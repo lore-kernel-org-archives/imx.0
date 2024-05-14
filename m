@@ -1,79 +1,68 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2045.outbound.protection.outlook.com [40.107.7.45])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2056.outbound.protection.outlook.com [40.107.105.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D20B17EBAE
-	for <imx@lists.linux.dev>; Tue, 14 May 2024 16:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EC717EBB0
+	for <imx@lists.linux.dev>; Tue, 14 May 2024 16:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715703082; cv=fail; b=MNInIAUzXQ+SFbPBrhbXUEjiFXJ2VsVXdMTv8pyTN8Kbh+FfiQmV3tOnqyju7fyEe3WlcKWbzyXfzmPGJNxunsrrqsIBk9eSIlRgNF1AfEqIwdvIzguEeEAqVF1/vmaIeHXloU/GuaUwnNpNNPnx2wI0RGijvbKg5tauJ7Fmj+s=
+	t=1715703384; cv=fail; b=fmQJWhdzGKZTupsn6dAwgOW1nKwZaLRB2U18LYYmRO+i6EXgqvxlj8GXcaPM8uWVB7zulxP3fxSJMtRV/1Hx/hs1D6mIUfkSxQmafz3rAeFZfx0Qt8s/mSyzWzI0eAEur0QB8rI4D3jz8H4H1bWnWA4qWfPmWLl8sigcebl75Ak=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715703082; c=relaxed/simple;
-	bh=7IUotb7dRMjcwneF4XXCyPePo4bDxBd+TbG2a6E6CZE=;
+	s=arc-20240116; t=1715703384; c=relaxed/simple;
+	bh=o14XS22P/netJvJtqUCgQ7C4J9kLM7Xh7A/m0JadBo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FQr/MVH1ZviCFGLXz8toPdkxdzFT2gp6jMPw1oVpHyzKAb9RrZkRFb11pNOspCICyyLS0qFpdvFH0NIozK9u/McCGG++hWRnj94pEld2Mpd/mnZ1H179QBmKyVDyj1RtJQixlmFDWZ+5x7EQCTKgKlrZi25ptGgJQNLhnJN9o80=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=SeSkTYVr; arc=fail smtp.client-ip=40.107.7.45
+	 Content-Disposition:In-Reply-To:MIME-Version; b=swMVR1yyBZJ0Mqv4mBO/GCPfnZhSDEAf8dZ0AebfIECdurZ5FBfiY0v9bNXs+o/xuC03zxjec0m8eJZkWl9RyFeWNjjotqAne2U88fZBjx5FAkaS+RlRUinCv46/FvDP0GNTr0YigMAG4buznNmWWu5DQeR+jZYS9hnM6Q96GCw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=gbzYFRFJ; arc=fail smtp.client-ip=40.107.105.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="SeSkTYVr"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="gbzYFRFJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RTYQnWGxk7fsK/0nHYaPsuSD5GkTzwcLcUXUMqEhXI0pz6z6CcqxddM8hRcj/xjbzxt4VxaVuMRiOIAPFNU9dZVpPY0uLHJRoOko6jVrqESkYLJRZG2yNNfMHndtaD1eE//t06z7/WQrJJOld+tbr97RtfW88kDEplJcUifCw/2OjOQR2Kgk6Ibd4NVpbryr+UM1vHsMdOdVX6yOpZfOyLEH51SimkSNxHLKt+kAVuEkJOaBQ01C2jksM6LAs9+QcSKQze3zyuofZ09+IQc3hPNm8jT67sjwO1FvF9jCy7t7brnNRtfkQHBlBFrb7HJXp8hAZlPYw/3XE6u6UmIwbg==
+ b=HA/aEQsF0J7bvzMX6/fpEHMuxJs+eaPLSCsY3/pt7tBUL6f3/56dII7f/9xS/qVislao0rhAQw8iq0GeLbzX/gBWPLVzRuxb+VfJtJpr5Ot6cUhq+qfvQm/Pa2NDt0rHyzVQRB54a3QxmcyE++MRCmdW4pan9u0Usd3BfQSCZqOZf+uOwOrHKmczzU+XFBdhLcWBqGCOzy2EdzAqvOnoLYE7xpqwL3WwOA7gxy+LhbUt8GIfuu727rzVoDfbpQf6CNpYovv02XMlOemf0L30ddzQC3SjwmR0X6FbiC+zncJ7t0M6fXj/VjrK/ZEDzSWBxVWwebiYZJ6xLqM092TEmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qFCdYRSaZ7CHthTz497muRRr/63qBRcHhOCR9Ipqoz4=;
- b=Jm45uH+pqzYV4s2+v95Ov9CcGwhPJlxcUQuyIjaKXeeOqxrf7eX8Zi4mafnanSMak7p4pFlGVAgY1/LzJX26ARbYtYypRWugyFZB5utGI8NQX3+FIr1PyhKdIHl5gjGBzpdJKWgb9xIPWqQGsHSx0iQ5YLXoZ8Zh72JKhMoXjLmHUSXVQcrXJHbvUXhpG2jWLjE9w4ECFSlsHYIaGHQc1CK7Hnz0AzJzUzJNKzvXnmaYJ5LTJwXPVgv5Y8HbADBrXrlRygyZDduSETx6z0TAhQZcgefBaQNWQdwMEsQDu73EuBQiXw2VqPeh8rX3PvcaQn6zM6gcUypIZnUT/gy4Ng==
+ bh=ZQzx3MFUg11Hsctkni0/a+wPSAxgL1O62pZbnHv3sIo=;
+ b=WqcpKxcZweNUTPHAMmLJtpjz/B2exj3OZmnZnGQIhztSCAjOpdpZDQHcqROvDBpHM2xhScQxBZDHhaoPO/opcRSo5yKUlJ/sQAJ7uGGnCFC5LVPNX08sObkBA9wQP/IILdyWELfo15MCLBwoqqUJ9xsyu6wiyxhhaEnbmGSsaVtT/JLIT+O55lw7r9i2ecBGzMkcy6lV2sIyhP/VlSsCyN0d6hjCqkNcxe2rXI4ZMFzM1sRsDUZKNWMd+2zJaLM74gbT3zBCBDKQg4EsEcspiN35ML+jtcuElHLrj9NCjWyZCSeK0OXen8aDwjAS55h3UgLh7kff68ilpb8iSrWNcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qFCdYRSaZ7CHthTz497muRRr/63qBRcHhOCR9Ipqoz4=;
- b=SeSkTYVrhiZvYZSn3FLefC41Mtw2pmyqY4vZaHxNtLzIyA9eygmniQ8fen9FxHSBdLDNkrh6pttiHo/icaAMz1IHBAO/Oneg/Ma1P84bAaDnOuq6Q82w/i7qOf+HtVyIMuEovQy2K12tfiHrWzeZ75hNaH4BfaeTqoua4IhptTc=
+ bh=ZQzx3MFUg11Hsctkni0/a+wPSAxgL1O62pZbnHv3sIo=;
+ b=gbzYFRFJwjDHW4ajy6f3Ahj61HgOXKPPe3XQwzcnKq23KF+1/EwhL/Tg7Qj5HZZP6yEHz1z9/kxebV7cuXicGWxyZsb1KldRYHvJpgny/YEJpe6nF87YISgxra2W8MA13xdvkOxvr8E91lPXFWZNn5GyWtFqBszdiSYQh/T05Zw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB11064.eurprd04.prod.outlook.com (2603:10a6:150:20b::9) with
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DU4PR04MB10887.eurprd04.prod.outlook.com (2603:10a6:10:592::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.22; Tue, 14 May
- 2024 16:11:15 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7544.052; Tue, 14 May 2024
- 16:11:14 +0000
-Date: Tue, 14 May 2024 12:11:05 -0400
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.21; Tue, 14 May
+ 2024 16:16:17 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.7544.052; Tue, 14 May 2024
+ 16:16:17 +0000
+Date: Tue, 14 May 2024 12:16:09 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Joshua Yeong <joshua.yeong@starfivetech.com>
-Cc: "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-	"conor.culhane@silvaco.com" <conor.culhane@silvaco.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"jirislaby@kernel.org" <jirislaby@kernel.org>,
-	"joe@perches.com" <joe@perches.com>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"zbigniew.lukwinski@linux.intel.com" <zbigniew.lukwinski@linux.intel.com>
-Subject: Re: [PATCH resend v9 1/8] i3c: add target mode support
-Message-ID: <ZkONGQPBeuR6oZ0Q@lizhi-Precision-Tower-5810>
-References: <20240507204311.2898714-1-Frank.Li@nxp.com>
- <20240507204311.2898714-2-Frank.Li@nxp.com>
- <SH0PR01MB084187FBA1E4EE786A8996C9F9E22@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
- <ZkI4GO4czdgs5/Xy@lizhi-Precision-Tower-5810>
- <SH0PR01MB084189445E4928BC5047495AF9E22@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
- <ZkJgf/oRMMBswih1@lizhi-Precision-Tower-5810>
- <SH0PR01MB084183D40B4ECC0C4B3A9BF0F9E32@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
-Content-Type: text/plain; charset=us-ascii
+To: Angelo Dureghello <angelo@kernel-space.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	"open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	linux-m68k <linux-m68k@lists.linux-m68k.org>
+Subject: Re: [PATCH 1/1] dmaengine: fsl-edma: merge mcf-edma into fsl-edma
+ driver
+Message-ID: <ZkOOSRMxX8MAO/3W@lizhi-Precision-Tower-5810>
+References: <20240509193517.3571694-1-Frank.Li@nxp.com>
+ <CAMuHMdVB2PrkxDMoo0y1y6SLj-yuW5o+PJ+sQn2VtB2yrXzkbw@mail.gmail.com>
+ <bd538260-2403-4912-961c-549c74aead76@kernel-space.org>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <SH0PR01MB084183D40B4ECC0C4B3A9BF0F9E32@SH0PR01MB0841.CHNPR01.prod.partner.outlook.cn>
-X-ClientProxiedBy: SJ0PR03CA0345.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bd538260-2403-4912-961c-549c74aead76@kernel-space.org>
+X-ClientProxiedBy: BYAPR06CA0069.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -82,358 +71,296 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB11064:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5851d6ca-fd41-4f48-aa27-08dc74307ad6
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DU4PR04MB10887:EE_
+X-MS-Office365-Filtering-Correlation-Id: 096aa94e-5152-4610-e98e-08dc74312ec8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|366007|52116005|7416005|376005|1800799015|38350700005;
+	BCL:0;ARA:13230031|366007|1800799015|52116005|376005|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UGocreDMOXxu430td5z92c0udjSUZx5vkC5x8c0Zo1aaNnBnqIhLzeBLIU4m?=
- =?us-ascii?Q?mkQJ6q0PYK639YxPTTQS3RBXVKtOIhs/RLAhmdmclMeMKwg+d9SEXxhCQAiO?=
- =?us-ascii?Q?Jz2BFxqCF508/AtdujWk4f6HeXHBxtWxDTAqwnBwzHePZFKGcDGbL6Mh0CW+?=
- =?us-ascii?Q?rA7VmcjcQkiiaEjmVgrPCI0rQGTlO5JBynFPh6v1F6mm/IjmHVHEbUrAb3kP?=
- =?us-ascii?Q?UShD+ujtdixWvEWY5ZkUqfJUdbbxLfGkgjrI8yPnfdJQWqIvLmdpTvRNLni+?=
- =?us-ascii?Q?iLGnrwRsg4AIt5c4ixNOpjQnffjEFUICYmowKWRXrVXOLeRzSoBBCWykmUKf?=
- =?us-ascii?Q?SFiCd0B4SY9pia7uugPPSv9NLH0Pv9Wg2Y63PE/6O0nqMZxL/Hw5NXxB0q0y?=
- =?us-ascii?Q?WNW+bg/j1Gm+gWaO2ixr04O3LdaxoE4Xn1H1kz1MjvlvBEPir3C1fiHaiW4c?=
- =?us-ascii?Q?GYBtNEMyO/zkfYxGhdzotO21zJx6nnD4prT+9HEP3T66UD/8HkwdrNZ3J8fz?=
- =?us-ascii?Q?NubHA1kkYAUi0LeRywLTH33eIq3yn5/27JN8Cyeahe11YDNea04MFYH1i956?=
- =?us-ascii?Q?L5QCHtoUdA6kzMt3jFoxSYlfnAU1QfkwXueg2iJNrG1kFEi0suQdfJV9WoAj?=
- =?us-ascii?Q?w2kZqyIA0qsR4ZiFJrWcPs3ZhbGYBUVKPOW4hXsBryYKVwm9zm+2nQrVg0IV?=
- =?us-ascii?Q?dKNZgoGQjtdPLudxC4gxXQ01gpRhpXy2pv1cqno7dFKi1MdPsByB08pgmneX?=
- =?us-ascii?Q?YEjF7qghJWtfbqLGyf80+nXsaK8KhFtpDqsb3W3M5gjvcDfRfBOWKZdJntg9?=
- =?us-ascii?Q?iLn1LeE20fBDS+Bt6DL0ViIme29jU010IYXtBClwLGw+erG9HkayR714Hbf6?=
- =?us-ascii?Q?kI47UodnX3EVn9BBXa6nZ01yVWrwdbEauSX4eu1/0DwSVadthBJ0NpwYABUH?=
- =?us-ascii?Q?CBZqcat1yxsXhau5PscEJXdOcPGgqnUtnNW1OvepTP2y4frC7RhhQjEn/7Ul?=
- =?us-ascii?Q?Zlw6mCY2Ke66I+Otp0hLNOoTILDGqakLaVfB9cnJS7qHzgJO/P2dZFCu4uKj?=
- =?us-ascii?Q?oW7snMeoyd0ECjcEqFCnAdXMMLisRxWa2Djd7Xn7QpF8OPoCyCQ/M4TIL16p?=
- =?us-ascii?Q?ZQykNAWNUuQSCXDZNdyFNNUrphmN4aIl/mALbc7w2RgkvC4ektad5z52FVyV?=
- =?us-ascii?Q?oNR9Hvtv/UymFdCcsv/m1+3vj1tA/3veyLTtFsAl8+IOLyJeiJOQ2x+nuRJS?=
- =?us-ascii?Q?hnfSclExCYZj0r+B8t0cSijGfIAVxsWQB/5lo8+pbQ=3D=3D?=
+	=?utf-8?B?TEZscnQ1QjZkclAxS2Y1Znh0djJXWExybFh1UGZuQzhoaXRhOTg5VG5IMEJv?=
+ =?utf-8?B?V1FaZ002MHBuYUNLZW5sKy9OeEVuSjVCRUNZV0VEQ2hWc0xrbjJ1SXI0a011?=
+ =?utf-8?B?RnhzS0luWVI2Wi9zSmJacEZ4U3NRZHJEeS9GYi91aHVoOHRBYnMvM0ZQS1RQ?=
+ =?utf-8?B?ZnF3UjNlME1GaFFmRmg0Z05YWlRZYzBnTXRBRThUV3VOUlYwcFQvWFl2VEZr?=
+ =?utf-8?B?M1dRZGhaaW10UWxYL2Jybi9ORU9OMzNxOEhPVDN4YXNCVVg2TDJuVVhoZFhD?=
+ =?utf-8?B?YW16US92SzlsNkl2dFdhR1BxaldTR0RhUmRndEhWejM3UzUzWnZoUjlwa0Vj?=
+ =?utf-8?B?NXVGaVdCcGlNRHdmTmh2UzhrRmY1aW9Wc2l2NXhVUkpCYS9BQjh0YU5wNUh1?=
+ =?utf-8?B?Y01xK05FNlM0MXdsWlR3TlNrSk9RS0JLMlVVaGxUcmtwVk9OYmxGWUdKdVpB?=
+ =?utf-8?B?Sy9yZ0pwWDZ0bkdrQ3dPcVl1MCtPVlJhQmlUbEUwL0laM1l2b3g3V0pKOWV3?=
+ =?utf-8?B?S1dSMlp0MzB6UkJxNHVOYVV3TE5ITEk2VTJ1cVVTM1k2Qk54KzBWOTJDY0tO?=
+ =?utf-8?B?NE45KzRuYzBid3JPeUV4T1h5blVnb1NyWkpQdWYzNEtWZU44ZVlobDNwaFhk?=
+ =?utf-8?B?cVJQbkJ2RFZrNGtKdzZWOFM1cW5aREJuUmdudTY4UHh1OFVYNXJIU0N0Szlm?=
+ =?utf-8?B?eEJGVmtsWVJDc3ZDVkJ2cTRYYms0VWZ1TTJobm13eDlBS0xEMlQ1R2NuakRa?=
+ =?utf-8?B?dW1wOVAwcjFIREQ0ZGJZTGtWTTRKcjRobGZ4NVhaWWdmL0xTWlJ0a3NaSkww?=
+ =?utf-8?B?WWQyMm9OUHFPQnA5SGNYOW91MUlNSGVUZmgwNThuMm8yanFJUjVUVmZDU3k0?=
+ =?utf-8?B?akg4MlRreGNOazBaWDhuOG8wOEd3MTRkTDkwMUtmSUsrR0huYlNiTHFkR0t4?=
+ =?utf-8?B?WjJrUE1IdWZnVHlYSUtUWEZoYStXZld3VW1VU1BMTGpUSkpSeUVSelRjSU9P?=
+ =?utf-8?B?NVZMUUN0UXRUbFFsM29LZmdYTEpnRG5WZ1ZsalIyZG1XNzM0TWdCMDByK3hP?=
+ =?utf-8?B?RG9wOEZhaHVMelB3RXA5bTVjb0xKWmpDRXJ6djNqN3Z1amI5T2RJYkJSblpI?=
+ =?utf-8?B?azhNMkZVS3ErOG5GQVZ4UFJ3dkZUNktDTXQ2dFU5Ny9WTHY1SnpndjRQWjNy?=
+ =?utf-8?B?ZWtPRlR2R2ppUDVSZXFGKzZHYmU3emRiNG5rZXc5algvSzkxS0E4RmYrNTRD?=
+ =?utf-8?B?V0RLaGpQVHphY1d3NUpmYnR3c29SdXFOUFp2bHJNNGVBb0xjOFBCb0kvMGRk?=
+ =?utf-8?B?S25WM2U3SHZYZWppVjFqeGJ5M2pXTks3d0J6NjRTTUdwS0h5M1hBcGJ1M1p2?=
+ =?utf-8?B?aitRK2dKZU81SnpXMElPZzB1L2FWS1NsQVcxQVplSXMwNmdrczM2NjNobVQr?=
+ =?utf-8?B?ejRnU0VaOE9ZZUtVL3ZrdkxrZFcyQ1ZsWlNIUzZFWVkxWWNLUFAyUlFsTldw?=
+ =?utf-8?B?bVAxdHhOY1NFVTVBNTFFNDh3aS9lYjVRY3pSbkJUdUtLZDBzeTBKQXh4eU01?=
+ =?utf-8?B?Zktkcnhab1YzaUZyV2ZsOHdIaThrZ1o1YlJnU3lMSmY2dW4ybnNDdUtkR1E1?=
+ =?utf-8?B?ZG5hS1Z6UDdZS1ZGZTMrb0NDREJ5YTdXK3daZSs4eTYzdWVBUmpqOFllb2Vi?=
+ =?utf-8?B?d3o3NEJyVUNIMHl1Yk84Nm1ycC9XTXZwdk1xbS9TaTU5L0pSWHhwanV3PT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(7416005)(376005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(52116005)(376005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RPgRHmWUVBGplQKJCrq6yb/CTXYrHxdJXfjr6iJ7q28odOLNo6ge7GcrFfCO?=
- =?us-ascii?Q?iHgoQ/AId2X0fHP0FWFMg84t78z7xUZRNtfixksoS+qanvNFLMIqMbOxZaAQ?=
- =?us-ascii?Q?uvd01FZU5Drg9ZTuOzFCBC3ehfsB9NVBYRV0LT0gXBx0RY9HfZSoUIZrCr4f?=
- =?us-ascii?Q?oJbQq7vHkFHJJnUG6iLY2oDoXq/QpofSJjVkbkdTkbSd1MW//7UqGVMfH1yq?=
- =?us-ascii?Q?3SsJW1xla4wZ05zzcL7id6+9yOMcbmCfeSVHNEAhRsd4r8dfDxk7nRPMT4Gy?=
- =?us-ascii?Q?g0MW+gYPH5joWQg9u4k7mljx+hLFOR/W/TiQaZSNSQ5Je5alKIEL1EMlLkNu?=
- =?us-ascii?Q?6b9Tg+Mbs4txKKeNgHT6vpYk1iYzPG/Z2+mvZk0/jnC5DZXA18HVSAHpoVJy?=
- =?us-ascii?Q?UUVbJA/4o/UywRBSUxChGIHFeAtNox5DH+Vn25KVuz7KXV/n4Ta3ukA6RPJk?=
- =?us-ascii?Q?Nt81Eq/EYVObjoCr+Nwxe/zWzM52Zh5iYOvDP3F1OV9Q5FCEbMrheCEfd4ly?=
- =?us-ascii?Q?9hwd+uHZbHUCQ8k8OAsNna+wSbVdVBPjpxVIqM00y9PoJvlb7ulDrsAP/A7D?=
- =?us-ascii?Q?S0cB3Ud5EDj3/MxA5IZP3Jsn8tDsBZbYc5aq13gJcQLVlYBO9XTVEfnjrIhk?=
- =?us-ascii?Q?xuDM5QUc+mG8MrtDk9Fbnowr7re47OgaqA0MTgia+/lE8L3e0oj+YB9vZTN0?=
- =?us-ascii?Q?dDTkN+X8EvITz+HlvaNMrlDdsHvXv6g/xoee3Y9AKRqpmVkX4nDNNgJAv8cc?=
- =?us-ascii?Q?Zmg9Bb4kT6ICUyUPN+x3CNRE5TS4y3Cqa51u3gPDGe8Qkyj/1mt5utTUJu/n?=
- =?us-ascii?Q?hwEDTgj5Y8/6RjZ8jquQ/H4QFWopZQ2U+HcJL1G9oSNCp/r53sYzX1fNXUOX?=
- =?us-ascii?Q?ca3vzFGmLo3nqs7cD9mso9rAttcRnk1jEUXezEMSFdhbdFOdzdMEv++miswL?=
- =?us-ascii?Q?eoEI7LXpjuW8a09IL9yy6iN7+YOq7m1iTTR/7vTOC5Lld62U3pwY8cChGmGQ?=
- =?us-ascii?Q?AdDwi+qkJ1QL7GELCv6IbLB0a0NiZDA6zGdbW2v6jTxqGsmZ082WOkuAa2hB?=
- =?us-ascii?Q?8wPGQFmyPIhMblUBXDkrHRNmRyf3p5MaET65kagWS1/ueJxDFhYenkA0QYCY?=
- =?us-ascii?Q?mUkc/rpY3XTiSnQ891ufjnPMypsRuV9YYhyFpdKI1mi6k1OsILASKt/dNjYN?=
- =?us-ascii?Q?kxGW/fXjEmRkwrab3gXnoDCDgirmZ4FzcF3PUisXZ2rgAWgOjA8pA1nCIut5?=
- =?us-ascii?Q?jywelpS4Vo+k+sj1CVmPNbc8rx8n7mqTK8l9bAMEyFt6gYRcSGWxw0bte1/E?=
- =?us-ascii?Q?kdpjRhl4Lmd83ibP0k9xnFDMUD76I0mUrCKvx0O/xqhUJnXUT3LW6aazsQbV?=
- =?us-ascii?Q?DoQwKbSnxYlY3kXpuY39dw8AMag4RY078DdrRK2sITOH+CTmvV5jRbXeBHk+?=
- =?us-ascii?Q?ISA8XphlQy8zm3XvJl+4zaUeZahBBQ8TpxjVh3lL4fuvameriXNAtcvqgoIh?=
- =?us-ascii?Q?uAoot6yg8VtXpkcmDjzpkm9JJDAqLRQplTcDmYaOUfwmvt/4pxq2u0C0+cDU?=
- =?us-ascii?Q?ETTZ5ZrF34jwnSdRlzWIqiujZLMqq0lzYHdJvnpa?=
+	=?utf-8?B?M1o3L3NEUEpML0l0Z0Npd2xpanZGR1dkb25lRVpRcHc1cm1md0FmMEFvd0N0?=
+ =?utf-8?B?anBrVlpENHRIQ1ZmRncvU05xUXhiK1lTSEdBZEZvdkl1TEN5UjE3eVE4aTF6?=
+ =?utf-8?B?T1BYZG9RT2xzUUFOeElveExac3Mvd2JscjBXU3JXdzNyUGVveWh1Q3Bsc0ds?=
+ =?utf-8?B?VW10bkJEMW40czZFWlJDVkdkK2ROZWx3TGQwMEE1WWpSUWk5UmxkSVpubXlV?=
+ =?utf-8?B?ZmdZZEY4SmxjaEVRRTFRLzhSYUVCMFpITjJmdVZxWkUvZ1NZaG9LMk5yOUtq?=
+ =?utf-8?B?TGVTZWVlRW90TmtxZkRiTGJ2MFE4SVdqZ3hSU0JoRlM3QyttLzFkbStNdG16?=
+ =?utf-8?B?M2xZQUhmQnZNekNUd2pMd2dHcWhSNklib0J5dEdWYW5QdmJSOU1JYmVWMlJD?=
+ =?utf-8?B?QVhrQVd4Zmx4Q3dGdTBtUUhaNmcyNm5lSS82WjhncEVHUEI4ZW1kUlZ5V1Zi?=
+ =?utf-8?B?eTdvMktJejFuMzJYTTdYNisvY0FObS84YlFkOHRIajFreGVZN2FUZzNSZzRV?=
+ =?utf-8?B?QWpNcjZSNVNncno3MEJqSUFSblEyam1QWFRaL3VjV0xVc3BaTi85VDU4NXNJ?=
+ =?utf-8?B?MExuR0RpY21MTjVOdHlkcFNrMmwrZXNJNHVnS25wcnhDaFU4dFo3Z1JuVkJC?=
+ =?utf-8?B?TmF4MXp2cXlFNlgraVdHaUY4Yit1QWQvUDRaWHpncW9JNjlJTWdQUFpNWTJM?=
+ =?utf-8?B?WWlxb1o1aEpRTzJvMnZUTTlVMHlySEF4RjVrVCtld2pkZFNYN0FzdVdsR3dj?=
+ =?utf-8?B?eXI1d2hFOXZVendmR3BzUktHdUZxTWpRRHljQU8waVdVRFpzMzRGdWVqcUJD?=
+ =?utf-8?B?a2VwU2I4UktrTzZ4dEhjaEhuTkRDUUpaYm9lUEhrQ2l5c0Jzd3h1M0swMUwz?=
+ =?utf-8?B?d3NibERVZWVSTE5LZHBGakM0NW5sQnFDMzNiRENTUUJGb1o1YmNCWktYTnIx?=
+ =?utf-8?B?dVZPK054SjMvNnMxVGN5ZXhJQUgvUTM5VWNYckt6TFBvRnlsM0tjNlpyVGJL?=
+ =?utf-8?B?cjhyVEdzK3pGQ1lPeCt5Z3lCOXpvclVTTjQ5SGVnREpISWZGdE1iYVRaYjJz?=
+ =?utf-8?B?WUNxR0sxVmJlRTdVS2RRbXRkQnNra2pudFpqeWZadjF6N0VHclFMcVdrcGN5?=
+ =?utf-8?B?dXZ3RksxNW15ZzA2L0l1cHYzeGU5dHBFUk1ROTJmQ3p2MURzVGFTZUlXeE44?=
+ =?utf-8?B?TXhxakdsZ3h5dzdScWFqVjEvK2c5aExvRDZEcUEybC9QaGZJSnpMWnRXY04y?=
+ =?utf-8?B?SFlGNDYrVTM2MlZoV3RJNi9MbFY2Sk1LeVEyNE9tckJ4N2pKdHZwaTdKamww?=
+ =?utf-8?B?eEFRbG1KYXBJV3c0WHVKZ1RmL3R0SkUzNnlGQ1RwYjNZK3RlL2RqWmduTjU3?=
+ =?utf-8?B?SHN2ODlFcFNCUDJ6aDRYQWxJVHNvRDRoQ3p3Z0Y3L2h6QTl1NHZnRGxUbHNB?=
+ =?utf-8?B?L1N2STlwVjZJQlZ3UGZ1cW1Nb21DZjJ4aWh1ZytWWGY2TnRrNFBNSGJYWlgx?=
+ =?utf-8?B?aElCbzFkKy9xLy96Z2VVTDMrU3pPZitEY1NWb2s0clZNanZMeGNnSGdQblkz?=
+ =?utf-8?B?YW5INERlWjdvdDdHSERmUzMwbld0V2JwZXRtUG1wZXZsbUtWVCtJQ1NzRWsv?=
+ =?utf-8?B?djlBdUhNbVpMeTBoZzhha2pKMldkcnpxSUxveXlURER5SVVOUWFhblVYekRX?=
+ =?utf-8?B?NXJXOEpRN2lINnBnOFNoYVFENFZ2ZWFrbXI4K0RNRjcrYllmWnNIZSthTTla?=
+ =?utf-8?B?N0JqdEVYNU54OW9lL0lQUnBwS0xIZ0lJb0JXaWV0RlZId3dLY2dpb0pNcHlZ?=
+ =?utf-8?B?bjRnUDlPVFBzUk94cThpa2taSzdVTG0xUjhYR3VFd2NyUGxXTVU3bkV3NWZi?=
+ =?utf-8?B?SjRObkV2NVRBNmY4Smd2ZUphRFZXM0p4Y0ZNanNGUlRPdUZ0OVQzYVF3dk8r?=
+ =?utf-8?B?dHNXREtjRllQaDA2Q1BJK294KzRJbkFFZk5objFGekRnMnJISnFmWVBTUzg3?=
+ =?utf-8?B?NmExMzZLU0VBdU81V0podS82RXdCYzU0Y0NiUThYaUxSMGxEc29ndTRsdDdl?=
+ =?utf-8?B?WUN4T0pzcWRYb1RiTTBzM0lYUzd1NjU4TjJ3ZnhuUlVlRlcvYWYyK25sWnFi?=
+ =?utf-8?Q?0RJyP1yYvVKrB5FaYzxPU1+23?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5851d6ca-fd41-4f48-aa27-08dc74307ad6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 096aa94e-5152-4610-e98e-08dc74312ec8
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2024 16:11:14.8951
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2024 16:16:17.6372
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Osnbo/LECo9PVgloVnU11CLlsOliMmHZQ5OHGwsmdIkmrO7ODTb7UJCku0yDmeb/7jgOBieT+0k03/LS0oG5mA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB11064
+X-MS-Exchange-CrossTenant-UserPrincipalName: jcNLYK2GTP7GT3hmp68/6m9iUYcXCmdeEjnYYi27vvdw8anv3soC1mjPE8jzTd7D84Hn3UDJRjP/qG9tptjeQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10887
 
-On Tue, May 14, 2024 at 03:07:25AM +0000, Joshua Yeong wrote:
-> Frank Li wrote:
-> > 
-> > On Mon, May 13, 2024 at 04:18:00PM +0000, Joshua Yeong wrote:
-> > > Frank Li wrote:
-> > > > On Mon, May 13, 2024 at 03:16:05AM +0000, Joshua Yeong wrote:
-> > > > > Joshua Yeong wrote:
-> > > > > >
-> > > > > > Introduce a new target core layer in order to support target
-> > > > > > functions in linux kernel. This comprises the controller library
-> > > > > > and function
-> > > > library.
-> > > > > > Controller library implements functions specific to an target
-> > > > > > controller and function library implements functions specific to
-> > > > > > an target
-> > > > function.
-> > > > > >
-> > > > > > Introduce a new configfs entry to configure the target function
-> > > > > > configuring and bind the target function with target controller.
-> > > > > >
-> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > ---
-> > > > > >
-> > > > > > Notes:
-> > > > > >     Change from v8 to v9
-> > > > > >     -none
-> > > > > >
-> > > > > >     Change from v7 to v8
-> > > > > >     Added missed head files
-> > > > > >
-> > > > > >     Change from v5 to v6
-> > > > > >     - fixed build error when have not CONFIG_TARGET_CONFIGFS
-> > > > > >     | Reported-by: kernel test robot <lkp@intel.com>
-> > > > > >     | Closes:
-> > > > > > https://lore.kernel.org/oe-kbuild-all/202402030437.GdGCrKeK-
-> > > > > > lkp@intel.com/
-> > > > > >
-> > > > > >     Chagne from v4 to v5
-> > > > > >     - add include <linux/slab.h> to fix build error
-> > > > > >     | Reported-by: kernel test robot <lkp@intel.com>
-> > > > > >     | Closes:
-> > > > > > https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT-
-> > > > > > lkp@intel.com/
-> > > > > >
-> > > > > >     Chagne from v4 to v8
-> > > > > >     - add include <linux/slab.h> to fix build error
-> > > > > >     | Reported-by: kernel test robot <lkp@intel.com>
-> > > > > >     | Closes:
-> > > > > > https://lore.kernel.org/oe-kbuild-all/202401270838.wdxHPaAT-
-> > > > > > lkp@intel.com/
-> > > > > >
-> > > > > >  drivers/i3c/Kconfig        |  28 +-
-> > > > > >  drivers/i3c/Makefile       |   2 +
-> > > > > >  drivers/i3c/i3c-cfs.c      | 389 ++++++++++++++++++++++++++
-> > > > > >  drivers/i3c/target.c       | 453 ++++++++++++++++++++++++++++++
-> > > > > >  include/linux/i3c/target.h | 548
-> > > > > > +++++++++++++++++++++++++++++++++++++
-> > > > > >
-> > > > > > ...
-> > > > > >
-> > > > > > diff --git a/include/linux/i3c/target.h
-> > > > > > b/include/linux/i3c/target.h new file mode 100644 index
-> > > > > > 0000000000000..b0bf06685834c
-> > > > > > --- /dev/null
-> > > > > > +++ b/include/linux/i3c/target.h
-> > > > > >
-> > > > > > ...
-> > > > > >
-> > > > > > +/**
-> > > > > > + * struct i3c_target_ctrl_ops - set of function pointers for
-> > > > > > +performing controller operations
-> > > > > > + * @set_config: set I3C controller configuration
-> > > > > > + * @enable: enable I3C controller
-> > > > > > + * @disable: disable I3C controller
-> > > > > > + * @raise_ibi: raise IBI interrupt to master
-> > > > > > + * @alloc_request: allocate a i3c_request, optional, default
-> > > > > > +use kmalloc
-> > > > > > + * @free_request: free a i3c_request, default use kfree
-> > > > > > + * @queue: queue an I3C transfer
-> > > > > > + * @dequeue: dequeue an I3C transfer
-> > > > > > + * @cancel_all_reqs: call all pending requests
-> > > > > > + * @fifo_status: current FIFO status
-> > > > > > + * @fifo_flush: flush hardware FIFO
-> > > > > > + * @hotjoin: raise hotjoin request to master
-> > > > > > + * @set_status_format1: set i3c status format1
-> > > > > > + * @get_status_format1: get i3c status format1
-> > > > > > + * @get_addr: get i3c dynmatic address
-> > > > > > + * @get_features: ops to get the features supported by the I3C
-> > > > > > +target controller
-> > > > > > + * @owner: the module owner containing the ops  */ struct
-> > > > > > +i3c_target_ctrl_ops {
-> > > > > > +	int (*set_config)(struct i3c_target_ctrl *ctrl, struct
-> > > > > > +i3c_target_func
-> > > > > > *func);
-> > > > > > +	int (*enable)(struct i3c_target_ctrl *ctrl);
-> > > > > > +	int (*disable)(struct i3c_target_ctrl *ctrl);
-> > > > > > +	int (*raise_ibi)(struct i3c_target_ctrl *ctrl, void *p, u8
-> > > > > > +size);
-> > > > > > +
-> > > > > > +	struct i3c_request *(*alloc_request)(struct i3c_target_ctrl
-> > > > > > +*ctrl, gfp_t
-> > > > > > gfp_flags);
-> > > > > > +	void (*free_request)(struct i3c_request *req);
-> > > > > > +
-> > > > > > +	int (*queue)(struct i3c_request *req, gfp_t gfp_flags);
-> > > > > > +	int (*dequeue)(struct i3c_request *req);
-> > > > > > +
-> > > > > > +	void (*cancel_all_reqs)(struct i3c_target_ctrl *ctrl, bool
-> > > > > > +tx);
-> > > > > > +
-> > > > > > +	int (*fifo_status)(struct i3c_target_ctrl *ctrl, bool tx);
-> > > > > > +	void (*fifo_flush)(struct i3c_target_ctrl *ctrl, bool tx);
-> > > > > > +	int (*hotjoin)(struct i3c_target_ctrl *ctrl);
-> > > > > > +	int (*set_status_format1)(struct i3c_target_ctrl *ctrl, u16
-> > status);
-> > > > > > +	u16 (*get_status_format1)(struct i3c_target_ctrl *ctrl);
-> > > > > > +	u8  (*get_addr)(struct i3c_target_ctrl *ctrl);
-> > > > > > +	const struct i3c_target_ctrl_features *(*get_features)(struct
-> > > > > > i3c_target_ctrl *ctrl);
-> > > > > > +	struct module *owner;
-> > > > > > +};
-> > > > >
-> > > > > This structure looks very different from the master controller ops
-> > > > 'i3c_master_controller_ops'.
-> > > > > I think you could probably combine 'set_config, enable' into
-> > > > > 'bus_init',
-> > > > 'disable' to 'bus_cleanup'.
-> > > > > Also using the 'struct i3c_priv_xfer' rather redefining another
-> > > > > 'struct
-> > > > i3c_request' would be much cleaner.
-> > > >
-> > > > Thanks, let me think this. i3c_priv_xter may include read and write,
-> > > > or write and read. I3C is quite fast. Most time software are not
-> > > > quite enough to handle it in time.
-> > > >
-> > > > If data len bigger than FIFO size, it have to use DMA to transfer it
-> > > > because there are not flow controler at target side (write direction).
-> > > > Read, hardware to use early terminate to tell host read too fast.
-> > > > but for write, 9th bit is parit check bit. Data will be lost if
-> > > > software have not read from FIFO in time. If use external DMA to do
-> > > > that, it needs switch dma channel(generally, DMA rx and tx are two
-> > > > channel). switch channel automatically are quite challenge at current dma
-> > engine framework.
-> > > >
-> > >
-> > > I guess when data is larger than FIFO, the i3c controller (master)
-> > > should 'aware' of this limitation when using such target device. So
-> > > that appropriate handle like make new read command, or do a write then
-> > > another larger read request.
-> > 
-> > Between two commands, such as two write command, some data may lost
-> > because first one have not chance to fetch it from FIFO.
-> > 
-> > Function driver can add some recovery mathod. But still better to use modem
-> > async method to queue multi transfer and handle by dma automatically. One
-> > transfer each time are just special case for queue.
-> > 
-> > If DMA support,  queue can work as big cycle buffer, underrun will never
-> > happen unless system wrong, such as disable irq over 1 second.
-> > 
-> > Actually, I worry about still i3c_priv_xfer, write followed read case.
-> > Most likely, host driver do like
-> > 
-> > 	write (cmd index/reg index) then read value or command result.
-> > 
-> > It is hard to decode cmd and send back data immedicately.
-> > 
-> > if there are not special DMA support,  more realistic usage mode is
-> > 
-> > cmd1, cmd2, cmd3,....
-> > 
-> > send back
-> > 	resp1, resp2, ....
-> > 
-> > instead of comebine cmd1 and resp1 at one transfer.
-> > 
-> > Host can do that just because all SCL are controller by host controllers.
+On Tue, May 14, 2024 at 09:57:09AM +0200, Angelo Dureghello wrote:
+> Hi,
 > 
-> The DMA queue mechanism should still be invisible to the framework. Target
-> could use info from SETMRL/SETMWL to 'prepare' whether internally DMA 
-> is needed.
+> On 13/05/24 8:12 PM, Geert Uytterhoeven wrote:
+> > CC coldfire
+> > 
+> > On Thu, May 9, 2024 at 9:35 PM Frank Li <Frank.Li@nxp.com> wrote:
+> > > MCF eDMA are almost the same as FSL eDMA driver. Previously link to two
+> > > kernel modules, fsl-edma.ko and mcf-edma.ko. These are not problem because
+> > > mcf-edma is for m68k ARCH and FSL eDMA is for arm/arm64 ARCH. But often
+> > > build both at PPC ARCH. It also makes sense to build two drivers at the
+> > > same time. It causes many build warning because share a fsl-edma-common.o.
+> > > such as:
+> > > 
+> > >     powerpc64le-linux-ld: warning: orphan section `.stubs' from `drivers/dma/fsl-edma-common.o' being placed in section `.stubs'
+> > >     powerpc64le-linux-ld: warning: orphan section `.stubs' from `drivers/dma/fsl-edma-trace.o' being placed in section `.stubs'
+> > > 
+> > > Merge mcf-edma into fsl-edma driver. So use one driver (fsl-edma.ko) for
+> > > MCF and FSL eDMA.
+> > > 
+> > > mcf-edma.ko should be replaced by fsl-edma.ko in modules, minimizing user
+> > > space impact because MCF eDMA remains confined to legacy ColdFire mcf5441x
+> > > production and mcf5441x has been in production for at least a decade and
+> > > NXP has long ceased ColdFire development.
+> 
+> when i developed mcf-edma, i tried to modify fsl-edma first. Modules are
+> similar but there are various edma IP versions, and i remember minimal
+> differences in the CF version too, some register bits and, of course,
+> endianness.
+> 
+> If a merge is possible, welcome, i have here mcf5441x, can give a try to
+> this patch as soon as i can.
 
-You are right. DMA should be invisiable to the framework, but framework
-need provide API to prepare receiver buffer advance before transfer happen.
-Only function driver know how much data need be prepared advance. For host
-read/target write case, It also need cancel request function incase host
-have not fetch data in certain time. Data need be updated. function driver
-can't simple update data buffer, because it may already map to DMA. 
-function driver need dequeue and queue request again.
-
-framework should abstract common part of difference i3c target controller
-and target function driver to avoid duplicate code.
-
-And also need consider linux's irq latency limiation, try to make the
-function driver can work on all target controller drivers.
-
-I think priv_xfer, W, R, ...  are hard to implement. Maybe limit priv_xfer
-'s len to 1 or 2. But if limited to 1, it becames no big difference with
-current implement.
+Thanks. I am not sure if recent eDMAv3 and eDMAv5 patch impact mcf5441.
+eDMAv3 is quite big change. If you can test on mcf5441x, can I send to you
+a futher clean up for mcf5441x? This patch are just simple glue two
+driver together to avoid a build warning. 
 
 > 
-> We can also argue that the max read length should always not larger than 
-> the FIFO size. Slave data transfer interface should still match what i3c
-> spec expect to be, rather than the hardware limitation here.
 > 
-
-According to spec:
- 	5.1.9.3.5 Maximum write length in a single command
-
-I am not resure "singe command here". I think it should be between
-"start" and "repeat start/stop". 
-
-If my understand is correct,  host still send out W R W R ... as whole
-I3C transaction, each one less than FIFO size. but totally size may exceed
-FIFO size. 
-
-
+> > > Update Kconfig to make MCF_EDMA as feature of FSL_EDMA and change Makefile
+> > > to link mcl-edma-main.o to fsl-edma.o.
+> > > 
+> > > Create a common module init/exit functions, which call original's
+> > > fsl-edma-init[exit]() and mcf-edma-init[exit]().
+> > > 
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Closes: https://lore.kernel.org/oe-kbuild-all/202405082029.Es9umH7n-lkp@intel.com/
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >   drivers/dma/Kconfig           |  8 ++++----
+> > >   drivers/dma/Makefile          |  5 ++---
+> > >   drivers/dma/fsl-edma-common.c | 28 ++++++++++++++++++++++++++++
+> > >   drivers/dma/fsl-edma-common.h |  5 +++++
+> > >   drivers/dma/fsl-edma-main.c   |  6 ++----
+> > >   drivers/dma/mcf-edma-main.c   |  6 ++----
+> > >   6 files changed, 43 insertions(+), 15 deletions(-)
+> > > 
+> > > diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+> > > index 002a5ec806207..45110520f6e68 100644
+> > > --- a/drivers/dma/Kconfig
+> > > +++ b/drivers/dma/Kconfig
+> > > @@ -393,14 +393,14 @@ config LS2X_APB_DMA
+> > >            It does not support memory to memory data transfer.
+> > > 
+> > >   config MCF_EDMA
+> > > -       tristate "Freescale eDMA engine support, ColdFire mcf5441x SoCs"
+> > > +       bool "Freescale eDMA engine support, ColdFire mcf5441x SoCs"
+> > >          depends on M5441x || COMPILE_TEST
+> > >          select DMA_ENGINE
+> > >          select DMA_VIRTUAL_CHANNELS
+> > >          help
+> > > -         Support the Freescale ColdFire eDMA engine, 64-channel
+> > > -         implementation that performs complex data transfers with
+> > > -         minimal intervention from a host processor.
+> > > +         Support the Freescale ColdFire eDMA engine in FSL_EDMA driver,
+> > > +         64-channel implementation that performs complex data transfers
+> > > +         with minimal intervention from a host processor.
+> > >            This module can be found on Freescale ColdFire mcf5441x SoCs.
+> > > 
+> > >   config MILBEAUT_HDMAC
+> > > diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
+> > > index 802ca916f05f5..0000922c7cbfe 100644
+> > > --- a/drivers/dma/Makefile
+> > > +++ b/drivers/dma/Makefile
+> > > @@ -33,11 +33,10 @@ obj-$(CONFIG_DW_EDMA) += dw-edma/
+> > >   obj-$(CONFIG_EP93XX_DMA) += ep93xx_dma.o
+> > >   fsl-edma-trace-$(CONFIG_TRACING) := fsl-edma-trace.o
+> > >   CFLAGS_fsl-edma-trace.o := -I$(src)
+> > > +mcf-edma-main-$(CONFIG_MCF_EDMA) := mcf-edma-main.o
+> > >   obj-$(CONFIG_FSL_DMA) += fsldma.o
+> > > -fsl-edma-objs := fsl-edma-main.o fsl-edma-common.o ${fsl-edma-trace-y}
+> > > +fsl-edma-objs := fsl-edma-main.o fsl-edma-common.o ${fsl-edma-trace-y} ${mcf-edma-main-y}
+> > >   obj-$(CONFIG_FSL_EDMA) += fsl-edma.o
+> > > -mcf-edma-objs := mcf-edma-main.o fsl-edma-common.o ${fsl-edma-trace-y}
+> > > -obj-$(CONFIG_MCF_EDMA) += mcf-edma.o
+> > >   obj-$(CONFIG_FSL_QDMA) += fsl-qdma.o
+> > >   obj-$(CONFIG_FSL_RAID) += fsl_raid.o
+> > >   obj-$(CONFIG_HISI_DMA) += hisi_dma.o
+> > > diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> > > index 3af4307873157..ac04a2ce4fa1f 100644
+> > > --- a/drivers/dma/fsl-edma-common.c
+> > > +++ b/drivers/dma/fsl-edma-common.c
+> > > @@ -888,4 +888,32 @@ void fsl_edma_setup_regs(struct fsl_edma_engine *edma)
+> > >          }
+> > >   }
+> > > 
+> > > +static int __init fsl_edma_common_init(void)
+> > > +{
+> > > +       int ret;
+> > > +
+> > > +       ret = fsl_edma_init();
+> > > +       if (ret)
+> > > +               return ret;
+> > > +
+> > > +#ifdef CONFIG_MCF_EDMA
+> > > +       ret = mcf_edma_init();
+> > > +       if (ret)
+> > > +               return ret;
+> > > +#endif
+> > > +       return 0;
+> > > +}
+> > > +
+> > > +subsys_initcall(fsl_edma_common_init);
+> > > +
+> > > +static void __exit fsl_edma_common_exit(void)
+> > > +{
+> > > +       fsl_edma_exit();
+> > > +
+> > > +#ifdef CONFIG_MCF_EDMA
+> > > +       mcf_edma_exit();
+> > > +#endif
+> > > +}
+> > > +module_exit(fsl_edma_common_exit);
+> > > +
+> > >   MODULE_LICENSE("GPL v2");
+> > > diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
+> > > index ac66222c16040..dfbdcc922ceea 100644
+> > > --- a/drivers/dma/fsl-edma-common.h
+> > > +++ b/drivers/dma/fsl-edma-common.h
+> > > @@ -488,4 +488,9 @@ void fsl_edma_free_chan_resources(struct dma_chan *chan);
+> > >   void fsl_edma_cleanup_vchan(struct dma_device *dmadev);
+> > >   void fsl_edma_setup_regs(struct fsl_edma_engine *edma);
+> > > 
+> > > +int __init fsl_edma_init(void);
+> > > +void __exit fsl_edma_exit(void);
+> > > +int __init mcf_edma_init(void);
+> > > +void __exit mcf_edma_exit(void);
+> > > +
+> > >   #endif /* _FSL_EDMA_COMMON_H_ */
+> > > diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+> > > index 391e4f13dfeb0..a1c3c4ed869c5 100644
+> > > --- a/drivers/dma/fsl-edma-main.c
+> > > +++ b/drivers/dma/fsl-edma-main.c
+> > > @@ -724,17 +724,15 @@ static struct platform_driver fsl_edma_driver = {
+> > >          .remove_new     = fsl_edma_remove,
+> > >   };
+> > > 
+> > > -static int __init fsl_edma_init(void)
+> > > +int __init fsl_edma_init(void)
+> > >   {
+> > >          return platform_driver_register(&fsl_edma_driver);
+> > >   }
+> > > -subsys_initcall(fsl_edma_init);
+> > > 
+> > > -static void __exit fsl_edma_exit(void)
+> > > +void __exit fsl_edma_exit(void)
+> > >   {
+> > >          platform_driver_unregister(&fsl_edma_driver);
+> > >   }
+> > > -module_exit(fsl_edma_exit);
+> > > 
+> > >   MODULE_ALIAS("platform:fsl-edma");
+> > >   MODULE_DESCRIPTION("Freescale eDMA engine driver");
+> > > diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
+> > > index 78c606f6d0026..d97991a1e9518 100644
+> > > --- a/drivers/dma/mcf-edma-main.c
+> > > +++ b/drivers/dma/mcf-edma-main.c
+> > > @@ -284,17 +284,15 @@ bool mcf_edma_filter_fn(struct dma_chan *chan, void *param)
+> > >   }
+> > >   EXPORT_SYMBOL(mcf_edma_filter_fn);
+> > > 
+> > > -static int __init mcf_edma_init(void)
+> > > +int __init mcf_edma_init(void)
+> > >   {
+> > >          return platform_driver_register(&mcf_edma_driver);
+> > >   }
+> > > -subsys_initcall(mcf_edma_init);
+> > > 
+> > > -static void __exit mcf_edma_exit(void)
+> > > +void __exit mcf_edma_exit(void)
+> > >   {
+> > >          platform_driver_unregister(&mcf_edma_driver);
+> > >   }
+> > > -module_exit(mcf_edma_exit);
+> > > 
+> > >   MODULE_ALIAS("platform:mcf-edma");
+> > >   MODULE_DESCRIPTION("Freescale eDMA engine driver, ColdFire family");
+> > > --
+> > > 2.34.1
 > 
-> > 
-> > >
-> > > > Of course it will be possible if hardware implement simpilar I3C HCI
-> > > > command queue. But I still not found any hardware that can do that yet.
-> > > >
-> > > > If only limited data size to FIFO size, there are still limiation
-> > > > for xfer.  if write, read, write, read, two write may combined in
-> > > > one FIFO, target driver may not split it which depend on hardware
-> > > > detect repeat start and insert something into fifo.
-> > > >
-> > > > It is hard to support all user case by I3C target software in linux.
-> > >
-> > > Can I know the speed limitation that you having issue while running on
-> > silicon?
-> > 
-> > I am not sure what "speed limitation" here? Do you means irq latency issue.
-> > 
-> > when I get "stop", there are new data already come into FIFO.  It is not for
-> > problem for tty case now.
-> > 
-> > But if it is well defined frame data, it may be problem.
-> > 
-> > I saw some data lost when target are busy without DMA support. driver can
-> > query how many fifo space avaible before send data, but it reduced bus
-> > utilities rate.
-> > 
-> > >
-> > > >
-> > > > write follow by read, generally used from get hardware register
-> > > > value from target side, which almost impossible by software, it is
-> > > > not quick enough to parse (write value) then send back data.
-> > > >
-> > > > >
-> > > > > In the master i3c side they don't abbreviate i3c_master_controller
-> > > > > to i3c_master_ctrl. I think we should do the same here to standardize it.
-> > > > > Thanks
-> > > >
-> > > > The problem is in I3C spec: "master" already depericated
-> > > >
-> > > > from i3c spec 1.1.1
-> > > >
-> > > > "Controller: An I3C Device that is capable of controlling the I3C Bus."
-> > > >
-> > > > master/slave => controller/target.
-> > > >
-> > > > It will become more confused if i3c_target_controller. "controller"
-> > > > are ambiguity.
-> > > >
-> > > > If "master" => "host" would be better situation, but not happen. A
-> > > > point, I use "ctrl"  here to avoid I3C spec defined "controller" term.
-> > > >
-> > > > Anyway, I hope more people that involve target support discussion.
-> > > >
-> > > > >
-> > > > > Regards,
-> > > > > Joshua
-> > > > >
-> > > > > > --
-> > > > > > 2.34.1
-> > > > > >
-> > > > > >
-> > > > > > --
-> > > > > > linux-i3c mailing list
-> > > > > > linux-i3c@lists.infradead.org
-> > > > > > http://lists.infradead.org/mailman/listinfo/linux-i3c
+> Regards,
+> angelo
+> 
+> 
