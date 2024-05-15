@@ -1,126 +1,147 @@
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2045381AA
-	for <imx@lists.linux.dev>; Wed, 15 May 2024 02:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CF83838F
+	for <imx@lists.linux.dev>; Wed, 15 May 2024 03:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715741291; cv=none; b=kQJg1og2x4VwUC+IUHIk8TQuZ+rK8yKS0/vV2S/KN2d4U6T29PCawx4Mv+9ZP6OIPHZKxXA6Z7mSl2LgI2j1VOXDxy6+kEmFJB746FcrBgNV8WvhY0FT2oQP5RFAOOyhXygnZax6l8atuwOeTIW0eW4WzDjYs5ApUOpqrNaoLBc=
+	t=1715742121; cv=none; b=drCVGIVNC880L9vllwkRsAs/wK/D9YtwefxjoYr2ZmOYP2Ad5niTGfw7dxJo/gwDPoaYZsnSMzWiOrDp8dR2HHwdpATVk7MLWbXVORv5kbFDhuiNi9MTQc08X/6IWmnDhfEN23stdKVWBzOH8YyQg9JUXDlZQ50Wego9l8Vq/Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715741291; c=relaxed/simple;
-	bh=Zm/aWD0cPpxYKvZkG11YI0/Q+FB2yEFE0LiK+B1PVHY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k1QqlTjmbscY5KbQbohv6y1MpCiSpnf0kMJCQi5ETlSnjHnDGwxe+HAipXstBKP0AiNpymvVeUja8T0Jm/M0NYKt8pCMK8OuPqJJX8MqTun83GXucz8Czh++mBaEycVgt2F2OtbRDJ/ffihh35vm6OyaS+gTwa1crPz1Qj5gSzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ePHGA9Fb; arc=none smtp.client-ip=209.85.166.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePHGA9Fb"
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-36c7004daecso24226875ab.0
-        for <imx@lists.linux.dev>; Tue, 14 May 2024 19:48:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715741289; x=1716346089; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KIDhweI0h5UXcyTSp+TP3eWf/lMbo5o/HSpNa1VAcs0=;
-        b=ePHGA9Fb4wcDATOh6JDh+i2CAbSDHTBBPtAyN7BTXNqki+XzbTpEr3+OmyOQmbuPk8
-         az2gidrFlEP60+zc/1HW5kCdzYMmnNrYm109+046sgMgEPzIn7CGXOaK+kdxtkH/5IMw
-         UFMbMf+o+3wuHkSD8Zw86uMrYwlB9tGf5CzqsWowaRpw6DrYB/G6n801qGKXowmyn6C2
-         tT8Bvw4o1UTKWyr806VvyxpzygrOLaCd3JVjLe9oGRqDTz6IBIvTYHye4VepDwTAO7C3
-         IlptrsfU+O/3bjW3o3V8KOnfsvCqfAmXU+y98YGu68qO1KdpGq4xru/v+K2Ghw59Tpe+
-         6aXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715741289; x=1716346089;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KIDhweI0h5UXcyTSp+TP3eWf/lMbo5o/HSpNa1VAcs0=;
-        b=cp9zeK00SmkN3Mhz9Q1CMVdUIP3E7mctlOEMIASrgtBV56le1DZaSTwsN/ZBrP0mU7
-         rNaG7IczzM4AyL4dDAqQXFTI8bAwCFl9KcD+sfHccX+NjIP1b3vaAtdjs6kRF/6JjEXQ
-         SQmNt8cTha+EGBj1wg6WOuDoyuQcNVwfgS3z8ocQwMvXSbX9HjODhl/xcvZdZA9R0J/R
-         aSgj4HXgkdzmxfIla+QzBr0tjcvX7GDoArY8mVtv5Lupcodu2LBOM0lgZzNhtF3tEvvr
-         xUrsUzs7/SnIu7sq+gPMadP1uRjOKTfcKwB1hxqzhJf2Rs2FeKA1nbmKvk/D8SfKOBme
-         lHaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbvaaZfxctpNG7LIf7ZEqyoDX/FJycBLhy7mGgi4Ybk6GPRbqNsEXecJZPhiOmOeSoBRnt8aMk4GKxPYThZiaErj2F
-X-Gm-Message-State: AOJu0YwIrlhXMp16sE6cTAJHKo/XhofPh178dngH6GlGSi0giNcxAtUc
-	2pRDKGCMkfXhOR0i3zFXEvwPcZz6jkfXWixOvp9Sm1zPpc1RjcyXMS8SXjldzXe3sB4ZDiXpN8n
-	dI/+TRVqzq7qmtcTxAMr3MGIKbsw=
-X-Google-Smtp-Source: AGHT+IHzVUc9KZPaSMitplhr5eOK7tggKIv03qnC7VHPuAL+ASkz3/IadH5Ux+z2PF/krzlmkYV1zomwI11/ywZHr4g=
-X-Received: by 2002:a05:6e02:17c5:b0:368:920b:e211 with SMTP id
- e9e14a558f8ab-36cc12a36a3mr120484205ab.5.1715741288898; Tue, 14 May 2024
- 19:48:08 -0700 (PDT)
+	s=arc-20240116; t=1715742121; c=relaxed/simple;
+	bh=dsenZlh0fxQ5J3Fofb0WP/2HBAsaZooXBTl2uqom+3E=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=PQi3TGEETRnQDDdqOyJT+/15MWbr6ElQUt3+cE2rcrRiSKk5miOHTnDrAan2Yk2gn/ZbpZlQGYPyhnxK1pojaUhtAH/BwZRI0OWMnHI/sdFNtGspQDLFRcc9oRioW/GfgMuJYMFVPdaXB9ZzeBc5yM4jZJVFEdONDfPSY/b+vhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 66B611A1A0C;
+	Wed, 15 May 2024 05:01:57 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1A1011A1A0A;
+	Wed, 15 May 2024 05:01:57 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BF2A51820F77;
+	Wed, 15 May 2024 11:01:55 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: frank.li@nxp.com,
+	festevam@gmail.com
+Cc: imx@lists.linux.dev,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v3] PCI: dwc: Fix suspend hang when e1000e network card is connected
+Date: Wed, 15 May 2024 10:42:35 +0800
+Message-Id: <1715740955-10688-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
- <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com> <20240514-campus-sibling-21cdf4c78366@spud>
- <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org>
-In-Reply-To: <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 15 May 2024 10:47:57 +0800
-Message-ID: <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller sub-node
-To: Stephen Boyd <sboyd@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, 
-	peng.fan@nxp.com, mturquette@baylibre.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 15, 2024 at 5:09=E2=80=AFAM Stephen Boyd <sboyd@kernel.org> wro=
-te:
->
-> Quoting Conor Dooley (2024-05-14 11:06:14)
-> > On Tue, May 14, 2024 at 05:33:27PM +0800, Shengjiu Wang wrote:
-> > > diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.=
-yaml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-> > > index 0a6dc1a6e122..a403ace4d11f 100644
-> > > --- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-> > > +++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-> > > @@ -15,7 +15,10 @@ description: |
-> > >
-> > >  properties:
-> > >    compatible:
-> > > -    const: fsl,imx8mp-audio-blk-ctrl
-> > > +    items:
-> > > +      - const: fsl,imx8mp-audio-blk-ctrl
-> > > +      - const: syscon
-> > > +      - const: simple-mfd
-> > >
-> > >    reg:
-> > >      maxItems: 1
-> > > @@ -44,6 +47,11 @@ properties:
-> > >        ID in its "clocks" phandle cell. See include/dt-bindings/clock=
-/imx8mp-clock.h
-> > >        for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
-> > >
-> > > +  reset-controller:
-> > > +    type: object
-> > > +    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
-> > > +    description: The child reset devices of AudioMIX Block Control.
-> >
-> > Why not just set #reset-cells =3D <1> in the existing node? IIRC it was
-> > already suggested to you to do that and use auxdev to set up the reset
-> > driver.
->
-> Yes, do that.
+In dw_pcie_suspend_noirq() and after the PME_TURN_OFF messgage is sent out,
+one PMC version2.0 endpoint device E1000E network card hangs in LTSSM stat
+polling and L2 stat check.
 
-Can I know why sub nodes can't be used? the relationship of parent and
-child devices looks better with sub nodes.
+To avoid this hang issue after the PME_TURN_OFF message is sent out.
+Only poll and check LTSSM L2 stat if the EP's PMC version is 3 or later,
 
-A further question is can I use the reset-ti-syscon? which is a generic res=
-et
-device for SoCs.  with it I don't even need to write a new reset device dri=
-ver.
-it is more simple.
+Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+v2:
+- Add a new help function dwc_get_devices_pmc_version() to get devices PMC
+  versions.
+v3:
+- Fetch the correct PMC versions, and get the minimum of them.
 
-Best regards
-Shengjiu Wang
+ .../pci/controller/dwc/pcie-designware-host.c | 52 ++++++++++++++++++-
+ 1 file changed, 51 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index cb8c3c2bcc790..a064972b36b7a 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -884,6 +884,48 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+ }
+ EXPORT_SYMBOL_GPL(dw_pcie_setup_rc);
+ 
++static int dwc_get_devices_pmc_version(struct dw_pcie *pci)
++{
++	int ret;
++	u16 pmc, ver = 0;
++	struct dw_pcie_rp *pp = &pci->pp;
++	struct pci_bus *child, *root_bus = NULL;
++	struct pci_dev *pdev;
++
++	/* Check the remote EP's PMC version */
++	list_for_each_entry(child, &pp->bridge->bus->children, node) {
++		if (child->parent == pp->bridge->bus) {
++			root_bus = child;
++			break;
++		}
++	}
++
++	if (!root_bus) {
++		dev_err(pci->dev, "Failed to find downstream devices\n");
++		return -ENODEV;
++	}
++
++	list_for_each_entry(pdev, &root_bus->devices, bus_list) {
++		if (PCI_SLOT(pdev->devfn) == 0) {
++			/* find PCI PM capability in list */
++			ret = pci_find_capability(pdev, PCI_CAP_ID_PM);
++			if (!ret)
++				return ret;
++			/*
++			 * Check device's PM ability version, the fetch the
++			 * minimum.
++			 */
++			pci_read_config_word(pdev, ret + PCI_PM_PMC, &pmc);
++			pmc &= PCI_PM_CAP_VER_MASK;
++
++			if ((ver == 0) || (ver > pmc))
++				ver = pmc;
++		}
++	}
++
++	return ver;
++}
++
+ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+ {
+ 	struct dw_pcie_ob_atu_cfg atu = { 0 };
+@@ -924,7 +966,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ {
+ 	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+ 	u32 val;
+-	int ret = 0;
++	int pmc_ver, ret = 0;
+ 
+ 	/*
+ 	 * If L1SS is supported, then do not put the link into L2 as some
+@@ -933,6 +975,8 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ 	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+ 		return 0;
+ 
++	pmc_ver = dwc_get_devices_pmc_version(pci);
++
+ 	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
+ 		/* Only send out PME_TURN_OFF when PCIE link is up */
+ 		if (pci->pp.ops->pme_turn_off)
+@@ -942,7 +986,13 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ 
+ 		if (ret)
+ 			return ret;
++	}
+ 
++	/*
++	 * PMC Ver2.0 device e1000e NIC hangs in LTSSM polling and L2 check.
++	 * Only do the L2 check when PMC version is Ver3.0 or later.
++	 */
++	if (pmc_ver >= 3) {
+ 		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
+ 					PCIE_PME_TO_L2_TIMEOUT_US/10,
+ 					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
+-- 
+2.37.1
+
