@@ -1,245 +1,82 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2042.outbound.protection.outlook.com [40.107.22.42])
+Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1141158DB3
-	for <imx@lists.linux.dev>; Wed, 15 May 2024 18:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715797748; cv=fail; b=C1K9ug+IhwUHiQwvgvLuth5/3mRyeaizvz9nVGirdYyd4WkRd2rMfASmbcITtqHrW4mnPzm7KwitVOyRPNrfNqDg9/BB8kUoIZn1nsJZBKfYviwJatyoeqSQsAzsYyBbEKXhC9ZO6gGkT4nh1tvo6ma9myj/miIyrmx59MY2oys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715797748; c=relaxed/simple;
-	bh=h5+3od+vAluPvKY0oWa+4pGOeAQPdwWZG32+uinDJN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=oo2GkbSHSCcsB18m4RrSHKUhAHHExqfj1QtI5z/k9IyQG/25zzIg2MZWGD5sdOSl55iBODKKp+AJaeEvhxsWUSuzA31OLPjxenyLmUCjHcRa7ITSwovGfbu3sWGZTo4UthocyxECIjR3c8n2sx/ohfItVl5A/ku83R4Zwp5acsM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ql+d1CwD; arc=fail smtp.client-ip=40.107.22.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ql+d1CwD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lbTjg9R5OwVZaCaP0kzrqdnPetDgwACVK0ed2LmYXM5Chprsoq10mX+1E3mcFAZ+9vQOntd5t1xc5Yud+AH+/TW5lN33BodnCiJQKHtk4pFqKdYYlNALqMO3O03MHoZEPc+qaE/C6eUb7cQehul+mn7skmc1v+D9wslKjZhVpmX8WwpR2HGTITHuo3YkujLuXsZSm7yVp5Ry+jkO5cKjOYfM+F3/cEIaJ1Cv6bXz0j8agtMLdY1N12/JSFdh7YCl7evrzKG2WA154ImcAeBdCScErY5jt/ypj+cYvrfQj9kxil29YXP3zXVApQ54i2oKJa+EcQN3Lt6d2CqoUgF5og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FzvBdoB7jxVrx4xPni29LI8xQnINbSqX38Fpj8kQldA=;
- b=ax31cwcftFdgVs6Q6JXZNGZ2K9FMhnfX51muOxJdwbY2IfeOKKqk87Lp+eyu27c8hnj/syWTmaikLW63dX9/PrTg67guzUI4qB2uLnfGolr9Pn5B6Sd2UL8YwjVadOCohAJWX40mgtSiZdPvJTVmCSVEAALPyeFyLi6f0rv48JAy0LWlF9x9KQJaRYio1JZP6HH6+KiRORj1YJaRA1Iiu2Q7oZY+Sr/5kvb+x958bCFsZTDUooVRlZWFZiRUd4l345Cufl2JkdSw7p5dSDnJgGdOKdHEhtnrI9PO+c2VThxp18C3sprOS2gtovx0D+C464j66uigwE5wDvUJtY6HQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FzvBdoB7jxVrx4xPni29LI8xQnINbSqX38Fpj8kQldA=;
- b=ql+d1CwDdkkYTE8olgj/VU3GYkNjnAFnnVKr3LBP7T+YiucY+sC7eV/rKJj7MvRYl5EUsSzk8HbrsfLelwjghTQeWCpj1epAL+LBagh25ZrI5D4P7ThKPLLJxzeJEz/4/ZEYrYTcbkeC7PJDujEwVsYlqUPuCZXUJlFWKD8+kK4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM0PR04MB6897.eurprd04.prod.outlook.com (2603:10a6:208:184::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.27; Wed, 15 May
- 2024 18:29:03 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7587.026; Wed, 15 May 2024
- 18:29:03 +0000
-Date: Wed, 15 May 2024 14:28:51 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org,
-	peng.fan@nxp.com, mturquette@baylibre.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de
-Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller
- sub-node
-Message-ID: <ZkT+4yUgcUdB/i2t@lizhi-Precision-Tower-5810>
-References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
- <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com>
- <20240514-campus-sibling-21cdf4c78366@spud>
- <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org>
- <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
- <20240515-unbundle-bubble-8623b495a4f1@spud>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240515-unbundle-bubble-8623b495a4f1@spud>
-X-ClientProxiedBy: BY3PR10CA0015.namprd10.prod.outlook.com
- (2603:10b6:a03:255::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6B33BBD4;
+	Wed, 15 May 2024 19:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715801196; cv=none; b=YLpin8EZkPEQMmP+bqgjsu/cTO8UnmtOeKSpAxKOLkK4Y/O7+XE1mMxe+VMfyFivE6gaaCJIG7JQbiKo6NDksonj5ccw3EkoO00pHO+LBHfOTQB0cjO7HHwQDGTm223O+x8c4bP8H1Iv1s5/qHomgMRDHic5tjutQTN9B2w24rU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715801196; c=relaxed/simple;
+	bh=IAgAE0eqXr3rNuRmILxbMX+aXNGzE+QxcpG9M8Ep/SM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rzuWUfGDDcSnoBjcrAlIqtppF5UoBzG86aekg0dWomS4KSNWA/vXsPt6CQ3LDIjg4Fb+XlGHjDJzodkc004mKb68CYjSW3e7ITNAPFTBAI0jLFSpV2Nclfh/pbcNL+Rom0n24ts78sTBth6fA4icpurvznUH8l1Kh22O2p2Flu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
+Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
+	(envelope-from <martin@akranes.kaiser.cx>)
+	id 1s7KGX-000R08-1x;
+	Wed, 15 May 2024 21:26:17 +0200
+Date: Wed, 15 May 2024 21:26:17 +0200
+From: Martin Kaiser <martin@kaiser.cx>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: imx@lists.linux.dev, Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25, 35, 50, 51, 53}
+ cspi devices
+Message-ID: <ZkUMWWcEpLvE3b-J@akranes.kaiser.cx>
+References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
+ <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
+ <a342h4qn2qkmeimbuanyqh6pxbpqvz7artmodnltcxtbzeo6qn@iyth4xit622f>
+ <pof7t5skj6w7to75kynjtck5hh5whc2zm3k3cd3nsz6ogthxi3@2a6at3s4lfpy>
+ <ZkDq73W7MuyQ4RLj@akranes.kaiser.cx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6897:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a6f3fbc-5eb6-468e-2d45-08dc750ce554
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|366007|1800799015|376005|52116005|7416005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OWpKUlVyZkR0Z2JpUmg5VUlxMTFreHZVRkJzZElvSlNRNjRUaXkyZzI0Q1pX?=
- =?utf-8?B?UlRmMFcwNWVTS1g4NFNvd0FtN0xpWVZvT1E1d01oeG5jMTZ1c2hGWTlVUmRD?=
- =?utf-8?B?R0RlSXRhdEFIbHE0UHdGd3BueGN1MFdoOGRrdWdjNU5leDFQWnhEU0hBckJs?=
- =?utf-8?B?cGU2ZjNJZ09sV2NrSnkzL3M3OEhQVXVmVzdsZFFzbHozc1B1ay9LY2wzdDJY?=
- =?utf-8?B?c1I3S0VuUFhRbzdEcHRKRWJoMHNtVlFqR1FjanFXeUxEazlweGxJOG4vVzYx?=
- =?utf-8?B?TTlRdFNrR21PVWxUNGI4eU41Wm9Ic2czM09NSVM0TVBMaGllbm90WnlLK1B2?=
- =?utf-8?B?NXZkU05wWHE2UFpDOVBTanpCbnNDUlluN2NUWE5aS2xFVHNVOGh5VUkrVGIy?=
- =?utf-8?B?VmhSSWhzRjFxRHhnYlAxbHNYbFNDdWlvRnlqMWcrclBoNXQrWjJRemJZS3ZE?=
- =?utf-8?B?OWdOc08zd0Y0SURqWXZ1Smd6UEZsS1lHSUM0THpTeGx2THh1QStqdW9sM1Iv?=
- =?utf-8?B?Ty9pVWxCaHFiU21GM1J3Z3F0aTVSbVM4MVErR0dyZ2N1eW1VTFhUUDVDVkJo?=
- =?utf-8?B?WUZjYTJBTGRQYXFuN3hRQk90S0w0OWMxUStlS3pmSjNoRnIzcFpTdmhLU0d3?=
- =?utf-8?B?MDQvUmhtemcyQ1duWDQ4bDdkYVZseUp3MjdVaWNaT1k5dUZiQUc2SjIwZndR?=
- =?utf-8?B?K1Zqa1QvdllLRVRvK3hQaHgrRVlFWklLMDBqa2ZSb01PdlhNSUh3R2k2K2ts?=
- =?utf-8?B?dGh2aEdTbjZCM3BIQ05rTWg1b2VybEtKWUhqNUNZMmRVZzNXYTNSYUJzSzJ2?=
- =?utf-8?B?cXRQRTVsUEJCVFhCSGk4K2FqcUVXTVQ4ekhkTXhhRlFpemJ6R3dGUFErWGs1?=
- =?utf-8?B?YWZUOU5kamdVQlJaOGFNUzVUc0c2bXFwbHphcFpMaS9yY2hWK2xsbG1tMDhj?=
- =?utf-8?B?VmN0MldwMUlLeUZCeWY2Y3Vad01Ja1lOZzBORVI4Q3pYNlRRSlVLT0M3ZG5m?=
- =?utf-8?B?VFV0dEpUSUdLRGFlTWp4MzdBRjU0M09LZ0NxS2NBODFacE1kdkxzazc5TUZn?=
- =?utf-8?B?TldKTVE5VUtRWGFrKzJ2Z3I3alg1aXB1Z05SbE5mMUwzME1TeDA1QjgxVXRN?=
- =?utf-8?B?bk4rYllZbVNMTXZuTXRxSHoreGltWmhSMVdXNkxzTjZOOW1GOU1xL1J0K2dp?=
- =?utf-8?B?OS9hWlkrdkFoMUhNZ1VVYTFhdDJ0YXhHaUt5Q0ZNd3dVWVBVM2lIZlMwSno5?=
- =?utf-8?B?dHovL2syeXowZktvOW9NeW5SejdpTUpxVmlkQU8rbGlQc2hrd1BBVU9IQ2dI?=
- =?utf-8?B?VjdreXBWUENDc2RVQUYzVVJ0LzFGbjl3QnlRZytaaFZPNktFbHpUdlVRaE9J?=
- =?utf-8?B?UUg0Q3FDREhKZElwN2M2bU15TzdwTmp2NkE5VWFJYlk4WmNTNjdHV3lKOUJh?=
- =?utf-8?B?ZWxtRittWUsrNmM0VXlMbjdUWUFiSmZLc2c1aGRHUHlzRHpWNXVxTmx1WENY?=
- =?utf-8?B?bW9VRUVlN1dNcHo5Zzl5d25IYnY2NEIyRG9ZZVJBMzhQU3RlTHR2aDZrUmRC?=
- =?utf-8?B?by9UeWhKdHNZNnNoMGdHVDhWeTluU3VvMkNOajRTREpOeGdtNEFjQ2poSk1Y?=
- =?utf-8?B?TTU2aVl1QXl5cmt0TWtudVBjRStEWDI3NGNUWjRFVFNMS3Uxd1F3NW5SU2pG?=
- =?utf-8?B?ek5GcEJONUtSa1JiekxuQXVxb2dSQ1l5NlMxV0hPKzRoZmMwTmNXdTZKWU5p?=
- =?utf-8?B?b01LY0VSLzFHLy9mNjFHNXBEUThBUUhLamZYaXl4cThMUjdJcHh4OHJ0Nk1m?=
- =?utf-8?B?dDJ0U1pFUEcxYnFEaWZUUT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(52116005)(7416005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Unl4OGZrNURhcmY5T0JSQXhId25jNm5NSlFGZ1ZBMzFFV09DK01qMXVCL1VD?=
- =?utf-8?B?Y2h6MFI5aUhlWFBvU1M3MUI3Qzg0ZVJST1dNT1VWem5taDAraWJzSDUrd0xo?=
- =?utf-8?B?UFdSM2tGU2xpR05PdTQ5Q29DRzgvVHgzemRkdVBQZktGT1lkNEdmMUJ1eGtr?=
- =?utf-8?B?dmZkQmFhdCs0Mi9YMitwTFd2NnN1S0RRRSsrelc1dVVFeXlyWGpmR0xlYUZS?=
- =?utf-8?B?QlQ2MkN2Rk9MVXFiaWY1QkMyOEF6TklGL2tnSHRLL0I3RzZDbjdxS2lyVklx?=
- =?utf-8?B?WTVPdFZTRmFZczFKejBLTXRia0JEY1dHNXBJSnQ5SWlzR0R3b2lGZ1NZRkVK?=
- =?utf-8?B?UFV0eTdtaEpEb282VEtVTkV2WHNwQkdpZ0ovTzkxdG05OThEelcvR2xQWm1I?=
- =?utf-8?B?eUQ4RE1jZWwxYi8wR3hBMjd6R3BKSTlBbi9Maysxb3lJTWRFZWlkV2xSSnpa?=
- =?utf-8?B?ZUd6RS9QVFBTN2JRU1FSZDdPc0pVTmV1emVyeVh5ZFF6Yll5aVlyQjJtVlBT?=
- =?utf-8?B?YndrekhGMkN6Q05CbWdPbEpBUG9JMGxpZ3VaN3VDdUF1clhhYkdoVlZoRHBY?=
- =?utf-8?B?cUprZEVIZDVRUlhaeURvVUx6a3g1Ujl4MjVrb1FXc3lxNnovWkxITUtuR3Zl?=
- =?utf-8?B?NE1vQW1Sb25uelJ4WjJSZjUwVXUrM1IwTWhydnQwOEh4MHNZNHM1bGhoOENU?=
- =?utf-8?B?NGFCTnE5MUVSai90bjFwN0l4UG5reElRcnQzTk1XNmJUckRGajAwY1NkTnpG?=
- =?utf-8?B?cDBYK2w1MDRnZHBjZ0lxUitHcVEreXRjWlJPNkgzSURWS0FxeUdtRTlsVlNo?=
- =?utf-8?B?Q0g3NUVsdzkxaTNVMlVXWlFabERFbG83RHlaUW4zaG9VWWliVlFZcXJ0cXpl?=
- =?utf-8?B?c3I5Q2RnOXhlcWxTTElPRGJXRTJWYWxpdEZvZ1k4aVM4aUc4UHV1bGVUOGJ2?=
- =?utf-8?B?UjAyVDZrc2YvaFdMcFUyekxBUWViTXB4VjdIMTBLRkMweEF5eHVUbDBhM0to?=
- =?utf-8?B?UFRFVi9wMmQxaFVVMyszSU5TQ05GQThoVEZ3TFNwUlhHNm1vejN5elhrbHlS?=
- =?utf-8?B?Ri81Sm5aanBFRjNkekQwaENPRzBpVlhadFJURHlwWDFpZDhHK1ZyK0pXV1k3?=
- =?utf-8?B?RHRwRElQN0lMekIwZUN1cW9RY2V5cUdKSy9ITW5SK3FNdHQyNU1valAvL2Vy?=
- =?utf-8?B?OFN6d0o3MDdQeFRBU3NWTzlBaXNzSmRCaUNvSTlNN1RXNVBJSERJeGR4T3pi?=
- =?utf-8?B?ak5HYVFlN2oyTmEzemlHQS9OT0NNUHVaWHJFNEhmQjk5YWI2Nlg4aHJ1NXJF?=
- =?utf-8?B?SVVSYVRNOWZRVExrWG56U0NpMDZRZ3d1dFd4QWcrUWRJVWphblduaHJETG9O?=
- =?utf-8?B?c1NWMk5NVzVtOFJsNjFLMVFOMXUvZUNBcHFKb1hYNW01MWt3TGRZTlZWVnhM?=
- =?utf-8?B?dit1eER1c001Mk05N1pkdG1pTzlBWkg0MVg1ZC9VTGlNQjdybjFXWHdIdlNH?=
- =?utf-8?B?c0RRM05IVFFtYS9lTlhKTXdReXdFZzhMRWdUZkFQcXNzdEZudVZlVkMyL2I5?=
- =?utf-8?B?dHBWMzJjVUJQRFV6WHprVDNxWkRLOHBCeTJNR0VTOVlUVjJ4RDU0MlJjbXp0?=
- =?utf-8?B?ZCtnQ2x0cDg2U01XZldnYVpoOVc4ellPL0tYVUE4ZTdGdnFHRks3azdYVnNQ?=
- =?utf-8?B?MUoxTmFiMFRia052d2dTK2xZYzlYYTQ5alV6aG12SVc0aEhVSVlZRzZXT2ZB?=
- =?utf-8?B?STRGOENhT3RaQVZFTVdxaFpYbHpEVC80emdabHhJVGl2R2RQY0sxRExEc0NI?=
- =?utf-8?B?b0hiU2xwbWNFa0ZaMVdxS3hIM2dkZ0dNRnhBUjZtMlRBZE8xZ3h0RFplM0lL?=
- =?utf-8?B?MitPSVl2N1ZpQlU0c0JzRFZVVE5sQjlxNG1FNVVVUTMwUUZTUTgrdENsZEEv?=
- =?utf-8?B?SGZUYVQ2dXZHOXNjdDMyZWtKT3puOTg4bGN2OW5qdTYvalZqakNwY0Y0N09H?=
- =?utf-8?B?dTJZZ2pZRVBJdDhkQXNLeGo1a0wrVjNEVTJSMk9Fd1B0ditxdEdOZkZKQ0E5?=
- =?utf-8?B?Vi9lQXAzK0thcEQ2TWNjSDBkMGZnRWZ3aW40Vk53anpLU2ZEanJUTjRPWDk4?=
- =?utf-8?Q?W/lf+6YJ6OZDMZw4rAStjeeP4?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a6f3fbc-5eb6-468e-2d45-08dc750ce554
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2024 18:29:02.8958
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8PeknegfupEpiqxsKvHwGCTLOqdFxEW9QM3/J2euNUY3rHCwQX69KJaAd3axuhTtGDNZOQ+AMNJKScP0E6mLLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6897
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZkDq73W7MuyQ4RLj@akranes.kaiser.cx>
+Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
 
-On Wed, May 15, 2024 at 05:04:48PM +0100, Conor Dooley wrote:
-> On Wed, May 15, 2024 at 10:47:57AM +0800, Shengjiu Wang wrote:
-> > On Wed, May 15, 2024 at 5:09 AM Stephen Boyd <sboyd@kernel.org> wrote:
-> > >
-> > > Quoting Conor Dooley (2024-05-14 11:06:14)
-> > > > On Tue, May 14, 2024 at 05:33:27PM +0800, Shengjiu Wang wrote:
-> > > > > diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-> > > > > index 0a6dc1a6e122..a403ace4d11f 100644
-> > > > > --- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
-> > > > > @@ -15,7 +15,10 @@ description: |
-> > > > >
-> > > > >  properties:
-> > > > >    compatible:
-> > > > > -    const: fsl,imx8mp-audio-blk-ctrl
-> > > > > +    items:
-> > > > > +      - const: fsl,imx8mp-audio-blk-ctrl
-> > > > > +      - const: syscon
-> > > > > +      - const: simple-mfd
-> > > > >
-> > > > >    reg:
-> > > > >      maxItems: 1
-> > > > > @@ -44,6 +47,11 @@ properties:
-> > > > >        ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8mp-clock.h
-> > > > >        for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
-> > > > >
-> > > > > +  reset-controller:
-> > > > > +    type: object
-> > > > > +    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
-> > > > > +    description: The child reset devices of AudioMIX Block Control.
-> > > >
-> > > > Why not just set #reset-cells = <1> in the existing node? IIRC it was
-> > > > already suggested to you to do that and use auxdev to set up the reset
-> > > > driver.
-> > >
-> > > Yes, do that.
-> > 
-> > Can I know why sub nodes can't be used? the relationship of parent and
-> > child devices looks better with sub nodes.
-> 
-> That's pretty subjective. I don't think it looks better to have a clock
-> node that is also a syscon with a reset child node as it is rather
-> inconsistent.
+Thus wrote Martin Kaiser (martin@kaiser.cx):
 
-I think it is multi function device syscon node. it should be like
+> > However this breaks SPI transfers, when I try to read out an MRAM I get:
 
-mfd
-{
-	clock
-	{
-		...
-	}
+> > 	root@ecu02:~ hexdump -C /dev/mtd4
+> > 	[   71.813807] spi_imx 43fa4000.spi: I/O Error in DMA TX
+> > 	[   71.819173] spi-nor spi0.2: SPI transfer failed: -110
+> > 	[   71.829129] spi_master spi0: failed to transfer one message from queue
+> > 	[   71.843962] spi_master spi0: noqueue transfer failed
 
-	reset
-	{
-		...
-	}
-}
+> > So it would indeed be interesting if you ever managed to use DMA on
+> > i.MX25.
 
-clock and reset are difference device node with totally difference's
-compatible string.
+> I believe so. Looking into my notes from 2016 (when I last tried this), I got
+> the -110 error when the SMC bit in CONREG wasn't set. But this should now be
+> done in mx31_prepare_transfer if DMA is used...
 
-> > 
-> > A further question is can I use the reset-ti-syscon? which is a generic reset
-> > device for SoCs.  with it I don't even need to write a new reset device driver.
-> > it is more simple.
-> 
-> That is for a TI SoC. You're working on an imx. I don't think that you
-> should be using that...
+> I'll try to set up a test some time next week.
 
-I think this statement violate the linux basic reuse prinicple. If the
-code logic are the same why need duplicate it just because it is difference
-company. Of coures, if it is generic enough, it'd better to add a more
-generic compatible string.
+I can now reproduce the dma tx error. My test board uses a dummy spidev device
+on cspi1 and configures loopback on the cspi1 controller (disabling loopback
+makes no difference).
 
-Frank
+I'm relatively sure that this setup did work back in 2016/17.
 
+Commit 24bb244e02a6 ("ARM: i.MX25: globally disable supervisor protect") was
+required before any DMA transfers started working on imx25. As far as I can
+see, this code is still present.
+
+I'll look into this a bit more as time permits.
+
+   Martin
