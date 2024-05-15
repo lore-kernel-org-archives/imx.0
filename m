@@ -1,252 +1,171 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2040.outbound.protection.outlook.com [40.107.6.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F383F376E4
-	for <imx@lists.linux.dev>; Wed, 15 May 2024 03:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715742721; cv=fail; b=TYEcKgaHI8dqzN8lPoXe9gwMV7lf1BL3bEW53uIK41i1Ici76bISUqyeE31TKUvTdewigPvssBOLxxf0T2tkcmLm9ZJwU1rLZAOI9q//eZMkuxyoeLbQ5Cb+nJjoAj2h/ujW9s7eokP/gKVfVsb3AbbipqiNZ7ReUDQ9c16a3rA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715742721; c=relaxed/simple;
-	bh=6eGPdm5/vrd3JfIat9p5ACJ61FaNd4iLxw3iWiYQhoI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SKhXZ2j/Pvwt43sdePS8n8oqcOfWPNb+cAMDozNNfBbOpr8vSvrA6xJ7bMd5IXg+8tIVwCySgBJRhL/35HmFilem6EC/y4JN+Fqg1vZZALPQLberSwqzRqB47B73Bb+JKp6ADm4+7mL8wFZCN63+Znej42K1Ehr6d52MoaF1/9w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=K2GI2nkr; arc=fail smtp.client-ip=40.107.6.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFF538F82
+	for <imx@lists.linux.dev>; Wed, 15 May 2024 03:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715744774; cv=none; b=pPL9ljQe6Ew2bh8nrIJDAjw1RyTO5dncjAgNx8wC/Nb8zNb7JGzFTuiCb7RAqicNGYX30Uw68rWSz0kGXKAJteRSlToRzSGaO1VazwGVgzO2U9Q4fzGol0Xk5wC8of575RHot6vB3vA8jTBVUS6JwAM1ln0FYBrYTj0h9ACPy3M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715744774; c=relaxed/simple;
+	bh=f0+RAJNpD4xwzDxXJtu5/ftCqWzFGWvy6Jlsa7uUy3Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VR7CRxH3tc5zCvM/OKTMOinDi6PmR8E353UY0KUcPnP+gZWidNCSFyIgnLf6wAAE+H4oS9Tk3TjhKXai2pY2rASwsnM5G2R2Cnppq/ggEsNbrzXVnuRChrAKlvoH0KKeK0yeJbrgaxcDAgjXOJLyporXli0WjVK+JL+IcrGwfLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cs9ofc4x; arc=none smtp.client-ip=209.85.166.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="K2GI2nkr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EYXHC98DN5TRKCYh35KfcxAn8SUlIfNltT8uOzNK+0rVoyOEF1rQ61MXhbhLGwGE9ICOaHlgJRN7B2/JJbbm5qArbcjQRdzCinDylMS6DFC8YCiH23leFY1ijGbPJOHAqjQ6M3c7DtqXdH+r6M9U8OpWM0teJSTT3xjnVXZQqxtCmYP6/PeUoeC2I253IdfQgVls+IPUPjFfwDwtbOJNXI/DGUzAOSvE/4W9eOao6rjPL1oLQiYL8kidA4fD63cIuPyhzBp2+7irj3U9jnMCPKhzVpZ+jQFvvhW4HV+kdOqXl74eCcAza2+KxjJp6GzOcQj2Cw58OKmn5sfAlpdwaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9jNN9ki+2bGPtElSbvXuI9lhW3XLMgbrLH6hx61qsvs=;
- b=H4MaMk9QSFEw+XMvCAaRIY54t2AtI84ImI/KTRmzza8F8TFMo9/oKAzaD25PQDHk3AH13kiOXHcNC7maU6ZOL45OiIsU/+3uXoi8lOvjV8BuQ84QJdcBfed4T2kUeWZXMHkQzyjrimwHgbc3+0GBNQlIfI2oO563n1VtXe2xHePeaHCQSHPuwHoPkWirvOCOZ2oza9KTSRjH1MwqnZRyubBkTMotKvXwwdUth3VDCGO+y2K4KTGnOGgSR6AOs5+vaiJ/Bsd6eRcfqkbquFI3/MKsoPkp1G0icWsXS44/SLPDFrRStn0WdwQAzmVqesab5MK9MJlYIObTvgd3l6S1Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9jNN9ki+2bGPtElSbvXuI9lhW3XLMgbrLH6hx61qsvs=;
- b=K2GI2nkraoWyYS0TpvGto+svrwg+gLViqUKGCGZpC9KHzh6vGp8qh5MiJNdwg7tiIscY77lBJtX+3mHkxBhzwflrQvvt1NNWzJSFmwDmXA1ta7bUMEmEKi6TOEUFKQs+foHEQeLWNOrCln2p4t5dQUCpK2FMsClSby5T+r2IEaU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AS1PR04MB9560.eurprd04.prod.outlook.com (2603:10a6:20b:470::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Wed, 15 May
- 2024 03:11:55 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%3]) with mapi id 15.20.7587.026; Wed, 15 May 2024
- 03:11:55 +0000
-Message-ID: <a8d19c8b-9406-4219-8128-3c9c60e1a34b@nxp.com>
-Date: Wed, 15 May 2024 11:12:09 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: display: synopsys,dw-hdmi: Document
- ddc-i2c-bus in core
-To: Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
- Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org,
- markyao0591@gmail.com
-References: <20240514220457.94571-1-marex@denx.de>
-Content-Language: en-US
-From: Liu Ying <victor.liu@nxp.com>
-In-Reply-To: <20240514220457.94571-1-marex@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0049.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::18) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cs9ofc4x"
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-36d93568a58so12739025ab.3
+        for <imx@lists.linux.dev>; Tue, 14 May 2024 20:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715744772; x=1716349572; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IK7QXti6gMaWIx9kOf1v+tHDmKiZibD5iL04jzdGCEc=;
+        b=cs9ofc4xbLiJ9VYRJKxC6laQvs46uCp1EduxETG7yIpi7xYn8qhUd7o7oI4wr3x82k
+         HyyRP6pxlKl98d/ULYUaelNBQolyP/G4SjVx6zJs2UooE00qqPiuTEzczhs26beB/0QS
+         ClL1Cdm5Mlg2+yKRyzs+rtY3JerRjvvO/J/2KF6wUlM9nO20ncUjKZ2vfH7D9RFHe2FM
+         pUBMIRbyRerrPw5/bsFm83Tcumavo+9/4Sp9KDjgZWynGvFgRfzrJNWOgyqsKI9po/NX
+         Z1CSjdMf8rKeUBZb4wZKlDEEhR3IFH+MFGuBVd4S+Zb0ctNLzuQxtHskTTo93Ojh1kvL
+         C0KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715744772; x=1716349572;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IK7QXti6gMaWIx9kOf1v+tHDmKiZibD5iL04jzdGCEc=;
+        b=LokzG6Dw+X3H8pxTdxshf7I/+3JjfECwoiCYOdnGily07YPdexFrkuVsHOAtfax5oZ
+         vO7mukh/6wtgqJxpCT8vkcoBrEQjBDvYNmc4gOkYnZ2o9HDaKvBzU6sUlSCB7+NBrS9i
+         eIvb71jSA17UPiDvGVQmK0hYAbr/I0rPPMCXrN6YaPtAEIiN2b1KZagS1q7Lz491ju/k
+         8IhgTt7ZihBb5SAl9CyWm3SaWk5C83qFRAZR8IH1MlYgmHw0kdjQO3FYmNCqRxiJNK+a
+         b/Y1r/Rv53lKU0EEaNQ+SHQigLCQz6iA30RFievw0h53wTLgf4UXCbwULsid8BhR2Fc5
+         Sdbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsAHRVyj67slEHUbyAyCOTHZJu6P5mCum3SMJWmy9ST4YR7KmY97K5hT7Lbbenlw6KeVZmGHOiNGtgUZ7ubOj6U7OJ
+X-Gm-Message-State: AOJu0YzOKy07j4+pYg+3fvGcxdjFJjq23Zae+fd+usjzCAoVufRLcJei
+	7tr8alOYvC0JF6Wa8yn6PgqMwV32a12ebl9LsHB/sBvyIuF66wLaZrKtqwq5GCzsJv7JEkmB/9n
+	H7MdgD8hCBJkyUCWFr4iW/gPrSfM=
+X-Google-Smtp-Source: AGHT+IGZ+P53lPWGkktNPznbZTqmgsikuFuzx6bUIb82YiQyAOuspBc445HOheK/8XONNLi1B1dXlpKVb5ds0xBfnxE=
+X-Received: by 2002:a92:c269:0:b0:36a:f9e8:5e7d with SMTP id
+ e9e14a558f8ab-36cc14684f7mr178877585ab.7.1715744771891; Tue, 14 May 2024
+ 20:46:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS1PR04MB9560:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc2ea2bd-dabd-44c6-90f2-08dc748cc622
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|1800799015|366007|376005;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?M2psSmlHUEJaclBTMW9ra0Y5Q2JJMlRYaTllaE9qMWJqQW5sS0oveUkxY2p1?=
- =?utf-8?B?anpYTEZDUC9xNFM2SEY5c0w5aGhOaGkvM1hqMk5GTkJMYUk2MDB6U0t5Tis5?=
- =?utf-8?B?Y0VqTjlBR0xyclA1a0Q2bjc5QXJScElVU0lQN0xFcExvVGNDVDRqeCtWQnlv?=
- =?utf-8?B?V1RHNmw3RjVKTWlVREhXdzlRdWZWT2tqc0dWMmxqWDFEcno4ak1qUTJTdCsx?=
- =?utf-8?B?WFc1K1dDNUE3S1pWRmNxTEtaNitKMHFVaXowYkh5dDYvdXcrY1BNelc5N0tn?=
- =?utf-8?B?UkZiaGVCVlVSa05Bb1lnSTN6bVlzRldzc3BKeUJJemYzdVRzdjNLd0dzUFMz?=
- =?utf-8?B?SkkyVlFmRktCYWZ3cUN2OXp3cmFvTnRMN2Q3ZERvdjNLMFgyZjRmMVFHRjUz?=
- =?utf-8?B?VHNHUjVzV0tIanhMem1DcHVMN3k4L1U3dWRjb2RTT242SzlENU54VG44a3Z0?=
- =?utf-8?B?SzRJbk9OcGxiTXBCcVNTajAvbGNIYTgwN3JMQTBvQnNoZEZMcnBaaUZLMnpQ?=
- =?utf-8?B?OG9LYWhtVnhLNWJOWjhhd0RJd3pLS0x1R1hTNmRzWGFmMm1WdmRVSFBybVRT?=
- =?utf-8?B?dlRwNm5jTHZPUzF3cVBZZ3RsZTRsMU9Xc2kzeUZTK2xaSStHdGc1MDVrUlN3?=
- =?utf-8?B?YkRrNjJDYjcyVS9JUlVZNkpiUjFQUTAzazFLWHNxTDFhQ21IWFpRYVZtRzlZ?=
- =?utf-8?B?YjMwR0JyN1hsTG9hbEJkaUJSODNUY1lRQVJQRkdvY3U5emxhMVByZU1jVkJP?=
- =?utf-8?B?QWN6clFXQzRoMm96cGxuSlZ2MXMrYnVudWlKL0FLT1FDSUNFNHg4cDh2bXMz?=
- =?utf-8?B?RlBIY1RidVovWVA1V2ZqQzNFZlVwcjRlZ2pNWXRhY0x1WXJpUFU0OXJDUHVm?=
- =?utf-8?B?clpiOUFUTDRuZHBCSWdPTUt2K2hHSVlnWnpucDRGWnZocjIvSkJBd3Y2VGpH?=
- =?utf-8?B?Zzk0aXlURWVTandVMUIyTEg5STczZjR6eVdEY21WTkZhOTVQcHVPUkxVQjhm?=
- =?utf-8?B?cHM3V1FaQzA4U0g3NHQ1OWZ1VDhTWTh2QzNORXk1aUpBYTFBTTgzWXlmUHhO?=
- =?utf-8?B?RzdjenBwZ0FEMVE1eW1CWVlRTmtTSnVBS25lVytrMGZHcUVPT1lNSFFzY25J?=
- =?utf-8?B?SWlDQXhGRm5QZkhESHNWOS9nMjNJZlcxTi9ILzV5UTgyUEFZM2R6cWNyTWJL?=
- =?utf-8?B?ZDV0VCtnL1dtL2I2bG5aS0lCbjZ2OEY2czlOR1dRZitoRitheEZYSWVvZUh1?=
- =?utf-8?B?bjM2MDQyMWo2aGVBalM5UWM0ODZ3Z2Qyem55SzBNaSswOUZucXduYXEyYzBZ?=
- =?utf-8?B?MTNLbGNCVGxvQTI0NkdNNmU5dEgvdDQwWUxjcnhTNmQ5cU5sanRPbHpjbzFv?=
- =?utf-8?B?OE9aZEx4YlZMc0RZTDVtRDBHcm85bWZlWHZqaTRHRU81ZHp5NVVJSFdMN2Z1?=
- =?utf-8?B?WmtzSmZTcnRjQlk4T3lNaHpyM2tlTHlPNjRsRUhvWElCeko2N2FlMHFTR0Jt?=
- =?utf-8?B?Y1JramVSYTdYYXNXUU84UG5DUlorUGhKR0VpTkhLVTRGZjlHL2tWV3kyRFpm?=
- =?utf-8?B?NWhXM0JieG00WVppUHFEeTNPUjZmSDU4SlNSZmNFaFhaYUV3WkE1U1dBc1l6?=
- =?utf-8?B?bmVBQW1WUi9kb3pXNzJ6QTZOS1VmbThLRHo2b0J2ZW84LzNTVUVlQlMrVnFm?=
- =?utf-8?B?cG50MDRBREpENG0wVGloZU1DS1VIWE5SWjc5TFhRTHNkRnVicWE2djlnPT0=?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(366007)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?Z1dJQmJUUFJ5eHVxb0toVlNFNzQvdTB2WFBvaEIxcll5UytRYTVuQWtZUmxn?=
- =?utf-8?B?aWpnbXozT2JxYmxiM2VJMlFzVjA0dzZYOEk4b1VWZnRCMFF3SjlBVTVnb3ZO?=
- =?utf-8?B?UlVFK2RjdmtqNzJLUnVjVlY2cytaTWJTTTBZc1I4aDRuWFY0V3lEMEl3L0c1?=
- =?utf-8?B?ZnZ3WjV3UzVjU0dhVlBmeFM2NytNdFA4YmVTeU1zTFhYQ3J6Mk41N1MveVVo?=
- =?utf-8?B?M01sTGI4eHZ6MkNOM0NlVURXNUZUWlFHU0hUSWVWbzcxU3JHUFhVbXp5NkV2?=
- =?utf-8?B?NzBpZHhqUXA0ODBNZ2hhbG5MbHIrWlBhOER2UUhUbzNSclhQRmJjUXFiajk5?=
- =?utf-8?B?K2dJNEtjT3NXOFhWU1JNQ2t6NG95QlllQVllSVRMbGxVYVdGWTRkSUdtWGo1?=
- =?utf-8?B?KzJNRmkzZktVTjFteXcrV2pSVHhzeTJpemdiNjFaVSs5UWFMakdtVlFBb2lO?=
- =?utf-8?B?YTIxcGVycERBSm5QeloyV3QraHpQRFlzNmd0ZTlIMEZqa2FXSmczYVZrV1lG?=
- =?utf-8?B?TDU0bG4rUHZ2VElleGFONWlPQk92YU90VXVYQkJDcjhxL2xtWGxpQ2ErOERM?=
- =?utf-8?B?OHZZVmxkUFZzVGJhTkdIVXc4TjdHV0ovM3htTTltRXVsS3JmK0liMDlQSTlE?=
- =?utf-8?B?Ukt3dE03ejk0UUJzVFVEUjB1bjNoYktSckhDRitBMllzT0Zjd0NsbHBtdHdl?=
- =?utf-8?B?TVZUaTRsS2FJMWxOZU5NNGF0WFNFOG40QzBZUW1jQ3JaMFBSNnVLbE5KZEZa?=
- =?utf-8?B?T1VIRGxsTUxnaXY5UVVTbEphaXVZeXMvQit0dG9TL3FFQ0RnaDhWNGFWTE43?=
- =?utf-8?B?N0k1Wm8xbU5PdWVXWHd2c1VQVGh3WWszN1R2UHRQa21lN3VLRzhqNUJkZkZB?=
- =?utf-8?B?cjFpZW14TDZhaHRMRTdBUmVvSzkrSzBqQXNkYjM0blJRbGZlQVFnbFJ6M3Fs?=
- =?utf-8?B?Ulg1bVlkc3lybFFITFlHZS9oN3hId2l6VHA3WWxjZFlhMnA1c1dtUm13ZTdZ?=
- =?utf-8?B?bDk4cU4wNVloanhhMzR3YVE5a1JZZlRONmE5TVlaUGJXYk5aNEZ1ZnJvSjNt?=
- =?utf-8?B?YzZ1ZXZ1VW9MYlBtVjhZbmxaTDN4VlIvUktFYnpvQlhnOUhaQWlvcXJQeXZp?=
- =?utf-8?B?MVJWYkoray81Z2psRTV1NE1CK1JlMGNMRmZYVVFHSWJNaDloWGpoNVd6MVg3?=
- =?utf-8?B?c3BsQWtwVjhiSXJpNzlSOEVwVFR1WkJBSkNZSjI1aGNlTGpTeGVZYUU0NDhC?=
- =?utf-8?B?dTJqQTM3TkwwampJa0JaMm5salJDRzYxRThncy9hTFV2S2xGWmt3RTRLb1ZP?=
- =?utf-8?B?Zk90VkxCVEFidWJFK0QvNDE3b2RkMVFnYUJGUEVSWGFDM25aV3k4Y3hURVpW?=
- =?utf-8?B?WDlSN3E4cUhwb2tzODVYc0RjTUtuY3BDSzhKZGpNWTZ3Ym5GSGNOdGxlUy9Z?=
- =?utf-8?B?WHhYaTdRclFHcnJHcmlMV1puSFQydElsMGdMSmpLY0hTVkYzQ1dZN0hOTVJY?=
- =?utf-8?B?RjMzNnFFaWZQT1VuUW1ON0N0N0pUQmxQOFdiTUljS0tJZ3JNNy9NaWgvMlgr?=
- =?utf-8?B?bFNMYXpYQnBuZjZnOHlvVFg1NUJxK0IwYjl3anJmellXWXBEeXBBVDZYcDdp?=
- =?utf-8?B?YzNqb1c1d2JqSUhEeHpYWC9RT1lBVlg5SHdUbmZhL21oRmpEYThFUThjaCs3?=
- =?utf-8?B?ejZiNmpad00xUmtldld0a3NoNUpuRlNSdUxtMk1sNEQ3SlU5cTIvZlRDSDE3?=
- =?utf-8?B?dHl2bXk5OVpMVXQ2RXd5dS9FWm00aWhnOHpoRWE4VzNnMDAzWUNSME5oSjVw?=
- =?utf-8?B?VWxtSFVsa25MVUpsZ29wY2U3dzNaNWhKTjl6L1RSZElvSmhDQ0prczF3d09l?=
- =?utf-8?B?a1pwMnF3Z0pDSThtandkamZVdHhqNEc3USt0eHd2T0FyVzhUTDhhMlJ5Nzdq?=
- =?utf-8?B?M3Z0Rmh2MDFlMHp1UHU0RkdDQ2dKOW1TdTRNK1VhdHhLOXRVZ3JTR1NuLzZo?=
- =?utf-8?B?Z2Rjc1JCYjdpc3ZVbkt0UmtVUDN1Vjg5M1lxaXp6ZEZZUWZFMTkvWG8rY0RB?=
- =?utf-8?B?VEFCbndmOElDU3dZT2p2N2tSaGg5MktURHdhUXpkMmE4V25RdnNBb1c1Zis2?=
- =?utf-8?Q?ZPP3EH1RjSgf4l0zUGJOa63z8?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc2ea2bd-dabd-44c6-90f2-08dc748cc622
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2024 03:11:55.1051
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zVjnCMnOuw9RmdwDdmnKXTCxog4VBOgYS8Tr5xZf05POPoazh6B4NkpXaABff2GHdkAMqY//CCCL5vL8RzRJ3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9560
+References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
+ <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com> <20240514-campus-sibling-21cdf4c78366@spud>
+ <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org> <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
+In-Reply-To: <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 15 May 2024 11:46:00 +0800
+Message-ID: <CAA+D8AMaEEMk9F4bFYqYNez=XPhtF9VR8F-hcqYp_C2QKFq-4Q@mail.gmail.com>
+Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller sub-node
+To: Stephen Boyd <sboyd@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, 
+	peng.fan@nxp.com, mturquette@baylibre.com, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/15/24 06:04, Marek Vasut wrote:
-> The DW HDMI driver core is responsible for parsing the 'ddc-i2c-bus' property,
-> move the property description into the DW HDMI common DT schema too, so this
-> property can be used on all devices integrating the DW HDMI core.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Cc: Jonas Karlman <jonas@kwiboo.se>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Robert Foss <rfoss@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
->  .../bindings/display/bridge/synopsys,dw-hdmi.yaml         | 8 ++++++++
->  .../devicetree/bindings/display/imx/fsl,imx6-hdmi.yaml    | 8 --------
->  2 files changed, 8 insertions(+), 8 deletions(-)
+On Wed, May 15, 2024 at 10:47=E2=80=AFAM Shengjiu Wang <shengjiu.wang@gmail=
+.com> wrote:
+>
+> On Wed, May 15, 2024 at 5:09=E2=80=AFAM Stephen Boyd <sboyd@kernel.org> w=
+rote:
+> >
+> > Quoting Conor Dooley (2024-05-14 11:06:14)
+> > > On Tue, May 14, 2024 at 05:33:27PM +0800, Shengjiu Wang wrote:
+> > > > diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomi=
+x.yaml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > > > index 0a6dc1a6e122..a403ace4d11f 100644
+> > > > --- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > > > +++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > > > @@ -15,7 +15,10 @@ description: |
+> > > >
+> > > >  properties:
+> > > >    compatible:
+> > > > -    const: fsl,imx8mp-audio-blk-ctrl
+> > > > +    items:
+> > > > +      - const: fsl,imx8mp-audio-blk-ctrl
+> > > > +      - const: syscon
+> > > > +      - const: simple-mfd
+> > > >
+> > > >    reg:
+> > > >      maxItems: 1
+> > > > @@ -44,6 +47,11 @@ properties:
+> > > >        ID in its "clocks" phandle cell. See include/dt-bindings/clo=
+ck/imx8mp-clock.h
+> > > >        for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
+> > > >
+> > > > +  reset-controller:
+> > > > +    type: object
+> > > > +    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
+> > > > +    description: The child reset devices of AudioMIX Block Control=
+.
+> > >
+> > > Why not just set #reset-cells =3D <1> in the existing node? IIRC it w=
+as
+> > > already suggested to you to do that and use auxdev to set up the rese=
+t
+> > > driver.
+> >
+> > Yes, do that.
+>
+> Can I know why sub nodes can't be used? the relationship of parent and
+> child devices looks better with sub nodes.
+>
+> A further question is can I use the reset-ti-syscon? which is a generic r=
+eset
+> device for SoCs.  with it I don't even need to write a new reset device d=
+river.
+> it is more simple.
+>
+The document link is:
+https://www.kernel.org/doc/Documentation/devicetree/bindings/reset/ti-sysco=
+n-reset.txt
 
-Cc'ed Mark Yao.
+Then example is:
+examples:
+  # Clock Control Module node:
+  - |
+    #include <dt-bindings/clock/imx8mp-clock.h>
+    #include <dt-bindings/reset/ti-syscon.h>
 
-rockchip,dw-hdmi.yaml documents ddc-i2c-bus too. Drop it?
+    clock-controller@30e20000 {
+        compatible =3D "fsl,imx8mp-audio-blk-ctrl", "syscon", "simple-mfd";
+        reg =3D <0x30e20000 0x10000>;
+        #clock-cells =3D <1>;
+        clocks =3D <&clk IMX8MP_CLK_AUDIO_ROOT>,
+                 <&clk IMX8MP_CLK_SAI1>,
+                 <&clk IMX8MP_CLK_SAI2>,
+                 <&clk IMX8MP_CLK_SAI3>,
+                 <&clk IMX8MP_CLK_SAI5>,
+                 <&clk IMX8MP_CLK_SAI6>,
+                 <&clk IMX8MP_CLK_SAI7>;
+        clock-names =3D "ahb",
+                      "sai1", "sai2", "sai3",
+                      "sai5", "sai6", "sai7";
+        power-domains =3D <&pgc_audio>;
 
-Regards,
-Liu Ying
+        reset-controller {
+            compatible =3D "ti,syscon-reset";
+            #reset-cells =3D <1>;
+            ti,reset-bits =3D <
+                0x200 0 0x200 0 0 0 (ASSERT_CLEAR | DEASSERT_SET | STATUS_N=
+ONE)
+                0x200 1 0x200 1 0 0 (ASSERT_CLEAR | DEASSERT_SET | STATUS_N=
+ONE)
+            >;
+        };
+    };
 
-> 
-> diff --git a/Documentation/devicetree/bindings/display/bridge/synopsys,dw-hdmi.yaml b/Documentation/devicetree/bindings/display/bridge/synopsys,dw-hdmi.yaml
-> index 4b7e54a8f037f..828709a8ded26 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/synopsys,dw-hdmi.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/synopsys,dw-hdmi.yaml
-> @@ -45,6 +45,14 @@ properties:
->        - const: isfr
->      additionalItems: true
->  
-> +  ddc-i2c-bus:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description:
-> +      The HDMI DDC bus can be connected to either a system I2C master or the
-> +      functionally-reduced I2C master contained in the DWC HDMI. When connected
-> +      to a system I2C master this property contains a phandle to that I2C
-> +      master controller.
-> +
->    interrupts:
->      maxItems: 1
->  
-> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx6-hdmi.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx6-hdmi.yaml
-> index 7979cf07f1199..180c4b510fb12 100644
-> --- a/Documentation/devicetree/bindings/display/imx/fsl,imx6-hdmi.yaml
-> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx6-hdmi.yaml
-> @@ -31,14 +31,6 @@ properties:
->    clock-names:
->      maxItems: 2
->  
-> -  ddc-i2c-bus:
-> -    $ref: /schemas/types.yaml#/definitions/phandle
-> -    description:
-> -      The HDMI DDC bus can be connected to either a system I2C master or the
-> -      functionally-reduced I2C master contained in the DWC HDMI. When connected
-> -      to a system I2C master this property contains a phandle to that I2C
-> -      master controller.
-> -
->    gpr:
->      $ref: /schemas/types.yaml#/definitions/phandle
->      description:
-
+Best regards
+Shengjiu Wang
