@@ -1,80 +1,101 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE4514534F
-	for <imx@lists.linux.dev>; Thu, 16 May 2024 11:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144C4143C56
+	for <imx@lists.linux.dev>; Thu, 16 May 2024 11:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715858049; cv=none; b=JbrFsKRoY5DWv1pjDg2UZyoNklVwoTp8LeRzbZ6dEVi9Ai2D9j6Q7UeQOtfb54ILuW8TS5eqmazjcG/bN+IyjaSZ1DAQTMME8DYlrT7YOKT+6DYnyzHg3GnVuq+CIZd/KivL0E2qlVrlZ7vTsT+VHOFSxCccfsMG/QrmhFNuUg0=
+	t=1715858633; cv=none; b=e3QZ5mVQfthkwXssMfk3P31RVv64VyHuPwEd6Qhp7SK71eJzQgehhGIAruJWv7/UKHeCjSakL1qDYEkJ8pfL4h3aJ4JXnLIzERbrQNzl2RodV9bl5ANLj0PFxJBSEerMDrD3/vqUCYm+7TKtbJfkGT+QXhsybdPQi8B0XMohA3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715858049; c=relaxed/simple;
-	bh=pjoQPkKUuW21zca92UF9OOT5GIqcTfgNNUm9MphTK0Y=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jfUus8FoNc5CedoFlrpS7mbbB08TczuVWIO5y2FDieoORb4j1Pi5KoQUfguTEFR1RCixBS8lAwMmO6qt/XLtmOVL/xnxXB3PNLIHx31K2KwVjw557UQUyGEnEw1aTKsPRK8Uub3nT68Zburqgguf0IFDKcaw+IGg3stgk8mbmGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=rFEyfyld; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1715858633; c=relaxed/simple;
+	bh=/gj7iIwcvKFWR02PQfrKrZc+tVj5Yu6eNlj7UaW4tMQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r6zW4P3JTPAEh59ihCaixVRzfxJDajx8q9cnGp6HzNuWdj8Y9A6Y6fIvmspq8rzIAJB4FtAKI7yAC6hVrP7UAdRIJ/IhYfW9NW0x1lP5VwynpmQwilEY+Vbnft7I8yaN4N+xp8itbtdoYpBV/D7AdnwXTTbPKdMOXe+Ma/zAm0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=LmVHVuQv; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=rOBMwhYf reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="rFEyfyld"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id A442C87FED;
-	Thu, 16 May 2024 13:14:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1715858046;
-	bh=RTRToB4vUTm0ZyMBu/TqK7nD8AS7u9L11XcSxj+30Z4=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=rFEyfyldCo0w74IknHphCZVE2NuRS3PrH+/VXlTXDvnrPqYx6Zwcp/NRanIBt8vQY
-	 SHNz6SzYvaI84aOU35Ky8tUaqz0KoATol8Qe1yOBoYMhhStBP+lHyP2CQv1OrfNrJG
-	 HDFfVd0EgomErL/SUoJTSHxoAyAJd+LH8y4hNTvomsjYLsWortF9QMfDphaqFO1tXg
-	 kXLcA4d0tIgbcNFQ8aE1X5IdaneVOWAjh7Cvh2iarybZsdVmkpYCYtFCw2zawUrUn+
-	 wxbgeCdiWOWkTTShL3BvVE6AnUQRtd5fkUDxDtfThuDkdL09jFRPgCBpOaJaKcKLgE
-	 3Mdua4P3eSeJw==
-Message-ID: <76b3cee8-1fe3-4192-b8c9-7a9c2b7165f0@denx.de>
-Date: Thu, 16 May 2024 13:14:04 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="LmVHVuQv";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="rOBMwhYf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1715858629; x=1747394629;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3PaondP2vCY+Il27mm6X+8OdOJ6oWIlMkkq/jKHGv2w=;
+  b=LmVHVuQvjZyFHwBqhDBV/yW9EOM04I98cP4WAjpdW66qJIwVnArCGiQe
+   fxubUkizMov1T+5bE/MfhnslTwnh2ayOwvYQBT0E+ve5mWems4Zkhz7/F
+   K/JYupboUx07wSRBTHcaU1pRP74k4TJatXtEQcLyGCPPvptC8pUKBKBUE
+   6WtBhtHNShFScE+j2s0zpn+7ZO0xtxx+EVGOOtsTPjKSog8pUXnmUF1ZE
+   ggDIgkTRuD8zTepibkTwFgM6ujI+fYk6QvxSmJg18U1HpAryd5xOQmvk1
+   DeqhZjeCKizA0Synho0e8iCPxLyHFYeQ2DcG+ARt0QHjZIxyKbB2JCXHu
+   Q==;
+X-CSE-ConnectionGUID: zZZTLLukTNSm1kpKsSkEmg==
+X-CSE-MsgGUID: mGnkgi9aSVyBwKK5iJZKqw==
+X-IronPort-AV: E=Sophos;i="6.08,164,1712613600"; 
+   d="scan'208";a="36936022"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 16 May 2024 13:23:46 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 82FCE173BE2;
+	Thu, 16 May 2024 13:23:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1715858622; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=3PaondP2vCY+Il27mm6X+8OdOJ6oWIlMkkq/jKHGv2w=;
+	b=rOBMwhYfi9zcrF/Ns7syh3UduzyJT9xhsYYXTIwo70uSQeLWGuhJdWmtrYszXSqqui1pDF
+	ZMqSJUUnQhPX7hdcQjZhjXriw1MAbKp6nDEauSY6ehYS12emkSAoWvBGjYXOHgYqyKFbq9
+	cq7/8Ofk7LpDrQRJiMSRTYNfu0Y1Qlp6z7vwkCpwZA9sceyYRyO/eYAISKKvbTVxUXtI/5
+	Z1QfEMsePoPFWwzTz76VNnjfMOA6KbEoI2TLFSZU+ovaX5UVoCIOuFn+ojbocxiSLeVsKe
+	VVvAgeTVXruVGtffCQL6GEk2H7RxXAVbn0OCTA8hO05Up/HSU1QnYIEQVQpkWg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] arm64: dts: imx8mp-tqma8mpql-mba8mpxl: Remove unused ocram node
+Date: Thu, 16 May 2024 13:23:43 +0200
+Message-Id: <20240516112344.200166-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2 and
- PDK3
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, kernel@dh-electronics.com, linux-kernel@vger.kernel.org
-References: <20240514010706.245874-1-marex@denx.de>
- <20240516080008.GA9338@francesco-nb>
-Content-Language: en-US
-In-Reply-To: <20240516080008.GA9338@francesco-nb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 5/16/24 10:00 AM, Francesco Dolcini wrote:
-> Hello Marek,
+This node is unused and origins from downstream kernel where it is
+used for the DSP.
 
-Hi,
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts | 5 -----
+ 1 file changed, 5 deletions(-)
 
-> On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
->> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
->> I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
->> of HDMI DDC mode to permit connection of other I2C devices on those buses.
-> 
-> Are you able to read the HDMI EDID with such configuration? I have the
-> patch ready for verdin imx8mp, I just did not have time to figure out
-> this last details.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index c51ed7d991d18..ae64731266f35 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -222,11 +222,6 @@ reserved-memory {
+ 		#size-cells = <2>;
+ 		ranges;
+ 
+-		ocram: ocram@900000 {
+-			no-map;
+-			reg = <0 0x900000 0 0x70000>;
+-		};
+-
+ 		/* global autoconfigured region for contiguous allocations */
+ 		linux,cma {
+ 			compatible = "shared-dma-pool";
+-- 
+2.34.1
 
-Yes with ddc-i2c-bus in hdmi_tx{} node, no with ddc-i2c-bus in connector 
-node. Maybe that's what you're running into ? The DW HDMI core needs the 
-ddc-i2c-bus property in hdmi_tx{} node if you use non-native I2C bus for 
-the DDC channel.
