@@ -1,25 +1,39 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C344814534B
-	for <imx@lists.linux.dev>; Thu, 16 May 2024 11:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9A014533E
+	for <imx@lists.linux.dev>; Thu, 16 May 2024 11:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715859383; cv=none; b=n1NpQo/FjFA+FxB1KeXrAYf2QYSns6hOSx+GTV9GEkHUaiUs+bZaOlL10J381WkVCKZonJhCY/NEyE1tbczCnts4PINDanW2zgQMU74O8lHg3YUrSCz15kcKkubXUZgK8Hv4PbBCgfbki2AzGPjIJ+1jSCIjW2oDLWRwdZWCxhE=
+	t=1715859852; cv=none; b=QXIBFMBchg1fa9nBKudLie83juaCb6EwTA365SGIg7TipsgGBtJUHjRTZz0UJ4N/NyXIPHLvEors4DyimR1s8qPse6Cv8gR1A37zNGscifKgHSsqmy3xbOwPKb2e4WvmbZreuvaHhC4H8Nl0uahenAPSI39n3lV3WjZ8z6ayfBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715859383; c=relaxed/simple;
-	bh=xnCHpjWJCxd1ThpugjVih1IsrG1enpQdqddYfJNlRLA=;
+	s=arc-20240116; t=1715859852; c=relaxed/simple;
+	bh=DCHEshO2dOAr8AXh2VzK+u10t7pES4WOhFrmP1fzzjU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ns9gGtea/zFQdoxSW2rfBsUveoTcpDsyUwG/XlUezGGPqNSFQzNP/KMya+V6pso8hoP7SOKyuerM3yy+GFMfNP6hleRlY7PlzEEcnWvI4SciysjMRFu3sUxebZoLRhUyjnXtKIuTQ/vodTCc8iX57qzdc4G1VdIX+wHLfvaeZPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7ZOz-0007RY-PT; Thu, 16 May 2024 13:36:01 +0200
-Message-ID: <b354724f-5235-4519-8361-b8209ab99d36@pengutronix.de>
-Date: Thu, 16 May 2024 13:36:00 +0200
+	 In-Reply-To:Content-Type; b=CjqD09i1QTVDp6gZaRH6KR5d70T5gFyBw8HQZfW5PL7GYBjWZyX7gjU5hlNUETQfp83hHidltYpI4orRX4iqvsHVG0B89JDZ6/SmEEXRXyIqh4Yt32Iq3rLGFWZ+yISXoLX9cDG9ZBJCmF6ceer2sApVN/zuMHtGHnhV4V+VqkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=aYtdPFKO; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="aYtdPFKO"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 85AC28826D;
+	Thu, 16 May 2024 13:44:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1715859849;
+	bh=dsErKX1n5UIXfT2HJBwpSPSizlx6kcbp1S8mWV1k6jc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aYtdPFKObsuhuPDNHyy31uE1czOpvlT6fhn76brMy9vTHtdA+vcbMrvDGEzOjZO0P
+	 Flve58qCXKl6wunoocKKstFLRVu9BVwgO1HZI686ne/bsIKtfuawXV24456/GIlRFk
+	 +apXaWnUOOLhLmPPaYv4gKDUU3buu79+BAMK+OgPCdQbI5wjemd4P8HidnAoZQx0MO
+	 dXNRYa5rYoaShgH+lF1Cf0AUUUz7K34A7B7MwZZEkBwbMSc9Y8xfGH2LbBv9p5TPsL
+	 Ocz+rYClGK+wpVWkDqmdwphLaFUaeGDWsUWhEOeuz4/DOFwN2Cn051gvA6QmeSoqWz
+	 Y4+3Z1lPVitXQ==
+Message-ID: <fa01ef26-d4d4-4c62-9c12-1f8bed1cfdab@denx.de>
+Date: Thu, 16 May 2024 13:44:08 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,7 +43,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2 and
  PDK3
-To: Marek Vasut <marex@denx.de>, Francesco Dolcini <francesco@dolcini.it>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Francesco Dolcini <francesco@dolcini.it>
 Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
@@ -40,49 +55,39 @@ Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
 References: <20240514010706.245874-1-marex@denx.de>
  <20240516080008.GA9338@francesco-nb>
  <76b3cee8-1fe3-4192-b8c9-7a9c2b7165f0@denx.de>
+ <b354724f-5235-4519-8361-b8209ab99d36@pengutronix.de>
 Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <76b3cee8-1fe3-4192-b8c9-7a9c2b7165f0@denx.de>
-Content-Type: text/plain; charset=UTF-8
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <b354724f-5235-4519-8361-b8209ab99d36@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hello Marek,
+On 5/16/24 1:36 PM, Ahmad Fatoum wrote:
+> Hello Marek,
 
-On 16.05.24 13:14, Marek Vasut wrote:
-> On 5/16/24 10:00 AM, Francesco Dolcini wrote:
->> Hello Marek,
-> 
-> Hi,
-> 
->> On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
->>> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
->>> I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
->>> of HDMI DDC mode to permit connection of other I2C devices on those buses.
+Hi,
+
+> On 16.05.24 13:14, Marek Vasut wrote:
+>> On 5/16/24 10:00 AM, Francesco Dolcini wrote:
+>>> Hello Marek,
 >>
->> Are you able to read the HDMI EDID with such configuration? I have the
->> patch ready for verdin imx8mp, I just did not have time to figure out
->> this last details.
+>> Hi,
+>>
+>>> On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
+>>>> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
+>>>> I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
+>>>> of HDMI DDC mode to permit connection of other I2C devices on those buses.
+>>>
+>>> Are you able to read the HDMI EDID with such configuration? I have the
+>>> patch ready for verdin imx8mp, I just did not have time to figure out
+>>> this last details.
+>>
+>> Yes with ddc-i2c-bus in hdmi_tx{} node, no with ddc-i2c-bus in connector node. Maybe that's what you're running into ? The DW HDMI core needs the ddc-i2c-bus property in hdmi_tx{} node if you use non-native I2C bus for the DDC channel.
 > 
-> Yes with ddc-i2c-bus in hdmi_tx{} node, no with ddc-i2c-bus in connector node. Maybe that's what you're running into ? The DW HDMI core needs the ddc-i2c-bus property in hdmi_tx{} node if you use non-native I2C bus for the DDC channel.
+> What benefit does the hdmi-connector provide over just omitting it?
+> Just for documentation purposes?
 
-What benefit does the hdmi-connector provide over just omitting it?
-Just for documentation purposes?
-
-Thanks,
-Ahmad
-
-
-
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+I was under the impression describing the hardware in DT in full was the 
+best practice (TM), hence it is in full here.
