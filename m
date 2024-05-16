@@ -1,125 +1,127 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52A4145A13
-	for <imx@lists.linux.dev>; Thu, 16 May 2024 12:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DB522075
+	for <imx@lists.linux.dev>; Thu, 16 May 2024 12:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715861260; cv=none; b=siHZ62iT2o5SI0qcpHRGPfGmW0St/jSIVvdMlycrnjqfE0w2phZY2Oq2YaQSnmls+VSZV5uAd0RNdGmMZTg33Kc1Aw+OVrqYMrXw3g19anyk31t9NwbbTnvRX7GmQN1mT3Ta8Y45ua+LOZLQxVTEb9CWDnCg1Jr43vlElmDVGmQ=
+	t=1715861939; cv=none; b=SkqWJNKnFOeIQ4X3KSvJttpmST1bRy084DA831EHhyxGMkp6x3MzvWPmzGf6QAjpEZpIJ1yQCwynTRxEhLQInK+Q4nOrRUGvf8b4ylVLWSJgWghx09gLZ4idB/EtKUeXPnKcDw2zJgt67s8WlXW4/TnzJx1W1tZrktnm7oWK21Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715861260; c=relaxed/simple;
-	bh=vcdsIGqZ5qz1syFN4U6rshX8LYDZBqv5t9KYXC8SXXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IuJAYv7XZXzr1VONFq1CxWoCZLyhRF4Zr9VdtmXcE2oz/2ABckpaWNnEkou+w4sUyGr0dotGnJIwFgr7a2m/eWnLdoQfeHzsNVGX7soMh6UHrIf01O/WPcpgEg6W5LSck/VFoIy1XlYHPjILtGPTNsfAjUHyFHtKNeCzO2JTL48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=NbGJocm/; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NwdinzhA reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1715861939; c=relaxed/simple;
+	bh=W0y+avRcgtWQeVDf9R7wQoPEqMAtWWjnPy4BajP6cTI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uDknYbzd+56lmZzMUOaq75kRMY039QN6qkwwoGIR8mHVdhkn2+7TAqbC4P9AiLBHETlZ2JPrS3i3arj4k0ZmshBsfA71XR5so750paXaaev+h4ivpFJN8/d1br42yDMQkAfXYN+Nn2yNyilRaYHkkExXs3lmebOTiuvxotdTef0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODhtra+k; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="NbGJocm/";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NwdinzhA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODhtra+k"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2b9cdbd6da9so92855a91.1
+        for <imx@lists.linux.dev>; Thu, 16 May 2024 05:18:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1715861257; x=1747397257;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vcdsIGqZ5qz1syFN4U6rshX8LYDZBqv5t9KYXC8SXXE=;
-  b=NbGJocm/nYhNY8ItDCPxBLvGN/h2O8pG6Tb61+itiGHWN5Di3vh6mmHp
-   x/V/t1HW2vTb9q8l4eOndww+mbnvRiH0bWOUhL9tCS5bdLoADUBMEHVwX
-   TJc57BscwaO+X89w9y/yWfk/f9HmGMVEcZGelYBtIiV/oM/N0kAHXXMKf
-   8you2V+8FWx2WhDHp3LpS74Z6TIUSFNS5kS9vFS3J/2FSaW2YEZjxXjR9
-   v0C6AWlpHmdaBwZ2b0Ua23KIZosWEypKUwaVYopftLn4jwtO+z01BTmjE
-   U1zcSz96LBITVUuUFvTndyvAdfC60aghjEjnmCS+Xtwg4fQ2nX6WnvveQ
-   g==;
-X-CSE-ConnectionGUID: RksVlVebSziJVsdXvJdhKg==
-X-CSE-MsgGUID: tlJ8O3lfQa60hJSqAFcjvg==
-X-IronPort-AV: E=Sophos;i="6.08,164,1712613600"; 
-   d="scan'208";a="36937146"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 16 May 2024 14:07:34 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23DB6174204;
-	Thu, 16 May 2024 14:07:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1715861250;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=vcdsIGqZ5qz1syFN4U6rshX8LYDZBqv5t9KYXC8SXXE=;
-	b=NwdinzhA0JeGGqgMmGZt/8JCtKF1X2eXOUGriZ8xtAglud6v3UTZWqQ8nz3R/y1Cw84O0/
-	U4AYI1vUo8hItVABU9FgsRWutlaKB1BUaGlmIa8/tNLu1QkzFNsg/zrg/Q8vn7H8rzM1Ux
-	1czmd7PK1P2/3MC4JvPrYFlmQQkmPknYAlF2fYkaaR41LZd7yHXpNBJ7Eb5Iybqo90jzKv
-	2K17rWErAszcPe/4kSGnP4KvdiZjQ+b9A7eq7qF/NTwAJPdIslPYmPxO3xgXloZc9MSB7j
-	Ms7+cYsk+KncudPPRocDPTasNeoBkmM+AavZOKM8V2OfnqXP6he/PKkW80BAAg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marek Vasut <marex@denx.de>, Francesco Dolcini <francesco@dolcini.it>, linux-arm-kernel@lists.infradead.org
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org, imx@lists.linux.dev, kernel@dh-electronics.com, Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2 and PDK3
-Date: Thu, 16 May 2024 14:07:34 +0200
-Message-ID: <5724851.tdWV9SEqCh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <69c3517c-0fa4-4e0d-9515-21adfb6730a8@pengutronix.de>
-References: <20240514010706.245874-1-marex@denx.de> <fa01ef26-d4d4-4c62-9c12-1f8bed1cfdab@denx.de> <69c3517c-0fa4-4e0d-9515-21adfb6730a8@pengutronix.de>
+        d=gmail.com; s=20230601; t=1715861937; x=1716466737; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jekx64oHBwBXL4RMdSdE7ZiJluoUVRftBtOqhrpyhts=;
+        b=ODhtra+kNcAvl+VaLR8S5QWeH+0xIYjMBk9VYyJJ11qMZ0jWpmaitcTTFxjtc0hg2h
+         K3x4Izjlua+Z8MATdtNIFonZEmxSktxZsMyq6EuoCI0AyTFgKYvzz+2L/d2mpJfRlG48
+         EKHYTnYoTYnaJY1YvajDiPEiM8MtuMPhjsN6uH0SufIr/FFdypfXGyKzjiQs9kb4M2TW
+         QDYomqNb4RqEkGHDsQEXdfNoxerTbSpgxtyLEFvvU7ywwC3xOQhCR50wKizWqmk7Vd0I
+         ovXK7KZS6j72QJqgTcAKnNuB+ySZBLL8somc+XyVXITer3bG4Qd3doTRP5aXFaV0UDr8
+         1MLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715861937; x=1716466737;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jekx64oHBwBXL4RMdSdE7ZiJluoUVRftBtOqhrpyhts=;
+        b=rfnH0/1gwtPBgRURpFyekOLEIXWO8g5afHDE+urZ50VNNIvLKxKS4z0F6JwnDHDMuv
+         7p9m9Wnvgpd7ZetrUNqL0dKOB0Vvt9ztfIHptnav++GhtvE43HVremfE8h237rLEg7Th
+         8eubMCOpyzccoC8Q8SXPvoZ1oFMxa4tUq1nPcf7c1vSUyTl4ree+x70PK93jxzFK+0GH
+         wwwkmUdjknyGm39SEm1aLDcZERZa/+RLMOrUd4OYtCCxbZEebgppntG6CXI9HgpFMQut
+         NBkh08ueHe/6YTtjoNNuLpOFCSKp+vGztFAIERyb3Z7dcZ1U1D2OG8XEU3QpI28/xlfU
+         B71Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVwDGqxItwdz3eTjZ3t4ljUufI4SGMXIUk82ydzkEgejNor+TKGfeM4lZqiKZomObLYLwZ7OQCzjOZZSvgO4fqGqhhS
+X-Gm-Message-State: AOJu0Yw+GvEg2pJmdtbZB9z7dWFU0mzPULqeJXL3fwqc2ZhTGmPAoUb7
+	ts1oCIcF5YVsy1MAovZgG6noql4nwZblVsn9t7vVfacAsvfrZoo1ZjkfMa0uWhM6x2CrG/BnYAe
+	jYOp0ry3mW1CQ7jlvmaOZXOGLn24=
+X-Google-Smtp-Source: AGHT+IHV+iGjWHQDDc1/wQXU0afN0otrO2sGh1kGYMr0abLfezvPHuUi+aKEXVySo8r5fXaooMNwMiEYCAl9GxsOl74=
+X-Received: by 2002:a17:90a:6982:b0:2ab:8324:1b47 with SMTP id
+ 98e67ed59e1d1-2b6c75dc6ddmr27526142a91.15.1715861936928; Thu, 16 May 2024
+ 05:18:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20240504-imx-clk-v1-0-f7915489d58d@nxp.com> <20240504-imx-clk-v1-6-f7915489d58d@nxp.com>
+In-Reply-To: <20240504-imx-clk-v1-6-f7915489d58d@nxp.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Thu, 16 May 2024 07:18:45 -0500
+Message-ID: <CAHCN7x+Sv6_QQStEacjQP8UAVntyWHdvHrErQO0j=n_pe9zqmA@mail.gmail.com>
+Subject: Re: [PATCH 06/18] clk: imx: pll14xx: use rate_table for audio plls
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Abel Vesa <abel.vesa@linaro.org>, Peng Fan <peng.fan@nxp.com>, 
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi everyone,
+On Fri, May 3, 2024 at 7:42=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.com=
+> wrote:
+>
+> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+>
+> The generated clock frequency may not accurate, for example
+> the expected rate is 361267200U, but result is 361267199U.
+> Add rate_table for audio clocks to avoid such issue.
 
-Am Donnerstag, 16. Mai 2024, 13:46:33 CEST schrieb Ahmad Fatoum:
-> On 16.05.24 13:44, Marek Vasut wrote:
-> > On 5/16/24 1:36 PM, Ahmad Fatoum wrote:
-> >> Hello Marek,
-> >=20
-> > Hi,
-> >=20
-> >> On 16.05.24 13:14, Marek Vasut wrote:
-> >>> On 5/16/24 10:00 AM, Francesco Dolcini wrote:
-> >>>> Hello Marek,
-> >>>
-> >>> Hi,
-> >>>
-> >>>> On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
-> >>>>> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2=
- and
-> >>>>> I2C mux port 1 on PDK3 respectively are used in regular I2C mode in=
-stead
-> >>>>> of HDMI DDC mode to permit connection of other I2C devices on those=
- buses.
-> >>>>
-> >>>> Are you able to read the HDMI EDID with such configuration? I have t=
-he
-> >>>> patch ready for verdin imx8mp, I just did not have time to figure out
-> >>>> this last details.
-> >>>
-> >>> Yes with ddc-i2c-bus in hdmi_tx{} node, no with ddc-i2c-bus in connec=
-tor node. Maybe that's what you're running into ? The DW HDMI core needs th=
-e ddc-i2c-bus property in hdmi_tx{} node if you use non-native I2C bus for =
-the DDC channel.
-> >>
-> >> What benefit does the hdmi-connector provide over just omitting it?
-> >> Just for documentation purposes?
-> >=20
-> > I was under the impression describing the hardware in DT in full was th=
-e best practice (TM), hence it is in full here.
->=20
-> Sure, I am just wondering what effect, if any, it has in how Linux interp=
-rets
-> the device tree. I have an i.MX8MP board with HDMI as well, but without
-> connector (yet).
+Wouldn't it be better to fix the clock calculator and eliminate the
+look-up table completely?
+The LUT seems like a work-around for a bug.
 
-AFAICT having a hdmi-connector has no effect at all. Linux drivers are
-not using it.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+adam
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/clk/imx/clk-pll14xx.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.=
+c
+> index 55812bfb9ec2..6b2c849f8b71 100644
+> --- a/drivers/clk/imx/clk-pll14xx.c
+> +++ b/drivers/clk/imx/clk-pll14xx.c
+> @@ -64,6 +64,17 @@ static const struct imx_pll14xx_rate_table imx_pll1443=
+x_tbl[] =3D {
+>         PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+>         PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
+>         PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
+> +       PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
+> +       PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
+> +       PLL_1443X_RATE(245760000U, 328, 4, 3, 0xae15),
+> +       PLL_1443X_RATE(225792000U, 226, 3, 3, 0xcac1),
+> +       PLL_1443X_RATE(122880000U, 328, 4, 4, 0xae15),
+> +       PLL_1443X_RATE(112896000U, 226, 3, 4, 0xcac1),
+> +       PLL_1443X_RATE(61440000U, 328, 4, 5, 0xae15),
+> +       PLL_1443X_RATE(56448000U, 226, 3, 5, 0xcac1),
+> +       PLL_1443X_RATE(49152000U, 393, 3, 6, 0x374c),
+> +       PLL_1443X_RATE(45158400U, 241, 2, 6, 0xd845),
+> +       PLL_1443X_RATE(40960000U, 109, 1, 6, 0x3a07),
+>  };
+>
+>  struct imx_pll14xx_clk imx_1443x_pll =3D {
+>
+> --
+> 2.37.1
+>
+>
