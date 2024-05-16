@@ -1,70 +1,222 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDFD4120A
-	for <imx@lists.linux.dev>; Thu, 16 May 2024 08:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065CA143898
+	for <imx@lists.linux.dev>; Thu, 16 May 2024 10:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715846424; cv=none; b=B0UAMPdr/HDyMjCJv0QCCL31Ut5G5cuWbvTr6lNXDAJ7p12FaoRv5ypqn79zywMXgH+/ug/N9ZckWQe1WIo6soUijj9ABBV2MJjbq50SSuObDvUUzaPuILjDjJdtiLqjupitTgzE83Kgbxpm09/MNWZUbK+F1SE12Dks/rqZMP0=
+	t=1715855152; cv=none; b=bvKM3AHVEcGyrVlAQxFJuOY5P74TKVfXeLuZQ6/ZLkjx+RAj4XUo3b56+IfF8F55Fcq5xz7ffNuaN4XfPsPtp5sv66ZxDJqow0CqEhsjGmspD91AYvidzpJmTMjzFEA+NSHiaxPLYalVveoLQXzo8Rcpsp8/jWG/FOLyjrgDXlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715846424; c=relaxed/simple;
-	bh=9fSy4m7IFndF9uPlgLMzNmbf3zpZNt6Zla356Zods3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TIRhMcCT0+LEya2NtXDE0Wsz6i7VDXtzjWm4bXkviWbPCofTWGmPiFTv5aHUIw8fDrwRMIdDuePYi5/FPgOK2DJ06UxVoanwwjLJ78J1cG8hUCb+n/j0vMTxvjvbbrnntJU2yjwde4H7j/wXMj/fKKRhdD2DLloxsR8iLNe7r7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=n+nkw9AU; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="n+nkw9AU"
-Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id 45FBB1FE67;
-	Thu, 16 May 2024 10:00:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1715846412;
-	bh=9fSy4m7IFndF9uPlgLMzNmbf3zpZNt6Zla356Zods3M=; h=From:To:Subject;
-	b=n+nkw9AUM5/VtOoI5cQjhYrdvZeg+o0A7gGkxcIhCvOrI7FhHIsjyhu2ZDxeWZ4iK
-	 GZddQ9LQ9gPmC9LSyzQ+x94ykLFujfn7/5UqTdcsgIS63ihY/nkhlCe13Tw9aPH8ZX
-	 ETdzNUJw2WfEGqtXEHhaCbsSnuUbpnPa1QhIB76XBifsm/IEss1pDURLrQXGPijWUM
-	 svVBqMGUtWe7RJnEp92Frdm2kn17hBbL/CPlzRDREw6XueEmVwNTXd6ru3Z0waS9at
-	 zgEXSCtBp0Ioi0DgzVjX6d6hw1goyuJFzcuSZPpQtODJWOay8w96iXpkDpblsrr9Rs
-	 uLinG5P8CcbmQ==
-Date: Thu, 16 May 2024 10:00:08 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor+dt@kernel.org>,
+	s=arc-20240116; t=1715855152; c=relaxed/simple;
+	bh=HK4fcMci2trdwHn9Xf4F2bpeZlCq2jIARnWYqTAaR6U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PRcl3CPiiXt0KPvpBSUopdKAuSYu4opWFF3sLhN83UErzRvBvwrrS092nxQZsfuLlTulGZTVeWpXONZ10LuKDj8zTfCmVqAiLz9RXjkUYUmaAbBwxg6VLJyXjIm2rssTCTSwdvVJCGTFjRuS45LMXXgMUxXfBSA21W77kC0ufJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1s7YIn-0003ce-Lb; Thu, 16 May 2024 12:25:33 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1s7YIm-001h9D-Ko; Thu, 16 May 2024 12:25:32 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2
- and PDK3
-Message-ID: <20240516080008.GA9338@francesco-nb>
-References: <20240514010706.245874-1-marex@denx.de>
+	dmaengine@vger.kernel.org,
+	imx@lists.linux.dev,
+	patchwork-lst@pengutronix.de
+Subject: [PATCH 1/2] firmware: add nowarn variant of request_firmware_nowait()
+Date: Thu, 16 May 2024 12:25:31 +0200
+Message-Id: <20240516102532.213874-1-l.stach@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240514010706.245874-1-marex@denx.de>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hello Marek,
+Device drivers with optional firmware may still want to use the
+asynchronous firmware loading interface. To avoid printing a
+warning into the kernel log when the optional firmware is
+absent, add a nowarn variant of this interface.
 
-On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
-> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
-> I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
-> of HDMI DDC mode to permit connection of other I2C devices on those buses.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+v3:
+- v2-link: https://lore.kernel.org/all/20181112160143.4459-1-l.stach@pengutronix.de/
+- Rename to firmware_*
+- Drop uevent for new API
+- Make use of EXPORT_SYMBOL_GPL
+- Sort header alphabetical
+---
+ drivers/base/firmware_loader/main.c | 90 ++++++++++++++++++++---------
+ include/linux/firmware.h            | 12 ++++
+ 2 files changed, 75 insertions(+), 27 deletions(-)
 
-Are you able to read the HDMI EDID with such configuration? I have the
-patch ready for verdin imx8mp, I just did not have time to figure out
-this last details.
-
-Francesco
+diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+index da8ca01d011c..a03ee4b11134 100644
+--- a/drivers/base/firmware_loader/main.c
++++ b/drivers/base/firmware_loader/main.c
+@@ -1172,34 +1172,11 @@ static void request_firmware_work_func(struct work_struct *work)
+ 	kfree(fw_work);
+ }
+ 
+-/**
+- * request_firmware_nowait() - asynchronous version of request_firmware
+- * @module: module requesting the firmware
+- * @uevent: sends uevent to copy the firmware image if this flag
+- *	is non-zero else the firmware copy must be done manually.
+- * @name: name of firmware file
+- * @device: device for which firmware is being loaded
+- * @gfp: allocation flags
+- * @context: will be passed over to @cont, and
+- *	@fw may be %NULL if firmware request fails.
+- * @cont: function will be called asynchronously when the firmware
+- *	request is over.
+- *
+- *	Caller must hold the reference count of @device.
+- *
+- *	Asynchronous variant of request_firmware() for user contexts:
+- *		- sleep for as small periods as possible since it may
+- *		  increase kernel boot time of built-in device drivers
+- *		  requesting firmware in their ->probe() methods, if
+- *		  @gfp is GFP_KERNEL.
+- *
+- *		- can't sleep at all if @gfp is GFP_ATOMIC.
+- **/
+-int
+-request_firmware_nowait(
++
++static int _request_firmware_nowait(
+ 	struct module *module, bool uevent,
+ 	const char *name, struct device *device, gfp_t gfp, void *context,
+-	void (*cont)(const struct firmware *fw, void *context))
++	void (*cont)(const struct firmware *fw, void *context), bool nowarn)
+ {
+ 	struct firmware_work *fw_work;
+ 
+@@ -1217,7 +1194,8 @@ request_firmware_nowait(
+ 	fw_work->context = context;
+ 	fw_work->cont = cont;
+ 	fw_work->opt_flags = FW_OPT_NOWAIT |
+-		(uevent ? FW_OPT_UEVENT : FW_OPT_USERHELPER);
++		(uevent ? FW_OPT_UEVENT : FW_OPT_USERHELPER) |
++		(nowarn ? FW_OPT_NO_WARN : 0);
+ 
+ 	if (!uevent && fw_cache_is_setup(device, name)) {
+ 		kfree_const(fw_work->name);
+@@ -1236,8 +1214,66 @@ request_firmware_nowait(
+ 	schedule_work(&fw_work->work);
+ 	return 0;
+ }
++
++/**
++ * request_firmware_nowait() - asynchronous version of request_firmware
++ * @module: module requesting the firmware
++ * @uevent: sends uevent to copy the firmware image if this flag
++ *	is non-zero else the firmware copy must be done manually.
++ * @name: name of firmware file
++ * @device: device for which firmware is being loaded
++ * @gfp: allocation flags
++ * @context: will be passed over to @cont, and
++ *	@fw may be %NULL if firmware request fails.
++ * @cont: function will be called asynchronously when the firmware
++ *	request is over.
++ *
++ *	Caller must hold the reference count of @device.
++ *
++ *	Asynchronous variant of request_firmware() for user contexts:
++ *		- sleep for as small periods as possible since it may
++ *		  increase kernel boot time of built-in device drivers
++ *		  requesting firmware in their ->probe() methods, if
++ *		  @gfp is GFP_KERNEL.
++ *
++ *		- can't sleep at all if @gfp is GFP_ATOMIC.
++ **/
++int request_firmware_nowait(
++	struct module *module, bool uevent,
++	const char *name, struct device *device, gfp_t gfp, void *context,
++	void (*cont)(const struct firmware *fw, void *context))
++{
++	return _request_firmware_nowait(module, uevent, name, device, gfp,
++					context, cont, false);
++
++}
+ EXPORT_SYMBOL(request_firmware_nowait);
+ 
++/**
++ * firmware_request_nowait_nowarn() - async version of request_firmware_nowarn
++ * @module: module requesting the firmware
++ * @name: name of firmware file
++ * @device: device for which firmware is being loaded
++ * @gfp: allocation flags
++ * @context: will be passed over to @cont, and
++ *	@fw may be %NULL if firmware request fails.
++ * @cont: function will be called asynchronously when the firmware
++ *	request is over.
++ *
++ * Similar in function to request_firmware_nowait(), but doesn't print a warning
++ * when the firmware file could not be found and always sends a uevent to copy
++ * the firmware image.
++ */
++int firmware_request_nowait_nowarn(
++	struct module *module, const char *name,
++	struct device *device, gfp_t gfp, void *context,
++	void (*cont)(const struct firmware *fw, void *context))
++{
++	return _request_firmware_nowait(module, FW_ACTION_UEVENT, name, device,
++					gfp, context, cont, true);
++}
++EXPORT_SYMBOL_GPL(firmware_request_nowait_nowarn);
++
+ #ifdef CONFIG_FW_CACHE
+ static ASYNC_DOMAIN_EXCLUSIVE(fw_cache_domain);
+ 
+diff --git a/include/linux/firmware.h b/include/linux/firmware.h
+index f026f8926d79..aae1b85ffc10 100644
+--- a/include/linux/firmware.h
++++ b/include/linux/firmware.h
+@@ -98,6 +98,10 @@ static inline bool firmware_request_builtin(struct firmware *fw,
+ #if IS_REACHABLE(CONFIG_FW_LOADER)
+ int request_firmware(const struct firmware **fw, const char *name,
+ 		     struct device *device);
++int firmware_request_nowait_nowarn(
++	struct module *module, const char *name,
++	struct device *device, gfp_t gfp, void *context,
++	void (*cont)(const struct firmware *fw, void *context));
+ int firmware_request_nowarn(const struct firmware **fw, const char *name,
+ 			    struct device *device);
+ int firmware_request_platform(const struct firmware **fw, const char *name,
+@@ -123,6 +127,14 @@ static inline int request_firmware(const struct firmware **fw,
+ 	return -EINVAL;
+ }
+ 
++static inline int firmware_request_nowait_nowarn(
++	struct module *module, const char *name,
++	struct device *device, gfp_t gfp, void *context,
++	void (*cont)(const struct firmware *fw, void *context))
++{
++	return -EINVAL;
++}
++
+ static inline int firmware_request_nowarn(const struct firmware **fw,
+ 					  const char *name,
+ 					  struct device *device)
+-- 
+2.39.2
 
