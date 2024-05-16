@@ -1,89 +1,80 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D2F143895
-	for <imx@lists.linux.dev>; Thu, 16 May 2024 10:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE4514534F
+	for <imx@lists.linux.dev>; Thu, 16 May 2024 11:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715855154; cv=none; b=Y+mF5Y7pSdXeGLZ1BdhUI4l6uBPspvYQucVggoEqujxpuiRYHR64kbcTCfukcRZngfGzu4QPvryP2Otsv84TLDzQuKM79KR5EfHqJbk10HRDhUxQFLXxyjADUXcG9Mjpg6G1k/oBJQegIzpv26mJyqs1yXbFaDHrrpTI8v8x1xI=
+	t=1715858049; cv=none; b=JbrFsKRoY5DWv1pjDg2UZyoNklVwoTp8LeRzbZ6dEVi9Ai2D9j6Q7UeQOtfb54ILuW8TS5eqmazjcG/bN+IyjaSZ1DAQTMME8DYlrT7YOKT+6DYnyzHg3GnVuq+CIZd/KivL0E2qlVrlZ7vTsT+VHOFSxCccfsMG/QrmhFNuUg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715855154; c=relaxed/simple;
-	bh=Fi/3Std58Ou4oxdk4xv5fAxp4eTJlp6AyhxONtEIpxE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OAjHDa8wGZYeiIaTe/W3TKvk7nBfYIfB4TuA6H1q9+lp3ErZ5mR/r1o+O6sDcdZWY6jip0kWVvFcmoc9uOuMsj+SbfMWmW6CDY83AGqaoC6P6elgEmF79a82ZPh7wklOs7M4tg5xLnIABi4C2w3bRrnlHOrbCWKgJAAFpAp6sk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1s7YIn-0003dH-Lb; Thu, 16 May 2024 12:25:33 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1s7YIm-001h9D-OD; Thu, 16 May 2024 12:25:32 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	dmaengine@vger.kernel.org,
-	imx@lists.linux.dev,
-	patchwork-lst@pengutronix.de
-Subject: [PATCH 2/2] dmaengine: imx-sdma: don't print warning when firmware is absent
-Date: Thu, 16 May 2024 12:25:32 +0200
-Message-Id: <20240516102532.213874-2-l.stach@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240516102532.213874-1-l.stach@pengutronix.de>
-References: <20240516102532.213874-1-l.stach@pengutronix.de>
+	s=arc-20240116; t=1715858049; c=relaxed/simple;
+	bh=pjoQPkKUuW21zca92UF9OOT5GIqcTfgNNUm9MphTK0Y=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jfUus8FoNc5CedoFlrpS7mbbB08TczuVWIO5y2FDieoORb4j1Pi5KoQUfguTEFR1RCixBS8lAwMmO6qt/XLtmOVL/xnxXB3PNLIHx31K2KwVjw557UQUyGEnEw1aTKsPRK8Uub3nT68Zburqgguf0IFDKcaw+IGg3stgk8mbmGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=rFEyfyld; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="rFEyfyld"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id A442C87FED;
+	Thu, 16 May 2024 13:14:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1715858046;
+	bh=RTRToB4vUTm0ZyMBu/TqK7nD8AS7u9L11XcSxj+30Z4=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=rFEyfyldCo0w74IknHphCZVE2NuRS3PrH+/VXlTXDvnrPqYx6Zwcp/NRanIBt8vQY
+	 SHNz6SzYvaI84aOU35Ky8tUaqz0KoATol8Qe1yOBoYMhhStBP+lHyP2CQv1OrfNrJG
+	 HDFfVd0EgomErL/SUoJTSHxoAyAJd+LH8y4hNTvomsjYLsWortF9QMfDphaqFO1tXg
+	 kXLcA4d0tIgbcNFQ8aE1X5IdaneVOWAjh7Cvh2iarybZsdVmkpYCYtFCw2zawUrUn+
+	 wxbgeCdiWOWkTTShL3BvVE6AnUQRtd5fkUDxDtfThuDkdL09jFRPgCBpOaJaKcKLgE
+	 3Mdua4P3eSeJw==
+Message-ID: <76b3cee8-1fe3-4192-b8c9-7a9c2b7165f0@denx.de>
+Date: Thu, 16 May 2024 13:14:04 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2 and
+ PDK3
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, kernel@dh-electronics.com, linux-kernel@vger.kernel.org
+References: <20240514010706.245874-1-marex@denx.de>
+ <20240516080008.GA9338@francesco-nb>
+Content-Language: en-US
+In-Reply-To: <20240516080008.GA9338@francesco-nb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-The SDMA firmware is optional and a usable fallback to the internal
-ROM firmware is present in the driver. There is already a message
-printed informing the user that the internal firmware is used, so
-there is no need to print a scary warning for what is normal operation
-on most systems.
+On 5/16/24 10:00 AM, Francesco Dolcini wrote:
+> Hello Marek,
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
-v3:
-- v2-link: https://lore.kernel.org/all/20181112160143.4459-1-l.stach@pengutronix.de/
-- Adapt to new firmware_* API
----
- drivers/dma/imx-sdma.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Hi,
 
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 9b42f5e96b1e..b94aef57c2c0 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -2057,9 +2057,8 @@ static int sdma_get_firmware(struct sdma_engine *sdma,
- {
- 	int ret;
- 
--	ret = request_firmware_nowait(THIS_MODULE,
--			FW_ACTION_UEVENT, fw_name, sdma->dev,
--			GFP_KERNEL, sdma, sdma_load_firmware);
-+	ret = firmware_request_nowait_nowarn(THIS_MODULE, fw_name, sdma->dev,
-+					GFP_KERNEL, sdma, sdma_load_firmware);
- 
- 	return ret;
- }
--- 
-2.39.2
+> On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
+>> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
+>> I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
+>> of HDMI DDC mode to permit connection of other I2C devices on those buses.
+> 
+> Are you able to read the HDMI EDID with such configuration? I have the
+> patch ready for verdin imx8mp, I just did not have time to figure out
+> this last details.
 
+Yes with ddc-i2c-bus in hdmi_tx{} node, no with ddc-i2c-bus in connector 
+node. Maybe that's what you're running into ? The DW HDMI core needs the 
+ddc-i2c-bus property in hdmi_tx{} node if you use non-native I2C bus for 
+the DDC channel.
