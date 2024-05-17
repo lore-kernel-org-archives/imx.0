@@ -1,113 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACF23D9E;
-	Fri, 17 May 2024 16:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEA213D8AC
+	for <imx@lists.linux.dev>; Fri, 17 May 2024 17:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715962899; cv=none; b=Rmp10eGwn/zBANl4Mg5vauplHXs2WOlEvGnnC04jX3B9dU8Ua6EIyRJ6dpr1GMdEExqYTTfn36du/e8jr9pjfTJkrlewrvhHfFUMoaSdRddZZIcHhXXJB4wo6310r6sgtZYqyiVKWnDGffIQkKnMUSUOmH3DaiQ6trY5mRCX/Uk=
+	t=1715965616; cv=none; b=M5kNO5BlwLEJMBTCxbWL3jXfrTFLl+PPwjHlk72kABlWaJk58iB91J70kUQXbWgrCbC2a5S4r2NaVroCyMHGPgAOH3Ee1j12uenMChs9KmXS7yydU3mqRl66F4mfQ00ASbMXR48/9zCDI8jV5BCFUA6qfnrOjbA9s7P9a1D8Wl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715962899; c=relaxed/simple;
-	bh=ev4iq0Wee83dklHI+OARRnVpV0x2gsj2uuRc45D2WZY=;
+	s=arc-20240116; t=1715965616; c=relaxed/simple;
+	bh=cmXJHYt0n27WurVX5CSCRo0/J6W6YEmPq397ULn1iWI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uG4opFzTSExstBxQVwkPiaWy083z8ytG55UqgRUcapJQiZgBJAwzWg3W+PMTTUiDvw5h9PyTuPMhFjCgVCYRnIZ3YupOSQVo1DOtzjMy+NYqPUrYrTjmauf1jZlnsot46Fx4/MqCxCEyDup9dkmVFBYApxh2LL9ehvqpmyA+/Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ExOhwA4/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ExOhwA4/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA85C2BD10;
-	Fri, 17 May 2024 16:21:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715962898;
-	bh=ev4iq0Wee83dklHI+OARRnVpV0x2gsj2uuRc45D2WZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ExOhwA4/ipTySjT0ECd1wWMW5Kl3Pcyuq5QrppMjN3DvW5Fn4NUMhCywmBrhKZ3Hs
-	 BsUu1wWti+XNrDVa7af5bpLsVi5tRPXr5+cW2CRMpZ7yLQBahwWHZ5tDkiue3EbZ4N
-	 DznDUsvQvrMemqHNFIFh025x2Hk/hHDZ1H890T17ANQP0MZ90JT7d4G1N9JqoRDE40
-	 YSZMcl/cr+zQ6qgz7TWSpF30POu+9RJ4phasKo0jU3LOtui5FSkSNpUgsGcv976i3U
-	 x1scDCIp3sJQJ5HsQ4sVlI4uT5jMrPGdvsfEqRvL8k2IJbBBRkEnsb3WI0SnncWX/V
-	 YtauH1OnC/gSg==
-Date: Fri, 17 May 2024 17:21:32 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org,
-	peng.fan@nxp.com, mturquette@baylibre.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de
-Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller
- sub-node
-Message-ID: <20240517-gristle-dealt-56b5299b9cb8@spud>
-References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com>
- <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com>
- <20240514-campus-sibling-21cdf4c78366@spud>
- <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org>
- <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
- <20240515-unbundle-bubble-8623b495a4f1@spud>
- <ZkT+4yUgcUdB/i2t@lizhi-Precision-Tower-5810>
- <20240516-reversing-demeanor-def651bc82ac@spud>
- <ZkbVa5KvvbnH/tNQ@lizhi-Precision-Tower-5810>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p0nwyQaJWckuXA1/CuZMIP7Y0FfAvFaxLjgqgbk/qQudC4+d/WeMjGkmRY/UoOaNLxv3n+QgLlIBi4lwtayefHPJqLAFrDkUc+xRtSvsyHPIG91ionibp2BGT8+DP5zJP6hv/kjUVeXUVCxQgqv45L2Hyo6InRZSANiwaNbCuqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1eeb1a4c10aso14805465ad.3
+        for <imx@lists.linux.dev>; Fri, 17 May 2024 10:06:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715965615; x=1716570415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tX2V3zugpj22RtcaxmCt5d+IZOg/f7yrPNcCBjnFxnU=;
+        b=D7tTZAZ06st64W/fOMXtVA2gN7aCD1bkOISLrkSELk8rFDMysanXWqyudXjIBt2BbZ
+         6wX1FfZB7O+vFiLgAdNb8d9/1Jtf6bxUI2EZlJ8GriXF3zXMeDjwaWlGWiITjdY8CE3d
+         vABWx7HpsqXpz5kuTBdh6/L+C0S9U4BzgGgIUsUyuj6bUDIeum3qRnK3P28IGU5OoN8L
+         Q2jLU2H284w6KdyfSbB6YSDHEiXB3hxPDtxeA0sJTO04O2Ca+2d9B/8Y/gjsukk9SRHz
+         /ZJnJojWFcgo1AcgluEFe5gqS7J1JeXwBn6kZ9YYjkGESm/MNnGyKxtUHgYgNblxq8tB
+         onvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVySETpGIxhmqcrniywp1ngbXr92eZrI0djSod/U4btk4fXtBNqImd7ZI6h0ghVsptFdSFipHR10hmgpdP3WP71vJ7g
+X-Gm-Message-State: AOJu0Yy41FDofaZ4mV3+pvA52Kc/PuUIsBVhJK2UKnWqT3ZzCF4zxX2h
+	pdYG1H/g8o/48Fs+ewmDsV8heOsI81qt2KpaHOvkaQMYFBLHaC4I
+X-Google-Smtp-Source: AGHT+IGcpPnQ6L8AUKPL7T4eaD+5vSlhDjJypWgo2jQ4+KxJfz3d5egB8JUeE4n7pXKePdQoJXgdpw==
+X-Received: by 2002:a17:903:1210:b0:1f0:6f32:e13d with SMTP id d9443c01a7336-1f06f32e236mr164155385ad.21.1715965614547;
+        Fri, 17 May 2024 10:06:54 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0b9d3b0fsm159107075ad.22.2024.05.17.10.06.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 May 2024 10:06:53 -0700 (PDT)
+Date: Sat, 18 May 2024 02:06:50 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: cassel@kernel.org, bhelgaas@google.com, gustavo.pimentel@synopsys.com,
+	helgaas@kernel.org, imx@lists.linux.dev, jdmason@kudzu.us,
+	jingoohan1@gmail.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, lpieralisi@kernel.org, mani@kernel.org,
+	robh@kernel.org
+Subject: Re: [PATCH v4 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <20240517170650.GC1947919@rocinante>
+References: <20240412160841.925927-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4Mu3zHPEQUMLHGbO"
-Content-Disposition: inline
-In-Reply-To: <ZkbVa5KvvbnH/tNQ@lizhi-Precision-Tower-5810>
-
-
---4Mu3zHPEQUMLHGbO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240412160841.925927-1-Frank.Li@nxp.com>
 
-On Thu, May 16, 2024 at 11:56:27PM -0400, Frank Li wrote:
+Hello,
 
-> Look like it is easy to register auxdev "reset" devices. But I have a
-> problem. How to use it by DT phandle?  "reset" devices is service provide=
-r.
-> Some client will use it.
->=20
-> Generally, reset node will used by other devices nodes. like
->=20
-> ABC: reset {
-> 	compatible=3D"simple-reset";
-> 	...
-> }
->=20
-> other node will use "reset =3D <&ABC 0>".  If use auxdev, how to get &ABC
-> in dts file.
+> When PERST# assert and deassert happens on the PERST# supported platforms,
+> the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
+> to the area that was previously allocated (iATU0) for BAR0, instead of the
+> new area (iATU6) for BAR0.
+> 
+> Right now, we dodge the bullet because both iATU0 and iATU6 should
+> currently translate inbound accesses to BAR0 to the same allocated memory
+> area. However, having two separate inbound mappings for the same BAR is a
+> disaster waiting to happen.
+> 
+> The mapping between PCI BAR and iATU inbound window are maintained in the
+> dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
+> a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
+> of the existing mapping in the array and if it is not found (i.e., value in
+> the array indexed by the BAR is found to be 0), then it will allocate a new
+> map value using find_first_zero_bit().
+> 
+> The issue here is, the existing logic failed to consider the fact that the
+> map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
+> will return '0' as the map value for BAR0 (note that it returns the first
+> zero bit position).
+> 
+> Due to this, when PERST# assert + deassert happens on the PERST# supported
+> platforms, the inbound window allocation restarts from BAR0 and the
+> existing logic to find the BAR mapping will return '6' for BAR0 instead of
+> '0' due to the fact that it considers '0' as an invalid map value.
+> 
+> So fix this issue by always incrementing the map value before assigning to
+> bar_to_atu[] array and then decrementing it while fetching. This will make
+> sure that the map value '0' always represents the invalid mapping."
 
-Whether or not you use auxdev or any other method etc, does not matter
-in a DT system, the consumer will always have a phandle to the provider
-node:
+Applied to controller/dwc, thank you!
 
-ABC: whatever {
-	compatible =3D "whatever";
-	#clock-cells =3D <...>;
-	#reset-cells =3D <...>;
-}
+[1/1] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
+      https://git.kernel.org/pci/pci/c/cd3c2f0fff46
 
-something-else {
-	clocks =3D <&ABC ...>;
-	resets =3D <&ABC ...>;
-}
-
---4Mu3zHPEQUMLHGbO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZkeEDAAKCRB4tDGHoIJi
-0v3KAQCtuCid5sZZRxVDSl1pghCdok/Ij++faKx/8/xcdIVx4QEAkSXxvCVqt5ZY
-2QTIu2jbkFxOScBwUQAQ57aJiG/iKQg=
-=riPG
------END PGP SIGNATURE-----
-
---4Mu3zHPEQUMLHGbO--
+	Krzysztof
