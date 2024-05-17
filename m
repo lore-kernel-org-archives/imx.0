@@ -1,91 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34FD15821F;
-	Thu, 16 May 2024 21:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616107E2;
+	Fri, 17 May 2024 00:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715894545; cv=none; b=U5Cg/uzxlrXnQQLXApTb2MZibrLUGTSlivS7vVipZNkhIbmvN+7/chHUem8pm80CwvCZqhk1xhAkPKr7vSU7cTENcc1hztPvuzby/CqVckXe+un7dXkjHrIwbm1RkATogGVNmSvfGdrg3VG2q8tNfyGeTmPfBueF+peWjPWievM=
+	t=1715906348; cv=none; b=Ir7MkpLVcP6LDpfX9nCtmxGg/v4J0yQ4fmBDfpf470+mIXt3Aj01ip8dtXRLLjRc1aYmamhzuxVf4JG6NeR8xb0IO12lH9bhegqD/5hke1/B3LYmSmy/zDGdgWRmuzqs/1YnOj6vJBW9O9CQdPSbG3iARAOxqGia3UN2Uj44eGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715894545; c=relaxed/simple;
-	bh=cSISbgkmxyD6+BUVKtX6e2T66hSdKGi2A1MglfvVZy0=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=O494kQ2dcDwibMw6GTpsQZgJ4QtAgyBlNGbbM9Y/PfkKQPvIBekJKqc7S6J0m+ZhH+ybAQYit7tf9Y6eKzx1p5qtoF2vV/jftsp1lwjliPmYsxkZRgFdSxDN4T6bBTgEB8S3c9u5EK0zV7xf3MHkT324p8xNlcrEO2l82FD1Lf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvumjN6Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715906348; c=relaxed/simple;
+	bh=gG0rBTgAalNSQOb8EKbB7cQc3gWTqoJxB0I5m2D5WKk=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=IYTf7xa1Zegm0miC4TEcHJA6xwEGVOIYSbxtV2gjp7c+RgwAWsEIPv1qIpUlz4z6dXRMYkuDYNeig+u1INkjK/x8zbPpTBlPe1VMadh4E4Q6kGP9xkCSkuaNLALRsZuObmyIaZcWRt0Kd+Tqieth+AAibTCeLzrASatc4b0IEGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCYkYbWW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvumjN6Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFC5C4AF0E;
-	Thu, 16 May 2024 21:22:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCYkYbWW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5AEC113CC;
+	Fri, 17 May 2024 00:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715894545;
-	bh=cSISbgkmxyD6+BUVKtX6e2T66hSdKGi2A1MglfvVZy0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=DvumjN6ZJru1RWG+0DS5uHbDX+0i1o/DVMpqobBSrEg7iYUz26c4q6YewJ5BVcuTw
-	 RIyiVgFGjaBsI5EJgJOuwWdVwLGX0qUAYhiE1BwRHynVTy5uIve3cxmBKCUTy6UM+k
-	 MotuFfyS6E90YIsSGuUk6W8O4v2eVJaJAWtLYxd3SxwBbxE8N/eiqjOY13J0kksFRh
-	 tQZ5KAmfJy40AmpzCLVvSaHjx86jvUoOEoPYroYMiez194AxPBeadhD2USNsVEoucw
-	 FksB/zma+KxK1n/ApFuIApIVfpFqc8bawqNs89SQI2QMlYL8c6qYKCd1I2uRZ9GNDJ
-	 cymQ2jglutopQ==
-Date: Thu, 16 May 2024 16:22:24 -0500
+	s=k20201202; t=1715906347;
+	bh=gG0rBTgAalNSQOb8EKbB7cQc3gWTqoJxB0I5m2D5WKk=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=oCYkYbWWJrT/g+j+licSCJUG9wbvqC7HbhZH4ZCD25oWKeU6B3cbmxH7gN6bi/f2h
+	 89cpqVIVSUYYxUP9IH3kJnVkdlp6vxXBRdTNEom3nAFWkHcFUBmxEkRIOo7lXt+Ff0
+	 uz+Umd7NWSQW2hEkiQvCTUyp7c1ln0z32zQQE5MggQogEzO352UV4PfKavAYt6cB6Q
+	 82b2T1oHS19T0HvxE1ZAY0ov6haZRAmmpbznRCdJoCeTDNBrIL+wAJ73WKygsA6wrm
+	 kKt+iOqhmnSV0tp1UBWqqs5YJJzIfFJ4SaDf2jo3lU6G1CViMIC+bUpAe1tbDrkUkj
+	 HKDX9N/V9sYIA==
+Message-ID: <b91dbdad0beb145a0797459c4ba9a98b.sboyd@kernel.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
- Conor Dooley <conor+dt@kernel.org>, laurentiu.mihalcea@nxp.com, 
- Lee Jones <lee@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, 
- Liu Ying <victor.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240516204031.171920-4-laurentiumihalcea111@gmail.com>
-References: <20240516204031.171920-1-laurentiumihalcea111@gmail.com>
- <20240516204031.171920-4-laurentiumihalcea111@gmail.com>
-Message-Id: <171589454264.3876920.17534704607181963871.robh@kernel.org>
-Subject: Re: [PATCH 3/4] dt-bindings: mfd: add schema for 8ulp's SIM
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
+References: <1715679210-9588-1-git-send-email-shengjiu.wang@nxp.com> <1715679210-9588-4-git-send-email-shengjiu.wang@nxp.com> <20240514-campus-sibling-21cdf4c78366@spud> <b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org> <CAA+D8ANTdvQJVtniyMtqjnJdT4qX+LDGjVuFO6H0RSO+GDw+ng@mail.gmail.com>
+Subject: Re: [PATCH v3 3/6] dt-bindings: clock: imx8mp: Add reset-controller sub-node
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, p.zabel@pengutronix.de
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 16 May 2024 17:39:05 -0700
+User-Agent: alot/0.10
 
+Quoting Shengjiu Wang (2024-05-14 19:47:57)
+> On Wed, May 15, 2024 at 5:09=E2=80=AFAM Stephen Boyd <sboyd@kernel.org> w=
+rote:
+> >
+> > Quoting Conor Dooley (2024-05-14 11:06:14)
+> > > On Tue, May 14, 2024 at 05:33:27PM +0800, Shengjiu Wang wrote:
+> > > > diff --git a/Documentation/devicetree/bindings/clock/imx8mp-audiomi=
+x.yaml b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > > > index 0a6dc1a6e122..a403ace4d11f 100644
+> > > > --- a/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > > > +++ b/Documentation/devicetree/bindings/clock/imx8mp-audiomix.yaml
+> > > > @@ -15,7 +15,10 @@ description: |
+> > > >
+> > > >  properties:
+> > > >    compatible:
+> > > > -    const: fsl,imx8mp-audio-blk-ctrl
+> > > > +    items:
+> > > > +      - const: fsl,imx8mp-audio-blk-ctrl
+> > > > +      - const: syscon
+> > > > +      - const: simple-mfd
+> > > >
+> > > >    reg:
+> > > >      maxItems: 1
+> > > > @@ -44,6 +47,11 @@ properties:
+> > > >        ID in its "clocks" phandle cell. See include/dt-bindings/clo=
+ck/imx8mp-clock.h
+> > > >        for the full list of i.MX8MP IMX8MP_CLK_AUDIOMIX_ clock IDs.
+> > > >
+> > > > +  reset-controller:
+> > > > +    type: object
+> > > > +    $ref: /schemas/reset/fsl,imx8mp-audiomix-reset.yaml#
+> > > > +    description: The child reset devices of AudioMIX Block Control.
+> > >
+> > > Why not just set #reset-cells =3D <1> in the existing node? IIRC it w=
+as
+> > > already suggested to you to do that and use auxdev to set up the reset
+> > > driver.
+> >
+> > Yes, do that.
+>=20
+> Can I know why sub nodes can't be used? the relationship of parent and
+> child devices looks better with sub nodes.
 
-On Thu, 16 May 2024 23:40:30 +0300, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add schema for i.MX8ULP's SIM.
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  .../bindings/mfd/nxp,imx8ulp-sim.yaml         | 71 +++++++++++++++++++
->  1 file changed, 71 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,imx8ulp-sim.yaml
-> 
-
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.example.dtb: syscon@2da50000: 'mux-controller' is a required property
-	from schema $id: http://devicetree.org/schemas/mfd/nxp,imx8ulp-sim.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240516204031.171920-4-laurentiumihalcea111@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Don't make nodes for drivers. Only make nodes for devices. This device
+is multi-function, but is still only a single device.
