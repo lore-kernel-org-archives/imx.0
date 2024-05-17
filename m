@@ -1,224 +1,122 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2074.outbound.protection.outlook.com [40.107.20.74])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C0D1411ED
-	for <imx@lists.linux.dev>; Fri, 17 May 2024 19:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715975785; cv=fail; b=I2UZ6OHUmpwICnVCmehbZYs1fn1cOC2QgPg3QsLrcaGI/xnf9ixWspln9lLJwugKd2cq61mXe8lrDVYSWrnZuzC1i2DsKK3XfRmke7d0y6OVO/6OH5JEpw8klgsZckIlnGy9sQhQUYaQ8DkKzXRRODx8C5aFX1Z4xC1iFeSrdOw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715975785; c=relaxed/simple;
-	bh=4USOs6e5rgVAq11WG8zQFlVL1yuIHyijER7SxVGeo3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HvivwwJREjAbhk8kXX2wRTqt6ZjUMrLSlreiz78TgGX8/5yDyso+inDM6utJHSwOEUm7IN+opcwzQhPGnbjQvZCpMr1EzpjnXhVBXFLNHfyu65N1vyOVUtff6Pi9iyowkMw4pRhcuuimN/uxQmX8hmCVuVpzyHM+j+5NmUuxPMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=UYp6DGC3 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264C445007;
+	Fri, 17 May 2024 19:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715975985; cv=none; b=sOARzCVkxCNPBM3N1Ow5irluScnjO6hZNqxIEhUCMNVZF1MZJIyDVztVOakXjzJ4VrZKSyW86M3e5Ff91Ql1N1/+y7AiJYYwJkkpo1eK67svx+/1ObaTAK9qQuC+UG3WXv39BT664kFKmTWvpY1IDig/i/tEgViKQvbt24ANsk4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715975985; c=relaxed/simple;
+	bh=dYYtjZRFg1w3fItuQaPCJGU5QXhIg35KUK9e0MdEWpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jxa21BKV1qXwzureoOEIsv9ojAM7Ay7c5FLQPFwct+qv+j1jyJn/b8xDecqV66bizNl/Q3edfW2pZ+/OfNyGH4E7DxMhSk8WcZM3modV5pu+LftpA+/leBUI0t/3TLZeHZD0G/UIZKv6NVkOAWhMSuarXN0Kq+hQ1k0rlx+E48o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCd8nWTr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="UYp6DGC3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UB7COkuo4vLSUcFgSukd8EczvwqI67qxxlv8g8SO8bj+Ql3y+nuIoFYvcybN0FbvUQtfAOUgIboEts8qaZehemuFZNdk/v22AZmt2Z1ipE2kMTPgfs+WClTQpydaNKfJaXRAJ9veiuUoPLlDuu1GoUkYO85mWGWid/vCGz9W2mGGVKZ2bHk7DaH96M+wYPVpUhiixIxjEQvH4SmsaYBX1pBmWwTfwWgsnDpwZCopoHxqbvQMuQGXzNoNc+qbRW5BmRZUWLM6mm3vaD15pbrdg8n8b0RxaqhItNb/lHn7NAHk2rPFMq/jIK//4JFlGpmWmzjXQKKCSARVmQUDYIIi8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fiDjjvcG95XjBZfmZy+xf66hKJX44kDLdGGsbO7wwyQ=;
- b=YsJPmsUJnn86J53e1RaWhXqb5AqyZxWb3kACXrqm/a8Pufi+yQLkTdtgstiNnA168xiO6AfE44Iu2AkLiU4NqxwgGtV7FXqRpPTCxPsLKZ8wKtuLVzyFY3yNUZt04kOqk7Rd1TXGal6FY4H1XiOTmle11H4z7n9vU/H7xw8wBr9qB2D/GTprsuhqRdzkpQmx/bdAoyIOFrbfEYfdZNXbzP8TN2IqhrVNTmQK7f1Uc8TvJyEU2ZVSB1Um636pcOsi/ETaMJdZxjD4yLpolvy1KzFivztX4/uHnAkuq9LhU4ObtcdlKN52i1BMydlE9+3dJlE2f7/2CNjncWI4vMqn+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fiDjjvcG95XjBZfmZy+xf66hKJX44kDLdGGsbO7wwyQ=;
- b=UYp6DGC3NhsQanMXVyRwDLsFm9g6RCQfAARzlhHcx0tZFdeoXQaChPqsdZRXAXP2RsPGnLDmshmjLChajm+ri6o77JLVZzbVg7tnsl8hoS8xykK+cBFDmGL9ca2FZV6LQCaNSlOZaKP5Cgzc4en/MoaMhUcJWdEOr02eUpFKwh4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8336.eurprd04.prod.outlook.com (2603:10a6:102:1c5::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.28; Fri, 17 May
- 2024 19:56:20 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7587.026; Fri, 17 May 2024
- 19:56:20 +0000
-Date: Fri, 17 May 2024 15:56:13 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Han Xu <han.xu@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>,
-	linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/5] mtd: rawnand: gpmi: add iMX8QXP support.
-Message-ID: <Zke2XTKqgKR4sEoY@lizhi-Precision-Tower-5810>
-References: <20240517-gpmi_nand-v1-0-73bb8d2cd441@nxp.com>
- <20240517-gpmi_nand-v1-3-73bb8d2cd441@nxp.com>
- <20240517203904.2879419a@xps-13>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240517203904.2879419a@xps-13>
-X-ClientProxiedBy: SA9P221CA0021.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:806:25::26) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCd8nWTr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707BDC2BD10;
+	Fri, 17 May 2024 19:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715975984;
+	bh=dYYtjZRFg1w3fItuQaPCJGU5QXhIg35KUK9e0MdEWpE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vCd8nWTrqP1F+FxyMtyqxSqIGrdlOE3jZE9tZ1LGythn4sC5NqUz+wJ8GuWmnS07k
+	 o1mt2HfxUPx2/+Psc31tEMwCL9JbR9kMgOppdvl1q0WnrBqD3mdvEf2lSUQjffdI1p
+	 nAUiCtDA2rQK7XHnun/A147wzBMDhRLi0SVHG6lMfid0XKCAyUcWd5cUUIFf4lyfCa
+	 GgN5QTmnFH0djiCEzmpzW/13H144vuiHcV0RqpMOe6uqhEsvCQl9j9Vw4YkMuAomjU
+	 Mh5gKa36JIlgU3PjY1kRurlXXQq9FxHpoTzIn3pw8MuzjkMJEubXOI6VsubL6ceW8I
+	 EcX1Rhh7jgTjw==
+Date: Fri, 17 May 2024 14:59:43 -0500
+From: Rob Herring <robh@kernel.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liu Ying <victor.liu@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, laurentiu.mihalcea@nxp.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: reset: add schema for imx8ulp SIM reset
+Message-ID: <20240517195943.GA2854624-robh@kernel.org>
+References: <20240516204031.171920-1-laurentiumihalcea111@gmail.com>
+ <20240516204031.171920-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8336:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1349dfe4-6ce8-4bf6-307c-08dc76ab6bc1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|52116005|366007|7416005|376005|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?wae67r/p9xtZHWaALkFOOB6taBl5JHqNc7NiJEBzvaPuz1U8mexAy/uHHz?=
- =?iso-8859-1?Q?O+wUo9lRaVNY2bAI7A7TDp0tbsaUD+vel/83tv/f88MLLO6hx1VwYAZhnV?=
- =?iso-8859-1?Q?olzPtGLwgYafliRbpjFA7iENPySsYslS2kd3HG02gbX3/ONEv0lLKBMVd6?=
- =?iso-8859-1?Q?Ws0PadIrxxw/bwMR0ETtwcsNWSMOodAsHGByGX9jIi9VCerWtEho3GVk/X?=
- =?iso-8859-1?Q?/eW7wNO9u0fdSiwdreB6wDc9jlsk+GNQGWX8un7OhgE9EQsmoIieRkjjDS?=
- =?iso-8859-1?Q?Jhba/FBD2JUSGlBbfQK1Hp5aEhMVK+n6OEooiuWbjKeHBbxRTp2ZaoaLid?=
- =?iso-8859-1?Q?t6U13GVynCXrRmtxtqYzQsbIevpYUesyqEkQN98GNA/K8MKfyY9DO3fS5G?=
- =?iso-8859-1?Q?w/Ny0Qc+IAAxZB4p1IxXtNsC2yWT8TNXegsDoX6mx+pIcCCu3b6JASUmm2?=
- =?iso-8859-1?Q?IxuzeBkyiwbI9voyITBWQgnJr5gVBFMsmCQS4wPec7XNjf3tmhSK/h/chd?=
- =?iso-8859-1?Q?TbVT5je9vIVWndc0HLumRx5TA984Fu0uvjy44YFuUmNoZ4lpkYqFK538QH?=
- =?iso-8859-1?Q?8FpKV9HFjTbwhTAaDDVqJ0sGycAc79deQzDb/QHkn+8NhYL0GRLKCILBkB?=
- =?iso-8859-1?Q?Ty8Bk8b/jvFIUIA76SM5AiuUoCLYYVapeRRZCzI5njjpqA2YlzUe7laeen?=
- =?iso-8859-1?Q?e70/g1KIjsPYsG5O782Krzp2eZCWpIQDKkgHyjzjYXl9hd2OmLkm2BpRwA?=
- =?iso-8859-1?Q?Y+h/Qk792TFkephhZKukrkYYM37pAZq9r38Glmzyu8Qb6b+YMiTlWPgz6V?=
- =?iso-8859-1?Q?tLzwLyBr/8F7nnIuqbkB5pJ5Ttqeddglhn56q6qo5qtnj99jJKszTmK61N?=
- =?iso-8859-1?Q?q5LBfh0fGfhLApP23/F4wbF5LzvFbEDJRhuUpUY43kd78bfJtdYfZ1W66A?=
- =?iso-8859-1?Q?aWwpXLYDKO5zsKsEUawffAnG1m3Ha3VkSHBiSA7rEM6IJCQ0RmnPE6uIwy?=
- =?iso-8859-1?Q?fxh92j9YKGmUCSCqmI+yjqbFeZjdIza2VYNPG1lzMso77PA5dGEX9ChURm?=
- =?iso-8859-1?Q?A3XH2rWD06io4dWujCz4ILr3aJWF8beKGj3pPmlgT9pSttg7gRujC4hGUJ?=
- =?iso-8859-1?Q?S7SX3DhdXKQv+xUI6Hk5Qc/iKHyogxTXUq6VSI4gW/JZMUzDRLXsfwzh9i?=
- =?iso-8859-1?Q?XwPmWaS+goW7bJbwgYsV0FfXoCetx78wbXTtOPQtqtWq+BmxD9chLzaRhE?=
- =?iso-8859-1?Q?mNyGKFM9UqoK6gnczqBDk3bhbtLBHuyZZSOsNUd7w4QtoWua7bisqL+ClN?=
- =?iso-8859-1?Q?7phrkBXmO1r80UX9nh8bKTSJ4iZk/mLoDEYcU3imD9A7NeQIi6dfP9NVUo?=
- =?iso-8859-1?Q?6BtOynMNyx?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(366007)(7416005)(376005)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?7gKvXYJWm9QApjTBqtxTWObwakUT3GDh+eaj7T3WjZP31jwK/lVPam61kO?=
- =?iso-8859-1?Q?fYD4HhDBZS6Cz2Fmc4zM0r8iCAN28n1aTP8YiT+XulGAxiz9EQjJI1EiaA?=
- =?iso-8859-1?Q?sLtznnQ4sFzmAQI6VW87Q3hUE4W3O70o3cJ4YssdU75DhexryOduqTrugl?=
- =?iso-8859-1?Q?cM5r3Cfjoen0u1jKCT77M0kTlw9GzAg1n/UR7CMIqxzfbIr6osA3SQ8Yqd?=
- =?iso-8859-1?Q?KVotxAIlRxjdgJf0crNCUZPr931NFIVzGVSg3VTsVpiU4VM9MMhRkJE/oU?=
- =?iso-8859-1?Q?1n5fseAbQrvC3hFAk3vB0VzhsD5jqu+hVbYnuZ6UpTYZLqdVY7HHSJOQut?=
- =?iso-8859-1?Q?e87mdWTCB1J+m7JJcmumGiszbWTaVjLOwSgmDAXNFoIkdMqeWFjSVRu7/J?=
- =?iso-8859-1?Q?NMtJeSeCY58lNUjVraTEumNwq69B4OEDs235NtwILy/ng6JlXojfn+tJbf?=
- =?iso-8859-1?Q?F9WNt9H0DrkApXL5wCcBVOiNFQcpy1v+2h9C69lGkeW3x84Pf3kCfTlaIl?=
- =?iso-8859-1?Q?xCJiXYvcYRuF0J2X/jcKMxfNIptVBd0JLyyU4VJ8Tsi29EK6gGbTRTqQtP?=
- =?iso-8859-1?Q?6eoYzdWC+uHy8Ou1TZHzsjLTfwASW4Tu5Y+7IFaR5NO7Tt2d9P75HksxaE?=
- =?iso-8859-1?Q?j7cfNqsjSQkZxQeodt5llC/MdpE7NmDhAx8eTMxPDVJeS5SzaRF8p3O8st?=
- =?iso-8859-1?Q?PcfH4Q8ESoXnjcMHLZKqd0kDdVACYh1o7IJxajitGxxc0kYsi6+dGWlEJL?=
- =?iso-8859-1?Q?jtI7LHY23KOO87MvWJIicwT+bvc4g/QB5LzThA12q4n4/CmAFOqD7hVPRm?=
- =?iso-8859-1?Q?OieX1kWi/OoQjxRCAxOwiG2CBkblhppW4s/n4DVsyDqmhWJsNj1hWNWadc?=
- =?iso-8859-1?Q?flRTl4wZ9R6C/Xm2/PcMH5yCl9Wk2VjAXabAWSVVFhZ5M6y7zr7PyTspO2?=
- =?iso-8859-1?Q?dVatBLmEtpnMKQ8wIAK4UU5/u10ACnKKasnP3lrxyDTELJ+4NnHP4myQnp?=
- =?iso-8859-1?Q?xQGnDtOEUg1BGkQVgglwcO8qmFvSz41Tbmx7Tx1zX1SpzOJ3N7Z/bBea5g?=
- =?iso-8859-1?Q?7JmKSZJ97tG2BUajrEPT8GhdyDgBe/VWebOAlA7ccx64je4xdoqwmLSkQg?=
- =?iso-8859-1?Q?zUSCkwI7fjv/w1j+5mDXPFFF1pHv5IyqDpWFrhw+FOj6Q7wBwHP3TeIXgW?=
- =?iso-8859-1?Q?jVVjMVDuY08B8nu8c63L4Owf0R1yAnbwxcvTEDnkt79F0mMHa4DXcjTMBy?=
- =?iso-8859-1?Q?eo1yloMTs/u618bmLgk1K2qHJwfgd1+I9TtDCAXTL82I0VhJnGdOnKpR5d?=
- =?iso-8859-1?Q?HRXHuSeDQVku7UX9Rvv5t74NLuzktlu8JCZMKgIrZIOJXcX+OKtB0Biu72?=
- =?iso-8859-1?Q?9BJR9kyYdBAOFbLLImXL88ibXi4+bD74MRam/l2sKPcWZtDxnnoOzWFIH8?=
- =?iso-8859-1?Q?3EoVP8OfR+x/7nCrZcmjD8YFTY7FzX/x/+Zo8wfT8MYBJC8csq5Zp0/0sF?=
- =?iso-8859-1?Q?AG3YPaOIfBzvzKVh0JXUVGcaHcU3Q6C7rlRzV1cumRi0myOUx9OqPjQQGM?=
- =?iso-8859-1?Q?CTUGd9MPhHu7uwaPnl85fj0ovM/t3BVFlbpotgKCGqfZ1kW5stGrvcx+bM?=
- =?iso-8859-1?Q?iXjyVh+skSzwXfPmi4lFKCwLM806oOpub9?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1349dfe4-6ce8-4bf6-307c-08dc76ab6bc1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2024 19:56:20.1538
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JlVD8VdnJnPnMoHIo6qAhw+jOpjyCbyED5g9/ABhH9BNygc/RC4+8n9pA9m4ZzVr1BEPwpIuhfknLpFXS6U69Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8336
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240516204031.171920-2-laurentiumihalcea111@gmail.com>
 
-On Fri, May 17, 2024 at 08:39:04PM +0200, Miquel Raynal wrote:
-> Hi Frank,
+On Thu, May 16, 2024 at 11:40:28PM +0300, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
-> Frank.Li@nxp.com wrote on Fri, 17 May 2024 14:09:50 -0400:
+> Add schema for imx8ulp's SIM reset controller.
 > 
-> > From: Han Xu <han.xu@nxp.com>
-> > 
-> > Add "fsl,imx8qxp-gpmi-nand" compatible string. iMX8QXP gpmi nand is similar
-> > with iMX7D. But it using 4 clock: "gpmi_io", "gpmi_apb", "gpmi_bch" and
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  .../bindings/reset/nxp,imx8ulp-sim-reset.yaml | 43 +++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
 > 
->   to?             is         clocks
-> 
-> > "gpmi_bch_apb".
-> > 
-> > Signed-off-by: Han Xu <han.xu@nxp.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 20 +++++++++++++++++---
-> >  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.h |  4 ++++
-> >  2 files changed, 21 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-> > index e71ad2fcec232..f90c5207bacb6 100644
-> > --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-> > +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-> > @@ -983,7 +983,8 @@ static int gpmi_setup_interface(struct nand_chip *chip, int chipnr,
-> >  		return PTR_ERR(sdr);
-> >  
-> >  	/* Only MX28/MX6 GPMI controller can reach EDO timings */
-> > -	if (sdr->tRC_min <= 25000 && !GPMI_IS_MX28(this) && !GPMI_IS_MX6(this))
-> > +	if (sdr->tRC_min <= 25000 && !GPMI_IS_MX28(this) &&
-> > +	    !(GPMI_IS_MX6(this) || GPMI_IS_MX8(this)))
-> 
-> Feels completely redundant, no? If it's not an imx6 nor an imx28, it
-> already returns -ENOTSUPP.
+> diff --git a/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml b/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
+> new file mode 100644
+> index 000000000000..ec9a5c73e83c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
+> @@ -0,0 +1,43 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/reset/nxp,imx8ulp-sim-reset.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX8ULP System Integration Module Reset Controller
+> +
+> +maintainers:
+> +  - Liu Ying <victor.liu@nxp.com>
+> +
+> +description: |
+> +  Some instances of i.MX8ULP's SIM may offer control over the
+> +  reset of some components of a certain domain (e.g: AVD-SIM).
+> +  As far as the DT is concerned, this means that the reset
+> +  controller needs to be a child of the SIM node.
+> +
+> +properties:
+> +  compatible:
+> +    const: nxp,imx8ulp-avd-sim-reset
+> +
+> +  '#reset-cells':
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - '#reset-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8ulp-clock.h>
+> +    syscon@2da50000 {
+> +      compatible = "nxp,imx8ulp-avd-sim", "syscon";
+> +      reg = <0x2da50000 0x38>;
+> +      clocks = <&pcc5 IMX8ULP_CLK_AVD_SIM>;
+> +
+> +      reset-controller {
+> +        compatible = "nxp,imx8ulp-avd-sim-reset";
+> +        #reset-cells = <1>;
+> +      };
+> +    };
 
-if this is mx8
+Why do you need a child node here? No DT resources or anything for this 
+'sub-block'. Just put "#reset-cells" in the parent node.
 
-	sdr->tRC_min <= 25000:   true
-        !GPMI_IS_MX28(this):     true
-        !GPMI_IS_MX6(this):      true
+(Note that examples for MFDs like this go in the MFD binding rather than 
+having incomplete examples here.)
 
-        so whole statement is true
-
-after change
-       sdr->tRC_min <= 25000:   true                                      
-       !GPMI_IS_MX28(this):     true                                      
-       !(GPMI_IS_MX6(this) || GPMI_IS_MX8(this)): false
-        (GPMI_IS_MX6(this) || GPMI_IS_MX8(this)): true
-            GPMI_IS_MX6(this):   false
-            GPMI_IS_MX8(this):   true
-
-so whole statement is false. Maybe use 
-
-sdr->tRC_min <= 25000 && !GPMI_IS_MX28(this) && !(GPMI_IS_MX6(this) &&
-!(GPMI_IS_MX8(this))
-
-looks better.
-
-Or use a drvflag. 
-     if (sdr->tRC_min <= 25000 && (!this->drvflag->support_tRC_min))
-
-Frank
-
-> 
-> >  		return -ENOTSUPP;
-> 
-> 
-> Fine otherwise.
-> 
-> Thanks,
-> Miquèl
+Rob
