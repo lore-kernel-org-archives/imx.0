@@ -1,51 +1,50 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2083.outbound.protection.outlook.com [40.107.104.83])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2056.outbound.protection.outlook.com [40.107.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF5A12CD8A
-	for <imx@lists.linux.dev>; Fri, 17 May 2024 15:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264378563B
+	for <imx@lists.linux.dev>; Fri, 17 May 2024 15:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715958986; cv=fail; b=gMlddXYaXkcrMkaygAuDaFCNhzPQFtHflTqNAVRGwtpnKrtcCJK4pDN+5z21ePwn5Z8xNjYQLnt9BFQEHU6mBpPWwD1h2niurtuZwXrYXVEk7lbD2HmPDVaubplGjRjV1I9FRIE6FBro0aRX6xkep6WycYiekVQq5t3lJEER/3k=
+	t=1715959511; cv=fail; b=SWE5RBuNcdVXsYEdTrCrUtP4P5GaY8gvqa5G+F3S/nQE80UvOjAId3ycUGL+KxJrj71yRMiNmzE3TcZrZfAoePmFGNuLTd7Shfkb2gq6WQBKD3yrldFaDJPbfadfiGy+SN/RoJeiZM1nOK6oJxcMJOIlSvvlwaAl/W6+7dihNOw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715958986; c=relaxed/simple;
-	bh=GvBeTlRbxIAsOohYqK7PSAYxy56tAb72hB0E4R7+Fs0=;
+	s=arc-20240116; t=1715959511; c=relaxed/simple;
+	bh=Gmio8fhTtUK811Zp69KbYrt9kdVPORcVwuKieDIXiPA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=C++5bIBLwH45x+8wRHNQZZMFzP54ySzDn2lsr4MfjU2Ae1Ih3xkldBa0IEhcc7YnnRjAg/Np/NzAJQTsJDPkhFWvQne07HAwXeMLIfZOXQz4NqHq00vWa7mw536uLn3n5dvs4NHo8c+5nc2hRUK7gLFeE3poB8WZ6aFEGr/87Ok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=NwkBXk5K; arc=fail smtp.client-ip=40.107.104.83
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lR+QYfJLZChyclXzuS8kK537FeT8S7T0pX/mwTWA3etVHM1m1OGFsRQCT4uS0D+5nTGZF//b0Wj4aAePf7UOsN8IDiO4X7KmsUv7/An/QllFvwAElFZxtvO7Zlmv2I3q1prTYFeZoZ38qgL/3AFozH6zg1H1695/Q+hE8DeZGa4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=rsGRznKE; arc=fail smtp.client-ip=40.107.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="NwkBXk5K"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="rsGRznKE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kCtYWdFsq3UCIwiu2C5TW+VsppYS4Xv8tfAXTWUNof+pC18/Hds64UcSNvh+mUqg4cZLoI4jBsNDPcInVfsd3hHnNYOPMdeyg8kmhODLxu1LmGm9rlDtq070etjeUMg/TsfGYrgVvDgNoRmYX+N1FYo+O1YbR0ehM/99QVcpYBW7M3QKcAMzrUwe11CQGw3bNvVcryHQ+zKWEKh0EHmWrRpH8h0YfKxvh2X4ny3AOqJyZBTaLc/F4Fyz7j8MxQBwZG6gmyC0x3rGk+INnBRwDaE0/CxolIJPh8hyLYy3VjAlTHm3u3mqPyT9jPNw2XeYQvqNLYbnDV9AkdUD7lK98Q==
+ b=mOnGb6cY3S6a7/ukiVp34pLwVXP0j9m69aE2pQMbnsoJXEo2F2K/CNu0Jc+4DCqT98/5gbwbT2JDr7mHxO+1kVYCBL+4F9F5SjxUvvMJzHMYeNGhT+Wd1NEgEkFUA/P4wK68tce3fvdS1lyQUdmZELpyKYAZ32rXBqysYEHoqa8ydJDlO/58jPXixjrFcDK9Z4kjYk4BRPs9qcgDXjQrt7/OaUCmlPVnYw9TBtBQofOGWtoR9tjmhk/6uiOBmaYzns8iAHW1DNf9vTwDOEx+lTTfd/nMOmv1m2uv6vDU4zyYu0mmUCFGGvX9Xeyls4k8kvioIS5KpSdXihiMFeBggg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z9AwDtIdEduGty41j7HuJKGp4IKgVeNuQPfJ17M/ktI=;
- b=DsBkkfpVgJRN3uWEwJzy72fRmmkMVAZU/dPCLamLzXHjuMTpHgxReDPSmPnBwSbFAoCdoEPXgl+V3nopJglrnV1CsWNfd+O5dykksSbnA/cYHGaE4RbUB2HszwSfLtHosDJCQ+wgPxrM9Y3A+xglrPBAmkrLI4tHhlhrJ82LrJo22L2oRdRMvPshv55jvRTPMz4sqi9z4eHXAU1h+i8p/67fcE4Ey43BQw12b64kKn0zrXEpUaSwrxEVd1ixXiTdMUY0FZ1Ks+czzkM7xhPHCkLwE/BhTjDaf48K4ItZbyjQfSF8dD3WbxMMkCGK5IT53qch3xt42AE0lj5lQEXvSA==
+ bh=Y6twWvzGBz9xEkaJV8TYRDq2rbt+5LJQswJ94lkSvpg=;
+ b=RYeXCKPvnbMOY3ZVbQYyWHa5i+dgxhunOwvrbNDLDB9Iz77wkvQt2BJDo1S2Lz0630XnECVlrHM0n0qnMrpoicYjRttEJIObMlju61QyAAOuozlfGEMp2m9oI/ZJ/prmbvzfBISbBeUcAehPlf882WdqZxqa5pQNyNaEDeCUO1WSmLqzU1Th7kSKH/pZEy2IngqX2y67fd97IS647QvTG9+tn+B7Nf1qhfN7NLGTOuNmniwsOjFcGSQa4lPhfOJmEoQpq6ogJhyyaNw0oswbcJhJFsc+tGCx+3KhI0y1k2FeYC2SQ2ddv3uHRbmfZye9RIDFYansB0HxpOSR98lhjQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z9AwDtIdEduGty41j7HuJKGp4IKgVeNuQPfJ17M/ktI=;
- b=NwkBXk5K5QO/JmqQ4hu0VSVttbeK5lsgNd+0YJN8KxDil53r+nxi2M75DP42DNv1BMb/5x08gTL/idj+sHfoAbQ8QIXG/8ao7nN/kXhPWIOhSaJvanEFPGnha1MTInRazjFRwSBbHiTf9Swwu7tB4zjKxgz/0ZgHi480rW8V/jA=
+ bh=Y6twWvzGBz9xEkaJV8TYRDq2rbt+5LJQswJ94lkSvpg=;
+ b=rsGRznKEdrXm7hBcoYSB3aSzpL5g48hlOR2+03+vKb8lONUwbnqlUXN49WCWAuRT9FwiffaSfb/ewCRfWHv2b+uxWdfmEaber8DC+Rnq+8nZ2vTS2vPSCjSWhnNq1v/obr+fLgRfg7CbXfEC6dIHZAFtmTxiDnCfEOO0zRL/cR0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB10352.eurprd04.prod.outlook.com (2603:10a6:150:1c4::5) with
+ by AS8PR04MB8643.eurprd04.prod.outlook.com (2603:10a6:20b:42a::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.25; Fri, 17 May
- 2024 15:16:17 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.28; Fri, 17 May
+ 2024 15:25:06 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7587.026; Fri, 17 May 2024
- 15:16:17 +0000
-Date: Fri, 17 May 2024 11:16:08 -0400
+ 15:25:06 +0000
+Date: Fri, 17 May 2024 11:24:57 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Amit Singh Tomar <amitsinght@marvell.com>
-Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
-	Rob Herring <robh@kernel.org>,
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
@@ -54,16 +53,15 @@ Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>, laurentiu.mihalcea@nxp.com,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] reset: add driver for imx8ulp SIM reset controller
-Message-ID: <Zkd0uIaJiwzYrBIK@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH 3/4] dt-bindings: mfd: add schema for 8ulp's SIM
+Message-ID: <Zkd2yQ02+VHs54zB@lizhi-Precision-Tower-5810>
 References: <20240516204031.171920-1-laurentiumihalcea111@gmail.com>
- <20240516204031.171920-3-laurentiumihalcea111@gmail.com>
- <ade33946-bb94-4357-bc6d-a354661b50ca@marvell.com>
+ <20240516204031.171920-4-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ade33946-bb94-4357-bc6d-a354661b50ca@marvell.com>
-X-ClientProxiedBy: BY3PR05CA0016.namprd05.prod.outlook.com
- (2603:10b6:a03:254::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20240516204031.171920-4-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: SJ0PR03CA0268.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a0::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,266 +70,174 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10352:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84104740-f188-4044-825c-08dc76844c89
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8643:EE_
+X-MS-Office365-Filtering-Correlation-Id: e5d57c66-8707-4673-bab8-08dc76858808
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|7416005|376005|1800799015|52116005|366007|38350700005;
+	BCL:0;ARA:13230031|7416005|366007|376005|52116005|1800799015|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?q1jr7bWc9GYQUQ9SrFlsFOsWHhP1SHLRNfT8zcdQJ3I1G/nyUgk4NYHbIBQn?=
- =?us-ascii?Q?SADKrav4OjsPg18jNjokPwu6HcjRj3kxuOUEbRkELKEB3kmSWIy9RKY8DsJe?=
- =?us-ascii?Q?AV7Lox8MFjY5UEtGl7ev6egKoNcag/Mws3s+DwFshHPBr1m+llU/ihAjqDA7?=
- =?us-ascii?Q?EsY/09D9CgMcOfqv2lRCHfFigTx0TxvntSMSg7e8LJ4LrPkYDPNeFS8Imd++?=
- =?us-ascii?Q?C9Ff/nMY0HbhH/8ompn+LJmLIPtxyINnDhj6ncnz8/UyvDTOswQwUrzT/m+u?=
- =?us-ascii?Q?qA1kkwRKS7UpH6s6X4QuQg7OUccpEj6v+drskPKGEqYg0W8PFarErMZAw4Vp?=
- =?us-ascii?Q?5TxL5loacqrvgI3LONBeUtwTgnR9aAi9fX4KgRTLIOgpqo0wuWtIVOjOFJi0?=
- =?us-ascii?Q?IaEL6PqX2esl0YqlILoQclO4qoK69k7sY9AqWDMcwx7QKDSu81kNsM9qjsjD?=
- =?us-ascii?Q?TtfREXUcrFMXf18IKAY6SgrzWM+cqjhWxzzM9La5u8x2dFkvFYae+sBlt27d?=
- =?us-ascii?Q?8h1UECI41c8vRwaLG39/vumRDL0CuZtKYgSCTFVHZBpqmj0RWuCcBzFqwQCK?=
- =?us-ascii?Q?f+BxnlVrAW+eIDhjxP4uWJwDztzCNUyOVgvpUSmoT0vGTZmhDputnoWhlIji?=
- =?us-ascii?Q?a4f4MFAJCVUBeZySMo09BNhY4zc3E+43xDFK1QSbujQpAKdNwpzXARd7n3+c?=
- =?us-ascii?Q?ioZ4craLa2VG+dPTIm6jHBxgg7gwcN6R3sUFkdD4YbayFgXn1p33+fcVQgE3?=
- =?us-ascii?Q?+IvNRLm5YepUMobdqZmfP1gR8z2eaWBJXWydwb+QOGSoZypk8ypFbqBDEXmN?=
- =?us-ascii?Q?mwMZTNMnec6wwXTveS45IJknw8IonHaj9x7FyBrtDTSCBS8MzBTqnBirRU2K?=
- =?us-ascii?Q?tNHHO7M34MiMfzdbDZW0nVdQjbLrGBigG2+59PuMQjdnzaDiH8BeXJ2WVBUY?=
- =?us-ascii?Q?Ksg9g2XcQoixrG8rkzVY19Ju2qoqnGMVuiOVOHL24mwqOzphgaTf5UtS/o4o?=
- =?us-ascii?Q?u+9TqeZoz6SsPNhy3XTTgffM0BkGFzfDMe8mu3pKmhXhgLxXcqO3dohr0lCo?=
- =?us-ascii?Q?hNPHrI23EyYy8ZlLIuU6dHM5NmBLxA+nacMAXl9AZ4yNA8Ss3993sLY0rQN9?=
- =?us-ascii?Q?fj/yVWhMT8I6smYyK6ynG34KiciCFTn7HoF6pIQ/uZGyfvkDbjIG8eAuAnwR?=
- =?us-ascii?Q?fiFWpW9oURODo5ifLczSxhjboipRxXgAoraIRYccjcepxPTgIUonijTdBgmH?=
- =?us-ascii?Q?xe4cqW9CQoXf5ig13yjSrG19FO7iQ3r0AyLcHGyBAw=3D=3D?=
+	=?us-ascii?Q?bY8GGP0If3/+Xb/ku9QxjktQf0EIWIaoB/X38uMJBtULwGDBFxrdKzUAIdZe?=
+ =?us-ascii?Q?U0A9BGEcIU8TZSPl50cv7p3bGBhQG+REnLW7wMU6pkgFS8pWohKCdalvjbB0?=
+ =?us-ascii?Q?A37TKI/gsVrl9cD6hib+ObWVRczZUuQuzHc27zKiZK8jltftRMAPlZJLjidd?=
+ =?us-ascii?Q?naeHG5kB7ir9HEdjr7fCjsEBHu8D78qaD3Z/PW/pJCRNubD92aJBaoOESYSu?=
+ =?us-ascii?Q?CNrkMQHF6nbB8g3w9wk/RuGbcPm80Wtc5dBUHL7eUcfWuQtStJiYTTbhwGCa?=
+ =?us-ascii?Q?1Yv2wHubkcytjFQ50GNmNy0kN/qCF0AtPnXcWfkqzGPpIQbl+AbCMFWaltle?=
+ =?us-ascii?Q?LntB7V+3D6ApgCNftFmdl/w+5QbKe6s/kssOdYOkfGDoyPHigZ3p6EFUx+WR?=
+ =?us-ascii?Q?DAVMjcwEv9dCfyRjJqo/3hfqkleMM/L4MxbUe1WpBfObrwE9hVfXW5HkWno1?=
+ =?us-ascii?Q?IKPfh+nSLodcaLYGLSjCQ/+3c4QLscZ1ZiG7n9qsf4QQc8h3CyP3Ty69r+dP?=
+ =?us-ascii?Q?O3WR3SgkYq0PaApD8s1Q3vjMvkMaGgadxhe/J5Z+tAMqvtuHVauLedVvKk5M?=
+ =?us-ascii?Q?N9u1LFfnmIXoNQ4LRWe3ie4wKT2OS4eRh/BA6nYpByvp0FbsFAOT6ry4RoYa?=
+ =?us-ascii?Q?W+U7yQtrfOc7wJYCbZNTwOYv1MySgojd9x/yfhiSkvlnF4ciMrMpRQdftmVU?=
+ =?us-ascii?Q?ceVwX9Hr1kdoTrJAvgzSwtU4D1kvrNRLaRYxC8pjBXzKbiY8jTeiJlDuDELs?=
+ =?us-ascii?Q?6sHNHaRqxyRjvdXjoUJuPdkrcAMnbcg6zwngyKRSkMrLc2+Ovs6vBeGKMFzP?=
+ =?us-ascii?Q?YGWYs7sp+L+01hemRSijV1i/Uv5eV7DdgQKfXBs0JW0wiqamLYfsaGUxnMb9?=
+ =?us-ascii?Q?zBWTBtfEsH4QUzfO/i70bk3gN2nwz3RQweZUVJrD6JYOZyIaT61Nk3FGafWw?=
+ =?us-ascii?Q?WjdeyyBjYS8QOiEoZhBvI4NhUspCf4lLHRTyErNiQo6lvKrWHuntGKy6H3gc?=
+ =?us-ascii?Q?8YxQfeaVuqiC0bK89oM1Gz3oGD5xmbWBi67X7lQoEvNWLRN9vQoO4s13kuKx?=
+ =?us-ascii?Q?UuWoNc8Aq1Feo+6YrJ+1GFppXQZt1u1RYZmLCJEzZZopAhpqVhksXonTL4Zq?=
+ =?us-ascii?Q?G8yW5PWQL3Q1lxUYSNh6uiEkgBu9wEgEgzirpwOi2cdoweWAcrFDMebCRyD/?=
+ =?us-ascii?Q?TUANKbnNsSTb5tQbRpEA6t1JhNXQAgKFH7inL1CdjYZHUqEBswLfDuehz8fn?=
+ =?us-ascii?Q?QqIuWBRrj/ex8JmUhNV40bX7WoyDcTspffj8yXSdvdo5NpdopTRB2UGTW97W?=
+ =?us-ascii?Q?Me4=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(376005)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZNL/G1FLLV8PUpVxDBJOsJ3ZhW+6TXIkDN3WOYjH3NnkxW9e3nPu6opiPQ74?=
- =?us-ascii?Q?CvmyWcKSDHYB+q9Godp09jXl+EGSZPT5pPSIQBziDjC4H/vxFBb+OkN7auHj?=
- =?us-ascii?Q?TmgH270u3sXcNICh4pGAhODjQfslKHkgMwJCPeH9a1UCZYTPv+DN4MBkrMLd?=
- =?us-ascii?Q?02sYkt7npO46eeyi7j67ayyGFWXlOLa8ScXshD6/7fvS6sx2wNsSQGbeZ+9f?=
- =?us-ascii?Q?/ltN0dw9hlqzskdhqjq39IMyTeXec3783TRC3aw1km3JmSGtFT3gQkWKwIv/?=
- =?us-ascii?Q?JQhfXrb3QE8taOct6sizQsx3VnsBpQHg2Lgg7g6XZIjihlGr3KLutyKOMjXc?=
- =?us-ascii?Q?5PJ6eBr+xPAmUYwtR2dNra5A0TnEs5bdL7O7wIz//LSSZg9T+xbQII7UcLtt?=
- =?us-ascii?Q?50f2yCxvH3NEXalVHyi6h2qEnqutGQmM/q/18XcYuJeduGzlzghDYr5eEmuY?=
- =?us-ascii?Q?E3nU1CPLFy4OVTC+x/+bX4VZTtpySvEMVH6Tk84oxcoRb38ZsX+jRIdSIPw1?=
- =?us-ascii?Q?pZC50PWlA2JCelDjIbXHKc4bpco0BGpLg2/84KGSwJJrEyOq3q9/WbGmuT3n?=
- =?us-ascii?Q?1dMj4fxckajDy2vRXkH1cfOSfa9ldv0ZyQqADcYJrnsavGaR22DvnlP7+rWF?=
- =?us-ascii?Q?44TMvmqQBj2UfqKQSa2f7PxGu2kM43NfOhHzZjiy4iR6xmIsA195PrZ3D6+X?=
- =?us-ascii?Q?xl3CBKE8SQH5ft3VNQQzkoD8tHSSUCWuwSCtzshvqL1Q7uPjG9IJLV+OPATO?=
- =?us-ascii?Q?X/9JYwmIXTD1awgXZ4LQ2nacShXwvU1OhVJhiI+ljFKpBsd5X+8AVsma+zmh?=
- =?us-ascii?Q?Z6hhqaYLVbhxfsYZWSd9L39sq6+rjGIkhnvUM1GnNrkG1VCfGbPIDRd+rU89?=
- =?us-ascii?Q?4LsY1iY7z+jrUwwMeZY4bIiJsWmlJ2uRqg/7HUE1HNFhWZ0DobJIm8/Thxor?=
- =?us-ascii?Q?rdrBjze+5w+R6Lom5LDCC/OC72mUxgdoYWpsxa6RDMk88xkVteJ82mNEf9aB?=
- =?us-ascii?Q?SCphuSze9HUSDN7hlhOE20zortAxLMW2FdRpv42o7jlob5MjJGfdivYviuC0?=
- =?us-ascii?Q?gMXFA9ly5bsOL5wUn2nTiJbwk5QMO0KzhqRFK6tdt4HzggY/YbbjTO7R8L36?=
- =?us-ascii?Q?QPtCiR8Qlipl6d9J0Xhg3c2AXJMPtarxRK2YbeLrhlByQ3dVqBSMSm9HbeZz?=
- =?us-ascii?Q?EA+HaMB6rYu7RchkMecoUX2J9uLsnNRyKNpGgHtaqSL6+1KOh/ePawcDRU5I?=
- =?us-ascii?Q?oiLx2p1r49WrPhG9YXLkSOLNbts2ozVLshVaJNNBV8y3qdQI5hOv0BU0QiPn?=
- =?us-ascii?Q?655XtzLkXKvmffEcjyHxhDDklVK9uUqI/lZFGT8LiC+2CLu0LxdMY7F6MJuq?=
- =?us-ascii?Q?EXyADF6PDAUXFFvshCsM02ADW2e3WcH2FiEQ+wNVlwD/6htaMwMLf2FvEkw/?=
- =?us-ascii?Q?nEjCEwDL9befmnSpZe6FhxzxVwt7peF7+0MxT1+frYWpPmGoHAN+Z20Z9rlO?=
- =?us-ascii?Q?xFruJ9jbGPQLwbqKrjk/RW9ws9pPzmmMFlipaMIV4tXCiz7p3rK96ovzTlCu?=
- =?us-ascii?Q?ocuGjWcDMX2k7KT4LnK1RlghRXj+zdV8pPP9DrOi?=
+	=?us-ascii?Q?fDeYoLNcXaPd2u3ddsj7nzc72ebw2GDuB2CqvxM/ETx9Q0lUt4tAzp9KAZvN?=
+ =?us-ascii?Q?U8S8b6IcIpkDGTPuZdNoQPByze92B4RWyyuL6IsFLbb2EUs01HnWGW7jy2z+?=
+ =?us-ascii?Q?vKh0J8rSv6pHiC3Yo9SIgEcLDfIc+cOg5lmAqMLJyu8TJuCgalkSyMSwKTb3?=
+ =?us-ascii?Q?2ibH7+YUB39x8Apzs5CLHKCw8qiIHIS6EN1eZ3DpZFz8wCfv7JHiCPsg1mZO?=
+ =?us-ascii?Q?OIOS7YdsM/HuwV0HoJuzfQEHCV5PyggKWchIgA53jOjeIgE7M+h054oab96/?=
+ =?us-ascii?Q?8uuRHfGdrv4NG+EPQJnhxWNsvZgME96pnwult5NWkuRw9uqvtx/IovrFhzyS?=
+ =?us-ascii?Q?onRiz0xEcs57obrcfnKi6CZcNLu9EWhaIWRzbGYeM8seL1BgFMu2XkbDRAQs?=
+ =?us-ascii?Q?fZe1xYziQvENKbvYWGpibnFohKDKqrPPArgHq0CvyioTeFiL0oDR6zu1BfYY?=
+ =?us-ascii?Q?DcWKxqt8Sifk6+YkHDWZC/Fxwyfhzv1iX/mufpPSb2KMk42mp1w5oe6nT8ov?=
+ =?us-ascii?Q?e3iBzicPV6hVW2u9PxfudbW6QgtiNg1sAAAyZP26C/cu8SfZASPcoI09PkyM?=
+ =?us-ascii?Q?0VQ6OlpZW01fHr21iOc8EaTkenX2vZbBIRKZS6qRSJVJ+t1rrVY1JLU1BdWB?=
+ =?us-ascii?Q?dd882FTkQ0FeOSLergr7eikl3MNKgHBm7S+u2+vOA61VMa/ADHf9HqGRbkC5?=
+ =?us-ascii?Q?/5bchBn8w8InvVIbZpXIm9lC5E0iYr2+LqrXW3SbN09lHf8Qj423CBChcMnR?=
+ =?us-ascii?Q?SIawDCeJVU5Cg3EJRR+q/v12Qm8mU9bEF6jESYq+nVRJi/dPf+6G2UeRrCBw?=
+ =?us-ascii?Q?epbTrZ/D8ZrVpmTITgKCWHAGT3LeCgkDz5xrs9ojdC1MIgUbnY/WCDF2Ac9p?=
+ =?us-ascii?Q?ppFIOlnd4mIYJmc74w8EZmn5z3mfEthR0DvOd7BWGDhp2yWsZUBR8DCl+hgD?=
+ =?us-ascii?Q?8oKo8ciuWwsjxcu1R6y5jabAJuXcxTUUaFOSdQzml5L23RyPCkd3m3yILC8t?=
+ =?us-ascii?Q?N3W/zC8Uz92CkCIDUJ87FM2e5un4m3lVjoMXbI7KlKSz/s/5OJ9DInU+iXOJ?=
+ =?us-ascii?Q?0XzwZM5+WuUSuz81TL6q+PsOh4crEbW1/bzgHgx/TADmeBxeHwWuDPJBCc6K?=
+ =?us-ascii?Q?uWRasyzflsEcsoVmmhmrSArtQUTFZdIrHTBMs1UpKpHnlfVMr4SJHAVjm/si?=
+ =?us-ascii?Q?xrCvb7fuK6ZGpS9XffJa8ZvSSwOi20ojxR69pxGOTiY2Z2WWvss/ICoVu63i?=
+ =?us-ascii?Q?NMy0TFUzti4CQq0TbdyI3QmKQkVG4Ce52qxNVgd1RcUN728vM6HdtGjwnLFK?=
+ =?us-ascii?Q?wSfWDnCopnh+HrjgSfwxmgDMuDT8D/tLd204xoDwkiaDMFdz+gPnu8zSva7N?=
+ =?us-ascii?Q?yDHiYcLTrkWOQdUhgA+CD3yAkgZeoAzUbgmIGHYv9nwcdmVWdxHQFNiwxOET?=
+ =?us-ascii?Q?HJrISBChhz9wj7uoJOXJrjviAZJRPFFq2tLcT3ZWFJZoytlfzUZ9OpERjsIZ?=
+ =?us-ascii?Q?amkc7W6rQg8MNQhBwcqxRKHttyalQXTJqLfQLJXOqP8syfMeiQ8fCcFE5pVK?=
+ =?us-ascii?Q?pe3CzlZdnU1kUNRtY8FY2dBMn3YRTaOXS7uiLm/s?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84104740-f188-4044-825c-08dc76844c89
+X-MS-Exchange-CrossTenant-Network-Message-Id: e5d57c66-8707-4673-bab8-08dc76858808
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2024 15:16:17.2739
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2024 15:25:06.5739
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JtXGmEyYTLWUwLGbKN1GNhmld5t9m/gDp451jRK00hyQMTui8kfm3O7eVKGoHBoh5TF19VnLPDs1noFUXDca3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10352
+X-MS-Exchange-CrossTenant-UserPrincipalName: rVhwtgtEpWgvKGMOqzWWx/DeJK+iBYmfvHOGmJeRfVwdXpK9G/3s1o8VtEsJuYQfue57nroEmMJhdQ0cE5OvyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8643
 
-On Fri, May 17, 2024 at 11:51:30AM +0530, Amit Singh Tomar wrote:
-> Hi,
+On Thu, May 16, 2024 at 11:40:30PM +0300, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
-> > ----------------------------------------------------------------------
-> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > 
-> > Certain components can be reset via the SIM module.
-> > Add reset controller driver for the SIM module to
-> > allow drivers for said components to control the
-> > reset signal(s).
-> > 
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > ---
-> >   drivers/reset/Kconfig                         |  7 ++
-> >   drivers/reset/Makefile                        |  1 +
-> >   drivers/reset/reset-imx8ulp-sim.c             | 98 +++++++++++++++++++
+> Add schema for i.MX8ULP's SIM.
 > 
-> Just out of curiosity, can't this be accomplished using a generic reset
-> driver?
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  .../bindings/mfd/nxp,imx8ulp-sim.yaml         | 71 +++++++++++++++++++
+>  1 file changed, 71 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,imx8ulp-sim.yaml
 > 
-> https://elixir.bootlin.com/linux/latest/source/drivers/reset/reset-simple.c
+> diff --git a/Documentation/devicetree/bindings/mfd/nxp,imx8ulp-sim.yaml b/Documentation/devicetree/bindings/mfd/nxp,imx8ulp-sim.yaml
+> new file mode 100644
+> index 000000000000..fbb17c06e3c0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/nxp,imx8ulp-sim.yaml
+> @@ -0,0 +1,71 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/nxp,imx8ulp-sim.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX8ULP System Integration Module
+> +
+> +maintainers:
+> +  - Liu Ying <victor.liu@nxp.com>
+> +
+> +description: |
 
-reset-simple have not use regmap. I think it can use ti's
-https://elixir.bootlin.com/linux/latest/source/drivers/reset/reset-ti-syscon.c
+Needn't "|"
 
-Or should change ti to reset-simple-syscon?  or add regmap support for
-reset-simple.c 
+> +  8ULP's SIM provides control and configuration options for
+> +  some of the chip's components.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - nxp,imx8ulp-avd-sim
+> +      - const: syscon
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  mux-controller:
+> +    $ref: ../mux/reg-mux.yaml
+> +
+> +  reset-controller:
+> +    $ref: ../reset/nxp,imx8ulp-sim-reset.yaml
 
-Frank Li
+I think we directly use reset-ti-syscon.c 
 
-
-> 
-> >   include/dt-bindings/reset/imx8ulp-sim-reset.h | 16 +++
-> >   4 files changed, 122 insertions(+)
-> >   create mode 100644 drivers/reset/reset-imx8ulp-sim.c
-> >   create mode 100644 include/dt-bindings/reset/imx8ulp-sim-reset.h
-> > 
-> > diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> > index 85b27c42cf65..c1f4d9ebd0fd 100644
-> > --- a/drivers/reset/Kconfig
-> > +++ b/drivers/reset/Kconfig
-> > @@ -91,6 +91,13 @@ config RESET_IMX7
-> >   	help
-> >   	  This enables the reset controller driver for i.MX7 SoCs.
-> > +config RESET_IMX8ULP_SIM
-> > +	tristate "i.MX8ULP SIM Reset Driver"
-> > +	depends on ARCH_MXC
-> > +	help
-> > +	  This enables the SIM (System Integration Module) reset driver
-> > +	  for the i.MX8ULP SoC.
-> > +
-> >   config RESET_INTEL_GW
-> >   	bool "Intel Reset Controller Driver"
-> >   	depends on X86 || COMPILE_TEST
-> > diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> > index fd8b49fa46fc..f257d6a41f1e 100644
-> > --- a/drivers/reset/Makefile
-> > +++ b/drivers/reset/Makefile
-> > @@ -42,3 +42,4 @@ obj-$(CONFIG_RESET_UNIPHIER) += reset-uniphier.o
-> >   obj-$(CONFIG_RESET_UNIPHIER_GLUE) += reset-uniphier-glue.o
-> >   obj-$(CONFIG_RESET_ZYNQ) += reset-zynq.o
-> >   obj-$(CONFIG_ARCH_ZYNQMP) += reset-zynqmp.o
-> > +obj-$(CONFIG_RESET_IMX8ULP_SIM) += reset-imx8ulp-sim.o
-> > diff --git a/drivers/reset/reset-imx8ulp-sim.c b/drivers/reset/reset-imx8ulp-sim.c
-> > new file mode 100644
-> > index 000000000000..27923b9cd454
-> > --- /dev/null
-> > +++ b/drivers/reset/reset-imx8ulp-sim.c
-> > @@ -0,0 +1,98 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +
-> > +/*
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +#include <linux/mfd/syscon.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/reset-controller.h>
-> > +#include <dt-bindings/reset/imx8ulp-sim-reset.h>
-> > +
-> > +#define AVD_SIM_SYSCTRL0        0x8
-> > +
-> > +struct imx8ulp_sim_reset {
-> > +	struct reset_controller_dev     rcdev;
-> > +	struct regmap                   *regmap;
-> > +};
-> > +
-> > +static const u32 imx8ulp_sim_reset_bits[IMX8ULP_SIM_RESET_NUM] = {
-> > +	[IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N] = BIT(3),
-> > +	[IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N] = BIT(4),
-> > +	[IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N] = BIT(5),
-> > +};
-> > +
-> > +static inline struct imx8ulp_sim_reset *
-> > +to_imx8ulp_sim_reset(struct reset_controller_dev *rcdev)
-> > +{
-> > +	return container_of(rcdev, struct imx8ulp_sim_reset, rcdev);
-> > +}
-> > +
-> > +static int imx8ulp_sim_reset_assert(struct reset_controller_dev *rcdev,
-> > +				    unsigned long id)
-> > +{
-> > +	struct imx8ulp_sim_reset *simr = to_imx8ulp_sim_reset(rcdev);
-> > +	const u32 bit = imx8ulp_sim_reset_bits[id];
-> > +
-> > +	return regmap_update_bits(simr->regmap, AVD_SIM_SYSCTRL0, bit, 0);
-> > +}
-> > +
-> > +static int imx8ulp_sim_reset_deassert(struct reset_controller_dev *rcdev,
-> > +				      unsigned long id)
-> > +{
-> > +	struct imx8ulp_sim_reset *simr = to_imx8ulp_sim_reset(rcdev);
-> > +	const u32 bit = imx8ulp_sim_reset_bits[id];
-> > +
-> > +	return regmap_update_bits(simr->regmap, AVD_SIM_SYSCTRL0, bit, bit);
-> > +}
-> > +
-> > +static const struct reset_control_ops imx8ulp_sim_reset_ops = {
-> > +	.assert         = imx8ulp_sim_reset_assert,
-> > +	.deassert       = imx8ulp_sim_reset_deassert,
-> > +};
-> > +
-> > +static const struct of_device_id imx8ulp_sim_reset_dt_ids[] = {
-> > +	{ .compatible = "nxp,imx8ulp-avd-sim-reset", },
-> > +	{ /* sentinel */ },
-> > +};
-> > +
-> > +static int imx8ulp_sim_reset_probe(struct platform_device *pdev)
-> > +{
-> > +	struct device *dev = &pdev->dev;
-> > +	struct imx8ulp_sim_reset *simr;
-> > +	int ret;
-> > +
-> > +	simr = devm_kzalloc(dev, sizeof(*simr), GFP_KERNEL);
-> > +	if (!simr)
-> > +		return -ENOMEM;
-> > +
-> > +	simr->regmap = syscon_node_to_regmap(dev->of_node->parent);
-> > +	if (IS_ERR(simr->regmap)) {
-> > +		ret = PTR_ERR(simr->regmap);
-> > +		dev_err(dev, "failed to get regmap: %d\n", ret);
-> > +		return ret;
-> > +	}
-> > +
-> > +	simr->rcdev.owner = THIS_MODULE;
-> > +	simr->rcdev.nr_resets = IMX8ULP_SIM_RESET_NUM;
-> > +	simr->rcdev.ops = &imx8ulp_sim_reset_ops;
-> > +	simr->rcdev.of_node = dev->of_node;
-> > +
-> > +	return devm_reset_controller_register(dev, &simr->rcdev);
-> > +}
-> > +
-> > +static struct platform_driver imx8ulp_sim_reset_driver = {
-> > +	.probe  = imx8ulp_sim_reset_probe,
-> > +	.driver = {
-> > +		.name           = KBUILD_MODNAME,
-> > +		.of_match_table = imx8ulp_sim_reset_dt_ids,
-> > +	},
-> > +};
-> > +module_platform_driver(imx8ulp_sim_reset_driver);
-> > +
-> > +MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
-> > +MODULE_DESCRIPTION("NXP i.MX8ULP System Integration Module Reset driver");
-> > +MODULE_LICENSE("GPL");
-> > diff --git a/include/dt-bindings/reset/imx8ulp-sim-reset.h b/include/dt-bindings/reset/imx8ulp-sim-reset.h
-> > new file mode 100644
-> > index 000000000000..a3cee0d60773
-> > --- /dev/null
-> > +++ b/include/dt-bindings/reset/imx8ulp-sim-reset.h
-> > @@ -0,0 +1,16 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-> > +
-> > +/*
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +#ifndef DT_BINDINGS_RESET_IMX8ULP_SIM_RESET_H
-> > +#define DT_BINDINGS_RESET_IMX8ULP_SIM_RESET_H
-> > +
-> > +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N    0
-> > +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N    1
-> > +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N   2
-> > +
-> > +#define IMX8ULP_SIM_RESET_NUM                   3
-> > +
-> > +#endif /* DT_BINDINGS_RESET_IMX8ULP_SIM_RESET_H */
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: nxp,imx8ulp-avd-sim
+> +    then:
+> +      required:
+> +        - reset-controller
+> +        - mux-controller
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8ulp-clock.h>
+> +    syscon@2da50000 {
+> +      compatible = "nxp,imx8ulp-avd-sim", "syscon";
+> +      reg = <0x2da50000 0x38>;
+> +      clocks = <&pcc5 IMX8ULP_CLK_AVD_SIM>;
+> +
+> +      mux-controller {
+> +        compatible = "mmio-mux";
+> +        #mux-control-cells = <1>;
+> +        mux-reg-masks = <0x8 0x00000200>;
+> +      };
+> +
+> +      reset-controller {
+> +        compatible = "nxp,imx8ulp-avd-sim-reset";
+> +        #reset-cells = <1>;
+> +      };
+> +    };
+> -- 
+> 2.34.1
 > 
