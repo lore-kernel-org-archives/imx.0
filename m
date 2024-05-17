@@ -1,108 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D843D546
-	for <imx@lists.linux.dev>; Fri, 17 May 2024 13:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F076748E;
+	Fri, 17 May 2024 14:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715952987; cv=none; b=dvTcm1WK3H6thqZWbwj2hkHoPegvCTewvcAcVySZqrtgAkokMXRubmXUn8Wk8TviAxSD6KK62XGOdgU1H/0kb578PFrsSbASl6h8Qm8lfj4cxqdzfAF727XTKcF1ebaE8HxbMmVkXCk1EmTEeSa3WtK+kVnvifhnWqXFT7dkdMg=
+	t=1715956834; cv=none; b=V5eEWMwgVrv4uH6MrCw0uXGRB3cC/oDFWFzqZWCK64SQga6/gv5baEigxMUfQleKfyDAb35JnU+vop6OrPm90SpbWgvLEI6A62YteFfxO2B8O62vonJCl9KAg1aGYlb1mnq3ewDU1wx5dZizGZksSHuhCQh5jV1Nw6HKAw4HmrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715952987; c=relaxed/simple;
-	bh=Jn7zwgtw8zPXbp3XlrdrrybXQAtHJe4Qo6Tf/v8KOUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WkFJNQOsn0+eo4l7aaVJt1zro8FD9CCSIH4Hc2lXBwXvzv4XZ+2NmlOc39IqW3FjWerja0zU2uq2rWU/vXLuxCIgVXchPlHSzCWAKqM/rMDV96ZuvvCFdlRG7XcH5mQwQAmOCxwVIg5HETPcPA/6BKqOKbwzKIfbbcyYhCFsyz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GLVE1+TD; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1715956834; c=relaxed/simple;
+	bh=WcnDMWC5m0Qf3HEHyWs/JC3uDjcP2QIwCvwotQ5JlEs=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IdT6V/vvEvBYWRv4nHZzX4HL/yNFmJZlhqUyxfvczseHFmFwbhen3ew9Y8KJlPYJLBBLj8zLfcv6XWm3xRuJTNBhJhuUzEwFMc3sGCxM//haFjMAgxASGpKCay/X1qfH/5dkgv3uV16z/PykkSEMJT7vuvke3wkhAF9nQ+xV0vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXFw+nJY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GLVE1+TD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715952987; x=1747488987;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Jn7zwgtw8zPXbp3XlrdrrybXQAtHJe4Qo6Tf/v8KOUU=;
-  b=GLVE1+TDn1+B+Yvz1TDYsrnHwHKuwnEaOHON1aDguXhPcSKWapzQLrCP
-   Zmm3BPBcaZWWLB8tof7gthuCMyKUFnH+GP+BEsNKSz6FMQeEevVLyJAdD
-   UHGs6MTuFP9+dARRoni9Bmz4N3hMR5j4y/mt6n5sV9h8ZJqm1NXqrHWVZ
-   jPp01eiWt3JeJ/3kkkIza+YMCjVKAFbbQvyIqvhJiGMabQR2d9nWijfO+
-   iQo90bw7saGxZOZCwRvQ74lemjNcdVoi0NBb5fXiplIeBJRJZCmDs2UaD
-   jnnEZUqE4zExEzIi81yKZ4JNhaPkZmOTpxPrWJC2PeMSYSU4F8dhwzDKM
-   A==;
-X-CSE-ConnectionGUID: IvnrGcZBRqSCenKrxfV+5Q==
-X-CSE-MsgGUID: ENkJnAm1RdqWTrJAdc8pTA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="15956642"
-X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="15956642"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 06:36:26 -0700
-X-CSE-ConnectionGUID: hv+jf/nYRMKp252TDzhWlA==
-X-CSE-MsgGUID: rHPZ9NOjRN2blqqMK8l1iw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
-   d="scan'208";a="55005642"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 06:36:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s7xks-00000008Lkv-21yz;
-	Fri, 17 May 2024 16:36:14 +0300
-Date: Fri, 17 May 2024 16:36:14 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-tegra@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v4 0/5] PCI: controller: Move to agnostic GPIO API
-Message-ID: <ZkddTpyC177ZGoMH@smile.fi.intel.com>
-References: <20240506142142.4042810-1-andriy.shevchenko@linux.intel.com>
- <20240517102234.GA333779@rocinante>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXFw+nJY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D7A1FC32789;
+	Fri, 17 May 2024 14:40:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715956833;
+	bh=WcnDMWC5m0Qf3HEHyWs/JC3uDjcP2QIwCvwotQ5JlEs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RXFw+nJYPQYnASuWo6jyxiEqP1yqqxziusrnrvlwQ5ez+852or9YlH/nigC95Sx13
+	 +ONpKFgHPtXpRxtVdEPHfru4l54k7dfSOAWoTYuHUO0sqsaFwROdU4BNo/D5GJOErs
+	 z8K/7d0BbLtMmc/3SEMPutAnBD2p3FyJ/Mr2weAkhw+CO/dEkrcurYi6tdKhUfClIV
+	 HM+dI25qt12o+XcNSg7GcCFA21qFKYouYkkDG7D2xRzXTuxOBMD/fTCfy6XHGFiGqz
+	 khj5vA1nQ9jI4AGOQbrtwI+NKQNi15zHC/QHShhxGPXYgDtX909M9/dalMKk2Pab+j
+	 Rz5ZZvoEcFkdw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C1613C54BD4;
+	Fri, 17 May 2024 14:40:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240517102234.GA333779@rocinante>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Subject: Re: [PATCH] Bluetooth: btnxpuart: Shutdown timer and prevent rearming
+ when driver unloading
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <171595683378.30517.9280094714253637646.git-patchwork-notify@kernel.org>
+Date: Fri, 17 May 2024 14:40:33 +0000
+References: <20240517111535.856723-1-ziniu.wang_1@nxp.com>
+In-Reply-To: <20240517111535.856723-1-ziniu.wang_1@nxp.com>
+To: None <ziniu.wang_1@nxp.com>
+Cc: marcel@holtmann.org, luiz.dentz@gmail.com,
+ linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+ amitkumar.karwar@nxp.com, rohit.fule@nxp.com, neeraj.sanjaykale@nxp.com,
+ sherry.sun@nxp.com, haibo.chen@nxp.com, jun.li@nxp.com,
+ guillaume.legoupil@nxp.com, salim.chebbo@nxp.com, imx@lists.linux.dev
 
-On Fri, May 17, 2024 at 07:22:34PM +0900, Krzysztof Wilczyński wrote:
-> Hello,
+Hello:
+
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+
+On Fri, 17 May 2024 19:15:35 +0800 you wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
 > 
-> > While at it, remove of_gpio.h leftover from some of the drivers.
+> When unload the btnxpuart driver, its associated timer will be deleted.
+> If the timer happens to be modified at this moment, it leads to the
+> kernel call this timer even after the driver unloaded, resulting in
+> kernel panic.
+> Use timer_shutdown_sync() instead of del_timer_sync() to prevent rearming.
 > 
-> Applied to gpio, thank you!
+> [...]
 
-Thank you!
+Here is the summary with links:
+  - Bluetooth: btnxpuart: Shutdown timer and prevent rearming when driver unloading
+    https://git.kernel.org/bluetooth/bluetooth-next/c/3afc41cbec84
 
+You are awesome, thank you!
 -- 
-With Best Regards,
-Andy Shevchenko
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
