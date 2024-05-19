@@ -1,107 +1,142 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB8C1773A;
-	Sat, 18 May 2024 10:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FA75B1E5
+	for <imx@lists.linux.dev>; Sun, 19 May 2024 21:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716027229; cv=none; b=L3l2N8+kEjZossdXAthfgFzNQjErpqFWUW+BzhcVNYMixpGNou5RZ4CItqr6FP+mHW9HzNXyRoWN6p2Qg75bsYwz7/ECs1cvTg04US7cXGwnZVBT4Uu0jSgJgJbWEQraJVesBUv/uDTtzUpnkoogAuaQFqC6bBdbP6JC/wS7tNE=
+	t=1716154525; cv=none; b=a6gGyxq9IANitAusTx/QJXrIMBPyklpXCrBI5Mrg0/hv5OyXbVM9nnRNNWux5MhPWt9RChlzdqG6VHzQV9THGmX6kstkCPKgtj7fwkJB4mPzgE8GUu4Z1wgcSiloo8mFCJe4cFptCnJ7HkIX1DJ0HP55ekZl1Vl+8Vi8WGB3a2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716027229; c=relaxed/simple;
-	bh=JEEGJe7P7TsOOE2g5iqa8BKS6lSw1rmKWvrEVpgafAk=;
-	h=Date:From:To:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RbkVrUhyvVC3P864oZQVUcJuvbCpMtLqszJpFqL3NqCvu6ziac1fO5xuWVRiYbHXb56oxkxjaiX9U4liawbQgiXsZCWiLghGdBBHYqD1TRoAVPL5ctXubs3fH3isHVtz5T1KMKIQrHufxbOtEwDoCkRM97P2w9CinRxbbn2RZsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=lGxkYnWM; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	s=arc-20240116; t=1716154525; c=relaxed/simple;
+	bh=F+jXRC9st30jHQhbNJSE+w/4Mll6e68LbYib2jiYex8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CTmHup+jmoDACln11cOl/tUvrXRy/85Rmer/cGxTVkUoTPlgPWTOLX0NEoy5v76W+T+sV5+oAIpcJJee5aulAA/WdCUJ3oiekHdWEsDahsFqiCk4nLGkNmkI4eFzDmnB5UGHgKuaz6pqfmj8NE9cIQGhYqnC0PsxOTx9PuzL9tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AEgTdmQ0; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="lGxkYnWM"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1s8GZ6-006VvV-0f;
-	Sat, 18 May 2024 11:41:21 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Subject:To:From:Date:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GZdz7DcQuZNUr0jvTXCmmPFf3gkI4Rtn8V9Cae9sto0=; b=lGxkYnWMYZypqxVrxAGzVjAiff
-	Kjo2o2LPO6tHTj1Oklu3HEz2yTvA23u9m/QBmLKX19/P11xwu4r7KBsnqnHHQprUHybYC0HR0Riwu
-	5vdd5O00bpSO4Vj16/gMC/OG8uu1zgA0sVzzEcd93e+1ZSPi0BkCC1L8Va0hCsZnrSwI7uwgsYmEA
-	/EDOf5MZZFSIP2kUzCvYxWvn7AEn0Z0atDbQVRAznvulNo209aun+PKhbP9d7wEKOnbw7UB0EqpV3
-	W/F2XBoAPR/17liJxkpsDqOwDVp1Pj5/EsSl8Va00Mu0qBXTUXNqRyxlOl4Upqis987gA7gM41iK8
-	O1F0n2+Q==;
-Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
-	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <andreas@kemnade.info>)
-	id 1s8GZ4-001KiF-0X;
-	Sat, 18 May 2024 11:41:19 +0200
-Date: Sat, 18 May 2024 11:41:17 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de, leoyang.li@nxp.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: dts: imx: Add Kobo Clara HD rev b
-Message-ID: <20240518114117.54d7aa75@aktux>
-In-Reply-To: <20240504215344.861327-3-andreas@kemnade.info>
-References: <20240504215344.861327-1-andreas@kemnade.info>
-	<20240504215344.861327-3-andreas@kemnade.info>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AEgTdmQ0"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52327368e59so4105094e87.1
+        for <imx@lists.linux.dev>; Sun, 19 May 2024 14:35:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716154522; x=1716759322; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3X1Yrmk1MoHmOR9BQlqVx5v5vjA2rIgAkVdy8YftygA=;
+        b=AEgTdmQ0qu2K98IOwitiS2MnNbNNco0p42V6sVn+p9oHXln59gXiyyBfPykwEAjiBy
+         38dR3xGcNLbBNPUAOlCf6Sw+SigN7q4bfNSpR9an3TD1DH9OTB9wquYzCzoTVSSd6pHP
+         6glZDUROWAp06GlWvtV+urkqDxFepK4wn0swMpAO32asB3pM510VAQ86r/bOKLnD8dAt
+         0TGVQKUXQm2sfRNJgOZPNJaGRZYc3YjVfqwdHphw9XQyF9qQNeO5nGTe3MbSgiKTRtRB
+         4Tgze05k7r15gGcYTfk7WHi/cmk8lpLBpm/3LBMyLpSrSVUumRiLOclcJEaARsSHS2CY
+         Fz2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716154522; x=1716759322;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3X1Yrmk1MoHmOR9BQlqVx5v5vjA2rIgAkVdy8YftygA=;
+        b=YQ5N7Di39e8RIg1z7KLgkD9Bx/5nwGyEGMKUu1N2OdOcY9adfuwrCCHEocrqQYF2zT
+         7ptIKVm72qn1qnjSgmxnlPtkmBGN7nvRIjuJ5H1hEwTpfkizTQGMr/C2fDRQWavtAgn+
+         jXSYUjPaxPJEykNmtp/+2bAInwtnYZaM9egg03LfZXxFz07ePx0WoE8ADXD9zMl3uDZu
+         eUG7XHV6IQVEq2TygQiAlLjTr5SH3PfmdwMzrHsT/mfbu1Y+1UcND5sfk3JQ/DF8uRfL
+         OcUH4ToRtedWgPe9doG3apRwhsq/cWb4YK405ZK65CUrHNwPoEMSl+eHGmlSnhqaDo3Q
+         UheQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXye+UN53chiXQ2opRNk/i/F81WftTwk+Znt5KokvqJ7OM4+g+4tHsSaECzupx5EyZ5nXuzdwueHqcfN/bo7ngDVSxP
+X-Gm-Message-State: AOJu0Yxbgg0GcYnJKowfUd0RRjNZizvawfRck4/jB56NC2T0wr27Vtar
+	m/FoS23CKYettIdw0oseP2RMhlYU6IXbVbpvBh6zQ1NqDOT3uB1Pxe5GSvgO+fA=
+X-Google-Smtp-Source: AGHT+IHFhLcimoHFdpBR6hAEKKHgEzXpoaS34rfFdJS0lF8TQ2Ce7Fm3Krw2KG+bznBsSAnt2LCThA==
+X-Received: by 2002:a05:6512:23a0:b0:51b:e46c:19fd with SMTP id 2adb3069b0e04-5220fc7acdcmr19544531e87.18.1716154521689;
+        Sun, 19 May 2024 14:35:21 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::8a5])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-523765da43dsm2090065e87.121.2024.05.19.14.35.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 May 2024 14:35:21 -0700 (PDT)
+Date: Mon, 20 May 2024 00:35:19 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 10/11] drm/imx/tve: convert to struct drm_edid
+Message-ID: <opukbtmhml563rxrjkg2d6ynysth3id6acscnnnbkrds3ix2xf@gbdxb6e5vvxz>
+References: <cover.1715691257.git.jani.nikula@intel.com>
+ <2f59a7ad10c29c21f08223ef19221cef48623cc8.1715691257.git.jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f59a7ad10c29c21f08223ef19221cef48623cc8.1715691257.git.jani.nikula@intel.com>
 
-On Sat,  4 May 2024 23:53:44 +0200
-Andreas Kemnade <andreas@kemnade.info> wrote:
-
-> There is a variation of the Kobo Clara HD containing a PMIC with different
-> default settings for the regulators in the OTP and therefore also
-> regulators wired up in a different way, so add a proper devicetree for it
-> to avoid some magic smoke.
+On Tue, May 14, 2024 at 03:55:16PM +0300, Jani Nikula wrote:
+> Prefer the struct drm_edid based functions for reading the EDID and
+> updating the connector.
 > 
-[...]
-> +&cpu0 {
-> +	arm-supply = <&dcdc5_reg>;
-> +	soc-supply = <&dcdc2_reg>;
-> +};
-> +
-Vendor devicetree has also this snippet for that revision:
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> 
+> ---
+> 
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> ---
+>  drivers/gpu/drm/imx/ipuv3/imx-tve.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+> index b49bddb85535..29f494bfff67 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+> +++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+> @@ -201,18 +201,16 @@ static int tve_setup_vga(struct imx_tve *tve)
+>  static int imx_tve_connector_get_modes(struct drm_connector *connector)
+>  {
+>  	struct imx_tve *tve = con_to_tve(connector);
+> -	struct edid *edid;
+> -	int ret = 0;
+> +	const struct drm_edid *drm_edid;
+> +	int ret;
+>  
+>  	if (!tve->ddc)
+>  		return 0;
+>  
+> -	edid = drm_get_edid(connector, tve->ddc);
+> -	if (edid) {
+> -		drm_connector_update_edid_property(connector, edid);
+> -		ret = drm_add_edid_modes(connector, edid);
+> -		kfree(edid);
+> -	}
+> +	drm_edid = drm_edid_read_ddc(connector, tve->ddc);
+> +	drm_edid_connector_update(connector, drm_edid);
+> +	ret = drm_edid_connector_add_modes(connector);
+> +	drm_edid_free(drm_edid);
 
-       cpus {
-                cpu0: cpu@0 {
-                        operating-points = <    /* Core2_1V3_ARM */
-                                /* kHz    uV */
-                                996000  1062500
-                                792000  1062500
-                                396000  1062500
-                                198000  975000
-                        >;
-                        fsl,soc-operating-points = <    /* Core2_1V3_SOC */
-                                /* ARM kHz      SOC-PU uV */
-                                996000          987500
-                                792000          987500
-                                396000          987500
-                                198000          900000
-                        >;
-                };
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-        };
+Nit: if you change two last lines, you can drop ret= assignment and use
+return drm_edid_connector_add_modes(connector).
 
-Apparently we run into https://gitlab.com/postmarketOS/pmaports/-/issues/2811
-but I cannot find any documentation an alternative voltage ranges for that SoC
-(i.MX6SLL). So not all 6SLLs are created equal? At least we do not mix up 1.XV regulators
-with 3.3 regulators now, that is more healthy.
+Maybe we shoud add cocci rule for such cases.
 
-Regards,
-Andreas
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.39.2
+> 
+
+-- 
+With best wishes
+Dmitry
