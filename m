@@ -1,71 +1,62 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2071.outbound.protection.outlook.com [40.107.7.71])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2089.outbound.protection.outlook.com [40.107.7.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8E2139CFF
-	for <imx@lists.linux.dev>; Mon, 20 May 2024 20:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D3713956F
+	for <imx@lists.linux.dev>; Mon, 20 May 2024 21:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716237716; cv=fail; b=l9xHqXqaF4nB9wrQNfXTRFAR2cBZwnbB027CrMmyVCkTBqWeVSaBs1jhuo3sT8G6vUvnaFDx8+W4+CPGtZHcVOIU0DXoj5zbYtmSmN8YgbBxvOsD1gPPfogduqFgNbxGOFa7we4JkLHMZzEs1Fhms3S/KiwjKt6GvcFeroHw72o=
+	t=1716241594; cv=fail; b=fz2/Wjac4Tv633eJrwKVTnRCMiA7vQmXTNPBQvnF2tk8P09+PqwHy6rP0FzJKK7AedKG60ob3thHS+/JJTY48WP/x/UZOAXg+5YCbnLT64bAgU36VuUp0UPlqmXpkmtIS63a6edyJCYOjCqWLz466Y1RDVDAkngqJFDD8eZb3+w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716237716; c=relaxed/simple;
-	bh=oWaM/CQyojbHgWGiSFA4WtRWbVzpTxVKkfl8L2eWRyM=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=awjeTd+EGZo7i8RDa+IOkW7q3F4/jISMxLnKZN6ke/h2LKW4xu6HXH811Z3nao9yL0qGIjFvsi1YF10a9t03wnQ7iddxKkwZq1jE8M3g+LMESlXxDkmcC9jk2+xB0ss320E/1K6O7feiIL+rtZQrwqZSXCTjzlR/rvpG6ZlPP/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ebqTPVEJ; arc=fail smtp.client-ip=40.107.7.71
+	s=arc-20240116; t=1716241594; c=relaxed/simple;
+	bh=5BFBKQYLcxryyq8fqHTidvXrmfDKJ0Xbff7ycAUw7TE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XrmNypb9giEH+hoSudLY1EGemE/KlV5DA+5GDPLNIsXjvHHTl9uuAVKiXFzRFjgy0W+d3aFcANM+qc1qN9bzn4DBkYNapoeAek0hdSzJm+5KRvzAWWg/VszGsJH1gjn2MuZ+hYnjQwyuuGMVXjdGfEI59mUt0xEfYMbQHwL3WBM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=SXUlwACX; arc=fail smtp.client-ip=40.107.7.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ebqTPVEJ"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="SXUlwACX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dht8J4dtAEql0+ThqVdiEpLBsYMvxMbMxIlDUvmqoS082apX9AhcDFNhCT2nINgcznO/yBHdOazRitaY2f3PV4Q9mBM8T25GJaIYpACaGFEeVp6TixHSqqdGzRVs1hNm0nEZn3PdPVubPA/6E2oERYcXD2T04npE4FzQ5RX/BCPS87c6TzdYKHsdH9CVvnxwIL17RoujCs+h8KczjLYJPw2KmH9DyGHIE5Y3lf/cT+4iAE4XD7xzC2Tzrht97A+0Y18P6jJs/yBUqooIoJgY8LIg3cO2nBLYVmf4WImMpqGnWpeMKzNLsutUfZgcUQb4daMIGIqPyZYXcYYQr1gHcg==
+ b=KvAysaARb5cK2Hf7Gn9xL8+O7tMWGVcaSYXx8sk/pmEKVt75M+lHLZPMujS5niok/ClqK8dBRFGTV9LcWYWhDpIHkz/jtfb1ATGnCsB2KtSeVQMXD7RKS79tRCcSocB6BOWBMRNlqV9lUGyEelgxAHPhSRBpuncjn5CvXX1FR4GHnBE9dTIfFuaOAaR+qycwwEgK1I5/ufdl9SERDQhuSNE2fqhjeVbQOHtJ1+iqtfSmr08ArZ5hB6cFLLnApl1Ondr1Ucvk6M5CtsMiTZUhk3pTFvFSAzkhqnxvE8Xo+t3WCdtyQfB1N8ITJzgr7zi6d9q65E1k+Qn+YuXzZOYMng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=STLaoB1KKhGKq3jjdzpSjfywUac8hgqZ5hBTD7tKRSQ=;
- b=Aq4FbTwFAKhRgKCHSzHgMscJBQUN4EdaPf6RcTeLoPEYQereFjw53z5y3czqDebnJ4Wv9euz/6lSGfAevbjzZ0dsq85yQyfAJOAwmEUQwpcCXfbK0LEAcJhJjUrXC/OJiFz+tnxbH5Gt0wxro/tSevo23KJ0iJG0wjUzG5htluSdCIvC9zJLjwBzjZv8kjMgIfwZ27yKo7NPYaDU/cVsuwfrDGzXbrvlpVvUAXl0ZuJVz0e1Zw6++f4MQAE0bUv3WptVnFoaiaP4sjJ2GKFa0R61KDP23G7j7SD4RKZTNriGYKmqqf+2p73b1YyhMMI5xg7qnmEvEVyK871pQTQ8Eg==
+ bh=0pLlm+E8LJPOQpHl7oDGYjCUAVsPwl3fA7HQXZd0WMg=;
+ b=Xjg/ON0IluxodPr31yLC3RrRXrbAVDJykCo0dUnAls9JGx+oGUEFtVCXRjYpH7kLud4gnXrNM3tkNpLcakV2iY+ptGElEKHFhM+RqfJcpQjj3kV6ZUWNpjb9drwt6ZnYbKqwq8V3Up5UkM9Ji08Th72C3WtW+uKcutAS5gSAbooBNyZUbA5XpxYolN5410L6Np/wzAlxAkUmicUS1Xd0NYTpu7wv7zwL2MMA5GN12xbiH0Vb4yvca/NTNwwvstNqgDTARvUeDYn6lnsdL1ATS7OCnu05fA+mslS6UqamXnuslSgopolsZEepOl5+56e3ImHycyzOfoRe4PS4I7TOzw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=STLaoB1KKhGKq3jjdzpSjfywUac8hgqZ5hBTD7tKRSQ=;
- b=ebqTPVEJeW8sK5zv01vI6F8Yttk+8TxFDbrkG7DEPkY74nY2e+JBGalSiQ6V+B6fYdXy8/gigeQ3MkI5e2TiaxlrLZMXelOgtx3Gz7LjOa8LUD6NDGdvLeVaEe37wAaCXBP9lY2+yCR3boyYyoKZeOe/Terqj/iqY+AGRSg2aI8=
+ bh=0pLlm+E8LJPOQpHl7oDGYjCUAVsPwl3fA7HQXZd0WMg=;
+ b=SXUlwACX72ckUHk6vk0VSwdmZL4fL2740HNBTlUhr+lll+URUWSX4ifSkNdxlTQLMgjAp04h4sVTnoIxmWgmVStaRm+zOgHCluPtpPAT50DpUNCUFOrEFxHDsB5EneIZcGFMFHV+Gra8A6rVHIbHWbbUQ9U0PdHrdHzc0U5KGuM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PR3PR04MB7385.eurprd04.prod.outlook.com (2603:10a6:102:89::17) with
+ by AM7PR04MB7112.eurprd04.prod.outlook.com (2603:10a6:20b:113::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Mon, 20 May
- 2024 20:41:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36; Mon, 20 May
+ 2024 21:46:29 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7587.035; Mon, 20 May 2024
- 20:41:52 +0000
+ 21:46:28 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 20 May 2024 16:41:32 -0400
-Subject: [PATCH 2/2] arm64: dts: freescale: ls1028a: Reorder sai dma-names
- to fix warning
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240520-ls_warning-v1-2-6851155356c6@nxp.com>
-References: <20240520-ls_warning-v1-0-6851155356c6@nxp.com>
-In-Reply-To: <20240520-ls_warning-v1-0-6851155356c6@nxp.com>
-To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716237705; l=3223;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=oWaM/CQyojbHgWGiSFA4WtRWbVzpTxVKkfl8L2eWRyM=;
- b=sujunTehnApY95qzIyoFEqTFhQDRiLW+qUpZKwfYwFDsc0DS/Ue4OGmOGz0/zCuLMyipZz5hL
- nBrjLPpzR6zClLMg8pjc93dQwMoc8XrJqZiMDzxPe01OEDC7cL1L6i7
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR03CA0162.namprd03.prod.outlook.com
- (2603:10b6:a03:338::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-rtc@vger.kernel.org (open list:REAL TIME CLOCK (RTC) SUBSYSTEM),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: rtc: Convert rtc-fsl-ftm-alarm.txt to yaml format
+Date: Mon, 20 May 2024 17:46:13 -0400
+Message-Id: <20240520214614.863539-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0205.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::30) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,189 +65,210 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PR3PR04MB7385:EE_
-X-MS-Office365-Filtering-Correlation-Id: b51fbd97-a16c-4f30-c6ec-08dc790d47d6
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB7112:EE_
+X-MS-Office365-Filtering-Correlation-Id: 28fc1ad9-c050-4521-39ac-08dc79164e27
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|52116005|376005|366007|38350700005;
+	BCL:0;ARA:13230031|376005|52116005|1800799015|366007|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aVJad0NxUGRNVG1pZUF0RTI3NldnZFZEMkE1azRHMEMrUEk4bGNwSVF4NXVV?=
- =?utf-8?B?S09WcGhrOEkvUHdpVzRqU3p2Y3BtL21JTGR1MG9yWEV2NTBOQkMvVURsQlBN?=
- =?utf-8?B?WjliSTEwVlUvdHI1UGlFQ25HeFZreXBvczVoZUQ3Z29EdlZKcVMxV3o3TDg5?=
- =?utf-8?B?U1Bha00xV2dEekw4MU5FSlRWc0tKakl3ZlQvTmhCVEl4TlZkck1rajFZQi80?=
- =?utf-8?B?VE9EalFnc05DN3h4TGplemNFOTh0Yml3bWtMRGY5bGEzQXlsekc5R1M4K2cv?=
- =?utf-8?B?c2RpZ0xXTW0vbXBnNStOWUtWM0hmMlFjTTNhcmU3dnhJNFIzV0VCUlFLc2Yz?=
- =?utf-8?B?Y0xvVm5ldmpVOTBXblNUeVNORFdFQ2lqckEwekYvOE81Tk8vaWJpUnZzVmlG?=
- =?utf-8?B?V09ma2hJQTMybyszNXdJaVJsRWx1alZHYXlqVzZkWjNMeEEzR2dBdVhzS0VU?=
- =?utf-8?B?TEFLSndNTmM5OWU1cGZFekw1UnpYWmF6OFhIYWNlMzRyRUpKNlUxM3c5OUdI?=
- =?utf-8?B?Wk5zMHEzbVJUdjNOUTY2b01qTEl1eHdwUDdqYmE3cGl1Z0NKK2RHYzBrQnVH?=
- =?utf-8?B?dVhGWExvc3Mvc0pyMmlsdGxKdXlRL0xSZTBkd1hXUlRuUzhna2JkbGkxVSsw?=
- =?utf-8?B?UktyS2pmZWdWL0g2MXRoU0krSThSL1hMTStoaUVUV1BKVys0enVRckVxRC9P?=
- =?utf-8?B?KzNKYlBqOVVoV3d5bmtWbGNLMTgwZkFEdW96V2t5dmdxSXdGOW1KMTE1V2ha?=
- =?utf-8?B?ZUVkNUJoc0VGN2RVQXdRbHB0MGVjalRYNlliaTZ5d1JDTGp0VVdwdmV1MUFI?=
- =?utf-8?B?Mmw2UjRoU0IraHpDUzhHb1V6a0l2dUdpVUwzaTRubFJpNzMybGU5UVZaN1c4?=
- =?utf-8?B?K1JPSG9TdVdZUHB3MGg0dXF3MkRvZmJXVTc0TzlyOEN6VkRPam5hQkpWUEht?=
- =?utf-8?B?ZkFJVUgwQU1hUTROblVvdmYxRTlWUFBQVFBUVURJb0FKSWlXbytaTk1kdFJB?=
- =?utf-8?B?L1BQTFNpZGZwUk1DNmZRUmFZVGNKcnNpV2lqVGRhYmVjUEFMU3BZbTVJTHFB?=
- =?utf-8?B?czRYNk8vR0drQ1F0TGxkSzRjWkJkcG1venFiMmo0aEFFL2pSK1hvbUw3Tmdj?=
- =?utf-8?B?WHV6aG5MUHdmYWswTFJHemdTZVFKRjJCaHVRRkVML29XTWFlYUt4ekt5N3dT?=
- =?utf-8?B?WVlvSUl3cmk4bzZWQ3djK3A3elZuSlhLQ0N6UGQ5bm9oQnhmSU1LWnNIVUZu?=
- =?utf-8?B?RGlWRTVCaDhPMFJKOW9QK0hTYldlSG16YUZacjdtTmpoaldEcnAvaVIxaDlX?=
- =?utf-8?B?UU1sR2JUd01uT1ExWUpqazhLNFkzK2c4TkhhdDlhNFlFalIyQVZFTE9UWEVi?=
- =?utf-8?B?dGwzSVY1cDRUOW1DUEFNOFBKYk9hL1QySFdvdEM0aVh5c1k5bUZTSThtb1VB?=
- =?utf-8?B?MTVQakFqU3lmNFdqbG8xMlZzY3ptRXN5NHBFRTcwUFZHenNBQ1lLcXNjclBK?=
- =?utf-8?B?eFRvMXhsdFhTYnYxRkZrRUhNMEZkblJKZEdsMm53ZXhsNkJYN3h1ZWo2V1l3?=
- =?utf-8?B?aVp0eklIcElZVk5hVmw1QnBBTnVIaEpQU3cxZU8zdUw4MFZLaitLZUlIRlZi?=
- =?utf-8?B?OFhDMWkvSVRMSnpoNmx0RlQxZFcyM3NSWnVuZFBlZVUrRXJwSEpDbTV6YjZO?=
- =?utf-8?B?L0hVaTRpSHVOOWZheEIxYWkxNTJWbW04ZXVudVNuR1hRUGg2RjEya1h3PT0=?=
+	=?us-ascii?Q?z7plvd/Hko8/qVicT9e2mCBwSa2TTTnAgvPELP2xTyGc8H7W2amFslD4cj9W?=
+ =?us-ascii?Q?j32WE3r15Q5n1TFl6FeWk4f+vIyUYYOQYgj7RfPAkG4uR4UlOI8mcYbhE6jX?=
+ =?us-ascii?Q?Weu2LMDVd87qQQXvgeARb/GrW3VyN5K4SqZfVE2bLBw91cz0iG5nQZNSs5XE?=
+ =?us-ascii?Q?+lZGPQAZLx9PX1j48DyoHapClkfcPO2Mbi3TExYrvlVLF1VPIFdNdVJnOrBA?=
+ =?us-ascii?Q?C3SClVDbqiN/c8aIrJOp5Ji+pbRakZZQVUXUCYaxHZllWkH9Prvedq3aEZ6L?=
+ =?us-ascii?Q?LOe3S3xCldx4qXsREByg93xQmqCGUcnBY1WyR+YACZT0a5ajpw2qa2clLNxw?=
+ =?us-ascii?Q?YeDregNxK2Jl37JNPtMZDAboORcGBKJhr+PoDD6VrErDMW00FxMYpUy/Gco+?=
+ =?us-ascii?Q?5eEMfEpkFUqePRM+7VNTA9neJh+FEbeb0RTTGotD19mLwZ3xl/NkLYu/xCag?=
+ =?us-ascii?Q?etu/7gdE8Fk5wERRrmNnjJ8IPpEhCJfJ8LCsUxA3VuS3DAx3kG14swxjywlK?=
+ =?us-ascii?Q?cgTU5fams8KMu8+7HmhbapP7Jakn3RtRjRdp7e+AOg3fx9U6AJ0fBJspjbvA?=
+ =?us-ascii?Q?MLrLYPgDlXN/2x8GY5h5yStpaxRagXKOk8IrOUn1FXkhGujjBtykUZmjg6fd?=
+ =?us-ascii?Q?nWDur9zugq/MlKkYCa1Xwsxs1aI6jzDxUNKpmm9S/7mPw135rSFW5silbiPo?=
+ =?us-ascii?Q?tCkCUkK3Ev0hlCcjs9nsQHjhyvcpl2KuNNA8OE+63N7YQFbF9mH0IbRS4DS7?=
+ =?us-ascii?Q?Ks51WyjQFLxmDBdKuvAlHoV9at1z34iHilBSCWGLsQ04LDvfYpCz5DhegXG+?=
+ =?us-ascii?Q?yFEMlhNTNHr6JusB/gEHGzIW/x9SWea7HxO6XaXg3qil/cTPBkoNxZO3nv/V?=
+ =?us-ascii?Q?wCTHjkZWr7GiCvcfEUgaK9Bqd+ZpP4ve+MPJwPNqtCdM6fWSMDmKNlmJaZnH?=
+ =?us-ascii?Q?KM1UQm736fQ7HQXXDj+gaoK3Z6/455VMpQqws8FlbAlh+HWZ7pxQvmQqojLg?=
+ =?us-ascii?Q?vS9o4Gwns9oDTl3ZBtmD/30SxVgxA7zS9M0WvIcHFce02z2iO+JfNtU6XBCr?=
+ =?us-ascii?Q?DzbYCFiRsr7ytlmSz1zPZ3bLgS5tOXSFHEsTSoq6LNiv8QfY4ad7vbQE10dy?=
+ =?us-ascii?Q?KKGbTkSxlEDUZvVdcR991fU3RFMcRZFmcXGp3rc21hO6ynUjhBpvdhXtHQ8v?=
+ =?us-ascii?Q?BuKoWMm+b5XsgeYMLJvNWB2uzHj3H6LJkRI6XV3kqm/u8SN/Uxkbn6HXDhG8?=
+ =?us-ascii?Q?YvX4NBkQpLpq5gwykCvSWXC9mUQAJh9apXBxPvqTFehOOjRZxAXtBlLzEDLj?=
+ =?us-ascii?Q?yKA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(376005)(366007)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U1lvSk9hMXAwN2tKZFdmRlNpVmh0MmZNN1dUUnZ1Wm5WZVRMb3IvK0RmUWF2?=
- =?utf-8?B?UjdreGx4SGZJNWt3ZlI2aHVEU2c0Q3FXRnJHeWFKOWduTEFhNWc1SndtTVBU?=
- =?utf-8?B?WERaSUdUOXRBa25aQVduL0hLU3VPVTlNVjNBMWM0VVNNczlqSDZjVzBJNGFR?=
- =?utf-8?B?RWs2WkljSWMzQ1RQY3pGR0UrSWx1MmN5S0tsb0lPZkJHWWY3MUdjRFFRVjcz?=
- =?utf-8?B?UVRvejZkWmgreXJWZjdsTkt2OVVBWUxVVUx3VDVEa3hIVzVaeHcwczFiVmpS?=
- =?utf-8?B?Y1cwTzdjOTJ6YlEvazBwcU41WDFxUnN3YzRQZi9FVnpsSlU1WS9lbUp2U2tQ?=
- =?utf-8?B?U2puR0tXaFNPVzNjN1ZPTnRMY2xqR0NLbG5QYURsK21YUnRTSnByN210MnZh?=
- =?utf-8?B?SCtuNjFsKzUvcUxJaVdnTDh1eU4yQXhyb0dyN0lMTTJOS1VmZkQ4bk90d2FQ?=
- =?utf-8?B?TnB1Q3oxS280UjJ4MEU3RFZsalpFZFRuWE9KbFJHeTh6Z3hkeXVTTkN6SWRY?=
- =?utf-8?B?aHZSbWNiS1hzQjdHZUdUNVdmLzdsNERibFA0Q2JGRlFMUUd3TlhLVVBwUWFH?=
- =?utf-8?B?MlZWTk5nUmx0bWFYR0IxbzhjbUtFL0xwQS9nYXp6NmcrZTdRcWE2SW1NSmpv?=
- =?utf-8?B?NHpSeHVVam1yc0pBOUl0WnoxaXpaRE4wUUxGQkZ2NWxxSUp6ZTVvRzQvc2pH?=
- =?utf-8?B?NTlpaTNMSjNhZmZZQysrUnFYYTVGTnJoZGNZUWlUNTUwRFRtRWFZS0R4SUc3?=
- =?utf-8?B?NEdremxQSVJXTnZUVnFwMEI4aVk3bG11WkxTbjZzUEYydEJab1NSWGxhL3FK?=
- =?utf-8?B?Y1pQeDhMUFNISkNqUWhyZXozcFc1c0g1QkVmazg4TGp1T1ZmSmlDNWRsU21U?=
- =?utf-8?B?UjZrQ0d5VEdHUVVwOW9nbXo1RXhjQ21ucDhzLzhlMlNXWUFvRVc4aCtQZm9z?=
- =?utf-8?B?cDNKMGFoVllqbU1iRCsrVDhjZGNleC84cHlRMUxzL3RKa2crTFRsYlVoZ1M3?=
- =?utf-8?B?K1Q4SEg2U2ZpNjBXc2ZISk93V1BSWGVRZFBRYk1rNXNwOUd0Z1hRa3UyY3hF?=
- =?utf-8?B?ekR5Ym4yWndGeGpTS2hKU0s0UXUydWg4QVN2YUZzT296WktNeDhVeXpoME5F?=
- =?utf-8?B?ekNMNHRJS1FDMVB0YTJNamRkSUltd2ZlUE91dDZyZDF0ZzN4Wnl0aXlmalh6?=
- =?utf-8?B?cUovQ3dTMGUzN0tQRzhwTkxZa01INkVRT3F4ZWNjMkVZYW15dkpCdVFZc1lH?=
- =?utf-8?B?Z3FFU0pmbVp2NFRrZ0kyODNyYXVYK2NQdEpOTWlXR0xoR0JsdkFSNnpuTC9z?=
- =?utf-8?B?MVhhY3hOVHlKRVVYelNtZDllTGplMzVNaFNjSTZiY3llbWdoQ1l2M0ZQc3N5?=
- =?utf-8?B?cnBYci9Bak1CeE4wTzY5K0REZDkxTjNOL0NqeFpnc1Z1UmVUbzY4ekdja2x2?=
- =?utf-8?B?aGxLdHJ4aUV4NjJDYmlmMFU3TGdRSEtNc216dU4yelJKajRKZzA2UndmS0RO?=
- =?utf-8?B?NUZHN1FOblpqckx2RTJuUHpPK3ZsYVkxQUJSS1IxSzFabjZKbkdwSENZRlFS?=
- =?utf-8?B?S1huaVhtSFAwcVZ5ZzZJTWhGVGl0OFF2TmUxdnVaVDQvbjN5NmNmRUFmRnA1?=
- =?utf-8?B?V2J4V0NWVUhGaUtCbVg0VHZhN00xTUxPZXRNb3ZjaHZ5QjN2WFEwaEV4RDk4?=
- =?utf-8?B?N0hGQXFZaHpLVURxeXBNMWZnQ01yZGJHaUNqNEptSHliK0U5bElWS1pBV3I0?=
- =?utf-8?B?ME1xL21vQ2RiVStSMTZiM2hDckhlaDZhdG45RFJYU3g0M3k0L2d3RU0rU1p5?=
- =?utf-8?B?WElPOENyK2JtS1IvM3JIdCtpUk8vM3Z2UWlmN3lzbEVCNG4rdWxZWUFtMVIr?=
- =?utf-8?B?MGd1SEg4MVRvaEFwbnBxQ1pLUTkrT2FXcGhoTVlva3I2dFE5d3J4RHpNK2Ns?=
- =?utf-8?B?NkRzUGJYVWw4bW1wTEJFc2U4WkxJZ3BoMDlSTWcwZjdSbk52T2JEWXgxWnBY?=
- =?utf-8?B?Y3Q1ZE0rbzdGVFR5VUJ5VGpLbURTMjNYeHNZVUlpSXhlNmIrTElhUmJHN21s?=
- =?utf-8?B?UW1XSTM5bHNNZGIwSFZRTHlvUENjS0p4TGExTENzWG53NE1xaFNrL0N0TXlE?=
- =?utf-8?Q?sxh4XhZFqYlm7CAWCwpyqjnok?=
+	=?us-ascii?Q?fqpxM9a1rNH4pwFKsIdgk6TRorb4SrnPVPndohbnwd2KFTt4jtKPTfokJN1I?=
+ =?us-ascii?Q?gfezV+pD4hxV36XrD5PYNK2M8VnsgU0bkzeFkY0AN7L5s5W88ugVRfi/Zdis?=
+ =?us-ascii?Q?ECWjfY52A2kQr54bkRY2G1bmTDikOiVh3kCfFGmCay4xiewIzOY/a5t0BIbj?=
+ =?us-ascii?Q?jncLrYb1FkgI4kETTwfdrhiIVwvwA15SvpsnM8eqc/E3xhXl7UtRQlY0+rqK?=
+ =?us-ascii?Q?PHu24nP0BXvE22edsXDQ9G1tzNMlS/oStPDo46Yip39NjGVAeICPsDaba4Gs?=
+ =?us-ascii?Q?jpkMartYp0bfmTPuXxZc7olvwJneTy1HUI1iQbJOmZST+L4VRisr8qvFOUG8?=
+ =?us-ascii?Q?hzFVchrhy3tmCOluJzLGsZ1Fw7aZm71iNgc3kQRU2Xt1zhEUfHhEi+fRRQXn?=
+ =?us-ascii?Q?0uDzt9b/Vlu+7zUMBMmDe2WcaP3PmXl0T5QB+dyi+stJEJj5ZBNXYGxa8SyS?=
+ =?us-ascii?Q?PwvFnBusWR9EU0mTvcjoBUakVxV2ACVYej75uNVRhUwxHpxLhNpG9mHtttFY?=
+ =?us-ascii?Q?F32Sprx9Gvbm/3InV/P+jM/qZKk4sOy03DQ4jRtockDbTnYVi/ll65/Y+9TJ?=
+ =?us-ascii?Q?6Y861wPRl2HBJzb5Spc57IiVCYLL1SnDviW2eAjeBvcSUDYbznhKgnzSSncS?=
+ =?us-ascii?Q?X3zn75jrHHa3zwkmb7w/abanu1jVLOQTDdPMM0U99eWPzJMD97TLv+L3WUi/?=
+ =?us-ascii?Q?tf64erUeMZoOrsCGnzrlXfGgAMUfGClK/ix5iA35St2mK0p4bgrV/qoIrCp0?=
+ =?us-ascii?Q?qmsCax+n1p5R8i756F6y1thAv7BaiUd+b6rYySjCX0GENJzvOXwTrqIguTd8?=
+ =?us-ascii?Q?8ZE2Qog2DpUHhXV3YcKrKMUPkNHWrBtklhDdcZ8z0S4tZ9+DInShqm2BWVAk?=
+ =?us-ascii?Q?h0HA3YKaXXAxo5gNPVyO2Y6VJw6zUnnFKXdhIMcRLdvplhFHvEH1469pJm3l?=
+ =?us-ascii?Q?5zby7rA0UTkh26HezYVLffkS1eAjuEgVMT0j3ZUjrkTM3rriBmWI+0p8fFbQ?=
+ =?us-ascii?Q?UJEkQY9rWbac2JPN3LvsC4RPBD1zQ6iK4ij37uCksRZRDVAMaYMEovdCziOk?=
+ =?us-ascii?Q?kJu8XlgTIrVA03qSke1NPMMrcgt0p1LtBXmD749C6iV5BYoAtDYTRF8vM+i+?=
+ =?us-ascii?Q?wuEIGNffFTXt9466bJdUAcfTtG8zR6yPDRPEz6ZbSswpp9O9xCbBqTIaRK03?=
+ =?us-ascii?Q?9r4DcUdAgyG2WsZeyQ92IQg2G8S/Ma+4QfEANecZ7T2O+QbYLMEx4sarQY6L?=
+ =?us-ascii?Q?WB8teOYoZNCn3scqaMWONq33sUdfgQca9edFy0EcdqXDCq/09+eM0tJO1ghr?=
+ =?us-ascii?Q?S0ntIjhw5BKn5u29mH6uDpNjTOOf6UoQLxavb5V8wO7xv69EXDcu1Ut1n6kR?=
+ =?us-ascii?Q?d3vN4fjUMOCXJDHhYP9tLSL2pf3q08j7s2GAzhPNDwrMwHCwCkV/NCYNkplS?=
+ =?us-ascii?Q?3/ltvGpbIa7NzfOy4dJ0llDYRN+Ku97TRFmQPFUsNXqTGR6EkEquVd4orbkx?=
+ =?us-ascii?Q?39EFRJ2Aj/qNMp6kxTJwoyuz7SdmXdeK4vPOeMDlc3TDO1gJ9LRl5eVE+S1w?=
+ =?us-ascii?Q?jIvoYn9MblN/wCWbJJHWaEPEaZGGN5NBJDAIBH6x?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b51fbd97-a16c-4f30-c6ec-08dc790d47d6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28fc1ad9-c050-4521-39ac-08dc79164e27
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2024 20:41:52.7457
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2024 21:46:28.8735
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m95kr00zuAVB1S8GeBPhbZsqtmwngSAAykMaXdHkeryD7AMoBuU71Zil7q/0U6um+bD2/7nEh4hPWeKs/9EPIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7385
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ddu/ttQpWJhPbCbV6Jf3izJhkc+YsSup0vaJ5o4HSqBbM17DbACAQJmxEjqXJB3jsqwGfz1uLoFMu6IQ7TkzWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7112
 
-Reorder the SAI dma-names to ensure "rx" precedes "tx" as required to fixes
-the DTB_CHECK warning.
+Convert dt-binding doc "rtc-fsl-ftm-alarm.txt" to yaml format.
 
-arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: audio-controller@f100000: dma-names:1: 'tx' was expected
-	from schema $id: http://devicetree.org/schemas/sound/fsl,sai.yaml#
-arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: audio-controller@f110000: dma-names:1: 'tx' was expected
+Change example's reg to 32bit address and length.
+Remove unrelated rcpm@1e34040 in example.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 36 +++++++++++++-------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-index f8b19b54e2afa..6552d404d1310 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-@@ -903,9 +903,9 @@ QORIQ_CLK_PLL_DIV(2)>,
- 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
- 			clock-names = "bus", "mclk1", "mclk2", "mclk3";
--			dma-names = "tx", "rx";
--			dmas = <&edma0 1 4>,
--			       <&edma0 1 3>;
-+			dma-names = "rx", "tx";
-+			dmas = <&edma0 1 3>,
-+			       <&edma0 1 4>;
- 			fsl,sai-asynchronous;
- 			status = "disabled";
- 		};
-@@ -924,9 +924,9 @@ QORIQ_CLK_PLL_DIV(2)>,
- 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
- 			clock-names = "bus", "mclk1", "mclk2", "mclk3";
--			dma-names = "tx", "rx";
--			dmas = <&edma0 1 6>,
--			       <&edma0 1 5>;
-+			dma-names = "rx", "tx";
-+			dmas = <&edma0 1 5>,
-+			       <&edma0 1 6>;
- 			fsl,sai-asynchronous;
- 			status = "disabled";
- 		};
-@@ -945,9 +945,9 @@ QORIQ_CLK_PLL_DIV(2)>,
- 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
- 			clock-names = "bus", "mclk1", "mclk2", "mclk3";
--			dma-names = "tx", "rx";
--			dmas = <&edma0 1 8>,
--			       <&edma0 1 7>;
-+			dma-names = "rx", "tx";
-+			dmas = <&edma0 1 7>,
-+			       <&edma0 1 8>;
- 			fsl,sai-asynchronous;
- 			status = "disabled";
- 		};
-@@ -966,9 +966,9 @@ QORIQ_CLK_PLL_DIV(2)>,
- 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
- 			clock-names = "bus", "mclk1", "mclk2", "mclk3";
--			dma-names = "tx", "rx";
--			dmas = <&edma0 1 10>,
--			       <&edma0 1 9>;
-+			dma-names = "rx", "tx";
-+			dmas = <&edma0 1 9>,
-+			       <&edma0 1 10>;
- 			fsl,sai-asynchronous;
- 			status = "disabled";
- 		};
-@@ -987,9 +987,9 @@ QORIQ_CLK_PLL_DIV(2)>,
- 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
- 			clock-names = "bus", "mclk1", "mclk2", "mclk3";
--			dma-names = "tx", "rx";
--			dmas = <&edma0 1 12>,
--			       <&edma0 1 11>;
-+			dma-names = "rx", "tx";
-+			dmas = <&edma0 1 11>,
-+			       <&edma0 1 12>;
- 			fsl,sai-asynchronous;
- 			status = "disabled";
- 		};
-@@ -1008,9 +1008,9 @@ QORIQ_CLK_PLL_DIV(2)>,
- 				 <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(2)>;
- 			clock-names = "bus", "mclk1", "mclk2", "mclk3";
--			dma-names = "tx", "rx";
--			dmas = <&edma0 1 14>,
--			       <&edma0 1 13>;
-+			dma-names = "rx", "tx";
-+			dmas = <&edma0 1 13>,
-+			       <&edma0 1 14>;
- 			fsl,sai-asynchronous;
- 			status = "disabled";
- 		};
+Notes:
+    make dt_binding_check DT_SCHEMA_FILES=rtc-fsl-ftm-alarm.yaml
+      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+      CHKDT   Documentation/devicetree/bindings
+      LINT    Documentation/devicetree/bindings
+      DTEX    Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.example.dts
+      DTC_CHK Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.example.dtb
 
+ .../bindings/rtc/rtc-fsl-ftm-alarm.txt        | 36 -----------
+ .../bindings/rtc/rtc-fsl-ftm-alarm.yaml       | 61 +++++++++++++++++++
+ 2 files changed, 61 insertions(+), 36 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
+ create mode 100644 Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
+
+diff --git a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
+deleted file mode 100644
+index fffac74999da6..0000000000000
+--- a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
++++ /dev/null
+@@ -1,36 +0,0 @@
+-Freescale FlexTimer Module (FTM) Alarm
+-
+-Required properties:
+-- compatible : Should be "fsl,<chip>-ftm-alarm", the
+-	       supported chips include
+-	       "fsl,ls1012a-ftm-alarm"
+-	       "fsl,ls1021a-ftm-alarm"
+-	       "fsl,ls1028a-ftm-alarm"
+-	       "fsl,ls1043a-ftm-alarm"
+-	       "fsl,ls1046a-ftm-alarm"
+-	       "fsl,ls1088a-ftm-alarm"
+-	       "fsl,ls208xa-ftm-alarm"
+-	       "fsl,lx2160a-ftm-alarm"
+-- reg : Specifies base physical address and size of the register sets for the
+-  FlexTimer Module.
+-- interrupts : Should be the FlexTimer Module interrupt.
+-- fsl,rcpm-wakeup property and rcpm node : Please refer
+-	Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+-
+-Optional properties:
+-- big-endian: If the host controller is big-endian mode, specify this property.
+-  The default endian mode is little-endian.
+-
+-Example:
+-rcpm: rcpm@1e34040 {
+-	compatible = "fsl,ls1088a-rcpm", "fsl,qoriq-rcpm-2.1+";
+-	reg = <0x0 0x1e34040 0x0 0x18>;
+-	#fsl,rcpm-wakeup-cells = <6>;
+-};
+-
+-ftm_alarm0: timer@2800000 {
+-	compatible = "fsl,ls1088a-ftm-alarm";
+-	reg = <0x0 0x2800000 0x0 0x10000>;
+-	fsl,rcpm-wakeup = <&rcpm 0x0 0x0 0x0 0x0 0x4000 0x0>;
+-	interrupts = <0 44 4>;
+-};
+diff --git a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
+new file mode 100644
+index 0000000000000..69b44e9920033
+--- /dev/null
++++ b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/rtc/rtc-fsl-ftm-alarm.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale FlexTimer Module (FTM) Alarm
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    enum:
++      - fsl,ls1012a-ftm-alarm
++      - fsl,ls1021a-ftm-alarm
++      - fsl,ls1028a-ftm-alarm
++      - fsl,ls1043a-ftm-alarm
++      - fsl,ls1046a-ftm-alarm
++      - fsl,ls1088a-ftm-alarm
++      - fsl,ls208xa-ftm-alarm
++      - fsl,lx2160a-ftm-alarm
++
++  reg:
++    description:
++      Specifies base physical address and size of the register sets for the
++      FlexTimer Module.
++    maxItems: 1
++
++  interrupts:
++    description: Should be the FlexTimer Module interrupt.
++    maxItems: 1
++
++  fsl,rcpm-wakeup:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description:
++      phandle to rcpm node, Please refer
++      documentation/devicetree/bindings/soc/fsl/rcpm.txt
++
++  big-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      If the host controller is big-endian mode, specify this property.
++      The default endian mode is little-endian.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - fsl,rcpm-wakeup
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    timer@2800000 {
++        compatible = "fsl,ls1088a-ftm-alarm";
++        reg = <0x2800000 0x10000>;
++        fsl,rcpm-wakeup = <&rcpm 0x0 0x0 0x0 0x0 0x4000 0x0>;
++        interrupts = <0 44 4>;
++    };
 -- 
 2.34.1
 
