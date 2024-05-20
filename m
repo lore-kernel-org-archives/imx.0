@@ -1,91 +1,81 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0A9E552
-	for <imx@lists.linux.dev>; Mon, 20 May 2024 19:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBAF8C06;
+	Mon, 20 May 2024 19:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716231904; cv=none; b=ALrLs41ra5FTESHzWIEnOipbIJ1tqbFctTiaksmMisrxFj06PNeCq8+HZJYCTh10F88Oj7JDVWYyDY5CYWby009VlAPfT+1DIeOmgVwN1dAugI8+yDRMx4Gf+QuAszRogDU1SmB0y2Gy+GdorZgh7oID8q87VWLr/svRSKM1goE=
+	t=1716234584; cv=none; b=PgxbWxFvnsxAE+8JbUos170QUDy4Ctx+rDWpgkx0PI/e4r+ZuMwkI6dz+vd2KkK+ZdQiAV6dUAPpUOkLbqvlaTnRyJ2AVHNH+T4x54Koo6M4Guytc2KiqUUZ85WIepLbT5DtXsttgSS6gbSpsSjJ55thg+IfQZduNx3r8eWjuHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716231904; c=relaxed/simple;
-	bh=Whkq+hKM/qmDNnBMj3dbzvPDG5j50Xp2GcuxKj7WaHI=;
+	s=arc-20240116; t=1716234584; c=relaxed/simple;
+	bh=sxGLsR90KSF7S/Z2DpAE5FYChE2YFZRSsoBsCOYL/jQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hUZ+0yHUhkPA7BzqTVtJ8ioLK6Z0qcBsu4wcoO9oRFbDRNhC+75M8bw/i6cAZ45mdX3UgBYwC5H2tH7zTbmm+hnG/VJ5fEW5RIaQVrKcQz/NqWTtceVxdBP/6uDUyKaj1iQjcLA1JIKu+wIYyLU3vJAt7fm8AsG+tuOQQg1XkRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=pVacRy8l; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=b7vzoFuZiJO1y2FmL7h7YGpGNqBBzRUPcwyJvgxCjRZwY84w3fTnIC+hKKZOrIgy3PM95BB/hRrexFk7qb0bb1ecwj1BEsgZ0nrTJpCLjPymtdcVp4CBSx5JNUzQ1CMDj2sSgbeFt3x99vMcynistdPcbTZfjs+G6YD6tSjCzDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LokIiB5c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="pVacRy8l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1716231898; bh=Whkq+hKM/qmDNnBMj3dbzvPDG5j50Xp2GcuxKj7WaHI=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=pVacRy8loO5jQ12YSQrnC47BXn66ePeAvKoHrFsTNZbUZuDE9I/8bc/37EdRZIQWN
-	 YJSS60cvLymNAglX+885beRZOfcbFcd8IxTR0nbDIJBtt2kVkGu2XfCUnR8pgUXis6
-	 ouo8co6qtt2wJAvS0kjSU1RuzrFrBuSb+cJmZbIE=
-Date: Mon, 20 May 2024 21:04:58 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, git@luigi311.com, 
-	linux-media@vger.kernel.org, jacopo.mondi@ideasonboard.com, mchehab@kernel.org, 
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, pavel@ucw.cz, 
-	phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v5 21/25] dt-bindings: media: imx258: Add binding for
- powerdown-gpio
-Message-ID: <6egxnvqjz4z57bwd7jeubikfiew2myjo74hw3x6dimcdm6nuq3@qnk2tliwfxps>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, git@luigi311.com, 
-	linux-media@vger.kernel.org, jacopo.mondi@ideasonboard.com, mchehab@kernel.org, 
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, pavel@ucw.cz, 
-	phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20240501152442.1072627-1-git@luigi311.com>
- <20240501152442.1072627-22-git@luigi311.com>
- <ZkcV5xWZz2jCszxA@kekkonen.localdomain>
- <q5nbk3qcxsjsqp4mdyx5nlrn4oie6oynunwodm7r2nwtywc2ey@kxsgcatwt5b2>
- <CAPY8ntCfQvp9rCt=fqTFKYEOamLZwKmJDv9agxerQtDvsGKB0g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LokIiB5c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB53C2BD10;
+	Mon, 20 May 2024 19:49:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716234583;
+	bh=sxGLsR90KSF7S/Z2DpAE5FYChE2YFZRSsoBsCOYL/jQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LokIiB5cDH+jczaMcXHV9n9aGU9hsuiS5ZCmmORHHX7LpVIA9pTpyxJFYadpst+ov
+	 jQtiJclC0PLGotuHkrM4D0+xd+pfg6RZZU40vSSbh17BUhJXeoHpYScXa2Fs0EagWw
+	 FXkueSw0JGnvcDPyVlmIvyZmJLTk0bMhMYC3WuloQ6m4af5jasnNdDU0xwz5kyVQlm
+	 1cCJyrQ8PGZIDhjBQDzKpRuikbIowuooKYcpCW+DoNOxiYA4Vsm0FMip4mk2d7JGKf
+	 9t2hE/w1mhW+bypcMJ43PGzWB15qQNLniui7JfBCVidjebVlLCYQrD0IT+G9EvwxsO
+	 qLeuiIdz6h9NA==
+Date: Mon, 20 May 2024 14:49:42 -0500
+From: Rob Herring <robh@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: linus.walleij@linaro.org, sudeep.holla@arm.com,
+	cristian.marussi@arm.com, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, festevam@gmail.com,
+	imx@lists.linux.dev, aisheng.dong@nxp.com,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [RFC] dt-bindings: firmware: arm,scmi: Add properties for i.MX95
+ Pinctrl OEM extensions
+Message-ID: <20240520194942.GA1374705-robh@kernel.org>
+References: <20240516073012.1699795-1-peng.fan@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPY8ntCfQvp9rCt=fqTFKYEOamLZwKmJDv9agxerQtDvsGKB0g@mail.gmail.com>
+In-Reply-To: <20240516073012.1699795-1-peng.fan@oss.nxp.com>
 
-Hi Dave,
-
-On Mon, May 20, 2024 at 02:20:28PM GMT, Dave Stevenson wrote:
-> Hi Ondřej
->
-> [...]
+On Thu, May 16, 2024 at 03:30:12PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> From v3 [1] Luis reported testing dropping the powerdown-gpio on a PPP
-> and it working fine.
+> i.MX95 Pinctrl is managed by System Control Management Interface(SCMI)
+> firmware using OEM extensions. No functions, no groups are provided by
+> the firmware. So add i.MX95 specific properties.
 > 
-> I linked to the IMX258 datasheet in the same thread[2], and that
-> datasheet does not include such a signal on the imx258 sensor itself.
+> To keep aligned with current i.MX pinctrl bindings, still use "fsl,pins"
+> for i.MX95.
 > 
-> If your module has a powerdown gpio, then you'll have to ask the
-> module vendor what it is actually connected to. Potentially it relates
-> to the VCM driver rather than the sensor.
-
-I've tested it in various ways (inverting the signal, etc.) and it doesn't
-seem to do anything. So these patches related to powerdown-gpio can
-be dropped.
-
-Kind regards,
-	o.
-
->   Dave
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 > 
-> [1] https://www.spinics.net/lists/linux-media/msg252519.html
-> [2] https://www.spinics.net/lists/linux-media/msg252496.html
+> V1:
+>  There is already a v6 version for i.MX95 pinctrl with binding got reviewed by
+>  Rob, https://lore.kernel.org/all/20240513-pinctrl-scmi-oem-v3-v6-1-904975c99cc4@nxp.com/
+>  But after NXP internal discussion, to keep "fsl,pins" for i.MX95 would make
+>  it aligned with current i.MX93/8M/7 bindings which people are familiar with,
+>  and easy to understand.
+> 
+>  Sorry to bring back so late after your reviewing in previous generic binding
+>  patch. This is not to reject the v6 patch, just wanna to see whether you are
+>  happy with "fsl,pins" for i.MX95. If people are happy to accept, I will post
+>  out driver together with this patch in new patchset to reject v6. If people are
+>  not happy, we could continue with v6.
+
+It is fine for me.
+
+Rob
