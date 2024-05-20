@@ -1,155 +1,113 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DD0FC0E
-	for <imx@lists.linux.dev>; Mon, 20 May 2024 13:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B32F53805
+	for <imx@lists.linux.dev>; Mon, 20 May 2024 13:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716210389; cv=none; b=tBtJPWy/A19NlURHAqqZaLgKokdS4aOypo+oEiRQc/hvw5Igym2flIWcNonO4WjHlM8A4o7Hhbek5vEdiwh9zSkM2arTzrG0xxwgpRf5DR1GLcBiW/3532/oKuSWzVjL+jumIVPxgyTNSEP3fhLfBxFnR7hJKXqaNSConrCcbTk=
+	t=1716211189; cv=none; b=QuPbXys9GI0GJWJ+NmQVl0P4h0PI6H8wvi6bdmBOG6H+o9O3p/pGz2+vE5bYCDzsyxOdD29HmqNi02UAvpKSQJNTOxtd6XgeAwknI60C8WYQLBJkGyKqzzEJdS0UQJzv13KaUfvXTlxGczX8ZJymmIMu/XYkgj4a7WO0N9UnZl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716210389; c=relaxed/simple;
-	bh=QNxMxsp5f2IJVZm6nz8esw+/sZvJ7kDRqA+fh+kKJJQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=L3qViSwyaN9IG35Ymk118YfX+L1/0f4DV6XpolnGrNADk2g1YJgLPA2Pk0ZlgzegZSfgYhGifnm+ZXW7GLYaQHU7NJbx8ClmdA2ca3KBcKP70LhMEWxowfDGh6J9h0sAjwrP5FcLDQRWxR7VGIcpwlqkQKuBxOJah4mGeIHLPCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lpslbmVb; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1716211189; c=relaxed/simple;
+	bh=NuEonSsy9BHcGw03XtsY8/+H2cm/AtrmCekQjk+olEY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fNKU34ZUy1BVnwW3TnzMyA4p8qz5AKiYgllUXW4hKCChgXvCcQWbYWvuCBEU/Gvne7/7WatL5A85icjqljNPBVvg1mrXmwl/S/icCYKTAepvLKwgX16PlG1CjC6f7/+sHZoyHqiPs42NkXgrkLIA81mzmn1nJ68Fgzad73iZvqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D5DwRzne; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lpslbmVb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D5DwRzne"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716210387; x=1747746387;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=QNxMxsp5f2IJVZm6nz8esw+/sZvJ7kDRqA+fh+kKJJQ=;
-  b=lpslbmVbUZK/tUUDWvGrxAz6PxdcS5MEXNZliCfBga3oKlgMDQmr6+YU
-   Uq/37Dbmb3/2mTybaX31RFJt0i/yrpOJp/ZgO9JM8CmuplEP1SBvQgaIz
-   8JJNl5amNIDwtmlNgDI7qHqVErnd/DzoV7+ZEJOj6PCQAh1oJERxZB7MV
-   PK9NzBMTuL9pxKccsogyzhZiyamb+01DQSfacwCAak40EqmSgWEbnQDH3
-   MQbst3yeaKeDKozI27186U3KcSWlH4BxvqWypd1xEJk47GPq1sGCp15lh
-   cXdVnnJdJNdVN5eIeJ7TeYVL8zlYsJEP3Att6lRTQuZ7xNhFroIaYrQRv
+  t=1716211188; x=1747747188;
+  h=date:from:to:subject:message-id:references:mime-version:
+   content-transfer-encoding:in-reply-to;
+  bh=NuEonSsy9BHcGw03XtsY8/+H2cm/AtrmCekQjk+olEY=;
+  b=D5DwRzne7fetmP2UI6rmdbUsG+9+K1jB5fmJz9DcWqT/lP8biKzVN/QN
+   p8SfYO79z4NcIDK+17eKNmvHJGbt5MuhxbajRMCLUvjBtJgtSL1vAxUyO
+   545dlcZnRVC/EA/NX7+Lf3lU9Q/eLCl/FsdLNPPi8pJgkwPd/9zB06m+Q
+   aPBQGHoBsE58/DhKRBtwII0/h3uYD0XoyziKMR8Zfd184Gn2YVNRSNNAX
+   rLpOLwo6udwhDNgiqdR2cAGVfTRXxRehPXhRK0M2/p1lmK/D4Y0ihTebT
+   sTRuFSXBQ1iwjLDaaJFQir9upTSTpfzAf+bfBqxK2UTh8F5ahEg72VWZo
    Q==;
-X-CSE-ConnectionGUID: 4ZuSK51zTAOVNcviy1zFeA==
-X-CSE-MsgGUID: kH4++HYhTeaRKKkNXVZUnw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12526299"
+X-CSE-ConnectionGUID: oHdnbYHpQGmnBYj2Jrf85Q==
+X-CSE-MsgGUID: f/CrZm5ZRhmAr7QGfqta7A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="15285538"
 X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; 
-   d="scan'208";a="12526299"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 06:06:27 -0700
-X-CSE-ConnectionGUID: F6+f0sAaTM632rEMs4GzRw==
-X-CSE-MsgGUID: aBJJoIvDS6qStyLHllYAIA==
+   d="scan'208";a="15285538"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 06:19:47 -0700
+X-CSE-ConnectionGUID: 6tFvXyVtRRKL8lxX7jfCRQ==
+X-CSE-MsgGUID: H2tDu6cjS8i01DNr1Lex/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; 
-   d="scan'208";a="32554370"
-Received: from unknown (HELO localhost) ([10.245.246.99])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 06:06:22 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 10/11] drm/imx/tve: convert to struct drm_edid
-In-Reply-To: <opukbtmhml563rxrjkg2d6ynysth3id6acscnnnbkrds3ix2xf@gbdxb6e5vvxz>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1715691257.git.jani.nikula@intel.com>
- <2f59a7ad10c29c21f08223ef19221cef48623cc8.1715691257.git.jani.nikula@intel.com>
- <opukbtmhml563rxrjkg2d6ynysth3id6acscnnnbkrds3ix2xf@gbdxb6e5vvxz>
-Date: Mon, 20 May 2024 16:06:19 +0300
-Message-ID: <87v838skdw.fsf@intel.com>
+   d="scan'208";a="32519214"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 06:19:42 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id B6A0811F855;
+	Mon, 20 May 2024 16:19:40 +0300 (EEST)
+Date: Mon, 20 May 2024 13:19:40 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, git@luigi311.com,
+	linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	pavel@ucw.cz, phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v5 21/25] dt-bindings: media: imx258: Add binding for
+ powerdown-gpio
+Message-ID: <ZktN7EcXiqupI9Qd@kekkonen.localdomain>
+References: <20240501152442.1072627-1-git@luigi311.com>
+ <20240501152442.1072627-22-git@luigi311.com>
+ <ZkcV5xWZz2jCszxA@kekkonen.localdomain>
+ <q5nbk3qcxsjsqp4mdyx5nlrn4oie6oynunwodm7r2nwtywc2ey@kxsgcatwt5b2>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <q5nbk3qcxsjsqp4mdyx5nlrn4oie6oynunwodm7r2nwtywc2ey@kxsgcatwt5b2>
 
-On Mon, 20 May 2024, Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
-> On Tue, May 14, 2024 at 03:55:16PM +0300, Jani Nikula wrote:
->> Prefer the struct drm_edid based functions for reading the EDID and
->> updating the connector.
->> 
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> 
->> ---
->> 
->> Cc: Philipp Zabel <p.zabel@pengutronix.de>
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: Maxime Ripard <mripard@kernel.org>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Shawn Guo <shawnguo@kernel.org>
->> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: imx@lists.linux.dev
->> Cc: linux-arm-kernel@lists.infradead.org
->> ---
->>  drivers/gpu/drm/imx/ipuv3/imx-tve.c | 14 ++++++--------
->>  1 file changed, 6 insertions(+), 8 deletions(-)
->> 
->> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
->> index b49bddb85535..29f494bfff67 100644
->> --- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
->> +++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
->> @@ -201,18 +201,16 @@ static int tve_setup_vga(struct imx_tve *tve)
->>  static int imx_tve_connector_get_modes(struct drm_connector *connector)
->>  {
->>  	struct imx_tve *tve = con_to_tve(connector);
->> -	struct edid *edid;
->> -	int ret = 0;
->> +	const struct drm_edid *drm_edid;
->> +	int ret;
->>  
->>  	if (!tve->ddc)
->>  		return 0;
->>  
->> -	edid = drm_get_edid(connector, tve->ddc);
->> -	if (edid) {
->> -		drm_connector_update_edid_property(connector, edid);
->> -		ret = drm_add_edid_modes(connector, edid);
->> -		kfree(edid);
->> -	}
->> +	drm_edid = drm_edid_read_ddc(connector, tve->ddc);
->> +	drm_edid_connector_update(connector, drm_edid);
->> +	ret = drm_edid_connector_add_modes(connector);
->> +	drm_edid_free(drm_edid);
->
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->
-> Nit: if you change two last lines, you can drop ret= assignment and use
-> return drm_edid_connector_add_modes(connector).
->
-> Maybe we shoud add cocci rule for such cases.
+Hi Ondřej,
 
-I think there was a cocci rule like that, but a lot of people (including
-yours truly) preferred to keep the assignment, and the patches ended up
-in bikeshedding, so the cocci was removed.
+On Mon, May 20, 2024 at 02:55:26PM +0200, Ondřej Jirman wrote:
+> On Fri, May 17, 2024 at 08:31:35AM GMT, Sakari Ailus wrote:
+> > Hi Luis,
+> > 
+> > On Wed, May 01, 2024 at 09:24:38AM -0600, git@luigi311.com wrote:
+> > > From: Ondrej Jirman <megi@xff.cz>
+> > > 
+> > > Add powerdown-gpio binding as it is required for some boards.
+> > 
+> > I thought the conclusion was that this wasn't a property of the sensor? If
+> > it needs to be controlled, then this should take place somewhere else than
+> > in the sensor driver.
+> 
+> It's a property of the sensor modules. It's just optional on
+> some, eg. (pin 8):
+> 
+>   https://assets-global.website-files.com/63b65bd4974577341e1fe194/654290d4d0fb173e87f754ed_IMX_258_FF_drawing.png
+> 
+> Where else should it be so that the module is described properly in the 
+> DT and the powerdown signal can be used as part of powerup/down sequence
+> of the sensor?
 
-My argument is that it's not uncommon to keep adding and removing stuff
-while the code evolves, and having to change the return statement is
-boring and makes the diff harder to follow. It's a bit like that extra
-comma at the end of initialization lists or enumeration definitions.
+That's an interesting case. The document does suggest the PWDN pin isn't
+connected though.
 
-Others think the code should reflect current state and not prepare for
-scenarios that might never arrive.
+Is this pin used for something? If so, what is it? The sensor doesn't have
+it and generally the module in this respect just contains wiring.
 
-Both are correct, so it's perfect for never ending bikeshedding. ;)
-
-
-BR,
-Jani.
-
-
->
->>  
->>  	return ret;
->>  }
->> -- 
->> 2.39.2
->> 
+Someone earlier suggested this could have been related to the VCM.
 
 -- 
-Jani Nikula, Intel
+Regards,
+
+Sakari Ailus
