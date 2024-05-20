@@ -1,278 +1,145 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2056.outbound.protection.outlook.com [40.107.104.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44F7137920
-	for <imx@lists.linux.dev>; Mon, 20 May 2024 15:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716219885; cv=fail; b=Gf8javEGWyGstFrSf3PXLo9e6MKQDfwivLfNkV7kUFChJ8FapLLT6m4uMCoX99YZnASU57LIAwhKcckXwNDHj9aZnUOSqxkjxlUPyDrTCMF3BrQ15pdICqMZ+5GdBQc50AB8h70BDmkCl8SoP4jtBDPt5slC+lKhGUK7U2w4WGA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716219885; c=relaxed/simple;
-	bh=GHMBgasvbe9I4qb42G22z721lmtl683Ltn7M68ms+7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NlLyrFuwsxDBIBpnFzIEhXDoP52fkgAFkFMe6WHhK+HKG85dtrMr+ErftWx+2GAjwTkfTlp5ODeTisuXi8Z7Lrgn94o5Hb4LNiniqCIh3DJz7bl6jcpgdfvXYgX3VFYox9X9pe4bOm7z6VWXlPS2yRMBf6TZj6CfEw+VJjA+7ik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=AHWSK9TD; arc=fail smtp.client-ip=40.107.104.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF40A136E37
+	for <imx@lists.linux.dev>; Mon, 20 May 2024 15:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716220544; cv=none; b=TCk+jtWtxAvcWKtpD50wiLLCEY5e0T4xi+zB1+v/FCXQ9I93gTLxhXOQcBl9Y+dT/NB769g3B/DQ5H1Jx1z1uLIbrf7nnu2wd5tzpJVhvWRoXgs8kL+Rt2rWpFCnaMyaP01synz95wAl2oIfnpPYYrE4ovSI5JqSdXTtl7sL92M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716220544; c=relaxed/simple;
+	bh=PKOTCzh7s/Hlw+lCPuwNY7ZQb0fnb29mRHIC+H6JoNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JXL8rijhoBSSyvjje1S2f6b4m3J52wjIEmaHQGhMLmMA8hRoOzYP6YNA/jq/67UIurmXRQvksKn4pwVCWcpixQSgIWAXsjKxQd+pgcCm3wHK5Zml4mmnCvTeDYh4MK/lCLo5HRMZ8Cg6BUVc6NmmvmpPikBH6WA87nLYWfc/RiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mg8M8EHo; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="AHWSK9TD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mWEeH4bE9uRnPNA7ls5ST2+CHOdRramSTvqt6cSh3WIQsSTN22FN6b6DBNeHtDJHpMtPXULuV8UEqxqZEVLvsSAjd7hJq4ZCmAQhWV9Rd2KXv8Oufi4rbLTpZfbjAxgaEwpu6SVhw8cwcmXGfBYZ03PpyRDVsdQiWf0rCcIIhElYEdNTnfY601KbpIak2+FDx2yZJcb8ut5r1ABQxhQK/HWczg0oCbc/vvaSEVxpkkRUEo0B1iLWf/+1OFPpnU/aWeSRkhpKKgBY7FbvaIGJ2M5A5nw6d+F0UGkL5+MLPCVlKraDCCPVpxmOOH+qJ0NHTZqgMLfBbqzyACHr/FRvmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h3dSTccWiVFO5uW8KhqNCmZpfiPtc0LPiyweWivA0ls=;
- b=SdF6vGsFR/Prw4GpodVWNY9eo0RFheDD0Ca7w4M9kvs51eEwCPGl3Eyl+NJ7k0iDxaCYQjVnyBU7ZVr8o5BmjPJpDbwBXm8myFwewxpA9tKdJGu7akZzANHysHbIS1GXbJs652tDLORjuzhCq0oOSgr3wtjSdai9HybnpeS4/pK3co6GRWfhVESVZjxTqeFD4HX0/1M6BoP4BHqkRBXAZhEi9NB6Z+IPnMdk9i7zwGhuopYHPY4LA3evP0GIqBt7rjz8eb9wpsXiBoCmTDxkPP9lp9Z8Zp/8vZD4k4YZDbwppzlJWkFnhiD1+PxGAsAqiVBZaq2eIH8qSAhGFZSPgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h3dSTccWiVFO5uW8KhqNCmZpfiPtc0LPiyweWivA0ls=;
- b=AHWSK9TDl0bpeXBasCJCEUSIWb4iT162ojjZzRrXyNzMwD4VRraQMxqFjwa6m0LhlMk3ss3yZsZB0Su/B3A27uiA0zZyK490CwEpkYfEsKXTTjPBy4JfKJ22pK2zHJwMW8J9jFCP+t1m4aJ1VL880FpwktHFjtuUx/K5G9kwwUs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU0PR04MB9370.eurprd04.prod.outlook.com (2603:10a6:10:359::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Mon, 20 May
- 2024 15:44:39 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::1e67:dfc9:d0c1:fe58%7]) with mapi id 15.20.7587.030; Mon, 20 May 2024
- 15:44:39 +0000
-Date: Mon, 20 May 2024 11:44:28 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
-	sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, marex@denx.de,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de,
-	shengjiu.wang@gmail.com
-Subject: Re: [PATCH v4 2/5] clk: imx: clk-audiomix: Add reset controller
-Message-ID: <Zktv3OcDbV1cggP1@lizhi-Precision-Tower-5810>
-References: <1716188963-16175-1-git-send-email-shengjiu.wang@nxp.com>
- <1716188963-16175-3-git-send-email-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1716188963-16175-3-git-send-email-shengjiu.wang@nxp.com>
-X-ClientProxiedBy: BYAPR08CA0060.namprd08.prod.outlook.com
- (2603:10b6:a03:117::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mg8M8EHo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716220543; x=1747756543;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=PKOTCzh7s/Hlw+lCPuwNY7ZQb0fnb29mRHIC+H6JoNQ=;
+  b=mg8M8EHonEG9iIMfm5PudNyIRXC1T+aDIHzPF6vnvgh1jbgA8Hrpwc+i
+   9SfPSBmnTTLSZdyepGIQNyfR8l+/Yx/b8wzN73lmQLyixNwRJmUyFy44G
+   bEXptH69qz+S3oqEc19gE429RV+fvHJ7DUXl7G4mFsTzu0qX1d9cXL27z
+   3Zxsr8EChJ7OOzmGbnOoRwy9FollX4NJCsM7LzkZwCGVGVxIixBJ4RBVB
+   2BM91t1YIKdEYnznBZK7/vRkw9kYbs1uNVAS1jr9U/S09E+Nae2a4xb7L
+   4QTuv4N4voqQSnIJhTHt1U55YA1gGkMWTkFuOHzuNHZyX9ql8B9Sj3wjR
+   Q==;
+X-CSE-ConnectionGUID: Aw9yWDPNSIq0jXX40qit+g==
+X-CSE-MsgGUID: So4KsFhWRzeOncARUdocrA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12233873"
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; 
+   d="scan'208";a="12233873"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 08:55:42 -0700
+X-CSE-ConnectionGUID: Zk9AkXmXQXCmMVOXmQSITw==
+X-CSE-MsgGUID: 9ILVEuteSYeDWdkOJH4GYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; 
+   d="scan'208";a="37346120"
+Received: from daliomra-mobl3.amr.corp.intel.com (HELO [10.125.109.51]) ([10.125.109.51])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 08:55:39 -0700
+Message-ID: <77e9221e-05d2-453f-9ce1-ff4a4b53d09d@linux.intel.com>
+Date: Mon, 20 May 2024 10:55:38 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9370:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b8e66e2-79f7-402b-5e81-08dc78e3c271
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|52116005|7416005|366007|1800799015|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GBt05SBQvIQx/sOM3J6IREW86mGW/bvk3XOp5PhYNRVUk/lNTLEipmi1lFq+?=
- =?us-ascii?Q?3irnbIAbA6hsTNxcQGP3WyQq8JR4tdmC0FFspDn0njG5Uav8uAEhHwpERYbW?=
- =?us-ascii?Q?OFNdWMU/KJbhQP0xm2CWxnvgMg3eR0TZX9U2dj97WuodusMfyhxUAepJl7Vc?=
- =?us-ascii?Q?WYbv55RSa23KkaSIWD2R/9hrEWMQpi++eRyPqS2QtONKrEt0tM1g3oEQESp9?=
- =?us-ascii?Q?E/jDrU1Ez0kPkpuWeoswOwQ1Yi7JSpmnyJb6MRm5mYjEUDG0w+lSQzYI8ewB?=
- =?us-ascii?Q?g7Q9HaIqB2T+XXmcxE3xEMWFBM9kTGsrsdxggTWd33uruoZ2ttXSA+KBAFsD?=
- =?us-ascii?Q?a6KwGdexpY8tK6kSewSvLVylWyrEhKv70UBxPyg8HsWibcZJ408+ctjr/bp4?=
- =?us-ascii?Q?3Xp2egCO1X7uwvwsYN66Ob1WFvzwDKJHG2F0RXm3sCrvWF8tjIEQcDDeRAkE?=
- =?us-ascii?Q?cH6sNuEN4dUn842ApAvsZrzRk1ATp70uq1haiZDTHG4ccLvKRd/hMk4VxGAc?=
- =?us-ascii?Q?Y/+puTJkThCjZJlMTPYxLZkc4OhP0xU6Wf8QaOCJBaf4qo7nIySYvRlbnnYb?=
- =?us-ascii?Q?IfniA6oixxRcNQX6SrcM3KZe2LvJn9M37g7gsHpLnbKwka5iK+h0Xh1HWb/6?=
- =?us-ascii?Q?o4zRAmWCfiDItK5uh3S/vAYOCGqHcyX5BTaRdq/NLBKZbL5fL/Tldl9OTzgm?=
- =?us-ascii?Q?6AorYXXpOt7yE1ZTGatEwdfPu95aSD6xOJEgSHB4dnwyFtPCp1EfLJOiSEHF?=
- =?us-ascii?Q?smCYryA/pGvme71fLCj+WaLW4pwzyRwZ1fMr+NtllIDTpck6XcUOmWIssIGR?=
- =?us-ascii?Q?xt/d7RjJgbrVgqHov1p8bCKV4Y5/3VjA6lYNRyIMRbpV2SwIXhCxWFHy8FVK?=
- =?us-ascii?Q?GD4V548JUjBEiF0fLZkd8g4ZLEq1Innx0uV5KdM2HJyNGdmO+ZNFsz1IJFUY?=
- =?us-ascii?Q?30U3fymGJkH1J/55afJzrFD8n/GwMXaI34sZnQ/pt/hn24t9EZTZDHupCsNj?=
- =?us-ascii?Q?nN9icFsdhnT8cdw7AVufXmrH8+enZFMvGQGoOhUW9NHyUrUZyDApOtx/Fgh7?=
- =?us-ascii?Q?EFxT1WSSRcOk17erdjC5Wz1cVb0zh5sFT7VPVRwD8BkJSdGBHfI7O/FKDc1s?=
- =?us-ascii?Q?2pQLZUAgFwzztn+y/z0vyPy7znkCefJqGYQItz4RbEV1LJLJwq0pzPhzT8P7?=
- =?us-ascii?Q?+sg4OMVlUBLTFhl6E4iVIc1yhOMrquVW7FhYnygQn9v5ZDl1AiYF5s82XEZm?=
- =?us-ascii?Q?WStU/16BoPU7YSypZOGLLLR2aNnX2ogODjn12z0z6i1BcUU3yajPyULexEMg?=
- =?us-ascii?Q?1PyFylyQOwPf6MbKghs0jwxxiHGL3cRjK8k5ZN+n6u8whg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(7416005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5GtSpWwmTcnFNlcTaliMC3o/kmPSEzmrdZYcY+9JU/eu9n8ghumUuXdB9/Nf?=
- =?us-ascii?Q?S9KfqCCf3jJdZYUOs35ntmSpLtXNhO+/MUI2xgT1O/jN/cgxKJ5KaCD/vAsp?=
- =?us-ascii?Q?YflPy0Av8SPXWeIDz/U+J+mAfVHqxUaEDLImfEctTV9ygSsNzpaTJdJcc38D?=
- =?us-ascii?Q?MyGN1sSrkk9Q35YpFFs2pGYJq1JiLuChOfiPyRwHqJi/P+DtshaF4w1Pqjbz?=
- =?us-ascii?Q?75EXrSCvPzuHwmn7N3zAQKBhby5wC8VewyJd8TlaZYZAPUbzvDkEpZx5f2bJ?=
- =?us-ascii?Q?7nR90GYFAwp7c9WM8z8X0QyjoDR3zMiQ5/HM6atrTWx/lAbV/oerkVoZ59DE?=
- =?us-ascii?Q?X7KqIttodfhV8ioAopJs5CHrovcDvrv5DbSxqHinCpJCsBCqcbBEBunv3WPO?=
- =?us-ascii?Q?xBquE5SPJryAntq+vWQ3zaGRLPsAZJZUmYhtlrEDRor2u1gxhstt0TnQ6owC?=
- =?us-ascii?Q?Q5QngH9eIIeQktkQ+/lnoThlvBD2ha/NPxj61fyGlob1r1hqIDWP1j4YrMAy?=
- =?us-ascii?Q?opbZjtFKXOi5HXQBAtDrVq6bs6Amb8RHqb8i1pdujXyTCSVZtsVO/0QC9Hjf?=
- =?us-ascii?Q?tsxHUywIovemhRGB32iYkUDf22XfdXkq4ZTRkGvaHTrOyrsH1W9DZMx2xgYC?=
- =?us-ascii?Q?MN+G9zlNrnOd7L7FrlC8qVmWDaPe+Oz7KDq5YEc4ERmodIKQ3VLa/8A3COel?=
- =?us-ascii?Q?JVemwDZpZDh3FXJQ0roGhDCDppY/Sn0ItijGbQ6JuGxQnmHsKaHmEJcqNVlx?=
- =?us-ascii?Q?xONRZQEhDK15o28Z1M65UHsXxObq9NWmM5CSDVSkmEDkkzsd2piPROuxwttN?=
- =?us-ascii?Q?udPTgWsnw+Km80xVEF6ZZLsrkYmb2PM9vF199Wr8c2I6U25GO0IXcAZ9UA1J?=
- =?us-ascii?Q?pEqbNY1d0A3pKimYducJVh0MRQWIhAPn0YNrT9JmMM0WE0BcEGdzLa9powGd?=
- =?us-ascii?Q?CuHMdRHsb5qpLtIklMd79nJkw6KdqQaBIGaDs9jkxAijXMz1c+aYBhmUCkDF?=
- =?us-ascii?Q?xlKD8P2cuQDY/jP78hZgHxr5FuZ+95TBe9ENgczvAvQ/dHIp8e8ugyiW2hoi?=
- =?us-ascii?Q?BOz842q47DhHoEquTQqB+3o68/N6t6ictixNZkoPE+08JWNBGkd+mFZy6pf0?=
- =?us-ascii?Q?sLqRpDY+cNm8hNQlDsZWBt3G0ZA4g1wo9VCugecf0QYxxJVhx1eyVEwp4RBL?=
- =?us-ascii?Q?TGf6ZJG4LVVTOV+pdKLCNNcmC4FId4SatwaXMyyoCxhYayn9TRAczEBzytQC?=
- =?us-ascii?Q?o3BM1Dujlc5JkwFmifJy855FaA6lRKssuDDs/JWwWhghpEnH+FP/f9mEIwYb?=
- =?us-ascii?Q?XN44K5BI+T7lr1v7mmVeSqTDnkAs/o8wCagQlW+6O2Lfovi0tFuqTmJRIsFl?=
- =?us-ascii?Q?WfzdkBxkbjXyoJd1GnJGqRdfIv/VKi5Dv22oXcAhBlezXoqK76dggXbzRB5y?=
- =?us-ascii?Q?f2onCg5U819usUBcigJ3i4HSpJg+TxIr7shgi8v9V7IftGvY9Mf5Yf9ADsff?=
- =?us-ascii?Q?4lCdnH6jwCWMJobD8GrMW/FRwBsgi/C3/K4leHoVD8zXhbkXOF7EkwaZtc9O?=
- =?us-ascii?Q?NvwxxKs6poU+QxslwAt/BWO1kbOud4eYX3qTnezS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b8e66e2-79f7-402b-5e81-08dc78e3c271
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2024 15:44:39.6136
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k/TNDr1tHyQSn+pINnOAm7QnzKabc4c0k3skFH5rOMwWREtcclzPdFf6WUSiRpIJZe4un2Rl+UwyT3xS+VtoFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9370
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] ASoC: soc-pcm: Indicate warning if CPU / Codec
+ availability mismatch
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Banajit Goswami <bgoswami@quicinc.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>,
+ Jiawei Wang <me@jwang.link>, Jonathan Corbet <corbet@lwn.net>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Maso Huang <maso.huang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>,
+ Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-sound@vger.kernel.org
+References: <87msole5wc.wl-kuninori.morimoto.gx@renesas.com>
+ <87jzjpe5vh.wl-kuninori.morimoto.gx@renesas.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <87jzjpe5vh.wl-kuninori.morimoto.gx@renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 20, 2024 at 03:09:20PM +0800, Shengjiu Wang wrote:
-> Audiomix block control can be a reset controller for
-> Enhanced Audio Return Channel (EARC), which is one of
-> modules in this audiomix subsystem.
+
+
+On 5/19/24 18:31, Kuninori Morimoto wrote:
+> Current DCPM is checking CPU side availability only, but it should also
+> check Codec availability. But because of long DPCM operation history,
+> it is possible that the some Codec driver check have been bypassed.
 > 
-> The reset controller is supported by the auxiliary device
-> framework.
+> It should be error, but let's add grace time to update driver.
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  drivers/clk/imx/Kconfig               |  1 +
->  drivers/clk/imx/clk-imx8mp-audiomix.c | 61 +++++++++++++++++++++++++++
->  2 files changed, 62 insertions(+)
-> 
-> diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
-> index 6da0fba68225..9edfb030bea9 100644
-> --- a/drivers/clk/imx/Kconfig
-> +++ b/drivers/clk/imx/Kconfig
-> @@ -81,6 +81,7 @@ config CLK_IMX8MP
->  	tristate "IMX8MP CCM Clock Driver"
->  	depends on ARCH_MXC || COMPILE_TEST
->  	select MXC_CLK
-> +	select AUXILIARY_BUS
->  	help
->  	    Build the driver for i.MX8MP CCM Clock Driver
->  
-> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> index b381d6f784c8..d2eaabe431cd 100644
-> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> @@ -5,6 +5,7 @@
->   * Copyright (C) 2022 Marek Vasut <marex@denx.de>
->   */
->  
-> +#include <linux/auxiliary_bus.h>
->  #include <linux/clk-provider.h>
->  #include <linux/device.h>
->  #include <linux/io.h>
-> @@ -217,6 +218,62 @@ struct clk_imx8mp_audiomix_priv {
->  	struct clk_hw_onecell_data clk_data;
->  };
->  
-> +#if IS_ENABLED(CONFIG_RESET_CONTROLLER)
-> +
-> +static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
-> +{
-> +	struct auxiliary_device *adev = _adev;
-> +
-> +	auxiliary_device_delete(adev);
-> +	auxiliary_device_uninit(adev);
-> +}
-> +
-> +static void clk_imx8mp_audiomix_reset_adev_release(struct device *dev)
-> +{
-> +	struct auxiliary_device *adev = to_auxiliary_dev(dev);
-> +
-> +	kfree(adev);
-> +}
-> +
-> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
-> +							 struct clk_imx8mp_audiomix_priv *priv)
-> +{
-> +	struct auxiliary_device *adev;
-> +	int ret;
-> +
-> +	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+> This patch indicates warning in above case. Each applicable driver need
+> to update during this grace time.
 
+...
 
-You may use scoped free
-
-	struct auxiliary_device *adev __free(kfree) = kzalloc(sizeof(*adev), GFP_KERNEL);
-
-> +	if (!adev)
-> +		return -ENOMEM;
+> +		/*
+> +		 * REMOVE ME
+> +		 *
+> +		 * Current DPCM is checking CPU side only, but both CPU and Codec should be
+> +		 * checked. Indicate warning if there was CPU / Codec mismatch.
+> +		 * To keep compatibility, warning only for now.
+> +		 */
+> +		if ((dai_link->dpcm_playback || dai_link->playback_only) &&
+> +		    !has_playback_both)
+> +			dev_warn(rtd->card->dev,
+> +				 "System requests playback, but not available (%s)."
+> +				 " Please update Codec driver\n",
+> +				 dai_link->stream_name);
+> +		if ((dai_link->dpcm_capture || dai_link->capture_only) &&
+> +		     !has_capture_both)
+> +			dev_warn(rtd->card->dev,
+> +				 "System requests capture, but not available (%s)."
+> +				 " Please update Codec driver\n",
+> +				 dai_link->stream_name);
 > +
-> +	adev->name = "reset";
-> +	adev->dev.parent = dev;
-> +	adev->dev.release = clk_imx8mp_audiomix_reset_adev_release;
-> +
-> +	ret = auxiliary_device_init(adev);
-> +	if (ret) {
-> +		kfree(adev);
-> +		return ret;
-> +	}
 
-if use scoped free, 
+I mentioned in my previous feedback that this isn't quite right. There
+are cases where the CPU dai reports capabilities that the codec DAI does
+not support - e.g. when the AEC reference is generated in firmware on
+the host DSP.
 
-	if (ret)
-		return ret;
+And sure enough we get that warning in the first test:
 
-> +
-> +	ret = auxiliary_device_add(adev);
-> +	if (ret) {
-> +		auxiliary_device_uninit(adev);
-> +		kfree(adev);
-> +		return ret;
+https://sof-ci.01.org/linuxpr/PR5005/build3040/devicetest/index.html?model=GLK_BOB_DA7219-ipc3&testcase=verify-kernel-boot-log
 
-the same here. 
+May 20 13:35:38 jf-glk-bob-da7219-1 kernel: sof_da7219 glk_da7219_def:
+System requests capture, but not available (SSP1-Codec). Please update
+Codec driver
 
-> +	}
-> +
-> +	return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev, adev);
-
-if use scope free
-	return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev, no_free_ptr(adev));
-
-> +}
-> +
-> +#else /* !CONFIG_RESET_CONTROLLER */
-> +
-> +static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8mp_audiomix_priv *priv)
-> +{
-> +	return 0;
-> +}
-> +
-> +#endif /* !CONFIG_RESET_CONTROLLER */
-> +
->  static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
->  {
->  	struct clk_imx8mp_audiomix_priv *priv = dev_get_drvdata(dev);
-> @@ -337,6 +394,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto err_clk_register;
->  
-> +	ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
-> +	if (ret)
-> +		goto err_clk_register;
-> +
->  	pm_runtime_put_sync(dev);
->  	return 0;
->  
-> -- 
-> 2.34.1
-> 
+For those systems, trying to match CPU and codec dais is not going to
+work. Either we skip this verification or we have an escape mechanism to
+avoid triggering errors.
