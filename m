@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8C951C5F;
-	Tue, 21 May 2024 07:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE2D54777;
+	Tue, 21 May 2024 08:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716278345; cv=none; b=PsWo2+Oht6ax8MCHIersHz9VKOiEoqNePowE44I2hqsYofO3VAIrclwAgohSRr2Bo+P0nVyTczyCDQtc+hoP+Ygfw8yQfCj/t31fQKmP05G5D5Jh90Z6YywKN2CUB7z0ZBeHjqVNamAOl84dFd6J8rIf02DkhuHtoXi2bVbRnb8=
+	t=1716280015; cv=none; b=SWmJn9d1LxL+P1IJ5xz6WwYXaHCxfGhtlWxKzyE+X+4qdtdsTeMkNR/9E72Ye9Mz5RTRLHhjhorKw2lVPyIWdPYAevkw9r6Fq/IwuRjWOn1yCZ9iBQxpgcM4i9c3O/U8wibbWreHQoXAL5K1XWG5e3MjBgG9AVM9Z3hu1z1ey80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716278345; c=relaxed/simple;
-	bh=FS9DQ4RsdW/wKyzu3gL+ApzVoigUb1QeBR3iqUhplBA=;
+	s=arc-20240116; t=1716280015; c=relaxed/simple;
+	bh=tv6yy5kHc6AAE39BqUVHJ2LFtdoFuzOvYG6HtKaB4Pk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JU7d12E/Emgmd3p2rK3IfTlYxRUS9y+r8KPK60e0MAA7Jjr3cDaUiR3PHIgo2NBQhRsLFb9WSaQYoiU6HDriUCfZY3lJf9IDJK306tKg0NOvRkSBq5Os1mJXMJ6uv6h5PNjNxHYsa43CzpdmT0UkQNid0OqV5pQ8maMqCKdsJHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4ADaoeW; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Yh0j8Tkg2EKoTXI7+AMw2vQ1QY6A12ffUeWF+4SVsMiHjXNjHmeFug1p1BGr5VwlBQuMm0u35EV1QNG4Fa07pWkT00PtagX/CY1Mp/vUujrngEUmHyEO3qDwnaIfXbZl3UfPH+jh2OV5jxvos4N8hgA0XVM4o5z7iZCOvV9u23s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DeAtIO/I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4ADaoeW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340CEC2BD11;
-	Tue, 21 May 2024 07:59:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DeAtIO/I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B9CC2BD11;
+	Tue, 21 May 2024 08:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716278344;
-	bh=FS9DQ4RsdW/wKyzu3gL+ApzVoigUb1QeBR3iqUhplBA=;
+	s=k20201202; t=1716280014;
+	bh=tv6yy5kHc6AAE39BqUVHJ2LFtdoFuzOvYG6HtKaB4Pk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=u4ADaoeW9KYO81+dk8O/RPfZbUlxYU1sC3CmI5IYqlMrTenR7GbfRFt5iXb+Fk+vU
-	 vA7MVcSDS0Dq3aQL484kTd0aIuV1VKzlXEOv9S5XDxaXnBxM6T+DQ53VlbEkBYh9sm
-	 isDbq4TrDixPxLoKp2Me3eG3NnhleNdi5tn6bSCXGGUq09oMZgDhp7AKxtKl1Mv3gU
-	 Dk6TOej3byUHBnsEaCtw1ed0gdDvbBpTO7TzNj0jCQKT0yY1/Q/lhRT11fovEOxtXm
-	 B7/Yqa86vMdnjmvMG7g2ezj51XbcZV0cW0ErRaYxs+13IGyXzEoPvp7vO3mmKCISxA
-	 zw83S48gfee3g==
-Message-ID: <a3c76bd2-f453-4320-8675-66ecb4bc6fc8@kernel.org>
-Date: Tue, 21 May 2024 09:59:00 +0200
+	b=DeAtIO/IMKUgSJl2VhFPZMh2EPp+bLNHxDBVjluZ+tQeUif3WB/9HJvhdNwNKKnPk
+	 K3Nb17yJHuMjwnV6MRjnKCOxTLlW4Z01tbjHf8v6/f+ZH6XtQhNAy79rL+YbRDnh+4
+	 MC4ZYfWDuEq8SSlgJudgRA/ZzFDWYEridFAPzhuulzP35UEwi75Ahx0v27RKFoP1/q
+	 iiDUQ40YzFR9JXX584cyYVpyRfc1622rzORW+FaFFFrV49x0jh6j5e/h8is80uL777
+	 qQMaaEOjOyveietda0tsTrA+UHZvDtsGCRePJUngawYvLhs3UCjJ3t/STdZb64Fxvk
+	 Rx5NQmww9FVgw==
+Message-ID: <8a0e5863-27f7-47e4-9325-a686d5adffec@kernel.org>
+Date: Tue, 21 May 2024 10:26:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,17 +35,16 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: rtc: Convert rtc-fsl-ftm-alarm.txt to
- yaml format
-To: Frank Li <Frank.Li@nxp.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Subject: Re: [PATCH 1/1] dt-bindings: fsl-qdma: Convert to yaml format
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
- "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
+ "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
+ <dmaengine@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20240520214614.863539-1-Frank.Li@nxp.com>
+References: <20240520203907.749347-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,172 +90,102 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240520214614.863539-1-Frank.Li@nxp.com>
+In-Reply-To: <20240520203907.749347-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 20/05/2024 23:46, Frank Li wrote:
-> Convert dt-binding doc "rtc-fsl-ftm-alarm.txt" to yaml format.
+On 20/05/2024 22:39, Frank Li wrote:
+> Convert binding doc from txt to yaml.
 > 
-> Change example's reg to 32bit address and length.
-> Remove unrelated rcpm@1e34040 in example.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     make dt_binding_check DT_SCHEMA_FILES=rtc-fsl-ftm-alarm.yaml
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       CHKDT   Documentation/devicetree/bindings
->       LINT    Documentation/devicetree/bindings
->       DTEX    Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.example.dts
->       DTC_CHK Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.example.dtb
-> 
->  .../bindings/rtc/rtc-fsl-ftm-alarm.txt        | 36 -----------
->  .../bindings/rtc/rtc-fsl-ftm-alarm.yaml       | 61 +++++++++++++++++++
->  2 files changed, 61 insertions(+), 36 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
->  create mode 100644 Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
-> deleted file mode 100644
-> index fffac74999da6..0000000000000
-> --- a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
-> +++ /dev/null
-> @@ -1,36 +0,0 @@
-> -Freescale FlexTimer Module (FTM) Alarm
-> -
-> -Required properties:
-> -- compatible : Should be "fsl,<chip>-ftm-alarm", the
-> -	       supported chips include
-> -	       "fsl,ls1012a-ftm-alarm"
-> -	       "fsl,ls1021a-ftm-alarm"
-> -	       "fsl,ls1028a-ftm-alarm"
-> -	       "fsl,ls1043a-ftm-alarm"
-> -	       "fsl,ls1046a-ftm-alarm"
-> -	       "fsl,ls1088a-ftm-alarm"
-> -	       "fsl,ls208xa-ftm-alarm"
-> -	       "fsl,lx2160a-ftm-alarm"
-> -- reg : Specifies base physical address and size of the register sets for the
-> -  FlexTimer Module.
-> -- interrupts : Should be the FlexTimer Module interrupt.
-> -- fsl,rcpm-wakeup property and rcpm node : Please refer
-> -	Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> -
-> -Optional properties:
-> -- big-endian: If the host controller is big-endian mode, specify this property.
-> -  The default endian mode is little-endian.
-> -
-> -Example:
-> -rcpm: rcpm@1e34040 {
-> -	compatible = "fsl,ls1088a-rcpm", "fsl,qoriq-rcpm-2.1+";
-> -	reg = <0x0 0x1e34040 0x0 0x18>;
-> -	#fsl,rcpm-wakeup-cells = <6>;
-> -};
-> -
-> -ftm_alarm0: timer@2800000 {
-> -	compatible = "fsl,ls1088a-ftm-alarm";
-> -	reg = <0x0 0x2800000 0x0 0x10000>;
-> -	fsl,rcpm-wakeup = <&rcpm 0x0 0x0 0x0 0x0 0x4000 0x0>;
-> -	interrupts = <0 44 4>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
-> new file mode 100644
-> index 0000000000000..69b44e9920033
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
+> Re-order interrupt-names to align example.
 
-fsl,ls-ftm-alarm.yaml
 
-or
-
-fsl,ls1012a-ftm-alarm.yaml
-
-> @@ -0,0 +1,61 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/rtc/rtc-fsl-ftm-alarm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale FlexTimer Module (FTM) Alarm
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - fsl,ls1012a-ftm-alarm
-> +      - fsl,ls1021a-ftm-alarm
-> +      - fsl,ls1028a-ftm-alarm
-> +      - fsl,ls1043a-ftm-alarm
-> +      - fsl,ls1046a-ftm-alarm
-> +      - fsl,ls1088a-ftm-alarm
-> +      - fsl,ls208xa-ftm-alarm
-> +      - fsl,lx2160a-ftm-alarm
+> +      - fsl,ls1021a-qdma
+> +      - fsl,ls1028a-qdma
+> +      - fsl,ls1043a-qdma
+> +      - fsl,ls1046a-qdma
 > +
 > +  reg:
-> +    description:
-> +      Specifies base physical address and size of the register sets for the
-> +      FlexTimer Module.
-
-Drop description, redundant.
-
-> +    maxItems: 1
+> +    items:
+> +      - description: Controller regs
+> +      - description: Status regs
+> +      - description: Block regs
 > +
 > +  interrupts:
-> +    description: Should be the FlexTimer Module interrupt.
-
-Drop description, redundant.
-
-
-> +    maxItems: 1
+> +    minItems: 2
+> +    maxItems: 5
 > +
-> +  fsl,rcpm-wakeup:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +  interrupt-names:
+> +    minItems: 2
+> +    items:
+> +      - const: qdma-error
+> +      - const: qdma-queue0
+> +      - const: qdma-queue1
+> +      - const: qdma-queue2
+> +      - const: qdma-queue3
+> +
+> +  dma-channels:
+> +    minItems: 1
+> +    maxItems: 64
 
-Please describe the items (see syscon-like phandles).
+That's not a list. Did you just copy buggy fsl-edma?
 
+> +
+> +  fsl,dma-queues:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Should contain number of queues supported.
+
+Constraints?
+
+> +
+> +  block-number:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: the virtual block number
+> +
+> +  block-offset:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: the offset of different virtual block
+> +
+> +  status-sizes:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: status queue size of per virtual block
+> +
+> +  queue-sizes:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
 > +    description:
-> +      phandle to rcpm node, Please refer
-> +      documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> +      command queue size of per virtual block, the size number
+> +      based on queues
 > +
 > +  big-endian:
 > +    $ref: /schemas/types.yaml#/definitions/flag
 > +    description:
-> +      If the host controller is big-endian mode, specify this property.
-> +      The default endian mode is little-endian.
+> +      If present registers and hardware scatter/gather descriptors
+> +      of the qDMA are implemented in big endian mode, otherwise in little
+> +      mode.
 > +
 > +required:
 > +  - compatible
 > +  - reg
 > +  - interrupts
-> +  - fsl,rcpm-wakeup
+> +  - interrupt-names
+> +  - fsl,dma-queues
+> +  - block-number
+> +  - block-offset
+> +  - status-sizes
+> +  - queue-sizes
 > +
-
-Missing allOf with ref to rtc.yaml.
-
 > +unevaluatedProperties: false
-
-becauase otherwise above does not make much sense... unless this is not
-a RTC?
-
 > +
-> +examples:
-> +  - |
-> +    timer@2800000 {
+> +allOf:
+> +  - $ref: dma-controller.yaml#
 
-timer or rtc?
+This goes above unevaluatedProperties.
 
-> +        compatible = "fsl,ls1088a-ftm-alarm";
-> +        reg = <0x2800000 0x10000>;
-> +        fsl,rcpm-wakeup = <&rcpm 0x0 0x0 0x0 0x0 0x4000 0x0>;
-> +        interrupts = <0 44 4>;
+Please constrain interrupts per variant.
 
-Include proper header and use defines for GIC and flags.
-
-> +    };
 
 Best regards,
 Krzysztof
