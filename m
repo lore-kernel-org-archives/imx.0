@@ -1,77 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FFF7EF18;
-	Tue, 21 May 2024 13:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964A67F7C1;
+	Tue, 21 May 2024 14:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716299905; cv=none; b=jt0P2o/wyjbY5AWdlXHuP5pZuDrihYuhoiRET7TCFj7jXHdQgZl6Z4WwjsDoxtcLTInR0cNM4uqnCnThHLK2x3oh6DOAXaG+fWI6II71fuNiCQqcvvB2SBzlKdhESFZu4dAFdVgIUNnc1VcHAM5eBtMx1DkrU+pQzOqIucdqpMg=
+	t=1716300874; cv=none; b=TxbmjBbuW/l2XH7/IjXy5QdWvqs5ylbHWAnsMwhBR62yx4VtJ4yWDn2C4P28yyTxyMA92ZCODjyu42C9EnD23mPXPC1F+EY5fklwp/bWw8s9AoManAnxNopb3ocwo5JWRqB6jmSn+UoDKPrC/SGHmNhqWgjRwb0lQWUwearGzn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716299905; c=relaxed/simple;
-	bh=5HmqnqzsCxCFATCFiGYJDXxeivAzpUBsJa0zJPKEjyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZGGN+UaLgHCqsdAZFuTJ3CY5j6LTX4tIULuGTpuII/y/jC+0ZwDdYZHNrRrGE1bvCdLTPF00qe4XwaxsFhvyjlSMTDpg2cmenIQsATstGnPzmd1MSZ6I/dj+PUQogEN0YB5l1kj2YY7LyJwpWGuUoEju2P7ariPU9AIpsB0AYBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+PRTIpK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716300874; c=relaxed/simple;
+	bh=AY9z2jOOOiWR4ihFpXH0l9LYmrbHOhfxQ20WcMzm54U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=BrHiCoKdTwlugHcka0qTDTYr3+VaWXwgC0hrVGh1OFgHBFW+iVoozExzXTH2/4ATYSTwh28xPXJ7Dn1i6ccO+ZFSZMNdtfeqqs+caBeMWVR/zTPzrDWsv0fH/wI7xgysaPI67PM1uLuuVOiW87zOLy+Iyc6poOd1d0+cggz27n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtLLmbNU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+PRTIpK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010D0C2BD11;
-	Tue, 21 May 2024 13:58:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtLLmbNU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AA5C2BD11;
+	Tue, 21 May 2024 14:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716299905;
-	bh=5HmqnqzsCxCFATCFiGYJDXxeivAzpUBsJa0zJPKEjyM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j+PRTIpKK8u+UHgOf9az9SySkFMZ+a4n0cu7VdC8zw2I3xA0P4gEK7BKH+rSh15Fn
-	 UUlRp5eC1zF7G4eKzbdwRnzs4iIEVN4gnv5cIsEgr0UquISM4cg15xd109f6LyH+/x
-	 EMmqw7aQbIkmP2UWcLvDfQEvmIxyKnI0TJX9cOtAO+eyVd3Zd8ztwvkB8otr/dC6ri
-	 eTGEyjFVQ4bAngNWO5jddw/L3iKIw51D/KqMfnLKsq/SD4/lCkVJ69N9XBIuBVbyeV
-	 TNDPxdX/NmLV0jJYpw9zb39lUMHZw2BtiS9Ng0bs9cFXjeYLs3n2XkMxOPfb23Gn+O
-	 SQqDllUEmCL4w==
-Date: Tue, 21 May 2024 08:58:23 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Jacky Bai <ping.bai@nxp.com>,
-	linux-gpio@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-kernel@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/3] dt-bindings: firmware: arm,scmi: Add properties for
- i.MX95 Pinctrl OEM extensions
-Message-ID: <171629989985.3959039.18302222463531901927.robh@kernel.org>
-References: <20240521-pinctrl-scmi-imx95-v1-0-9a1175d735fd@nxp.com>
- <20240521-pinctrl-scmi-imx95-v1-1-9a1175d735fd@nxp.com>
+	s=k20201202; t=1716300874;
+	bh=AY9z2jOOOiWR4ihFpXH0l9LYmrbHOhfxQ20WcMzm54U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=UtLLmbNUJPJuLX2G+rdPKrRs7Ld64KuKOmLlxZ2dTcolrqBtoDWoaKqStL+aY95ve
+	 WIkYNwO7nZeBFPRPVSQuyf6byue/iEs0+gIxT86alE5gxzb9BJewOmkgt0faX4Ht/A
+	 d2Dc56JmsOUM1mDwqRDsuN40nf27LcmEKNLQHMr/NUS8Ay+te6wDx47kht6jMDdLr0
+	 y9UpyW/ZwIeNxJ3nDTZ9cmSrlpWAp67K9fItN0K6vW0Rm/QEWkmPe7Oi9YcNoUFkL6
+	 pcm5XQ2zyXLRQnZMLVX1p+XWn0NfMK1EuQCFwl6e4jX5quZjTuH7U1XZkZ/Cb5fmjp
+	 H5k1enDRV9Q4A==
+Date: Tue, 21 May 2024 09:14:31 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	bhelgaas@google.com, mani@kernel.org, Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev, jdmason@kudzu.us, jingoohan1@gmail.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org, dlemoal@kernel.org
+Subject: Re: [PATCH v4 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <20240521141431.GA25673@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240521-pinctrl-scmi-imx95-v1-1-9a1175d735fd@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zkx0lzP76bmp4K0r@ryzen.lan>
 
+On Tue, May 21, 2024 at 12:16:55PM +0200, Niklas Cassel wrote:
+> On Sat, May 18, 2024 at 02:06:50AM +0900, Krzysztof Wilczyński wrote:
+> > Hello,
+> > 
+> > > When PERST# assert and deassert happens on the PERST# supported platforms,
+> > > the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
+> > > to the area that was previously allocated (iATU0) for BAR0, instead of the
+> > > new area (iATU6) for BAR0.
+> > > 
+> > > Right now, we dodge the bullet because both iATU0 and iATU6 should
+> > > currently translate inbound accesses to BAR0 to the same allocated memory
+> > > area. However, having two separate inbound mappings for the same BAR is a
+> > > disaster waiting to happen.
+> > > 
+> > > The mapping between PCI BAR and iATU inbound window are maintained in the
+> > > dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
+> > > a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
+> > > of the existing mapping in the array and if it is not found (i.e., value in
+> > > the array indexed by the BAR is found to be 0), then it will allocate a new
+> > > map value using find_first_zero_bit().
+> > > 
+> > > The issue here is, the existing logic failed to consider the fact that the
+> > > map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
+> > > will return '0' as the map value for BAR0 (note that it returns the first
+> > > zero bit position).
+> > > 
+> > > Due to this, when PERST# assert + deassert happens on the PERST# supported
+> > > platforms, the inbound window allocation restarts from BAR0 and the
+> > > existing logic to find the BAR mapping will return '6' for BAR0 instead of
+> > > '0' due to the fact that it considers '0' as an invalid map value.
+> > > 
+> > > So fix this issue by always incrementing the map value before assigning to
+> > > bar_to_atu[] array and then decrementing it while fetching. This will make
+> > > sure that the map value '0' always represents the invalid mapping."
+> > 
+> > Applied to controller/dwc, thank you!
+> > 
+> > [1/1] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
+> >       https://git.kernel.org/pci/pci/c/cd3c2f0fff46
+> > 
+> > 	Krzysztof
+> 
+> Hello PCI maintainers,
+> 
+> There was a message sent out that this patch was applied, yet the patch does
+> not appear to be part of the pull request that was sent out yesterday:
+> https://lore.kernel.org/linux-pci/20240520222943.GA7973@bhelgaas/T/#u
+> 
+> In fact, there seems to be many PCI patches that have been reviewed and ready
+> to be included (some of them for months) that is not part of the pull request.
+> 
+> Looking at pci/next, these patches do not appear there either, so I assume
+> that these patches will also not be included in a follow-up pull request.
+> 
+> Some of these patches are actual fixes, like the patch in $subject, and do not
+> appear to depend on any other patches, so what is the reason for not including
+> them in the PCI pull request?
 
-On Tue, 21 May 2024 14:25:57 +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> i.MX95 Pinctrl is managed by System Control Management Interface(SCMI)
-> firmware using OEM extensions. No functions, no groups are provided by
-> the firmware. So add i.MX95 specific properties.
-> 
-> To keep aligned with current i.MX pinctrl bindings, still use "fsl,pins"
-> for i.MX95.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../devicetree/bindings/firmware/arm,scmi.yaml     |  4 +-
->  .../bindings/firmware/nxp,imx95-scmi-pinctrl.yaml  | 53 ++++++++++++++++++++++
->  2 files changed, 56 insertions(+), 1 deletion(-)
-> 
+The problem was that we didn't get these applied soon enough for them
+to get any time in linux-next before the merge window opened.  I don't
+like to add non-trivial things during the merge window, so I deferred
+most of these.  I plan to get them in linux-next as soon as v6.10-rc1
+is tagged.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+If we can make a case for post-merge window fixes, e.g., to fix a
+regression in the pull request or other serious issue, that's always a
+possibility.
 
+Bjorn
