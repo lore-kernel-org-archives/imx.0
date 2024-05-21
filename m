@@ -1,186 +1,423 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2079.outbound.protection.outlook.com [40.107.7.79])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805227BAE3
-	for <imx@lists.linux.dev>; Wed, 22 May 2024 07:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716362888; cv=fail; b=RuFw5yMt8h57URhgBpD7SQQevtho5k8mp5LFauyAR78V3G1cYeOZ91k/JTjqK18uxVWtF2C6j0F1E55FjO6FpHlznZJgVcaGmXR8KZ+BHwrv4FtLZCyvg0x+in9C+P+GojpYwnjw40aDbTR1wh+1BCO97dxhZHbA520zkcgxKiE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716362888; c=relaxed/simple;
-	bh=6if8QkYP42EAuKlNULnUyYXrvx1eiEgnX67KnoQq4VA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hhHb8xvPXayewthqCNdY4VnJHEpZxyXhP6ONmfngAo0q6SxrExpLfD44Y4YzWXOQzcfrzyjrEmsOYrJv4UUlonr8CRnjtbGA5PRAVruXE/ePY5BTG5cQDHceef9Ivy9b27BNkb4UimYKhaBC70pVPm0wahP9RxdWxKFj42YK6ps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=LTwGILsl; arc=fail smtp.client-ip=40.107.7.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LTwGILsl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NvHairbI/wKfuSudA5zdfSy/YB6cayuOSvV/T+Vy6SoKOVaZ89qXdVvf88lmXQgYDRQRa3s5ZBuo0gwgmHzc+ie/gdAHnLRJFlEW7QdH+iXQbYOWO7WeTtMpEzfc5uaIR3ND9XJl4wwkdi4tNBXhimWMKZlgk6i+qoO/1S7aj1QY8cVHjL5DPf+NY6OZOl05IwyhLu5De/8fsR1q0UlV5YveekfW4Kw21wizOl9yfhiNi1mmr3UwuGDeq+NweAdF5o7OzeYsPaGtjYJlZqIERJVQ1UiVLTXhhfih3D181IWfKrPYFiQnGDVMuhro8/sObS5DDGO6ZxPcBA9xERgg1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6if8QkYP42EAuKlNULnUyYXrvx1eiEgnX67KnoQq4VA=;
- b=AxjvdcmuZu2HB1oJn0/ZSSWLEDCmwFVYBz7/pck+sfFc1PR65aEuZW/utxvR9vO3t1NN5cOMSSEXwhpO4zQHPb4D0FWuj/Pep4VJayoVq9ldmCEcYT/T7gwN+yJt8XSdSXGDRAAwHDrYb2xzJP92PqLJSLX0MIv7siE31X5p4Le8tynGRQHdGszAzlbbGvRFspakLXaxvU05grA9gtxawN7d6AAIBsILX3zFXekuQXr0dGrbgDPxC/3jEQHsvjv0CJstacMPYgt5ztg04GuG+n9xOotxfBGJLpuhwSSc+vcAmp9Dg4tm9vDklHrHzi8F/FM8ppE25forRi4LveU7jA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6if8QkYP42EAuKlNULnUyYXrvx1eiEgnX67KnoQq4VA=;
- b=LTwGILsluFOZ1X88IPIrwrEqmEmVwOaeLC194bnkmp9UhJP7GsgX1qBxoJYgyGVbO74wmIvKqOpmu7Xjgt9xwv390dgfgSDC0gIYnS5a3vDKyQQ7lFs2YEtpbiiJIWVc8mqWAd+nnLzJrNpSO4FOBa7/7DjhxIrLUG1hP4MsIho=
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS8PR04MB7608.eurprd04.prod.outlook.com (2603:10a6:20b:293::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36; Wed, 22 May
- 2024 07:28:03 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::baed:1f6d:59b4:957]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::baed:1f6d:59b4:957%5]) with mapi id 15.20.7587.028; Wed, 22 May 2024
- 07:28:03 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>, Xiaolei Wang <xiaolei.wang@windriver.com>
-CC: Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [net PATCH] net: fec: free fec queue when fec_enet_mii_init()
- fails
-Thread-Topic: [net PATCH] net: fec: free fec queue when fec_enet_mii_init()
- fails
-Thread-Index: AQHaq+22vnaNT3PSDE643JvjIPXkobGiiaOggAAK4ICAAEYVQA==
-Date: Wed, 22 May 2024 07:28:02 +0000
-Message-ID:
- <PAXPR04MB85100FA1D553CE1E8523269088EB2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20240522021317.1113689-1-xiaolei.wang@windriver.com>
- <PAXPR04MB8510B1D6C8B77D7E154CC6CF88EB2@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <8bbf2c1d-5083-4321-bded-f83aba5428fa@lunn.ch>
-In-Reply-To: <8bbf2c1d-5083-4321-bded-f83aba5428fa@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB7608:EE_
-x-ms-office365-filtering-correlation-id: c35650bf-4b0a-4387-ff2f-08dc7a30b743
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230031|366007|1800799015|376005|38070700009;
-x-microsoft-antispam-message-info:
- =?gb2312?B?VThzR1JpbExNZDFUM0c0ZFp2VUpzQmRjaFcrL2wrRy9PMjlRdUZxRXhMRUlC?=
- =?gb2312?B?NTAyU1dtSTZPWnJoS3Q0ZElrc1BoQXd3VVovS0FvTEFqeCtBZys5c0IvREl0?=
- =?gb2312?B?OWEyZkg1Mk5UUzlLaUlVRjQ2aHlrV1JhVEdhcktiV041Z1hCWnJiZ2IvcnFs?=
- =?gb2312?B?OENxbGhsczFVRGt1VmdrV0JqUWJrdmREamNmQXBSbWhxVzNqZ2pVUEV3U2s0?=
- =?gb2312?B?SmhoS1FBNzdFM0d0TG9ZTGdMcXRzRmpqTzB5UFprNll2VzR6VE01RjlwNFhl?=
- =?gb2312?B?TnJjZkJzM3dpY3cyK2FndHJIdm8zVEVMNXl0dERDOS9ZL1c0ZHUyM1JWcnU2?=
- =?gb2312?B?Qjd3akVxdVQ1cTV0V1BJNkk3T0tOcFFQWklLRzkxRk0zY2crUG5oZmVldDB3?=
- =?gb2312?B?bUJlR2NKaTN0WUloN1hzQUdPblREVVRWRmFkYkNJZXM0cVlRZmYrVDdRMk40?=
- =?gb2312?B?MS9xdTBuVEx1cGY4clJOWXBxaWJrOHg0eG04SHRSdXFGR0pzZDY5UTVpZXNo?=
- =?gb2312?B?MFg0ZVFQL1FxQmlUSVM1SFFVRTVPSk40SS9YMnpXaVlteEd5MTdpS09wZUJB?=
- =?gb2312?B?V095M1k2VHEyall6V0UxbWhsL1FFc2NuOG9FZU1KT1F1MTYxOTNhR1JZdWtv?=
- =?gb2312?B?ZkNpTUc4a0V0UkVQOENHZVlQQ2NnbXpnd1gwYmFTZy9TYThRQXhqaVdRZ05j?=
- =?gb2312?B?UVFEb2c2MHBrTFpPTkhIYStYdWdPRlhYMUhzbkNHeG84bjhGMnNyMnl6Q0ll?=
- =?gb2312?B?ZCtlQUxVTjU3ajBpcUxtQ0xNbnB4bmIvUDBxMEVNT3dvaG00eUJ4anllWEg4?=
- =?gb2312?B?K3R4RmZVZjlVL1NIWGFHb3ZUNnltNHVNMzYzSVVUaXNFWEZJK2ppejVSaGto?=
- =?gb2312?B?cXBQN1o3S1NpQ0Vlb054djN5c04zcVFULzdhTWVhYmlzeG5PLzdCZ3ovNTIr?=
- =?gb2312?B?V3V0eCtJeWdyRGE2WkZ1cFAzREgwd3hRYmdRTzVjRFVpd3NIMzl6VjN6Y0Rw?=
- =?gb2312?B?UWNQK3ZvYm5HejkrcDRkR0w0UFdSRjI4LzZKYlZTa3NVMlozTlVvWGtKd3lw?=
- =?gb2312?B?aWtRdEtsWmxGMVVWelpQK3lrL0pocUNLdEJwM1gxSlJtbnFjVWRYaEtmNVpu?=
- =?gb2312?B?STdpWElmQy9YdWlGVmpKVDBROG5EMGRHZG1zNDdORVp6Njhvb1UzT3Rpazlx?=
- =?gb2312?B?RXRoa2RTa1VPL0VUQlVNZCtsZjdNcGtnNlJPRHEyaVZubWlvZms2cDJ0MFZK?=
- =?gb2312?B?aTNyUUlaWWlnRWZCdmVreU9LM0pCTWRRWjhpNHhDTkozTmViY1c1SFVqbzRo?=
- =?gb2312?B?anNMZlZPWTZKM3pGNzFVOGZud0plOG5XcjNGaU9Fek5KQi9NL1ZWSUZRNE9L?=
- =?gb2312?B?STBrUENEMWVHNk5lUUJxT2RMaTR0T2ttdThxYmtqVk5oOFFxd2hqbFZOWk1X?=
- =?gb2312?B?UkdXY2RoRHlzUWdEVk9kaUErbGszYy9mbGhYTEVmTFNaRnp5U3lGTTlyWnpC?=
- =?gb2312?B?T3VOMEhUTzNiYk5Zdk1nMEZjMzZUNi9IV1VTZ2EyT1BldUN6UTR4TTRmRzRm?=
- =?gb2312?B?cjFka01FaFJyaCswRFcybS9Ncy9VUGFlM1Axd1JOcXhmT24vVE45ODRKT0N4?=
- =?gb2312?B?NEl6emoyMU9OSEQrdTdyME5CLysyMXRpWWJKSFZvaE5Ec2JVUmhvc1B3UExW?=
- =?gb2312?B?a3hyQlRjbmo0UHQzVVJyMGRrdEtiNStlQnhwL29BR1ZZbjluMzR3ZG5FMm4z?=
- =?gb2312?B?T2xKaTdvTzZvUlB1ZjIrSlpqSC8zWnJjK05FU1VtTDlKZUEvVE1QSlNSUnVR?=
- =?gb2312?B?azIwa1p3aXJNQ2Z2MGMxQT09?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?RWhnV2pFcmpWeUo0bEZkL051ZDdINENQLytSZHpiclpZV0ZKdjRudlhhUGFj?=
- =?gb2312?B?cU93TWhLWXZpS3hYSGhjWjVyRWdVRUxwQlZBanZsMVBpaVFDVWdGK3hTdCtj?=
- =?gb2312?B?QnBrTzFZckphSzR5Y3BWZkFOaW5aY2JSZzZmREFUQ3FTRG1DYlNPb2NRNmY1?=
- =?gb2312?B?VmdpaXpDVHJKbFp2dC9jaDZMQ1MzdzVFNlNUQzgrdUNRMWVmUEF0eDZkZStM?=
- =?gb2312?B?RjBBWm5NWWFPcHJDbGV6OUZNaXhrOUN3cXl0eS9YTVZIT0c1ZjdxYVdaOEIv?=
- =?gb2312?B?c1hhYWh2U1FlemhpOGhYRGswTTJ4WnRpdkZ6cGpvTWVZSGRJNDkxcFZYOXR1?=
- =?gb2312?B?SHRiQ3UzZTJCWlkvV1lmUTFxMzYyRmExWHZtY0U2Vm1jeXNLcEZocHRockJB?=
- =?gb2312?B?aEFDa2ZteGF3amlTdFpmNThXOVR0UktjZkFSb0M3NG5OeWZoSEpuY3JDa3Z4?=
- =?gb2312?B?N0dwSGIzNnl3R2pFMjk5VkhTNjJMUEhZMlJpZG9kOVJEL3lUUzNwcHBBVGhG?=
- =?gb2312?B?dlBSSmF0OG50eDd0NHowWU5VQTVUQWRmZFFwRTczVXBoTGs2a3E0TWp6R3lm?=
- =?gb2312?B?bENOWTRmN0JnTnNFanROZ0pRbU5McVN1U3N2OElMWS9DOUhDS1hYYjlsRUVk?=
- =?gb2312?B?QXBqOE8xcC84bXRDR3BxSm5GMmdtSWVtS2pYcFlIOGk1Ump5cHc2VjlFTE5G?=
- =?gb2312?B?bHNhblR1RUNrbnRtTXprbEVGWWJFdUlTQ2NBZXZJbS9DcFdBWEpoOEpCQjNV?=
- =?gb2312?B?SkN6VHYvZ2dmRlhYREJtK0haQzlMVUNZZWF2NXkyL2daK1J5Q0FHQ2krM0lC?=
- =?gb2312?B?a1dlS1ZkWktuMFB6MXAzU3Y2emlEYTVvQXV1clF5N0tjT2RUMlNQbXU0Z2FM?=
- =?gb2312?B?dEsrSzBQWFBXSmZiUDEwczZibDZoNFMrZHl0Q1VVQWF6U2lxNzl4S2orMDdW?=
- =?gb2312?B?aTNDMk93SUU4d2lpRjJzK0tYN3JJOG1QUjRpYnk4N0I4c1A5VUVsSlNFNHUy?=
- =?gb2312?B?K3U1QmtDeEs5VzVNZFZneVFKWlJ0Z2hqWS9KS0tEYnMzUDRIa0JVVDJ4cXR0?=
- =?gb2312?B?NUlVUGJYbTVoaGx0bEVqOS94azJ3a3gxNUZRZDg5a2JKQ0VjSkoyS0RFWnk4?=
- =?gb2312?B?Z092Yit4Sm5UNktnYUlkUFpQdjhKS1lLdGZJR2w3Z3dqRUg2eVU4YkJNejd2?=
- =?gb2312?B?bnBqbmVnb2t4aHlxd0ZLcnh4KyttdlBEcGM5RlROZW84ckZGMnRSN3Rmdk4v?=
- =?gb2312?B?MHhHMzVqWENIRktBWjdoM2RIcUdaUWg0YlNtbkRxK0l3SnJROVJCUW50cHB1?=
- =?gb2312?B?a0dMcWVienVkSHQxZU9MWnpCRnpPWVZGbVJjN0VsQlpobURXYzVEczUvQ29O?=
- =?gb2312?B?Ti9zYm5GNG9hUXBBK2I5UEJ3MStKWGd4T0d5bFlNMm9wU2xBeXRDc2l6WjRn?=
- =?gb2312?B?azFyc3FualpSMWMxaUt1THRiYnFFVDhqaUFhTEhVZktyK3hnaWRPeERNcXF1?=
- =?gb2312?B?QkVYMUdWcFpJekVtNm1wekY0YXNHY21wMzcrRllnKzU1T280alE2K1VQV2Y1?=
- =?gb2312?B?akJ6QWpWUSsrQlZTWitla29BYTVEVy9mWHBBWThNdHpZNmJDV1NNWWtaYkhO?=
- =?gb2312?B?eGxIaHdpNTBFNVh3MXJwMU1EblRtVXNtbGxkQUJwMWZaYW9odWlNSnozbmxK?=
- =?gb2312?B?Sjlac1NQRVh5bk45b1pZYjI4dHZrVGI5NFhYY3NDdjAyQWZRMGJRdHFrV2gw?=
- =?gb2312?B?S29qSU4vdzJXTmlGcitvZXdKRUtOZHREcFpGZ0hqcWQ0RmovMkdZQVBnMU5l?=
- =?gb2312?B?d05BR2xYZnl5QWU3VHRtOEF6ajB5bFE2V1VES1M3SlR5OFBsZkRKUkc1NllF?=
- =?gb2312?B?T1FJMkpKN29ocXVDM095cDVndHhQR2VPTURLZUhrMFVWdnkwMDc2eXlHMk5j?=
- =?gb2312?B?R29QZkd3Y2RSWUUrWEtEblJTb2lKd3cxTWdTNng5anFiUVV2UjVVcmZEYUhs?=
- =?gb2312?B?ekFTVDdPZW1yYm5RTFRnWDFtR2JHaXNvNTN2T21VcWhIOWZMY0hNSkxIOFRV?=
- =?gb2312?B?N0JqS2ZERDFFaEZ3bUF1ekxMeFdnNFBKcXYwaGtHZG4rS2tnWmM2SkpINEFr?=
- =?gb2312?Q?R5io=3D?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F253770E6
+	for <imx@lists.linux.dev>; Wed, 22 May 2024 07:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716364083; cv=none; b=HNtRABT6MsrZp5qUQjow4qEyjIr7KC+4gp74P+6K9pX3miMlQsEe+yu4LLOcdNmStnO2xPf9RMXyhs6zQYsQZsnpU8QgXhukU2h9kQ9ymJ8rAKFsZ2NO8MQ8lsJYUyDTtzXD/A+6LsyPhl9/1vwIJxRMbAuBPE49iSvS4hC10KA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716364083; c=relaxed/simple;
+	bh=UFileiIY+FcdENlfmaHs7dMmW4+IrMZlQd00Hn5+Gt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nZBDTG2rFvmQS+V/bmpTcbXPJuwLMqkybJXoXBLtnWW8hOUFMBzXD2BvHImnAYc1M8jCfMpqv9LQe5tOX9ilbWNZ74ugDm/0Iy2aS0FMUaKIYhfZgYcJmC/8pSnkgHF4scWez2T0YfxNX9xatkWqH6JAU8dAjkB2y3YK2WMu+NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1s9ghS-00081G-2A; Wed, 22 May 2024 09:47:50 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1s9ghP-002Uky-JB; Wed, 22 May 2024 09:47:47 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 50A9C2D520D;
+	Tue, 21 May 2024 12:27:11 +0000 (UTC)
+Date: Tue, 21 May 2024 14:27:10 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: RE: RE: [EXT] Re: [PATCH 4/4] firmware: imx: add driver for NXP
+ EdgeLock Enclave
+Message-ID: <20240521-handsome-hairy-bullfrog-d2faba-mkl@pengutronix.de>
+References: <20240510-imx-se-if-v1-0-27c5a674916d@nxp.com>
+ <20240510-imx-se-if-v1-4-27c5a674916d@nxp.com>
+ <20240513-pretty-quartz-lemming-14d9ea-mkl@pengutronix.de>
+ <AM9PR04MB86044FBF697375EB2C8D285B95EE2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20240520-accurate-intrepid-kestrel-8eb361-mkl@pengutronix.de>
+ <AM9PR04MB86045BD682A0362A7D463C5A95EA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c35650bf-4b0a-4387-ff2f-08dc7a30b743
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2024 07:28:03.0873
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XV6KpsaxtWeYAzq3/9nxc7xpFnYgnrWWuDnk9VXclv7FVOXloboPJU/33EH1DFw2VIBuyovB524E9cWzxaHrKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7608
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7yk6pkmeqxyudczq"
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB86045BD682A0362A7D463C5A95EA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFuZHJldyBMdW5uIDxhbmRy
-ZXdAbHVubi5jaD4NCj4gU2VudDogMjAyNMTqNdTCMjLI1SAxMToxNQ0KPiBUbzogV2VpIEZhbmcg
-PHdlaS5mYW5nQG54cC5jb20+DQo+IENjOiBYaWFvbGVpIFdhbmcgPHhpYW9sZWkud2FuZ0B3aW5k
-cml2ZXIuY29tPjsgU2hlbndlaSBXYW5nDQo+IDxzaGVud2VpLndhbmdAbnhwLmNvbT47IENsYXJr
-IFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT47DQo+IGRhdmVtQGRhdmVtbG9mdC5uZXQ7IGVk
-dW1hemV0QGdvb2dsZS5jb207IGt1YmFAa2VybmVsLm9yZzsNCj4gcGFiZW5pQHJlZGhhdC5jb207
-IGlteEBsaXN0cy5saW51eC5kZXY7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtl
-cm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtuZXQgUEFUQ0hdIG5ldDogZmVj
-OiBmcmVlIGZlYyBxdWV1ZSB3aGVuIGZlY19lbmV0X21paV9pbml0KCkgZmFpbHMNCj4gDQo+ID4g
-VGhlIGNvbW1pdCA1OWQwZjc0NjU2NDQgKCJuZXQ6IGZlYzogaW5pdCBtdWx0aSBxdWV1ZSBkYXRl
-IHN0cnVjdHVyZSIpDQo+ID4gd2FzIHRoZSBmaXJzdCB0byBpbnRyb2R1Y2UgdGhpcyBpc3N1ZSwg
-Y29tbWl0IDYxOWZlZTllYjEzYg0KPiA+ICgibmV0OiBmZWM6IGZpeCB0aGUgcG90ZW50aWFsIG1l
-bW9yeSBsZWFrIGluIGZlY19lbmV0X2luaXQoKSAiKSBmaXhlZA0KPiA+IHRoaXMsIGJ1dCBpdCBk
-b2VzIG5vdCBzZWVtIHRvIGJlIGNvbXBsZXRlbHkgZml4ZWQuDQo+IA0KPiBUaGlzIGZpeCBpcyBh
-bHNvIG5vdCBncmVhdCwgYW5kIGkgd291bGQgc2F5IHRoZSBpbml0aWFsIGRlc2lnbiBpcyByZWFs
-bHkgdGhlIHByb2JsZW0uDQo+IFRoZXJlIG5lZWRzIHRvIGJlIGEgZnVuY3Rpb24gd2hpY2ggaXMg
-dGhlIG9wcG9zaXRlIG9mIGZlY19lbmV0X2luaXQoKS4gSXQgY2FuDQo+IHRoZW4gYmUgY2FsbGVk
-IGluIHRoZSBwcm9iZSBjbGVhbnVwIGNvZGUsIGFuZCBpbiBmZWNfZHJ2X3JlbW92ZSgpIHdoaWNo
-IGFsc28NCj4gYXBwZWFycyB0byBsZWFrIHRoZSBxdWV1ZXMuDQo+IA0KWWVzLCB0aGlzIGlzc3Vl
-IGFsc28gZXhpc3RzIHdoZW4gdGhlIGZlYyBkcml2ZXIgaXMgdW5ib3VuZCwgbWF5YmUgWGlhb2xl
-aSBjYW4NCmhlbHAgaW1wcm92ZSBpdCBpbiBoaXMgcGF0Y2guDQo=
+
+--7yk6pkmeqxyudczq
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 21.05.2024 11:57:04, Pankaj Gupta wrote:
+> > > > > +
+> > > > > +	memset(s_info, 0x0, sizeof(*s_info));
+> > > > > +
+> > > > > +	if (priv->mem_pool_name)
+> > > > > +		get_info_data =3D get_phy_buf_mem_pool(dev,
+> > > > > +						     priv->mem_pool_name,
+> > > > > +						     &get_info_addr,
+> > > > > +						     ELE_GET_INFO_BUFF_SZ);
+> > > > > +	else
+> > > > > +		get_info_data =3D dmam_alloc_coherent(dev,
+> > > > > +						    ELE_GET_INFO_BUFF_SZ,
+> > > > > +						    &get_info_addr,
+> > > > > +						    GFP_KERNEL);
+> > > >
+> > > > It's better style to move the init of the dma memory into the probe
+> > > > function.
+> > >
+> > > It is not DMA init. It is DMA allocation.
+> >=20
+> > It's better style to move the allocation of the dma memory into the pro=
+be
+> > function.
+> >=20
+> The buffer 'get_info_data', is allocated and freed within this function.
+> This API is called multiple times:
+> - as part of probe.
+> - as part of suspend/resume.
+>=20
+> Why to keep the memory retained?
+
+I see. Then why do you allocate with dmam_alloc_coherent()?
+
+[...]
+
+> > > > > +int imx_ele_msg_send(struct se_if_priv *priv, void *mssg) {
+> > > > > +	bool is_cmd_lock_tobe_taken =3D false;
+> > > > > +	int err;
+> > > > > +
+> > > > > +	if (!priv->waiting_rsp_dev || priv->no_dev_ctx_used) {
+> > > > > +		is_cmd_lock_tobe_taken =3D true;
+> > > > > +		mutex_lock(&priv->se_if_cmd_lock);
+> > > > > +	}
+> > > > > +	scoped_guard(mutex, &priv->se_if_lock);
+> > > > > +
+> > > > > +	err =3D mbox_send_message(priv->tx_chan, mssg);
+> > > > > +	if (err < 0) {
+> > > > > +		dev_err(priv->dev, "Error: mbox_send_message failure.\n");
+> > > > > +		if (is_cmd_lock_tobe_taken)
+> > > > > +			mutex_unlock(&priv->se_if_cmd_lock);
+> > > >
+> > > > Only dropping the lock in case of failure doesn't look right to me.
+> > >
+> > > The callers of this function, takes the execution flow to aborting the
+> > > operation on getting return code < 0. No next action is expected under
+> > > this aborted operation. Unlocking the lock here is not an issue
+> > >
+> > > > It seems you should better move the lock to the callers of this fun=
+ction.
+> > >
+> > > Accepted, and moved to the caller of the function for:
+> > >    - locking
+> > >    - unlocking in case of error.
+> > >
+> > > Unlocking in the read API, once response is successfully received and
+> > > read.
+> >=20
+> > A better design would be: imx_ele_msg_rcv() imx_ele_msg_send() are
+> > expected to be called locked. Add lockdep_assert_held() to these functi=
+on to
+> > document/check this.
+> >=20
+> > The callers of imx_ele_msg_rcv() and imx_ele_msg_send() have to take ca=
+re
+> > of the locking.
+> >=20
+> > [...]
+> >=20
+> The locking/unlocking of se_if_cmd_lock, is taken care by the callers onl=
+y:
+> - imx_ele_msg_send_rcv calls both the functions:
+>   --imx_ele_msg_send.
+>   --imx_ele_msg_rcv.
+>=20
+> But the lockdep_assert_held, cannot be added to imx_ele_msg_send, as
+> its another caller function imx_ele_miscdev_msg_send calls if for
+> sending:
+>  --- command (here command lock is taken).
+>  --- response to a command (here command lock is not taken).
+
+miscdev is another patch.
+
+But why can't you use the same lock in imx_ele_miscdev_msg_send()?
+
+
+> > > > > +static const struct imx_se_node_info_list imx93_info =3D {
+> > > > > +	.num_mu =3D 1,
+> > > > > +	.soc_id =3D SOC_ID_OF_IMX93,
+> > > > > +	.info =3D {
+> > > > > +			{
+> > > > > +				.se_if_id =3D 2,
+> > > > > +				.se_if_did =3D 3,
+> > > > > +				.max_dev_ctx =3D 4,
+> > > > > +				.cmd_tag =3D 0x17,
+> > > > > +				.rsp_tag =3D 0xe1,
+> > > > > +				.success_tag =3D 0xd6,
+> > > > > +				.base_api_ver =3D MESSAGING_VERSION_6,
+> > > > > +				.fw_api_ver =3D MESSAGING_VERSION_7,
+> > > > > +				.se_name =3D "hsm1",
+> > > > > +				.mbox_tx_name =3D "tx",
+> > > > > +				.mbox_rx_name =3D "rx",
+> > > > > +				.reserved_dma_ranges =3D true,
+> > > > > +				.imem_mgmt =3D true,
+> > > > > +				.soc_register =3D true,
+> > > > > +			},
+> > > > > +	},
+> > > >
+> > > >
+> > > > Some (most?) members of these structs are the same. Why do you have
+> > > > this abstraction if it's not needed right now?
+> > >
+> > > It is needed as the values is different for different NXP SoC
+> > > compatible. It will be needed for NXP i.MX95 platform, whose code will
+> > > be next in pipeline.
+> >=20
+> > How does the imx95 .info look like?
+> >=20
+> Copied from the internal repo.
+> static const struct imx_info_list imx95_info =3D {
+>         .num_mu =3D 4,
+>         .soc_id =3D SOC_ID_OF_IMX95,
+>         .info =3D {
+>                         {
+>                                 .socdev =3D false,
+>                                 .mu_id =3D 2,
+>                                 .mu_did =3D 3,
+>                                 .max_dev_ctx =3D 4,
+>                                 .cmd_tag =3D 0x17,
+>                                 .rsp_tag =3D 0xe1,
+>                                 .success_tag =3D 0xd6,
+>                                 .base_api_ver =3D MESSAGING_VERSION_6,
+>                                 .fw_api_ver =3D MESSAGING_VERSION_7,
+>                                 .se_name =3D "hsm1",
+>                                 .mbox_tx_name =3D "tx",
+>                                 .mbox_rx_name =3D "rx",
+>                                 .pool_name =3D NULL,
+>                                 .reserved_dma_ranges =3D false,
+>                                 .init_fw =3D true,
+>                                 .v2x_state_check =3D true,
+>                                 .start_rng =3D ele_start_rng,
+>                                 .enable_ele_trng =3D true,
+>                                 .imem_mgmt =3D false,
+>                                 .mu_buff_size =3D 0,
+>                                 .fw_name_in_rfs =3D NULL,
+>                         },
+>                         {
+>                                 .socdev =3D false,
+>                                 .mu_id =3D 0,
+>                                 .mu_did =3D 0,
+>                                 .max_dev_ctx =3D 0,
+>                                 .cmd_tag =3D 0x17,
+>                                 .rsp_tag =3D 0xe1,
+>                                 .success_tag =3D 0xd6,
+>                                 .base_api_ver =3D 0x2,
+>                                 .fw_api_ver =3D 0x2,
+>                                 .se_name =3D "v2x_dbg",
+>                                 .pool_name =3D NULL,
+>                                 .mbox_tx_name =3D "tx",
+>                                 .mbox_rx_name =3D "rx",
+>                                 .reserved_dma_ranges =3D false,
+>                                 .init_fw =3D false,
+>                                 .v2x_state_check =3D true,
+>                                 .start_rng =3D v2x_start_rng,
+>                                 .enable_ele_trng =3D false,
+>                                 .imem_mgmt =3D false,
+>                                 .mu_buff_size =3D 0,
+>                                 .fw_name_in_rfs =3D NULL,
+>                         },
+>                         {
+>                                 .socdev =3D false,
+>                                 .mu_id =3D 4,
+>                                 .mu_did =3D 0,
+>                                 .max_dev_ctx =3D 4,
+>                                 .cmd_tag =3D 0x18,
+>                                 .rsp_tag =3D 0xe2,
+>                                 .success_tag =3D 0xd6,
+>                                 .base_api_ver =3D 0x2,
+>                                 .fw_api_ver =3D 0x2,
+>                                 .se_name =3D "v2x_sv0",
+>                                 .pool_name =3D NULL,
+>                                 .mbox_tx_name =3D "tx",
+>                                 .mbox_rx_name =3D "rx",
+>                                 .reserved_dma_ranges =3D false,
+>                                 .init_fw =3D false,
+>                                 .v2x_state_check =3D true,
+>                                 .start_rng =3D NULL,
+>                                 .enable_ele_trng =3D false,
+>                                 .imem_mgmt =3D false,
+>                                 .mu_buff_size =3D 16,
+>                                 .fw_name_in_rfs =3D NULL,
+>                         },
+>                         {
+>                                 .socdev =3D false,
+>                                 .mu_id =3D 6,
+>                                 .mu_did =3D 0,
+>                                 .max_dev_ctx =3D 4,
+>                                 .cmd_tag =3D 0x1a,
+>                                 .rsp_tag =3D 0xe4,
+>                                 .success_tag =3D 0xd6,
+>                                 .base_api_ver =3D 0x2,
+>                                 .fw_api_ver =3D 0x2,
+>                                 .se_name =3D "v2x_she",
+>                                 .pool_name =3D NULL,
+>                                 .mbox_tx_name =3D "tx",
+> 		   .mbox_rx_name =3D "rx",
+>                                 .reserved_dma_ranges =3D false,
+>                                 .init_fw =3D false,
+>                                 .v2x_state_check =3D true,
+>                                 .start_rng =3D NULL,
+>                                 .enable_ele_trng =3D false,
+>                                 .imem_mgmt =3D false,
+>                                 .mu_buff_size =3D 16,
+>                                 .fw_name_in_rfs =3D NULL,
+>                         },
+>                         {
+>                                 .socdev =3D false,
+>                                 .mu_id =3D 6,
+>                                 .mu_did =3D 0,
+>                                 .max_dev_ctx =3D 4,
+>                                 .cmd_tag =3D 0x1a,
+>                                 .rsp_tag =3D 0xe4,
+>                                 .success_tag =3D 0xd6,
+>                                 .base_api_ver =3D 0x2,
+>                                 .fw_api_ver =3D 0x2,
+>                                 .se_name =3D "v2x_she",
+>                                 .pool_name =3D NULL,
+>                                 .mbox_tx_name =3D "tx",
+>                                 .mbox_rx_name =3D "rx",
+>                                 .reserved_dma_ranges =3D false,
+>                                 .init_fw =3D false,
+>                                 .v2x_state_check =3D true,
+>                                 .start_rng =3D NULL,
+>                                 .enable_ele_trng =3D false,
+>                                 .imem_mgmt =3D false,
+>                                 .mu_buff_size =3D 256,
+>                                 .fw_name_in_rfs =3D NULL,
+>                         },
+>         }
+> };
+
+Just looking at _some_, the .cmd_tag, .rsp_tag and .success_tag look the
+same for all SoCs.
+
+[...]
+
+> Created a static variable g_soc_rev in the se_ctrl.c.
+> Accepted and will correct it in v2.
+>=20
+> >=20
+> > > > > +	if (info_list->soc_rev)
+> > > > > +		return err;
+> > > >
+> Will change the above condition to g_soc_rev.
+
+"g_" as is global? Don't do that. Use your priv!
+
+[...]
+
+> > > > > +
+> > > > > +	info_list->soc_rev =3D s_info.soc_rev;
+> > > > > +
+> > > > > +	if (!info->soc_register)
+> > > > > +		return 0;
+> > > > > +
+> > > > > +	attr =3D devm_kzalloc(dev, sizeof(*attr), GFP_KERNEL);
+> > > > > +	if (!attr)
+> > > > > +		return -ENOMEM;
+> > > > > +
+> > > > > +	if (s_info.minor_ver)
+> > > > > +		attr->revision =3D devm_kasprintf(dev, GFP_KERNEL, "%x.%x",
+> > > > > +					   s_info.major_ver,
+> > > > > +					   s_info.minor_ver);
+> > > > > +	else
+> > > > > +		attr->revision =3D devm_kasprintf(dev, GFP_KERNEL, "%x",
+> > > > > +					   s_info.major_ver);
+> > > > > +
+> > > > > +	switch (s_info.soc_id) {
+> > > > > +	case SOC_ID_OF_IMX8ULP:
+> > > > > +		attr->soc_id =3D devm_kasprintf(dev, GFP_KERNEL,
+> > > > > +					      "i.MX8ULP");
+> > > > > +		break;
+> > > > > +	case SOC_ID_OF_IMX93:
+> > > > > +		attr->soc_id =3D devm_kasprintf(dev, GFP_KERNEL,
+> > > > > +					      "i.MX93");
+> > > > > +		break;
+> > > > > +	}
+> > > > > +
+> > > > > +	err =3D of_property_read_string(of_root, "model",
+> > > > > +				      &attr->machine);
+> > > > > +	if (err) {
+> > > > > +		devm_kfree(dev, attr);
+> > > >
+> > > > Why do you do a manual cleanup of devm managed resources? Same
+> > > > applies to the other devm managed resources, too.
+> > > >
+> > > Used devm managed memory, as this function is called as part probe.
+> > > Post device registration, this devm managed memory is un-necessarily
+> > > blocked. It is better to release it as part of clean-up, under this
+> > > function only.
+> >=20
+> > Why do you allocate the memory with devm in the first place, if it's not
+> > needed after probe?
+>=20
+> Sorry to confuse you. Actually the devm_memory will be needed for the cas=
+e of soc_registration.
+> Meaning, memory with devm, will be needed post probing as well.
+>=20
+> If this function fails, the probing will fail too. It will be auto cleane=
+d.
+>=20
+> Accepted, will remove the devm_free in v2.
+
+If you don't need the memory past probe() allocate with kzalloc() and
+use kfree(). Only used managed resources for lifetimes beyond the probe
+function.
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--7yk6pkmeqxyudczq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmZMkxsACgkQKDiiPnot
+vG+Z/Af/WMnqhWM48LnZtU6kUIbY7cRacggeGQv2jj71QpNxkSQ62f9qkFrUh3rS
+Zmnt+uZAOghpnCADbwdGszNnOMR8saS83xmewg528L/7StvqR2/2N92ZGAfVC7Q1
+BEn0/fwyAGSWnvNLgmeSGi0gDd+LxVQVfrkhqxSPSYvLCcZMJh0Q0VBiHlv2ikqt
+Sf8hGPnZ5cyeNWzHucZ0luAWy2ilrU2fA9VUiuhrczVRJL4Rb6Tudswv7Dmb2DX2
+jHSD3/RViGgDHR4xUVQnV2BW43sS220cKg8xQ5xeHgtOlxo/PvVfMPbCyrpZZJ11
+Weuh3GM0jY/KBh4rxcm2VBE8FJOfgw==
+=R/M7
+-----END PGP SIGNATURE-----
+
+--7yk6pkmeqxyudczq--
