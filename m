@@ -1,84 +1,112 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABC26BB33;
-	Tue, 21 May 2024 09:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E0778C6B;
+	Tue, 21 May 2024 10:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716285260; cv=none; b=qIRvMEBfsGIAnkFhLnkPnqNNduxB+RT+MvF2VaUAbGZ7HBUhUjQzdVFhLXfnvL+vuwEnjzeG+yDL38kTVghUkqH1H+Gp07ILAMsMx/fPnDsSlOzSm6TKTJR3qqEtPsYFOExBPjQB/qK2SvJ4ECQwsl/Mo4Sy41ZdsyYRrOlv2xw=
+	t=1716286621; cv=none; b=XvsNktlwIh56ilJUPQV7miPsefnMsmWRlYlRjGOXlMrTPPDYLVBenVUDP69xYPYLIpECmJovj+QkSUz86v1sCBt2GumqHQ53WyHtQNbi7LAwGmc/ofqZKY6T5Uz4AgpTcPFMV3OCb6pwQLZLxAkRRvNMhM3XG3pHvHbvNpgN8kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716285260; c=relaxed/simple;
-	bh=kIBK/TXl0EdrSBki4Xtx0zg3YhBsx/YlEAh607eYTTo=;
+	s=arc-20240116; t=1716286621; c=relaxed/simple;
+	bh=PNikNaHR6zU/zfXGkNmZ8iumO7c9iBa0+ICynQKy2Rw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwPhaYRnvk4hoKX7lir/dQcFmY0KxWHNEBCLA9Gws0ZeZELktr6hkkc+xK5fq0Qt8pQHfjgyZBgKqF/luSpi1Wyd0e0kJ8TCG0EAZkNBdmFuky5VLJ1q+3B6GXn+Ph9KOwhb1mzQhsg3SiZYR1MnJJbZujMK9hFzB5pGqGWovw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=UUfABhN3; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=ISgpIW5XQsU/ja8m42+XFcEqymdLDc4eI6srhO+olh8pqK885Pi1qsO9o38Os9yx8zRC9zjih4oxp6BziY6pgLvBEnU3OGAxvdo4HG98SuEtKpRETPurwMa7vEitqZzp+6/NrSH25ReAR6H+sdKDz+TNB2vPIENa93YAklNUjHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1kAgxiu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="UUfABhN3"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 6E0CC206CE;
-	Tue, 21 May 2024 11:54:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1716285248;
-	bh=YrMaapKOCmWxZh7K2wOvL1ZSRLa5q+qreSWpLytaCas=; h=From:To:Subject;
-	b=UUfABhN3Se2UKhxDPzbGrtxI32ZpyPyoyFZZA62pFnr53HioNzOA7RG8mUAnXACuY
-	 gW2Ypyywpc07swpvIvUkGADqzcCmzanqwfI4JzTk+0toWJVp/S9TMQMlQfOqDZ19aL
-	 zaoGH0jaBqHpLQESBW+w+wT7pzj69sAGISSSRceIrgBOWwjecAE1W9ha+fqgqKx1SS
-	 WpozmnlCGyGD5V8Ofn2tvqsQLdeuemI9qR6aJjgdT8oHc5zE1IrfhRjSBavMTOj703
-	 NdyMCoWPHOJlIbej8I4Q1HkmKSIdJL1QIHS7gHJZVRSGq3jeiyM8Y/QO3XmUHZcPPS
-	 Nujkt7Hynhx1g==
-Date: Tue, 21 May 2024 11:54:02 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, regressions@lists.linux.dev,
-	Stephen Boyd <sboyd@kernel.org>, ulf.hansson@linaro.org
-Cc: ulf.hansson@linaro.org, heiko@sntech.de, u.kleine-koenig@pengutronix.de,
-	geert+renesas@glider.be, rafael@kernel.org,
-	linux-pm@vger.kernel.org, abelvesa@kernel.org, peng.fan@nxp.com,
-	mturquette@baylibre.com, sboyd@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	imx@lists.linux.dev, shengjiu.wang@gmail.com, frank.li@nxp.com,
-	mkl@pengutronix.de, linus.walleij@linaro.org,
-	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] pmdomain: imx: gpcv2: Add delay after power up
- handshake
-Message-ID: <20240521095402.GA11937@francesco-nb>
-References: <1715396125-3724-1-git-send-email-shengjiu.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1kAgxiu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21C5C32782;
+	Tue, 21 May 2024 10:16:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716286621;
+	bh=PNikNaHR6zU/zfXGkNmZ8iumO7c9iBa0+ICynQKy2Rw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k1kAgxiuE9rA/Hvqgct3mNL21APMt0RhL2f9/WJ2DjnIvh+b5obh7vYvCpVkGp/sv
+	 vkl6CSnH56jgHicS/YPmlipskcvM9TjM6lMZ1T3PvbznCzAkGkd1KjMisOIhh8nZyB
+	 HKBb8iY4/PmKfQpdFNZKpwfHuneh2I5IibdZDpXy5WCNAKwbQGxUa2SLIrzJsn6sR+
+	 C6u5ex1q0wx4YC9h42PDhx3Q5jkuiZPD/VsUxilW9LQCGwGPtPbGOgTE5lOilzZXYo
+	 bTXFqg3XHr95K26mBd0gJ0xU8KvqLd2kF64SNS2hi8EWRwTjV0hAWRQ7Luc9teBZtG
+	 /wQ/33ZvivwXw==
+Date: Tue, 21 May 2024 12:16:55 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	bhelgaas@google.com, mani@kernel.org
+Cc: Frank Li <Frank.Li@nxp.com>, helgaas@kernel.org, imx@lists.linux.dev,
+	jdmason@kudzu.us, jingoohan1@gmail.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org, robh@kernel.org, dlemoal@kernel.org
+Subject: Re: [PATCH v4 1/1] PCI: dwc: Fix index 0 incorrectly being
+ interpreted as a free ATU slot
+Message-ID: <Zkx0lzP76bmp4K0r@ryzen.lan>
+References: <20240412160841.925927-1-Frank.Li@nxp.com>
+ <20240517170650.GC1947919@rocinante>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1715396125-3724-1-git-send-email-shengjiu.wang@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240517170650.GC1947919@rocinante>
 
-Hello Stephen and Ulf, 
-
-On Sat, May 11, 2024 at 10:55:25AM +0800, Shengjiu Wang wrote:
-> AudioMix BLK-CTRL on i.MX8MP encountered an accessing register issue
-> after power up.
+On Sat, May 18, 2024 at 02:06:50AM +0900, Krzysztof Wilczyński wrote:
+> Hello,
 > 
-> [    2.181035] Kernel panic - not syncing: Asynchronous SError Interrupt
-...
+> > When PERST# assert and deassert happens on the PERST# supported platforms,
+> > the both iATU0 and iATU6 will map inbound window to BAR0. DMA will access
+> > to the area that was previously allocated (iATU0) for BAR0, instead of the
+> > new area (iATU6) for BAR0.
+> > 
+> > Right now, we dodge the bullet because both iATU0 and iATU6 should
+> > currently translate inbound accesses to BAR0 to the same allocated memory
+> > area. However, having two separate inbound mappings for the same BAR is a
+> > disaster waiting to happen.
+> > 
+> > The mapping between PCI BAR and iATU inbound window are maintained in the
+> > dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
+> > a BAR, dw_pcie_ep_inbound_atu() API will first check for the availability
+> > of the existing mapping in the array and if it is not found (i.e., value in
+> > the array indexed by the BAR is found to be 0), then it will allocate a new
+> > map value using find_first_zero_bit().
+> > 
+> > The issue here is, the existing logic failed to consider the fact that the
+> > map value '0' is a valid value for BAR0. Because, find_first_zero_bit()
+> > will return '0' as the map value for BAR0 (note that it returns the first
+> > zero bit position).
+> > 
+> > Due to this, when PERST# assert + deassert happens on the PERST# supported
+> > platforms, the inbound window allocation restarts from BAR0 and the
+> > existing logic to find the BAR mapping will return '6' for BAR0 instead of
+> > '0' due to the fact that it considers '0' as an invalid map value.
+> > 
+> > So fix this issue by always incrementing the map value before assigning to
+> > bar_to_atu[] array and then decrementing it while fetching. This will make
+> > sure that the map value '0' always represents the invalid mapping."
+> 
+> Applied to controller/dwc, thank you!
+> 
+> [1/1] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
+>       https://git.kernel.org/pci/pci/c/cd3c2f0fff46
+> 
+> 	Krzysztof
 
-> Fixes: 1496dd413b2e ("clk: imx: imx8mp: Add pm_runtime support for power saving")
-> Reported-by: Francesco Dolcini <francesco@dolcini.it>
+Hello PCI maintainers,
 
-Any chances to get this into mainline with some priority?
+There was a message sent out that this patch was applied, yet the patch does
+not appear to be part of the pull request that was sent out yesterday:
+https://lore.kernel.org/linux-pci/20240520222943.GA7973@bhelgaas/T/#u
 
-If in your opinion the fix is not correct I can just send a revert of
-the buggy commit.
+In fact, there seems to be many PCI patches that have been reviewed and ready
+to be included (some of them for months) that is not part of the pull request.
 
-I reported the bug 4 weeks ago, the same day the broken commit was
-merged into -next [1], now we have a regression in mainline that is
-preventing booting with a kernel panic and because of that our whole CI
-is not able to test anything and therefore preventing us to look into
-any other regression.
+Looking at pci/next, these patches do not appear there either, so I assume
+that these patches will also not be included in a follow-up pull request.
 
-Thanks,
-Francesco
+Some of these patches are actual fixes, like the patch in $subject, and do not
+appear to depend on any other patches, so what is the reason for not including
+them in the PCI pull request?
 
-[1] https://lore.kernel.org/all/20240424164725.GA18760@francesco-nb/
+
+Kind regards,
+Niklas
