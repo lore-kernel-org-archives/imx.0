@@ -1,307 +1,186 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2041.outbound.protection.outlook.com [40.107.21.41])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2079.outbound.protection.outlook.com [40.107.7.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79DE77113
-	for <imx@lists.linux.dev>; Wed, 22 May 2024 06:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805227BAE3
+	for <imx@lists.linux.dev>; Wed, 22 May 2024 07:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.79
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716359852; cv=fail; b=V838Cud+BUxhG23md2J3Zy8jkGmqQ3ZGRxAX+L5ces/RbhSo+lGPI9rQStifWxajc6mtpTyNzGOV6UpdPENXgMM/wdoXGNDlK1NfjZRdvF56gahLkDTqWUHT+hMpnLKc9yG7aAJu2AIT9NCIBdAHfxoeg8EOXgj2XM2TeeYxPOs=
+	t=1716362888; cv=fail; b=RuFw5yMt8h57URhgBpD7SQQevtho5k8mp5LFauyAR78V3G1cYeOZ91k/JTjqK18uxVWtF2C6j0F1E55FjO6FpHlznZJgVcaGmXR8KZ+BHwrv4FtLZCyvg0x+in9C+P+GojpYwnjw40aDbTR1wh+1BCO97dxhZHbA520zkcgxKiE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716359852; c=relaxed/simple;
-	bh=t/QM6BrighKr+G8QVXYS3vQFjE0QojzvBODTp/fYaJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=OcvFl2epzINGiSxOJoOkYXNthcxKzmfNxe/5wZq6s13tYeBoO8MIhXKUtz/ZKfYhRDlVEpNpkutpVSg1lvWg5KnkTJnxpIMXZlT6oFItVsTqXaWEFWz+xnbyB3ezVIfpuwJscmOsEbN3c7pCCrl4l9H1G++5RfjY8q25Ues/SoU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=GFr6BuVX; arc=fail smtp.client-ip=40.107.21.41
+	s=arc-20240116; t=1716362888; c=relaxed/simple;
+	bh=6if8QkYP42EAuKlNULnUyYXrvx1eiEgnX67KnoQq4VA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hhHb8xvPXayewthqCNdY4VnJHEpZxyXhP6ONmfngAo0q6SxrExpLfD44Y4YzWXOQzcfrzyjrEmsOYrJv4UUlonr8CRnjtbGA5PRAVruXE/ePY5BTG5cQDHceef9Ivy9b27BNkb4UimYKhaBC70pVPm0wahP9RxdWxKFj42YK6ps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=LTwGILsl; arc=fail smtp.client-ip=40.107.7.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="GFr6BuVX"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LTwGILsl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DrKS7TKVr8qL+/+iFtqv/vbmNXMm0uz6+k72eTJNyiXrF30kzPczhJLAuN/VLFnvMxI6gDzINGx0zYWsaup+EVDpIPLNes/sa8AVdFg/ehne2zSBwGlNQiNkogLZkNPASzgTZq5er7s8BjeCpXi+x85rq57tDS/DCtfa6+tnAZcmIqa8p5PHGT+eYwrfyLIZv3DiIdkvdO9aeXnPVHpytJOwGgrgFQ/Ljr4l0+uBm7URvvi/iRvJwfq4BEOeEv4B98BisYN73xdj4JNW9x2kOa7fuiQJrEvbLYi8RLCd62mC6zOdaiYpY1I/q6s0vSOM2XKZPZlCSCvlV+qpyUuEkQ==
+ b=NvHairbI/wKfuSudA5zdfSy/YB6cayuOSvV/T+Vy6SoKOVaZ89qXdVvf88lmXQgYDRQRa3s5ZBuo0gwgmHzc+ie/gdAHnLRJFlEW7QdH+iXQbYOWO7WeTtMpEzfc5uaIR3ND9XJl4wwkdi4tNBXhimWMKZlgk6i+qoO/1S7aj1QY8cVHjL5DPf+NY6OZOl05IwyhLu5De/8fsR1q0UlV5YveekfW4Kw21wizOl9yfhiNi1mmr3UwuGDeq+NweAdF5o7OzeYsPaGtjYJlZqIERJVQ1UiVLTXhhfih3D181IWfKrPYFiQnGDVMuhro8/sObS5DDGO6ZxPcBA9xERgg1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TJ/fILY0zNdihHJWDXv0PqLriQe1wwJ9i74/GxqV1kg=;
- b=A0qkynPO9L17YxkMdXoy2mHAHEPQ76HRAdcgIJF6p+ndKzCpjJzP7++daLsAdutV9Vi8iJXjrO+xGJSFAJSV9Xn220f9N4XCy7vCU3S3Ww9VV77eMQ3EkKvVa/LlOxfeKQRCK3T5ON9Ea2T0ZHS54kVJu81e7O7M/sb7yS1shdf3gO0AfofSSq5dn6VcXsnOzUHksZNqUhDKiIHHF952ctWq1pgKesaGx6shf86cyiUkfsEHdbAgB3fulYY1pb5vNNxy5kaj8Im0wTud4YSQjPwr23911raiFItkwQy4abFLP8cRZQeBVAUmhk/DrQsdMmmq30JNJU+AGoW1mrRQLw==
+ bh=6if8QkYP42EAuKlNULnUyYXrvx1eiEgnX67KnoQq4VA=;
+ b=AxjvdcmuZu2HB1oJn0/ZSSWLEDCmwFVYBz7/pck+sfFc1PR65aEuZW/utxvR9vO3t1NN5cOMSSEXwhpO4zQHPb4D0FWuj/Pep4VJayoVq9ldmCEcYT/T7gwN+yJt8XSdSXGDRAAwHDrYb2xzJP92PqLJSLX0MIv7siE31X5p4Le8tynGRQHdGszAzlbbGvRFspakLXaxvU05grA9gtxawN7d6AAIBsILX3zFXekuQXr0dGrbgDPxC/3jEQHsvjv0CJstacMPYgt5ztg04GuG+n9xOotxfBGJLpuhwSSc+vcAmp9Dg4tm9vDklHrHzi8F/FM8ppE25forRi4LveU7jA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TJ/fILY0zNdihHJWDXv0PqLriQe1wwJ9i74/GxqV1kg=;
- b=GFr6BuVXWuBpauPFhLXkPvZSf7MAmTFThRaY5QV3oltNDt1c9viPS7o4hLREduM9mlWKSxsgCrH8OnLQWAVUoD4wNUAvKCmkD+DxYpro03xKeu3eDOjYgM4BkRy03M2pk5Ms088+yjMb0ct1W/SrArRRyoXePLkcBOM2XGjt61M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by VI0PR04MB10710.eurprd04.prod.outlook.com (2603:10a6:800:260::10) with
+ bh=6if8QkYP42EAuKlNULnUyYXrvx1eiEgnX67KnoQq4VA=;
+ b=LTwGILsluFOZ1X88IPIrwrEqmEmVwOaeLC194bnkmp9UhJP7GsgX1qBxoJYgyGVbO74wmIvKqOpmu7Xjgt9xwv390dgfgSDC0gIYnS5a3vDKyQQ7lFs2YEtpbiiJIWVc8mqWAd+nnLzJrNpSO4FOBa7/7DjhxIrLUG1hP4MsIho=
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS8PR04MB7608.eurprd04.prod.outlook.com (2603:10a6:20b:293::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36; Wed, 22 May
- 2024 06:37:27 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.7611.016; Wed, 22 May 2024
- 06:37:26 +0000
-Date: Wed, 22 May 2024 14:36:00 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] ALSA: usb-audio: fix potential use after free issue when
- remove module snd-usb-audioy
-Message-ID: <20240522063600.qbf5dsk3bg5523mg@hippo>
-References: <20240520170349.2417900-1-xu.yang_2@nxp.com>
- <87bk503hfo.wl-tiwai@suse.de>
- <20240521105605.xcnji3d2wcihekhb@hippo>
- <87le431ju2.wl-tiwai@suse.de>
- <20240522033425.yztpigsv3uhdl5zv@hippo>
- <87jzjmz8vv.wl-tiwai@suse.de>
- <87h6eqz7rv.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h6eqz7rv.wl-tiwai@suse.de>
-X-ClientProxiedBy: SI1PR02CA0016.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::17) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+ 2024 07:28:03 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::baed:1f6d:59b4:957]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::baed:1f6d:59b4:957%5]) with mapi id 15.20.7587.028; Wed, 22 May 2024
+ 07:28:03 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>, Xiaolei Wang <xiaolei.wang@windriver.com>
+CC: Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [net PATCH] net: fec: free fec queue when fec_enet_mii_init()
+ fails
+Thread-Topic: [net PATCH] net: fec: free fec queue when fec_enet_mii_init()
+ fails
+Thread-Index: AQHaq+22vnaNT3PSDE643JvjIPXkobGiiaOggAAK4ICAAEYVQA==
+Date: Wed, 22 May 2024 07:28:02 +0000
+Message-ID:
+ <PAXPR04MB85100FA1D553CE1E8523269088EB2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20240522021317.1113689-1-xiaolei.wang@windriver.com>
+ <PAXPR04MB8510B1D6C8B77D7E154CC6CF88EB2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <8bbf2c1d-5083-4321-bded-f83aba5428fa@lunn.ch>
+In-Reply-To: <8bbf2c1d-5083-4321-bded-f83aba5428fa@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB7608:EE_
+x-ms-office365-filtering-correlation-id: c35650bf-4b0a-4387-ff2f-08dc7a30b743
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|366007|1800799015|376005|38070700009;
+x-microsoft-antispam-message-info:
+ =?gb2312?B?VThzR1JpbExNZDFUM0c0ZFp2VUpzQmRjaFcrL2wrRy9PMjlRdUZxRXhMRUlC?=
+ =?gb2312?B?NTAyU1dtSTZPWnJoS3Q0ZElrc1BoQXd3VVovS0FvTEFqeCtBZys5c0IvREl0?=
+ =?gb2312?B?OWEyZkg1Mk5UUzlLaUlVRjQ2aHlrV1JhVEdhcktiV041Z1hCWnJiZ2IvcnFs?=
+ =?gb2312?B?OENxbGhsczFVRGt1VmdrV0JqUWJrdmREamNmQXBSbWhxVzNqZ2pVUEV3U2s0?=
+ =?gb2312?B?SmhoS1FBNzdFM0d0TG9ZTGdMcXRzRmpqTzB5UFprNll2VzR6VE01RjlwNFhl?=
+ =?gb2312?B?TnJjZkJzM3dpY3cyK2FndHJIdm8zVEVMNXl0dERDOS9ZL1c0ZHUyM1JWcnU2?=
+ =?gb2312?B?Qjd3akVxdVQ1cTV0V1BJNkk3T0tOcFFQWklLRzkxRk0zY2crUG5oZmVldDB3?=
+ =?gb2312?B?bUJlR2NKaTN0WUloN1hzQUdPblREVVRWRmFkYkNJZXM0cVlRZmYrVDdRMk40?=
+ =?gb2312?B?MS9xdTBuVEx1cGY4clJOWXBxaWJrOHg0eG04SHRSdXFGR0pzZDY5UTVpZXNo?=
+ =?gb2312?B?MFg0ZVFQL1FxQmlUSVM1SFFVRTVPSk40SS9YMnpXaVlteEd5MTdpS09wZUJB?=
+ =?gb2312?B?V095M1k2VHEyall6V0UxbWhsL1FFc2NuOG9FZU1KT1F1MTYxOTNhR1JZdWtv?=
+ =?gb2312?B?ZkNpTUc4a0V0UkVQOENHZVlQQ2NnbXpnd1gwYmFTZy9TYThRQXhqaVdRZ05j?=
+ =?gb2312?B?UVFEb2c2MHBrTFpPTkhIYStYdWdPRlhYMUhzbkNHeG84bjhGMnNyMnl6Q0ll?=
+ =?gb2312?B?ZCtlQUxVTjU3ajBpcUxtQ0xNbnB4bmIvUDBxMEVNT3dvaG00eUJ4anllWEg4?=
+ =?gb2312?B?K3R4RmZVZjlVL1NIWGFHb3ZUNnltNHVNMzYzSVVUaXNFWEZJK2ppejVSaGto?=
+ =?gb2312?B?cXBQN1o3S1NpQ0Vlb054djN5c04zcVFULzdhTWVhYmlzeG5PLzdCZ3ovNTIr?=
+ =?gb2312?B?V3V0eCtJeWdyRGE2WkZ1cFAzREgwd3hRYmdRTzVjRFVpd3NIMzl6VjN6Y0Rw?=
+ =?gb2312?B?UWNQK3ZvYm5HejkrcDRkR0w0UFdSRjI4LzZKYlZTa3NVMlozTlVvWGtKd3lw?=
+ =?gb2312?B?aWtRdEtsWmxGMVVWelpQK3lrL0pocUNLdEJwM1gxSlJtbnFjVWRYaEtmNVpu?=
+ =?gb2312?B?STdpWElmQy9YdWlGVmpKVDBROG5EMGRHZG1zNDdORVp6Njhvb1UzT3Rpazlx?=
+ =?gb2312?B?RXRoa2RTa1VPL0VUQlVNZCtsZjdNcGtnNlJPRHEyaVZubWlvZms2cDJ0MFZK?=
+ =?gb2312?B?aTNyUUlaWWlnRWZCdmVreU9LM0pCTWRRWjhpNHhDTkozTmViY1c1SFVqbzRo?=
+ =?gb2312?B?anNMZlZPWTZKM3pGNzFVOGZud0plOG5XcjNGaU9Fek5KQi9NL1ZWSUZRNE9L?=
+ =?gb2312?B?STBrUENEMWVHNk5lUUJxT2RMaTR0T2ttdThxYmtqVk5oOFFxd2hqbFZOWk1X?=
+ =?gb2312?B?UkdXY2RoRHlzUWdEVk9kaUErbGszYy9mbGhYTEVmTFNaRnp5U3lGTTlyWnpC?=
+ =?gb2312?B?T3VOMEhUTzNiYk5Zdk1nMEZjMzZUNi9IV1VTZ2EyT1BldUN6UTR4TTRmRzRm?=
+ =?gb2312?B?cjFka01FaFJyaCswRFcybS9Ncy9VUGFlM1Axd1JOcXhmT24vVE45ODRKT0N4?=
+ =?gb2312?B?NEl6emoyMU9OSEQrdTdyME5CLysyMXRpWWJKSFZvaE5Ec2JVUmhvc1B3UExW?=
+ =?gb2312?B?a3hyQlRjbmo0UHQzVVJyMGRrdEtiNStlQnhwL29BR1ZZbjluMzR3ZG5FMm4z?=
+ =?gb2312?B?T2xKaTdvTzZvUlB1ZjIrSlpqSC8zWnJjK05FU1VtTDlKZUEvVE1QSlNSUnVR?=
+ =?gb2312?B?azIwa1p3aXJNQ2Z2MGMxQT09?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?gb2312?B?RWhnV2pFcmpWeUo0bEZkL051ZDdINENQLytSZHpiclpZV0ZKdjRudlhhUGFj?=
+ =?gb2312?B?cU93TWhLWXZpS3hYSGhjWjVyRWdVRUxwQlZBanZsMVBpaVFDVWdGK3hTdCtj?=
+ =?gb2312?B?QnBrTzFZckphSzR5Y3BWZkFOaW5aY2JSZzZmREFUQ3FTRG1DYlNPb2NRNmY1?=
+ =?gb2312?B?VmdpaXpDVHJKbFp2dC9jaDZMQ1MzdzVFNlNUQzgrdUNRMWVmUEF0eDZkZStM?=
+ =?gb2312?B?RjBBWm5NWWFPcHJDbGV6OUZNaXhrOUN3cXl0eS9YTVZIT0c1ZjdxYVdaOEIv?=
+ =?gb2312?B?c1hhYWh2U1FlemhpOGhYRGswTTJ4WnRpdkZ6cGpvTWVZSGRJNDkxcFZYOXR1?=
+ =?gb2312?B?SHRiQ3UzZTJCWlkvV1lmUTFxMzYyRmExWHZtY0U2Vm1jeXNLcEZocHRockJB?=
+ =?gb2312?B?aEFDa2ZteGF3amlTdFpmNThXOVR0UktjZkFSb0M3NG5OeWZoSEpuY3JDa3Z4?=
+ =?gb2312?B?N0dwSGIzNnl3R2pFMjk5VkhTNjJMUEhZMlJpZG9kOVJEL3lUUzNwcHBBVGhG?=
+ =?gb2312?B?dlBSSmF0OG50eDd0NHowWU5VQTVUQWRmZFFwRTczVXBoTGs2a3E0TWp6R3lm?=
+ =?gb2312?B?bENOWTRmN0JnTnNFanROZ0pRbU5McVN1U3N2OElMWS9DOUhDS1hYYjlsRUVk?=
+ =?gb2312?B?QXBqOE8xcC84bXRDR3BxSm5GMmdtSWVtS2pYcFlIOGk1Ump5cHc2VjlFTE5G?=
+ =?gb2312?B?bHNhblR1RUNrbnRtTXprbEVGWWJFdUlTQ2NBZXZJbS9DcFdBWEpoOEpCQjNV?=
+ =?gb2312?B?SkN6VHYvZ2dmRlhYREJtK0haQzlMVUNZZWF2NXkyL2daK1J5Q0FHQ2krM0lC?=
+ =?gb2312?B?a1dlS1ZkWktuMFB6MXAzU3Y2emlEYTVvQXV1clF5N0tjT2RUMlNQbXU0Z2FM?=
+ =?gb2312?B?dEsrSzBQWFBXSmZiUDEwczZibDZoNFMrZHl0Q1VVQWF6U2lxNzl4S2orMDdW?=
+ =?gb2312?B?aTNDMk93SUU4d2lpRjJzK0tYN3JJOG1QUjRpYnk4N0I4c1A5VUVsSlNFNHUy?=
+ =?gb2312?B?K3U1QmtDeEs5VzVNZFZneVFKWlJ0Z2hqWS9KS0tEYnMzUDRIa0JVVDJ4cXR0?=
+ =?gb2312?B?NUlVUGJYbTVoaGx0bEVqOS94azJ3a3gxNUZRZDg5a2JKQ0VjSkoyS0RFWnk4?=
+ =?gb2312?B?Z092Yit4Sm5UNktnYUlkUFpQdjhKS1lLdGZJR2w3Z3dqRUg2eVU4YkJNejd2?=
+ =?gb2312?B?bnBqbmVnb2t4aHlxd0ZLcnh4KyttdlBEcGM5RlROZW84ckZGMnRSN3Rmdk4v?=
+ =?gb2312?B?MHhHMzVqWENIRktBWjdoM2RIcUdaUWg0YlNtbkRxK0l3SnJROVJCUW50cHB1?=
+ =?gb2312?B?a0dMcWVienVkSHQxZU9MWnpCRnpPWVZGbVJjN0VsQlpobURXYzVEczUvQ29O?=
+ =?gb2312?B?Ti9zYm5GNG9hUXBBK2I5UEJ3MStKWGd4T0d5bFlNMm9wU2xBeXRDc2l6WjRn?=
+ =?gb2312?B?azFyc3FualpSMWMxaUt1THRiYnFFVDhqaUFhTEhVZktyK3hnaWRPeERNcXF1?=
+ =?gb2312?B?QkVYMUdWcFpJekVtNm1wekY0YXNHY21wMzcrRllnKzU1T280alE2K1VQV2Y1?=
+ =?gb2312?B?akJ6QWpWUSsrQlZTWitla29BYTVEVy9mWHBBWThNdHpZNmJDV1NNWWtaYkhO?=
+ =?gb2312?B?eGxIaHdpNTBFNVh3MXJwMU1EblRtVXNtbGxkQUJwMWZaYW9odWlNSnozbmxK?=
+ =?gb2312?B?Sjlac1NQRVh5bk45b1pZYjI4dHZrVGI5NFhYY3NDdjAyQWZRMGJRdHFrV2gw?=
+ =?gb2312?B?S29qSU4vdzJXTmlGcitvZXdKRUtOZHREcFpGZ0hqcWQ0RmovMkdZQVBnMU5l?=
+ =?gb2312?B?d05BR2xYZnl5QWU3VHRtOEF6ajB5bFE2V1VES1M3SlR5OFBsZkRKUkc1NllF?=
+ =?gb2312?B?T1FJMkpKN29ocXVDM095cDVndHhQR2VPTURLZUhrMFVWdnkwMDc2eXlHMk5j?=
+ =?gb2312?B?R29QZkd3Y2RSWUUrWEtEblJTb2lKd3cxTWdTNng5anFiUVV2UjVVcmZEYUhs?=
+ =?gb2312?B?ekFTVDdPZW1yYm5RTFRnWDFtR2JHaXNvNTN2T21VcWhIOWZMY0hNSkxIOFRV?=
+ =?gb2312?B?N0JqS2ZERDFFaEZ3bUF1ekxMeFdnNFBKcXYwaGtHZG4rS2tnWmM2SkpINEFr?=
+ =?gb2312?Q?R5io=3D?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI0PR04MB10710:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e85e982-a5db-493c-88cc-08dc7a29a54d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|52116005|1800799015|376005|366007|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vdxlcYVLXBsgqL3mtQ3wcpy22M1hc2ytBx50eeEtC/lVVpk3NsmqHZkW3q7P?=
- =?us-ascii?Q?pt1jrWuMvlrIKUhTs2WLqehRgvcWGpvaGbR5gO5C9hLaDJxQTK+XSYWfS3Ov?=
- =?us-ascii?Q?lauN1nEi6sq8SWFrAQ/eqZpOvgRoO3tmAhr+wqNRpgMHUo6aq3JWPZK4tT6g?=
- =?us-ascii?Q?HYKZncPkg0cXAldpMQin5tvG/nl0FAuYIO6PsSeJPEAbuy0eMFyEBCWUKuFx?=
- =?us-ascii?Q?Embvg1qrgYvqGwWmYcFTHWKN1YrQspauj8q/A5xsUeTA0fqYEmyN/371nm4Z?=
- =?us-ascii?Q?opnUebJ3y7WHhkz7qnovOhL4MC2L+loGAvFI4ArG9gcUGfBjd2Bk/MW3QlHJ?=
- =?us-ascii?Q?PShXi/BGGolJBpCfdevJxWIt39WPJ3uD89yAcoVHRccQkrtFVw68TiU0Oq6J?=
- =?us-ascii?Q?tvzSS4Mf6Ayn6inWkayyyAxEbMw1s+a0ODL7X5/L+4mJquCJuNWKYL63UyOY?=
- =?us-ascii?Q?WztGcAZaviOJR8Ia9ajTm1pC28PbWaehfj9GILfbcHKya0IHfbEoimb38GUe?=
- =?us-ascii?Q?Lp8WKSCeNTrnLfxEtIxoljAKS47jV9VR2KLeZsq4YkDbjDYXyUGqK6YP1fa2?=
- =?us-ascii?Q?KC4h8h6h5X+kKdmYvusVcJAST6/Z65KHPdbvsjfYzKyGsq+0ynex2UpwFypx?=
- =?us-ascii?Q?fVQQ735qjDLqw2mitF/wknUEX/xcoywfqFHW3xdH2CDK9o/BPw7LEIMQH98q?=
- =?us-ascii?Q?uGIImZCzJ+tfxq4RETKFSw47A907Q5uqJUhRo+Z/uUu0+CnCb+zoj6l+ZxYP?=
- =?us-ascii?Q?FEbgah1EkHbcJw+hKGiUd/UhL3vncD+Iu28ZJPuxN05MMA851on7YvDDE6QK?=
- =?us-ascii?Q?h6TOqHuHlRCnLpgFrOi7a0unpEQ+DWVuzeHmDXIErU1jJDzMXvxZLVxlIRip?=
- =?us-ascii?Q?XbMdKExvkxtCr9cUdDUZ1TUjFEJOczks8Pcx2q5dBd7syUjiZJeBjBE1X8nK?=
- =?us-ascii?Q?s576H/J1nnO6e19wZUKmCUDYfnCBOiiFRmTRaxrFuYQnTo+FIfk54X8ejw89?=
- =?us-ascii?Q?zQKpMLM1CUA089GP5Td+4/sXV5kI8g8LzMO1X6nSqTHEa6zAK8cx3gmWq5kx?=
- =?us-ascii?Q?VOwHWiCtrQmmiTvtbtiLeWUwDsoGxaFPcmiq6Qw8wH6N7+qpw/+5xzDejTar?=
- =?us-ascii?Q?Nduf+9dTj7DhWy0inVTZb8WCG9VVTCJyjAaD7M+bz8eyQaYnLp6Bly+TANye?=
- =?us-ascii?Q?OvToQLE4M2DRRlB2Okfrl3WCG2lpeLUbNlF6R9WYFNPekfpFZHTPbFGoWNzU?=
- =?us-ascii?Q?dg7PmAQFDcYOtHl7eEQTSGRnjoyTCdKFrMf2WTHNgw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(1800799015)(376005)(366007)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AFSGcu6gx3UD7IYrolb2vpPpskmkt8D3gLF11CbQwD0Lth3ZiL01FKPk4oHQ?=
- =?us-ascii?Q?nK6njOnVHwHkHQLl6+aba2vnniB1Z9TuhYuZqsCB1xnrUO8yd4UabhkYSt5e?=
- =?us-ascii?Q?8d9MqtE5FEmLp8gtKPwcOrNM/tEbBf7bJHNjXOqll8MU9xU0ecupJXzCYL9L?=
- =?us-ascii?Q?fECNvUG9UPpRAiddgUJzq5IVqkHKQoVLv8CGbjxwXb1g+GhVLm922911K00S?=
- =?us-ascii?Q?WK+n/4UsW2H1tJd9t/IgjKmZMY288kNnXq+dGxxKOjV6rz1RYLzQ88j6MtNO?=
- =?us-ascii?Q?EgrawvqR4OQhLYnczd5liNsdFr7nQF060YZXj6205R3kG823BQiixTJ6aHIK?=
- =?us-ascii?Q?010UMHGsBbg7T5XfwQqU/FVDJxcotgqpYtgv0eOUKXD9FxZ76AvYppLqEAuF?=
- =?us-ascii?Q?UAw/Hsl/fkBz9D/ePA0lHpCEQVzOj1E12aWKG7L/3mh8neVv7IbpfmcfQyX+?=
- =?us-ascii?Q?lW0slK/7vYG54FqbH29H5oMHY/cWKSOBl0TcR15Let/AC0HNa8iPqrLvRCWl?=
- =?us-ascii?Q?zVEoTYi+t0FDBIeHz+PJIsho4iMPFT3LlEu1U6fU/EW2onnnVAKK1FhUmU2H?=
- =?us-ascii?Q?BUoRjtqRakw1nwjP6P8zr3G1EaoogiZfK06W1b2SlAaSrrLVANLEo4O8HTU4?=
- =?us-ascii?Q?7KCvMQ0KW6F5i+sIJB9a6OQmN/MVMqaoNFPctuwwziGCugKV6u1LGf7q1+s4?=
- =?us-ascii?Q?4ERbIMpc4jyC5XMLUAoLJ3qJ+zqpeB+JYSYx7b7SO4pfxTeOxoQSH2gPsEQr?=
- =?us-ascii?Q?XIXiYQcv4AOqIRMwIysQIj9J5XvZ0nkkOzyHXdh6tFGjiDk+80RNpHOKT2sA?=
- =?us-ascii?Q?Llz2Ty2yyZCfoQUnxOPDn3CWr8JYlfWIzzb/2skTnu5HQhUXkhT70GG5YOze?=
- =?us-ascii?Q?Wdt4pcQgdFa79ah6dpND0Fk6+NXQf6hxM7VdixJMVcYtJoIAJrOrjKHKoVae?=
- =?us-ascii?Q?OAMMJsjdbvFs39cuw3Fck4xh6GvYbmjyMbmz+TTaurVWcNkGlWXcIe7TEFa5?=
- =?us-ascii?Q?+CcmzrxN2MNRDiY9s2jNAUdXgM6IMU67s3HI7gO//3QroyYMZIRfJDyzDlCe?=
- =?us-ascii?Q?v76D8jHUyy5jZjJnGjpr+pdQmgq+pM6nJx5lriTJ/fY4KxpKnWGf+cE35v3d?=
- =?us-ascii?Q?Io87FkOECaOWpO4XvzfzQKNIzR5AlMHK2XjWpzcjbVJtaiHETtI8mzZR3Jrj?=
- =?us-ascii?Q?CJTzCFZ5F/UJTawH4A3n9ouFjk8JVnkix23OiEH+RwQHaJv606eRWLSolsZr?=
- =?us-ascii?Q?KtXCM+LrqLpKcQz4us/jMyzGxKmFSlN3PoaxhLMRwwCRPoX/onMmfPzXWEbM?=
- =?us-ascii?Q?UHLvoR+NuMMIJUGhVqfhqvSuISn1DSftxg8yGq4B/N56ewSCAxvo1O0XLb1i?=
- =?us-ascii?Q?AO8UWYN/dP9ACeiSa9zlrVx+y+oi9aH+pmcrfNP2xQPcTbagz2hR10Hk77nH?=
- =?us-ascii?Q?Zwn+lh8L77SfVy55b+RREsEpaFmwatVImis87IlWW6hB7o3P4sRRz5kn0jgD?=
- =?us-ascii?Q?elmAtzV1G4QIawiwh7nbmnn4cudVpp3u35ldJ+AvW5hboEMjmhqv+3sa4jrb?=
- =?us-ascii?Q?zHDUc+Xg1+YZXn6eZOwRJgJ1BREMAnHQJ1o3hT1d?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e85e982-a5db-493c-88cc-08dc7a29a54d
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2024 06:37:26.8608
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c35650bf-4b0a-4387-ff2f-08dc7a30b743
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2024 07:28:03.0873
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8LggbM9lOUr81Qz2XTEodsEljEgYUF/1qgLXxymfPdty4EyuS7cF9fiSjzUsem1zjJeXHRdNjECMLY4ZOVGxiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10710
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XV6KpsaxtWeYAzq3/9nxc7xpFnYgnrWWuDnk9VXclv7FVOXloboPJU/33EH1DFw2VIBuyovB524E9cWzxaHrKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7608
 
-On Wed, May 22, 2024 at 08:21:24AM +0200, Takashi Iwai wrote:
-> On Wed, 22 May 2024 07:57:24 +0200,
-> Takashi Iwai wrote:
-> > 
-> > On Wed, 22 May 2024 05:34:25 +0200,
-> > Xu Yang wrote:
-> > > 
-> > > On Tue, May 21, 2024 at 01:32:37PM +0200, Takashi Iwai wrote:
-> > > > On Tue, 21 May 2024 12:56:05 +0200,
-> > > > Xu Yang wrote:
-> > > > > 
-> > > > > On Mon, May 20, 2024 at 12:29:15PM +0200, Takashi Iwai wrote:
-> > > > > > On Mon, 20 May 2024 19:03:49 +0200,
-> > > > > > Xu Yang wrote:
-> > > > > > > 
-> > > > > > > When remove module snd-usb-audio, snd_card_free_when_closed() will not
-> > > > > > > release the card resource if the card_dev refcount > 0 and
-> > > > > 
-> > > > > [...]
-> > > > > 
-> > > > > > > Then, even the userspace trying to cleanup the resources, kernel will not
-> > > > > > > touch the released code memory.
-> > > > > > 
-> > > > > > Hm, it's an interesting report.  Could you verify whether it's really
-> > > > > > hitting a module unload race?  The module refcount should have been
-> > > > > > non-zero when the device is still in use, and it should have prevented
-> > > > > > the module unloading.
-> > > > > 
-> > > > > Yes, the race does exist. I enable trace and got below output:
-> > > > > It seems that snd_usb_audio module refcnt is 0 after insmod completed. So
-> > > > > it can continue to be removed even it's still in use.
-> > > > 
-> > > > If no device is opened, it's not really "used", and the driver module
-> > > > can be unloaded at any time.  That's the intended behavior.
-> > > 
-> > > Hh, I see wireplumber did open the card_dev when it scan card devices.
-> > > But wireplumber didn't close the card_dev when the scan process completed.
-> > 
-> > Then rmmod shouldn't have been allowed, it's a consequence of the NULL
-> > module pointer, I suppose.
-
-Yes.
-
-> > 
-> > > > (snip)
-> > > > > Then I take some time to check why snd_usb_audio module refcnt is 0
-> > > > > even though the card_dev is in use. Finally I got below finding:
-> > > > > 
-> > > > > I build kernel and module with below configuration:
-> > > > > 
-> > > > > CONFIG_SOUND=y
-> > > > > CONFIG_SND=y
-> > > > > CONFIG_SND_USB=y
-> > > > > CONFIG_SND_USB_AUDIO=m
-> > > > > 
-> > > > > Then GCC will add -DMODULE when build snd-usb-audio as module, but will
-> > > > > not add -DMODULE when build sound/core/*.c.
-> > > > > 
-> > > > > When insmod snd-usb-audio.ko, it will create a snd card device and call:
-> > > > > 
-> > > > > snd_card_init()  // sound/core/init.c
-> > > > > 
-> > > > >   #ifdef MODULE
-> > > > >     WARN_ON(!module);
-> > > > >     card->module = module;
-> > > > >   #endif
-> > > > > 
-> > > > > However, MODULE is not defined for sound/core/init.c, then card->module
-> > > > > will keep NULL pointer. With this results, snd-usb-audio module refcnt
-> > > > > will not be a non-zero value.
-> > > > 
-> > > > Ah, it's a good finding!  That explains.
-> > > > 
-> > > > > > Practically seen, replacing snd_card_free_when_closed() with
-> > > > > > snd_card_free() shouldn't be a big problem, and it'll work in most
-> > > > > > cases.  But there are always some corner cases that might lead to
-> > > > > > unexpected behavior.  So, let's try to analyze more exactly what's
-> > > > > > happening there at first.
-> > > > > 
-> > > > > With above finding, we needn't to replace snd_card_free_when_closed()
-> > > > > with snd_card_free(). We need to find a way to correctly handle module
-> > > > > refcnt since this should be a normal usecase.
-> > > > 
-> > > > Right, I guess a simple fix below to replace '#ifdef MODULE' with
-> > > > '#ifdef CONFIG_MODULES' should work instead?
-> > > 
-> > > Yeah, it works for me.
-> > > Will you send a fix for the issue or suggest me send it? ^_^
-> > 
-> > I'm going to submit a proper fix patch later.
-
-Thanks in advance.
-
-> 
-> Looking at the git log again, I noticed that it's rather a regression
-> in commit 81033c6b584b.  So at best we should address only this
-> regression by the patch below.  Then the rest '#ifdef MODULE' can be
-> replaced with '#ifdef CONFIG_MODULES' in another patch as a different
-> fix / cleanup.  The latter changes the behavior slightly (now the proc
-> entry appears even if you build the sound core into kernel).
-
-Yes, indeed true. I agree with you.
-
-> 
-> 
-> Takashi
-> 
-> -- 8< --
-> Subject: [PATCH] ALSA: core: Fix NULL module pointer assignment at card init
-> 
-> The commit 81033c6b584b ("ALSA: core: Warn on empty module")
-> introduced a WARN_ON() for a NULL module pointer passed at snd_card
-> object creation, and it also wraps the code around it with '#ifdef
-> MODULE'.  This works in most cases, but the devils are always in
-> details.  "MODULE" is defined when the target code (i.e. the sound
-> core) is built as a module; but this doesn't mean that the caller is
-> also built-in or not.  Namely, when only the sound core is built-in
-> (CONFIG_SND=y) while the driver is a module
-> (e.g. CONFIG_SND_USB_AUDIO=m), the passed module pointer is ignored
-> even if it's non-NULL and NULL is kept in card->module as consequence.
-> This resulted in the missing module reference up/down at the device
-> open/close, leading to a race with the code execution after the module
-> removal.
-> 
-> For addressing the bug, move the assignment of card->module again out
-> of ifdef.  The WARN_ON() is still wrapped with ifdef, because the
-> module can be really NULL when all sound drivers are built-in.
-> 
-> Note that a NULL module pointer won't caught by ifdef MODULE, but it's
-> only for special kconfigs and this warning is only for debugging,
-> hence it shouldn't be any serious problem.
-> 
-> Fixes: 81033c6b584b ("ALSA: core: Warn on empty module")
-> Reported-by: Xu Yang <xu.yang_2@nxp.com>
-> Closes: https://lore.kernel.org/r/20240520170349.2417900-1-xu.yang_2@nxp.com
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> ---
->  sound/core/init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/core/init.c b/sound/core/init.c
-> index 6b127864a1a3..ac072614d1ea 100644
-> --- a/sound/core/init.c
-> +++ b/sound/core/init.c
-> @@ -313,8 +313,8 @@ static int snd_card_init(struct snd_card *card, struct device *parent,
->  	card->number = idx;
->  #ifdef MODULE
->  	WARN_ON(!module);
-> -	card->module = module;
->  #endif
-> +	card->module = module;
->  	INIT_LIST_HEAD(&card->devices);
->  	init_rwsem(&card->controls_rwsem);
->  	rwlock_init(&card->ctl_files_rwlock);
-
-It's okay for me. I'll give a Tested-by when receive a formal patch.
-
-Thanks,
-Xu Yang
-
-> -- 
-> 2.43.0
-> 
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFuZHJldyBMdW5uIDxhbmRy
+ZXdAbHVubi5jaD4NCj4gU2VudDogMjAyNMTqNdTCMjLI1SAxMToxNQ0KPiBUbzogV2VpIEZhbmcg
+PHdlaS5mYW5nQG54cC5jb20+DQo+IENjOiBYaWFvbGVpIFdhbmcgPHhpYW9sZWkud2FuZ0B3aW5k
+cml2ZXIuY29tPjsgU2hlbndlaSBXYW5nDQo+IDxzaGVud2VpLndhbmdAbnhwLmNvbT47IENsYXJr
+IFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT47DQo+IGRhdmVtQGRhdmVtbG9mdC5uZXQ7IGVk
+dW1hemV0QGdvb2dsZS5jb207IGt1YmFAa2VybmVsLm9yZzsNCj4gcGFiZW5pQHJlZGhhdC5jb207
+IGlteEBsaXN0cy5saW51eC5kZXY7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtl
+cm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtuZXQgUEFUQ0hdIG5ldDogZmVj
+OiBmcmVlIGZlYyBxdWV1ZSB3aGVuIGZlY19lbmV0X21paV9pbml0KCkgZmFpbHMNCj4gDQo+ID4g
+VGhlIGNvbW1pdCA1OWQwZjc0NjU2NDQgKCJuZXQ6IGZlYzogaW5pdCBtdWx0aSBxdWV1ZSBkYXRl
+IHN0cnVjdHVyZSIpDQo+ID4gd2FzIHRoZSBmaXJzdCB0byBpbnRyb2R1Y2UgdGhpcyBpc3N1ZSwg
+Y29tbWl0IDYxOWZlZTllYjEzYg0KPiA+ICgibmV0OiBmZWM6IGZpeCB0aGUgcG90ZW50aWFsIG1l
+bW9yeSBsZWFrIGluIGZlY19lbmV0X2luaXQoKSAiKSBmaXhlZA0KPiA+IHRoaXMsIGJ1dCBpdCBk
+b2VzIG5vdCBzZWVtIHRvIGJlIGNvbXBsZXRlbHkgZml4ZWQuDQo+IA0KPiBUaGlzIGZpeCBpcyBh
+bHNvIG5vdCBncmVhdCwgYW5kIGkgd291bGQgc2F5IHRoZSBpbml0aWFsIGRlc2lnbiBpcyByZWFs
+bHkgdGhlIHByb2JsZW0uDQo+IFRoZXJlIG5lZWRzIHRvIGJlIGEgZnVuY3Rpb24gd2hpY2ggaXMg
+dGhlIG9wcG9zaXRlIG9mIGZlY19lbmV0X2luaXQoKS4gSXQgY2FuDQo+IHRoZW4gYmUgY2FsbGVk
+IGluIHRoZSBwcm9iZSBjbGVhbnVwIGNvZGUsIGFuZCBpbiBmZWNfZHJ2X3JlbW92ZSgpIHdoaWNo
+IGFsc28NCj4gYXBwZWFycyB0byBsZWFrIHRoZSBxdWV1ZXMuDQo+IA0KWWVzLCB0aGlzIGlzc3Vl
+IGFsc28gZXhpc3RzIHdoZW4gdGhlIGZlYyBkcml2ZXIgaXMgdW5ib3VuZCwgbWF5YmUgWGlhb2xl
+aSBjYW4NCmhlbHAgaW1wcm92ZSBpdCBpbiBoaXMgcGF0Y2guDQo=
