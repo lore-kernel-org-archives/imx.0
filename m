@@ -1,24 +1,23 @@
 Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293E4146A69;
-	Wed, 22 May 2024 21:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB51C23CB;
+	Wed, 22 May 2024 22:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716414663; cv=none; b=brJXXHn8UVyYlYq//3pjYUBtRkkziVp5pshN1FKvsTjgJ5zrii7RP6B+f2q7C21ioD6gPazOEFl+xGDh84f4A57IuFC2bZ3wQGyBa3TjgBaSIVrI1abH1Wf82GYJCEeUC53d0JHhrvGFVUpV/0cYxVbIiuc6WH451MGC7hWjIAs=
+	t=1716415276; cv=none; b=h5vihonJbYfevDfYemZOV0zIr1odOpW5ccv2hE41bJne9d5HjIE4ftxDIkWYTCW8hImTgYtmJuKrTVsSTTbhP0+8jI4ulbQ95MNhg7aoxTsa0J0PuhDzK6dFBtSDI7Fjkc3BR8hmPoF08kVZef1Br4Rt7gQbJl9LiEgDac3VKRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716414663; c=relaxed/simple;
-	bh=ofPBeRqSIe2vx2hxtmS3fwTatzKosnn0o5DkUNV20jU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JYr1tAJONW2/3VmnPy8/RWrcdJFGj0/l6M5qRngZUEBTk4gN4fly1D5owkAjTENT3oIR2gAMUg81Px9kaPtAn1ftVWdUSQ3WT6JtPaikuEOyVaUamrCqWtce24Rxjfyl+pCG/sSLFR5LaQyX0SN/+GSgiqRyzUVhg9c8euK5lxw=
+	s=arc-20240116; t=1716415276; c=relaxed/simple;
+	bh=ZGJrvuyD1hpkeylaVYvTVMsT2k63HLWpXPMkzbnhvwA=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=KMBjWeP8iOBI0nspzD2U2w/GvOI0HzVSr9I5xCCQs1wpYkWCmHr9E6dH3Yi8U6nYz7HQ/7Vnk5MMAsDSaw8gO3d9IBQhYfWMxfVtp+IZx89J5f/7fRP2hXeY2l2Nry/+LCsRPdionXQmuAhV6AY1GUF5ggtXuzY66liS1byU0uY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
 	by finn.localdomain with esmtp (Exim 4.95)
 	(envelope-from <tharvey@gateworks.com>)
-	id 1s9trM-00BO3S-8U;
-	Wed, 22 May 2024 21:50:56 +0000
+	id 1s9tfO-00AwiR-8Q;
+	Wed, 22 May 2024 21:38:34 +0000
 From: Tim Harvey <tharvey@gateworks.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -27,18 +26,15 @@ To: Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Li Yang <leoyang.li@nxp.com>,
+	Tim Harvey <tharvey@gateworks.com>,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH 2/2] arm64: dts: freescale: rename gw7905 to gw75xx
-Date: Wed, 22 May 2024 14:50:43 -0700
-Message-Id: <20240522215043.3747651-2-tharvey@gateworks.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: freescale: imx8mp-venice-gw73xx-2x: fix BT shutdown GPIO
+Date: Wed, 22 May 2024 14:38:28 -0700
+Message-Id: <20240522213828.3745882-1-tharvey@gateworks.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240522215043.3747651-1-tharvey@gateworks.com>
-References: <20240522215043.3747651-1-tharvey@gateworks.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,99 +43,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The GW7905 was renamed to GW7500 before production release.
+Fix the invalid BT shutdown GPIO (gpio1_io3 not gpio4_io16)
 
+Fixes: 716ced308234 ("arm64: dts: freescale: Add imx8mp-venice-gw73xx-2x")
 Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile                      | 4 ++--
- ...8mm-venice-gw7905-0x.dts => imx8mm-venice-gw75xx-0x.dts} | 6 +++---
- ...{imx8mm-venice-gw7905.dtsi => imx8mm-venice-gw75xx.dtsi} | 0
- ...8mp-venice-gw7905-2x.dts => imx8mp-venice-gw75xx-2x.dts} | 6 +++---
- ...{imx8mp-venice-gw7905.dtsi => imx8mp-venice-gw75xx.dtsi} | 0
- 5 files changed, 8 insertions(+), 8 deletions(-)
- rename arch/arm64/boot/dts/freescale/{imx8mm-venice-gw7905-0x.dts => imx8mm-venice-gw75xx-0x.dts} (67%)
- rename arch/arm64/boot/dts/freescale/{imx8mm-venice-gw7905.dtsi => imx8mm-venice-gw75xx.dtsi} (100%)
- rename arch/arm64/boot/dts/freescale/{imx8mp-venice-gw7905-2x.dts => imx8mp-venice-gw75xx-2x.dts} (67%)
- rename arch/arm64/boot/dts/freescale/{imx8mp-venice-gw7905.dtsi => imx8mp-venice-gw75xx.dtsi} (100%)
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index bd443c2bc5a4..4b234d97a13b 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -128,11 +128,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw71xx-0x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw72xx-0x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw73xx-0x.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw75xx-0x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7901.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7902.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7903.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7904.dtb
--dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7905-0x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-mallow.dtb
-@@ -181,7 +181,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw71xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw72xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw73xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw74xx.dtb
--dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw7905-2x.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw75xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-verdin-nonwifi-mallow.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7905-0x.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx-0x.dts
-similarity index 67%
-rename from arch/arm64/boot/dts/freescale/imx8mm-venice-gw7905-0x.dts
-rename to arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx-0x.dts
-index 914753f062cd..04f06a55da5c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7905-0x.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx-0x.dts
-@@ -7,11 +7,11 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
+index dec57fad6828..e2b5e7ac3e46 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
+@@ -219,7 +219,7 @@ &uart3 {
  
- #include "imx8mm.dtsi"
- #include "imx8mm-venice-gw700x.dtsi"
--#include "imx8mm-venice-gw7905.dtsi"
-+#include "imx8mm-venice-gw75xx.dtsi"
+ 	bluetooth {
+ 		compatible = "brcm,bcm4330-bt";
+-		shutdown-gpios = <&gpio4 16 GPIO_ACTIVE_HIGH>;
++		shutdown-gpios = <&gpio1 3 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
  
- / {
--	model = "Gateworks Venice GW7905-0x i.MX8MM Development Kit";
--	compatible = "gateworks,imx8mm-gw7905-0x", "fsl,imx8mm";
-+	model = "Gateworks Venice GW75xx-0x i.MX8MM Development Kit";
-+	compatible = "gateworks,imx8mm-gw75xx-0x", "fsl,imx8mm";
- 
- 	chosen {
- 		stdout-path = &uart2;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7905.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
-similarity index 100%
-rename from arch/arm64/boot/dts/freescale/imx8mm-venice-gw7905.dtsi
-rename to arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw7905-2x.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx-2x.dts
-similarity index 67%
-rename from arch/arm64/boot/dts/freescale/imx8mp-venice-gw7905-2x.dts
-rename to arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx-2x.dts
-index 4a1bbbbe19e6..7ca68df9e516 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw7905-2x.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx-2x.dts
-@@ -7,11 +7,11 @@
- 
- #include "imx8mp.dtsi"
- #include "imx8mp-venice-gw702x.dtsi"
--#include "imx8mp-venice-gw7905.dtsi"
-+#include "imx8mp-venice-gw75xx.dtsi"
- 
- / {
--	model = "Gateworks Venice GW7905-2x i.MX8MP Development Kit";
--	compatible = "gateworks,imx8mp-gw7905-2x", "fsl,imx8mp";
-+	model = "Gateworks Venice GW75xx-2x i.MX8MP Development Kit";
-+	compatible = "gateworks,imx8mp-gw75xx-2x", "fsl,imx8mp";
- 
- 	chosen {
- 		stdout-path = &uart2;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw7905.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
-similarity index 100%
-rename from arch/arm64/boot/dts/freescale/imx8mp-venice-gw7905.dtsi
-rename to arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
 -- 
 2.25.1
 
