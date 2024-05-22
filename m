@@ -1,301 +1,80 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C211C13E888
-	for <imx@lists.linux.dev>; Wed, 22 May 2024 19:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E58A146A79;
+	Wed, 22 May 2024 21:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716405612; cv=none; b=ocjydKnnd+uF7CYaM1B2j2CMW9EoqLM8wKFFmaDyDyGaDVhsBFbdowe8t8ZeWZsaQcaZf/BLABWKoeZpf56GohkBFTMhkCwtjtcRL+0/WXgeCILysujA08RGEN8VD7g2F8d/Z8Mc3LH/aTRSkkNZ37/+0Tj/m+RGulEyhV2xhg8=
+	t=1716414660; cv=none; b=WPvrdCb6VWVM2/rse8TLjKIewHjovUYR3BNVNaS+HqGmNqkZWq19IeuWci/o4yZV9vHOzpQSUwC8dBxPBZPooSuwrdMng/KImEcEAkqy7bGZobJl3rmbxSrl4tylvdtOmCurtZQ0SEsGnLWsac9HBJhZcJzqL6fKFxHyfhl8/cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716405612; c=relaxed/simple;
-	bh=qXzBKLa/2vH+6rPMu/HQ3cd7kmlNPPimpw21pAKLjQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CakEALTYfuo8Zg++XqPZulV8XFO5UOf6NggYerRVG7T66o9x/W9BvNyzrGxDCI8TZ7kEDJRxt4UK+PF8McJFQ7TOsO7yZFBW9Nxw+K3kJbfQPPyUQ1X7cR48HDzrZPct9N7WZAZ3kEIKb4IOHpBGMGWYs3XhKvS3khthpgnl1ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZpea8HO; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZpea8HO"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a59a609dd3fso245735666b.0
-        for <imx@lists.linux.dev>; Wed, 22 May 2024 12:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716405609; x=1717010409; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qXzBKLa/2vH+6rPMu/HQ3cd7kmlNPPimpw21pAKLjQc=;
-        b=eZpea8HOog7YbDZRo9+xNWfvP2zVtcPW39N9lhoqqpDKXZYiRUf9i0RWK9zEO3/x9k
-         qhfYQV2dQT+WkJLGGdNyBoMFOljUtXTnYWqJTZ4lUpii2qLAyLqCubkrYGhuiNzWdAsq
-         3ivxpBbI61T6ahfP3fZFRe2Px+lFIUg8/yEDC/nWXdB4DypJaOyIQEzXvnFyqj4jVKAM
-         RH1MpyjznCL8zF4PVCXa1RZabb72rraOeCyTeqARLzCgaSUbIs2mqumOQxKuiGEj9lVg
-         VN0ur4nktfajDQMGlY65L1mO2LLI8S/66HOlMVFrw8dMRavQdTb9PnANDdgECpYEvO6Q
-         8q8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716405609; x=1717010409;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qXzBKLa/2vH+6rPMu/HQ3cd7kmlNPPimpw21pAKLjQc=;
-        b=W+bny3tkKAoelfBQog6LfPp3Tr+C4foaKZc5yoqxyWo8IpPiTmOoifaV7ZRgbwU45i
-         fvR266t65YRjGFCMh8T3poIAxKQWSL/2vTHkYVsvg1ZfDEppbDORBrfwzuBfYIhdHAMJ
-         bREA37yfJDl6JhVD+/ZdNtAa40R+qHAKfGhyrPxXe4W2WAtr8UTYU0G9IsMSkrIccjHn
-         MEsgwQtr5SDxDa5JkHerPvjF8xkkjz0v5Chaju0l1ODgjH7wPEErioaGdDU4FMJlUfnF
-         hn4yaE7f1WaC4wcFUeHNBORFPWuN599WlEjSwFXboaF8+qtlnYDGQwNJB5roBIpXMnip
-         j/dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUk1n7NcUF6G5xniCtIQvZi0f0lkcacSdLVWt6nLfnvVeamVBAHDzl4O4aFK4fAgEYj7Zu0aM2J6bAPhwRB33QK3RtU
-X-Gm-Message-State: AOJu0Yy3SR3qqT4HAdqS5V2uKXllki/P0stl0qklyYn6X7iWZREh0ecD
-	P8tGUn76bEMQCpQ1H4RtshsJjZebLr9UjCR/Jr26wbUkIBqbnEAG
-X-Google-Smtp-Source: AGHT+IEiGXuZfJanjugmhekGCcABA0a3U1vGrSOTHp1COahUF5FeiP6lSedr0EY4pGGKZXWst/v81A==
-X-Received: by 2002:a17:906:d8d1:b0:a5a:177b:d8d2 with SMTP id a640c23a62f3a-a623e8f87a3mr13393566b.22.1716405608942;
-        Wed, 22 May 2024 12:20:08 -0700 (PDT)
-Received: from ?IPV6:2a02:2f00:503:7c00:503d:ca7a:1fd6:cd63? ([2a02:2f00:503:7c00:503d:ca7a:1fd6:cd63])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17891f6esm1820514066b.54.2024.05.22.12.20.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 May 2024 12:20:08 -0700 (PDT)
-Message-ID: <131e46b1-61d9-41de-a225-853b09c765d1@gmail.com>
-Date: Wed, 22 May 2024 22:20:07 +0300
+	s=arc-20240116; t=1716414660; c=relaxed/simple;
+	bh=gdS9zOp1Th6sAT7JgkhhosETF34ZaNUOWBvkZs5hl2I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=lLdmZhjmufqBUKjEIR5/6+TReDoTxmfR19SZy9NepXIEmJ08nHlQzF3VdS2pZf2L3AfXxjtlXImT0dUWMWfIxT0Rq29Hmmvh657UdT9EX6l1vnL2e9+JMhHkjLi9Gl4Qu382oEOj1XVReCHfyUR5tUwr9F9kn5090XNcrWQH+wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1s9trJ-00BO3S-4u;
+	Wed, 22 May 2024 21:50:53 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+Date: Wed, 22 May 2024 14:50:42 -0700
+Message-Id: <20240522215043.3747651-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] reset: add driver for imx8ulp SIM reset controller
-Content-Language: en-US
-To: Amit Singh Tomar <amitsinght@marvell.com>, Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Liu Ying <victor.liu@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- laurentiu.mihalcea@nxp.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240516204031.171920-1-laurentiumihalcea111@gmail.com>
- <20240516204031.171920-3-laurentiumihalcea111@gmail.com>
- <ade33946-bb94-4357-bc6d-a354661b50ca@marvell.com>
- <Zkd0uIaJiwzYrBIK@lizhi-Precision-Tower-5810>
- <fc91b997-f90b-4e3c-9a89-5db932ba148c@marvell.com>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <fc91b997-f90b-4e3c-9a89-5db932ba148c@marvell.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+The GW7905 was renamed to GW7500 before production release.
 
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 5/20/2024 5:41 PM, Amit Singh Tomar wrote:
->
->>
->> ----------------------------------------------------------------------
->> On Fri, May 17, 2024 at 11:51:30AM +0530, Amit Singh Tomar wrote:
->>> Hi,
->>>
->>>> ----------------------------------------------------------------------
->>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>>>
->>>> Certain components can be reset via the SIM module.
->>>> Add reset controller driver for the SIM module to
->>>> allow drivers for said components to control the
->>>> reset signal(s).
->>>>
->>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>>> ---
->>>>    drivers/reset/Kconfig                         |  7 ++
->>>>    drivers/reset/Makefile                        |  1 +
->>>>    drivers/reset/reset-imx8ulp-sim.c             | 98 +++++++++++++++++++
->>>
->>> Just out of curiosity, can't this be accomplished using a generic reset
->>> driver?
->>>
->>> https://urldefense.proofpoint.com/v2/url?u=https-3A__elixir.bootlin.com_linux_latest_source_drivers_reset_reset-2Dsimple.c&d=DwIBAg&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=MnEcoegPnKc-F7TNf8PB3icMf8uCGrxsh6mEDWgNq3YA-OugL6Y53LxytlBGcsKp&s=6mBPHYYYXoyyxPPbUeOiIpwR3CXdnui1W3nkUJQ76Vo&e=
->>
->> reset-simple have not use regmap. I think it can use ti's
->> https://urldefense.proofpoint.com/v2/url?u=https-3A__elixir.bootlin.com_linux_latest_source_drivers_reset_reset-2Dti-2Dsyscon.c&d=DwIBAg&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=MnEcoegPnKc-F7TNf8PB3icMf8uCGrxsh6mEDWgNq3YA-OugL6Y53LxytlBGcsKp&s=D6tqLNYrUbsdG_gYg4G-ORlC9YKz4XRAlVeo1hyoYS4&e=
->>
->> Or should change ti to reset-simple-syscon?  or add regmap support for
->> reset-simple.c
->>
->
-> Quickly looked into U-Boot (not sure if it's the right reference), and it has a separate reset-syscon.c file:
->
-> https://elixir.bootlin.com/u-boot/latest/source/drivers/reset/reset-syscon.c
->
-> So, converting reset-ti-syscon.c to reset-syscon.c might be the way to go.
-
-A few comments here: current version of the patch is wrong because
-the reset controller driver doesn't get probed. If my understanding
-is correct this is because the syscon driver doesn't create devices
-for its children (via of_platform_populate() or its variants).
-
-I plan to fix this in V2 by transforming the syscon parent node into
-a syscon + reset controller node (+ the of_platform_populate() call
-in the driver for the mux controller probe).
-
-In this case, I think TI's reset driver will no longer be an option.
-
->
->> Frank Li
->>
->>
->>>
->>>>    include/dt-bindings/reset/imx8ulp-sim-reset.h | 16 +++
->>>>    4 files changed, 122 insertions(+)
->>>>    create mode 100644 drivers/reset/reset-imx8ulp-sim.c
->>>>    create mode 100644 include/dt-bindings/reset/imx8ulp-sim-reset.h
->>>>
->>>> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
->>>> index 85b27c42cf65..c1f4d9ebd0fd 100644
->>>> --- a/drivers/reset/Kconfig
->>>> +++ b/drivers/reset/Kconfig
->>>> @@ -91,6 +91,13 @@ config RESET_IMX7
->>>>        help
->>>>          This enables the reset controller driver for i.MX7 SoCs.
->>>> +config RESET_IMX8ULP_SIM
->>>> +    tristate "i.MX8ULP SIM Reset Driver"
->>>> +    depends on ARCH_MXC
->>>> +    help
->>>> +      This enables the SIM (System Integration Module) reset driver
->>>> +      for the i.MX8ULP SoC.
->>>> +
->>>>    config RESET_INTEL_GW
->>>>        bool "Intel Reset Controller Driver"
->>>>        depends on X86 || COMPILE_TEST
->>>> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
->>>> index fd8b49fa46fc..f257d6a41f1e 100644
->>>> --- a/drivers/reset/Makefile
->>>> +++ b/drivers/reset/Makefile
->>>> @@ -42,3 +42,4 @@ obj-$(CONFIG_RESET_UNIPHIER) += reset-uniphier.o
->>>>    obj-$(CONFIG_RESET_UNIPHIER_GLUE) += reset-uniphier-glue.o
->>>>    obj-$(CONFIG_RESET_ZYNQ) += reset-zynq.o
->>>>    obj-$(CONFIG_ARCH_ZYNQMP) += reset-zynqmp.o
->>>> +obj-$(CONFIG_RESET_IMX8ULP_SIM) += reset-imx8ulp-sim.o
->>>> diff --git a/drivers/reset/reset-imx8ulp-sim.c b/drivers/reset/reset-imx8ulp-sim.c
->>>> new file mode 100644
->>>> index 000000000000..27923b9cd454
->>>> --- /dev/null
->>>> +++ b/drivers/reset/reset-imx8ulp-sim.c
->>>> @@ -0,0 +1,98 @@
->>>> +// SPDX-License-Identifier: GPL-2.0+
->>>> +
->>>> +/*
->>>> + * Copyright 2024 NXP
->>>> + */
->>>> +
->>>> +#include <linux/mfd/syscon.h>
->>>> +#include <linux/module.h>
->>>> +#include <linux/of.h>
->>>> +#include <linux/platform_device.h>
->>>> +#include <linux/regmap.h>
->>>> +#include <linux/reset-controller.h>
->>>> +#include <dt-bindings/reset/imx8ulp-sim-reset.h>
->>>> +
->>>> +#define AVD_SIM_SYSCTRL0        0x8
->>>> +
->>>> +struct imx8ulp_sim_reset {
->>>> +    struct reset_controller_dev     rcdev;
->>>> +    struct regmap                   *regmap;
->>>> +};
->>>> +
->>>> +static const u32 imx8ulp_sim_reset_bits[IMX8ULP_SIM_RESET_NUM] = {
->>>> +    [IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N] = BIT(3),
->>>> +    [IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N] = BIT(4),
->>>> +    [IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N] = BIT(5),
->>>> +};
->>>> +
->>>> +static inline struct imx8ulp_sim_reset *
->>>> +to_imx8ulp_sim_reset(struct reset_controller_dev *rcdev)
->>>> +{
->>>> +    return container_of(rcdev, struct imx8ulp_sim_reset, rcdev);
->>>> +}
->>>> +
->>>> +static int imx8ulp_sim_reset_assert(struct reset_controller_dev *rcdev,
->>>> +                    unsigned long id)
->>>> +{
->>>> +    struct imx8ulp_sim_reset *simr = to_imx8ulp_sim_reset(rcdev);
->>>> +    const u32 bit = imx8ulp_sim_reset_bits[id];
->>>> +
->>>> +    return regmap_update_bits(simr->regmap, AVD_SIM_SYSCTRL0, bit, 0);
->>>> +}
->>>> +
->>>> +static int imx8ulp_sim_reset_deassert(struct reset_controller_dev *rcdev,
->>>> +                      unsigned long id)
->>>> +{
->>>> +    struct imx8ulp_sim_reset *simr = to_imx8ulp_sim_reset(rcdev);
->>>> +    const u32 bit = imx8ulp_sim_reset_bits[id];
->>>> +
->>>> +    return regmap_update_bits(simr->regmap, AVD_SIM_SYSCTRL0, bit, bit);
->>>> +}
->>>> +
->>>> +static const struct reset_control_ops imx8ulp_sim_reset_ops = {
->>>> +    .assert         = imx8ulp_sim_reset_assert,
->>>> +    .deassert       = imx8ulp_sim_reset_deassert,
->>>> +};
->>>> +
->>>> +static const struct of_device_id imx8ulp_sim_reset_dt_ids[] = {
->>>> +    { .compatible = "nxp,imx8ulp-avd-sim-reset", },
->>>> +    { /* sentinel */ },
->>>> +};
->>>> +
->>>> +static int imx8ulp_sim_reset_probe(struct platform_device *pdev)
->>>> +{
->>>> +    struct device *dev = &pdev->dev;
->>>> +    struct imx8ulp_sim_reset *simr;
->>>> +    int ret;
->>>> +
->>>> +    simr = devm_kzalloc(dev, sizeof(*simr), GFP_KERNEL);
->>>> +    if (!simr)
->>>> +        return -ENOMEM;
->>>> +
->>>> +    simr->regmap = syscon_node_to_regmap(dev->of_node->parent);
->>>> +    if (IS_ERR(simr->regmap)) {
->>>> +        ret = PTR_ERR(simr->regmap);
->>>> +        dev_err(dev, "failed to get regmap: %d\n", ret);
->>>> +        return ret;
->>>> +    }
->>>> +
->>>> +    simr->rcdev.owner = THIS_MODULE;
->>>> +    simr->rcdev.nr_resets = IMX8ULP_SIM_RESET_NUM;
->>>> +    simr->rcdev.ops = &imx8ulp_sim_reset_ops;
->>>> +    simr->rcdev.of_node = dev->of_node;
->>>> +
->>>> +    return devm_reset_controller_register(dev, &simr->rcdev);
->>>> +}
->>>> +
->>>> +static struct platform_driver imx8ulp_sim_reset_driver = {
->>>> +    .probe  = imx8ulp_sim_reset_probe,
->>>> +    .driver = {
->>>> +        .name           = KBUILD_MODNAME,
->>>> +        .of_match_table = imx8ulp_sim_reset_dt_ids,
->>>> +    },
->>>> +};
->>>> +module_platform_driver(imx8ulp_sim_reset_driver);
->>>> +
->>>> +MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
->>>> +MODULE_DESCRIPTION("NXP i.MX8ULP System Integration Module Reset driver");
->>>> +MODULE_LICENSE("GPL");
->>>> diff --git a/include/dt-bindings/reset/imx8ulp-sim-reset.h b/include/dt-bindings/reset/imx8ulp-sim-reset.h
->>>> new file mode 100644
->>>> index 000000000000..a3cee0d60773
->>>> --- /dev/null
->>>> +++ b/include/dt-bindings/reset/imx8ulp-sim-reset.h
->>>> @@ -0,0 +1,16 @@
->>>> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
->>>> +
->>>> +/*
->>>> + * Copyright 2024 NXP
->>>> + */
->>>> +
->>>> +#ifndef DT_BINDINGS_RESET_IMX8ULP_SIM_RESET_H
->>>> +#define DT_BINDINGS_RESET_IMX8ULP_SIM_RESET_H
->>>> +
->>>> +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N    0
->>>> +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N    1
->>>> +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N   2
->>>> +
->>>> +#define IMX8ULP_SIM_RESET_NUM                   3
->>>> +
->>>> +#endif /* DT_BINDINGS_RESET_IMX8ULP_SIM_RESET_H */
->>>
->
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 0027201e19f8..d8bc295079e3 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -920,8 +920,8 @@ properties:
+               - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
+               - fsl,imx8mm-evk            # i.MX8MM EVK Board
+               - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
++              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
+               - gateworks,imx8mm-gw7904
+-              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Board
+               - gw,imx8mm-gw71xx-0x       # i.MX8MM Gateworks Development Kit
+               - gw,imx8mm-gw72xx-0x       # i.MX8MM Gateworks Development Kit
+               - gw,imx8mm-gw73xx-0x       # i.MX8MM Gateworks Development Kit
+@@ -1055,7 +1055,7 @@ properties:
+               - gateworks,imx8mp-gw72xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw73xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw74xx   # i.MX8MP Gateworks Board
+-              - gateworks,imx8mp-gw7905-2x # i.MX8MP Gateworks Board
++              - gateworks,imx8mp-gw75xx-2x # i.MX8MP Gateworks Board
+               - skov,imx8mp-skov-revb-hdmi # SKOV i.MX8MP climate control without panel
+               - skov,imx8mp-skov-revb-lt6 # SKOV i.MX8MP climate control with 7” panel
+               - skov,imx8mp-skov-revb-mi1010ait-1cp1 # SKOV i.MX8MP climate control with 10.1" panel
+-- 
+2.25.1
 
