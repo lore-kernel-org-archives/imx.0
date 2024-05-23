@@ -1,77 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA0E4685;
-	Thu, 23 May 2024 09:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0EC13D286
+	for <imx@lists.linux.dev>; Thu, 23 May 2024 10:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716457238; cv=none; b=QV6zQ26Djyz6x39ms3k7vv0u/LJ5viorafrwnBTcw6zvMPVi8MIisHzlsjMfrvHJ6rcINVRIDnrN5PDbLg0dMHEipKaI+9dahkG1E5K4EnH0BZKz5PS/qbEeM6VzJeTbQ/EmCV5LgEJW30D1C2P4H0pVj0CUtv7pFKHdQOqkeGY=
+	t=1716459611; cv=none; b=SunA31CbV2zIKO3Zq9A48zXXhXHIeeY1uk0czFOcc6ImTSxu1tRH/1bkgzW5zqf5hlt/AGompAppUiR/M8DKaWuoqeZWQHLDvTOpnWwenKIK4d2YIbtdvyJIcfA/OO3Os/kiVh5dv8pxR6sIAsa0udC8pMVCDb3L6LYXdCbOAU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716457238; c=relaxed/simple;
-	bh=0a8Cvw4MRnzhALmRdstt3jzS71JOV55Hiq8Rf4MC7GY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QzWi+iRWk+/JS22iAOtIK5yRfG7tWR3ECtYzQ0VUThUXrSqO24g1NvN7ohWHI7gqp+zkDKt8g9rVqXCwrmxrY9B6zHPJC3gjFggILDO9ad3tzePMd/Uoe9IOHI1WbZI4fHFuNM/nS5w2Iw8TUH+9DfaMwmh67gur1tnMY4i5q4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VzYuenIM; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VzYuenIM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DE9F1C32782;
-	Thu, 23 May 2024 09:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716457237;
-	bh=0a8Cvw4MRnzhALmRdstt3jzS71JOV55Hiq8Rf4MC7GY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=VzYuenIM80nW7ntnPLMKGkabfZFxJEqKpu1MT/FiN+h5oFOZBVMiEsfRjHy+DhGrV
-	 ajbVyu5aWI+qS78OM9nSfFtJFWM5oyYpZiZ3v//0MVpbCXSBnGUGvA1m+1Ux87pn3K
-	 IjQGMWw+XPCWkcC12U7w0naAxTXNyhWIffhiKOUQl4Gcsk0biafl0gKidkq/03f9iK
-	 hdsKVIfZrCuBv1E1ZfFANtZZ3zG+01sprUaiNeMjhthCv1qE4uKwHCmbNDRliElsdJ
-	 fYD6aQLgtkCRIseVUSWikuXFaIJpg4KPTSy+JN/q73HvLdKQxas3a0TUdA+ORHrihU
-	 qMDKs7lv+agqg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CE823C43617;
-	Thu, 23 May 2024 09:40:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1716459611; c=relaxed/simple;
+	bh=mQZX0GpupK3bkgiwgabR7cVdsnZ41kVjsv3/XEPRAGs=;
+	h=From:To:Subject:Date:Message-Id; b=K+qpMqgQZ9/IiOm6/f4jeCxAsQ8/6e09MN8h3IxFr+ra1h/DHWd/uEcpnb46pSUGYOH6w7Gn1Mjly0c71I70LsxhX6pLye2FpkgGrrIP8IS53vRGM0v7jOmNLswSkdBVFB/deBUtgiOAgICpB/sza5kQfkq/sKKKuRsmLVFDNh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5F903201F88;
+	Thu, 23 May 2024 12:20:02 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1D6F5201F81;
+	Thu, 23 May 2024 12:20:02 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id AB88C180222C;
+	Thu, 23 May 2024 18:19:59 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: abelvesa@kernel.org,
+	peng.fan@nxp.com,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	marex@denx.de,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	p.zabel@pengutronix.de,
+	shengjiu.wang@gmail.com
+Subject: [PATCH v5 0/5] clk: imx: clk-audiomix: Improvement for audiomix
+Date: Thu, 23 May 2024 17:59:45 +0800
+Message-Id: <1716458390-20120-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] net: fec: avoid lock evasion when reading pps_enable
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171645723783.24100.7721910085063661458.git-patchwork-notify@kernel.org>
-Date: Thu, 23 May 2024 09:40:37 +0000
-References: <20240521023800.17102-1-wei.fang@nxp.com>
-In-Reply-To: <20240521023800.17102-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
- richardcochran@gmail.com, andrew@lunn.ch, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-Hello:
+Some improvement for audiomix driver:
+Add reset controller for EARC function
+Add CLK_SET_RATE_PARENT flags for clocks
+Corrent parent clock for earc_phy and audpll clocks.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+changes in v5:
+- fix miss header issue reported by kernel test robot
+- use scoped free
 
-On Tue, 21 May 2024 10:38:00 +0800 you wrote:
-> The assignment of pps_enable is protected by tmreg_lock, but the read
-> operation of pps_enable is not. So the Coverity tool reports a lock
-> evasion warning which may cause data race to occur when running in a
-> multithread environment. Although this issue is almost impossible to
-> occur, we'd better fix it, at least it seems more logically reasonable,
-> and it also prevents Coverity from continuing to issue warnings.
-> 
-> [...]
+changes in v4:
+- use auxiliary device framework for reset controller driver.
+- drop syscon and simple-mfd related changes in v3
 
-Here is the summary with links:
-  - [v2,net] net: fec: avoid lock evasion when reading pps_enable
-    https://git.kernel.org/netdev/net/c/3b1c92f8e537
+changes in v3:
+- separate reset driver to driver/reset/
+- add binding doc for reset driver.
+- modify imx8mp.dtsi accordingly
 
-You are awesome, thank you!
+changes in v2:
+- add more info in commit messages
+
+Shengjiu Wang (5):
+  dt-bindings: clock: imx8mp: Add #reset-cells property
+  clk: imx: clk-audiomix: Add reset controller
+  reset: imx-aux: Add i.MX auxiliary reset driver
+  clk: imx: clk-audiomix: Add CLK_SET_RATE_PARENT flags for clocks
+  clk: imx: clk-audiomix: Corrent parent clock for earc_phy and audpll
+
+ .../bindings/clock/imx8mp-audiomix.yaml       |   3 +
+ drivers/clk/imx/Kconfig                       |   1 +
+ drivers/clk/imx/clk-imx8mp-audiomix.c         |  83 ++++++-
+ drivers/reset/Kconfig                         |   8 +
+ drivers/reset/Makefile                        |   1 +
+ drivers/reset/reset-imx-aux.c                 | 217 ++++++++++++++++++
+ 6 files changed, 307 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/reset/reset-imx-aux.c
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
