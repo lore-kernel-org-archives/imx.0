@@ -1,97 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E60E54C
-	for <imx@lists.linux.dev>; Thu, 23 May 2024 15:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108E921362
+	for <imx@lists.linux.dev>; Thu, 23 May 2024 17:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716479501; cv=none; b=TZ7b0r4uL9f2FBNF5rqvH9bnmwCf3EoFTelZGZbvMv1qOZqdTipSzNr8Mlu86UxPoEVAwIcLl4aYLf2mRzEjn+KTSLdAHlSfEyLKV5xxCJo7QM+eEyeeIypUSVj+0k4340+/ZNwT+SZaIytwtNZVWZUtEL9qxfCkUGrPjJK2tT0=
+	t=1716485539; cv=none; b=msqFi9hIMEXGNeOFn51yad+osBOzu+yVfUlD6Z/wZp1J+en73vdmau6xgHhs5vzJoRShgEjSEMdBkcg3PTpgx49gLdKjjPsXuAEeBU2d0HRGZ5KpSfuZ2Wi17UTfms86uVkfG/jbDloB2b6qIkdJK/D5p8Rz4C3jakN8E7cxQ0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716479501; c=relaxed/simple;
-	bh=u5C+G2r6BRqBl+StF3Q+wwcxgy8yjkrFhSiEp0mdUyQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NKvwgRKeeujmxHPgydolYBUYsD4cOlKi47K0JtOQsgQLABtaW4f1/Uw+c6FIVOU7BeNCxoBvkjdb6tHG9LaEMzkZGs+QWqcq8akAQmsPOeonzsfnFl5S1sb2Ftp/qCh2QX6ghVswNqBcqnOg3EbkGLE/JUCZNmK47a/ARleGx8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FhLAyRfY; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1716485539; c=relaxed/simple;
+	bh=uNcIGozZvpEAmR27nhSWVo+xVUOftbExVLTNqebYqjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AiPG2kAJt3nhoTtCgFW3T9Qi0nbg5Vq/47P480ZoIFNoWQs1JPVWglnHxDBZOUKUmtn72eZNr4NzgyKKB4QxT53y7pUXBx8pXGpoRRcSI8kOAg5ZdXJ0rFWxgrr2tzZoVmRwAvhJote5d2MbMHsKRWBU8atVaZZTO6OFdMGhy5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dS+ek4Ba; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FhLAyRfY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dS+ek4Ba"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716479499; x=1748015499;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=u5C+G2r6BRqBl+StF3Q+wwcxgy8yjkrFhSiEp0mdUyQ=;
-  b=FhLAyRfYcGLNrijnvci3lHizjBgvzBQkOheD8IeZFLQm9A7nc0GcPM4z
-   o2EghryF1W45f5xWN/pzvHRYbX2Pjr+VPQog13xBj6EIsLZcnCtdKt+U4
-   Xqe+k3BjVyB09xUGU4ccaR5jrkE58YaEoN5VG6s45niog4rTLiVrcqyYi
-   GQkRovjyVLwFJCu3/UVbGn/dBTtBupUM+qmbkkfMT+QdTU0QhUhK0vI0x
-   Y6k+6yexIQL/SkkE6tntKGGY89rAj8nK7Te2aXP984ujvbQxnim1e2nz+
-   Eh6IbmeW7bvS9fhz7z9vBfhIUHuycCKyXmI2MJCt68/CFF9raNZeDFQMx
-   A==;
-X-CSE-ConnectionGUID: FqmxAS6DS4a+xoTgGUsuCg==
-X-CSE-MsgGUID: AFcJwrbtSpmSKyA18NguLw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12982340"
+  t=1716485538; x=1748021538;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=uNcIGozZvpEAmR27nhSWVo+xVUOftbExVLTNqebYqjs=;
+  b=dS+ek4BaPs5JM8tuCQ8BzJ7ryUTei2riwxUgU8OlspKfz0Vr0VtubO4F
+   BbSetM5BPG+nooUs/anvm49VyeMXpPII+uV/6jVMSS4ZFRYz/nmOPt+O9
+   CRJBgjrjl0csLiZsmQ9IjKzoLABLSeXGnJzOaJ/LQqI5kd22DFNCU/fwD
+   Uz6D/dU5628D5Uhv+KNvLV3UkiNKR7pJHD2wRu8MZm0thxPoikcOWZTus
+   83UIjtDV/gJZ66vThWi1uVDwBUmdzpeGBtaXiIXXBwVbbiRTlkiP+eqO1
+   3kozLCnX/bZVHHPj/OQt5ulFALQGLR1OV9YYbHpQUcyk4KYB8h9XiAdS/
+   w==;
+X-CSE-ConnectionGUID: kk/w6qdUSgOmtm9M+mR+Hg==
+X-CSE-MsgGUID: xoWkiB2lTSWEV0/2qojgWA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12673170"
 X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="12982340"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 08:51:39 -0700
-X-CSE-ConnectionGUID: tRe+GP46QGeClIHEEwEkdg==
-X-CSE-MsgGUID: zjUvqLI3RnCT8irAol/ZKg==
+   d="scan'208";a="12673170"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 10:32:15 -0700
+X-CSE-ConnectionGUID: xt+TKiz4TyavmPMvRJ7mUQ==
+X-CSE-MsgGUID: 9Eeg2aYeSdigM9bHUEo3oA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="38556571"
-Received: from unknown (HELO localhost) ([10.237.66.160])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 08:51:38 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	nouveau@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org
-Cc: jani.nikula@intel.com
-Subject: [PATCH 4/4] drm: enable -Wformat-truncation across the subsystem
-Date: Thu, 23 May 2024 18:51:09 +0300
-Message-Id: <719debc351075abc36b2573266bfd4d963361e40.1716479340.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1716479340.git.jani.nikula@intel.com>
+   d="scan'208";a="33712668"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 23 May 2024 10:32:11 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 23 May 2024 20:32:11 +0300
+Date: Thu, 23 May 2024 20:32:11 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH 3/4] drm/imx: fix -Wformat-truncation warning in
+ imx_ldb_probe()
+Message-ID: <Zk99m4i82XnQPeKQ@intel.com>
 References: <cover.1716479340.git.jani.nikula@intel.com>
+ <c257c4174743f35bafee8492ec60e1d2734450cf.1716479340.git.jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <c257c4174743f35bafee8492ec60e1d2734450cf.1716479340.git.jani.nikula@intel.com>
+X-Patchwork-Hint: comment
 
-With the -Wformat-truncation warnings fixed, finish the job started in
-commit a61ddb4393ad ("drm: enable (most) W=1 warnings by default across
-the subsystem"), and enable that warning too.
+On Thu, May 23, 2024 at 06:51:08PM +0300, Jani Nikula wrote:
+> Enabling -Wformat-truncation yields the following warning:
+> 
+> ../drivers/gpu/drm/imx/ipuv3/imx-ldb.c: In function ‘imx_ldb_probe’:
+> ../drivers/gpu/drm/imx/ipuv3/imx-ldb.c:658:57: error: ‘_sel’ directive output may be truncated writing 4 bytes into a region of size between 3 and 13 [-Werror=format-truncation=]
+>   658 |                 snprintf(clkname, sizeof(clkname), "di%d_sel", i);
+>       |                                                         ^~~~
+> ../drivers/gpu/drm/imx/ipuv3/imx-ldb.c:658:17: note: ‘snprintf’ output between 8 and 18 bytes into a destination of size 16
+>   658 |                 snprintf(clkname, sizeof(clkname), "di%d_sel", i);
+>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+If only the compiler could count to three...
 
----
+> 
+> Silence the warning by checking the snprintf() return value.
+> 
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> 
+> ---
+> 
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> ---
+>  drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+> index 71d70194fcbd..46f779fe60ee 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+> +++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+> @@ -654,8 +654,12 @@ static int imx_ldb_probe(struct platform_device *pdev)
+>  	 */
+>  	for (i = 0; i < 4; i++) {
+>  		char clkname[16];
+> +		int len;
+> +
+> +		len = snprintf(clkname, sizeof(clkname), "di%d_sel", i);
+> +		if (len >= sizeof(clkname))
+> +			dev_err(dev, "clkname truncated\n");
+>  
+> -		snprintf(clkname, sizeof(clkname), "di%d_sel", i);
+>  		imx_ldb->clk_sel[i] = devm_clk_get(imx_ldb->dev, clkname);
+>  		if (IS_ERR(imx_ldb->clk_sel[i])) {
+>  			ret = PTR_ERR(imx_ldb->clk_sel[i]);
+> -- 
+> 2.39.2
 
-Gut feeling says there are more issues, and my configs just don't catch
-them all, but let's see what the build bots have to say. ;)
----
- drivers/gpu/drm/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
-index 68cc9258ffc4..644613dbedda 100644
---- a/drivers/gpu/drm/Makefile
-+++ b/drivers/gpu/drm/Makefile
-@@ -16,8 +16,7 @@ subdir-ccflags-y += $(call cc-option, -Wunused-but-set-variable)
- subdir-ccflags-y += $(call cc-option, -Wunused-const-variable)
- subdir-ccflags-y += $(call cc-option, -Wpacked-not-aligned)
- subdir-ccflags-y += $(call cc-option, -Wformat-overflow)
--# FIXME: fix -Wformat-truncation warnings and uncomment
--#subdir-ccflags-y += $(call cc-option, -Wformat-truncation)
-+subdir-ccflags-y += $(call cc-option, -Wformat-truncation)
- subdir-ccflags-y += $(call cc-option, -Wstringop-truncation)
- # The following turn off the warnings enabled by -Wextra
- ifeq ($(findstring 2, $(KBUILD_EXTRA_WARN)),)
 -- 
-2.39.2
-
+Ville Syrjälä
+Intel
