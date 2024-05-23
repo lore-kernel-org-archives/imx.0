@@ -1,118 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379A383CC1
-	for <imx@lists.linux.dev>; Thu, 23 May 2024 22:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CA484E1B
+	for <imx@lists.linux.dev>; Thu, 23 May 2024 23:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716504237; cv=none; b=qoTbKE/Q7v0HgN/BcZccw66fZU0b3KOXXusm+3ZFuxGOMd3rNP9NgL6J3g+r/fa7iycg3U50WjlRdhD4muXJ/41m9uRodqFoMsk1U+bFiOFH0Lq911LQ1kOph4jmm362nKtxmEjCkYGr7q8lxfwZYjFK8uzQ00yBma776v9eDe8=
+	t=1716505505; cv=none; b=ggBFAzJO3DJHzTOTNOeiVJdT8fyQHGQuUETnpZoyS5IrYLFeZYq2oXQ4eZVhWI/lNSCqw69iDg40j3GGtsJb/ScIe8zAN490s3uFoRx9H/W03g6PZCs0do2iV7rrStmFZrX6rnUdMGg0RRsMZQJbU1Z5WysJwyeMCgGJSf26I7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716504237; c=relaxed/simple;
-	bh=DeRznDUy6+k12p/OKJsq9wS5q2D71jokILR4vUud1xk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=sVBgJdYBdEtx2aRl3ubrmkCqh6TI8x3wVcD12vdraD3w6w51ngI+f5rPjhVyZ3wRITzVyj56U1WAofalZzXBu++7wq0dbeaTnXO2KkT++JRtwY1NboHwbFJVYY4yFKc9Z/j8RKEkTD4Wp0n4WHDNh/Qm4gjdNh2XkbAvK41jwBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C5FOhzpV; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1716505505; c=relaxed/simple;
+	bh=BHiJmgEBa1gvLNWntn5RfkJD/TJ7EaO5QDPUeZlRx5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sGjasLI+OADzL6bNgshD4Na9p4eLpb5csaKi1ivTK76bB7eWNRDQCWx+oklve2z88X2hAbPEENQ0A8CdkoOXkV3lUlt+PzGOz4Y6fy0ppF65twYxZmXjyHCSvDUuTVfP792EKruH8IPuYTZIPDSgyrYmSc5CwWuopZr/aqZjIWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=kT4lZezg; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C5FOhzpV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716504236; x=1748040236;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=DeRznDUy6+k12p/OKJsq9wS5q2D71jokILR4vUud1xk=;
-  b=C5FOhzpV5PDfwoazcz/7FjRKQZkaNmJBCkkqRjAaOEdE9cxUgHn1jtoy
-   vcwcrcDpzuzJs29X0NGnVWALmUWS05+EcsHVy+kSgygkuLPbRRbzTdiJp
-   Y4d5QtSO1H5LbRmWLBJYsNjgJCPHEX5mjDCZUkbw2Id6EaD+i7S7PMMVv
-   JepGNIaqvD0cvwRL2a8U+rvThV9xUoQfm7If5yGBOc0ju1WsHTvXGpsiq
-   vfxqR638y988Cnp0WvDz+1qk/sXiL/dBEGtj/tZZ723blnoWm7dCOk11/
-   kNDCuxT3YeYDDcG15c0z1DP1TI1BSl1bOtyw4vQsplFGHFg8oFgo2mLD2
-   A==;
-X-CSE-ConnectionGUID: h01z/F3LSxqgrwJZlJZKgA==
-X-CSE-MsgGUID: 6fH4dAAsSmml+zbcHWIoFQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="24267624"
-X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="24267624"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 15:43:55 -0700
-X-CSE-ConnectionGUID: tUWROIX/RrmqrcPvdGAnBQ==
-X-CSE-MsgGUID: yZHJsThDQ2GV8X3EiMTVRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
-   d="scan'208";a="64641111"
-Received: from unknown (HELO [10.125.110.41]) ([10.125.110.41])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 15:43:53 -0700
-Message-ID: <179eb2b1-0103-4105-ae66-fd0a86bd9fd1@linux.intel.com>
-Date: Thu, 23 May 2024 17:43:52 -0500
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="kT4lZezg"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-529644ec0ebso272108e87.3
+        for <imx@lists.linux.dev>; Thu, 23 May 2024 16:05:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1716505501; x=1717110301; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QNpjFzKLRaM/fVkxEdNIFaPzfJ+DbE01S4ZDfPlVfB0=;
+        b=kT4lZezglGYqLFJ/PXfEKRioJ5732TEOE2WZH+pqoiaaBnFc8PixADkIVrSmesytZ+
+         ScYaTheHcEFEak8RwOcOHqFthnurA+gYUheazINpSK89R4pIAJA2edO/rrtb7iMHktY6
+         +wvJyew9gOQnWmFW5KZXc+JOUG9xi4mtlxSXqO3cnH0dhEU2ZiypiY3MKOfrG7QqjnYo
+         RdEkjvw3p0W70gp3yrbyPbQHUVOnk6RZla6epv6j6tc/Doatpq2o6f9XjNx2AZdx3F8V
+         z1wS5YhGMFaJdjC4kcxv17GRzKOXRQ+P4ebYe2jjl/TfK4n/+6sEjq+eX+6UaB2pIgfH
+         7obQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716505501; x=1717110301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QNpjFzKLRaM/fVkxEdNIFaPzfJ+DbE01S4ZDfPlVfB0=;
+        b=fdC7oIpZEp8bBMeMxeBQEebHv9emy+KWF5JuxmtgiL/8kXPE/EoOlOvUX/OE7XiCov
+         4BcKhO5+l8Y4/kdEjXwG1wNLrgrfz74GZmoVp8kRY7pT20GThD4xpnFL7xb8KVNKXuTr
+         ju5NCnMGP/AruLlt4MT19DJc6J3bHGf/HTJc2VlMNi37AtBtQ7yjKTLmVGYNDH/JorU+
+         LYfxNxzWijzD/EW3zvVdnOO33KrVKXbxfBVHo1opfyRgNurLwRVkLzawCq67JjchDCqZ
+         HQk5TfO466wLi7WYyG4L1L0zTezFq6TGO/97Vz7AY5a9AATM7o8W5KKHyV242MFS6s3F
+         BvwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWiS2qK2cfv5fgH+muKS5UH0gB7Q+WXDQeodGoUhgAYphG8/6LgARV/mENO59+gunbsdMzVINVa7r3PR5+x05RiBKAl
+X-Gm-Message-State: AOJu0YwPoZHfBBU9GAxgYcZUH8oLgcwBaxJ1ejs3ouNtCM68a21f8xCm
+	Xr2bLUlgwPT5a3YSexeYfbDRQwuYKJIOVUL9FmSU4srCVVD2hcwnutxIHRsib5rxnhaUeZWe4fr
+	6QO4//oQzYP9gnjuZjKAMWWugBWi3B8t6LxUFRQ==
+X-Google-Smtp-Source: AGHT+IEmckQyii9d5h+3SwFO5raoGBU1nq40RxOH1XcjOxKLm2r5qPhAiY+i55UsHnYaFQnU8ydp+dzH7XdOV3iZv2I=
+X-Received: by 2002:a19:7008:0:b0:522:3487:3f3b with SMTP id
+ 2adb3069b0e04-52966005c1dmr291285e87.36.1716505501582; Thu, 23 May 2024
+ 16:05:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] ASoC: grace time for DPCM cleanup
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
- <amadeuszx.slawinski@linux.intel.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alper Nebi Yasak <alpernebiyasak@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Banajit Goswami <bgoswami@quicinc.com>,
- Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>,
- Cezary Rojewski <cezary.rojewski@intel.com>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
- Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>,
- Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>,
- Jiawei Wang <me@jwang.link>, Jonathan Corbet <corbet@lwn.net>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>,
- Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Maso Huang <maso.huang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Shengjiu Wang <shengjiu.wang@gmail.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>,
- Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-sound@vger.kernel.org
-References: <871q5tnuok.wl-kuninori.morimoto.gx@renesas.com>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <871q5tnuok.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240522215043.3747651-1-tharvey@gateworks.com>
+ <07250029-7cea-4a82-9e70-22e0e6f7fb37@linaro.org> <20240523-vividly-sequester-d85ac7bccbbd@spud>
+In-Reply-To: <20240523-vividly-sequester-d85ac7bccbbd@spud>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Thu, 23 May 2024 16:04:50 -0700
+Message-ID: <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+To: Conor Dooley <conor@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Morimoto-san,
+On Thu, May 23, 2024 at 7:47=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> On Thu, May 23, 2024 at 09:02:46AM +0200, Krzysztof Kozlowski wrote:
+> > On 22/05/2024 23:50, Tim Harvey wrote:
+> > > The GW7905 was renamed to GW7500 before production release.
+> > >
+> > > Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documen=
+tation/devicetree/bindings/arm/fsl.yaml
+> > > index 0027201e19f8..d8bc295079e3 100644
+> > > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > @@ -920,8 +920,8 @@ properties:
+> > >                - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
+> > >                - fsl,imx8mm-evk            # i.MX8MM EVK Board
+> > >                - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
+> > > +              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
+> >
+> > That's not even equivalent. You 7500 !=3D 75xx.
+> >
+>
+> > >                - gateworks,imx8mm-gw7904
+> > > -              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Board
+> >
+> > Compatibles do not change. It's just a string. Fixed string.
+>
+> I think there's justification here for removing it, per the commit
+> message, the rename happened before the device was available to
+> customers.
+> Additionally, I think we can give people that upstream things before they=
+'re
+> publicly available a bit of slack, otherwise we're just discouraging
+> people from upstreaming early.
 
-> This is v4 of DPCM cleanup
-> 
-> As we discussed in [1], we don't need to use dpcm_playback/capture flag,
-> so we remove it. But we have been using it for 10 years, some driver might
-> get damage. The most likely case is that the device/driver can use both
-> playback/capture, but have only one flag, and not using xxx_only flag.
-> [1/3] patch indicates warning in such case.
-> 
-> These adds grace time for DPCM cleanup.
-> I'm not sure when dpcm_xxx will be removed, and Codec check bypass will be
-> error, but maybe v6.11 or v6.12 ?
+Hi Conor,
 
-We're already finding warnings on all Intel SoundWire platforms:
+Thanks for understanding - that's exactly what happened. I'm in the
+habit of submitting patches early and often and it's no fun when
+something like a silly product name gets changed and breaks all the
+hard work.
 
-The DAIs are declared as supporting playback AND capture, but in
-practice they can only support one direction at a time.
+The board model number is stored in an EEPROM at manufacturing time
+and that EEPROM model is used to build a dt name. So instead of GW7905
+which would be a one-off custom design it was decided to change the
+product to a GW75xx. The difference between GW7500 and GW75xx is
+because we subload components on boards between GW7500/GW7501/GW7502
+etc but the dt is the same.
 
-The direction is defined by the dailink when it includes specific DAIs.
+If there is resistance to a patch that renames it then I guess I'll
+have to submit a patch that removes the obsolete board, then adds back
+the same board under a different name. Shall I do that?
 
-So if you don't mind I'd prefer it if we shared a patch with you to be
-included in a v5, to make sure at least the Intel platforms tested in CI
-are all ok from Day1, otherwise we're going to get lots of noise
-reported for no good reason.
-Shouldn't take long.
+Best Regards,
+
+Tim
