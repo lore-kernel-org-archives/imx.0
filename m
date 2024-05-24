@@ -1,186 +1,171 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984678615C
-	for <imx@lists.linux.dev>; Fri, 24 May 2024 12:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10712BF18
+	for <imx@lists.linux.dev>; Fri, 24 May 2024 12:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716552773; cv=none; b=eywkjoDTRLbbkOwKE5Ld5b2zdlCvq8QNlM1K303GRebo/mdtL22JgVTmve8S9L/r+9jG+FtTRpvlcUFZzGHxPp3KQBVn2M57t4qCjUIUHgbYGS0XPw4QPSwi+iLZDZ4y7xpRzo/KnTNYq8VVMMthqVQebV6q3EPbDJIuuWEBgN8=
+	t=1716553574; cv=none; b=DSrq1O/hmcC6c9tNGzP9NtsJCcuX2bpmibB8D8sFwlxmmQZPONG6WcBHQBMU7QlLtzmfWqmm0sh+zyeJhSv9peJjCErhND9TcDf+CFC6lSEG/1AAMoRSAv99N4Ny1qMogSNWVZYGinG4EMF7Sj+lQNNG/sdXjb+OO27hE/GDY1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716552773; c=relaxed/simple;
-	bh=NLkcXVJfxaNj+x/ym/nlC1R/VqgX2dj3Yj+vQmBzw2Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FFccVYKaskusKnwnPmv8xtsAeaeIy5Fm4BsCRp+oQgH4JMfOSDZCMt3Tid+wj3d5nzuysJjkozCesCXQHGcRxxjMRYcX/+C+qZLek8lp6a3T2/S3Mh0Swnx2nWqikP9XhbRhPGYEZjNhu9FEKzZW1LqryLVEKd8INsNexgKSo7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk; spf=pass smtp.mailfrom=rasmusvillemoes.dk; dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b=QZ4Pn3eH; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rasmusvillemoes.dk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b="QZ4Pn3eH"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52232d0e5ceso9187547e87.0
-        for <imx@lists.linux.dev>; Fri, 24 May 2024 05:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1716552770; x=1717157570; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=z/kQluXbrS5/xKa378gCLMmIP4qg7U9JjmWwPqCAy5U=;
-        b=QZ4Pn3eHXUrghWYKsGDAMi4ld8OWjr55oi9vEEeOmss13E+FaPf65rudMw+dQWuMNk
-         vYp8wpQT0rWTjGbSkqzpUlOYileNoI05YvUyePJJGYZD4DaOEkBVPn+w/tb3hONnvptT
-         tIEB29oBnrOvGr84GF5wRCW+FUV5sDuDC9zV4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716552770; x=1717157570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z/kQluXbrS5/xKa378gCLMmIP4qg7U9JjmWwPqCAy5U=;
-        b=DMzLxMM4ipy8+BvBmgi6Ju1xSOrx3hSjUweywxoYUKOGzUDak9f9i8wd80FuuWUPZQ
-         15G0rRUmIQDH/+7iRvwWBLvLlefIU3VFijScqcaLN7tGGq44LGArBwQCpamipD7BfLRI
-         MaZfG2+K0Tu/7CVsgx0BUeD0+yrXSXMBWwRAZxFvCztiE0uPsxJHnnepvbs1LbHfllAm
-         CdDgAT8hDm1JEnHveYJm/64CCUtA/IHQzOMCFMgLeGeEidw98tcoU9GYj1HqGFq59R67
-         mCjC9hVNoHrEGmjTZyo7whvIJsnW0/nesOwqEHslmz9behDEwkd8wWF3BUxj+bf4jIu8
-         a5Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+/CCMuxlyZsApSkFFGW6WCnFDfHp4y9G1RIml/bPZY66UV56KlbtnLMsHzyg30W0Hlo60CCrQUHCztcMbcO2y6+Rq
-X-Gm-Message-State: AOJu0YxuaW1IRWE5a1aGeuh0CtpKE2RvNJWFAOCfmDtfvfHIRrj59v/Z
-	LRTWrPmhgO3itIBoSdarNkTM+01dzbSL0u/XYNlS1CJ/fb/Dp0t/R0wigqGlX1Q=
-X-Google-Smtp-Source: AGHT+IFDzskSYUTxKkoP6SCgQgAYltT2X4VJOr36ZAkA0ExwWVFTGCSdWPvOlsTH+ENT8Hvd6LU7KA==
-X-Received: by 2002:a05:6512:10ca:b0:51c:b73f:950 with SMTP id 2adb3069b0e04-529661f315emr1807735e87.43.1716552769459;
-        Fri, 24 May 2024 05:12:49 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52970c3313fsm164559e87.200.2024.05.24.05.12.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 May 2024 05:12:49 -0700 (PDT)
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	s=arc-20240116; t=1716553574; c=relaxed/simple;
+	bh=BR6wg9i/0mbzIcyzWHdONHm37dg16V5vztgEDpsM3jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eRN8IskU9EKkE0Wv61FJdYaKezX8+ROnTwmuG5vF2RQNtw3miQLHdtGoR1HfPtur7CwNripygPawis5vwF3LJqXibtEJQmsH0hZCQqKJxI969Z8sMMZbi8VcmSezSIDhFiKuH2AS8MlOpsOWjLY13cn+54aSF0STiQ5aYAUP9oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sATzb-0001Lx-DC; Fri, 24 May 2024 14:25:51 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sATza-002nB5-Jm; Fri, 24 May 2024 14:25:50 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sATza-00BiEV-1d;
+	Fri, 24 May 2024 14:25:50 +0200
+Date: Fri, 24 May 2024 14:25:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] serial: imx: ensure RTS signal is not left active after shutdown
-Date: Fri, 24 May 2024 14:12:45 +0200
-Message-Id: <20240524121246.1896651-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.40.1.1.g1c60b9335d
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
+ EdgeLock Enclave
+Message-ID: <ZlCHTqJ0Umgh3LCw@pengutronix.de>
+References: <20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com>
+ <20240523-imx-se-if-v2-4-5a6fd189a539@nxp.com>
+ <ZlBtNSeh2VyZsVxq@pengutronix.de>
+ <AM9PR04MB860424A71753DBB56D2CEF5895F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB860424A71753DBB56D2CEF5895F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-If a process is killed while writing to a /dev/ttymxc* device in RS485
-mode, we observe that the RTS signal is left high, thus making it
-impossible for other devices to transmit anything.
+On Fri, May 24, 2024 at 12:08:14PM +0000, Pankaj Gupta wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Friday, May 24, 2024 4:04 PM
+> > To: Pankaj Gupta <pankaj.gupta@nxp.com>
+> > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh+dt@kernel.org>;
+> > Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
+> > <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Pengutronix
+> > Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> > <festevam@gmail.com>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> > <krzk+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
+> > linux-arm-kernel@lists.infradead.org
+> > Subject: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP EdgeLock
+> > Enclave
+> >
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> >
+> >
+> > On Thu, May 23, 2024 at 04:19:35PM +0530, Pankaj Gupta wrote:
+> > > NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are
+> > > embedded in the SoC to support the features like HSM, SHE & V2X, using
+> > > message based communication interface.
+> > >
+> > > The secure enclave FW communicates on a dedicated messaging unit(MU)
+> > > based interface(s) with application core, where kernel is running.
+> > > It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
+> > >
+> > > This patch adds the driver for communication interface to
+> > > secure-enclave, for exchanging messages with NXP secure enclave HW
+> > > IP(s) like EdgeLock Enclave (ELE) from Kernel-space, used by kernel
+> > > management layers like
+> > > - DM-Crypt.
+> > >
+> > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> > > ---
+> > >  drivers/firmware/imx/Kconfig        |  12 +
+> > >  drivers/firmware/imx/Makefile       |   2 +
+> > >  drivers/firmware/imx/ele_base_msg.c | 286 +++++++++++++++++++
+> > > drivers/firmware/imx/ele_base_msg.h |  92 +++++++
+> > >  drivers/firmware/imx/ele_common.c   | 239 ++++++++++++++++
+> > >  drivers/firmware/imx/ele_common.h   |  43 +++
+> > >  drivers/firmware/imx/se_ctrl.c      | 531
+> > ++++++++++++++++++++++++++++++++++++
+> > >  drivers/firmware/imx/se_ctrl.h      |  99 +++++++
+> > >  include/linux/firmware/imx/se_api.h |  14 +
+> > >  9 files changed, 1318 insertions(+)
+> > >
+> >
+> > > +static int se_probe_if_cleanup(struct platform_device *pdev) {
+> > > +     struct device *dev = &pdev->dev;
+> > > +     struct se_if_priv *priv;
+> > > +     int ret = 0;
+> > > +
+> > > +     priv = dev_get_drvdata(dev);
+> > > +     if (!priv) {
+> > > +             ret = 0;
+> > > +             dev_dbg(dev, "SE-MU Priv data is NULL;");
+> > > +             return ret;
+> > > +     }
+> > > +
+> > > +     if (priv->tx_chan)
+> > > +             mbox_free_channel(priv->tx_chan);
+> > > +     if (priv->rx_chan)
+> > > +             mbox_free_channel(priv->rx_chan);
+> > > +
+> > > +     /* free the buffer in se remove, previously allocated
+> > > +      * in se probe to store encrypted IMEM
+> > > +      */
+> > > +     if (priv->imem.buf) {
+> > > +             dmam_free_coherent(dev,
+> > > +                                ELE_IMEM_SIZE,
+> > > +                                priv->imem.buf,
+> > > +                                priv->imem.phyaddr);
+> > > +             priv->imem.buf = NULL;
+> > > +     }
+> > > +
+> > > +     if (priv->flags & RESERVED_DMA_POOL) {
+> > > +             of_reserved_mem_device_release(dev);
+> >
+> > You can call this unconditionally, no need to keep track if you called
+> > of_reserved_mem_device_init() successfully.
+> 
+> But it will not be called for each SoC.
+> The memory is not reserved for i.MX95 platforms.
+> This is required.
 
-Moreover, the ->tx_state variable is left in state SEND, which means
-that when one next opens the device and configures baud rate etc., the
-initialization code in imx_uart_set_termios dutifully ensures the RTS
-pin is pulled down, but since ->tx_state is already SEND, the logic in
-imx_uart_start_tx() does not in fact pull the pin high before
-transmitting, so nothing actually gets on the wire on the other side
-of the transceiver. Only when that transmission is allowed to complete
-is the state machine then back in a consistent state.
+Again: You can call this unconditionally. Look at the code,
+of_reserved_mem_device_release() won't do anything if you haven't called
+of_reserved_mem_device_init() before.
 
-This is completely reproducible by doing something as simple as
+Sascha
 
-  seq 10000 > /dev/ttymxc0
-
-and hitting ctrl-C, and watching with a logic analyzer.
-
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
-
-A screen dump from a logic analyzer can be seen at:
-
-  https://ibb.co/xCcP7Jy
-
-This is on an imx8mp board, with /dev/ttymxc0 and /dev/ttymxc2 both
-configured for rs485 and connected to each other. I'm writing to
-/dev/ttymxc2. This demonstrates both bugs; that RTS is left high when
-a write is interrupted, and that a subsequent write actually fails to
-have RTS high while TX'ing.
-
-I'm not sure what commit to name as a Fixes:. This certainly happens
-on 6.6 and onwards, but I assume the problem exists since the tx_state
-machine was introduced in cb1a60923609 (serial: imx: implement rts
-delaying for rs485), and possibly even before that.
-
-
- drivers/tty/serial/imx.c | 50 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
-
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 2eb22594960f..35a47f4ab6ed 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1551,6 +1551,7 @@ static void imx_uart_shutdown(struct uart_port *port)
- 	struct imx_port *sport = (struct imx_port *)port;
- 	unsigned long flags;
- 	u32 ucr1, ucr2, ucr4, uts;
-+	int loops;
- 
- 	if (sport->dma_is_enabled) {
- 		dmaengine_terminate_sync(sport->dma_chan_tx);
-@@ -1613,6 +1614,55 @@ static void imx_uart_shutdown(struct uart_port *port)
- 	ucr4 &= ~UCR4_TCEN;
- 	imx_uart_writel(sport, ucr4, UCR4);
- 
-+	/*
-+	 * We have to ensure the tx state machine ends up in OFF. This
-+	 * is especially important for rs485 where we must not leave
-+	 * the RTS signal high, blocking the bus indefinitely.
-+	 *
-+	 * All interrupts are now disabled, so imx_uart_stop_tx() will
-+	 * no longer be called from imx_uart_transmit_buffer(). It may
-+	 * still be called via the hrtimers, and if those are in play,
-+	 * we have to honour the delays.
-+	 */
-+	if (sport->tx_state == WAIT_AFTER_RTS || sport->tx_state == SEND)
-+		imx_uart_stop_tx(port);
-+
-+	/*
-+	 * In many cases (rs232 mode, or if tx_state was
-+	 * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
-+	 * delay_rts_after_send), this will have moved directly to
-+	 * OFF. In rs485 mode, tx_state might already have been
-+	 * WAIT_AFTER_SEND and the hrtimer thus already started, or
-+	 * the above imx_uart_stop_tx() call could have started it. In
-+	 * those cases, we have to wait for the hrtimer to fire and
-+	 * complete the transition to OFF.
-+	 */
-+	loops = port->rs485.flags & SER_RS485_ENABLED ?
-+		port->rs485.delay_rts_after_send : 0;
-+	while (sport->tx_state != OFF && loops--) {
-+		uart_port_unlock_irqrestore(&sport->port, flags);
-+		msleep(1);
-+		uart_port_lock_irqsave(&sport->port, &flags);
-+	}
-+
-+	if (dev_WARN_ONCE(sport->port.dev, sport->tx_state != OFF,
-+			  "unexpected tx_state %d\n", sport->tx_state)) {
-+		/*
-+		 * This machine may be busted, but ensure the RTS
-+		 * signal is inactive in order not to block other
-+		 * devices.
-+		 */
-+		if (port->rs485.flags & SER_RS485_ENABLED) {
-+			ucr2 = imx_uart_readl(sport, UCR2);
-+			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
-+				imx_uart_rts_active(sport, &ucr2);
-+			else
-+				imx_uart_rts_inactive(sport, &ucr2);
-+			imx_uart_writel(sport, ucr2, UCR2);
-+		}
-+		sport->tx_state = OFF;
-+	}
-+
- 	uart_port_unlock_irqrestore(&sport->port, flags);
- 
- 	clk_disable_unprepare(sport->clk_per);
 -- 
-2.40.1.1.g1c60b9335d
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
