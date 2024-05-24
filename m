@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10712BF18
-	for <imx@lists.linux.dev>; Fri, 24 May 2024 12:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C3386AE2
+	for <imx@lists.linux.dev>; Fri, 24 May 2024 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716553574; cv=none; b=DSrq1O/hmcC6c9tNGzP9NtsJCcuX2bpmibB8D8sFwlxmmQZPONG6WcBHQBMU7QlLtzmfWqmm0sh+zyeJhSv9peJjCErhND9TcDf+CFC6lSEG/1AAMoRSAv99N4Ny1qMogSNWVZYGinG4EMF7Sj+lQNNG/sdXjb+OO27hE/GDY1Y=
+	t=1716554648; cv=none; b=fcfmNnikUEl6TCB/R/r6CL3jYc3z7+Z2BFPzJD01vODFflFoQZEJxGYUuvqN/pFlFHig7GqIaTGWVvzs+UlNPt59po2gpFhInCISFpUZvspMZhOpXcJXI0tQX3aJsq3WKLo86CGj1yBpgc67gcCJc41QxtAOGY/sRcEkGU42JVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716553574; c=relaxed/simple;
-	bh=BR6wg9i/0mbzIcyzWHdONHm37dg16V5vztgEDpsM3jY=;
+	s=arc-20240116; t=1716554648; c=relaxed/simple;
+	bh=flVEgoKN1tPvevHbNX6zdPufBNG427EtPA4EnS2rUYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eRN8IskU9EKkE0Wv61FJdYaKezX8+ROnTwmuG5vF2RQNtw3miQLHdtGoR1HfPtur7CwNripygPawis5vwF3LJqXibtEJQmsH0hZCQqKJxI969Z8sMMZbi8VcmSezSIDhFiKuH2AS8MlOpsOWjLY13cn+54aSF0STiQ5aYAUP9oE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=g/BdsgLllP0/9CT+V8oLIC20XAersqDiY8lCGuY+UFncuNLFPUm6yVu4ALC5x5u9kMGEwX8oQvUWHAOLQcxL1aTsds0CuvhwFVDiat5p6nNQ9abMX6uu+WaXLzDVTnGg3ZajBwbNxMF9K0ZJjJBBcIUMnLeU1AU7uwN055SQykM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1sATzb-0001Lx-DC; Fri, 24 May 2024 14:25:51 +0200
+	id 1sAUGz-0002rp-6u; Fri, 24 May 2024 14:43:49 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1sATza-002nB5-Jm; Fri, 24 May 2024 14:25:50 +0200
+	id 1sAUGy-002nP0-8I; Fri, 24 May 2024 14:43:48 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1sATza-00BiEV-1d;
-	Fri, 24 May 2024 14:25:50 +0200
-Date: Fri, 24 May 2024 14:25:50 +0200
+	id 1sAUGy-00BiUO-0U;
+	Fri, 24 May 2024 14:43:48 +0200
+Date: Fri, 24 May 2024 14:43:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Pankaj Gupta <pankaj.gupta@nxp.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
@@ -42,13 +42,12 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
 	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
 	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Message-ID: <ZlCHTqJ0Umgh3LCw@pengutronix.de>
+Subject: Re: [EXT] Re: [PATCH v2 5/5] firmware: imx: adds miscdev
+Message-ID: <ZlCLhPzLD6ox7iB3@pengutronix.de>
 References: <20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com>
- <20240523-imx-se-if-v2-4-5a6fd189a539@nxp.com>
- <ZlBtNSeh2VyZsVxq@pengutronix.de>
- <AM9PR04MB860424A71753DBB56D2CEF5895F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20240523-imx-se-if-v2-5-5a6fd189a539@nxp.com>
+ <ZlBOeAnkrn4ki7Wv@pengutronix.de>
+ <AM9PR04MB8604C000F464CF1F5788901995F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,7 +56,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM9PR04MB860424A71753DBB56D2CEF5895F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
+In-Reply-To: <AM9PR04MB8604C000F464CF1F5788901995F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -67,12 +66,12 @@ X-SA-Exim-Mail-From: sha@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, May 24, 2024 at 12:08:14PM +0000, Pankaj Gupta wrote:
+On Fri, May 24, 2024 at 12:03:35PM +0000, Pankaj Gupta wrote:
 > 
 > 
 > > -----Original Message-----
 > > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Friday, May 24, 2024 4:04 PM
+> > Sent: Friday, May 24, 2024 1:53 PM
 > > To: Pankaj Gupta <pankaj.gupta@nxp.com>
 > > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh+dt@kernel.org>;
 > > Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
@@ -82,85 +81,155 @@ On Fri, May 24, 2024 at 12:08:14PM +0000, Pankaj Gupta wrote:
 > > <krzk+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
 > > kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
 > > linux-arm-kernel@lists.infradead.org
-> > Subject: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP EdgeLock
-> > Enclave
+> > Subject: [EXT] Re: [PATCH v2 5/5] firmware: imx: adds miscdev
 > >
 > > Caution: This is an external email. Please take care when clicking links or
 > > opening attachments. When in doubt, report the message using the 'Report
 > > this email' button
 > >
 > >
-> > On Thu, May 23, 2024 at 04:19:35PM +0530, Pankaj Gupta wrote:
-> > > NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are
-> > > embedded in the SoC to support the features like HSM, SHE & V2X, using
-> > > message based communication interface.
-> > >
-> > > The secure enclave FW communicates on a dedicated messaging unit(MU)
-> > > based interface(s) with application core, where kernel is running.
-> > > It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
-> > >
-> > > This patch adds the driver for communication interface to
-> > > secure-enclave, for exchanging messages with NXP secure enclave HW
-> > > IP(s) like EdgeLock Enclave (ELE) from Kernel-space, used by kernel
-> > > management layers like
-> > > - DM-Crypt.
-> > >
-> > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > ---
-> > >  drivers/firmware/imx/Kconfig        |  12 +
-> > >  drivers/firmware/imx/Makefile       |   2 +
-> > >  drivers/firmware/imx/ele_base_msg.c | 286 +++++++++++++++++++
-> > > drivers/firmware/imx/ele_base_msg.h |  92 +++++++
-> > >  drivers/firmware/imx/ele_common.c   | 239 ++++++++++++++++
-> > >  drivers/firmware/imx/ele_common.h   |  43 +++
-> > >  drivers/firmware/imx/se_ctrl.c      | 531
-> > ++++++++++++++++++++++++++++++++++++
-> > >  drivers/firmware/imx/se_ctrl.h      |  99 +++++++
-> > >  include/linux/firmware/imx/se_api.h |  14 +
-> > >  9 files changed, 1318 insertions(+)
-> > >
-> >
-> > > +static int se_probe_if_cleanup(struct platform_device *pdev) {
-> > > +     struct device *dev = &pdev->dev;
-> > > +     struct se_if_priv *priv;
-> > > +     int ret = 0;
+> > On Thu, May 23, 2024 at 04:19:36PM +0530, Pankaj Gupta wrote:
+> > > +int imx_ele_miscdev_msg_send(struct se_if_device_ctx *dev_ctx,
+> > > +                          void *tx_msg, int tx_msg_sz) {
+> > > +     struct se_if_priv *priv = dev_ctx->priv;
+> > > +     struct se_msg_hdr *header;
+> > > +     int err;
 > > > +
-> > > +     priv = dev_get_drvdata(dev);
-> > > +     if (!priv) {
-> > > +             ret = 0;
-> > > +             dev_dbg(dev, "SE-MU Priv data is NULL;");
-> > > +             return ret;
-> > > +     }
+> > > +     header = (struct se_msg_hdr *) tx_msg;
 > > > +
-> > > +     if (priv->tx_chan)
-> > > +             mbox_free_channel(priv->tx_chan);
-> > > +     if (priv->rx_chan)
-> > > +             mbox_free_channel(priv->rx_chan);
-> > > +
-> > > +     /* free the buffer in se remove, previously allocated
-> > > +      * in se probe to store encrypted IMEM
+> > > +     /*
+> > > +      * Check that the size passed as argument matches the size
+> > > +      * carried in the message.
 > > > +      */
-> > > +     if (priv->imem.buf) {
-> > > +             dmam_free_coherent(dev,
-> > > +                                ELE_IMEM_SIZE,
-> > > +                                priv->imem.buf,
-> > > +                                priv->imem.phyaddr);
-> > > +             priv->imem.buf = NULL;
+> > > +     err = header->size << 2;
+> > > +
+> > > +     if (err != tx_msg_sz) {
+> > > +             err = -EINVAL;
+> > > +             dev_err(priv->dev,
+> > > +                     "%s: User buffer too small\n",
+> > > +                             dev_ctx->miscdev.name);
+> > > +             goto exit;
+> > > +     }
+> > > +     /* Check the message is valid according to tags */
+> > > +     if (header->tag == priv->cmd_tag) {
+> > > +             mutex_lock(&priv->se_if_cmd_lock);
+> >
+> > Grabbing a mutex in a character devices write fop and releasing it in the read
+> > fop is really calling for undesired race conditions.
+> 
+> Condition is:
+> - Only one command is allowed to be in flight, at a time per interface.
+>    -- Second command is not allowed, when one command is in flight.
+> - Duration of the flight is till the time the response is not received from the FW.
+> 
+> Command lock is grabbed and then released in process context only.
+> 
+> >
+> > If sending a command and receiving the response shall be an atomic operation
+> > then you should really consider turning this into an ioctl and just not
+> > implement read/write on the character device. With this you'll be able to get
+> > rid of several oddities in this drivers locking.
+> >
+> 
+> It is not an atomic operation. It can be pre-empted.
+
+I didn't mean atomic in the sense of being non preemptable.
+
+> But it cannot be pre-empted to send another command on the same interface.
+> 
+> As only one command is allowed to be executed at one point in time, through an interface.
+
+I meant atomic in the sense that only one command may be in flight: Send
+a message and do not allow to send another message until the answer to
+the first one is received.
+
+Using an ioctl you can just use imx_ele_msg_send_rcv() which takes a
+mutex during the whole send/receive process and have no need for such a
+strange locking construct.
+
+> > > +     /*
+> > > +      * We may need to copy the output data to user before
+> > > +      * delivering the completion message.
+> > > +      */
+> > > +     while (!list_empty(&dev_ctx->pending_out)) {
+> > > +             b_desc = list_first_entry_or_null(&dev_ctx->pending_out,
+> > > +                                               struct se_buf_desc,
+> > > +                                               link);
+> > > +             if (!b_desc)
+> > > +                     continue;
+> >
+> > b_desc will never be NULL because otherwise you wouldn't be in the loop
+> > anymore. The usual way to iterate over a list is to use list_for_each_entry() or
+> > list_for_each_entry_safe() in case you delete entries in the loop body.
+> >
+> 
+> Will remove the NULL check.
+>         if (!b_desc)
+>                continue;
+
+Please don't. Use list_for_each_entry_safe() which is the normal way to
+iterate over a list.
+
+> > > +static int se_ioctl_get_mu_info(struct se_if_device_ctx *dev_ctx,
+> > > +                             u64 arg) {
+> > > +     struct se_if_priv *priv = dev_get_drvdata(dev_ctx->dev);
+> > > +     struct imx_se_node_info *if_node_info;
+> > > +     struct se_ioctl_get_if_info info;
+> > > +     int err = 0;
+> > > +
+> > > +     if_node_info = (struct imx_se_node_info *)priv->info;
+> >
+> > priv->info is of type const void *. You are casting away the the 'const'
+> > here. Either it is const, then it should stay const, or not, in which case it
+> > shouldn't be declared const. Also why isn't priv->info of type struct
+> > imx_se_node_info * in the first place?
+> 
+> This struct definition is local to the file se_ctrl.c.
+> Declaration of imx_se_node_info, is fixed by adding const in the whole file.
+
+Add a
+
+struct imx_se_node_info;
+
+to se_ctrl.h and you're done.
+
+> 
+> > > +             err = -EFAULT;
+> > > +             goto exit;
+> > > +     } else {
+> > > +             /* No specific requirement for this buffer. */
+> > > +             shared_mem = &dev_ctx->non_secure_mem;
 > > > +     }
 > > > +
-> > > +     if (priv->flags & RESERVED_DMA_POOL) {
-> > > +             of_reserved_mem_device_release(dev);
+> > > +     /* Check there is enough space in the shared memory. */
+> > > +     if (shared_mem->size < shared_mem->pos
+> > > +                     || io.length >= shared_mem->size - shared_mem->pos) {
+> > > +             dev_err(dev_ctx->priv->dev,
+> > > +                     "%s: Not enough space in shared memory\n",
+> > > +                             dev_ctx->miscdev.name);
+> > > +             err = -ENOMEM;
+> > > +             goto exit;
+> > > +     }
+> > > +
+> > > +     /* Allocate space in shared memory. 8 bytes aligned. */
+> > > +     pos = shared_mem->pos;
+> > > +     shared_mem->pos += round_up(io.length, 8u);
 > >
-> > You can call this unconditionally, no need to keep track if you called
-> > of_reserved_mem_device_init() successfully.
+> > You are checking if there's enough space in the shared memory without taking
+> > this round_up into account.
 > 
-> But it will not be called for each SoC.
-> The memory is not reserved for i.MX95 platforms.
-> This is required.
+> Yes. It is initializing the local variable 'pos', with last store value of shared_mem->pos.
 
-Again: You can call this unconditionally. Look at the code,
-of_reserved_mem_device_release() won't do anything if you haven't called
-of_reserved_mem_device_init() before.
+Your check is:
+
+	if (shared_mem->size < shared_mem->pos || io.length >= shared_mem->size - shared_mem->pos)
+
+Afterwards you do a:
+
+	shared_mem->pos += round_up(io.length, 8u);
+
+This invalidates the check. You have to honor the potential padding in
+your check as well.
 
 Sascha
 
