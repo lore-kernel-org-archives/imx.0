@@ -1,89 +1,139 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECFF12CD81;
-	Fri, 24 May 2024 15:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DD63A268;
+	Fri, 24 May 2024 18:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716566056; cv=none; b=CEvp3yhqlkNrGndsAmUfUvSFBqxjHWkR5xXnHgB1wSz1Vm5gXuJcHotZpVFD/Z4ceUEYLi+ARBb8MR+bllDg7oEmdDg0mM3WZQ8za5vV1Q26JZzZZIyRh7TRLoLCh6SQdfMN1GaM6Hpm1w4lztv/lg6FxvKju4zvZ9n7ivQ2pY8=
+	t=1716576060; cv=none; b=tMQju/d62efw9/Gxhl6UOO2YT17cv4/LPC/2pT0GuTAAq61d4oa54cf+UCA5WPVyKnsFfKikmoo1TJaEovic0/DTryjogWK5s2LRAhoiaOsPPtMVk0wm2avHACosT79kwOqowgI6WCoVJLOCxf7TWrBjX3ltMieON60t3W4UU6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716566056; c=relaxed/simple;
-	bh=+Pq8Ay0wvcb7Etnygr3YARipsS/gX3bUE7ZtLQZNb+Y=;
+	s=arc-20240116; t=1716576060; c=relaxed/simple;
+	bh=40gtA562p+lzTr+9s5RdmfFpwV562RCDBYLHPKo0nKo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YvB8dIz/I6lK28J6ty99SxHDx+cJ0K9pkxjjyidrNelt9dfMMEuhhH5Ol8N0iWuAbOJRv553SjhK5/GtSINELqnqPTi9pF5uU0nf1FzWQ/xNS+XPV63HLwBYjTxL0v9px0xgarAqxkrPSL9mQy5KydJS+QxXcEH1lOydJ1Y0zA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IQvJheCf; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=K2haJPqmN9DBVOUcThMtIh/hGVyjqaTdQv1Qrivie5o5uoXKesN2yu0ALMZuVJE20gazeSAvfbRU9RguI03swVh0Y5TziPfNykOV/lR6adEBcQiU1lghVdA0wS/ZlzKwTpfExxftay1l/ywiU1mgoKbQhnMZ+22bLYg4WYCdDew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBMOwUP7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IQvJheCf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MV8cl0rOGCTFcJnTsA5zvFiTquGTr/gV2k/m7gDsWG4=; b=IQvJheCf08SL2R5FzIUr3qIfsc
-	IzMIZ0eIwz7vKm8f4p86ki3xUrLeYmy/XCtrU95+Ch702s+sxm1aRpBcOqCCE8wo1tTN6k2GzaeC4
-	r4n1v+rd40kqOqWXg5XHy+dsYG6keBnzRs5Xsc2H8T+r9x68fWuDfzYnEAJiUSKZXAd8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sAXF3-00Fxnh-Rc; Fri, 24 May 2024 17:54:01 +0200
-Date: Fri, 24 May 2024 17:54:01 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Xiaolei Wang <xiaolei.wang@windriver.com>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net v3 PATCH] net:fec: Add fec_enet_deinit()
-Message-ID: <9eb45fe8-a0df-4b5d-88a3-ed61f9e320f1@lunn.ch>
-References: <20240524050528.4115581-1-xiaolei.wang@windriver.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBMOwUP7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8F1C2BBFC;
+	Fri, 24 May 2024 18:40:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716576059;
+	bh=40gtA562p+lzTr+9s5RdmfFpwV562RCDBYLHPKo0nKo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MBMOwUP7AP/4PR0PLfby9X4PcyO0ur/nKESPtUBj36LbsywxT1CwIj7RwKXXKvHJe
+	 T4tEznwZi/jrasixDIEhX+yxPRuLzmXqj0Rj7VjJa4I+30ujLIbRreH1i5G5zG9Gwl
+	 3qPybTC0hq5PMPkL3afqj3yZV697FG7ItUR7aBM8yobAV6J/nyqRV0JU3cmnLA8cWo
+	 JKLYfmWLXN7MZKNp6i9C0snt/vYDx3eLKtJGNns3FajyvtQF8LeOiywgDqhrLLT3HI
+	 0rlphCLLguX/4ZUmn7hdVyG3x/QPuWPITU/TIV9NYIRO53i18Mo/jzmS3feyrQVCV3
+	 2gpKV6fZ1eXrw==
+Date: Fri, 24 May 2024 19:40:54 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Tim Harvey <tharvey@gateworks.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+Message-ID: <20240524-cavalier-outthink-51805f49c8fb@spud>
+References: <20240522215043.3747651-1-tharvey@gateworks.com>
+ <07250029-7cea-4a82-9e70-22e0e6f7fb37@linaro.org>
+ <20240523-vividly-sequester-d85ac7bccbbd@spud>
+ <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="pCaot/fJN4+FoIrV"
 Content-Disposition: inline
-In-Reply-To: <20240524050528.4115581-1-xiaolei.wang@windriver.com>
+In-Reply-To: <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
 
-On Fri, May 24, 2024 at 01:05:28PM +0800, Xiaolei Wang wrote:
-> When fec_probe() fails or fec_drv_remove() needs to release the
-> fec queue and remove a NAPI context, therefore add a function
-> corresponding to fec_enet_init() and call fec_enet_deinit() which
-> does the opposite to release memory and remove a NAPI context.
-> 
-> Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-> Reviewed-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v1 -> v2
->  - Add fec_enet_free_queue() in fec_drv_remove()
-> v2 -> v3
->  - Add fec_enet_deinit()
-> 
->  drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index a72d8a2eb0b3..881ece735dcf 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -4130,6 +4130,14 @@ static int fec_enet_init(struct net_device *ndev)
->  	return ret;
->  }
->  
-> +static void fec_enet_deinit(struct net_device *ndev)
-> +{
-> +	struct fec_enet_private *fep = netdev_priv(ndev);
-> +
-> +	netif_napi_del(&fep->napi);
-> +	fec_enet_free_queue(ndev);
-> +}
 
-That is much better, and using the correct structure helped you find
-other bug....
+--pCaot/fJN4+FoIrV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On Thu, May 23, 2024 at 04:04:50PM -0700, Tim Harvey wrote:
+> On Thu, May 23, 2024 at 7:47=E2=80=AFAM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > On Thu, May 23, 2024 at 09:02:46AM +0200, Krzysztof Kozlowski wrote:
+> > > On 22/05/2024 23:50, Tim Harvey wrote:
+> > > > The GW7905 was renamed to GW7500 before production release.
+> > > >
+> > > > Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> > > > ---
+> > > >  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Docum=
+entation/devicetree/bindings/arm/fsl.yaml
+> > > > index 0027201e19f8..d8bc295079e3 100644
+> > > > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > > @@ -920,8 +920,8 @@ properties:
+> > > >                - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
+> > > >                - fsl,imx8mm-evk            # i.MX8MM EVK Board
+> > > >                - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
+> > > > +              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Boa=
+rd
+> > >
+> > > That's not even equivalent. You 7500 !=3D 75xx.
+> > >
+> >
+> > > >                - gateworks,imx8mm-gw7904
+> > > > -              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Boa=
+rd
+> > >
+> > > Compatibles do not change. It's just a string. Fixed string.
+> >
+> > I think there's justification here for removing it, per the commit
+> > message, the rename happened before the device was available to
+> > customers.
+> > Additionally, I think we can give people that upstream things before th=
+ey're
+> > publicly available a bit of slack, otherwise we're just discouraging
+> > people from upstreaming early.
+>=20
+> Hi Conor,
+>=20
+> Thanks for understanding - that's exactly what happened. I'm in the
+> habit of submitting patches early and often and it's no fun when
+> something like a silly product name gets changed and breaks all the
+> hard work.
+>=20
+> The board model number is stored in an EEPROM at manufacturing time
+> and that EEPROM model is used to build a dt name. So instead of GW7905
+> which would be a one-off custom design it was decided to change the
+> product to a GW75xx. The difference between GW7500 and GW75xx is
+> because we subload components on boards between GW7500/GW7501/GW7502
+> etc but the dt is the same.
+>=20
+> If there is resistance to a patch that renames it then I guess I'll
+> have to submit a patch that removes the obsolete board, then adds back
+> the same board under a different name. Shall I do that?
 
-    Andrew
+I think this patch is fine - other than the inconsistency that Krzysztof
+pointed out between the "renamed to gw7500" and the "gw75xx" in the new
+compatible.
+
+--pCaot/fJN4+FoIrV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlDfNgAKCRB4tDGHoIJi
+0uWsAP9dzrZ3+eiCFu2YQvK3J+Zew8rK3KOAEeLUpnNiZQre7QEAzAhNADZZS5/6
+Y98YUIYEF8yRhwinZqc/RiVXus5T0gY=
+=BFLi
+-----END PGP SIGNATURE-----
+
+--pCaot/fJN4+FoIrV--
