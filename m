@@ -1,132 +1,215 @@
-Received: from smtpcmd01-sp1.aruba.it (smtpcmd01-sp1.aruba.it [62.149.158.218])
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2051.outbound.protection.outlook.com [40.107.13.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B517212A14F
-	for <imx@lists.linux.dev>; Fri, 24 May 2024 07:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716534664; cv=none; b=THKLEnmoH1gFAJFJ/SwzFxbABnBRNwcdzvf7by+TvntHuM7tl1kinMn+3IT+RNZf8FlfKbtyiIbkQEsVCirQYbHLoMBm+bHBVurBSOOb6Q4uiKQaxbkRbgxVkvW+LgHnkFkU+vMVZe/I7VzqWbp354V27U+vsOt4SBhomqg37XY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716534664; c=relaxed/simple;
-	bh=lE2QS6lR1/Y/1hnhivmXubzt9g9a+xKOwCIxWr45d0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o6zIjFNqLrv3cSzbskPRQhsLBauiwE0uQSr34R6LKcEG1blAg0PTAstYvVWtS6dt1H3bMRTNoNhwno5PBbM3b8WUR72ec89F0I+laxBQnxtUlruwAXK+uadEwIIOUJj7XTVAmCs926wauSCqCsmkK187ssMj8F04SFEkt48EYCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com; spf=pass smtp.mailfrom=engicam.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=BZb0NWqP; arc=none smtp.client-ip=62.149.158.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engicam.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engicam.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B2333D0
+	for <imx@lists.linux.dev>; Fri, 24 May 2024 07:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716536880; cv=fail; b=Z9xqKG8n0mO/cKOQDi1jO4MvNZkQKaoIOaC5oawbQnwLP7uNkTDbzX5q9sZHUuzjoaw8joZTKqCuOwL3iUgSOGm2iFoCmXR763DSl1xVcBC0JNRNRcdS3YKwhqEmFRteYQGTMAnhtPc4l3NWOC5bP/GIgIsKj97Z0djAL1Wvdm4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716536880; c=relaxed/simple;
+	bh=6GMZakGCtlidiqF7IBTVnqO4OUyJUdo017Xw5FjAJuo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=uYiSeUm5SuaqrjtSaH89LNQ8c71r9wwGM8xDhdV1CBqs+DEdcbdkcOy7qcpLxjQstwoqwTs+sQfCq//3dXYEqpm8IZc3k8zSHzaUag+2fj1MGpBc9rjPJLpYtK1yodqj0U5LwLgD0M0r9WEy6q5S6xJ9xwFZCsg1CuqGO6jvWig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=W11VllKR; arc=fail smtp.client-ip=40.107.13.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="BZb0NWqP"
-Received: from engicam ([77.32.45.53])
-	by Aruba Outgoing Smtp  with ESMTPSA
-	id AP1rsMjiGwy3rAP1sszWGr; Fri, 24 May 2024 09:07:53 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1716534473; bh=lE2QS6lR1/Y/1hnhivmXubzt9g9a+xKOwCIxWr45d0I=;
-	h=Date:From:To:Subject:MIME-Version:Content-Type;
-	b=BZb0NWqPJHs43h+FHyFkz6zJPlLj/BtboAoBuPOE0uHO7KjXRg4tsDRzIUb3sGwSS
-	 lt/HjHUovGjrx2RfmTFrmTuEQ+PWZfHb/hSQyj3lAETbK3ZxyS9BMgYdzlDhuzn70U
-	 ROtREzR9nqn3kG1E/CPnFzfv14iJp6XSQygBToA7HQR0is7f2vvSoEcpKNxn1SSZPI
-	 iAbk3/ZTfl0VGcM1EWoqeFRLv+4lP1lApEnXP/ENH7RLBKNghhBT/1zXIRIZoO8f9x
-	 /81UF4RR25NFQ2YDpTkgSC8XqU2MuyCvX4An81kXl4yffqpTu1R+szEkP7xcROyH5k
-	 O3LxFu6aItzwQ==
-Date: Fri, 24 May 2024 09:07:51 +0200
-From: Fabio Aiuto <fabio.aiuto@engicam.com>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	matteo.lisi@engicam.com, mirko.ardinghi@engicam.com
-Subject: Re: [PATCH v8 0/3] arm64: dts: imx93: add i.Core MX93 EDIMM 2.0 board
-Message-ID: <ZlA8x9J0TBoRFbUb@engicam>
-References: <20240429093116.9346-1-fabio.aiuto@engicam.com>
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="W11VllKR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UpOx/UyPqm1fJ1SB27JgP5O3Nr80vwigN7fRQVd3TBp/CV7T+b+bK2o2BWiT7BJEK/a0l88z3lwiXMxZmxdwk8GC2hX7ec/SCMrpVDGZhHWo9uSe51Ie7KemgZN5X53w1YzcucJiMVLAdtEzklqfcJNXnvwwn5bGCtwpgWZ48Bb4C2hMlLTg+soYY46WbeVy8eDcq4e+zttk46+Dm70hnas4R9hEDv8PR2kDQqR80Q0VzGKHvqKmLjP/V6v/FaMebj2bN+fIWkOJ+PJcWuuNCVK2npAAYa1CUFPirLME5ReHMvGXKTv4junwZ7QatOhd0VfeiqGqMvY4MMP8Dqb0+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sT49zB2xCkDCe2MHK6qV90scOYjR+/CjmSEWgazEacc=;
+ b=aqxLbobfCaaUPsGevNvSl1OitsgAd709iAeuArkEwAo23yucTzXD+ZvFer3oLzdxxT8RGpUp4XCIDD0BaanzCetFIljtVqmMFdYV9ioCQqNncdHyh6HcJ2GvZxAANaRk1Y/JynqUpzr7QdmjfIW0a1MmpP0gOcykSiTPj666hmuKFCbrkT690sCM69AglYkTBCgBnzJhhAUShI6lNSIt/ElhxFUgpnLNPiireT826P4KgXLty4PMqhcCcmdcBcltkfowB1CcycqIPkf7F6kX0Snby/9ZOYMm9TI6f3XApxOQl/BlpHfd53LLH5gyGHUa/qcw/I5R8ENLRjGdRpRYsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sT49zB2xCkDCe2MHK6qV90scOYjR+/CjmSEWgazEacc=;
+ b=W11VllKRpzhc47XKpE0IUjRVNKdLqGWAfSUgj1CKxAFRKI5BYItC1j0U2+yVZHpjcHdzWuZIdc1f4s+t6JKbzIF/9Q1kRNcP3I6SX92Tivs1UnzbCLhSwFE2Gb5IeQ5euNgAzAJTa4T8WcujzBYI7RcqtJvB+aefFVsRLSARIbU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.22; Fri, 24 May
+ 2024 07:47:43 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::557f:6fcf:a5a7:981c]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::557f:6fcf:a5a7:981c%7]) with mapi id 15.20.7611.016; Fri, 24 May 2024
+ 07:47:43 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Jassi Brar <jassisinghbrar@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>
+Cc: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
+	Jassi Brar <jaswinder.singh@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] mailbox: imx: fix TXDB_V2 channel race condition
+Date: Fri, 24 May 2024 15:56:32 +0800
+Message-Id: <20240524075632.1009044-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0043.apcprd02.prod.outlook.com
+ (2603:1096:4:196::12) To DU0PR04MB9417.eurprd04.prod.outlook.com
+ (2603:10a6:10:358::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429093116.9346-1-fabio.aiuto@engicam.com>
-X-CMAE-Envelope: MS4xfCoxL4upyb62o7G9vEw+NpXZSx3bhoYjW0ZwXhTiw3qa4q6LGiXuZiFuOTdQPv9IaX1YLVA8vEQBHFNwJy3EOow3hcNH4ChqnVhILLw+XNfFNAMb62IG
- qgZiRKuBDca0Of3NdvDX+YHrKLrAx7YUDkeSoUZ2hio9N2Z8W4e9X1N5XXXoA09GDbydd8MUcQ13JaH+pkBEzAMVyBLvnzASPRY5BfzcoPvqekTdNNT1tSkQ
- RICQNahyzhe71x+mKTkSXXXV3zrzu+IcXmG0NJqxrv3aYFrCDrU+Z+meleZOjSOGMbkI8HmMqb2kOvbBPJBa0zx2caLNbYgDWZ1c12RiEYaiwUCJblpQN8In
- 0SAHdV1oF5LFpbLQPLRIIxqfgYvfusdn6LoXNZ39nbbfdRaPRjOsGNiwOevRE3XkFTSZf8GR2OGxm9JeYru4DBoJYzlvWwgzsT947HY3/Aoc0Q9cCCw46gac
- fu4aJVkPyb3Mrf/UQYc0Taa0ozYhIBC3RXWs+AL7S3w9ouJfxYId25+XD4oKByadU4icU6VQheneqRh4JunEHE5nxmDCfDxjSxAf5A==
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9417:EE_|DU2PR04MB8951:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd554cac-c413-43e6-70c7-08dc7bc5cb6a
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|376005|366007|52116005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?NlBum5W8pciNMhxKj3pu4gzc4XnkKSDXeNGHY6XAIS80BqG3vuxadLvFEuvJ?=
+ =?us-ascii?Q?42lm37jX91HaztTJFiC7+yd6sfjpGVms/JFap4IgePSh5aBmZjvY2NfVIjde?=
+ =?us-ascii?Q?R1gHJc28rBK9U16QNbzQa9/FA/yt2pTTalnqjFDivqKt6/VCj9EX2G5m+PUa?=
+ =?us-ascii?Q?GjA+vU8JjLgI98X084SlrXGvCD9cWOCFJawdvxZF1nBA8MpQEuT6bGxh7lEt?=
+ =?us-ascii?Q?uWqEAIFIxrAbKfYPnTNF0AQO2H9PXhBIsWiIIuuE89Ufay+cBeYplOVzG/Ix?=
+ =?us-ascii?Q?ANK6O9M716tVXCssTG6riQ0ETqpWOE5dHpe3mhMfpNBQMJRQrCQuar6OKmhv?=
+ =?us-ascii?Q?92V0DfB9YNqsDcVmmD9y00oBfP445yuKhqLV//qcm0IqD0ltdEMUUhd8rtgF?=
+ =?us-ascii?Q?TjmZMTo7ptPN+HoSab39bF/CgEJn7itp0+/EReRjX/O9BXktNomzpcrHup8P?=
+ =?us-ascii?Q?EO+TiROUa1bmkQSa5UIYBkmXvAf9HVggmKOkuxgHteNFKknaDgYj9CeTj/HW?=
+ =?us-ascii?Q?j2rXgRZRGtUdT1FSe+YXI8mQTa7EnwTvulKhjt/YtfDL9jEPayU9J0fnKoLm?=
+ =?us-ascii?Q?xccFdPIvXGaebSEkDNDOYr0DCt1MZrNQWQYMomn1KdmYipGwEG/4fT1Zos95?=
+ =?us-ascii?Q?8p9ixfBB2Zv9+rkZXfub2nDGxahVUtrkSY45SRCkEis3p0oOqhFTTL+dPTOt?=
+ =?us-ascii?Q?7FJz1xDgKMv8Xzq4yEbghWM02eCck9XWUYfJXuuZKYa10vnd+GfUgRSxcxnA?=
+ =?us-ascii?Q?cffhOA+GJTsgxpLQ0QrKqkDxC7x5pijpVVZGRoGXIBqrBAgeoQZkEYdIC8+R?=
+ =?us-ascii?Q?/ZdihYPYJmhJmUEpPVOrqcNbkzJ09SOXPCAAuuDjxG1u4XrKpc1HX5NKNv4l?=
+ =?us-ascii?Q?xOJ7aUCzgfm01DnLtD+KJ9P1FxtmCcXfTeKr7TltFm/OfWXqEiJxcq5jXQ1+?=
+ =?us-ascii?Q?LWTH3ZgykD6rn1S4nYg8hylrLpnP5ORGmRxseCTh7eNGxWOIRV07iW8Fuv7b?=
+ =?us-ascii?Q?Se3i3v3wXWVaMf14vsFXHT4DExSawhzcYB3K3KD0woJLYzYjSwSUDGVUdMY6?=
+ =?us-ascii?Q?qXiuOwkDXsixX1S/rOy+IUfWxcjJW5iVfIgxu9hcQ+7YWoWi+qqgZz1adz5r?=
+ =?us-ascii?Q?RSwRbJmNAd1y/8h+MehwBWn6w8V7lywrUrLXwW7ElKyAFSoOJmPDpSlJXaeP?=
+ =?us-ascii?Q?Htc2iTqxQms97uOPFpwIGtCA79CNUQyzBRD51If3MyAksAXgPvcdOEKCJ6n9?=
+ =?us-ascii?Q?PeQz3EWe/mAV+B5kB87d+0czUFqA/yBkX0qV6TFHodV88eS2aEXlnwEZp3ri?=
+ =?us-ascii?Q?w5yioeFhiIGwsm8iuZE/rnRZtdp0duiAHo6UgYACz3FawA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007)(52116005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?N/Ht5qFTCfCziOHA0iGRohCB1mDHGH9Uq0xjY8noGlHLYrUE46WdL2xjodeC?=
+ =?us-ascii?Q?PeUV7TzP+yo7JKaVVtVwl+7lGtn3TvWyJlg2FQWdM4HALWvJQXgujiYPAj7B?=
+ =?us-ascii?Q?FMRcO0LXIFvmdvP727tfoDutTMSUVOP7bxNCjR4ywDtiqzqgLZ3tj/Nbz0al?=
+ =?us-ascii?Q?Y3v9mHHJCB5U4d3DaV9mLxl/NM39adVapFZ+Rqk0901wkcMyOc/sMdppEcVK?=
+ =?us-ascii?Q?UUUtqKADnhvKvBEHmbZOiVitefpFaTHxS0s3nq4Ds/T2vOSoHKBFImo6XyX+?=
+ =?us-ascii?Q?XzPSK/UtR+vEAeFvXCBJ3HE3Ei1RyXgH8sjPOx+W1O58B4/g9dlk/FNQsMTl?=
+ =?us-ascii?Q?FJZIiXefalDSEwP83xAs4C2nQzb7o8z4AayOYS7nW0SheA1nptZ506pz0YBN?=
+ =?us-ascii?Q?DzoPzDP0WRRq/sAGj96q2pneCH3ICu8SvMF25IpXqGMOtjPnPQ2oXLTI2ryv?=
+ =?us-ascii?Q?fQRwBYDll4vzlKkI1py3RrbbVBV8nK/lF6gLERO9JIcdZPYmHC1dIRkYh0BT?=
+ =?us-ascii?Q?Pl9D8sQvQaDjRTF8xFpYoFMAx7mBfUvoNVVY7yj6QTxrdbDqxsixiizqaD/B?=
+ =?us-ascii?Q?n0QvTQubPVl81/LnSSsHvLw+8qHCCiQahTeDl5XW2/ry72odY3jsd4RhAu+L?=
+ =?us-ascii?Q?9dC62HZB1shGZJqAUJBbQbGXf22AxW3kO/qbxPVdIQzNELIwiBCNuCr/cqYs?=
+ =?us-ascii?Q?ptBxxSBMhzToK8chwu6oUDneIPuCZHbHevJxsR3u/pVta/1egA/VqWJKx0j3?=
+ =?us-ascii?Q?lYjzJQlaFLk92F40ddG6hd6uHAzaSA0yBR95ItaJjmFEsBk2DrauG+u4EmI7?=
+ =?us-ascii?Q?vtDp9s+XkYtvHiNHUBXeb8Oxf46re6uxUMmH0a7/Vtcs++0IOkiHI03zuKFX?=
+ =?us-ascii?Q?xwgl9xXEHYdlrUczmRzVRllkVaNB2A7g0DKGjYMp1haLTkuHk4Kmx264x5Bi?=
+ =?us-ascii?Q?kv1HqI4A6yWgbIS826R1UEI3jp4jfNc2zNNygcMteZm4Tu8ZH39ArPtwLDA+?=
+ =?us-ascii?Q?viFmIJdosiBvdGuSK0Kmc8XpRSn3TEgMcp6KK+pehvxVQIM/2yiSw/0mr/Un?=
+ =?us-ascii?Q?demI8YLlbqdzsDwF8Aw43hoPPd+Pa8RnP+E7uXu1nnI/0KJLIW98Fsz0tnQg?=
+ =?us-ascii?Q?zAFimKn4p2xgwXYdzrUtRi3DDzgiIZLdNx5C7phkBqaULeDhd2HW+u21huYu?=
+ =?us-ascii?Q?eLI6Eps0dZSZbAA9y6Cu8/NIgVBiaW65XotAoTTk2idbzrYEN1w0MfoZBboA?=
+ =?us-ascii?Q?vipK4F9NtxaMPnOfmHCTHwN1LAospGe/cwCnYb4U68Htx/JK53c5l5pwpYut?=
+ =?us-ascii?Q?i52rME40dXgHEbbGLsKZo9jZ6IgzYe1ply4W6mkxgP34c3V5zSkRjfX4d6FH?=
+ =?us-ascii?Q?ghZ4hXM+cxunNvYUPPczI/szSN5WOkfSkNfQlsQrW80fPdpMksBjV5cG2Nlu?=
+ =?us-ascii?Q?ntg92L2LRcdDIdt2wy+MUzxMPau4VvnsjDCc8Iceb9+OUBk4vOo9hPPSsNkx?=
+ =?us-ascii?Q?tVbj3Qd8nIGpjTFnjrjDO/OGikFEfiexjoMror4d/89RmBu9wI5o8D3dwkJ0?=
+ =?us-ascii?Q?hIyCEsPUILJK9+w6RGLDBHpWFRjtGkCHqbW7TvX4?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd554cac-c413-43e6-70c7-08dc7bc5cb6a
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2024 07:47:43.4032
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MjLqagxPpN84F8LbZHngBS/KyJogdsnXIDl0oGeoW5jTzznYS4sWbn43edu5ER0LIah+xTC5QkZOqJhS0/eGyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8951
 
-Hello all,
+From: Peng Fan <peng.fan@nxp.com>
 
-any news here?
+Two TXDB_V2 channels are used between Linux and System Manager(SM).
+Channel0 for normal TX, Channel 1 for notification completion.
+The TXDB_V2 trigger logic is using imx_mu_xcr_rmw which uses
+read/modify/update logic.
 
-kr,
+Note: clear MUB GSR BITs, the MUA side GCR BITs will also got cleared per
+hardware design.
+Channel0 Linux
+read GCR->modify GCR->write GCR->M33 SM->read GSR----->clear GSR
+                                                |-(1)-|
+Channel1 Linux start in time slot(1)
+read GCR->modify GCR->write GCR->M33 SM->read GSR->clear GSR
+So Channel1 read GCR will read back the GCR that Channel0 wrote, because
+M33 has not finish clear GSR, this means Channel1 GCR writing will
+trigger Channel1 and Channel0 interrupt both which is wrong.
 
-fabio
+Channel0 will be freed(SCMI channel status set to FREE) in M33 SM when
+processing the 1st Channel0 interrupt. So when 2nd interrupt trigger
+(channel 0/1 trigger together), SM will see a freed Channel0, and report
+protocol error.
 
-Il Mon, Apr 29, 2024 at 11:31:13AM +0200, Fabio Aiuto ha scritto:
-> Hello all,
-> 
-> this patchset adds support for i.Core MX93 EDIMM 2.0 Starter Kit,
-> a SoM + Evaluation Board combination from Engicam.
-> 
-> The number of patch has diminished to 3, for I dropped the
-> patch introducing a change in nxp,pca9450 binding which has
-> been already submitted in regulator tree.
-> 
-> (Dropped also regulator tree maintainers as recipients for
-> they aren't anymore involved in this patchset)
-> 
-> This patchset introduces just basic functionality for board.
-> 
-> Thanks in advance,
-> 
-> fabio
-> ---
-> v7 ---> v8:
-> 	- fixed tag name in commit message
-> v6 ---> v7:
->         - removed max-frequency property in wifi node
->         - removed pinctrl-{1,2} in usdhc3 node
-> v5 ---> v6:
->         - added property in lpuart5 node
->         - removed unused sai1 node
-> v4 ---> v5:
->         - done some property reorder, indentation fixes,
->           node rename, drop/add new-lines
->         - fixed line wrap in 2nd patch commit log
->         - added Reviewed-by tag
-> v3 ---> v4:
->         - drop wl_reg_on regulator in favor of
->           mmc-pwrseq-simple
-> v2 ---> v3:
->         - fixed dtschema warnings
->         - added Acked/Reviewed-by tags
->         - removed regulator-always-on on
->           bt_reg_on
->         - fixed clock rate assignment on
->           sgtl5000 node
->         - added wdog_b-warm-reset; property in pmic
->         - fixed indentation issue
-> v1 ---> v2:
->         - dropped patch updating nxp,pca9450 binding
->         - fixed indentation issue
->         - fixed missing space issue
->         - improved naming of regulator nodes
->         - removed unneeded include
->         - fixed email recipients
-> 
-> Fabio Aiuto (3):
->   dt-bindings: arm: fsl: add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
->   arm64: dts: imx93: add Engicam i.Core MX93 SoM
->   arm64: dts: imx93: Add Engicam i.Core MX93 EDIMM 2.0 Starter Kit
-> 
->  .../devicetree/bindings/arm/fsl.yaml          |   7 +
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../dts/freescale/imx93-icore-mx93-edimm2.dts | 321 ++++++++++++++++++
->  .../boot/dts/freescale/imx93-icore-mx93.dtsi  | 269 +++++++++++++++
->  4 files changed, 598 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93-edimm2.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-icore-mx93.dtsi
-> 
-> -- 
-> 2.34.1
-> 
+To address the issue, not using read/modify/update logic, just use
+write, because write 0 to GCR will be ignored. And after write MUA GCR,
+wait the SM to clear MUB GSR by looping MUA GCR value.
+
+Fixes: 5bfe4067d350 ("mailbox: imx: support channel type tx doorbell v2")
+Reviewed-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+
+V1: This patch has got R-b inside NXP and could be directly applied to
+    upstream linux, so I keep the R-b tag from Ranjani.
+
+ drivers/mailbox/imx-mailbox.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index 5c1d09cad761..38abe07babdf 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -224,6 +224,8 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
+ 			     void *data)
+ {
+ 	u32 *arg = data;
++	u32 val;
++	int ret;
+ 
+ 	switch (cp->type) {
+ 	case IMX_MU_TYPE_TX:
+@@ -235,7 +237,13 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
+ 		tasklet_schedule(&cp->txdb_tasklet);
+ 		break;
+ 	case IMX_MU_TYPE_TXDB_V2:
+-		imx_mu_xcr_rmw(priv, IMX_MU_GCR, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx), 0);
++		imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx),
++			     priv->dcfg->xCR[IMX_MU_GCR]);
++		ret = readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
++					 !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
++					 0, 1000);
++		if (ret)
++			dev_warn_ratelimited(priv->dev, "channel type: %d failure\n", cp->type);
+ 		break;
+ 	default:
+ 		dev_warn_ratelimited(priv->dev, "Send data on wrong channel type: %d\n", cp->type);
+-- 
+2.37.1
+
