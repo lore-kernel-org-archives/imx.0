@@ -1,256 +1,186 @@
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on2054.outbound.protection.outlook.com [40.107.13.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8A186244
-	for <imx@lists.linux.dev>; Fri, 24 May 2024 12:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.13.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716552528; cv=fail; b=n+Ne2iZXbkGE4wgghR+GNiuvQg/4JfzfJOQwkB8EjeJJY/ytS+aJ9G1I5ERmoWxlHrAiy9M4r9894sT0DV4BYTUz/FnndbDcG81mMnfeRyDZuuIdLDMTt6rwciq1jjP3iim8FJsqmimU2h21YWiv08+FIS/yOxpjAkBCnGg2Sjs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716552528; c=relaxed/simple;
-	bh=/jXkSZql8M0jGiX6xkMHwAOb0t8jKFI0hHNaD4POuOE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gro8aJkTtfQRbTreUfhvyaW8V6d7s/9egZc0CmleLuBY1RxR3T2A0zOfFvhLErx09TVl3WK1enHz6lb0p5/35ojy2fWzv1Fhqr0hxx4Fdp2SRzt11wZie1Fm1obUG6aLReN/GXXA5lSjywJL5T7B2AH5x1GqJzE185BAo/I2/uk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=HB0PoGGQ; arc=fail smtp.client-ip=40.107.13.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984678615C
+	for <imx@lists.linux.dev>; Fri, 24 May 2024 12:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716552773; cv=none; b=eywkjoDTRLbbkOwKE5Ld5b2zdlCvq8QNlM1K303GRebo/mdtL22JgVTmve8S9L/r+9jG+FtTRpvlcUFZzGHxPp3KQBVn2M57t4qCjUIUHgbYGS0XPw4QPSwi+iLZDZ4y7xpRzo/KnTNYq8VVMMthqVQebV6q3EPbDJIuuWEBgN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716552773; c=relaxed/simple;
+	bh=NLkcXVJfxaNj+x/ym/nlC1R/VqgX2dj3Yj+vQmBzw2Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FFccVYKaskusKnwnPmv8xtsAeaeIy5Fm4BsCRp+oQgH4JMfOSDZCMt3Tid+wj3d5nzuysJjkozCesCXQHGcRxxjMRYcX/+C+qZLek8lp6a3T2/S3Mh0Swnx2nWqikP9XhbRhPGYEZjNhu9FEKzZW1LqryLVEKd8INsNexgKSo7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk; spf=pass smtp.mailfrom=rasmusvillemoes.dk; dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b=QZ4Pn3eH; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rasmusvillemoes.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="HB0PoGGQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HUWZYXf+sjiiX9XD6dQDrZdmxwIt0EKxYOpiNdsTfRLqVWWN6i97SurdNdGgVS6/D+iQInM/E3qeh1wVsrEpbozqHCf/5Wd9+X/2fwJFChgvbFpAwn2cTeVy5J2t7CJGYKGv6Y8mJjuuQasYuxp8man2M4wyulLCVodISkg3q/9ZFAvL8hQ+rlUAI2yXoEgqoOtrI/Gwy/cV2TvfVw0qRhzsukwrT0W3gfeeeyZ54uteJX8uTJ6om5x28bOvKaOT8PH086W+YXOnu902qCYX+gCNmVtHhkqdzOnidhooJL3cuJvHXbnFSmoYKNEMbDRn50uzyLbGNpspLhVwFcYtOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NE+OFOt0hiLRJCKAnFaXxagGL2kfw3QyMFxOQIK2lTA=;
- b=MNFoddeCmAusQ4MvCmMuRPSMkznUOlQDcDCDS8Sx8PFP8/4QnudqODZy1lBK+Jn2ogs9VxwAHDR9deKCOfd9LEVZiDC2FDSdtErNnKfew5eZDy0LhYjJ9qUArE/UAT5p5pEA7KUudAfS0yvheqcfWX1vphGBeQkNA5hXG2FVJRBDn/QG4CBxSPLRHZ7uqp86elNZnzbsPVNLvpEGg0TF99tt89XlyL93TNIvSWMU0QsTG1SH7f4DpI2U8orWp9Ir+n56u6WlyOLs4EZmnZvWkZGyiGkeHIxvIRvvsypzDT5dK1nQDsteV4nNmJKCsqdax1lLvfJ/cJCvyOO91zXvtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NE+OFOt0hiLRJCKAnFaXxagGL2kfw3QyMFxOQIK2lTA=;
- b=HB0PoGGQZgkIKlo9gVOAgeHgZPL4HekNIP5FaC5vyHf77h2ih3ulxHChxjSCYS3XPlpknLW2jbaASosySjv2Sgumq1Cl1+h8sUFMChSvo478auxgazh6qCudIn+IpXRownoSuEBoh7bhmeQPbS6YaC1vwLXAPmCkdPAT0DI+p+c=
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
- by VI1PR04MB7053.eurprd04.prod.outlook.com (2603:10a6:800:12f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Fri, 24 May
- 2024 12:08:43 +0000
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827%4]) with mapi id 15.20.7611.016; Fri, 24 May 2024
- 12:08:43 +0000
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-CC: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel
- Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Thread-Topic: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Thread-Index: AQHarP9ayLdOqCtfLEqTQR0Rf+AVuLGmNX6AgAAVodA=
-Date: Fri, 24 May 2024 12:08:43 +0000
-Message-ID:
- <AM9PR04MB860484B8E16451E12AC18CE195F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
-References: <20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com>
- <20240523-imx-se-if-v2-4-5a6fd189a539@nxp.com>
- <ZlBwNbkFV1fcnPKE@pengutronix.de>
-In-Reply-To: <ZlBwNbkFV1fcnPKE@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|VI1PR04MB7053:EE_
-x-ms-office365-filtering-correlation-id: 7a7b03b6-93a9-4e14-5e3c-08dc7bea41a8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230031|7416005|366007|376005|1800799015|38070700009;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?4lIsSo0ivWXho0NQlqj5qjsW9+kOONVzg6RRfuixsmwWwu1rg6cVLMZ4+Lc2?=
- =?us-ascii?Q?vYD/hM697NqJ0WHkBynOyEgcwj5XfWybT72w4fKYX54Bg4OQeUNzHiygp9bH?=
- =?us-ascii?Q?Ja3wGHm2Zg33mH82G36S4dKxWdYNHD+awYtZ4xdZh8RKA/hn5G74QD4ebyck?=
- =?us-ascii?Q?PyB1Y2LJtUo4n6CIMDOrxuCJ+1+M4LQUubIRKHVYX+DjW7wOO9IuOLgLPqY1?=
- =?us-ascii?Q?EbJ7uHsPS/nQb29ZBEX+eoVk8ty7PiKgItvOuJ8y/gHIhcIA98lChE48bcLz?=
- =?us-ascii?Q?fUIS3b0ZzIoZ3FfOfy/WLpbyRhPQuaeCYsWtyaryEBw7xe7i2wz1jFP5P0fB?=
- =?us-ascii?Q?xJc35k3tB4470USjztznVxt8sD+oPiGTXXbkbyNe8aB82jTdlXgJFHv3j41e?=
- =?us-ascii?Q?W/E34aIz9XxY2+vcQIy9uwn/SwtLwcYDjTDm+I6YkIXRzbqqN/KH7CzlyV/b?=
- =?us-ascii?Q?HW1la68t4glg3XJXzVNmzMLVbcoHa4IwMNTvLeBunHZjOKA+qznq3OyO75GI?=
- =?us-ascii?Q?dWI17C6fxeEqC36i5JtxIpCn23szD6tH9heUGZfdy2L78D3e5HpvcCbM0gq1?=
- =?us-ascii?Q?aW8lfLVWoMs7snBw/ZE4cXWztHObLN/PQ3zURRi0X1bJVYQasLZle9VkDStA?=
- =?us-ascii?Q?KldHTWsCNLoSrt3zlMyQXXuUig9aOh5IycPljDwKgr+lR/HeYlNa3wPoC90c?=
- =?us-ascii?Q?+VNeyWCh6+B/E0yzetRjoyQ/nlD25ZLcHTgvUoirI23hPN5tC8cd52Fl2n0p?=
- =?us-ascii?Q?K+PgAKElE2M7bxdfP6aIrH3RPAiAES8GXxlZ3Tw+hg8MG1HJYlnmrQmeDYNA?=
- =?us-ascii?Q?G7eouv5InCujdWL+VheyEId7U2jXp+YfayulqRxn7S8blBnYMtYrQccplsAS?=
- =?us-ascii?Q?IyfIN8IpdUGm/vSMQDkHjhoQixEimalf69mVsMaH+kNqFKE1rij9GM+2AJe1?=
- =?us-ascii?Q?qWZFEIrx8CT+i0iMT/XAC/Qg8WKzMpM2ABNapkIAB2/gOvE0ariDhjg4S8PY?=
- =?us-ascii?Q?uwlyEHclbKR4BXV5S/yk6NgDTMgVTYcf0O7CoU2hx/kKcLt9RNW5w6MTNeWZ?=
- =?us-ascii?Q?fmuxEdI+HMvayENoAQs0EKgyKOmNI6VhcwydN1IJwanA4BUHpTdvJZqGPYYS?=
- =?us-ascii?Q?qHh2zTBW4JMhQ/NrW46YaqlVFxAKifP5rWlfkWeJnzsx79tC/ct0BCmGW6Ao?=
- =?us-ascii?Q?Q7X7RBe+ZKOMXkWDtaARhioo/OQAvGtzrRjpAw4jNCng+U8UWw2OLQWWonGt?=
- =?us-ascii?Q?aklVk0iKdIGYXitF3n83WjY6VOVP8RHSGJ7gBrCJ2A=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(376005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?h/vDpYI54benleoOCxgvjH5p7TQ/uYnp7q62INyUpNdJG6+G+0F9RGWtJBhT?=
- =?us-ascii?Q?Mny/2MUPeOfzdpUX17r4+8eFDMo8VK4so0k3krNg2VNSVCNmWN9+0t9dWcyE?=
- =?us-ascii?Q?D3fwqfnIzI7eoVcB/z3mhK0rFx+aQE3/kwRD+t77QM/x12aCvxEovDPtLmSR?=
- =?us-ascii?Q?M9P/Qf8rY6OoTEO0Kfi35q27nnKStcpzNSudEsGsdIFr2lWpN90MvMgZOYPH?=
- =?us-ascii?Q?kgv/qr2Gphw4f9vSfef7+GnH/rPIMdYttvOfmM+ozXzAzM2ItiqrNAcT/kG9?=
- =?us-ascii?Q?adOI6unjv7cgJzDggQsZBRUMb4n0PkfTM1pZIdHiENSHDFaG+fkVdZMrlbJC?=
- =?us-ascii?Q?+UxARsQ1YrXlxdosKblCCTwHdxNmW8TUd3TIjoPNvAALergQMse3rN7U7EUB?=
- =?us-ascii?Q?qiSklB5Q78TPKOjazuMDjOnYKOox+PduIGV0S5EvAei0hzbb+eyrxbFjxzDu?=
- =?us-ascii?Q?tLmz4L1uYLcKczBXX8CLpgM9/kAFSejZSzcEmx4VBBNKX9MqR0SbRs4QRhki?=
- =?us-ascii?Q?DJuGV43kmbGfM9w9SK+5WNQn7azqPiyB5+kVxi5ZwkP413agFLkWtk3SC65L?=
- =?us-ascii?Q?/hsr1/NnsMw8snqtnoL8hrphmJE4qFvpcrp2UXxJC/92adnnYfeAQ3Ecb+G6?=
- =?us-ascii?Q?YCrTuBSbNzUHawcLolfaxDewSkPb2llB8oG651Oc+VHLSEYrMDhowSWsNjuA?=
- =?us-ascii?Q?+7NXmTvXMD2ag5mGPdHHglCrbP1gr30y40Ya7EeLSHX8ukFOe3g8wIMAlZMy?=
- =?us-ascii?Q?Z/fQ9DDjVeAWtgdhQGeEEjtwfqNvGscMs3ngm5bSoPdPpYKE2iUEyWU7JJye?=
- =?us-ascii?Q?yDY/4x1bvdemIEbkE1/sZLRpSANUkJeacc1VEXMzJsF+gL8rvkn311rHiP0Q?=
- =?us-ascii?Q?1KD4A18eW3Qho/WA4/An5RaEuSXame2lRk8Bnf3qB4kwlpC2ZcNKXIfiZD+Y?=
- =?us-ascii?Q?6NoHlenGVEm0Dd4+FTQdQ8xuhrISPwxXYXxWbInZh4XXoDXMb3fUms7MqvFx?=
- =?us-ascii?Q?BsqIsGgzLoiOeyRJK2+UJwkI6X5IYvsTXg4QM/LCR7mTYFUSd6lcZkKUlfa0?=
- =?us-ascii?Q?du3i7nI0o0rt6XDb81k3704M5Yzlg7IVdJum9xHIIlmhs7Iq/SWTR5B14tCo?=
- =?us-ascii?Q?Cz0hAQrRXCXtXVO92ciJ984SdL96N2NXX0LL7n7zUzU69nPHHoLb10P3nyga?=
- =?us-ascii?Q?vcfSgtMzLnd1xCti2mvFYw+60W+s99ZCQ0ShOsZXEjd9p+wUo+GEDiLp/yfl?=
- =?us-ascii?Q?ywjXPHjIDmJJse2HsOQINV7RpDmN+b/YOjqS4hj5KOLRh61tOWO+u5/AaX+3?=
- =?us-ascii?Q?wj7AEdCLVoE6LwmlNg4az5AyD+x4yl6YlI38qlzaSxe9sDSPynHWmtlv9Ydd?=
- =?us-ascii?Q?6VWY6N43t854KguH1QBJvY0DeYcH59MFlSrYVyd9RFnaELt6AP2d7CgkvQWE?=
- =?us-ascii?Q?Ui57bEVX88RpEzQAGvhw9LUqoKnLhQmX/SB4BhlQmdK8d2Q1akZ+9Jt2xs8q?=
- =?us-ascii?Q?br4gVUfwQKztMYAacSjUIkpfEVaotozDlj22lseY7EyaSOCtaWyV/dbhg835?=
- =?us-ascii?Q?PK1GA4U+2j3mA0QjR/Nl1G3IXQGS3uFPkeVlsUt1?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b="QZ4Pn3eH"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52232d0e5ceso9187547e87.0
+        for <imx@lists.linux.dev>; Fri, 24 May 2024 05:12:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1716552770; x=1717157570; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=z/kQluXbrS5/xKa378gCLMmIP4qg7U9JjmWwPqCAy5U=;
+        b=QZ4Pn3eHXUrghWYKsGDAMi4ld8OWjr55oi9vEEeOmss13E+FaPf65rudMw+dQWuMNk
+         vYp8wpQT0rWTjGbSkqzpUlOYileNoI05YvUyePJJGYZD4DaOEkBVPn+w/tb3hONnvptT
+         tIEB29oBnrOvGr84GF5wRCW+FUV5sDuDC9zV4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716552770; x=1717157570;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z/kQluXbrS5/xKa378gCLMmIP4qg7U9JjmWwPqCAy5U=;
+        b=DMzLxMM4ipy8+BvBmgi6Ju1xSOrx3hSjUweywxoYUKOGzUDak9f9i8wd80FuuWUPZQ
+         15G0rRUmIQDH/+7iRvwWBLvLlefIU3VFijScqcaLN7tGGq44LGArBwQCpamipD7BfLRI
+         MaZfG2+K0Tu/7CVsgx0BUeD0+yrXSXMBWwRAZxFvCztiE0uPsxJHnnepvbs1LbHfllAm
+         CdDgAT8hDm1JEnHveYJm/64CCUtA/IHQzOMCFMgLeGeEidw98tcoU9GYj1HqGFq59R67
+         mCjC9hVNoHrEGmjTZyo7whvIJsnW0/nesOwqEHslmz9behDEwkd8wWF3BUxj+bf4jIu8
+         a5Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+/CCMuxlyZsApSkFFGW6WCnFDfHp4y9G1RIml/bPZY66UV56KlbtnLMsHzyg30W0Hlo60CCrQUHCztcMbcO2y6+Rq
+X-Gm-Message-State: AOJu0YxuaW1IRWE5a1aGeuh0CtpKE2RvNJWFAOCfmDtfvfHIRrj59v/Z
+	LRTWrPmhgO3itIBoSdarNkTM+01dzbSL0u/XYNlS1CJ/fb/Dp0t/R0wigqGlX1Q=
+X-Google-Smtp-Source: AGHT+IFDzskSYUTxKkoP6SCgQgAYltT2X4VJOr36ZAkA0ExwWVFTGCSdWPvOlsTH+ENT8Hvd6LU7KA==
+X-Received: by 2002:a05:6512:10ca:b0:51c:b73f:950 with SMTP id 2adb3069b0e04-529661f315emr1807735e87.43.1716552769459;
+        Fri, 24 May 2024 05:12:49 -0700 (PDT)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52970c3313fsm164559e87.200.2024.05.24.05.12.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 May 2024 05:12:49 -0700 (PDT)
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] serial: imx: ensure RTS signal is not left active after shutdown
+Date: Fri, 24 May 2024 14:12:45 +0200
+Message-Id: <20240524121246.1896651-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.40.1.1.g1c60b9335d
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a7b03b6-93a9-4e14-5e3c-08dc7bea41a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 May 2024 12:08:43.3692
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: J3+3RF1v1nMp1FzrXCc+/Mhp31xyW9/r/geFF9+SL7dZWvqiFqG0vxrzOj4ySZU7GteXFt64zcQuRKetPF0ENQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7053
+Content-Transfer-Encoding: 8bit
+
+If a process is killed while writing to a /dev/ttymxc* device in RS485
+mode, we observe that the RTS signal is left high, thus making it
+impossible for other devices to transmit anything.
+
+Moreover, the ->tx_state variable is left in state SEND, which means
+that when one next opens the device and configures baud rate etc., the
+initialization code in imx_uart_set_termios dutifully ensures the RTS
+pin is pulled down, but since ->tx_state is already SEND, the logic in
+imx_uart_start_tx() does not in fact pull the pin high before
+transmitting, so nothing actually gets on the wire on the other side
+of the transceiver. Only when that transmission is allowed to complete
+is the state machine then back in a consistent state.
+
+This is completely reproducible by doing something as simple as
+
+  seq 10000 > /dev/ttymxc0
+
+and hitting ctrl-C, and watching with a logic analyzer.
+
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+---
+
+A screen dump from a logic analyzer can be seen at:
+
+  https://ibb.co/xCcP7Jy
+
+This is on an imx8mp board, with /dev/ttymxc0 and /dev/ttymxc2 both
+configured for rs485 and connected to each other. I'm writing to
+/dev/ttymxc2. This demonstrates both bugs; that RTS is left high when
+a write is interrupted, and that a subsequent write actually fails to
+have RTS high while TX'ing.
+
+I'm not sure what commit to name as a Fixes:. This certainly happens
+on 6.6 and onwards, but I assume the problem exists since the tx_state
+machine was introduced in cb1a60923609 (serial: imx: implement rts
+delaying for rs485), and possibly even before that.
 
 
+ drivers/tty/serial/imx.c | 50 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-> -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Friday, May 24, 2024 4:17 PM
-> To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh+dt@kernel.org>;
-> Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
-> <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Pengutronix
-> Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> <festevam@gmail.com>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
-> <krzk+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
-> linux-arm-kernel@lists.infradead.org
-> Subject: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP EdgeL=
-ock
-> Enclave
->
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->
->
-> On Thu, May 23, 2024 at 04:19:35PM +0530, Pankaj Gupta wrote:
-> > NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are
-> > embedded in the SoC to support the features like HSM, SHE & V2X, using
-> > message based communication interface.
-> >
-> > The secure enclave FW communicates on a dedicated messaging unit(MU)
-> > based interface(s) with application core, where kernel is running.
-> > It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
-> >
-> > This patch adds the driver for communication interface to
-> > secure-enclave, for exchanging messages with NXP secure enclave HW
-> > IP(s) like EdgeLock Enclave (ELE) from Kernel-space, used by kernel
-> > management layers like
-> > - DM-Crypt.
-> >
-> > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > ---
-> >  drivers/firmware/imx/Kconfig        |  12 +
-> >  drivers/firmware/imx/Makefile       |   2 +
-> >  drivers/firmware/imx/ele_base_msg.c | 286 +++++++++++++++++++
-> > drivers/firmware/imx/ele_base_msg.h |  92 +++++++
-> >  drivers/firmware/imx/ele_common.c   | 239 ++++++++++++++++
-> >  drivers/firmware/imx/ele_common.h   |  43 +++
-> >  drivers/firmware/imx/se_ctrl.c      | 531
-> ++++++++++++++++++++++++++++++++++++
-> >  drivers/firmware/imx/se_ctrl.h      |  99 +++++++
-> >  include/linux/firmware/imx/se_api.h |  14 +
-> >  9 files changed, 1318 insertions(+)
-> >
-> > +static int imx_fetch_se_soc_info(struct device *dev) {
-> > +     struct se_if_priv *priv =3D dev_get_drvdata(dev);
-> > +     struct imx_se_node_info_list *info_list;
-> > +     const struct imx_se_node_info *info;
-> > +     struct soc_device_attribute *attr;
-> > +     struct soc_device *sdev;
-> > +     u64 serial_num;
-> > +     u16 soc_rev;
-> > +     int err =3D 0;
-> > +
-> > +     info =3D priv->info;
-> > +     info_list =3D (struct imx_se_node_info_list *)
-> > +                             device_get_match_data(dev);
-> > +
-> > +     /* This function should be called once.
-> > +      * Check if the soc_rev is zero to continue.
-> > +      */
-> > +     if (priv->soc_rev)
-> > +             return err;
-> > +
-> > +     err =3D info->se_fetch_soc_info(dev, &soc_rev, &serial_num);
-> > +     if (err < 0) {
-> > +             dev_err(dev, "Failed to fetch SoC Info.");
-> > +             return err;
-> > +     }
->
-> This is called unconditionally but is not set for i.MX93. You should eith=
-er set it
-> for i.MX93 or check it before calling it.
->
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 2eb22594960f..35a47f4ab6ed 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1551,6 +1551,7 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 	struct imx_port *sport = (struct imx_port *)port;
+ 	unsigned long flags;
+ 	u32 ucr1, ucr2, ucr4, uts;
++	int loops;
+ 
+ 	if (sport->dma_is_enabled) {
+ 		dmaengine_terminate_sync(sport->dma_chan_tx);
+@@ -1613,6 +1614,55 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 	ucr4 &= ~UCR4_TCEN;
+ 	imx_uart_writel(sport, ucr4, UCR4);
+ 
++	/*
++	 * We have to ensure the tx state machine ends up in OFF. This
++	 * is especially important for rs485 where we must not leave
++	 * the RTS signal high, blocking the bus indefinitely.
++	 *
++	 * All interrupts are now disabled, so imx_uart_stop_tx() will
++	 * no longer be called from imx_uart_transmit_buffer(). It may
++	 * still be called via the hrtimers, and if those are in play,
++	 * we have to honour the delays.
++	 */
++	if (sport->tx_state == WAIT_AFTER_RTS || sport->tx_state == SEND)
++		imx_uart_stop_tx(port);
++
++	/*
++	 * In many cases (rs232 mode, or if tx_state was
++	 * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
++	 * delay_rts_after_send), this will have moved directly to
++	 * OFF. In rs485 mode, tx_state might already have been
++	 * WAIT_AFTER_SEND and the hrtimer thus already started, or
++	 * the above imx_uart_stop_tx() call could have started it. In
++	 * those cases, we have to wait for the hrtimer to fire and
++	 * complete the transition to OFF.
++	 */
++	loops = port->rs485.flags & SER_RS485_ENABLED ?
++		port->rs485.delay_rts_after_send : 0;
++	while (sport->tx_state != OFF && loops--) {
++		uart_port_unlock_irqrestore(&sport->port, flags);
++		msleep(1);
++		uart_port_lock_irqsave(&sport->port, &flags);
++	}
++
++	if (dev_WARN_ONCE(sport->port.dev, sport->tx_state != OFF,
++			  "unexpected tx_state %d\n", sport->tx_state)) {
++		/*
++		 * This machine may be busted, but ensure the RTS
++		 * signal is inactive in order not to block other
++		 * devices.
++		 */
++		if (port->rs485.flags & SER_RS485_ENABLED) {
++			ucr2 = imx_uart_readl(sport, UCR2);
++			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
++				imx_uart_rts_active(sport, &ucr2);
++			else
++				imx_uart_rts_inactive(sport, &ucr2);
++			imx_uart_writel(sport, ucr2, UCR2);
++		}
++		sport->tx_state = OFF;
++	}
++
+ 	uart_port_unlock_irqrestore(&sport->port, flags);
+ 
+ 	clk_disable_unprepare(sport->clk_per);
+-- 
+2.40.1.1.g1c60b9335d
 
-
-Accepted. Will correct in v3.
-
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       |
-> http://www.pe/
-> ngutronix.de%2F&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7C104138b
-> e4be445f8222608dc7bdee29f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C
-> 0%7C0%7C638521444411216377%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
-> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%
-> 7C%7C%7C&sdata=3DMgDkY1PHo0qrLpw2IBCxVf4NVy3C3OInhb%2ByoUwib%2
-> Bc%3D&reserved=3D0  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
