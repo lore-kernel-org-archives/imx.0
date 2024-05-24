@@ -1,123 +1,211 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2069042AA0
-	for <imx@lists.linux.dev>; Fri, 24 May 2024 09:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED0786273
+	for <imx@lists.linux.dev>; Fri, 24 May 2024 10:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716541741; cv=none; b=G2yDMspChu0b/E/0Ug0yZoTCxOg40YsZIHIWMe/1GqSJ8hIN3J09NvqR86oT9BKTnrj5rvaRzXToFu+N34n3MSCmHtxOqBUxXnGehkK0kOl1jrE6JPlkcsgHRP6gtKeg1KzTkZImdfFyai90RAoWdL1akce8CapxUjtlUMr7Z4U=
+	t=1716546893; cv=none; b=T9/zJ2RU9knhOHRF2dGn05cz2R4rSy6luPc3a/KnUnfHsN0PlXV70LEgVqhgljpXY0XOivifpuUm6n+gl7B+tJMiWEV15QZr34NdX75NhWHTIOnzJOlCLwvYZprqJvE9t+SA3ie2EH2w4r5sJivsVaIT3vywPNuEUQ1W4/QHhA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716541741; c=relaxed/simple;
-	bh=xe/mCiADKWKoHmV7LHdspv3GXZyRbUw0F1g2MLd8RMc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VhGjDdQzglV7OzUYPnlEPttZGudhYCHWpri8GhjdCKbE3jqv0XzMQ6ENvAUzmjEOUX7iWawqe79RQy5Vq1EHf5ijiBm/rHlCE8wyn9cL6diQ6WI26t6pq7NgCxoAXRSNHYhtKDLKGG9zBZSsEB1w7GPyjNTTXHVzq8WAgo6Z3WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jDYlct/e; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jDYlct/e"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716541739; x=1748077739;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=xe/mCiADKWKoHmV7LHdspv3GXZyRbUw0F1g2MLd8RMc=;
-  b=jDYlct/eBi4ri8B6r/Q1T3KLF+8tXOgx9RhqpY/WPOSGvuedWg60sUW+
-   hgb5v/OuXzl3h0HVqCzjJw+I5ThGgVDF8SE2J9UR9rU7ZrGj4uR14sPfN
-   ZJNUhma5KfuTLWR7mq+fJarV2chUx0qQZup1JPcIZWIx3KDJoh4r8Qxdu
-   1Z/WT3CrYfMZieeKsxJJLhCL63D4pYMl5y7TkjENsEp/OnU5NBkeTUXLz
-   BldoJWopaSep2pb38+m7v8bE6KDaXarAEitec5hezKKvDjLV0fu3hft6d
-   7h9XMuqxKkxggIiu1L5B8RtsWvuOHTzKOtzL1EPZU3OBEF2urh7lWBEI0
-   A==;
-X-CSE-ConnectionGUID: eH1qBK80SNi4lecCJLsPjQ==
-X-CSE-MsgGUID: XwiQZsjXRlKDfsKXP7B47A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="16737377"
-X-IronPort-AV: E=Sophos;i="6.08,185,1712646000"; 
-   d="scan'208";a="16737377"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2024 02:08:59 -0700
-X-CSE-ConnectionGUID: pZZKcbw2Scq9QlM7prupww==
-X-CSE-MsgGUID: qLyhjg0QRQW4/K9BALCm5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,185,1712646000"; 
-   d="scan'208";a="34066966"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2024 02:08:55 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
-Subject: Re: [PATCH 4/4] drm: enable -Wformat-truncation across the subsystem
-In-Reply-To: <20240523184128.GA523806@ravnborg.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1716479340.git.jani.nikula@intel.com>
- <719debc351075abc36b2573266bfd4d963361e40.1716479340.git.jani.nikula@intel.com>
- <20240523184128.GA523806@ravnborg.org>
-Date: Fri, 24 May 2024 12:08:50 +0300
-Message-ID: <87ed9ro9ul.fsf@intel.com>
+	s=arc-20240116; t=1716546893; c=relaxed/simple;
+	bh=qg+hQa3sjCvK1rsMinmlMmvRSQldE+iztqZn3l16GXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yk6vpk3yu4SfpuqxPktLqCCa7TVX09SNgGk7m3ps024OJmV5iwZnJGSo7nhIsVKlBMJDiBTV19PBERhs92hDbzGhsKA+N+MlCvdftQBH+8yPbA13HyNxBdJbAm0OR58rCmH+ByFyL1QjIPCfTS6/Y4SKQSsq61FiFW4R9cOwr+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sASFq-0008L1-7k; Fri, 24 May 2024 12:34:30 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sASFp-002mYJ-9k; Fri, 24 May 2024 12:34:29 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sASFp-00Bdvd-0d;
+	Fri, 24 May 2024 12:34:29 +0200
+Date: Fri, 24 May 2024 12:34:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 4/5] firmware: imx: add driver for NXP EdgeLock Enclave
+Message-ID: <ZlBtNSeh2VyZsVxq@pengutronix.de>
+References: <20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com>
+ <20240523-imx-se-if-v2-4-5a6fd189a539@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240523-imx-se-if-v2-4-5a6fd189a539@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, 23 May 2024, Sam Ravnborg <sam@ravnborg.org> wrote:
-> Hi Jani,
->
-> On Thu, May 23, 2024 at 06:51:09PM +0300, Jani Nikula wrote:
->> With the -Wformat-truncation warnings fixed, finish the job started in
->> commit a61ddb4393ad ("drm: enable (most) W=1 warnings by default across
->> the subsystem"), and enable that warning too.
->> 
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->
-> When it is enabled for all of drm then the explicit assignments here
-> could be dropped I think:
->
-> drivers/gpu/drm/i915/Makefile:subdir-ccflags-y += $(call cc-option, -Wformat-truncation)
-> drivers/gpu/drm/xe/Makefile:subdir-ccflags-y += $(call cc-option, -Wformat-truncation)
->
-> Just a drive-by comment, I know this patch was mostly for the bots.
+On Thu, May 23, 2024 at 04:19:35PM +0530, Pankaj Gupta wrote:
+> NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE),
+> are embedded in the SoC to support the features like HSM, SHE & V2X,
+> using message based communication interface.
+> 
+> The secure enclave FW communicates on a dedicated messaging unit(MU)
+> based interface(s) with application core, where kernel is running.
+> It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
+> 
+> This patch adds the driver for communication interface to secure-enclave,
+> for exchanging messages with NXP secure enclave HW IP(s) like EdgeLock
+> Enclave (ELE) from Kernel-space, used by kernel management layers like
+> - DM-Crypt.
+> 
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> ---
+>  drivers/firmware/imx/Kconfig        |  12 +
+>  drivers/firmware/imx/Makefile       |   2 +
+>  drivers/firmware/imx/ele_base_msg.c | 286 +++++++++++++++++++
+>  drivers/firmware/imx/ele_base_msg.h |  92 +++++++
+>  drivers/firmware/imx/ele_common.c   | 239 ++++++++++++++++
+>  drivers/firmware/imx/ele_common.h   |  43 +++
+>  drivers/firmware/imx/se_ctrl.c      | 531 ++++++++++++++++++++++++++++++++++++
+>  drivers/firmware/imx/se_ctrl.h      |  99 +++++++
+>  include/linux/firmware/imx/se_api.h |  14 +
+>  9 files changed, 1318 insertions(+)
+> 
 
-Additionally, I didn't want to create any conflicts with [1]. There's no
-harm in having the duplication.
+> +static int se_probe_if_cleanup(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct se_if_priv *priv;
+> +	int ret = 0;
+> +
+> +	priv = dev_get_drvdata(dev);
+> +	if (!priv) {
+> +		ret = 0;
+> +		dev_dbg(dev, "SE-MU Priv data is NULL;");
+> +		return ret;
+> +	}
+> +
+> +	if (priv->tx_chan)
+> +		mbox_free_channel(priv->tx_chan);
+> +	if (priv->rx_chan)
+> +		mbox_free_channel(priv->rx_chan);
+> +
+> +	/* free the buffer in se remove, previously allocated
+> +	 * in se probe to store encrypted IMEM
+> +	 */
+> +	if (priv->imem.buf) {
+> +		dmam_free_coherent(dev,
+> +				   ELE_IMEM_SIZE,
+> +				   priv->imem.buf,
+> +				   priv->imem.phyaddr);
+> +		priv->imem.buf = NULL;
+> +	}
+> +
+> +	if (priv->flags & RESERVED_DMA_POOL) {
+> +		of_reserved_mem_device_release(dev);
 
-BR,
-Jani.
+You can call this unconditionally, no need to keep track if you called
+of_reserved_mem_device_init() successfully.
 
-[1] https://lore.kernel.org/r/cover.1716471145.git.jani.nikula@intel.com
+> +
+> +static int se_if_probe(struct platform_device *pdev)
+> +{
+> +	struct imx_se_node_info_list *info_list;
+> +	struct device *dev = &pdev->dev;
+> +	struct imx_se_node_info *info;
+> +	struct se_if_priv *priv;
+> +	u32 idx;
+> +	int ret;
+> +
+> +	if (of_property_read_u32(dev->of_node, "reg", &idx)) {
+> +		ret = -EINVAL;
+> +		goto exit;
+> +	}
+> +
+> +	info_list = (struct imx_se_node_info_list *)
+> +			device_get_match_data(dev);
+> +	info = get_imx_se_node_info(info_list, idx);
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv) {
+> +		ret = -ENOMEM;
+> +		goto exit;
+> +	}
+> +
+> +	dev_set_drvdata(dev, priv);
+> +
+> +	/* Mailbox client configuration */
+> +	priv->se_mb_cl.dev		= dev;
+> +	priv->se_mb_cl.tx_block		= false;
+> +	priv->se_mb_cl.knows_txdone	= true;
+> +	priv->se_mb_cl.rx_callback	= se_if_rx_callback;
+> +
+> +	ret = se_if_request_channel(dev, &priv->tx_chan,
+> +			&priv->se_mb_cl, info->mbox_tx_name);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	ret = se_if_request_channel(dev, &priv->rx_chan,
+> +			&priv->se_mb_cl, info->mbox_rx_name);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	priv->dev = dev;
+> +	priv->info = info;
+> +
+> +	/* Initialize the mutex. */
+> +	mutex_init(&priv->se_if_lock);
+> +	mutex_init(&priv->se_if_cmd_lock);
+> +
+> +	priv->cmd_receiver_dev = NULL;
+> +	priv->waiting_rsp_dev = NULL;
+> +	priv->max_dev_ctx = info->max_dev_ctx;
+> +	priv->cmd_tag = info->cmd_tag;
+> +	priv->rsp_tag = info->rsp_tag;
+> +	priv->mem_pool_name = info->pool_name;
+> +	priv->success_tag = info->success_tag;
+> +	priv->base_api_ver = info->base_api_ver;
+> +	priv->fw_api_ver = info->fw_api_ver;
+> +
+> +	init_completion(&priv->done);
+> +	spin_lock_init(&priv->lock);
+> +
+> +	if (info->reserved_dma_ranges) {
+> +		ret = of_reserved_mem_device_init(dev);
+> +		if (ret) {
+> +			dev_err(dev,
+> +				"failed to init reserved memory region %d\n",
+> +				ret);
+> +			priv->flags &= (~RESERVED_DMA_POOL);
+> +			goto exit;
+> +		}
+> +		priv->flags |= RESERVED_DMA_POOL;
+> +	}
 
+Can't this be optional? Why do you need to reserve memory in the device
+tree for it?
 
->
-> 	Sam
->
->> 
->> ---
->> 
->> Gut feeling says there are more issues, and my configs just don't catch
->> them all, but let's see what the build bots have to say. ;)
->> ---
->>  drivers/gpu/drm/Makefile | 3 +--
->>  1 file changed, 1 insertion(+), 2 deletions(-)
->> 
->> diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
->> index 68cc9258ffc4..644613dbedda 100644
->> --- a/drivers/gpu/drm/Makefile
->> +++ b/drivers/gpu/drm/Makefile
->> @@ -16,8 +16,7 @@ subdir-ccflags-y += $(call cc-option, -Wunused-but-set-variable)
->>  subdir-ccflags-y += $(call cc-option, -Wunused-const-variable)
->>  subdir-ccflags-y += $(call cc-option, -Wpacked-not-aligned)
->>  subdir-ccflags-y += $(call cc-option, -Wformat-overflow)
->> -# FIXME: fix -Wformat-truncation warnings and uncomment
->> -#subdir-ccflags-y += $(call cc-option, -Wformat-truncation)
->> +subdir-ccflags-y += $(call cc-option, -Wformat-truncation)
->>  subdir-ccflags-y += $(call cc-option, -Wstringop-truncation)
->>  # The following turn off the warnings enabled by -Wextra
->>  ifeq ($(findstring 2, $(KBUILD_EXTRA_WARN)),)
->> -- 
->> 2.39.2
+Sascha
 
 -- 
-Jani Nikula, Intel
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
