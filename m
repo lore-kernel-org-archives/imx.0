@@ -1,349 +1,197 @@
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406AE8664A
-	for <imx@lists.linux.dev>; Sat, 25 May 2024 17:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D896C8594E
+	for <imx@lists.linux.dev>; Sat, 25 May 2024 18:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716657561; cv=none; b=FABeRl+0wsDipPQSIWCLd1Ptk+gkpDtXM9i3ilzQ+xZwCoyE2EbY9/da3hk3GgllS2ugQNUxTx18PjdtwSH84Dn495yLoFcimMnZ93VtsrgMNoXdkjK8lEesaQLPmytFZayOWQv141O0G9cigDxN/3+++fqvs0Wa9LdBAshmPvE=
+	t=1716662076; cv=none; b=TtwcRbBTMSr/FCbX0JqM83Ds9HsGVMhf4IRmQtDpLwf+wUxNefoZnw/EJE9g0y2nZ6g2tBU+wRvnurb/i2DkjsujtF439WMjPsS+HrW+xnlhm6tlT9zlMe/rH3hyZ3a4ohp0fdhCs+zBi3IoAgc5VfINF9nHBxL2wgHpaI4vY5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716657561; c=relaxed/simple;
-	bh=PWh7d+8YLA93Rz4p8tPC24xDQWybgvNly8P2B7HhAVg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fyLWnsTUgCKh5yZah1xTDQ4czOXJi3BPlHyz5D59TBzZcEfCe/i5/gIADbLZSCbNUPZw+Mhf15wQFdG6L+rIVpOppqjHM0IFIuVRAjUyXnPA+VdONzJh7wNCO7wDPbuH6Jb24veMlrKXDPR33zXT07p+pVtv9bAM17+7tUyuZcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com; spf=pass smtp.mailfrom=linumiz.com; dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b=ool/H/St; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linumiz.com
+	s=arc-20240116; t=1716662076; c=relaxed/simple;
+	bh=gXp7mtxI5+En4bOppVLsZ3l7pBgVT0WiilnTsdsYR+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dFLquA/6tl7PBtjLTcqg1omxmAX40cZ7EHtXg7jbtJzqcUI9K7MzSRhCr+m0MQxbvHWErmMJczeO7qJ418U+IekUqhS1uasV3EFYwLRt6/cwHsZsXQojYYc+gZ9OURTXdtF84fK9JvLNTTRfry9ftrz1D8vJYxm8yQSjRFEI2E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HX+UIbnD; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b="ool/H/St"
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id Aox2suGesSLKxAv34sNNzS; Sat, 25 May 2024 17:19:14 +0000
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-	by cmsmtp with ESMTPS
-	id Av30s96MSuv6XAv32sbXYN; Sat, 25 May 2024 17:19:13 +0000
-X-Authority-Analysis: v=2.4 cv=YbZ25BRf c=1 sm=1 tr=0 ts=66521d91
- a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=kofhyyBXuK/oEhdxNjf66Q==:17
- a=TpHVaj0NuXgA:10 a=oz0wMknONp8A:10 a=vU9dKmh3AAAA:8 a=ypTnhA6Xp4740vGWRosA:9
- a=rsP06fVo5MYu2ilr0aT5:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=/RujOLMVGp8FrUUWdugajJTD7U3vVTy5mq4h40ezfCE=; b=ool/H/St0oZsdV8wbBsOILBQNp
-	nFaJHDojsSLAs0wGNQfSM7Uhodyp7hh6lTdYKXWKvKRhRtjSNtkCQupvhzp0eyTWGoNVUJqYn0rKc
-	yZcjQ9gnyCtG9lBOLM24k80F13PVLuHX6B8tnv/tvviKbxxGn2/O2AFFr3/FQvL5Ll0HTy42INzGJ
-	2wfyF4ROkCARacj0Q3DsiZ884FRBQeaymLg/bi7CnDKQi3vmM7MT7peRunLVnczNNGMruyknt5U6G
-	6GcEmjG9+kqItgC50XqWExiZQzrq9fvG2AL18D0BpYOufQ17InTtoymqqwIs0E52Zci3T16iaZrse
-	m30CzJyA==;
-Received: from [122.165.245.213] (port=56054 helo=localhost.localdomain)
-	by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <parthiban@linumiz.com>)
-	id 1sAv2z-001NCX-2H;
-	Sat, 25 May 2024 22:49:09 +0530
-From: Parthiban Nallathambi <parthiban@linumiz.com>
-To: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Parthiban Nallathambi <parthiban@linumiz.com>
-Subject: [PATCH 2/2] arm64: phygate-tauri-l add overlays for RS232 and RS485
-Date: Sat, 25 May 2024 22:48:54 +0530
-Message-Id: <20240525171854.2165241-2-parthiban@linumiz.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240525171854.2165241-1-parthiban@linumiz.com>
-References: <20240525171854.2165241-1-parthiban@linumiz.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HX+UIbnD"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-351d309bbecso7079214f8f.2
+        for <imx@lists.linux.dev>; Sat, 25 May 2024 11:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716662073; x=1717266873; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=2rB90Zyk/xnV7pjOge9pMgAzrLvBX8WyYkOhzQ6Icas=;
+        b=HX+UIbnDjDneTfaKyRhoACsJgqO7T2ZvJtPeu3WtkXig9ve0kQn8gtS3JGcPpfuRK2
+         XKeQnQgPQhJzFTk87Y1JfQ3GYYPSZqSs6hCEiRl2KWZG/OJ3HO+hYa9rr0g63lriY07z
+         0FsvJ7cc7RnDzPuULNKcZ1ljN3kswA+kcyyAJbQsuRrlsfSNbR7ntwob5rYo9BvkRikY
+         jJMNQXTOX84pmClHBhUx/6aRmTcoTfpfRMzY+5WQD4GBF87iiksul70wsRH1aNy3ASE3
+         vtyW3RwjAnot96ESLpTdFtnxFUym4tu1G8C/9R5J6mVoTsjbjTM3cVk+3Ak/b85pyqQM
+         Dt2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716662073; x=1717266873;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2rB90Zyk/xnV7pjOge9pMgAzrLvBX8WyYkOhzQ6Icas=;
+        b=qJubjneuApTgmrks3EisfezyvlqZGiaAzL6flfkQIq1OUDB72LG+G1FPoJVOLSNLUx
+         veCT50sP/lQNXA37HcNpNV67Skor8fNeq/M4QyhOW5FDTkoA0G5vES73LciR0zKydfEy
+         LtIe8Fw1HfbkKaIvQ5oYJo7Vvci7/R/M9MAR+HJO1xoZYEDj3Ngjfm8MOv42spL1P1Ww
+         s0zOx2/hnBYj3qO64yOnvCPl7D6mE+aGoxiXze9bettzaaiUUU/vjNfyIhbmjUx+HEZd
+         cWJzWZH3eSMVWK46ayav3J3lYo4PorxCFKNX+3J6VD6oS7YFEnnod5I11EfYlsvWKnBM
+         JM3A==
+X-Forwarded-Encrypted: i=1; AJvYcCWypX2/77oPSVfT1cVPLMRL88AZdkRAAxMdddO3LQHdPseTVYtkWnpWkS+RAXadc4EMsV3xRXq8XWvn+5tEMXZGo+I/
+X-Gm-Message-State: AOJu0YwnLPoe8VNs8pJty3J+D+rPoPYLEtrSIhwPnmEWmFue7slAagcK
+	/UuKNNMwIGEfvOjPxY3eXRBlq7bcoSM2bYCCvv9bXx/cvRh7lv0kEnM5ox82ATs=
+X-Google-Smtp-Source: AGHT+IHu4K3qkmTYK4sRJW7Q4z82iFN/TsWlBdU2oIeYfo05jlo/wrTGSzE2FPwp7sn8N/JdOA6LwQ==
+X-Received: by 2002:adf:ce06:0:b0:354:f2b0:ebda with SMTP id ffacd0b85a97d-35527056594mr4952326f8f.10.1716662072990;
+        Sat, 25 May 2024 11:34:32 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3558889fb57sm4599424f8f.114.2024.05.25.11.34.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 May 2024 11:34:32 -0700 (PDT)
+Message-ID: <8007abef-38bb-4d7d-a453-00bb5e6bede5@linaro.org>
+Date: Sat, 25 May 2024 20:34:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+To: Conor Dooley <conor@kernel.org>, Tim Harvey <tharvey@gateworks.com>
+Cc: Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20240522215043.3747651-1-tharvey@gateworks.com>
+ <07250029-7cea-4a82-9e70-22e0e6f7fb37@linaro.org>
+ <20240523-vividly-sequester-d85ac7bccbbd@spud>
+ <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
+ <20240524-cavalier-outthink-51805f49c8fb@spud>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240524-cavalier-outthink-51805f49c8fb@spud>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 122.165.245.213
-X-Source-L: No
-X-Exim-ID: 1sAv2z-001NCX-2H
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (localhost.localdomain) [122.165.245.213]:56054
-X-Source-Auth: parthiban@linumiz.com
-X-Email-Count: 15
-X-Org: HG=dishared_whb_net_legacy;ORG=directi;
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPfUYhmIquVyVskCMT76M1gZKykE2lHrX4j+JplXON2R8FIUp0lELFlW2eyUv3Y5FYm8g0wt0xLY4uYsWGuK2RRzbilh4fJfsSpyEKY3c7H/gEpqV9Fv
- qMoYU7rD4/DLFHazsdQM7Zg5TXQqQ+TNSsowIkIyeSbPQwRnLO0L+fvhhVGaOLCBQ2NGi00TqU/GmvwoddROFYwAY2yIJuRKQ3A=
 
-UART2 and UART4 can used in following combination,
+On 24/05/2024 20:40, Conor Dooley wrote:
+> On Thu, May 23, 2024 at 04:04:50PM -0700, Tim Harvey wrote:
+>> On Thu, May 23, 2024 at 7:47 AM Conor Dooley <conor@kernel.org> wrote:
+>>>
+>>> On Thu, May 23, 2024 at 09:02:46AM +0200, Krzysztof Kozlowski wrote:
+>>>> On 22/05/2024 23:50, Tim Harvey wrote:
+>>>>> The GW7905 was renamed to GW7500 before production release.
+>>>>>
+>>>>> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+>>>>> ---
+>>>>>  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+>>>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+>>>>> index 0027201e19f8..d8bc295079e3 100644
+>>>>> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+>>>>> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+>>>>> @@ -920,8 +920,8 @@ properties:
+>>>>>                - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
+>>>>>                - fsl,imx8mm-evk            # i.MX8MM EVK Board
+>>>>>                - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
+>>>>> +              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
+>>>>
+>>>> That's not even equivalent. You 7500 != 75xx.
+>>>>
+>>>
+>>>>>                - gateworks,imx8mm-gw7904
+>>>>> -              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Board
+>>>>
+>>>> Compatibles do not change. It's just a string. Fixed string.
+>>>
+>>> I think there's justification here for removing it, per the commit
+>>> message, the rename happened before the device was available to
+>>> customers.
+>>> Additionally, I think we can give people that upstream things before they're
+>>> publicly available a bit of slack, otherwise we're just discouraging
+>>> people from upstreaming early.
+>>
+>> Hi Conor,
+>>
+>> Thanks for understanding - that's exactly what happened. I'm in the
+>> habit of submitting patches early and often and it's no fun when
+>> something like a silly product name gets changed and breaks all the
+>> hard work.
+>>
+>> The board model number is stored in an EEPROM at manufacturing time
+>> and that EEPROM model is used to build a dt name. So instead of GW7905
+>> which would be a one-off custom design it was decided to change the
+>> product to a GW75xx. The difference between GW7500 and GW75xx is
+>> because we subload components on boards between GW7500/GW7501/GW7502
+>> etc but the dt is the same.
+>>
+>> If there is resistance to a patch that renames it then I guess I'll
+>> have to submit a patch that removes the obsolete board, then adds back
+>> the same board under a different name. Shall I do that?
+> 
+> I think this patch is fine - other than the inconsistency that Krzysztof
+> pointed out between the "renamed to gw7500" and the "gw75xx" in the new
+> compatible.
 
-2 x RS232:
-- UART2 and UART4 without flow control
-- MUX selection GPIO3_20 must be held low
+I am not a fan of renaming compatibles because of marketing change,
+because compatible does not have to reflect the marketing name, but
+there was already precedent from Qualcomm which I did not nak, so fine
+here as well. Double wildcard 75xx is however a bit worrying.
 
-1 x RS232 + 1 x RS485:
-- UART2 - RS232
-- UART4 - RS485
-- MUX selection GPIO3_20 must be held high
-- RE/DE for RS485 controlled with GPIO3_25
-
-1 x RS232 with flow control:
-- UART2 - RS232
-- MUX selection GPIO3_20 must be held low
-
-Signed-off-by: Parthiban Nallathambi <parthiban@linumiz.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  8 ++
- .../imx8mm-phygate-tauri-l-rs232-rs232.dtso   | 72 ++++++++++++++++++
- .../imx8mm-phygate-tauri-l-rs232-rs485.dtso   | 76 +++++++++++++++++++
- .../imx8mm-phygate-tauri-l-rs232-rts-cts.dtso | 41 ++++++++++
- 4 files changed, 197 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rts-cts.dtso
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index bd443c2bc5a4..c150dfaa01c6 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -263,6 +263,14 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw73xx-0x-rs485.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw74xx-imx219.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw74xx-rpidsi.dtb
- 
-+imx8mm-phygate-tauri-l-rs232-rs232-dtbs		:= imx8mm-phygate-tauri-l.dtb imx8mm-phygate-tauri-l-rs232-rs232.dtbo
-+imx8mm-phygate-tauri-l-rs232-cts-rts-dtbs	:= imx8mm-phygate-tauri-l.dtb imx8mm-phygate-tauri-l-rs232-rts-cts.dtbo
-+imx8mm-phygate-tauri-l-rs232-rs485-dtbs		:= imx8mm-phygate-tauri-l.dtb imx8mm-phygate-tauri-l-rs232-rs485.dtbo
-+
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l-rs232-rs232.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l-rs232-cts-rts.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l-rs232-rs485.dtb
-+
- dtb-$(CONFIG_ARCH_S32) += s32g274a-evb.dtb
- dtb-$(CONFIG_ARCH_S32) += s32g274a-rdb2.dtb
- dtb-$(CONFIG_ARCH_S32) += s32g399a-rdb3.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso
-new file mode 100644
-index 000000000000..bf3e04651ba0
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso
-@@ -0,0 +1,72 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
-+ * Author: Jens Lang <j.lang@phytec.de>
-+ *
-+ * Tauri-L 2 x RS232:
-+ *  - GPIO3_20 uart4_rs485_en needs to be driven low (inactive)
-+ */
-+
-+#include <dt-bindings/clock/imx8mm-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include "imx8mm-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	compatible = "phytec,imx8mm-phygate-tauri-l";
-+
-+};
-+
-+&gpio3 {
-+	pinctrl-names = "default";
-+	pinctrcl-0 = <&pinctrl_gpio3_hog>;
-+
-+	uart4_rs485_en {
-+		gpio-hog;
-+		gpios = <20 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "uart4_rs485_en";
-+	};
-+};
-+
-+/* UART2 - RS232  */
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	assigned-clocks = <&clk IMX8MM_CLK_UART2>;
-+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
-+	status = "okay";
-+};
-+
-+/* UART4 - RS232  */
-+&uart4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart4>;
-+	assigned-clocks = <&clk IMX8MM_CLK_UART4>;
-+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_gpio3_hog: gpio3hoggrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20	0x49
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x00
-+			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX	0x00
-+		>;
-+	};
-+
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART4_RXD_UART4_DCE_RX	0x49
-+			MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x49
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso
-new file mode 100644
-index 000000000000..f4448cde0407
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso
-@@ -0,0 +1,76 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021 PHYTEC Messtechnik GmbH
-+ * Author: Jens Lang <j.lang@phytec.de>
-+ *
-+ * Tauri-L RS232 + RS485:
-+ *  - GPIO3_20 uart4_rs485_en needs to be driven high (active)
-+ *  - GPIO3_25 RS485_DE Driver enable
-+ */
-+
-+#include <dt-bindings/clock/imx8mm-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include "imx8mm-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	compatible = "phytec,imx8mm-phygate-tauri-l";
-+
-+};
-+
-+&gpio3 {
-+	pinctrl-names = "default";
-+	pinctrcl-0 = <&pinctrl_gpio3_hog>;
-+
-+	uart4_rs485_en {
-+		gpio-hog;
-+		gpios = <20 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "uart4_rs485_en";
-+	};
-+};
-+
-+/* UART2 - RS232  */
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	assigned-clocks = <&clk IMX8MM_CLK_UART2>;
-+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
-+	status = "okay";
-+};
-+
-+/* UART4 - RS485  */
-+&uart4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart4>;
-+	assigned-clocks = <&clk IMX8MM_CLK_UART4>;
-+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
-+	rts-gpios = <&gpio3 25 GPIO_ACTIVE_HIGH>;
-+	linux,rs485-enabled-at-boot-time;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_gpio3_hog: gpio3hoggrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20	0x49
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x00
-+			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX	0x00
-+		>;
-+	};
-+
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART4_RXD_UART4_DCE_RX	0x49
-+			MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x49
-+			MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25	0x49
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rts-cts.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rts-cts.dtso
-new file mode 100644
-index 000000000000..107f743fbb1c
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rts-cts.dtso
-@@ -0,0 +1,41 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2023 PHYTEC Messtechnik GmbH
-+ * Author: Jens Lang <j.lang@phytec.de>
-+ *
-+ * Tauri-L RS232 with RTS/CTS hardware flow control:
-+ *  - UART4_TX becomes RTS
-+ *  - UART4_RX becomes CTS
-+ */
-+
-+#include <dt-bindings/clock/imx8mm-clock.h>
-+#include "imx8mm-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+
-+&{/} {
-+	compatible = "phytec,imx8mm-phygate-tauri-l";
-+
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	assigned-clocks = <&clk IMX8MM_CLK_UART2>;
-+	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_80M>;
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x00
-+			MX8MM_IOMUXC_UART2_TXD_UART2_DCE_TX	0x00
-+			MX8MM_IOMUXC_UART4_RXD_UART2_DCE_CTS_B	0x00
-+			MX8MM_IOMUXC_UART4_TXD_UART2_DCE_RTS_B	0x00
-+		>;
-+	};
-+};
--- 
-2.34.1
+Best regards,
+Krzysztof
 
