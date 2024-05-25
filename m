@@ -1,139 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DD63A268;
-	Fri, 24 May 2024 18:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5A4101F4;
+	Sat, 25 May 2024 07:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716576060; cv=none; b=tMQju/d62efw9/Gxhl6UOO2YT17cv4/LPC/2pT0GuTAAq61d4oa54cf+UCA5WPVyKnsFfKikmoo1TJaEovic0/DTryjogWK5s2LRAhoiaOsPPtMVk0wm2avHACosT79kwOqowgI6WCoVJLOCxf7TWrBjX3ltMieON60t3W4UU6Q=
+	t=1716622065; cv=none; b=nULokn2ZUU0czvwGXDUWSSvzZQ2PQBn5hQoOfbvn251fj/7yhvfPqDDCC1DgVFACCgiGDmiOmJOuhRgNR8W4oxzjUKV5MTqORaEOBMgGQ8cxVFqKS85O6xZ2wvr3lXoSr0JgSR3EoWhvB/Z9Nmr6gIIoJI7TjJDQC3HYxYjSHuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716576060; c=relaxed/simple;
-	bh=40gtA562p+lzTr+9s5RdmfFpwV562RCDBYLHPKo0nKo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K2haJPqmN9DBVOUcThMtIh/hGVyjqaTdQv1Qrivie5o5uoXKesN2yu0ALMZuVJE20gazeSAvfbRU9RguI03swVh0Y5TziPfNykOV/lR6adEBcQiU1lghVdA0wS/ZlzKwTpfExxftay1l/ywiU1mgoKbQhnMZ+22bLYg4WYCdDew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBMOwUP7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716622065; c=relaxed/simple;
+	bh=1vV2rcZq7Yv8cvgatVorPcVsxAzQmPjkjKoLUVSD/9s=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=ed6/Dl8Nzuxe+qlXjU7q1ot4ksgvd5+pQ9/N+mIpAaZBxxLZQ+amFrg1Ws/PocXqoZyWdOhJ8+tQQ6Rmv4gAnwqiegTAyrJvn5Qc6dzn17M+b+KKTVeteTNv1tzAKTAUrmav5H3TEJgMDuZHUWcoAU1pW2Rth8kIuAXNS9EWizc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=d/QKjmuN; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBMOwUP7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8F1C2BBFC;
-	Fri, 24 May 2024 18:40:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716576059;
-	bh=40gtA562p+lzTr+9s5RdmfFpwV562RCDBYLHPKo0nKo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MBMOwUP7AP/4PR0PLfby9X4PcyO0ur/nKESPtUBj36LbsywxT1CwIj7RwKXXKvHJe
-	 T4tEznwZi/jrasixDIEhX+yxPRuLzmXqj0Rj7VjJa4I+30ujLIbRreH1i5G5zG9Gwl
-	 3qPybTC0hq5PMPkL3afqj3yZV697FG7ItUR7aBM8yobAV6J/nyqRV0JU3cmnLA8cWo
-	 JKLYfmWLXN7MZKNp6i9C0snt/vYDx3eLKtJGNns3FajyvtQF8LeOiywgDqhrLLT3HI
-	 0rlphCLLguX/4ZUmn7hdVyG3x/QPuWPITU/TIV9NYIRO53i18Mo/jzmS3feyrQVCV3
-	 2gpKV6fZ1eXrw==
-Date: Fri, 24 May 2024 19:40:54 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
-Message-ID: <20240524-cavalier-outthink-51805f49c8fb@spud>
-References: <20240522215043.3747651-1-tharvey@gateworks.com>
- <07250029-7cea-4a82-9e70-22e0e6f7fb37@linaro.org>
- <20240523-vividly-sequester-d85ac7bccbbd@spud>
- <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="d/QKjmuN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1716622028; x=1717226828; i=markus.elfring@web.de;
+	bh=6INwEjwgOCmGgOy8ZeWOLJOHl6t8dOZTr0bTagI6Hpo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=d/QKjmuNUNl6skSonlt7xy84QrYC/aZ0HCBqQG4gmpdqxUSK84BhZD1yhSfvSlU+
+	 O64klxkS96ENhWSFFe7YZ4ONRBSLXxjG6ofmL/mMKMwWy4cBOA0ShKgoxbkCV1JK6
+	 OhqSbau51ESD5fyaVUrMmUZa3znhsRCECtrfDfDtlDzVw8dbHCrtsDpHzjvC0SPaN
+	 YdDIKSeceeeJRpIgSlkAgdS9PxX3t/OOmoSAoDTtDxApVeSidrISVtBDLWPUkvphY
+	 tZZCoInsRQXcRK1+2KWKXiec23+QW0LhgyPbCYgiEDsV8qOy7cuF24UPHOv9jQ7Bj
+	 rlizL3NhTPz/meEUow==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MMGyA-1rutLe2qpi-00JTf8; Sat, 25
+ May 2024 09:27:08 +0200
+Message-ID: <4c53b063-ad12-405d-b088-9b992284ba08@web.de>
+Date: Sat, 25 May 2024 09:26:53 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="pCaot/fJN4+FoIrV"
-Content-Disposition: inline
-In-Reply-To: <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
-
-
---pCaot/fJN4+FoIrV
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kernel-janitors@vger.kernel.org, imx@lists.linux.dev,
+ Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+ Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel@pengutronix.de,
+ Shengjiu Wang <shengjiu.wang@gmail.com>
+References: <1716458390-20120-3-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v5 2/5] clk: imx: clk-audiomix: Add reset controller
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <1716458390-20120-3-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7xxTsM6Kf1mc/B2+VvsoIat3BsnLAt64foHiT/NelZ+ffJkbhTB
+ jRZhxyhS/V83g6c87aCUT7I6AaL9YMRyuQb+mjx7nHxlo1ILCOYgD5SkAPBH5K236dRojH8
+ DkLl0DLpgSDFicN/cR1Ou/JiQTCBCjOMtLzDjg4za1pLhDiuIPtheIBUamPhP4+9qKACOs/
+ bEEQNF+ZAvhtPwcLVSO6w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:UOryPKNMsTk=;uYxEyA1BlH+rnEbdOgIk74ncs0l
+ M6cbmCB5kSEPC2OR55JRYwah+nhOnwB6z8Fr5WvrcLlUHtV6S0edcGimlqIVtuDxp89HHtOOW
+ WfrSntW2IVbigwWt244GTuRRf9zQTmdL5A1H7IVnNhGfhupT5MlEzQ74Wc6uRowrM1w5rXCN5
+ 0HwhhCDJ+mj6UDnUY6NrGD+zof3NzOmzKZd3FaGctVxBmhbmimlHEpJYNLRc0DyFUoJpy6T0i
+ Bpt2zFT82/TzCHWETZmecYCSQERCyOn77TMWe3X42WDb8MKp7YlwNEw/NcTjJ8tUnmaDmJTGV
+ M+BnC/hZsblGTY3xcYQJ+K2aIWie/J8MmqjfhN+eX+MyGBejnXmkgWu5Xxn0NApsAimdh54Lk
+ ozxurWtoqjMydj7PzVZ5anpl/4f2msb+szhJGD+LYp4Qbge23NIb2NmJMDvB2v+YIDKqWIqco
+ ju528YTrrTUhIcWVXaxSSwhPeXCZTeYM9dq88bcahk27mzEjkoYJ0CMeQHL35K2BioaSLeBr0
+ OX2Rf7LJv7+YkUmtL5rK3uuFactKgZT5oV8Fta+F0MMbfs/YoToXDY6VNvgtwvMtHKeCWZb8R
+ N3HpW9mbiMUgyzw7p2yO85rOD09HT521s5yB9iknZavcZ5bOQr4mWnYFCIzfZ3a9lrcjJnssd
+ Aw/H3r1yNyPsp+94J9KZwPh5FFgUDphqqlHj0vLRzlvt1sGQWWfY/13glClPpNscJe0blf2SO
+ O14rVbN+L62Kmq9DsNfuO0kU651ZiCY6o1mXaTCopjTKizw4h3wLvIzkYseUAstv9bIREnhzD
+ ORo7QH9ejyKjr0vo74zMw6ZEDT2pgYYo4CEgqsZLnXffc=
 
-On Thu, May 23, 2024 at 04:04:50PM -0700, Tim Harvey wrote:
-> On Thu, May 23, 2024 at 7:47=E2=80=AFAM Conor Dooley <conor@kernel.org> w=
-rote:
-> >
-> > On Thu, May 23, 2024 at 09:02:46AM +0200, Krzysztof Kozlowski wrote:
-> > > On 22/05/2024 23:50, Tim Harvey wrote:
-> > > > The GW7905 was renamed to GW7500 before production release.
-> > > >
-> > > > Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-> > > > ---
-> > > >  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Docum=
-entation/devicetree/bindings/arm/fsl.yaml
-> > > > index 0027201e19f8..d8bc295079e3 100644
-> > > > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> > > > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > > > @@ -920,8 +920,8 @@ properties:
-> > > >                - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
-> > > >                - fsl,imx8mm-evk            # i.MX8MM EVK Board
-> > > >                - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
-> > > > +              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Boa=
-rd
-> > >
-> > > That's not even equivalent. You 7500 !=3D 75xx.
-> > >
-> >
-> > > >                - gateworks,imx8mm-gw7904
-> > > > -              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Boa=
-rd
-> > >
-> > > Compatibles do not change. It's just a string. Fixed string.
-> >
-> > I think there's justification here for removing it, per the commit
-> > message, the rename happened before the device was available to
-> > customers.
-> > Additionally, I think we can give people that upstream things before th=
-ey're
-> > publicly available a bit of slack, otherwise we're just discouraging
-> > people from upstreaming early.
->=20
-> Hi Conor,
->=20
-> Thanks for understanding - that's exactly what happened. I'm in the
-> habit of submitting patches early and often and it's no fun when
-> something like a silly product name gets changed and breaks all the
-> hard work.
->=20
-> The board model number is stored in an EEPROM at manufacturing time
-> and that EEPROM model is used to build a dt name. So instead of GW7905
-> which would be a one-off custom design it was decided to change the
-> product to a GW75xx. The difference between GW7500 and GW75xx is
-> because we subload components on boards between GW7500/GW7501/GW7502
-> etc but the dt is the same.
->=20
-> If there is resistance to a patch that renames it then I guess I'll
-> have to submit a patch that removes the obsolete board, then adds back
-> the same board under a different name. Shall I do that?
+=E2=80=A6
+> The reset controller is supported by the auxiliary device
+> framework.
 
-I think this patch is fine - other than the inconsistency that Krzysztof
-pointed out between the "renamed to gw7500" and the "gw75xx" in the new
-compatible.
+Would you like to add an imperative wording for an improved change descrip=
+tion?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.9#n94
 
---pCaot/fJN4+FoIrV
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+=E2=80=A6
+> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+=E2=80=A6
+> +static int clk_imx8mp_audiomix_reset_controller_register(struct device =
+*dev,
+> +							 struct clk_imx8mp_audiomix_priv *priv)
+> +{
+> +	struct auxiliary_device __free(kfree) * adev =3D NULL;
+> +	int ret;
+> +
+> +	adev =3D kzalloc(sizeof(*adev), GFP_KERNEL);
+=E2=80=A6
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlDfNgAKCRB4tDGHoIJi
-0uWsAP9dzrZ3+eiCFu2YQvK3J+Zew8rK3KOAEeLUpnNiZQre7QEAzAhNADZZS5/6
-Y98YUIYEF8yRhwinZqc/RiVXus5T0gY=
-=BFLi
------END PGP SIGNATURE-----
+May the following source code variant be applied here?
 
---pCaot/fJN4+FoIrV--
+	int ret;
+	struct auxiliary_device __free(kfree) *adev =3D kzalloc(sizeof(*adev), GF=
+P_KERNEL);
+
+
+Regards,
+Markus
