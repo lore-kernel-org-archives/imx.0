@@ -1,114 +1,86 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C54F161906
-	for <imx@lists.linux.dev>; Mon, 27 May 2024 16:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77C117E906;
+	Mon, 27 May 2024 16:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825859; cv=none; b=B/ZaGJXPRvSblpYNseBjMJopU1zjzEt45rzTLSiQDHLlrFgEdrwgyjVHflMTaT5IKmrzGKtlYON5kbAwYUykrFsfHbi9J42NC/8GYjtg7UMJCginAKPFBZtIif5J5YPENjdK9er0mdodRMOiY/FSmkO7a38QQr0PmzrdbfNDTGg=
+	t=1716828231; cv=none; b=j+8erwnF/6k+bOE0twj04N/+DzCmEJdYEnJ61Sy3db7OOByadnRGPAxK/6eN0qIkg9+cEifW0v4F7ySFk++kFnh0XJdqgpWtgpqBqVCOypyJsyX5gVdEVpxBUaRgjquLlBiHTgY1SaDrOPlU/dN7C5uiqGaaiL7xQ0idc2hCT8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825859; c=relaxed/simple;
-	bh=p/Ie9SW5LLry5odHyn1Z+OtVpPLJguI7HShBHpE0eKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gv90DtKclArAYJN3TYbEtWy5tZAsFBzWmhMRkMkeGkAnCpme+kMAl0C9rgJz6TxuZHP63Ilt+yxCRtOqgTmBupbItw/UgzcB+CQn251ru3o0xIRh9qOAzlPfml7UrC/kPhf0FAxJDqINywv8C0WN9l1LUEWtebgPYLHjKxbsz0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnqb97n4; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1716828231; c=relaxed/simple;
+	bh=4dvkOf1CENcyz9mYEJmPvOqP9GJwkrOwMz2AdlNtPgA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hvvHV380wytItXTG6g67OorE83GOeuaeppi31FIN4Xk5slpgXCKJOW33AwmMRBRlQ9lsKSsdWo1H7RTLOdLeCPp/E2pwb0RqPTto0cfE2Jp4WP9IhsSi5H4i5qFXNZ1uO6cBah0Gy5Tp+bLyuv1cUVzC/M7Non75oHPUEj65K3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXWfL9vn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnqb97n4"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-35507a3a038so2423023f8f.0
-        for <imx@lists.linux.dev>; Mon, 27 May 2024 09:04:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716825857; x=1717430657; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GX7MWRomctyKxwYidxaCMCj15SrJj2c1nUuhZiJGE4Y=;
-        b=lnqb97n4I488m3g5X47CJ72rxE37N8Cpc3ZhzmzOsuoWdflr4OgZRr5IWteallntU0
-         5sH3cKJfmcdBpRl6XWwR+VB/mv5mD6w4pNzHJyr+8u6oPvvYr28F5z8hZijk2JrY9uPl
-         dyLFk7C6CV37swNCpTmbMZapGRDux+kpQyXX2ViSlwO2O6m8cbAypOjMxKRztepNBmDl
-         zSv8EG4lNKNKyPjCKTSqebDqRSMGedoRZ9hGMhvur/UcFxRMh5Z7WPQ2r2JAFojENK5w
-         ktwgaoQFms0uZTaEwJQm5wcRzCtE1ekCxn+a046JQUujkJCzVRwFspI3mO55ESYAUiwz
-         o48Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716825857; x=1717430657;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GX7MWRomctyKxwYidxaCMCj15SrJj2c1nUuhZiJGE4Y=;
-        b=nWmJH319Qgu0Dkap6yywGzCahY9LFk6MclNhpByIQVJ2Oe//Fr9gS4Nozx8WFeIz6e
-         jrjpEfS7on/DnVGXivtSdga29Ms86q/htjZLRU89okZaBCcQNpeBOG0VJ6YQwOy4Ku2j
-         faMJM3iMMfMyl9rAGVyhHyLBq3CnmKa6qxPJJXJG/k0q4U6uWZfE6+sm/MIor9w6sY3/
-         fK3352cieRwmFTRb4UgKkMM2McxnwIK/Tp8BP95w6Yld7Nf0aVyWm49kfBrpGfYA3yUB
-         VbFF30b8g0XToKOg8eaZopgp5TU0bjYRgmoVHWJ49NPc6SCzryD/p4frS3s4gMcKZwKa
-         /J2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUeiro5SuSSQUKHd9Q2tC7emQf0d2xg2nRVip523DlbkERlJy2AqUL+Td0fweU80b98R3YGB6KnnYE8WzA89IZzEojf
-X-Gm-Message-State: AOJu0YwC255Sjs5/Dumao4scBamJQlDOOVwhjH3E64n9JopSj5VTiF8f
-	9C9VysTf3fio1pXThB6w0MeIH/JfjEoAysyxPGMcmDKwhZhSy0dc
-X-Google-Smtp-Source: AGHT+IGIGygC2UpwgSkACZB8IxM9lQz/dCKFi424OCk/HsYCzOxG44VH9Zf55MjJBWI44kLuK6cLzA==
-X-Received: by 2002:adf:e444:0:b0:356:4cfa:b4a2 with SMTP id ffacd0b85a97d-3564cfaebb7mr8173765f8f.3.1716825856453;
-        Mon, 27 May 2024 09:04:16 -0700 (PDT)
-Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579f96519sm9349394f8f.26.2024.05.27.09.04.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 09:04:16 -0700 (PDT)
-From: max.oss.09@gmail.com
-To: Max Krummenacher <max.krummenacher@toradex.com>
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXWfL9vn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E166DC2BBFC;
+	Mon, 27 May 2024 16:43:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716828231;
+	bh=4dvkOf1CENcyz9mYEJmPvOqP9GJwkrOwMz2AdlNtPgA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AXWfL9vn+y1y9ceVUMv3HdCyy/fYMV/mL51WccnbrUe1T/QpXcUk7xwP+2bGRCIDy
+	 AXR36x92MZHHicdhvyGuvydaOdhRQ6aNK88ICRr1jfwCVbVW8jtbIE1XLssSLOsFzS
+	 CixBRZhm23I6u9WoWepxzlIlKSB0q6aeJoAXmt9UNqsHAINLh87d0j635hnQw89N4O
+	 TZBOVy3PBtiDzuZsNxb1sQjwbR3yFxU7x2oeYTT2oahvG0wgsGnOBKPObQF3MW68KX
+	 2xLg0SmkN07xBF7r0ftOgLV3Il4hpdZJm9CcELcIaXLcF4PzPwZ0v3Q903weqjL+Pc
+	 0c4HF5DXzgRrA==
+Date: Mon, 27 May 2024 17:43:46 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: freescale: imx8mp-verdin: don't limit i2c2 max. clock
-Date: Mon, 27 May 2024 18:03:46 +0200
-Message-ID: <20240527160359.1965512-3-max.oss.09@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240527160359.1965512-1-max.oss.09@gmail.com>
-References: <20240527160359.1965512-1-max.oss.09@gmail.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 1/2] dt-bindings: interrupt-controller: fsl,irqsteer:
+ Add imx8mp/imx8qxp support
+Message-ID: <20240527-baritone-rubbing-3adca364a249@spud>
+References: <20240527083402.30895-1-alexander.stein@ew.tq-group.com>
+ <20240527083402.30895-2-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="mNr8ZlAANkA3yQp4"
+Content-Disposition: inline
+In-Reply-To: <20240527083402.30895-2-alexander.stein@ew.tq-group.com>
 
-From: Max Krummenacher <max.krummenacher@toradex.com>
 
-Verdin I2C2 may be used to access other I2C devices apart from serving
-as an HDMI DDC channel.
-Thus do not limit the used I2C clock frequency to 10kHz in the module
-specific device tree part.
-If an overlay configures i2c2 as DDC the overlay is also responsible
-to cope with an appropriate I2C clock.
+--mNr8ZlAANkA3yQp4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+On Mon, May 27, 2024 at 10:34:01AM +0200, Alexander Stein wrote:
+> Some SoC like i.MX8MP or i.MX8QXP use a power-domain for this IP. Add
+> SoC-specific compatibles, which also requires a power-domain.
+>=20
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
----
+With the indentation fixed
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Cheers,
+Conor.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index aef4bef4bccd..3c6b47edd4c1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -650,8 +650,7 @@ eeprom@50 {
- 
- /* Verdin I2C_2_DSI */
- &i2c2 {
--	/* Lower frequency to avoid DDC/EDID issues with certain displays/screens. */
--	clock-frequency = <10000>;
-+	clock-frequency = <400000>;
- 	pinctrl-names = "default", "gpio";
- 	pinctrl-0 = <&pinctrl_i2c2>;
- 	pinctrl-1 = <&pinctrl_i2c2_gpio>;
--- 
-2.42.0
+--mNr8ZlAANkA3yQp4
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlS4QgAKCRB4tDGHoIJi
+0tmiAP48qu9QL4EFuYSq0hRRDGKbueI5B7QNRepOaJRjHSJVbgEAqb5MwT5Jj7Ph
+byZMrMDdpfWCPNYs5zjxARLjcDmC7wU=
+=gjJm
+-----END PGP SIGNATURE-----
+
+--mNr8ZlAANkA3yQp4--
