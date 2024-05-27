@@ -1,93 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501484D5A2;
-	Mon, 27 May 2024 12:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C793915E5CC
+	for <imx@lists.linux.dev>; Mon, 27 May 2024 12:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716814190; cv=none; b=lAvBW5Nkalq+dHCoKMbe54Yc6fRY9hDm1ER3RGG575FJbGevmw4O4wjp8DwEj1ov0BsSbAfYRpd/nZIoDSQ6htkEjhDyOOnglowDm6x/xOyr+p4ozWtFgaD0uRAOnAODDDdo23NaJa183qMegUxQygUHLr8YbjR24A3bEMTWR1g=
+	t=1716814228; cv=none; b=sWBSnRiOktsOcEtZOKhGv76hWc5ko9AxKysMzOXUw8PBK48ryzzuefMOuCLudWPNv80YkbV+6NTaiCDnaJbkivktRtDcjqvciyMebnt5Z7zW7RGoKrXNz8qdmDE1BPMpArSQNm3WAl7okHNGNj65zqU8olikMdXJLBj7MkD795Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716814190; c=relaxed/simple;
-	bh=kO9wIg+CtwT+6heTucB0udl6EgeL1JvmQsaJlESS0TU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XgAeHwrk6jKtNV6ESFbki9+OcEweBiH00U7qY7jflVgLQB6c7YggvcJsAtN68lce7s1IEhEgwSqkU83fZo+DfY3lc8OR8ZClfnOyojUdYFMf++aaiA/NBN/0vdKwuN8Z8fJ3SmQ8x54hF1lYkfxU251/OIIsX0anGRYgBJ6AshQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1IaD3ke; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716814228; c=relaxed/simple;
+	bh=14UMBsxwAYor7acU+f5R1XwmfsHblIByKkJ6KnVfk84=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iSuY4dKa5MoBedU3F1kU19tGV9ztMqBD6/sQVdD/AO6RKd/1G987ArNcH+IqD6FfCMVAZINX0wrFFOfeSz5FWXbBy61LcsL/yQo/M26dHAu1ZNrcFee57a3rdT5XLjzzW6JPOu2BNSvRDBnIoOm3eGQ+Z9G6Rdh8ad7DG8RQW6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JNTebvNE; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1IaD3ke"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58186C2BBFC;
-	Mon, 27 May 2024 12:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716814189;
-	bh=kO9wIg+CtwT+6heTucB0udl6EgeL1JvmQsaJlESS0TU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n1IaD3ke/1U9fQO7YdI8TsMSLanSmv+uyhSacUc/+ri475UKL25Jb4wR+C+JenB/y
-	 5q8RbYOz9pjYTFAg1cb7pjjEAbNbCP4g2ddLMf6XxckbIqVkYymyAcPkmHtPJp0v1s
-	 AVOMAFuTUF8jDJKVwo5Fmx+ymbynbXx9QnYqB2d4AQ9Ji+ixTTAarLwRbVmgh9vzgI
-	 1B4v7cWarbmPVk9+6pV8ITgfRXjRetwVte51AChQ97U1OIvN1ttJ1+4Q9HIcFyPhZ2
-	 HBeNfEZ+gs8qBIKoagkIVNWwNf5BNCM8Jkp/LBm8MVPFikQ63Ur9Ht3XHyV1MoXSb9
-	 WZqxGOZ6gBjbA==
-Date: Mon, 27 May 2024 13:49:42 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, heiko@sntech.de,
-	u.kleine-koenig@pengutronix.de, geert+renesas@glider.be,
-	rafael@kernel.org, linux-pm@vger.kernel.org, abelvesa@kernel.org,
-	peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev, shengjiu.wang@gmail.com,
-	frank.li@nxp.com, mkl@pengutronix.de, linus.walleij@linaro.org,
-	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] pmdomain: imx: gpcv2: Add delay after power up
- handshake
-Message-ID: <a04b3939-081a-49e0-a063-5b50d3321ca7@sirena.org.uk>
-References: <1715396125-3724-1-git-send-email-shengjiu.wang@nxp.com>
- <CAPDyKFp4V8f0iyeRASSEu4YaCSz0m56=8ssBJ9ogSvqG1dzMZA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JNTebvNE"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-62a0809c805so34000077b3.0
+        for <imx@lists.linux.dev>; Mon, 27 May 2024 05:50:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716814226; x=1717419026; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=14UMBsxwAYor7acU+f5R1XwmfsHblIByKkJ6KnVfk84=;
+        b=JNTebvNEpu37GNWAvTgKxkgF2FANfLyuifhsdvWPSxtuAGox0kYAz9UWPocalrnFG/
+         kbx4uPVsyzFtVy+jnzh3KSUKro1fkJ6DH9NfVMA8Pni2/ywoOHsvPBTBj2z1koH4jjET
+         VZZRWDjIW7dvCHGK6UD/9MRfEgdAQ8cXQVfJbEALRZxCdwaApnCyiGYX0TTschKUckAc
+         dFDWyDkujvRBiky3DeRlEyk+MVOePk9yQQc5ctVsvBNc2ostpukaqffDrEMd6cupY1kq
+         YaAiH6OsDSq8LRBNxdxzmIR5H+cA403x2VC8VJaTnP6BjJYJovyUdS3YhX3IY5SK1nsV
+         tLGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716814226; x=1717419026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=14UMBsxwAYor7acU+f5R1XwmfsHblIByKkJ6KnVfk84=;
+        b=cr0oyy1QNeRQ4lpx0MMbDpNerj9lBq76BfCTPSt4NH8P3FGbbT13zWGQC0CZUNT6o5
+         eWhHiCVwACahJ9XAPCc2BDYFL9kZMTdOl51BWO0FVd6ysDiG90dhdRL/wwu8V8igMviE
+         RDXxNAvP17mYwakI77Cd6mKzOqL6ehmTvWXWMl61hfIIWUCd5TsA8ruxWPVraFra2Ga4
+         OLXdUZBR19lKopIq3MIpPhpjmAH+XB1OnRosABRWIM0TFISAIMdkBsrrjYpZPzHijKdR
+         1jDaY96H6T8SRZcUd8b3Mxs9cQCDVUz7pWVN35vZfKj+RvGZEafR4dFO5o90Ni3O93Ez
+         hGSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUuW0BmoA12z+O5DRGbVYjok3Cbq57j/tqudgXXDv+UJCohsSfKG+C+CHbuBBw0xuj5VCbkafWt0vI5w9z4/veNYJY2
+X-Gm-Message-State: AOJu0YzX7AgFSbXoW/nnmxYLv9gkogrR9IOYExl602CYOKNkLWSg0CqR
+	Bnp0EeK1ZWmAfqQdj2gx86e6+lzljUaAoULvmMTwOhRUyJVJPKyLq5ETzHpidIc5CwxBuLr1xcy
+	h/ZIX7ujeDia65NikW2VLNcdyqOzaP/qVFBfBKA==
+X-Google-Smtp-Source: AGHT+IHQev4ydRTgpyByOzu2HFcpu2MVKpWBI6FXCN8mebkBNMtO53w2pge5I/hqSmzhTxgE+0KR4nyVgR2HhWJO7ro=
+X-Received: by 2002:a25:df50:0:b0:de5:4d41:80c3 with SMTP id
+ 3f1490d57ef6-df77223e718mr9210410276.55.1716814225824; Mon, 27 May 2024
+ 05:50:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Oj5O7UC7qaae2W5K"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFp4V8f0iyeRASSEu4YaCSz0m56=8ssBJ9ogSvqG1dzMZA@mail.gmail.com>
-X-Cookie: The Moral Majority is neither.
+References: <20240521-pinctrl-scmi-imx95-v1-0-9a1175d735fd@nxp.com> <DU0PR04MB941718F15619A907C15AA18588F02@DU0PR04MB9417.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB941718F15619A907C15AA18588F02@DU0PR04MB9417.eurprd04.prod.outlook.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 27 May 2024 14:50:15 +0200
+Message-ID: <CACRpkdbpLcxZ0YNdvYCS3bpyd3e6Qx7Wf1Ju9Buy-TvkBQoYDQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions with
+ fsl,pins property
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Cristian Marussi <cristian.marussi@arm.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Aisheng Dong <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, May 27, 2024 at 10:36=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
 
---Oj5O7UC7qaae2W5K
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Hi Linus, Sudeep, Cristian,
+>
+> > Subject: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions with
+> > fsl,pins property
+>
+> Sorry if this is an early ping to you. Just wanna this not blocking i.MX9=
+5
+> upstream support.
+>
+> Are you ok with this patchset?
 
-On Tue, May 21, 2024 at 12:22:41PM +0200, Ulf Hansson wrote:
-> On Sat, 11 May 2024 at 05:15, Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+Patch 1 is fine as it's ACKed by the DT maintainers.
 
-> > The BLK-CTL module needs to add delay to wait for a handshake request finished.
-> > For some BLK-CTL module (eg. AudioMix on i.MX8MP) doesn't have BUS clk-en
-> > bit, it is better to add delay in this driver, as the BLK-CTL module doesn't
-> > need to care about how it is powered up.
+Patch 2 patches the SCMI pinctrl driver and patch 3 uses
+module_scmi_driver(), so I cannot merge any of these patches
+without ACK from the SCMI maintainers.
 
-> Sorry for the delay!
+The code in patch 3 looks OK but I will comment on it, no big
+deal though.
 
-> Applied for fixes, thanks!
-
-I see this is in -next but mainline is currently broken for i.MX8
-platforms - could we get it in for -rc2?
-
---Oj5O7UC7qaae2W5K
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZUgWUACgkQJNaLcl1U
-h9CSQQf+Mt9Bm1J3SOUbg3E3YrGKe269u9XMPX2/8mjaeJaQ4JKJOwfRqxjeiayG
-zthEIjLn5LqjBsaPDa7CgLfYSxfXOdpUmJ/DkebqpiUag367dyoxubuz8AizQass
-E4jD+KxnfFQR0KIo3WbQsgCJSiEmAVuwZvba8BA/DCLFe4QKXwv0g4j3J0zyqIWO
-PqWekRXAONlr0LF42HC9+dj+Y4hQvxaWCNL95ipKvTKKSJTPo6MIH/5Jt5S7OUQ9
-QqTMceS9gH90lhFt37utufxqQKEGPYR4qeceIlymtl2Ce0GqL/Nzd17VO7kCU13i
-6E9s7rzLOTFU9/eH1N87gf4Z0XnDfw==
-=u0Mu
------END PGP SIGNATURE-----
-
---Oj5O7UC7qaae2W5K--
+Yours,
+Linus Walleij
