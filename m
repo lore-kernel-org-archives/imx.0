@@ -1,86 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77C117E906;
-	Mon, 27 May 2024 16:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C634316132B
+	for <imx@lists.linux.dev>; Mon, 27 May 2024 21:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716828231; cv=none; b=j+8erwnF/6k+bOE0twj04N/+DzCmEJdYEnJ61Sy3db7OOByadnRGPAxK/6eN0qIkg9+cEifW0v4F7ySFk++kFnh0XJdqgpWtgpqBqVCOypyJsyX5gVdEVpxBUaRgjquLlBiHTgY1SaDrOPlU/dN7C5uiqGaaiL7xQ0idc2hCT8s=
+	t=1716845272; cv=none; b=b+gxKccwmDGvk6c3ERo9Yr0yIP/Z3xrhIUsziTDoITVW3pJurlasrS0ZLxFL7esFqXQrzG0twVesg9sl1D4wvPeJ1efa+wyDKuTMyCZ9wD8gr/ujXJa8Sn+FgKz7mieFPi/Bke27sI6grAzyBfd4rsJaUBRZu1v7HdRakph5V8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716828231; c=relaxed/simple;
-	bh=4dvkOf1CENcyz9mYEJmPvOqP9GJwkrOwMz2AdlNtPgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hvvHV380wytItXTG6g67OorE83GOeuaeppi31FIN4Xk5slpgXCKJOW33AwmMRBRlQ9lsKSsdWo1H7RTLOdLeCPp/E2pwb0RqPTto0cfE2Jp4WP9IhsSi5H4i5qFXNZ1uO6cBah0Gy5Tp+bLyuv1cUVzC/M7Non75oHPUEj65K3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXWfL9vn; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXWfL9vn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E166DC2BBFC;
-	Mon, 27 May 2024 16:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716828231;
-	bh=4dvkOf1CENcyz9mYEJmPvOqP9GJwkrOwMz2AdlNtPgA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AXWfL9vn+y1y9ceVUMv3HdCyy/fYMV/mL51WccnbrUe1T/QpXcUk7xwP+2bGRCIDy
-	 AXR36x92MZHHicdhvyGuvydaOdhRQ6aNK88ICRr1jfwCVbVW8jtbIE1XLssSLOsFzS
-	 CixBRZhm23I6u9WoWepxzlIlKSB0q6aeJoAXmt9UNqsHAINLh87d0j635hnQw89N4O
-	 TZBOVy3PBtiDzuZsNxb1sQjwbR3yFxU7x2oeYTT2oahvG0wgsGnOBKPObQF3MW68KX
-	 2xLg0SmkN07xBF7r0ftOgLV3Il4hpdZJm9CcELcIaXLcF4PzPwZ0v3Q903weqjL+Pc
-	 0c4HF5DXzgRrA==
-Date: Mon, 27 May 2024 17:43:46 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	s=arc-20240116; t=1716845272; c=relaxed/simple;
+	bh=hcPCGtyNt9BtsRv3MK9CcRwmRQmt//+7sIK53y3Zy5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RXvJo0eaiUvw+iQ1HEVQP1T5rCJgpABjmK6mZ9UH75gXUgpj7F58/02dYyNg2KkuCa5ReIKGDOHpXUXipkdksQtE5nj0gScEhaxuKMxlheL2TA02vJdrXZZ1pVJRf8BfEYLRO4WXzLEa+eisVi6abM8tqW59c0vmrA8pjS6fleo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
+	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
+	id f5f62320-1c6f-11ef-8e2a-005056bdf889;
+	Tue, 28 May 2024 00:27:47 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-mips@vger.kernel.org
+Cc: Dong Aisheng <aisheng.dong@nxp.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: interrupt-controller: fsl,irqsteer:
- Add imx8mp/imx8qxp support
-Message-ID: <20240527-baritone-rubbing-3adca364a249@spud>
-References: <20240527083402.30895-1-alexander.stein@ew.tq-group.com>
- <20240527083402.30895-2-alexander.stein@ew.tq-group.com>
+	Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v1 00/11] pinctrl: pinmux: Embed and reuse struct pinfunction
+Date: Tue, 28 May 2024 00:24:35 +0300
+Message-ID: <20240527212742.1432960-1-andy.shevchenko@gmail.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mNr8ZlAANkA3yQp4"
-Content-Disposition: inline
-In-Reply-To: <20240527083402.30895-2-alexander.stein@ew.tq-group.com>
+Content-Transfer-Encoding: 8bit
 
+As promised to Linus W. there is a series that converts struct function_desc
+to use struct pinfunction. With this it both struct group_desc and struct
+function_desc will rely on the generic data types (struct pingroup and struct
+pinfunction respectively).
 
---mNr8ZlAANkA3yQp4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I haven't compiled everything, some builds might fail. Anyway, comments, reviews,
+testing are all appreciated.
 
-On Mon, May 27, 2024 at 10:34:01AM +0200, Alexander Stein wrote:
-> Some SoC like i.MX8MP or i.MX8QXP use a power-domain for this IP. Add
-> SoC-specific compatibles, which also requires a power-domain.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Andy Shevchenko (11):
+  pinctrl: berlin: Make use of struct pinfunction
+  pinctrl: equilibrium: Make use of struct pinfunction
+  pinctrl: ingenic: Provide a helper macro INGENIC_PIN_FUNCTION()
+  pinctrl: mediatek: Provide a helper macro PINCTRL_PIN_FUNCTION()
+  pinctrl: pinmux: Add a convenient define PINCTRL_FUNCTION_DESC()
+  pinctrl: pinmux: Embed struct pinfunction into struct function_desc
+  pinctrl: imx: Convert to use func member
+  pinctrl: ingenic: Convert to use func member
+  pinctrl: keembay: Convert to use func member
+  pinctrl: mediatek: Convert to use func member
+  pinctrl: pinmux: Remove unused members from struct function_desc
 
-With the indentation fixed
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+ drivers/pinctrl/berlin/berlin.c           |  33 +-
+ drivers/pinctrl/berlin/berlin.h           |   6 -
+ drivers/pinctrl/core.h                    |   2 +-
+ drivers/pinctrl/freescale/pinctrl-imx.c   |  14 +-
+ drivers/pinctrl/mediatek/pinctrl-moore.c  |  10 +-
+ drivers/pinctrl/mediatek/pinctrl-moore.h  |   6 +
+ drivers/pinctrl/mediatek/pinctrl-mt7622.c |  32 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7623.c |  42 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7629.c |  20 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7981.c |  34 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7986.c |  24 +-
+ drivers/pinctrl/pinctrl-equilibrium.c     |  18 +-
+ drivers/pinctrl/pinctrl-equilibrium.h     |  12 -
+ drivers/pinctrl/pinctrl-ingenic.c         | 707 +++++++++++-----------
+ drivers/pinctrl/pinctrl-keembay.c         |  22 +-
+ drivers/pinctrl/pinmux.c                  |  15 +-
+ drivers/pinctrl/pinmux.h                  |  19 +-
+ 17 files changed, 501 insertions(+), 515 deletions(-)
 
-Cheers,
-Conor.
+-- 
+2.45.1
 
---mNr8ZlAANkA3yQp4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlS4QgAKCRB4tDGHoIJi
-0tmiAP48qu9QL4EFuYSq0hRRDGKbueI5B7QNRepOaJRjHSJVbgEAqb5MwT5Jj7Ph
-byZMrMDdpfWCPNYs5zjxARLjcDmC7wU=
-=gjJm
------END PGP SIGNATURE-----
-
---mNr8ZlAANkA3yQp4--
