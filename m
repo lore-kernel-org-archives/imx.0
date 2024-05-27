@@ -1,86 +1,100 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F1715D5CE
-	for <imx@lists.linux.dev>; Mon, 27 May 2024 12:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85D115DBD1
+	for <imx@lists.linux.dev>; Mon, 27 May 2024 12:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716812327; cv=none; b=q9qZbifH9zbyBEB6aVbAfgT3rgZoZZgrLmOXDp8JCmGrfGCqwI1wu/NzVYvrbi2ghc0V45SXIP28a3SuruyvNCvoh0A/5cS1wVqqOs2ERRDsQkdb91ipf8LcK8wVAjZgKmRxgYWtACyY79YXNEK/XUZ0oj9jmIbH692ePHD6STk=
+	t=1716813744; cv=none; b=Jmg98WhWH/UrkYrEbbKcud+gLUFnRT72a8y8yw/47O6JJ2Y2Jb47nQTtEPLkdERN4pBVX/esT4+0Qk4ENliT4DKTDvfzY4ZUxT9Uynlbk9Sw1qFHAMKFjlB4APBF1RB56WZ7JYPa5fx3DaHw9oFtlpGPfNvmADFd03ozXXYteKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716812327; c=relaxed/simple;
-	bh=N3Pd8BDtG4WVjrpGE7/0kTpfr8WPMwenH+v6yM+bY88=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hc1gza2oDJfhG1Ho0FITqDJZ1RkiadbZQaOjBysGdWw2aKo30mRRSeIqySpJOCuphi54m0imoWi7BzPvrUSp2uZ8J/1XbpWRpa+OI3dlXknPFN1omSfkwfBHwx0090j7DaDQ146E2JKKSe5u5K9AamiTh7Nc9RogczgwJPK7t3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RJ7SrfyP; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1716813744; c=relaxed/simple;
+	bh=gvmIvei/evck27eAyXPfMfAUpIW//VOl8Dual8yqM7I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b3tj+wLJ1pldLxyBKf2U8RlHUQmCfslIQQZlRJJJuh3QLUpeJZL5QDszv54s7aETEWf4lRYbRFeuYr1wV3mNyVnJBULKWb42QfiKuVLH7mN8vaw9+XQUDI2e4VVAIAMlyPTnoDYOiaQtSZo8LUrxO3mjyeXF3k0jalmrQjONpPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zIuE/JTB; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RJ7SrfyP"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3A1B120004;
-	Mon, 27 May 2024 12:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1716812318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=94UOc6Wom93RXwChN429/bX0m+mqat4leaCPT/CzIhQ=;
-	b=RJ7SrfyPwDv7LlLhgATY7ekp2eNuTnvkSO/t6KBDXdshAci07VITrFb/nfpdxBuIa+XBWE
-	HgKo8EGDRgTHlyozBWsJai5fguj9P4tp6UTqkw18J2N+Wg/o+UIBd83MPUGzIluVE/tsfQ
-	+aXXACwD6qK9jxMxI5YJc1lUIsehGBc111W3ggQejuwLJRg3tj54Istq7Ht8xNXsi3hqSU
-	xW8tUbYMJ8Z8LE6wNrfMPxvsHvH3LBakAKc4t7y4MOFbTQAfTczauxTXYg0Lw61JNnUrzs
-	aowpe9sGcJi8dUY6nt/LMWvk1J1nNU+1/zkNs9P0Ycce44JUskzIs++3bFgYHQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Han Xu <han.xu@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Marek Vasut <marex@denx.de>
-Cc: linux-mtd@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 2/6] dt-bindings: dma: fsl-mxs-dma: Add compatible string "fsl,imx8qxp-dma-apbh"
-Date: Mon, 27 May 2024 14:18:36 +0200
-Message-Id: <20240527121836.178457-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240520-gpmi_nand-v2-2-e3017e4c9da5@nxp.com>
-References: 
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zIuE/JTB"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dee72970df8so4113942276.0
+        for <imx@lists.linux.dev>; Mon, 27 May 2024 05:42:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716813742; x=1717418542; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RreWtAd7Wi7xpCgHNvoy0257vlpp2GBbsNvbWW0dsCg=;
+        b=zIuE/JTBJiXelgke8TvBcdFb1e07B+nNH1U5lUVssL1manjNpG0SF6/2GTzomPYxrK
+         f2gAl5SkTVk/8kQ82kpT+HLhOSxq4xkotRWa79rDTx/dbZy2rqKxNe4TAUA+hrwMMqJK
+         Cukrcx+bL7BG3sxoNTKDpw2N/kLb+CseselbwUeXd76ii4+oTVkFEPoWQ207rZvma7GZ
+         UrGUrD80MHaOwX3Vjo8XSp+GbPO1tzFY4fVUdZ70UwvBQIii3PzULYk23TxSoPJNDeG7
+         2qUdG30z6OYoESTwfLbkS4FC/0Ta3y/ZAfs2aClQm2Q2jMJi4vldE1zMi5hmZYBzC8HX
+         sC8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716813742; x=1717418542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RreWtAd7Wi7xpCgHNvoy0257vlpp2GBbsNvbWW0dsCg=;
+        b=HQhEMY0mcvJXsZlL+x77nw7zW7B/y7poWCjRI55m89P1XdCFEeWOPX/ZtN/uu8s3sk
+         CuXTBx8L5myVGwt3wd3/v+Pmh0CmiOtUAjRhS2oyZSAVRUe/p5l5fzLNFqAETWA6wudG
+         K51i7kRw71n/Cvk4nVzXR+coaavl+I1dTz1cNYdeDBh1fLTMZf1Gx3qMqu2wjYieLGlN
+         mWTbPT3hD6IOzSD7WN8Xee7boqgzBTK7FPpd/VohxY7ZX2JPINQsfxpjFVTRnbo7TLCr
+         o90gyGzMCEopry8cQmClOYCIZ0NvMW7qxctjNIct1jXlhYn+sQ2y5gtsqkeHWfD/cj0m
+         h6qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTMBqR6IaL12rE6hHb98gqT6sHnxYHbpMac5Ss4zCQG1E7m/aHxfcCEcx+mvCU+wZlY+y4RI/aXXYzsrGCrvxh8A5c
+X-Gm-Message-State: AOJu0Yz4viy1XfOPdc+CowqtFTDOmuG+/OPs/ZdkCYwhB2Z/YbHtSMOG
+	pzMJmFXash0K1baChzCbNB4f6ESbQN/uEq3pNNqDiyTF6G37sGfvDCPg/p3owvHpNy0dF7j6XTg
+	ho/fHNzTEwlYzpRfyirtva3K3GDx/FDoBF5eiEQ==
+X-Google-Smtp-Source: AGHT+IGnKKyNaK0erydWgd+7egLyO1LEZVbwIGZL84HNMIAWKZun14kUnLhTrRDtqLO6jO06aGMtpPufyBXFe4UUfcs=
+X-Received: by 2002:a25:c302:0:b0:df4:d98d:3e4f with SMTP id
+ 3f1490d57ef6-df5422399dfmr8673203276.12.1716813741865; Mon, 27 May 2024
+ 05:42:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'ccb5d365ee53b3c79c96c89a0bb179354c37873c'
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+References: <20240513-imx91-pinctrl-v1-0-c99a23c6843a@nxp.com>
+In-Reply-To: <20240513-imx91-pinctrl-v1-0-c99a23c6843a@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 27 May 2024 14:42:10 +0200
+Message-ID: <CACRpkdYP1Tp6Cxn7xMNusZi=DP6LPUUTaKOPzW4FChu3oEbkFQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] pinctrl: freescale: support i.MX91 pinctrl
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2024-05-20 at 16:09:13 UTC, Frank Li wrote:
-> Add compatible string "fsl,imx8qxp-dma-apbh". It requires power-domains
-> compared with "fsl,imx28-dma-apbh".
-> 
-> Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP need
-> it.
-> 
-> Keep the same restriction about 'power-domains' for other compatible
-> strings.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+On Mon, May 13, 2024 at 11:12=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.c=
+om> wrote:
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
+> Add i.MX91 IOMUXC binding doc and driver.
+> i.MX91 IOMUXC has similar design as i.MX93 IOMUXC, so reuse the
+> i.MX93 binding.
 
-Miquel
+Patches applied for v6.11.
+
+I haven't heard much from the i.MX maintainers for a while I guess they
+are busy.
+
+Should Peng Fan be added to this list?
+
+PIN CONTROLLER - FREESCALE
+M:      Dong Aisheng <aisheng.dong@nxp.com>
+M:      Fabio Estevam <festevam@gmail.com>
+M:      Shawn Guo <shawnguo@kernel.org>
+M:      Jacky Bai <ping.bai@nxp.com>
+
+Maybe someone should be subtracted?
+
+Yours,
+Linus Walleij
