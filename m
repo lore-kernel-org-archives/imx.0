@@ -1,96 +1,99 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCB616D333
-	for <imx@lists.linux.dev>; Mon, 27 May 2024 14:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E771517E91F
+	for <imx@lists.linux.dev>; Mon, 27 May 2024 15:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716820687; cv=none; b=Z16BoIz9JPiKNd/OhHRe15fpJUBpsIIy8kOID5lr6LTGH9tE/a9FOlwj7JtcjHS6E5KpF1W1WDsF4JVipki7HAqXsfa1cq7sNmnO8uOcdz9Yn7sV4xG1VWJzXjeuklGZDWT+Y15uJXROmJURBsbnJUHekOK1aLlNgrAUZxNXBrE=
+	t=1716824429; cv=none; b=EUqjMZ3Vwb485T5MEwIP26k4Q63V1x3lUzD9rfkdLNMZFnXdKp7GT2v93KOFhEuQberKgq6fnIu1w45knV5sWguVxH/CtarPI6/80cawOZw29o0TDDG8LwXnDWZXDDnFhx4cSdG7Qlmw6eLT+DhO1JDdfVzA7sR+B8GeAeI0aVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716820687; c=relaxed/simple;
-	bh=TsORAf+30DK49YwxeDsXCfFaQYfYRcUm4oGKDiMwiIg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UOMgYYVB1BzS8n5O13rODmKI3sx9mBR1MgZ4ZA9BEs1LMtrhP1eSr0HFGoD2i1yUCqzjcHUCrlDoN4WBOkHRB3PQvjw/PKCbE/si4JpSp/3ZwRcZfTmHg9XtRFMbhecpjApvRS6ZBdGxRdKvJiqAw+adftyINIgORNslv/qAo88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VClSe8US; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VClSe8US"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-df4e7763603so4928315276.1
-        for <imx@lists.linux.dev>; Mon, 27 May 2024 07:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716820684; x=1717425484; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TsORAf+30DK49YwxeDsXCfFaQYfYRcUm4oGKDiMwiIg=;
-        b=VClSe8USC0jrNCekpuBGNtfh71I0Rjnkpn07CD/KeblrtoTGuUYYQaRjNwg67zRN/C
-         TlP8nvOnSkkVyVvU1wfIWjvGsz2FUxlsAD6xQ7/U6RHI3uk/4gVUBpcGXnAD8V1BoYz7
-         1FYDjPOTfmHreki8HDk4uzHzJvn/usG8Zv6zDzeADdBUPC6qvE54rN3iJ+puEmR37gsF
-         XmfqkypwMf4xHXm37xgy1gjD5/dv1pDTwjPCn4dIsAoxijQFb4eucdNiVd0pvKBSzDRC
-         Ay7FHklLdsqf1YvwegTiL6xmO7vKV995LUNHmiAq70FYBIhRe5tjdSl8dIlQcwQ1/ru6
-         khLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716820684; x=1717425484;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TsORAf+30DK49YwxeDsXCfFaQYfYRcUm4oGKDiMwiIg=;
-        b=HELiIEsz0apvBwY4taZACaxkkXJvdPVQ2fASpP2WdwpOJvyBxUSqfXfC1PEJJhctue
-         SaI9GRDh7YNpgwpgzh0iAWwpbLNw0N9YHbIfVcliQDQxfPlbjn2ZdkUcTU4/qRvRlW4G
-         bEd2j2BQn4aiUeAzUf6BndKcKEQ+rceu7Nq2jGyr0DL+3ZAfiuoquKORrUvuWIGw7HEO
-         CWLgBCaaZyGbe9/nG6oZS21dQ9YTqVSvcBEuDaGELVVKMAGm2miXDcToptV0QKFqK39c
-         R4yzp+7mv/k6PabLF5eGvFNXYrUFRcQX3J5Nw2S/LW/GB98281cW7iARY9FDEYsD815Y
-         ZcLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ98mMRnsl65u6KMJXhpmUxoL4lk7cd42gmnVBCfLeRpKc6niScoMVmbEMjOCZ5sozSgKYKtc1TS0JNzzGwVtN0gaL
-X-Gm-Message-State: AOJu0YwRyUa8UllQ1RsharQ1a7417JdZW9lL4OnLUVLJKnsYNK9+FK4x
-	mVV9huK+VwysxZILWwZ7akBHY4TQTKFYlKhljx7MlvCP44XH0Sip2wVyYCPjnmMq1BE3WMpfhXc
-	tLmN4ULupo7QnHPiI33HhIvptsoyUvnEHrP3MUA==
-X-Google-Smtp-Source: AGHT+IEwTZzUZTnOFyK1J+Cmkx0U06fySsAKy1c+9/Zyl9b38yE9jX5xO+y6/SfRx/NvtCMT1w5cN419DuraUe6mJAc=
-X-Received: by 2002:a25:ab8a:0:b0:df4:df29:bcc6 with SMTP id
- 3f1490d57ef6-df7721a2897mr8786729276.31.1716820684554; Mon, 27 May 2024
- 07:38:04 -0700 (PDT)
+	s=arc-20240116; t=1716824429; c=relaxed/simple;
+	bh=PEP0YuwSoPd8YJAS+tIwbrsSaYGrWZxHl/U3vGZ3I8M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rGKxgQRAL76kSM3yfWerauKkEfLc+UQX77zp6qIuKHpQaHTtd15cRaLqUq2nFFN8SwKgoPcUtCaC+SDZiqDeJnCBD4xtB+IsVdssFLg0UHjfhPR8vN5h3YD2GD6J5pXhVdQS6pr0EZXYHOaO0F2WrEAJxEouiPHwfxaM+hNWr14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sBcSC-0005Mf-IW; Mon, 27 May 2024 17:40:04 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sBcSB-003D3H-BW; Mon, 27 May 2024 17:40:03 +0200
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sBcSB-000EmW-0r;
+	Mon, 27 May 2024 17:40:03 +0200
+Message-ID: <fbb666b99104241aae09fc5b2ae72433e1249c23.camel@pengutronix.de>
+Subject: Re: [PATCH v2 00/12] drm/imx/ipuv3: switch LDB and parallel-display
+ driver to use drm_bridge_connector
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Date: Mon, 27 May 2024 17:40:03 +0200
+In-Reply-To: <yh4r2pgdl2m5wp627r35zse3obacmeanin5rjo34f7tctgpix2@dme3vwzaivag>
+References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
+	 <yh4r2pgdl2m5wp627r35zse3obacmeanin5rjo34f7tctgpix2@dme3vwzaivag>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1715396125-3724-1-git-send-email-shengjiu.wang@nxp.com>
- <CAPDyKFp4V8f0iyeRASSEu4YaCSz0m56=8ssBJ9ogSvqG1dzMZA@mail.gmail.com> <a04b3939-081a-49e0-a063-5b50d3321ca7@sirena.org.uk>
-In-Reply-To: <a04b3939-081a-49e0-a063-5b50d3321ca7@sirena.org.uk>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 27 May 2024 16:37:28 +0200
-Message-ID: <CAPDyKFrhvB9bXiuQS6QKd28S2tOu7WJ-48qHP7KEBTpE8SSi+Q@mail.gmail.com>
-Subject: Re: [PATCH v3] pmdomain: imx: gpcv2: Add delay after power up handshake
-To: Mark Brown <broonie@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, heiko@sntech.de, u.kleine-koenig@pengutronix.de, 
-	geert+renesas@glider.be, rafael@kernel.org, linux-pm@vger.kernel.org, 
-	abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
-	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
-	shengjiu.wang@gmail.com, frank.li@nxp.com, mkl@pengutronix.de, 
-	linus.walleij@linaro.org, linux-clk@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, 27 May 2024 at 14:49, Mark Brown <broonie@kernel.org> wrote:
->
-> On Tue, May 21, 2024 at 12:22:41PM +0200, Ulf Hansson wrote:
-> > On Sat, 11 May 2024 at 05:15, Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
->
-> > > The BLK-CTL module needs to add delay to wait for a handshake request finished.
-> > > For some BLK-CTL module (eg. AudioMix on i.MX8MP) doesn't have BUS clk-en
-> > > bit, it is better to add delay in this driver, as the BLK-CTL module doesn't
-> > > need to care about how it is powered up.
->
-> > Sorry for the delay!
->
-> > Applied for fixes, thanks!
->
-> I see this is in -next but mainline is currently broken for i.MX8
-> platforms - could we get it in for -rc2?
+Hi Dmitry,
 
-Yes, I am preparing a pull-request as of right now!
+On Mi, 2024-04-17 at 00:58 +0300, Dmitry Baryshkov wrote:
+> On Sun, Mar 31, 2024 at 11:28:57PM +0300, Dmitry Baryshkov wrote:
+> > The IPUv3 DRM i.MX driver contains several codepaths for different
+> > usescases: both LDB and paralllel-display drivers handle next-bridge,
+> > panel and the legacy display-timings DT node on their own.
+> >=20
+> > Drop unused ddc-i2c-bus and edid handling (none of the DT files merged
+> > upstream ever used these features), switch to panel-bridge driver,
+> > removing the need to handle drm_panel codepaths separately and finally
+> > switch to drm_bridge_connector, removing requirement for the downstream
+> > bridges to create drm_connector on their own.
+> >=20
+> > This has been tested on the iMX53 with the DPI panel attached to LDB vi=
+a
+> > LVDS decoder, using all possible usecases (lvds-codec + panel, panel
+> > linked directly to LDB node and the display-timings node).
+> >=20
+> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > ---
+> > Changes in v2:
+> > - Fixed drm_bridge_attach flags in imx/parallel-display driver.
+> > - Moved the legacy bridge to drivers/gpu/drm/bridge
+> > - Added missing EXPORT_SYMBOL_GPL to the iMX legacy bridge
+> > - Link to v1: https://lore.kernel.org/r/20240311-drm-imx-cleanup-v1-0-e=
+104f05caa51@linaro.org
+>=20
+> Phillip, Shawn, Sascha, any comments on this patchset?
 
-Kind regards
-Uffe
+Sorry for the delay, this all looks sane to me. I can't find any users
+of the "edid" and "ddc-i2c-bus" properties either. But let me test on
+i.MX6 and with parallel-display as well.
+
+regards
+Philipp
