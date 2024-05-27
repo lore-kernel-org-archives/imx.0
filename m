@@ -1,95 +1,83 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ED813B5B9
-	for <imx@lists.linux.dev>; Mon, 27 May 2024 11:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6C22837A
+	for <imx@lists.linux.dev>; Mon, 27 May 2024 12:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716807959; cv=none; b=lOw39Huiiw6IDPn57JCjWHjlvtOQ6RJ43pvMuemzKQiOc1nUhLRpUUMIGqP1pYoCJqALhs6Pau/3C+aeFw4y1ZnDLw7oNB1McnGcrUFtmkWmqODyQok2gNC/XJ2rCYTtg0F/cioJuzj7CMe2jlj3DTzg9GlIwBU7V8Odt4jlGls=
+	t=1716812313; cv=none; b=Il0OjHKJ8v+VmIzWJL5ZZL/G8+Y+6pj/7VLCZHkqiEliyVNQPw27WVjTuPBrO6siyFJrEURAV9rhAiuKQzoxycADrAQ4mwu6N6frAi0fwvioeMTkuL5MQAdKyOoxWh95K7jt+e5chdp9D/1R6233TDsZZWOxlswRH7tMpbigIcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716807959; c=relaxed/simple;
-	bh=AGOTuEx3RxbJzSknO6FX7GZtQcyn/9D9jvyJ2MsACYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KrHd8tZTvyGGmSKn8RVk88AWOP/sQS29hJsvIfOHgYYFjTSo2IDLKYD+fLwqbaHkk/XbUpymjMzvHyYiED02pi7eEzNmk8LihzUbBesa9pRnxYfUdX5jAGpk/4+x4n4R+FiLJmP2EiSjL/jdPzx2T15D/GUNksEXhEk2QaVrd04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j10luvSo; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1716812313; c=relaxed/simple;
+	bh=kLOiR/0PJYqKC2emVJKLB6F7L5wjo6KOdESD/0Us3YQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hKifEKmZ10ewR6hMmECpVtlLRz971To1K5RuxhAK6IF0qAzbCiRIN+RwzLVJ89l8PwackfPCxuF64F7mmq22O74AfGWRxNXdFksjiFCZAi46YopTcGPzzguTcqxryEvAwwIq1UUrLC5wSnagERAJFS1HTgQy1qzFTO6tYKodaBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NF4Fxnwd; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j10luvSo"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-df771fa2b8bso3016806276.2
-        for <imx@lists.linux.dev>; Mon, 27 May 2024 04:05:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716807957; x=1717412757; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AGOTuEx3RxbJzSknO6FX7GZtQcyn/9D9jvyJ2MsACYA=;
-        b=j10luvSohe/hQEnKTsn+UxmyT32Tug82moHa+9PgFtzMlDDLA3JWzaPDiSm8lh9hOH
-         3tomPhvNX//p5oR106wUwlu1KsESystllXk82sNQLhKd4NthT7lITR3FkRCL8yFKdGEe
-         YeIQqTvSUj2dG373rk2db9iuARTkTM8xSNSuTfxmvfSj39fe4+8gCgyddS/GiAz1sBGT
-         4s61W77rStObdhzcm828OHvKE0kWAzBPv44Ney/glyI9Sn1lQ1b88l1WlN9gG3E9BQpB
-         ivWgiWD7naeAccmali4dZ91tf0zTD0TRjaeTkPEnFQ4SdXYlBYWSNjcjEWYbdkD4jdIm
-         b4eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716807957; x=1717412757;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AGOTuEx3RxbJzSknO6FX7GZtQcyn/9D9jvyJ2MsACYA=;
-        b=LB7njmtfGSarYwOnEjbcZBblefQMpkeej5pVCV6sxHi6XXUbbnsUOBrjEID5oJixEQ
-         NF5dwqIr2G3GjRxTwZM271eVMWD/rgPrCu/lObmPJPn/eEOv9T/TAam3yZn/usT1JNTY
-         EJT3xSAmAmrWHaezZ69oVp7cs2R16voz9qyvl7GkevYyZCDzd04ppSK/GIj5HusQ8GHy
-         H8OdOhzVsFj39QQayfHemJktH9z8kG80FaeHBnEwXU+7Uqft/lmBwEgOWpiDFa/yj21k
-         LPoRk5k27dKu1SH5sclX/aTGMfD67Q93u+qXj+elu5haXFyOI1I/OXlXDXC1gfUHUDNI
-         DzSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtJuT8OP00Enjp8Dnle/hpIQ14oIcRN+oaQBgkjneqEduSp+zlfCKuHTSAoGdDX4ycM9FYVq6peB1U76q8olSumhVS
-X-Gm-Message-State: AOJu0YxpqWwO3LtwXG4hJ22zcJ6+EWm1FxI8dyaJx90ObsBn8FDx7HSd
-	ammiIOGyvjF28R6oVjqEUkwn4CgoEfTserhYImV1j09bbhogvrLPSf6q1iw2ccT1aVwGg1pJGxp
-	8f164Ztn6q54etBrTdE3Bf7a1sHf0vfp7vuzpFw==
-X-Google-Smtp-Source: AGHT+IE+x2RNUDIXzBVJyvvEPGXIeKYYisMGL9Wmwd7yQrZe3Q62nlZKoeWKiejefMIQx/H55NGFKTgn7UsM+pYsbXo=
-X-Received: by 2002:a25:ced3:0:b0:df4:d5f4:3ef2 with SMTP id
- 3f1490d57ef6-df77218adb9mr8965780276.20.1716807956744; Mon, 27 May 2024
- 04:05:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NF4Fxnwd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 72458FF810;
+	Mon, 27 May 2024 12:18:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1716812310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p2Iu865HQOncwOUv89lXf8ydO1Mwrp2c6T2G2xw89jY=;
+	b=NF4FxnwdqS2r+FF9nN6B0D7CokJjbAf5Whywftp3k88UuIGMS9CWuyFDwsksh1KzcxV420
+	mYIyrp43cK2Hr2kIIIkmjYr4oPe759t2CsmVXuwZvAG2yXFuhjtHIHA9jCBLxh4vhUyAEY
+	yDit73LJgpNWaSZozOPlut82blxvk9Q+THeDFQKTk/zA1uIIttWbLPJ3YNll+fmv8f5wYq
+	Ya+EKFw9FdvuYBcnnY4UoAIrlmOTnUN0dejWYCltmIqnJ8sF4AkeUQ4GGHSd8GtAQ7BDhZ
+	tdeRmZY0g4z+W4fMMpt/huKy5NLGyxtYihFsc3uHqSXJfg3FEpCtaO/1d8BLsA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Han Xu <han.xu@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Marek Vasut <marex@denx.de>
+Cc: linux-mtd@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 4/6] mtd: rawnand: gpmi: add iMX8QXP support.
+Date: Mon, 27 May 2024 14:18:28 +0200
+Message-Id: <20240527121828.178398-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240520-gpmi_nand-v2-4-e3017e4c9da5@nxp.com>
+References: 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
-In-Reply-To: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 27 May 2024 13:05:45 +0200
-Message-ID: <CACRpkdYbOTXmap-vJy4JNZSaZnE=yzC35EPD2F=bD8gWdD8-GQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] ARM: imx: only enable pinctrl as needed
-To: Esben Haabendal <esben@geanix.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Rasmus Villemoes <rasmus.villemoes@prevas.dk>, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'b9bf7737de329f7a05ac2f9c1bba664926eed3e8'
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Mon, May 6, 2024 at 12:24=E2=80=AFPM Esben Haabendal <esben@geanix.com> =
-wrote:
+On Mon, 2024-05-20 at 16:09:15 UTC, Frank Li wrote:
+> From: Han Xu <han.xu@nxp.com>
+> 
+> Add "fsl,imx8qxp-gpmi-nand" compatible string. iMX8QXP gpmi nand is similar
+> to iMX7D. But it is using 4 clocks: "gpmi_io", "gpmi_apb", "gpmi_bch" and
+> "gpmi_bch_apb".
+> 
+> Signed-off-by: Han Xu <han.xu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-> As not all mach-imx platforms has support for run-time changes of pin
-> configurations (such as LS1021A), a more selective approach to enabling
-> pinctrl infrastructure makes sense, so that an e.g. an LS1021A only kerne=
-l
-> could be built without pinctrl support.
->
-> This is a very late follow up v1 3 years ago [1]. The situation seems to =
-be
-> unchanged since then, and I have tried to incorporate the requested
-> changes.
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
 
-What is the verdict from the i.MX pin control maintainers on this?
-
-I can merge this into the pin control tree for v6.11 but it'd be nice
-to get an ACK from the maintainers first.
-
-Yours,
-Linus Walleij
+Miquel
