@@ -1,267 +1,206 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2052.outbound.protection.outlook.com [40.107.6.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C1716939B
-	for <imx@lists.linux.dev>; Tue, 28 May 2024 09:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716889229; cv=none; b=bmiLIehZsGXiX1RhkuLuz84yDGHiHC7gVRP35bzct/ZywLS+TbkvqDyghLsMITE9CQIFdEtPexJGNGmRKhZlXMbIhjyoQcSGNxb4O7wxruJe6rtsYTGJ5BSVkJSSaavADH+jXRTrlqiDRwFbcuQMOUjXLK8oL6ERLCwC4NLhUxY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716889229; c=relaxed/simple;
-	bh=UTgk+S/ntlj4DJ7vOuWu5jP7Xc1+VOJ8hpm+1blQCDw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mMGC55bLoyEPGa0BO/9rQwbvimytTTckXHEmwuMh+I9NCz/dBisWOkZU7JcJ87us1OBFmYVo+BB9OKof9NpHsVQsRw5jF1ArR8rh3Cic1DgkQCVXLb+KoENmWK52E3jH/HECfYzfAWqCZer1WNjxpKdNamcYweJyB9KvFcT7Xtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk; spf=pass smtp.mailfrom=rasmusvillemoes.dk; dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b=BtibeMHZ; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rasmusvillemoes.dk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6720251021
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 10:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716890539; cv=fail; b=kyrQS/5X/sYM4a2EnFR2YSBC/gSQgREWeA1OOl6XbkHGuUThOlIpcMiMOSDDYKOImpSeT9TtiZjCUPZ9oybAQbhpHztJ9oiz8sRXYlJOrNunOIO3VueCGVbHqIsrfss7i6I0GcQXzjHYpsNwaS64rt+YnzPghGm/L7Ve+bspDtY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716890539; c=relaxed/simple;
+	bh=zUJZWIUghCY2JlevDNh8AAx+eK6UB55GdUWrVwXKJn0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=W8iuCLEzzNms3yx1LDK14mgtbt+wNv2/99/hznc+rj60Um5SSB6yV7vPAlCq5OJfXNcL/+yvl0BhGK0Gol+VZh6rkcPwR5MGqV3RGyTKJH72ccDsekd19e1XijcbWYoLbrxdqUjiso+C1EVqZDBkM/rxZfbwM2TDYNs6b85h2Ms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=O6+qf6HJ; arc=fail smtp.client-ip=40.107.6.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b="BtibeMHZ"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2e974862b00so5970311fa.0
-        for <imx@lists.linux.dev>; Tue, 28 May 2024 02:40:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1716889225; x=1717494025; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GsAir5s7syPxi7Z0jM8CWLgds717Ko20mRWI7Xd9NB8=;
-        b=BtibeMHZOcGG91SSDqG2tOmwU1/B9+C68HM0r58sVXoFOUIlAh7T1GwgSUVe7HjXho
-         Ck6syBFEF2pThZfCvewwITnCHm7dO0dHMMsfQUVX8JumocDuuIjCvziXwY10tsqHdpVh
-         v6iLRvb2FvMn321VDgGW2fwbPM9oBqdBLfM1Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716889225; x=1717494025;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GsAir5s7syPxi7Z0jM8CWLgds717Ko20mRWI7Xd9NB8=;
-        b=icFDu3FQeQkj+LDQiJHuQr5ygLTRoTZd3+W5nRulZ2OjD/38QKBNA2gLiwvih08a0O
-         JzclyDcmNf++L9k51vIoC4jDXD8QE7MV/95/cjy5/ytmIcUb06bi2znx0btavwUeBDqw
-         owwiJuooJtY4PD0/oGTvJtH6Mc0J6IxUeenswWCoshqFc07oZHisxDSlxwUllRlkJdOk
-         joNA4J7tq8LsHfdi3TES8RvVAL+ApX/mflRVjuJOb15v4wtB9KK+r6yPrioyJ6xiuQ4r
-         7raY7CPtx1ZlXyAQowdihtwEmMxlCLyCtWd38uefG/jw3b4FOhscxklogXNIDrY0OWwD
-         Amsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXEOMattwP8mzO6XfVXtMP48tn5/Xow/P0Tar+smO6v0wZatI8UPZzDqXOrsbG/mtmWrHCrrZiOXCoues2W0slvCIfj
-X-Gm-Message-State: AOJu0YzDNJTbktMrPd7CWL0Cy3gM9RKLr524Z+mT+aYuw79Bn1VUOt1h
-	4uuNoNJlFd0cDhT3ETMA2k5JfJdW2HiehTefXBOCEgiDIWy4wMLvjx3gNhniqtG7YZ82qNa/h0P
-	QtQs=
-X-Google-Smtp-Source: AGHT+IFRC5F+uRTEEAgRzPfgYmsVebb6vhnBeks8C4kTfMuV2pHXNUEYaRTsAAyEYxXGPFioV6UrSg==
-X-Received: by 2002:a2e:3003:0:b0:2dc:e69a:fdbc with SMTP id 38308e7fff4ca-2e95b0702bemr72083601fa.1.1716889225287;
-        Tue, 28 May 2024 02:40:25 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2e98c6bc515sm55821fa.67.2024.05.28.02.40.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 May 2024 02:40:24 -0700 (PDT)
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] serial: imx: stop casting struct uart_port to struct imx_port
-Date: Tue, 28 May 2024 11:40:21 +0200
-Message-Id: <20240528094022.2161066-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.40.1.1.g1c60b9335d
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="O6+qf6HJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jJjtVFPT4RFbnQU9AxSgZzmA2eK2xh3j69Lk0x+z1b6XbXDRkwtqNIm3LtC6RNKoGl+pRAA+7AWEG1oD7diS5eqRP7TG9ierVE3sacE+7/eGZ4B4VrG2DFgneDx1BnkVrthw/x0qNwF97C+0sm4ZUr1eCrRKPaYpFOiwSKqhSJu9qsXZjTZrzhZrO+k0DKXPRA1bxxTv8CgAgNTusBcUXi+xlzfm7xQFq4w0OrIKsN0Y5TXfMGsIr5SHHkmkhhPPDqePo3bHduw4aHJrm8jdnef0M50n3XKljrVcNC05Uq4B+bsT89/xe/XJVwWOiWoYk4vYbVQz10vMHTKHIcMFIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=InK+MNqQPqrG/8qZYtQQayNIxQO39Nb2grt9RTKwkFI=;
+ b=BYn/hVQuwKC9YoM3fLYbSxjjPXSKqs0ZfDLbcbwDH7jW7MOqku+QTVyD1mUtQepQb5WQmovdmVz9e8eqrQs9epSczNosLGxeuIML8hJA2YLOyfmMeBrv1VARNsFnt8X8wc1Twfun12vhoKPD7ZLI1pUumqM+srRdpHSneC/LEgUyo82Cc0+2wdGpWo5xO8GfxbHAXdKNaIVEFLmebsRUceixewGuM217r6VN7/G7lFRkPzXJ4UY6pRGJPfUh7+ppdihNV2M6cElF+s6vfGcH80dILvcQl05/Cacjb9DlcMgmPbLB66kFPVtWRyQgjNTF2a76XhHJo0D8ZuyqvXFrdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=InK+MNqQPqrG/8qZYtQQayNIxQO39Nb2grt9RTKwkFI=;
+ b=O6+qf6HJENJ8RqzC8QPtku7oOObOaZXA+miXVvo+o385xz0wPIIxBPPHG/MBJfS1cvU2xUU4ezw7209RkuaGa9zPy2WjBbZJx7Vpg2JtqTnbndIoP9/qP5b2b0RwxUsGxhD25BpRLdCZa18+KF6QmQRk49EgXdRarWTMF+Nq9qA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by GVXPR04MB10874.eurprd04.prod.outlook.com (2603:10a6:150:215::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Tue, 28 May
+ 2024 10:02:14 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%6]) with mapi id 15.20.7611.030; Tue, 28 May 2024
+ 10:02:13 +0000
+Message-ID: <40bc3142-c7be-4dfc-a2ff-6ac209112aa6@nxp.com>
+Date: Tue, 28 May 2024 18:02:29 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] drm/bridge: imx93-mipi-dsi: Use dev_err_probe
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240528093922.194684-1-alexander.stein@ew.tq-group.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20240528093922.194684-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SGAP274CA0015.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::27)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GVXPR04MB10874:EE_
+X-MS-Office365-Filtering-Correlation-Id: dda5d92f-9318-4957-576b-08dc7efd3f7b
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230031|1800799015|7416005|366007|376005|921011;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?c0swZ21uSlJyVUhIWXp5cHJQcXRMTEgvV2NMckhNOVhLaXVZQ0JZYXBSOFN4?=
+ =?utf-8?B?TFMwUnU4Z2JidU1OOVc3NlNvNnp2eGtpVGViam1vOHB2UWF0aWg1VytkdFpy?=
+ =?utf-8?B?TG1pUmNqSjhnZllNZkVCNWpzK3BCNVJ3SDBMNU9POVExNmxvb1hOL21QQmhn?=
+ =?utf-8?B?TTFSczY4S1NONDJOQjhwamVkcGZQS2ZWeTYyQ1BOOTFuV0VFKy9XRXJaSGtH?=
+ =?utf-8?B?SzlpajV2VEVOMFZOdzBYbytxZzJFNzc3ZkpTaWNndmdaNC9aOGJzUGt3eVE4?=
+ =?utf-8?B?b2VZN2RBdFBUcWZBNmpiQm5IQmNuL0dodGZDdlk2SlFMTERkZkM5Z0Y4VWJO?=
+ =?utf-8?B?bE9DUTV2Z0s3Mk1jazFmem5WYXdVSFdyRTU2WW1tZ0RpUEpRdWh0MXlzREh0?=
+ =?utf-8?B?Nzhud0dFQUc3YVdSSmlCYU84SUNlSEJHL05FZElxTStiRS9FYW12RUZDVGEv?=
+ =?utf-8?B?Q1VkNjZ5MnJ3V0xyTTFpTUk5SVZEb0RjWnh2cTFtM2kvTG1LT05TR0tBMUZN?=
+ =?utf-8?B?UFdkRUZMYnZvYXAvMmdocDhpS01scEU2Q3Npd29xekg4L2gyUU1md0thR2xT?=
+ =?utf-8?B?RXJCeDVqWFEvdXFPWkl3b1E2YmhlSGtiZkVVWmFqVXY0c3lxVWtuUVVZNk1j?=
+ =?utf-8?B?MVZ5ZkgybEp3SU1HVFZwTFp1SkJ5czFUZFNQM3hoR0ZJZlh3L21UeUw3T21n?=
+ =?utf-8?B?c3BzWUlqZTZsSFgyWERVTzNqcDNkei9JR1ZWbERCRUczOHNzNnkwVDBsUURP?=
+ =?utf-8?B?dUYyN3Z3Mk05ZnFybkJLYUlJSjBudldSZXBwN1hXNmpSdG9QTVRaZ1M4cHdX?=
+ =?utf-8?B?OU1KdVlKb3NaajJNb3dKQnlsQnhTUk5yN21DcUhSczZ5ZjNGYUl6ZTB3RFZI?=
+ =?utf-8?B?WnlnS3BlR1lEbnVTQUlWRWxKWHZWaytlajNyV2xxY1prejlFeXNJbnBzWER0?=
+ =?utf-8?B?MWhuR25PaDRoM2VYWklEbC9aUGZTRXBxcG1yWWJ5RGNvemt4TXkxeS9Ga1Rw?=
+ =?utf-8?B?YWFVME5HSVk1MFd3bENKTnU4RTl2czRNdis0clNNRElDc1JlUmM1U09mTllZ?=
+ =?utf-8?B?RWo5eGwzbm9TWkFCYU5GbG1jNlp2cG9kVHlUNytNSExoNy9UZFdmZGdkcXZT?=
+ =?utf-8?B?bXJhZjI4Tmh0RFpqYzB3ZXN0bTBsbk5QSlkwallBZGxMK3BmaGZJc3N1bkha?=
+ =?utf-8?B?eXJCL2c4V1dxT0VFOHF4eU80QkFjNnRYd05xa3NqbjNabWFseENiQkRma0k4?=
+ =?utf-8?B?cnpBM2N5UDFPekRMcnZ2RHRCNkJYNWRqUldKWnJ4a3NNQVcyMDJyTWhUTVBl?=
+ =?utf-8?B?bzY0UU5qOWtqc2NvZ0lMSms5aXlLUFFrTHFXU0ZKdkNId1pTSjFjeHY4UHhx?=
+ =?utf-8?B?OEdNWnFPZ24vN1dXbUpTcDRhOTlNUk5obFlQM2daOHFBY1d3YnNsR2Qvczk4?=
+ =?utf-8?B?eFRPT2FJU0tmalk5NmxuWUpEZFFpWDRPb0NFVFV5cXJEUDlxL2ZlWWFJd1BB?=
+ =?utf-8?B?WVM2T3hHclduY2YrQ2Uza1g4blRlSzVvQnF6RWZsNFlpKzB5bXp0S2UyUlpZ?=
+ =?utf-8?B?SU1sdkErbU00U3RPeUlkSzhxbnhTYmZ4SzViWmpZY2NKclp5YnkxL0ZUMHdT?=
+ =?utf-8?B?azNxVGM2ellpUXdOWmE5Ykg3L29oVlZidWd2TVYya3c0RWdCM3l0UnNQcXZo?=
+ =?utf-8?B?UDNaMnpOZ3g4cm04OG1PSmoyQzVMTGRqcU5kNEN2U0NUems3bjRXS251TVRt?=
+ =?utf-8?Q?5YbSegM5+eRxUnmR2LnQLPxU0m/b5zlvSxeabns?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(366007)(376005)(921011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?WlJGKzA3enMyZjM2R2tEeFhQZGFFK21PWXlyTHowRVB6OGRBRjUwZW1QcVMv?=
+ =?utf-8?B?RWVNL2ZtZWcxLzg3bDRleFQ4YlFDUThsYkZMZ2h0Wk42WTB6SDZLS3RUckdE?=
+ =?utf-8?B?ME83WmR0dWMwbkFDSVNrbzBKdHBmaFBnMVM3aHF5YVZpM0xoY3VvU0lrNTFv?=
+ =?utf-8?B?ckxsa2FpWGpLTDdMNGJyYkRKcXZvQnA3Uzc5QitYYXJ2c1hOSTZFSVpGbjNn?=
+ =?utf-8?B?VEYvaWhMQ0prV0NoQUZaMzV2bW85N3Bta1FqTEtzZGVFZnEyZFZjK3pQYnVy?=
+ =?utf-8?B?dmZqSWRSYUEwUmlwdXdvM2RwT3BGRkdFblBmaWFjenB0YlhKaU82cFRhN3Bw?=
+ =?utf-8?B?Uzd3L3Z0WUFmNzl0N2Q2SGgzK28yc1NDTXBoeVZybEpSdmgzZnNRaS9xTEIz?=
+ =?utf-8?B?eDI4Q1B0d0ptcis0dzU0S2lwdk1vS1hFcGFDODY2SjV1TkJlWnZFWHNnWG54?=
+ =?utf-8?B?WGlmOFYwVlpHTjQwRkVYcXJTb0tETVBOSjMxd3BDSklaelN6VjJDVWd3cytw?=
+ =?utf-8?B?alQ0NU96NFVLT3pGVjNhSzRNSFdZOTVrbTJ5M2FQY21xMHVGRzVyQTZPQ1ds?=
+ =?utf-8?B?enNHZ3lBSGpGQTRvRzE5c3B3Z3B3RjY4UVdKMTVrcGNoczNtNHJnUklWTkZz?=
+ =?utf-8?B?a2d6RjBWSGtwYlVtMnBKSmJZT2JEODNjcjRDNnFSWjZiblpvQ0ZyTGNqWGlK?=
+ =?utf-8?B?SDFQeHl3Vkp2SWFvaEhTeEYvRy9tUzRzelA5YnlPc01LZm9yNFZpTDgwcy8v?=
+ =?utf-8?B?NGczYXZ1OFRmRlpkdGZiWnlVZ0JXTEpRVDhpS1lIRjJTQmJFNzQ2dWxuNnNQ?=
+ =?utf-8?B?aGRKOUZKeWhHRGl4ejNra2gxSS94SEMxM1JEVGZDZklKOFdoeUpXcXBkSlNO?=
+ =?utf-8?B?VHJTZmxQRGlLeWt5SEdvVXhnYXdhUUZwbVA0QUhCV28yY3pYdFVxQWtqdE9o?=
+ =?utf-8?B?ZysySXhQNkdSQXpOcHFyMmVxUzBuV0tLRjJrb211RjMxZ3IyK1p1SnZNUjdr?=
+ =?utf-8?B?UmhGQkpHWGh4SER4MEREbmdmVDZFRVMvQzNCR0U2YzkzVWlPV0lPWjhvVWlI?=
+ =?utf-8?B?ZVlnN21BU0FUbXQzRDJsOHpPMEhaYXI4dG8zUzhRcTFSTjN3aDZBbzk4Z01D?=
+ =?utf-8?B?TUxBODE4UUduY2U4TFViaHJ5WjZkbnhYQVBFOWhrVU0xM1lhRG1tUEZJdWtx?=
+ =?utf-8?B?Tmx0NnBwZ3pMOUxNaVRyU29nTzllb01zSHhycW9Wd2I5czNsM0hCVExuZzBQ?=
+ =?utf-8?B?aVpaakUrVFZxaFZ6a3pUNHhReVZNajVjMkplOWZxbWRmaEFZSDJhSS9iMkU1?=
+ =?utf-8?B?b25zbW05QVdLTHJFSXFYZktnTys1NTZKaWhkSFV6bnk1aEgyak92QzZ5M0pN?=
+ =?utf-8?B?dVQ5aTFPN3JMRUVoKys4M1pKbEpLekxtS0FKMHJUSC9pK2lTZGpQQlI4YlJv?=
+ =?utf-8?B?ZGo5OGFqam1NQVRvMWZDMmZkYnBGNllObHEyU25TWTFJUGxzNVlTUVVlbW1x?=
+ =?utf-8?B?RThoKytnaUNmZ3F2QjQ2d0RzUDdzOUk4bGE3UW5yYk5GMTl4SHViRFhpS0Fp?=
+ =?utf-8?B?TFR1WEdKSndJdDV4ZzAvdldBbXo0MmEzNVZYK1BsN3JOYlNacVVpY1cwcnhF?=
+ =?utf-8?B?UVdXbFhhWE0rUzFweENCQ3FnMXZ0VGRoMGhzY25kZlFDYUxsU0xsK25NU1la?=
+ =?utf-8?B?a2hoaEJWLzNVWE0zRWRxbFpDVGRRb1ErUWZxOGRHZ05nZEVuS1VNV25ZWG56?=
+ =?utf-8?B?YTRXUEIrS3I2dTY5ZHQvbkk0Q0NNUHduWS85YUJBSjJxbWRPS0F5cVcrNzFo?=
+ =?utf-8?B?emhvamp0N3MvSUh2aXNJZmNoRnBrRS94S0pOMGlDb0lSN0hmZERLSnVvV3E2?=
+ =?utf-8?B?dEw5T2tZS0pJTzFPc0tzVzlidlNUOXRCaGpMSnc5N0ttd1FGL0VPZUpkWVFN?=
+ =?utf-8?B?M2NXRU1xYTNJemVZajZMbkxGaEdDallsbGY1djRjc2RBdVUxd2E5Y1JIT0RZ?=
+ =?utf-8?B?SUVCNng3YS93WWR0QzVBMlRIZlhZVWlJZUdvdnh3dGFNc1BaeWE4SEMxVWRt?=
+ =?utf-8?B?alpLeHVsOGEyOXhzTTFuclJaeklFclRxK3NYbTYrcnRqblRvTlRHVXpUcTF1?=
+ =?utf-8?Q?dMxPfz5/63qJw2E8dGEAJJmmn?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dda5d92f-9318-4957-576b-08dc7efd3f7b
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2024 10:02:13.8639
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +xQC/zyldLimadQH3AAXeQurYcxpQGrq71zluCBIz4wZaWLIfXerJMOuGoRK9ZNus8SIswEq29uKsC22mNcCkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10874
 
-struct imx_port does have a struct uart_port as its first member, so
-the current code works, but it is not how kernel code is usually
-written.
+On 05/28/2024, Alexander Stein wrote:
+> Although very unlike to occur (media_blk_ctrl needs 'syscon' compatible
+> removed), it lines up with the other error paths in probe function.
+> 
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+> index 2347f8dd632f9..8331db3b4f054 100644
+> --- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+> +++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
+> @@ -841,11 +841,9 @@ static int imx93_dsi_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  
+>  	dsi->regmap = syscon_regmap_lookup_by_phandle(np, "fsl,media-blk-ctrl");
+> -	if (IS_ERR(dsi->regmap)) {
+> -		ret = PTR_ERR(dsi->regmap);
+> -		dev_err(dev, "failed to get block ctrl regmap: %d\n", ret);
+> -		return ret;
+> -	}
+> +	if (IS_ERR(dsi->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(dsi->regmap),
+> +				     "failed to get block ctrl regmap");
 
-Similar to many other serial drivers, introduce and use a
-to_imx_port() helper based on container_of(). No functional change.
+Missing \n.
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
- drivers/tty/serial/imx.c | 41 ++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+And, a build warning:
+drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c: In function ‘imx93_dsi_probe’:
+drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c:837:13: warning: unused variable ‘ret’ [-Wunused-variable]
+  837 |         int ret;
+      |             ^~~
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 2eb22594960f..f5cfe5571e0e 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -264,6 +264,11 @@ static const struct of_device_id imx_uart_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, imx_uart_dt_ids);
- 
-+static inline struct imx_port *to_imx_port(struct uart_port *port)
-+{
-+        return container_of(port, struct imx_port, port);
-+}
-+
- static inline void imx_uart_writel(struct imx_port *sport, u32 val, u32 offset)
- {
- 	writel(val, sport->port.membase + offset);
-@@ -377,7 +382,7 @@ static void imx_uart_disable_loopback_rs485(struct imx_port *sport)
- /* called with port.lock taken and irqs off */
- static void imx_uart_start_rx(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned int ucr1, ucr2;
- 
- 	ucr1 = imx_uart_readl(sport, UCR1);
-@@ -401,7 +406,7 @@ static void imx_uart_start_rx(struct uart_port *port)
- /* called with port.lock taken and irqs off */
- static void imx_uart_stop_tx(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	u32 ucr1, ucr4, usr2;
- 
- 	if (sport->tx_state == OFF)
-@@ -466,7 +471,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
- 
- static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, bool loopback)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	u32 ucr1, ucr2, ucr4, uts;
- 
- 	ucr1 = imx_uart_readl(sport, UCR1);
-@@ -511,7 +516,7 @@ static void imx_uart_stop_rx(struct uart_port *port)
- /* called with port.lock taken and irqs off */
- static void imx_uart_enable_ms(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 
- 	mod_timer(&sport->timer, jiffies);
- 
-@@ -662,7 +667,7 @@ static void imx_uart_dma_tx(struct imx_port *sport)
- /* called with port.lock taken and irqs off */
- static void imx_uart_start_tx(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	struct tty_port *tport = &sport->port.state->port;
- 	u32 ucr1;
- 
-@@ -1043,7 +1048,7 @@ static irqreturn_t imx_uart_int(int irq, void *dev_id)
-  */
- static unsigned int imx_uart_tx_empty(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned int ret;
- 
- 	ret = (imx_uart_readl(sport, USR2) & USR2_TXDC) ?  TIOCSER_TEMT : 0;
-@@ -1058,7 +1063,7 @@ static unsigned int imx_uart_tx_empty(struct uart_port *port)
- /* called with port.lock taken and irqs off */
- static unsigned int imx_uart_get_mctrl(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned int ret = imx_uart_get_hwmctrl(sport);
- 
- 	mctrl_gpio_get(sport->gpios, &ret);
-@@ -1069,7 +1074,7 @@ static unsigned int imx_uart_get_mctrl(struct uart_port *port)
- /* called with port.lock taken and irqs off */
- static void imx_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	u32 ucr3, uts;
- 
- 	if (!(port->rs485.flags & SER_RS485_ENABLED)) {
-@@ -1112,7 +1117,7 @@ static void imx_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
-  */
- static void imx_uart_break_ctl(struct uart_port *port, int break_state)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned long flags;
- 	u32 ucr1;
- 
-@@ -1434,7 +1439,7 @@ static void imx_uart_disable_dma(struct imx_port *sport)
- 
- static int imx_uart_startup(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	int retval;
- 	unsigned long flags;
- 	int dma_is_inited = 0;
-@@ -1548,7 +1553,7 @@ static int imx_uart_startup(struct uart_port *port)
- 
- static void imx_uart_shutdown(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned long flags;
- 	u32 ucr1, ucr2, ucr4, uts;
- 
-@@ -1622,7 +1627,7 @@ static void imx_uart_shutdown(struct uart_port *port)
- /* called with port.lock taken and irqs off */
- static void imx_uart_flush_buffer(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	struct scatterlist *sgl = &sport->tx_sgl[0];
- 
- 	if (!sport->dma_chan_tx)
-@@ -1649,7 +1654,7 @@ static void
- imx_uart_set_termios(struct uart_port *port, struct ktermios *termios,
- 		     const struct ktermios *old)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned long flags;
- 	u32 ucr2, old_ucr2, ufcr;
- 	unsigned int baud, quot;
-@@ -1852,7 +1857,7 @@ imx_uart_verify_port(struct uart_port *port, struct serial_struct *ser)
- 
- static int imx_uart_poll_init(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned long flags;
- 	u32 ucr1, ucr2;
- 	int retval;
-@@ -1901,7 +1906,7 @@ static int imx_uart_poll_init(struct uart_port *port)
- 
- static int imx_uart_poll_get_char(struct uart_port *port)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	if (!(imx_uart_readl(sport, USR2) & USR2_RDR))
- 		return NO_POLL_CHAR;
- 
-@@ -1910,7 +1915,7 @@ static int imx_uart_poll_get_char(struct uart_port *port)
- 
- static void imx_uart_poll_put_char(struct uart_port *port, unsigned char c)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	unsigned int status;
- 
- 	/* drain */
-@@ -1932,7 +1937,7 @@ static void imx_uart_poll_put_char(struct uart_port *port, unsigned char c)
- static int imx_uart_rs485_config(struct uart_port *port, struct ktermios *termios,
- 				 struct serial_rs485 *rs485conf)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 	u32 ucr2;
- 
- 	if (rs485conf->flags & SER_RS485_ENABLED) {
-@@ -1986,7 +1991,7 @@ static struct imx_port *imx_uart_ports[UART_NR];
- #if IS_ENABLED(CONFIG_SERIAL_IMX_CONSOLE)
- static void imx_uart_console_putchar(struct uart_port *port, unsigned char ch)
- {
--	struct imx_port *sport = (struct imx_port *)port;
-+	struct imx_port *sport = to_imx_port(port);
- 
- 	while (imx_uart_readl(sport, imx_uart_uts_reg(sport)) & UTS_TXFULL)
- 		barrier();
--- 
-2.40.1.1.g1c60b9335d
+Regards,
+Liu Ying
+
+>  
+>  	dsi->clk_pixel = devm_clk_get(dev, "pix");
+>  	if (IS_ERR(dsi->clk_pixel))
 
