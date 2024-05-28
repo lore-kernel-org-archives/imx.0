@@ -1,180 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F83B17083D;
-	Tue, 28 May 2024 15:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2357716EBE2;
+	Tue, 28 May 2024 15:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716911618; cv=none; b=XQETYBlzNPGFOmyUWbJbjcyTmE7GagasPgsU6KNhGMrD0wSde+Al3MLVAiVEfsJt8N8FTmVO08FuEZpC6ogCj6IQAzYJ6FeYNJq1h/dHGdaCL3zWQy90HjI5zBELZeJI0yLnvuJIhv66DkLKXoPBpN3qgVVAeOkyo8zTAubP/Zc=
+	t=1716911890; cv=none; b=X+wUDMLb9NymVyBw9muuOovm9435Wwkm/92Kb259brcqjzN7bWNC3cStHdvBlf2BO1JLSG0Q04qLcWjU2T/pGQvmFh7Ree7ErsR2xCllHdlpjfZI+o2cOJV8oCjgTkBens7etAfF+zOvYGIsxKV3K9hr2k6FrqRmG1zJog4m9UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716911618; c=relaxed/simple;
-	bh=bebSNINfLGRXjEL3kdOR1gvaAlgvXerHGRc6bFG72XM=;
+	s=arc-20240116; t=1716911890; c=relaxed/simple;
+	bh=c5lGEXQwzulh39BNNvVK3ComcUQeEWk6Pg0H6NWEfbE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FCO0pk5ZafCbECVYF9A9pJUsrcBoa8xDGt/WxgFCBFK78j4V2eFlxjihb5V+7S19a53JAHch3GzD/8dG8wCjjPad0cWLuZOChk8E4HadMf7SGY1zIKMuXPoqFM/El9auPvhXWrRNTpL3Dyjj3RQk/oxkCXwM2TRRq9DcmSoXv5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mXI2zp7Z; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ppoe03qIJlkCJKYymswiKMIYuiEro2iN56zHPdD5wXNgqJWK0DGPTTFlOvOzkips1Xbhpqnyimut00F/W8vQ7AogKURsQ1do2Fy6pZ69CezNM3PtB/omGLXsSqPxnfeSsaZZkDm3jGH/+aEOOYIq7doe+z91BGMa69oYoUNJWkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si2wh7RR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mXI2zp7Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716911617; x=1748447617;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bebSNINfLGRXjEL3kdOR1gvaAlgvXerHGRc6bFG72XM=;
-  b=mXI2zp7ZQsjXBHVXtYpJrC69a+8aA8pC0S8WUYaiFM2Pkq3wdjgnsgwp
-   muH2iu30ZziNXJcf4RVfSX+4XwEAlscmI5vTzOY/+JiLwBeJW4djuvZ+F
-   Mu0EmMsUDoZjCqE/U8176H66cr8LNbuYKUls/NazKFWPOXvrpBMNI82/T
-   PyYa0j1UfHdgNbOdddApK5wCv6D5q5nk7u/O0eZlsKrRTW068cnS7tMqa
-   2Zf18H1tZIZYbmF9m4LSpI6RyUK0ZYKtmk5xJ6H0qjlOITJJB7yIHe3O7
-   BvE6jrn2yBpMmkurlmdyH3hTMSVDnBenFUZ5qLm83wlEE4EdUc7ZFEhYq
-   Q==;
-X-CSE-ConnectionGUID: X7tcn1fwR/mANf/IgKs7yw==
-X-CSE-MsgGUID: lq7j3WcTS0mwi63zzVY9Ew==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13488880"
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
-   d="scan'208";a="13488880"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 08:53:36 -0700
-X-CSE-ConnectionGUID: MtRu17F0SRKNFeJRdnL+dw==
-X-CSE-MsgGUID: 1Akhkm+dTiWzxcfzcudOOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
-   d="scan'208";a="72551972"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 28 May 2024 08:53:30 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sBz7l-000CPL-0V;
-	Tue, 28 May 2024 15:53:04 +0000
-Date: Tue, 28 May 2024 23:51:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si2wh7RR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76209C3277B;
+	Tue, 28 May 2024 15:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716911889;
+	bh=c5lGEXQwzulh39BNNvVK3ComcUQeEWk6Pg0H6NWEfbE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=si2wh7RRadbQhWij7/FlclQAb1uil6gL8wD06Q08zbUhVkIq5tv/8K0cPHIkXVV27
+	 +nzaKAAKApwgOKNnIqsruYCGEx2VC6rKeobQXp+RWqLYzINbTSOR0NO14GkxTvLKLO
+	 L31lR8XlyC1mU3wLB7vJj0xBNokXvUvJQmLr9xrTcGe9oeDMroRnD7aZrza/pDVtph
+	 fX9URt5gU5Aov0kRfrcbQgQAb5hL65AVkSqJ4m/M3VnqKV2HJzJMr0kqODE6PQId04
+	 z282TuXRvFX1/Wchj+O8fCVTJEBjzMf3h38/U/fxYf8LsiYDByZiIT09A/+tt94Pyy
+	 P4BsQUcQyqSFw==
+Date: Tue, 28 May 2024 10:58:08 -0500
+From: Rob Herring <robh@kernel.org>
+To: Tim Harvey <tharvey@gateworks.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] drm/bridge: imx93-mipi-dsi: Use dev_err_probe
-Message-ID: <202405282314.dvr8cFY0-lkp@intel.com>
-References: <20240528093922.194684-1-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+Message-ID: <20240528155808.GA695520-robh@kernel.org>
+References: <20240522215043.3747651-1-tharvey@gateworks.com>
+ <07250029-7cea-4a82-9e70-22e0e6f7fb37@linaro.org>
+ <20240523-vividly-sequester-d85ac7bccbbd@spud>
+ <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
+ <20240524-cavalier-outthink-51805f49c8fb@spud>
+ <8007abef-38bb-4d7d-a453-00bb5e6bede5@linaro.org>
+ <CAJ+vNU3Rh6f-HrFbBLxNXVP1PwsGh8OyGmmGJBv6+GRwZaTXgw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240528093922.194684-1-alexander.stein@ew.tq-group.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ+vNU3Rh6f-HrFbBLxNXVP1PwsGh8OyGmmGJBv6+GRwZaTXgw@mail.gmail.com>
 
-Hi Alexander,
+On Sat, May 25, 2024 at 12:58:18PM -0700, Tim Harvey wrote:
+> On Sat, May 25, 2024 at 11:34 AM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+> >
+> > On 24/05/2024 20:40, Conor Dooley wrote:
+> > > On Thu, May 23, 2024 at 04:04:50PM -0700, Tim Harvey wrote:
+> > >> On Thu, May 23, 2024 at 7:47 AM Conor Dooley <conor@kernel.org> wrote:
+> > >>>
+> > >>> On Thu, May 23, 2024 at 09:02:46AM +0200, Krzysztof Kozlowski wrote:
+> > >>>> On 22/05/2024 23:50, Tim Harvey wrote:
+> > >>>>> The GW7905 was renamed to GW7500 before production release.
+> > >>>>>
+> > >>>>> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> > >>>>> ---
+> > >>>>>  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+> > >>>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >>>>>
+> > >>>>> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> > >>>>> index 0027201e19f8..d8bc295079e3 100644
+> > >>>>> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> > >>>>> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> > >>>>> @@ -920,8 +920,8 @@ properties:
+> > >>>>>                - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
+> > >>>>>                - fsl,imx8mm-evk            # i.MX8MM EVK Board
+> > >>>>>                - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
+> > >>>>> +              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
+> > >>>>
+> > >>>> That's not even equivalent. You 7500 != 75xx.
+> > >>>>
+> > >>>
+> > >>>>>                - gateworks,imx8mm-gw7904
+> > >>>>> -              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Board
+> > >>>>
+> > >>>> Compatibles do not change. It's just a string. Fixed string.
+> > >>>
+> > >>> I think there's justification here for removing it, per the commit
+> > >>> message, the rename happened before the device was available to
+> > >>> customers.
+> > >>> Additionally, I think we can give people that upstream things before they're
+> > >>> publicly available a bit of slack, otherwise we're just discouraging
+> > >>> people from upstreaming early.
+> > >>
+> > >> Hi Conor,
+> > >>
+> > >> Thanks for understanding - that's exactly what happened. I'm in the
+> > >> habit of submitting patches early and often and it's no fun when
+> > >> something like a silly product name gets changed and breaks all the
+> > >> hard work.
+> > >>
+> > >> The board model number is stored in an EEPROM at manufacturing time
+> > >> and that EEPROM model is used to build a dt name. So instead of GW7905
+> > >> which would be a one-off custom design it was decided to change the
+> > >> product to a GW75xx. The difference between GW7500 and GW75xx is
+> > >> because we subload components on boards between GW7500/GW7501/GW7502
+> > >> etc but the dt is the same.
+> > >>
+> > >> If there is resistance to a patch that renames it then I guess I'll
+> > >> have to submit a patch that removes the obsolete board, then adds back
+> > >> the same board under a different name. Shall I do that?
+> > >
+> > > I think this patch is fine - other than the inconsistency that Krzysztof
+> > > pointed out between the "renamed to gw7500" and the "gw75xx" in the new
+> > > compatible.
+> >
+> > I am not a fan of renaming compatibles because of marketing change,
+> > because compatible does not have to reflect the marketing name, but
+> > there was already precedent from Qualcomm which I did not nak, so fine
+> > here as well. Double wildcard 75xx is however a bit worrying.
+> >
+> 
+> Hi Krzysztof,
+> 
+> Thanks for understanding. The double-wildcard is again a marketing
+> tool. All GW75** use the same device-tree by design. The boot firmware
+> that chooses the device-tree understands this and for a GW7521 for
+> example would look for gw7521 first, gw752x next, gw75xx last.
 
-kernel test robot noticed the following build warnings:
+You haven't documented the other 2 though.
 
-[auto build test WARNING on shawnguo/for-next]
-[also build test WARNING on linus/master v6.10-rc1 next-20240528]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+How do "all GW75** use the same device-tree", but then there are 3 
+possible DTs for just 1 board?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Stein/drm-bridge-imx93-mipi-dsi-Use-dev_err_probe/20240528-174332
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20240528093922.194684-1-alexander.stein%40ew.tq-group.com
-patch subject: [PATCH 1/1] drm/bridge: imx93-mipi-dsi: Use dev_err_probe
-config: arm-randconfig-001-20240528 (https://download.01.org/0day-ci/archive/20240528/202405282314.dvr8cFY0-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240528/202405282314.dvr8cFY0-lkp@intel.com/reproduce)
+Selecting a DT is not a unique problem. We don't need unique 
+solutions. There's the QCom board-id proposal[1] and OS provided DT[2] 
+which are addressing similar issues.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405282314.dvr8cFY0-lkp@intel.com/
+Rob
 
-All warnings (new ones prefixed by >>):
-
-   drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c: In function 'imx93_dsi_probe':
->> drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c:837:13: warning: unused variable 'ret' [-Wunused-variable]
-     837 |         int ret;
-         |             ^~~
-
-
-vim +/ret +837 drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  831  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  832  static int imx93_dsi_probe(struct platform_device *pdev)
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  833  {
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  834  	struct device *dev = &pdev->dev;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  835  	struct device_node *np = dev->of_node;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  836  	struct imx93_dsi *dsi;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21 @837  	int ret;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  838  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  839  	dsi = devm_kzalloc(dev, sizeof(*dsi), GFP_KERNEL);
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  840  	if (!dsi)
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  841  		return -ENOMEM;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  842  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  843  	dsi->regmap = syscon_regmap_lookup_by_phandle(np, "fsl,media-blk-ctrl");
-b407e810c9a5b87 Alexander Stein 2024-05-28  844  	if (IS_ERR(dsi->regmap))
-b407e810c9a5b87 Alexander Stein 2024-05-28  845  		return dev_err_probe(dev, PTR_ERR(dsi->regmap),
-b407e810c9a5b87 Alexander Stein 2024-05-28  846  				     "failed to get block ctrl regmap");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  847  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  848  	dsi->clk_pixel = devm_clk_get(dev, "pix");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  849  	if (IS_ERR(dsi->clk_pixel))
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  850  		return dev_err_probe(dev, PTR_ERR(dsi->clk_pixel),
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  851  				     "failed to get pixel clock\n");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  852  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  853  	dsi->clk_cfg = devm_clk_get(dev, "phy_cfg");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  854  	if (IS_ERR(dsi->clk_cfg))
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  855  		return dev_err_probe(dev, PTR_ERR(dsi->clk_cfg),
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  856  				     "failed to get phy cfg clock\n");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  857  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  858  	dsi->clk_ref = devm_clk_get(dev, "phy_ref");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  859  	if (IS_ERR(dsi->clk_ref))
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  860  		return dev_err_probe(dev, PTR_ERR(dsi->clk_ref),
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  861  				     "failed to get phy ref clock\n");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  862  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  863  	dsi->ref_clk_rate = clk_get_rate(dsi->clk_ref);
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  864  	if (dsi->ref_clk_rate < REF_CLK_RATE_MIN ||
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  865  	    dsi->ref_clk_rate > REF_CLK_RATE_MAX) {
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  866  		dev_err(dev, "invalid phy ref clock rate %lu\n",
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  867  			dsi->ref_clk_rate);
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  868  		return -EINVAL;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  869  	}
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  870  	dev_dbg(dev, "phy ref clock rate: %lu\n", dsi->ref_clk_rate);
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  871  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  872  	dsi->dev = dev;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  873  	dsi->pdata.max_data_lanes = 4;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  874  	dsi->pdata.mode_valid = imx93_dsi_mode_valid;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  875  	dsi->pdata.mode_fixup = imx93_dsi_mode_fixup;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  876  	dsi->pdata.get_input_bus_fmts = imx93_dsi_get_input_bus_fmts;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  877  	dsi->pdata.phy_ops = &imx93_dsi_phy_ops;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  878  	dsi->pdata.host_ops = &imx93_dsi_host_ops;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  879  	dsi->pdata.priv_data = dsi;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  880  	platform_set_drvdata(pdev, dsi);
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  881  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  882  	dsi->dmd = dw_mipi_dsi_probe(pdev, &dsi->pdata);
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  883  	if (IS_ERR(dsi->dmd))
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  884  		return dev_err_probe(dev, PTR_ERR(dsi->dmd),
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  885  				     "failed to probe dw_mipi_dsi\n");
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  886  
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  887  	return 0;
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  888  }
-ce62f8ea7e3f8a8 Liu Ying        2023-08-21  889  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://lore.kernel.org/all/20240521-board-ids-v3-0-e6c71d05f4d2@quicinc.com/
+[2] https://lists.linaro.org/archives/list/boot-architecture@lists.linaro.org/thread/DZCZSOCRH5BN7YOXEL2OQKSDIY7DCW2M/
