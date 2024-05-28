@@ -1,86 +1,335 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2044.outbound.protection.outlook.com [40.107.105.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0CD16F274
-	for <imx@lists.linux.dev>; Tue, 28 May 2024 13:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716902379; cv=none; b=mUNtDH3JneAhFJUVAjS0GeoPFj9Roh04yO8n40qFSeRY1sIg3q9nG0zwxDJkDPJKksSvk2DgkDzf/HgS3l4tMjQRUtktQKzzJiPWyt7t72yfNjVXT+AuWaqex+MJ7ahXZp2kfYBduM+e0s9qxG4tUefstNJ9r/IT7Lkn5OLDugk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716902379; c=relaxed/simple;
-	bh=5cMzI+v8sDAeyKiAtvYu0nmQOVHCMm5QhUO/fz8L32w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XpIcqLdSjnXUT9GWRUDfoRvbAdab3FN2qN5iFOA7Pah5f0SzDEQigpuMbJUMOEYXN6kM3oafAHhS8cGGHWWimA6ml6BRt8QfatH+xHUvK9kz5aL76Jq0iBNdJcFuNdjcBSaMhEGMYISpOcD9aoxctZPPM+ScgX0KbB8cE1jEWME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZeWrGtTb; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F50F16F90B
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 14:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716907162; cv=fail; b=WgBuviITcRAuIJJYlk2ZHSP/p+sStgszq9FKlg3lz4aYTYVWODtHHVUQXCSlu+AWdCy9UWag/8tMON9c/d8nB6g7ZwgIous0BtZCse5jf/6+nlpzjM9CJAPxNu335ZsrSycm2tlp9Mh9aFaH96sG6IDsivRXosBtzcwMOcnWPo8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716907162; c=relaxed/simple;
+	bh=xCCkZj4E8rRA74hj2Hd0ShHoenCHuPpN6Q3PyVT+UMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YELebaNZy7rLWl0Hhmi7vtePAh635m3Q7eyPhNqmGgr4SBtPfN8jEXS5cv/sOqzAeAYQbRUep6OnaYLhhJpRfdXH2yOIWK8NebFA5E0DYxYMGsxtOfnm81D7ygLh9r8pBj3lBQik5vr8yZsDM+CHO7FPzxP3+7oZwxdsTKUlPns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=aRKXY8SW; arc=fail smtp.client-ip=40.107.105.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZeWrGtTb"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2bfae86f1ffso152886a91.0
-        for <imx@lists.linux.dev>; Tue, 28 May 2024 06:19:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716902378; x=1717507178; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5cMzI+v8sDAeyKiAtvYu0nmQOVHCMm5QhUO/fz8L32w=;
-        b=ZeWrGtTbB4+O74gIDUYi0XjMpTPtzQVQV/zXAbMW9jLOvaxfLNWYx5Xo9fdHhoc3ZJ
-         +xHZer07muvAHR2NVBc8qFBv2bsFPmslNIrlTOMSTlCbqVNAL7/GfTx38Qy9uGuUzJLv
-         WrvKtyH1hZO1imL/HT8iWJIsZzyXbCUE2ndcMJmOqwFq8HA9fYv4ZtmT9uBxDSq42qH7
-         28IzV1L9KP66hhNcFuqR1WJCPkJu/vs0qEJmLUyLys2bsVOIKHRSSb97eUd0L73H31jM
-         AdTv2bSWXz7nsQMkN2mbjw0j2bMl35GbK2DkdYpe/lnP6kGXluZTCvNlxqNXe5DDAVPk
-         PSFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716902378; x=1717507178;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5cMzI+v8sDAeyKiAtvYu0nmQOVHCMm5QhUO/fz8L32w=;
-        b=QbiwO3JKPKYZp+Hknt5fia2e7MgpJ9tjvVmL6CatomlUSZNE33KrAMASXs2kjTB4Ql
-         0amoFVnwqqzAUVivWTCdycDvkgSAxt1QML4L8p/YYvm1e1tcSfQOvfdbvoktSNlJ5EyP
-         +sAOhU9BXrmzEA71UENTWGYIGVQb9ujYP0da8u93GzB/nI+i0maVeFcCCu2Wnv1pmf0v
-         vbxtcadIaVlkG6A79VmSTNTxUBrvlSsKFfTPz2FdUWbEJhEmnPJNqOfBPK0vbQro7bNO
-         KWp2XpduYhh0kwA5yE8YBW2ebuo1ybhtD7bSgKDUEgIcYQLkz2VUtFQSsyqIzMintmLo
-         2Yow==
-X-Forwarded-Encrypted: i=1; AJvYcCU6E06y3nlQ9hvApncMdJyXISLfidcregWIq0wIdRtbIJrU966b3CEQEGdgSDcXpXWd1p8GJMWeThyVG/fRuWmlpmhF
-X-Gm-Message-State: AOJu0Yx1tD1u+VnaZOrx8vhhPBxvNj8jw4/FlMLUjQ67t4E3syLF79BR
-	7EfVKw+fVhDSYAqNqTyTZ1RtweE/GB4UC4lYjFcyDNnmsVjHpHP+zhOcLl5t0YHx+Hv3Nqy452i
-	o2lPq3Z3+uwV5gY3upZyjMVZEOMU=
-X-Google-Smtp-Source: AGHT+IEX2lE0VCcvC7pGoKnB7c+rFQvdDWmPp7YXpTSFlvIP9+457a+iyNl7IkydoZmoCqXRmbTtbTKPReQBamn74Ic=
-X-Received: by 2002:a17:90b:a58:b0:2bd:e950:dfa5 with SMTP id
- 98e67ed59e1d1-2bf5ee1f6c6mr11120702a91.2.1716902377828; Tue, 28 May 2024
- 06:19:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="aRKXY8SW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hLl+8nAlCHoW6N2zozSTibZaWOKKF2pWVlQzKnkTQpEe0Aq9rVi1+6/kzJOoTflWVtiG9Mh6efXEYeCZy+oe13/6tJ8nidLO3qy32/3hMS3UPwEYQKzSLZdoJcOBaIGm2J4axQxe4TSBEpRlhPfn0YIY5qaFXcNBh/t7RGiXrV1mCKlhRSfMeTZLlQhkiH6ATuB0zY9nRoEqwxHEButLx65axmdqPXSJ7Rgmb26LIs6rF5T9Q+0vedESHqEUvb22mxOF1/IjNVf1oC6tqY5/vEaQM1gJ14QGkku8OTBPtf+CV6bPx11qEn2eh7Kgl08ZLWJG2DDF69yXRqQLXg/PJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UwehUeaLAWCuAwxZ5P6xrMQNOjFvLrVclsQyxf6KSJw=;
+ b=Y4n/faieuct0scxySH1CfQcpbDHCICUywcTBUoVZazYp5C2fPCN6Zi++L53/pNC142TtRj44HYjU0eN462+LhTh6OndTT4pCtJQGmzfUGKKoAydXgm+PRAHd4iD59mnOqbDK0sYHR4ohVLkwgPtdL6qkAdOKWbG5jnmT88iO4ob3BtHGXQkMmlsu4dVDDRlAIhNhG4l+zAeBH+rJofe9zY5617TICtqAIX6Z+xfjvsNbmbgUJPVikZ30S4kTLPMQLHgHmktwZ+obfWsfgil2QDUyu9PeeX23i/rIucw21HQxbfdvyLFw3w3cqCbu/NQWlK9Vz5gYllP+UhNtyhzLcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UwehUeaLAWCuAwxZ5P6xrMQNOjFvLrVclsQyxf6KSJw=;
+ b=aRKXY8SWluQi1Ny3eDAH9VfScui7jx8iSNBunlaR0qwJcxqYCSDEJgeW0miTrTh3VZs/CGxRXls6KNi6KCPqThoBP0HAJoDFI6FZSrJXAyqsnBS0FctqKbPLrfcer4plKQiZV3cSHVGL9rcNhG7yeDgZ2f9++2nel23KXt5lmnA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GVXPR04MB10405.eurprd04.prod.outlook.com (2603:10a6:150:1d8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Tue, 28 May
+ 2024 14:39:16 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7611.016; Tue, 28 May 2024
+ 14:39:16 +0000
+Date: Tue, 28 May 2024 10:39:07 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: conor@kernel.org, vkoul@kernel.org, kishon@kernel.org,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v6 1/2] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY
+ binding
+Message-ID: <ZlXsi8IFMyDjSJnk@lizhi-Precision-Tower-5810>
+References: <1716865154-25044-1-git-send-email-hongxing.zhu@nxp.com>
+ <1716865154-25044-2-git-send-email-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1716865154-25044-2-git-send-email-hongxing.zhu@nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0060.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240528094022.2161066-1-linux@rasmusvillemoes.dk>
-In-Reply-To: <20240528094022.2161066-1-linux@rasmusvillemoes.dk>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 28 May 2024 10:19:26 -0300
-Message-ID: <CAOMZO5BfwMrQGiaN07VC4ZUiTPjkW=epbckOWs2GAWG0fMXERw@mail.gmail.com>
-Subject: Re: [PATCH] serial: imx: stop casting struct uart_port to struct imx_port
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-kernel@vger.kernel.org, 
-	linux-serial@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10405:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4556e5cd-db86-4ecf-ff14-08dc7f23f33e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|52116005|376005|7416005|1800799015|366007|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vLLPRh1BE6Es7nUCF5o59dgaoA/YCMrmXQipo5TXvA7Md0Zk4KLhJCBLb9JU?=
+ =?us-ascii?Q?IyXGj24XReg/52xUBUkBf6MMpt37E8w0Iyf4puODvv+jYJI9xTIAOLLnbjye?=
+ =?us-ascii?Q?BunN9UtYykgkF42yy7lJdz953e3Jre0MOf8hH5i0NwkWiQWLoWjHolzDlQ2O?=
+ =?us-ascii?Q?oFZHBsSuesx66L+d8EwHuIXTOSbYVOJd5W+UGQZZBojmGCpeDcFvaewthIn7?=
+ =?us-ascii?Q?ZoOocBCLcVj9KLuPEU7P6Ao63+0AcYxR6WQeHgeN8qUTYEDPzrZ7LP3+Jkrb?=
+ =?us-ascii?Q?3J7HPZw1mIIYHi2uxaDJCo7jH569UhB55jVZGPp/47xPlVobY+GtO0B20Fs/?=
+ =?us-ascii?Q?c4MzunMuIBiurecfYoGLWgySM8tbbrpygn53a2M6TYYqw+jyQNsLSQ3KGNln?=
+ =?us-ascii?Q?PT5yl/JuAVqciLRHgocCFPcqdgb7oE0HFMqDfGA+FtETNkaXhOc/yln1HU3i?=
+ =?us-ascii?Q?D/seG5w1FSJFBjoy3q3CzoA7Dik+CoQc7s10Iwc1y0yJnZ9g6oucNXZP+lds?=
+ =?us-ascii?Q?g3nlFxKZZv/YUtJY3A7IHo9+aRfk4FpVcu1d/yKjog2sEMmvLAxNhf+f60D2?=
+ =?us-ascii?Q?+1LOfarN0KhC+7UpzGeGGFomUgRbFMh4gwHYQCjziNPayJ/5Rby6X0waJsJC?=
+ =?us-ascii?Q?c4K8gSxMcgHVQvwzJOufgKrs6kJJsAhYulqghbS/9E5RuGvcFcUOTlWPKPoK?=
+ =?us-ascii?Q?mpfHOtaPNQ1QXzIlL9TVgxDS+or9KFTIJ15zbNaUP71b452RuaXaSBSJxKdk?=
+ =?us-ascii?Q?WSOMzP1mMz0rZfJuDIZp7joukfqPFHwEmNQhmZ7mYf61RubeHHg2k+rZ1ylJ?=
+ =?us-ascii?Q?Vzk50glbc4I/XhxhgwatOW4AdUqcHNcPz0TgA+ttnE690D0uynUQSifNH6oM?=
+ =?us-ascii?Q?MDZ/vScH7lZz2D05ewHv+KBqcW2bUxiTGaup1k/WQJ42bxU9csS1jmGTSB9Y?=
+ =?us-ascii?Q?+IM4ehscviGAAn5FV6GSfg+yVX1SXwowqLKs/hytD+caRes9DZbWV3cFz5mL?=
+ =?us-ascii?Q?iJrJl8arz8LjICcVS1kZoY0qj8LXaxDAc2HTuHlpPEZ7sNS2Krh90T3tvY2q?=
+ =?us-ascii?Q?/Wqfe/3qHCAJjIPs8W4A2k1vxZi2RyUzFG+1TW1/Pw/O9do+GogFQ4Fo9X7B?=
+ =?us-ascii?Q?l4PtTbbNGiqith+cWZgozBX1hkbfFtICUcEMZZiXQQJLEQoLLPDYBCyO+kQj?=
+ =?us-ascii?Q?JLrGy4oBWvt7HpO0NiSY6y+P+LE+rUHfqMsYLjS3Z8qHlFNzAzgN+x+RwLCy?=
+ =?us-ascii?Q?0/CTyrBjPkGvhRejvOs5WrFbjdnUJwxUepSDXryx8BGb19BKm99cd35yrHoj?=
+ =?us-ascii?Q?q8k=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(376005)(7416005)(1800799015)(366007)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?17DmoyAv+XbeZyto2fgne2dDeVCJD7YNB/hhvp0e02ntZgESZfy09Mj53egn?=
+ =?us-ascii?Q?64dafCEF/81Me+ncKZDR58fkDAd7ADZ9sjMUfULaYlCwXXxKvn7+NbqnyGgO?=
+ =?us-ascii?Q?xoYR7Qivs9yAdv7dR8c1PTWAinWM3UFbeXGEMkhhUsCA+hVJ5oFwJmn9GFIg?=
+ =?us-ascii?Q?hqFT34l00RyxwppGUfYfT1xLppyLEoAqID3XfyzGDATZnOEILe8/wMooxHvf?=
+ =?us-ascii?Q?DjaJpLGsudiDx5nnGNI+QTzo5AP3O+LseX7q+LebO5rw2vd9cKnkDGMoa4va?=
+ =?us-ascii?Q?gY8uX+OkW4VxPTJzPEi9tO7Mr0NFS6myM+e+lb7ipQZ578iuhTviGqye8lAQ?=
+ =?us-ascii?Q?SMUPhQuTnUijhxGxDfNfIpPU75jp9a6V6ZjnAgHPuCQJ/9/OIn8TavtW4q8M?=
+ =?us-ascii?Q?2tbjARVeR6B/yxzblWdGpIPKoEHQoBfmjAiA/nnDibEbbS+bC8TTKuv99OWj?=
+ =?us-ascii?Q?2PtGph3bf8ynvE5/YAt5XoAMnK95zDmbA9zbv8JMJQYM0bVRgB/Rfm0q/cJL?=
+ =?us-ascii?Q?6j+DZoW6p41nRQPgu/yohYJLe+8ivNFg4h641efmb2PJfnvtUfAzrPBdHPey?=
+ =?us-ascii?Q?OFR2fLczA1wf1mxnwvVAkzWsW5OE9aOO9YMF0PAj1APR9TwRm97uOCkYzioK?=
+ =?us-ascii?Q?O4UQsO7tvWkMYvK5PsaVTt61feXBAY80HXioWLJHb0hmmojKufAbAC8TtoSV?=
+ =?us-ascii?Q?pCvWbSfHqmJbDjYM/lHLhLFqqeRakux3bHChsx8+ufXUo6jQqtOge+++9now?=
+ =?us-ascii?Q?jmUJrlQQRs+sOy8RLikPmjnJp/AuE7Cwahwu9CthpCJ9n6XWk7oBL8gpAu7h?=
+ =?us-ascii?Q?X0O59XC8m+McxCkKmlb2VZuNtjL49LDV53zY902WW5NT2ue2oy1QlTVEWpQE?=
+ =?us-ascii?Q?JgwZG/RtunvRHH8/wafCyQJHzNi1Rri3j7wAay4zk2oMu+h4vlFUWchjt4fI?=
+ =?us-ascii?Q?iy02DgcyZDWAg9R2FY4UQyn3S75nHKTunMhf4bHFe984z/npfbXonjIK4Jrm?=
+ =?us-ascii?Q?PoeoU509Bipyi7UxLHk19cEnK5YLBXsd/TokhE4xW7fR4epq8egfIbPNg2uj?=
+ =?us-ascii?Q?NhTXCrjxLz8ApvQvyit6HzsT5xiGFgr0CpPt3LQL/2KbmA5eqEKaO3XYjmoa?=
+ =?us-ascii?Q?vPnZ6r2gofywHga1QBnSTm0YPnBWx6sdKk8wpmANb+MRsVbmEVBcy6PMhVU3?=
+ =?us-ascii?Q?tt+bcrr5MxSkRbQOkp1x2Ud9NWA6LgMrJGOnoMmyJNp2aQHlBaKaBV8sPVDh?=
+ =?us-ascii?Q?2kCfHZucFsjdq9mfKyFESTiMVAmVp0N3/r5Ee+pYBt0IGfxMdXds1aaOvgW2?=
+ =?us-ascii?Q?bUVXtBUJ68vEkQpk+MJU+bjfItg72EX+PpfP+uNCBPkwLuSdYI4VfHA3VK67?=
+ =?us-ascii?Q?H56z9aOLjKZP+Evi6vtK02SImx0XAb/0b+bRgd9IQiogc5kL2avBz/AVLuOt?=
+ =?us-ascii?Q?xB3nvDeY0S9x8fnLg06tyQF4QeMCYTs3VW5jYiMKFmbUSWl8bfdxYQM+aZ20?=
+ =?us-ascii?Q?jdU0hkKd4ekwjWwmZsXy2rkNv9PBDn4/krDNfmg+ZEHTBhXciHROA81KItFX?=
+ =?us-ascii?Q?KAxPtjpaPrAq/ceVhyICGjG9d8YmGpfNY9jicTLb?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4556e5cd-db86-4ecf-ff14-08dc7f23f33e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2024 14:39:16.2455
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ae+vPYEpV7DPxaZsj9MYqZ53M3vqpmD28zL9BDp4Yi0X47OyepkWLm7VRIeDUXq94VWIPUFSfRgYmMvwdtlB1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10405
 
-On Tue, May 28, 2024 at 6:40=E2=80=AFAM Rasmus Villemoes
-<linux@rasmusvillemoes.dk> wrote:
->
-> struct imx_port does have a struct uart_port as its first member, so
-> the current code works, but it is not how kernel code is usually
-> written.
->
-> Similar to many other serial drivers, introduce and use a
-> to_imx_port() helper based on container_of(). No functional change.
->
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+On Tue, May 28, 2024 at 10:59:13AM +0800, Richard Zhu wrote:
+> Add i.MX8QM and i.MX8QXP HSIO SerDes PHY binding.
+> Introduce one HSIO configuration 'fsl,hsio-cfg', which need be set at
+> initialization according to board design.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+>  .../bindings/phy/fsl,imx8qm-hsio.yaml         | 164 ++++++++++++++++++
+>  1 file changed, 164 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
+> new file mode 100644
+> index 000000000000..8af342ef3be3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml
+> @@ -0,0 +1,164 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/phy/fsl,imx8qm-hsio.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale i.MX8QM SoC series High Speed IO(HSIO) SERDES PHY
+> +
+> +maintainers:
+> +  - Richard Zhu <hongxing.zhu@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8qm-hsio
+> +      - fsl,imx8qxp-hsio
+> +  reg:
+> +    items:
+> +      - description: Base address and length of the PHY block
+> +      - description: HSIO control and status registers(CSR) of the PHY
+> +      - description: HSIO CSR of the controller bound to the PHY
+> +      - description: HSIO CSR for MISC
+> +
+> +  reg-names:
+> +    items:
+> +      - const: reg
+> +      - const: phy
+> +      - const: ctrl
+> +      - const: misc
+> +
+> +  "#phy-cells":
+> +    const: 3
+> +    description:
+> +      The first defines lane index.
+> +      The second defines the type of the PHY refer to the include phy.h.
+> +      The third defines the controller index, indicated which controller
+> +      is bound to the lane.
+> +
+> +  clocks:
+> +    minItems: 5
+> +    maxItems: 14
+> +
+> +  clock-names:
+> +    minItems: 5
+> +    maxItems: 14
+> +
+> +  fsl,hsio-cfg:
+> +    description:
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Here need "|" because you want keep format for below table.
+
+
+> +      Specifies the use case of the HSIO module in the hardware design.
+> +      Regarding the design of i.MX8QM HSIO subsystem, HSIO module can be
+> +      confiured as following three use cases.
+> +      +-------------------------------------+
+> +      |                | i.MX8QM            |
+> +      |----------------|--------------------|
+> +      |                | Lane0| Lane1| Lane2|
+> +      |----------------|------|------|------|
+> +      | pcieax2sata    | PCIEA| PCIEA| SATA |
+> +      |----------------|------|------|------|
+> +      | pcieax2pcieb   | PCIEA| PCIEA| PCIEB|
+> +      |----------------|------|------|------|
+> +      | pcieapciebsata | PCIEA| PCIEB| SATA |
+> +      +-------------------------------------+
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ pcieax2sata, pcieax2pcieb, pcieapciebsata]
+
+how about:
+	pciea-x2-sata, pciea-x2-pcieb, pciea-pcieb-sata
+
+> +    default: pcieapciebsata
+> +
+> +  fsl,refclk-pad-mode:
+> +    description:
+> +      Specifies the mode of the refclk pad used. INPUT(PHY refclock is
+> +      provided externally via the refclk pad) or OUTPUT(PHY refclock is
+> +      derived from SoC internal source and provided on the refclk pad).
+> +      This property not exists means unused(PHY refclock is derived from
+> +      SoC internal source).
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ input, output, unused ]
+> +    default: unused
+> +
+> +  power-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - "#phy-cells"
+> +  - clocks
+> +  - clock-names
+> +  - fsl,hsio-cfg
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qxp-hsio
+> +    then:
+> +      properties:
+> +        clock-names:
+> +          items:
+> +            - const: pclk0
+> +            - const: apb_pclk0
+> +            - const: phy0_crr
+> +            - const: ctl0_crr
+> +            - const: misc_crr
+> +        power-domains:
+> +          maxItems: 1
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qm-hsio
+> +    then:
+> +      properties:
+> +        clock-names:
+> +          items:
+> +            - const: pclk0
+> +            - const: pclk1
+> +            - const: apb_pclk0
+> +            - const: apb_pclk1
+> +            - const: pclk2
+> +            - const: epcs_tx
+> +            - const: epcs_rx
+> +            - const: apb_pclk2
+> +            - const: phy0_crr
+> +            - const: phy1_crr
+> +            - const: ctl0_crr
+> +            - const: ctl1_crr
+> +            - const: ctl2_crr
+> +            - const: misc_crr
+> +        power-domains:
+> +          minItems: 2
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8-clock.h>
+> +    #include <dt-bindings/clock/imx8-lpcg.h>
+> +    #include <dt-bindings/firmware/imx/rsrc.h>
+> +    #include <dt-bindings/phy/phy-imx8-pcie.h>
+> +
+> +    phy@5f1a0000 {
+> +        compatible = "fsl,imx8qxp-hsio";
+> +        reg = <0x5f1a0000 0x10000>,
+> +              <0x5f120000 0x10000>,
+> +              <0x5f140000 0x10000>,
+> +              <0x5f160000 0x10000>;
+> +        reg-names = "reg", "phy", "ctrl", "misc";
+> +        clocks = <&phyx1_lpcg IMX_LPCG_CLK_0>,
+> +                 <&phyx1_lpcg IMX_LPCG_CLK_4>,
+> +                 <&phyx1_crr1_lpcg IMX_LPCG_CLK_4>,
+> +                 <&pcieb_crr3_lpcg IMX_LPCG_CLK_4>,
+> +                 <&misc_crr5_lpcg IMX_LPCG_CLK_4>;
+> +        clock-names = "pclk0", "apb_pclk0", "phy0_crr", "ctl0_crr", "misc_crr";
+> +        power-domains = <&pd IMX_SC_R_SERDES_1>;
+> +        #phy-cells = <3>;
+> +        fsl,hsio-cfg = "pcieapciebsata";
+> +        fsl,refclk-pad-mode = "input";
+> +    };
+> +...
+> -- 
+> 2.37.1
+> 
