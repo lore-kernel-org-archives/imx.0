@@ -1,132 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F79C16F850;
-	Tue, 28 May 2024 13:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0CD16F274
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 13:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716902205; cv=none; b=iBcMJJOBABK/dczTNUBR1fX7GvEH6I3Arn8mGuRoBQ7wHC7iU7tAU0D+NK4KmasL1METQZpzDwbtUhzRuwtjCBKhKdnfOWw3jWcQva4ATWxkUFw5pne8K04cOkPVukiu77sRy8pF9HmU0SXeGlLwMiMD1Xcl4EO6agClN3LUszU=
+	t=1716902379; cv=none; b=mUNtDH3JneAhFJUVAjS0GeoPFj9Roh04yO8n40qFSeRY1sIg3q9nG0zwxDJkDPJKksSvk2DgkDzf/HgS3l4tMjQRUtktQKzzJiPWyt7t72yfNjVXT+AuWaqex+MJ7ahXZp2kfYBduM+e0s9qxG4tUefstNJ9r/IT7Lkn5OLDugk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716902205; c=relaxed/simple;
-	bh=tP9LNLHcHcid8pBq2Y+wDHSSdjrKRVd8ZjilPzbswnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OYJMJ/R7AZeBb1ZfxAcEJwCQcRKg6LbWJQbc6tfHbiHRgDyTeCmmwBTvRYp7+Qxzka+Vr/kZCmjCGMRwvdqm+KXt/xJOKXVKHiIb1vjkw0KK3DarvWZablsF9QmjVk3WdcTzkaznfHjTPli9inMHFcGeYL14gjGzTaIaCj2vAHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cCCp0jSF; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1716902379; c=relaxed/simple;
+	bh=5cMzI+v8sDAeyKiAtvYu0nmQOVHCMm5QhUO/fz8L32w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XpIcqLdSjnXUT9GWRUDfoRvbAdab3FN2qN5iFOA7Pah5f0SzDEQigpuMbJUMOEYXN6kM3oafAHhS8cGGHWWimA6ml6BRt8QfatH+xHUvK9kz5aL76Jq0iBNdJcFuNdjcBSaMhEGMYISpOcD9aoxctZPPM+ScgX0KbB8cE1jEWME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZeWrGtTb; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cCCp0jSF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716902202; x=1748438202;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tP9LNLHcHcid8pBq2Y+wDHSSdjrKRVd8ZjilPzbswnE=;
-  b=cCCp0jSFvxZT6u1WvjwYx2FwGvWQWAOjGwFx/+tFdwdoWpQTfKrg1p6m
-   4VUeYEZJl5A20Z1Hbn9YQ1iX3bSBJGykTNju0hgdjYS8wdcP10y/7zvd1
-   Rz8qoEW5XX3jX/EcuP0cCnlkBjGzhIU1/x54ezccj48CQQA6IdFi6yMwz
-   2vTOEElFW/4LXH/7JObW/dAbUkoaSrj+wJnJY8vA1v8KoYMxNoa1o93ke
-   jvxThY57w+vxrXnVzW99ENP3SASDcel6rLFxFOPLTg93UYntkAS0tEUZM
-   fBc20Cr1H+zEm0lzlaSLRgx28whmINs0mZYUspBOKs7EN+hcomWCgwA1N
-   w==;
-X-CSE-ConnectionGUID: 551OQc4rT2mCdh2chQTUyw==
-X-CSE-MsgGUID: uioFgdQ2RPmWr6vUhqsCsA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13016929"
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
-   d="scan'208";a="13016929"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 06:16:40 -0700
-X-CSE-ConnectionGUID: oAOqOddLRqGQgH5dTxqg+w==
-X-CSE-MsgGUID: 5MmUvP+QSB2ns0Y4VCSVvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; 
-   d="scan'208";a="34983502"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 28 May 2024 06:16:35 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sBwgr-000CDP-1B;
-	Tue, 28 May 2024 13:16:33 +0000
-Date: Tue, 28 May 2024 21:15:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>, frank.li@nxp.com, will@kernel.org,
-	mark.rutland@arm.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, john.g.garry@oracle.com, jolsa@kernel.org,
-	namhyung@kernel.org, irogers@google.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	mike.leach@linaro.org, peterz@infradead.org, mingo@redhat.com,
-	acme@kernel.org, alexander.shishkin@linux.intel.com,
-	adrian.hunter@intel.com, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v11 2/8] perf: imx_perf: add macro definitions for
- parsing config attr
-Message-ID: <202405282055.sHBcNC4i-lkp@intel.com>
-References: <20240528160523.1695953-2-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZeWrGtTb"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2bfae86f1ffso152886a91.0
+        for <imx@lists.linux.dev>; Tue, 28 May 2024 06:19:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716902378; x=1717507178; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5cMzI+v8sDAeyKiAtvYu0nmQOVHCMm5QhUO/fz8L32w=;
+        b=ZeWrGtTbB4+O74gIDUYi0XjMpTPtzQVQV/zXAbMW9jLOvaxfLNWYx5Xo9fdHhoc3ZJ
+         +xHZer07muvAHR2NVBc8qFBv2bsFPmslNIrlTOMSTlCbqVNAL7/GfTx38Qy9uGuUzJLv
+         WrvKtyH1hZO1imL/HT8iWJIsZzyXbCUE2ndcMJmOqwFq8HA9fYv4ZtmT9uBxDSq42qH7
+         28IzV1L9KP66hhNcFuqR1WJCPkJu/vs0qEJmLUyLys2bsVOIKHRSSb97eUd0L73H31jM
+         AdTv2bSWXz7nsQMkN2mbjw0j2bMl35GbK2DkdYpe/lnP6kGXluZTCvNlxqNXe5DDAVPk
+         PSFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716902378; x=1717507178;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5cMzI+v8sDAeyKiAtvYu0nmQOVHCMm5QhUO/fz8L32w=;
+        b=QbiwO3JKPKYZp+Hknt5fia2e7MgpJ9tjvVmL6CatomlUSZNE33KrAMASXs2kjTB4Ql
+         0amoFVnwqqzAUVivWTCdycDvkgSAxt1QML4L8p/YYvm1e1tcSfQOvfdbvoktSNlJ5EyP
+         +sAOhU9BXrmzEA71UENTWGYIGVQb9ujYP0da8u93GzB/nI+i0maVeFcCCu2Wnv1pmf0v
+         vbxtcadIaVlkG6A79VmSTNTxUBrvlSsKFfTPz2FdUWbEJhEmnPJNqOfBPK0vbQro7bNO
+         KWp2XpduYhh0kwA5yE8YBW2ebuo1ybhtD7bSgKDUEgIcYQLkz2VUtFQSsyqIzMintmLo
+         2Yow==
+X-Forwarded-Encrypted: i=1; AJvYcCU6E06y3nlQ9hvApncMdJyXISLfidcregWIq0wIdRtbIJrU966b3CEQEGdgSDcXpXWd1p8GJMWeThyVG/fRuWmlpmhF
+X-Gm-Message-State: AOJu0Yx1tD1u+VnaZOrx8vhhPBxvNj8jw4/FlMLUjQ67t4E3syLF79BR
+	7EfVKw+fVhDSYAqNqTyTZ1RtweE/GB4UC4lYjFcyDNnmsVjHpHP+zhOcLl5t0YHx+Hv3Nqy452i
+	o2lPq3Z3+uwV5gY3upZyjMVZEOMU=
+X-Google-Smtp-Source: AGHT+IEX2lE0VCcvC7pGoKnB7c+rFQvdDWmPp7YXpTSFlvIP9+457a+iyNl7IkydoZmoCqXRmbTtbTKPReQBamn74Ic=
+X-Received: by 2002:a17:90b:a58:b0:2bd:e950:dfa5 with SMTP id
+ 98e67ed59e1d1-2bf5ee1f6c6mr11120702a91.2.1716902377828; Tue, 28 May 2024
+ 06:19:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240528160523.1695953-2-xu.yang_2@nxp.com>
+References: <20240528094022.2161066-1-linux@rasmusvillemoes.dk>
+In-Reply-To: <20240528094022.2161066-1-linux@rasmusvillemoes.dk>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 28 May 2024 10:19:26 -0300
+Message-ID: <CAOMZO5BfwMrQGiaN07VC4ZUiTPjkW=epbckOWs2GAWG0fMXERw@mail.gmail.com>
+Subject: Re: [PATCH] serial: imx: stop casting struct uart_port to struct imx_port
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, linux-kernel@vger.kernel.org, 
+	linux-serial@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Xu,
+On Tue, May 28, 2024 at 6:40=E2=80=AFAM Rasmus Villemoes
+<linux@rasmusvillemoes.dk> wrote:
+>
+> struct imx_port does have a struct uart_port as its first member, so
+> the current code works, but it is not how kernel code is usually
+> written.
+>
+> Similar to many other serial drivers, introduce and use a
+> to_imx_port() helper based on container_of(). No functional change.
+>
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on perf-tools-next/perf-tools-next]
-[also build test WARNING on tip/perf/core perf-tools/perf-tools linus/master v6.10-rc1 next-20240528]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yang/perf-imx_perf-add-macro-definitions-for-parsing-config-attr/20240528-160104
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git perf-tools-next
-patch link:    https://lore.kernel.org/r/20240528160523.1695953-2-xu.yang_2%40nxp.com
-patch subject: [PATCH v11 2/8] perf: imx_perf: add macro definitions for parsing config attr
-config: arm-randconfig-003-20240528 (https://download.01.org/0day-ci/archive/20240528/202405282055.sHBcNC4i-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project bafda89a0944d947fc4b3b5663185e07a397ac30)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240528/202405282055.sHBcNC4i-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405282055.sHBcNC4i-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/perf/fsl_imx9_ddr_perf.c:11:
-   In file included from include/linux/perf_event.h:18:
-   In file included from include/uapi/linux/bpf_perf_event.h:11:
-   In file included from ./arch/arm/include/generated/uapi/asm/bpf_perf_event.h:1:
-   In file included from include/uapi/asm-generic/bpf_perf_event.h:4:
-   In file included from include/linux/ptrace.h:10:
-   In file included from include/linux/pid_namespace.h:7:
-   In file included from include/linux/mm.h:2253:
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/perf/fsl_imx9_ddr_perf.c:46:9: warning: 'CONFIG_COUNTER' macro redefined [-Wmacro-redefined]
-      46 | #define CONFIG_COUNTER          GENMASK(15, 8)
-         |         ^
-   ./include/generated/autoconf.h:377:9: note: previous definition is here
-     377 | #define CONFIG_COUNTER 1
-         |         ^
-   2 warnings generated.
-
-
-vim +/CONFIG_COUNTER +46 drivers/perf/fsl_imx9_ddr_perf.c
-
-    44	
-    45	#define CONFIG_EVENT		GENMASK(7, 0)
-  > 46	#define CONFIG_COUNTER		GENMASK(15, 8)
-    47	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
