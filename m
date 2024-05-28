@@ -1,150 +1,316 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2052.outbound.protection.outlook.com [40.107.241.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2357716EBE2;
-	Tue, 28 May 2024 15:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716911890; cv=none; b=X+wUDMLb9NymVyBw9muuOovm9435Wwkm/92Kb259brcqjzN7bWNC3cStHdvBlf2BO1JLSG0Q04qLcWjU2T/pGQvmFh7Ree7ErsR2xCllHdlpjfZI+o2cOJV8oCjgTkBens7etAfF+zOvYGIsxKV3K9hr2k6FrqRmG1zJog4m9UE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716911890; c=relaxed/simple;
-	bh=c5lGEXQwzulh39BNNvVK3ComcUQeEWk6Pg0H6NWEfbE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ppoe03qIJlkCJKYymswiKMIYuiEro2iN56zHPdD5wXNgqJWK0DGPTTFlOvOzkips1Xbhpqnyimut00F/W8vQ7AogKURsQ1do2Fy6pZ69CezNM3PtB/omGLXsSqPxnfeSsaZZkDm3jGH/+aEOOYIq7doe+z91BGMa69oYoUNJWkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si2wh7RR; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155982576B
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 16:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716912108; cv=fail; b=GdNevsUKXcl7I+4/kmgGg+TaCnnss8lrrB+dnrFv0+Lx35Q4LCk5SXOLybc1NWlGkysKRtMZ2cyRQ6KALWXtRJjGQeiFrKxe3LlWmneyf3hrQ0kyFYrhhpRRioNCuJ5KMeF0/KZPdZDcfWPLY3vUuMMB2FfYG7aP4rxuhe/hXvE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716912108; c=relaxed/simple;
+	bh=bxzsL22r3fPQLXcwWMDm5NZ4PuE7AcupE1uceo7R2kA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ptsFX2M4oAnNsqAIKbtUhvQdSYywTDaOTmr2wl+dmzhpnSjffDUqiX7b6YOVKNs6AOuygtnV1zMWs5RZ1ntksnMgK4nCntD0ED42Vu2v+4qVt50PLB6ZXjMyDL6HXD4/WpEI1zN9lTIZB/go7rIsxfIdC95PGJp848CWctkQiqw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vol0P5Cc; arc=fail smtp.client-ip=40.107.241.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si2wh7RR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76209C3277B;
-	Tue, 28 May 2024 15:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716911889;
-	bh=c5lGEXQwzulh39BNNvVK3ComcUQeEWk6Pg0H6NWEfbE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=si2wh7RRadbQhWij7/FlclQAb1uil6gL8wD06Q08zbUhVkIq5tv/8K0cPHIkXVV27
-	 +nzaKAAKApwgOKNnIqsruYCGEx2VC6rKeobQXp+RWqLYzINbTSOR0NO14GkxTvLKLO
-	 L31lR8XlyC1mU3wLB7vJj0xBNokXvUvJQmLr9xrTcGe9oeDMroRnD7aZrza/pDVtph
-	 fX9URt5gU5Aov0kRfrcbQgQAb5hL65AVkSqJ4m/M3VnqKV2HJzJMr0kqODE6PQId04
-	 z282TuXRvFX1/Wchj+O8fCVTJEBjzMf3h38/U/fxYf8LsiYDByZiIT09A/+tt94Pyy
-	 P4BsQUcQyqSFw==
-Date: Tue, 28 May 2024 10:58:08 -0500
-From: Rob Herring <robh@kernel.org>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
-Message-ID: <20240528155808.GA695520-robh@kernel.org>
-References: <20240522215043.3747651-1-tharvey@gateworks.com>
- <07250029-7cea-4a82-9e70-22e0e6f7fb37@linaro.org>
- <20240523-vividly-sequester-d85ac7bccbbd@spud>
- <CAJ+vNU3fQt=6t3a_QFU_3jb5mTVLGJiptPnGEmWvvXZYGEPOFQ@mail.gmail.com>
- <20240524-cavalier-outthink-51805f49c8fb@spud>
- <8007abef-38bb-4d7d-a453-00bb5e6bede5@linaro.org>
- <CAJ+vNU3Rh6f-HrFbBLxNXVP1PwsGh8OyGmmGJBv6+GRwZaTXgw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vol0P5Cc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cyfbM7vSW6frlQRcdMXrfXrWjBTH6uHHN3wGSt7A/HyHqjmfZgHRXb6jSQvG0HmN+sg6rImbsNKVOZvj+HB7XT8AhUdepB7igjMsz8m+tLK3Kj1uY7JRsByLI27pCpJMJotAbcTzCvfkUitK78Il9uJVJKFeboEEFeQocs+/Dq2WXxMeWB5scb6U4L4Inu3tiEspVoMlK1BkLql733KOhnVXSXvbhJUmOXUAcHxkK4yzHjrWBU9sYRa3Q5idEluNQfVif8tYz/8l8kRYkGFwWR/+BvJ4aKJeT4fdET7uTJQWOyhfGoSlRQjtWE4yZHmPhUgbb0woujh+px5MoTxcbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aHyCX0PxWzhsInV2LWN1zWRgnNkSz0TQX4Aiet07JIM=;
+ b=H5q6f2IQn6TLRXi9YaABI4rxZkDLAL7+Qdt54BZ+KXJjq+yGv5BcQ9o1S9DWBoCSbRDVvrCm6MKAQIyIFsiBAsccCUi1AQgui54USsDuQfxWZTidfgrSVTvWuKndgWnDMMWd8oNA0B/pvZroAQ9L49VTljQD0uI0rPB6fQb+xWiYOI0yUX0kFVmu6KjAiDtNZxZHRq83t3kE4cnQ4f9TlQCBuibFluE//Vg0Tacy40aVDyWhGT4qUuIn+XhIW70hP+scIbwCoX+Lz/BX82bRtP+txZxWyiMt+FXDWOFT6ivLeQz2h366uOw/2BxntKsNW5CkkrClpMmserzHEb1RfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aHyCX0PxWzhsInV2LWN1zWRgnNkSz0TQX4Aiet07JIM=;
+ b=Vol0P5CcX0VpeNL13V/aPEPmOP/aaDUEQkO+ZwSsAYfuJpB51Gp41gfh7PHScHQ6Pai1jmqlKWePtOWiJ7lDJ+qtHR3ie0P0Qzbq/s9emUOqeDIdgiKE2wWgknAClOvvS8Yb5aHvxmAX7aRqyYgks6SGgFxxsjzuSYzf06ky+0M=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB9255.eurprd04.prod.outlook.com (2603:10a6:102:2bb::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.29; Tue, 28 May
+ 2024 16:01:42 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7611.016; Tue, 28 May 2024
+ 16:01:42 +0000
+Date: Tue, 28 May 2024 12:01:34 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: rtc: Convert rtc-fsl-ftm-alarm.txt to
+ yaml format
+Message-ID: <ZlX/3ubifkR/RTl8@lizhi-Precision-Tower-5810>
+References: <20240520214614.863539-1-Frank.Li@nxp.com>
+ <a3c76bd2-f453-4320-8675-66ecb4bc6fc8@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a3c76bd2-f453-4320-8675-66ecb4bc6fc8@kernel.org>
+X-ClientProxiedBy: SJ0PR13CA0040.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+vNU3Rh6f-HrFbBLxNXVP1PwsGh8OyGmmGJBv6+GRwZaTXgw@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9255:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3dde4e5c-9d54-4811-b114-08dc7f2f777e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|52116005|366007|376005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?LacgbphlDu2YTWmGZHTQJSmZqxTJlihaJsaksBRKUU6BLnar/cjjeAQECNqr?=
+ =?us-ascii?Q?Txgoj2r4YKL1a5wk6+2LRVGDTLo4lcYKyRzNimJe46xZ3v6Rq/1qDtFLEAxE?=
+ =?us-ascii?Q?ISqmUSDrfQ6CZRfcRex4OTmd/RlpzygTOP/4I2PgCZF8S2wb/ojYmGaVlWHq?=
+ =?us-ascii?Q?RiupZA7jL0oPdk+G3C8+MtEm85RyTMvt6vpGOsT8gph6r4XxXVqnBU/6XA8A?=
+ =?us-ascii?Q?jujS3y11wcZ021KxJ8P0xWoT3oSMX584JHORzCfbFoVvfHzeddBt+hqfqP8l?=
+ =?us-ascii?Q?LwRu1xcZ1lq79E3F9mBYp1wpxY4XzIYXfg5E/qBKx+hZs0nSu/a5SExhtlRr?=
+ =?us-ascii?Q?S47c6QmXgE9Bxmw4i/7HlI0mdz2JaacQt1V267hUxg7p6Cyzu985yp+ezfoK?=
+ =?us-ascii?Q?uJ5DOVc7NHL4t1O2xViTlbs4nWxEEzqwP9uIwQUo7cSQGOEMLU7gPH+Ei76E?=
+ =?us-ascii?Q?N/IfRO1FwFw80VLQj9KqqXqPxzFzbTpPxoHoNkymhMQiJEyTHhCB4zhjXl76?=
+ =?us-ascii?Q?aOEkUQeqLALVSc7y5zP8uvY8N1zSKDflKKPOeGrQBqeFxdPFcvnTDUNJiNC2?=
+ =?us-ascii?Q?iEABX+UEGiIlXt63H761GnzoyD9Z19eE5eGlqUu+OSeNtUa2lWxWGkYp/BJ9?=
+ =?us-ascii?Q?lYXUJfLpXcn2Bg3StrMx+FN132pEhDk4LHinEm8gOkuVk4OYyl2g/ejLRCfo?=
+ =?us-ascii?Q?JBsSHV9BhJUL76q/faaZWAH+fnAgmc3Ez3o25GBbT9vdHa1RwKO8ZXb5PFne?=
+ =?us-ascii?Q?DqLyRHnSqdjszSy3YSrlI0/gWphRisW50REvFKxpX6aZcwaqv3dQNzDfRHGv?=
+ =?us-ascii?Q?06HQLGcFZCUvXJshpd9H0NRaLMPwy+iCO8ga22jw99rj3rTSNQYg/HUh/5Zr?=
+ =?us-ascii?Q?PmgHhMT+AjXISkWjByVWcQar0JQvHfkOoegER6Wval9gDdBf4yvf97Bx5bRc?=
+ =?us-ascii?Q?YeRBTPpv3Q4xb2jFRiG14gvll3C5jHHakGYA9w8PnWjWXxuXdg4ITs5re9EO?=
+ =?us-ascii?Q?c/Tzh0UuV/nFGBibA7JfCyhzkPSpAFmEtrHpzpV5vA9H/Cgi1JaimF90pP/O?=
+ =?us-ascii?Q?+NPKvHVfpqTrSsOM25jxsKd1A3kGq4HJu7ed3ZpBgf5boIcR3IdCbYht+ZWV?=
+ =?us-ascii?Q?o7xNXfbqYlq09q7Q+zKefCb0WXoUkxengHdLcqID7ENWwPrCZh2ZEhgnG3Ty?=
+ =?us-ascii?Q?dBA6QOXBNxUGhpn5xuY7gjw6NC1cvna3QY3riGGbdVRracvnrpX49a+yw41U?=
+ =?us-ascii?Q?ydJiEiVoVD7eXenDkWcBe2NOFKWDHW28S45Ysqplu8rIgmbdxGMFxxnzMsyM?=
+ =?us-ascii?Q?Xgw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(52116005)(366007)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/th4eRpPSNo4dr8WjzLm0/yrpAXPyxgoRCCmaiJjS79KjB4zIdHBLu966KY1?=
+ =?us-ascii?Q?lFayBzk4x2Oq8XsWCYGoPgoGHNR1Y99fG3LTXWFrIN2i4YQIou4y8suQZ2ih?=
+ =?us-ascii?Q?mMUd5UgVFrYu45lZkPClRf3+pr+AbcPsaGY9IcqO84RZnNgQVBZargswZRfm?=
+ =?us-ascii?Q?2kY2eFVfdxfDhoHrDgBQYQwpP4hZ8ih+kap9HDyFgp6svF0PcGr4n8ap4Kpq?=
+ =?us-ascii?Q?2VWaS0rCre02ykkO+1ZNZYAnJRv5hj06w1b3nzg0H+p9uMwKHxkchNerisUF?=
+ =?us-ascii?Q?3fN66Kup6oP3GXcMXxUBdrY0ikaZSBAsARcoFap5+8qA1QGd//4C4cW+6SCA?=
+ =?us-ascii?Q?wdl4gKnXJi2k7FmzbkTsTPNmT7/dgkCvBD+nl9Ihk94RmWE0vpcrw4PNQYYS?=
+ =?us-ascii?Q?Ay5E7sG8GrDvwdYSLBBBHTaQZBUgW542+X1bW3IOvOlK3/79czEzaYO8pJ8P?=
+ =?us-ascii?Q?wHPN9kcL/zSScuGKaD1exgtPDJ0h54uYDyBR8FsOsyjpJWSHkvhFOlW0fIp+?=
+ =?us-ascii?Q?OyzIRlnr/5ZZD1xzW4walV0ip0mCCLyK2e1Njothhs/F2J04CBRqCcUxy0rS?=
+ =?us-ascii?Q?3g7YY7NKHjxUxKn3CrG9SAvBsSkvgHVQT3J5Q9Mm56W71aHht6mfGeENbYJa?=
+ =?us-ascii?Q?kC7qEqBjl6xphp2ApIhgoADYVhHNnp0PuMQydVQtJc+LWlJ7I5xyzY0Am88j?=
+ =?us-ascii?Q?+Z8zvKQhL359JlZ+9lr65mO9K1qfaSnCxrjEUW4EBO3ZoMrmW9+QtzUULvKl?=
+ =?us-ascii?Q?If88Cu8DVUm7ojKr0lgYt5qepvqIpovuo3kqKweBFChOfJmwzcl4oD15fTG0?=
+ =?us-ascii?Q?RSVZ2qEipdixSWq/CthmE/yTXzuyRVFRTQdlm0HTIWEXlyg1ly+L1stbTTTo?=
+ =?us-ascii?Q?QzNxrsYXoM49tnHRQ1wyiJ0/LqaDGsgpsewofId3RaYIpiM6K4qrGEqBoDgi?=
+ =?us-ascii?Q?76geLZ1+SwFl43qqUbxGFiBETHdn/T/7e3ij/4yUuBV+MGmNBd75f2VITIZU?=
+ =?us-ascii?Q?N7KNMxEuiskBblLGlK8zzwoVPmfddE6iHZj7aaQBVHexN+J18MW4r2CQv+eZ?=
+ =?us-ascii?Q?afqZOjbhgdqz/ONicZgzdhZRMdHDzMKhmNz8rY2v9p/Ku+3YchVQYq5UClKJ?=
+ =?us-ascii?Q?gz018VlBQWsKok7r0IbNnJtKah0sF3LMKyg+si1VenTi+nT2q7ztBQyOR0Y8?=
+ =?us-ascii?Q?Ni8PJGbDUpV++VZSHEyw9ZCE/EIviFoy3VKUz28AI1VPsvIYNchBNXwEVL9s?=
+ =?us-ascii?Q?vqIxudLQOGC+J9OYSo5BL+ELiwA6RSd1ZprkAfH28VLGYT4aaYggIeMUSXGq?=
+ =?us-ascii?Q?59ZV/Eco+Qvlwne5QSQtvG1By0IcNlhLvSPruXbL/r35dzG22AR3nfLEVRHs?=
+ =?us-ascii?Q?yKnLoyqunRB4Hfo98CRmhVKVcXTc/rQbUhHPJW7R+Jm8CWoRYc8mLfcx4/FV?=
+ =?us-ascii?Q?ap3gp4CCOQbs3tpYh0uDNyvgotU/4WgxFrJg4ytVG/CNZaeLnwj7EIyoLJ5w?=
+ =?us-ascii?Q?1YJiBGhBLXpUmfbIBbQY1rJ2z4UAfOOiYzuCumklhzekpvHLhx73LcYVq+do?=
+ =?us-ascii?Q?t8NmT65tf4BUD1tYVB8xfI/sH8s6PUo+Ko0bNxKU?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3dde4e5c-9d54-4811-b114-08dc7f2f777e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2024 16:01:42.8037
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9Ww68Evmz4TZFWPxfMKZ4M1a/RsyxIrPHT2TrgjgFeryELS4RCOGbQVKrj2Bdq8EWqITkhmf4dnNqj5lArjjBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9255
 
-On Sat, May 25, 2024 at 12:58:18PM -0700, Tim Harvey wrote:
-> On Sat, May 25, 2024 at 11:34 AM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> >
-> > On 24/05/2024 20:40, Conor Dooley wrote:
-> > > On Thu, May 23, 2024 at 04:04:50PM -0700, Tim Harvey wrote:
-> > >> On Thu, May 23, 2024 at 7:47 AM Conor Dooley <conor@kernel.org> wrote:
-> > >>>
-> > >>> On Thu, May 23, 2024 at 09:02:46AM +0200, Krzysztof Kozlowski wrote:
-> > >>>> On 22/05/2024 23:50, Tim Harvey wrote:
-> > >>>>> The GW7905 was renamed to GW7500 before production release.
-> > >>>>>
-> > >>>>> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-> > >>>>> ---
-> > >>>>>  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
-> > >>>>>  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >>>>>
-> > >>>>> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > >>>>> index 0027201e19f8..d8bc295079e3 100644
-> > >>>>> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> > >>>>> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > >>>>> @@ -920,8 +920,8 @@ properties:
-> > >>>>>                - fsl,imx8mm-ddr4-evk       # i.MX8MM DDR4 EVK Board
-> > >>>>>                - fsl,imx8mm-evk            # i.MX8MM EVK Board
-> > >>>>>                - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
-> > >>>>> +              - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
-> > >>>>
-> > >>>> That's not even equivalent. You 7500 != 75xx.
-> > >>>>
-> > >>>
-> > >>>>>                - gateworks,imx8mm-gw7904
-> > >>>>> -              - gateworks,imx8mm-gw7905-0x # i.MX8MM Gateworks Board
-> > >>>>
-> > >>>> Compatibles do not change. It's just a string. Fixed string.
-> > >>>
-> > >>> I think there's justification here for removing it, per the commit
-> > >>> message, the rename happened before the device was available to
-> > >>> customers.
-> > >>> Additionally, I think we can give people that upstream things before they're
-> > >>> publicly available a bit of slack, otherwise we're just discouraging
-> > >>> people from upstreaming early.
-> > >>
-> > >> Hi Conor,
-> > >>
-> > >> Thanks for understanding - that's exactly what happened. I'm in the
-> > >> habit of submitting patches early and often and it's no fun when
-> > >> something like a silly product name gets changed and breaks all the
-> > >> hard work.
-> > >>
-> > >> The board model number is stored in an EEPROM at manufacturing time
-> > >> and that EEPROM model is used to build a dt name. So instead of GW7905
-> > >> which would be a one-off custom design it was decided to change the
-> > >> product to a GW75xx. The difference between GW7500 and GW75xx is
-> > >> because we subload components on boards between GW7500/GW7501/GW7502
-> > >> etc but the dt is the same.
-> > >>
-> > >> If there is resistance to a patch that renames it then I guess I'll
-> > >> have to submit a patch that removes the obsolete board, then adds back
-> > >> the same board under a different name. Shall I do that?
-> > >
-> > > I think this patch is fine - other than the inconsistency that Krzysztof
-> > > pointed out between the "renamed to gw7500" and the "gw75xx" in the new
-> > > compatible.
-> >
-> > I am not a fan of renaming compatibles because of marketing change,
-> > because compatible does not have to reflect the marketing name, but
-> > there was already precedent from Qualcomm which I did not nak, so fine
-> > here as well. Double wildcard 75xx is however a bit worrying.
-> >
+On Tue, May 21, 2024 at 09:59:00AM +0200, Krzysztof Kozlowski wrote:
+> On 20/05/2024 23:46, Frank Li wrote:
+> > Convert dt-binding doc "rtc-fsl-ftm-alarm.txt" to yaml format.
+> > 
+> > Change example's reg to 32bit address and length.
+> > Remove unrelated rcpm@1e34040 in example.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > 
+> > Notes:
+> >     make dt_binding_check DT_SCHEMA_FILES=rtc-fsl-ftm-alarm.yaml
+> >       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+> >       CHKDT   Documentation/devicetree/bindings
+> >       LINT    Documentation/devicetree/bindings
+> >       DTEX    Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.example.dts
+> >       DTC_CHK Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.example.dtb
+> > 
+> >  .../bindings/rtc/rtc-fsl-ftm-alarm.txt        | 36 -----------
+> >  .../bindings/rtc/rtc-fsl-ftm-alarm.yaml       | 61 +++++++++++++++++++
+> >  2 files changed, 61 insertions(+), 36 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
+> >  create mode 100644 Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
+> > deleted file mode 100644
+> > index fffac74999da6..0000000000000
+> > --- a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.txt
+> > +++ /dev/null
+> > @@ -1,36 +0,0 @@
+> > -Freescale FlexTimer Module (FTM) Alarm
+> > -
+> > -Required properties:
+> > -- compatible : Should be "fsl,<chip>-ftm-alarm", the
+> > -	       supported chips include
+> > -	       "fsl,ls1012a-ftm-alarm"
+> > -	       "fsl,ls1021a-ftm-alarm"
+> > -	       "fsl,ls1028a-ftm-alarm"
+> > -	       "fsl,ls1043a-ftm-alarm"
+> > -	       "fsl,ls1046a-ftm-alarm"
+> > -	       "fsl,ls1088a-ftm-alarm"
+> > -	       "fsl,ls208xa-ftm-alarm"
+> > -	       "fsl,lx2160a-ftm-alarm"
+> > -- reg : Specifies base physical address and size of the register sets for the
+> > -  FlexTimer Module.
+> > -- interrupts : Should be the FlexTimer Module interrupt.
+> > -- fsl,rcpm-wakeup property and rcpm node : Please refer
+> > -	Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> > -
+> > -Optional properties:
+> > -- big-endian: If the host controller is big-endian mode, specify this property.
+> > -  The default endian mode is little-endian.
+> > -
+> > -Example:
+> > -rcpm: rcpm@1e34040 {
+> > -	compatible = "fsl,ls1088a-rcpm", "fsl,qoriq-rcpm-2.1+";
+> > -	reg = <0x0 0x1e34040 0x0 0x18>;
+> > -	#fsl,rcpm-wakeup-cells = <6>;
+> > -};
+> > -
+> > -ftm_alarm0: timer@2800000 {
+> > -	compatible = "fsl,ls1088a-ftm-alarm";
+> > -	reg = <0x0 0x2800000 0x0 0x10000>;
+> > -	fsl,rcpm-wakeup = <&rcpm 0x0 0x0 0x0 0x0 0x4000 0x0>;
+> > -	interrupts = <0 44 4>;
+> > -};
+> > diff --git a/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
+> > new file mode 100644
+> > index 0000000000000..69b44e9920033
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/rtc/rtc-fsl-ftm-alarm.yaml
 > 
-> Hi Krzysztof,
+> fsl,ls-ftm-alarm.yaml
 > 
-> Thanks for understanding. The double-wildcard is again a marketing
-> tool. All GW75** use the same device-tree by design. The boot firmware
-> that chooses the device-tree understands this and for a GW7521 for
-> example would look for gw7521 first, gw752x next, gw75xx last.
+> or
+> 
+> fsl,ls1012a-ftm-alarm.yaml
+> 
+> > @@ -0,0 +1,61 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/rtc/rtc-fsl-ftm-alarm.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Freescale FlexTimer Module (FTM) Alarm
+> > +
+> > +maintainers:
+> > +  - Frank Li <Frank.Li@nxp.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - fsl,ls1012a-ftm-alarm
+> > +      - fsl,ls1021a-ftm-alarm
+> > +      - fsl,ls1028a-ftm-alarm
+> > +      - fsl,ls1043a-ftm-alarm
+> > +      - fsl,ls1046a-ftm-alarm
+> > +      - fsl,ls1088a-ftm-alarm
+> > +      - fsl,ls208xa-ftm-alarm
+> > +      - fsl,lx2160a-ftm-alarm
+> > +
+> > +  reg:
+> > +    description:
+> > +      Specifies base physical address and size of the register sets for the
+> > +      FlexTimer Module.
+> 
+> Drop description, redundant.
+> 
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    description: Should be the FlexTimer Module interrupt.
+> 
+> Drop description, redundant.
+> 
+> 
+> > +    maxItems: 1
+> > +
+> > +  fsl,rcpm-wakeup:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> 
+> Please describe the items (see syscon-like phandles).
+> 
+> > +    description:
+> > +      phandle to rcpm node, Please refer
+> > +      documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> > +
+> > +  big-endian:
+> > +    $ref: /schemas/types.yaml#/definitions/flag
+> > +    description:
+> > +      If the host controller is big-endian mode, specify this property.
+> > +      The default endian mode is little-endian.
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - interrupts
+> > +  - fsl,rcpm-wakeup
+> > +
+> 
+> Missing allOf with ref to rtc.yaml.
+> 
+> > +unevaluatedProperties: false
+> 
+> becauase otherwise above does not make much sense... unless this is not
+> a RTC?
 
-You haven't documented the other 2 though.
+Sorry! which one doesn't make sense? I suppose not "unevaluatedProperties".
 
-How do "all GW75** use the same device-tree", but then there are 3 
-possible DTs for just 1 board?
+Frank
 
-Selecting a DT is not a unique problem. We don't need unique 
-solutions. There's the QCom board-id proposal[1] and OS provided DT[2] 
-which are addressing similar issues.
-
-Rob
-
-[1] https://lore.kernel.org/all/20240521-board-ids-v3-0-e6c71d05f4d2@quicinc.com/
-[2] https://lists.linaro.org/archives/list/boot-architecture@lists.linaro.org/thread/DZCZSOCRH5BN7YOXEL2OQKSDIY7DCW2M/
+> 
+> > +
+> > +examples:
+> > +  - |
+> > +    timer@2800000 {
+> 
+> timer or rtc?
+> 
+> > +        compatible = "fsl,ls1088a-ftm-alarm";
+> > +        reg = <0x2800000 0x10000>;
+> > +        fsl,rcpm-wakeup = <&rcpm 0x0 0x0 0x0 0x0 0x4000 0x0>;
+> > +        interrupts = <0 44 4>;
+> 
+> Include proper header and use defines for GIC and flags.
+> 
+> > +    };
+> 
+> Best regards,
+> Krzysztof
+> 
