@@ -1,52 +1,52 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B076F079
-	for <imx@lists.linux.dev>; Tue, 28 May 2024 07:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA837346D
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 07:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716880319; cv=none; b=jNRvpP83RgDt5XPUkzhtZXdjSOcDPOwjeINNXyGh08pMXAtJssr672u5wSYkm68VkWkOu/+9wQTaq2DvmTllSJHU5R2hKKSban+MRDjnnVofaheyzxHrAYvtyLzXQj8zzA52NeO3HwAg3w404IY6Fqcc2wf4IebmlFONWtJggLU=
+	t=1716880325; cv=none; b=Q1WRCw+wXgV9JDCRMNzZk8GdJHn1UFgmdYy1xy07VUFUhN6KPd3waSDwBTGF7h/N8AUPC2/DIQLQ1bQTMbVdHow5epZwsWoyW7VW3IIs8AwZFOld5qxV32BjXXCq01WkEAZz0lOtuHw1Z4QvMHm3D17Bej/AgxB+piwgMZO19Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716880319; c=relaxed/simple;
-	bh=3SuIiVs4ex3dKgKjRY4GThiMcpkSuoZTjKwprnKlHC0=;
+	s=arc-20240116; t=1716880325; c=relaxed/simple;
+	bh=elvAq7UtGknIb6crDSiKS9oRZqkD//5l72kIWJITzhI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K4PDt+9MoDMTi3Xn38jH+Beo2bLoRuX4p/xtP5vX1q6zrbA4oCjgc517SSSgax2WKR9WpIsvLKkKpIingRHTsC2YMNWOx7ZK8t5ynDE33omf8/6t+/eFhVX/FT06+wW/lPdMJwiiHVzd/c6QsewMhgMNCWqo3lgPQWbEJqTOaX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=eRnjEcaJ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=V+4VRrue reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=bbvVcmbyD6EOzVWsaFnj+fiyIFfD/vYh2cIBzUv1/h9SoYMWual2+dPo/wwoP+0aMzP34G8D5/9Vp32xbsmdowDSB1RNIUsdzrM5NKlRUin11yPiOMZuoRZ842SZit+5ckqdatKbeZzfL79d+lYiPCS7OJvs2QBYg//vT7pF3vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Z2ANtBZa; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=JPGPlKqC reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="eRnjEcaJ";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="V+4VRrue"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Z2ANtBZa";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="JPGPlKqC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1716880317; x=1748416317;
+  t=1716880323; x=1748416323;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dHKIs/KoK2vU5Vx0u2qFk5vGdrktdeEflK3UPvVVUsg=;
-  b=eRnjEcaJoXo/rYp9jd0VtW+VKJ0rsYn/76Ei/uE4G34tRD+vgB/pXrQJ
-   h9YdQAloIn48HeS19rZnpkZLLpfmOGq1oD3kyIAjglbt1zpyV7t3LGcSb
-   WQWEkNIDFthB1UF63VzC1IBuu3Vxc8H9myzZcDE3ypFOe4zk+6IIvqyPH
-   +IJP9OH6Zo/9sIsVjbW/AQGeKPYHl/DoT5KpwIBF8AEkeJ92RLkP+nWAp
-   YabU3wYfZItlRC/4l0FMciFnI1RraMsqkxwGg1Zs5nylfI7FqtN+DhjF9
-   Od3TFvKIFn2Nkevtpsqf98UTzopzv2tWWabDBYIfvQvyUot3mZ4SkElYy
-   w==;
-X-CSE-ConnectionGUID: ZN0Rvt3yQa+vyBonDSWnLQ==
-X-CSE-MsgGUID: 6ROlfigfQbmWuUvnB2TSUg==
+  bh=T2u4zEaRlGBpo4Yx+BpIMgm18+yuNbm2IErR00tf+e4=;
+  b=Z2ANtBZawf06y0uvnuvRkj2v9iLFDKmCHAgvW4OUThekADyMlIM0A+yd
+   Ik8g2Uq2KtX6kF+RuTC6u5oCalteh3k4M5Eq2T9yuL1EcQMbp0g3CHYah
+   Qq7yygv4KoQme1fMCbt7c/KrzagaTEEn98GCda5TI783aCogenoS00N91
+   rWmCcikLBKBBEIFRR6oZLprOwlOmb6Oe6nEXTGRxaJhDOLRXB36WvknB6
+   srRsTN1pSGfW/rf7ndD28IwUO2FAyr0PnINPiLwYGoUXW9Wg/DRi+gA5D
+   z1wScvJFVs76cTegf4zTHgBQVh/OSSFHr29kcvcUxzb3eO0BtohHL5h0k
+   Q==;
+X-CSE-ConnectionGUID: DFWmmDeIT7S3unEt0oJ7JQ==
+X-CSE-MsgGUID: DX3ya5D7SXmTvy0vBQrqew==
 X-IronPort-AV: E=Sophos;i="6.08,194,1712613600"; 
-   d="scan'208";a="37094739"
+   d="scan'208";a="37094743"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 28 May 2024 09:11:55 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4F9FA1641FA;
-	Tue, 28 May 2024 09:11:51 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 28 May 2024 09:12:01 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 69D811641FA;
+	Tue, 28 May 2024 09:11:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1716880311; h=from:subject:date:message-id:to:cc:mime-version:
+	s=dkim; t=1716880316; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=dHKIs/KoK2vU5Vx0u2qFk5vGdrktdeEflK3UPvVVUsg=;
-	b=V+4VRrueizZhPW5Uq0k6hT3bRdJ9fFRyKH+Y3dYMGAeCNel8NW6qTT/9a3sTplPsHvaDnT
-	jAC27dz5eDXRTr2+BOqfjBE/HdHcaEKwVjD0qTJGvct1aOaP9b9jHoqaWXlHA3iDHN/cHJ
-	62iIlA2iSeCy1eMcKd5Ub3srYGMTpcODgUrfQ0jHkCNiidUUBp1Cw9Hb01FIQSs3M4g9RV
-	bzDc2C718GXngwkMNSc0hPMCPZL7f9XSZq70eOAPcqTtSzqi0kGOFx//bnm7odr5X6fpM/
-	4YoRMmvaAd5jBc2gA6NtBG1ZZSwOVhrEVIty3E9w9M4g65NsE8pHVTo2jp5xNQ==
+	bh=T2u4zEaRlGBpo4Yx+BpIMgm18+yuNbm2IErR00tf+e4=;
+	b=JPGPlKqCnnYg6Se19JlfY/mk26viejPo+9qzPngPhgTA0RRjaMaP+A4CvlAKxXsLyZbibi
+	9JHQdo6tAu2NLCVmDrkKqsegd74htoBAzDkAgIkYAOy0DMpa0ZKU/1LF965ePGzjK1sUkh
+	CFNMxV2wNaNqmphqSNRq9Pbyt5FJS4MF+pmZm1g+i2mm+rFB7wKpLSqWPAqdtJxXlNvqYa
+	N9VZ44uzbHz0BVLWnlZFKOExK8nNrouzkijknp4RH44zHT/7s6gFl1DJNX4PZEA+XY128e
+	lkeMME6Sg4Oy8EzEBmoNrjwAMonw5IJIKrebRNx6e6h035+ppM0Qty5ZN+pQPA==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Rob Herring <robh@kernel.org>,
@@ -61,11 +61,10 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v5 1/2] dt-bindings: interrupt-controller: fsl,irqsteer: Add imx8mp/imx8qxp support
-Date: Tue, 28 May 2024 09:11:40 +0200
-Message-Id: <20240528071141.92003-2-alexander.stein@ew.tq-group.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v5 2/2] arm64: dts: imx8mp: Add imx8mp-specific irqsteer compatible
+Date: Tue, 28 May 2024 09:11:41 +0200
+Message-Id: <20240528071141.92003-3-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528071141.92003-1-alexander.stein@ew.tq-group.com>
 References: <20240528071141.92003-1-alexander.stein@ew.tq-group.com>
@@ -78,63 +77,26 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Some SoC like i.MX8MP or i.MX8QXP use a power-domain for this IP. Add
-SoC-specific compatibles, which also requires a power-domain.
+i.MX8MP irqsteer has power-domain support, so use a dedicated compatible.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- .../interrupt-controller/fsl,irqsteer.yaml    | 23 ++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
-index 20ad4ad82ad64..aae676ba30edc 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
-@@ -14,7 +14,10 @@ properties:
-     oneOf:
-       - const: fsl,imx-irqsteer
-       - items:
--          - const: fsl,imx8m-irqsteer
-+          - enum:
-+              - fsl,imx8m-irqsteer
-+              - fsl,imx8mp-irqsteer
-+              - fsl,imx8qxp-irqsteer
-           - const: fsl,imx-irqsteer
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 8eb9f24007d00..fdaf7d5314384 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1996,7 +1996,7 @@ hdmi_blk_ctrl: blk-ctrl@32fc0000 {
+ 			};
  
-   reg:
-@@ -42,6 +45,9 @@ properties:
-   clock-names:
-     const: ipg
- 
-+  power-domains:
-+    maxItems: 1
-+
-   interrupt-controller: true
- 
-   "#interrupt-cells":
-@@ -70,6 +76,21 @@ required:
-   - fsl,channel
-   - fsl,num-irqs
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,imx8mp-irqsteer
-+              - fsl,imx8qxp-irqsteer
-+    then:
-+      required:
-+        - power-domains
-+    else:
-+      properties:
-+        power-domains: false
-+
- additionalProperties: false
- 
- examples:
+ 			irqsteer_hdmi: interrupt-controller@32fc2000 {
+-				compatible = "fsl,imx-irqsteer";
++				compatible = "fsl,imx8mp-irqsteer", "fsl,imx-irqsteer";
+ 				reg = <0x32fc2000 0x1000>;
+ 				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-controller;
 -- 
 2.34.1
 
