@@ -1,50 +1,35 @@
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC65816A39F
-	for <imx@lists.linux.dev>; Mon, 27 May 2024 21:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6109A954;
+	Tue, 28 May 2024 00:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716845286; cv=none; b=dJgM1k+rx3g9iybK7tlM3hJ3xwtv6W1ZqGsi49nVF2F23IImSQbkq1lAPdD5zh/bUynV3Ig0MQLmU4sav0QdeWikp4Sd9E0QrtnVI7soeO8jP+denvISjoj+oz7MnlC4ge6ghZSr1qprmTeFDz4gBIADbdk9UDrSlZWvAcy7JWg=
+	t=1716854430; cv=none; b=qUU5j6oH+qcyuxNwr9K5M109Zv0TlDR8UVT4dEugUBXR4IDOXylf9BVdN/TJLgtwe2lNH5OtSZezH1h+h3cSDJK6TxTVvZsoLgRuoiwldRoUIddfEV+ipm+ofp7slLkJOsU6F9U+iY2aD4s4q/2DvmGKLuBW8La0jlFSj8TlrAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716845286; c=relaxed/simple;
-	bh=AtdSj8Gi5BjDdlTV9ZqdN7OUIGwv22hj9Vwr0vi/QVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k46cYzMGY9WMa3Lga+URMCWpbqzncZkMlkHiU5EV6e7NhDCa2ntmfRNiq7poJvxLwyeXMrlt1/QmklIEJLF92LE8Dso5QvGVsILxNnGM/kFgXnZkMuHFt83hRgleuQQmHlc+wn5+JaCx+9V3uwaEr2WcKnUKB3sxHbZmByQSdZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
-	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-	id fd1a1bdb-1c6f-11ef-8e2a-005056bdf889;
-	Tue, 28 May 2024 00:27:58 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-mips@vger.kernel.org
-Cc: Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v1 11/11] pinctrl: pinmux: Remove unused members from struct function_desc
-Date: Tue, 28 May 2024 00:24:46 +0300
-Message-ID: <20240527212742.1432960-12-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527212742.1432960-1-andy.shevchenko@gmail.com>
-References: <20240527212742.1432960-1-andy.shevchenko@gmail.com>
+	s=arc-20240116; t=1716854430; c=relaxed/simple;
+	bh=TkeI3JIJvfkemQRWIxPmdnV4KioeLN3NQXGMEsBVYeQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=t+X90RK2Ix2+iZ4Ngt6MIgQ9SrD5GfapY+0jEjMVJwgtJu+aaioveQxBorrAXmopsySgENUT1RYEyJAoSalHn9wgAlkn45LqaKCS6JUN2YkDijkqsllCB69YU7gNCqOdR6GWoy3KHdmozWn0/+aT4JbxwrDpLbQPNP/KuMeAHpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QpSdIvO5; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QpSdIvO5"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3B2E6C32781;
+	Tue, 28 May 2024 00:00:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716854430;
+	bh=TkeI3JIJvfkemQRWIxPmdnV4KioeLN3NQXGMEsBVYeQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=QpSdIvO5hMryeB7v7ObpsjZfQwaaq7OESGD38UMfYq7UFf/CjqnUCXqLOAcAecDqL
+	 4+ZBWyrKE0lMWzDAH9XH21kCUUa/bxJWXJtMDjCG5DM80sVJDRgNduo/yTkiOMPPkX
+	 j8Khtsi053UmhU0pzg7/2GAlSrI6LpUJMYzKHSRAzSx4moCroQA9XEnen85XEPrOWx
+	 ZRbTXXR9KdZZaNKXtCezHZz5i08vLspKSAhzcUOQJbFJOt1+OkaXJ4Lz9rArwYJcAA
+	 wvvW4RenAzqHhPXkCE7IhUSnj7X0ZrL6NnE/V5P/Nkj7LJ+ysk4N5aeI+lafQUhFu2
+	 XMI+BN86AU9dg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2A16DD40192;
+	Tue, 28 May 2024 00:00:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,48 +37,43 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [net v3 PATCH] net:fec: Add fec_enet_deinit()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171685443016.27081.2425155450906733033.git-patchwork-notify@kernel.org>
+Date: Tue, 28 May 2024 00:00:30 +0000
+References: <20240524050528.4115581-1-xiaolei.wang@windriver.com>
+In-Reply-To: <20240524050528.4115581-1-xiaolei.wang@windriver.com>
+To: Xiaolei Wang <xiaolei.wang@windriver.com>
+Cc: wei.fang@nxp.com, andrew@lunn.ch, shenwei.wang@nxp.com,
+ xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hello:
 
-All drivers are converted to use embedded struct pinfunction.
-Remove unused members from struct function_desc.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/pinctrl/pinmux.h | 9 ---------
- 1 file changed, 9 deletions(-)
+On Fri, 24 May 2024 13:05:28 +0800 you wrote:
+> When fec_probe() fails or fec_drv_remove() needs to release the
+> fec queue and remove a NAPI context, therefore add a function
+> corresponding to fec_enet_init() and call fec_enet_deinit() which
+> does the opposite to release memory and remove a NAPI context.
+> 
+> Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
+> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+> Reviewed-by: Wei Fang <wei.fang@nxp.com>
+> 
+> [...]
 
-diff --git a/drivers/pinctrl/pinmux.h b/drivers/pinctrl/pinmux.h
-index 9b57c1cc9d50..2965ec20b77f 100644
---- a/drivers/pinctrl/pinmux.h
-+++ b/drivers/pinctrl/pinmux.h
-@@ -134,16 +134,10 @@ static inline void pinmux_init_device_debugfs(struct dentry *devroot,
- /**
-  * struct function_desc - generic function descriptor
-  * @func: generic data of the pin function (name and groups of pins)
-- * @name: name of the function
-- * @group_names: array of pin group names
-- * @num_group_names: number of pin group names
-  * @data: pin controller driver specific data
-  */
- struct function_desc {
- 	struct pinfunction func;
--	const char *name;
--	const char * const *group_names;
--	int num_group_names;
- 	void *data;
- };
- 
-@@ -151,9 +145,6 @@ struct function_desc {
- #define PINCTRL_FUNCTION_DESC(_name, _grps, _num_grps, _data)	\
- (struct function_desc) {					\
- 	.func = PINCTRL_PINFUNCTION(_name, _grps, _num_grps),	\
--	.name = _name,						\
--	.group_names = _grps,					\
--	.num_group_names = _num_grps,				\
- 	.data = _data,						\
- }
- 
+Here is the summary with links:
+  - [net,v3] net:fec: Add fec_enet_deinit()
+    https://git.kernel.org/netdev/net/c/bf0497f53c85
+
+You are awesome, thank you!
 -- 
-2.45.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
