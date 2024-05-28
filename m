@@ -1,98 +1,124 @@
-Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020D718E29
-	for <imx@lists.linux.dev>; Tue, 28 May 2024 17:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDC938F87;
+	Tue, 28 May 2024 17:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716915650; cv=none; b=YguIEWnyCIv/axo27N0mdx7ArrAUWtx4ZP/kMO5r4YmU/xJpr85XaIiZwBCjME4KKzMygZPYCt/qAiftArmhO2hs93WKfmshdYgoCIYVyxSiaKrGvKc7phH1Z6zgszJsIhhz7mluXVhhRhkyf3AondT2e0QHaJN3SP7gcU5kVNc=
+	t=1716918103; cv=none; b=FDYcsU/lqnGbDVXsmc+L7LxFaH0mbRJglsg/2Yo7iR8Z4gDXN0eOJ+Amgk7dD9DWFu8HQX2JLuzp/de4gi0a6nUlCnisbhQvi/Wi3L76IsNJtTR/N4VoSAedm3MKEQugROgirja2A+5P4tJp5PkDtnSDDPBv4mBwbQhb+DoK1rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716915650; c=relaxed/simple;
-	bh=MEpI9cbiuyp4XqZwjDIfCb+8/tqlEMab6Gbx7NbkZgU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hMQ7Rs9JEVSYt6c5kTVvuBEPxHCbHRQFVDXd/est8v4XcG4R1qMRbAy7I/tWFX0K75N7uz27Zu9VBecXR2FKXmbjP5LGxXV9aVCDRqK+Xp9X0kJpA5DlJK4tG/S7vxZVQ1/4nTzbL07VhYiKpTlaPlT8yr5SKIjTlRn1YXiKccU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smartandconnective.com; spf=pass smtp.mailfrom=smartandconnective.com; dkim=pass (1024-bit key) header.d=smartandconnective.com header.i=@smartandconnective.com header.b=kza+oIZP; arc=none smtp.client-ip=45.157.188.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=smartandconnective.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartandconnective.com
+	s=arc-20240116; t=1716918103; c=relaxed/simple;
+	bh=RBpYwUrOrov4++YqaMsUXwq/82wkQZJD1OxZ4lr6mPU=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=I97622stSmgnMKGCIfHjPpN1PAyWpGGEIPjz7E8OvJPdW/Q3/4rzEt5gGJvaBQR2PU0/NM8ivF/De4zYNlvdinHEAZ51x41pTlz7Eo4Qsh5d/4XLjWJGOqOdRuUUKhOFJ4odt5uM3zPzHSTPN+IKO9Fawu7zcczQXb1773h2NJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3DE6HtT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smartandconnective.com header.i=@smartandconnective.com header.b="kza+oIZP"
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Vpbf94QnDz7nG;
-	Tue, 28 May 2024 17:14:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=smartandconnective.com; s=20191114; t=1716909281;
-	bh=3bUxCMue09hBn28f4SiBpgvkHgQHBTwNx6pE/uKig6Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kza+oIZPTVXxTlz1ZM527xyVxTPuxb24dIH12C62NsMEr607xEiPUZK5N/0uLvg2I
-	 aY5B53xN9B1qGCLHD06MGeXb0NirMpTrwHbuYeTp32wF4S97bEvcVYeUlN6F7Qi05A
-	 X4VdQMGMIkID7DIJjJyyaOzQBH4QaWHt+PShHhc8=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Vpbf83S5Qzw36;
-	Tue, 28 May 2024 17:14:40 +0200 (CEST)
-From: Sebastien Laveze <slaveze@smartandconnective.com>
-To: Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Lee Jones <lee@kernel.org>
-Cc: Sebastien Laveze <slaveze@smartandconnective.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: imx: imx6ul: fix default parent for enet*_ref_sel
-Date: Tue, 28 May 2024 17:14:33 +0200
-Message-Id: <20240528151434.227602-1-slaveze@smartandconnective.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3DE6HtT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3F2C32786;
+	Tue, 28 May 2024 17:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716918102;
+	bh=RBpYwUrOrov4++YqaMsUXwq/82wkQZJD1OxZ4lr6mPU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=s3DE6HtTk2grBy6f+ooWveg1QYRQhxoI8is4YrM3LWFsW+yszTEOtvDiqXRA4WhGz
+	 jz6XMx7/RSwmOU/eo7H0PqakekwVc9gAq5Gmw9igeW51ew7xOp2ZLomVWh7ypzIuRu
+	 Pm7cHn6RTLpZmE+Pud/HptpQrQFAQsk+mJNssBMRN3mEhF1HH4D11hkbTPYlHX3Pl3
+	 JJWGoVZjfuHlWdhWCjcFxW7j4lNEwKeceudNvyzHTejrH41tNYnfv3nY8Kk3t2yJN1
+	 j8Wuq3UAVeVrB91eIT1LhfCRVqjwOc5iEaVxbqY91KKwwOXvmTdQzkTdasF596TKsp
+	 HzxuMCwPLTaIA==
+Date: Tue, 28 May 2024 12:41:41 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Pengfei Li <pengfei.li_1@nxp.com>
+Cc: hiago.franco@toradex.com, krzk+dt@kernel.org, ye.li@nxp.com, 
+ festevam@gmail.com, leoyang.li@nxp.com, bhelgaas@google.com, 
+ linux-clk@vger.kernel.org, peng.fan@nxp.com, linux-kernel@vger.kernel.org, 
+ abelvesa@kernel.org, frank.li@nxp.com, ping.bai@nxp.com, 
+ m.othacehe@gmail.com, kernel@pengutronix.de, devicetree@vger.kernel.org, 
+ shawnguo@kernel.org, hvilleneuve@dimonoff.com, imx@lists.linux.dev, 
+ conor+dt@kernel.org, aisheng.dong@nxp.com, s.hauer@pengutronix.de, 
+ alexander.stein@ew.tq-group.com, Markus.Niebel@ew.tq-group.com, 
+ linux-arm-kernel@lists.infradead.org, joao.goncalves@toradex.com, 
+ sboyd@kernel.org, gregor.herburger@ew.tq-group.com, mturquette@baylibre.com, 
+ tharvey@gateworks.com, m.felsch@pengutronix.de
+In-Reply-To: <20240527235158.1037971-1-pengfei.li_1@nxp.com>
+References: <20240527235158.1037971-1-pengfei.li_1@nxp.com>
+Message-Id: <171691793305.1180610.12774136629203985071.robh@kernel.org>
+Subject: Re: [PATCH 0/5] arm64: dts: freescale: Add i.MX91 11x11 EVK basic
+ support
 
-The clk_set_parent for "enet1_ref_sel" and  "enet2_ref_sel" are
-incorrect, therefore the original requirements to have "enet_clk_ref" as
-output sourced by iMX ENET PLL as a default config is not met.
 
-Only "enet[1,2]_ref_125m" "enet[1,2]_ref_pad" are possible parents for
-"enet1_ref_sel" and "enet2_ref_sel".
+On Mon, 27 May 2024 16:51:53 -0700, Pengfei Li wrote:
+> The design of the i.MX91 platform is very similar to i.MX93.
+> The mainly difference between i.MX91 and i.MX93 is as follows:
+> - i.MX91 removed some clocks and modified the names of some clocks.
+> - i.MX91 only has one A core
+> 
+> Therefore, i.MX91 can reuse i.MX93 dtsi.
+> 
+> Pengfei Li (5):
+>   dt-bindings: clock: Add i.MX91 clock support
+>   dt-bindings: clock: Add i.MX91 clock definition
+>   arm64: dts: freescale: Add i.MX91 dtsi support
+>   dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
+>   arm64: dts: freescale: Add i.MX91 11x11 EVK basic support
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   6 +
+>  .../bindings/clock/imx93-clock.yaml           |   1 +
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../boot/dts/freescale/imx91-11x11-evk.dts    | 807 ++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx91-pinfunc.h | 770 +++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx91.dtsi      |  66 ++
+>  include/dt-bindings/clock/imx93-clock.h       |   7 +-
+>  7 files changed, 1657 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
+> 
+> --
+> 2.34.1
+> 
+> 
+> 
 
-This was observed as a regression using a custom device tree which was
-expecting this default config.
 
-This can be fixed at the device tree level but having a default config
-matching the original behavior (before refclock mux) will avoid breaking
-existing configs.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Fixes: 4e197ee880c2 ("clk: imx6ul: add ethernet refclock mux support")
-Link: https://lore.kernel.org/lkml/20230306020226.GC143566@dragon/T/
-Signed-off-by: Sebastien Laveze <slaveze@smartandconnective.com>
----
- drivers/clk/imx/clk-imx6ul.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index f9394e94f69d..05c7a82b751f 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -542,8 +542,8 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
- 
- 	clk_set_parent(hws[IMX6UL_CLK_ENFC_SEL]->clk, hws[IMX6UL_CLK_PLL2_PFD2]->clk);
- 
--	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
--	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET1_REF_125M]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF_125M]->clk);
- 
- 	imx_register_uart_clocks();
- }
--- 
-2.34.1
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx91-11x11-evk.dtb' for 20240527235158.1037971-1-pengfei.li_1@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: pinctrl@443c0000: 'eqosgrpsleep', 'pdmgrpsleep', 'sai1grpsleep', 'sai3grpsleep', 'spdifgrpsleep', 'usdhc2gpiogrpsleep', 'usdhc2grpsleep', 'usdhc3grpsleep' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx9-pinctrl.yaml#
+arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@50: compatible: ['nxp,ptn5110'] is too short
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@50: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@51: compatible: ['nxp,ptn5110'] is too short
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@51: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
+arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: mmc@42860000: Unevaluated properties are not allowed ('fsl,cd-gpio-wakeup-disable' was unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/fsl-imx-esdhc.yaml#
+
+
+
+
 
