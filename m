@@ -1,124 +1,310 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2041.outbound.protection.outlook.com [40.107.247.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDC938F87;
-	Tue, 28 May 2024 17:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716918103; cv=none; b=FDYcsU/lqnGbDVXsmc+L7LxFaH0mbRJglsg/2Yo7iR8Z4gDXN0eOJ+Amgk7dD9DWFu8HQX2JLuzp/de4gi0a6nUlCnisbhQvi/Wi3L76IsNJtTR/N4VoSAedm3MKEQugROgirja2A+5P4tJp5PkDtnSDDPBv4mBwbQhb+DoK1rA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716918103; c=relaxed/simple;
-	bh=RBpYwUrOrov4++YqaMsUXwq/82wkQZJD1OxZ4lr6mPU=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=I97622stSmgnMKGCIfHjPpN1PAyWpGGEIPjz7E8OvJPdW/Q3/4rzEt5gGJvaBQR2PU0/NM8ivF/De4zYNlvdinHEAZ51x41pTlz7Eo4Qsh5d/4XLjWJGOqOdRuUUKhOFJ4odt5uM3zPzHSTPN+IKO9Fawu7zcczQXb1773h2NJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3DE6HtT; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85845034
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 17:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716919028; cv=fail; b=eJY9pb4Qjvx6HnRTSO7uucCZxfEpByJMDr8y7gjpzprnrHAcbyrHooKx26LzBqaliAZvrt6CzIjOXNohAa72nfiFjJmtX83WELnMnBLPqjNCuGUVxynM5sjaQWUMcmSrQQIHoIM24VFCkJIhDDVcuUDO7TtGmTBlZT1XNMSQwEQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716919028; c=relaxed/simple;
+	bh=Ll2Yeu5BnD/hizFP9o6YmEs9HDLeDFtfECIcuCDny8s=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JhhtNhgad+YlfNLJ3yldWB3FEWN2oD6waDm2enZ5+sO+X+yWX7bCSFdWDS6B+mqt4vU5YS/e4TS9BIsdHAvbaibHKIjYbuLWVsf/vA6N4iHaGxdutvnTgVhgMmAcAqHLVJmVJhYdt/+8iRJJyZwv1TeKJRBkh3eKkC0cPcqIbpw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=DVYNoduC; arc=fail smtp.client-ip=40.107.247.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3DE6HtT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3F2C32786;
-	Tue, 28 May 2024 17:41:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716918102;
-	bh=RBpYwUrOrov4++YqaMsUXwq/82wkQZJD1OxZ4lr6mPU=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=s3DE6HtTk2grBy6f+ooWveg1QYRQhxoI8is4YrM3LWFsW+yszTEOtvDiqXRA4WhGz
-	 jz6XMx7/RSwmOU/eo7H0PqakekwVc9gAq5Gmw9igeW51ew7xOp2ZLomVWh7ypzIuRu
-	 Pm7cHn6RTLpZmE+Pud/HptpQrQFAQsk+mJNssBMRN3mEhF1HH4D11hkbTPYlHX3Pl3
-	 JJWGoVZjfuHlWdhWCjcFxW7j4lNEwKeceudNvyzHTejrH41tNYnfv3nY8Kk3t2yJN1
-	 j8Wuq3UAVeVrB91eIT1LhfCRVqjwOc5iEaVxbqY91KKwwOXvmTdQzkTdasF596TKsp
-	 HzxuMCwPLTaIA==
-Date: Tue, 28 May 2024 12:41:41 -0500
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="DVYNoduC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gNvwbdjhSeMiXgMqdKgJu+bC+HyIWgmPO6AEIw07hXjB3OlB+zpicdgfOGCAwq0QQOjD4nMBEBb07xTMwoTBEIwGJftXZwZZlu9v8G+xyS8S40s7hPNK1/qaKv4D2V37L5aIuotn/KK+gQv4WtkPUNJucyGo89dBY3lWkmbWutMaS3BkaCxVtU2UiLTwRlsPYVmsIoBXccOZpViLyCNvwVQk56hFLlbqMgHvM38JeDiDvjcPoYJJaXPqf+LVKIag2VTNgD8klmr69R+wwzg3JgEQLHFRJwk9AG2qldmbhUWYVPCHCHYla/WfcMXolr4PrVEUfKXKddM2jRrp4FOjUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Eh8Csu3RezZhPxqV+WVuW3nAaOagyjglgMz4xf4jfvk=;
+ b=Gp/ZsRoI7619qA2CsENRHkX/9xh/2fXoUzxm9EKY+p4r/riQCpGHVt9S0BV+rJnYURiKWpBDpIJQ6XxrJFZvd+bEyTh8+Dnsn78Nk00APeDdODykMMVc4B6C9qh8dyNrlv8h7oRIjBh0lA5BofyHlLaBUHFKxAw/tfJfbGsR49SgRXJs9dXvMm1te+hPhamYVbf3spA93o3yeGolLNqCRvSWmy2VQY0UMYxr8g5KyQDlsTQtZBAFOwc8i6y1VQbhit69EOXb1aj+uMWxsfAOkYxj+bBSvoXFZ7CKpZGKKB4Vlwv41dON2Jw95UzTLbxh8meB92SvWP6vmvkpjenKGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Eh8Csu3RezZhPxqV+WVuW3nAaOagyjglgMz4xf4jfvk=;
+ b=DVYNoduCmfFLeM3TgdFnEL/pwwva+Wt/YxM2Lrno/u/WLEGc7wlk2uv1djVe4vBL22WbQqKH3b/qWIEidf9yyetzLlFquZAuq1KrwW2J6VsnP9hJ9PinNZDIG3Al/3OEnXMSZEkuAl0wcvd7mm0eXdZzpqckmcLpZIuExrcnHj8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA4PR04MB7710.eurprd04.prod.outlook.com (2603:10a6:102:e6::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Tue, 28 May
+ 2024 17:57:03 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7611.016; Tue, 28 May 2024
+ 17:57:03 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
+Date: Tue, 28 May 2024 13:56:46 -0400
+Message-Id: <20240528175647.2604295-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR20CA0006.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: hiago.franco@toradex.com, krzk+dt@kernel.org, ye.li@nxp.com, 
- festevam@gmail.com, leoyang.li@nxp.com, bhelgaas@google.com, 
- linux-clk@vger.kernel.org, peng.fan@nxp.com, linux-kernel@vger.kernel.org, 
- abelvesa@kernel.org, frank.li@nxp.com, ping.bai@nxp.com, 
- m.othacehe@gmail.com, kernel@pengutronix.de, devicetree@vger.kernel.org, 
- shawnguo@kernel.org, hvilleneuve@dimonoff.com, imx@lists.linux.dev, 
- conor+dt@kernel.org, aisheng.dong@nxp.com, s.hauer@pengutronix.de, 
- alexander.stein@ew.tq-group.com, Markus.Niebel@ew.tq-group.com, 
- linux-arm-kernel@lists.infradead.org, joao.goncalves@toradex.com, 
- sboyd@kernel.org, gregor.herburger@ew.tq-group.com, mturquette@baylibre.com, 
- tharvey@gateworks.com, m.felsch@pengutronix.de
-In-Reply-To: <20240527235158.1037971-1-pengfei.li_1@nxp.com>
-References: <20240527235158.1037971-1-pengfei.li_1@nxp.com>
-Message-Id: <171691793305.1180610.12774136629203985071.robh@kernel.org>
-Subject: Re: [PATCH 0/5] arm64: dts: freescale: Add i.MX91 11x11 EVK basic
- support
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB7710:EE_
+X-MS-Office365-Filtering-Correlation-Id: efc84c4c-66e7-4318-82b6-08dc7f3f9474
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|376005|1800799015|52116005|366007|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?QXe04qnxUbUERGzYyNy0iSmgZ52APyUDLbUg4YJdGgKywj684Maq9UJkTfDh?=
+ =?us-ascii?Q?SciWV6nIVTgsiRkqQPn8+4HiH5+E7Ooankyd2Fwk9NP8GMEZCL8UHxoF3yLY?=
+ =?us-ascii?Q?H2FzKOeqHjBgF8WyzWJw7kl8Oo5Lk66zC+aH+BpDe2EsDx3+YUy0L/q/X1ar?=
+ =?us-ascii?Q?iY8c+MVwRSAt4BVh8CBUEBR/9sOBYL/SQVuTC6aYKlUl/RO9JQjzHEc/dLTz?=
+ =?us-ascii?Q?6m8I6uwt646zZ6pC5gDkMrzegbrUNcX9T92+9g3lfmqvG25EiBBNxVf7FafH?=
+ =?us-ascii?Q?L7C47Uc6uGaM9ebWOMVNXYIjr9KWsivALsrfb5QbQAVa9ov4AkgUxn+z90wJ?=
+ =?us-ascii?Q?NtOnF207lZ30k1i+JL3+8RPALV7cd6w/UbRpv+eUhzmc/nd5cptsC6IpmGR8?=
+ =?us-ascii?Q?fUZG9CYCQj7W1/VPtJrttEmxKluv1x0aGmMnlVva2a0iokMIdgoVqAvDljDr?=
+ =?us-ascii?Q?ZKejfaxipHN3b7pLNIKblvY7R2RztslF4EWciorZHs/JcP7O7+1UQe4jjcBD?=
+ =?us-ascii?Q?UGdx3j08laGyDXPI1yYL8yZkmxTJWz6TVJpMCZ6t/t+3T5jTPBDjdboDP3D8?=
+ =?us-ascii?Q?SaGODZcsH+8xmGw5Vu9YQpsyq+IHf87lBmaAFeuJSITvRXsycWYQM2NtCmL5?=
+ =?us-ascii?Q?HPtHmy48SeMfFYtsssaoy1+LqpxgIQb4vUoOv7D6cqd/utiBOz93zzwkkOWu?=
+ =?us-ascii?Q?JXnkdWigFd4hssg4nQ6QVg+qEaj/51HOvBtvk0wJPCJXV6uJ8DtZlHl3/Imc?=
+ =?us-ascii?Q?SqFza9nuPQ+4LjkTl6ZaF2Gm/KMB2TUOGV66IQKuhmqvdot7QihlXhI3junE?=
+ =?us-ascii?Q?8Z9zbmjBidqf8Do/PxOVNGIZO1MpC5Au0Xk+jhisk09N0zHBEYSgcHhZW3Se?=
+ =?us-ascii?Q?6D3QHSUZ3vBudxc0raEsUDwJV+2e1mCkV46rEQr6h0eAUqilij+Igs0kuZ51?=
+ =?us-ascii?Q?sGG1LBDrwP3V2DKqEdNM5g3x6i3aEym5DweUhSwD9HhdKJWsiPzAxwf2UgyH?=
+ =?us-ascii?Q?GHju3h9SG6rEn1yld636i0I+5ojpeldQckqOO1lLu+2zxGLTQSdFTWwpcz6e?=
+ =?us-ascii?Q?s1qeJzCW8HlX/dKMCae91h0OhOsBxNVm9SKWNmi+kYdV9hwdlTd+AiJup2Qa?=
+ =?us-ascii?Q?GY5hBX/IqkBfY0+dEGKkE5S0INDpVuvfBZp+n0CktrANpLqh/aulHlNQH47b?=
+ =?us-ascii?Q?F1yQmwOLcByMxXegW6vUpCiImNBM3vc5kO0M4mtOps3gF1oK3reawRuo8DYu?=
+ =?us-ascii?Q?6xCbfhwVzt8pdSToRldZ/70C8q7NWwpjTgH/o9SXbPhIyWfMtxKo3UudZ6T0?=
+ =?us-ascii?Q?aHE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tloEe58VkcPe562OpL50hndMizif3tGmr0lM5+i1IB+lB149jOAdrcT+ZPpv?=
+ =?us-ascii?Q?18mhR1L6MXV/X3If0nL7vDfgIu+I0EW4h9wx8h2CRd0rzDJV/cRlV8MAOxEO?=
+ =?us-ascii?Q?d20Awm7MKjEuK//s4ddERtiu5Vmdl+Sm7uEYUsqCanYEji5tb2ccSJnkUl60?=
+ =?us-ascii?Q?UpE/Pw0pDjPugLXb86Y5Z/Jj2RIAt045VeNXNqd3fzWP2mtYuAvRDzD8WyBR?=
+ =?us-ascii?Q?olzUINEee4wY+7kVYFXzDSoGwlALqSdQZ2LpWsrtA5Xful+H8K1pbImv6e3l?=
+ =?us-ascii?Q?3NVC+KZcU+iaS9R9SZXtTIRqtJlX42rFoEUw9u6CEe1ecvXBkUk0m1XvANSz?=
+ =?us-ascii?Q?6KzEVgejuXu+9EsyLIfXW6D3+XuWX4reyL9DOo7gCdu2WgXfSTvyrxQUOTzP?=
+ =?us-ascii?Q?dj6DMOpDVcK2AIZmQaJPiKvJrDcawnZW2o1m/J/DOXUs+gbVLxgHXTurPhnp?=
+ =?us-ascii?Q?YtGTE+OoHv8w86iR0F2u3x+U3Ob+RkKqSXuM++7hoNoDUouK2E5EhmjdEnHc?=
+ =?us-ascii?Q?5Rlhu1PaSGq14Q3bNMzybeUvZkUZFMnr5A2dSclafnnEsRG8o7QJQ0wbq9Xm?=
+ =?us-ascii?Q?Uj/B06qgI53tql+gCP2hztIi6Mca3+V12KKfpQ45PvckDZMD37XUjVmylqJS?=
+ =?us-ascii?Q?JKSoIDiuB5BN3FJQ2+MS53IYrOohPUfJHhrAB9a25oWpGIgdKv+dxUr986ba?=
+ =?us-ascii?Q?FQE2skdX2mXLaZ00w6Hh6uqj78HaM3mnnWbPh3BiJxx+VN16+7fWql3IHK4G?=
+ =?us-ascii?Q?1VZ/FxTQKp9zm2LRFfXoCH15iTo6u/DqkxpXuhWJ3Tzcr9UNKPz46YpODs7p?=
+ =?us-ascii?Q?PoB3jHRwmvDZCqNhYNt2ok0N5piPGNpep+9/G7o7cjft/l353OypjdAvSeHn?=
+ =?us-ascii?Q?vloX95Z2g+pnsc2HQLCeo/CE0kNlt29WMSTkWgh5toA/iBPMMh9ByjPFpSMN?=
+ =?us-ascii?Q?/GQ1Ov9eSLLHr3n2srzIXPvA/yCqMi/7lq8jkGkNIWD0rbYAFOEb94MF24I2?=
+ =?us-ascii?Q?4QhkYhG8soRxgwvYaJda1PqmfPEVmFttvw7McSoaFTmsiGNKq4VosqP1tdkR?=
+ =?us-ascii?Q?8oX+m8Yi7CTs0wCotLtxnD+EaL/1xU+L7f32eNjQD+2ph/fG0FSoY5twdjmF?=
+ =?us-ascii?Q?JS+7XJ72RmM1AiwcalEsY8NRp7OtuNpDkugROPN/aNH4USgOIRB9nXZJFrxn?=
+ =?us-ascii?Q?9ctzCaZCMUXi0b2OhGtRtIwVVinD0UxabCSUYqBugpCqxttZWH8sqX0QJzlG?=
+ =?us-ascii?Q?HkZrODDCoVPJFov3n5dfSqgqww0hmwmzka35FaoF0bNIsEPeKMZUIWIwBwki?=
+ =?us-ascii?Q?+qaxc3KIvv1RdtsQiZxiCm2LyeNlECFbJ/WbvhFx6tWatrubGDYw8fruRzTr?=
+ =?us-ascii?Q?f1ty1FjYrxX9LlL82702r0X91GapwxReVEij7hCIDh2hTb0Ewc70NzwSfAhY?=
+ =?us-ascii?Q?xfZA/v5AP2cG8fUbTLK7qQteW46fEa3b9I/JeLvS3exAagWiIb7hIeFgbWGH?=
+ =?us-ascii?Q?Bby6hz7Wxt32phwRUC6TeCoUe3CswRVZ2nLXTQoUBJbeUYzEi1O+LYtb8ZDU?=
+ =?us-ascii?Q?ZTpMEFdk2BvWxa1JIzYqgugvRLEvIjtRq+kpxmbL?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: efc84c4c-66e7-4318-82b6-08dc7f3f9474
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2024 17:57:03.2485
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7pID+pVzdzMKVTIVfXzN/FF/tfaDSMf9ZyLxkG4MeqRAHz9MNYwOPFqemk23rP3LIiDMdk7YpRtBFJGc6A7PNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7710
 
+Convert binding doc from txt to yaml.
 
-On Mon, 27 May 2024 16:51:53 -0700, Pengfei Li wrote:
-> The design of the i.MX91 platform is very similar to i.MX93.
-> The mainly difference between i.MX91 and i.MX93 is as follows:
-> - i.MX91 removed some clocks and modified the names of some clocks.
-> - i.MX91 only has one A core
-> 
-> Therefore, i.MX91 can reuse i.MX93 dtsi.
-> 
-> Pengfei Li (5):
->   dt-bindings: clock: Add i.MX91 clock support
->   dt-bindings: clock: Add i.MX91 clock definition
->   arm64: dts: freescale: Add i.MX91 dtsi support
->   dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
->   arm64: dts: freescale: Add i.MX91 11x11 EVK basic support
-> 
->  .../devicetree/bindings/arm/fsl.yaml          |   6 +
->  .../bindings/clock/imx93-clock.yaml           |   1 +
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../boot/dts/freescale/imx91-11x11-evk.dts    | 807 ++++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx91-pinfunc.h | 770 +++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx91.dtsi      |  66 ++
->  include/dt-bindings/clock/imx93-clock.h       |   7 +-
->  7 files changed, 1657 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
->  create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
-> 
-> --
-> 2.34.1
-> 
-> 
-> 
+Remove redundated "gpio1: gpio@2300000" example.
 
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Notes:
+    Pass dt_binding_check
+    make dt_binding_check DT_SCHEMA_FILES=fsl,qoriq-gpio.yaml
+      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+      CHKDT   Documentation/devicetree/bindings
+      LINT    Documentation/devicetree/bindings
+      DTC_CHK Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.example.dtb
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+ .../bindings/gpio/fsl,qoriq-gpio.yaml         | 80 +++++++++++++++++++
+ .../devicetree/bindings/gpio/gpio-mpc8xxx.txt | 53 ------------
+ 2 files changed, 80 insertions(+), 53 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+ delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx91-11x11-evk.dtb' for 20240527235158.1037971-1-pengfei.li_1@nxp.com:
-
-arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: pinctrl@443c0000: 'eqosgrpsleep', 'pdmgrpsleep', 'sai1grpsleep', 'sai3grpsleep', 'spdifgrpsleep', 'usdhc2gpiogrpsleep', 'usdhc2grpsleep', 'usdhc3grpsleep' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx9-pinctrl.yaml#
-arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@50: compatible: ['nxp,ptn5110'] is too short
-	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
-arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@50: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
-arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@51: compatible: ['nxp,ptn5110'] is too short
-	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
-arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: tcpc@51: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/usb/nxp,ptn5110.yaml#
-arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb: mmc@42860000: Unevaluated properties are not allowed ('fsl,cd-gpio-wakeup-disable' was unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/fsl-imx-esdhc.yaml#
-
-
-
-
+diff --git a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+new file mode 100644
+index 0000000000000..532fbb631a89a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+@@ -0,0 +1,80 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/gpio/fsl,qoriq-gpio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - fsl,mpc5121-gpio
++          - fsl,mpc5125-gpio
++          - fsl,mpc8349-gpio
++          - fsl,mpc8572-gpio
++          - fsl,mpc8610-gpio
++          - fsl,pq3-gpio
++      - items:
++          - enum:
++              - fsl,ls1021a-gpio
++              - fsl,ls1028a-gpio
++              - fsl,ls1043a-gpio
++              - fsl,ls1088a-gpio
++              - fsl,ls2080a-gpio
++          - const: fsl,qoriq-gpio
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  "#gpio-cells":
++    const: 2
++
++  gpio-controller: true
++
++  interrupt-controller: true
++
++  "#interrupt-cells":
++    const: 2
++
++  little-endian:
++    description:
++      GPIO registers are used as little endian. If not
++      present registers are used as big endian by default.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - "#gpio-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    gpio@1100 {
++        compatible = "fsl,mpc5125-gpio";
++        #gpio-cells = <2>;
++        reg = <0x1100 0x080>;
++        interrupts = <78 0x8>;
++    };
++
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    gpio@2300000 {
++        compatible = "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
++        reg = <0x2300000 0x10000>;
++        interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
++        gpio-controller;
++        little-endian;
++        #gpio-cells = <2>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
++    };
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt b/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
+deleted file mode 100644
+index cd28e932bf50e..0000000000000
+--- a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
++++ /dev/null
+@@ -1,53 +0,0 @@
+-* Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
+-
+-Required properties:
+-- compatible : Should be "fsl,<soc>-gpio"
+-  The following <soc>s are known to be supported:
+-	mpc5121, mpc5125, mpc8349, mpc8572, mpc8610, pq3, qoriq,
+-	ls1021a, ls1043a, ls2080a, ls1028a, ls1088a.
+-- reg : Address and length of the register set for the device
+-- interrupts : Should be the port interrupt shared by all 32 pins.
+-- #gpio-cells : Should be two.  The first cell is the pin number and
+-  the second cell is used to specify the gpio polarity:
+-      0 = active high
+-      1 = active low
+-
+-Optional properties:
+-- little-endian : GPIO registers are used as little endian. If not
+-                  present registers are used as big endian by default.
+-
+-Example of gpio-controller node for a mpc5125 SoC:
+-
+-gpio0: gpio@1100 {
+-	compatible = "fsl,mpc5125-gpio";
+-	#gpio-cells = <2>;
+-	reg = <0x1100 0x080>;
+-	interrupts = <78 0x8>;
+-};
+-
+-Example of gpio-controller node for a ls2080a SoC:
+-
+-gpio0: gpio@2300000 {
+-	compatible = "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
+-	reg = <0x0 0x2300000 0x0 0x10000>;
+-	interrupts = <0 36 0x4>; /* Level high type */
+-	gpio-controller;
+-	little-endian;
+-	#gpio-cells = <2>;
+-	interrupt-controller;
+-	#interrupt-cells = <2>;
+-};
+-
+-
+-Example of gpio-controller node for a ls1028a/ls1088a SoC:
+-
+-gpio1: gpio@2300000 {
+-	compatible = "fsl,ls1028a-gpio", "fsl,ls1088a-gpio", "fsl,qoriq-gpio";
+-	reg = <0x0 0x2300000 0x0 0x10000>;
+-	interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
+-	gpio-controller;
+-	#gpio-cells = <2>;
+-	interrupt-controller;
+-	#interrupt-cells = <2>;
+-	little-endian;
+-};
+-- 
+2.34.1
 
