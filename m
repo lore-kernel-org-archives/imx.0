@@ -1,120 +1,146 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E1C17E912
-	for <imx@lists.linux.dev>; Tue, 28 May 2024 00:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431F4168DC
+	for <imx@lists.linux.dev>; Tue, 28 May 2024 03:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716857506; cv=none; b=tC1G7wI3rPbxwC1Fy83oRMGVquScCKW621Bf09g6NSQkj5I6r2wSMIT2KTt+MEDfPQiIggQaC3jCfr5x6PwP6bnB9+LNa0HH5ExHri+yX2tdG+hdTXtYgj5tG52ai54aGc68Iz2JtneoyezZ2vy5ApWlLs1dW9Mi4atrbCKk3PE=
+	t=1716866366; cv=none; b=Ix0Fsr892SugVV6IP9MzqFhj1zQAxr07p88MPkU5B7PV6LnPavGdbUfp+GPs9ebLThaODEYviI1RkJsMZ89Iuz6stDLCFv1q+e4i1bfKGHqMb6t1nSDRg9vsViSzNam7kJu9OTgsrRWfdzpb9b7rpThUPFqA5QSL0aoBia4xXRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716857506; c=relaxed/simple;
-	bh=+f0VPv4MrrgiymcyGPwMbtbuzF8oJvqu+QmqfjmTGq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ShI4BiK9myokkPqDYKBI2TWa3vfq7Fnw7h6dHkl3wjbfpQt4CwzNV/sw06JCNqIMyFb5jcjiNHwG2P7XmvdT/EHsCSsUyIPtn9kOxvhO2hw1fi3sVl5WDloElNabZoJshyhvWGEsIm5WybKVpMNmK2OYLhvO3VoKjVcb+7shmKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O4C/i4sd; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O4C/i4sd"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52389c1308dso382393e87.3
-        for <imx@lists.linux.dev>; Mon, 27 May 2024 17:51:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716857503; x=1717462303; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Jvp+hZYFfhzystmOitlp42k6Z90166BIGS6uqP4gWo=;
-        b=O4C/i4sd61jQrYWButtiuEm5CIckMKTpEq9sry0mklSp9GqwsWIQxyTtbcxQ1iI13/
-         A4CcaAFkLIW+Cq+3BBbkr+/5fYnvjbdVSsujOZvF4pPXHiCBaS9fZnmhmrKLwBKBTF/g
-         iQcOI7QGAB7pn1o+CJt/R9KqRwS309HBoU2zuMegoGNt9eQtAfLL6ezHM12D5O8CwCw0
-         u1ZFBkNdcB99sQlhWfmHFIk5FzHFmlcuj8miHJ53QpwRvJ51DBIju8FEveizRtrrQoa/
-         25MANQBUA+YaLd2b9PXV8md+Xru0nPfv/ucy4wmtlqTNDjwuLLhTHT0YP1lHtu/bN7NF
-         xQcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716857503; x=1717462303;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Jvp+hZYFfhzystmOitlp42k6Z90166BIGS6uqP4gWo=;
-        b=YqJ1Mw9Z5aZyTPXJcSS1LEUp/muLa+6W7SfNEmWrd7y3vJbFpi/5Hv5utZNKqKfEDf
-         4BkwouTnOr5ANqn/JrBsCG3/evNnveN1N8d+VYqNWs20xGtSXLcJLknqcd4R6GSm5Pu1
-         ExZjt/3Z6zjZygfWOEw8vuZxVE+71ilh0hHUROmX5cj6wjejoL74+R8KLV9dF2M2tZuU
-         AH1Zh7O/EaFUhzoRexBFh7S6rLEHoGZBZq74yknHNOgAv3Ye5JZJPOP+Hchh5eQENqwr
-         WPe1tqIpKawzboxHtyxSQwPcwtRzalVliix/2stQifC2BLR3L+mx+zhkn5fFR9cvPNVY
-         cd7g==
-X-Forwarded-Encrypted: i=1; AJvYcCU1jnqlyB9GF0LhVxBQShhpFTjw5iQQ128JvFW1BXry7GSCf2eEeWu7HOMTzXO4db2ByZgFHmiVqcCB1JHio7hW9a+I
-X-Gm-Message-State: AOJu0YzJHOKfJSUzH8I9Du6Qz+Z285enHjPu460FpH1cU8ZyIN9fupP5
-	i6VmJdazBOPpBw3gIYmv88GDAo2gOuF17BcVNmFN0KN34uDHhVF9R/L0NfSJS2Y=
-X-Google-Smtp-Source: AGHT+IGcWgwBgUcaN0cfQnKSG/Vltpwn7liri5wS72ChHP41TsGxpMvTPSgmLVdzeboS4ZHat/qOWQ==
-X-Received: by 2002:a05:6512:5cb:b0:523:72b8:8002 with SMTP id 2adb3069b0e04-52965198b89mr5807900e87.30.1716857502311;
-        Mon, 27 May 2024 17:51:42 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-529a9c25e98sm511225e87.278.2024.05.27.17.51.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 17:51:41 -0700 (PDT)
-Date: Tue, 28 May 2024 03:51:40 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 00/12] drm/imx/ipuv3: switch LDB and parallel-display
- driver to use drm_bridge_connector
-Message-ID: <l2y5jntbmrfard2h6napw27ngdsndvt64vb5xwz5ydmvoham6u@h6xgmmwbakss>
-References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
- <yh4r2pgdl2m5wp627r35zse3obacmeanin5rjo34f7tctgpix2@dme3vwzaivag>
- <fbb666b99104241aae09fc5b2ae72433e1249c23.camel@pengutronix.de>
+	s=arc-20240116; t=1716866366; c=relaxed/simple;
+	bh=BCjgtX7qnroMhhttvjYYhYxVp0B4QNrMVcp4hig0gvQ=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=NzwZrcvzAUudgbR8pCyKZJkqN5hGrNFpUtawnP3MsfiShTkOVePyY1PlBlGgOrreDL1g6hO9UOX/7QhXLbd+zl8Zub1/4t9LbUiXNHKQxd00McfxGv1/9Yi28mUkmhMOnpysvq++zhdMhXM62Ti9MGIxw0Xzs/T523+okJtM0A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2F1CF201D3C;
+	Tue, 28 May 2024 05:19:17 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A99EF2011C0;
+	Tue, 28 May 2024 05:19:16 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id B4DC7180222F;
+	Tue, 28 May 2024 11:19:14 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: conor@kernel.org,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	frank.li@nxp.com,
+	conor+dt@kernel.org
+Cc: hongxing.zhu@nxp.com,
+	linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: [PATCH v6 0/2] Add i.MX8Q HSIO PHY support
+Date: Tue, 28 May 2024 10:59:12 +0800
+Message-Id: <1716865154-25044-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fbb666b99104241aae09fc5b2ae72433e1249c23.camel@pengutronix.de>
 
-On Mon, May 27, 2024 at 05:40:03PM +0200, Philipp Zabel wrote:
-> Hi Dmitry,
-> 
-> On Mi, 2024-04-17 at 00:58 +0300, Dmitry Baryshkov wrote:
-> > On Sun, Mar 31, 2024 at 11:28:57PM +0300, Dmitry Baryshkov wrote:
-> > > The IPUv3 DRM i.MX driver contains several codepaths for different
-> > > usescases: both LDB and paralllel-display drivers handle next-bridge,
-> > > panel and the legacy display-timings DT node on their own.
-> > > 
-> > > Drop unused ddc-i2c-bus and edid handling (none of the DT files merged
-> > > upstream ever used these features), switch to panel-bridge driver,
-> > > removing the need to handle drm_panel codepaths separately and finally
-> > > switch to drm_bridge_connector, removing requirement for the downstream
-> > > bridges to create drm_connector on their own.
-> > > 
-> > > This has been tested on the iMX53 with the DPI panel attached to LDB via
-> > > LVDS decoder, using all possible usecases (lvds-codec + panel, panel
-> > > linked directly to LDB node and the display-timings node).
-> > > 
-> > > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > > ---
-> > > Changes in v2:
-> > > - Fixed drm_bridge_attach flags in imx/parallel-display driver.
-> > > - Moved the legacy bridge to drivers/gpu/drm/bridge
-> > > - Added missing EXPORT_SYMBOL_GPL to the iMX legacy bridge
-> > > - Link to v1: https://lore.kernel.org/r/20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org
-> > 
-> > Phillip, Shawn, Sascha, any comments on this patchset?
-> 
-> Sorry for the delay, this all looks sane to me. I can't find any users
-> of the "edid" and "ddc-i2c-bus" properties either. But let me test on
-> i.MX6 and with parallel-display as well.
+v6 changes:
+- Correct the spell mistake in binding document.
+- Change the "fsl,hsio-cfg" property to an enum strings too.
 
-At some point Chris dropped me a note that he had issues with i.MX5 /
-sii902x driver, but because of the Connect I wasn't able to fully triage
-it. I hope to have time this week.
+v5:https://patchwork.kernel.org/project/linux-phy/cover/1715563324-6391-1-git-send-email-hongxing.zhu@nxp.com/
 
--- 
-With best wishes
-Dmitry
+v5 changes:
+dt-binding
+- Fix dt_binding_check errors of fsl,refclk-pad-mode.
+  And, add the unused description of this property.
+- Add description for each register entry.
+- Add fsl,hsio-cfg description.
+- Other minor refine changes.
+
+PHY driver
+- To make codes safe enough in multi instances probe, use scoped_guard()
+to replace the atomic_###() callbacks.
+
+v4:https://patchwork.kernel.org/project/linux-phy/cover/1715234181-672-1-git-send-email-hongxing.zhu@nxp.com/
+
+v4 changes:
+- Re-format the "phy-cells" as <&hsio_phy lane_id phy_mode controller_id>
+- Use each lane as a phys entry, suggested by Rob.
+PCIEA:
+phys = <&hsio_phy 0 PHY_MODE_PCIE>;
+or:
+phys = <&hsio_phy 0 PHY_MODE_PCIE>, <&hsio_phy 1 PHY_MODE_PCIE>;
+
+PCIEB:
+phys = <&hsio_phy 1 PHY_MODE_PCIE>;
+or:
+phys = <&hsio_phy 2 PHY_MODE_PCIE>;
+
+SATA:
+phys = <&hsio_phy 2 PHY_MODE_SATA>;
+
+- Add a new propery "fsl,hsio-cfg".
+The HSIO configuration (fsl,hsio-cfg) is one global state.
+It should be known and used to set global setting: PCIE_AB_SELECT and
+PHY_X1_EPCS_SEL at the begin of HSIO initialization like this listed below.
+
+ +-------------------------------------------------------------+
+ |CRR(SYS.CSR) register|PCIAx2 and|PCIEAx1, PCIEBx1|PCIEAx2 and|
+ |                     |SATA      |SATA            |PCIEBx1    |
+ |---------------------|----------|----------------|-----------|
+ |PCIE_AB_SELECT       | 0        | 1              | 1         |
+ |---------------------|----------|----------------|-----------|
+ |PHY_X1_EPCS_SEL      | 1        | 1              | 0         |
+ +-------------------------------------------------------------+
+When first PHY instance is probed, PHY driver can't get a global view of the
+HSIO use case and doesn't know how to set global setting: PCIE_AB_SELECT and
+PHYX1_EPCS_SEL.
+Because first PHY instance doesn't know followed PHY instance use mode.
+
+So, one property named "fsl,hsio-cfg" has to be introduced here to specify the
+setting of the global setting: PCIE_AB_SELECT and PHY_X1_EPCS_SEL.
+
+Here is the discussion about this.
+https://lkml.org/lkml/2024/4/26/231
+
+- Address Conor's comments about the "fsl,refclk-pad-mode".
+fsl,refclk-pad-mode:
+  description:
+    ...
+  enum: ["input", "output"].
+
+v3:https://patchwork.kernel.org/project/linux-phy/cover/1713939683-15328-1-git-send-email-hongxing.zhu@nxp.com/
+
+v3 changes:
+Refer to Conor's comments.
+- Let filename match a compatible
+- Refine description of the fsl,refclk-pad-mode.
+- Remove power-domains description.
+- Keep clock ording for two devices.
+- Drop the unused label and status.
+Refer to Rob's comments.
+- Use standard phy mode defines.
+- Correct the spell mistakes in the binding document.
+
+v2:https://patchwork.kernel.org/project/linux-phy/cover/1712036704-21064-1-git-send-email-hongxing.zhu@nxp.com/ 
+
+v2 changes:
+- Place the dt-bindings header file changes as the first one
+in the patch-set, make the annotation more clear, and add
+Frank's Reviewed-by tag.
+
+v1:https://patchwork.kernel.org/project/linux-phy/cover/1711699790-16494-1-git-send-email-hongxing.zhu@nxp.com/
+
+[PATCH v6 1/2] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY binding
+[PATCH v6 2/2] phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY
+
+Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml | 164 ++++++++++++++++++++++
+drivers/phy/freescale/Kconfig                              |   8 ++
+drivers/phy/freescale/Makefile                             |   1 +
+drivers/phy/freescale/phy-fsl-imx8qm-hsio.c                | 612 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4 files changed, 785 insertions(+)
