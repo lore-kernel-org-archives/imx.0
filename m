@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68795142E68;
-	Wed, 29 May 2024 12:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAF3181B82;
+	Wed, 29 May 2024 12:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716986554; cv=none; b=HFdsiOj3YKF5bWpZ9YW8xfaSBGj0Cx8aftW2ZtSWh99GJI9d5tTNaIiGYch+9QXkBipvM1FCVZk7dIWCU3RfVcGHr8ZX1roKp8WdI7IOeABIt7mBtpRcId5K2xLNoX2balmpnNzHxjqJU19eWMXbLU2lfO1mJvpLJKZIAwlwMJ8=
+	t=1716986608; cv=none; b=ni3d+qVzXOHl5XpzzrqvJImyPEbS6to02DBnJOch0Q5b+aqP4PDgRP6AqGALFPP7Ad5yufKuvxjv82FiyZFQDXlbmTuKTNJEkthjqnPSjIeHysjG8N+SxDng/0PlxqLbguThK9tJydPLxHFeLkFSak8wTSoCdjrUJdORpTw10Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716986554; c=relaxed/simple;
-	bh=V07Xk4BXjw/sAB5xBCQyqi+Ks84h/AAGIe3cdwowxTA=;
+	s=arc-20240116; t=1716986608; c=relaxed/simple;
+	bh=x7fxx2wAn5tcq/jOn+WYY1FaAla9wHnIEgSCbz76z8M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GZCZAUMD7+TwKWupt0Yu93qa/u24IDDJFnITXwSf0VaqkjD1DTYV0glsqg7QejNM3OxdezQ5UawgayYjf53PxpOpq9NzmcE9r/RIH7TZ666Ck0NscWbNeFIni0d2lWdEfrhPifZisw/v2+XeZ1y8q0EHBnueoVpYhag4H0MGlQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCJWBFiM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=tInl8T6uB7f8fxkVHVXkZ7ZHAK+B5y1OaF37wG0joobkVEqCd8BPY/8oD12Uv8YvXI8UPEusBRSz/XcQEJqALv6lyOfCAqxQUN3VTfMO3cKQPAT9T93Ji47C5WegzcM8LopLhWqfRPGRykksMTs1wSMuRWs6KuZW3EV1bGKoZFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haXplEdo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCJWBFiM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8957C2BD10;
-	Wed, 29 May 2024 12:42:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haXplEdo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE7FC2BD10;
+	Wed, 29 May 2024 12:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716986553;
-	bh=V07Xk4BXjw/sAB5xBCQyqi+Ks84h/AAGIe3cdwowxTA=;
+	s=k20201202; t=1716986607;
+	bh=x7fxx2wAn5tcq/jOn+WYY1FaAla9wHnIEgSCbz76z8M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DCJWBFiMqS5zwPldS6W8McoviTD1DCM0N+X2j4BsWJkZQGql4xa8hyKu/6ZkLU/Qa
-	 g2vPl87XxWmLnmCu1h/SdvrYx2JatU4HtIxscU8djSwLGfoEiX+sa+1+h/PAieKHS3
-	 2k6APo9Ghh+CvfqRmh+oOWynKnZnn8DTZyrooeXiXFYH/MLACmqnkmPFfLUbPSYEzG
-	 8B2iuh0c22ujkIkorLFpVc99NyjW8usuesjof1+8OBQVcaGWZHKBCRScSotG6UJ7sI
-	 EBPU1+QJ9v19ZIITkYIoaeUuOOaM2x+ECeCdNHicX4/n7tLqKIf1+GQbdrY1/ji9ef
-	 KbnPYxZUgxSbw==
-Message-ID: <a9f419a3-967f-44b6-b91e-c4fe27834e9a@kernel.org>
-Date: Wed, 29 May 2024 14:42:28 +0200
+	b=haXplEdod6jS7AFZF2sK/c3K6vS0KSAQFiWjBun17vQEr8irnXkxVgFHC4zO/7Rie
+	 s4rC9DAJ1EFahMaohYLyQ57TjbLZQ+/lRyHrxphD8sVnouCyMnIopIV0SaEzatfaVn
+	 hF1r9B1JUQUd+QauLPZkfmYvXWR4TL18e96Z5pER9TVMy+lr1Ofgs1xGfKaylb5Mw9
+	 V+9N3Yikbux5juAbnlL2B3AT6nOD9bsn1QANq8M9RZchxzZhUZ7kRcsrT9et+wE+Ii
+	 78CH8GvWxEx1e5cXMm1peHWeVCpn3z/45k6HGMhrAW992MQXsqS4vS2hEOzj0ES4n1
+	 VgwPgXMTF1Tag==
+Message-ID: <1c9c0d78-83c0-4055-83bf-6792b03b6df9@kernel.org>
+Date: Wed, 29 May 2024 14:43:21 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,13 +35,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: rtc: Convert rtc-fsl-ftm-alarm.txt to
- yaml format
+Subject: Re: [PATCH v2 1/1] dt-bindings: fsl-qdma: Convert to yaml format
 To: Frank Li <Frank.Li@nxp.com>
-Cc: alexandre.belloni@bootlin.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org,
- linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org, robh@kernel.org
-References: <20240528184359.2685109-1-Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dmaengine@vger.kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org,
+ linux-kernel@vger.kernel.org, robh@kernel.org, vkoul@kernel.org
+References: <20240528163734.2471268-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -87,17 +86,19 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240528184359.2685109-1-Frank.Li@nxp.com>
+In-Reply-To: <20240528163734.2471268-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/05/2024 20:43, Frank Li wrote:
-> Convert dt-binding doc "rtc-fsl-ftm-alarm.txt" to yaml format.
+On 28/05/2024 18:37, Frank Li wrote:
+> Convert binding doc from txt to yaml.
 > 
-> Change example's reg to 32bit address and length.
-> Remove unrelated rcpm@1e34040 in example.
+> Re-order interrupt-names to align example.
+> Add #dma-cell in example.
+> Change 'reg' in example to 32bit address.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
