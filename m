@@ -1,157 +1,80 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994B444C7B
-	for <imx@lists.linux.dev>; Wed, 29 May 2024 08:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AAA177992
+	for <imx@lists.linux.dev>; Wed, 29 May 2024 08:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716970532; cv=none; b=jrjEpepLRllKH0q+mkCZ5Y3I3SfWkAYclGRn9YL7+Z23C/GDyfrcm/TSmzSrqI/QTwVB+4Hks4TpqCBrYSGYU22U5GpGRgv93JTfm3h7rJ3RD2kjpwyMaFdwZI0aSA9syBN2Txo8fR13a7DNcbOuAnECjcI6C3Ebomnv5zIgBMc=
+	t=1716971054; cv=none; b=S+Sf5ufYy+5VhSq17KL8DllWgI+jm7qULWB6MAy8IZQCllTo1lv4lT7VSqL8robXRlrLHduF/5Cs9ZJavLXLSn70UshcX6AIB0O3Uxf7ii+mFsKArOsVl0Qt/MKn+QOyAolfftu6Jwt7+Pq0sOD6J4sLXHoybz4sF2OIsPsplh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716970532; c=relaxed/simple;
-	bh=UzQmf9tjN3LeNjX/lVtrlreMZNXUsY8QbXs8KUectg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yearmcs8ozle0eu27AjmyJ57L755yZ35oHIGsVrrhee1y8BoJVz1sFm6KW5TqcMb1EbUvN97WetHIf1oU2uRwBpxlZSHWklHLrje95IRJdShtm4WG1XWw5fkdHkcx8Z3QFRHzdUk6sKzmHGoUdDxt7bDZayvz+OEbVLsb53w5qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=QZHNzQzw; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=X0yjbkyS reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1716971054; c=relaxed/simple;
+	bh=T0goSHfjzYTHwb4NAbEKcB9/JQYf1677w+bj+dFoZLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OJOwXTDHdld4CmFLPsqRPlXiB5nqvD7ECy+Vdx2ujtpCEEGBg7XHDZ4BZQohosmzUgYMtdjTG6Gg48eXI8Wh0EbSJOgk6g6KeWFPccOKr9moy0uvzXLXG2EVxcUILGmmjY2B1gC8pTHXx2+NJCfSFw/ZZNfdVIbIxuhQ5ae3azY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ERMZTvdf; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="QZHNzQzw";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="X0yjbkyS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1716970528; x=1748506528;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qPzqmbhWrWgXeytPFFr8ZnaAVt6ESUekqElZje8ecik=;
-  b=QZHNzQzwm0qFrgoOLEhkcQQQnO3iq43VNmwZPxRobkA+yNMCi+Md0Azp
-   PIumymSHTTYCkDSOVvK8iA21E2GcCqh7Q2R2UqdM5mJs07BBKcOFZUYHd
-   Z254ZiloN8tUMLS/k+JVdbMx3yeYCBmteUnLkR9Tm/99St8P94i/bVctq
-   sKTNCr3bNnl8t/jODl66dZYiHdkm4yfzbuZfiSsaAcr0pATl55tOWiMWu
-   wBltK/Dbzzagp7yoA/gm48i54s+4/vT1xavXxByM5BP8VfgaG7HTxsPfI
-   FUHjMAhCYNGXlIpU7JZVy9y+B4yikt3y6Nxli+x70clvnrBe7IE/aYDW+
-   Q==;
-X-CSE-ConnectionGUID: peETRQxgQGeJmBnaAiv4Qw==
-X-CSE-MsgGUID: BGCkLORMQzqJRAr6qC55Sg==
-X-IronPort-AV: E=Sophos;i="6.08,197,1712613600"; 
-   d="scan'208";a="37120964"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 29 May 2024 10:15:26 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 428F516564F;
-	Wed, 29 May 2024 10:15:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1716970522;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=qPzqmbhWrWgXeytPFFr8ZnaAVt6ESUekqElZje8ecik=;
-	b=X0yjbkySyuGTbdlhNBO93Jh68pO3BA/mg1Zd40iUSbpOU95OxQ52P5PGEqzn1uViTP7tbV
-	iI62wxWbD0xc/OKGyawp1b6dojDbnY8akxQlxY9e9l8JkWzE3k8w9yJmXsbEuVLi3mJy1Z
-	JWLzPP+GEyTf1xbuixIphwW1jshgmDGJbhsM26wmH70SZ73nvIg5vrj5VBP1ZF6LGgAhaq
-	k1Z+w27V+CgqhxshxYlgoiDkKrmpmW0XUdSUFjJhKyEs0PHT1Ko4d+UnBTvf5+kOrl05eD
-	LiJ5XSthmZoI6noWYj4kLdu/pdMTUiWfawdrHwOFq4NddGxNyi62if1v7I6qCA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] drm/bridge: imx93-mipi-dsi: Use dev_err_probe
-Date: Wed, 29 May 2024 10:15:18 +0200
-Message-ID: <6130653.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <091f1d5c-0bff-4dcb-b823-b82989eac628@nxp.com>
-References: <20240529065400.461633-1-alexander.stein@ew.tq-group.com> <091f1d5c-0bff-4dcb-b823-b82989eac628@nxp.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ERMZTvdf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1716971049;
+	bh=T0goSHfjzYTHwb4NAbEKcB9/JQYf1677w+bj+dFoZLE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ERMZTvdfimF8/X3wkcB15TuUxOemNHd321eP/duA9X49MSdM90SrYu59NOtRQBhx/
+	 h+5YEpmcgLp/iXxCmGynv1TQt0lswL3P6bUOqzTXjwBOQ2ZCnPpgQifCcVI48nUvFp
+	 gLNZtshghS/uILvED+9tC8OlEPAKOBzpnl+eYYkRiXSF4jERAUr/8RXxl2XFxbSxpn
+	 LRfUC4wzm+vsrCojZOUpVobBVP7hJK1dMRgcTplffdtdPfxokDsULMew9eUwKmObrI
+	 tvzenzUjK69rQm64YqcGQDIFgDasUxecKSSzlB+qfpMo2sk4wIhzA1sYdnEu652CxY
+	 6lUfmNPUK1YEA==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 8472B378000A;
+	Wed, 29 May 2024 08:24:08 +0000 (UTC)
+Message-ID: <358b6488-3f7c-4378-a811-175b6c77290f@collabora.com>
+Date: Wed, 29 May 2024 10:24:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/11] pinctrl: mediatek: Convert to use func member
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Daniel Golle <daniel@makrotopia.org>, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-mips@vger.kernel.org
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sean Wang <sean.wang@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Paul Cercueil <paul@crapouillou.net>,
+ Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>
+References: <20240528194951.1489887-1-andy.shevchenko@gmail.com>
+ <20240528194951.1489887-11-andy.shevchenko@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20240528194951.1489887-11-andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Il 28/05/24 21:45, Andy Shevchenko ha scritto:
+> Convert drivers to use func member embedded in struct function_desc,
+> because other members will be removed to avoid duplication and
+> desynchronisation of the generic pin function description.
+> 
+> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Am Mittwoch, 29. Mai 2024, 09:50:24 CEST schrieb Liu Ying:
-> On 05/29/2024, Alexander Stein wrote:
-> > Although very unlike to occur (media_blk_ctrl needs 'syscon' compatible
-> > removed), it lines up with the other error paths in probe function.
->=20
-> Why media_blk_ctrl needs 'syscon' compatible removed?
+pinctrl: mediatek: moore: Convert to use func member
 
-No, it does not. As media_blk_ctrl is also used as power-domain the device
-will not even be probed if media_blk_ctrl is not available.
-I just mentioned it under which conditions this error path could happen.
-
-Best regards,
-Alexander
-
-> device_node_get_regmap may return error pointer other than
-> ERR_PTR(-EPROBE_DEFER), like ERR_PTR(-ENOMEM).
->=20
-> struct regmap *syscon_node_to_regmap(struct device_node *np)             =
-       =20
-> {                                                                        =
-       =20
->         if (!of_device_is_compatible(np, "syscon"))                      =
-       =20
->                 return ERR_PTR(-EINVAL);                                 =
-       =20
->                                                                          =
-       =20
->         return device_node_get_regmap(np, true);                         =
-       =20
-> }                                                                        =
-       =20
-> EXPORT_SYMBOL_GPL(syscon_node_to_regmap);
->=20
-> Regard,
-> Liu Ying
->=20
-> >=20
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> > Changes in v2:
-> > * Removed unused variable
-> > * Added missing \n at end of string
-> >=20
-> >  drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c | 9 +++------
-> >  1 file changed, 3 insertions(+), 6 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c b/drivers/gpu/=
-drm/bridge/imx/imx93-mipi-dsi.c
-> > index 2347f8dd632f9..13025f47f3902 100644
-> > --- a/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-> > +++ b/drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c
-> > @@ -834,18 +834,15 @@ static int imx93_dsi_probe(struct platform_device=
- *pdev)
-> >  	struct device *dev =3D &pdev->dev;
-> >  	struct device_node *np =3D dev->of_node;
-> >  	struct imx93_dsi *dsi;
-> > -	int ret;
-> > =20
-> >  	dsi =3D devm_kzalloc(dev, sizeof(*dsi), GFP_KERNEL);
-> >  	if (!dsi)
-> >  		return -ENOMEM;
-> > =20
-> >  	dsi->regmap =3D syscon_regmap_lookup_by_phandle(np, "fsl,media-blk-ct=
-rl");
-> > -	if (IS_ERR(dsi->regmap)) {
-> > -		ret =3D PTR_ERR(dsi->regmap);
-> > -		dev_err(dev, "failed to get block ctrl regmap: %d\n", ret);
-> > -		return ret;
-> > -	}
-> > +	if (IS_ERR(dsi->regmap))
-> > +		return dev_err_probe(dev, PTR_ERR(dsi->regmap),
-> > +				     "failed to get block ctrl regmap\n");
-> > =20
-> >  	dsi->clk_pixel =3D devm_clk_get(dev, "pix");
-> >  	if (IS_ERR(dsi->clk_pixel))
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Then,
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
 
