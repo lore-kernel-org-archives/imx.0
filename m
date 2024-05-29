@@ -1,99 +1,160 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B0A17E8F0
-	for <imx@lists.linux.dev>; Wed, 29 May 2024 03:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979A515D5B7
+	for <imx@lists.linux.dev>; Wed, 29 May 2024 06:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716954549; cv=none; b=ch+T8WDEXcb0SkfYr0e3AlVoUQYIkEZ3eiHqunj9UAL/b7KdMfDopAqW37woXwJbABXkcbp67J1HNb4RzOoEM1qqYIUZZigQ2r8tkgiVlAW5e5TEYO3zVh5OFU8W2U6JKEB65vtifBXk3cT5oHfQ69/yIOFYnr/cX9AkrmWllCo=
+	t=1716963524; cv=none; b=fZDstNS6+h3qaF2KPneh98QTnCp3X3JNDooAnJZiwMDhxXHG+/ypRWGqlWtLLtr/eABD9HFbWVDVkbeOt11wHtgJkx37jRH1LvA3UxNOzHFjDD3EcqEA0Gf+N7Ee7QjqMaqxs/WeIdyn+cgqVgri8/2S68SYi1oFy9pnZh/jox8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716954549; c=relaxed/simple;
-	bh=3NAHOwIQTDXtNlU8i81GnYZjk8f2OfzXlqUgXm7FCEc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DSpthMbG3Soc6O1kRx7x3pO5pyVZZ0wyx3Nlv9VD0Plwi+Nhb0Bj32A9ZsoKVUEKXlsdKyZlkFDHQp9MTfV5/9P+eKk+G522JkVVCzQcYr0UNM9XumR6BpKloNG+ywSUrQ8W2fVeowCjGKx39MD2xoP4Zl7S9N+Fum4UJThT61A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QJRD80is; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QJRD80is"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6f8b36f10d7so25440b3a.0
-        for <imx@lists.linux.dev>; Tue, 28 May 2024 20:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716954547; x=1717559347; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ypZlzXpmfWiVW7jdMoXt93b/dsMiorXU/dyr3NecVGE=;
-        b=QJRD80isMP+qC9Rprx2Mg5MIlFsu7cGMgPuqniChsDA0z1Vsff+cenVJQyHNsg1+ON
-         qTL73Mgxqcwx/jI7EBHGMrSpoyQKSABJ83rkpT3akAY9fbyfpjaGfS3R1fOP2M9eDG1d
-         G5H6NcU4lBlveJv4fr+L75gZVnMJfJ6NTVcUhJuMwMlsdr639s2w1jKzHCtNwI9sC1Gn
-         /arb24H37fFlVbMwgDNVQaEg4dLBMIYqNKFSasAL1Jc7Bq+flD+cfYA6iK2iX8YJddri
-         viD72GLuPu99O2sS+Bgggh/oUDvnMCmT6vfN9tB2qLk50cDXAT1Q3vMiKyda9aaqUFCa
-         m0rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716954547; x=1717559347;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ypZlzXpmfWiVW7jdMoXt93b/dsMiorXU/dyr3NecVGE=;
-        b=ZUmJCa1O0xarZZf9Uy+UmBF+dknB5os4gUTDodYL5a0KNcuVbehebMHM3B2weRqOEN
-         zCXEop8TFtVoLxqnGfO+O2uI2aZ2O67XaQhR0+7lvO1V6Y45VpXWaISW8doeI0sy446M
-         BWRRYsUtsIC2Z8CbCPi4GNM0qSStZByBYnW+TNO15LvLAvbd7IORT7FFCilW+67qUZLa
-         F4UBqyZCwGjxpp8CZu1Jle4/k1L3mnDqH9xMOb0lOb34LAJYqNQ6yP75gu5ME3rNRrEQ
-         AeqTsUwf8IfPd/8lw7rsSGyd+Z0q76Y1ORTkGQvxBA3wpwOUFo5lCmvQLAtzZ7YQ++E3
-         uabg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBJFt/IKPSZHyOsz7EufgVwsw9NftcllsAFc1LBgSG1hf1b357NFcnVN6wU+nsO+Tp/ZoyAuhYDNYtPWdVOsMRp61L
-X-Gm-Message-State: AOJu0YyaaIO0xwAx4tUNXA7epPjN3pLTmN+MgIo7TKRttkIiLTnjl339
-	ByF6+6MGcSeTduJq388CHEPdwdsWQH/FYRfKG7rNup3jg/KNVwQd
-X-Google-Smtp-Source: AGHT+IGl/riRWvfcu1mplacFQEsee+UPiwTEMZRD4kwMjY0t2VQHHxOY6xzKyidSa0hRW424LY/LCg==
-X-Received: by 2002:a05:6a00:4bad:b0:6ed:cc50:36cd with SMTP id d2e1a72fcca58-6f8f41b0c01mr14778987b3a.2.1716954547158;
-        Tue, 28 May 2024 20:49:07 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:dfd9:2d9b:ff9d:4f57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f8fcfe64f8sm7139408b3a.151.2024.05.28.20.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 May 2024 20:49:06 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	haibo.chen@nxp.com,
-	imx@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH] arm64: dts: imx93-11x11-evk: Remove the 'no-sdio' property
-Date: Wed, 29 May 2024 00:48:54 -0300
-Message-Id: <20240529034854.1595664-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1716963524; c=relaxed/simple;
+	bh=J3oHJ6BUvlEp4jAHQzUBker2OU7er4PvjG6IkKQziYo=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=SnODinl/ZZcnKNjf8D/0Yt2F74D5NHe+JH70+RgVyNsv/caGx4+B5TMxcrdmHyGHfoMDr3YZ9XWI+fFyby6BmYY8Z/Ruvj+Urul0pUHPUrgrcfkqr4MrdxuElw57Cl6lv9pn0w5C3RnaImFDh0C0pTNKrZD3ncc5+MnuxvHjTUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 683CF20152B;
+	Wed, 29 May 2024 08:18:35 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D520D201527;
+	Wed, 29 May 2024 08:18:34 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id D968E180222F;
+	Wed, 29 May 2024 14:18:32 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: conor@kernel.org,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	frank.li@nxp.com,
+	conor+dt@kernel.org
+Cc: hongxing.zhu@nxp.com,
+	linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: [PATCH v7 0/2] Add i.MX8Q HSIO PHY support
+Date: Wed, 29 May 2024 14:02:43 +0800
+Message-Id: <1716962565-2084-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The usdhc2 port is connected to the microSD slot. The presence of the
-'no-sdio' property prevents Wifi SDIO cards, such as CMP9010-X-EVB [1]
-to be detected.
+v7 changes:
+Rebase to 6.10-rc1
 
-Remove the 'no-sdio' property so that SDIO cards could also work.
+dt-binding
+- To keep the table format, add "|" to description of "fsl,hsio-cfg" property.
+- Refine the contents of "fsl,hsio-cfg" property.
+- Add Reviewed-by: Conor Dooley <conor.dooley@microchip.com> tag.
+PHY driver
+- Use "imx8qm_hsio_drvdata" as imx_hsio_drvdata struct name of i.MX8QM
+- Remove redundant memset().
+- Add Reviewed-by: Frank Li <Frank.Li@nxp.com> tag.
 
-[1] https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-plus-802-15-4/cmp9010-x-evb-iw416-usd-interface-evaluation-board:CMP9010-X-EVB
+v6:https://patchwork.kernel.org/project/linux-phy/cover/1716865154-25044-1-git-send-email-hongxing.zhu@nxp.com/
 
-Fixes: e37907bd8294 ("arm64: dts: freescale: add i.MX93 11x11 EVK basic support")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
- arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 1 -
- 1 file changed, 1 deletion(-)
+v6 changes:
+- Correct the spell mistake in binding document.
+- Change the "fsl,hsio-cfg" property to an enum strings too.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-index d400d85f42a9..bd98eff4d685 100644
---- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-@@ -296,7 +296,6 @@ &usdhc2 {
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
- 	bus-width = <4>;
- 	status = "okay";
--	no-sdio;
- 	no-mmc;
- };
- 
--- 
-2.34.1
+v5:https://patchwork.kernel.org/project/linux-phy/cover/1715563324-6391-1-git-send-email-hongxing.zhu@nxp.com/
 
+v5 changes:
+dt-binding
+- Fix dt_binding_check errors of fsl,refclk-pad-mode.
+  And, add the unused description of this property.
+- Add description for each register entry.
+- Add fsl,hsio-cfg description.
+- Other minor refine changes.
+
+PHY driver
+- To make codes safe enough in multi instances probe, use scoped_guard()
+to replace the atomic_###() callbacks.
+
+v4:https://patchwork.kernel.org/project/linux-phy/cover/1715234181-672-1-git-send-email-hongxing.zhu@nxp.com/
+
+v4 changes:
+- Re-format the "phy-cells" as <&hsio_phy lane_id phy_mode controller_id>
+- Use each lane as a phys entry, suggested by Rob.
+PCIEA:
+phys = <&hsio_phy 0 PHY_MODE_PCIE>;
+or:
+phys = <&hsio_phy 0 PHY_MODE_PCIE>, <&hsio_phy 1 PHY_MODE_PCIE>;
+
+PCIEB:
+phys = <&hsio_phy 1 PHY_MODE_PCIE>;
+or:
+phys = <&hsio_phy 2 PHY_MODE_PCIE>;
+
+SATA:
+phys = <&hsio_phy 2 PHY_MODE_SATA>;
+
+- Add a new propery "fsl,hsio-cfg".
+The HSIO configuration (fsl,hsio-cfg) is one global state.
+It should be known and used to set global setting: PCIE_AB_SELECT and
+PHY_X1_EPCS_SEL at the begin of HSIO initialization like this listed below.
+
+ +-------------------------------------------------------------+
+ |CRR(SYS.CSR) register|PCIAx2 and|PCIEAx1, PCIEBx1|PCIEAx2 and|
+ |                     |SATA      |SATA            |PCIEBx1    |
+ |---------------------|----------|----------------|-----------|
+ |PCIE_AB_SELECT       | 0        | 1              | 1         |
+ |---------------------|----------|----------------|-----------|
+ |PHY_X1_EPCS_SEL      | 1        | 1              | 0         |
+ +-------------------------------------------------------------+
+When first PHY instance is probed, PHY driver can't get a global view of the
+HSIO use case and doesn't know how to set global setting: PCIE_AB_SELECT and
+PHYX1_EPCS_SEL.
+Because first PHY instance doesn't know followed PHY instance use mode.
+
+So, one property named "fsl,hsio-cfg" has to be introduced here to specify the
+setting of the global setting: PCIE_AB_SELECT and PHY_X1_EPCS_SEL.
+
+Here is the discussion about this.
+https://lkml.org/lkml/2024/4/26/231
+
+- Address Conor's comments about the "fsl,refclk-pad-mode".
+fsl,refclk-pad-mode:
+  description:
+    ...
+  enum: ["input", "output"].
+
+v3:https://patchwork.kernel.org/project/linux-phy/cover/1713939683-15328-1-git-send-email-hongxing.zhu@nxp.com/
+
+v3 changes:
+Refer to Conor's comments.
+- Let filename match a compatible
+- Refine description of the fsl,refclk-pad-mode.
+- Remove power-domains description.
+- Keep clock ording for two devices.
+- Drop the unused label and status.
+Refer to Rob's comments.
+- Use standard phy mode defines.
+- Correct the spell mistakes in the binding document.
+
+v2:https://patchwork.kernel.org/project/linux-phy/cover/1712036704-21064-1-git-send-email-hongxing.zhu@nxp.com/ 
+
+v2 changes:
+- Place the dt-bindings header file changes as the first one
+in the patch-set, make the annotation more clear, and add
+Frank's Reviewed-by tag.
+
+v1:https://patchwork.kernel.org/project/linux-phy/cover/1711699790-16494-1-git-send-email-hongxing.zhu@nxp.com/
+
+[PATCH v7 1/2] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY binding
+[PATCH v7 2/2] phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY
+
+Documentation/devicetree/bindings/phy/fsl,imx8qm-hsio.yaml | 164 ++++++++++++++++++++++
+drivers/phy/freescale/Kconfig                              |   9 +-
+drivers/phy/freescale/Makefile                             |   1 +
+drivers/phy/freescale/phy-fsl-imx8qm-hsio.c                | 610 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+4 files changed, 783 insertions(+), 1 deletion(-)
