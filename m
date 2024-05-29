@@ -1,107 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAF3181B82;
-	Wed, 29 May 2024 12:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0315AADE
+	for <imx@lists.linux.dev>; Wed, 29 May 2024 14:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716986608; cv=none; b=ni3d+qVzXOHl5XpzzrqvJImyPEbS6to02DBnJOch0Q5b+aqP4PDgRP6AqGALFPP7Ad5yufKuvxjv82FiyZFQDXlbmTuKTNJEkthjqnPSjIeHysjG8N+SxDng/0PlxqLbguThK9tJydPLxHFeLkFSak8wTSoCdjrUJdORpTw10Bc=
+	t=1716994729; cv=none; b=rzorrh9oCSAuGL/NVJgsoBnG7MCnkWkzCevDN1P2MKVN6K25IhGJRjlVlZJAXpTZMy0FHinF0kmCfUFFBB/psLM4iKmvcIcpLACwXk4guBZRyGLhKBlz9Q4HtZeOV7Ttbd/tMmnp5XtgsuYanZaS0d0vPzrnjb9UHB9j/EL+UBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716986608; c=relaxed/simple;
-	bh=x7fxx2wAn5tcq/jOn+WYY1FaAla9wHnIEgSCbz76z8M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tInl8T6uB7f8fxkVHVXkZ7ZHAK+B5y1OaF37wG0joobkVEqCd8BPY/8oD12Uv8YvXI8UPEusBRSz/XcQEJqALv6lyOfCAqxQUN3VTfMO3cKQPAT9T93Ji47C5WegzcM8LopLhWqfRPGRykksMTs1wSMuRWs6KuZW3EV1bGKoZFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haXplEdo; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haXplEdo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE7FC2BD10;
-	Wed, 29 May 2024 12:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716986607;
-	bh=x7fxx2wAn5tcq/jOn+WYY1FaAla9wHnIEgSCbz76z8M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=haXplEdod6jS7AFZF2sK/c3K6vS0KSAQFiWjBun17vQEr8irnXkxVgFHC4zO/7Rie
-	 s4rC9DAJ1EFahMaohYLyQ57TjbLZQ+/lRyHrxphD8sVnouCyMnIopIV0SaEzatfaVn
-	 hF1r9B1JUQUd+QauLPZkfmYvXWR4TL18e96Z5pER9TVMy+lr1Ofgs1xGfKaylb5Mw9
-	 V+9N3Yikbux5juAbnlL2B3AT6nOD9bsn1QANq8M9RZchxzZhUZ7kRcsrT9et+wE+Ii
-	 78CH8GvWxEx1e5cXMm1peHWeVCpn3z/45k6HGMhrAW992MQXsqS4vS2hEOzj0ES4n1
-	 VgwPgXMTF1Tag==
-Message-ID: <1c9c0d78-83c0-4055-83bf-6792b03b6df9@kernel.org>
-Date: Wed, 29 May 2024 14:43:21 +0200
+	s=arc-20240116; t=1716994729; c=relaxed/simple;
+	bh=D/KHEOSbPCLIuOq8sWS35ux5QKqBNifC402qQ1qcCiE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Qs/nZISDiAGWIL5pa7xJUZPX81WO0WTngUZAdW11o7xgb/aiRqWIT8tyQzU6ReHMOKMWJKcYbPtfYS3sRnC/Ltq49FsIoK7JfDdekYVklxr66T4f8VtdfKGmUhMWaQTX4QYVo3Z9IKegQacMNEI2NlxeXKWY5+ffzrjKv3Pfdg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sCKkx-00038v-2U; Wed, 29 May 2024 16:58:23 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sCKkw-003Te0-F8; Wed, 29 May 2024 16:58:22 +0200
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sCKkw-000Da6-1F;
+	Wed, 29 May 2024 16:58:22 +0200
+Message-ID: <52baeec98214106ca406dd190e1b7eecd73fe255.camel@pengutronix.de>
+Subject: Re: [PATCH v2 07/12] drm/imx: ldb: switch to drm_panel_bridge
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Date: Wed, 29 May 2024 16:58:22 +0200
+In-Reply-To: <20240331-drm-imx-cleanup-v2-7-d81c1d1c1026@linaro.org>
+References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
+	 <20240331-drm-imx-cleanup-v2-7-d81c1d1c1026@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: fsl-qdma: Convert to yaml format
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- dmaengine@vger.kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org,
- linux-kernel@vger.kernel.org, robh@kernel.org, vkoul@kernel.org
-References: <20240528163734.2471268-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240528163734.2471268-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 28/05/2024 18:37, Frank Li wrote:
-> Convert binding doc from txt to yaml.
-> 
-> Re-order interrupt-names to align example.
-> Add #dma-cell in example.
-> Change 'reg' in example to 32bit address.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On So, 2024-03-31 at 23:29 +0300, Dmitry Baryshkov wrote:
+> Defer panel handling to drm_panel_bridge, unifying codepaths for the
+> panel and bridge cases.
+>=20
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 > ---
+>  drivers/gpu/drm/imx/ipuv3/Kconfig   |  2 ++
+>  drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 44 ++++++++++++-------------------=
+------
+>  2 files changed, 16 insertions(+), 30 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv=
+3/Kconfig
+> index bacf0655ebaf..4e41611c8532 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/Kconfig
+> +++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
+> @@ -28,7 +28,9 @@ config DRM_IMX_LDB
+>  	tristate "Support for LVDS displays"
+>  	depends on DRM_IMX && MFD_SYSCON
+>  	depends on COMMON_CLK
+> +	depends on DRM_BRIDGE
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To avoid hiding the DRM_IMX_LDB option for legacy configurations with
+DRM_BRIDGE disabled, it would be better to select DRM_BRIDGE here
+instead.
 
-Best regards,
-Krzysztof
+>  	select DRM_PANEL
 
+And this shouldn't be necessary anymore.
+
+regards
+Philipp
