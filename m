@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C33A156F32
-	for <imx@lists.linux.dev>; Wed, 29 May 2024 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616F8156F32
+	for <imx@lists.linux.dev>; Wed, 29 May 2024 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716994785; cv=none; b=oOPJandHU1GTF4aJ6cYbiv5SLA/TAxv363LF4WBTznBdXpLKR0IJMB5uxb+N/u1mS6d5mUERGA4J+BUUsYGRJND5HUSmUXtWbL4DHQNGfCcVOFzkJEj7ueLdMzLw5RCuRbSq7O/6or3rHLROaalULpVoAswkMxGh+Qf5D1f7AyY=
+	t=1716994787; cv=none; b=RrFhKC1YmiiaGyixA+hNSFH1S1cEYNxkkRUfa5Hw13/cu8tDS6mRj1cp7dltQE+iMhDxBIB40Zt8KlTesVGpAKnM4ExATvSjyeI9qff0qQqPNzl305neN/LXEN1673STJpQFJ0ZoFkGln7geufddHqFtJzbDQCWtsHt3riew19w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716994785; c=relaxed/simple;
-	bh=DmCpfKCYn9/oqZtK1VCClsxj7fkxnFmXcv5mMqHRi70=;
+	s=arc-20240116; t=1716994787; c=relaxed/simple;
+	bh=YAT9dsM9pI7gBcsu+sKqreMBuuMomHR5Qsy/PNYY3pk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nU/rCPp0F10S0/lbCONZZENnH5frQCd8eKB4ryd0MAYeSAFWm2Vx9hWgw4cAQwC3vIjG3rVsnSxIveLsPHoRmvyoLIzjiBvoGV/0Pm2mw9zy8TORbgWJVRJJcTibulU0ob9R7tDyXD+S+WL8PlqJqlcG5+66syAZWT8C4DX0epM=
+	 Content-Type:MIME-Version; b=LjzjoAVXURatALKZyJ3YDIV33wosN7E+tKLuI8JdqqF7HG2xmLgS843xe1Ya9QE6xjRtKCUKkdDaVvIQLa/7kdsmZ2kqNEtjvhi2w8vNdDRfvU5fTZLeMUxNUcCU1Nlf+wTKRfutykpLOt8A/ikrEVFeXX74DhTm+a0GtqOPMec=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,18 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sCKm4-0003Zc-SC; Wed, 29 May 2024 16:59:32 +0200
+	id 1sCKm7-0003ci-JB; Wed, 29 May 2024 16:59:35 +0200
 Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sCKm3-003TeA-Ui; Wed, 29 May 2024 16:59:31 +0200
+	id 1sCKm7-003TeE-0v; Wed, 29 May 2024 16:59:35 +0200
 Received: from pza by lupine with local (Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sCKm3-000Ddz-2o;
-	Wed, 29 May 2024 16:59:31 +0200
-Message-ID: <1c92e3e7f10af4beb3d5d87e19f3d556b56dc67e.camel@pengutronix.de>
-Subject: Re: [PATCH v2 03/12] drm/imx: cleanup the imx-drm header
+	id 1sCKm6-000DeG-33;
+	Wed, 29 May 2024 16:59:34 +0200
+Message-ID: <25c5dde93f89e6c99ef86e05df8223931ea174ed.camel@pengutronix.de>
+Subject: Re: [PATCH v2 04/12] drm/imx: parallel-display: drop edid override
+ support
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
  <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
@@ -42,10 +43,10 @@ To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
 Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
 	devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Date: Wed, 29 May 2024 16:59:31 +0200
-In-Reply-To: <20240331-drm-imx-cleanup-v2-3-d81c1d1c1026@linaro.org>
+Date: Wed, 29 May 2024 16:59:34 +0200
+In-Reply-To: <20240331-drm-imx-cleanup-v2-4-d81c1d1c1026@linaro.org>
 References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
-	 <20240331-drm-imx-cleanup-v2-3-d81c1d1c1026@linaro.org>
+	 <20240331-drm-imx-cleanup-v2-4-d81c1d1c1026@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -61,7 +62,13 @@ X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expand
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
 On So, 2024-03-31 at 23:29 +0300, Dmitry Baryshkov wrote:
-> Drop unused defines and obsolete prototypes from the imx-drm.h header.
+> None of the in-kernel DT files ever used edid override with the
+> fsl-imx-drm driver. In case the EDID needs to be specified manually, DRM
+> core allows one to either override it via the debugfs or to load it via
+> request_firmware by using DRM_LOAD_EDID_FIRMWARE. In all other cases
+> EDID and/or modes are to be provided as a part of the panel driver.
+>=20
+> Drop support for the edid property.
 >=20
 > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
