@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3332316A379
-	for <imx@lists.linux.dev>; Wed, 29 May 2024 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F8CD2F0
+	for <imx@lists.linux.dev>; Wed, 29 May 2024 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716994801; cv=none; b=D5ZoqKvQMoQkvtzpRiq5Hndkdl5aWzMuYAIkgw9sKvKepmjb5gBeskBYtH0O3s+nWbOuzgFCTFQ5pAo8Q++Bfvj/W+hozsRs65gIhMzlYeiYCQbJ+LGCyjh0Rtu/VJwnf0+UN7dLO+2taUtkaMyJf/jvQArSjqY0T3cGLWvZsns=
+	t=1716994830; cv=none; b=WnojRaNUn4DSlWU4CD9b8iHSePBplNG96eaugwHZxcnTudUzHym5n1R2uiO6VADFBJ202bp2wtWWp6gQmtr570w4579q7FnkBl0LRu2uq9uC4syIotgrTfPCq3oXcf15Tui6lm58b2QB8dk0G33x7ectp1Hk7S55V2xujH0p8uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716994801; c=relaxed/simple;
-	bh=xrvV/cTt7FDwth4BsgVseinJOia3uRzgyGzmCj+zF98=;
+	s=arc-20240116; t=1716994830; c=relaxed/simple;
+	bh=SxvwdkQmeMWN0k4Fjbo41GQehOnLvwt2cHgW/QE/OF8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aZ/4Ttxz+WJZyluDX9xDFAT1QxW4OrNlDWMi7jgP1dKfJCjy1c3asfjHIeGCBDOMySiTCxAfSX1HLgOPXAh8K3fR/fpt0xE/zzbN8/jDu9HewtlcPVCGSmDM3Bdlo3rrv+bBBGZgWP2xj0N100pLJR0tBs7stYA3CwP8ffl6Qus=
+	 Content-Type:MIME-Version; b=sRI7Ob66R5zlUDnukemdTif3XXLIGw/LYflSNaXxjcn86TumNeGEg1chDuMTAffA/fsjxjKimxTiJ1XNkLIYCV2O9OBSHwS6MzeRbP0m0FFJ5vsbtvzWj6mT0psk/yYSxq38w5Dhmc4HCW14ypGfzROad/yMijL4h6rSf26FVUE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,18 +18,18 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sCKmL-0003hh-JG; Wed, 29 May 2024 16:59:49 +0200
+	id 1sCKmm-0003s0-GG; Wed, 29 May 2024 17:00:16 +0200
 Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sCKmK-003TeI-Qd; Wed, 29 May 2024 16:59:48 +0200
+	id 1sCKml-003TeM-Nb; Wed, 29 May 2024 17:00:15 +0200
 Received: from pza by lupine with local (Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sCKmK-000Dg2-2P;
-	Wed, 29 May 2024 16:59:48 +0200
-Message-ID: <604e3e34ca98484e938d775379441f2a82a73fbb.camel@pengutronix.de>
-Subject: Re: [PATCH v2 05/12] drm/imx: ldb: drop custom EDID support
+	id 1sCKml-000Dhq-21;
+	Wed, 29 May 2024 17:00:15 +0200
+Message-ID: <1f6475267bcd16db21080c90a77592ba0f7db9b9.camel@pengutronix.de>
+Subject: Re: [PATCH v2 06/12] drm/imx: ldb: drop custom DDC bus support
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
  <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
@@ -42,10 +42,10 @@ To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
 Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
 	devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Date: Wed, 29 May 2024 16:59:48 +0200
-In-Reply-To: <20240331-drm-imx-cleanup-v2-5-d81c1d1c1026@linaro.org>
+Date: Wed, 29 May 2024 17:00:15 +0200
+In-Reply-To: <20240331-drm-imx-cleanup-v2-6-d81c1d1c1026@linaro.org>
 References: <20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org>
-	 <20240331-drm-imx-cleanup-v2-5-d81c1d1c1026@linaro.org>
+	 <20240331-drm-imx-cleanup-v2-6-d81c1d1c1026@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -61,9 +61,10 @@ X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expand
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
 On So, 2024-03-31 at 23:29 +0300, Dmitry Baryshkov wrote:
-> Bindings for the imx-ldb never allowed specifying the EDID in DT. None
-> of the existing DT files use it. Drop it now in favour of using debugfs
-> overrides or the drm.edid_firmware support.
+> None of the boards ever supported by the upstream kernel used the custom
+> DDC bus support with the LDB connector. If a need arises to do so, one
+> should use panel-simple and its DDC bus code. Drop ddc-i2c-bus support
+> from the imx-ldb driver.
 >=20
 > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
@@ -71,4 +72,3 @@ Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
 regards
 Philipp
-
