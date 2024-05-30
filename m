@@ -1,22 +1,22 @@
 Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA64B183A6E
-	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A718508A
+	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717059498; cv=none; b=Cl/5x8UQ7oa1Z28Pthh52Ly2WrdOui1xJfmg3xIuAI9vba/Ojti5LEmCD9r2QRU8t3fE58f+qSnNFa43HOwSV/vQbEKM/ISVUV2Ph3gUYzGvUD1rBdt+YkrAtS19+ISn90+Ok7IT/Eu9IoYu7Lmv0t0NkXzxFQtjlNJ2q4Zatw4=
+	t=1717059518; cv=none; b=PB5r/mOQ5Y9qv5d5wxxTgCik3gq6NgTIVqmCCVNotM0QV3ty+5pRGUYyN2Rc7hqzQfFaQDfMeo7WdvA13MEnb/ZJ6HfIS5jFmsxTk09ppWSviqOcL9DKrAU00avgyn50xV5VixKBJg68KoV9nfAlANJjQLDhGddqcX/elz8tFGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717059498; c=relaxed/simple;
-	bh=fcakMpeN0kh1ivrPRRMUOj3J303wd5sdAUxeGg+CQOk=;
+	s=arc-20240116; t=1717059518; c=relaxed/simple;
+	bh=KYoxAAK6S+GIuN2E48DvdIJyuBlhCt1h5mEc1k8V3xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/kIeTfpTYVck95TXOmXXAQRllG3F/u+rGMi3MLIXgP4XEBjCXUzPjXNkOi86uJm0nKMtCImaSwrvPrRXrD4igAu0jG62SIHMgFjTfDTo6Lnxcp4LUKcytD3Ozq9KYSXV1m2vhPDWPhhVHkNw4oi+5t5+q8VlcTjDdV4EW/Iy3Q=
+	 MIME-Version; b=XWA/VqgVKhecVL6T6hDKLLwCAR69JBnDrHfiIpb4QOzZTzrIwAfQWwiUVvp7S7Kzx3twwlZKqn1ErStFtByA6Ob1PdohsW7TUkrXhReLbB/e7ISAFE10zHgXjEPDuotWDRCz3bnpmWcNLFKgLL1Tx3UCBGVihcT5ngy9bkVXCTw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
-	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-	id bdc774e0-1e62-11ef-8e2e-005056bdf889;
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id be284b31-1e62-11ef-8d3e-005056bd6ce9;
 	Thu, 30 May 2024 11:58:11 +0300 (EEST)
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -40,9 +40,9 @@ Cc: Dong Aisheng <aisheng.dong@nxp.com>,
 	Paul Cercueil <paul@crapouillou.net>,
 	Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v3 07/11] pinctrl: imx: Convert to use func member
-Date: Thu, 30 May 2024 11:55:16 +0300
-Message-ID: <20240530085745.1539925-8-andy.shevchenko@gmail.com>
+Subject: [PATCH v3 08/11] pinctrl: ingenic: Convert to use func member
+Date: Thu, 30 May 2024 11:55:17 +0300
+Message-ID: <20240530085745.1539925-9-andy.shevchenko@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240530085745.1539925-1-andy.shevchenko@gmail.com>
 References: <20240530085745.1539925-1-andy.shevchenko@gmail.com>
@@ -60,50 +60,53 @@ desynchronisation of the generic pin function description.
 
 Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/pinctrl/freescale/pinctrl-imx.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/pinctrl/pinctrl-ingenic.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx.c b/drivers/pinctrl/freescale/pinctrl-imx.c
-index 2d3d80921c0d..1ccdeb86d8a7 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx.c
-@@ -266,7 +266,7 @@ static int imx_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
- 	npins = grp->grp.npins;
+diff --git a/drivers/pinctrl/pinctrl-ingenic.c b/drivers/pinctrl/pinctrl-ingenic.c
+index 959b9ea83a66..31703737731b 100644
+--- a/drivers/pinctrl/pinctrl-ingenic.c
++++ b/drivers/pinctrl/pinctrl-ingenic.c
+@@ -96,9 +96,7 @@
  
- 	dev_dbg(ipctl->dev, "enable function %s group %s\n",
+ #define INGENIC_PIN_FUNCTION(_name_, id)							\
+ 	{											\
+-		.name = _name_,									\
+-		.group_names = id##_groups,							\
+-		.num_group_names = ARRAY_SIZE(id##_groups),					\
++		.func = PINCTRL_PINFUNCTION(_name_, id##_groups, ARRAY_SIZE(id##_groups)),	\
+ 		.data = NULL,									\
+ 	}
+ 
+@@ -3769,7 +3767,7 @@ static int ingenic_pinmux_set_mux(struct pinctrl_dev *pctldev,
+ 		return -EINVAL;
+ 
+ 	dev_dbg(pctldev->dev, "enable function %s group %s\n",
 -		func->name, grp->grp.name);
 +		func->func.name, grp->grp.name);
  
- 	for (i = 0; i < npins; i++) {
- 		/*
-@@ -593,21 +593,21 @@ static int imx_pinctrl_parse_functions(struct device_node *np,
- 		return -EINVAL;
- 
- 	/* Initialise function */
--	func->name = np->name;
--	func->num_group_names = of_get_child_count(np);
--	if (func->num_group_names == 0) {
-+	func->func.name = np->name;
-+	func->func.ngroups = of_get_child_count(np);
-+	if (func->func.ngroups == 0) {
- 		dev_info(ipctl->dev, "no groups defined in %pOF\n", np);
- 		return -EINVAL;
+ 	mode = (uintptr_t)grp->data;
+ 	if (mode <= 3) {
+@@ -4317,14 +4315,14 @@ static int __init ingenic_pinctrl_probe(struct platform_device *pdev)
  	}
  
--	group_names = devm_kcalloc(ipctl->dev, func->num_group_names,
--				   sizeof(char *), GFP_KERNEL);
-+	group_names = devm_kcalloc(ipctl->dev, func->func.ngroups,
-+				   sizeof(*func->func.groups), GFP_KERNEL);
- 	if (!group_names)
- 		return -ENOMEM;
- 	i = 0;
- 	for_each_child_of_node(np, child)
- 		group_names[i++] = child->name;
--	func->group_names = group_names;
-+	func->func.groups = group_names;
+ 	for (i = 0; i < chip_info->num_functions; i++) {
+-		const struct function_desc *func = &chip_info->functions[i];
++		const struct function_desc *function = &chip_info->functions[i];
++		const struct pinfunction *func = &function->func;
  
- 	i = 0;
- 	for_each_child_of_node(np, child) {
+ 		err = pinmux_generic_add_function(jzpc->pctl, func->name,
+-				func->group_names, func->num_group_names,
+-				func->data);
++						  func->groups, func->ngroups,
++						  function->data);
+ 		if (err < 0) {
+-			dev_err(dev, "Failed to register function %s\n",
+-					func->name);
++			dev_err(dev, "Failed to register function %s\n", func->name);
+ 			return err;
+ 		}
+ 	}
 -- 
 2.45.1
 
