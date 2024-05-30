@@ -1,79 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFE168BD;
-	Thu, 30 May 2024 07:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4C01474DA
+	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717054810; cv=none; b=rhyOyDZ/UKk8oLnASCm1lqWVFWAoXh9SFTz+sRmuz2uL9YT7V46AhUhtY9UMsjlDHIxkg2vyiTt/J9WNZDZJwTEofLB4H0gGCIUJJLRns0x1fiO4vj6yz1iS4dhcMtY0wiJl4ZCFaR1YMIv3/tWy3PZIdQmWL5XdPcJ72VEaYPI=
+	t=1717056751; cv=none; b=ivEOzNxsLGWEV09POZ7OAaqGFkMyJ20wPT96Mv3nqJv2vaJbWDe8mgRtk+Nu8obBWtG/E/AX+RC7X4rLuLSsX+CWzm5HELHKJ749scBw/MxbhSSIsqR5nOxOE6h+vvflaLNLBLNIZJLrw0zp07Z3MfYuEODVriE6lbhJPUtD9Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717054810; c=relaxed/simple;
-	bh=wNN960FphnubiQ9QbNQbnvG3rJVXxUI69WDQ4o/6EvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rzgYyxdSxoXSgyd/NhFIWyxxkBdlKcxgUNOjfGvVPq+T0g2w3u1NKGvuF058C5HYvBKsWiYYxd4KRz7Lg8C770mLNWZ2otN3QfgUhJawCwsQzGUV/3tQ0uWvZWkt4F7SG921d4kNP3mGziZ1O4Mz19ZnL0EMa5mPDneXNBE2uA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayoqaR3e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717056751; c=relaxed/simple;
+	bh=WezqI/UOXVIpTjMJypNZUq8DzqVTPIr5eJy3W7G97Rw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SuqM3e3Vpj7FLsd6HCST2prVOcJ6RRaq90O1kcOxyVHGJdpyjl5LQTXxROBDQBmdISD5k/R0eD4C2fipw3O1MOO8k+8ElbvUKLchma62YeSXE40aClzCWmrh5vnz4eQcEqUOsfNlpAfSSodGUq5K+lqbZ3IXWmPyszqvb4uGl0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=NPx7Ho5a; arc=none smtp.client-ip=44.202.169.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayoqaR3e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAFFC2BBFC;
-	Thu, 30 May 2024 07:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717054809;
-	bh=wNN960FphnubiQ9QbNQbnvG3rJVXxUI69WDQ4o/6EvY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ayoqaR3eB0FFbwcg8JkZVAtblT/BzCHcQScR/gPHUtH/y7vPIJKjPvU/+X9iEVzaN
-	 oJwFP4vJaOuoRF4EPFu34dPav4543Rz0lNbrOAR9Vt7LIYA73if6sk1jCkaeOB0700
-	 H5wFz1FRmjTqxJoE28bumw2DwcLFeIZxEtoovx/U=
-Date: Thu, 30 May 2024 09:40:13 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-Message-ID: <2024053008-sadly-skydiver-92be@gregkh>
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
- <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="NPx7Ho5a"
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+	by cmsmtp with ESMTPS
+	id CL15sOWIjxs4FCatas9eOf; Thu, 30 May 2024 08:12:22 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id CatYsmrNjiKqRCatZsUBqQ; Thu, 30 May 2024 08:12:21 +0000
+X-Authority-Analysis: v=2.4 cv=I9quR8gg c=1 sm=1 tr=0 ts=665834e5
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=7eglLlv4HFOW3sTsDH6Jqg==:17
+ a=IkcTkHD0fZMA:10 a=TpHVaj0NuXgA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
+ a=NEAV23lmAAAA:8 a=nG3MMMVrgEngwwIGFzYA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=veiVKH1vZWe9V2vON8q6NViu4bLJsZtyTGLVtkgabHg=; b=NPx7Ho5a5jQRoP/g1eCjaTAmwc
+	G7ARIO3jxIMb7kKvdbCsbzwDL8MGIGFkvjnX3nsl/AEEHVnAPPMsTNlLdoW4dIOZWRL/Zf+2FPgtb
+	ZsJ8witC9l1Nmung92orCnCv92dQN6R63fhvbRvN27erCdjoOv7guq+XoRNqx7KoC0pWe3CiRBdO7
+	tDSjnjeydGCtZuZ7FZLjjqCmPQEb3nuT6DyqwKCP6ZG/yI5NxKroCkrt5h7zpuZIN6KycKX8CM0zt
+	gVZyP6TiUSkbhxSnkYCLdJ8LoWnqYu679pdn7rtF2cVysMQ+gwJuBQ+1VsM/A5Vhbj9MTq2XQWdWt
+	UAxYvSbg==;
+Received: from d58c58c2.rev.dansknet.dk ([213.140.88.194]:38800 helo=[10.0.0.182])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1sCatX-000JCm-2c;
+	Thu, 30 May 2024 03:12:20 -0500
+Message-ID: <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
+Date: Thu, 30 May 2024 10:12:13 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-serial@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+ <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+ <2024053008-sadly-skydiver-92be@gregkh>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <2024053008-sadly-skydiver-92be@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 213.140.88.194
+X-Source-L: No
+X-Exim-ID: 1sCatX-000JCm-2c
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: d58c58c2.rev.dansknet.dk ([10.0.0.182]) [213.140.88.194]:38800
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDW/l4b6bXwfHIQQgpALnUcaLk95Q8XyGqsyIm3EMP80kIXAQUF2h3jsdtm4ElxB0USQ5kqC8Ky4Vhmh7dAK73Txs5jqo6xObNBF2ZqCU20LEIskraBD
+ UFoOTq7a8mcH8RaTkiMDDFF8hxdbGSKi1sFPIu9pwGKtM9jFgz+C0MSzj+aJz9Vkpr3G3xwVYtVW6Q02pmeejzQ0UXbAxZ4iSm0=
 
-On Thu, May 30, 2024 at 08:22:03AM +0200, Jiri Slaby wrote:
-> >  This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
-> >      291 |         struct mxser_port ports[] __counted_by(nports);
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> >    1 error generated.
-> > 
-> > Remove this use of __counted_by to fix the warning/error. However,
-> > rather than remove it altogether, leave it commented, as it may be
-> > possible to support this in future compiler releases.
+
+
+On 30/05/24 09:40, Greg Kroah-Hartman wrote:
+> On Thu, May 30, 2024 at 08:22:03AM +0200, Jiri Slaby wrote:
+>>>   This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
+>>>       291 |         struct mxser_port ports[] __counted_by(nports);
+>>>           |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+>>>     1 error generated.
+>>>
+>>> Remove this use of __counted_by to fix the warning/error. However,
+>>> rather than remove it altogether, leave it commented, as it may be
+>>> possible to support this in future compiler releases.
+>>
+>> This looks like a compiler bug/deficiency.
 > 
-> This looks like a compiler bug/deficiency.
+> I agree, why not just turn that option off in the compiler so that these
+> "warnings" will not show up?
 
-I agree, why not just turn that option off in the compiler so that these
-"warnings" will not show up?
+It's not a compiler bug.
 
-> What does gcc say BTW?
+The flexible array is nested four struct layers deep, see:
+
+ports[].port.buf.sentinel.data[]
+
+The error report could be more specific, though.
+
+--
+Gustavo
+
 > 
-> > Cc: stable@vger.kernel.org
-> > Closes: https://github.com/ClangBuiltLinux/linux/issues/2026
-> > Fixes: f34907ecca71 ("mxser: Annotate struct mxser_board with __counted_by")
+>> What does gcc say BTW?
+>>
+>>> Cc: stable@vger.kernel.org
+>>> Closes: https://github.com/ClangBuiltLinux/linux/issues/2026
+>>> Fixes: f34907ecca71 ("mxser: Annotate struct mxser_board with __counted_by")
+>>
+>> I would not say "Fixes" here. It only works around a broken compiler.
 > 
-> I would not say "Fixes" here. It only works around a broken compiler.
-
-Agreed, don't add Fixes: for this, it's a compiler bug, not a kernel
-issue.
-
-thanks,
-
-greg k-h
+> Agreed, don't add Fixes: for this, it's a compiler bug, not a kernel
+> issue.
+> 
+> thanks,
+> 
+> greg k-h
+> 
