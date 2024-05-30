@@ -1,215 +1,189 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2087.outbound.protection.outlook.com [40.107.7.87])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BBE176191
-	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717058654; cv=fail; b=dUZ7CyxzW2h6meWO8mFIJFYpNr2BmMO+QPMOhpuzi++RdOFufBxPRXle7qzR+Ofx0qr0sKqteu1By0aTD7augpz73teJ2vWQzq+NJpA12VVeDzu6awXAFwD/g8OW4YRJIg5ANsl/8/ZuiC/gOgdSdAwIXwSTZYLB/q/sJW97GQ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717058654; c=relaxed/simple;
-	bh=lY5cnNjCnzHMNAYe3UNeuptGPxRKDgDGA3KNChZ4JIc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=l19YIUPmOZUN+7fF3mH1CDEmGu8phzNN5+cVrthtAaaDxqSY4/xi9UK3i9qvZFfaPymeQyJxfEZ+vf+6zc9rgLEif9enstKZiTJR1c/5c/LYv4WKiZ7WD7ajfH0mFg3BoIk1ANlFEuritYWycO8CT5scduR+MI3/DkO2JKC1Slw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=JHfbBcGt; arc=fail smtp.client-ip=40.107.7.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="JHfbBcGt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=APwcAvXeDqdbhkRD9xmzZhwhqmoA60G2NTe2im8M7srEp3xFd7o7oNLg8NXDKJD3PBsgSxX782JDu4F/j/B6JzQs5yEEHEe5b9ZEdU0PQwl/XSt0Er88hA0Aps3X3szrsEkIefzCfr+WFQ5yDwUIJ3WiM7WuHXFtH2jWuX79OkLqLQJ5xhe5i1KUYIuIx/yDviI4+KFpWlBq062mbN3Ubz1/w6QJBMo90G1qtwCsk6oumBEl9wluEE22ssMmlxF/4yaPR0AzmDO+4oPlR5sl6a589gVZ1IVfKtsxpkwG+4obYGSo0DrTqlfBoOGjW1AZ1cBIGJ/OKHy1r02Uj9F7MQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lY5cnNjCnzHMNAYe3UNeuptGPxRKDgDGA3KNChZ4JIc=;
- b=OnVnQfMb2c1NBpw+KVs2J+sqHVc3bi3YvnAfYbC98PfCwm/ubfiu9C5Zmrgy6TnhgjdH/4mPQOp5YrpMEUJMYBLHwEABTQo5A/CwOj8Ci2n7N1vc6nEoqBdYr4G71GpBzSi44UBwNoB3e30jTzq5WlhbdYG19lHqSacJnJ31nOeK3HUrDWsLOYqm5bAmzb//V5O7/O6FiRO6ANbiXw5MDmEbPanJ+DJKg9Jhkre3LO3m+BB6eZbC4Z+lfM2KZIbDRrgwX7LfRdwZVWbPV+MKfVow3kVMevAP87ZmJV2F/30BVtyqXXYXVnxER9me1AqE39CV0Zfb5PrQka6XUv2Wew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lY5cnNjCnzHMNAYe3UNeuptGPxRKDgDGA3KNChZ4JIc=;
- b=JHfbBcGtfLAER9e5lgF4ChVT3GSVeP2KBDlMUeg3RJbPIW0v50zKCnVCDHfCMT/eCsoikk3bt2Rz6fZmCyNXj3OeHtdQu9/d8JNLFHtMpFVwQ7h05EE3Lwpb57WRbTmFRX3jKRd9cT7xVwWB+1VnAy/UdOKhBL+03ne52P0Z1ig=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by DU2PR04MB8856.eurprd04.prod.outlook.com (2603:10a6:10:2e3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.19; Thu, 30 May
- 2024 08:44:09 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::557f:6fcf:a5a7:981c]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::557f:6fcf:a5a7:981c%7]) with mapi id 15.20.7633.018; Thu, 30 May 2024
- 08:44:09 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Markus Elfring <Markus.Elfring@web.de>, "soc@kernel.org" <soc@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Alexandre Torgue
-	<alexandre.torgue@foss.st.com>, Alim Akhtar <alim.akhtar@samsung.com>, Andrew
- Jeffery <andrew@codeconstruct.com.au>, Angelo Gioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Chester Lin <chester62515@gmail.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>, Damien Le Moal <dlemoal@kernel.org>, Dan
- Carpenter <dan.carpenter@linaro.org>, Aisheng Dong <aisheng.dong@nxp.com>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Emil Renner Berthing <kernel@esmil.dk>,
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, "Ghennadi Procopciuc (OSS)"
-	<ghennadi.procopciuc@oss.nxp.com>, Hal Feng <hal.feng@starfivetech.com>,
-	=?utf-8?B?SGVpa28gU3TDvGJuZXI=?= <heiko@sntech.de>, Jacky Bai
-	<ping.bai@nxp.com>, Jianlong Huang <jianlong.huang@starfivetech.com>, Joel
- Stanley <joel@jms.id.au>, Jonathan Hunter <jonathanh@nvidia.com>, Krzysztof
- Kozlowski <krzk@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>, Matthias Brugger
-	<matthias.bgg@gmail.com>, Matthias Brugger <mbrugger@suse.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Nicolas Ferre
-	<nicolas.ferre@microchip.com>, Orson Zhai <orsonzhai@gmail.com>, Patrice
- Chotard <patrice.chotard@foss.st.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Sean Wang <sean.wang@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Shiraz
- Hashim <shiraz.linux.kernel@gmail.com>, Stephen Warren
-	<swarren@wwwdotorg.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Thierry
- Reding <thierry.reding@gmail.com>, Tony Lindgren <tony@atomide.com>, Viresh
- Kumar <vireshk@kernel.org>, Wells Lu <wellslutw@gmail.com>
-CC: LKML <linux-kernel@vger.kernel.org>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "linux-tegra@vger.kernel.org"
-	<linux-tegra@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-aspeed@lists.ozlabs.org"
-	<linux-aspeed@lists.ozlabs.org>, "openbmc@lists.ozlabs.org"
-	<openbmc@lists.ozlabs.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Subject: RE: [PATCH v2 18/20] pinctrl: freescale: mxs: Fix refcount of child
-Thread-Topic: [PATCH v2 18/20] pinctrl: freescale: mxs: Fix refcount of child
-Thread-Index: AQHaniVkZWlAc+ixjEijPTWAKiPHFrGrYKWAgAQ9t9A=
-Date: Thu, 30 May 2024 08:44:08 +0000
-Message-ID:
- <DU0PR04MB941783DEB48C73844CD3FDBF88F32@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com>
- <aa58efd3-b502-4bed-8c84-e5d78da23fbe@web.de>
-In-Reply-To: <aa58efd3-b502-4bed-8c84-e5d78da23fbe@web.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|DU2PR04MB8856:EE_
-x-ms-office365-filtering-correlation-id: 77c0b891-a678-4e4c-511b-08dc8084ac08
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230031|366007|1800799015|7416005|376005|38070700009|921011;
-x-microsoft-antispam-message-info:
- =?utf-8?B?WHB0YUdlSTNHeFduNDNHWmNWUmVsR3ErcHhBREh1Z3hWUjVmZGxjL002ZzZv?=
- =?utf-8?B?V2lzRFRpMTlWS25xVFBnb3lMbEJpa2pydUZyN2ZxeWxzN0lnNGJNV01iSGx5?=
- =?utf-8?B?alk4V2RYZWp4SmJmNWtYNm9VdjNrbHZPZ3dJUytpM2hQRWNOeVo3N0VlZWlt?=
- =?utf-8?B?RTdIREJyZnNXa1hrU01GUnJsUHlSaWRFQStQckNDMStsS1M4L3BtTnZXR3Ji?=
- =?utf-8?B?bzQzK1I1Nmh4N2JncGV1N1NSaDNNUkl1M0xIbkVPeUZIL2dTQXhLWUdhTEZm?=
- =?utf-8?B?MFh5OGcwaVpZWEs3RUdtTEFpa2lHbU5Obi9qMkVhaHJSblVnb1JrL3VQZkVp?=
- =?utf-8?B?OHB3a2VDNzNpR3lPNmxFWWVuL0J5R2ZMRWR6SzF4TUlnV2VBUlNCOHN1aGxN?=
- =?utf-8?B?c3d5KzZPZlMxaUJ3bnkwUzh0WHdsR2x3OXdRRFRySFFlaVVPQUNWMTVnbFAz?=
- =?utf-8?B?ZzRod0NFZy81Q0RSOHhkWXZ6Y0IxbTVWczY5TW9maWFRdGdORmMzQXpRMCsz?=
- =?utf-8?B?TFZqK2Uxb2FnUlRJUCswVGtjNFJXWUxsbjRjdThWZ1N0OGtZN0tRZFJQbWhP?=
- =?utf-8?B?ZUJHNS9tUWZRVmw2djVCS01mblAxQzIrVnd0OHVRWUVxSXd0dTJJS0tZdEQ1?=
- =?utf-8?B?QTkyQm1HVEJFb1o3VFpjMW9GSk1VVVhGcjkyc1RwMlNhYlkxT0M4VFZ0UWRz?=
- =?utf-8?B?VmptR3VSTS83b3JoNjhnR2l0VzJwWUxUOFZ4ZUIveWRyakthRFRmU3NyeUkv?=
- =?utf-8?B?NjhaaWxkektLU0pFczg5OWJiQkpxOWc0SHZvcWZ3UWtOdjZoUDVRSE5MY1RT?=
- =?utf-8?B?aDJ6bWR1Nkk2aGVmM1lsMStjd1BRT3NIL0NQMWVEUWw1ZjJqNk5jY2ZzWWwv?=
- =?utf-8?B?VjMvSzlFWVNHUkFERXBsWDZnbEdCZjBhckdaQ090YVlaTngxcC93M1lXT1RH?=
- =?utf-8?B?Zm84L1RmR1FDNkg2RDM2YmE0RnhDdkVwNkFrNG9HblZ2ZHY0V2J3NWNXN2Ur?=
- =?utf-8?B?S0M0N2JNbGJKOU9SUnNDekVSRURiVExCM1lpRTNIUnJ3dWVOdmpUQ2ZrY2Ja?=
- =?utf-8?B?YTFuajEwaUozUGRyQzl2bDRkdkFnUlJQamllT1dPU3ljMmwwQjJ4MHEreDEz?=
- =?utf-8?B?TUlSSWF4UFM3OWRCdkVKYXJ6eEg5cVRwRVBQRnV5YmFxZkZmMU5vOGtTNk9W?=
- =?utf-8?B?cTZXRVNiU0ZrNHJxMmF6RVd0Rnh3SDBLb3NMeGNUQnNnaE5tb3NpelQ4REtm?=
- =?utf-8?B?VFNPZ3duTFVmUEVhN2hDS08zMFpKdFk4Q2pubmpzNHA1QlJRWXh6bXh3Ry8v?=
- =?utf-8?B?VVdFbmJ6a1prQlIveHhtand0Z2xYK2VGRCs3d1VRNUJDMlgvcmhoTzNOdW9F?=
- =?utf-8?B?LzM0Mkt5Qkd6TW5vYlRpbEdmOXJOakgrZEJ3c0duTmR5RTYvSkE2VFM1ZTVQ?=
- =?utf-8?B?YjlGQ29KemI5RHBVMzF1SEtybGZiK2RJTmQyQ0RvSVI0bk5QS2hyWFhJdGQx?=
- =?utf-8?B?c2FLeUl5VXVEeDNrMzBvQXM1VWdOdUN2bWdGVVVwSUZUK2ZGem54RjViRTIz?=
- =?utf-8?B?djZsUTdPY1V6K1A1NHYxNVJ2UldvTGhGY0swM1Nwcmx3WkJTQ0xQU3QwdnV2?=
- =?utf-8?B?cTBZbVhWd1VNVWIvaUhIMXpRb25pSiswYlJLSDlTSDFDeUt3S2loNGRrNUdH?=
- =?utf-8?B?WnpBMWQ0eXoydUZSY1I3YjhFaGVBNUNjeHk1cmhyTlo2M3ZVeTRhY0tzZVcr?=
- =?utf-8?B?RGUxL0xmSUEwNTNUS3BYeFJoWE13SmJweVlBSkdpdEtUMHhsbjg3dW9XUnEz?=
- =?utf-8?Q?0+seWBIt6kb2B5WxohRc+yj08p3lOItzflD74=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005)(38070700009)(921011);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VzlTLzkyWGx3YmF5d0Y1VWlHV0xMZituaEdxbDBLSTAxTnJ0SkVCWFYxcVRy?=
- =?utf-8?B?K2hMTGxyYzNVOE1FRXJZcDkzeTJjSTAxN0RLWmhVYUJML3ZOZFBZU3c4MzNl?=
- =?utf-8?B?MXVkMkFNVzhlMms2RjFQTDBrZnRITHpyK1JIZjgzZkhmVnljRWFMaXF0OHJl?=
- =?utf-8?B?RDJPWGxqY0dPTTFUWXpBUjJSa3hFMlQ4NmNUbDdaMXRvOVpOVTFwVzhwN2hT?=
- =?utf-8?B?cnk5RXlyUlN2N29HMENQaEdZV0dVVjVJOE00eC9xeUJ0Y1lKSVp6Wm5zU2Jn?=
- =?utf-8?B?R3lNYUphQlV1cGRyZ0M5UUxLOFAzZjByV2EyclVQSWJqRm40QThJdkpKWUZO?=
- =?utf-8?B?STNjdjk4NWYrMk5RcDZiUlMvem5mOUdScmpoSEFFTkljc3diWkdhVEh6c3Jr?=
- =?utf-8?B?QVY5VEJuTmhhbTk5NWl6a1U0REJVdFYydTQrbFZ0Q1QxcXp5RlpMUHlhNHRZ?=
- =?utf-8?B?Rm9ENmxZbnpPc2dMU3lvWWREejBIZFpoYml0NGJ3cncxU0tacEwrOGd5clVK?=
- =?utf-8?B?ZThweWtFTGN6Y2FmQ014VTFHbC9Uai8yMHpEYlo5MjU0OFNITXRDekhBN2JT?=
- =?utf-8?B?U2oyVkxUN2RXMXNvNkV4bUxIc2RTTFJobHFPVnlpQ2NZYkM2RkJHdEJZNmkv?=
- =?utf-8?B?RVF5QVcxclFpeFI0U0F0MVk5dDNmQVZRTm1LS08rSngrUHFkNXAwM29MQTZv?=
- =?utf-8?B?akIzZ0IzM3lCc1duYjlweWF3STk3L2gyZTVwc0JrZ1lFek9qOUdFTC90NFNE?=
- =?utf-8?B?bXNzdWZjRXZhRGlLYkgySUxsa3RQRUtpRUE5V3JpY1lpSDdkNXk3bXRjN0hm?=
- =?utf-8?B?dXRtQ3A4ZldtNkZKZUVSbXJHMmdjdGhoS09YZlhhK1NmdTJzYTlVbkcvN2o4?=
- =?utf-8?B?MHNHQXJ3VGZ2S0dQZVhhWERnYzh2RzRSNm9jVDlaZElGYWYzZkFZZWwwaEl0?=
- =?utf-8?B?R0psdEhzV1BKVmVsRmgrUEpmaVRCZUVlM2hvRjdWaTZIT05obXpsWC95NHNM?=
- =?utf-8?B?RElBVjJ0MFUrcnh1NXQyUHFoUEZ0TDBVdngybzIySEQ4Y2FqZnA0RVB5RUxy?=
- =?utf-8?B?U2N1ZEFjazhiYTdLWGtRbzl5aExwVkFOcVd1Q0hIbXRQeFFtVlpmdzJYNWVE?=
- =?utf-8?B?R3U4ejFTZkJxZ0liblY4aXlKL3VRcll5YXZYY3FQWFlnTmNSbHYxZUFBZndh?=
- =?utf-8?B?djJGUFFvcTdDcG9idEN4R1ZMZWRvVnFJYlFhZlNNTzB2c0dkT0txZStUcXgy?=
- =?utf-8?B?NUxma3BOMEx1REJHbVhxR29yMHozQUtRVVdxQmptU1hPWFgxclZ4RGFwWU92?=
- =?utf-8?B?SkpQR3ZQcldiMHFod1V1VFRRZFJwTUphSm1sMVVFMDZONGFDeEVrTHlVOWFz?=
- =?utf-8?B?TVpwTys5VlZMTFQvV2F2TXNhYnloV2MxWWVMRkN5d1BKT1NiRmRmNVNreVFj?=
- =?utf-8?B?bVRXN1BObFo1ZGt3NWxEcHdsQ2xYZ3Zhc3pHU0lYOUhQMGZrTWpPSE1FSVUv?=
- =?utf-8?B?TkFldWJQNlo1V2s5STViVnB5bm5NellNdlQ3aE1HN3c1S0pRc2U1cmlWVlM5?=
- =?utf-8?B?LzhmZHB2eXBKa1IwTTBQLzI3dHp5Q242dnRidlN5OWJUZm92TFBmY1hkaTRK?=
- =?utf-8?B?bkQwUFkvQVhlS0ZPenUrYUxFSmplUE5kNlUwMVJwYmZtb3ZQUUhZOGxyVVpE?=
- =?utf-8?B?QnlOZTdCRUFBUk1Za0VKU1pmaXlwSi9VZFJYbFgzdm1ZR05JOStWb25zcmZ1?=
- =?utf-8?B?bTdxU05VWFpmQ0o2UUlyNis5N21BTDcvZ0cwT1FDNVUwTi85NHN5VW4rTnc3?=
- =?utf-8?B?VjZVOEVubjBUdmpkT2d5Wmxmd3BtcXJqZkh3c3lucmpyVEFOK2RDMWdBakxV?=
- =?utf-8?B?WWo2V0VIYmhSc2R6b1hZL2dsRC9yNWdNREVlLy8vbU1mQnp5YzNabHFRRk9I?=
- =?utf-8?B?NTh5NjVvTHorTVRjNmR0aEdzNHBIT1JlMGZHWUtOTS84RUJpN0tsL1RQMmlR?=
- =?utf-8?B?enNYNVpVRS94U2VjQUFGeVg1bEhUTTRqek43cVc1MU1SL1Vnb2sxcmhjak1E?=
- =?utf-8?B?S1dFT3pwSjdmQ2ZFQUtKQU9UUFJpSU92cys2MWtJVW1XamF6VVN4NHBCTmtz?=
- =?utf-8?Q?dHu4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94D16F2F1
+	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717059099; cv=none; b=qTxbePF0SvRQVRsinJmF7vOvoFt4XJCrAJFSH5YCVBIxiqQnl40ICnk0aab8Z/JzIDTvVb4TYiOrUJ3DhxnsjgGNzVOovT7nhucV0TuhIn4GOCytP9aSMfmHL/lLSI60Bq713rs+mH0+s2PvHdEhyj+PvgkysbSP2dVm+7Zl1A4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717059099; c=relaxed/simple;
+	bh=ldijqlRHr9EX+84TGvk38cU+KkmKKfH4BPsMyQjQM7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=joa6WzzgSSscekwHGE6JEHzoAuP0RiwiZ1+2GK+ETWtCOvdyE51Vro8/oTwmiow1AYZ5SbgI3fsElb35YgeUQpfTrrORCoykSN2L5lsm5BgXqO3E3Q0LfdM5nwHm7XmCd1ckyvuxiK+3xHCyjJLjq9/iENNxjGGAND4k8lKtJAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sCbVE-0006tG-Ko; Thu, 30 May 2024 10:51:16 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sCbVD-003Zad-T7; Thu, 30 May 2024 10:51:15 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sCbVD-00039q-2Z;
+	Thu, 30 May 2024 10:51:15 +0200
+Date: Thu, 30 May 2024 10:51:15 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
+	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
+Subject: Re: [PATCH v6 2/5] clk: imx: clk-audiomix: Add reset controller
+Message-ID: <20240530085115.ttmzx4dve4x6nep2@pengutronix.de>
+References: <1717036278-3515-1-git-send-email-shengjiu.wang@nxp.com>
+ <1717036278-3515-3-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77c0b891-a678-4e4c-511b-08dc8084ac08
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 May 2024 08:44:08.9823
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: A7hZ9840t60j4IRntB33hVVAfdsRol41wy0W+y8gL/qlLpUeLvzCFEeyQE4KW1bhwVtjnMVo9R5qxiD/dNW2sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8856
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1717036278-3515-3-git-send-email-shengjiu.wang@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDE4LzIwXSBwaW5jdHJsOiBmcmVlc2NhbGU6IG14czog
-Rml4IHJlZmNvdW50IG9mIGNoaWxkDQo+IA0KPiBIb3cgZG8geW91IHRoaW5rIGFib3V0IHRvIHVz
-ZSB0aGUgc3VtbWFyeSBwaHJhc2Ug4oCcRml4IHJlZmVyZW5jZSBjb3VudGluZw0KPiBmb3IgY2hp
-bGRyZW4gaW4gbXhzX3BpbmN0cmxfcHJvYmVfZHQoKeKAnT8NCg0KVGhhbmtzIGZvciByZXZpZXdp
-bmcuIEkgaGF2ZSBubyBwbGFuIHRvIHJld29yayB0aGlzIHNlcmllcyBmb3Igbm9uLWFjY2VwdGVk
-DQpwYXRjaGVzLiBJZiB5b3UgaGF2ZSBpbnRlcmVzdCBhbmQgdGltZSwgZmVlbCBmcmVlIHRvIHRh
-a2UgaXQuDQoNClRoYW5rcywNClBlbmcuDQo+IA0KPiANCj4g4oCmDQo+ID4gb2ZfZ2V0X25leHRf
-Y2hpbGQoKSB3aWxsIGluY3JlYXNlIHJlZmNvdW50IOKApg0KPiANCj4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgdGhlIHJlZmVyZW5jZSBjb3VudGVyPw0KPiANCj4gDQo+ID4g
-UGVyIGN1cnJlbnQgaW1wbGVtZW50YXRpb24sICdjaGlsZCcgd2lsbCBiZSBvdmVycmlkZSBieQ0K
-PiANCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG92ZXJy
-aWRkZW4/DQo+IA0KPiANCj4gPiBmb3JfZWFjaF9jaGlsZF9vZl9ub2RlKG5wLCBjaGlsZCksIHNv
-IHVzZSBvZl9nZXRfY2hpbGRfY291bnQgdG8gYXZvaWQNCj4gPiByZWZjb3VudCBsZWFrYWdlLg0K
-PiANCj4gQW5vdGhlciB3b3JkaW5nIHN1Z2dlc3Rpb246DQo+ICAgZm9yX2VhY2hfY2hpbGRfb2Zf
-bm9kZShucCwgY2hpbGQpLiBUaHVzIHVzZSBhbiBvZl9nZXRfY2hpbGRfY291bnQoKSBjYWxsDQo+
-ICAgdG8gYXZvaWQgcmVmZXJlbmNlIGNvdW50aW5nIGxlYWthZ2UuDQo+IA0KPiANCj4gUmVnYXJk
-cywNCj4gTWFya3VzDQo=
+On 24-05-30, Shengjiu Wang wrote:
+> Audiomix block control can be a reset controller for
+> Enhanced Audio Return Channel (EARC), which is one of
+> modules in this audiomix subsystem.
+> 
+> The reset controller is supported by the auxiliary device
+> framework.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/clk/imx/Kconfig               |  1 +
+>  drivers/clk/imx/clk-imx8mp-audiomix.c | 60 +++++++++++++++++++++++++++
+>  2 files changed, 61 insertions(+)
+> 
+> diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
+> index 6da0fba68225..9edfb030bea9 100644
+> --- a/drivers/clk/imx/Kconfig
+> +++ b/drivers/clk/imx/Kconfig
+> @@ -81,6 +81,7 @@ config CLK_IMX8MP
+>  	tristate "IMX8MP CCM Clock Driver"
+>  	depends on ARCH_MXC || COMPILE_TEST
+>  	select MXC_CLK
+> +	select AUXILIARY_BUS
+>  	help
+>  	    Build the driver for i.MX8MP CCM Clock Driver
+>  
+> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> index b381d6f784c8..a3dc2f3606ee 100644
+> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> @@ -5,6 +5,7 @@
+>   * Copyright (C) 2022 Marek Vasut <marex@denx.de>
+>   */
+>  
+> +#include <linux/auxiliary_bus.h>
+>  #include <linux/clk-provider.h>
+>  #include <linux/device.h>
+>  #include <linux/io.h>
+> @@ -13,6 +14,7 @@
+>  #include <linux/of.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/slab.h>
+>  
+>  #include <dt-bindings/clock/imx8mp-clock.h>
+>  
+> @@ -217,6 +219,60 @@ struct clk_imx8mp_audiomix_priv {
+>  	struct clk_hw_onecell_data clk_data;
+>  };
+>  
+> +#if IS_ENABLED(CONFIG_RESET_CONTROLLER)
+> +
+> +static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
+> +{
+> +	struct auxiliary_device *adev = _adev;
+> +
+> +	auxiliary_device_delete(adev);
+> +	auxiliary_device_uninit(adev);
+> +}
+> +
+> +static void clk_imx8mp_audiomix_reset_adev_release(struct device *dev)
+> +{
+> +	struct auxiliary_device *adev = to_auxiliary_dev(dev);
+> +
+> +	kfree(adev);
+> +}
+> +
+> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
+> +							 struct clk_imx8mp_audiomix_priv *priv)
+> +{
+> +	struct auxiliary_device *adev __free(kfree) = NULL;
+> +	int ret;
+
+Since the reset-controller is optional you need to check the existence
+of the '#reset-cells' property before you register it.
+
+Regards,
+  Marco
+
+> +
+> +	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+> +	if (!adev)
+> +		return -ENOMEM;
+> +
+> +	adev->name = "reset";
+> +	adev->dev.parent = dev;
+> +	adev->dev.release = clk_imx8mp_audiomix_reset_adev_release;
+> +
+> +	ret = auxiliary_device_init(adev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = auxiliary_device_add(adev);
+> +	if (ret) {
+> +		auxiliary_device_uninit(adev);
+> +		return ret;
+> +	}
+> +
+> +	return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev,
+> +					no_free_ptr(adev));
+> +}
+> +
+> +#else /* !CONFIG_RESET_CONTROLLER */
+> +
+> +static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8mp_audiomix_priv *priv)
+> +{
+> +	return 0;
+> +}
+> +
+> +#endif /* !CONFIG_RESET_CONTROLLER */
+> +
+>  static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
+>  {
+>  	struct clk_imx8mp_audiomix_priv *priv = dev_get_drvdata(dev);
+> @@ -337,6 +393,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto err_clk_register;
+>  
+> +	ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
+> +	if (ret)
+> +		goto err_clk_register;
+> +
+>  	pm_runtime_put_sync(dev);
+>  	return 0;
+>  
+> -- 
+> 2.34.1
+> 
+> 
+> 
