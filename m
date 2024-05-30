@@ -1,189 +1,103 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94D16F2F1
-	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCDA6F31B
+	for <imx@lists.linux.dev>; Thu, 30 May 2024 08:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717059099; cv=none; b=qTxbePF0SvRQVRsinJmF7vOvoFt4XJCrAJFSH5YCVBIxiqQnl40ICnk0aab8Z/JzIDTvVb4TYiOrUJ3DhxnsjgGNzVOovT7nhucV0TuhIn4GOCytP9aSMfmHL/lLSI60Bq713rs+mH0+s2PvHdEhyj+PvgkysbSP2dVm+7Zl1A4=
+	t=1717059476; cv=none; b=N5SsH/pyE6DWbVzw06ms8OygPgbvZcJ2aF3nhl3SdXpnbn/JU/VlUO8SlRe3aAnH2oz6W+Oupqwo6O+PXjlsuKczTGtRwSvrTRbvsPMVz9YJuv2LtApm+jsHJckkPouhAYcdUu4aJDGJX5X/HSy5TBSeZ78ORCTsq7SGaUFAwig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717059099; c=relaxed/simple;
-	bh=ldijqlRHr9EX+84TGvk38cU+KkmKKfH4BPsMyQjQM7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=joa6WzzgSSscekwHGE6JEHzoAuP0RiwiZ1+2GK+ETWtCOvdyE51Vro8/oTwmiow1AYZ5SbgI3fsElb35YgeUQpfTrrORCoykSN2L5lsm5BgXqO3E3Q0LfdM5nwHm7XmCd1ckyvuxiK+3xHCyjJLjq9/iENNxjGGAND4k8lKtJAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sCbVE-0006tG-Ko; Thu, 30 May 2024 10:51:16 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sCbVD-003Zad-T7; Thu, 30 May 2024 10:51:15 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sCbVD-00039q-2Z;
-	Thu, 30 May 2024 10:51:15 +0200
-Date: Thu, 30 May 2024 10:51:15 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
-	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
-Subject: Re: [PATCH v6 2/5] clk: imx: clk-audiomix: Add reset controller
-Message-ID: <20240530085115.ttmzx4dve4x6nep2@pengutronix.de>
-References: <1717036278-3515-1-git-send-email-shengjiu.wang@nxp.com>
- <1717036278-3515-3-git-send-email-shengjiu.wang@nxp.com>
+	s=arc-20240116; t=1717059476; c=relaxed/simple;
+	bh=rMtuf0zcS3kB8x7D/HT0/cZ54ltIPRIKq3ttpS2CiSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z/0ahHh6wgSDZZgSzn5oBiJM8gDTrvINA/vVeq0quJg/z/wrmQesLRgYqaSTWRczboQd2iYPw74za/yUInEaKFUz0y7bTpt9rZUXNVESN3v/wqO0IcVds4vBBE7VOBTYgMyWMUyERATAD1HM3ejlGCA4nY26HKvZhRjWBB3KKbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id b11f2cc6-1e62-11ef-8d3e-005056bd6ce9;
+	Thu, 30 May 2024 11:57:52 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-mips@vger.kernel.org
+Cc: Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v3 00/11] pinctrl: pinmux: Embed and reuse struct
+Date: Thu, 30 May 2024 11:55:09 +0300
+Message-ID: <20240530085745.1539925-1-andy.shevchenko@gmail.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1717036278-3515-3-git-send-email-shengjiu.wang@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-On 24-05-30, Shengjiu Wang wrote:
-> Audiomix block control can be a reset controller for
-> Enhanced Audio Return Channel (EARC), which is one of
-> modules in this audiomix subsystem.
-> 
-> The reset controller is supported by the auxiliary device
-> framework.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/clk/imx/Kconfig               |  1 +
->  drivers/clk/imx/clk-imx8mp-audiomix.c | 60 +++++++++++++++++++++++++++
->  2 files changed, 61 insertions(+)
-> 
-> diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
-> index 6da0fba68225..9edfb030bea9 100644
-> --- a/drivers/clk/imx/Kconfig
-> +++ b/drivers/clk/imx/Kconfig
-> @@ -81,6 +81,7 @@ config CLK_IMX8MP
->  	tristate "IMX8MP CCM Clock Driver"
->  	depends on ARCH_MXC || COMPILE_TEST
->  	select MXC_CLK
-> +	select AUXILIARY_BUS
->  	help
->  	    Build the driver for i.MX8MP CCM Clock Driver
->  
-> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> index b381d6f784c8..a3dc2f3606ee 100644
-> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> @@ -5,6 +5,7 @@
->   * Copyright (C) 2022 Marek Vasut <marex@denx.de>
->   */
->  
-> +#include <linux/auxiliary_bus.h>
->  #include <linux/clk-provider.h>
->  #include <linux/device.h>
->  #include <linux/io.h>
-> @@ -13,6 +14,7 @@
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/slab.h>
->  
->  #include <dt-bindings/clock/imx8mp-clock.h>
->  
-> @@ -217,6 +219,60 @@ struct clk_imx8mp_audiomix_priv {
->  	struct clk_hw_onecell_data clk_data;
->  };
->  
-> +#if IS_ENABLED(CONFIG_RESET_CONTROLLER)
-> +
-> +static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
-> +{
-> +	struct auxiliary_device *adev = _adev;
-> +
-> +	auxiliary_device_delete(adev);
-> +	auxiliary_device_uninit(adev);
-> +}
-> +
-> +static void clk_imx8mp_audiomix_reset_adev_release(struct device *dev)
-> +{
-> +	struct auxiliary_device *adev = to_auxiliary_dev(dev);
-> +
-> +	kfree(adev);
-> +}
-> +
-> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
-> +							 struct clk_imx8mp_audiomix_priv *priv)
-> +{
-> +	struct auxiliary_device *adev __free(kfree) = NULL;
-> +	int ret;
+As promised to Linus W. there is a series that converts struct function_desc
+to use struct pinfunction. With this it both struct group_desc and struct
+function_desc will rely on the generic data types (struct pingroup and struct
+pinfunction respectively). I haven't compiled everything, some builds might
+fail. Anyway, comments, reviews, testing are all appreciated. 
 
-Since the reset-controller is optional you need to check the existence
-of the '#reset-cells' property before you register it.
+In v3:
+- added 'moore' to the mediatek patches summary (AngeloGioacchino)
+- added tags (AngeloGioacchino)
+- fixed build error in IMX driver (LKP)
 
-Regards,
-  Marco
+In v2:
+- fixed compilation problems found so far by LKP
 
-> +
-> +	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
-> +	if (!adev)
-> +		return -ENOMEM;
-> +
-> +	adev->name = "reset";
-> +	adev->dev.parent = dev;
-> +	adev->dev.release = clk_imx8mp_audiomix_reset_adev_release;
-> +
-> +	ret = auxiliary_device_init(adev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = auxiliary_device_add(adev);
-> +	if (ret) {
-> +		auxiliary_device_uninit(adev);
-> +		return ret;
-> +	}
-> +
-> +	return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev,
-> +					no_free_ptr(adev));
-> +}
-> +
-> +#else /* !CONFIG_RESET_CONTROLLER */
-> +
-> +static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8mp_audiomix_priv *priv)
-> +{
-> +	return 0;
-> +}
-> +
-> +#endif /* !CONFIG_RESET_CONTROLLER */
-> +
->  static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
->  {
->  	struct clk_imx8mp_audiomix_priv *priv = dev_get_drvdata(dev);
-> @@ -337,6 +393,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto err_clk_register;
->  
-> +	ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
-> +	if (ret)
-> +		goto err_clk_register;
-> +
->  	pm_runtime_put_sync(dev);
->  	return 0;
->  
-> -- 
-> 2.34.1
-> 
-> 
-> 
+Andy Shevchenko (11):
+  pinctrl: berlin: Make use of struct pinfunction
+  pinctrl: equilibrium: Make use of struct pinfunction
+  pinctrl: ingenic: Provide a helper macro INGENIC_PIN_FUNCTION()
+  pinctrl: mediatek: moore: Provide a helper macro
+    PINCTRL_PIN_FUNCTION()
+  pinctrl: pinmux: Add a convenient define PINCTRL_FUNCTION_DESC()
+  pinctrl: pinmux: Embed struct pinfunction into struct function_desc
+  pinctrl: imx: Convert to use func member
+  pinctrl: ingenic: Convert to use func member
+  pinctrl: keembay: Convert to use func member
+  pinctrl: mediatek: moore: Convert to use func member
+  pinctrl: pinmux: Remove unused members from struct function_desc
+
+ drivers/pinctrl/berlin/berlin.c           |  21 +-
+ drivers/pinctrl/berlin/berlin.h           |   6 -
+ drivers/pinctrl/core.h                    |   2 +-
+ drivers/pinctrl/freescale/pinctrl-imx.c   |  14 +-
+ drivers/pinctrl/mediatek/pinctrl-moore.c  |  10 +-
+ drivers/pinctrl/mediatek/pinctrl-moore.h  |   6 +
+ drivers/pinctrl/mediatek/pinctrl-mt7622.c |  32 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7623.c |  42 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7629.c |  20 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7981.c |  34 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7986.c |  24 +-
+ drivers/pinctrl/pinctrl-equilibrium.c     |  24 +-
+ drivers/pinctrl/pinctrl-equilibrium.h     |  12 -
+ drivers/pinctrl/pinctrl-ingenic.c         | 707 +++++++++++-----------
+ drivers/pinctrl/pinctrl-keembay.c         |  22 +-
+ drivers/pinctrl/pinmux.c                  |  19 +-
+ drivers/pinctrl/pinmux.h                  |  19 +-
+ 17 files changed, 503 insertions(+), 511 deletions(-)
+
+-- 
+2.45.1
+
