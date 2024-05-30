@@ -1,146 +1,109 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08771E532
-	for <imx@lists.linux.dev>; Thu, 30 May 2024 15:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871CB187554;
+	Thu, 30 May 2024 15:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717081335; cv=none; b=NX/Zr+qA7cFQ6bpZsEJ0yNGlL/J7kl6eQ8I5tlIA08/RkI0o1Y1ihvitb5qV/2oda5TZTkCyUd+JxlQZWI7gtqPAijCTOIv5Ndfl9GZwQmcnowl8zWfxIRsoy+uuOYY1ex4ZlsF9hlxltwv918PJsCsW7htQ/QKqfvUIyBQ9xqA=
+	t=1717082491; cv=none; b=qjlXXj/oOHKZY7x/2Tx9CeT95nEDX/ti8jW0551E2WgpyC40rxlF+q56aenr1kNJ/CtbY96EdzsHTybzbG3m8l64qj9RpKWtjj/5OVSlpcV288VW9fUanLchfJKGXbWHiDcAB4QwuMvqfnsb/2jhF4dFJHWihi/cSzNHiuxUPWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717081335; c=relaxed/simple;
-	bh=Gh9cbHiV0vQlIQ0Ybp3Zq7HDBJmoleGPJjiVwVpWMcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V+Bbu3E3EoZ2VbXv/+pdUZ/CJt/LGTt/Orvs5+MlzIrPm1fzfLy4ih9JNSMyW01mCnm82a/oV1cQlqq0oc10G0PV0ETe04dxifGIX4lbFK8dKz+yHSYIOefUCgqUessFjFvJs3QDiBxh6h74RsKCCEoxnt2tblxABOJYI5eCn6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a22cgIii; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717082491; c=relaxed/simple;
+	bh=U5TgF7VIYvKSRNdp67128508jDwSIOgx0w/UYpTd0Uo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WEO7YXIeA7f5SeNJ0UM2864itpOicNwkSvhuiKVLWLSI9ihduA6S2jLbppNJJBdFSZtIKm8Tmx4Ufy2J810xy11MaoNwJvbQpZqtC3RkSE6YAw6tzApu69FF++kVKQOAwhU6lywOfrqii1xspG/UCmV7s7I9r26vF4AgNfFy0sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=WI2EPLYT; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a22cgIii"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-421140314d5so10464835e9.0
-        for <imx@lists.linux.dev>; Thu, 30 May 2024 08:02:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717081332; x=1717686132; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=giZRcSqmVr6pTJj0L38lY8BgbAhYw8xa4kQEZAhZtZw=;
-        b=a22cgIiihQ7S+h1+zi5MzmZ19eBnJPyZGwLCyDbAViLRqLPPsBgYyOaERzv0LpHSiI
-         Yw/zO6/zy4e6+YnNNlAp0a8itWS7KSF5wRM9hvKnAg0101YOcYu8ywu9CY/+TlyJMHVH
-         RFZohnNEph+pa6GX9vcwS0ZwQG851OQYknVxj5jWtDyhH7jRrTRk7F+XdYLloUtgtI3R
-         xhIhKJhR1vLBezTo2b7d64OnR3uI5tL01AnLiavvLwGxxVCNtzLjQjQ9Ed8N1j/ijiwu
-         fHRK1tNZPcZ8gT6FE8VV18423m9fAsKxLTzTeB4xsiMgJONNL+gTj9nFuskaupUs4ILJ
-         0MxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717081332; x=1717686132;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=giZRcSqmVr6pTJj0L38lY8BgbAhYw8xa4kQEZAhZtZw=;
-        b=SuctNALUJz+cDojdOOtoqUqb2Nb1mV1imQqktgimDbbFEE/JnJV6uOgHd6hxsGabSl
-         JKa3YeA/jAxIckQbkLgfxI5NnZb3S5Vpw/yZu7j8z0UxxSv4jsVBBqqKsuX6jeTFXdyI
-         HnQzMSuo/8/GTqjn0BedguWUIQNo3HMICDidNwMaD68z7SxL+1XjCHU2GvEJiUjVho1Z
-         Ba2Ss1kdAYI3GyDqL+ARcZrJTl5Rdx6Dc9Fj0OzZXUOeRI9hnEQSCgPII7OR9T8v+ewg
-         yATpaU1+/R+rkGeQZcBQkuiQ56aGmy3HaF/ZS7RpZhxCU8h8/t8wuyyNsbIuCUrZ7mZk
-         KIYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZnzcw7zI0b2olF9R7znsQq+ssKx49+DEJHcDshLcBQ0fUyJwrmsWsVmko4BsAo3VdJ4RPHHJsMm5aBfd1W3d4L9rE
-X-Gm-Message-State: AOJu0YzSpklGPRoj3lUJicxrAKhrFsia5I30HYS4hTlA3YJeYCGk3Cpb
-	kA+QI9pMd+zml4hz8ET4MYF4qFp6pCWCDkNZzFvdw7Hnetf+rGbi
-X-Google-Smtp-Source: AGHT+IFjQF/lcM7ZPr6DlNqP24gQj5UIxSjOg0Yx8aoFMh9AlWjbAddylnUOhdKXlfOwpdRpBPxpGA==
-X-Received: by 2002:a05:600c:4ba4:b0:421:15f:186a with SMTP id 5b1f17b1804b1-42127932790mr20985215e9.39.1717081331646;
-        Thu, 30 May 2024 08:02:11 -0700 (PDT)
-Received: from skbuf ([188.25.55.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421270662bfsm27600385e9.15.2024.05.30.08.02.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 08:02:10 -0700 (PDT)
-Date: Thu, 30 May 2024 18:02:08 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] spi: dt-bindings: fsl-dspi: Convert to yaml format
-Message-ID: <20240530150208.k3xdobbxznaqchch@skbuf>
-References: <20240529193651.1029840-1-Frank.Li@nxp.com>
- <20240529193651.1029840-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="WI2EPLYT"
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id CZlbsLI7RSLKxChalsA1PK; Thu, 30 May 2024 15:21:23 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id ChajskCaIYakKChajsyJEi; Thu, 30 May 2024 15:21:21 +0000
+X-Authority-Analysis: v=2.4 cv=a4T79lSF c=1 sm=1 tr=0 ts=66589971
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=7eglLlv4HFOW3sTsDH6Jqg==:17
+ a=IkcTkHD0fZMA:10 a=TpHVaj0NuXgA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
+ a=VjqEAW4Pdxq5hPAZ8QEA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=U5TgF7VIYvKSRNdp67128508jDwSIOgx0w/UYpTd0Uo=; b=WI2EPLYTdZl9H0MLSza743CvOT
+	1xSH/pmM1S9t7kmGMjm2n0Be+KYEmaP6IrWjZrupFcuKsoHRKMRmIhYkFQPfxNgXiiIyvfCvN+Fvx
+	3a9gI9uwjVPIX+WncjfkZwfz9OP/ygWuJf+B/AlUnvWqqBBfEXGvIDDo9Fcc+s0h8jFw1yY73TvdF
+	9RnhV6p5q+F4BZK+a7D0OI6csw1ffZhGzrDMu0WM1KkB9me+LMHlgWJBrkgO4uXV448+vuC9Bdjgc
+	6ev6XphlrZ5D6syOHR2rNh6EYQXK3zIudkhLSUDKSLSmLOjFWaw7OgF7+7BenED2BWq63+OAIre3P
+	or6LJIFg==;
+Received: from d58c58c2.rev.dansknet.dk ([213.140.88.194]:46746 helo=[10.0.0.182])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1sCbQI-000zIv-2W;
+	Thu, 30 May 2024 03:46:10 -0500
+Message-ID: <bee7240b-d143-4613-bde4-822d9c598834@embeddedor.com>
+Date: Thu, 30 May 2024 10:46:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240529193651.1029840-1-Frank.Li@nxp.com>
- <20240529193651.1029840-1-Frank.Li@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+To: Bill Wendling <morbo@google.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
+ patches@lists.linux.dev, stable@vger.kernel.org
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+ <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+ <2024053008-sadly-skydiver-92be@gregkh>
+ <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
+ <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
+ <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
+ <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 213.140.88.194
+X-Source-L: No
+X-Exim-ID: 1sCbQI-000zIv-2W
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: d58c58c2.rev.dansknet.dk ([10.0.0.182]) [213.140.88.194]:46746
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 0
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJeUL40EbDi7GYdCnB9W0LClbZgpgcu7jVLXZkeqw/uaIDqphcecTRitJMvZgKJjrWJwxQePvB/Pe3YP2oCNv2HiVTI4AUW+RO22xXJfUPTWqCQAfBGE
+ 7zH6VVlRdV+lTE6nu9oD6/3OaaQYRmJh7YrC12YrYh+mrABbuDKbQ6PxGvdAHRssXEhsonIJl4aEHM0z4drdQUrHieuuW/NEG3g7sTXs8dG6d2+NDixrnrjy
+ gULHhH3gzBBq+TQcKxSxgNb5cfVsW9yJZW/1rpcGheU=
 
-Hi Frank,
 
-On Wed, May 29, 2024 at 03:36:50PM -0400, Frank Li wrote:
-> Convert dt-binding spi-fsl-dspi.txt to yaml format.
-> 
-> Addtional changes during convert:
-> - compatible string "fsl,ls1028a-dspi" can be followed by
-> fsl,ls1021a-v1.0-dspi
-> - Change "dspi0@4002c000" to "spi@4002c000" in example
-> - Reorder properties in example
-> - Use GIC include in example
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     pass dt_binding_check
->     
->     make dt_binding_check DT_SCHEMA_FILES=fsl,dspi.yaml
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       CHKDT   Documentation/devicetree/bindings
->       LINT    Documentation/devicetree/bindings
->       DTEX    Documentation/devicetree/bindings/spi/fsl,dspi.example.dts
->       DTC_CHK Documentation/devicetree/bindings/spi/fsl,dspi.example.dtb
-> 
->  .../devicetree/bindings/spi/fsl,dspi.yaml     | 126 ++++++++++++++++++
->  .../devicetree/bindings/spi/spi-fsl-dspi.txt  |  65 ---------
->  2 files changed, 126 insertions(+), 65 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/fsl,dspi.yaml
->  delete mode 100644 Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
-> new file mode 100644
-> index 0000000000000..12a67b2cc25c8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
-> @@ -0,0 +1,126 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/fsl,dspi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ARM Freescale DSPI controller
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  fsl,spi-cs-sck-delay:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      a delay in nanoseconds between activating chip
-> +      select and the start of clock signal, at the start of a transfer.
-> +  fsl,spi-sck-cs-delay:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      a delay in nanoseconds between stopping the clock
-> +      signal and deactivating chip select, at the end of a transfer.
+>> So we should get rid of all those. Sooner than later.
+>>
+> Yes! Please do this.
 
-Thanks for this patch and for picking up on this task.
+Definitely, we are working on that already[1]. :)
 
-But fsl,spi-cs-sck-delay and fsl,spi-sck-cs-delay are not controller
-properties as this schema makes them appear, but rather, child node
-properties.
+--
+Gustavo
 
-Could you try and take a look at how the previous attempt went, and
-incorporate some of its good parts?
-https://lore.kernel.org/linux-spi/20221111224651.577729-1-vladimir.oltean@nxp.com/
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=-Wflex-array-member-not-at-end
