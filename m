@@ -1,79 +1,69 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2044.outbound.protection.outlook.com [40.107.8.44])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2076.outbound.protection.outlook.com [40.107.104.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2A6225DD
-	for <imx@lists.linux.dev>; Thu, 30 May 2024 17:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D507450A65
+	for <imx@lists.linux.dev>; Thu, 30 May 2024 18:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717091818; cv=fail; b=gBfqqxzwd/8ApQO0E1MenPQdW12ogp3CpZ0sU4D11v0w1kyXPo49wmhcNSOe+2uncI/xJGyMGrtESfMRgmUUcPdTizxsuyPNmClujNhKgZ+JLpSf8hqdTvZi3tWhIx3iLYxZn67dRVqlx+n7IjonmJm+wq6AxEUA6jRCxcpEg/k=
+	t=1717094045; cv=fail; b=hFLhXIZylv+Gh3+XBToECRqzqml2oJVKBwFNdg+MZ3ikWu42qGBeGXZOwEjTIRx4xh/d9+H9pBai0XPOTNlVg5UQvhWMdSVQkvPfEFGDNm2UcYskC15Me5Z4NwfcO7qOHSiJt/AzLS3BdC1Fxznw8lzpk/swYyGi//2QggYV4vY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717091818; c=relaxed/simple;
-	bh=JNCFW3WxXlR4KU0Wkv1zxa95No14uBcLeptDSMb850o=;
+	s=arc-20240116; t=1717094045; c=relaxed/simple;
+	bh=S1T0QE9NVIE4EPF6AeW2hxVoCI+t474Yn673ymLlYgA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dKmkurHSNAUDL3N/q+Tt1agA+cOcvFEe8y4GysmcmDeLEzmUAwn5eRERVEID4sLckVqRSvjmAzCYgGjeEx2uV6Cup6jQOlCIAR0QaBLqese8WCFUxkU7+pDnGR3VgzlJgYuL2/jmjBwuJ5iNbhEWP9jjAu2xgj5gK/uhYVt/A+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=BP9f4pNS; arc=fail smtp.client-ip=40.107.8.44
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hgmCqurN8/VHpm4/dY3AS2GbOUZAAwYQ+0AI3MBpl8LqQ2vZ9wWywO86MAUSc28+4dffCnvipbkl6/0P+ot1BLfc8oz2iMQC8tdLpy5ELUZ6lry7LnCVuYNlIwHH9xzckKLafU7PkeZZLgkVXls4xYkDRYr6h7LcRGmD1pWI8iM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=i+dkDCD1; arc=fail smtp.client-ip=40.107.104.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="BP9f4pNS"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="i+dkDCD1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VcuaR5v3lU0tzN44bX54Q4691GByAS40c0fYzQOCdPrfB2kED+qOksnPiBVWEowJnGmeX2I41XKj7qRN59cHEfVgi+Jj/ho2qfbm9WtDYui46pP2mqgy7NP3lLQudVsff2EpRab3tbRad7uOzxpWMdzM8br095nIEQkdri2Y7ryt+VDk51cJzYjWeLAb3L5PwMq3zfWlcoAj6Y2rnLHfNfTUE4AJRKAGs5txJux/llLWPB3sEtDPlG2dc3Kqfrn9ZBcn6SV52EjwkVGg2Xkja09XzE8yv0Bi5W0f7sxRhTSRAV9KD1mI6seL8jZk1VwJZcEa7pNSApn8fuflzSHXrQ==
+ b=DDNfv/jb9a6LvEDmZmRsc0teUf8WEICQhtK5txTsYkyISKIIqSHC5lTcgG+hMQbGAEu+gEK2+rfN5QntBaYrh8KAoMnQoX+MH/2y7fr/B5aC8ug2CvaEnvGlTi5gFncCPGPAU51lvT0OdM8nPMaht4JRSpyYABO75SRfC7X8Mi00uJmMe3FbMVwk2skndj22dhQAjdxx/XbsUHqLjDWkXudX3/dNu9tTIfKWwaO/jEBcrSvTHZjP3bY4AHM6z1itnUFFW6/tw+/SjjGSfMsU0KwzgZr2JNrmjT+nhS3sjeQyA52zZE4eGL15dAmGIyi1+toORWSOfwXYSAoNffZIzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3DseiNip4D5B54oWWL6RtLNzuzXBCeMV1/J+T4hHt2E=;
- b=n9/E8N6psxg9Guj61B+XoDAEN/GX2Vy5TSHWefe7VkkxDka9rG2dlQyhRe1WNyDqZPnlZecJlE4YR/hwXTf7p0ueEQ3YZUe9EGkIgyB4PTDUANk7Mr0RWY84/vtJzQ/zOkFrlOVRZhxi60QzBH0ZPyhhGmrciZ7a7M+mvOSVw0/biK9e+nlAKTqYcWPfHXbNdSvktFap9O8+3vIrystkCnw/cmKBdA8d3fz/A9cS2e8soJ6i5zvNWymzoJuBE1KYV3Ryag1LnNzvvkskyfhGftvmfWPhXPfWNf68wQ9M+EmVbi0xLFUMdnp8lI5bFM2wTgOUEZRk9QwrVsPCGgB9mQ==
+ bh=T2qB5DsfNAqsWA3mcWDa5syWeWlfgp0hnMvTb0fKhz8=;
+ b=idoCdTCcIfeK5WJbKqzgs6Tdp+yPpMMRhNVnG+uYWlxnrxb2cY4PC0swRH4aEsu6RN5W3sSOeV23V4Q8MH0b7qYlQzSQ4w5GwnOvHOuihvxcQOqVBne8bQZ9L8bIw0BBOuej4okfK/q2MAbbVhxrsyWpWontBtdyA5fS/nWr5V88gwVHNnqQfsjNG4Bbe0AMpCxHMhT0d/gFMq3aoehf8LnMCFakt0n0/0SJRExEqNVKKAkajIH2rVo4dgpcZqu8000fQXOtRRNVBklw1g07Ru0JGONGHWI/B4cfnSVE1AInZk8X/fED6muAtPgO//UpmAEwHmkD4jlDv/Cc35+fpQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3DseiNip4D5B54oWWL6RtLNzuzXBCeMV1/J+T4hHt2E=;
- b=BP9f4pNSLDSp00xBJnm1QPG/1M8M47fiJSdUzuHb7QmykNpvHBEhENIxVKV+29N7S3rnWRJJlZCBOOZ33KZYtXy8iwqrVyLVrntLax7tfK+P9YmNaxBwdRJrcP1YAFOpJ50L6QvcKs4Fe8Xk/dlR8t7cy8kXqrGjuL7Ck4Nw0pM=
+ bh=T2qB5DsfNAqsWA3mcWDa5syWeWlfgp0hnMvTb0fKhz8=;
+ b=i+dkDCD1s7EjP6BAj71x1SIn9EfWSyCAxoQpHjGFBIdYIm32ERdLzIHSBwRpoqDQmgLb2gb/oL/tUEDM6s8yThsMYAA9d6BPN6I/Dsh8Ju5Y3TqGvdHhGZZ1/tM8ky9HTO6GK7i4BS7qsAZ4YBqT4ExcfVcCuZjR5vntgUWJAgY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB7133.eurprd04.prod.outlook.com (2603:10a6:800:126::13) with
+ by GVXPR04MB10660.eurprd04.prod.outlook.com (2603:10a6:150:221::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Thu, 30 May
- 2024 17:56:52 +0000
+ 2024 18:33:58 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.018; Thu, 30 May 2024
- 17:56:52 +0000
-Date: Thu, 30 May 2024 13:56:41 -0400
+ 18:33:58 +0000
+Date: Thu, 30 May 2024 14:33:47 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org, Jason Liu <jason.hui.liu@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v5 00/12] PCI: imx6: Fix\rename\clean up and add lut
- information for imx95
-Message-ID: <Zli92VLw6IEVg97b@lizhi-Precision-Tower-5810>
-References: <ZldDIabPAa7NEmDQ@lizhi-Precision-Tower-5810>
- <20240530172749.GA552716@bhelgaas>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, p.zabel@pengutronix.de,
+	abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
+	sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, marex@denx.de,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
+Subject: Re: [PATCH v6 3/5] reset: imx-aux: Add i.MX auxiliary reset driver
+Message-ID: <ZljGi+VPGgDxVYKf@lizhi-Precision-Tower-5810>
+References: <1717036278-3515-1-git-send-email-shengjiu.wang@nxp.com>
+ <1717036278-3515-4-git-send-email-shengjiu.wang@nxp.com>
+ <20240530090558.53reobf2zea22oi2@pengutronix.de>
+ <Zlig/Z7u4nxvKLoQ@lizhi-Precision-Tower-5810>
+ <20240530164510.fyznsyzvqrbu4a4e@pengutronix.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240530172749.GA552716@bhelgaas>
-X-ClientProxiedBy: BYAPR02CA0030.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::43) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20240530164510.fyznsyzvqrbu4a4e@pengutronix.de>
+X-ClientProxiedBy: SJ0PR13CA0095.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -82,119 +72,433 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB7133:EE_
-X-MS-Office365-Filtering-Correlation-Id: 991ba564-fb26-42ba-e56b-08dc80d1e2f4
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10660:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5712378f-d98b-46e0-1472-08dc80d711b1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|366007|376005|52116005|1800799015|7416005|38350700005;
+	BCL:0;ARA:13230031|1800799015|366007|376005|52116005|7416005|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DHy4qUqBztE4hDC1j+uh/RVz0fIhxtkKpaqcptPo+D6hgIowHPpaM+VQyAIJ?=
- =?us-ascii?Q?w6lGRiGBff/ADEjuPh7aCgPqMBGmTH2pB+2ow95tHCdsYqv5rfRx6hdrqgrd?=
- =?us-ascii?Q?1fRbFKwiGh0wf62SCUyzQYijp97ffNFAz+Q09hxuAWfoqlEtwrCIoPpEni5S?=
- =?us-ascii?Q?6Dj6ADXYx3G+vXfThRqX8NpXf7kjnb/IrvD7aHNHUeOhvMLBs9a8AysSeazT?=
- =?us-ascii?Q?oY0u/8+pz7odx4shcKoeE8frkpStIzTQImd104GGlGA4j4EVBPttTs8ca7w7?=
- =?us-ascii?Q?6BOFTQMFU1jf3qDmjdwNNoBKphONGeEpoZyp46oVzzaVWNnUdnHlxdET35Io?=
- =?us-ascii?Q?c2tT59DvNvhXdWu1PZBixgUYN3HAE5GWfUkdCKtB2hTqM8k/PZ0UO8bAiG2d?=
- =?us-ascii?Q?eRhFDW0s4W+hYbyJwikaR4sa5tQuMm58C5rC1P0ZVnFBTUOkJhIwVBrLxcm/?=
- =?us-ascii?Q?UoQfiFiyhiMVXCS3FVMsySUXgLnalkLdE56Yr8yTV7WwUHojLIGvXZ9+xaol?=
- =?us-ascii?Q?hL6FsJQ683nT6P3e3myuLTJ/Xg0NnI1QbhFmw5n/Vqgnk+VlDUKlwkTpExqx?=
- =?us-ascii?Q?dsi/SSXx+0p4ppMGbuE6qg/d3vdQ3c966iQal0WJGysgmM9xtwsOGEZ707gs?=
- =?us-ascii?Q?atSXxPqW9bS+3XutZPLmDVs8/913lc7iMMqdwSEPfAkHsvlXNTLkF60Dx4b7?=
- =?us-ascii?Q?KMuuv2FY5lmYLLdzZAho1sNssqvDXhUSJEqFLeqROOotXnucH8uUi9OjlFyY?=
- =?us-ascii?Q?5sbOqjhL+jkjlLp1+bNh6xxrZIQ56XT0X2Co0Lfid64L8tMtYHzjHkfJhWZa?=
- =?us-ascii?Q?s49izeRx9DfM6UPGoBiGuEAb5PlCeo6xG6rI6x298WS+Zcibd7yYNDxgl2Wk?=
- =?us-ascii?Q?Vn9nXERbWrKBpiEsmjOvEpA+SfgCQ3iTJ/T66hSE2RLQ/jIbekgrfVUfZdHn?=
- =?us-ascii?Q?RhsyUC+xqINi8jWYsFXbamrpgSFKLg4Drq8ZOLQoDaDFG1h0cceHRhlKtgxu?=
- =?us-ascii?Q?AdCbIiHjiPBbiZ2LVsD6pZc4D9nP4K8g5coBHfYyN1vpA9mDa4cccCC8gVRv?=
- =?us-ascii?Q?rFwK0CgDRfsHSaLBTaPUpicufl4Q3ERjPQ/sNmGg2uQfI5UvDPoIq0BZELQg?=
- =?us-ascii?Q?d0igLVutuMssmE8TJdT9RhMipW1asqGMtNBAm08luHmt1fUTDLuoVczgbwPJ?=
- =?us-ascii?Q?8e7zPIJFCY4Z/ekZs4XlDAA7ILHjSUPqCVOr8Acegv5vZwd15MdHqIs0qWKc?=
- =?us-ascii?Q?h1ZINN2ihKiBxR1dMnq8n9w0SN2nUBQwKI+GGxtyvOWkj3QMwEn6FjnoYU9q?=
- =?us-ascii?Q?d8d50CS0Q0HVGCffqQt76x/ACSEBM8vlsH4Fcv+J3Sk9SQ=3D=3D?=
+	=?us-ascii?Q?GjJqwNcuTUc6KK8XH6a6YIRvFlRrz4ivcI/Mdo0x13Ygs38rlapRpbrwCmg1?=
+ =?us-ascii?Q?+nVCJn1/2voFXEEMfyZgI0eWvUJrUr5SlR7w+fas2AZ789GCt9YQEWdSEn/h?=
+ =?us-ascii?Q?bulXV4wxdAZqoAY107TU3Ld3BNpXdZWksMvO0/rc7Spe7nPrqqfHXIt+u8R7?=
+ =?us-ascii?Q?S7Q+2TB1Bdd1joNoioZh22eKsC+xjBVeaMrsXX8QoWCsi1p6RkSWAAYYaobB?=
+ =?us-ascii?Q?XAGgnH27VuEx2pE0j0f3y/wa2h1vDKX2hz024dgv37R15p5M5lfflO1NHLeA?=
+ =?us-ascii?Q?Dpz4SLch85cSBTNe3GgHYblBifbPHTg2X66nl85k/dqakt0Eqd1+jjpK89n9?=
+ =?us-ascii?Q?DvIuqB1M8lU9j4zE6j+dGbRDN1mS1w6CiZY98SGQvXuFHKcSpAcncGtxJoZW?=
+ =?us-ascii?Q?ra082WZ/MgRSoirE1AX9rueb5GtfBYwpQnGMr8NKPveUxuvFEQwKOKqSdyoM?=
+ =?us-ascii?Q?pRD5fiu8M6rmbyCEI45xmCdRJztjq398YRrqhAWObjhXqaJrnyYrPnK+N/rE?=
+ =?us-ascii?Q?kXGWoMhWlF0QkWn730gXRwyWZydhNWzbEi7T+ocGetcBIl1PstqNHJpNGs0A?=
+ =?us-ascii?Q?ToU5GBBzuUq85kYPVYW/UWBk7czDvAnLT0Y95PVBjRNyx1PPxvVDJ/C9lQdg?=
+ =?us-ascii?Q?e/pZBv7TmvVwhh+T+m+okSLPqwxTk1fgB1SqdX86lxYlvkuAc5qoF5Gjx2dt?=
+ =?us-ascii?Q?IkZ3k6byUwpcreqLWkS0QzyF+WNtHUTWtWHGcH2SYRzv8Ub/F+BmD85w5oTB?=
+ =?us-ascii?Q?maPrMVOtFYnGpI8LywZdHozdk2gjoHs4PD9QQMZzBqNsV4oO8zygwNJwp4Ra?=
+ =?us-ascii?Q?4l78AVKioQlM5npPVxhgffEAzK5VdS607PfBu82QOxT9tL9CXpuONVS3d6Vd?=
+ =?us-ascii?Q?gqjOrsS/dohEtzebn3Z3kwkn3vod91ZaCVOdOBxoJFmd9uc3+txJ4FFiZTkD?=
+ =?us-ascii?Q?/YPsZ7ZTnwDvQghRuQQn/QY1HldGAv8pTTVN0eqpFlXXo9j1SuXaHBJ9mxbZ?=
+ =?us-ascii?Q?qQex3UItrc6AnROjOp6Nsf24piEgY/ZsLsTW1/1AABFnD4xChSbfbpp1wXcG?=
+ =?us-ascii?Q?mE9V/kxYPTBc74t7ZKtewn0SmR3hEsGGFDsZkKVNMXv0hn22ye7CdzFZmaYt?=
+ =?us-ascii?Q?kuTTkjL79iwkVSnsoT5KFb+RFP68sR5Xk6WZr22VLkRemnmqFIj5cF6ZYnEt?=
+ =?us-ascii?Q?dEgQbuKeBY7kPJWyxU9mkSmoRTXbuiarHJKWezBwSSz4GuFwia5BzEaJTK0p?=
+ =?us-ascii?Q?r5GqtmKYhIoqAu8TXe2XDNZvKh3j8QulmMuKvi0HKQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(52116005)(1800799015)(7416005)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005)(52116005)(7416005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?whFBwZZi3U7MXrKESQTai/Nt7vnR6gALmxniJK+JsmbI2cFZvFssV8TYousa?=
- =?us-ascii?Q?1P69sZRP5/sdqyg1n01xtjaVV6V6FoDyKrV1rs1/EwAskFzu2T8Didz0dfSw?=
- =?us-ascii?Q?di0lrmSQ0OzH9Ofpla5zSKvfNRaHF7NcHeJF5iBR+uiyJ3I/1ytEewRTMA/v?=
- =?us-ascii?Q?IZQDXE88XGMBO2YY1fSCsGuqAR0/nE4RNm0qrfuoyx11bK3kkjMJu+chVHHC?=
- =?us-ascii?Q?pF2YBnizGdH00FlYLFLr6arA6ggmeBHOhNMqwhbKtpmHotVhPbtuvDuyr3EZ?=
- =?us-ascii?Q?DykN87fx67bjA3t054oNzFpT6y2m1LBiolVjD0toYSQeO2z0iQE936iaSzY2?=
- =?us-ascii?Q?GxrpO3czk2XgxUMzPIapo3aBWxo2Bfx0VKd5krGGhemWE5t+EYnftly3nRq4?=
- =?us-ascii?Q?WGprPJTI4ehV06BuwqpO0i5rpU0wsJo8A8nLIsrx0R1VjqG7kUkrjWiyBt5K?=
- =?us-ascii?Q?hJ+MIIR/36AIPXFvAuy6JwoH2DmWgOotGSqSSuMp7Mb3vtusDOT9HUFrnjL8?=
- =?us-ascii?Q?Db6ky/j5M8fnGFk/qLgagG1+FNwC4M21n8k0JPHYRQNyqPKPa4AusHol3SWp?=
- =?us-ascii?Q?Zw4KCsPmCFKn73jaHsp4XBUNyiCcAl+GItAeCjsR9O/ELVTtw2LE5qV0WKVH?=
- =?us-ascii?Q?j+bOl5nTglBPG4eIz/CXM1WmJi26Dtr4FSRFzDn9SYPkU3H3QYzNyhtwy6qJ?=
- =?us-ascii?Q?Wu0yPJY754E/bfkna7ujLj553s5RuDvUI3PYq1CyP6LqcWyQSIhi+yVUEbQX?=
- =?us-ascii?Q?ivTdw/+q24izIybae2Jh7IF4CWT23Z+1p4Z/4AFJdSmYyQAUgLNgYG+mbzy7?=
- =?us-ascii?Q?+L7+XMAI+PdPdtzHTEYp7OjGDXQTmUhaudvn7VziXHH176VLfB67/LZ7daFH?=
- =?us-ascii?Q?Qn0ztHchMRJ14odJdBsxXnswm/YjZNGKQosLizu9IkrMJR8JeypX5/9dsMQ8?=
- =?us-ascii?Q?3xTRDg+u2t3vFRbUbft6gOoRxzCiUq/1EXghzKdqbgXTGofXPyazWyAK8RJY?=
- =?us-ascii?Q?LsMqwbWJkliy3FtqZxe7782I18+p4lFhIe0egpP4U1V7EgFdcZUqe6PtMO9V?=
- =?us-ascii?Q?QxvKBkcvtFuNA0+nX9mygx4hdNTm3firOzIUI7uWZDTQ/HbUO0tH+iznU5Ha?=
- =?us-ascii?Q?+uJjV+2QrrovXxHGmc0itmg9aFgXjJetPqcHWmzmLAjRIn+GaFVm3gvAZhfp?=
- =?us-ascii?Q?r57e6y2LyAR+oUuo3L7NSz/94nLp9StoSvy3zwyil3/ESHm+JNgBqnyzCk/m?=
- =?us-ascii?Q?8nmM8Lgi3+14FSZdB0P2JYf2An3BmEkWIsMffHbbzCmklOPM/tdYxiZJkOV4?=
- =?us-ascii?Q?lZXHlid3JyjOrizx5blHizErwW2M8yeshkE6pUWWMWnBJBIZgEkbVxHsamqo?=
- =?us-ascii?Q?wQFLNYGRPsr0t/Ys/i/Cyhaezbzz+zr6d6DsmKBt4AyLO2zq4P52C9ObzVHg?=
- =?us-ascii?Q?7lETSGZO2CUPQJa2Y43VDs6pHy1akxUO0Q1rtmliWTpetMpzB74rcuAX4oZD?=
- =?us-ascii?Q?QodB1hCd0Xolmsft9rurfr9QC+wcnEmVoF5z7mG/UZ7EtPsJeNrYGzaAwHJu?=
- =?us-ascii?Q?uYBBVIwGkOCAeZBnmyN5mMLcQcOrg5AsMgheOq0e?=
+	=?us-ascii?Q?EYw3KVhwEqilpQAb5G4saUOJq+lJ45IJrtRm71KmiuX7c/4atvF1zo0RTq4e?=
+ =?us-ascii?Q?z8gRxWxk0naon8fzhMKia9RPipBP/Viu4RPdg3NSXZASGVNVC4Pmc6Ks6cUN?=
+ =?us-ascii?Q?ZUKRsCSPrB4+fCbAwPHwkOvym38yguNV4/B/AQWD41TZiPHqkSXsTCmE0btc?=
+ =?us-ascii?Q?mndFEJKYZaWW7hQpaf+R176K+OxqUgxTt9WHyN8d8wq2Z79LTI5dM4qUit10?=
+ =?us-ascii?Q?ks3y9C004PmH6PVQYcFI7Njx/PYlg+ftYTDvEaPkGGdU/GmDcx4pB6Oi4YKr?=
+ =?us-ascii?Q?3lTQmmYFhXVQrlSnhmjvNa3FqLL0B+nhddzQqnuVq+fIXffrx97Hk5ZiqVQI?=
+ =?us-ascii?Q?BMFKaw8HhB3xeI7XzfvunC2D5QmPEgvRhNdmanyk3BJoaFlAV7x+lDbFX+eQ?=
+ =?us-ascii?Q?8bTNhCu3wPLEJaNguwTnQMQFPGjMLNVUA9RmVLL8NfaTn866VH2h2k99lmqb?=
+ =?us-ascii?Q?SQWr1Jx1wZTI8XwFXbC1kLcZgG64NiYlL41U/cEeveM2qFThje+HE5d0jnfJ?=
+ =?us-ascii?Q?MIjI6hS3qR2xiJKc98JB9FPlUhXGIQL0Vl3DQOZQVu46VnLZvcPK329I6fS6?=
+ =?us-ascii?Q?SNqd3DHwQZQvuFAIu/Pc1KVhg8V3vG9278t7HRhApB0Js94NKfYzH5vBuEuw?=
+ =?us-ascii?Q?9cXm70kSxLBWDwoid+2BHz49+/Aq7ZsjMFjKHiJ8qG3Ow05IuyFcdGH45vZD?=
+ =?us-ascii?Q?kdvx2c6hheuAmW5ZVdsuzZgKqpMKfk9Qm0poTaNUZgfXpAvrCJYRT4eY3Uwx?=
+ =?us-ascii?Q?nNkmHq6N6hyrAlvrRKPbUyNyDQwjXq1o778WCSczFpQ6ibRE6y50jN8TBR/b?=
+ =?us-ascii?Q?Clj5wDqT3C+Vcpg7axas3USWtBM0t7i/NY/2FYExE5UP6HpOgXV01n0B7lfi?=
+ =?us-ascii?Q?zeSiLaR1yi93EJrAGtRZTh2UQRT7eBZDAhx9OpvksxH3EuUZe0RTNuMBNwnm?=
+ =?us-ascii?Q?7N4x2FACLlOBF0JxCO/Wj3w3kSAFUUBrVFCNzqnIU/+dkda3DNlCN0iQOYlR?=
+ =?us-ascii?Q?nEsENGlh9NZZmdX06kppV7SLLGttaeZ84eJo6EiKgdrwfP+hJxrxvpcjt/B1?=
+ =?us-ascii?Q?FiA6eCcb92LfKFWokTvS8h6slW5IercqTI1tIc+cprFneI1Bz2paRufw2Oek?=
+ =?us-ascii?Q?k7saHHvdTZhiFp+N61G8seIkJgnBhwPfuTOlO6xkoXSpwkf7Tu8extWVXprz?=
+ =?us-ascii?Q?7Je3f0wEc1xsF+2zwv2wJQ/GCkusyWGt0SUjTcOcQiIEAjCQ7bV/D4yOzRF4?=
+ =?us-ascii?Q?9DL6Bv9PEnO8DBwlcxpDmze4eO/4asqVkBLVbrvIpXX4NRmodu+1TfHz02H1?=
+ =?us-ascii?Q?IVRqRQvjVeCcdf+Xe+srClYxxHppLgCFbviWgieWxvRzPbRjFAQCyDEiXqSK?=
+ =?us-ascii?Q?oWPhFNXB2cQWCyVeWexXSTddYJ9/AMDD+xFi+PYfG3BRAGRYPcLw9mKadE82?=
+ =?us-ascii?Q?v9Ht4pkSx/vTDYREWu0yhsFvnrD6VxW2YLzagbvio0aQAH7KyvjR29BRhiBW?=
+ =?us-ascii?Q?IRLdM6X25i03i9+qj65IxrdO4VEFFn7aHMPDncMhjXxq2anOpYD27f+S2iHQ?=
+ =?us-ascii?Q?jHvysDlfaWLTRZDlUaOi2O2o6+ol2KxF/0Hjk36P?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 991ba564-fb26-42ba-e56b-08dc80d1e2f4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5712378f-d98b-46e0-1472-08dc80d711b1
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2024 17:56:52.4969
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2024 18:33:58.4893
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /jp3GnBH2RJR4cvezYUDK07+8V7/StYDsj0nT/4XjtqI4eG0T/3sxaeOcOolmB7JgZZTqSxmOqTBqCYlMqbH+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7133
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3DesOzDliZ8NLRyUoWZ+i383MTKHlabhVE6Yuj0JrHd+fDeqTQ/lvoiHwSbYtnYa9bL9fa39yJFjcOoxlue0eA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10660
 
-On Thu, May 30, 2024 at 12:27:49PM -0500, Bjorn Helgaas wrote:
-> On Wed, May 29, 2024 at 11:00:49AM -0400, Frank Li wrote:
-> > On Tue, May 28, 2024 at 05:31:36PM -0500, Bjorn Helgaas wrote:
-> > > On Tue, May 28, 2024 at 03:39:13PM -0400, Frank Li wrote:
-> > ...
-> 
-> > > > Base on linux-pci/controller/imx
+On Thu, May 30, 2024 at 06:45:10PM +0200, Marco Felsch wrote:
+> On 24-05-30, Frank Li wrote:
+> > On Thu, May 30, 2024 at 11:05:58AM +0200, Marco Felsch wrote:
+> > > Hi,
 > > > 
-> > > This applies cleanly to the pci/controller/gpio branch, which has some
-> > > minor rework in pci-imx6.c.
+> > > On 24-05-30, Shengjiu Wang wrote:
+> > > > Add support for the resets on i.MX8MP Audio Block Control module,
+> > > > which includes the EARC PHY software reset and EARC controller
+> > > > software reset. The reset controller is created using the auxiliary
+> > > > device framework and set up in the clock driver.
+> > > > 
+> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > > ---
+> > > >  drivers/reset/Kconfig         |   8 ++
+> > > >  drivers/reset/Makefile        |   1 +
+> > > >  drivers/reset/reset-imx-aux.c | 217 ++++++++++++++++++++++++++++++++++
+> > > 			    ^
+> > > You make use of the auxiliary bus but this isn't a aux driver, it's the
+> > > i.MX8MP EARC reset driver. According the TRM only the EARC reset bits
+> > > are covered by the AUDIOMIX blk-ctrl.
 > > > 
-> > > When we apply this, I think we should do it on a a pci/controller/imx6
-> > > branch that is based on "main" (v6.10-rc1).
+> > > >  3 files changed, 226 insertions(+)
+> > > >  create mode 100644 drivers/reset/reset-imx-aux.c
+> > > > 
+> > > > diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+> > > > index 7112f5932609..38fdf05b326b 100644
+> > > > --- a/drivers/reset/Kconfig
+> > > > +++ b/drivers/reset/Kconfig
+> > > > @@ -91,6 +91,14 @@ config RESET_IMX7
+> > > >  	help
+> > > >  	  This enables the reset controller driver for i.MX7 SoCs.
+> > > >  
+> > > > +config RESET_IMX_AUX
+> > > > +	tristate "i.MX Auxiliary Reset Driver"
+> > > 			^
+> > >               Same applies here
 > > > 
-> > > I can resolve the conflicts with pci/controller/gpio when building
-> > > pci/next.
+> > > > +	depends on CLK_IMX8MP
+> > > > +	select AUXILIARY_BUS
+> > > > +	default CLK_IMX8MP
+> > > > +	help
+> > > > +	  This enables the auxiliary reset controller driver for i.MX.
+> > > > +
+> > > >  config RESET_INTEL_GW
+> > > >  	bool "Intel Reset Controller Driver"
+> > > >  	depends on X86 || COMPILE_TEST
+> > > > diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+> > > > index fd8b49fa46fc..f078da14c327 100644
+> > > > --- a/drivers/reset/Makefile
+> > > > +++ b/drivers/reset/Makefile
+> > > > @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
+> > > >  obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
+> > > >  obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
+> > > >  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
+> > > > +obj-$(CONFIG_RESET_IMX_AUX) += reset-imx-aux.o
+> > > >  obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
+> > > >  obj-$(CONFIG_RESET_K210) += reset-k210.o
+> > > >  obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
+> > > > diff --git a/drivers/reset/reset-imx-aux.c b/drivers/reset/reset-imx-aux.c
+> > > > new file mode 100644
+> > > > index 000000000000..61c353abc84e
+> > > > --- /dev/null
+> > > > +++ b/drivers/reset/reset-imx-aux.c
+> > > > @@ -0,0 +1,217 @@
+> > > > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > > > +/*
+> > > > + * Copyright 2024 NXP
+> > > > + */
+> > > > +
+> > > > +#include <linux/auxiliary_bus.h>
+> > > > +#include <linux/device.h>
+> > > > +#include <linux/io.h>
+> > > > +#include <linux/module.h>
+> > > > +#include <linux/of.h>
+> > > > +#include <linux/of_address.h>
+> > > > +#include <linux/of_platform.h>
+> > > > +#include <linux/platform_device.h>
+> > > > +#include <linux/reset-controller.h>
+> > > > +
+> > > > +/*
+> > > > + * The reset does not support the feature and corresponding
+> > > > + * values are not valid
+> > > > + */
+> > > > +#define ASSERT_NONE     BIT(0)
+> > > > +#define DEASSERT_NONE   BIT(1)
+> > > > +#define STATUS_NONE     BIT(2)
+> > > > +
+> > > > +/* When set this function is activated by setting(vs clearing) this bit */
+> > > > +#define ASSERT_SET      BIT(3)
+> > > > +#define DEASSERT_SET    BIT(4)
+> > > > +#define STATUS_SET      BIT(5)
+> > > > +
+> > > > +/* The following are the inverse of the above and are added for consistency */
+> > > > +#define ASSERT_CLEAR    (0 << 3)
+> > > > +#define DEASSERT_CLEAR  (0 << 4)
+> > > > +#define STATUS_CLEAR    (0 << 5)
+> > > > +
+> > > > +/**
+> > > > + * struct imx_reset_ctrl - reset control structure
+> > > > + * @assert_offset: reset assert control register offset
+> > > > + * @assert_bit: reset assert bit in the reset assert control register
+> > > > + * @deassert_offset: reset deassert control register offset
+> > > > + * @deassert_bit: reset deassert bit in the reset deassert control register
+> > > > + * @status_offset: reset status register offset
+> > > > + * @status_bit: reset status bit in the reset status register
+> > > > + * @flags: reset flag indicating how the (de)assert and status are handled
+> > > > + */
+> > > > +struct imx_reset_ctrl {
+> > > > +	u32 assert_offset;
+> > > > +	u32 assert_bit;
+> > > > +	u32 deassert_offset;
+> > > > +	u32 deassert_bit;
+> > > > +	u32 status_offset;
+> > > > +	u32 status_bit;
+> > > > +	u32 flags;
+> > > > +};
+> > > 
+> > > Why do we make it this compicated for an simple EARC module reset? I
+> > > understand that you want to provide a generic driver which can be
+> > > re-used but there is actual no other user and may will get no other user
+> > > in the future too. Therefore I would like to keep it simple at the
+> > > begin and adapt the code on-demand.
 > > 
-> > Sorry, I forget update this. It should be base on linux-pci/next
-> > (e3fca37312892122d73f8c5293c0d1cc8c34500b). 
+> > There are many similar cases. such as
+> > https://elixir.bootlin.com/linux/v6.10-rc1/source/drivers/pci/controller/dwc/pci-layerscape.c#L251
+> > 
+> > Previously it use syscon and regmap to a global register space region and
+> > direct operate the register. Now this way will not preferred. It needs
+> > export as reset driver. but actually, it just write some bits. 
 > 
-> I prefer patches that are based on -rc1, i.e., the pci/main branch,
-> not on the pci/next branch.
-> 
-> If a series *requires* functionality that is already on a topic
-> branch, you can base it on that branch instead of on pci/main.
-> 
-> This series happens to touch some of the same code as
-> pci/controller/gpio, but it doesn't require those gpio changes, so it
-> does not need to be based on pci/controller/gpio.
-> 
-> Having this series based on pci/main means that if we update or drop
-> the gpio branch for some reason, this series will still make sense.
+> It depends, if your reset-controller is part of an complete different
+> device like this EARC reset you're right else you can write to the reset
+> directly within you driver.
 
-v4 should cleanly apply to pci/main. It is not big deal. Do you have any
-additional comments for this series?
-
-We still have some other works (such as simply suspend/resume by using
-common PME turn off method), which base on this series.
-
-Frank
+These reset bits allocated a global register regions. Such as bit0 for
+pcie0, bit1 for pci1, bit2 for usb0, bit3 for usb1. Hardware pack these
+to misc mmio region.
 
 > 
-> Bjorn
+> > We face the similar problem at difference driver when do upstream.
+> > 
+> > One on going a discussion about sim module reset
+> > https://lore.kernel.org/imx/131e46b1-61d9-41de-a225-853b09c765d1@gmail.com/
+> > 
+> > We hope an unified and simple method to handle these cases.
+> 
+> An unified driver for non-unified reset modules? This makes no sense to
+> me. When it comes to possible quirk handling for different reset modules
+> your code gets even more complex.
+> 
+> I'm fine with a common code base (driver) if NXP has an common reset
+> controller IP which is added to several SoC. There should be no common
+> code base if this isn't the case.
+
+Some chip have common reset controller IP. Some chip simple packed reset
+bits to one global misc mmio region with other misc control bit, such power
+on/off / clock source choose / enable debug features. 
+
+Here we just consider the second case. Anyway we need handle these case at
+somewhere. 99% case just write bit<n> to register offset. Only difference
+is bit posstion and register offset. If write difference driver for these
+just because bit posstion or offset, there will be many duplicated codes
+under driver/reset.
+
+For example:
+Misc: 0x1000
+      bit0: pcie0 reset
+      bit2: usb0 reset
+      bit3-bit4: pcie clk source select
+      bit5-bit6: usb0 clk source select
+      bit7: pcie0 phy power on
+      bit8: usb0 phy power on.
+
+The difference chip, bit possition will be changed.
+How handle this case corporately?
+
+> 
+> Regards,
+>   Marco
+> 
+> 
+> > 
+> > Frank
+> > 
+> > > 
+> > > Regards,
+> > >   Marco
+> > > 
+> > > > +struct imx_reset_data {
+> > > > +	const struct imx_reset_ctrl *rst_ctrl;
+> > > > +	size_t rst_ctrl_num;
+> > > > +};
+> > > > +
+> > > > +struct imx_aux_reset_priv {
+> > > > +	struct reset_controller_dev rcdev;
+> > > > +	void __iomem *base;
+> > > > +	const struct imx_reset_data *data;
+> > > > +};
+> > > > +
+> > > > +static int imx_aux_reset_assert(struct reset_controller_dev *rcdev,
+> > > > +				unsigned long id)
+> > > > +{
+> > > > +	struct imx_aux_reset_priv *priv = container_of(rcdev,
+> > > > +					struct imx_aux_reset_priv, rcdev);
+> > > > +	const struct imx_reset_data *data = priv->data;
+> > > > +	void __iomem *reg_addr = priv->base;
+> > > > +	const struct imx_reset_ctrl *ctrl;
+> > > > +	unsigned int mask, value, reg;
+> > > > +
+> > > > +	if (id >= data->rst_ctrl_num)
+> > > > +		return -EINVAL;
+> > > > +
+> > > > +	ctrl = &data->rst_ctrl[id];
+> > > > +
+> > > > +	/* assert not supported for this reset */
+> > > > +	if (ctrl->flags & ASSERT_NONE)
+> > > > +		return -EOPNOTSUPP;
+> > > > +
+> > > > +	mask = BIT(ctrl->assert_bit);
+> > > > +	value = (ctrl->flags & ASSERT_SET) ? mask : 0x0;
+> > > > +
+> > > > +	reg = readl(reg_addr + ctrl->assert_offset);
+> > > > +	writel(reg | value, reg_addr + ctrl->assert_offset);
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static int imx_aux_reset_deassert(struct reset_controller_dev *rcdev,
+> > > > +				  unsigned long id)
+> > > > +{
+> > > > +	struct imx_aux_reset_priv *priv = container_of(rcdev,
+> > > > +					struct imx_aux_reset_priv, rcdev);
+> > > > +	const struct imx_reset_data *data = priv->data;
+> > > > +	void __iomem *reg_addr = priv->base;
+> > > > +	const struct imx_reset_ctrl *ctrl;
+> > > > +	unsigned int mask, value, reg;
+> > > > +
+> > > > +	if (id >= data->rst_ctrl_num)
+> > > > +		return -EINVAL;
+> > > > +
+> > > > +	ctrl = &data->rst_ctrl[id];
+> > > > +
+> > > > +	/* deassert not supported for this reset */
+> > > > +	if (ctrl->flags & DEASSERT_NONE)
+> > > > +		return -EOPNOTSUPP;
+> > > > +
+> > > > +	mask = BIT(ctrl->deassert_bit);
+> > > > +	value = (ctrl->flags & DEASSERT_SET) ? mask : 0x0;
+> > > > +
+> > > > +	reg = readl(reg_addr + ctrl->deassert_offset);
+> > > > +	writel(reg | value, reg_addr + ctrl->deassert_offset);
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static int imx_aux_reset_status(struct reset_controller_dev *rcdev,
+> > > > +				unsigned long id)
+> > > > +{
+> > > > +	struct imx_aux_reset_priv *priv = container_of(rcdev,
+> > > > +					struct imx_aux_reset_priv, rcdev);
+> > > > +	const struct imx_reset_data *data = priv->data;
+> > > > +	void __iomem *reg_addr = priv->base;
+> > > > +	const struct imx_reset_ctrl *ctrl;
+> > > > +	unsigned int reset_state;
+> > > > +
+> > > > +	if (id >= data->rst_ctrl_num)
+> > > > +		return -EINVAL;
+> > > > +
+> > > > +	ctrl = &data->rst_ctrl[id];
+> > > > +
+> > > > +	/* status not supported for this reset */
+> > > > +	if (ctrl->flags & STATUS_NONE)
+> > > > +		return -EOPNOTSUPP;
+> > > > +
+> > > > +	reset_state = readl(reg_addr + ctrl->status_offset);
+> > > > +
+> > > > +	return !(reset_state & BIT(ctrl->status_bit)) ==
+> > > > +		!(ctrl->flags & STATUS_SET);
+> > > > +}
+> > > > +
+> > > > +static const struct reset_control_ops imx_aux_reset_ops = {
+> > > > +	.assert   = imx_aux_reset_assert,
+> > > > +	.deassert = imx_aux_reset_deassert,
+> > > > +	.status	  = imx_aux_reset_status,
+> > > > +};
+> > > > +
+> > > > +static int imx_aux_reset_probe(struct auxiliary_device *adev,
+> > > > +			       const struct auxiliary_device_id *id)
+> > > > +{
+> > > > +	struct imx_reset_data *data = (struct imx_reset_data *)(id->driver_data);
+> > > > +	struct imx_aux_reset_priv *priv;
+> > > > +	struct device *dev = &adev->dev;
+> > > > +
+> > > > +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > > > +	if (!priv)
+> > > > +		return -ENOMEM;
+> > > > +
+> > > > +	priv->rcdev.owner     = THIS_MODULE;
+> > > > +	priv->rcdev.nr_resets = data->rst_ctrl_num;
+> > > > +	priv->rcdev.ops       = &imx_aux_reset_ops;
+> > > > +	priv->rcdev.of_node   = dev->parent->of_node;
+> > > > +	priv->rcdev.dev	      = dev;
+> > > > +	priv->rcdev.of_reset_n_cells = 1;
+> > > > +	priv->base            = of_iomap(dev->parent->of_node, 0);
+> > > > +	priv->data            = data;
+> > > > +
+> > > > +	return devm_reset_controller_register(dev, &priv->rcdev);
+> > > > +}
+> > > > +
+> > > > +#define EARC  0x200
+> > > > +
+> > > > +static const struct imx_reset_ctrl imx8mp_audiomix_rst_ctrl[] = {
+> > > > +	{
+> > > > +		.assert_offset = EARC,
+> > > > +		.assert_bit = 0,
+> > > > +		.deassert_offset = EARC,
+> > > > +		.deassert_bit = 0,
+> > > > +		.flags  = ASSERT_CLEAR | DEASSERT_SET | STATUS_NONE,
+> > > > +	},
+> > > > +	{
+> > > > +		.assert_offset = EARC,
+> > > > +		.assert_bit = 1,
+> > > > +		.deassert_offset = EARC,
+> > > > +		.deassert_bit = 1,
+> > > > +		.flags  = ASSERT_CLEAR | DEASSERT_SET | STATUS_NONE,
+> > > > +	},
+> > > > +};
+> > > > +
+> > > > +static const struct imx_reset_data imx8mp_audiomix_rst_data = {
+> > > > +	.rst_ctrl = imx8mp_audiomix_rst_ctrl,
+> > > > +	.rst_ctrl_num = ARRAY_SIZE(imx8mp_audiomix_rst_ctrl),
+> > > > +};
+> > > > +
+> > > > +static const struct auxiliary_device_id imx_aux_reset_ids[] = {
+> > > > +	{
+> > > > +		.name = "clk_imx8mp_audiomix.reset",
+> > > > +		.driver_data = (kernel_ulong_t)&imx8mp_audiomix_rst_data,
+> > > > +	},
+> > > > +	{ }
+> > > > +};
+> > > > +MODULE_DEVICE_TABLE(auxiliary, imx_aux_reset_ids);
+> > > > +
+> > > > +static struct auxiliary_driver imx_aux_reset_driver = {
+> > > > +	.probe		= imx_aux_reset_probe,
+> > > > +	.id_table	= imx_aux_reset_ids,
+> > > > +};
+> > > > +
+> > > > +module_auxiliary_driver(imx_aux_reset_driver);
+> > > > +
+> > > > +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
+> > > > +MODULE_DESCRIPTION("Freescale i.MX auxiliary reset driver");
+> > > > +MODULE_LICENSE("GPL");
+> > > > -- 
+> > > > 2.34.1
+> > > > 
+> > > > 
+> > > > 
+> > 
