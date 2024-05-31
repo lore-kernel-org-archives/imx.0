@@ -1,126 +1,111 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC12233E
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 14:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B24557C8E
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 14:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717166720; cv=none; b=PVjeTurLoYS50vRnWOfXSqdTfMfnsOO55b+MuBsyi/8lKkX/pu3IfZi+ygw14Rri90+MLpv6QsxuN20NhXmXk683HihBaM8TfGuF91WFNUv/LSrEchz/2aqMnmZvKhiewTDhAdFBmTw9Up/sx9bvkbDKHUttRSWomG7Ez9Ox7zE=
+	t=1717167509; cv=none; b=Heul/o+y7DVol4228s4n0b9dF1QaW1swRDkN/kEaxupT5bVcREPJPHy5ViS3TxEnyDfw6gKFkkQfMEqhr9la46aQQWvLwsC1l++rm71dHWPbIBe2E2a9QQRpizU4+O5wI386JHboWEtadJ3NTFYrmJKs4yCNvzhr8PIQ+I+Y8oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717166720; c=relaxed/simple;
-	bh=EIrwrMgP84onPe3hHLgvihCbppR9nSwhvh1a+A539DY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EPaawZlAt/un4UkTd4hrKgd4O5ide/XdHP5hIlP77VPlztlmxrsgNpK8osS0bhNMsMierlIPoHjcJzglLf12qNPmZKLuMSycyX/4wPl3vmTjLPERoeCZnliOpSQU41wtcuS1tSMLeoaBkm2BXU/qS5WDVplGDjtjhL4A2RhvWh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gIgfamOO; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1717167509; c=relaxed/simple;
+	bh=9+6h3DiodrT9YFrdp+kdRsd+uvX5l44PO21I4T4zFO4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E1ZUakt0GKKygvOsDwD8YJVKc6nHtgMG7OcBZCrYZlCQDIse7MGG57i779K+XzMc+vwovk9orCgOA/kN5ZO5DmaoNURsi97HK+MF5HJSIdPKEPjiehCq1mK74kx46qqYQe32Q1TFe2Ib62soRZCnXmO50IAH7KM8UDbuyn+Ux4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=cgV8psTi; arc=none smtp.client-ip=67.231.149.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gIgfamOO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717166719; x=1748702719;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EIrwrMgP84onPe3hHLgvihCbppR9nSwhvh1a+A539DY=;
-  b=gIgfamOOAheaM2zBu2lQ4GMOSELo/ZqSOsYGTom12B+TgfDIbkMNTTuQ
-   asIFUfdMBPLNvCdG6GEaf863ROjyNVYjM2AH/x1ebhV9KKOXJhcBwQxaH
-   Mwah1iAolf0hKn/LjwRsLTruQw8/UF+zP3/nh3juJERcJuNnESna9+8Gi
-   C7e7gWi6LKbQU0rnvth01ZqRD7A41AwuZI6YT9Wgt295R+63w27si6mvq
-   Vgs+zo2bThGn4MpdwGIYwbrYy5NwDG5enIT9fTFMya18nCR8QTDGYvpg5
-   +HplbfP2lJYpvzwQUeGfVn65auDiL/bNT+lHCrmkrig2fjTPvasX9gXnz
-   A==;
-X-CSE-ConnectionGUID: eaeBJh4HQ4StQBKlE7yNLw==
-X-CSE-MsgGUID: 6yMFnFHpRyO43fVZ6tb1lQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13939048"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13939048"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 07:45:19 -0700
-X-CSE-ConnectionGUID: AF/eqOPGQtC4ibKbWQSFkQ==
-X-CSE-MsgGUID: OrRQBb5xQYCHfCfMLf2tzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="67030268"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 07:45:14 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sD3VG-0000000CUn1-45IS;
-	Fri, 31 May 2024 17:45:10 +0300
-Date: Fri, 31 May 2024 17:45:10 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-	u.kleine-koenig@pengutronix.de, marcelo.schmitt@analog.com,
-	gnstark@salutedevices.com, francesco.dolcini@toradex.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
- not busy
-Message-ID: <Zlnidi62gEWwdQ3U@smile.fi.intel.com>
-References: <20240531142437.74831-1-eichest@gmail.com>
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="cgV8psTi"
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44V9Swso003313;
+	Fri, 31 May 2024 09:58:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=PODMain02222019; bh=hxGvSEqlUm/4Gr1/Y7
+	FisaucBu8jAHnTKI/Obg6VI9c=; b=cgV8psTiVp2etlgNlYKT/Xz5UTa72Adwnp
+	Mz2p1O9qHqFUPa15bt9k4vOaw0BFh7bPfJ1p4wP2ArTWshr7L1GtTFZWa18VmbEX
+	efyhNCr7LGDVTGEkFIdZ0+fQ7lrmWR08B7gFutkTdq4gik7dVbbMx17C3hPbsiqX
+	FCCs7+w31Fz3cjSd/vTp8fxiOXlBH0SixpDYUeNAgOZyC/WqXTvNGN/y23eabUCD
+	5uteqKIcoNKlQlCxYfRo5l/rbU0dUpjor+W6lYVOnFoOCyW4y/NdaGcm+icIdEzg
+	FzQyVFTV5U46MBSRn9vkeAmsXDfnV3tfBs9CiTKaysNGvNIL1WOg==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3ybdcwwwuu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 May 2024 09:58:06 -0500 (CDT)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 31 May
+ 2024 15:58:04 +0100
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.9 via Frontend Transport; Fri, 31 May 2024 15:58:04 +0100
+Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPS id 05CBE820244;
+	Fri, 31 May 2024 14:58:04 +0000 (UTC)
+Date: Fri, 31 May 2024 14:58:02 +0000
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: Rob Herring <robh@kernel.org>, Weidong Wang <wangweidong.a@awinic.com>,
+        Mark Brown <broonie@kernel.org>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>,
+        Shenghao Ding <shenghao-ding@ti.com>,
+        "Marco Felsch" <m.felsch@pengutronix.de>,
+        Alper Nebi Yasak
+	<alpernebiyasak@gmail.com>,
+        Chancel Liu <chancel.liu@nxp.com>,
+        "Kuninori
+ Morimoto" <kuninori.morimoto.gx@renesas.com>,
+        <linux-sound@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
+        <linuxppc-dev@lists.ozlabs.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rockchip@lists.infradead.org>,
+        Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "James
+ Schulman" <james.schulman@cirrus.com>,
+        David Rhodes
+	<david.rhodes@cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+        Srinivas Kandagatla
+	<srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+        Nicolin Chen <nicoleotsuka@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Heiko Stuebner
+	<heiko@sntech.de>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
+Message-ID: <ZlnleuSae2C6/WRU@opensource.cirrus.com>
+References: <20240530230037.1156253-1-andriy.shevchenko@linux.intel.com>
+ <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20240531142437.74831-1-eichest@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
+X-Proofpoint-GUID: QOHrrhhsAlL1BvB8LD1NFqOZRJaPkXqI
+X-Proofpoint-ORIG-GUID: QOHrrhhsAlL1BvB8LD1NFqOZRJaPkXqI
+X-Proofpoint-Spam-Reason: safe
 
-On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On Fri, May 31, 2024 at 01:58:47AM +0300, Andy Shevchenko wrote:
+> of_gpio.h is deprecated and subject to remove. The drivers in question
+> don't use it, simply remove the unused header.
 > 
-> On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
-> the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
-> bus is idle. The imx i2c driver will call schedule when waiting for the
-> bus to become idle after switching to master mode. When the i2c
-> controller switches to master mode it pulls SCL and SDA low, if the
-> ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
-> clocking, it will timeout and ignore all signals until the next start
-> condition occurs (SCL and SDA low). This can occur when the system load
-> is high and schedule returns after more than 25 ms.
-> 
-> This rfc tries to solve the problem by using a udelay for the first 10
-> ms before calling schedule. This reduces the chance that we will
-> reschedule. However, it is still theoretically possible for the problem
-> to occur. To properly solve the problem, we would also need to disable
-> interrupts during the transfer.
-> 
-> After some internal discussion, we see three possible solutions:
-> 1. Use udelay as shown in this rfc and also disable the interrupts
->    during the transfer. This would solve the problem but disable the
->    interrupts. Also, we would have to re-enable the interrupts if the
->    timeout is longer than 1ms (TBD).
-> 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
->    timeout, we try again.
-> 3. We use the suggested solution and accept that there is an edge case
->    where the timeout can happen.
-> 
-> There may be a better way to do this, which is why this is an RFC.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  sound/soc/codecs/cs53l30.c        | 1 -
 
-...
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-> +			/*
-> +			 * Avoid rescheduling in the first 10 ms to avoid
-> +			 * timeouts for SMBus like devices
-> +			 */
-> +			if (time_before(jiffies, orig_jiffies + msecs_to_jiffies(10)))
-> +				udelay(10);
-> +			else
-> +				schedule();
-
-Isn't there cond_resched() or so for such things?
-More info here: 494e46d08d35 ("airo: Replace in_atomic() usage.")
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks,
+Charles
