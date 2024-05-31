@@ -1,133 +1,159 @@
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973D1157487
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 11:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56FB16F282;
+	Fri, 31 May 2024 13:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717154045; cv=none; b=LwmTDM+k9gh77V0nGL9p/99+5wkdDV1/N0Wbyf98UeC/eTuoVUPcRbd0SDrX7f4CT1lGrso/NwVlLRJd3sSsl41ygiUDHThqjLMgjhBnQR33qP1Ki17TaxsGnhHfZ4lU0V4I4VdAY+UQmgpcoNoe07AxHwijzQfm9YHqQ9BwvdI=
+	t=1717163573; cv=none; b=KhIkOwVp09XOBTHgwsBuH2QFGYc8Bz533yxu8g8fb+xb/LsH4cFLHGk8tFVZwvlmt1zn8+jKPe3oZdXdSsIyb3kZ0/FlwIKvXFdocyyAls4NHNhSlT8zMCYu/vI6inE2ilAPLOGIUW/92yL6NGCvEXYd/N1jiLBVho3/h4fwerQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717154045; c=relaxed/simple;
-	bh=5JDD33qRorywNmQKPBbyh44Bl11dNVa+Lm3wUWF09Ic=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DZd+MB6AtS2EaA96VDKn+vbaVum8S4cqrc83ZvY38fDWxMjP01IoZnJWzTLM0Cl4DFRWcuvYZjesELSU+g+VC/SC1yqH8/5aW+olHRAuG0w4P0elUd2C0G4t7m3C6PRvXFWUavmADsZ1ToKQncwlcqcD/Rjq09LM0xea36F5ebs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Etg32dFr; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717163573; c=relaxed/simple;
+	bh=uKE5W2MwLeT6Liv0HtH7JnSOYllTclfPZHEkgcGCaJg=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ppj+tDKsS0j8b4cmyrvHRXpce0TwOQwReb/EWAs833FhA/uyCg9cfqkJbuT3geWx8q4Q4m0LNaKDSSs+zaGlEa6VbFiPvN79GUJ1mXhqCWGcsrBe9zmTkg15foAjVd2PasSNo4VKiJOz2J2MVYIOMPwStE+nhv5Kfj+qN7ddzLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgOObifV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Etg32dFr"
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-24c9f892aeaso1004104fac.2
-        for <imx@lists.linux.dev>; Fri, 31 May 2024 04:14:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717154043; x=1717758843; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eXBg1IIKOFylKo+rkqsg8yzt/arKbmHAdUcO7p0ZR7c=;
-        b=Etg32dFr1Mcmf0WHO7aDlA50OSukIA5QZBoJgLTJVw05urTriMFpP9IY30QXrC2fua
-         J9pPOr2Hr/WN4B2K7PrjmscveyiPuvfFegIPl2e8bDSO7EF6HipoXw4YczEZWu/jPP/e
-         Y0fpS4W9cja1gZrERgocK7DIMGQkfViCOKhGe8LFXUdbKaCVCxwoFiW7uVQxadB12bSz
-         pugpGoIPjR+YjhSPh0afDSTRoW/ModPBnXrtBLBeZGoSMFUt+f9jxcLH6vCEP+v21Cpj
-         mGrXkieAYPPgGUKHlUWNYWfelnx8lu1CuaaGhLkPb+1ZKfec3V5vD6KXDvapjKW0Kv8e
-         7tLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717154043; x=1717758843;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eXBg1IIKOFylKo+rkqsg8yzt/arKbmHAdUcO7p0ZR7c=;
-        b=YKGswYR6GlX3TX6l1A0t1dASSl9y8UO3qheyjBknot5Yi/z2hyCRE+HXadnhAb6QLA
-         MsZ6oe+XpnJDMOHb4xFUPcLspPBG8A4EAjXn2BoE+NgYXgZtzuoulL9kHVtkRCDJQ67f
-         SQfji23cXUF6dGO8h3zi0U9JunO63bwNKDVyxPfsfqVWBoBUy11/82xkYhtumDz9MNtA
-         YaZbcc84n/whz6AS+3yoCySjI992HJ8rTnU1NPb8UeXenYuA2tYaVoR/4qgohRXbPzKA
-         ZhPxtfhxosraHYKtRIPr+nzln2tseiBHHN3YPLU+M0sRHOLUgSdsqF/DmRkYIiK36A4L
-         o6zw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+YMgDk+g5N/CnAGcz03erVVXxKxR21Gz+QsteEUDoQNRtTGVg2iILuhY5WXnlrhSRVhf3EePkpQL7dwlSI0nxS2M3
-X-Gm-Message-State: AOJu0YzLqeYxsElzIfNB5U60ZhZETAo4gvxIDlAc5MT0ItBlS7Kpc3vt
-	NqWebMpu3Zv1TDkMfdcx5qriBLPzDSVulMTQcLFSdD09/pyf+Mx7XfjLiHI/DTOTe4eLTYkcTrE
-	7inah51qgSRPeFv/rRtrtf7KkxS0=
-X-Google-Smtp-Source: AGHT+IHxpK+grLpjn8RaNCKVuk2asXOqwaFS7gBD9s5FbqdCZLTtq7o51KMuQ/gD9ZSt6PBAA87mn9OqOkvS9K3F1PY=
-X-Received: by 2002:a05:6870:969e:b0:250:8141:9219 with SMTP id
- 586e51a60fabf-2508b7f15f2mr1716934fac.18.1717154043442; Fri, 31 May 2024
- 04:14:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgOObifV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8147C4AF07;
+	Fri, 31 May 2024 13:52:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717163573;
+	bh=uKE5W2MwLeT6Liv0HtH7JnSOYllTclfPZHEkgcGCaJg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PgOObifVO9KMfMs2CvshtwxFti9gexco3zoFmc77HOD5/t7cvg9BgKeLlQop8ktyH
+	 vNceWIvTw46xKCfD2NoWl5WN5sXd/maNsRz5FW+vFAaTGCrP6YiOAXyYZjZFYE5kv3
+	 QaU96P7JQh7UxqdJJok8B06yTxwzgfPHt1O6gTABBHFLO4LxG4K0R9R4gT+Kx4n0lg
+	 p5JNRoFWyOs35ZWr6koZ2Q6XXRA4v7xcCwZ7fkKn959ufd/SXTdW4tNDtA4oUyeJKP
+	 HVHjxFHc35dyNbzs1lhRqhZJVtFaaCfU568G00CdT4BOvCAozkJ+gR4wher6Niwb0P
+	 vuMvovnsr+51A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sD2gc-00HBtu-LR;
+	Fri, 31 May 2024 14:52:50 +0100
+Date: Fri, 31 May 2024 14:52:50 +0100
+Message-ID: <86sexyks0d.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,	Richard Zhu <hongxing.zhu@nxp.com>,	Lucas
+ Stach <l.stach@pengutronix.de>,	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,	Rob Herring
+ <robh@kernel.org>,	Bjorn Helgaas <bhelgaas@google.com>,	Shawn Guo
+ <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,	Pengutronix
+ Kernel Team <kernel@pengutronix.de>,	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,	Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>,	Conor Dooley
+ <conor+dt@kernel.org>,	linux-pci@vger.kernel.org,	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,	devicetree@vger.kernel.org,	Will Deacon
+ <will@kernel.org>,	Robin Murphy <robin.murphy@arm.com>,	Joerg Roedel
+ <joro@8bytes.org>,	Jason Gunthorpe <jgg@ziepe.ca>,	Alyssa Rosenzweig
+ <alyssa@rosenzweig.io>
+Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support MSI ITS and IOMMU for i.MX95
+In-Reply-To: <20240530230832.GA474962@bhelgaas>
+References: <20240528-pci2_upstream-v5-8-750aa7edb8e2@nxp.com>
+	<20240530230832.GA474962@bhelgaas>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20240531090458.99744-1-animeshagarwal28@gmail.com> <a472e8ba-bf54-4a62-9b05-ea265a83ef1b@kernel.org>
-In-Reply-To: <a472e8ba-bf54-4a62-9b05-ea265a83ef1b@kernel.org>
-From: Animesh Agarwal <animeshagarwal28@gmail.com>
-Date: Fri, 31 May 2024 16:43:52 +0530
-Message-ID: <CAE3Oz825RQg25PxEbnb=ui7+MtH0ssS=i2HAQK-yOJo+v8JMMw@mail.gmail.com>
-Subject: Re: [PATCH v2] dt-bindings: dma: fsl,imx-dma: Convert to dtschema
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, dmaengine@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: helgaas@kernel.org, Frank.Li@nxp.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com, p.zabel@pengutronix.de, lgirdwood@gmail.com, broonie@kernel.org, manivannan.sadhasivam@linaro.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, devicetree@vger.kernel.org, will@kernel.org, robin.murphy@arm.com, joro@8bytes.org, jgg@ziepe.ca, alyssa@rosenzweig.io
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, May 31, 2024 at 3:49=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
+On Fri, 31 May 2024 00:08:32 +0100,
+Bjorn Helgaas <helgaas@kernel.org> wrote:
+> 
+> [+cc IOMMU and pcie-apple.c folks for comment]
+> 
+> On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
+> > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
+> > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
+> > This involves examining the msi-map and smmu-map to ensure consistent
+> > mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
+> > registers are configured. In the absence of an msi-map, the built-in MSI
+> > controller is utilized as a fallback.
+> > 
+> > Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
+> > upon the appearance of a new PCI device and when the bus is an iMX6 PCI
+> > controller. This function configures the correct LUT based on Device Tree
+> > Settings (DTS).
+> 
+> This scheme is pretty similar to apple_pcie_bus_notifier().  If we
+> have to do this, I wish it were *more* similar, i.e., copy the
+> function names, bitmap tracking, code structure, etc.
+> 
+> I don't really know how stream IDs work, but I assume they are used on
+> most or all arm64 platforms, so I'm a little surprised that of all the
+> PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
+> this notifier.
+
+That's because on sane platforms, PCI's RID and the IOMMU's SID are
+the same thing, and there is no need to do anything bizarre. In the
+worse case, there is a static transformation that can be applied (IORT
+for ACPI, or iommu-map for DT).
+
+Some "creative" systems such as the Apple stuff require some extra
+side-band configuration because they don't know what a RID is at all
+(the RID isn't conveyed to the IOMMU), nor is there a static (baked in
+HW) transformation between RID and SID.
+
+So there is a widget on the side that performs the conversion, and
+this widget needs to be programmed. The way it works is that the
+driver parses the iommu-map to find the expected and arbitrary) SID
+on the IOMMU side for a given RID, and programs the association in the
+RID-to-SID mapper. It does so at device probe time in order to make
+sure the widget is alive (it seems to be part of the port power
+domain).
+
+Yes, this is a terrible hack, and I wish we didn't have to deal with
+this sort of crap.
+
 >
-> On 31/05/2024 11:04, Animesh Agarwal wrote:
-> > +  "#dma-cells":
-> > +    const: 1
-> > +
-> > +  dma-channels:
-> > +    maximum: 16
->
-> maximum or const?
+> There's this path, which is pretty generic and does at least the
+> of_map_id() part of what you're doing in imx_pcie_add_device():
+> 
+>     __driver_probe_device
+>       really_probe
+>         pci_dma_configure                       # pci_bus_type.dma_configure
+>           of_dma_configure
+>             of_dma_configure_id
+>               of_iommu_configure
+>                 of_pci_iommu_init
+>                   of_iommu_configure_dev_id
+>                     of_map_id
+>                     of_iommu_xlate
+>                       ops = iommu_ops_from_fwnode
+>                       iommu_fwspec_init
+>                       ops->of_xlate(dev, iommu_spec)
+> 
+> Maybe this needs to be extended somehow with a hook to do the
+> device-specific work like updating the LUT?  Just speculating here,
+> the IOMMU folks will know how this is expected to work.
 
-The txt binding says it should always be 16. Datasheet says this
-device has 16 channels of DMA services. I thought specifying just the
-maximum implies maximum=3Dminimum=3D16. Sorry for missing the changelog in
-this version it was cost in the v1 of this patch.
+That'd be a possibility. But this would be adding extra complexity to
+the IOMMU core, and I'm not sure it is worth it given that these
+systems are thankfully "rare".
 
->
-> deprecated: true
->
+It is also something that is conceptually part of the PCIe root port,
+and not really the IOMMU, so I'm a bit reluctant to shove things
+there. In any case, it would still require callbacks into the PCIe
+host driver, and I have the feeling that we'd be reinventing the bus
+notifier wheel, only with pointier angles...
 
-Shall it not be
-"#dma-channels ":
-  deprecated: true
-?
+Thanks,
 
-> > +
-> > +  dma-requests:
-> > +    description: Number of DMA requests supported.
->
-> deprecated: true
->
+	M.
 
-Shall it not be
-"#dma-requests ":
-  deprecated: true
-?
-
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - "#dma-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    dma-controller@10001000 {
-> > +      compatible =3D "fsl,imx27-dma";
-> > +      reg =3D <0x10001000 0x1000>;
-> > +      interrupts =3D <32 33>;
-> > +      #dma-cells =3D <1>;
-> > +      dma-channels =3D <16>;
->
-> and drop it from here
-
-Is this really a deprecated property?
+-- 
+Without deviation from the norm, progress is not possible.
