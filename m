@@ -1,173 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DC880623;
-	Fri, 31 May 2024 06:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E191F4C84
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 07:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717137848; cv=none; b=rlfKNqYNq77kk812T2RLawIEo7Wz4wGnghpvIwM3imPgKtkKtNcEILLs9ELAA3OMNt8z+RSRt2sAGLa6jbmrT/5tRxHtoxjO6cWa7OPWBID5NIbxnZ6mYZxz2QTcRS1Ezh4geRbG/HdZ+s5gxAm+XKo7fDE4OkAWTaec+EePVAw=
+	t=1717139227; cv=none; b=XovC3Pd8stSjYRmf5+pEazhfmx3+j1pIANmYXYTQNMApcphXZ+zAzBKhe5C4dgTyOAvaZvHY4pSNliI6AIhpUJhSChCc/0rL3cTBcIY1QP66kxeFTj9G+qNQ54GLbfwHBBGH42rXGEpmr/83GhY1o5nrYhp8yl9mvbM6XMwY2+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717137848; c=relaxed/simple;
-	bh=UG2VPXJmnotgQCGbUJuzOG/RmR6KlipUd0UjDzTFmOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FuMv690125zS4AybR+SOzRiHp7G07DXSqocF6nTNEg5F3DtAXde6LhhhAG2cWbkizq9T8yT8Vsh0kNwPioOCmta2B2KO6LGQjkcNPnQC+0tFXx0jTPtcMryaMUZ9lEyoHZD/Jg0Hu0RfFTewKo4SiCh4NCaMFIAf2pgrRAUaCw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YZM0CWkl; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YZM0CWkl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717137846; x=1748673846;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UG2VPXJmnotgQCGbUJuzOG/RmR6KlipUd0UjDzTFmOc=;
-  b=YZM0CWklr+d5AEzyUfDHiw6G70pIq1zPbl84ETih1cZ0sHmpx4cZJg91
-   ujsN23p1MTVpdLpBkrIPcV3k1ctrcqgIwSh90xgTaSCFJ2TouRlzulp4R
-   4B2gAEc/G40BtGaPpggwjB/yzSAjd0PbVNRaCO88jj3gF/tjz/7HSZq6M
-   4itWWMkOzqs+fX5Jdu9CMcxk3SYGPH/s2LQjd0uMTDG1sCL2vcpc8M3h7
-   DrQpgcz4NquJolwz9QdigWd5gM4yLX09lLzbLBTJqfWmoo3rKkGuUS7kE
-   PuIRHG0mR9cCc03EcnF4lxnpLo9XpQeayJiumEpjXuEk7MPc3jrTf20q1
-   Q==;
-X-CSE-ConnectionGUID: z1+/mFY+ROSIsqrp0OEbqw==
-X-CSE-MsgGUID: udaxfvSBTLSrxS92T3LEZQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="17497237"
-X-IronPort-AV: E=Sophos;i="6.08,203,1712646000"; 
-   d="scan'208";a="17497237"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 23:44:06 -0700
-X-CSE-ConnectionGUID: 3FNSixCJRzeU6SpSydb64Q==
-X-CSE-MsgGUID: MIPAgyHVT2ebsdue2tL+gg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,203,1712646000"; 
-   d="scan'208";a="36689755"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 30 May 2024 23:43:58 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sCvzO-000Gd3-2Y;
-	Fri, 31 May 2024 06:43:49 +0000
-Date: Fri, 31 May 2024 14:42:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rob Herring <robh@kernel.org>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	Mark Brown <broonie@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	James Schulman <james.schulman@cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>
-Subject: Re: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
-Message-ID: <202405311428.tzsBMIPs-lkp@intel.com>
-References: <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1717139227; c=relaxed/simple;
+	bh=GwpopD7I++CEt2GXRSjw+x35z0xYtVzunPiCuEMRxwU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p76JIb5FUdEObREHs3fETjRgjdA0z9CFLRNkUjCPb8iDlpBUIWyHY3Vadvj0gBaXLYMFmwpiIMr0k5dTMVvP9csTdI0fVK6hawWs3h0jECnv2JjXuFeKljKWNGID1MCBH51Ot7ugKPSXJD2HQ4oS1bY05tCnxTKr8Wm/e9s0Zs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3d1bdefedc0so918095b6e.1
+        for <imx@lists.linux.dev>; Fri, 31 May 2024 00:07:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717139224; x=1717744024;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ayp9OTJcx8xBTEOWGr76ffez+fesdX+4XqGBVIDxEaQ=;
+        b=JxhEUeTgSUl2KpgWVuaJ/uNUljCuHqxNo7dCqG8g0zX3hINYwfDC3NK7I5Fiev6n44
+         8/TSWEFrtp3qMKqu6RzuPcxAB+GypsozCAamJO4Il9bDbeA7U6dru5ZWsd5IFIJ25Aql
+         wXXuvIq9SNsGoTlXmcDsQNmuBb6VtQ8/W0OkXn0DxGHQWp0hPLA8S+z6m4gqx4DkwjX9
+         smJwFcLZX6/mFA9F7f2wfH+b9taTY7rf0D1+FUbIXwGv2f6NO9ThEOVBVKmExXlAM8xk
+         l2UB8yZSvmJ3lzn/OzBo3NtzRl/AfzWrzYPMFLZYp0sINR3RRjoGii3teJ7wCI5OjgYR
+         O0nA==
+X-Forwarded-Encrypted: i=1; AJvYcCXF8u6SrJhtjFii/7V4JXb7fksbAbeE1C/iCwsvp2gYWpVognweAjid9qknZPMZ/rqq6sWUm8ncO4AXsPqBkRVNWsNx
+X-Gm-Message-State: AOJu0Yw1vJOkEegv4rjmpeASAkX+Yemjqftcv7WAHNVyNrYL6msmfLQd
+	0nxtyl+fQAYV3cnCCULK4PeduxTmzfxhj0zGk1u3MoJuF13mYh9NZe4cXRFv
+X-Google-Smtp-Source: AGHT+IHVEihowzJGLabVvDO6UwtJaXlVhlCo2WbrbbhIQkitCRzNmg9q2/jLhQd/cz0Ifwby36xjGQ==
+X-Received: by 2002:a05:6808:1294:b0:3c9:62d9:8a4a with SMTP id 5614622812f47-3d1e34a10f3mr1258310b6e.33.1717139224220;
+        Fri, 31 May 2024 00:07:04 -0700 (PDT)
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d1e1a46372sm263282b6e.40.2024.05.31.00.07.04
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 May 2024 00:07:04 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5b97b5822d8so797831eaf.3
+        for <imx@lists.linux.dev>; Fri, 31 May 2024 00:07:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX78nIe4WKoAA5iNs8gpxspixQdauJfIe4UA3Bnn2JXwTugiGe4Y6bya7mURlgDT8kxXkxtg63RymXOUa6q45Sh5hcp
+X-Received: by 2002:a25:5f46:0:b0:df4:f149:1fc7 with SMTP id
+ 3f1490d57ef6-dfa73dc4a2dmr974775276.58.1717139203004; Fri, 31 May 2024
+ 00:06:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
+References: <20240504-pinctrl-cleanup-v2-0-26c5f2dc1181@nxp.com>
+ <CAMuHMdVprgpjDP6PDn7appofJv8Tv30nRA4+7n4sR8n6n4qy+g@mail.gmail.com> <DU0PR04MB9417FF2632A278BF6605AE1F88FC2@DU0PR04MB9417.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB9417FF2632A278BF6605AE1F88FC2@DU0PR04MB9417.eurprd04.prod.outlook.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 31 May 2024 09:06:30 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW01HtY7d+L=44czH_dqV6bresLeF=SRqyn9p=jk3MTAw@mail.gmail.com>
+Message-ID: <CAMuHMdW01HtY7d+L=44czH_dqV6bresLeF=SRqyn9p=jk3MTAw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/20] pinctrl: Use scope based of_node_put() cleanups
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Emil Renner Berthing <kernel@esmil.dk>, Jianlong Huang <jianlong.huang@starfivetech.com>, 
+	Hal Feng <hal.feng@starfivetech.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Viresh Kumar <vireshk@kernel.org>, Shiraz Hashim <shiraz.linux.kernel@gmail.com>, 
+	"soc@kernel.org" <soc@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Damien Le Moal <dlemoal@kernel.org>, 
+	Ludovic Desroches <ludovic.desroches@microchip.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Aisheng Dong <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Chester Lin <chester62515@gmail.com>, 
+	Matthias Brugger <mbrugger@suse.com>, 
+	"Ghennadi Procopciuc (OSS)" <ghennadi.procopciuc@oss.nxp.com>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Joel Stanley <joel@jms.id.au>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Tony Lindgren <tony@atomide.com>, Stephen Warren <swarren@wwwdotorg.org>, 
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>, 
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, 
+	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>, 
+	"openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>, 
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andy,
+Hi Peng,
 
-kernel test robot noticed the following build errors:
+On Fri, May 31, 2024 at 5:07=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
+> > Subject: Re: [PATCH v2 00/20] pinctrl: Use scope based of_node_put()
+> > cleanups
+> > On Sat, May 4, 2024 at 3:12=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp=
+.com>
+> > wrote:
+> > > Use scope based of_node_put() to simplify code. It reduces the chance
+> > > of forgetting of_node_put(), and also simplifies error handling path.
+> > > I not able to test the changes on all the hardwares, so driver owners=
+,
+> > > please help review when you have time.
+> > >
+> > > This patchset was inspired from Dan's comments on pinctrl-scmi-imx.c,
+> > > thanks.
+> > >
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> >
+> > Andy's question about code generation on a related patch made me wonder=
+,
+> > too.
+> >
+> > On arm32, a conversion to for_each_child_of_node_scoped() seems to cost=
+ ca.
+> > 48 bytes of additional code, regardless of whether there were explicit
+> > cleanups before or not.
+> >
+> > I checked "pinctrl: renesas: Use scope based of_node_put() cleanups", a=
+nd all
+> > but the conversions in *_dt_node_to_map() cost 48 bytes each.
+>
+> I am not sure this is an issue or else. What would you suggest me to do?
+> If you think extra 48bytes consumption is not good here, feel free to dro=
+p the
+> patch.
 
-[auto build test ERROR on broonie-sound/for-next]
-[also build test ERROR on shawnguo/for-next rockchip/for-next linus/master v6.10-rc1 next-20240529]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I suggest doing nothing about this.  I just wanted people to be aware
+of the impact.  I guess it's just part of the slow but steady increase
+of kernel size (ca. 20-30 KiB/release)... ;-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/ASoC-codecs-Remove-unused-of_gpio-h/20240531-070350
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-patch link:    https://lore.kernel.org/r/20240530230037.1156253-2-andriy.shevchenko%40linux.intel.com
-patch subject: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
-config: i386-buildonly-randconfig-006-20240531 (https://download.01.org/0day-ci/archive/20240531/202405311428.tzsBMIPs-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240531/202405311428.tzsBMIPs-lkp@intel.com/reproduce)
+Gr{oetje,eeting}s,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405311428.tzsBMIPs-lkp@intel.com/
+                        Geert
 
-All errors (new ones prefixed by >>):
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
->> sound/soc/codecs/tas2781-comlib.c:408:6: error: call to undeclared function 'gpio_is_valid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     408 |         if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
-         |             ^
-   sound/soc/codecs/tas2781-comlib.c:408:6: note: did you mean 'uuid_is_valid'?
-   include/linux/uuid.h:102:19: note: 'uuid_is_valid' declared here
-     102 | bool __must_check uuid_is_valid(const char *uuid);
-         |                   ^
->> sound/soc/codecs/tas2781-comlib.c:409:3: error: call to undeclared function 'gpio_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     409 |                 gpio_free(tas_priv->irq_info.irq_gpio);
-         |                 ^
-   sound/soc/codecs/tas2781-comlib.c:409:3: note: did you mean 'pmd_free'?
-   include/asm-generic/pgtable-nopmd.h:63:20: note: 'pmd_free' declared here
-      63 | static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
-         |                    ^
-   2 errors generated.
---
->> sound/soc/codecs/tas2781-i2c.c:664:6: error: call to undeclared function 'gpio_is_valid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     664 |         if (gpio_is_valid(tas_priv->irq_info.irq_gpio)) {
-         |             ^
-   sound/soc/codecs/tas2781-i2c.c:664:6: note: did you mean 'uuid_is_valid'?
-   include/linux/uuid.h:102:19: note: 'uuid_is_valid' declared here
-     102 | bool __must_check uuid_is_valid(const char *uuid);
-         |                   ^
->> sound/soc/codecs/tas2781-i2c.c:665:8: error: call to undeclared function 'gpio_request'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     665 |                 rc = gpio_request(tas_priv->irq_info.irq_gpio,
-         |                      ^
->> sound/soc/codecs/tas2781-i2c.c:668:4: error: call to undeclared function 'gpio_direction_input'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     668 |                         gpio_direction_input(
-         |                         ^
-   sound/soc/codecs/tas2781-i2c.c:668:4: note: did you mean 'gpiod_direction_input'?
-   include/linux/gpio/consumer.h:110:5: note: 'gpiod_direction_input' declared here
-     110 | int gpiod_direction_input(struct gpio_desc *desc);
-         |     ^
->> sound/soc/codecs/tas2781-i2c.c:672:5: error: call to undeclared function 'gpio_to_irq'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     672 |                                 gpio_to_irq(tas_priv->irq_info.irq_gpio);
-         |                                 ^
-   sound/soc/codecs/tas2781-i2c.c:672:5: note: did you mean 'gpiod_to_irq'?
-   include/linux/gpio/consumer.h:167:5: note: 'gpiod_to_irq' declared here
-     167 | int gpiod_to_irq(const struct gpio_desc *desc);
-         |     ^
-   4 errors generated.
-
-
-vim +/gpio_is_valid +408 sound/soc/codecs/tas2781-comlib.c
-
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  405  
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  406  void tasdevice_remove(struct tasdevice_priv *tas_priv)
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  407  {
-ef3bcde75d06d6 Shenghao Ding 2023-06-18 @408  	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
-ef3bcde75d06d6 Shenghao Ding 2023-06-18 @409  		gpio_free(tas_priv->irq_info.irq_gpio);
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  410  	mutex_destroy(&tas_priv->codec_lock);
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  411  }
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  412  EXPORT_SYMBOL_GPL(tasdevice_remove);
-ef3bcde75d06d6 Shenghao Ding 2023-06-18  413  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
