@@ -1,269 +1,173 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60DD1F614
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 06:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DC880623;
+	Fri, 31 May 2024 06:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717136216; cv=none; b=bTfBVOTDa9nZ8XdOEVvHqktq9lSnIoLfchpbHRIRubKegIcovFtABrDbFLjdty5UvZl+QqnhPBfOZQdOYriAeCfSEFpxdvX9Gp1ytHaQ8rT6wsDDajkUtsw+1P9SpLpYb2RNPvf29+ECSejAd0Ss2rQ/CECLl8PLUOUA4pFtehw=
+	t=1717137848; cv=none; b=rlfKNqYNq77kk812T2RLawIEo7Wz4wGnghpvIwM3imPgKtkKtNcEILLs9ELAA3OMNt8z+RSRt2sAGLa6jbmrT/5tRxHtoxjO6cWa7OPWBID5NIbxnZ6mYZxz2QTcRS1Ezh4geRbG/HdZ+s5gxAm+XKo7fDE4OkAWTaec+EePVAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717136216; c=relaxed/simple;
-	bh=PU9wADAmKFnxGMyTJINBlux3WHrl1/71rCrm4yjDdt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tPDJIXsQCRT/FTPvg5zbtAmF3qcgd8liO98pytQ/REtUN1Uwqh9sctSNoqNMZ5xCeHZ3x/8D18vkRJ1ZVbd7C1KEnSnytY8loeXttyhYlRPEnU7LwvjGe/QI61G+KzuazxpKdhL2Ek3feCA49T79QGwpj6fb2FV06igMIVbW0n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Ch+D15+1; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Y9oqFuNv reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1717137848; c=relaxed/simple;
+	bh=UG2VPXJmnotgQCGbUJuzOG/RmR6KlipUd0UjDzTFmOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FuMv690125zS4AybR+SOzRiHp7G07DXSqocF6nTNEg5F3DtAXde6LhhhAG2cWbkizq9T8yT8Vsh0kNwPioOCmta2B2KO6LGQjkcNPnQC+0tFXx0jTPtcMryaMUZ9lEyoHZD/Jg0Hu0RfFTewKo4SiCh4NCaMFIAf2pgrRAUaCw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YZM0CWkl; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Ch+D15+1";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Y9oqFuNv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1717136212; x=1748672212;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BplqydDYpMobXdQpqqvJqm0UHLjyRhrsf41yh2GGcfE=;
-  b=Ch+D15+1KTm+eEptbQtQkOqJsU/kFfIhrhyZRLGfOk4gOOJnt3eL5uej
-   C1XAcPofinYETv4jjQTfVFuB4Zmn4fQimE9Y6gAUnxV98ToFlnqkuoQgE
-   5WPpfCOtxCaFjWbvMo+wrf+Eb/kmZPGojMBM86fbKBbWBcYEyN0OkI6hC
-   ZjPXMmRYOJVXww8qzHq42oXk4KUgZPwOHeqybIOIasI7Dge8L38xgfWy4
-   JOHfmQMdNgwbaBblrMvxC/VD8SwsMlSS/eJqLHlk9YcY+5I7Y56EncJ1e
-   iRAFxOLP4V2WSnsoA8L9BIFq62DBMHCmSPtpDIPWmCJJj2Olmog3qBXfn
-   w==;
-X-CSE-ConnectionGUID: 1UsTIyD4RAyP9gPTIO8Oww==
-X-CSE-MsgGUID: yfHIr/PMTrGQsrQuGrwdeg==
-X-IronPort-AV: E=Sophos;i="6.08,203,1712613600"; 
-   d="scan'208";a="37152332"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 31 May 2024 08:16:49 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 77C9E1669A9;
-	Fri, 31 May 2024 08:16:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1717136205;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BplqydDYpMobXdQpqqvJqm0UHLjyRhrsf41yh2GGcfE=;
-	b=Y9oqFuNvNbB9GDHQMUxmVtQ4IbFlKbdQPusTXelQmIa26dGXG8W6MbOezTfq7JIgGAZ2PM
-	HO+0OLxuQ6wfwiMRR4gfUjmHpCXwmCRXTLRwbbb/vd+Z5OZ99eLdK8UR8sSk2Wb9TzYhi8
-	yVuswT7H9OgaSBm8k+i6ps1pbHbRKUXv9grtY6YfGouWlgueYCEI/3QfstsL5CiE4wZXXZ
-	Ze1Bs3maywRBl0UXlAv8faK/JCB85YbN4qs+L7d7665OlfBAxQK/kNssmqj84YFFt9ejEg
-	OtV0OvHUIklWrOFdibgQmzywHO1J5WhIgoK0SOfxy6I6PVw5fPhik6a0CIdXlg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: robh@kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: Frank.Li@nxp.com, brgl@bgdev.pl, conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, linus.walleij@linaro.org, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
-Date: Fri, 31 May 2024 08:16:44 +0200
-Message-ID: <2408577.ElGaqSPkdT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240530165424.3173673-1-Frank.Li@nxp.com>
-References: <20240530165424.3173673-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YZM0CWkl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717137846; x=1748673846;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UG2VPXJmnotgQCGbUJuzOG/RmR6KlipUd0UjDzTFmOc=;
+  b=YZM0CWklr+d5AEzyUfDHiw6G70pIq1zPbl84ETih1cZ0sHmpx4cZJg91
+   ujsN23p1MTVpdLpBkrIPcV3k1ctrcqgIwSh90xgTaSCFJ2TouRlzulp4R
+   4B2gAEc/G40BtGaPpggwjB/yzSAjd0PbVNRaCO88jj3gF/tjz/7HSZq6M
+   4itWWMkOzqs+fX5Jdu9CMcxk3SYGPH/s2LQjd0uMTDG1sCL2vcpc8M3h7
+   DrQpgcz4NquJolwz9QdigWd5gM4yLX09lLzbLBTJqfWmoo3rKkGuUS7kE
+   PuIRHG0mR9cCc03EcnF4lxnpLo9XpQeayJiumEpjXuEk7MPc3jrTf20q1
+   Q==;
+X-CSE-ConnectionGUID: z1+/mFY+ROSIsqrp0OEbqw==
+X-CSE-MsgGUID: udaxfvSBTLSrxS92T3LEZQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="17497237"
+X-IronPort-AV: E=Sophos;i="6.08,203,1712646000"; 
+   d="scan'208";a="17497237"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 23:44:06 -0700
+X-CSE-ConnectionGUID: 3FNSixCJRzeU6SpSydb64Q==
+X-CSE-MsgGUID: MIPAgyHVT2ebsdue2tL+gg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,203,1712646000"; 
+   d="scan'208";a="36689755"
+Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 30 May 2024 23:43:58 -0700
+Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sCvzO-000Gd3-2Y;
+	Fri, 31 May 2024 06:43:49 +0000
+Date: Fri, 31 May 2024 14:42:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rob Herring <robh@kernel.org>,
+	Weidong Wang <wangweidong.a@awinic.com>,
+	Mark Brown <broonie@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	James Schulman <james.schulman@cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>
+Subject: Re: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
+Message-ID: <202405311428.tzsBMIPs-lkp@intel.com>
+References: <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
 
-Hi Frank,
+Hi Andy,
 
-thanks for your patch.
+kernel test robot noticed the following build errors:
 
-Am Donnerstag, 30. Mai 2024, 18:54:24 CEST schrieb Frank Li:
-> Convert binding doc from txt to yaml.
->=20
-> Remove redundated "gpio1: gpio@2300000" example.
-> Add gpio-controller at example "gpio@1100".
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->=20
-> Notes:
->     Change from v1 to v2
->      - Add gpio-controller at example "gpio@1100". to fix bot error.
->     Strangely, I can't reproduce locally.
->    =20
->     Pass dt_binding_check
->     make dt_binding_check DT_SCHEMA_FILES=3Dfsl,qoriq-gpio.yaml
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       CHKDT   Documentation/devicetree/bindings
->       LINT    Documentation/devicetree/bindings
->       DTC_CHK Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.examp=
-le.dtb
->=20
->  .../bindings/gpio/fsl,qoriq-gpio.yaml         | 82 +++++++++++++++++++
->  .../devicetree/bindings/gpio/gpio-mpc8xxx.txt | 53 ------------
->  2 files changed, 82 insertions(+), 53 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio=
-=2Eyaml
->  delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.t=
-xt
->=20
-> diff --git a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml b=
-/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
-> new file mode 100644
-> index 0000000000000..adc955679d066
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
-> @@ -0,0 +1,82 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/gpio/fsl,qoriq-gpio.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
-> +          - fsl,mpc5121-gpio
-> +          - fsl,mpc5125-gpio
-> +          - fsl,mpc8349-gpio
-> +          - fsl,mpc8572-gpio
-> +          - fsl,mpc8610-gpio
-> +          - fsl,pq3-gpio
-> +      - items:
-> +          - enum:
-> +              - fsl,ls1021a-gpio
-> +              - fsl,ls1028a-gpio
-> +              - fsl,ls1043a-gpio
-> +              - fsl,ls1088a-gpio
-> +              - fsl,ls2080a-gpio
-> +          - const: fsl,qoriq-gpio
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  "#gpio-cells":
-> +    const: 2
-> +
-> +  gpio-controller: true
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 2
-> +
-> +  little-endian:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      GPIO registers are used as little endian. If not
-> +      present registers are used as big endian by default.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - "#gpio-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    gpio@1100 {
-> +        compatible =3D "fsl,mpc5125-gpio";
-> +        reg =3D <0x1100 0x080>;
-> +        interrupts =3D <78 0x8>;
-> +        gpio-controller;
-> +        #gpio-cells =3D <2>;
-> +    };
-> +
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    gpio@2300000 {
-> +        compatible =3D "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
-> +        reg =3D <0x2300000 0x10000>;
-> +        interrupts =3D <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
-> +        gpio-controller;
-> +        little-endian;
-> +        #gpio-cells =3D <2>;
+[auto build test ERROR on broonie-sound/for-next]
+[also build test ERROR on shawnguo/for-next rockchip/for-next linus/master v6.10-rc1 next-20240529]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Please keep 'gpio-controller' and '#gpio-cells' together. I would move
-little-endian either below reg directly or below interrupts.
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/ASoC-codecs-Remove-unused-of_gpio-h/20240531-070350
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+patch link:    https://lore.kernel.org/r/20240530230037.1156253-2-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
+config: i386-buildonly-randconfig-006-20240531 (https://download.01.org/0day-ci/archive/20240531/202405311428.tzsBMIPs-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240531/202405311428.tzsBMIPs-lkp@intel.com/reproduce)
 
-Thanks
-Alexander
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405311428.tzsBMIPs-lkp@intel.com/
 
-> +        interrupt-controller;
-> +        #interrupt-cells =3D <2>;
-> +    };
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt b/Do=
-cumentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
-> deleted file mode 100644
-> index cd28e932bf50e..0000000000000
-> --- a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
-> +++ /dev/null
-> @@ -1,53 +0,0 @@
-> -* Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
-> -
-> -Required properties:
-> -- compatible : Should be "fsl,<soc>-gpio"
-> -  The following <soc>s are known to be supported:
-> -	mpc5121, mpc5125, mpc8349, mpc8572, mpc8610, pq3, qoriq,
-> -	ls1021a, ls1043a, ls2080a, ls1028a, ls1088a.
-> -- reg : Address and length of the register set for the device
-> -- interrupts : Should be the port interrupt shared by all 32 pins.
-> -- #gpio-cells : Should be two.  The first cell is the pin number and
-> -  the second cell is used to specify the gpio polarity:
-> -      0 =3D active high
-> -      1 =3D active low
-> -
-> -Optional properties:
-> -- little-endian : GPIO registers are used as little endian. If not
-> -                  present registers are used as big endian by default.
-> -
-> -Example of gpio-controller node for a mpc5125 SoC:
-> -
-> -gpio0: gpio@1100 {
-> -	compatible =3D "fsl,mpc5125-gpio";
-> -	#gpio-cells =3D <2>;
-> -	reg =3D <0x1100 0x080>;
-> -	interrupts =3D <78 0x8>;
-> -};
-> -
-> -Example of gpio-controller node for a ls2080a SoC:
-> -
-> -gpio0: gpio@2300000 {
-> -	compatible =3D "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
-> -	reg =3D <0x0 0x2300000 0x0 0x10000>;
-> -	interrupts =3D <0 36 0x4>; /* Level high type */
-> -	gpio-controller;
-> -	little-endian;
-> -	#gpio-cells =3D <2>;
-> -	interrupt-controller;
-> -	#interrupt-cells =3D <2>;
-> -};
-> -
-> -
-> -Example of gpio-controller node for a ls1028a/ls1088a SoC:
-> -
-> -gpio1: gpio@2300000 {
-> -	compatible =3D "fsl,ls1028a-gpio", "fsl,ls1088a-gpio", "fsl,qoriq-gpio";
-> -	reg =3D <0x0 0x2300000 0x0 0x10000>;
-> -	interrupts =3D <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
-> -	gpio-controller;
-> -	#gpio-cells =3D <2>;
-> -	interrupt-controller;
-> -	#interrupt-cells =3D <2>;
-> -	little-endian;
-> -};
->=20
+All errors (new ones prefixed by >>):
+
+>> sound/soc/codecs/tas2781-comlib.c:408:6: error: call to undeclared function 'gpio_is_valid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     408 |         if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
+         |             ^
+   sound/soc/codecs/tas2781-comlib.c:408:6: note: did you mean 'uuid_is_valid'?
+   include/linux/uuid.h:102:19: note: 'uuid_is_valid' declared here
+     102 | bool __must_check uuid_is_valid(const char *uuid);
+         |                   ^
+>> sound/soc/codecs/tas2781-comlib.c:409:3: error: call to undeclared function 'gpio_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     409 |                 gpio_free(tas_priv->irq_info.irq_gpio);
+         |                 ^
+   sound/soc/codecs/tas2781-comlib.c:409:3: note: did you mean 'pmd_free'?
+   include/asm-generic/pgtable-nopmd.h:63:20: note: 'pmd_free' declared here
+      63 | static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+         |                    ^
+   2 errors generated.
+--
+>> sound/soc/codecs/tas2781-i2c.c:664:6: error: call to undeclared function 'gpio_is_valid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     664 |         if (gpio_is_valid(tas_priv->irq_info.irq_gpio)) {
+         |             ^
+   sound/soc/codecs/tas2781-i2c.c:664:6: note: did you mean 'uuid_is_valid'?
+   include/linux/uuid.h:102:19: note: 'uuid_is_valid' declared here
+     102 | bool __must_check uuid_is_valid(const char *uuid);
+         |                   ^
+>> sound/soc/codecs/tas2781-i2c.c:665:8: error: call to undeclared function 'gpio_request'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     665 |                 rc = gpio_request(tas_priv->irq_info.irq_gpio,
+         |                      ^
+>> sound/soc/codecs/tas2781-i2c.c:668:4: error: call to undeclared function 'gpio_direction_input'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     668 |                         gpio_direction_input(
+         |                         ^
+   sound/soc/codecs/tas2781-i2c.c:668:4: note: did you mean 'gpiod_direction_input'?
+   include/linux/gpio/consumer.h:110:5: note: 'gpiod_direction_input' declared here
+     110 | int gpiod_direction_input(struct gpio_desc *desc);
+         |     ^
+>> sound/soc/codecs/tas2781-i2c.c:672:5: error: call to undeclared function 'gpio_to_irq'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     672 |                                 gpio_to_irq(tas_priv->irq_info.irq_gpio);
+         |                                 ^
+   sound/soc/codecs/tas2781-i2c.c:672:5: note: did you mean 'gpiod_to_irq'?
+   include/linux/gpio/consumer.h:167:5: note: 'gpiod_to_irq' declared here
+     167 | int gpiod_to_irq(const struct gpio_desc *desc);
+         |     ^
+   4 errors generated.
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+vim +/gpio_is_valid +408 sound/soc/codecs/tas2781-comlib.c
 
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  405  
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  406  void tasdevice_remove(struct tasdevice_priv *tas_priv)
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  407  {
+ef3bcde75d06d6 Shenghao Ding 2023-06-18 @408  	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
+ef3bcde75d06d6 Shenghao Ding 2023-06-18 @409  		gpio_free(tas_priv->irq_info.irq_gpio);
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  410  	mutex_destroy(&tas_priv->codec_lock);
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  411  }
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  412  EXPORT_SYMBOL_GPL(tasdevice_remove);
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  413  
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
