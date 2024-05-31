@@ -1,54 +1,57 @@
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326697F7CA
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 20:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC628DA0
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 20:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717187233; cv=none; b=dJuU1sl2+eNoweI9qLw82B9zHsa0jRo1aik1C9evNYbhQbQTdbziJz7TqyhzOwM4Wa04wIe8CtHqzTHRNJcUuYdnQ5cn7MmiTEsiTBpzxNFpdWd6Q8imEElyXqJ3L6i299UViz3rmRKrAPA+FefPgO6MTFeGIQ0e/5KcM3teu0w=
+	t=1717187312; cv=none; b=kr125fIZk8rQLG85E6PSM5zWuQVeQKAscIcuqEYeLHFdxwFmlEr04K/OF3ThceEQca5RPyklXynnaYnPqHeeyDL7bdXsvHuQvnEygcFmHSspF0+kkpxUWj3cr2LWjQGHR4uNGUf9E/jPYAaaxac3E3m2ObjMSP2JRzAd9xW666E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717187233; c=relaxed/simple;
-	bh=ixcKqYywwhhVOgxQe69BbhPiEYE4PIE4mUoLjYmoHHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QR1rmVBj6lgP7oafOW2lgjuedIwBpI/A3lMTRGBV3UGm5b7J1vyMv0lcHOagl1kLSeyUsDZAuwpXgkxItcVk3X6mnbjCXnUaXg4cwYmFeKef4RZkGnx7iNgh3YAEulau9e8Uzd+abuKdxivLjib2CYgtwsWPSwaUSVWgAiOS+B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Rw02wwlp; arc=none smtp.client-ip=85.214.62.61
+	s=arc-20240116; t=1717187312; c=relaxed/simple;
+	bh=sD5bR/nj4EUSz7HeYPqrdPfgShTNncId10MKNI3+39I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lhVuyfa9ZFBT+BNlEayCLW0DG9+b3SGU2AbwHV49J426WJX76yN78DXRKh1wvC3/oopBrpTbdZM2/Ov/as7EokkJVSei++QLkiUUDxxRwzU9HLuFdAcA1JI/bIUsRNSmMCLrtm9DVB0e3ph8uOZwGNd3lp82hngAZmhoFiBQJG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=qQyH6uua; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Rw02wwlp"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="qQyH6uua"
 Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
 	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 7C3BE880FB;
-	Fri, 31 May 2024 22:27:08 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id 2F4E0882CD;
+	Fri, 31 May 2024 22:28:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1717187229;
-	bh=pG52++7gBSviTnxXJPWSTkc6y2jX4BjJltbX+3OBuNw=;
+	s=phobos-20191101; t=1717187308;
+	bh=+AS08pOYhC0hjeQD7oKsJG2RA/tLALJu0DV65uV4toM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Rw02wwlpnk1YKUICtQpth2Wl6jcJWz/9jc8loAcnz4glRtOQzSVoLIibYxL7Gd6lq
-	 E1q1LDXVHa/tzy6HO6xYspbbW48GitPwaKwi3H+gQlp2WmwBDWuvgnlZaVkE+eTOnJ
-	 kxpEc93UQaQQzI+t/2w5Az2TwG42n1mp6vUnuAda+2K6z1Y6vBGrp5joJSqDPd7uk7
-	 zWvje2a8VJ5yg+ejGbq5lUpSD+s7hIQDcqirrZLNeXTxVfa+EcE0Zcddl41hXtPahB
-	 oX0jrd3CFFHnqFACVKENR55NT40FMK/hPCIXiqQJBI0OLPvBevcEg2tq4qZWKfHtVe
-	 GstH1+NmjPmTg==
+	b=qQyH6uuaUvY9VWDaDyNQAE6XoPZH0up/wOQg60Vm2ui3VwGwETT07bHlbjGT2e1HC
+	 OZ0g6d0XyqEm+0MikIzzOoVINhalN/EQS2P1BvGcx4wMPRH9ZVPZPkV2wU9BaugJJc
+	 fJ6EWnJBnUGWy+U+UdmWrXqr6yXb6caUT225m20IjkIv0561DYSN+/z/w/XX2zSqKL
+	 HwTmWizTLRiXpgmJhpQ9LkvWjTTOiBQxvMV0t4soKxcSD0S/dbZ7B/p5X1UYDknrhM
+	 tNJ/X3sdvgyTXfGZ4GATs3fWCyiC+Zp6PAYuOzXW0q1ExKED7c8Z2RCe8rerAcNWv4
+	 Ksz90X3vwV/Jw==
 From: Marek Vasut <marex@denx.de>
-To: linux-clk@vger.kernel.org
+To: dri-devel@lists.freedesktop.org
 Cc: Marek Vasut <marex@denx.de>,
-	Abel Vesa <abelvesa@kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	"Lukas F . Hartmann" <lukas@mntmn.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	imx@lists.linux.dev,
 	kernel@dh-electronics.com,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock reconfigure parent rate
-Date: Fri, 31 May 2024 22:26:26 +0200
-Message-ID: <20240531202648.277078-1-marex@denx.de>
+Subject: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of .crtc_clock
+Date: Fri, 31 May 2024 22:27:21 +0200
+Message-ID: <20240531202813.277109-1-marex@denx.de>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -60,69 +63,59 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
 
-The media_disp[12]_pix clock supply LCDIFv3 pixel clock output. These
-clocks are usually the only downstream clock from Video PLL on i.MX8MP.
-Allow these clocks to reconfigure the Video PLL, as that results in
-accurate pixel clock. If the Video PLL is not reconfigured, the pixel
-clock accuracy is low.
+In case an upstream bridge modified the required clock frequency
+in its .atomic_check callback by setting adjusted_mode.clock ,
+make sure that clock frequency is generated by the LCDIFv3 block.
+
+This is useful e.g. when LCDIFv3 feeds DSIM which feeds TC358767
+with (e)DP output, where the TC358767 expects precise timing on
+its input side, the precise timing must be generated by the LCDIF.
 
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
-Cc: Abel Vesa <abelvesa@kernel.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: David Airlie <airlied@gmail.com>
 Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
 Cc: Lukas F. Hartmann <lukas@mntmn.com>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Stefan Agner <stefan@agner.ch>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: kernel@dh-electronics.com
 Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-clk@vger.kernel.org
 ---
- drivers/clk/imx/clk-imx8mp.c | 4 ++--
- drivers/clk/imx/clk.h        | 4 ++++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mxsfb/lcdif_kms.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 670aa2bab3017..f11dfe2028319 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -547,7 +547,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_CLK_AHB] = imx8m_clk_hw_composite_bus_critical("ahb_root", imx8mp_ahb_sels, ccm_base + 0x9000);
- 	hws[IMX8MP_CLK_AUDIO_AHB] = imx8m_clk_hw_composite_bus("audio_ahb", imx8mp_audio_ahb_sels, ccm_base + 0x9100);
- 	hws[IMX8MP_CLK_MIPI_DSI_ESC_RX] = imx8m_clk_hw_composite_bus("mipi_dsi_esc_rx", imx8mp_mipi_dsi_esc_rx_sels, ccm_base + 0x9200);
--	hws[IMX8MP_CLK_MEDIA_DISP2_PIX] = imx8m_clk_hw_composite_bus("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300);
-+	hws[IMX8MP_CLK_MEDIA_DISP2_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_SET_RATE_PARENT);
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+index 2541d2de4e45f..dbd42cc1da87f 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
+@@ -407,8 +407,7 @@ static void lcdif_crtc_mode_set_nofb(struct drm_crtc_state *crtc_state,
+ 	struct drm_display_mode *m = &crtc_state->adjusted_mode;
  
- 	hws[IMX8MP_CLK_IPG_ROOT] = imx_clk_hw_divider2("ipg_root", "ahb_root", ccm_base + 0x9080, 0, 1);
+ 	DRM_DEV_DEBUG_DRIVER(drm->dev, "Pixel clock: %dkHz (actual: %dkHz)\n",
+-			     m->crtc_clock,
+-			     (int)(clk_get_rate(lcdif->clk) / 1000));
++			     m->clock, (int)(clk_get_rate(lcdif->clk) / 1000));
+ 	DRM_DEV_DEBUG_DRIVER(drm->dev, "Bridge bus_flags: 0x%08X\n",
+ 			     lcdif_crtc_state->bus_flags);
+ 	DRM_DEV_DEBUG_DRIVER(drm->dev, "Mode flags: 0x%08X\n", m->flags);
+@@ -538,7 +537,7 @@ static void lcdif_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	struct drm_device *drm = lcdif->drm;
+ 	dma_addr_t paddr;
  
-@@ -609,7 +609,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_CLK_USDHC3] = imx8m_clk_hw_composite("usdhc3", imx8mp_usdhc3_sels, ccm_base + 0xbc80);
- 	hws[IMX8MP_CLK_MEDIA_CAM1_PIX] = imx8m_clk_hw_composite("media_cam1_pix", imx8mp_media_cam1_pix_sels, ccm_base + 0xbd00);
- 	hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] = imx8m_clk_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_base + 0xbd80);
--	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00);
-+	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET_RATE_PARENT);
- 	hws[IMX8MP_CLK_MEDIA_CAM2_PIX] = imx8m_clk_hw_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
- 	hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
- 	hws[IMX8MP_CLK_MEMREPAIR] = imx8m_clk_hw_composite_critical("mem_repair", imx8mp_memrepair_sels, ccm_base + 0xbf80);
-diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index adb7ad649a0d2..aa5202f284f3d 100644
---- a/drivers/clk/imx/clk.h
-+++ b/drivers/clk/imx/clk.h
-@@ -442,6 +442,10 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
- 	_imx8m_clk_hw_composite(name, parent_names, reg, \
- 			IMX_COMPOSITE_BUS, IMX_COMPOSITE_CLK_FLAGS_DEFAULT)
+-	clk_set_rate(lcdif->clk, m->crtc_clock * 1000);
++	clk_set_rate(lcdif->clk, m->clock * 1000);
  
-+#define imx8m_clk_hw_composite_bus_flags(name, parent_names, reg, flags) \
-+	_imx8m_clk_hw_composite(name, parent_names, reg, \
-+			IMX_COMPOSITE_BUS, IMX_COMPOSITE_CLK_FLAGS_DEFAULT | flags)
-+
- #define imx8m_clk_hw_composite_bus_critical(name, parent_names, reg)	\
- 	_imx8m_clk_hw_composite(name, parent_names, reg, \
- 			IMX_COMPOSITE_BUS, IMX_COMPOSITE_CLK_FLAGS_CRITICAL)
+ 	pm_runtime_get_sync(drm->dev);
+ 
 -- 
 2.43.0
 
