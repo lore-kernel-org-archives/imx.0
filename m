@@ -1,60 +1,82 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2042.outbound.protection.outlook.com [40.107.21.42])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2048.outbound.protection.outlook.com [40.107.241.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003101420C8
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F52D158869
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 16:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717170212; cv=fail; b=kgVo7gsSAq2zbnivzJK8p3+OdOR+aqAxtJrgtd21QIdlR/lLjDzsgZL5LWQbLJJ86G8XZUig+GEblyewmizb8dDcD50PrAfTh2KHy69tcDuKvxbLFDO4jyjP+mBpvpHPGQEK2wIzZHCzNYUP9ZNRGxe1qdRrBnqOFnnD4qpffns=
+	t=1717172077; cv=fail; b=YTje37qtN4wPzof/fyyhhB2tMq+j/fdvWyzuXyzQAkxmXNuK2qghsJyZ7e2a/sl96bUXMczQRndEVLxdQDV78d+9YUmRXrSlP3Hj+cs0G0eJVnJtkoFSF1axpPYO1QpV7c29BbR9UCLXIFoWQAk+vctUZ0/z6CEx5xz66jQ2gmw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717170212; c=relaxed/simple;
-	bh=LWyoI2Rb7ciBVh8y0WJrLQpa5VJ/rm2nLGRJ0o91ZJM=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AV/Hoy2nbUqgXD7jrp5LxG8F14p9zhEtBV3vBUEn5KQa5aGAmX58BsAQ5kEfHRyg7pVFO4+45cJLVIb7nkjTyzL8is8D5+GkAFW7dmWaYYQA0ue/QfcycZy/6BKsfJ/FGisFUCiSa+WZV1c/53eEcyvS1oOIBtOEiZv0tFTtBTA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Qbn6nF8L; arc=fail smtp.client-ip=40.107.21.42
+	s=arc-20240116; t=1717172077; c=relaxed/simple;
+	bh=jdEEHkT2MC8VB7Uzs9pzw0KvmQorfK7ewoHQfqElwcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=f/jXGagRMQtQudl/r/xzcy+8J/eb4NptoUQPpwyQwCdBsf2C77Ct5cmL4CFN3xeQtRY8oZJh/CMDs+bo4YIAcQD7Ghh6/A1qayaJI6dPDQ4UaMPlhd9JlRZB1sF5XIwfPKuLouDwQ7/tPd1ky+zTuoQjlXzwa6uOt/B5gh2L718=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=G4xIqJLe; arc=fail smtp.client-ip=40.107.241.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Qbn6nF8L"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="G4xIqJLe"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jBzXdDw/fxQ6ySZxdRq5+UQRO1OSSyImaOMdCikmlL3gkLCAwxrPdT9/NAZVJx4X4l1aRbmdi6wrTI/aJ9npHkMa+fsTHil4o48UcS/9C9XBYCZy4JFseVeadFXXFzOjledN1sOXMqIDdQh3luiuwN48rPx33DeujGAePX9YGDEnsTl1cWnUt9PLn1KfIyEzfYR+PhJeHM+/O+hEwg7GDFC+nyNc/xsGybxSueUEiFeyzr5oAIGzEhiv8Cfv+e8W6AbPn+64z8QOOGwQOKo6XuGEoSyL2LbAG5f8wNOcwqJ1suUs8gmcU+5ml014QGwzFlWAEcPOWJbMZTQ4M5+U5Q==
+ b=RLGwq7Po+s/WLXsSwlBO+URIt7SAkttRri3lIPwJnqXqIU/YjoWahVtTVpYKzsVOiq2xv3k8EGJDc/OL3zpkBURWSPZTxCQ17OU1E4Wy/X/jmK7+tG76ueEBtHL1TYpeqxBjwCDJ62TEMcz2ks2K8n3RdZ92mlhWxwDVdS9wNpOf+iihBZpcanokf1zaWvj6KfaQ/1ybrpayeILMCLgeUIxPKUDi8Bc6aMzftfzpzzHrxFidrfXYyWTn5onEY5rngb8q4IIseZ1ZcDl8NTYIGy5yVEV8Ri+9zs/OTTiq1yeGvxsKMjwOSERYgQmMWy2/nV4ktMTTkZXywzGG3xyiJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o3HQz8cnIDtSZICFSDsale5sAWPlHWfAZhfoat1UN2k=;
- b=c+4Ac8aimc0eVt9oYzCneGkO8KrkB3M4G7n4lyM5zSa86hrtEmlyhAJO1JareUjJHbLNRELmb7san4wCRRd61I+WZL2sTptFW7fSrMQahYUeFPqXjQwgNmrK8sVjfDICgctGmrP54VC4a6AzD1CY1kc3SYH2VP4eYhN67U37AKyX1t5tHutD2TL4cp1GFd0d4i0MfTcYeX8glZp4IUCe2iXvWrDCLvjJWoBDY4IJ+QcFyw9nq8dxnDiaLeoHeG6P+7Mz4LI6u3jM+7w0Z0H1xSgik1lhUPl9IbRp505X4EwfCTbWkmyTYH5Yeu+H8+TN7ffJuP9aIF2sBmmKbJGP/w==
+ bh=dkD+4JKYMvhjbFcKEWItu8iITnB4HsoOEVvPQwHxoe0=;
+ b=T8NnJwDx+ppk1K1LAbwGal8p+WuTUJw3YOWT0FQ1CGbhdYytAWHrNXd8rjfpLQdm3GRgibvHcChytRUUEXoW8BngL+48xXknbYjmNFZLNau9qLEfSMbX8IgklIH/1H68CbMkY24DZx0qkZTcDmxubQd1/eIcSCuIsbZm01Za9WFrm9EM9ZverP9aD3Fnd3WWCqqwaxB/vUqGmimwuf6gZj/aN7dwYXdiYyMkeFilILAHx4NpoDReMsG7it2ECsgBuDlPYvOwOEbAf4FfO+OkvBtKJ4d3ETd4/W7Tg+Lr25YwFnrcfNjWf+GpG8rurrvt6/L8PBlXetieNtPqECmd7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o3HQz8cnIDtSZICFSDsale5sAWPlHWfAZhfoat1UN2k=;
- b=Qbn6nF8L2dP1L9ka9ZjNNesiKtY70OGvrCNdOgxektfx5GuKunOMKcZ0cKXU+G8eI8Vf2LiRA/WN8MI+wv/2LoDNQPFteJ4CY1JWL43sZ79GGtbfrrStWr5ORwQozb4Q3X6K0OJoveoXErIZ/Z07tfxf8esw3eUjtJvk8PDKuKw=
+ bh=dkD+4JKYMvhjbFcKEWItu8iITnB4HsoOEVvPQwHxoe0=;
+ b=G4xIqJLeI9FGkild7ZiBAoAPTyyT2EQ3Z/TQUmIvz/J6XvbugNYOqKWLVIyzPxj7dN1ja/HiWCFHaTGQgs1KByDmoJGCC52K5s6DgxepkrIJBZz6vaVWLGKN3VgUKgZvzid2So90vyOh6cCxZcpG80aUHglrlWtcUG+e1d05OYY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7605.eurprd04.prod.outlook.com (2603:10a6:20b:292::6) with
+ by AM0PR04MB6964.eurprd04.prod.outlook.com (2603:10a6:208:18a::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Fri, 31 May
- 2024 15:43:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.24; Fri, 31 May
+ 2024 16:14:30 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.018; Fri, 31 May 2024
- 15:43:27 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Conor Culhane <conor.culhane@silvaco.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-i3c@lists.infradead.org (moderated list:SILVACO I3C DUAL-ROLE MASTER),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] i3c: master: svc: fix IBIWON not set if IBI follow a hot join
-Date: Fri, 31 May 2024 11:43:08 -0400
-Message-Id: <20240531154308.1246214-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR08CA0025.namprd08.prod.outlook.com
- (2603:10b6:a03:100::38) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 16:14:30 +0000
+Date: Fri, 31 May 2024 12:14:18 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support
+ MSI ITS and IOMMU for i.MX95
+Message-ID: <Zln3WkiHC3AUPocL@lizhi-Precision-Tower-5810>
+References: <20240528-pci2_upstream-v5-8-750aa7edb8e2@nxp.com>
+ <20240530230832.GA474962@bhelgaas>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240530230832.GA474962@bhelgaas>
+X-ClientProxiedBy: BY3PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -63,124 +85,425 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7605:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e69c251-ff58-408e-6f01-08dc818869bb
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6964:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f554137-48e1-44a0-f40a-08dc818cc058
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|52116005|366007|1800799015|38350700005;
+	BCL:0;ARA:13230031|1800799015|366007|52116005|7416005|376005|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AIkaE8I400MQCQ6MCMmTDxzsWc+Y2RXmUUrGTQ51nVAQFlhBA8BI/8a3zn4Q?=
- =?us-ascii?Q?oXkdAjIXZqtlXSUfbBNm9Vuy5NYdUVkw11+lMemzjDW3ljZ6roMrDJ5nhTzz?=
- =?us-ascii?Q?+2NOeGL0Plth9YGpAy/MQu6WgSKg9P5ATpvvv2nhPsSVAB8VLRzBu+UOUDN5?=
- =?us-ascii?Q?4ITvFLGLHJxJeXRf5zXA8Ah/rE04IhTnAyMWLuMlI2LLEmh7m7LLPWNw0CWx?=
- =?us-ascii?Q?EK3BUXHBfQI2eGiZiQmP3eFwyNmzAoRlhRYHXymHxGRWPXdxY6lvZxKyu/WN?=
- =?us-ascii?Q?Hb5GWKDGsKpUXuMjW0dpiTVdtLTx30C0YhHgcVu/R3CYNLw4cuXOZCIwiW4L?=
- =?us-ascii?Q?t0mZBRoTVkgzc7/QZOFaNetlTAQ65QaJhaWR7zmWNe4Iso1GDuXYaa2ydKd7?=
- =?us-ascii?Q?zfVR7JlFTtY5SU3jRAMlv+lFU+feQNn1se89BEF/a/414K6XmmXCHV+/ByUq?=
- =?us-ascii?Q?vClyE5TJqB59seZaSy+taPvbtrMl4eh4+GhLZu8tqUltN2YLhzhGrIpgQNeN?=
- =?us-ascii?Q?U8ATm810rq8B3f7/mMRDsx06iGnV6w6JrL0vGCRuQZWQaFkCC5caHC/1gvH7?=
- =?us-ascii?Q?enSox04C5QZQxE8TpUhMU1MYDYFgKbmBvIWmJHFK5Eg5un8pJO42viiiGmTP?=
- =?us-ascii?Q?oxALBaDy87KKcUdt/V+5bd+7oKNrVEvp7k+AELgCQQiiywpLmz/Ju017RVzd?=
- =?us-ascii?Q?3XUwXzQtnxKnlRVQqYirbNj2Piyj5+p9uRsNZ9bbx2Is7QXUXEBVZDK+IWgQ?=
- =?us-ascii?Q?c5G9UvlYIBX5cpu2MF2lWFvcoU4F4gL11X6xQHFSKsUplIzxjWHpXLSujI8U?=
- =?us-ascii?Q?Y7yndz/Jx+j2tb9hfEV5Lj/3N29PSzBzcM7ctK+XECbClO5r2gY5FiVBol5Z?=
- =?us-ascii?Q?fKxerBYiDRbZLsVGf184XEBW2XxyJlvEcNOtv28SETjtPO4VJ3nicVNUBFvX?=
- =?us-ascii?Q?achrkych8mWRW+uH3pyi8nsDaEdCgUrao1rBPlYZXjtXmP+L40Y06PRJYFq+?=
- =?us-ascii?Q?9E8jMaFMBJNLrvBdwBkTUoo9H1XZrf/1ULPlExWwz0sQQDhapS/lS+3YC3RW?=
- =?us-ascii?Q?20uu0WES/NnAFfSIMWIbdTNm9/lkzJUwdRqdfxP7Op3sSZdqIQCnPKjhFwfm?=
- =?us-ascii?Q?v7AJOaThd+46R0n5gNRlgZuF8UrW04kAMTptqoaeQ7BgrY1WViXSUBZc10RM?=
- =?us-ascii?Q?Y7sdZZc5hWbQCcydUXHY1khqBqLckbdtXsEzTTezrwertRNGeg63OzLyWiiR?=
- =?us-ascii?Q?H3qgzXZxc3a+ft5zKat1evS/wDpoL6jLp54nz4RY7qtRcUhfMVchUBI5aQOx?=
- =?us-ascii?Q?16Q5b07nGG737EJ6PiuZIAA33UFdtolNv+V+clnA9/VYoQ=3D=3D?=
+	=?us-ascii?Q?VWHDRDbsGDUdSO2yXLGQ1aL+9Mrw4fEQUA3Jd/oLperLx1ultGLMzyjVdCYx?=
+ =?us-ascii?Q?g2h9Pp3PTXJabPzTxbU7hWuhiwX4fyrKY20wJed2aYBJcaXh2SdbNjMuqcWQ?=
+ =?us-ascii?Q?4NmH72irVtWpGNDQNDhYZMxFRxQDfWj4kg9Up7pGccONK+qfSKxqgDCLPOlr?=
+ =?us-ascii?Q?hOcDo661JkgprtzEu4/FTl1cG4jTTEObV2wfFD86CWZUhjDLMRChyrv5oT6y?=
+ =?us-ascii?Q?6C8oKBCBmYPNXdWcQ0IqU3DuRn1fUsE7lrIGY9tg+L0PZuafS8JYJSgXGtwk?=
+ =?us-ascii?Q?H2nTqFDnWb+Fp+zTfy7BaEyPMU4I2XN8ijbG5uUOs6N6CIt+xRFd+e9ZL5aI?=
+ =?us-ascii?Q?G7Bsh+z+zLrTuYDIv0ZCPJUuXWQ1gAYzcyw2RPvE/VU1mDNzkkIMbUTjqe4w?=
+ =?us-ascii?Q?ESi7vNKQv4+LBkHiUZr+SCNrNJwlg466/U63BFZhH+V17imvMi98SHn8HbrJ?=
+ =?us-ascii?Q?mCPM+5ADYbERYpeFJjVlDQqIUTKq8VN7hk9XGiWmuVKqtEh78YgKjMaa7PuY?=
+ =?us-ascii?Q?/RqFYFGUovEgTttlN503QRnZGtPXNU3kil+96hluTd4+Gvz98gfmchEPcbWZ?=
+ =?us-ascii?Q?CY9uvNgcbtioGv79ozYg2JSf6EurTvF8XZ0ckASDF8+BWHPCymey5R7kQki0?=
+ =?us-ascii?Q?YkvdkEsyFBNq24yY+P3L446ZqKXxigcU2kUIhXpImNN4tAS6cHa7aZgzUPvy?=
+ =?us-ascii?Q?e6ij5Y5k38Y49iO1J8c+8TO2TbSUXvXmhojiY9IwV97RVAEo7RgerlJMjo4q?=
+ =?us-ascii?Q?NOv/2dYqK0BKEFGRQVXK1acwieT+c75AnVetVpKJkXzcm+cNGZiQCAFFnMNe?=
+ =?us-ascii?Q?+A5mjRAdBdvPSnc59zYgd7V4+rKVZmCV1RpneBJHOd2JMKcZBh6j8UMHfuuO?=
+ =?us-ascii?Q?8/5ySyGrztDYDnK2yl94x+E7rY8Nobz6I/gcJPwS06Ikix0jC8GqMCWxyOYZ?=
+ =?us-ascii?Q?qwaSsR4JgH307YjXQErfGHOOyZTp4DCK3jtTc/zq06gozBKAifewU9+dSF12?=
+ =?us-ascii?Q?qqJpObs6avLrahDMAW218wF97adUAWPQ1uF/p4r+Ho8ThlHpzpDTR+z55GNl?=
+ =?us-ascii?Q?2zD6n0k2TyRRgWaR3ohiBfkScD5lr9TCmdTT8eoCNiUUAxhsGBfEOylwgtnI?=
+ =?us-ascii?Q?9rGbNl20w3Qrm2WQp6WobsiIPCS0KkfPJ31oM0tW+iUpROyFYpF8Rf4JzBBm?=
+ =?us-ascii?Q?nX6o/BkmeTiOvbwcWmBlgN2iLS/DjKu/fLzZREH9Q6Ecz57iQN76sfxK+oPD?=
+ =?us-ascii?Q?X5BjJhJ4JHHeZVpiE31qll1OPmGfYuYCaBn7iSjPjxHYzKJwsCiicjC+6TBo?=
+ =?us-ascii?Q?5Bf/bfFu1CxYkp8M+wCi4ePLrqzsPL4CTmvpmy7dCQ5hbw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(52116005)(7416005)(376005)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Rl4zVHo1yr/bKDTdH4m/ew+QOSvY/Jy0P9+xSTtkZZTHmo/0EM6MJLG6uTqc?=
- =?us-ascii?Q?yZi8LXHiLGGf0DOttRzL1BuwTuT21aX7i/s0m9wi58iIr3Xo5WH1pfqvXY9o?=
- =?us-ascii?Q?sJRVsmOOv0yNPeYkgI7k2V+1W6krGXOktwN1qGe8tkD9RliUa+zTad3KcEe+?=
- =?us-ascii?Q?aSqzouskjsidhVzCAkwFP3pEu5awEVfEyU2fS8diaSD+yHQ2YoUqPmz8HB78?=
- =?us-ascii?Q?q6LyVpdwKNd2xg4Fhdi3NNKww2srMk7yMGLzN9rN4Kj0rVjZY5ePthPM2Vau?=
- =?us-ascii?Q?RL4A+SinryZku+JjuJtKi7AuqDSbNG2kHYpDCWPuslY2GQILLGKbiewZModi?=
- =?us-ascii?Q?iheRCxAJHrRoLc88p/r5xaaTia4NzK/C7wJR+hlj5HrdOpFt0nIjTcGN34oo?=
- =?us-ascii?Q?H0dbEPIE4my7ccm+BPa7w83SesgD5b1+cdMZyrrvkfh+HX4ZC9KykWUSDJkf?=
- =?us-ascii?Q?Fwl2j7UzOq7ItcDlog5O0NSfLYdYgo/SalMEBL1mxDeuSHUntoBBMzEB3kC0?=
- =?us-ascii?Q?Bf3dGmhUqDcHIbdI+6gSiYPomXalR+UQzJmqwmjs8lQLDBWTkXO/LOUvuVpW?=
- =?us-ascii?Q?qLOoHlqlQGZ0IlBBJK+ZwNcmNTXI5Tk2SgNSea/9Tn3ca2ujUrjR9pNlxorn?=
- =?us-ascii?Q?odQyuwkteq+uJGo8Z52TDFMepnNOwkz4KmE5ZQnsXKYMv1xJRmz43O4RKMGJ?=
- =?us-ascii?Q?T/QXZFfjYzSjDH0jGFAFVNl2QM4CZnKp3Hizn23OQOBCLfinrNdGfWrBOWl6?=
- =?us-ascii?Q?JtMZAj9i/GhKZNG6mqCgXceUPCFQ785NDI8RdYGv1mgMrE0d96BTOk/RCXa+?=
- =?us-ascii?Q?j65l+aWWMO9nLE7NjkqZwrBMoIY+kF7L98ik2Iy2q+it1DGZACm/Ahkhz0UB?=
- =?us-ascii?Q?ULGngy98yrfWzEaFb01pN5JMLAArXIfWMYUHeyniCYkxDM9zJjtiApFoYpx3?=
- =?us-ascii?Q?WAvsIlc3O+66UsQnZuN1jfhUFd6fp/JDBl3UrJuZPOv4Qf+wDRSF9UOSXr+6?=
- =?us-ascii?Q?vq2lmIee/RhWgBJH2PeNR57txPSnMWZBdeg9OUufxpu67lEIVAeZq/NDGvcZ?=
- =?us-ascii?Q?bBl+hnh5XY4GE3JVJL6bJpnJV5DQ25fXTJMwlcqLKgJIIE9/ntlNFy11QxBs?=
- =?us-ascii?Q?KgcYWXyLwDDW+LpPPZhbDEpdR9utZkL/vkRlotlvWuGzZrpBXtesxEaXpKQT?=
- =?us-ascii?Q?yPtfmmPjijatF1F2y5fidH9KGAfwTp7laxtcCWLqL4tJGgg7kZbIFVOgBaJD?=
- =?us-ascii?Q?Om/XM0sf4rcI9yLD0m5nIABpbVJiem5NJCH+HxTlL+KyjvAuSas1jGSgZ9M8?=
- =?us-ascii?Q?5h7gPy5FCCtuyXusiLFIAxVdECX4NH8SXl5jZqgRsl/SJkhOp0bBVRierzgr?=
- =?us-ascii?Q?lyEhQGcJ+gk6FRntmZD74y3Pn1v1NqSItWazyc5BoHrQ+jADnSrB0gEdWT7d?=
- =?us-ascii?Q?v60HybaU1FljlbQJuIS96cs2rl07N8tBD1zeh2tMBV0SD4JrimVzte4Wzp4Q?=
- =?us-ascii?Q?WMxO8NCvA9UMjhygptosKe/hc1HWThPTXIO2WJzfHK9s3b4AIC9FJg5jCGbj?=
- =?us-ascii?Q?xP4IqqtztuOjL6oGW0LFjiul0wvhC3JwpdH+Irlr?=
+	=?us-ascii?Q?04LBbn2QkS6dooYRPiXSPMRjfTopd/Pnpw5MocIsaoo2KDdWKx0iHOv/RRk2?=
+ =?us-ascii?Q?XefCqWz038reQrc5ipCmrQenMw7q5o5YQo1nWyHB8KInsFbU45S03N2u7CJK?=
+ =?us-ascii?Q?ASEUDrGvc3dtL7uTjhnVxZs9Tm0wEyNFusyEev34c1oj/QXVIZg0Znn3ZUo5?=
+ =?us-ascii?Q?GPVeSnlUbtEt/BfFONY/8cbcJqbYHTqFhzD/kmgnEcMqBHjsYgcN0+Grjqv4?=
+ =?us-ascii?Q?43NLyHFdZHEn7r/wp5/D1ZhB24MvVRNHWkJ7fCB3rYwOGPuz46YEkdaV7TF4?=
+ =?us-ascii?Q?3GqaRTk8msIJX+tybUnbL/BG90TwqzEtY2QNc14jOGTAvaCH0FDFHXAFyhX/?=
+ =?us-ascii?Q?i57EpCmVrRCzjxXLcI5Iif2RcC72/4cl0w7nkEWOXRmdwzM7FKt+GXvyEpzP?=
+ =?us-ascii?Q?DKgOw/6xLq9jwgNeMqpAtANsKYiH4gQYTqUSnXsi2yvHwHgl/AGf7FWLcuVX?=
+ =?us-ascii?Q?jsJBMFyv7GUE1FmrK15I5OY5lijsw65DfQhhCDyQvsVggIETI/vzNz9+645v?=
+ =?us-ascii?Q?Zk0iOqRLnYjoQTnape2JYZfvvrhrj19JwCqBU0TG82zyXyFWfJpcj36dvMAm?=
+ =?us-ascii?Q?SeVC+nUznfgTYxj1PZWHgqFI0pc0Itk/qiLDzwtZ7dZSmtgq5Jdnn7Ix1f5l?=
+ =?us-ascii?Q?FqQRxFvbZQPvAD/+T2pDm/J1+UBV8833H2Y2lxEUA5TaBypB6Jxujgr8bb65?=
+ =?us-ascii?Q?KqW77VZJTl4fXa4vOPC8ziPpliBtzXECMK6BKF+44CtSVxSZw+H9whz1EZc9?=
+ =?us-ascii?Q?lgptv0iF+i8ysbu6pLjRULBNAnkrqRKS47iRpaTqUHBCfpcLOORJErgrZDt/?=
+ =?us-ascii?Q?GXO8gHMceQJFF0g1UcLSSltuVVn7S3Tjx2sJkYTYDJsm80P9BfDfZR9gaIrt?=
+ =?us-ascii?Q?dyhv3drwH9o/0rrdBimDXXrWdrBSSSCjWx89M/hbkliyRanzPMZBgqpZgpaU?=
+ =?us-ascii?Q?IB6J7q2iMgVQ/+Rdm/yU5X0nt5oA29SK4nfc4cDvrbXkl1D/5qyiHB4INZMS?=
+ =?us-ascii?Q?y9pNEbMN8QvruCMsMBpO2bOkm8EH6JRdgAd/lkC4pl0ZoBr5Zy+9Krz2aLpL?=
+ =?us-ascii?Q?F6Ypqft+AN6NOFu4xRU6y/ZGzUGJA1MtZ5eaonm1o1ZhUhaUkd+ktD1MsXJW?=
+ =?us-ascii?Q?VSIFLv2ve+uwkeDFxMwg05eFQk/SRZcShBnwdJ+4xVNrZK12skVUtq2v5wob?=
+ =?us-ascii?Q?nehc1PbF3TpRaLj52e1Gu95c263W77veW04vFj36U+4P2crh4qVmGt5BF/Pg?=
+ =?us-ascii?Q?jxkCW77/alFOj4lgQbC32YwATMhSmSmxhfJr/uB3JiWOh2MhVogrR6sVh9YD?=
+ =?us-ascii?Q?9ENp3huVHJmuuo3bGEc1/mtFLdBGAdV32s+2mjhFjaCVYx/2GI995b6p1gW4?=
+ =?us-ascii?Q?0DapSqIZfQiiY/rcPPQVTvRt7P+Ydn0zvHt9eM34LCDb2LWi216ROMr+ZOT7?=
+ =?us-ascii?Q?wJXBC9O2nGrW8QJsS8iIDSafO0iNw2fD+nCeD0MsdGXVy97c3UePCN99rQXT?=
+ =?us-ascii?Q?60fdaSMFg1bOllAIVf2km9Tc9HaJPRxwkXf9tAdEz8uzbZUQ4c+hiREwm2ed?=
+ =?us-ascii?Q?f7YmoiGzXO7gtNaEU5o=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e69c251-ff58-408e-6f01-08dc818869bb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f554137-48e1-44a0-f40a-08dc818cc058
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 15:43:27.0681
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 16:14:30.3033
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qtunjkrM1emh+s4EeyFf6gLrD1YZvjNSaBK+7X0V12hKo8zu85VU6FNXxMedWRDGoAtD69qDNWxg6djIYUMWUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7605
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZZhpkOs4PM+X4LgwMYrfy5426KXLFPcpgGR5qKj6mR6LfGpXcKi8nJ9bD5Md8mXmW7dhD4u0SuLoPfBXptUksw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6964
 
-When an In-Band Interrupt(IBI) occurs after svc_i3c_master_do_daa_locked(),
-typically triggered during a Hot Join (HJ) event, the IBIWON flag fails to
-be set when issuing an auto IBI command.
+On Thu, May 30, 2024 at 06:08:32PM -0500, Bjorn Helgaas wrote:
+> [+cc IOMMU and pcie-apple.c folks for comment]
+> 
+> On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
+> > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
+> > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
+> > This involves examining the msi-map and smmu-map to ensure consistent
+> > mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
+> > registers are configured. In the absence of an msi-map, the built-in MSI
+> > controller is utilized as a fallback.
+> > 
+> > Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
+> > upon the appearance of a new PCI device and when the bus is an iMX6 PCI
+> > controller. This function configures the correct LUT based on Device Tree
+> > Settings (DTS).
+> 
+> This scheme is pretty similar to apple_pcie_bus_notifier().  If we
+> have to do this, I wish it were *more* similar, i.e., copy the
+> function names, bitmap tracking, code structure, etc.
 
-The issue stems from the omission of emitting STOP upon successful
-execution of svc_i3c_master_do_daa_locked(). Consequently, the controller
-interprets it as a repeat start when emitting the auto IBI command. Per the
-I3C specification, an IBI should never occur during a repeat start, thus
-preventing the IBIWON flag from being set.
+Actually, I refer apple_pcie_bus_notifier(). I can't direct use apple's
+implement because in imx95 have difference PCI host controller, another one
+is PCI ECAM netc controller. At lease function name should be similar with
+apple. 
 
-Emit STOP regardless of the success or failure of
-svc_i3c_master_do_daa_locked() to match I3C spec requirement.
+> 
+> I don't really know how stream IDs work, but I assume they are used on
+> most or all arm64 platforms, so I'm a little surprised that of all the
+> PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
+> this notifier.  
+> 
+> There's this path, which is pretty generic and does at least the
+> of_map_id() part of what you're doing in imx_pcie_add_device():
+> 
+>     __driver_probe_device
+>       really_probe
+>         pci_dma_configure                       # pci_bus_type.dma_configure
+>           of_dma_configure
+>             of_dma_configure_id
+>               of_iommu_configure
+>                 of_pci_iommu_init
+>                   of_iommu_configure_dev_id
+>                     of_map_id
+>                     of_iommu_xlate
+>                       ops = iommu_ops_from_fwnode
+>                       iommu_fwspec_init
+>                       ops->of_xlate(dev, iommu_spec)
+> 
+> Maybe this needs to be extended somehow with a hook to do the
+> device-specific work like updating the LUT?  Just speculating here,
+> the IOMMU folks will know how this is expected to work.
 
-Cc: <stable@vger.kernel.org>
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+Let me do more study. But I think ITS also need stream ID, not sure if
+only hook IOMMU can work. Some configuration, IOMMU have not enabled. but
+ITS need it.
 
-Notes:
-    Change from v1 to v2
-    - new patch
+Ideally, pci system can provide a hook function to host bridge when new
+device add and remove.
 
- drivers/i3c/master/svc-i3c-master.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Frank
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index bb299ce02cccb..032fe032ec433 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -961,11 +961,11 @@ static int svc_i3c_master_do_daa(struct i3c_master_controller *m)
- 	spin_lock_irqsave(&master->xferqueue.lock, flags);
- 	ret = svc_i3c_master_do_daa_locked(master, addrs, &dev_nb);
- 	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
--	if (ret) {
--		svc_i3c_master_emit_stop(master);
--		svc_i3c_master_clear_merrwarn(master);
-+
-+	svc_i3c_master_emit_stop(master);
-+	svc_i3c_master_clear_merrwarn(master);
-+	if (ret)
- 		goto rpm_out;
--	}
- 
- 	/* Register all devices who participated to the core */
- 	for (i = 0; i < dev_nb; i++) {
--- 
-2.34.1
+> 
+> Some typos and minor comments below.
+> 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  drivers/pci/controller/dwc/pci-imx6.c | 175 +++++++++++++++++++++++++++++++++-
+> >  1 file changed, 174 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > index 29309ad0e352b..8ecc00049e20b 100644
+> > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > @@ -54,6 +54,22 @@
+> >  #define IMX95_PE0_GEN_CTRL_3			0x1058
+> >  #define IMX95_PCIE_LTSSM_EN			BIT(0)
+> >  
+> > +#define IMX95_PE0_LUT_ACSCTRL			0x1008
+> > +#define IMX95_PEO_LUT_RWA			BIT(16)
+> > +#define IMX95_PE0_LUT_ENLOC			GENMASK(4, 0)
+> > +
+> > +#define IMX95_PE0_LUT_DATA1			0x100c
+> > +#define IMX95_PE0_LUT_VLD			BIT(31)
+> > +#define IMX95_PE0_LUT_DAC_ID			GENMASK(10, 8)
+> > +#define IMX95_PE0_LUT_STREAM_ID			GENMASK(5, 0)
+> > +
+> > +#define IMX95_PE0_LUT_DATA2			0x1010
+> > +#define IMX95_PE0_LUT_REQID			GENMASK(31, 16)
+> > +#define IMX95_PE0_LUT_MASK			GENMASK(15, 0)
+> > +
+> > +#define IMX95_SID_MASK				GENMASK(5, 0)
+> > +#define IMX95_MAX_LUT				32
+> > +
+> >  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
+> >  
+> >  enum imx_pcie_variants {
+> > @@ -79,6 +95,7 @@ enum imx_pcie_variants {
+> >  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> >  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
+> >  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+> > +#define IMX_PCIE_FLAG_MONITOR_DEV		BIT(8)
+> >  
+> >  #define imx_check_flag(pci, val)     (pci->drvdata->flags & val)
+> >  
+> > @@ -132,6 +149,8 @@ struct imx_pcie {
+> >  	struct device		*pd_pcie_phy;
+> >  	struct phy		*phy;
+> >  	const struct imx_pcie_drvdata *drvdata;
+> > +
+> > +	struct mutex		lock;
+> >  };
+> >  
+> >  /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
+> > @@ -215,6 +234,66 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+> >  	return 0;
+> >  }
+> >  
+> > +static int imx_pcie_config_lut(struct imx_pcie *imx_pcie, u16 reqid, u8 sid)
+> > +{
+> > +	struct dw_pcie *pci = imx_pcie->pci;
+> > +	struct device *dev = pci->dev;
+> > +	u32 data1, data2;
+> > +	int i;
+> > +
+> > +	if (sid >= 64) {
+> > +		dev_err(dev, "Invalid SID for index %d\n", sid);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	guard(mutex)(&imx_pcie->lock);
+> > +
+> > +	for (i = 0; i < IMX95_MAX_LUT; i++) {
+> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
+> > +
+> > +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
+> > +		if (data1 & IMX95_PE0_LUT_VLD)
+> > +			continue;
+> > +
+> > +		data1 = FIELD_PREP(IMX95_PE0_LUT_DAC_ID, 0);
+> > +		data1 |= FIELD_PREP(IMX95_PE0_LUT_STREAM_ID, sid);
+> > +		data1 |= IMX95_PE0_LUT_VLD;
+> > +
+> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, data1);
+> > +
+> > +		data2 = 0xffff;
+> > +		data2 |= FIELD_PREP(IMX95_PE0_LUT_REQID, reqid);
+> > +
+> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, data2);
+> > +
+> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
+> > +
+> > +		return 0;
+> > +	}
+> > +
+> > +	dev_err(dev, "All lut already used\n");
+> > +	return -EINVAL;
+> > +}
+> > +
+> > +static void imx_pcie_remove_lut(struct imx_pcie *imx_pcie, u16 reqid)
+> > +{
+> > +	u32 data2 = 0;
+> > +	int i;
+> > +
+> > +	guard(mutex)(&imx_pcie->lock);
+> > +
+> > +	for (i = 0; i < IMX95_MAX_LUT; i++) {
+> > +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
+> > +
+> > +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
+> > +		if (FIELD_GET(IMX95_PE0_LUT_REQID, data2) == reqid) {
+> > +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, 0);
+> > +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, 0);
+> > +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
+> > +		}
+> > +	}
+> > +}
+> > +
+> >  static void imx_pcie_configure_type(struct imx_pcie *imx_pcie)
+> >  {
+> >  	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
+> > @@ -1232,6 +1311,85 @@ static int imx_pcie_resume_noirq(struct device *dev)
+> >  	return 0;
+> >  }
+> >  
+> > +static bool imx_pcie_match_device(struct pci_bus *bus);
+> 
+> Can you add the imx_pcie_match_device() earlier in the file so we
+> don't need this forward declaration?
 
+imx_pcie_match_device() use global veriable imx_pcie_driver, which close to
+end of the file. There will be bigger change if move imx_pcie_driver ahead.
+
+> 
+> > +static int imx_pcie_add_device(struct imx_pcie *imx_pcie, struct pci_dev *pdev)
+> > +{
+> > +	u32 sid_i = 0, sid_m = 0, rid = pci_dev_id(pdev);
+> > +	struct device *dev = imx_pcie->pci->dev;
+> > +	int err;
+> > +
+> > +	err = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", NULL, &sid_i);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	err = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask", NULL, &sid_m);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	if (sid_i != rid && sid_m != rid)
+> > +		if ((sid_i & IMX95_SID_MASK) != (sid_m & IMX95_SID_MASK)) {
+> > +			dev_err(dev, "its and iommu stream id miss match, please check dts file\n");
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +	/* if iommu-map is not existed then use msi-map's stream id*/
+> 
+> Capitalize consistently, e.g., the most comments in this file start
+> with a capital letter.
+> 
+> s/is not existed/does not exist/
+> 
+> Add space before closing */
+> 
+> > +	if (sid_i == rid)
+> > +		sid_i = sid_m;
+> > +
+> > +	sid_i &= IMX95_SID_MASK;
+> > +
+> > +	if (sid_i != rid)
+> > +		return imx_pcie_config_lut(imx_pcie, rid, sid_i);
+> > +
+> > +	/* Use dwc built-in MSI controller */
+> > +	return 0;
+> > +}
+> > +
+> > +static void imx_pcie_del_device(struct imx_pcie *imx_pcie, struct pci_dev *pdev)
+> > +{
+> > +	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
+> > +}
+> > +
+> > +
+> > +static int imx_pcie_bus_notifier(struct notifier_block *nb, unsigned long action, void *data)
+> > +{
+> > +	struct pci_host_bridge *host;
+> > +	struct imx_pcie *imx_pcie;
+> > +	struct pci_dev *pdev;
+> > +	int err;
+> > +
+> > +	pdev = to_pci_dev(data);
+> > +	host = pci_find_host_bridge(pdev->bus);
+> > +
+> > +	if (!imx_pcie_match_device(host->bus))
+> > +		return NOTIFY_OK;
+> > +
+> > +	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(host->sysdata));
+> > +
+> > +	if (!imx_check_flag(imx_pcie, IMX_PCIE_FLAG_MONITOR_DEV))
+> > +		return NOTIFY_OK;
+> > +
+> > +	switch (action) {
+> > +	case BUS_NOTIFY_ADD_DEVICE:
+> > +		err = imx_pcie_add_device(imx_pcie, pdev);
+> > +		if (err)
+> > +			return notifier_from_errno(err);
+> > +		break;
+> > +	case BUS_NOTIFY_DEL_DEVICE:
+> > +		imx_pcie_del_device(imx_pcie, pdev);
+> > +		break;
+> > +	default:
+> > +		return NOTIFY_DONE;
+> > +	}
+> > +
+> > +	return NOTIFY_OK;
+> > +}
+> > +
+> > +static struct notifier_block imx_pcie_nb = {
+> > +	.notifier_call = imx_pcie_bus_notifier,
+> > +};
+> > +
+> >  static const struct dev_pm_ops imx_pcie_pm_ops = {
+> >  	NOIRQ_SYSTEM_SLEEP_PM_OPS(imx_pcie_suspend_noirq,
+> >  				  imx_pcie_resume_noirq)
+> > @@ -1264,6 +1422,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+> >  	imx_pcie->pci = pci;
+> >  	imx_pcie->drvdata = of_device_get_match_data(dev);
+> >  
+> > +	mutex_init(&imx_pcie->lock);
+> > +
+> >  	/* Find the PHY if one is defined, only imx7d uses it */
+> >  	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+> >  	if (np) {
+> > @@ -1551,7 +1711,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
+> >  	},
+> >  	[IMX95] = {
+> >  		.variant = IMX95,
+> > -		.flags = IMX_PCIE_FLAG_HAS_SERDES,
+> > +		.flags = IMX_PCIE_FLAG_HAS_SERDES |
+> > +			 IMX_PCIE_FLAG_MONITOR_DEV,
+> >  		.clk_names = imx8mq_clks,
+> >  		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
+> >  		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
+> > @@ -1687,6 +1848,8 @@ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_SYNOPSYS, 0xabcd,
+> >  
+> >  static int __init imx_pcie_init(void)
+> >  {
+> > +	int ret;
+> > +
+> >  #ifdef CONFIG_ARM
+> >  	struct device_node *np;
+> >  
+> > @@ -1705,7 +1868,17 @@ static int __init imx_pcie_init(void)
+> >  	hook_fault_code(8, imx6q_pcie_abort_handler, SIGBUS, 0,
+> >  			"external abort on non-linefetch");
+> >  #endif
+> > +	ret = bus_register_notifier(&pci_bus_type, &imx_pcie_nb);
+> > +	if (ret)
+> > +		return ret;
+> 
+> I think this should go in imx6_pcie_probe().
+
+The same nb only register once. If move to probe, bus_register_notifier()
+will return error and dump error message when second pci controller
+instance probe.
+
+> 
+> >  	return platform_driver_register(&imx_pcie_driver);
+> >  }
+> > +
+> > +static void __exit imx_pcie_exit(void)
+> > +{
+> > +	bus_unregister_notifier(&pci_bus_type, &imx_pcie_nb);
+> 
+> It looks like this driver is removable?
+
+Actually, I think not. I am not sure how to prevent driver remove. There
+are raise condition when driver remove and a pci device hot plug at the
+same time although hot plug pci have not implement yet in imx platform.
+
+> 
+> What happens when an external abort occurs after the
+> imx6q_pcie_abort_handler() text is removed?
+> 
+> > +}
+> > +
+> >  device_initcall(imx_pcie_init);
+> > +__exitcall(imx_pcie_exit);
+> > 
+> > -- 
+> > 2.34.1
+> > 
