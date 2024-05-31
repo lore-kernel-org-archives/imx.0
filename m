@@ -1,65 +1,62 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2062.outbound.protection.outlook.com [40.107.6.62])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2047.outbound.protection.outlook.com [40.107.20.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BE4176225
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 16:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D5F7E788
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 19:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717173855; cv=fail; b=nOGM9pgSjJdUc3RHEH0Yn28g5pUhK7XeDjNG51l7zv1/JXIVHof9yKR7t2GGBhDAGBF2yipyhG0ypuvLJ6W1fDyQQVsiwoPb6A5faYR1gdO0vcdel6BSqGXiXlbH3J7MxPxWyKDYQcU0BzerdIs95jXa8z37zoJnUsoLlzRtaHE=
+	t=1717184286; cv=fail; b=o+tx3pKGOG9CnVfrMdAM4w9utjxecfoiGv6W2nmH/RmGOmkMpitmtcbivxEZEJyBPrM7f3ZkU/uR1NeSIaa+XjbYZAtpnqp8r1yNdKEVJbZduXT5hHv0FB1lnRt2HP6u9mK2jj9sTCSN9M9dAQ6x4p1JKjwwY7H4SeOtq20BNk0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717173855; c=relaxed/simple;
-	bh=QfhQ0tSjtsAp3pwdL16aT4ioOSRp2kefG1/9b0svC2A=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=pHlgL7MLJeg48dWzoORYS1F4izxbuUCdBbz8Jo9bcdfGFLzUWPR8XN+eFcY3lAET39uYqVkO2IUqH6pOcOa+3Qy8vT4262/W1lHxW8wk0+Q17ziLrBYB4XLd6Alv9vxo7GfEaqLbiceqbCwagJ5sjjUDhAHRROlmQ9KC767g8oU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ErqaLlMp; arc=fail smtp.client-ip=40.107.6.62
+	s=arc-20240116; t=1717184286; c=relaxed/simple;
+	bh=b5qLBBkJ+SvPVJNI4gFw4nBxckfFpiJotHgfHQx1i00=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Azrnom3NpcBIAwdnRGvddbRe8TvPynR04/kB7jFnUokpG3mFgZsAqecm0i/xF1PbXOlifgUYdRHFdfjRbmJ2DFA1Y8oMSCHXayzIg1hvpsUm4HCUTqCT/fzfgUIpSEsdvQRLpKFMcGnlVx/7qBmVIqu4/EVximsZrss8a7HW/4k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=R4LqesnC; arc=fail smtp.client-ip=40.107.20.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ErqaLlMp"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="R4LqesnC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Csz5r/EmNWj5q5MHtaz7KasD7494EST2xV/tg8o2CA5oT322kusSXVAch3nfM4eRihmq7eJF7bhSnWl/Tvx3gfZ3ExcJv143Q+TbpvGr81oVbn9anbEh218gms9pX7VPGunCvc++0WfNZhN0Vgj+0RvvWLVHrD3F/GiZph+M0GJK4loNvbkwMiXu2MjgeV7Ar1dT8Fb8G5lx3eUCB4EwgZVUF65zFca7srR1oWSOMky1XGkLmeOTsFwSw/GVHSXJmvW/khe77wKy65LN90AfrNpMoafEEjUaWj/aMEwMOEx4BPjo+fSPWlobsEl8PtPKIxz9Mx/prCMZtQ0sR3QDOw==
+ b=Ru053B+zEGnLwgBjlChxEN7eLiZyXUwI47aprielt1uzGQnemUzQfTDt3xRY8G6QVvXvnEcmKDbwsvT/fwCj+J7Ur66yU9M56RkJwYVEamGYddgM8Qs/MoxKr+y7k84dh6DgxPiPxTy7Zp5Lkrfj8KOWCu783GzAudoWBFOlx7UyCo2Z3E17KZFxUYBs4pKDWZBI7lI86l+U2LyOCgnPdXkAucKGd+Uy28RzgNdWsLSsnmf5PhYo+LXyZ4geBmLjEalCctatcmqK/89Xp+IEc7uWGRbYwzcD9ALIBi8VgVZjlKrGJMHx/e+B5kWwENeaw7vNmrwJxSgmAJRpV9vPAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dJxGasPJaw589fVwlksqdg1/sl0BoImJj0StJOPsy0=;
- b=EfeKexrC4B+Q2YkVRFdgKPtyumMRmdkY+Dqqnl7pVdVesU4EjHs8wgI5FGL4UDcIgMS3ytn1T2RyIz8G+wOcBEMP//PJT9sZ+9fkbpA7oxq/oYeSdWQ0ByKTpRlrCNOoecgKOWWtTwd4CW1jOI7lvfoM5v2IMrpHezi96rpWOPwIBT2lX7O2MHz4+IeOSoQVUB8R861odDdKOjKCodz41bwJBQRCkZYr6Z4mwVgghAdgKhfH6EmaNUwmgUlEyzZszea4j4wQvdljNFAHULPowyJAPPw2ow+U9tPPm8HwF8B69VlPn19kyXp5O2Qg7CLW1R3GKN8LcivP5Js901c1Hg==
+ bh=mvo8YjzHqpXZCUtF7QAcDJNfyWDpFyzDZ/VtAgqOG+I=;
+ b=Mc2yutHMBSvM0o/fXY22C5Jm/VXokjUCnC05DVL05ctZxE4WqMu86ntbENH149YwnR5HuejOW5Sg4by8RmLfelbV7786s1fcebRvMzY+fsu5FzLrVhOS5XfOf5/Px6WYGYU6Nl/z0blj53/b3jwGWbs4aXMFo9xf91N9hUwmHmX+7IYA9XtZ8c+DfZ9YzJ1rjh/O4sijxLkOqP0AtvxApju1H0s5kwDHYiMPuacYnhPsQPJSTFIu/eUfcKb84fYu6mIM/ULNFvELyiwnA/IRwDHeZnaOiuvWoICn5n8yS0tyLodqy0wZz+aL7PS+VAySslY0yXi84kTdeYN9B95Obw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dJxGasPJaw589fVwlksqdg1/sl0BoImJj0StJOPsy0=;
- b=ErqaLlMpJZfa+tGQO5P00nA6paZolcVAMzjZ5WPCv7KdNzmV4LszeLYdFK4GQJk/z2CxJF99rfpF2+IRe/zzN2Mn7VSnyBeeK99FET+U3kYg+bS5NavHs4GWYQzttvSd5Yei3jERk9QINOWkKmg2lpr/FOtJ/OHH5bUc8yj9toY=
+ bh=mvo8YjzHqpXZCUtF7QAcDJNfyWDpFyzDZ/VtAgqOG+I=;
+ b=R4LqesnCXK9Nwyn6U8p+QTT7oZwjUBJYTXIA8EKToIfJAtcED+maJ/NNFDAzxNg32KI7N7msqVQA781RUll/A7ahLRMi8AfRS5qO71w7nxTq9NI0uwoUcIESzfMXwLnUdIZFmqGoV2O0NOlqrS/hT9kd6xSRPQm1lBtX1rHD0qc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB8316.eurprd04.prod.outlook.com (2603:10a6:10:246::20) with
+ by PAXPR04MB9679.eurprd04.prod.outlook.com (2603:10a6:102:23d::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.27; Fri, 31 May
- 2024 16:44:10 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Fri, 31 May
+ 2024 19:38:01 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.018; Fri, 31 May 2024
- 16:44:10 +0000
+ 19:38:01 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: alexander.stein@ew.tq-group.com,
-	krzk+dt@kernel.org
-Cc: Frank.Li@nxp.com,
-	brgl@bgdev.pl,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linus.walleij@linaro.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org
-Subject: [PATCH v3 1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
-Date: Fri, 31 May 2024 12:43:57 -0400
-Message-Id: <20240531164357.1419858-1-Frank.Li@nxp.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-mmc@vger.kernel.org (open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND...),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+Date: Fri, 31 May 2024 15:37:44 -0400
+Message-Id: <20240531193745.1714046-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY3PR05CA0044.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BY5PR04CA0006.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -68,145 +65,202 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB8316:EE_
-X-MS-Office365-Filtering-Correlation-Id: 229f2d9c-5609-45d4-0ec0-08dc8190e531
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9679:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b095422-695a-40a5-8d7c-08dc81a92e7b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|7416005|1800799015|52116005|366007|38350700005;
+	BCL:0;ARA:13230031|366007|376005|52116005|1800799015|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JtqwbdKManIGVECDzGYtiHsdPxPMORiKhrxpUVRnS5TA339Mk5ZzLeNJ+VVa?=
- =?us-ascii?Q?Z7CvyZXrgDAqbD0h3y0fzRhCL2D0NgeFfviDdl+C4QFX3nNL+xNT728r5YVk?=
- =?us-ascii?Q?nH2tO660c8fMw/tWNIJsXKk0At2G/01qQSOw7N+V9JGpHuDGjWB36Rx0dbYU?=
- =?us-ascii?Q?xG11oVmb1+BFr3fzcPW9GmnFWfW5BCek02M3Th7AUz6tKg7tE07blApFr84n?=
- =?us-ascii?Q?wVSjBFbvVUYw5HByl7WPBFTziMT7ixph5bxBPlroZUtzOxGrBmNmmN2RxJdY?=
- =?us-ascii?Q?4xLI4frOkQ4sSZYB1yE5sQghYInoLsKZ4JvozfJqnkiDD6fvCIQkNix24mDO?=
- =?us-ascii?Q?PLEKvqLIgpGJTGPlaQr9aOuOg6dydakbiZgLgMzA7qdp6zt2gnWN3Dkkjq9M?=
- =?us-ascii?Q?W07PiUcHqfB0lbwueXF2QZiXwj3PXt4Ky/YxwlqA++GMJ2GRb2/F+iRW6841?=
- =?us-ascii?Q?efeTXFkdZl44F+lQviKpLOl2P6viHfi7LiXd6DLw8mAS/81FL8johlA8WfFC?=
- =?us-ascii?Q?1nocAHucAMxGoI0ylq1E/9CLsRoHsN7Xuzg8dS/a4pFZf4VXRcy6NULwS0ii?=
- =?us-ascii?Q?fK/+Q3CDbjLKMLBHXH8SNZXrJAJm/oK4gkoELgshZIyWlkVSIgAknF0ts1jq?=
- =?us-ascii?Q?sOaG1SS/fq0xVXGMLv1z/71gefn53dvBUvjIrgSCZFNLblf350EBotYcA5f8?=
- =?us-ascii?Q?w7MjiMa1m7YXRaY7ktDEjPBaZGXA+GysFDl9Hu/e5NJg6kPe6Nfpw6x65Jzb?=
- =?us-ascii?Q?AQC2AfXZA2MoxymBKQtHwZw4Mv3X1ywBkc4e6hDG+BmmHO60h9qPV9u4uDVA?=
- =?us-ascii?Q?tj4dDt+Y+ArgqIR39CQPz7VEva/ZGQMTCd0ggE06XGIPBViH6FdDO0sJVBkb?=
- =?us-ascii?Q?U1/kkjPXSqrRWk36hvju6BlgooTXxSTlG1dJgllZPWGaewU+YcGEXZNTRGdn?=
- =?us-ascii?Q?XNUlw13zDzNg4Ioqsg4KIU+86B6rZWCdhfvxKKC9pjQRqRpFBBaIAVgvxl9X?=
- =?us-ascii?Q?mRx+6J3b1G6bkReD7SD9AW7JX3s/zFduvFK11tL3WJj6z/E911zrxgDQga1e?=
- =?us-ascii?Q?cZoQw41i8RIt2x8Fq5czQCsgTL58KkBRCzZLkvEY7ApBrsC4t2PNLuvWanKS?=
- =?us-ascii?Q?IX0mM0nYyRGeFfzcmFP8jFSQEVqaQPZ5BkMt0QYyktlwYM1TXatm98I89+f9?=
- =?us-ascii?Q?3YD3iO+vhqKKHHPANabWC/XTtcWuETPFTTovjilz111nNWHy9fEArzMvp984?=
- =?us-ascii?Q?F4wo4SoT9Lcb6djXZPWLiVbLoAQqRyQoUx1JihvcFDQtEBSZ+LJRR52NCt4d?=
- =?us-ascii?Q?SHc=3D?=
+	=?us-ascii?Q?NTDYMZ0dNnJ3pZfsoBi1qxHscjQeXlSil55PcZSQQzoCNbQ3Nr7I87cQinB3?=
+ =?us-ascii?Q?EHDFv5YoC0EaFG2mZPzgVFL74QNeYZzuYUXj8TVeBI+QUbok6WPm9U0l7j5E?=
+ =?us-ascii?Q?/Q8taK/e5B1o3PsB370wupCFRZNhedL0WGqLwIqDdkB1OtMsHJfF7ralDNfs?=
+ =?us-ascii?Q?aO86dcqDU4ZHRVVrqU7c3gW7iVtNsK43gZJJXTfkIKj3yizQFuGgBzwmy3v8?=
+ =?us-ascii?Q?SUtkQ9BSYSRi8PgaRYbZs9yciqc4DochXJO490efE8HN+nuwPrQyrblbxTIo?=
+ =?us-ascii?Q?nBdhpX3wbXkZCblAokTT3gOB98TI5jCLg/MEmS5M3EKm1yUtWr505GZoyf0X?=
+ =?us-ascii?Q?n5MRoX0HitFU6KADNn+LrBlcDNRUFMUzDbTv288eMP3LZltJHjvrDaPPLf2b?=
+ =?us-ascii?Q?2ckCq9xBXlCWT6xry2V6NPdE9UlfIfrSoxgPBuWP0epnYRPj521NgFAf0/ZJ?=
+ =?us-ascii?Q?LxdQUAa5jqIbMWHzSknHnuWpZAfvC3wIU7Za/Ow14gWOKKtZLTvv+GNyAgh5?=
+ =?us-ascii?Q?33hwqCva8JC7Xnvem3W1bWEojSHAgTLK873++7FGiGkr1LnwfdmWRvc3BwiE?=
+ =?us-ascii?Q?+H5oGqhKBD3RyLX7jooyC6pXr42T+42CnFGlBZnYbEAHwC84ef0k1akMRVs1?=
+ =?us-ascii?Q?leT0ONYPTU8HhOI24OQ41TEXpDmQdHxfaVwmG9Pv5Lj0cahSyrrzwgiUe2cY?=
+ =?us-ascii?Q?93wj+FcdmB/FwZ8IgfqmwgGozQLW9m+gSb5yytsK5TSg7H8bfS+h1zIGc7i3?=
+ =?us-ascii?Q?elMOA3xp3pLXjn08BdX+dQbBU7I6adlfrHU9f4HSRiUyLERvtDcqozF5rtgy?=
+ =?us-ascii?Q?jzvtvg508eNEULBOFwf+PZuM2p2i8DcL+ULEECDeYDwlnQwIiwc0aFkvrkP6?=
+ =?us-ascii?Q?0Gp/ZhCzWI2se3aUjkUz9QXNHbltODYxV7S0WGtV7qMpDwX4O1Zk82jl2ivR?=
+ =?us-ascii?Q?f7rxUlzOOyITk1DNTjEfCcWqJvPi6djq1X8G9HMEy6eIJqD9K4zd/0mQuPxQ?=
+ =?us-ascii?Q?PPoxqqGw2u1Hlq9Hb1GJH15njrc/6oZFB0/peFn/G+/6zu96j2Cd07GgpUHw?=
+ =?us-ascii?Q?1ETRFEF1S5HYPUKN+mkC78l/LpIm34yGURDwX1u+bSOaRswpe8p1XhReMcdt?=
+ =?us-ascii?Q?rofDXJWswGGdAwK54vKV7if3iTjXKxJCqtrJtx9hE+uBEx869gEpIgSc6YgT?=
+ =?us-ascii?Q?P8JUI56W4/kHJJI9RI9zd98TN6gjD1ZtFSCOAuVyjtNFCsshXaCy5LmQkFL4?=
+ =?us-ascii?Q?SRtzhCTkEKLf79qwRB65SRS8V3jcQkM4Jfwamlc8k8BgdYC1yWWL7hQ3Yb4l?=
+ =?us-ascii?Q?FNg=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KLLqIMMkvDwE9207pz7QnbLvqWVQ4TbKJNGVHo68dvsIPeC1mHnnFxuHX+Yd?=
- =?us-ascii?Q?0MXJeJ4LckcFibhoBM+LBRNrDpFQ+VtVbrcSVL4WyU8GCKWHyYfX6Xlb2Lxa?=
- =?us-ascii?Q?jU+sKJX1OqsZCcVQs/pOQSW33Ei2HF0iXsyx/qSkbrl0nHeTyLTidEu5tF/7?=
- =?us-ascii?Q?3AEDfJs7a60jMpnx+tCUoMKk7jm1QWmJIX2EGdsv1e1sMv5iTD59cEW3TBtd?=
- =?us-ascii?Q?zJPwg9CksujD/BR21jAELS8FLanBdb/trfHpVHEl0z870iq2fDCIQZa9U4ay?=
- =?us-ascii?Q?poWsdEE/d1Azraiv7iqyxntSaOLN59SijwHzp9KBHwScEXzHL4KjZrEG7Rx9?=
- =?us-ascii?Q?3Oiax04tuIGy5KeyXGEQyo1/VT07EuBI8WP+Kf4LjJ5Ia3IIA5xLPcxBtkJ9?=
- =?us-ascii?Q?my2wAxHH39sEKWOzqSuRF0YIYkkTJi3u4FL1is0X3/ANVD8u0CQL/37vB8g1?=
- =?us-ascii?Q?VPK17DqxE7f0MXbYHdnHiUPYzC/52AWvI948LBMphUCNncGdP7QN8SrHipct?=
- =?us-ascii?Q?uUoz+r1Ftpcsf6efcAt9QEjmhCHTL6PJs8an6bft6u27A0yb+KCrDMm03qC+?=
- =?us-ascii?Q?x53at9yn4vH0YaxpIADkht0qpq4bv21FKFTJBHGai5e1v1hBe7rHW8vPA6P+?=
- =?us-ascii?Q?9lQbVVXwJ74n21reuapZna2PvEa5SC6f+vrEI+qTj9q9T1816SszR8stRThO?=
- =?us-ascii?Q?AcQF8bXoacbH46OkMK9zaKYjxVmSKSgtmBXrtqgzG0BGFLKE3nlEBBIqr2It?=
- =?us-ascii?Q?EjHVf1Mkz3HxyCHU/rnuFPc+Qj3B5JXuV0N7VHqXIcNc/waPZUxe7q9DysBa?=
- =?us-ascii?Q?O6/onPz6RFr1/FGk1U2JHukxipTtRW3VmkAmmgCd8SsHqaUIhTzMod7YspZq?=
- =?us-ascii?Q?1UUyl8v5cg+hVbxYWsURMU6jg+ajN2qD2Ul3owwBCsodQOEFDhlnaS70IE0K?=
- =?us-ascii?Q?CX4VX2XBG3UmybuV5lZnFIuvWyDGTB6El361BQp3sfzndwHhiSoVDlaTwgj+?=
- =?us-ascii?Q?wPMU7IEOGp0N07zERbFZyM4JbAiYCsszQU6KvRAKpGuqOah+79zQ7bOgrqq3?=
- =?us-ascii?Q?eAF3jrbRE93nk+yjQODAp7djHY3ZryYmBPX6J36ZbiCuuoqKxolCENBcl44H?=
- =?us-ascii?Q?lJ+/j9DskGN2pIiEzKfD+Pexh61mgN+LA1wBjP88uLIabSOV4zm4HMkcGOSV?=
- =?us-ascii?Q?aX428DjtU9NePTtvoDDCE6aFzlsO68hiNX1qPo3bQ8c4yUb/yHLzda8yVxRL?=
- =?us-ascii?Q?RepGe3C9dIMDEUKfPkm1+3BWzjhl+7JljZ6xzFXSlCsNtjzn4NIfh2EfWrge?=
- =?us-ascii?Q?JNoUZ9Zgx/5njQ7QPztP0lQGLddZfPMC6zDoEfIMQRqY6e/pVNK6P0YAOfpf?=
- =?us-ascii?Q?YpyfznVhO1VJBmguwtFrPzLG8EP3YIPDjHppo1SW4qKWDACzk7JuoLQJhbaB?=
- =?us-ascii?Q?fPPl8xyh5vQesRUhaeNC1Oxx4xUz3HazsI07berBQH/NtOtD0RzEKEdBk+It?=
- =?us-ascii?Q?LMbmzeE2MsAbri9GFwryej34ABOmOpQD+rTUSdw45FoDwmcj7W6Ck3O/fqYN?=
- =?us-ascii?Q?J4p8QOAIYMxGNsIBmPU=3D?=
+	=?us-ascii?Q?c0LEX8vLNLkdxi9ucUmf6pVU4Iq2didbCsz88H+wnh1K5qWApgh+wsChz8mD?=
+ =?us-ascii?Q?42nN+7Tb4XC1GLERF6o2okqys+/8dC4/T3Yu71fgwamhZNvvHp0nTXMjBrQh?=
+ =?us-ascii?Q?1PsRhJPY99ehSysNImOkgcp0hR3eSc38xFnk7zCSt5pkVuWxARCRorcdqvZW?=
+ =?us-ascii?Q?aTWCFftBoQA6UrgYXtULq9DSPYJV150arVL0IqPzg9RW7LQ47IR7HHzI47id?=
+ =?us-ascii?Q?hrJMJapcYFIxU/5XrhZ4XEIcNVRgRkKtDMq9KEASGKnGH4nfaOpxtEo6pR5D?=
+ =?us-ascii?Q?qAwbZeTilu2YhFgrBtmSbot+3od3SGwxtX5JSIScwirFUjMtd0ohTWpusM/W?=
+ =?us-ascii?Q?Yt1/0CuQuwu0tetrJIqNbChxT5Wa8o3T3yS4ibhfEF1LoZU17FTLLLTBSvrM?=
+ =?us-ascii?Q?b1cFDayD0C9rjeYzCTYmHA3rQrXOBk4Motmh9HSbqii61wY/VVCzuvpbfi2v?=
+ =?us-ascii?Q?EKt4heuHUQobJegRkiijJHr20lNdHXFUuMLwZ1AkfmUXd12UgRAPmoU4jKKX?=
+ =?us-ascii?Q?2H+TzIkv17t/pjyJ+fInzGg6NmAjYVmfD8eCeFwNGBReKWkkfLao5n+QCP3S?=
+ =?us-ascii?Q?mx/XaY1Cn6mPfOyZP0GyjYT/9dQxGf+LkxQIEzu7ZDqS4BpWH65IfCNMM8bf?=
+ =?us-ascii?Q?FQ6E59XUFe9k7kahq24ynJyjW/96ee7iFXjedExfaE7xV0e2PK4j03FNqR2w?=
+ =?us-ascii?Q?qZQ4kyvnAhEwommzPHjeEcjH5h4Ag5/75o5lsAh8pfWW9SaGx1xwUztVAxJa?=
+ =?us-ascii?Q?WMVpIp4yvgt7tfpQDl2Siv+K69901EfqPHhra5/CBzm2NTRISVYS44b4fKTx?=
+ =?us-ascii?Q?8UYB2PELz9TfcAiXqFUDcZv5Riv5uAvqxF4Ggj+9OKhg2CxXvPOL9hKeNQo/?=
+ =?us-ascii?Q?bR7w6tqYobFcoCSUsOzI6HbpgDPAXajvRXsdZmY+MkNP6ae1Qq7/HSGpDBjd?=
+ =?us-ascii?Q?DDvhWiFvYWUpQ0F1rf1kf33Ea11HxwZRw2CsuxQ1iNa+Y1sqzQrjILC+/AiR?=
+ =?us-ascii?Q?EjynHcbJ5Nf0+VIOa1OMNmq5VECnn8Jg0TQk18Rah8/6yT/zww3KolQhbETh?=
+ =?us-ascii?Q?S1La4pj2azlbRQuoY79/rHxJscPC4xUwKfOpK+qrbp/S0/++tR2KB0W5gKpm?=
+ =?us-ascii?Q?Yv43WM1zOiAHIUcPNyn2g1Onu1c20AdT7KSy9piNQT/W1sDrosb2zCRBPjfg?=
+ =?us-ascii?Q?A48YbC+kyZOhLoWVj+CFcz+WasSA0PpfDIjntMUb3Yao64iSIvNjmt6jW5Zz?=
+ =?us-ascii?Q?3mhTjB/bxygCGRcC+/NXlEUAHFCa8n50Z1Cu4EJ9xCzAQlS0sx6q67Uxe8cB?=
+ =?us-ascii?Q?xNVVv9ho5swLUzx3/kclnOW2EEgs770Ft6xld8K42ImAFzgQfslV/NDK5fHy?=
+ =?us-ascii?Q?n1MZAL2VkWb61AU7Hw39Y5I4/ULuUIxKiD6lATRMWU/DCtSZ3gZsjSxeWw2F?=
+ =?us-ascii?Q?4OhKDcpkmg1g9wCEi1Xl3M/+ad3NF0X7ZCcwwLqmvcOB7l8B1lJmBrIHtqli?=
+ =?us-ascii?Q?+DYj/Bs0WcSfoQHuGg/VyUuf9zHwT2bxuizgFipvyf0awhuvmlD+E/Ymmav+?=
+ =?us-ascii?Q?E16OA3x0xFQIYUcRWhPA2thzxQNqxl8KMdrc+PwG?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 229f2d9c-5609-45d4-0ec0-08dc8190e531
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b095422-695a-40a5-8d7c-08dc81a92e7b
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 16:44:10.1394
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 19:38:01.0553
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rwR3WlkZlXAbP6pX65tynVaarv211qI83H0Yqx+O+fzRHT8BOyy2UgVvNe5rwMSck635kKLm3CtXgeGKK8/onA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8316
+X-MS-Exchange-CrossTenant-UserPrincipalName: FWsGQhUWwc2x5cUZMgYWhQKuj4QOF02GdLQr7P4agS0ghaK5XJypRrB5d1JvqvcliTpJS+wLrYAUOF6IhgMAfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9679
 
-Convert binding doc from txt to yaml.
+Convert layerscape fsl-esdhc binding doc from txt to yaml format.
 
-Remove redundated "gpio1: gpio@2300000" example.
-Add gpio-controller at example "gpio@1100".
+Addtional change during convert:
+- deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
+- Add "reg" and "interrupts" property.
+- change example "sdhci@2e000" to "mmc@2e000".
+- compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
+most existed dts file.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
 
 Notes:
-    Change from v2 to v3
-     - Add Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-     - keep 'gpio-controller' and '#gpio-cells' together in example.
-    
-    Change from v1 to v2
-     - Add gpio-controller at example "gpio@1100". to fix bot error.
-    Strangely, I can't reproduce locally.
-    
-    Pass dt_binding_check
-    make dt_binding_check DT_SCHEMA_FILES=fsl,qoriq-gpio.yaml
+    pass dt_binding_check
+    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl-ls-esdhc.yaml
       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
       CHKDT   Documentation/devicetree/bindings
       LINT    Documentation/devicetree/bindings
-      DTC_CHK Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.example.dtb
+      DTEX    Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.example.dts
+      DTC_CHK Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.example.dtb
 
- .../bindings/gpio/fsl,qoriq-gpio.yaml         | 82 +++++++++++++++++++
- .../devicetree/bindings/gpio/gpio-mpc8xxx.txt | 53 ------------
- 2 files changed, 82 insertions(+), 53 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
- delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
+ .../devicetree/bindings/mmc/fsl-esdhc.txt     | 52 ----------
+ .../devicetree/bindings/mmc/fsl-ls-esdhc.yaml | 98 +++++++++++++++++++
+ 2 files changed, 98 insertions(+), 52 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
+ create mode 100644 Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
 
-diff --git a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+diff --git a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
+deleted file mode 100644
+index edb8cadb95412..0000000000000
+--- a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
++++ /dev/null
+@@ -1,52 +0,0 @@
+-* Freescale Enhanced Secure Digital Host Controller (eSDHC)
+-
+-The Enhanced Secure Digital Host Controller provides an interface
+-for MMC, SD, and SDIO types of memory cards.
+-
+-This file documents differences between the core properties described
+-by mmc.txt and the properties used by the sdhci-esdhc driver.
+-
+-Required properties:
+-  - compatible : should be "fsl,esdhc", or "fsl,<chip>-esdhc".
+-    Possible compatibles for PowerPC:
+-	"fsl,mpc8536-esdhc"
+-	"fsl,mpc8378-esdhc"
+-	"fsl,p2020-esdhc"
+-	"fsl,p4080-esdhc"
+-	"fsl,t1040-esdhc"
+-	"fsl,t4240-esdhc"
+-    Possible compatibles for ARM:
+-	"fsl,ls1012a-esdhc"
+-	"fsl,ls1028a-esdhc"
+-	"fsl,ls1088a-esdhc"
+-	"fsl,ls1043a-esdhc"
+-	"fsl,ls1046a-esdhc"
+-	"fsl,ls2080a-esdhc"
+-  - clock-frequency : specifies eSDHC base clock frequency.
+-
+-Optional properties:
+-  - sdhci,wp-inverted : specifies that eSDHC controller reports
+-    inverted write-protect state; New devices should use the generic
+-    "wp-inverted" property.
+-  - sdhci,1-bit-only : specifies that a controller can only handle
+-    1-bit data transfers. New devices should use the generic
+-    "bus-width = <1>" property.
+-  - sdhci,auto-cmd12: specifies that a controller can only handle auto
+-    CMD12.
+-  - voltage-ranges : two cells are required, first cell specifies minimum
+-    slot voltage (mV), second cell specifies maximum slot voltage (mV).
+-    Several ranges could be specified.
+-  - little-endian : If the host controller is little-endian mode, specify
+-    this property. The default endian mode is big-endian.
+-
+-Example:
+-
+-sdhci@2e000 {
+-	compatible = "fsl,mpc8378-esdhc", "fsl,esdhc";
+-	reg = <0x2e000 0x1000>;
+-	interrupts = <42 0x8>;
+-	interrupt-parent = <&ipic>;
+-	/* Filled in by U-Boot */
+-	clock-frequency = <0>;
+-	voltage-ranges = <3300 3300>;
+-};
+diff --git a/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
 new file mode 100644
-index 0000000000000..eb046a48a3f59
+index 0000000000000..cafc09c4f1234
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
-@@ -0,0 +1,82 @@
++++ b/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
+@@ -0,0 +1,98 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/gpio/fsl,qoriq-gpio.yaml#
++$id: http://devicetree.org/schemas/mmc/fsl-ls-esdhc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
++title: Freescale Enhanced Secure Digital Host Controller (eSDHC)
++
++description:
++  The Enhanced Secure Digital Host Controller provides an interface
++  for MMC, SD, and SDIO types of memory cards.
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
 +
 +properties:
 +  compatible:
-+    oneOf:
++    items:
 +      - enum:
-+          - fsl,mpc5121-gpio
-+          - fsl,mpc5125-gpio
-+          - fsl,mpc8349-gpio
-+          - fsl,mpc8572-gpio
-+          - fsl,mpc8610-gpio
-+          - fsl,pq3-gpio
-+      - items:
-+          - enum:
-+              - fsl,ls1021a-gpio
-+              - fsl,ls1028a-gpio
-+              - fsl,ls1043a-gpio
-+              - fsl,ls1088a-gpio
-+              - fsl,ls2080a-gpio
-+          - const: fsl,qoriq-gpio
++          - fsl,mpc8536-esdhc
++          - fsl,mpc8378-esdhc
++          - fsl,p2020-esdhc
++          - fsl,p4080-esdhc
++          - fsl,t1040-esdhc
++          - fsl,t4240-esdhc
++          - fsl,ls1012a-esdhc
++          - fsl,ls1028a-esdhc
++          - fsl,ls1088a-esdhc
++          - fsl,ls1043a-esdhc
++          - fsl,ls1046a-esdhc
++          - fsl,ls2080a-esdhc
++      - const: fsl,esdhc
 +
 +  reg:
 +    maxItems: 1
@@ -214,111 +268,65 @@ index 0000000000000..eb046a48a3f59
 +  interrupts:
 +    maxItems: 1
 +
-+  "#gpio-cells":
-+    const: 2
++  clock-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: specifies eSDHC base clock frequency.
 +
-+  gpio-controller: true
++  sdhci,wp-inverted:
++    $ref: /schemas/types.yaml#/definitions/flag
++    deprecated: true
++    description:
++      specifies that eSDHC controller reports
++      inverted write-protect state; New devices should use the generic
++      "wp-inverted" property.
 +
-+  interrupt-controller: true
++  sdhci,1-bit-only:
++    $ref: /schemas/types.yaml#/definitions/flag
++    deprecated: true
++    description:
++      specifies that a controller can only handle
++      1-bit data transfers. New devices should use the generic
++      "bus-width = <1>" property.
 +
-+  "#interrupt-cells":
-+    const: 2
++  sdhci,auto-cmd12:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      specifies that a controller can only handle auto CMD12.
++
++  voltage-ranges:
++    $ref: /schemas/types.yaml#/definitions/uint32-matrix
++    items:
++      items:
++        - description: specifies minimum slot voltage (mV).
++        - description: specifies maximum slot voltage (mV).
 +
 +  little-endian:
 +    $ref: /schemas/types.yaml#/definitions/flag
 +    description:
-+      GPIO registers are used as little endian. If not
-+      present registers are used as big endian by default.
++      If the host controller is little-endian mode, specify
++      this property. The default endian mode is big-endian.
 +
 +required:
 +  - compatible
 +  - reg
 +  - interrupts
-+  - "#gpio-cells"
 +
-+additionalProperties: false
++allOf:
++  - $ref: sdhci-common.yaml#
++
++unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    gpio@1100 {
-+        compatible = "fsl,mpc5125-gpio";
-+        reg = <0x1100 0x080>;
-+        interrupts = <78 0x8>;
-+        gpio-controller;
-+        #gpio-cells = <2>;
++    mmc@2e000 {
++        compatible = "fsl,mpc8378-esdhc", "fsl,esdhc";
++        reg = <0x2e000 0x1000>;
++        interrupts = <42 0x8>;
++        interrupt-parent = <&ipic>;
++        /* Filled in by U-Boot */
++        clock-frequency = <0>;
++        voltage-ranges = <3300 3300>;
 +    };
-+
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    gpio@2300000 {
-+        compatible = "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
-+        reg = <0x2300000 0x10000>;
-+        interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
-+        little-endian;
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        interrupt-controller;
-+        #interrupt-cells = <2>;
-+    };
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt b/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
-deleted file mode 100644
-index cd28e932bf50e..0000000000000
---- a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
-+++ /dev/null
-@@ -1,53 +0,0 @@
--* Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
--
--Required properties:
--- compatible : Should be "fsl,<soc>-gpio"
--  The following <soc>s are known to be supported:
--	mpc5121, mpc5125, mpc8349, mpc8572, mpc8610, pq3, qoriq,
--	ls1021a, ls1043a, ls2080a, ls1028a, ls1088a.
--- reg : Address and length of the register set for the device
--- interrupts : Should be the port interrupt shared by all 32 pins.
--- #gpio-cells : Should be two.  The first cell is the pin number and
--  the second cell is used to specify the gpio polarity:
--      0 = active high
--      1 = active low
--
--Optional properties:
--- little-endian : GPIO registers are used as little endian. If not
--                  present registers are used as big endian by default.
--
--Example of gpio-controller node for a mpc5125 SoC:
--
--gpio0: gpio@1100 {
--	compatible = "fsl,mpc5125-gpio";
--	#gpio-cells = <2>;
--	reg = <0x1100 0x080>;
--	interrupts = <78 0x8>;
--};
--
--Example of gpio-controller node for a ls2080a SoC:
--
--gpio0: gpio@2300000 {
--	compatible = "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
--	reg = <0x0 0x2300000 0x0 0x10000>;
--	interrupts = <0 36 0x4>; /* Level high type */
--	gpio-controller;
--	little-endian;
--	#gpio-cells = <2>;
--	interrupt-controller;
--	#interrupt-cells = <2>;
--};
--
--
--Example of gpio-controller node for a ls1028a/ls1088a SoC:
--
--gpio1: gpio@2300000 {
--	compatible = "fsl,ls1028a-gpio", "fsl,ls1088a-gpio", "fsl,qoriq-gpio";
--	reg = <0x0 0x2300000 0x0 0x10000>;
--	interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
--	gpio-controller;
--	#gpio-cells = <2>;
--	interrupt-controller;
--	#interrupt-cells = <2>;
--	little-endian;
--};
 -- 
 2.34.1
 
