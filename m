@@ -1,60 +1,65 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2071.outbound.protection.outlook.com [40.107.22.71])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2062.outbound.protection.outlook.com [40.107.6.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD2615CD7F
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 16:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BE4176225
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 16:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717173204; cv=fail; b=QsOpRaBuM8h1knZqAvR/qoGDoAmFrU+jJkrOueCbzqWZNvBWT5bWj41mF7HqBuP16tTi+mQ8OG5877GN8KHfuEsu6GVbvn2Y8+Z5G1o3YaGQJvaxdFsXjmhNMS1udM2+DmFWduYlFCtqMWVBh7/gLf8pFhT2+Njlp3Nc7OwmMjY=
+	t=1717173855; cv=fail; b=nOGM9pgSjJdUc3RHEH0Yn28g5pUhK7XeDjNG51l7zv1/JXIVHof9yKR7t2GGBhDAGBF2yipyhG0ypuvLJ6W1fDyQQVsiwoPb6A5faYR1gdO0vcdel6BSqGXiXlbH3J7MxPxWyKDYQcU0BzerdIs95jXa8z37zoJnUsoLlzRtaHE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717173204; c=relaxed/simple;
-	bh=Ghpe2PBxMJvA9M+XfCvvAcoc30m7q+ocjEHykEl3mmg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=H6dWrAdfaCNwgUlt+0U6RLkSI8IXRjCoZgKvjuERzGWJayT1YNGvy/WS+4WuYmKKN34ebow4b4X5AJd/P5uGH6GKvVLtRCqzqKQWk3WQ/N+lOUbAfP540y6GeFvI4fOUSBarrBTHl9sGE0ipZG/Jm/+Dy+xARgN5WhY6X20q2Nc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=K8HkuLln; arc=fail smtp.client-ip=40.107.22.71
+	s=arc-20240116; t=1717173855; c=relaxed/simple;
+	bh=QfhQ0tSjtsAp3pwdL16aT4ioOSRp2kefG1/9b0svC2A=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=pHlgL7MLJeg48dWzoORYS1F4izxbuUCdBbz8Jo9bcdfGFLzUWPR8XN+eFcY3lAET39uYqVkO2IUqH6pOcOa+3Qy8vT4262/W1lHxW8wk0+Q17ziLrBYB4XLd6Alv9vxo7GfEaqLbiceqbCwagJ5sjjUDhAHRROlmQ9KC767g8oU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ErqaLlMp; arc=fail smtp.client-ip=40.107.6.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="K8HkuLln"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ErqaLlMp"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KnKoJOGFV/0n/0JMwI4d6v4o5SAEzD5XVFTpn8vuJ/NdjJbJE5/2mNHqk3SBALl08Hi64pNhayRy5NV3TqiByxLVhBo/H5t71KmICkihHQbwtLvemZNmJq0SXoXsuo91G4y9MA3xAXG7WrHRAzNKlLmnlm4oumvNwMvmmOtv5AtRfif5ez/ptoGDRsmOUC4/lSp49H71Mzm0eVaBnYu0IR1tlrPBYo7NvgvVyMfPsyC6hH6kxQPTaXpIZUwG+cwlx6X95bPNJJ1ThCXCSFc1MEASXoJAxUC2k9NnRTbTGFaM8hplZi7DCA9m7WEZP7TtzAKLSk3XSB4feaFhOwWAAQ==
+ b=Csz5r/EmNWj5q5MHtaz7KasD7494EST2xV/tg8o2CA5oT322kusSXVAch3nfM4eRihmq7eJF7bhSnWl/Tvx3gfZ3ExcJv143Q+TbpvGr81oVbn9anbEh218gms9pX7VPGunCvc++0WfNZhN0Vgj+0RvvWLVHrD3F/GiZph+M0GJK4loNvbkwMiXu2MjgeV7Ar1dT8Fb8G5lx3eUCB4EwgZVUF65zFca7srR1oWSOMky1XGkLmeOTsFwSw/GVHSXJmvW/khe77wKy65LN90AfrNpMoafEEjUaWj/aMEwMOEx4BPjo+fSPWlobsEl8PtPKIxz9Mx/prCMZtQ0sR3QDOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CRJ/O0ryhVZY+/ZZv17Sbp7hjtMigMkBXC8btHCtd8M=;
- b=mvnmG6fvKn3muzHWUMVMOjuX1Bml9Zbu4+DH0/o6WE+wO8TGJNjXkGxXuXXX4Q2ehOJgrgHM+I1JcvFoSwbs3QPQWfstzwQFT4ykJFCwRoxVYaJdE7NYBdoc29QZUCUdVVoln6sqMRvoqlxKI9iWfu41aNijxZWJgzeOEfOFSWNUM19ysURgmciiqPjix+QO1AA7daSlDu66bqccPX+WC/jF2UmKpkZTdP1ctmcT9X/Ak+62oIE7KBj8xhhVe6GX1IAahQMwW1+St1Vy5MxXbgSMWVqVYcuaYZHypc4WL4+/jy2SAsuDwvC0AQaNz8hUk/fiM/qDh972o+cI9pr62g==
+ bh=4dJxGasPJaw589fVwlksqdg1/sl0BoImJj0StJOPsy0=;
+ b=EfeKexrC4B+Q2YkVRFdgKPtyumMRmdkY+Dqqnl7pVdVesU4EjHs8wgI5FGL4UDcIgMS3ytn1T2RyIz8G+wOcBEMP//PJT9sZ+9fkbpA7oxq/oYeSdWQ0ByKTpRlrCNOoecgKOWWtTwd4CW1jOI7lvfoM5v2IMrpHezi96rpWOPwIBT2lX7O2MHz4+IeOSoQVUB8R861odDdKOjKCodz41bwJBQRCkZYr6Z4mwVgghAdgKhfH6EmaNUwmgUlEyzZszea4j4wQvdljNFAHULPowyJAPPw2ow+U9tPPm8HwF8B69VlPn19kyXp5O2Qg7CLW1R3GKN8LcivP5Js901c1Hg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CRJ/O0ryhVZY+/ZZv17Sbp7hjtMigMkBXC8btHCtd8M=;
- b=K8HkuLln799WXnZJUtxksZ6vhYZgD10fLo2+wPf5JX6VBXKe1clw+mUUO9qUSJdtnaNsrcbf7hTVSs0WIsU18eBrBcrwYh1CcByWSHCCqRn9s6U1nqKzx9hlZDNzR7Kz62MoDWN3eIuY8qS862iEaHrYUJFuwDGPM14VWLM+we4=
+ bh=4dJxGasPJaw589fVwlksqdg1/sl0BoImJj0StJOPsy0=;
+ b=ErqaLlMpJZfa+tGQO5P00nA6paZolcVAMzjZ5WPCv7KdNzmV4LszeLYdFK4GQJk/z2CxJF99rfpF2+IRe/zzN2Mn7VSnyBeeK99FET+U3kYg+bS5NavHs4GWYQzttvSd5Yei3jERk9QINOWkKmg2lpr/FOtJ/OHH5bUc8yj9toY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB11066.eurprd04.prod.outlook.com (2603:10a6:150:224::18) with
+ by DB9PR04MB8316.eurprd04.prod.outlook.com (2603:10a6:10:246::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.27; Fri, 31 May
- 2024 16:33:19 +0000
+ 2024 16:44:10 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.018; Fri, 31 May 2024
- 16:33:18 +0000
+ 16:44:10 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Conor Culhane <conor.culhane@silvaco.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-i3c@lists.infradead.org (moderated list:SILVACO I3C DUAL-ROLE MASTER),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] i3c: master: svc: resend target address when get NACK
-Date: Fri, 31 May 2024 12:33:00 -0400
-Message-Id: <20240531163301.1401281-1-Frank.Li@nxp.com>
+To: alexander.stein@ew.tq-group.com,
+	krzk+dt@kernel.org
+Cc: Frank.Li@nxp.com,
+	brgl@bgdev.pl,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linus.walleij@linaro.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org
+Subject: [PATCH v3 1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
+Date: Fri, 31 May 2024 12:43:57 -0400
+Message-Id: <20240531164357.1419858-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0141.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::26) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BY3PR05CA0044.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -63,186 +68,257 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB11066:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2080b874-9666-4995-cb5c-08dc818f6107
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB8316:EE_
+X-MS-Office365-Filtering-Correlation-Id: 229f2d9c-5609-45d4-0ec0-08dc8190e531
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|376005|52116005|366007|38350700005;
+	BCL:0;ARA:13230031|376005|7416005|1800799015|52116005|366007|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iPI/iGSMWb/6LO89RXqrVjjd3PpHGrZP/hQZ15fBUNw2pyTm7R9ufSXiJFOp?=
- =?us-ascii?Q?YBj+e2mS3N5jvIRGZpfQAKTUI+on0t5osUKlN++jpWfrTZnkCdxoMMLk5ri5?=
- =?us-ascii?Q?ixfjA7yypNTFkVJuzmBZMR+cL7PAYDXPT+YNi/uKmbZAEa1PBSQQc1W4CQHP?=
- =?us-ascii?Q?Noujv+flDW8oGoTfd17HOSMGxkzSjgPnwm8W6tU9M+6kY/F4RscjtGPLOKUY?=
- =?us-ascii?Q?EWX39inQZaeibmHmbNOzlWS5iqgcGDA8p4KHqt4xihRtqbNfW7+LzgMOa3nW?=
- =?us-ascii?Q?eI1nvew2d6FaB3rKsaz+Z0d6c23sF+0CBw8cv+ZWnrto84ZZknyESDmg+7jL?=
- =?us-ascii?Q?UW3kWO5MFSaIrYT7c+4CmTI4FC2JewpvO1Z+81Uh5ePFa7NZFcJ6vvCf05ep?=
- =?us-ascii?Q?KLLhm1fdSKVq8YFrSWpM/61uishItQH8D23kR/oxEZMVqASXk6DPyj4rjKgh?=
- =?us-ascii?Q?yzBACSJoNUQNs3OyiJhE8Ick1QWdFksguKzplLbWA0f1Q139ufqn4PgQre5o?=
- =?us-ascii?Q?a51HUIXVJodTG9hkFTVE+MOUz/w/afX+AD/eJdQ0cKqc10jWB4LadWGCFJah?=
- =?us-ascii?Q?ArC6xzIuBIgJTZcPNRkYX3V39ppd08yidGpbP3X9BJ++AEnfQoAhDiOlO4+L?=
- =?us-ascii?Q?2EjOxZqIlQ4C8Z2pjAt6goCfpml0YqYcdFmNzk7QKIb864ev4lq7xVWEZFdU?=
- =?us-ascii?Q?VFcPDtA0hpri7Y6SCe7IfPypDiFsz4iN/vxV+qOzk7gzRUWNlbPbdkNJQKtV?=
- =?us-ascii?Q?wCIxXehlq0hUHvmUgsisNGX5qOy5/u5xCtDeALtLV267oZGzD3xFyNVpXASq?=
- =?us-ascii?Q?bBJP19kgNHbGLj4qWVtUSei4qvrNHwX2Tbqx4TtaAOEu8ArVk+BJCq88xuda?=
- =?us-ascii?Q?SroAzgit0lXLU6S+cLmCrxFbf3ZRRnC0mnD+jBxFmaZhFYa5pD7MlGFv4+Us?=
- =?us-ascii?Q?tVE+ID3cCYxSRWLHrnWq5PsgRO9YT8OzAwv1PN+7IKEjDPUZLq/H5ayw21Yz?=
- =?us-ascii?Q?uxZAomBvTkwDKDwsutjB472ecS2pK+v/f2LP2wPou0HAWW9hUyQ6zrrW1Ng9?=
- =?us-ascii?Q?m6OvgO3QpDGcZ9vkRa3rluyq9KSet/JOE1rISKkQc15vpcJw2IMKzaTheLS4?=
- =?us-ascii?Q?lo6/lIlzttWe6L+y8gW6pAxe3YFn4JLeGDOYyG7GBu38GfPmDDOdQBJgPSaM?=
- =?us-ascii?Q?Eh/gwAMNCCu31BmKTx2/KESBIE2ObJWAkXc6oV8Mz76LfXRGJj715avcZl7N?=
- =?us-ascii?Q?yf2Qm5eAdEkWOmevxtf8evA6a6Rp3y1ZuP7Kwz1qXwsOzGMhCKeX24G8w39G?=
- =?us-ascii?Q?K5GABMuHl5bW7PimrwFfQQ24YUAerbpwYSdAMO837mMI+w=3D=3D?=
+	=?us-ascii?Q?JtqwbdKManIGVECDzGYtiHsdPxPMORiKhrxpUVRnS5TA339Mk5ZzLeNJ+VVa?=
+ =?us-ascii?Q?Z7CvyZXrgDAqbD0h3y0fzRhCL2D0NgeFfviDdl+C4QFX3nNL+xNT728r5YVk?=
+ =?us-ascii?Q?nH2tO660c8fMw/tWNIJsXKk0At2G/01qQSOw7N+V9JGpHuDGjWB36Rx0dbYU?=
+ =?us-ascii?Q?xG11oVmb1+BFr3fzcPW9GmnFWfW5BCek02M3Th7AUz6tKg7tE07blApFr84n?=
+ =?us-ascii?Q?wVSjBFbvVUYw5HByl7WPBFTziMT7ixph5bxBPlroZUtzOxGrBmNmmN2RxJdY?=
+ =?us-ascii?Q?4xLI4frOkQ4sSZYB1yE5sQghYInoLsKZ4JvozfJqnkiDD6fvCIQkNix24mDO?=
+ =?us-ascii?Q?PLEKvqLIgpGJTGPlaQr9aOuOg6dydakbiZgLgMzA7qdp6zt2gnWN3Dkkjq9M?=
+ =?us-ascii?Q?W07PiUcHqfB0lbwueXF2QZiXwj3PXt4Ky/YxwlqA++GMJ2GRb2/F+iRW6841?=
+ =?us-ascii?Q?efeTXFkdZl44F+lQviKpLOl2P6viHfi7LiXd6DLw8mAS/81FL8johlA8WfFC?=
+ =?us-ascii?Q?1nocAHucAMxGoI0ylq1E/9CLsRoHsN7Xuzg8dS/a4pFZf4VXRcy6NULwS0ii?=
+ =?us-ascii?Q?fK/+Q3CDbjLKMLBHXH8SNZXrJAJm/oK4gkoELgshZIyWlkVSIgAknF0ts1jq?=
+ =?us-ascii?Q?sOaG1SS/fq0xVXGMLv1z/71gefn53dvBUvjIrgSCZFNLblf350EBotYcA5f8?=
+ =?us-ascii?Q?w7MjiMa1m7YXRaY7ktDEjPBaZGXA+GysFDl9Hu/e5NJg6kPe6Nfpw6x65Jzb?=
+ =?us-ascii?Q?AQC2AfXZA2MoxymBKQtHwZw4Mv3X1ywBkc4e6hDG+BmmHO60h9qPV9u4uDVA?=
+ =?us-ascii?Q?tj4dDt+Y+ArgqIR39CQPz7VEva/ZGQMTCd0ggE06XGIPBViH6FdDO0sJVBkb?=
+ =?us-ascii?Q?U1/kkjPXSqrRWk36hvju6BlgooTXxSTlG1dJgllZPWGaewU+YcGEXZNTRGdn?=
+ =?us-ascii?Q?XNUlw13zDzNg4Ioqsg4KIU+86B6rZWCdhfvxKKC9pjQRqRpFBBaIAVgvxl9X?=
+ =?us-ascii?Q?mRx+6J3b1G6bkReD7SD9AW7JX3s/zFduvFK11tL3WJj6z/E911zrxgDQga1e?=
+ =?us-ascii?Q?cZoQw41i8RIt2x8Fq5czQCsgTL58KkBRCzZLkvEY7ApBrsC4t2PNLuvWanKS?=
+ =?us-ascii?Q?IX0mM0nYyRGeFfzcmFP8jFSQEVqaQPZ5BkMt0QYyktlwYM1TXatm98I89+f9?=
+ =?us-ascii?Q?3YD3iO+vhqKKHHPANabWC/XTtcWuETPFTTovjilz111nNWHy9fEArzMvp984?=
+ =?us-ascii?Q?F4wo4SoT9Lcb6djXZPWLiVbLoAQqRyQoUx1JihvcFDQtEBSZ+LJRR52NCt4d?=
+ =?us-ascii?Q?SHc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(52116005)(366007)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?40eMn6Z3wgddlja0rbc2FjygJcnBGapQqutZVFwbHL6DH3tMAhaChlB0tzNU?=
- =?us-ascii?Q?2LV/fGDWtziVjmPjJ5ciqEodRdoqvgR3jzT7v3pW1JQPIdrwgtYjxB5o+MY8?=
- =?us-ascii?Q?bdpQBuBtX60IR6Dit+6mDPrJSbpN0/VvkFxKeXCtNymgA6YkOcHRW9XFSWno?=
- =?us-ascii?Q?hvGuUIM80J3Eslr4l3cO3Rc/Amb7YPI7PaDS4Eglyl0yC1ryieZoEavG5TYr?=
- =?us-ascii?Q?odVv184TxRByaf0qOnbsdMPVnunTRhBcvxNej+e0tgRCaQSxbnh5ltLvL6jD?=
- =?us-ascii?Q?qPgYJRrlaavHTmB1on7jDcRxkFEuQaIw6HbbBKCrjyComzAHi/cHDTos6ocf?=
- =?us-ascii?Q?ZPNXqZVJb7P9Pd2zgrHnb8B/MS3xAwnKQPcrTTq/8jsiYL8ZXTTjZJ+Q0tXf?=
- =?us-ascii?Q?gzjW6cfcJZZJNsQhuHOp2OTJ6CEWjSVlOjSvhUUVlZPhRBQUbbbCn2G0/mfp?=
- =?us-ascii?Q?G+oFIo/pwHy/nU88Ysb562CJB9+IwV0lRN15T7BYFHm4X9HUNyO4KIhw95p5?=
- =?us-ascii?Q?zj85caTcPZDOydhRsiVjMlTI2in83mU61fkuqRJxIY4BGhj7YNodYLn8KQ4N?=
- =?us-ascii?Q?xLlG16/4z8EW7GI1AOM4R7MuUK8bwA7yCpBR12mPeSwgc0uCMbwUEOmXw5Wq?=
- =?us-ascii?Q?VUvYFpPY04QFjM/pdFuI00dl5W3d12cGmyOIqOHRKLY9v0LdxQn6E8K4fyo1?=
- =?us-ascii?Q?RvevAesHJ2mkU6oY57q4LA6h7Af8S9MIvJkhjQSj9VQ/DMjU+nE9uHCBBkh+?=
- =?us-ascii?Q?Op915URW12N9o4eCV+i1Cpp+673weWtyUCkJr+1wE2LOuEJFHKF4OSsRNC8c?=
- =?us-ascii?Q?NeYOW9ds0ebJVwTa82o0WTCn82+pfNLLru/qUTLfO6ow0ZJX6Bj//RDPuJ9/?=
- =?us-ascii?Q?0JVuitBRzeJYLmvWOfKcBHrOokT+nOzs4+DzMjv/EVmkNBBpy+irCxV9gPvg?=
- =?us-ascii?Q?9WziqZ1ARFVXbS4xJEr2GVdUzoV7+GaG4SWTv0XHFOPjIwrzVMxVyircYAyl?=
- =?us-ascii?Q?5pYK4EBP3Y0kJKJGsEAB4DrYiIzmMW+pL+ObCa/aoLRrZcfiktyrzhQpCYq0?=
- =?us-ascii?Q?Yhg/awj0qnrvzFmTcUN9SO2rpH2KKlNLgS3OW2NTHjqNIRnk/YCeMEHz56fP?=
- =?us-ascii?Q?wdfbBwEYJZsS083qFQQ1h9t36A4hjAVx0KI7E194piz2ZXB09btq4hpn16Fz?=
- =?us-ascii?Q?I+HXsLTB9FriRWWVtWKS9T9AzyvuOJjs48URyXuErcdPN38yVm8SZKboA0n/?=
- =?us-ascii?Q?N7rhVD9AEKTkBm1O+akc/t3lodz6hhPCz7uZZhueVcfeWQUgthCaR514QI7b?=
- =?us-ascii?Q?5KkTEPR9TymWJfnmjGck/3xs2ptjHLDWMHU+hwfZ5A3gaUc/9KEoz+1J5QUV?=
- =?us-ascii?Q?T+fzX/4mRXOcG5UMB20Zb48iDikbYvFxPlXVgoChCLvBrJJxfbHVKLsiu1kJ?=
- =?us-ascii?Q?oukCZaIPFZy/FqR2/R4uPhnsBd7mCGNm06J188KD0/42hEPPE2sriDrR/NIZ?=
- =?us-ascii?Q?QPjXVb3uv++D550JSPJcyHQmZzO/dIIN5JVfnkJiEA1deIDq77tsQTSB23HR?=
- =?us-ascii?Q?OOLMO1GnBsGKGfF1A18X6y2Xc01HkhVtADFsD2Jk?=
+	=?us-ascii?Q?KLLqIMMkvDwE9207pz7QnbLvqWVQ4TbKJNGVHo68dvsIPeC1mHnnFxuHX+Yd?=
+ =?us-ascii?Q?0MXJeJ4LckcFibhoBM+LBRNrDpFQ+VtVbrcSVL4WyU8GCKWHyYfX6Xlb2Lxa?=
+ =?us-ascii?Q?jU+sKJX1OqsZCcVQs/pOQSW33Ei2HF0iXsyx/qSkbrl0nHeTyLTidEu5tF/7?=
+ =?us-ascii?Q?3AEDfJs7a60jMpnx+tCUoMKk7jm1QWmJIX2EGdsv1e1sMv5iTD59cEW3TBtd?=
+ =?us-ascii?Q?zJPwg9CksujD/BR21jAELS8FLanBdb/trfHpVHEl0z870iq2fDCIQZa9U4ay?=
+ =?us-ascii?Q?poWsdEE/d1Azraiv7iqyxntSaOLN59SijwHzp9KBHwScEXzHL4KjZrEG7Rx9?=
+ =?us-ascii?Q?3Oiax04tuIGy5KeyXGEQyo1/VT07EuBI8WP+Kf4LjJ5Ia3IIA5xLPcxBtkJ9?=
+ =?us-ascii?Q?my2wAxHH39sEKWOzqSuRF0YIYkkTJi3u4FL1is0X3/ANVD8u0CQL/37vB8g1?=
+ =?us-ascii?Q?VPK17DqxE7f0MXbYHdnHiUPYzC/52AWvI948LBMphUCNncGdP7QN8SrHipct?=
+ =?us-ascii?Q?uUoz+r1Ftpcsf6efcAt9QEjmhCHTL6PJs8an6bft6u27A0yb+KCrDMm03qC+?=
+ =?us-ascii?Q?x53at9yn4vH0YaxpIADkht0qpq4bv21FKFTJBHGai5e1v1hBe7rHW8vPA6P+?=
+ =?us-ascii?Q?9lQbVVXwJ74n21reuapZna2PvEa5SC6f+vrEI+qTj9q9T1816SszR8stRThO?=
+ =?us-ascii?Q?AcQF8bXoacbH46OkMK9zaKYjxVmSKSgtmBXrtqgzG0BGFLKE3nlEBBIqr2It?=
+ =?us-ascii?Q?EjHVf1Mkz3HxyCHU/rnuFPc+Qj3B5JXuV0N7VHqXIcNc/waPZUxe7q9DysBa?=
+ =?us-ascii?Q?O6/onPz6RFr1/FGk1U2JHukxipTtRW3VmkAmmgCd8SsHqaUIhTzMod7YspZq?=
+ =?us-ascii?Q?1UUyl8v5cg+hVbxYWsURMU6jg+ajN2qD2Ul3owwBCsodQOEFDhlnaS70IE0K?=
+ =?us-ascii?Q?CX4VX2XBG3UmybuV5lZnFIuvWyDGTB6El361BQp3sfzndwHhiSoVDlaTwgj+?=
+ =?us-ascii?Q?wPMU7IEOGp0N07zERbFZyM4JbAiYCsszQU6KvRAKpGuqOah+79zQ7bOgrqq3?=
+ =?us-ascii?Q?eAF3jrbRE93nk+yjQODAp7djHY3ZryYmBPX6J36ZbiCuuoqKxolCENBcl44H?=
+ =?us-ascii?Q?lJ+/j9DskGN2pIiEzKfD+Pexh61mgN+LA1wBjP88uLIabSOV4zm4HMkcGOSV?=
+ =?us-ascii?Q?aX428DjtU9NePTtvoDDCE6aFzlsO68hiNX1qPo3bQ8c4yUb/yHLzda8yVxRL?=
+ =?us-ascii?Q?RepGe3C9dIMDEUKfPkm1+3BWzjhl+7JljZ6xzFXSlCsNtjzn4NIfh2EfWrge?=
+ =?us-ascii?Q?JNoUZ9Zgx/5njQ7QPztP0lQGLddZfPMC6zDoEfIMQRqY6e/pVNK6P0YAOfpf?=
+ =?us-ascii?Q?YpyfznVhO1VJBmguwtFrPzLG8EP3YIPDjHppo1SW4qKWDACzk7JuoLQJhbaB?=
+ =?us-ascii?Q?fPPl8xyh5vQesRUhaeNC1Oxx4xUz3HazsI07berBQH/NtOtD0RzEKEdBk+It?=
+ =?us-ascii?Q?LMbmzeE2MsAbri9GFwryej34ABOmOpQD+rTUSdw45FoDwmcj7W6Ck3O/fqYN?=
+ =?us-ascii?Q?J4p8QOAIYMxGNsIBmPU=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2080b874-9666-4995-cb5c-08dc818f6107
+X-MS-Exchange-CrossTenant-Network-Message-Id: 229f2d9c-5609-45d4-0ec0-08dc8190e531
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 16:33:18.9149
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 16:44:10.1394
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NpaTI5/Hq2fB2reXMJTTbk+GtnMeLNJXlqa+VsSxFk1gEdP1cSvJD3O6f2aX3GZAeE6bFyOV55S1cRyypIC6Sg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB11066
+X-MS-Exchange-CrossTenant-UserPrincipalName: rwR3WlkZlXAbP6pX65tynVaarv211qI83H0Yqx+O+fzRHT8BOyy2UgVvNe5rwMSck635kKLm3CtXgeGKK8/onA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8316
 
-According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3:
+Convert binding doc from txt to yaml.
 
-If the Controller chooses to start an I3C Message with an I3C Dynamic
-Address, then special provisions shall be made because that same I3C Target
-may be initiating an IBI or a Controller Role Request. So, one of three
-things may happen: (skip 1, 2)
+Remove redundated "gpio1: gpio@2300000" example.
+Add gpio-controller at example "gpio@1100".
 
-3. The Addresses match and the RnW bits also match, and so neither
-Controller nor Target will ACK since both are expecting the other side to
-provide ACK. As a result, each side might think it had "won" arbitration,
-but neither side would continue, as each would subsequently see that the
-other did not provide ACK.
-...
-For either value of RnW: Due to the NACK, the Controller shall defer the
-Private Write or Private Read, and should typically transmit the Target
-						    ^^^^^^^^^^^^^^^^^^^
-Address again after a Repeated START (i.e., the next one or any one prior
-^^^^^^^^^^^^^
-to a STOP in the Frame). Since the Address Header following a Repeated
-START is not arbitrated, the Controller will always win (see Section
-5.1.2.2.4).
-
-Resend target address again if address is not 7E and controller get NACK.
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/i3c/master/svc-i3c-master.c | 58 ++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 032fe032ec433..0b588ed5894ea 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1052,29 +1052,59 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 			       u8 *in, const u8 *out, unsigned int xfer_len,
- 			       unsigned int *actual_len, bool continued)
- {
-+	int retry = 2;
- 	u32 reg;
- 	int ret;
- 
- 	/* clean SVC_I3C_MINT_IBIWON w1c bits */
- 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
- 
--	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
--	       xfer_type |
--	       SVC_I3C_MCTRL_IBIRESP_NACK |
--	       SVC_I3C_MCTRL_DIR(rnw) |
--	       SVC_I3C_MCTRL_ADDR(addr) |
--	       SVC_I3C_MCTRL_RDTERM(*actual_len),
--	       master->regs + SVC_I3C_MCTRL);
- 
--	ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-+	while (retry--) {
-+		writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
-+		       xfer_type |
-+		       SVC_I3C_MCTRL_IBIRESP_NACK |
-+		       SVC_I3C_MCTRL_DIR(rnw) |
-+		       SVC_I3C_MCTRL_ADDR(addr) |
-+		       SVC_I3C_MCTRL_RDTERM(*actual_len),
-+		       master->regs + SVC_I3C_MCTRL);
+Notes:
+    Change from v2 to v3
+     - Add Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+     - keep 'gpio-controller' and '#gpio-cells' together in example.
+    
+    Change from v1 to v2
+     - Add gpio-controller at example "gpio@1100". to fix bot error.
+    Strangely, I can't reproduce locally.
+    
+    Pass dt_binding_check
+    make dt_binding_check DT_SCHEMA_FILES=fsl,qoriq-gpio.yaml
+      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+      CHKDT   Documentation/devicetree/bindings
+      LINT    Documentation/devicetree/bindings
+      DTC_CHK Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.example.dtb
+
+ .../bindings/gpio/fsl,qoriq-gpio.yaml         | 82 +++++++++++++++++++
+ .../devicetree/bindings/gpio/gpio-mpc8xxx.txt | 53 ------------
+ 2 files changed, 82 insertions(+), 53 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+ delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
+
+diff --git a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+new file mode 100644
+index 0000000000000..eb046a48a3f59
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+@@ -0,0 +1,82 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/gpio/fsl,qoriq-gpio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+		ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
- 				 SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
--	if (ret)
--		goto emit_stop;
-+		if (ret)
-+			goto emit_stop;
- 
--	if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
--		ret = -ENXIO;
--		*actual_len = 0;
--		goto emit_stop;
-+		if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
-+			/*
-+			 * According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3.
-+			 * If the Controller chooses to start an I3C Message with an I3C Dynamic
-+			 * Address, then special provisions shall be made because that same I3C
-+			 * Target may be initiating an IBI or a Controller Role Request. So, one of
-+			 * three things may happen: (skip 1, 2)
-+			 *
-+			 * 3. The Addresses match and the RnW bits also match, and so neither
-+			 * Controller nor Target will ACK since both are expecting the other side to
-+			 * provide ACK. As a result, each side might think it had "won" arbitration,
-+			 * but neither side would continue, as each would subsequently see that the
-+			 * other did not provide ACK.
-+			 * ...
-+			 * For either value of RnW: Due to the NACK, the Controller shall defer the
-+			 * Private Write or Private Read, and should typically transmit the Target
-+			 * Address again after a Repeated START (i.e., the next one or any one prior
-+			 * to a STOP in the Frame). Since the Address Header following a Repeated
-+			 * START is not arbitrated, the Controller will always win (see Section
-+			 * 5.1.2.2.4).
-+			 */
-+			if (retry && addr != 0x7e) {
-+				writel(SVC_I3C_MERRWARN_NACK, master->regs + SVC_I3C_MERRWARN);
-+			} else {
-+				ret = -ENXIO;
-+				*actual_len = 0;
-+				goto emit_stop;
-+			}
-+		} else {
-+			break;
-+		}
- 	}
- 
- 	/*
++title: Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - fsl,mpc5121-gpio
++          - fsl,mpc5125-gpio
++          - fsl,mpc8349-gpio
++          - fsl,mpc8572-gpio
++          - fsl,mpc8610-gpio
++          - fsl,pq3-gpio
++      - items:
++          - enum:
++              - fsl,ls1021a-gpio
++              - fsl,ls1028a-gpio
++              - fsl,ls1043a-gpio
++              - fsl,ls1088a-gpio
++              - fsl,ls2080a-gpio
++          - const: fsl,qoriq-gpio
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  "#gpio-cells":
++    const: 2
++
++  gpio-controller: true
++
++  interrupt-controller: true
++
++  "#interrupt-cells":
++    const: 2
++
++  little-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      GPIO registers are used as little endian. If not
++      present registers are used as big endian by default.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - "#gpio-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    gpio@1100 {
++        compatible = "fsl,mpc5125-gpio";
++        reg = <0x1100 0x080>;
++        interrupts = <78 0x8>;
++        gpio-controller;
++        #gpio-cells = <2>;
++    };
++
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    gpio@2300000 {
++        compatible = "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
++        reg = <0x2300000 0x10000>;
++        interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
++        little-endian;
++        gpio-controller;
++        #gpio-cells = <2>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
++    };
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt b/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
+deleted file mode 100644
+index cd28e932bf50e..0000000000000
+--- a/Documentation/devicetree/bindings/gpio/gpio-mpc8xxx.txt
++++ /dev/null
+@@ -1,53 +0,0 @@
+-* Freescale MPC512x/MPC8xxx/QorIQ/Layerscape GPIO controller
+-
+-Required properties:
+-- compatible : Should be "fsl,<soc>-gpio"
+-  The following <soc>s are known to be supported:
+-	mpc5121, mpc5125, mpc8349, mpc8572, mpc8610, pq3, qoriq,
+-	ls1021a, ls1043a, ls2080a, ls1028a, ls1088a.
+-- reg : Address and length of the register set for the device
+-- interrupts : Should be the port interrupt shared by all 32 pins.
+-- #gpio-cells : Should be two.  The first cell is the pin number and
+-  the second cell is used to specify the gpio polarity:
+-      0 = active high
+-      1 = active low
+-
+-Optional properties:
+-- little-endian : GPIO registers are used as little endian. If not
+-                  present registers are used as big endian by default.
+-
+-Example of gpio-controller node for a mpc5125 SoC:
+-
+-gpio0: gpio@1100 {
+-	compatible = "fsl,mpc5125-gpio";
+-	#gpio-cells = <2>;
+-	reg = <0x1100 0x080>;
+-	interrupts = <78 0x8>;
+-};
+-
+-Example of gpio-controller node for a ls2080a SoC:
+-
+-gpio0: gpio@2300000 {
+-	compatible = "fsl,ls2080a-gpio", "fsl,qoriq-gpio";
+-	reg = <0x0 0x2300000 0x0 0x10000>;
+-	interrupts = <0 36 0x4>; /* Level high type */
+-	gpio-controller;
+-	little-endian;
+-	#gpio-cells = <2>;
+-	interrupt-controller;
+-	#interrupt-cells = <2>;
+-};
+-
+-
+-Example of gpio-controller node for a ls1028a/ls1088a SoC:
+-
+-gpio1: gpio@2300000 {
+-	compatible = "fsl,ls1028a-gpio", "fsl,ls1088a-gpio", "fsl,qoriq-gpio";
+-	reg = <0x0 0x2300000 0x0 0x10000>;
+-	interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
+-	gpio-controller;
+-	#gpio-cells = <2>;
+-	interrupt-controller;
+-	#interrupt-cells = <2>;
+-	little-endian;
+-};
 -- 
 2.34.1
 
