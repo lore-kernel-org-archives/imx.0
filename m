@@ -1,128 +1,186 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2042.outbound.protection.outlook.com [40.107.21.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D30E5381A
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717169467; cv=none; b=Pn0d8EET1JQSnLSdZy5EBFbHO9wLHTo9/TUuTBOaZ07ZNDZroRCk4bJgAZudQE60by94DNotHJodcyXb9Vup/qimyHC2ZlBtNA0Cmfbiy6VVx0jA5f6met/DVJD7j67bqr4CTKJ5Cd0JyZ51699JtY6KV4ejud6LOhGtapl6RhE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717169467; c=relaxed/simple;
-	bh=sA6qI//FTL7pgyGldUMsd1jU+l556RY52OWXWgjHnto=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwDg8oJVX2FSrUb1/OiSRPSQtgjGDIHwxRUy8WAabaA5RY/Y7DKuIbvCzVIbeXU7SUGs/SsxLgy7UU+IQ7PF1Q6VBIgwYk3MG64DJvOO1b3Ad82zFQahoCcMBc0HMj7nkz7Sy2TEdp+v3n49/OKnoeTKeCq21B7seeOSVs0qhR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eSF45pq1; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003101420C8
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717170212; cv=fail; b=kgVo7gsSAq2zbnivzJK8p3+OdOR+aqAxtJrgtd21QIdlR/lLjDzsgZL5LWQbLJJ86G8XZUig+GEblyewmizb8dDcD50PrAfTh2KHy69tcDuKvxbLFDO4jyjP+mBpvpHPGQEK2wIzZHCzNYUP9ZNRGxe1qdRrBnqOFnnD4qpffns=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717170212; c=relaxed/simple;
+	bh=LWyoI2Rb7ciBVh8y0WJrLQpa5VJ/rm2nLGRJ0o91ZJM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AV/Hoy2nbUqgXD7jrp5LxG8F14p9zhEtBV3vBUEn5KQa5aGAmX58BsAQ5kEfHRyg7pVFO4+45cJLVIb7nkjTyzL8is8D5+GkAFW7dmWaYYQA0ue/QfcycZy/6BKsfJ/FGisFUCiSa+WZV1c/53eEcyvS1oOIBtOEiZv0tFTtBTA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Qbn6nF8L; arc=fail smtp.client-ip=40.107.21.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eSF45pq1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169466; x=1748705466;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=sA6qI//FTL7pgyGldUMsd1jU+l556RY52OWXWgjHnto=;
-  b=eSF45pq1QjAZ3zPZDNQXqcHDSX9NpgUjnTq8VClVx0Wid/ml9emR9Dhr
-   I2MOa3as0O/Zn7ndrbUc5OeMlBTH5T0duXVLns4JhLpsYF1K9kdflc8qx
-   hBe4UdscvxNIG52K63EEaEJIRE/jUaCoGSajII6WiPVPurD+ETq+VANF9
-   8hDTBIvsaNAIR1Hu3s62Z3/p6Ig0r5afZYjthKuR4K4UDagHDzWhCwQ54
-   A02sFtzXWqm45EDls1u0wtAHYWrGdXlMywDxyKJDvfDPq8LCmy6BSMNbp
-   ubGLsPWrqpaW8wUFggNClQjMGJDzetP5Y1XFKrIZvVkP0PNGkZqPMk6sU
-   w==;
-X-CSE-ConnectionGUID: nAL/EIeXTlCUk+gSqkMS5g==
-X-CSE-MsgGUID: AZRX8+eiSZ22rpLvkt+ftQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839670"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13839670"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:57 -0700
-X-CSE-ConnectionGUID: hHqXtMjBQrmkR3of3UKpuQ==
-X-CSE-MsgGUID: 7H/Fjvj9SyuUz1KNLZXrwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="40627351"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 04665692; Fri, 31 May 2024 18:30:39 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Rob Herring <robh@kernel.org>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
-	Chancel Liu <chancel.liu@nxp.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	patches@opensource.cirrus.com,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH v2 6/6] ASoC: samsung: Replace of_gpio.h by proper one
-Date: Fri, 31 May 2024 18:29:33 +0300
-Message-ID: <20240531153038.1590171-7-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
-References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Qbn6nF8L"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jBzXdDw/fxQ6ySZxdRq5+UQRO1OSSyImaOMdCikmlL3gkLCAwxrPdT9/NAZVJx4X4l1aRbmdi6wrTI/aJ9npHkMa+fsTHil4o48UcS/9C9XBYCZy4JFseVeadFXXFzOjledN1sOXMqIDdQh3luiuwN48rPx33DeujGAePX9YGDEnsTl1cWnUt9PLn1KfIyEzfYR+PhJeHM+/O+hEwg7GDFC+nyNc/xsGybxSueUEiFeyzr5oAIGzEhiv8Cfv+e8W6AbPn+64z8QOOGwQOKo6XuGEoSyL2LbAG5f8wNOcwqJ1suUs8gmcU+5ml014QGwzFlWAEcPOWJbMZTQ4M5+U5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o3HQz8cnIDtSZICFSDsale5sAWPlHWfAZhfoat1UN2k=;
+ b=c+4Ac8aimc0eVt9oYzCneGkO8KrkB3M4G7n4lyM5zSa86hrtEmlyhAJO1JareUjJHbLNRELmb7san4wCRRd61I+WZL2sTptFW7fSrMQahYUeFPqXjQwgNmrK8sVjfDICgctGmrP54VC4a6AzD1CY1kc3SYH2VP4eYhN67U37AKyX1t5tHutD2TL4cp1GFd0d4i0MfTcYeX8glZp4IUCe2iXvWrDCLvjJWoBDY4IJ+QcFyw9nq8dxnDiaLeoHeG6P+7Mz4LI6u3jM+7w0Z0H1xSgik1lhUPl9IbRp505X4EwfCTbWkmyTYH5Yeu+H8+TN7ffJuP9aIF2sBmmKbJGP/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o3HQz8cnIDtSZICFSDsale5sAWPlHWfAZhfoat1UN2k=;
+ b=Qbn6nF8L2dP1L9ka9ZjNNesiKtY70OGvrCNdOgxektfx5GuKunOMKcZ0cKXU+G8eI8Vf2LiRA/WN8MI+wv/2LoDNQPFteJ4CY1JWL43sZ79GGtbfrrStWr5ORwQozb4Q3X6K0OJoveoXErIZ/Z07tfxf8esw3eUjtJvk8PDKuKw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB7605.eurprd04.prod.outlook.com (2603:10a6:20b:292::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Fri, 31 May
+ 2024 15:43:27 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.018; Fri, 31 May 2024
+ 15:43:27 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Conor Culhane <conor.culhane@silvaco.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-i3c@lists.infradead.org (moderated list:SILVACO I3C DUAL-ROLE MASTER),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] i3c: master: svc: fix IBIWON not set if IBI follow a hot join
+Date: Fri, 31 May 2024 11:43:08 -0400
+Message-Id: <20240531154308.1246214-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR08CA0025.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::38) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7605:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e69c251-ff58-408e-6f01-08dc818869bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|376005|52116005|366007|1800799015|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?AIkaE8I400MQCQ6MCMmTDxzsWc+Y2RXmUUrGTQ51nVAQFlhBA8BI/8a3zn4Q?=
+ =?us-ascii?Q?oXkdAjIXZqtlXSUfbBNm9Vuy5NYdUVkw11+lMemzjDW3ljZ6roMrDJ5nhTzz?=
+ =?us-ascii?Q?+2NOeGL0Plth9YGpAy/MQu6WgSKg9P5ATpvvv2nhPsSVAB8VLRzBu+UOUDN5?=
+ =?us-ascii?Q?4ITvFLGLHJxJeXRf5zXA8Ah/rE04IhTnAyMWLuMlI2LLEmh7m7LLPWNw0CWx?=
+ =?us-ascii?Q?EK3BUXHBfQI2eGiZiQmP3eFwyNmzAoRlhRYHXymHxGRWPXdxY6lvZxKyu/WN?=
+ =?us-ascii?Q?Hb5GWKDGsKpUXuMjW0dpiTVdtLTx30C0YhHgcVu/R3CYNLw4cuXOZCIwiW4L?=
+ =?us-ascii?Q?t0mZBRoTVkgzc7/QZOFaNetlTAQ65QaJhaWR7zmWNe4Iso1GDuXYaa2ydKd7?=
+ =?us-ascii?Q?zfVR7JlFTtY5SU3jRAMlv+lFU+feQNn1se89BEF/a/414K6XmmXCHV+/ByUq?=
+ =?us-ascii?Q?vClyE5TJqB59seZaSy+taPvbtrMl4eh4+GhLZu8tqUltN2YLhzhGrIpgQNeN?=
+ =?us-ascii?Q?U8ATm810rq8B3f7/mMRDsx06iGnV6w6JrL0vGCRuQZWQaFkCC5caHC/1gvH7?=
+ =?us-ascii?Q?enSox04C5QZQxE8TpUhMU1MYDYFgKbmBvIWmJHFK5Eg5un8pJO42viiiGmTP?=
+ =?us-ascii?Q?oxALBaDy87KKcUdt/V+5bd+7oKNrVEvp7k+AELgCQQiiywpLmz/Ju017RVzd?=
+ =?us-ascii?Q?3XUwXzQtnxKnlRVQqYirbNj2Piyj5+p9uRsNZ9bbx2Is7QXUXEBVZDK+IWgQ?=
+ =?us-ascii?Q?c5G9UvlYIBX5cpu2MF2lWFvcoU4F4gL11X6xQHFSKsUplIzxjWHpXLSujI8U?=
+ =?us-ascii?Q?Y7yndz/Jx+j2tb9hfEV5Lj/3N29PSzBzcM7ctK+XECbClO5r2gY5FiVBol5Z?=
+ =?us-ascii?Q?fKxerBYiDRbZLsVGf184XEBW2XxyJlvEcNOtv28SETjtPO4VJ3nicVNUBFvX?=
+ =?us-ascii?Q?achrkych8mWRW+uH3pyi8nsDaEdCgUrao1rBPlYZXjtXmP+L40Y06PRJYFq+?=
+ =?us-ascii?Q?9E8jMaFMBJNLrvBdwBkTUoo9H1XZrf/1ULPlExWwz0sQQDhapS/lS+3YC3RW?=
+ =?us-ascii?Q?20uu0WES/NnAFfSIMWIbdTNm9/lkzJUwdRqdfxP7Op3sSZdqIQCnPKjhFwfm?=
+ =?us-ascii?Q?v7AJOaThd+46R0n5gNRlgZuF8UrW04kAMTptqoaeQ7BgrY1WViXSUBZc10RM?=
+ =?us-ascii?Q?Y7sdZZc5hWbQCcydUXHY1khqBqLckbdtXsEzTTezrwertRNGeg63OzLyWiiR?=
+ =?us-ascii?Q?H3qgzXZxc3a+ft5zKat1evS/wDpoL6jLp54nz4RY7qtRcUhfMVchUBI5aQOx?=
+ =?us-ascii?Q?16Q5b07nGG737EJ6PiuZIAA33UFdtolNv+V+clnA9/VYoQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(52116005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Rl4zVHo1yr/bKDTdH4m/ew+QOSvY/Jy0P9+xSTtkZZTHmo/0EM6MJLG6uTqc?=
+ =?us-ascii?Q?yZi8LXHiLGGf0DOttRzL1BuwTuT21aX7i/s0m9wi58iIr3Xo5WH1pfqvXY9o?=
+ =?us-ascii?Q?sJRVsmOOv0yNPeYkgI7k2V+1W6krGXOktwN1qGe8tkD9RliUa+zTad3KcEe+?=
+ =?us-ascii?Q?aSqzouskjsidhVzCAkwFP3pEu5awEVfEyU2fS8diaSD+yHQ2YoUqPmz8HB78?=
+ =?us-ascii?Q?q6LyVpdwKNd2xg4Fhdi3NNKww2srMk7yMGLzN9rN4Kj0rVjZY5ePthPM2Vau?=
+ =?us-ascii?Q?RL4A+SinryZku+JjuJtKi7AuqDSbNG2kHYpDCWPuslY2GQILLGKbiewZModi?=
+ =?us-ascii?Q?iheRCxAJHrRoLc88p/r5xaaTia4NzK/C7wJR+hlj5HrdOpFt0nIjTcGN34oo?=
+ =?us-ascii?Q?H0dbEPIE4my7ccm+BPa7w83SesgD5b1+cdMZyrrvkfh+HX4ZC9KykWUSDJkf?=
+ =?us-ascii?Q?Fwl2j7UzOq7ItcDlog5O0NSfLYdYgo/SalMEBL1mxDeuSHUntoBBMzEB3kC0?=
+ =?us-ascii?Q?Bf3dGmhUqDcHIbdI+6gSiYPomXalR+UQzJmqwmjs8lQLDBWTkXO/LOUvuVpW?=
+ =?us-ascii?Q?qLOoHlqlQGZ0IlBBJK+ZwNcmNTXI5Tk2SgNSea/9Tn3ca2ujUrjR9pNlxorn?=
+ =?us-ascii?Q?odQyuwkteq+uJGo8Z52TDFMepnNOwkz4KmE5ZQnsXKYMv1xJRmz43O4RKMGJ?=
+ =?us-ascii?Q?T/QXZFfjYzSjDH0jGFAFVNl2QM4CZnKp3Hizn23OQOBCLfinrNdGfWrBOWl6?=
+ =?us-ascii?Q?JtMZAj9i/GhKZNG6mqCgXceUPCFQ785NDI8RdYGv1mgMrE0d96BTOk/RCXa+?=
+ =?us-ascii?Q?j65l+aWWMO9nLE7NjkqZwrBMoIY+kF7L98ik2Iy2q+it1DGZACm/Ahkhz0UB?=
+ =?us-ascii?Q?ULGngy98yrfWzEaFb01pN5JMLAArXIfWMYUHeyniCYkxDM9zJjtiApFoYpx3?=
+ =?us-ascii?Q?WAvsIlc3O+66UsQnZuN1jfhUFd6fp/JDBl3UrJuZPOv4Qf+wDRSF9UOSXr+6?=
+ =?us-ascii?Q?vq2lmIee/RhWgBJH2PeNR57txPSnMWZBdeg9OUufxpu67lEIVAeZq/NDGvcZ?=
+ =?us-ascii?Q?bBl+hnh5XY4GE3JVJL6bJpnJV5DQ25fXTJMwlcqLKgJIIE9/ntlNFy11QxBs?=
+ =?us-ascii?Q?KgcYWXyLwDDW+LpPPZhbDEpdR9utZkL/vkRlotlvWuGzZrpBXtesxEaXpKQT?=
+ =?us-ascii?Q?yPtfmmPjijatF1F2y5fidH9KGAfwTp7laxtcCWLqL4tJGgg7kZbIFVOgBaJD?=
+ =?us-ascii?Q?Om/XM0sf4rcI9yLD0m5nIABpbVJiem5NJCH+HxTlL+KyjvAuSas1jGSgZ9M8?=
+ =?us-ascii?Q?5h7gPy5FCCtuyXusiLFIAxVdECX4NH8SXl5jZqgRsl/SJkhOp0bBVRierzgr?=
+ =?us-ascii?Q?lyEhQGcJ+gk6FRntmZD74y3Pn1v1NqSItWazyc5BoHrQ+jADnSrB0gEdWT7d?=
+ =?us-ascii?Q?v60HybaU1FljlbQJuIS96cs2rl07N8tBD1zeh2tMBV0SD4JrimVzte4Wzp4Q?=
+ =?us-ascii?Q?WMxO8NCvA9UMjhygptosKe/hc1HWThPTXIO2WJzfHK9s3b4AIC9FJg5jCGbj?=
+ =?us-ascii?Q?xP4IqqtztuOjL6oGW0LFjiul0wvhC3JwpdH+Irlr?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e69c251-ff58-408e-6f01-08dc818869bb
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 15:43:27.0681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qtunjkrM1emh+s4EeyFf6gLrD1YZvjNSaBK+7X0V12hKo8zu85VU6FNXxMedWRDGoAtD69qDNWxg6djIYUMWUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7605
 
-of_gpio.h is deprecated and subject to remove.
-The driver doesn't use it directly, replace it
-with what is really being used.
+When an In-Band Interrupt(IBI) occurs after svc_i3c_master_do_daa_locked(),
+typically triggered during a Hot Join (HJ) event, the IBIWON flag fails to
+be set when issuing an auto IBI command.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The issue stems from the omission of emitting STOP upon successful
+execution of svc_i3c_master_do_daa_locked(). Consequently, the controller
+interprets it as a repeat start when emitting the auto IBI command. Per the
+I3C specification, an IBI should never occur during a repeat start, thus
+preventing the IBIWON flag from being set.
+
+Emit STOP regardless of the success or failure of
+svc_i3c_master_do_daa_locked() to match I3C spec requirement.
+
+Cc: <stable@vger.kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- sound/soc/samsung/aries_wm8994.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/samsung/aries_wm8994.c b/sound/soc/samsung/aries_wm8994.c
-index a548ac33dd94..01716df0c842 100644
---- a/sound/soc/samsung/aries_wm8994.c
-+++ b/sound/soc/samsung/aries_wm8994.c
-@@ -1,11 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include <linux/extcon.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/iio/consumer.h>
- #include <linux/input-event-codes.h>
- #include <linux/mfd/wm8994/registers.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/regulator/consumer.h>
- #include <sound/jack.h>
- #include <sound/pcm_params.h>
+Notes:
+    Change from v1 to v2
+    - new patch
+
+ drivers/i3c/master/svc-i3c-master.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index bb299ce02cccb..032fe032ec433 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -961,11 +961,11 @@ static int svc_i3c_master_do_daa(struct i3c_master_controller *m)
+ 	spin_lock_irqsave(&master->xferqueue.lock, flags);
+ 	ret = svc_i3c_master_do_daa_locked(master, addrs, &dev_nb);
+ 	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
+-	if (ret) {
+-		svc_i3c_master_emit_stop(master);
+-		svc_i3c_master_clear_merrwarn(master);
++
++	svc_i3c_master_emit_stop(master);
++	svc_i3c_master_clear_merrwarn(master);
++	if (ret)
+ 		goto rpm_out;
+-	}
+ 
+ 	/* Register all devices who participated to the core */
+ 	for (i = 0; i < dev_nb; i++) {
 -- 
-2.43.0.rc1.1336.g36b5255a03ac
+2.34.1
 
