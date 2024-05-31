@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502F5136E2E
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B8D1420D0
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717169453; cv=none; b=hp1OTfPM0seB+P6TUu1Cdz6aZlicriNJ8ciaVCaFkrRTB03mdD7kBF4x+HQPM//JNZyca1s39xZfwUMHaXAqov63+F9r+w7xIDGuZkDWHgoNZObgXVlRu8Tu6bhM4WMzetnfjSlh7XfLj/ePhJEt0JR/w/e6QtE8VGgOVzESHOo=
+	t=1717169455; cv=none; b=J5Nr61kv/kMh19qgBsgOVIXxXYMRjzCIK/cJjOzCEG9PvToYOWfh8ZkDcnyQsWmIHgGlJ9RoN5Hc4DxNsm/HgARKK/Id+MUAej8tgBBmBbDDFN3+Y/WKRSHn3k95cdZ9iONaCvQRtEUN/or96L6Zr6JiAMMfOuGNUUrlsXiAcr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717169453; c=relaxed/simple;
-	bh=81hqptQlE/LEM/MdYuEb48YnMieQd2hcNEosrso0DUw=;
+	s=arc-20240116; t=1717169455; c=relaxed/simple;
+	bh=ZQKha7BG252KruQ9oU8AYSozYEYwH5AEwR9Xap5vJ0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Li9Ymoz1Zp6mqtp+cqT+pkU0YoF3dRrfFET0LKG3DcUyPoGqd1WA5/Kx7Zw+3QapS2n1ZuSf+wxEpnhaRw/LVbtR85kcWQRnr8L94AflZJR6704FkqOMxvyKtKFSU4XjMYzzO/st+EYexY3neFL11+CTwr51AX4ollzq21TzBhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eodYEWVo; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=grPoQl6gNdzmXvLdcQE/zpqdFfBXHUpy5qiQR0VlO+PUJVhoQ4c1Cdkaf5mQBQi6ePFg1Dy0Kwj6ABRS1OAPaCclFCbeL++RiR5bo9FmlEvPxFwY/peV40PDEkwm1tbvmcpCe88x4LqNA361fjNQ5w+FG4xSeuTSkAoR7w6ei6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WBEGFTKi; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eodYEWVo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WBEGFTKi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169452; x=1748705452;
+  t=1717169453; x=1748705453;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=81hqptQlE/LEM/MdYuEb48YnMieQd2hcNEosrso0DUw=;
-  b=eodYEWVohd2+pIs3ZeLQBmshbHSO0QhdMZR/2lV3YuPN/GDbo4JN9qWj
-   zaK5giq7COEFzaBmEn/VgacaAffKRaSZmHgQAddnSWOXf9vmpRRIbhrdS
-   k+YUkRGxEwq3yTxBZ961n2EOogFNE9500HQqpC+ZG15sfwgv/deq6oZeJ
-   W68Whkws0JnmDLWGmpnpwdUT6A/tjzqRl3U+QokJdyqC44oP8SeAouWb7
-   M4z+VP2vQ4NAhEJuxeNOjV9NNt3kQLAGAqSFaYtwpw6DwUMsUP7VTkMiq
-   kILZeAxFGiaNUl//iptk3Y+Wb9t/aQo3dmXSN/3om0iRBP/9JVxBtZ8ZS
-   w==;
-X-CSE-ConnectionGUID: fp+JiHOnTNKn/cL9frAGrQ==
-X-CSE-MsgGUID: YWwAa7nTTZ2upcj9aNeoHw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24348136"
+  bh=ZQKha7BG252KruQ9oU8AYSozYEYwH5AEwR9Xap5vJ0c=;
+  b=WBEGFTKiJh6ZT1a5OnBNgAeDZiXHv/g+fMLP//71aSTeLqJkwJZwKr9Q
+   qT2oB2v2z2OX+hvnboZD2iUj8Ejyc5lVepW63iQjx5no9gnOmRz1C50T/
+   Rp7feHDAtHdoYdFC6zENSLm41Rz6jdNDtj9xEgKyGsFvAORdQb9jL5Kvp
+   W/0vy0WbmahysoFxFCygr+iuRiOShZn1m55hb8P7rt/mcehhvhV6aaFrF
+   r+zMBnBKJ1JEVfrXxPpaLfNeSCUbxb8GUSIQJeHtcQCqY9yFik1+sCWOE
+   TNHpFjfkYwPZIMAvHSm2RaKbqenickN4Ax/eNXlRdwhg4h5tI5MlCczVY
+   g==;
+X-CSE-ConnectionGUID: xNhEun2BSBqxRoYZReDauA==
+X-CSE-MsgGUID: 3kTOu2M9S7e7vsPPDyMtzg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839599"
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="24348136"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:49 -0700
-X-CSE-ConnectionGUID: Htetr8d2SE+NM97c7xMEbw==
-X-CSE-MsgGUID: eWxLHUYTTYGIR52qbo0oaA==
+   d="scan'208";a="13839599"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:50 -0700
+X-CSE-ConnectionGUID: 3R6qj3MvSkWKx9oZgpc3VQ==
+X-CSE-MsgGUID: 2ty8IMICQ0iFA8vS+R6Azg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="73678757"
+   d="scan'208";a="40627260"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 31 May 2024 08:30:41 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:40 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id C8D58650; Fri, 31 May 2024 18:30:39 +0300 (EEST)
+	id D6770668; Fri, 31 May 2024 18:30:39 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Rob Herring <robh@kernel.org>,
@@ -83,9 +83,9 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH v2 3/6] ASoC: rockchip: Remove unused of_gpio.h
-Date: Fri, 31 May 2024 18:29:30 +0300
-Message-ID: <20240531153038.1590171-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 4/6] ASoC: codecs: Replace of_gpio.h by proper one
+Date: Fri, 31 May 2024 18:29:31 +0300
+Message-ID: <20240531153038.1590171-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
 References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
@@ -97,39 +97,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-of_gpio.h is deprecated and subject to remove. The drivers in question
-don't use it, simply remove the unused header.
+of_gpio.h is deprecated and subject to remove.
+The driver doesn't use it directly, replace it
+with what is really being used.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- sound/soc/rockchip/rockchip_i2s.c   | 1 -
- sound/soc/rockchip/rockchip_spdif.c | 1 -
- 2 files changed, 2 deletions(-)
+ sound/soc/codecs/aw88395/aw88395.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
-index b0c3ef030e06..b378f870b3ad 100644
---- a/sound/soc/rockchip/rockchip_i2s.c
-+++ b/sound/soc/rockchip/rockchip_i2s.c
-@@ -11,7 +11,6 @@
- #include <linux/mfd/syscon.h>
- #include <linux/delay.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/clk.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pm_runtime.h>
-diff --git a/sound/soc/rockchip/rockchip_spdif.c b/sound/soc/rockchip/rockchip_spdif.c
-index 1a24b78e9e02..eb9d5dee196e 100644
---- a/sound/soc/rockchip/rockchip_spdif.c
-+++ b/sound/soc/rockchip/rockchip_spdif.c
-@@ -11,7 +11,6 @@
+diff --git a/sound/soc/codecs/aw88395/aw88395.c b/sound/soc/codecs/aw88395/aw88395.c
+index 3c459a67ad0c..be6ebcb51cca 100644
+--- a/sound/soc/codecs/aw88395/aw88395.c
++++ b/sound/soc/codecs/aw88395/aw88395.c
+@@ -8,9 +8,9 @@
+ // Author: Weidong Wang <wangweidong.a@awinic.com>
+ //
  
- #include <linux/module.h>
- #include <linux/delay.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/i2c.h>
+ #include <linux/firmware.h>
 -#include <linux/of_gpio.h>
- #include <linux/clk.h>
- #include <linux/pm_runtime.h>
- #include <linux/mfd/syscon.h>
+ #include <linux/regmap.h>
+ #include <sound/soc.h>
+ #include "aw88395.h"
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
