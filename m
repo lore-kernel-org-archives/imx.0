@@ -1,138 +1,319 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9006F2EF
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 14:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0717A56B72
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717167540; cv=none; b=cIiQVA2xqMUCkSz8pBl+UKXekHgGtQoCucsWb/M7w8BH7zayUIg+dg37Ss51k5P3dcb023NV+441wXkDZBI1FUfkB5qwsr+/8G3Pe6p2G6ufiSiQ5GuFzPnCq9Pt9+bQoXYiQ7SjcJNUq2TVZnAd1cXw64pUJ0br/eMpFDNnrXg=
+	t=1717169452; cv=none; b=gz+ou211zk02YOFYGc6Po/opNkFLquRmliHfzM3PXRsuYCOkHqwTrqXOE5J8EaL4/Vr8oT8cd2HMDHtuLmqfzmoBaTN8icI6KVH4/vFfItNuPcecX3Rq4wRtEBbyQnws45fv/+6G9rFE1luCcehRYtmu5oyza0mYWN2pYcdBEfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717167540; c=relaxed/simple;
-	bh=G/b7RyaoGodqjPBF0FsWhLwSns9WaG79sqo1CfgHyUE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RlyHw5TKpW4NWv0hXJPBkqqzYVhr45+flIyi4HZks0oABYl85EvLaVFEQAMHUlvODHUsBLV+HHyHpN08qOs27YVhJHY1QHdGOU6+EQCtVqVMEVhThTNQs0OlF3sEdbIA9mFJ9sFGNe2tCJN5DCABxz2UeYVKlU99Ap3V5Tujcxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6911F1424;
-	Fri, 31 May 2024 07:59:21 -0700 (PDT)
-Received: from [10.57.69.119] (unknown [10.57.69.119])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D57253F641;
-	Fri, 31 May 2024 07:58:51 -0700 (PDT)
-Message-ID: <974f1d23-aba8-432e-85b5-0e4b1c2005e7@arm.com>
-Date: Fri, 31 May 2024 15:58:49 +0100
+	s=arc-20240116; t=1717169452; c=relaxed/simple;
+	bh=3V5pXNYUIe5amzJ/wlWv+uZ+rQkwQ0AbOeOsiYESyYs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ssGYc7FlpixUJPD5dXB8+nQap+Ot72q1wT5kAbT1Bw39CsHrdQM8S20AO6M+7q35IJ4DcD3JhlrpyCzgSHUOHjm1tVjsVyGQBoweMl4w2W00wf0Lwnz0IxOssbA6xBuVJTbN09OkzMvVIbm2oir5Zjc0DImH6S0q/zaqpeKzBAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wpb5/ncD; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wpb5/ncD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717169450; x=1748705450;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3V5pXNYUIe5amzJ/wlWv+uZ+rQkwQ0AbOeOsiYESyYs=;
+  b=Wpb5/ncDcnV90L/EZsKgk14b+JAEd9o6OD4YoimujIFGmeLPk09jsB6t
+   PmyZrIWXzDEV10WrmtApM+u8divDOfXOXgKX2cSCF0TyAO2K42D7yj2Eo
+   9vTdDaxN+PsLvjlYPUO0hnjvx0xxJxxqSePbw4ZoqtnSzuaTSKDSyDKFl
+   5EL5YU9oPRPN2xX1yA3dLFbOFCjOYjHlxTDxbiekKevBHXCsACaw2ja7g
+   c3NuuZkyySMiWOh/T9EQFQxJv/5zCngFmXwbJphs5yISTIqBny7+J//gk
+   KiC+m56BFvBBrYpCdaNQvOI4I6f0mvtyYyzNIfsWNjwjYF+AnPWSc6OVA
+   g==;
+X-CSE-ConnectionGUID: 7lK+YtztQ7+7LdGsKM8yWw==
+X-CSE-MsgGUID: lQU0JYbpTbaY7G5hJQYbzA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24348112"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="24348112"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:48 -0700
+X-CSE-ConnectionGUID: iuHuXjxdS6Wb+7hA5s84Sw==
+X-CSE-MsgGUID: 1IHu24H0TXCyEXpf1AgGQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="73678756"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa001.jf.intel.com with ESMTP; 31 May 2024 08:30:41 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id A7B34136; Fri, 31 May 2024 18:30:39 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Rob Herring <robh@kernel.org>,
+	Weidong Wang <wangweidong.a@awinic.com>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	patches@opensource.cirrus.com,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Cc: Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Kevin Lu <kevin-lu@ti.com>,
+	Baojun Xu <baojun.xu@ti.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: [PATCH v2 1/6] ASoC: codecs: Remove unused of_gpio.h
+Date: Fri, 31 May 2024 18:29:28 +0300
+Message-ID: <20240531153038.1590171-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
+References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support
- MSI ITS and IOMMU for i.MX95
-To: Bjorn Helgaas <helgaas@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Marc Zyngier <maz@kernel.org>
-References: <20240530230832.GA474962@bhelgaas>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20240530230832.GA474962@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2024-05-31 12:08 am, Bjorn Helgaas wrote:
-> [+cc IOMMU and pcie-apple.c folks for comment]
-> 
-> On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
->> For the i.MX95, configuration of a LUT is necessary to convert Bus Device
->> Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
->> This involves examining the msi-map and smmu-map to ensure consistent
->> mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
->> registers are configured. In the absence of an msi-map, the built-in MSI
->> controller is utilized as a fallback.
->>
->> Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
->> upon the appearance of a new PCI device and when the bus is an iMX6 PCI
->> controller. This function configures the correct LUT based on Device Tree
->> Settings (DTS).
-> 
-> This scheme is pretty similar to apple_pcie_bus_notifier().  If we
-> have to do this, I wish it were *more* similar, i.e., copy the
-> function names, bitmap tracking, code structure, etc.
-> 
-> I don't really know how stream IDs work, but I assume they are used on
-> most or all arm64 platforms, so I'm a little surprised that of all the
-> PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
-> this notifier.
+of_gpio.h is deprecated and subject to remove. The drivers in question
+don't use it, simply remove the unused header.
 
-This is one of those things that's mostly at the mercy of the PCIe root 
-complex implementation. Typically the SMMU StreamID and/or GIC ITS 
-DeviceID is derived directly from the PCI RID, sometimes with additional 
-high-order bits hard-wired to disambiguate PCI segments. I believe this 
-RID-translation LUT is a particular feature of the the Synopsys IP - I 
-know there's also one on the NXP Layerscape platforms, but on those it's 
-programmed by the bootloader, which also generates the appropriate 
-"msi-map" and "iommu-map" properties to match. Ideally that's what i.MX 
-should do as well, but hey.
+Reviewed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ sound/soc/codecs/ak4118.c        | 1 -
+ sound/soc/codecs/ak4458.c        | 1 -
+ sound/soc/codecs/aw88399.c       | 1 -
+ sound/soc/codecs/cs53l30.c       | 1 -
+ sound/soc/codecs/max98390.c      | 1 -
+ sound/soc/codecs/pcm3168a.c      | 1 -
+ sound/soc/codecs/rk817_codec.c   | 1 -
+ sound/soc/codecs/tas2552.c       | 1 -
+ sound/soc/codecs/tas2764.c       | 1 -
+ sound/soc/codecs/tas2770.c       | 1 -
+ sound/soc/codecs/tas2780.c       | 1 -
+ sound/soc/codecs/tlv320adc3xxx.c | 1 -
+ sound/soc/codecs/tlv320adcx140.c | 1 -
+ sound/soc/codecs/tlv320aic31xx.c | 1 -
+ sound/soc/codecs/ts3a227e.c      | 1 -
+ sound/soc/codecs/wsa883x.c       | 1 -
+ 16 files changed, 16 deletions(-)
 
-> There's this path, which is pretty generic and does at least the
-> of_map_id() part of what you're doing in imx_pcie_add_device():
-> 
->      __driver_probe_device
->        really_probe
->          pci_dma_configure                       # pci_bus_type.dma_configure
->            of_dma_configure
->              of_dma_configure_id
->                of_iommu_configure
->                  of_pci_iommu_init
->                    of_iommu_configure_dev_id
->                      of_map_id
->                      of_iommu_xlate
->                        ops = iommu_ops_from_fwnode
->                        iommu_fwspec_init
->                        ops->of_xlate(dev, iommu_spec)
-> 
-> Maybe this needs to be extended somehow with a hook to do the
-> device-specific work like updating the LUT?  Just speculating here,
-> the IOMMU folks will know how this is expected to work.
+diff --git a/sound/soc/codecs/ak4118.c b/sound/soc/codecs/ak4118.c
+index 9a43235e6a11..23e868e4e3fb 100644
+--- a/sound/soc/codecs/ak4118.c
++++ b/sound/soc/codecs/ak4118.c
+@@ -9,7 +9,6 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+ 
+diff --git a/sound/soc/codecs/ak4458.c b/sound/soc/codecs/ak4458.c
+index 73cf482f104f..32cb802ad635 100644
+--- a/sound/soc/codecs/ak4458.c
++++ b/sound/soc/codecs/ak4458.c
+@@ -10,7 +10,6 @@
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/reset.h>
+diff --git a/sound/soc/codecs/aw88399.c b/sound/soc/codecs/aw88399.c
+index 9fcb805bf971..23e50d73b4c4 100644
+--- a/sound/soc/codecs/aw88399.c
++++ b/sound/soc/codecs/aw88399.c
+@@ -10,7 +10,6 @@
+ #include <linux/crc32.h>
+ #include <linux/i2c.h>
+ #include <linux/firmware.h>
+-#include <linux/of_gpio.h>
+ #include <linux/regmap.h>
+ #include <sound/soc.h>
+ #include "aw88399.h"
+diff --git a/sound/soc/codecs/cs53l30.c b/sound/soc/codecs/cs53l30.c
+index c0893146423b..2ee13d885fdc 100644
+--- a/sound/soc/codecs/cs53l30.c
++++ b/sound/soc/codecs/cs53l30.c
+@@ -12,7 +12,6 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+-#include <linux/of_gpio.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/regulator/consumer.h>
+ #include <sound/pcm_params.h>
+diff --git a/sound/soc/codecs/max98390.c b/sound/soc/codecs/max98390.c
+index 57fa2db1e148..1bae253618fd 100644
+--- a/sound/soc/codecs/max98390.c
++++ b/sound/soc/codecs/max98390.c
+@@ -13,7 +13,6 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+-#include <linux/of_gpio.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+ #include <linux/time.h>
+diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
+index 9d6431338fb7..3c0e0fdbfc5c 100644
+--- a/sound/soc/codecs/pcm3168a.c
++++ b/sound/soc/codecs/pcm3168a.c
+@@ -11,7 +11,6 @@
+ #include <linux/delay.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/module.h>
+-#include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ 
+diff --git a/sound/soc/codecs/rk817_codec.c b/sound/soc/codecs/rk817_codec.c
+index d4da98469f8b..5fea600bc3a4 100644
+--- a/sound/soc/codecs/rk817_codec.c
++++ b/sound/soc/codecs/rk817_codec.c
+@@ -10,7 +10,6 @@
+ #include <linux/mfd/rk808.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <sound/core.h>
+diff --git a/sound/soc/codecs/tas2552.c b/sound/soc/codecs/tas2552.c
+index a7ed59ec49a6..9e68afc09897 100644
+--- a/sound/soc/codecs/tas2552.c
++++ b/sound/soc/codecs/tas2552.c
+@@ -13,7 +13,6 @@
+ #include <linux/device.h>
+ #include <linux/i2c.h>
+ #include <linux/gpio.h>
+-#include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 1dc719d726ab..5eaddf07aadc 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -15,7 +15,6 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/slab.h>
+ #include <sound/soc.h>
+ #include <sound/pcm.h>
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index 67bc1c8b0131..5601fba17c96 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -20,7 +20,6 @@
+ #include <linux/firmware.h>
+ #include <linux/regmap.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/slab.h>
+ #include <sound/soc.h>
+ #include <sound/pcm.h>
+diff --git a/sound/soc/codecs/tas2780.c b/sound/soc/codecs/tas2780.c
+index a18ccf5fb7ad..6902bfef185b 100644
+--- a/sound/soc/codecs/tas2780.c
++++ b/sound/soc/codecs/tas2780.c
+@@ -11,7 +11,6 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/regmap.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <sound/soc.h>
+ #include <sound/pcm.h>
+ #include <sound/pcm_params.h>
+diff --git a/sound/soc/codecs/tlv320adc3xxx.c b/sound/soc/codecs/tlv320adc3xxx.c
+index e100cc9f5c19..eb180df9a72a 100644
+--- a/sound/soc/codecs/tlv320adc3xxx.c
++++ b/sound/soc/codecs/tlv320adc3xxx.c
+@@ -25,7 +25,6 @@
+ #include <linux/i2c.h>
+ #include <linux/platform_device.h>
+ #include <linux/cdev.h>
+-#include <linux/of_gpio.h>
+ #include <linux/slab.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
+index 41342b340680..d594bf166c0e 100644
+--- a/sound/soc/codecs/tlv320adcx140.c
++++ b/sound/soc/codecs/tlv320adcx140.c
+@@ -12,7 +12,6 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/acpi.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/slab.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+diff --git a/sound/soc/codecs/tlv320aic31xx.c b/sound/soc/codecs/tlv320aic31xx.c
+index 4d7c5a80c6ed..2f94cfda0e33 100644
+--- a/sound/soc/codecs/tlv320aic31xx.c
++++ b/sound/soc/codecs/tlv320aic31xx.c
+@@ -23,7 +23,6 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/acpi.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/slab.h>
+ #include <sound/core.h>
+ #include <sound/jack.h>
+diff --git a/sound/soc/codecs/ts3a227e.c b/sound/soc/codecs/ts3a227e.c
+index dbf448dd8864..b9eb59e3bfa0 100644
+--- a/sound/soc/codecs/ts3a227e.c
++++ b/sound/soc/codecs/ts3a227e.c
+@@ -10,7 +10,6 @@
+ #include <linux/init.h>
+ #include <linux/input.h>
+ #include <linux/module.h>
+-#include <linux/of_gpio.h>
+ #include <linux/regmap.h>
+ #include <linux/acpi.h>
+ 
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index a2e86ef7d18f..8abce2160d65 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -9,7 +9,6 @@
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/printk.h>
+ #include <linux/regmap.h>
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-Note that that particular code path has fundamental issues and much of 
-it needs to go away (I'm working on it, but it's a rich ~8-year-old pile 
-of technical debt...). IOMMU configuration needs to be happening at 
-device_add() time via the IOMMU layer's own bus notifier.
-
-If it's really necessary to do this programming from Linux, then there's 
-still no point in it being dynamic - the mappings cannot ever change, 
-since the rest of the kernel believes that what the DT said at boot time 
-was already a property of the hardware. It would be a lot more logical, 
-and likely simpler, for the driver to just read the relevant map 
-property and program the entire LUT to match, all in one go at 
-controller probe time. Rather like what's already commonly done with the 
-parsing of "dma-ranges" to program address-translation LUTs for inbound 
-windows.
-
-Plus that would also give a chance of safely dealing with bad DTs 
-specifying invalid ID mappings (by refusing to probe at all). As it is, 
-returning an error from a child's BUS_NOTIFY_ADD_DEVICE does nothing 
-except prevent any further notifiers from running at that point - the 
-device will still be added, allowed to bind a driver, and able to start 
-sending DMA/MSI traffic without the controller being correctly 
-programmed, which at best won't work and at worst may break the whole 
-system.
-
-Thanks,
-Robin.
