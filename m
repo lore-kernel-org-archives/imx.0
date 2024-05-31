@@ -1,49 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052276410
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502F5136E2E
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717169452; cv=none; b=LVUM2i+9GrAjiCFFzxnc0gycnkDehPYvUcEEdYEUBXFnQuCwesFo42Ev6DP4T+g2PJTqQ0Bf1KNp1gHHnWskrmWPcVtNfQOcCwQWueakOlfKqh6+W7G/mBVd0sWNRocA3oSSt4zK/XaHsTIY1i+L8EQ11Z7HALywStoLOaBWvcM=
+	t=1717169453; cv=none; b=hp1OTfPM0seB+P6TUu1Cdz6aZlicriNJ8ciaVCaFkrRTB03mdD7kBF4x+HQPM//JNZyca1s39xZfwUMHaXAqov63+F9r+w7xIDGuZkDWHgoNZObgXVlRu8Tu6bhM4WMzetnfjSlh7XfLj/ePhJEt0JR/w/e6QtE8VGgOVzESHOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717169452; c=relaxed/simple;
-	bh=hsjA0x6Srt7WNltFPQm36M1XEQClgGGCUWLHMkEXdTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IaJmpT0KYXmG0XWwJHC8IEeSxRZhjTH1dMxyMMVpLm76zQ8l/5tezi/V72bQDe/hMifbNvg6++hh/NV1H5AqIAikt6Pf6bVPaaPplnEA45wTFcVVbiYi+sVihlT+9hEAUPhHsIbudf3R92nAXryAfBWMZ6oqpV4FM/FnhWRa4s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gwHn53Ob; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1717169453; c=relaxed/simple;
+	bh=81hqptQlE/LEM/MdYuEb48YnMieQd2hcNEosrso0DUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Li9Ymoz1Zp6mqtp+cqT+pkU0YoF3dRrfFET0LKG3DcUyPoGqd1WA5/Kx7Zw+3QapS2n1ZuSf+wxEpnhaRw/LVbtR85kcWQRnr8L94AflZJR6704FkqOMxvyKtKFSU4XjMYzzO/st+EYexY3neFL11+CTwr51AX4ollzq21TzBhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eodYEWVo; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gwHn53Ob"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eodYEWVo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169451; x=1748705451;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hsjA0x6Srt7WNltFPQm36M1XEQClgGGCUWLHMkEXdTw=;
-  b=gwHn53OboEuQaDjWp71F6SAV26buEj/aWbxkKyiN6Ak+/ouWpiKJupeJ
-   ZD5ry+rTQsE2sslGSRWRtR11v0TumnVjwOuNjK9TsyutUHaTpulmfscUn
-   g8NifyZKdMPIZ0o7PbEM1K12I6RtbE9z0Lw+c4W2NV8wVFd+8j32xBoBN
-   sogIulYS4xgUTQJPIqejl64Mlqi9PbUhSPeS2P1Gio4aYn3QE6iN5x54P
-   dMJNVdAUtZs0oQ0BwDNl10HmCiwnlwTAzBxB1ZJ67LlthO0J2HvQQBKGt
-   0UOQmSaAmy5TmDOTsmeQE220YWZ9iAxuDK1j6fPCQPAa8cHb5bUr1yIoR
-   Q==;
-X-CSE-ConnectionGUID: 8sLGpxEYR2Gq+mXlGUCNkg==
-X-CSE-MsgGUID: nQU0LZigRZW1pCNGEXPgHg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839581"
+  t=1717169452; x=1748705452;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=81hqptQlE/LEM/MdYuEb48YnMieQd2hcNEosrso0DUw=;
+  b=eodYEWVohd2+pIs3ZeLQBmshbHSO0QhdMZR/2lV3YuPN/GDbo4JN9qWj
+   zaK5giq7COEFzaBmEn/VgacaAffKRaSZmHgQAddnSWOXf9vmpRRIbhrdS
+   k+YUkRGxEwq3yTxBZ961n2EOogFNE9500HQqpC+ZG15sfwgv/deq6oZeJ
+   W68Whkws0JnmDLWGmpnpwdUT6A/tjzqRl3U+QokJdyqC44oP8SeAouWb7
+   M4z+VP2vQ4NAhEJuxeNOjV9NNt3kQLAGAqSFaYtwpw6DwUMsUP7VTkMiq
+   kILZeAxFGiaNUl//iptk3Y+Wb9t/aQo3dmXSN/3om0iRBP/9JVxBtZ8ZS
+   w==;
+X-CSE-ConnectionGUID: fp+JiHOnTNKn/cL9frAGrQ==
+X-CSE-MsgGUID: YWwAa7nTTZ2upcj9aNeoHw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24348136"
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13839581"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:50 -0700
-X-CSE-ConnectionGUID: rj6obq2ERMO5QDiPGyKZ2g==
-X-CSE-MsgGUID: q2N5xO0fShaiM6SvMI6SaQ==
+   d="scan'208";a="24348136"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:49 -0700
+X-CSE-ConnectionGUID: Htetr8d2SE+NM97c7xMEbw==
+X-CSE-MsgGUID: eWxLHUYTTYGIR52qbo0oaA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="40627259"
+   d="scan'208";a="73678757"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:40 -0700
+  by orviesa001.jf.intel.com with ESMTP; 31 May 2024 08:30:41 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 8ED9F228; Fri, 31 May 2024 18:30:39 +0300 (EEST)
+	id C8D58650; Fri, 31 May 2024 18:30:39 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Rob Herring <robh@kernel.org>,
@@ -82,10 +83,12 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH v2 0/6] ASoC: Drop or replace of_gpio.h
-Date: Fri, 31 May 2024 18:29:27 +0300
-Message-ID: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 3/6] ASoC: rockchip: Remove unused of_gpio.h
+Date: Fri, 31 May 2024 18:29:30 +0300
+Message-ID: <20240531153038.1590171-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
+References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -94,47 +97,39 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace or drop the legacy header that is subject to remove.
-Not all of them were compile-tested, the series might have
-hidden compilation errors.
+of_gpio.h is deprecated and subject to remove. The drivers in question
+don't use it, simply remove the unused header.
 
-In v2:
-- added tags (Kuninori, Charles)
-- ripped out TAS2781 (it's a mess from GPIO handling perspective)
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ sound/soc/rockchip/rockchip_i2s.c   | 1 -
+ sound/soc/rockchip/rockchip_spdif.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-Andy Shevchenko (6):
-  ASoC: codecs: Remove unused of_gpio.h
-  ASoC: fsl: Remove unused of_gpio.h
-  ASoC: rockchip: Remove unused of_gpio.h
-  ASoC: codecs: Replace of_gpio.h by proper one
-  ASoC: generic: Replace of_gpio.h by proper one
-  ASoC: samsung: Replace of_gpio.h by proper one
-
- sound/soc/codecs/ak4118.c                           | 1 -
- sound/soc/codecs/ak4458.c                           | 1 -
- sound/soc/codecs/aw88395/aw88395.c                  | 2 +-
- sound/soc/codecs/aw88399.c                          | 1 -
- sound/soc/codecs/cs53l30.c                          | 1 -
- sound/soc/codecs/max98390.c                         | 1 -
- sound/soc/codecs/pcm3168a.c                         | 1 -
- sound/soc/codecs/rk817_codec.c                      | 1 -
- sound/soc/codecs/tas2552.c                          | 1 -
- sound/soc/codecs/tas2764.c                          | 1 -
- sound/soc/codecs/tas2770.c                          | 1 -
- sound/soc/codecs/tas2780.c                          | 1 -
- sound/soc/codecs/tlv320adc3xxx.c                    | 1 -
- sound/soc/codecs/tlv320adcx140.c                    | 1 -
- sound/soc/codecs/tlv320aic31xx.c                    | 1 -
- sound/soc/codecs/ts3a227e.c                         | 1 -
- sound/soc/codecs/wsa883x.c                          | 1 -
- sound/soc/fsl/imx-es8328.c                          | 1 -
- sound/soc/fsl/imx-rpmsg.c                           | 2 --
- sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
- sound/soc/rockchip/rockchip_i2s.c                   | 1 -
- sound/soc/rockchip/rockchip_spdif.c                 | 1 -
- sound/soc/samsung/aries_wm8994.c                    | 2 +-
- 23 files changed, 4 insertions(+), 24 deletions(-)
-
+diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
+index b0c3ef030e06..b378f870b3ad 100644
+--- a/sound/soc/rockchip/rockchip_i2s.c
++++ b/sound/soc/rockchip/rockchip_i2s.c
+@@ -11,7 +11,6 @@
+ #include <linux/mfd/syscon.h>
+ #include <linux/delay.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/clk.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pm_runtime.h>
+diff --git a/sound/soc/rockchip/rockchip_spdif.c b/sound/soc/rockchip/rockchip_spdif.c
+index 1a24b78e9e02..eb9d5dee196e 100644
+--- a/sound/soc/rockchip/rockchip_spdif.c
++++ b/sound/soc/rockchip/rockchip_spdif.c
+@@ -11,7 +11,6 @@
+ 
+ #include <linux/module.h>
+ #include <linux/delay.h>
+-#include <linux/of_gpio.h>
+ #include <linux/clk.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/mfd/syscon.h>
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
