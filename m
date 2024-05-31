@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB9B158DCF
-	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD95516A360
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 15:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717169455; cv=none; b=t+btVj7uVqWIYa/7SWHor4NKrb9ZlQbY3dnq5+zQzxoeU9sUJGkkUNmh/KbHTMijqbB/L5xbZYgqEaaND/F5y3wugTPG1dXRtPxEvct6XF429/CHuAPFZ+L/sRyW0jzrpGaWlw/5VlDV1zqG4GYZ/QTMD4v6Rb1dWD/QRbxbw0g=
+	t=1717169459; cv=none; b=pPSLiB/B3AdPxWPNwKYgXvhuuQ315MRJ9q7nul8ISRjRB6h56T1yPdrkJDEiwlWBgTzm8MjcHQf2d5Wtp9EsbbgIW0OWf7E59fT/Oh9EP6Wc7tIcWDT09z+KbMVWnnACp3UJsSZnKcuL1igD8yjtysam5xglj2JNKUYE3jfDIHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717169455; c=relaxed/simple;
-	bh=j//q7PxjjHf16S9qzs6ZEZBUjOL4lL+BxQBw8TkTaeo=;
+	s=arc-20240116; t=1717169459; c=relaxed/simple;
+	bh=SGwfez3lrOf2K/YTWirwKNhphy+WK2Ug6UhveRqerj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5QmiyWacM+65DUa11uEL5DX2ZLhwr7tpM12qhzmzZ6CGLeSNkE+2Pfu9CMd5okfU0UdUQB0hALOJVISZx2Ovzna3vM/eBAdHrl0EeVtthD5/dssnSCGyC/WUWK4Zw3/m6wQclVJs34blhw73pJJ2TD5ulcquek/I/Un1ezc1ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I3hftE0L; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=g5u+Y0b77hpTJ6WeCZs6rrrXrJYJQhwdBvxjr0gU5VH7mwXsspElRgvcv/Pjh4dAKqlbbVWACdTHy0Sx0nsDMKprzh4cjfplCBJ/6iPEGjI1wiEQ5/9BLcKAz78KkK7kHU1+vZyMYv76S/LrBBBomlaq2a8qvKBcMdw6bdQTKao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j/f7YWim; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I3hftE0L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j/f7YWim"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169454; x=1748705454;
+  t=1717169457; x=1748705457;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=j//q7PxjjHf16S9qzs6ZEZBUjOL4lL+BxQBw8TkTaeo=;
-  b=I3hftE0LuQYJ2KcyNknI+Hkh6GAM4xcwHK69/l5ELcly3HgkQEj65xM1
-   QEMcSEliGp8+fZWc11RdDDq/g02Duia5Pae7uKthPYv5O3Tkmx9dKNGTL
-   LedfIh3AnxXET5pwdyjCzH1oT8cLztI1eaFoY5NCMdTh0fAcuDJ+UZsNA
-   7KdS+qp/RC1m9X2rQ/CX6+8yuntbK25vVwH1Yfgbno7UR9gDSV4oOJ4Pr
-   pdCeSqXjzXe9igUmNLHKlFvQpADa1tfyQ0vi7spyflQ/qBJxgP7f53Ric
-   NrLi8mkCfRTUdlv2LPtWQ/J5R0RE7zZ7guTarTPIOA340yFomwZkPK4TH
+  bh=SGwfez3lrOf2K/YTWirwKNhphy+WK2Ug6UhveRqerj0=;
+  b=j/f7YWimoLjiMqdaC5XY8cstSdPJedBIqBYUZ/DnKAPvgN0IDL+SvKeL
+   +7qLiOs8ughKATjaneOWwsvNmvYb6/O2j9JgDjuE1kCyta0U9S9vBN9sc
+   61k1Imqdd5DbWJNH4N3J5TcMQh1/1XJejYeHpXDq9IWtELnHvbnvybrP3
+   QPX0PZVy3OfoInbQC6owALHCAcDNEjdeQaf1KjP9pV1ZT9gp4HxvnX5ab
+   KsjOb2aN0bQSIk+k5lGoUMUg0ukr0eHQV9vLdCJdjHuIoUCd8qC2Ie+Up
+   ulwqQYBVTfTfnhRsIO/kdapo5/5qxuj0cUBMG1oDFMiOusUnFweHU2PRb
    Q==;
-X-CSE-ConnectionGUID: /2z+huE8STO77PES+DfTNg==
-X-CSE-MsgGUID: kFiRTbEiRUaxCx/FFkSEqw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839622"
+X-CSE-ConnectionGUID: jssTrGXTS5mKIxV46XSG2w==
+X-CSE-MsgGUID: y5rLrSYsQ5+BlmJbWUQlSw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24348168"
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13839622"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:50 -0700
-X-CSE-ConnectionGUID: nwDwpn1fQ2SNJPRQUUQn3A==
-X-CSE-MsgGUID: OEXIKaNATXuTal65ZUfdtw==
+   d="scan'208";a="24348168"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:57 -0700
+X-CSE-ConnectionGUID: R+7+mf/zRxCcV6DbRi4D6A==
+X-CSE-MsgGUID: +8jCcKrWQP6iKzrYNSNOUw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="40627258"
+   d="scan'208";a="73678789"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:40 -0700
+  by orviesa001.jf.intel.com with ESMTP; 31 May 2024 08:30:49 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id B16433B3; Fri, 31 May 2024 18:30:39 +0300 (EEST)
+	id EA704679; Fri, 31 May 2024 18:30:39 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Rob Herring <robh@kernel.org>,
@@ -83,9 +83,9 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH v2 2/6] ASoC: fsl: Remove unused of_gpio.h
-Date: Fri, 31 May 2024 18:29:29 +0300
-Message-ID: <20240531153038.1590171-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 5/6] ASoC: generic: Replace of_gpio.h by proper one
+Date: Fri, 31 May 2024 18:29:32 +0300
+Message-ID: <20240531153038.1590171-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
 References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
@@ -97,41 +97,31 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-of_gpio.h is deprecated and subject to remove. The drivers in question
-don't use it, simply remove the unused header.
+of_gpio.h is deprecated and subject to remove.
+The driver doesn't use it directly, replace it
+with what is really being used.
 
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- sound/soc/fsl/imx-es8328.c | 1 -
- sound/soc/fsl/imx-rpmsg.c  | 2 --
- 2 files changed, 3 deletions(-)
+ sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-es8328.c b/sound/soc/fsl/imx-es8328.c
-index 5b9648f3b087..3ef92f6dfc6b 100644
---- a/sound/soc/fsl/imx-es8328.c
-+++ b/sound/soc/fsl/imx-es8328.c
-@@ -8,7 +8,6 @@
- #include <linux/of.h>
- #include <linux/of_platform.h>
- #include <linux/i2c.h>
+diff --git a/sound/soc/generic/audio-graph-card2-custom-sample.c b/sound/soc/generic/audio-graph-card2-custom-sample.c
+index 1b6ccd2de964..8e5a51098490 100644
+--- a/sound/soc/generic/audio-graph-card2-custom-sample.c
++++ b/sound/soc/generic/audio-graph-card2-custom-sample.c
+@@ -5,8 +5,9 @@
+ // Copyright (C) 2020 Renesas Electronics Corp.
+ // Copyright (C) 2020 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+ //
++#include <linux/device.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
 -#include <linux/of_gpio.h>
- #include <sound/soc.h>
- #include <sound/jack.h>
+ #include <linux/platform_device.h>
+ #include <sound/graph_card.h>
  
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index 0f1ad7ad7d27..ce98d2288193 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -5,9 +5,7 @@
- #include <linux/of_platform.h>
- #include <linux/of_reserved_mem.h>
- #include <linux/i2c.h>
--#include <linux/of_gpio.h>
- #include <linux/slab.h>
--#include <linux/gpio.h>
- #include <linux/clk.h>
- #include <sound/soc.h>
- #include <sound/jack.h>
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
