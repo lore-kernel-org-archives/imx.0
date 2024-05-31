@@ -1,385 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2055.outbound.protection.outlook.com [40.107.114.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD7974042;
-	Thu, 30 May 2024 23:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717110515; cv=none; b=Hgv5w11puaOUUew6nvKWu2OffuNCVU1xtVhCtpwvDHU8D4mlaLR2Bh35uRhb9guui4ZVApdF8Tc9Nm0b5OPgDOqGci9oxeDY0yATSZKedjswqSk5jDkCTfx7VanFQr0y50mDi7xPtbI4qcM6mGg+lNFVLsNNRXP2fD9VQjGD2GI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717110515; c=relaxed/simple;
-	bh=xv63xkQ/N35UIXFUqB556y/E/zx8WT/ylXiP/7xc2yc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=J7APB/n2Az/hExRbMIt85VuplMlmWBmraMFLRHZq94nZdlVX4ieU/fueZFdEsBK5MtojEfK8s1RSW2YFOeAThT5WMddn+1sJaX86M3tLjy7diLaO3EFCGQd+gPvhWH/vZP4ftzTFW03nfFT5udSMlh/yyfKclhCJJrk1Pz1lsAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IrO4qU00; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA764C84
+	for <imx@lists.linux.dev>; Fri, 31 May 2024 00:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717116840; cv=fail; b=FV5v8TugiUWUTCz6wmTBFLV3s1ylcHHFl4PN10YFEDijzf8PeVdBCwQ2kSOdnToiskEQ44LtRjj+3BhsgmnlF68EAn4mqaGxjvxo0aBjQoPoiUy0VuBzGaWxcUEOfG/1yuQTbQTsgHCQignPrRojs6pulz0Jx5jSMyx+gAgkWrY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717116840; c=relaxed/simple;
+	bh=OS/7Lq+zPUpzm2nXKzjKIYuBkPgTZwakPAxWfdKzS8w=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=U97H3hVIYAbrrqBcLIZDTcrmwbooE1zCHdIenD6UqEIq/4k27X83aYsFUnknFyz7XH5gKyGFAL3eCvQpWjmPAUD6FPu+xbSlfRf2CkE0NKMyUDYQs53LEMQXY299PcDDzP+ZemGsg6G2ZyZkrou2kdMQ6kszRBdIEUhxqkRvnZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=RbAilqTQ; arc=fail smtp.client-ip=40.107.114.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IrO4qU00"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AF6C2BBFC;
-	Thu, 30 May 2024 23:08:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717110514;
-	bh=xv63xkQ/N35UIXFUqB556y/E/zx8WT/ylXiP/7xc2yc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=IrO4qU00oIEISHIrYH786TC5X6IV4zMrAW/cMDr1eqJdXlJddTBcHViUN9MZieXzR
-	 5/vmP+ezlB3Q7O8OiIqOVyd6cTb/wzMGvFwGtGeJJGJz2zxhAYqsX9KbSSkTPBt9Ks
-	 0xt7rFWxo14YpEcBpQYnprHgL2g8f5tQKXzbwRTUgifFi6MsFFENqJcQtxk9X3Y/0t
-	 bX+nfPeUCKG1KkQn2slT/3+CMIXUVGXkxGHYUsU5UJ6mrf5KQXP5HU4Jb/LylKWh5o
-	 LQBUsfsXrTsnk2S2QA47hreLv+Mr0xIb8XfbMDf5Sxk1UhXjj2eFRQvr2Xo1HzSVYE
-	 nZ78FGY4lh+1g==
-Date: Thu, 30 May 2024 18:08:32 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support
- MSI ITS and IOMMU for i.MX95
-Message-ID: <20240530230832.GA474962@bhelgaas>
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="RbAilqTQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ldqcJh5Ld7xkUBljUE8iTd9Q8oOTDpvmr7V/eT0uz+ilxhEF9Atunb3LrN+fvp+/lVnvF6Jp1vxBn27wUX5qjMUWAcEXBKMVagcUqEjftZOlscpG9gTvcuVj//IHvUkLXV9bcoTCQKWjUsdsLlcDUjsJyf+2xCtOhP1z+DQrsNtRD+3fIGDd02P2biyWskfTdcNMjI+KoKTpyDpukDEJuj7g93JA2varCuFXOFCJNAix27EDYZoj0pXqPOAihXC/8LaZHlZfW+qWXAgSdnGHgRJAb7qWPVTOb7XM9QvPEDwDObKV6JbLrHujweDAnZ2jqcxT8D14OuoE6yGFv1zzlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rnRiCj1AQxC8bQ1vaKb4r/rrpq8eEUrHlH4nakrZoPk=;
+ b=N32Q7HjD32hkFvIF8Bwq48sTIophCCzf3Ydz+iJ7voduUcmyCBkOzLHQ60hj8D4UH1l05SjGwBWFvKKo5HxXfOVNIEDlb9wYWN8fcPTau49wSHqWsreVW7P26TKHqXNcNHBGPSSrZz0owClZZdj6144sR4fqeX3BlQ2lDH/rAtfVWraAgKBGVRMJ/C416bBoEaDsaUbssduJ8LbmQ6PRleWEPMNfR+I+AW/GvWMjB3SELpEmaMHVV1r22txp70bxu/jQcskUmnn0ZnU9HHtGO0yej4sdWE/n7RGm3x/WErzn36XsPkj/6ZzXz+zWcRB9XcdBEDPqUqKexaB+M6IQGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rnRiCj1AQxC8bQ1vaKb4r/rrpq8eEUrHlH4nakrZoPk=;
+ b=RbAilqTQboCZDt8NRzhogQcAZ4GpocXYzjUZiA3rVYIFhPulzYA6wKtmSMAUjjH3RZfV8PA49tN9eruoZMLuhi/IPjQH9qxH38PwtM+tMjGrtMgtnD7xMleSXXvbQEA/v6PtNxaRMvqzMUEHO6Fm5hvwZXFIzzcYsL9Sz3T2u1c=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OS3PR01MB5878.jpnprd01.prod.outlook.com
+ (2603:1096:604:c4::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.23; Fri, 31 May
+ 2024 00:53:54 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%4]) with mapi id 15.20.7633.021; Fri, 31 May 2024
+ 00:53:53 +0000
+Message-ID: <87ttievm1r.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rob Herring <robh@kernel.org>,	Weidong Wang <wangweidong.a@awinic.com>,
+	Mark Brown <broonie@kernel.org>,	Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+ <u.kleine-koenig@pengutronix.de>,	Shenghao Ding <shenghao-ding@ti.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,	Alper Nebi Yasak
+ <alpernebiyasak@gmail.com>,	Chancel Liu <chancel.liu@nxp.com>,
+	linux-sound@vger.kernel.org,	linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org,	patches@opensource.cirrus.com,
+	linuxppc-dev@lists.ozlabs.org,	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,	linux-rockchip@lists.infradead.org,
+	Liam Girdwood <lgirdwood@gmail.com>,	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,	James Schulman <james.schulman@cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,	Richard Fitzgerald
+ <rf@opensource.cirrus.com>,	Kevin Lu <kevin-lu@ti.com>,	Baojun Xu
+ <baojun.xu@ti.com>,	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,	Shengjiu Wang
+ <shengjiu.wang@gmail.com>,	Xiubo Li <Xiubo.Lee@gmail.com>,	Fabio Estevam
+ <festevam@gmail.com>,	Nicolin Chen <nicoleotsuka@gmail.com>,	Shawn Guo
+ <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,	Pengutronix
+ Kernel Team <kernel@pengutronix.de>,	Heiko Stuebner <heiko@sntech.de>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH v1 5/6] ASoC: generic: Replace of_gpio.h by proper one
+In-Reply-To: <20240530230037.1156253-6-andriy.shevchenko@linux.intel.com>
+References: <20240530230037.1156253-1-andriy.shevchenko@linux.intel.com>
+	<20240530230037.1156253-6-andriy.shevchenko@linux.intel.com>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Fri, 31 May 2024 00:53:52 +0000
+X-ClientProxiedBy: TYBP286CA0005.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:404:ce::17) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240528-pci2_upstream-v5-8-750aa7edb8e2@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS3PR01MB5878:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e4f55c6-91dc-4aeb-1396-08dc810c24c9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|7416005|52116005|376005|366007|1800799015|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FcTy7MQ7xyKTS4c9yoBZPRb7bK2E9+bilpN04gKeG1jtR+q2MoIc9mESWumd?=
+ =?us-ascii?Q?/krM3QB9LgbHjRjAmWjwGAcxw7WXp4hlJmZzXw5cNSpLSyat8gEbKtcMS6q7?=
+ =?us-ascii?Q?3mulwm/0GKomDvA9IGhhLd0Py+Mq1GP31vTPoN7bizCL1CPouv7K8cy1rYRV?=
+ =?us-ascii?Q?NaSeLchd5/IazjqzWootuyfGj8IeJ02FJHkRO2EZL0RpDOmufraPkWKGDfp7?=
+ =?us-ascii?Q?caVCVZBsA8LJrL8nGGLklKwytlFYAcM0XmeK6a1fymfOasyGhxkogMROixML?=
+ =?us-ascii?Q?5aZxYiIowuiJrQOCZwTuu+UZ5wNKQ3m7fRovt7ZKDtm4zz2TKHRvnZnjaeDX?=
+ =?us-ascii?Q?rEWOjSs5FMC40XpN4O1pxsQhyeih5q9tR1WExRPznHiKUv/p/vYyGdq2dz6s?=
+ =?us-ascii?Q?HjiECxXijME8OV1FLkVib5yJcrLr2tkluI+kYLN+PSvbfSnGm3nZ42QFTU3K?=
+ =?us-ascii?Q?4UgnPcmfIRAHI518NDRPviMm2JgR1zGCRTK1Sli8Ui9nX33xWeWpMtoO4dMQ?=
+ =?us-ascii?Q?LDWUEN8+2qvENEQDRzQxC1xSePa9U/XnqQrbReZ+LLuioZFoauAxWwDVq4Bs?=
+ =?us-ascii?Q?uxO0XMZuPg0TQOGCV8zH8rqlWXDO77unO3nltwwYw+gBLm+q5sMO4iWKvSh6?=
+ =?us-ascii?Q?l1CaGBl0muIdkJCqv1oxt6aBgtalvViouHTQ1gv/PMF//B3KMzoGWKgabkHX?=
+ =?us-ascii?Q?OQfLPTV/YF2aC+c1dvcJ9wKbCXptpxhTXLeHUf+bTJ7WZ1FnwlAOwiTqRSuL?=
+ =?us-ascii?Q?LSUHnxZ8cnYAOVfAcfOoZhBwtkYbvWWl1D6HD3WyCGn9cHHKaBbPjzhyMqwg?=
+ =?us-ascii?Q?P3nsJBACkDlO8gQBML9d52j+6FZRYfI3CFIjIbpXBgBA8SUQvu+7og8CdDMP?=
+ =?us-ascii?Q?+EWAfwHjRPqcRiO/LtvQ4jHFGRFy58Y1RS24JZ8/6pbrHqdwWewuLco+1/7y?=
+ =?us-ascii?Q?VaKCcowxqGLVSLIlVTDlefPbo5/tbn6b8tTKmzInkQ6xgbteGHKFJuZBHkc1?=
+ =?us-ascii?Q?io/XA/R7Yu9y4WtFbam/3FOlYiZwZ4FzTrHwZbPaRhJmWwsL99nL1nVGh0F8?=
+ =?us-ascii?Q?jmu8AbSmyLqY5Kx91xfxH/As/ni0YDCnMuaNqMoEjPXrJkwatmT2UHw5OeT5?=
+ =?us-ascii?Q?mkTuUzEMikXdaq4okJHcZgPObqAjAs+0iz4empLa0QNDHUBCc6KhgUh50+HB?=
+ =?us-ascii?Q?eWg3p2dU7Ef5nKkYEKO7SzymvLXUUOBscJ1eiL57FjBRFz+Cb3/wVuQ6dp3f?=
+ =?us-ascii?Q?Z128LK3W1rERk63rSgRjLT1k0UWdLd9tTUIwFSXLgEgC9fGvqnCEbopl/aJM?=
+ =?us-ascii?Q?PHztpppKeVcJ55XbJBnrpIaRtQb1wflpuDad1e3avLLqZw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(52116005)(376005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1QoiMPO9V4W++16/btjwcNhUGxFGhYkenaKB6OqQXvXq2eYDLfzH8VeRjWf5?=
+ =?us-ascii?Q?DnMamy4bISYdRBa2FgOxlmiCvteVjaTuw7ZBmLLWFDwpncFx4ZBn0PYpAEtX?=
+ =?us-ascii?Q?r6w8Q7IEo8mf7czMtTuJExvWrDE6u+/raoTXU0iV6wM5GgNhNYOZgVziUceH?=
+ =?us-ascii?Q?6O5Lgn/yLk0Bl9aAHdWCR/N/OC3XBBSqIaR8ysn/yqE8Frav2FOzu5xDZmlA?=
+ =?us-ascii?Q?17V6Uo1c7rththBsLtvCKBcPXtxcZh8uA3AKiQm8bRZ3DCTwF0Mwb6uw0S+l?=
+ =?us-ascii?Q?oNeOX7Bt+KzWi277A0W+Rbx/w6VNEDJGybC6Ek5TPx4VYjG1TJXITtGRbpUb?=
+ =?us-ascii?Q?wg1yhkUg3ud3HDRJYBucXx/wWloZ6wmdX33GCO7R0gvYsGv99kk9psCGtjUT?=
+ =?us-ascii?Q?iXdilPEBe8KcCtPfJf5NT197ITCuYjh0o9MuJvfsTM/9iplnGXYaGcMTePK8?=
+ =?us-ascii?Q?MOltUlj6y3mmJGW6laHt5pnjWdv+1D9lALiyS0yqIZWY988ZwpNhQdUT2lfl?=
+ =?us-ascii?Q?wypL748hLScMYh7tSBqNKFp+KtzuXUrDqGnwKQcl2Ddls1PNIOP/30NH/1na?=
+ =?us-ascii?Q?JFEmqsodnRhXfKN0e94T6QuaJVqlqnV0b9HXA/zkUuUAGGu59D4TrKwiMswz?=
+ =?us-ascii?Q?mxWFZMQFW1P+AdTsdxYA33o0fdb/Qia4u2Mj7YXiTGvDM2R0Vy/BrldY7gyP?=
+ =?us-ascii?Q?l5No/oewJmHQFNmJpT/P0ggB8BhqxYpo83ekkOzU1cZDN7ZnTcgVr5JMBtKR?=
+ =?us-ascii?Q?Hi/Mk1TWUIExzRiJIVcaPw2XvpyA8tcMoSLRu+WaoLBJaphEDnGS59a9JArn?=
+ =?us-ascii?Q?OSAvaEoaDS3pXTDt+AEikh1iBWeDRn8E3UtXgZT9dLH8xe2Y6y7uYnHzoSbl?=
+ =?us-ascii?Q?hB3tVEiJZTcYHuD/p+ljfREUWJxKpqTqsjyrtImzsXTgXu2Dk8RadNIKzBPq?=
+ =?us-ascii?Q?FTdVwsztiF8MMlOg/JZG8VNpTMFg3QqaOTZ2fWO8nV/f7ovZfgJ6vbgAFm8Q?=
+ =?us-ascii?Q?E3C8jxHAnLlPCKD/CiIpcK9x6KlJN8gy1UI9z8kdm+03AP9O3FuWdLz/WPn9?=
+ =?us-ascii?Q?XUgcv6kzGos4ajkUxrvFr+hXYFXLcUINFhEkQgQZtCSZM6qGl09z8YnEU7Xc?=
+ =?us-ascii?Q?9J4+VNIouNeYXEVDirpTVQpsUHdLXFE9S7GEeQcrylBRJ+UJPCeTnTEykIDf?=
+ =?us-ascii?Q?TnkS+52oVOF8G1XuicPIPuZR2yzrg/Zl/DWmhlxFNJMtawO91oAwXkDFjAYD?=
+ =?us-ascii?Q?pQ9yOI4r/MIDwjF8Nj+geg8W6epRGkYf3piYWdZQd5wkWTPxcyjEftpa6hbe?=
+ =?us-ascii?Q?UXyOcp9VTIkqVdVThlM7Dvd+b0bFZvy/EuosW7rTfeXk/1XlAetd1ttrIyRG?=
+ =?us-ascii?Q?ue9deopyDuf9NbXbYbafCBEW+8kZkSPit2Qt8GYGAMPO0R+dcoMFFfKytTXP?=
+ =?us-ascii?Q?y0snhxvFrTviorFLxpTCrMSltyecInqq4Oq5/fFvsH7WlsArnV6HF2EFRX3+?=
+ =?us-ascii?Q?W6a2C1p2VkVAO5HloxAj7JhXNiUZaGDqL5Un/5fpJLhiZDBxaiOQJsKzQIMi?=
+ =?us-ascii?Q?zvNWAzJus08zqKv9tQMDVPi6TOpzOjGce+4kY90plbccHL4lBs7aN+TiRDlL?=
+ =?us-ascii?Q?sVsxkc2JtOFlF0N8dM7sbHU=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e4f55c6-91dc-4aeb-1396-08dc810c24c9
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 00:53:53.8027
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UEoiBfS38WCwrjH1iinINsLH5zNJ1YSawDVd23YcpQMjC6DBwvgiR7nyh0nYjm0dC0/UcVSTo+XGRVNJ1+ORl0iaPQbvdHjotm0YbGR8OZb6aMWdRabspyZSBg/ARmMh
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB5878
 
-[+cc IOMMU and pcie-apple.c folks for comment]
 
-On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
-> For the i.MX95, configuration of a LUT is necessary to convert Bus Device
-> Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
-> This involves examining the msi-map and smmu-map to ensure consistent
-> mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
-> registers are configured. In the absence of an msi-map, the built-in MSI
-> controller is utilized as a fallback.
+Hi
+
+> of_gpio.h is deprecated and subject to remove.
+> The driver doesn't use it directly, replace it
+> with what is really being used.
 > 
-> Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
-> upon the appearance of a new PCI device and when the bus is an iMX6 PCI
-> controller. This function configures the correct LUT based on Device Tree
-> Settings (DTS).
-
-This scheme is pretty similar to apple_pcie_bus_notifier().  If we
-have to do this, I wish it were *more* similar, i.e., copy the
-function names, bitmap tracking, code structure, etc.
-
-I don't really know how stream IDs work, but I assume they are used on
-most or all arm64 platforms, so I'm a little surprised that of all the
-PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
-this notifier.  
-
-There's this path, which is pretty generic and does at least the
-of_map_id() part of what you're doing in imx_pcie_add_device():
-
-    __driver_probe_device
-      really_probe
-        pci_dma_configure                       # pci_bus_type.dma_configure
-          of_dma_configure
-            of_dma_configure_id
-              of_iommu_configure
-                of_pci_iommu_init
-                  of_iommu_configure_dev_id
-                    of_map_id
-                    of_iommu_xlate
-                      ops = iommu_ops_from_fwnode
-                      iommu_fwspec_init
-                      ops->of_xlate(dev, iommu_spec)
-
-Maybe this needs to be extended somehow with a hook to do the
-device-specific work like updating the LUT?  Just speculating here,
-the IOMMU folks will know how this is expected to work.
-
-Some typos and minor comments below.
-
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 175 +++++++++++++++++++++++++++++++++-
->  1 file changed, 174 insertions(+), 1 deletion(-)
+
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+
+>  sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 29309ad0e352b..8ecc00049e20b 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -54,6 +54,22 @@
->  #define IMX95_PE0_GEN_CTRL_3			0x1058
->  #define IMX95_PCIE_LTSSM_EN			BIT(0)
+> diff --git a/sound/soc/generic/audio-graph-card2-custom-sample.c b/sound/soc/generic/audio-graph-card2-custom-sample.c
+> index 1b6ccd2de964..8e5a51098490 100644
+> --- a/sound/soc/generic/audio-graph-card2-custom-sample.c
+> +++ b/sound/soc/generic/audio-graph-card2-custom-sample.c
+> @@ -5,8 +5,9 @@
+>  // Copyright (C) 2020 Renesas Electronics Corp.
+>  // Copyright (C) 2020 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+>  //
+> +#include <linux/device.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> -#include <linux/of_gpio.h>
+>  #include <linux/platform_device.h>
+>  #include <sound/graph_card.h>
 >  
-> +#define IMX95_PE0_LUT_ACSCTRL			0x1008
-> +#define IMX95_PEO_LUT_RWA			BIT(16)
-> +#define IMX95_PE0_LUT_ENLOC			GENMASK(4, 0)
-> +
-> +#define IMX95_PE0_LUT_DATA1			0x100c
-> +#define IMX95_PE0_LUT_VLD			BIT(31)
-> +#define IMX95_PE0_LUT_DAC_ID			GENMASK(10, 8)
-> +#define IMX95_PE0_LUT_STREAM_ID			GENMASK(5, 0)
-> +
-> +#define IMX95_PE0_LUT_DATA2			0x1010
-> +#define IMX95_PE0_LUT_REQID			GENMASK(31, 16)
-> +#define IMX95_PE0_LUT_MASK			GENMASK(15, 0)
-> +
-> +#define IMX95_SID_MASK				GENMASK(5, 0)
-> +#define IMX95_MAX_LUT				32
-> +
->  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
->  
->  enum imx_pcie_variants {
-> @@ -79,6 +95,7 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
->  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
->  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
-> +#define IMX_PCIE_FLAG_MONITOR_DEV		BIT(8)
->  
->  #define imx_check_flag(pci, val)     (pci->drvdata->flags & val)
->  
-> @@ -132,6 +149,8 @@ struct imx_pcie {
->  	struct device		*pd_pcie_phy;
->  	struct phy		*phy;
->  	const struct imx_pcie_drvdata *drvdata;
-> +
-> +	struct mutex		lock;
->  };
->  
->  /* Parameters for the waiting for PCIe PHY PLL to lock on i.MX7 */
-> @@ -215,6 +234,66 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
->  	return 0;
->  }
->  
-> +static int imx_pcie_config_lut(struct imx_pcie *imx_pcie, u16 reqid, u8 sid)
-> +{
-> +	struct dw_pcie *pci = imx_pcie->pci;
-> +	struct device *dev = pci->dev;
-> +	u32 data1, data2;
-> +	int i;
-> +
-> +	if (sid >= 64) {
-> +		dev_err(dev, "Invalid SID for index %d\n", sid);
-> +		return -EINVAL;
-> +	}
-> +
-> +	guard(mutex)(&imx_pcie->lock);
-> +
-> +	for (i = 0; i < IMX95_MAX_LUT; i++) {
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-> +
-> +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, &data1);
-> +		if (data1 & IMX95_PE0_LUT_VLD)
-> +			continue;
-> +
-> +		data1 = FIELD_PREP(IMX95_PE0_LUT_DAC_ID, 0);
-> +		data1 |= FIELD_PREP(IMX95_PE0_LUT_STREAM_ID, sid);
-> +		data1 |= IMX95_PE0_LUT_VLD;
-> +
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, data1);
-> +
-> +		data2 = 0xffff;
-> +		data2 |= FIELD_PREP(IMX95_PE0_LUT_REQID, reqid);
-> +
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, data2);
-> +
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-> +
-> +		return 0;
-> +	}
-> +
-> +	dev_err(dev, "All lut already used\n");
-> +	return -EINVAL;
-> +}
-> +
-> +static void imx_pcie_remove_lut(struct imx_pcie *imx_pcie, u16 reqid)
-> +{
-> +	u32 data2 = 0;
-> +	int i;
-> +
-> +	guard(mutex)(&imx_pcie->lock);
-> +
-> +	for (i = 0; i < IMX95_MAX_LUT; i++) {
-> +		regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, IMX95_PEO_LUT_RWA | i);
-> +
-> +		regmap_read(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, &data2);
-> +		if (FIELD_GET(IMX95_PE0_LUT_REQID, data2) == reqid) {
-> +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA1, 0);
-> +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_DATA2, 0);
-> +			regmap_write(imx_pcie->iomuxc_gpr, IMX95_PE0_LUT_ACSCTRL, i);
-> +		}
-> +	}
-> +}
-> +
->  static void imx_pcie_configure_type(struct imx_pcie *imx_pcie)
->  {
->  	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
-> @@ -1232,6 +1311,85 @@ static int imx_pcie_resume_noirq(struct device *dev)
->  	return 0;
->  }
->  
-> +static bool imx_pcie_match_device(struct pci_bus *bus);
-
-Can you add the imx_pcie_match_device() earlier in the file so we
-don't need this forward declaration?
-
-> +static int imx_pcie_add_device(struct imx_pcie *imx_pcie, struct pci_dev *pdev)
-> +{
-> +	u32 sid_i = 0, sid_m = 0, rid = pci_dev_id(pdev);
-> +	struct device *dev = imx_pcie->pci->dev;
-> +	int err;
-> +
-> +	err = of_map_id(dev->of_node, rid, "iommu-map", "iommu-map-mask", NULL, &sid_i);
-> +	if (err)
-> +		return err;
-> +
-> +	err = of_map_id(dev->of_node, rid, "msi-map", "msi-map-mask", NULL, &sid_m);
-> +	if (err)
-> +		return err;
-> +
-> +	if (sid_i != rid && sid_m != rid)
-> +		if ((sid_i & IMX95_SID_MASK) != (sid_m & IMX95_SID_MASK)) {
-> +			dev_err(dev, "its and iommu stream id miss match, please check dts file\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +	/* if iommu-map is not existed then use msi-map's stream id*/
-
-Capitalize consistently, e.g., the most comments in this file start
-with a capital letter.
-
-s/is not existed/does not exist/
-
-Add space before closing */
-
-> +	if (sid_i == rid)
-> +		sid_i = sid_m;
-> +
-> +	sid_i &= IMX95_SID_MASK;
-> +
-> +	if (sid_i != rid)
-> +		return imx_pcie_config_lut(imx_pcie, rid, sid_i);
-> +
-> +	/* Use dwc built-in MSI controller */
-> +	return 0;
-> +}
-> +
-> +static void imx_pcie_del_device(struct imx_pcie *imx_pcie, struct pci_dev *pdev)
-> +{
-> +	imx_pcie_remove_lut(imx_pcie, pci_dev_id(pdev));
-> +}
-> +
-> +
-> +static int imx_pcie_bus_notifier(struct notifier_block *nb, unsigned long action, void *data)
-> +{
-> +	struct pci_host_bridge *host;
-> +	struct imx_pcie *imx_pcie;
-> +	struct pci_dev *pdev;
-> +	int err;
-> +
-> +	pdev = to_pci_dev(data);
-> +	host = pci_find_host_bridge(pdev->bus);
-> +
-> +	if (!imx_pcie_match_device(host->bus))
-> +		return NOTIFY_OK;
-> +
-> +	imx_pcie = to_imx_pcie(to_dw_pcie_from_pp(host->sysdata));
-> +
-> +	if (!imx_check_flag(imx_pcie, IMX_PCIE_FLAG_MONITOR_DEV))
-> +		return NOTIFY_OK;
-> +
-> +	switch (action) {
-> +	case BUS_NOTIFY_ADD_DEVICE:
-> +		err = imx_pcie_add_device(imx_pcie, pdev);
-> +		if (err)
-> +			return notifier_from_errno(err);
-> +		break;
-> +	case BUS_NOTIFY_DEL_DEVICE:
-> +		imx_pcie_del_device(imx_pcie, pdev);
-> +		break;
-> +	default:
-> +		return NOTIFY_DONE;
-> +	}
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
-> +static struct notifier_block imx_pcie_nb = {
-> +	.notifier_call = imx_pcie_bus_notifier,
-> +};
-> +
->  static const struct dev_pm_ops imx_pcie_pm_ops = {
->  	NOIRQ_SYSTEM_SLEEP_PM_OPS(imx_pcie_suspend_noirq,
->  				  imx_pcie_resume_noirq)
-> @@ -1264,6 +1422,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	imx_pcie->pci = pci;
->  	imx_pcie->drvdata = of_device_get_match_data(dev);
->  
-> +	mutex_init(&imx_pcie->lock);
-> +
->  	/* Find the PHY if one is defined, only imx7d uses it */
->  	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
->  	if (np) {
-> @@ -1551,7 +1711,8 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  	},
->  	[IMX95] = {
->  		.variant = IMX95,
-> -		.flags = IMX_PCIE_FLAG_HAS_SERDES,
-> +		.flags = IMX_PCIE_FLAG_HAS_SERDES |
-> +			 IMX_PCIE_FLAG_MONITOR_DEV,
->  		.clk_names = imx8mq_clks,
->  		.clks_cnt = ARRAY_SIZE(imx8mq_clks),
->  		.ltssm_off = IMX95_PE0_GEN_CTRL_3,
-> @@ -1687,6 +1848,8 @@ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_SYNOPSYS, 0xabcd,
->  
->  static int __init imx_pcie_init(void)
->  {
-> +	int ret;
-> +
->  #ifdef CONFIG_ARM
->  	struct device_node *np;
->  
-> @@ -1705,7 +1868,17 @@ static int __init imx_pcie_init(void)
->  	hook_fault_code(8, imx6q_pcie_abort_handler, SIGBUS, 0,
->  			"external abort on non-linefetch");
->  #endif
-> +	ret = bus_register_notifier(&pci_bus_type, &imx_pcie_nb);
-> +	if (ret)
-> +		return ret;
-
-I think this should go in imx6_pcie_probe().
-
->  	return platform_driver_register(&imx_pcie_driver);
->  }
-> +
-> +static void __exit imx_pcie_exit(void)
-> +{
-> +	bus_unregister_notifier(&pci_bus_type, &imx_pcie_nb);
-
-It looks like this driver is removable?
-
-What happens when an external abort occurs after the
-imx6q_pcie_abort_handler() text is removed?
-
-> +}
-> +
->  device_initcall(imx_pcie_init);
-> +__exitcall(imx_pcie_exit);
-> 
 > -- 
-> 2.34.1
+> 2.43.0.rc1.1336.g36b5255a03ac
 > 
