@@ -1,130 +1,192 @@
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633E1152160
-	for <imx@lists.linux.dev>; Sat,  1 Jun 2024 13:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A76F111AD;
+	Sat,  1 Jun 2024 15:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717249960; cv=none; b=h5VJxLBlDKSO46ml3YVvSZWR5ivmz0W+c+gLRm1kKuSwaOn+aAkwTx4kTEVykQaQL+O4pjdGRAF1PhuqAFClvMjsxDtaJckqrsXYnzemXq/etDS5gxR5btbnZ6R0+QnaJdAzJ1rrKv/k3eyJYYiDSPLQhV/rJSfb9OWjlBfzyPE=
+	t=1717255550; cv=none; b=QvxgD3yHZwCoVGWZUs1jKVi0B8JY/20Jt7VsgekquJFPphnqRgHXk0BN44/GnWxAQGaOCFrwkZPD0KAwtwR7r9PueCXCe0xLdPFUIBmiY+aMVezAJbE8U9oaiX6JvZJMH70Q6DmwLSE15/4EmJ0xazPEhPnH7bG7KZuDrYQ7zIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717249960; c=relaxed/simple;
-	bh=1Dgwy0Q+GhrrVZfVCPhz54VGa+v3vTl0ATIGpU3b1r0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIna42MUR+DJRWiI4H5BtE6whF8va2zNdfb68EADyXI58Ajno0vyq5RO88WHivlZYDzRy7qajxEV2+g38QGDCJeQOQ+Y5eG8HVqO3rv3hllz+3RTms+k1p62+ZLJHqvh4eHTZFohlq/OUZRfXEh++4lmXI5m8cWiwKAeEmS4SYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIgOErli; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717255550; c=relaxed/simple;
+	bh=6arLZDLJuJlo6JuZXNw8KfGVxYLRDu0gY7ndaZcELgs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R2fDMFs9zwBGwdbawpqvpQSvc6OISx2P52ILXDFtI+Hz9zNbaXRY1QhG0j0iDazZqoBW9jatjFaGSfAMSftfNlLBLvITKgiLMT5PzkGrtNtzMkRDQxDtHjRl8w707KaI1Zaevq+9PS5QC/0jPo5OW6qrOoesEqPOkI9pElNP4Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKNwUi/Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIgOErli"
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-36da84df7adso8134355ab.1
-        for <imx@lists.linux.dev>; Sat, 01 Jun 2024 06:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717249958; x=1717854758; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RGka72aXhHw6B/ugmJ5D8SFrSBdPwgiFasgjGAhEvSI=;
-        b=TIgOErliLmulY6kfpifQnUVAYQPiQq6f4PG+gOhzRqfbvukltDlg6IOoXVt2ejOyLa
-         LCug93UwcdvT8qnCU8tISZS9jw8Om3Rwr3Iqs+AE/CY1zZvLWH9z0iLAv4V3VLuIn3PA
-         63iFPh4cCJgFZh+IQO3aYgcIPsx35UnVUzLCnWyUcW6njeAbnyhsWzfKGtALLXKg2JK5
-         9S1evmlXZWu68GEDhVHPd24pLskL5U7FE77ikUB3chk2mpdTqabeHrLE6cQzHQ5V50y2
-         6SNVfj5CqN+rSx+gThAb5yEk/cm2aUcwq3ZKxGLes9Vng6oHt5G/Q+j4AI5/f3Njg7F8
-         BB9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717249958; x=1717854758;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RGka72aXhHw6B/ugmJ5D8SFrSBdPwgiFasgjGAhEvSI=;
-        b=RoV+LG8QAhsLCcHGgTl2QM41wYR8WnMTzkvcCD7BQxnaDFxx+ue+BqLPeLrbe2VuKD
-         cbU+MIz4tnwPjCz1cxWGbPyfSw1PEPUvh3hDQWAcNHvVAaQL5g3hl7cLOXAi32U7Dmks
-         oHGljEiKrCr3hjygHWd0v2a+AgMGTASzi3O/fZP0U7efSgkknyqpQFrx8+Py2/dyNpPw
-         SoNmkyzzCHWxofbmzaFJo+Z3MXRCZs0IQwONLuH+9+fUAwcqt16ip2arls86v4HMA3Cv
-         N7U0S+WGLbvDpdrpqqHca7Rh3gz+ERdOj7DuKliqb7y2JbGwx71d6rB7fUntGj41616L
-         NKHg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2ckixka/lgE38REU/sDJ5jQhQvcDIMErprpbJzTZgm6u2pzVa/Lm+FeoMHgf2FZTdW2reJPPCGKukYnR/dTYv42yR
-X-Gm-Message-State: AOJu0Yx42P+tlNByOIjzG7IFUiSAv4NNwM1ic8OoyvB9QPg8S7zfo5od
-	nWtgV0q3RPnJsC/D8J2MfwDSVfwlQvkM554W6I6g1GSsS4YpsgQjPAlzXw==
-X-Google-Smtp-Source: AGHT+IHNarKWZy9HAtQK8XU6dQr4Zrxypy/AD5KjenkEvnfFzfikvYAeTK9czkeEyJLIysD+wU5U3A==
-X-Received: by 2002:a92:cd8a:0:b0:373:1137:cc1e with SMTP id e9e14a558f8ab-3747e20bf3fmr60551865ab.7.1717249958498;
-        Sat, 01 Jun 2024 06:52:38 -0700 (PDT)
-Received: from aford-System-Version.lan ([2601:447:d002:5be:e0b7:c613:ee:e8f3])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b56e7824d4sm556349173.172.2024.06.01.06.52.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Jun 2024 06:52:37 -0700 (PDT)
-From: Adam Ford <aford173@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com,
-	Adam Ford <aford173@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V3 2/2] arm64: dts: imx8mp-beacon-kit: Fix errors found from CHECK_DTBS
-Date: Sat,  1 Jun 2024 08:52:29 -0500
-Message-ID: <20240601135230.89980-2-aford173@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240601135230.89980-1-aford173@gmail.com>
-References: <20240601135230.89980-1-aford173@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKNwUi/Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED31FC116B1;
+	Sat,  1 Jun 2024 15:25:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717255550;
+	bh=6arLZDLJuJlo6JuZXNw8KfGVxYLRDu0gY7ndaZcELgs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UKNwUi/ZG96iN4HmYc3blfQJ0y6H4YO4j/U1ogjpCJ7ZKqj3hwtlv7xNJWZinU1Wc
+	 M6LsTxD604zMz+m1MtLqCVhNNznq1eVhf0GbkELX1+prAF3fJl3NlrT26tVcr7gdcA
+	 Eihndo4ZPQwfN/5BoO1csMa0qqB1RLwMQE5zz3VkuA32hux7PpZzoFLoS8Der35fRj
+	 3+t7Lio5XC8QJyEtRSCi1IaN18zuwgnXZEioDdE+3sp7ZlY2ii6nt0fn3z7gkZaPLA
+	 XYvziZyT+8BjLyn3i8MCdR14/jTG452SGVUdKXFM2l4H028sLSISG5A4pFl2dj2qv4
+	 qbmcx9DRYO+sQ==
+Message-ID: <b78b14c7-e71c-4403-a606-80564a31e107@kernel.org>
+Date: Sat, 1 Jun 2024 17:25:46 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+To: Frank Li <Frank.Li@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..."
+ <linux-mmc@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240531193745.1714046-1-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240531193745.1714046-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The adv7535 has some unnecessary entries which can be removed since
-they were not setup properly anyway and the defaults work just fine.
-Removing them and adding some required regulators make the errors
-detected from CHECK_DTBS go away:
+On 31/05/2024 21:37, Frank Li wrote:
+> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
+> 
+> Addtional change during convert:
+> - deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
+> - Add "reg" and "interrupts" property.
+> - change example "sdhci@2e000" to "mmc@2e000".
+> - compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
+> most existed dts file.
+> 
 
- reg-names:1: 'edid' was expected
- reg-names:2: 'cec' was expected
- 'avdd-supply' is a required property
- 'dvdd-supply' is a required property
- 'pvdd-supply' is a required property
- 'a2vdd-supply' is a required property
- 'v3p3-supply' is a required property
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
----
-V2:  No Change
+> -};
+> diff --git a/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
+> new file mode 100644
+> index 0000000000000..cafc09c4f1234
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
 
-V3:  Update commit message, no functional changes.
+Filename: fsl,esdhc.yaml
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-index da836172ae46..5c4b68c18bb2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-@@ -302,12 +302,19 @@ pca6416_3: gpio@20 {
- 
- 	adv_bridge: hdmi@3d {
- 		compatible = "adi,adv7535";
--		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
--		reg-names = "main", "cec", "edid", "packet";
-+		reg = <0x3d>;
-+		reg-names = "main";
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
- 		adi,dsi-lanes = <4>;
- 		#sound-dai-cells = <0>;
-+		avdd-supply = <&buck5>;
-+		dvdd-supply = <&buck5>;
-+		pvdd-supply = <&buck5>;
-+		a2vdd-supply = <&buck5>;
-+		v1p2-supply = <&buck5>;
-+		v3p3-supply = <&buck4>;
-+
- 
- 		ports {
- 			#address-cells = <1>;
--- 
-2.43.0
+> @@ -0,0 +1,98 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+
+...
+
+> +  clock-frequency:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: specifies eSDHC base clock frequency.
+> +
+> +  sdhci,wp-inverted:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    deprecated: true
+> +    description:
+> +      specifies that eSDHC controller reports
+> +      inverted write-protect state; New devices should use the generic
+> +      "wp-inverted" property.
+> +
+> +  sdhci,1-bit-only:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    deprecated: true
+> +    description:
+> +      specifies that a controller can only handle
+> +      1-bit data transfers. New devices should use the generic
+> +      "bus-width = <1>" property.
+> +
+> +  sdhci,auto-cmd12:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      specifies that a controller can only handle auto CMD12.
+> +
+> +  voltage-ranges:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +    items:
+> +      items:
+> +        - description: specifies minimum slot voltage (mV).
+> +        - description: specifies maximum slot voltage (mV).
+> +
+> +  little-endian:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      If the host controller is little-endian mode, specify
+> +      this property. The default endian mode is big-endian.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+
+clock-frequency was required. Isn't it required now?
+
+> +
+> +allOf:
+> +  - $ref: sdhci-common.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    mmc@2e000 {
+> +        compatible = "fsl,mpc8378-esdhc", "fsl,esdhc";
+> +        reg = <0x2e000 0x1000>;
+> +        interrupts = <42 0x8>;
+> +        interrupt-parent = <&ipic>;
+> +        /* Filled in by U-Boot */
+> +        clock-frequency = <0>;
+
+Please provide complete (final) example.
+
+> +        voltage-ranges = <3300 3300>;
+> +    };
+
+Best regards,
+Krzysztof
 
