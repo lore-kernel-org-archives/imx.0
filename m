@@ -1,61 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C05BA2F;
-	Sat,  1 Jun 2024 05:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2BD2FA;
+	Sat,  1 Jun 2024 05:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717218552; cv=none; b=nPP2LtJAq+pN3E/GVvivkY+JBLnpaQ5mQ7c52U2kQ34FxI/5gKn3wlL4KdEOjQOJgXoGyQ4/+gR363nn1R8491weUJXbTp3klZx95pZC8ZYpgRtcZ0pr0ldWMgvG5BsKyyIS2yNM5mV36Rxi0hmSq98ZylH3o9DqXO9ObIbGtOQ=
+	t=1717221039; cv=none; b=BUypUAKAS66yPe+Z26++b18v2F6SHF7PIqGoTdswwlz5JU9sDqwvtsaQKa2kDktibEbn6sj8KRe2SrdWI378YIoKqmUBgxgOk82rJn2Pf3rhq2GGS8tKc2k2bmX84+Gn9ivPHQ/lF8XcjPLP5gg4icmaEsdseWbiT+5FWkivmZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717218552; c=relaxed/simple;
-	bh=tKYTmVHs6IMI7rjpM20cWi/8xgeoZcaJdXkzRHvYPR0=;
+	s=arc-20240116; t=1717221039; c=relaxed/simple;
+	bh=sWbc3uG2lmnElC1fzYYw8hroZJ/7dZbzi/7Nr/hh7w8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qylst3eS36BBzcA+grZp/l6hn5jwK4mzHceplpSxurC3QWrvCb3B/IvZeXGITX+/2mTIAAcOE3wncfl4ZqE8l8+j8aIDwkLTKlB+zVbMydgpUcxwyKCtA7uu4jrmT9X5HkvmmqYs7DGWb/pz2Eu9sZnBVp/Sqg1UE09BP6jfvYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QKFv7P1V; arc=none smtp.client-ip=198.175.65.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+DPE0mL6T0QodMffIaFQeTnv3B0eQWnFz4/MrLSk/LyhBNFbus+IhkyeXabnBKVo8nqdH82KVdPxCa5zf25nRDgmVL9+3S18VHr+O8BtBg/dksV6JHAQ8K7Tox1VfS3J0BKhfIj+FdYzHkOUaHAAEM9hXmGc4BPrmU29qdkEQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=elT5zf7I; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QKFv7P1V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="elT5zf7I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717218550; x=1748754550;
+  t=1717221037; x=1748757037;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=tKYTmVHs6IMI7rjpM20cWi/8xgeoZcaJdXkzRHvYPR0=;
-  b=QKFv7P1Vurk1KxhAHS0AtCPwGhrOY9lJST9FZSUuq2bTIELVHm6yK3ha
-   9c8XtEWTHU1lhLmX45LojWIcy5aoo6ENO6PeDDQK3eLcXJpyxaI6lGQSZ
-   KK2IPP7n+83hJKYJ89nMJ0cAEBGDSm9uoOurHLoOjVg6EJjltD065/jqg
-   9Wl8ZjCNgdJ4g3HyqkK0HjJGITwniR3ivmkd8+rDiDwDLUiuRcQWb0hCU
-   ykkuWWhuCXeO34BGtGb5XXTHqq/wToTGP9oFK/m6zwtiiClfEbaAK7uHU
-   XhOWaABHMq7qds1/LG4XHkANhwmMOd8EN9l166YoHdVBuFeYkrhKBtP6d
+  bh=sWbc3uG2lmnElC1fzYYw8hroZJ/7dZbzi/7Nr/hh7w8=;
+  b=elT5zf7Ig6S8dVDh5orunkc2IQOyG0mT+6tzNmgoZVf1isg5KmA68EHk
+   oSo3V/udoF0H1V3uGMPPwY45SkqkEKPaSmykHkggwoZyza7df/FCmYNI8
+   b67pNBnwH5/rZRDwME1dgPjJcz+Gc62OGRIU1mI3SUhnXgsmD8Bc7sxc7
+   WUTns0toYs8D1PtDfVXvOzEY7nPBcAE0B6TnM1Zj2Kmeqr9Qh9yLFtd0w
+   8qzjd+tmKFGLJjWIhsAB+3GNNONuZEI5wMitGbgtRAufeZXH+JJJCnk7J
+   sl/pDoKUomgeEOWfzwbnEZnynEcU2GAm45IBH3dO31S/d9J1HD4sR0YAI
    g==;
-X-CSE-ConnectionGUID: v+QBEMDsRVSUnYMrzEhzUA==
-X-CSE-MsgGUID: Gf3wSeyIRl2rkXXfLZWexg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="17570135"
+X-CSE-ConnectionGUID: IElJjO8mRcabt4UurQcQVg==
+X-CSE-MsgGUID: sb2xZhnaSFOSN4ac9ZSqng==
+X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="25181564"
 X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
-   d="scan'208";a="17570135"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 22:09:08 -0700
-X-CSE-ConnectionGUID: t4bv1537SM6B9vxLcsByig==
-X-CSE-MsgGUID: /62jstHhSxWc/FUZHbEKjg==
+   d="scan'208";a="25181564"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 22:50:36 -0700
+X-CSE-ConnectionGUID: lMt31lgjRqO5B20eKNv4yA==
+X-CSE-MsgGUID: dfDHijn8QYOH+XgjOQ/eMA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
-   d="scan'208";a="40797318"
+   d="scan'208";a="36810149"
 Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 31 May 2024 22:09:06 -0700
+  by orviesa006.jf.intel.com with ESMTP; 31 May 2024 22:50:35 -0700
 Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sDGzH-000IQL-33;
-	Sat, 01 Jun 2024 05:09:03 +0000
-Date: Sat, 1 Jun 2024 13:08:12 +0800
+	id 1sDHdQ-000ISF-1D;
+	Sat, 01 Jun 2024 05:50:32 +0000
+Date: Sat, 1 Jun 2024 13:49:46 +0800
 From: kernel test robot <lkp@intel.com>
 To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
 	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>,
 	open list <linux-kernel@vger.kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev
 Subject: Re: [PATCH 2/2] dmaengine: fsl-edma: remove redundant "idle" field
  from fsl_chan
-Message-ID: <202406011229.5vpeVXX2-lkp@intel.com>
+Message-ID: <202406011344.s3sPp61I-lkp@intel.com>
 References: <20240531210152.1878443-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -81,79 +81,25 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-fsl-ed
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git next
 patch link:    https://lore.kernel.org/r/20240531210152.1878443-2-Frank.Li%40nxp.com
 patch subject: [PATCH 2/2] dmaengine: fsl-edma: remove redundant "idle" field from fsl_chan
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20240601/202406011229.5vpeVXX2-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project bafda89a0944d947fc4b3b5663185e07a397ac30)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240601/202406011229.5vpeVXX2-lkp@intel.com/reproduce)
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240601/202406011344.s3sPp61I-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240601/202406011344.s3sPp61I-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406011229.5vpeVXX2-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406011344.s3sPp61I-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   In file included from drivers/dma/mcf-edma-main.c:7:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/dma/mcf-edma-main.c:7:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/dma/mcf-edma-main.c:7:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   In file included from drivers/dma/mcf-edma-main.c:8:
-   In file included from include/linux/dmaengine.h:12:
-   In file included from include/linux/scatterlist.h:8:
-   In file included from include/linux/mm.h:2253:
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/dma/mcf-edma-main.c:67:24: error: no member named 'idle' in 'struct fsl_edma_chan'
+   drivers/dma/mcf-edma-main.c: In function 'mcf_edma_err_handler':
+>> drivers/dma/mcf-edma-main.c:67:44: error: 'struct fsl_edma_chan' has no member named 'idle'
       67 |                         mcf_edma->chans[ch].idle = true;
-         |                         ~~~~~~~~~~~~~~~~~~~ ^
-   drivers/dma/mcf-edma-main.c:199:13: error: no member named 'idle' in 'struct fsl_edma_chan'
+         |                                            ^
+   drivers/dma/mcf-edma-main.c: In function 'mcf_edma_probe':
+   drivers/dma/mcf-edma-main.c:199:25: error: 'struct fsl_edma_chan' has no member named 'idle'
      199 |                 mcf_chan->idle = true;
-         |                 ~~~~~~~~  ^
-   7 warnings and 2 errors generated.
+         |                         ^~
 
 
 vim +67 drivers/dma/mcf-edma-main.c
