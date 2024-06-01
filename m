@@ -1,192 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A76F111AD;
-	Sat,  1 Jun 2024 15:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82111DFFB
+	for <imx@lists.linux.dev>; Sat,  1 Jun 2024 17:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717255550; cv=none; b=QvxgD3yHZwCoVGWZUs1jKVi0B8JY/20Jt7VsgekquJFPphnqRgHXk0BN44/GnWxAQGaOCFrwkZPD0KAwtwR7r9PueCXCe0xLdPFUIBmiY+aMVezAJbE8U9oaiX6JvZJMH70Q6DmwLSE15/4EmJ0xazPEhPnH7bG7KZuDrYQ7zIQ=
+	t=1717263717; cv=none; b=m1NSw9jieaWB0mmmRl8kYVkB1lLaQEb0DaTsyk7Oj7862k1uNzpfdjFS036cb5zjbQwddZ9CxewMzkWWFX7Imz5Ckkd1WpfpIIJ1Ol0ibgjOTiRA5cYLt6A1YvBZBJSLCL6HKhf4b+bYjfvkqGLeBN8IKPNLy7phM37DhEq3rds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717255550; c=relaxed/simple;
-	bh=6arLZDLJuJlo6JuZXNw8KfGVxYLRDu0gY7ndaZcELgs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R2fDMFs9zwBGwdbawpqvpQSvc6OISx2P52ILXDFtI+Hz9zNbaXRY1QhG0j0iDazZqoBW9jatjFaGSfAMSftfNlLBLvITKgiLMT5PzkGrtNtzMkRDQxDtHjRl8w707KaI1Zaevq+9PS5QC/0jPo5OW6qrOoesEqPOkI9pElNP4Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKNwUi/Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717263717; c=relaxed/simple;
+	bh=bsEyydaAYT9XXqTl8bsO2MRBf0XUN2C/EVIikHgV+r0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gVZnKvLZ1s35G80BSc4NgEJuiuFBL6/8xexFuCezAEeqXVFxGycHVx0fhEPu8mNko1zChmxIvp/rMVcOF69nF+A4N8GEp97kHqab3eFbT1WUMdl/gg42cZ9wOoeCWohNOHBY6SxqUkW3b4JBGR9I7IjQvicr9lfSetsaB43xhtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lz5Yur6R; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKNwUi/Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED31FC116B1;
-	Sat,  1 Jun 2024 15:25:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717255550;
-	bh=6arLZDLJuJlo6JuZXNw8KfGVxYLRDu0gY7ndaZcELgs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UKNwUi/ZG96iN4HmYc3blfQJ0y6H4YO4j/U1ogjpCJ7ZKqj3hwtlv7xNJWZinU1Wc
-	 M6LsTxD604zMz+m1MtLqCVhNNznq1eVhf0GbkELX1+prAF3fJl3NlrT26tVcr7gdcA
-	 Eihndo4ZPQwfN/5BoO1csMa0qqB1RLwMQE5zz3VkuA32hux7PpZzoFLoS8Der35fRj
-	 3+t7Lio5XC8QJyEtRSCi1IaN18zuwgnXZEioDdE+3sp7ZlY2ii6nt0fn3z7gkZaPLA
-	 XYvziZyT+8BjLyn3i8MCdR14/jTG452SGVUdKXFM2l4H028sLSISG5A4pFl2dj2qv4
-	 qbmcx9DRYO+sQ==
-Message-ID: <b78b14c7-e71c-4403-a606-80564a31e107@kernel.org>
-Date: Sat, 1 Jun 2024 17:25:46 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lz5Yur6R"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-6c9cd96e485so65327a12.3
+        for <imx@lists.linux.dev>; Sat, 01 Jun 2024 10:41:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717263716; x=1717868516; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bsEyydaAYT9XXqTl8bsO2MRBf0XUN2C/EVIikHgV+r0=;
+        b=Lz5Yur6RGIQLqC3yVNhd3rgmTMG+y7+ceaUVdsGMVos5PvqCDH4hIjgu7B5fpvc1Ra
+         6W0r4atBGSTcHCcvRs1Kfh+9a7JaaXpsFHsEb9TWCg06W5R3eyRIySVtu9AU97+L8ap5
+         +jJwzm4IvZsrN7jwPaZKBcI5V+7DY+yu5n0e9KTgBdy7pAsuikqhMCr/dAWMDsXLwnEZ
+         dkqYfo17R0Ia0I+rzhTZt4WaHWF1ancMrWERapji6U57Eipw/J/8//mIyKLbZ0vFwgA8
+         LRHvmxJEQfM31VS4bHuqJifHlWD0mhclJMGSx6mdgRUVoYHoMJYNvlna04pcHUDyRP4U
+         S4ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717263716; x=1717868516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bsEyydaAYT9XXqTl8bsO2MRBf0XUN2C/EVIikHgV+r0=;
+        b=TbjzaNkg0fhky84IMAJ83alI5Pf+c4VuypL4W2aOOkTQypYnHZpzs6F9ZsNHVLuyKX
+         qKNmvvND6AdnWbwHW7Nj3ptEoMTci8qmO4QAL/1VSAyWeeVTg8LvdWnmtqlxwaHGjvFZ
+         eIktk67W5Jfo7/HXXJBGaxRBTnafohHK08rSuKICO9LfQsAxrsyW+KgWwG24DLHYE+8o
+         oEtocxQ2LtfZgz9w00JiPhzq+rgmmNyMp8wyBA1wsA7dkwiC05fM4rFWBAe0MtNRLeSo
+         IE5RkuyRDTOhjaGbu15HO8gZYEfC7zErokAOgMBE6kvnYVPiDiTPVUVxT79MTDxc4Nef
+         vNaA==
+X-Forwarded-Encrypted: i=1; AJvYcCXuXUG1ETEqXiBIM3BkuDaj9BXHujmXYkXLurDICM1hNIBp9Uc+FtFywdiAXu9ShiCb0f+UODroQ30L16BTab/JR1y7
+X-Gm-Message-State: AOJu0YwxgPhTm7XfCIAtNHVyIRWvJuuP0TpXIlaosO2u18RYa6VUC9S9
+	975X/pRM+Ctq64GjDw8opzfoif7bDN4cbdhKGMdJVX+UzeNXAitLlM6QtG6u9zGmUCiIGHQeYM+
+	KMhO+2HbVlM3Wdnjo9x66RyvQF6o=
+X-Google-Smtp-Source: AGHT+IGHnvmpmNTTfNUy5D8KhM5Q3tt4LuFd3aHPkPUX8XCjz3oQInk0yPU6lIldWfbHyomiGJxpxAAi2Pe+xFyTbpY=
+X-Received: by 2002:a17:90b:3013:b0:2bd:e950:dfa5 with SMTP id
+ 98e67ed59e1d1-2c1dc5caceemr4430512a91.2.1717263715898; Sat, 01 Jun 2024
+ 10:41:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
-To: Frank Li <Frank.Li@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..."
- <linux-mmc@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240531193745.1714046-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240531193745.1714046-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240601135230.89980-1-aford173@gmail.com>
+In-Reply-To: <20240601135230.89980-1-aford173@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Sat, 1 Jun 2024 14:41:44 -0300
+Message-ID: <CAOMZO5CyZsHEchFuguz2q4VZcO-3qgXT2w1O97WbZZpgFVaFMA@mail.gmail.com>
+Subject: Re: [PATCH V3 1/2] arm64: dts: imx8mp-beacon-kit: Enable ADV7535 Hot
+ Plug Detect
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 31/05/2024 21:37, Frank Li wrote:
-> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
-> 
-> Addtional change during convert:
-> - deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
-> - Add "reg" and "interrupts" property.
-> - change example "sdhci@2e000" to "mmc@2e000".
-> - compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
-> most existed dts file.
-> 
+Hi Adam,
 
+On Sat, Jun 1, 2024 at 10:52=E2=80=AFAM Adam Ford <aford173@gmail.com> wrot=
+e:
+>
+> The DSI to HDMI bridge supports hot-plug-detect.The driver
+> supports shared GPIO IRQ pins, so it's save to enable them
+> which allows for hot-plug detect.
+>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-> -};
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
-> new file mode 100644
-> index 0000000000000..cafc09c4f1234
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.yaml
-
-Filename: fsl,esdhc.yaml
-
-> @@ -0,0 +1,98 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-
-...
-
-> +  clock-frequency:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: specifies eSDHC base clock frequency.
-> +
-> +  sdhci,wp-inverted:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    deprecated: true
-> +    description:
-> +      specifies that eSDHC controller reports
-> +      inverted write-protect state; New devices should use the generic
-> +      "wp-inverted" property.
-> +
-> +  sdhci,1-bit-only:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    deprecated: true
-> +    description:
-> +      specifies that a controller can only handle
-> +      1-bit data transfers. New devices should use the generic
-> +      "bus-width = <1>" property.
-> +
-> +  sdhci,auto-cmd12:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      specifies that a controller can only handle auto CMD12.
-> +
-> +  voltage-ranges:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> +    items:
-> +      items:
-> +        - description: specifies minimum slot voltage (mV).
-> +        - description: specifies maximum slot voltage (mV).
-> +
-> +  little-endian:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      If the host controller is little-endian mode, specify
-> +      this property. The default endian mode is big-endian.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-
-clock-frequency was required. Isn't it required now?
-
-> +
-> +allOf:
-> +  - $ref: sdhci-common.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    mmc@2e000 {
-> +        compatible = "fsl,mpc8378-esdhc", "fsl,esdhc";
-> +        reg = <0x2e000 0x1000>;
-> +        interrupts = <42 0x8>;
-> +        interrupt-parent = <&ipic>;
-> +        /* Filled in by U-Boot */
-> +        clock-frequency = <0>;
-
-Please provide complete (final) example.
-
-> +        voltage-ranges = <3300 3300>;
-> +    };
-
-Best regards,
-Krzysztof
-
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
