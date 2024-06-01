@@ -1,60 +1,61 @@
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EE91514E2
-	for <imx@lists.linux.dev>; Sat,  1 Jun 2024 13:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633E1152160
+	for <imx@lists.linux.dev>; Sat,  1 Jun 2024 13:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717249959; cv=none; b=lTzY8yDNpLX4zSQsa4CLufTC2T2zY3KXWfefYT6BMKD9tBQqZptcUvhcEo9wFy7Mr1KH+mxUt+GAc6y41vY1z1z5ZGaT5QCE/apAoHUwb76HiIdX23xboC1P9cdghFmcvWStb5Lo0LFQ21q+jf7cKhlxI60VFbFUOJURfUqSI64=
+	t=1717249960; cv=none; b=h5VJxLBlDKSO46ml3YVvSZWR5ivmz0W+c+gLRm1kKuSwaOn+aAkwTx4kTEVykQaQL+O4pjdGRAF1PhuqAFClvMjsxDtaJckqrsXYnzemXq/etDS5gxR5btbnZ6R0+QnaJdAzJ1rrKv/k3eyJYYiDSPLQhV/rJSfb9OWjlBfzyPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717249959; c=relaxed/simple;
-	bh=x97TGYicuAOIiNkkbEMugsrQH1Uh8scFHklNqOBKDT0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gdlw8wb4RC3eg9pIBFRCsWEQiZG73WncvpAgUoR6HZv3Jqxw/eceWcSZo51qZAw9Un+2cn1r1v8X+h71oKC/dgjPrXpJD6ADodhwcG+hgNbOMS/SXEJ+l4paY/0GVnOOeZNSMTDhTgyBuQ5K1/pkcwUKGNveCDiygaCk/H+M2/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbGbfn9N; arc=none smtp.client-ip=209.85.166.53
+	s=arc-20240116; t=1717249960; c=relaxed/simple;
+	bh=1Dgwy0Q+GhrrVZfVCPhz54VGa+v3vTl0ATIGpU3b1r0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GIna42MUR+DJRWiI4H5BtE6whF8va2zNdfb68EADyXI58Ajno0vyq5RO88WHivlZYDzRy7qajxEV2+g38QGDCJeQOQ+Y5eG8HVqO3rv3hllz+3RTms+k1p62+ZLJHqvh4eHTZFohlq/OUZRfXEh++4lmXI5m8cWiwKAeEmS4SYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIgOErli; arc=none smtp.client-ip=209.85.166.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbGbfn9N"
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-7ea7bcc72caso130531939f.0
-        for <imx@lists.linux.dev>; Sat, 01 Jun 2024 06:52:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIgOErli"
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-36da84df7adso8134355ab.1
+        for <imx@lists.linux.dev>; Sat, 01 Jun 2024 06:52:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717249957; x=1717854757; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YSOWAUY88oC5lW5rvGSdvx6UaNHLnsYyAlMhcv2+2no=;
-        b=BbGbfn9NAEmm4q+oN8kDhXZ73rnERav6ymqeW/P1/UJ6z/nLIC2XO/drejsGi68THD
-         Kr5S3V2CTjv0ev8viRwLfHF2DViUrMtvdRBViX6imHcg+6YOF2A3oSnKY9YCxgY7RA43
-         aXyP9fghdKHG4JXI5l8mKzL90pC4UalX/HcFTGiOgNddW9uIIyj4PGtL0IXUxNXdQZyu
-         iVhEJMJfPOQY5FraTTJoZp64m5JxvGJ2JO0L5N0XqxtQm504IsHXK9noQ8vlEYjK2mAJ
-         FWBsMZSKHc+wOeYbCiBML3/72CSl0PSj1mSqx9FphYsl4mAhLBnf2S/CJPuwxnuBRD9T
-         KX8Q==
+        d=gmail.com; s=20230601; t=1717249958; x=1717854758; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RGka72aXhHw6B/ugmJ5D8SFrSBdPwgiFasgjGAhEvSI=;
+        b=TIgOErliLmulY6kfpifQnUVAYQPiQq6f4PG+gOhzRqfbvukltDlg6IOoXVt2ejOyLa
+         LCug93UwcdvT8qnCU8tISZS9jw8Om3Rwr3Iqs+AE/CY1zZvLWH9z0iLAv4V3VLuIn3PA
+         63iFPh4cCJgFZh+IQO3aYgcIPsx35UnVUzLCnWyUcW6njeAbnyhsWzfKGtALLXKg2JK5
+         9S1evmlXZWu68GEDhVHPd24pLskL5U7FE77ikUB3chk2mpdTqabeHrLE6cQzHQ5V50y2
+         6SNVfj5CqN+rSx+gThAb5yEk/cm2aUcwq3ZKxGLes9Vng6oHt5G/Q+j4AI5/f3Njg7F8
+         BB9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717249957; x=1717854757;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YSOWAUY88oC5lW5rvGSdvx6UaNHLnsYyAlMhcv2+2no=;
-        b=rJKKg7Rzz9HyMA0sndNnkmrbSECNBCoQ40k2tKJR0TeZAaV4bxSvkHDZB1kLazFj44
-         Z7/tcyS7f9RpeOTQZ9xN9dcvwm0WC7wMmeAN5/ICbIztFgD7qmfR46OVznXJUfISLceR
-         kxRtsJ0WuI0TsXHnhxbD+wfBf46HSz1G/EGypEOblr/Zd/hXPFG5qWdtho6ySgblP6mr
-         eDP6uF4t+mZy3Q9w61xQBpHm2f/u3AC01S/t9rcovd57LqWpW0MOHFs2E45F1VblJc/c
-         KJRpMSGX45Cnp/QqyRb5JzkaR+uFS8oV9H+Gr3pmiR3zAzieFHJ5n1fnD+6FjeT0IcpB
-         1y4w==
-X-Forwarded-Encrypted: i=1; AJvYcCU1MSQJRc0Z0lF/7f2fMelCBR/GwfVuzoz/ONFD2ahsG/gb9ktFdhg81zbdgD0SvU+XS4higMR2r0XLcKHd+3XBFGHd
-X-Gm-Message-State: AOJu0YzDq+CgHidCIdA0zkLd0M3xOIJIJg0tGXIlFmcfWoRVN6xYKICM
-	Dz3BIwYn4W3uNDcnol8/8dxOye9oHGw1WqpGEMA4V0MOO4PgcV+Z
-X-Google-Smtp-Source: AGHT+IFu377v3BUIDc9piHIID8NWcbvXfFBcxu9yZ9fDFgRolnum/XAZM3rhhAySVW5+a3c2HcN5tA==
-X-Received: by 2002:a05:6602:2d88:b0:7ea:fadb:1cd5 with SMTP id ca18e2360f4ac-7eafff2b8e1mr639467839f.18.1717249956993;
-        Sat, 01 Jun 2024 06:52:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717249958; x=1717854758;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RGka72aXhHw6B/ugmJ5D8SFrSBdPwgiFasgjGAhEvSI=;
+        b=RoV+LG8QAhsLCcHGgTl2QM41wYR8WnMTzkvcCD7BQxnaDFxx+ue+BqLPeLrbe2VuKD
+         cbU+MIz4tnwPjCz1cxWGbPyfSw1PEPUvh3hDQWAcNHvVAaQL5g3hl7cLOXAi32U7Dmks
+         oHGljEiKrCr3hjygHWd0v2a+AgMGTASzi3O/fZP0U7efSgkknyqpQFrx8+Py2/dyNpPw
+         SoNmkyzzCHWxofbmzaFJo+Z3MXRCZs0IQwONLuH+9+fUAwcqt16ip2arls86v4HMA3Cv
+         N7U0S+WGLbvDpdrpqqHca7Rh3gz+ERdOj7DuKliqb7y2JbGwx71d6rB7fUntGj41616L
+         NKHg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2ckixka/lgE38REU/sDJ5jQhQvcDIMErprpbJzTZgm6u2pzVa/Lm+FeoMHgf2FZTdW2reJPPCGKukYnR/dTYv42yR
+X-Gm-Message-State: AOJu0Yx42P+tlNByOIjzG7IFUiSAv4NNwM1ic8OoyvB9QPg8S7zfo5od
+	nWtgV0q3RPnJsC/D8J2MfwDSVfwlQvkM554W6I6g1GSsS4YpsgQjPAlzXw==
+X-Google-Smtp-Source: AGHT+IHNarKWZy9HAtQK8XU6dQr4Zrxypy/AD5KjenkEvnfFzfikvYAeTK9czkeEyJLIysD+wU5U3A==
+X-Received: by 2002:a92:cd8a:0:b0:373:1137:cc1e with SMTP id e9e14a558f8ab-3747e20bf3fmr60551865ab.7.1717249958498;
+        Sat, 01 Jun 2024 06:52:38 -0700 (PDT)
 Received: from aford-System-Version.lan ([2601:447:d002:5be:e0b7:c613:ee:e8f3])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b56e7824d4sm556349173.172.2024.06.01.06.52.35
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b56e7824d4sm556349173.172.2024.06.01.06.52.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Jun 2024 06:52:36 -0700 (PDT)
+        Sat, 01 Jun 2024 06:52:37 -0700 (PDT)
 From: Adam Ford <aford173@gmail.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: aford@beaconembedded.com,
 	Adam Ford <aford173@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -65,10 +66,12 @@ Cc: aford@beaconembedded.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V3 1/2] arm64: dts: imx8mp-beacon-kit: Enable ADV7535 Hot Plug Detect
-Date: Sat,  1 Jun 2024 08:52:28 -0500
-Message-ID: <20240601135230.89980-1-aford173@gmail.com>
+Subject: [PATCH V3 2/2] arm64: dts: imx8mp-beacon-kit: Fix errors found from CHECK_DTBS
+Date: Sat,  1 Jun 2024 08:52:29 -0500
+Message-ID: <20240601135230.89980-2-aford173@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240601135230.89980-1-aford173@gmail.com>
+References: <20240601135230.89980-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,28 +80,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The DSI to HDMI bridge supports hot-plug-detect.The driver
-supports shared GPIO IRQ pins, so it's save to enable them
-which allows for hot-plug detect.
+The adv7535 has some unnecessary entries which can be removed since
+they were not setup properly anyway and the defaults work just fine.
+Removing them and adding some required regulators make the errors
+detected from CHECK_DTBS go away:
+
+ reg-names:1: 'edid' was expected
+ reg-names:2: 'cec' was expected
+ 'avdd-supply' is a required property
+ 'dvdd-supply' is a required property
+ 'pvdd-supply' is a required property
+ 'a2vdd-supply' is a required property
+ 'v3p3-supply' is a required property
 
 Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
+V2:  No Change
+
 V3:  Update commit message, no functional changes.
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-index e5d3901f2913..da836172ae46 100644
+index da836172ae46..5c4b68c18bb2 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
 +++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-@@ -304,6 +304,8 @@ adv_bridge: hdmi@3d {
+@@ -302,12 +302,19 @@ pca6416_3: gpio@20 {
+ 
+ 	adv_bridge: hdmi@3d {
  		compatible = "adi,adv7535";
- 		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
- 		reg-names = "main", "cec", "edid", "packet";
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+-		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
+-		reg-names = "main", "cec", "edid", "packet";
++		reg = <0x3d>;
++		reg-names = "main";
+ 		interrupt-parent = <&gpio4>;
+ 		interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
  		adi,dsi-lanes = <4>;
  		#sound-dai-cells = <0>;
++		avdd-supply = <&buck5>;
++		dvdd-supply = <&buck5>;
++		pvdd-supply = <&buck5>;
++		a2vdd-supply = <&buck5>;
++		v1p2-supply = <&buck5>;
++		v3p3-supply = <&buck4>;
++
  
+ 		ports {
+ 			#address-cells = <1>;
 -- 
 2.43.0
 
