@@ -1,145 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2BD2FA;
-	Sat,  1 Jun 2024 05:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EE91514E2
+	for <imx@lists.linux.dev>; Sat,  1 Jun 2024 13:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717221039; cv=none; b=BUypUAKAS66yPe+Z26++b18v2F6SHF7PIqGoTdswwlz5JU9sDqwvtsaQKa2kDktibEbn6sj8KRe2SrdWI378YIoKqmUBgxgOk82rJn2Pf3rhq2GGS8tKc2k2bmX84+Gn9ivPHQ/lF8XcjPLP5gg4icmaEsdseWbiT+5FWkivmZI=
+	t=1717249959; cv=none; b=lTzY8yDNpLX4zSQsa4CLufTC2T2zY3KXWfefYT6BMKD9tBQqZptcUvhcEo9wFy7Mr1KH+mxUt+GAc6y41vY1z1z5ZGaT5QCE/apAoHUwb76HiIdX23xboC1P9cdghFmcvWStb5Lo0LFQ21q+jf7cKhlxI60VFbFUOJURfUqSI64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717221039; c=relaxed/simple;
-	bh=sWbc3uG2lmnElC1fzYYw8hroZJ/7dZbzi/7Nr/hh7w8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f+DPE0mL6T0QodMffIaFQeTnv3B0eQWnFz4/MrLSk/LyhBNFbus+IhkyeXabnBKVo8nqdH82KVdPxCa5zf25nRDgmVL9+3S18VHr+O8BtBg/dksV6JHAQ8K7Tox1VfS3J0BKhfIj+FdYzHkOUaHAAEM9hXmGc4BPrmU29qdkEQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=elT5zf7I; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1717249959; c=relaxed/simple;
+	bh=x97TGYicuAOIiNkkbEMugsrQH1Uh8scFHklNqOBKDT0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gdlw8wb4RC3eg9pIBFRCsWEQiZG73WncvpAgUoR6HZv3Jqxw/eceWcSZo51qZAw9Un+2cn1r1v8X+h71oKC/dgjPrXpJD6ADodhwcG+hgNbOMS/SXEJ+l4paY/0GVnOOeZNSMTDhTgyBuQ5K1/pkcwUKGNveCDiygaCk/H+M2/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbGbfn9N; arc=none smtp.client-ip=209.85.166.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="elT5zf7I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717221037; x=1748757037;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sWbc3uG2lmnElC1fzYYw8hroZJ/7dZbzi/7Nr/hh7w8=;
-  b=elT5zf7Ig6S8dVDh5orunkc2IQOyG0mT+6tzNmgoZVf1isg5KmA68EHk
-   oSo3V/udoF0H1V3uGMPPwY45SkqkEKPaSmykHkggwoZyza7df/FCmYNI8
-   b67pNBnwH5/rZRDwME1dgPjJcz+Gc62OGRIU1mI3SUhnXgsmD8Bc7sxc7
-   WUTns0toYs8D1PtDfVXvOzEY7nPBcAE0B6TnM1Zj2Kmeqr9Qh9yLFtd0w
-   8qzjd+tmKFGLJjWIhsAB+3GNNONuZEI5wMitGbgtRAufeZXH+JJJCnk7J
-   sl/pDoKUomgeEOWfzwbnEZnynEcU2GAm45IBH3dO31S/d9J1HD4sR0YAI
-   g==;
-X-CSE-ConnectionGUID: IElJjO8mRcabt4UurQcQVg==
-X-CSE-MsgGUID: sb2xZhnaSFOSN4ac9ZSqng==
-X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="25181564"
-X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
-   d="scan'208";a="25181564"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 22:50:36 -0700
-X-CSE-ConnectionGUID: lMt31lgjRqO5B20eKNv4yA==
-X-CSE-MsgGUID: dfDHijn8QYOH+XgjOQ/eMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
-   d="scan'208";a="36810149"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 31 May 2024 22:50:35 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sDHdQ-000ISF-1D;
-	Sat, 01 Jun 2024 05:50:32 +0000
-Date: Sat, 1 Jun 2024 13:49:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] dmaengine: fsl-edma: remove redundant "idle" field
- from fsl_chan
-Message-ID: <202406011344.s3sPp61I-lkp@intel.com>
-References: <20240531210152.1878443-2-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbGbfn9N"
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-7ea7bcc72caso130531939f.0
+        for <imx@lists.linux.dev>; Sat, 01 Jun 2024 06:52:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717249957; x=1717854757; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YSOWAUY88oC5lW5rvGSdvx6UaNHLnsYyAlMhcv2+2no=;
+        b=BbGbfn9NAEmm4q+oN8kDhXZ73rnERav6ymqeW/P1/UJ6z/nLIC2XO/drejsGi68THD
+         Kr5S3V2CTjv0ev8viRwLfHF2DViUrMtvdRBViX6imHcg+6YOF2A3oSnKY9YCxgY7RA43
+         aXyP9fghdKHG4JXI5l8mKzL90pC4UalX/HcFTGiOgNddW9uIIyj4PGtL0IXUxNXdQZyu
+         iVhEJMJfPOQY5FraTTJoZp64m5JxvGJ2JO0L5N0XqxtQm504IsHXK9noQ8vlEYjK2mAJ
+         FWBsMZSKHc+wOeYbCiBML3/72CSl0PSj1mSqx9FphYsl4mAhLBnf2S/CJPuwxnuBRD9T
+         KX8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717249957; x=1717854757;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YSOWAUY88oC5lW5rvGSdvx6UaNHLnsYyAlMhcv2+2no=;
+        b=rJKKg7Rzz9HyMA0sndNnkmrbSECNBCoQ40k2tKJR0TeZAaV4bxSvkHDZB1kLazFj44
+         Z7/tcyS7f9RpeOTQZ9xN9dcvwm0WC7wMmeAN5/ICbIztFgD7qmfR46OVznXJUfISLceR
+         kxRtsJ0WuI0TsXHnhxbD+wfBf46HSz1G/EGypEOblr/Zd/hXPFG5qWdtho6ySgblP6mr
+         eDP6uF4t+mZy3Q9w61xQBpHm2f/u3AC01S/t9rcovd57LqWpW0MOHFs2E45F1VblJc/c
+         KJRpMSGX45Cnp/QqyRb5JzkaR+uFS8oV9H+Gr3pmiR3zAzieFHJ5n1fnD+6FjeT0IcpB
+         1y4w==
+X-Forwarded-Encrypted: i=1; AJvYcCU1MSQJRc0Z0lF/7f2fMelCBR/GwfVuzoz/ONFD2ahsG/gb9ktFdhg81zbdgD0SvU+XS4higMR2r0XLcKHd+3XBFGHd
+X-Gm-Message-State: AOJu0YzDq+CgHidCIdA0zkLd0M3xOIJIJg0tGXIlFmcfWoRVN6xYKICM
+	Dz3BIwYn4W3uNDcnol8/8dxOye9oHGw1WqpGEMA4V0MOO4PgcV+Z
+X-Google-Smtp-Source: AGHT+IFu377v3BUIDc9piHIID8NWcbvXfFBcxu9yZ9fDFgRolnum/XAZM3rhhAySVW5+a3c2HcN5tA==
+X-Received: by 2002:a05:6602:2d88:b0:7ea:fadb:1cd5 with SMTP id ca18e2360f4ac-7eafff2b8e1mr639467839f.18.1717249956993;
+        Sat, 01 Jun 2024 06:52:36 -0700 (PDT)
+Received: from aford-System-Version.lan ([2601:447:d002:5be:e0b7:c613:ee:e8f3])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b56e7824d4sm556349173.172.2024.06.01.06.52.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Jun 2024 06:52:36 -0700 (PDT)
+From: Adam Ford <aford173@gmail.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: aford@beaconembedded.com,
+	Adam Ford <aford173@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V3 1/2] arm64: dts: imx8mp-beacon-kit: Enable ADV7535 Hot Plug Detect
+Date: Sat,  1 Jun 2024 08:52:28 -0500
+Message-ID: <20240601135230.89980-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531210152.1878443-2-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+The DSI to HDMI bridge supports hot-plug-detect.The driver
+supports shared GPIO IRQ pins, so it's save to enable them
+which allows for hot-plug detect.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+V3:  Update commit message, no functional changes.
 
-[auto build test ERROR on vkoul-dmaengine/next]
-[also build test ERROR on linus/master v6.10-rc1 next-20240531]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-fsl-edma-remove-redundant-idle-field-from-fsl_chan/20240601-050401
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git next
-patch link:    https://lore.kernel.org/r/20240531210152.1878443-2-Frank.Li%40nxp.com
-patch subject: [PATCH 2/2] dmaengine: fsl-edma: remove redundant "idle" field from fsl_chan
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240601/202406011344.s3sPp61I-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240601/202406011344.s3sPp61I-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406011344.s3sPp61I-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/dma/mcf-edma-main.c: In function 'mcf_edma_err_handler':
->> drivers/dma/mcf-edma-main.c:67:44: error: 'struct fsl_edma_chan' has no member named 'idle'
-      67 |                         mcf_edma->chans[ch].idle = true;
-         |                                            ^
-   drivers/dma/mcf-edma-main.c: In function 'mcf_edma_probe':
-   drivers/dma/mcf-edma-main.c:199:25: error: 'struct fsl_edma_chan' has no member named 'idle'
-     199 |                 mcf_chan->idle = true;
-         |                         ^~
-
-
-vim +67 drivers/dma/mcf-edma-main.c
-
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  39  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  40  static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  41  {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  42  	struct fsl_edma_engine *mcf_edma = dev_id;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  43  	struct edma_regs *regs = &mcf_edma->regs;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  44  	unsigned int err, ch;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  45  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  46  	err = ioread32(regs->errl);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  47  	if (!err)
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  48  		return IRQ_NONE;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  49  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  50  	for (ch = 0; ch < (EDMA_CHANNELS / 2); ch++) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  51  		if (err & BIT(ch)) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  52  			fsl_edma_disable_request(&mcf_edma->chans[ch]);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  53  			iowrite8(EDMA_CERR_CERR(ch), regs->cerr);
-79434f9b973616 drivers/dma/mcf-edma-main.c Frank Li          2023-08-21  54  			fsl_edma_err_chan_handler(&mcf_edma->chans[ch]);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  55  		}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  56  	}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  57  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  58  	err = ioread32(regs->errh);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  59  	if (!err)
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  60  		return IRQ_NONE;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  61  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  62  	for (ch = (EDMA_CHANNELS / 2); ch < EDMA_CHANNELS; ch++) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  63  		if (err & (BIT(ch - (EDMA_CHANNELS / 2)))) {
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  64  			fsl_edma_disable_request(&mcf_edma->chans[ch]);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  65  			iowrite8(EDMA_CERR_CERR(ch), regs->cerr);
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  66  			mcf_edma->chans[ch].status = DMA_ERROR;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19 @67  			mcf_edma->chans[ch].idle = true;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  68  		}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  69  	}
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  70  
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  71  	return IRQ_HANDLED;
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  72  }
-e7a3ff92eaf19e drivers/dma/mcf-edma.c      Angelo Dureghello 2018-08-19  73  
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+index e5d3901f2913..da836172ae46 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
+@@ -304,6 +304,8 @@ adv_bridge: hdmi@3d {
+ 		compatible = "adi,adv7535";
+ 		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
+ 		reg-names = "main", "cec", "edid", "packet";
++		interrupt-parent = <&gpio4>;
++		interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+ 		adi,dsi-lanes = <4>;
+ 		#sound-dai-cells = <0>;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
