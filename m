@@ -1,40 +1,40 @@
-Received: from mail-108-mta68.mxroute.com (mail-108-mta68.mxroute.com [136.175.108.68])
+Received: from mail-108-mta224.mxroute.com (mail-108-mta224.mxroute.com [136.175.108.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD1C762E8
-	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 20:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C227E588
+	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 20:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717359555; cv=none; b=RauTmxyVxrQ26rHFAx9jh0oD2mFyrC8fTFcszvvC0nw5JQCxl2F4aFBKxBa3a71jkOB/fzXw5r8csmazQcFSbXNc/PZpc4zKE2LYQK+evQdXNw/WkV6iC9GjRMQRKoWAEfJjxRH2RDZulMIoYcMFfEBWRnnGx/U1K0hFiE9BVvI=
+	t=1717359560; cv=none; b=jGm4qNOFO7/Uq5yHV/G7i9s3U/ebe+XrQR30yR6ypYR1hGv0f3TUQI2oqyuTYZ6nUTTFn09WIBdJyYlYDUR+sPm895v97UBPJn+RruKTy0zupZ58SpaIkq/JMSi4GZbEA3RZY39MJfk6tShMXZu16MjF9k6l9dGZsyBNCCll1aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717359555; c=relaxed/simple;
-	bh=vmDWxnFYVlMeX8mv6XV77VsSX93jJDH21Yu7+jdTofM=;
+	s=arc-20240116; t=1717359560; c=relaxed/simple;
+	bh=jyWrtrkRdIwLv8vFyOZgGaDw3f1409gIT2RgcJyPZ/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pi6+BPgi/+j3zuJnMqf83179H4gEb+LmXsoJhtMNhbYSeDHfiBax6uMyWD9F5ay+VdBSnIT5ofjdex79RzvoMUQCfGWczsnFMHAsyq5/N+NddLLjmKkhkd+rU4Un9BBCOa8QWHFUIpzVzVmUov3quN5cQi1LomvB2kzdoZn9QCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=SU6NupzX; arc=none smtp.client-ip=136.175.108.68
+	 MIME-Version; b=holzKTTx8G6CUyEvsYgzC2fEt6Um9Lwg5yhrXVS03NFfKhTKcO9S8vpqM/aSoJt2BxjdLg6kUNMDk4ac3pvChIpIYdNWfkgSRB0qx69uierqyLDwl/odGi6fxkYj6ZM4VoF0E2yTwQnafQH5mYg5IPHiJd7l3CmuL8twVZxJtjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=Rhmw0bcU; arc=none smtp.client-ip=136.175.108.224
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="SU6NupzX"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="Rhmw0bcU"
 Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta68.mxroute.com (ZoneMTA) with ESMTPSA id 18fda9677c0000e2b6.00a
+ by mail-108-mta224.mxroute.com (ZoneMTA) with ESMTPSA id 18fda9689c1000e2b6.00a
  for <imx@lists.linux.dev>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sun, 02 Jun 2024 20:14:05 +0000
-X-Zone-Loop: 221e72cf5f9969ff6414db35436c542edbd8f7554412
+ Sun, 02 Jun 2024 20:14:09 +0000
+X-Zone-Loop: 8d1248027dc940694a8ee7320966e3df4ec5ac66c9c3
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Jxe1gPtYFCmEVv9eTkE7KcDWNvKsfj2RH86DpQggAUU=; b=SU6NupzXCG/9f+iXmj9c3c45n6
-	WzJpgZ2VnmFmM1n1t8W4uJPEncFH3I8L7QuEkmEobRyGhwA9KCxGCgEk2jvy+9WlCYPu1tgaqvOkX
-	29YBgbFxmzwuZRRDGOGZaSvIc2vp5UXsdI9EBGlCxqRxDzw60BP79h2KzQe0+4qqIvIRZ7rimWMFT
-	uuSUnNHHu7wrwO3oUqwUv3WHp0t95o4USZostWhpzL2D50iZP/AACrahJSE9I1S/1SNCarBKK0JdP
-	s51dSTBd3yIzSWqg8BFXEebhU3NHiCWrSmyfxXMJtD4iMV4zr2LccQ5YOuQL+fgXn1K14TxEGZJdG
-	rFmYUq0A==;
+	bh=+Z4CkPGkAS954uRQNPQhsFU7twZudFZFCOHeX0C/iOk=; b=Rhmw0bcUARM+rrchfN8PfF5Vf7
+	YVlD/SSQLyhJQtYoJ1ZvwxtLPKBugcuZrhphNSm7ufH7YybXphrDHhit6TP7Xl3n8V6uEYCN0cLQy
+	ee8TMqtQ94jvUNumkavQFbPVASyYf+Bh5JhIzS4Po5pGcRhiAVIbWQBBFkIIZORHFKyuJNZEdIVt/
+	5yvrazsEKM/exiZzURy2NpBhpTzF68E0BNiIj2KJUW8/4CK2hittGQXm6uW3ttcBbEdBSWkmMLcyP
+	/s7b7hZwrzeZQF7jj/Fkysfwnw96eURZIof+6tXDZwHd/68uOJRbHzVcORREVpUQqwQfsiDDTmWZA
+	Y8p9prDw==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v6 06/23] media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
-Date: Sun,  2 Jun 2024 14:13:28 -0600
-Message-ID: <20240602201345.328737-7-git@luigi311.com>
+Subject: [PATCH v6 08/23] media: i2c: imx258: Add support for 24MHz clock
+Date: Sun,  2 Jun 2024 14:13:30 -0600
+Message-ID: <20240602201345.328737-9-git@luigi311.com>
 In-Reply-To: <20240602201345.328737-1-git@luigi311.com>
 References: <20240602201345.328737-1-git@luigi311.com>
 Precedence: bulk
@@ -71,80 +71,258 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-The values and ranges of V4L2_CID_VBLANK are all computed,
-so there is no reason for it to be a read only control.
-Remove the register values from the mode lists, add the
-handler, and remove the read only flag.
+There's no reason why only a clock of 19.2MHz is supported.
+Indeed this isn't even a frequency listed in the datasheet.
+
+Add support for 24MHz as well.
+The PLL settings result in slightly different link frequencies,
+so parameterise those.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/media/i2c/imx258.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/media/i2c/imx258.c | 130 +++++++++++++++++++++++++++++--------
+ 1 file changed, 102 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 495eaada2945..321b504c6a48 100644
+index 351add1bc5d5..e4b1b3cbbde5 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -30,6 +30,8 @@
- #define IMX258_VTS_30FPS_VGA		0x034c
- #define IMX258_VTS_MAX			0xffff
+@@ -76,9 +76,6 @@
+ #define REG_CONFIG_MIRROR_FLIP		0x03
+ #define REG_CONFIG_FLIP_TEST_PATTERN	0x02
  
-+#define IMX258_REG_VTS			0x0340
-+
- /* HBLANK control - read only */
- #define IMX258_PPL_DEFAULT		5352
- 
-@@ -202,8 +204,6 @@ static const struct imx258_reg mode_4208x3120_regs[] = {
- 	{ 0x0114, 0x03 },
- 	{ 0x0342, 0x14 },
- 	{ 0x0343, 0xE8 },
--	{ 0x0340, 0x0C },
--	{ 0x0341, 0x50 },
- 	{ 0x0344, 0x00 },
- 	{ 0x0345, 0x00 },
- 	{ 0x0346, 0x00 },
-@@ -319,8 +319,6 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
- 	{ 0x0114, 0x03 },
- 	{ 0x0342, 0x14 },
- 	{ 0x0343, 0xE8 },
--	{ 0x0340, 0x06 },
--	{ 0x0341, 0x38 },
- 	{ 0x0344, 0x00 },
- 	{ 0x0345, 0x00 },
- 	{ 0x0346, 0x00 },
-@@ -436,8 +434,6 @@ static const struct imx258_reg mode_1048_780_regs[] = {
- 	{ 0x0114, 0x03 },
- 	{ 0x0342, 0x14 },
- 	{ 0x0343, 0xE8 },
--	{ 0x0340, 0x03 },
--	{ 0x0341, 0x4C },
- 	{ 0x0344, 0x00 },
- 	{ 0x0345, 0x00 },
- 	{ 0x0346, 0x00 },
-@@ -800,6 +796,11 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
- 					       BIT(IMX258_HDR_RATIO_MAX));
- 		}
- 		break;
-+	case V4L2_CID_VBLANK:
-+		ret = imx258_write_reg(imx258, IMX258_REG_VTS,
-+				       IMX258_REG_VALUE_16BIT,
-+				       imx258->cur_mode->height + ctrl->val);
-+		break;
- 	default:
- 		dev_info(&client->dev,
- 			 "ctrl(id:0x%x,val:0x%x) is not handled\n",
-@@ -1174,9 +1175,6 @@ static int imx258_init_controls(struct imx258 *imx258)
- 				IMX258_VTS_MAX - imx258->cur_mode->height, 1,
- 				vblank_def);
- 
--	if (imx258->vblank)
--		imx258->vblank->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+-/* Input clock frequency in Hz */
+-#define IMX258_INPUT_CLOCK_FREQ		19200000
 -
- 	imx258->hblank = v4l2_ctrl_new_std(
- 				ctrl_hdlr, &imx258_ctrl_ops, V4L2_CID_HBLANK,
- 				IMX258_PPL_DEFAULT - imx258->cur_mode->width,
+ struct imx258_reg {
+ 	u16 address;
+ 	u8 val;
+@@ -115,7 +112,9 @@ struct imx258_mode {
+ };
+ 
+ /* 4208x3120 needs 1267Mbps/lane, 4 lanes */
+-static const struct imx258_reg mipi_data_rate_1267mbps[] = {
++static const struct imx258_reg mipi_1267mbps_19_2mhz[] = {
++	{ 0x0136, 0x13 },
++	{ 0x0137, 0x33 },
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x02 },
+ 	{ 0x0305, 0x03 },
+@@ -133,7 +132,29 @@ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
+ 	{ 0x0823, 0xCC },
+ };
+ 
+-static const struct imx258_reg mipi_data_rate_640mbps[] = {
++static const struct imx258_reg mipi_1272mbps_24mhz[] = {
++	{ 0x0136, 0x18 },
++	{ 0x0137, 0x00 },
++	{ 0x0301, 0x05 },
++	{ 0x0303, 0x02 },
++	{ 0x0305, 0x04 },
++	{ 0x0306, 0x00 },
++	{ 0x0307, 0xD4 },
++	{ 0x0309, 0x0A },
++	{ 0x030B, 0x01 },
++	{ 0x030D, 0x02 },
++	{ 0x030E, 0x00 },
++	{ 0x030F, 0xD8 },
++	{ 0x0310, 0x00 },
++	{ 0x0820, 0x13 },
++	{ 0x0821, 0x4C },
++	{ 0x0822, 0xCC },
++	{ 0x0823, 0xCC },
++};
++
++static const struct imx258_reg mipi_640mbps_19_2mhz[] = {
++	{ 0x0136, 0x13 },
++	{ 0x0137, 0x33 },
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x02 },
+ 	{ 0x0305, 0x03 },
+@@ -151,9 +172,27 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
+ 	{ 0x0823, 0x00 },
+ };
+ 
++static const struct imx258_reg mipi_642mbps_24mhz[] = {
++	{ 0x0136, 0x18 },
++	{ 0x0137, 0x00 },
++	{ 0x0301, 0x05 },
++	{ 0x0303, 0x02 },
++	{ 0x0305, 0x04 },
++	{ 0x0306, 0x00 },
++	{ 0x0307, 0x6B },
++	{ 0x0309, 0x0A },
++	{ 0x030B, 0x01 },
++	{ 0x030D, 0x02 },
++	{ 0x030E, 0x00 },
++	{ 0x030F, 0xD8 },
++	{ 0x0310, 0x00 },
++	{ 0x0820, 0x0A },
++	{ 0x0821, 0x00 },
++	{ 0x0822, 0x00 },
++	{ 0x0823, 0x00 },
++};
++
+ static const struct imx258_reg mode_common_regs[] = {
+-	{ 0x0136, 0x13 },
+-	{ 0x0137, 0x33 },
+ 	{ 0x3051, 0x00 },
+ 	{ 0x3052, 0x00 },
+ 	{ 0x4E21, 0x14 },
+@@ -313,10 +352,6 @@ static const char * const imx258_supply_name[] = {
+ 
+ #define IMX258_NUM_SUPPLIES ARRAY_SIZE(imx258_supply_name)
+ 
+-/* Configurations for supported link frequencies */
+-#define IMX258_LINK_FREQ_634MHZ	633600000ULL
+-#define IMX258_LINK_FREQ_320MHZ	320000000ULL
+-
+ enum {
+ 	IMX258_LINK_FREQ_1267MBPS,
+ 	IMX258_LINK_FREQ_640MBPS,
+@@ -335,25 +370,48 @@ static u64 link_freq_to_pixel_rate(u64 f)
+ }
+ 
+ /* Menu items for LINK_FREQ V4L2 control */
+-static const s64 link_freq_menu_items[] = {
+-	IMX258_LINK_FREQ_634MHZ,
+-	IMX258_LINK_FREQ_320MHZ,
++/* Configurations for supported link frequencies */
++static const s64 link_freq_menu_items_19_2[] = {
++	633600000ULL,
++	320000000ULL,
++};
++
++static const s64 link_freq_menu_items_24[] = {
++	636000000ULL,
++	321000000ULL,
+ };
+ 
+ /* Link frequency configs */
+-static const struct imx258_link_freq_config link_freq_configs[] = {
++static const struct imx258_link_freq_config link_freq_configs_19_2[] = {
+ 	[IMX258_LINK_FREQ_1267MBPS] = {
+ 		.pixels_per_line = IMX258_PPL_DEFAULT,
+ 		.reg_list = {
+-			.num_of_regs = ARRAY_SIZE(mipi_data_rate_1267mbps),
+-			.regs = mipi_data_rate_1267mbps,
++			.num_of_regs = ARRAY_SIZE(mipi_1267mbps_19_2mhz),
++			.regs = mipi_1267mbps_19_2mhz,
+ 		}
+ 	},
+ 	[IMX258_LINK_FREQ_640MBPS] = {
+ 		.pixels_per_line = IMX258_PPL_DEFAULT,
+ 		.reg_list = {
+-			.num_of_regs = ARRAY_SIZE(mipi_data_rate_640mbps),
+-			.regs = mipi_data_rate_640mbps,
++			.num_of_regs = ARRAY_SIZE(mipi_640mbps_19_2mhz),
++			.regs = mipi_640mbps_19_2mhz,
++		}
++	},
++};
++
++static const struct imx258_link_freq_config link_freq_configs_24[] = {
++	[IMX258_LINK_FREQ_1267MBPS] = {
++		.pixels_per_line = IMX258_PPL_DEFAULT,
++		.reg_list = {
++			.num_of_regs = ARRAY_SIZE(mipi_1272mbps_24mhz),
++			.regs = mipi_1272mbps_24mhz,
++		}
++	},
++	[IMX258_LINK_FREQ_640MBPS] = {
++		.pixels_per_line = IMX258_PPL_DEFAULT,
++		.reg_list = {
++			.num_of_regs = ARRAY_SIZE(mipi_642mbps_24mhz),
++			.regs = mipi_642mbps_24mhz,
+ 		}
+ 	},
+ };
+@@ -410,6 +468,9 @@ struct imx258 {
+ 	/* Current mode */
+ 	const struct imx258_mode *cur_mode;
+ 
++	const struct imx258_link_freq_config *link_freq_configs;
++	const s64 *link_freq_menu_items;
++
+ 	/*
+ 	 * Mutex for serialized access:
+ 	 * Protect sensor module set pad format and start/stop streaming safely.
+@@ -713,7 +774,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+ 		imx258->cur_mode = mode;
+ 		__v4l2_ctrl_s_ctrl(imx258->link_freq, mode->link_freq_index);
+ 
+-		link_freq = link_freq_menu_items[mode->link_freq_index];
++		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
+ 		pixel_rate = link_freq_to_pixel_rate(link_freq);
+ 		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
+ 		/* Update limits and set FPS to default */
+@@ -727,7 +788,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+ 			vblank_def);
+ 		__v4l2_ctrl_s_ctrl(imx258->vblank, vblank_def);
+ 		h_blank =
+-			link_freq_configs[mode->link_freq_index].pixels_per_line
++			imx258->link_freq_configs[mode->link_freq_index].pixels_per_line
+ 			 - imx258->cur_mode->width;
+ 		__v4l2_ctrl_modify_range(imx258->hblank, h_blank,
+ 					 h_blank, 1, h_blank);
+@@ -747,7 +808,7 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 
+ 	/* Setup PLL */
+ 	link_freq_index = imx258->cur_mode->link_freq_index;
+-	reg_list = &link_freq_configs[link_freq_index].reg_list;
++	reg_list = &imx258->link_freq_configs[link_freq_index].reg_list;
+ 	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
+ 	if (ret) {
+ 		dev_err(&client->dev, "%s failed to set plls\n", __func__);
+@@ -946,9 +1007,9 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	imx258->link_freq = v4l2_ctrl_new_int_menu(ctrl_hdlr,
+ 				&imx258_ctrl_ops,
+ 				V4L2_CID_LINK_FREQ,
+-				ARRAY_SIZE(link_freq_menu_items) - 1,
++				ARRAY_SIZE(link_freq_menu_items_19_2) - 1,
+ 				0,
+-				link_freq_menu_items);
++				imx258->link_freq_menu_items);
+ 
+ 	if (imx258->link_freq)
+ 		imx258->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+@@ -964,8 +1025,10 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	if (vflip)
+ 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ 
+-	pixel_rate_max = link_freq_to_pixel_rate(link_freq_menu_items[0]);
+-	pixel_rate_min = link_freq_to_pixel_rate(link_freq_menu_items[1]);
++	pixel_rate_max =
++		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0]);
++	pixel_rate_min =
++		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1]);
+ 	/* By default, PIXEL_RATE is read only */
+ 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
+ 				V4L2_CID_PIXEL_RATE,
+@@ -1086,8 +1149,19 @@ static int imx258_probe(struct i2c_client *client)
+ 	} else {
+ 		val = clk_get_rate(imx258->clk);
+ 	}
+-	if (val != IMX258_INPUT_CLOCK_FREQ) {
+-		dev_err(&client->dev, "input clock frequency not supported\n");
++
++	switch (val) {
++	case 19200000:
++		imx258->link_freq_configs = link_freq_configs_19_2;
++		imx258->link_freq_menu_items = link_freq_menu_items_19_2;
++		break;
++	case 24000000:
++		imx258->link_freq_configs = link_freq_configs_24;
++		imx258->link_freq_menu_items = link_freq_menu_items_24;
++		break;
++	default:
++		dev_err(&client->dev, "input clock frequency of %u not supported\n",
++			val);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.44.0
 
