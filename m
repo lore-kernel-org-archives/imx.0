@@ -1,100 +1,89 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A57154BE0
-	for <imx@lists.linux.dev>; Sat,  1 Jun 2024 17:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E99A374CC
+	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 10:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717263800; cv=none; b=oyz/+sj02YIJ8r1K5PC6zNS9yg3xEzwlx2+ajAuebmVjfNi5HqX8mUMyyoGi0JPtBm1K0He3sa1Ep0HW9YPE9oeKZBQQ5bCIIs2vmiUw9yfXoEt5D3ACo5DysgYZAeJqRSqtPju6iljxGIiydzA6Mfl15TheWCANsyqu9Pq7Pgo=
+	t=1717324868; cv=none; b=gzTs52//DXxby8FcHAwjXLLmwJjMZQOWF5a5O5E2KUAaC3xmeJf2k0XCYS+FM7AYF9ZcvUTKp4wiHXgb5DA/YSptZAjSLu/m/sBKm/e+3ngAEY+i6PhGosDEqTUc8+ACmgtLHqzfl8ByZGJz8Sh+hDpxiYNwIFLzZFDzCbdLA8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717263800; c=relaxed/simple;
-	bh=W0wuE5Of9oClh7yyA2twjLsZUMGP7wIYysfR+SJ1z5s=;
+	s=arc-20240116; t=1717324868; c=relaxed/simple;
+	bh=4lF60Tp1ZKHlgeQKqBEl0y1eoXo68jynVkVk5IO43gc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fDNw546trP38Y1ASjoc9DFBG+VV0rmedPKyNsJTfrCFZUIsA2KbFlaa1sNDugCZgqBx7wEPROIPIdcDLzl8TYaxhIEqp++cQNhV+c3aoV4vPqjlt/+wJfxht0Yxrt0qR2fkZMO781RU6sa8hXvSu+0H9mssP0M79Szb35svF218=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tt9Uk8Sc; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=sCeLsb9S25KsCqbm2ifSMaPTX7XdymGCBkmU6Mjv675IESmMsdPjqs7YIrE78eJ86UsINgAaGiUoSqDAlgUo/DmyMvGbHpigbARXp9cU4zCkjBMsIKg4eBXIkgA+SP3OXUYq7RKUYhuIUAxb/xujtL8QqdlCEomw9xy+rBdVyno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dBELLvR9; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tt9Uk8Sc"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2c1efa67244so154407a91.3
-        for <imx@lists.linux.dev>; Sat, 01 Jun 2024 10:43:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dBELLvR9"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dfa7873bab2so1704521276.1
+        for <imx@lists.linux.dev>; Sun, 02 Jun 2024 03:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717263798; x=1717868598; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=buYYkTl8li7ctanCOVUPnpm17gP2d9IWbg1xZ7qYW0A=;
-        b=Tt9Uk8ScNJHuTUyZiZiaCAaCZhQ2VklA6GxYlX1N1dUgtAIpnWszTvaYHWy72XZTje
-         GSC2bzG5cpsZqcjjAyWsFHWsJ+s2QMPFioE2VNMU318QoBRTf9wOruBCAU66Ipt/d+hX
-         7BbcNx1JG71/Pprbtq92JzLknQza6DZtD8d6Ocl/Nsl2ARsj616/B6av0ZSGckJjHu3K
-         Q6/ckSPCezvEeTgBtpkERGGj0uA5bM8cTlLqdS/WlgUnyrI18A4GOH1TZldkwkOsk9r7
-         CbfCS4X8R3YlXxK6DSByxBEQlxwEFB1phot2UGAEUPLy5Dh3Y9oV/xVIHD0kw1AWX13/
-         kaGg==
+        d=linaro.org; s=google; t=1717324863; x=1717929663; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mFM4fI0BfVhoIuFo3oNmTS1/Tw1vlv77X7lObWK8gXo=;
+        b=dBELLvR9F/pthWJJoa09JJxLrqrB9ESQJOI75yyVH8VOLvuS3yPMbJFHVrWsSzzcuG
+         Tm+TO2RwEJlOl6/GGSkG84fgtfaRGWO2UkcYOJhmODhvDxOW4qIvGk3mNYouJoaw2Xvy
+         HrfVF1ytNXCpw23vEHDtb6rZECmwvlU16PT9RXAKJNangAiSl6BpCISad3Z2zOwG9OHR
+         vGkiCmJefFWPvMWORSikjdTa8k/tnaKP1GO5QwG4bv/E5Mtz4MvBay5h6U+Ptg6PrAOF
+         TwWwc03upQrayEAFIpimjwxzUUMuDdwExcnYUkLXSLlAd9SCv0YG+UDe4iA3QZXgDNMf
+         Lh2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717263798; x=1717868598;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=buYYkTl8li7ctanCOVUPnpm17gP2d9IWbg1xZ7qYW0A=;
-        b=hsjvDMoKY17QUr0fLfILyZUc7y+eH26x2Cdd98H3Waqqxnsq2s5/wI4UQk71Re+m0l
-         IPxw89EIzZRrh9pHXgGK9m51dxtpQmDYR9wtVGiOaKB4nomXZEtm/PDQ+OR9oF1ZkwVR
-         ljJtTcUQucPRW3GGNksaW0KMW1ADpev3+wnkp5Pr/FXCWTA0MY4LixznsnFcpJINlDis
-         RNZo4aUYTpb4rakbnE/7HyI4CozwyuVBBeaf9TS8HTozNfHqgBZ+Pseb8M5AwmbTWHTL
-         F4ZG0GH+qOMr7AdkrloAk/07k6fzx52mB1PurN45JaSZB0In+E2rL4oCfsstlDtbNpl8
-         x/hg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7nwhOanVCVsrcrtlyehE4B/RGjlmAgp+PZMsP2lNDY3YZPtIpggSNHM0bHHS5jdOmm5LNfcjiwJy4BVlvtHJuCsE4
-X-Gm-Message-State: AOJu0YzUDvIVwcBiFMj8aXcwL0UDGirwvqG4QwGoC8LVyGEIMpX5brUC
-	I0Vh8+NUGoUl5nRi7MwAw5V9yLjq49MUmCIUGgyEIKx6jEQqHNqJ0JaJw2ALFqdkvrwy5vRYQ7P
-	WlcNsJVfiG7hFHz+ep38y8eK+W/o=
-X-Google-Smtp-Source: AGHT+IH30qJm5Dn9kjIOog7TjJO9dDrnfu32rz4HIS3cmy1sSKziWOx6W7hrqbBQnUIoV06Ofw6MzPxn1IUshT9zD8I=
-X-Received: by 2002:a17:90b:3b4c:b0:2c1:aa9e:1781 with SMTP id
- 98e67ed59e1d1-2c1dc4b9529mr4732595a91.0.1717263798460; Sat, 01 Jun 2024
- 10:43:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717324863; x=1717929663;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mFM4fI0BfVhoIuFo3oNmTS1/Tw1vlv77X7lObWK8gXo=;
+        b=Q57retNjFjO6W7cjxba109vpPbttJB2Q9VnmQJUmnf/EDjW7E1VPHBjDCEZMLt4yN3
+         H9/9Zf5jsG0Mt3TU00/2/f7N3uuPtplyZ0klxxZpzTd5s3wbMVYD1/QtrUPPJKmAAEQS
+         XZwguCyopVeU93zlVeZhwn02m6EGD7OtCIQCpDys9Ui0586bXxlhTRPiBUN9pVC68J6j
+         8g6nXK0gDXCqnRGB09UPULKSbpFvlZslvAPeBxT7tkLczMRzwE3Vf7GZwO7/GBYAZicU
+         loL8o3qJvND8qKLoTQT4+TV/HXFi3WQ8qlwgZZDNPE/1xVoAEuWenwI0G7EUKp/8/i+C
+         zloA==
+X-Gm-Message-State: AOJu0YwjfpByVBDj/nojfHMFPsNEi/ouiJUSIuj3ySLZilWCnHEjlfqC
+	OYYF3JgYk0LOFwsjx8G4XzRba0VBEgI2NGEk5XZKRieJFN4umoG1OqIDFddL/db1Ga7KYegQnjz
+	2RLPIU7YTsehizgkTmPHT+M5WQcji0L4ErJ/3Gw==
+X-Google-Smtp-Source: AGHT+IGAvjZUn9usqBaQXStHYMiIq+xkcrPxemQDbOh6Td+kMNg2WV2GXfOZ2G0rsURmY5+qN2Tsi0NdkrstgDyKMNk=
+X-Received: by 2002:a25:ac95:0:b0:df4:ab39:8c1f with SMTP id
+ 3f1490d57ef6-dfa73dd2735mr6280143276.53.1717324863129; Sun, 02 Jun 2024
+ 03:41:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240601135230.89980-1-aford173@gmail.com> <20240601135230.89980-2-aford173@gmail.com>
-In-Reply-To: <20240601135230.89980-2-aford173@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 1 Jun 2024 14:43:07 -0300
-Message-ID: <CAOMZO5CVrEEj20v+EDX7rmCvW29wL+gD37mfMZAp-uY=tnz-rQ@mail.gmail.com>
-Subject: Re: [PATCH V3 2/2] arm64: dts: imx8mp-beacon-kit: Fix errors found
- from CHECK_DTBS
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+References: <20240514030718.533169-1-victor.liu@nxp.com>
+In-Reply-To: <20240514030718.533169-1-victor.liu@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Sun, 2 Jun 2024 13:40:52 +0300
+Message-ID: <CAA8EJpra3jfmhEmAM6PSpu6eKNdMGuNN3eX2r2JT6YEd7hWsiQ@mail.gmail.com>
+Subject: Re: [PATCH] arm: dts: imx53-qsb-hdmi: Disable panel instead of
+ deleting node
+To: Liu Ying <victor.liu@nxp.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 1, 2024 at 10:52=E2=80=AFAM Adam Ford <aford173@gmail.com> wrot=
-e:
+On Tue, 14 May 2024 at 05:59, Liu Ying <victor.liu@nxp.com> wrote:
+>
+> We cannot use /delete-node/ directive to delete a node in a DT
+> overlay.  The node won't be deleted effectively.  Instead, set
+> the node's status property to "disabled" to achieve something
+> similar.
+>
+> Fixes: eeb403df953f ("ARM: dts: imx53-qsb: add support for the HDMI expander")
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi | 2 +-
+>  arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso   | 6 ++++--
+>  2 files changed, 5 insertions(+), 3 deletions(-)
 
->         adv_bridge: hdmi@3d {
->                 compatible =3D "adi,adv7535";
-> -               reg =3D <0x3d>, <0x3c>, <0x3e>, <0x3f>;
-> -               reg-names =3D "main", "cec", "edid", "packet";
-> +               reg =3D <0x3d>;
-> +               reg-names =3D "main";
->                 interrupt-parent =3D <&gpio4>;
->                 interrupts =3D <27 IRQ_TYPE_EDGE_FALLING>;
->                 adi,dsi-lanes =3D <4>;
->                 #sound-dai-cells =3D <0>;
-> +               avdd-supply =3D <&buck5>;
-> +               dvdd-supply =3D <&buck5>;
-> +               pvdd-supply =3D <&buck5>;
-> +               a2vdd-supply =3D <&buck5>;
-> +               v1p2-supply =3D <&buck5>;
-> +               v3p3-supply =3D <&buck4>;
-> +
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-The extra blank line is not needed.
-
-Thanks for fixing the dt-schema warnings:
-
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+-- 
+With best wishes
+Dmitry
