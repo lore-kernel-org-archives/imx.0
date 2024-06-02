@@ -1,61 +1,61 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2359381B8
-	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 12:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69580381BB
+	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 12:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717329891; cv=none; b=mg5Da3aOUTPM+4F/Ul1lXZpuKZdYV5iDJkhYHc9lr50FGIBNlh1NmFHYyrQ+zf/3Kx2tpA7rOLwND4SefTidqOTStGDxky2mFoUYwvso0kb9uzhthNkILUGqrEk3WUwrzdKaQU8j5LJ2of45YP7ku+PcxUk3oWR3k5jY+IrwbnE=
+	t=1717329892; cv=none; b=UkA/X4pJOCifehrsWPsuAm886Sxd48auFQb7KG78xBbax68AchLMl0nFOUk16Iy6wCEKHa8UPnsIIRfadHERWp0oG6G8cAjojkwDkA6zIEBPfxhx+LACyoC+/JzQVVRyZPF4zbnREjQSdrNyYvddaIzOQ0lSm1pzWEu3B71Ctuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717329891; c=relaxed/simple;
-	bh=SFNXn1zh/yUH5lKBoXzlQkp+p1CQ7cqY5rYlPQmKP7Y=;
+	s=arc-20240116; t=1717329892; c=relaxed/simple;
+	bh=3Nz5IHmPVWRwHFsw4a2c0uKZtmM9s7xJPi4nSL2SZJE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LLzJulEqva54uCTLYSbadSvnnBTZinUkKEolLrgB4TrYfQqo4H3ZPl+hg2crn46qqBR2iJFw2YN0M6cbKaG11lVlDpxceUVsc/gj4paUECecGAE8gjC2QACZdSmjZgZTGErUFCmciDFc1ZVxxGFwWfq/L9hC43Jy+dCDijPsB2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EcW6KNTl; arc=none smtp.client-ip=209.85.167.52
+	 In-Reply-To:To:Cc; b=EMgeUDRCpw9R7Ld6jTu7zCS9w/hnAXKZ+8SjiZFnuyzkSmcNQ9bIkC3vPxjw6GuNi3PnQtGAvFuyoMV4lRQAyL9AREE2DnEZG3QbnnM/CHihhuwxst2XJ3f6KlcVVjY5FzIEf3xB7RndupBww383o3Hvivc0QPovY2KcjNz5JOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H9cBA4M8; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EcW6KNTl"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52b8e0e98adso2411028e87.0
-        for <imx@lists.linux.dev>; Sun, 02 Jun 2024 05:04:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H9cBA4M8"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52b88335dd7so2857204e87.1
+        for <imx@lists.linux.dev>; Sun, 02 Jun 2024 05:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1717329888; x=1717934688; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pQWdjTwgnIdZS6takOhMDQQy8XjSBnwUC2ksC3WzZco=;
-        b=EcW6KNTlZPgqfAznHTkFu/kqXWcq4nz8oRAMDLDgC0l71tLOJpbhR/AcAtzaHnMPLQ
-         d7a2vEec4dfS6EmkAZZ1St7ZW9AG+rGxZvHq+2rI2qnbDmnaYFwrEqCoq9ubytNrVEIe
-         NGH8CYF/HRjDrG+b7XhnF2QdHajzvTN/4WJszTo+s2/T4cdYUT75FUVfHx0LgveG0kOI
-         Uc0D1ifW+BFZtGF1sUiOMHJziWtMscKbu1LtcC7O/FR2sJjohZb4mn4CFxnnNlDGGJhK
-         cQpFaCCVwqE+orEbucH7UPdv5yh1JodNQCUX2YSRt2m0TZ0gz9h7sQojj3BROZs6gZCW
-         rnZA==
+        bh=BGWVh/Zr3LGFqNC/PDJ+t+m+rq2p7BOWG0ebyvpQons=;
+        b=H9cBA4M8RWbPL+hA+QmdN6GtXlmRd0jREoX2FtL7yFLMUngME8vMEnvGx4omelHeak
+         2AtADaTOHVptd6sqrPNcEqCllT4yKS/3imYz0/CeJQVZ+1KSnk6bsQfcGgRsiqNFhp/w
+         MKHKZ3OiGPFSFAoQoOl0Hz7Cmop+Zy8t+td6w8/3dqeLGcZHMfpVZ13B99KPo9D1tia5
+         KeZFt8sDQCg7CtmXreDpfYSs0qKVbI2yHHkrUGsYhXKIwjwJjoIs97txzYV/1Stkz+0N
+         beWdM7T0fRPOMn3U6FtHRFflAaRmtAToWw7Jww5nlcZY9xt13zGjgZazBBWKYcV1Vw8H
+         MawA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1717329888; x=1717934688;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pQWdjTwgnIdZS6takOhMDQQy8XjSBnwUC2ksC3WzZco=;
-        b=fdc25PKFkjMOwXvYtgaBSoD3Jd3a+M9JzyvR/KYtYB2RQegEHalMe4W0rg5liKh0Ot
-         wNsVwDJAnCZAmoRVoVKLvYo4AroqapQ/XJMsrj8dvwW2sIESFnmb4KSC71nVx/wznFX+
-         oVYJ+YiDsb3jOxxbgZAVPBq2e3saHDPyhEYwLsvXI1vrjFDHcic2cweMemAMC6Z1ddvy
-         t7LuDSXI9OHVMkTuQQIE/fhFWSSFOdONpWMYh9KK7ci7qbsF45S5FY1hjRwvfnIjdGyP
-         HSF/X1LjirYp6RQtJn+8DD+dSSUkwGvMcf7xs0ILfEKdwTy7oG8mkfHYW8vCvuTJWCqD
-         G7kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSecIh+6ZmMEJlq88WjK0SMCzfIN/M0808D903AWAWG20mOl284EHJArtCEbg3e5q3UCQJvu12EHl7AaZ5IhOnvrfP
-X-Gm-Message-State: AOJu0Yy2OXT+nW5769rfO79OLsBrk3Hb9y6zQPjQNdy9C+F8KExSd/d/
-	3AA9YbU9gc2HlVybxDdgx62pgg8bqK39YE0QGYCJFUA3trq4Nyi+iQAmIt9wmeo=
-X-Google-Smtp-Source: AGHT+IGfozs4AwvcZe4Ex5alE8/DWJLLE0peGqkDlWeKv2/RBkKRrvdguJMijbWU1spsIZJp4mhVRw==
-X-Received: by 2002:ac2:4c86:0:b0:51f:696b:949a with SMTP id 2adb3069b0e04-52b896c7ae7mr4279067e87.48.1717329887841;
-        Sun, 02 Jun 2024 05:04:47 -0700 (PDT)
+        bh=BGWVh/Zr3LGFqNC/PDJ+t+m+rq2p7BOWG0ebyvpQons=;
+        b=KSOBFtBbhEj8MsvvrnnYo1aD5kd+6fEb5nBJFmHj+z9hjUBATCUoqWPLuC1X/kPCQP
+         8IAv6qON3Rfq73MzoI/bWpacybU1/6jem3zmU3PyaoP7nZhEQAi4TGvpqFhgPd8acP+v
+         Fhl7/WaGVfbqMx5DYT1C92sMMJhy5mdfnpg0XNSlzs/9oA3q7pZiIb9edun3jvc/+P5M
+         Y9Oot0zmtVEdq5b86SUTEjk1pNKRqpc0263Qp2DQdFjAU0vzA3vxdKa55Whcqz6KUIUz
+         0TbgJ5XCPsnX0DgtGw1DrqgyMLTgePZI1MGzrtaVyPvV7jsrGp/nU8TzNm+M1JYOv0c3
+         cc5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU9uh6DKSZGB6Af8RD6QKFGDpbxTDh3VIgm6LosY3m6PphDSq40s3Y6PiU/BUBJ37Ezl4g8n4SIGDgZXJbkY/O4ASne
+X-Gm-Message-State: AOJu0YzmtJNEmLChBI4VkdKI3pL1C12b5jbwuWRP9WlTqXOy+IlOerNX
+	2yLOB+LoKQS9ulVkC9MqNS0VfF9ZZSZegvVgLDjtc+EsKCuMlu0G3rGVIwepZK4=
+X-Google-Smtp-Source: AGHT+IFioojHdR8Li3FtAUmWNxJNZSvKgoMY/dETwt1uCPkRs8JMSzzF/VAu/d9Aejv8BYFZwW5OPw==
+X-Received: by 2002:ac2:4e94:0:b0:52b:7f00:5695 with SMTP id 2adb3069b0e04-52b896d26a1mr3567965e87.59.1717329888558;
+        Sun, 02 Jun 2024 05:04:48 -0700 (PDT)
 Received: from umbar.lan ([192.130.178.91])
         by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52b8b56867fsm759398e87.44.2024.06.02.05.04.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Jun 2024 05:04:47 -0700 (PDT)
+        Sun, 02 Jun 2024 05:04:48 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Sun, 02 Jun 2024 15:04:41 +0300
-Subject: [PATCH v3 01/12] dt-bindings: display: fsl-imx-drm: drop edid
- property support
+Date: Sun, 02 Jun 2024 15:04:42 +0300
+Subject: [PATCH v3 02/12] dt-bindings: display: imx/ldb: drop ddc-i2c-bus
+ property
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240602-drm-imx-cleanup-v3-1-e549e2a43100@linaro.org>
+Message-Id: <20240602-drm-imx-cleanup-v3-2-e549e2a43100@linaro.org>
 References: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
 In-Reply-To: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
 To: Philipp Zabel <p.zabel@pengutronix.de>, 
@@ -82,53 +82,41 @@ Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org,
  linux-arm-kernel@lists.infradead.org, 
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1524;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1144;
  i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=SFNXn1zh/yUH5lKBoXzlQkp+p1CQ7cqY5rYlPQmKP7Y=;
- b=owGbwMvMwMXYbdNlx6SpcZXxtFoSQ1pM/J2vZz5Isk1dyi0v4TtXuFzuvoLEo4zOkvkbo396q
- dcI1ed2MhqzMDByMciKKbL4FLRMjdmUHPZhx9R6mEGsTCBTGLg4BWAiU1XZ/8rn3ldQjYy/vUz1
- 1W3lC1Uxdfwmr+15haMreA5z6us5d1/sl+cV/7F9nXztqmde39LbHA92W/Qtj45XWC+yqWq6cnm
- o6kz7LPszV7Zs+CexOdpE66wmb/XGx3kHI74KN8i9mXT1Q6KBwjwe7WePr7ulZ175o9++4pSA4/
- XeGol1K6oq/Ccu+y+iqv//ntisVcpnG3LXJdpO+K5p6WibssF/v/r5d5xJhofe5laHLpvEbSs9/
- cjR8tJ/P3kn64tv2c/IOPeMt+ExH+ZZneyquzqenwhae2POpquM56XPVp5n5eP+nqMczKm1UIFd
- ebftxBcS/UqXLzhWyVYne6S/jPXIdGhpeWhuFu1v9O8BAA==
+ bh=3Nz5IHmPVWRwHFsw4a2c0uKZtmM9s7xJPi4nSL2SZJE=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmXF/cS9DynlRGL/q+FhwSBFBcGFVl4UCT9geOY
+ UOhOg3+BfuJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZlxf3AAKCRCLPIo+Aiko
+ 1dStB/9ur7o0ZT1BGSJZP85LBwNFyha0XzFbawRG0NkoKwEt/qs9Ss23XuP64+H0Cgyv/lVZjih
+ EIYQvrftDLxdSueWB7OoHv+r853IRqJFX5s/L3FwrhUoWR4NxzSmt+dwf5i/uyMTsq00ulQE5cn
+ bZEqh0UlBGShgZQEb8KmODQEGST0F5Y1hIct+TfuXs13DQYdkp02ie1uKCpXSeBRPqWG27zz+K4
+ +1/03y1P7Nh61Dh/a0EX9L9v4YVhfWy/URMe2TNrE2Lt9GPP9AZjKCGZc6sPeAnsig6dVr6e1bd
+ LvZnaiOQHvUe+FMP8pELJ2COAaNjL9n+YQrHqNflOdiRBK+b
 X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-None of the in-kernel DT files ever used edid override with the
-fsl-imx-drm driver. In case the EDID needs to be specified manually, DRM
-core allows one to either override it via the debugfs or to load it via
-request_firmware by using DRM_LOAD_EDID_FIRMWARE. In all other cases
-EDID and/or modes are to be provided as a part of the panel driver.
-
-Drop the edid property from the fsl-imx-drm bindings.
+The in-kernel DT files do not use ddc-i2c-bus property with the iMX LVDS
+Display Bridge. If in future a need arises to support such usecase, the
+panel-simple should be used, which is able to handle the DDC bus.
 
 Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt | 2 --
- 1 file changed, 2 deletions(-)
+ Documentation/devicetree/bindings/display/imx/ldb.txt | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt b/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
-index 3c35338a2867..269b1ae2fca9 100644
---- a/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
-+++ b/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
-@@ -119,7 +119,6 @@ Optional properties:
- - interface-pix-fmt: How this display is connected to the
-   display interface. Currently supported types: "rgb24", "rgb565", "bgr666"
-   and "lvds666".
--- edid: verbatim EDID data block describing attached display.
- - ddc: phandle describing the i2c bus handling the display data
-   channel
- - port@[0-1]: Port nodes with endpoint definitions as defined in
-@@ -131,7 +130,6 @@ example:
+diff --git a/Documentation/devicetree/bindings/display/imx/ldb.txt b/Documentation/devicetree/bindings/display/imx/ldb.txt
+index 8e6e7d797943..03653a291b54 100644
+--- a/Documentation/devicetree/bindings/display/imx/ldb.txt
++++ b/Documentation/devicetree/bindings/display/imx/ldb.txt
+@@ -62,7 +62,6 @@ Required properties:
+    display-timings are used instead.
  
- disp0 {
- 	compatible = "fsl,imx-parallel-display";
--	edid = [edid-data];
- 	interface-pix-fmt = "rgb24";
- 
- 	port@0 {
+ Optional properties (required if display-timings are used):
+- - ddc-i2c-bus: phandle of an I2C controller used for DDC EDID probing
+  - display-timings : A node that describes the display timings as defined in
+    Documentation/devicetree/bindings/display/panel/display-timing.txt.
+  - fsl,data-mapping : should be "spwg" or "jeida"
 
 -- 
 2.39.2
