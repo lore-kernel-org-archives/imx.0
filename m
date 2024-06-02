@@ -1,112 +1,117 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta14.mxroute.com (mail-108-mta14.mxroute.com [136.175.108.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A7B482FA
-	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 17:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF6153E15
+	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 20:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717347652; cv=none; b=OUmauSY+FhdUQxxycUDcAuETxY1HmoT3Gf8Jou5d9Zw+LBOyp1Hy4E86zrkSSLGPAh9jRmEh56kgr7c5bpc+w58HjHKPMtIzGES68yOoCD+xU1DzDNzxwz64C9qSMSbwx2cfwte8FL313QUDWtc5bWAHwl0QMkjcgDCpKlNWY0A=
+	t=1717359269; cv=none; b=l33TgniYuNUFgOB6nIt8L/OEs0KNHX89Pxjeu5y16BnpvDdrEB5PIAPczvPE7SM/H/JwN7bDTVE/0vPMD8XNF1cUpFXaZagp6yD1OWHrCTvZVRCXJz0GmTTMN95n4O0s1CuVXE0VS20pZEPoP+nJLSXySHhx3yjaKKUdcHuzqyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717347652; c=relaxed/simple;
-	bh=k5EYfPHC/Lo/TNWeBjdx9+fS7FRH2k0S/Jzl9BF0st4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=OY5UF8DfRmGMMssOU65SMOw6MtkH10EPFzrf8JyCI1qvm1lsF5rfv+PLBVG4bdQ29bTFW257eHwWmxyVqh4HUDHEBgn+guKViKJT0W+/ecbeDZsbps7ui27O4GrvhqYyjiGDn/hdalS+onwipUGbpTUro/Fobz4XMg/EiAHyoMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JuocYykB; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1717359269; c=relaxed/simple;
+	bh=t0DpAm14I63PD+zKjpelnQ5UomdKi3PfstUiSulsvmk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kM4I4IDNmVij2F34LoxqYmALQyCz58jjmZZL6B12iw/OwtfDLkZeLZBzS9K3JYIoqzfwqZzLIIn0if2Qn9r83sY1TXUlR5AIaBPZrpcTl0kL0nm+iQCHp2kV1TiBm/CvlnzmZXsIm8g/8u9Maiwc3Pt5B2+BWihR4aGly/7vyv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=r1pmuNLg; arc=none smtp.client-ip=136.175.108.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JuocYykB"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 452GQRj5030510;
-	Sun, 2 Jun 2024 17:00:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=3V/muIh5raFrmw+q30bwPk
-	XMh8vWT0odM2JbwBWGe8Q=; b=JuocYykB3bFoOcOQf0lz39Ejc8pUKcQnWe4OgU
-	isXDFaYqKlPzo3Nyqf1/FCUngph7/hF1XQY7JeiwwkmdFajGEEyWqXyCoBpQHaBw
-	Srpp0NC9ZN1+PHeWLAgN/zaYGNCjsT8G3vSCL5CfdKHaUk66+L9iD3Ozql3evJ5/
-	Iyl5c4YQvvz+JqAWTLzv4FyRYv27tBfGO3MVh5YHemU3QSoHljxUvSHEffCE4ZKY
-	ad3kRQOq/cNnxXCrEc6kULd1ywmQXtvxk1kuesI3Je/CKkRco0m4spMd6vX0Xb1m
-	20c7Jr86RVfO3gFcLYEpQ9pef7JqkVTQYxOA6q7nqsJzUkUw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yfw7dj9k0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Jun 2024 17:00:35 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 452H0SE5011802
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 2 Jun 2024 17:00:28 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 2 Jun 2024
- 10:00:28 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Sun, 2 Jun 2024 10:00:27 -0700
-Subject: [PATCH] ASoC: fsl: add missing MODULE_DESCRIPTION() macro
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="r1pmuNLg"
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta14.mxroute.com (ZoneMTA) with ESMTPSA id 18fda96bc57000e2b6.00a
+ for <imx@lists.linux.dev>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sun, 02 Jun 2024 20:14:22 +0000
+X-Zone-Loop: 3269649a26fa9679cc3b4ed512a217d25ee04ce4530d
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Mc+RbIL+DgqYcfe/mLvPif24eMzEBPY7cltm4NspsTE=; b=r1pmuNLgrmVRdy3DspwaEwSbql
+	yEc1bf+nm9x08MET0M1CrqWtVKqF3DKQ6XvFgCl0P3lEkUhNp/H+G21OoASACXJO+5u5yjDuS+FJA
+	JjhRiS8zsBKqSSu8Nt6GYSexcf3KtHf/dgr1qBdhpGfVgRdh5s7MBNVqWzn5CvfwSXZHmoUsWhRFF
+	9MjaOGtzKEeHPiL3sVjpXYrNZIYLIWdJMtE7KPRLGeyDJq+r7aDKsDUbIWFoxBypxX+v2CZL9QYba
+	b4pAiwpajpBSlSfTqZv4V1c0NywisI2IbYoSnwa4uDkvTpht3nnrIrvPSv3iyIH/vfGD2q9bj0kHS
+	2ZCL/8bw==;
+From: git@luigi311.com
+To: linux-media@vger.kernel.org
+Cc: dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com,
+	mchehab@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	pavel@ucw.cz,
+	phone-devel@vger.kernel.org,
+	Luis Garcia <git@luigi311.com>
+Subject: [PATCH v6 14/23] media: i2c: imx258: Issue reset before starting streaming
+Date: Sun,  2 Jun 2024 14:13:36 -0600
+Message-ID: <20240602201345.328737-15-git@luigi311.com>
+In-Reply-To: <20240602201345.328737-1-git@luigi311.com>
+References: <20240602201345.328737-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240602-md-snd-fsl-imx-pcm-dma-v1-1-e7efc33c6bf3@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIACqlXGYC/x3MwQqDMAyA4VeRnBeopXrYq4wdahNnwHaSbFIQ3
- 32dx+/w/wcYq7DBvTtAeReTd2nobx2kJZYXo1AzeOeDG53HTGiFcLYVJVfcUkbKEd3ofUiDo0A
- 9tHhTnqVe48ezeYrGOGksafnvVinfijnahxXO8wdUKIBhhwAAAA==
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Shawn Guo
-	<shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Pengutronix
- Kernel Team" <kernel@pengutronix.de>
-CC: <alsa-devel@alsa-project.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-sound@vger.kernel.org>, <imx@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6DUnu3tC95JK_a5FNoxTYQqixlWUhI41
-X-Proofpoint-GUID: 6DUnu3tC95JK_a5FNoxTYQqixlWUhI41
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-06-02_11,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 impostorscore=0 malwarescore=0 phishscore=0 adultscore=0
- clxscore=1011 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406020147
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: personal@luigi311.com
 
-make allmodconfig && make W=1 C=1 reports:
-WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-dma.o
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Add the missing invocation of the MODULE_DESCRIPTION() macro.
+Whilst not documented, register 0x0103 bit 0 is the soft
+reset for the sensor, so send it before trying to configure
+the sensor.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Luis Garcia <git@luigi311.com>
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- sound/soc/fsl/imx-pcm-dma.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/imx258.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-pcm-dma.c b/sound/soc/fsl/imx-pcm-dma.c
-index 14e94270911c..4fa208d6a032 100644
---- a/sound/soc/fsl/imx-pcm-dma.c
-+++ b/sound/soc/fsl/imx-pcm-dma.c
-@@ -50,4 +50,5 @@ int imx_pcm_dma_init(struct platform_device *pdev)
- }
- EXPORT_SYMBOL_GPL(imx_pcm_dma_init);
+diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+index c1a2c2406aaa..9c83ba1232fa 100644
+--- a/drivers/media/i2c/imx258.c
++++ b/drivers/media/i2c/imx258.c
+@@ -20,6 +20,8 @@
+ #define IMX258_MODE_STANDBY		0x00
+ #define IMX258_MODE_STREAMING		0x01
  
-+MODULE_DESCRIPTION("Freescale i.MX PCM DMA interface");
- MODULE_LICENSE("GPL");
-
----
-base-commit: 83814698cf48ce3aadc5d88a3f577f04482ff92a
-change-id: 20240602-md-snd-fsl-imx-pcm-dma-06224c50d4d1
++#define IMX258_REG_RESET		0x0103
++
+ /* Chip ID */
+ #define IMX258_REG_CHIP_ID		0x0016
+ #define IMX258_CHIP_ID			0x0258
+@@ -1052,6 +1054,16 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 	const struct imx258_link_freq_config *link_freq_cfg;
+ 	int ret, link_freq_index;
+ 
++	ret = imx258_write_reg(imx258, IMX258_REG_RESET, IMX258_REG_VALUE_08BIT,
++			       0x01);
++	if (ret) {
++		dev_err(&client->dev, "%s failed to reset sensor\n", __func__);
++		return ret;
++	}
++
++	/* 12ms is required from poweron to standby */
++	fsleep(12000);
++
+ 	/* Setup PLL */
+ 	link_freq_index = imx258->cur_mode->link_freq_index;
+ 	link_freq_cfg = &imx258->link_freq_configs[link_freq_index];
+-- 
+2.44.0
 
