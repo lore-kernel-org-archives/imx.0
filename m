@@ -1,86 +1,95 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDE63BBC1
-	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 13:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45488B64B;
+	Sun,  2 Jun 2024 14:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717334502; cv=none; b=QBhU5RKEBHtS6XErWO6gkpHye3sSWD+/n+uHdRjOkiV1nsgLL7MzzNVhKy6gVwyPu8QsiUfPhaG6Fbk0CrhKTvZJ77eV/14VzNjwYFBXoWUqo53C9davKEeRl2T+C+ROsAHzEdOXQnOWX1PobftC5EvpyN69DRdx4zjxWq9E8fk=
+	t=1717338704; cv=none; b=EmjDFPHi6rw8AQBLp54J8/qCI0es5XuLi6eZ8K1RrYnZeuVUCXusrTfhUZGd11H3ZTpp5HUh8X994nOdmxtceuiRzlbEdFfTWjBtL2Fe7CK7dJ6P8pAlWFF7T2E3aa4gjMqRg+J5XYxVxG6vVJAwSlMP529mDMInVg2eOf2vM4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717334502; c=relaxed/simple;
-	bh=w9qAtj/Q6OMUm4l3FP+hub4S5StaD/SWZRWY3ZBKnIk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aRjAPqWOgNL9DovJhje54BkPDO8KXq7yIPGgGtdJwR/m3IJSx0HH7fj00KweaOoMdncq6WXTD3n5rlrDQj6j25bonolApXU0H0v+xZEBU8roWh/cw+TpuRGGgGAiTXTB780gavLCvGgP66nIgqKjpaVmgVPRrZlXMWN5Xm+Hfp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K87yqO/x; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717338704; c=relaxed/simple;
+	bh=CotbdNz9LHK9WkQCoFQqdqV3uDXLQoDBucayG0hD5MI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8fc63TBmsoD2OUzedrwH9nPBC+VB4ykpas16UjICO6HDp8/AIkgMW1yvlKnzb5Siqe4gslhyRYaXZRfWHHq16kZvkhNAjg+GxbuuyLdWZLwZgBRfbnmAEclhy7+u2Tt5JlHo+5kiUIh7q1leVh35QuXe+V8+7G9kNzO3/hCR6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0kucGJq/; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K87yqO/x"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2c21571e99bso64506a91.2
-        for <imx@lists.linux.dev>; Sun, 02 Jun 2024 06:21:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717334501; x=1717939301; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w9qAtj/Q6OMUm4l3FP+hub4S5StaD/SWZRWY3ZBKnIk=;
-        b=K87yqO/xmfiTwxtmzdmjoet18riQ3qjrueDxHvX65Fh3M3XQWApSPQcS0gHb6YGo0W
-         ngmgIscf2ME3nsAdWoCllgK7FfZYq0iNPAF2Jh48/o8OQjWelZV+Pw09FSIKFAWOeuw5
-         jI3bUOTAAzqmTeyEKxtQw66Jc1Q1FieheWHUh7qUlyZ7Cmn49c+Ayx98dNGEZBKO9R0z
-         bKtiqXhbLwbB23CL7MTpBww9OGdvjfSCSxBxN34Y+hDd5Qze1vHxJH9Z9N71DQQ3O+LN
-         VpqPmzTlwRd4ewbJVXTnrZSBTlm7z2KfYogmdUZM7d0x863c/6y97NRZ2aaRly4kK3t8
-         TNLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717334501; x=1717939301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w9qAtj/Q6OMUm4l3FP+hub4S5StaD/SWZRWY3ZBKnIk=;
-        b=UxR+Nh2GWOLfPA27EYvCxxK2jgNO3HVF8DgEyBbp6aWMZVkvAHsnOxyDmzibHwBz1y
-         E5k1oMLLP2SdZ6wMNRk/HWXjmwKi2MY2gRSSfp3P0Z3nVm5su0CZ0v4tpIJ0KwYcG2bA
-         F/qBWwx80n9aZAw0rZUHJoUYdnKsoBumI+H3ghU5qlAx9Enm69XOjkmUA4W2hfiOwcOU
-         uQb41Z7CM0da01wWrZ1mhk3JukNgzYEoRwzTWSUsXdq+3T5mZ9DAItiuiZLTzmwbG/sF
-         FQ2XMlFm/tgSDn3tSRxBls6X6sElK14aDmObGN65u6zwHjZ8jlJTYCcqh3AFNYoQzJgl
-         JJCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfADHUoj9eNsTBUovcyJjxSi1ADPPQgyzQjo7Ia+HvN94qwnLoBHjqECXOOCS+AuL5e73eALIIw2rmbnt8loN2nWEU
-X-Gm-Message-State: AOJu0YxYrao78SJwN4HmHoqI8xUlWMxVpBne/LKBFI2grobCErQQQUvv
-	3Vn+pHTunNjTPjTPPAsZDEAQh6lmZUxdljOaIa7RaxeZLqLneiRxpxnwOnd3i89K2QiJARQEzdq
-	81vnp5wmugtLKX64zEwfCyuYHdm4=
-X-Google-Smtp-Source: AGHT+IFxFx9jMlGIxkqoDIJGkMsPnJnWQKdTJk+XxjFR4fcHMa+VR6s2lNNgn+Px80s2ZL4pgkP7iwiMERFEMa04H3k=
-X-Received: by 2002:a17:90a:ea85:b0:2b2:4bff:67b7 with SMTP id
- 98e67ed59e1d1-2c1dc5da0a5mr5628590a91.3.1717334500480; Sun, 02 Jun 2024
- 06:21:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0kucGJq/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=RWGYwTysSvB1AzNEXTEGFJRM12Fxwodp6LFILw+wyVM=; b=0kucGJq/2zFxgbs7FdovI3m/Ll
+	zpIf8Am8tEyQf0bBEC4b/ONEn+HRO5v/03B53Vtpg/CpaGoCUtIFF9MOQawlK2wVuOselEUlDvOpg
+	II/vCIWvIBW04lULUZbw8wLLKiuxT+s6eHY9EQpNDcuOkeHmmod46dJTxqWNZ9DAG+1w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sDmF5-00Gc71-T9; Sun, 02 Jun 2024 16:31:27 +0200
+Date: Sun, 2 Jun 2024 16:31:27 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
+	andriy.shevchenko@linux.intel.com, u.kleine-koenig@pengutronix.de,
+	marcelo.schmitt@analog.com, gnstark@salutedevices.com,
+	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
+ not busy
+Message-ID: <f5d537e2-b102-415f-bc22-c949fd859344@lunn.ch>
+References: <20240531142437.74831-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240602-imx-sii902x-defconfig-v1-1-71a6c382b422@linaro.org>
-In-Reply-To: <20240602-imx-sii902x-defconfig-v1-1-71a6c382b422@linaro.org>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sun, 2 Jun 2024 10:21:28 -0300
-Message-ID: <CAOMZO5DgB6g7wydECav35wfAQ+p+XuYrOC2=8oksj7ALeQTOew@mail.gmail.com>
-Subject: Re: [PATCH] ARM: imx_v6_v6_defconfig: enable DRM_SII902X and DRM_DISPLAY_CONNECTOR
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Chris Healy <cphealy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240531142437.74831-1-eichest@gmail.com>
 
-Hi Dmitry,
+On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> 
+> On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
+> the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
+> bus is idle. The imx i2c driver will call schedule when waiting for the
+> bus to become idle after switching to master mode. When the i2c
+> controller switches to master mode it pulls SCL and SDA low, if the
+> ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
+> clocking, it will timeout and ignore all signals until the next start
+> condition occurs (SCL and SDA low).
 
-On Sun, Jun 2, 2024 at 7:47=E2=80=AFAM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
+Does the I2C specification say anything about this behaviour, or is it
+specific to this device?
 
-There is a typo in the Subject line: s/imx_v6_v6_defconfig/imx_v6_v7_defcon=
-fig
+> This rfc tries to solve the problem by using a udelay for the first 10
+> ms before calling schedule. This reduces the chance that we will
+> reschedule. However, it is still theoretically possible for the problem
+> to occur. To properly solve the problem, we would also need to disable
+> interrupts during the transfer.
+> 
+> After some internal discussion, we see three possible solutions:
+> 1. Use udelay as shown in this rfc and also disable the interrupts
+>    during the transfer. This would solve the problem but disable the
+>    interrupts. Also, we would have to re-enable the interrupts if the
+>    timeout is longer than 1ms (TBD).
+> 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
+>    timeout, we try again.
+> 3. We use the suggested solution and accept that there is an edge case
+>    where the timeout can happen.
 
-> Enable the LVDS-to-HDMI bridge and the HDMI display connector drivers
-> used on the iMX53 board with the HDMI mezzanine.
+2. has the advantage you fix it for any system with this device, not
+just those using an IMX. Once question would be, is such a retry safe
+in all conditions. Does the timeout happen before any non idempotent
+operation is performed?
 
-"i.MX53 QSB board".
+If the I2C specification allows this behaviour, maybe a more generic
+solution is needed, since it could affect more devices?
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+	Andrew
