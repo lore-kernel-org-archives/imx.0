@@ -1,61 +1,60 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69580381BB
-	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 12:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3917438DF2
+	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 12:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717329892; cv=none; b=UkA/X4pJOCifehrsWPsuAm886Sxd48auFQb7KG78xBbax68AchLMl0nFOUk16Iy6wCEKHa8UPnsIIRfadHERWp0oG6G8cAjojkwDkA6zIEBPfxhx+LACyoC+/JzQVVRyZPF4zbnREjQSdrNyYvddaIzOQ0lSm1pzWEu3B71Ctuw=
+	t=1717329892; cv=none; b=sTuU7U2kgKNk4BqnE21XqnIWi3X7rzUQWahAuKCwNLPSBKVi1iGuRatXIVERvX5TJkNm4mswOjsMbgYcPvZ5Kq2Pjchx/wbKDjWb503uxk9ulSMcBGDN/4Q56YOAXk9C49HDvDOPt4dlYYL5DJ3o5y46czzQC2jMhBEMitYjoIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717329892; c=relaxed/simple;
-	bh=3Nz5IHmPVWRwHFsw4a2c0uKZtmM9s7xJPi4nSL2SZJE=;
+	bh=ZDw9je94QoyosO0168STtseYxQQ179pVpV6GiETvE+4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EMgeUDRCpw9R7Ld6jTu7zCS9w/hnAXKZ+8SjiZFnuyzkSmcNQ9bIkC3vPxjw6GuNi3PnQtGAvFuyoMV4lRQAyL9AREE2DnEZG3QbnnM/CHihhuwxst2XJ3f6KlcVVjY5FzIEf3xB7RndupBww383o3Hvivc0QPovY2KcjNz5JOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H9cBA4M8; arc=none smtp.client-ip=209.85.167.48
+	 In-Reply-To:To:Cc; b=fBeLfw0N4N394wmnN/5wH/U0ABN+/adfiavM43VOIs7ZRlKL+QVdsTpw+FCbYzpY1gaAwUFfPAcSriFAVjrMpq+QuX4I9S+KEym1+gqCSamvL1oL6n3WLVgSuoN2xdqh3YaesEdZjg+YK5EesMEP3XsJKr77TYL+slzhh8B0DK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dU1aIAho; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H9cBA4M8"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52b88335dd7so2857204e87.1
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dU1aIAho"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52b91f655d1so850649e87.1
         for <imx@lists.linux.dev>; Sun, 02 Jun 2024 05:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717329888; x=1717934688; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1717329889; x=1717934689; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BGWVh/Zr3LGFqNC/PDJ+t+m+rq2p7BOWG0ebyvpQons=;
-        b=H9cBA4M8RWbPL+hA+QmdN6GtXlmRd0jREoX2FtL7yFLMUngME8vMEnvGx4omelHeak
-         2AtADaTOHVptd6sqrPNcEqCllT4yKS/3imYz0/CeJQVZ+1KSnk6bsQfcGgRsiqNFhp/w
-         MKHKZ3OiGPFSFAoQoOl0Hz7Cmop+Zy8t+td6w8/3dqeLGcZHMfpVZ13B99KPo9D1tia5
-         KeZFt8sDQCg7CtmXreDpfYSs0qKVbI2yHHkrUGsYhXKIwjwJjoIs97txzYV/1Stkz+0N
-         beWdM7T0fRPOMn3U6FtHRFflAaRmtAToWw7Jww5nlcZY9xt13zGjgZazBBWKYcV1Vw8H
-         MawA==
+        bh=nxc4vHH87Y1eSO87AR835I7/5WLCpgJXyFLj/BGpZY0=;
+        b=dU1aIAhoGas7tXmL+cl/SFrfe+5InvKhG2ylqoQ+X20W9IcEo12sMB/LFcF7TRmGId
+         iudN3ikmrw2buJBrNqzKXQfbYQJNXsmjc3qSD3eUKJOnZpMbnvCmkWmuyZ5nl7TX56GW
+         of+0zKRP26unAac3KYeLzNRRjupCor6bdW5g/MwJgplkS8uKbiEUm54MxVe9IJuI355t
+         7jzzxJhrvSzs/pBbDWL348eizENt4C8VeCoGzGo/uZSIYfjmy/1LlxJNu9XYTttl+ao2
+         6zjsXeZ8plidK9nr8+Pv6/SkBNQwCz9qtod3xUAc3VjtMImjShhoPrXeOxyAddThccZ7
+         oH5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717329888; x=1717934688;
+        d=1e100.net; s=20230601; t=1717329889; x=1717934689;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BGWVh/Zr3LGFqNC/PDJ+t+m+rq2p7BOWG0ebyvpQons=;
-        b=KSOBFtBbhEj8MsvvrnnYo1aD5kd+6fEb5nBJFmHj+z9hjUBATCUoqWPLuC1X/kPCQP
-         8IAv6qON3Rfq73MzoI/bWpacybU1/6jem3zmU3PyaoP7nZhEQAi4TGvpqFhgPd8acP+v
-         Fhl7/WaGVfbqMx5DYT1C92sMMJhy5mdfnpg0XNSlzs/9oA3q7pZiIb9edun3jvc/+P5M
-         Y9Oot0zmtVEdq5b86SUTEjk1pNKRqpc0263Qp2DQdFjAU0vzA3vxdKa55Whcqz6KUIUz
-         0TbgJ5XCPsnX0DgtGw1DrqgyMLTgePZI1MGzrtaVyPvV7jsrGp/nU8TzNm+M1JYOv0c3
-         cc5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU9uh6DKSZGB6Af8RD6QKFGDpbxTDh3VIgm6LosY3m6PphDSq40s3Y6PiU/BUBJ37Ezl4g8n4SIGDgZXJbkY/O4ASne
-X-Gm-Message-State: AOJu0YzmtJNEmLChBI4VkdKI3pL1C12b5jbwuWRP9WlTqXOy+IlOerNX
-	2yLOB+LoKQS9ulVkC9MqNS0VfF9ZZSZegvVgLDjtc+EsKCuMlu0G3rGVIwepZK4=
-X-Google-Smtp-Source: AGHT+IFioojHdR8Li3FtAUmWNxJNZSvKgoMY/dETwt1uCPkRs8JMSzzF/VAu/d9Aejv8BYFZwW5OPw==
-X-Received: by 2002:ac2:4e94:0:b0:52b:7f00:5695 with SMTP id 2adb3069b0e04-52b896d26a1mr3567965e87.59.1717329888558;
-        Sun, 02 Jun 2024 05:04:48 -0700 (PDT)
+        bh=nxc4vHH87Y1eSO87AR835I7/5WLCpgJXyFLj/BGpZY0=;
+        b=mFRrrM8MXE05ARytVrjGwg/jJwNj/z7Z2ldDw9c94ZQv8JOp2WUvpodyU/aL/Ah2dN
+         34tetk7+6ohpy8Z7nnjK0tzNpaxG7ZBLx+yZdvjRmCjcgPjuiCChyz7NXnwzxylLi/Ak
+         gsZu+cZqR4i0RsZJccRjEKKrB3qzHhcBZSuNWZYm9JzY54q8odoOZZ0SuNG0FPyQm4GI
+         QU9y9STyPiWr2G5GZCCi41AYuXdXEneJ+RMDu1QCotC+LyEwPXzqCJb0IxAxaLdlPE3x
+         BWLpcWemdOqF4fayyAsrVV+S29uAjExqIpfsGFssWumRBEsBxet9YBwPHtJVFelRApHs
+         3aSg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/pVuqfN8Emv4RpdKEZSKRX2L1k9+rZPN1/vJS3EdxHZd2TW8K3yjRjfGkqnyMXTBHw2e3+k1ldWczZdBHiKOpxzH6
+X-Gm-Message-State: AOJu0Ywu5zKNdBIg8c7krGVDLptpwu4zQGaXFq16hA6gT+r7RPqqmpOk
+	ehqMTr6I39cryOK96s6Hn1oXriWZyToLWarE8mBjx6w65d8gWMSlRRieLdwi/j8=
+X-Google-Smtp-Source: AGHT+IFPOiv0yb9NenXs61eeyl+FTzUia9VO7YGHEV3B4cyF+m7yIyCA+pulo20IEMCgPXGBKi/V/A==
+X-Received: by 2002:a05:6512:3d20:b0:52b:963d:277c with SMTP id 2adb3069b0e04-52b963d2864mr477027e87.33.1717329889449;
+        Sun, 02 Jun 2024 05:04:49 -0700 (PDT)
 Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52b8b56867fsm759398e87.44.2024.06.02.05.04.47
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52b8b56867fsm759398e87.44.2024.06.02.05.04.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 02 Jun 2024 05:04:48 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Sun, 02 Jun 2024 15:04:42 +0300
-Subject: [PATCH v3 02/12] dt-bindings: display: imx/ldb: drop ddc-i2c-bus
- property
+Date: Sun, 02 Jun 2024 15:04:43 +0300
+Subject: [PATCH v3 03/12] drm/imx: cleanup the imx-drm header
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +63,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240602-drm-imx-cleanup-v3-2-e549e2a43100@linaro.org>
+Message-Id: <20240602-drm-imx-cleanup-v3-3-e549e2a43100@linaro.org>
 References: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
 In-Reply-To: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
 To: Philipp Zabel <p.zabel@pengutronix.de>, 
@@ -82,41 +81,63 @@ Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org,
  linux-arm-kernel@lists.infradead.org, 
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1144;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1410;
  i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=3Nz5IHmPVWRwHFsw4a2c0uKZtmM9s7xJPi4nSL2SZJE=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmXF/cS9DynlRGL/q+FhwSBFBcGFVl4UCT9geOY
- UOhOg3+BfuJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZlxf3AAKCRCLPIo+Aiko
- 1dStB/9ur7o0ZT1BGSJZP85LBwNFyha0XzFbawRG0NkoKwEt/qs9Ss23XuP64+H0Cgyv/lVZjih
- EIYQvrftDLxdSueWB7OoHv+r853IRqJFX5s/L3FwrhUoWR4NxzSmt+dwf5i/uyMTsq00ulQE5cn
- bZEqh0UlBGShgZQEb8KmODQEGST0F5Y1hIct+TfuXs13DQYdkp02ie1uKCpXSeBRPqWG27zz+K4
- +1/03y1P7Nh61Dh/a0EX9L9v4YVhfWy/URMe2TNrE2Lt9GPP9AZjKCGZc6sPeAnsig6dVr6e1bd
- LvZnaiOQHvUe+FMP8pELJ2COAaNjL9n+YQrHqNflOdiRBK+b
+ bh=ZDw9je94QoyosO0168STtseYxQQ179pVpV6GiETvE+4=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmXF/c9m9P02PzAYv+Hvngg0pK/UDBTwhhmG1zr
+ 6YIzCrb9vGJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZlxf3AAKCRCLPIo+Aiko
+ 1fjzCACVJAOnM38OBMjesvSYWvhCttUEqRnqa1cwq4nlLesJDTMZ2OUTNhRtlYVXOyjfQdPCZoY
+ sFg6k3yFt2WWYJBGVbYAc3fuchDTgb0HEb98vxj41NM9rI7BNJSWHJlLr6XS7RGIK7LtSQ9vpcj
+ ESAFP3iCtlpbs+a0als6qX4eWKJZOLwj8uq1Lt4aQSHCSo9e4RyTzhFKMcp9PsbQWyhhWQLek1u
+ ABZyZLlg4UbyRcy0FlQAFgPnpEw6Y5h4FovYheyJU3SjH1hxE5Ve5sHgaXMJ8/nqFD0scxw+dML
+ s3IqxYlKtclaMDhG8+vC5UlutqEjdAQVKc/YRM0Y6WMrzg/l
 X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-The in-kernel DT files do not use ddc-i2c-bus property with the iMX LVDS
-Display Bridge. If in future a need arises to support such usecase, the
-panel-simple should be used, which is able to handle the DDC bus.
+Drop unused defines and obsolete prototypes from the imx-drm.h header.
 
-Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- Documentation/devicetree/bindings/display/imx/ldb.txt | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/imx/ipuv3/imx-drm.h | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/imx/ldb.txt b/Documentation/devicetree/bindings/display/imx/ldb.txt
-index 8e6e7d797943..03653a291b54 100644
---- a/Documentation/devicetree/bindings/display/imx/ldb.txt
-+++ b/Documentation/devicetree/bindings/display/imx/ldb.txt
-@@ -62,7 +62,6 @@ Required properties:
-    display-timings are used instead.
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm.h b/drivers/gpu/drm/imx/ipuv3/imx-drm.h
+index e721bebda2bd..e01f026047de 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-drm.h
++++ b/drivers/gpu/drm/imx/ipuv3/imx-drm.h
+@@ -3,14 +3,9 @@
+ #define _IMX_DRM_H_
  
- Optional properties (required if display-timings are used):
-- - ddc-i2c-bus: phandle of an I2C controller used for DDC EDID probing
-  - display-timings : A node that describes the display timings as defined in
-    Documentation/devicetree/bindings/display/panel/display-timing.txt.
-  - fsl,data-mapping : should be "spwg" or "jeida"
+ struct device_node;
+-struct drm_crtc;
+ struct drm_connector;
+ struct drm_device;
+-struct drm_display_mode;
+ struct drm_encoder;
+-struct drm_framebuffer;
+-struct drm_plane;
+-struct platform_device;
+ 
+ struct imx_crtc_state {
+ 	struct drm_crtc_state			base;
+@@ -24,16 +19,9 @@ static inline struct imx_crtc_state *to_imx_crtc_state(struct drm_crtc_state *s)
+ {
+ 	return container_of(s, struct imx_crtc_state, base);
+ }
+-int imx_drm_init_drm(struct platform_device *pdev,
+-		int preferred_bpp);
+-int imx_drm_exit_drm(void);
+ 
+ extern struct platform_driver ipu_drm_driver;
+ 
+-void imx_drm_mode_config_init(struct drm_device *drm);
+-
+-struct drm_gem_dma_object *imx_drm_fb_get_obj(struct drm_framebuffer *fb);
+-
+ int imx_drm_encoder_parse_of(struct drm_device *drm,
+ 	struct drm_encoder *encoder, struct device_node *np);
+ 
 
 -- 
 2.39.2
