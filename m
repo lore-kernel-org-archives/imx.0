@@ -1,95 +1,124 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45488B64B;
-	Sun,  2 Jun 2024 14:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77083481A7
+	for <imx@lists.linux.dev>; Sun,  2 Jun 2024 15:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717338704; cv=none; b=EmjDFPHi6rw8AQBLp54J8/qCI0es5XuLi6eZ8K1RrYnZeuVUCXusrTfhUZGd11H3ZTpp5HUh8X994nOdmxtceuiRzlbEdFfTWjBtL2Fe7CK7dJ6P8pAlWFF7T2E3aa4gjMqRg+J5XYxVxG6vVJAwSlMP529mDMInVg2eOf2vM4s=
+	t=1717343971; cv=none; b=C6eIkAw8BkjyzXdJyA8rnXh3uMpWmyE7CCwZ8MSIyuOPhzTeWMSwRlYB8diXrEkL0+fMJgbp3Ab3uN4vvL42sMqSifaLpY6cFyakgxJQxXYn+cTQlIv0b9Ywn/LVME5nfhZ7vngLnsAwA7U+8e491ddKh/1Zb/WXsLdDb0A/A6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717338704; c=relaxed/simple;
-	bh=CotbdNz9LHK9WkQCoFQqdqV3uDXLQoDBucayG0hD5MI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R8fc63TBmsoD2OUzedrwH9nPBC+VB4ykpas16UjICO6HDp8/AIkgMW1yvlKnzb5Siqe4gslhyRYaXZRfWHHq16kZvkhNAjg+GxbuuyLdWZLwZgBRfbnmAEclhy7+u2Tt5JlHo+5kiUIh7q1leVh35QuXe+V8+7G9kNzO3/hCR6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0kucGJq/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1717343971; c=relaxed/simple;
+	bh=NhRIo0Ra5R8aaKVasORj+WeRKMXMOqwqZC5Mr2clkok=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=UPjfjXWBurzB4Eqx7S0V8pS5du1i3yqlwNuILhJ9GpQgp+Sd7zpY0S64lm3tX72s11ZlrbP9rkxQ9C6nyQcIg/VdPe+D09wajZI+mnjuq1X6TDkAPIHbxLM4Uo7JI/H2oReV3JCMx8OPrM7PYOU8nlBaxAjNtkowH2PN723M3LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GOfhTNEq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0kucGJq/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RWGYwTysSvB1AzNEXTEGFJRM12Fxwodp6LFILw+wyVM=; b=0kucGJq/2zFxgbs7FdovI3m/Ll
-	zpIf8Am8tEyQf0bBEC4b/ONEn+HRO5v/03B53Vtpg/CpaGoCUtIFF9MOQawlK2wVuOselEUlDvOpg
-	II/vCIWvIBW04lULUZbw8wLLKiuxT+s6eHY9EQpNDcuOkeHmmod46dJTxqWNZ9DAG+1w=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sDmF5-00Gc71-T9; Sun, 02 Jun 2024 16:31:27 +0200
-Date: Sun, 2 Jun 2024 16:31:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-	andriy.shevchenko@linux.intel.com, u.kleine-koenig@pengutronix.de,
-	marcelo.schmitt@analog.com, gnstark@salutedevices.com,
-	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
- not busy
-Message-ID: <f5d537e2-b102-415f-bc22-c949fd859344@lunn.ch>
-References: <20240531142437.74831-1-eichest@gmail.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GOfhTNEq"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 452EwXLY031481;
+	Sun, 2 Jun 2024 15:59:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=P5kXeOJlMUyHG8oSeX/YqW
+	mTmy2VqA3LGlgqepAHGIo=; b=GOfhTNEqpw4rRO7aHKWd8+SNCSPAK02VM6npCV
+	FAq3bqhStDMGcpyuQS+f7CKulCJMcXCrnS43SZYMYlhfQEHCPmCvnGJ6uSnr9wGA
+	9xaXOs42I8gzKRYN70rdHPznXBCYkYZEbCYIxCoCyEk0UH/GZxAqGoWKFPuY9njj
+	MoaYzEXJqE9wXsbcpMXR8Am4kq2M4Gu/5GKg2vo5GNjBD1BRyz1vrc5wXGj7up1E
+	N5Ki0IoWsbZAzXe3u/mzVh2Asi29FYz1CJgdu9bVeQ/JBQ7MmYone3DM8w0g5p1A
+	UNspCZyWFkC3id957FMIfTMImMqq2xHTGFFUl7GPTIqEIZog==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yfw5t258d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 02 Jun 2024 15:59:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 452FxIb9020912
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 2 Jun 2024 15:59:18 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 2 Jun 2024
+ 08:59:18 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Sun, 2 Jun 2024 08:59:17 -0700
+Subject: [PATCH] clk: imx: add missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531142437.74831-1-eichest@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240602-md-clk-imx-v1-1-5c6d240f6fab@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIANSWXGYC/x3MwQrCMAyA4VcZORvoqlPxVWSHtM1ccK2SqBTG3
+ t3q8Tv8/wrGKmxw6VZQ/ojJozT0uw7iTOXGKKkZvPMHd3Qec8K43FFyxf3JTbFP54HCAC14Kk9
+ S/7Pr2BzIGINSifNvsUh5V8xkL1bYti/qHdp0ewAAAA==
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        "Michael
+ Turquette" <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, "Shawn
+ Guo" <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam
+	<festevam@gmail.com>
+CC: <linux-clk@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: oPbszWzkp-86_8BQxWEDpQG8g06bT1xJ
+X-Proofpoint-GUID: oPbszWzkp-86_8BQxWEDpQG8g06bT1xJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-06-02_10,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
+ spamscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1011 malwarescore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406020138
 
-On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> 
-> On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
-> the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
-> bus is idle. The imx i2c driver will call schedule when waiting for the
-> bus to become idle after switching to master mode. When the i2c
-> controller switches to master mode it pulls SCL and SDA low, if the
-> ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
-> clocking, it will timeout and ignore all signals until the next start
-> condition occurs (SCL and SDA low).
+make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/mxc-clk.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/clk-imxrt1050.o
 
-Does the I2C specification say anything about this behaviour, or is it
-specific to this device?
+Add the missing invocations of the MODULE_DESCRIPTION() macro.
 
-> This rfc tries to solve the problem by using a udelay for the first 10
-> ms before calling schedule. This reduces the chance that we will
-> reschedule. However, it is still theoretically possible for the problem
-> to occur. To properly solve the problem, we would also need to disable
-> interrupts during the transfer.
-> 
-> After some internal discussion, we see three possible solutions:
-> 1. Use udelay as shown in this rfc and also disable the interrupts
->    during the transfer. This would solve the problem but disable the
->    interrupts. Also, we would have to re-enable the interrupts if the
->    timeout is longer than 1ms (TBD).
-> 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
->    timeout, we try again.
-> 3. We use the suggested solution and accept that there is an edge case
->    where the timeout can happen.
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/clk/imx/clk-imxrt1050.c | 1 +
+ drivers/clk/imx/clk.c           | 1 +
+ 2 files changed, 2 insertions(+)
 
-2. has the advantage you fix it for any system with this device, not
-just those using an IMX. Once question would be, is such a retry safe
-in all conditions. Does the timeout happen before any non idempotent
-operation is performed?
+diff --git a/drivers/clk/imx/clk-imxrt1050.c b/drivers/clk/imx/clk-imxrt1050.c
+index 08d155feb035..efd1ac9d8eeb 100644
+--- a/drivers/clk/imx/clk-imxrt1050.c
++++ b/drivers/clk/imx/clk-imxrt1050.c
+@@ -176,6 +176,7 @@ static struct platform_driver imxrt1050_clk_driver = {
+ };
+ module_platform_driver(imxrt1050_clk_driver);
+ 
++MODULE_DESCRIPTION("NXP i.MX RT1050 clock driver");
+ MODULE_LICENSE("Dual BSD/GPL");
+ MODULE_AUTHOR("Jesse Taube <Mr.Bossman075@gmail.com>");
+ MODULE_AUTHOR("Giulio Benetti <giulio.benetti@benettiengineering.com>");
+diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+index e35496af5ceb..df83bd939492 100644
+--- a/drivers/clk/imx/clk.c
++++ b/drivers/clk/imx/clk.c
+@@ -226,4 +226,5 @@ static int __init imx_clk_disable_uart(void)
+ late_initcall_sync(imx_clk_disable_uart);
+ #endif
+ 
++MODULE_DESCRIPTION("Common clock support for NXP i.MX SoC family");
+ MODULE_LICENSE("GPL v2");
 
-If the I2C specification allows this behaviour, maybe a more generic
-solution is needed, since it could affect more devices?
+---
+base-commit: 83814698cf48ce3aadc5d88a3f577f04482ff92a
+change-id: 20240602-md-clk-imx-370fc1d85ab5
 
-	Andrew
