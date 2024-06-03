@@ -1,42 +1,45 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE512566
-	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 02:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511397E8
+	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 02:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717382454; cv=none; b=pYQl5s8v1973aptxWTwA+e0d8+7JucUS7reT3Vq6qO0FbwqMAmfVTtoTUpa69cIkwi8b/VY8fHGBbNzK8c8ZBFOJogHlUc1IWFhccUQagjKRqEbL0x0Ex/ynOUGphjjvON0GrFNzM744bMGXXfYQ7WxoWTrmZUXsXWku35mlr8A=
+	t=1717383099; cv=none; b=t/A5xOsZoG1+cF8CSwFiAhc1Bcs3Hf1JxwigJ2xcLeNScH5jbPsfhJMaFYo57uFco98YRfUvthg+QUUdrcKBxqc0M+4iadAhhzvHQ95insMym4HE+ypG3EHgI0kG1IatoPaG9xzRst85BDY8Vwxm5jfkxtmb/puWw1FE6kidt7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717382454; c=relaxed/simple;
-	bh=f/LNo8wZ1TxjZ6NHh1Ki8vmUnMpxjFitkOVr7lruCUw=;
+	s=arc-20240116; t=1717383099; c=relaxed/simple;
+	bh=NiytJ2AMYvegxaHKEXtaqWHe+4LqIoAAvBf48/InMtc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ItxBVj0188zpuFKhImuFAiYGwvpzmIDn6tGSCMlgoWcnNwpS6PIKTlaCFbePvIsBuarvUBnOxK5Zl8Y/BZ+Q8q2UUknPJ8hhfReJELBw1glOaDKFucJO426wEN1iiIjPIGQc/duUMfybpMMiblAknA4o+GGD3bJydn/Lo49Zb7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=YkomyI/n; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tiyyd62C1HKubboPFy8MnbSipfFXspxSL5wfdgWSliI8kREYj/fqz6cELshrzBNGMk6aaf8mcdJdzdowjGHxS+4PInnraMmipo4nSExsDSL2X72/GyK7k/MDKO0/JCBALvSAG2hz6Yr1XyKYXXucLNAk0DatB7KRg/bvXD/h5I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hNL/uz0l; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="YkomyI/n"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hNL/uz0l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=HQ5RWTQSwYYSKe8sFZkPkiko6uKlUYaB9AsbqDpjXYM=;
-	b=YkomyI/nMAH6avSV5SU/KY8r3qJ2N0C1lM8TcoQGfdwQcOo8sB+Qvq2EoU8/I2
-	A/KYvItF6btX84Wd7j5e2gHu0jzi8a+oVhk2SYSLPyZIcC6Uva7mySFRbPP19Pfs
-	1l8pC0r/vDNv/feIOWip2DfqIQJQWcRHXBC2cMSLUvGfs=
+	Content-Type; bh=DYwujD+kR84TKzaju2fXFZQwbc6+rq3fIhZZ+IH4RxQ=;
+	b=hNL/uz0lTLcW0fj3f3834Wn/lAEWEiXics/TiypTkmOf0aAZcSgaAUknSiatXt
+	mtgRdnXaDTnjUJ9919cQoMnd9ie9pwEJ+za5BFsedm10HneqEkZ3El1TsTws1TID
+	oHSwc9VoAKeg8PFQOF1cYgWcktZEbJScgrGLqLbUoVmxU=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrACH7xgULV1mDyXtBw--.58598S3;
-	Mon, 03 Jun 2024 10:40:22 +0800 (CST)
-Date: Mon, 3 Jun 2024 10:40:20 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrACHZu9rL11mpM4xBw--.38460S3;
+	Mon, 03 Jun 2024 10:50:20 +0800 (CST)
+Date: Mon, 3 Jun 2024 10:50:19 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Christian Gmeiner <christian.gmeiner@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Esben Haabendal <esben@geanix.com>
+Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Christian Gmeiner <cgmeiner@igalia.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8qm: Add GPU nodes
-Message-ID: <Zl0tFA0vUoDBxLbN@dragon>
-References: <20240503212249.3102288-1-christian.gmeiner@gmail.com>
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
+Message-ID: <Zl0va6yv2VY4ky0l@dragon>
+References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
+ <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,21 +48,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240503212249.3102288-1-christian.gmeiner@gmail.com>
-X-CM-TRANSID:C1UQrACH7xgULV1mDyXtBw--.58598S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3oGQUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDRbyZVszXjZcnQAAsN
+In-Reply-To: <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
+X-CM-TRANSID:ClUQrACHZu9rL11mpM4xBw--.38460S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrCFWxur43GF45Wrykur1fCrg_yoWxWFcE9F
+	Wkta1kAryDCw42qr1kKF43Xryvka17WF9Y9ryqqry5Ka95Zwn7AFn5Jw45Cwn8tw4rW3sr
+	Z3ZYqrn8tryavjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0QdbUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQzyZVsVCm9ZPwAAsT
 
-On Fri, May 03, 2024 at 11:22:48PM +0200, Christian Gmeiner wrote:
-> From: Christian Gmeiner <cgmeiner@igalia.com>
+On Mon, May 06, 2024 at 12:23:53PM +0200, Esben Haabendal wrote:
+> Making pinctrl drivers and subsequently the pinctrl framework
+> user-controllable, allows building a kernel without this.
+> While in many (most) cases, this could make the system unbootable, it
+> does allow building smaller kernels for those situations where picntrl
+> is not needed.
 > 
-> Add the DT node for the GPU core found on the i.MX8QM.
+> One such situation is when building a kernel for NXP LS1021A systems,
+> which does not have run-time controllable pinctrl, so pinctrl framework
+> and drivers are 100% dead-weight.
 > 
-> etnaviv-gpu 53100000.gpu: model: GC7000, revision: 6009
-> [drm] Initialized etnaviv 1.4.0 20151214 for etnaviv on minor 0
 > 
-> Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+> Signed-off-by: Esben Haabendal <esben@geanix.com>
 
-Applied, thanks!
+Acked-by: Shawn Guo <shawnguo@kernel.org>
 
