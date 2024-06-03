@@ -1,216 +1,134 @@
-Received: from mail-108-mta211.mxroute.com (mail-108-mta211.mxroute.com [136.175.108.211])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5473938DF9
-	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 07:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93F74206C
+	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 07:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717398447; cv=none; b=haOrhCYkxOOiMQxndmg1wdowfXq2GQ2ucNtkFyabHhP5z0bghfW2n8MPNpleUNzJf21DOgAKncMCDUgcSivm6VI0WMEazfko/2QJwHEpt1gOWwdOeEyJlr22SzM/xfdTYtYSs+tQ15/rCyacd+8zZ5teCKlu3PKTtEX4rwhHrz8=
+	t=1717400104; cv=none; b=QWn7WAWRE8rykNnnOePXLPvIq+Ytqd62P31C6QZFcnWA0WV4EtEYCmTU3KIxd7Z4ZTgzyb/84ZAf5/kNTik/A6Ds8AXubs1QOly9yo5Qm8wIcQdITZUm6YSF4I5vAcbGFXiiVrlbLFMfdhCCiH71jqR5PY+pt2T93Km+MJYQY1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717398447; c=relaxed/simple;
-	bh=XRhXaAZqTdGwXeKaRUIdWhEeuAznnbq0x6lIVejZ7IY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V0l//67LXv9aWNsfcxEonjIOK42Al7+lAm7B/2yqwDgvM0J2H3oqOwjiFlKaDP1ia47Unf/HYdMZfiAciqtDV7VQNH7glEahYnu0ZiMqHDjAg0Vp50mDpYtv4ALDcioqJ+2Y38TOJDoua12WSNpW2B2N/TqxSytUarRuA665/YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=kKYZMHNd; arc=none smtp.client-ip=136.175.108.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1717400104; c=relaxed/simple;
+	bh=NKByOjzEgPFF13Q0AdwzXS9EvRu3omSeUKK5hLUrkj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2RmTlQ/fmdZGUXWJI+tpiLK+oK6VKNefbXeus1hyjQ8pSWv3nJTiQBcLWt9bfGnxSV2qrn1QDCdUK1GvYpn164qPOMc/gBpocAOOpMKAVStwnWFhcu9YwTBj5Sk4fL657LS9f6syfsnJt1i+/+K2cMPVPbC0OQRw5gAMaw3cF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ekrgQ6Cg; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="kKYZMHNd"
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta211.mxroute.com (ZoneMTA) with ESMTPSA id 18fdcec88d2000e76b.00a
- for <imx@lists.linux.dev>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Mon, 03 Jun 2024 07:07:20 +0000
-X-Zone-Loop: f813673492c271064527ebc4c6f9c36c1362762fdce5
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=weWzdWj0l/fwOMs86+c7cQSxgtwCposJWO78UGw648E=; b=kKYZMHNdrD4wlerbYcGb0yTSfJ
-	BTBS61eX3J3u5NfIWygjOkfDmyexiA1J0q5jVdkblmVlN5GKJKMdlIkCfA7yWkR5PO2j4InnnDpw7
-	RiQMEn+yaM9/R1Jn2c0OXxfdQ/SOpQMfnY1VB7nNQ8ZczFkzuiC4/Dxjls+0t886sTgnLi01rszCY
-	umS3rMCOM2Lb/lfJPW5AycWBUfhw4tuTa5zFj1pFuwCmg/6h7QAVIOx2fkBX6E5ou3UNDA9nX7UVl
-	qOV1Jqn2y3lpGsfpA9oKXnGs+JJ1bK6pRZ+COD18LF68ojffeP9se2N34uovy5w4wxxnR+Zt1VZTK
-	EeBo2EVw==;
-Message-ID: <a8f6092e-0df0-4a31-8417-0d94864f20b2@luigi311.com>
-Date: Mon, 3 Jun 2024 01:07:14 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ekrgQ6Cg"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42121d28664so34622315e9.2
+        for <imx@lists.linux.dev>; Mon, 03 Jun 2024 00:35:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717400101; x=1718004901; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dicgZOJvKn5T8RaFpyT/8hZCmr01MJ9Sp/DfGcqf1B0=;
+        b=ekrgQ6CgS/ldS41cFXaKUOfOk5KZjj1OJ/W5d22nWRL3jlgwjfOm8K/E+E4BNBi3X3
+         7nS6CkbyVcIC1CdhmOP0yhpM8dPkPOc6Wo2tehsR82gbGBoMJa4NDKjrUMQ8bcPh1ou/
+         STR59qf7oR2qjDEsFYSC5lnaIWoV0tHD2YaGiF11ZHwIXPLO/Zy1X8G+wy1xXSNFscPW
+         6TpP8HTt+j8mjqqJ5C++MbYBGh+Zgo3tkkYv6Irb6m3vtxJYisIFz0uIpVXuJwgRUpnh
+         8njjwS3Rx6IWlxcnD8UcFMIXN2U03m7DHkdFRwfexE06kVh/l4QY9UirG2eZVaWLljc7
+         XZ/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717400101; x=1718004901;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dicgZOJvKn5T8RaFpyT/8hZCmr01MJ9Sp/DfGcqf1B0=;
+        b=oazb2FtRpBf8v7Rh2lo7/xksEbzdJNdefEU8/UeGwFFNufnuVB0rw4b04XLddszzfY
+         aKSuIZwa0GG9qK5ILfP4v2+pNtmoxnvOcZRX8orTwjzxL477pEv9IN34CJk0znLi6IDc
+         mbLeE/nN+kwiOBUWko4B90hg9oZkF5ksFoozFsqagpNDRJ70fyNPcL1kHHVcwLSf6XzG
+         nEefQ5MtpE82CiOM/0+gBk0h1RGYCGTI9yLGB2xjI3c82mwW4SN+ogzfP3MJvXzHkbDD
+         wyUEURLmfoUjUJC0izJVcdsxeCSU3fooo3zhNJujRaZ1EnZMdONBFlvnNfQI6+Aqd8z5
+         aUGw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+MowAPFA+MJPF+hpcSG4QLZF8LZrkyOfTk526GXrqgpJ/xvk96m5c0Kos9oOAnMsgzPXrpAI+auf06PIzHb11BJ7/
+X-Gm-Message-State: AOJu0Yw1v9vwSYzQJ6O7JXc7VZQpfB56S/PX5swiCu3AycoPv8zR4X3M
+	dF3UbeGX9ncanQcx78lJAyXBdbVldfL5tywb/nMuvgl3Imjs1Su0
+X-Google-Smtp-Source: AGHT+IEEgeFVnXmG6lbJKYsvkxGXa9tP597wtFh2250QbRrm/he4vpWuR6MbekVDIbwfm4OL4KByBw==
+X-Received: by 2002:a05:600c:45c3:b0:420:171c:3d70 with SMTP id 5b1f17b1804b1-4212e05daa7mr70827895e9.16.1717400100851;
+        Mon, 03 Jun 2024 00:35:00 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72:0:2b03:375:843f:be9d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212b8a5658sm107324345e9.34.2024.06.03.00.34.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jun 2024 00:35:00 -0700 (PDT)
+Date: Mon, 3 Jun 2024 09:34:58 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
+	andriy.shevchenko@linux.intel.com, u.kleine-koenig@pengutronix.de,
+	marcelo.schmitt@analog.com, gnstark@salutedevices.com,
+	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
+ not busy
+Message-ID: <Zl1yIsE6f5JJY89S@eichest-laptop>
+References: <20240531142437.74831-1-eichest@gmail.com>
+ <f5d537e2-b102-415f-bc22-c949fd859344@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/23] imx258 improvement series
-To: linux-media@vger.kernel.org
-Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
- mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, sakari.ailus@linux.intel.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- pavel@ucw.cz, phone-devel@vger.kernel.org
-References: <20240602201345.328737-1-git@luigi311.com>
-Content-Language: en-US
-From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <20240602201345.328737-1-git@luigi311.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: git@luigi311.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f5d537e2-b102-415f-bc22-c949fd859344@lunn.ch>
 
-On 6/2/24 14:13, git@luigi311.com wrote:
-> From: Luis Garcia <git@luigi311.com>
+On Sun, Jun 02, 2024 at 04:31:27PM +0200, Andrew Lunn wrote:
+> On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
+> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > 
+> > On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
+> > the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
+> > bus is idle. The imx i2c driver will call schedule when waiting for the
+> > bus to become idle after switching to master mode. When the i2c
+> > controller switches to master mode it pulls SCL and SDA low, if the
+> > ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
+> > clocking, it will timeout and ignore all signals until the next start
+> > condition occurs (SCL and SDA low).
 > 
-> v6:
->   - Drop powerdown-gpio patches
->     - per Sakari Ailus request as it is not part or 
->       not used by the sensor
->     - I tested without it and PPP still works
->     - Dave mentioned its not part of the datasheet 
->       for the imx258
->     - Ondrej Jirman also tested it and it doesnt seem
->       to be needed
-> 
-> 
-> v5:
->   - Changed ownership of a few patches to Ondrej Jirman
->   - Implement feedback from Tommy Merciai
->     - media: i2c: imx258: Add support for reset gpio
->     - media: i2c: imx258: Use v4l2_link_freq_to_bitmap helper
->     - media: i2c: imx258: Convert to new CCI register access helpers
-> 
-> v4:
->   - Swapped out the use macro patch for a patch that uses the new
->     CCI register access helpers per Sakari Ailus
->   - Fix order of reset and powerdown gpio before disable regulators
->   - Fix formating of all patches
->   
->   - Implemented feedback from Pavel Machek
->     - media: i2c: imx258: Follow normal V4L2 behaviours
->     - media: i2c: imx258: Allow configuration of clock
->   - Implemented feedback from Sakari Ailus
->     - media: i2c: imx258: Add support for powerdown gpio
-> 
-> 
-> v3 Luis Garcia
-> 
-> - Add Use v4l2_link_freq_to_bitmap helper patch per Sakari Ailus
-> - Separate dt-bindings for powerdown per Rob Herring
-> - Fix dt-bindings for imx258.yaml
-> - Fix sign offs per Dang Huynh 
-> - Fix versioning per Conor Dooley and Kieran Bingham
-> - Use scripts to validate and fix patches
-> - Implemented feedback from Sakari Ailus
->   - media: i2c: imx258: Add support for 24MHz clock
->   - media: i2c: imx258: Add support for running on 2 CSI data lanes
-> 
-> - Implemented feedback from Rob Herring
->   - dt-bindings: media: imx258: Add alternate compatible strings
-> 
-> 
-> 
-> v2 Luis Garcia
-> 
-> - Add use macros patch 
-> - Add support for powerdown gpio patch
-> - Add support for reset gpio patch
-> - Dropped Add support for long exposure modes patch
-> - Implemented feedback from Jacopo Mondi
->   - media: i2c: imx258: Add regulator control
->   - media: i2c: imx258: Add support for 24MHz clock
->   - media: i2c: imx258: Add support for running on 2 CSI data lanes
->   - media: i2c: imx258: Add get_selection for pixel array information
->   - media: i2c: imx258: Issue reset before starting streaming
->   - media: i2c: imx258: Set pixel_rate range to the same as the value
->   - dt-bindings: media: imx258: Add alternate compatible strings
->   - media: i2c: imx258: Change register settings for variants of the sensor
->   - media: i2c: imx258: Make HFLIP and VFLIP controls writable
-> 
-> This adds a few more patches and drops one. The long exposure mode patch
-> was dropped due to the bug that Jacopo found. The powerdown and reset gpio
-> patches were added as that fixes support for the Pinephone Pro, without
-> them the sensor doesn't initialize correctly.
-> 
-> Tested on a Pinephone Pro by forcing 24 mhz clock. The two lower 
-> resolutions had some artifacts but that is expected as more changes are 
-> required to fix them for the Pinephone Pro specifically, kept all 
-> registers the same as Dave's original patch since that works on dedicated
-> imx258 hardware and the artifacts are PPP specific so it shouldn't 
-> be a regression.
-> 
-> 
-> 
-> v1 Dave Stevenson
-> 
-> This is a set of patches for imx258 that allow it to work with alternate
-> clock frequencies, over either 2 or 4 lanes, and generally adding
-> flexibility to the driver.
-> 
-> Tested with an IMX258 module from Soho Enterprises that has a 24MHz
-> oscillator. Both 2 and 4 lane configurations work with correct link
-> frequencies and pixel rates.
-> 
-> Jacopo has tested on a PinePhone Pro which has an ~19.2MHz clock fed from
-> the SoC, He confirms that the two lower resolution modes work, but not the
-> full res mode. Comparing to the BSP it looks like they have some weird
-> clock configuration in the 4208x3120 mode (nominally 1224Mb/s/lane instead
-> of 1267). As it has never previously worked directly with the mainline
-> driver this isn't a regression but may indicate that there is a need for
-> support of additional link frequencies in the future.
-> 
-> The last patch that makes HFLIP and VFLIP configurable may be contentious
-> as I've retained the default configuration of inverted from the original
-> driver. I know this was discussed recently, but I can't recall the final
-> outcome.
-> 
-> I am relying on someone from Intel testing this out, as correcting the
-> cropping and supporting flips has changed the Bayer order. Seeing as this
-> is all above board in V4L2 terms I really hope that the layers above it
-> behave themselves.
-> 
-> Dave Stevenson (20):
->   media: i2c: imx258: Remove unused defines
->   media: i2c: imx258: Make image geometry meet sensor requirements
->   media: i2c: imx258: Disable digital cropping on binned modes
->   media: i2c: imx258: Remove redundant I2C writes.
->   media: i2c: imx258: Add regulator control
->   media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
->   media: i2c: imx258: Split out common registers from the mode based
->     ones
->   media: i2c: imx258: Add support for 24MHz clock
->   media: i2c: imx258: Add support for running on 2 CSI data lanes
->   media: i2c: imx258: Follow normal V4L2 behaviours for clipping
->     exposure
->   media: i2c: imx258: Add get_selection for pixel array information
->   media: i2c: imx258: Allow configuration of clock lane behaviour
->   media: i2c: imx258: Correct max FRM_LENGTH_LINES value
->   media: i2c: imx258: Issue reset before starting streaming
->   media: i2c: imx258: Set pixel_rate range to the same as the value
->   media: i2c: imx258: Support faster pixel rate on binned modes
->   dt-bindings: media: imx258: Rename to include vendor prefix
->   dt-bindings: media: imx258: Add alternate compatible strings
->   media: i2c: imx258: Change register settings for variants of the
->     sensor
->   media: i2c: imx258: Make HFLIP and VFLIP controls writable
-> 
-> Luis Garcia (2):
->   media: i2c: imx258: Use v4l2_link_freq_to_bitmap helper
->   media: i2c: imx258: Convert to new CCI register access helpers
-> 
-> Ondrej Jirman (1):
->   media: i2c: imx258: Add support for reset gpio
-> 
->  .../i2c/{imx258.yaml => sony,imx258.yaml}     |   11 +-
->  MAINTAINERS                                   |    2 +-
->  drivers/media/i2c/Kconfig                     |    1 +
->  drivers/media/i2c/imx258.c                    | 1440 ++++++++++-------
->  4 files changed, 835 insertions(+), 619 deletions(-)
->  rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (88%)
+> Does the I2C specification say anything about this behaviour, or is it
+> specific to this device?
 > 
 
-Looks like Sakari has took it forward while i was gone so v6 isnt needed anymore
-since they implemented the changes on their side 
-https://lore.kernel.org/all/ZleJV5YSl92-13CT@valkosipuli.retiisi.eu/
+The timeouting mechanism is normally used in SMBus mode. However, for
+this specific device they still call it I2C which is a bit confusing.
+The difference between I2C and SMBus is that SMBus has a timeout while
+the I2C uses a recovery mechanism. Besides that the two protocols are
+identical.
+
+> > This rfc tries to solve the problem by using a udelay for the first 10
+> > ms before calling schedule. This reduces the chance that we will
+> > reschedule. However, it is still theoretically possible for the problem
+> > to occur. To properly solve the problem, we would also need to disable
+> > interrupts during the transfer.
+> > 
+> > After some internal discussion, we see three possible solutions:
+> > 1. Use udelay as shown in this rfc and also disable the interrupts
+> >    during the transfer. This would solve the problem but disable the
+> >    interrupts. Also, we would have to re-enable the interrupts if the
+> >    timeout is longer than 1ms (TBD).
+> > 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
+> >    timeout, we try again.
+> > 3. We use the suggested solution and accept that there is an edge case
+> >    where the timeout can happen.
+> 
+> 2. has the advantage you fix it for any system with this device, not
+> just those using an IMX. Once question would be, is such a retry safe
+> in all conditions. Does the timeout happen before any non idempotent
+> operation is performed?
+> 
+> If the I2C specification allows this behaviour, maybe a more generic
+> solution is needed, since it could affect more devices?
+
+Maybe I could add a smbus_xfer function to the i2c driver and then
+change the ti-ads1015 driver to use the smbus_xfer function instead of
+i2c. However, I would still have to disable preemption while the SMBus
+transfer is happening which concerns me a bit.
+
+Regards,
+Stefan
