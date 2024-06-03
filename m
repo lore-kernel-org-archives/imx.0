@@ -1,131 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483F31366;
-	Mon,  3 Jun 2024 17:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF7A137764;
+	Mon,  3 Jun 2024 17:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717435165; cv=none; b=d3YA+eOQuDCQ2a3Kg4EjCZeV0DGMF2QFJRLtdmFEumhS4Wdys8xXPE0ppTym/WfiNZjubL/K1yHm80JfsEl+FZ8Ol0nE0jSf1ojSVFWTrQnNwPc3QUhO/0xu1YfgM5GU4btl5VMWOYta0x4tjdJbuOoysnw6S8WnxACzbk+p9Eo=
+	t=1717436098; cv=none; b=FCfTHfEDddyBQEn1WhZnWryYKueBt1KPLCbSY+3BereApdu77pBzVVv3L5aKUkaPr3fKJMD3vRAG3zd7Q5LLW+b2reG/syj4QAVUYt0dpSeiVT1CjjEJNZhQWruUVcdAapozOdsZbudnrk7PsEiue9rH2ggaKjvft+KM0at6uXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717435165; c=relaxed/simple;
-	bh=o+oMkH1I/WbYDZBa3qcXo8pOhVZODTPPaT5jeLn7qIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=XfUIR+Wknw80lfl4SkipQrYQBEgaDUMnMwTNzPJBmFhG42xr5s92WImA9/5Z3q/ILqc02uGEAJhudIUEkhi0dL+IYTH4fYb5nw2XjbeXTc2CzCgqN2wHglQrtOrXnsB7B+bSu5ghmlIeyaUaSoK/wyAB6O3vmUjlSXppShj4xco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhwFWKSS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717436098; c=relaxed/simple;
+	bh=DKulNpWMB5g4h3LO0UnPAP8vpdAsv+ZuVpLPHeUsdwQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=M5XH+hIln6mlA4WGV/JhOO/EonsIduLgZHDrUlZAeQ7PmkPS4batJRkkVZEsNCt64qWewd77f3Nsn0WvmmDYM/IIm/SLCqu9RodrycAo2f5o+S8DJtw/YaN54OgdCj4NXt+ct9P12fTPu41eIuKs77zxP/F7AcOa+AxicHiMpgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=arwB9k2c; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhwFWKSS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6583AC2BD10;
-	Mon,  3 Jun 2024 17:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717435163;
-	bh=o+oMkH1I/WbYDZBa3qcXo8pOhVZODTPPaT5jeLn7qIU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=hhwFWKSSd4vV2hTYoNib68G4aE53A9hjm/qJTppKcaTVXqZ3K4F8FnfKdI32g6R3a
-	 luQD8Z1RYHtLwXs/M4NQm1fJAZTRopSgdO0Qd1pfmpGSIjWtjcPMnzrzxaKgxM9H33
-	 CxTXWuL1hlBkHGtPKRVAcKxUyGElF8oR2vHTLhHFWTJ20+qfZJwH52g8tNJs1qQkOX
-	 d56VBM/qpQ/5gtIL6YY7XK+4+BS34uQx8Rw3B2QRMGeObdl9V/+S8TC/qp9mJY6MtV
-	 CdUAFpYDItJ8i6wpM/BKPyNsSLCDzPpJ38jiex4vFTOBdxidxBBuNCg4W4RS3deaJt
-	 NFjppavpkC5Jg==
-Date: Mon, 3 Jun 2024 12:19:21 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support
- MSI ITS and IOMMU for i.MX95
-Message-ID: <20240603171921.GA685838@bhelgaas>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="arwB9k2c"
+Received: from smtpclient.apple (d66-183-91-182.bchsia.telus.net [66.183.91.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4684920681D5;
+	Mon,  3 Jun 2024 10:25:13 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4684920681D5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1717435514;
+	bh=4DfOU8aQl0aDoujS+l1W8I9cPbB9Sd5aNNyJFDGp/QQ=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=arwB9k2cp5qmOpH04JZQJkpaQ68dKr6NHq6/nWjIeKTEglSLJZbHneTkxRo0iYye3
+	 dopPLk66Mp6Cqqtct/3LWOtVyWSXCVY5VMtnmDbdTLbXrzM1H6t1A8KCeQ5Sp+gzGS
+	 Acr7rY4qAUIDkO+vSD/92kHIH7AgZovgYBJ1BnFc=
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <974f1d23-aba8-432e-85b5-0e4b1c2005e7@arm.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
+From: Allen Pais <apais@linux.microsoft.com>
+In-Reply-To: <7e618af0-51a7-4941-a386-0ac68c66d358@microchip.com>
+Date: Mon, 3 Jun 2024 10:25:02 -0700
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Tejun Heo <tj@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Vinod Koul <vkoul@kernel.org>,
+ marcan@marcan.st,
+ sven@svenpeter.dev,
+ florian.fainelli@broadcom.com,
+ Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>,
+ Paul Cercueil <paul@crapouillou.net>,
+ Eugeniy.Paltsev@synopsys.com,
+ manivannan.sadhasivam@linaro.org,
+ Viresh Kumar <vireshk@kernel.org>,
+ Frank.Li@nxp.com,
+ Leo Li <leoyang.li@nxp.com>,
+ zw@zh-kernel.org,
+ Zhou Wang <wangzhou1@hisilicon.com>,
+ haijie1@huawei.com,
+ Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Sean Wang <sean.wang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ angelogioacchino.delregno@collabora.com,
+ =?utf-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ andersson@kernel.org,
+ konrad.dybcio@linaro.org,
+ Orson Zhai <orsonzhai@gmail.com>,
+ baolin.wang@linux.alibaba.com,
+ Lyra Zhang <zhang.lyra@gmail.com>,
+ Patrice CHOTARD <patrice.chotard@foss.st.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Chen-Yu Tsai <wens@csie.org>,
+ =?utf-8?Q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>,
+ peter.ujfalusi@gmail.com,
+ kys@microsoft.com,
+ haiyangz@microsoft.com,
+ wei.liu@kernel.org,
+ decui@microsoft.com,
+ jassisinghbrar@gmail.com,
+ mchehab@kernel.org,
+ maintainers@bluecherrydvr.com,
+ ulf.hansson@linaro.org,
+ manuel.lauss@gmail.com,
+ mirq-linux@rere.qmqm.pl,
+ jh80.chung@samsung.com,
+ oakad@yahoo.com,
+ hayashi.kunihiko@socionext.com,
+ mhiramat@kernel.org,
+ brucechang@via.com.tw,
+ HaraldWelte@viatech.com,
+ pierre@ossman.eu,
+ duncan.sands@free.fr,
+ stern@rowland.harvard.edu,
+ oneukum@suse.com,
+ openipmi-developer@lists.sourceforge.net,
+ dmaengine@vger.kernel.org,
+ asahi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
+ linux-rpi-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org,
+ imx@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-mediatek@lists.infradead.org,
+ linux-actions@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ linux-sunxi@lists.linux.dev,
+ linux-tegra@vger.kernel.org,
+ linux-hyperv@vger.kernel.org,
+ linux-rdma@vger.kernel.org,
+ linux-media@vger.kernel.org,
+ linux-mmc@vger.kernel.org,
+ linux-omap@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <61F36002-C765-410C-8EF9-203593C269FF@linux.microsoft.com>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-10-apais@linux.microsoft.com>
+ <7e618af0-51a7-4941-a386-0ac68c66d358@microchip.com>
+To: Aubin Constans <aubin.constans@microchip.com>
+X-Mailer: Apple Mail (2.3774.600.62)
 
-On Fri, May 31, 2024 at 03:58:49PM +0100, Robin Murphy wrote:
-> On 2024-05-31 12:08 am, Bjorn Helgaas wrote:
-> > [+cc IOMMU and pcie-apple.c folks for comment]
-> > 
-> > On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
-> > > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
-> > > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
-> > > This involves examining the msi-map and smmu-map to ensure consistent
-> > > mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
-> > > registers are configured. In the absence of an msi-map, the built-in MSI
-> > > controller is utilized as a fallback.
-> > > 
-> > > Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
-> > > upon the appearance of a new PCI device and when the bus is an iMX6 PCI
-> > > controller. This function configures the correct LUT based on Device Tree
-> > > Settings (DTS).
-> > 
-> > This scheme is pretty similar to apple_pcie_bus_notifier().  If we
-> > have to do this, I wish it were *more* similar, i.e., copy the
-> > function names, bitmap tracking, code structure, etc.
-> > 
-> > I don't really know how stream IDs work, but I assume they are used on
-> > most or all arm64 platforms, so I'm a little surprised that of all the
-> > PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
-> > this notifier.
-> 
-> This is one of those things that's mostly at the mercy of the PCIe root
-> complex implementation. Typically the SMMU StreamID and/or GIC ITS DeviceID
-> is derived directly from the PCI RID, sometimes with additional high-order
-> bits hard-wired to disambiguate PCI segments. I believe this RID-translation
-> LUT is a particular feature of the the Synopsys IP - I know there's also one
-> on the NXP Layerscape platforms, but on those it's programmed by the
-> bootloader, which also generates the appropriate "msi-map" and "iommu-map"
-> properties to match. Ideally that's what i.MX should do as well, but hey.
 
-Maybe this RID-translation is a feature of i.MX, not of Synopsys?  I
-see that the LUT CSR accesses use IMX95_* definitions.
 
-> If it's really necessary to do this programming from Linux, then there's
-> still no point in it being dynamic - the mappings cannot ever change, since
-> the rest of the kernel believes that what the DT said at boot time was
-> already a property of the hardware. It would be a lot more logical, and
-> likely simpler, for the driver to just read the relevant map property and
-> program the entire LUT to match, all in one go at controller probe time.
-> Rather like what's already commonly done with the parsing of "dma-ranges" to
-> program address-translation LUTs for inbound windows.
-> 
-> Plus that would also give a chance of safely dealing with bad DTs specifying
-> invalid ID mappings (by refusing to probe at all). As it is, returning an
-> error from a child's BUS_NOTIFY_ADD_DEVICE does nothing except prevent any
-> further notifiers from running at that point - the device will still be
-> added, allowed to bind a driver, and able to start sending DMA/MSI traffic
-> without the controller being correctly programmed, which at best won't work
-> and at worst may break the whole system.
+> On Jun 3, 2024, at 5:38=E2=80=AFAM, Aubin Constans =
+<aubin.constans@microchip.com> wrote:
+>=20
+> On 27/03/2024 17:03, Allen Pais wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you =
+know the content is safe
+>> The only generic interface to execute asynchronously in the BH =
+context is
+>> tasklet; however, it's marked deprecated and has some design flaws. =
+To
+>> replace tasklets, BH workqueue support was recently added. A BH =
+workqueue
+>> behaves similarly to regular workqueues except that the queued work =
+items
+>> are executed in the BH context.
+>> This patch converts drivers/infiniband/* from tasklet to BH =
+workqueue.
+>> Based on the work done by Tejun Heo <tj@kernel.org>
+>> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git =
+for-6.10
+>> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+>> ---
+>>  drivers/mmc/host/atmel-mci.c                  | 35 ++++-----
+> [...]
+>=20
+> For atmel-mci, judging from a few simple tests, performance is =
+preserved.
+> E.g. writing to a SD Card on the SAMA5D3-Xplained board:
+> time dd if=3D/dev/zero of=3D/opt/_del_me bs=3D4k count=3D64k
+>=20
+>     Base 6.9.0 : 0.07user 5.05system 0:18.92elapsed 27%CPU
+>  Patched 6.9.0+: 0.12user 4.92system 0:18.76elapsed 26%CPU
+>=20
+> However, please resolve what checkpatch is complaining about:
+> scripts/checkpatch.pl --strict =
+PATCH-9-9-mmc-Convert-from-tasklet-to-BH-workqueue.mbox
+>=20
+>  WARNING: please, no space before tabs
+>  #72: FILE: drivers/mmc/host/atmel-mci.c:367:
+>  +^Istruct work_struct ^Iwork;$
+>=20
+> Same as discussions on the USB patch[1] and others in this series, I =
+am also in favour of "workqueue" or similar in the comments, rather than =
+just "work".
 
-Frank, could the imx LUT be programmed once at boot-time instead of at
-device-add time?  I'm guessing maybe not because apparently there is a
-risk of running out of LUT entries?
+ Will send out a new version.
 
-It sounds like the consequences of running out of LUT entries are
-catastrophic, e.g., memory corruption from mis-directed DMA?  If
-that's possible, I think we need to figure out how to prevent the
-device from being used, not just dev_warn() about it.
+Thank you very much for testing and providing your review.
 
-Bjorn
+- Allen
+
+>=20
+> Apart from that:
+> Tested-by: Aubin Constans <aubin.constans@microchip.com>
+> Acked-by: Aubin Constans <aubin.constans@microchip.com>
+>=20
+> Thanks.
+>=20
+> [1]: =
+https://lore.kernel.org/linux-mmc/CAOMdWSLipPfm3OZTpjZz4uF4M+E_8QAoTeMcKBX=
+awLnkTQx6Jg@mail.gmail.com/
+
