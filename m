@@ -1,45 +1,43 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511397E8
-	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 02:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A7B652
+	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 03:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717383099; cv=none; b=t/A5xOsZoG1+cF8CSwFiAhc1Bcs3Hf1JxwigJ2xcLeNScH5jbPsfhJMaFYo57uFco98YRfUvthg+QUUdrcKBxqc0M+4iadAhhzvHQ95insMym4HE+ypG3EHgI0kG1IatoPaG9xzRst85BDY8Vwxm5jfkxtmb/puWw1FE6kidt7Q=
+	t=1717383710; cv=none; b=pO9X5Ppi2Fn5zFoYq6WMpZtWORQ0jsEcdJy6dhIIFUenFV6Lq5TS+WcZfFnp3kO0rgy7zJuSxpkbRGbLW4e6mgTXIcY5i2P+29XnmIBOl60QojDPbnnbMOioMPVEXoKwq45TDsgEgtKDwqyTkuURklU88rCWC46mUa6MFUDnYh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717383099; c=relaxed/simple;
-	bh=NiytJ2AMYvegxaHKEXtaqWHe+4LqIoAAvBf48/InMtc=;
+	s=arc-20240116; t=1717383710; c=relaxed/simple;
+	bh=5x7HXdrNWAEE6vI1d7NYp5OMzGtUovnbw2hniT+rEYQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tiyyd62C1HKubboPFy8MnbSipfFXspxSL5wfdgWSliI8kREYj/fqz6cELshrzBNGMk6aaf8mcdJdzdowjGHxS+4PInnraMmipo4nSExsDSL2X72/GyK7k/MDKO0/JCBALvSAG2hz6Yr1XyKYXXucLNAk0DatB7KRg/bvXD/h5I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hNL/uz0l; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=FQEIHXRc1lyVCpQ3rxJ4PNruo2sbsAvfVuFpBJ0+DLIqxVZUTiRkwmUo94xXF/OwlvsERByhXSe1NqMj3Qzz/f6WFwi+LNCoKnqVtOMhr4dCTAEeW0qLeedIqHTOuK2lFqSjduXQnim3kKbbITpCaec3ToncwTNb8zdl8O9ZQQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=L+Rv56De; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hNL/uz0l"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="L+Rv56De"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=DYwujD+kR84TKzaju2fXFZQwbc6+rq3fIhZZ+IH4RxQ=;
-	b=hNL/uz0lTLcW0fj3f3834Wn/lAEWEiXics/TiypTkmOf0aAZcSgaAUknSiatXt
-	mtgRdnXaDTnjUJ9919cQoMnd9ie9pwEJ+za5BFsedm10HneqEkZ3El1TsTws1TID
-	oHSwc9VoAKeg8PFQOF1cYgWcktZEbJScgrGLqLbUoVmxU=
+	Content-Type; bh=pP5UUDF3nBlbJDPfN+e11ND9XX88gVbEBhykB7jdJWU=;
+	b=L+Rv56DeTQoHK7guf4X1vgl/qCkCqi9fuNuLEfoJ26m7R9U+EjURt58XORbuuZ
+	y2s58YyCzi+ktWO+nS3QIPuWymm7I1NVsCf+oG0kY8H+xSdQl34L6fbmEWMg5GWj
+	qyK88KhbDbTRgS9yKPDQLEHf0EzEIuSvFXK7pk7dGDRuE=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp1 (Coremail) with SMTP id ClUQrACHZu9rL11mpM4xBw--.38460S3;
-	Mon, 03 Jun 2024 10:50:20 +0800 (CST)
-Date: Mon, 3 Jun 2024 10:50:19 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAD3_0MLMl1mA_AxBw--.35276S3;
+	Mon, 03 Jun 2024 11:01:32 +0800 (CST)
+Date: Mon, 3 Jun 2024 11:01:31 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Esben Haabendal <esben@geanix.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+To: Joao Paulo Goncalves <jpaulo.silvagoncalves@gmail.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] ARM: imx: Allow user to disable pinctrl
-Message-ID: <Zl0va6yv2VY4ky0l@dragon>
-References: <20240506-imx-pinctrl-optional-v2-0-bdff75085156@geanix.com>
- <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: freescale: imx8mm-verdin: Fix GPU speed
+Message-ID: <Zl0yC+5B0OzcnM6y@dragon>
+References: <20240507143555.471025-1-jpaulo.silvagoncalves@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,27 +46,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240506-imx-pinctrl-optional-v2-1-bdff75085156@geanix.com>
-X-CM-TRANSID:ClUQrACHZu9rL11mpM4xBw--.38460S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrCFWxur43GF45Wrykur1fCrg_yoWxWFcE9F
-	Wkta1kAryDCw42qr1kKF43Xryvka17WF9Y9ryqqry5Ka95Zwn7AFn5Jw45Cwn8tw4rW3sr
-	Z3ZYqrn8tryavjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0QdbUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBQzyZVsVCm9ZPwAAsT
+In-Reply-To: <20240507143555.471025-1-jpaulo.silvagoncalves@gmail.com>
+X-CM-TRANSID:ClUQrAD3_0MLMl1mA_AxBw--.35276S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUx2YLDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDwzyZVnxcx9JEwAAsK
 
-On Mon, May 06, 2024 at 12:23:53PM +0200, Esben Haabendal wrote:
-> Making pinctrl drivers and subsequently the pinctrl framework
-> user-controllable, allows building a kernel without this.
-> While in many (most) cases, this could make the system unbootable, it
-> does allow building smaller kernels for those situations where picntrl
-> is not needed.
+On Tue, May 07, 2024 at 11:35:55AM -0300, Joao Paulo Goncalves wrote:
+> From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
 > 
-> One such situation is when building a kernel for NXP LS1021A systems,
-> which does not have run-time controllable pinctrl, so pinctrl framework
-> and drivers are 100% dead-weight.
+> The GPU clock was reduced on iMX8MM SOC device tree to prevent boards
+> that don't support GPU overdrive from being out of specification. However,
+> this caused a regression in GPU speed for the Verdin iMX8MM, which does
+> support GPU overdrive. This patch fixes this by enabling overdrive mode
+> in the SOM dtsi.
 > 
-> 
-> Signed-off-by: Esben Haabendal <esben@geanix.com>
+> Fixes: 1f794d3eed53 ("arm64: dts: imx8mm: Reduce GPU to nominal speed")
+> Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
 
-Acked-by: Shawn Guo <shawnguo@kernel.org>
+Applied, thanks!
 
