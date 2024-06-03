@@ -1,197 +1,144 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A431280039
-	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 10:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16B212C475;
+	Mon,  3 Jun 2024 12:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717409570; cv=none; b=h9jTFHsikebAoAoKreHOyY81bFJtfxSFb2ldAFWxYVY2U9lrTiI1yiNrgiSesbFGdhDUmraF1VODsle11e6/cpMFLchxzcMknoC+7tLqHzYWvwTN2tJVXlRwrsbv5PGEzcL+/wtcgbcSvHoPq6/G1jI7jYS7Bgj8aJh6BddROlQ=
+	t=1717418358; cv=none; b=LNq3f9YtLcRoII7jKBeOxnOmjUAXMMxQlMOaVtaU1Si1Iyo+TJrQZkSihh3Pv5h3C4sGiETwhjY8cyLM64+A8NXCPOiaIGPfGTnGoY5R1+vtk6uayzW4r5yBno8KJQUf5Bc1nNlISDYhQgedPC60fSoMLQCza26WRtg00Q7gaPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717409570; c=relaxed/simple;
-	bh=mFbCETMq62xq9puR3Nzjw2I8uzI0rG4N1YtiK1zuiq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SsIpljKOoqDaWOyIwb9eDbCXAdb9alnW40+zzT9GXu9NXqJFOdufehyFGrCUA6liGKYaoYyG30urdCuWdYI3hJSqTY3X+WaemryoPgXmTTkW6a7GhkcTisngkkAekxy+Wo8T/DD2t8I+gH1fWPkDGGLmG6zq+fMjZ0Cj9TG8+xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SrLOsrm+; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1717418358; c=relaxed/simple;
+	bh=LEM9nLCZweC6fzBGd3LiqBJyI0EVR5DWYNV+RHxhfJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Rk9j9+yPewQeBwWkcfpqTv/2MUBRkd96DN9uvKLncenknwEqkwIwWeL8LvNvxyVGw8zoK+QqXBUX33BV8gf5Cbs2FbbzDo9+qlb17gWRUNQTHVawf2rIrDf61oFVDX+5MOspdqPCl2cPHh1zlYtsNrCpSRcyyZD1TBaDnCVrwbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=OzrGn/YR; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SrLOsrm+"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52b90038cf7so2466179e87.0
-        for <imx@lists.linux.dev>; Mon, 03 Jun 2024 03:12:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717409567; x=1718014367; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BplKJjDXRXs7XXTpBdwnu/IkEVLGY0pP0flPQPkrbkQ=;
-        b=SrLOsrm+b2rVY832iZFhrG1gO3NC/Rjde8uQiY3G0Zap5zwLVEYXLdQ9D4BWr4EUt3
-         eyWkasQlf1cYkeA09BTytOpmm5WXJwLMqeGNmBFMNO0YjVGPiD04Zb02cm3vcDm3wxJb
-         cJ+uAcOtrKC0WzhhuPJ2c1U5BSQUiP0jLvqhKmbtRVn3xI+i+8Z8wP6xq1/4J1JMC6zj
-         MitV93+1DmaWOvogqoHOa55LhgvPgGToTxfL7a4DrE45u0pQnLlhB/j+/BEIkoNJfzxk
-         f0H5OUK30Lej2/StsUTtfS0jaDvOLcqNbFWKJrfXxL4xUtYP3F9NDV7P5CtSdQb7q+jL
-         ieBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717409567; x=1718014367;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BplKJjDXRXs7XXTpBdwnu/IkEVLGY0pP0flPQPkrbkQ=;
-        b=mlb9VGxNphgTnzO03LchNYr1yw896LjsPwAkR/Y5oepwyZUUDJLKPsBEaw5V7N/JBC
-         SPiXiiY6pPMid45h91Md4JXiiieqjXfTSLvwJLIYWgVWSYpiEaOziaY8ySn+WqtgR9I6
-         MhlhrqH7FIdX8b+9gdJwfkKY+D5LtMGUsoMN0sGrsu5JOBhSef5HVuFQMmqpWpF9I65T
-         f8SCfuagq1NJZhK2w3KIiUeFGOOPkojEGG/X+CV4cEQEuHmvF84hbP267pAfIbRK8FGE
-         pncv9R6TLi2v4KuaBWCHXHBzvGCScWOoBSVSFwm5on/l3TcxMl+/3sJLHGX7FhEsVzjX
-         5PAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXopJf4HKVRSIHfG6M8kMPaI9xYlfu+PYHfagEiS1OqCrUWG0NMM0/MzIHeFzdmr/u4ZhunE6jAH1Cd11XTGOe/vnKu
-X-Gm-Message-State: AOJu0YxhoU/Ne9x0E+F7jToy0gUjwEm+IwzKKOnDo2JOmkRxsHttvZgL
-	GM4D0/vDe5VF+eqjPU9LTMsRHGxNY4cd9knydChWProQcPGd3tXZcADaLz+64T0=
-X-Google-Smtp-Source: AGHT+IGuA0HoldCdeHkBfZZPB8luy0sGIPdxQUddKpghBgp2oPZCJBHLfXvHqZw7CVJaWvEsW958uw==
-X-Received: by 2002:ac2:46f1:0:b0:52b:8255:71ce with SMTP id 2adb3069b0e04-52b896c15b0mr4571321e87.43.1717409566720;
-        Mon, 03 Jun 2024 03:12:46 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52b84d764c6sm1185135e87.123.2024.06.03.03.12.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 03:12:46 -0700 (PDT)
-Date: Mon, 3 Jun 2024 13:12:44 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Chris Healy <cphealy@gmail.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 00/12] drm/imx/ipuv3: switch LDB and parallel-display
- driver to use drm_bridge_connector
-Message-ID: <qcbh6pltjsetikped3ioihwmiow5ngstimgebplnl6ckqkkl63@z5xd64qbsbga>
-References: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
- <CAFXsbZo3miDMQ7SDktRP_DOzMy2JTFz4AsuMp78jLQGauTNsmA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="OzrGn/YR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1717418355; x=1748954355;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LEM9nLCZweC6fzBGd3LiqBJyI0EVR5DWYNV+RHxhfJc=;
+  b=OzrGn/YR4di+NMkv4FAo9xi7kTx6PApK1VH3NF92lFsaU/EpXJHh0tJO
+   b3kxEm7Ewn9ASlHDrKwGG7icsm9IDJqjoO9rlHdGH/AKrduhZabd2St82
+   /YTyFzsVllqIl9myhhPnrgbXOQdjIBX1U/V3gY6JuFnAsSiYbUCAH+mVs
+   iozb6EYjxwQtEruopp6AywCz9M4A5IzfSZ08tPqWoIpBW+UtVt0mgi7Ad
+   42UOYzsTXBgm/jHHiNkpQD47JMMJC8d+7YZxGYdoCHC4cCjUYOaVSelIp
+   vm9SxphCiU3W3SrkhNYf3D/Mm39G4ITla7kD9goauafSndBFDpp3S7U1q
+   w==;
+X-CSE-ConnectionGUID: mGTV6IY0SjuqO4B8d/I3Zg==
+X-CSE-MsgGUID: cs2mH/dwScqctcaN/BguNA==
+X-IronPort-AV: E=Sophos;i="6.08,211,1712646000"; 
+   d="scan'208";a="194291692"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Jun 2024 05:39:11 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 3 Jun 2024 05:38:36 -0700
+Received: from [10.159.227.221] (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Mon, 3 Jun 2024 05:38:23 -0700
+Message-ID: <7e618af0-51a7-4941-a386-0ac68c66d358@microchip.com>
+Date: Mon, 3 Jun 2024 14:38:22 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFXsbZo3miDMQ7SDktRP_DOzMy2JTFz4AsuMp78jLQGauTNsmA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
+To: Allen Pais <apais@linux.microsoft.com>, <linux-kernel@vger.kernel.org>
+CC: <tj@kernel.org>, <keescook@chromium.org>, <vkoul@kernel.org>,
+	<marcan@marcan.st>, <sven@svenpeter.dev>, <florian.fainelli@broadcom.com>,
+	<rjui@broadcom.com>, <sbranden@broadcom.com>, <paul@crapouillou.net>,
+	<Eugeniy.Paltsev@synopsys.com>, <manivannan.sadhasivam@linaro.org>,
+	<vireshk@kernel.org>, <Frank.Li@nxp.com>, <leoyang.li@nxp.com>,
+	<zw@zh-kernel.org>, <wangzhou1@hisilicon.com>, <haijie1@huawei.com>,
+	<shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <sean.wang@mediatek.com>,
+	<matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+	<afaerber@suse.de>, <logang@deltatee.com>, <daniel@zonque.org>,
+	<haojian.zhuang@gmail.com>, <robert.jarzmik@free.fr>, <andersson@kernel.org>,
+	<konrad.dybcio@linaro.org>, <orsonzhai@gmail.com>,
+	<baolin.wang@linux.alibaba.com>, <zhang.lyra@gmail.com>,
+	<patrice.chotard@foss.st.com>, <linus.walleij@linaro.org>, <wens@csie.org>,
+	<jernej.skrabec@gmail.com>, <peter.ujfalusi@gmail.com>, <kys@microsoft.com>,
+	<haiyangz@microsoft.com>, <wei.liu@kernel.org>, <decui@microsoft.com>,
+	<jassisinghbrar@gmail.com>, <mchehab@kernel.org>,
+	<maintainers@bluecherrydvr.com>, <ulf.hansson@linaro.org>,
+	<manuel.lauss@gmail.com>, <mirq-linux@rere.qmqm.pl>,
+	<jh80.chung@samsung.com>, <oakad@yahoo.com>,
+	<hayashi.kunihiko@socionext.com>, <mhiramat@kernel.org>,
+	<brucechang@via.com.tw>, <HaraldWelte@viatech.com>, <pierre@ossman.eu>,
+	<duncan.sands@free.fr>, <stern@rowland.harvard.edu>, <oneukum@suse.com>,
+	<openipmi-developer@lists.sourceforge.net>, <dmaengine@vger.kernel.org>,
+	<asahi@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-rpi-kernel@lists.infradead.org>, <linux-mips@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-mediatek@lists.infradead.org>, <linux-actions@lists.infradead.org>,
+	<linux-arm-msm@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+	<linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
+	<linux-hyperv@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-media@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+	<linux-s390@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-usb@vger.kernel.org>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-10-apais@linux.microsoft.com>
+Content-Language: en-US, fr
+From: Aubin Constans <aubin.constans@microchip.com>
+In-Reply-To: <20240327160314.9982-10-apais@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jun 02, 2024 at 08:25:39PM -0700, Chris Healy wrote:
-> On an i.MX53 QSB with HDMI daughter board, this patch series is:
+On 27/03/2024 17:03, Allen Pais wrote:
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
 > 
-> Tested-by: Chris Healy <cphealy@gmail.com>
+> The only generic interface to execute asynchronously in the BH context is
+> tasklet; however, it's marked deprecated and has some design flaws. To
+> replace tasklets, BH workqueue support was recently added. A BH workqueue
+> behaves similarly to regular workqueues except that the queued work items
+> are executed in the BH context.
+> 
+> This patch converts drivers/infiniband/* from tasklet to BH workqueue.
+> 
+> Based on the work done by Tejun Heo <tj@kernel.org>
+> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
+> 
+> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+> ---
+>   drivers/mmc/host/atmel-mci.c                  | 35 ++++-----
+[...]
 
-Thank you! I assume this is imx53-qsrb-hdmi ?
+For atmel-mci, judging from a few simple tests, performance is preserved.
+E.g. writing to a SD Card on the SAMA5D3-Xplained board:
+time dd if=/dev/zero of=/opt/_del_me bs=4k count=64k
 
-> 
-> HDMI output still works correctly and the bridges file reflects the changes:
-> 
-> Before:
-> 
-> root:/sys/kernel/debug/dri/display-subsystem/encoder-0 cat bridges
-> bridge[0]: 0xc0fa76d8
->         type: [0] Unknown
->         ops: [0x0]
-> bridge[1]: 0xc0fba03c
->         type: [0] Unknown
->         OF: /soc/bus@60000000/i2c@63fc4000/bridge-hdmi@39:sil,sii9022
->         ops: [0x7] detect edid hpd
-> 
-> 
-> After:
-> 
-> root:/sys/kernel/debug/dri/display-subsystem/encoder-0 cat bridges
-> bridge[0]: 0xc0fa76d8
->         type: [0] Unknown
->         ops: [0x0]
-> bridge[1]: 0xc0fb9f5c
->         type: [0] Unknown
->         OF: /soc/bus@60000000/i2c@63fc4000/bridge-hdmi@39:sil,sii9022
->         ops: [0x7] detect edid hpd
-> bridge[2]: 0xc0fb9794
->         type: [11] HDMI-A
->         OF: /connector-hdmi:hdmi-connector
->         ops: [0x0]
-> 
-> On Sun, Jun 2, 2024 at 5:04 AM Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
-> >
-> > The IPUv3 DRM i.MX driver contains several codepaths for different
-> > usescases: both LDB and paralllel-display drivers handle next-bridge,
-> > panel and the legacy display-timings DT node on their own.
-> >
-> > Drop unused ddc-i2c-bus and edid handling (none of the DT files merged
-> > upstream ever used these features), switch to panel-bridge driver,
-> > removing the need to handle drm_panel codepaths separately and finally
-> > switch to drm_bridge_connector, removing requirement for the downstream
-> > bridges to create drm_connector on their own.
-> >
-> > This has been tested on the iMX53 with the DPI panel attached to LDB via
-> > LVDS decoder, using all possible usecases (lvds-codec + panel, panel
-> > linked directly to LDB node and the display-timings node).
-> >
-> > To be able to test on the iMX53 QSRB with the HDMI cape apply [1], [2]
-> >
-> > [1] https://lore.kernel.org/all/20240514030718.533169-1-victor.liu@nxp.com/
-> > [2] https://lore.kernel.org/all/20240602-imx-sii902x-defconfig-v1-1-71a6c382b422@linaro.org/
-> >
-> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > ---
-> > Changes in v3:
-> > - Notice (soft) dependencies in the cover letter (Chris)
-> > - Select DRM_BRIDGE instead of depending on it (Philipp)
-> > - Dropped unused selection of DRM_PANEL (Philipp)
-> > - Added missing include of <drm/bridge/imx.h> to parallel-display.c
-> >   (Philipp)
-> > - Link to v2: https://lore.kernel.org/r/20240331-drm-imx-cleanup-v2-0-d81c1d1c1026@linaro.org
-> >
-> > Changes in v2:
-> > - Fixed drm_bridge_attach flags in imx/parallel-display driver.
-> > - Moved the legacy bridge to drivers/gpu/drm/bridge
-> > - Added missing EXPORT_SYMBOL_GPL to the iMX legacy bridge
-> > - Link to v1: https://lore.kernel.org/r/20240311-drm-imx-cleanup-v1-0-e104f05caa51@linaro.org
-> >
-> > ---
-> > Dmitry Baryshkov (12):
-> >       dt-bindings: display: fsl-imx-drm: drop edid property support
-> >       dt-bindings: display: imx/ldb: drop ddc-i2c-bus property
-> >       drm/imx: cleanup the imx-drm header
-> >       drm/imx: parallel-display: drop edid override support
-> >       drm/imx: ldb: drop custom EDID support
-> >       drm/imx: ldb: drop custom DDC bus support
-> >       drm/imx: ldb: switch to drm_panel_bridge
-> >       drm/imx: parallel-display: switch to drm_panel_bridge
-> >       drm/imx: add internal bridge handling display-timings DT node
-> >       drm/imx: ldb: switch to imx_legacy_bridge / drm_bridge_connector
-> >       drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector
-> >       drm/imx: move imx_drm_connector_destroy to imx-tve
-> >
-> >  .../bindings/display/imx/fsl-imx-drm.txt           |   2 -
-> >  .../devicetree/bindings/display/imx/ldb.txt        |   1 -
-> >  drivers/gpu/drm/bridge/imx/Kconfig                 |  10 +
-> >  drivers/gpu/drm/bridge/imx/Makefile                |   1 +
-> >  drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c     |  85 +++++++++
-> >  drivers/gpu/drm/imx/ipuv3/Kconfig                  |  10 +-
-> >  drivers/gpu/drm/imx/ipuv3/imx-drm-core.c           |   7 -
-> >  drivers/gpu/drm/imx/ipuv3/imx-drm.h                |  14 --
-> >  drivers/gpu/drm/imx/ipuv3/imx-ldb.c                | 203 +++++----------------
-> >  drivers/gpu/drm/imx/ipuv3/imx-tve.c                |   8 +-
-> >  drivers/gpu/drm/imx/ipuv3/parallel-display.c       | 139 +++-----------
-> >  include/drm/bridge/imx.h                           |  13 ++
-> >  12 files changed, 187 insertions(+), 306 deletions(-)
-> > ---
-> > base-commit: 850ca533e572247b6f71dafcbf7feb0359350963
-> > change-id: 20240310-drm-imx-cleanup-10746a9b71f5
-> >
-> > Best regards,
-> > --
-> > Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> >
+      Base 6.9.0 : 0.07user 5.05system 0:18.92elapsed 27%CPU
+   Patched 6.9.0+: 0.12user 4.92system 0:18.76elapsed 26%CPU
 
--- 
-With best wishes
-Dmitry
+However, please resolve what checkpatch is complaining about:
+scripts/checkpatch.pl --strict 
+PATCH-9-9-mmc-Convert-from-tasklet-to-BH-workqueue.mbox
+
+   WARNING: please, no space before tabs
+   #72: FILE: drivers/mmc/host/atmel-mci.c:367:
+   +^Istruct work_struct ^Iwork;$
+
+Same as discussions on the USB patch[1] and others in this series, I am 
+also in favour of "workqueue" or similar in the comments, rather than 
+just "work".
+
+Apart from that:
+Tested-by: Aubin Constans <aubin.constans@microchip.com>
+Acked-by: Aubin Constans <aubin.constans@microchip.com>
+
+Thanks.
+
+[1]: 
+https://lore.kernel.org/linux-mmc/CAOMdWSLipPfm3OZTpjZz4uF4M+E_8QAoTeMcKBXawLnkTQx6Jg@mail.gmail.com/
