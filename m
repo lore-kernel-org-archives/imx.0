@@ -1,93 +1,111 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5793C0D
-	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 14:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066C815C3
+	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 14:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717423233; cv=none; b=tUceyTBoEioSQLW6jCDNQeGOByP1yHR/8yfieZAxaHInjANL9AwRpQBHOPjDOoj6gBVuPdT49fXhjr0NDHb5fFvPh82ig96FWqzjwVRC/jdMMKtE8917HvRyk0yqtqzizXqFrwJpq420V4NyUutnpqw8DNDEEz+1Be4GhcvcUuk=
+	t=1717423311; cv=none; b=GCy3MoiBowrHmGHki4qd+H2VILOFRkxFqQrd3VIvJfAIDybsbsd8Ts24MOkkBqCVdlcpkL+z/GqclQUuB3ukZaeXvI6og6gw8LeZWYU5ZQMdpTK8rbtkoX2cR9RW5hPVEtTANAmFnU8ShG/gXkNkbnggpuwLLuGAOXDGis09Dlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717423233; c=relaxed/simple;
-	bh=Tq+fTOP9a85zGx81hI5MmId6I7YXI6owwkdLPoka3YQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f/C/MGK0ussj8FOfvVoa7qt1Yro8uEylsjtC85F6FEDUsoJGqlpWN6bFIedAmYyla9/AJVfgT0tWAcJQDS1bv5c7HxatrvOVT0B+Gr8OA8Nwt7aEvFbvluFMW3HVpGBIzYp5Blz54XFHAHH3mH7ph1XbPNbm0eXPxk68EqbNdR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Vnk9rxj2; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1717423311; c=relaxed/simple;
+	bh=1eBfmTHL1QaR8pbVnJDmzCh9p4iP+N0vXh+zBPtMsd8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T7i1XavnZnPd/GUt5rxH9JOOFcDkIGBjwNr1C0GrFvRyb4jcz2kv3OS+9WQFWV24XmubKL0HnwlN+PLm3iH+BLZPpaKhP26Gg++73/p1Fxe/86utS/oQWAHs9sBraFBuxU9T+UA5ugECGuPpHCyM8pNW4HDIcfBPYQ+/WwoSNnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fQSi2kGI; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Vnk9rxj2"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5293F40019;
-	Mon,  3 Jun 2024 14:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1717423223;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eUiKeSDAw5PSWaHAWumiSmz2tV9iwBOhkTk5YbNtRJw=;
-	b=Vnk9rxj2LrJ31ASbDAuodEeVDzQEiuJI6BXER38I5f8OLktmjqg4+Ot1G7uXJrLWYDCMPj
-	r4c1Ejhl02HzHSrCCx+M31d9nMPrNl6Ewk55kp1kGd1EowRllfKsbSxfY8PiOVyq6xH6YD
-	m/8WOmH+Ojb/qlevO6BD5LPiCUpo0HG5MHXTF+fRt4pjI0aJ7vdJBFRg8appj96hZhvHQf
-	KtEY+gP+5Ao7sQMYTeQqKbNEi9AsPbIK+yKoVP4sbrORpGDW2PLjnyj+P7OUfwMkUAasAX
-	+39x0pHa2zrVb3Rwxi931X2VeKDeY7yNKIX0zirc72/gyF1cUoQEeq40ch5sxA==
-Date: Mon, 3 Jun 2024 16:00:18 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, linux-i3c@lists.infradead.org (moderated
- list:SILVACO I3C DUAL-ROLE MASTER), linux-kernel@vger.kernel.org (open
- list), imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] i3c: master: svc: resend target address when get
- NACK
-Message-ID: <20240603160018.29498c2f@xps-13>
-In-Reply-To: <20240531163301.1401281-1-Frank.Li@nxp.com>
-References: <20240531163301.1401281-1-Frank.Li@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fQSi2kGI"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-57a1fe63a96so3845861a12.0
+        for <imx@lists.linux.dev>; Mon, 03 Jun 2024 07:01:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717423307; x=1718028107; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cud/6aqJnRfF1FRYIE7dZy35PpEncKlSngXb7y86szE=;
+        b=fQSi2kGIXljxillGeFVXvzpvOvh5XdYQyxybCaoRoXEjhrzdSKxJ42e3AEZCJv4WQp
+         VwkE6p0OFmgUKGXAaK87KjN5LzmHJTgV7oKVjTu+2q7Gk5REdiVo3bqDnTYtkHQky34k
+         fa9cXWJiW/qGa/TdEVKkd5uvxbP6bgIMUfsoQsJ6tCfjNAS+d0qBK4T61xU+QlnpqzNU
+         ABUg6XKqJY0No0BFsm6+74eG83I+Uy1cIpWEoih9fLgGaFOlSMzDMr41uiFengJNfvyw
+         2UAQ5Q4RxO1UxXJHuGm/jhoh5qK3zYtdwjvg5bQjvXSEZeeUV1TYdufn2S+b8vx2rd4A
+         mWiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717423307; x=1718028107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cud/6aqJnRfF1FRYIE7dZy35PpEncKlSngXb7y86szE=;
+        b=uzU4aB7cZ3AhTeh+43dtHKMxNDRXCxiwqQBHFguDcwDyfqYz6L5R8TfgO5dafk6Ema
+         8vtGiJRQSiRfzxV5Wr32WDzXKi6JydtaJpTueP4BoLccUrniApq/bYlCb6ueDAFS/fnB
+         PFrgelrClmU6sg/Ye3MQuAlCkEES7Y+JKIGy7t2ByrRV09cqMAuQ2cb1ATqlBdEzmsAb
+         Puv4OJ97Prc5lE4aEG8bjd9yQ01ayvjGY+RNchj+LOVy+SCBbEkrKOl8EE3HmzcggxMa
+         ydJ1QcGLW3Q+fRLM6s39/3yQGxpoH7QS3wB6N9jgC5VhygSKCzpAOgdtpiONpaf1D8tL
+         R69g==
+X-Forwarded-Encrypted: i=1; AJvYcCUFx8X/hX7mQsPjwiKjARohUJ8PU50zdaRYdvLYXZPiAjQ/I4VjsJrus6DIK2HOB0RwrO7D4ct1OyhFbcT/1lzF51Iu
+X-Gm-Message-State: AOJu0YyeKKfQv5IYh2doMZtWi24SJdzCqenJpV1HEz8kGk0FBCjVLSIR
+	IEkaznJ43lCaVKHdXH2/K7Dc/I2kxgO8f869rgGi6/SZAupdTD/f
+X-Google-Smtp-Source: AGHT+IHYwq7JslSgiiWPjfYTfZvNj/Ldq8H6hHi/nPS12CQ7DKy5/4mkKUOWlx7SsorXuBkZ1VLOwA==
+X-Received: by 2002:a50:9f2c:0:b0:578:3336:92a with SMTP id 4fb4d7f45d1cf-57a3622b9e6mr6527527a12.0.1717423307034;
+        Mon, 03 Jun 2024 07:01:47 -0700 (PDT)
+Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a31bbddb6sm5438541a12.38.2024.06.03.07.01.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jun 2024 07:01:46 -0700 (PDT)
+From: max.oss.09@gmail.com
+To: Max Krummenacher <max.krummenacher@toradex.com>
+Cc: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: freescale: imx8mm-verdin: enable hysteresis on slow input pin
+Date: Mon,  3 Jun 2024 16:00:45 +0200
+Message-ID: <20240603140103.3845905-1-max.oss.09@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-Frank.Li@nxp.com wrote on Fri, 31 May 2024 12:33:00 -0400:
+SODIMM 17 can be used as an edge triggered interrupt supplied from an
+off board source.
 
-> According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3:
->=20
-> If the Controller chooses to start an I3C Message with an I3C Dynamic
-> Address, then special provisions shall be made because that same I3C Targ=
-et
-> may be initiating an IBI or a Controller Role Request. So, one of three
-> things may happen: (skip 1, 2)
->=20
-> 3. The Addresses match and the RnW bits also match, and so neither
-> Controller nor Target will ACK since both are expecting the other side to
-> provide ACK. As a result, each side might think it had "won" arbitration,
-> but neither side would continue, as each would subsequently see that the
-> other did not provide ACK.
-> ...
-> For either value of RnW: Due to the NACK, the Controller shall defer the
-> Private Write or Private Read, and should typically transmit the Target
-> 						    ^^^^^^^^^^^^^^^^^^^
-> Address again after a Repeated START (i.e., the next one or any one prior
-> ^^^^^^^^^^^^^
-> to a STOP in the Frame). Since the Address Header following a Repeated
-> START is not arbitrated, the Controller will always win (see Section
-> 5.1.2.2.4).
->=20
-> Resend target address again if address is not 7E and controller get NACK.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Enable hysteresis on the pinmuxing to increase immunity against noise
+on the signal.
 
-I'm not getting 100% of it, but looks okay, so:
+Fixes: 60f01b5b5c7d ("arm64: dts: imx8mm-verdin: update iomux configuration")
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
 
-Thanks,
-Miqu=C3=A8l
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index 4768b05fd765..7a971b235283 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -935,7 +935,7 @@ pinctrl_gpio8: gpio8grp {
+ 	/* Verdin GPIO_9_DSI (pulled-up as active-low) */
+ 	pinctrl_gpio_9_dsi: gpio9dsigrp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_NAND_RE_B_GPIO3_IO15		0x146>;	/* SODIMM 17 */
++			<MX8MM_IOMUXC_NAND_RE_B_GPIO3_IO15		0x1c6>;	/* SODIMM 17 */
+ 	};
+ 
+ 	/* Verdin GPIO_10_DSI (pulled-up as active-low) */
+-- 
+2.42.0
+
