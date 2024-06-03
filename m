@@ -1,101 +1,117 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964414AEF5
-	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 08:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A122943F
+	for <imx@lists.linux.dev>; Mon,  3 Jun 2024 08:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717403148; cv=none; b=MBDxfucLy40gT2J4bbakVOFgGRrmUZ/pdyB+vmQlCD8sjyjXul+CkET1Mfmxdo/hu0myUUUxwPUYkXueEp6g3gr+OwnAqTSOfkqJuQwdcSESusbgSQ5RNMhCDLJ/sUIXmjxaVXc4ng5aBmI49wKV0Txg1sHneouHgmr0EvNJoYE=
+	t=1717403214; cv=none; b=cQrQ39NBW9mxDm6ntk6KhZm+QbofZMQn53t6nFmCbF+AmbB8qOLWCcv7DEGEoW0hV48C2XWVJ7XcGxcfoFAGz2AcEtV6LxLwYDS98glo3yaug6aMNTYbgF6FW678B/cFijMwG+d9gwdL67uLZPWFjbl1A6xyDhknaMM238qV50U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717403148; c=relaxed/simple;
-	bh=nMrzAHRYbaM0CPzFYJoIrikgtExLbpIG/tDhr8hm/0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l7qb4E79Qro39DXK/OkjQi42/bdDRPu1q466jllc+7l7+06LkrW/ugpxnx66+njKAS37YzbZDxTiPUBVH0sBBf0LUj18KWqu1AMzzFgcuF1pEt5vmZUQrbd8359O86fHvO3d3cKbCFXr94Jx+pVghDaSVbjIYe+ehOlvwHedtw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=vXIUpGYE; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1717403214; c=relaxed/simple;
+	bh=DCx2r/p/OFxtmxhQQlPl/IZZVkzLeeoV7K53BAsOblg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DamkdxkjQJyic2Jvu4qYk7bnk2t3Msnae/4n1G11IWkiLQjYazgRXgjnsNiJ+zIJ5PgiI9ov2jeOmg5nZdBEXw6+u9kv1Qk5Lxy3EAktvpzAVlin2noyj3jAOx9XtKDwwHiWiNyc4eIK2lMXHedgRhSpEzuWwx9K0rVC1ux6yPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=e2WBLhak; arc=none smtp.client-ip=44.202.169.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="vXIUpGYE"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52b8d483a08so2700639e87.1
-        for <imx@lists.linux.dev>; Mon, 03 Jun 2024 01:25:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1717403145; x=1718007945; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zvxlVn3WbqZZhkrp7NY7W//mMZJXucYwAeoohXFNboM=;
-        b=vXIUpGYE/Mjh/HeE5QslExAMtjVNMvO5n51uUBAr6VxDNtdBs062NinJKsoJkGMwrl
-         GxArki8dBJBtt6BpYqRx3eMfDmHOXec0IxYjY7YC1vyaKKLHiu7h2t5x/dSLS6G92xM8
-         /MpNv2/zpiisVjuQlcw9dj0Z/BDBI95zBCAtI2NAkUu7Zwz5RIPKGkEfvFnibFDm2/3e
-         xfOFrGQbswQZTmHz8nxXK2LYkKDQcNUunW5wHP0r7Q2aatLL6ze5hp+umnNlSzxvv30f
-         RBH93Fg+o3d7y3EMrSgn3N7MKLg3dSCoCkBZi0axLMx5rUctbkZ8lp7OALGLKLqbFUUH
-         iwtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717403145; x=1718007945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zvxlVn3WbqZZhkrp7NY7W//mMZJXucYwAeoohXFNboM=;
-        b=IA3+XHRSgOh2wpZ9hvFOk5gKzrMrh/w9FP0lEUhR4agkRQA69/gtvoTucyi/5WAQW6
-         xvQT2UIDEWJx/e79XUEJ012aNiGOAsDeYW6ay0UCo3e5q4QLJMp6U6iwjXUugbmJuK85
-         sZo0bXcEjNr52zN5VdwibuBSrw3iyfEd4gSy5zzYzACzTX2sGL5/ANOgx6f6Fz5O+d5Z
-         TwugDwlHWW6Fiz2pgOgZuKnBDe8QHztbotfohbSG4aD9UIhH67G8+IMW84NyNoaF/ype
-         pv95OVY7aGJMGCdzObOQHVgZ17tIh+xgOYsuI+Pn1n0rFjzgHDeNLd55T7TE85niO9tu
-         MWoA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoqcl5R2ursbfEWFjhXEBCsUt77sKvyC0sUF/I0wGl39IhTQBEuyBSFVEYuVftKZAWptVfF/uhY9esPHmDQt0NM50s
-X-Gm-Message-State: AOJu0YzKUdy86LTyGkdLKdEW5bOVlSf11jGteyTzRMW1rYD/RiznRWIp
-	s5MoToVIP6xw1VqIZndjh6zDJDOaOqyXTfWNIE/nZa7+r1ANfXE2tUUTSrmQYIE=
-X-Google-Smtp-Source: AGHT+IHvhGIL9bagwIEIWKklEMO2niJwNdydUNxk7jfjMiblsReyAbr8xDnjx9dhW5olJB7JFIJNmA==
-X-Received: by 2002:a05:6512:158c:b0:52b:98ab:6100 with SMTP id 2adb3069b0e04-52b98ab619dmr2154272e87.15.1717403144788;
-        Mon, 03 Jun 2024 01:25:44 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:75a:e000:5b1:48e9:27a3:7085])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212b84be78sm108641565e9.17.2024.06.03.01.25.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 01:25:44 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: alexander.stein@ew.tq-group.com,
-	krzk+dt@kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	brgl@bgdev.pl,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linus.walleij@linaro.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org
-Subject: Re: [PATCH v3 1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
-Date: Mon,  3 Jun 2024 10:25:43 +0200
-Message-ID: <171740314108.11298.15004161310238771393.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240531164357.1419858-1-Frank.Li@nxp.com>
-References: <20240531164357.1419858-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="e2WBLhak"
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+	by cmsmtp with ESMTPS
+	id DsJAsnyNzxs4FE31iseu9e; Mon, 03 Jun 2024 08:26:46 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id E31hsJ997iKqRE31hsuETD; Mon, 03 Jun 2024 08:26:45 +0000
+X-Authority-Analysis: v=2.4 cv=I9quR8gg c=1 sm=1 tr=0 ts=665d7e45
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=oyxFDGXHj6VF3crgWAIVWQ==:17
+ a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=wYkD_t78qR0A:10 a=xGRsDScCAAAA:8
+ a=rifHBRH1XTZtWdLw4JwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=zEVfNvAIcUWeczMkmY0T:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CpKO348auTtOkpaYxnYFFOrDsx8VkfciEW5JtRsobmk=; b=e2WBLhak2xvyRkPsJmDRs3IROQ
+	YVXA+bZDSAY8Di4iBWMtbISchapu1sHGzDwmq/5+dXSgHIAW1ie9mIg/BIVkkKh5yUT9QCAnMOoER
+	j7xlKy9eSy2nlP0AO2CI+owhmjla/lpFxGA1aGCZF1itJUBajvl5H5sv4y64nx0kNFb9Vf/UotnDq
+	Kfs/u85G0HY1vlLlw6mQkyHXties1riA0UUskDbyrXCRcRRrYYffJ9zGn3Jw6PlALiVo3cEuBAqWv
+	qsXMfvNBe72rde9k84Mkwis5PZl0W5HpniYIM7KzwpmXgyRB0RHuPNE3RZfCFamzBsj45qDWU6Y/n
+	BDTgayGg==;
+Received: from 81-67-36-78.rev.numericable.fr ([81.67.36.78]:35236 helo=[10.7.154.191])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1sE31f-0022kp-1V;
+	Mon, 03 Jun 2024 03:26:44 -0500
+Message-ID: <4da5ba72-6dff-46f1-b596-158c62b34f18@embeddedor.com>
+Date: Mon, 3 Jun 2024 10:26:31 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+To: Jiri Slaby <jirislaby@kernel.org>, Bill Wendling <morbo@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
+ patches@lists.linux.dev, stable@vger.kernel.org
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+ <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+ <2024053008-sadly-skydiver-92be@gregkh>
+ <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
+ <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
+ <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
+ <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
+ <bee7240b-d143-4613-bde4-822d9c598834@embeddedor.com>
+ <1313c7a5-d074-4a8f-9ab9-07e4a7716fb9@kernel.org>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <1313c7a5-d074-4a8f-9ab9-07e4a7716fb9@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 81.67.36.78
+X-Source-L: No
+X-Exim-ID: 1sE31f-0022kp-1V
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 81-67-36-78.rev.numericable.fr ([10.7.154.191]) [81.67.36.78]:35236
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfLv65aq+LyomMNTeI4aBzphp4Y7PrRB6RR62cF2fASY4JhchI4oe/Ad9kCfvLJoCm2diAtfJZNepQvjUfz9xt9cJnJpf/dlmpeW24tPTj5JB4y5ICb2y
+ Gl5Aezk4tFsHZ2kh6JdsJffuxv1AxUDxRKLtYqju1ZnasbB5ObLMfuPz7pX+um2SBhAT8srhblUvqPY6RnL6M4tdahQCkqRn1Es=
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-
-On Fri, 31 May 2024 12:43:57 -0400, Frank Li wrote:
-> Convert binding doc from txt to yaml.
+> FWIW undoing:
+> commit 7391ee16950e772076d321792d9fbf030f921345
+> Author: Peter Hurley <peter@hurleysoftware.com>
+> Date:   Sat Jun 15 09:36:07 2013 -0400
 > 
-> Remove redundated "gpio1: gpio@2300000" example.
-> Add gpio-controller at example "gpio@1100".
+>      tty: Simplify flip buffer list with 0-sized sentinel
 > 
 > 
+> would do the job, IMO.
 
-Applied, thanks!
+So, not even _sentinel_ is actually needed? Awesome!
 
-[1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
-      commit: 77e1ea9e9913df8c23ac102c9c2b7c49a5d224da
+I wish all of these FAMs-in-the-middle were like this one. :)
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+--
+Gustavo
