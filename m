@@ -1,92 +1,174 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF4FC13B;
-	Tue,  4 Jun 2024 15:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D626C14900F;
+	Tue,  4 Jun 2024 15:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717514755; cv=none; b=lf/IEspISWALTKlIVd4nfSidzoDUPFCcgy6uwYBm2yPz2nF16uzm20Ld8fOAO2clRVeEYuj48eFk7hUMIAPO97zxf3+XZ4PR+3fGJtDqkNFK7g6EaGOKvWR9Cfg6uNFqVBpIqpMWjKATThDnsptVKIKrQ8KyIR8a02Uo7ebJrYE=
+	t=1717514940; cv=none; b=Nfak+M1j3ZNkKtDFm26od0Ta6OvGrrNCwJ2c51xoGDGBNmcKjgYIJnKm1vArbDq2GkaBj5AdIpL3zBTpymChho2VyjjiPmzZmr69YpwDGbpVW/iy/WlskKpLYPgzGRRataQwWQHNeBKQNBU86dQ83jvXzbCq2fdwUMBIZ+lF3Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717514755; c=relaxed/simple;
-	bh=W4guxw4l01Fm9wSUJoG6FBoB1xjKNyaC5jSs9toFe60=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pl3NJFjGe/XSgp3pW6fgX8U6T3N2Vmtck0UullHUe3NzV3cg9R9FFoUK3CcQYljXTARU+rRHuEGBSQorpGK3BHPXaJD/Qwrn9cpFIACoypQMLxt73s5qalujRVp/VsMiw/maPbD7w4OI2faZvj3IU2cCjSexaUNPBDgqWtCujaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uBlERkTf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717514940; c=relaxed/simple;
+	bh=M9flsdH1rf42KEqaDdDPbhL6x/FMg56h8dxioyYi/dM=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=X9qTByalI58CgUxDfAyd9h06HjJ1AECCpqYYzy0lOKsx+sMmIDqRtpgka9sCuBxvyJdXKJ4q2u4MRQ2nW7Mle0WJixUVlGRDYPoM5BWWl038zF/s1E6K170+7xxEUn4hqF7AH7Vzi0myvQ/G9yqmwF23NM8PMQuBlPmJOtV5CAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPZHtD1s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uBlERkTf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A9BC2BBFC;
-	Tue,  4 Jun 2024 15:25:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPZHtD1s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E301C2BBFC;
+	Tue,  4 Jun 2024 15:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717514754;
-	bh=W4guxw4l01Fm9wSUJoG6FBoB1xjKNyaC5jSs9toFe60=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uBlERkTfsl6Cc1Hb9rsoZKL3tUhcrxXlmutR3hjFozXXQD+clGNtj1kEfeLvvmwug
-	 ZhWMMQut0D6GHkWtFX8YI98xpkpe0RVwG9dTrBOJAzEEHbM1jrIz+mgFlwhD1+Zkz9
-	 yhcx5lXBjmqbQsJKqOcjTckeEboWdcI5vfGbCKMzwWVElQlzdOzDR+Fsq07m+nAE/3
-	 mt5h/Neh6E82IwLgvYRsrlKqAZ2L/tTnDx4q6APk351MkrsjO1GIWAC0hzcsSj0fLW
-	 DpfNjAfk7nTYj7P3ukQ3kQ4HLc1jPIulxTvauURLNPh0ROtGhBPWE3M0euplY+Qq+k
-	 AIywwb5ieKwlQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sEW2q-000d09-Cz;
-	Tue, 04 Jun 2024 16:25:52 +0100
-Date: Tue, 04 Jun 2024 16:25:51 +0100
-Message-ID: <86cyowlog0.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Robin Murphy <robin.murphy@arm.com>,	Bjorn Helgaas <helgaas@kernel.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,	Krzysztof =?UTF-8?B?V2lsY3p5?=
- =?UTF-8?B?xYRza2k=?= <kw@linux.com>,	Rob Herring <robh@kernel.org>,	Bjorn
- Helgaas <bhelgaas@google.com>,	Shawn Guo <shawnguo@kernel.org>,	Sascha
- Hauer <s.hauer@pengutronix.de>,	Pengutronix Kernel Team
- <kernel@pengutronix.de>,	Fabio Estevam <festevam@gmail.com>,	NXP Linux Team
- <linux-imx@nxp.com>,	Philipp Zabel <p.zabel@pengutronix.de>,	Liam Girdwood
- <lgirdwood@gmail.com>,	Mark Brown <broonie@kernel.org>,	Manivannan
- Sadhasivam <manivannan.sadhasivam@linaro.org>,	Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>,	Conor Dooley <conor+dt@kernel.org>,
-	linux-pci@vger.kernel.org,	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,	devicetree@vger.kernel.org,	Will Deacon
- <will@kernel.org>,	Joerg Roedel <joro@8bytes.org>,	Jason Gunthorpe
- <jgg@ziepe.ca>,	Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support MSI ITS and IOMMU for i.MX95
-In-Reply-To: <Zl4v10Od99et+tLX@lizhi-Precision-Tower-5810>
-References: <20240603171921.GA685838@bhelgaas>
-	<3d24fecf-1fdb-4804-9a51-d6c34a9d65c6@arm.com>
-	<Zl4v10Od99et+tLX@lizhi-Precision-Tower-5810>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1717514940;
+	bh=M9flsdH1rf42KEqaDdDPbhL6x/FMg56h8dxioyYi/dM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=gPZHtD1siZ06BKU0y6Bplhy60c1vhNUXg2e4hAYniJlLylxUxzXfViP33As9AKseI
+	 Xyv9xB7dold8FpqZ89olAn0q/XL+O96EOcMmij8EfjPtCTS5Mdteu3k3ajvd5MQ50n
+	 sL5obTKudv/nqcqPps28wVRzF3Tzccgm7mFt4+/Plxtc40VRmgipd5NaNfyW6Kya+S
+	 G7xkX4rz3Gc0LDW3YKyIBC0ooOXWP29bSyvaSj/6BckJwx+pm9RGoxB+YLC4ZQnWt+
+	 M/nmBtafaZ0RnbayXEZ+3sbb5pyrNsQRAX3Ph7NlEqZST2TGoEyUiU+BNX51z4O8KQ
+	 yZXzd/uXBkSUA==
+Date: Tue, 04 Jun 2024 10:28:58 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Frank.li@nxp.com, robin.murphy@arm.com, helgaas@kernel.org, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com, p.zabel@pengutronix.de, lgirdwood@gmail.com, broonie@kernel.org, manivannan.sadhasivam@linaro.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, devicetree@vger.kernel.org, will@kernel.org, joro@8bytes.org, jgg@ziepe.ca, alyssa@rosenzweig.io
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Michael Walle <mwalle@kernel.org>
+Cc: Priit Laes <plaes@plaes.org>, linux-arm-kernel@lists.infradead.org, 
+ Li Yang <leoyang.li@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, 
+ Michael Grzeschik <m.grzeschik@pengutronix.de>, devicetree@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+In-Reply-To: <20240604135934.1951189-1-mwalle@kernel.org>
+References: <20240604135934.1951189-1-mwalle@kernel.org>
+Message-Id: <171751455018.786235.5564969339384632378.robh@kernel.org>
+Subject: Re: [PATCH 00/10] ARM: dts: kontron-samx6i: various fixes
 
-On Mon, 03 Jun 2024 22:04:23 +0100,
-Frank Li <Frank.li@nxp.com> wrote:
+
+On Tue, 04 Jun 2024 15:59:24 +0200, Michael Walle wrote:
+> While working on a new PHY support for this board I've noticed quite
+> a few errors. Fix these and introduce an actual board for the
+> module. For now, there was just a dtsi and no actual user of it.
 > 
-> iommu may share one stream id for multi-devices. but ITS MSI can't. each
-> device's MSI index start from 0. It needs difference stream id for each
-> device.
+> Michael Walle (10):
+>   ARM: dts: imx6qdl-kontron-samx6i: fix phy-mode
+>   ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset
+>   ARM: dts: imx6qdl-kontron-samx6i: fix board reset
+>   ARM: dts: imx6qdl-kontron-samx6i: cleanup the PMIC node
+>   ARM: dts: imx6qdl-kontron-samx6i: fix SPI0 chip selects
+>   ARM: dts: imx6qdl-kontron-samx6i: fix product name
+>   ARM: dts: imx6qdl-kontron-samx6i: always enable eMMC
+>   ARM: dts: imx6qdl-kontron-samx6i: add SDIO_PWR_EN support
+>   dt-bindings: arm: fsl: document Kontron SMARC-sAMX6i boards
+>   ARM: dts: imx6qdl-kontron-samx6i: add actual device trees
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |  12 ++
+>  arch/arm/boot/dts/nxp/imx/Makefile            |   2 +
+>  .../nxp/imx/imx6dl-kontron-samx6i-ads2.dts    |  12 ++
+>  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    |   2 +-
+>  .../dts/nxp/imx/imx6q-kontron-samx6i-ads2.dts |  12 ++
+>  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     |  25 +---
+>  .../nxp/imx/imx6qdl-kontron-samx6i-ads2.dtsi  | 121 ++++++++++++++++++
+>  .../dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi   |  41 ++++--
+>  8 files changed, 190 insertions(+), 37 deletions(-)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i-ads2.dtsi
+> 
+> --
+> 2.39.2
+> 
+> 
+> 
 
-That's not quite true. We go through all sort of hoops to find about
-device aliasing on PCI and allow devices that translate into the same
-DID to get MSIs.
 
-Of course, just like the IOMMU, you lose any form of isolation, but
-you get what you pay for.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-	M.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
--- 
-Without deviation from the norm, progress is not possible.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y nxp/imx/imx6dl-kontron-samx6i-ads2.dtb nxp/imx/imx6q-kontron-samx6i-ads2.dtb' for 20240604135934.1951189-1-mwalle@kernel.org:
+
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu2_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /soc/bus@2000000/pinctrl@20e0000: failed to match any schema with compatible: ['fsl,imx6dl-iomuxc']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /soc/bus@2000000/pinctrl@20e0000: failed to match any schema with compatible: ['fsl,imx6q-iomuxc']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: audio-codec@1a: 'AVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: audio-codec@1a: 'CPVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: audio-codec@1a: 'DBVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: audio-codec@1a: 'DCVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: audio-codec@1a: 'MICVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: audio-codec@1a: 'AVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: audio-codec@1a: 'CPVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: audio-codec@1a: 'DBVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: audio-codec@1a: 'DCVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: audio-codec@1a: 'MICVDD-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/sound/wlf,wm8904.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: audmux@21d8000: 'audmux_adu3', 'audmux_adu4', 'audmux_ssi1', 'audmux_ssi2' do not match any of the regexes: '^mux-[0-9a-z]*$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/sound/imx-audmux.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: audmux@21d8000: 'audmux_adu3', 'audmux_adu4', 'audmux_ssi1', 'audmux_ssi2' do not match any of the regexes: '^mux-[0-9a-z]*$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/sound/imx-audmux.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /soc/ipu@2800000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: /lcd: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: i2c-gpio-intern: $nodename:0: 'i2c-gpio-intern' does not match '^i2c(@.*|-[0-9a-z]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: i2c-gpio-intern: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'pmic@8' were unexpected)
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: i2c-gpio-lcd: $nodename:0: 'i2c-gpio-lcd' does not match '^i2c(@.*|-[0-9a-z]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: /lcd: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i-ads2.dtb: i2c-gpio-cam: $nodename:0: 'i2c-gpio-cam' does not match '^i2c(@.*|-[0-9a-z]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: i2c-gpio-intern: $nodename:0: 'i2c-gpio-intern' does not match '^i2c(@.*|-[0-9a-z]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: i2c-gpio-intern: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'pmic@8' were unexpected)
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: i2c-gpio-lcd: $nodename:0: 'i2c-gpio-lcd' does not match '^i2c(@.*|-[0-9a-z]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i-ads2.dtb: i2c-gpio-cam: $nodename:0: 'i2c-gpio-cam' does not match '^i2c(@.*|-[0-9a-z]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+
+
+
+
+
