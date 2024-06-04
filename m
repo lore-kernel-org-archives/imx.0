@@ -1,203 +1,394 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2060.outbound.protection.outlook.com [40.107.104.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203628F4E
-	for <imx@lists.linux.dev>; Tue,  4 Jun 2024 00:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717462158; cv=fail; b=JDjnNSr8C0OWYlcvnX1DoY3FJ6ZB+uHINmJXoNRK9t5XIfTdPypjqs0Kx3kpPXqhBcgBbjmqYGMRhYZHWDC87lmG35RNPTGUI98XWYo5nOYcLP4pD+SuX+dv7Wng/G5Z49Aw5zXcUU1+xgzcdmH6X2UB5YbCDR5w+l9HUe/wr2Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717462158; c=relaxed/simple;
-	bh=Jl1N5O3C9dhNQQgEynLeHNXU1wbth1b7gxbwawkeWLw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=h8o72qXo+beEdt0s6rsPqtByYySQudLeWTXkJeqAL57EXx2fy2O6UvZVyUseIRHJ5TaOYcRUC2tBQCW5JVRf494AvGrdyNmUnKWoOwgh87dgDX3VFqsxEYAYtyJD8zePzbkZzBn22bYj9F0CV2APTFf/zC81YpC461jpR8P/SSQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=sdZJCYVo; arc=fail smtp.client-ip=40.107.104.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6612E1CA
+	for <imx@lists.linux.dev>; Tue,  4 Jun 2024 03:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717473441; cv=none; b=SWLFQaI5vgMRmfLSY7AI8HYMugdP34/6CrcrKeO5336Y0VG3IB+0TWlWw3ViMW7XNiCGclFh91AIcbxXe3SBC4l8MMx2nxZ6QdcvQMOGheuMp5kkKsMJD5sfrXWM/BMItGuHYa5IIPHVv3IjaoPcVNFX6CWmBFPezYR70/6eprU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717473441; c=relaxed/simple;
+	bh=UMFaQHIGOcCk2JsX+HFbn+3z235Z8FarTMQKUt5Qxwc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qOXwQO06XXsXgu7wn7UkUC7hQ21SBMGQfYubJycEbBhWHYMZkrXS/ZMGy14qKcb9nqBr/4tJIVipAAkFQ4t4hTxU5frfrWy2cq/n6todZL5Ay8MvG5gQYhlh9xFuDeExUd8TuKsHNdwFR6h/tT6UI8FvMjz9q84H6GXKWpocpOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=edtI8vf/; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="sdZJCYVo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AKOTY7z/0YJe8epqsuiTljq79Dk4zi2um4eOe2SfFABeMCTd4+zxvAQ7cD2SlN/R/NjZODFB19aFDXIC92bx+jY7nt+BcIo+oGpgWXaPMeG2KVARME7WWvQEy1kAmEPrTXdlsAZWtihkn0PGPmpywmSA3dqOvl8aaXcQQYtJ1/kgVEHnB63Yz+/z2Ludrav+w+Gx2s1H7gw9umIC0127EBwc69BhBT3wbF+BW8BJ7UciWVIKwDw7az/U4RsUZKgoEo81tTBD3KpfAPWvTW1i10KRlLfi2BVNIpWVyqgAlZPHJ16ygcZcJevKXgDvpCzkpPuvmy0mTSxt/tQa2uxyKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u0y0BTU7qoW6FLGGzi/JQ7rggEE6NAcDcdipSrk1M8E=;
- b=MJ5pE7ts4zkioK+g8OyJPF9b1g5Hl980nA1blzA/YLcJ2OFo3D3gaadbjKKliPq1X/9bKYC/ZbcAEpYL2FCxTRq60o9dgT9MDH6O0UbOK0BiNyV6ltBSH5B+qsRU0Iq4jzeUC4YiW8DPhMj8AGICO3qDgnwVGbQ49h0YSj9QIra9pncAQXOVpDNu5Z+Y+7VEdwnPaZq/+ti/BcMnPZKIL0z8HCZBWYKBTwnDBSuR6cOgOTwddjI3sslt/29sIp8wecD8in3RltVonEWBG4cqzIj7OiDMNWFLEBO+yuD92++rjCLvMBmyIKBbACkDpnuabuH+qwKSXTDNckolg50tYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u0y0BTU7qoW6FLGGzi/JQ7rggEE6NAcDcdipSrk1M8E=;
- b=sdZJCYVoTFRtiLNLejIvpJePoW1wUIbqZfXSbsY0Wh4vwBka0c2PGt1RAYo65ntBstEk28fVKgSBm/kHyVA1oVXfmt8yUGLBqFFM2vl5G1Mx15gAn64wvQf4ZKMJu4nxlsKzFPTAU2JG8V3GjvWeJwDwj6yYaUr6WF7gHsxac7Q=
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
- by AM7PR04MB7160.eurprd04.prod.outlook.com (2603:10a6:20b:119::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.24; Tue, 4 Jun
- 2024 00:49:13 +0000
-Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::557f:6fcf:a5a7:981c]) by DU0PR04MB9417.eurprd04.prod.outlook.com
- ([fe80::557f:6fcf:a5a7:981c%7]) with mapi id 15.20.7633.021; Tue, 4 Jun 2024
- 00:49:13 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-CC: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Cristian Marussi
-	<cristian.marussi@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>, Aisheng Dong
-	<aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Subject: RE: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions with
- fsl,pins property
-Thread-Topic: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions with
- fsl,pins property
-Thread-Index: AQHaq0Z+AFfJc9w7tEOWjM+RsEK2hrGqyxrQgAtZjICAALMGcA==
-Date: Tue, 4 Jun 2024 00:49:13 +0000
-Message-ID:
- <DU0PR04MB941706D2E6FA25AD23B4863C88F82@DU0PR04MB9417.eurprd04.prod.outlook.com>
-References: <20240521-pinctrl-scmi-imx95-v1-0-9a1175d735fd@nxp.com>
- <DU0PR04MB941718F15619A907C15AA18588F02@DU0PR04MB9417.eurprd04.prod.outlook.com>
- <Zl3LKRE-PT3u1AX7@bogus>
-In-Reply-To: <Zl3LKRE-PT3u1AX7@bogus>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AM7PR04MB7160:EE_
-x-ms-office365-filtering-correlation-id: 32882376-80cd-44a3-7836-08dc8430279c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230031|1800799015|7416005|376005|366007|38070700009;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?9ixRWM+B478Z2QcmEgg6aQLU/MyZdMsNTCgnE01CxmppLpNi69IlaHuwoFp/?=
- =?us-ascii?Q?FnWSxs2KB2cB3D+5HV1VFtUcW+lnNR90E/+oj19ib633O3O/QsT93OcFfypE?=
- =?us-ascii?Q?QBeJSfy1vyfpTWpffYX8hCn2sGv5sPOCc1yENSBDsxsR835DRWLI3v8VttHW?=
- =?us-ascii?Q?61mvdzjSY/ImI/Ybdn/1TA9u/cWs1/NDYDe3Tk8LHIJqWpGXuhy9Lk8H8y7r?=
- =?us-ascii?Q?stPQ0p33MB7VPItfg+tbDtmEmNGNVUtIGi+aQD1uCvDKmXYDOhyiJ+UrFwEq?=
- =?us-ascii?Q?0yeJRflYJJcRWDLkjBeAP7blSYuziX0ZxmIhRv4CwKbpeSaTepGlzQuIExb5?=
- =?us-ascii?Q?QPF28dV3ufHxjA4JL0NGrOP8ZoZEA58likou+Ipsb1NqX5+GrIR/hy0Ijyto?=
- =?us-ascii?Q?7zOjzBi/yzvbll0LZQL4HFW5Z5xjRs68ruakBB+rsxd6Edq74dfI6WQeWh5u?=
- =?us-ascii?Q?7itJ2hC54GekrRkUGMlctDFCyUnggBiXZk3088k8xjz3/lrtX73DfOluyrfZ?=
- =?us-ascii?Q?Eag05lqCpo24C/Xv8RZxVWs2wp1V3Ofj8NV2Zzfamu2L3V6Hq7PzaJ4cx/5i?=
- =?us-ascii?Q?ql4+5eYu46AFpFz6N5rkqbh0Up1/+whjZv4eY152Rx1jrNHj1VVhfeK/8Agg?=
- =?us-ascii?Q?scIWOc+RcpSSMPZZWclN1uKalsPBq0FY0h/GhkJ9ImyBm2udRXGyJOVgMILj?=
- =?us-ascii?Q?x+fO7woa4F31cOJoEkmBOZUyhy+zN12TI/sjCbJ4jMHpz2g2j5a+49BXeIGQ?=
- =?us-ascii?Q?1PMjkaHc7I7RWjMapeFma1fCwhEg/wIkIFneN6uBSVWTAb/YbaILcrSEGquH?=
- =?us-ascii?Q?p+KUz3G+Q3EkWPZ7B8R/5Mp6Mbeuq3J1fwKgaUWus+A65Jrjv+qhArh3LJWU?=
- =?us-ascii?Q?l94qa5p9GexsHRTOCwanNRfsWMJ/wx5g9s7Ig8XnMrHuXpqIr7qOtFMe5Iq7?=
- =?us-ascii?Q?T6gRRYK8jk8AxHCOkmu5y3EqdV1s5pe7f3fCYaHq0qs39PHxb/uCLpTMiwXO?=
- =?us-ascii?Q?3g3nqnnqBOGXO5hSeI/fjzbJzaPQFfTW++a97j1hcuHJ+HGuFd+NpQJPzQNl?=
- =?us-ascii?Q?nmfqPyVRo6Blf0wp+HtzKaBhWpSU9GtuDyq8JgwXPiTqNZ5QNkPyes3bEyUr?=
- =?us-ascii?Q?e45daGBB+GQkFEWB/vnKeMaxopXtj6BeWGFsWDrqTDw83D3TBOdB0nVo23Uz?=
- =?us-ascii?Q?bM/mHtzac4nn22Hg1wcaVDdo+COoWq8p4UfjL8i+dwLrPgWhHJ2+psjSaZEA?=
- =?us-ascii?Q?fyokFYxzKw4Yj4g2jV/N/YDN2Zu82sLrcqDtv53yY0jU6gLLLHcc4Z1vhvJt?=
- =?us-ascii?Q?C00m6ggbApPTASkuh6q9ZmR7ddADhQrP9Wto8bxf0i+q5g=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(366007)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?fkN9uTxTeZNyQ4LLDHc79VI+VlTOwoqXe/duSaZOQ9kGzL7zWaQ7j3QNN5Xc?=
- =?us-ascii?Q?YscCzPXf4aAx7vwKeo6/yewCKZyhNEtU3V1XYq59nF3aBOTRtdzuantHrWe3?=
- =?us-ascii?Q?dHVWzboAqksx4QAH2XyRNcGz+Y9QIjUScTS7a430dmyXngwli7j7djHvSkMh?=
- =?us-ascii?Q?b6JvNuSCNBamm5NzRtjFYj+uDmfqsl8yZGZ//jqNG/O0TWne9CCm8eNDhFH+?=
- =?us-ascii?Q?1XVgRpX30eINWrahW15dFyOcZUllpgNahXdTE5f5JooN8YnqqK3RViuenm1M?=
- =?us-ascii?Q?bVeXaYo943hCHiZbPKJoXnWAm+P8kniM62ytc2CnYvQOSg+2AdZxFTHv9WZK?=
- =?us-ascii?Q?JbbUrVidIGDTusYHeRtnnHdC/zk5kFNN9vhloAliMhfUIJ0ZbJ3YU1FR9CuC?=
- =?us-ascii?Q?2eRgfr+FkxukpCu9cRfnKYikMKCT03UdIZ3PbFAwD0z7npGXr130iyMx4HWN?=
- =?us-ascii?Q?t0OLqsnr1rQBg6VSVTLLUi4rAH0SXcAiiGePxmSQON69dUtOqblD57ZmDdlf?=
- =?us-ascii?Q?oDGfFThnuJ3mJeKKQU5KMqCx4KhCZvb2g5ojSOxtlnwBnoYJNu5L53mAs366?=
- =?us-ascii?Q?EKN19oIVVuDA7r4zyK0JlWYw99tYo+k+aPFKuy+OejI0evlGdkHRlKZlzPmR?=
- =?us-ascii?Q?z3cRdfJuG9IT+wY6U3vrC+donW15XOevocn8qzagJ++0S6ARioWYw9lgf/y/?=
- =?us-ascii?Q?bDcvC6pl7l94RxOFz4EFezgiMsBTDRA473tEgo5ObB/zLlsW+tDlJvzM46+8?=
- =?us-ascii?Q?1Cn96N0M/oNkmEKfBVwNZo0f9RUbn8/ZrK+gUQ34RJj4l12peKHBky3avQrY?=
- =?us-ascii?Q?vBMN0RVk8eVtDewz6uEtLrV2XOMhj/UtJYLrgKg7A2Fpx/7hrc2i6GrTbhO4?=
- =?us-ascii?Q?N6tetd+3lmd8KCwGHZ2GIDWaYeVS0HyrxhVfLmBjzQWm+BDOaaGs5LMRzLN3?=
- =?us-ascii?Q?r5sBIVoGPds26AcPw0m1wY8uv6CZhTwaiOqeyin9sCIVRlI8ICdUwUThsK7f?=
- =?us-ascii?Q?x4kVP2nHIB7p1uzHS9I9gG2aClCGSllrpoVDySJu8LvA62Y7SH7zSVE+Ppbo?=
- =?us-ascii?Q?MEs5YIM8XpjG6R9wqt8uzLEfCOP+XG2j9Fer8Ec3n0rQ09ZvTHd6JaJ4NDAF?=
- =?us-ascii?Q?xoioUnDAOYSYkfMCQbUAt+LE9qhWV2Nb7AOB8LriY586k0QYLq5ryw8dgWOo?=
- =?us-ascii?Q?YEGq/tWKyWQHeNAaCV/JMKtl37211yWF79JFSxCxK19gqbZ9erUQe8yhXyBz?=
- =?us-ascii?Q?EaHW/z0FCEoiHdLp9N9a2e3Vw0UWXMmUWBqc9ZpKD5xoyVjGvm1K1vJ8Tmw1?=
- =?us-ascii?Q?/QVseCtA1/fwhjW+lmhtTdHF4EWtutsrn8KUXXr465A3PR6pONuQqR877LcI?=
- =?us-ascii?Q?VugtPPq1wzVFcdsbqlLLOXgwC3Py2MtjH1oy/2DCEelyVvXzRLJ0XcqExbx2?=
- =?us-ascii?Q?+RIvUOvQU0ugc+5RnLgFDUVTQZAtqJLq9/oq9e4PiywId7Q2VcMtUBRwwFVA?=
- =?us-ascii?Q?12im3gqXyeUUbSOX35TuPfQFFc3DZqkKMDwLdWN+ZNx6WNLNjlznKguB0+ZF?=
- =?us-ascii?Q?x/bZ6KCBhwUObsK7N6w=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="edtI8vf/"
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3748d68b7b8so15967495ab.1
+        for <imx@lists.linux.dev>; Mon, 03 Jun 2024 20:57:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717473439; x=1718078239; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sDw463836VXxjFEssZxkzySa5xdge6xhhv/M+Qec16I=;
+        b=edtI8vf/Ory7GHv5U7v+YTfCGvf8G2B/Aae1CfFVS/yqA1fpGWC26XSZmstO/gxsNf
+         UuFz4ATzjzVBFGgzz9OdfXcVF5GEMrwOyX33gO5ChNYonmqWNwSV25Mm1qVg7mvyl8LU
+         e/E7nFZV2pDFmG6swsP3Hhs8f4RpHpY03EV6zcQg7mKcDVEg0Ctseag9sBR3cl73b2xu
+         tI1qDErXXb9AebWYa9lJMp0M72o7KnUFkWakF60v3TG/IHIR37GCh9Vca4sP10uwu/EX
+         DMqpEWJU3N8AjA4lXEDClPv5aSiPoCZuAMQxBL+7iOBnTd6PIUKT/yTw81xcYSIFBSkH
+         1r6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717473439; x=1718078239;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sDw463836VXxjFEssZxkzySa5xdge6xhhv/M+Qec16I=;
+        b=uc3rH17Rf6aIQeWwngxKB5Cz7RUxH5v/vnPaKaX7CwNTeSWbwIcg6sY+XBqkEcvepm
+         YPxG3RLnL6n7vp1j1pAyeO5zeXA0AyofYNGn3ulqAVuAmsZIE44tBbvpn4s9VBrh9HKW
+         3OkTvj4yOZMSsfoamZ1Wmil9WMKJ/ooHYUe97CAk+yL5wJmBZw5P5kO4SObFqx6tRNlV
+         8Eb/GpIiAQROSLjCRI4a1QfITzt9Z4UrqY5kDEvp9dKDDEIBO22PMjIeb9hxtUPHi0wC
+         C/ypJttKVvdweha5BldgfSvyoQ3hon0gp+fpt2+/sWgTVfKnSccOPxo1gwiwlSQXcLVo
+         lAHg==
+X-Forwarded-Encrypted: i=1; AJvYcCUTEM7/bleHGo6oxW3H32Wjkr3ASdcjg6Z6a34dGPgM5AcBxOE/6ddQtK5+SlltZYeKjywQgxCb8Jx9FLPlFhBY1vY5
+X-Gm-Message-State: AOJu0Yyibx1DGeGdkPpT9MWfXIqKPUKRbIGfPlHQhvuCLj0g6v55U4x5
+	tcFPyrQfKrqv9UDoH/+o6vwXvBh/yJpKmYPVoB5qwtIaewRRzKD+0OielSteYRxs1cDBY1FtCzq
+	82C62FhQ2yHUWV26QWwQyAJHIhNgSFjydDYE=
+X-Google-Smtp-Source: AGHT+IHv96HDpvzi1scKNYLa1svsheD1fN+/LYbf36PbZHOxMXXSnA2KzvqwtRPzC25VCJqRhpk1QNNccpIzt5c3Ijc=
+X-Received: by 2002:a05:6e02:2165:b0:374:99df:1da2 with SMTP id
+ e9e14a558f8ab-37499df20b9mr66313035ab.18.1717473438578; Mon, 03 Jun 2024
+ 20:57:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32882376-80cd-44a3-7836-08dc8430279c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2024 00:49:13.7471
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QgV7U0DbWdxH4qMEjesCZZJf8wcaziNF2NiyLsI69XbHqDgU2TzzdBiCb6sXjWJvGT+1dB3hPVzqV426jIH4aw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7160
+References: <1717036278-3515-1-git-send-email-shengjiu.wang@nxp.com>
+ <1717036278-3515-4-git-send-email-shengjiu.wang@nxp.com> <20240530090558.53reobf2zea22oi2@pengutronix.de>
+In-Reply-To: <20240530090558.53reobf2zea22oi2@pengutronix.de>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 4 Jun 2024 11:57:07 +0800
+Message-ID: <CAA+D8AMTC0cwsoebc804rvoJ1tZMqzQcMqDS17tPvwCsAmwFCw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/5] reset: imx-aux: Add i.MX auxiliary reset driver
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, p.zabel@pengutronix.de, abelvesa@kernel.org, 
+	peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sudeep,
-
-> Subject: Re: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions wit=
-h
-> fsl,pins property
->=20
-> On Mon, May 27, 2024 at 08:36:27AM +0000, Peng Fan wrote:
-> > Hi Linus, Sudeep, Cristian,
+On Thu, May 30, 2024 at 5:06=E2=80=AFPM Marco Felsch <m.felsch@pengutronix.=
+de> wrote:
+>
+> Hi,
+>
+> On 24-05-30, Shengjiu Wang wrote:
+> > Add support for the resets on i.MX8MP Audio Block Control module,
+> > which includes the EARC PHY software reset and EARC controller
+> > software reset. The reset controller is created using the auxiliary
+> > device framework and set up in the clock driver.
 > >
-> > > Subject: [PATCH 0/3] pinctrl: scmi: support i.MX95 OEM extensions
-> > > with fsl,pins property
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  drivers/reset/Kconfig         |   8 ++
+> >  drivers/reset/Makefile        |   1 +
+> >  drivers/reset/reset-imx-aux.c | 217 ++++++++++++++++++++++++++++++++++
+>                             ^
+> You make use of the auxiliary bus but this isn't a aux driver, it's the
+> i.MX8MP EARC reset driver. According the TRM only the EARC reset bits
+> are covered by the AUDIOMIX blk-ctrl.
+
+I am confused. According to below discussion:
+
+https://lore.kernel.org/lkml/b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.=
+org/
+
+Stephen and Conor suggested using auxdev.
+
+
+Best regards
+Shengjiu Wang
+
+>
+> >  3 files changed, 226 insertions(+)
+> >  create mode 100644 drivers/reset/reset-imx-aux.c
 > >
-> > Sorry if this is an early ping to you. Just wanna this not blocking
-> > i.MX95 upstream support.
+> > diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+> > index 7112f5932609..38fdf05b326b 100644
+> > --- a/drivers/reset/Kconfig
+> > +++ b/drivers/reset/Kconfig
+> > @@ -91,6 +91,14 @@ config RESET_IMX7
+> >       help
+> >         This enables the reset controller driver for i.MX7 SoCs.
 > >
->=20
-> I would say yes as this was posted bang in the middle of the merge window=
-.
-> So it is possible for people to miss this if they are busy otherwise.
->=20
-> I wouldn't have responded in general or if someone is new to the Linux ke=
-rnel
-> development. But you are no new to kernel development.
->=20
-> In general I also have a suggestion for you. Avoid churning the dependent
-> patch series if the base set of patches are not yet reviewed or agreed up=
-on.
-> I was super confused with the amount of different concurrent but dependen=
-t
-> patch series you had for this whole i.MX SCMI pinmux support. I had ignor=
-ed
-> and not responded in the past but thought it would be good to respond in
-> this thread.
-
-Thanks for your suggestion.  I tried to do different implementations that
-could make all of us agree, so it was indeed many versions with different
-implementations. Sorry. I will improve.
-
-BTW: would you please also give an ACK for patch 3, because patch 3 uses
-module_scmi_driver?
-
-Thanks,
-Peng.
-
->=20
-> --
+> > +config RESET_IMX_AUX
+> > +     tristate "i.MX Auxiliary Reset Driver"
+>                         ^
+>               Same applies here
+>
+> > +     depends on CLK_IMX8MP
+> > +     select AUXILIARY_BUS
+> > +     default CLK_IMX8MP
+> > +     help
+> > +       This enables the auxiliary reset controller driver for i.MX.
+> > +
+> >  config RESET_INTEL_GW
+> >       bool "Intel Reset Controller Driver"
+> >       depends on X86 || COMPILE_TEST
+> > diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+> > index fd8b49fa46fc..f078da14c327 100644
+> > --- a/drivers/reset/Makefile
+> > +++ b/drivers/reset/Makefile
+> > @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) +=3D reset-brcmstb=
+-rescal.o
+> >  obj-$(CONFIG_RESET_GPIO) +=3D reset-gpio.o
+> >  obj-$(CONFIG_RESET_HSDK) +=3D reset-hsdk.o
+> >  obj-$(CONFIG_RESET_IMX7) +=3D reset-imx7.o
+> > +obj-$(CONFIG_RESET_IMX_AUX) +=3D reset-imx-aux.o
+> >  obj-$(CONFIG_RESET_INTEL_GW) +=3D reset-intel-gw.o
+> >  obj-$(CONFIG_RESET_K210) +=3D reset-k210.o
+> >  obj-$(CONFIG_RESET_LANTIQ) +=3D reset-lantiq.o
+> > diff --git a/drivers/reset/reset-imx-aux.c b/drivers/reset/reset-imx-au=
+x.c
+> > new file mode 100644
+> > index 000000000000..61c353abc84e
+> > --- /dev/null
+> > +++ b/drivers/reset/reset-imx-aux.c
+> > @@ -0,0 +1,217 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +/*
+> > + * Copyright 2024 NXP
+> > + */
+> > +
+> > +#include <linux/auxiliary_bus.h>
+> > +#include <linux/device.h>
+> > +#include <linux/io.h>
+> > +#include <linux/module.h>
+> > +#include <linux/of.h>
+> > +#include <linux/of_address.h>
+> > +#include <linux/of_platform.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/reset-controller.h>
+> > +
+> > +/*
+> > + * The reset does not support the feature and corresponding
+> > + * values are not valid
+> > + */
+> > +#define ASSERT_NONE     BIT(0)
+> > +#define DEASSERT_NONE   BIT(1)
+> > +#define STATUS_NONE     BIT(2)
+> > +
+> > +/* When set this function is activated by setting(vs clearing) this bi=
+t */
+> > +#define ASSERT_SET      BIT(3)
+> > +#define DEASSERT_SET    BIT(4)
+> > +#define STATUS_SET      BIT(5)
+> > +
+> > +/* The following are the inverse of the above and are added for consis=
+tency */
+> > +#define ASSERT_CLEAR    (0 << 3)
+> > +#define DEASSERT_CLEAR  (0 << 4)
+> > +#define STATUS_CLEAR    (0 << 5)
+> > +
+> > +/**
+> > + * struct imx_reset_ctrl - reset control structure
+> > + * @assert_offset: reset assert control register offset
+> > + * @assert_bit: reset assert bit in the reset assert control register
+> > + * @deassert_offset: reset deassert control register offset
+> > + * @deassert_bit: reset deassert bit in the reset deassert control reg=
+ister
+> > + * @status_offset: reset status register offset
+> > + * @status_bit: reset status bit in the reset status register
+> > + * @flags: reset flag indicating how the (de)assert and status are han=
+dled
+> > + */
+> > +struct imx_reset_ctrl {
+> > +     u32 assert_offset;
+> > +     u32 assert_bit;
+> > +     u32 deassert_offset;
+> > +     u32 deassert_bit;
+> > +     u32 status_offset;
+> > +     u32 status_bit;
+> > +     u32 flags;
+> > +};
+>
+> Why do we make it this compicated for an simple EARC module reset? I
+> understand that you want to provide a generic driver which can be
+> re-used but there is actual no other user and may will get no other user
+> in the future too. Therefore I would like to keep it simple at the
+> begin and adapt the code on-demand.
+>
 > Regards,
-> Sudeep
+>   Marco
+>
+> > +struct imx_reset_data {
+> > +     const struct imx_reset_ctrl *rst_ctrl;
+> > +     size_t rst_ctrl_num;
+> > +};
+> > +
+> > +struct imx_aux_reset_priv {
+> > +     struct reset_controller_dev rcdev;
+> > +     void __iomem *base;
+> > +     const struct imx_reset_data *data;
+> > +};
+> > +
+> > +static int imx_aux_reset_assert(struct reset_controller_dev *rcdev,
+> > +                             unsigned long id)
+> > +{
+> > +     struct imx_aux_reset_priv *priv =3D container_of(rcdev,
+> > +                                     struct imx_aux_reset_priv, rcdev)=
+;
+> > +     const struct imx_reset_data *data =3D priv->data;
+> > +     void __iomem *reg_addr =3D priv->base;
+> > +     const struct imx_reset_ctrl *ctrl;
+> > +     unsigned int mask, value, reg;
+> > +
+> > +     if (id >=3D data->rst_ctrl_num)
+> > +             return -EINVAL;
+> > +
+> > +     ctrl =3D &data->rst_ctrl[id];
+> > +
+> > +     /* assert not supported for this reset */
+> > +     if (ctrl->flags & ASSERT_NONE)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     mask =3D BIT(ctrl->assert_bit);
+> > +     value =3D (ctrl->flags & ASSERT_SET) ? mask : 0x0;
+> > +
+> > +     reg =3D readl(reg_addr + ctrl->assert_offset);
+> > +     writel(reg | value, reg_addr + ctrl->assert_offset);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int imx_aux_reset_deassert(struct reset_controller_dev *rcdev,
+> > +                               unsigned long id)
+> > +{
+> > +     struct imx_aux_reset_priv *priv =3D container_of(rcdev,
+> > +                                     struct imx_aux_reset_priv, rcdev)=
+;
+> > +     const struct imx_reset_data *data =3D priv->data;
+> > +     void __iomem *reg_addr =3D priv->base;
+> > +     const struct imx_reset_ctrl *ctrl;
+> > +     unsigned int mask, value, reg;
+> > +
+> > +     if (id >=3D data->rst_ctrl_num)
+> > +             return -EINVAL;
+> > +
+> > +     ctrl =3D &data->rst_ctrl[id];
+> > +
+> > +     /* deassert not supported for this reset */
+> > +     if (ctrl->flags & DEASSERT_NONE)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     mask =3D BIT(ctrl->deassert_bit);
+> > +     value =3D (ctrl->flags & DEASSERT_SET) ? mask : 0x0;
+> > +
+> > +     reg =3D readl(reg_addr + ctrl->deassert_offset);
+> > +     writel(reg | value, reg_addr + ctrl->deassert_offset);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int imx_aux_reset_status(struct reset_controller_dev *rcdev,
+> > +                             unsigned long id)
+> > +{
+> > +     struct imx_aux_reset_priv *priv =3D container_of(rcdev,
+> > +                                     struct imx_aux_reset_priv, rcdev)=
+;
+> > +     const struct imx_reset_data *data =3D priv->data;
+> > +     void __iomem *reg_addr =3D priv->base;
+> > +     const struct imx_reset_ctrl *ctrl;
+> > +     unsigned int reset_state;
+> > +
+> > +     if (id >=3D data->rst_ctrl_num)
+> > +             return -EINVAL;
+> > +
+> > +     ctrl =3D &data->rst_ctrl[id];
+> > +
+> > +     /* status not supported for this reset */
+> > +     if (ctrl->flags & STATUS_NONE)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     reset_state =3D readl(reg_addr + ctrl->status_offset);
+> > +
+> > +     return !(reset_state & BIT(ctrl->status_bit)) =3D=3D
+> > +             !(ctrl->flags & STATUS_SET);
+> > +}
+> > +
+> > +static const struct reset_control_ops imx_aux_reset_ops =3D {
+> > +     .assert   =3D imx_aux_reset_assert,
+> > +     .deassert =3D imx_aux_reset_deassert,
+> > +     .status   =3D imx_aux_reset_status,
+> > +};
+> > +
+> > +static int imx_aux_reset_probe(struct auxiliary_device *adev,
+> > +                            const struct auxiliary_device_id *id)
+> > +{
+> > +     struct imx_reset_data *data =3D (struct imx_reset_data *)(id->dri=
+ver_data);
+> > +     struct imx_aux_reset_priv *priv;
+> > +     struct device *dev =3D &adev->dev;
+> > +
+> > +     priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > +     if (!priv)
+> > +             return -ENOMEM;
+> > +
+> > +     priv->rcdev.owner     =3D THIS_MODULE;
+> > +     priv->rcdev.nr_resets =3D data->rst_ctrl_num;
+> > +     priv->rcdev.ops       =3D &imx_aux_reset_ops;
+> > +     priv->rcdev.of_node   =3D dev->parent->of_node;
+> > +     priv->rcdev.dev       =3D dev;
+> > +     priv->rcdev.of_reset_n_cells =3D 1;
+> > +     priv->base            =3D of_iomap(dev->parent->of_node, 0);
+> > +     priv->data            =3D data;
+> > +
+> > +     return devm_reset_controller_register(dev, &priv->rcdev);
+> > +}
+> > +
+> > +#define EARC  0x200
+> > +
+> > +static const struct imx_reset_ctrl imx8mp_audiomix_rst_ctrl[] =3D {
+> > +     {
+> > +             .assert_offset =3D EARC,
+> > +             .assert_bit =3D 0,
+> > +             .deassert_offset =3D EARC,
+> > +             .deassert_bit =3D 0,
+> > +             .flags  =3D ASSERT_CLEAR | DEASSERT_SET | STATUS_NONE,
+> > +     },
+> > +     {
+> > +             .assert_offset =3D EARC,
+> > +             .assert_bit =3D 1,
+> > +             .deassert_offset =3D EARC,
+> > +             .deassert_bit =3D 1,
+> > +             .flags  =3D ASSERT_CLEAR | DEASSERT_SET | STATUS_NONE,
+> > +     },
+> > +};
+> > +
+> > +static const struct imx_reset_data imx8mp_audiomix_rst_data =3D {
+> > +     .rst_ctrl =3D imx8mp_audiomix_rst_ctrl,
+> > +     .rst_ctrl_num =3D ARRAY_SIZE(imx8mp_audiomix_rst_ctrl),
+> > +};
+> > +
+> > +static const struct auxiliary_device_id imx_aux_reset_ids[] =3D {
+> > +     {
+> > +             .name =3D "clk_imx8mp_audiomix.reset",
+> > +             .driver_data =3D (kernel_ulong_t)&imx8mp_audiomix_rst_dat=
+a,
+> > +     },
+> > +     { }
+> > +};
+> > +MODULE_DEVICE_TABLE(auxiliary, imx_aux_reset_ids);
+> > +
+> > +static struct auxiliary_driver imx_aux_reset_driver =3D {
+> > +     .probe          =3D imx_aux_reset_probe,
+> > +     .id_table       =3D imx_aux_reset_ids,
+> > +};
+> > +
+> > +module_auxiliary_driver(imx_aux_reset_driver);
+> > +
+> > +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
+> > +MODULE_DESCRIPTION("Freescale i.MX auxiliary reset driver");
+> > +MODULE_LICENSE("GPL");
+> > --
+> > 2.34.1
+> >
+> >
+> >
