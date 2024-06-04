@@ -1,127 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0416013D24C;
-	Tue,  4 Jun 2024 16:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D81A84A33
+	for <imx@lists.linux.dev>; Tue,  4 Jun 2024 18:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717516856; cv=none; b=ahlU7nnBwEBRtMCdxVbQ+g0Kugvb6PKTTZscszwyY3kOsllvV+hSCmk5rtWAwhGPsug1bxHkUqgLWWqTmg88SJYSJVSdW6z9afQOXlaja+oHo9w5cMLrAOoeOBApnEwwc1C8Twx4dhdKx3mBIjjUp8+UoAq4V5rC2PvxfZGy+Ys=
+	t=1717524846; cv=none; b=qQC2i7SkcHdv3KNVP+uRfvNypo6oMQwCV/UWZBjprsPXVbVwKreYbC43+qJKLie0TviA+mCeXBYJMUAFWIvP86AGtNIlPKozBAmwVm1yvFjmIy0pmZrgh6SMYgi+bIEzwO7V2cRhyKW/APzEwlNkslGM47jbcxG1Pzw8as5GOWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717516856; c=relaxed/simple;
-	bh=3hmxqGK0QfWX4zsvkouthqZUz26y15GVCoVzj1/J/GE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QkVymRWyJSmDj/ykbfXS2xJ9yAevrB1jKfHkR2ELcwTR2LtFlrLD4H/50E0SlGSVdDZnL8cPBH2HwH1o3WT5FqNe8Eul07vnNCTmLA0Qx7YmeYyUtQnpC+C0inMrwk5A0zyANPB+Htv1GkXFfoSxjkdR2Z4AqJvQ5Gdqd8U9zO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxb6Zu+n; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717524846; c=relaxed/simple;
+	bh=zprNLxxXrGNdjRroO70rIrHz8BIroNnj1HM6tE5B7HE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QE8RoAb62nj2AGmFmpmTu7YFdeSJG0qXqjpEKmpjZJfPDyIlR0y0ww8gWnd1wfirdujWsi5DPvDWutU3H58ZkniDNFiF79M35LXyaJz6B+Cc17hzcwn/w+TsroIU9wuJGEorY0YtL0zMoTRqg0cTafGmJT+nX8GsbE1s1uQ5tHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i/uaFKuE; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxb6Zu+n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFB4C2BBFC;
-	Tue,  4 Jun 2024 16:00:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717516855;
-	bh=3hmxqGK0QfWX4zsvkouthqZUz26y15GVCoVzj1/J/GE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uxb6Zu+nh6OwsK7NJIFDFbxEbOFjSmWADSsWciXC6dZTsyol8VMECg2EgsUsuSibi
-	 H9Uq5jlwwGeeBbtgy2ysCBsC7FJaUJSrNDZuMK9JTM3sCWapo7xvBGec9F/nfzP9ym
-	 s1osGlmP30YGTZsJZ094OksMwfj+yEgGBHuBIStb/ZlLMi+Qan9NJxQA5h2zAPQCiA
-	 UN2+Ol5RJBofoNp4U5XHgBppSLgbpD6hZlHpk79J0xTjj+xWk0H5VYODSwsauI89O4
-	 RwapKqUbBZmFSpoYjz/BJoit4X/z07oIrjdVguaL5OG9uuSDKVt1EfiK2eyQd14mSG
-	 W8FwJb07GtN+A==
-Message-ID: <1a6feb0b-76e3-42a0-8ba7-03d92e2c62f6@kernel.org>
-Date: Tue, 4 Jun 2024 18:00:51 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i/uaFKuE"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2c1afeb259cso918595a91.0
+        for <imx@lists.linux.dev>; Tue, 04 Jun 2024 11:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717524844; x=1718129644; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zprNLxxXrGNdjRroO70rIrHz8BIroNnj1HM6tE5B7HE=;
+        b=i/uaFKuEjed0oj0XKIZRaE+rTE//gd2t13mFXerqPXUsVuLNKgfjrHNcHh3B8ps3l9
+         523k/cm+FYC7+roh4WlgFdO/2ZMfSLRtFKalWCZJ1SiYRqM6uBqXAR78r20/VenicWPj
+         fDW5tldQzqf4PFLvqRkE4/g6bvRzSOCbCVc/UYI6q0Bu2+KQCLO4GBv4ub7AUzTfh4Hz
+         4NRD6A2vk7T15QZrhucCq9LIaibTWorQRWUMfzZCRJpLa8jAGSBQqnTRBh+6hpHALDSh
+         OI07+UQMldilEeVdouhLv3FcE3jg317XA91MDycLDNItJ9AUtpI2gRGoEOSh4+3OCeDH
+         wfyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717524844; x=1718129644;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zprNLxxXrGNdjRroO70rIrHz8BIroNnj1HM6tE5B7HE=;
+        b=TNWOyJI6a/7ntvKxaXhaMxzOplc73jKl6V5rU5YufWuyGg0zed39niRlAvHWCFVRwb
+         C8NS9gEnHHHn0yiLrb7NmwbPXuDqKUa5wenTnuzNHzRuGsY/iKFBtw9RURzzWhzHLJnH
+         bQXDt7YTGNeEQIm/G66UrapP2zUVSr5CMU9PrUmfcy/xN0V7A0OROBlDWY4zL9xidWQ6
+         GBX+H4YN2bvGXqNwiKZcLAxvjQtnfjLAD985rDxfKWBAh87XZHMgOyv3RVO87UM6OgJx
+         HFEcXOw022QNZxzQh9dJ5k4s/JpkDtXSbgRhspZmhNQzZ1MyURgn0N03y18lqziBIZ4Z
+         BlXA==
+X-Gm-Message-State: AOJu0YxLYYAipU8YZfrQIJGUMrsuh6JGqhO7mFnRBiY1eW+nZpaoWqYL
+	84fGcuOCsPNuPKXrO0il7vg88YFVlIF6buoA2eZK8rBmP1vzuQAOWCmGYdOr0Ht+GJESoxzz22s
+	0BSS+cSuumRN0tw48GUWKo+JF+zo=
+X-Google-Smtp-Source: AGHT+IFJM+RSuoiIypFqZPEhI6YM4SlfusXmn4gOwq5yZZsDMMR2koH8xf+y9YPZMVAT/aQWW9uZZuGOdowU5V3nguI=
+X-Received: by 2002:a17:90a:d308:b0:2b5:1cdc:9ac8 with SMTP id
+ 98e67ed59e1d1-2c27de728aamr211122a91.4.1717524844301; Tue, 04 Jun 2024
+ 11:14:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- krzk+dt@kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- robh@kernel.org, ulf.hansson@linaro.org
-References: <20240604145308.2417017-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240604145308.2417017-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAOMZO5B0+jkaPo_6VKXVGb6SMAa78jLVQU3xUt92BpkAzc5AnQ@mail.gmail.com>
+ <DU0PR04MB949617775A095B8DE513D97690F22@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <CAOMZO5B7Zm1RXRLXs=_Re_onUam=RCy_QYUkEtGz+qvKmz=7Ow@mail.gmail.com> <CAOMZO5B4cuE5QMkjdWnTJFCs8kY_cK0q5O3xujnetfCfmJQHSg@mail.gmail.com>
+In-Reply-To: <CAOMZO5B4cuE5QMkjdWnTJFCs8kY_cK0q5O3xujnetfCfmJQHSg@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 4 Jun 2024 15:13:52 -0300
+Message-ID: <CAOMZO5BbmTTQ8OAPg8jE8-CB94VmjBB+9+9vmDtQYkL_BBK5Wg@mail.gmail.com>
+Subject: Re: imx93-11x11-evk: SD card is not detected on 6.6
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 04/06/2024 16:53, Frank Li wrote:
-> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
-> 
-> Addtional change during convert:
-> - Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
-> - Add "reg" and "interrupts" property.
-> - Change example "sdhci@2e000" to "mmc@2e000".
-> - Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
-> most existed dts file.
-> - Set clock-frequency t
+On Tue, Jun 4, 2024 at 11:16=E2=80=AFAM Fabio Estevam <festevam@gmail.com> =
+wrote:
 
-...
+> Today I built 6.6.32 again and could reproduce the problem:
 
-> +
-> +  sdhci,auto-cmd12:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      specifies that a controller can only handle auto CMD12.
-> +
-> +  voltage-ranges:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> +    items:
-> +      items:
-> +        - description: specifies minimum slot voltage (mV).
-> +        - description: specifies maximum slot voltage (mV).
+This commit causes the problem:
 
-I missed it last time:
+https://github.com/torvalds/linux/commit/04cd4831174622f545fc7ee79ead38ca7f=
+f04c0c
 
-This needs min/maxItems, because you constrained only one dimension. I
-assume this can be quite flexible, so could be min=1 and maxItems=8, or
-whatever slots number is there.
+I asked the stable folks to apply the following fix the 6.6 stable tree:
 
-Best regards,
-Krzysztof
+https://github.com/torvalds/linux/commit/a73bda63a102a5f1feb730d4d809de098a=
+3d1886
 
+With this fix applied to 6.6.32, imx93-evk boots successfully.
+
+Thanks
