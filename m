@@ -1,439 +1,346 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2048.outbound.protection.outlook.com [40.107.105.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB55E2837A
-	for <imx@lists.linux.dev>; Wed,  5 Jun 2024 17:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717607250; cv=none; b=RbYjEyh/YRjkCJOp425Uoy67hu4OCWMdr7rYpmy5imbsINfivLbDynQYWaWTCE0jxbv/9v7LwlFdMCqG5B8kBreuQFx/xw+Cbsl8I3sXYxSRgMAPYa/iMzEkHC/qd42FB3WD46ZMeTKJJxK7qIoMNpdgrty0JWchZtgRsYBtgQQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717607250; c=relaxed/simple;
-	bh=Wc2d6oL7dIorQNEBMRjf4sC4r+Df0+y+xQEpxJy5jkE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=S8Y3KNAcgOZVbNNmCMZXe1+yr+r/Zj7e4vtIf2/F8KX0GgfWH77zbfG27AWi5BI+ctLrX0pqC3mYs2+pp3G2EVZ9EGDgaLWST3wtTj5sC7gl5Oze3XvSwy3aEu5qQepVEssebtkuFvps1zbjQ7fy9QuxO+XRHUaOp9ukMz33H68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q1YBun+q; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8F0DF78
+	for <imx@lists.linux.dev>; Wed,  5 Jun 2024 18:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717613468; cv=fail; b=UdsI6sY4PzN0eMeUxKUnCeezBzAWeiUZYkWNXUez7dk0L8Fwsjuc0HadNdO9XgGq167YXEzyPQlzPDp4uk7nj2CX3jDGa2KQvKZADzYQZldUnIPJRIkYywOhDPuyyYKUakG4QdDYXEDqgwMuC3oxy9EKXX+2Xc2gMBnYeRYGEdQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717613468; c=relaxed/simple;
+	bh=hDIORg8Vjy6dYT1JxMkHUKfuWeFXhQ2EYjxoSQ/fp0o=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=KPvuISFRBsukJa8K/rgFOpOLdck2lO1uGzfOyApv5uCK4TeGUC4sAu9Hq6gAkGVTAjcnCVX+o8PXlIsVPVElBk1mmcsjaPQWPCVc2rHTwNVLdwD9YyS7DpnWFbcAQ18OTUrmgXUDkEh90kisynWJsHMxIPKQoFmXH8fCMl3nOs8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=PrQElEw+; arc=fail smtp.client-ip=40.107.105.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q1YBun+q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717607248; x=1749143248;
-  h=date:from:to:cc:subject:message-id;
-  bh=Wc2d6oL7dIorQNEBMRjf4sC4r+Df0+y+xQEpxJy5jkE=;
-  b=Q1YBun+qGl6QHf+gXLc/jyb3EqVVLkHw5+yURv5wSdNPiGBImWcRioTs
-   LPXMzUz6/0Pwkg8ZGpNgZlqRNAltaj80kv+EHe/V5kvVT41hxDjQir8dA
-   oPZ681NM3x2XKk/k2R6AFx/EY2PPZTJ9cepmPQx8+ahMDcwild/t9XJxB
-   yRtDiR3XgcBqhoIp0XFcKbE9YaizKVk0MMUk2KWnxHR9wbajGvbrM5lrT
-   GS5/E/+1eup5wr/D34y3ImhWKcEe9qKq1+JFESdmxKsD4HDWY+ZqS8SFj
-   nZ7DykpEJQsM5gaNc5aeu/e+g9PjH6NWewb7o5AQRyc+8+i9WtAFp2wGQ
-   Q==;
-X-CSE-ConnectionGUID: cFRBMNunROy/X0uhEEpHcw==
-X-CSE-MsgGUID: AUUxg/TmRXi4NA1xwpMBYQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14388016"
-X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; 
-   d="scan'208";a="14388016"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 10:07:28 -0700
-X-CSE-ConnectionGUID: n2ql4dM4RE+mla9ey1nnRw==
-X-CSE-MsgGUID: PTidhW0RRUG6ZStRrMTk6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; 
-   d="scan'208";a="37550069"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 05 Jun 2024 10:07:23 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sEu6b-0001yc-1d;
-	Wed, 05 Jun 2024 17:07:21 +0000
-Date: Thu, 06 Jun 2024 01:06:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- amd-gfx@lists.freedesktop.org, bpf@vger.kernel.org,
- dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
- linux-input@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: [linux-next:master] BUILD REGRESSION
- 234cb065ad82915ff8d06ce01e01c3e640b674d2
-Message-ID: <202406060125.8GGeEpJs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="PrQElEw+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=btEAWIjBC/Muwleufpabco5sl0si+Cg7bHzcZz6RHfs03CC7vTYJTLYsjPgv3Bm5tZ8FWBT+DqMRjVErWHwL1IaBUyo/MW6WerPolOwqVOYIdYQiRlwypGGb27T8RL4j2U18u8lv5c+D81oJ9AxToaTBFFN0qOVtLC3GBo+o0k/1AEgJe2wnhoBQ68XmOczUIa8ya4+btUTNPQlNN6MorwxTzjEY7/jCFnzQmryG9sIELOLtcAyMFW+zvQfFghKxgmSLhbuT9SIVCvHRnEBJGR1mmEZlLQeuyYjf1XjVfdR4/ZxJVlxCkvlWTLGOt2epeq/LEiS4K4yK6G0Gmb/rpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8JwuPYpJL+JDb8ARhGq9Lc2R/JDNNaqnoG1wIbuEZ2A=;
+ b=hR83l+ZoPJNQMCgOm2XPuIFIWkGaEs0IPJpzcLd6Z5EqymxzuiWrSkDTRDoYRZtYx62si9I2pZW0l5KWFlfq2HhJjPZ9YspjR6dsBFhcFyPT/89Cp4qyXy9p7Du+NLZoB5Zd/6IVpSAe0QUFwl1SrB/6y+SWVkrzghmcwyD9nEaVh7jxw9cS4gDGpEQ9p9556Jpl0BauQ6S7D6cmJh5uTWXULK5740Xl+b8H4ZDKhh9KQM7oykLEE0qK3biw2cWIq05ap4R60EyOgciZYzeJMTWCic4yVwRunGvKSI+gmneti5ExTpdjuwzqDuIPAEhL3TdLxzpb5TE/oGVF80BfaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8JwuPYpJL+JDb8ARhGq9Lc2R/JDNNaqnoG1wIbuEZ2A=;
+ b=PrQElEw+3xP0iZF3h+ceQ7bi5gWBj6RDC/IAMMWX/poGoyrz2wxUK8b0bEiMTMEeiYFTrWPdkkswiicAjrO8dsAP+z1UCaN0xCxb4yInBmimc10LUn/dLpB3Flkcyf+jEA3qChIFoW052X2UNtWqG81clUpucLmgRrSPC2usTQ4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB10749.eurprd04.prod.outlook.com (2603:10a6:150:204::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.31; Wed, 5 Jun
+ 2024 18:51:02 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.021; Wed, 5 Jun 2024
+ 18:51:02 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: krzk@kernel.org
+Cc: Frank.Li@nxp.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	krzk+dt@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	robh@kernel.org,
+	ulf.hansson@linaro.org
+Subject: [PATCH v3 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+Date: Wed,  5 Jun 2024 14:50:46 -0400
+Message-Id: <20240605185046.1057877-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ2PR07CA0008.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::8) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10749:EE_
+X-MS-Office365-Filtering-Correlation-Id: 596b7cfe-113f-47ed-ebd9-08dc8590729d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|366007|1800799015|52116005|376005|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9FPRCVirweehpVJTNvGLD5gbPCbhp824qx4x9tgR9us7lKhTh7oa3Tt+98CM?=
+ =?us-ascii?Q?0B6tBG1avDuR8gT9Ml1IIZkdiUkBH8hoir/CUCLER1cawNshOrOM7/lTSnLp?=
+ =?us-ascii?Q?M+DOfmUtECnyuR8l7BGVdW2OU2XU5fUphd6B1mvhNi3KV8L7znyLtsz9NKCT?=
+ =?us-ascii?Q?T7GQeh8qg1qqP2vEnCdAvPUlU3i4ZICnpPDQKWfk4293MY/Qg560l1zaKTvL?=
+ =?us-ascii?Q?DnYm0HOpbd0wHj8fu/OBkK+oDSE79d93Xn/Q2/DTxyU3Pu7eTg73ijWoVv5m?=
+ =?us-ascii?Q?OByQkhB76ikzE06iuBeld8APyrlRObXlC7of9kMkhtcIK6c4YbrepwrU+nGe?=
+ =?us-ascii?Q?Sf4wKPtIcDCv/8L225xlB0N/mdoGqQhcZJ5fk2+xZyLVkPaT5lNVG7uqPCJZ?=
+ =?us-ascii?Q?MsJBKWk9jawiQK49Jm2KyKCNgfvXc1cfpAqKXWtV3E8cUp/IZjVknK6TCnUq?=
+ =?us-ascii?Q?ZrijRRp2RG6yHxyyKyANTm/lkR3cdahYzwmvj6axYlcN35z7GEInMZsKq7SM?=
+ =?us-ascii?Q?jw6eEjjWPLW39kyXAf7Y4HgUPE6yMJZhQJ4+ziBCojXK+jJ2AM9sBlon1kcY?=
+ =?us-ascii?Q?TExFHHmretdEM8i8xDqtED5aa7qcFlS0mv4ei6AF1UoqamDFeX77Mcn7+Q5Q?=
+ =?us-ascii?Q?3KHmR0OPzDjkWY13fsKWRf9q5aOBb9SYW3sTDUeFn/tfe7nD0ZXvxhKX+dIG?=
+ =?us-ascii?Q?69HaQVX517ZYGK9ouJkNIubKLrc3+fXnLOg0wsujqhznd4zIQXmjN6qrCZMX?=
+ =?us-ascii?Q?6m4DxB4KW715wVV61nN6VGgOxuAn9d4ERXLg3W60gqIAmIkm1zXwtPxk0O8P?=
+ =?us-ascii?Q?/tFxsdjfs8bLwAh+Sq24/PmFaie+XaPDTTC8ufSagcx0xNsZpuxglwuTn1ja?=
+ =?us-ascii?Q?YQ3MI0vZyoZWD/j5rhRkUejHiBWS3AM6+2yuJxGQvOPYyLKr2w8WFLAvf4Vg?=
+ =?us-ascii?Q?OLxaYeY2/tE2if6Of1SR/arQet2MXaqUPxWmEWu1ag+lfRK1GkZTw7N+PWcH?=
+ =?us-ascii?Q?XH3ALOEbdCDsPdtTbgix3S6464YsGwrg05ZKeZPJM62IbpzSJpHPCxtB3psO?=
+ =?us-ascii?Q?gUyUQe6f6BlYhkTK+yKbQwm/KkUlYBkjp6kuSePguSXCq91mIeVSC2Qw4N/Y?=
+ =?us-ascii?Q?AvcIFrZ3PUo579CK1BOf8QHGNJvjfvmNJQFLuFCXEk5CQs1oBMS4Vy5bB3n2?=
+ =?us-ascii?Q?Z6uIOqOz3/Vqxixwl+tGyUZ+fCBO0ZrNqQRjQS1uwUsLrm3vU11fkSNFHH+p?=
+ =?us-ascii?Q?WuSJ8OUwRxvEfEprJDJfdmiNLWFSJIJAv7sir3Ew/8iRdXJtwa3x6cm4/tsc?=
+ =?us-ascii?Q?i1s=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(52116005)(376005)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ea58YeplY0xgHHaT2ch7slKkmHr8+k8c+yNG/TVegpA56HGCdTRzmaPk336Z?=
+ =?us-ascii?Q?0Fgp5is3M0Kjnl9M2zphCk1CKkHh5UuX5F63WbAOgCqQwr6D/hYKLb5zTv/8?=
+ =?us-ascii?Q?IEjAgP2LV2f4cZFYeYSogIKsjXb9bYB3be+i8N/0gBQaHILJK68tJngYpCHz?=
+ =?us-ascii?Q?Mjt2bNcf2BC8oDSGvOBVBSrzCFCRd5+XWiTJfCog2YG4raET5km+0lvD+oRI?=
+ =?us-ascii?Q?y+R9PAhdnYbhfJ2RnTmA2mFmtXfN+pBFLBCwMEPDlzdcg7dCpGTDKwft9QpN?=
+ =?us-ascii?Q?QeIDPEdyOYKDDsAIWVCXYUYZwz9XcRMkV3OJikR1fqP44ftw0CCigz0ClHHf?=
+ =?us-ascii?Q?sNCxI3j6xtOmTf58XjfGE+uhkTXCv7qjJhVfWG59IA+1J7F7aiB++BRTppxu?=
+ =?us-ascii?Q?wXEY+tZ2rHOVDwfMjhLWIlY6x+4FmOAUagdJsawhogyDrpHF+8b3MthRBxdl?=
+ =?us-ascii?Q?bVeMSotBVW1O6LjH7+PdpRnMyojLPZ6+1PHeqdwpnG07T2Jy9r/+pWE2LWj1?=
+ =?us-ascii?Q?BrMScPXbp+3dNmg5TGEfpV8Q5F9VEfKkEXhEaCdib8wKmYpyo2+x2Dn8nhis?=
+ =?us-ascii?Q?BjU78TjeIrqE3FWPeSOAumMTOCkE17WIcy7xtcvuXJ7IWCv+XfESKf5TrfIT?=
+ =?us-ascii?Q?8lbutOV4XdujDd3h4j7ykY6W9Q6VsZ6XrfAyS2cR3DMGszFHPrjzIaKAJnjZ?=
+ =?us-ascii?Q?2SgpwvviuK9/sOUVZT8HeRla61bew0HCmcqscplrpowRsSN/D3grbgQL39uK?=
+ =?us-ascii?Q?r05HElcu6TqXn8fy/p2D255u9iZnL6bFgT0+3ebAHlaqXCcUTwDN8jT3oWag?=
+ =?us-ascii?Q?dDs1pEIMsYPpW8gJYxueXHsNwYBrb8vDhnzR884/ZPAjDEsly4VPG3LB1sn1?=
+ =?us-ascii?Q?aEUFc0Ah4UUfEzR+0IlwtIKkFTUs9VZ7Tx2OPx3LDe7kDLtVeVvbxrJgUDe8?=
+ =?us-ascii?Q?YzRpOYE/AzszuCn84+e6hdUcQULbk41zwJ6U6CzL/rKJ8Ev4IjyfEQSTAUey?=
+ =?us-ascii?Q?oUBL4hTNBO08JT8Lf6ScwkMUd5BB6tcoNmQIo88MnljmcR4LHm8jt0y1sFGt?=
+ =?us-ascii?Q?SUBpzjy2MkwqlnqPGZrBOSXZ6bwcVgLM8JJs5wyzagHWln9d77XTVcw5gdk5?=
+ =?us-ascii?Q?phuKAnls/VpCv/akVAUINN7GgnhW/hTxTzl61FQIrUY8opJqKncvjIOt7lvW?=
+ =?us-ascii?Q?ynWSLWKS1UuRQamIyD49wYd2zM5vIsIWB/F9eVAcRcIiv543RvQ2XS5lfWEw?=
+ =?us-ascii?Q?rV91KZkBtHY38jIYXGbVQ6q7yyLQq0fWw9dKelol5eedhT5nk27tRv6QYudX?=
+ =?us-ascii?Q?jbcwKsul5f0l2Bfffh8zPNlKyPAeRmgj1EWVfESbdEdkdIcHkqV9NJyP0FqR?=
+ =?us-ascii?Q?1z1dwIVRu17CRo+8/05YYjsYSqC5mSf3RE9HTCFFqqeQO0v7pfw1sa3fiOhC?=
+ =?us-ascii?Q?jTTCcszfPNTfOGPQkTA72CKdKJBT9BwfTeH55G3TQw7Heh26Os7G//VJAN3E?=
+ =?us-ascii?Q?nf4DobPVfwGw5m13eOF7HuuSSi3EpAwAzK+TUlFdNc3A4KDOq01p+mxnCphg?=
+ =?us-ascii?Q?hL0BJ7cy0VZAuA/VUTJatUwSg0qtWXogxW2e19nw?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 596b7cfe-113f-47ed-ebd9-08dc8590729d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2024 18:51:02.6124
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ikbRjn7jATn5I4LSB1u0PtOZtWctO79CqunReKxcSVcK5R2qDsf5QHw/Ntt/SLv5QKkWoMFmPsfdFl45wwutBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10749
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 234cb065ad82915ff8d06ce01e01c3e640b674d2  Add linux-next specific files for 20240605
+Convert layerscape fsl-esdhc binding doc from txt to yaml format.
 
-Error/Warning reports:
+Addtional change during convert:
+- Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
+- Add "reg" and "interrupts" property.
+- Change example "sdhci@2e000" to "mmc@2e000".
+- Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
+most existed dts file.
+- Set clock-frequency to 100mhz in example.
 
-https://lore.kernel.org/oe-kbuild-all/202406051521.mroqvR5l-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202406051524.a12JqLqx-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202406051711.dS1sQZ9n-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202406051855.9VIYXbTB-lkp@intel.com
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
 
-Error/Warning: (recently discovered and may have been fixed)
+Notes:
+    Change from v2 to v3
+    - add minItems and maxItems for voltage-ranges
+    
+    Change from v1 to v2
+    - use filename fsl,esdhc.yaml
+    - Add clock-frequency to required
+    - change clock-frequency to 100mhz in example
+    
+    pass dt_binding_check
+    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,esdhc.yaml
+      SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+      CHKDT   Documentation/devicetree/bindings
+      LINT    Documentation/devicetree/bindings
+      DTEX    Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.example.dts
+      DTC_CHK Documentation/devicetree/bindings/mmc/fsl-ls-esdhc.example.dtb
 
-include/linux/container_of.h:20:54: error: 'struct ftrace_ops' has no member named 'list'
-include/linux/list.h:769:26: error: 'struct ftrace_ops' has no member named 'list'
-include/linux/stddef.h:16:33: error: 'struct ftrace_ops' has no member named 'list'
-kernel/trace/fgraph.c:883:43: error: 'struct ftrace_ops' has no member named 'subop_list'
-kernel/trace/fgraph.c:934:15: error: implicit declaration of function 'ftrace_startup_subops'; did you mean 'ftrace_startup'? [-Werror=implicit-function-declaration]
-kernel/trace/fgraph.c:973:9: error: implicit declaration of function 'ftrace_shutdown_subops'; did you mean 'ftrace_shutdown'? [-Werror=implicit-function-declaration]
+ .../devicetree/bindings/mmc/fsl,esdhc.yaml    | 101 ++++++++++++++++++
+ .../devicetree/bindings/mmc/fsl-esdhc.txt     |  52 ---------
+ 2 files changed, 101 insertions(+), 52 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
 
-Error/Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- arc-randconfig-r061-20240605
-|   |-- drivers-gpu-drm-arm-display-komeda-komeda_dev.c:error:implicit-declaration-of-function-seq_puts
-|   |-- drivers-gpu-drm-arm-display-komeda-komeda_dev.c:error:invalid-use-of-undefined-type-struct-seq_file
-|   `-- drivers-gpu-drm-arm-display-komeda-komeda_dev.c:error:type-defaults-to-int-in-declaration-of-DEFINE_SHOW_ATTRIBUTE
-|-- csky-randconfig-r053-20240605
-|   |-- include-linux-container_of.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- include-linux-list.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- include-linux-stddef.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_shutdown_subops
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_startup_subops
-|   `-- kernel-trace-fgraph.c:error:struct-ftrace_ops-has-no-member-named-subop_list
-|-- i386-randconfig-061-20240605
-|   `-- drivers-hwmon-cros_ec_hwmon.c:sparse:sparse:cast-to-restricted-__le16
-|-- i386-randconfig-063-20240605
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-B-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-B-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash1-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash2-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash2-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-orig_hash-got-struct-ftrace_hash-noderef-__rcu
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-src-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-src-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-filter_hash-got-struct-ftrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-filter_hash-got-struct-ftrace_hash-assigned-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-filter_hash-got-struct-ftrace_hash-save_filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-notrace_hash-got-struct-ftrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-notrace_hash-got-struct-ftrace_hash-assigned-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-notrace_hash-got-struct-ftrace_hash-save_notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-save_filter_hash-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   `-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-save_notrace_hash-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|-- i386-randconfig-141-20240605
-|   |-- drivers-dma-fsl-edma-common.c-fsl_edma_fill_tcd()-warn:statement-has-no-effect
-|   |-- drivers-dma-fsl-edma-common.c-fsl_edma_set_tcd_regs()-warn:statement-has-no-effect
-|   |-- drivers-dma-fsl-edma-main.c-fsl_edma_probe()-warn:statement-has-no-effect
-|   |-- drivers-dma-fsl-edma-main.c-fsl_edma_resume_early()-warn:statement-has-no-effect
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_stream.c-dc_stream_get_max_flickerless_instant_vtotal_delta()-warn:always-true-condition-((safe_refresh_v_total-stream-timing.v_total)-)-(-u32max-)
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_stream.c-dc_stream_get_max_flickerless_instant_vtotal_delta()-warn:always-true-condition-((stream-timing.v_total-safe_refresh_v_total)-)-(-u32max-)
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_vm.c-amdgpu_vm_bo_update()-error:we-previously-assumed-bo-could-be-null-(see-line-)
-|   |-- drivers-gpu-drm-i915-display-intel_dpt.c-intel_dpt_pin_to_ggtt()-error:uninitialized-symbol-vma-.
-|   |-- drivers-gpu-drm-i915-display-intel_fb_pin.c-intel_fb_pin_to_dpt()-error:uninitialized-symbol-vma-.
-|   |-- drivers-gpu-drm-i915-display-intel_fb_pin.c-intel_fb_pin_to_dpt()-error:vma-dereferencing-possible-ERR_PTR()
-|   |-- drivers-gpu-drm-xe-xe_drm_client.c-show_run_ticks()-error:uninitialized-symbol-gpu_timestamp-.
-|   |-- drivers-gpu-drm-xe-xe_drm_client.c-show_run_ticks()-error:uninitialized-symbol-hwe-.
-|   `-- drivers-gpu-drm-xe-xe_sched_job.c-xe_sched_job_arm()-error:uninitialized-symbol-fence-.
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-hubbub-dcn401-dcn401_hubbub.o:warning:objtool:unexpected-relocation-symbol-type-in-.rela.discard.reachable
-|   `-- drivers-thermal-thermal_trip.o:warning:objtool:unexpected-relocation-symbol-type-in-.rela.discard.reachable
-|-- loongarch-loongson3_defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-hubbub-dcn401-dcn401_hubbub.o:warning:objtool:unexpected-relocation-symbol-type-in-.rela.discard.reachable
-|   `-- drivers-thermal-thermal_trip.o:warning:objtool:unexpected-relocation-symbol-type-in-.rela.discard.reachable
-|-- loongarch-randconfig-r064-20240605
-|   |-- drivers-gpu-drm-arm-display-komeda-komeda_dev.c:error:implicit-declaration-of-function-seq_puts
-|   |-- drivers-gpu-drm-arm-display-komeda-komeda_dev.c:error:invalid-use-of-undefined-type-struct-seq_file
-|   |-- drivers-gpu-drm-arm-display-komeda-komeda_dev.c:error:type-defaults-to-int-in-declaration-of-DEFINE_SHOW_ATTRIBUTE
-|   |-- include-linux-container_of.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- include-linux-list.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- include-linux-stddef.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_shutdown_subops
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_startup_subops
-|   `-- kernel-trace-fgraph.c:error:struct-ftrace_ops-has-no-member-named-subop_list
-|-- riscv-randconfig-001-20240605
-|   |-- include-linux-container_of.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- include-linux-list.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- include-linux-stddef.h:error:struct-ftrace_ops-has-no-member-named-list
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_shutdown_subops
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_startup_subops
-|   `-- kernel-trace-fgraph.c:error:struct-ftrace_ops-has-no-member-named-subop_list
-|-- sparc64-randconfig-r121-20240605
-|   |-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_shutdown_subops
-|   `-- kernel-trace-fgraph.c:error:implicit-declaration-of-function-ftrace_startup_subops
-|-- um-allyesconfig
-|   `-- kernel-bpf-verifier.c:error:pcpu_hot-undeclared-(first-use-in-this-function)
-`-- x86_64-randconfig-003-20240605
-    |-- drivers-input-touchscreen-wacom_w8001.c:warning:Finger-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-    `-- drivers-input-touchscreen-wacom_w8001.c:warning:Pen-directive-output-may-be-truncated-writing-bytes-into-a-region-of-size-between-and
-clang_recent_errors
-|-- arm64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:error:arithmetic-between-different-enumeration-types-(-enum-dc_irq_source-and-enum-irq_type-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dce110-irq_service_dce110.c:error:arithmetic-between-different-enumeration-types-(-enum-dc_irq_source-and-enum-irq_type-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_cursor.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_ddi.c:error:arithmetic-between-different-enumeration-types-(-enum-hpd_pin-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_ddi.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-phy-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-tc_port-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display_irq.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display_irq.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_dpll_mgr.c:error:arithmetic-between-different-enumeration-types-(-enum-tc_port-and-enum-intel_dpll_id-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_hotplug.c:error:arithmetic-between-different-enumeration-types-(-enum-hpd_pin-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_pipe_crc.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_tc.c:error:arithmetic-between-different-enumeration-types-(-enum-intel_display_power_domain-and-enum-tc_port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_vdsc.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-skl_universal_plane.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-skl_watermark.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   `-- drivers-gpu-drm-renesas-rcar-du-rcar_cmm.c:error:unused-function-rcar_cmm_read-Werror-Wunused-function
-|-- arm64-randconfig-003-20240605
-|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:error:format-specifies-type-unsigned-char-but-the-argument-has-type-int-Werror-Wformat
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_gfx.c:error:format-specifies-type-unsigned-char-but-the-argument-has-type-u32-(aka-unsigned-int-)-Werror-Wformat
-|-- hexagon-randconfig-001-20240605
-|   `-- drivers-gpu-drm-drm_mm.c:error:function-drm_mm_node_scanned_block-is-not-needed-and-will-not-be-emitted-Werror-Wunneeded-internal-declaration
-|-- i386-randconfig-r131-20240605
-|   |-- kernel-trace-fgraph.c:sparse:sparse:symbol-fgraph_do_direct-was-not-declared.-Should-it-be-static
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-B-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-B-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash1-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash2-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-new_hash2-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-orig_hash-got-struct-ftrace_hash-noderef-__rcu
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-src-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-ftrace_hash-src-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-filter_hash-got-struct-ftrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-filter_hash-got-struct-ftrace_hash-assigned-filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-filter_hash-got-struct-ftrace_hash-save_filter_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-notrace_hash-got-struct-ftrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-notrace_hash-got-struct-ftrace_hash-assigned-notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-noderef-__rcu-notrace_hash-got-struct-ftrace_hash-save_notrace_hash
-|   |-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-save_filter_hash-got-struct-ftrace_hash-noderef-__rcu-filter_hash
-|   `-- kernel-trace-ftrace.c:sparse:sparse:incorrect-type-in-assignment-(different-address-spaces)-expected-struct-ftrace_hash-save_notrace_hash-got-struct-ftrace_hash-noderef-__rcu-notrace_hash
-|-- riscv-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:error:arithmetic-between-different-enumeration-types-(-enum-dc_irq_source-and-enum-irq_type-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dce110-irq_service_dce110.c:error:arithmetic-between-different-enumeration-types-(-enum-dc_irq_source-and-enum-irq_type-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_cursor.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_ddi.c:error:arithmetic-between-different-enumeration-types-(-enum-hpd_pin-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_ddi.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-phy-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-tc_port-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display_irq.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display_irq.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_dpll_mgr.c:error:arithmetic-between-different-enumeration-types-(-enum-tc_port-and-enum-intel_dpll_id-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_hotplug.c:error:arithmetic-between-different-enumeration-types-(-enum-hpd_pin-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_pipe_crc.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_tc.c:error:arithmetic-between-different-enumeration-types-(-enum-intel_display_power_domain-and-enum-tc_port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_vdsc.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-skl_universal_plane.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   `-- drivers-gpu-drm-i915-display-skl_watermark.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|-- riscv-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:error:arithmetic-between-different-enumeration-types-(-enum-dc_irq_source-and-enum-irq_type-)-Werror-Wenum-enum-conversion
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-irq-dce110-irq_service_dce110.c:error:arithmetic-between-different-enumeration-types-(-enum-dc_irq_source-and-enum-irq_type-)-Werror-Wenum-enum-conversion
-|-- s390-allmodconfig
-|   |-- drivers-gpu-drm-i915-display-intel_cursor.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_ddi.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-phy-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display_irq.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_display_irq.c:error:arithmetic-between-different-enumeration-types-(-enum-transcoder-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_dpll_mgr.c:error:arithmetic-between-different-enumeration-types-(-enum-tc_port-and-enum-intel_dpll_id-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_hotplug.c:error:arithmetic-between-different-enumeration-types-(-enum-hpd_pin-and-enum-port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_pipe_crc.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_tc.c:error:arithmetic-between-different-enumeration-types-(-enum-intel_display_power_domain-and-enum-tc_port-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-intel_vdsc.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   |-- drivers-gpu-drm-i915-display-skl_universal_plane.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-|   `-- drivers-gpu-drm-i915-display-skl_watermark.c:error:arithmetic-between-different-enumeration-types-(-enum-pipe-and-enum-intel_display_power_domain-)-Werror-Wenum-enum-conversion
-`-- x86_64-randconfig-002-20240605
-    `-- drivers-gpu-drm-drm_mm.c:error:function-drm_mm_node_scanned_block-is-not-needed-and-will-not-be-emitted-Werror-Wunneeded-internal-declaration
-
-elapsed time: 754m
-
-configs tested: 180
-configs skipped: 3
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240605   gcc  
-arc                   randconfig-002-20240605   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                            mps2_defconfig   clang
-arm                         mv78xx0_defconfig   clang
-arm                        mvebu_v7_defconfig   clang
-arm                         orion5x_defconfig   clang
-arm                   randconfig-001-20240605   clang
-arm                   randconfig-002-20240605   clang
-arm                   randconfig-003-20240605   clang
-arm                   randconfig-004-20240605   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240605   gcc  
-arm64                 randconfig-002-20240605   clang
-arm64                 randconfig-003-20240605   clang
-arm64                 randconfig-004-20240605   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240605   gcc  
-csky                  randconfig-002-20240605   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240605   clang
-hexagon               randconfig-002-20240605   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240605   gcc  
-i386         buildonly-randconfig-002-20240605   gcc  
-i386         buildonly-randconfig-003-20240605   gcc  
-i386         buildonly-randconfig-004-20240605   gcc  
-i386         buildonly-randconfig-005-20240605   gcc  
-i386         buildonly-randconfig-006-20240605   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240605   gcc  
-i386                  randconfig-002-20240605   clang
-i386                  randconfig-003-20240605   gcc  
-i386                  randconfig-004-20240605   gcc  
-i386                  randconfig-005-20240605   gcc  
-i386                  randconfig-006-20240605   gcc  
-i386                  randconfig-011-20240605   gcc  
-i386                  randconfig-012-20240605   gcc  
-i386                  randconfig-013-20240605   clang
-i386                  randconfig-014-20240605   clang
-i386                  randconfig-015-20240605   gcc  
-i386                  randconfig-016-20240605   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch                 loongson3_defconfig   gcc  
-loongarch             randconfig-001-20240605   gcc  
-loongarch             randconfig-002-20240605   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                          atari_defconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      maltaaprp_defconfig   clang
-mips                          rb532_defconfig   clang
-nios2                            alldefconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240605   gcc  
-nios2                 randconfig-002-20240605   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240605   gcc  
-parisc                randconfig-002-20240605   gcc  
-parisc64                            defconfig   gcc  
-powerpc                     akebono_defconfig   clang
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                        cell_defconfig   gcc  
-powerpc                        icon_defconfig   gcc  
-powerpc                     ppa8548_defconfig   gcc  
-powerpc                      ppc64e_defconfig   gcc  
-powerpc               randconfig-001-20240605   gcc  
-powerpc               randconfig-002-20240605   gcc  
-powerpc               randconfig-003-20240605   gcc  
-powerpc64             randconfig-001-20240605   gcc  
-powerpc64             randconfig-002-20240605   clang
-powerpc64             randconfig-003-20240605   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240605   gcc  
-riscv                 randconfig-002-20240605   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240605   gcc  
-s390                  randconfig-002-20240605   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240605   gcc  
-sh                    randconfig-002-20240605   gcc  
-sh                   rts7751r2dplus_defconfig   gcc  
-sh                   sh7770_generic_defconfig   gcc  
-sh                             shx3_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240605   gcc  
-sparc64               randconfig-002-20240605   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240605   gcc  
-um                    randconfig-002-20240605   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240605   gcc  
-x86_64       buildonly-randconfig-002-20240605   gcc  
-x86_64       buildonly-randconfig-003-20240605   gcc  
-x86_64       buildonly-randconfig-004-20240605   clang
-x86_64       buildonly-randconfig-005-20240605   clang
-x86_64       buildonly-randconfig-006-20240605   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240605   clang
-x86_64                randconfig-002-20240605   clang
-x86_64                randconfig-003-20240605   gcc  
-x86_64                randconfig-004-20240605   clang
-x86_64                randconfig-005-20240605   clang
-x86_64                randconfig-006-20240605   gcc  
-x86_64                randconfig-011-20240605   clang
-x86_64                randconfig-012-20240605   gcc  
-x86_64                randconfig-013-20240605   clang
-x86_64                randconfig-014-20240605   gcc  
-x86_64                randconfig-015-20240605   clang
-x86_64                randconfig-016-20240605   gcc  
-x86_64                randconfig-071-20240605   gcc  
-x86_64                randconfig-072-20240605   clang
-x86_64                randconfig-073-20240605   gcc  
-x86_64                randconfig-074-20240605   gcc  
-x86_64                randconfig-075-20240605   gcc  
-x86_64                randconfig-076-20240605   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240605   gcc  
-xtensa                randconfig-002-20240605   gcc  
-
+diff --git a/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml
+new file mode 100644
+index 0000000000000..9170456ebf5a2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml
+@@ -0,0 +1,101 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mmc/fsl,esdhc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Enhanced Secure Digital Host Controller (eSDHC)
++
++description:
++  The Enhanced Secure Digital Host Controller provides an interface
++  for MMC, SD, and SDIO types of memory cards.
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - fsl,mpc8536-esdhc
++          - fsl,mpc8378-esdhc
++          - fsl,p2020-esdhc
++          - fsl,p4080-esdhc
++          - fsl,t1040-esdhc
++          - fsl,t4240-esdhc
++          - fsl,ls1012a-esdhc
++          - fsl,ls1028a-esdhc
++          - fsl,ls1088a-esdhc
++          - fsl,ls1043a-esdhc
++          - fsl,ls1046a-esdhc
++          - fsl,ls2080a-esdhc
++      - const: fsl,esdhc
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clock-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: specifies eSDHC base clock frequency.
++
++  sdhci,wp-inverted:
++    $ref: /schemas/types.yaml#/definitions/flag
++    deprecated: true
++    description:
++      specifies that eSDHC controller reports
++      inverted write-protect state; New devices should use the generic
++      "wp-inverted" property.
++
++  sdhci,1-bit-only:
++    $ref: /schemas/types.yaml#/definitions/flag
++    deprecated: true
++    description:
++      specifies that a controller can only handle
++      1-bit data transfers. New devices should use the generic
++      "bus-width = <1>" property.
++
++  sdhci,auto-cmd12:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      specifies that a controller can only handle auto CMD12.
++
++  voltage-ranges:
++    $ref: /schemas/types.yaml#/definitions/uint32-matrix
++    items:
++      items:
++        - description: specifies minimum slot voltage (mV).
++        - description: specifies maximum slot voltage (mV).
++    minItems: 1
++    maxItems: 8
++
++  little-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      If the host controller is little-endian mode, specify
++      this property. The default endian mode is big-endian.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clock-frequency
++
++allOf:
++  - $ref: sdhci-common.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mmc@2e000 {
++        compatible = "fsl,mpc8378-esdhc", "fsl,esdhc";
++        reg = <0x2e000 0x1000>;
++        interrupts = <42 0x8>;
++        interrupt-parent = <&ipic>;
++        /* Filled in by U-Boot */
++        clock-frequency = <100000000>;
++        voltage-ranges = <3300 3300>;
++    };
+diff --git a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
+deleted file mode 100644
+index edb8cadb95412..0000000000000
+--- a/Documentation/devicetree/bindings/mmc/fsl-esdhc.txt
++++ /dev/null
+@@ -1,52 +0,0 @@
+-* Freescale Enhanced Secure Digital Host Controller (eSDHC)
+-
+-The Enhanced Secure Digital Host Controller provides an interface
+-for MMC, SD, and SDIO types of memory cards.
+-
+-This file documents differences between the core properties described
+-by mmc.txt and the properties used by the sdhci-esdhc driver.
+-
+-Required properties:
+-  - compatible : should be "fsl,esdhc", or "fsl,<chip>-esdhc".
+-    Possible compatibles for PowerPC:
+-	"fsl,mpc8536-esdhc"
+-	"fsl,mpc8378-esdhc"
+-	"fsl,p2020-esdhc"
+-	"fsl,p4080-esdhc"
+-	"fsl,t1040-esdhc"
+-	"fsl,t4240-esdhc"
+-    Possible compatibles for ARM:
+-	"fsl,ls1012a-esdhc"
+-	"fsl,ls1028a-esdhc"
+-	"fsl,ls1088a-esdhc"
+-	"fsl,ls1043a-esdhc"
+-	"fsl,ls1046a-esdhc"
+-	"fsl,ls2080a-esdhc"
+-  - clock-frequency : specifies eSDHC base clock frequency.
+-
+-Optional properties:
+-  - sdhci,wp-inverted : specifies that eSDHC controller reports
+-    inverted write-protect state; New devices should use the generic
+-    "wp-inverted" property.
+-  - sdhci,1-bit-only : specifies that a controller can only handle
+-    1-bit data transfers. New devices should use the generic
+-    "bus-width = <1>" property.
+-  - sdhci,auto-cmd12: specifies that a controller can only handle auto
+-    CMD12.
+-  - voltage-ranges : two cells are required, first cell specifies minimum
+-    slot voltage (mV), second cell specifies maximum slot voltage (mV).
+-    Several ranges could be specified.
+-  - little-endian : If the host controller is little-endian mode, specify
+-    this property. The default endian mode is big-endian.
+-
+-Example:
+-
+-sdhci@2e000 {
+-	compatible = "fsl,mpc8378-esdhc", "fsl,esdhc";
+-	reg = <0x2e000 0x1000>;
+-	interrupts = <42 0x8>;
+-	interrupt-parent = <&ipic>;
+-	/* Filled in by U-Boot */
+-	clock-frequency = <0>;
+-	voltage-ranges = <3300 3300>;
+-};
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
