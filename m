@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0101B1505;
-	Wed,  5 Jun 2024 11:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA991B3732;
+	Wed,  5 Jun 2024 11:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588431; cv=none; b=Wyug/VjRiUVeHXSyz5kY0B5PzoALjklOQB2N03hehnRasVpmOSWmizuTBBHHaHgxNakZ/7RNxA8iynxRNzw73Czfv3T/sNBpq6ETnsapRoCa9M55pRkAII0LiYQ67tnL7e5DaUN60prexx32fjWF9ghcorgP414SPiNhPclvjnU=
+	t=1717588471; cv=none; b=DmUVK9HqV7wShPdEgzQqeeH+jPdgYO4+uI3WQuB1D8nhIiMcLyDer6u8RINosDxPgcAisC2znxS9TLeemOTds3U29Wz5RAGMRtXYiqPKRMEPTVXHR3MVHZYdk470oEw78m3U6bGVJ1/9SxYkieuUfV/isN97MJSg7JsptE6CwVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588431; c=relaxed/simple;
-	bh=sUkdikgKfLk5y9/mJjMHHqkh3/heA3hP590SNrGrPxM=;
+	s=arc-20240116; t=1717588471; c=relaxed/simple;
+	bh=mCP1odBp/E+seo1PF1EwA6/lK01Byu8F2UblPqk/58A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fL0SHy6Mbd8wNeTeG0JtA8oJNtfGentIdNeNFaYmLAurF/l9sEg7jQfQhP312AS60kAmAs0RkhZ+fR0SzRrKuLDpN3RIhs0vfbm22fht9VWQi8JI+vATp8AysLADNcuHuvtzNoq++tnptu/5s6wlxutEB2OCKYmGooCB7Fyyxyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOMt5wew; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=bO/A2kef2vNYh26yWZ1IxX/U3CyvM7IrySmPSxIrdvZBb59GdpjD2auX+loJ8OI8bvD4SnUrcHJ0PkWovgKfmZp+Bwpwt++NufXQOf8EodbgXVjM2luXgatqYyTQYQKEgwI6Z5KDZFbEE96bhaIs7Ce30vazUNEjb4yUVc7PkSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPo9/HEj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOMt5wew"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB72C3277B;
-	Wed,  5 Jun 2024 11:53:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPo9/HEj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CA7C3277B;
+	Wed,  5 Jun 2024 11:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588431;
-	bh=sUkdikgKfLk5y9/mJjMHHqkh3/heA3hP590SNrGrPxM=;
+	s=k20201202; t=1717588471;
+	bh=mCP1odBp/E+seo1PF1EwA6/lK01Byu8F2UblPqk/58A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOMt5wewDqBowuaONGKH8dS6rec9aJDfORN3K2TPPpvjUul4a5+g4z77pWtTO98sC
-	 T43HjrkIqM+1sCorOP13noJ7mRNaTCOPKjdL+y8WrOa0IeQGUhYtMtWeIKJk2VoEGa
-	 erG1LepzhI2pXzNLIwslLlMdlNysr5+VV33WwBg5g+5fHSWxUytDxeVZXiGSdRsEFg
-	 bmlAM7WloedcWD6k8op7OqU1lYLQ4H1ilWWbveStKsshpH5YQuJMVXCKON1r9wlJRp
-	 Ou1tiJY6foY4os5fp/7RfEPk1MWo79WUBGgayusj0y/xr4fZFbn7i1bH18KNLdXjg4
-	 wt9cU21HWu3sA==
+	b=rPo9/HEj+ry7Umr7jE5I/yh7iRSPWHjHppcMFFDU001EuuE6tT54piyHEP5FtzxiZ
+	 rBf/eXOpbHR7VLzuC2DLu/st34UWCs80qoEp9hxKyOQEag2ly9bhQNPqMtPyEeYktK
+	 ul2+CTWAmzios4JCwfbrncdfsjCibpcmp+wdC4NiJjnkLXZ1s5Ljtk4GE/ikuudhHq
+	 5StouwHMnh/oWuCKXdDvMMV6F514kxQfIMInr1Rkt2u9Vv5VmSN/QP04BGK90wfvM8
+	 8xTZycELbCG1mgNaVUN+cCZ9q5CYaP6DHBpMXkP0t0AuE772NsGFFmgOkvMSadWWXG
+	 85EaAutf5o6rg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,22 +36,21 @@ Cc: Esben Haabendal <esben@geanix.com>,
 	jirislaby@kernel.org,
 	shawnguo@kernel.org,
 	u.kleine-koenig@pengutronix.de,
+	ilpo.jarvinen@linux.intel.com,
 	cniedermaier@dh-electronics.com,
 	l.sanfilippo@kunbus.com,
-	ilpo.jarvinen@linux.intel.com,
-	rickaran@axis.com,
-	matthias.schiffer@ew.tq-group.com,
+	frank.li@vivo.com,
 	tglx@linutronix.de,
-	martin.fuzzey@flowbird.group,
+	rickaran@axis.com,
 	linux-serial@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 08/12] serial: imx: Introduce timeout when waiting on transmitter empty
-Date: Wed,  5 Jun 2024 07:53:13 -0400
-Message-ID: <20240605115334.2963803-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 7/9] serial: imx: Introduce timeout when waiting on transmitter empty
+Date: Wed,  5 Jun 2024 07:54:05 -0400
+Message-ID: <20240605115415.2964165-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605115334.2963803-1-sashal@kernel.org>
-References: <20240605115334.2963803-1-sashal@kernel.org>
+In-Reply-To: <20240605115415.2964165-1-sashal@kernel.org>
+References: <20240605115415.2964165-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,7 +59,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.92
+X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
 From: Esben Haabendal <esben@geanix.com>
@@ -83,7 +82,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 573bf7e9b7978..b20abaa9ef150 100644
+index 0587beaaea08d..b9ef426d5aae3 100644
 --- a/drivers/tty/serial/imx.c
 +++ b/drivers/tty/serial/imx.c
 @@ -27,6 +27,7 @@
@@ -94,7 +93,7 @@ index 573bf7e9b7978..b20abaa9ef150 100644
  #include <linux/dma-mapping.h>
  
  #include <asm/irq.h>
-@@ -2028,7 +2029,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
+@@ -2024,7 +2025,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
  	struct imx_port *sport = imx_uart_ports[co->index];
  	struct imx_port_ucrs old_ucr;
  	unsigned long flags;
@@ -103,7 +102,7 @@ index 573bf7e9b7978..b20abaa9ef150 100644
  	int locked = 1;
  
  	if (sport->port.sysrq)
-@@ -2059,8 +2060,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
+@@ -2055,8 +2056,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
  	 *	Finally, wait for transmitter to become empty
  	 *	and restore UCR1/2/3
  	 */
