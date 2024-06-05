@@ -1,149 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAA618C324;
-	Wed,  5 Jun 2024 08:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8611946AE;
+	Wed,  5 Jun 2024 08:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717575888; cv=none; b=B8ApwWWLr3PGpeR0bBcdkJIe3AXKYfPj8dzlpdZt7v6azcCcMgzfktc0CTZeEIBhe/4e6ULl/2cf/lzt+7hM2WuOLSX91g0sW36GujIQ9NuzZrcwC8SSHHr+g6Lb7/zETs3J4HhqZ50wsrCCmDixMaq+IIHa+7kRKeSDTroH1U8=
+	t=1717576797; cv=none; b=JCf4x2Bj1YtikhstIL/jQQrZt85B5nb5IlYV+JC3UcPk++Sfim7Mq7iXOHJ9Kfw7W30QgYM2ZKgHooGe2DErD2zqGo9XpC7CBItVDMNLDYhfBvsxRf+nVA8okcIo7z4JUjOMyKgTsOOwBiFR7uGvb8+7OO85exQq72w1cNRnhvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717575888; c=relaxed/simple;
-	bh=nvygrpCQm6tIoTRBf/JypeEyOilo9fzXmix4PvWBWvU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EcHF7txWRp7l64r8JECEiX22cYYoT9HJzs996KA5l041FUCHRcAhQBRXJyFNUK4b3TVUwid9j4++RsKZQXZnIZHIeYbDqp9tazxo3PhU+0MM11e/thBZdnVX31DJgeER3F2edpZGNutc+K+eWugPs5TgFgd2PBSLiD2G3vt4Htw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHcFCifN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717576797; c=relaxed/simple;
+	bh=22MaBtZi5AInBLEVS80SS3Joqf+eQ6RctsUOZeLFvmo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mo1ux9NnpE/L0gU+UddKifgXJciezGbWtCWYaZNmRiSWlvZ6tvscVh0htlsN2RNQjiC/v+fugj+F4wUBVrOCATJc8e71Yh2KgttoLzGunMHnr55ecUC5ZIgyG5/r9FbHEwsOg/xmUMokQZEq1iGGZ1Ycy5IJl/TtO57Py6hEjLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=n/Tx3AfR; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHcFCifN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9082AC32781;
-	Wed,  5 Jun 2024 08:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717575888;
-	bh=nvygrpCQm6tIoTRBf/JypeEyOilo9fzXmix4PvWBWvU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sHcFCifNacAkgFK4H9YarCqWvVnI81N2jpCElBnUa8fCtorGwezkBUu8ZoEQl94Rl
-	 qIHDx011cPu+PsKh3AD7RBr/Mh9AR8rKV7qEOEFmlreWg7AVjgq1Gynue2megD3uCF
-	 AjtCdkRZF05gv5DWqSfGpHUoL0ys/LYzn8Uk1v26thnKXExOEIU8ht7hX4EZ3AIyxK
-	 4BSr7XfMXBhcmZ4GVFuWs9fquRzk1CwsdXQxxymA0mrs9+XZDHwBdipg51nS1f9KfJ
-	 ogM1Ov5CTljgWaAt20Uxf09LPfjLVMyJXlkp+GMwHBEm39PnSVulrtHx1KNXug8vDe
-	 4xoKdbhAQ/kHg==
-Message-ID: <6bbcf768-ecaf-4120-9a98-85528a142008@kernel.org>
-Date: Wed, 5 Jun 2024 10:24:38 +0200
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="n/Tx3AfR"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sEmBU-008sYN-2y;
+	Wed, 05 Jun 2024 10:39:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=s1Dqt3Ik0d9VyS97+X6CEVzkr11OOcW3uaWdRrpb+wA=; b=n/Tx3AfR+zPH2/oex4MrmkIDxk
+	0IYxBvtJwLGL9XVkk1xxuyW7Fxx+CbgsgTNVmAw7osMA2ax7ylm28WkA+AanzstKLs3HOudHJNUN1
+	OdhGDCPU/07SZqr7oaUmzVNtiY5bdM8iJcH1JHJD+k/kZR4KDCseoR8kazkxPD8Fru+5unrQ+JDjj
+	5i1c49w2kSQvdaGzVbeINuvf+EHQGK5SF9HxPto1uvVphpoUaOqS60VqrkBfjf6VN279kcGkuLfzc
+	UiItU4Dgv9Pj21vxjo+SawsB9acFUrvXrd6uUZ9ogcF/zNdhGdAD7aR8lWlgdO+oKCA4/7IH5Kpex
+	LDokabzw==;
+Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sEmBT-002fSw-2J;
+	Wed, 05 Jun 2024 10:39:52 +0200
+Received: from andi by aktux with local (Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sEmBU-000YzE-2N;
+	Wed, 05 Jun 2024 10:39:52 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH] ARM: dts: e60k02: fix aliases for mmc
+Date: Wed,  5 Jun 2024 10:39:50 +0200
+Message-Id: <20240605083950.134479-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] dt-bindings: clock: Add i.MX91 clock definition
-To: Pengfei Li <pengfei.li_1@nxp.com>, Rob Herring <robh@kernel.org>
-Cc: krzk+dt@kernel.org, conor+dt@kernel.org, abelvesa@kernel.org,
- mturquette@baylibre.com, sboyd@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- ping.bai@nxp.com, ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com,
- frank.li@nxp.com, tharvey@gateworks.com, alexander.stein@ew.tq-group.com,
- gregor.herburger@ew.tq-group.com, hiago.franco@toradex.com,
- joao.goncalves@toradex.com, hvilleneuve@dimonoff.com,
- Markus.Niebel@ew.tq-group.com, m.felsch@pengutronix.de,
- m.othacehe@gmail.com, bhelgaas@google.com, leoyang.li@nxp.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20240530022634.2062084-1-pengfei.li_1@nxp.com>
- <20240530022634.2062084-3-pengfei.li_1@nxp.com>
- <20240604150447.GA604729-robh@kernel.org>
- <ZmEBn2E1FPKiXnMc@pengfei-OptiPlex-Tower-Plus-7010>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <ZmEBn2E1FPKiXnMc@pengfei-OptiPlex-Tower-Plus-7010>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 06/06/2024 02:23, Pengfei Li wrote:
-> On Tue, Jun 04, 2024 at 10:04:47AM -0500, Rob Herring wrote:
->> On Wed, May 29, 2024 at 07:26:31PM -0700, Pengfei Li wrote:
->>> i.MX91 is similar with i.MX93, only add few new clock compared to i.MX93.
->>> Add i.MX91 related clock definition.
->>>
->>> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
->>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->>> ---
->>>  include/dt-bindings/clock/imx93-clock.h | 7 ++++++-
->>>  1 file changed, 6 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/include/dt-bindings/clock/imx93-clock.h b/include/dt-bindings/clock/imx93-clock.h
->>> index 787c9e74dc96..ca0785f35a46 100644
->>> --- a/include/dt-bindings/clock/imx93-clock.h
->>> +++ b/include/dt-bindings/clock/imx93-clock.h
->>> @@ -204,6 +204,11 @@
->>>  #define IMX93_CLK_A55_SEL		199
->>>  #define IMX93_CLK_A55_CORE		200
->>>  #define IMX93_CLK_PDM_IPG		201
->>> -#define IMX93_CLK_END			202
->>> +#define IMX91_CLK_ENET1_QOS_TSN     202
->>> +#define IMX91_CLK_ENET_TIMER        203
->>> +#define IMX91_CLK_ENET2_REGULAR     204
->>> +#define IMX91_CLK_ENET2_REGULAR_GATE		205
->>> +#define IMX91_CLK_ENET1_QOS_TSN_GATE		206
->>> +#define IMX93_CLK_END			207
->>
->> Drop the END define. If it can change, it's not part of the ABI.
->>
->> Rob
->>
-> 
-> Hi Rob Herring,
-> 
-> The 'IMX93_CLK_END' macro definition is indeed not a certain clock, but it is
-> used in the imx93 ccm driver to indicate the number of clocks. And this macro
-> already existed before this patch, so it may not be able to be deleted.
+Since commit fa2d0aa96941
+("mmc: core: Allow setting slot index via device tree alias")
+mmc numbering are changed, confusing boot scripts. Fix that by adding
+proper aliases
 
-May be. Trust me. Fix your driver first.
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+Well, this has lingered around a long time in my branches and probably
+used by virtually everyone using this devicetree.
 
+ arch/arm/boot/dts/nxp/imx/e60k02.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/arch/arm/boot/dts/nxp/imx/e60k02.dtsi b/arch/arm/boot/dts/nxp/imx/e60k02.dtsi
+index 13756d39fb7b..0029c12f16c8 100644
+--- a/arch/arm/boot/dts/nxp/imx/e60k02.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/e60k02.dtsi
+@@ -14,6 +14,10 @@
+ #include <dt-bindings/input/input.h>
+ 
+ / {
++	aliases {
++		mmc0 = &usdhc2;
++		mmc1 = &usdhc3;
++	};
+ 
+ 	chosen {
+ 		stdout-path = &uart1;
+-- 
+2.39.2
 
