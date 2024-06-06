@@ -1,105 +1,114 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1756C195FD8
-	for <imx@lists.linux.dev>; Thu,  6 Jun 2024 13:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1DC38D
+	for <imx@lists.linux.dev>; Thu,  6 Jun 2024 14:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717680899; cv=none; b=Mb5mXlbzB6do3QsZgIABYRi9dE4RCoeedEy9BrCNEUGr1fRN9oVgzrwzzpkjjbrGDzYwMtIqPbbwJBinoLETsI+h3cOXko0Z2o+0U5r4puAeYxyOyHgmMpP9vwqIP3vJO0ZMKqSOvzTqEVkc8JFKYZqmMfK5REcTSTv4gTz6oW8=
+	t=1717684615; cv=none; b=hy9NjAlOpr/nhLSSWA0h9kwCyoXI+rADB1g8r/7EL4pC8lxwKhoiZr9vJhnk6vhWW0GnobM+aPPiyXYD2lWRfjUmh8W9kqubuPMR29q3FSc3qmFYrMFDwbgxQ4MLAjNvxrQw3c0iYFf9Gx9eGKW907rThsA/c4rzTlQfhNWNfBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717680899; c=relaxed/simple;
-	bh=rwUDRgOE0g4IgjJwSHjyICbUSGGmHGx7b0GMJ3hLNNg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LY+72qKB4Ee2rBYNFeDPiTkUz0OgAAnxbbENxlXyyc0m2NLrXYZPIlaQs7GjIa0IW8XbeRMhlD7QgAnBFUdfK5TfqWWoD9MKS0ylLZIdHQye0c9jBjnXmJrvRgSwwwqMGmli64hId3hXf65juiix1N/CA7Kl4SEWpYFMfZRnEyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ml1eOfci; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ipMSiLDK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1717684615; c=relaxed/simple;
+	bh=HYbaZvNxTbJKa5f2sNO1p1OoBPjJdhGaLI/bsnkYCJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AYH3Ar4ISMbeq3P0hZOOxX6wTpt8+tdqXE86LkBIAwLeVl7Ty7OJD89QeQskDkSQ//aqzgmTKkEEC/C1Ft2zGQXJyiCrrriULdNKEXjQA2woantVaUocfScM2xcfQfaS+FufnbXvO3iJSjLmkxLztiI71oOsS/cU4kjDtFdbzEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YACCMcyk; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ml1eOfci";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ipMSiLDK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YACCMcyk"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42158db03a7so10859115e9.2
+        for <imx@lists.linux.dev>; Thu, 06 Jun 2024 07:36:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1717680896; x=1749216896;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=O3hYsokB6g9yjbSVd+FECl8ByMyjSc1GdXfnu8/iMsI=;
-  b=ml1eOfciYhWnP80mOS4MHjAC9YAC+h0OvagEU4SlxL58GPtumPHbZflf
-   m3eDJg/F9BO+Oc6jTVUzzxAYExGhaibS7a8KUXeujOOOF3QahYTX0vZ7T
-   6V8duqHDCEKMLQySb54beqmxy/U3j26AEcFIfc0R9L3UdRNY/wd6bUEOP
-   DEBXdsCJOqBYV2m5nzH1qrRtxICkFlkGx3rz5TemJRuQDFwDKJiXCYRE9
-   RdgAcq2Ax8hbDOURANLawXf4I/FgBcvWrYAhyq6d0CYGrC8+ZAyT0Pz/7
-   uYm1XMzu2ePio6QbQzW5E/X7Bk0210QDKNQRzGt56ozmP925LN8AYLzwH
-   g==;
-X-CSE-ConnectionGUID: yoShREV9TgqZmY6qnePSaw==
-X-CSE-MsgGUID: tQSVBPAPQkS6XAOKDhkxXA==
-X-IronPort-AV: E=Sophos;i="6.08,219,1712613600"; 
-   d="scan'208";a="37263912"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 06 Jun 2024 15:34:48 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E763216E02E;
-	Thu,  6 Jun 2024 15:34:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1717680883;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=O3hYsokB6g9yjbSVd+FECl8ByMyjSc1GdXfnu8/iMsI=;
-	b=ipMSiLDKM0bcul7VycARroxu/EXpYbFvkR6uhCtgBGQY6GE8LZ5ec6m9lf+oxrPSQrK6uU
-	WlJTjowqSP5OXGWjK/I54Llxi8xgIngIecazmedbB3Y1G3Qrr2gfKptMObUgffFjK1tOqc
-	PTRa7F/AMFPvXM3zQHZCj+aLdU2EnFa5v6e1t6ocLIi+yPCNSYDlb2WWKqFzQ2mavRIQCp
-	Vsf0SdFA/Bt8a6E+FjSGq6ptQLJ0g1mN4qg2H3Oj7TESae+8L+9LjvzfVC+pXL7V1T3NeJ
-	VW0rQtmXWf5nFqXZyMcejtRQQLw6jzm6xRjnQIwHh7F4bcz7ggHVX9BW95w64Q==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 2/2] arm64: dts: imx8mp: Add imx8mp-specific irqsteer compatible
-Date: Thu, 06 Jun 2024 15:34:42 +0200
-Message-ID: <2690282.X9hSmTKtgW@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240528071141.92003-3-alexander.stein@ew.tq-group.com>
-References: <20240528071141.92003-1-alexander.stein@ew.tq-group.com> <20240528071141.92003-3-alexander.stein@ew.tq-group.com>
+        d=linaro.org; s=google; t=1717684612; x=1718289412; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BEGX/YRM4abY7OJ5gwhaYjtg7TEA+2R15UHkn44kNAM=;
+        b=YACCMcykr8os8IREvnNpEwMbFCq4Gd3GQXgeWS0YqyTDg7E4NISivyIn/Y4OvUnDJ6
+         B5Mxu/A7UF5KwiLgW4aDCaQiassHwaPAjuErmHIeETS+Nt2yFhWfjMw4GUIjKXo8NGTU
+         I4a3PKwNgn8E1aVH9FElXgGOiS65bKOEdJY98AdtOTCtDj0h09VXiJHWP/B4wkK4jCWv
+         oQBllAvK71p22pthzRTz1f+yNy3+ERAKu8QXSVfwi2mZzlpHkb7/iRGzPBG52s/DDJjB
+         N5U017gTTi/0Ojz5ldcdOOuVqWMvThPS+3DRdFo1x0tF04oZDKlQEHC4pr2v1zlyUX8C
+         Qwgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717684612; x=1718289412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BEGX/YRM4abY7OJ5gwhaYjtg7TEA+2R15UHkn44kNAM=;
+        b=pysYhkpOSV2mssXj6qtnaas4gBq7MM/HiL5ceJ1hAxJqiAmOPnYbJFZ8pa7fL0odX5
+         JWQNWYaFkg5qf8ctpP50MVYDB0eD3MZj+bEk1Hs7aXpcy9aP9iPoHuyle2UrRHgyeo+K
+         vIEcl00tXzMGYpz6QjReBcwyXCphUbWYgPC1JNf6Z0Te0wpo3A7fPgoVIQAIXQn4Gq93
+         3t0ag59Bt9h0iqJwr54EKTj+8vVF0/lbCGajEtkQCQnQSxzphc28KB4U5Zm714Rl126B
+         xiihXx+0A6O0J2+ZCOZNmiPNVCRvG6A7ew6VYcnQts2KZUOoFU3yBatjBSan6VF30FxZ
+         DPWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBCCZkWPM8hiu5slYtiO/Rw566J29c1IBHzD37dVMXxcYgYwr8uwnXGFmxKPd+DmTb1Mu+pG6E5WphjbYk6YMyTxEB
+X-Gm-Message-State: AOJu0YxANRUjIQnPuemdLTxMrL4ZlAB90Lk/hK0TzBZFdLMzYRGfWYKh
+	3dVuH5H/pxgadWi7Pb603O5PGXciQMC9CuZp9WPqw5aJm7kiu6VChOZ3tTe/MCY=
+X-Google-Smtp-Source: AGHT+IEzOvqTcqQFVTM/zPrDfgG4Ch2gvXbBob36jdrxqP8DV2hXHRxxXD0hBtX3K+evZarwhWDdKQ==
+X-Received: by 2002:a05:600c:4714:b0:41f:afa6:3d85 with SMTP id 5b1f17b1804b1-421563504aamr51262215e9.31.1717684611808;
+        Thu, 06 Jun 2024 07:36:51 -0700 (PDT)
+Received: from krzk-bin.. ([110.93.11.116])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42158148ffasm59540865e9.38.2024.06.06.07.36.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jun 2024 07:36:51 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	patches@opensource.cirrus.com,
+	llvm@lists.linux.dev
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/3] mfd: max14577: Fix Wvoid-pointer-to-enum-cast warning (again)
+Date: Thu,  6 Jun 2024 16:36:46 +0200
+Message-ID: <20240606143648.152668-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi,
+'type' is an enum, thus cast of pointer on 64-bit compile test with
+clang and W=1 causes:
 
-Am Dienstag, 28. Mai 2024, 09:11:41 CEST schrieb Alexander Stein:
-> i.MX8MP irqsteer has power-domain support, so use a dedicated compatible.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index 8eb9f24007d00..fdaf7d5314384 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1996,7 +1996,7 @@ hdmi_blk_ctrl: blk-ctrl@32fc0000 {
->  			};
-> =20
->  			irqsteer_hdmi: interrupt-controller@32fc2000 {
-> -				compatible =3D "fsl,imx-irqsteer";
-> +				compatible =3D "fsl,imx8mp-irqsteer", "fsl,imx-irqsteer";
->  				reg =3D <0x32fc2000 0x1000>;
->  				interrupts =3D <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
->  				interrupt-controller;
->=20
+  max14577.c:400:23: error: cast to smaller integer type 'enum maxim_device_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-Any feedback on this?
-Thanks,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Year ago this was solved, although LKML discussion suggested warning is
+not suitable for kernel.  Nothing changed in this regard for a year, so
+assume the warning will stay and we want to have warnings-free builds.
 
+Link: https://lore.kernel.org/all/20230814160457.GA2836@dev-arch.thelio-3990X/
+Link: https://lore.kernel.org/all/20230810095849.123321-1-krzysztof.kozlowski@linaro.org/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/mfd/max14577.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+index 8f7472c76009..67bf4de4c0c1 100644
+--- a/drivers/mfd/max14577.c
++++ b/drivers/mfd/max14577.c
+@@ -397,7 +397,7 @@ static int max14577_i2c_probe(struct i2c_client *i2c)
+ 		return ret;
+ 	}
+ 
+-	max14577->dev_type = (enum maxim_device_type)i2c_get_match_data(i2c);
++	max14577->dev_type = (kernel_ulong_t)i2c_get_match_data(i2c);
+ 
+ 	max14577_print_dev_type(max14577);
+ 
+-- 
+2.43.0
 
