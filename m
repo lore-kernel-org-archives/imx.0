@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0577E43AB7;
-	Thu,  6 Jun 2024 06:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5954413BC20;
+	Thu,  6 Jun 2024 06:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717656176; cv=none; b=NBHRFvsyj3z6g8kOqps5sKzthR2W4tQ8ewIwg+cMO8QChuCQE1CtKZzvwRr79EcuarbZ4kkJCBUidPm2O1zJIbCcHrdS4lDbC9uj1p/gQqsyCiCbTV8H+If5kwTsRu1bA+8suPPrEZcSaScSYhZG5AdXPEOHFbqmzIiLiHJbTPk=
+	t=1717656251; cv=none; b=h3qNgm5Sj1nex2Tn97cbSDBvgtmOd8XIsH/cZ3dEQ+EB/O65aFFsuKEsugZyYx2FpLzZ855T+cbpvEiXuAvgZFj40+kJDgMIurm35t3+4eQz3P/nH5ewcJ6mt4qRpkNkOFtZnE1BsDxMbvrY7sexELLJcdboABFxMXyo84H/SdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717656176; c=relaxed/simple;
-	bh=IVm4GBK+EUL7qtaYcd3QzD3U1t+bEREQP2cYVxz4d/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=LouuWxZaVmYnHlSPzyaQBJGQsl4YtdXp8ZSxTRH4BMyrt60MFvtBH3EDcpCnnOV4J49wkpxOUI6iMf005nh7QXa0j/L2C9RExHEcAmMW+Rs4t3oa0Yl52CLt7ryzICL7LNZKROcdA6giWlEgAls61lvi/arnTJ0tYZhJ7ZIkF6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nsb83SIM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717656251; c=relaxed/simple;
+	bh=3ZCCiIZVN2JELpO+tKNP2BLYPCzEKTVkvzzbdR0N+fI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K1sYvqpbhawJ2r5dDKznXSZnO2Hd02oe/lL4tKohbTKeXMGCY3zY8F6fFuuJ7fi67IxNmklMM84yabhEiwBumoqbQGgSaAwvCu7DVhGMf4URyyXnC4aHmyxQ85/tEX6vyzh3Xxz+iJ4OdW6HxPLH6+jdiydtpr/xG1rNNjNtjHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sShhanP/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nsb83SIM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4708C3277B;
-	Thu,  6 Jun 2024 06:42:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sShhanP/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947DAC4AF0D;
+	Thu,  6 Jun 2024 06:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717656175;
-	bh=IVm4GBK+EUL7qtaYcd3QzD3U1t+bEREQP2cYVxz4d/M=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=Nsb83SIMVtw+ghHxIM2giiqGIlGzPuX7YNekKTNZNk6IQVJaEDDRiKTCelplHLdaJ
-	 sNDn31y/YHTSGIFy/K383Z+XjWPVJVY0ydW9Njy16uOyZpEKnwj4e5XWD0ITjwBoxn
-	 hRwyfxUvplo27U3yxgYAcUam83yYPRQVKxI91I0Bbb2Vcm0PsjXC/qnrE4w+EFm06e
-	 6I9RVh5VO6kPhB+fIExmM44yF6V5pH1NUK+tewQS9R1MjoE5dIwRGzoxzZpQgenfsd
-	 pwvVEoIIUeW7JLv0dOpcHTvjg5E7rchjC/hfrsrl15QwBn1ijs8jBuY6clcDVc+v32
-	 XoNa3UC+hZLuw==
-Message-ID: <5f8ccd9b-d419-4a77-9e05-c2290c40b9d0@kernel.org>
-Date: Thu, 6 Jun 2024 08:42:50 +0200
+	s=k20201202; t=1717656251;
+	bh=3ZCCiIZVN2JELpO+tKNP2BLYPCzEKTVkvzzbdR0N+fI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sShhanP/FFJUHQNKWsv/7lYVwGsM1lZdd+hEcJYODoxhjL/GlzkjwwuHGciILcGwN
+	 8reE1FU4slMISoNq7VvRFvib68yNoTNMTZNIkI2201SY6FOdpsrx61vcMrfr7txz/I
+	 XgAMTUXx08A8veo/PkR3PJcqviXspOKcf/L2EAZa7xU9eNLBo1VOPDtlWsIDufZsqD
+	 d+AVFYYlB1+THL8ZVrIzLSYHyaqYP6Ni+JH63UO00yxQtl0fdF+0JhRf1otmE58kZ4
+	 Ara+uofViO9HoO8WT4VDPwR4KfQ+E6tdWl24HPc0mlPao5WdZzgWY5u7RtLwDKFepm
+	 eL538UBx9uoTg==
+Message-ID: <b1c51acc-441d-4484-adef-1da368571097@kernel.org>
+Date: Thu, 6 Jun 2024 08:44:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,24 +35,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: remoteproc: imx_rproc: add minItems for
- power-domain
-To: Frank Li <Frank.Li@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM"
- <linux-remoteproc@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20240605193409.1131220-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ krzk+dt@kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+ robh@kernel.org, ulf.hansson@linaro.org
+References: <20240605185046.1057877-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,61 +86,23 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240605193409.1131220-1-Frank.Li@nxp.com>
+In-Reply-To: <20240605185046.1057877-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 05/06/2024 21:34, Frank Li wrote:
-> "fsl,imx8qxp-cm4" just need 2 power domains. Keep the same restriction for
-> other compatible string.
+On 05/06/2024 20:50, Frank Li wrote:
+> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+> Addtional change during convert:
+> - Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
+> - Add "reg" and "interrupts" property.
+> - Change example "sdhci@2e000" to "mmc@2e000".
+> - Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
+> most existed dts file.
+> - Set clock-frequency to 100mhz in example.
 > 
-> Notes:
->     pass dt_binding_check.
->     
->     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-rproc.yaml
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       CHKDT   Documentation/devicetree/bindings
->       LINT    Documentation/devicetree/bindings
->       DTEX    Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dts
->       DTC_CHK Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dtb
-> 
->  .../bindings/remoteproc/fsl,imx-rproc.yaml       | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index df36e29d974ca..60267c1ba94e0 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -59,6 +59,7 @@ properties:
->      maxItems: 32
->  
->    power-domains:
-> +    minItems: 1
 
-Then here should be 2.
-
->      maxItems: 8
->  
->    fsl,auto-boot:
-> @@ -99,6 +100,21 @@ allOf:
->        properties:
->          fsl,iomuxc-gpr: false
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx8qxp-cm4
-> +    then:
-> +      properties:
-> +        power-domains:
-> +          minItems: 2
-
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
