@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECF613BC2B;
-	Thu,  6 Jun 2024 06:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0577E43AB7;
+	Thu,  6 Jun 2024 06:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717655976; cv=none; b=LThwwUMivfDCNf6Jvw6Cmm4/P8byWAJ0hSbuBni5zfBCG778Oo3zlXhxLnPDLkYit/6eksPDbY0VdcGsIkOYgNp2rlXb6fbtTJlhdUZQjW0/H3zfXhjT+dZAWeBmB+iLcveGzhGTuQt5xqQS9bVALnR8mYI7v3fzRC4X6R/W1Ds=
+	t=1717656176; cv=none; b=NBHRFvsyj3z6g8kOqps5sKzthR2W4tQ8ewIwg+cMO8QChuCQE1CtKZzvwRr79EcuarbZ4kkJCBUidPm2O1zJIbCcHrdS4lDbC9uj1p/gQqsyCiCbTV8H+If5kwTsRu1bA+8suPPrEZcSaScSYhZG5AdXPEOHFbqmzIiLiHJbTPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717655976; c=relaxed/simple;
-	bh=sJKvmB1/cWlJykFFARqeITuFspBLzwVycXd9vuzvU2Q=;
+	s=arc-20240116; t=1717656176; c=relaxed/simple;
+	bh=IVm4GBK+EUL7qtaYcd3QzD3U1t+bEREQP2cYVxz4d/M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=DBFPcWtG9LMsp2MpP6i85LK6MNjefzO8YC3Q/gaAOTUY6PZU9QNRk17K6ss6WLqytYixXDhwCE8ixMCeOgEsgWPHBAT+7GSj13WjxR5Cfj3rsYXNCjuUAYtjDt9TUeUTSh7E1KmoBp/WBPGMWFlivklIi5gJbMkiBlls4WyA7vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEFmmS+y; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=LouuWxZaVmYnHlSPzyaQBJGQsl4YtdXp8ZSxTRH4BMyrt60MFvtBH3EDcpCnnOV4J49wkpxOUI6iMf005nh7QXa0j/L2C9RExHEcAmMW+Rs4t3oa0Yl52CLt7ryzICL7LNZKROcdA6giWlEgAls61lvi/arnTJ0tYZhJ7ZIkF6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nsb83SIM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEFmmS+y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF89C2BD10;
-	Thu,  6 Jun 2024 06:39:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nsb83SIM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4708C3277B;
+	Thu,  6 Jun 2024 06:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717655975;
-	bh=sJKvmB1/cWlJykFFARqeITuFspBLzwVycXd9vuzvU2Q=;
+	s=k20201202; t=1717656175;
+	bh=IVm4GBK+EUL7qtaYcd3QzD3U1t+bEREQP2cYVxz4d/M=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=UEFmmS+yoHnJ7U4pz7+lfGiLF2gCEu0QWbn+PGGM2kDz8hJvdfYZEs9qmwCb4qLzx
-	 61Z9a0DWIFuVFPdGgppb+smcoZzsYR3sLKbTTWRBV3mLQfNTrtOzpdewL9lcYDNCOh
-	 /VEfMsNZfOE/+62mdebcxp3s3LGNv4803pscgyhN/viqAU0oAF1QIJg4LXfrpXBT7e
-	 3W/T7hr1R7alBfqBHynB5YRJ+TCEFu9fg7WWgnyyzmLPqRv2EnU75JcHr6GimCQCW9
-	 QvFu3qDLUhH80LBI0+m5OJ6KsJWi2coynFwA2TktfGktWG7uhUobsly5px+euAxy63
-	 WiHrtGJno2p/Q==
-Message-ID: <dc9accba-78af-45ec-a516-b89f2d4f4b03@kernel.org>
-Date: Thu, 6 Jun 2024 08:39:29 +0200
+	b=Nsb83SIMVtw+ghHxIM2giiqGIlGzPuX7YNekKTNZNk6IQVJaEDDRiKTCelplHLdaJ
+	 sNDn31y/YHTSGIFy/K383Z+XjWPVJVY0ydW9Njy16uOyZpEKnwj4e5XWD0ITjwBoxn
+	 hRwyfxUvplo27U3yxgYAcUam83yYPRQVKxI91I0Bbb2Vcm0PsjXC/qnrE4w+EFm06e
+	 6I9RVh5VO6kPhB+fIExmM44yF6V5pH1NUK+tewQS9R1MjoE5dIwRGzoxzZpQgenfsd
+	 pwvVEoIIUeW7JLv0dOpcHTvjg5E7rchjC/hfrsrl15QwBn1ijs8jBuY6clcDVc+v32
+	 XoNa3UC+hZLuw==
+Message-ID: <5f8ccd9b-d419-4a77-9e05-c2290c40b9d0@kernel.org>
+Date: Thu, 6 Jun 2024 08:42:50 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,23 +35,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: pwm: imx: remove interrupt proptery from
- required
-To: Frank Li <Frank.Li@nxp.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: remoteproc: imx_rproc: add minItems for
+ power-domain
+To: Frank Li <Frank.Li@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- "open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+ "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM"
+ <linux-remoteproc@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>,
  "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
  "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
  <linux-arm-kernel@lists.infradead.org>,
  open list <linux-kernel@vger.kernel.org>
-References: <20240605220839.1398872-1-Frank.Li@nxp.com>
+References: <20240605193409.1131220-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -97,19 +98,61 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240605220839.1398872-1-Frank.Li@nxp.com>
+In-Reply-To: <20240605193409.1131220-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 06/06/2024 00:08, Frank Li wrote:
-> The driver "drivers/pwm/pwm-imx27.c" never use interrupt. Generally pwm
-> hardware generate a waveform according to register timing setting. Needn't
-> interrupt handle at all. So remove it from "required" list.
+On 05/06/2024 21:34, Frank Li wrote:
+> "fsl,imx8qxp-cm4" just need 2 power domains. Keep the same restriction for
+> other compatible string.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
+> 
+> Notes:
+>     pass dt_binding_check.
+>     
+>     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-rproc.yaml
+>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>       CHKDT   Documentation/devicetree/bindings
+>       LINT    Documentation/devicetree/bindings
+>       DTEX    Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dts
+>       DTC_CHK Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dtb
+> 
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml       | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> index df36e29d974ca..60267c1ba94e0 100644
+> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> @@ -59,6 +59,7 @@ properties:
+>      maxItems: 32
+>  
+>    power-domains:
+> +    minItems: 1
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Then here should be 2.
+
+>      maxItems: 8
+>  
+>    fsl,auto-boot:
+> @@ -99,6 +100,21 @@ allOf:
+>        properties:
+>          fsl,iomuxc-gpr: false
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qxp-cm4
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          minItems: 2
+
+
 
 Best regards,
 Krzysztof
