@@ -1,140 +1,105 @@
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B64C13C90A;
-	Thu,  6 Jun 2024 10:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1756C195FD8
+	for <imx@lists.linux.dev>; Thu,  6 Jun 2024 13:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717671172; cv=none; b=fjZ2bupdNmXH/vzwQdfZB/2gyF/8BK1WKSh39Np27++0Zx/hnVN2v+C9fixQNiwbqMFHadwp9WvhzUqM0MHM8j2tSY4P8dksJWaOjAAmDtocfUCiNB5jEpuNpz0ombnJFYu2SzysOvZKVWeCv1ksE3VuzVDjP9xTRHEOsJ2xVU4=
+	t=1717680899; cv=none; b=Mb5mXlbzB6do3QsZgIABYRi9dE4RCoeedEy9BrCNEUGr1fRN9oVgzrwzzpkjjbrGDzYwMtIqPbbwJBinoLETsI+h3cOXko0Z2o+0U5r4puAeYxyOyHgmMpP9vwqIP3vJO0ZMKqSOvzTqEVkc8JFKYZqmMfK5REcTSTv4gTz6oW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717671172; c=relaxed/simple;
-	bh=ZpuzNlwMqe4oHu3girJ5a0z9IYHGTkMdZYPNlhM+SdQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKF2v1/ZcGIWbxCYery/upciQT3u0Qbo1qmyaTD4k4ZafBLvrIFwOZjgAot2m/sbkawfVpD69VblB5y+NoE9RbvRTxni/HbiTxoQmzKV2DO4aiQYXoCtHIk1pyan/2yWbVwpP3MDyQeIoIMgr4bGkS+0d2TxXQRKjzwOSGbSI/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VjgECtmK; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1717680899; c=relaxed/simple;
+	bh=rwUDRgOE0g4IgjJwSHjyICbUSGGmHGx7b0GMJ3hLNNg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LY+72qKB4Ee2rBYNFeDPiTkUz0OgAAnxbbENxlXyyc0m2NLrXYZPIlaQs7GjIa0IW8XbeRMhlD7QgAnBFUdfK5TfqWWoD9MKS0ylLZIdHQye0c9jBjnXmJrvRgSwwwqMGmli64hId3hXf65juiix1N/CA7Kl4SEWpYFMfZRnEyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ml1eOfci; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ipMSiLDK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VjgECtmK"
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 456AqZ4k067178;
-	Thu, 6 Jun 2024 05:52:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1717671155;
-	bh=ZHhYe9SXX81VO9UiinRj2/vpq4eEiarfDw7Bhml8Hpc=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=VjgECtmKCuhCXw6iZwOgDvXfZncWFe9iL8P5si5yVX3gRYm/GMZXQMhQQuKYOMOsv
-	 fKWS8rOLCPNIB8l4894jY5tdDgBTqnqQbbrXnFWAziOcyC52SvpcNcvHVIFre6iBqR
-	 VijY43WsvZoGGvEIqkAjZdYup9nrh6S/UUewJDlQ=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 456AqZLg053435
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 6 Jun 2024 05:52:35 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 6
- Jun 2024 05:52:35 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 6 Jun 2024 05:52:35 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 456AqYOG071819;
-	Thu, 6 Jun 2024 05:52:34 -0500
-Date: Thu, 6 Jun 2024 16:22:33 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-CC: Vignesh Raghavendra <vigneshr@ti.com>,
-        Siddharth Vadapalli
-	<s-vadapalli@ti.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha
- Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team
-	<kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Minghuan Lian
-	<minghuan.Lian@nxp.com>,
-        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang
-	<roy.zang@nxp.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Jingoo Han
-	<jingoohan1@gmail.com>,
-        Srikanth Thokala <srikanth.thokala@intel.com>,
-        Marek
- Vasut <marek.vasut+renesas@gmail.com>,
-        Yoshihiro Shimoda
-	<yoshihiro.shimoda.uh@renesas.com>,
-        Thierry Reding
-	<thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kunihiko
- Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu
-	<mhiramat@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-arm-kernel@axis.com>, <linux-arm-msm@vger.kernel.org>,
-        <linux-renesas-soc@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <mhi@lists.linux.dev>, Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH 3/5] PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown()
- API to handle Link Down event
-Message-ID: <bea79de4-b49b-44a5-990e-071d9c35bff4@ti.com>
-References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
- <20240606-pci-deinit-v1-3-4395534520dc@linaro.org>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ml1eOfci";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ipMSiLDK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1717680896; x=1749216896;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=O3hYsokB6g9yjbSVd+FECl8ByMyjSc1GdXfnu8/iMsI=;
+  b=ml1eOfciYhWnP80mOS4MHjAC9YAC+h0OvagEU4SlxL58GPtumPHbZflf
+   m3eDJg/F9BO+Oc6jTVUzzxAYExGhaibS7a8KUXeujOOOF3QahYTX0vZ7T
+   6V8duqHDCEKMLQySb54beqmxy/U3j26AEcFIfc0R9L3UdRNY/wd6bUEOP
+   DEBXdsCJOqBYV2m5nzH1qrRtxICkFlkGx3rz5TemJRuQDFwDKJiXCYRE9
+   RdgAcq2Ax8hbDOURANLawXf4I/FgBcvWrYAhyq6d0CYGrC8+ZAyT0Pz/7
+   uYm1XMzu2ePio6QbQzW5E/X7Bk0210QDKNQRzGt56ozmP925LN8AYLzwH
+   g==;
+X-CSE-ConnectionGUID: yoShREV9TgqZmY6qnePSaw==
+X-CSE-MsgGUID: tQSVBPAPQkS6XAOKDhkxXA==
+X-IronPort-AV: E=Sophos;i="6.08,219,1712613600"; 
+   d="scan'208";a="37263912"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 06 Jun 2024 15:34:48 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E763216E02E;
+	Thu,  6 Jun 2024 15:34:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1717680883;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=O3hYsokB6g9yjbSVd+FECl8ByMyjSc1GdXfnu8/iMsI=;
+	b=ipMSiLDKM0bcul7VycARroxu/EXpYbFvkR6uhCtgBGQY6GE8LZ5ec6m9lf+oxrPSQrK6uU
+	WlJTjowqSP5OXGWjK/I54Llxi8xgIngIecazmedbB3Y1G3Qrr2gfKptMObUgffFjK1tOqc
+	PTRa7F/AMFPvXM3zQHZCj+aLdU2EnFa5v6e1t6ocLIi+yPCNSYDlb2WWKqFzQ2mavRIQCp
+	Vsf0SdFA/Bt8a6E+FjSGq6ptQLJ0g1mN4qg2H3Oj7TESae+8L+9LjvzfVC+pXL7V1T3NeJ
+	VW0rQtmXWf5nFqXZyMcejtRQQLw6jzm6xRjnQIwHh7F4bcz7ggHVX9BW95w64Q==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 2/2] arm64: dts: imx8mp: Add imx8mp-specific irqsteer compatible
+Date: Thu, 06 Jun 2024 15:34:42 +0200
+Message-ID: <2690282.X9hSmTKtgW@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240528071141.92003-3-alexander.stein@ew.tq-group.com>
+References: <20240528071141.92003-1-alexander.stein@ew.tq-group.com> <20240528071141.92003-3-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240606-pci-deinit-v1-3-4395534520dc@linaro.org>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jun 06, 2024 at 12:56:36PM +0530, Manivannan Sadhasivam wrote:
-> As per the PCIe base spec r5.0, section 5.2, Link Down event can happen
-> under any of the following circumstances:
-> 
-> 1. Fundamental/Hot reset
-> 2. Link disable transmission by upstream component
-> 3. Moving from L2/L3 to L0
-> 
-> In those cases, Link Down causes some non-sticky DWC registers to loose the
-> state (like REBAR, etc...). So the drivers need to reinitialize them to
-> function properly once the link comes back again.
-> 
-> This is not a problem for drivers supporting PERST# IRQ, since they can
-> reinitialize the registers in the PERST# IRQ callback. But for the drivers
-> not supporting PERST#, there is no way they can reinitialize the registers
-> other than relying on Link Down IRQ received when the link goes down. So
-> let's add a DWC generic API dw_pcie_ep_linkdown() that reinitializes the
-> non-sticky registers and also notifies the EPF drivers about link going
-> down.
-> 
-> This API can also be used by the drivers supporting PERST# to handle the
-> scenario (2) mentioned above.
-> 
-> NOTE: For the sake of code organization, move the dw_pcie_ep_linkup()
-> definition just above dw_pcie_ep_linkdown().
-> 
-> Reviewed-by: Niklas Cassel <cassel@kernel.org>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Hi,
 
-This patch already seems to be present in linux-next:
-https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?id=3d2e425263e2674713220379ad04e925efdb731d&h=next
+Am Dienstag, 28. Mai 2024, 09:11:41 CEST schrieb Alexander Stein:
+> i.MX8MP irqsteer has power-domain support, so use a dedicated compatible.
+>=20
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index 8eb9f24007d00..fdaf7d5314384 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1996,7 +1996,7 @@ hdmi_blk_ctrl: blk-ctrl@32fc0000 {
+>  			};
+> =20
+>  			irqsteer_hdmi: interrupt-controller@32fc2000 {
+> -				compatible =3D "fsl,imx-irqsteer";
+> +				compatible =3D "fsl,imx8mp-irqsteer", "fsl,imx-irqsteer";
+>  				reg =3D <0x32fc2000 0x1000>;
+>  				interrupts =3D <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+>  				interrupt-controller;
+>=20
 
-Other patches in this series also seem to be merged.
+Any feedback on this?
+Thanks,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-[...]
 
-Regards,
-Siddharth.
