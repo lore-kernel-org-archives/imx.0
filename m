@@ -1,109 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5954413BC20;
-	Thu,  6 Jun 2024 06:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266FC13BC20
+	for <imx@lists.linux.dev>; Thu,  6 Jun 2024 07:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717656251; cv=none; b=h3qNgm5Sj1nex2Tn97cbSDBvgtmOd8XIsH/cZ3dEQ+EB/O65aFFsuKEsugZyYx2FpLzZ855T+cbpvEiXuAvgZFj40+kJDgMIurm35t3+4eQz3P/nH5ewcJ6mt4qRpkNkOFtZnE1BsDxMbvrY7sexELLJcdboABFxMXyo84H/SdU=
+	t=1717658832; cv=none; b=JQuBnqDJBuY4gQ/2spwpOvEcg0iUax7NgED6ovuOvVd+gzsHwYcXOgPMNBSkuii0opyDrHqQ8m9IA9+gx0N1i7PWcK/gK3a9kmxuhQ3rfwQcEdrXMS5tbCj/4bR/viS6+0jMWud61tSRbr5KruorerZXw06Uz2Bf/Ocnz2s5E3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717656251; c=relaxed/simple;
-	bh=3ZCCiIZVN2JELpO+tKNP2BLYPCzEKTVkvzzbdR0N+fI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K1sYvqpbhawJ2r5dDKznXSZnO2Hd02oe/lL4tKohbTKeXMGCY3zY8F6fFuuJ7fi67IxNmklMM84yabhEiwBumoqbQGgSaAwvCu7DVhGMf4URyyXnC4aHmyxQ85/tEX6vyzh3Xxz+iJ4OdW6HxPLH6+jdiydtpr/xG1rNNjNtjHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sShhanP/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717658832; c=relaxed/simple;
+	bh=eTnUwNkDQXdrC7n1JvpcvTENi2pHuNndoBzQaRgPaoU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=H2rYgtS6lb5b7on+7SRnLRCg3xXkAf3VTJ+4qgNhwKy8BUfg29kuaH2mpJjV7s8Eft58RArO9B77Xqq9aCeH4L3Fs7GzRvQluy7qzjXYg5Z7EUhyIp+fWbUTB67O0AK5IaBrIM6DReqEzyOsj7IZTsvTqXrdTLPSOSS3jsdeo3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jF6dvD7m; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sShhanP/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947DAC4AF0D;
-	Thu,  6 Jun 2024 06:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717656251;
-	bh=3ZCCiIZVN2JELpO+tKNP2BLYPCzEKTVkvzzbdR0N+fI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sShhanP/FFJUHQNKWsv/7lYVwGsM1lZdd+hEcJYODoxhjL/GlzkjwwuHGciILcGwN
-	 8reE1FU4slMISoNq7VvRFvib68yNoTNMTZNIkI2201SY6FOdpsrx61vcMrfr7txz/I
-	 XgAMTUXx08A8veo/PkR3PJcqviXspOKcf/L2EAZa7xU9eNLBo1VOPDtlWsIDufZsqD
-	 d+AVFYYlB1+THL8ZVrIzLSYHyaqYP6Ni+JH63UO00yxQtl0fdF+0JhRf1otmE58kZ4
-	 Ara+uofViO9HoO8WT4VDPwR4KfQ+E6tdWl24HPc0mlPao5WdZzgWY5u7RtLwDKFepm
-	 eL538UBx9uoTg==
-Message-ID: <b1c51acc-441d-4484-adef-1da368571097@kernel.org>
-Date: Thu, 6 Jun 2024 08:44:06 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jF6dvD7m"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-6c4f3e0e407so472845a12.1
+        for <imx@lists.linux.dev>; Thu, 06 Jun 2024 00:27:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717658830; x=1718263630; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vATXyYpxDoxuMBWGCsFFKBvV2FwTY9tS2i2Q/lEI70Q=;
+        b=jF6dvD7m4XlYclEjZvb2REzo9LAnXmctoHw8hHb24Hc+OVkLaOep51zqvw3v/UUyGk
+         bspRtQgiP00cm6yrbpH5hXJKvMCjI/fuo41qgWushYHnswjLTDz34fADN2BHYCZdFyjW
+         6a9vrV3ekn9etJEFKdUSjaHRM1j1h3XjLOE2ABxKRTDk4wOsgSJ5yP0Ja1e9CYQUYaPx
+         UdkDcetrODOQkZjj7/+ayRpsStQzy0VttEFHXc2pBAEjxxDqze8YTYrRk/10bkTywqhZ
+         emlKCoXRVC66yZBZHC1AhV4FvZUWt2FDnHUHm1a8VrsUE1ynrYxWMTxQ9WXIkvB8vA6F
+         jJ/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717658830; x=1718263630;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vATXyYpxDoxuMBWGCsFFKBvV2FwTY9tS2i2Q/lEI70Q=;
+        b=BKn7MKyOPjIa1erlAzBK0n4UTk/02DrDEHoFKLjT0x2/806S+Xr0F+4OOPjcvYeQSg
+         oGR13onYdtLCosLx81LkOkwOTLVEjsol8WSYmQW5svomowy8rBiXcaN9WBmYuVjcVVm0
+         ruEOQmgIPYgpVGrOAiYcOXteXvD4P/r9UrICBofTP+1cNhrO44uSNhifg03BKkZp8FDm
+         BM2I3dCmJUO4K6vf5pztwy2SX7bYGXQ2Iis5wZSiXLm/zUnPwI43KeWd4YLxtHXZz+QO
+         FcI8d1eJP21Wp7ldmnW6aJoOEhxAOMzVGIBYaPgUjNh8FBz1ev5XGuP+wr9Dy/uSSfIj
+         Xtbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQLn4wlBMg8VKhjFwhNMtsyzQlVfwvIXoRbjIAJ0Z3tjtdkXhZrzq+c8lGLpovtSvmceU3oh4mJLZPHmlvdkRo2Z0w
+X-Gm-Message-State: AOJu0YxeA1PfxDJoZKubsxG/DdaVmfW70kABOBT4TN0VhjMXvH6EpVjL
+	R+giHuvIniARIE7jdXr8V9SUfRU27ro91GqaEUvBoU5bzRYfqo0DlpL1kkUl5g==
+X-Google-Smtp-Source: AGHT+IHaMKRV/ZyBSrUsIgLazsPnTH6mNPZ8ByD6J5KfGegSjHhh2dqKlKHNCqkvzSpa+cIabaAPcw==
+X-Received: by 2002:a05:6a20:da9f:b0:1b0:278e:34a6 with SMTP id adf61e73a8af0-1b2b70fe1f0mr6173863637.49.1717658830110;
+        Thu, 06 Jun 2024 00:27:10 -0700 (PDT)
+Received: from [127.0.1.1] ([120.60.142.92])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd494feasm566621b3a.100.2024.06.06.00.26.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jun 2024 00:27:09 -0700 (PDT)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 0/5] PCI: endpoint: Add EPC 'deinit' event and
+ dw_pcie_ep_linkdown() API
+Date: Thu, 06 Jun 2024 12:56:33 +0530
+Message-Id: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- krzk+dt@kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- robh@kernel.org, ulf.hansson@linaro.org
-References: <20240605185046.1057877-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240605185046.1057877-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKlkYWYC/x3MQQqAIBBA0avIrBNUYqCuEi3KGWs2JhoRiHdPW
+ r7F/xUKZ+ECs6qQ+ZEiV+ywgwJ/bvFgLdQNzrjRoEGdvGhiiXJrx+gp2J1wCtCDlDnI+8+WtbU
+ PTiaPVVwAAAA=
+To: Vignesh Raghavendra <vigneshr@ti.com>, 
+ Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Minghuan Lian <minghuan.Lian@nxp.com>, 
+ Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, 
+ Jesper Nilsson <jesper.nilsson@axis.com>, Jingoo Han <jingoohan1@gmail.com>, 
+ Srikanth Thokala <srikanth.thokala@intel.com>, 
+ Marek Vasut <marek.vasut+renesas@gmail.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+ linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ mhi@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Bjorn Helgaas <helgaas@kernel.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2731;
+ i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
+ bh=eTnUwNkDQXdrC7n1JvpcvTENi2pHuNndoBzQaRgPaoU=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmYWTBvvClBeGF7FTQylWzbsg9oVTTskz2EOoBn
+ Zt4GVpYgeSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZmFkwQAKCRBVnxHm/pHO
+ 9dwUB/4/uHuy0pOtmq60P1UyLiR+MH2npT+bFuWCf8fMwExCiwaeJHYifh0b18wJgThFXn7F4Lo
+ iuzlAa23KRnrAiq/e0hvZmPmnM30g6EXNbW7THksJEFxLdnoSpeyIWg7uIsVak75r1nSfHIKqNj
+ sSx1fUpQvxDgWYY+56ZvpDp7KZ40y4MG8iSOv2wVwPGgxgpugNKqY2ogX1366QUpjBOM1clCvwA
+ tuS3Xry4kqdFn3bu9TsWOL4HoG/3r+VB7RwuZoMAOe7z17rawzf4OiRQF/WwQO6VgQomU+JUIBG
+ hI3tDABYUW5C9SooxoFvxoHMbJIwb5/mXxW8M6dlQzXxeJpS
+X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-On 05/06/2024 20:50, Frank Li wrote:
-> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
-> 
-> Addtional change during convert:
-> - Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
-> - Add "reg" and "interrupts" property.
-> - Change example "sdhci@2e000" to "mmc@2e000".
-> - Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
-> most existed dts file.
-> - Set clock-frequency to 100mhz in example.
-> 
+Hi,
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This series includes patches that were left over from previous series [1] for
+making the host reboot handling robust in endpoint framework.
+
+When the above mentioned series got merged to pci/endpoint, we got a bug report
+from LKP bot [2] and due to that the offending patches were dropped.
+
+This series addressed the issue reported by the bot by adding the stub APIs in
+include/pci/pci-epc.h and also removed the unused dwc wrapper as concluded in
+[3].
+
+Testing
+=======
+
+This series is tested on Qcom SM8450 based development board with 2 SM8450 SoCs
+connected over PCIe.
+
+- Mani
+
+[1] https://lore.kernel.org/linux-pci/20240430-pci-epf-rework-v4-0-22832d0d456f@linaro.org/
+[2] https://lore.kernel.org/linux-pci/202405130815.BwBrIepL-lkp@intel.com/
+[3] https://lore.kernel.org/linux-pci/20240529141614.GA3293@thinkpad/
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+Manivannan Sadhasivam (5):
+      PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+      PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers
+      PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API to handle Link Down event
+      PCI: qcom-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
+      PCI: layerscape-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
+
+ drivers/pci/controller/dwc/pci-dra7xx.c           |   2 +-
+ drivers/pci/controller/dwc/pci-imx6.c             |   2 +-
+ drivers/pci/controller/dwc/pci-keystone.c         |   2 +-
+ drivers/pci/controller/dwc/pci-layerscape-ep.c    |   4 +-
+ drivers/pci/controller/dwc/pcie-artpec6.c         |   2 +-
+ drivers/pci/controller/dwc/pcie-designware-ep.c   | 116 +++++++++++++---------
+ drivers/pci/controller/dwc/pcie-designware-plat.c |   2 +-
+ drivers/pci/controller/dwc/pcie-designware.h      |  10 +-
+ drivers/pci/controller/dwc/pcie-keembay.c         |   2 +-
+ drivers/pci/controller/dwc/pcie-qcom-ep.c         |   5 +-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c       |   2 +-
+ drivers/pci/controller/dwc/pcie-tegra194.c        |   3 +-
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c     |   2 +-
+ drivers/pci/endpoint/functions/pci-epf-mhi.c      |  19 ++++
+ drivers/pci/endpoint/functions/pci-epf-test.c     |  17 +++-
+ drivers/pci/endpoint/pci-epc-core.c               |  25 +++++
+ include/linux/pci-epc.h                           |  13 +++
+ include/linux/pci-epf.h                           |   2 +
+ 18 files changed, 162 insertions(+), 68 deletions(-)
+---
+base-commit: 7d96527bc16e46545739c6fe0ab6e4c915e9910e
+change-id: 20240606-pci-deinit-2e6cdf1bd69f
 
 Best regards,
-Krzysztof
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
