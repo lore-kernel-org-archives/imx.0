@@ -1,133 +1,68 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BB919D064
-	for <imx@lists.linux.dev>; Fri,  7 Jun 2024 16:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECDC19924F;
+	Fri,  7 Jun 2024 17:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717778100; cv=none; b=hn3dVvCFO0ajJZ8jxaZOUs2dsIBOYqw5XHbXlnggx9tEsiKSPEfaQYXx+SfJ8x1HfdkMbzcJ6tI0AfgM1DO0tgctN+XWVcZEQkUmqTdAg4YcnUY+Fd3U2mN4HMUiFCteSwyA315CC+CQr07lUE3iecXIasDaLZ1Mto3uX6Vq3YE=
+	t=1717782437; cv=none; b=FeJpdx6gFDgRF8xCbyqYRTeDpaRNNXjLerji/2RkAiQFppkuGrVH/5t2JPcb0JX8Dj4+OLT8I07XRA7j/F3qdX6pCxVAoqPNVbCEUGepHwXa+a+dWrBgY5/tab3c/Y4sApdAAddpLivSB+PAPpDDrM4mhFXnlxlgHg6ClUpaqIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717778100; c=relaxed/simple;
-	bh=JSjugDn364e1bR2NBfOIb6HAziv7A8jZrYbuA88Eh+4=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P3noULO6XA/iok4e+C+fiRhzOCx8DT7G5N4s9fKtONE+MmyKxcpuw5yThbOjvs4yqKARAowe2Dc0+iib9HiThxNplGs+LozMmK7Uq8/eG8knpH9MS1VuZMSeChTns05bZqhfu5E5plPeK2cyuXpwa+63lp9kGoH0SfcW+cR+Hgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=L3cFJHN/; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1717782437; c=relaxed/simple;
+	bh=Ah3xD2VYfWteOXiiI1LPCE0B+4+uVAXtyTUN+YThnGE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=H2gjsS3YkH08iJYYeA+U+eK+JYVPFP0xWvIRA/d7OEES2X4i0XMApqBz7RTGbjdUsL52HuMB7wJ1YZNcxFk7CnmnKwoSO84nJmOAcT7p+7LZPLRhNoiPStpyw2iHR9w9j2m1S9Uxo9VFjqvkxFWRMx2wHzNfk8VrRepuT4ILggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FC5dhQ8k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="L3cFJHN/"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4216badde75so7014485e9.1
-        for <imx@lists.linux.dev>; Fri, 07 Jun 2024 09:34:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717778096; x=1718382896; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JSjugDn364e1bR2NBfOIb6HAziv7A8jZrYbuA88Eh+4=;
-        b=L3cFJHN/faS5OCvRF+G9mXvkJsaeVOqoHemTbaddvE8v77EKdfA59Qi1Xsc6huxs/K
-         HQCib9hJGDXcbUG7FBlxog1ZZCUAyU1CpIOjSLrmjRv7NpDG3i7vNFNAObDWOTH4HCZJ
-         Bq619aXzeDUZCY6yBMkLgTQFQiBDCB1HchscsOqTzEFAZkgBN2f6Qfon4qSdfGyGfZ/m
-         HZMcMZ7c8qRw050IpxvfaA1BaGjXpzP8CyW80ZHVLH6UZ1fkEhwixwEWZjaehSfpGvqg
-         FNf8vYh/9oZY8549WsX9LaglvD/WCyHhr89YaE3D5oolE5dENR/1Pn3O2hFfA+nIAe0L
-         WrZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717778096; x=1718382896;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JSjugDn364e1bR2NBfOIb6HAziv7A8jZrYbuA88Eh+4=;
-        b=SRXzxyo4MP+/9MpbrDjXfsH6dBgG3cbp9sYP2+Xu7SBthfhOc74/xQHJRTACGjeK4z
-         MJvNuNjY6SJSZl/KHvBuURY+FfwP2TREn2u8cE5LF1NK8dRK8ZHRCxSeNyY/lfUnQuzd
-         gtZO0diV6FQE+uUO9rvMXGcaG62JgRvt1aWFfu3u5qbEblN1Z9L05meVpX/d2XbqHABN
-         OwvgD7tdp3u+U1mcqxuUukdU1uUkw7G7y9DeFUTf65Q1pW8UBdGjbZwdgjceiyN5HoJL
-         U1E6jLz61z56ZBeDUvUpc3VoLZu1a5TZnSQ7RlQLFqVW5u5NCiqBJb+P1T3BeUH70a/2
-         kGvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUM2NO8BXTUommcNmyEHnQBH6GTng4NFgMNDuSE9djHgAwFvuzHKoBPBfnlL1MHhg6kozxVpAzTNDkFr4pRr71ipJ8T
-X-Gm-Message-State: AOJu0Yyj98ue4U1eABi1e2ho4PUeAHN5e9MKfGPWC3nvSmCgAzz9FPc5
-	5kXROVQzmW9QMERYoU6JiAJM/6h3HAM1B1oIvH4aWZAYGydIFearR/ujP+D4KvM=
-X-Google-Smtp-Source: AGHT+IGpGEuV4DVZ1kdf6ue+dBm6Ke4RvEdYp3g9xEjXsaFgOxYEd6wAXfkcbKsCsHOsq8Dy8bGbhw==
-X-Received: by 2002:a05:600c:3c83:b0:41c:13f6:206d with SMTP id 5b1f17b1804b1-42164a2e9d4mr30060715e9.25.1717778096151;
-        Fri, 07 Jun 2024 09:34:56 -0700 (PDT)
-Received: from localhost (p200300f65f283b0017c92b05fa289d44.dip0.t-ipconnect.de. [2003:f6:5f28:3b00:17c9:2b05:fa28:9d44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c19e719sm58262335e9.3.2024.06.07.09.34.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 09:34:55 -0700 (PDT)
-From: "Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=" <ukleinek@baylibre.com>
-X-Google-Original-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Date: Fri, 7 Jun 2024 18:34:54 +0200
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-pwm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] pwm: add missing MODULE_DESCRIPTION() macros
-Message-ID: <vunkvcpe7omv5tbsyw237hhauzyrhf6nujwvyv6vq5zd33udee@5b36qxbz5mjx>
-References: <20240607-md-drivers-pwm-v1-1-27237a2bec6a@quicinc.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FC5dhQ8k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078E4C32786;
+	Fri,  7 Jun 2024 17:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717782437;
+	bh=Ah3xD2VYfWteOXiiI1LPCE0B+4+uVAXtyTUN+YThnGE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=FC5dhQ8k1oE23ig1HbTMiS4JdLzl6fnAdrdp4nKcndmm9XKwBaMkfQK8RiMPnwayd
+	 u4+X0+bwcvil/ueng01fss6gFXTkrGXKRgTR5MsRGSvSn+KA2uxGia8poZvGrzLhLy
+	 4cogYwIf2k8joqOd3OuZlzA4xjGAeIOHOyYeh3PV/qaNBrnijf0qX1Nc5V6hhzUz6A
+	 vtTi8DBWwNWseCP8uCYgnHWzZ1SesQeu9U0CIQkYsi6LO6d73o/MNYKpIcrODpT7wb
+	 KZxaZAL/+MNV+wpG/lprYffVAXLL7vVeNMcZ8ZFpmbXV9Gt0MVI3kl1dRoNxrMkTjy
+	 vnCLVcCwwHRsQ==
+From: Vinod Koul <vkoul@kernel.org>
+To: Animesh Agarwal <animeshagarwal28@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, dmaengine@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240605003356.46458-1-animeshagarwal28@gmail.com>
+References: <20240605003356.46458-1-animeshagarwal28@gmail.com>
+Subject: Re: [PATCH v3] dt-bindings: dma: fsl,imx-dma: Convert to dtschema
+Message-Id: <171778243367.276050.5441148149906303737.b4-ty@kernel.org>
+Date: Fri, 07 Jun 2024 23:17:13 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uegcep6av77uozx5"
-Content-Disposition: inline
-In-Reply-To: <20240607-md-drivers-pwm-v1-1-27237a2bec6a@quicinc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
 
---uegcep6av77uozx5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, 05 Jun 2024 06:03:49 +0530, Animesh Agarwal wrote:
+> Convert the fsl i.MX DMA controller bindings to DT schema. Remove old
+> and deprecated properties #dma-channels and #dma-requests.
+> 
+> 
 
-Hello,
+Applied, thanks!
 
-On Fri, Jun 07, 2024 at 09:02:33AM -0700, Jeff Johnson wrote:
-> make allmodconfig && make W=3D1 C=3D1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-imx1.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-imx27.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-intel-l=
-gm.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-mediate=
-k.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-pxa.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-samsung=
-=2Eo
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-spear.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-viscont=
-i.o
->=20
-> Add the missing invocations of the MODULE_DESCRIPTION() macro.
->=20
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> ---
-> This addresses all of the issues in driver/pwm
->=20
-> Let me know if you want any of the individual module changes
-> segregated into separate patches.
+[1/1] dt-bindings: dma: fsl,imx-dma: Convert to dtschema
+      commit: 45a24e40581db95f9c7ee08e0f27874daf7d3e7b
 
-Looks good to me, I applied it to
-https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-=
-next
+Best regards,
+-- 
+Vinod Koul <vkoul@kernel.org>
 
-Thanks
-Uwe
-
---uegcep6av77uozx5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmZjNqkACgkQj4D7WH0S
-/k4LyAf+MocX0RpPC44cCBO/dFFZlEnU4+NMAXx+vRXpg0ASWbWuBgbMvXujfpeo
-YRQZYgDgLp/7/FndOQIPT59C9fFbWz0UdLPSiT/MkN+cbRAoiaMXD5JqiTrORPFq
-RFbNwOtXzQoRAEceczkKFb65oV7rwmyNyIBN9Vv3Ce/o+avvmlqdAziFU/smNwKz
-en3MhIonz85eSOessjikio9bmBGGFzT8US8WiD8Ya8zcQUZ/i9aXH/verkoyfsb/
-9hIlW/QY+mBn61RQeVHuF6O5W5Trnq4/sPf2TtnicRafEYBtwNFJRZmDviEqVp3g
-UVN+CF/yOMS6eo/89WixvZXyYMNuEQ==
-=bpJ1
------END PGP SIGNATURE-----
-
---uegcep6av77uozx5--
