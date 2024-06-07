@@ -1,672 +1,123 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C867911CAB
-	for <imx@lists.linux.dev>; Fri,  7 Jun 2024 06:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E08015622E;
+	Fri,  7 Jun 2024 07:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717742857; cv=none; b=m5uX7jB3lq7GlShx6JP3MB5tCnlmk+Grf9IsP7uLY+EndcPuqNmzgEK2qiGXMyzK67L4EmcUoty2ZXNH2huKSGXtTZj1CBAUzntskv9kWu+eoqQ3NLnWTCCsBJOS2fZilPYWU8/rAb7HEscyRgbEkGtM8zpI/E6mgSJ1CVA7SQI=
+	t=1717744072; cv=none; b=qF0WdfQ/CigyGPoU1bZ+TVXMXApaKdOfIeLC9vQU/W6gxaHD8opCHlmHcvHyjkQKDxdOdZcV6cdZKkcHxR3l5b0j8XUL2raGmlajQJlvqQAnqromKrmRi5gizfo8i35qTwqODnUfJPBQxXzBOhOXK5K04dbZiiSi0ogTKzGdnHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717742857; c=relaxed/simple;
-	bh=Omad5yDDU+nmYWwiQc6CMFFpZTAtOlIS1TauVskhZoA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t/ISLCJLC5Aeto3vPpR9E+uM/GTeUwaap5jkriUZN560Unp+9Z1XQo96acTNSe2xP+2TJxbG7eOe86naNN8LHJEU7tPXhDV+qKCbbYQnibCp2IesfIwbbyI8jAfq/xRiDDvFveXZ41/N4QfG37U8hXJjGfT+T02RBYIBxQ3dnI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=G6RGWMKW; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=sEtMLIlz reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1717744072; c=relaxed/simple;
+	bh=vND6tBPRIH6M9sigCzz668/u3ZjGc2f2xi9oV0DOp2Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KjYAVs8vojt6Qo+y/HX4KsJYD/9VvyusgxqmpuqFf6EiTcZwI7qMiD4zCXn7eOedEodmqsLx+A2WKr7sm3c3ipsz7HmHjYjQNr0HKWxdp31JYOSoAXZbEjr0I5XJg3U4NP4AodDlefEAfhaKw7y4DxVpS9ZnbNz/Cb66YDbcE78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyNIXMbA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="G6RGWMKW";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="sEtMLIlz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1717742855; x=1749278855;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pLjUTnmktrf31eI6S08bckIh0RmCDrrQkUrxpZLOGbw=;
-  b=G6RGWMKWgIFZj2KoZKn6oEGnkeBCyDaR+bG4arjzQjfeG/smp0S/eZg3
-   VXXOFjQ14ZxZ7hO3iGimLeQOwqIOZiM0LneRtsvMkXwEuDzETBhK27xkc
-   wvVjo7eFQca2D3Rmih9KRTx0eLorfJLXnCPM5MS64qwIuitJ+lhzzlt2H
-   1x+wCKbASPtEhhWUVNYcUiOGQTWrf8ERO84bZWHSak/3NhK1D0FrGQKKN
-   YANgSCk+W1cYOeHvVtp5YYMV0zcRuXmFybz3N1W7WHly7Ax/9jpOfDapc
-   VtB6LqNra1o/yQqTQSVdBMMu+K/53CCJVTTb5v+j2BQeM3mgKMTIzMYkw
-   g==;
-X-CSE-ConnectionGUID: UOq3MMEURiy+gE8RilkJKw==
-X-CSE-MsgGUID: ZknLSp+/TficsUqDNxSZ0A==
-X-IronPort-AV: E=Sophos;i="6.08,220,1712613600"; 
-   d="scan'208";a="37274621"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Jun 2024 08:47:32 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DC1D1170735;
-	Fri,  7 Jun 2024 08:47:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1717742848; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pLjUTnmktrf31eI6S08bckIh0RmCDrrQkUrxpZLOGbw=;
-	b=sEtMLIlzB0Uskik3b9hVS2zaN7+W6nG7v33MAwjnROU4+MZw2bK3CRAy1GI0OIEOYecpRv
-	xhOTlW1cf0Q6CsqZoiHEewasNdoB3BymgdvGWf3Z1vMEhqk7BDnKVoLVulablgoQAvvOgB
-	m4NDqJTxnRiuc9QA3O/OPi3C9TvN40ya17eofj+LVSxtabp/AKwNxJhlSEzAVL2eIPJQ2Q
-	ajofl8aVYiURF4Z5Ai3AGcqfSg0f/BQiVvAj2G6I1DKgbgOBQlzCxF3yD3vzqFSTdX40jl
-	4hAl/IqmJqwSeq6MxROUfuIyW13zwJqh0w2G2EGL0cX2r2HeKU94CaxbruzepA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] [WIP] Initial DC0/LVDS0 subsystem files
-Date: Fri,  7 Jun 2024 08:47:13 +0200
-Message-Id: <20240607064714.2242082-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <6638616.G0QQBjFxQf@steina-w>
-References: <6638616.G0QQBjFxQf@steina-w>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyNIXMbA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4628C2BBFC;
+	Fri,  7 Jun 2024 07:07:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717744072;
+	bh=vND6tBPRIH6M9sigCzz668/u3ZjGc2f2xi9oV0DOp2Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UyNIXMbA/nkk4UXSfTpBupCK1AG/OZpZsKXitxQE6xQc2VGncQrxeBEFkhCLiGsxN
+	 zoftIn2MADwxgVJD8tUZxvQ71YdSMGPl0x9WoqzEJ24IhN1zYGIT4YGIu2CObmTy1r
+	 Puq3yoPO0twTQKdkvBUMQISz4OVy1S13hLvCmeJy8SDBZBOe2LxbXhHMoX5sbidPrZ
+	 2UrWMXSmH7sc26xkqZNto+9h7W7dTa7ytIWImlWx904LQEoiy+sDPgW+RmhR+Ny3Fx
+	 iXPxSZ5rExrCLrWAOp8r4WgCPSQkH6Sh7I8mcrbiG6wZuAlzWA0TD/EY8OSpdP6HSk
+	 1opXpZR0JX+YA==
+Message-ID: <1486a1b6-4119-4121-b6df-3da21d06add7@kernel.org>
+Date: Fri, 7 Jun 2024 09:07:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [EXT] Re: [PATCH 1/4] dt-bindings: firmware: secvio: Add device
+ tree bindings
+To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Franck Lenormand <franck.lenormand@nxp.com>,
+ Aisheng Dong <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, Varun Sethi <V.Sethi@nxp.com>,
+ Silvano Di Ninno <silvano.dininno@nxp.com>,
+ Pankaj Gupta <pankaj.gupta@nxp.com>, Frank Li <frank.li@nxp.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>
+References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
+ <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
+ <750f5388-20f9-45a3-a1e6-ceac4b91329f@kernel.org>
+ <AS1PR04MB9358A2457AF05553457DE9B0F3FB2@AS1PR04MB9358.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <AS1PR04MB9358A2457AF05553457DE9B0F3FB2@AS1PR04MB9358.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
----
-Current WIP ported from downstream kernel. Still a lot of TODOs
-and missing parts.
-It's the same approach as imx8-ss-lsio.dtsi and friends which are supposed
-to be included inside the DT root node, not at the end.
+On 07/06/2024 06:58, Vabhav Sharma wrote:
+>>
+>> Missing SoC compatibles.
+> Ok, I will use fsl,imx8dxl-sc-secvio
+>>
+>> So no, that's just abuse of DT to instantiate driver.
+>>
+>> NAK. Drop the binding.
+> I will detail the dt binding to describe the real hardware
 
- .../boot/dts/freescale/imx8-ss-lvds0.dtsi     | 574 ++++++++++++++++++
- 1 file changed, 574 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+Still looks like way just to instantiate driver. Why it cannot be part
+of existing firmware SCU node?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
-new file mode 100644
-index 0000000000000..8ad13962925d0
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
-@@ -0,0 +1,574 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+/*
-+ * Copyright 2019 NXP
-+ */
-+
-+mipi_ipg_clk: clock-mipi-ipg {
-+	compatible = "fixed-clock";
-+	#clock-cells = <0>;
-+	clock-frequency = <120000000>;
-+	clock-output-names = "mipi_ipg_clk";
-+};
-+
-+mipi_pll_div2_clk: clock-mipi-div2-pll {
-+	compatible = "fixed-clock";
-+	#clock-cells = <0>;
-+	clock-frequency = <432000000>;
-+	clock-output-names = "mipi_pll_div2_clk";
-+};
-+
-+lvds_subsys: bus@56200000 {
-+	compatible = "simple-bus";
-+	reg = <0x56200000 0x100000>;
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	ranges;
-+
-+	lvds0_subsys: bus@56220000 {
-+		compatible = "simple-bus";
-+		reg = <0x56220000 0x30000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+		interrupt-parent = <&irqsteer_mipi_lvds0>;
-+
-+		irqsteer_mipi_lvds0: irqsteer@56220000 {
-+			compatible = "fsl,imx8qxp-irqsteer", "fsl,imx-irqsteer";
-+			reg = <0x56220000 0x1000>;
-+			interrupts = <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-controller;
-+			interrupt-parent = <&gic>;
-+			#interrupt-cells = <1>;
-+			fsl,channel = <0>;
-+			fsl,num-irqs = <32>;
-+			clocks = <&mipi0_lis_lpcg 0>;
-+			clock-names = "ipg";
-+			power-domains = <&pd IMX_SC_R_MIPI_0>;
-+		};
-+
-+		mipi_lvds0_csr: syscon@56221000 {
-+			compatible = "fsl,imx8qxp-mipi-lvds-csr", "syscon", "simple-mfd";
-+			reg = <0x56221000 0x1000>;
-+			clocks = <&mipi_lvds0_di_mipi_lvds_regs_lpcg IMX_LPCG_CLK_4>;
-+			clock-names = "ipg";
-+			status = "disabled";
-+
-+			mipi_lvds0_pxl2dpi: pxl2dpi {
-+				compatible = "fsl,imx8qxp-pxl2dpi";
-+				fsl,sc-resource = <IMX_SC_R_MIPI_0>;
-+				power-domains = <&pd IMX_SC_R_MIPI_0>;
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						reg = <0>;
-+
-+						mipi_lvds_0_pxl2dpi_dc0_pixel_link0: endpoint@0 {
-+							reg = <0>;
-+							remote-endpoint = <&dc0_pixel_link0_mipi_lvds_0_pxl2dpi>;
-+						};
-+
-+						// mipi_lvds_0_pxl2dpi_dc0_pixel_link1: endpoint@1 {
-+						// 	reg = <1>;
-+						// 	remote-endpoint = <&dc0_pixel_link1_mipi_lvds_0_pxl2dpi>;
-+						// };
-+					};
-+
-+					port@1 {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						reg = <1>;
-+
-+						mipi_lvds_0_pxl2dpi_mipi_lvds_0_ldb_ch0: endpoint@0 {
-+							reg = <0>;
-+							remote-endpoint = <&mipi_lvds_0_ldb_ch0_mipi_lvds_0_pxl2dpi>;
-+						};
-+
-+						// mipi_lvds_0_pxl2dpi_mipi_lvds_0_ldb_ch1: endpoint@1 {
-+						// 	reg = <1>;
-+						// 	remote-endpoint = <&mipi_lvds_0_ldb_ch1_mipi_lvds_0_pxl2dpi>;
-+						// };
-+					};
-+				};
-+			};
-+
-+			mipi_lvds_0_ldb: ldb {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx8qxp-ldb";
-+				clocks = <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_MISC2>,
-+					 <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_BYPASS>;
-+				clock-names = "pixel", "bypass";
-+				assigned-clocks = <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_MISC2>;
-+				assigned-clock-parents = <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_BYPASS>;
-+				power-domains = <&pd IMX_SC_R_LVDS_0>;
-+				status = "disabled";
-+
-+				channel@0 {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					reg = <0>;
-+					phys = <&mipi_lvds_0_phy>;
-+					phy-names = "lvds_phy";
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						mipi_lvds_0_ldb_ch0_mipi_lvds_0_pxl2dpi: endpoint {
-+							remote-endpoint = <&mipi_lvds_0_pxl2dpi_mipi_lvds_0_ldb_ch0>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+
-+						/* ... */
-+					};
-+				};
-+
-+				// channel@1 {
-+				// 	#address-cells = <1>;
-+				// 	#size-cells = <0>;
-+				// 	reg = <1>;
-+				// 	phys = <&mipi_lvds_0_phy>;
-+				// 	phy-names = "lvds_phy";
-+
-+				// 	port@0 {
-+				// 		reg = <0>;
-+
-+				// 		mipi_lvds_0_ldb_ch1_mipi_lvds_0_pxl2dpi: endpoint {
-+				// 			remote-endpoint = <&mipi_lvds_0_pxl2dpi_mipi_lvds_0_ldb_ch1>;
-+				// 		};
-+				// 	};
-+
-+				// 	port@1 {
-+				// 		reg = <1>;
-+
-+				// 		/* ... */
-+				// 	};
-+				// };
-+			};
-+		};
-+
-+		mipi0_lis_lpcg: clock-controller@56223000 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56223000 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi0_lis_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_0>;
-+		};
-+
-+		mipi_lvds0_di_mipi_lvds_regs_lpcg: clock-controller@56223004 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56223004 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi_lvds0_di_mipi_lvds_regs_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_0>;
-+		};
-+
-+		mipi0_pwm_lpcg: clock-controller@5622300c {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x5622300c 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&clk IMX_SC_R_MIPI_0_PWM_0 IMX_SC_PM_CLK_PER>,
-+				 <&mipi_ipg_clk>,
-+				 <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_0 IMX_LPCG_CLK_4 IMX_LPCG_CLK_1>;
-+			clock-output-names = "mipi0_pwm_lpcg_clk",
-+					     "mipi0_pwm_lpcg_ipg_clk",
-+					     "mipi0_pwm_lpcg_32k_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_0_PWM_0>;
-+		};
-+
-+		mipi0_i2c0_lpcg: clock-controller@56223010 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56223010 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&clk IMX_SC_R_MIPI_0_I2C_0 IMX_SC_PM_CLK_PER>,
-+				 <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_0 IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi0_i2c0_lpcg_clk",
-+					     "mipi0_i2c0_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_0_I2C_0>;
-+		};
-+
-+		mipi0_i2c1_lpcg: clock-controller@56223014 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56223014 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&clk IMX_SC_R_MIPI_0_I2C_1 IMX_SC_PM_CLK_PER>,
-+				 <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_0 IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi0_i2c1_lpcg_clk",
-+					     "mipi0_i2c1_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_0_I2C_1>;
-+		};
-+
-+		pwm_mipi_lvds0: pwm@56224000 {
-+			compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
-+			reg = <0x56224000 0x1000>;
-+			clocks = <&mipi0_pwm_lpcg 0>,
-+				 <&mipi0_pwm_lpcg 1>,
-+				 <&mipi0_pwm_lpcg 2>;
-+			clock-names = "per", "ipg", "32k";
-+			assigned-clocks = <&clk IMX_SC_R_MIPI_0_PWM_0 IMX_SC_PM_CLK_PER>;
-+			assigned-clock-rates = <24000000>;
-+			#pwm-cells = <3>;
-+			power-domains = <&pd IMX_SC_R_MIPI_0_PWM_0>;
-+			status = "disabled";
-+		};
-+
-+		i2c0_mipi_lvds0: i2c@56226000 {
-+			compatible = "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
-+			reg = <0x56226000 0x1000>;
-+			interrupts = <8>;
-+			clocks = <&mipi0_i2c0_lpcg 0>,
-+				 <&mipi0_i2c0_lpcg 1>;
-+			clock-names = "per", "ipg";
-+			assigned-clocks = <&clk IMX_SC_R_MIPI_0_I2C_0 IMX_SC_PM_CLK_PER>;
-+			assigned-clock-rates = <24000000>;
-+			power-domains = <&pd IMX_SC_R_MIPI_0_I2C_0>;
-+			status = "disabled";
-+		};
-+
-+		mipi_lvds_0_phy: phy@56228300 {
-+			compatible = "fsl,imx8qxp-mipi-dphy";
-+			reg = <0x56228300 0x100>;
-+			clocks = <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_MISC3>;
-+			clock-names = "phy_ref";
-+			assigned-clocks = <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_MISC3>;
-+			assigned-clock-parents = <&clk IMX_SC_R_LVDS_0 IMX_SC_PM_CLK_BYPASS>;
-+			#phy-cells = <0>;
-+			fsl,syscon = <&mipi_lvds0_csr>;
-+			power-domains = <&pd IMX_SC_R_MIPI_0>;
-+		};
-+
-+		/* TODO MIPI DSI0 */
-+	};
-+
-+	// mipi0_dsi_host: dsi_host@56228000 {
-+	// 	#address-cells = <1>;
-+	// 	#size-cells = <0>;
-+	// 	compatible = "fsl,imx8qx-nwl-dsi";
-+	// 	reg = <0x56228000 0x300>;
-+	// 	clocks = <&clk IMX_SC_R_MIPI_0 IMX_SC_PM_CLK_PER>,
-+	// 		 <&clk IMX_SC_R_MIPI_0 IMX_SC_PM_CLK_BYPASS>,
-+	// 		 <&clk IMX_SC_R_MIPI_0 IMX_SC_PM_CLK_PHY>,
-+	// 		 <&clk IMX_SC_R_MIPI_0 IMX_SC_PM_CLK_MST_BUS>,
-+	// 		 <&clk IMX_SC_R_MIPI_0 IMX_SC_PM_CLK_SLV_BUS>,
-+	// 		 <&mipi_pll_div2_clk>;
-+	// 	clock-names = "pixel",
-+	// 		      "bypass",
-+	// 		      "phy_ref",
-+	// 		      "tx_esc",
-+	// 		      "rx_esc",
-+	// 		      "phy_parent";
-+	// 	interrupts = <16>;
-+	// 	power-domains = <&pd IMX_SC_R_MIPI_0>;
-+	// 	phys = <&mipi0_dphy>;
-+	// 	phy-names = "dphy";
-+	// 	csr = <&lvds_region1>;
-+	// 	use-disp-ss;
-+	// 	status = "disabled";
-+
-+	// 	ports {
-+	// 		#address-cells = <1>;
-+	// 		#size-cells = <0>;
-+
-+	// 		mipi0_in: port@0 {
-+	// 			#address-cells = <1>;
-+	// 			#size-cells = <0>;
-+
-+	// 			reg = <0>;
-+	// 			mipi0_dsi_in: endpoint@0 {
-+	// 				reg = <0>;
-+	// 				remote-endpoint = <&dpu_disp0_mipi_dsi>;
-+	// 			};
-+	// 		};
-+	// 	};
-+	// };
-+
-+	lvds1_subsys: bus@56240000 {
-+		compatible = "simple-bus";
-+		reg = <0x56240000 0x30000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+		interrupt-parent = <&irqsteer_mipi_lvds1>;
-+
-+		irqsteer_mipi_lvds1: irqsteer@56240000 {
-+			compatible = "fsl,imx8qxp-irqsteer", "fsl,imx-irqsteer";
-+			reg = <0x56240000 0x1000>;
-+			interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-controller;
-+			interrupt-parent = <&gic>;
-+			#interrupt-cells = <1>;
-+			fsl,channel = <0>;
-+			fsl,num-irqs = <32>;
-+			clocks = <&mipi1_lis_lpcg 0>;
-+			clock-names = "ipg";
-+			power-domains = <&pd IMX_SC_R_MIPI_1>;
-+		};
-+
-+		mipi_lvds1_csr: syscon@56241000 {
-+			compatible = "fsl,imx8qxp-mipi-lvds-csr", "syscon", "simple-mfd";
-+			reg = <0x56241000 0x1000>;
-+			clocks = <&mipi_lvds1_di_mipi_lvds_regs_lpcg IMX_LPCG_CLK_4>;
-+			clock-names = "ipg";
-+			status = "disabled";
-+
-+			mipi_lvds1_pxl2dpi: pxl2dpi {
-+				compatible = "fsl,imx8qxp-pxl2dpi";
-+				fsl,sc-resource = <IMX_SC_R_MIPI_1>;
-+				power-domains = <&pd IMX_SC_R_MIPI_1>;
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						reg = <0>;
-+
-+						mipi_lvds_1_pxl2dpi_dc0_pixel_link0: endpoint@0 {
-+							reg = <0>;
-+							remote-endpoint = <&dc0_pixel_link0_mipi_lvds_1_pxl2dpi>;
-+						};
-+
-+						// mipi_lvds_1_pxl2dpi_dc0_pixel_link1: endpoint@1 {
-+						// 	reg = <1>;
-+						// 	remote-endpoint = <&dc0_pixel_link1_mipi_lvds_1_pxl2dpi>;
-+						// };
-+					};
-+
-+					port@1 {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						reg = <1>;
-+
-+						mipi_lvds_1_pxl2dpi_mipi_lvds_1_ldb_ch0: endpoint@0 {
-+							reg = <0>;
-+							remote-endpoint = <&mipi_lvds_1_ldb_ch0_mipi_lvds_1_pxl2dpi>;
-+						};
-+
-+						// mipi_lvds_1_pxl2dpi_mipi_lvds_1_ldb_ch1: endpoint@1 {
-+						// 	reg = <1>;
-+						// 	remote-endpoint = <&mipi_lvds_1_ldb_ch1_mipi_lvds_1_pxl2dpi>;
-+						// };
-+					};
-+				};
-+			};
-+
-+			mipi_lvds_1_ldb: ldb {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx8qxp-ldb";
-+				clocks = <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_MISC2>,
-+					 <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_BYPASS>;
-+				clock-names = "pixel", "bypass";
-+				assigned-clocks = <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_MISC2>;
-+				assigned-clock-parents = <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_BYPASS>;
-+				power-domains = <&pd IMX_SC_R_LVDS_1>;
-+				status = "disabled";
-+
-+				channel@0 {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					reg = <0>;
-+					phys = <&mipi_lvds_1_phy>;
-+					phy-names = "lvds_phy";
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						mipi_lvds_1_ldb_ch0_mipi_lvds_1_pxl2dpi: endpoint {
-+							remote-endpoint = <&mipi_lvds_1_pxl2dpi_mipi_lvds_1_ldb_ch0>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+
-+						/* ... */
-+					};
-+				};
-+
-+				// channel@1 {
-+				// 	#address-cells = <1>;
-+				// 	#size-cells = <0>;
-+				// 	reg = <1>;
-+				// 	phys = <&mipi_lvds_1_phy>;
-+				// 	phy-names = "lvds_phy";
-+
-+				// 	port@0 {
-+				// 		reg = <0>;
-+
-+				// 		mipi_lvds_1_ldb_ch1_mipi_lvds_1_pxl2dpi: endpoint {
-+				// 			remote-endpoint = <&mipi_lvds_1_pxl2dpi_mipi_lvds_1_ldb_ch1>;
-+				// 		};
-+				// 	};
-+
-+				// 	port@1 {
-+				// 		reg = <1>;
-+
-+				// 		/* ... */
-+				// 	};
-+				// };
-+			};
-+		};
-+
-+		mipi1_lis_lpcg: clock-controller@56243000 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56243000 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi1_lis_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_1>;
-+		};
-+
-+		mipi_lvds1_di_mipi_lvds_regs_lpcg: clock-controller@56243004 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56243004 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi_lvds1_di_mipi_lvds_regs_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_1>;
-+		};
-+
-+		mipi1_pwm_lpcg: clock-controller@5624300c {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x5624300c 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&clk IMX_SC_R_MIPI_1_PWM_0 IMX_SC_PM_CLK_PER>,
-+				 <&mipi_ipg_clk>,
-+				 <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_0 IMX_LPCG_CLK_4 IMX_LPCG_CLK_1>;
-+			clock-output-names = "mipi1_pwm_lpcg_clk",
-+					     "mipi1_pwm_lpcg_ipg_clk",
-+					     "mipi1_pwm_lpcg_32k_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
-+		};
-+
-+		mipi1_i2c0_lpcg: clock-controller@56243010 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56243010 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_PER>,
-+				 <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_0 IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi1_i2c0_lpcg_clk",
-+					     "mipi1_i2c0_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
-+		};
-+
-+		mipi1_i2c1_lpcg: clock-controller@56243014 {
-+			compatible = "fsl,imx8qxp-lpcg";
-+			reg = <0x56243014 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&clk IMX_SC_R_MIPI_1_I2C_1 IMX_SC_PM_CLK_PER>,
-+				 <&mipi_ipg_clk>;
-+			clock-indices = <IMX_LPCG_CLK_0 IMX_LPCG_CLK_4>;
-+			clock-output-names = "mipi1_i2c1_lpcg_clk",
-+					     "mipi1_i2c1_lpcg_ipg_clk";
-+			power-domains = <&pd IMX_SC_R_MIPI_1_I2C_1>;
-+		};
-+
-+		pwm_mipi_lvds1: pwm@56244000 {
-+			compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
-+			reg = <0x56244000 0x1000>;
-+			clocks = <&mipi1_pwm_lpcg 0>,
-+				 <&mipi1_pwm_lpcg 1>,
-+				 <&mipi1_pwm_lpcg 2>;
-+			clock-names = "per", "ipg", "32k";
-+			assigned-clocks = <&clk IMX_SC_R_MIPI_1_PWM_0 IMX_SC_PM_CLK_PER>;
-+			assigned-clock-rates = <24000000>;
-+			#pwm-cells = <3>;
-+			power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
-+			status = "disabled";
-+		};
-+
-+		i2c0_mipi_lvds1: i2c@56246000 {
-+			compatible = "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
-+			reg = <0x56246000 0x1000>;
-+			interrupts = <8>;
-+			clocks = <&mipi1_i2c0_lpcg 0>,
-+				 <&mipi1_i2c0_lpcg 1>;
-+			clock-names = "per", "ipg";
-+			assigned-clocks = <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_PER>;
-+			assigned-clock-rates = <24000000>;
-+			power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
-+			status = "disabled";
-+		};
-+
-+		mipi_lvds_1_phy: phy@56248300 {
-+			compatible = "fsl,imx8qxp-mipi-dphy";
-+			reg = <0x56248300 0x100>;
-+			clocks = <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_MISC3>;
-+			clock-names = "phy_ref";
-+			assigned-clocks = <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_MISC3>;
-+			assigned-clock-parents = <&clk IMX_SC_R_LVDS_1 IMX_SC_PM_CLK_BYPASS>;
-+			#phy-cells = <0>;
-+			fsl,syscon = <&mipi_lvds1_csr>;
-+			power-domains = <&pd IMX_SC_R_MIPI_1>;
-+		};
-+
-+		/* TODO MIPI DSI1 */
-+	};
-+
-+	// mipi1_dsi_host: dsi_host@56248000 {
-+	// 	#address-cells = <1>;
-+	// 	#size-cells = <0>;
-+	// 	compatible = "fsl,imx8qx-nwl-dsi";
-+	// 	reg = <0x56248000 0x300>;
-+	// 	clocks = <&clk IMX_SC_R_MIPI_1 IMX_SC_PM_CLK_PER>,
-+	// 		 <&clk IMX_SC_R_MIPI_1 IMX_SC_PM_CLK_BYPASS>,
-+	// 		 <&clk IMX_SC_R_MIPI_1 IMX_SC_PM_CLK_PHY>,
-+	// 		 <&clk IMX_SC_R_MIPI_1 IMX_SC_PM_CLK_MST_BUS>,
-+	// 		 <&clk IMX_SC_R_MIPI_1 IMX_SC_PM_CLK_SLV_BUS>,
-+	// 		 <&mipi_pll_div2_clk>;
-+	// 	clock-names = "pixel",
-+	// 		      "bypass",
-+	// 		      "phy_ref",
-+	// 		      "tx_esc",
-+	// 		      "rx_esc",
-+	// 		      "phy_parent";
-+	// 	interrupts = <16>;
-+	// 	power-domains = <&pd IMX_SC_R_MIPI_1>;
-+	// 	phys = <&mipi1_dphy>;
-+	// 	phy-names = "dphy";
-+	// 	csr = <&lvds_region2>;
-+	// 	use-disp-ss;
-+	// 	status = "disabled";
-+
-+	// 	ports {
-+	// 		#address-cells = <1>;
-+	// 		#size-cells = <0>;
-+
-+	// 		mipi1_in: port@0 {
-+	// 			#address-cells = <1>;
-+	// 			#size-cells = <0>;
-+
-+	// 			reg = <0>;
-+	// 			mipi1_dsi_in: endpoint@0 {
-+	// 				reg = <0>;
-+	// 				remote-endpoint = <&dpu_disp1_mipi_dsi>;
-+	// 			};
-+	// 		};
-+	// 	};
-+	// };
-+
-+};
--- 
-2.34.1
+Best regards,
+Krzysztof
 
