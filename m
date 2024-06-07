@@ -1,88 +1,86 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2782115E5BA
-	for <imx@lists.linux.dev>; Fri,  7 Jun 2024 09:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1DF2209D;
+	Fri,  7 Jun 2024 09:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717751582; cv=none; b=U4JHtzZOMyLO2+w8ClWbO2SXK2BFrweVwxKOB5NNoQsyoHnx9Paw29IPVqJE0dMhIUtyG7DPZ2yfvdTZDPYbK1HNab3G+Q1G7Yf4HEU8in7Rh2jM/6ugpnuYVR1KpscG2Ll66gXoMDMJ56NOlLnwURZygOX04q5YUcKt+drkfKs=
+	t=1717752093; cv=none; b=k9yL/IbfhelGTuc5shhEKilR65BtsW2X80xIlaZwmMg+bAKcytzkOVvWcdmDQHslVvJKeCEX+dCvvE342f4WTumRfICUxKfoM2kXPozoAsD6kHBCoO2gk/5+DfUlUOBmLP5VgOUR3r5pD4BzlDN7m0Zd2rlS7Mw1gO8SsCWlOh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717751582; c=relaxed/simple;
-	bh=CpoWk9tqECkn4nbQhMbf4yMd845I5p9Btv2YBKK6sMU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ovxoxl9wAnmsAo7HG+Ydlck71sC1oIQD6TJ2+5m7+swJ7syQ/9syZsNAKD99zsNxfeMJfb2x/My2ZOR6vPr/GcXvY20s0jCtse9ma6Bd0UJVaSiJuWK+aJkBiOW3+3z6xlWKv3xHXXlwOCH9aCifmA+QLKwRumLjHdJonnxwmRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=JLHm3qN6; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1717752093; c=relaxed/simple;
+	bh=PUBYPlYV+0CEGjbaUressY4P2n0tji7Q+2OKwCAMyuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H2By4bljJOZRjRfcCypbHIfRAXrwOM3Bkm/EM3iJNu5ZFX1PjJ+Gd9diR3g4AgSupYwVFojcxleAZ9Ep3utP/rLdBAPu3Qw5pLp3eli0WJTDjMqWzWBtcT4uoX51Zbwb1dpJeveKbago52sVw5VvdorpmWubJk+pXExHvTyVaD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyfHmQ1w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="JLHm3qN6"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 03306A03B1;
-	Fri,  7 Jun 2024 11:12:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=cH3JNZ+ofwZaBIUkuSYT
-	MJjaGGVzDFJZcT+TVGds2Ik=; b=JLHm3qN68bCyKXUsP5w0jTBP0MxLRvTRsqPQ
-	hUtL+ZBZENRQwfwtxXvV8qHm97t09Ae3c9iN58LavCrXU4rrxzg8gu8RhS14hhtN
-	tLgAzJmrSa7lh0gSbb7fu9Z+DDb50icbhSG6lSxYdf+OHAPO3ulCaU57p6pZL0LH
-	FL/m7YK3yMzPZeMMq/vOhNJ5we/t/sgSc9cAfUKF7D+RuASp7xxnKFJCs3ALG92E
-	FQNT52quraKXwRgJ7fPFtRIoquB6O+pEgxJhKy94N4B1RlXRNzwGSNmVfiyOjfep
-	cZGta+0QVbZokmsR6FZVDDUMKN8KuBu2XskY04YCT0tqxNBJaK21nfoB29ruRa6J
-	IEJyGrNkCL/iIyhOKuGg3cErdg+thzA0lcO434HUW682wapQCkNCgIEgoMbBmB8M
-	TIAU5fCZXVmtstkerrUOFQtTUe4aDu6TGmjhOLP+QlSPS9UPe6ZDn1wYeNvZy8om
-	LXmigJly3R8Mklt5zJyXNwAzpLbBLdhs/Zi9Vo0fJMH276xonCx4uMAtF8VfQYo4
-	CU80fgaQ6rbJrLE51OCy8qLSuGuwNrQXSYbj85X+TbCX4OIxmpbwExNa0Z1ajRDR
-	EQ8cDsC6EH7x4Ya/Cd5+c60NY3uaYOsZ/PDk9S/7gSAyWSxOXWjh3daOLBVz+hFG
-	wMCMzZ0=
-Message-ID: <8be22ec7-0d91-46ba-b45e-4499b547a8d3@prolan.hu>
-Date: Fri, 7 Jun 2024 11:12:56 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyfHmQ1w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12495C32786;
+	Fri,  7 Jun 2024 09:21:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717752092;
+	bh=PUBYPlYV+0CEGjbaUressY4P2n0tji7Q+2OKwCAMyuw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CyfHmQ1w3+wQAG6AtCTgiWqJMB9O1sIpPf3pIJtRCrDXSX9T1RydsbJjY8P1zFZtG
+	 LT/PFHmDHGNRqFIXrBOuJ8v9O6HrOpih1xjYoPW2Znw2MmXr8f9IdaSEynhdON2MY1
+	 EHI2RTTuFLW27F8X7An9HqhIAhpeh4AvoX5N1YKluMO1/KzuzrE1UztGokk+7W0i7t
+	 MVP1FN3HfXC3zjAn2UOB50naV1ozvIJDXyQP6y+XZRqOL7D1G1/JBztS8I+uV1SDlf
+	 RKmIwxJnmMTfvIhAeZ7TIXXZ+jb6AY34kaoxtbvFjg1FY3yQlMZrZhbCIjXSBPaSuQ
+	 IsrssWc6AizUg==
+Date: Fri, 7 Jun 2024 11:21:22 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	mhi@lists.linux.dev, Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH 1/5] PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+Message-ID: <ZmLREhi8_iCDZTP3@ryzen.lan>
+References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
+ <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] net: fec: Add ECR bit macros, fix FEC_ECR_EN1588 being
- cleared on link-down
-To: Hariprasad Kelam <hkelam@marvell.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, "Clark
- Wang" <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-References: <20240607081855.132741-1-csokas.bence@prolan.hu>
- <PH0PR18MB4474DC325887DE80C1A2D7F0DEFB2@PH0PR18MB4474.namprd18.prod.outlook.com>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <PH0PR18MB4474DC325887DE80C1A2D7F0DEFB2@PH0PR18MB4474.namprd18.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2945A12957627061
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
 
-Hi!
-
-On 6/7/24 10:32, Hariprasad Kelam wrote:
->> FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which makes
->> all 1588 functionality shut down on link-down. However, some functionality
->> needs to be retained (e.g. PPS) even without link.
->>
+On Thu, Jun 06, 2024 at 12:56:34PM +0530, Manivannan Sadhasivam wrote:
+> Currently dw_pcie_ep_init_notify() wrapper just calls pci_epc_init_notify()
+> directly. So this wrapper provides no benefit to the glue drivers.
 > 
+> So let's remove it and call pci_epc_init_notify() directly from glue
+> drivers.
 > 
->      Since this patch is targeted for net, please add fixes tag.
+> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
 
-This issue has existed for "practically all time". I guess if I had to 
-pick one commit, it would be:
-
-Fixes: 6605b730c061 FEC: Add time stamping code and a PTP hardware clock
-
-I don't know if it makes sense to add this ancient commit from 22 years 
-ago, but if so, then so be it.
-
-Bence
-
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
