@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E08015622E;
-	Fri,  7 Jun 2024 07:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A946115530F;
+	Fri,  7 Jun 2024 07:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717744072; cv=none; b=qF0WdfQ/CigyGPoU1bZ+TVXMXApaKdOfIeLC9vQU/W6gxaHD8opCHlmHcvHyjkQKDxdOdZcV6cdZKkcHxR3l5b0j8XUL2raGmlajQJlvqQAnqromKrmRi5gizfo8i35qTwqODnUfJPBQxXzBOhOXK5K04dbZiiSi0ogTKzGdnHc=
+	t=1717745448; cv=none; b=skcS13tdWtsUz8DehQ8fsPz1z8H6xX7fZ6W8dGHWr4mct3+AKHFdnBR9+PLMVuiw1cq8sk38mLIamp2xLvk7ZHi2Bf1GAVAvfMXkgO9mSfwFJ/rSgmIfTH48yWoflZh1y4YtWOoAtifXJaF2wDEnReVzH40zeggG/UaEwJ8ensU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717744072; c=relaxed/simple;
-	bh=vND6tBPRIH6M9sigCzz668/u3ZjGc2f2xi9oV0DOp2Q=;
+	s=arc-20240116; t=1717745448; c=relaxed/simple;
+	bh=Z3FFAvOtY81jdbTzkmiEyBDE39rxcsFJ3zmC1SfF600=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KjYAVs8vojt6Qo+y/HX4KsJYD/9VvyusgxqmpuqFf6EiTcZwI7qMiD4zCXn7eOedEodmqsLx+A2WKr7sm3c3ipsz7HmHjYjQNr0HKWxdp31JYOSoAXZbEjr0I5XJg3U4NP4AodDlefEAfhaKw7y4DxVpS9ZnbNz/Cb66YDbcE78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyNIXMbA; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=hynK5eHjclgir6I9TGpIJkMju8Niib9Ki+JnxttMYfwJQEG9F6XDN/IoZS4kt/ozEA9nUrmF0rOROZZ05Gm/igGeql/iIRdp9xTGV9w7kT/FoPH1/+TWYV2dNCB5yf9vm0VWkAEdQvqIYxxl3Qoq6i0Gwsgg6CRVRRND7SBBynY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEnoQekJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyNIXMbA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4628C2BBFC;
-	Fri,  7 Jun 2024 07:07:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEnoQekJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F6CC4AF0C;
+	Fri,  7 Jun 2024 07:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717744072;
-	bh=vND6tBPRIH6M9sigCzz668/u3ZjGc2f2xi9oV0DOp2Q=;
+	s=k20201202; t=1717745448;
+	bh=Z3FFAvOtY81jdbTzkmiEyBDE39rxcsFJ3zmC1SfF600=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UyNIXMbA/nkk4UXSfTpBupCK1AG/OZpZsKXitxQE6xQc2VGncQrxeBEFkhCLiGsxN
-	 zoftIn2MADwxgVJD8tUZxvQ71YdSMGPl0x9WoqzEJ24IhN1zYGIT4YGIu2CObmTy1r
-	 Puq3yoPO0twTQKdkvBUMQISz4OVy1S13hLvCmeJy8SDBZBOe2LxbXhHMoX5sbidPrZ
-	 2UrWMXSmH7sc26xkqZNto+9h7W7dTa7ytIWImlWx904LQEoiy+sDPgW+RmhR+Ny3Fx
-	 iXPxSZ5rExrCLrWAOp8r4WgCPSQkH6Sh7I8mcrbiG6wZuAlzWA0TD/EY8OSpdP6HSk
-	 1opXpZR0JX+YA==
-Message-ID: <1486a1b6-4119-4121-b6df-3da21d06add7@kernel.org>
-Date: Fri, 7 Jun 2024 09:07:45 +0200
+	b=EEnoQekJzv20W+ISchcm3xeqM/6W18gDiCqVjix0yEokK0PbYuYHq5p9Cnl6HhB23
+	 1ZDpekv8iXooWSuCZ1y/MAR3WuxkQKZ5qAAbGtDuYTcGPDayMDyq5C3OlzP0a0sda+
+	 YBK/w4xohv9p4jt+STGWLVkBEph0Aa9B7mglkycA5DdhvG9PmUAnVn6QlNya6p1y/Q
+	 RejBcdDEZkK4Ox0XZndfL3kDJDS2luboQ+MFTcG9/XZfLYfaLwzJBJGQDjvDZxEyNN
+	 LikDzCWc0EW5Mj1QOt0fbRjw2+SvSG4kwxy+CE99Q1DlaTxGlFbhgd0b3G82rnZOBv
+	 wHbFoNNiVYTWQ==
+Message-ID: <bd4e31a5-180d-40fb-88bc-e34d2a28f56b@kernel.org>
+Date: Fri, 7 Jun 2024 09:30:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,27 +35,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXT] Re: [PATCH 1/4] dt-bindings: firmware: secvio: Add device
- tree bindings
-To: Vabhav Sharma <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Franck Lenormand <franck.lenormand@nxp.com>,
- Aisheng Dong <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Varun Sethi <V.Sethi@nxp.com>,
- Silvano Di Ninno <silvano.dininno@nxp.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, Frank Li <frank.li@nxp.com>,
- Daniel Baluta <daniel.baluta@nxp.com>
-References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
- <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
- <750f5388-20f9-45a3-a1e6-ceac4b91329f@kernel.org>
- <AS1PR04MB9358A2457AF05553457DE9B0F3FB2@AS1PR04MB9358.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH 1/1] dt-bindings: usb: cdns,usb3: use common usb-drd yaml
+To: Frank Li <Frank.Li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
+ Pawel Laszczak <pawell@cadence.com>, Roger Quadros <rogerq@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:CADENCE USB3 DRD IP DRIVER" <linux-usb@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240606161509.3201080-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,22 +91,67 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <AS1PR04MB9358A2457AF05553457DE9B0F3FB2@AS1PR04MB9358.eurprd04.prod.outlook.com>
+In-Reply-To: <20240606161509.3201080-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07/06/2024 06:58, Vabhav Sharma wrote:
->>
->> Missing SoC compatibles.
-> Ok, I will use fsl,imx8dxl-sc-secvio
->>
->> So no, that's just abuse of DT to instantiate driver.
->>
->> NAK. Drop the binding.
-> I will detail the dt binding to describe the real hardware
+On 06/06/2024 18:15, Frank Li wrote:
+> Use common usb-drd yaml for usb OTG related propteries. Allow propertry
+> "usb-role-switch" to fix below DTB_CHECK warning.
+> 
+> arch/arm64/boot/dts/freescale/imx8qxp-mek.dtb: usb@5b110000: usb@5b120000: 'port', 'usb-role-switch' do not match any of the regexes: 'pinctrl-[0-9]+'
+> 
+> Add "port" proptery to use connect type C connector and fix below warning.
+> arch/arm64/boot/dts/freescale/imx8qxp-mek.dtb: usb@5b110000: usb@5b120000: Unevaluated properties are not allowed ('port' was unexpected)
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> 
+> Notes:
+>     pass dt_binding_check
+>     
+>     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=cdns,usb3.yaml
+>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>       CHKDT   Documentation/devicetree/bindings
+>       LINT    Documentation/devicetree/bindings
+>       DTEX    Documentation/devicetree/bindings/usb/cdns,usb3.example.dts
+>       DTC_CHK Documentation/devicetree/bindings/usb/cdns,usb3.example.dtb
+> 
+>  .../devicetree/bindings/usb/cdns,usb3.yaml       | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/usb/cdns,usb3.yaml b/Documentation/devicetree/bindings/usb/cdns,usb3.yaml
+> index 69a93a0722f07..38df19bad7c41 100644
+> --- a/Documentation/devicetree/bindings/usb/cdns,usb3.yaml
+> +++ b/Documentation/devicetree/bindings/usb/cdns,usb3.yaml
+> @@ -42,8 +42,15 @@ properties:
+>        - const: otg
+>        - const: wakeup
+>  
+> -  dr_mode:
+> -    enum: [host, otg, peripheral]
+> +  dr_mode: true
+> +
+> +  usb-role-switch: true
 
-Still looks like way just to instantiate driver. Why it cannot be part
-of existing firmware SCU node?
+These two should not be needed now (usage of unevaluatedProps allows
+them), just drop them.
+
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    description:
+> +      This port is used with the 'usb-role-switch' property  to connect the
+> +      cdns3 to type C connector.
+>  
+>    maximum-speed:
+>      enum: [super-speed, high-speed, full-speed]
+> @@ -77,7 +84,10 @@ required:
+>    - interrupts
+>    - interrupt-names
+
+Missing dependency on "port", see other bindings like dwc2.
+
 
 Best regards,
 Krzysztof
