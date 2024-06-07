@@ -1,157 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC1915443A;
-	Fri,  7 Jun 2024 07:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE5714EC75
+	for <imx@lists.linux.dev>; Fri,  7 Jun 2024 08:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717745552; cv=none; b=cPLeoSdIkkXlhYzv/yqKwhqbV0wVsglNHTqjLZuUdeI19ye4VsicxRWHY6OguQVyzNgPHKtevBCrhBpO+MIf/SMLI//KuoXsyoORCmgdRFEC95446hVne4HG+EAmpggQQgPdltQJPX3Te6X7ZXc093+Tg8Ap+JSNy3Rj5URhtf0=
+	t=1717748384; cv=none; b=HVfDJrUvxpyQZlhQEYJTxsKCVE5K7chdbqSmxT4qwW7TyssmA9Sr5km6xYaWTJw5kxHUpsiMj5m2PoXWVF/ia8TAsFr9AcItZa4egcmpF/sZKnPKTM5Uw48P2MQYSO4XIkf9qJSA+aB2yEgaiBC6M5rQN2XNOrdv2szZx/Boj5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717745552; c=relaxed/simple;
-	bh=GSmqGOqoPAgqakBnfPFWSNXrd/qku71McqkYKmDmD/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R3mOSnxZ47WyujT/LETv/iQAxSlGMaH58+mPyDEwHwu1iHCrdxyTtIB4EoFo88i37xy8yAyqS3HODuKau7cFRVcYAe0RUUXDVopdVIRVEqd2snBK+aVQxtBqWIe9NLTIyH3PeaoT86rcfWuXBphqm2XIdbF6SkeSSZCl1bz8hg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RR8EfdzV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717748384; c=relaxed/simple;
+	bh=8ylq6lTmAICvJ78ovAeFFxwYjpztjGrZBRXCN4JMfuw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JgN3eTQfLcnxJVrcmpvyJLO52XC9zVEfHjCDwVeDayXoNr7Qlp+SiC1vEwQRY9Ih10SYj6iSbj/Bo1ciO4fE5HrTiRTb83oSum39yQPX+NoSvijMnv9/m6ywsiBl49uS1GSJ3WPr/pqWuWuH0fgEIweemuV8sD96z/RbyyXLp0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=V+hZ8qVS; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RR8EfdzV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5645BC2BBFC;
-	Fri,  7 Jun 2024 07:32:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717745552;
-	bh=GSmqGOqoPAgqakBnfPFWSNXrd/qku71McqkYKmDmD/k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RR8EfdzVa+bXpc9ed+cAQtzf0afbGhfhiElpdlMKpJ6tOP9BGwWLQ/38G7fLbOViz
-	 KHddmz7TF9wybHxYFFUlDPPOuN+FgMtThQn2kvMXHyDQ5GM3KfPBKjCYfDpbbGJ77P
-	 WSflbKHEwy86tlr3/VaLUgFjRT7z6IuwqyrUy1GjRz1gtBaOtQAth3701hOQESLbt2
-	 nlPFqXzOrnj4pdI9xq3S6lxcgK3oumAIBwSsglW9M1Ljrxrzyx8JVTsU+t4WTNhubu
-	 XyMjDOISPD0UZ3+t84PvmPFEsvbNjRZ6RyG01UXysAmoowiDBHfrUZR1fiGSdZftlG
-	 5ea6RuUTgcwrw==
-Message-ID: <19058054-5138-4d37-860f-dd430abd3a0f@kernel.org>
-Date: Fri, 7 Jun 2024 09:32:26 +0200
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="V+hZ8qVS"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 1EC07A041E;
+	Fri,  7 Jun 2024 10:19:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=wg6qi7CwlG9mPI6UdwwMmwNTJpAiHxal7cH+O7K8jiE=; b=
+	V+hZ8qVSziVHanXhxnf5+l5T8lhFnPf3WbTtMhh9mIwqxde3ceKpv8MK1K464NGC
+	dgQlb3gp1+EEH1B7w1tqVS2HX5KlfRPniKxD9pOJWYtSfE0VfPJnbBOydx7Mwmz0
+	kXQV30RTeh2T3WiRkgwY/EH+2unCA5bZF7yYLJOHyT3KLEMhBGA/cS44mwp+gLIr
+	OpxTXh8ZpGzZJFv9KPfFi9FQE0+dYjnIbch2INK35TvXITGLKYk7sO6IRFNmmSfv
+	SXe0BCmV5mlO/Ljeg8k3U/4IOASRVAi98NnVO0cna3FlabHT9kZmBlGXw+LSM3cU
+	kgvbYs5fhMx3ANzBDFYQa/FmsNeV9hgHo/xQUHSmtIPddNVJBs3WNP0Yze1Zd7lF
+	Nqs9TUCDXCi2zdXYAiWn6z8Eh9Xffg6if5ItsQAdu5i4WmGvTwYCN6ydcGLP08KB
+	8ffNCf3d202CNMQUUpDXfw2HOdonumwbtZ1bX7xdVfPep0BJAG8BriuttgXmW9I2
+	y9MsalHyN/aT6Z/mm0XACJu1gBjVzQFtIr2CV2NrKI0Twv2Mpl5NXx48nJW5t4ef
+	zFPz6FbooLpQTgKhbyGA5XgJNRbEvpErbndO7ML2iB1yTz3mTH3AoZiEbJJ9iRA8
+	BozzBl0+EEVyMvn9YHzoamYq4dOgbaxxV03oT2dpJ4A=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+Subject: [PATCH v2] net: fec: Add ECR bit macros, fix FEC_ECR_EN1588 being cleared on link-down
+Date: Fri, 7 Jun 2024 10:18:55 +0200
+Message-ID: <20240607081855.132741-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: remoteproc: imx_rproc: add minItems
- for power-domain
-To: Frank Li <Frank.Li@nxp.com>
-Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
- krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- mathieu.poirier@linaro.org, peng.fan@nxp.com, robh@kernel.org,
- s.hauer@pengutronix.de, shawnguo@kernel.org
-References: <20240606150030.3067015-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240606150030.3067015-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1717748379;VERSION=7972;MC=3391927748;ID=131151;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2945A12957627061
 
-On 06/06/2024 17:00, Frank Li wrote:
-> "fsl,imx8qxp-cm4" and "fsl,imx8qm-cm4" need minimum 2 power domains. Keep
-> the same restriction for other compatible string.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     Change from v1 to v2
->     - set minitem to 2 at top
->     - Add imx8qm compatible string also
->     - use not logic to handle difference compatible string restriction
->     - update commit message.
->     
->     pass dt_binding_check.
->     
->     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-rproc.yaml
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       CHKDT   Documentation/devicetree/bindings
->       LINT    Documentation/devicetree/bindings
->       DTEX    Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dts
->       DTC_CHK Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dtb
-> 
->  .../bindings/remoteproc/fsl,imx-rproc.yaml         | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index df36e29d974ca..da108a39df435 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -59,6 +59,7 @@ properties:
->      maxItems: 32
->  
->    power-domains:
-> +    minItems: 2
->      maxItems: 8
->  
->    fsl,auto-boot:
-> @@ -99,6 +100,19 @@ allOf:
->        properties:
->          fsl,iomuxc-gpr: false
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          not:
-> +            contains:
-> +              enum:
-> +                - fsl,imx8qxp-cm4
-> +                - fsl,imx8qm-cm4
-> +    then:
-> +      properties:
-> +        power-domains:
-> +          minItems: 8
+FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
+makes all 1588 functionality shut down on link-down. However, some
+functionality needs to be retained (e.g. PPS) even without link.
 
-What happened with the "else:"? How many power domains is needed for
-other devices?
+Signed-off-by: "Csókás, Bence" <csokas.bence@prolan.hu>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 881ece735dcf..fb19295529a2 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1361,6 +1361,12 @@ fec_stop(struct net_device *ndev)
+ 		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
+ 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
+ 	}
++
++	if (fep->bufdesc_ex) {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= FEC_ECR_EN1588;
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
+ }
+ 
+ static void
+-- 
+2.34.1
+
 
