@@ -1,155 +1,253 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757E6182DF;
-	Sat,  8 Jun 2024 12:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBCE56446
+	for <imx@lists.linux.dev>; Sat,  8 Jun 2024 15:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717850925; cv=none; b=X1VboFRa5rPbtl+8R91L29kfpTUF0M8aCocpWAhlaQivhP20VvP+ti6AlAK4/5WDnLjzaF5DM6eveRM4DghCUfkVCXIFyXbM4lSZZsokcUeZvBC0v1xDF8FxDzosR3SXvWIY/7ZsalfYgDhLxLOd71nPsAu436wERM7n+5+7K+A=
+	t=1717858976; cv=none; b=VNsaK3Jg7dnEuRemVybr5R+dL4zoyuKp0DWJA/PkOwrz7YcgKxXYA+bJLMzDrdLDYJ9OrQ6m5KkrSw6RcDvbzTXXQg0cTeE2Wuwde8O1aY+tfRR+tcoh42VvM6jyAPV4qOwKXaiK0S7N4dOPsCjEyCuXbNC7X6O43a10fBWKb1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717850925; c=relaxed/simple;
-	bh=0uhVK2EDPWadg2sGtuaFhDUBT8Bj6aEIPf+2ui1CAww=;
+	s=arc-20240116; t=1717858976; c=relaxed/simple;
+	bh=UQajqenKlrvH5lGzWKTwgn2VoSNwkyZus1uA9XzmJ3w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=evo3IoQr3Qyn/Mza5mbMZwLcF/Bt5udkUpqUZgFrdVYZ71I19dYguXRghZNz/Vr0Vwsj2kzyolLykMfg83Mx51dtkjQ8i2ij1dtyXxaAfvmrj/JPXr1QpjmI/Vac0QBttMrhKA3EIByx/7qhNGN+CcjBbpZe4gkrOp8pBpOSLKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hFxQwKLG; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=IB1m+PURUk5WmR22MiUQbCkAc/1boF7P1Di3HMlr7i5yXayWfVRTdYU2UP0N0UBeUu0CeaGFms3q4QkFz1RAmDj1HwGiGprmIXhUouf115KzlQ5OZOSlRVL/IBVfHRs/edO2q/gxsZf4JKH9Y3jsLb+8T3Jp0xulX4BhaB5y+fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wbF5FcR1; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hFxQwKLG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717850924; x=1749386924;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0uhVK2EDPWadg2sGtuaFhDUBT8Bj6aEIPf+2ui1CAww=;
-  b=hFxQwKLGqrakMYjGCvAmcRAzAbpOxphDfYpX5bjZQZNl1UBiV01np95V
-   8ua6sgizIm+a2tsH2yCj/eaxPa4limLJP5B2FkSalFCX7+RaWGl4ewbCv
-   5PUtLpt9/Ywe7MH/r/Mw74SVjQrSSnLCEVC8T16WttEX4dwXpMLNYQWSJ
-   obKUSrWO33asQHxB+l5c87RNjhPTzuyRmApgVdMvsF8IOw+olyRj63S39
-   7D8FEOqGZbpAR9MR3TA/izYesMESErjuf9O47hC8Db8YWOOneQhVvQ91/
-   WLMsKFDNs49LrjtJAehKmRMfZA1eUpE2hEY0No/U1CcbHcDPLJHVjOU2N
-   A==;
-X-CSE-ConnectionGUID: sIkgEL85SFePuG8da+BwjA==
-X-CSE-MsgGUID: fO0Z1IA9SXy8aC2624il6w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14522922"
-X-IronPort-AV: E=Sophos;i="6.08,223,1712646000"; 
-   d="scan'208";a="14522922"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2024 05:48:43 -0700
-X-CSE-ConnectionGUID: sMv28rYnSumtbuouiucdDw==
-X-CSE-MsgGUID: j0UkYyPzQa6XDrMOEKBWbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,223,1712646000"; 
-   d="scan'208";a="38669003"
-Received: from lkp-server01.sh.intel.com (HELO 472b94a103a1) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 08 Jun 2024 05:48:40 -0700
-Received: from kbuild by 472b94a103a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFvUr-0001aW-1Y;
-	Sat, 08 Jun 2024 12:48:37 +0000
-Date: Sat, 8 Jun 2024 20:48:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: oe-kbuild-all@lists.linux.dev, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: Support i.MX93 9x9 Quick
- Start Board
-Message-ID: <202406082200.sVJmF5id-lkp@intel.com>
-References: <20240605094812.1074027-2-peng.fan@oss.nxp.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wbF5FcR1"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4D90829F;
+	Sat,  8 Jun 2024 17:02:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1717858955;
+	bh=UQajqenKlrvH5lGzWKTwgn2VoSNwkyZus1uA9XzmJ3w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wbF5FcR1OHHS/6eqX8MBcF5zS9DuwurwCsdj2MFv4nPOUZeuI8VJtUgXWyn8AwoyS
+	 YiHhMSjcXCSqhQ+vBCK5JYimCt/dZYmb6aCYJK8bfJn6uAHJJPW4vXyaqbZtJlQiH4
+	 25xNQyyg3C84xZfskXqZ6JqtMOrIjMPzBjM/+oG0=
+Date: Sat, 8 Jun 2024 18:02:27 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Christopher Obbard <chris.obbard@collabora.com>
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	linux-kernel@vger.kernel.org,
+	Daniel Scally <dan.scally@ideasonboard.com>, kernel@collabora.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mp-debix-model-a: Add HDMI output
+ support
+Message-ID: <20240608150227.GA13024@pendragon.ideasonboard.com>
+References: <20240415114135.25473-1-chris.obbard@collabora.com>
+ <20240415114135.25473-2-chris.obbard@collabora.com>
+ <171319369093.2333277.9109576229211275635@ping.linuxembedded.co.uk>
+ <20240415163520.GA22954@pendragon.ideasonboard.com>
+ <525f3c7f7f6613c78ac364c9ce0234cca5e1c710.camel@collabora.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240605094812.1074027-2-peng.fan@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <525f3c7f7f6613c78ac364c9ce0234cca5e1c710.camel@collabora.com>
 
-Hi Peng,
+On Mon, Apr 15, 2024 at 06:07:24PM +0100, Christopher Obbard wrote:
+> On Mon, 2024-04-15 at 19:35 +0300, Laurent Pinchart wrote:
+> > On Mon, Apr 15, 2024 at 04:08:10PM +0100, Kieran Bingham wrote:
+> > > Quoting Christopher Obbard (2024-04-15 12:41:27)
+> > > > Enable the HDMI output on the Debix Model A SBC, using the HDMI encoder
+> > > > present in the i.MX8MP SoC.
+> > > 
+> > > Aha, you beat me to it. I have a commit locally (Dated 2022-09-06) but
+> > > not sent because I didn't realise the HDMI support finally got upstream
+> > > \o/
+> > > 
+> > > > Signed-off-by: Christopher Obbard <chris.obbard@collabora.com>
+> > > > ---
+> > > > 
+> > > >  .../dts/freescale/imx8mp-debix-model-a.dts    | 47 +++++++++++++++++++
+> > > >  1 file changed, 47 insertions(+)
+> > > > 
+> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > > b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > > index 2c19766ebf09..29529c2ecac9 100644
+> > > > --- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+> > > > @@ -20,6 +20,18 @@ chosen {
+> > > >                 stdout-path = &uart2;
+> > > >         };
+> > > >  
+> > > > +       hdmi-connector {
+> > > > +               compatible = "hdmi-connector";
+> > > > +               label = "hdmi";
+> > > > +               type = "a";
+> > > > +
+> > > > +               port {
+> > > > +                       hdmi_connector_in: endpoint {
+> > > > +                               remote-endpoint = <&hdmi_tx_out>;
+> > > > +                       };
+> > > > +               };
+> > > > +       };
+> > > > +
+> > > 
+> > > Interesting. My patch missed this. But it looks correct.
+> > > 
+> > > >         leds {
+> > > >                 compatible = "gpio-leds";
+> > > >                 pinctrl-names = "default";
+> > > > @@ -94,6 +106,28 @@ ethphy0: ethernet-phy@0 { /* RTL8211E */
+> > > >         };
+> > > >  };
+> > > >  
+> > > > +&hdmi_pvi {
+> > > > +       status = "okay";
+> > > > +};
+> > > > +
+> > > > +&hdmi_tx {
+> > > > +       pinctrl-names = "default";
+> > > > +       pinctrl-0 = <&pinctrl_hdmi>;
+> > > > +       status = "okay";
+> > > > +
+> > > > +       ports {
+> > > > +               port@1 {
+> > > > +                       hdmi_tx_out: endpoint {
+> > > > +                               remote-endpoint = <&hdmi_connector_in>;
+> > > > +                       };
+> > > > +               };
+> > > > +       };
+> > > > +};
+> > > > +
+> > > > +&hdmi_tx_phy {
+> > > > +       status = "okay";
+> > > > +};
+> > > > +
+> > > >  &i2c1 {
+> > > >         clock-frequency = <400000>;
+> > > >         pinctrl-names = "default";
+> > > > @@ -241,6 +275,10 @@ &i2c6 {
+> > > >         status = "okay";
+> > > >  };
+> > > >  
+> > > > +&lcdif3 {
+> > > > +       status = "okay";
+> > > > +};
+> > > > +
+> > > 
+> > > Except for the addition of the connector, the above matches my patch to
+> > > here.
+> > > 
+> > > >  &snvs_pwrkey {
+> > > >         status = "okay";
+> > > >  };
+> > > 
+> > > But in my patch I have the following hunk here: (I haven't checked to
+> > > see if this still applies on mainline, so take with a pinch of salt if
+> > > it's not there!)
+> > > 
+> > > 
+> > >  &iomuxc {
+> > >  	pinctrl-names = "default";
+> > > -	pinctrl-0 = <&pinctrl_hog>;
+> > > -
+> > > -	pinctrl_hog: hoggrp {
+> > > -		fsl,pins = <
+> > > -
+> > > 			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL					0x400001c3
+> > > -
+> > > 			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA					0x400001c3
+> > > -
+> > > 			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD						0x40000019
+> > > -
+> > > 			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC						0x40000019
+> > > -		>;
+> > > -	};
+> > > 
+> > >  	pinctrl_eqos: eqosgrp {
+> > >  		fsl,pins = <
+> > >  			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC		
+> > > 					0x3
+> > >  			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO		
+> > > 				0x3
+> > > 
+> > > 
+> > > > @@ -358,6 +396,15 @@
+> > > > MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16                              0x19
+> > > >                 >;
+> > > >         };
+> > > >  
+> > > > +       pinctrl_hdmi: hdmigrp {
+> > > > +               fsl,pins = <
+> > > > +                      
+> > > > MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL                    
+> > > > 0x400001c3
+> > > > +                      
+> > > > MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA                    
+> > > > 0x400001c3
+> > > > +                      
+> > > > MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD                        
+> > > > 0x40000019
+> > > > +                      
+> > > > MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC                        
+> > > > 0x40000019
+> > > > +               >;
+> > > > +       };
+> > > > +
+> > > 
+> > > And my addition here is :
+> > > 
+> > > 
+> > > +	pinctrl_hdmi: hdmigrp {
+> > > +		fsl,pins = <
+> > > +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0
+> > > x1c3
+> > > +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0
+> > > x1c3
+> > > +			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	
+> > > 	0x19
+> > > +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	
+> > > 	0x19
+> > > +		>;
+> > > +	};
+> > > +
+> > > 
+> > > 
+> > > I haven't looked into what the 0x40000000 does yet, but just
+> > > highlighting the difference from the version I've been using to make use
+> > > of HDMI so far.
+> > > 
+> > > Does anyone else know the impact here? Otherwise I'll try to find time
+> > > to check this later. (For some undefined term of later...)
+> > 
+> > In drivers/pinctrl/freescale/pinctrl-imx.c,
+> > 
+> > #define IMX_NO_PAD_CTL  0x80000000      /* no pin config need */
+> > #define IMX_PAD_SION 0x40000000         /* set SION */
+> > 
+> > The SION (Software Input ON) bit forces the input path active for the
+> > pin. This can be used, for instance, to capture through GPIO the value
+> > of a pin driven by a module. I'm not sure that's needed here.
+> 
+> Thanks for the explanation, makes perfect sense. I will send a v2 without the
+> SION bit set (e.g exactly per the hunk in Kieran's patch).
 
-kernel test robot noticed the following build warnings:
+I'd like to get this merged in v6.11. If you don't have time to send a
+v2, I'm happy resending our version of the patch instead :-)
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.10-rc2 next-20240607]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/arm64-dts-freescale-Support-i-MX93-9x9-Quick-Start-Board/20240605-174602
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20240605094812.1074027-2-peng.fan%40oss.nxp.com
-patch subject: [PATCH 2/2] arm64: dts: freescale: Support i.MX93 9x9 Quick Start Board
-compiler: aarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240608/202406082200.sVJmF5id-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406082200.sVJmF5id-lkp@intel.com/
-
-dtcheck warnings: (new ones prefixed by >>)
->> arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts:160.10-171.6: Warning (graph_child_address): /soc@0/bus@44000000/i2c@44340000/tcpc@50/connector/ports: graph node has single child node 'port@0', #address-cells/#size-cells are not necessary
-
-vim +160 arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
-
-   132	
-   133	&lpi2c1 {
-   134		#address-cells = <1>;
-   135		#size-cells = <0>;
-   136		clock-frequency = <400000>;
-   137		pinctrl-names = "default";
-   138		pinctrl-0 = <&pinctrl_lpi2c1>;
-   139		status = "okay";
-   140	
-   141		ptn5110: tcpc@50 {
-   142			compatible = "nxp,ptn5110", "tcpci";
-   143			reg = <0x50>;
-   144			interrupt-parent = <&gpio3>;
-   145			interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
-   146			status = "okay";
-   147	
-   148			typec1_con: connector {
-   149				compatible = "usb-c-connector";
-   150				label = "USB-C";
-   151				power-role = "dual";
-   152				data-role = "dual";
-   153				try-power-role = "sink";
-   154				source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-   155				sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
-   156					     PDO_VAR(5000, 20000, 3000)>;
-   157				op-sink-microwatt = <15000000>;
-   158				self-powered;
-   159	
- > 160				ports {
-   161					#address-cells = <1>;
-   162					#size-cells = <0>;
-   163	
-   164					port@0 {
-   165						reg = <0>;
-   166	
-   167						typec1_dr_sw: endpoint {
-   168							remote-endpoint = <&usb1_drd_sw>;
-   169						};
-   170					};
-   171				};
-   172			};
-   173		};
-   174	
-   175		rtc@53 {
-   176			compatible = "nxp,pcf2131";
-   177			reg = <0x53>;
-   178			interrupt-parent = <&pcal6524>;
-   179			interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
-   180			status = "okay";
-   181		};
-   182	};
-   183	
+> > > >         pinctrl_i2c1: i2c1grp {
+> > > >                 fsl,pins = <
+> > > >                        
+> > > > MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL                                
+> > > > 0x400001c2
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+
+Laurent Pinchart
