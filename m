@@ -1,57 +1,57 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86CD17565
-	for <imx@lists.linux.dev>; Sun,  9 Jun 2024 13:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDD64317C
+	for <imx@lists.linux.dev>; Sun,  9 Jun 2024 13:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717938072; cv=none; b=eSwOJ+VoGg3YLCwQccb0w2jFr7wKY8tBvPK7Ch37DAzYt1uZbdcIRPcwnlthsTFrGZ910oK1PJ9sExbfugGzUyIyb3fGwjHOGCE5x4gfsBgU6dNd06ESH0ibildj7NmL/zgI5YlPyFdwwJZ8uP0af21J9CXxp215n0asHSA4Gmw=
+	t=1717938077; cv=none; b=mv2KdnDp5AzTJ8xoyd61UT07qfOv1EDGg4RfBas0h/91kPO30/YcF5UosuXSExcrqQ2ISpbvIbU//tEfSj+a+QBzi/ybAfyc7sBfvKtISnCkQoXI5yWxnojMVLx1xCBmcxQSllmd7+8VnIEyf+UcEZAdOwUJLZ8kapG6S2++ZoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717938072; c=relaxed/simple;
-	bh=j49VU9MU24LvpW7FfwuoiEMwbcnOP7x2EnhIo7iP/Mc=;
+	s=arc-20240116; t=1717938077; c=relaxed/simple;
+	bh=00/efm170rHixvXjsDdkmTJjaLFkiwwiwdlNwtJtkho=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cOoVuasI5h/Fl2TcBg+8f/QFnqsSvsJCgZJm61vy6YbJ0xssTtA56W8uDVRDqrrinfaS+Z/nyOZm+9Owm+XT8SAgw/3YFI6FlcdAp9Wfy5sJV6fWARgPrUnbVqU/X/6PwrBR8syES0XchsXaMvFFPAP6wMmKzLHAhcNQxzw6uCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I8hK7k5Z; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version; b=T75gi6spMsBu+jj+WuX8i6Ir+ClVAlHWcovo8m3Atpg2gkLCqKK9S9to0c3NfrTER4HsJMR8Rg/CEB63E9qcX8mqSSAv4JKdDfKVazZJaUT3eMks0SgfCTTZnCPDMvV+JGCrL3RTzJLbNiWNdJd2kE8rDm++b7m3E+X+A0MOIgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMnDcgO2; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I8hK7k5Z"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a6ef64b092cso180202866b.1
-        for <imx@lists.linux.dev>; Sun, 09 Jun 2024 06:01:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMnDcgO2"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a6efae34c83so144946366b.0
+        for <imx@lists.linux.dev>; Sun, 09 Jun 2024 06:01:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717938069; x=1718542869; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1717938074; x=1718542874; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=REsRox1e0RuQ8D5QAaZjLhlhSVKgshVITv7B++1K8Ss=;
-        b=I8hK7k5Z4MPe3c+kulk4gv/+C06+J50t8Rn9I1g+st230aOCXMcB2XFsVMLFiplfmD
-         oQJG/0vpwMaao5enHGiITfBlGSwUb/wS134YIW6y9y/qrCcndBqrUWPhE6YgLSVbsKLb
-         HfaCKU37kzC2ZIYM6PChV0jKZw00rPMgDC3Kk8kroeIVdxBuFHP4Xd8yfDabZ4OsOeTM
-         CwpHk6L8gjnFlJpyBkPC2qdQoohJnyq0bKhom6YSoaeKjalKgKnNbBUTi09m5qQc9kEt
-         iq9Be61op4oHNlbzH2GEUvCcRQfnde9toftxMLA6txzyztcHVqheU4sR2yCxGeHhC0M9
-         kDcw==
+        bh=roddXwv5d465/lxlFzMrZn0lrN/Jz4rrWHyGURYshMc=;
+        b=CMnDcgO2OtiOHfUsu4WusvV8DFgwcEJAwwJ5LGF05c6DT63M1IBl+qiOVWzBIadmdC
+         y5NMvfssIO/QHIMpjryTdcgDgGHel2+ucrQwjb+4gIDa8PbPfzbSU/jn4Xg8R5aPfpr+
+         3fjLMtOPD0blsjSpDvTKATySznmHp9xaN9Wxy2ygCSqEDx3R4QHaCU43Xx/j+g3qMdM6
+         +smZASzXZL3p1YGStrXabTZ3DoqC18sYgBaNwWcB9VPnur42VwKl/UVz2c+hOf0YsFMZ
+         MQbDosnHJQXVRPckZyL2xaNSt5RPk0DIPFfSnO7r8iOH0J/naTKXMYQnnL5twdhpkQVT
+         bMOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717938069; x=1718542869;
+        d=1e100.net; s=20230601; t=1717938074; x=1718542874;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=REsRox1e0RuQ8D5QAaZjLhlhSVKgshVITv7B++1K8Ss=;
-        b=OEE/pdcBf87C7XdNVcq3KV6W5kfEnBOKYH0WrGge4Vra8Z7FTM2jKBgksT22b8J88N
-         6kVI0zepacWi4VYgbr/iJyUHpfFPhnhQpKiVgpcn7Wpl/szeME3ABLgnzmZyTBN6D3pm
-         OX2zSH2MTFINkW0ymYbsLTEiLwjYnPLIH8UV+r5sdviJo6fVayDNvdxbxVKwp7RSVGri
-         xixQ849qj1PH7FpLtw+KyxV7qtrJ+TYWOSO/vnYkrgahQs9FRNH/YsuqQMBJfRvhOOhX
-         Ff9nUQ4JeWKzD9zWbckOJW2Cue9A1BaW72wsNd8r0QHAMA2V/QKPW8eAfVWPgMYzwFe/
-         4HAA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1iQ9zckWaZUQ6B7r4z+zYAL3zYVh2Os45XtO0LpjYIEUHWxd+WptUo7d+tXnQPlhuaQGknwAzgTG7ZS+0IG7sTc15
-X-Gm-Message-State: AOJu0YxoJRc8rbch1RWsbLN6J+bR5KDNrTzJhVFCbJpwToRJJWTZpnD+
-	stHmP5RqT71YIABKUNXiwKJ++0eG4raZXLfAmlDkEWlbGgn49+wO
-X-Google-Smtp-Source: AGHT+IHuwX9E4jd+uOP3g2E/VCQpCP2FwgjdCll+ONft/3eSl0lcdXlxqQ5XLFW8iIp/cysdKtueIQ==
-X-Received: by 2002:a17:906:4a4a:b0:a6f:74:d389 with SMTP id a640c23a62f3a-a6f0074d52fmr240671266b.14.1717938068825;
-        Sun, 09 Jun 2024 06:01:08 -0700 (PDT)
+        bh=roddXwv5d465/lxlFzMrZn0lrN/Jz4rrWHyGURYshMc=;
+        b=oopBAGym6W4i4Za/5l/PV16KdHB1Ejq02VE1EMEKyo0iQqcBgxW4K9vdaqaCZDVoQQ
+         kMtMrtDNM4AGrWDimMlfpwQnZGJrJkChLRjs0qYz2poeK62uTyduA6vWh3jMdFHeTKct
+         ip6btyLcW6j7pi1BmLeRaZ3hjhltjLZAFPVG2Z5HWh1VdI1SoOOHfm6ebMLj2rdGgquw
+         AUSkkAijnUaF2SelnALvGqUmejqoTEtOyvqIKrXZDp5OftdzZwRt+fdaFxaViR5RqjcY
+         JViogVBSf0TVQdKRYfwxZBqGT/MPrNzkkdqYga18OtWhcx5ocUMQH5n20QD7nijBvCMd
+         FpPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPehxTMrt8C3FcJbzxt6kZ/V6tRLPId2vEWTFYqryBn2iOx4clr7iBly2GvP6hlgex1uz7RyjGHv4j4VbTGesNGLUz
+X-Gm-Message-State: AOJu0YwCWDujlXhcOXCdiihe3xshxDPZz5bZOgFxMROaPs6kpcm6b9yU
+	1/kvimVTMelnnuRw8+0a/EO1pE09/dFVN6LEpNx1SRJKmONrwZHb
+X-Google-Smtp-Source: AGHT+IGreRkBONukfacHwv3hN2S0XEX0TDLoo4NDkaB14N8SCtzAN4GtduaJrUVGiB3CjataKqHrAQ==
+X-Received: by 2002:a17:906:1752:b0:a6e:facf:f982 with SMTP id a640c23a62f3a-a6efacffa1emr277059466b.23.1717938073841;
+        Sun, 09 Jun 2024 06:01:13 -0700 (PDT)
 Received: from lmc-playground.localdomain ([188.25.209.252])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f1841fceasm85961266b.70.2024.06.09.06.01.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f1841fceasm85961266b.70.2024.06.09.06.01.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 06:01:08 -0700 (PDT)
+        Sun, 09 Jun 2024 06:01:13 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -65,9 +65,9 @@ Cc: laurentiu.mihalcea@nxp.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/3] dt-bindings: reset: add schema for imx8ulp SIM reset
-Date: Sun,  9 Jun 2024 15:58:59 +0300
-Message-Id: <20240609125901.76274-2-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v2 2/3] reset: add driver for imx8ulp SIM reset controller
+Date: Sun,  9 Jun 2024 15:59:00 +0300
+Message-Id: <20240609125901.76274-3-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240609125901.76274-1-laurentiumihalcea111@gmail.com>
 References: <20240609125901.76274-1-laurentiumihalcea111@gmail.com>
@@ -81,89 +81,180 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add schema for imx8ulp's SIM reset controller.
+Certain components can be reset via the SIM module.
+Add reset controller driver for the SIM module to
+allow drivers for said components to control the
+reset signal(s).
 
 Signed-off-by: Liu Ying <victor.liu@nxp.com>
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- .../bindings/reset/nxp,imx8ulp-sim-reset.yaml | 68 +++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
+ drivers/reset/Kconfig                         |   7 ++
+ drivers/reset/Makefile                        |   1 +
+ drivers/reset/reset-imx8ulp-sim.c             | 103 ++++++++++++++++++
+ include/dt-bindings/reset/imx8ulp-sim-reset.h |  16 +++
+ 4 files changed, 127 insertions(+)
+ create mode 100644 drivers/reset/reset-imx8ulp-sim.c
+ create mode 100644 include/dt-bindings/reset/imx8ulp-sim-reset.h
 
-diff --git a/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml b/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index 7112f5932609..9b3574a4f1c6 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -91,6 +91,13 @@ config RESET_IMX7
+ 	help
+ 	  This enables the reset controller driver for i.MX7 SoCs.
+ 
++config RESET_IMX8ULP_SIM
++	tristate "i.MX8ULP SIM Reset Driver"
++	depends on ARCH_MXC
++	help
++	  This enables the SIM (System Integration Module) reset driver
++	  for i.MX8ULP SoC.
++
+ config RESET_INTEL_GW
+ 	bool "Intel Reset Controller Driver"
+ 	depends on X86 || COMPILE_TEST
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index fd8b49fa46fc..f257d6a41f1e 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -42,3 +42,4 @@ obj-$(CONFIG_RESET_UNIPHIER) += reset-uniphier.o
+ obj-$(CONFIG_RESET_UNIPHIER_GLUE) += reset-uniphier-glue.o
+ obj-$(CONFIG_RESET_ZYNQ) += reset-zynq.o
+ obj-$(CONFIG_ARCH_ZYNQMP) += reset-zynqmp.o
++obj-$(CONFIG_RESET_IMX8ULP_SIM) += reset-imx8ulp-sim.o
+diff --git a/drivers/reset/reset-imx8ulp-sim.c b/drivers/reset/reset-imx8ulp-sim.c
 new file mode 100644
-index 000000000000..e7faec55ff36
+index 000000000000..d1b9511a5c6a
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/reset/nxp,imx8ulp-sim-reset.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/reset/reset-imx8ulp-sim.c
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: GPL-2.0+
 +
-+title: NXP i.MX8ULP System Integration Module Reset Controller
++/*
++ * Copyright 2024 NXP
++ */
 +
-+maintainers:
-+  - Liu Ying <victor.liu@nxp.com>
++#include <linux/mfd/syscon.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
++#include <linux/regmap.h>
++#include <linux/reset-controller.h>
++#include <dt-bindings/reset/imx8ulp-sim-reset.h>
++#include <linux/of_platform.h>
 +
-+description: |
-+  Some instances of i.MX8ULP's SIM may offer control
-+  over the reset of some components of a certain domain
-+  (e.g: AVD-SIM).
++#define AVD_SIM_SYSCTRL0        0x8
 +
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - nxp,imx8ulp-avd-sim-reset
-+      - const: syscon
++struct imx8ulp_sim_reset {
++	struct reset_controller_dev     rcdev;
++	struct regmap                   *regmap;
++};
 +
-+  reg:
-+    maxItems: 1
++static const u32 imx8ulp_sim_reset_bits[IMX8ULP_SIM_RESET_NUM] = {
++	[IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N] = BIT(3),
++	[IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N] = BIT(4),
++	[IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N] = BIT(5),
++};
 +
-+  clocks:
-+    maxItems: 1
++static inline struct imx8ulp_sim_reset *
++to_imx8ulp_sim_reset(struct reset_controller_dev *rcdev)
++{
++	return container_of(rcdev, struct imx8ulp_sim_reset, rcdev);
++}
 +
-+  '#reset-cells':
-+    const: 1
++static int imx8ulp_sim_reset_assert(struct reset_controller_dev *rcdev,
++				    unsigned long id)
++{
++	struct imx8ulp_sim_reset *simr = to_imx8ulp_sim_reset(rcdev);
++	const u32 bit = imx8ulp_sim_reset_bits[id];
 +
-+  mux-controller:
-+    $ref: ../mux/reg-mux.yaml
++	return regmap_update_bits(simr->regmap, AVD_SIM_SYSCTRL0, bit, 0);
++}
 +
-+required:
-+  - compatible
-+  - reg
-+  - '#reset-cells'
++static int imx8ulp_sim_reset_deassert(struct reset_controller_dev *rcdev,
++				      unsigned long id)
++{
++	struct imx8ulp_sim_reset *simr = to_imx8ulp_sim_reset(rcdev);
++	const u32 bit = imx8ulp_sim_reset_bits[id];
 +
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: nxp,imx8ulp-avd-sim-reset
-+    then:
-+      required:
-+        - mux-controller
-+        - clocks
++	return regmap_update_bits(simr->regmap, AVD_SIM_SYSCTRL0, bit, bit);
++}
 +
-+additionalProperties: false
++static const struct reset_control_ops imx8ulp_sim_reset_ops = {
++	.assert         = imx8ulp_sim_reset_assert,
++	.deassert       = imx8ulp_sim_reset_deassert,
++};
 +
-+examples:
-+  - |
-+    #include <dt-bindings/clock/imx8ulp-clock.h>
-+    syscon@2da50000 {
-+      compatible = "nxp,imx8ulp-avd-sim-reset", "syscon";
-+      reg = <0x2da50000 0x38>;
-+      clocks = <&pcc5 IMX8ULP_CLK_AVD_SIM>;
-+      #reset-cells = <1>;
++static const struct of_device_id imx8ulp_sim_reset_dt_ids[] = {
++	{ .compatible = "nxp,imx8ulp-avd-sim-reset", },
++	{ /* sentinel */ },
++};
 +
-+      mux-controller {
-+        compatible = "mmio-mux";
-+        #mux-control-cells = <1>;
-+        mux-reg-masks = <0x8 0x00000200>;
-+      };
-+    };
++static int imx8ulp_sim_reset_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct imx8ulp_sim_reset *simr;
++	int ret;
++
++	simr = devm_kzalloc(dev, sizeof(*simr), GFP_KERNEL);
++	if (!simr)
++		return -ENOMEM;
++
++	simr->regmap = syscon_node_to_regmap(dev->of_node);
++	if (IS_ERR(simr->regmap)) {
++		ret = PTR_ERR(simr->regmap);
++		dev_err(dev, "failed to get regmap: %d\n", ret);
++		return ret;
++	}
++
++	simr->rcdev.owner = THIS_MODULE;
++	simr->rcdev.nr_resets = IMX8ULP_SIM_RESET_NUM;
++	simr->rcdev.ops = &imx8ulp_sim_reset_ops;
++	simr->rcdev.of_node = dev->of_node;
++
++	ret = devm_of_platform_populate(dev);
++	if (ret)
++		return ret;
++
++	return devm_reset_controller_register(dev, &simr->rcdev);
++}
++
++static struct platform_driver imx8ulp_sim_reset_driver = {
++	.probe  = imx8ulp_sim_reset_probe,
++	.driver = {
++		.name           = KBUILD_MODNAME,
++		.of_match_table = imx8ulp_sim_reset_dt_ids,
++	},
++};
++module_platform_driver(imx8ulp_sim_reset_driver);
++
++MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
++MODULE_DESCRIPTION("NXP i.MX8ULP System Integration Module Reset driver");
++MODULE_LICENSE("GPL");
+diff --git a/include/dt-bindings/reset/imx8ulp-sim-reset.h b/include/dt-bindings/reset/imx8ulp-sim-reset.h
+new file mode 100644
+index 000000000000..9f8fb8680a5e
+--- /dev/null
++++ b/include/dt-bindings/reset/imx8ulp-sim-reset.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
++
++/*
++ * Copyright 2024 NXP
++ */
++
++#ifndef DT_BINDINGS_RESET_IMX8ULP_SIM_H
++#define DT_BINDINGS_RESET_IMX8ULP_SIM_H
++
++#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N    0
++#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N    1
++#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N   2
++
++#define IMX8ULP_SIM_RESET_NUM                   3
++
++#endif /* DT_BINDINGS_RESET_IMX8ULP_SIM_H */
 -- 
 2.34.1
 
