@@ -1,50 +1,72 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3091BDDB
-	for <imx@lists.linux.dev>; Sat,  8 Jun 2024 18:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45D71FDD
+	for <imx@lists.linux.dev>; Sun,  9 Jun 2024 12:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717869916; cv=none; b=lsYwhAYkMuDTsgQzd8+e6ofhgIvfpTnBH3eSlzhGGkiQUrbFZDW1Ql5mgu7YzT/akxMZkpM+dgu50S9ln4nPnK5dujegeoo6VEqcAtvuazkCcYQpLwcE4TaIz9sg0JhFD48uksx8Rm22TKnzE7fbJ8EKAe8H4eHa1cEeIuZqhdo=
+	t=1717937996; cv=none; b=HZEdc0hNfHIK//KE+Vxzi8tYPt/XCc8U2lUPbdsVEcJrAMf4lG0tfZ1YIEfv2s0nkVWwFaTmAPmydKlPVlV9DBwXcA5p7BkDB/Ut/OKLDLtkT9zhpHYoyAv19FXjD72lZrcBzIUrAWzM7OB4hZgbZZroMItUiBy2G01igCKFO/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717869916; c=relaxed/simple;
-	bh=b+vbyorzjSQbO3fn1Wf8E0LpPAA6jF3pd3Edxag4UBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTZj8BH84ehVw9i2f7tqjAbEO13RmNrdtMCbj/I0jLXtz0xAJ4VdxKNPt5xAAOCRK4cjPtRHSFjQodwT2aL0VyRR6J29JBC9HaI4sqanHRGGSGeRU1kiLYBk5XlZmQvzsxXJwhGitpzovDeXfui+LRLOBMgkt5Js6XuFdO3ZULA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Owvkf74T; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1717937996; c=relaxed/simple;
+	bh=ZBEzRfn+mFCbyufKXc/4c7RplCyGr6rZvxeGQzawPT0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GAD3ZT+xqj+G0ARGEX6Qt3my5UV5DQfjSYkum23gpOpuZcdlAu+saYP6N999rFWKeun9PiVzu7qSQnn1ccB0aGjYxgwhKidtR8ltFNSzHsyi2d/YQpswA77Ew68HZSjfFg49F6L/PhSunkWr9OdLV2moGIlBmRoYbZO8FqsZvgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bqu+kBWo; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Owvkf74T"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 936FF4CA;
-	Sat,  8 Jun 2024 20:05:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1717869900;
-	bh=b+vbyorzjSQbO3fn1Wf8E0LpPAA6jF3pd3Edxag4UBs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Owvkf74Tx+qQV2jaOFHSnn57BMVu93AaY6uk050iPoPQwOd8GShVSS/ZgGOMO8W9a
-	 UpYe/zD4abBWu0tfmC/mAmR7Cw5hDYVo/HVO/aWcdGrcD/T1Br3zVBiwSr9cpFJCSG
-	 vXCzts3izFj4IuoGxzFgA5ycCRaJ5q1j+JbL9t1Y=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Cc: devicetree@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bqu+kBWo"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5295e488248so4019877e87.2
+        for <imx@lists.linux.dev>; Sun, 09 Jun 2024 05:59:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717937993; x=1718542793; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zvgraGsdwP8qNq0CbLRpBxfSdVjyK/qpe06H5/qHpTM=;
+        b=Bqu+kBWoCiTcQ5Xtu1Qs4ItCiznbBWpRfhOjeefOkdwMNPhvGz3KcP/+g7mvvhrLvG
+         gCewo13GcYRiFswmYv4JJf+gF/mKheC7raBoVBlSUFB/tyF5XpBdZPJWBMcNSFjrNpfN
+         r8GFu8+UG2jxcYZIZ/9tc94QXb8/sCxr1/rroWPIet+URF4vIDh6laHEI6J3Mh3RL2Tq
+         PuHrbuH4ufNST7zDzL3Ecf2O8kRldxR9vdibujwT7sgfCBYej5Cj+JNe3+jK1A7XYkRw
+         NX808bhGNzTcb4vfV8dhvUmS00nyWOWaVnpiArmZn0O2CkR4kVNMj6+1UY/HJ+EixoEw
+         t2Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717937993; x=1718542793;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zvgraGsdwP8qNq0CbLRpBxfSdVjyK/qpe06H5/qHpTM=;
+        b=HRHiBMb5ZDH7yQU9PpQ1qku4FjkTL5lplS+mi0RXtom7XSZoqYGpnRbzNHuvTsFNTE
+         ER148Gpa5vOwrrsGrYyiLq5dTE/Nhhd7dlwZ72fjLsBglGX1/DgxyotoFPB5828zPlo0
+         vyK04SyqxF5gKLcz8q9E+eyM6C5/+rb/gp4byH+XFawTnH5M0g2hZuQ3Sa5cENXJvH3S
+         rSqVvjBAbgFqP3I8N/i8RC16mtT/hMoj3/0/DqiT5vaHXfl0qmFDU9yPghQZt4KioCoO
+         iOc8O/5q7LeP9UOn1CCL3Uxy2ibuxugvSo3fSOHFjhKjvxg9fsrISkY3QqgQqBX/vjQL
+         1AJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX3W5URHizuTvsj/k69f38tzR7BWL8f3/g5zpWeDTRa2Y4LVgZpFQ7MfR97kt3terMZALGBBMHC2T/Jo+yT7JrM/F9B
+X-Gm-Message-State: AOJu0YzzrDVJcpW/Y2WFtdK73eKbqlWSLX5/wf6zGv1zgrFCE4n7tSAL
+	2/5YsURHA2bYMMQ0ybNdK4w9V/knDtaxVLr0oPNf6ZTVPjE4dbo+
+X-Google-Smtp-Source: AGHT+IH0kfJd+mvMseVa+3hYIyeisA8ltLtAHrUOGBmoHFRBwQJplxengofSYzowRy3u69oYOatzLw==
+X-Received: by 2002:ac2:4989:0:b0:52c:7fc9:954e with SMTP id 2adb3069b0e04-52c7fc9976fmr1948585e87.41.1717937992741;
+        Sun, 09 Jun 2024 05:59:52 -0700 (PDT)
+Received: from lmc-playground.localdomain ([188.25.209.252])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f1841fceasm85961266b.70.2024.06.09.05.59.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Jun 2024 05:59:52 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Li Yang <leoyang.li@nxp.com>,
-	Marco Contenti <marco.c@variscite.com>,
-	Nate Drude <nate.d@variscite.com>,
-	FrancescoFerraro <francesco.f@variscite.com>,
-	Harshesh Valera <harshesh.v@variscite.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH v3 4/4] arm64: dts: freescale: Add panel overlay for Variscite DART
-Date: Sat,  8 Jun 2024 21:04:47 +0300
-Message-ID: <20240608180447.31378-5-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20240608180447.31378-1-laurent.pinchart@ideasonboard.com>
-References: <20240608180447.31378-1-laurent.pinchart@ideasonboard.com>
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liu Ying <victor.liu@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: laurentiu.mihalcea@nxp.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] Add support for imx8ulp's SIM
+Date: Sun,  9 Jun 2024 15:58:58 +0300
+Message-Id: <20240609125901.76274-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,142 +75,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a DT overlay for the Variscite i.MX8MP DT8MCustomBoard that models
-the GKTW70SDAE4SE LVDS panel found in the evaluation kit.
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+i.MX8ULP's SIM (System Integration Module) allows
+control and configuration of certain components
+form the domain it's assigned to. Add DT node
+and schema for it. Its child shall also be
+included.
+
 ---
-Changes since v2:
+Changes in v2:
+- Reset controller is now also a syscon provider.
+- Changed vendor prefix to nxp.
+- Link to v1: https://lore.kernel.org/all/20240516204031.171920-1-laurentiumihalcea111@gmail.com/
 
-- Move Makefile changes to the right location
 ---
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- .../imx8mp-var-dart-panel-gktw70sdae4se.dtso  | 99 +++++++++++++++++++
- 2 files changed, 101 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
+Laurentiu Mihalcea (3):
+  dt-bindings: reset: add schema for imx8ulp SIM reset
+  reset: add driver for imx8ulp SIM reset controller
+  arm64: dts: imx8ulp: add AVD-SIM node
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index e179cdd364a9..9812aa2e4bcd 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -197,8 +197,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-mx8-dlvds-lcd1.dtb
- 
- imx8mp-tqma8mpql-mba8mpxl-lvds-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
- imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
-+imx8mp-var-dart-panel-gktw70sdae4se-dtbs := imx8mp-var-dart-dt8mcustomboard-v2.dtb imx8mp-var-dart-panel-gktw70sdae4se.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-dart-panel-gktw70sdae4se.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mq-hummingboard-pulse.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
-new file mode 100644
-index 000000000000..d5f61e157bc2
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2020-2021 Variscite Ltd.
-+ * Copyright 2023 Ideas on Board Oy
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include "imx8mp-pinfunc.h"
-+
-+&{/} {
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm1 0 1000000 0>;
-+	};
-+
-+	panel {
-+		compatible = "sgd,gktw70sdae4se", "panel-lvds";
-+		backlight = <&backlight>;
-+		width-mm = <153>;
-+		height-mm = <87>;
-+		label = "gktw70sdae4se";
-+		data-mapping = "jeida-24";
-+
-+		panel-timing {
-+			clock-frequency = <29232000>;
-+			hactive = <800>;
-+			vactive = <480>;
-+			hback-porch = <40>;
-+			hfront-porch = <40>;
-+			vback-porch = <29>;
-+			vfront-porch = <13>;
-+			hsync-len = <48>;
-+			vsync-len = <3>;
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			de-active = <1>;
-+		};
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+};
-+
-+&i2c2 {
-+	touch@38 {
-+		compatible = "edt,edt-ft5206";
-+		reg = <0x38>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_captouch>;
-+
-+		reset-gpios = <&gpio_exp_2 4 GPIO_ACTIVE_LOW>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
-+		wakeup-source;
-+
-+		touchscreen-size-x = <800>;
-+		touchscreen-size-y = <480>;
-+		touchscreen-inverted-x;
-+		touchscreen-inverted-y;
-+	};
-+};
-+
-+&lcdif2 {
-+	/*
-+	 * The pixel clock should be configured by the lcdif driver, but the
-+	 * clock frequency propagation in the clock framework stops at the PIX2
-+	 * clock and doesn't reach the VIDEO_PLL1 clock. As a workaround, set
-+	 * the VIDEO_PLL1 rate manually.
-+	 *
-+	 * For a 60Hz refresh rate, the panel requires a pixel clock of 29.232
-+	 * MHz. The LVDS clock frequency is 7 times higher, or 204.624 MHz.
-+	 */
-+	assigned-clock-rates = <0>, <204624000>;
-+	status = "okay";
-+};
-+
-+&ldb_lvds_ch0 {
-+	remote-endpoint = <&panel_in>;
-+};
-+
-+&lvds_bridge {
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_captouch: captouchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14				0x16
-+		>;
-+	};
-+};
--- 
-Regards,
+ .../bindings/reset/nxp,imx8ulp-sim-reset.yaml |  68 ++++++++++++
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  13 +++
+ drivers/reset/Kconfig                         |   7 ++
+ drivers/reset/Makefile                        |   1 +
+ drivers/reset/reset-imx8ulp-sim.c             | 103 ++++++++++++++++++
+ include/dt-bindings/reset/imx8ulp-sim-reset.h |  16 +++
+ 6 files changed, 208 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/reset/nxp,imx8ulp-sim-reset.yaml
+ create mode 100644 drivers/reset/reset-imx8ulp-sim.c
+ create mode 100644 include/dt-bindings/reset/imx8ulp-sim-reset.h
 
-Laurent Pinchart
-
+---
+base-commit: fec32ea96dd90bf0af97e001f380d4a240013aa0
