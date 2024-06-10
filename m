@@ -1,46 +1,46 @@
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4270280BFC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A368173C
 	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 12:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718024392; cv=none; b=YheRTes9iBtRFQq9/o2IKF76/SRz9tCtsiDhvOPCZduQlRcBOs3M0nIZgsNLLHI9dt5wDq9exI83AHnRzFNf6SXsgwu0vr4mkK6HOcDKxVsOgfHVHk8EDJoNawseVyclVWxvm5BwmgxFnT8JCkdFKPEEUqklnG9fSIzVYUbU5io=
+	t=1718024393; cv=none; b=qKPiLj/5jSheB7gOn2rQXQUc1OvN88oEmcrwaP7WS1b01Rsouy3/SjQ67dp12s7/uD+VkdsBtwpSC31F6xqHkIyf5a0yXLNAy3uDx6IHnldcbz3PKuEogwy6ubqStlIcH+1sGOcuKFY/tNz2CZbClDaGDyfo08HftqVrRhK6Nyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718024392; c=relaxed/simple;
-	bh=dSAjAr+wnVBnPTSFTNHMmjz+ASjCbSOA7VVnEQUNfXY=;
+	s=arc-20240116; t=1718024393; c=relaxed/simple;
+	bh=bM81m61bwS2UN2Svbu/r1zfl/LDb+tjGoL6u8SEWQWE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ubsNct4aWpDHKOOxPy0lIz//FGXR8eV8daMeYOjArec4sjLUL/0SqQS5+mpiKgVSTBy2y9yUSHGo2nQkWazgUbUQJebRoiZDf716dB+uqk9mJ3qvTFjngNBCzng+Ki2IcJd7QCUvte+SqwXZso/gMX7K7e9AqJe6nDKOgeL+sQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=w65KCt/Q; arc=none smtp.client-ip=198.47.23.249
+	 MIME-Version:Content-Type; b=bsJWwk0XG3qUEd0zGN9BXe3wN7oZgsHOOHSAxUNgt+dHXbzSAzHwRimVo+jRNKyNsqqmtQF2hlhUWgai0vzMq2IYKATlhcSCrfq+g/BDpreank8ADIdIMUAl9wAJVRIycdHqLzNE0+Kntm4yanZlASYAKymoewo72rmj+glkJ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MfYKvQU+; arc=none smtp.client-ip=198.47.19.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="w65KCt/Q"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MfYKvQU+"
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxRU0084552;
-	Mon, 10 Jun 2024 07:59:27 -0500
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxTM1010160;
+	Mon, 10 Jun 2024 07:59:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1718024367;
-	bh=1kI9jO4Og9q9o5G7/v9MhM9iAwKUZEKqE2cN+f2H3R8=;
+	s=ti-com-17Q1; t=1718024369;
+	bh=UUkIu/8Qmux6+/va5NpKSfNIFMGEqp8ObO5jfrobR38=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=w65KCt/QGgwO19pvFYFW7u2HomvVgOdyOKkUk+aLeGsE9HCGcZSLXhQr9ASiLBc2I
-	 Q7vwNm7RMQ3UU6gNtJwWXLFhBmuHSC8eCcNdKN4/XuEzcILa4CwWSVGxZ4q87p/DRp
-	 j3+4SqTpJ9t9D7IjBLaxFUFPIQLdv0/BQJ3ERoCc=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45ACxRwG040406
+	b=MfYKvQU+50NmBlRsRK4gnQkcG5nLX5QmL/9ANDT46GgQ5P2B6QM33aAG7+UcEXmPf
+	 cCXdm48FU7OoXMqI0CVkfcEmQvc4rl+bFGG0qK9sp/t7ziEEmdrnYlH4CU6n456fV3
+	 7uUsaHeKyLfpkQaYGy+IuxVVFo9ftDvHo32cVrfo=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45ACxTd7040422
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 10 Jun 2024 07:59:27 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 10 Jun 2024 07:59:29 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 10
- Jun 2024 07:59:27 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ Jun 2024 07:59:29 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 10 Jun 2024 07:59:27 -0500
+ Frontend Transport; Mon, 10 Jun 2024 07:59:29 -0500
 Received: from lelvsmtp5.itg.ti.com ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxP7W064068;
-	Mon, 10 Jun 2024 07:59:26 -0500
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxP7Z064068;
+	Mon, 10 Jun 2024 07:59:28 -0500
 From: Andrew Davis <afd@ti.com>
 To: Andre Przywara <andre.przywara@arm.com>,
         Russell King
@@ -59,9 +59,9 @@ To: Andre Przywara <andre.przywara@arm.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>
 CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <imx@lists.linux.dev>, Andrew Davis <afd@ti.com>
-Subject: [PATCH 3/6] ARM: orion5x: Switch to new sys-off handler API
-Date: Mon, 10 Jun 2024 07:59:21 -0500
-Message-ID: <20240610125924.86003-3-afd@ti.com>
+Subject: [PATCH 6/6] ARM: vt8500: Switch to new sys-off handler API
+Date: Mon, 10 Jun 2024 07:59:24 -0500
+Message-ID: <20240610125924.86003-6-afd@ti.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240610125924.86003-1-afd@ti.com>
 References: <20240610125924.86003-1-afd@ti.com>
@@ -82,136 +82,22 @@ are converted to the new sys-off API.
 
 Signed-off-by: Andrew Davis <afd@ti.com>
 ---
- arch/arm/mach-orion5x/board-mss2.c             | 2 +-
- arch/arm/mach-orion5x/dns323-setup.c           | 6 +++---
- arch/arm/mach-orion5x/kurobox_pro-setup.c      | 2 +-
- arch/arm/mach-orion5x/mv2120-setup.c           | 2 +-
- arch/arm/mach-orion5x/net2big-setup.c          | 2 +-
- arch/arm/mach-orion5x/terastation_pro2-setup.c | 2 +-
- arch/arm/mach-orion5x/ts209-setup.c            | 2 +-
- arch/arm/mach-orion5x/ts409-setup.c            | 2 +-
- 8 files changed, 10 insertions(+), 10 deletions(-)
+ arch/arm/mach-vt8500/vt8500.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-orion5x/board-mss2.c b/arch/arm/mach-orion5x/board-mss2.c
-index b0f16d223adf5..9e3d69891d2f6 100644
---- a/arch/arm/mach-orion5x/board-mss2.c
-+++ b/arch/arm/mach-orion5x/board-mss2.c
-@@ -82,5 +82,5 @@ static void mss2_power_off(void)
- void __init mss2_init(void)
- {
- 	/* register mss2 specific power-off method */
--	pm_power_off = mss2_power_off;
-+	register_platform_power_off(mss2_power_off);
- }
-diff --git a/arch/arm/mach-orion5x/dns323-setup.c b/arch/arm/mach-orion5x/dns323-setup.c
-index 062109efa0ecc..fcd38ff7ca459 100644
---- a/arch/arm/mach-orion5x/dns323-setup.c
-+++ b/arch/arm/mach-orion5x/dns323-setup.c
-@@ -700,7 +700,7 @@ static void __init dns323_init(void)
- 		if (gpio_request(DNS323_GPIO_POWER_OFF, "POWEROFF") != 0 ||
- 		    gpio_direction_output(DNS323_GPIO_POWER_OFF, 0) != 0)
- 			pr_err("DNS-323: failed to setup power-off GPIO\n");
--		pm_power_off = dns323a_power_off;
-+		register_platform_power_off(dns323a_power_off);
- 		break;
- 	case DNS323_REV_B1:
- 		/* 5182 built-in SATA init */
-@@ -717,7 +717,7 @@ static void __init dns323_init(void)
- 		if (gpio_request(DNS323_GPIO_POWER_OFF, "POWEROFF") != 0 ||
- 		    gpio_direction_output(DNS323_GPIO_POWER_OFF, 0) != 0)
- 			pr_err("DNS-323: failed to setup power-off GPIO\n");
--		pm_power_off = dns323b_power_off;
-+		register_platform_power_off(dns323b_power_off);
- 		break;
- 	case DNS323_REV_C1:
- 		/* 5182 built-in SATA init */
-@@ -727,7 +727,7 @@ static void __init dns323_init(void)
- 		if (gpio_request(DNS323C_GPIO_POWER_OFF, "POWEROFF") != 0 ||
- 		    gpio_direction_output(DNS323C_GPIO_POWER_OFF, 0) != 0)
- 			pr_err("DNS-323: failed to setup power-off GPIO\n");
--		pm_power_off = dns323c_power_off;
-+		register_platform_power_off(dns323c_power_off);
- 
- 		/* Now, -this- should theoretically be done by the sata_mv driver
- 		 * once I figure out what's going on there. Maybe the behaviour
-diff --git a/arch/arm/mach-orion5x/kurobox_pro-setup.c b/arch/arm/mach-orion5x/kurobox_pro-setup.c
-index acba066180801..339b10891808f 100644
---- a/arch/arm/mach-orion5x/kurobox_pro-setup.c
-+++ b/arch/arm/mach-orion5x/kurobox_pro-setup.c
-@@ -373,7 +373,7 @@ static void __init kurobox_pro_init(void)
- 	i2c_register_board_info(0, &kurobox_pro_i2c_rtc, 1);
- 
- 	/* register Kurobox Pro specific power-off method */
--	pm_power_off = kurobox_pro_power_off;
-+	register_platform_power_off(kurobox_pro_power_off);
- }
- 
- #ifdef CONFIG_MACH_KUROBOX_PRO
-diff --git a/arch/arm/mach-orion5x/mv2120-setup.c b/arch/arm/mach-orion5x/mv2120-setup.c
-index b7327a6128353..5b0249f109cde 100644
---- a/arch/arm/mach-orion5x/mv2120-setup.c
-+++ b/arch/arm/mach-orion5x/mv2120-setup.c
-@@ -238,7 +238,7 @@ static void __init mv2120_init(void)
- 	if (gpio_request(MV2120_GPIO_POWER_OFF, "POWEROFF") != 0 ||
- 	    gpio_direction_output(MV2120_GPIO_POWER_OFF, 1) != 0)
- 		pr_err("mv2120: failed to setup power-off GPIO\n");
--	pm_power_off = mv2120_power_off;
-+	register_platform_power_off(mv2120_power_off);
- }
- 
- /* Warning: HP uses a wrong mach-type (=526) in their bootloader */
-diff --git a/arch/arm/mach-orion5x/net2big-setup.c b/arch/arm/mach-orion5x/net2big-setup.c
-index 6ad9740b426b6..4afd9b4c71a94 100644
---- a/arch/arm/mach-orion5x/net2big-setup.c
-+++ b/arch/arm/mach-orion5x/net2big-setup.c
-@@ -423,7 +423,7 @@ static void __init net2big_init(void)
- 
- 	if (gpio_request(NET2BIG_GPIO_POWER_OFF, "power-off") == 0 &&
- 	    gpio_direction_output(NET2BIG_GPIO_POWER_OFF, 0) == 0)
--		pm_power_off = net2big_power_off;
-+		register_platform_power_off(net2big_power_off);
+diff --git a/arch/arm/mach-vt8500/vt8500.c b/arch/arm/mach-vt8500/vt8500.c
+index 0ab40087ae1cc..1d294255d7083 100644
+--- a/arch/arm/mach-vt8500/vt8500.c
++++ b/arch/arm/mach-vt8500/vt8500.c
+@@ -141,7 +141,7 @@ static void __init vt8500_init(void)
+ 			pr_err("%s:ioremap(power_off) failed\n", __func__);
+ 	}
+ 	if (pmc_base)
+-		pm_power_off = &vt8500_power_off;
++		register_platform_power_off(vt8500_power_off);
  	else
- 		pr_err("net2big: failed to configure power-off GPIO\n");
- 
-diff --git a/arch/arm/mach-orion5x/terastation_pro2-setup.c b/arch/arm/mach-orion5x/terastation_pro2-setup.c
-index 23a5521c68336..a9f01859d1012 100644
---- a/arch/arm/mach-orion5x/terastation_pro2-setup.c
-+++ b/arch/arm/mach-orion5x/terastation_pro2-setup.c
-@@ -349,7 +349,7 @@ static void __init tsp2_init(void)
- 	i2c_register_board_info(0, &tsp2_i2c_rtc, 1);
- 
- 	/* register Terastation Pro II specific power-off method */
--	pm_power_off = tsp2_power_off;
-+	register_platform_power_off(tsp2_power_off);
+ 		pr_err("%s: PMC Hibernation register could not be remapped, not enabling power off!\n", __func__);
  }
- 
- MACHINE_START(TERASTATION_PRO2, "Buffalo Terastation Pro II/Live")
-diff --git a/arch/arm/mach-orion5x/ts209-setup.c b/arch/arm/mach-orion5x/ts209-setup.c
-index bab8ba0e01ab9..de9092e992c56 100644
---- a/arch/arm/mach-orion5x/ts209-setup.c
-+++ b/arch/arm/mach-orion5x/ts209-setup.c
-@@ -314,7 +314,7 @@ static void __init qnap_ts209_init(void)
- 	i2c_register_board_info(0, &qnap_ts209_i2c_rtc, 1);
- 
- 	/* register tsx09 specific power-off method */
--	pm_power_off = qnap_tsx09_power_off;
-+	register_platform_power_off(qnap_tsx09_power_off);
- }
- 
- MACHINE_START(TS209, "QNAP TS-109/TS-209")
-diff --git a/arch/arm/mach-orion5x/ts409-setup.c b/arch/arm/mach-orion5x/ts409-setup.c
-index 8131982c10d97..725688aa5cba7 100644
---- a/arch/arm/mach-orion5x/ts409-setup.c
-+++ b/arch/arm/mach-orion5x/ts409-setup.c
-@@ -312,7 +312,7 @@ static void __init qnap_ts409_init(void)
- 	platform_device_register(&ts409_leds);
- 
- 	/* register tsx09 specific power-off method */
--	pm_power_off = qnap_tsx09_power_off;
-+	register_platform_power_off(qnap_tsx09_power_off);
- }
- 
- MACHINE_START(TS409, "QNAP TS-409")
 -- 
 2.39.2
 
