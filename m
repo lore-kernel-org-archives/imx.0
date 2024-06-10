@@ -1,70 +1,387 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821AD7A702;
-	Mon, 10 Jun 2024 13:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0FD839E3
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 14:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718027211; cv=none; b=d3RdfIN5DAVplnDKf08nh5WLeCe3kWCRljJoAF3mQPnG7KUYR7aRisFCicPTGm4DaKwgWcCdJ4F/+NBr1Vd02X+EHdCZteg1d7PEBePmMhsl/hYH6pLtF8LrczaLv5VQmDgu8xDPSEFlo5ZiTi0atBEnwmofpfKRHb1zYVS53YQ=
+	t=1718028612; cv=none; b=ZZf9on4vtOv2sS6a+JOzbrrdcpUWVJHQG2RjeqZTOaKZou9eegtotPMdNRuYzuVbeBM1RbBV+EYpw+c98jXWEAhWZQo4kWpx6bVXc0CP9hD6t0622eJAGK1qm+q6FnJPAO++selAZppkmIUZIjGVltKD1qQCfC1XIqS6ck4CVEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718027211; c=relaxed/simple;
-	bh=g/5Lsq36RXklS9o2TtS/yIjiPAe6FbbGCXZi44gE7k8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cBJaAgaRqDqNWvP52JiO0y+Ou9WOPm/zz1ku+bWjHHpl+4mPjSVmxXL7yhLZtEWL8j8b3XK3pHGgFnPU9KwD5kR5/4r+ozipLqBuQMspNzgxElQNuihTnX0ETo3Uk0g+zSlcNE679un9xcayEPVNmcn5XexY2lDX82LWBzB0QgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AyoVZndU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1718028612; c=relaxed/simple;
+	bh=yrvsW6NpIyyvUzCuw7XD/v8m6AxV1qlSrNJk9MBhaio=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qwk3WczzrX8A0COF5///+ffdzev2ek9bSFMA8eLdLmTT47at2tJn/hZdxWpc+eZRfGWilZpBqgHOcd73f7/56tj3rWlZ8+DVLUYPiuA60ptSCTumN4135L/i70h6Tfk+CmTtiJKPczFd8quydTw0iUID+Pdwq9YdMeE6EgRynvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=CLTGjL3B; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AyoVZndU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=k2bfY9bURGyuauj9Z1BJWbBxRd9HHOxCDFbFWjTnfUg=; b=AyoVZndUcFYK+q90o/VRnVpisW
-	YDI7GqfNEusKJHmfeKLReZVB4hfTA8sj7SNt+4MQeUNGjXUguJ3MTfS5pWwDrUtGC3REaXsZBmS/5
-	Ilk5dRTanlJGbOLDFxtSrqxwuT5p8y+0AoK8QaAJhssnjy+mqiydf15Zkclsm7zsvyoo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sGfM0-00HIrZ-K8; Mon, 10 Jun 2024 15:46:32 +0200
-Date: Mon, 10 Jun 2024 15:46:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Andrew Davis <afd@ti.com>
-Cc: Andre Przywara <andre.przywara@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="CLTGjL3B"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 83D4A1FB6F;
+	Mon, 10 Jun 2024 16:10:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1718028608;
+	bh=YkGB/2C2PmPaw5Fgoeug/KCYvx1pa2uTv5PzS+7PUHo=; h=From:To:Subject;
+	b=CLTGjL3BIWIdo5p7FKFB94y7rgpgH2kqmc6uPfaI34mtfEcW7dTEPOARknXsrtLhP
+	 zfgR262AEbFmCiziNL4Qm2GpYDgYpIT0zRYqL/aL3Acj+IO283Sd3VqO7JpovZZNtG
+	 IeFU+EUuzuEgh1T+uU3rXZOfiQfWUdej5l5RS1qBGetARADhSLCdAUgw5l51ngt2xn
+	 hUdGSSiC/Cc7EPoqjLTWPiVgQ/Qko9ak4uccdvlPK7SIJ3cWizqp13MuycrAsmXCVt
+	 1vHubB1QXNjiazyjR0XGDSAgot8FhykazyD3/d4BZlQyUa6hGamuqTMB0AKTMD5205
+	 IBIPXe+zzpJGQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 3/6] ARM: orion5x: Switch to new sys-off handler API
-Message-ID: <c0e284cf-f3c9-4634-8cfc-9ab0b95cc55f@lunn.ch>
-References: <20240610125924.86003-1-afd@ti.com>
- <20240610125924.86003-3-afd@ti.com>
+	Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: freescale: imx8mp-verdin: add HDMI support
+Date: Mon, 10 Jun 2024 16:10:01 +0200
+Message-Id: <20240610141001.32034-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240610125924.86003-3-afd@ti.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 10, 2024 at 07:59:21AM -0500, Andrew Davis wrote:
-> Kernel now supports chained power-off handlers. Use
-> register_platform_power_off() that registers a platform level power-off
-> handler. Legacy pm_power_off() will be removed once all drivers and archs
-> are converted to the new sys-off API.
-> 
-> Signed-off-by: Andrew Davis <afd@ti.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Enable HDMI output on Verdin iMX8MP on all the supported carrier boards
+(dev, dahlia, mallow and yavia).
 
-    Andrew
+HDMI DDC I2C is used in regular I2C mode, see link on the related
+dt-bindings patch.
+
+Fix CEC and HPD pinctrl, having a pull-down on HPD and a pull-up on CEC.
+
+Link: https://lore.kernel.org/all/20240515062753.111746-1-marex@denx.de/
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ .../dts/freescale/imx8mp-verdin-dahlia.dtsi   | 37 +++++++++++++++++++
+ .../boot/dts/freescale/imx8mp-verdin-dev.dtsi | 37 +++++++++++++++++++
+ .../dts/freescale/imx8mp-verdin-mallow.dtsi   | 37 +++++++++++++++++++
+ .../dts/freescale/imx8mp-verdin-nonwifi.dtsi  |  3 +-
+ .../dts/freescale/imx8mp-verdin-wifi.dtsi     |  3 +-
+ .../dts/freescale/imx8mp-verdin-yavia.dtsi    | 37 +++++++++++++++++++
+ .../boot/dts/freescale/imx8mp-verdin.dtsi     | 13 +++++--
+ 7 files changed, 160 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
+index 6e6b9c2c4640..fbcd93e33aea 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
+@@ -4,6 +4,18 @@
+  */
+ 
+ / {
++	native-hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "X21";
++		type = "a";
++
++		port {
++			native_hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	sound {
+ 		compatible = "simple-audio-card";
+ 		simple-audio-card,bitclock-master = <&codec_dai>;
+@@ -94,6 +106,27 @@ &gpio4 {
+ 	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
+ };
+ 
++/* Verdin HDMI_1 */
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&native_hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ /* Current measurement into module VCC */
+ &hwmon {
+ 	status = "okay";
+@@ -139,6 +172,10 @@ &i2c5 {
+ 	status = "okay";
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
+ /* Verdin PCIE_1 */
+ &pcie {
+ 	vpcie-supply = <&reg_pcie>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
+index 42ed44a11711..09733fea036d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
+@@ -4,6 +4,18 @@
+  */
+ 
+ / {
++	native-hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "X37";
++		type = "a";
++
++		port {
++			native_hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	reg_eth2phy: regulator-eth2phy {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
+@@ -103,6 +115,27 @@ &gpio_expander_21 {
+ 	vcc-supply = <&reg_1p8v>;
+ };
+ 
++/* Verdin HDMI_1 */
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&native_hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ /* Current measurement into module VCC */
+ &hwmon {
+ 	status = "okay";
+@@ -141,6 +174,10 @@ &i2c5 {
+ 	status = "okay";
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
+ /* Verdin PCIE_1 */
+ &pcie {
+ 	status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
+index 1d15f7449c58..3a40338cf2d8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
+@@ -11,6 +11,18 @@
+ #include <dt-bindings/leds/common.h>
+ 
+ / {
++	native-hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "X14";
++		type = "a";
++
++		port {
++			native_hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+@@ -91,6 +103,27 @@ &flexcan2 {
+ 	status = "okay";
+ };
+ 
++/* Verdin HDMI_1 */
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&native_hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ /* Temperature sensor on Mallow */
+ &hwmon_temp {
+ 	compatible = "ti,tmp1075";
+@@ -117,6 +150,10 @@ &i2c5 {
+ 	status = "okay";
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
+ /* Verdin PCIE_1 */
+ &pcie {
+ 	status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi
+index 91d597391b7c..2ee91f31e7f0 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi
+@@ -41,8 +41,7 @@ &iomuxc {
+ 	pinctrl-0 = <&pinctrl_gpio1>, <&pinctrl_gpio2>,
+ 		    <&pinctrl_gpio3>, <&pinctrl_gpio4>,
+ 		    <&pinctrl_gpio7>, <&pinctrl_gpio8>,
+-		    <&pinctrl_gpio_hog1>, <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>,
+-		    <&pinctrl_hdmi_hog>;
++		    <&pinctrl_gpio_hog1>, <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>;
+ };
+ 
+ /*
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi
+index ef94f9a57e20..efcab00c0142 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi
+@@ -55,8 +55,7 @@ &iomuxc {
+ 	pinctrl-0 = <&pinctrl_gpio1>, <&pinctrl_gpio2>,
+ 		    <&pinctrl_gpio3>, <&pinctrl_gpio4>,
+ 		    <&pinctrl_gpio7>, <&pinctrl_gpio8>,
+-		    <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>, <&pinctrl_gpio_hog4>,
+-		    <&pinctrl_hdmi_hog>;
++		    <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>, <&pinctrl_gpio_hog4>;
+ };
+ 
+ /* On-module Bluetooth */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
+index a7b261ff3e4c..533b7fe218ce 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
+@@ -6,6 +6,18 @@
+ #include <dt-bindings/leds/common.h>
+ 
+ / {
++	native-hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "J15";
++		type = "a";
++
++		port {
++			native_hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	/* Carrier Board Supply +V1.8 */
+ 	reg_1p8v: regulator-1p8v {
+ 		compatible = "regulator-fixed";
+@@ -105,6 +117,27 @@ &gpio4 {
+ 	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
+ };
+ 
++/* Verdin HDMI_1 */
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&native_hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ &hwmon_temp {
+ 	status = "okay";
+ };
+@@ -127,6 +160,10 @@ &i2c5 {
+ 	status = "okay";
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
+ /* Verdin PCIE_1 */
+ &pcie {
+ 	status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+index aef4bef4bccd..834236db86fe 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+@@ -457,6 +457,13 @@ &gpio4 {
+ 			  "SODIMM_44";
+ };
+ 
++/* Verdin HDMI_1 */
++&hdmi_tx {
++	ddc-i2c-bus = <&i2c5>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++};
++
+ /* On-module I2C */
+ &i2c1 {
+ 	clock-frequency = <400000>;
+@@ -1117,10 +1124,10 @@ pinctrl_gpio_keys: gpiokeysgrp {
+ 			<MX8MP_IOMUXC_SAI1_RXFS__GPIO4_IO00		0x1c4>;	/* SODIMM 252 */
+ 	};
+ 
+-	pinctrl_hdmi_hog: hdmihoggrp {
++	pinctrl_hdmi: hdmigrp {
+ 		fsl,pins =
+-			<MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x40000019>,	/* SODIMM 63 */
+-			<MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x40000019>;	/* SODIMM 61 */
++			<MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x140>,	/* SODIMM 63 */
++			<MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x180>;	/* SODIMM 61 */
+ 	};
+ 
+ 	/* On-module I2C */
+-- 
+2.39.2
+
