@@ -1,170 +1,154 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2079.outbound.protection.outlook.com [40.107.21.79])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE39B82D75
-	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 14:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718030039; cv=fail; b=rSqjU5R0Nvetb+LzV8SAmdfqvpeMzfr8Rwc8gAbLLYC/am/VxvRS6TOK4vXlEg3z/RKOHYlpKK/lsvbVkhc7SDZfI+2+rcV9bRF8AeXtSVw4Tmo1EmwWzQm6EmhIB7YeXQc7let1tIfHksd/Xk1AMwXQaxoX5uGZKgJeLxnbt/A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718030039; c=relaxed/simple;
-	bh=+cGySQQ2Q+OI3EqfU7ubE09BsyRFjxSCIbS+4+lvN7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=T6NCYmjA24vUedCbKTO2aC7kya6x5pb/f3x08wT5RWjlVtsObqr05HVSNH3fH3n4Y1i7xmskzYGNLES+kA0X7oHuAY+oNazNKNHKRsGFcrkrQelN4O6Y328Ji3b7VRMa7zj4oEQCGnvWL+AVwr38kKZByl3vgVQZ0c8PaPr56Ks=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=T4IYJ+m+; arc=fail smtp.client-ip=40.107.21.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D678132138
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 14:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718030670; cv=none; b=dBncx7gXOjuV13Q/c6tPVcRPyLRUEINJ5RlzjyaCpMYdCxZQIF/AX/sOdF3JU/ou10RhhVzRXYKAnN/O9vdE8S3/74C9zelKF3fpKIeA1R3IVLWL0OcyR4fQuOF3TP8C0Us7s34/aLuijg7U6D61L9G7ovbDxRa2K6XmUouNpt8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718030670; c=relaxed/simple;
+	bh=eY9F5kq/mdlMa6zRjS1NBDAumKWUUH16eUTQ0RBgBOM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TpqES7BEF8c1Xj13oMSJHvDzPFthpB92Eo0G0ZdTuz6X9mr25VxaMQoEPJL3FtTsmlWizBtSmr0zqDMY+Hg6GxyoezWwZoskVUUVHwG404S5QleVK/2aE4WZnwDzHmiwcM9L5pggwFsZxaPFHL+yYi0b02/Mb4Ps7DKrdLvLdns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pw43uUed; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="T4IYJ+m+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aEd+mYDp69Lucv6XZJCa4zRKxdKBpvnmyLDJvduryfdnuhztJS7W3UL37FZooHCPfdMePi0S2GiIiquzzBqALJ9adwep40YqMJMod2r0KevuSI5LqNwCv3obAfDARV0azXhstldDlncebPkqFoUVjonEHNY3K4AXOtIPiqtvGqNI9uxEPBCSC4SlzT8uyHJvtpBz/ZMjZMlFAQEPKTuMy+uane94GKxv7Y+dCdqn6/5yajDdJAKx5JduQBjqtQYdZczV3/QXFHkZstEeTgGYoD9YTv/DirgtbopMI7Sr2n4lc7GUYnjHPYkloSu5u3LXOPsfJ1wLclvyuE9LSgn76g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O29E0kVUDR60WoCAuW6ifVFz+S/MfQqrxlUaVobcHbw=;
- b=J+LgCxvAHH3gA2+5CfuAV9G+VIDiHBfPWcwQPyswKf6upTa5R3UGXSZWn8pEcLkGRO42jaxBiq29+Bb/ZtZbeNynKWecj0AfSEwXRIOQojnhKX6k4QaZUFGCd4GG0x5t/zDrzC2WKP9yVNmZEuJdh88bezKreD7zJyEGbaNnuWZ9F06BfNSzeusvGuN6aGvxWX4t3ydTkyetLzocHDENobU4dn3WhYc+5PwpSF5b8IAVY9E4oknGe2JolqsssLs7e74TAB9EvLs0WXFaBifPQXiU82eFqlLrAE+w8OVW43ZXv+Bv7BJIFD03+MBCZU20fhKSJfFrUpa+GbdC+cv7WA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O29E0kVUDR60WoCAuW6ifVFz+S/MfQqrxlUaVobcHbw=;
- b=T4IYJ+m+eO0PBawKlX/m0gR1PqIDUNHA5ndtdw8l/iY1GHG0bC2GOkR8tMVPIMqIcDEyLKJvYguzKBfFckBUNvvPt3Zvjin7VehOV/PVr93RqjQN3giK12S7iXgKhQMNEt6svHm+koIdgK8PBwa1JgS0Pn1qxE/XArCeo8EPmz0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB6847.eurprd04.prod.outlook.com (2603:10a6:803:134::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Mon, 10 Jun
- 2024 14:33:53 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.036; Mon, 10 Jun 2024
- 14:33:53 +0000
-Date: Mon, 10 Jun 2024 10:33:45 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
-	linux-mmc@vger.kernel.org, robh@kernel.org, ulf.hansson@linaro.org
-Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
-Message-ID: <ZmcOyVmI5GhRUuVc@lizhi-Precision-Tower-5810>
-References: <20240605185046.1057877-1-Frank.Li@nxp.com>
- <b1c51acc-441d-4484-adef-1da368571097@kernel.org>
- <8901d498-d30a-43db-bda2-25d3d1d58e8d@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8901d498-d30a-43db-bda2-25d3d1d58e8d@kernel.org>
-X-ClientProxiedBy: SJ2PR07CA0007.namprd07.prod.outlook.com
- (2603:10b6:a03:505::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pw43uUed"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45ADUbtR029624;
+	Mon, 10 Jun 2024 14:44:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	YerxaNiDrqT++v3tBHV72ahDavLdzSNSM69xaGAmvMA=; b=Pw43uUedZ8KuOXS1
+	/oNwR7m0GP/Kt6W/0Fbq9TGDv3JR19mDb2ibvMKGY/lln1YHY8iKFdt9Az9Fm1fx
+	X74gWD12Mrm9hbEcYMbHaXQ9X8f0jJ4EVr/jRZt6PGKDmRT6Y1XHSWCmDuv5RAzV
+	6UKlt3qxurrWT5PnoMtb4ilDlQbOd1qlsl+c5QYuILroXvvpFfX6YlOQbxDYNMG/
+	c/VJyVK03aBcQJ5TzjAwsQLtZOsHdCRX/45XmaNPNpmHKqzYOGfpx6hGF086Ubk6
+	fzeb6Oo5PMLhriIJaXJXzaY7Tz1mJgFl38jHVD4XPY8IPEi0up4hWlGBmc4qVLqv
+	KoOsgg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ymea6kwcu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Jun 2024 14:44:20 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45AEiIwZ012751
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Jun 2024 14:44:18 GMT
+Received: from [10.48.242.196] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 10 Jun
+ 2024 07:44:17 -0700
+Message-ID: <ea5c6e03-3821-4808-9681-ea5576c65391@quicinc.com>
+Date: Mon, 10 Jun 2024 07:44:16 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6847:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5fa8d6c-0a33-4522-9297-08dc895a5a73
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|366007|52116005|1800799015|38350700005;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?biVm8L/kKb93QqsbfZDI8k2sR2dYzRgi3ba3q3TUrjFX4lc5SNYfF5bK5l7w?=
- =?us-ascii?Q?CgWE3HnNNGcKf1TxqtznxoWfBKMddPkAzf90wQitQkyWIoYqo6PNLyzMg8PA?=
- =?us-ascii?Q?lyGGWnAnfmDIaxE7tB63UJkE5Klmhcp0qLFX5XULbUwZ1ZVrH8ltyu1X5PmF?=
- =?us-ascii?Q?BRPp7bA7IFg/4WPR8OHJsqANCupbNi8/5eAFKbHVT6t9R9VdDo3mdskH+BYU?=
- =?us-ascii?Q?iiO+noxX3OEEssQaLC5wHHW7bTKHQDipN6hGoPsa0RSN4c9iPVanuE88oStD?=
- =?us-ascii?Q?WpF8oKgpThLSKpWpiM7dcc/zoQsY0BPIUwnpw3INQ/4m2qInJyEfZ9fNS0py?=
- =?us-ascii?Q?hxsXH2+0Iqm1ABmxBju2HGzjvwq/2lfsGqHnfLl9kMsPcOlk2OjKqDIBzoPB?=
- =?us-ascii?Q?BgODK3bK9ald4kkc9rOz6HsERXI+lt2WU9blCfJ73pqcl4mUMrA2KJRzdDiP?=
- =?us-ascii?Q?fg8DBW15RaPw2gwtlSQNcLga2z42k4p7Ch2i8yjkr5ggt/RWKxHTVS9RGu94?=
- =?us-ascii?Q?+TtKJRerryb9RGb+A9G/VwGg6w3TiKgHpmQux/ZcF/u2zTOUcXfF1eFasBqd?=
- =?us-ascii?Q?Dr4UVYMFZW/1Mz5D6v94HlPgie4DcFj+fTdK6Wx0OJo/radPjO5XGvcLCheh?=
- =?us-ascii?Q?DFvn9UxA8NNyQZmSG6QTXon3kS4b2in3HnLFciJMnsAM0yJrgWXtBbGCLcJM?=
- =?us-ascii?Q?Lf34rcFzBohCXIBthkjYQk///kRC6joZPz8n2hmzbhZMNTFL9yuZ7gR1iYRG?=
- =?us-ascii?Q?br4IihJuJCWGlnwVIfOWvQO2qG5aLZtCLlD21ybY571shISPpUca/VZm+kWW?=
- =?us-ascii?Q?XOc8nYUPDbZIg7KHKKeC6IrZbMwaHvWGl8ssS4Ai8KhlcwI33VsQOp2YYOI2?=
- =?us-ascii?Q?ryzX01gzsL8A23YfagZORFMFXKtDkjbsyu4tj9O+N/4wP5wn8AjlGgfnXaBi?=
- =?us-ascii?Q?Fpbzow9Emx5QSfhj9N2PCYgHdFe28yZEAranfm8qEkeVAaZAyq83TW3RUnBP?=
- =?us-ascii?Q?8Nzx+kzvPVAl5wgkuwSBZTXoUtQvIBz/P6M334t6X/zeRC31c3AlmFBAXLPB?=
- =?us-ascii?Q?71OHfVQPnPLI3XGTD6jYD88rB8rmfJyjTYfrkljFShkr7Rqf3d7uCyutVjc8?=
- =?us-ascii?Q?vIEZCuyjlPUQSBN+1v67s3As2JJuoIoNLa5J8D6ZnzwfYIJDGks5IEwJlCFW?=
- =?us-ascii?Q?zjP8bkqOTuUug41fJ5Y8vyRy1HHbARXWW0TiCUiADLpasDGGzJZpOUwmdaxp?=
- =?us-ascii?Q?pQ2Hy1J0wKH7EsKUZG6VjbRENTQcv+AeEvD9i3JkB+1pWojeVTUbYMxSYgU9?=
- =?us-ascii?Q?5YrAhgPB147+NfAckCsASDo9mIQmlB2RhmAvml89TbevXcp5fXskO1n1IcN5?=
- =?us-ascii?Q?7wXkodU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uf4ceSuATDKaV89V3Ys0aY2jsUAFAbEFuH6rdfLSHHVpPjFW45337NdjaExJ?=
- =?us-ascii?Q?QAsjTXbRqoKHMdsCuzYbmrYkyCvAPxK8Yne2ykG5ikrgGiNk3fvZ/GWdF/vT?=
- =?us-ascii?Q?A8frDwpsTO2iYz82NIQffw9J90EP/r13R0SbOilnQiUsNpgUQIFBZercap7X?=
- =?us-ascii?Q?GNIouBeSCIzLDFIYQ3VykZEiHn3wzpjFRm8vFY83XF+sgmgew6sS5Ll91HYw?=
- =?us-ascii?Q?IZZnAaOWCf/Hjhbxx+NgF9XKPHctAanA7vvR8FWdmXGJEZxEvfMYpwWxvp9u?=
- =?us-ascii?Q?KW7arP7RlgvnLNoZBV8Wc8J5Cp87AoxXc2M/Sr1H3ugNuSaI03UXQK+bTbb/?=
- =?us-ascii?Q?eKfqG0STqdSCTvHE2nZA3D8xEBuuvE4cjdkBBMSmVstjU2Mq6oWe151ratjc?=
- =?us-ascii?Q?OaazxqGPOxh58mtYhygvg2oRVQ1WgVMvn8Gn60GewY3Fy85T+WQbMnTRPvYA?=
- =?us-ascii?Q?CEtgWhBvhYtixoKgyO+t46TAJ7HVD/aohJjL/z3zBORu95KiHA8iP/KzFgY3?=
- =?us-ascii?Q?9AL7GjjT4ES3VlkYoUCs1gxsSU2HJXqZwkckcrouQjxiFLr/1GGYHoXGN9mh?=
- =?us-ascii?Q?TRfI9kglP8mgYJipPWsxxVsUM8+6j+FzcK61TrgGUZfFhpIFRY7/CuiLdHVh?=
- =?us-ascii?Q?HZdNytIZ7T/YFrKpfNv2NZLCg9XgpN+gKID65Y14YJURsFbpI29b16sfaLQv?=
- =?us-ascii?Q?N0UGY35Un75EGO8sWQVZgyBIKKLkRjNpkR2ityqN+BE3TE4pkFJTaCmxj4iE?=
- =?us-ascii?Q?GvK21QqTlmoQixnqQOBkAPDWLFnNjeTIt8f3OH10x3WP0HiFmCibDeSnIYJY?=
- =?us-ascii?Q?sRBz9y0VzwW6/XVktJGwj6xyVRKdDG/7WOPbkP3+B4gWZJgDmgVTbsFnBR8M?=
- =?us-ascii?Q?j0wEMzdd+/R3xnPqSmNh7k4nrUjlMYrfM5tP2KAVyaR6Yu69+IyGevHTPfu3?=
- =?us-ascii?Q?SjVWob2K2DyozT727rmsOzfnZG40ERhIQnZhkjsNY1gJWI3DEvebMumfstU1?=
- =?us-ascii?Q?iWwXxgvn+m7zFXbg4n87/Q8OPjItgKnvc6ZrULnkNCf0wkz6dtWfhgLv87Cg?=
- =?us-ascii?Q?rRr6jRKtvXth17BBX/3FqYj1TppLpuzsmhwB/1y9/KvRWVZslxV/YOWptDwH?=
- =?us-ascii?Q?bJZSXzBLpziD1wtDYv3KXiNg+kXpVGR9KGSLq1CxCDQDLCFxQwiwiMYE4POd?=
- =?us-ascii?Q?jQ+WwnxU7QnySqkdEH8IC36LiomKbtfSpDtWW9mvd+3Ms/9iVxpuPtPTuzCm?=
- =?us-ascii?Q?C2hldmwZayD7mCRxR3nLXkAZO+P1ZY7EJGLm4EDwDnVqgCCYUMj57ctpEmui?=
- =?us-ascii?Q?Rn1flc97z3lIrXdgiJcG1koQnqjZIfEU/gPlk9hvvstISqbm/3iNEH7RHKTc?=
- =?us-ascii?Q?ApQVWhNpZfZ1zNJLkDIZVA//Wyb2k2zGhKRaYD+OkDFiz3drvZ059pJV4VIE?=
- =?us-ascii?Q?3IWmRmLRlEL4xmG3Sl8bng+QxWwi+kF3YtTlywZUASR676TXLBcH6tHE7hRz?=
- =?us-ascii?Q?JzLDJdnW2kjnyhV+RLDVloTbRerOY6CGZdg1xEwgrEPNYQFjQALtwWqu03F3?=
- =?us-ascii?Q?w8rmjbfFL5V0+k+tVZk=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5fa8d6c-0a33-4522-9297-08dc895a5a73
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2024 14:33:53.8442
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i3ymrrRWKFU4Ejgpzv/0naAV2B2dYVFkV7+jXwKmvF/KzKq93TrRq7e71pyAhaFhfZ18lJCrGMruuU52ydKB5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6847
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pwm: add missing MODULE_DESCRIPTION() macros
+Content-Language: en-US
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix
+ Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Matthias Brugger
+	<matthias.bgg@gmail.com>
+CC: <linux-pwm@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20240607-md-drivers-pwm-v1-1-27237a2bec6a@quicinc.com>
+ <ca6b4ce2-4ebf-409d-b87d-2024445b9392@collabora.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <ca6b4ce2-4ebf-409d-b87d-2024445b9392@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: BZzjFM6FFRhPIg51RXBqh8PoY2xZ714Q
+X-Proofpoint-ORIG-GUID: BZzjFM6FFRhPIg51RXBqh8PoY2xZ714Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-10_02,2024-06-10_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ spamscore=0 phishscore=0 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406100112
 
-On Mon, Jun 10, 2024 at 02:29:57PM +0200, Krzysztof Kozlowski wrote:
-> On 06/06/2024 08:44, Krzysztof Kozlowski wrote:
-> > On 05/06/2024 20:50, Frank Li wrote:
-> >> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
-> >>
-> >> Addtional change during convert:
-> >> - Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
-> >> - Add "reg" and "interrupts" property.
-> >> - Change example "sdhci@2e000" to "mmc@2e000".
-> >> - Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
-> >> most existed dts file.
-> >> - Set clock-frequency to 100mhz in example.
-> >>
-> > 
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On 6/10/2024 1:06 AM, AngeloGioacchino Del Regno wrote:
+> Il 07/06/24 18:02, Jeff Johnson ha scritto:
+>> make allmodconfig && make W=1 C=1 reports:
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-imx1.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-imx27.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-intel-lgm.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-mediatek.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-pxa.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-samsung.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-spear.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-visconti.o
+>>
+>> Add the missing invocations of the MODULE_DESCRIPTION() macro.
+>>
+>> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>> ---
+>> This addresses all of the issues in driver/pwm
+>>
+>> Let me know if you want any of the individual module changes
+>> segregated into separate patches.
+>> ---
+>>   drivers/pwm/pwm-imx1.c      | 1 +
+>>   drivers/pwm/pwm-imx27.c     | 1 +
+>>   drivers/pwm/pwm-intel-lgm.c | 1 +
+>>   drivers/pwm/pwm-mediatek.c  | 1 +
+>>   drivers/pwm/pwm-pxa.c       | 1 +
+>>   drivers/pwm/pwm-samsung.c   | 1 +
+>>   drivers/pwm/pwm-spear.c     | 1 +
+>>   drivers/pwm/pwm-visconti.c  | 1 +
+>>   8 files changed, 8 insertions(+)
+>>
 > 
-> Or not... are you sure that DTS validates? Did you test it? kbuild has a
-> bit different opinion.
-
-Need additional patch to fix this DTS warnings. It needs convert to yaml
-firstly. If you like, I can create big patch set to fix all emmc related
-warnings.
-
-Frank
-
+> ..snip..
 > 
-> Best regards,
-> Krzysztof
+>> diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
+>> index 19a87873ad60..0b5d68a90e83 100644
+>> --- a/drivers/pwm/pwm-mediatek.c
+>> +++ b/drivers/pwm/pwm-mediatek.c
+>> @@ -395,4 +395,5 @@ static struct platform_driver pwm_mediatek_driver = {
+>>   module_platform_driver(pwm_mediatek_driver);
+>>   
+>>   MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
+>> +MODULE_DESCRIPTION("MediaTek Pulse Width Modulator driver");
 > 
+> MediaTek SoCs have got two different PWM IPs, one of which is used exclusively
+> for the Display PWM, and it is located in the DDP block.
+> 
+> So, there are two PWM IPs in one SoC:
+>   - A general purpose PWM IP
+>   - A DDP PWM IP
+> 
+> This driver is for the general purpose PWM IP.. so, please, can we change this
+> to "MediaTek general purpose Pulse Width Modulator driver"?
+> 
+> After which,
+> 
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> 
+>>   MODULE_LICENSE("GPL v2");
+> 
+Sure, I'll update these in v2
