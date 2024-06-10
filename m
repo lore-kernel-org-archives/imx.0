@@ -1,101 +1,114 @@
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9BD13C819;
-	Mon, 10 Jun 2024 15:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9201474C8
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 16:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718032785; cv=none; b=ALHUQ+Mcan6M2Jc9EeCB4aMc3yoyNZ7dsU0+/gpBLwD6r8EF53zG/kVLjfAPOnMs70/F6+lQh30r64AepU6PblqAgnyth7A5stGq1ZzXibwsgUIY5gyIjZr23Gp6zBa7jeLnKVyLU8OTz+9klvs7rVHmZjS2YrPX5PtlXvFA4G0=
+	t=1718038044; cv=none; b=gEzAfJ9HnuqBjDGd09/IwRM08Qn+RwqSNrdof+NrpRThkkuaC+awrFfZ/k5bYXUN2jHYnBo6jExMEOMObXSHkSP05iMi9lSWn1FA5kXI5WRC4hX/t5xCz2bt7uJ0kErXfZzOlBeKHGSpTTa44eVtUZQkNQX9UDpMelYdQMsIx6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718032785; c=relaxed/simple;
-	bh=jQ6iraW9wZ/32s77kH/CLkpMkRpj08dMpTRjYPO83Wg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m3WQ2U0ArXB1WXFMgqQIpyOLJp5+B0KPBj5fUcm4th3d2FTbqUn+JHIoLRQaqpmFhgKSttOVOlaJLxR30CgQh3R9u6PkAe0bhVdhdYUntuXF2ptNtNs9mijQ70buVUNqiGHo0nQR266J9+7L8C048g8sYekOFkbM2fnTMhYXKU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=IOoTGm1q; arc=none smtp.client-ip=67.231.149.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1718038044; c=relaxed/simple;
+	bh=4Hj9IG1LMlzHH3A3y0qYTvhcNtKcDqLmxJ6EzjUt+qQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HP6qzxASLJD+JO857wqPVVQnHvgEtISi/aXtXrJ0UyVpQc70jvS5QJ9tBYXaq3caB68W7MyUmhizvB0Zk1F/OeNwcFA8AKXVUIJlTIQOoMwbq0piWfWhkjKvpm0wGLnkEd/4re6nbCAyqHu+45jItIpzx9tnUrTPOvhhqdmRkY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sJmcHv+Z; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="IOoTGm1q"
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45AEOOUx020276;
-	Mon, 10 Jun 2024 10:19:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=PODMain02222019; bh=VuIFm0hFHHWeDLcAy+
-	luhI4ftuGgKwb0lS6iv6cXHXY=; b=IOoTGm1qU2LdLM0EJTiWo8OvLinnX008V7
-	YIAeDw//ZuwjA5n+CW+uVYPhthyrr5kew+fVKObQuU3v2SJYsV7EttnoA5+1Hw/l
-	U8+yKPhUYEmBXQE6gy0fmnkO86EOHJlYo93syd4MLT7AlLbxKERkK8PGN0GvXEbE
-	5GrNVMHzU765s13fQ4w6tRvXW4yrj1BWB2ANEAvTAPTT47wSTWkITbt6pBiaDxK/
-	03MkoAaqt4Hl8a2CECIrvdDXezd7BexBcGkiGKk2GCU0/9IuXLvQO0T5KpfQ++Yz
-	QmwjTiI6Ms/tIGXjDFaDXYOEjCv3g8m2xc/wAe9rsaOVT4679CDw==
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3ymmq09ncf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Jun 2024 10:19:35 -0500 (CDT)
-Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 10 Jun
- 2024 16:19:33 +0100
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
- 15.2.1544.9 via Frontend Transport; Mon, 10 Jun 2024 16:19:33 +0100
-Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPS id E99DF820249;
-	Mon, 10 Jun 2024 15:19:32 +0000 (UTC)
-Date: Mon, 10 Jun 2024 15:19:31 +0000
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC: Chanwoo Choi <cw00.choi@samsung.com>,
-        Krzysztof Kozlowski
-	<krzk@kernel.org>, Lee Jones <lee@kernel.org>,
-        Shawn Guo
-	<shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Pengutronix
- Kernel Team" <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers
-	<ndesaulniers@google.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt
-	<justinstitt@google.com>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-        <patches@opensource.cirrus.com>, <llvm@lists.linux.dev>
-Subject: Re: [PATCH 3/3] mfd: wm8994: Fix Wvoid-pointer-to-enum-cast warning
- (again)
-Message-ID: <ZmcZg+c0iOZtjqjr@opensource.cirrus.com>
-References: <20240606143648.152668-1-krzysztof.kozlowski@linaro.org>
- <20240606143648.152668-3-krzysztof.kozlowski@linaro.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sJmcHv+Z"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-70435f4c330so122730b3a.1
+        for <imx@lists.linux.dev>; Mon, 10 Jun 2024 09:47:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718038041; x=1718642841; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GltpCEOROqdEZtPzqZDYIjfn931I+xP8uUPheSuWph8=;
+        b=sJmcHv+Z5qvVpuxRkkrhaodEF/+zlj0OBK8gzpRBxDFeyLxc2jRLeOyR6D2f/SyKAI
+         TBXOAYGlds7lASD0+iMOapw0a/DsTWhHhQKwM1ID8Wi/D3+ybli43md6cA0jlwWDJgO1
+         4o3nlO1jj47b+x2rjNSJaHjdxmiJ3kDqSDR/KQsuBwYLxIoIdqUOuBfb7htiqBG0XXLS
+         OmIBh5097qjP8QWhHiUJRkjJmvlfzgRl6260AxyHnX320VaVifWLp8mWRX+cmvedqXxd
+         lCWfLtweyS8cQ8K9QmEQ5kBurhP4ZNr/3qMsjqe5nY1c44xWFonhoG3XWWrjauHFe6xU
+         Jk7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718038041; x=1718642841;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GltpCEOROqdEZtPzqZDYIjfn931I+xP8uUPheSuWph8=;
+        b=UmpLXSmkwwNIzfnbo16ROb2dbkdTF/ttumeYSZDOssXYEQt56dyPjQ9IkucSAFZUJJ
+         y4TONn1VQoiQ+2COrxCVbA0sW4/r4CHdw3MC2gV0wZnVqa/kdWvNBcd/UZbGSTBoX5ZK
+         Ccu06iIoXLbGBFBsvDqEIqAUX9UihJMHwLaGfDRt8dQdptmH09nPCJwVy+eAdB4clPVh
+         HTATy7/YKlO+g7OyhuKSIAWgajQoWFfqAw1bsI9Y19mMuHSvIfOilzRlra/YXh9qyMTG
+         91NV0T8U6ukfz49vljfDqz3K7ettzgVDWsjZ1OkQhOARhzwOOUDHws5NatI8AphOQPRO
+         ir5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUXHN/eGTkZ6ZYbG1T5EuTTyypTupbUN+P3kCzB346jKNvFhZX35rgjWNBAY3njd1At09zwhSQi1QyC95RMOrVbKDMp
+X-Gm-Message-State: AOJu0YwWhPLd+QmUbQnIX98RB13Hs3ZQAqJyNgiHlPNDfNPBwsh8U8gw
+	OrAQLV4nDfNrXL6VqkDmcViO1OyzD8mTh2EM/1VxhDVlZtR5+vgjNYEXhcrRVoYIh4XhTfx573J
+	z
+X-Google-Smtp-Source: AGHT+IGb/lXCCC+JbIDGUdr375qb0RgEL7LsqGDkkx+quxB1SnI5zlcCI8SeIz3Y9Zc+WyklRsuyOQ==
+X-Received: by 2002:a05:6a00:8506:b0:704:25de:f297 with SMTP id d2e1a72fcca58-70425def3f2mr4676511b3a.29.1718038041356;
+        Mon, 10 Jun 2024 09:47:21 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:9b34:fecc:a6c:e2bc])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70426cc74f3sm4045691b3a.35.2024.06.10.09.47.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 09:47:20 -0700 (PDT)
+Date: Mon, 10 Jun 2024 10:47:17 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Aleksandr Mishin <amishin@t-argos.ru>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH] remoteproc: imx_rproc: Adjust phandle parsing issue
+ while remapping optional addresses in imx_rproc_addr_init()
+Message-ID: <ZmcuFRfjKRQG9OXI@p14s>
+References: <20240606075204.12354-1-amishin@t-argos.ru>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240606143648.152668-3-krzysztof.kozlowski@linaro.org>
-X-Proofpoint-GUID: D6D9nm4QIDDFz72zwe_qm_GuO0SYswrl
-X-Proofpoint-ORIG-GUID: D6D9nm4QIDDFz72zwe_qm_GuO0SYswrl
-X-Proofpoint-Spam-Reason: safe
+In-Reply-To: <20240606075204.12354-1-amishin@t-argos.ru>
 
-On Thu, Jun 06, 2024 at 04:36:48PM +0200, Krzysztof Kozlowski wrote:
-> 'type' is an enum, thus cast of pointer on 64-bit compile test with
-> clang and W=1 causes:
+On Thu, Jun 06, 2024 at 10:52:04AM +0300, Aleksandr Mishin wrote:
+> In imx_rproc_addr_init() "nph = of_count_phandle_with_args()" just counts
+> number of phandles. But phandles may be empty. So of_parse_phandle() in
+> the parsing loop (0 < a < nph) may return NULL which is later dereferenced.
+> Adjust this issue by adding NULL-return check.
 > 
->   wm8994-core.c:625:17: error: cast to smaller integer type 'enum wm8994_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 > 
-> Year ago this was solved, although LKML discussion suggested warning is
-> not suitable for kernel.  Nothing changed in this regard for a year, so
-> assume the warning will stay and we want to have warnings-free builds.
-> 
-> Link: https://lore.kernel.org/all/20230814160457.GA2836@dev-arch.thelio-3990X/
-> Link: https://lore.kernel.org/all/20230810095849.123321-1-krzysztof.kozlowski@linaro.org/
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
+> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
 > ---
+>  drivers/remoteproc/imx_rproc.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 5a3fb902acc9..39eacd90af14 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -726,6 +726,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+>  		struct resource res;
+>  
+>  		node = of_parse_phandle(np, "memory-region", a);
+> +		if (!node)
 
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+You're missing an "of_node_put()" before continuing.
 
-Thanks,
-Charles
+> +			continue;
+>  		/* Not map vdevbuffer, vdevring region */
+>  		if (!strncmp(node->name, "vdev", strlen("vdev"))) {
+>  			of_node_put(node);
+> -- 
+> 2.30.2
+> 
+> 
