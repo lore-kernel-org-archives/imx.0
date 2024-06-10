@@ -1,175 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1729E47A58;
-	Mon, 10 Jun 2024 09:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03D178C64
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 10:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718010433; cv=none; b=PUA1+92hx7VtzSU0259TKFLsCDUNMgeY4kNicw6h91Hu/9uKZTUcsMQrQbtoUugWcVY1MQdaF+O4rNf/Kjri4jRl0VxIb2j0iU2fhJ7H2tpYDdf8waPGOyQ6dWs6iGcvjLftOrLbrc+uljL1pxruGh+CmwFB/FREaALvRQ6oUCM=
+	t=1718015032; cv=none; b=I6kc1+ryE4q/UQ6uI4KX2WN4Hsng44mkP8SpnG+WVYo6yKUJEdBjKc3kuC+4BQwDsGb1fc8UP5PBsVew1ax6n9XiXpOqGYZw6GSi4LQKp5Ab/m1SwvLWF6SPe34axWj2mK/Y3qpZvapUdARawR8/gjH2hFsfiKlp5B5jjN5bZ2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718010433; c=relaxed/simple;
-	bh=Oe6aa/Sv/6QnbJTu+1EUV0CktmjLNuWgf1Yer3fRT78=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t7TnYsS4Ana+BD5J3QFT1fClgBAdEBl+GyJH9dzing3EBSMKLn1yJuFSOJOyAEDOU+ear2VNG8e9CLwP1ncD9CGvEA9/xgN1jMk5lWduiajQRGcCJA9Fhbg3yE/SsKlduS+nn2qQc0ZUr1rPlmA0zTxWgBdaJBwlptLpJ2GZzsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLOBC9CW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718015032; c=relaxed/simple;
+	bh=/dvlPaDX7JS7HUc0xymxE8GPZRJ/dZ9lSf050PDmGgg=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jweifPDp/jk4Zxjq1izkzI/dtaOgzMO0mxplwcpajWeSmv+bAg6kMRy/aeEMAo/09tOABaf513/blH9tuqr+H+W0SsiWmf/fnKy9bm+/U6WupS5u2sQ9JPor6FfoNhAkE8giPd3K4no3XLdVzteTLs+HOoNqdhs/Lf2T3lsXHX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=hVn0UGjo; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLOBC9CW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41491C2BBFC;
-	Mon, 10 Jun 2024 09:07:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718010432;
-	bh=Oe6aa/Sv/6QnbJTu+1EUV0CktmjLNuWgf1Yer3fRT78=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PLOBC9CWZDed5NAwDsecmUULpmL68wKjoyo1E55ywQ4Z71xtN5Fb7w+XVqmrXY+vA
-	 ob8iDnr19X/bSzBgyw125RwvMvmsmMqRlkVL+SMKPy76qcXQlas+/DAKiQTXoSi0W/
-	 Ct2iaPHzPq520RSM2y7Lk89JFIWhIWWNJbNzeMOmnRJ72OPe6y8Y+6Tb4RFEC0je32
-	 M9a/w77RxwgkSk3YhAcZuleevO84TCYp/Q+51Mm+cEKc4GYjxB+PEGqYIdtuOPJ6H6
-	 QdqlGJj9/NRzWJfDvvA1LNLQMPe+6F3V9PDb7AsWjxiEDf2Og0+9fj9qR4VmmB5/V4
-	 ztqUUk8yQkiGg==
-Message-ID: <e3f4190b-f641-4df7-8b86-98a8be40a852@kernel.org>
-Date: Mon, 10 Jun 2024 11:07:05 +0200
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="hVn0UGjo"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id A7D81240101
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 12:17:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+	t=1718014679; bh=/dvlPaDX7JS7HUc0xymxE8GPZRJ/dZ9lSf050PDmGgg=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:From;
+	b=hVn0UGjoEIWpc28KZUIuvmIHaQbdQaEf3UKUxFL+kKAtBKX0YufCaSqfPQW38hMc7
+	 E+g3jfDEKiWm2aMQUGqxcAbNSwO3UNe+y3qMYmx2IGwpJrS+EAEHId9ptYHW6ny4tb
+	 9fLSMosWMplnFr8b8EGb97nKQPL184qNrgRBHIhTMhnwWJ1cJykCFkl5HUW+uKvm2G
+	 d+cIUN6ms9YrBeEs/l0VJxypPTcnpINuU/jJNm8uhy4Tn0VG0863uWyAbKxb6YDalk
+	 4Q5BorAp1mpG7Co5wlLlWgS58BPptqWFZ8YjlxOc7dB4uF6X2uCrdkW/IPksgtYYXh
+	 jW70aQ438k0xg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4VySRl4VHgz6tvp;
+	Mon, 10 Jun 2024 12:17:55 +0200 (CEST)
+Message-ID: <6cc32fceb4d74833e045e0acbc51515b5ef3065b.camel@posteo.de>
+Subject: Re: [PATCH] dts: imx8mq-librem5: Don't wake up on volume key press
+From: Martin Kepplinger <martink@posteo.de>
+To: Guido =?ISO-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,  phone-devel@vger.kernel.org, kernel@puri.sm
+Date: Mon, 10 Jun 2024 10:17:55 +0000
+In-Reply-To: <fa416916049e85ca159805e8602fa8361d5e6d83.1716202515.git.agx@sigxcpu.org>
+References: 
+	<fa416916049e85ca159805e8602fa8361d5e6d83.1716202515.git.agx@sigxcpu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] reset: add driver for imx8ulp SIM reset controller
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Liu Ying <victor.liu@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: laurentiu.mihalcea@nxp.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240609125901.76274-1-laurentiumihalcea111@gmail.com>
- <20240609125901.76274-3-laurentiumihalcea111@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240609125901.76274-3-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 09/06/2024 14:59, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Certain components can be reset via the SIM module.
-> Add reset controller driver for the SIM module to
-> allow drivers for said components to control the
-> reset signal(s).
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  drivers/reset/Kconfig                         |   7 ++
->  drivers/reset/Makefile                        |   1 +
->  drivers/reset/reset-imx8ulp-sim.c             | 103 ++++++++++++++++++
->  include/dt-bindings/reset/imx8ulp-sim-reset.h |  16 +++
-
-That's a binding, not driver. Keep it *always* with binding.
-
->  4 files changed, 127 insertions(+)
->  create mode 100644 drivers/reset/reset-imx8ulp-sim.c
->  create mode 100644 include/dt-bindings/reset/imx8ulp-sim-reset.h
-> 
-
-
-> +static int imx8ulp_sim_reset_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct imx8ulp_sim_reset *simr;
-> +	int ret;
-> +
-> +	simr = devm_kzalloc(dev, sizeof(*simr), GFP_KERNEL);
-> +	if (!simr)
-> +		return -ENOMEM;
-> +
-> +	simr->regmap = syscon_node_to_regmap(dev->of_node);
-> +	if (IS_ERR(simr->regmap)) {
-> +		ret = PTR_ERR(simr->regmap);
-> +		dev_err(dev, "failed to get regmap: %d\n", ret);
-> +		return ret;
-
-syntax is return dev_err_probe()
-
-> +	}
-
-
-> +
-> +MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
-> +MODULE_DESCRIPTION("NXP i.MX8ULP System Integration Module Reset driver");
-> +MODULE_LICENSE("GPL");
-> diff --git a/include/dt-bindings/reset/imx8ulp-sim-reset.h b/include/dt-bindings/reset/imx8ulp-sim-reset.h
-> new file mode 100644
-> index 000000000000..9f8fb8680a5e
-> --- /dev/null
-> +++ b/include/dt-bindings/reset/imx8ulp-sim-reset.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-> +
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#ifndef DT_BINDINGS_RESET_IMX8ULP_SIM_H
-> +#define DT_BINDINGS_RESET_IMX8ULP_SIM_H
-> +
-> +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_DPI_N    0
-> +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_ESC_N    1
-> +#define IMX8ULP_SIM_RESET_MIPI_DSI_RST_BYTE_N   2
-> +
-> +#define IMX8ULP_SIM_RESET_NUM                   3
-
-Drop, not suitable for bindings.
-
-> +
-> +#endif /* DT_BINDINGS_RESET_IMX8ULP_SIM_H */
-
-Best regards,
-Krzysztof
+QW0gTW9udGFnLCBkZW0gMjAuMDUuMjAyNCB1bSAxMjo1NyArMDIwMCBzY2hyaWViIEd1aWRvIEfD
+vG50aGVyOgo+IFRoZSBvbmx5IGtleSB0aGF0IHNob3VsZCB3YWtlIHVwIHRoZSBwaG9uZSBpcyBw
+b3dlciBidXR0b24gcHJlc3MuCj4gVGhpcwo+IHByZXZlbnRzIGFjY2lkZW50YWwgd2FrZXVwIGR1
+ZSB0byBlLmcuIHByZXNzaW5nIHRoZSBidXR0b25zIGluIHRoZQo+IHBvY2tldCBvciBiYWNrcGFj
+ayBhbmQgaXMgaW4gbGluZSB3aGF0IHVzZXJzcGFjZSB1c2VzIHRvIHVuYmxhbmsgdGhlCj4gZGV2
+aWNlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEd1aWRvIEfDvG50aGVyIDxhZ3hAc2lneGNwdS5vcmc+
+CgpSZXZpZXdlZC1ieTogTWFydGluIEtlcHBsaW5nZXIgPG1hcnRpbmtAcG9zdGVvLmRlPgoKdGhh
+bmsgeW91LAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWFydGluCgo+IC0tLQo+IMKg
+YXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1xLWxpYnJlbTUuZHRzaSB8IDIgLS0K
+PiDCoDEgZmlsZSBjaGFuZ2VkLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNo
+L2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXEtbGlicmVtNS5kdHNpCj4gYi9hcmNoL2Fy
+bTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXEtbGlicmVtNS5kdHNpCj4gaW5kZXggZmZiNWZl
+NjE2MzBkLi4xYjM5NTE0ZDVjMTIgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm02NC9ib290L2R0cy9m
+cmVlc2NhbGUvaW14OG1xLWxpYnJlbTUuZHRzaQo+ICsrKyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMv
+ZnJlZXNjYWxlL2lteDhtcS1saWJyZW01LmR0c2kKPiBAQCAtNDUsNyArNDUsNiBAQCBrZXktdm9s
+LWRvd24gewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGdwaW9zID0gPCZncGlvMSAxNyBHUElPX0FDVElWRV9MT1c+Owo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxpbnV4LGNvZGUgPSA8S0VZX1ZPTFVNRURP
+V04+Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRl
+Ym91bmNlLWludGVydmFsID0gPDUwPjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoHdha2V1cC1zb3VyY2U7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB9Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBrZXktdm9s
+LXVwIHsKPiBAQCAtNTMsNyArNTIsNiBAQCBrZXktdm9sLXVwIHsKPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBncGlvcyA9IDwmZ3BpbzEgMTYgR1BJT19B
+Q1RJVkVfTE9XPjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBsaW51eCxjb2RlID0gPEtFWV9WT0xVTUVVUD47Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGVib3VuY2UtaW50ZXJ2YWwgPSA8NTA+Owo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgd2FrZXVwLXNvdXJj
+ZTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH07Cj4gwqDCoMKgwqDCoMKgwqDC
+oH07Cj4gwqAKCg==
 
