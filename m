@@ -1,204 +1,82 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E54877119
-	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 22:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739B72110F
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 23:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718060156; cv=none; b=AFrGTsaFmOh4z472Z5xbJ3wo2RfmDesq6HgxyjQctGP5B5tyq5atAdKDmpWHfqRKhSRqmpF+GprE7B+vPtGpN4sH96N76meHUqX9byFJfiP9ELLvpysj72Sp7603CxWcfjDOk1Qpcr1JQm8VVHWCggCiGb5qmh/vziIjhVY3VHE=
+	t=1718062993; cv=none; b=qLf2YY5OcJ7gsjc3G/fTGe3P5+Zo3DNR3HkbozdoFzidStv1rlejFBHgHg9Rtq+poVTjvoz/T5PZL+I4cB5Cel5k8g0SQPsZceqttGhMhNZzmip208X6s2lMPka6OfATY6C8Dx/Yi2DbDyER1nvtibsibFlOo2oDgRR8UlRyDL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718060156; c=relaxed/simple;
-	bh=5c+cupG43q3JxOZFm9CLv4boFt7YHyL3IM0TYOplEQI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ljdLGZgRi0l0F2YEwclEfStVAwQ1Lp00fxvEXyFRKZhpWnLvr+J7DDtumP8j9ayaGHFKBUVViUeYEJTPxRGZn2nZMELSJbqmL2MgHhkqBWfiR9qrDCMPMjnJ+FR2LSzNju0z1F6Ss2qTPDTHQLHg+bgnur4U8yCg5sjEWxWH54g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ezcvoj8p; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1718062993; c=relaxed/simple;
+	bh=nPNzVptm/f18wTbcMhm0vYE+658NKVvbwwpRS+Up3zA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GpATaIuXWhTayiswpSSU/TkpAIuJ+SYs/Mkt819m+iaeaLyqVolZLzbzy5FYQqK+l43Ttc/aE2xVMaVpPKNYK1Yzj9nexFR5+3F1OWjLRplyha6sxCkb5W5ftzejGKmfE3lV0IOjhITkCz4+z5XiZyngGORk6jm8MsHczvBvc7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=s1yaOO5q; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ezcvoj8p"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="s1yaOO5q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1718060152;
-	bh=5c+cupG43q3JxOZFm9CLv4boFt7YHyL3IM0TYOplEQI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=ezcvoj8pZwuSFCTOy956WEli/FfETd7rsBuJ2mucC2Y3C6CqWHUFnu6/FKWAD0QbR
-	 kJwAuKJNX5TJMRWoajl0xLjoDtGRRMQCQfNTP38q56dofEEvd11Z7aKleiVVHsIU34
-	 hJRza2Hvc0n8c1rjrvVaZ1KSIR8iE7Rwo+LEIv48mBBYZGrFqp+9gkqfhTx4f7iotX
-	 MqnmjKVelYdeUxOMQIbr31IzhllTErx44mfLN+wETeTk68iE2kkD58FoTukFnhp4aW
-	 HkBAO08Vmtp7il3sw638PhV0yZLsrBdv6ZCk7MM5d+fPmltIX2BZnae0L5feWfW4IP
-	 9IhWKMET/uHCw==
-Received: from [100.77.12.232] (cola.collaboradmins.com [195.201.22.229])
+	s=mail; t=1718062990;
+	bh=nPNzVptm/f18wTbcMhm0vYE+658NKVvbwwpRS+Up3zA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=s1yaOO5qxsDnFtvgvS05IYym3DEKp/WuUAfZ7uDnQIhh4IFz7bnNuc3835QkZHhkS
+	 O0Ep2yeX96b6O2nYGZDtRwyFSi5Dky6ZTZg2pJ8wMa04LYS9cG0MbS7YL1F46YE+yc
+	 f86xBX5VRcvgdxre4ANSpsxQmENzZm3uUQF3nMYD2Zq/YSoslxdMe7CrI4KKQl7ACV
+	 C6yp9H/3lCBRLHda2Yw90L8TqqIsdggCM6ANHVSLf0zutxwcErMuF/Yqepodt48xvZ
+	 TtLcdtxpX+1Oxbcz+g/KGwEIHFANTSkShmnRDl/kr517dyfYd+dnpC5ze0umnpo1NP
+	 rpjAmCP7xLNzQ==
+Received: from obbardc-t14.home (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: obbardc)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 995FB378113A;
-	Mon, 10 Jun 2024 22:55:51 +0000 (UTC)
-Message-ID: <6c98da19b4978197213cb7b9cbcafc10480c0a73.camel@collabora.com>
-Subject: Re: [PATCH v1 1/1] arm64: dts: imx8mp-debix-model-a: Add HDMI
- output support
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D4AAE378065F;
+	Mon, 10 Jun 2024 23:43:09 +0000 (UTC)
 From: Christopher Obbard <chris.obbard@collabora.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- linux-kernel@vger.kernel.org, Daniel Scally <dan.scally@ideasonboard.com>, 
- kernel@collabora.com, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam
- <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>,  Shawn Guo <shawnguo@kernel.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-Date: Mon, 10 Jun 2024 23:55:50 +0100
-In-Reply-To: <20240608150227.GA13024@pendragon.ideasonboard.com>
-References: <20240415114135.25473-1-chris.obbard@collabora.com>
-	 <20240415114135.25473-2-chris.obbard@collabora.com>
-	 <171319369093.2333277.9109576229211275635@ping.linuxembedded.co.uk>
-	 <20240415163520.GA22954@pendragon.ideasonboard.com>
-	 <525f3c7f7f6613c78ac364c9ce0234cca5e1c710.camel@collabora.com>
-	 <20240608150227.GA13024@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.52.2-2 
+To: linux-kernel@vger.kernel.org
+Cc: kernel@collabora.com,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Christopher Obbard <chris.obbard@collabora.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/1] Enable HDMI output support on the Debix Model A SBC
+Date: Tue, 11 Jun 2024 00:42:37 +0100
+Message-ID: <20240610234307.96766-1-chris.obbard@collabora.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-SGkgTGF1cmVudCwKCk9uIFNhdCwgMjAyNC0wNi0wOCBhdCAxODowMiArMDMwMCwgTGF1cmVudCBQ
-aW5jaGFydCB3cm90ZToKPiBPbiBNb24sIEFwciAxNSwgMjAyNCBhdCAwNjowNzoyNFBNICswMTAw
-LCBDaHJpc3RvcGhlciBPYmJhcmQgd3JvdGU6Cj4gPiBPbiBNb24sIDIwMjQtMDQtMTUgYXQgMTk6
-MzUgKzAzMDAsIExhdXJlbnQgUGluY2hhcnQgd3JvdGU6Cj4gPiA+IE9uIE1vbiwgQXByIDE1LCAy
-MDI0IGF0IDA0OjA4OjEwUE0gKzAxMDAsIEtpZXJhbiBCaW5naGFtIHdyb3RlOgo+ID4gPiA+IFF1
-b3RpbmcgQ2hyaXN0b3BoZXIgT2JiYXJkICgyMDI0LTA0LTE1IDEyOjQxOjI3KQo+ID4gPiA+ID4g
-RW5hYmxlIHRoZSBIRE1JIG91dHB1dCBvbiB0aGUgRGViaXggTW9kZWwgQSBTQkMsIHVzaW5nIHRo
-ZSBIRE1JCj4gPiA+ID4gPiBlbmNvZGVyCj4gPiA+ID4gPiBwcmVzZW50IGluIHRoZSBpLk1YOE1Q
-IFNvQy4KPiA+ID4gPiAKPiA+ID4gPiBBaGEsIHlvdSBiZWF0IG1lIHRvIGl0LiBJIGhhdmUgYSBj
-b21taXQgbG9jYWxseSAoRGF0ZWQgMjAyMi0wOS0wNikgYnV0Cj4gPiA+ID4gbm90IHNlbnQgYmVj
-YXVzZSBJIGRpZG4ndCByZWFsaXNlIHRoZSBIRE1JIHN1cHBvcnQgZmluYWxseSBnb3QKPiA+ID4g
-PiB1cHN0cmVhbQo+ID4gPiA+IFxvLwo+ID4gPiA+IAo+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTog
-Q2hyaXN0b3BoZXIgT2JiYXJkIDxjaHJpcy5vYmJhcmRAY29sbGFib3JhLmNvbT4KPiA+ID4gPiA+
-IC0tLQo+ID4gPiA+ID4gCj4gPiA+ID4gPiDCoC4uLi9kdHMvZnJlZXNjYWxlL2lteDhtcC1kZWJp
-eC1tb2RlbC1hLmR0c8KgwqDCoCB8IDQ3Cj4gPiA+ID4gPiArKysrKysrKysrKysrKysrKysrCj4g
-PiA+ID4gPiDCoDEgZmlsZSBjaGFuZ2VkLCA0NyBpbnNlcnRpb25zKCspCj4gPiA+ID4gPiAKPiA+
-ID4gPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAt
-ZGViaXgtbW9kZWwtYS5kdHMKPiA+ID4gPiA+IGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2Nh
-bGUvaW14OG1wLWRlYml4LW1vZGVsLWEuZHRzCj4gPiA+ID4gPiBpbmRleCAyYzE5NzY2ZWJmMDku
-LjI5NTI5YzJlY2FjOSAxMDA2NDQKPiA+ID4gPiA+IC0tLSBhL2FyY2gvYXJtNjQvYm9vdC9kdHMv
-ZnJlZXNjYWxlL2lteDhtcC1kZWJpeC1tb2RlbC1hLmR0cwo+ID4gPiA+ID4gKysrIGIvYXJjaC9h
-cm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLWRlYml4LW1vZGVsLWEuZHRzCj4gPiA+ID4g
-PiBAQCAtMjAsNiArMjAsMTggQEAgY2hvc2VuIHsKPiA+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBzdGRvdXQtcGF0aCA9ICZ1YXJ0MjsKPiA+ID4gPiA+IMKgwqDCoMKgwqDC
-oMKgIH07Cj4gPiA+ID4gPiDCoAo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoCBoZG1pLWNvbm5lY3Rv
-ciB7Cj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0g
-ImhkbWktY29ubmVjdG9yIjsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGxhYmVsID0gImhkbWkiOwo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-dHlwZSA9ICJhIjsKPiA+ID4gPiA+ICsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIHBvcnQgewo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIGhkbWlfY29ubmVjdG9yX2luOiBlbmRwb2ludCB7Cj4gPiA+ID4gPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IHJlbW90ZS1lbmRwb2ludCA9IDwmaGRtaV90eF9vdXQ+Owo+ID4gPiA+ID4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH07Cj4gPiA+ID4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCB9Owo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoCB9Owo+ID4gPiA+
-ID4gKwo+ID4gPiA+IAo+ID4gPiA+IEludGVyZXN0aW5nLiBNeSBwYXRjaCBtaXNzZWQgdGhpcy4g
-QnV0IGl0IGxvb2tzIGNvcnJlY3QuCj4gPiA+ID4gCj4gPiA+ID4gPiDCoMKgwqDCoMKgwqDCoCBs
-ZWRzIHsKPiA+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxl
-ID0gImdwaW8tbGVkcyI7Cj4gPiA+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-cGluY3RybC1uYW1lcyA9ICJkZWZhdWx0IjsKPiA+ID4gPiA+IEBAIC05NCw2ICsxMDYsMjggQEAg
-ZXRocGh5MDogZXRoZXJuZXQtcGh5QDAgeyAvKiBSVEw4MjExRSAqLwo+ID4gPiA+ID4gwqDCoMKg
-wqDCoMKgwqAgfTsKPiA+ID4gPiA+IMKgfTsKPiA+ID4gPiA+IMKgCj4gPiA+ID4gPiArJmhkbWlf
-cHZpIHsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqAgc3RhdHVzID0gIm9rYXkiOwo+ID4gPiA+ID4g
-K307Cj4gPiA+ID4gPiArCj4gPiA+ID4gPiArJmhkbWlfdHggewo+ID4gPiA+ID4gK8KgwqDCoMKg
-wqDCoCBwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoCBw
-aW5jdHJsLTAgPSA8JnBpbmN0cmxfaGRtaT47Cj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgIHN0YXR1
-cyA9ICJva2F5IjsKPiA+ID4gPiA+ICsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqAgcG9ydHMgewo+
-ID4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcG9ydEAxIHsKPiA+ID4gPiA+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBoZG1pX3R4X291
-dDogZW5kcG9pbnQgewo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZW1vdGUtZW5kcG9pbnQgPQo+ID4gPiA+ID4g
-PCZoZG1pX2Nvbm5lY3Rvcl9pbj47Cj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgfTsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIH07Cj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgIH07Cj4gPiA+ID4gPiArfTsKPiA+ID4g
-PiA+ICsKPiA+ID4gPiA+ICsmaGRtaV90eF9waHkgewo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoCBz
-dGF0dXMgPSAib2theSI7Cj4gPiA+ID4gPiArfTsKPiA+ID4gPiA+ICsKPiA+ID4gPiA+IMKgJmky
-YzEgewo+ID4gPiA+ID4gwqDCoMKgwqDCoMKgwqAgY2xvY2stZnJlcXVlbmN5ID0gPDQwMDAwMD47
-Cj4gPiA+ID4gPiDCoMKgwqDCoMKgwqDCoCBwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwo+ID4g
-PiA+ID4gQEAgLTI0MSw2ICsyNzUsMTAgQEAgJmkyYzYgewo+ID4gPiA+ID4gwqDCoMKgwqDCoMKg
-wqAgc3RhdHVzID0gIm9rYXkiOwo+ID4gPiA+ID4gwqB9Owo+ID4gPiA+ID4gwqAKPiA+ID4gPiA+
-ICsmbGNkaWYzIHsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqAgc3RhdHVzID0gIm9rYXkiOwo+ID4g
-PiA+ID4gK307Cj4gPiA+ID4gPiArCj4gPiA+ID4gCj4gPiA+ID4gRXhjZXB0IGZvciB0aGUgYWRk
-aXRpb24gb2YgdGhlIGNvbm5lY3RvciwgdGhlIGFib3ZlIG1hdGNoZXMgbXkgcGF0Y2gKPiA+ID4g
-PiB0bwo+ID4gPiA+IGhlcmUuCj4gPiA+ID4gCj4gPiA+ID4gPiDCoCZzbnZzX3B3cmtleSB7Cj4g
-PiA+ID4gPiDCoMKgwqDCoMKgwqDCoCBzdGF0dXMgPSAib2theSI7Cj4gPiA+ID4gPiDCoH07Cj4g
-PiA+ID4gCj4gPiA+ID4gQnV0IGluIG15IHBhdGNoIEkgaGF2ZSB0aGUgZm9sbG93aW5nIGh1bmsg
-aGVyZTogKEkgaGF2ZW4ndCBjaGVja2VkIHRvCj4gPiA+ID4gc2VlIGlmIHRoaXMgc3RpbGwgYXBw
-bGllcyBvbiBtYWlubGluZSwgc28gdGFrZSB3aXRoIGEgcGluY2ggb2Ygc2FsdCBpZgo+ID4gPiA+
-IGl0J3Mgbm90IHRoZXJlISkKPiA+ID4gPiAKPiA+ID4gPiAKPiA+ID4gPiDCoCZpb211eGMgewo+
-ID4gPiA+IMKgCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7Cj4gPiA+ID4gLQlwaW5jdHJsLTAg
-PSA8JnBpbmN0cmxfaG9nPjsKPiA+ID4gPiAtCj4gPiA+ID4gLQlwaW5jdHJsX2hvZzogaG9nZ3Jw
-IHsKPiA+ID4gPiAtCQlmc2wscGlucyA9IDwKPiA+ID4gPiAtCj4gPiA+ID4gCQkJTVg4TVBfSU9N
-VVhDX0hETUlfRERDX1NDTF9fSERNSU1JWF9IRE1JX1NDTAo+ID4gPiA+IAkJCQkJMHg0MDAwMDFj
-Mwo+ID4gPiA+IC0KPiA+ID4gPiAJCQlNWDhNUF9JT01VWENfSERNSV9ERENfU0RBX19IRE1JTUlY
-X0hETUlfU0RBCj4gPiA+ID4gCQkJCQkweDQwMDAwMWMzCj4gPiA+ID4gLQo+ID4gPiA+IAkJCU1Y
-OE1QX0lPTVVYQ19IRE1JX0hQRF9fSERNSU1JWF9IRE1JX0hQRAo+ID4gPiA+IAkJCQkJCTB4NDAw
-MDAwMTkKPiA+ID4gPiAtCj4gPiA+ID4gCQkJTVg4TVBfSU9NVVhDX0hETUlfQ0VDX19IRE1JTUlY
-X0hETUlfQ0VDCj4gPiA+ID4gCQkJCQkJMHg0MDAwMDAxOQo+ID4gPiA+IC0JCT47Cj4gPiA+ID4g
-LQl9Owo+ID4gPiA+IAo+ID4gPiA+IMKgCXBpbmN0cmxfZXFvczogZXFvc2dycCB7Cj4gPiA+ID4g
-wqAJCWZzbCxwaW5zID0gPAo+ID4gPiA+IMKgCQkJTVg4TVBfSU9NVVhDX0VORVRfTURDX19FTkVU
-X1FPU19NREMJCj4gPiA+ID4gCQo+ID4gPiA+IAkJCQkJMHgzCj4gPiA+ID4gwqAJCQlNWDhNUF9J
-T01VWENfRU5FVF9NRElPX19FTkVUX1FPU19NRElPCQo+ID4gPiA+IAkKPiA+ID4gPiAJCQkJMHgz
-Cj4gPiA+ID4gCj4gPiA+ID4gCj4gPiA+ID4gPiBAQCAtMzU4LDYgKzM5NiwxNSBAQAo+ID4gPiA+
-ID4gTVg4TVBfSU9NVVhDX05BTkRfUkVBRFlfQl9fR1BJTzNfSU8xNsKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiA+ID4gPiA+IDB4MTkK
-PiA+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA+Owo+ID4gPiA+ID4gwqDC
-oMKgwqDCoMKgwqAgfTsKPiA+ID4gPiA+IMKgCj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgIHBpbmN0
-cmxfaGRtaTogaGRtaWdycCB7Cj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBmc2wscGlucyA9IDwKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoAo+ID4gPiA+ID4gTVg4TVBfSU9NVVhDX0hETUlfRERDX1NDTF9fSERNSU1J
-WF9IRE1JX1NDTMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiA+ID4g
-PiA+IDB4NDAwMDAxYzMKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoAo+ID4gPiA+ID4gTVg4TVBfSU9NVVhDX0hETUlfRERDX1NEQV9fSERNSU1J
-WF9IRE1JX1NEQcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiA+ID4g
-PiA+IDB4NDAwMDAxYzMKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoAo+ID4gPiA+ID4gTVg4TVBfSU9NVVhDX0hETUlfSFBEX19IRE1JTUlYX0hE
-TUlfSFBEwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4g
-PiA+ID4gPiAweDQwMDAwMDE5Cj4gPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAKPiA+ID4gPiA+IE1YOE1QX0lPTVVYQ19IRE1JX0NFQ19fSERNSU1J
-WF9IRE1JX0NFQ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oAo+ID4gPiA+ID4gMHg0MDAwMDAxOQo+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgPjsKPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqAgfTsKPiA+ID4gPiA+ICsKPiA+ID4gPiAK
-PiA+ID4gPiBBbmQgbXkgYWRkaXRpb24gaGVyZSBpcyA6Cj4gPiA+ID4gCj4gPiA+ID4gCj4gPiA+
-ID4gKwlwaW5jdHJsX2hkbWk6IGhkbWlncnAgewo+ID4gPiA+ICsJCWZzbCxwaW5zID0gPAo+ID4g
-PiA+ICsJCQlNWDhNUF9JT01VWENfSERNSV9ERENfU0NMX19IRE1JTUlYX0hETUlfU0NMCj4gPiA+
-ID4gCTAKPiA+ID4gPiB4MWMzCj4gPiA+ID4gKwkJCU1YOE1QX0lPTVVYQ19IRE1JX0REQ19TREFf
-X0hETUlNSVhfSERNSV9TREEKPiA+ID4gPiAJMAo+ID4gPiA+IHgxYzMKPiA+ID4gPiArCQkJTVg4
-TVBfSU9NVVhDX0hETUlfSFBEX19IRE1JTUlYX0hETUlfSFBECj4gPiA+ID4gCQo+ID4gPiA+IAkw
-eDE5Cj4gPiA+ID4gKwkJCU1YOE1QX0lPTVVYQ19IRE1JX0NFQ19fSERNSU1JWF9IRE1JX0NFQwo+
-ID4gPiA+IAkKPiA+ID4gPiAJMHgxOQo+ID4gPiA+ICsJCT47Cj4gPiA+ID4gKwl9Owo+ID4gPiA+
-ICsKPiA+ID4gPiAKPiA+ID4gPiAKPiA+ID4gPiBJIGhhdmVuJ3QgbG9va2VkIGludG8gd2hhdCB0
-aGUgMHg0MDAwMDAwMCBkb2VzIHlldCwgYnV0IGp1c3QKPiA+ID4gPiBoaWdobGlnaHRpbmcgdGhl
-IGRpZmZlcmVuY2UgZnJvbSB0aGUgdmVyc2lvbiBJJ3ZlIGJlZW4gdXNpbmcgdG8gbWFrZQo+ID4g
-PiA+IHVzZQo+ID4gPiA+IG9mIEhETUkgc28gZmFyLgo+ID4gPiA+IAo+ID4gPiA+IERvZXMgYW55
-b25lIGVsc2Uga25vdyB0aGUgaW1wYWN0IGhlcmU/IE90aGVyd2lzZSBJJ2xsIHRyeSB0byBmaW5k
-IHRpbWUKPiA+ID4gPiB0byBjaGVjayB0aGlzIGxhdGVyLiAoRm9yIHNvbWUgdW5kZWZpbmVkIHRl
-cm0gb2YgbGF0ZXIuLi4pCj4gPiA+IAo+ID4gPiBJbiBkcml2ZXJzL3BpbmN0cmwvZnJlZXNjYWxl
-L3BpbmN0cmwtaW14LmMsCj4gPiA+IAo+ID4gPiAjZGVmaW5lIElNWF9OT19QQURfQ1RMwqAgMHg4
-MDAwMDAwMMKgwqDCoMKgwqAgLyogbm8gcGluIGNvbmZpZyBuZWVkICovCj4gPiA+ICNkZWZpbmUg
-SU1YX1BBRF9TSU9OIDB4NDAwMDAwMDDCoMKgwqDCoMKgwqDCoMKgIC8qIHNldCBTSU9OICovCj4g
-PiA+IAo+ID4gPiBUaGUgU0lPTiAoU29mdHdhcmUgSW5wdXQgT04pIGJpdCBmb3JjZXMgdGhlIGlu
-cHV0IHBhdGggYWN0aXZlIGZvciB0aGUKPiA+ID4gcGluLiBUaGlzIGNhbiBiZSB1c2VkLCBmb3Ig
-aW5zdGFuY2UsIHRvIGNhcHR1cmUgdGhyb3VnaCBHUElPIHRoZSB2YWx1ZQo+ID4gPiBvZiBhIHBp
-biBkcml2ZW4gYnkgYSBtb2R1bGUuIEknbSBub3Qgc3VyZSB0aGF0J3MgbmVlZGVkIGhlcmUuCj4g
-PiAKPiA+IFRoYW5rcyBmb3IgdGhlIGV4cGxhbmF0aW9uLCBtYWtlcyBwZXJmZWN0IHNlbnNlLiBJ
-IHdpbGwgc2VuZCBhIHYyIHdpdGhvdXQKPiA+IHRoZQo+ID4gU0lPTiBiaXQgc2V0IChlLmcgZXhh
-Y3RseSBwZXIgdGhlIGh1bmsgaW4gS2llcmFuJ3MgcGF0Y2gpLgo+IAo+IEknZCBsaWtlIHRvIGdl
-dCB0aGlzIG1lcmdlZCBpbiB2Ni4xMS4gSWYgeW91IGRvbid0IGhhdmUgdGltZSB0byBzZW5kIGEK
-PiB2MiwgSSdtIGhhcHB5IHJlc2VuZGluZyBvdXIgdmVyc2lvbiBvZiB0aGUgcGF0Y2ggaW5zdGVh
-ZCA6LSkKCkkndmUganVzdCBkdXN0ZWQgdGhlIGJvYXJkIG9mZiBhbmQgd2lsbCBzZW5kIHYyIHNo
-b3J0bHkgYWZ0ZXIgdGVzdGluZy4KClRoYW5rcyBmb3IgdGhlIHJlbWluZGVyIDotKS4KCj4gCj4g
-PiA+ID4gPiDCoMKgwqDCoMKgwqDCoCBwaW5jdHJsX2kyYzE6IGkyYzFncnAgewo+ID4gPiA+ID4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZzbCxwaW5zID0gPAo+ID4gPiA+ID4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+ID4gPiA+ID4gTVg4
-TVBfSU9NVVhDX0kyQzFfU0NMX19JMkMxX1NDTMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiA+ID4gPiA+IDB4NDAwMDAxYzIK
-PiAKPiAtLSAKPiBSZWdhcmRzLAo+IAo+IExhdXJlbnQgUGluY2hhcnQK
+This series brings up the HDMI output on the Debix Model A SBC.
+
+With support for the HDMI transmitter for the i.MX8MP SoC in mainline,
+we can now enable the HDMI output on the Debix Model A SBC.
+
+Changes in v2:
+- Do not set SION (Software Input ON) bit in pinmux pin config register.
+- Small changes to commit log/cover letter.
+- v1: https://lore.kernel.org/linux-arm-kernel/20240415114135.25473-1-chris.obbard@collabora.com/
+
+Christopher Obbard (1):
+  arm64: dts: imx8mp-debix-model-a: Enable HDMI output
+
+ .../dts/freescale/imx8mp-debix-model-a.dts    | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+-- 
+2.45.1
 
