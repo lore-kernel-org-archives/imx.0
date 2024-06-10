@@ -1,197 +1,240 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2042.outbound.protection.outlook.com [40.107.22.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B694E14D6E9
-	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 20:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718050489; cv=none; b=f5p3Kqvm4eYVXK3m3BjqvR5ig3xZtvPHiFgLVL0I8M763apIEd7gobVwwSWzuohBiywqSXpGekC4/hMrPYshp9kMzYUF7diABHr6jnOcXd/vCFL2IQAgdEF8mS9cHe5/8oZGkhrCbbYPAjNEfqi1V/vDZm/HOPP0eXcFgAGut2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718050489; c=relaxed/simple;
-	bh=bdvJlbw1/chnYOtLBpIve21xjV9IQLVV4o87fmIs9pQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o8cCeByvAubcB/8q7YRCmG+KJ212bGdDLoBhqAZ9lQYLiemrAABwDvkZL1zC0oLZcN0Zl+EkNj3Wam+sRtBrsU5zUkkGyU65JEiCzoSaVWXMlLuoTOrAp6k26OkE5GZ/yOI2Qbv7uAxVuqUwuHYhECiElenCCZZI8w2RmPMrk4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=twx9GJqs; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978E14267
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 20:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718052401; cv=fail; b=DBPguAA43nWlVbPKDfw4VpvwFXid0dn4kFKrvdY7wEnT5N1IuDZEoyPQBQL2+5RifYjzKoUJkI9iEtJmdyaNJeHAchmAWG2E33XwFTAmCsFypK+6LtLrThldDRzV8WdSRuvhZXFsS60qLfCfhALew6g6yVuXIGZHgr8PKhkh33U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718052401; c=relaxed/simple;
+	bh=+xfOy59njoxBv9g1k3teB3aqGtcXLiGDFGi7zR1Zie4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=WYo5dy6ADKdjjofDvchBtkLJYL3TxqSUDcdwW7s0Tf/iwXmv9bwrHGCwyqdIe0o2KxTVdxeuaf60EE+zyAIQLZHo4bylnDs/gfA1pMtlxqtPuR2nUu698wh9blq4JNIGcaRnBWdGD7uQXg5pEsOrzjbsvF54fLB+vk2nw2uLXi0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=F++nRYsb; arc=fail smtp.client-ip=40.107.22.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="twx9GJqs"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8CE3C512;
-	Mon, 10 Jun 2024 22:14:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1718050467;
-	bh=bdvJlbw1/chnYOtLBpIve21xjV9IQLVV4o87fmIs9pQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=twx9GJqsl9G3bcmwUXpH6J5IOTOjz8S3xKO3CrI/3+sQ07n9QjwcrFfk/NzYrqUut
-	 +XOfpLbG3QWcDl882laJ8sT7n1ilyAaNAlBrHe7CjvDXt1Ksb5EhhCt2eR0cLTwyCJ
-	 5FOBMNmfIjiHt9JMMlgEN1Orua4ePV95Zj1idzeE=
-Date: Mon, 10 Jun 2024 23:14:20 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org,
-	FrancescoFerraro <francesco.f@variscite.com>,
-	Rob Herring <robh+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Harshesh Valera <harshesh.v@variscite.com>,
-	Nate Drude <nate.d@variscite.com>, Shawn Guo <shawnguo@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Marco Contenti <marco.c@variscite.com>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 0/4] arm64: dts: freescale: Add Variscite i.MX8MP
- DART8MCustomBoard v2
-Message-ID: <20240610201420.GO26663@pendragon.ideasonboard.com>
-References: <20240608180447.31378-1-laurent.pinchart@ideasonboard.com>
- <171804879863.2984705.9370632116551818195.robh@kernel.org>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="F++nRYsb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IQ4qtvogsd+Nc/UjjK9/B/bhqYOVUUhaUBkvfRv9P+8tuCwQ4pbP3mJM5qaB9h6GcCMHp4IRYRcqElc51zuHu9B/TqsATIabY9SJm8/6RLTCAKxlW5yNFw5q6UsxFWy7vSD1OIySDa/aX7v0ivdfK2con5uuV8GCT6ky1Lz87SrjRGIrNfd/mHslHLqluyykp647GalEwkH0dIFuPdThWIUGUMh6mtWExrYJDeGBQ5MXqLFh+dCfhPatZ7MWOLBnsU5+F6HphE14+5xdf8pphu23f4WmST7UIBtkjTjBqQ1ODiCZr1ZJ1LMb6souQyYKbrbgJ/XKw3qUpGGSCJDH7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZEaaQR30MBc3/lbjvS7bmmqD9lXjH+WlE3Jfd6ItUdg=;
+ b=KLCVAiPmijkNnKjU7kqj9x2V1m9FXxvdJNm4gQ9sYO6Gc++CyLhrBpq2m1ARuNVaVbvc67L6gpBxl4RXxucMVlWsNatNBp3BpvP5r+6y8fgpx81vjIdJjkgpef4FdbkayTwdIPbYNSVO+29jXx05xQr/WXp2qp5mfipOLdG1jKcX8vmQlnSr2E+aIczDXkIAqTBMJxmR0SX4q9dZQgQQIcrz66OYHTH49ucQMQhdQbXlRbnb8mBfYq1mjiV4RpGoYDm0SpgMnx7d6g05ecLGf0Svi9HvUyfZbBn2mUe+qy+LVKMXvWjsOWa4TrH4VvJXxGYYSUfq53WLAZI1b3sR/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZEaaQR30MBc3/lbjvS7bmmqD9lXjH+WlE3Jfd6ItUdg=;
+ b=F++nRYsb63NzVivMtvskxmLefbYzj/ngPLihX6T5o0f8A09KCjdGR4tOEHB9MN9gPgAg7+AY+Ug+fESoQHAu2979FCDEIPFZKnnY3EAX2wMNlKQtayMiXzB//q5pK+hC/imxaUN3/xfsnWxL8Db5p+gajSG1J12v+OMJu5PZMoA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DB9PR04MB8463.eurprd04.prod.outlook.com (2603:10a6:10:2c0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Mon, 10 Jun
+ 2024 20:46:35 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.036; Mon, 10 Jun 2024
+ 20:46:35 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 0/9] arm64: dts: imx8qm: add subsystem lvds and mipi
+Date: Mon, 10 Jun 2024 16:46:17 -0400
+Message-Id: <20240610-imx8qm-dts-usb-v2-0-788417116fb1@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABlmZ2YC/3XMyw7CIBCF4VdpZu0YmBS8rHwP04VQsLNoqVBJT
+ cO7i927/E9yvg2Si+wSXJsNosucOEw16NCAHR7T0yH3tYEEtUILjTyu59eI/ZLwnQxerFI9Ge8
+ UaainOTrP6w7eu9oDpyXEz+5n+Vv/UlmiQKXViaTRrSd1m9b5aMMIXSnlC04Q6TmqAAAA
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718052391; l=3670;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=+xfOy59njoxBv9g1k3teB3aqGtcXLiGDFGi7zR1Zie4=;
+ b=bI+ol7+At/2dsh8cS28OtodfDJ99+9EfvgTitsGNe3THnx1ylYpwyBWcVHX8qAdVrfg9UnVH0
+ zjHPXcPswLbA3NGoyuX7hyBX6iwHe3aeE7Gw/9Tg3thUrJ2MsXyW+AY
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BYAPR06CA0059.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::36) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171804879863.2984705.9370632116551818195.robh@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB8463:EE_
+X-MS-Office365-Filtering-Correlation-Id: dfc94f5b-f2f5-4f86-302b-08dc898e6b05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|52116005|7416005|376005|366007|1800799015|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VVBLUG16TmRnbXFSTGVPK0RHMm5objRhRmJvOUpZZUdVd00xR0Z5M3BNQ3py?=
+ =?utf-8?B?QXM0OHE0UUYrRDdZUXlOc0FpY0VxbXFCK0FvOWcxNTAxT1lWNzduM09qWVRa?=
+ =?utf-8?B?TE5SN2FTYjB2L0NOYlRhckZoRXFTR0RkaHFGS01uSGlxZFhtWXdyOWhncXlj?=
+ =?utf-8?B?QkxCdkY4RHl0SDVrSVdWRTVCQWRhb3dBWWNrbmNUQ0VxTTc5N0RsL3ZVU290?=
+ =?utf-8?B?UTdQVG9aNEdUUFdZN29ERWlWYjJKZ1Z2ZFo4UW5uWEF0Z3FuRndXMlVmVis2?=
+ =?utf-8?B?S3NsV1JkYXBPbThRMXlIVTBYZ2VlVjBkM1kya0QvcGRxZlUvek5CbFFjNXM4?=
+ =?utf-8?B?MWhjM2JNVkpVZmVEcjJKbU1xY0xFNm9SMWludm5ZMUJsN0M4eTFOdVhYY01J?=
+ =?utf-8?B?UDUzNjYwclM0bmE2YjZrc0NBSFFFTlp2aFAra3BxdmxWTm5yTEtIMWoxOTQr?=
+ =?utf-8?B?c0Rxb1V4QVlLT0x1WWc5WGM2TW5LRjJnWStmWnEvWTI1ZllJU0RKdmk3Y1Q3?=
+ =?utf-8?B?YURqYXE3R0RyM215K1RJSUcvc3cyRTlpbnU2TVN2Unp4VlYwUC9taXZOemhl?=
+ =?utf-8?B?Nyt0OWsxYWU5ejhvcUNmREttVDdvU0FvOXlIZ2NWSjdKTmovMStCdnN2Uldh?=
+ =?utf-8?B?bDhic2JqTVR4Qm05THgvTUtjN3VDNVFCYm00TzZSMlZ4OFp6Tmp3UnIzeXF2?=
+ =?utf-8?B?TU40QnRHOUZ4NU1sdXp4dkZveExPVENGc3BwSXNGTE9SSGYxT213TWRpMkU3?=
+ =?utf-8?B?L3FvRUN2N3NMeTNjaTJMQ2dBZ0RBbUxNNGp1WFVMUEFxdCsxYzBiN3hrcEl2?=
+ =?utf-8?B?ZWhQaVlFaGVpVC90MXRSUTF2Y2xzT3RaM3VLUGg4VzFoMDVGVjBUa2pWS2t1?=
+ =?utf-8?B?enVPYjNNL01Sd1M1QWx2N1NwU05XUCtNSDhCRUdaZVJBRngxaW85eHlYZGt4?=
+ =?utf-8?B?MHh3R2pUdFFLcnU4aS9XdGVKM3lCaHdOOVBoT0pqU24rcW9lN0NUZFYwVm01?=
+ =?utf-8?B?L2NCM2xBbzluRmZDenhGbURha1EzNFYwQzBhd1BZTkZsc0hmaFZMb1lVazh2?=
+ =?utf-8?B?MlBEQjBCT2gyL0JoT3hqd3B0enk1NkxUQnpmMjlKZ2NwZkxISFNybXpOemNv?=
+ =?utf-8?B?aGhPMmJLMjRvcUptN0MzV1NVOGVSK3h3MFhTVGozU25vN0xpWExmMmhFcFZL?=
+ =?utf-8?B?bkdDb0EzNzRiVTVsdXpQekRkVnFLVmJNSnQ2K1Z6KzhLTXZET1IzbHpBeEdy?=
+ =?utf-8?B?NVhYQU1mU3BydzhQWklEUTZ1VFI5Vm5QMTJQNGNmd1NXYlNGcmZTaWJNZWh4?=
+ =?utf-8?B?RnVNbWRrc0xVbjdXU0dqdFZTL1RYRUlmVUQrTkh5Ukk1Q2Y1VnR2ejZ0d0gw?=
+ =?utf-8?B?RERlcUh0RXVpM3BSdEhLaWpRNDJoTDEveTU3cFc0blJXbk9yRjQ0Q1RhL2Qr?=
+ =?utf-8?B?cE15WXREcGNrUG95YndBV0lORXczKzhycDNaK1Z4eGFJU3dKUG1jTUZUbEF4?=
+ =?utf-8?B?ait2QXBlMURna2pvZGk2Q3RBTEZzUkxnL1FvbFdwUFpQd1BKM3VVeWNBVlF4?=
+ =?utf-8?B?K3RKYUQraTVCV21JbjlBOGJpRDlsTm9LTnpzRW9CU2o0bTN5OFdpZnp4NlNQ?=
+ =?utf-8?B?ZHA1SkthdjJoNnJtWVIvaTNsczc0cUlPcU1Nd051ZWxjWFZkeXNJZ3NhdXc2?=
+ =?utf-8?B?TW9icktMYkpGT05rd0dOdlFuU1h0Q2J3V050cGpkNE93OTlPVDhpSTkxUXZW?=
+ =?utf-8?Q?6q4wsE2u60BNSCEIv+LcqDMR/t3B0ZOpXUNzKVE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(52116005)(7416005)(376005)(366007)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a3JWSTVUY1JOY3B3dlR2TU84WHhBZlpUVDl6dGF0STExY3RxSVJBTW5xdFlI?=
+ =?utf-8?B?Q2tuT2xGNmk5ZWlMdHcxdnN4WDc5QUtYaGl4aWFWK1dVRjROYmlRSjJUR2dL?=
+ =?utf-8?B?ZWcrdG1COGxHM2JwVjJrL2NBUnBXTmFuTUFML0VJVjJVanVKckRBUE85Y0h4?=
+ =?utf-8?B?Vm8vV080K1duUFdyYUFPK1FsRW14elc4RHM5ZDQyTFY4Q0ozTmtNNWdoVkpU?=
+ =?utf-8?B?YnB4NHUxcWhFMUoyRDE4Tmx5eFE4aEhUcEtmOFpGOUwxaHNqNU1LWk84SXla?=
+ =?utf-8?B?cFh1anBmZ0l2d2JjbG54V29JRlNRRlJQc05DZzBnRXQ1bE1XY3UrejFkUFdM?=
+ =?utf-8?B?QS9NbDhWcE1iM1l5WENRZHB2V084d3hGZ1ZWZ2JMbTZkRFFQSzQ4MU1TMWpp?=
+ =?utf-8?B?RVNEV205OGpTa0loMlpZdUtEdW9YZUJkY3pid000V2tOR0lKK1BnanJNTytw?=
+ =?utf-8?B?SFhoS2UyKzlYZkw4di91WUZUd2JlTmFFclI1Tkc1cFZpSnhLY1BEd1NQSDZj?=
+ =?utf-8?B?MEVQY1FPcGZVbGw1UUkrUm9NbnFiUUF2NUtUR200emI4MGhqQjlhb251a0tx?=
+ =?utf-8?B?U2tpUDZaSDljKy9nWE13cXNiYVZ6YTRzcGFXZFJxUUI3RVRkRHV5V1BQc0Rt?=
+ =?utf-8?B?NmxOSE5SR2U2M1lWdVl4U20vN2RVS21vR293bUcydTJhbHRuUnlHQkhHU1dH?=
+ =?utf-8?B?aHpOd3h6NUtlY1VCYXd5M2N1WHpidGpJYTdZa2E1MGZVZ3RwM3dSUXh4Zmls?=
+ =?utf-8?B?SlVTODcvTVFIWlNjeUQ0cXZrSE9ZRWVsWjZ5RWpTYXRFM0RSK1RkdHl2d0JV?=
+ =?utf-8?B?TkV0U09WT3ZMU2QzTlZLdGlxaksyNGIwMUMrem40bVh5d2hCdm9RQWdVRmZy?=
+ =?utf-8?B?V2pDSFdBWDNOekFIc2dTaHVFYi90RmRLNUx2VzdYTGlCN1VsOE1TalFWalda?=
+ =?utf-8?B?ZUdFVnc3UkZlalZ3SzByaElvM3FxNWVITGRsbHhUbkVUMGw4Vkk4NUV6dkxw?=
+ =?utf-8?B?YWxMdi90RHlSZjI3Wk81dmUxSjNlbUsxdEEvcktWdHRLVUYxclJ3dUhtcGNq?=
+ =?utf-8?B?aFJCL2hlY3E1VFZRYVVodzBNcHp2VUFnTzBYcWJsTkdqd1hoRW1nVnVpMnpu?=
+ =?utf-8?B?QkxudEw0ZlV1OEh0NkZDQWE4azhIT0NidVdSc3NHU0lPcHFUTTJXTERqQjRm?=
+ =?utf-8?B?b2kyakNDSFY3MEhCTE9SOFkwanpKcUhqVG55TjBaT2JXeXhSelNBSC93T0t6?=
+ =?utf-8?B?NW5aM3J2SUVVbUZzamdwcEVnWHZOaFl4b0tQTHgvVVNBaFBLZFk4NlNWbjkv?=
+ =?utf-8?B?NFVyVW9yMWNiSk5nUDVkS3VTTzJQaGY0WGlud3ExREdHMmljZ0I5OFRHRXVP?=
+ =?utf-8?B?bDhRQ1ZXNWVJUjM0dVowMW9lMGttVWdMcnp4TkZRMFFYaDBXWkNUQzNFTUFJ?=
+ =?utf-8?B?eDJ4MGFUQVJ0a2tFRVNpa29wY0s4T0ZPeC9hOGxTTlhVdEJUVytoMUdOUXFl?=
+ =?utf-8?B?eGpjNjFwT2dpSzNyWlJqUkloNE90R0hiUTFabGUvakYyWjFnOVlRSEh0TzU1?=
+ =?utf-8?B?VXl6SGo5STFsZzROd2dTWFVxcm9xMzBCaTA5SXViTjZpUGZ0ZWNadGoyK3Fn?=
+ =?utf-8?B?U2VuTmRxYnJzMFdKbW8ySDJWWGZtRlFqbG11aHRPcThBS1p0cFRZK29NR3h0?=
+ =?utf-8?B?UmtVem8zZHdOOGNlUS84cktvWDhUbGJrSHNEd2l4SExTb0FRRGNTbzMvNUx1?=
+ =?utf-8?B?UkFoMWpaeFo0YjFpU25RYnRmZHpNY0d3QzEvNG5ldWFrbFlENkpHYjJPZnBS?=
+ =?utf-8?B?R2xVTGRyeEV5dEZwVTV2TWFEc1lHWnI5TzVyNGZJQVpVWUxRSUs3b3Z1WDM5?=
+ =?utf-8?B?QStUbExZQkJlUG9iVlg1QmlGYTFRZG9qT0wxOWhTMUFZV2VYdlpsQ0JYaU16?=
+ =?utf-8?B?cjREVGhXdWprdHh5a1JNYXlVVWFBWCszUHRSK1UzT1ZYQmxRR3UzeS9wTGpZ?=
+ =?utf-8?B?VXlkQXhHcDFJWUFZZDU5WWZyVHVuV1E3enpEYlVBamxrZDQ0TkZ2SWZDZGR4?=
+ =?utf-8?B?RTZIaFlQWWlHcGhZM25zN25QWmg4QXNqM2FvVHpWSmtsTDd4YUxDQVFSaDBq?=
+ =?utf-8?Q?eAyw=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfc94f5b-f2f5-4f86-302b-08dc898e6b05
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2024 20:46:35.4416
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UDF1FmOypa8TZfiOPpQE7RDCyW4EvS3QZMljIERJTafJbGiSOcM1hNyIP4qfcZtYaJfR8R8/wRshn5Pd5T2u7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8463
 
-Hi Rob,
+Add subsystem lvds and mipi. Add pwm and i2c in lvds and mipi.
+imx8qm-mek:
+- add remove-proc
+- fixed gpio number error for vmmc
+- add usb3 and typec
+- add pwm and i2c in lvds and mipi
 
-On Mon, Jun 10, 2024 at 01:55:15PM -0600, Rob Herring (Arm) wrote:
-> On Sat, 08 Jun 2024 21:04:43 +0300, Laurent Pinchart wrote:
-> > Hello,
-> > 
-> > This patch series adds support for the Variscite DART8MCustomBoard v2
-> > carrier board with a DART-MX8M-PLUS module.
-> > 
-> > The device tree code originates from Variscite's BSP, and has been
-> > heavily refactored to adapt to mainline DT bindings. Some features have
-> > been left out:
-> > 
-> > - Camera: cameras should be enabled through overlays as they're not part
-> >   of the carrier board itself. I have successfully tested both camera
-> >   ports with modules that currently require out-of-tree drivers, so I
-> >   haven't included them in this series.
-> > 
-> > - USB OTG: the carrier board has a PTN5150 but doesn't route its
-> >   interrupt pin to the SoC. It should be possible to work around that in
-> >   the driver by implementing polling, but that requires more work that I
-> >   can perform at the moment.
-> > 
-> > - WiFi, Bluetooth and audio support: those are part of the DART SoM
-> >   itself, for which schematics isn't available, so I can't easily
-> >   troubleshoot them.
-> > 
-> > - PCIe: I lack test hardware for this.
-> > 
-> > May I tempt someone from Variscite to submit patches to enable at least
-> > WiFi, Bluetooth, audio and PCIe ? :-)
-> > 
-> > The LVDS display panel is integrated in the carrier board device tree in
-> > the BSP, I have split it out to an overlay in this series as it is
-> > shipped with the development kit but isn't an integral part of the
-> > carrier board. In the review of v2, Shawn pointed out that this overlay
-> > caused the DT compiler to spit ou warnings. This is still the case here:
-> > 
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:54.3-16: Warning (reg_format): /fragment@1/__overlay__/touch@38:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:52.11-68.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/touch@38: Relying on default #address-cells value
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:52.11-68.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/touch@38: Relying on default #size-cells value
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtbo: Warning (graph_port): /fragment@3: graph port node name should be 'port'
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:85.15-87.3: Warning (graph_endpoint): /fragment@3/__overlay__: graph endpoint node name should be 'endpoint'
-> > arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso:85.15-87.3: Warning (graph_endpoint): /fragment@3/__overlay__: graph connection to node '/fragment@0/__overlay__/panel/port/endpoint' is not bidirectional
-> >   DTOVL   arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtb
-> > 
-> > When compiling the overlay in isolation, the compiler doesn't know in
-> > which context it will be applied, and thus lacks information to validate
-> > the device tree. I don't think the issue is specific to this overlay,
-> > and I don't know if there are plans to handle it. If this is a blocker
-> > for the time being, patches 1/4 to 3/4 can already be merged without the
-> > overlay.
-> 
-> This has come up before. My suggestion is that you add the necessary 
-> information to the overlay. Specifically, just add the #address-cells 
-> and #size-cells to the overlay. That might mean you have to move up a 
-> parent for the target path.
+DTB_CHECK warning fixed by seperate patches.
+arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: usb@5b110000: usb@5b120000: 'port', 'usb-role-switch' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8qm-cdns3.yaml#
+arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: usb@5b120000: 'port', 'usb-role-switch' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/usb/cdns,usb3.yaml#
 
-It's not ideal as the overlay should really not care about that, but it
-will probably work around the warnings for this specific case. I'll have
-a look.
+** binding fix patch:  https://lore.kernel.org/imx/20240606161509.3201080-1-Frank.Li@nxp.com/T/#u
 
-Do you envision we will fix this problem in a nicer way in the future ?
-I wonder if it would become part of the DT connector support (or
-whatever becomes of that). I've heard multiple people telling me they
-would like to revive the proposal (or see it revived), so maybe there's
-hope. I know I have many copies of essentially the same overlays for the
-same Raspberry Pi camera modules connected to different boards which I
-would like to upstream.
+arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: interrupt-controller@56240000: 'power-domains' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/fsl,irqsteer.yaml#
 
-> > Laurent Pinchart (4):
-> >   dt-bindings: arm: fsl: Add Variscite DT8MCustomBoard with DART
-> >     MX8M-PLUS
-> >   arm64: dts: freescale: Add support for the Variscite DART-MX8M-PLUS
-> >     SoM
-> >   arm64: dts: freescale: Add support for the Variscite i.MX8MP
-> >     DART8MCustomBoard
-> >   arm64: dts: freescale: Add panel overlay for Variscite DART
-> > 
-> >  .../devicetree/bindings/arm/fsl.yaml          |   6 +
-> >  arch/arm64/boot/dts/freescale/Makefile        |   3 +
-> >  .../imx8mp-var-dart-dt8mcustomboard-v2.dts    | 529 ++++++++++++++++++
-> >  .../imx8mp-var-dart-panel-gktw70sdae4se.dtso  |  99 ++++
-> >  .../boot/dts/freescale/imx8mp-var-dart.dtsi   | 340 +++++++++++
-> >  5 files changed, 977 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dts
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart-panel-gktw70sdae4se.dtso
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-dart.dtsi
-> > 
-> > 
-> > base-commit: 41f93a496af2696d970cbcb3814261a9b32dbaa2
-> > --
-> > Regards,
-> > 
-> > Laurent Pinchart
-> 
-> My bot found new DTB warnings on the .dts files added or changed in this
-> series.
-> 
-> Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-> are fixed by another series. Ultimately, it is up to the platform
-> maintainer whether these warnings are acceptable or not. No need to reply
-> unless the platform maintainer has comments.
-> 
-> If you already ran DT checks and didn't see these error(s), then
-> make sure dt-schema is up to date:
-> 
->   pip3 install dtschema --upgrade
-> 
-> 
-> New warnings running 'make CHECK_DTBS=y freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb' for 20240608180447.31378-1-laurent.pinchart@ideasonboard.com:
-> 
-> ti,x-plate-ohms: size (2) error for type uint32-array
-> arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb: touch@0: ti,x-plate-ohms: size is 16, expected 32
-> 	from schema $id: http://devicetree.org/schemas/property-units.yaml#
-> arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb: touch@0: ti,settle-delay-usec: b'\x00\x96' is not of type 'object', 'array', 'boolean', 'null'
-> 	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-> arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb: touch@0: ti,debounce-tol: b'\x00\x03' is not of type 'object', 'array', 'boolean', 'null'
-> 	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-> arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb: touch@0: ti,debounce-rep: b'\x00\x01' is not of type 'object', 'array', 'boolean', 'null'
-> 	from schema $id: http://devicetree.org/schemas/dt-core.yaml#
-> arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb: /soc@0/bus@30800000/spba-bus@30800000/spi@30820000/touch@0: failed to match any schema with compatible: ['ti,tsc2046']
+** binding fix patch: https://lore.kernel.org/imx/20240528071141.92003-1-alexander.stein@ew.tq-group.com/T/#me3425d580ba9a086866c3053ef854810ac7a0ef6
 
-I'll check that. Sorry for not noticiting it before.
+arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: pwm@56244000: 'oneOf' conditional failed, one must be fixed:
+	'interrupts' is a required property
+	'interrupts-extended' is a required property
+	from schema $id: http://devicetree.org/schemas/pwm/imx-pwm.yaml#
 
-> arch/arm64/boot/dts/freescale/imx8mp-var-dart-dt8mcustomboard-v2.dtb: interrupt-controller@32fc2000: 'power-domains' does not match any of the regexes: 'pinctrl-[0-9]+'
-> 	from schema $id: http://devicetree.org/schemas/interrupt-controller/fsl,irqsteer.yaml#
+** binding fix patch: https://lore.kernel.org/imx/dc9accba-78af-45ec-a516-b89f2d4f4b03@kernel.org/T/#t 
 
-This one is caused by an issue in imx8mp.dtsi. A patch has been posted,
-see https://lore.kernel.org/all/2690282.X9hSmTKtgW@steina-w/. I think
-Alexander would appreciate feedback :-)
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/fsl,irqsteer.yaml#
+arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: imx8qm-cm4-0: power-domains: [[15, 278], [15, 297]] is too short
+	from schema $id: http://devicetree.org/schemas/remoteproc/fsl,imx-rproc.yaml#
+arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: imx8qm-cm4-1: power-domains: [[15, 298], [15, 317]] is too short
 
--- 
-Regards,
+** binding fix patch: https://lore.kernel.org/imx/20240606150030.3067015-1-Frank.Li@nxp.com/T/#u
 
-Laurent Pinchart
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+    Changes in v2:
+    - split common lvds and mipi part to seperate dtsi file.
+    - num-interpolated-steps = <100>
+    - irq-steer add "fsl,imx8qm-irqsteer"
+    - using mux-controller
+    - move address-cells common dtsi
+- Link to v1: https://lore.kernel.org/r/20240606-imx8qm-dts-usb-v1-0-565721b64f25@nxp.com
+
+---
+Frank Li (9):
+      arm64: dts: imx8: add basic lvds and lvds2 subsystem
+      arm64: dts: imx8qm: add lvds subsystem
+      arm64: dts: imx8: add basic mipi subsystem
+      arm64: dts: imx8qm: add mipi subsystem
+      arm64: dts: imx8qm-mek: add cm4 remote-proc and related memory region
+      arm64: dts: imx8qm-mek: add pwm and i2c in lvds subsystem
+      arm64: dts: imx8qm-mek: add i2c in mipi[0,1] subsystem
+      arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
+      arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes
+
+ arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi  |  63 +++++
+ arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi  | 114 +++++++++
+ arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi  | 138 +++++++++++
+ arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi  | 138 +++++++++++
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts      | 280 +++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi |  77 ++++++
+ arch/arm64/boot/dts/freescale/imx8qm.dtsi         |  27 +++
+ 7 files changed, 836 insertions(+), 1 deletion(-)
+---
+base-commit: ee78a17615ad0cfdbbc27182b1047cd36c9d4d5f
+change-id: 20240606-imx8qm-dts-usb-9c55d2bfe526
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
+
