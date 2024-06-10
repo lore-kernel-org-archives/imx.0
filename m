@@ -1,171 +1,168 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6921803A
-	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 06:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051DE22081;
+	Mon, 10 Jun 2024 07:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718002417; cv=none; b=f6JAzfvtm24MR/ut1iq3V7gd653nFWIArwBPdVBC7QVzpoE+zSQRvXZEJGqO/StiipA9Zb3SPK6sFXpYvKvxmyzqC6k3Or/0gJ5WSR0F+IL1LhHKnjajnaoHeRGWMFWvAhfqZTvOr74C9X8cnEThKELaCS16lyk93k4p+vaFyOM=
+	t=1718005084; cv=none; b=Q+PKJsEMR5hhM8otjPWee0mVKdc8cm0fmhMFGPOPIeVHMxb33pSw6Mr9oBeeK2CiNa0I/kCBYeRqhFHrh5eTO/F2F4pR9veDVSAsj+x6DIMQVMDytKJ6IjZZs4G6mRgxn3/Mk3yFQsQ/6dkiFO+O9ixULIaiUqGJ/+dZmUqG7uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718002417; c=relaxed/simple;
-	bh=mRZh5+OagwrYksdm05IvR/+1yNl8KYHz8Qj7URz+FVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jtdkOQLJowssxO+wCYqPRwcUd8yd2J9oqbW/aoDmtCdovh5KT+R+wygvZgTHSCI6jVd8s0KySESfJH0FWhplyvtzqCZdgHfqnzR63W2LrLMj4NzTWiX+4TjOG49Yk9Rrq30nOIGEW8SxIqq7TzIMURtFSjYJntJy3WFTFU6uMnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IEHJ/b+Q; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718005084; c=relaxed/simple;
+	bh=JKT8jeUz+peHP9dNxGhf4e2EBO7WzNrYvduLRcI94GQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FDeQ3hKhI3k1l8/+7rV6n5sufJMGT3Q5BW4apyCLf6/8z1BTMadKhOhB8pBXdrqMJrYZTtBRx9nxojevQPLWuaUG6h95w6wO5ph+oOwmDnByuZDLv0jcBaBBe/IHdsCwFxKiJZwT/wSVWw63h+OIqXbEAYHoaNuNtcXoqS95rmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xq+M6SYo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IEHJ/b+Q"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2c2f8f73010so735738a91.1
-        for <imx@lists.linux.dev>; Sun, 09 Jun 2024 23:53:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718002415; x=1718607215; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Q79+Rla3cX6Hmnq2eCF4cwSxfS8g2qeMA5niTT4AJrk=;
-        b=IEHJ/b+QjU//9hJSyO/4pSmC8FPzG12hGhbNR72+jEX51R3zyAdSE+qh1y2zYK9eLI
-         TbKpMMga+rbIY398gj0b7gjOGCiNR5hTYb59aSjh/ugeBTwQPoo6gYlD6QRWaCvJ6DbH
-         utrVLAKc0rHfJpB2nevn3MdwVIkwv8HxXug1GTV/gnOOUvwWU8tKIilu01GuxFoOnVYL
-         FFcbELMIZ1Tzv43HduLo8OpFY1EG1w8ouFIPVMxdLV4jkMWECzEKdx7lupvUxJLy5ccu
-         zPO+o3FalfrZP2JQmtpOJxhf4R1gtAW9KRrT6ZEEzV5nw6dGWY4y5y8S5B9GK6ONf1Nv
-         2iTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718002415; x=1718607215;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q79+Rla3cX6Hmnq2eCF4cwSxfS8g2qeMA5niTT4AJrk=;
-        b=JjWBipqAPlWwl/oGyIG2MX1G/zBvTo20frgvNbL2JNYNsJeFLLdZBtb4Zkl8SI1VXE
-         OmyUQWe+u3fCUK1b0z7JzDVlPFmHzY0WmB8nTs7bTqZz0BOj7bWlSePr2aQveKSYTfe/
-         n7JyqiI2xrCaUy931ctYpjWgNWOAmpb+IbZ89NdolFDs+9VqUWA8moR10NGhBx4d/akN
-         JOLP66ZTeoJ38jBN3FeEjO35RGmh6NTU1eeLX+M2iVSs8TKMeVsRGn7JaP+Odc2pRa4I
-         jKsDKz/xHCtG9+5dnHu9nq8m5u/HE5d/Gi5EQ6pHS61S7lc1jZwsLYtW2BwO/771uFIQ
-         hT+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXbaZ1Ok9JubrLegsz3bv19txeCdT1nFdBkTdPG+l2YdrYjNuZeKGduKfgXnAq7L2xP9hzSN9PVJGYIs8TjsKlS8nqr
-X-Gm-Message-State: AOJu0YyoGtzTB//dvEMdbINFNlA5n9T0bLXb/7Pfltm1WQhKyvVN1CT9
-	BVdyPg1SkK3D+ZqSJlvqcZ6Yz4jdYpiAORF9jy+RI+rD5MR4xtXRBDu2reP5IA==
-X-Google-Smtp-Source: AGHT+IGiQnfID/w2ovEqOtXmdaUmHolv4W8npj5rXP4hlu3K/zYS4n6pz5nKcO0YwT4Ao+fhHzZlGg==
-X-Received: by 2002:a17:90b:b12:b0:2c2:c3fb:b13c with SMTP id 98e67ed59e1d1-2c2c3fbb277mr5727406a91.44.1718002414578;
-        Sun, 09 Jun 2024 23:53:34 -0700 (PDT)
-Received: from thinkpad ([220.158.156.236])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c3094cfe3dsm1355898a91.15.2024.06.09.23.53.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 23:53:34 -0700 (PDT)
-Date: Mon, 10 Jun 2024 12:23:24 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>
-Cc: linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-	mhi@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH 0/5] PCI: endpoint: Add EPC 'deinit' event and
- dw_pcie_ep_linkdown() API
-Message-ID: <20240610065324.GA7660@thinkpad>
-References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xq+M6SYo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69A3C2BBFC;
+	Mon, 10 Jun 2024 07:37:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718005083;
+	bh=JKT8jeUz+peHP9dNxGhf4e2EBO7WzNrYvduLRcI94GQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xq+M6SYoiXTTgSBMjBLlIarHnOx21mTKAc77p3F/gX5OraHEk47d/6C25s+4a+ZW+
+	 SwAba5UtfZ8nZRgTjBHOVAWJS/arx4aJ35R6ijq+lTvJNbRLFOe9Nrl99bN7JKhGGs
+	 U2cuvYvom6JZYKoqHdEr6BSHZepKlbrreOvW6Znl18D8Kcosg/Gqd/+12PGsgRsOMk
+	 WNJjh0BLPv0oHDwNlSkQPKoxcEdYkl69Exi7RuVb3/pttgYWhMNnqiz6juo8dAR3ZF
+	 RsDURgHU8B79HiqfVnihSySRTaER3X1cxN+mczemkwnZhoTMIjDexJUSKnYexZUfIM
+	 8tgteJvwX+U2A==
+Message-ID: <d78b7a50-8f79-4733-bf2b-ee7d70501c47@kernel.org>
+Date: Mon, 10 Jun 2024 09:37:56 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] dt-bindings: remoteproc: imx_rproc: add minItems
+ for power-domain
+To: Frank Li <Frank.li@nxp.com>
+Cc: andersson@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
+ krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ mathieu.poirier@linaro.org, peng.fan@nxp.com, robh@kernel.org,
+ s.hauer@pengutronix.de, shawnguo@kernel.org
+References: <20240606150030.3067015-1-Frank.Li@nxp.com>
+ <19058054-5138-4d37-860f-dd430abd3a0f@kernel.org>
+ <ZmMk/T3I1jNcxKOB@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <ZmMk/T3I1jNcxKOB@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 06, 2024 at 12:56:33PM +0530, Manivannan Sadhasivam wrote:
-> Hi,
+On 07/06/2024 17:19, Frank Li wrote:
+> On Fri, Jun 07, 2024 at 09:32:26AM +0200, Krzysztof Kozlowski wrote:
+>> On 06/06/2024 17:00, Frank Li wrote:
+>>> "fsl,imx8qxp-cm4" and "fsl,imx8qm-cm4" need minimum 2 power domains. Keep
+>>> the same restriction for other compatible string.
+>>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>>
+>>> Notes:
+>>>     Change from v1 to v2
+>>>     - set minitem to 2 at top
+>>>     - Add imx8qm compatible string also
+>>>     - use not logic to handle difference compatible string restriction
+>>>     - update commit message.
+>>>     
+>>>     pass dt_binding_check.
+>>>     
+>>>     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-rproc.yaml
+>>>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>>>       CHKDT   Documentation/devicetree/bindings
+>>>       LINT    Documentation/devicetree/bindings
+>>>       DTEX    Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dts
+>>>       DTC_CHK Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dtb
+>>>
+>>>  .../bindings/remoteproc/fsl,imx-rproc.yaml         | 14 ++++++++++++++
+>>>  1 file changed, 14 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+>>> index df36e29d974ca..da108a39df435 100644
+>>> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+>>> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+>>> @@ -59,6 +59,7 @@ properties:
+>>>      maxItems: 32
+>>>  
+>>>    power-domains:
+>>> +    minItems: 2
+>>>      maxItems: 8
+>>>  
+>>>    fsl,auto-boot:
+>>> @@ -99,6 +100,19 @@ allOf:
+>>>        properties:
+>>>          fsl,iomuxc-gpr: false
+>>>  
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          not:
+>>> +            contains:
+>>> +              enum:
+>>> +                - fsl,imx8qxp-cm4
+>>> +                - fsl,imx8qm-cm4
+>>> +    then:
+>>> +      properties:
+>>> +        power-domains:
+>>> +          minItems: 8
+>>
+>> What happened with the "else:"? How many power domains is needed for
+>> other devices?
 > 
-> This series includes patches that were left over from previous series [1] for
-> making the host reboot handling robust in endpoint framework.
+> So far, only fsl,imx8qxp-cm4 ind fsl,imx8qm-cm4 need power domain (2-8). 
+> Power-domains is option property. 
 > 
-> When the above mentioned series got merged to pci/endpoint, we got a bug report
-> from LKP bot [2] and due to that the offending patches were dropped.
-> 
-> This series addressed the issue reported by the bot by adding the stub APIs in
-> include/pci/pci-epc.h and also removed the unused dwc wrapper as concluded in
-> [3].
-> 
-> Testing
-> =======
-> 
-> This series is tested on Qcom SM8450 based development board with 2 SM8450 SoCs
-> connected over PCIe.
-> 
-> - Mani
-> 
+> Can I just remove whole "if"?
 
-Applied patch 2/5 to pci/endpoint! Krzysztof, please apply patches 1/5 and 5/5
-to controller/dwc (patches 3/5 and 4/5 are already applied by you).
+No, I rather expect else.
 
-- Mani
+Best regards,
+Krzysztof
 
-> [1] https://lore.kernel.org/linux-pci/20240430-pci-epf-rework-v4-0-22832d0d456f@linaro.org/
-> [2] https://lore.kernel.org/linux-pci/202405130815.BwBrIepL-lkp@intel.com/
-> [3] https://lore.kernel.org/linux-pci/20240529141614.GA3293@thinkpad/
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
-> Manivannan Sadhasivam (5):
->       PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
->       PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers
->       PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API to handle Link Down event
->       PCI: qcom-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
->       PCI: layerscape-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
-> 
->  drivers/pci/controller/dwc/pci-dra7xx.c           |   2 +-
->  drivers/pci/controller/dwc/pci-imx6.c             |   2 +-
->  drivers/pci/controller/dwc/pci-keystone.c         |   2 +-
->  drivers/pci/controller/dwc/pci-layerscape-ep.c    |   4 +-
->  drivers/pci/controller/dwc/pcie-artpec6.c         |   2 +-
->  drivers/pci/controller/dwc/pcie-designware-ep.c   | 116 +++++++++++++---------
->  drivers/pci/controller/dwc/pcie-designware-plat.c |   2 +-
->  drivers/pci/controller/dwc/pcie-designware.h      |  10 +-
->  drivers/pci/controller/dwc/pcie-keembay.c         |   2 +-
->  drivers/pci/controller/dwc/pcie-qcom-ep.c         |   5 +-
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |   2 +-
->  drivers/pci/controller/dwc/pcie-tegra194.c        |   3 +-
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |   2 +-
->  drivers/pci/endpoint/functions/pci-epf-mhi.c      |  19 ++++
->  drivers/pci/endpoint/functions/pci-epf-test.c     |  17 +++-
->  drivers/pci/endpoint/pci-epc-core.c               |  25 +++++
->  include/linux/pci-epc.h                           |  13 +++
->  include/linux/pci-epf.h                           |   2 +
->  18 files changed, 162 insertions(+), 68 deletions(-)
-> ---
-> base-commit: 7d96527bc16e46545739c6fe0ab6e4c915e9910e
-> change-id: 20240606-pci-deinit-2e6cdf1bd69f
-> 
-> Best regards,
-> -- 
-> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
