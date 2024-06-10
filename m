@@ -1,88 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06CD77F2F;
-	Mon, 10 Jun 2024 17:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1AC14D702
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 17:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718039769; cv=none; b=AenOK3gkdlSWaRQklXyuYTVd+SptnxuLydFVnbVn97xtfZncY3zR7iJ2+J5M88+iLuq7qSrrPDSvm9nRWjNLnbQS/kJn0OApOi6xpEL41MPm6O0O3Phol7KJHwjoILDsK1fpVctXrN11BgnUp/dFoKqpXyyNeuFsMl8Dvo6iGAE=
+	t=1718040999; cv=none; b=qELb8N2KryEjpT92raotTARIeGehECp2Q0FFK9kPCgmA+MUhOX8jzbMK/GikoMb5p77Ss6bSItW1Qh4pbkTcNMIOlB1vPC8GmFb5NeoUVUIFdsOUtwBp+j7REqFraK+A9rJEjnkZTPBZUCpa/q+ld6ZMDVuS48wRwD3N1/g50Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718039769; c=relaxed/simple;
-	bh=HinoY02p1LpLPOjaaEHb1JVXGrzq+rrnxJRiEJ48xlw=;
+	s=arc-20240116; t=1718040999; c=relaxed/simple;
+	bh=5peT9yE4nDGFeJtvaJ7NLGE1KQp2YckJYIwOYXJbbGA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZYnzr2V2jflIGly7o4Xvt9V0kcdioNBHmen0s+Ta9zq5nZaCAxO+fzTNDzzI5AhZNumUh2E1fw5CG0uKtUF92vigltgqXROi9WM8psgXni5776HUTmI9f/Odn8P49qC0ZJngoBqt/XEUBUouKAItvDz9y92BZj2ADY4AVuun6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AZcN0L1s; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=IDPLA/9TK1YCc/EG1ZUJANhg4a4PKHoDTdBPljay2ny2Zwgr1t83f+3ZwAWij/bmwi01x1yAzT5sBgAxxtns0G6Xs696mxwBhloRihqxG3QvlwnvtmbbyGZdYBE+VT1eSMsU7QvSSRMyRbSIbMvS7a51ZDHmC4qbdMPqeFyo3Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=McdIVopN; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AZcN0L1s"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rwMOeMtIESGwI5KegBNglkXRUu/oEgFYhH+CJMDK8wM=; b=AZcN0L1s1aXflwtaQLdqmXEwhR
-	l0YTaETKG2vL5RvkAJkkf5zPiawQ0Wg3ApdT954vOH+8N3GZOFHHXC+k8yZDh9uEQztQq/pmK5mjg
-	qeAFGIy4dMEthS7CeV9R2Lh8NV1AIbmY6TsibUF3Va98myxlVlrhKeF+OikoBUzKzdEs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sGick-00HJnh-QN; Mon, 10 Jun 2024 19:16:02 +0200
-Date: Mon, 10 Jun 2024 19:16:02 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Johannes Zink <j.zink@pengutronix.de>
-Subject: Re: [PATCH v2 2/5] arm64: dts: freescale: Add device tree for
- Compulab UCM-iMX8M-Plus
-Message-ID: <92d20188-d1e5-4983-ae70-14ef2f5a2342@lunn.ch>
-References: <20240317164850.32708-1-laurent.pinchart@ideasonboard.com>
- <20240317164850.32708-3-laurent.pinchart@ideasonboard.com>
- <c5f5fd07-99e3-4a43-a92e-9e622932ea1b@lunn.ch>
- <20240317185722.GA24220@pendragon.ideasonboard.com>
- <7deaf04a-7433-4712-9fb8-1c89fc283346@lunn.ch>
- <20240317235030.GB18202@pendragon.ideasonboard.com>
- <be18ffcf-3157-4f8c-9bb1-10d6520900f5@lunn.ch>
- <20240606223823.GA2245@pendragon.ideasonboard.com>
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="McdIVopN"
+Received: from fedor-21d0 (unknown [5.228.116.47])
+	by mail.ispras.ru (Postfix) with ESMTPSA id DF359407853A;
+	Mon, 10 Jun 2024 17:36:26 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru DF359407853A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1718040987;
+	bh=3mx7J795/y8Yz1JHM3D8D7/9NeMSSgSBgbIlVoPD2Nw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=McdIVopNHE9BRDrwTqPcWXIO+30y9qCb6noHwAH4dDKfyUbq9GDBLoR6aKWr8io2I
+	 BT2j8PVErELdSAd8Q0EivkajK22MF3Znv3dvy255z1Ge/lhT4EBPLvC3z3qzikrNI4
+	 pGMDUX6mSsXL8Nfjm3WqLyyI5oB0K/q8lOoZvA8c=
+Date: Mon, 10 Jun 2024 20:36:19 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Aleksandr Mishin <amishin@t-argos.ru>, imx@lists.linux.dev, 
+	lvc-project@linuxtesting.org, Shawn Guo <shawnguo@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [lvc-project] [PATCH] remoteproc: imx_rproc: Adjust phandle
+ parsing issue while remapping optional addresses in imx_rproc_addr_init()
+Message-ID: <20240610-4fb504648421659114538a50-pchelkin@ispras.ru>
+References: <20240606075204.12354-1-amishin@t-argos.ru>
+ <ZmcuFRfjKRQG9OXI@p14s>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240606223823.GA2245@pendragon.ideasonboard.com>
+In-Reply-To: <ZmcuFRfjKRQG9OXI@p14s>
 
-On Fri, Jun 07, 2024 at 01:38:23AM +0300, Laurent Pinchart wrote:
-> Hi Andrew,
+On Mon, 10. Jun 10:47, Mathieu Poirier wrote:
+> On Thu, Jun 06, 2024 at 10:52:04AM +0300, Aleksandr Mishin wrote:
+> > In imx_rproc_addr_init() "nph = of_count_phandle_with_args()" just counts
+> > number of phandles. But phandles may be empty. So of_parse_phandle() in
+> > the parsing loop (0 < a < nph) may return NULL which is later dereferenced.
+> > Adjust this issue by adding NULL-return check.
+> > 
+> > Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> > 
+> > Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
+> > Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+> > ---
+> >  drivers/remoteproc/imx_rproc.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> > index 5a3fb902acc9..39eacd90af14 100644
+> > --- a/drivers/remoteproc/imx_rproc.c
+> > +++ b/drivers/remoteproc/imx_rproc.c
+> > @@ -726,6 +726,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+> >  		struct resource res;
+> >  
+> >  		node = of_parse_phandle(np, "memory-region", a);
+> > +		if (!node)
 > 
-> On Mon, Mar 18, 2024 at 01:58:56PM +0100, Andrew Lunn wrote:
-> > > I don't know if there are public errata about this issue. It is beyong
-> > > my areas of expertise. I've found a relatively recent e-mail on the
-> > > netdev mailing list that seems related ([1]), but there was no reply.
-> > > 
-> > > [1] https://lore.kernel.org/netdev/9c1c9408-88ac-4ade-b8ec-2ae5d8922cac@pengutronix.de/
-> > 
-> > Thanks for the link.
-> > 
-> > Has anybody tried setting STMMAC_FLAG_RX_CLK_RUNS_IN_LPI.
-> > 
-> > https://elixir.bootlin.com/linux/latest/source/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c#L816
-> > 
-> > The problem description makes it sound like the hardware does not like
-> > the clock being turned off. Setting this flag might fix that.
+> You're missing an "of_node_put()" before continuing.
 > 
-> How would you recommend proceeding with this patch ? I can drop the
-> eee-broken-1000t property as I didn't notice any issue, or keep with the
-> risk that it my be cargo-cult.
 
-If you have not noticed any issues, drop it. This thread should
-hopefully pop up in a search engine if anybody runs into problems.
+The node is NULL in this case so of_node_put() is not needed..?
 
-	  Andrew
+Btw, there is a "rsc-table" node->name check in the the end of the loop
+body. It was added recently with commit 5e4c1243071d ("remoteproc:
+imx_rproc: support remote cores booted before Linux Kernel"). Seems to me
+it forgot that of_node_put() is called way before that.
+
+Also commit 61afafe8b938 ("remoteproc: imx_rproc: Fix refcount leak in
+imx_rproc_addr_init") was dealing with the last of_node_put() call here
+but it's still not in the right place I'd say.
+
+> > +			continue;
+> >  		/* Not map vdevbuffer, vdevring region */
+> >  		if (!strncmp(node->name, "vdev", strlen("vdev"))) {
+> >  			of_node_put(node);
+> > -- 
+> > 2.30.2
+> > 
+> > 
