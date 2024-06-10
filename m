@@ -1,45 +1,46 @@
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504DF81205
-	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 12:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4273C811E7
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 12:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718024391; cv=none; b=PUQFA0wHtyv7P9sx8mfj0wpE0kaT3P8YaN/3VR1vNYmcNNDk8Cl0xejBFNNqPjXZRT49ZNCiROrs9P0Df7SoiPRrScRv6GQ/b3wCJIBYKIlSihWs8pKsyfcaXNQ9r/7MyxcEuWV9jA+3b/fjMfsEFCLlN/fETSacrrrIPa7wyyI=
+	t=1718024392; cv=none; b=p4r1fMyX0To8wZ03PZoAWFnRzUm6hdtgxAhR01a89aezU7YkCk9lmJe9WlBKCKgTH2C10uqOyn0+FLs553we565nKE6cBepPFZpPfyLgAVcM7ZytxDVXlj+gR6vKRGR1Fjt2ULy9rzUjvnOhzUWhx6ynkDER1UwTA7zMC5XEyi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718024391; c=relaxed/simple;
-	bh=4MGgnzg2JZ2JhUvWSpp/hH/wLfi88rLG9cyyoXmgbz4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bBsMGtwjeExZ0CcT2TjZxPbppuz4muCS54/tccg8D+dObSYRiBwzm0zqDhCd2rIcG1oWGCfmwLKQD0A8VFmbukH0cg+TCv51s5p+rnrL/cRroo8YnoR+jMS7Zg1+myKW8W4aoJbWy7A43DFcal7FYW9Kb312WZT2MyMhp9bIYbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VjQMnxBV; arc=none smtp.client-ip=198.47.19.142
+	s=arc-20240116; t=1718024392; c=relaxed/simple;
+	bh=8Ci/OsnahK/bBn7zwhrIhXwgOme4UJ/921P5K9y7fGI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AJ5wSqNHdNdG4cXDPmdsINZIB9kjP2iGa3qJU+BT16PpF/oId5SPg7s3ibH/+O5L4IWf1SCyTFjEN1px8TvQk9FPhPzL7+rEkgM9DY1czf6/l1leKMnhsW91I3seHiRcLrlpA8dkqEtuOi47M3LRFOEi0sO5nhHpS6ssO82puZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cTdrmp6+; arc=none smtp.client-ip=198.47.23.249
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VjQMnxBV"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxQij041177;
-	Mon, 10 Jun 2024 07:59:26 -0500
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cTdrmp6+"
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxS6P084557;
+	Mon, 10 Jun 2024 07:59:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1718024366;
-	bh=9qVYz6uxkNZ9EajXzIvmaiC+dOktkrr+a+eYnCwY8ho=;
-	h=From:To:CC:Subject:Date;
-	b=VjQMnxBVs/9EZmKnHQyYqu9wOceaukxURf/8jBJJzPypAJVNyOw4Lxkhr/s7w+I+e
-	 oDUPF1bmX6S+PL/qK4+Px9TrDTuTdVKT25Li0hCm7R94NX5EFowai2RL4gTEgnHRR9
-	 ybfgPmXoVUWvK5WQJRd3XOj8r4/RziNQ0LN90cIQ=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45ACxQjU013522
+	s=ti-com-17Q1; t=1718024368;
+	bh=yXBs03WeRona3MGkbGkbcoT3PwhsZF7P//oppQ9IszM=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=cTdrmp6+1gKFEZzXHK/h0UKZj/PF+QjG8LiEvXeNokZDXCnQAuWIx0rudW7DvR2TR
+	 +84jPQIP5cZ69u3tMCvVjolFGc3NYwswZtlYxtdwx3yVw2BR/KE4e8RJeRkaA8M9U+
+	 Hp8xGG6vTcuCAk6Q0osBQC4OHGSPAKbDt/HNzLZc=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45ACxSsL040412
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 10 Jun 2024 07:59:26 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 10 Jun 2024 07:59:28 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 10
- Jun 2024 07:59:26 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ Jun 2024 07:59:27 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 10 Jun 2024 07:59:26 -0500
+ Frontend Transport; Mon, 10 Jun 2024 07:59:27 -0500
 Received: from lelvsmtp5.itg.ti.com ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxP7U064068;
-	Mon, 10 Jun 2024 07:59:25 -0500
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45ACxP7X064068;
+	Mon, 10 Jun 2024 07:59:27 -0500
 From: Andrew Davis <afd@ti.com>
 To: Andre Przywara <andre.przywara@arm.com>,
         Russell King
@@ -58,10 +59,12 @@ To: Andre Przywara <andre.przywara@arm.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>
 CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <imx@lists.linux.dev>, Andrew Davis <afd@ti.com>
-Subject: [PATCH 1/6] ARM: highbank: Switch to new sys-off handler API
-Date: Mon, 10 Jun 2024 07:59:19 -0500
-Message-ID: <20240610125924.86003-1-afd@ti.com>
+Subject: [PATCH 4/6] ARM: pxa: Switch to new sys-off handler API
+Date: Mon, 10 Jun 2024 07:59:22 -0500
+Message-ID: <20240610125924.86003-4-afd@ti.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240610125924.86003-1-afd@ti.com>
+References: <20240610125924.86003-1-afd@ti.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,22 +82,22 @@ are converted to the new sys-off API.
 
 Signed-off-by: Andrew Davis <afd@ti.com>
 ---
- arch/arm/mach-highbank/highbank.c | 2 +-
+ arch/arm/mach-pxa/spitz.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-highbank/highbank.c b/arch/arm/mach-highbank/highbank.c
-index 5d4f977ac7d2a..47335c7dadf8d 100644
---- a/arch/arm/mach-highbank/highbank.c
-+++ b/arch/arm/mach-highbank/highbank.c
-@@ -143,7 +143,7 @@ static void __init highbank_init(void)
- 	sregs_base = of_iomap(np, 0);
- 	WARN_ON(!sregs_base);
+diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
+index 3c5f5a3cb480c..e444d7e8aefa0 100644
+--- a/arch/arm/mach-pxa/spitz.c
++++ b/arch/arm/mach-pxa/spitz.c
+@@ -1021,7 +1021,7 @@ static void spitz_restart(enum reboot_mode mode, const char *cmd)
+ static void __init spitz_init(void)
+ {
+ 	init_gpio_reset(SPITZ_GPIO_ON_RESET, 1, 0);
+-	pm_power_off = spitz_poweroff;
++	register_platform_power_off(spitz_poweroff);
  
--	pm_power_off = highbank_power_off;
-+	register_platform_power_off(highbank_power_off);
- 	highbank_pm_init();
+ 	PMCR = 0x00;
  
- 	bus_register_notifier(&platform_bus_type, &highbank_platform_nb);
 -- 
 2.39.2
 
