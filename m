@@ -1,387 +1,170 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2079.outbound.protection.outlook.com [40.107.21.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0FD839E3
-	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 14:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718028612; cv=none; b=ZZf9on4vtOv2sS6a+JOzbrrdcpUWVJHQG2RjeqZTOaKZou9eegtotPMdNRuYzuVbeBM1RbBV+EYpw+c98jXWEAhWZQo4kWpx6bVXc0CP9hD6t0622eJAGK1qm+q6FnJPAO++selAZppkmIUZIjGVltKD1qQCfC1XIqS6ck4CVEg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718028612; c=relaxed/simple;
-	bh=yrvsW6NpIyyvUzCuw7XD/v8m6AxV1qlSrNJk9MBhaio=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qwk3WczzrX8A0COF5///+ffdzev2ek9bSFMA8eLdLmTT47at2tJn/hZdxWpc+eZRfGWilZpBqgHOcd73f7/56tj3rWlZ8+DVLUYPiuA60ptSCTumN4135L/i70h6Tfk+CmTtiJKPczFd8quydTw0iUID+Pdwq9YdMeE6EgRynvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=CLTGjL3B; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE39B82D75
+	for <imx@lists.linux.dev>; Mon, 10 Jun 2024 14:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718030039; cv=fail; b=rSqjU5R0Nvetb+LzV8SAmdfqvpeMzfr8Rwc8gAbLLYC/am/VxvRS6TOK4vXlEg3z/RKOHYlpKK/lsvbVkhc7SDZfI+2+rcV9bRF8AeXtSVw4Tmo1EmwWzQm6EmhIB7YeXQc7let1tIfHksd/Xk1AMwXQaxoX5uGZKgJeLxnbt/A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718030039; c=relaxed/simple;
+	bh=+cGySQQ2Q+OI3EqfU7ubE09BsyRFjxSCIbS+4+lvN7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=T6NCYmjA24vUedCbKTO2aC7kya6x5pb/f3x08wT5RWjlVtsObqr05HVSNH3fH3n4Y1i7xmskzYGNLES+kA0X7oHuAY+oNazNKNHKRsGFcrkrQelN4O6Y328Ji3b7VRMa7zj4oEQCGnvWL+AVwr38kKZByl3vgVQZ0c8PaPr56Ks=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=T4IYJ+m+; arc=fail smtp.client-ip=40.107.21.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="CLTGjL3B"
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 83D4A1FB6F;
-	Mon, 10 Jun 2024 16:10:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1718028608;
-	bh=YkGB/2C2PmPaw5Fgoeug/KCYvx1pa2uTv5PzS+7PUHo=; h=From:To:Subject;
-	b=CLTGjL3BIWIdo5p7FKFB94y7rgpgH2kqmc6uPfaI34mtfEcW7dTEPOARknXsrtLhP
-	 zfgR262AEbFmCiziNL4Qm2GpYDgYpIT0zRYqL/aL3Acj+IO283Sd3VqO7JpovZZNtG
-	 IeFU+EUuzuEgh1T+uU3rXZOfiQfWUdej5l5RS1qBGetARADhSLCdAUgw5l51ngt2xn
-	 hUdGSSiC/Cc7EPoqjLTWPiVgQ/Qko9ak4uccdvlPK7SIJ3cWizqp13MuycrAsmXCVt
-	 1vHubB1QXNjiazyjR0XGDSAgot8FhykazyD3/d4BZlQyUa6hGamuqTMB0AKTMD5205
-	 IBIPXe+zzpJGQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] arm64: dts: freescale: imx8mp-verdin: add HDMI support
-Date: Mon, 10 Jun 2024 16:10:01 +0200
-Message-Id: <20240610141001.32034-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="T4IYJ+m+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aEd+mYDp69Lucv6XZJCa4zRKxdKBpvnmyLDJvduryfdnuhztJS7W3UL37FZooHCPfdMePi0S2GiIiquzzBqALJ9adwep40YqMJMod2r0KevuSI5LqNwCv3obAfDARV0azXhstldDlncebPkqFoUVjonEHNY3K4AXOtIPiqtvGqNI9uxEPBCSC4SlzT8uyHJvtpBz/ZMjZMlFAQEPKTuMy+uane94GKxv7Y+dCdqn6/5yajDdJAKx5JduQBjqtQYdZczV3/QXFHkZstEeTgGYoD9YTv/DirgtbopMI7Sr2n4lc7GUYnjHPYkloSu5u3LXOPsfJ1wLclvyuE9LSgn76g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O29E0kVUDR60WoCAuW6ifVFz+S/MfQqrxlUaVobcHbw=;
+ b=J+LgCxvAHH3gA2+5CfuAV9G+VIDiHBfPWcwQPyswKf6upTa5R3UGXSZWn8pEcLkGRO42jaxBiq29+Bb/ZtZbeNynKWecj0AfSEwXRIOQojnhKX6k4QaZUFGCd4GG0x5t/zDrzC2WKP9yVNmZEuJdh88bezKreD7zJyEGbaNnuWZ9F06BfNSzeusvGuN6aGvxWX4t3ydTkyetLzocHDENobU4dn3WhYc+5PwpSF5b8IAVY9E4oknGe2JolqsssLs7e74TAB9EvLs0WXFaBifPQXiU82eFqlLrAE+w8OVW43ZXv+Bv7BJIFD03+MBCZU20fhKSJfFrUpa+GbdC+cv7WA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O29E0kVUDR60WoCAuW6ifVFz+S/MfQqrxlUaVobcHbw=;
+ b=T4IYJ+m+eO0PBawKlX/m0gR1PqIDUNHA5ndtdw8l/iY1GHG0bC2GOkR8tMVPIMqIcDEyLKJvYguzKBfFckBUNvvPt3Zvjin7VehOV/PVr93RqjQN3giK12S7iXgKhQMNEt6svHm+koIdgK8PBwa1JgS0Pn1qxE/XArCeo8EPmz0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI1PR04MB6847.eurprd04.prod.outlook.com (2603:10a6:803:134::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Mon, 10 Jun
+ 2024 14:33:53 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.036; Mon, 10 Jun 2024
+ 14:33:53 +0000
+Date: Mon, 10 Jun 2024 10:33:45 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org, robh@kernel.org, ulf.hansson@linaro.org
+Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+Message-ID: <ZmcOyVmI5GhRUuVc@lizhi-Precision-Tower-5810>
+References: <20240605185046.1057877-1-Frank.Li@nxp.com>
+ <b1c51acc-441d-4484-adef-1da368571097@kernel.org>
+ <8901d498-d30a-43db-bda2-25d3d1d58e8d@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8901d498-d30a-43db-bda2-25d3d1d58e8d@kernel.org>
+X-ClientProxiedBy: SJ2PR07CA0007.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6847:EE_
+X-MS-Office365-Filtering-Correlation-Id: e5fa8d6c-0a33-4522-9297-08dc895a5a73
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|376005|366007|52116005|1800799015|38350700005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?biVm8L/kKb93QqsbfZDI8k2sR2dYzRgi3ba3q3TUrjFX4lc5SNYfF5bK5l7w?=
+ =?us-ascii?Q?CgWE3HnNNGcKf1TxqtznxoWfBKMddPkAzf90wQitQkyWIoYqo6PNLyzMg8PA?=
+ =?us-ascii?Q?lyGGWnAnfmDIaxE7tB63UJkE5Klmhcp0qLFX5XULbUwZ1ZVrH8ltyu1X5PmF?=
+ =?us-ascii?Q?BRPp7bA7IFg/4WPR8OHJsqANCupbNi8/5eAFKbHVT6t9R9VdDo3mdskH+BYU?=
+ =?us-ascii?Q?iiO+noxX3OEEssQaLC5wHHW7bTKHQDipN6hGoPsa0RSN4c9iPVanuE88oStD?=
+ =?us-ascii?Q?WpF8oKgpThLSKpWpiM7dcc/zoQsY0BPIUwnpw3INQ/4m2qInJyEfZ9fNS0py?=
+ =?us-ascii?Q?hxsXH2+0Iqm1ABmxBju2HGzjvwq/2lfsGqHnfLl9kMsPcOlk2OjKqDIBzoPB?=
+ =?us-ascii?Q?BgODK3bK9ald4kkc9rOz6HsERXI+lt2WU9blCfJ73pqcl4mUMrA2KJRzdDiP?=
+ =?us-ascii?Q?fg8DBW15RaPw2gwtlSQNcLga2z42k4p7Ch2i8yjkr5ggt/RWKxHTVS9RGu94?=
+ =?us-ascii?Q?+TtKJRerryb9RGb+A9G/VwGg6w3TiKgHpmQux/ZcF/u2zTOUcXfF1eFasBqd?=
+ =?us-ascii?Q?Dr4UVYMFZW/1Mz5D6v94HlPgie4DcFj+fTdK6Wx0OJo/radPjO5XGvcLCheh?=
+ =?us-ascii?Q?DFvn9UxA8NNyQZmSG6QTXon3kS4b2in3HnLFciJMnsAM0yJrgWXtBbGCLcJM?=
+ =?us-ascii?Q?Lf34rcFzBohCXIBthkjYQk///kRC6joZPz8n2hmzbhZMNTFL9yuZ7gR1iYRG?=
+ =?us-ascii?Q?br4IihJuJCWGlnwVIfOWvQO2qG5aLZtCLlD21ybY571shISPpUca/VZm+kWW?=
+ =?us-ascii?Q?XOc8nYUPDbZIg7KHKKeC6IrZbMwaHvWGl8ssS4Ai8KhlcwI33VsQOp2YYOI2?=
+ =?us-ascii?Q?ryzX01gzsL8A23YfagZORFMFXKtDkjbsyu4tj9O+N/4wP5wn8AjlGgfnXaBi?=
+ =?us-ascii?Q?Fpbzow9Emx5QSfhj9N2PCYgHdFe28yZEAranfm8qEkeVAaZAyq83TW3RUnBP?=
+ =?us-ascii?Q?8Nzx+kzvPVAl5wgkuwSBZTXoUtQvIBz/P6M334t6X/zeRC31c3AlmFBAXLPB?=
+ =?us-ascii?Q?71OHfVQPnPLI3XGTD6jYD88rB8rmfJyjTYfrkljFShkr7Rqf3d7uCyutVjc8?=
+ =?us-ascii?Q?vIEZCuyjlPUQSBN+1v67s3As2JJuoIoNLa5J8D6ZnzwfYIJDGks5IEwJlCFW?=
+ =?us-ascii?Q?zjP8bkqOTuUug41fJ5Y8vyRy1HHbARXWW0TiCUiADLpasDGGzJZpOUwmdaxp?=
+ =?us-ascii?Q?pQ2Hy1J0wKH7EsKUZG6VjbRENTQcv+AeEvD9i3JkB+1pWojeVTUbYMxSYgU9?=
+ =?us-ascii?Q?5YrAhgPB147+NfAckCsASDo9mIQmlB2RhmAvml89TbevXcp5fXskO1n1IcN5?=
+ =?us-ascii?Q?7wXkodU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uf4ceSuATDKaV89V3Ys0aY2jsUAFAbEFuH6rdfLSHHVpPjFW45337NdjaExJ?=
+ =?us-ascii?Q?QAsjTXbRqoKHMdsCuzYbmrYkyCvAPxK8Yne2ykG5ikrgGiNk3fvZ/GWdF/vT?=
+ =?us-ascii?Q?A8frDwpsTO2iYz82NIQffw9J90EP/r13R0SbOilnQiUsNpgUQIFBZercap7X?=
+ =?us-ascii?Q?GNIouBeSCIzLDFIYQ3VykZEiHn3wzpjFRm8vFY83XF+sgmgew6sS5Ll91HYw?=
+ =?us-ascii?Q?IZZnAaOWCf/Hjhbxx+NgF9XKPHctAanA7vvR8FWdmXGJEZxEvfMYpwWxvp9u?=
+ =?us-ascii?Q?KW7arP7RlgvnLNoZBV8Wc8J5Cp87AoxXc2M/Sr1H3ugNuSaI03UXQK+bTbb/?=
+ =?us-ascii?Q?eKfqG0STqdSCTvHE2nZA3D8xEBuuvE4cjdkBBMSmVstjU2Mq6oWe151ratjc?=
+ =?us-ascii?Q?OaazxqGPOxh58mtYhygvg2oRVQ1WgVMvn8Gn60GewY3Fy85T+WQbMnTRPvYA?=
+ =?us-ascii?Q?CEtgWhBvhYtixoKgyO+t46TAJ7HVD/aohJjL/z3zBORu95KiHA8iP/KzFgY3?=
+ =?us-ascii?Q?9AL7GjjT4ES3VlkYoUCs1gxsSU2HJXqZwkckcrouQjxiFLr/1GGYHoXGN9mh?=
+ =?us-ascii?Q?TRfI9kglP8mgYJipPWsxxVsUM8+6j+FzcK61TrgGUZfFhpIFRY7/CuiLdHVh?=
+ =?us-ascii?Q?HZdNytIZ7T/YFrKpfNv2NZLCg9XgpN+gKID65Y14YJURsFbpI29b16sfaLQv?=
+ =?us-ascii?Q?N0UGY35Un75EGO8sWQVZgyBIKKLkRjNpkR2ityqN+BE3TE4pkFJTaCmxj4iE?=
+ =?us-ascii?Q?GvK21QqTlmoQixnqQOBkAPDWLFnNjeTIt8f3OH10x3WP0HiFmCibDeSnIYJY?=
+ =?us-ascii?Q?sRBz9y0VzwW6/XVktJGwj6xyVRKdDG/7WOPbkP3+B4gWZJgDmgVTbsFnBR8M?=
+ =?us-ascii?Q?j0wEMzdd+/R3xnPqSmNh7k4nrUjlMYrfM5tP2KAVyaR6Yu69+IyGevHTPfu3?=
+ =?us-ascii?Q?SjVWob2K2DyozT727rmsOzfnZG40ERhIQnZhkjsNY1gJWI3DEvebMumfstU1?=
+ =?us-ascii?Q?iWwXxgvn+m7zFXbg4n87/Q8OPjItgKnvc6ZrULnkNCf0wkz6dtWfhgLv87Cg?=
+ =?us-ascii?Q?rRr6jRKtvXth17BBX/3FqYj1TppLpuzsmhwB/1y9/KvRWVZslxV/YOWptDwH?=
+ =?us-ascii?Q?bJZSXzBLpziD1wtDYv3KXiNg+kXpVGR9KGSLq1CxCDQDLCFxQwiwiMYE4POd?=
+ =?us-ascii?Q?jQ+WwnxU7QnySqkdEH8IC36LiomKbtfSpDtWW9mvd+3Ms/9iVxpuPtPTuzCm?=
+ =?us-ascii?Q?C2hldmwZayD7mCRxR3nLXkAZO+P1ZY7EJGLm4EDwDnVqgCCYUMj57ctpEmui?=
+ =?us-ascii?Q?Rn1flc97z3lIrXdgiJcG1koQnqjZIfEU/gPlk9hvvstISqbm/3iNEH7RHKTc?=
+ =?us-ascii?Q?ApQVWhNpZfZ1zNJLkDIZVA//Wyb2k2zGhKRaYD+OkDFiz3drvZ059pJV4VIE?=
+ =?us-ascii?Q?3IWmRmLRlEL4xmG3Sl8bng+QxWwi+kF3YtTlywZUASR676TXLBcH6tHE7hRz?=
+ =?us-ascii?Q?JzLDJdnW2kjnyhV+RLDVloTbRerOY6CGZdg1xEwgrEPNYQFjQALtwWqu03F3?=
+ =?us-ascii?Q?w8rmjbfFL5V0+k+tVZk=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e5fa8d6c-0a33-4522-9297-08dc895a5a73
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2024 14:33:53.8442
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i3ymrrRWKFU4Ejgpzv/0naAV2B2dYVFkV7+jXwKmvF/KzKq93TrRq7e71pyAhaFhfZ18lJCrGMruuU52ydKB5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6847
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Mon, Jun 10, 2024 at 02:29:57PM +0200, Krzysztof Kozlowski wrote:
+> On 06/06/2024 08:44, Krzysztof Kozlowski wrote:
+> > On 05/06/2024 20:50, Frank Li wrote:
+> >> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
+> >>
+> >> Addtional change during convert:
+> >> - Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
+> >> - Add "reg" and "interrupts" property.
+> >> - Change example "sdhci@2e000" to "mmc@2e000".
+> >> - Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
+> >> most existed dts file.
+> >> - Set clock-frequency to 100mhz in example.
+> >>
+> > 
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> Or not... are you sure that DTS validates? Did you test it? kbuild has a
+> bit different opinion.
 
-Enable HDMI output on Verdin iMX8MP on all the supported carrier boards
-(dev, dahlia, mallow and yavia).
+Need additional patch to fix this DTS warnings. It needs convert to yaml
+firstly. If you like, I can create big patch set to fix all emmc related
+warnings.
 
-HDMI DDC I2C is used in regular I2C mode, see link on the related
-dt-bindings patch.
+Frank
 
-Fix CEC and HPD pinctrl, having a pull-down on HPD and a pull-up on CEC.
-
-Link: https://lore.kernel.org/all/20240515062753.111746-1-marex@denx.de/
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- .../dts/freescale/imx8mp-verdin-dahlia.dtsi   | 37 +++++++++++++++++++
- .../boot/dts/freescale/imx8mp-verdin-dev.dtsi | 37 +++++++++++++++++++
- .../dts/freescale/imx8mp-verdin-mallow.dtsi   | 37 +++++++++++++++++++
- .../dts/freescale/imx8mp-verdin-nonwifi.dtsi  |  3 +-
- .../dts/freescale/imx8mp-verdin-wifi.dtsi     |  3 +-
- .../dts/freescale/imx8mp-verdin-yavia.dtsi    | 37 +++++++++++++++++++
- .../boot/dts/freescale/imx8mp-verdin.dtsi     | 13 +++++--
- 7 files changed, 160 insertions(+), 7 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-index 6e6b9c2c4640..fbcd93e33aea 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-@@ -4,6 +4,18 @@
-  */
- 
- / {
-+	native-hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "X21";
-+		type = "a";
-+
-+		port {
-+			native_hdmi_connector_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
-+
- 	sound {
- 		compatible = "simple-audio-card";
- 		simple-audio-card,bitclock-master = <&codec_dai>;
-@@ -94,6 +106,27 @@ &gpio4 {
- 	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
- };
- 
-+/* Verdin HDMI_1 */
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
-+&hdmi_tx {
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&native_hdmi_connector_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
- /* Current measurement into module VCC */
- &hwmon {
- 	status = "okay";
-@@ -139,6 +172,10 @@ &i2c5 {
- 	status = "okay";
- };
- 
-+&lcdif3 {
-+	status = "okay";
-+};
-+
- /* Verdin PCIE_1 */
- &pcie {
- 	vpcie-supply = <&reg_pcie>;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-index 42ed44a11711..09733fea036d 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-@@ -4,6 +4,18 @@
-  */
- 
- / {
-+	native-hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "X37";
-+		type = "a";
-+
-+		port {
-+			native_hdmi_connector_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
-+
- 	reg_eth2phy: regulator-eth2phy {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
-@@ -103,6 +115,27 @@ &gpio_expander_21 {
- 	vcc-supply = <&reg_1p8v>;
- };
- 
-+/* Verdin HDMI_1 */
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
-+&hdmi_tx {
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&native_hdmi_connector_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
- /* Current measurement into module VCC */
- &hwmon {
- 	status = "okay";
-@@ -141,6 +174,10 @@ &i2c5 {
- 	status = "okay";
- };
- 
-+&lcdif3 {
-+	status = "okay";
-+};
-+
- /* Verdin PCIE_1 */
- &pcie {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-index 1d15f7449c58..3a40338cf2d8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-@@ -11,6 +11,18 @@
- #include <dt-bindings/leds/common.h>
- 
- / {
-+	native-hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "X14";
-+		type = "a";
-+
-+		port {
-+			native_hdmi_connector_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 		pinctrl-names = "default";
-@@ -91,6 +103,27 @@ &flexcan2 {
- 	status = "okay";
- };
- 
-+/* Verdin HDMI_1 */
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
-+&hdmi_tx {
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&native_hdmi_connector_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
- /* Temperature sensor on Mallow */
- &hwmon_temp {
- 	compatible = "ti,tmp1075";
-@@ -117,6 +150,10 @@ &i2c5 {
- 	status = "okay";
- };
- 
-+&lcdif3 {
-+	status = "okay";
-+};
-+
- /* Verdin PCIE_1 */
- &pcie {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi
-index 91d597391b7c..2ee91f31e7f0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi.dtsi
-@@ -41,8 +41,7 @@ &iomuxc {
- 	pinctrl-0 = <&pinctrl_gpio1>, <&pinctrl_gpio2>,
- 		    <&pinctrl_gpio3>, <&pinctrl_gpio4>,
- 		    <&pinctrl_gpio7>, <&pinctrl_gpio8>,
--		    <&pinctrl_gpio_hog1>, <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>,
--		    <&pinctrl_hdmi_hog>;
-+		    <&pinctrl_gpio_hog1>, <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>;
- };
- 
- /*
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi
-index ef94f9a57e20..efcab00c0142 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi.dtsi
-@@ -55,8 +55,7 @@ &iomuxc {
- 	pinctrl-0 = <&pinctrl_gpio1>, <&pinctrl_gpio2>,
- 		    <&pinctrl_gpio3>, <&pinctrl_gpio4>,
- 		    <&pinctrl_gpio7>, <&pinctrl_gpio8>,
--		    <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>, <&pinctrl_gpio_hog4>,
--		    <&pinctrl_hdmi_hog>;
-+		    <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>, <&pinctrl_gpio_hog4>;
- };
- 
- /* On-module Bluetooth */
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-index a7b261ff3e4c..533b7fe218ce 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-@@ -6,6 +6,18 @@
- #include <dt-bindings/leds/common.h>
- 
- / {
-+	native-hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "J15";
-+		type = "a";
-+
-+		port {
-+			native_hdmi_connector_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
-+
- 	/* Carrier Board Supply +V1.8 */
- 	reg_1p8v: regulator-1p8v {
- 		compatible = "regulator-fixed";
-@@ -105,6 +117,27 @@ &gpio4 {
- 	pinctrl-0 = <&pinctrl_ctrl_sleep_moci>;
- };
- 
-+/* Verdin HDMI_1 */
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
-+&hdmi_tx {
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&native_hdmi_connector_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
- &hwmon_temp {
- 	status = "okay";
- };
-@@ -127,6 +160,10 @@ &i2c5 {
- 	status = "okay";
- };
- 
-+&lcdif3 {
-+	status = "okay";
-+};
-+
- /* Verdin PCIE_1 */
- &pcie {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index aef4bef4bccd..834236db86fe 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -457,6 +457,13 @@ &gpio4 {
- 			  "SODIMM_44";
- };
- 
-+/* Verdin HDMI_1 */
-+&hdmi_tx {
-+	ddc-i2c-bus = <&i2c5>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hdmi>;
-+};
-+
- /* On-module I2C */
- &i2c1 {
- 	clock-frequency = <400000>;
-@@ -1117,10 +1124,10 @@ pinctrl_gpio_keys: gpiokeysgrp {
- 			<MX8MP_IOMUXC_SAI1_RXFS__GPIO4_IO00		0x1c4>;	/* SODIMM 252 */
- 	};
- 
--	pinctrl_hdmi_hog: hdmihoggrp {
-+	pinctrl_hdmi: hdmigrp {
- 		fsl,pins =
--			<MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x40000019>,	/* SODIMM 63 */
--			<MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x40000019>;	/* SODIMM 61 */
-+			<MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x140>,	/* SODIMM 63 */
-+			<MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x180>;	/* SODIMM 61 */
- 	};
- 
- 	/* On-module I2C */
--- 
-2.39.2
-
+> 
+> Best regards,
+> Krzysztof
+> 
