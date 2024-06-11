@@ -1,68 +1,71 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2053.outbound.protection.outlook.com [40.107.22.53])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2065.outbound.protection.outlook.com [40.107.20.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EAE2C6B6
-	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 15:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2146E2B9DD
+	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 16:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718118208; cv=fail; b=obCChRc8lQWeGCUV7k+n10j+RaPeel792pmU6axF9od0I3i8+2NshN8B7iFoB/PIWng9Aim7FVtnBFXuEB7wStaD/gpPQ/o/UikxlgkraGMNnjCR4xsPlNUqFn1Wq9WAWcjHq5hTu2yg7sFn9aMwaMUW5YByOOJ0BkpeunvcKRU=
+	t=1718121747; cv=fail; b=WXtv5V5FIIfdz2jx27Q7VGdZ7hL+g1VbqwWaiN22f7WgVft4RB1IcYENDiVne4it1vwAQ0A6iMSRyGUKNiuSEtsHX8r6b0F6UBwHeCCXt4KdlcN7FzM5CBqsy+sLtzDAXKTk2lXSMWVF2fsZjf5OSfhqYEsptKv+3gsP8MMJvr4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718118208; c=relaxed/simple;
-	bh=yuOyWTWPV5hi+RlOOEGu7/ERSM7MsCDQ0kuPpogq00U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=JxU74ZL9c1R8DrOFIaB1TO08ZjAg6k1vvn2gUIBhdVigKZtkKd9MNiZdWamFdc+fPew/0cu+ZdxGw4Lj+vojJ0JbWE1jdlWMH4LqbB2d/+JxQSnMntdLhea85drSX1ypaealKbRbozfdCwrouacqeVmg4+VWCWv8cvyXRg1XxJs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=m6Rftg5u reason="signature verification failed"; arc=fail smtp.client-ip=40.107.22.53
+	s=arc-20240116; t=1718121747; c=relaxed/simple;
+	bh=5dX6n2/7tQD1IvcrjFPR/z7msGkfgduYI8XE2ZgayOk=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=IbesQNze2Bhoe34c8oU5icsMfVEXJ1IbsEy+VC9YBlSqiMcg3K7VMzFG0UHI5tJuR3nj92amO/g0xdkX6o2RA4Hq7ubIfISIozbOkZwbPRrf1VkDns37ZbH/YIE5EUv+92yKITGUJVMgi5tzNsmUeTM43QfBJyTmDNkLMxO8LcA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=F+bW43IZ; arc=fail smtp.client-ip=40.107.20.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="m6Rftg5u"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="F+bW43IZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KiLBN8la16OZYBS7V8jVCtCGSC8wG76qSLpVY7paeehWATcraaFJ1qVxbGHs2VyA4efr4vhLdavKGu8RNij6kwj+sqcTjLad1KPe//ySH/03X84rkud2oY//so3nhkI/7Y4ZtV81OKx5P4ycRxSXm32YeHaZUx+MXa90l2N/Rk6yM8voxczPQhn5MQUUqrSrNqdqBP71ABEy2TpxLZPg+6Ga//3je9x++h447m3IFlwZkNVT8E3a/hAL0V9kuXSL1k/Dr2nMTdld/i0P0LCVz7ai0UCVM7/hGQ0hkGj9Tobjhbk/9sQMBCPXGMzmH9lbfsQSgho1a2IO4v6FI9k4ww==
+ b=SwG2xkKU0osu/UeJiF5K9twrPoG/DOkZW62BUjtLMAaKbb3fySYz95KlVVKRCOBcHRznJT49bNbYpyQ/igHNONRYT7uTfkmD0L0yVjMX8cGvEmS6FyNyKEWuSHemVvRGvUV012ZONUsUOAVvS9FEi5LG651meZ8H6ikK4UAmBK+Wrmd6f/1/FK+fzdV2w6I4Ruw9A/tk/CUi3JQTN9jBxKHXSwX7JJ/ofJxbou8nMh24+3QuecdqtgbvfIQU6Bcfe5bAjpsFHyUoiVSj7HkLajm8zrPPeNeJATMgo8hO3Ne94fP7EwMyFvsArrYPgpQUB9VOajXq53HQ3UjR8yMI9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H3qBXlS52SYHDOq7ejbT8yxp5pe8R+e6xso2fPzf2EA=;
- b=Y22t0zF6EobI+aiOzzCBh8Tem3z5Xo1/836O+m5EsX3fVXkKQgu4qIvE+RwrMjUoowBXsuxxsVzciJHOyqBYZQEFRpZQAPyi1HE4ETFT9RU36xb7hbUgU99g17VLZIoC2ofZOqErpc1d8+D/zLuRrYooCGa/ygHka10tbBntPJZabjAVED6lG6ZpoUZtlj1qDaWklU4bFp0V3Go6Mg+FaQE9npsyvbguFecmcapnR+pjJF748FMetE3GAFwR//LmufmMiyb9IfMTpqVPu9YRNtAlA5CuOwg7BRghJJp7ioA39nRBpN25SDEsWrzMG0JELMxof2L4+Vhn+kPtuU6jzw==
+ bh=Nz9NhjNbXXabUEF0wPX41oKciy7IIyz/I4hN1/9Gruc=;
+ b=dnKSnCa0sHRGuRkNpOKNCRQgmA9Qiv3VDLReWcFMbMsuGDCez1NuDojhXgshzKMyJeIUv9vapp0HJJugEd/A00MQAybUIQadmFygUqFBSZUFje2okNbeyoCWcLkd7IAXBGkDinBlhLhmsPpdx8dk9QsmPv4qBXpi3LWaKmVVCey73/bmCgM4StxmEoYBS61i3WSb6L1jYTnQ+hNLbZ40cV7V6b50Nqu68pQ1H8TuDfOaHf/tmsl6gGdiRZPVa98h/KH21iM3NC6rXZgDD7fTii+z68JiNUT6STrOoP8bhpPYN+lCVRqVzFObbG4OIeeT0Y+CKlxX/DD1sAznWC1Hag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H3qBXlS52SYHDOq7ejbT8yxp5pe8R+e6xso2fPzf2EA=;
- b=m6Rftg5u4G/FbyurXFIKzaa7Aoo44BIVqaNyRUrRVqKva/lvZikjYPc/JxwMJvqVA/bnhqgVfmvns6eP6D8XWYXn+B/s/xySYcoVvJ2FkjI/MeAdn8IEsVvGkIp7wsHNjv0QYqsag4oG8fb9UJGFP3+cAEhCaBzLrW4YxrrKgP8=
+ bh=Nz9NhjNbXXabUEF0wPX41oKciy7IIyz/I4hN1/9Gruc=;
+ b=F+bW43IZppXqag+145RfR9um5O3JLZDLx/xgxz2m6FTbLpT4eWqtSFfD2EaEN160K/pie/4WqKkVo3ZAnTT/HO3vR3t/vhlcV2E2MERtt7bgcMG3O620Fz0QwPinBx7+aRFuBAUlqbnHQLLYjeboKta2ffq3bIrEOrQDyGM6mL8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB6893.eurprd04.prod.outlook.com (2603:10a6:803:133::7) with
+ by VI2PR04MB10287.eurprd04.prod.outlook.com (2603:10a6:800:220::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.34; Tue, 11 Jun
- 2024 15:03:22 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Tue, 11 Jun
+ 2024 16:02:17 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7633.036; Tue, 11 Jun 2024
- 15:03:22 +0000
-Date: Tue, 11 Jun 2024 11:03:13 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] arm64: dts: imx8: add basic mipi subsystem
-Message-ID: <ZmhnMTGrl+3m9w1f@lizhi-Precision-Tower-5810>
-References: <20240610-imx8qm-dts-usb-v2-0-788417116fb1@nxp.com>
- <20240610-imx8qm-dts-usb-v2-3-788417116fb1@nxp.com>
- <13535816.uLZWGnKmhe@steina-w>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <13535816.uLZWGnKmhe@steina-w>
-X-ClientProxiedBy: SJ0PR05CA0012.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 16:02:21 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 0/8] arm64: dts: convert fsl,esdhc.txt to yaml and fix
+ layerscape dts warning
+Date: Tue, 11 Jun 2024 12:01:45 -0400
+Message-Id: <20240611-ls_waring_esdhc-v4-0-d0d8a5b3f3cb@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOl0aGYC/x3MQQqAIBBA0avIrBO0rLCrRIjklANh4UAF0d2Tl
+ m/x/wOMmZBhEA9kPIlpTwWmEjBHn1aUFIqhVrVRnVZyY3f5TGl1yCHO0ja66XwbQm8NlOrIuND
+ 9H8fpfT8j7hsvYQAAAA==
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718121738; l=1744;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=5dX6n2/7tQD1IvcrjFPR/z7msGkfgduYI8XE2ZgayOk=;
+ b=lQZz5kUY55711rRSbUmAOHkubW7xBPpt6ePPO4mm6NHr6oCkSqg/1Eh4HQVFLdXnKS3Vzh3tq
+ Vlm+xH02f/xD5XqA2b3swbhw7Nv7n9y1O8LH3zY7Wf6PIPqVQ63LqQN
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR13CA0017.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,432 +74,134 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6893:EE_
-X-MS-Office365-Filtering-Correlation-Id: 335cc48c-0b2c-44bb-7e97-08dc8a27a2c1
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10287:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8f2949d-eebf-449f-1f7d-08dc8a2fe0b4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230032|52116006|376006|7416006|366008|1800799016|38350700006;
 X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?g6ygF0h9wFsdPJUnFlwVrCMhHqpmav4lC12q9nh6hyJvdyC9PiAw+LLN+8?=
- =?iso-8859-1?Q?XQ8ADZ+0Zyh4bD+vC2hzWbzrcRvbbJkeyOXu1dohuwxuJl6uIuLgSaIAuD?=
- =?iso-8859-1?Q?1l9VdT+7qBzvemxTpRMdK3Jb/p5DXi3Vup/NkqKr009Zgk04fpHUXpkwEq?=
- =?iso-8859-1?Q?mPpgeD7adFYNShWauaGHajvO2VNhzl5MqK+8YO578c8vcG0b54tF3FMypV?=
- =?iso-8859-1?Q?yi+JwFH4VGeb0fxluF4vgHZ+1FFt6xwxv+iMbxeXKpY2FS7fzdUFrvMJct?=
- =?iso-8859-1?Q?h0MBKT6rREZI872Eg6Uw7nIusDG9TkEb2V//8uLWrwJrVWisCQemwBZRuC?=
- =?iso-8859-1?Q?LJsqFqcOMCV1tT/FeQtJSFqTZeI1yCsHtV78MzEsZxp8S/om+A3VU8bklB?=
- =?iso-8859-1?Q?6ty3LWQOtny/0LtX+bGwtDpe2UQBjkle8ZuqY7HWznIP29cDolkIyrIuRx?=
- =?iso-8859-1?Q?uvURN5VHsDMx2b7xYX1/uu8OFzvZ7/QDdKQYLzvQHZjIh0D5xNwQ6shfDU?=
- =?iso-8859-1?Q?USrxkqexzZ+Om7ieOH4ACKLSKtzoogyY3svK4Y/kVToHbyRwiVGHjTwlY2?=
- =?iso-8859-1?Q?tpMKg4wjwWndacya0+hrol7MH9ppJ3mBTvW+yU/1a2TYONSGiW8eXaYi3a?=
- =?iso-8859-1?Q?wBr28V2Iqearrh3IXKo1Hpkao6S6EYP7YD675b5/7u9ozc2HzbVHtupciU?=
- =?iso-8859-1?Q?Gjx/pWuBQngj0DPzMmB9suDlqbrBtZ+OgLhFBFn2ezxMmvh4rUj0Cn9BYN?=
- =?iso-8859-1?Q?9lnBWtUwPwTkz1l9ZauBwlwiHD0UBRIxrCm6vathWxi3TKj1340BuI0L0a?=
- =?iso-8859-1?Q?h2FcbWluHH0qWFhATXCOeMe19lRSKbVXL8QzqW1KxpLpqoHTkYtdns5Xsq?=
- =?iso-8859-1?Q?BpcshReGsydqSfBSVELWyqkDL6kf182SYNqw8V5RM6bJMGlWmwGGKWUKJb?=
- =?iso-8859-1?Q?GNHnrseKeXosp6BvvGBaXFyJ2oPdBYlEafCwlaY/c8goc8iOqnTlZWHyeU?=
- =?iso-8859-1?Q?k5ycSNWXCuI9bh2hB9Y/ZzTX6NJE/dP3+cNp1o5j87Z0yrbEb1gd0ikjTp?=
- =?iso-8859-1?Q?1vxUAD1fgRQ+pB6OqIjKUSdhMaZnoixNRtVuOewKpoNwOP8XNh4JXiz0C/?=
- =?iso-8859-1?Q?oCe7NouYecgykThhGaauHtVSeR1kIzvgidWLxPcgghYrEYY0h7zpIgVy0i?=
- =?iso-8859-1?Q?ezhxuv7+dqbAszCQJ4Q/LU1h/ZLUKAhVal9Jhw2SYrBiCn9j+F4Dc7OcM7?=
- =?iso-8859-1?Q?w81PAJnI3r+gAUbkZ7oxKGCgZiR7z+V2Be3W/NuZsiBnMTQgW5HFhRJcOM?=
- =?iso-8859-1?Q?YV/jr5BiA6feBc21ce6Ec7HNMg70pepIw5PfMO7tJWkDFNGcA8KpZvgnb1?=
- =?iso-8859-1?Q?9fT23/ueT3?=
+	=?utf-8?B?ajB0dndXK0hEQzRCMkE2UVdjVUVwa1dWR1A1MmhidXkxMXlwbFpSYjloN0FD?=
+ =?utf-8?B?c3NDSFNNaWVJL3dpODdxSTljQkwxMXhDQlhQNGZ6ZnJEaGxRWUxJQ1QyYkFh?=
+ =?utf-8?B?ZytBUkw1VCtMMUxtbmZHb2tYNzFITDFtT3RIWGhIOEQ4bEJEZWhHLzhtUVAv?=
+ =?utf-8?B?TDJpSnk0RlhseURRUzFRYi9DazlGZEw3cVNRUWxOdmRaUWN0bTdMbVJTZEFu?=
+ =?utf-8?B?cFZPWUJnN0JsQ3pSdERjMHhQWjR3cXkxQno5ajRRRXNWZEVuZWlVaHJ1UGhE?=
+ =?utf-8?B?UUdMdk1kUWNTci9vcVdQbTJGRmdDUzQvZ0J2TjhBSXFObU92TWV4WTh4cXY2?=
+ =?utf-8?B?TEZmVWZZL1Z4L3ZLN3R6Z0lTZml4YTcyeFVxQ0pQZFo0MkJJSTZac2theUJL?=
+ =?utf-8?B?bDdSWmdtcHZMRmI4TXh5bGs3WGJmMVgvVVBCN1gvSkF1OTVCeXlYYVI2TmtB?=
+ =?utf-8?B?NEVsUlBsb2JoSCswY1VhaGhySHhzaW5mRjJUQmtmVm5BMW1ReFJwclJEUnNZ?=
+ =?utf-8?B?S0Zma3dueStJc2ZEdFRKYU84QUNzQ1YzQkc4VjlkS0JHQlFFVUxGMGlOVXNw?=
+ =?utf-8?B?U0dUZ0xoYityN2I4VjZWalFGVUR0RVlkWXdYbktWcWlOeHpBZUd0dU82T0ds?=
+ =?utf-8?B?OFBKQzZiRnRoWjlUTmltOURHbGljaXR0cEwzeXR2aUZnNFV4WmNqQjE5UEpE?=
+ =?utf-8?B?Q1IxbVBCd1YxYnNybnN2ZWtJY1VuWXYyWnlzMWdEUlJrNWU4eHJYR1h2WVN5?=
+ =?utf-8?B?ZGZkd1pWU1Z6cE9IMkdaM3c4WElwZGIvTUlCVi9aVmF0K0Z4R1BtaTFYZVlB?=
+ =?utf-8?B?N2xycWNmblVDTk9RclVWUTVQZU82QUpSekdCbGRoejI4Ry9JRlJlQkYydjls?=
+ =?utf-8?B?TkFhZXZmb0FlSko5UUU3STBVN09tSldmSW4yb0tvWEVtcnZQVEN6c0ZNcFpp?=
+ =?utf-8?B?a0tBbFpQT3l4d0Z0b3NVR0JVTVd5ZVUyTFRNek5Wc1BuajJQeFBxcS9aeGw3?=
+ =?utf-8?B?am1qSHZhZjFpSXdmaUpBWEhjdlhOVXNPM25xYnkySko4bEZUbkNMU0FSeXky?=
+ =?utf-8?B?cGNnSlBveGNtT2xRN2IyVk1WcS96c3U3OW5iV2E0d3J4T0JkQ0ZHUjZJUTRp?=
+ =?utf-8?B?M2Jhd2pjQjhNc05ub2Zrbk5RUjF1YTcyaVhsWDVPTnBkUGwwb2tmMEJiVGVC?=
+ =?utf-8?B?Q01IRUN2bTJyNEltTVhlWGo5U2NpQTRzMGI2eVFQMGZjVWpqcjJNQW9ERGU5?=
+ =?utf-8?B?UHJTcHhrNysvU0R2K2g0eEZrOVUrd1krUUxiZU9tTnpBTXEyT0FZYVdFd3Uw?=
+ =?utf-8?B?WDNrYWo1OERrUi96Z1pqdzBTczZ3eDYxQjUxT3pyV2FHYjZqSENkRGJHb29a?=
+ =?utf-8?B?V3VjQUJUbXZseTNia2txWkEremRaRWVvdXdWN21rTDc3ZWRLa0s3VGVPVENq?=
+ =?utf-8?B?amJqcUM1Z3JxLzVaZEp2OUx0bmR5SEpaVXg2aE5oaUlTK1JFZ3VsWlk4N2pM?=
+ =?utf-8?B?NDV2MFU2WnBhNWxGNC9YR1Y3dUxQWTVlWmpUWkx3SkdXeFpnTVF1Y2NhUzJK?=
+ =?utf-8?B?a0dUTkwzZXNrT3RENnNUN2pPT2JvVWJkbFkxUFN4d3FoaGpVU3ljWE9JSm5W?=
+ =?utf-8?B?SStBZFRzYllEY253ZVFhYXRPY2dHUVZLTC9xTkpLclBqVTlScXJNTmIvUU53?=
+ =?utf-8?B?YWRxTTNTcE9VTnZPcXQ3WU9RQ2dWMllVVkdaS2pNU1MvT3JIdnI4U2Voc1ls?=
+ =?utf-8?B?M2d2YmdOaWx2QXZMbi9ZUFZxQXFvb1lrbUszZTRwcnN1bDlqTVhVekJHSmhE?=
+ =?utf-8?Q?pf2YORoVP4c2vAJi15e6yLCs+farihng2bJGM=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230032)(52116006)(376006)(7416006)(366008)(1800799016)(38350700006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?cPLRemAZRKk+gyf8U6XIZQ+MRgLXa4Vb3Ly5061lfcngEGawD0cN4OQ24R?=
- =?iso-8859-1?Q?hx4tV/Ta9Fnr9TbnkAlHuRb0AFu16Ckaiaz7Agr5k7cDhtsOyTfnQELcvz?=
- =?iso-8859-1?Q?kmT7STCd+U8MvhN7UKUniAoCglV5Tl5ic2lu+kylTQo57VMsgEGE+eWfAZ?=
- =?iso-8859-1?Q?6MQvuANhqMjWLe8T6iN9faje+MHDAfUwV7LRRpUiyAc39w1p/lXx7sC5of?=
- =?iso-8859-1?Q?zG0NhRyBUJtoSbxaWUsBY6JFW3IbV4G8n7OsfItQmIHArz3/GcuJLbggUa?=
- =?iso-8859-1?Q?GiZxHJl74MoyxQbVPo3EC3nddQxNT7latD7KT1DU5Q55YjqO17P0ZL4h8t?=
- =?iso-8859-1?Q?pVDp/x7uJATaxyhHnzHfTeSTTHqarKzgc/1cZxyKilDpePBpHUZZUBd3qB?=
- =?iso-8859-1?Q?nrnCDihxb+XxH4T8seBIsumMpKUEsS+FOiZ2z1VLv872TmvJ4B+dYgW18Z?=
- =?iso-8859-1?Q?sqrQdlKo1kAxn1KNTiAoDejzJx3cZHm6zV7x8Vnlu3tc9zqdxciuF3YDMf?=
- =?iso-8859-1?Q?PykYxIo9qXn0fRRSal0vxmDfR1/huEaFTIlAoaFW7RNSlCp8DJmrh6bBVf?=
- =?iso-8859-1?Q?8lDSRbkC7boJ8pfFfJ0en+335Lro8hPVIymJ93cn7FB3+A8tcps2xf/JW+?=
- =?iso-8859-1?Q?D4t6qWjSLf/TYzNohLYjR6Ttr+WmMbsBo4xTeTu+Gumw7z524lRLc2bDwW?=
- =?iso-8859-1?Q?Udh3SsxylwFbUmaBr5/oAIjHTkga8serVWR8F7ms8Jl/CGP8yJXhUFEWu8?=
- =?iso-8859-1?Q?ZWqgS2QOUnWJkx2M/HKgnwkDU9lIu4asWNWsr0pxJ2hEfIqSec9kTsficK?=
- =?iso-8859-1?Q?dfnZG7mucX6PkSijNbM1AJs77BrsvNTSHZDCfEljYi20TbEXhsMknlg4Ai?=
- =?iso-8859-1?Q?lrNkK82j/1SE97UPo8sYr24MjmeimJNiDphQM15d2LyvHFJTT5PBVioGNW?=
- =?iso-8859-1?Q?rIl0I6JtoxSjUogp8I71qFhW0lnmfv0QZ9/N5PlgWvLtYO6qiXWLwxMhhc?=
- =?iso-8859-1?Q?NchcF42MvzmuZ6gxYnaEGokjpuhkwB7nKmVMDBUt8/lBs33oUi+JdgIUXk?=
- =?iso-8859-1?Q?Z4qf5CzsUknjg1F/jbZhlb34g6gP1yz5Gg1QFCDea6i5586vynt0qHyu/S?=
- =?iso-8859-1?Q?kLXS7pcxQazxkzFTlG4iwwcoHRXAbMx/buPdCSBjBob0VOU58Xc8e0PZAk?=
- =?iso-8859-1?Q?fZOZvV31qvannUC5I0GGFV8j9ZC8mZjDyYrkDA+eHMBi3XNYtAzvPDEjgc?=
- =?iso-8859-1?Q?ufEFjU1fk6Haqqq1GT5wWj8UBGMCvanJFfXJhQ0kuJJz8pzmiMgbgFk6Es?=
- =?iso-8859-1?Q?TrX7346XcoV9Jqq1mr9jsAaIZYKI+LnhspCSvl1ebanJ73yKsjEiYxtDFp?=
- =?iso-8859-1?Q?QQDud2DxDrSwdfA54DofO0hukoAnIjFriZZWoQWkNF2hiVPXXwDYREJdKQ?=
- =?iso-8859-1?Q?KDsc3YyHK2/59t2dsLumXHB2zfOiXvoLFVRxpyuj8u2GaTT/ynFnBbOyvM?=
- =?iso-8859-1?Q?OgIGmE88Y4RdIAZ/vQF6nZLJ8aTM9aJQNDy0lI/dbXs55C/GOUxesjMrJk?=
- =?iso-8859-1?Q?8NKZFVjY2UnfbHH1KI6JUH91ZXRK5UDesE6XA2X04FRNkddyVUb9d/kgR8?=
- =?iso-8859-1?Q?e6yoz4GfPmtbiuxUpwzNbNp/AEVD7P3HQM?=
+	=?utf-8?B?OG1NYlBCc0hjRFRZYlZWS0YySXVFT0twakhUMjFOUXpXWFB3NURsWUdJTnFx?=
+ =?utf-8?B?dGNacEFKOXpoMGZrOXZVWm5jR2Q1bmo0WkVjai8vVXNVdnZVTHpINm5FUWZ4?=
+ =?utf-8?B?NStzT2RPaWtlQkJJaEwrdlRSZlpsbDFPVmx1TVY4M2gzTUhrdGUzWjI1clk4?=
+ =?utf-8?B?ZGlYd29lUnB6QjNPajhHNUVMMERCQ25ybHRneFZ6RkZTZ3JIOW1NU2NXem5N?=
+ =?utf-8?B?T0JJM3UrcGdxTjJHdkpFaW5LVmI0dHJmYnVScmRaYSt1MWl1Ry9hWkJhRTI2?=
+ =?utf-8?B?Ylh4Z0pZbzJCSVA1TXBuMmpaN2ZMWnRvZ0tCb2FqdXFidFZENWRaQysvTFFE?=
+ =?utf-8?B?N1RBekppbHpJVDM4Z1NLK2VSeVVLR3lZcUpZKzV2cG1FcGxZK3RrQkkzM2Ju?=
+ =?utf-8?B?cE05Ym9FU0FMdmtGYlBiZDg2Z1NFUzZOYTQrMWVNOUg3THFIbVRrNkptRk1i?=
+ =?utf-8?B?K1ZnY2Y0NEV6VlZKTHJWMGJ0UldOdi9aL3pKcEtMSm93QS9mYUhVWHA0WGNC?=
+ =?utf-8?B?TmZqU0hsYU1MUzE0UzZOM1pzUnZmQmp0d3Q5VmZEaEh0MHA1R1hCaWpKeHFw?=
+ =?utf-8?B?UlpXUG5ZZ0FBRW94WllrZVkzaFhJaXQrY2FwR1ZQMHViWEFLczBtOG9NWnZV?=
+ =?utf-8?B?U1NRQ3F2bXdwS2pVWlRLWlFiNjJVUk5ieWdmWjFLU2ZSaVl2QzM3M1YyYWZj?=
+ =?utf-8?B?bkFpMGhuQVZGKzJKRkVwUlYzZnF5NVNoZS9oRzdNM01VOXRubHRBYmVCdTNE?=
+ =?utf-8?B?VGtIblFPWW9kUlNsSnRmdnp6cXFuWElUVmFMR01uL1ZIMEtVbnArcGg1cVcz?=
+ =?utf-8?B?RjFmYXQ5TG91aWJzSkhlMWVLV2dRdXNwZndXcTNBMCtKRDFUSy94WEtpVFVh?=
+ =?utf-8?B?Qld4dmp6a1FuTDNYSW56YjNCTHVZZEJHelFXblRralRUVUp0cm1vbDNVaW1W?=
+ =?utf-8?B?N3J1Y01JMTdoYTV0OVBHUkw1K2hBaDlia3R3MUI5aERPTFYxTHhEd2RjWGt6?=
+ =?utf-8?B?K2x4STh2MnZLa0tuR1BoeVAyd0tHMHZNNjBhek1Jbm1NbE15WGJRWTNaS0o3?=
+ =?utf-8?B?RlBSUWZ4eDFEaXYremg5OEUrMGlNd0JseHNrc0VhOGRjamk4TXYvNFVhMWls?=
+ =?utf-8?B?cFJiRUtxMmFqeUFIVS90YnA3blBHdDlPNk1uNWxta01FL3EyMVlQSXFGZkVs?=
+ =?utf-8?B?bzR6UTVDSWdRcVdTazJQS09nM2p0RThxZWVoVHNOOGlaRDArZndOdGlsbHhR?=
+ =?utf-8?B?a2hTdGtqampOSUpKTU9JM2RyMFA5RzdOL20zVjNuci9DWlRJOG1XWk9haHFI?=
+ =?utf-8?B?UC84L2pmNktoa1diZlhsVFdQK0M1UlArVEp3bkpDdHE5L3FxdDZJejlDV2JP?=
+ =?utf-8?B?V1lzZ3QwNTJOVHZPMDVZM09mLzNxbWRaRSs5VlpJQkUrTzFyWFlMSXNCNHpC?=
+ =?utf-8?B?Q3NNSDIremJEZEswYmdJcmc1LzlwRFg2NlBZNzRJU1BKWlpEVHJBSW5xQ1Fv?=
+ =?utf-8?B?MlpWVFdYM0dNK2JqTE9sSi9xR21Gc0drOHhWZ29LcGk1K0U1Nm5EU3ZWSnJ1?=
+ =?utf-8?B?WE02cytiUTExSzZDd3h0TUNIUWYwWXQ2a3BzRHNhaG5oL1VNMWRMTXg4WVVs?=
+ =?utf-8?B?c0UxNWlLNjI4K08rSUhkVVJ3ekpFekQ3NnY0UnFmWUNUMEFFRnM5ZnNUSG1t?=
+ =?utf-8?B?c1krZFVnZXNtSFRkU2NUS0ZqZElnSnkrSUN0dnZVSHRWMkUzMWdYbHdLeVMv?=
+ =?utf-8?B?ZERZM2IxL3NFZE5RU1JVMTRQdk83c1FUbE1UU2VBdVRZQS80TkM4NWwvOVlH?=
+ =?utf-8?B?N3IxN2YrbzcwMllXUnlpZDFHbmZmcG9VUjlDNjBVTFM4WWZaSU1sUnNHbDhF?=
+ =?utf-8?B?RTRNZEd6UjdJekNhYTFEMldiNFBGbmcwUk9MQXd1SGdDaUZIR0tGY0RLdGtD?=
+ =?utf-8?B?aFBWMGQ3TitaczhQRUt0SWMzMHlnVWN6L3ZCbUlBNGtWSDhhYXVZS20ycTFR?=
+ =?utf-8?B?OEl5dU1JdHFzRUhXMEdTVEY4dUlORzFYMDkrbWVRQjY0YXpVc2kzclJoaURX?=
+ =?utf-8?B?U292T3BXd1VxdnlGdElJb05qb3BZT3dyKysxY043S1hnMG5qbjA5bjFnSG5P?=
+ =?utf-8?Q?Gx1WRc8Qu9hVseA6h14z88O/g?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 335cc48c-0b2c-44bb-7e97-08dc8a27a2c1
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8f2949d-eebf-449f-1f7d-08dc8a2fe0b4
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2024 15:03:22.0142
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2024 16:02:21.8764
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2Pcg048KJOoOunSxKtoVeJA15GEz03ZpUE9ZRFcZOCt4HJvhz+ksd7vM4oAbES/VPlMcdRZAnZefldS9tQYyBQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6893
+X-MS-Exchange-CrossTenant-UserPrincipalName: S5KLDeK+qyfuq+TaB6+9kPWQ3UpYktjq0ma8qylj1zWAp3105MJpDo7FF0+dEOSjx2X/tgaeaE9u4sLliQ/Sgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10287
 
-On Tue, Jun 11, 2024 at 01:14:20PM +0200, Alexander Stein wrote:
-> Am Montag, 10. Juni 2024, 22:46:20 CEST schrieb Frank Li:
-> > ********************
-> > Achtung externe E-Mail: Öffnen Sie Anhänge und Links nur, wenn Sie wissen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten Sie die E-Mail im Zweifelsfall zur Prüfung an den IT-Helpdesk weiter.
-> > Attention external email: Open attachments and links only if you know that they are from a secure source and are safe. In doubt forward the email to the IT-Helpdesk to check it.
-> > ********************
-> > 
-> > Add basic mipi subsystem for imx8qm and imx8qxp.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi | 138 +++++++++++++++++++++++
-> >  arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi | 138 +++++++++++++++++++++++
-> >  2 files changed, 276 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi
-> > new file mode 100644
-> > index 0000000000000..6b56315e8c434
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi
-> > @@ -0,0 +1,138 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only and MIT
-> > +
-> > +/*
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +mipi0_subsys: bus@56220000 {
-> > +	compatible = "simple-bus";
-> > +	interrupt-parent = <&irqsteer_mipi0>;
-> > +	#address-cells = <1>;
-> > +	#size-cells = <1>;
-> > +	ranges = <0x56220000 0x0 0x56220000 0x10000>;
-> > +
-> > +	irqsteer_mipi0: interrupt-controller@56220000 {
-> > +		compatible = "fsl,imx8qxp-irqsteer", "fsl,imx-irqsteer";
-> > +		reg = <0x56220000 0x1000>;
-> > +		interrupts = <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
-> > +		interrupt-controller;
-> > +		interrupt-parent = <&gic>;
-> > +		#interrupt-cells = <1>;
-> > +		clocks = <&mipi0_lis_lpcg IMX_LPCG_CLK_0>;
-> > +		clock-names = "ipg";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0>;
-> > +		fsl,channel = <0>;
-> > +		fsl,num-irqs = <32>;
-> > +	};
-> > +
-> > +	mipi0_lis_lpcg: clock-controller@56223000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x56223000 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> 
-> That's LPCG_DI_LVDS_LPCG_0 for imx8qxp, no? So clock-indices and
-> clock-output-names should be split similar to patch.
+Start from v4 because fsl.esdhc.txt to yaml already sent out as v3.
 
-I am focus qm firstly. I can remove it. 
+Change from v3 to v4
+- Add dts warning fixes
+- Add mmc-spi-slot's voltage range fix, (not sure why it apply to
+layserscape's dts file.
+- clock-frequency is not required property
+- add dma-conherence: true in binding doc
 
-> 
-> > +		clock-output-names = "mipi0_lis_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0>;
-> > +	};
-> > +
-> > +	mipi0_pwm_lpcg: clock-controller@5622300c {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x5622300c 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&clk IMX_SC_R_MIPI_0_PWM_0 IMX_SC_PM_CLK_PER>,
-> > +			 <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "mipi0_pwm_lpcg_clk",
-> > +				     "mipi0_pwm_lpcg_ipg_clk";
-> 
-> That's LPCG_DI_MIPI_LPCG_12, no? imx8qm RM Rev 0 just lists one clock.
-> Also it's different on imx8qxp.
-> 
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_PWM_0>;
-> > +	};
-> > +
-> > +	mipi0_i2c0_lpcg_ipg_clk: clock-controller@56223014 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x56223014 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&mipi0_i2c0_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
-> 
-> Just 0 instead of IMX_LPCG_CLK_0.
+Now only "bit-endian" proptery warning left.
 
-all lpcg have to use IMX_LPCG_CLK_n, down stream clk driver is difference
-with upstream one.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (8):
+      dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+      dt-bindings: mmc: mmc-spi-slot: Change voltage-ranges to uint32-matrix
+      arm64: dts: ls1012a: Chang node name from 'esdhc' to 'mmc'
+      arm64: dts: ls1043a: Chang node name from 'esdhc' to 'mmc'
+      arm64: dts: ls1046a: Chang node name from 'esdhc' to 'mmc'
+      arm64: dts: ls1088a: Chang node name from 'esdhc' to 'mmc'
+      arm64: dts: ls208ax: Chang node name from 'esdhc' to 'mmc'
+      arm64: dts: lx2160a: Chang node name from 'esdhc' to 'mmc'
 
-> 
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi0_i2c0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_0>;
-> > +	};
-> > +
-> > +	mipi0_i2c0_lpcg_ipg_s_clk: clock-controller@56223018 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x56223018 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi0_i2c0_lpcg_ipg_s_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_0>;
-> > +	};
-> > +
-> > +	mipi0_i2c0_lpcg_clk: clock-controller@5622301c {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x5622301c 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&clk IMX_SC_R_MIPI_0_I2C_0 IMX_SC_PM_CLK_MISC2>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi0_i2c0_lpcg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_0>;
-> > +	};
-> > +
-> > +	mipi0_i2c1_lpcg_ipg_clk: clock-controller@56223024 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x56223024 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&mipi0_i2c1_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi0_i2c1_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_1>;
-> > +	};
-> > +
-> > +	mipi0_i2c1_lpcg_clk: clock-controller@5622302c {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x5622302c 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&clk IMX_SC_R_MIPI_0_I2C_1 IMX_SC_PM_CLK_MISC2>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi0_i2c1_lpcg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_1>;
-> > +	};
-> > +
-> > +	mipi0_i2c1_lpcg_ipg_s_clk: clock-controller@56223028 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x56223028 0x4>;
-> 
-> Order nodes by base address please.
-> 
-> > +		#clock-cells = <1>;
-> > +		clocks = <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi0_i2c1_lpcg_ipg_s_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_1>;
-> > +	};
-> > +
-> > +	pwm_mipi0: pwm@56224000 {
-> > +		compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
-> > +		reg = <0x56224000 0x1000>;
-> > +		clocks = <&mipi0_pwm_lpcg IMX_LPCG_CLK_4>,
-> > +			 <&mipi0_pwm_lpcg IMX_LPCG_CLK_0>;
-> 
-> I don't think that's correct. IMX_LPCG_CLK_4 evaluates to 16.
-> 'mipi0_pwm_lpcg' only has 2 clocks, so you should use just '1' and '0'.
+ .../devicetree/bindings/mmc/fsl,esdhc.yaml         | 105 +++++++++++++++++++++
+ .../devicetree/bindings/mmc/fsl-esdhc.txt          |  52 ----------
+ .../devicetree/bindings/mmc/mmc-spi-slot.yaml      |  17 ++--
+ arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi     |   4 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi     |   2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi     |   2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi     |   2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi     |   2 +-
+ arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     |   8 +-
+ 9 files changed, 125 insertions(+), 69 deletions(-)
+---
+base-commit: d35b2284e966c0bef3e2182a5c5ea02177dd32e4
+change-id: 20240610-ls_waring_esdhc-93136a5dd794
 
-all lpcg have to use indices, instead of index. Upstream clk driver use
-arg0 as clock indices, which is difference downstream version. 
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
-> 
-> > +		clock-names = "ipg", "per";
-> > +		assigned-clocks = <&clk IMX_SC_R_MIPI_0_PWM_0 IMX_SC_PM_CLK_PER>;
-> > +		assigned-clock-rates = <24000000>;
-> > +		#pwm-cells = <3>;
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_PWM_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	i2c0_mipi0: i2c@56226000 {
-> > +		compatible = "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
-> > +		reg = <0x56226000 0x1000>;
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
-> > +		interrupts = <8>;
-> > +		clocks = <&mipi0_i2c0_lpcg_clk IMX_LPCG_CLK_0>,
-> > +			 <&mipi0_i2c0_lpcg_ipg_clk IMX_LPCG_CLK_0>;
-> 
-> Just use 0 instead of IMX_LPCG_CLK_0.
-> 
-> > +		clock-names = "per", "ipg";
-> > +		assigned-clocks = <&mipi0_i2c0_lpcg_clk IMX_LPCG_CLK_0>;
-> > +		assigned-clock-rates = <24000000>;
-> > +		power-domains = <&pd IMX_SC_R_MIPI_0_I2C_0>;
-> > +		status = "disabled";
-> > +	};
-> > +};
-> > +
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi
-> > new file mode 100644
-> > index 0000000000000..5b1f08e412b24
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi
-> 
-> This is only for imx8qm, no?
-> 
-> It maybe makes sense to rename this file to imx8qm-ss-mipi1.dtsi
-> 
-> Best regards,
-> Alexander
-> 
-> > @@ -0,0 +1,138 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only and MIT
-> > +
-> > +/*
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +mipi1_subsys: bus@57220000 {
-> > +	compatible = "simple-bus";
-> > +	interrupt-parent = <&irqsteer_mipi1>;
-> > +	#address-cells = <1>;
-> > +	#size-cells = <1>;
-> > +	ranges = <0x57220000 0x0 0x57220000 0x10000>;
-> > +
-> > +	irqsteer_mipi1: interrupt-controller@57220000 {
-> > +		compatible = "fsl,imx8qm-irqsteer", "fsl,imx-irqsteer";
-> > +		reg = <0x57220000 0x1000>;
-> > +		interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
-> > +		interrupt-controller;
-> > +		interrupt-parent = <&gic>;
-> > +		#interrupt-cells = <1>;
-> > +		clocks = <&mipi1_lis_lpcg IMX_LPCG_CLK_0>;
-> > +		clock-names = "ipg";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1>;
-> > +		fsl,channel = <0>;
-> > +		fsl,num-irqs = <32>;
-> > +	};
-> > +
-> > +	mipi1_lis_lpcg: clock-controller@57223000 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x57223000 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_lis_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1>;
-> > +	};
-> > +
-> > +	mipi1_pwm_lpcg: clock-controller@5722300c {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x5722300c 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&clk IMX_SC_R_MIPI_1_PWM_0 IMX_SC_PM_CLK_PER>,
-> > +			 <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> > +		clock-output-names = "mipi1_pwm_lpcg_clk",
-> > +				     "mipi1_pwm_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
-> > +	};
-> > +
-> > +	mipi1_i2c0_lpcg_clk: clock-controller@5722301c {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x5722301c 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_MISC2>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_i2c0_lpcg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
-> > +	};
-> > +
-> > +	mipi1_i2c0_lpcg_ipg_clk: clock-controller@57223014 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x57223014 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&mipi1_i2c0_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_i2c0_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
-> > +	};
-> > +
-> > +	mipi1_i2c0_lpcg_ipg_s_clk: clock-controller@57223018 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x57223018 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_i2c0_lpcg_ipg_s_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
-> > +	};
-> > +
-> > +	mipi1_i2c1_lpcg_ipg_clk: clock-controller@57223024 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x57223024 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&mipi1_i2c1_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_i2c1_lpcg_ipg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_1>;
-> > +	};
-> > +
-> > +	mipi1_i2c1_lpcg_ipg_s_clk: clock-controller@57223028 {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x57223028 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&dsi_ipg_clk>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_i2c1_lpcg_ipg_s_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_1>;
-> > +	};
-> > +
-> > +	mipi1_i2c1_lpcg_clk: clock-controller@5722302c {
-> > +		compatible = "fsl,imx8qxp-lpcg";
-> > +		reg = <0x5722302c 0x4>;
-> > +		#clock-cells = <1>;
-> > +		clocks = <&clk IMX_SC_R_MIPI_1_I2C_1 IMX_SC_PM_CLK_MISC2>;
-> > +		clock-indices = <IMX_LPCG_CLK_0>;
-> > +		clock-output-names = "mipi1_i2c1_lpcg_clk";
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_1>;
-> > +	};
-> > +
-> > +	pwm_mipi1: pwm@57224000 {
-> > +		compatible = "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
-> > +		reg = <0x57224000 0x1000>;
-> > +		clocks = <&mipi1_pwm_lpcg IMX_LPCG_CLK_4>,
-> > +			 <&mipi1_pwm_lpcg IMX_LPCG_CLK_0>;
-> > +		clock-names = "ipg", "per";
-> > +		assigned-clocks = <&clk IMX_SC_R_MIPI_1_PWM_0 IMX_SC_PM_CLK_PER>;
-> > +		assigned-clock-rates = <24000000>;
-> > +		#pwm-cells = <3>;
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_PWM_0>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	i2c0_mipi1: i2c@57226000 {
-> > +		compatible = "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
-> > +		reg = <0x57226000 0x1000>;
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
-> > +		interrupts = <8>;
-> > +		interrupt-parent = <&irqsteer_mipi1>;
-> > +		clocks = <&mipi1_i2c0_lpcg_clk IMX_LPCG_CLK_0>,
-> > +			 <&mipi1_i2c0_lpcg_ipg_clk IMX_LPCG_CLK_0>;
-> > +		clock-names = "per", "ipg";
-> > +		assigned-clocks = <&mipi1_i2c0_lpcg_clk IMX_LPCG_CLK_0>;
-> > +		assigned-clock-rates = <24000000>;
-> > +		power-domains = <&pd IMX_SC_R_MIPI_1_I2C_0>;
-> > +		status = "disabled";
-> > +	};
-> > +};
-> > 
-> > 
-> 
-> 
-> -- 
-> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-> Amtsgericht München, HRB 105018
-> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-> http://www.tq-group.com/
-> 
-> 
