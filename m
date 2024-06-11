@@ -1,45 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D8B74BE8;
-	Tue, 11 Jun 2024 18:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A70D1553B4;
+	Tue, 11 Jun 2024 18:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718130479; cv=none; b=vC8dzE2trl1+QGfemGvsngPgOw0z1Z6QKi7MTDF//tyWzwpmrTZua/dcKal+WbQrAkNN1ubv4HRK4iAETJSd+qqvfz3lXT8BmYUPXu9easXnXZfvLR9CW+4pbPNbFvEWLnx905oqoELocGEwhaKKnhcfGRhMNIaDOohpiPy/iPY=
+	t=1718130501; cv=none; b=oMXl9OKIOT0SOtnv4V9e7eWHXmgV7ZBx1qhUHokyE4H7lUj+elmluM08XSXA8pem2wZeuiJved/B9YvO+Qfl21lNEoqSKAjgytk5EDZzEBGcNdzUrW7MJpeAm+uQjGJbce2nL//Waxnb30qYnJda7Pvz10XWELIqAnT2tPPkqxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718130479; c=relaxed/simple;
-	bh=6CSNMxxBSxOg2wytumtFbB+a4+h3V2IFBw3MlO5EU3Q=;
+	s=arc-20240116; t=1718130501; c=relaxed/simple;
+	bh=wfA1da30CmPTkWYaNNBASZzD3aUSgxiND7E14LbAT5M=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=PtlSJjaj2Q7znIqn+aCfETQ5vjkBEg1kP8RP7X3KDUAaNL+j2qcIjbaRqqJXsxndvb6lDYymjn/US78cZfnZ9QKFZgu7oBBSeaVZRt0Pbz19mNQZweSGsndkSRKPky3qFT4QUeP1J34aEUQRaS4UZuo6xQnsCdLjcIA1MLoaLgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9MVZZky; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=bzmxJ9NI3I97e+V0L85dPH4FtQcif4o0W5w9nYG9hZfDlae++ERW5J0WpnAATX/02Z4cpoHHXMBt/DiZlBFYfKA63pb7TPVnliqla2f6bBZFwBU20IEv6h8NW7dJpvZmZkMKqtAjNRFtsXOEyiZpLUpm+xqg3uk43YzaS98XLG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qaDttzYO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9MVZZky"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35CDC32786;
-	Tue, 11 Jun 2024 18:27:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qaDttzYO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6C5C4AF48;
+	Tue, 11 Jun 2024 18:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718130479;
-	bh=6CSNMxxBSxOg2wytumtFbB+a4+h3V2IFBw3MlO5EU3Q=;
+	s=k20201202; t=1718130501;
+	bh=wfA1da30CmPTkWYaNNBASZzD3aUSgxiND7E14LbAT5M=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=M9MVZZkyp9REtuItIrCF3J+xoeWLhhKnsmYGD5Op+QZmTQC0RuiSCIHHuEmxbc1Rl
-	 vx02zqODkzr9ZKY8gS9trDMn+PpGm18pY1x57HsJQhJCxPaPkDsQMdZ9zsGi2lCXUZ
-	 9PShElK12B2XcEm1iFDTDUnkj6FiAYIw2aaoy+5Gmix08zqSUVy2kGAqB8IfkkDONg
-	 l58RMbc4VyW60alqO2FVa/z3+7db/uM0MOrCRNESwUiSPWsJ4/YPTJqgvUBdJWZSXq
-	 wpzyFhVzLdXNXLILCVhUWPsWPEImJcgDeL3H9HwwkAUeggPjYziIwU8SYOLJaqo40Y
-	 i9RziCFpL/E2A==
+	b=qaDttzYO8KhPqwi3yEvixBOU6k0bvmQG/aBYzGkDPxF7MQWh5QPvsSaZUTYVXQF8U
+	 EwUkINyZGtzrRuGtI6lsioR3lcFfws2smpC/06YTmk6Fh7Qk7LMe57xl0qVdcLHOwG
+	 0H802/Ffht7vphtDI8gIJMznYMiwSgWpbKIGLTZ3qywmHDjJWnMpaZ1MzkJUhK+M3/
+	 Zk30zjVkwqLxp3/VW3HvWXsyIs4vzX8gcUwTCh8XUfHmIjvoWmPJc3yLz2Ev4LjMFW
+	 cLvUJMxy7WhTuy1nvcS1GKJ4fgek/Gs8DAwYqtSOIKLP0DcsuhPFzvGlO6upy6q0VE
+	 jsQUtyM53CCdg==
 From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- imx@lists.linux.dev, dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20240521083002.23262-1-krzysztof.kozlowski@linaro.org>
-References: <20240521083002.23262-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] dt-bindings: dma: fsl-edma: fix dma-channels
- constraints
-Message-Id: <171813047547.475489.5206693494651133919.b4-ty@kernel.org>
-Date: Tue, 11 Jun 2024 23:57:55 +0530
+To: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240603152317.69917-1-Frank.Li@nxp.com>
+References: <20240603152317.69917-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/2] dmaengine: fsl-edma: request per-channel IRQ
+ only when channel is allocated
+Message-Id: <171813049980.475662.10470435420085877416.b4-ty@kernel.org>
+Date: Tue, 11 Jun 2024 23:58:19 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,16 +47,23 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Tue, 21 May 2024 10:30:02 +0200, Krzysztof Kozlowski wrote:
-> dma-channels is a number, not a list.  Apply proper constraints on the
-> actual number.
+On Mon, 03 Jun 2024 11:23:15 -0400, Frank Li wrote:
+> The edma feature individual IRQs for each DMA channel at some devices.
+> Given the presence of numerous eDMA instances, each with multiple channels,
+> IRQ request during probe results in an extensive list at /proc/interrupts.
+> However, a significant portion of these channels remains unused by the
+> system.
 > 
+> Request irq only when a DMA client driver requests a DMA channel.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] dt-bindings: dma: fsl-edma: fix dma-channels constraints
-      commit: 1345a13f18370ad9e5bc98995959a27f9bd71464
+[1/2] dmaengine: fsl-edma: request per-channel IRQ only when channel is allocated
+      commit: 44eb827264de4f14d8317692441e13f5e2aadbf2
+[2/2] dmaengine: fsl-edma: remove redundant "idle" field from fsl_chan
+      commit: bb160502a45440d2b52c189d5a81365c01b8d494
 
 Best regards,
 -- 
