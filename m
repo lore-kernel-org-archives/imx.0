@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B277F7E3;
-	Tue, 11 Jun 2024 18:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F3E156643;
+	Tue, 11 Jun 2024 18:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718130505; cv=none; b=V5pfr9GIO3A/T5pGyIsGD+2pkgrI5+hFqdyNNw194KCd48GRCwZjHT9AT6D/RVV/9UjWrETbYA+9TUHYthq2Sz71Yr1UMkNf/MPkr6Ux2K+yaGzMpR2CArEKajOzSb01bGLWrVT2bzMS18IIhZqG5erkTT787O6i4TWs9YJP398=
+	t=1718130511; cv=none; b=EGMdv4Qrg4myIVMNGKVcvbuLPpk3xCpmiuznfc0HnqZpbdeTxH1TU79E/2bFFPzeT/m1eFiNLcfTvwm1UMYZd0Gil6GE3G32gRz0qjNhER7Ve1nOvGatTvViVl0l3nW0lQSzRM69Gh8B28XWcCswmR2TOwhR0lLVfaua/KIPENk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718130505; c=relaxed/simple;
-	bh=ASTVQ3g9Rf3VqgMx9wDJe2koGCVSLXH24rsi7ZnRAT8=;
+	s=arc-20240116; t=1718130511; c=relaxed/simple;
+	bh=0IpkudyHdYEF2XfuJ5ytUb4hg9SXIAZELPdA4I83a4M=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dpqzgZHSE+LWQGHvm/wWiZNwMGlTwsu2z8lClfw+mFwR7leyk/yidZQus1Fc6UanZm6CmSaQ9RMgdwfUYNMKmFe4XYJcB7/5aqv4ff/vPiFlPnpztMVBYTaX+r0VZmQmDiwu9jrftlv3tuVwUurHRH2TZJyd9NIOa48B0dWuUIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+hBWzQr; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=eAiwRY3311HWZR0x0iImncT7Ho6Ht5Ds4Q/go3uYDHwz9/7FVFfWGyKz2t4gNmrxlY6oi7fvng2CegX2DRp1V4r5CbI8q6DJ+8wdnH69BZhtYzNNWFot+3NdXtQcQFFmTmmLVE96O+WKMpTajnsaPpwK9K/9hQhyyNeELE4jZc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwmc5/OJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+hBWzQr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0F7C4AF54;
-	Tue, 11 Jun 2024 18:28:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwmc5/OJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07107C2BD10;
+	Tue, 11 Jun 2024 18:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718130505;
-	bh=ASTVQ3g9Rf3VqgMx9wDJe2koGCVSLXH24rsi7ZnRAT8=;
+	s=k20201202; t=1718130511;
+	bh=0IpkudyHdYEF2XfuJ5ytUb4hg9SXIAZELPdA4I83a4M=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=S+hBWzQr1Sudx/3LF9FtyOg4syZNNYbEbchXihrKVy9i2edfgjA5vaMamJJp3/KoO
-	 seuDlC9bLA+cmQFCQLnRQKL6Sk0/HKu38cYe9DwlFnyUB0Pj1XZ4eJ7Yy0BX0fMEn5
-	 ThxSyOYtP2ataPsCR76IEonBA5aeaA3XqPE6DgfckpVNNPZbCb/rQkLjW1HHMREZHk
-	 HzAeCCnF5VqeBlfGAsJyoIBIu9u6LDFduIWChE2qZ8+rt7KBHlZraOGrUlSrn2sQHK
-	 7LeT6Aiq9ucQ5qEB99mc7N19jHu7UDGzsFx5XmvJLQVuWD7gLGZC0ofeol8rwuBxQC
-	 RBdI9pDBNPI5g==
+	b=Pwmc5/OJX8zMSSbaDlxc75aIvszsYj3yB2w9PlpEw3rhPcNgOBd8gucc+h3kvUwWh
+	 mJXWg8b+9Dp+3ku6Cq7gmi5ANLiqTwY09p/SNzuVqPSeqFASdY68jDUaMZcd4e4aIB
+	 6YAyRO9bpcp/XnG2BwGKkGfFLTkge5OxHAGMlDBaURz6MUiRWAtNYtYW5taZwM77+X
+	 6WoFSKHJhTYtihJWOh3S0N4RoYYivmvGKJ/VlhCxFB3EZv8lTkSIdioSekl/C7B5/b
+	 1NxPX/y3qodoUwRa/RWHgtZqNyJQyHB52Gpr63cQCsKHHfCwQCJSylLjo4ZzFyV8uT
+	 PWDcoA7y7MkyA==
 From: Vinod Koul <vkoul@kernel.org>
-To: krzk@kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, 
- dmaengine@vger.kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, 
- linux-kernel@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20240528163734.2471268-1-Frank.Li@nxp.com>
-References: <20240528163734.2471268-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: fsl-qdma: Convert to yaml format
-Message-Id: <171813050173.475662.8322119332604104990.b4-ty@kernel.org>
-Date: Tue, 11 Jun 2024 23:58:21 +0530
+To: Frank Li <Frank.Li@nxp.com>, imx@lists.linux.dev, 
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Joy Zou <joy.zou@nxp.com>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20240510030959.703663-1-joy.zou@nxp.com>
+References: <20240510030959.703663-1-joy.zou@nxp.com>
+Subject: Re: [PATCH] dmaengine: fsl-edma: change the memory access from
+ local into remote mode in i.MX 8QM
+Message-Id: <171813050965.475662.12830562542163135119.b4-ty@kernel.org>
+Date: Tue, 11 Jun 2024 23:58:29 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,20 +48,21 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Tue, 28 May 2024 12:37:34 -0400, Frank Li wrote:
-> Convert binding doc from txt to yaml.
+On Fri, 10 May 2024 11:09:34 +0800, Joy Zou wrote:
+> Fix the issue where MEM_TO_MEM fail on i.MX8QM due to the requirement
+> that both source and destination addresses need pass through the IOMMU.
+> Typically, peripheral FIFO addresses bypass the IOMMU, necessitating
+> only one of the source or destination to go through it.
 > 
-> Re-order interrupt-names to align example.
-> Add #dma-cell in example.
-> Change 'reg' in example to 32bit address.
-> 
+> Set "is_remote" to true to ensure both source and destination
+> addresses pass through the IOMMU.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] dt-bindings: fsl-qdma: Convert to yaml format
-      commit: 671bc17fc4d14fed69ee86e1f7c2c972010c49ac
+[1/1] dmaengine: fsl-edma: change the memory access from local into remote mode in i.MX 8QM
+      commit: 8ddad558997002ce67980e30c9e8dfaa696e163b
 
 Best regards,
 -- 
