@@ -1,128 +1,484 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741A017167F;
-	Tue, 11 Jun 2024 06:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEEF2AE77
+	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 06:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718088297; cv=none; b=lGzPVMYWi1A1GbJpBbbAxW8C/1oEfvOO/TEYctGY8vAbiE0o2mY0dEYlH/Tv9O+qhPvB5mnVqTbtzNpl68fhPKkveIzjxZ3+2ExUlZB+idMkjrfJe7pTKO6l7xVM/rlaqCZ4K7XlxGUBH6M3iOJjGyT4XRXvDLBIZoQRGz8ylEE=
+	t=1718088970; cv=none; b=idFioOTYg4O+6ccQi5RQdeVS0RlbuBKiRtQdkgXbEey0chOolx2t0SvrLfb1WELb9OnErDymKFx04j1vV/dijihmcmoXanEucyNqK6CEGCQyKuVl1Uue4VS8dVF5NsMHXF7LJpgrEquucWUZRGff0wdA0NVOUALSwpDZ7mVtJ30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718088297; c=relaxed/simple;
-	bh=iy1Lrua7h7pyuJRoJuN3UDsLYmIYRnZyzDVImo/6rbg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QJ26L2AXGwRILOBIPnFMKoqnS1MpGqRl2eBjqrQkIUulcZG8OL8CcMwE6QxZNxp6aG47lIyKQrxyT2yZbAO61xi7GtSC1R3c+I0lnZSESkmzwVGvbzLa/Jk95v+6KzuPdXjg+TSU2QQR/HWFmvsKFRSkxCuk+4wkhaCCyQ8qp38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6fJAa9U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718088970; c=relaxed/simple;
+	bh=B+Gy8SEtqx9t6ms371lgzQbEfArEErMx5gqAWNsl6SQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EEg+IjGvYEQ4f6jK1MEA8UxBM8z4CJE5d1GXfSymFqcFw2zMW4cM6qh0acY3DU+WYHCuS3n9NM5Gff+V+mEg1cSXXVSVNhEk6yw09skRVqo3BMrWShj2H1+J+zN2Z0h1/JrhohKf5x74mcdESAcKYpSKGJ6TD9C3crXgDZk20CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GbykEd+3; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6fJAa9U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2A2C2BD10;
-	Tue, 11 Jun 2024 06:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718088297;
-	bh=iy1Lrua7h7pyuJRoJuN3UDsLYmIYRnZyzDVImo/6rbg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F6fJAa9UopUa4dpJPmy+JW0+x8mDZUlTa7EdyWacRHHOmG/IgfJT12Gw/s5i5LAtl
-	 FZ27OvTTZ8qGqH4PRGYAR1Uyu0MwCiHR4kaNEK7Nu6fyijglSvSeOcM5fGNzNgZpFK
-	 7LJOi6RGMxuKATL4jhIjoeeoZ5MO3Qul3Tt5rXHYb3G4VsF3ge5IcsDSQzNILcWOWQ
-	 2/eNYjaryIXhMnUO7ZdsNJ06P8m6s0wqGwqE+riOGRWDtuBNAvwkRCnbWrhPqRJWs4
-	 AeU0+kSDlWiXuarJUmA+t5GlIyMJEp2z/POMYErrTh2jsXzR/UKpaGdBNSzD+hdHPp
-	 HjfKWLHBJO0mw==
-Message-ID: <1a5144e3-aad6-4a1e-ab9f-4c879b050d45@kernel.org>
-Date: Tue, 11 Jun 2024 08:44:51 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GbykEd+3"
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7ea7bcc72caso35883639f.0
+        for <imx@lists.linux.dev>; Mon, 10 Jun 2024 23:56:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718088968; x=1718693768; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uIV8kEyDfbkOpTN/DX1sgcJeZ6eCveBn7lNpOasAGh4=;
+        b=GbykEd+3/gqwH81llgFOhZERA5Ko42LtyEcx8JrDrAIsuRahtMVmXDVV8YecdF/8be
+         xJq/WEmv3p4mcTAEdtObSjiNOZgumddc4OgU5q7aJ7ByT4E06m+hXXJeEcLw5BTdSCsu
+         uSkUWoEDumfiAMODsqjiZE6AxCEsIAyefdPtEUxzYAcWY2iGYovHdN2BW9PXXEBTaeyw
+         7G54TRXm9g1ODyeGnFUaJrlOT/iB6U/lea3L6n2n7NF0DZ1VFBACw+gtOfxfBqFuISQI
+         bsoe9MRfPqKzUt494A9OTOnGvMiB44qi2Fuvu3AA7Fe9qHa4xupzCF5ZiqQ+KMVQ/LWS
+         cXFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718088968; x=1718693768;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uIV8kEyDfbkOpTN/DX1sgcJeZ6eCveBn7lNpOasAGh4=;
+        b=QW9Bve3DMAPfM6TgTeLipVoR1BbFXx12umqWbMY7PHQ7O/ouds239v7tdEqvK3y/1T
+         vWVj1wLInflceRmsgYFhDGAbil+BJh4T7JExUxm8Vnn5OenYWzjgwiWP5rpAHg6ODRnW
+         9e48RddeYq97kf8VdfUUdwlCIojcd9vh3crwWwY+kGm/1vHqm2QtJFc12aOmPkl2rWAX
+         V+9W48UUogDbIjzNkDT+QaDu+dPN3RkgiJH3KE5p1NMuLQX7WGJ/BjUn4PcFTnNpDwf1
+         LZsQGwuAu4WZz/3soWJM2DBh006cJO8Y0EJvjIg9xo7neSFtuIaFUp2Lj0ipcGOMRJ31
+         PArg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpl4MybqQh/myMRQ+bRhtKaiH7XNJYtmWJLg0+c7YgHZZ9W1C3nGxPEGSEf4whgJK4znffmxz0LMjf57Z4IVvkmtke
+X-Gm-Message-State: AOJu0YzaR7AgiCYX4H5fV8r+v2pvdHxSEmE5A41V/EKiYkfRaiETN4fc
+	Q1nftp9i5newggHQRF0wBHZCYooQyawg9M/MjJVd23k4wkWwg6XRma93V1PSdopEZGEftsQ3LlZ
+	666GYHl7ZXTIDWzVpIO9lvOYGHMU=
+X-Google-Smtp-Source: AGHT+IF/aIbFJgENwccISyiDw4ED2Yu2mF1rJ9k3fpVdGgufmmvg4Nqe+PWlVb+q3Py3N5/NblY7j5GfNMfnA8pHx5A=
+X-Received: by 2002:a92:c047:0:b0:375:86c9:9ec9 with SMTP id
+ e9e14a558f8ab-37586c9a260mr97466115ab.11.1718088967543; Mon, 10 Jun 2024
+ 23:56:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
+References: <1717036278-3515-1-git-send-email-shengjiu.wang@nxp.com>
+ <1717036278-3515-4-git-send-email-shengjiu.wang@nxp.com> <20240530090558.53reobf2zea22oi2@pengutronix.de>
+ <Zlig/Z7u4nxvKLoQ@lizhi-Precision-Tower-5810> <20240530164510.fyznsyzvqrbu4a4e@pengutronix.de>
+ <ZljGi+VPGgDxVYKf@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZljGi+VPGgDxVYKf@lizhi-Precision-Tower-5810>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 11 Jun 2024 14:55:55 +0800
+Message-ID: <CAA+D8AOnoRouTmtv7VMXan=k9i8yQkBJvmWDEqtCTDizMJyDDA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/5] reset: imx-aux: Add i.MX auxiliary reset driver
 To: Frank Li <Frank.li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- krzk+dt@kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- robh@kernel.org, ulf.hansson@linaro.org
-References: <20240605185046.1057877-1-Frank.Li@nxp.com>
- <b1c51acc-441d-4484-adef-1da368571097@kernel.org>
- <8901d498-d30a-43db-bda2-25d3d1d58e8d@kernel.org>
- <ZmcOyVmI5GhRUuVc@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <ZmcOyVmI5GhRUuVc@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc: Marco Felsch <m.felsch@pengutronix.de>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com, 
+	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/06/2024 16:33, Frank Li wrote:
-> On Mon, Jun 10, 2024 at 02:29:57PM +0200, Krzysztof Kozlowski wrote:
->> On 06/06/2024 08:44, Krzysztof Kozlowski wrote:
->>> On 05/06/2024 20:50, Frank Li wrote:
->>>> Convert layerscape fsl-esdhc binding doc from txt to yaml format.
->>>>
->>>> Addtional change during convert:
->>>> - Deprecate "sdhci,wp-inverted", "sdhci,1-bit-only".
->>>> - Add "reg" and "interrupts" property.
->>>> - Change example "sdhci@2e000" to "mmc@2e000".
->>>> - Compatible string require fsl,<chip>-esdhc followed by fsl,esdhc to match
->>>> most existed dts file.
->>>> - Set clock-frequency to 100mhz in example.
->>>>
->>>
->>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>
->> Or not... are you sure that DTS validates? Did you test it? kbuild has a
->> bit different opinion.
-> 
-> Need additional patch to fix this DTS warnings. It needs convert to yaml
-> firstly. If you like, I can create big patch set to fix all emmc related
-> warnings.
+On Fri, May 31, 2024 at 2:34=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Thu, May 30, 2024 at 06:45:10PM +0200, Marco Felsch wrote:
+> > On 24-05-30, Frank Li wrote:
+> > > On Thu, May 30, 2024 at 11:05:58AM +0200, Marco Felsch wrote:
+> > > > Hi,
+> > > >
+> > > > On 24-05-30, Shengjiu Wang wrote:
+> > > > > Add support for the resets on i.MX8MP Audio Block Control module,
+> > > > > which includes the EARC PHY software reset and EARC controller
+> > > > > software reset. The reset controller is created using the auxilia=
+ry
+> > > > > device framework and set up in the clock driver.
+> > > > >
+> > > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > > > ---
+> > > > >  drivers/reset/Kconfig         |   8 ++
+> > > > >  drivers/reset/Makefile        |   1 +
+> > > > >  drivers/reset/reset-imx-aux.c | 217 ++++++++++++++++++++++++++++=
+++++++
+> > > >                       ^
+> > > > You make use of the auxiliary bus but this isn't a aux driver, it's=
+ the
+> > > > i.MX8MP EARC reset driver. According the TRM only the EARC reset bi=
+ts
+> > > > are covered by the AUDIOMIX blk-ctrl.
+> > > >
+> > > > >  3 files changed, 226 insertions(+)
+> > > > >  create mode 100644 drivers/reset/reset-imx-aux.c
+> > > > >
+> > > > > diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+> > > > > index 7112f5932609..38fdf05b326b 100644
+> > > > > --- a/drivers/reset/Kconfig
+> > > > > +++ b/drivers/reset/Kconfig
+> > > > > @@ -91,6 +91,14 @@ config RESET_IMX7
+> > > > >         help
+> > > > >           This enables the reset controller driver for i.MX7 SoCs=
+.
+> > > > >
+> > > > > +config RESET_IMX_AUX
+> > > > > +       tristate "i.MX Auxiliary Reset Driver"
+> > > >                   ^
+> > > >               Same applies here
+> > > >
+> > > > > +       depends on CLK_IMX8MP
+> > > > > +       select AUXILIARY_BUS
+> > > > > +       default CLK_IMX8MP
+> > > > > +       help
+> > > > > +         This enables the auxiliary reset controller driver for =
+i.MX.
+> > > > > +
+> > > > >  config RESET_INTEL_GW
+> > > > >         bool "Intel Reset Controller Driver"
+> > > > >         depends on X86 || COMPILE_TEST
+> > > > > diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+> > > > > index fd8b49fa46fc..f078da14c327 100644
+> > > > > --- a/drivers/reset/Makefile
+> > > > > +++ b/drivers/reset/Makefile
+> > > > > @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) +=3D reset-b=
+rcmstb-rescal.o
+> > > > >  obj-$(CONFIG_RESET_GPIO) +=3D reset-gpio.o
+> > > > >  obj-$(CONFIG_RESET_HSDK) +=3D reset-hsdk.o
+> > > > >  obj-$(CONFIG_RESET_IMX7) +=3D reset-imx7.o
+> > > > > +obj-$(CONFIG_RESET_IMX_AUX) +=3D reset-imx-aux.o
+> > > > >  obj-$(CONFIG_RESET_INTEL_GW) +=3D reset-intel-gw.o
+> > > > >  obj-$(CONFIG_RESET_K210) +=3D reset-k210.o
+> > > > >  obj-$(CONFIG_RESET_LANTIQ) +=3D reset-lantiq.o
+> > > > > diff --git a/drivers/reset/reset-imx-aux.c b/drivers/reset/reset-=
+imx-aux.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..61c353abc84e
+> > > > > --- /dev/null
+> > > > > +++ b/drivers/reset/reset-imx-aux.c
+> > > > > @@ -0,0 +1,217 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > > > > +/*
+> > > > > + * Copyright 2024 NXP
+> > > > > + */
+> > > > > +
+> > > > > +#include <linux/auxiliary_bus.h>
+> > > > > +#include <linux/device.h>
+> > > > > +#include <linux/io.h>
+> > > > > +#include <linux/module.h>
+> > > > > +#include <linux/of.h>
+> > > > > +#include <linux/of_address.h>
+> > > > > +#include <linux/of_platform.h>
+> > > > > +#include <linux/platform_device.h>
+> > > > > +#include <linux/reset-controller.h>
+> > > > > +
+> > > > > +/*
+> > > > > + * The reset does not support the feature and corresponding
+> > > > > + * values are not valid
+> > > > > + */
+> > > > > +#define ASSERT_NONE     BIT(0)
+> > > > > +#define DEASSERT_NONE   BIT(1)
+> > > > > +#define STATUS_NONE     BIT(2)
+> > > > > +
+> > > > > +/* When set this function is activated by setting(vs clearing) t=
+his bit */
+> > > > > +#define ASSERT_SET      BIT(3)
+> > > > > +#define DEASSERT_SET    BIT(4)
+> > > > > +#define STATUS_SET      BIT(5)
+> > > > > +
+> > > > > +/* The following are the inverse of the above and are added for =
+consistency */
+> > > > > +#define ASSERT_CLEAR    (0 << 3)
+> > > > > +#define DEASSERT_CLEAR  (0 << 4)
+> > > > > +#define STATUS_CLEAR    (0 << 5)
+> > > > > +
+> > > > > +/**
+> > > > > + * struct imx_reset_ctrl - reset control structure
+> > > > > + * @assert_offset: reset assert control register offset
+> > > > > + * @assert_bit: reset assert bit in the reset assert control reg=
+ister
+> > > > > + * @deassert_offset: reset deassert control register offset
+> > > > > + * @deassert_bit: reset deassert bit in the reset deassert contr=
+ol register
+> > > > > + * @status_offset: reset status register offset
+> > > > > + * @status_bit: reset status bit in the reset status register
+> > > > > + * @flags: reset flag indicating how the (de)assert and status a=
+re handled
+> > > > > + */
+> > > > > +struct imx_reset_ctrl {
+> > > > > +       u32 assert_offset;
+> > > > > +       u32 assert_bit;
+> > > > > +       u32 deassert_offset;
+> > > > > +       u32 deassert_bit;
+> > > > > +       u32 status_offset;
+> > > > > +       u32 status_bit;
+> > > > > +       u32 flags;
+> > > > > +};
+> > > >
+> > > > Why do we make it this compicated for an simple EARC module reset? =
+I
+> > > > understand that you want to provide a generic driver which can be
+> > > > re-used but there is actual no other user and may will get no other=
+ user
+> > > > in the future too. Therefore I would like to keep it simple at the
+> > > > begin and adapt the code on-demand.
+> > >
+> > > There are many similar cases. such as
+> > > https://elixir.bootlin.com/linux/v6.10-rc1/source/drivers/pci/control=
+ler/dwc/pci-layerscape.c#L251
+> > >
+> > > Previously it use syscon and regmap to a global register space region=
+ and
+> > > direct operate the register. Now this way will not preferred. It need=
+s
+> > > export as reset driver. but actually, it just write some bits.
+> >
+> > It depends, if your reset-controller is part of an complete different
+> > device like this EARC reset you're right else you can write to the rese=
+t
+> > directly within you driver.
+>
+> These reset bits allocated a global register regions. Such as bit0 for
+> pcie0, bit1 for pci1, bit2 for usb0, bit3 for usb1. Hardware pack these
+> to misc mmio region.
+>
+> >
+> > > We face the similar problem at difference driver when do upstream.
+> > >
+> > > One on going a discussion about sim module reset
+> > > https://lore.kernel.org/imx/131e46b1-61d9-41de-a225-853b09c765d1@gmai=
+l.com/
+> > >
+> > > We hope an unified and simple method to handle these cases.
+> >
+> > An unified driver for non-unified reset modules? This makes no sense to
+> > me. When it comes to possible quirk handling for different reset module=
+s
+> > your code gets even more complex.
+> >
+> > I'm fine with a common code base (driver) if NXP has an common reset
+> > controller IP which is added to several SoC. There should be no common
+> > code base if this isn't the case.
+>
+> Some chip have common reset controller IP. Some chip simple packed reset
+> bits to one global misc mmio region with other misc control bit, such pow=
+er
+> on/off / clock source choose / enable debug features.
+>
+> Here we just consider the second case. Anyway we need handle these case a=
+t
+> somewhere. 99% case just write bit<n> to register offset. Only difference
+> is bit posstion and register offset. If write difference driver for these
+> just because bit posstion or offset, there will be many duplicated codes
+> under driver/reset.
+>
+> For example:
+> Misc: 0x1000
+>       bit0: pcie0 reset
+>       bit2: usb0 reset
+>       bit3-bit4: pcie clk source select
+>       bit5-bit6: usb0 clk source select
+>       bit7: pcie0 phy power on
+>       bit8: usb0 phy power on.
+>
+> The difference chip, bit possition will be changed.
+> How handle this case corporately?
 
-We kind of been here... I raise the problem and you answer with
-something unspecific requiring me to dig more to prove my point. I am
-not going to play more of that game.
+What's the conclusion for this topic?
+Should be the driver general for other cases or specific
+for i.MX8MP AudioMIX?
 
-Did you analyze the errors?
-
-Best regards,
-Krzysztof
-
+Best regards
+Shengjiu Wang
+>
+> >
+> > Regards,
+> >   Marco
+> >
+> >
+> > >
+> > > Frank
+> > >
+> > > >
+> > > > Regards,
+> > > >   Marco
+> > > >
+> > > > > +struct imx_reset_data {
+> > > > > +       const struct imx_reset_ctrl *rst_ctrl;
+> > > > > +       size_t rst_ctrl_num;
+> > > > > +};
+> > > > > +
+> > > > > +struct imx_aux_reset_priv {
+> > > > > +       struct reset_controller_dev rcdev;
+> > > > > +       void __iomem *base;
+> > > > > +       const struct imx_reset_data *data;
+> > > > > +};
+> > > > > +
+> > > > > +static int imx_aux_reset_assert(struct reset_controller_dev *rcd=
+ev,
+> > > > > +                               unsigned long id)
+> > > > > +{
+> > > > > +       struct imx_aux_reset_priv *priv =3D container_of(rcdev,
+> > > > > +                                       struct imx_aux_reset_priv=
+, rcdev);
+> > > > > +       const struct imx_reset_data *data =3D priv->data;
+> > > > > +       void __iomem *reg_addr =3D priv->base;
+> > > > > +       const struct imx_reset_ctrl *ctrl;
+> > > > > +       unsigned int mask, value, reg;
+> > > > > +
+> > > > > +       if (id >=3D data->rst_ctrl_num)
+> > > > > +               return -EINVAL;
+> > > > > +
+> > > > > +       ctrl =3D &data->rst_ctrl[id];
+> > > > > +
+> > > > > +       /* assert not supported for this reset */
+> > > > > +       if (ctrl->flags & ASSERT_NONE)
+> > > > > +               return -EOPNOTSUPP;
+> > > > > +
+> > > > > +       mask =3D BIT(ctrl->assert_bit);
+> > > > > +       value =3D (ctrl->flags & ASSERT_SET) ? mask : 0x0;
+> > > > > +
+> > > > > +       reg =3D readl(reg_addr + ctrl->assert_offset);
+> > > > > +       writel(reg | value, reg_addr + ctrl->assert_offset);
+> > > > > +
+> > > > > +       return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static int imx_aux_reset_deassert(struct reset_controller_dev *r=
+cdev,
+> > > > > +                                 unsigned long id)
+> > > > > +{
+> > > > > +       struct imx_aux_reset_priv *priv =3D container_of(rcdev,
+> > > > > +                                       struct imx_aux_reset_priv=
+, rcdev);
+> > > > > +       const struct imx_reset_data *data =3D priv->data;
+> > > > > +       void __iomem *reg_addr =3D priv->base;
+> > > > > +       const struct imx_reset_ctrl *ctrl;
+> > > > > +       unsigned int mask, value, reg;
+> > > > > +
+> > > > > +       if (id >=3D data->rst_ctrl_num)
+> > > > > +               return -EINVAL;
+> > > > > +
+> > > > > +       ctrl =3D &data->rst_ctrl[id];
+> > > > > +
+> > > > > +       /* deassert not supported for this reset */
+> > > > > +       if (ctrl->flags & DEASSERT_NONE)
+> > > > > +               return -EOPNOTSUPP;
+> > > > > +
+> > > > > +       mask =3D BIT(ctrl->deassert_bit);
+> > > > > +       value =3D (ctrl->flags & DEASSERT_SET) ? mask : 0x0;
+> > > > > +
+> > > > > +       reg =3D readl(reg_addr + ctrl->deassert_offset);
+> > > > > +       writel(reg | value, reg_addr + ctrl->deassert_offset);
+> > > > > +
+> > > > > +       return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static int imx_aux_reset_status(struct reset_controller_dev *rcd=
+ev,
+> > > > > +                               unsigned long id)
+> > > > > +{
+> > > > > +       struct imx_aux_reset_priv *priv =3D container_of(rcdev,
+> > > > > +                                       struct imx_aux_reset_priv=
+, rcdev);
+> > > > > +       const struct imx_reset_data *data =3D priv->data;
+> > > > > +       void __iomem *reg_addr =3D priv->base;
+> > > > > +       const struct imx_reset_ctrl *ctrl;
+> > > > > +       unsigned int reset_state;
+> > > > > +
+> > > > > +       if (id >=3D data->rst_ctrl_num)
+> > > > > +               return -EINVAL;
+> > > > > +
+> > > > > +       ctrl =3D &data->rst_ctrl[id];
+> > > > > +
+> > > > > +       /* status not supported for this reset */
+> > > > > +       if (ctrl->flags & STATUS_NONE)
+> > > > > +               return -EOPNOTSUPP;
+> > > > > +
+> > > > > +       reset_state =3D readl(reg_addr + ctrl->status_offset);
+> > > > > +
+> > > > > +       return !(reset_state & BIT(ctrl->status_bit)) =3D=3D
+> > > > > +               !(ctrl->flags & STATUS_SET);
+> > > > > +}
+> > > > > +
+> > > > > +static const struct reset_control_ops imx_aux_reset_ops =3D {
+> > > > > +       .assert   =3D imx_aux_reset_assert,
+> > > > > +       .deassert =3D imx_aux_reset_deassert,
+> > > > > +       .status   =3D imx_aux_reset_status,
+> > > > > +};
+> > > > > +
+> > > > > +static int imx_aux_reset_probe(struct auxiliary_device *adev,
+> > > > > +                              const struct auxiliary_device_id *=
+id)
+> > > > > +{
+> > > > > +       struct imx_reset_data *data =3D (struct imx_reset_data *)=
+(id->driver_data);
+> > > > > +       struct imx_aux_reset_priv *priv;
+> > > > > +       struct device *dev =3D &adev->dev;
+> > > > > +
+> > > > > +       priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > > > > +       if (!priv)
+> > > > > +               return -ENOMEM;
+> > > > > +
+> > > > > +       priv->rcdev.owner     =3D THIS_MODULE;
+> > > > > +       priv->rcdev.nr_resets =3D data->rst_ctrl_num;
+> > > > > +       priv->rcdev.ops       =3D &imx_aux_reset_ops;
+> > > > > +       priv->rcdev.of_node   =3D dev->parent->of_node;
+> > > > > +       priv->rcdev.dev       =3D dev;
+> > > > > +       priv->rcdev.of_reset_n_cells =3D 1;
+> > > > > +       priv->base            =3D of_iomap(dev->parent->of_node, =
+0);
+> > > > > +       priv->data            =3D data;
+> > > > > +
+> > > > > +       return devm_reset_controller_register(dev, &priv->rcdev);
+> > > > > +}
+> > > > > +
+> > > > > +#define EARC  0x200
+> > > > > +
+> > > > > +static const struct imx_reset_ctrl imx8mp_audiomix_rst_ctrl[] =
+=3D {
+> > > > > +       {
+> > > > > +               .assert_offset =3D EARC,
+> > > > > +               .assert_bit =3D 0,
+> > > > > +               .deassert_offset =3D EARC,
+> > > > > +               .deassert_bit =3D 0,
+> > > > > +               .flags  =3D ASSERT_CLEAR | DEASSERT_SET | STATUS_=
+NONE,
+> > > > > +       },
+> > > > > +       {
+> > > > > +               .assert_offset =3D EARC,
+> > > > > +               .assert_bit =3D 1,
+> > > > > +               .deassert_offset =3D EARC,
+> > > > > +               .deassert_bit =3D 1,
+> > > > > +               .flags  =3D ASSERT_CLEAR | DEASSERT_SET | STATUS_=
+NONE,
+> > > > > +       },
+> > > > > +};
+> > > > > +
+> > > > > +static const struct imx_reset_data imx8mp_audiomix_rst_data =3D =
+{
+> > > > > +       .rst_ctrl =3D imx8mp_audiomix_rst_ctrl,
+> > > > > +       .rst_ctrl_num =3D ARRAY_SIZE(imx8mp_audiomix_rst_ctrl),
+> > > > > +};
+> > > > > +
+> > > > > +static const struct auxiliary_device_id imx_aux_reset_ids[] =3D =
+{
+> > > > > +       {
+> > > > > +               .name =3D "clk_imx8mp_audiomix.reset",
+> > > > > +               .driver_data =3D (kernel_ulong_t)&imx8mp_audiomix=
+_rst_data,
+> > > > > +       },
+> > > > > +       { }
+> > > > > +};
+> > > > > +MODULE_DEVICE_TABLE(auxiliary, imx_aux_reset_ids);
+> > > > > +
+> > > > > +static struct auxiliary_driver imx_aux_reset_driver =3D {
+> > > > > +       .probe          =3D imx_aux_reset_probe,
+> > > > > +       .id_table       =3D imx_aux_reset_ids,
+> > > > > +};
+> > > > > +
+> > > > > +module_auxiliary_driver(imx_aux_reset_driver);
+> > > > > +
+> > > > > +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
+> > > > > +MODULE_DESCRIPTION("Freescale i.MX auxiliary reset driver");
+> > > > > +MODULE_LICENSE("GPL");
+> > > > > --
+> > > > > 2.34.1
+> > > > >
+> > > > >
+> > > > >
+> > >
