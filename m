@@ -1,96 +1,295 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A731173321
-	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 08:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C705E177990
+	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 10:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718093090; cv=none; b=Sx4DgR3sai6ooVHk7KWxkWCC7cFMTMcZXedjMq6VJ0vwAYryQbVE6Hq+4UzIJOjg6ai7OHhMg12Mpz80emPH7r1w8T1a8lhq6Ac4JwvH3LdY0qhbrWHq9DlV3SUENWFxZtdXUk1L4s/Qa9VEm2Infr90M1x4hCfM9WSzTqbCurE=
+	t=1718100351; cv=none; b=Oc6Qnd922iEbW7O5CshgpXTFnGEL5LtZ0AQ11fSFZCAv/FKmwtK6Z0jloFUrlG4HbqP83f7L+jCB24ZjCOlrrLa5lC01uRZDpsj4m1bQWgliu4XBifx+/sdaTANtVgkQIES1sYGstlJKcdXSr9kDsnTIbpDJT8mEUm0cD2X504Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718093090; c=relaxed/simple;
-	bh=yYgTt6VYlpyrsw+D+VczHVk7t9so6lEWB9yYmW1KwQk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qyop4b6inyADnCmAVW2HJ+m+mq3GKowOsl3hoG2Dj8Q+08v1WxWParbS+98h0zoYQoK3uf9kiFwo6/fniBC94Nw2EXELqsstbPTWLddanuYg8PgEx0VxGPmP83fzOMdTxkv6iq2+4wZewC/xWAO9Gyz9D3rs3BaTJAlY3QMF3Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=ihrH9Hfe; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1718100351; c=relaxed/simple;
+	bh=Efn05NVXQ8LL12SEOgebkSabzxCq2BMNBnhaIh464Dk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LzQhZdruymaHkpoiAmPPQynmOZbuxutSsW5wrz5k0VVu8jJoXUCRzqvQOTau0XWJ0EHAbBKYZYQYq+hMePYja7Npm4UdkD4ko4zJatK2aC7+/68mhYZ2cnaXF3CifVQNUB1i0swqPVtBH1xw9Dn+5It0baUogfBg9b0h4uY7gcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Vsd3mMsu; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=B+lpaBY+ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="ihrH9Hfe"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 98DC9A06AD;
-	Tue, 11 Jun 2024 10:04:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=Izsbb6raQToVG/aAGBJ/FcHgN/EZ3prel7zQ0hy+F3I=; b=
-	ihrH9HfemSg2O2YmL0yzx+eQQ1a+OmA9Ar9/h5Aw57XoQdR8rtGI7xbhIQHJlQFd
-	N7foldjGv8XBW8UeywUQksm7S/Wm9rKOJcmBIEaWNp5PfE8m2FhAqg+vamfH9gq6
-	Jr6Oih/CsMN6xIeZb/IBwYV+WY7I7/eCxgm7gxlhDKBfNsut5SL7FaWYEsggI5n+
-	2m9wpAm15zFknc2k3WCB9KK1A/WkEWIylO/PkAOI1l0zRiI1gFncQTAJrH8YBwja
-	mLfM1vGpr6f/s/2EUFhHIL9KDkVVOiA37+oGnh+0R874fH4UzunDac7RgusG0Wdg
-	7AlubpKjZ3Qr2UEFVjwm8yNltReLE9SWsSUx3oWwaO9SbQeO+ZbWEDZcnXs0Mr0V
-	aFeYG3Zgdm9V9m4JqYHGrKIziSp8yQUkyqvelHxteVqp4asftkavj8dKzsFXeHYf
-	jMlEhVM4CQR8jvSKjye7nDjO4MHx8OTsLUC/j5NaYXoo7s18o/LgsLYcYz0yRCtk
-	Tpj9RxrALUhobuzo8b9WRthmla3OE7FgpAG+7EH2wHFRXWWpwOq9iLAA0++GT3Pd
-	Xak1zv5ZDoU0aS2WplR7KdmmTwVbgLZIp+gHcZg3JLUT+WyBzfCQLYWyr9CTw6Ik
-	PLPIOhbLYLO1pYCt1SyFS5S2SUyWm847xx4+2/JBbh0=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
-	<davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Richard
- Cochran" <richardcochran@gmail.com>, Wei Fang <wei.fang@nxp.com>, Shenwei
- Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH resubmit 2] net: fec: Fix FEC_ECR_EN1588 being cleared on link-down
-Date: Tue, 11 Jun 2024 10:04:05 +0200
-Message-ID: <20240611080405.673431-1-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.45.2.437.gf7de8c0566
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Vsd3mMsu";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="B+lpaBY+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1718100348; x=1749636348;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IpeC1QAyGp7/ecmPqLy+8ePCuBDPCsaQb8tByibuhG4=;
+  b=Vsd3mMsuvLcrMtLCGYuG5BlsfKvEUCycM7BYMtK1ln/NGBC42K/dn9Cm
+   2LWZRdcpM5OIoC/k2jkErTY31knN9qOdwkDQjRdImQwvq8QqPU3xK3rTO
+   i06UnZXrKjZbcgDuof1r8RJMkDfhv0Mm7TIqC052rE+UXKQ3Pv7iMkwlw
+   pYCiZ7eAgbisa/h7dZ+W6jSSb9EQJkI49p7DqflPmBcvtcMPWlPmKPWPi
+   JpLv4rFKRhr7TVSXjI9YJezN49eWSeAAfyIBEJA1mcMStHZviWNuX0tHe
+   jERpGGKXfWZw5Go7ZAs+uSFGCqHIq5Oy4oLei9RjwMQfcTsKga3/A2AjB
+   A==;
+X-CSE-ConnectionGUID: 1P99VBzoRRaTc8rrIT8Wsw==
+X-CSE-MsgGUID: vPHOmii7R1+khm3rIbi4Rg==
+X-IronPort-AV: E=Sophos;i="6.08,229,1712613600"; 
+   d="scan'208";a="37329397"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 11 Jun 2024 12:05:39 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 468ED163947;
+	Tue, 11 Jun 2024 12:05:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1718100335;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=IpeC1QAyGp7/ecmPqLy+8ePCuBDPCsaQb8tByibuhG4=;
+	b=B+lpaBY+5PQduUy26+YMD3o23CtOQFLQsz5x6J4Bt41aIzZw2yep1fBN9tF4XmrU3x84Mg
+	AT+P7LWVDCPZxxfSli8hNWh3rI/T6pF0nxH4eRTMuuBfxQUR2sDYTFaZm+POUCx7MliTn/
+	Zk8kcDj0RolsedtKYfgHMw2sCKl7Qpm0xwZY6OMG8hx0HZU1sJE/U4cbPXcw21aKB8XDZk
+	qz1GdbGMnMIZmC3+1B1p+wnnQ1DbexlkunLL8axoxwTmxPH15a/m1LQMkhDeQNITQVDGBr
+	ThRuSVUFwwBuLkocjKXqSSzlo/T2uccWpUxv/PQmDfgsLQMiOJt6DwcYtG6evg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/9] arm64: dts: imx8: add basic lvds and lvds2 subsystem
+Date: Tue, 11 Jun 2024 12:05:35 +0200
+Message-ID: <5792284.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240610-imx8qm-dts-usb-v2-1-788417116fb1@nxp.com>
+References: <20240610-imx8qm-dts-usb-v2-0-788417116fb1@nxp.com> <20240610-imx8qm-dts-usb-v2-1-788417116fb1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1718093086;VERSION=7972;MC=1588675963;ID=228453;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2945A12957627C61
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
-makes all 1588 functionality shut down, and all the extended registers
-disappear, on link-down, making the adapter fall back to compatibility
-"dumb mode". However, some functionality needs to be retained (e.g. PPS)
-even without link.
+Hi Frank,
 
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Cc: Richard Cochran <richardcochran@gmail.com>
+Am Montag, 10. Juni 2024, 22:46:18 CEST schrieb Frank Li:
+> Add basic lvds and lvds2 subsystem for imx8qm an imx8qxp.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi |  63 +++++++++++++
+>  arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi | 114 +++++++++++++++++=
+++++++
+>  2 files changed, 177 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8-ss-lvds0.dtsi
+> new file mode 100644
+> index 0000000000000..55fd60446ad21
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
+> @@ -0,0 +1,63 @@
+> +// SPDX-License-Identifier: GPL-2.0-only and MIT
+> +
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +lvds0_subsys: bus@56240000 {
+> +	compatible =3D "simple-bus";
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <1>;
+> +	ranges =3D <0x56240000 0x0 0x56240000 0x10000>;
+> +
+> +	qm_lvds0_lis_lpcg: qxp_mipi1_lis_lpcg: clock-controller@56243000 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x56243000 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clock-output-names =3D "mipi1_lis_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1>;
+> +	};
+> +
+> +	qm_lvds0_pwm_lpcg: qxp_mipi1_pwm_lpcg: clock-controller@5624300c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5624300c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clock-output-names =3D "mipi1_pwm_lpcg_clk",
+> +				     "mipi1_pwm_lpcg_ipg_clk",
+> +				     "mipi1_pwm_lpcg_32k_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_PWM_0>;
+> +	};
+> +
+> +	qm_lvds0_i2c0_lpcg: qxp_mipi1_i2c0_lpcg: clock-controller@56243010 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x56243010 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clock-output-names =3D "mipi1_i2c0_lpcg_clk",
+> +				     "mipi1_i2c0_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
+> +	};
+> +
+> +	qm_pwm_lvds0: qxp_pwm_mipi_lvds1: pwm@56244000 {
+> +		compatible =3D "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
+> +		reg =3D <0x56244000 0x1000>;
+> +		clock-names =3D "ipg", "per";
+> +		assigned-clocks =3D <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_PER>;
 
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
----
- drivers/net/ethernet/freescale/fec_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Is IMX_SC_R_MIPI_1_I2C_0 actually correct? I would have assumed
+it's IMX_SC_R_MIPI_1_PWM_0.
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 881ece735dcf..fb19295529a2 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1361,6 +1361,12 @@ fec_stop(struct net_device *ndev)
- 		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
- 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
- 	}
-+
-+	if (fep->bufdesc_ex) {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= FEC_ECR_EN1588;
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
- }
- 
- static void
--- 
-2.34.1
+> +		assigned-clock-rates =3D <24000000>;
+> +		#pwm-cells =3D <3>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_PWM_0>;
+> +		status =3D "disabled";
+> +	};
+> +
+> +	qm_i2c0_lvds0: qxp_i2c0_mipi_lvds1: i2c@56246000 {
+> +		compatible =3D "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
+> +		reg =3D <0x56246000 0x1000>;
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +		interrupts =3D <8>;
+> +		clock-names =3D "per", "ipg";
+> +		assigned-clocks =3D <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
+> +		status =3D "disabled";
+> +	};
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8-ss-lvds1.dtsi
+> new file mode 100644
+> index 0000000000000..12ae4f48e1e1c
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi
+
+This is only for imx8qm, no?
+
+It maybe makes sense to rename this file to imx8qm-ss-lvds1.dtsi
+
+Best regards,
+Alexander
+
+> @@ -0,0 +1,114 @@
+> +// SPDX-License-Identifier: GPL-2.0-only and MIT
+> +
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +lvds1_subsys: bus@57240000 {
+> +	compatible =3D "simple-bus";
+> +	interrupt-parent =3D <&irqsteer_lvds1>;
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <1>;
+> +	ranges =3D <0x57240000 0x0 0x57240000 0x10000>;
+> +
+> +	irqsteer_lvds1: interrupt-controller@57240000 {
+> +		compatible =3D "fsl,imx8qm-irqsteer", "fsl,imx-irqsteer";
+> +		reg =3D <0x57240000 0x1000>;
+> +		interrupts =3D <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>;
+> +		interrupt-controller;
+> +		interrupt-parent =3D <&gic>;
+> +		#interrupt-cells =3D <1>;
+> +		clocks =3D <&lvds1_lis_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names =3D "ipg";
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1>;
+> +		fsl,channel =3D <0>;
+> +		fsl,num-irqs =3D <32>;
+> +	};
+> +
+> +	lvds1_lis_lpcg: clock-controller@57243000 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57243000 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&lvds_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_4>;
+> +		clock-output-names =3D "lvds1_lis_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1>;
+> +	};
+> +
+> +	lvds1_pwm_lpcg: clock-controller@5724300c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5724300c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_LVDS_1_PWM_0 IMX_SC_PM_CLK_PER>,
+> +			 <&lvds_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names =3D "lvds1_pwm_lpcg_clk",
+> +				     "lvds1_pwm_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_PWM_0>;
+> +	};
+> +
+> +	lvds1_i2c0_lpcg: clock-controller@57243010 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57243010 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>,
+> +			 <&lvds_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names =3D "lvds1_i2c0_lpcg_clk",
+> +				     "lvds1_i2c0_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +	};
+> +
+> +	lvds1_i2c1_lpcg: clock-controller@57243014 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57243014 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>,
+> +			 <&lvds_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names =3D "lvds1_i2c1_lpcg_clk",
+> +				     "lvds1_i2c1_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +	};
+> +
+> +	pwm_lvds1: pwm@57244000 {
+> +		compatible =3D "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
+> +		reg =3D <0x57244000 0x1000>;
+> +		clocks =3D <&lvds1_pwm_lpcg IMX_LPCG_CLK_4>,
+> +			 <&lvds1_pwm_lpcg IMX_LPCG_CLK_0>;
+> +		clock-names =3D "ipg", "per";
+> +		assigned-clocks =3D <&clk IMX_SC_R_LVDS_1_PWM_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		#pwm-cells =3D <3>;
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_PWM_0>;
+> +		status =3D "disabled";
+> +	};
+> +
+> +	i2c0_lvds1: i2c@57246000 {
+> +		compatible =3D "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
+> +		reg =3D <0x57246000 0x1000>;
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +		interrupts =3D <8>;
+> +		clocks =3D <&lvds1_i2c0_lpcg IMX_LPCG_CLK_0>,
+> +			 <&lvds1_i2c0_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names =3D "per", "ipg";
+> +		assigned-clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +		status =3D "disabled";
+> +	};
+> +
+> +	i2c1_lvds1: i2c@57247000 {
+> +		compatible =3D "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
+> +		reg =3D <0x57247000 0x1000>;
+> +		interrupts =3D <9>;
+> +		clocks =3D <&lvds1_i2c1_lpcg IMX_LPCG_CLK_0>,
+> +			 <&lvds1_i2c1_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names =3D "per", "ipg";
+> +		assigned-clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +		status =3D "disabled";
+> +	};
+> +};
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
 
