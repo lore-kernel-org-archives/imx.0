@@ -1,45 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC70F7350E;
-	Tue, 11 Jun 2024 20:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A4E3A8E4;
+	Tue, 11 Jun 2024 22:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718137394; cv=none; b=WsMoowsAO/I+REqRoxcN2VSFo9rOt1qvl9KQxIn5L+fxPW+6Rc+A/XQ+MIMBaEiJeB71hksJT2S3JSbxyDqc2+aQKBrPXrVfanrhahz62oxiIkvvk47PUxU2VBEshbK+cO8TaaPOlUmJFVrdMdM2u3z4LFE2C0hhye2BoBYcTww=
+	t=1718143605; cv=none; b=dZ2H7wVx+7FMTggyFkL9Zpj4tWo2gy1Njvxi2Bwa4F77MjWCOVjNqtpGgT4PFhEff+7QzO0gemdqk7zKuH+4ObT+p+XWFiZjz7Lqx8yZNFzZZCRYByHN2hN0tOljyBGyM3nXe8W2QmLY3P0wxkZdopXisLZWBnbGqSQy21xBUtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718137394; c=relaxed/simple;
-	bh=56NOMgdsoxv7ugc+ao6X6J5QmSuvu4JChgfjXogleMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fy1J9EBA65DbVrk8il+eIlwN/v32SYVJqWh7dnlDtxbdoBiL+vOVGU5izWpliwLrEmyE0fA2Z1gbqCJt4EoEbVXXuWQRIXvZ/8eP3czz/6LU8uZ+lsFt8hQu5JyWOoagMv+dcWItq9XJM2KH3oehsoE2d7GY9g71FLqUUx9PzU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUVtHTD+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718143605; c=relaxed/simple;
+	bh=2z2T09bcbzfwexUZ5T7jD1TkbLjspNsoiYHpZ3OkpCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=S3oQDUOGk9ZUWoUr6usYvNZjGQtGPO6sNTAj+Xg+jFLvMuzH6aXbihOC4v6Y+usGqpSbnLhYQv6s666tSpPXHa2dRrL6crJOu4M0CFgHbcOyKFnsh2KJj1URau+wzmv5Zweg4XoBnug4aF5r96qXPetcw4egG77mjcBDX7TPRpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/NzRHHA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUVtHTD+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E708AC2BD10;
-	Tue, 11 Jun 2024 20:23:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/NzRHHA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC81C2BD10;
+	Tue, 11 Jun 2024 22:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718137393;
-	bh=56NOMgdsoxv7ugc+ao6X6J5QmSuvu4JChgfjXogleMI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TUVtHTD+w/kTSIrjuW9puv0jtLqV5sx4w5q2Sq5hPhdc/gbV9VUlDReL9JiSnuzXq
-	 Vno81Y9nhfHacE7rS+MKwGs+UAVaTcbHX+ZyoFhmPHlhBh2ZL4qEIdrDj4VDPX4/4J
-	 KxQNFqcKrS6Ds/JYog6j/FJLtwHh24UhhgBQ9lwxkBqZjMF490WVFxoJ4p0lCZhQt4
-	 TIsxSktoFBXqKlhSJFKYr7mwKUXYufcall3mTa/cdnz74amEMeXZd9ReaZZdBtQ/50
-	 dQh+bcge7VuRkTxZbPLYyqzYi+9J/AVNR7MeNWeO4MSZuTTX/i//UtDiCPnSofEMz3
-	 JuTWOdSrUCVgQ==
-Date: Tue, 11 Jun 2024 14:23:11 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v4 2/8] dt-bindings: mmc: mmc-spi-slot: Change
- voltage-ranges to uint32-matrix
-Message-ID: <20240611202311.GB3003237-robh@kernel.org>
-References: <20240611-ls_waring_esdhc-v4-0-d0d8a5b3f3cb@nxp.com>
- <20240611-ls_waring_esdhc-v4-2-d0d8a5b3f3cb@nxp.com>
+	s=k20201202; t=1718143604;
+	bh=2z2T09bcbzfwexUZ5T7jD1TkbLjspNsoiYHpZ3OkpCI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=a/NzRHHA81Kr/n5nwF8wLMmpSxDwQFBG1tf3wJl/ZX5qrZu3LoF/n38c1RQWAS3to
+	 9PF0iBa1/cYKwSVYTUUEyS/nclJFBX6lIO5eO0x1Az0PTI0ZwlAsdX/khbFtfebn6E
+	 YXiFVo4lds+SLiDkmm+nUPE/ZqefCzy2l8jaKYjZeHRpo24owJwxwC2tQwf1lgcI1s
+	 jSWMaN02nOnAzTwxwp8JNo1/Rsd/DRVvo/SgDh50CtfMf0VE9bi5/DnHDINTWd02UU
+	 HtDL2EuqVAPEfbwNIt35YzWTA4zlII6G6PiSRavH22Rynv/chO+GKlSJqnxKZZ2/Mp
+	 +OmyobALds0Jg==
+Date: Tue, 11 Jun 2024 17:06:40 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	mhi@lists.linux.dev, Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH 2/5] PCI: endpoint: Introduce 'epc_deinit' event and
+ notify the EPF drivers
+Message-ID: <20240611220640.GA1001976@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,57 +69,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240611-ls_waring_esdhc-v4-2-d0d8a5b3f3cb@nxp.com>
+In-Reply-To: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
 
-On Tue, Jun 11, 2024 at 12:01:47PM -0400, Frank Li wrote:
-> According to common mmc core, voltages-ranges should be matrix.
+On Thu, Jun 06, 2024 at 12:56:35PM +0530, Manivannan Sadhasivam wrote:
+> As like the 'epc_init' event, that is used to signal the EPF drivers about
+> the EPC initialization, let's introduce 'epc_deinit' event that is used to
+> signal EPC deinitialization.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> The EPC deinitialization applies only when any sort of fundamental reset
+> is supported by the endpoint controller as per the PCIe spec.
 > 
-> ---
-> Not sure why it impact other mmc yaml's voltage-ranges.
+> Reference: PCIe Base spec v5.0, sections 4.2.4.9.1 and 6.6.1.
 
-It's a quirk of the tools. When decoding properties, the tools only know 
-all possible types. Types are global, not per binding. Sometimes it can 
-be figured out, but cases like this cannot be.
+PCIe r6.0, sec 4.2.5.9.1 and 6.6.1.
 
-> ---
->  Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml | 17 ++++++++++-------
->  1 file changed, 10 insertions(+), 7 deletions(-)
+(Not 4.2.4.9.1, which no longer exists in r6.x)
+
+> Currently, some EPC drivers like pcie-qcom-ep and pcie-tegra194 support
+> PERST# as the fundamental reset. So the 'deinit' event will be notified to
+> the EPF drivers when PERST# assert happens in the above mentioned EPC
+> drivers.
 > 
-> diff --git a/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml b/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
-> index 36acc40c7d181..05815b837219d 100644
-> --- a/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
-> @@ -27,17 +27,20 @@ properties:
->      maxItems: 1
->  
->    voltage-ranges:
-> -    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
->      description: |
->        Two cells are required, first cell specifies minimum slot voltage (mV),
->        second cell specifies maximum slot voltage (mV).
->      items:
-> -      - description: |
-> -          value for minimum slot voltage in mV
-> -        default: 3200
-> -      - description: |
-> -          value for maximum slot voltage in mV
-> -        default: 3400
-> +      items:
-> +        - description: |
-> +            value for minimum slot voltage in mV
-> +          default: 3200
-> +        - description: |
-> +            value for maximum slot voltage in mV
-> +          default: 3400
-> +    minItems: 1
-> +    maxItems: 8
-
-From what I remember, SPI mode doesn't support voltage changes. 
-Switching to 1.8V came much later in the spec. So it should be 
-'maxItems: 1'. Or better yet, make the outer 'items' a list (of 1 
-entry).
-
-Rob
+> The EPF drivers, on receiving the event through the epc_deinit() callback
+> should reset the EPF state machine and also cleanup any configuration that
+> got affected by the fundamental reset like BAR, DMA etc...
+> 
+> This change also warrants skipping the cleanups in unbind() if already done
+> in epc_deinit().
+> 
+> Reviewed-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
