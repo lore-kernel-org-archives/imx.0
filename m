@@ -1,62 +1,62 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C705E177990
-	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 10:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0A846525
+	for <imx@lists.linux.dev>; Tue, 11 Jun 2024 11:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718100351; cv=none; b=Oc6Qnd922iEbW7O5CshgpXTFnGEL5LtZ0AQ11fSFZCAv/FKmwtK6Z0jloFUrlG4HbqP83f7L+jCB24ZjCOlrrLa5lC01uRZDpsj4m1bQWgliu4XBifx+/sdaTANtVgkQIES1sYGstlJKcdXSr9kDsnTIbpDJT8mEUm0cD2X504Q=
+	t=1718104476; cv=none; b=GjhcXET/No8qnDEjegDEbRJh2dRaecuCkL3OCRUCNl+sbv5+2q5mPnd4PbploCCXjrKGgL1ZjPnxfqafFbBY1+eCPq09z7wyS+WD6gkT+iP1GLePz05CQmGorc+ngHVwm7PCyHWDDQ2yXAR3gZQHkfjaXi/JkLDwY94UXiMdKKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718100351; c=relaxed/simple;
-	bh=Efn05NVXQ8LL12SEOgebkSabzxCq2BMNBnhaIh464Dk=;
+	s=arc-20240116; t=1718104476; c=relaxed/simple;
+	bh=CkiMqKxPiGR645vdpz18V4Euqo7gdC1GDpwS0frfJ08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LzQhZdruymaHkpoiAmPPQynmOZbuxutSsW5wrz5k0VVu8jJoXUCRzqvQOTau0XWJ0EHAbBKYZYQYq+hMePYja7Npm4UdkD4ko4zJatK2aC7+/68mhYZ2cnaXF3CifVQNUB1i0swqPVtBH1xw9Dn+5It0baUogfBg9b0h4uY7gcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Vsd3mMsu; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=B+lpaBY+ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=kUT4H4c/m3316lZ2loX5MHiCCN4BW/N1uk6IXPi77UCiIJEF3GYcFjPc7zb427W8IFJN4/I+RjEV16E2ZPv8UzBmBo0CObciPhj4eP8inRnbkZdWMas7or0AgVCNHfKIrn0geC24j/J4ibV94cdJ+zsecc2P3IvlW31PdDIiios=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=pyeJevoR; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=cMy3t+t2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Vsd3mMsu";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="B+lpaBY+"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="pyeJevoR";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="cMy3t+t2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1718100348; x=1749636348;
+  t=1718104471; x=1749640471;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IpeC1QAyGp7/ecmPqLy+8ePCuBDPCsaQb8tByibuhG4=;
-  b=Vsd3mMsuvLcrMtLCGYuG5BlsfKvEUCycM7BYMtK1ln/NGBC42K/dn9Cm
-   2LWZRdcpM5OIoC/k2jkErTY31knN9qOdwkDQjRdImQwvq8QqPU3xK3rTO
-   i06UnZXrKjZbcgDuof1r8RJMkDfhv0Mm7TIqC052rE+UXKQ3Pv7iMkwlw
-   pYCiZ7eAgbisa/h7dZ+W6jSSb9EQJkI49p7DqflPmBcvtcMPWlPmKPWPi
-   JpLv4rFKRhr7TVSXjI9YJezN49eWSeAAfyIBEJA1mcMStHZviWNuX0tHe
-   jERpGGKXfWZw5Go7ZAs+uSFGCqHIq5Oy4oLei9RjwMQfcTsKga3/A2AjB
-   A==;
-X-CSE-ConnectionGUID: 1P99VBzoRRaTc8rrIT8Wsw==
-X-CSE-MsgGUID: vPHOmii7R1+khm3rIbi4Rg==
+  bh=4PjT/MrSudGoxdl+OLVToOZpc+RsOaj2dmxQ6UUv+H0=;
+  b=pyeJevoR5A+9rPWGJz0OEHmiBRPSMXq2dVPh/ewPmSDCDTiSnw2WcU9S
+   c3586IkFiV7FaTRm9dJR3XhV5xNe92j/2lislvkU0wLCFaHyfFx9sXiWm
+   LjLy5Uv4CJehynLCc80rnDXWeBSj70HOPTEIHa4ak8x3ANn/T7fZdH7Bv
+   wQcLiEgisAknfrBbmXBolrPDvOndiTGIEmYCXC0ExxyC1rL7GlQhf3F5B
+   C2mKuRA1FgVgP25wO8vP5bPTfk5r7ode+pOJr3Gil0GSRr7ELwmwQHweO
+   +E5hyXey6gUCau4mX7jdhARspyzK6SUa00gjhQYb5aWVv2q49vumQpsSv
+   g==;
+X-CSE-ConnectionGUID: CE35JlwyRz6QaDhcyCEtxg==
+X-CSE-MsgGUID: 23UtiwDmR8+YUI0+AI/E6Q==
 X-IronPort-AV: E=Sophos;i="6.08,229,1712613600"; 
-   d="scan'208";a="37329397"
+   d="scan'208";a="37330923"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 11 Jun 2024 12:05:39 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 468ED163947;
-	Tue, 11 Jun 2024 12:05:34 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 11 Jun 2024 13:14:29 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8FC6916372F;
+	Tue, 11 Jun 2024 13:14:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1718100335;
+	s=dkim; t=1718104464;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=IpeC1QAyGp7/ecmPqLy+8ePCuBDPCsaQb8tByibuhG4=;
-	b=B+lpaBY+5PQduUy26+YMD3o23CtOQFLQsz5x6J4Bt41aIzZw2yep1fBN9tF4XmrU3x84Mg
-	AT+P7LWVDCPZxxfSli8hNWh3rI/T6pF0nxH4eRTMuuBfxQUR2sDYTFaZm+POUCx7MliTn/
-	Zk8kcDj0RolsedtKYfgHMw2sCKl7Qpm0xwZY6OMG8hx0HZU1sJE/U4cbPXcw21aKB8XDZk
-	qz1GdbGMnMIZmC3+1B1p+wnnQ1DbexlkunLL8axoxwTmxPH15a/m1LQMkhDeQNITQVDGBr
-	ThRuSVUFwwBuLkocjKXqSSzlo/T2uccWpUxv/PQmDfgsLQMiOJt6DwcYtG6evg==
+	bh=4PjT/MrSudGoxdl+OLVToOZpc+RsOaj2dmxQ6UUv+H0=;
+	b=cMy3t+t2kqcsAjGSDPgcLesGLRvKqfzy69dRWYhppH/FYAy7q4na2UyjOiBR2dXRFRMsnq
+	qgeRYhWh+0T8ez79sWqsr5AtoNxnbQTowCeUdqNLaB3C9Ws8/8K5lsFadlns31nOrz9Qan
+	kR42h8wYXIOHoUdvfLR+8iKSAzE0qSGoJlHWybIyQgdDCbh1PGUmlfWSH5MqaM8EeOniDN
+	ihIhyOUq10mcg69SDmmsy5uk2l2/Pxea4c2YMDviTtYg+rrcKk4SZIBuWclXKQuj5TGxMm
+	xaMFyvAumCv/hcRv6650oKnFqeRalSoNf1mYRbdY3TDyJKN9DFp55CygWvK+Rg==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>, linux-arm-kernel@lists.infradead.org
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/9] arm64: dts: imx8: add basic lvds and lvds2 subsystem
-Date: Tue, 11 Jun 2024 12:05:35 +0200
-Message-ID: <5792284.DvuYhMxLoT@steina-w>
+Subject: Re: [PATCH v2 3/9] arm64: dts: imx8: add basic mipi subsystem
+Date: Tue, 11 Jun 2024 13:14:20 +0200
+Message-ID: <13535816.uLZWGnKmhe@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20240610-imx8qm-dts-usb-v2-1-788417116fb1@nxp.com>
-References: <20240610-imx8qm-dts-usb-v2-0-788417116fb1@nxp.com> <20240610-imx8qm-dts-usb-v2-1-788417116fb1@nxp.com>
+In-Reply-To: <20240610-imx8qm-dts-usb-v2-3-788417116fb1@nxp.com>
+References: <20240610-imx8qm-dts-usb-v2-0-788417116fb1@nxp.com> <20240610-imx8qm-dts-usb-v2-3-788417116fb1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,218 +67,342 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
-
-Am Montag, 10. Juni 2024, 22:46:18 CEST schrieb Frank Li:
-> Add basic lvds and lvds2 subsystem for imx8qm an imx8qxp.
+Am Montag, 10. Juni 2024, 22:46:20 CEST schrieb Frank Li:
+> ********************
+> Achtung externe E-Mail: =D6ffnen Sie Anh=E4nge und Links nur, wenn Sie wi=
+ssen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten =
+Sie die E-Mail im Zweifelsfall zur Pr=FCfung an den IT-Helpdesk weiter.
+> Attention external email: Open attachments and links only if you know tha=
+t they are from a secure source and are safe. In doubt forward the email to=
+ the IT-Helpdesk to check it.
+> ********************
+>=20
+> Add basic mipi subsystem for imx8qm and imx8qxp.
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi |  63 +++++++++++++
->  arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi | 114 +++++++++++++++++=
+>  arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi | 138 +++++++++++++++++=
 ++++++
->  2 files changed, 177 insertions(+)
+>  arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi | 138 +++++++++++++++++=
+++++++
+>  2 files changed, 276 insertions(+)
 >=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8-ss-lvds0.dtsi
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8-ss-mipi0.dtsi
 > new file mode 100644
-> index 0000000000000..55fd60446ad21
+> index 0000000000000..6b56315e8c434
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds0.dtsi
-> @@ -0,0 +1,63 @@
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-mipi0.dtsi
+> @@ -0,0 +1,138 @@
 > +// SPDX-License-Identifier: GPL-2.0-only and MIT
 > +
 > +/*
 > + * Copyright 2024 NXP
 > + */
 > +
-> +lvds0_subsys: bus@56240000 {
+> +mipi0_subsys: bus@56220000 {
 > +	compatible =3D "simple-bus";
+> +	interrupt-parent =3D <&irqsteer_mipi0>;
 > +	#address-cells =3D <1>;
 > +	#size-cells =3D <1>;
-> +	ranges =3D <0x56240000 0x0 0x56240000 0x10000>;
+> +	ranges =3D <0x56220000 0x0 0x56220000 0x10000>;
 > +
-> +	qm_lvds0_lis_lpcg: qxp_mipi1_lis_lpcg: clock-controller@56243000 {
-> +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x56243000 0x4>;
-> +		#clock-cells =3D <1>;
-> +		clock-output-names =3D "mipi1_lis_lpcg_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_MIPI_1>;
-> +	};
-> +
-> +	qm_lvds0_pwm_lpcg: qxp_mipi1_pwm_lpcg: clock-controller@5624300c {
-> +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x5624300c 0x4>;
-> +		#clock-cells =3D <1>;
-> +		clock-output-names =3D "mipi1_pwm_lpcg_clk",
-> +				     "mipi1_pwm_lpcg_ipg_clk",
-> +				     "mipi1_pwm_lpcg_32k_clk";
-> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_PWM_0>;
-> +	};
-> +
-> +	qm_lvds0_i2c0_lpcg: qxp_mipi1_i2c0_lpcg: clock-controller@56243010 {
-> +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x56243010 0x4>;
-> +		#clock-cells =3D <1>;
-> +		clock-output-names =3D "mipi1_i2c0_lpcg_clk",
-> +				     "mipi1_i2c0_lpcg_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
-> +	};
-> +
-> +	qm_pwm_lvds0: qxp_pwm_mipi_lvds1: pwm@56244000 {
-> +		compatible =3D "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
-> +		reg =3D <0x56244000 0x1000>;
-> +		clock-names =3D "ipg", "per";
-> +		assigned-clocks =3D <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_PER>;
-
-Is IMX_SC_R_MIPI_1_I2C_0 actually correct? I would have assumed
-it's IMX_SC_R_MIPI_1_PWM_0.
-
-> +		assigned-clock-rates =3D <24000000>;
-> +		#pwm-cells =3D <3>;
-> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_PWM_0>;
-> +		status =3D "disabled";
-> +	};
-> +
-> +	qm_i2c0_lvds0: qxp_i2c0_mipi_lvds1: i2c@56246000 {
-> +		compatible =3D "fsl,imx8qxp-lpi2c", "fsl,imx7ulp-lpi2c";
-> +		reg =3D <0x56246000 0x1000>;
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		interrupts =3D <8>;
-> +		clock-names =3D "per", "ipg";
-> +		assigned-clocks =3D <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_PER>;
-> +		assigned-clock-rates =3D <24000000>;
-> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
-> +		status =3D "disabled";
-> +	};
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8-ss-lvds1.dtsi
-> new file mode 100644
-> index 0000000000000..12ae4f48e1e1c
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-lvds1.dtsi
-
-This is only for imx8qm, no?
-
-It maybe makes sense to rename this file to imx8qm-ss-lvds1.dtsi
-
-Best regards,
-Alexander
-
-> @@ -0,0 +1,114 @@
-> +// SPDX-License-Identifier: GPL-2.0-only and MIT
-> +
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +lvds1_subsys: bus@57240000 {
-> +	compatible =3D "simple-bus";
-> +	interrupt-parent =3D <&irqsteer_lvds1>;
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <1>;
-> +	ranges =3D <0x57240000 0x0 0x57240000 0x10000>;
-> +
-> +	irqsteer_lvds1: interrupt-controller@57240000 {
-> +		compatible =3D "fsl,imx8qm-irqsteer", "fsl,imx-irqsteer";
-> +		reg =3D <0x57240000 0x1000>;
-> +		interrupts =3D <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>;
+> +	irqsteer_mipi0: interrupt-controller@56220000 {
+> +		compatible =3D "fsl,imx8qxp-irqsteer", "fsl,imx-irqsteer";
+> +		reg =3D <0x56220000 0x1000>;
+> +		interrupts =3D <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
 > +		interrupt-controller;
 > +		interrupt-parent =3D <&gic>;
 > +		#interrupt-cells =3D <1>;
-> +		clocks =3D <&lvds1_lis_lpcg IMX_LPCG_CLK_4>;
+> +		clocks =3D <&mipi0_lis_lpcg IMX_LPCG_CLK_0>;
 > +		clock-names =3D "ipg";
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0>;
 > +		fsl,channel =3D <0>;
 > +		fsl,num-irqs =3D <32>;
 > +	};
 > +
-> +	lvds1_lis_lpcg: clock-controller@57243000 {
+> +	mipi0_lis_lpcg: clock-controller@56223000 {
 > +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x57243000 0x4>;
+> +		reg =3D <0x56223000 0x4>;
 > +		#clock-cells =3D <1>;
-> +		clocks =3D <&lvds_ipg_clk>;
-> +		clock-indices =3D <IMX_LPCG_CLK_4>;
-> +		clock-output-names =3D "lvds1_lis_lpcg_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1>;
+> +		clocks =3D <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+
+That's LPCG_DI_LVDS_LPCG_0 for imx8qxp, no? So clock-indices and
+clock-output-names should be split similar to patch.
+
+> +		clock-output-names =3D "mipi0_lis_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0>;
 > +	};
 > +
-> +	lvds1_pwm_lpcg: clock-controller@5724300c {
+> +	mipi0_pwm_lpcg: clock-controller@5622300c {
 > +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x5724300c 0x4>;
+> +		reg =3D <0x5622300c 0x4>;
 > +		#clock-cells =3D <1>;
-> +		clocks =3D <&clk IMX_SC_R_LVDS_1_PWM_0 IMX_SC_PM_CLK_PER>,
-> +			 <&lvds_ipg_clk>;
+> +		clocks =3D <&clk IMX_SC_R_MIPI_0_PWM_0 IMX_SC_PM_CLK_PER>,
+> +			 <&dsi_ipg_clk>;
 > +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +		clock-output-names =3D "lvds1_pwm_lpcg_clk",
-> +				     "lvds1_pwm_lpcg_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_PWM_0>;
+> +		clock-output-names =3D "mipi0_pwm_lpcg_clk",
+> +				     "mipi0_pwm_lpcg_ipg_clk";
+
+That's LPCG_DI_MIPI_LPCG_12, no? imx8qm RM Rev 0 just lists one clock.
+Also it's different on imx8qxp.
+
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_PWM_0>;
 > +	};
 > +
-> +	lvds1_i2c0_lpcg: clock-controller@57243010 {
+> +	mipi0_i2c0_lpcg_ipg_clk: clock-controller@56223014 {
 > +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x57243010 0x4>;
+> +		reg =3D <0x56223014 0x4>;
 > +		#clock-cells =3D <1>;
-> +		clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>,
-> +			 <&lvds_ipg_clk>;
-> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +		clock-output-names =3D "lvds1_i2c0_lpcg_clk",
-> +				     "lvds1_i2c0_lpcg_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +		clocks =3D <&mipi0_i2c0_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
+
+Just 0 instead of IMX_LPCG_CLK_0.
+
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi0_i2c0_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_0>;
 > +	};
 > +
-> +	lvds1_i2c1_lpcg: clock-controller@57243014 {
+> +	mipi0_i2c0_lpcg_ipg_s_clk: clock-controller@56223018 {
 > +		compatible =3D "fsl,imx8qxp-lpcg";
-> +		reg =3D <0x57243014 0x4>;
+> +		reg =3D <0x56223018 0x4>;
 > +		#clock-cells =3D <1>;
-> +		clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>,
-> +			 <&lvds_ipg_clk>;
-> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +		clock-output-names =3D "lvds1_i2c1_lpcg_clk",
-> +				     "lvds1_i2c1_lpcg_ipg_clk";
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +		clocks =3D <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi0_i2c0_lpcg_ipg_s_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_0>;
 > +	};
 > +
-> +	pwm_lvds1: pwm@57244000 {
+> +	mipi0_i2c0_lpcg_clk: clock-controller@5622301c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5622301c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_MIPI_0_I2C_0 IMX_SC_PM_CLK_MISC2>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi0_i2c0_lpcg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_0>;
+> +	};
+> +
+> +	mipi0_i2c1_lpcg_ipg_clk: clock-controller@56223024 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x56223024 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&mipi0_i2c1_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi0_i2c1_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_1>;
+> +	};
+> +
+> +	mipi0_i2c1_lpcg_clk: clock-controller@5622302c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5622302c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_MIPI_0_I2C_1 IMX_SC_PM_CLK_MISC2>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi0_i2c1_lpcg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_1>;
+> +	};
+> +
+> +	mipi0_i2c1_lpcg_ipg_s_clk: clock-controller@56223028 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x56223028 0x4>;
+
+Order nodes by base address please.
+
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi0_i2c1_lpcg_ipg_s_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_1>;
+> +	};
+> +
+> +	pwm_mipi0: pwm@56224000 {
 > +		compatible =3D "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
-> +		reg =3D <0x57244000 0x1000>;
-> +		clocks =3D <&lvds1_pwm_lpcg IMX_LPCG_CLK_4>,
-> +			 <&lvds1_pwm_lpcg IMX_LPCG_CLK_0>;
+> +		reg =3D <0x56224000 0x1000>;
+> +		clocks =3D <&mipi0_pwm_lpcg IMX_LPCG_CLK_4>,
+> +			 <&mipi0_pwm_lpcg IMX_LPCG_CLK_0>;
+
+I don't think that's correct. IMX_LPCG_CLK_4 evaluates to 16.
+'mipi0_pwm_lpcg' only has 2 clocks, so you should use just '1' and '0'.
+
 > +		clock-names =3D "ipg", "per";
-> +		assigned-clocks =3D <&clk IMX_SC_R_LVDS_1_PWM_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clocks =3D <&clk IMX_SC_R_MIPI_0_PWM_0 IMX_SC_PM_CLK_PER>;
 > +		assigned-clock-rates =3D <24000000>;
 > +		#pwm-cells =3D <3>;
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_PWM_0>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_PWM_0>;
 > +		status =3D "disabled";
 > +	};
 > +
-> +	i2c0_lvds1: i2c@57246000 {
+> +	i2c0_mipi0: i2c@56226000 {
 > +		compatible =3D "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
-> +		reg =3D <0x57246000 0x1000>;
+> +		reg =3D <0x56226000 0x1000>;
 > +		#address-cells =3D <1>;
 > +		#size-cells =3D <0>;
 > +		interrupts =3D <8>;
-> +		clocks =3D <&lvds1_i2c0_lpcg IMX_LPCG_CLK_0>,
-> +			 <&lvds1_i2c0_lpcg IMX_LPCG_CLK_4>;
+> +		clocks =3D <&mipi0_i2c0_lpcg_clk IMX_LPCG_CLK_0>,
+> +			 <&mipi0_i2c0_lpcg_ipg_clk IMX_LPCG_CLK_0>;
+
+Just use 0 instead of IMX_LPCG_CLK_0.
+
 > +		clock-names =3D "per", "ipg";
-> +		assigned-clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clocks =3D <&mipi0_i2c0_lpcg_clk IMX_LPCG_CLK_0>;
 > +		assigned-clock-rates =3D <24000000>;
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_0_I2C_0>;
+> +		status =3D "disabled";
+> +	};
+> +};
+> +
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8-ss-mipi1.dtsi
+> new file mode 100644
+> index 0000000000000..5b1f08e412b24
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-mipi1.dtsi
+
+This is only for imx8qm, no?
+
+It maybe makes sense to rename this file to imx8qm-ss-mipi1.dtsi
+
+Best regards,
+Alexander
+
+> @@ -0,0 +1,138 @@
+> +// SPDX-License-Identifier: GPL-2.0-only and MIT
+> +
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +mipi1_subsys: bus@57220000 {
+> +	compatible =3D "simple-bus";
+> +	interrupt-parent =3D <&irqsteer_mipi1>;
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <1>;
+> +	ranges =3D <0x57220000 0x0 0x57220000 0x10000>;
+> +
+> +	irqsteer_mipi1: interrupt-controller@57220000 {
+> +		compatible =3D "fsl,imx8qm-irqsteer", "fsl,imx-irqsteer";
+> +		reg =3D <0x57220000 0x1000>;
+> +		interrupts =3D <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
+> +		interrupt-controller;
+> +		interrupt-parent =3D <&gic>;
+> +		#interrupt-cells =3D <1>;
+> +		clocks =3D <&mipi1_lis_lpcg IMX_LPCG_CLK_0>;
+> +		clock-names =3D "ipg";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1>;
+> +		fsl,channel =3D <0>;
+> +		fsl,num-irqs =3D <32>;
+> +	};
+> +
+> +	mipi1_lis_lpcg: clock-controller@57223000 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57223000 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_lis_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1>;
+> +	};
+> +
+> +	mipi1_pwm_lpcg: clock-controller@5722300c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5722300c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_MIPI_1_PWM_0 IMX_SC_PM_CLK_PER>,
+> +			 <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names =3D "mipi1_pwm_lpcg_clk",
+> +				     "mipi1_pwm_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_PWM_0>;
+> +	};
+> +
+> +	mipi1_i2c0_lpcg_clk: clock-controller@5722301c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5722301c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_MIPI_1_I2C_0 IMX_SC_PM_CLK_MISC2>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_i2c0_lpcg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
+> +	};
+> +
+> +	mipi1_i2c0_lpcg_ipg_clk: clock-controller@57223014 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57223014 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&mipi1_i2c0_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_i2c0_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
+> +	};
+> +
+> +	mipi1_i2c0_lpcg_ipg_s_clk: clock-controller@57223018 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57223018 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_i2c0_lpcg_ipg_s_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
+> +	};
+> +
+> +	mipi1_i2c1_lpcg_ipg_clk: clock-controller@57223024 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57223024 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&mipi1_i2c1_lpcg_ipg_s_clk IMX_LPCG_CLK_0>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_i2c1_lpcg_ipg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_1>;
+> +	};
+> +
+> +	mipi1_i2c1_lpcg_ipg_s_clk: clock-controller@57223028 {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x57223028 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&dsi_ipg_clk>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_i2c1_lpcg_ipg_s_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_1>;
+> +	};
+> +
+> +	mipi1_i2c1_lpcg_clk: clock-controller@5722302c {
+> +		compatible =3D "fsl,imx8qxp-lpcg";
+> +		reg =3D <0x5722302c 0x4>;
+> +		#clock-cells =3D <1>;
+> +		clocks =3D <&clk IMX_SC_R_MIPI_1_I2C_1 IMX_SC_PM_CLK_MISC2>;
+> +		clock-indices =3D <IMX_LPCG_CLK_0>;
+> +		clock-output-names =3D "mipi1_i2c1_lpcg_clk";
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_1>;
+> +	};
+> +
+> +	pwm_mipi1: pwm@57224000 {
+> +		compatible =3D "fsl,imx8qxp-pwm", "fsl,imx27-pwm";
+> +		reg =3D <0x57224000 0x1000>;
+> +		clocks =3D <&mipi1_pwm_lpcg IMX_LPCG_CLK_4>,
+> +			 <&mipi1_pwm_lpcg IMX_LPCG_CLK_0>;
+> +		clock-names =3D "ipg", "per";
+> +		assigned-clocks =3D <&clk IMX_SC_R_MIPI_1_PWM_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates =3D <24000000>;
+> +		#pwm-cells =3D <3>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_PWM_0>;
 > +		status =3D "disabled";
 > +	};
 > +
-> +	i2c1_lvds1: i2c@57247000 {
+> +	i2c0_mipi1: i2c@57226000 {
 > +		compatible =3D "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
-> +		reg =3D <0x57247000 0x1000>;
-> +		interrupts =3D <9>;
-> +		clocks =3D <&lvds1_i2c1_lpcg IMX_LPCG_CLK_0>,
-> +			 <&lvds1_i2c1_lpcg IMX_LPCG_CLK_4>;
+> +		reg =3D <0x57226000 0x1000>;
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +		interrupts =3D <8>;
+> +		interrupt-parent =3D <&irqsteer_mipi1>;
+> +		clocks =3D <&mipi1_i2c0_lpcg_clk IMX_LPCG_CLK_0>,
+> +			 <&mipi1_i2c0_lpcg_ipg_clk IMX_LPCG_CLK_0>;
 > +		clock-names =3D "per", "ipg";
-> +		assigned-clocks =3D <&clk IMX_SC_R_LVDS_1_I2C_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clocks =3D <&mipi1_i2c0_lpcg_clk IMX_LPCG_CLK_0>;
 > +		assigned-clock-rates =3D <24000000>;
-> +		power-domains =3D <&pd IMX_SC_R_LVDS_1_I2C_0>;
+> +		power-domains =3D <&pd IMX_SC_R_MIPI_1_I2C_0>;
 > +		status =3D "disabled";
 > +	};
 > +};
