@@ -1,42 +1,48 @@
-Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5493917B4E5
-	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 13:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF0217DE0D
+	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 13:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718198725; cv=none; b=qtlfriBF0ZdYlygGunrTjS8NKnfuzZptHb4GCEGkXK6lhJfTfei/9wF5pdO+GMaNLABR3Lq4uf/bToQsQP3xaZ1yVRiB7SxtKE7VidEoKJZQ9gpMj+Bt7xPcs0fGQE5JlwV6KCLd57ZFRfPfOfEw57dFYe+NIGYR+GvOc0h0Fro=
+	t=1718200593; cv=none; b=tDDt/VbLWi9TS6u0LoR0nwpolKutx8uh/STz5uRFHPEStuvrA5YK3MFOV8yKXvyY7n5rnXY9/oKuoPIROeWuDJRF7KwTmDWaQwzDReuWC3nyeCcQbd0tuqMoMeLq7+Hw3ZCfWKxJiL1yKsxqWG/3q4W9Rd/bdM/EWG4GSmLPtgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718198725; c=relaxed/simple;
-	bh=ESEvRJfzS3KGanZGJdEyvowcxkbIO8/vhCUM5ogIqKA=;
+	s=arc-20240116; t=1718200593; c=relaxed/simple;
+	bh=wVj/TKmMd1rQ3SzX4DrV7AwKUyU2gwhaXGdlsq4rQaM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=HDgfxVoVFM7bI6bPFrkgD7nOa4/FImKxFWl+tGILn5rGyA6WCARp7HqvkrJ4nkqSYBC4P01qE3MJM+3uVlhDEMf54SoQUiSrwZeD2u+KhLk6oFk/gfKc5oYLEvngUCDGD7LduDF4B4LIX2m6SORD9hIr/gp5y4N0C3qOy2zvWck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=tmBswakr; arc=none smtp.client-ip=109.73.34.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
+	 In-Reply-To:Content-Type; b=PwNomS2Kx+Ka0ERKk0b62kJHLrQHrpgOdwjEOgcdgxp1cYmmWcCqxOx+R6IuQKVAO9W/dFPAB0/qMFextU4EIPN2LpjaYrpJaDx2I1QNuZP/Y4H3775Ow6/oC5gy87+blJi75tn7FGsqZnm2je7u99/kIkw6TaY1LdMLWi+PKMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jhUWgUj/; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="tmBswakr"
-Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id 3B28E100002;
-	Wed, 12 Jun 2024 16:25:04 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1718198704; bh=YI6fT9fSUfrIGUkPmAXo1xXDMM+gKSv9iSq1TDWxF58=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=tmBswakrhxB2kfkUeVRGuu1R5eukICc6sfSxxCi3fBAs4hcpPrB+xrHluspBK3Ubk
-	 Sfg/TczyNUed6vXa95EhJgAGFTQ9+d8wyiOI+5a0ZX0Acu9a8Vyv7Et/VbOcYEj7AA
-	 1LEusbbzkDtwvMjD5AgBxCx+2cS5/SNubK7JoM/bjLLaCdHplD9/49sdkvaXMcs5Lf
-	 RGO8BSimN8sCMIDpdmNK1cOPQ56WvuRn/ixIzgHhFPAA/Auo8RB2czUuYE+ddYDNS4
-	 Cq50idQmyv2uKX/MEtqJxdiwfzO7pUs+FBwxhH+GvcikwiiD7DL7Ph3nql/aWZOONU
-	 6X7m6b2VWH79w==
-Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
-	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Wed, 12 Jun 2024 16:23:45 +0300 (MSK)
-Received: from [172.17.214.6] (172.17.214.6) by ta-mail-02 (172.17.13.212)
- with Microsoft SMTP Server (version=TLS1_2,
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jhUWgUj/"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45CCD4U1017787;
+	Wed, 12 Jun 2024 13:56:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	n560daCLgpz3ZdOfX2LEmXn4QpxtVUnQWqyqxxLmb8M=; b=jhUWgUj/nwoABnkO
+	ioLPdiZ6IND3JQMUZOn56ktSDoc0nOSyHjZ2Vr2pi5xpPqbE5H+OKIZV4ICeiwH/
+	NEJwMvsGLjV/vAmFeOCZ0sk7gYd6wQRj7+hcMRtnn7ZNMrW623sJsVwSBB3R1q8Y
+	KPbbR4Yp1NT6ubFPe8fPfbjXhIJw2PIcDnGTZJnY42UVZ1pjn6lSsn0T2ajdgDUO
+	eqCkcPyTO76A5m0uuXwrLTmLViyzY9n3Bt32pXdSAy9XMrpf/BHaN9ya1+nsz6Hh
+	tL5fTgh2QGoKAUk2p8vamEV5rTy2Q9EtOLo8v1EPihVneLQy91inpsVWcHq8jhjL
+	e8MXaw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yqbfq87h5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 13:56:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45CDuEs5001427
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 13:56:14 GMT
+Received: from [10.48.243.20] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Jun
- 2024 16:23:25 +0300
-Message-ID: <3176acd2-0b0e-4896-b189-60c05ccde593@t-argos.ru>
-Date: Wed, 12 Jun 2024 16:20:12 +0300
+ 2024 06:56:13 -0700
+Message-ID: <0a67ada3-a030-466d-8110-c665940a5785@quicinc.com>
+Date: Wed, 12 Jun 2024 06:56:12 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,117 +50,77 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [lvc-project] [PATCH] remoteproc: imx_rproc: Adjust phandle
- parsing issue while remapping optional addresses in imx_rproc_addr_init()
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, Fedor Pchelkin
-	<pchelkin@ispras.ru>
-CC: <imx@lists.linux.dev>, <lvc-project@linuxtesting.org>, Shawn Guo
-	<shawnguo@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-	<linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Oleksij
- Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, <linux-arm-kernel@lists.infradead.org>, Peng Fan
-	<peng.fan@nxp.com>
-References: <20240606075204.12354-1-amishin@t-argos.ru>
- <ZmcuFRfjKRQG9OXI@p14s>
- <20240610-4fb504648421659114538a50-pchelkin@ispras.ru>
- <Zmh/J0hvTT1Jwvjc@p14s>
-Content-Language: ru
-From: Aleksandr Mishin <amishin@t-argos.ru>
-In-Reply-To: <Zmh/J0hvTT1Jwvjc@p14s>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH] soc: add missing MODULE_DESCRIPTION() macros
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>,
+        AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>,
+        Neil Armstrong
+	<neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome
+ Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl
+	<martin.blumenstingl@googlemail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha
+ Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team
+	<kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Linus Walleij
+	<linusw@kernel.org>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Matthias Brugger
+	<matthias.bgg@gmail.com>
+CC: <linux-arm-kernel@lists.infradead.org>,
+        <linux-amlogic@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
+ <a314c676-3dbd-46f8-826a-2e59367d30ce@linaro.org>
+ <ea604d75-e571-4d63-a7e2-aa1393588c75@collabora.com>
+ <cfad60ae-3dee-4c03-84c0-734f1fa59ff2@app.fastmail.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <cfad60ae-3dee-4c03-84c0-734f1fa59ff2@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
- (172.17.13.212)
-X-KSMG-Rule-ID: 1
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 185880 [Jun 12 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 20 0.3.20 743589a8af6ec90b529f2124c2bbfc3ce1d2f20f, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;t-argos.ru:7.1.1;mx1.t-argos.ru.ru:7.1.1, FromAlignment: s
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/06/12 12:51:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/06/12 04:43:00 #25560246
-X-KSMG-AntiVirus-Status: Clean, skipped
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Ftek-8sc2XhAb2_WElZ_ZTVzalQijyoT
+X-Proofpoint-ORIG-GUID: Ftek-8sc2XhAb2_WElZ_ZTVzalQijyoT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_07,2024-06-12_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ spamscore=0 phishscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=936 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406120097
 
-
-
-On 11.06.2024 19:45, Mathieu Poirier wrote:
-> On Mon, Jun 10, 2024 at 08:36:19PM +0300, Fedor Pchelkin wrote:
->> On Mon, 10. Jun 10:47, Mathieu Poirier wrote:
->>> On Thu, Jun 06, 2024 at 10:52:04AM +0300, Aleksandr Mishin wrote:
->>>> In imx_rproc_addr_init() "nph = of_count_phandle_with_args()" just counts
->>>> number of phandles. But phandles may be empty. So of_parse_phandle() in
->>>> the parsing loop (0 < a < nph) may return NULL which is later dereferenced.
->>>> Adjust this issue by adding NULL-return check.
->>>>
->>>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>>>
->>>> Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
->>>> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
->>>> ---
->>>>   drivers/remoteproc/imx_rproc.c | 2 ++
->>>>   1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
->>>> index 5a3fb902acc9..39eacd90af14 100644
->>>> --- a/drivers/remoteproc/imx_rproc.c
->>>> +++ b/drivers/remoteproc/imx_rproc.c
->>>> @@ -726,6 +726,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
->>>>   		struct resource res;
->>>>   
->>>>   		node = of_parse_phandle(np, "memory-region", a);
->>>> +		if (!node)
->>>
->>> You're missing an "of_node_put()" before continuing.
->>>
+On 6/12/2024 1:18 AM, Arnd Bergmann wrote:
+> On Wed, Jun 12, 2024, at 10:12, AngeloGioacchino Del Regno wrote:
+> 
+>> MediaTek:
+>> Reviewed-by: AngeloGioacchino Del Regno 
+>> <angelogioacchino.delregno@collabora.com>
 >>
->> The node is NULL in this case so of_node_put() is not needed..?
-> 
-> Oh yeah, doing a of_node_put() with a NULL value is are really good idea...
-> 
-> I will pickup this patch.
-> 
+>> ...but I'm not sure how we should apply this? :-)
 >>
->> Btw, there is a "rsc-table" node->name check in the the end of the loop
->> body. It was added recently with commit 5e4c1243071d ("remoteproc:
->> imx_rproc: support remote cores booted before Linux Kernel"). Seems to me
->> it forgot that of_node_put() is called way before that.
+>> Either Arnd takes it directly, or you split it per-soc... and I don't have any
+>> preference anyway.
 >>
+>> (P.S.: Added Arnd to the loop)
 > 
-> I agree.
+> I think in this case it makes sense to keep it as a single
+> patch, no need to clutter up the git log with identical
+> one-line changes.
 > 
->> Also commit 61afafe8b938 ("remoteproc: imx_rproc: Fix refcount leak in
->> imx_rproc_addr_init") was dealing with the last of_node_put() call here
->> but it's still not in the right place I'd say.
->>
+> Jeff, can you send this to soc@kernel.org (cc:lakml)
+> once you feel you have enough Acks? That will put it
+> into my patchwork queue.
 > 
-> You mean becaue of node->name being used after the last of_node_put() or is
-> there something else?
-> 
-> Aleksandr - Can you send another patch for the above?
+>       Arnd
+Will do, thanks Arnd
 
-Patch is sent.
-https://lore.kernel.org/all/20240612131714.12907-1-amishin@t-argos.ru/
-
-> 
-> Thanks,
-> Mathieu
-> 
->>>> +			continue;
->>>>   		/* Not map vdevbuffer, vdevring region */
->>>>   		if (!strncmp(node->name, "vdev", strlen("vdev"))) {
->>>>   			of_node_put(node);
->>>> -- 
->>>> 2.30.2
->>>>
->>>>
-
--- 
-Kind regards
-Aleksandr
