@@ -1,118 +1,75 @@
-Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80447152500
-	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 08:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2614BA31
+	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 08:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718180357; cv=none; b=AvSFjjME+8iw8PbYibWeJFTtq2tuaDy6Ea+TGS55a7PLps66+KA5FDrvhqhZgNq9tDvQIE41/1pXCG/yt6ijV0PCa7V7uWh3kb0mfysjgcPakKyro3z+ImgnOZgyNIcKf3U/Y/3JFPY68Do5AivqdZn8rQU3ZgFfyMVddiUL4n0=
+	t=1718181153; cv=none; b=snvVz/cPkWpF/yciQht7Vz1Ptf8VZbr7W8CkAI/DNNZth5psEvA0Vem72uBiE+aQvyP7wOYMUwhDFMLyMiYScoErVplcKfDN0vxvIpH/UzBxuULpGakTA14r00JOxSJqq0QYGx88Z5h6/zLux4iNUA/tWoSKiKnh+6X9vmf2fPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718180357; c=relaxed/simple;
-	bh=y//vbwfgBmVOrV/PuTjRTGtOTJ16+anauhBJjxDnZS0=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=gvUBlnILVD5b1PNikBRmigwT1ki1mBz4iGrJ5o6nwNlhCe6g+REcfK3Qj9tMcIoyyvELtmpNOmehvmHlvqcWpW8A2eoUGg814DKltfqKrZn2hDrldfM7aeyEVVSwOvkX5ciqd2H3ykXkGs4d7wDfOfo7/asccfyblZE+3/sxFuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=cLtineVW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ep5NWYR1; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1718181153; c=relaxed/simple;
+	bh=hlkt8qUqaJ32mNpH119vJ7oD4xZ22Clwrh0BnKbUAq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Buh288rkVvcpaNcCDFpWHztt8usvof/OIUF+embiSKf762RFZsGx/H7KiI9Ww1s2Kna1SiJ2Kplsap6JimZyE7mXiEKUitC+LCVlaEifysdfOwbzNQ1tXbqq2KHiPkNA1xxajt7uaKvOX/xQFv7pQtg6vG4sHJN82fXzevGjTSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=m5fbtJ2R; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="cLtineVW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ep5NWYR1"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 8EFBB1380193;
-	Wed, 12 Jun 2024 04:19:14 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 12 Jun 2024 04:19:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1718180354; x=1718266754; bh=d8ymq7h+Su
-	pUPB1TveszzEzISILgzgA3jwE5Eb5tOo8=; b=cLtineVW9mr/pV8qARMG2jgqOS
-	+5XYZXEOoVSCYDVQdas5V5ZBdf2YV8Ae2k+/bfx5LJBmWNSlh+OD/PB6uaXZqZ1s
-	HqM7g8ErabNRspnQ5XaLsJJIMTk4qDzcn1fxXZc1rLMmGOzrBwv9sERSPA9oZVJd
-	dJYIq+G18nb+nZ6cb0+gVXzUAYWyTaM9q7r+mi093YKkcCSHyARHElKBGoAh6oG1
-	ARAWdmKtLhgi2qPFun7jQJSKdRWfISSeSFnk/dMQ5hBxkvnglD7Wk7lHbkllfccz
-	jm1CId6N41DKpfjjNLvyf64Bfh5zByI+lyffSQYm+vUAx3+SKp3MKRedsIdw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1718180354; x=1718266754; bh=d8ymq7h+SupUPB1TveszzEzISILg
-	zgA3jwE5Eb5tOo8=; b=Ep5NWYR1umrudPmeDMu5zJ40VHbQhuNrWLLvsC+AvDGa
-	Ck9he2H8ZwTc6/uvUGegKIv2tFoXhYR9e+TnP1ke5YFTfMJroMsqXBBpzqRlrBia
-	iFM/8hmBILSkGNuM1NI1x0TWb0MeZnagFm0w9+XzKck4c+V+Bik0oCNkDsiMQG2Z
-	N0h5j+Bqy0j1p2EC0pT5OP2MRr7dOh84/TvhpDyaM6zrote36lO4UFZIAbJiJa8M
-	1zPvdIf5yCKhMiuobjI/RW4mb45QndV2UKaFmeYbKcIR/c7O2dA1eyvdY3QCxbMo
-	cRGITwOdyhbL6XgPr77iZ6MU9r9zzezjADrlvQ4oTg==
-X-ME-Sender: <xms:AlppZgyhzFuOFYwRPkvpuRiZVMiS-XWloRkTwKptMs84lMwYsWPx2w>
-    <xme:AlppZkR21xV8qOeULUtzpTHFseQBiudMO_FFYipXMIq_UButUWe2g6weD_C0MR7d4
-    PCrFDq_UpeaehILs9s>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedugedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:AlppZiXLDtfOBZktVAvgWTF0ksGBBajqeywK6hU7pK4KVR_NpZtQzw>
-    <xmx:AlppZugoz3yNYqwEzCEGHKewNaDkoVoQ5PDYt7-4D4MYXPI3Mi2pEA>
-    <xmx:AlppZiCfGGV2Q67Gjfk5v1vObUSV_TRM2ODFvniUt5bHjHGuoH3_mQ>
-    <xmx:AlppZvIc2Rx6ZYp0hZvwZI9EhosZMfB1rLtQ6dyuTqbMl2X4fCH39w>
-    <xmx:AlppZq6qYlLxPN7FqNnVAsjF9zzvF184QZ0j8p5vaNoOR26uVR5RX2Xe>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 00598B6008D; Wed, 12 Jun 2024 04:19:13 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-515-g87b2bad5a-fm-20240604.001-g87b2bad5
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="m5fbtJ2R"
+Received: from fedor-21d0 (unknown [5.228.117.145])
+	by mail.ispras.ru (Postfix) with ESMTPSA id A64FC40762DE;
+	Wed, 12 Jun 2024 08:32:21 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A64FC40762DE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1718181141;
+	bh=5H66dcRSlGQ/cNXt0pE1QJxw6xTn3Ooqy8BWZdp8tQI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m5fbtJ2RtoLg6H+F7g1S3OXAApqdz8bJU42yri4D5CjdfHlSyceSwPHUl/E8c3Zdp
+	 vKWQqGzCDLFyacJSTbG/L3iTS6KVbgkR53M45ooLBcAPmkqGOJFOLTvbaKm/lZd2Yp
+	 i+U7mOL0IGYZkvFJsMwwPGbbYL6jJgLWilJ0wrIU=
+Date: Wed, 12 Jun 2024 11:32:17 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Aleksandr Mishin <amishin@t-argos.ru>, imx@lists.linux.dev, 
+	lvc-project@linuxtesting.org, Shawn Guo <shawnguo@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [lvc-project] [PATCH] remoteproc: imx_rproc: Adjust phandle
+ parsing issue while remapping optional addresses in imx_rproc_addr_init()
+Message-ID: <20240612-d3218ce9809ada564606999e-pchelkin@ispras.ru>
+References: <20240606075204.12354-1-amishin@t-argos.ru>
+ <ZmcuFRfjKRQG9OXI@p14s>
+ <20240610-4fb504648421659114538a50-pchelkin@ispras.ru>
+ <Zmh/J0hvTT1Jwvjc@p14s>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <cfad60ae-3dee-4c03-84c0-734f1fa59ff2@app.fastmail.com>
-In-Reply-To: <ea604d75-e571-4d63-a7e2-aa1393588c75@collabora.com>
-References: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
- <a314c676-3dbd-46f8-826a-2e59367d30ce@linaro.org>
- <ea604d75-e571-4d63-a7e2-aa1393588c75@collabora.com>
-Date: Wed, 12 Jun 2024 10:18:53 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Jeff Johnson" <quic_jjohnson@quicinc.com>,
- "Kevin Hilman" <khilman@baylibre.com>,
- "Jerome Brunet" <jbrunet@baylibre.com>,
- "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
- "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>, "Linus Walleij" <linusw@kernel.org>,
- "Imre Kaloz" <kaloz@openwrt.org>, "Matthias Brugger" <matthias.bgg@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] soc: add missing MODULE_DESCRIPTION() macros
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Zmh/J0hvTT1Jwvjc@p14s>
 
-On Wed, Jun 12, 2024, at 10:12, AngeloGioacchino Del Regno wrote:
+On Tue, 11. Jun 10:45, Mathieu Poirier wrote:
+> On Mon, Jun 10, 2024 at 08:36:19PM +0300, Fedor Pchelkin wrote:
+> > Btw, there is a "rsc-table" node->name check in the the end of the loop
+> > body. It was added recently with commit 5e4c1243071d ("remoteproc:
+> > imx_rproc: support remote cores booted before Linux Kernel"). Seems to me
+> > it forgot that of_node_put() is called way before that.
+> > 
+> 
+> I agree.
+> 
+> > Also commit 61afafe8b938 ("remoteproc: imx_rproc: Fix refcount leak in
+> > imx_rproc_addr_init") was dealing with the last of_node_put() call here
+> > but it's still not in the right place I'd say.
+> >
+> 
+> You mean becaue of node->name being used after the last of_node_put() or is
 
-> MediaTek:
-> Reviewed-by: AngeloGioacchino Del Regno 
-> <angelogioacchino.delregno@collabora.com>
->
-> ...but I'm not sure how we should apply this? :-)
->
-> Either Arnd takes it directly, or you split it per-soc... and I don't have any
-> preference anyway.
->
-> (P.S.: Added Arnd to the loop)
+Yes, this one. Only that node->name is used after the last of_node_put().
 
-I think in this case it makes sense to keep it as a single
-patch, no need to clutter up the git log with identical
-one-line changes.
-
-Jeff, can you send this to soc@kernel.org (cc:lakml)
-once you feel you have enough Acks? That will put it
-into my patchwork queue.
-
-      Arnd
+> there something else?
