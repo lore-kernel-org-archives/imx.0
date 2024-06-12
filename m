@@ -1,71 +1,167 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C82E59B4E;
-	Wed, 12 Jun 2024 19:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3454BD8
+	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 20:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718219791; cv=none; b=nYcG9E9NR5IFD+8t4UJD2v4F63xXxlff29fnLT4t7Yat0yRInBKZqdKnQZynXX8lb+4/oMRXpYSpi6foSYGdWN41FQi4bkuBmcDMhWvo9liBkVpkNr5TfL+8JByEMnf3pgy9bx9KxpQp8xqVi+LlNXWipOXQ865RY4gvA28HLb8=
+	t=1718222683; cv=none; b=Tmg04a0hFQhza5HBi8xq+MV1sNB7JNATZPeM/tsdY/87LZeJIs9WDWTO1Nx/aFfLpYp09/a7lLbgOAZCFCewOHTbp5JntKbjWsH+pxYZVd6vuIjjoei534Qoernl7n4rONg4xumMXesvTtXTWnx1gSVLaFqmVW96ytqvbxYVhJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718219791; c=relaxed/simple;
-	bh=h9OrCqNtDcSWplzbwmvzVv8Y1Pp41dr3XGTW2LGPiGk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=apGcGaTLD/XItXCuDICCJQiIcaIwAKmopAuIEefK5rne3NXOECTmJW4yMIZma3F2HbCRjay4CUOjgon7z0M0qbrXThswwCvBh08oatz9K1lLi9Ss0ctpftefErzn2DniBWUXJEFQZTFf38cQNwEh1voMqgjq3BDpZeRDP7K32kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TkMZJbTb; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1718222683; c=relaxed/simple;
+	bh=5C6E8Y9SDchcIWwSmH36JEqE6WSYVVh9PjV5yurQ6WA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=uqHB2vxmM/6CbpeL5VDjOB2dWoCguaEgLS3BWJZ/zWtZxFvmGS4uUcaMQSGHv2vctSBHXDbD2MndqjSS4AWu8nQjpaSCMigvVnPiCBsV7IqCNB/tCqwCC92bcglu6Dz2XauCesxsVYWNumJHZnqzA7KHI+GCrF6iWUp7+DzpaLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=IaMH4Jce; arc=none smtp.client-ip=44.202.169.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TkMZJbTb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=9B/Qk2uWCAxs4BHcvpRcMr2sP++AxA6OtnPjaYkILhc=; b=Tk
-	MZJbTbE7A6PhroebI9UO3cW97crXUkmkqufmCKhqFLQPrcrl4kbCK9C+IKtQpp6l6Su28hXZ6h5qG
-	8Cm9fNIa1vs9k8bRuUYcei+TeB5x8ekQySJEre2NyjrjlgnZuDVZL5aFNltvQydaU4z2OgwSgNR4b
-	57wQq8BLTGCv1Sw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sHTS9-00HUuE-Cb; Wed, 12 Jun 2024 21:16:13 +0200
-Date: Wed, 12 Jun 2024 21:16:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
-Cc: Frank Li <Frank.Li@freescale.com>,
-	"David S. Miller" <davem@davemloft.net>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Richard Cochran <richardcochran@gmail.com>,
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH resubmit 2] net: fec: Fix FEC_ECR_EN1588 being cleared on
- link-down
-Message-ID: <5fa9fadc-a89d-467a-aae9-c65469ff5fe1@lunn.ch>
-References: <20240611080405.673431-1-csokas.bence@prolan.hu>
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="IaMH4Jce"
+Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
+	by cmsmtp with ESMTPS
+	id HQpmsvBdSxs4FHUCxsOmOZ; Wed, 12 Jun 2024 20:04:35 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id HUCwsznCt2h7CHUCwslKaG; Wed, 12 Jun 2024 20:04:34 +0000
+X-Authority-Analysis: v=2.4 cv=RcKWCUtv c=1 sm=1 tr=0 ts=6669ff52
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=frY+GlAHrI6frpeK1MvySw==:17
+ a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=wYkD_t78qR0A:10 a=xGRsDScCAAAA:8
+ a=pKTFDrzG_x3V9sfl7PQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=zEVfNvAIcUWeczMkmY0T:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/QPeIjovkvV/E5oIolQo/mIlJ+pmqKXHutHu0+C0FVs=; b=IaMH4JcelzjtzZ8l052lUZoo73
+	sI8xPNQtYOTq4SBbq7wbYV19M4bbN7/tIy0GGJ0daZKbJwwMBPgru1JOSJbZkKTTDHj0JkGj6CfDt
+	hvpFYVQwNVSs+gUb3q2uK4cvQYtAxfknNNRP9/IGljJQJwQvF18bbmwdWdjPF3qHJVBySzDRqbMmP
+	R/PTadZMsEQNP/1lFtMBtB/gWcW0n3l7fL+kWu3KgjClJyS963c82KeIRgpmL91Iheiihvd02mP7k
+	A+x5MhXqNQVGRaXeDMCx8FkrVQayyvm0QZwzu0xmSKR1RFVQEvDn4K4AjQMI/Pc+P6Ek/OvMUyUID
+	m04LJ4DQ==;
+Received: from [201.172.173.139] (port=40652 helo=[192.168.15.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1sHUCv-004Bhn-0e;
+	Wed, 12 Jun 2024 15:04:33 -0500
+Message-ID: <c80e41e6-793e-4311-8e15-f5eda91e723e@embeddedor.com>
+Date: Wed, 12 Jun 2024 14:04:31 -0600
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To: Jiri Slaby <jirislaby@kernel.org>, Bill Wendling <morbo@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
+ patches@lists.linux.dev, stable@vger.kernel.org
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+ <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+ <2024053008-sadly-skydiver-92be@gregkh>
+ <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
+ <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
+ <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
+ <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
+ <bee7240b-d143-4613-bde4-822d9c598834@embeddedor.com>
+ <1313c7a5-d074-4a8f-9ab9-07e4a7716fb9@kernel.org>
+ <4da5ba72-6dff-46f1-b596-158c62b34f18@embeddedor.com>
+Content-Language: en-US
+In-Reply-To: <4da5ba72-6dff-46f1-b596-158c62b34f18@embeddedor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240611080405.673431-1-csokas.bence@prolan.hu>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.173.139
+X-Source-L: No
+X-Exim-ID: 1sHUCv-004Bhn-0e
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.10]) [201.172.173.139]:40652
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfAjDPSMg6k9wY3cIdLT02QfNj3vQxHQhNsRfLiejMU4qI2Lhpi8zS+JxLW922EbgtIfWIbllIIQ1ebLDiQdEHaqEUOPAQyPW/JOv1ZfX89U4kEgewzRv
+ moOdxgKwiTRQvq0PXZDPbkIf6C2kjKq+QPhWEg+N9mmGBcY0Y36hD1F6XVvolDzqCOf/MOAqH0nQtJOdqRpXntEcDYDjnK2KWTo=
 
-On Tue, Jun 11, 2024 at 10:04:05AM +0200, Csókás, Bence wrote:
-> FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
-> makes all 1588 functionality shut down, and all the extended registers
-> disappear, on link-down, making the adapter fall back to compatibility
-> "dumb mode". However, some functionality needs to be retained (e.g. PPS)
-> even without link.
+
+
+On 6/3/24 02:26, Gustavo A. R. Silva wrote:
 > 
-> Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-> Cc: Richard Cochran <richardcochran@gmail.com>
+>> FWIW undoing:
+>> commit 7391ee16950e772076d321792d9fbf030f921345
+>> Author: Peter Hurley <peter@hurleysoftware.com>
+>> Date:Â Â  Sat Jun 15 09:36:07 2013 -0400
+>>
+>> Â Â Â Â  tty: Simplify flip buffer list with 0-sized sentinel
+>>
+>>
+>> would do the job, IMO.
 > 
-> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> So, not even _sentinel_ is actually needed? Awesome!
+> 
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+It seems that a clean revert is not possible at this point, as
+the original patch is more than a decade old. If _sentinel_ is
+not needed, and based on the original patch, would the following
+suffice?
 
-    Andrew
+diff --git a/drivers/tty/tty_buffer.c b/drivers/tty/tty_buffer.c
+index 79f0ff94ce00..1b77019cc510 100644
+--- a/drivers/tty/tty_buffer.c
++++ b/drivers/tty/tty_buffer.c
+@@ -135,10 +135,7 @@ void tty_buffer_free_all(struct tty_port *port)
+         llist_for_each_entry_safe(p, next, llist, free)
+                 kfree(p);
+
+-       tty_buffer_reset(&buf->sentinel, 0);
+-       buf->head = &buf->sentinel;
+-       buf->tail = &buf->sentinel;
+-
++       buf->tail = NULL;
+         still_used = atomic_xchg(&buf->mem_used, 0);
+         WARN(still_used != freed, "we still have not freed %d bytes!",
+                         still_used - freed);
+@@ -578,9 +575,8 @@ void tty_buffer_init(struct tty_port *port)
+         struct tty_bufhead *buf = &port->buf;
+
+         mutex_init(&buf->lock);
+-       tty_buffer_reset(&buf->sentinel, 0);
+-       buf->head = &buf->sentinel;
+-       buf->tail = &buf->sentinel;
++       buf->head = NULL;
++       buf->tail = NULL;
+         init_llist_head(&buf->free);
+         atomic_set(&buf->mem_used, 0);
+         atomic_set(&buf->priority, 0);
+diff --git a/include/linux/tty_buffer.h b/include/linux/tty_buffer.h
+index 31125e3be3c5..75fb041e43fe 100644
+--- a/include/linux/tty_buffer.h
++++ b/include/linux/tty_buffer.h
+@@ -37,7 +37,6 @@ struct tty_bufhead {
+         struct work_struct work;
+         struct mutex       lock;
+         atomic_t           priority;
+-       struct tty_buffer sentinel;
+         struct llist_head free;         /* Free queue head */
+         atomic_t           mem_used;    /* In-use buffers excluding free list */
+         int                mem_limit;
+
+Thanks
+--
+Gustavo
