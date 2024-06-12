@@ -1,194 +1,193 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91C516C69A
-	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 07:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3A116D33A
+	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 08:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718179092; cv=none; b=fUJU090wvbQ8+6zWxa0Vl2PL82VIQ6BO7xXwkigjGXhP2Ad6aHXGIeMXpqnIigupOS+MjBtexur7TeoTaxJJqQ1zu7+pli405JlWwQjusF9UoC26SAb+JkEh027QT4kcrZpk4PrI0fpYTwMxWm4z4ugwOLS+vQHfNzIL6oTVxsQ=
+	t=1718179762; cv=none; b=pIyrnvUbHa51yGpqiXVK5bP8+9qOA/VnO+cfTXZbt8iQNcIuzUihi3dFVPzGvp/HES3j3elyGQr5mkWZaXwn9Et9+oNwx9n5/bFzs+fG96jWt2WVICm9UKf9+CiZib9kz0vlTLo0rhwIknvdznAIt2fnGNxUdCc+tb/wXZGCi3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718179092; c=relaxed/simple;
-	bh=f9kCf84eyzlwQr0DOO2ZoS6yL8QyN/5Y2BWId6yPcqw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FkXkNraXs9q81RLnPv8MDsQUPEh5IpXAR7+nI3ilUXQFCFDIbMXUDNfSLSIRoeFXP5AD9YIQFapKuc01RwlbHL0eQRvLEe5S0A+Ip1VlsqS4x58DD4Q22Sx508rgnoTvoB6KyZ0w6IBXo8joCi1myEzF634eicp2vGatXFi7b0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z3g3v1Jo; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718179762; c=relaxed/simple;
+	bh=8sIAZSlf4WuNaF1daREKewN6nBaPdnh2z9v++bC1Sxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zw/KXUjUIW0zZJ4IYlsQA3tascyzhHbmQxOhQizreUf97IxJBdwDKe8TLb7SpMYOI2XLSwiHH752/HkH4W+lLZHDeCOpcjyyyXwn1UvGBvxJDBJ1Xn8ePcrG/apgUBPskmzW5CN57bdRY8m5KbfteRvZv0rvfh39jQpQXEejR9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zbHWotKx; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z3g3v1Jo"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42189d3c7efso31766255e9.2
-        for <imx@lists.linux.dev>; Wed, 12 Jun 2024 00:58:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zbHWotKx"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a62ef52e837so806739966b.3
+        for <imx@lists.linux.dev>; Wed, 12 Jun 2024 01:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718179089; x=1718783889; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bcLdFTHsKhxsWZKbXum3q12jRap59Wq5H+bR99icFo4=;
-        b=Z3g3v1JoR6fBEfWJ2C4MC3rcbX2dBDeSWHELyvDNMbfRv3DtH5trsU+eCK3/4WTOym
-         MS/6rtn1WxGYeoXZT12HIGdQL5Ds8CAXXh9qNsCHXTjrW2jLKVFysSIFqzDOOYY8Cg5g
-         mFHn57fceRqUylxYznfT1xXWe0tAAS8Zn9FJFdrLOKs2M+OJ/AY+my5foNB7El53CcsW
-         T8z5trLU8SgkzvczRZdX2llKMVl9xJ5n5NEPMOSmhxz6l46NAAOUPup7VT0/XFCC99/G
-         PUMchQZbqDNxmtxrT32oGK6yk7HMP7GIrbE0uUsyQ7a1NCjnLJGXP61G39VHhIhPRg1j
-         eZbg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718179758; x=1718784558; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RKb/vtoIHaAuT7eS6tdIIVHB4rHiCLnX6z8pJYSRJNs=;
+        b=zbHWotKxs+JtcxRoDvvwBM4WGqh3jXtpBwv1EGbBNJR2QspIL8337JtoH+QH9WEiii
+         L/HHKRNSpYZhafkM2uCBEk00rijfBYuc3DCbpoYSxXvkJxm5HdYpByDAplcYUuKCeU6V
+         kFnXThV2ZN+Y9ipowFMAonYHfC1T+KhhfTYW8JWV/DeGmO5GFtfa8+B8pik+VpCiXzGC
+         IbxjfcWa23/FUGGsA6g3Xcc17Z+hJWLsJiX2bjbYAwsdHIUBNjTOznHCxqjV2J5CLMTG
+         ClVJ7OUaE2VUzngenhvyas/kc01JFvWKDARcwGVpupjnj/vRcBekM5IX0IWhejY8KV7q
+         XBvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718179089; x=1718783889;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bcLdFTHsKhxsWZKbXum3q12jRap59Wq5H+bR99icFo4=;
-        b=lJz6GtRqZdn88Np7mX7n85CKTwEu5xKRcZWWrr5TOPOvtiSt1irPy7Z/c6/3vuVbf6
-         b1GaHPg2gxbH5B1npNv2D4uuKHXujcmgVtpEVLeAe3zUkCllR/G0kb9/uuj/EBCDEL/m
-         HiOnIy6Dm1Fd2K3tswow+ZheTwR77bohDy3QpaVplRks3KcfCge4gpDoMlFtCQ5B2s7T
-         ewaolR1Lvy243Cpjrzzu+rtTvm/fkYTkRuTkMsBPc+E2pO7Pyt0lS9WxUG6jIcYaOAw8
-         eVKqfF0NorLQynNaRhiHw4aXbE5WmucBuA5FZ2Oh8q+4BN+oQd7uRjrkbHKdgtpBZ04T
-         vlAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyDN11cLqywXMO2tg890l+MUIRWDLfw6QkHhJJvMH9P9DIhilRVt19Bp6Y3MHY23NvPnqgYJhvCdbpSDu7zu5xO2PY
-X-Gm-Message-State: AOJu0YzeAaa8rRsmTWAV7rSHHfN/dpak3iODI6+LVkv7JShv++iDkzvw
-	rToJhR7YfZO+7z7SV5T93Om9elidPUWviLZ1RabgyEyZULH/W2rWnoYJjVpWtzU=
-X-Google-Smtp-Source: AGHT+IEJGltYyHPm5azIaXZsfp0ocu+v/Cqr2tZqTEenkv7mLVqkDy/oZNxcfiL3PNM4Ugjo8ukmUw==
-X-Received: by 2002:a05:600c:4f0e:b0:422:97d:4403 with SMTP id 5b1f17b1804b1-422866c2684mr12207455e9.31.1718179088584;
-        Wed, 12 Jun 2024 00:58:08 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:30bd:bf21:eed1:8aeb? ([2a01:e0a:982:cbb0:30bd:bf21:eed1:8aeb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f26857582sm6538100f8f.77.2024.06.12.00.58.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jun 2024 00:58:08 -0700 (PDT)
-Message-ID: <a314c676-3dbd-46f8-826a-2e59367d30ce@linaro.org>
-Date: Wed, 12 Jun 2024 09:58:05 +0200
+        d=1e100.net; s=20230601; t=1718179758; x=1718784558;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RKb/vtoIHaAuT7eS6tdIIVHB4rHiCLnX6z8pJYSRJNs=;
+        b=mRePzJSrek0vHUpOsjEFLxaMPJkAB4LZk3hYUpsO51BgSe63pNBL8VbbMkh9XF2WSK
+         6jhm/YslnkGH+HYCZJ6C6k0hbi2BZGYwMM5nF18hc8JzCoW7fgsQSv8yHbmKXg4wOC8x
+         ICt/RWEh+enP6546S2fAg4GyE+s8gVR22q/fbWW15upUpLaa5BSDfRZaazUxXvV+sv3C
+         A2EJFyKjZH1DBuELdGhHgIROFwi/pQ7gyO46M9b1GwgrXfUeSfco5s0RMnXMVatjjPpb
+         K8hmvEK5a3FqNveExXs680l2UM0fB1lD4xn0T1/zDbgeC0I2MG0SB0SpQwvHNA2uVXys
+         mEWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtUPK1wSjbSdtEHMMek4LsfvDma0pfavPOOW/RJrqcfdv+qOJPPcoJwcexwXVF/zt+qZKDBxe1fOntNaMshkpN3w4+
+X-Gm-Message-State: AOJu0YxO3cNtG/azQG6OoNhdPHYB2W6wqUurDEIIZCTKu7MR+i9gaUtY
+	5+4Ucm+Qywewt5e6mv/iHeyaJ8vwx4eAU5s5nSERVMEINQyptOUIqD7uGU6xH9E=
+X-Google-Smtp-Source: AGHT+IEyUqS7xeGpS62654NQBM20ZnTsaBaQtVWFbZpKweR38cT7xpNYg2DKAqfcljsV5Jo8GYnSxQ==
+X-Received: by 2002:a17:906:3c47:b0:a6f:1c38:3370 with SMTP id a640c23a62f3a-a6f47fad6b3mr75793666b.36.1718179757867;
+        Wed, 12 Jun 2024 01:09:17 -0700 (PDT)
+Received: from localhost (p509153eb.dip0.t-ipconnect.de. [80.145.83.235])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f16427842sm439552466b.100.2024.06.12.01.09.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jun 2024 01:09:16 -0700 (PDT)
+Date: Wed, 12 Jun 2024 10:09:15 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+Cc: Lucas Stankus <lucas.p.stankus@gmail.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Dmitry Rokosov <ddrokosov@sberdevices.ru>, 
+	Cosmin Tanislav <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Saravanan Sekar <sravanhome@gmail.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+	Crt Mori <cmo@melexis.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [RESEND][PATCH] iio: simplify with regmap_set_bits(),
+ regmap_clear_bits()
+Message-ID: <6grkkioyfqvjy37ztevbs7lbkhc4yfvvomwk7jx5qjmrsdihir@mlluicav2cvs>
+References: <20240611165214.4091591-1-tgamblin@baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH] soc: add missing MODULE_DESCRIPTION() macros
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
- Imre Kaloz <kaloz@openwrt.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
-References: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kp4epuvmx3jkqhoq"
+Content-Disposition: inline
+In-Reply-To: <20240611165214.4091591-1-tgamblin@baylibre.com>
 
-On 12/06/2024 07:50, Jeff Johnson wrote:
-> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/imx/soc-imx8m.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-qmgr.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-npe.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/mediatek/mtk-cmdq-helper.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/amlogic/meson-clk-measure.o
-> 
-> Add the missing invocations of the MODULE_DESCRIPTION() macro.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+--kp4epuvmx3jkqhoq
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Trevor,
+
+On Tue, Jun 11, 2024 at 12:52:06PM -0400, Trevor Gamblin wrote:
+> Simplify the way regmap is accessed in iio drivers.
+>=20
+> Instead of using regmap_update_bits() and passing the mask twice, use
+> regmap_set_bits().
+>=20
+> Instead of using regmap_update_bits() and passing val =3D 0, use
+> regmap_clear_bits().
+>=20
+> Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 > ---
-> This is the last of the issues that I see in the soc directory
-> ---
->   drivers/soc/amlogic/meson-clk-measure.c | 1 +
+> CC list got suppressed on first submission, so resending. Sorry about
+> that.
+>=20
+>  drivers/iio/accel/adxl313_core.c              |   4 +-
+>  drivers/iio/accel/adxl313_spi.c               |   4 +-
+>  drivers/iio/accel/fxls8962af-core.c           |  18 ++--
+>  drivers/iio/accel/kxsd9.c                     |   6 +-
+>  drivers/iio/accel/msa311.c                    |   6 +-
+>  drivers/iio/adc/ad4130.c                      |   4 +-
+>  drivers/iio/adc/axp20x_adc.c                  |   5 +-
+>  drivers/iio/adc/axp288_adc.c                  |   4 +-
+>  drivers/iio/adc/bcm_iproc_adc.c               |   8 +-
+>  drivers/iio/adc/berlin2-adc.c                 |  24 ++---
+>  drivers/iio/adc/cpcap-adc.c                   |  44 +++-----
+>  drivers/iio/adc/fsl-imx25-gcq.c               |  16 ++-
+>  drivers/iio/adc/ina2xx-adc.c                  |   3 +-
+>  drivers/iio/adc/intel_mrfld_adc.c             |   4 +-
+>  drivers/iio/adc/meson_saradc.c                | 101 ++++++++----------
+>  drivers/iio/adc/mp2629_adc.c                  |  19 ++--
+>  drivers/iio/adc/qcom-spmi-rradc.c             |  50 +++++----
+>  drivers/iio/adc/rn5t618-adc.c                 |   5 +-
+>  drivers/iio/adc/sc27xx_adc.c                  |  41 ++++---
+>  drivers/iio/adc/stm32-dfsdm-adc.c             |  29 +++--
+>  drivers/iio/dac/ltc2688.c                     |   5 +-
+>  drivers/iio/dac/stm32-dac-core.c              |   5 +-
+>  drivers/iio/gyro/bmg160_core.c                |   4 +-
+>  drivers/iio/gyro/mpu3050-core.c               |  33 +++---
+>  drivers/iio/health/afe4403.c                  |   9 +-
+>  drivers/iio/health/afe4404.c                  |   9 +-
+>  drivers/iio/health/max30100.c                 |   5 +-
+>  drivers/iio/health/max30102.c                 |   5 +-
+>  .../imu/inv_icm42600/inv_icm42600_buffer.c    |  14 ++-
+>  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |   9 +-
+>  .../iio/imu/inv_icm42600/inv_icm42600_i2c.c   |   4 +-
+>  .../iio/imu/inv_icm42600/inv_icm42600_spi.c   |   4 +-
+>  drivers/iio/light/adux1020.c                  |  13 ++-
+>  drivers/iio/light/iqs621-als.c                |   4 +-
+>  drivers/iio/light/isl29018.c                  |   6 +-
+>  drivers/iio/light/st_uvis25_core.c            |   4 +-
+>  drivers/iio/light/veml6030.c                  |   4 +-
+>  drivers/iio/magnetometer/ak8974.c             |  11 +-
+>  drivers/iio/magnetometer/mmc35240.c           |   8 +-
+>  drivers/iio/pressure/bmp280-core.c            |   4 +-
+>  drivers/iio/proximity/sx9324.c                |   5 +-
+>  drivers/iio/proximity/sx9360.c                |   5 +-
+>  drivers/iio/proximity/sx9500.c                |  12 +--
+>  drivers/iio/proximity/sx_common.c             |   9 +-
+>  drivers/iio/temperature/mlx90632.c            |   4 +-
+>  drivers/iio/trigger/stm32-timer-trigger.c     |  34 +++---
+>  46 files changed, 273 insertions(+), 351 deletions(-)
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org> # for amlogic/meson-clk-measure.c
+I found five more drivers below drivers/iio that could benefit from such
+a conversion:
 
->   drivers/soc/imx/soc-imx8m.c             | 1 +
->   drivers/soc/ixp4xx/ixp4xx-npe.c         | 1 +
->   drivers/soc/ixp4xx/ixp4xx-qmgr.c        | 1 +
->   drivers/soc/mediatek/mtk-cmdq-helper.c  | 1 +
->   5 files changed, 5 insertions(+)
-> 
-> diff --git a/drivers/soc/amlogic/meson-clk-measure.c b/drivers/soc/amlogic/meson-clk-measure.c
-> index 3f3039600357..a6453ffeb753 100644
-> --- a/drivers/soc/amlogic/meson-clk-measure.c
-> +++ b/drivers/soc/amlogic/meson-clk-measure.c
-> @@ -688,4 +688,5 @@ static struct platform_driver meson_msr_driver = {
->   	},
->   };
->   module_platform_driver(meson_msr_driver);
-> +MODULE_DESCRIPTION("Amlogic Meson SoC Clock Measure driver");
->   MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-> index ec87d9d878f3..fe111bae38c8 100644
-> --- a/drivers/soc/imx/soc-imx8m.c
-> +++ b/drivers/soc/imx/soc-imx8m.c
-> @@ -252,4 +252,5 @@ static int __init imx8_soc_init(void)
->   	return ret;
->   }
->   device_initcall(imx8_soc_init);
-> +MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
->   MODULE_LICENSE("GPL");
-> diff --git a/drivers/soc/ixp4xx/ixp4xx-npe.c b/drivers/soc/ixp4xx/ixp4xx-npe.c
-> index 35825ee95dff..34a6f187c220 100644
-> --- a/drivers/soc/ixp4xx/ixp4xx-npe.c
-> +++ b/drivers/soc/ixp4xx/ixp4xx-npe.c
-> @@ -764,6 +764,7 @@ static struct platform_driver ixp4xx_npe_driver = {
->   module_platform_driver(ixp4xx_npe_driver);
->   
->   MODULE_AUTHOR("Krzysztof Halasa");
-> +MODULE_DESCRIPTION("Intel IXP4xx Network Processor Engine driver");
->   MODULE_LICENSE("GPL v2");
->   MODULE_FIRMWARE(NPE_A_FIRMWARE);
->   MODULE_FIRMWARE(NPE_B_FIRMWARE);
-> diff --git a/drivers/soc/ixp4xx/ixp4xx-qmgr.c b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-> index 244ad8d7e80b..cb112f3643e9 100644
-> --- a/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-> +++ b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-> @@ -465,6 +465,7 @@ static struct platform_driver ixp4xx_qmgr_driver = {
->   };
->   module_platform_driver(ixp4xx_qmgr_driver);
->   
-> +MODULE_DESCRIPTION("Intel IXP4xx Queue Manager driver");
->   MODULE_LICENSE("GPL v2");
->   MODULE_AUTHOR("Krzysztof Halasa");
->   
-> diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
-> index 046522664dc1..dd70d4d2bed7 100644
-> --- a/drivers/soc/mediatek/mtk-cmdq-helper.c
-> +++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
-> @@ -526,4 +526,5 @@ int cmdq_pkt_finalize(struct cmdq_pkt *pkt)
->   }
->   EXPORT_SYMBOL(cmdq_pkt_finalize);
->   
-> +MODULE_DESCRIPTION("MediaTek Command Queue (CMDQ) driver");
->   MODULE_LICENSE("GPL v2");
-> 
-> ---
-> base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-> change-id: 20240611-md-drivers-soc-1780b1939627
-> 
+ drivers/iio/adc/ad7173.c                      |  2 +-
+ drivers/iio/adc/ti-ads1298.c                  | 13 ++++++-------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  4 ++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  8 ++++----
+ drivers/iio/light/veml6075.c                  |  4 ++--
+ 5 files changed, 15 insertions(+), 16 deletions(-)
 
+But even without addressing these:
+
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+
+Thanks for picking up my suggestion,
+Uwe
+
+--kp4epuvmx3jkqhoq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmZpV6cACgkQj4D7WH0S
+/k5HtQf/VeZ8OLgNz7dXrFmR7AQ9UOUpW7yE/aNJ/0jp+/7SKFUid8kLelq2CIon
+ZVEOQoxGVhsBhSmzwJGvZf6cOMAu4nWRuACbap5soHOv/ycOA3QIKizvIGt1TEEh
+0/VqnqKzkXb9oxxMVSpN3tbFXRuYlvx7+jpdDVoguOBsVI5jeZb+AXseQscpy/nt
+qD1t26pVyaJH3/Rhp0912HRYo6zsvpSCWJ/IssmngcMCXSnCjNUYK8mWeQX+QG47
+rd6Yx/Q79PT6dB778e1LYvrOx5QTfFUe1NjjNJP+SjJH8mHE8CRBLdBXAVQJGfMf
+tXTZy24yn6DSipC1sqLciFOAvQns1A==
+=/peH
+-----END PGP SIGNATURE-----
+
+--kp4epuvmx3jkqhoq--
