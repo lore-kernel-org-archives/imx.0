@@ -1,84 +1,119 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AA916DEDE
-	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 09:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590F816EBE6
+	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 10:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718185624; cv=none; b=mQA4KZD/8mmAXxx3tciMjYcQ8AKUwDLDTD3Cwz27LyW+/z9/0XcnrKYN9DEoXQV7c86fvWYQLEtAaba1867GjKZ6wR/JXb81LAghvg2eimd3NBJNvED1SGjuMBAaMj9vo+DmBB380GwTIcZoxBgiz3MiAbA1f4jAdPk3sBSL6l8=
+	t=1718187455; cv=none; b=tMAE8gG6aW5o+eP68nPYyeQGhoLLgbpJO+R7bclcZZaR6oPNtMLRRtHrcsd3I0q2Obh/Ue2cShebOAyw2g0RHXj/PRMi4aivWz7oYVBlmzELjIfQL54Wqu4GWAH0hEHGW/0n5FYLbHji6tPzHeKgp5U49CsjBnaDNNsr+gJ+aiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718185624; c=relaxed/simple;
-	bh=zQKdgF8mcEp+wVi7lqvaVDwpdEckLhnlchOC12xC+RA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TV4P0amtMSJ+rxeA4XmTjPbEgs8aZex0O6Etu2mTcGxdnccYkTF3qFLTAOPVcW2EkRkgI6z6fQSjC1eUc0Wv+O5Y3dmCLv7l5JjQtLbTPxdI0o8szVpmBn5yqhEPKczpYw1zjNJlw0wEgFj7gGKu+oJrHtFsp9WphDpPossmyHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dg0Opz02; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718187455; c=relaxed/simple;
+	bh=uEVXytN0su4uO31CCDzPwmBSkgNmoh/AYGceJbx2wJg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dSBjs3Y3ZUQ4jQSNjFO4ryEvrBy+OBGnvxFiNUXlbuHz+z0Q3FLuimLNLqqxP4p8ON80xxJJ+KaGz+I29dHvK7D5RJKBG9CiBVJHi+YyPLdLuL/LQQNUqdB1/JfG73IJLySB9ajUUrP14SbJOM0ZynrSC2C9jLzUVZgSf+czFI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=baylP864; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dg0Opz02"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-52c82101407so6797743e87.3
-        for <imx@lists.linux.dev>; Wed, 12 Jun 2024 02:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718185621; x=1718790421; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zQKdgF8mcEp+wVi7lqvaVDwpdEckLhnlchOC12xC+RA=;
-        b=Dg0Opz02KwVLj4O0g9VuWoe+tndksQqbtnsgNJ89PSyY2byJMLRDoRDq4HLD9Bj035
-         J/i//StTU7cZQBCvumLiVL5gYv9oBxusyfhqX0skGELUHUYrJrWCNvkFBzd8Rgj7Peu0
-         UAw13o6v1eGUZvhpYzaNPv6/cRrp13uV0Yv/JIY3vCXs4ySKGj9UpJgXTkYPR6MjRh8N
-         uB0bmk+BVdrK5AljVHXz89B6R5cDrBVfYb7dzj3UvOC9GNCSXarFsvIzm3A0RkNCIHNw
-         OVMIrAWML97OpZFWyGDVe7icUWoJFllBPsXidrzvVjn5yxhgGgiK+WrxwVhAvfusndTE
-         Woow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718185621; x=1718790421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zQKdgF8mcEp+wVi7lqvaVDwpdEckLhnlchOC12xC+RA=;
-        b=FV+GTAxCxjY3bgXDcovg4Yh52sWLwHyHGbxKFi5eDXcEPaxmmuNCxRNeTygbkQIomB
-         +1zRM3kvmWcwwWTaG5++4Fkq3QiWNpGgwJT4Kb2xJ1EbKiOkAdWTD6fma016h9XaRXL5
-         G8h7YjX2FHNDbKZ2w65ibzGO+gJELiJXrI6mOgkklzxXC5KvBsgveSW3kRAiDCAOX4ST
-         BZJH5pFyknxj/fknWMZX7DoZwS4hClS6F7aap846JN2tIVo922+hI/mPJUf8QsdBNrv9
-         ODoYYKdpi443zI462UKcdMciEdRgbmkx7YFClvfjcp20XnZ5s1RFg8iJwVMYSE9USd7b
-         MZrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXacLUkZVpoPVA0yEOhCcYNQz57ABlD8moOP9oQV+7TK5TcACrarNeqXJ/Gp6+kzQC5bTjEJu55xciOFuw00QIUupkW
-X-Gm-Message-State: AOJu0YxhMMZLROf6w+BhS30FoYTZkHaEKZPsbQgRzyI/1t5OB6+T9s0n
-	BS8UC8F3lmgkrVWqGZ5W7/Hi7Y9kh/8+0yiUG6V/GjDXwcDpNT7fhl32RkHEHaHkyAU2qTryWMX
-	5e5JkfZOUZpr/k1hbv/sBP2K7mAiv8jUN5VBvAA==
-X-Google-Smtp-Source: AGHT+IGCNkHASnW9VHX/JSYWKJzZNEu3Qmg4CK2c1hPkFlnh/pbup3cTnpgiY+Of0KiWJ4QoVJYCQXU1sRI9qEXlsX4=
-X-Received: by 2002:a19:e00a:0:b0:52c:8811:42f7 with SMTP id
- 2adb3069b0e04-52c9a3d2020mr998967e87.19.1718185620774; Wed, 12 Jun 2024
- 02:47:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="baylP864"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 57D021BF203;
+	Wed, 12 Jun 2024 10:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1718187450;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CfBySjCLhdPg25qelMt2+tvslyXTXvLTckrLcGn3QEc=;
+	b=baylP864iq/ua2yedrZZPQeSvLYCrueoxX0C0+8cwhMaJ5bbdxW2zob4gCWTUIeOko2y7h
+	jy8zAKnY0McE6ftj+OdlOAWvUq5duntD/Z118FHUixiOI+7sannftpGC7nRkYuXNlIT1tD
+	DKlycYfJ3M4p6f45rC9qHonot5c7nL/IYpyjdsjqMxAsCCHgHQ7sIFts5YjBhS29/ZT8l3
+	qatd9SrA2oFAwNvY2B0XtdTlHf4BAwLRL8FNwOpeStplSiCKm+5Z4TEL4IW3Vr25MtoYDo
+	YEaeF8nBxsLBvVbHHdh20V3GKRz+ClaC+yXyOPyTEDX3bEcdSZBSoqe2NY9bgw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Wed, 12 Jun 2024 12:17:27 +0200
+Subject: [PATCH] arm64: dts: imx8mp-msc-sm2s: Add HDMI output
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240530165424.3173673-1-Frank.Li@nxp.com>
-In-Reply-To: <20240530165424.3173673-1-Frank.Li@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 12 Jun 2024 11:46:49 +0200
-Message-ID: <CACRpkdYbZAMjgLQPo9Xw_ooqpohwGKG3S1qMV0sKsDAYh3Pv+A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: gpio: mpc8xxx: Convert to yaml format
-To: Frank Li <Frank.Li@nxp.com>
-Cc: robh@kernel.org, brgl@bgdev.pl, conor+dt@kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, krzk+dt@kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240612-imx8mp-msc-sm2s-hdmi-v1-1-6c808df5205d@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIALZ1aWYC/x3MPQqAMAxA4atIZgM1/iBeRRxsGzVDVBoQQby7x
+ fEb3nvAOAkbDMUDiS8xOfaMqiwgbPO+MkrMBnLUuK4iFL17PVEtoCkZblEFm7g43/vW1xQgp2f
+ iRe5/O07v+wFF1HH2ZgAAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>, Adam Ford <aford173@gmail.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.13.0
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Thu, May 30, 2024 at 6:54=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+Enable the HDMI output of the MSC SM2-MB-EP1 carrier board based the
+SM2S-IMX8PLUS SMARC module.
 
-> Convert binding doc from txt to yaml.
->
-> Remove redundated "gpio1: gpio@2300000" example.
-> Add gpio-controller at example "gpio@1100".
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+ .../boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts     | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts b/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts
+index da4b1807c275..83194ea7cb81 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts
+@@ -46,6 +46,24 @@ codec_dai: simple-audio-card,codec {
+ 	};
+ };
+ 
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
++&lcdif3 {
++	status = "okay";
++};
++
+ &i2c1 {
+ 	sgtl5000: audio-codec@a {
+ 		compatible = "fsl,sgtl5000";
+@@ -92,6 +110,15 @@ &iomuxc {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_smarc_gpio>;
+ 
++	pinctrl_hdmi: hdmigrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
++			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
++			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
++			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x10
++		>;
++	};
++
+ 	pinctrl_sai2: sai2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SAI2_TXFS__AUDIOMIX_SAI2_TX_SYNC   0xd6
 
-Yours,
-Linus Walleij
+---
+base-commit: 2ef5971ff345d3c000873725db555085e0131961
+change-id: 20240612-imx8mp-msc-sm2s-hdmi-4df0b8b5b32c
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
