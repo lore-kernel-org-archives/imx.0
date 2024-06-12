@@ -1,139 +1,173 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E81C26ACE
-	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 04:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E562381AF
+	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 05:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718166990; cv=none; b=pIrdSRFUbFpoS50rA/37rj0QfKzaRcV4kto9hf+/kP60ltWbPNxKxqKFCLhej39xmUHO/5GK72wNXQUBK06vbEPbuAzALAUVS3RNwbuEY2ArA6/lj9jyX73zvKFKgAX9a5oouulW/kDrjtt2o5B8ybvQ2DUUAD9TKkOJ2I8M9Cg=
+	t=1718171476; cv=none; b=Z/mm0Jo0PdUEMZlLXgRAxpF1OelWFDkY+bojgLYKV0hj4cgfT4aCNIC+j842iWfafntmymwSC4JYccsQuaLK4IF5z0uBnipQTTzF2CgZ3Yb7A+7hOwxHpURGcmlrJb1CLY36NTNjGBCJeEKxVHWeyhE38CVuwYd7FwBbNQp1xkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718166990; c=relaxed/simple;
-	bh=EO0aImAqYw7a/OBDl+S8gijoba1Ra+Y0nG8ZUi4cOaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UGZfo8l72EcpSMrAzoSY7LOPLUBoCiQvB3NK+Et4ByruEK4Mj9JqWAuZs7T2XxH4RcAsDlY2LhNPsK0NzNrUVi/dhM9WJljcTNZN0xQqWSguui3uFa14fKmi2P2XURdd4c39vDAOejduhdYW1+EzndrNA8BnF5fbe4SwGvT5g04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xT9pBdy8; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718171476; c=relaxed/simple;
+	bh=eSZ4Sy3Bd+LgKQ/b98+H+wFttIGEU7uB3E1BIMCvP/o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=pOW0jpHQOVYRpCMeiCdzV2sC6LSRGiVAy+iox36IHp9i9i6qNHCbDlyIarGzL6RnbcMxpHDkQtgz8VCkPXBcNuIbhvR7g7Wpkqn0lwyf8dx3mMLJeaus3Cfsp8EJzGk42xXa0Yo6nHhLnrtSdMc605N9xGTuZ7BLlA+gkF1M3As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gwnI6Xkm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xT9pBdy8"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-24c9f630e51so3125887fac.1
-        for <imx@lists.linux.dev>; Tue, 11 Jun 2024 21:36:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718166987; x=1718771787; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vH+4iQ0Kxj/vMdKXd1GL4axukTJSkL87xzz/uOsZjd0=;
-        b=xT9pBdy8OdUohzyxLQWLJPoovawYIAn/IZFjDBPEiD3Yeym6HjamkDgQM4ghnWb7gN
-         eyWkRiA4Sj9iGYuh6IcZe1bpjXVOpc+xesBmjl0WD9EfhWoH7FylKdWldJOyAAdtf1Yd
-         0hOJjqDCJW0/6GryL0YJQYFHg2AY7Ot60qRQiL5YdwInKl5yvP5nWWYtlCaHNm/VJ4uq
-         LWpKBRk4kWzDcpM2Z1ZQ/YPx4UJJsaWNpCtvEclXvkbM7/IP0Wwr5H57KJ54LxV6NGgk
-         npjtU79fPshaIL/rXMzac+gUx86/qk9j3ECozS3KSChvpaoyAWxgR0xleUDTJxhvCQDb
-         1hZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718166987; x=1718771787;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vH+4iQ0Kxj/vMdKXd1GL4axukTJSkL87xzz/uOsZjd0=;
-        b=bhvzkzekAankY5eRqU5bsU295LwILzW0RIGmRifmRbNcGXQndBT7eAp9V2XKQl7Nuo
-         mPgae27bbhdBu7zpiobhzUjeVItfjD/an0eZXo/EikpNoLLtEH1TFFmh9ogpZ8pq4F3r
-         q1sctuGKT9i+CnrikbO1rHDAw+44xAuXH2hQjaIWqLbN6XmLFOT9bsHdO+7RaO2HxMgr
-         BuXfOTqSCU85Bfvlii2+Sk+KS9U+pZY/COFQqZ5XFIGRMeX2q2BMtrJbaJW2+3lQQCfM
-         YBf2aFnBh7dYn6WjJ10+21Ad/6V41GQHWfQAwoXrRGURRGzASKH1wecUcMqxGuZDNECQ
-         nwoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUtFRVEj0IaH++S1W64KTs41hoqSelmgJqLh67ZhJGwWRTxhFEhLIviMM7PY/4PU8A39XzZej4SrLZn6rCzR1IxlAUr
-X-Gm-Message-State: AOJu0Yz0wZtRogJw/xmfNzmhs3OWawfYlL3VYUexNEfdIcOl9Z0fCKfB
-	NlfjVCbgMQvoFgVpWuuAsM3ljRqm9UO1P7JMGP5n64vjtbTHddE3rLe7pd9xZw==
-X-Google-Smtp-Source: AGHT+IF/i1Z4g1iXpug+xajahacKVwnIvfnsiSOznBlRwgjL1WHJ0xairr9brTYDWvv7YNpLZYuzDg==
-X-Received: by 2002:a05:6870:d186:b0:251:46d:d32a with SMTP id 586e51a60fabf-25514b4e021mr927373fac.8.1718166986969;
-        Tue, 11 Jun 2024 21:36:26 -0700 (PDT)
-Received: from thinkpad ([120.60.129.29])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6e9a52a3012sm5409033a12.30.2024.06.11.21.36.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 21:36:26 -0700 (PDT)
-Date: Wed, 12 Jun 2024 10:06:12 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-	mhi@lists.linux.dev, Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH 2/5] PCI: endpoint: Introduce 'epc_deinit' event and
- notify the EPF drivers
-Message-ID: <20240612043612.GC2645@thinkpad>
-References: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
- <20240611220640.GA1001976@bhelgaas>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gwnI6Xkm"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45BL0gJK013157;
+	Wed, 12 Jun 2024 05:51:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Asvj8P9d0rg7S+Y9Suvlcx
+	FTOWajvcFsS63XkgAaQcs=; b=gwnI6Xkm+yhcXJUattorbWIJEMMBxOKi+CSvuO
+	x9IxN8RMGhMVMoTy+pdArLvx09skrEfPLaV/khLAcA0zxRGmYMXnzhlkFzbbbTSD
+	zF53fxHQxYsiHstm7nN0M0lwb1gzxBaea5+dhs8zRaFaQNVkXXlbRq/LMG5ObX0F
+	VgGuvXMaSdHCGphTP8KhLnr287iS9cNOKmrdybzG2ycFeAY+U1l/XvBTRDkMCAMB
+	j24h8jdKbBouPDJ164OTN6f1Tz5QuHR8sE6ND5LvY2g1OvGdh7IlkE4LVzgHfp9b
+	bjgtoMQMrBydNNsTSf7ZXFjWGPMxYY0NARloKz0dV7NQrbDA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ypm45aj40-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 05:51:02 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45C5p1uH001793
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 05:51:01 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 11 Jun
+ 2024 22:51:00 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Tue, 11 Jun 2024 22:50:58 -0700
+Subject: [PATCH] soc: add missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240611220640.GA1001976@bhelgaas>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAEE3aWYC/x3MTQ6CQAxA4auQrm0yHQmIVzEu5qdKExlMq4SEc
+ HdGl9/ivQ2MVdjg2mygvIjJXCro1EAaQ3kySq4G73zrOiKcMmaVhdXQ5oTUX1yk4Tx0vocavZU
+ fsv6Ht3t1DMYYNZQ0/jYvKd8Vp2AfVtj3A080wx5/AAAA
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman
+	<khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        "Martin
+ Blumenstingl" <martin.blumenstingl@googlemail.com>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        "Matthias
+ Brugger" <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>
+CC: <linux-arm-kernel@lists.infradead.org>,
+        <linux-amlogic@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hemcyYV9GAtAfb0bwsG1uX_Te_dWyefs
+X-Proofpoint-ORIG-GUID: hemcyYV9GAtAfb0bwsG1uX_Te_dWyefs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_02,2024-06-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406120040
 
-On Tue, Jun 11, 2024 at 05:06:40PM -0500, Bjorn Helgaas wrote:
-> On Thu, Jun 06, 2024 at 12:56:35PM +0530, Manivannan Sadhasivam wrote:
-> > As like the 'epc_init' event, that is used to signal the EPF drivers about
-> > the EPC initialization, let's introduce 'epc_deinit' event that is used to
-> > signal EPC deinitialization.
-> > 
-> > The EPC deinitialization applies only when any sort of fundamental reset
-> > is supported by the endpoint controller as per the PCIe spec.
-> > 
-> > Reference: PCIe Base spec v5.0, sections 4.2.4.9.1 and 6.6.1.
-> 
-> PCIe r6.0, sec 4.2.5.9.1 and 6.6.1.
-> 
-> (Not 4.2.4.9.1, which no longer exists in r6.x)
-> 
+With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/imx/soc-imx8m.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-qmgr.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-npe.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/mediatek/mtk-cmdq-helper.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/amlogic/meson-clk-measure.o
 
-Ammended the commit in pci/endpoint, thanks!
+Add the missing invocations of the MODULE_DESCRIPTION() macro.
 
-- Mani
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+This is the last of the issues that I see in the soc directory
+---
+ drivers/soc/amlogic/meson-clk-measure.c | 1 +
+ drivers/soc/imx/soc-imx8m.c             | 1 +
+ drivers/soc/ixp4xx/ixp4xx-npe.c         | 1 +
+ drivers/soc/ixp4xx/ixp4xx-qmgr.c        | 1 +
+ drivers/soc/mediatek/mtk-cmdq-helper.c  | 1 +
+ 5 files changed, 5 insertions(+)
 
-> > Currently, some EPC drivers like pcie-qcom-ep and pcie-tegra194 support
-> > PERST# as the fundamental reset. So the 'deinit' event will be notified to
-> > the EPF drivers when PERST# assert happens in the above mentioned EPC
-> > drivers.
-> > 
-> > The EPF drivers, on receiving the event through the epc_deinit() callback
-> > should reset the EPF state machine and also cleanup any configuration that
-> > got affected by the fundamental reset like BAR, DMA etc...
-> > 
-> > This change also warrants skipping the cleanups in unbind() if already done
-> > in epc_deinit().
-> > 
-> > Reviewed-by: Niklas Cassel <cassel@kernel.org>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+diff --git a/drivers/soc/amlogic/meson-clk-measure.c b/drivers/soc/amlogic/meson-clk-measure.c
+index 3f3039600357..a6453ffeb753 100644
+--- a/drivers/soc/amlogic/meson-clk-measure.c
++++ b/drivers/soc/amlogic/meson-clk-measure.c
+@@ -688,4 +688,5 @@ static struct platform_driver meson_msr_driver = {
+ 	},
+ };
+ module_platform_driver(meson_msr_driver);
++MODULE_DESCRIPTION("Amlogic Meson SoC Clock Measure driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index ec87d9d878f3..fe111bae38c8 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -252,4 +252,5 @@ static int __init imx8_soc_init(void)
+ 	return ret;
+ }
+ device_initcall(imx8_soc_init);
++MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/soc/ixp4xx/ixp4xx-npe.c b/drivers/soc/ixp4xx/ixp4xx-npe.c
+index 35825ee95dff..34a6f187c220 100644
+--- a/drivers/soc/ixp4xx/ixp4xx-npe.c
++++ b/drivers/soc/ixp4xx/ixp4xx-npe.c
+@@ -764,6 +764,7 @@ static struct platform_driver ixp4xx_npe_driver = {
+ module_platform_driver(ixp4xx_npe_driver);
+ 
+ MODULE_AUTHOR("Krzysztof Halasa");
++MODULE_DESCRIPTION("Intel IXP4xx Network Processor Engine driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_FIRMWARE(NPE_A_FIRMWARE);
+ MODULE_FIRMWARE(NPE_B_FIRMWARE);
+diff --git a/drivers/soc/ixp4xx/ixp4xx-qmgr.c b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
+index 244ad8d7e80b..cb112f3643e9 100644
+--- a/drivers/soc/ixp4xx/ixp4xx-qmgr.c
++++ b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
+@@ -465,6 +465,7 @@ static struct platform_driver ixp4xx_qmgr_driver = {
+ };
+ module_platform_driver(ixp4xx_qmgr_driver);
+ 
++MODULE_DESCRIPTION("Intel IXP4xx Queue Manager driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Krzysztof Halasa");
+ 
+diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
+index 046522664dc1..dd70d4d2bed7 100644
+--- a/drivers/soc/mediatek/mtk-cmdq-helper.c
++++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
+@@ -526,4 +526,5 @@ int cmdq_pkt_finalize(struct cmdq_pkt *pkt)
+ }
+ EXPORT_SYMBOL(cmdq_pkt_finalize);
+ 
++MODULE_DESCRIPTION("MediaTek Command Queue (CMDQ) driver");
+ MODULE_LICENSE("GPL v2");
 
--- 
-மணிவண்ணன் சதாசிவம்
+---
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+change-id: 20240611-md-drivers-soc-1780b1939627
+
