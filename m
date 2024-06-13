@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2273C57C8A
-	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 08:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AEC13D2AF
+	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 08:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718266517; cv=none; b=TePooZW7tUNV4b8JNgcP8yYeSIvnJx/C1TXsI7Z/4J6zRvu3qsHMyex77wdo3A7jHRs7LbQXkMtIVmDhpWWjq8TkSkSgcDVddcOa5qCLx7/CXol61vz2PGEyBqdnlejg/G6feJ/ThrXwJrzWPY/xoo34Y6t1ElUhGCVdIyA/S6E=
+	t=1718266803; cv=none; b=IJtE8YZoMle5MEDIUQSmipGKhlTFv2GyON/JRiW1SCipk4oU6q6Wpr8hYq+8fy8zAKyOC0ReWlFxw+R4f6bsEkpV9E6IZh185txCjvBikQR1QhkvIBmGmVzCAdOR4txVVTbhiDF9tyY7Q1XscUyqIznz+UsH8L+2z7jOowtQg2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718266517; c=relaxed/simple;
-	bh=rXEKRMvId4ve84z8AItG3uwUw0AENm9bXkidn6KfjDk=;
+	s=arc-20240116; t=1718266803; c=relaxed/simple;
+	bh=WCAEiBIiyTOXjgovBnlCZXpFFVek96FWLmwb8swe714=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XQVy9MNVHRRxXcS2KhbalzOBdQvyHiNN62b8kEvOi6O9Qra9lyp2lAootWA143xysM2FqKqcECHZZZ3h+qXopjiT0nJyAyEfKjiLaxWgAMF9Gweh/5pZYj89Sqd6Q+Unzb3+UL9fkwtZDZbUdeCKUUc3gVd5cmdsMEC3/BLTOwk=
+	 Content-Type:Content-Disposition:In-Reply-To; b=fKN2naEbBi5iQZxiZVYtfQkfQiIYHco7IsLS7TkJD9pQHPWoVulzTCcmWHOVcshejVMmOG99SlJ+wkkUBphOO7gMnXuAdy/Q5+/6xDkIluf2XPvyUoV4GSthIcjudOcps4vu0T+0OCGC+1Kt+C8YfxgTOtJPGSDFH4xEsY1iHY0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sHfbn-00036N-8G; Thu, 13 Jun 2024 10:14:59 +0200
+	id 1sHfgU-0003PM-BO; Thu, 13 Jun 2024 10:19:50 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sHfbm-001yyc-B2; Thu, 13 Jun 2024 10:14:58 +0200
+	id 1sHfgT-001z3X-RK; Thu, 13 Jun 2024 10:19:49 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sHfbm-008PUZ-0m;
-	Thu, 13 Jun 2024 10:14:58 +0200
-Date: Thu, 13 Jun 2024 10:14:58 +0200
+	id 1sHfgT-008Pdb-2P;
+	Thu, 13 Jun 2024 10:19:49 +0200
+Date: Thu, 13 Jun 2024 10:19:49 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
 Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
@@ -38,11 +38,10 @@ Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
 	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
 	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
-Subject: Re: [PATCH v7 3/5] reset: imx8mp-audiomix: Add AudioMix Block
- Control reset driver
-Message-ID: <20240613081458.idnrarxjwoau2eoa@pengutronix.de>
+Subject: Re: [PATCH v7 2/5] clk: imx: clk-audiomix: Add reset controller
+Message-ID: <20240613081949.yty3hznopp3u2qwq@pengutronix.de>
 References: <1718243482-18552-1-git-send-email-shengjiu.wang@nxp.com>
- <1718243482-18552-4-git-send-email-shengjiu.wang@nxp.com>
+ <1718243482-18552-3-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,190 +50,143 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1718243482-18552-4-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1718243482-18552-3-git-send-email-shengjiu.wang@nxp.com>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mfe@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi,
-
 On 24-06-13, Shengjiu Wang wrote:
-> Add support for the resets on i.MX8MP Audio Block Control module,
-> which includes the EARC PHY software reset and EARC controller
-> software reset. The reset controller is created using the auxiliary
-> device framework and set up in the clock driver.
-
-thanks a lot for converting it to the single purpose driver.
-
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  drivers/reset/Kconfig                 |   8 ++
->  drivers/reset/Makefile                |   1 +
->  drivers/reset/reset-imx8mp-audiomix.c | 103 ++++++++++++++++++++++++++
->  3 files changed, 112 insertions(+)
->  create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
+> Audiomix block control can be a reset controller for
+> Enhanced Audio Return Channel (EARC), which is one of
+> modules in this audiomix subsystem.
 > 
-> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> index 7112f5932609..b3c0e528d08c 100644
-> --- a/drivers/reset/Kconfig
-> +++ b/drivers/reset/Kconfig
-> @@ -91,6 +91,14 @@ config RESET_IMX7
->  	help
->  	  This enables the reset controller driver for i.MX7 SoCs.
->  
-> +config RESET_IMX8MP_AUDIOMIX
-> +	tristate "i.MX8MP AudioMix Reset Driver"
-> +	depends on CLK_IMX8MP
+> The reset controller is supported by the auxiliary device
+> framework.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/clk/imx/Kconfig               |  1 +
+>  drivers/clk/imx/clk-imx8mp-audiomix.c | 63 +++++++++++++++++++++++++++
+>  2 files changed, 64 insertions(+)
+> 
+> diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
+> index 6da0fba68225..9edfb030bea9 100644
+> --- a/drivers/clk/imx/Kconfig
+> +++ b/drivers/clk/imx/Kconfig
+> @@ -81,6 +81,7 @@ config CLK_IMX8MP
+>  	tristate "IMX8MP CCM Clock Driver"
+>  	depends on ARCH_MXC || COMPILE_TEST
+>  	select MXC_CLK
 > +	select AUXILIARY_BUS
-> +	default CLK_IMX8MP
-> +	help
-> +	  This enables the reset controller driver for i.MX8MP AudioMix
-> +
->  config RESET_INTEL_GW
->  	bool "Intel Reset Controller Driver"
->  	depends on X86 || COMPILE_TEST
-> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> index fd8b49fa46fc..a6796e83900b 100644
-> --- a/drivers/reset/Makefile
-> +++ b/drivers/reset/Makefile
-> @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
->  obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
->  obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
->  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-> +obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) += reset-imx8mp-audiomix.o
->  obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
->  obj-$(CONFIG_RESET_K210) += reset-k210.o
->  obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
-> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
-> new file mode 100644
-> index 000000000000..f3f9f5420c14
-> --- /dev/null
-> +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> @@ -0,0 +1,103 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
+
+	select AUXILIARY_BUS if RESET_CONTROLLER
+
+>  	help
+>  	    Build the driver for i.MX8MP CCM Clock Driver
+>  
+> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> index b381d6f784c8..517b1f88661b 100644
+> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> @@ -5,6 +5,7 @@
+>   * Copyright (C) 2022 Marek Vasut <marex@denx.de>
+>   */
+>  
 > +#include <linux/auxiliary_bus.h>
-> +#include <linux/device.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/reset-controller.h>
-> +
-> +#define EARC			0x200
-> +#define EARC_RESET_MASK		0x3
-> +
-> +struct imx8mp_audiomix_reset_priv {
-				^
-Nit: the _priv can be dropped.
-
-> +	struct reset_controller_dev rcdev;
-> +	void __iomem *base;
-> +};
-> +
-> +static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
-> +					unsigned long id)
-> +{
-> +	struct imx8mp_audiomix_reset_priv *priv = container_of(rcdev,
-> +					struct imx8mp_audiomix_reset_priv, rcdev);
-
-Nit:
-
-static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct  reset_controller_dev *rcdev)
-{
-	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
-}
-
-	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-
-Since both nits are cosmetic feel free to add my:
-
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+>  #include <linux/clk-provider.h>
+>  #include <linux/device.h>
+>  #include <linux/io.h>
+> @@ -13,6 +14,7 @@
+>  #include <linux/of.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/slab.h>
+		^
+This is an unrelated change.
 
 Regards,
   Marco
-
-> +	void __iomem *reg_addr = priv->base;
-> +	unsigned int mask, reg;
+	
+>  
+>  #include <dt-bindings/clock/imx8mp-clock.h>
+>  
+> @@ -217,6 +219,63 @@ struct clk_imx8mp_audiomix_priv {
+>  	struct clk_hw_onecell_data clk_data;
+>  };
+>  
+> +#if IS_ENABLED(CONFIG_RESET_CONTROLLER)
 > +
-> +	if (id >= fls(EARC_RESET_MASK))
-> +		return -EINVAL;
+> +static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
+> +{
+> +	struct auxiliary_device *adev = _adev;
 > +
-> +	mask = BIT(id);
-> +	reg = readl(reg_addr + EARC);
-> +	writel(reg & ~mask, reg_addr + EARC);
-> +
-> +	return 0;
+> +	auxiliary_device_delete(adev);
+> +	auxiliary_device_uninit(adev);
 > +}
 > +
-> +static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
-> +					  unsigned long id)
+> +static void clk_imx8mp_audiomix_reset_adev_release(struct device *dev)
 > +{
-> +	struct imx8mp_audiomix_reset_priv *priv = container_of(rcdev,
-> +					struct imx8mp_audiomix_reset_priv, rcdev);
-> +	void __iomem *reg_addr = priv->base;
-> +	unsigned int mask, reg;
+> +	struct auxiliary_device *adev = to_auxiliary_dev(dev);
 > +
-> +	if (id >= fls(EARC_RESET_MASK))
-> +		return -EINVAL;
-> +
-> +	mask = BIT(id);
-> +	reg = readl(reg_addr + EARC);
-> +	writel(reg | mask, reg_addr + EARC);
-> +
-> +	return 0;
+> +	kfree(adev);
 > +}
 > +
-> +static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
-> +	.assert   = imx8mp_audiomix_reset_assert,
-> +	.deassert = imx8mp_audiomix_reset_deassert,
-> +};
-> +
-> +static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
-> +				       const struct auxiliary_device_id *id)
+> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
+> +							 struct clk_imx8mp_audiomix_priv *priv)
 > +{
-> +	struct imx8mp_audiomix_reset_priv *priv;
-> +	struct device *dev = &adev->dev;
+> +	struct auxiliary_device *adev __free(kfree) = NULL;
+> +	int ret;
 > +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
+> +	if (!of_property_present(dev->of_node, "#reset-cells"))
+> +		return 0;
+> +
+> +	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+> +	if (!adev)
 > +		return -ENOMEM;
 > +
-> +	priv->rcdev.owner     = THIS_MODULE;
-> +	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
-> +	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
-> +	priv->rcdev.of_node   = dev->parent->of_node;
-> +	priv->rcdev.dev	      = dev;
-> +	priv->rcdev.of_reset_n_cells = 1;
-> +	priv->base            = of_iomap(dev->parent->of_node, 0);
+> +	adev->name = "reset";
+> +	adev->dev.parent = dev;
+> +	adev->dev.release = clk_imx8mp_audiomix_reset_adev_release;
 > +
-> +	return devm_reset_controller_register(dev, &priv->rcdev);
+> +	ret = auxiliary_device_init(adev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = auxiliary_device_add(adev);
+> +	if (ret) {
+> +		auxiliary_device_uninit(adev);
+> +		return ret;
+> +	}
+> +
+> +	return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev,
+> +					no_free_ptr(adev));
 > +}
 > +
-> +static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
-> +	{
-> +		.name = "clk_imx8mp_audiomix.reset",
-> +	},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
+> +#else /* !CONFIG_RESET_CONTROLLER */
 > +
-> +static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
-> +	.probe		= imx8mp_audiomix_reset_probe,
-> +	.id_table	= imx8mp_audiomix_reset_ids,
-> +};
+> +static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8mp_audiomix_priv *priv)
+> +{
+> +	return 0;
+> +}
 > +
-> +module_auxiliary_driver(imx8mp_audiomix_reset_driver);
+> +#endif /* !CONFIG_RESET_CONTROLLER */
 > +
-> +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
-> +MODULE_DESCRIPTION("Freescale i.MX8MP Audio Block Controller reset driver");
-> +MODULE_LICENSE("GPL");
+>  static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
+>  {
+>  	struct clk_imx8mp_audiomix_priv *priv = dev_get_drvdata(dev);
+> @@ -337,6 +396,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto err_clk_register;
+>  
+> +	ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
+> +	if (ret)
+> +		goto err_clk_register;
+> +
+>  	pm_runtime_put_sync(dev);
+>  	return 0;
+>  
 > -- 
 > 2.34.1
 > 
