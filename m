@@ -1,165 +1,242 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA5B132133;
-	Thu, 13 Jun 2024 06:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2273C57C8A
+	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 08:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718260522; cv=none; b=jFh2w3PiGb6xpoMQldykhBIVqniu2A9YMm/3KbGpyJpFSFcTfyJMROoiaTN3bsC8m5AU9oCqOwVRvTukKUsTSudYsOKSAmLsjWar7FCfTePUOcuvkTaGI4OaFZnpMd173NzGHgV+xNl8IlPLPYLszNhwnUS3lwGIw+wY0k0pBZM=
+	t=1718266517; cv=none; b=TePooZW7tUNV4b8JNgcP8yYeSIvnJx/C1TXsI7Z/4J6zRvu3qsHMyex77wdo3A7jHRs7LbQXkMtIVmDhpWWjq8TkSkSgcDVddcOa5qCLx7/CXol61vz2PGEyBqdnlejg/G6feJ/ThrXwJrzWPY/xoo34Y6t1ElUhGCVdIyA/S6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718260522; c=relaxed/simple;
-	bh=wDqi4jE6ey9mCMPc4VS0GW1B7gFNKdAy5tWUVtXQP0U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uE9IFgI+hruxk8vH094UDCl0Qc6dJm0ysllMFLHasgNXn9QB8/o/6oHMERFladsvwCWTQzpaKapfiLPww6Y8BJ0YmqOhqUO/6P6UmA7fctS4cr9imzmQjtufGAt7CQA2UISHaaNpW2NAQK0Y3v9uqdpPQVH2osNDwxc+pIeuwwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKzbtlhs; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKzbtlhs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2295DC2BBFC;
-	Thu, 13 Jun 2024 06:35:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718260521;
-	bh=wDqi4jE6ey9mCMPc4VS0GW1B7gFNKdAy5tWUVtXQP0U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mKzbtlhsrIO8X1BueC0jqDAqHSGi8+fHbKSTxyy/ocF3TA0kOWPIwAsErTlxr40ft
-	 VbC6ozKSa3C+0Ns8aEPSz5uYdrEx0ydGbIOETVXEVLrCOfBx54i4mnsVq0X6tUR6NR
-	 rMYLmnYN+S50c+SFb/TuWQWahXNwd+DYJuaiIkRf7UHpFi1b7t2go+dB2aQ7XgodCA
-	 uRfKYdUkPvgJVPXAKNaPavdlhcjYg8BeP9ezmtCdqb2s+hs0wA73tQUk/ur1ojNhY6
-	 glxzF4QxYUoQJbm2V+EshbfBvQHJJWrUq6WCuEFwD4XaHvUVFcbmaZW7mhbgbZmHcz
-	 BsLitIRLy+YDg==
-Message-ID: <019a6515-0df0-4075-9410-6fa32937643e@kernel.org>
-Date: Thu, 13 Jun 2024 08:35:14 +0200
+	s=arc-20240116; t=1718266517; c=relaxed/simple;
+	bh=rXEKRMvId4ve84z8AItG3uwUw0AENm9bXkidn6KfjDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQVy9MNVHRRxXcS2KhbalzOBdQvyHiNN62b8kEvOi6O9Qra9lyp2lAootWA143xysM2FqKqcECHZZZ3h+qXopjiT0nJyAyEfKjiLaxWgAMF9Gweh/5pZYj89Sqd6Q+Unzb3+UL9fkwtZDZbUdeCKUUc3gVd5cmdsMEC3/BLTOwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sHfbn-00036N-8G; Thu, 13 Jun 2024 10:14:59 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sHfbm-001yyc-B2; Thu, 13 Jun 2024 10:14:58 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sHfbm-008PUZ-0m;
+	Thu, 13 Jun 2024 10:14:58 +0200
+Date: Thu, 13 Jun 2024 10:14:58 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
+	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
+Subject: Re: [PATCH v7 3/5] reset: imx8mp-audiomix: Add AudioMix Block
+ Control reset driver
+Message-ID: <20240613081458.idnrarxjwoau2eoa@pengutronix.de>
+References: <1718243482-18552-1-git-send-email-shengjiu.wang@nxp.com>
+ <1718243482-18552-4-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/8] dt-bindings: mmc: mmc-spi-slot: Change
- voltage-ranges to uint32-matrix
-To: Frank Li <Frank.li@nxp.com>, Rob Herring <robh@kernel.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev
-References: <20240611-ls_waring_esdhc-v4-0-d0d8a5b3f3cb@nxp.com>
- <20240611-ls_waring_esdhc-v4-2-d0d8a5b3f3cb@nxp.com>
- <20240611202311.GB3003237-robh@kernel.org>
- <Zmmyfna+DoAcYzHp@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Zmmyfna+DoAcYzHp@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1718243482-18552-4-git-send-email-shengjiu.wang@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 12/06/2024 16:36, Frank Li wrote:
-> On Tue, Jun 11, 2024 at 02:23:11PM -0600, Rob Herring wrote:
->> On Tue, Jun 11, 2024 at 12:01:47PM -0400, Frank Li wrote:
->>> According to common mmc core, voltages-ranges should be matrix.
->>>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>
->>> ---
->>> Not sure why it impact other mmc yaml's voltage-ranges.
->>
->> It's a quirk of the tools. When decoding properties, the tools only know 
->> all possible types. Types are global, not per binding. Sometimes it can 
->> be figured out, but cases like this cannot be.
->>
->>> ---
->>>  Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml | 17 ++++++++++-------
->>>  1 file changed, 10 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml b/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
->>> index 36acc40c7d181..05815b837219d 100644
->>> --- a/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
->>> +++ b/Documentation/devicetree/bindings/mmc/mmc-spi-slot.yaml
->>> @@ -27,17 +27,20 @@ properties:
->>>      maxItems: 1
->>>  
->>>    voltage-ranges:
->>> -    $ref: /schemas/types.yaml#/definitions/uint32-array
->>> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
->>>      description: |
->>>        Two cells are required, first cell specifies minimum slot voltage (mV),
->>>        second cell specifies maximum slot voltage (mV).
->>>      items:
->>> -      - description: |
->>> -          value for minimum slot voltage in mV
->>> -        default: 3200
->>> -      - description: |
->>> -          value for maximum slot voltage in mV
->>> -        default: 3400
->>> +      items:
->>> +        - description: |
->>> +            value for minimum slot voltage in mV
->>> +          default: 3200
->>> +        - description: |
->>> +            value for maximum slot voltage in mV
->>> +          default: 3400
->>> +    minItems: 1
->>> +    maxItems: 8
->>
->> From what I remember, SPI mode doesn't support voltage changes. 
->> Switching to 1.8V came much later in the spec. So it should be 
->> 'maxItems: 1'. Or better yet, make the outer 'items' a list (of 1 
->> entry).
+Hi,
+
+On 24-06-13, Shengjiu Wang wrote:
+> Add support for the resets on i.MX8MP Audio Block Control module,
+> which includes the EARC PHY software reset and EARC controller
+> software reset. The reset controller is created using the auxiliary
+> device framework and set up in the clock driver.
+
+thanks a lot for converting it to the single purpose driver.
+
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  drivers/reset/Kconfig                 |   8 ++
+>  drivers/reset/Makefile                |   1 +
+>  drivers/reset/reset-imx8mp-audiomix.c | 103 ++++++++++++++++++++++++++
+>  3 files changed, 112 insertions(+)
+>  create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
 > 
-> I don't understand "make the outer 'items' a list (of 1 entry)." Can guide
-> me how to write it?
+> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+> index 7112f5932609..b3c0e528d08c 100644
+> --- a/drivers/reset/Kconfig
+> +++ b/drivers/reset/Kconfig
+> @@ -91,6 +91,14 @@ config RESET_IMX7
+>  	help
+>  	  This enables the reset controller driver for i.MX7 SoCs.
+>  
+> +config RESET_IMX8MP_AUDIOMIX
+> +	tristate "i.MX8MP AudioMix Reset Driver"
+> +	depends on CLK_IMX8MP
+> +	select AUXILIARY_BUS
+> +	default CLK_IMX8MP
+> +	help
+> +	  This enables the reset controller driver for i.MX8MP AudioMix
+> +
+>  config RESET_INTEL_GW
+>  	bool "Intel Reset Controller Driver"
+>  	depends on X86 || COMPILE_TEST
+> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+> index fd8b49fa46fc..a6796e83900b 100644
+> --- a/drivers/reset/Makefile
+> +++ b/drivers/reset/Makefile
+> @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
+>  obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
+>  obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
+>  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
+> +obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) += reset-imx8mp-audiomix.o
+>  obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
+>  obj-$(CONFIG_RESET_K210) += reset-k210.o
+>  obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
+> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
+> new file mode 100644
+> index 000000000000..f3f9f5420c14
+> --- /dev/null
+> +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> @@ -0,0 +1,103 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/auxiliary_bus.h>
+> +#include <linux/device.h>
+> +#include <linux/io.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/reset-controller.h>
+> +
+> +#define EARC			0x200
+> +#define EARC_RESET_MASK		0x3
+> +
+> +struct imx8mp_audiomix_reset_priv {
+				^
+Nit: the _priv can be dropped.
 
-voltage-ranges:
-  $ref: /schemas/types.yaml#/definitions/uint32-matrix
-  items:
-    - items:
-        - descr:
-        - descr:
+> +	struct reset_controller_dev rcdev;
+> +	void __iomem *base;
+> +};
+> +
+> +static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
+> +					unsigned long id)
+> +{
+> +	struct imx8mp_audiomix_reset_priv *priv = container_of(rcdev,
+> +					struct imx8mp_audiomix_reset_priv, rcdev);
 
-Best regards,
-Krzysztof
+Nit:
 
+static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct  reset_controller_dev *rcdev)
+{
+	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
+}
+
+	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
+
+Since both nits are cosmetic feel free to add my:
+
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+
+Regards,
+  Marco
+
+> +	void __iomem *reg_addr = priv->base;
+> +	unsigned int mask, reg;
+> +
+> +	if (id >= fls(EARC_RESET_MASK))
+> +		return -EINVAL;
+> +
+> +	mask = BIT(id);
+> +	reg = readl(reg_addr + EARC);
+> +	writel(reg & ~mask, reg_addr + EARC);
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
+> +					  unsigned long id)
+> +{
+> +	struct imx8mp_audiomix_reset_priv *priv = container_of(rcdev,
+> +					struct imx8mp_audiomix_reset_priv, rcdev);
+> +	void __iomem *reg_addr = priv->base;
+> +	unsigned int mask, reg;
+> +
+> +	if (id >= fls(EARC_RESET_MASK))
+> +		return -EINVAL;
+> +
+> +	mask = BIT(id);
+> +	reg = readl(reg_addr + EARC);
+> +	writel(reg | mask, reg_addr + EARC);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
+> +	.assert   = imx8mp_audiomix_reset_assert,
+> +	.deassert = imx8mp_audiomix_reset_deassert,
+> +};
+> +
+> +static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
+> +				       const struct auxiliary_device_id *id)
+> +{
+> +	struct imx8mp_audiomix_reset_priv *priv;
+> +	struct device *dev = &adev->dev;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->rcdev.owner     = THIS_MODULE;
+> +	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
+> +	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
+> +	priv->rcdev.of_node   = dev->parent->of_node;
+> +	priv->rcdev.dev	      = dev;
+> +	priv->rcdev.of_reset_n_cells = 1;
+> +	priv->base            = of_iomap(dev->parent->of_node, 0);
+> +
+> +	return devm_reset_controller_register(dev, &priv->rcdev);
+> +}
+> +
+> +static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
+> +	{
+> +		.name = "clk_imx8mp_audiomix.reset",
+> +	},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
+> +
+> +static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
+> +	.probe		= imx8mp_audiomix_reset_probe,
+> +	.id_table	= imx8mp_audiomix_reset_ids,
+> +};
+> +
+> +module_auxiliary_driver(imx8mp_audiomix_reset_driver);
+> +
+> +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
+> +MODULE_DESCRIPTION("Freescale i.MX8MP Audio Block Controller reset driver");
+> +MODULE_LICENSE("GPL");
+> -- 
+> 2.34.1
+> 
+> 
+> 
