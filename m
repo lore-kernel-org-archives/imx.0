@@ -1,130 +1,106 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68636EEC8
-	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 01:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D612A1DC
+	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 02:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718243097; cv=none; b=eI3nr/NON+y8NrMozl5/ul2UuhDbKAKoFdXUt6Hcwr7c/37+o3xacC29A/gMC0RzHo7zweA0Qr/dmiYPpgDzixXzJutPyrpGSFNIvzGsggFfgHJbijzxQGElaXvk5QOaKuNbTFrLyK2kbax/F0jfmgv7dgI78TgxsMTHMJ9hdVA=
+	t=1718244483; cv=none; b=DmbLiIp79cCBkcZBY0B2E54F3FeYzXCsjEkB/D5wupBWvYdy++Um5TjA6CW/pcpU5u89SqYTuQpaoWlHTzJwqBtSWxIbLrrLHz/fYDyVoMCWYNPJ6Jr8UbJrrGIR2s5uNoC8FkqmCIfnFSohptXuGW+JIrL4T+lLYzXcHjQ8q/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718243097; c=relaxed/simple;
-	bh=JApacLBSnTiOxd/MDGkRAN1Y3sRYhlmQq2aTWoRE4bE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WdoeKLtn358RvcCZ5pExg4p+b67qjG2ObQ7+RYlKfZgSZva0l+cRmXzZPQ6FYEmWZNzb5Ha4krXD6Q7ZtsDt4mYO6VoOIixb6KnE6psJIuwl7r7/E+bZJn+f/ggRQhMgMwYOrJmfizn2C+e1S4v+Hn8ikaaAn2TxQNjX0qN+TF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Y4G9Lj7Y; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Y4G9Lj7Y"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id B6DDC88889;
-	Thu, 13 Jun 2024 03:44:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1718243087;
-	bh=8D0zdflsI+96R7w3bD5NSguq6bh8HmskkbvDsqKuIjI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y4G9Lj7YZyz826W8kg8SLmzz9PcBNKaX50qQDykFrdDIxPA84jt+DMD0TQ4JsPO+j
-	 rehvu3K1/7z8DtyBOriAYXVMhgx3/yQEqgnIjrR8xCbK0lPc90qHiLZmfl2f4c9oHR
-	 8+UvmkJsqFwwVliqIfSe2ebT3yxhYbsAIxvmItvr/Ce5qHRBz5cSmddPyFr1qpNYNf
-	 IH+4sRid03mnPXH5mcJKe0o8g+U7E4ChhwVGn4N/3NBJsfHve2Xw57vyjQdq4ru8Wg
-	 4PGYoXOL5W4kEysH9T3a1Y5xwccL4lQoVIq5Iiv78FBrv7gWDQFkpYjiViBOuwR6A6
-	 7omnv3C+2ppwg==
-Message-ID: <3cc52973-61b0-4698-98b7-402634f2b620@denx.de>
-Date: Thu, 13 Jun 2024 03:10:24 +0200
+	s=arc-20240116; t=1718244483; c=relaxed/simple;
+	bh=ChQvBI+Er4xZh0kIrCud60Pm6ajfJzZQKAnf67VYDCg=;
+	h=From:To:Subject:Date:Message-Id; b=RaT2lqdxTIYrOhAbjHrWC+a23eOc+preU8/KZLS2DnZx8XtXLlh8O9q3tT6Oq+W0lSQVJlEB8PyRo5J2ACMBNBIvAALvd+OmSXun2MfE4RMe5eqfibbd8bjxan0CTnQvvhqoM8kCjTv69pIjQww2GSKp0+dFCWt/lQqqJov/b/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AAAA7200A5D;
+	Thu, 13 Jun 2024 04:07:59 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 550DA20012D;
+	Thu, 13 Jun 2024 04:07:59 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 7F9D71820F76;
+	Thu, 13 Jun 2024 10:07:57 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: p.zabel@pengutronix.de,
+	abelvesa@kernel.org,
+	peng.fan@nxp.com,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	marex@denx.de,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com
+Subject: [PATCH v7 0/5] clk: imx: clk-audiomix: Improvement for audiomix
+Date: Thu, 13 Jun 2024 09:51:17 +0800
+Message-Id: <1718243482-18552-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-To: Peng Fan <peng.fan@nxp.com>, Adam Ford <aford173@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- Paul Elder <paul.elder@ideasonboard.com>, Conor Dooley
- <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>
-References: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com>
- <4879631.GXAFRqVoOG@steina-w>
- <20240325204924.GY18799@pendragon.ideasonboard.com>
- <2929432.e9J7NaK4W3@steina-w>
- <CAHCN7xLFjJUZQZwPbj5xyxnprwAV3TOvd_6A6sBwOPK+V6uQPA@mail.gmail.com>
- <AM6PR04MB59412D143AA8C20AFB479E8F88C72@AM6PR04MB5941.eurprd04.prod.outlook.com>
- <6ba1db19-32d6-4d25-824d-731bea65b583@denx.de>
- <AM6PR04MB594198421BCC895B506C408A88C72@AM6PR04MB5941.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <AM6PR04MB594198421BCC895B506C408A88C72@AM6PR04MB5941.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 6/11/24 5:01 AM, Peng Fan wrote:
+Some improvement for audiomix driver:
+Add CLK_SET_RATE_PARENT flags for clocks
+Correct parent clock for earc_phy and audpll clocks.
+Add reset controller for EARC function, use the auxiliary device
+framework:
+https://lore.kernel.org/lkml/b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org/
 
-[...]
+changes in v7:
+- add property "#reset-cells" exist check
+- change the reset driver to be specific for 8MP-audiomix
+  remove the design for general usage.
 
->>>> According to the i.MX8MP Data sheet, the nominal speed for
->>>> MEDIA_ISP_CLOCL_ROOT is 400MHZ with 500MHz being allowed in
->> overdrive
->>>> mode.
->>>>
->>>> I think this clock rate should drop to  the nominal value of 400MHz
->>>> and those boards who support overdrive can increase it to 500MHz to
->>>> avoid stiability issues and/or running out of spec.  I created an
->>>> imx8mm and imx8mn- overdrive.dtsi file.  If there is interest, I can do the
->> same for the 8MP as well.
->>>>
->>>> I haven't gone through all the clocks to determine if/what clocks are
->>>> being overdriven.
->>>
->>> Shouldn't the bootloader take the work to runtime update the freq?
->>> Why need introduce an extra overdrive.dtsi?
->>
->> Shouldn't the overdrive/non-overdrive decision be done in board DT instead ?
-> 
-> It is bootloader configure voltage to nominal, then bootloader should use
-> nominal device tree or runtime update dtb.
-> If bootloader configure voltage to over-drive, bootloader could use
-> nominal or over-drive dtb
+changes in v6:
+- fix type for "correct"
+- fix coding style for " * adev"
 
-I think the bootloader should always configure the minimal common 
-configuration, i.e. nominal voltage, nominal clock, so that it would 
-achieve maximum compatibility with any SoC in that SoC line up.
+changes in v5:
+- fix miss header issue reported by kernel test robot
+- use scoped free
 
-If the user does need overdrive configuration, they should specify that 
-in their board DT.
+changes in v4:
+- use auxiliary device framework for reset controller driver.
+- drop syscon and simple-mfd related changes in v3
 
-Keep in mind, the kernel is easy to update (including kernel DT), the 
-bootloader is not easy to update (esp. in field, bootloader update may 
-render a system unbootable if it fails). I would say, it is better to 
-keep the complicated things out of the bootloader if at all possible.
+changes in v3:
+- separate reset driver to driver/reset/
+- add binding doc for reset driver.
+- modify imx8mp.dtsi accordingly
 
-> If introduce x.dtsi and x-overdrive.dtsi, how to let board choose which dtsi
-> to include?
+changes in v2:
+- add more info in commit messages
 
-#include "x.dtsi"
-or
-#include "x-overdrive.dtsi"
+Shengjiu Wang (5):
+  dt-bindings: clock: imx8mp: Add #reset-cells property
+  clk: imx: clk-audiomix: Add reset controller
+  reset: imx8mp-audiomix: Add AudioMix Block Control reset driver
+  clk: imx: clk-audiomix: Add CLK_SET_RATE_PARENT flags for clocks
+  clk: imx: clk-audiomix: Correct parent clock for earc_phy and audpll
 
-But I think your question is -- how to do that at runtime ?
+ .../bindings/clock/imx8mp-audiomix.yaml       |   3 +
+ drivers/clk/imx/Kconfig                       |   1 +
+ drivers/clk/imx/clk-imx8mp-audiomix.c         |  86 ++++++++++++++-
+ drivers/reset/Kconfig                         |   8 ++
+ drivers/reset/Makefile                        |   1 +
+ drivers/reset/reset-imx8mp-audiomix.c         | 103 ++++++++++++++++++
+ 6 files changed, 196 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
 
-U-Boot can apply DT overlays onto DT that is passed to Linux, so if the 
-user has board variants where they need both nonoverdrive/overdrive 
-options, they can apply DT overlay which enables the overdrive mode on 
-boards which need it. This can be done from U-Boot boot.scr or similar 
-boot script, which can again be easily updated, without the need to 
-update the bootloader itself (if something goes wrong or needs to be 
-changed in the future).
+-- 
+2.34.1
+
