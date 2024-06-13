@@ -1,116 +1,66 @@
-Received: from EXCEDGE02.prodrive.nl (mail.prodrive-technologies.com [212.61.153.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CEC15E85
-	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 14:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A621474A8;
+	Thu, 13 Jun 2024 15:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718290614; cv=none; b=uOq4Pm9R6aw4aPFqPcfVym3IKp9RWZbir3AQ64/MZAc2q04tL/Fk4+woFVqebRb2qNtBytoMMUM3dif2+kKdkLAmrzcs8RUERzYF6vSdYjMKqe6Gq5et5txYn+jbI12sx3BQTdpJGKVATlX/EFCJrfUxmZrqyZlTbDryEzA9P/o=
+	t=1718291555; cv=none; b=iRR5+9fD9oPMt1f9kmdme2OLA1SzWhI0gmjQBPmalaNqj0pBRBBLW1nQMOFngHgTscFf78JRZrsoQltkoqOrqQpvJkbIpr7Q2Ghkk9um+MNiqtCG8NpGKQiAr9IHoo0pt/8hG5+eqCLeiO8mihAWWvvt7PDg5OdQYxbyQfPCkSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718290614; c=relaxed/simple;
-	bh=JBD5JZgYoYP7sSdaelVg7aP3qlQnjwjxKiVYCRSyL+E=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TLLdcH9j+uhfv6SMBDYk92a5LND7UtxUTsQfLBsvOpWjW3cCuyu2MWozhHdmGASlWT41ihCxr/b//U21k/p/Xlca3b9K+GFWO4TT9T4+5xK2GNQdSxwZou60X/2eJMLhRWDmggg5N5cYV8Bw+hOyxx37drLLq9MYdLLOdtxNQ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
-Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by webmail.prodrive.nl
- (192.168.102.63) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 13 Jun
- 2024 16:41:42 +0200
-Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
- (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 13 Jun
- 2024 16:41:41 +0200
-Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
- EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1258.12
- via Frontend Transport; Thu, 13 Jun 2024 16:41:41 +0200
-Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.94.2)
-	(envelope-from <paul.geurts@prodrive-technologies.com>)
-	id 1sHle1-001Uou-3r; Thu, 13 Jun 2024 16:41:41 +0200
-From: Paul Geurts <paul.geurts@prodrive-technologies.com>
-To: <wei.fang@nxp.com>, <shenwei.wang@nxp.com>, <xiaoning.wang@nxp.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Paul Geurts <paul.geurts@prodrive-technologies.com>
-Subject: [PATCH] fec_main: Register net device before initializing the MDIO bus
-Date: Thu, 13 Jun 2024 16:41:11 +0200
-Message-ID: <20240613144112.349707-1-paul.geurts@prodrive-technologies.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1718291555; c=relaxed/simple;
+	bh=XsF8HkAJYL9Ss7pF8HPDdQHn7zyHWQqpDXPPFItQYms=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tUIaExzWoiSX1u08SEbjnUonrDuy8rFvjm/J+zfy8o2SBpjOSnNvsiIkLPCiVOP5o+a34bNezFpBBv6YilgmyMal+1DwpvvKI1jAgGlf58dr1YzjHZ5dU5YAVGsMqddzxugqnbPa9vlhA4pFllaVofFGKEVt7uumEveqnG5AJVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdHqJdde; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdHqJdde"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102F1C2BBFC;
+	Thu, 13 Jun 2024 15:12:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718291554;
+	bh=XsF8HkAJYL9Ss7pF8HPDdQHn7zyHWQqpDXPPFItQYms=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PdHqJddemg5/0l6huu8epVk4gX6SFL8oHPYXL3vx0M0s4JQUCFJbGuqIlYn4D3b9V
+	 gEinFkeEJiStL58PUrx/LHjUH8U66EUpnKj4cDOqDgsTEJShTVPkrl6lHT9KvzJf0p
+	 6brJt8XKlyo6Q5osP2va+dPmHErV/uaWV7jXycdjltvDFWOLLgtqKFUnueV+c+RqsH
+	 oYXr1kR3Fq2z9k31FtUl5ZaLgjkkUbtQglXgNJ+l/a/sF2JicCpXDLcD6UHL0eVQ9z
+	 kuRZz8b0RKpGx2NbWlZ+M/J3AMVhAOaBvVe1DQQYxYlRUM66QObOXZmcVgszwn4zBS
+	 kcZnF8Wi8dsGg==
+Date: Thu, 13 Jun 2024 08:12:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "=?UTF-8?B?Q3PDs2vDoXMs?= Bence" <csokas.bence@prolan.hu>
+Cc: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
+ <davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Richard Cochran"
+ <richardcochran@gmail.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+ <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH resubmit 2] net: fec: Fix FEC_ECR_EN1588 being cleared
+ on link-down
+Message-ID: <20240613081233.6ff570cd@kernel.org>
+In-Reply-To: <20240611080405.673431-1-csokas.bence@prolan.hu>
+References: <20240611080405.673431-1-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Registration of the FEC MDIO bus triggers a probe of all devices
-connected to that bus. DSA based Ethernet switch devices connect to the
-uplink Ethernet port during probe. When a DSA based, MDIO controlled
-Ethernet switch is connected to FEC, it cannot connect the uplink port,
-as the FEC MDIO port is registered before the net device is being
-registered. This causes an unnecessary defer of the Ethernet switch
-driver probe.
+On Tue, 11 Jun 2024 10:04:05 +0200 Cs=C3=B3k=C3=A1s, Bence wrote:
+> +	if (fep->bufdesc_ex) {
+> +		val =3D readl(fep->hwp + FEC_ECNTRL);
+> +		val |=3D FEC_ECR_EN1588;
+> +		writel(val, fep->hwp + FEC_ECNTRL);
 
-Register the net device before initializing and registering the MDIO
-bus.
+FEC_ECNTRL gets written multiple times in this function,
+including with 0, and then you RMW it to add this flag.
 
-Fixes: e6b043d512fa ("netdev/fec.c: add phylib supporting to enable carrier detection (v2)")
-Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
----
- drivers/net/ethernet/freescale/fec_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 881ece735dcf..ed71f1f25ab9 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -4500,10 +4500,6 @@ fec_probe(struct platform_device *pdev)
- 	/* Decide which interrupt line is wakeup capable */
- 	fec_enet_get_wakeup_irq(pdev);
- 
--	ret = fec_enet_mii_init(pdev);
--	if (ret)
--		goto failed_mii_init;
--
- 	/* Carrier starts down, phylib will bring it up */
- 	netif_carrier_off(ndev);
- 	fec_enet_clk_enable(ndev, false);
-@@ -4515,6 +4511,10 @@ fec_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto failed_register;
- 
-+	ret = fec_enet_mii_init(pdev);
-+	if (ret)
-+		goto failed_mii_init;
-+
- 	device_init_wakeup(&ndev->dev, fep->wol_flag &
- 			   FEC_WOL_HAS_MAGIC_PACKET);
- 
-@@ -4528,9 +4528,9 @@ fec_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--failed_register:
--	fec_enet_mii_remove(fep);
- failed_mii_init:
-+	unregister_netdev(ndev);
-+failed_register:
- failed_irq:
- 	fec_enet_deinit(ndev);
- failed_init:
-@@ -4577,8 +4577,8 @@ fec_drv_remove(struct platform_device *pdev)
- 
- 	cancel_work_sync(&fep->tx_timeout_work);
- 	fec_ptp_stop(pdev);
--	unregister_netdev(ndev);
- 	fec_enet_mii_remove(fep);
-+	unregister_netdev(ndev);
- 	if (fep->reg_phy)
- 		regulator_disable(fep->reg_phy);
- 
--- 
-2.30.2
-
+Is this intentional? It really seems like you should be
+adding this flag more consistently or making sure its
+not cleared, rather than appending "add it back" at the=20
+end of the function...
+--=20
+pw-bot: cr
