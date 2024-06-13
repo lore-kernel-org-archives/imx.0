@@ -1,86 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C831C1494DE;
-	Thu, 13 Jun 2024 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA04149C5A;
+	Thu, 13 Jun 2024 17:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718297674; cv=none; b=OToPdf/+ZHorWglHrNFiD9eLhPe9tUqy30NpuaKwJZQKMINJrt53PD0QrVmyINkyx8ApBiQsNv26PqO1iRPZ3UvxB6S8kBm6nWIstVuLoIj/ANv3JAbkoahA4aHcV56jYj/TZT/VrLyEYjw7yEGtKB13cmCfO1qBnrrcrdqI4gs=
+	t=1718298595; cv=none; b=jmfb8FTZo0804pc8cQfvaQGLrHb/raZ6qlJlwuZiFqlw6I9jUgkb/gnuYz9c/9DyjYPCZCpVwWXda/1MKuY4DQOQ2mOzWU8Hzvh1jLwXIfPtrDltsxKdQcJuINuXaMj72UDoxb8jJlHdP817lheh+/Bgrai3nD9vBveivW0IOnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718297674; c=relaxed/simple;
-	bh=liuR4gMpNjq/xKSucqP2XoRrQSlMIIT2FrkVNCQ3uEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zjt39LuXA0HtsiKDjHQV+95RWrcx5AJNphuwrYowD7UGBWn0EhGDvD1WZnlDMC7xim9aBtglhREX0PX5PLcSGlfC9MZIXUtbg0YrKU8oUN3U8ShfH35gHxXsCz+iNOfP8SmfaK2Q+p1uLixm7klA3xY0asXG9+12+sfdeYFXjKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BThaP0qV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718298595; c=relaxed/simple;
+	bh=sawuofgiTla22xNeYJ7qMOaw4kLeel2V7h6pjTPcsy4=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=rlCY80xnw9f68x1KTOGDw3gPitMzr5zpl6P2mhTSGk7R6sQg22iMJRRAMwnPcL+duanyfvA4vdqv3BACkx7sXa+kmNy7kCzc9CYuwueyS4ck0p/bLXrqIQDFZqTuB3iov3xlPv6MI3fvwXyP8kkTgoog8uYn1uyCwRgnYISrAFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSLLD7t0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BThaP0qV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B67DC3277B;
-	Thu, 13 Jun 2024 16:54:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSLLD7t0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E585AC2BBFC;
+	Thu, 13 Jun 2024 17:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718297674;
-	bh=liuR4gMpNjq/xKSucqP2XoRrQSlMIIT2FrkVNCQ3uEk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BThaP0qVXGat057GchZb6GahDincRv5taX79W44x7tusBUPkoeg5Plm5uc/rQ7WaW
-	 7MS7h1pX6xgCwRet/9i9NDbQGHA9GL+jKgL4f6ZHWEsol91MiXe8lZltVAGV1YKR65
-	 HMwfMX/JmkkEl6xJ73x00ba178zm60WUNgNyRL0HwE36cboHtkfsQiWJewq/zda6NA
-	 dtsSisl63qAjqgz6CZiCxHWHzUyACVXDwzwXHQosIjJPwq7ZVQMZBEK1cckiu3rQy6
-	 OzPreHo7HdiH0Oxxs+qN9AOQFxRWFsxclsQMoN9DF1jJPxW6H/BT+iYmRCpXg8Ogvv
-	 fmYqrAGelTRNA==
-Date: Thu, 13 Jun 2024 10:54:33 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Frank.li@nxp.com, linux-remoteproc@vger.kernel.org, krzk+dt@kernel.org,
-	linux-kernel@vger.kernel.org, krzk@kernel.org,
-	linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de,
-	mathieu.poirier@linaro.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, festevam@gmail.com,
-	kernel@pengutronix.de, peng.fan@nxp.com, andersson@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org
-Subject: Re: [PATCH v3 1/1] dt-bindings: remoteproc: imx_rproc: add minItems
- for power-domain
-Message-ID: <171829767127.2016899.8977063289627594833.robh@kernel.org>
-References: <20240610151721.274424-1-Frank.Li@nxp.com>
+	s=k20201202; t=1718298594;
+	bh=sawuofgiTla22xNeYJ7qMOaw4kLeel2V7h6pjTPcsy4=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=uSLLD7t0C1sZaoqbsr/ALoQz7x5p/xxV5cigTZ7XYHqwypv5JZvPJFYSwZkP2FL9N
+	 8uC65AYK11K2EKbEz74W951XcmEeJkVd2sc5Odf0zviaBSyQ3/FeUq+p2u6CJfp0Ax
+	 3JqYIHeMZrdY0QyZQNysWBTYl75mLuSAF4D4uz7efP9PzRgT2WxRIYsUdcefM+CpcE
+	 FIr2Y9Y7GnlV6nK6W8749oTAB6sFzTu6Nozt050HrZ/5gZbK5xxhik4XXzKfPjpx2r
+	 rlR7T3ZNbpntTiCOG6ODOfKMRzLkghYwA2Ds1ALeoUN3LMEw2FoMgAsaJoEH3UmSlb
+	 TlUiENI91I4xA==
+From: Lee Jones <lee@kernel.org>
+To: Chanwoo Choi <cw00.choi@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com, 
+ llvm@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20240606143648.152668-1-krzysztof.kozlowski@linaro.org>
+References: <20240606143648.152668-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/3] mfd: max14577: Fix Wvoid-pointer-to-enum-cast
+ warning (again)
+Message-Id: <171829859167.2724644.8244967741458502000.b4-ty@kernel.org>
+Date: Thu, 13 Jun 2024 18:09:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240610151721.274424-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
 
+On Thu, 06 Jun 2024 16:36:46 +0200, Krzysztof Kozlowski wrote:
+> 'type' is an enum, thus cast of pointer on 64-bit compile test with
+> clang and W=1 causes:
+> 
+>   max14577.c:400:23: error: cast to smaller integer type 'enum maxim_device_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+> 
+> Year ago this was solved, although LKML discussion suggested warning is
+> not suitable for kernel.  Nothing changed in this regard for a year, so
+> assume the warning will stay and we want to have warnings-free builds.
+> 
+> [...]
 
-On Mon, 10 Jun 2024 11:17:21 -0400, Frank Li wrote:
-> "fsl,imx8qxp-cm4" and "fsl,imx8qm-cm4" need minimum 2 power domains. Other
-> platform doesn't require 'power-domain'.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> 
-> Notes:
->     Change from v2 to v3
->     - only imx8qxp and imx8qm need power-domain, other platform don't need it.
->     - update commit message.
-> 
->     Change from v1 to v2
->     - set minitem to 2 at top
->     - Add imx8qm compatible string also
->     - use not logic to handle difference compatible string restriction
->     - update commit message.
-> 
->     pass dt_binding_check.
-> 
->     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-rproc.yaml
->       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
->       CHKDT   Documentation/devicetree/bindings
->       LINT    Documentation/devicetree/bindings
->       DTEX    Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dts
->       DTC_CHK Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dtb
-> 
->  .../bindings/remoteproc/fsl,imx-rproc.yaml        | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
+Applied, thanks!
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+[1/3] mfd: max14577: Fix Wvoid-pointer-to-enum-cast warning (again)
+      commit: 9d1e745c2dc06fed0eb6e3b549b75669f9da77be
+[2/3] mfd: mxs-lradc: Fix Wvoid-pointer-to-enum-cast warning (again)
+      commit: a377d89e5064e787deecfb87d9464ea18f5f067e
+[3/3] mfd: wm8994: Fix Wvoid-pointer-to-enum-cast warning (again)
+      commit: 05bb1fb09b523136acb58421361a259127de68d4
+
+--
+Lee Jones [李琼斯]
 
