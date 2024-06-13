@@ -1,44 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAEF824A4;
-	Thu, 13 Jun 2024 20:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5F11369A1;
+	Thu, 13 Jun 2024 22:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718309880; cv=none; b=NfMYfN3rdNacRJBMhTTdatMZWaNMwsBEvKwcMTtca3L6jK9njH1hpH7UxiYzZdofKq9RZ7wJwI9df3k9IhzeUK8b5ZiNnN3n6CGGLTaBQ7o8iE0FNk9I+84CUqOR8CPf74+4TwSeToPqDkvXFLKvWDSQEf1aFOtLrtMZewRDrGE=
+	t=1718316143; cv=none; b=lhP5jvm0kx3XUIAZCY7e//En64kI+Sz7sjZ4+h98R9c7J46Ip0iMP/fALPyBCZkaKl6hKDaKHHE+HQ/t7ERot4lVgSKFZxKxQQ+HGV7fOSZ6Uw4bxwEtrPYQy5dr2WH1k590GUXWS5IIhWuOEVSmQH8ykxQ9sVE5sgiMbxsHb7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718309880; c=relaxed/simple;
-	bh=SeoW3pQUv+7r5hH9UutJVNk3geg6YNYfWR6URRa1t0w=;
+	s=arc-20240116; t=1718316143; c=relaxed/simple;
+	bh=mvhZ7fg02QLWDHOt4fSSAy0v3cjUxDyrkpKSDETExpo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nTcSgxs1o6g2o2/M+2LUDCnKJ7RCxsR7ZMcdDzdx3ZzOINSxaRo2wdPZOMkMxe96PaXHpQByyNOb/WRDU7mj8+WIRtezt/9cHMlmtydTaakAKRh/ZK9YjnaJdj+ZT7Idtkn4H0b6P/lObKHTMDUVDgxcY/8aHr7ZOojSZTZ714o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sM4I4ZHm; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mM8XwRZXDmueFCxP+mM/08wexPQ5XvcTW7W+hMX5V0Hh8dYenVwfuqkOBk7c/ABSTGDp/TqC6urSZRiIzGylkL5RdHf8RIC7+8tqu1U+5p7QyXR5lXjAcBG3o7+Ca5C93z+qHk/sIeYe9wOugYGhzcbaMm47RSqHjJufey05m/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=z1ZtUrKD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sM4I4ZHm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA8AC2BBFC;
-	Thu, 13 Jun 2024 20:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718309879;
-	bh=SeoW3pQUv+7r5hH9UutJVNk3geg6YNYfWR6URRa1t0w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sM4I4ZHmFl9zudcj8FKpOoM2BO2TXzDlCjiGjrvsIB/y3HVPD3QA5qFQ2X+hnc95u
-	 uxXuKHimDuNs6MAzDAGgA76gZQDldLo7Io2NUxrsana47vNYbWKLxunAQJkE/v2mTa
-	 qEQhNRVHH+rxGhWWsyQX53FgZtIPkKH9jkNNlLuPu1bTJqitdtMvndVJW48q765bUk
-	 NVJhEkUjlmSFkf5skF7sl36kVWMgI2EOA8kKEsM+bQ/Ohth+qVT0AQkhsIpdasJVcG
-	 KNqMBu3nYvly1LKtLOy6tLmprpoFwhwk9OKRJ0wCghMGWbLYAnsSyP7BQQhg+oZonn
-	 VZKRqAERGg72Q==
-Date: Thu, 13 Jun 2024 14:17:58 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 2/3] spi: dt-bindings: fsl-dspi: Convert to yaml format
-Message-ID: <20240613201758.GA2396297-robh@kernel.org>
-References: <20240613-ls_qspi-v2-0-b288f6f5b736@nxp.com>
- <20240613-ls_qspi-v2-2-b288f6f5b736@nxp.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="z1ZtUrKD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=j7zmwo2RU6Du49DJYBT9DPZ+SSoMA3yEsZqcq2HtOms=; b=z1ZtUrKDjEIC/fl/3dnk+8K7Rd
+	AtuWAhrv9Bk+AZ53kimQy5z3UvwmTX9axysgmJptRQfYtmdCBlAAEHJErHPi8dBeEIFYHSO217/JZ
+	ZJtcGWQBE5Eg2jSmQKkISAjoDzd10sL+MD88UPZSquC0NoPrt869YJvnhZHdUapbb8mA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sHsWK-0000bs-Ce; Fri, 14 Jun 2024 00:02:12 +0200
+Date: Fri, 14 Jun 2024 00:02:12 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Paul Geurts <paul.geurts@prodrive-technologies.com>
+Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fec_main: Register net device before initializing the
+ MDIO bus
+Message-ID: <51faeed2-6a6b-439b-80e6-8cf2b5ce401a@lunn.ch>
+References: <20240613144112.349707-1-paul.geurts@prodrive-technologies.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,32 +46,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240613-ls_qspi-v2-2-b288f6f5b736@nxp.com>
+In-Reply-To: <20240613144112.349707-1-paul.geurts@prodrive-technologies.com>
 
-On Thu, Jun 13, 2024 at 03:00:38PM -0400, Frank Li wrote:
-> Convert dt-binding spi-fsl-dspi.txt to yaml format.
+On Thu, Jun 13, 2024 at 04:41:11PM +0200, Paul Geurts wrote:
+> Registration of the FEC MDIO bus triggers a probe of all devices
+> connected to that bus. DSA based Ethernet switch devices connect to the
+> uplink Ethernet port during probe. When a DSA based, MDIO controlled
+> Ethernet switch is connected to FEC, it cannot connect the uplink port,
+> as the FEC MDIO port is registered before the net device is being
+> registered. This causes an unnecessary defer of the Ethernet switch
+> driver probe.
 > 
-> Addtional changes during convert:
-> - compatible string "fsl,ls1028a-dspi" can be followed by
-> fsl,ls1021a-v1.0-dspi.
-> - Change "dspi0@4002c000" to "spi@4002c000" in example.
-> - Reorder properties in example.
-> - Use GIC include in example.
-> - Remove fsl,spi-cs-sck-delay and fsl,spi-sck-cs-delay by use common SPI
-> property.
+> Register the net device before initializing and registering the MDIO
+> bus.
 
-You can't just remove them. These are mature platforms using them and 
-replacing the properties would break kernels without your driver change. 
-The only compatible change would be put both properties in the DT.
+The problem with this is, as soon as you call register_netdev(), the
+device is alive and sending packets. It can be sending packets even
+before register_netdev() returns, e.g. in the case of NFS root. So
+fec_enet_open() gets called, and tried to find its PHY. But the MDIO
+bus is not registered yet....
 
-You need to pick up what Vladimir did:
+So yes, DSA ends up doing an EPROBE_DEFER cycle. Not much we can do
+about that. We can try to keep the DSA probe functions as cheap as
+possible, and put all the expensive stuff in setup(), which will only
+be called once we have all the needed resources.
 
-https://lore.kernel.org/linux-spi/20221111224651.577729-1-vladimir.oltean@nxp.com/
+    Andrew
 
-> - Use compatible string 'jedec,spi-nor' in example.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/spi/fsl,dspi.yaml          | 115 +++++++++++++++++++++
->  .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  65 ------------
->  2 files changed, 115 insertions(+), 65 deletions(-)
+---
+pw-bot: cr
