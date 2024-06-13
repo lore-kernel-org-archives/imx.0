@@ -1,188 +1,224 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C076A13DDDB
-	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 09:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF16D13D608
+	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 09:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718270666; cv=none; b=lvHMXPPq3ZXC4sdJeFRdG9ndCkqO9q0YdXv1jadDsITed5K1qXxPnwr70/idrjIPDzbCN6BLH37mtJiNP8UZIEwzilJJiCm40cTLprc6URLobzhq02N4bisM4XvkB65ffa1VJOXbEEkA3DhIbUnA2wNu/4Hc79zQ357dOEmZUGo=
+	t=1718271571; cv=none; b=LPRZ1/TggiCdSDQKrrz1YJmt+lcyfvx+35WeAuid2jGAoUNHtvNnx9qrHAaxqLyIwEzBZGDjgUCK9YJnuDxRTAcf/uE085o4vGRpIbFE7HbP7+tIckG8JszeFMVwxuAnGcC5QHv+lI5PE2xIGUrKljm+87Cs7npvmfWthkHZmns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718270666; c=relaxed/simple;
-	bh=+vQn3HjO/YchQui9IJ3APLcbMNH88nHBloO+VGQCjaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sUt2cYx9yiggTtsX0QEJpFNxnXj/OzzqlsXR+kAmZ1HAckcARYSPXmq2a+Vk0vggUAivPa6JC2EnK/ZhQ519uXrEAvQkYirjkvsSMuzxSXS1XPq51q850788L3/scFkZtS8BoeDMGeympGSQh0o6UbBFun9OvPvMXiL3+qA+p3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KFeBY6C6; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KFeBY6C6"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1718270660; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=KbWX8Db8CbQXtBeXWc2CukpLYCDdNStf9N0SgO0PdS0=;
-	b=KFeBY6C66rgRfcshfoD1qIC0xD18OCFhWQMpAMiLpD1rtbeBeOnn8L+4w6pXxEWYJM0AM2ut9kz55DJ9IqjXCa4mODPmGblXCIx1IJZcxME3/tlr9FcuwTBjZs3ceA0gVsAgKCC+4nmyxr3L4Obvyw2nuKRyzay6ZCnIDTwzd5I=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R541e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032014031;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=37;SR=0;TI=SMTPD_---0W8NgDjm_1718270656;
-Received: from 30.97.56.57(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0W8NgDjm_1718270656)
-          by smtp.aliyun-inc.com;
-          Thu, 13 Jun 2024 17:24:18 +0800
-Message-ID: <3b7950db-bde8-407e-b568-51cacee93ad8@linux.alibaba.com>
-Date: Thu, 13 Jun 2024 17:24:14 +0800
+	s=arc-20240116; t=1718271571; c=relaxed/simple;
+	bh=iLQX6wuI1C08F/UQlPVe2qnRK6e+oxmbatREJ02+xTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d25W6vU7/RAlqVHx6YPe7t01oC5orZnBc6Qk/BvsSUlr34a/AOTrqQcGPLq/2gPdwrhbaSnsv92ZzKr1sttTXL4OscuVJAdcFZVfGn0P8QF2DXlK1YDrGzzn0Sgmi+hoFlfgC+DBX+BMwnDyVr2XIkqZ5qAozL09s8mtLNLgMlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sHgvD-0002DT-Gy; Thu, 13 Jun 2024 11:39:07 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sHgvC-001zsF-Uc; Thu, 13 Jun 2024 11:39:06 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sHgvC-008SNC-2h;
+	Thu, 13 Jun 2024 11:39:06 +0200
+Date: Thu, 13 Jun 2024 11:39:06 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, p.zabel@pengutronix.de,
+	abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
+	sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, marex@denx.de,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/5] clk: imx: clk-audiomix: Add reset controller
+Message-ID: <20240613093906.trc2rahodmhqd4lt@pengutronix.de>
+References: <1718243482-18552-1-git-send-email-shengjiu.wang@nxp.com>
+ <1718243482-18552-3-git-send-email-shengjiu.wang@nxp.com>
+ <20240613081949.yty3hznopp3u2qwq@pengutronix.de>
+ <CAA+D8AMc9=bzHKNXyMH5LLerr2kgmKTxacP=1LhocTHgP9Thfw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND][PATCH] iio: simplify with regmap_set_bits(),
- regmap_clear_bits()
-To: Trevor Gamblin <tgamblin@baylibre.com>,
- Lucas Stankus <lucas.p.stankus@gmail.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>,
- Dmitry Rokosov <ddrokosov@sberdevices.ru>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>,
- Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Saravanan Sekar <sravanhome@gmail.com>, Orson Zhai <orsonzhai@gmail.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Linus Walleij <linus.walleij@linaro.org>,
- Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Crt Mori <cmo@melexis.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240611165214.4091591-1-tgamblin@baylibre.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20240611165214.4091591-1-tgamblin@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAA+D8AMc9=bzHKNXyMH5LLerr2kgmKTxacP=1LhocTHgP9Thfw@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-
-
-On 2024/6/12 00:52, Trevor Gamblin wrote:
-> Simplify the way regmap is accessed in iio drivers.
+On 24-06-13, Shengjiu Wang wrote:
+> On Thu, Jun 13, 2024 at 4:20 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >
+> > On 24-06-13, Shengjiu Wang wrote:
+> > > Audiomix block control can be a reset controller for
+> > > Enhanced Audio Return Channel (EARC), which is one of
+> > > modules in this audiomix subsystem.
+> > >
+> > > The reset controller is supported by the auxiliary device
+> > > framework.
+> > >
+> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/clk/imx/Kconfig               |  1 +
+> > >  drivers/clk/imx/clk-imx8mp-audiomix.c | 63 +++++++++++++++++++++++++++
+> > >  2 files changed, 64 insertions(+)
+> > >
+> > > diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
+> > > index 6da0fba68225..9edfb030bea9 100644
+> > > --- a/drivers/clk/imx/Kconfig
+> > > +++ b/drivers/clk/imx/Kconfig
+> > > @@ -81,6 +81,7 @@ config CLK_IMX8MP
+> > >       tristate "IMX8MP CCM Clock Driver"
+> > >       depends on ARCH_MXC || COMPILE_TEST
+> > >       select MXC_CLK
+> > > +     select AUXILIARY_BUS
+> >
+> >         select AUXILIARY_BUS if RESET_CONTROLLER
 > 
-> Instead of using regmap_update_bits() and passing the mask twice, use
-> regmap_set_bits().
+> Do we really need this change?
 > 
-> Instead of using regmap_update_bits() and passing val = 0, use
-> regmap_clear_bits().
+> I checked other drivers like MCHP_CLK_MPFS, but they don't have
+> this condition also.
+
+Since you made the whole reset optional I would like to pull reset
+dependency optional as well e.g. pulling it only if you really use it.
+In the end the RESET_CONTROLLER is enabled most the time.
+
+> > >       help
+> > >           Build the driver for i.MX8MP CCM Clock Driver
+> > >
+> > > diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > index b381d6f784c8..517b1f88661b 100644
+> > > --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > @@ -5,6 +5,7 @@
+> > >   * Copyright (C) 2022 Marek Vasut <marex@denx.de>
+> > >   */
+> > >
+> > > +#include <linux/auxiliary_bus.h>
+> > >  #include <linux/clk-provider.h>
+> > >  #include <linux/device.h>
+> > >  #include <linux/io.h>
+> > > @@ -13,6 +14,7 @@
+> > >  #include <linux/of.h>
+> > >  #include <linux/platform_device.h>
+> > >  #include <linux/pm_runtime.h>
+> > > +#include <linux/slab.h>
+> >                 ^
+> > This is an unrelated change.
 > 
-> Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-> ---
+> This is for the fix of this issue
+> 
+> https://lore.kernel.org/oe-kbuild-all/202405201844.zf7UkDmq-lkp@intel.com/
 
-[...]
+Thanks for the link.
 
-> diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
-> index b4a2e057d80f..2535c2c3e60b 100644
-> --- a/drivers/iio/adc/sc27xx_adc.c
-> +++ b/drivers/iio/adc/sc27xx_adc.c
-> @@ -508,13 +508,13 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
->   		}
->   	}
->   
-> -	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
-> -				 SC27XX_ADC_EN, SC27XX_ADC_EN);
-> +	ret = regmap_set_bits(data->regmap, data->base + SC27XX_ADC_CTL,
-> +			      SC27XX_ADC_EN);
->   	if (ret)
->   		goto regulator_restore;
->   
-> -	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_INT_CLR,
-> -				 SC27XX_ADC_IRQ_CLR, SC27XX_ADC_IRQ_CLR);
-> +	ret = regmap_set_bits(data->regmap, data->base + SC27XX_ADC_INT_CLR,
-> +			      SC27XX_ADC_IRQ_CLR);
->   	if (ret)
->   		goto disable_adc;
->   
-> @@ -537,8 +537,8 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
->   	if (ret)
->   		goto disable_adc;
->   
-> -	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
-> -				 SC27XX_ADC_CHN_RUN, SC27XX_ADC_CHN_RUN);
-> +	ret = regmap_set_bits(data->regmap, data->base + SC27XX_ADC_CTL,
-> +			      SC27XX_ADC_CHN_RUN);
->   	if (ret)
->   		goto disable_adc;
->   
-> @@ -559,8 +559,8 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
->   	value &= SC27XX_ADC_DATA_MASK;
->   
->   disable_adc:
-> -	regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
-> -			   SC27XX_ADC_EN, 0);
-> +	regmap_clear_bits(data->regmap, data->base + SC27XX_ADC_CTL,
-> +			  SC27XX_ADC_EN);
->   regulator_restore:
->   	if ((data->var_data->set_volref) && (channel == 30 || channel == 31)) {
->   		ret_volref = regulator_set_voltage(data->volref,
-> @@ -765,15 +765,14 @@ static int sc27xx_adc_enable(struct sc27xx_adc_data *data)
->   {
->   	int ret;
->   
-> -	ret = regmap_update_bits(data->regmap, data->var_data->module_en,
-> -				 SC27XX_MODULE_ADC_EN, SC27XX_MODULE_ADC_EN);
-> +	ret = regmap_set_bits(data->regmap, data->var_data->module_en,
-> +			      SC27XX_MODULE_ADC_EN);
->   	if (ret)
->   		return ret;
->   
->   	/* Enable ADC work clock and controller clock */
-> -	ret = regmap_update_bits(data->regmap, data->var_data->clk_en,
-> -				 SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN,
-> -				 SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
-> +	ret = regmap_set_bits(data->regmap, data->var_data->clk_en,
-> +			      SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
->   	if (ret)
->   		goto disable_adc;
->   
-> @@ -789,11 +788,11 @@ static int sc27xx_adc_enable(struct sc27xx_adc_data *data)
->   	return 0;
->   
->   disable_clk:
-> -	regmap_update_bits(data->regmap, data->var_data->clk_en,
-> -			   SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0);
-> +	regmap_clear_bits(data->regmap, data->var_data->clk_en,
-> +			  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
->   disable_adc:
-> -	regmap_update_bits(data->regmap, data->var_data->module_en,
-> -			   SC27XX_MODULE_ADC_EN, 0);
-> +	regmap_clear_bits(data->regmap, data->var_data->module_en,
-> +			  SC27XX_MODULE_ADC_EN);
->   
->   	return ret;
->   }
-> @@ -803,11 +802,11 @@ static void sc27xx_adc_disable(void *_data)
->   	struct sc27xx_adc_data *data = _data;
->   
->   	/* Disable ADC work clock and controller clock */
-> -	regmap_update_bits(data->regmap, data->var_data->clk_en,
-> -			   SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0);
-> +	regmap_clear_bits(data->regmap, data->var_data->clk_en,
-> +			  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
->   
-> -	regmap_update_bits(data->regmap, data->var_data->module_en,
-> -			   SC27XX_MODULE_ADC_EN, 0);
-> +	regmap_clear_bits(data->regmap, data->var_data->module_en,
-> +			  SC27XX_MODULE_ADC_EN);
->   }
->   
->   static const struct sc27xx_adc_variant_data sc2731_data = {
+Regards,
+  Marco
 
-For SPRD sc27xx parts, looks good to me. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Best regards
+> Shengjiu wang
+> 
+> >
+> > Regards,
+> >   Marco
+> >
+> > >
+> > >  #include <dt-bindings/clock/imx8mp-clock.h>
+> > >
+> > > @@ -217,6 +219,63 @@ struct clk_imx8mp_audiomix_priv {
+> > >       struct clk_hw_onecell_data clk_data;
+> > >  };
+> > >
+> > > +#if IS_ENABLED(CONFIG_RESET_CONTROLLER)
+> > > +
+> > > +static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
+> > > +{
+> > > +     struct auxiliary_device *adev = _adev;
+> > > +
+> > > +     auxiliary_device_delete(adev);
+> > > +     auxiliary_device_uninit(adev);
+> > > +}
+> > > +
+> > > +static void clk_imx8mp_audiomix_reset_adev_release(struct device *dev)
+> > > +{
+> > > +     struct auxiliary_device *adev = to_auxiliary_dev(dev);
+> > > +
+> > > +     kfree(adev);
+> > > +}
+> > > +
+> > > +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
+> > > +                                                      struct clk_imx8mp_audiomix_priv *priv)
+> > > +{
+> > > +     struct auxiliary_device *adev __free(kfree) = NULL;
+> > > +     int ret;
+> > > +
+> > > +     if (!of_property_present(dev->of_node, "#reset-cells"))
+> > > +             return 0;
+> > > +
+> > > +     adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+> > > +     if (!adev)
+> > > +             return -ENOMEM;
+> > > +
+> > > +     adev->name = "reset";
+> > > +     adev->dev.parent = dev;
+> > > +     adev->dev.release = clk_imx8mp_audiomix_reset_adev_release;
+> > > +
+> > > +     ret = auxiliary_device_init(adev);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     ret = auxiliary_device_add(adev);
+> > > +     if (ret) {
+> > > +             auxiliary_device_uninit(adev);
+> > > +             return ret;
+> > > +     }
+> > > +
+> > > +     return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev,
+> > > +                                     no_free_ptr(adev));
+> > > +}
+> > > +
+> > > +#else /* !CONFIG_RESET_CONTROLLER */
+> > > +
+> > > +static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8mp_audiomix_priv *priv)
+> > > +{
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +#endif /* !CONFIG_RESET_CONTROLLER */
+> > > +
+> > >  static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
+> > >  {
+> > >       struct clk_imx8mp_audiomix_priv *priv = dev_get_drvdata(dev);
+> > > @@ -337,6 +396,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
+> > >       if (ret)
+> > >               goto err_clk_register;
+> > >
+> > > +     ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
+> > > +     if (ret)
+> > > +             goto err_clk_register;
+> > > +
+> > >       pm_runtime_put_sync(dev);
+> > >       return 0;
+> > >
+> > > --
+> > > 2.34.1
+> > >
+> > >
+> > >
+> 
