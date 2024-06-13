@@ -1,79 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA04149C5A;
-	Thu, 13 Jun 2024 17:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D70F1494D1
+	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 17:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718298595; cv=none; b=jmfb8FTZo0804pc8cQfvaQGLrHb/raZ6qlJlwuZiFqlw6I9jUgkb/gnuYz9c/9DyjYPCZCpVwWXda/1MKuY4DQOQ2mOzWU8Hzvh1jLwXIfPtrDltsxKdQcJuINuXaMj72UDoxb8jJlHdP817lheh+/Bgrai3nD9vBveivW0IOnk=
+	t=1718299232; cv=none; b=XfU//VCFQWI4txXJ7GEO3fgMEHzBy427zSf+WCmujxlLUzWgzRv7nVVbdwlyFROvrAbo0b2TVgDVofROEG0xDnlt6YCYamZnD3AMr5wvp90opGoctOGGxP3QeFlBIS8NrCoqreWTWLqVEAqZ9Txwg/FuCra1/LcYDrNHulcJ/P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718298595; c=relaxed/simple;
-	bh=sawuofgiTla22xNeYJ7qMOaw4kLeel2V7h6pjTPcsy4=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rlCY80xnw9f68x1KTOGDw3gPitMzr5zpl6P2mhTSGk7R6sQg22iMJRRAMwnPcL+duanyfvA4vdqv3BACkx7sXa+kmNy7kCzc9CYuwueyS4ck0p/bLXrqIQDFZqTuB3iov3xlPv6MI3fvwXyP8kkTgoog8uYn1uyCwRgnYISrAFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSLLD7t0; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSLLD7t0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E585AC2BBFC;
-	Thu, 13 Jun 2024 17:09:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718298594;
-	bh=sawuofgiTla22xNeYJ7qMOaw4kLeel2V7h6pjTPcsy4=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=uSLLD7t0C1sZaoqbsr/ALoQz7x5p/xxV5cigTZ7XYHqwypv5JZvPJFYSwZkP2FL9N
-	 8uC65AYK11K2EKbEz74W951XcmEeJkVd2sc5Odf0zviaBSyQ3/FeUq+p2u6CJfp0Ax
-	 3JqYIHeMZrdY0QyZQNysWBTYl75mLuSAF4D4uz7efP9PzRgT2WxRIYsUdcefM+CpcE
-	 FIr2Y9Y7GnlV6nK6W8749oTAB6sFzTu6Nozt050HrZ/5gZbK5xxhik4XXzKfPjpx2r
-	 rlR7T3ZNbpntTiCOG6ODOfKMRzLkghYwA2Ds1ALeoUN3LMEw2FoMgAsaJoEH3UmSlb
-	 TlUiENI91I4xA==
-From: Lee Jones <lee@kernel.org>
-To: Chanwoo Choi <cw00.choi@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, patches@opensource.cirrus.com, 
- llvm@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20240606143648.152668-1-krzysztof.kozlowski@linaro.org>
-References: <20240606143648.152668-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH 1/3] mfd: max14577: Fix Wvoid-pointer-to-enum-cast
- warning (again)
-Message-Id: <171829859167.2724644.8244967741458502000.b4-ty@kernel.org>
-Date: Thu, 13 Jun 2024 18:09:51 +0100
+	s=arc-20240116; t=1718299232; c=relaxed/simple;
+	bh=bcTlQCZmkD/Xi9pbAhyUanFMXK8HrG7tkMYcoDGGb+g=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rbkqfY1FTiwNUN0V9IMTKqGDT8nxarzkKcE6wDUZdzUySgn5H+HKdHcdBfOx/XmCYpbHhRx4/tHgJQNZkcTQRqOtMoRV+PcE1N4VyIM4A1u3CAm1HqADqwlJCUH1nDNRHQnMFHeIIJZ8dCONHaPAasiRxWz1cUDYgQqz9yfFRgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W0TfD3Fs8z6K91P;
+	Fri, 14 Jun 2024 01:19:00 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8267F1400CB;
+	Fri, 14 Jun 2024 01:20:23 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 13 Jun
+ 2024 18:20:22 +0100
+Date: Thu, 13 Jun 2024 18:20:21 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+CC: Lucas Stankus <lucas.p.stankus@gmail.com>, Lars-Peter Clausen
+	<lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan
+ Cameron <jic23@kernel.org>, Dmitry Rokosov <ddrokosov@sberdevices.ru>, Cosmin
+ Tanislav <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>, Hans de
+ Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, Scott Branden
+	<sbranden@broadcom.com>, "Broadcom internal kernel review list"
+	<bcm-kernel-feedback-list@broadcom.com>, "Shawn Guo" <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Neil Armstrong
+	<neil.armstrong@linaro.org>, "Kevin Hilman" <khilman@baylibre.com>, Jerome
+ Brunet <jbrunet@baylibre.com>, "Martin Blumenstingl"
+	<martin.blumenstingl@googlemail.com>, Saravanan Sekar <sravanhome@gmail.com>,
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+	<alexandre.torgue@foss.st.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Linus Walleij <linus.walleij@linaro.org>, Jean-Baptiste
+ Maneyrol <jmaneyrol@invensense.com>, Crt Mori <cmo@melexis.com>, Uwe
+ =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
+	<linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [RESEND][PATCH] iio: simplify with regmap_set_bits(),
+ regmap_clear_bits()
+Message-ID: <20240613182021.00005072@Huawei.com>
+In-Reply-To: <20240611165214.4091591-1-tgamblin@baylibre.com>
+References: <20240611165214.4091591-1-tgamblin@baylibre.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, 06 Jun 2024 16:36:46 +0200, Krzysztof Kozlowski wrote:
-> 'type' is an enum, thus cast of pointer on 64-bit compile test with
-> clang and W=1 causes:
-> 
->   max14577.c:400:23: error: cast to smaller integer type 'enum maxim_device_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
-> 
-> Year ago this was solved, although LKML discussion suggested warning is
-> not suitable for kernel.  Nothing changed in this regard for a year, so
-> assume the warning will stay and we want to have warnings-free builds.
-> 
-> [...]
+On Tue, 11 Jun 2024 12:52:06 -0400
+Trevor Gamblin <tgamblin@baylibre.com> wrote:
 
-Applied, thanks!
+> Simplify the way regmap is accessed in iio drivers.
+>=20
+> Instead of using regmap_update_bits() and passing the mask twice, use
+> regmap_set_bits().
+>=20
+> Instead of using regmap_update_bits() and passing val =3D 0, use
+> regmap_clear_bits().
+>=20
+> Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Looks like a good change in general. However...
 
-[1/3] mfd: max14577: Fix Wvoid-pointer-to-enum-cast warning (again)
-      commit: 9d1e745c2dc06fed0eb6e3b549b75669f9da77be
-[2/3] mfd: mxs-lradc: Fix Wvoid-pointer-to-enum-cast warning (again)
-      commit: a377d89e5064e787deecfb87d9464ea18f5f067e
-[3/3] mfd: wm8994: Fix Wvoid-pointer-to-enum-cast warning (again)
-      commit: 05bb1fb09b523136acb58421361a259127de68d4
+The problem with a change like this is it results in
+non trivial backporting if we need to due to a fix in related
+code.
 
---
-Lee Jones [李琼斯]
+As such, whilst it will obviously generate a lot of patches, I'd
+like this split up into a series so each patch touches only one driver.
+Fine to keep a single patch for the multiple module for a single
+device cases though.
 
+Also some very long lines that need the line breaks put back.
+
+Jonathan
+
+
+> diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+> index b8ddbfd98f11..40e605c57adb 100644
+> --- a/drivers/iio/accel/msa311.c
+> +++ b/drivers/iio/accel/msa311.c
+> @@ -1034,10 +1034,8 @@ static int msa311_chip_init(struct msa311_priv *ms=
+a311)
+>  				     "failed to unmap map0/map1 interrupts\n");
+> =20
+>  	/* Disable all axes by default */
+> -	err =3D regmap_update_bits(msa311->regs, MSA311_ODR_REG,
+> -				 MSA311_GENMASK(F_X_AXIS_DIS) |
+> -				 MSA311_GENMASK(F_Y_AXIS_DIS) |
+> -				 MSA311_GENMASK(F_Z_AXIS_DIS), 0);
+> +	err =3D regmap_clear_bits(msa311->regs, MSA311_ODR_REG,
+> +				MSA311_GENMASK(F_X_AXIS_DIS) | MSA311_GENMASK(F_Y_AXIS_DIS) | MSA311=
+_GENMASK(F_Z_AXIS_DIS));
+Too long
+
+> diff --git a/drivers/iio/adc/cpcap-adc.c b/drivers/iio/adc/cpcap-adc.c
+> index b6c4ef70484e..8fabf748c36b 100644
+> --- a/drivers/iio/adc/cpcap-adc.c
+> +++ b/drivers/iio/adc/cpcap-adc.c
+> @@ -385,9 +385,8 @@ static irqreturn_t cpcap_adc_irq_thread(int irq, void=
+ *data)
+> @@ -424,23 +423,17 @@ static void cpcap_adc_setup_calibrate(struct cpcap_=
+adc *ddata,
+>  	if (error)
+>  		return;
+> =20
+> -	error =3D regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+> -				   CPCAP_BIT_ATOX_PS_FACTOR |
+> -				   CPCAP_BIT_ADC_PS_FACTOR1 |
+> -				   CPCAP_BIT_ADC_PS_FACTOR0,
+> -				   0);
+> +	error =3D regmap_clear_bits(ddata->reg, CPCAP_REG_ADCC2,
+> +				  CPCAP_BIT_ATOX_PS_FACTOR | CPCAP_BIT_ADC_PS_FACTOR1 | CPCAP_BIT_AD=
+C_PS_FACTOR0);
+That one is over 100! =20
+>  	if (error)
+
+> diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-c=
+ore.c
+> index a791ba3a693a..ff1c81553045 100644
+> --- a/drivers/iio/gyro/mpu3050-core.c
+> +++ b/drivers/iio/gyro/mpu3050-core.c
+
+> =20
+> @@ -513,12 +513,8 @@ static irqreturn_t mpu3050_trigger_handler(int irq, =
+void *p)
+>  				 "FIFO overflow! Emptying and resetting FIFO\n");
+>  			fifo_overflow =3D true;
+>  			/* Reset and enable the FIFO */
+> -			ret =3D regmap_update_bits(mpu3050->map,
+> -						 MPU3050_USR_CTRL,
+> -						 MPU3050_USR_CTRL_FIFO_EN |
+> -						 MPU3050_USR_CTRL_FIFO_RST,
+> -						 MPU3050_USR_CTRL_FIFO_EN |
+> -						 MPU3050_USR_CTRL_FIFO_RST);
+> +			ret =3D regmap_set_bits(mpu3050->map, MPU3050_USR_CTRL,
+> +					      MPU3050_USR_CTRL_FIFO_EN | MPU3050_USR_CTRL_FIFO_RST);
+
+Keep the line break to stay under 80 chars.
+
+> @@ -997,11 +991,8 @@ static int mpu3050_drdy_trigger_set_state(struct iio=
+_trigger *trig,
+>  			return ret;
+> =20
+>  		/* Reset and enable the FIFO */
+> -		ret =3D regmap_update_bits(mpu3050->map, MPU3050_USR_CTRL,
+> -					 MPU3050_USR_CTRL_FIFO_EN |
+> -					 MPU3050_USR_CTRL_FIFO_RST,
+> -					 MPU3050_USR_CTRL_FIFO_EN |
+> -					 MPU3050_USR_CTRL_FIFO_RST);
+> +		ret =3D regmap_set_bits(mpu3050->map, MPU3050_USR_CTRL,
+> +				      MPU3050_USR_CTRL_FIFO_EN | MPU3050_USR_CTRL_FIFO_RST);
+
+For IIO stuff try and stay under 80 chars unless there is a strong
+readability argument for going longer.  Here there isn't one.
+
+>  		if (ret)
+>  			return ret;
+> =20
