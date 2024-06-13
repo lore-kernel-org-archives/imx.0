@@ -1,52 +1,39 @@
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3454BD8
-	for <imx@lists.linux.dev>; Wed, 12 Jun 2024 20:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68636EEC8
+	for <imx@lists.linux.dev>; Thu, 13 Jun 2024 01:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718222683; cv=none; b=Tmg04a0hFQhza5HBi8xq+MV1sNB7JNATZPeM/tsdY/87LZeJIs9WDWTO1Nx/aFfLpYp09/a7lLbgOAZCFCewOHTbp5JntKbjWsH+pxYZVd6vuIjjoei534Qoernl7n4rONg4xumMXesvTtXTWnx1gSVLaFqmVW96ytqvbxYVhJM=
+	t=1718243097; cv=none; b=eI3nr/NON+y8NrMozl5/ul2UuhDbKAKoFdXUt6Hcwr7c/37+o3xacC29A/gMC0RzHo7zweA0Qr/dmiYPpgDzixXzJutPyrpGSFNIvzGsggFfgHJbijzxQGElaXvk5QOaKuNbTFrLyK2kbax/F0jfmgv7dgI78TgxsMTHMJ9hdVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718222683; c=relaxed/simple;
-	bh=5C6E8Y9SDchcIWwSmH36JEqE6WSYVVh9PjV5yurQ6WA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=uqHB2vxmM/6CbpeL5VDjOB2dWoCguaEgLS3BWJZ/zWtZxFvmGS4uUcaMQSGHv2vctSBHXDbD2MndqjSS4AWu8nQjpaSCMigvVnPiCBsV7IqCNB/tCqwCC92bcglu6Dz2XauCesxsVYWNumJHZnqzA7KHI+GCrF6iWUp7+DzpaLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=IaMH4Jce; arc=none smtp.client-ip=44.202.169.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+	s=arc-20240116; t=1718243097; c=relaxed/simple;
+	bh=JApacLBSnTiOxd/MDGkRAN1Y3sRYhlmQq2aTWoRE4bE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WdoeKLtn358RvcCZ5pExg4p+b67qjG2ObQ7+RYlKfZgSZva0l+cRmXzZPQ6FYEmWZNzb5Ha4krXD6Q7ZtsDt4mYO6VoOIixb6KnE6psJIuwl7r7/E+bZJn+f/ggRQhMgMwYOrJmfizn2C+e1S4v+Hn8ikaaAn2TxQNjX0qN+TF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Y4G9Lj7Y; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="IaMH4Jce"
-Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
-	by cmsmtp with ESMTPS
-	id HQpmsvBdSxs4FHUCxsOmOZ; Wed, 12 Jun 2024 20:04:35 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id HUCwsznCt2h7CHUCwslKaG; Wed, 12 Jun 2024 20:04:34 +0000
-X-Authority-Analysis: v=2.4 cv=RcKWCUtv c=1 sm=1 tr=0 ts=6669ff52
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=frY+GlAHrI6frpeK1MvySw==:17
- a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=wYkD_t78qR0A:10 a=xGRsDScCAAAA:8
- a=pKTFDrzG_x3V9sfl7PQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=zEVfNvAIcUWeczMkmY0T:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/QPeIjovkvV/E5oIolQo/mIlJ+pmqKXHutHu0+C0FVs=; b=IaMH4JcelzjtzZ8l052lUZoo73
-	sI8xPNQtYOTq4SBbq7wbYV19M4bbN7/tIy0GGJ0daZKbJwwMBPgru1JOSJbZkKTTDHj0JkGj6CfDt
-	hvpFYVQwNVSs+gUb3q2uK4cvQYtAxfknNNRP9/IGljJQJwQvF18bbmwdWdjPF3qHJVBySzDRqbMmP
-	R/PTadZMsEQNP/1lFtMBtB/gWcW0n3l7fL+kWu3KgjClJyS963c82KeIRgpmL91Iheiihvd02mP7k
-	A+x5MhXqNQVGRaXeDMCx8FkrVQayyvm0QZwzu0xmSKR1RFVQEvDn4K4AjQMI/Pc+P6Ek/OvMUyUID
-	m04LJ4DQ==;
-Received: from [201.172.173.139] (port=40652 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1sHUCv-004Bhn-0e;
-	Wed, 12 Jun 2024 15:04:33 -0500
-Message-ID: <c80e41e6-793e-4311-8e15-f5eda91e723e@embeddedor.com>
-Date: Wed, 12 Jun 2024 14:04:31 -0600
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Y4G9Lj7Y"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id B6DDC88889;
+	Thu, 13 Jun 2024 03:44:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1718243087;
+	bh=8D0zdflsI+96R7w3bD5NSguq6bh8HmskkbvDsqKuIjI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y4G9Lj7YZyz826W8kg8SLmzz9PcBNKaX50qQDykFrdDIxPA84jt+DMD0TQ4JsPO+j
+	 rehvu3K1/7z8DtyBOriAYXVMhgx3/yQEqgnIjrR8xCbK0lPc90qHiLZmfl2f4c9oHR
+	 8+UvmkJsqFwwVliqIfSe2ebT3yxhYbsAIxvmItvr/Ce5qHRBz5cSmddPyFr1qpNYNf
+	 IH+4sRid03mnPXH5mcJKe0o8g+U7E4ChhwVGn4N/3NBJsfHve2Xw57vyjQdq4ru8Wg
+	 4PGYoXOL5W4kEysH9T3a1Y5xwccL4lQoVIq5Iiv78FBrv7gWDQFkpYjiViBOuwR6A6
+	 7omnv3C+2ppwg==
+Message-ID: <3cc52973-61b0-4698-98b7-402634f2b620@denx.de>
+Date: Thu, 13 Jun 2024 03:10:24 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,114 +41,90 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Jiri Slaby <jirislaby@kernel.org>, Bill Wendling <morbo@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
- patches@lists.linux.dev, stable@vger.kernel.org
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
- <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
- <2024053008-sadly-skydiver-92be@gregkh>
- <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
- <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
- <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
- <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
- <bee7240b-d143-4613-bde4-822d9c598834@embeddedor.com>
- <1313c7a5-d074-4a8f-9ab9-07e4a7716fb9@kernel.org>
- <4da5ba72-6dff-46f1-b596-158c62b34f18@embeddedor.com>
+Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT nodes for the two ISPs
+To: Peng Fan <peng.fan@nxp.com>, Adam Ford <aford173@gmail.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ Paul Elder <paul.elder@ideasonboard.com>, Conor Dooley
+ <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>
+References: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com>
+ <4879631.GXAFRqVoOG@steina-w>
+ <20240325204924.GY18799@pendragon.ideasonboard.com>
+ <2929432.e9J7NaK4W3@steina-w>
+ <CAHCN7xLFjJUZQZwPbj5xyxnprwAV3TOvd_6A6sBwOPK+V6uQPA@mail.gmail.com>
+ <AM6PR04MB59412D143AA8C20AFB479E8F88C72@AM6PR04MB5941.eurprd04.prod.outlook.com>
+ <6ba1db19-32d6-4d25-824d-731bea65b583@denx.de>
+ <AM6PR04MB594198421BCC895B506C408A88C72@AM6PR04MB5941.eurprd04.prod.outlook.com>
 Content-Language: en-US
-In-Reply-To: <4da5ba72-6dff-46f1-b596-158c62b34f18@embeddedor.com>
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <AM6PR04MB594198421BCC895B506C408A88C72@AM6PR04MB5941.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.139
-X-Source-L: No
-X-Exim-ID: 1sHUCv-004Bhn-0e
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.173.139]:40652
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 6
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAjDPSMg6k9wY3cIdLT02QfNj3vQxHQhNsRfLiejMU4qI2Lhpi8zS+JxLW922EbgtIfWIbllIIQ1ebLDiQdEHaqEUOPAQyPW/JOv1ZfX89U4kEgewzRv
- moOdxgKwiTRQvq0PXZDPbkIf6C2kjKq+QPhWEg+N9mmGBcY0Y36hD1F6XVvolDzqCOf/MOAqH0nQtJOdqRpXntEcDYDjnK2KWTo=
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+On 6/11/24 5:01 AM, Peng Fan wrote:
 
+[...]
 
-On 6/3/24 02:26, Gustavo A. R. Silva wrote:
-> 
->> FWIW undoing:
->> commit 7391ee16950e772076d321792d9fbf030f921345
->> Author: Peter Hurley <peter@hurleysoftware.com>
->> Date:   Sat Jun 15 09:36:07 2013 -0400
+>>>> According to the i.MX8MP Data sheet, the nominal speed for
+>>>> MEDIA_ISP_CLOCL_ROOT is 400MHZ with 500MHz being allowed in
+>> overdrive
+>>>> mode.
+>>>>
+>>>> I think this clock rate should drop to  the nominal value of 400MHz
+>>>> and those boards who support overdrive can increase it to 500MHz to
+>>>> avoid stiability issues and/or running out of spec.  I created an
+>>>> imx8mm and imx8mn- overdrive.dtsi file.  If there is interest, I can do the
+>> same for the 8MP as well.
+>>>>
+>>>> I haven't gone through all the clocks to determine if/what clocks are
+>>>> being overdriven.
+>>>
+>>> Shouldn't the bootloader take the work to runtime update the freq?
+>>> Why need introduce an extra overdrive.dtsi?
 >>
->>      tty: Simplify flip buffer list with 0-sized sentinel
->>
->>
->> would do the job, IMO.
+>> Shouldn't the overdrive/non-overdrive decision be done in board DT instead ?
 > 
-> So, not even _sentinel_ is actually needed? Awesome!
-> 
+> It is bootloader configure voltage to nominal, then bootloader should use
+> nominal device tree or runtime update dtb.
+> If bootloader configure voltage to over-drive, bootloader could use
+> nominal or over-drive dtb
 
-It seems that a clean revert is not possible at this point, as
-the original patch is more than a decade old. If _sentinel_ is
-not needed, and based on the original patch, would the following
-suffice?
+I think the bootloader should always configure the minimal common 
+configuration, i.e. nominal voltage, nominal clock, so that it would 
+achieve maximum compatibility with any SoC in that SoC line up.
 
-diff --git a/drivers/tty/tty_buffer.c b/drivers/tty/tty_buffer.c
-index 79f0ff94ce00..1b77019cc510 100644
---- a/drivers/tty/tty_buffer.c
-+++ b/drivers/tty/tty_buffer.c
-@@ -135,10 +135,7 @@ void tty_buffer_free_all(struct tty_port *port)
-         llist_for_each_entry_safe(p, next, llist, free)
-                 kfree(p);
+If the user does need overdrive configuration, they should specify that 
+in their board DT.
 
--       tty_buffer_reset(&buf->sentinel, 0);
--       buf->head = &buf->sentinel;
--       buf->tail = &buf->sentinel;
--
-+       buf->tail = NULL;
-         still_used = atomic_xchg(&buf->mem_used, 0);
-         WARN(still_used != freed, "we still have not freed %d bytes!",
-                         still_used - freed);
-@@ -578,9 +575,8 @@ void tty_buffer_init(struct tty_port *port)
-         struct tty_bufhead *buf = &port->buf;
+Keep in mind, the kernel is easy to update (including kernel DT), the 
+bootloader is not easy to update (esp. in field, bootloader update may 
+render a system unbootable if it fails). I would say, it is better to 
+keep the complicated things out of the bootloader if at all possible.
 
-         mutex_init(&buf->lock);
--       tty_buffer_reset(&buf->sentinel, 0);
--       buf->head = &buf->sentinel;
--       buf->tail = &buf->sentinel;
-+       buf->head = NULL;
-+       buf->tail = NULL;
-         init_llist_head(&buf->free);
-         atomic_set(&buf->mem_used, 0);
-         atomic_set(&buf->priority, 0);
-diff --git a/include/linux/tty_buffer.h b/include/linux/tty_buffer.h
-index 31125e3be3c5..75fb041e43fe 100644
---- a/include/linux/tty_buffer.h
-+++ b/include/linux/tty_buffer.h
-@@ -37,7 +37,6 @@ struct tty_bufhead {
-         struct work_struct work;
-         struct mutex       lock;
-         atomic_t           priority;
--       struct tty_buffer sentinel;
-         struct llist_head free;         /* Free queue head */
-         atomic_t           mem_used;    /* In-use buffers excluding free list */
-         int                mem_limit;
+> If introduce x.dtsi and x-overdrive.dtsi, how to let board choose which dtsi
+> to include?
 
-Thanks
---
-Gustavo
+#include "x.dtsi"
+or
+#include "x-overdrive.dtsi"
+
+But I think your question is -- how to do that at runtime ?
+
+U-Boot can apply DT overlays onto DT that is passed to Linux, so if the 
+user has board variants where they need both nonoverdrive/overdrive 
+options, they can apply DT overlay which enables the overdrive mode on 
+boards which need it. This can be done from U-Boot boot.scr or similar 
+boot script, which can again be easily updated, without the need to 
+update the bootloader itself (if something goes wrong or needs to be 
+changed in the future).
