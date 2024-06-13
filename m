@@ -1,45 +1,45 @@
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F0B12EBD7;
-	Thu, 13 Jun 2024 16:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C831C1494DE;
+	Thu, 13 Jun 2024 16:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718296255; cv=none; b=PcW6+H6nxOJgIlbTSG6EtbNhyFEdRGZSWFXLRFxD5ih8PLpiet1+++Hx0x+z8C3KDXRA9pFl9uyQXwutQtu1+xA45yQimIBq8b8qg3zkqD6vZzKfyQwXIxnHeQp01afAMpWjCyt56r4wSpJ4wVyWvY9lIsUX1GJsUcVIE4oeFMU=
+	t=1718297674; cv=none; b=OToPdf/+ZHorWglHrNFiD9eLhPe9tUqy30NpuaKwJZQKMINJrt53PD0QrVmyINkyx8ApBiQsNv26PqO1iRPZ3UvxB6S8kBm6nWIstVuLoIj/ANv3JAbkoahA4aHcV56jYj/TZT/VrLyEYjw7yEGtKB13cmCfO1qBnrrcrdqI4gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718296255; c=relaxed/simple;
-	bh=CPnWHwYnGbtOANd/gqnYJzF+AdtChj9v/G7JGCbbXGQ=;
+	s=arc-20240116; t=1718297674; c=relaxed/simple;
+	bh=liuR4gMpNjq/xKSucqP2XoRrQSlMIIT2FrkVNCQ3uEk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vBpSq46k7i6jgoCM6mFxS0ecMnicXbG2Cg6yXoo9mWuVr29h+K6RlFszh88gVOUmtumN7rPsQ2w4iNIHDGQKFibpaVkcYghzVxfcerHAhGzVXTBIrtUwEXbXBRfEnZcf7zVMuP+p32JMgR4l1lwfYlPvs3+CLg04DRQsLlBWMAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
-	(envelope-from <martin@akranes.kaiser.cx>)
-	id 1sHn2k-001onM-2U;
-	Thu, 13 Jun 2024 18:11:18 +0200
-Date: Thu, 13 Jun 2024 18:11:18 +0200
-From: Martin Kaiser <martin@kaiser.cx>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: u.kleine-koenig@baylibre.com, imx@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, T.Scherer@eckelmann.de
-Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25, 35, 50, 51, 53}
- cspi devices
-Message-ID: <ZmsaJnASSkO3I19t@akranes.kaiser.cx>
-References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
- <ZjuB1Rjyu1ooYvDi@akranes.kaiser.cx>
- <a342h4qn2qkmeimbuanyqh6pxbpqvz7artmodnltcxtbzeo6qn@iyth4xit622f>
- <pof7t5skj6w7to75kynjtck5hh5whc2zm3k3cd3nsz6ogthxi3@2a6at3s4lfpy>
- <ZkDq73W7MuyQ4RLj@akranes.kaiser.cx>
- <ZkUMWWcEpLvE3b-J@akranes.kaiser.cx>
- <20240612-rebel-thick-chital-2f7bfa-mkl@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zjt39LuXA0HtsiKDjHQV+95RWrcx5AJNphuwrYowD7UGBWn0EhGDvD1WZnlDMC7xim9aBtglhREX0PX5PLcSGlfC9MZIXUtbg0YrKU8oUN3U8ShfH35gHxXsCz+iNOfP8SmfaK2Q+p1uLixm7klA3xY0asXG9+12+sfdeYFXjKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BThaP0qV; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BThaP0qV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B67DC3277B;
+	Thu, 13 Jun 2024 16:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718297674;
+	bh=liuR4gMpNjq/xKSucqP2XoRrQSlMIIT2FrkVNCQ3uEk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BThaP0qVXGat057GchZb6GahDincRv5taX79W44x7tusBUPkoeg5Plm5uc/rQ7WaW
+	 7MS7h1pX6xgCwRet/9i9NDbQGHA9GL+jKgL4f6ZHWEsol91MiXe8lZltVAGV1YKR65
+	 HMwfMX/JmkkEl6xJ73x00ba178zm60WUNgNyRL0HwE36cboHtkfsQiWJewq/zda6NA
+	 dtsSisl63qAjqgz6CZiCxHWHzUyACVXDwzwXHQosIjJPwq7ZVQMZBEK1cckiu3rQy6
+	 OzPreHo7HdiH0Oxxs+qN9AOQFxRWFsxclsQMoN9DF1jJPxW6H/BT+iYmRCpXg8Ogvv
+	 fmYqrAGelTRNA==
+Date: Thu, 13 Jun 2024 10:54:33 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Frank.li@nxp.com, linux-remoteproc@vger.kernel.org, krzk+dt@kernel.org,
+	linux-kernel@vger.kernel.org, krzk@kernel.org,
+	linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de,
+	mathieu.poirier@linaro.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, festevam@gmail.com,
+	kernel@pengutronix.de, peng.fan@nxp.com, andersson@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org
+Subject: Re: [PATCH v3 1/1] dt-bindings: remoteproc: imx_rproc: add minItems
+ for power-domain
+Message-ID: <171829767127.2016899.8977063289627594833.robh@kernel.org>
+References: <20240610151721.274424-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,60 +48,39 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240612-rebel-thick-chital-2f7bfa-mkl@pengutronix.de>
-Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
+In-Reply-To: <20240610151721.274424-1-Frank.Li@nxp.com>
 
-Hello Marc,
 
-Thus wrote Marc Kleine-Budde (mkl@pengutronix.de):
+On Mon, 10 Jun 2024 11:17:21 -0400, Frank Li wrote:
+> "fsl,imx8qxp-cm4" and "fsl,imx8qm-cm4" need minimum 2 power domains. Other
+> platform doesn't require 'power-domain'.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> 
+> Notes:
+>     Change from v2 to v3
+>     - only imx8qxp and imx8qm need power-domain, other platform don't need it.
+>     - update commit message.
+> 
+>     Change from v1 to v2
+>     - set minitem to 2 at top
+>     - Add imx8qm compatible string also
+>     - use not logic to handle difference compatible string restriction
+>     - update commit message.
+> 
+>     pass dt_binding_check.
+> 
+>     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,imx-rproc.yaml
+>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>       CHKDT   Documentation/devicetree/bindings
+>       LINT    Documentation/devicetree/bindings
+>       DTEX    Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dts
+>       DTC_CHK Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.example.dtb
+> 
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml        | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
 
-> Hello Martin,
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-> On 15.05.2024 21:26:17, Martin Kaiser wrote:
-> > Thus wrote Martin Kaiser (martin@kaiser.cx):
-
-> > > > However this breaks SPI transfers, when I try to read out an MRAM I get:
-
-> > > > 	root@ecu02:~ hexdump -C /dev/mtd4
-> > > > 	[   71.813807] spi_imx 43fa4000.spi: I/O Error in DMA TX
-> > > > 	[   71.819173] spi-nor spi0.2: SPI transfer failed: -110
-> > > > 	[   71.829129] spi_master spi0: failed to transfer one message from queue
-> > > > 	[   71.843962] spi_master spi0: noqueue transfer failed
-
-> > > > So it would indeed be interesting if you ever managed to use DMA on
-> > > > i.MX25.
-
-> > > I believe so. Looking into my notes from 2016 (when I last tried this), I got
-> > > the -110 error when the SMC bit in CONREG wasn't set. But this should now be
-> > > done in mx31_prepare_transfer if DMA is used...
-
-> > > I'll try to set up a test some time next week.
-
-> > I can now reproduce the dma tx error. My test board uses a dummy spidev device
-> > on cspi1 and configures loopback on the cspi1 controller (disabling loopback
-> > makes no difference).
-
-> > I'm relatively sure that this setup did work back in 2016/17.
-
-> > Commit 24bb244e02a6 ("ARM: i.MX25: globally disable supervisor protect") was
-> > required before any DMA transfers started working on imx25. As far as I can
-> > see, this code is still present.
-
-> > I'll look into this a bit more as time permits.
-
-> have you found the time to look into this?
-
-I did have another look but couldn't get DMA to work :-(
-
-I got to the point where tx seemed to work and rx failed. The tx callback
-function was called from the dma core and rx timed out. However, looking at
-the mosi, miso and clk signals, there was no clock and no data transmission on
-the bus.
-
-The dev_dbg prints in imx-sdma didn't show anything that looked wrong...
-
-I'll have another go some time soon. In the meantime, feel free to merge this
-patch and disable DMA on imx25.
-
-Best regards,
-Martin
