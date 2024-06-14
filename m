@@ -1,217 +1,92 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361E61836FE
-	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 07:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4518308F
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 07:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718351961; cv=none; b=jVYuBGwxPtxde8l8/Ws2zF3P0F2OXJ0dFpF2sFDeWiyK78NMDCu7qpTZy7+P6KIhiRTMYJxWz0SaAcIjOXHE8YKrfzjr6pQ3ywiZxmWyxVYGg3WUp3l787G+o02bfR2Y1J3cVFSJJ9EP01iEOtfWEasmtkmo7Euv0OPuv90Wwo8=
+	t=1718351968; cv=none; b=M/hHx4Q5P3/L+rZLcC7DUel7I1RU/dZoG8GSi1Z/CZHLvrjm9D84OqPVZbFYPXE0hFRpJKB2ab8XlDXNngZj6d3f2dvrLcHR+nfw5Y01mL+PDdgc4cSawIr7vQqVpwOum4FKeAyXOOuGrqT37D3/Q+DiLCazdMTGfwV/4SoZWVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718351961; c=relaxed/simple;
-	bh=Q6Y2SlTjsLMz5xWfLUkFMfcfKjQqFQTLfuhstB6uWjw=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=ryee2T9RcqRM8AJazZ2x0kaoHjJFZRPVXtowdAv4nLo3HExifl6Ywt0jmEPqX7cYMfMleztNIeDWpa40BwPjD9K08ys2h8NTaHHPGIUMBkkX3jEYCCRghxUj/mgqnh2uso+kHOh13ENL6KyOLS16Uop8wVeMrBHR32cXBQYlHRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D2725200DAB;
-	Fri, 14 Jun 2024 09:59:10 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4C399200E13;
-	Fri, 14 Jun 2024 09:59:10 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 794AF1820F59;
-	Fri, 14 Jun 2024 15:59:08 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: p.zabel@pengutronix.de,
-	abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	marex@denx.de,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com
-Subject: [PATCH v8 3/5] reset: imx8mp-audiomix: Add AudioMix Block Control reset driver
-Date: Fri, 14 Jun 2024 15:42:01 +0800
-Message-Id: <1718350923-21392-4-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1718350923-21392-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1718350923-21392-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1718351968; c=relaxed/simple;
+	bh=WLsQLfSBgdrbdcbL23bGEE1GXt0r8cyRHZPC0kRFL0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZA/dlE74pLPC46v4Tu7do5vGGNDuMurJ6L2iCFfr4nv93WSiL3K+tzaBmaKmspd2PQqFAT0RdiCgWXA4zq/EHR06zMAMpHo582/SzIx2pTz5AD4M6gXPH0iSUPtoOJ7jTrBdNi9UeNchQvyaEdlXPZQT3Jbi8o2oA+SSmq8jtMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=NVpPFKIm; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="NVpPFKIm"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 5B1F0A0B23;
+	Fri, 14 Jun 2024 09:59:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=X48ANnpZpKQn6FVdiODA
+	epUqBqw7Ho8W5zl8HyAQNVc=; b=NVpPFKImG4zlvpc1bIohpS/M7Xqwa8TSwhOw
+	gNVjxwUFXZ47igNHo3g9dBEKYZvfJ0FFAHVsIv0UNEl3SKcnj6FMh7l5AzC/z9Yj
+	PWyEnh6AhgOpUQFB1PxzQmmn1GMulv0Dp+6gA1hp+HCnutYaiAIHiKhJCHPZq/da
+	Vac1yBJexCezUxn5Zfnp/WBVzH4/nRc17FzNfZZ6CFjKJa9ss2I2bKG54V2QCtO7
+	bQ6Hvj7J5t3eRy1oMcw2JGOOmsPMFlsMHMb/ax4qB8l315qwz5ej6TN2n58LmunO
+	jBrpuepeu3kpPMbTHmCxyVyUB83lRgu5rpGIRMNa1oaLASg2+pJfJ+EVQgAIB/ov
+	CPhGrb5BpQnK/8awvkLPoxyy3DixzcKMgpvB3CRguL9WPAsMEzDlcRfnAGUXBREK
+	NzOIrYuWfZy1WD498MizZUCRZXsjBL7wdySb270PGa4yrARS1zjJ2y/+7ZzYlyCV
+	EGvWm+0XppGCTObxgVEOBKaDkJrKgkDNjJJ8s8pcYPop2e27sI8oKyJyKtcifY3+
+	XNJhFPjWy9HWyiF4UuJl4IvmgnkYROKYZ0XUUQjGk52J9Sk7FupsLhkouE/9DQFg
+	6YwL4E8anHC7CioF2OF5AxSua96H39aBNC8dLmTIQgpJl5Tko+qp97tdqDZUdgns
+	nl0+MoM=
+Message-ID: <0f315501-e8cb-4904-8c43-d9721fdef846@prolan.hu>
+Date: Fri, 14 Jun 2024 09:59:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH resubmit 2] net: fec: Fix FEC_ECR_EN1588 being cleared on
+ link-down
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
+	<davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>
+References: <20240611080405.673431-1-csokas.bence@prolan.hu>
+ <20240613081233.6ff570cd@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20240613081233.6ff570cd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2945A129576D776B
 
-Add support for the resets on i.MX8MP Audio Block Control module,
-which includes the EARC PHY software reset and EARC controller
-software reset. The reset controller is created using the auxiliary
-device framework and set up in the clock driver.
+On 6/13/24 17:12, Jakub Kicinski wrote:
+> On Tue, 11 Jun 2024 10:04:05 +0200 Csókás, Bence wrote:
+>> +	if (fep->bufdesc_ex) {
+>> +		val = readl(fep->hwp + FEC_ECNTRL);
+>> +		val |= FEC_ECR_EN1588;
+>> +		writel(val, fep->hwp + FEC_ECNTRL);
+> 
+> FEC_ECNTRL gets written multiple times in this function,
+> including with 0, and then you RMW it to add this flag.
+> 
+> Is this intentional? It really seems like you should be
+> adding this flag more consistently or making sure its
+> not cleared, rather than appending "add it back" at the
+> end of the function...
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/reset/Kconfig                 |   8 ++
- drivers/reset/Makefile                |   1 +
- drivers/reset/reset-imx8mp-audiomix.c | 106 ++++++++++++++++++++++++++
- 3 files changed, 115 insertions(+)
- create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
+It only writes 0 if WOL is disabled AND the device has the MULTI_QUEUES 
+quirk. Otherwise, we either write FEC_ECR_RESET, which resets the device 
+(and the HW changes ECNTRL to its reset value), OR we RMW set the WOL 
+sleep bits. And then, if some more quirks are set, we set ETHEREN.
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 7112f5932609..b3c0e528d08c 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -91,6 +91,14 @@ config RESET_IMX7
- 	help
- 	  This enables the reset controller driver for i.MX7 SoCs.
- 
-+config RESET_IMX8MP_AUDIOMIX
-+	tristate "i.MX8MP AudioMix Reset Driver"
-+	depends on CLK_IMX8MP
-+	select AUXILIARY_BUS
-+	default CLK_IMX8MP
-+	help
-+	  This enables the reset controller driver for i.MX8MP AudioMix
-+
- config RESET_INTEL_GW
- 	bool "Intel Reset Controller Driver"
- 	depends on X86 || COMPILE_TEST
-diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-index fd8b49fa46fc..a6796e83900b 100644
---- a/drivers/reset/Makefile
-+++ b/drivers/reset/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
- obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
- obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
- obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-+obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) += reset-imx8mp-audiomix.o
- obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
- obj-$(CONFIG_RESET_K210) += reset-k210.o
- obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
-diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
-new file mode 100644
-index 000000000000..1fc984bc08c0
---- /dev/null
-+++ b/drivers/reset/reset-imx8mp-audiomix.c
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#include <linux/auxiliary_bus.h>
-+#include <linux/device.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/reset-controller.h>
-+
-+#define EARC			0x200
-+#define EARC_RESET_MASK		0x3
-+
-+struct imx8mp_audiomix_reset {
-+	struct reset_controller_dev rcdev;
-+	void __iomem *base;
-+};
-+
-+static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
-+{
-+	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
-+}
-+
-+static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
-+					unsigned long id)
-+{
-+	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-+	void __iomem *reg_addr = priv->base;
-+	unsigned int mask, reg;
-+
-+	if (id >= fls(EARC_RESET_MASK))
-+		return -EINVAL;
-+
-+	mask = BIT(id);
-+	reg = readl(reg_addr + EARC);
-+	writel(reg & ~mask, reg_addr + EARC);
-+
-+	return 0;
-+}
-+
-+static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
-+					  unsigned long id)
-+{
-+	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-+	void __iomem *reg_addr = priv->base;
-+	unsigned int mask, reg;
-+
-+	if (id >= fls(EARC_RESET_MASK))
-+		return -EINVAL;
-+
-+	mask = BIT(id);
-+	reg = readl(reg_addr + EARC);
-+	writel(reg | mask, reg_addr + EARC);
-+
-+	return 0;
-+}
-+
-+static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
-+	.assert   = imx8mp_audiomix_reset_assert,
-+	.deassert = imx8mp_audiomix_reset_deassert,
-+};
-+
-+static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
-+				       const struct auxiliary_device_id *id)
-+{
-+	struct imx8mp_audiomix_reset *priv;
-+	struct device *dev = &adev->dev;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->rcdev.owner     = THIS_MODULE;
-+	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
-+	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
-+	priv->rcdev.of_node   = dev->parent->of_node;
-+	priv->rcdev.dev	      = dev;
-+	priv->rcdev.of_reset_n_cells = 1;
-+	priv->base            = of_iomap(dev->parent->of_node, 0);
-+
-+	return devm_reset_controller_register(dev, &priv->rcdev);
-+}
-+
-+static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
-+	{
-+		.name = "clk_imx8mp_audiomix.reset",
-+	},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
-+
-+static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
-+	.probe		= imx8mp_audiomix_reset_probe,
-+	.id_table	= imx8mp_audiomix_reset_ids,
-+};
-+
-+module_auxiliary_driver(imx8mp_audiomix_reset_driver);
-+
-+MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
-+MODULE_DESCRIPTION("Freescale i.MX8MP Audio Block Controller reset driver");
-+MODULE_LICENSE("GPL");
--- 
-2.34.1
+So I think RMW is the safest route here, instead of trying to keep track 
+of all these different branches, re-read ECNTRL after reset etc.
+
+Bence
 
