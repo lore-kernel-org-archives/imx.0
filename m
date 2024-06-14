@@ -1,92 +1,84 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from EXCEDGE02.prodrive.nl (mail.prodrive-technologies.com [212.61.153.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4518308F
-	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 07:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB51418508D
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 08:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718351968; cv=none; b=M/hHx4Q5P3/L+rZLcC7DUel7I1RU/dZoG8GSi1Z/CZHLvrjm9D84OqPVZbFYPXE0hFRpJKB2ab8XlDXNngZj6d3f2dvrLcHR+nfw5Y01mL+PDdgc4cSawIr7vQqVpwOum4FKeAyXOOuGrqT37D3/Q+DiLCazdMTGfwV/4SoZWVQ=
+	t=1718354457; cv=none; b=rKAmObHBtcCO3rffOCjQ8DvGufwAonI6P0Icc+YzQtnJ7kQOgT+cZtDCRbstSe9HbmqVRZ/UKawRi8rzD8LcxRa8/5oAYgdjiG4uHLuU899Cu99IUD0tey/ePLdlTSc47GG9xQPxAD43Jvg6j6wvv/YQKU30MGyeRINxfbE+up8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718351968; c=relaxed/simple;
-	bh=WLsQLfSBgdrbdcbL23bGEE1GXt0r8cyRHZPC0kRFL0s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZA/dlE74pLPC46v4Tu7do5vGGNDuMurJ6L2iCFfr4nv93WSiL3K+tzaBmaKmspd2PQqFAT0RdiCgWXA4zq/EHR06zMAMpHo582/SzIx2pTz5AD4M6gXPH0iSUPtoOJ7jTrBdNi9UeNchQvyaEdlXPZQT3Jbi8o2oA+SSmq8jtMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=NVpPFKIm; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="NVpPFKIm"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 5B1F0A0B23;
-	Fri, 14 Jun 2024 09:59:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=X48ANnpZpKQn6FVdiODA
-	epUqBqw7Ho8W5zl8HyAQNVc=; b=NVpPFKImG4zlvpc1bIohpS/M7Xqwa8TSwhOw
-	gNVjxwUFXZ47igNHo3g9dBEKYZvfJ0FFAHVsIv0UNEl3SKcnj6FMh7l5AzC/z9Yj
-	PWyEnh6AhgOpUQFB1PxzQmmn1GMulv0Dp+6gA1hp+HCnutYaiAIHiKhJCHPZq/da
-	Vac1yBJexCezUxn5Zfnp/WBVzH4/nRc17FzNfZZ6CFjKJa9ss2I2bKG54V2QCtO7
-	bQ6Hvj7J5t3eRy1oMcw2JGOOmsPMFlsMHMb/ax4qB8l315qwz5ej6TN2n58LmunO
-	jBrpuepeu3kpPMbTHmCxyVyUB83lRgu5rpGIRMNa1oaLASg2+pJfJ+EVQgAIB/ov
-	CPhGrb5BpQnK/8awvkLPoxyy3DixzcKMgpvB3CRguL9WPAsMEzDlcRfnAGUXBREK
-	NzOIrYuWfZy1WD498MizZUCRZXsjBL7wdySb270PGa4yrARS1zjJ2y/+7ZzYlyCV
-	EGvWm+0XppGCTObxgVEOBKaDkJrKgkDNjJJ8s8pcYPop2e27sI8oKyJyKtcifY3+
-	XNJhFPjWy9HWyiF4UuJl4IvmgnkYROKYZ0XUUQjGk52J9Sk7FupsLhkouE/9DQFg
-	6YwL4E8anHC7CioF2OF5AxSua96H39aBNC8dLmTIQgpJl5Tko+qp97tdqDZUdgns
-	nl0+MoM=
-Message-ID: <0f315501-e8cb-4904-8c43-d9721fdef846@prolan.hu>
-Date: Fri, 14 Jun 2024 09:59:16 +0200
+	s=arc-20240116; t=1718354457; c=relaxed/simple;
+	bh=jLxkqDgK66uSESkHcfpgG41Y+W1bF9Kp28hKCuGXkno=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FHKjPzKmgfzaP2S4Xkw+nx8T0ipSt9wPpNHIqS2Mmm+D4gzF/7Ab1uXXoDBLLICMnoa0cHKBg6wy9mxWa2n9WKk3hYTdllgnUn+gqS7kIbF22gG4wdxP8NqFC78UVHzVrBpzICi73xsB9wxM9HpjiYbMDGCnpR0nYt+xoL3ZmVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
+Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by webmail.prodrive.nl
+ (192.168.102.63) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 14 Jun
+ 2024 10:40:47 +0200
+Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
+ (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 14 Jun
+ 2024 10:40:52 +0200
+Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
+ EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1544.4
+ via Frontend Transport; Fri, 14 Jun 2024 10:40:52 +0200
+Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.94.2)
+	(envelope-from <paul.geurts@prodrive-technologies.com>)
+	id 1sI2UO-0053sY-58; Fri, 14 Jun 2024 10:40:52 +0200
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
+To: <andrew@lunn.ch>
+CC: <wei.fang@nxp.com>, <shenwei.wang@nxp.com>, <xiaoning.wang@nxp.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Paul Geurts
+	<paul.geurts@prodrive-technologies.com>
+Subject: Re: [PATCH] fec_main: Register net device before initializing the MDIO bus
+Date: Fri, 14 Jun 2024 10:40:50 +0200
+Message-ID: <20240614084050.1205641-1-paul.geurts@prodrive-technologies.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <51faeed2-6a6b-439b-80e6-8cf2b5ce401a@lunn.ch>
+References: <51faeed2-6a6b-439b-80e6-8cf2b5ce401a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH resubmit 2] net: fec: Fix FEC_ECR_EN1588 being cleared on
- link-down
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
-	<davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Richard Cochran <richardcochran@gmail.com>,
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>
-References: <20240611080405.673431-1-csokas.bence@prolan.hu>
- <20240613081233.6ff570cd@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20240613081233.6ff570cd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2945A129576D776B
+Content-Type: text/plain
 
-On 6/13/24 17:12, Jakub Kicinski wrote:
-> On Tue, 11 Jun 2024 10:04:05 +0200 Csókás, Bence wrote:
->> +	if (fep->bufdesc_ex) {
->> +		val = readl(fep->hwp + FEC_ECNTRL);
->> +		val |= FEC_ECR_EN1588;
->> +		writel(val, fep->hwp + FEC_ECNTRL);
+> On Thu, Jun 13, 2024 at 04:41:11PM +0200, Paul Geurts wrote:
+> > Registration of the FEC MDIO bus triggers a probe of all devices
+> > connected to that bus. DSA based Ethernet switch devices connect to the
+> > uplink Ethernet port during probe. When a DSA based, MDIO controlled
+> > Ethernet switch is connected to FEC, it cannot connect the uplink port,
+> > as the FEC MDIO port is registered before the net device is being
+> > registered. This causes an unnecessary defer of the Ethernet switch
+> > driver probe.
+> > 
+> > Register the net device before initializing and registering the MDIO
+> > bus.
 > 
-> FEC_ECNTRL gets written multiple times in this function,
-> including with 0, and then you RMW it to add this flag.
+> The problem with this is, as soon as you call register_netdev(), the
+> device is alive and sending packets. It can be sending packets even
+> before register_netdev() returns, e.g. in the case of NFS root. So
+> fec_enet_open() gets called, and tried to find its PHY. But the MDIO
+> bus is not registered yet....
+
+Valid argument there. I was trying to make the initialization more efficient,
+but you are correct.
+
 > 
-> Is this intentional? It really seems like you should be
-> adding this flag more consistently or making sure its
-> not cleared, rather than appending "add it back" at the
-> end of the function...
-
-It only writes 0 if WOL is disabled AND the device has the MULTI_QUEUES 
-quirk. Otherwise, we either write FEC_ECR_RESET, which resets the device 
-(and the HW changes ECNTRL to its reset value), OR we RMW set the WOL 
-sleep bits. And then, if some more quirks are set, we set ETHEREN.
-
-So I think RMW is the safest route here, instead of trying to keep track 
-of all these different branches, re-read ECNTRL after reset etc.
-
-Bence
-
+> So yes, DSA ends up doing an EPROBE_DEFER cycle. Not much we can do
+> about that. We can try to keep the DSA probe functions as cheap as
+> possible, and put all the expensive stuff in setup(), which will only
+> be called once we have all the needed resources.
+> 
+>     Andrew
+> 
+> ---
+> pw-bot: cr
+> 
