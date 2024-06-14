@@ -1,98 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97951146A8E;
-	Fri, 14 Jun 2024 22:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A61B1850BF;
+	Fri, 14 Jun 2024 22:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718403319; cv=none; b=ixUP5L/by4ax/J98AUE6/wD6gHivHr6PU3YOLHzK260g4Ux6hhx0ZQ74HwjyGK0en4UKkISBqC9gB1nspXETfKqqoL+ZMufFgL75s8GEOBH93Yq3MmSnurY1adLWwR6z4pcJq7e7m/ofZ9bdejf6931K8wERnQjWyfcz8Wa3hIs=
+	t=1718403945; cv=none; b=toWtc3Q0yfehbbAhBnrwHjCF32jWe5Yl3TnAf8FDSfcH48V4UqMeCJAoMX8BIYPjCTOqh2V8s0M+EE6LIkJldJkVztHXDOXnVARuAsfMyY5rpua44XaBOMRHveyLn7FQb3iMNg5/MSO/jDJAqz7HBaCgYnymoHl/DAD8zO0u3aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718403319; c=relaxed/simple;
-	bh=1cjEIBWjtesSOy+Z3gVYh6H7ZTdBXSafNwRgGrntRso=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=lZu+C0Rb1ca4+Q4iuWYykNaCJRp+0YdQbPr8xht8NAnvPq+l1EcOIj5vIHDZzzhDj171+o9NH0C6mmjbXYf2Zgm2dGc21AaaLkZWMStPFKMfkrV3vBWWgGjBODrgiG4zilccJM41aQW6NYj9Pa/4gW3S1r6dFtU4N0XWu1C600s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evd8s+CA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718403945; c=relaxed/simple;
+	bh=6YgvbtWNyXFx8I2W9QnTK3WvMLjx61KuOPEvg44eqqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KZpwYnaHTrRPdicr/sXZ5vi52+qqqdiGz2LMWhEBsrUBuNNXCwAq0rAHQMGm8mOkc/G2iv6BR5dJ07pUCeUPOaTBY+b1OxAXo9jYEGR4PIqPfN7LT/+Lzfs0VLWNLyOQq/e9VYycl9aQ6gFa7wGfLzAL0cs54dbC1aONRZAjVvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X8bdn6kZ; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evd8s+CA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18A5C2BD10;
-	Fri, 14 Jun 2024 22:15:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718403319;
-	bh=1cjEIBWjtesSOy+Z3gVYh6H7ZTdBXSafNwRgGrntRso=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=evd8s+CAnFVf2kS1uuD2kMPKo1GZREY2x3ChpfAf7EScQiNCzRbjew9KHw0VYPmOi
-	 N/LL2sCs1HvdySJ3SGyxrRb4DAB5R1y3PKxFPtBQ6bzonydYfp5RRBbIlIO+e6yBGG
-	 m0MmPCAC9SmrVfKjf4VTF9wAk59Oto5YMXBTGXPWtBkCjHHR3cVwsEEI5PFs5yLSra
-	 VqWuJDOutbFEsEk8HpW8u38oXDHxq9FJiJ4UAYmvGpb9u8cVyT0C40uvpqByeq76zL
-	 m/23duFipAqg7oTvCLvMfiw9U9X2oxSsEPvd8WqKYwFAGdh1XTw4iHY05kTDnOlKLa
-	 zvdyYmyQITYEQ==
-Date: Fri, 14 Jun 2024 16:15:17 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X8bdn6kZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718403941; x=1749939941;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6YgvbtWNyXFx8I2W9QnTK3WvMLjx61KuOPEvg44eqqE=;
+  b=X8bdn6kZXvQLclfeXs+jcH6IHH1U278A0jTahTYBHDgCp9Fns2g9nTk2
+   HRA0V4i3JWbgg+l+VKhkQHQIl9+zmIbThOrIujhzuMc1R3ZjyluCkdC5X
+   9vTxh7yr6rQ3bXC58YRyPWCnTOHTCvCcjHnTTWi4MSm9wtRDANZKRrr7C
+   oNWW+zZ9Avg6a27uLiArY7U6QZH/VErLhREyYJ2uTQC9Ys6Hsxa251not
+   dwaZV5TqWjogqsS6jEYHCUr1LS6LPe+qCzn5L8SxHhkjNXLf9437gmJR+
+   2ACu+Zybyj7Ow2oLWHceZFiS6qFQ6LHtqESrQcU5U37bhsWLFlmP1Hp0H
+   A==;
+X-CSE-ConnectionGUID: EZdIKrLrSnaD7UBW36Taww==
+X-CSE-MsgGUID: 5X1WiV8LSx+kh4mDfFUuEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11103"; a="37835241"
+X-IronPort-AV: E=Sophos;i="6.08,238,1712646000"; 
+   d="scan'208";a="37835241"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 15:25:38 -0700
+X-CSE-ConnectionGUID: ReAJNsFFT2SLqVFuiMtE7w==
+X-CSE-MsgGUID: 9mAHqE0uQmKhxmwPtsJ7nQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,239,1712646000"; 
+   d="scan'208";a="41340753"
+Received: from lkp-server01.sh.intel.com (HELO 9e3ee4e9e062) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 14 Jun 2024 15:25:26 -0700
+Received: from kbuild by 9e3ee4e9e062 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sIFMJ-0001rZ-0p;
+	Fri, 14 Jun 2024 22:25:23 +0000
+Date: Sat, 15 Jun 2024 06:24:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Sean Anderson <sean.anderson@seco.com>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 2/2] dt-bindings: net: Convert fsl-fman to yaml
+Message-ID: <202406150653.31VnJ0A4-lkp@intel.com>
+References: <20240614-ls_fman-v1-2-cb33c96dc799@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Laurentiu Tudor <laurentiu.tudor@nxp.com>, 
- Stuart Yoder <stuyoder@gmail.com>, Conor Dooley <conor+dt@kernel.org>
-In-Reply-To: <20240614213109.2518797-1-Frank.Li@nxp.com>
-References: <20240614213109.2518797-1-Frank.Li@nxp.com>
-Message-Id: <171840331790.1657462.8424849531522839529.robh@kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: misc: fsl,qoriq-mc: convert to yaml
- format
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240614-ls_fman-v1-2-cb33c96dc799@nxp.com>
 
+Hi Frank,
 
-On Fri, 14 Jun 2024 17:31:03 -0400, Frank Li wrote:
-> Convert fsl,qoriq-mc from txt to yaml format.
-> 
-> Addition changes:
-> - Child node name allow 'ethernet'.
-> - Use 32bit address in example.
-> - Fixed missed ';' in example.
-> - Allow dma-coherent.
-> - Remove smmu, its part in example.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ------------------
->  .../bindings/misc/fsl,qoriq-mc.yaml           | 187 +++++++++++++++++
->  2 files changed, 187 insertions(+), 196 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->  create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
-> 
+kernel test robot noticed the following build warnings:
 
-My bot found errors running 'make dt_binding_check' on your patch:
+[auto build test WARNING on 03d44168cbd7fc57d5de56a3730427db758fc7f6]
 
-yamllint warnings/errors:
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-ptp-Convert-ptp-qoirq-to-yaml-format/20240615-043704
+base:   03d44168cbd7fc57d5de56a3730427db758fc7f6
+patch link:    https://lore.kernel.org/r/20240614-ls_fman-v1-2-cb33c96dc799%40nxp.com
+patch subject: [PATCH 2/2] dt-bindings: net: Convert fsl-fman to yaml
+reproduce: (https://download.01.org/0day-ci/archive/20240615/202406150653.31VnJ0A4-lkp@intel.com/reproduce)
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.example.dtb: dpmac@1: $nodename:0: 'dpmac@1' does not match '^ethernet(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/net/fsl,qoriq-mc-dpmac.yaml#
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406150653.31VnJ0A4-lkp@intel.com/
 
-doc reference errors (make refcheckdocs):
-Warning: Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt*
-Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
-Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt*
-MAINTAINERS: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+All warnings (new ones prefixed by >>):
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240614213109.2518797-1-Frank.Li@nxp.com
+   Warning: Documentation/devicetree/bindings/power/wakeup-source.txt references a file that doesn't exist: Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
+   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/display/exynos/
+>> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/fsl-fman.txt
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/ptp/ptp-qoriq.txt
+   Using alabaster theme
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
