@@ -1,75 +1,62 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2068.outbound.protection.outlook.com [40.107.249.68])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2070.outbound.protection.outlook.com [40.107.8.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB31A38DD
-	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 20:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98A51474D3
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 21:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718397247; cv=fail; b=aX17m/X0v72bdiywxxp8xMychjzGtcFwOmtKfjWAXnxVDG8iE/M53YrSUVSdFtW7IbfBVF2qbWlV8P5ZBy6QbT6Gd8Hvkg9swSf46KfmDS80BoqJ+vdDDgcvRFENiODt7VThrFBmu5MJB3RBF7L+e7x7YjTJMS0c1UyiwmbSZ+o=
+	t=1718400691; cv=fail; b=IppEWYT2V6I4kI6Evz5xXTEIadlGS6YUYvBvddguV1yibGZ131lvR6BvZGW1fqA/dku3js2IAxwoyLkS8u8hPByhuFLZLvT8tybp94CpbDnlar9rSaAHtaF6lzEwWIG9mzRH2yRU6brKEEA5TicL7CfvuRhve4cj0tgPbhXhrIk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718397247; c=relaxed/simple;
-	bh=PYixBxTg8e/FLGAuUo00iiStzHXBVdtj7NLq+ndjjzs=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=SrUZNb/T2ubnpzcECuHXESfGZ9fsAq0Rj/TyhQK7u9Hf38XhG3dmomz3KFWAhtJdac7Y6jFogvE1vN4tFXVBwDXsVe6Um7DXv7hiZmvvjRYx2cVaq1adTQePcxMAaAmC87Uo/CjgWhvIPryo+/hNzYLJ1f2U2RNO8l6K0cQGWLM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=jm+USOXb; arc=fail smtp.client-ip=40.107.249.68
+	s=arc-20240116; t=1718400691; c=relaxed/simple;
+	bh=Lb3hvrkmqcvmfxBkj3DP3AJh+ZCrP3UYcYuayN7sArk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jFJAerj87KgGZcpqB1Mdia1xkXiWChEulVZzSBgloUWlc2h1Guz/8wEaayhtL1OvwDgRX48HBWEpWSWmrf5HRyZEmP6aG6Vo5c/fNmptP+f222eofwkNAT30Sja6JTUzwVbxqb4YckYKjlb45a3iqsVhmtRqfGWWx8Pxfaf76RQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=WOx9PaW3; arc=fail smtp.client-ip=40.107.8.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="jm+USOXb"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="WOx9PaW3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WW8xZ/7WXCgEjNXbdTQRK+VTek6j18R7RxyztgF8onPC6RHKfwezCzAqBoi99xTs8FjhQzkw77XTIQv5T9/SmJBIEOT8W6c989qsDFarFz4IBVakXW1xF73FEypcJrVrbyouy5DOJYG2cUQp0aFuuKlqGyW3Leue7Ur8aeNrfjQnjJFDuSaAljcB3THjmxygOzJlMhGTRou3SygZelaksWo9NS8rOgM1ASNS+l41D9YnxyzH9FEQ5hUBedcqc7d60itz/HwWIhuczrgbRgHn1/GshxmwnnHvopSU2+9mMWJTC0gtgO0/twOt3eel9a72lRJW4R88h54/Qif3Bo/OSg==
+ b=Ca9e8uJlhRZupYYQKZMMuFZpuk+xM9oZ+ba6SUU4yeX9TS4er6rUPr8+570XoTiaKzEVmHK5EGdgvp0dHeAJcGH6+++aKaQDDYl/iJfG/05VFRQO3ko5lWRgQTHXgPyQcjibuxC2mWKmAuiXctg/vxkkQQtgsl6mm4HpjKAe3dQYkVTgdMexdeZ//j+WnlwdHhBInAYQnZRTo+kKx8gV18/7OpEz7FDroIs4nbC6HqpBxXiRRowW0VtNd9PSsOzqkRQl/+VOw0k1/EM2/Rl+p1ADpSMVDDAVFrCLTb2l2vgpWCXEq4U9YSupSYFK2SkWIlx60JMuv905EkEkFq9esg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cd2ZIo9d/STbx95ZAO66aJEpqZ5DhXuiNjVDs8jEqN4=;
- b=IlH287bN3LN8/O81bq5avTAhbMVOV6w3tGdGUtIhlTTEQ/qDAUHfuRlAblZKXSkOziJ++jSsCB+6T/RHCjB9IXBuKP4UOscUWVQS0knkRZai+RR2ZOR8MHl5gn9eswO9EZx6nm/eJhOzxTypTcjVlmYozb7w4po0kJJI7Dkw0Ntefek/cb5J87CYooEZB9SwhpIcK9Y3hc9BHnCZYX54kCq6GRtJEbCbAKoxhZcYe89KX4QlvhSQVjNvDTRakPCB7JNwhnb570NrTaSD+FSqr3Ktk5LawOtkHZJLEKqgDvwsPxSzEoYMNfcvxFNyYpyXBxBQeVC4tcVAIjQJsPOlnw==
+ bh=RVgRHfv4zN0uB22pF3kVE8npmFyTn+ScWrwNyF5YDzw=;
+ b=nLjcdiHW7xgXCPgiNudQ9NV8wPznhUEWju5zJ4OmQs5yCyurjC8w9sZbOzq9gVcZlqjYiF7rG0yD/CYzLRYoyS6tOu3WeP2qqEjUX/h+gXPA6VawtDf2NEY/AJ+2xW6bvAoshNPXX+Y5zUEv5qd7DWMV9HS1v4veB/LieYXKWQIdmAK4w4PLbZbBqcEpzhlEvTwQF0+hkJL6RWm5trXYFIMVgPybUL92QTUAh8RdpTMC4eiHlOoUgI4HBAyZblOiYtsQpb+29PBRZHU2yVCyvq1DgGohE4jw0U29qUN8IOh3A1rEBm8uOdDhbab4Y76/SMZNfJE4/px7o0mWjE/wPQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cd2ZIo9d/STbx95ZAO66aJEpqZ5DhXuiNjVDs8jEqN4=;
- b=jm+USOXbneEAI1kbf0bPr6jXiXFJ8/7f3XYpPOnQSmuLNZcKEipJkVeVCpPcd8Z3aarOmzJcf86SUa4ggg6wAITNbOBUAyjAJR5husHzjmVHmk+px0UkNY8TENG9NeYRiWL5usFjDDaYa/1LtelIsne+NT6/1AdELfWwZkbqZ1g=
+ bh=RVgRHfv4zN0uB22pF3kVE8npmFyTn+ScWrwNyF5YDzw=;
+ b=WOx9PaW3YNVJw3G6fQNVUNQYX1CP3OpK5zrZeUAhmrXbCmq1o+CRqKT4y5um9BNIDrD0OcUWFkPVlMPoOSmZYylkpwD/EPgASWCLFiK7PDuy7dVnkZ1GAUZ0OvjK+0zVwaZevYV/ZwBxNwL8chNPcsnl0joLkrJsdZWbUoaEULc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB10203.eurprd04.prod.outlook.com (2603:10a6:150:1c1::18) with
+ by VI0PR04MB10420.eurprd04.prod.outlook.com (2603:10a6:800:21a::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.25; Fri, 14 Jun
- 2024 20:34:01 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.22; Fri, 14 Jun
+ 2024 21:31:25 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7677.024; Fri, 14 Jun 2024
- 20:34:01 +0000
+ 21:31:25 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Date: Fri, 14 Jun 2024 16:33:29 -0400
-Subject: [PATCH 2/2] dt-bindings: net: Convert fsl-fman to yaml
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240614-ls_fman-v1-2-cb33c96dc799@nxp.com>
-References: <20240614-ls_fman-v1-0-cb33c96dc799@nxp.com>
-In-Reply-To: <20240614-ls_fman-v1-0-cb33c96dc799@nxp.com>
-To: Yangbo Lu <yangbo.lu@nxp.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Madalin Bucur <madalin.bucur@nxp.com>, 
- Sean Anderson <sean.anderson@seco.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1718397228; l=35183;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=PYixBxTg8e/FLGAuUo00iiStzHXBVdtj7NLq+ndjjzs=;
- b=vvcXf7ztvT1/pEaN5S983OMbMpn8dKjPVLrZhj+N4vlUkG4Vhio2Q7403BhfTXNR7kg2+gk1h
- V9XQ/hE/XEQCYsdPQDLSWkM5qSEiooWaean3emA0fCUmkRtolT95Ujp
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR11CA0075.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
+To: Stuart Yoder <stuyoder@gmail.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:QORIQ DPAA2 FSL-MC BUS DRIVER),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: misc: fsl,qoriq-mc: convert to yaml format
+Date: Fri, 14 Jun 2024 17:31:03 -0400
+Message-Id: <20240614213109.2518797-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR11CA0060.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -78,1298 +65,491 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10203:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4682770-1e70-4b5b-24e9-08dc8cb152f8
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10420:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5fb8c536-e5cf-4b73-ffb2-08dc8cb957be
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230037|366013|52116011|376011|7416011|1800799021|38350700011|921017;
+	BCL:0;ARA:13230037|1800799021|366013|52116011|376011|38350700011;
 X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?Z2pJcmNGaTAvc09uRHp0QUg0MTYraHBRa1dIQ2t2RFpTUmZsUTcrWkpLQUNs?=
- =?utf-8?B?MHRER0U5Wm53UGpYdXR6d3RiWSttU0NqUHhFRkxRYlc4RWJ2d3FnWTJlaG84?=
- =?utf-8?B?bnRFUHI3NHZpYVJkNERQZkVwOTN0c0tELzFDaVlmdkFtZDZGejdRZFh5UWla?=
- =?utf-8?B?RDlQZWIydFAwN3RvYjE5NW01NlFLZkF5NldKdk50Ny91SkJXblAzUnUvMWxW?=
- =?utf-8?B?U3F0Z0hFRlpyVnhNWVphWnRITy81bGUvTDNNREtmeWo2aGZFbW9ybGpCcDJ5?=
- =?utf-8?B?U3FWT1BkTHhreU5aaCs3K21pZk42UVJWNjhvOC9GRGJWWkdRRjhwaEJtVDll?=
- =?utf-8?B?amRCa1FoMWk2dVdEU1U5RlVWejdQMC9MWWRabzBxcDZDelJ6cWQzeGpCZ2pw?=
- =?utf-8?B?eHpDNXoyYzBqSkpiNWVLNVFQWlJKVVhaSFRPV05oRkJWOGFEYy9WTnBjd3Zk?=
- =?utf-8?B?UUxjRFV6ME1zUE9EMldKREZFSlRmdVFDTHpseDdRVWdScXNYMmw2bm04OEFG?=
- =?utf-8?B?OC9GcWNIVHk2R3lZSHNsNGRRMTB1MmNjQkdqUUpDeXVFU2ZLNko0TWVvRllv?=
- =?utf-8?B?c1hxRko5Mm9MOEpsay9LYmlMMGhzcDlySkZrMnU2dTFkc0N5UDlVaW5qRGdU?=
- =?utf-8?B?Uml3bFRCM3dheTFOU2F3WUFBYkMreTlRWjFZd1daNjdGVWVGNmtzaksxNWgy?=
- =?utf-8?B?M2hQMWRwaGlpZ3lrSElhTUZIKzlpOW42czlHQ00wWlZJYU8zUXU3VWVtSDk1?=
- =?utf-8?B?QjVIWDBtdzBZOEZDR3BQQWMwYlhnTVFhQ3huWVY2M2t1b1hMemtlbzBVVldX?=
- =?utf-8?B?cVJVYlBYWmpvL2ZpTkNNRWkya2RPb1VMRDFDeVpCTnN5MmMxZzI4UktxL3Y5?=
- =?utf-8?B?NXROampCZElPSEMxOGxTUGRLYkd1UlV1TXRtZHhVT212eHA4VC9Cd21vNnNm?=
- =?utf-8?B?Wi9OKytlejVJRVhVM2cvaDlMZHU3ZW41N2pDMDdQYmlHY285dHlDblhJU01n?=
- =?utf-8?B?UVdLc3ZxWDZJLzhVdVlPcUtOd3RBRXBMOEM5elJzcDRSbEdKTXBDS0ZxWnN3?=
- =?utf-8?B?b2xrTjY4UlQ5Q3lWdlFCNVJHMWZtZkJ6b3ZTajdGeEN6SHZZWVVGVFpJK2tx?=
- =?utf-8?B?citzMEdRWVBiQWpUL2lRU1VsK0JxdUN2bUxMc0tQWWZ1UmF4eHAxSWI5L2FL?=
- =?utf-8?B?WkhNVENTMTZTblZqdnNpMm04Mys2SFN4VWdCdDdIdVRJZkxDZ2x1NkUwVGpo?=
- =?utf-8?B?bGlJZ0d4SlVZUlRaYWl5VC95RVBjdm1lR2xHSlBwU2U3bUpVRVZxWUFFeXd3?=
- =?utf-8?B?MWd0SWsyTUZ3ZnZxUlZqQTRVdzUrRk9vLzA5SncvMWkvc0g4NUNuMHdxSWxW?=
- =?utf-8?B?UTBVWTR4aWNNVjV5MWhHWnFqQThQSUVYbkx6czkra0xEKytZQURRSjQvVnZl?=
- =?utf-8?B?UHBaY1N3VlcrVXQ2UkNhNlEzOGlPaWhSYkgyNUxtTmdRL3d4ZVBsV1BNUFRv?=
- =?utf-8?B?eWtQWkk0RXhtUDRrdjZxdVMzMjVKYVRHMkpoRFVNdkhjL3J5UkRIR2M0TUlu?=
- =?utf-8?B?d2I2Rk1yek1FQTBRdU9XSmdpOXVDaDdzd2xCdWxCNVpuSXZTcUI3OVQwaFRo?=
- =?utf-8?B?dGgzTjhaUUhuU25LS3NxWitHbzhTS2FkL2dyTVlaOWN1ZGRrSStOZWtRdzlP?=
- =?utf-8?B?N0wwdTk4RnVUbytMQjFxRWpneUxvUHlIdUpsOGhZWE9JTFVScWZ3dHRsWi9X?=
- =?utf-8?B?Zkd5K1dkQXRGVWZUbW1sUEo3Q1NtU2FoQkFtVGgyWVl1ZVFCRHR4RDROalZ2?=
- =?utf-8?B?UVdHWVFjcm9Bb0x2UlduZz09?=
+	=?us-ascii?Q?jfOVntAI4HtssYlX8guLbrrUnq+rAjTkiPoXRaLN6gPezuqfnKIlXMDTMflE?=
+ =?us-ascii?Q?eGFs0RVkcNxs4y8Vo79ZnQ8LCwb1/Oh+aVYwIUUnNDSGS+9kiR5IM4h/EYma?=
+ =?us-ascii?Q?UZZwhTmgiIDfTp56JHeuqwGTXVb5DElY4uez9w6dcC+jjsdN9eCs/79nlemk?=
+ =?us-ascii?Q?g+dbsOTWASMv1nhoHdyW8CF9CPzIOngoayIvk8unZhWjV7hQyC4H258F8waS?=
+ =?us-ascii?Q?hfY6PuaDsWfDDKFWDFethickidRPz+gX3F/H0XkqFxJp6GttGTKOYMAYfi/p?=
+ =?us-ascii?Q?1bT5naatWte4hkCTKKY8pDdQGIgIPPYuyHANoq/zOKTDSLtKWyrpl8HwnQUE?=
+ =?us-ascii?Q?cedSDW90m7H1QbLQB+qg7VgE1iHsZYX+8lmrNk0tzbBNjQd66XTZxtPkiQgo?=
+ =?us-ascii?Q?SFXt/s222ppirk+nV2l+pCaA0CdN7LrSubrlHASTYze4PSr120/b7ThqaYl6?=
+ =?us-ascii?Q?JXNh5VtemIfx9Vglk3O0SO9rzgrb2DA5u1owk1N0k4zNX5qZcwNIc0MwQsh9?=
+ =?us-ascii?Q?ghx4hfuIYvLTnkKL6hLBU+nZuT6hepYTwB7AhAU4o0LbXQTIMp4nso+TjV54?=
+ =?us-ascii?Q?LT+Rsf+KBeFG0nnF1JE9Iozjvo9aE8W/rt5MEzBbge6VVCfv3NQwhGi/bwrs?=
+ =?us-ascii?Q?H/uzclWBDyDf9N5dw9+kOzzo89M18WAulcdlXRdzJIIOJAO5xK1IRn81xAsz?=
+ =?us-ascii?Q?Kv46hgscHpSq62esgvZmj1CnSI5RdezWreU3zCXPOHwjrE2BIDXYm/s3TV7X?=
+ =?us-ascii?Q?Gi2yUI0hcWTQOKnQDQ50vw+4tiU5rRWTxunvb5tsNBWs8knoGYFLgeX3ybzK?=
+ =?us-ascii?Q?omfaB+s3P9/CXAUlU1oWmdlZ2v6MZb8CERI/eMXqRTGzyELBbdtM5w5fDL5d?=
+ =?us-ascii?Q?dN35x0dYd26X0ekxthFBl14zQx3Enw7dDpZS9d/u6uKQ4QxkLONsGQ6Wz19N?=
+ =?us-ascii?Q?3ZKWoZC9ZIiFd2RBx7hpYigtbJ/kKbPexoEevLyl0MLTMC5+zpUHYbB41tTl?=
+ =?us-ascii?Q?y1BSXVedZbEhV6mVwpUQ2J3AYeKKRQJtMOYyDXIWYV1mK/5Xwgq1CKeVkJMO?=
+ =?us-ascii?Q?wz78blPK0DxdhKf9R7tqtiZMGuBYlMIxQccKODRkNOPTnuN2tYJnpqkP7Egm?=
+ =?us-ascii?Q?4YPNTBEghERyQf0o3gwfLU49EnbrQ0J4Fot2Vwd1b8F1DAfmnRPqSLEKrKgD?=
+ =?us-ascii?Q?qgYH/5qmNi5oqQxOgojaQFzz08lIAMezATdTLmKGEzbZPGdTS+Lgl9GuUQsW?=
+ =?us-ascii?Q?jh0EGNNs/7AZ05CaNq05RlIAEVYv5NlFROoX8BdgLWpbzW7p7d0pSOQ9sxOI?=
+ =?us-ascii?Q?1nN6//GJqyTgpv5V43LXvIXt?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(52116011)(376011)(7416011)(1800799021)(38350700011)(921017);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(366013)(52116011)(376011)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?T2lsRm5WT2Ixd3YvbTVIMUF1MlZVMDR0Z0xNaThYWldmR0FndG52a2h2NjdR?=
- =?utf-8?B?QXBzdGRiN1kvMzJnSjZLOFFFemFHdFRHYTVpZnpEaTNnWkw4VUsyTkdTUVVl?=
- =?utf-8?B?QWlGWis0YThYS1JRSG13aG5wR3E2bmlQVVpBZmo4WE5LanlLK2xyOEdUUjZR?=
- =?utf-8?B?ZWFBUUpCYlBCK2tlWk0rMVpDeGh0V2RZK0JVYlNvb1lhNi84SjdLb2VyUWNX?=
- =?utf-8?B?UjJzUzdoNlFlNitWV1dGWVdWcldtL0lKaFNpdU5zQVNuN0wrK3pIOWdGRGc3?=
- =?utf-8?B?SGo0MUFKY2toNVRFQnhSNFdTMnVOaGhSaDVtVUdJeWV5VEtidFJyWTI4UHph?=
- =?utf-8?B?eGRIclVlZkdzbmZUUzZHYjV6bjA2MTRzV2h1ZDdTYVlmRURTeHNpN0grY293?=
- =?utf-8?B?bmxMZW44aVRiV1NwR0d6SW5sWDcrbzBsbXp5dFJESk5ocmJDVnRSajZNOVZE?=
- =?utf-8?B?Q1dxMEU3OXpIK3M3R3B5Nld0ZGdQUTVmMktTMXJwTXJYZnpYM1NQbmxQOFc4?=
- =?utf-8?B?NnkvOUNHdU9kOVhXTjRKSWw4UXZRTHpwR1NrNzQ5TEFJazdZZWRXdTRjM3Zq?=
- =?utf-8?B?TUdud0NwVDBXMXp5bTBJaHJoeVlXUjhSeXU0NlZxNlhmTmgzQ1pGMHlxMHlW?=
- =?utf-8?B?MmZ6d2pJUWlaSUlDWW95UzNoeE91SUowWVNRditpbkN2NFgwZnBUK1hqcXNX?=
- =?utf-8?B?TEVNUFp6Qmw2bHJ6TERzcDdMeFE1UWlsdlpxeVQrcnh2VGZ4b2VLSGMwRHVW?=
- =?utf-8?B?aDQvRktLTzB6NHptK3FReFpuZTZyc3RXQ3UyQytXWlFsMmVkTzZxaTBFRFQ0?=
- =?utf-8?B?REprMUdjOFZsSXZxQlY4YjliZVdQaEpYNHZ6SmlUV0Y3Y3NHbGlaR2JKM1Rq?=
- =?utf-8?B?WG9EME53aDVMMGFjUWt2QURaL0tkd3M3aTE5SDdwWXJUWFhBRjI0ZXpCVHdj?=
- =?utf-8?B?NnhLMDlzT0dJQ0d0THp3anZhTXdWby9Sd0VYVWMrN1VIMVRyUUZhVlB4SzJK?=
- =?utf-8?B?bFQzUXJ6LzM1VnlOa0pEM09URzMyVm4vSWpoZkNoTGFCNzFWTXVNY1I4ZmhG?=
- =?utf-8?B?OTZjdjM3Zmc3cTVjT1I5dWROeGRnQTYybGRuNzhJb3pNelM3LzY0Q2d1aHVD?=
- =?utf-8?B?TTF1bGdOVDRGOWJPYmFQdlFPZnMrSWNXcWRhQTUwd0Y2Z0ZTSW5EUC9nOWFo?=
- =?utf-8?B?bUtFZnhtdzBadnFRN01SZTBRZG1JeDZiTEhxQkU0dDkwQWFmVERRN01QV3R4?=
- =?utf-8?B?d3daNmZ1ZUI0eWZUc0NzclBmSDlRMUszUGpMK1pWUzRkcnprd25EZyswaEpO?=
- =?utf-8?B?TTYrSDdMcW84TzVheW1ybGlTSDhqMmZqczl5MFAzUEhrSmpPNDVzaTdxZzdZ?=
- =?utf-8?B?LzhDQlJ3aFV1V1g1M1BjT2cxNnNiejJYWnZWL1poWno0a0U4UnZiV2pCNVVS?=
- =?utf-8?B?SU1Ib1BiYXJ5cW9RZ3RMOUJCSHJuR2JpejZkOUswZkRtUi9ZRmMxMUdDZGtL?=
- =?utf-8?B?SkVVbUxVY201OUVNU25OVFJ6QjdyaXlzdjF2QVMrZ2RNZGsvcE40M3MzSE1H?=
- =?utf-8?B?MTRGRmYwVmVmNmd0RHluMmE5ajlPN00rU0RRYU8zbjdyVmk4NExyZUVCbTJi?=
- =?utf-8?B?WHlxQTUvNy9rZHVJd1BJOFdsZU1jZUd0NmhUNE0yY05qTndCWXRtYjQ0NVll?=
- =?utf-8?B?b0ZjY0U5UURFSVZDdHFxTFFXWGxYNkZRZHVOVHNhUUh1WS9HTThMMjVnM3VD?=
- =?utf-8?B?ZHdDeExHMmxwNmZuRTVWenZMVktheFM1bkFjbUpXYVBDZ2Zuem5kOVQrM1Ny?=
- =?utf-8?B?T1l6NTJUMFZFdUxQNGtTckFKaEkrNGV0SzFEbHJFcmpJc2NCRGZ4UU9BeHNW?=
- =?utf-8?B?SWZZbzlFZ0ROdU9PdnlJVEhLazRDOUtUMTVISC9wVExZNTlHSGExanlaVXZY?=
- =?utf-8?B?T2N6NG5UcUlES21KbHk3N2FxUUluMGJiNkJHc0oweTY1YkpYeFkvbUJLYU5v?=
- =?utf-8?B?d3plaHRzUitrV0tmRHEvY1oycEpxQ2ZPVldLSE1LNWRyanNyNnNPTkpDSklM?=
- =?utf-8?B?RjRBUmtaRmtGNVk2YUNZZ1hLOWdrQTFKUVkwSFRQaDVUUEFEWmlacGZMd0c4?=
- =?utf-8?Q?RnmwSAqVL6fMRywW+dcoO+GjE?=
+	=?us-ascii?Q?VeYYQkC0HeekEU4kIz1raRJms2s9BEsVpXik4VxzfSUZDUbt/hgLTdHfQPHB?=
+ =?us-ascii?Q?LOb6K9ghB7dbN97VSfgmYPkJmc+Kb69c7DCcCs6i7BNQOTEWqXLEKtr2ggQ4?=
+ =?us-ascii?Q?MWpCqMBdOZDKcbAlXqYjdNkbVV938TMN2OksYYEjNKCtGqkAvU4G5Hwk2zGb?=
+ =?us-ascii?Q?gvq1BTQBZ8QzRHxoQxMKH6ppIeC5O4MpHlc677hKM9OQ58wzyiHm8Hf1nZ7W?=
+ =?us-ascii?Q?1cAjbmPrCh9MLJxFiQF4LjtYRdi9PE1T/k3vcr/Im053LBrswph9/JhR1tPF?=
+ =?us-ascii?Q?JhehsRMQle8b9md80gyEHZIOygkr/7MFm1fxr9sptczTZeBoy+yLJ2SwK/GH?=
+ =?us-ascii?Q?yQgqPQLTzJJxnT16Y/44I+6z2zwW5JRYBUqxZVpVLE43bFIXhcNHyW03vk5a?=
+ =?us-ascii?Q?tBLwGz0t6gVvxkW8El/pBOBHgvmAp7Q0Nco8N3CJ8rgU3YS6x2zMPDlka8hA?=
+ =?us-ascii?Q?26RlFABxBW5NeHB1rHcpYIOijQ/l6CpCHDWp4VbfQM9crSA1FL7FlrwiQTyD?=
+ =?us-ascii?Q?Xwn2sNUC+/N8/a8cgVusy0ijiBnzCsTIxnI/Rm6PurrpBZ//yMZmO9lNFATB?=
+ =?us-ascii?Q?6G0MTb308aa2yPt0r2Z/J3BFRkWqXDmXDm/RCP2Z/5Bs3aJG+1XcN8SGCvy9?=
+ =?us-ascii?Q?qWrMLqpwUKPYozkzB5HrrM31ACKMK7E8JHqD8/feSfOQSbxHFttqGM40ZINk?=
+ =?us-ascii?Q?x47g4Q0rQL3nKOYC6hCT48r6mDZ0Uzmf650vXcwEpkprZYuxDkN4OR3JKIG8?=
+ =?us-ascii?Q?kQFLJAjHg5vqymTcS3cfuOcozljnnvUb77u/tufJz4HL7DRJnME2Qa0PAffC?=
+ =?us-ascii?Q?QD3rpJvSAFWfh4ouZDfSu4g+LL4O+zsMm5/MQZmaCQ4eoFMf1GaWxm+PeOSh?=
+ =?us-ascii?Q?M/mxBT4yEzMO9DkEGh2RVgyQwOC6HEwuhAex/awHeY1S/RIDhQJKGopvcTmy?=
+ =?us-ascii?Q?A5kkT2Ty17sv+/+udjbhmDfGUtLHQXOSDBeDzZVZp1+eESPMKbaWG14hsATb?=
+ =?us-ascii?Q?zQnVGDbM3aLhLxh639AUl7BabjFoySlYElzKMhe6+QLy8vuMBKv9GkwB7y+v?=
+ =?us-ascii?Q?FFhPcEJ+wEHw8T+Q3ch351SCsMdDxz8tCgsxiOyIT/uwEte7pDorDaSuy8pr?=
+ =?us-ascii?Q?Di1i3fRQ/GbcP4r5xbutzeORdsPYHAUYfqENgNqhwgZ3pdIJiNOOUiowo7kX?=
+ =?us-ascii?Q?6NWUf9nuIpLO2AA7oZx4JPseZnmuBzgfsMv7moOQDs6bkmYR+97ABqw1DjjV?=
+ =?us-ascii?Q?ocK2Hz93qXuGVojl8v/YDxgiP2hfrDA4Y8TPae0oloJtGO3WkpafxPnuX27U?=
+ =?us-ascii?Q?rTji4fIt+KR4sWdqkE+WC2gh2lHGbs0zMZ9QUQQJX4yYjkXYvqy+H7SKaCbG?=
+ =?us-ascii?Q?QlVzzvdR/j5q6JAft7x5SkwP/d/q/smp1/ssx9sPPDI2DdFYgezonEpDSYTo?=
+ =?us-ascii?Q?GRxQL0EDciZSWs9o0Y/1em8HjXNQDGx/uf7Hra2Ls3rCnjBhC5Gm4hH5R+px?=
+ =?us-ascii?Q?GQ3IOx/rF7GiLrvAjvVLQhCZDd31ecx9Gbjd1G8KdZKNP123MFOXRN8z1oOo?=
+ =?us-ascii?Q?O1r+2UWqBX0UZzKCFClkBq8lOMUccfQCH47DBWEV?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4682770-1e70-4b5b-24e9-08dc8cb152f8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fb8c536-e5cf-4b73-ffb2-08dc8cb957be
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2024 20:34:00.9718
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2024 21:31:25.2136
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pSmTbeckjpIr/xgBJbYaQtUK9MWvsJfFjBzzb6BbW9ztcYQG9jKW5+/P8gQs1ueMicR96WbvL3EPLJ1Y4igtjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10203
+X-MS-Exchange-CrossTenant-UserPrincipalName: o42ahuIFYddkclE05TFvH7vlzxFnmNKgocyJflnQNB2QnZ0FduF1TY0ZA1vBA7Bz2rsMRg8sD9kPAx4+en537g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10420
 
-Convert fsl-fman from txt to yaml format and split it fsl,fman.yam,
-fsl,fman-port.yaml, fsl-muram.yaml, fsl-mdio.yaml.
+Convert fsl,qoriq-mc from txt to yaml format.
 
 Addition changes:
-fsl,fman.yaml:
-  - Fixed interrupts in example
-  - Fixed ethernet@e8000 miss } in example
-  - ptp-timer add label in example
-  - Ref to new fsl,fman*.yaml
-  - Reorder property in example
-
-fsl,fman-mdio:
-  - Add little-endian property
-  - Add ref to mdio.yaml
-  - Remove suppress-preamble
-  - Add #address-cells and #size-cells in example
-
-fsl-muram.yaml:
-  - Add reg property
+- Child node name allow 'ethernet'.
+- Use 32bit address in example.
+- Fixed missed ';' in example.
+- Allow dma-coherent.
+- Remove smmu, its part in example.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../devicetree/bindings/net/fsl,fman-mdio.yaml     | 130 +++++
- .../devicetree/bindings/net/fsl,fman-muram.yaml    |  42 ++
- .../devicetree/bindings/net/fsl,fman-port.yaml     |  86 ++++
- .../devicetree/bindings/net/fsl,fman.yaml          | 335 +++++++++++++
- Documentation/devicetree/bindings/net/fsl-fman.txt | 548 ---------------------
- 5 files changed, 593 insertions(+), 548 deletions(-)
+ .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ------------------
+ .../bindings/misc/fsl,qoriq-mc.yaml           | 187 +++++++++++++++++
+ 2 files changed, 187 insertions(+), 196 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+ create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
 
-diff --git a/Documentation/devicetree/bindings/net/fsl,fman-mdio.yaml b/Documentation/devicetree/bindings/net/fsl,fman-mdio.yaml
-new file mode 100644
-index 0000000000000..e056b270733a7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,fman-mdio.yaml
-@@ -0,0 +1,130 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,fman-mdio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Frame Manager MDIO Device
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: FMan MDIO Node.
-+  The MDIO is a bus to which the PHY devices are connected.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,fman-mdio
-+      - fsl,fman-xmdio
-+      - fsl,fman-memac-mdio
-+    description:
-+      Must include "fsl,fman-mdio" for 1 Gb/s MDIO from FMan v2.
-+      Must include "fsl,fman-xmdio" for 10 Gb/s MDIO from FMan v2.
-+      Must include "fsl,fman-memac-mdio" for 1/10 Gb/s MDIO from
-+      FMan v3.
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: A reference to the input clock of the controller
-+          from which the MDC frequency is derived.
-+
-+  clock-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      Specifies the external MDC frequency, in Hertz, to
-+      be used. Requires that the input clock is specified in the
-+      "clocks" property. See also: mdio.yaml.
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  fsl,fman-internal-mdio:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Fman has internal MDIO for internal PCS(Physical
-+      Coding Sublayer) PHYs and external MDIO for external PHYs.
-+      The settings and programming routines for internal/external
-+      MDIO are different. Must be included for internal MDIO.
-+
-+  fsl,erratum-a009885:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: Indicates the presence of the A009885
-+      erratum describing that the contents of MDIO_DATA may
-+      become corrupt unless it is read within 16 MDC cycles
-+      of MDIO_CFG[BSY] being cleared, when performing an
-+      MDIO read operation.
-+
-+  fsl,erratum-a011043:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates the presence of the A011043 erratum
-+      describing that the MDIO_CFG[MDIO_RD_ER] bit may be falsely
-+      set when reading internal PCS registers. MDIO reads to
-+      internal PCS registers may result in having the
-+      MDIO_CFG[MDIO_RD_ER] bit set, even when there is no error and
-+      read data (MDIO_DATA[MDIO_DATA]) is correct.
-+      Software may get false read error when reading internal
-+      PCS registers through MDIO. As a workaround, all internal
-+      MDIO accesses should ignore the MDIO_CFG[MDIO_RD_ER] bit.
-+
-+      For internal PHY device on internal mdio bus, a PHY node should be created.
-+      See the definition of the PHY node in booting-without-of.txt for an
-+      example of how to define a PHY (Internal PHY has no interrupt line).
-+      - For "fsl,fman-mdio" compatible internal mdio bus, the PHY is TBI PHY.
-+      - For "fsl,fman-memac-mdio" compatible internal mdio bus, the PHY is PCS PHY.
-+        The PCS PHY address should correspond to the value of the appropriate
-+        MDEV_PORT.
-+
-+  little-endian:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      IP block is little-endian mode. The default endian mode is big-endian.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: mdio.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    mdio@f1000 {
-+        compatible = "fsl,fman-xmdio";
-+        reg = <0xf1000 0x1000>;
-+        interrupts = <101 2 0 0>;
-+    };
-+
-+  - |
-+    mdio@e3120 {
-+        compatible = "fsl,fman-mdio";
-+        reg = <0xe3120 0xee0>;
-+        fsl,fman-internal-mdio;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        tbi-phy@8 {
-+            reg = <0x8>;
-+            device_type = "tbi-phy";
-+        };
-+    };
-+
-+  - |
-+    mdio@f1000 {
-+        compatible = "fsl,fman-memac-mdio";
-+        reg = <0xf1000 0x1000>;
-+        fsl,fman-internal-mdio;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        pcsphy6: ethernet-phy@0 {
-+            reg = <0x0>;
-+        };
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/net/fsl,fman-muram.yaml b/Documentation/devicetree/bindings/net/fsl,fman-muram.yaml
-new file mode 100644
-index 0000000000000..035b949b316c2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,fman-muram.yaml
-@@ -0,0 +1,42 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,fman-muram.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Frame Manager MURAM Device
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  FMan Internal memory - shared between all the FMan modules.
-+  It contains data structures that are common and written to or read by
-+  the modules.
-+
-+  FMan internal memory is split into the following parts:
-+    Packet buffering (Tx/Rx FIFOs)
-+    Frames internal context
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,fman-muram
-+
-+  reg:
-+    maxItems: 1
-+
-+  ranges: true
-+
-+required:
-+  - compatible
-+  - ranges
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    muram@0 {
-+        compatible = "fsl,fman-muram";
-+        ranges = <0 0x000000 0x0 0x28000>;
-+    };
-diff --git a/Documentation/devicetree/bindings/net/fsl,fman-port.yaml b/Documentation/devicetree/bindings/net/fsl,fman-port.yaml
-new file mode 100644
-index 0000000000000..7e69cf02bd024
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,fman-port.yaml
-@@ -0,0 +1,86 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,fman-port.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Frame Manager Port Device
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  The Frame Manager (FMan) supports several types of hardware ports:
-+    Ethernet receiver (RX)
-+    Ethernet transmitter (TX)
-+    Offline/Host command (O/H)
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,fman-v2-port-oh
-+      - fsl,fman-v2-port-rx
-+      - fsl,fman-v2-port-tx
-+      - fsl,fman-v3-port-oh
-+      - fsl,fman-v3-port-rx
-+      - fsl,fman-v3-port-tx
-+
-+  cell-index:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Specifies the hardware port id.
-+      Each hardware port on the FMan has its own hardware PortID.
-+      Super set of all hardware Port IDs available at FMan Reference
-+      Manual under "FMan Hardware Ports in Freescale Devices" table.
-+
-+      Each hardware port is assigned a 4KB, port-specific page in
-+      the FMan hardware port memory region (which is part of the
-+      FMan memory map). The first 4 KB in the FMan hardware ports
-+      memory region is used for what are called common registers.
-+      The subsequent 63 4KB pages are allocated to the hardware
-+      ports.
-+      The page of a specific port is determined by the cell-index.
-+
-+  reg:
-+    items:
-+      - description: There is one reg region describing the port
-+          configuration registers.
-+
-+  fsl,fman-10g-port:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: The default port rate is 1G.
-+      If this property exists, the port is s 10G port.
-+
-+  fsl,fman-best-effort-port:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: The default port rate is 1G.
-+      Can be defined only if 10G-support is set.
-+      This property marks a best-effort 10G port (10G port that
-+      may not be capable of line rate).
-+
-+required:
-+  - compatible
-+  - reg
-+  - cell-index
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    port@a8000 {
-+        compatible = "fsl,fman-v2-port-tx";
-+        reg = <0xa8000 0x1000>;
-+        cell-index = <0x28>;
-+    };
-+
-+    port@88000 {
-+        cell-index = <0x8>;
-+        compatible = "fsl,fman-v2-port-rx";
-+        reg = <0x88000 0x1000>;
-+    };
-+
-+    port@81000 {
-+        cell-index = <0x1>;
-+        compatible = "fsl,fman-v2-port-oh";
-+        reg = <0x81000 0x1000>;
-+    };
-diff --git a/Documentation/devicetree/bindings/net/fsl,fman.yaml b/Documentation/devicetree/bindings/net/fsl,fman.yaml
-new file mode 100644
-index 0000000000000..dfd403f9a7c9d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,fman.yaml
-@@ -0,0 +1,335 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,fman.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Frame Manager Device
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  Due to the fact that the FMan is an aggregation of sub-engines (ports, MACs,
-+  etc.) the FMan node will have child nodes for each of them.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,fman
-+    description:
-+      FMan version can be determined via FM_IP_REV_1 register in the
-+      FMan block. The offset is 0xc4 from the beginning of the
-+      Frame Processing Manager memory map (0xc3000 from the
-+      beginning of the FMan node).
-+
-+  cell-index:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      Specifies the index of the FMan unit.
-+
-+      The cell-index value may be used by the SoC, to identify the
-+      FMan unit in the SoC memory map. In the table below,
-+      there's a description of the cell-index use in each SoC:
-+
-+      - P1023:
-+      register[bit]      FMan unit  cell-index
-+      ============================================================
-+      DEVDISR[1]      1    0
-+
-+      - P2041, P3041, P4080 P5020, P5040:
-+      register[bit]      FMan unit  cell-index
-+      ============================================================
-+      DCFG_DEVDISR2[6]    1    0
-+      DCFG_DEVDISR2[14]    2    1
-+        (Second FM available only in P4080 and P5040)
-+
-+      - B4860, T1040, T2080, T4240:
-+      register[bit]      FMan unit  cell-index
-+      ============================================================
-+      DCFG_CCSR_DEVDISR2[24]    1    0
-+      DCFG_CCSR_DEVDISR2[25]    2    1
-+        (Second FM available only in T4240)
-+
-+      DEVDISR, DCFG_DEVDISR2 and DCFG_CCSR_DEVDISR2 are located in
-+      the specific SoC "Device Configuration/Pin Control" Memory
-+      Map.
-+
-+  reg:
-+    items:
-+      - description: BMI configuration registers.
-+      - description: QMI configuration registers.
-+      - description: DMA configuration registers.
-+      - description: FPM configuration registers.
-+      - description: FMan controller configuration registers.
-+    minItems: 1
-+
-+  ranges: true
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: fmanclk
-+
-+  interrupts:
-+    items:
-+      - description: The first element is associated with the event interrupts.
-+      - description: the second element is associated with the error interrupts.
-+
-+  fsl,qman-channel-range:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    description:
-+      Specifies the range of the available dedicated
-+      channels in the FMan. The first cell specifies the beginning
-+      of the range and the second cell specifies the number of
-+      channels
-+    items:
-+      - description: The first cell specifies the beginning of the range.
-+      - description: |
-+          The second cell specifies the number of channels.
-+          Further information available at:
-+          "Work Queue (WQ) Channel Assignments in the QMan" section
-+          in DPAA Reference Manual.
-+
-+  fsl,qman:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: See soc/fsl/qman.txt
-+
-+  fsl,bman:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: See soc/fsl/bman.txt
-+
-+  fsl,erratum-a050385:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: A boolean property. Indicates the presence of the
-+      erratum A050385 which indicates that DMA transactions that are
-+      split can result in a FMan lock.
-+
-+  "#address-cells": true
-+
-+  "#size-cells": true
-+
-+patternProperties:
-+  '^muram@[a-f0-9]+$':
-+    $ref: fsl,fman-muram.yaml
-+
-+  '^port@[a-f0-9]+$':
-+    $ref: fsl,fman-port.yaml
-+
-+  '^ethernet@[a-f0-9]+$':
-+    $ref: fsl,fman-dtsec.yaml
-+
-+  '^mdio@[a-f0-9]+$':
-+    $ref: fsl,fman-mdio.yaml
-+
-+  '^ptp\-timer@[a-f0-9]+$':
-+    $ref: /schemas/ptp/ptp-qoriq.yaml
-+
-+required:
-+  - compatible
-+  - cell-index
-+  - reg
-+  - ranges
-+  - clocks
-+  - clock-names
-+  - interrupts
-+  - fsl,qman-channel-range
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    fman@400000 {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+        cell-index = <1>;
-+        compatible = "fsl,fman";
-+        ranges = <0 0x400000 0x100000>;
-+        reg = <0x400000 0x100000>;
-+        clocks = <&fman_clk>;
-+        clock-names = "fmanclk";
-+        interrupts = <96 2>,
-+                     <16 2>;
-+        fsl,qman-channel-range = <0x40 0xc>;
-+
-+        muram@0 {
-+            compatible = "fsl,fman-muram";
-+            reg = <0x0 0x28000>;
-+            ranges = <0x0 0x0 0x1000 0x1000>;
-+        };
-+
-+        port@81000 {
-+            cell-index = <1>;
-+            compatible = "fsl,fman-v2-port-oh";
-+            reg = <0x81000 0x1000>;
-+        };
-+
-+        port@82000 {
-+            cell-index = <2>;
-+            compatible = "fsl,fman-v2-port-oh";
-+            reg = <0x82000 0x1000>;
-+        };
-+
-+        port@83000 {
-+            cell-index = <3>;
-+            compatible = "fsl,fman-v2-port-oh";
-+            reg = <0x83000 0x1000>;
-+        };
-+
-+        port@84000 {
-+            cell-index = <4>;
-+            compatible = "fsl,fman-v2-port-oh";
-+            reg = <0x84000 0x1000>;
-+        };
-+
-+        port@85000 {
-+            cell-index = <5>;
-+            compatible = "fsl,fman-v2-port-oh";
-+            reg = <0x85000 0x1000>;
-+        };
-+
-+        port@86000 {
-+            cell-index = <6>;
-+            compatible = "fsl,fman-v2-port-oh";
-+            reg = <0x86000 0x1000>;
-+        };
-+
-+        fman1_rx_0x8: port@88000 {
-+            cell-index = <0x8>;
-+            compatible = "fsl,fman-v2-port-rx";
-+            reg = <0x88000 0x1000>;
-+        };
-+
-+        fman1_rx_0x9: port@89000 {
-+            cell-index = <0x9>;
-+            compatible = "fsl,fman-v2-port-rx";
-+            reg = <0x89000 0x1000>;
-+        };
-+
-+        fman1_rx_0xa: port@8a000 {
-+            cell-index = <0xa>;
-+            compatible = "fsl,fman-v2-port-rx";
-+            reg = <0x8a000 0x1000>;
-+        };
-+
-+        fman1_rx_0xb: port@8b000 {
-+            cell-index = <0xb>;
-+            compatible = "fsl,fman-v2-port-rx";
-+            reg = <0x8b000 0x1000>;
-+        };
-+
-+        fman1_rx_0xc: port@8c000 {
-+            cell-index = <0xc>;
-+            compatible = "fsl,fman-v2-port-rx";
-+            reg = <0x8c000 0x1000>;
-+        };
-+
-+        fman1_rx_0x10: port@90000 {
-+            cell-index = <0x10>;
-+            compatible = "fsl,fman-v2-port-rx";
-+            reg = <0x90000 0x1000>;
-+        };
-+
-+        fman1_tx_0x28: port@a8000 {
-+            cell-index = <0x28>;
-+            compatible = "fsl,fman-v2-port-tx";
-+            reg = <0xa8000 0x1000>;
-+        };
-+
-+        fman1_tx_0x29: port@a9000 {
-+            cell-index = <0x29>;
-+            compatible = "fsl,fman-v2-port-tx";
-+            reg = <0xa9000 0x1000>;
-+        };
-+
-+        fman1_tx_0x2a: port@aa000 {
-+            cell-index = <0x2a>;
-+            compatible = "fsl,fman-v2-port-tx";
-+            reg = <0xaa000 0x1000>;
-+        };
-+
-+        fman1_tx_0x2b: port@ab000 {
-+            cell-index = <0x2b>;
-+            compatible = "fsl,fman-v2-port-tx";
-+            reg = <0xab000 0x1000>;
-+        };
-+
-+        fman1_tx_0x2c: port@ac0000 {
-+            cell-index = <0x2c>;
-+            compatible = "fsl,fman-v2-port-tx";
-+            reg = <0xac000 0x1000>;
-+        };
-+
-+        fman1_tx_0x30: port@b0000 {
-+            cell-index = <0x30>;
-+            compatible = "fsl,fman-v2-port-tx";
-+            reg = <0xb0000 0x1000>;
-+        };
-+
-+        ethernet@e0000 {
-+            compatible = "fsl,fman-dtsec";
-+            cell-index = <0>;
-+            reg = <0xe0000 0x1000>;
-+            ptp-timer = <&ptp_timer>;
-+            fsl,fman-ports = <&fman1_rx_0x8 &fman1_tx_0x28>;
-+            tbi-handle = <&tbi5>;
-+        };
-+
-+        ethernet@e2000 {
-+            compatible = "fsl,fman-dtsec";
-+            reg = <0xe2000 0x1000>;
-+            cell-index = <1>;
-+            ptp-timer = <&ptp_timer>;
-+            fsl,fman-ports = <&fman1_rx_0x9 &fman1_tx_0x29>;
-+            tbi-handle = <&tbi6>;
-+        };
-+
-+        ethernet@e4000 {
-+            compatible = "fsl,fman-dtsec";
-+            reg = <0xe4000 0x1000>;
-+            cell-index = <2>;
-+            ptp-timer = <&ptp_timer>;
-+            fsl,fman-ports = <&fman1_rx_0xa &fman1_tx_0x2a>;
-+            tbi-handle = <&tbi7>;
-+        };
-+
-+        ethernet@e6000 {
-+            compatible = "fsl,fman-dtsec";
-+            reg = <0xe6000 0x1000>;
-+            cell-index = <3>;
-+            ptp-timer = <&ptp_timer>;
-+            fsl,fman-ports = <&fman1_rx_0xb &fman1_tx_0x2b>;
-+            tbi-handle = <&tbi8>;
-+        };
-+
-+        ethernet@e8000 {
-+            compatible = "fsl,fman-dtsec";
-+            reg = <0xf0000 0x1000>;
-+            cell-index = <4>;
-+            ptp-timer = <&ptp_timer>;
-+            fsl,fman-ports = <&fman1_rx_0xc &fman1_tx_0x2c>;
-+            tbi-handle = <&tbi9>;
-+        };
-+
-+        ethernet@f0000 {
-+            compatible = "fsl,fman-xgec";
-+            reg = <0xf0000 0x1000>;
-+            ptp-timer = <&ptp_timer>;
-+            cell-index = <8>;
-+            fsl,fman-ports = <&fman1_rx_0x10 &fman1_tx_0x30>;
-+        };
-+
-+        ptp_timer: ptp-timer@fe000 {
-+            compatible = "fsl,fman-ptp-timer";
-+            reg = <0xfe000 0x1000>;
-+            interrupts = <12 0x8>, <13 0x8>;
-+        };
-+
-+        mdio@f1000 {
-+            compatible = "fsl,fman-xmdio";
-+            reg = <0xf1000 0x1000>;
-+            interrupts = <101 2>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/fsl-fman.txt b/Documentation/devicetree/bindings/net/fsl-fman.txt
+diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
 deleted file mode 100644
-index bda4b41af0748..0000000000000
---- a/Documentation/devicetree/bindings/net/fsl-fman.txt
+index 7b486d4985dc7..0000000000000
+--- a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
 +++ /dev/null
-@@ -1,548 +0,0 @@
--=============================================================================
--Freescale Frame Manager Device Bindings
--
--CONTENTS
--  - FMan Node
--  - FMan Port Node
--  - FMan MURAM Node
--  - FMan dTSEC/XGEC/mEMAC Node
--  - FMan IEEE 1588 Node
--  - FMan MDIO Node
--  - Example
--
--=============================================================================
--FMan Node
--
--DESCRIPTION
--
--Due to the fact that the FMan is an aggregation of sub-engines (ports, MACs,
--etc.) the FMan node will have child nodes for each of them.
--
--PROPERTIES
--
--- compatible
--		Usage: required
--		Value type: <stringlist>
--		Definition: Must include "fsl,fman"
--		FMan version can be determined via FM_IP_REV_1 register in the
--		FMan block. The offset is 0xc4 from the beginning of the
--		Frame Processing Manager memory map (0xc3000 from the
--		beginning of the FMan node).
--
--- cell-index
--		Usage: required
--		Value type: <u32>
--		Definition: Specifies the index of the FMan unit.
--
--		The cell-index value may be used by the SoC, to identify the
--		FMan unit in the SoC memory map. In the table below,
--		there's a description of the cell-index use in each SoC:
--
--		- P1023:
--		register[bit]			FMan unit	cell-index
--		============================================================
--		DEVDISR[1]			1		0
--
--		- P2041, P3041, P4080 P5020, P5040:
--		register[bit]			FMan unit	cell-index
--		============================================================
--		DCFG_DEVDISR2[6]		1		0
--		DCFG_DEVDISR2[14]		2		1
--			(Second FM available only in P4080 and P5040)
--
--		- B4860, T1040, T2080, T4240:
--		register[bit]			FMan unit	cell-index
--		============================================================
--		DCFG_CCSR_DEVDISR2[24]		1		0
--		DCFG_CCSR_DEVDISR2[25]		2		1
--			(Second FM available only in T4240)
--
--		DEVDISR, DCFG_DEVDISR2 and DCFG_CCSR_DEVDISR2 are located in
--		the specific SoC "Device Configuration/Pin Control" Memory
--		Map.
--
--- reg
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: A standard property. Specifies the offset of the
--		following configuration registers:
--		- BMI configuration registers.
--		- QMI configuration registers.
--		- DMA configuration registers.
--		- FPM configuration registers.
--		- FMan controller configuration registers.
--
--- ranges
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: A standard property.
--
--- clocks
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: phandle for the fman input clock.
--
--- clock-names
--		usage: required
--		Value type: <stringlist>
--		Definition: "fmanclk" for the fman input clock.
--
--- interrupts
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: A pair of IRQs are specified in this property.
--		The first element is associated with the event interrupts and
--		the second element is associated with the error interrupts.
--
--- fsl,qman-channel-range
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: Specifies the range of the available dedicated
--		channels in the FMan. The first cell specifies the beginning
--		of the range and the second cell specifies the number of
--		channels.
--		Further information available at:
--		"Work Queue (WQ) Channel Assignments in the QMan" section
--		in DPAA Reference Manual.
--
--- fsl,qman
--- fsl,bman
--		Usage: required
--		Definition: See soc/fsl/qman.txt and soc/fsl/bman.txt
--
--- fsl,erratum-a050385
--		Usage: optional
--		Value type: boolean
--		Definition: A boolean property. Indicates the presence of the
--		erratum A050385 which indicates that DMA transactions that are
--		split can result in a FMan lock.
--
--=============================================================================
--FMan MURAM Node
--
--DESCRIPTION
--
--FMan Internal memory - shared between all the FMan modules.
--It contains data structures that are common and written to or read by
--the modules.
--FMan internal memory is split into the following parts:
--	Packet buffering (Tx/Rx FIFOs)
--	Frames internal context
--
--PROPERTIES
--
--- compatible
--		Usage: required
--		Value type: <stringlist>
--		Definition: Must include "fsl,fman-muram"
--
--- ranges
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: A standard property.
--		Specifies the multi-user memory offset and the size within
--		the FMan.
--
--EXAMPLE
--
--muram@0 {
--	compatible = "fsl,fman-muram";
--	ranges = <0 0x000000 0x28000>;
--};
--
--=============================================================================
--FMan Port Node
--
--DESCRIPTION
--
--The Frame Manager (FMan) supports several types of hardware ports:
--	Ethernet receiver (RX)
--	Ethernet transmitter (TX)
--	Offline/Host command (O/H)
--
--PROPERTIES
--
--- compatible
--		Usage: required
--		Value type: <stringlist>
--		Definition: A standard property.
--		Must include one of the following:
--			- "fsl,fman-v2-port-oh" for FManV2 OH ports
--			- "fsl,fman-v2-port-rx" for FManV2 RX ports
--			- "fsl,fman-v2-port-tx" for FManV2 TX ports
--			- "fsl,fman-v3-port-oh" for FManV3 OH ports
--			- "fsl,fman-v3-port-rx" for FManV3 RX ports
--			- "fsl,fman-v3-port-tx" for FManV3 TX ports
--
--- cell-index
--		Usage: required
--		Value type: <u32>
--		Definition: Specifies the hardware port id.
--		Each hardware port on the FMan has its own hardware PortID.
--		Super set of all hardware Port IDs available at FMan Reference
--		Manual under "FMan Hardware Ports in Freescale Devices" table.
--
--		Each hardware port is assigned a 4KB, port-specific page in
--		the FMan hardware port memory region (which is part of the
--		FMan memory map). The first 4 KB in the FMan hardware ports
--		memory region is used for what are called common registers.
--		The subsequent 63 4KB pages are allocated to the hardware
--		ports.
--		The page of a specific port is determined by the cell-index.
--
--- reg
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: There is one reg region describing the port
--		configuration registers.
--
--- fsl,fman-10g-port
--		Usage: optional
--		Value type: boolean
--		Definition: The default port rate is 1G.
--		If this property exists, the port is s 10G port.
--
--- fsl,fman-best-effort-port
--		Usage: optional
--		Value type: boolean
--		Definition: Can be defined only if 10G-support is set.
--		This property marks a best-effort 10G port (10G port that
--		may not be capable of line rate).
--
--EXAMPLE
--
--port@a8000 {
--	cell-index = <0x28>;
--	compatible = "fsl,fman-v2-port-tx";
--	reg = <0xa8000 0x1000>;
--};
--
--port@88000 {
--	cell-index = <0x8>;
--	compatible = "fsl,fman-v2-port-rx";
--	reg = <0x88000 0x1000>;
--};
--
--port@81000 {
--	cell-index = <0x1>;
--	compatible = "fsl,fman-v2-port-oh";
--	reg = <0x81000 0x1000>;
--};
--
--=============================================================================
--FMan dTSEC/XGEC/mEMAC Node
--
--Refer to Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml
--
--============================================================================
--FMan IEEE 1588 Node
--
--Refer to Documentation/devicetree/bindings/ptp/ptp-qoriq.txt
--
--=============================================================================
--FMan MDIO Node
--
--DESCRIPTION
--
--The MDIO is a bus to which the PHY devices are connected.
--
--PROPERTIES
--
--- compatible
--		Usage: required
--		Value type: <stringlist>
--		Definition: A standard property.
--		Must include "fsl,fman-mdio" for 1 Gb/s MDIO from FMan v2.
--		Must include "fsl,fman-xmdio" for 10 Gb/s MDIO from FMan v2.
--		Must include "fsl,fman-memac-mdio" for 1/10 Gb/s MDIO from
--		FMan v3.
--
--- reg
--		Usage: required
--		Value type: <prop-encoded-array>
--		Definition: A standard property.
--
--- clocks
--		Usage: optional
--		Value type: <phandle>
--		Definition: A reference to the input clock of the controller
--		from which the MDC frequency is derived.
--
--- clock-frequency
--		Usage: optional
--		Value type: <u32>
--		Definition: Specifies the external MDC frequency, in Hertz, to
--		be used. Requires that the input clock is specified in the
--		"clocks" property. See also: mdio.yaml.
--
--- suppress-preamble
--		Usage: optional
--		Value type: <boolean>
--		Definition: Disable generation of preamble bits. See also:
--		mdio.yaml.
--
--- interrupts
--		Usage: required for external MDIO
--		Value type: <prop-encoded-array>
--		Definition: Event interrupt of external MDIO controller.
--
--- fsl,fman-internal-mdio
--		Usage: required for internal MDIO
--		Value type: boolean
--		Definition: Fman has internal MDIO for internal PCS(Physical
--		Coding Sublayer) PHYs and external MDIO for external PHYs.
--		The settings and programming routines for internal/external
--		MDIO are different. Must be included for internal MDIO.
--
--- fsl,erratum-a009885
--		Usage: optional
--		Value type: <boolean>
--		Definition: Indicates the presence of the A009885
--		erratum describing that the contents of MDIO_DATA may
--		become corrupt unless it is read within 16 MDC cycles
--		of MDIO_CFG[BSY] being cleared, when performing an
--		MDIO read operation.
--
--- fsl,erratum-a011043
--		Usage: optional
--		Value type: <boolean>
--		Definition: Indicates the presence of the A011043 erratum
--		describing that the MDIO_CFG[MDIO_RD_ER] bit may be falsely
--		set when reading internal PCS registers. MDIO reads to
--		internal PCS registers may result in having the
--		MDIO_CFG[MDIO_RD_ER] bit set, even when there is no error and
--		read data (MDIO_DATA[MDIO_DATA]) is correct.
--		Software may get false read error when reading internal
--		PCS registers through MDIO. As a workaround, all internal
--		MDIO accesses should ignore the MDIO_CFG[MDIO_RD_ER] bit.
--
--For internal PHY device on internal mdio bus, a PHY node should be created.
--See the definition of the PHY node in booting-without-of.txt for an
--example of how to define a PHY (Internal PHY has no interrupt line).
--- For "fsl,fman-mdio" compatible internal mdio bus, the PHY is TBI PHY.
--- For "fsl,fman-memac-mdio" compatible internal mdio bus, the PHY is PCS PHY.
--  The PCS PHY address should correspond to the value of the appropriate
--  MDEV_PORT.
--
--EXAMPLE
--
--Example for FMan v2 external MDIO:
--
--mdio@f1000 {
--	compatible = "fsl,fman-xmdio";
--	reg = <0xf1000 0x1000>;
--	interrupts = <101 2 0 0>;
--};
--
--Example for FMan v2 internal MDIO:
--
--mdio@e3120 {
--	compatible = "fsl,fman-mdio";
--	reg = <0xe3120 0xee0>;
--	fsl,fman-internal-mdio;
--
--	tbi1: tbi-phy@8 {
--		reg = <0x8>;
--		device_type = "tbi-phy";
--	};
--};
--
--Example for FMan v3 internal MDIO:
--
--mdio@f1000 {
--	compatible = "fsl,fman-memac-mdio";
--	reg = <0xf1000 0x1000>;
--	fsl,fman-internal-mdio;
--
--	pcsphy6: ethernet-phy@0 {
--		reg = <0x0>;
--	};
--};
--
--=============================================================================
--Example
--
--fman@400000 {
--	#address-cells = <1>;
--	#size-cells = <1>;
--	cell-index = <1>;
--	compatible = "fsl,fman"
--	ranges = <0 0x400000 0x100000>;
--	reg = <0x400000 0x100000>;
--	clocks = <&fman_clk>;
--	clock-names = "fmanclk";
--	interrupts = <
--		96 2 0 0
--		16 2 1 1>;
--	fsl,qman-channel-range = <0x40 0xc>;
--
--	muram@0 {
--		compatible = "fsl,fman-muram";
--		reg = <0x0 0x28000>;
--	};
--
--	port@81000 {
--		cell-index = <1>;
--		compatible = "fsl,fman-v2-port-oh";
--		reg = <0x81000 0x1000>;
--	};
--
--	port@82000 {
--		cell-index = <2>;
--		compatible = "fsl,fman-v2-port-oh";
--		reg = <0x82000 0x1000>;
--	};
--
--	port@83000 {
--		cell-index = <3>;
--		compatible = "fsl,fman-v2-port-oh";
--		reg = <0x83000 0x1000>;
--	};
--
--	port@84000 {
--		cell-index = <4>;
--		compatible = "fsl,fman-v2-port-oh";
--		reg = <0x84000 0x1000>;
--	};
--
--	port@85000 {
--		cell-index = <5>;
--		compatible = "fsl,fman-v2-port-oh";
--		reg = <0x85000 0x1000>;
--	};
--
--	port@86000 {
--		cell-index = <6>;
--		compatible = "fsl,fman-v2-port-oh";
--		reg = <0x86000 0x1000>;
--	};
--
--	fman1_rx_0x8: port@88000 {
--		cell-index = <0x8>;
--		compatible = "fsl,fman-v2-port-rx";
--		reg = <0x88000 0x1000>;
--	};
--
--	fman1_rx_0x9: port@89000 {
--		cell-index = <0x9>;
--		compatible = "fsl,fman-v2-port-rx";
--		reg = <0x89000 0x1000>;
--	};
--
--	fman1_rx_0xa: port@8a000 {
--		cell-index = <0xa>;
--		compatible = "fsl,fman-v2-port-rx";
--		reg = <0x8a000 0x1000>;
--	};
--
--	fman1_rx_0xb: port@8b000 {
--		cell-index = <0xb>;
--		compatible = "fsl,fman-v2-port-rx";
--		reg = <0x8b000 0x1000>;
--	};
--
--	fman1_rx_0xc: port@8c000 {
--		cell-index = <0xc>;
--		compatible = "fsl,fman-v2-port-rx";
--		reg = <0x8c000 0x1000>;
--	};
--
--	fman1_rx_0x10: port@90000 {
--		cell-index = <0x10>;
--		compatible = "fsl,fman-v2-port-rx";
--		reg = <0x90000 0x1000>;
--	};
--
--	fman1_tx_0x28: port@a8000 {
--		cell-index = <0x28>;
--		compatible = "fsl,fman-v2-port-tx";
--		reg = <0xa8000 0x1000>;
--	};
--
--	fman1_tx_0x29: port@a9000 {
--		cell-index = <0x29>;
--		compatible = "fsl,fman-v2-port-tx";
--		reg = <0xa9000 0x1000>;
--	};
--
--	fman1_tx_0x2a: port@aa000 {
--		cell-index = <0x2a>;
--		compatible = "fsl,fman-v2-port-tx";
--		reg = <0xaa000 0x1000>;
--	};
--
--	fman1_tx_0x2b: port@ab000 {
--		cell-index = <0x2b>;
--		compatible = "fsl,fman-v2-port-tx";
--		reg = <0xab000 0x1000>;
--	};
--
--	fman1_tx_0x2c: port@ac0000 {
--		cell-index = <0x2c>;
--		compatible = "fsl,fman-v2-port-tx";
--		reg = <0xac000 0x1000>;
--	};
--
--	fman1_tx_0x30: port@b0000 {
--		cell-index = <0x30>;
--		compatible = "fsl,fman-v2-port-tx";
--		reg = <0xb0000 0x1000>;
--	};
--
--	ethernet@e0000 {
--		compatible = "fsl,fman-dtsec";
--		cell-index = <0>;
--		reg = <0xe0000 0x1000>;
--		fsl,fman-ports = <&fman1_rx_0x8 &fman1_tx_0x28>;
--		tbi-handle = <&tbi5>;
--	};
--
--	ethernet@e2000 {
--		compatible = "fsl,fman-dtsec";
--		cell-index = <1>;
--		reg = <0xe2000 0x1000>;
--		fsl,fman-ports = <&fman1_rx_0x9 &fman1_tx_0x29>;
--		tbi-handle = <&tbi6>;
--	};
--
--	ethernet@e4000 {
--		compatible = "fsl,fman-dtsec";
--		cell-index = <2>;
--		reg = <0xe4000 0x1000>;
--		fsl,fman-ports = <&fman1_rx_0xa &fman1_tx_0x2a>;
--		tbi-handle = <&tbi7>;
--	};
--
--	ethernet@e6000 {
--		compatible = "fsl,fman-dtsec";
--		cell-index = <3>;
--		reg = <0xe6000 0x1000>;
--		fsl,fman-ports = <&fman1_rx_0xb &fman1_tx_0x2b>;
--		tbi-handle = <&tbi8>;
--	};
--
--	ethernet@e8000 {
--		compatible = "fsl,fman-dtsec";
--		cell-index = <4>;
--		reg = <0xf0000 0x1000>;
--		fsl,fman-ports = <&fman1_rx_0xc &fman1_tx_0x2c>;
--		tbi-handle = <&tbi9>;
--
--	ethernet@f0000 {
--		cell-index = <8>;
--		compatible = "fsl,fman-xgec";
--		reg = <0xf0000 0x1000>;
--		fsl,fman-ports = <&fman1_rx_0x10 &fman1_tx_0x30>;
--	};
--
--	ptp-timer@fe000 {
--		compatible = "fsl,fman-ptp-timer";
--		reg = <0xfe000 0x1000>;
--	};
--
--	mdio@f1000 {
--		compatible = "fsl,fman-xmdio";
--		reg = <0xf1000 0x1000>;
--		interrupts = <101 2 0 0>;
--	};
--};
-
+@@ -1,196 +0,0 @@
+-* Freescale Management Complex
+-
+-The Freescale Management Complex (fsl-mc) is a hardware resource
+-manager that manages specialized hardware objects used in
+-network-oriented packet processing applications. After the fsl-mc
+-block is enabled, pools of hardware resources are available, such as
+-queues, buffer pools, I/O interfaces. These resources are building
+-blocks that can be used to create functional hardware objects/devices
+-such as network interfaces, crypto accelerator instances, L2 switches,
+-etc.
+-
+-For an overview of the DPAA2 architecture and fsl-mc bus see:
+-Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+-
+-As described in the above overview, all DPAA2 objects in a DPRC share the
+-same hardware "isolation context" and a 10-bit value called an ICID
+-(isolation context id) is expressed by the hardware to identify
+-the requester.
+-
+-The generic 'iommus' property is insufficient to describe the relationship
+-between ICIDs and IOMMUs, so an iommu-map property is used to define
+-the set of possible ICIDs under a root DPRC and how they map to
+-an IOMMU.
+-
+-For generic IOMMU bindings, see
+-Documentation/devicetree/bindings/iommu/iommu.txt.
+-
+-For arm-smmu binding, see:
+-Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
+-
+-The MSI writes are accompanied by sideband data which is derived from the ICID.
+-The msi-map property is used to associate the devices with both the ITS
+-controller and the sideband data which accompanies the writes.
+-
+-For generic MSI bindings, see
+-Documentation/devicetree/bindings/interrupt-controller/msi.txt.
+-
+-For GICv3 and GIC ITS bindings, see:
+-Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
+-
+-Required properties:
+-
+-    - compatible
+-        Value type: <string>
+-        Definition: Must be "fsl,qoriq-mc".  A Freescale Management Complex
+-                    compatible with this binding must have Block Revision
+-                    Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
+-                    the MC control register region.
+-
+-    - reg
+-        Value type: <prop-encoded-array>
+-        Definition: A standard property.  Specifies one or two regions
+-                    defining the MC's registers:
+-
+-                       -the first region is the command portal for the
+-                        this machine and must always be present
+-
+-                       -the second region is the MC control registers. This
+-                        region may not be present in some scenarios, such
+-                        as in the device tree presented to a virtual machine.
+-
+-    - ranges
+-        Value type: <prop-encoded-array>
+-        Definition: A standard property.  Defines the mapping between the child
+-                    MC address space and the parent system address space.
+-
+-                    The MC address space is defined by 3 components:
+-                       <region type> <offset hi> <offset lo>
+-
+-                    Valid values for region type are
+-                       0x0 - MC portals
+-                       0x1 - QBMAN portals
+-
+-    - #address-cells
+-        Value type: <u32>
+-        Definition: Must be 3.  (see definition in 'ranges' property)
+-
+-    - #size-cells
+-        Value type: <u32>
+-        Definition: Must be 1.
+-
+-Sub-nodes:
+-
+-        The fsl-mc node may optionally have dpmac sub-nodes that describe
+-        the relationship between the Ethernet MACs which belong to the MC
+-        and the Ethernet PHYs on the system board.
+-
+-        The dpmac nodes must be under a node named "dpmacs" which contains
+-        the following properties:
+-
+-            - #address-cells
+-              Value type: <u32>
+-              Definition: Must be present if dpmac sub-nodes are defined and must
+-                          have a value of 1.
+-
+-            - #size-cells
+-              Value type: <u32>
+-              Definition: Must be present if dpmac sub-nodes are defined and must
+-                          have a value of 0.
+-
+-        These nodes must have the following properties:
+-
+-            - compatible
+-              Value type: <string>
+-              Definition: Must be "fsl,qoriq-mc-dpmac".
+-
+-            - reg
+-              Value type: <prop-encoded-array>
+-              Definition: Specifies the id of the dpmac.
+-
+-            - phy-handle
+-              Value type: <phandle>
+-              Definition: Specifies the phandle to the PHY device node associated
+-                          with the this dpmac.
+-Optional properties:
+-
+-- iommu-map: Maps an ICID to an IOMMU and associated iommu-specifier
+-  data.
+-
+-  The property is an arbitrary number of tuples of
+-  (icid-base,iommu,iommu-base,length).
+-
+-  Any ICID i in the interval [icid-base, icid-base + length) is
+-  associated with the listed IOMMU, with the iommu-specifier
+-  (i - icid-base + iommu-base).
+-
+-- msi-map: Maps an ICID to a GIC ITS and associated msi-specifier
+-  data.
+-
+-  The property is an arbitrary number of tuples of
+-  (icid-base,gic-its,msi-base,length).
+-
+-  Any ICID in the interval [icid-base, icid-base + length) is
+-  associated with the listed GIC ITS, with the msi-specifier
+-  (i - icid-base + msi-base).
+-
+-Deprecated properties:
+-
+-    - msi-parent
+-        Value type: <phandle>
+-        Definition: Describes the MSI controller node handling message
+-                    interrupts for the MC. When there is no translation
+-                    between the ICID and deviceID this property can be used
+-                    to describe the MSI controller used by the devices on the
+-                    mc-bus.
+-                    The use of this property for mc-bus is deprecated. Please
+-                    use msi-map.
+-
+-Example:
+-
+-        smmu: iommu@5000000 {
+-               compatible = "arm,mmu-500";
+-               #iommu-cells = <1>;
+-               stream-match-mask = <0x7C00>;
+-               ...
+-        };
+-
+-        gic: interrupt-controller@6000000 {
+-               compatible = "arm,gic-v3";
+-               ...
+-        }
+-        its: gic-its@6020000 {
+-               compatible = "arm,gic-v3-its";
+-               msi-controller;
+-               ...
+-        };
+-
+-        fsl_mc: fsl-mc@80c000000 {
+-                compatible = "fsl,qoriq-mc";
+-                reg = <0x00000008 0x0c000000 0 0x40>,    /* MC portal base */
+-                      <0x00000000 0x08340000 0 0x40000>; /* MC control reg */
+-                /* define map for ICIDs 23-64 */
+-                iommu-map = <23 &smmu 23 41>;
+-                /* define msi map for ICIDs 23-64 */
+-                msi-map = <23 &its 23 41>;
+-                #address-cells = <3>;
+-                #size-cells = <1>;
+-
+-                /*
+-                 * Region type 0x0 - MC portals
+-                 * Region type 0x1 - QBMAN portals
+-                 */
+-                ranges = <0x0 0x0 0x0 0x8 0x0c000000 0x4000000
+-                          0x1 0x0 0x0 0x8 0x18000000 0x8000000>;
+-
+-                dpmacs {
+-                    #address-cells = <1>;
+-                    #size-cells = <0>;
+-
+-                    dpmac@1 {
+-                        compatible = "fsl,qoriq-mc-dpmac";
+-                        reg = <1>;
+-                        phy-handle = <&mdio0_phy0>;
+-                    }
+-                }
+-        };
+diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+new file mode 100644
+index 0000000000000..505428d29ec3e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+@@ -0,0 +1,187 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/misc/fsl,qoriq-mc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Management Complex
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description: |
++  The Freescale Management Complex (fsl-mc) is a hardware resource
++  manager that manages specialized hardware objects used in
++  network-oriented packet processing applications. After the fsl-mc
++  block is enabled, pools of hardware resources are available, such as
++  queues, buffer pools, I/O interfaces. These resources are building
++  blocks that can be used to create functional hardware objects/devices
++  such as network interfaces, crypto accelerator instances, L2 switches,
++  etc.
++
++  For an overview of the DPAA2 architecture and fsl-mc bus see:
++  Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
++
++  As described in the above overview, all DPAA2 objects in a DPRC share the
++  same hardware "isolation context" and a 10-bit value called an ICID
++  (isolation context id) is expressed by the hardware to identify
++  the requester.
++
++  The generic 'iommus' property is insufficient to describe the relationship
++  between ICIDs and IOMMUs, so an iommu-map property is used to define
++  the set of possible ICIDs under a root DPRC and how they map to
++  an IOMMU.
++
++  For generic IOMMU bindings, see
++  Documentation/devicetree/bindings/iommu/iommu.txt.
++
++  For arm-smmu binding, see:
++  Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
++
++  The MSI writes are accompanied by sideband data which is derived from the ICID.
++  The msi-map property is used to associate the devices with both the ITS
++  controller and the sideband data which accompanies the writes.
++
++  For generic MSI bindings, see
++  Documentation/devicetree/bindings/interrupt-controller/msi.txt.
++
++  For GICv3 and GIC ITS bindings, see:
++  Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
++
++properties:
++  compatible:
++    enum:
++      - fsl,qoriq-mc
++    description:
++      Must be "fsl,qoriq-mc".  A Freescale Management Complex
++      compatible with this binding must have Block Revision
++      Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
++      the MC control register region.
++
++  reg:
++    items:
++      - description:
++          the first region is the command portal for the
++          this machine and must always be present
++
++      - description:
++          the second region is the MC control registers. This
++          region may not be present in some scenarios, such
++          as in the device tree presented to a virtual machine.
++
++  ranges:
++    description: |
++      A standard property.  Defines the mapping between the child
++      MC address space and the parent system address space.
++
++      The MC address space is defined by 3 components:
++        <region type> <offset hi> <offset lo>
++
++      Valid values for region type are
++        0x0 - MC portals
++        0x1 - QBMAN portals
++
++  "#address-cells":
++    const: 3
++
++  "#size-cells":
++    const: 1
++
++  iommu-map:
++    description: |
++      Maps an ICID to an IOMMU and associated iommu-specifier
++      data.
++
++      The property is an arbitrary number of tuples of
++      (icid-base,iommu,iommu-base,length).
++
++      Any ICID i in the interval [icid-base, icid-base + length) is
++      associated with the listed IOMMU, with the iommu-specifier
++      (i - icid-base + iommu-base).
++
++  msi-map:
++    description: |
++      Maps an ICID to a GIC ITS and associated msi-specifier
++      data.
++
++      The property is an arbitrary number of tuples of
++      (icid-base,gic-its,msi-base,length).
++
++      Any ICID in the interval [icid-base, icid-base + length) is
++      associated with the listed GIC ITS, with the msi-specifier
++      (i - icid-base + msi-base).
++
++  msi-parent:
++    deprecated: true
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      Describes the MSI controller node handling message
++      interrupts for the MC. When there is no translation
++      between the ICID and deviceID this property can be used
++      to describe the MSI controller used by the devices on the
++      mc-bus.
++      The use of this property for mc-bus is deprecated. Please
++      use msi-map.
++
++  dma-coherent: true
++
++  dpmacs:
++    type: object
++    description:
++      The fsl-mc node may optionally have dpmac sub-nodes that describe
++      the relationship between the Ethernet MACs which belong to the MC
++      and the Ethernet PHYs on the system board.
++
++    properties:
++      "#address-cells":
++        const: 1
++
++      "#size-cells":
++        const: 0
++
++    patternProperties:
++      '^(dpmac|ethernet)@[a-f0-9]+$':
++        $ref: /schemas/net/fsl,qoriq-mc-dpmac.yaml
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - ranges
++  - "#address-cells"
++  - "#size-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    fsl-mc@80c000000 {
++        compatible = "fsl,qoriq-mc";
++        reg = <0x0c000000 0x40>,    /* MC portal base */
++              <0x08340000 0x40000>; /* MC control reg */
++        /* define map for ICIDs 23-64 */
++        iommu-map = <23 &smmu 23 41>;
++        /* define msi map for ICIDs 23-64 */
++        msi-map = <23 &its 23 41>;
++        #address-cells = <3>;
++        #size-cells = <1>;
++
++        /*
++         * Region type 0x0 - MC portals
++         * Region type 0x1 - QBMAN portals
++         */
++        ranges = <0x0 0x0 0x8 0x0c000000 0x4000000
++                 0x1 0x0 0x8 0x18000000 0x8000000>;
++
++        dpmacs {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            dpmac@1 {
++                compatible = "fsl,qoriq-mc-dpmac";
++                reg = <1>;
++                phy-handle = <&mdio0_phy0>;
++            };
++        };
++    };
 -- 
 2.34.1
 
