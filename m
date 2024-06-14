@@ -1,87 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4623919AA6E;
-	Fri, 14 Jun 2024 15:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA9F503
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 16:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718377900; cv=none; b=qpTEASackckHNaD9xUMs++/BPslxaQ9IWlPo+ra2H7N4gOd7fPlWY52A44JYc/Oyyfb/GjEVwmr0KwPv84Hb4HynkGL0uJdMEGkbO6tSLm2id2gd4MJ7qBph8KIQ5ty+D9RCIAa9jnOkHpzD6cvNh4x/df+Ps/ODd3SFGUYb8Jc=
+	t=1718380890; cv=none; b=u2Ym8AQ3pGWmk+5tKojJpZDATlJLLSY/2Hj6n9zt7V5wOWFtBtizc5FfGBHuEKJ6/ViuHvpj2gzkl2al0gp0SAWSTBKR33BjKcRbhrwZzKk6WU1p3H5l9uFk2fZlZLG7Sut66zunG+iQ6R7z2+qB5uDI/+5XMT51LVrEfLMszwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718377900; c=relaxed/simple;
-	bh=/3Mg5rIwDCahxGgJ6iiybRmVjRLsews/D+g4t1liyx0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gLFw2AhO6fQqgJ/Yw/XovAnulKiYlx3vtjv+WH8RK5abA+pn7IvS1JL50auM+9ZULqtMB/nKxJlO5/wCYRMhURl9Iyy5y2MRBx6HkH3xVFo1qwDkOCG6Moo85NI3F1wy4RukSudQupWQYpHvdN0z9R6EQpjhUKqqBP/kcem50Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rJSYDq3n; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rJSYDq3n"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=bfVN5YN8JhVjpssbPI26uslRFd4p7nnZEhkAMORv9XM=; b=rJSYDq3nwAThqM8pk0ZJ+N9e74
-	TPoy0AM3t84gM/r3tHQE1vUj/c1wpZe8mZTmb35nvVPCAumadBWluGk5SelJDcpQOKLKT3TDA/QoI
-	05lnooBitw/KIhJNOt3chdZr095Qq707t7gsmpyQ7TJgSap1S1HzoZgcPKU+7OC/lgiY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sI8Cv-0004TC-Hl; Fri, 14 Jun 2024 16:47:13 +0200
-Date: Fri, 14 Jun 2024 16:47:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Paul Geurts <paul.geurts@prodrive-technologies.com>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fec_main: Register net device before initializing the
- MDIO bus
-Message-ID: <222fed4c-1613-40ec-b0a2-35b181fac795@lunn.ch>
-References: <51faeed2-6a6b-439b-80e6-8cf2b5ce401a@lunn.ch>
- <20240614084050.1205641-1-paul.geurts@prodrive-technologies.com>
+	s=arc-20240116; t=1718380890; c=relaxed/simple;
+	bh=PF06UVAUwNRTBfsiJ21LK7Zw9YpeWoI6dp0UuAuGFXs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LefoSjqMmrEPxI2/LllxjadNnL74oNd7aT2Ohkzwu3UAGZ06UKujjQUMbaP8nYuz0/jAWl8mV+3Tp9nVfPjF8IW74ikuvomKiV1R+jwKHQWP8nqs+x84LNkTqRUrwiLejBSjEf1Db7DrCNzjhng1L4DHrYHTp5S+d9fgGuqrafg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W13rc72Q9z6H7Wv;
+	Sat, 15 Jun 2024 00:00:00 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 690CF140D26;
+	Sat, 15 Jun 2024 00:01:25 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 14 Jun
+ 2024 17:01:24 +0100
+Date: Fri, 14 Jun 2024 17:01:23 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Abel Vesa
+	<abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Frank Li
+	<Frank.Li@nxp.com>, <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-clk@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+	<linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+	<linux-pwm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>, <linux-watchdog@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: drop stale Anson Huang from maintainers
+Message-ID: <20240614170123.00002e0f@Huawei.com>
+In-Reply-To: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
+References: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240614084050.1205641-1-paul.geurts@prodrive-technologies.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, Jun 14, 2024 at 10:40:50AM +0200, Paul Geurts wrote:
-> > On Thu, Jun 13, 2024 at 04:41:11PM +0200, Paul Geurts wrote:
-> > > Registration of the FEC MDIO bus triggers a probe of all devices
-> > > connected to that bus. DSA based Ethernet switch devices connect to the
-> > > uplink Ethernet port during probe. When a DSA based, MDIO controlled
-> > > Ethernet switch is connected to FEC, it cannot connect the uplink port,
-> > > as the FEC MDIO port is registered before the net device is being
-> > > registered. This causes an unnecessary defer of the Ethernet switch
-> > > driver probe.
-> > > 
-> > > Register the net device before initializing and registering the MDIO
-> > > bus.
-> > 
-> > The problem with this is, as soon as you call register_netdev(), the
-> > device is alive and sending packets. It can be sending packets even
-> > before register_netdev() returns, e.g. in the case of NFS root. So
-> > fec_enet_open() gets called, and tried to find its PHY. But the MDIO
-> > bus is not registered yet....
+On Fri, 14 Jun 2024 11:59:27 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+
+> Emails to Anson Huang bounce:
 > 
-> Valid argument there. I was trying to make the initialization more efficient,
-> but you are correct.
+>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
+> 
+> Add IMX platform maintainers for bindings which would become orphaned.
+That doesn't make much sense for the magnetometer which has nothing to do with
+imx.
 
-Any changes to make this more efficient probably needs to be generic,
-and not in a specific Ethernet driver. One idea might be, when parsing
-the DT node for the MDIO bus, look to see if the device on the bus has
-a compatible which indicates it is not a PHY. If so, try to make the
-driver core put the device straight into deferred state, without even
-trying the first probe.
+Make that one my problem under my jic23@kernel.org address.
 
-Also, look at driver core devlink stuff. It tries to keep track of
-resource dependencies, and only probe devices when their resources are
-available. It does not seem to understand DSA too well, and it might
-be made better. But this is complex, we have dependency loops in
-network drivers, which causes devlink issues.
+Thanks,
 
-       Andrew
+Jonathan
+
+
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+> index 6b54d32323fc..467002a5da43 100644
+> --- a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+> +++ b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+> @@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+
+Not sure the new maintainers make sense here.
+
+Flip it to me if no one else volunteers.
+
+>  title: Freescale MAG3110 magnetometer sensor
+>  
+>  maintainers:
+> -  - Anson Huang <Anson.Huang@nxp.com>
+> +  - Shawn Guo <shawnguo@kernel.org>
+> +  - Sascha Hauer <s.hauer@pengutronix.de>
+> +  - Fabio Estevam <festevam@gmail.com>
+>  
+>  properties:
+>    compatible:
+
+
