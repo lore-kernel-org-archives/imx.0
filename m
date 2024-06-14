@@ -1,660 +1,473 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F10C1A2C1A
-	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 09:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCA819FA62
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 09:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718358449; cv=none; b=Ok05vZoeD/cKdQH85vmJ8CmWh4lCatfbq/W5fsFQQKmDX3CZWHeabiQMzQTMT4Y/IRg9LXLZf71hzEI0/MRjz0AeBlnN7zWXkXjqK0nvuHa9fSggN6j0VTHxrpp3YPeVpkDMR19TFfyHBmpW8FT/DfF4K6XhANy7fdfFEws8pLk=
+	t=1718359182; cv=none; b=f6bzduLmspOhXbXe8518LCiKHFlnpycdWNHZz5ZuoyJ5z/aNPwE/oylGAvEtqz+IPssJI8hcXywCHu8VhjUWlmLUKgBrQvIAOl0WHUtKLKkKI/nqXJF9F6kfPeGC9hymt/6003cavZnMRTfZd2q9y/LIPdOGo8E6UgMX6iGKGgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718358449; c=relaxed/simple;
-	bh=PTWaCGHhxDG3JPho0JTkQVwDMdXBskC1S/cinQsqs34=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GR/3AwSChCG/q3eRgAcW5saCy71kT0lMqX/i/SL+Ty2l8TYq+5gwhCGb9UTQbyYP16L4v5EPj/+N1Z7TD6z5Ntx6wusf9jQ9nPvjHPeOwS3h5y0BAOvqFyWLMm8oNZB7caRgmu/KgIw9SaVvVyrPKqeBi8zHL2E1ecfuovv20PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VYOSGFkI; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1718359182; c=relaxed/simple;
+	bh=o+UxusDvXcRw/9+99wtmLFw1Ay/JOFInOe2ZTYft6/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e3HWD0lm0clCS1Gt4yEvi8EW2InWrrJdcneakJ3a07Ya5HSp/+I7MgVYdH4I9hM2LhIh7mLrjCMpNmgmsNyWFgJ6GqBy6G032vBeVt7O8a5GZpeZ4nU/cJ4ZhcpGhdOmtYSbmrmJveiEe5odIyVQu95H+a+4HY8IC9vj6N63z04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=effI9WZ+; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VYOSGFkI"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6f0dc80ab9so312923166b.2
-        for <imx@lists.linux.dev>; Fri, 14 Jun 2024 02:47:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="effI9WZ+"
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6f95be3d4c4so763964a34.3
+        for <imx@lists.linux.dev>; Fri, 14 Jun 2024 02:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718358443; x=1718963243; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R2gPriGbKHdVX74nqBWMkbblvztnZeI8q7lI51XJyjE=;
-        b=VYOSGFkInGNIC4oxc1A1+qo6eFO4Y7Njc4y+zwhMeT8veFATN0kt1sFm75CTw2yqOj
-         CL2c1+8PsaKRWpn7x5ho+Eti/Egv5jSkv0ZaSTKvi7VWmpi67FLMAL9vMOzTweoenlzV
-         VN/BifdClbmNmXMcilGynTmuW8JqWK+IEQu97grb6rRfou53II2m3uMzzSNUE+fQY+XB
-         CIgUP1Tj3qrLCwUVe0IZVn+htqWu1UQDwOplJaTXgSG14r3kMBCtLkGAosakeUi5KC3z
-         GJ6d5g9Qt1b5M0feESys/YVe5mhSuWnzBaJIqmU2BGI/Z+KCSCDemlK7AZziU6QWr39k
-         6Skw==
+        d=linaro.org; s=google; t=1718359178; x=1718963978; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZwEL12Dk210SzDROzm2fK2nLGU+zRldORTG8TcrOARU=;
+        b=effI9WZ+rGLSSPZ1SzsjsYQ7GeryLIVL762Lzv7dBUwxhqWRBElgZjdaSci18eR9x/
+         6vkN+cuZjX7VwBq10loTRq+9lmegbuOH97w46gdToGPboRbcSxSvEl/5yL3emH6mZb06
+         kSQEK/TvCBBW+TUDvvNbJgPajQW0g6SD9LQ+eJpn2Bi1maMF8U0y4racSaVJURgSPRaU
+         AlmDElIQ3/xT9UEIT2IwBJo5G+ptalkEw7Uv+qb4n6AvXyNxl5LdjlukX6SmZ3OkokgL
+         2FN4yyeuaawZUX+w7i4HEzLUKtK/owSQ9fY+dup6LOnRkpASNbK+RU+gfxYoH4ihI0GW
+         b8rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718358443; x=1718963243;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R2gPriGbKHdVX74nqBWMkbblvztnZeI8q7lI51XJyjE=;
-        b=n23K9VrGpAby61xNKyPwO9AtsnEWOIa6FWfPjTnHlZIsdMkWa/5XwXEMaxgVw0Ecdg
-         4xgGsh/QX30DAW5E8D3vfmYjNjXN86Ei2Ma5JkhwIwXNr6PIURmTuh9bttqUr1E+QNXz
-         vK1OTSBg9TRBqZe6RTi5cduWDG3DMQNG657Gu7XtA4AcN1ahm97vteMrg5Y6RYZ7xTvR
-         jECH2r133p8zOzToL7NMjpD7Qep/nSmxL8klBByt2GMoYuASITdmWZ0ffQKXKWypMFw2
-         zeoyI2Ez/5oqUObIwMBUodCZYZD3aXsSz1mVnJ3WrJntdNdHts1lhEFjkLIEO3Ro+wM0
-         L8nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVezURLbXKV+ht2Rc/RcRgMo9vaXTBvW5K+ptLBsoEM8w8WbcZTZNCGvaBiiUitqMg0ieH+AYI423xXCd5uJwOQ9Myb
-X-Gm-Message-State: AOJu0YzsK1UioqOM+y16Kyedlr2keLVyQhITpEGmiZQUTeHd+bKzFKdL
-	19RdJC0gwAUstBgYPCxYR6vSMXpnFoRjt4KBXoWrrizu6Evi0Uy86vetlypo18Q=
-X-Google-Smtp-Source: AGHT+IEf3+S0MhgY0wukGRo771V3bdpj3ZA5SXQwPVRN2B+sO2RVirDXSDvX66hTXcXM0U1zEb/VKQ==
-X-Received: by 2002:a17:906:4f16:b0:a6e:f997:7d91 with SMTP id a640c23a62f3a-a6f60d42257mr139307566b.38.1718358443385;
-        Fri, 14 Jun 2024 02:47:23 -0700 (PDT)
-Received: from [127.0.1.1] ([78.10.206.163])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56f9c84csm164966366b.222.2024.06.14.02.47.21
+        d=1e100.net; s=20230601; t=1718359178; x=1718963978;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZwEL12Dk210SzDROzm2fK2nLGU+zRldORTG8TcrOARU=;
+        b=itbWNf03gp7Tfwty3RK2LPMzzOUG1Oq4NJbkXlhLKz4Yw7XykA9GNKPe5awBsfcFwz
+         OcGBQlhwxfoD/lfKJJoIJHuMqh78Wo7ESrla9ACCFkCVaPi1EawODJUyiJ+4p7Mo9gyr
+         wMAQfxrUj9Fg++umuj7saLTfFVIpW9wGBsnqJIDtFrO1ck+sqc8DlU9sjpZeZ6dv5VDm
+         C7zl5dLo9x33fuFgvaAWGzpOV3mPME7u1To9hCYIvT5jLo99ipOMNosTCe6ETtsOINon
+         dvEviSER7C342hfNSFWkRPPFwmyiq/dap6djR7a0UKlwGv9Ir0WVyuP1UXwBbXLEYQBN
+         RR1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXgBRkmopm6wImMlmDMRMUgnZptzOKT12pHHIamzM2q4am8sr7SjmifjFlt0c6059gkfIujZE1jaRIVfyzDIoGoOD/M
+X-Gm-Message-State: AOJu0Yzh2u06xfDDSByUy4E6nA99Lv0LLOVP1AWSXpGwPXE8/Ekdq6vx
+	IoASmhhctaJbJhpgmodyvBoHL7Helbn0XrYHTaBkugaJd/zRFEoINdeklhBNfFw=
+X-Google-Smtp-Source: AGHT+IGaIW4Oj4QyiK1N8uLp44uKOum0SpgbvhX9tXBoqXkfPuCUc1l/mIKPBdvr5bH67v1ZL9Bhsw==
+X-Received: by 2002:a05:6830:10a:b0:6fa:e93:3e3e with SMTP id 46e09a7af769-6fb93766baamr2212329a34.9.1718359178133;
+        Fri, 14 Jun 2024 02:59:38 -0700 (PDT)
+Received: from krzk-bin.. ([78.10.206.163])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6fb5b2fe510sm554180a34.48.2024.06.14.02.59.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jun 2024 02:47:22 -0700 (PDT)
+        Fri, 14 Jun 2024 02:59:37 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 14 Jun 2024 11:46:21 +0200
-Subject: [PATCH 22/22] dt-bindings: thermal: cleanup examples indentation
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-watchdog@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: drop stale Anson Huang from maintainers
+Date: Fri, 14 Jun 2024 11:59:27 +0200
+Message-ID: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240614-dt-bindings-thermal-allof-v1-22-30b25a6ae24e@linaro.org>
-References: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
-In-Reply-To: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>, 
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Guillaume La Roque <glaroque@baylibre.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Vasily Khoruzhick <anarsoul@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Anson Huang <Anson.Huang@nxp.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
- Amit Kucheria <amitk@kernel.org>, 
- =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
- Heiko Stuebner <heiko@sntech.de>, Biju Das <biju.das.jz@bp.renesas.com>, 
- Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Pascal Paillet <p.paillet@foss.st.com>, Keerthy <j-keerthy@ti.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Scott Branden <sbranden@broadcom.com>, 
- zhanghongchen <zhanghongchen@loongson.cn>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, imx@lists.linux.dev, 
- linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- Florian Fainelli <f.fainelli@gmail.com>, 
- linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=21269;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=PTWaCGHhxDG3JPho0JTkQVwDMdXBskC1S/cinQsqs34=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmbBFzHrd9GOiKwbzJMror8sT+hnOlEceWGq75k
- 7UM0c1D222JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZmwRcwAKCRDBN2bmhouD
- 1yuHEACQQW+ctgqsyxcNpgAHqwclHpTy68YBzjAnl4LzShLU/IKf0yY+RsTopyTrhoi2a8uqxym
- tb/2s73RE2G0GQGl6ovK2iXBnX57zoQHgEiM+npaJaO8VOeo7SqdNFVMogAV6tQqsJ1at1ApsyZ
- /Rsq7yRCQMOME6Fh7mGb6xsxi1vn1Pe0Pmx4FAHcDlZORtDY0q5uCrzuV5ox3hLALkNxy2gR5Cr
- SLzND16UJibYdb1DDPgARuC8T62okbBouAY/sxXbD1ri9KpKOpZTfq6tXSAwe7Uq16dVk5gMTZH
- pgz9p2yaqZ3YfQfLfClz44hpM5JFAHpK2OQaW8XDXDhcHASmA30A2JGeJjHAvt+E9157G2e5XGX
- vDOkH5TldhWe0Jf3WqfvqF7pJd4iQhNpBbqTglUIDZo7RnwYPyXsQqIQFVUMkp513EZQ513iQJk
- ImwdYUGZHbNyg642Bju3dWO6ydMpKIpRLinsMHViIFI0XOIa+GYqW5n9XrRo95RsEZAJBGiamw1
- kztcCY3tAQVxMZCXBalUMhCJsldG+yK0kybQ42JUjgLYIP/pYJ6Gbl4FRdBTCwORdDwCufh4p5a
- J2cutoXsbGMslNy/H3IVMfdFi//qegvrgHFSYaxZlHeyvMtwjOw0yJvviRhsuBz//He4zuLCH8k
- 8ea1P+ZuXQH2j3w==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-Preferred indentation for DTS examples in the bindings is 4-space.  It
-is also preferred not to have redundant/unused labels. No functional
-change
+Emails to Anson Huang bounce:
+
+  Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
+
+Add IMX platform maintainers for bindings which would become orphaned.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../bindings/thermal/amlogic,thermal.yaml          | 18 ++---
- .../bindings/thermal/brcm,avs-ro-thermal.yaml      | 16 ++--
- .../devicetree/bindings/thermal/brcm,avs-tmon.yaml | 16 ++--
- .../devicetree/bindings/thermal/qcom-tsens.yaml    | 88 ++++++++++------------
- .../bindings/thermal/rcar-gen3-thermal.yaml        | 64 ++++++++--------
- .../devicetree/bindings/thermal/rcar-thermal.yaml  | 60 +++++++--------
- .../devicetree/bindings/thermal/rzg2l-thermal.yaml | 36 ++++-----
- .../devicetree/bindings/thermal/sprd-thermal.yaml  | 42 +++++------
- .../bindings/thermal/ti,am654-thermal.yaml         | 10 +--
- 9 files changed, 172 insertions(+), 178 deletions(-)
+ .../devicetree/bindings/arm/freescale/fsl,imx7ulp-sim.yaml    | 4 +++-
+ Documentation/devicetree/bindings/clock/imx6q-clock.yaml      | 4 +++-
+ Documentation/devicetree/bindings/clock/imx6sl-clock.yaml     | 4 +++-
+ Documentation/devicetree/bindings/clock/imx6sll-clock.yaml    | 4 +++-
+ Documentation/devicetree/bindings/clock/imx6sx-clock.yaml     | 4 +++-
+ Documentation/devicetree/bindings/clock/imx6ul-clock.yaml     | 4 +++-
+ Documentation/devicetree/bindings/clock/imx7d-clock.yaml      | 1 -
+ Documentation/devicetree/bindings/clock/imx8m-clock.yaml      | 4 +++-
+ Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml      | 4 +++-
+ Documentation/devicetree/bindings/gpio/gpio-mxs.yaml          | 1 -
+ Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml      | 4 +++-
+ .../devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml     | 4 +++-
+ .../devicetree/bindings/memory-controllers/fsl/mmdc.yaml      | 4 +++-
+ Documentation/devicetree/bindings/nvmem/imx-iim.yaml          | 4 +++-
+ Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml        | 4 +++-
+ Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml        | 4 +++-
+ Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml        | 4 +++-
+ Documentation/devicetree/bindings/pwm/mxs-pwm.yaml            | 1 -
+ Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml      | 4 +++-
+ Documentation/devicetree/bindings/thermal/imx-thermal.yaml    | 1 -
+ Documentation/devicetree/bindings/thermal/imx8mm-thermal.yaml | 4 +++-
+ Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml  | 4 +++-
+ Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml   | 4 +++-
+ .../devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml         | 4 +++-
+ 24 files changed, 60 insertions(+), 24 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/thermal/amlogic,thermal.yaml b/Documentation/devicetree/bindings/thermal/amlogic,thermal.yaml
-index e52fc40e215d..725303e1a364 100644
---- a/Documentation/devicetree/bindings/thermal/amlogic,thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/amlogic,thermal.yaml
-@@ -50,13 +50,13 @@ unevaluatedProperties: false
+diff --git a/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-sim.yaml b/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-sim.yaml
+index 526f508cb98d..bd39cf107f3e 100644
+--- a/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-sim.yaml
++++ b/Documentation/devicetree/bindings/arm/freescale/fsl,imx7ulp-sim.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX7ULP System Integration Module
  
- examples:
-   - |
--        cpu_temp: temperature-sensor@ff634800 {
--                compatible = "amlogic,g12a-cpu-thermal",
--                             "amlogic,g12a-thermal";
--                reg = <0xff634800 0x50>;
--                interrupts = <0x0 0x24 0x0>;
--                clocks = <&clk 164>;
--                #thermal-sensor-cells = <0>;
--                amlogic,ao-secure = <&sec_AO>;
--        };
-+    temperature-sensor@ff634800 {
-+        compatible = "amlogic,g12a-cpu-thermal",
-+                     "amlogic,g12a-thermal";
-+        reg = <0xff634800 0x50>;
-+        interrupts = <0x0 0x24 0x0>;
-+        clocks = <&clk 164>;
-+        #thermal-sensor-cells = <0>;
-+        amlogic,ao-secure = <&sec_AO>;
-+    };
- ...
-diff --git a/Documentation/devicetree/bindings/thermal/brcm,avs-ro-thermal.yaml b/Documentation/devicetree/bindings/thermal/brcm,avs-ro-thermal.yaml
-index 0271a0bc1843..29a9844e8b48 100644
---- a/Documentation/devicetree/bindings/thermal/brcm,avs-ro-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/brcm,avs-ro-thermal.yaml
-@@ -35,14 +35,14 @@ unevaluatedProperties: false
+ maintainers:
+-  - Anson Huang <anson.huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
- examples:
-   - |
--        avs-monitor@7d5d2000 {
--                compatible = "brcm,bcm2711-avs-monitor",
--                             "syscon", "simple-mfd";
--                reg = <0x7d5d2000 0xf00>;
-+    avs-monitor@7d5d2000 {
-+        compatible = "brcm,bcm2711-avs-monitor",
-+                     "syscon", "simple-mfd";
-+        reg = <0x7d5d2000 0xf00>;
+ description: |
+   The system integration module (SIM) provides system control and chip configuration
+diff --git a/Documentation/devicetree/bindings/clock/imx6q-clock.yaml b/Documentation/devicetree/bindings/clock/imx6q-clock.yaml
+index bae4fcb3aacc..74cfdcf1c93b 100644
+--- a/Documentation/devicetree/bindings/clock/imx6q-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx6q-clock.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX6 Quad Clock Controller
  
--                thermal: thermal {
--                        compatible = "brcm,bcm2711-thermal";
--                        #thermal-sensor-cells = <0>;
--                };
-+        thermal: thermal {
-+            compatible = "brcm,bcm2711-thermal";
-+            #thermal-sensor-cells = <0>;
-         };
-+    };
- ...
-diff --git a/Documentation/devicetree/bindings/thermal/brcm,avs-tmon.yaml b/Documentation/devicetree/bindings/thermal/brcm,avs-tmon.yaml
-index 32730211e15b..081486b44382 100644
---- a/Documentation/devicetree/bindings/thermal/brcm,avs-tmon.yaml
-+++ b/Documentation/devicetree/bindings/thermal/brcm,avs-tmon.yaml
-@@ -45,11 +45,11 @@ required:
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
- examples:
-   - |
--     thermal@f04d1500 {
--          compatible = "brcm,avs-tmon-bcm7445", "brcm,avs-tmon";
--          reg = <0xf04d1500 0x28>;
--          interrupts = <0x6>;
--          interrupt-names = "tmon";
--          interrupt-parent = <&avs_host_l2_intc>;
--          #thermal-sensor-cells = <0>;
--     };
-+    thermal@f04d1500 {
-+        compatible = "brcm,avs-tmon-bcm7445", "brcm,avs-tmon";
-+        reg = <0xf04d1500 0x28>;
-+        interrupts = <0x6>;
-+        interrupt-names = "tmon";
-+        interrupt-parent = <&avs_host_l2_intc>;
-+        #thermal-sensor-cells = <0>;
-+    };
-diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-index cce6624228c7..01f9f45b94c2 100644
---- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-+++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-@@ -295,22 +295,16 @@ unevaluatedProperties: false
- examples:
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
--    // Example msm9860 based SoC (ipq8064):
--    gcc: clock-controller {
-+    thermal-sensor {
-+        compatible = "qcom,ipq8064-tsens";
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/clock/imx6sl-clock.yaml b/Documentation/devicetree/bindings/clock/imx6sl-clock.yaml
+index c85ff6ea3d24..b780bdaa4126 100644
+--- a/Documentation/devicetree/bindings/clock/imx6sl-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx6sl-clock.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX6 SoloLite Clock Controller
  
--           /* ... */
-+        nvmem-cells = <&tsens_calib>, <&tsens_calib_backup>;
-+        nvmem-cell-names = "calib", "calib_backup";
-+        interrupts = <GIC_SPI 178 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "uplow";
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--           tsens: thermal-sensor {
--                compatible = "qcom,ipq8064-tsens";
--
--                 nvmem-cells = <&tsens_calib>, <&tsens_calib_backup>;
--                 nvmem-cell-names = "calib", "calib_backup";
--                 interrupts = <GIC_SPI 178 IRQ_TYPE_LEVEL_HIGH>;
--                 interrupt-names = "uplow";
--
--                 #qcom,sensors = <11>;
--                 #thermal-sensor-cells = <1>;
--          };
-+        #qcom,sensors = <11>;
-+        #thermal-sensor-cells = <1>;
-     };
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/clock/imx6sll-clock.yaml b/Documentation/devicetree/bindings/clock/imx6sll-clock.yaml
+index 6b549ed1493c..992536b2bf6a 100644
+--- a/Documentation/devicetree/bindings/clock/imx6sll-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx6sll-clock.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX6 SLL Clock Controller
  
-   - |
-@@ -347,66 +341,66 @@ examples:
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
-     // Example 1 (legacy: for pre v1 IP):
-     tsens1: thermal-sensor@4a9000 {
--           compatible = "qcom,msm8916-tsens", "qcom,tsens-v0_1";
--           reg = <0x4a9000 0x1000>, /* TM */
--                 <0x4a8000 0x1000>; /* SROT */
-+        compatible = "qcom,msm8916-tsens", "qcom,tsens-v0_1";
-+        reg = <0x4a9000 0x1000>, /* TM */
-+              <0x4a8000 0x1000>; /* SROT */
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--           nvmem-cells = <&tsens_caldata>, <&tsens_calsel>;
--           nvmem-cell-names = "calib", "calib_sel";
-+        nvmem-cells = <&tsens_caldata>, <&tsens_calsel>;
-+        nvmem-cell-names = "calib", "calib_sel";
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/clock/imx6sx-clock.yaml b/Documentation/devicetree/bindings/clock/imx6sx-clock.yaml
+index 55dcad18b7c6..cd67fd6ba7ad 100644
+--- a/Documentation/devicetree/bindings/clock/imx6sx-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx6sx-clock.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX6 SoloX Clock Controller
  
--           interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
--           interrupt-names = "uplow";
-+        interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "uplow";
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--           #qcom,sensors = <5>;
--           #thermal-sensor-cells = <1>;
-+        #qcom,sensors = <5>;
-+        #thermal-sensor-cells = <1>;
-     };
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/clock/imx6ul-clock.yaml b/Documentation/devicetree/bindings/clock/imx6ul-clock.yaml
+index be54d4df5afa..3804369c9f8a 100644
+--- a/Documentation/devicetree/bindings/clock/imx6ul-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx6ul-clock.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX6 UltraLite Clock Controller
  
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
-     // Example 2 (for any platform containing v1 of the TSENS IP):
-     tsens2: thermal-sensor@4a9000 {
--          compatible = "qcom,qcs404-tsens", "qcom,tsens-v1";
--          reg = <0x004a9000 0x1000>, /* TM */
--                <0x004a8000 0x1000>; /* SROT */
-+        compatible = "qcom,qcs404-tsens", "qcom,tsens-v1";
-+        reg = <0x004a9000 0x1000>, /* TM */
-+              <0x004a8000 0x1000>; /* SROT */
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--          nvmem-cells = <&tsens_caldata>;
--          nvmem-cell-names = "calib";
-+        nvmem-cells = <&tsens_caldata>;
-+        nvmem-cell-names = "calib";
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/clock/imx7d-clock.yaml b/Documentation/devicetree/bindings/clock/imx7d-clock.yaml
+index e7d8427e4957..880d602d09f4 100644
+--- a/Documentation/devicetree/bindings/clock/imx7d-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx7d-clock.yaml
+@@ -8,7 +8,6 @@ title: Freescale i.MX7 Dual Clock Controller
  
--          interrupts = <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>;
--          interrupt-names = "uplow";
-+        interrupts = <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "uplow";
+ maintainers:
+   - Frank Li <Frank.Li@nxp.com>
+-  - Anson Huang <Anson.Huang@nxp.com>
  
--          #qcom,sensors = <10>;
--          #thermal-sensor-cells = <1>;
-+        #qcom,sensors = <10>;
-+        #thermal-sensor-cells = <1>;
-     };
+ description: |
+   The clock consumer should specify the desired clock by having the clock
+diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+index 80539f88bc27..b4afd5aa8769 100644
+--- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: NXP i.MX8M Family Clock Control Module
  
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
-     // Example 3 (for any platform containing v2 of the TSENS IP):
-     tsens3: thermal-sensor@c263000 {
--           compatible = "qcom,sdm845-tsens", "qcom,tsens-v2";
--           reg = <0xc263000 0x1ff>,
--                 <0xc222000 0x1ff>;
-+        compatible = "qcom,sdm845-tsens", "qcom,tsens-v2";
-+        reg = <0xc263000 0x1ff>,
-+              <0xc222000 0x1ff>;
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--           interrupts = <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>,
--                        <GIC_SPI 508 IRQ_TYPE_LEVEL_HIGH>;
--           interrupt-names = "uplow", "critical";
-+        interrupts = <GIC_SPI 506 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 508 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "uplow", "critical";
+ description: |
+   NXP i.MX8M Mini/Nano/Plus/Quad clock control module is an integrated clock
+diff --git a/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
+index 918776d16ef3..e1fc8bb6d379 100644
+--- a/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX/MXC GPIO controller
  
--           #qcom,sensors = <13>;
--           #thermal-sensor-cells = <1>;
-+        #qcom,sensors = <13>;
-+        #thermal-sensor-cells = <1>;
-     };
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
-     // Example 4 (for any IPQ8074 based SoC-s):
-     tsens4: thermal-sensor@4a9000 {
--           compatible = "qcom,ipq8074-tsens";
--           reg = <0x4a9000 0x1000>,
--                 <0x4a8000 0x1000>;
-+        compatible = "qcom,ipq8074-tsens";
-+        reg = <0x4a9000 0x1000>,
-+              <0x4a8000 0x1000>;
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+index dfa1133f8c5e..8ff54369d16c 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
++++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+@@ -8,7 +8,6 @@ title: Freescale MXS GPIO controller
  
--           interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
--           interrupt-names = "combined";
-+        interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "combined";
+ maintainers:
+   - Shawn Guo <shawnguo@kernel.org>
+-  - Anson Huang <Anson.Huang@nxp.com>
  
--           #qcom,sensors = <16>;
--           #thermal-sensor-cells = <1>;
-+        #qcom,sensors = <16>;
-+        #thermal-sensor-cells = <1>;
-     };
- ...
-diff --git a/Documentation/devicetree/bindings/thermal/rcar-gen3-thermal.yaml b/Documentation/devicetree/bindings/thermal/rcar-gen3-thermal.yaml
-index d92e882c9e8d..b6657d64cf3d 100644
---- a/Documentation/devicetree/bindings/thermal/rcar-gen3-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/rcar-gen3-thermal.yaml
-@@ -106,33 +106,33 @@ examples:
-     #include <dt-bindings/power/r8a7795-sysc.h>
+ description: |
+   The Freescale MXS GPIO controller is part of MXS PIN controller.
+diff --git a/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml b/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
+index 54d500be6aaa..1dcb9c78de3b 100644
+--- a/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale Low Power Inter IC (LPI2C) for i.MX
  
-     tsc: thermal@e6198000 {
--            compatible = "renesas,r8a7795-thermal";
--            reg = <0xe6198000 0x100>,
--                  <0xe61a0000 0x100>,
--                  <0xe61a8000 0x100>;
--            interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
--                         <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
--                         <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
--            clocks = <&cpg CPG_MOD 522>;
--            power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
--            resets = <&cpg 522>;
--            #thermal-sensor-cells = <1>;
-+        compatible = "renesas,r8a7795-thermal";
-+        reg = <0xe6198000 0x100>,
-+              <0xe61a0000 0x100>,
-+              <0xe61a8000 0x100>;
-+        interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&cpg CPG_MOD 522>;
-+        power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
-+        resets = <&cpg 522>;
-+        #thermal-sensor-cells = <1>;
-     };
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
-     thermal-zones {
--            sensor_thermal: sensor-thermal {
--                    polling-delay-passive = <250>;
--                    polling-delay = <1000>;
--                    thermal-sensors = <&tsc 0>;
-+        sensor_thermal: sensor-thermal {
-+            polling-delay-passive = <250>;
-+            polling-delay = <1000>;
-+            thermal-sensors = <&tsc 0>;
+ allOf:
+   - $ref: /schemas/i2c/i2c-controller.yaml#
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+index 6b54d32323fc..467002a5da43 100644
+--- a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
++++ b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale MAG3110 magnetometer sensor
  
--                    trips {
--                            sensor1_crit: sensor1-crit {
--                                    temperature = <90000>;
--                                    hysteresis = <2000>;
--                                    type = "critical";
--                            };
--                    };
-+            trips {
-+                sensor1_crit: sensor1-crit {
-+                    temperature = <90000>;
-+                    hysteresis = <2000>;
-+                    type = "critical";
-+                };
-             };
-+        };
-     };
-   - |
-     #include <dt-bindings/clock/r8a779a0-cpg-mssr.h>
-@@ -140,14 +140,14 @@ examples:
-     #include <dt-bindings/power/r8a779a0-sysc.h>
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
-     tsc_r8a779a0: thermal@e6190000 {
--            compatible = "renesas,r8a779a0-thermal";
--            reg = <0xe6190000 0x200>,
--                  <0xe6198000 0x200>,
--                  <0xe61a0000 0x200>,
--                  <0xe61a8000 0x200>,
--                  <0xe61b0000 0x200>;
--            clocks = <&cpg CPG_MOD 919>;
--            power-domains = <&sysc R8A779A0_PD_ALWAYS_ON>;
--            resets = <&cpg 919>;
--            #thermal-sensor-cells = <1>;
-+        compatible = "renesas,r8a779a0-thermal";
-+        reg = <0xe6190000 0x200>,
-+              <0xe6198000 0x200>,
-+              <0xe61a0000 0x200>,
-+              <0xe61a8000 0x200>,
-+              <0xe61b0000 0x200>;
-+        clocks = <&cpg CPG_MOD 919>;
-+        power-domains = <&sysc R8A779A0_PD_ALWAYS_ON>;
-+        resets = <&cpg 919>;
-+        #thermal-sensor-cells = <1>;
-     };
-diff --git a/Documentation/devicetree/bindings/thermal/rcar-thermal.yaml b/Documentation/devicetree/bindings/thermal/rcar-thermal.yaml
-index 119998d10ff4..221a58d18cad 100644
---- a/Documentation/devicetree/bindings/thermal/rcar-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/rcar-thermal.yaml
-@@ -98,8 +98,8 @@ examples:
-   # Example (non interrupt support)
-   - |
-     thermal@ffc48000 {
--            compatible = "renesas,thermal-r8a7779", "renesas,rcar-thermal";
--            reg = <0xffc48000 0x38>;
-+        compatible = "renesas,thermal-r8a7779", "renesas,rcar-thermal";
-+        reg = <0xffc48000 0x38>;
-     };
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/memory-controllers/fsl/mmdc.yaml b/Documentation/devicetree/bindings/memory-controllers/fsl/mmdc.yaml
+index 71547eee9919..5447f1dddedf 100644
+--- a/Documentation/devicetree/bindings/memory-controllers/fsl/mmdc.yaml
++++ b/Documentation/devicetree/bindings/memory-controllers/fsl/mmdc.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale Multi Mode DDR controller (MMDC)
  
-   # Example (interrupt support)
-@@ -109,12 +109,12 @@ examples:
-     #include <dt-bindings/interrupt-controller/irq.h>
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
-     thermal@e61f0000 {
--            compatible = "renesas,thermal-r8a73a4", "renesas,rcar-thermal";
--            reg = <0xe61f0000 0x14>, <0xe61f0100 0x38>,
--                  <0xe61f0200 0x38>, <0xe61f0300 0x38>;
--            interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
--            clocks = <&mstp5_clks R8A73A4_CLK_THERMAL>;
--            power-domains = <&pd_c5>;
-+        compatible = "renesas,thermal-r8a73a4", "renesas,rcar-thermal";
-+        reg = <0xe61f0000 0x14>, <0xe61f0100 0x38>,
-+              <0xe61f0200 0x38>, <0xe61f0300 0x38>;
-+        interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&mstp5_clks R8A73A4_CLK_THERMAL>;
-+        power-domains = <&pd_c5>;
-     };
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/nvmem/imx-iim.yaml b/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
+index e9d9d8df4811..bb37d72c9eaa 100644
+--- a/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
++++ b/Documentation/devicetree/bindings/nvmem/imx-iim.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX IC Identification Module (IIM)
  
-   # Example (with thermal-zone)
-@@ -124,32 +124,32 @@ examples:
-     #include <dt-bindings/power/r8a7790-sysc.h>
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
-     thermal: thermal@e61f0000 {
--      compatible = "renesas,thermal-r8a7790",
--                   "renesas,rcar-gen2-thermal",
--                   "renesas,rcar-thermal";
--            reg = <0xe61f0000 0x10>, <0xe61f0100 0x38>;
--            interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
--            clocks = <&cpg CPG_MOD 522>;
--            power-domains = <&sysc R8A7790_PD_ALWAYS_ON>;
--            resets = <&cpg 522>;
--            #thermal-sensor-cells = <0>;
-+        compatible = "renesas,thermal-r8a7790",
-+                     "renesas,rcar-gen2-thermal",
-+                     "renesas,rcar-thermal";
-+        reg = <0xe61f0000 0x10>, <0xe61f0100 0x38>;
-+        interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&cpg CPG_MOD 522>;
-+        power-domains = <&sysc R8A7790_PD_ALWAYS_ON>;
-+        resets = <&cpg 522>;
-+        #thermal-sensor-cells = <0>;
-     };
+ description: |
+   This binding represents the IC Identification Module (IIM) found on
+diff --git a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+index be1314454bec..e21c06e9a741 100644
+--- a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX On-Chip OTP Controller (OCOTP)
  
-     thermal-zones {
--            cpu_thermal: cpu-thermal {
--                    polling-delay-passive = <1000>;
--                    polling-delay = <5000>;
-+        cpu_thermal: cpu-thermal {
-+            polling-delay-passive = <1000>;
-+            polling-delay = <5000>;
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--                    thermal-sensors = <&thermal>;
-+            thermal-sensors = <&thermal>;
+ description: |
+   This binding represents the on-chip eFuse OTP controller found on
+diff --git a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+index d9287be89877..95121dd6311c 100644
+--- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: On-Chip OTP Memory for Freescale i.MX23/i.MX28
  
--                    trips {
--                            cpu-crit {
--                                    temperature = <115000>;
--                                    hysteresis = <0>;
--                                    type = "critical";
--                            };
--                    };
--                    cooling-maps {
--                    };
-+            trips {
-+                cpu-crit {
-+                    temperature = <115000>;
-+                    hysteresis = <0>;
-+                    type = "critical";
-+                };
-             };
-+            cooling-maps {
-+            };
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/thermal/rzg2l-thermal.yaml b/Documentation/devicetree/bindings/thermal/rzg2l-thermal.yaml
-index 2f96c0fe0f75..136589f5adee 100644
---- a/Documentation/devicetree/bindings/thermal/rzg2l-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/rzg2l-thermal.yaml
-@@ -53,27 +53,27 @@ examples:
-     #include <dt-bindings/clock/r9a07g044-cpg.h>
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
-     tsu: thermal@10059400 {
--            compatible = "renesas,r9a07g044-tsu",
--                         "renesas,rzg2l-tsu";
--            reg = <0x10059400 0x400>;
--            clocks = <&cpg CPG_MOD R9A07G044_TSU_PCLK>;
--            resets = <&cpg R9A07G044_TSU_PRESETN>;
--            power-domains = <&cpg>;
--            #thermal-sensor-cells = <1>;
-+        compatible = "renesas,r9a07g044-tsu",
-+                     "renesas,rzg2l-tsu";
-+        reg = <0x10059400 0x400>;
-+        clocks = <&cpg CPG_MOD R9A07G044_TSU_PCLK>;
-+        resets = <&cpg R9A07G044_TSU_PRESETN>;
-+        power-domains = <&cpg>;
-+        #thermal-sensor-cells = <1>;
-     };
+ allOf:
+   - $ref: nvmem.yaml#
+diff --git a/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml b/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
+index 8bef9dfeba9a..ac0a35bf8648 100644
+--- a/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
++++ b/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX TPM PWM controller
  
-     thermal-zones {
--            cpu-thermal {
--                    polling-delay-passive = <250>;
--                    polling-delay = <1000>;
--                    thermal-sensors = <&tsu 0>;
-+        cpu-thermal {
-+            polling-delay-passive = <250>;
-+            polling-delay = <1000>;
-+            thermal-sensors = <&tsu 0>;
+ maintainers:
+-  - Anson Huang <anson.huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
  
--                    trips {
--                            sensor_crit: sensor-crit {
--                                    temperature = <125000>;
--                                    hysteresis = <1000>;
--                                    type = "critical";
--                            };
--                    };
-+            trips {
-+                sensor_crit: sensor-crit {
-+                    temperature = <125000>;
-+                    hysteresis = <1000>;
-+                    type = "critical";
-+                };
-             };
-+        };
-     };
-diff --git a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-index f65076fc68f9..afa551f6185f 100644
---- a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-@@ -86,27 +86,27 @@ unevaluatedProperties: false
+ description: |
+   The TPM counter and period counter are shared between multiple
+diff --git a/Documentation/devicetree/bindings/pwm/mxs-pwm.yaml b/Documentation/devicetree/bindings/pwm/mxs-pwm.yaml
+index 8f50e23ca8c9..a9d3a41ac5b9 100644
+--- a/Documentation/devicetree/bindings/pwm/mxs-pwm.yaml
++++ b/Documentation/devicetree/bindings/pwm/mxs-pwm.yaml
+@@ -8,7 +8,6 @@ title: Freescale MXS PWM controller
  
- examples:
-   - |
--        ap_thm0: thermal@32200000 {
--                compatible = "sprd,ums512-thermal";
--                reg = <0x32200000 0x10000>;
--                clock-names = "enable";
--                clocks = <&aonapb_gate 32>;
--                #thermal-sensor-cells = <1>;
--                nvmem-cells = <&thm0_sign>, <&thm0_ratio>;
--                nvmem-cell-names = "thm_sign_cal", "thm_ratio_cal";
--                #address-cells = <1>;
--                #size-cells = <0>;
-+    thermal@32200000 {
-+        compatible = "sprd,ums512-thermal";
-+        reg = <0x32200000 0x10000>;
-+        clock-names = "enable";
-+        clocks = <&aonapb_gate 32>;
-+        #thermal-sensor-cells = <1>;
-+        nvmem-cells = <&thm0_sign>, <&thm0_ratio>;
-+        nvmem-cell-names = "thm_sign_cal", "thm_ratio_cal";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
+ maintainers:
+   - Shawn Guo <shawnguo@kernel.org>
+-  - Anson Huang <anson.huang@nxp.com>
  
--                prometheus-sensor@0 {
--                        reg = <0>;
--                        nvmem-cells = <&thm0_sen0>;
--                        nvmem-cell-names = "sen_delta_cal";
--                };
--
--                ank-sensor@1 {
--                        reg = <1>;
--                        nvmem-cells = <&thm0_sen1>;
--                        nvmem-cell-names = "sen_delta_cal";
--                };
-+        prometheus-sensor@0 {
-+            reg = <0>;
-+            nvmem-cells = <&thm0_sen0>;
-+            nvmem-cell-names = "sen_delta_cal";
-         };
-+
-+        ank-sensor@1 {
-+            reg = <1>;
-+            nvmem-cells = <&thm0_sen1>;
-+            nvmem-cell-names = "sen_delta_cal";
-+        };
-+    };
- ...
-diff --git a/Documentation/devicetree/bindings/thermal/ti,am654-thermal.yaml b/Documentation/devicetree/bindings/thermal/ti,am654-thermal.yaml
-index 16801aa78bc2..c123d9070525 100644
---- a/Documentation/devicetree/bindings/thermal/ti,am654-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/ti,am654-thermal.yaml
-@@ -47,11 +47,11 @@ examples:
-         thermal-sensors = <&vtm0 0>;
+ allOf:
+   - $ref: pwm.yaml#
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+index 2ff174244795..ed1d4aa41b8c 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale Low Power SPI (LPSPI) for i.MX
  
-         trips {
--                mpu0_crit: mpu0_crit {
--                        temperature = <125000>; /* milliCelsius */
--                        hysteresis = <2000>; /* milliCelsius */
--                        type = "critical";
--                };
-+            mpu0_crit: mpu0_crit {
-+                temperature = <125000>; /* milliCelsius */
-+                hysteresis = <2000>; /* milliCelsius */
-+                type = "critical";
-+            };
-         };
-     };
- ...
-
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
+ 
+ allOf:
+   - $ref: /schemas/spi/spi-controller.yaml#
+diff --git a/Documentation/devicetree/bindings/thermal/imx-thermal.yaml b/Documentation/devicetree/bindings/thermal/imx-thermal.yaml
+index 808d987bd8d1..337560562337 100644
+--- a/Documentation/devicetree/bindings/thermal/imx-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/imx-thermal.yaml
+@@ -8,7 +8,6 @@ title: NXP i.MX Thermal
+ 
+ maintainers:
+   - Shawn Guo <shawnguo@kernel.org>
+-  - Anson Huang <Anson.Huang@nxp.com>
+ 
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/thermal/imx8mm-thermal.yaml b/Documentation/devicetree/bindings/thermal/imx8mm-thermal.yaml
+index d2c1e4573c32..42e2317a00f5 100644
+--- a/Documentation/devicetree/bindings/thermal/imx8mm-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/imx8mm-thermal.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: NXP i.MX8M Mini Thermal
+ 
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
+ 
+ description: |
+   i.MX8MM has TMU IP to allow temperature measurement, there are
+diff --git a/Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml b/Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml
+index d155d6799da6..66c4972d5072 100644
+--- a/Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Thermal Monitoring Unit (TMU) on Freescale QorIQ SoCs
+ 
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
+ 
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
+index 181f0cc5b5bd..36b836d0620c 100644
+--- a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
++++ b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX Watchdog Timer (WDT) Controller
+ 
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
+ 
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
+index 9c50766bf690..a09686b3030d 100644
+--- a/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
++++ b/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
+@@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale i.MX7ULP Watchdog Timer (WDT) Controller
+ 
+ maintainers:
+-  - Anson Huang <Anson.Huang@nxp.com>
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++  - Fabio Estevam <festevam@gmail.com>
+ 
+ allOf:
+   - $ref: watchdog.yaml#
 -- 
 2.43.0
 
