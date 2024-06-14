@@ -1,62 +1,63 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2070.outbound.protection.outlook.com [40.107.8.70])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2089.outbound.protection.outlook.com [40.107.105.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98A51474D3
-	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 21:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD2014882D
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 21:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718400691; cv=fail; b=IppEWYT2V6I4kI6Evz5xXTEIadlGS6YUYvBvddguV1yibGZ131lvR6BvZGW1fqA/dku3js2IAxwoyLkS8u8hPByhuFLZLvT8tybp94CpbDnlar9rSaAHtaF6lzEwWIG9mzRH2yRU6brKEEA5TicL7CfvuRhve4cj0tgPbhXhrIk=
+	t=1718401145; cv=fail; b=AcDi/el8WbXAxAfvpAhCw+YeokissIHuf+JoN5wZzBmO5JDcvo1c6HufXHft6r1ueWcPYqXnzhRo2soJw0QboDiz+3t4055yJXkjvunU8CBqu8JZMo/aWcrHiuiCDPSJtH6OqSQwKCjEhTTdrtDzsBy8t1GroDcLKJ1mg5w7iSM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718400691; c=relaxed/simple;
-	bh=Lb3hvrkmqcvmfxBkj3DP3AJh+ZCrP3UYcYuayN7sArk=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jFJAerj87KgGZcpqB1Mdia1xkXiWChEulVZzSBgloUWlc2h1Guz/8wEaayhtL1OvwDgRX48HBWEpWSWmrf5HRyZEmP6aG6Vo5c/fNmptP+f222eofwkNAT30Sja6JTUzwVbxqb4YckYKjlb45a3iqsVhmtRqfGWWx8Pxfaf76RQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=WOx9PaW3; arc=fail smtp.client-ip=40.107.8.70
+	s=arc-20240116; t=1718401145; c=relaxed/simple;
+	bh=wxN+UPyITBkyNpizflLgeJlO+bj/ytSVVDOAwm0Qub4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=KeLZi/9iAs6v8ARaXhVCvPTTDCRkdpXAL/bTKo4Et7CvGQEl6SvOZEqvP6bxFWsJLtrgV5nHAj2jwAR1OX6Rg3P3B6cx7pL2cFOllTSKEe2q4Qizh/Jb0q1+XpTjnHA/pgxvBkld6I2nTBBgdq1uplqzYDIEgf/HTOWifTBf77s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TLALYyv4; arc=fail smtp.client-ip=40.107.105.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="WOx9PaW3"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TLALYyv4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ca9e8uJlhRZupYYQKZMMuFZpuk+xM9oZ+ba6SUU4yeX9TS4er6rUPr8+570XoTiaKzEVmHK5EGdgvp0dHeAJcGH6+++aKaQDDYl/iJfG/05VFRQO3ko5lWRgQTHXgPyQcjibuxC2mWKmAuiXctg/vxkkQQtgsl6mm4HpjKAe3dQYkVTgdMexdeZ//j+WnlwdHhBInAYQnZRTo+kKx8gV18/7OpEz7FDroIs4nbC6HqpBxXiRRowW0VtNd9PSsOzqkRQl/+VOw0k1/EM2/Rl+p1ADpSMVDDAVFrCLTb2l2vgpWCXEq4U9YSupSYFK2SkWIlx60JMuv905EkEkFq9esg==
+ b=iLY20SDmv+dE37KGi82LrUjLD4xbPqYsVg0blWFe2sJn4A9eR5KKEACxtL95YmJXG0t5ZUf1aKJ4i77FAyU8K+hTS2DU/PENWY6q+vyty+5MQ9HJIV6zoTIuuFzrLkUGbDfYxTKoklubAkOriAfAk5pgNN8leStIVr7ILx3CHLEqgLarCpOersoRwlR2aZQBBnYKYMEWwghGxNSk0veoHlabYZGaThUo2L9eaMTXqHPihLwxZKZbA7OyrQ1e/CHz9CFasjGbbDtLhaabS0lbZQszLjN/f8Y/jgxkhPkjpMC0ePAtC+n54ENtVFA9JGL3nvebFKsLEJz5oG/ep3bO2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RVgRHfv4zN0uB22pF3kVE8npmFyTn+ScWrwNyF5YDzw=;
- b=nLjcdiHW7xgXCPgiNudQ9NV8wPznhUEWju5zJ4OmQs5yCyurjC8w9sZbOzq9gVcZlqjYiF7rG0yD/CYzLRYoyS6tOu3WeP2qqEjUX/h+gXPA6VawtDf2NEY/AJ+2xW6bvAoshNPXX+Y5zUEv5qd7DWMV9HS1v4veB/LieYXKWQIdmAK4w4PLbZbBqcEpzhlEvTwQF0+hkJL6RWm5trXYFIMVgPybUL92QTUAh8RdpTMC4eiHlOoUgI4HBAyZblOiYtsQpb+29PBRZHU2yVCyvq1DgGohE4jw0U29qUN8IOh3A1rEBm8uOdDhbab4Y76/SMZNfJE4/px7o0mWjE/wPQ==
+ bh=N5Y2LtF03k2lnMz4IxvTudZQjoCkHcFx8T9gJ1uQ5uA=;
+ b=SlUjJelV4vtsQ8YZy3eQVJ6hhbxQd3JqJiwilKAaQckiiCGeSiasYEZSeSojaqOCohNEhtSSmjxGccO9JCv5XSLdbBDwqD6PR5RNFm6dQ9upyJ0pjyyJdt1WXfAdGTuKDl8l7xw7m8xjanNKDw3JZgSpKZzJiyCLJwWAyOlFh/hMlscopHTM/+SFkya7uWeTdR/b9LVdIMiZbnJ4AJfbefw54ZEyP8+StjiYRduXAIp/S2r3e7FYzyucki1ueANPtB6VYex6V1Z+IW2eG5PrKAU7UR6hLiApeDfJKide6kJAg9qeRXPn/dGVt5CCx4QiOVie/BHowdUntLw+uQ7bjg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RVgRHfv4zN0uB22pF3kVE8npmFyTn+ScWrwNyF5YDzw=;
- b=WOx9PaW3YNVJw3G6fQNVUNQYX1CP3OpK5zrZeUAhmrXbCmq1o+CRqKT4y5um9BNIDrD0OcUWFkPVlMPoOSmZYylkpwD/EPgASWCLFiK7PDuy7dVnkZ1GAUZ0OvjK+0zVwaZevYV/ZwBxNwL8chNPcsnl0joLkrJsdZWbUoaEULc=
+ bh=N5Y2LtF03k2lnMz4IxvTudZQjoCkHcFx8T9gJ1uQ5uA=;
+ b=TLALYyv4M4yRrRU+6s4oQGDDAsamSfVUgXpBGhZnEi0x90ZdTNN5NcaGVFRROsc+WlBUs3MH8jv/HARIutYGxg2pLaUUSymYAL3G0NWFREme6jTZZtsPPFAzTY4xrASnXSJhXjm8xrNO2mIV4adsLFQVmpVCrNI9rwG8/sqV40A=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10420.eurprd04.prod.outlook.com (2603:10a6:800:21a::16) with
+ by DBBPR04MB7867.eurprd04.prod.outlook.com (2603:10a6:10:1e5::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.22; Fri, 14 Jun
- 2024 21:31:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.25; Fri, 14 Jun
+ 2024 21:38:54 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7677.024; Fri, 14 Jun 2024
- 21:31:25 +0000
+ 21:38:54 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:QORIQ DPAA2 FSL-MC BUS DRIVER),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+	linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: misc: fsl,qoriq-mc: convert to yaml format
-Date: Fri, 14 Jun 2024 17:31:03 -0400
-Message-Id: <20240614213109.2518797-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: gpio: mpc8xxx: Allow only use 'fsl,qoriq-gpio'
+Date: Fri, 14 Jun 2024 17:38:39 -0400
+Message-Id: <20240614213839.2532061-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0060.namprd11.prod.outlook.com
- (2603:10b6:a03:80::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR11CA0082.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::23) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,491 +66,105 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10420:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5fb8c536-e5cf-4b73-ffb2-08dc8cb957be
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7867:EE_
+X-MS-Office365-Filtering-Correlation-Id: 118b53d7-6f7d-45ee-29c8-08dc8cba633c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|1800799021|366013|52116011|376011|38350700011;
+	BCL:0;ARA:13230037|366013|376011|52116011|1800799021|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jfOVntAI4HtssYlX8guLbrrUnq+rAjTkiPoXRaLN6gPezuqfnKIlXMDTMflE?=
- =?us-ascii?Q?eGFs0RVkcNxs4y8Vo79ZnQ8LCwb1/Oh+aVYwIUUnNDSGS+9kiR5IM4h/EYma?=
- =?us-ascii?Q?UZZwhTmgiIDfTp56JHeuqwGTXVb5DElY4uez9w6dcC+jjsdN9eCs/79nlemk?=
- =?us-ascii?Q?g+dbsOTWASMv1nhoHdyW8CF9CPzIOngoayIvk8unZhWjV7hQyC4H258F8waS?=
- =?us-ascii?Q?hfY6PuaDsWfDDKFWDFethickidRPz+gX3F/H0XkqFxJp6GttGTKOYMAYfi/p?=
- =?us-ascii?Q?1bT5naatWte4hkCTKKY8pDdQGIgIPPYuyHANoq/zOKTDSLtKWyrpl8HwnQUE?=
- =?us-ascii?Q?cedSDW90m7H1QbLQB+qg7VgE1iHsZYX+8lmrNk0tzbBNjQd66XTZxtPkiQgo?=
- =?us-ascii?Q?SFXt/s222ppirk+nV2l+pCaA0CdN7LrSubrlHASTYze4PSr120/b7ThqaYl6?=
- =?us-ascii?Q?JXNh5VtemIfx9Vglk3O0SO9rzgrb2DA5u1owk1N0k4zNX5qZcwNIc0MwQsh9?=
- =?us-ascii?Q?ghx4hfuIYvLTnkKL6hLBU+nZuT6hepYTwB7AhAU4o0LbXQTIMp4nso+TjV54?=
- =?us-ascii?Q?LT+Rsf+KBeFG0nnF1JE9Iozjvo9aE8W/rt5MEzBbge6VVCfv3NQwhGi/bwrs?=
- =?us-ascii?Q?H/uzclWBDyDf9N5dw9+kOzzo89M18WAulcdlXRdzJIIOJAO5xK1IRn81xAsz?=
- =?us-ascii?Q?Kv46hgscHpSq62esgvZmj1CnSI5RdezWreU3zCXPOHwjrE2BIDXYm/s3TV7X?=
- =?us-ascii?Q?Gi2yUI0hcWTQOKnQDQ50vw+4tiU5rRWTxunvb5tsNBWs8knoGYFLgeX3ybzK?=
- =?us-ascii?Q?omfaB+s3P9/CXAUlU1oWmdlZ2v6MZb8CERI/eMXqRTGzyELBbdtM5w5fDL5d?=
- =?us-ascii?Q?dN35x0dYd26X0ekxthFBl14zQx3Enw7dDpZS9d/u6uKQ4QxkLONsGQ6Wz19N?=
- =?us-ascii?Q?3ZKWoZC9ZIiFd2RBx7hpYigtbJ/kKbPexoEevLyl0MLTMC5+zpUHYbB41tTl?=
- =?us-ascii?Q?y1BSXVedZbEhV6mVwpUQ2J3AYeKKRQJtMOYyDXIWYV1mK/5Xwgq1CKeVkJMO?=
- =?us-ascii?Q?wz78blPK0DxdhKf9R7tqtiZMGuBYlMIxQccKODRkNOPTnuN2tYJnpqkP7Egm?=
- =?us-ascii?Q?4YPNTBEghERyQf0o3gwfLU49EnbrQ0J4Fot2Vwd1b8F1DAfmnRPqSLEKrKgD?=
- =?us-ascii?Q?qgYH/5qmNi5oqQxOgojaQFzz08lIAMezATdTLmKGEzbZPGdTS+Lgl9GuUQsW?=
- =?us-ascii?Q?jh0EGNNs/7AZ05CaNq05RlIAEVYv5NlFROoX8BdgLWpbzW7p7d0pSOQ9sxOI?=
- =?us-ascii?Q?1nN6//GJqyTgpv5V43LXvIXt?=
+	=?us-ascii?Q?7JRMvwuBLf4qYWveu2Kvt3sVuEFsljn9JmOTKwdeqpMnUF2vi0wL5nGx+7Au?=
+ =?us-ascii?Q?hx0dItXsGd/561f3mmKYBPNbH2ezBewByBMBywuERHBubo14K/xlQrYtPO89?=
+ =?us-ascii?Q?ky5ul7dSUpmtSi/RbPxzIbdmmKu9hXUOi/6oOYm3rgEZ5/TjB0myRMTv5PoG?=
+ =?us-ascii?Q?AyeCnt8Arq2j6Q/g4DLmfvUFQ61PsGbmiAc0ZKdsi4MgwAOGAMb6eB/Nq1jJ?=
+ =?us-ascii?Q?asiqVe1yEG7nq1l8nCaOiTZ8x4e989l1/kK2QNA9AuJYLbbE7HurcF55Bbqy?=
+ =?us-ascii?Q?qiNvW1Abu1P8CVFG4Pd6VaNyp8CDAw4g85RVrS4JXOS63vlS/nSvE++azI4c?=
+ =?us-ascii?Q?RM/5A5WxAAO1JdGV6/jk7DdRDSgZZsa3F/DY8H1y3LTLuTUkdH9DwHnVhVrG?=
+ =?us-ascii?Q?xdFonxGRdeu1yVXZrLGPXHsH+kP3jZMm7hKC7k3quECkvaZrsVzZDBjToTF4?=
+ =?us-ascii?Q?+uLPcggcIppZ4d9K3IDTb34jUWzS1XPigqbun0dFVFn3FeRyFvmBoYqr0pdQ?=
+ =?us-ascii?Q?2on/8UQFTvPeF5Jfca23REHQ/UZpEPdPf7c5tlo4h0lqiv5LfWE8d5UVAH23?=
+ =?us-ascii?Q?P/b9PF2iLrTm/zOwjPJoyBzIBejH7r7PETwk01OGUMu4wpVBu/SmM7ZGRBtH?=
+ =?us-ascii?Q?5OzBNGZoj8xJlbluDSVBXrYcHeUWnZPUCCl5C+P9yRAgF6wyS9qaeTVZ7FFf?=
+ =?us-ascii?Q?rXRzorRTPs0Gmp2bA63lKTH5d9ZKafPCeC0++9FXxMg/4HwdfoPDH4gAwfek?=
+ =?us-ascii?Q?qntffH4nDsQeluKk+t6x4xxkfutOyLh21BGGVuW1x2A9CNuXgXLVC0PhCxB4?=
+ =?us-ascii?Q?rgm7aslNBAuBnpcmO6CIN7Dc1j9QxQHc3DYUI1hP4F9qQ7H4eg9KCIQF+fV0?=
+ =?us-ascii?Q?eBIqXKcakvwnZb5edZSCYfWWA7bxzBuXPzSi9KBW70xnOnlQbCNkCSug7FPI?=
+ =?us-ascii?Q?6N5P5qlHtRYcWQFrJ5ksU06yGyO2ktFsouDnttMImCZnDZs5w2Tpn1jWDDNF?=
+ =?us-ascii?Q?VeEOzhfTUkU1p++FDJWagmINxZg4GKi/cMcVatPIFGTlnpOyVAjqBJFL12nW?=
+ =?us-ascii?Q?xd1YhO9UEPhKgfd8twD16x3VzCom5KjKqUL1dgxZWhmofKumMkQC9DRt8mGU?=
+ =?us-ascii?Q?INEgAswrTeIaq7G2sHYJwQ1tZrNAEX7FPe+MpqCtrN0JeT8pHsN9n538ZrJk?=
+ =?us-ascii?Q?SZCN5s9G21wYzL+0BP8HclYPwKe+Yv+nJA3UDLtBUdaa5AGVPPxwzic141I+?=
+ =?us-ascii?Q?OSk+Y/xAYJU5ieFAoTJqD7O5aXs+dPIyG38l3D3yg0Vey+bQt6iAowu0Lh0o?=
+ =?us-ascii?Q?KUtNkwkEMX+nTBdNLQRE0N8PBdZLmBzYelDYxDFgihAAN36vb6Ov59D/bQh0?=
+ =?us-ascii?Q?ZHDiRbw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(366013)(52116011)(376011)(38350700011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(376011)(52116011)(1800799021)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VeYYQkC0HeekEU4kIz1raRJms2s9BEsVpXik4VxzfSUZDUbt/hgLTdHfQPHB?=
- =?us-ascii?Q?LOb6K9ghB7dbN97VSfgmYPkJmc+Kb69c7DCcCs6i7BNQOTEWqXLEKtr2ggQ4?=
- =?us-ascii?Q?MWpCqMBdOZDKcbAlXqYjdNkbVV938TMN2OksYYEjNKCtGqkAvU4G5Hwk2zGb?=
- =?us-ascii?Q?gvq1BTQBZ8QzRHxoQxMKH6ppIeC5O4MpHlc677hKM9OQ58wzyiHm8Hf1nZ7W?=
- =?us-ascii?Q?1cAjbmPrCh9MLJxFiQF4LjtYRdi9PE1T/k3vcr/Im053LBrswph9/JhR1tPF?=
- =?us-ascii?Q?JhehsRMQle8b9md80gyEHZIOygkr/7MFm1fxr9sptczTZeBoy+yLJ2SwK/GH?=
- =?us-ascii?Q?yQgqPQLTzJJxnT16Y/44I+6z2zwW5JRYBUqxZVpVLE43bFIXhcNHyW03vk5a?=
- =?us-ascii?Q?tBLwGz0t6gVvxkW8El/pBOBHgvmAp7Q0Nco8N3CJ8rgU3YS6x2zMPDlka8hA?=
- =?us-ascii?Q?26RlFABxBW5NeHB1rHcpYIOijQ/l6CpCHDWp4VbfQM9crSA1FL7FlrwiQTyD?=
- =?us-ascii?Q?Xwn2sNUC+/N8/a8cgVusy0ijiBnzCsTIxnI/Rm6PurrpBZ//yMZmO9lNFATB?=
- =?us-ascii?Q?6G0MTb308aa2yPt0r2Z/J3BFRkWqXDmXDm/RCP2Z/5Bs3aJG+1XcN8SGCvy9?=
- =?us-ascii?Q?qWrMLqpwUKPYozkzB5HrrM31ACKMK7E8JHqD8/feSfOQSbxHFttqGM40ZINk?=
- =?us-ascii?Q?x47g4Q0rQL3nKOYC6hCT48r6mDZ0Uzmf650vXcwEpkprZYuxDkN4OR3JKIG8?=
- =?us-ascii?Q?kQFLJAjHg5vqymTcS3cfuOcozljnnvUb77u/tufJz4HL7DRJnME2Qa0PAffC?=
- =?us-ascii?Q?QD3rpJvSAFWfh4ouZDfSu4g+LL4O+zsMm5/MQZmaCQ4eoFMf1GaWxm+PeOSh?=
- =?us-ascii?Q?M/mxBT4yEzMO9DkEGh2RVgyQwOC6HEwuhAex/awHeY1S/RIDhQJKGopvcTmy?=
- =?us-ascii?Q?A5kkT2Ty17sv+/+udjbhmDfGUtLHQXOSDBeDzZVZp1+eESPMKbaWG14hsATb?=
- =?us-ascii?Q?zQnVGDbM3aLhLxh639AUl7BabjFoySlYElzKMhe6+QLy8vuMBKv9GkwB7y+v?=
- =?us-ascii?Q?FFhPcEJ+wEHw8T+Q3ch351SCsMdDxz8tCgsxiOyIT/uwEte7pDorDaSuy8pr?=
- =?us-ascii?Q?Di1i3fRQ/GbcP4r5xbutzeORdsPYHAUYfqENgNqhwgZ3pdIJiNOOUiowo7kX?=
- =?us-ascii?Q?6NWUf9nuIpLO2AA7oZx4JPseZnmuBzgfsMv7moOQDs6bkmYR+97ABqw1DjjV?=
- =?us-ascii?Q?ocK2Hz93qXuGVojl8v/YDxgiP2hfrDA4Y8TPae0oloJtGO3WkpafxPnuX27U?=
- =?us-ascii?Q?rTji4fIt+KR4sWdqkE+WC2gh2lHGbs0zMZ9QUQQJX4yYjkXYvqy+H7SKaCbG?=
- =?us-ascii?Q?QlVzzvdR/j5q6JAft7x5SkwP/d/q/smp1/ssx9sPPDI2DdFYgezonEpDSYTo?=
- =?us-ascii?Q?GRxQL0EDciZSWs9o0Y/1em8HjXNQDGx/uf7Hra2Ls3rCnjBhC5Gm4hH5R+px?=
- =?us-ascii?Q?GQ3IOx/rF7GiLrvAjvVLQhCZDd31ecx9Gbjd1G8KdZKNP123MFOXRN8z1oOo?=
- =?us-ascii?Q?O1r+2UWqBX0UZzKCFClkBq8lOMUccfQCH47DBWEV?=
+	=?us-ascii?Q?HqJsh95TCXDyny4STeHGhcvWGsD0PXF1CyQzaFkoUCXRcFnpWRl72XRd/5eR?=
+ =?us-ascii?Q?TPJZ7PQgmNtW2jXD+Wd7dU9NArvldGgiR3z7UU3zXmsOktcPrxaBdWr+3GEj?=
+ =?us-ascii?Q?JAJeDl/tW9l6TXhHpcKV9U/zeiqSr55Luw5zZub/ShmK3gcpQpcSZDlrviaw?=
+ =?us-ascii?Q?8nbAjW+WbQiq6aFd5SPOLejgmUG+krVi0aSryA8GPSkwOsiZVRkUc45qMY+o?=
+ =?us-ascii?Q?pFeNygDvLgkbcaSjCfvOqkfx9/AM4iH35Ao/NM/bX5aDMFl6C0HdGL24tCzR?=
+ =?us-ascii?Q?CFqZUJbmkmmtFJZAKIJGZB7faeGSAd3vo37izLs1MSIvSecxHvrAnoMk4IaO?=
+ =?us-ascii?Q?WxShgEb3KhC6HCwRffeq1BXriCNllfPCZCTEyWt5YwuNNlmSD9bzE6HklUy9?=
+ =?us-ascii?Q?YuzWViFYmTWZCdT1upHkdCy5N8GsmoT2aaXLrQKjTB6+4xn090dGS7/7tXpG?=
+ =?us-ascii?Q?Dux04+sy60SRlebN9SdT2mJoHJpik/fxAdoEe4qRDy9uG17X1vBtnqpum8VY?=
+ =?us-ascii?Q?cUig1NIpij51AsKb/16sNny9wNGrqwRFW8vEnWAu/bzzumAIC1xOUnGdN53e?=
+ =?us-ascii?Q?uro0Y21pzgCT0ZyhtcPgsCWbg0NbzQzPo2JSBEG9+PVT0dIbg0aEdR6rFwDs?=
+ =?us-ascii?Q?GJN+OkbI7KpYmKqUMWqKtR4v59H/BsyOsjPPFauiZwfPF0lL7xv2PNvIQfHz?=
+ =?us-ascii?Q?KoENURSfM/rfhA3IIAEh7oOhB5vntshhzKgis1SwwgiZWb+2bhsfK4OUEYd6?=
+ =?us-ascii?Q?wrXPOVgUG69TjXDd5/YZQ+sQmMDQ7jcIC7elQfOrPyVGo5LT4/bCL1yZ8F4u?=
+ =?us-ascii?Q?oTfgJ/935Hu0DSn5wKO1tkZ3hdMN/WMpwtX9pRplWhPZzWlK8jvCYu15Rt9+?=
+ =?us-ascii?Q?BNyY9yMiIjIANIM7pq4kavg8sipOuXzP9c/s1eR6cvNkX9DeOovgzpM5WCmC?=
+ =?us-ascii?Q?0VcLprrgI6JViG1Xs5JYq0Fgsa+YmK9Ov73ksnHIHq291lunuGAVwSFkWhbC?=
+ =?us-ascii?Q?magHhLKSdzFoTUhD+M1g0ZjiVHpyIqEO/C6KDQot138IWKUWR2/0Hdsx+jTX?=
+ =?us-ascii?Q?ul9EP8BEvjwkNhcxSRx0xdakBd43UTaCB6pkCpDWkCzn+5WI/TM3pMt1z5Yo?=
+ =?us-ascii?Q?X8v1XV3y7JSc5t96KH8Sy9TMtJZT9gv0TBnCj7QuKANmsom4juef/6D54b0c?=
+ =?us-ascii?Q?4gUhv34qLceaoJPUAsvfpqMdVQKd2DqpAl4+Hj1ai6CAnrNPZGivQxPlxQwD?=
+ =?us-ascii?Q?roQtHaRS2j3UAtfyvzkLbdg8GnNMbj68YuLcTrEOKcy3Vl88Mxm1SDO9/MTi?=
+ =?us-ascii?Q?NhdGaqbYNHS1CU/lQ/cAyxAaTXnnQ0FK2nXCij5yNzgZf9kqk6WFjkvBHhVm?=
+ =?us-ascii?Q?89Jmp6mpAovdet+OIWQIYUaRGQMjfpZ7A67M11VNo0HWHokBJRgE8gWlapoX?=
+ =?us-ascii?Q?nYGhts88gxB0YWxTNcQ98qJLUQwlVTeJ1hinZebUOtksHcbXjRgx+J1R7zUF?=
+ =?us-ascii?Q?LsdiJEmuy9Yn9Dd5++Tj0FTD0EZYpabt9FmP8fnu+FQpE2L+NoaHIKP7OMB2?=
+ =?us-ascii?Q?tphfRnGrhT94n0biIVf47pY0x7cojIBNdN9iOccA?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fb8c536-e5cf-4b73-ffb2-08dc8cb957be
+X-MS-Exchange-CrossTenant-Network-Message-Id: 118b53d7-6f7d-45ee-29c8-08dc8cba633c
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2024 21:31:25.2136
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2024 21:38:54.0902
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o42ahuIFYddkclE05TFvH7vlzxFnmNKgocyJflnQNB2QnZ0FduF1TY0ZA1vBA7Bz2rsMRg8sD9kPAx4+en537g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10420
+X-MS-Exchange-CrossTenant-UserPrincipalName: xWWHRr7eVyAyLeV7pPsAl46AmK2MPrMqEJiiHvlzGx4hqzQRjBO6II675frRWXlU1pgnWq7f+gJ1hbcT7yh1hg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7867
 
-Convert fsl,qoriq-mc from txt to yaml format.
+Allow only use compatible string 'fsl,qoriq-gpio' in dts to fix below
+warning:
 
-Addition changes:
-- Child node name allow 'ethernet'.
-- Use 32bit address in example.
-- Fixed missed ';' in example.
-- Allow dma-coherent.
-- Remove smmu, its part in example.
+arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dtb: gpio@2300000: compatible: 'oneOf' conditional failed, one must be fixed:
+	['fsl,qoriq-gpio'] is too short
+	'fsl,qoriq-gpio' is not one of ['fsl,mpc5121-gpio', 'fsl,mpc5125-gpio', 'fsl,mpc8349-gpio', 'fsl,mpc8572-gpio', 'fsl,mpc8610-gpio', 'fsl,pq3-gpio']
+	'fsl,qoriq-gpio' is not one of ['fsl,ls1021a-gpio', 'fsl,ls1028a-gpio', 'fsl,ls1043a-gpio', 'fsl,ls1088a-gpio', 'fsl,ls2080a-gpio']
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ------------------
- .../bindings/misc/fsl,qoriq-mc.yaml           | 187 +++++++++++++++++
- 2 files changed, 187 insertions(+), 196 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
- create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+ Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
-deleted file mode 100644
-index 7b486d4985dc7..0000000000000
---- a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
-+++ /dev/null
-@@ -1,196 +0,0 @@
--* Freescale Management Complex
--
--The Freescale Management Complex (fsl-mc) is a hardware resource
--manager that manages specialized hardware objects used in
--network-oriented packet processing applications. After the fsl-mc
--block is enabled, pools of hardware resources are available, such as
--queues, buffer pools, I/O interfaces. These resources are building
--blocks that can be used to create functional hardware objects/devices
--such as network interfaces, crypto accelerator instances, L2 switches,
--etc.
--
--For an overview of the DPAA2 architecture and fsl-mc bus see:
--Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
--
--As described in the above overview, all DPAA2 objects in a DPRC share the
--same hardware "isolation context" and a 10-bit value called an ICID
--(isolation context id) is expressed by the hardware to identify
--the requester.
--
--The generic 'iommus' property is insufficient to describe the relationship
--between ICIDs and IOMMUs, so an iommu-map property is used to define
--the set of possible ICIDs under a root DPRC and how they map to
--an IOMMU.
--
--For generic IOMMU bindings, see
--Documentation/devicetree/bindings/iommu/iommu.txt.
--
--For arm-smmu binding, see:
--Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
--
--The MSI writes are accompanied by sideband data which is derived from the ICID.
--The msi-map property is used to associate the devices with both the ITS
--controller and the sideband data which accompanies the writes.
--
--For generic MSI bindings, see
--Documentation/devicetree/bindings/interrupt-controller/msi.txt.
--
--For GICv3 and GIC ITS bindings, see:
--Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
--
--Required properties:
--
--    - compatible
--        Value type: <string>
--        Definition: Must be "fsl,qoriq-mc".  A Freescale Management Complex
--                    compatible with this binding must have Block Revision
--                    Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
--                    the MC control register region.
--
--    - reg
--        Value type: <prop-encoded-array>
--        Definition: A standard property.  Specifies one or two regions
--                    defining the MC's registers:
--
--                       -the first region is the command portal for the
--                        this machine and must always be present
--
--                       -the second region is the MC control registers. This
--                        region may not be present in some scenarios, such
--                        as in the device tree presented to a virtual machine.
--
--    - ranges
--        Value type: <prop-encoded-array>
--        Definition: A standard property.  Defines the mapping between the child
--                    MC address space and the parent system address space.
--
--                    The MC address space is defined by 3 components:
--                       <region type> <offset hi> <offset lo>
--
--                    Valid values for region type are
--                       0x0 - MC portals
--                       0x1 - QBMAN portals
--
--    - #address-cells
--        Value type: <u32>
--        Definition: Must be 3.  (see definition in 'ranges' property)
--
--    - #size-cells
--        Value type: <u32>
--        Definition: Must be 1.
--
--Sub-nodes:
--
--        The fsl-mc node may optionally have dpmac sub-nodes that describe
--        the relationship between the Ethernet MACs which belong to the MC
--        and the Ethernet PHYs on the system board.
--
--        The dpmac nodes must be under a node named "dpmacs" which contains
--        the following properties:
--
--            - #address-cells
--              Value type: <u32>
--              Definition: Must be present if dpmac sub-nodes are defined and must
--                          have a value of 1.
--
--            - #size-cells
--              Value type: <u32>
--              Definition: Must be present if dpmac sub-nodes are defined and must
--                          have a value of 0.
--
--        These nodes must have the following properties:
--
--            - compatible
--              Value type: <string>
--              Definition: Must be "fsl,qoriq-mc-dpmac".
--
--            - reg
--              Value type: <prop-encoded-array>
--              Definition: Specifies the id of the dpmac.
--
--            - phy-handle
--              Value type: <phandle>
--              Definition: Specifies the phandle to the PHY device node associated
--                          with the this dpmac.
--Optional properties:
--
--- iommu-map: Maps an ICID to an IOMMU and associated iommu-specifier
--  data.
--
--  The property is an arbitrary number of tuples of
--  (icid-base,iommu,iommu-base,length).
--
--  Any ICID i in the interval [icid-base, icid-base + length) is
--  associated with the listed IOMMU, with the iommu-specifier
--  (i - icid-base + iommu-base).
--
--- msi-map: Maps an ICID to a GIC ITS and associated msi-specifier
--  data.
--
--  The property is an arbitrary number of tuples of
--  (icid-base,gic-its,msi-base,length).
--
--  Any ICID in the interval [icid-base, icid-base + length) is
--  associated with the listed GIC ITS, with the msi-specifier
--  (i - icid-base + msi-base).
--
--Deprecated properties:
--
--    - msi-parent
--        Value type: <phandle>
--        Definition: Describes the MSI controller node handling message
--                    interrupts for the MC. When there is no translation
--                    between the ICID and deviceID this property can be used
--                    to describe the MSI controller used by the devices on the
--                    mc-bus.
--                    The use of this property for mc-bus is deprecated. Please
--                    use msi-map.
--
--Example:
--
--        smmu: iommu@5000000 {
--               compatible = "arm,mmu-500";
--               #iommu-cells = <1>;
--               stream-match-mask = <0x7C00>;
--               ...
--        };
--
--        gic: interrupt-controller@6000000 {
--               compatible = "arm,gic-v3";
--               ...
--        }
--        its: gic-its@6020000 {
--               compatible = "arm,gic-v3-its";
--               msi-controller;
--               ...
--        };
--
--        fsl_mc: fsl-mc@80c000000 {
--                compatible = "fsl,qoriq-mc";
--                reg = <0x00000008 0x0c000000 0 0x40>,    /* MC portal base */
--                      <0x00000000 0x08340000 0 0x40000>; /* MC control reg */
--                /* define map for ICIDs 23-64 */
--                iommu-map = <23 &smmu 23 41>;
--                /* define msi map for ICIDs 23-64 */
--                msi-map = <23 &its 23 41>;
--                #address-cells = <3>;
--                #size-cells = <1>;
--
--                /*
--                 * Region type 0x0 - MC portals
--                 * Region type 0x1 - QBMAN portals
--                 */
--                ranges = <0x0 0x0 0x0 0x8 0x0c000000 0x4000000
--                          0x1 0x0 0x0 0x8 0x18000000 0x8000000>;
--
--                dpmacs {
--                    #address-cells = <1>;
--                    #size-cells = <0>;
--
--                    dpmac@1 {
--                        compatible = "fsl,qoriq-mc-dpmac";
--                        reg = <1>;
--                        phy-handle = <&mdio0_phy0>;
--                    }
--                }
--        };
-diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
-new file mode 100644
-index 0000000000000..505428d29ec3e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
-@@ -0,0 +1,187 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/misc/fsl,qoriq-mc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Management Complex
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  The Freescale Management Complex (fsl-mc) is a hardware resource
-+  manager that manages specialized hardware objects used in
-+  network-oriented packet processing applications. After the fsl-mc
-+  block is enabled, pools of hardware resources are available, such as
-+  queues, buffer pools, I/O interfaces. These resources are building
-+  blocks that can be used to create functional hardware objects/devices
-+  such as network interfaces, crypto accelerator instances, L2 switches,
-+  etc.
-+
-+  For an overview of the DPAA2 architecture and fsl-mc bus see:
-+  Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
-+
-+  As described in the above overview, all DPAA2 objects in a DPRC share the
-+  same hardware "isolation context" and a 10-bit value called an ICID
-+  (isolation context id) is expressed by the hardware to identify
-+  the requester.
-+
-+  The generic 'iommus' property is insufficient to describe the relationship
-+  between ICIDs and IOMMUs, so an iommu-map property is used to define
-+  the set of possible ICIDs under a root DPRC and how they map to
-+  an IOMMU.
-+
-+  For generic IOMMU bindings, see
-+  Documentation/devicetree/bindings/iommu/iommu.txt.
-+
-+  For arm-smmu binding, see:
-+  Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
-+
-+  The MSI writes are accompanied by sideband data which is derived from the ICID.
-+  The msi-map property is used to associate the devices with both the ITS
-+  controller and the sideband data which accompanies the writes.
-+
-+  For generic MSI bindings, see
-+  Documentation/devicetree/bindings/interrupt-controller/msi.txt.
-+
-+  For GICv3 and GIC ITS bindings, see:
-+  Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,qoriq-mc
-+    description:
-+      Must be "fsl,qoriq-mc".  A Freescale Management Complex
-+      compatible with this binding must have Block Revision
-+      Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
-+      the MC control register region.
-+
-+  reg:
-+    items:
-+      - description:
-+          the first region is the command portal for the
-+          this machine and must always be present
-+
-+      - description:
-+          the second region is the MC control registers. This
-+          region may not be present in some scenarios, such
-+          as in the device tree presented to a virtual machine.
-+
-+  ranges:
-+    description: |
-+      A standard property.  Defines the mapping between the child
-+      MC address space and the parent system address space.
-+
-+      The MC address space is defined by 3 components:
-+        <region type> <offset hi> <offset lo>
-+
-+      Valid values for region type are
-+        0x0 - MC portals
-+        0x1 - QBMAN portals
-+
-+  "#address-cells":
-+    const: 3
-+
-+  "#size-cells":
-+    const: 1
-+
-+  iommu-map:
-+    description: |
-+      Maps an ICID to an IOMMU and associated iommu-specifier
-+      data.
-+
-+      The property is an arbitrary number of tuples of
-+      (icid-base,iommu,iommu-base,length).
-+
-+      Any ICID i in the interval [icid-base, icid-base + length) is
-+      associated with the listed IOMMU, with the iommu-specifier
-+      (i - icid-base + iommu-base).
-+
-+  msi-map:
-+    description: |
-+      Maps an ICID to a GIC ITS and associated msi-specifier
-+      data.
-+
-+      The property is an arbitrary number of tuples of
-+      (icid-base,gic-its,msi-base,length).
-+
-+      Any ICID in the interval [icid-base, icid-base + length) is
-+      associated with the listed GIC ITS, with the msi-specifier
-+      (i - icid-base + msi-base).
-+
-+  msi-parent:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      Describes the MSI controller node handling message
-+      interrupts for the MC. When there is no translation
-+      between the ICID and deviceID this property can be used
-+      to describe the MSI controller used by the devices on the
-+      mc-bus.
-+      The use of this property for mc-bus is deprecated. Please
-+      use msi-map.
-+
-+  dma-coherent: true
-+
-+  dpmacs:
-+    type: object
-+    description:
-+      The fsl-mc node may optionally have dpmac sub-nodes that describe
-+      the relationship between the Ethernet MACs which belong to the MC
-+      and the Ethernet PHYs on the system board.
-+
-+    properties:
-+      "#address-cells":
-+        const: 1
-+
-+      "#size-cells":
-+        const: 0
-+
-+    patternProperties:
-+      '^(dpmac|ethernet)@[a-f0-9]+$':
-+        $ref: /schemas/net/fsl,qoriq-mc-dpmac.yaml
-+
-+    additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - ranges
-+  - "#address-cells"
-+  - "#size-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    fsl-mc@80c000000 {
-+        compatible = "fsl,qoriq-mc";
-+        reg = <0x0c000000 0x40>,    /* MC portal base */
-+              <0x08340000 0x40000>; /* MC control reg */
-+        /* define map for ICIDs 23-64 */
-+        iommu-map = <23 &smmu 23 41>;
-+        /* define msi map for ICIDs 23-64 */
-+        msi-map = <23 &its 23 41>;
-+        #address-cells = <3>;
-+        #size-cells = <1>;
-+
-+        /*
-+         * Region type 0x0 - MC portals
-+         * Region type 0x1 - QBMAN portals
-+         */
-+        ranges = <0x0 0x0 0x8 0x0c000000 0x4000000
-+                 0x1 0x0 0x8 0x18000000 0x8000000>;
-+
-+        dpmacs {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            dpmac@1 {
-+                compatible = "fsl,qoriq-mc-dpmac";
-+                reg = <1>;
-+                phy-handle = <&mdio0_phy0>;
-+            };
-+        };
-+    };
+diff --git a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+index eb046a48a3f59..ef72f569c8387 100644
+--- a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
+@@ -19,6 +19,7 @@ properties:
+           - fsl,mpc8572-gpio
+           - fsl,mpc8610-gpio
+           - fsl,pq3-gpio
++          - fsl,qoriq-gpio
+       - items:
+           - enum:
+               - fsl,ls1021a-gpio
 -- 
 2.34.1
 
