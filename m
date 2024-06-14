@@ -1,301 +1,197 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2081.outbound.protection.outlook.com [40.107.249.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1206E5ED
-	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 09:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718355956; cv=fail; b=DzhjOmzaF/Bi0MQlfTEtFjvhvBtyaKebwQpQ1pDzumypR3D7QCfdvnhQtiS/DjYrAr0T8rPqs9bibqtapEdlFolCuJyFXT3sZaNxrFxNUhVVtircjpYL4YuOKumQFxv9Rizn4Bz0hmSzeaScJZXWHEsCUWlibNkJv4WOWCmK0Lk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718355956; c=relaxed/simple;
-	bh=54+l08JcQHmvxGyxsG2Fdp8DswR3ULfT4f616/UsL4c=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=P63Z4HB/HqgwwD+EmYfhmKn8Myj33jagbLXV3V9RWDFMfsBX0y7Hb+bFNeHTBjgbqsQssl0w+8/Lx0KiPNALCBziM72zCGPVK0W2ORnSvdpE7BfEyD6aNIxRxx7CkXUzWcDuWxsOLqZSQrQy63xkg/OIY9KTYWdFe0ByVPyCA94=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=UmeI5ZUj; arc=fail smtp.client-ip=40.107.249.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E3D194125
+	for <imx@lists.linux.dev>; Fri, 14 Jun 2024 09:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718358395; cv=none; b=BuM4Yrvv6iFrSPAWf6EdIMnMj4HYSyVntqCFA50F/DZMpXbnMovVwIqYZvh1TtrTyI8KqKtNEFrt3kQbzZab3d9K8pNjU5/mZ7qwoz8qbvKhXLYAfP33vvE9fe/h67MLoP7UD2jCKKsi2kq7rKcFmNa1H1DLPFBaRpmKXpvIXXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718358395; c=relaxed/simple;
+	bh=p3XfyX3kLTCraBOtA3bYk0nZWnKJv6DRa4Xv9JXFZPw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MCvAqkGvbenvpXpAN3EN6gXYTjpDvIlLBRYunyQC8FwiWzpKTlFb90s/9BB4gDxsyfkKSyOsF9P0nFmM4rqW9pwSsUtJ0kI+/aHkrYsp2IcUEyfjXshMSCyBouhvVtavNW5KiBxeyhIkfV9PEBtnFnoBuloGntVMPLobt/3txr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uG9Fi088; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="UmeI5ZUj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ELy1ZAmz3qjravvIcMswYxtqT8cHv+IUDTiesZMxYh9rq3Wp0j6mQx7BrkiwCfsoHLFb8L5WQwDUbBRG/13EKcldPLiarGUO3X51aLcV+N7aotd80G0zVa2asC+xWEt9tY2vHlxSsNztCuYgmg8E7Ds6/YSipTylSqf1IvEzYAKe+rOKHkltAERyeEzoD5zt7PWgSvUY7HI5pO3zeg7WNAjFFO/oXvHXpeWEwRhmn3nx85xCeGE1pKGLMWaP0fVIq0Z3mgK52H2G1GL2NIcBJIlJtHMbJ1F2bT3z1RrHVpJOdI/uC2Y0rKS54hOizipZIqKyH97LDpZSH/MlsNh5aA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DRCiNgoZ5/6rI0dAl7KIm90PxaeKYFOBgLNng0VIq2k=;
- b=WQ7g/Ho3xHXN537U8neIuGBHHNrF2zamwLsjStBnBw9ymzKBfsIbRc3VqefyBwUbADeuMPQvBnwEhUcCC4ZfrtHg9PFe8Q2vPg+smxGiIs5B7AAwJ0rlgo0Vjy4RF6heQ3JNrekwrn36xxCjZB2vIefsfaVBI5OaFwXV+IV4SqccX4UbIhV9xf0OgdJsECX7nls9jpLei96VvaS2LN+ylyEs+WEOuAYQ06QY2JeLfV7HhqXWPKc9PdPm5uDix0BrOONJLSGBY4LIWzwRFtVukV1mLYPn6o/wdOomwEV/OZjtfzTsxUbPE3SQnSYsyWJtdBqGmZSYW1taEmkzaGIZdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DRCiNgoZ5/6rI0dAl7KIm90PxaeKYFOBgLNng0VIq2k=;
- b=UmeI5ZUjnyiBdedMbQ4uBlR23InzTJBH7w9khhj7xnIvYf5m4xTQjfucteouh60I3hAnxB566lkr4g4Kq3R36CIRififpiO/n2Lj3YZLQIF1WBkiSt6Yx7L+7wKyrC2VsdCZXFrnvL5zSFLxL+DCpw6W3NRMqPB6RIrd6Yk+H84=
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
- by AM0PR04MB7171.eurprd04.prod.outlook.com (2603:10a6:208:19c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.25; Fri, 14 Jun
- 2024 09:05:50 +0000
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827%5]) with mapi id 15.20.7677.024; Fri, 14 Jun 2024
- 09:05:49 +0000
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-CC: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel
- Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Thread-Topic: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Thread-Index: AQHarP9ayLdOqCtfLEqTQR0Rf+AVuLGmMeuAgAAZRgCAAAXWAIAgyBqQ
-Date: Fri, 14 Jun 2024 09:05:49 +0000
-Message-ID:
- <AM9PR04MB86047886B5191D94C3E68C4C95C22@AM9PR04MB8604.eurprd04.prod.outlook.com>
-References: <20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com>
- <20240523-imx-se-if-v2-4-5a6fd189a539@nxp.com>
- <ZlBtNSeh2VyZsVxq@pengutronix.de>
- <AM9PR04MB860424A71753DBB56D2CEF5895F52@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <ZlCHTqJ0Umgh3LCw@pengutronix.de>
-In-Reply-To: <ZlCHTqJ0Umgh3LCw@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|AM0PR04MB7171:EE_
-x-ms-office365-filtering-correlation-id: 2e90997a-5e33-4421-ee7b-08dc8c512fa4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230035|366011|376009|1800799019|7416009|38070700013;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?3F6xUKsIbrfjdu5b2SI6Cvypi6a2j0S+6sBr2P4w/4s6ALo2qOc2b5G2W/Kw?=
- =?us-ascii?Q?UhXi2eMYOiyGvfeEsm0QwCAM4xsJCstqii5SAU2NpqgWIeAD0I5CMHbPCrdy?=
- =?us-ascii?Q?vcAjZ26N2FY2H+y7OHSdTfTuyb/S0UXjJlz66tXsYtiujrzadQQ995GikDKu?=
- =?us-ascii?Q?zIXb9XW4HZjVolqPEpbkTKLhIwK9U1cGPGVvod+kyvM1SckSbDZxuwJW0Do3?=
- =?us-ascii?Q?aCiURV9hteu0gPwHT7IRBHQyJFeSPr6XuEOK2sYZRg7b0EwDNOnsPlBRoZBI?=
- =?us-ascii?Q?mt6/LrXPfsQO8X8Ds2gRZz7I0Bz4l1f1JZ+ngqeKq11PRPx5lnWJ1UuRP4ty?=
- =?us-ascii?Q?1rxbxOPYh1igTbInGpXXRxNgLQZe00RKTT5sVQKwxErT6E+0x7gMnGO+Ib+5?=
- =?us-ascii?Q?HiMWeRILbVJ3/29WwOj9xhYnMsOyTmCVFO43MODByyVa5gihr6w1SwkcIXjo?=
- =?us-ascii?Q?UG0z/bEPDWdlIANtD9+rNpgcE6YoENQ7YKHnH46S0wJfj48v4GBvCBL9SgYg?=
- =?us-ascii?Q?wwCq43ZAmgBpqXKlbjidkytd4/Ke5nZXwwJ7cA+nrpE6yp4yoI55oLt1evEA?=
- =?us-ascii?Q?Fu4/F1Ii8I39hgN6GMDg1yd75U7zuwAE78EurR1U9PwsvEo0I0wn1U095uAU?=
- =?us-ascii?Q?9VOOBDU+VtSU8pz+jME+GWxZSYCHeNFuAYXiDD3bAby1pSLCpZVpy04DudY2?=
- =?us-ascii?Q?8SZUPXq3SR+F684v+1PbGfNLG9Mx5zo+BznzvB8V6s35qffUZt8WX9EIEk9+?=
- =?us-ascii?Q?K4dDHQmUEf+3gYpnBleHzp5NiKxPUGK7odcRF+Ayl9tAL9kbfKGfV5K3mMwg?=
- =?us-ascii?Q?D+Ou+l5TzStNpvXh/71uhl0iQumiEL7mmUQ/zexRrLyIQe9n5yemNPzpsBAe?=
- =?us-ascii?Q?3YoAJzb5xm9LQLRbI1ZeJbWytmpWIii98eOYGkBbekq82I66TYNZwfS7SnRg?=
- =?us-ascii?Q?I5Y33sLRhMNif5AORdMmQFsiI8oy/hOyau3WgyxqqN6893GngkTejj8P9brf?=
- =?us-ascii?Q?f0H2VzItX5gopr+lgd1sDyW6TpIE80e8tc16SVAbbGJcYsQjjE8lq2b4CQfu?=
- =?us-ascii?Q?496CFHzSBtj4f1C3I5QZeLIHBWhw+Ilp+VbwnAG4rlbAQdnQd5X57cv9pIpZ?=
- =?us-ascii?Q?+T/6VsIfbuleokpn2Df/eN1douWRAFVCY4ZMy6jcCDZ2q4xPxEmFQJdnvS4i?=
- =?us-ascii?Q?R1eNaOU58FAEEI+Oyywa8/9Rj/YkheyyHfWxGxZsJAEPK+aXhvcTPHQucHAk?=
- =?us-ascii?Q?ROiMtV526hSHNfaOYbJhZHKm6TuswqOR0NA614qVgeGp5rBuLLVvR31TKbzT?=
- =?us-ascii?Q?NdSzMQPhQbBipDgsr7JzaFdC?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230035)(366011)(376009)(1800799019)(7416009)(38070700013);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+ej4eAQhntdhORZXeWN53wFMvILO6/kah7D5WQXb48euG8dG/blNRHeo0The?=
- =?us-ascii?Q?GAi+3R9NBtrnrH7W6OsUHqoJGfYn4Lj8DjfWlBpg3KoZMZJjRqqDfRWZgby2?=
- =?us-ascii?Q?aZkL0dyp2S0CyKNNmSutNUsk6AnpGMeUA5ADySyZsn018Y06DVUuJaL/Htpq?=
- =?us-ascii?Q?pv1ZGcoxRTIjVh6hdYn0UGQZEBw548fMhUMsyXKPw+/yGEIN7SRlojHSf06q?=
- =?us-ascii?Q?SxreArXGdE9Y2YFPFE89XPVPpuM7OeHrFD7gxEtt3meiY806riK8XT6LLR7/?=
- =?us-ascii?Q?sDADPolnJ4NWdfdjNs50RaMgtzGo3Jh4ueSSUlI1/5ADEqvnDAn5YWZDzB/y?=
- =?us-ascii?Q?wP5mqn4TKPlBKQOX7Z3jVQsSREGbfg1ahucvuco0etfqbEP7I9oWqSZFk4DL?=
- =?us-ascii?Q?rOMrsMqaCMpuBfMVEiTQ1Y+FwXuUa9Nd+s0ANlfF6fZ8LRpLjXAVYWg5z79v?=
- =?us-ascii?Q?+MJzDZh0xXe+MGXqiO8AYGXxSKSGoCu27SIvExJcH0D+Z9VfuYY6aahXuAen?=
- =?us-ascii?Q?rBHW3thDdlADVT8g95OUI76N2dV5vTKVN/rSzjyFcenS+np0d19WMmdmfTWQ?=
- =?us-ascii?Q?b8nTIKzPlz1J7MHjyFTI9gM7B2nlGDJ/PXZPwrUbYj5Ot5BG1GOZMFUxCzsS?=
- =?us-ascii?Q?Gql/OmDPYdOm/jImdjxsenA4M0lLXNfOH2BRE+gjKju9GbjphvvsWDwEKenC?=
- =?us-ascii?Q?Ova3KAhic0DKfXI8uiFTweByF47Iy0Q9AMuNKor8k0dHkdcmqnenrfzm6Gsg?=
- =?us-ascii?Q?ZTx9Ogdm8MGJ0Z103StsC3XO3pJ7uTVW9bLwI3CijdVSPzgfaHU6v3veWBIi?=
- =?us-ascii?Q?iu8vghxMVyDueynjUAf5w6jKDVjjKAqMbErBbxZYqgboHUDmUVAE1Zg2bg1Q?=
- =?us-ascii?Q?DoDFQqWcI4+iyiapT1jVB4PdfSuKRz7FkiffBQs29fE3KcKASxU1qaTfQjbF?=
- =?us-ascii?Q?3Dq4uE8jqp/4KT+w8COuS12v0SuAOkpypSRMbpXe209+N5UWqGeSwPVy9IZh?=
- =?us-ascii?Q?W11dbG+bcCae35EchF9Qe/EL3iIeg4ibN1k8JRi8yX7TwJMBUS/QNbYc6cQ4?=
- =?us-ascii?Q?wWPUIRFj444QG4V9eTa5XIiqw2DSi8qBTIcrX8lB73ThHevrg+IpFptXfmKs?=
- =?us-ascii?Q?LGrYL58sRMmw2taHB/bBooQaVahJd+7jgYpzIBRB7KS3ZdBbRtx50lyVG0yp?=
- =?us-ascii?Q?J312rk8J8dGajUjh4P83hqEHlJk0UzdR203GgceDb7kH1gDyzcIkNNI7iSex?=
- =?us-ascii?Q?KqV2ne2lIgGhDgm/pzEg/VIKuGhbFh3Ygbe9yHoQyyB6MBEDKvXBGsZ7NINm?=
- =?us-ascii?Q?sRmfpxzsAKG3s3EN1zp4U6i8un/p+fpEnVN08yvIvNRrNRe6UTjUzbAreWAa?=
- =?us-ascii?Q?wEokLrEshPeB1e+mw9pONC50GlMZIl/oJ/ActAsE5HA2oDg3j5ms60Kbec2Q?=
- =?us-ascii?Q?/aq06WQLAkoooHmDhGKe3SAjhGfAi9cRhwTGZj1Qokc8t5soDQUbQsAMDGkE?=
- =?us-ascii?Q?lu1rSQiixLgnHcATWV8tmvWflRU12BgfV5HURN0+h7F/zMDnpWdOpGlnmatV?=
- =?us-ascii?Q?QtVguexkBCTepUS4vRxkVXKY4cQ3tdWJBtzbBxFI?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uG9Fi088"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6ef64b092cso243463366b.1
+        for <imx@lists.linux.dev>; Fri, 14 Jun 2024 02:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718358391; x=1718963191; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R3E6JlKgnDrJSPy23T3qrpFv918sUOaM5ecbbXYgrI4=;
+        b=uG9Fi088/cFfrS7MvSf80qmYoD/+SQWuctqvEZ9q+ielcM9RU/9/q7Ss//erY2aDQ4
+         kQlfEBx0ymGMmggoWlyE3u1MDhpePleijoivWTC0fQO8NM0/9KoZC1SFzvnWli5mFGXS
+         3AMS9mat2geqFWPtbOMhxZ/dupQlfBo8ETrCsp0Ex92XAMI57blX62t6PVdMZUXGnXxE
+         G7WFavCA3GLTl7ZG5sDs4MyIOgrA38ig9bgZc/5ejkgfD/EGMcRmM1pZb292T1US+f1D
+         9g8Z+ZpWw8c9ckQq+rWE1uL4yRZu1LRlS7IQtFV2Ps2BKirbJ80sF/rlv2EU7Nn2P3Wo
+         gu3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718358391; x=1718963191;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R3E6JlKgnDrJSPy23T3qrpFv918sUOaM5ecbbXYgrI4=;
+        b=Woakk1jTf/EyFxCM6E7T59dOu6OKv2UKIbSDuVQjj2cf9w+91Ko4v1hdEA2TZJfEwz
+         Dqq0VhbEdidAMs1sw/iCBAxjBZXwdHdeP0+HOcqzJ/3KAZUiEjdDN/D+3+JksQYmQJfo
+         cz9ERljJkiWfMazWleyipeoC25d3mmjfrMX1pMr4KewIRfnGyb70+MK+QWBUfIto0YSY
+         vDvfLhX9L0hD//8mjSVcLRgvlYZiF1TTjAziS069+rBMXx3aKbS9PrT5pXTuuuOghxdD
+         6IZ1wrPiHY8JdMK17uYQXAyHDZmqeXCIx5CS4qkXAfXDCLDBQmA1kmhxZttWDPUC4iWC
+         9yWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVaibNyxzcsPkr5YUmKjsY9BaxQ1gfUoTJ2X9gZpcrJI75X2t9TvZZq8Idtus32oZxbEzxX/9HzV2gYnDfjuX5V3fsC
+X-Gm-Message-State: AOJu0YxG8B8rq5OWqvOtrzWok4MyaS9RiSgPOmaXOl7+B0fUE7GgN6Zl
+	1VElgoZSmVIMMJe++H5bdy+vMMluNat0uU2nmCCij7O3iaLsd+yjxVagsfYMuhw=
+X-Google-Smtp-Source: AGHT+IGov8h4HWz1vwXrMuZx4d9Kl8tLftrHfY/R0lPxIE7iVJTda8tqaONdGVeUAi1qLy3sNijSsQ==
+X-Received: by 2002:a17:906:d8b2:b0:a6e:fc0a:efaf with SMTP id a640c23a62f3a-a6f60dc89edmr143181966b.49.1718358390766;
+        Fri, 14 Jun 2024 02:46:30 -0700 (PDT)
+Received: from [127.0.1.1] ([78.10.206.163])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56f9c84csm164966366b.222.2024.06.14.02.46.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jun 2024 02:46:30 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 00/22] dt-bindings: thermal: few cleanups
+Date: Fri, 14 Jun 2024 11:45:59 +0200
+Message-Id: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e90997a-5e33-4421-ee7b-08dc8c512fa4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jun 2024 09:05:49.8986
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BHwN3FG3VBxVP8Eafn94DYw2fc+ACivUKk8WVtbq/fL0Ex/lLOVanQ19kJMjsLzcHe7efDpmM+I1qIoG3zKlcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7171
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFcRbGYC/x3MQQqAIBBA0avErBtQsRZdJVqYjjpgFhoRRHdPW
+ r7F/w9UKkwVpu6BQhdX3nOD7Duw0eRAyK4ZlFBajFKjO3Hl7DiHimekspmEJqXdoxbSDoJGSV5
+ B649Cnu//PS/v+wHlGnZRawAAAA==
+To: Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Guillaume La Roque <glaroque@baylibre.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Vasily Khoruzhick <anarsoul@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Anson Huang <Anson.Huang@nxp.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Amit Kucheria <amitk@kernel.org>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+ Heiko Stuebner <heiko@sntech.de>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Pascal Paillet <p.paillet@foss.st.com>, Keerthy <j-keerthy@ti.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Scott Branden <sbranden@broadcom.com>, 
+ zhanghongchen <zhanghongchen@loongson.cn>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, imx@lists.linux.dev, 
+ linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ Florian Fainelli <f.fainelli@gmail.com>, 
+ linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3782;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=p3XfyX3kLTCraBOtA3bYk0nZWnKJv6DRa4Xv9JXFZPw=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmbBFZ2k3GJoNNLFeKNDEm6wol3YrFjWScB/fEO
+ gMayn0IsTaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZmwRWQAKCRDBN2bmhouD
+ 1/1iD/0cmbLdy7BRDK+hdAHoMuk7AzFr49JqiJx9VLENFE1VKTi9ZqBN8aDoSCByUeWGR0qU+4q
+ KEogi56HJQfUf74TNd3+SnFy0Sn+vjwhHn/CGv+mMBvy+WBQcLFhAVq8OPFrC6ZaHnMw+twYqdZ
+ cJztoB4JHHpNSh4utMWjZ/1dCwew1GKPFztUKT8kK4OUhxotGA+oTqFklvuMza1LUOitasdXcWE
+ NO5DOwXa3khj+DvmylZwD9aItPM+9lEIrSe1ZI7Im3INY+QlThZu8/jXgvQShu4wMFo6ZiFcGSf
+ DZQw22RWE9MZfA5rprvMGcHRONNxt7Bj9+XsmFTvsgLNUMtn/4cgbR+H6XB53fYsCXd/U77WruG
+ 5FCXdX04NfpF63KybtlPqGyse++v9DRIjDqOl+YaajBVfY5AIWnNtWpkqo0pHDjr8imiQP7O9RM
+ uJCHWeyn0PwumkruVCJHJ6atM6UxO20yBQIoccFirseDL9dbds/B7ghSRppjIKrS9caS0Zu+XK/
+ i2UMwVJf+O4CyDzjLhIUmKwCDk2jNSqCbmUvcv3F5+o34uhViJYX6Lq22U/Nd7PS7LT1uFK5pNg
+ xGjQ4xLDpRUyKC0lPvWUtf8qn7rOAsuoc6ELE0cz7nJbX0rDs1XLZl4fdMI6cRnxhT0CibGBy7L
+ 6PdmGjRdB0YzBJQ==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
+Hi,
 
+Few cleanups witout practical impact, except maybe the Amlogic schema
+(bringing required cells).
 
-> -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Friday, May 24, 2024 5:56 PM
-> To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh+dt@kernel.org>;
-> Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
-> <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Pengutronix
-> Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> <festevam@gmail.com>; Rob Herring <robh@kernel.org>; Krzysztof
-> Kozlowski <krzk+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
-> linux-arm-kernel@lists.infradead.org
-> Subject: Re: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
-> EdgeLock Enclave
->
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->
->
-> On Fri, May 24, 2024 at 12:08:14PM +0000, Pankaj Gupta wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > > Sent: Friday, May 24, 2024 4:04 PM
-> > > To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring
-> > > <robh+dt@kernel.org>; Krzysztof Kozlowski
-> > > <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
-> > > <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>;
-> Pengutronix
-> > > Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > > <festevam@gmail.com>; Rob Herring <robh@kernel.org>; Krzysztof
-> > > Kozlowski <krzk+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> > > kernel@vger.kernel.org; devicetree@vger.kernel.org;
-> > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org
-> > > Subject: [EXT] Re: [PATCH v2 4/5] firmware: imx: add driver for NXP
-> > > EdgeLock Enclave
-> > >
-> > > Caution: This is an external email. Please take care when clicking
-> > > links or opening attachments. When in doubt, report the message
-> > > using the 'Report this email' button
-> > >
-> > >
-> > > On Thu, May 23, 2024 at 04:19:35PM +0530, Pankaj Gupta wrote:
-> > > > NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE),
-> > > > are embedded in the SoC to support the features like HSM, SHE &
-> > > > V2X, using message based communication interface.
-> > > >
-> > > > The secure enclave FW communicates on a dedicated messaging
-> > > > unit(MU) based interface(s) with application core, where kernel is
-> running.
-> > > > It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
-> > > >
-> > > > This patch adds the driver for communication interface to
-> > > > secure-enclave, for exchanging messages with NXP secure enclave HW
-> > > > IP(s) like EdgeLock Enclave (ELE) from Kernel-space, used by
-> > > > kernel management layers like
-> > > > - DM-Crypt.
-> > > >
-> > > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > > ---
-> > > >  drivers/firmware/imx/Kconfig        |  12 +
-> > > >  drivers/firmware/imx/Makefile       |   2 +
-> > > >  drivers/firmware/imx/ele_base_msg.c | 286 +++++++++++++++++++
-> > > > drivers/firmware/imx/ele_base_msg.h |  92 +++++++
-> > > >  drivers/firmware/imx/ele_common.c   | 239 ++++++++++++++++
-> > > >  drivers/firmware/imx/ele_common.h   |  43 +++
-> > > >  drivers/firmware/imx/se_ctrl.c      | 531
-> > > ++++++++++++++++++++++++++++++++++++
-> > > >  drivers/firmware/imx/se_ctrl.h      |  99 +++++++
-> > > >  include/linux/firmware/imx/se_api.h |  14 +
-> > > >  9 files changed, 1318 insertions(+)
-> > > >
-> > >
-> > > > +static int se_probe_if_cleanup(struct platform_device *pdev) {
-> > > > +     struct device *dev =3D &pdev->dev;
-> > > > +     struct se_if_priv *priv;
-> > > > +     int ret =3D 0;
-> > > > +
-> > > > +     priv =3D dev_get_drvdata(dev);
-> > > > +     if (!priv) {
-> > > > +             ret =3D 0;
-> > > > +             dev_dbg(dev, "SE-MU Priv data is NULL;");
-> > > > +             return ret;
-> > > > +     }
-> > > > +
-> > > > +     if (priv->tx_chan)
-> > > > +             mbox_free_channel(priv->tx_chan);
-> > > > +     if (priv->rx_chan)
-> > > > +             mbox_free_channel(priv->rx_chan);
-> > > > +
-> > > > +     /* free the buffer in se remove, previously allocated
-> > > > +      * in se probe to store encrypted IMEM
-> > > > +      */
-> > > > +     if (priv->imem.buf) {
-> > > > +             dmam_free_coherent(dev,
-> > > > +                                ELE_IMEM_SIZE,
-> > > > +                                priv->imem.buf,
-> > > > +                                priv->imem.phyaddr);
-> > > > +             priv->imem.buf =3D NULL;
-> > > > +     }
-> > > > +
-> > > > +     if (priv->flags & RESERVED_DMA_POOL) {
-> > > > +             of_reserved_mem_device_release(dev);
-> > >
-> > > You can call this unconditionally, no need to keep track if you
-> > > called
-> > > of_reserved_mem_device_init() successfully.
-> >
-> > But it will not be called for each SoC.
-> > The memory is not reserved for i.MX95 platforms.
-> > This is required.
->
-> Again: You can call this unconditionally. Look at the code,
-> of_reserved_mem_device_release() won't do anything if you haven't called
-> of_reserved_mem_device_init() before.
+Best regards,
+Krzysztof
 
+---
+Krzysztof Kozlowski (22):
+      dt-bindings: thermal: samsung,exynos: specify cells
+      dt-bindings: thermal: amlogic: reference thermal-sensor schema
+      dt-bindings: thermal: allwinner,sun8i-a83t-ths: reference thermal-sensor schema
+      dt-bindings: thermal: brcm,avs-ro: reference thermal-sensor schema
+      dt-bindings: thermal: generic-adc: reference thermal-sensor schema
+      dt-bindings: thermal: imx8mm: reference thermal-sensor schema
+      dt-bindings: thermal: nvidia,tegra186-bpmp: reference thermal-sensor schema
+      dt-bindings: thermal: nvidia,tegra30-tsensor: reference thermal-sensor schema
+      dt-bindings: thermal: qcom-spmi-adc-tm-hc: reference thermal-sensor schema
+      dt-bindings: thermal: qcom-spmi-adc-tm5: reference thermal-sensor schema
+      dt-bindings: thermal: qcom-tsens: reference thermal-sensor schema
+      dt-bindings: thermal: qoriq: reference thermal-sensor schema
+      dt-bindings: thermal: rcar-gen3: reference thermal-sensor schema
+      dt-bindings: thermal: rockchip: reference thermal-sensor schema
+      dt-bindings: thermal: rzg2l: reference thermal-sensor schema
+      dt-bindings: thermal: socionext,uniphier: reference thermal-sensor schema
+      dt-bindings: thermal: sprd: reference thermal-sensor schema
+      dt-bindings: thermal: st,stm32: reference thermal-sensor schema
+      dt-bindings: thermal: ti,am654: reference thermal-sensor schema
+      dt-bindings: thermal: ti,j72xx: reference thermal-sensor schema
+      dt-bindings: thermal: simplify few bindings
+      dt-bindings: thermal: cleanup examples indentation
 
-Agree. Accepted and will removed in v3.
+ .../bindings/thermal/allwinner,sun8i-a83t-ths.yaml |  6 +-
+ .../bindings/thermal/amlogic,thermal.yaml          | 22 ++---
+ .../bindings/thermal/brcm,avs-ro-thermal.yaml      | 22 ++---
+ .../devicetree/bindings/thermal/brcm,avs-tmon.yaml | 17 ++--
+ .../bindings/thermal/brcm,bcm2835-thermal.yaml     |  1 -
+ .../bindings/thermal/fsl,scu-thermal.yaml          |  1 -
+ .../bindings/thermal/generic-adc-thermal.yaml      |  5 +-
+ .../bindings/thermal/imx8mm-thermal.yaml           |  5 +-
+ .../bindings/thermal/loongson,ls2k-thermal.yaml    |  1 -
+ .../bindings/thermal/mediatek,lvts-thermal.yaml    |  1 -
+ .../bindings/thermal/nvidia,tegra124-soctherm.yaml |  1 -
+ .../thermal/nvidia,tegra186-bpmp-thermal.yaml      | 12 +--
+ .../bindings/thermal/nvidia,tegra30-tsensor.yaml   |  9 +-
+ .../bindings/thermal/qcom,spmi-temp-alarm.yaml     |  1 -
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml      |  8 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml        |  8 +-
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    | 96 ++++++++++------------
+ .../devicetree/bindings/thermal/qoriq-thermal.yaml |  5 +-
+ .../bindings/thermal/rcar-gen3-thermal.yaml        | 69 ++++++++--------
+ .../devicetree/bindings/thermal/rcar-thermal.yaml  | 60 +++++++-------
+ .../bindings/thermal/rockchip-thermal.yaml         |  5 +-
+ .../devicetree/bindings/thermal/rzg2l-thermal.yaml | 41 ++++-----
+ .../bindings/thermal/samsung,exynos-thermal.yaml   |  3 +-
+ .../thermal/socionext,uniphier-thermal.yaml        |  5 +-
+ .../devicetree/bindings/thermal/sprd-thermal.yaml  | 47 +++++------
+ .../bindings/thermal/st,stm32-thermal.yaml         |  5 +-
+ .../bindings/thermal/ti,am654-thermal.yaml         | 15 ++--
+ .../bindings/thermal/ti,j72xx-thermal.yaml         |  5 +-
+ 28 files changed, 230 insertions(+), 246 deletions(-)
+---
+base-commit: 6906a84c482f098d31486df8dc98cead21cce2d0
+change-id: 20240614-dt-bindings-thermal-allof-401c50e61ef2
 
->
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-
-
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       |
-> http://www.p/
-> engutronix.de%2F&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7Cead7b9
-> 3ccacb404124bf08dc7beca6b2%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C
-> 0%7C0%7C638521503534570049%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
-> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%
-> 7C%7C%7C&sdata=3DU0BX68CpPzJg%2B9IytihYTcmivJhfn7xbfIQpMp0R8o0%3D
-> &reserved=3D0  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
