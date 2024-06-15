@@ -1,61 +1,61 @@
 Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF88D481A5
-	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 15:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978C84596E
+	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 15:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718465192; cv=none; b=irKP9pkeg3Dq++t+rPD7ZbrOJIi3+ucxI7VWmEbrRw1CKpuvd9zCju7l19kjr60TAiBP0jt1N/MUzRvzsN0nrdD2lPFyT2eSvhOivp4F/ZMXYO5UutOwMKjlABCV1gQwNfItyCCXt8/91orr98oK8WtG08ESG6caiPSto/Ck+QQ=
+	t=1718465353; cv=none; b=ceENLDqjt07nn2AerMVJXh2heZH4jCROjctO/HcMYu81UDBqiMevQ5ARDNYhlYs5CCQqsDb0RSYBAIkRN3SGFQr06Zk1eaczqZ0d+Kh5EdEWaG/45dv41mRGf18A8mCDh4FMwlwwcX7hl1AmZ3jo4lQgOdTvo7Eqq5d/hUAc6pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718465192; c=relaxed/simple;
-	bh=4f6dCfAUMBr+yzedC7GOm5w5X2Xw16tmt8HGB8+/KXk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=QzB6tCUGy0zI/hKJJ44GgnXEk3P/IYgVl76oth3B2rzLcyy8AQlm8MEGnZMd+DHevYr1kLl/aSZBY0q0AY2SJEP+CrCUNlJdcCoIC7WTg/g0TH+bjEMGg+13cIyJRlco8b5y+2F2S3c647GhHt9N76UY+5Ck8CqT7laHBnknYrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=daz/KrW1; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1718465353; c=relaxed/simple;
+	bh=+IKcDRrK3Yf9NpM7JW1XTPQvEZWRKxw+gASymx/EBC8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rn3lQrar8BjsASnDL7jDrIIJSfOXRaB8EnZsPHVFOGtVnT9XwhbGS6R88SqAR1kJIrzZden4uEayublIAQ2RALeuctJllNXMwCYvQCNtd29YNhzSE1yhNJDUcRTeK26pVHzN6msvkj8Xylyq/LPXjnksbPwL28HXqiT+wTlXuiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLmRCZ5S; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="daz/KrW1"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7024d571d8eso2428626b3a.0
-        for <imx@lists.linux.dev>; Sat, 15 Jun 2024 08:26:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLmRCZ5S"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70109d34a16so2784925b3a.2
+        for <imx@lists.linux.dev>; Sat, 15 Jun 2024 08:29:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718465190; x=1719069990; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=qpnyp13Za6SgJlUsHkg1RuoKHFZYKkZtL5dRcQMT3C0=;
-        b=daz/KrW1KnQbNrqHoG1Sy3CGQAKXoPYyhVzTkBzGlmTkXM46mpYalbGL5uHTDATXqw
-         NDM81UFlGpkBFIpDjGk03biLreGKkTN+5EXod5cYJ4u+h7QPnXYuxY9h0IAsLI/0zXdW
-         pAllsAEjmOSiDF94r+OPJEaqTkOH4A8O2MBILPZ1k0owfVtOKNV7x3Do+EaztAjGl4Tr
-         w6IulNm3D+11SPDX7+GrZH5b+/Xcjc0cQ7N5acSXZ+AdznJFYWGGFvXlnzktcipoxadk
-         6Kt7ZZNBP3+M11GMDhHP9s9gNMPdnN6yrSd3YdGjIafDIjNlnO20WM+1gSH6lkKCNt/l
-         S8Mg==
+        d=gmail.com; s=20230601; t=1718465351; x=1719070151; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=KjbGlRNTPFA52XKTRivBpgz1uUkCb0j4NvGuuOm5beg=;
+        b=fLmRCZ5SP7Fxx1T95wzttFYWCu9UYhD9nMeCEd+PuQjq9aUgFpi1EqxpJyxz1RdHC1
+         JRbnPF1p1aq3dMXFoZcv8d8pkrOOWjeChyoZUltzqKYHKL1+jXPJt29SwSG//7w/daP6
+         PeyzCH6Ja1mlMxdJ397bbTcsRiTAMSI+/rpg4TyjJYCMLcghJR/STXil1xbDdSb1/muD
+         C8nptlnOyp8utn2+KbT/3boLpzcrXlSMEqkuXY1b+DP+gEMeaLTK5fkj9Zp0JP672A0U
+         xx34A+SnMMqvS3d7NSLgBqRT67LFLm20I/EHEqdA+i/9WBb11TPpM7jBG3M049bYkVpY
+         5lHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718465190; x=1719069990;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1718465351; x=1719070151;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qpnyp13Za6SgJlUsHkg1RuoKHFZYKkZtL5dRcQMT3C0=;
-        b=VfCGL/YXcOHmnx4lLLXLuqrOT3Kdf05nAW4BcEjTtNj+qoJRxYaUU/N+Xkm0ESSl2F
-         gMbl2pTAHX9r3lhJPZ7n/OyZGUvj6ddqFb6hCwYq3vX1BCrqbbR27/REj2qGmIB3z8px
-         dpiV4GlOTdakh4ZqxL6zbdOvYOG+8uvyvYTGuApqNqyTOUdah0nVnXRoZWLNz8vkOkR3
-         6WdJ6PwoG+3aPgWrDu1qCxTJ3GjVdor9HfzWGw7wKNagLOK+qPhkDOFYTjMqJ9pLUEVK
-         HBU3CTTfpU205FZ07feWagSoRRIh2j1lqmzXYHnUiBekigbrFM01pAxM8shbqx0JFZgO
-         WatQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwr9kVC8O0cVPX9pewV84Xm3oAK2yeCBgFqpG+sCR2WOY/rjz00B6jLbLd5zhD6aElYJd1dQUJ977ILiItXBWQJZbF
-X-Gm-Message-State: AOJu0YxjaTTeofiXggcNUJ9UlWjWnJcOE0gd5mO8/wa9oUI+eBWczMZq
-	4/2SKy94EjnsTeuiMS+uGVeuVOuS3q3imYYTKAVRxu7uA9WWcNsK
-X-Google-Smtp-Source: AGHT+IHEh6WEYq9qWxdgdlF9p5ojaFmZtp6yXbgEXamZ5jENinuwE3o61Z+j0J8e46btb709WP763Q==
-X-Received: by 2002:a05:6a00:4b97:b0:705:b3b1:8fa8 with SMTP id d2e1a72fcca58-705d7104d35mr6098995b3a.2.1718465189831;
-        Sat, 15 Jun 2024 08:26:29 -0700 (PDT)
+        bh=KjbGlRNTPFA52XKTRivBpgz1uUkCb0j4NvGuuOm5beg=;
+        b=NcELfPw8sdjf+ncO//RjRZm7Hv94R9jRayMxiohKVUtrtakI9hdwCYl0i2XvG/GGK/
+         M2yFIVCZa4hwf1yDA/KxjX9RUTg7BPBZ4X5B06n5VmBKPkR+dof3DKlwUVh1DtYggMK8
+         L+zSZUi2ZLIBQE0k1u/+vKKlfWwGXm/7YeWAys/MPBzGqAnBkoz6QBrKhwWjZYwxQfHx
+         aI9xLi8sFwBcStrBFbE704/978s94hf7ogp72gq/vj0M7UHx5TsUAm1gmWgy2Nz4O6l9
+         gUqjQc7BwehdGllwQgylW0b+XdKPcOLxLE729NxUaHBCCGJJr5N19OdUDgE/4TuuuJNW
+         dFwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGhxLc/iviqc1KhD/nvdejqCRVD2FSJ7Cu0sCG7rE9J71yQMEIH0zqql2W1LBLlVFrNpGKPx1lFum3hBtl2Y51N9XR
+X-Gm-Message-State: AOJu0YxmVPnqW4efeiGA+8T7B3f+dK1rcoCh5gri+88MUWXwx2FXmDw8
+	JqN/Hftyf/IhbHAxGZuMiCVEjPhgAz/iHQlgWrGvFYDaTchxgztP
+X-Google-Smtp-Source: AGHT+IFrfI2HAZMkZ8D1+eTOCon91HjyLxJhnwYjO8VjENlVeHOpEnzt3mBKsRWFEE5DsGpqp/od9Q==
+X-Received: by 2002:a05:6a00:788:b0:705:c5d4:7861 with SMTP id d2e1a72fcca58-705d712024amr5404255b3a.6.1718465350412;
+        Sat, 15 Jun 2024 08:29:10 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705cc921b41sm4807607b3a.5.2024.06.15.08.26.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb9195asm4785956b3a.209.2024.06.15.08.29.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Jun 2024 08:26:28 -0700 (PDT)
+        Sat, 15 Jun 2024 08:29:09 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <95ee7772-7d5a-4d94-8eb2-93382554a769@roeck-us.net>
-Date: Sat, 15 Jun 2024 08:26:27 -0700
+Message-ID: <480b0513-01c4-42a3-bc8b-5ee6e711a1a1@roeck-us.net>
+Date: Sat, 15 Jun 2024 08:29:08 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,14 +64,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] watchdog: imx2_wdg: Save the actual timeout value
-From: Guenter Roeck <linux@roeck-us.net>
-To: LongQiang <lqking7735@163.com>, wim@linux-watchdog.org
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, linux-watchdog@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
+To: "L.Q" <lqking7735@163.com>
+Cc: "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ =?UTF-8?Q?linux-watchdog=40vger=2Eke=E2=80=A6?=
+ <linux-watchdog@vger.kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>,
+ =?UTF-8?Q?linux-arm-kernel=40lists=2Ein=E2=80=A6?=
+ <linux-arm-kernel@lists.infradead.org>
 References: <20240615141059.345076-1-lqking7735@163.com>
  <8db871d7-154d-48c3-b934-e480991ad8a8@roeck-us.net>
+ <57e6bc77.319eb.1901c76a5fa.Coremail.lqking7735@163.com>
 Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
  RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
@@ -115,37 +123,86 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <8db871d7-154d-48c3-b934-e480991ad8a8@roeck-us.net>
+In-Reply-To: <57e6bc77.319eb.1901c76a5fa.Coremail.lqking7735@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 6/15/24 07:18, Guenter Roeck wrote:
-> On 6/15/24 07:10, LongQiang wrote:
->> When setting the timeout, the effective timeout value should be saved.
->> Otherwise, the illegal timeout will take effect at 'start'.
->>
->> Signed-off-by: LongQiang <lqking7735@163.com>
->> ---
->>   drivers/watchdog/imx2_wdt.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/watchdog/imx2_wdt.c b/drivers/watchdog/imx2_wdt.c
->> index 42e8ffae18dd..d4a4d4c58c3f 100644
->> --- a/drivers/watchdog/imx2_wdt.c
->> +++ b/drivers/watchdog/imx2_wdt.c
->> @@ -196,7 +196,7 @@ static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
->>       actual = min(new_timeout, IMX2_WDT_MAX_TIME);
->>       __imx2_wdt_set_timeout(wdog, actual);
->> -    wdog->timeout = new_timeout;
->> +    wdog->timeout = actual;
->>       return 0;
->>   }
-> No, that would be wrong.
+On 6/15/24 08:14, L.Q wrote:
+> Well
+> If I first set a timeout value greater than 128 and then start the watchdog, the watchdog timeout value is illegal.
+> In the function 'imx2_wdt_start', there is no validity check on the timeout value
 > 
-To add more detail, ->timeout is the soft timeout, handled by the watchdog
-core. The start function calls imx2_wdt_set_timeout() again, which will set
-the chip timeout to no more than IMX2_WDT_MAX_TIME. So the claim that
-"the illegal timeout will take effect at 'start'" is simply not correct.
+
+static int imx2_wdt_start(struct watchdog_device *wdog)
+{
+         struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
+
+         if (imx2_wdt_is_running(wdev))
+                 imx2_wdt_set_timeout(wdog, wdog->timeout);
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         else
+                 imx2_wdt_setup(wdog);
+...
+
+static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
+                                 unsigned int new_timeout)
+{
+         unsigned int actual;
+
+         actual = min(new_timeout, IMX2_WDT_MAX_TIME);
+	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         __imx2_wdt_set_timeout(wdog, actual);
+                                      ^^^^^^
+         wdog->timeout = new_timeout;
+         return 0;
+}
+
+Please point out the code path where an attempt is made to write
+a value larger than IMX2_WDT_MAX_TIME into the chip.
 
 Guenter
+
+> ---- Replied Message ----
+> From	Guenter Roeck<linux@roeck-us.net> <mailto:undefined>
+> Date	6/15/2024 22:18
+> To	LongQiang<lqking7735@163.com>,
+> <mailto:lqking7735@163.com><wim@linux-watchdog.org> <mailto:wim@linux-watchdog.org>
+> Cc	<shawnguo@kernel.org>,
+> <mailto:shawnguo@kernel.org><s.hauer@pengutronix.de>,
+> <mailto:s.hauer@pengutronix.de><kernel@pengutronix.de>,
+> <mailto:kernel@pengutronix.de><festevam@gmail.com>,
+> <mailto:festevam@gmail.com><linux-watchdog@vger.kernel.org>,
+> <mailto:linux-watchdog@vger.kernel.org><imx@lists.linux.dev>,
+> <mailto:imx@lists.linux.dev><linux-arm-kernel@lists.infradead.org> <mailto:linux-arm-kernel@lists.infradead.org>
+> Subject	Re: [PATCH] watchdog: imx2_wdg: Save the actual timeout value
+> 
+> On 6/15/24 07:10, LongQiang wrote:
+> 
+>     When setting the timeout, the effective timeout value should be saved.
+>     Otherwise, the illegal timeout will take effect at 'start'.
+> 
+>     Signed-off-by: LongQiang <lqking7735@163.com>
+>     ---
+>     drivers/watchdog/imx2_wdt.c | 2 +-
+>     1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+>     diff --git a/drivers/watchdog/imx2_wdt.c b/drivers/watchdog/imx2_wdt.c
+>     index 42e8ffae18dd..d4a4d4c58c3f 100644
+>     --- a/drivers/watchdog/imx2_wdt.c
+>     +++ b/drivers/watchdog/imx2_wdt.c
+>     @@ -196,7 +196,7 @@ static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
+> 
+>     actual = min(new_timeout, IMX2_WDT_MAX_TIME);
+>     __imx2_wdt_set_timeout(wdog, actual);
+>     -  wdog->timeout = new_timeout;
+>     +  wdog->timeout = actual;
+>     return 0;
+>     }
+> 
+> No, that would be wrong.
+> 
+> NACK.
+> 
+> Guenter
+> 
 
