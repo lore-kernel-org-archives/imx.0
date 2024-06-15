@@ -1,127 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632CE10A11;
-	Sat, 15 Jun 2024 09:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA79B67A
+	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 14:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718444907; cv=none; b=G8dAwr1aR2jVqoyfGJWicagbO7XVw0RdzY/2x4E+4GKLLB+MwCO8eVw/B5iNIfNmx0SzdDNkl+KlR5kv1CNE8IzcH9B5OxoJrGZOK9VbH0cS72S5dJ1vb1Xde2VdzjAAndqd//QDt0rjqdJU4Xc4YS0fjihGbXX8cPfd4MZ6lZM=
+	t=1718460705; cv=none; b=sm+MUIls/5VTb21fEOAWGlY20sXlCIWmpuDyzuqrv0WJFBitmfVtg9WZuavBrl/A1Pkdl+47uzl0KynXMYgGh4PnK+1Q5TS4cf26OleMZfuklv70rCxlMGc3acG8bIK21e7UgUaXNW3lNY7PBnu0m1uZmTUFVasCleBvP7ovH6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718444907; c=relaxed/simple;
-	bh=5lgczmI4KHA3a8/JLhs3fR7zSsRky2Mlj8Fi75mmJOA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TZAvlOddY2xlL5R5K4NoZuW5IGxDrorN/kfhZ7zj6iHXtOqpMBdL7BS+eDFcWCN96yoKH0Nux+4gZ4wMtqb30lnVAdKhxMYLTZxzINlJ2qD7JLJB/cCpXd+hXQK6zDJF3OpVv75UvYFLZHRuALQxcE7RsnK5gKkYXrK1b51jItg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uE71K+fA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718460705; c=relaxed/simple;
+	bh=ysppDQEkB6tYTT8MEXmTW3fSf1MCmntTplromX3pjaU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AAxBiNhXFBXq24SHCg85gpamrb8dCOwX/hWtC8sovUAFzYjNn7CgQ+EW/i7XzHBZPRUY3RzlAemnflzsql5xj7b1jKyr5/o6oSaElwbFME0AouNojBUqAnHpKjxhAM91HetAk2qE6GT08v5RKtIoscx0sTaDovZ6BIshApodzBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=qI3n7Y4n; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uE71K+fA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3142DC3277B;
-	Sat, 15 Jun 2024 09:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718444906;
-	bh=5lgczmI4KHA3a8/JLhs3fR7zSsRky2Mlj8Fi75mmJOA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uE71K+fAudxqLKfjENxfU+kPkSSVjyj4k1cJWYQhLrZgunhJlh8YsX4cRjW7y6Xrm
-	 P+5QqBkuH7B3WsmTRG9x1Y3xi87gdjiRFEmvv8u862kcCrcUrO795yQEkxCAPt+F4N
-	 3mCMeC1sk3Jvto6+2mb5habzrOyNFIGb/+w2iRvFsGfUG7VEigPvOTrbHm/W8C38wf
-	 aW68Y6ntRo8zzTfvxK74DbHB/1RNww8vIWh7KRVEgvZMCC9NiKER0U+Mu3BMsXTYKj
-	 jk5nQdD47fLqWCLFSnQhucsy445wk1eg6IEywapX8Yf6LaaSVKdF4xzzqD9oTAxH6L
-	 kKWOi4KEJIX6Q==
-Message-ID: <7c2d1e2b-6abc-4941-8270-c2b19601fe3e@kernel.org>
-Date: Sat, 15 Jun 2024 11:48:22 +0200
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="qI3n7Y4n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=ieKug
+	Uq21pkO9EAjGILHNEFhB1VEmDQbP/Q7G3lCUXU=; b=qI3n7Y4ndoVNpgZKX/U5R
+	/OouuP3zPFbxYm8UofZxX7WJSxnchNeKPRqkvMwNL4JTzWXkfFp0pPu4qa2RQSMv
+	A8qZQlm0gIhJt9MMVIE61Y10ikvS7Vn/7p57CczvPSiOiRYXQJVAH2YupA46IiqN
+	uZ+7mIZ1vGuLMveRDHq5EY=
+Received: from lq-VirtualBox.. (unknown [118.112.88.81])
+	by gzga-smtp-mta-g1-2 (Coremail) with SMTP id _____wDXP5b0oG1mjrqZHA--.46791S2;
+	Sat, 15 Jun 2024 22:11:00 +0800 (CST)
+From: LongQiang <lqking7735@163.com>
+To: wim@linux-watchdog.org
+Cc: linux@roeck-us.net,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-watchdog@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	LongQiang <lqking7735@163.com>
+Subject: [PATCH] watchdog: imx2_wdg: Save the actual timeout value
+Date: Sat, 15 Jun 2024 22:10:59 +0800
+Message-ID: <20240615141059.345076-1-lqking7735@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: gpio: mpc8xxx: Allow only use
- 'fsl,qoriq-gpio'
-To: Frank Li <Frank.Li@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "open list:GPIO SUBSYSTEM"
- <linux-gpio@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240614213839.2532061-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240614213839.2532061-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXP5b0oG1mjrqZHA--.46791S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Xr4DuFWrXw1rCFyfGFyDJrb_yoW3Grg_Cr
+	97tw42grs8Gr1IyF45Xw17Ary0gF1UW3WxZa1IgFWfu3srA3y5G3yqg34kZF1Uua18tr98
+	Ar4kXr4FkF97CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNZXo7UUUUU==
+X-CM-SenderInfo: potnx0zjxxjki6rwjhhfrp/1tbiLBj+QGXAmf4Y7QAAs9
 
-On 14/06/2024 23:38, Frank Li wrote:
-> Allow only use compatible string 'fsl,qoriq-gpio' in dts to fix below
-> warning:
-> 
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-rdb.dtb: gpio@2300000: compatible: 'oneOf' conditional failed, one must be fixed:
-> 	['fsl,qoriq-gpio'] is too short
-> 	'fsl,qoriq-gpio' is not one of ['fsl,mpc5121-gpio', 'fsl,mpc5125-gpio', 'fsl,mpc8349-gpio', 'fsl,mpc8572-gpio', 'fsl,mpc8610-gpio', 'fsl,pq3-gpio']
-> 	'fsl,qoriq-gpio' is not one of ['fsl,ls1021a-gpio', 'fsl,ls1028a-gpio', 'fsl,ls1043a-gpio', 'fsl,ls1088a-gpio', 'fsl,ls2080a-gpio']
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
-> index eb046a48a3f59..ef72f569c8387 100644
-> --- a/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/fsl,qoriq-gpio.yaml
-> @@ -19,6 +19,7 @@ properties:
->            - fsl,mpc8572-gpio
->            - fsl,mpc8610-gpio
->            - fsl,pq3-gpio
-> +          - fsl,qoriq-gpio
+When setting the timeout, the effective timeout value should be saved.
+Otherwise, the illegal timeout will take effect at 'start'.
 
-No, this does not look like correct fix. You rather miss specific
-compatibles.
+Signed-off-by: LongQiang <lqking7735@163.com>
+---
+ drivers/watchdog/imx2_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/watchdog/imx2_wdt.c b/drivers/watchdog/imx2_wdt.c
+index 42e8ffae18dd..d4a4d4c58c3f 100644
+--- a/drivers/watchdog/imx2_wdt.c
++++ b/drivers/watchdog/imx2_wdt.c
+@@ -196,7 +196,7 @@ static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
+ 
+ 	actual = min(new_timeout, IMX2_WDT_MAX_TIME);
+ 	__imx2_wdt_set_timeout(wdog, actual);
+-	wdog->timeout = new_timeout;
++	wdog->timeout = actual;
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
 
