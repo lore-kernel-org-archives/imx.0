@@ -1,45 +1,40 @@
 Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD2F17BD6
-	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 08:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64F61803E
+	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 08:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718438801; cv=none; b=SUNmCcqY/CmORpeO4b60T4OstirQ5P8d/zAdAyuigKxFUc0/6zKFosKMfYy0Fov9Wg6SzxDOqkB4nmsPLB+c8+LX47XfxmMo9HKJ9O9k2I621AL9pxHzhRA3Ldmu54su0XOBYcUapEQ1bnMSXMoiityfiYQfEyk0tbHVOyy894k=
+	t=1718438881; cv=none; b=ZFuEE1HdG2lW2b1jorby4JwTYMypv5O1a57hheBcHizUqNn7sq+lzAtbAui4Qi3F3LEzQdBKOzwNZI3282cqLJXzwjgnUN90YlL29NJzpiRtexMW3F+F6fLiH3iUKADEyYarbNGmo48KAQJpS13Yrl1AassgHV9Z9i1m1atFJLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718438801; c=relaxed/simple;
-	bh=GxAOZy0x9WrDZ/LeK+PwkuiwAQ2MR0JWNopsCLd6u4w=;
+	s=arc-20240116; t=1718438881; c=relaxed/simple;
+	bh=rPgCc9oeqCVfNZ8wHQbb4DAAw3Bq7+5vbSGwXTvp2p8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JcKoekTtrtkivGQgz1rqTuUjnRVmSN+C73eti+hdOxYWYBf+GvjI7zYcoXH7q8kBVh1sg9BxxT+8sJq4/RxmB4WPBDxyvWOI349MyHeYeTJwZHwSne+BmODZoQ7CVfkCPHuHCavRGXIGUQDnl/tQ1NxaUdVO9whn/MqF5ev5HZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EoTs6NzW; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=QnZ9ygYGWJqsUiqYQfdgWaDhzcqSwVrdeGyF8tnsLHA+9NA0fjGYLQahSUg/URvxwGxA1xuP5X+IjWZ4MZ3gg0+Ux/F5eVPAFkmP6Ju5mlQLq6t9kskQRJ9sbtpxMS4dRViyCaIXvfL8rgcC+Z9ckL5dys/iqB2rfS05zSk/JC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=cSpa9X0I; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EoTs6NzW"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="cSpa9X0I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=nBIxbGV2M/V9F3VVH2qGA1ziJ7K7maeJDL9DDy8Cg9E=;
-	b=EoTs6NzW5+SbMEggtvXAVYbG9U9bsMTyrqb4pLuj6K0WRrjBrVOqaiTRqfKKdx
-	y1iWKsIMSw0jdP2uf9z3eNuhA0ijGibqKT4DwWHSMKc5fm4goRzC00PAk9jbgPbO
-	QtE/WEk0MSPapD/L7TiehVBCeEHZSdRfXQnyaFsb4KFtY=
+	Content-Type; bh=/iKjibvMsxezGFlPSNPKpOBNVsf+6rthH3pcb2WX1No=;
+	b=cSpa9X0IMbQKAzcN/yz/8EXPeA/EMwh8Ujy3dqSwaVMna++cJGjIHFOptHf+pT
+	4OwVYNQvrDW4ylikwSuEoMdEBaja2yNLBdrQeet2c8KZV3ppNxuzEidY6I1ew8Dq
+	NjL6q5HtOm1NOl+gl86hUdbqGZ/2nmmKXNjvlyMGhOS/Q=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrABXH+J0S21m4t60CA--.4800S3;
-	Sat, 15 Jun 2024 16:06:14 +0800 (CST)
-Date: Sat, 15 Jun 2024 16:06:12 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrACHjxDRS21mwOK0CA--.43334S3;
+	Sat, 15 Jun 2024 16:07:46 +0800 (CST)
+Date: Sat, 15 Jun 2024 16:07:45 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp: Enable HDMI on i.MX8MP DHCOM PDK2
- and PDK3
-Message-ID: <Zm1LdFyxYJ1+UIgY@dragon>
-References: <20240514010706.245874-1-marex@denx.de>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, dmitry.baryshkov@linaro.org
+Subject: Re: [PATCH] arm: dts: imx53-qsb-hdmi: Disable panel instead of
+ deleting node
+Message-ID: <Zm1L0fyKupDFDOUX@dragon>
+References: <20240514030718.533169-1-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,19 +43,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240514010706.245874-1-marex@denx.de>
-X-CM-TRANSID:C1UQrABXH+J0S21m4t60CA--.4800S3
+In-Reply-To: <20240514030718.533169-1-victor.liu@nxp.com>
+X-CM-TRANSID:C1UQrACHjxDRS21mwOK0CA--.43334S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIco7DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDw-+ZVnxc0gsowACsF
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUswZ2UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBRL+ZVsVCphcKQAAsl
 
-On Tue, May 14, 2024 at 03:06:42AM +0200, Marek Vasut wrote:
-> Enable HDMI output on i.MX8MP DHCOM PDK2 and PDK3. The I2C5 on PDK2 and
-> I2C mux port 1 on PDK3 respectively are used in regular I2C mode instead
-> of HDMI DDC mode to permit connection of other I2C devices on those buses.
-> The pinctrl_hdmi node is part of the SoM DTSI already.
+On Tue, May 14, 2024 at 11:07:18AM +0800, Liu Ying wrote:
+> We cannot use /delete-node/ directive to delete a node in a DT
+> overlay.  The node won't be deleted effectively.  Instead, set
+> the node's status property to "disabled" to achieve something
+> similar.
 > 
-> Signed-off-by: Marek Vasut <marex@denx.de>
+> Fixes: eeb403df953f ("ARM: dts: imx53-qsb: add support for the HDMI expander")
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
 
 Applied, thanks!
 
