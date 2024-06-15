@@ -1,112 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81C326AE4;
-	Fri, 14 Jun 2024 23:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEA110F7;
+	Sat, 15 Jun 2024 01:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718407651; cv=none; b=EmS+w2YwFyefzYOoYI/OoRALSamlcKqpRriNh7hrjU1OOlJrTl53vsmla8BCv9VCXHtzzxO1AVo39HO7UZ4L7b3Ssb8umdnlD/J/p9HfZnyoyynyS+bG/BPNjlVy6ulTz3DFETzxU4WhzjTmCsRN902yY/T6CtHO634uCUgi/jw=
+	t=1718414853; cv=none; b=m8st7TQu48i3AWLy8xLqfw48xp69TDEX0jORDbRwLGP2cnQICSMWyVeCmhKPCn1mOHOx2jpiZ7ZFAR5AXoUQiKBc2dmOUNzG+uYEVN0rKzHNd6zebZ3hzuaJ0qqRnpYfvrtnPfW+bWecPS54GHvtEBHtqaHelz7xkGMVwJk2bmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718407651; c=relaxed/simple;
-	bh=A7eXOSdNmaIjl5CGYcbjc04snYieZJPfKAn2snstOjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GxtYfyXKzKNsmvnqOJHXmOKOjAcoXMG2l+D3Hhz1ssuhrpBirfVPrZoTYBnVcm2L3yMcY//gjIc/uJZiyrdUHePbFn74SWMt+RUP01y71b+u2wzsoklwGuLJbei7hWeYBgGYT+HokIp18esrl7ZX3vGPGUqH61VeFvJfJhsDrLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DBjTU8jv; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1718414853; c=relaxed/simple;
+	bh=uO0l8fWM8wy0kjfMSdBXh5QBa3T8WTIIwxytMlnolVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xe1JtFSUIYO7di1Ss26yDMgEGRM5Laqf6YijtI4WZqP2ZAY5B0sYSzeAiTnHN/HcS1GkWKIVtvGpCCUQMmzFhUwxUvXaYvH16TxUyBWOAeM9S1mE0viQrmAIeE2eOoAy+juu6WUn/up3EAUIVCPiecQL8fupr6OnhdnHRFxB0Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2s0B1p7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DBjTU8jv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718407651; x=1749943651;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A7eXOSdNmaIjl5CGYcbjc04snYieZJPfKAn2snstOjQ=;
-  b=DBjTU8jv9VtbhXBzyqOqZuCRfkkP943w4cXoMiPfVboIzRYfYqk9Cwy3
-   G7uOUT0IFogXfNVpMkoYHsbLivENPqKSHyB7ZFGbUXR7h14j0UgMl778z
-   h+3aGcW9zmcnNTMK9tat0vqBN/Rf26UvjdsbfyU1+I31yypScpQo4LnK4
-   iVT10RyfQckxPBXlczVnnfHa9j2yPo0RUkIii/ly59BdMz81scVyPeoqu
-   ZYQDTxxMaSFQAW4bQMvbCiqkO9mkcYveZVnlZjfp26PuZIkLQ55O44FPB
-   2shYKOqmM4X7v+niLoja0t3SsrPJ38moqNn4VA+SJSeinrddF30ZMrxoX
-   Q==;
-X-CSE-ConnectionGUID: Ht4HdUdATn+MJKHdtu6plA==
-X-CSE-MsgGUID: nibXv2ZyTuaI8/ahBIUwdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11103"; a="15439269"
-X-IronPort-AV: E=Sophos;i="6.08,239,1712646000"; 
-   d="scan'208";a="15439269"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 16:27:30 -0700
-X-CSE-ConnectionGUID: G3bAMsY4SIazPF/IH5/LwA==
-X-CSE-MsgGUID: VWE5NyhMQ/e/YlSc0CnXKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,239,1712646000"; 
-   d="scan'208";a="45058145"
-Received: from lkp-server01.sh.intel.com (HELO 9e3ee4e9e062) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 14 Jun 2024 16:27:27 -0700
-Received: from kbuild by 9e3ee4e9e062 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sIGKK-0001tr-34;
-	Fri, 14 Jun 2024 23:27:24 +0000
-Date: Sat, 15 Jun 2024 07:27:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:QORIQ DPAA2 FSL-MC BUS DRIVER" <linux-kernel@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: misc: fsl,qoriq-mc: convert to yaml
- format
-Message-ID: <202406150719.nmv1rQAS-lkp@intel.com>
-References: <20240614213109.2518797-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2s0B1p7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B56C2BD10;
+	Sat, 15 Jun 2024 01:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718414852;
+	bh=uO0l8fWM8wy0kjfMSdBXh5QBa3T8WTIIwxytMlnolVk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b2s0B1p7PB2aVGlz/qIbq4zDYFcmZfBVDr8OoH5cbCMbXdkyprsvQL3baKEfsUPbA
+	 REnK0pGaGHJkKuvfFLULnBdImhIqrNDxF7fpQEe6SeWzyCVTH4w8riYFWakn+HV0wy
+	 byoYWfa+fZ00mC+BFn3ywN31UD5h8P1ikdn26tBCA57vSCy/AHo/UhGAFR6boQzyyr
+	 nTHxPBuZStTKKmEXG+n6FIGKNJKO+2K2xTkIYRIQ0tkp0nStGglOFf0nNgGe8/aPdb
+	 rzzPmBXsac1WNHVdaD0Tb5bcJn+j3k69Exgm6/YLF+7rLDAJa1L8hcPijN4m7BbqUf
+	 ueE+btEeiORgA==
+Date: Fri, 14 Jun 2024 18:27:31 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?Q3PDs2vDoXM=?= Bence <csokas.bence@prolan.hu>
+Cc: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
+ <davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+ Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH resubmit 2] net: fec: Fix FEC_ECR_EN1588 being cleared
+ on link-down
+Message-ID: <20240614182731.3244deef@kernel.org>
+In-Reply-To: <0f315501-e8cb-4904-8c43-d9721fdef846@prolan.hu>
+References: <20240611080405.673431-1-csokas.bence@prolan.hu>
+	<20240613081233.6ff570cd@kernel.org>
+	<0f315501-e8cb-4904-8c43-d9721fdef846@prolan.hu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240614213109.2518797-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Frank,
+On Fri, 14 Jun 2024 09:59:16 +0200 Cs=C3=B3k=C3=A1s Bence wrote:
+> It only writes 0 if WOL is disabled AND the device has the MULTI_QUEUES=20
+> quirk. Otherwise, we either write FEC_ECR_RESET, which resets the device=
+=20
+> (and the HW changes ECNTRL to its reset value), OR we RMW set the WOL=20
+> sleep bits. And then, if some more quirks are set, we set ETHEREN.
+>=20
+> So I think RMW is the safest route here, instead of trying to keep track=
+=20
+> of all these different branches, re-read ECNTRL after reset etc.
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.10-rc3 next-20240613]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-misc-fsl-qoriq-mc-convert-to-yaml-format/20240615-053243
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20240614213109.2518797-1-Frank.Li%40nxp.com
-patch subject: [PATCH 1/1] dt-bindings: misc: fsl,qoriq-mc: convert to yaml format
-reproduce: (https://download.01.org/0day-ci/archive/20240615/202406150719.nmv1rQAS-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406150719.nmv1rQAS-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt_link<../../networking/netlink_spec/rt_link>`
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
-   Warning: Documentation/devicetree/bindings/power/wakeup-source.txt references a file that doesn't exist: Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
-   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
->> Warning: Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt*
-   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/display/exynos/
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
-   Using alabaster theme
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Okay, just resend without the empty line between tags then.
