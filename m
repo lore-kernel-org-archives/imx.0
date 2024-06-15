@@ -1,61 +1,61 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B49C9479
-	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 16:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB62F1DFED
+	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 16:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718468516; cv=none; b=b59PXyDOF0LVP/S9AK5vXEhujayKXKgi2lXe6zqSt3Wnbk5lKDGSO+i0BXL6aH3rED/Qd0P0Zv7p+x9PyP2iQ0W9qcns7yjRJ27jAXv+45KiVaX7Ba65T0WKhapfLWkeS2MaShMLhBe1WjODp0lcGk3hTIrBl45r3nZgDPLPpU0=
+	t=1718469261; cv=none; b=VZX/Jto0lODhg12Lg9wHOMyRDnvthcOvlGm0u6IrD0C117DnciiXx6NUh5iZKexPE+NdNrV+9wFrU0+bdS+OdFO4L+vfHWBvZxfdhJZxIPgNElA6BlkV/hsuseJy3gqML/fxhHNLqCCSQ8o9C665/pc0c1G2pToAcg4+UBN6xeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718468516; c=relaxed/simple;
-	bh=nseT3jnH7TDugs1GFvb4Xv8OW9smm+XMOFQ1ERn0xxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pryuaiv8JSb7hBRI/cmdg8l9TxDVU8ny6RXgi2W/tWJ07FpQNOUnep8G43Xua4g61JHwBOWV/SjBiLkOYQceFCUZrODR+sGR6xa5lCuqZzwFY/yTESZrTGzMZgRhjb98ydlyOwNZUiiWDdc0KfKV11fLAN6w1bbaDHfgcKpTUtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IKn2ZPEX; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1718469261; c=relaxed/simple;
+	bh=8pua4o1cyTqDRdRluAi9HB2xMIdT2IkUHJceHO8yweY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=TGHbxyAZB/eZm6HShW1otQsFjxMlRMCRV+Q3LElLYN5yem2lyFiRMEpD0sKRG92btbqDpnb2yqUTvFA1adG9xavLcnv313mnu7id3CiNxLP6lgXiQ+xa/l36xXsha/5qVwJ7rmLnfDVNA+i38eP7WtbVZxcdK7hM4ZrrAKXxqAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwRVWbkY; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IKn2ZPEX"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1f70fdc9644so31525385ad.0
-        for <imx@lists.linux.dev>; Sat, 15 Jun 2024 09:21:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwRVWbkY"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1f717608231so24270685ad.2
+        for <imx@lists.linux.dev>; Sat, 15 Jun 2024 09:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718468515; x=1719073315; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=6jpbVnER420awWvOnStDFZ6kJFXd2BJcugFSMBCOgB0=;
-        b=IKn2ZPEXoUcAmNArRvTVA8bR7Z82WH0unXBagBFVPcJ7CrAM2tvFthp+DaiYttZ+a0
-         tUD2mdenVhUOtZnLJbxhYHwUfHMwuPmm9sBuxU8MNQAXWWiOnsZEgaM2MmKbpjm/t+Fo
-         JelXGUUNsSGBMqmXJ0nd6Q7z1hwgdTjEJwLuP89EPkzqKgVuSUwZjVD/VAX+5IO248mq
-         bgIigeL9UlAyufWx2jSv0Mkx04FWOeGunBoncsBRdH25+OI5f8jxZqucQsYlMz+SSkpF
-         Ri9gyeNggQvEuBbDQCJmMVyYBaRwzcbiVa0z0b7zj6qmuZX0RFmc8Uo/ULvhi7BuZoKC
-         M3Ug==
+        d=gmail.com; s=20230601; t=1718469259; x=1719074059; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=PDM1oM1XC8WReZKf+c1OWc4+c5xQRkyV7QKWGB7jZvs=;
+        b=cwRVWbkYx5P4Ol3QOjRkY2D4I/pVoXGRiAdEQ1YzfwrR/MJO1TXvN0l1X15OyUqGEG
+         pnYvpdiUWBLjPmVxXGpaEfp/gOh6AkyowUfrnJvzeAv7ljtxzWY+y7HG3luARGntVH/4
+         Yx7SU+VfvPaxhU7vi8RrOLbqKSLpaE75k4Whuzg1fyvZbdiPhmLCaKtXsPGXlA5iQ4ZN
+         KPARmvIoXXqwpm+jCVqw37NAFNkqmS07SVN3ad1qeyc6EPR206qOty/H+psjBtpVXzY/
+         0/ZCpdOukcOpnGPRwIfurgS2rOzJz+Ks1GQo1J93WFCFkISgEIJXFNDJtiS357yhaUW7
+         /TyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718468515; x=1719073315;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1718469259; x=1719074059;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6jpbVnER420awWvOnStDFZ6kJFXd2BJcugFSMBCOgB0=;
-        b=GOAui1MvzU418W9Nt1IoKXaB6u125/flKgml0gmmbPmKZMvC3J86s1RuES2DmPItju
-         nH8QDThKYhTqsj1qmS+pzkyN9s4+O1EEixQea8Pv9DzvijdHDYMLwGB8GtCT5zXZBFEE
-         TAXcJwCCPlR9HsdiXpebY+WK5cj2PirHjKNd9jgndHHq46x7sduPjF0Hh+hMHm6mhisq
-         Po4EKW7L2zP5kymBuakC5TMwiqXEmv/QKcEfDNr4fhAfOPhciogaakyi/Y1Jk1fxej2y
-         tRBP9N1HyEy9yHI20lFEocHZW/4LjM1r1mcPAZ4nCFi8/E5Iy5jTNvlVqkXLnrdu6A9T
-         37dw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnzNQknrtD3E8RvzXRmPQ75YEpNU7G9RwHs6N0yf654lnzRIoKDwON5onJAHHCqfj0V47CSUS3rWYO+DYsaZfSLwmq
-X-Gm-Message-State: AOJu0YykWXvWhvAGfrdqpIJYvB8pruoIhGO14W5x1AV/NmKt3VK2Ql0s
-	PLq3B41LdFikhsQ/P9vLwN8gTI9+aH4/PMDzCYSjnJp/V1JAPGW2
-X-Google-Smtp-Source: AGHT+IFUzkPmX6Sl86BSalpWN81RJrRwYjLK3O8LsMUn6S0eR2wf4E7W8cdyAqwO8QindJ3xuhMH3g==
-X-Received: by 2002:a17:902:f68e:b0:1f7:22b4:8240 with SMTP id d9443c01a7336-1f862322e45mr78056045ad.29.1718468514553;
-        Sat, 15 Jun 2024 09:21:54 -0700 (PDT)
+        bh=PDM1oM1XC8WReZKf+c1OWc4+c5xQRkyV7QKWGB7jZvs=;
+        b=A7H4yFao4SrqRbNa6ilan6QGdZH3Zg7WzDEUSZPZ02K5iYLJUqKJQtSygWuBX7mQVj
+         eZS/PSiXXUrF3BIC/hN8azFX2fpBWjCrFAouND/5XGiszQGKm2Fndgw5hbq/TzekFnXL
+         jRlbiRs+ICVenmk7j/1wM4uEtEjEYhMz90vCCmB85+YgQ5sU5i2q5qalq5LoT63VPVly
+         QIjmDsHnu8M4Mr36QZpCY0k1XlAvrZvtegUJVmkhBEEp7SQCSuEG5BFgMIgjWKA+szpg
+         gUVz/g5jIPfVCwDcQuBUcvMcvGmQAy5BVz8rObU/2DLo49GL4/HYMTUQCFhgFP7rzwGq
+         RuUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcrkx7LL6CWXp5t0Mc9wAFnS84RFOfAfzOLVIuRJGmQBCih/kSFyILR3WFZpREeLNDG0moyjmXp+esIKFnQ8W6haff
+X-Gm-Message-State: AOJu0YxSa0zgtx2DcMSFVh2f2AybmGPcWIcxfIeNJ9KIQC8GGb0RSyiy
+	nxbmkph2RM+93DC/kj/3Y37G6jgSCBZTMSItLzCCNO34PVmSvnx8
+X-Google-Smtp-Source: AGHT+IG7+bBwyXaUzMhXfv5dJ+0SUwpmFnCcsegrTytmMnVom6Js/AR3zA6hamwyd6CmsLiHP6GC1A==
+X-Received: by 2002:a17:902:f68b:b0:1f7:1706:25ba with SMTP id d9443c01a7336-1f8625cf2b0mr63491305ad.15.1718469259111;
+        Sat, 15 Jun 2024 09:34:19 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f32334sm51703245ad.259.2024.06.15.09.21.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855ee8004sm51882675ad.121.2024.06.15.09.34.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Jun 2024 09:21:53 -0700 (PDT)
+        Sat, 15 Jun 2024 09:34:18 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <69dcaeba-a077-4f41-92ef-669392b66c24@roeck-us.net>
-Date: Sat, 15 Jun 2024 09:21:52 -0700
+Message-ID: <1ee5eeec-cda8-4977-a596-ec3a0e3fc8a9@roeck-us.net>
+Date: Sat, 15 Jun 2024 09:34:16 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,6 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] watchdog: imx2_wdg: Save the actual timeout value
+From: Guenter Roeck <linux@roeck-us.net>
 To: "L.Q" <lqking7735@163.com>
 Cc: "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
  "shawnguo@kernel.org" <shawnguo@kernel.org>,
@@ -80,8 +81,8 @@ References: <20240615141059.345076-1-lqking7735@163.com>
  <57e6bc77.319eb.1901c76a5fa.Coremail.lqking7735@163.com>
  <480b0513-01c4-42a3-bc8b-5ee6e711a1a1@roeck-us.net>
  <7814550c.31a49.1901c98ad6f.Coremail.lqking7735@163.com>
+ <69dcaeba-a077-4f41-92ef-669392b66c24@roeck-us.net>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
  RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
@@ -125,44 +126,42 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <7814550c.31a49.1901c98ad6f.Coremail.lqking7735@163.com>
+In-Reply-To: <69dcaeba-a077-4f41-92ef-669392b66c24@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 6/15/24 08:51, L.Q wrote:
-> Step 1:
-> Call imx2_wdt_set_timeout with a timeout value greater than 128
-> This illegal value will be stored in wdog->timeout
+On 6/15/24 09:21, Guenter Roeck wrote:
+> On 6/15/24 08:51, L.Q wrote:
+>> Step 1:
+>> Call imx2_wdt_set_timeout with a timeout value greater than 128
+>> This illegal value will be stored in wdog->timeout
+> 
+> This is not an illegal value because the driver sets max_hw_heartbeat_ms
+> which lets the watchdog core handle timeout values exceeding the maximum
+> timeout supported by the chip.
+> 
 
-This is not an illegal value because the driver sets max_hw_heartbeat_ms
-which lets the watchdog core handle timeout values exceeding the maximum
-timeout supported by the chip.
+ From Documentation/watchdog/watchdog-kernel-api.rst:
 
-[ ... ]
+* set_timeout: this routine checks and changes the timeout of the watchdog
+   timer device. It returns 0 on success, -EINVAL for "parameter out of range"
+   and -EIO for "could not write value to the watchdog". On success this
+   routine should set the timeout value of the watchdog_device to the
+   achieved timeout value (which may be different from the requested one
+   because the watchdog does not necessarily have a 1 second resolution).
 
-> static inline void imx2_wdt_setup(struct watchdog_device *wdog)
-> {
->   struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
->   u32 val;
->   regmap_read(wdev->regmap, IMX2_WDT_WCR, &val);
->   /* Suspend timer in low power mode, write once-only */
->   val |= IMX2_WDT_WCR_WDZST;
->   /* Strip the old watchdog Time-Out value */
->   val &= ~IMX2_WDT_WCR_WT;
->   /* Generate internal chip-level reset if WDOG times out */
->   if (!wdev->ext_reset)
->    val &= ~IMX2_WDT_WCR_WRE;
->   /* Or if external-reset assert WDOG_B reset only on time-out */
->   else
->    val |= IMX2_WDT_WCR_WRE;
->   /* Keep Watchdog Disabled */
->   val &= ~IMX2_WDT_WCR_WDE;
->   /* Set the watchdog's Time-Out value */
->   val |= WDOG_SEC_TO_COUNT(wdog->timeout);
->      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Drivers implementing max_hw_heartbeat_ms set the hardware watchdog heartbeat
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   to the minimum of timeout and max_hw_heartbeat_ms. Those drivers set the
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   timeout value of the watchdog_device either to the requested timeout value
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   (if it is larger than max_hw_heartbeat_ms), or to the achieved timeout value.
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-That is the bug. It needs to be
-	val |= WDOG_SEC_TO_COUNT(min(wdog->timeout, IMX2_WDT_MAX_TIME));
+If any of this is difficult to understand, please feel free to suggest
+a better wording.
 
+Thanks,
 Guenter
 
