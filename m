@@ -1,39 +1,44 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F15524C
-	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 07:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4094417BCA
+	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 07:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718437118; cv=none; b=VpJzTUSDqd7HSgqncA7rwRL4798jtBAxgFezKt6fHaj4k63Ph6BMtWiXO4Gqd2QXWg4wygXyzZ4RWAWuDzyNFKkuOWaVh6aogBY9g3e7xznV9C3VP1SkZFktzQtW2ihLUyquqsrZ90EPQw5wje/IrT3xz9AA/hzG1D7Sxm3WjpM=
+	t=1718437504; cv=none; b=n3dkgtxZfOohEmS7jOPuqoe78UsTFvx5Xc3dmp/huKvaPMtupxuS4qMzipGdXpyqFbIkmt2sYFTDZR0gIvTHR7EGVAvJQQ+FOshxRpRYRZ3QHYMiV6q2mny6sgw5vI6WAvTc3TrNgV/TXY5IH1QT+pvGzwkmSPLg/XUnSYPqHqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718437118; c=relaxed/simple;
-	bh=VtscccgBqPZ9Al4kyY/5E64fLc7TJp+Nx04NWxp9nTQ=;
+	s=arc-20240116; t=1718437504; c=relaxed/simple;
+	bh=traNFPsD0OSWdhWhNH+YM/+QHoruzMtRAGom3oFUD3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iIzi2y2BaYAhVlBfOs0jAz3qra/VSfvDpts8DKZYhXi7Rhisgr2LP/IyqOhc8Mjx8GeWJbayTkXC+1lxN1N2HpuLc5Y4HArehEly1ykbDW778/4VCOt6AxLMZR/LkfSUpzOxpNsAMgG4m1IKqhlsTFc3BT0Dk911kUykmI2XN6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ZqosBIKI; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=GnkYAp01BDgOR7siVTHGpa79iCKxClmminUQFJs7IAofXkgCA3iOjhxWDTM9+lZIWUH42XZ1QvKxFwBq0WuLWD12cPaLKLCw8dpSMV5Q+5y6upHUL4W/vQHYqL7JHdrSgxOeqGq9hruV2LLn+XY5aiLLSliaEwKau8FF4eprqW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ItY4KuKs; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ZqosBIKI"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ItY4KuKs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=OXJBh4XRa9tXn6n19F9dZpPyn9bj5wawMCr1I33Nqxo=;
-	b=ZqosBIKIsIUFOigT6BUEVs0LUvTK09H/2l3gc3hV3rN1ttp6ovncDA9CMhXCjA
-	Y+wyBKdTcxXlWtsBkqkVR9svH10ZxihRDmxXOofAcZOWY7j2qLN4N1AHu0ff574A
-	rYOOoD76a4Y4RjT7DkQfjWrnEfOF9O/WZxHEgPK/AVXLg=
+	Content-Type; bh=Qf3RN1WnE/NE5Lv+4iMkt0dPuEaZVm2V5AuMT5u6lrU=;
+	b=ItY4KuKs/IbXYaZavq516eIkeIsI5rRIXzbm4oZqdudx8s/6oeRUwJlFY57aM1
+	Q2JXnLyGiEu99icyCiyjmCgAjegGc/Z/7AKTuTe2g1hCOJW90JgzvOHxE0ZoDn5x
+	0WwE/YxX0h1wnQXCZCPjF40tqHCW18TU5vfsq+Qh6tuVM=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp1 (Coremail) with SMTP id ClUQrACHbfbvRG1m3q7xBw--.33414S3;
-	Sat, 15 Jun 2024 15:38:25 +0800 (CST)
-Date: Sat, 15 Jun 2024 15:38:23 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAD3f3XwQ21mf6HxBw--.62088S3;
+	Sat, 15 Jun 2024 15:34:11 +0800 (CST)
+Date: Sat, 15 Jun 2024 15:34:08 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com
-Subject: Re: [PATCH 0/2] arm64: dts: imx8mp-evk: support bt-sco sound card
-Message-ID: <Zm1E74loyi3a4CPA@dragon>
-References: <1715231698-451-1-git-send-email-shengjiu.wang@nxp.com>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx93-11x11-evk: reoder lpi2c2 and lpi2c3
+ label
+Message-ID: <Zm1D8CsF/ggZtQzs@dragon>
+References: <20240509015709.3668405-1-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,18 +47,271 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1715231698-451-1-git-send-email-shengjiu.wang@nxp.com>
-X-CM-TRANSID:ClUQrACHbfbvRG1m3q7xBw--.33414S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI2Q6DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBRH+ZVsVCphLrwAAs3
+In-Reply-To: <20240509015709.3668405-1-joy.zou@nxp.com>
+X-CM-TRANSID:ClUQrAD3f3XwQ21mf6HxBw--.62088S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Gw4UWw4kAFyfKF4rGw4DJwb_yoWxGryrpa
+	9xZrsrCrs3AFyfJw45Ga1ak3Z8WrnYkasxuwn5ZFWFyrWUt3ZrJrnFkr4rA3WrJwn7Zw4Y
+	vFWI9ryxKFnFg3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5739UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDhP+ZVszYrcxsQAAs7
 
-On Thu, May 09, 2024 at 01:14:56PM +0800, Shengjiu Wang wrote:
-> support bt-sco sound card
+On Thu, May 09, 2024 at 09:57:08AM +0800, Joy Zou wrote:
+> Reorder lpi2c2 and lpi2c3 label in alphabetical order.
 > 
-> Shengjiu Wang (2):
->   arm64: dts: imx8mp: Initialize audio PLLs from audiomix subsystem
->   arm64: dts: imx8mp-evk: add bt-sco sound card support
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx93-11x11-evk.dts    | 217 +++++++++---------
+>  1 file changed, 105 insertions(+), 112 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> index d400d85f42a9..6be1eb920c02 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> @@ -105,6 +105,104 @@ &mu2 {
+>  	status = "okay";
+>  };
+>  
+> +&lpi2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&pinctrl_lpi2c2>;
+> +	pinctrl-1 = <&pinctrl_lpi2c2>;
+> +	status = "okay";
+> +
+> +	pcal6524: gpio@22 {
+> +		compatible = "nxp,pcal6524";
+> +		reg = <0x22>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_pcal6524>;
+> +		gpio-controller;
+> +		#gpio-cells = <2>;
+> +		interrupt-controller;
+> +		#interrupt-cells = <2>;
+> +		interrupt-parent = <&gpio3>;
+> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+> +	};
+> +
+> +	pmic@25 {
+> +		compatible = "nxp,pca9451a";
+> +		reg = <0x25>;
+> +		interrupt-parent = <&pcal6524>;
+> +		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
+> +
+> +		regulators {
+> +			buck1: BUCK1 {
+> +				regulator-name = "BUCK1";
+> +				regulator-min-microvolt = <610000>;
+> +				regulator-max-microvolt = <950000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +				regulator-ramp-delay = <3125>;
+> +			};
+> +
+> +			buck2: BUCK2 {
+> +				regulator-name = "BUCK2";
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-max-microvolt = <670000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +				regulator-ramp-delay = <3125>;
+> +			};
+> +
+> +			buck4: BUCK4{
+> +				regulator-name = "BUCK4";
+> +				regulator-min-microvolt = <1620000>;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			buck5: BUCK5{
+> +				regulator-name = "BUCK5";
+> +				regulator-min-microvolt = <1620000>;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			buck6: BUCK6 {
+> +				regulator-name = "BUCK6";
+> +				regulator-min-microvolt = <1060000>;
+> +				regulator-max-microvolt = <1140000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo1: LDO1 {
+> +				regulator-name = "LDO1";
+> +				regulator-min-microvolt = <1620000>;
+> +				regulator-max-microvolt = <1980000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo4: LDO4 {
+> +				regulator-name = "LDO4";
+> +				regulator-min-microvolt = <800000>;
+> +				regulator-max-microvolt = <840000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +
+> +			ldo5: LDO5 {
+> +				regulator-name = "LDO5";
+> +				regulator-min-microvolt = <1800000>;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+>  &lpi2c3 {
+>  	#address-cells = <1>;
+>  	#size-cells = <0>;
+> @@ -113,6 +211,13 @@ &lpi2c3 {
+>  	pinctrl-0 = <&pinctrl_lpi2c3>;
+>  	status = "okay";
+>  
+> +	pcf2131: rtc@53 {
+> +		compatible = "nxp,pcf2131";
+> +		reg = <0x53>;
+> +		interrupt-parent = <&pcal6524>;
+> +		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+> +	};
+> +
+>  	ptn5110: tcpc@50 {
 
-Applied both, thanks!
+The child devices with @unit-address should be order in the
+unit-address.
+
+Shawn
+
+>  		compatible = "nxp,ptn5110", "tcpci";
+>  		reg = <0x50>;
+> @@ -304,118 +409,6 @@ &wdog3 {
+>  	status = "okay";
+>  };
+>  
+> -&lpi2c2 {
+> -	#address-cells = <1>;
+> -	#size-cells = <0>;
+> -	clock-frequency = <400000>;
+> -	pinctrl-names = "default", "sleep";
+> -	pinctrl-0 = <&pinctrl_lpi2c2>;
+> -	pinctrl-1 = <&pinctrl_lpi2c2>;
+> -	status = "okay";
+> -
+> -	pcal6524: gpio@22 {
+> -		compatible = "nxp,pcal6524";
+> -		reg = <0x22>;
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_pcal6524>;
+> -		gpio-controller;
+> -		#gpio-cells = <2>;
+> -		interrupt-controller;
+> -		#interrupt-cells = <2>;
+> -		interrupt-parent = <&gpio3>;
+> -		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+> -	};
+> -
+> -	pmic@25 {
+> -		compatible = "nxp,pca9451a";
+> -		reg = <0x25>;
+> -		interrupt-parent = <&pcal6524>;
+> -		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
+> -
+> -		regulators {
+> -			buck1: BUCK1 {
+> -				regulator-name = "BUCK1";
+> -				regulator-min-microvolt = <610000>;
+> -				regulator-max-microvolt = <950000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -				regulator-ramp-delay = <3125>;
+> -			};
+> -
+> -			buck2: BUCK2 {
+> -				regulator-name = "BUCK2";
+> -				regulator-min-microvolt = <600000>;
+> -				regulator-max-microvolt = <670000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -				regulator-ramp-delay = <3125>;
+> -			};
+> -
+> -			buck4: BUCK4{
+> -				regulator-name = "BUCK4";
+> -				regulator-min-microvolt = <1620000>;
+> -				regulator-max-microvolt = <3400000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -			};
+> -
+> -			buck5: BUCK5{
+> -				regulator-name = "BUCK5";
+> -				regulator-min-microvolt = <1620000>;
+> -				regulator-max-microvolt = <3400000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -			};
+> -
+> -			buck6: BUCK6 {
+> -				regulator-name = "BUCK6";
+> -				regulator-min-microvolt = <1060000>;
+> -				regulator-max-microvolt = <1140000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -			};
+> -
+> -			ldo1: LDO1 {
+> -				regulator-name = "LDO1";
+> -				regulator-min-microvolt = <1620000>;
+> -				regulator-max-microvolt = <1980000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -			};
+> -
+> -			ldo4: LDO4 {
+> -				regulator-name = "LDO4";
+> -				regulator-min-microvolt = <800000>;
+> -				regulator-max-microvolt = <840000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -			};
+> -
+> -			ldo5: LDO5 {
+> -				regulator-name = "LDO5";
+> -				regulator-min-microvolt = <1800000>;
+> -				regulator-max-microvolt = <3300000>;
+> -				regulator-boot-on;
+> -				regulator-always-on;
+> -			};
+> -		};
+> -	};
+> -};
+> -
+> -&lpi2c3 {
+> -	clock-frequency = <400000>;
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&pinctrl_lpi2c3>;
+> -	status = "okay";
+> -
+> -	pcf2131: rtc@53 {
+> -		compatible = "nxp,pcf2131";
+> -		reg = <0x53>;
+> -		interrupt-parent = <&pcal6524>;
+> -		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+> -	};
+> -};
+> -
+>  &iomuxc {
+>  	pinctrl_eqos: eqosgrp {
+>  		fsl,pins = <
+> -- 
+> 2.37.1
+> 
 
