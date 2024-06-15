@@ -1,61 +1,61 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978C84596E
-	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 15:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B49C9479
+	for <imx@lists.linux.dev>; Sat, 15 Jun 2024 16:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718465353; cv=none; b=ceENLDqjt07nn2AerMVJXh2heZH4jCROjctO/HcMYu81UDBqiMevQ5ARDNYhlYs5CCQqsDb0RSYBAIkRN3SGFQr06Zk1eaczqZ0d+Kh5EdEWaG/45dv41mRGf18A8mCDh4FMwlwwcX7hl1AmZ3jo4lQgOdTvo7Eqq5d/hUAc6pU=
+	t=1718468516; cv=none; b=b59PXyDOF0LVP/S9AK5vXEhujayKXKgi2lXe6zqSt3Wnbk5lKDGSO+i0BXL6aH3rED/Qd0P0Zv7p+x9PyP2iQ0W9qcns7yjRJ27jAXv+45KiVaX7Ba65T0WKhapfLWkeS2MaShMLhBe1WjODp0lcGk3hTIrBl45r3nZgDPLPpU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718465353; c=relaxed/simple;
-	bh=+IKcDRrK3Yf9NpM7JW1XTPQvEZWRKxw+gASymx/EBC8=;
+	s=arc-20240116; t=1718468516; c=relaxed/simple;
+	bh=nseT3jnH7TDugs1GFvb4Xv8OW9smm+XMOFQ1ERn0xxU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rn3lQrar8BjsASnDL7jDrIIJSfOXRaB8EnZsPHVFOGtVnT9XwhbGS6R88SqAR1kJIrzZden4uEayublIAQ2RALeuctJllNXMwCYvQCNtd29YNhzSE1yhNJDUcRTeK26pVHzN6msvkj8Xylyq/LPXjnksbPwL28HXqiT+wTlXuiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fLmRCZ5S; arc=none smtp.client-ip=209.85.210.169
+	 In-Reply-To:Content-Type; b=pryuaiv8JSb7hBRI/cmdg8l9TxDVU8ny6RXgi2W/tWJ07FpQNOUnep8G43Xua4g61JHwBOWV/SjBiLkOYQceFCUZrODR+sGR6xa5lCuqZzwFY/yTESZrTGzMZgRhjb98ydlyOwNZUiiWDdc0KfKV11fLAN6w1bbaDHfgcKpTUtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IKn2ZPEX; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fLmRCZ5S"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70109d34a16so2784925b3a.2
-        for <imx@lists.linux.dev>; Sat, 15 Jun 2024 08:29:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IKn2ZPEX"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1f70fdc9644so31525385ad.0
+        for <imx@lists.linux.dev>; Sat, 15 Jun 2024 09:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718465351; x=1719070151; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1718468515; x=1719073315; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=KjbGlRNTPFA52XKTRivBpgz1uUkCb0j4NvGuuOm5beg=;
-        b=fLmRCZ5SP7Fxx1T95wzttFYWCu9UYhD9nMeCEd+PuQjq9aUgFpi1EqxpJyxz1RdHC1
-         JRbnPF1p1aq3dMXFoZcv8d8pkrOOWjeChyoZUltzqKYHKL1+jXPJt29SwSG//7w/daP6
-         PeyzCH6Ja1mlMxdJ397bbTcsRiTAMSI+/rpg4TyjJYCMLcghJR/STXil1xbDdSb1/muD
-         C8nptlnOyp8utn2+KbT/3boLpzcrXlSMEqkuXY1b+DP+gEMeaLTK5fkj9Zp0JP672A0U
-         xx34A+SnMMqvS3d7NSLgBqRT67LFLm20I/EHEqdA+i/9WBb11TPpM7jBG3M049bYkVpY
-         5lHA==
+        bh=6jpbVnER420awWvOnStDFZ6kJFXd2BJcugFSMBCOgB0=;
+        b=IKn2ZPEXoUcAmNArRvTVA8bR7Z82WH0unXBagBFVPcJ7CrAM2tvFthp+DaiYttZ+a0
+         tUD2mdenVhUOtZnLJbxhYHwUfHMwuPmm9sBuxU8MNQAXWWiOnsZEgaM2MmKbpjm/t+Fo
+         JelXGUUNsSGBMqmXJ0nd6Q7z1hwgdTjEJwLuP89EPkzqKgVuSUwZjVD/VAX+5IO248mq
+         bgIigeL9UlAyufWx2jSv0Mkx04FWOeGunBoncsBRdH25+OI5f8jxZqucQsYlMz+SSkpF
+         Ri9gyeNggQvEuBbDQCJmMVyYBaRwzcbiVa0z0b7zj6qmuZX0RFmc8Uo/ULvhi7BuZoKC
+         M3Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718465351; x=1719070151;
+        d=1e100.net; s=20230601; t=1718468515; x=1719073315;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KjbGlRNTPFA52XKTRivBpgz1uUkCb0j4NvGuuOm5beg=;
-        b=NcELfPw8sdjf+ncO//RjRZm7Hv94R9jRayMxiohKVUtrtakI9hdwCYl0i2XvG/GGK/
-         M2yFIVCZa4hwf1yDA/KxjX9RUTg7BPBZ4X5B06n5VmBKPkR+dof3DKlwUVh1DtYggMK8
-         L+zSZUi2ZLIBQE0k1u/+vKKlfWwGXm/7YeWAys/MPBzGqAnBkoz6QBrKhwWjZYwxQfHx
-         aI9xLi8sFwBcStrBFbE704/978s94hf7ogp72gq/vj0M7UHx5TsUAm1gmWgy2Nz4O6l9
-         gUqjQc7BwehdGllwQgylW0b+XdKPcOLxLE729NxUaHBCCGJJr5N19OdUDgE/4TuuuJNW
-         dFwg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGhxLc/iviqc1KhD/nvdejqCRVD2FSJ7Cu0sCG7rE9J71yQMEIH0zqql2W1LBLlVFrNpGKPx1lFum3hBtl2Y51N9XR
-X-Gm-Message-State: AOJu0YxmVPnqW4efeiGA+8T7B3f+dK1rcoCh5gri+88MUWXwx2FXmDw8
-	JqN/Hftyf/IhbHAxGZuMiCVEjPhgAz/iHQlgWrGvFYDaTchxgztP
-X-Google-Smtp-Source: AGHT+IFrfI2HAZMkZ8D1+eTOCon91HjyLxJhnwYjO8VjENlVeHOpEnzt3mBKsRWFEE5DsGpqp/od9Q==
-X-Received: by 2002:a05:6a00:788:b0:705:c5d4:7861 with SMTP id d2e1a72fcca58-705d712024amr5404255b3a.6.1718465350412;
-        Sat, 15 Jun 2024 08:29:10 -0700 (PDT)
+        bh=6jpbVnER420awWvOnStDFZ6kJFXd2BJcugFSMBCOgB0=;
+        b=GOAui1MvzU418W9Nt1IoKXaB6u125/flKgml0gmmbPmKZMvC3J86s1RuES2DmPItju
+         nH8QDThKYhTqsj1qmS+pzkyN9s4+O1EEixQea8Pv9DzvijdHDYMLwGB8GtCT5zXZBFEE
+         TAXcJwCCPlR9HsdiXpebY+WK5cj2PirHjKNd9jgndHHq46x7sduPjF0Hh+hMHm6mhisq
+         Po4EKW7L2zP5kymBuakC5TMwiqXEmv/QKcEfDNr4fhAfOPhciogaakyi/Y1Jk1fxej2y
+         tRBP9N1HyEy9yHI20lFEocHZW/4LjM1r1mcPAZ4nCFi8/E5Iy5jTNvlVqkXLnrdu6A9T
+         37dw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnzNQknrtD3E8RvzXRmPQ75YEpNU7G9RwHs6N0yf654lnzRIoKDwON5onJAHHCqfj0V47CSUS3rWYO+DYsaZfSLwmq
+X-Gm-Message-State: AOJu0YykWXvWhvAGfrdqpIJYvB8pruoIhGO14W5x1AV/NmKt3VK2Ql0s
+	PLq3B41LdFikhsQ/P9vLwN8gTI9+aH4/PMDzCYSjnJp/V1JAPGW2
+X-Google-Smtp-Source: AGHT+IFUzkPmX6Sl86BSalpWN81RJrRwYjLK3O8LsMUn6S0eR2wf4E7W8cdyAqwO8QindJ3xuhMH3g==
+X-Received: by 2002:a17:902:f68e:b0:1f7:22b4:8240 with SMTP id d9443c01a7336-1f862322e45mr78056045ad.29.1718468514553;
+        Sat, 15 Jun 2024 09:21:54 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb9195asm4785956b3a.209.2024.06.15.08.29.09
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f32334sm51703245ad.259.2024.06.15.09.21.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Jun 2024 08:29:09 -0700 (PDT)
+        Sat, 15 Jun 2024 09:21:53 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <480b0513-01c4-42a3-bc8b-5ee6e711a1a1@roeck-us.net>
-Date: Sat, 15 Jun 2024 08:29:08 -0700
+Message-ID: <69dcaeba-a077-4f41-92ef-669392b66c24@roeck-us.net>
+Date: Sat, 15 Jun 2024 09:21:52 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,6 +78,8 @@ Cc: "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
 References: <20240615141059.345076-1-lqking7735@163.com>
  <8db871d7-154d-48c3-b934-e480991ad8a8@roeck-us.net>
  <57e6bc77.319eb.1901c76a5fa.Coremail.lqking7735@163.com>
+ <480b0513-01c4-42a3-bc8b-5ee6e711a1a1@roeck-us.net>
+ <7814550c.31a49.1901c98ad6f.Coremail.lqking7735@163.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -123,86 +125,44 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <57e6bc77.319eb.1901c76a5fa.Coremail.lqking7735@163.com>
+In-Reply-To: <7814550c.31a49.1901c98ad6f.Coremail.lqking7735@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 6/15/24 08:14, L.Q wrote:
-> Well
-> If I first set a timeout value greater than 128 and then start the watchdog, the watchdog timeout value is illegal.
-> In the function 'imx2_wdt_start', there is no validity check on the timeout value
-> 
+On 6/15/24 08:51, L.Q wrote:
+> Step 1:
+> Call imx2_wdt_set_timeout with a timeout value greater than 128
+> This illegal value will be stored in wdog->timeout
 
-static int imx2_wdt_start(struct watchdog_device *wdog)
-{
-         struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
+This is not an illegal value because the driver sets max_hw_heartbeat_ms
+which lets the watchdog core handle timeout values exceeding the maximum
+timeout supported by the chip.
 
-         if (imx2_wdt_is_running(wdev))
-                 imx2_wdt_set_timeout(wdog, wdog->timeout);
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-         else
-                 imx2_wdt_setup(wdog);
-...
+[ ... ]
 
-static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
-                                 unsigned int new_timeout)
-{
-         unsigned int actual;
+> static inline void imx2_wdt_setup(struct watchdog_device *wdog)
+> {
+>   struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
+>   u32 val;
+>   regmap_read(wdev->regmap, IMX2_WDT_WCR, &val);
+>   /* Suspend timer in low power mode, write once-only */
+>   val |= IMX2_WDT_WCR_WDZST;
+>   /* Strip the old watchdog Time-Out value */
+>   val &= ~IMX2_WDT_WCR_WT;
+>   /* Generate internal chip-level reset if WDOG times out */
+>   if (!wdev->ext_reset)
+>    val &= ~IMX2_WDT_WCR_WRE;
+>   /* Or if external-reset assert WDOG_B reset only on time-out */
+>   else
+>    val |= IMX2_WDT_WCR_WRE;
+>   /* Keep Watchdog Disabled */
+>   val &= ~IMX2_WDT_WCR_WDE;
+>   /* Set the watchdog's Time-Out value */
+>   val |= WDOG_SEC_TO_COUNT(wdog->timeout);
+>      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-         actual = min(new_timeout, IMX2_WDT_MAX_TIME);
-	^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-         __imx2_wdt_set_timeout(wdog, actual);
-                                      ^^^^^^
-         wdog->timeout = new_timeout;
-         return 0;
-}
-
-Please point out the code path where an attempt is made to write
-a value larger than IMX2_WDT_MAX_TIME into the chip.
+That is the bug. It needs to be
+	val |= WDOG_SEC_TO_COUNT(min(wdog->timeout, IMX2_WDT_MAX_TIME));
 
 Guenter
-
-> ---- Replied Message ----
-> From	Guenter Roeck<linux@roeck-us.net> <mailto:undefined>
-> Date	6/15/2024 22:18
-> To	LongQiang<lqking7735@163.com>,
-> <mailto:lqking7735@163.com><wim@linux-watchdog.org> <mailto:wim@linux-watchdog.org>
-> Cc	<shawnguo@kernel.org>,
-> <mailto:shawnguo@kernel.org><s.hauer@pengutronix.de>,
-> <mailto:s.hauer@pengutronix.de><kernel@pengutronix.de>,
-> <mailto:kernel@pengutronix.de><festevam@gmail.com>,
-> <mailto:festevam@gmail.com><linux-watchdog@vger.kernel.org>,
-> <mailto:linux-watchdog@vger.kernel.org><imx@lists.linux.dev>,
-> <mailto:imx@lists.linux.dev><linux-arm-kernel@lists.infradead.org> <mailto:linux-arm-kernel@lists.infradead.org>
-> Subject	Re: [PATCH] watchdog: imx2_wdg: Save the actual timeout value
-> 
-> On 6/15/24 07:10, LongQiang wrote:
-> 
->     When setting the timeout, the effective timeout value should be saved.
->     Otherwise, the illegal timeout will take effect at 'start'.
-> 
->     Signed-off-by: LongQiang <lqking7735@163.com>
->     ---
->     drivers/watchdog/imx2_wdt.c | 2 +-
->     1 file changed, 1 insertion(+), 1 deletion(-)
-> 
->     diff --git a/drivers/watchdog/imx2_wdt.c b/drivers/watchdog/imx2_wdt.c
->     index 42e8ffae18dd..d4a4d4c58c3f 100644
->     --- a/drivers/watchdog/imx2_wdt.c
->     +++ b/drivers/watchdog/imx2_wdt.c
->     @@ -196,7 +196,7 @@ static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
-> 
->     actual = min(new_timeout, IMX2_WDT_MAX_TIME);
->     __imx2_wdt_set_timeout(wdog, actual);
->     -  wdog->timeout = new_timeout;
->     +  wdog->timeout = actual;
->     return 0;
->     }
-> 
-> No, that would be wrong.
-> 
-> NACK.
-> 
-> Guenter
-> 
 
