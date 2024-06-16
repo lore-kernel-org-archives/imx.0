@@ -1,84 +1,61 @@
 Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DC149637
-	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 07:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603865025E
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 07:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718521324; cv=none; b=JAPWrPRBV0KAuEqt69MWCXJUYhU9lWK40MgxGFYMKOMW+VwNPouAliKROr//iLxhyjNZVMRbjpl/0UF4u/NJofoUnoXEshcFgZlbZZ1jKV+3RCwURCZ0imHVkykvOoY79YzWwvEFWwqC02c3N74yrcB62eBYik/8eRObb8PsYwI=
+	t=1718521760; cv=none; b=sGUPhkljBGh0tmJuSkZ3sMHH/4tWx63zK1HijjX9ydm/lkZj9m5CGuyMEXM3w1fT097+PaLH3f0mVmqwGbnOYfHdg8ZdVzL3v4bqRAHhTFB0w4cguX/Sp4avc9gpdLmleJOCgA6UHhcybjZrQ1Qo/3riS4Un2Tkpmtx3MZJtwz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718521324; c=relaxed/simple;
-	bh=m8efvqW6Btrs3xRpdD/WYC5AdiHwFW76qFg0/hS6lts=;
+	s=arc-20240116; t=1718521760; c=relaxed/simple;
+	bh=vZ0BN+iwJKmD0J8p1QINCDjKP75eZtW2SC1O6NI3ukE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcDCSX9N7ba7GrviQ+ejvJjwzzqzd1UpFrN/w4/WqIcomom9Z5JfhCkoY/xwlFJwXkB7H0kgR1RQG5YRGJUlZIAwhNuZv0rk3RLCTFxbX/MKPan3+A9hS9h8KiWErJF8eEdx80SiLDmghSTGo9ACe4xlRfwdJdYDl1qmhGvUmzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nkp8cjs7; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=ptvLWIPjxb0YVeaSdcARaXCn3FTvwqRKuYQ/pqRm6Dy6JJDa6u2fiRfymUx0FYgJhIfyBhAGyyz1GscPvEDdkQd0KWVECZdoePOEuwHD08ng1V/spqylrsYh9QlnJK2No16q0WRdA4x43QkD368bw1L/zyr8AM0b7Wal6/S8cKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fSQoL1S7; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nkp8cjs7"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fSQoL1S7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=r1hzxcxDWZtioQbWh9y3RfIQWJfYmt55lg+MTy3ToSI=;
-	b=nkp8cjs7vCMKwIN8Aaf8mLKCKg8Tol9iAAFJrMQoac108OcLirFkZCs11IF1Wx
-	IJLCgUlaiXWP7Bj1iY07Lx2/F8zuumglGBAPIr/Gqx3L1FIS9r91pcjG5cBdVfIn
-	C3/ZZAc4V0Y8OTEAr8Rxevnj6AQp/52fjCgkwpE7ZUE2o=
+	Content-Type; bh=hoopR7IVlqAk31RamLP5caSJX2yo8Er/Hi00JioDoi0=;
+	b=fSQoL1S7o2B0aEjMy7ProFCXlOtQDDoRKFNDrGrnp6aNmbr1v2fCCSKqBLtB/f
+	bhhEFXVxHD3qBb7ychvk/gfDkNo24Raxv7d3OZ3mHrLYy+mHSdT2OkcS4JYK+h7P
+	PfxQ+L/ArlQW9k5QF6NQXVIBjFpMmkk/1zh6WhpsFHSn0=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp1 (Coremail) with SMTP id ClUQrAD3v0LZjW5mGy3_Bw--.35031S3;
-	Sun, 16 Jun 2024 15:01:47 +0800 (CST)
-Date: Sun, 16 Jun 2024 15:01:45 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAB33vqHj25mmz__Bw--.39420S3;
+	Sun, 16 Jun 2024 15:08:56 +0800 (CST)
+Date: Sun, 16 Jun 2024 15:08:55 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Adam Ford <aford173@gmail.com>, linux-arm-kernel@lists.infradead.org,
-	aford@beaconembedded.com, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 2/2] arm64: dts: imx8mp-beacon-kit: Fix errors found
- from CHECK_DTBS
-Message-ID: <Zm6N2W4E/DeHIMDQ@dragon>
-References: <20240601135230.89980-1-aford173@gmail.com>
- <20240601135230.89980-2-aford173@gmail.com>
- <CAOMZO5CVrEEj20v+EDX7rmCvW29wL+gD37mfMZAp-uY=tnz-rQ@mail.gmail.com>
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Chris Healy <cphealy@gmail.com>
+Subject: Re: [PATCH v2] ARM: imx_v6_v7_defconfig: enable DRM_SII902X and
+ DRM_DISPLAY_CONNECTOR
+Message-ID: <Zm6Ph1FGsPYJCcbe@dragon>
+References: <20240603-imx-sii902x-defconfig-v2-1-a39e442011ae@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5CVrEEj20v+EDX7rmCvW29wL+gD37mfMZAp-uY=tnz-rQ@mail.gmail.com>
-X-CM-TRANSID:ClUQrAD3v0LZjW5mGy3_Bw--.35031S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtr4xAw48Jr1DZr17Jry8uFg_yoWxKrbEyF
-	yrKrW0grnxJFn2vr1qy34rAayfWr4DAr4xt390yF43u3ZI93ykJr1fJFW5XrZxXa1xtFy3
-	uw17XFZYyFyjgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0wmRUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBsAZV6Nn4yK5AAAsI
+In-Reply-To: <20240603-imx-sii902x-defconfig-v2-1-a39e442011ae@linaro.org>
+X-CM-TRANSID:ClUQrAB33vqHj25mmz__Bw--.39420S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4GQ6DUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBsAZV6Nn4yK5AABsJ
 
-On Sat, Jun 01, 2024 at 02:43:07PM -0300, Fabio Estevam wrote:
-> On Sat, Jun 1, 2024 at 10:52 AM Adam Ford <aford173@gmail.com> wrote:
+On Mon, Jun 03, 2024 at 12:09:39AM +0300, Dmitry Baryshkov wrote:
+> Enable the LVDS-to-HDMI bridge and the HDMI display connector drivers
+> used on the iMX53 QSB and QSRB boards with the HDMI mezzanine.
 > 
-> >         adv_bridge: hdmi@3d {
-> >                 compatible = "adi,adv7535";
-> > -               reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
-> > -               reg-names = "main", "cec", "edid", "packet";
-> > +               reg = <0x3d>;
-> > +               reg-names = "main";
-> >                 interrupt-parent = <&gpio4>;
-> >                 interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
-> >                 adi,dsi-lanes = <4>;
-> >                 #sound-dai-cells = <0>;
-> > +               avdd-supply = <&buck5>;
-> > +               dvdd-supply = <&buck5>;
-> > +               pvdd-supply = <&buck5>;
-> > +               a2vdd-supply = <&buck5>;
-> > +               v1p2-supply = <&buck5>;
-> > +               v3p3-supply = <&buck4>;
-> > +
-> 
-> The extra blank line is not needed.
+> Cc: Chris Healy <cphealy@gmail.com>
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-Fixed it up and applied, thanks!
+Applied, thanks!
 
