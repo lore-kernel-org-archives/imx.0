@@ -1,159 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0112941B;
-	Sun, 16 Jun 2024 07:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0456A16FF41
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 12:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718523246; cv=none; b=mF2eGcGtkF2muD2WHkWwyFQhrvTeX1RsrcLm0LXHvo8QGWe6H7YM/4QKArsmEeBE/4dp9rqCTlWDbWj/QAHsxuk99aoP+lZP/GOvX9PNr0wLPnGaAsWxuS/nqVaaQcmvIE8P3tJ31kVNqoOewA2mXHl7HrJW8Srj9433DQaswZ4=
+	t=1718540462; cv=none; b=RbNCF2SwnNlxfjyQuVzClK+dZsWs5+JOiJpsREd9WLZQSxWq3Lbq5WsjKCOT/BGaJs8/IWblAd+YPH6K4wwgVsy2aYPjJSNbxXI4pZDgxe6sG6MFFi/LAaK2RSizKaGQTdpGEfmjqeNm0jnhwe/zvelNDjWpHsOrqkaL1HlqXVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718523246; c=relaxed/simple;
-	bh=kTsR+jDhJLNT79h4PwTyOjoZ+7mND6y6hntDjwMKg4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jAe07MP2f5ujCpuwTlliV0b/ztq7smF/IWENxqozUBEKhYEINtzkBIaANfyVc/jhyDpbF9n27qErkYnEK04pqeiCSwDg5gKdzvVyCAyzEEqOQRedg9YLO/Rwu3mzF7VJjaTlRpuvXJz77P5UYaVYLUNQvJGJMq3xqcd9uO3I3qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6HBy1Uh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718540462; c=relaxed/simple;
+	bh=SCQXPdgSipHDPN4YthpZu0919XATC8K3N/zDDamI43Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ddjCsEBt1iRggnPTwigBKPPyVJeVp3pI7ZKKoWB4/SdLvIUVEsddNSHZT4WBQ5QQrazFO7szse/ixSi8QRq6Gm5oM05jZeuBVdeDBWETgxF86D+TCQMwqNs36lSH5vbvrP4EVdeGYfhhZhEXZ93rFRC0AA8q6p8/FMFQ3PDrrD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=IuJizTRy; arc=none smtp.client-ip=123.58.177.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6HBy1Uh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86951C2BBFC;
-	Sun, 16 Jun 2024 07:34:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718523245;
-	bh=kTsR+jDhJLNT79h4PwTyOjoZ+7mND6y6hntDjwMKg4o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=C6HBy1Uh7MuKQKy4OyVA8jnnJB6zfjwO1tqAB/d2o+AajqU5qdBnIUCOjWB4ekZh3
-	 jO1PgTmtMqHe3tmyKU7BeQUFz/rwJUpNSYclyMnMNK0SOkQos23GHB3dvrzGn6gtyW
-	 gRFNBLc6MN5/oeEtm2i80KeQwdF7sNOrgDVdt0EDETE0ZTKWxS55MWE8/+yy/545vA
-	 44ZasjsRxpNu2dB8a54BPOICd+Enio1vonRacrVrsetRcHl+7hxPH+6Bi8LcINE8wR
-	 yvSpuhNSd4F5MU4N777PLdsAYYyaabs5e+8+AzPpu5YgLCgQnAVksgli/Om65Hvj/Z
-	 S6dlSMvIVrjeg==
-Message-ID: <f6515498-ffc4-45b0-a19c-82204e4c83c0@kernel.org>
-Date: Sun, 16 Jun 2024 09:33:58 +0200
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="IuJizTRy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=irFNwU641pAaOKt3xuRSaqFXQYVHXJpdtESTK70JdsY=;
+	b=IuJizTRyTxeAS6FfixGqE5mUBGKioReVf7OYZur68PFtDyJXzUeNxuOf978IXO
+	pzBPV526CsqCmntb+LXNJU3Qtx8+xfbqhnASKN/Gt6gbxEY0qxtIbCl2srwg4aN2
+	PYBEaPmPUUDTJRKYv8w5SUlmgNH4tyo9+MBUuw/1ia+EQ=
+Received: from dragon (unknown [114.216.76.201])
+	by smtp1 (Coremail) with SMTP id ClUQrACX_vqK2G5myI8CCA--.40222S3;
+	Sun, 16 Jun 2024 20:20:29 +0800 (CST)
+Date: Sun, 16 Jun 2024 20:20:26 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: max.oss.09@gmail.com
+Cc: Max Krummenacher <max.krummenacher@toradex.com>,
+	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] arm64: dts: freescale: imx8mm-verdin: enable
+ hysteresis on slow input pin
+Message-ID: <Zm7YiipkuWRpSG7H@dragon>
+References: <20240603140103.3845905-1-max.oss.09@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: firmware: secvio: Add device tree
- bindings
-To: Aisheng Dong <aisheng.dong@nxp.com>, Vabhav Sharma
- <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Franck Lenormand <franck.lenormand@nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Varun Sethi <V.Sethi@nxp.com>,
- Silvano Di Ninno <silvano.dininno@nxp.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, Frank Li <frank.li@nxp.com>,
- Daniel Baluta <daniel.baluta@nxp.com>
-References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
- <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
- <750f5388-20f9-45a3-a1e6-ceac4b91329f@kernel.org>
- <AS1PR04MB9358A2457AF05553457DE9B0F3FB2@AS1PR04MB9358.eurprd04.prod.outlook.com>
- <1486a1b6-4119-4121-b6df-3da21d06add7@kernel.org>
- <DU0PR04MB929983AB361DB081B44E7AFE80C02@DU0PR04MB9299.eurprd04.prod.outlook.com>
- <a752a912-a328-49c8-b887-fa95512785cb@kernel.org>
- <DU0PR04MB9299FB3B70920CF85CA2FB6B80C12@DU0PR04MB9299.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <DU0PR04MB9299FB3B70920CF85CA2FB6B80C12@DU0PR04MB9299.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240603140103.3845905-1-max.oss.09@gmail.com>
+X-CM-TRANSID:ClUQrACX_vqK2G5myI8CCA--.40222S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUa8nYUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDw0AZVnxc0sL2wAAsn
 
-On 13/06/2024 10:48, Aisheng Dong wrote:
-> Hi Krzysztof, 
+On Mon, Jun 03, 2024 at 04:00:45PM +0200, max.oss.09@gmail.com wrote:
+> From: Max Krummenacher <max.krummenacher@toradex.com>
 > 
->> From: Krzysztof Kozlowski <krzk@kernel.org>
->> Sent: 2024年6月13日 14:14
->>
->> On 12/06/2024 09:20, Aisheng Dong wrote:
->>> Hi Krzysztof
->>>
->>>> From: Krzysztof Kozlowski <krzk@kernel.org>
->>>> Sent: 2024年6月7日 15:08
->>>>
->>>> On 07/06/2024 06:58, Vabhav Sharma wrote:
->>>>>>
->>>>>> Missing SoC compatibles.
->>>>> Ok, I will use fsl,imx8dxl-sc-secvio
->>>>>>
->>>>>> So no, that's just abuse of DT to instantiate driver.
->>>>>>
->>>>>> NAK. Drop the binding.
->>>>> I will detail the dt binding to describe the real hardware
->>>>
->>>> Still looks like way just to instantiate driver. Why it cannot be
->>>> part of existing firmware SCU node?
->>>>
->>>
->>> Technically yes. But SCU case is a little bit complicated as there're
->>> many functions and all of them are already added as sub nodes in SCU
->>> node for consistency and handling platform difference.
->>>
->>> I guess some of them, e.g. rtc, could be part of SCU node (reuse)
->>> while some couldn't. e.g. pinctrl Do you want us to only make secvio
->>> reuse existing SCU node?
->>
->> Yes
->>
+> SODIMM 17 can be used as an edge triggered interrupt supplied from an
+> off board source.
 > 
-> Digging a bit more on the implementation. It seems there will be a
-> 'parent depends on child' issue when reusing the parent SCU node for secvio.
-> Considering the defer probe support and ocotop could be modules, I'm still thinking
-> If any solution. Do you have a good suggestion?
+> Enable hysteresis on the pinmuxing to increase immunity against noise
+> on the signal.
+> 
+> Fixes: 60f01b5b5c7d ("arm64: dts: imx8mm-verdin: update iomux configuration")
+> Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 
-I don't see any problem there. You will have even worse if making it
-children and using populate - unpredictable order.
-
-Best regards,
-Krzysztof
+Applied, thanks!
 
