@@ -1,77 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6DA4437;
-	Sat, 15 Jun 2024 18:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FCB1581E0
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 02:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718477555; cv=none; b=ruQ85XH8zpVV052EHcUVpsvSVcAoFTMs8uZUNVzsxgDXDe/EAS3x0ENtBv7chncBEA/jTwtEtOZQjeuGBanqDl6nu5DWYn653Adf8IupDC7AMY5yKKuo6VEy48vJOXSDkT6E5hJRA76+5qcIORZX5tF5qHU5ysdqAk+ZEiQfmb4=
+	t=1718504916; cv=none; b=E+iUq0wUyO1HwzFtAMh3EURaIFV/xuHK50uE26JK6E/3pgwDMfBYm83OGKa3zLE/Myw4JJi5bRHBWiOP8wzPnm/WBZxshKxxecQsqUuDEhZF/l0NxCkeKIeujh2cdc6AUnkPhFtJSi3etf44XOjyQ6REA7OlJnG7YbsYWcHSEz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718477555; c=relaxed/simple;
-	bh=nyGltL8ICDC6yNzr7LgN5jIYezIhu7MymJF2gKvIdTs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=QSokFffiZ9xRDHpIGqZUT2QNs53asz1s7V7JKMgEt+o3PopK5kGVvQbx8Go1oYV8lvFzfmjxA3svlZVqCzXZOaaVK2fkkA8ZtPymfwem/0tvUE+MiCtCsvM5tktYMxv2LCmROTAxKjiWZ9LefpsmlixUzs3Fs7OsTiHhpACCp1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=di9FlrJk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718504916; c=relaxed/simple;
+	bh=1r14RNKX6lIR0dzW2WDHULEq9VmnThN3nSSYnADO748=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oxBiaSz5CfBLH/T3HT06dVfjhNJOGa37tMa4VpgZNdip75jLENiWyqsim603AQuLU+IOY611GDLq4T9rJhvgJfSp/8Hf1n/7jrgVDt3NlbPxOYGWTTk8w4jvNctwhck2LLZrBetMU448UKfj83FplBZ8MqjPG2Yu9p3uubarilQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HlSt0jGS; arc=none smtp.client-ip=123.58.177.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="di9FlrJk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72993C116B1;
-	Sat, 15 Jun 2024 18:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718477554;
-	bh=nyGltL8ICDC6yNzr7LgN5jIYezIhu7MymJF2gKvIdTs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=di9FlrJkf6enPrwrRLzCVdp15Vg/c15nzBD5yNkikm4q+vtua7GROqMrDs98lCB1v
-	 S3G1LZDtTNPw1fp6RdoLCzPO4wdz/D+TUWVQfcCxCmNfmR8wAJsvW2YbKY34vlFqAd
-	 WrYLGIDJo3IgoYKMPj0f2CHcY951iIOWPwvK6grdff2BT54uOVyinA9fSjE9I59QPr
-	 IBzE12jWaiQIg2PHpHaa/UHcz9IdCwiVwDHydjnAhRrYUchx6WnYtkZgQZkwD/hG+9
-	 j/G2OJMSWYaOae4mNPLfHzskx7BzHL6IvyG8I/YXRpDzON4GCG66/mU+yYTm73PTlc
-	 oqtWJ4SkTdk9g==
-From: Vinod Koul <vkoul@kernel.org>
-To: conor@kernel.org, kishon@kernel.org, robh+dt@kernel.org, 
- krzysztof.kozlowski+dt@linaro.org, frank.li@nxp.com, conor+dt@kernel.org, 
- Richard Zhu <hongxing.zhu@nxp.com>
-Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, imx@lists.linux.dev
-In-Reply-To: <1716962565-2084-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1716962565-2084-1-git-send-email-hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v7 0/2] Add i.MX8Q HSIO PHY support
-Message-Id: <171847755003.716119.4761960505484541660.b4-ty@kernel.org>
-Date: Sun, 16 Jun 2024 00:22:30 +0530
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HlSt0jGS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=tgM+933VJXc6N/HR2wHbnAQi4LrA+IyU4Qmg8g8VZFE=;
+	b=HlSt0jGSDyU0Lc9m1Ig0h+KdZgSVPxIbrFubnol386klkkt6lEKMU7UeTbbCjV
+	1G6/al/qLc3PSsK9IyBcFzzk+FsQYOmo2GnJiIpWdd1+b6eNBkuxRORYQ78tnmE8
+	bkJtXSJpQf2TZWkLauaM2PVzno7dEYn5vWAm+bbOpzacE=
+Received: from dragon (unknown [114.216.76.201])
+	by smtp2 (Coremail) with SMTP id C1UQrACX_heyTW5mR4S+CA--.63768S3;
+	Sun, 16 Jun 2024 10:28:04 +0800 (CST)
+Date: Sun, 16 Jun 2024 10:28:02 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Parthiban Nallathambi <parthiban@linumiz.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, kernel@pengutronix.de,
+	festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: phygate-tauri-l enable pcie phy
+Message-ID: <Zm5NskGQrjQk5SSZ@dragon>
+References: <20240525171854.2165241-1-parthiban@linumiz.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240525171854.2165241-1-parthiban@linumiz.com>
+X-CM-TRANSID:C1UQrACX_heyTW5mR4S+CA--.63768S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVJKIDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFRQAZV6NnP0RWQAAse
 
-
-On Wed, 29 May 2024 14:02:43 +0800, Richard Zhu wrote:
-> v7 changes:
-> Rebase to 6.10-rc1
+On Sat, May 25, 2024 at 10:48:53PM +0530, Parthiban Nallathambi wrote:
+> I210 intel ethernet controller is connected to PCIe. Enable the PHY
+> to use the ethernet controller.
 > 
-> dt-binding
-> - To keep the table format, add "|" to description of "fsl,hsio-cfg" property.
-> - Refine the contents of "fsl,hsio-cfg" property.
-> - Add Reviewed-by: Conor Dooley <conor.dooley@microchip.com> tag.
-> PHY driver
-> - Use "imx8qm_hsio_drvdata" as imx_hsio_drvdata struct name of i.MX8QM
-> - Remove redundant memset().
-> - Add Reviewed-by: Frank Li <Frank.Li@nxp.com> tag.
-> 
-> [...]
+> Signed-off-by: Parthiban Nallathambi <parthiban@linumiz.com>
 
-Applied, thanks!
+Subject prefix should be 'arm64: dts: phygate-tauri-l: ...'
 
-[1/2] dt-bindings: phy: Add i.MX8Q HSIO SerDes PHY binding
-      commit: 7c46101aa631843ded626b823b5a412d57371812
-[2/2] phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY driver support
-      commit: 82c56b6dd24fcdf811f2b47b72e5585c8a79b685
-
-Best regards,
--- 
-Vinod Koul <vkoul@kernel.org>
+Fixed it up and applied both, thanks!
 
