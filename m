@@ -1,116 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70611C2A5;
-	Sun, 16 Jun 2024 18:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591DD3611A
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 20:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718563791; cv=none; b=olkF2yzwmXB3xJNfFSM0Ox0kVNY/KxIlsSPQOk3uYnwkR9vHaEO0kZnS+CdjUwvyoMEGqTq+caDdIpMC9LVQrFa4vnJVGMx8/JUwZw/WUbGoXQKUh/XCtt/jbB5QKM5/3nhSShp7m7cvi/s/tcSaTHWHADl3VWuwp3fFwMhoXaM=
+	t=1718568375; cv=none; b=I5Ksgdo/W8bWDpqa/ymtQCcfoLu1Ifyl+kmEpzRYkLUxJYQ+Fmtn3Iz571JUkf1ecgmHQVTPP10wQVTrK5Sl09XMuurNPctgWhgQo5lg0c2Llx+bFam52LXAe/6TmetQvZeEuXdfk/3PUYekfE0UtEFvSI2St10oykgn3D8zYzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718563791; c=relaxed/simple;
-	bh=osjHdpENVIPZkE6xIPy2V4BuG0sO5GBaRhifuE5x2O0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=goSxK1S8naC00aieWRlZwOH3S1DIehCsvMjhg6hQSLDYN4DS0PmeNgec6H1vrB0Giie6DqL2fR22bhm7+4pNEIOUzt04ZvmwkAeoGEv4nu1KoZ+IopU8Ndii0Hk/h2/KE1cjS/9he4BfdHhjKpKeUaqO5J0jS16JmqfZB0UTHEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=coDx3fTC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718568375; c=relaxed/simple;
+	bh=wf9Fx6JS/4clZSMdADTQm2NJNZorI8+VFz2nDFwiRgk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Og7VWzj4vkLAvSgWixFcUrMBh8V1WtdEuMyHgkVpFKV+iIOdrNCOVvScJDVwPG9OaLFHb7MtFojyPdSUQca7+NuHVhcgr/KO0aKSolXNxGG9YZoqXBctBBDkWip5IlJnzz3+WPCO5A0COgdHuvgpINRRIJke0UULt4ISXweUW3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fvhk0JX+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="coDx3fTC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF56C2BBFC;
-	Sun, 16 Jun 2024 18:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718563790;
-	bh=osjHdpENVIPZkE6xIPy2V4BuG0sO5GBaRhifuE5x2O0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=coDx3fTCDyHCwcx4phLEdKPE4EnO0+r5shya/UDwFe1tr2yNK3DD5+11me8gnjfCo
-	 gcgxjn1nhU11+GPNDlr70AY4FsCrONmAuiz2j8aTXJdQbIHEw7/IF/cnHnan8oigXy
-	 tvq9Y/l6Ls0ceOSLpTlOmbdCRh68+btlPNA2k4EMVCSGTLrHAurqhFLet/O9WE3ewA
-	 ULmnLzGKFayh2LHgHDLw2ANYsfHGD5rv6QbpyeYy91sjm5K5YywxT3CpwHu0T8N3EE
-	 FB5mtdDSfIDYwlg1L/vpD0Dt4nRhV1TbTtB3DeC2Xgpm2Z/P2OyDdyPM5d7b0emAHE
-	 c6dz3vR4/Ppkg==
-Date: Sun, 16 Jun 2024 19:49:38 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Guillaume La Roque <glaroque@baylibre.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Anson Huang <Anson.Huang@nxp.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Amit Kucheria <amitk@kernel.org>,
-	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund@ragnatech.se>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Pascal Paillet <p.paillet@foss.st.com>, Keerthy <j-keerthy@ti.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	zhanghongchen <zhanghongchen@loongson.cn>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
-	linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 00/22] dt-bindings: thermal: few cleanups
-Message-ID: <20240616-immovably-washboard-5eff43888e6f@spud>
-References: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fvhk0JX+"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45GJuupE015153;
+	Sun, 16 Jun 2024 20:06:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6IKWbW3PBn8pb4z2Zs0fKK5lu0Pq72e8Y63XTL0w61M=; b=fvhk0JX+7zNLyiWZ
+	qat2Po91kio3Mv/TT0qA9mFlazv9efUcE6ZdCk8idFwklPeTHRK+vYW4yQ5o5HZW
+	CXp4yg9J1O+tc2kHL5s9mL+7bGKEchw+qRPf1uD0uf3y6+N6j2pDSushNnHk9dll
+	VYemBmgB5SqqyVzzf/Yr/IrRYzAdsOHaFsiBAji3WNdSwlGAuUvZvUVythWCeZ7f
+	qQleJY+KHNSB0ZzPPStWPUPDhj6p64o1pyHt2WhJxYRRMS0g1NXjct8Q8lrbo/Gh
+	3+JQVjX3MZYbB+DfYB3Gn57igim9NvoO14jAtPc8Lou2nnglAH2psektK6AOdvap
+	fNmGGA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys2hxa7ae-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 16 Jun 2024 20:06:01 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45GK5gp3022592
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 16 Jun 2024 20:05:42 GMT
+Received: from [10.48.243.231] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 16 Jun
+ 2024 13:05:41 -0700
+Message-ID: <11db53fa-7ed6-46cb-ac40-859054df91a6@quicinc.com>
+Date: Sun, 16 Jun 2024 13:05:40 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="kOA5/bYAEVq+jUn/"
-Content-Disposition: inline
-In-Reply-To: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: fsl: imx-pcm-fiq: add missing MODULE_DESCRIPTION()
+ macro
+Content-Language: en-US
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Shengjiu Wang
+	<shengjiu.wang@gmail.com>,
+        Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam
+	<festevam@gmail.com>,
+        Nicolin Chen <nicoleotsuka@gmail.com>,
+        Liam Girdwood
+	<lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela
+	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix
+ Kernel Team <kernel@pengutronix.de>
+CC: <alsa-devel@alsa-project.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-sound@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20240615-md-arm-sound-soc-fsl-v1-1-8ed731c2f073@quicinc.com>
+ <de75c710-044a-45ff-9477-cf4d57f55ab1@wanadoo.fr>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <de75c710-044a-45ff-9477-cf4d57f55ab1@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: S7O2oa02ygbNOwVLSRTxF8hIw9GaafuT
+X-Proofpoint-ORIG-GUID: S7O2oa02ygbNOwVLSRTxF8hIw9GaafuT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-16_12,2024-06-14_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 clxscore=1015 priorityscore=1501 bulkscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 impostorscore=0 mlxscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406160158
 
+On 6/16/2024 12:14 AM, Christophe JAILLET wrote:
+> Le 16/06/2024 à 08:42, Jeff Johnson a écrit :
+>> With ARCH=arm, make allmodconfig && make W=1 C=1 reports:
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-fiq.o
+>>
+>> Add the missing invocation of the MODULE_DESCRIPTION() macro.
+>>
+>> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>> ---
+>>   sound/soc/fsl/imx-pcm-fiq.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/sound/soc/fsl/imx-pcm-fiq.c b/sound/soc/fsl/imx-pcm-fiq.c
+>> index 0d124002678e..5ea6dd4c89a1 100644
+>> --- a/sound/soc/fsl/imx-pcm-fiq.c
+>> +++ b/sound/soc/fsl/imx-pcm-fiq.c
+>> @@ -319,4 +319,5 @@ void imx_pcm_fiq_exit(struct platform_device *pdev)
+>>   }
+>>   EXPORT_SYMBOL_GPL(imx_pcm_fiq_exit);
+>>   
+>> +MODULE_DESCRIPTION("Freescle i.MX PCM FIQ handler");
+> 
+> Freescale? (missing 'a')
 
---kOA5/bYAEVq+jUn/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+thanks for the catch, will send a v2
 
-On Fri, Jun 14, 2024 at 11:45:59AM +0200, Krzysztof Kozlowski wrote:
->=20
-> Few cleanups witout practical impact, except maybe the Amlogic schema
-> (bringing required cells).
-
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
---kOA5/bYAEVq+jUn/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZm8zwgAKCRB4tDGHoIJi
-0ttlAQCXZrCE/f+fR0kZEWAkq+YZfRQhwyqkNPYsIPr3O9xqAAD+NmeiOYPzL4/8
-zTg9dNEipYzGNeR396Pg5r09PcUJDQM=
-=AUoM
------END PGP SIGNATURE-----
-
---kOA5/bYAEVq+jUn/--
