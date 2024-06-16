@@ -1,60 +1,84 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40511849
-	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 06:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DC149637
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 07:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718520956; cv=none; b=o+jWXwB6rH3quRt4rk3VrGichyIV+aeLPUDus+UOpuOaelwcmIXfigbspInYMZ9yp7JuR+SXw06+jZB3V9Hspzo32G4ygPB93vEmyPBYqyw92qPimmFpcLu5LRWQtId2x3hMf75C1NKbuk6DVL+dafn7uErPIokW4Gl0n7SRAI8=
+	t=1718521324; cv=none; b=JAPWrPRBV0KAuEqt69MWCXJUYhU9lWK40MgxGFYMKOMW+VwNPouAliKROr//iLxhyjNZVMRbjpl/0UF4u/NJofoUnoXEshcFgZlbZZ1jKV+3RCwURCZ0imHVkykvOoY79YzWwvEFWwqC02c3N74yrcB62eBYik/8eRObb8PsYwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718520956; c=relaxed/simple;
-	bh=weXblZGQTXhCcgWR2tS3lV6++Dz7ruXUjcEWPz8id/Q=;
+	s=arc-20240116; t=1718521324; c=relaxed/simple;
+	bh=m8efvqW6Btrs3xRpdD/WYC5AdiHwFW76qFg0/hS6lts=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AAVGc4uZLm41osS8C5YSKTApHwoIP3d1elubJnU/lIT3oeuONLtJpmtb1RX0rXnr8kjTejuR4fPKgUNesKWZzdefDT7hIp2W8ULgQShtYI0bqvxpaWsfBLGxXtN8jlFKHakdtUMonDImwmLkn7VRgipqS8Bn3yf2q5ULjaRGIqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=DT3Jk8l6; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=fcDCSX9N7ba7GrviQ+ejvJjwzzqzd1UpFrN/w4/WqIcomom9Z5JfhCkoY/xwlFJwXkB7H0kgR1RQG5YRGJUlZIAwhNuZv0rk3RLCTFxbX/MKPan3+A9hS9h8KiWErJF8eEdx80SiLDmghSTGo9ACe4xlRfwdJdYDl1qmhGvUmzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nkp8cjs7; arc=none smtp.client-ip=123.58.177.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="DT3Jk8l6"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nkp8cjs7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=TyImyxiwmiztTDCYgP43q/RjNR9SBQZeJHg9PIFjFpI=;
-	b=DT3Jk8l6eeEGnQo8LCRh9X3zSiSOQbhsb6CK2wQ6BwWb+yfk7xwlmBpfRHPNIa
-	BK0mBSN0isIcW7lEu+ClbmcIPGUZigzpH1GTN2tIhJ0+9ApIdGj5oUK34pm5PdwS
-	2Ggr3ngKpVsCPOaDwyJMbEgwabCYT41BP9EgKa6KW/x8E=
+	Content-Type; bh=r1hzxcxDWZtioQbWh9y3RfIQWJfYmt55lg+MTy3ToSI=;
+	b=nkp8cjs7vCMKwIN8Aaf8mLKCKg8Tol9iAAFJrMQoac108OcLirFkZCs11IF1Wx
+	IJLCgUlaiXWP7Bj1iY07Lx2/F8zuumglGBAPIr/Gqx3L1FIS9r91pcjG5cBdVfIn
+	C3/ZZAc4V0Y8OTEAr8Rxevnj6AQp/52fjCgkwpE7ZUE2o=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrADnD1BtjG5meRfBCA--.30676S3;
-	Sun, 16 Jun 2024 14:55:43 +0800 (CST)
-Date: Sun, 16 Jun 2024 14:55:41 +0800
+	by smtp1 (Coremail) with SMTP id ClUQrAD3v0LZjW5mGy3_Bw--.35031S3;
+	Sun, 16 Jun 2024 15:01:47 +0800 (CST)
+Date: Sun, 16 Jun 2024 15:01:45 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: shawnguo@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, krzk+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	robh@kernel.org
-Subject: Re: [PATCH 1/4] arm64: dts: ls1012a: Reorder sai dma-names to clean
- up DTB_CHECK  warning
-Message-ID: <Zm6MbW60pmIFY+rS@dragon>
-References: <20240531215017.1969431-1-Frank.Li@nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Adam Ford <aford173@gmail.com>, linux-arm-kernel@lists.infradead.org,
+	aford@beaconembedded.com, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 2/2] arm64: dts: imx8mp-beacon-kit: Fix errors found
+ from CHECK_DTBS
+Message-ID: <Zm6N2W4E/DeHIMDQ@dragon>
+References: <20240601135230.89980-1-aford173@gmail.com>
+ <20240601135230.89980-2-aford173@gmail.com>
+ <CAOMZO5CVrEEj20v+EDX7rmCvW29wL+gD37mfMZAp-uY=tnz-rQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240531215017.1969431-1-Frank.Li@nxp.com>
-X-CM-TRANSID:C1UQrADnD1BtjG5meRfBCA--.30676S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsiF4DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDxAAZVnxc0p68wAAsi
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOMZO5CVrEEj20v+EDX7rmCvW29wL+gD37mfMZAp-uY=tnz-rQ@mail.gmail.com>
+X-CM-TRANSID:ClUQrAD3v0LZjW5mGy3_Bw--.35031S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtr4xAw48Jr1DZr17Jry8uFg_yoWxKrbEyF
+	yrKrW0grnxJFn2vr1qy34rAayfWr4DAr4xt390yF43u3ZI93ykJr1fJFW5XrZxXa1xtFy3
+	uw17XFZYyFyjgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0wmRUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGBsAZV6Nn4yK5AAAsI
 
-On Fri, May 31, 2024 at 05:50:14PM -0400, Frank Li wrote:
-> Change order of sai's dma-names to clearn up below DTB_CHECK warning.
+On Sat, Jun 01, 2024 at 02:43:07PM -0300, Fabio Estevam wrote:
+> On Sat, Jun 1, 2024 at 10:52 AM Adam Ford <aford173@gmail.com> wrote:
 > 
->    arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: sai@2b50000: dma-names:1: 'tx' was expected
->    arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: sai@2b60000: dma-names:1: 'tx' was expected
+> >         adv_bridge: hdmi@3d {
+> >                 compatible = "adi,adv7535";
+> > -               reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
+> > -               reg-names = "main", "cec", "edid", "packet";
+> > +               reg = <0x3d>;
+> > +               reg-names = "main";
+> >                 interrupt-parent = <&gpio4>;
+> >                 interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+> >                 adi,dsi-lanes = <4>;
+> >                 #sound-dai-cells = <0>;
+> > +               avdd-supply = <&buck5>;
+> > +               dvdd-supply = <&buck5>;
+> > +               pvdd-supply = <&buck5>;
+> > +               a2vdd-supply = <&buck5>;
+> > +               v1p2-supply = <&buck5>;
+> > +               v3p3-supply = <&buck4>;
+> > +
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> The extra blank line is not needed.
 
-Applied all, thanks!
+Fixed it up and applied, thanks!
 
