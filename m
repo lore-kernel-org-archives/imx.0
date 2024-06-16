@@ -1,59 +1,113 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B058A48
-	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 06:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20382F2B
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 06:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718518976; cv=none; b=Dq7Cl2djz0aPpntHs02f1RoagDqHxdmFI9QNyucDenr8yrraYze2MbvU8cV+7bcGasKEI3ExoDYycsUzJvqKH1R1h2hpqrIgkrQ9N2NH4W1ODav0t4XzmWK7iRU3SIItq44GAieyo9KHyCdJsIbY32SW+yPs8BKRfVGUYTMDvIM=
+	t=1718520172; cv=none; b=ITg2PHgnFC13MC0OlyOt6eY/FmOeW5Ja6aQMXYSzXcOJ/ySV346g+rBxXYF1+F7TC+Lqw9NHdYSMdJrRdY9ygHm3+j2OtnCJjIMEAYCyS6m/wNcj81L1K0VqN2CZzFUzEPeCNOVXhR5mtb5j6BcANyRgUef8lah0hmDj5pCfwqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718518976; c=relaxed/simple;
-	bh=Mknlk//x2xNtEoqP8k9y55wgH6UtIrOZ6sg4zR/FQyE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CynovN+PMuTEh2GDW5/eeh7X8tSVQkk3xoFxTh+qmnWFJJQmY8cWCosi52DrcXzCxgomSMcgUfBdh8u2By9p6jEHY4HzvADiRsm7zVH88Dqh7cbOKW05fx71d94WV9bD5kdh+Fh0KuJ6EkwjUUNHOeesIHXzr3ek7HpS+TZXl7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k9iEiJnw; arc=none smtp.client-ip=123.58.177.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1718520172; c=relaxed/simple;
+	bh=7nH6l1dJpF8nYglnceufMEyYGkxAU1x3BKrZt5E2VT8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=lqDzgso2ognGICylrD68e3ulES199DSdxJT1TBQNSlISv9WfYEmTiLaHFvW8teSL9g+lN62Uq1UtN6qFrE/VkC2URCaxUOgsE1eC+HmrHQIYkWOHiQIcH3uvgg0oRVxsAetTIjTmZacwGmgQR4kYljSGsUEelD9tbb3tcLpzoa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IuMXeTsw; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k9iEiJnw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=a31zCvY9cwbcKQGBKnLRpRlPlfGDPY5SQt+DrzR2m0Q=;
-	b=k9iEiJnwKtM6yYKFZ/qYzFsDLAa/wc2/c94N4cJ+/sPJTPxsUAPxuebmrc38xf
-	KULhF4qmeuXMV4M9pC7lchA3mN3354SVCMfA2oM9VoNb7QztOy9NYF1Ycg2bkzBA
-	xR8OycM5dYvYhArGGknjOEsSwYZdyTCl3KFlH6hw9gqqQ=
-Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrADnL2mghG5mpb_ACA--.10294S3;
-	Sun, 16 Jun 2024 14:22:26 +0800 (CST)
-Date: Sun, 16 Jun 2024 14:22:24 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] ARM: imx_v6_v7_defconfig: Enable drivers for
- TQMa7x/MBa7x
-Message-ID: <Zm6EoB/v4eSTknVU@dragon>
-References: <20240530143722.834264-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IuMXeTsw"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45G5km92013090;
+	Sun, 16 Jun 2024 06:42:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=aHqtJcmnVaFmtzJFnV7swi
+	03nBkl2huhie0q16+yyww=; b=IuMXeTswH+V12RJaKcDbzkZXIKHtcXs7wDbuUV
+	pIite9kcYG3yeD8G8GZPKPCoEBLXCO7Jzm2YYL6A4VtFlIxBZdzUxmA53D5VZH8h
+	Z3hTRb2BKRPoCeuHrVawxzZ9Vm56vgDXsNlHKstmsJbXL+ITUyvVIQnCuRNrnUBB
+	FRLvpPWZwZXBQ0/5SrzJOmsvfifVzw/fuD8wgUnfLnYZ64eukNhuCXCs8neKyxt0
+	mHIEAArGuboYYvR9+FyySMnBcqSdM2H3SxOG4TQGK8EL1/mJdSnLgTrmN7PbYTzC
+	aVAzZnfZAYpKJLxgx+Aa3bFKQxJYyEbNWG4RGMReOjIDzA8Q==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys1y6sjus-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 16 Jun 2024 06:42:38 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45G6gb8t031882
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 16 Jun 2024 06:42:37 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 15 Jun
+ 2024 23:42:36 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Sat, 15 Jun 2024 23:42:35 -0700
+Subject: [PATCH] ASoC: fsl: imx-pcm-fiq: add missing MODULE_DESCRIPTION()
+ macro
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240530143722.834264-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:C1UQrADnL2mghG5mpb_ACA--.10294S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxhihUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGAIAZV6Nn4x5FwAAsR
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240615-md-arm-sound-soc-fsl-v1-1-8ed731c2f073@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAFqJbmYC/x3MywqDQAyF4VeRrBvw0pHaVyldzCVTA85YEi2C+
+ O4d3Rz4FuffQUmYFJ7VDkI/Vp5zQXOrwI82fwg5FENbt/e6bwymgFYS6rzmUNZj1Am9GR7Rdaa
+ jfoBy/QpF3q7s613srBI6sdmPZ2zivG6YrC4kcBx/j44L/YUAAAA=
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Nicolin Chen <nicoleotsuka@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>
+CC: <alsa-devel@alsa-project.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-sound@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: A_jgJAWNvyRo0PHScpD6Yq9C4i5X0yoR
+X-Proofpoint-ORIG-GUID: A_jgJAWNvyRo0PHScpD6Yq9C4i5X0yoR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-16_05,2024-06-14_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 impostorscore=0 mlxscore=0 bulkscore=0 clxscore=1011
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406160051
 
-On Thu, May 30, 2024 at 04:37:22PM +0200, Alexander Stein wrote:
-> Enable drivers for devices/features used on MBa7x.
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+With ARCH=arm, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-fiq.o
 
-Applied, thanks!
+Add the missing invocation of the MODULE_DESCRIPTION() macro.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ sound/soc/fsl/imx-pcm-fiq.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/soc/fsl/imx-pcm-fiq.c b/sound/soc/fsl/imx-pcm-fiq.c
+index 0d124002678e..5ea6dd4c89a1 100644
+--- a/sound/soc/fsl/imx-pcm-fiq.c
++++ b/sound/soc/fsl/imx-pcm-fiq.c
+@@ -319,4 +319,5 @@ void imx_pcm_fiq_exit(struct platform_device *pdev)
+ }
+ EXPORT_SYMBOL_GPL(imx_pcm_fiq_exit);
+ 
++MODULE_DESCRIPTION("Freescle i.MX PCM FIQ handler");
+ MODULE_LICENSE("GPL");
+
+---
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+change-id: 20240615-md-arm-sound-soc-fsl-c598fb353e69
 
