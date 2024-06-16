@@ -1,121 +1,111 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591DD3611A
-	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 20:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53326BB26
+	for <imx@lists.linux.dev>; Sun, 16 Jun 2024 21:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718568375; cv=none; b=I5Ksgdo/W8bWDpqa/ymtQCcfoLu1Ifyl+kmEpzRYkLUxJYQ+Fmtn3Iz571JUkf1ecgmHQVTPP10wQVTrK5Sl09XMuurNPctgWhgQo5lg0c2Llx+bFam52LXAe/6TmetQvZeEuXdfk/3PUYekfE0UtEFvSI2St10oykgn3D8zYzg=
+	t=1718573401; cv=none; b=YinbCh8d2ER2Y1y1LjTg+C2m5Sq1chx4KNyAp30VZfi9Si4d3pKeC5pKoXDk3UDiiz7ldMPg7MSxpXoPaijnUR807NfVCv/LUpcur6NuuWYoozMhsEHN4lCg8a8dwd7iPLOq+iGjVHS6ZpLdAWHG5IqUZ4QShNu53dq3BrCQHUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718568375; c=relaxed/simple;
-	bh=wf9Fx6JS/4clZSMdADTQm2NJNZorI8+VFz2nDFwiRgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Og7VWzj4vkLAvSgWixFcUrMBh8V1WtdEuMyHgkVpFKV+iIOdrNCOVvScJDVwPG9OaLFHb7MtFojyPdSUQca7+NuHVhcgr/KO0aKSolXNxGG9YZoqXBctBBDkWip5IlJnzz3+WPCO5A0COgdHuvgpINRRIJke0UULt4ISXweUW3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fvhk0JX+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1718573401; c=relaxed/simple;
+	bh=77qTZ2/jNB1s3kvHZeR23oY3xoIE8oX+Pbgo1oPSZVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rxq6rjjdtilMK0D/Khcpri/pKIf/QAo4+GecYzTvJYmadcBHgZlit5OVvsCWMsSdkoP37B14/nmLE8hC/QiNPowcW2Cj5OgB1fVS86+jhSYiMBH79ZuoYeZtSmivuaQB7MTP8l/WuMVd2UXMwQ3hzQ9IrGCSGvggLaC/kMStFM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C2Hj3Ftr; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fvhk0JX+"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45GJuupE015153;
-	Sun, 16 Jun 2024 20:06:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6IKWbW3PBn8pb4z2Zs0fKK5lu0Pq72e8Y63XTL0w61M=; b=fvhk0JX+7zNLyiWZ
-	qat2Po91kio3Mv/TT0qA9mFlazv9efUcE6ZdCk8idFwklPeTHRK+vYW4yQ5o5HZW
-	CXp4yg9J1O+tc2kHL5s9mL+7bGKEchw+qRPf1uD0uf3y6+N6j2pDSushNnHk9dll
-	VYemBmgB5SqqyVzzf/Yr/IrRYzAdsOHaFsiBAji3WNdSwlGAuUvZvUVythWCeZ7f
-	qQleJY+KHNSB0ZzPPStWPUPDhj6p64o1pyHt2WhJxYRRMS0g1NXjct8Q8lrbo/Gh
-	3+JQVjX3MZYbB+DfYB3Gn57igim9NvoO14jAtPc8Lou2nnglAH2psektK6AOdvap
-	fNmGGA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys2hxa7ae-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Jun 2024 20:06:01 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45GK5gp3022592
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Jun 2024 20:05:42 GMT
-Received: from [10.48.243.231] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 16 Jun
- 2024 13:05:41 -0700
-Message-ID: <11db53fa-7ed6-46cb-ac40-859054df91a6@quicinc.com>
-Date: Sun, 16 Jun 2024 13:05:40 -0700
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C2Hj3Ftr"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a6269885572so838290766b.1
+        for <imx@lists.linux.dev>; Sun, 16 Jun 2024 14:29:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718573396; x=1719178196; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kmVQxJoiRRnVxUmJPLxuy9ofoBMY/z2Ox1ZWQdCQeiQ=;
+        b=C2Hj3FtrCc0qSHpcYcIkfTffVd0q9++bplUjPbjljnn4XSvvb8HQ4U4h/KHSJtFzcP
+         2XR/29ZryFZdzqENr5HW5E2spYm5AR6CH1xx07k/w4HbKLtQmIx5pXhsbyyjA0Y0puH/
+         6d1sA9A8H6FOtiWOLwMsuYzpsuP3J7Q7M/adbR4A+/8k9burpqjuw2nItwMllXdOM4ur
+         W4CTnXGqEQ0v3SSzghH2aUv+icXcuOzf5hdT54CyoZglIKPzs3HWQV9Ab06dBTnIRmXy
+         1MbbuJHTfs5PiTya2kwHOpPlJmloC4VPX/H6X+EBLK3YiFEpd4GVqHBksn5wTkoX33wj
+         gQPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718573396; x=1719178196;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kmVQxJoiRRnVxUmJPLxuy9ofoBMY/z2Ox1ZWQdCQeiQ=;
+        b=uHN77zvz2yQloG7XM1SfWcpX3pDaRjDLEV82+nblh+kl4TQ0MmhwutK2cSBYS0Anuu
+         9FpG8lSZ90tK6Spc6tLHQjXL6HhgxRUZ80mR8GSGsOxkMhiNOHBrLfcDzZ9xaA12jsug
+         U/a/fSenIWcBboRZjqr2zBJ9fR27lXfgN2WMWzrzzmAZVoXeRKMP0TjaFijEuzq3/anH
+         Eudyqvq+eUe2oZdpWcsQz0F5FwrAxAHI9xcfj3eoyVVg9fD0vY3GcH73sMfsyvmT5gYz
+         vGKlxKy/AAB+XAPXML3YLVCtOJb3fLsB2oFRzfjiGBvUahWFmprV4akxA2SfXi3Gti7e
+         Bo/g==
+X-Forwarded-Encrypted: i=1; AJvYcCW/q5KjgE5Fa8Mc7T5LXSLPaGAVnv6GbbPc2n84KPY9x2rMDP0+tRbPzS1JDt4sSMZwy5CW3QlV10kb7W8ZhVZAIODI
+X-Gm-Message-State: AOJu0YwamzkUxMRDIz9yXtFyaESqry3IPVDwtTWgFIkpLjLdnbNLToAz
+	UpAbax6eBUCZguUkecPkCGBLJwqlCCYLHviQl2ViqsqSc+WaFg/mi1soR+81cPs=
+X-Google-Smtp-Source: AGHT+IEvUS/odyJPhKK7Glqf82cIjEvLFIs9anp+ZsBOp8SFgZaTIpP8nTwgP28wMtCwtrwni3h6Dg==
+X-Received: by 2002:a17:907:c302:b0:a6f:6337:1ad5 with SMTP id a640c23a62f3a-a6f63371be1mr650604966b.27.1718573396000;
+        Sun, 16 Jun 2024 14:29:56 -0700 (PDT)
+Received: from linaro.org ([188.24.162.56])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f5f1c8d6fsm384984166b.0.2024.06.16.14.29.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Jun 2024 14:29:55 -0700 (PDT)
+Date: Mon, 17 Jun 2024 00:29:53 +0300
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: drop stale Anson Huang from maintainers
+Message-ID: <Zm9ZUWpievH+P8Yc@linaro.org>
+References: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: fsl: imx-pcm-fiq: add missing MODULE_DESCRIPTION()
- macro
-Content-Language: en-US
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Shengjiu Wang
-	<shengjiu.wang@gmail.com>,
-        Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam
-	<festevam@gmail.com>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Liam Girdwood
-	<lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela
-	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Shawn Guo
-	<shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix
- Kernel Team <kernel@pengutronix.de>
-CC: <alsa-devel@alsa-project.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-sound@vger.kernel.org>, <imx@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20240615-md-arm-sound-soc-fsl-v1-1-8ed731c2f073@quicinc.com>
- <de75c710-044a-45ff-9477-cf4d57f55ab1@wanadoo.fr>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <de75c710-044a-45ff-9477-cf4d57f55ab1@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: S7O2oa02ygbNOwVLSRTxF8hIw9GaafuT
-X-Proofpoint-ORIG-GUID: S7O2oa02ygbNOwVLSRTxF8hIw9GaafuT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-16_12,2024-06-14_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 bulkscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 impostorscore=0 mlxscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406160158
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
 
-On 6/16/2024 12:14 AM, Christophe JAILLET wrote:
-> Le 16/06/2024 à 08:42, Jeff Johnson a écrit :
->> With ARCH=arm, make allmodconfig && make W=1 C=1 reports:
->> WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-fiq.o
->>
->> Add the missing invocation of the MODULE_DESCRIPTION() macro.
->>
->> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->> ---
->>   sound/soc/fsl/imx-pcm-fiq.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/sound/soc/fsl/imx-pcm-fiq.c b/sound/soc/fsl/imx-pcm-fiq.c
->> index 0d124002678e..5ea6dd4c89a1 100644
->> --- a/sound/soc/fsl/imx-pcm-fiq.c
->> +++ b/sound/soc/fsl/imx-pcm-fiq.c
->> @@ -319,4 +319,5 @@ void imx_pcm_fiq_exit(struct platform_device *pdev)
->>   }
->>   EXPORT_SYMBOL_GPL(imx_pcm_fiq_exit);
->>   
->> +MODULE_DESCRIPTION("Freescle i.MX PCM FIQ handler");
+On 24-06-14 11:59:27, Krzysztof Kozlowski wrote:
+> Emails to Anson Huang bounce:
 > 
-> Freescale? (missing 'a')
+>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
+> 
+> Add IMX platform maintainers for bindings which would become orphaned.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
 
-thanks for the catch, will send a v2
+[...]
 
+> diff --git a/Documentation/devicetree/bindings/clock/imx6q-clock.yaml b/Documentation/devicetree/bindings/clock/imx6q-clock.yaml
+> index bae4fcb3aacc..74cfdcf1c93b 100644
+> --- a/Documentation/devicetree/bindings/clock/imx6q-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx6q-clock.yaml
+> @@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: Freescale i.MX6 Quad Clock Controller
+>  
+>  maintainers:
+> -  - Anson Huang <Anson.Huang@nxp.com>
+> +  - Shawn Guo <shawnguo@kernel.org>
+> +  - Sascha Hauer <s.hauer@pengutronix.de>
+> +  - Fabio Estevam <festevam@gmail.com>
+>  
+
+For the clocks, please add me as well. Don't mind having more help from
+the others :-) . But i.MX clock bindings usually go through my tree.
+
+Thanks.
