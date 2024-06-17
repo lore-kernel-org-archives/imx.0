@@ -1,106 +1,118 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E14A31
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 03:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A9BA31
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 03:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718595939; cv=none; b=ZxGq7kU5jC0oQjGyB6QDYIRvY0aHEEXL8qWl8X2G/sLA7KyMQqc6btvzFD60o3wxO8WqllRvDT9hndlChgHo2owIfNoskjGI69x+ki1IRdkqTaWkg3QTmwSJCW/qz0RB6B1bJqHrmMph3LwZ2zO6fS1vl+eNhnLLl0XJSPybrtg=
+	t=1718596368; cv=none; b=gs8+S2/TDGrRTYl9+aP40FufeXTtK8aJsu684I6afGv8AqkIFuXI1lfqJ3lI8NKYfhTljA5tFCvrs/7SpwvyWy7CHra8lYg35byyJL8bn9jW1rNH55SSexn9+Yle2vmv3LLjMNF11G1G/n6xqu7zNdnP2HvptMs4lClA0NFL4wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718595939; c=relaxed/simple;
-	bh=sXWdN1O7NqWFWY4b+k53ydKXcnKDx79uD/Hs5GIZGNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Dm6+3Ped62koA/Y24EnyyG8XX3jc7iNuDNQTGWxRmRJ2C7Gv2ZfLOd4Z1gVPUgw9ZzZsPATj2uFxIrWBtY15IQnZjyfi9QW8EXD4D3i22b+ralcfbcAn2lUlLs+8sUAL1OzpxCq1D9Rv8WCaZ18iBZafCSzCjAr45hDoQ105sVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=P5B2pNw8; arc=none smtp.client-ip=123.58.177.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1718596368; c=relaxed/simple;
+	bh=+DEENcXMKXyiWZXETIGEWVoFCDj5PxY9bRACXwxWcyM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=AJliDxREEAbUjiXSlPiw0Xp+xQ9Kssn1B5GTx7IVJNLmBPQSpmUxYF0qOa8K4ISUE6f8K/ZwZXNL5TscuTWsg9gEARyro4ceajuuFgA8WkoOF7/f6DOTZvbFgUU/PpxMO+jCZj3qOAg0n3/Pxtv3jsJ6lYhvah3JS+vUnR3fdH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hrPsjxyh; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="P5B2pNw8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=m/voODt9TY9R77IeA7WVY1A3Xd9OvptuZQxSo0kZs+M=;
-	b=P5B2pNw8XuOnAe5tN1wARWhYS00dQAybsm3HhIDGMeUj1x3AU4JuR9EIH4jSca
-	uFcxOYE0i7akYvX9NnBz22N3/S4Y9AXgGFL3+p2fcQrAUN5FWVhkVXk3HXuA8PWb
-	lSsXu90Qs9Ta4Sb0vlG7b0Y4omsYWu8VD/zkSWnXQnFfc=
-Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrADHLxlVsW9mtC7PCA--.5394S3;
-	Mon, 17 Jun 2024 11:45:26 +0800 (CST)
-Date: Mon, 17 Jun 2024 11:45:25 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org, arm@kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	kernel@pengutronix.de, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] i.MX fixes for 6.10
-Message-ID: <Zm+xVUmFtaOnYBb4@dragon>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hrPsjxyh"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45GNjv9C027906;
+	Mon, 17 Jun 2024 03:52:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=HG6oEJg2/GeNLGbGBK0m7n
+	b1SCOW0UJLipys6dM2UyA=; b=hrPsjxyhiDCBvrhyEC4QxJW2LhyKwED6zAzhgI
+	4uh/NJOT5O4PBqOxPc1FMyguRyMV2YmGJXVZm0CCzDH9xZwqbTaDtW+nQRV8PRNn
+	Vc8jCY23r0y/SmNc5Szi6qFKRV2hCUepS3+5ihFo1vj+yumRVavfhMXRIjBEMv6t
+	y+5o7+k7y5+qKc9tIR3tp2mONwfmxqoGS9bEXMoRkEPe9JG8j9IfCtKvcpIdC52X
+	CnXNYdiQUX//aheimnBIqPWHQrqNfATr2WphW5aWx7wo7GtInXJaTn79kkneUfqc
+	AoC2HdOkgJoWd5WvElVfncE4o2lU+feEXiuWxLqoV0RPD9rQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys3b72mkv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 03:52:29 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45H3qS17022208
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 03:52:28 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 16 Jun
+ 2024 20:52:27 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Sun, 16 Jun 2024 20:52:26 -0700
+Subject: [PATCH v2] ASoC: fsl: imx-pcm-fiq: add missing
+ MODULE_DESCRIPTION() macro
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-CM-TRANSID:C1UQrADHLxlVsW9mtC7PCA--.5394S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uryktw13Cr1xWFyfWF4fAFb_yoW8tw4kpF
-	yfCrW3Jr4fGr18CFn0qF4kX398ta15AF4Yqr1Yy348Kr1rZw1DXFnxKw1fWryjvryxXw4Y
-	yF1xGryUWw1rXw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jazuAUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDRcBZVszXmQLqQAAsO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240616-md-arm-sound-soc-fsl-v2-1-228772e81a54@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAPmyb2YC/4WOSw6DIBRFt2IY9zUC9ddR99E4QHjUlyi0oMbGu
+ PeiG+jkJie5v41FDISR3bONBVwokncJxCVjulfuhUAmMRO5uOUlL2A0oMII0c/OJNVg4wC6aGr
+ byUJi2bAUfQe0tJ61zzZxpyJCF5TT/VE2kJtXGFWcMBz2nuLkw/c8sfAj9Gdv4cChRlNJroXNK
+ /n4zKTJ6av2I2v3ff8BxWTWQdkAAAA=
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Nicolin Chen <nicoleotsuka@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>
+CC: <alsa-devel@alsa-project.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-sound@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 7_hVxNreZFW5jF6KCta9oeKbC7ELmJx9
+X-Proofpoint-ORIG-GUID: 7_hVxNreZFW5jF6KCta9oeKbC7ELmJx9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-17_02,2024-06-14_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
+ bulkscore=0 spamscore=0 mlxscore=0 priorityscore=1501 clxscore=1015
+ mlxlogscore=999 adultscore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406170028
 
-The following changes since commit 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0:
+With ARCH=arm, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-fiq.o
 
-  Linux 6.10-rc1 (2024-05-26 15:20:12 -0700)
+Add the missing invocation of the MODULE_DESCRIPTION() macro.
 
-are available in the Git repository at:
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+Changes in v2:
+- Fixed spelling of Freescale
+- Link to v1: https://lore.kernel.org/r/20240615-md-arm-sound-soc-fsl-v1-1-8ed731c2f073@quicinc.com
+---
+ sound/soc/fsl/imx-pcm-fiq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.10
+diff --git a/sound/soc/fsl/imx-pcm-fiq.c b/sound/soc/fsl/imx-pcm-fiq.c
+index 0d124002678e..3391430e4253 100644
+--- a/sound/soc/fsl/imx-pcm-fiq.c
++++ b/sound/soc/fsl/imx-pcm-fiq.c
+@@ -319,4 +319,5 @@ void imx_pcm_fiq_exit(struct platform_device *pdev)
+ }
+ EXPORT_SYMBOL_GPL(imx_pcm_fiq_exit);
+ 
++MODULE_DESCRIPTION("Freescale i.MX PCM FIQ handler");
+ MODULE_LICENSE("GPL");
 
-for you to fetch changes up to dfd239a039b3581ca25f932e66b6e2c2bf77c798:
-
-  arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc (2024-06-17 11:07:06 +0800)
-
-----------------------------------------------------------------
-i.MX fixes for 6.10:
-
-- Fix GPIO number for reg_usdhc2_vmmc on imx8qm-mek board.
-- Enable hysteresis for SODIMM_17 pin on imx8mm-verdin board to increase
-  immunity against noise.
-- Remove 'no-sdio' property for uSDHC2 on imx93-11x11-evk board, so that
-  SDIO cards could also work.
-- Fix BT shutdown GPIO for imx8mp-venice-gw73xx-2x board.
-- Fix panel node deleting on imx53-qsb-hdmi, as /delete-node/ directive
-  doesn't really delete a node in a DT overlay.
-- Fix TC9595 input clock on DH i.MX8M Plus DHCOM SoM.
-- Fix GPU speed for imx8mm-verdin board by enabling overdrive mode in
-  the SOM dtsi.
-
-----------------------------------------------------------------
-Fabio Estevam (1):
-      arm64: dts: imx93-11x11-evk: Remove the 'no-sdio' property
-
-Frank Li (1):
-      arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
-
-Joao Paulo Goncalves (1):
-      arm64: dts: freescale: imx8mm-verdin: Fix GPU speed
-
-Liu Ying (1):
-      arm: dts: imx53-qsb-hdmi: Disable panel instead of deleting node
-
-Marek Vasut (1):
-      arm64: dts: imx8mp: Fix TC9595 input clock on DH i.MX8M Plus DHCOM SoM
-
-Max Krummenacher (1):
-      arm64: dts: freescale: imx8mm-verdin: enable hysteresis on slow input pin
-
-Tim Harvey (1):
-      arm64: dts: freescale: imx8mp-venice-gw73xx-2x: fix BT shutdown GPIO
-
- arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi         | 2 +-
- arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso           | 6 ++++--
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi        | 3 ++-
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi     | 2 +-
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/imx8qm-mek.dts            | 2 +-
- arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts       | 1 -
- 7 files changed, 10 insertions(+), 8 deletions(-)
+---
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+change-id: 20240615-md-arm-sound-soc-fsl-c598fb353e69
 
