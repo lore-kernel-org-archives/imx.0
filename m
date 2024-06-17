@@ -1,60 +1,60 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55DE1C0DD2
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3BB1C0DFE
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632217; cv=none; b=bAt09glAj1URij4q0/2/W0Q3m5hzE/qT2OKLJFUTP4Sz2nQbuXfGA3KCY/CeWj2yJmp1bqzOvMuSqxHcaXHnWqVaHrBuHO0fUXrdUUInnxvB+PD+XcrOjaDfpwAS7V1NJm6iH42Sl0kDSW5mwQI/ZOksWhIOOkvgRm/CXIJ2zbI=
+	t=1718632219; cv=none; b=fCXK9wtjmpyMAVgpTKOnxyZuUparC9H84VUlEydo0qt6QEJsaWLq/A8WcAwzJlveSBrINwRyfUdFejIR5oipgu/8cOj6RFMxSu9f2rLwUeBMk7iv2D2HxNjDjzBi35Pr/OWw+EW/JL7i5Qrsz2kCTuQzfhC3tgB4QjZSDKvMIy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632217; c=relaxed/simple;
-	bh=fzPzUYcNz9V2ID3qrrApafMZGiDVZpy6ghrI0nU92Lw=;
+	s=arc-20240116; t=1718632219; c=relaxed/simple;
+	bh=MPFBeRiBqEWL2ZmKqHZsE/yYze6ZRHtpV3TD+LCyks4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Gr5cjXQb0zjDHvzXd6uoZmJlibASta4KP2mPT4e4mflBtjBEjr5YtcbInF54Gn9flAYLA6czG7jc7e8vhQ00r7ZgHlH7cgQZPgdn8ZWWN5A49iy57nCGN3txIEMxwUKb88qGAQb+odrxnO1Je83oZ0qDmDWvUGG+aS/TXRBfEOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FR5emlIV; arc=none smtp.client-ip=209.85.222.172
+	 In-Reply-To:To:Cc; b=PszmBhoF5Mww5Mz+ZIeMR5ndfStepuLTUm0bbqXiaFrUOJgPmLct06ud9FhJsTJawyrEAro0fpl6/DqmfR9zt3nQayAaHlOECgU4NZhBS8cGsztuv1ATCRSYMjWx8dklFvIUPNBUxkTK7i377QYo0aucXBaoF9y/ZUl8FWoPUCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=M38+BemS; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FR5emlIV"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-795569eedcaso228709585a.3
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="M38+BemS"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-79550284502so267240185a.2
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632215; x=1719237015; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632217; x=1719237017; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GyaMuqBhP7o7wmqZwNnsnkbTtRp5AugJ4lcsefsATFM=;
-        b=FR5emlIVR5/gTeE96016BCtEuqObXY1YISSBXYIiEsCGdXJl9CPm0oEXZbHmNCjHxI
-         YMWkyHCNR15SeHuZwus/vd88ws8Vu727rdHaAUilEADfKe/yGTXUCRI9+RwaACo1+zgJ
-         XLMwxG1Ep4gDY3JA4FwM5elVcOJ8ifntqIk+hYAWuAGWzOj5g9xSkPae8IID00E96I0n
-         S30waO2zjyJeg/b+Ctu4cPdF2fQU0XIUaBWLzDDJNyew0vdqjBBkAXHIAc5b2z3+5eed
-         847YscUjzC2FS8YkS5C0JIE6LO0XgaxDwY322oNzaLWzkQ4P++1edbG8DoBYiBkiLtqb
-         7cBw==
+        bh=FJ898fDCKj42D5/vtQAto1s5SAQxhzxV4OLmCarOpnQ=;
+        b=M38+BemSMwZwB9Lm5BwljlZFczIsKs5wh/Emi10TBh3tnHim7gfZFrgL5jiU63EEHP
+         m8aSvH62ZIe81wMIvc9ayy0NjDGjt+1XtEG/ytBeeMKuh4QO3BmOEK2hkTwZl3MlEZsK
+         XWty7j9VUANWfSUWD/1L1cyBj8YzqlMX1Kz53P+ykCffiOLCQSqgX28EzuNdUtmm0kKv
+         Q+19Kp+0ZyNnWFjfLrRmPhy3Tc4IUsvLqdEgyd/R8RVaTeL7K/E5LHRonoA/u5/iFmE7
+         vSL3mCss+o7CXTSlpX+BtIe85P/latpFrE7RJJm8qexXy1feJn7qLN/1H6bOUrg0jv2d
+         VYSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632215; x=1719237015;
+        d=1e100.net; s=20230601; t=1718632217; x=1719237017;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GyaMuqBhP7o7wmqZwNnsnkbTtRp5AugJ4lcsefsATFM=;
-        b=pG377fVxTesfmmTxJyJM77FuuerXaFmH4xsPcvrCl/g60XlQd/ye8eeQKYVhnXx1su
-         9F0Uq9vY4SczNzaafqqs9BoB/3xaOuMiYdSH7ecGqu958iN18GIqz6c+B3/GfgyPYL4d
-         aNmnMUac0Qq2OJwgjBlJo7GiLGFBxWDI0A4t97E/Vebl5XbnIBonRI5a/G3Wghe9J0Kx
-         wXHqr/sfoZphyesLYQ+cJeqzYe7UZeodEcJZ7JFcT+XXIRe+Sm25E4+bchkCg8cXR1nK
-         C+5/wVqiONT88yt20jLwCJZIGnsnVg/1N8VNppHSGwW4Qs+y6NV7agZAkE7IwDE2Zm7q
-         NIXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHCd04Mz+bna2t6rZfm1y4Y2sNfCftPzsiScJVf7sbPlAfQ9glh2OKCp4Y6KjbEm1ZRMws384M8ismQSyLSC/tVRxi
-X-Gm-Message-State: AOJu0YxSfhxipmTGhpM2pfL4vfB+2yZH4ZlBQi4qOWsaMWNUl01B5+J5
-	XW6UXmwnLd22o/mRrnuDZedoqeYJBvzz8CmeJNV7ZzJBqLJ8KmCdcm08NBolsZk=
-X-Google-Smtp-Source: AGHT+IG9rvLxXHys5yM3fiDf+G14AWJNmGoLIu5wSpeGGOXNzHBF3wjPuE24N3ncETdlUUNQNA6oSA==
-X-Received: by 2002:a05:620a:45aa:b0:795:4e64:dbbe with SMTP id af79cd13be357-798d1f824a7mr1191474185a.0.1718632214915;
-        Mon, 17 Jun 2024 06:50:14 -0700 (PDT)
+        bh=FJ898fDCKj42D5/vtQAto1s5SAQxhzxV4OLmCarOpnQ=;
+        b=QATswDnbD7kltyDLP03V7KgUNCTlbMhx/QjFJXB713xEMsoy1C7euNa07QVzkEKOIa
+         42z982me9OxLsZ/kr7vVRkdmtNXKsPPtz7DcMHxwobx5yDLtCUnArkRZqKxqbwODOC1i
+         VLdgPRoUmroSokBimU7O4fL0UHU4WKcRI9XYitmBZg+cawwUuXzhOEMUvRqsfRYVnhm/
+         YPHe8ToJsxuu3mMTzQ1G6r53Z8oDeScDC00ir9VVGiTNGEUfL1EXQd7DE9GtsNStjJwJ
+         RviiLx3KGxN0C34r/Z/dVhuWtEpQMlEmRZLW27dDd05RX7sICjmwGLGPQIIUzv33gMhz
+         FvFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEPFvKY7Lr5RHtj/X8bCnDQR1tezvJYdGgqF/pbEuHcjz7cCy1WWJBEs1F3LI3uLubtFmzgFmn43/uS9sNsIwP76tK
+X-Gm-Message-State: AOJu0Yxu9jlJ43WyY0O6aukF3ryZ78Sl1lSvLNJKooVi+rgMrFrYo86p
+	WmVmmzm507PKSV+KwBriNlTE4fAkGeSmftd0816tWvPlwOYm67joRfIqyajMA6E=
+X-Google-Smtp-Source: AGHT+IG7O2bJi0GCfnphwmiN8zuYwAKTZAA7K/LgtdsfOhK/hCe8sAhzrzmLoDYS8PhLsNItnynlLA==
+X-Received: by 2002:a05:620a:404a:b0:795:2307:97ec with SMTP id af79cd13be357-798d2588f12mr1074628285a.56.1718632217032;
+        Mon, 17 Jun 2024 06:50:17 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.12
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:14 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:16 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:54 -0400
-Subject: [PATCH v3 14/41] iio: adc: mp2629_adc: make use of
+Date: Mon, 17 Jun 2024 09:49:55 -0400
+Subject: [PATCH v3 15/41] iio: adc: qcom-spmi-rradc: make use of
  regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-14-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-15-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -107,53 +107,131 @@ regmap_clear_bits().
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/mp2629_adc.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/iio/adc/qcom-spmi-rradc.c | 50 +++++++++++++++++++--------------------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
-index 7c66c2cd5be2..5f672765d4a2 100644
---- a/drivers/iio/adc/mp2629_adc.c
-+++ b/drivers/iio/adc/mp2629_adc.c
-@@ -131,9 +131,8 @@ static int mp2629_adc_probe(struct platform_device *pdev)
- 	info->dev = dev;
- 	platform_set_drvdata(pdev, indio_dev);
+diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
+index 56a713766954..1402df68dd52 100644
+--- a/drivers/iio/adc/qcom-spmi-rradc.c
++++ b/drivers/iio/adc/qcom-spmi-rradc.c
+@@ -358,15 +358,15 @@ static int rradc_enable_continuous_mode(struct rradc_chip *chip)
+ 	int ret;
  
--	ret = regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
--				MP2629_ADC_START | MP2629_ADC_CONTINUOUS,
--				MP2629_ADC_START | MP2629_ADC_CONTINUOUS);
-+	ret = regmap_set_bits(info->regmap, MP2629_REG_ADC_CTRL,
-+			      MP2629_ADC_START | MP2629_ADC_CONTINUOUS);
- 	if (ret) {
- 		dev_err(dev, "adc enable fail: %d\n", ret);
+ 	/* Clear channel log */
+-	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_LOG,
+-				 RR_ADC_LOG_CLR_CTRL, RR_ADC_LOG_CLR_CTRL);
++	ret = regmap_set_bits(chip->regmap, chip->base + RR_ADC_LOG,
++			      RR_ADC_LOG_CLR_CTRL);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "log ctrl update to clear failed:%d\n", ret);
  		return ret;
-@@ -163,10 +162,9 @@ static int mp2629_adc_probe(struct platform_device *pdev)
- 	iio_map_array_unregister(indio_dev);
+ 	}
  
- fail_disable:
--	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
--					 MP2629_ADC_CONTINUOUS, 0);
--	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
--					 MP2629_ADC_START, 0);
-+	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL,
-+			  MP2629_ADC_CONTINUOUS);
-+	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL, MP2629_ADC_START);
+-	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_LOG,
+-				 RR_ADC_LOG_CLR_CTRL, 0);
++	ret = regmap_clear_bits(chip->regmap, chip->base + RR_ADC_LOG,
++				RR_ADC_LOG_CLR_CTRL);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "log ctrl update to not clear failed:%d\n",
+ 			ret);
+@@ -374,9 +374,8 @@ static int rradc_enable_continuous_mode(struct rradc_chip *chip)
+ 	}
+ 
+ 	/* Switch to continuous mode */
+-	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_CTL,
+-				 RR_ADC_CTL_CONTINUOUS_SEL,
+-				 RR_ADC_CTL_CONTINUOUS_SEL);
++	ret = regmap_set_bits(chip->regmap, chip->base + RR_ADC_CTL,
++			      RR_ADC_CTL_CONTINUOUS_SEL);
+ 	if (ret < 0)
+ 		dev_err(chip->dev, "Update to continuous mode failed:%d\n",
+ 			ret);
+@@ -389,8 +388,8 @@ static int rradc_disable_continuous_mode(struct rradc_chip *chip)
+ 	int ret;
+ 
+ 	/* Switch to non continuous mode */
+-	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_CTL,
+-				 RR_ADC_CTL_CONTINUOUS_SEL, 0);
++	ret = regmap_clear_bits(chip->regmap, chip->base + RR_ADC_CTL,
++				RR_ADC_CTL_CONTINUOUS_SEL);
+ 	if (ret < 0)
+ 		dev_err(chip->dev, "Update to non-continuous mode failed:%d\n",
+ 			ret);
+@@ -434,8 +433,8 @@ static int rradc_read_status_in_cont_mode(struct rradc_chip *chip,
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = regmap_update_bits(chip->regmap, chip->base + chan->trigger_addr,
+-				 chan->trigger_mask, chan->trigger_mask);
++	ret = regmap_set_bits(chip->regmap, chip->base + chan->trigger_addr,
++			      chan->trigger_mask);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev,
+ 			"Failed to apply trigger for channel '%s' ret=%d\n",
+@@ -469,8 +468,8 @@ static int rradc_read_status_in_cont_mode(struct rradc_chip *chip,
+ 	rradc_disable_continuous_mode(chip);
+ 
+ disable_trigger:
+-	regmap_update_bits(chip->regmap, chip->base + chan->trigger_addr,
+-			   chan->trigger_mask, 0);
++	regmap_clear_bits(chip->regmap, chip->base + chan->trigger_addr,
++			  chan->trigger_mask);
  
  	return ret;
  }
-@@ -180,10 +178,9 @@ static void mp2629_adc_remove(struct platform_device *pdev)
+@@ -481,17 +480,16 @@ static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
+ {
+ 	int ret;
  
- 	iio_map_array_unregister(indio_dev);
+-	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
+-				 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV,
+-				 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
++	ret = regmap_set_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
++			      RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Enabling BATT ID channel failed:%d\n", ret);
+ 		return ret;
+ 	}
  
--	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
--					 MP2629_ADC_CONTINUOUS, 0);
--	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
--					 MP2629_ADC_START, 0);
-+	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL,
-+			  MP2629_ADC_CONTINUOUS);
-+	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL, MP2629_ADC_START);
+-	ret = regmap_update_bits(chip->regmap,
+-				 chip->base + RR_ADC_BATT_ID_TRIGGER,
+-				 RR_ADC_TRIGGER_CTL, RR_ADC_TRIGGER_CTL);
++	ret = regmap_set_bits(chip->regmap,
++			      chip->base + RR_ADC_BATT_ID_TRIGGER,
++			      RR_ADC_TRIGGER_CTL);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "BATT_ID trigger set failed:%d\n", ret);
+ 		goto out_disable_batt_id;
+@@ -500,12 +498,12 @@ static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
+ 	ret = rradc_read_status_in_cont_mode(chip, chan_address);
+ 
+ 	/* Reset registers back to default values */
+-	regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_TRIGGER,
+-			   RR_ADC_TRIGGER_CTL, 0);
++	regmap_clear_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_TRIGGER,
++			  RR_ADC_TRIGGER_CTL);
+ 
+ out_disable_batt_id:
+-	regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
+-			   RR_ADC_BATT_ID_CTRL_CHANNEL_CONV, 0);
++	regmap_clear_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
++			  RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
+ 
+ 	return ret;
  }
+@@ -965,9 +963,9 @@ static int rradc_probe(struct platform_device *pdev)
  
- static const struct of_device_id mp2629_adc_of_match[] = {
+ 	if (batt_id_delay >= 0) {
+ 		batt_id_delay = FIELD_PREP(BATT_ID_SETTLE_MASK, batt_id_delay);
+-		ret = regmap_update_bits(chip->regmap,
+-					 chip->base + RR_ADC_BATT_ID_CFG,
+-					 batt_id_delay, batt_id_delay);
++		ret = regmap_set_bits(chip->regmap,
++				      chip->base + RR_ADC_BATT_ID_CFG,
++				      batt_id_delay);
+ 		if (ret < 0) {
+ 			dev_err(chip->dev,
+ 				"BATT_ID settling time config failed:%d\n",
 
 -- 
 2.45.2
