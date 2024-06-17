@@ -1,61 +1,61 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3BB1C0DFE
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCCF1C2310
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632219; cv=none; b=fCXK9wtjmpyMAVgpTKOnxyZuUparC9H84VUlEydo0qt6QEJsaWLq/A8WcAwzJlveSBrINwRyfUdFejIR5oipgu/8cOj6RFMxSu9f2rLwUeBMk7iv2D2HxNjDjzBi35Pr/OWw+EW/JL7i5Qrsz2kCTuQzfhC3tgB4QjZSDKvMIy8=
+	t=1718632222; cv=none; b=j7PgqYm8tMMSX72pJ8aSyxc+AWONrKUjcELmlvHUaRsbzpMvRxgm+Ab0NyadEfbNgYZrLCU1K2BaD+WCgJ30SImqFSTILA4TAMY12fO7mjyCx3SY6j/tA17wlxohfLCGGAwVHaQ0hGsF08f/xkd0yUI3H288exI1MmNfNLrCEuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632219; c=relaxed/simple;
-	bh=MPFBeRiBqEWL2ZmKqHZsE/yYze6ZRHtpV3TD+LCyks4=;
+	s=arc-20240116; t=1718632222; c=relaxed/simple;
+	bh=guuqVXSs2s7BD/iWi4IU8Nf6aEgnRuSwwDipuP5iGhw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PszmBhoF5Mww5Mz+ZIeMR5ndfStepuLTUm0bbqXiaFrUOJgPmLct06ud9FhJsTJawyrEAro0fpl6/DqmfR9zt3nQayAaHlOECgU4NZhBS8cGsztuv1ATCRSYMjWx8dklFvIUPNBUxkTK7i377QYo0aucXBaoF9y/ZUl8FWoPUCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=M38+BemS; arc=none smtp.client-ip=209.85.222.169
+	 In-Reply-To:To:Cc; b=LaY3lexXn0uTZK2NxcNpJuVxerynlge0POpmgeBa4AidrxRyxhCqzFbcXTj5yt1Zs27hjAoscfuNl5r88/X8lkbMyI997WEPbu3y+cotImPeOHmbxZwDKQBbJxxroL5fZgw3bQhuQjvLBeOuK+PemZ+dGrD5nRACAg2S44mDyUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kd0s5uVs; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="M38+BemS"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-79550284502so267240185a.2
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kd0s5uVs"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-797f1287aa3so342732685a.2
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632217; x=1719237017; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632219; x=1719237019; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FJ898fDCKj42D5/vtQAto1s5SAQxhzxV4OLmCarOpnQ=;
-        b=M38+BemSMwZwB9Lm5BwljlZFczIsKs5wh/Emi10TBh3tnHim7gfZFrgL5jiU63EEHP
-         m8aSvH62ZIe81wMIvc9ayy0NjDGjt+1XtEG/ytBeeMKuh4QO3BmOEK2hkTwZl3MlEZsK
-         XWty7j9VUANWfSUWD/1L1cyBj8YzqlMX1Kz53P+ykCffiOLCQSqgX28EzuNdUtmm0kKv
-         Q+19Kp+0ZyNnWFjfLrRmPhy3Tc4IUsvLqdEgyd/R8RVaTeL7K/E5LHRonoA/u5/iFmE7
-         vSL3mCss+o7CXTSlpX+BtIe85P/latpFrE7RJJm8qexXy1feJn7qLN/1H6bOUrg0jv2d
-         VYSg==
+        bh=KVb/0PilAc52B9kaVfDX+4rlv8WRgZtRLdvIf/r6J1Y=;
+        b=kd0s5uVsCb+VXwGz9f2i4i0pAZuXaOjiFnCAHA29LFzGnOJpoxYG1xXEtDmC/JXrOw
+         yWrPkm/o/zUtaqnJabyYMKEEDyouks06ikZwEMlr9HxY9Y5Jhljbm0sFjYVkK6/MXt+2
+         GwPjTSU8NbircOOVFJR3h+ekOOE5AvxCdkJoJUV/DnZy0wgWAvdnP+h9fNYAZugruCGi
+         F2ygCVrtjLmuhyfy7S7kN87CwO4VcxPOYJpEesmvEtXoFQbAwUVW7AIDuURRnq9hH9Vf
+         Li8OGpoBJuN3S5AbRS2bT7Y8ONLG26G1r/h2bw+UV8pstTei8xoNgG/PBud0KzAjZXq2
+         AKaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632217; x=1719237017;
+        d=1e100.net; s=20230601; t=1718632219; x=1719237019;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FJ898fDCKj42D5/vtQAto1s5SAQxhzxV4OLmCarOpnQ=;
-        b=QATswDnbD7kltyDLP03V7KgUNCTlbMhx/QjFJXB713xEMsoy1C7euNa07QVzkEKOIa
-         42z982me9OxLsZ/kr7vVRkdmtNXKsPPtz7DcMHxwobx5yDLtCUnArkRZqKxqbwODOC1i
-         VLdgPRoUmroSokBimU7O4fL0UHU4WKcRI9XYitmBZg+cawwUuXzhOEMUvRqsfRYVnhm/
-         YPHe8ToJsxuu3mMTzQ1G6r53Z8oDeScDC00ir9VVGiTNGEUfL1EXQd7DE9GtsNStjJwJ
-         RviiLx3KGxN0C34r/Z/dVhuWtEpQMlEmRZLW27dDd05RX7sICjmwGLGPQIIUzv33gMhz
-         FvFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEPFvKY7Lr5RHtj/X8bCnDQR1tezvJYdGgqF/pbEuHcjz7cCy1WWJBEs1F3LI3uLubtFmzgFmn43/uS9sNsIwP76tK
-X-Gm-Message-State: AOJu0Yxu9jlJ43WyY0O6aukF3ryZ78Sl1lSvLNJKooVi+rgMrFrYo86p
-	WmVmmzm507PKSV+KwBriNlTE4fAkGeSmftd0816tWvPlwOYm67joRfIqyajMA6E=
-X-Google-Smtp-Source: AGHT+IG7O2bJi0GCfnphwmiN8zuYwAKTZAA7K/LgtdsfOhK/hCe8sAhzrzmLoDYS8PhLsNItnynlLA==
-X-Received: by 2002:a05:620a:404a:b0:795:2307:97ec with SMTP id af79cd13be357-798d2588f12mr1074628285a.56.1718632217032;
-        Mon, 17 Jun 2024 06:50:17 -0700 (PDT)
+        bh=KVb/0PilAc52B9kaVfDX+4rlv8WRgZtRLdvIf/r6J1Y=;
+        b=NQm1wll9+NCebdcZVBUe0l1UVrrnC9kPisrREOvlGUzSmtLYJo+PZ6wa/j0dJH7SvH
+         RzyumqBFr4WcuDoJvO80ebjhQzuAa7zxUwAzifVhgDOFfVdh3D7Vsr/gePlB5+zPAR2E
+         dO34/7fHnOnfuLAKireFcsOKISYEiEDhMR5CsQbr0o285Nlwoyqog9DtdFNUPo8sQ7S6
+         KcPs7wfalzKDiG83rqFe+HJSd8ZvRtkcwyFPmksMDGl7ZbdFn99BdbFiiVpU4vhD4VTK
+         PPnSJ6hMh/L8aYxZndXYrifTRQ3FaVgsMqAd2g5ivvCPU3tQD30d1Xqx7vEI9hDiLvOZ
+         AyvA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/g5z/uzMnIqgoUCFhm3ic5EUiAQxvd0e61Q9u9H3u7pmJuzIIYMZ8HS5ibIjwDeMnZ8k56rQzW5MkF72D7242b4ld
+X-Gm-Message-State: AOJu0YzLeP+R1qovv5POS84LvdJTHGm5UXQ2O8zxvIbpfJswYGbHkAul
+	aytSAs/vThpk+kywmM5nztk0GXfLXIO7Go9b3kqkcHWLsCzJxTleTyeSVPrBFF4=
+X-Google-Smtp-Source: AGHT+IEhAnjjomgk19gOfh4FY6+tmL+ftVg/dpR5n10Qt2NpVGAkWAorRIXV5RllBFaajmvErpGqLg==
+X-Received: by 2002:a05:620a:370d:b0:796:842c:77f1 with SMTP id af79cd13be357-798d243aaa6mr1278103785a.36.1718632219186;
+        Mon, 17 Jun 2024 06:50:19 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.15
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:16 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:18 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:55 -0400
-Subject: [PATCH v3 15/41] iio: adc: qcom-spmi-rradc: make use of
- regmap_clear_bits(), regmap_set_bits()
+Date: Mon, 17 Jun 2024 09:49:56 -0400
+Subject: [PATCH v3 16/41] iio: adc: rn5t618-adc: make use of
+ regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-15-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-16-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -101,137 +101,28 @@ X-Mailer: b4 0.13.0
 Instead of using regmap_update_bits() and passing the mask twice, use
 regmap_set_bits().
 
-Instead of using regmap_update_bits() and passing val = 0, use
-regmap_clear_bits().
-
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/qcom-spmi-rradc.c | 50 +++++++++++++++++++--------------------
- 1 file changed, 24 insertions(+), 26 deletions(-)
+ drivers/iio/adc/rn5t618-adc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
-index 56a713766954..1402df68dd52 100644
---- a/drivers/iio/adc/qcom-spmi-rradc.c
-+++ b/drivers/iio/adc/qcom-spmi-rradc.c
-@@ -358,15 +358,15 @@ static int rradc_enable_continuous_mode(struct rradc_chip *chip)
- 	int ret;
+diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
+index 6bf32907f01d..ce5f3011fe00 100644
+--- a/drivers/iio/adc/rn5t618-adc.c
++++ b/drivers/iio/adc/rn5t618-adc.c
+@@ -137,9 +137,8 @@ static int rn5t618_adc_read(struct iio_dev *iio_dev,
  
- 	/* Clear channel log */
--	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_LOG,
--				 RR_ADC_LOG_CLR_CTRL, RR_ADC_LOG_CLR_CTRL);
-+	ret = regmap_set_bits(chip->regmap, chip->base + RR_ADC_LOG,
-+			      RR_ADC_LOG_CLR_CTRL);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "log ctrl update to clear failed:%d\n", ret);
- 		return ret;
- 	}
- 
--	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_LOG,
--				 RR_ADC_LOG_CLR_CTRL, 0);
-+	ret = regmap_clear_bits(chip->regmap, chip->base + RR_ADC_LOG,
-+				RR_ADC_LOG_CLR_CTRL);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "log ctrl update to not clear failed:%d\n",
- 			ret);
-@@ -374,9 +374,8 @@ static int rradc_enable_continuous_mode(struct rradc_chip *chip)
- 	}
- 
- 	/* Switch to continuous mode */
--	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_CTL,
--				 RR_ADC_CTL_CONTINUOUS_SEL,
--				 RR_ADC_CTL_CONTINUOUS_SEL);
-+	ret = regmap_set_bits(chip->regmap, chip->base + RR_ADC_CTL,
-+			      RR_ADC_CTL_CONTINUOUS_SEL);
+ 	init_completion(&adc->conv_completion);
+ 	/* single conversion */
+-	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
+-				 RN5T618_ADCCNT3_GODONE,
+-				 RN5T618_ADCCNT3_GODONE);
++	ret = regmap_set_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
++			      RN5T618_ADCCNT3_GODONE);
  	if (ret < 0)
- 		dev_err(chip->dev, "Update to continuous mode failed:%d\n",
- 			ret);
-@@ -389,8 +388,8 @@ static int rradc_disable_continuous_mode(struct rradc_chip *chip)
- 	int ret;
- 
- 	/* Switch to non continuous mode */
--	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_CTL,
--				 RR_ADC_CTL_CONTINUOUS_SEL, 0);
-+	ret = regmap_clear_bits(chip->regmap, chip->base + RR_ADC_CTL,
-+				RR_ADC_CTL_CONTINUOUS_SEL);
- 	if (ret < 0)
- 		dev_err(chip->dev, "Update to non-continuous mode failed:%d\n",
- 			ret);
-@@ -434,8 +433,8 @@ static int rradc_read_status_in_cont_mode(struct rradc_chip *chip,
- 		return -EINVAL;
- 	}
- 
--	ret = regmap_update_bits(chip->regmap, chip->base + chan->trigger_addr,
--				 chan->trigger_mask, chan->trigger_mask);
-+	ret = regmap_set_bits(chip->regmap, chip->base + chan->trigger_addr,
-+			      chan->trigger_mask);
- 	if (ret < 0) {
- 		dev_err(chip->dev,
- 			"Failed to apply trigger for channel '%s' ret=%d\n",
-@@ -469,8 +468,8 @@ static int rradc_read_status_in_cont_mode(struct rradc_chip *chip,
- 	rradc_disable_continuous_mode(chip);
- 
- disable_trigger:
--	regmap_update_bits(chip->regmap, chip->base + chan->trigger_addr,
--			   chan->trigger_mask, 0);
-+	regmap_clear_bits(chip->regmap, chip->base + chan->trigger_addr,
-+			  chan->trigger_mask);
- 
- 	return ret;
- }
-@@ -481,17 +480,16 @@ static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
- {
- 	int ret;
- 
--	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
--				 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV,
--				 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
-+	ret = regmap_set_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
-+			      RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "Enabling BATT ID channel failed:%d\n", ret);
  		return ret;
- 	}
  
--	ret = regmap_update_bits(chip->regmap,
--				 chip->base + RR_ADC_BATT_ID_TRIGGER,
--				 RR_ADC_TRIGGER_CTL, RR_ADC_TRIGGER_CTL);
-+	ret = regmap_set_bits(chip->regmap,
-+			      chip->base + RR_ADC_BATT_ID_TRIGGER,
-+			      RR_ADC_TRIGGER_CTL);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "BATT_ID trigger set failed:%d\n", ret);
- 		goto out_disable_batt_id;
-@@ -500,12 +498,12 @@ static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
- 	ret = rradc_read_status_in_cont_mode(chip, chan_address);
- 
- 	/* Reset registers back to default values */
--	regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_TRIGGER,
--			   RR_ADC_TRIGGER_CTL, 0);
-+	regmap_clear_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_TRIGGER,
-+			  RR_ADC_TRIGGER_CTL);
- 
- out_disable_batt_id:
--	regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
--			   RR_ADC_BATT_ID_CTRL_CHANNEL_CONV, 0);
-+	regmap_clear_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
-+			  RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
- 
- 	return ret;
- }
-@@ -965,9 +963,9 @@ static int rradc_probe(struct platform_device *pdev)
- 
- 	if (batt_id_delay >= 0) {
- 		batt_id_delay = FIELD_PREP(BATT_ID_SETTLE_MASK, batt_id_delay);
--		ret = regmap_update_bits(chip->regmap,
--					 chip->base + RR_ADC_BATT_ID_CFG,
--					 batt_id_delay, batt_id_delay);
-+		ret = regmap_set_bits(chip->regmap,
-+				      chip->base + RR_ADC_BATT_ID_CFG,
-+				      batt_id_delay);
- 		if (ret < 0) {
- 			dev_err(chip->dev,
- 				"BATT_ID settling time config failed:%d\n",
 
 -- 
 2.45.2
