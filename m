@@ -1,63 +1,63 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2040.outbound.protection.outlook.com [40.107.21.40])
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2045.outbound.protection.outlook.com [40.107.15.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0176619ADAD
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 18:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B547818EFEA
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 18:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718647383; cv=fail; b=RS7HRkPbgVPbSUOwJA3hb1EtQ8BOS8SnNCcKf/vGBw+PUMzPur26y7/G6Un5sr3ErhiN3AetbPpHq02nXZN9f4wz/3pehTnzz3Opsk6MvhaygfJWf+paMo/lUIqXBAHcqFhN2Kw/kz+DSbIRT0e/7OZKnkqxdDi7BgdVibYQ4og=
+	t=1718648073; cv=fail; b=TPn2cGnEXDINTtMaagKVGrinBJFrn1yGKbC2Vvx8seMy+Cq2IKxcUNQvnr0whv6dBNsbx6yff6DxFF5VvZvQEcifq3W+VdgvvV/BV8LkBXQMc0g26u/MFRG9Vq6ohxsOIOUDmLJ4QoOS+vFReKnguDU8pGelk/Epgg9GLDUZZoI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718647383; c=relaxed/simple;
-	bh=1sTDjxtBNCYgA010Dk3F/8eEkxfKsEvZRLCSRcz/n/o=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=b5WUEb+ZAQqjVeZVnKreAmn0gRFy3u7KKpXJFR1zg9j+fjIuvxqZgcTHdCJoHkgSj53NTJsHrjP8DvuT93xlE3tmc6jaDgKtlPPsVaX2E4WW3K3ZtwJ5FuQXxrEvChcB81PKMl8Mxmx/1qyWVEGaqOSGscF/1atCqvNVqXbRcTo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Oc8S0ZQP; arc=fail smtp.client-ip=40.107.21.40
+	s=arc-20240116; t=1718648073; c=relaxed/simple;
+	bh=H+aHSUzbpRS4U+KoI38qAZJXF80R9PFNBX5Pq9f16p8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=uKFPam2v9Pox2N6qUF0GZv83/Hdc5H3MZ833878TWdY+NAp4hGYlyubqbf9bdoRIRMsvobmvKMPA19AERBZh4/8F2XZfU3R7gHL4RhSQfwtuVCxZ3L5jJhiOJToGduLrkcpmTDz9+rUbxdWOqJS7PKrr6ZTRKWChhnLwCMc+C78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ayuXjJOH; arc=fail smtp.client-ip=40.107.15.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Oc8S0ZQP"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ayuXjJOH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fykxPq/U/nl8Fl2QzbHBjJwrBtYarNvll3ey+Ze9emc2MBIptu4mcPVFAM3akuVDKDVUxamWby7NwJFSW/15T3c7ti48TPkW5/5XOOBoIqdZyJLO3+HHPVOhKdmmvKOFGgd8niI57R7dF6t2tVlmNwArdVxe0gwFWi4Gwg7jGSczSjkXrLMMtNprnlSjcTVz+DXqHuuicHJF3JQLRW4gbWSYem5uZJgzoTSqys4FGbdR0/1IeSmOg+KgXJCl/z/WDmHqIJOQuHLCU5wKolQ2bONfad6YXzH1WaWKs91bvFfHbXiipgEBkNzoVh/Pw7EJXrxvvt70TcGtxHUiD5IfXw==
+ b=eWLhlZtm1o22LVfk2wcXnct6lk7YDHK8EasXCeTnGmyFd50zjNP+eQQeYXs8ldukn/6EcQQwQPUYCg9hRI8W7arTzgLk6U4yCMzC0q9/X4064fajD/d/oKtBqeGx718j24cZ/i6Q+nYHYKGPqPM2ohpMjvQQcuAqry8PlFYyb0nb9chb8qyKUrDEEWEkJdcCDb/bM/ocYlPOOKWlFLy788JuR6YSzjFxtEx92365frqQFj6ujqfEJe2qND+pFyaBKGy995TC4/VKqxbC9lyTYShXNLm8ejS82s8yndc5VLwSyv8JJ2C87nfOtronTbF3FDWWwz1L2Sk+KKQMyhPAyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oZhflHKkhPx1x+CqBA76QfJJ4EN9TwtIEAuyXSjIkBI=;
- b=oevF8XH/gfifZpwkn4i8aOL8BsY3arngEiQjRkBPzHOJOUW8lNdsxv58+mHiw/gJqaNB0glP8AzkPRePp3YmotB7wPB15HASm4FUP2IF2HEwcGycj3niciIjMzIzPxs2Ok0wILHdlY4xhEG2hI8iCjxa9YeNWUxifO03gudVfCArEyFdngj7UrdNFAU7alExjgFz5sinLVkkHxYvGA/s92av6qyM/t1y9DJnMgg+iPXIKUkyJ4gjmVA0RWWZcCuKR+K4JjhJTuebKHieIvGViKZUfJCeB338HVvzhFl6cppsafPhyJMSTPpWMcllnO+5F3aRR6YeBQfYQyq5ODfs+g==
+ bh=dINiiACI9aH8Z7Ebxj6ToYvFW57CtN+hV8eiaNHoh4k=;
+ b=eszISDC9G2bnADnxDm4SieSY6VKuPN4Uyw/d6Z9Uux5EzBaMr0hUKI2VZPoxG9o4HFnytc1d34FJTjGKnkz/EEZfK4aCr+uS/9nbkBwJn/mZ/x/FbMhnDsrXyoJUqXbOhf7eSehkIoAPRcLjlMrsiWzXPGbpPOY/5RmS7Vh7r8hE+FgfgEu7WZ1LsfxIwfAYU++2l7Tywj83nPh7cR9lRrgSKBs6jMrrBW8CxkhwEVPoQ8Kgm6c0ZK2+K0VOc+CfdbcNeHXrbvA3DI4I1KCEZ0STlOQ1vYapJRNt/VgHaV3NL8za0LETKoL+eOwsV6lyx2pyMvBJSSOtbwd/w9O0Ow==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oZhflHKkhPx1x+CqBA76QfJJ4EN9TwtIEAuyXSjIkBI=;
- b=Oc8S0ZQPB9G5lG1al04zf260UMHMLbTrf/9GIPrPT9Snmerd23i3UYrvJHNl6aWSLTG4QJQvGRGd7p/RegmPIWQG4nq0KlDWNlqBFNMKN+vvEvUqMkWJZfpKGWMGsagzspyPNKfIw0QXieHZUKgAAK63g6mvjRPaJbf/GMIov/8=
+ bh=dINiiACI9aH8Z7Ebxj6ToYvFW57CtN+hV8eiaNHoh4k=;
+ b=ayuXjJOHUiEwvweO1nqpN6xn+VaFk+3VFOTsKuqr+EOmZqljMdeFvQuYndIHB6siJ1nNBW2qjgz+tivNnXYAbY9FdHNlvOI5XtwAvbf3M9kvy44yWNSFIMJ8H4wQwpnQnstX6ARUoyKuuHIor9gFbvZzJgII/EnaluyyJNZwfWQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS5PR04MB9972.eurprd04.prod.outlook.com (2603:10a6:20b:682::12) with
+ by VI1PR04MB7022.eurprd04.prod.outlook.com (2603:10a6:800:126::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Mon, 17 Jun
- 2024 18:02:57 +0000
+ 2024 18:14:26 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7677.030; Mon, 17 Jun 2024
- 18:02:57 +0000
+ 18:14:26 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)),
+	linux-clk@vger.kernel.org (open list:COMMON CLK FRAMEWORK),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: ata: ahci-fsl-qoriq: convert to yaml format
-Date: Mon, 17 Jun 2024 14:02:40 -0400
-Message-Id: <20240617180241.901377-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: clock: qoriq-clock: convert to yaml format
+Date: Mon, 17 Jun 2024 14:14:09 -0400
+Message-Id: <20240617181410.921090-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY5PR20CA0020.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR07CA0048.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -66,184 +66,614 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9972:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9db0494a-91d3-4a64-9a62-08dc8ef7b7d9
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB7022:EE_
+X-MS-Office365-Filtering-Correlation-Id: 379b6d2f-8d95-48a4-2af7-08dc8ef95277
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|376011|1800799021|52116011|366013|38350700011;
+	BCL:0;ARA:13230037|52116011|376011|1800799021|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WTBgkwG2ZFTpeQMMZCAu4gi8SUN/VZywLl0B9gbRAfy6482+RTCFLuzwes8i?=
- =?us-ascii?Q?QLUNztxfctuEikUNBT52rXPJ5xJMMyMiIH+5Xz+IJjwfBbj7l4jF8WYp8OxE?=
- =?us-ascii?Q?u1YCiINHbfCjQNGrp1cqAwWqxGUUyQfQ0u0ivw8WKocdYfQMCPnFhVmX2Lxz?=
- =?us-ascii?Q?yeJVdlQoP8csUWO6RXWjSas9mETJXDLk8230hehmIlwHzyswDbLBvsktOXJL?=
- =?us-ascii?Q?Hzwy/O4Cvy+JO0VHKh8qWJMCdmcyhpWJHFTwB3u/gRhHOxINhPFshFA6P7Hk?=
- =?us-ascii?Q?xTeBQ4Wm4oLaqA85hp5hPTrjStVyPYpv/ugrgm0FlSTC7Mf9yvOnPEDqR6yo?=
- =?us-ascii?Q?o4FA1Z4afBSB/3kwArRtlMkOP3qSvYV2DDLht/8zbfmixTX0qsi7XssDjivz?=
- =?us-ascii?Q?CH+YYJXxKJu4R6eY5JLMfzZwRpsBlyBgvoVD1kEPnRLpGXOOSclVHQeF0Q3q?=
- =?us-ascii?Q?F91BCqK5nB3ZJTXmdhHtiCBGIR3xEN1r6pw9KEIKyR9WxgvYcgUGn3m/pz8P?=
- =?us-ascii?Q?UmfxzN2ceOf+bRG2gAhMPIp6nsMHcJae2fIBoIp8wnmLmwVD6QjsPAcBKYj+?=
- =?us-ascii?Q?7qkt1QO6nnbqM63GIB4D1K6ULtTuj7Za0rxjXMsbQ9jbkJYYeiYnhRM9RS8x?=
- =?us-ascii?Q?H5SAehOdFrBb15B4/mDk8fu4jbPT81iMzQzBlqyKnlI/0BJzeM7aEy4nJlle?=
- =?us-ascii?Q?8umdTMmNZN8r/DYwNv3EYYVLQe29QNlu5WbxnB9jhI5GFZW+BXEtWoOXeWfx?=
- =?us-ascii?Q?mwZzrLRmGIMmkfeU7P0yCIZ/Fu41zhtBB9AEmGLPww/I6+1NhY86rilTsu4O?=
- =?us-ascii?Q?ku1Esi+fNeaJwGNucEOPxiP5PNCXKENfsWUWdTW5rykewwvu1HnoJ9QHD0Qw?=
- =?us-ascii?Q?ddAZIdlFjBLG2/t4ZiWEj/BIC32FKDYHip1FnZb5N2I6hvDZNje7HXE4YWu9?=
- =?us-ascii?Q?v0kk9eOnzl31t02mpOuMv06scXtI3MJCn/CIJx21pyOfRsmkKjIJxX0q+s1j?=
- =?us-ascii?Q?OopFsPanQZIpvJIKfFRYxs7ErVqZlWPkCsrK2J5PGGVFovC6156TMLo4z/z0?=
- =?us-ascii?Q?SUnEkKFFo8WO+ujS6pmNbTyxtna+U6Ii1RyE4slvUFmXTSslqiH1E6x30GTB?=
- =?us-ascii?Q?qFAiDmOhM/dKOotlPet8athR0XE9sr704BnWwLo/K+RVJD9wams/3GqWZrrX?=
- =?us-ascii?Q?YAQdg89Vyyy1wmUaVv4Pw3zqwAJRmTcEuiWDiIf5XDNT9GR0PYG1kSQc7UwJ?=
- =?us-ascii?Q?PgMUjd3snmCy3ohZ7kwvy78NDOv2Vb/+T/wgL2zjIoOMrAg1QagkblbHb6+A?=
- =?us-ascii?Q?qJhG69iF3oog8UHgS70cB3fx?=
+	=?us-ascii?Q?rW76Tv+f6ipw0frVfPm3h7ck+ir8tHTOYSqeWqW4y0hDFecry7FUhRoQ+G5P?=
+ =?us-ascii?Q?FsOz9zQajnCuZDrCCe7aMVR7lLrHOD1r1fmJFPcnNDJRhoT7OzdEKIojcClw?=
+ =?us-ascii?Q?Rb9YS+m2QuOYtKLBgL/yPJMyV5fCo6DPVK930vZ2FW8bnXOPZ4zod6+YlsE5?=
+ =?us-ascii?Q?/dssSGl81aaOiQJX/IFVeHrIJZiaobYTdUH4jf+szkLFf3BlIj0/zy3Jz0+z?=
+ =?us-ascii?Q?AjLNHB7CCjr+pvLfaOrJkHOUQ4QnQneXHXFyPhGQrRIyjU+WOVcRWZ+i52rW?=
+ =?us-ascii?Q?1pLZ01VHesEQq9hNy7D68S4zB8pIge12VzygqgmDx4+MuB0X9JMoECp1+i4+?=
+ =?us-ascii?Q?PcDfyg0bSWnMt5EPr5JsvW6hvYe7a+PC0hutckPv95QVRSYW4mleYnZ4sL5R?=
+ =?us-ascii?Q?DpGKAQRE3m7xyonlSxOQCebbRPuK1UDZ7Wx30nETKxTHwwIZntUWYpYH6DBK?=
+ =?us-ascii?Q?qGG9VcP7/87/sZDIK7wvQg2ClwdecFmjnvPT3sK0LudM93rQcGIRl4uB1WCV?=
+ =?us-ascii?Q?1KyJjR1dY/vEO6sWhGsXdTjRmjGZ3lYsjuETL8dG94k6z2Y1eDbCRG0vJCly?=
+ =?us-ascii?Q?0Hq7FHRrg1DqnOkpi4v7izJ3zoluOiBdVtDGd7UI1yltF+k3J3YoI/uhC32f?=
+ =?us-ascii?Q?I8GEVQdttfbYwPXbluxvtU2y91FT41H0/QJJUH5NFoZh6Xgq67/IVO7Pf/V6?=
+ =?us-ascii?Q?3gS/icp6v7mZzqBPzTHVA8gZblCWpektFULuhO6zKSTina83kf9IrFLsvpLp?=
+ =?us-ascii?Q?JHA2321fcYN+wlSEVA6oO6Uf3fQLqxMLLw7DhxbLp10L/Ca5I0dpZ2GzGB5f?=
+ =?us-ascii?Q?zkiaZsZzEzLmP1Jxml+9dgUPZ63RjwDRZgg6O2zbW3AhaaYAwhy22lQ2EmT/?=
+ =?us-ascii?Q?iOVtlRY3qrhtV+v7x19Sh+GNpZECGody1J3htwcIQyBRhKNtJy15fX7dTkDu?=
+ =?us-ascii?Q?wNKmPbWs8vsVA6I93PbORBnJDyAJ297iQjlBSf0sQ4Yqw31l8e5CoxiLbsGS?=
+ =?us-ascii?Q?Y53JgduGNyzXl4+LosEtPhpjq550O/0Ufz2npKkmD7EJFclYBi2yMIC2ffTW?=
+ =?us-ascii?Q?IY+G9JcL8q7vllSeo4g82RKLjWtfoV7/L3tnV0vg2wNUUD4ctIMnmTj0ooeh?=
+ =?us-ascii?Q?bQwYe7O/F98DXRPhn1GeMdWC5WhZHbGLlu22vKt4glzO2Mqu72PnCfC7q+rp?=
+ =?us-ascii?Q?3nKp+mkjbZ7Qh6rilhgNL4DpIzajPfyquWGKuERuBZzDoXuBRdUeRVb2tPQc?=
+ =?us-ascii?Q?HAzxgx/0Pj8S4epoXJM+u1AN1yTQPprQxTo6QILuQEQYy89M1NIQhctEC+FG?=
+ =?us-ascii?Q?0xzhIbEec5+V9Nwyx70zej5U?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(1800799021)(52116011)(366013)(38350700011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(52116011)(376011)(1800799021)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2QTO5YP0pzsMWDp3c7v8T5XbFRB/9Diw9sbEizwlsPZw7Px5QK9t3WIKMyry?=
- =?us-ascii?Q?/ZhXwKY6/fl/P4bG6yK2JkHawRxaLI9p6+sa3AZu6ub9YCanlyIRn+tpiBBd?=
- =?us-ascii?Q?fb42A+19s3LxzuA/O6qRrIFHqsAGRpDToeUOV9n4p05RaMcoiJovQJnz3KIi?=
- =?us-ascii?Q?+N4BWaxXBX3UtBfE4uCCPf5vsWJ9FuDm0yu+nAD5B6mr8uBH2Qf+DtE1lWQU?=
- =?us-ascii?Q?56Zx3tubnNKgXjXvWyEnBPxtCKdvCwtJexX2VT1etY+9k7Ku6CYXiboYD1cU?=
- =?us-ascii?Q?Je+KzTEn6Xg39JiDS2sTJh4fUs5FgibGR1Hcw0mIQBg1EVKReBb/PHzjiRoq?=
- =?us-ascii?Q?DeH+H8o3WCXi49mjQjtX05f5wG3YzPKAPP8ybovTs8qDAgR0By4gJ37ahksy?=
- =?us-ascii?Q?VvWvtlF11KZ1URavIzn3qF2eOL255qEbJuSoZI/4EMEABsdzspJQWSNmNaP9?=
- =?us-ascii?Q?3vL++lqAk+mrVie16OFrbPAiC4Ij9YC8rRhoiRrRdpjsjdA6oKLeKbT+UBx5?=
- =?us-ascii?Q?zeBqaL4a9A5GQlXX6LKwgpLctcL2RJZKkyCrFNzKJGibfzkJRUErderHZHWw?=
- =?us-ascii?Q?+vojTfdkPXntS+5r/GQz6Zmpt/yF8X2AVxqWN3jn59kIHXi1lKTh4Xa0C7Xe?=
- =?us-ascii?Q?2lQomokIAF0xEpO+LP9S1Yi1gIxr5fAzHUdfQ8G4C4xhiZuxjuQmeaS8e7ep?=
- =?us-ascii?Q?ZKDKvEWYUzdtSi+q/NIvSrfEK1agcQzRGuoX3osJzk6/vS+2cg7SXAJRJ0+o?=
- =?us-ascii?Q?Q8BLGAmtSQPXqsuVmAvJfXD0B5Ju7s0dOYY8H/0Gb9aZbklcaYHh2Ky5oyfQ?=
- =?us-ascii?Q?V6JVJy+eUDEC9cG4yEJzgf7r582rMMquhZhmc/0PHcB5ElGIxIVU0o/rOIBa?=
- =?us-ascii?Q?9nAXBJTbrNpD1KrgTlbzWmGWhd9WyfYu5l7GRFg7aNtK2ujygUEV/+MyUmmK?=
- =?us-ascii?Q?UAnKNRv3moY+JnSKhRf7QujkL0ooWZovtj0e1zYLVz1f0RHEX/kEL2nMLjA/?=
- =?us-ascii?Q?ku3V//KxnDpowmCol8ydx2cU5nZz3RyvfOy2wdXTUxIdyLWRKx3rZvrE4jmY?=
- =?us-ascii?Q?cdOi7Lweb1L6AQZmWs6Umnxm3PH2dTCgGUXcnQt59FzpNOqNQGCKlcNSJEqK?=
- =?us-ascii?Q?TCv6rUBMY7bitX2TJKVIP79PDorcZdaved+itYJm766/791OhlBBrC7haZX9?=
- =?us-ascii?Q?fQPY9CgwxTmO0eDiN5k8hyGZpONIcMTXpYTPVJLMMyZyJUwFu1mwh2JDQkP6?=
- =?us-ascii?Q?fRrdhTMhT1Ekq0MTtWeXKrGjsbpByrUB30HPKpxFpAv66rbdaCMwSU3kYAND?=
- =?us-ascii?Q?PKOOEqPBEjonuu2jW6nTVl81SXFpuWrPJmwAaQhLQKU48xqZalu2nNTKFN9p?=
- =?us-ascii?Q?1FaPqGWrH13fpJF9G58VCS+ibIjLe2Bdih36oLERNJh4jljimp+Br+vc2c5w?=
- =?us-ascii?Q?xMmR/kS2lQw5T+DiwwketkLUJGQUg2PnWwvXuRFrex9hSRaboLbVUN45qiyG?=
- =?us-ascii?Q?DrjPaNZwHQ3AipEf1cIhGoT11t+uPObzrlX98cJSWT7E+eUgKHqU9Ur5cSR/?=
- =?us-ascii?Q?Awy39qKaMdXq1jxNHCZ1dBUKVmKWA/xJIkUs5nmh?=
+	=?us-ascii?Q?E+K38Eg4HVcYnmJKLF7OO/AvLoEM2OmsJj0FZjuBjgqXF+QOSlaB4vrMLSuH?=
+ =?us-ascii?Q?en5RmpBzuaBS7batqFuKHPMfjKnsMHfzof1y3Er0tu2+31ZobxliBoZfH1B8?=
+ =?us-ascii?Q?CpVuFKZNRL7ab9q/JLAQdaVnpmWSGOiBVHRvQ9DNIhz0TW2mUrWYEyKrebd1?=
+ =?us-ascii?Q?PW2mLieT2ulaccAQSkiSCEhYS+BpGH1m2VdUc4yoHuMYYz2nSrL9n60DHOn0?=
+ =?us-ascii?Q?VeM+1JgPz5KEUERoqD1vTJsxMa+rvRiFVI4l6cRI+nNYWUi08mpVf1zfj1+B?=
+ =?us-ascii?Q?hD/lgFVOo7RlfERaio631xfgS/Lv+QA5kSkcBQgapn+yVgRibmHsiVtRgjzP?=
+ =?us-ascii?Q?Lr0YO17W88wteS7b3b/KEkQxKgTMQU1kFdsJuboOl/gIIw8mA/uDvUFvNnRL?=
+ =?us-ascii?Q?H7ormCbtcqauuS5msfUWdQTYfxyjGqAfqNUw3Cx1+gLVzGMrIRcYpizq88FU?=
+ =?us-ascii?Q?yQvlS43IAgoA4LdpWE74nkUFYcJp1pq4Yo4fbedzzelKAV/kRvA6ZtPmMXs8?=
+ =?us-ascii?Q?p78xGG/xhH/eqB9B9TQYZkBoOOY4g76AmTdB5uGW9MP73oHNUgVhJi2nm6PE?=
+ =?us-ascii?Q?OvfI1cW+3Zeb2cVv+mXKp+Cv7+T7RQayCI62tY9T711txFb7dZJEQjAA0B+M?=
+ =?us-ascii?Q?4p33jljkIAmqyH/W1tvlAgQxGwlSiOKbzHinZtaAhCQf1iDgxMc9CPzQ6XKk?=
+ =?us-ascii?Q?4Sd9nxF3ZM42D4o/GLttGefAeFdYLEnDGVcy42Vxlpv63IJXq37IuyjqHgDN?=
+ =?us-ascii?Q?sUBx5t6moGYhTjRXbAOnMEJu9FhLWZVGGJ/y9avsIGMTdtnip0+ZtGD4Apef?=
+ =?us-ascii?Q?QNVhIcxRmsV3CK0wzTliHqs1TXYWjdVc1xfs8aixjayNCXIAXrK829XMvNQZ?=
+ =?us-ascii?Q?6RI50XdF88bqNtAeXQHCWpo6gIncPYsBUHuZKNxjzLlKUn9EvJ9B6MW1+OZl?=
+ =?us-ascii?Q?BhqXQBavp9mkVce35qCKQ8eCkJY/0TybXmrd4MCwFJhQWfw6kEn1LGg0sVCy?=
+ =?us-ascii?Q?Bx2pj4r4COwZE52Zd3VepND9RktBWRifr10/bUsgd0wbsdxSOPBmzcINhhjo?=
+ =?us-ascii?Q?w46IYDrWCnF7XSm32Kn9ovnmE7eqsZjCa0mPTau4NxtXxJYPmylqBn30M/lC?=
+ =?us-ascii?Q?HyQlvua0X4wknYNq9yltKlh7dbnJeYv6i2epRHey4LhjX8P/2fuRnAMTyz/p?=
+ =?us-ascii?Q?kBfOW6O/0KI0AqXxg7INDtxflpnJQS5UjmUlIX3AJLVwLhy4itApPHuMNPiy?=
+ =?us-ascii?Q?8CwQS3GM/Z3v3odhixTvDtsaOXTUAcM19iX1bZ0WJVLh9g9DiMs7VgPCKT2r?=
+ =?us-ascii?Q?WHE0+QFOA3UrAPa/A9VDT9BRMhgUDIf1kSXjBzdkHTnIfKd3kDh1EtnmhepJ?=
+ =?us-ascii?Q?fhpwAAH3SK85BFBuw08J7caxhhhwV2CkiMn+41kg+wwC4OP2XFs70i8gJUkI?=
+ =?us-ascii?Q?VVnyMiAevZAM0tYkmPG5N4UEM/Ab8XPEk/mP5VtwLK8o3U0qDAPOuMWFUBcI?=
+ =?us-ascii?Q?vx18hfWGe8TC/MirVaOmupgINloQ1Yby0eAnP/8sPnLNDqOhroEm39ltrEne?=
+ =?us-ascii?Q?5s2l5YQDLbr1IALOdps=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9db0494a-91d3-4a64-9a62-08dc8ef7b7d9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 379b6d2f-8d95-48a4-2af7-08dc8ef95277
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 18:02:57.4034
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 18:14:26.4069
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kb2t2SVAC4rb4yiwkasrhJSBdceG9ftMJoIUa38IzIZ/CkaiTJQShQkhOAjrLMMTVrZRQBSKGktIhgM8FMmpIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9972
+X-MS-Exchange-CrossTenant-UserPrincipalName: OHJ/00Z3BdJj1IeScMES4CobCyunQLuAYYVRSiByoWBOGXJYOlA3teqUB3IYifTpIyrusjwu9wIU92Nj2HPHlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7022
 
-Convert ahci-fsl-qoirq DT binding to yaml format.
+Convert qoria-clock DT binding to yaml format. Split to two files
+qoriq-clock.yaml and qoriq-clock-legancy.yaml.
 
-Additional changes:
-- Add reg-names list, ahci and sata-ecc
-- Add fsl,ls1028a-ahci and fsl,lx2060a-ahci
+Addtional change:
+- Remove clock consumer part in example
+- Fixed example dts error
+- Deprecated legancy node
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../bindings/ata/ahci-fsl-qoriq.txt           | 21 -------
- .../devicetree/bindings/ata/fsl,ahci.yaml     | 58 +++++++++++++++++++
- 2 files changed, 58 insertions(+), 21 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt
- create mode 100644 Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+ .../clock/fsl,qoriq-clock-legacy.yaml         |  84 +++++++
+ .../bindings/clock/fsl,qoriq-clock.yaml       | 203 +++++++++++++++++
+ .../devicetree/bindings/clock/qoriq-clock.txt | 212 ------------------
+ 3 files changed, 287 insertions(+), 212 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml
+ delete mode 100644 Documentation/devicetree/bindings/clock/qoriq-clock.txt
 
-diff --git a/Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt b/Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt
-deleted file mode 100644
-index 7c3ca0e13de05..0000000000000
---- a/Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt
-+++ /dev/null
-@@ -1,21 +0,0 @@
--Binding for Freescale QorIQ AHCI SATA Controller
--
--Required properties:
--  - reg: Physical base address and size of the controller's register area.
--  - compatible: Compatibility string. Must be 'fsl,<chip>-ahci', where
--    chip could be ls1021a, ls1043a, ls1046a, ls1088a, ls2080a etc.
--  - clocks: Input clock specifier. Refer to common clock bindings.
--  - interrupts: Interrupt specifier. Refer to interrupt binding.
--
--Optional properties:
--  - dma-coherent: Enable AHCI coherent DMA operation.
--  - reg-names: register area names when there are more than 1 register area.
--
--Examples:
--	sata@3200000 {
--		compatible = "fsl,ls1021a-ahci";
--		reg = <0x0 0x3200000 0x0 0x10000>;
--		interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&platform_clk 1>;
--		dma-coherent;
--	};
-diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+diff --git a/Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml
 new file mode 100644
-index 0000000000000..162b3bb5427ed
+index 0000000000000..97b96a1a58254
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-@@ -0,0 +1,58 @@
++++ b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml
+@@ -0,0 +1,84 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/ata/fsl,ahci.yaml#
++$id: http://devicetree.org/schemas/clock/fsl,qoriq-clock-legacy.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale QorIQ AHCI SATA Controller
++title: Legacy Clock Block on Freescale QorIQ Platforms
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
 +
++description: |
++  These nodes are deprecated.  Kernels should continue to support
++  device trees with these nodes, but new device trees should not use them.
++
++  Most of the bindings are from the common clock binding[1].
++  [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
++
 +properties:
 +  compatible:
 +    enum:
-+      - fsl,ls1021a-ahci
-+      - fsl,ls1043a-ahci
-+      - fsl,ls1028a-ahci
-+      - fsl,ls1088a-ahci
-+      - fsl,ls2080a-ahci
-+      - fsl,lx2160a-ahci
++      - fsl,qoriq-core-pll-1.0
++      - fsl,qoriq-core-pll-2.0
++      - fsl,qoriq-core-mux-1.0
++      - fsl,qoriq-core-mux-2.0
++      - fsl,qoriq-sysclk-1.0
++      - fsl,qoriq-sysclk-2.0
++      - fsl,qoriq-platform-pll-1.0
++      - fsl,qoriq-platform-pll-2.0
 +
 +  reg:
-+    minItems: 1
-+    maxItems: 2
-+
-+  reg-names:
-+    items:
-+      - const: ahci
-+      - const: sata-ecc
-+    minItems: 1
++    maxItems: 1
 +
 +  clocks:
++    minItems: 1
++    maxItems: 4
++
++  clock-names:
++    minItems: 1
++    maxItems: 4
++
++  clock-output-names:
++    minItems: 1
++    maxItems: 8
++
++  '#clock-cells':
++    minimum: 0
++    maximum: 1
++
++required:
++  - compatible
++  - '#clock-cells'
++
++additionalProperties: false
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - fsl,qoriq-sysclk-1.0
++              - fsl,qoriq-sysclk-2.0
++    then:
++      properties:
++        '#clock-cells':
++          const: 0
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - fsl,qoriq-core-pll-1.0
++              - fsl,qoriq-core-pll-2.0
++    then:
++      properties:
++        '#clock-cells':
++          const: 1
++          description: |
++            * 0 - equal to the PLL frequency
++            * 1 - equal to the PLL frequency divided by 2
++            * 2 - equal to the PLL frequency divided by 4
++
+diff --git a/Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml
+new file mode 100644
+index 0000000000000..d641756b04635
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml
+@@ -0,0 +1,203 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/fsl,qoriq-clock.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Clock Block on Freescale QorIQ Platforms
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++
++description: |
++
++  Freescale QorIQ chips take primary clocking input from the external
++  SYSCLK signal. The SYSCLK input (frequency) is multiplied using
++  multiple phase locked loops (PLL) to create a variety of frequencies
++  which can then be passed to a variety of internal logic, including
++  cores and peripheral IP blocks.
++  Please refer to the Reference Manual for details.
++
++  All references to "1.0" and "2.0" refer to the QorIQ chassis version to
++  which the chip complies.
++
++  Chassis Version    Example Chips
++  ---------------    -------------
++       1.0      p4080, p5020, p5040
++       2.0      t4240, b4860
++
++  Clock Provider
++
++  The clockgen node should act as a clock provider, though in older device
++  trees the children of the clockgen node are the clock providers.
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - fsl,p2041-clockgen
++          - fsl,p3041-clockgen
++          - fsl,p4080-clockgen
++          - fsl,p5020-clockgen
++          - fsl,p5040-clockgen
++          - fsl,t1023-clockgen
++          - fsl,t1024-clockgen
++          - fsl,t1040-clockgen
++          - fsl,t1042-clockgen
++          - fsl,t2080-clockgen
++          - fsl,t2081-clockgen
++          - fsl,t4240-clockgen
++          - fsl,b4420-clockgen
++          - fsl,b4860-clockgen
++          - fsl,ls1012a-clockgen
++          - fsl,ls1021a-clockgen
++          - fsl,ls1028a-clockgen
++          - fsl,ls1043a-clockgen
++          - fsl,ls1046a-clockgen
++          - fsl,ls1088a-clockgen
++          - fsl,ls2080a-clockgen
++          - fsl,lx2160a-clockgen
++      - enum:
++          - fsl,qoriq-clockgen-1.0
++          - fsl,qoriq-clockgen-2.0
++    minItems: 1
++
++  reg:
 +    maxItems: 1
 +
-+  interrupts:
-+    maxItems: 1
++  ranges: true
 +
-+  dma-coherent: true
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 1
++
++  '#clock-cells':
++    const: 2
++    description: |
++      The first cell of the clock specifier is the clock type, and the
++      second cell is the clock index for the specified type.
++
++        Type#  Name       Index Cell
++        0  sysclk          must be 0
++        1  cmux            index (n in CLKCnCSR)
++        2  hwaccel         index (n in CLKCGnHWACSR)
++        3  fman            0 for fm1, 1 for fm2
++        4  platform pll    n=pll/(n+1). For example, when n=1,
++                          that means output_freq=PLL_freq/2.
++        5  coreclk         must be 0
++
++  clock-frequency:
++    description: Input system clock frequency (SYSCLK)
++
++  clocks:
++    items:
++      - description:
++          sysclk may be provided as an input clock.  Either clock-frequency
++          or clocks must be provided.
++      - description:
++          A second input clock, called "coreclk", may be provided if
++          core PLLs are based on a different input clock from the
++          platform PLL.
++    minItems: 1
++
++  clock-names:
++    items:
++      - const: sysclk
++      - const: coreclk
++
++patternProperties:
++  '^mux[0-9]@[a-f0-9]+$':
++    deprecated: true
++    $ref: fsl,qoriq-clock-legacy.yaml
++
++  '^sysclk+$':
++    deprecated: true
++    $ref: fsl,qoriq-clock-legacy.yaml
++
++  '^pll[0-9]@[a-f0-9]+$':
++    deprecated: true
++    $ref: fsl,qoriq-clock-legacy.yaml
++
++  '^platform\-pll@[a-f0-9]+$':
++    deprecated: true
++    $ref: fsl,qoriq-clock-legacy.yaml
 +
 +required:
 +  - compatible
 +  - reg
-+  - clocks
-+  - interrupts
++  - '#clock-cells'
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    sata@3200000 {
-+        compatible = "fsl,ls1021a-ahci";
-+        reg = <0x3200000 0x10000>;
-+        interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&platform_clk 1>;
-+        dma-coherent;
++    /* clock provider example */
++    global-utilities@e1000 {
++        compatible = "fsl,p5020-clockgen", "fsl,qoriq-clockgen-1.0";
++        reg = <0xe1000 0x1000>;
++        clock-frequency = <133333333>;
++        #clock-cells = <2>;
 +    };
++
++  - |
++    /* Legacy example */
++    global-utilities@e1000 {
++        compatible = "fsl,p5020-clockgen", "fsl,qoriq-clockgen-1.0";
++        reg = <0xe1000 0x1000>;
++        ranges = <0x0 0xe1000 0x1000>;
++        clock-frequency = <133333333>;
++        #address-cells = <1>;
++        #size-cells = <1>;
++        #clock-cells = <2>;
++
++        sysclk: sysclk {
++            compatible = "fsl,qoriq-sysclk-1.0";
++            clock-output-names = "sysclk";
++            #clock-cells = <0>;
++        };
++
++        pll0: pll0@800 {
++            compatible = "fsl,qoriq-core-pll-1.0";
++            reg = <0x800 0x4>;
++            #clock-cells = <1>;
++            clocks = <&sysclk>;
++            clock-output-names = "pll0", "pll0-div2";
++        };
++
++        pll1: pll1@820 {
++            compatible = "fsl,qoriq-core-pll-1.0";
++            reg = <0x820 0x4>;
++            #clock-cells = <1>;
++            clocks = <&sysclk>;
++            clock-output-names = "pll1", "pll1-div2";
++        };
++
++        mux0: mux0@0 {
++            compatible = "fsl,qoriq-core-mux-1.0";
++            reg = <0x0 0x4>;
++            #clock-cells = <0>;
++            clocks = <&pll0 0>, <&pll0 1>, <&pll1 0>, <&pll1 1>;
++            clock-names = "pll0", "pll0-div2", "pll1", "pll1-div2";
++            clock-output-names = "cmux0";
++        };
++
++        mux1: mux1@20 {
++            compatible = "fsl,qoriq-core-mux-1.0";
++            reg = <0x20 0x4>;
++            #clock-cells = <0>;
++            clocks = <&pll0 0>, <&pll0 1>, <&pll1 0>, <&pll1 1>;
++            clock-names = "pll0", "pll0-div2", "pll1", "pll1-div2";
++            clock-output-names = "cmux1";
++        };
++
++        platform-pll@c00 {
++            #clock-cells = <1>;
++            reg = <0xc00 0x4>;
++            compatible = "fsl,qoriq-platform-pll-1.0";
++            clocks = <&sysclk>;
++            clock-output-names = "platform-pll", "platform-pll-div2";
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/clock/qoriq-clock.txt b/Documentation/devicetree/bindings/clock/qoriq-clock.txt
+deleted file mode 100644
+index 10119d9ef4b11..0000000000000
+--- a/Documentation/devicetree/bindings/clock/qoriq-clock.txt
++++ /dev/null
+@@ -1,212 +0,0 @@
+-* Clock Block on Freescale QorIQ Platforms
+-
+-Freescale QorIQ chips take primary clocking input from the external
+-SYSCLK signal. The SYSCLK input (frequency) is multiplied using
+-multiple phase locked loops (PLL) to create a variety of frequencies
+-which can then be passed to a variety of internal logic, including
+-cores and peripheral IP blocks.
+-Please refer to the Reference Manual for details.
+-
+-All references to "1.0" and "2.0" refer to the QorIQ chassis version to
+-which the chip complies.
+-
+-Chassis Version		Example Chips
+----------------		-------------
+-1.0			p4080, p5020, p5040
+-2.0			t4240, b4860
+-
+-1. Clock Block Binding
+-
+-Required properties:
+-- compatible: Should contain a chip-specific clock block compatible
+-	string and (if applicable) may contain a chassis-version clock
+-	compatible string.
+-
+-	Chip-specific strings are of the form "fsl,<chip>-clockgen", such as:
+-	* "fsl,p2041-clockgen"
+-	* "fsl,p3041-clockgen"
+-	* "fsl,p4080-clockgen"
+-	* "fsl,p5020-clockgen"
+-	* "fsl,p5040-clockgen"
+-	* "fsl,t1023-clockgen"
+-	* "fsl,t1024-clockgen"
+-	* "fsl,t1040-clockgen"
+-	* "fsl,t1042-clockgen"
+-	* "fsl,t2080-clockgen"
+-	* "fsl,t2081-clockgen"
+-	* "fsl,t4240-clockgen"
+-	* "fsl,b4420-clockgen"
+-	* "fsl,b4860-clockgen"
+-	* "fsl,ls1012a-clockgen"
+-	* "fsl,ls1021a-clockgen"
+-	* "fsl,ls1028a-clockgen"
+-	* "fsl,ls1043a-clockgen"
+-	* "fsl,ls1046a-clockgen"
+-	* "fsl,ls1088a-clockgen"
+-	* "fsl,ls2080a-clockgen"
+-	* "fsl,lx2160a-clockgen"
+-	Chassis-version clock strings include:
+-	* "fsl,qoriq-clockgen-1.0": for chassis 1.0 clocks
+-	* "fsl,qoriq-clockgen-2.0": for chassis 2.0 clocks
+-- reg: Describes the address of the device's resources within the
+-	address space defined by its parent bus, and resource zero
+-	represents the clock register set
+-
+-Optional properties:
+-- ranges: Allows valid translation between child's address space and
+-	parent's. Must be present if the device has sub-nodes.
+-- #address-cells: Specifies the number of cells used to represent
+-	physical base addresses.  Must be present if the device has
+-	sub-nodes and set to 1 if present
+-- #size-cells: Specifies the number of cells used to represent
+-	the size of an address. Must be present if the device has
+-	sub-nodes and set to 1 if present
+-- clock-frequency: Input system clock frequency (SYSCLK)
+-- clocks: If clock-frequency is not specified, sysclk may be provided
+-	as an input clock.  Either clock-frequency or clocks must be
+-	provided.
+-	A second input clock, called "coreclk", may be provided if
+-	core PLLs are based on a different input clock from the
+-	platform PLL.
+-- clock-names: Required if a coreclk is present.  Valid names are
+-	"sysclk" and "coreclk".
+-
+-2. Clock Provider
+-
+-The clockgen node should act as a clock provider, though in older device
+-trees the children of the clockgen node are the clock providers.
+-
+-When the clockgen node is a clock provider, #clock-cells = <2>.
+-The first cell of the clock specifier is the clock type, and the
+-second cell is the clock index for the specified type.
+-
+-	Type#	Name		Index Cell
+-	0	sysclk		must be 0
+-	1	cmux		index (n in CLKCnCSR)
+-	2	hwaccel		index (n in CLKCGnHWACSR)
+-	3	fman		0 for fm1, 1 for fm2
+-	4	platform pll	n=pll/(n+1). For example, when n=1,
+-				that means output_freq=PLL_freq/2.
+-	5	coreclk		must be 0
+-
+-3. Example
+-
+-	clockgen: global-utilities@e1000 {
+-		compatible = "fsl,p5020-clockgen", "fsl,qoriq-clockgen-1.0";
+-		clock-frequency = <133333333>;
+-		reg = <0xe1000 0x1000>;
+-		#clock-cells = <2>;
+-	};
+-
+-	fman@400000 {
+-		...
+-		clocks = <&clockgen 3 0>;
+-		...
+-	};
+-}
+-4. Legacy Child Nodes
+-
+-NOTE: These nodes are deprecated.  Kernels should continue to support
+-device trees with these nodes, but new device trees should not use them.
+-
+-Most of the bindings are from the common clock binding[1].
+- [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+-
+-Required properties:
+-- compatible : Should include one of the following:
+-	* "fsl,qoriq-core-pll-1.0" for core PLL clocks (v1.0)
+-	* "fsl,qoriq-core-pll-2.0" for core PLL clocks (v2.0)
+-	* "fsl,qoriq-core-mux-1.0" for core mux clocks (v1.0)
+-	* "fsl,qoriq-core-mux-2.0" for core mux clocks (v2.0)
+-	* "fsl,qoriq-sysclk-1.0": for input system clock (v1.0).
+-		It takes parent's clock-frequency as its clock.
+-	* "fsl,qoriq-sysclk-2.0": for input system clock (v2.0).
+-		It takes parent's clock-frequency as its clock.
+-	* "fsl,qoriq-platform-pll-1.0" for the platform PLL clock (v1.0)
+-	* "fsl,qoriq-platform-pll-2.0" for the platform PLL clock (v2.0)
+-- #clock-cells: From common clock binding. The number of cells in a
+-	clock-specifier. Should be <0> for "fsl,qoriq-sysclk-[1,2].0"
+-	clocks, or <1> for "fsl,qoriq-core-pll-[1,2].0" clocks.
+-	For "fsl,qoriq-core-pll-[1,2].0" clocks, the single
+-	clock-specifier cell may take the following values:
+-	* 0 - equal to the PLL frequency
+-	* 1 - equal to the PLL frequency divided by 2
+-	* 2 - equal to the PLL frequency divided by 4
+-
+-Recommended properties:
+-- clocks: Should be the phandle of input parent clock
+-- clock-names: From common clock binding, indicates the clock name
+-- clock-output-names: From common clock binding, indicates the names of
+-	output clocks
+-- reg: Should be the offset and length of clock block base address.
+-	The length should be 4.
+-
+-Legacy Example:
+-/ {
+-	clockgen: global-utilities@e1000 {
+-		compatible = "fsl,p5020-clockgen", "fsl,qoriq-clockgen-1.0";
+-		ranges = <0x0 0xe1000 0x1000>;
+-		clock-frequency = <133333333>;
+-		reg = <0xe1000 0x1000>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+-		sysclk: sysclk {
+-			#clock-cells = <0>;
+-			compatible = "fsl,qoriq-sysclk-1.0";
+-			clock-output-names = "sysclk";
+-		};
+-
+-		pll0: pll0@800 {
+-			#clock-cells = <1>;
+-			reg = <0x800 0x4>;
+-			compatible = "fsl,qoriq-core-pll-1.0";
+-			clocks = <&sysclk>;
+-			clock-output-names = "pll0", "pll0-div2";
+-		};
+-
+-		pll1: pll1@820 {
+-			#clock-cells = <1>;
+-			reg = <0x820 0x4>;
+-			compatible = "fsl,qoriq-core-pll-1.0";
+-			clocks = <&sysclk>;
+-			clock-output-names = "pll1", "pll1-div2";
+-		};
+-
+-		mux0: mux0@0 {
+-			#clock-cells = <0>;
+-			reg = <0x0 0x4>;
+-			compatible = "fsl,qoriq-core-mux-1.0";
+-			clocks = <&pll0 0>, <&pll0 1>, <&pll1 0>, <&pll1 1>;
+-			clock-names = "pll0", "pll0-div2", "pll1", "pll1-div2";
+-			clock-output-names = "cmux0";
+-		};
+-
+-		mux1: mux1@20 {
+-			#clock-cells = <0>;
+-			reg = <0x20 0x4>;
+-			compatible = "fsl,qoriq-core-mux-1.0";
+-			clocks = <&pll0 0>, <&pll0 1>, <&pll1 0>, <&pll1 1>;
+-			clock-names = "pll0", "pll0-div2", "pll1", "pll1-div2";
+-			clock-output-names = "cmux1";
+-		};
+-
+-		platform-pll: platform-pll@c00 {
+-			#clock-cells = <1>;
+-			reg = <0xc00 0x4>;
+-			compatible = "fsl,qoriq-platform-pll-1.0";
+-			clocks = <&sysclk>;
+-			clock-output-names = "platform-pll", "platform-pll-div2";
+-		};
+-	};
+-};
+-
+-Example for legacy clock consumer:
+-
+-/ {
+-	cpu0: PowerPC,e5500@0 {
+-		...
+-		clocks = <&mux0>;
+-		...
+-	};
+-};
 -- 
 2.34.1
 
