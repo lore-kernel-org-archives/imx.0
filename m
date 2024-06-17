@@ -1,103 +1,106 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4833353AD;
-	Mon, 17 Jun 2024 11:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846B4186E56;
+	Mon, 17 Jun 2024 11:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718622781; cv=none; b=hdlniXP4VK8do3voz4dyUOCLkEsxwcmoyvj5ePVZC3f92151w2DWUv4KU+9IkWAkfqQk5eyxYOVLCPQVifWvd428a2hMuPq1lnIkwc7WiFsmYc8YbQj7IlFrN9fZNeEwUsWOOYxe9k4cjUjJJZGlh0D8tZ5YocMJvfoa4DDLYNk=
+	t=1718625004; cv=none; b=Ig7/of5LBSQErcoSBAbSfFxKZYH1Ly1EmLI5JkgodDZx28VezLKmOhfnE49ak5H9Xt8ZqYtWfpGUX4/GpzOKBGbUJTkjCP559JNOrFycFyMJGYDQ7i3zy3tKib+tHdH80NDLLGUP1G1Ijqejfjzvc3+aOlX/kntmbIqg15h1HL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718622781; c=relaxed/simple;
-	bh=/L6WYMxSMfjTIoWr9t9k/aRtdxtiTotpKJC0bwZmths=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QQ6eArwe209nA8HCxisb4g27/6U77kCRUxwER4oBdXXM47p6XjOor6Io32ymM9se4tvDt78W7cUAxRP7OQIwsRSHQ/+EMk9GYkOsTbFxbFVnFcMevUFi7h1DSQ4eQu4FmEW7X3UNgplQsl9L/WhqUYANdyrRVVg1+KuFgoC1r5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=TWun6Tz0; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1718625004; c=relaxed/simple;
+	bh=OqoQ6ZxH5cHIMs3+jLFrcIOTsDPqWQXiXFgsGcvQtmc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+vmeHhTWobZGRqrmhNT6BADkBav8/Ug/KLosFKyINYMveYCmZ++9H5R5Qbw9ZyYD5CPf6Me3GLv0+NeXuMeHApPm4ZEI6V/Fs/34aXVpzY3rmePJVQkqHjWkwcU+gEQsnjw3Po/LCeTeeCuSX8blPvwxSbPhlHgkxBmuWtSDsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpA8sHn4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="TWun6Tz0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1718622778;
-	bh=/L6WYMxSMfjTIoWr9t9k/aRtdxtiTotpKJC0bwZmths=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TWun6Tz0mrFyu0Doh3GSFs5086lVufoWIuFjkxiKsPZHUQOo5/kxB2MOvTdkHoK4M
-	 l4YUhTOvHS6iKdIwIxJr+SYFYE4R3tSubri3gpAKeg6QauwUwxk8RGrhWTgKsJRkga
-	 WmuEAq1gxUD4FXTikNClu2mpX/GqqqZR9v0VNhWXWVooGlwaZSnITzWYVtrWMAdY/Q
-	 Gc1Sy3KP5c8iVAVzEodL3ey7mM4zKdz2E7c0MAl9n4oWfGTO9aciNFSPuXhlGTSJ4A
-	 mnRmhAVp0wQ90eRATO9s4OC6Pw0gg5PJ3Gn/yeXaoaNP+Ktue2EHgnAsiuTtPDUH6E
-	 goMQ1PX6AMUzA==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 42DB93780480;
-	Mon, 17 Jun 2024 11:12:55 +0000 (UTC)
-Message-ID: <33aac6a0-7bdf-48d3-bf79-0f3bf60394f2@collabora.com>
-Date: Mon, 17 Jun 2024 13:12:54 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpA8sHn4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710F0C2BD10;
+	Mon, 17 Jun 2024 11:49:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718625004;
+	bh=OqoQ6ZxH5cHIMs3+jLFrcIOTsDPqWQXiXFgsGcvQtmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HpA8sHn4I/uwMAoESG+goOFTmifzrpBQCu9dGkOqZXt8LYQqIz5QC28pY7Sf0V0im
+	 Rg3jeH3eikunEuigeTgUzbTZ+0Imva19O0s2muNxA4UevqUFDN3pgh2gkZqiPaumdk
+	 vcSLpVPa9akY/UIDqIsvq5tskgFgDB2P4D3sgld14Q56O303qkj5x6nQhfEvRRQi4M
+	 Gk0JUzOUemjLwycr4PfdBBZYJkpP7j747BOm1btJ2rnG35Qrq2fQkzKmtodhX7c5Fi
+	 Hx77E015tcScm9SmYjLY9TNQ7XuuFlhEtg/818x62PvlE5UBoaSBkrYLy4pAeurPpG
+	 nK8oyrEht/AUQ==
+Date: Mon, 17 Jun 2024 12:49:46 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
+Message-ID: <440bb6fa-2e26-4a64-8c53-bebf706a1079@sirena.org.uk>
+References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/22] dt-bindings: thermal: simplify few bindings
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Guillaume La Roque <glaroque@baylibre.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Vasily Khoruzhick <anarsoul@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Anson Huang <Anson.Huang@nxp.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Amit Kucheria <amitk@kernel.org>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Heiko Stuebner <heiko@sntech.de>, Biju Das <biju.das.jz@bp.renesas.com>,
- Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Pascal Paillet <p.paillet@foss.st.com>, Keerthy <j-keerthy@ti.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>,
- zhanghongchen <zhanghongchen@loongson.cn>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
- linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Florian Fainelli <f.fainelli@gmail.com>,
- linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
- <20240614-dt-bindings-thermal-allof-v1-21-30b25a6ae24e@linaro.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20240614-dt-bindings-thermal-allof-v1-21-30b25a6ae24e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Il 14/06/24 11:46, Krzysztof Kozlowski ha scritto:
-> Simplify few bindings which already reference thermal-sensor.yaml schema
-> by dropping unneeded requiring of '#thermal-sensor-cells' and dropping
-> assigned-clocks properties (core schema allows it if 'clocks' are
-> there).
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jfSjzlj0zX5Rl/R2"
+Content-Disposition: inline
+In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
+X-Cookie: Life is the urge to ecstasy.
 
 
+--jfSjzlj0zX5Rl/R2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jun 17, 2024 at 08:58:28AM +0200, Krzysztof Kozlowski wrote:
+> Emails to Anson Huang bounce:
+>=20
+>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access den=
+ied.
+>=20
+> Add IMX platform maintainers for bindings which would become orphaned.
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--jfSjzlj0zX5Rl/R2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZwItoACgkQJNaLcl1U
+h9D5Wwf/Q7ZtAKp5HRIsqeh8PBxnOEEF8ljY8bCew6Q7rvMXTsxiI2WXFX0ykufr
+bDY0Ho5rMIUGwQf/F1v+q6ZS6TEUbnawVgxkKBRJTDeK8Uxs9bXPSfCu8oZY888f
+YzPOYmhnDVtIWvoHZFUO6klplmBwPYQn3WqXYi4M2eap2IHsTxAUrrcyiL4uLVAG
+yqNRTuUyg4+YAkj/te942l7M/obYkf3Nxb/1HM3vZypXDeUhg+ubgr3TKF8LRpg3
+LBmfcA+m586XLOoQUPbLcilqogjAJuokkNwNMia0ny9IINWjZ6izZ/1Oe/fCnHSn
+vX0livBtYHzSS6lauBj/V6L4gSTz+w==
+=b38n
+-----END PGP SIGNATURE-----
+
+--jfSjzlj0zX5Rl/R2--
