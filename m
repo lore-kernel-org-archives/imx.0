@@ -1,60 +1,60 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6EA1D0F49
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8711D0F7C
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632269; cv=none; b=MQVa8U8ODurcBrbGvDaH3/y48pNHwDs97JQRweyrejeGJ5UYZQV6glhpQ/X384vB8xItLZcLJw3dh/1CRebUICGte114Km7DND6Qi6fC7oUEzInXLtRTO4HtATEu4ZMin6U+cHOOb+Iv9BFO3HPcly+SeCU6AFTQy/aVNKk5oCs=
+	t=1718632270; cv=none; b=sxgoi6k4djDsj0c9WAXP/7saYIWXCLzyWPvz90ARqgpvbvQuaaemzDd7vRqjlnUB/r6fT9siZNoH8akjQH3cjtAjhOLHZ1AtP5aeot4Ua0PI46H99tosqqek7e+HqQlIeyEQ0qgAk3LOxcaBlpqATOdgVAmIP7EUN6YCWg/XBt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632269; c=relaxed/simple;
-	bh=Sz6h2pKfKvBPze6AioYNagC/2euAAaKQFjYWGhnXEKM=;
+	s=arc-20240116; t=1718632270; c=relaxed/simple;
+	bh=lrT4UVJxbYPigfpUfvDqNd6ndl1eVcIzUfVJ/1QCCbs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QsLpJfe/whHqN6fG5AB3LCb7X2sLjoSUp3IbIUIk8WSRrEvFe81EpBeO36DBvQ6dFBnsCUQFEsy55VjKJ/OQlgNSQ7E9cGT+QovmUIsBdlFIcblROgszN2O19FrT5CEIbuAcjLCuTL/w5HAwi5YHIOn0Xci31QfSL3VVg1YOsAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KQAd0JGn; arc=none smtp.client-ip=209.85.222.174
+	 In-Reply-To:To:Cc; b=Gexd6DaQRSmu6B0nW0TMi1C+InTI4G0Ylhd2sB0np1XYsZKILuKPfBaKA7IfoxgL2bz/WAF/MUMHPpxl95KdhkeHiBhF7wcjpVpIXipZl/hP1cTaOTJYWQrIoBX0E0mFDx2PtQr7esU7d+dWtyCdZ9mPqljtLRWCRSP4S4YwrKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uhrf5dnT; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KQAd0JGn"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7954f8b818fso290940285a.1
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:51:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uhrf5dnT"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4405743ac19so37286281cf.0
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:51:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632266; x=1719237066; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632268; x=1719237068; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=79Hx9GfOVVYusy8xA5eoh/JX07K+FfT35u2XbTC3DMc=;
-        b=KQAd0JGnJwy3pflNn4XR4GMSVq/0CHuRFznBqw72SMPmmShD+0t4z0G51XSFcQQyms
-         2jbC89tMQ2d7A8WlX07KoQqWWHueZSY2s3+vAfeF2z2ZAC7j/jpqAlLaZrTx3vMO5Ldo
-         BC0pgYmcDfqHtbImtCft3zEshI4ZzPjJ5ZMbMx2MYchiPiAS7zDkhDvyZpoYaE58QmXm
-         ajc9vRzEf3H+cAkfBfXi/dEjiIwR6zgyX8yVm3GcfX0ASvH2YAo9BRnsR9uFYOWPNOYl
-         pvoanB1M1EwwX0/ncuzPAWRkHlM1FqBSSYOXLvvZIM50FcrqIBY/79QDDmU04MBFCpZ8
-         8S0g==
+        bh=Tvabn+RMpG3uovvK1+JaZOuuhTQ0Y5v5qxh3XvN8Rq8=;
+        b=uhrf5dnTx3rixb8Cg7Q6gyozegVsF9weTzhR5HTPOSO8zZJRljUamPoXtsZ/vRoIu9
+         wfWrzXHwr8oOKCH3hIFF/lT+JkxLq++sj1/nYr94M636+Vl+U7vy1c4MSBU9SAMHf+7Y
+         e9JBBJMhnZXb3RLLwsWJOemlBKXwonx3IWyrnVSW/ZRi7UrmanfFuhF8wuFMpOHQ/fh6
+         ZviXu3oAENTyZUn/9QrKDpfoXvoPTKbPqFIeVlrHE6/UthVJF4I//I/r7wIobNzN5u4z
+         hkvO7RRS2J9/YCSJ1cXZtvJDu+BZfKexxnu/V4H26kwNnxeaKn6f0cCBziMJgGQ5TPIt
+         q4Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632266; x=1719237066;
+        d=1e100.net; s=20230601; t=1718632268; x=1719237068;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=79Hx9GfOVVYusy8xA5eoh/JX07K+FfT35u2XbTC3DMc=;
-        b=orczv2IxFbO9+am1EmzxesGfir45PcurZj2m3uyi0Ss8ps7EKhXf145m+1dEQGXJMP
-         glAI+6s2uAOEVqp7vOdC4u6B0Q+2POI/ArBuNu7ZiVVYWs67FZaP6xnUx0DzmgltUADa
-         0X4QlC5TUejtoDMAue8sf7lru9Kwfmp1M+g9O5isP/4zFe28d3msu43ZZNN/ryqsd3gZ
-         /TqoinZFzOHwUVe16knWwxYPUuDnvXZQLrnJeM9qYS5y8qQAQ0MdlwnqypJJs+LI45jh
-         DtIJ8c27m31872o+91StVmFWtJt1S54cKcdG6GgbTxxnVZf08Wrm6pGz1I9Hu83/fYiD
-         aAmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVawH3BLgoOMrTuHv2U5dpthPYkiDOZcFFPCC0FWN1nc/1xkh0TV62IZ05foZVmeKUxIltHOr0vOX7/GHlRf3vEZary
-X-Gm-Message-State: AOJu0Yw+ub3AC2rlwqS6fMq2CYhceeqtg2+7aF0P54PMT5p4S3Xci8CI
-	yMwBf+gEZ2J24vBqSZA7hR9VxB6lEKvOsR1rbBMxMNqxkreDZ9ySRZ71ktUDi5o=
-X-Google-Smtp-Source: AGHT+IEx2KbRAk7Gdof/baHhrw8Y3qRBi2Hyio6LTg74NUhbwR1HRET1Zcy3yDqPrTQiSKqEfswRkA==
-X-Received: by 2002:a05:620a:1a86:b0:795:5d6f:8bbd with SMTP id af79cd13be357-798d26a4644mr1303274985a.73.1718632266285;
-        Mon, 17 Jun 2024 06:51:06 -0700 (PDT)
+        bh=Tvabn+RMpG3uovvK1+JaZOuuhTQ0Y5v5qxh3XvN8Rq8=;
+        b=jlI13QKM0NapINE0j60I1mgiul/FozxXgih3HHwXlad/vlDi73KHbTLJZyYnGFzQfK
+         HTCovl393XiY0rztnFcvhVgzeDV0CXTOf6K+8sBpinHDjZBd5bGH1meeyHXjAWkSi5QB
+         ure3ZJpWNjOb0cJTJ2fnR4757BClJuO3Zb5CPrTvUbKRP9Kx5mz2rmbriqqCvANddziw
+         kceUGJ1JL8k2d+qQTsc+/eDzYpke66FjxF+sYWLGIFtltSSk2DsJutNwf0iJ/o3dc/jw
+         iv5U4J543I7JikyLn9yTAJXob7DWErdYz0uTaQllObwBF/FBuJH7Vj3YOH9IxvPLhj2G
+         SUjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVB86gc5lZ3BfVFWJ5Mm+b87C0PH8L/DeJ1tpYucoivaofoB0Ci3Jc33kBTNpgM5pkOKQcbbMiB9m8Y0gNx+doe1wt4
+X-Gm-Message-State: AOJu0Yx0tfozmjzCcBs1a9C0bF4FZYacUZqUp95KrP4b4cdyQMwLSmXs
+	wwIxtZVHqPpOsjoHQtUuOF4oMV9qqR+EFI2gxqnm7v3Bkd7Wb+Fa5kBx5bVd/2I=
+X-Google-Smtp-Source: AGHT+IGCNTX7XI85nrdMwm8HgjdhSBF2upAbofRDQ4N0lo0/7MseIEDdacRNTzR/tFRJhwns3PxO2A==
+X-Received: by 2002:ac8:71d7:0:b0:442:198e:cb9 with SMTP id d75a77b69052e-442198e0e4bmr132788711cf.27.1718632268400;
+        Mon, 17 Jun 2024 06:51:08 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.51.04
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.51.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:51:06 -0700 (PDT)
+        Mon, 17 Jun 2024 06:51:08 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:50:18 -0400
-Subject: [PATCH v3 38/41] iio: proximity: sx9500: make use of
+Date: Mon, 17 Jun 2024 09:50:19 -0400
+Subject: [PATCH v3 39/41] iio: proximity: sx_common: make use of
  regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-38-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-39-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -107,53 +107,35 @@ regmap_clear_bits().
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/proximity/sx9500.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iio/proximity/sx_common.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
-index 550e7d3cd5ee..49f4ccd8a5c4 100644
---- a/drivers/iio/proximity/sx9500.c
-+++ b/drivers/iio/proximity/sx9500.c
-@@ -209,7 +209,7 @@ static int sx9500_inc_users(struct sx9500_data *data, int *counter,
- 		/* Bit is already active, nothing to do. */
+diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+index fe07d1444ac3..a95e9814aaf2 100644
+--- a/drivers/iio/proximity/sx_common.c
++++ b/drivers/iio/proximity/sx_common.c
+@@ -111,17 +111,16 @@ static int sx_common_enable_irq(struct sx_common_data *data, unsigned int irq)
+ {
+ 	if (!data->client->irq)
  		return 0;
- 
--	return regmap_update_bits(data->regmap, reg, bitmask, bitmask);
-+	return regmap_set_bits(data->regmap, reg, bitmask);
+-	return regmap_update_bits(data->regmap, data->chip_info->reg_irq_msk,
+-				  irq << data->chip_info->irq_msk_offset,
+-				  irq << data->chip_info->irq_msk_offset);
++	return regmap_set_bits(data->regmap, data->chip_info->reg_irq_msk,
++			       irq << data->chip_info->irq_msk_offset);
  }
  
- static int sx9500_dec_users(struct sx9500_data *data, int *counter,
-@@ -220,7 +220,7 @@ static int sx9500_dec_users(struct sx9500_data *data, int *counter,
- 		/* There are more users, do not deactivate. */
+ static int sx_common_disable_irq(struct sx_common_data *data, unsigned int irq)
+ {
+ 	if (!data->client->irq)
  		return 0;
- 
--	return regmap_update_bits(data->regmap, reg, bitmask, 0);
-+	return regmap_clear_bits(data->regmap, reg, bitmask);
+-	return regmap_update_bits(data->regmap, data->chip_info->reg_irq_msk,
+-				  irq << data->chip_info->irq_msk_offset, 0);
++	return regmap_clear_bits(data->regmap, data->chip_info->reg_irq_msk,
++				 irq << data->chip_info->irq_msk_offset);
  }
  
- static int sx9500_inc_chan_users(struct sx9500_data *data, int chan)
-@@ -795,8 +795,8 @@ static int sx9500_init_compensation(struct iio_dev *indio_dev)
- 	int i, ret;
- 	unsigned int val;
- 
--	ret = regmap_update_bits(data->regmap, SX9500_REG_PROX_CTRL0,
--				 SX9500_CHAN_MASK, SX9500_CHAN_MASK);
-+	ret = regmap_set_bits(data->regmap, SX9500_REG_PROX_CTRL0,
-+			      SX9500_CHAN_MASK);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -815,8 +815,8 @@ static int sx9500_init_compensation(struct iio_dev *indio_dev)
- 	}
- 
- out:
--	regmap_update_bits(data->regmap, SX9500_REG_PROX_CTRL0,
--			   SX9500_CHAN_MASK, 0);
-+	regmap_clear_bits(data->regmap, SX9500_REG_PROX_CTRL0,
-+			  SX9500_CHAN_MASK);
- 	return ret;
- }
- 
+ static int sx_common_update_chan_en(struct sx_common_data *data,
 
 -- 
 2.45.2
