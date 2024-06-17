@@ -1,61 +1,61 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D031BE251
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC32C1BE867
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632214; cv=none; b=ZM+pON5XwPIXXrUOazC8dJr2iNMkk4Po+OanQ8IdCbGoBDspLrpj1xyix9cefxra+rLB1dTdd4um7IRVOKP+z88/mlEGJniIjHnX2xw8TnZ4LhQHYEFTEK3JLYAcP86lX+4sznWvVrkY+KWQ1OJTP+mDhLtq2D+My/wcn7lg43k=
+	t=1718632216; cv=none; b=mGVBhs8EIePGehVgUiKFEy7o8YFbDRx68A4mHk5OYihEbnpCcZQtfOow+DoulbKaUN+XEm2fCvL4VFjCXWOs+aKFonVywgCK+ooXXvySLqWpRDOKYz5aI9Q6bup9VkpMPV2phbu9EJ934vt4tD2gnB7RZDN8S+DIc7qHsZATdHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632214; c=relaxed/simple;
-	bh=38T/q5mgwk2j8HZtXOQWhbPXZHF8GM5UZOsgQFkjGgQ=;
+	s=arc-20240116; t=1718632216; c=relaxed/simple;
+	bh=4gIRZ/vu50pKU4o1TP9QUC/IjjrHpbnZ1GOSjHAMZ4M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ADQ6ydBUyBtGFGPpjKqstFnpCxtxUpSu/bZkgwuBLQEQ+gUpLtQNhLFMNpO4+0YSmsX1QvT2XLOR9sOI3THCMsAUIrUT2rm/CHV+teWE/e4+OasjZ4rdScBVGjRpcztzGrqE4JMlaeI7tW9tNAt1JUMogquvlZ6eNbKvvukdgAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nW2tcAEN; arc=none smtp.client-ip=209.85.222.170
+	 In-Reply-To:To:Cc; b=KZvOHeAimwLmmq+TCa2i99lxwiHzSCvBtI5eqDRC6PBXUKNXQAEnl2Fx4vgMKqpW+s9uoamA2u2De8riCCEoc9mQXhyV8ePbm/Uqd8XocE+rDiMzBYmMNvJR5demjQiZ0VBWPeYH8PMUCBT4RWDTRoi1KdG5E8cOCMy19Oe4prg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BOGbkqc/; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nW2tcAEN"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-795fb13b256so419698985a.0
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BOGbkqc/"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7955aaf8006so368493685a.1
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632210; x=1719237010; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632213; x=1719237013; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=DyBlb3Ba1k/jlth0MsPpVigCEg60zHZmfggBIvSR+YQ=;
-        b=nW2tcAENVEBHC/1gauVGo39DPWdQ/pwdQipa+VqZUW6UaguTikYn4BGDmIiqxw4i3Y
-         joXyzOmT4QNHpZuD3gIqvbzBq8UsWPKKew2xIFze2Ox94NVBg6nBdzWHG2KQ0/2HWNoX
-         MgdjxoXxmZ0+GQ2eInZfZ/rmsiG+Np4OEn37UxwnG7W1/KHQXnLVytU5PNIjwWdFi5xr
-         lmjs2a/TxB2Gm2sU6EuojaTEcInCUBeCtdpQxhHBxaXKIzARXl+KVaOFHeTuEQ0VYz/5
-         6jGhzgcfJBEl1YhTO5t1PbtNRnUY+madsaxO9PYiZk2sGjci9T63W4SrWUUh76sG0Twj
-         b14A==
+        bh=KXJIaHqTfmpNhZnTE583n/Ec2b/3cyzD9UXAylu36IA=;
+        b=BOGbkqc/0PySLk4At20sO7V9yYPrXcx9KbY3R4PZGb77lyST1Uf/eJBQCZmsgBiQje
+         nOAhXTaLSXNdtZuwre+lH/A51qF6GFeacIzOJM0zRb2TJQtd/VyDqKk6DgHLWEH53jr8
+         AT6np24jHmeQyeWP6b+cRFbOb9FSSyZduxiKbuthC6rvDvJlQNxQnZSWgB1OELvkpZPa
+         8o+x5D7MWtbbKFIxXGwmgwfYIY3nMbYBypghFerUvMzBkFI+OyWTGqFFTZWjRT9fJTkS
+         7QAPGRBPyDNi9z7JwnJiTXVrp/9WS5egBXUKzP+RXLS24ve+dLMH2fMfy5bKwaLdJ2Pv
+         c7JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632210; x=1719237010;
+        d=1e100.net; s=20230601; t=1718632213; x=1719237013;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DyBlb3Ba1k/jlth0MsPpVigCEg60zHZmfggBIvSR+YQ=;
-        b=nahdY86f1DESMRZmsdzsvmN0s6IPuSSa4ajXlydz95219vdMn48WutTO4LDQVOsWF+
-         xnhBOK+4HXT0xgnCTIB8cVVYSPuM5NTyMVCWM+/WdGx2WsDvS0PzAnY375RYlshbxQBg
-         S7ikGuIZKWGcbe4UIYdMnOj30kAUUFKjPB/1QTJiUNBi2sXnJ+AK/aYR6Y6iN0rzgsSL
-         vlpJDXpMjQBLXFKH8UioaDT2gb+TY6mZlpfWELNXfkGNb2a6IQsZH2DDnqclVdHh85r2
-         LK6KbptF1lUpuWPpZixcILZ7hvdFXjwHwIPAGXzspg30P+x5Uegnhq3dRqaWhavodkkE
-         NX1w==
-X-Forwarded-Encrypted: i=1; AJvYcCVgyug8YiuGuVhNGvG0mIT/LntqrXBgygcwHULFAH45OyGo2nlIUHOXLKk0H8Xn5zRaiNNM/k+4kmkuQjm1wqKN6srb
-X-Gm-Message-State: AOJu0Yx/mvk4UjzKvMamc/qlhgxEal4QBxABWBraVaQYB2odRPwpmYtA
-	W1pVGn/3wPSCUeP/vLSnYi46DFN/c8qLAJFCv7EZGoyEtxviAquHZNqGcGUvbZ8=
-X-Google-Smtp-Source: AGHT+IHWmg+UOH3erM5jeRd6l80OV3UNPvKSawdtaAa099apOKn54lBrRboJnTNNmboBsmxvynve5Q==
-X-Received: by 2002:a05:620a:408a:b0:799:b171:b1fe with SMTP id af79cd13be357-799b171b5f4mr1409403885a.14.1718632210646;
-        Mon, 17 Jun 2024 06:50:10 -0700 (PDT)
+        bh=KXJIaHqTfmpNhZnTE583n/Ec2b/3cyzD9UXAylu36IA=;
+        b=CzmqFonrG/MvBya/LHnSd2fgplvnaNqXtbTYVocLTM18EYwdP83QhdknBBkqC/FDJ6
+         9wYMBw4H6IpZS/Vum0LhwtKWylGTmiy8StJvL37CH3u3PYpaK01HB0bX7wN6MKMHV8QN
+         zbHvnKcypJ6579IZEBmzNWfQ4tCyWswmzTOheQBpCXfOzPEmCXUV7FQCV5sskQ7h5rgx
+         CreKEDEi6LxGRH8E7SYFP7fV88qk/HogiX9RkEbHvFfp6zl9bIyBzFwHE/+Xt+y4plES
+         AMDbX/WOqC2r7F9qW5S2RGN/LRAQHs20XHC4cwaKTSDw7pcZ9uVSPRh9ud/hQ9tsDVQe
+         NeIA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAIfnKi/1Jm1Vl9y057zCccdYJRGCOqT9D5VZ1J3F6vFQvAVzUpEmDRv9aPsBRpacNuR3HAxnorrPqTPpjdleX7EHs
+X-Gm-Message-State: AOJu0YzWeYrSpP4gAxPgaxTG7XXl0aWNf6ASl3pg/ftPhs4xUOfk/ccw
+	oJ2xgiSr2TgT97UzA//Q+VZVfegtISQ38MQ8nR+odWtwJ6XahPs1FHKQUWSeHd8=
+X-Google-Smtp-Source: AGHT+IFE4+GjUcRvfBj86U5p9RlM1W0UrqMbwwjDZojT1mdFRj7PyY3udpb+reAC5jxDfHM60DBB3g==
+X-Received: by 2002:a05:620a:28c7:b0:797:8564:920a with SMTP id af79cd13be357-798d2413c45mr1111201285a.29.1718632212779;
+        Mon, 17 Jun 2024 06:50:12 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.08
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:10 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:12 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:52 -0400
-Subject: [PATCH v3 12/41] iio: adc: intel_mrfld_adc: make use of
- regmap_clear_bits()
+Date: Mon, 17 Jun 2024 09:49:53 -0400
+Subject: [PATCH v3 13/41] iio: adc: meson_saradc: make use of
+ regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-12-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-13-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -98,30 +98,213 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Trevor Gamblin <tgamblin@baylibre.com>
 X-Mailer: b4 0.13.0
 
+Instead of using regmap_update_bits() and passing the mask twice, use
+regmap_set_bits().
+
 Instead of using regmap_update_bits() and passing val = 0, use
 regmap_clear_bits().
 
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/intel_mrfld_adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/meson_saradc.c | 101 ++++++++++++++++++-----------------------
+ 1 file changed, 44 insertions(+), 57 deletions(-)
 
-diff --git a/drivers/iio/adc/intel_mrfld_adc.c b/drivers/iio/adc/intel_mrfld_adc.c
-index c7f40ae6e608..0590a126f321 100644
---- a/drivers/iio/adc/intel_mrfld_adc.c
-+++ b/drivers/iio/adc/intel_mrfld_adc.c
-@@ -81,8 +81,8 @@ static int mrfld_adc_single_conv(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 13b473d8c6c7..e16b0e28974e 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -546,35 +546,31 @@ static void meson_sar_adc_start_sample_engine(struct iio_dev *indio_dev)
  
- 	reinit_completion(&adc->completion);
+ 	reinit_completion(&priv->done);
  
--	regmap_update_bits(regmap, BCOVE_MADCIRQ, BCOVE_ADCIRQ_ALL, 0);
--	regmap_update_bits(regmap, BCOVE_MIRQLVL1, BCOVE_LVL1_ADC, 0);
-+	regmap_clear_bits(regmap, BCOVE_MADCIRQ, BCOVE_ADCIRQ_ALL);
-+	regmap_clear_bits(regmap, BCOVE_MIRQLVL1, BCOVE_LVL1_ADC);
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_FIFO_IRQ_EN,
+-			   MESON_SAR_ADC_REG0_FIFO_IRQ_EN);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			MESON_SAR_ADC_REG0_FIFO_IRQ_EN);
  
- 	ret = regmap_read_poll_timeout(regmap, BCOVE_GPADCREQ, req,
- 				       !(req & BCOVE_GPADCREQ_BUSY),
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE,
+-			   MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_SAMPLING_START,
+-			   MESON_SAR_ADC_REG0_SAMPLING_START);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			MESON_SAR_ADC_REG0_SAMPLING_START);
+ }
+ 
+ static void meson_sar_adc_stop_sample_engine(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_FIFO_IRQ_EN, 0);
++	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			  MESON_SAR_ADC_REG0_FIFO_IRQ_EN);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_SAMPLING_STOP,
+-			   MESON_SAR_ADC_REG0_SAMPLING_STOP);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			MESON_SAR_ADC_REG0_SAMPLING_STOP);
+ 
+ 	/* wait until all modules are stopped */
+ 	meson_sar_adc_wait_busy_clear(indio_dev);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE, 0);
++	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			  MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE);
+ }
+ 
+ static int meson_sar_adc_lock(struct iio_dev *indio_dev)
+@@ -586,9 +582,8 @@ static int meson_sar_adc_lock(struct iio_dev *indio_dev)
+ 
+ 	if (priv->param->has_bl30_integration) {
+ 		/* prevent BL30 from using the SAR ADC while we are using it */
+-		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
+-				   MESON_SAR_ADC_DELAY_KERNEL_BUSY,
+-				   MESON_SAR_ADC_DELAY_KERNEL_BUSY);
++		regmap_set_bits(priv->regmap, MESON_SAR_ADC_DELAY,
++				MESON_SAR_ADC_DELAY_KERNEL_BUSY);
+ 
+ 		udelay(1);
+ 
+@@ -614,8 +609,8 @@ static void meson_sar_adc_unlock(struct iio_dev *indio_dev)
+ 
+ 	if (priv->param->has_bl30_integration)
+ 		/* allow BL30 to use the SAR ADC again */
+-		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
+-				   MESON_SAR_ADC_DELAY_KERNEL_BUSY, 0);
++		regmap_clear_bits(priv->regmap, MESON_SAR_ADC_DELAY,
++				  MESON_SAR_ADC_DELAY_KERNEL_BUSY);
+ 
+ 	mutex_unlock(&priv->lock);
+ }
+@@ -869,17 +864,16 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 	 * disable this bit as seems to be only relevant for Meson6 (based
+ 	 * on the vendor driver), which we don't support at the moment.
+ 	 */
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
+-			   MESON_SAR_ADC_REG0_ADC_TEMP_SEN_SEL, 0);
++	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG0,
++			  MESON_SAR_ADC_REG0_ADC_TEMP_SEN_SEL);
+ 
+ 	/* disable all channels by default */
+ 	regmap_write(priv->regmap, MESON_SAR_ADC_CHAN_LIST, 0x0);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
+-			   MESON_SAR_ADC_REG3_CTRL_SAMPLING_CLOCK_PHASE, 0);
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
+-			   MESON_SAR_ADC_REG3_CNTL_USE_SC_DLY,
+-			   MESON_SAR_ADC_REG3_CNTL_USE_SC_DLY);
++	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG3,
++			  MESON_SAR_ADC_REG3_CTRL_SAMPLING_CLOCK_PHASE);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG3,
++			MESON_SAR_ADC_REG3_CNTL_USE_SC_DLY);
+ 
+ 	/* delay between two samples = (10+1) * 1uS */
+ 	regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
+@@ -914,21 +908,17 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_MUX_SEL_MASK,
+ 			   regval);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_XP_DRIVE_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_XP_DRIVE_SW);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
++			MESON_SAR_ADC_CHAN_10_SW_CHAN0_XP_DRIVE_SW);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_YP_DRIVE_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_YP_DRIVE_SW);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
++			MESON_SAR_ADC_CHAN_10_SW_CHAN0_YP_DRIVE_SW);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_XP_DRIVE_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_XP_DRIVE_SW);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
++			MESON_SAR_ADC_CHAN_10_SW_CHAN1_XP_DRIVE_SW);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_YP_DRIVE_SW,
+-			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_YP_DRIVE_SW);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
++			MESON_SAR_ADC_CHAN_10_SW_CHAN1_YP_DRIVE_SW);
+ 
+ 	/*
+ 	 * set up the input channel muxes in MESON_SAR_ADC_AUX_SW
+@@ -944,12 +934,10 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 	regmap_write(priv->regmap, MESON_SAR_ADC_AUX_SW, regval);
+ 
+ 	if (priv->temperature_sensor_calibrated) {
+-		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
+-				   MESON_SAR_ADC_DELTA_10_TS_REVE1,
+-				   MESON_SAR_ADC_DELTA_10_TS_REVE1);
+-		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
+-				   MESON_SAR_ADC_DELTA_10_TS_REVE0,
+-				   MESON_SAR_ADC_DELTA_10_TS_REVE0);
++		regmap_set_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
++				MESON_SAR_ADC_DELTA_10_TS_REVE1);
++		regmap_set_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
++				MESON_SAR_ADC_DELTA_10_TS_REVE0);
+ 
+ 		/*
+ 		 * set bits [3:0] of the TSC (temperature sensor coefficient)
+@@ -976,10 +964,10 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 					   regval);
+ 		}
+ 	} else {
+-		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
+-				   MESON_SAR_ADC_DELTA_10_TS_REVE1, 0);
+-		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
+-				   MESON_SAR_ADC_DELTA_10_TS_REVE0, 0);
++		regmap_clear_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
++				  MESON_SAR_ADC_DELTA_10_TS_REVE1);
++		regmap_clear_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
++				  MESON_SAR_ADC_DELTA_10_TS_REVE0);
+ 	}
+ 
+ 	regval = FIELD_PREP(MESON_SAR_ADC_REG3_CTRL_CONT_RING_COUNTER_EN,
+@@ -1062,9 +1050,8 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
+ 
+ 	meson_sar_adc_set_bandgap(indio_dev, true);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
+-			   MESON_SAR_ADC_REG3_ADC_EN,
+-			   MESON_SAR_ADC_REG3_ADC_EN);
++	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG3,
++			MESON_SAR_ADC_REG3_ADC_EN);
+ 
+ 	udelay(5);
+ 
+@@ -1079,8 +1066,8 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
+ 	return 0;
+ 
+ err_adc_clk:
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
+-			   MESON_SAR_ADC_REG3_ADC_EN, 0);
++	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG3,
++			  MESON_SAR_ADC_REG3_ADC_EN);
+ 	meson_sar_adc_set_bandgap(indio_dev, false);
+ 	regulator_disable(priv->vref);
+ err_vref:
+@@ -1104,8 +1091,8 @@ static void meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
+ 
+ 	clk_disable_unprepare(priv->adc_clk);
+ 
+-	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
+-			   MESON_SAR_ADC_REG3_ADC_EN, 0);
++	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG3,
++			  MESON_SAR_ADC_REG3_ADC_EN);
+ 
+ 	meson_sar_adc_set_bandgap(indio_dev, false);
+ 
 
 -- 
 2.45.2
