@@ -1,63 +1,177 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824CF3D6A
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 03:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718593266; cv=none; b=J/e0H8O56I9aITd4pievGpcF6j2Rs4dwfwRDWe2DARxw9AIzk0nAyvugi3AvTt7o2QUJKeHiOAW7Z9A8ieQwNbEoO5nc4J/34qqdD7Zkp+dadAVzuTe7lxS7F/LN6ucI47JtrVmmanl5NsimDNDIMgLpAxEMlo6jWgsX9+RDAfY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718593266; c=relaxed/simple;
-	bh=FfB7LZT6eKL1+i0+GK4vbUTf3Gkh+hb+wMYH8QTNqdA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAFp209bhjngAEh8Ix2ZuwPq0OHOpKJklhemfGTi/ccSuDxJ8YaFMFFiS3dXJlwA1ILz9HtsfYd0H0xnKAtK7GC6CWQltxDry1li0qUUqjH5CHKzT624ON1CVlhO94VPS0UsngyOov0eUkApKE6Z0kJVXfX2DuDhfWsC6psYDGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OG3+Oopv; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2052.outbound.protection.outlook.com [40.107.241.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3195D17C217
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 03:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718593372; cv=fail; b=LbKRnQzsBKy4WvXeKwx9XkSaLwldmcdNr7simuF3774OIoy+6zEfC4FN58My7VQ9/YvGr9Xqj7ZWw9ZwHexOOgsaRdQLV8TrP7m4vfWn/d14FVMh5x8WLrgmXVRnHuNML56BfD8okrTOI2LtP9hUX3WdS2DiwEIqGIyPkCyknCU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718593372; c=relaxed/simple;
+	bh=jVoefRP+KTTfFHYmL8sa91MJicL29Ex2n9MkjVsJaq8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fIjr4uBPu8ieQs4+5+oABzGXIoR22ULauGs9J4NMJZ6vRUSD4HlOW2KXqa8TY8EtMzUIvTwvoaULeXuvmN8jZO+HDAPHdNDVfBavju/Mk/Ot4sIh7tnh1LVen2X0E/0CKlw0mShNQdz033z+EN7FWtYZ9h3l8TD4Rue8c+C62bE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ZOmlxAcD; arc=fail smtp.client-ip=40.107.241.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OG3+Oopv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=eby4XkKKxODZ1wXdg8ChTQaLUDD8vGH6k5TlGqO4Pik=;
-	b=OG3+OopvKtZx65RjRpg1jb3EJcBaYa5K9SbeL2b/ohIevoQIpP8prCNLtDEPfn
-	ECLmXraPFxulKJyWuFR96dIeYg9/8kAGJU9llyrwJy9LI92i/zXbW1awRlAoyA3Z
-	3jb0HaRQ4LkO/fGYOEEdagHD+xN/ccyMdT4wu9STTfVSI=
-Received: from dragon (unknown [114.216.76.201])
-	by smtp1 (Coremail) with SMTP id ClUQrADnDyDdpm9mQLgMCA--.59953S3;
-	Mon, 17 Jun 2024 11:00:47 +0800 (CST)
-Date: Mon, 17 Jun 2024 11:00:45 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ZOmlxAcD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BFknKcPzCQxxe4U2ifx6AsBudHjI6DJymp0/pJ6qzxX9GX/TymRBKP5opygHatqsxQRa71FGakTfZchGyCe+T8/kx2Is+oZG5MX6RNI6Npv/wmAcm7DFW5JHe8o1g0hrKiL+PQDTa1R9EKhrHCZwHN3xbO6geiPnvaGylflI47l80gSGY2vf19zGptKN5zwtCbPpcc7az8B+NFIwzr7Dn7Qih2OlG3dAvEKOc2blmIIzcop6i46zM0O+aKNzEjWp/ONmcvZO/d0/ZpR//f8n1GVINYWteW711el1CLKKYWvf+MEw9pudwkfXO/2uRzXIzb7WQfZVxHSvoE1mM/uUJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wUhpDWTa6QkZFYrV+ZmGSDaG5QEvegGv1cx38QBGTTY=;
+ b=EHFLTX1amzemN4e3/uACFwRgPAUQW1HppLY46kcJZFqqTlrXidWq2L2mdueasB7FmdJTQWfMvumwpIR4kMahHUSa8xtlrup15Wa+iTrFylVHIqN9+dg3OMuxQ7oqBUxHwC5QqDvFlrcBCqwuNXlQieFo6YyhqalWMsXJhQSqNF4XeSzbSPFy7ZP8dJSsTvvjDEwhEP3oZagUUJdBuIiBPZEuoUciBhz/T7xz/DSpRSrRPIXf5BXHfvZky39jJRpEXfAPCNpZxnO95+C6UB/ds1P3Biq9BNRkCxVONvZw81d/cliQ0wi9y8sPsg3Hqj92w+uYPHhXmlO896FTySaG3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wUhpDWTa6QkZFYrV+ZmGSDaG5QEvegGv1cx38QBGTTY=;
+ b=ZOmlxAcDtRkw5hB4ahLomBv0gX1VvIk7WeJXecaNkGnTvKXSy7cVHyDOoOAQglV6TYLK2HEyYOF5e1IFbz5EBG1xoXuz/hoQPSi0VrJjReavmTh5LNQcivKCBV+EtLtZxGrY6hH2p+PCoZ66TtBxRcOafMJ8msvkr/PWqpVHFDU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM6PR04MB5941.eurprd04.prod.outlook.com (2603:10a6:20b:9e::16)
+ by VI0PR04MB10438.eurprd04.prod.outlook.com (2603:10a6:800:21b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Mon, 17 Jun
+ 2024 03:02:46 +0000
+Received: from AM6PR04MB5941.eurprd04.prod.outlook.com
+ ([fe80::9f4e:b695:f5f0:5256]) by AM6PR04MB5941.eurprd04.prod.outlook.com
+ ([fe80::9f4e:b695:f5f0:5256%5]) with mapi id 15.20.7677.030; Mon, 17 Jun 2024
+ 03:02:46 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Peng Fan <peng.fan@nxp.com>,
 	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v7 0/3] arm64: dts: add i.MX95 and EVK board
-Message-ID: <Zm+m3fO5L4pVnXG/@dragon>
-References: <20240617-imx95-dts-v3-v7-0-488b52e10862@nxp.com>
+Subject: [PATCH V3 1/2] dt-bindings: arm: fsl: add i.MX93 9x9 QSB board
+Date: Mon, 17 Jun 2024 11:11:44 +0800
+Message-Id: <20240617031145.20057-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG3P274CA0004.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::16)
+ To AM6PR04MB5941.eurprd04.prod.outlook.com (2603:10a6:20b:9e::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240617-imx95-dts-v3-v7-0-488b52e10862@nxp.com>
-X-CM-TRANSID:ClUQrADnDyDdpm9mQLgMCA--.59953S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUV8u4UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDR8BZVszXmPkSQAAsO
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB5941:EE_|VI0PR04MB10438:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb1e4a38-668c-41e0-4d4f-08dc8e79f6df
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230037|376011|7416011|1800799021|52116011|366013|38350700011;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WoNQ+TpdLBNaMX0ivQlW439vuSYnQ1Wdn6zemW+/OeDxHmaPDb1uFtxPtFvH?=
+ =?us-ascii?Q?N7GEP7nMERttUWVJYPVPMDbeww187vwdQkFzaLE6QpxD38BVGEWuyXboDJAf?=
+ =?us-ascii?Q?XLHYrXdtNs4B8ha0vc7hnj9z/sAsOaHB/Za8PiVmon22Jql71aWPX+7XkQ4i?=
+ =?us-ascii?Q?F4g9wpG/id/bVOJFb/XVSE6kd6d4KblokUa0hpTgN6u6wXz/Xfkmnu2XKR+h?=
+ =?us-ascii?Q?ikwFyCPuvaxYrqHklZX4cFr1pvEK9YkubKE+nINr26UA2JbVLylyI7wN7mGY?=
+ =?us-ascii?Q?pN3mNVvDB+5qfA+SKo/E2kv8n0xL35f1OmbRy9zM3lSdYx5+v/n9z+Z8+vpE?=
+ =?us-ascii?Q?I69QgxLwMHq6jgHkix9ostuWKujSAmU5W8KEGY0IJ+al6Qlw9KsQ1nHgTmEE?=
+ =?us-ascii?Q?TF4hYcrriQUUenp0JwbUCAIeHNhasBJt8GFepuAJutLsZwAwCo+Ynn4h721o?=
+ =?us-ascii?Q?yYOyZvonwoQxjkmdbtnihojqWEJXYCxAPYsh1FwpzENmYWy2WSwcT8j1SC60?=
+ =?us-ascii?Q?dsfigMqTI8eGSIt70bOSi4VaLHsEk4T8vC0q4gpYxHfnzf9a09n0bw03gQEl?=
+ =?us-ascii?Q?IjwZ7uztaSM2JI78gDf7oJNMagttoiaAILkL3JtDWfR5QzoHlzoGStinXMzQ?=
+ =?us-ascii?Q?gGWIrEQHQpWOub6Qv1Qr7Pud3rAHvcNIzAPw0970lD4cKK7Ug4wXAQYvkOjf?=
+ =?us-ascii?Q?qao/j4dFxYpLdhNWXBypHdE7+tf+/rl15YZvEfD0YBL5oiXKaa2zsNClwPGZ?=
+ =?us-ascii?Q?GE1waWzie9wWc8Xc2TizqtgmFXbuqHzuHJBvB3nkSNmvYxUaH7musP3mCKgS?=
+ =?us-ascii?Q?pkn+bwk6yegy9BbuymlCblN6bD59YJvfK2UiTqCFni1YhZ6ndiYhj8bdCbTG?=
+ =?us-ascii?Q?RywPLtAy1GP2lxY+fhyf4Apa6gXIpeGPjZOZBG3/2fWwv/9OQyIzQkdIMMqg?=
+ =?us-ascii?Q?h5x1sVHW879UpSy5T7d2/byH6sVOQFFiWPE7zQUvu9XTwdKfghRwL0u1nXs1?=
+ =?us-ascii?Q?nUrsGkL3LehY9YFXn/a7uvn1Uh9PC1E9BnvlB2Ayqv3n7so9Hjk9VSehuwhX?=
+ =?us-ascii?Q?BhFs6lOLJcMNRzDv2tQgIXBZ2dcdK6d7yzP+Fn3K5/ck5rlOL7SUMtqjeBY3?=
+ =?us-ascii?Q?TSd3/O7Nuc7D/L2ky+EbsKxE7yn8QP4ceNsX8DUFhEvyh2lyO4OTo0ptOwEK?=
+ =?us-ascii?Q?LRPiVo14GshE/ASGgi0y7FrCuWHslnBhEK2mkmcYnBzRvu7uJHjRWv1R5Jl+?=
+ =?us-ascii?Q?x6RLo4nbpPa/2r7h7hB90UIRwmmg0W82CYnFJoypOGxxIchOJiT/yPrRE2/m?=
+ =?us-ascii?Q?zfjw6qKgQHN/4CCd5l2UnokgJKsY8mdUZ+my077I79qgEy0dc9hmesbJYvmR?=
+ =?us-ascii?Q?MPhMAY0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5941.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(7416011)(1800799021)(52116011)(366013)(38350700011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RpLyf8zYJaPRlR6g5mC8vY+ZQW742v3x1S6qrWjbBXzFwVIsFKe9cGSEVyot?=
+ =?us-ascii?Q?eUiX2I7dInDnwux7T7uv+yxxvIeMfn8Na8mlI+qZGivfFwvUukwTtDSmJmif?=
+ =?us-ascii?Q?9ihOKmxwihrpoqmWAK/e0FMr8r5viPTMqA9r6bBlYJ42RZ9oHtF3G/nYeDEa?=
+ =?us-ascii?Q?4lVIhzI3yQJGJIR4W1KOEzXLecFHHXv+YHKGp+QikZpbL3LgcKr41EdaBqWF?=
+ =?us-ascii?Q?y/Pn+N7RJV+B5wBxVxl7/tdil2ZDm25YOoPE5hiI3BBSQT+h81yUXQVC2B+W?=
+ =?us-ascii?Q?c7je8pt3hpaoeeAIdz/EbQjaesjE1rrc4CULE45owB5w09QgDQdM1gn+D30C?=
+ =?us-ascii?Q?z4FlnmTd2FY2voDguQKZaZfgv+GB+0i010aTbo3QYsbkx8mDtFJ0vbq9y4Da?=
+ =?us-ascii?Q?FdPstfCa3FMi0OMdn7p8MYsGw5GOdcMt7rRwvyp0xJNWVSKTyWNh0xzl39B1?=
+ =?us-ascii?Q?BlhObU1YXsdf8Dbh3ka2+60A27DvjockteGErOMuEKil/mAp0s8yJL2MraQn?=
+ =?us-ascii?Q?7HMuR4tdQBjtAmlHGu6hN0oxLpLuz5pIPwaBWfTHlDRWkPlSGRp6bQgzoPBt?=
+ =?us-ascii?Q?tZ7AhRa4lRnMwfyTFF/F3ejQmes3rwpvC1K4cvzqxAA82PXfnT8R7UxvrCQr?=
+ =?us-ascii?Q?HHis46928fv+Qi9jEoju1VFXsjqa6uKggzigv1QvGRGqws0wMzdFoemJgJGf?=
+ =?us-ascii?Q?uwWYpuWqN7ltdhGUyTc3Nqx4814lRXdQSqTpyXd+q97QWAf1HS/cpkF1RzBa?=
+ =?us-ascii?Q?DFMddfEDX2DAW/6YRPAO03gO24BvUNaZC0NBqx9ps1R1Odx1stV1Wo0NgO66?=
+ =?us-ascii?Q?hfcTJC1k7m01InYrPBmwFoIfLcECPmDmDHAAXjwi+WLi++iG9qF27pExaq7E?=
+ =?us-ascii?Q?VIMoYo1s/asCmhXM4YT44Hkf/zBeFmI6ONKy7CNLwGiYr8TfNb6mG6R6aA+i?=
+ =?us-ascii?Q?Hj7jn3PCV4UwJuPrkPNCHe2rXyvIHQPXc4mHiAR8+JtmeKB+/8OIW64YOeK6?=
+ =?us-ascii?Q?fbSMFKMpcBPLnxN93dlF4Yqa7em5AvDxeLkCZjlEZ+0y0A9NJJpLJHIQylR7?=
+ =?us-ascii?Q?sOUFA3l2kn78Ggif9PksuRsrisN163gUulX246XW2asdOsxUoPaRMelO1DJI?=
+ =?us-ascii?Q?7xTouOVHmxjWMlzRUGWuS83SbzXmMYEQ0dlnJPoWjc96FwYkIPvm9qs6lL3h?=
+ =?us-ascii?Q?Ac/DoRz+8Fo50P+H8ZUvdEhorfTSAcVb4bg0JVB70ngp4E5GFY8Eg+akgVZK?=
+ =?us-ascii?Q?mFbvEAcyIAFLzrnxKJI56FZZncWsbT2uNRKvz27dqMjYnov8oAHK76ATRbxg?=
+ =?us-ascii?Q?NBQZEn7CKYae5fm18KOgVBKnhT2Mwyg5e0HzS3mdq3FH30qjetD/O+YJnfgr?=
+ =?us-ascii?Q?lV5UrkJm6Ra2SKTBUCjpHs+fOQFREYU1ZNsYlqNxz/pxH/+FiY39m2KiSeoP?=
+ =?us-ascii?Q?r9QW6IXy4z8eDWZdVrkBfeei2sHtFtaf33+CmvPuvJEkwu/sE+ofleFRcr/Z?=
+ =?us-ascii?Q?4L4bt90cRmjI83M5NpKgIXh9dQrsM02Ik98lTvfBpTd+cHNqHFwPsh5F+vlq?=
+ =?us-ascii?Q?avhDD0SU/1AB8ney4F+VAVzQzWL+45jsgqDqLbri?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb1e4a38-668c-41e0-4d4f-08dc8e79f6df
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5941.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 03:02:46.7123
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QwMHB4UqeXo4YjpH1SeL94SGZWwf1si9rkZ9WTaMNFmnHzIFWzTb//LvjK+tfP0F+PkDmCt0p4t462JEJfI4hA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10438
 
-On Mon, Jun 17, 2024 at 10:56:34AM +0800, Peng Fan (OSS) wrote:
-> Peng Fan (3):
->       dt-bindings: arm: fsl: add i.MX95 19x19 EVK board
->       arm64: dts: freescale: add i.MX95 basic dtsi
->       arm64: dts: freescale: add i.MX95 19x19 EVK minimal board dts
+From: Peng Fan <peng.fan@nxp.com>
 
-Applied all, thanks!
+Add compatible string for i.MX93 9x9 Quick Start Board.
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+
+V3: None
+V2: Add A-b
+
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 5c9014087c17..1de64cb451e0 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1272,6 +1272,7 @@ properties:
+       - description: i.MX93 based Boards
+         items:
+           - enum:
++              - fsl,imx93-9x9-qsb         # i.MX93 9x9 QSB Board
+               - fsl,imx93-11x11-evk       # i.MX93 11x11 EVK Board
+           - const: fsl,imx93
+ 
+-- 
+2.37.1
 
