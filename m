@@ -1,60 +1,60 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D756C1BC091
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19781BD01C
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632204; cv=none; b=eL8BX+8Gmb2P+CVnhhriL3JheBAN33Lx2xJS4sZk0oetSViTsbntvz+TzE9C6emYa2q8t5OBrWM5Wvn1Ph8634lhebm33cOl/oWEOjVw9q6raHDqYH1heq4J1RH8zuRJGxdmBKhFUXOA8BItAAXUf2pePW0Kdr53EGMI1SQcHnQ=
+	t=1718632206; cv=none; b=l3PCtdPmmp0YurvjFuKln8IwwhUesw/kUaQzALARVI5QsDNy8Hu16VG9Dt+oXObvidABH5T/59mp8Pn6OV1oQklaFEqB8uSl6xutxGjkJbY0xISQAoon32dLioTpV7fcMYZCDw3oEnnmtCrNy2FysDiEYr+IVkqRcTdvukXPDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632204; c=relaxed/simple;
-	bh=ut+W8QUP8tQabPWzbyke7d8OEC6HNxiYzZgFQhQRoBI=;
+	s=arc-20240116; t=1718632206; c=relaxed/simple;
+	bh=C6gfMUeKRh6vNiJAqdCzmX2JzDDgIvBqfFNnNfFuGtI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d/EDuSVc8n79kR2lmBwaKEn+Ns5S7TwB+TtSyMNNM16UvOuyn3yZRb0atM80DEoHq2hi/L1XrxvdYx+DVyfZGLHPlpqLl7zr8lb0zguzI/qzWRLFPAKKYH9BUiZYeNClNF9o5SLRwroaB4AtL4P8LXrcV3vnVTPfFg8TYgXC12E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=A0e1Dt7M; arc=none smtp.client-ip=209.85.222.182
+	 In-Reply-To:To:Cc; b=gvHEaDZ0dEfPPzYQg4KXsPpUqQsZdfWtZ8sJu5U/WfVTSQLo0hTTaQ9S4DJItu9VrrOh5d8or/OVbTQY6RGQXPbnW99/mjChSB0XspOpS76ofZvz9rBB8aXE1SKtHRzQYnqiB9fWO7zq93Df+q/Vp8tUGrrngI9IdTOKemQN4As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tBxBhg93; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="A0e1Dt7M"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-797dcb558ebso286407085a.2
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tBxBhg93"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-795ca45c54cso246567185a.0
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632202; x=1719237002; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632204; x=1719237004; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/J+uii6o7EZaRWTf6fwT0Zq6b6sr2oRr59Sqisc7RFA=;
-        b=A0e1Dt7MLvlc/bGOcBqTNQqY3UGuqa9z2cD+f/cWkEAK2uBpuVsifs3biV3rPiCyGQ
-         zQEz4SY2nBN4cinTynaI18huo1bkzvJAe21ZuSIyCCEsKBCp3P6jULMLG1g6po/+L6RE
-         S8GUlir5TexIxnG0Neu6ZzwcTvmN0yUdylayF9/myliDJ1K6Rl6v2DCvDgbwdBU9Ik6O
-         tjYUXLnjupKMg9aqhayQeKFrneu6gEoGRj7bn7cDYcgSBdOqYqGnJy+9PYFc5k7r4LyN
-         H0ZrHpQJrYEng0vy5nghc2lHo0zS+8a5McN8skzhDDhbpHqSFROG5fUPbbtg9y3C1FOr
-         pS6A==
+        bh=ClhrI/fyo1cx6bZjSpXIGRy7tTTxclMqWX7+F4JU4yY=;
+        b=tBxBhg93PegvN3+CjqfY9NxlsMW+8T00L8u8y63pw/mGMb8yFHv4Vxla7wLgxTyEdA
+         5wO+rowcF+0YQm8u5lavZkBmITz2Ox2EwiVixlUQBbPxvOY4P1zRe7Vzm5G11P1sMODH
+         tBz3oo88pUvo9Ec7IghR37dLnLkL2beS8g6b8LthsITh53u7poLrcwrU+xzG9lnSnd3T
+         zoxWtB6h4s9vPEdNfM0VYhbh8Q0PmS5eg9tCUY3rVTVcxhy0wcwAB2sJEqpgCQPx733D
+         YVp+Br2KnZYKj5BOO8Frc7eOkXvIyx1+XWSu7HpFMje0hpz4790gnviwqKHG3QrP68P6
+         ZAGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632202; x=1719237002;
+        d=1e100.net; s=20230601; t=1718632204; x=1719237004;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/J+uii6o7EZaRWTf6fwT0Zq6b6sr2oRr59Sqisc7RFA=;
-        b=bFH5zQip+Jc5r/zaYDxQAkbkcR2b6qMVoo0En62h70LCsUXm63w9VW2D3EYgrJpQvT
-         sri1kaWzAg9MlKtt5d6ZNDeO+D+hlVv3hsR+Y5ugzDbRzE+exgHT9K5G0lYNK8+tNwDe
-         /VES9KOm22FV30tCcGl4iJaRvCkGlFmZ4bREga2MJeS/feHybDoYK+RGPNGLQWQfiNq1
-         +RIf0Vffd1dmiqTq4tiNzV2zVuJlUSWXeZ3l63MLIqW3Aa0fYFGU4Wz+AmLgt7VBvcxH
-         EGSqw2mqI30BNOO58ACOtMpqVu34+tSMXpgvIkCwEh5vfr+pbdaTXGvej/K+OiKZEWll
-         +Bng==
-X-Forwarded-Encrypted: i=1; AJvYcCUZbUU+bYaaQUXGk1FFpk9crKGp4+GKsAcDSFlh4mwOGowKxZexk8irD+XKZmFwR/jGpaEEj6ntmxyivECP0wENuEuw
-X-Gm-Message-State: AOJu0YxhOkKnHhOFZiNZg/bwzR06MEMvjC5wtun82AXz4UFkTjYBmpB2
-	IUdXvBkc1Rr2utR+t7r/7AtgwPGmnD4fHkW+9OvP4++xi9C9knYfDvgulG3Jb6w=
-X-Google-Smtp-Source: AGHT+IHQO7lDiG1TVDzbCtPAbJI8uHKSdU2/yIiDIlagRddBfJsOkXoStyLOw9TY/mBvF1osZeRq9Q==
-X-Received: by 2002:a05:620a:2955:b0:792:c34d:482 with SMTP id af79cd13be357-798d2413b26mr1228938285a.25.1718632201881;
-        Mon, 17 Jun 2024 06:50:01 -0700 (PDT)
+        bh=ClhrI/fyo1cx6bZjSpXIGRy7tTTxclMqWX7+F4JU4yY=;
+        b=AMxmnbm6cItCxezJ678f9Y1N/OLyyDYaCD9xlMEF73dB0PWX5l0ATuX3y/S0QJkxLX
+         H77TRlcMxrz+pqtbCx+1eDaHhidinzPh6vNXtPtUUqIybosW1V/zczvLskYem/cu/hw8
+         TVixDavbVF/F9Whk4Z2Ll0U5kKxaEJ7gD8gUJtkzkODFrVSBb1mkRtkY7MZw9GVV19Ho
+         hqDmh3ZDpkytbytBXKs8VWDMrV2tNsOcAem6ChaojKmM1ctKMnYmv7ZU2WSDdV5cd935
+         R1m8seXhpboekiQM0rLdDL0fyyau0sKHLEMUes4qs+bYdKGfMI327GA4eLymcrjphgTn
+         R8ew==
+X-Forwarded-Encrypted: i=1; AJvYcCUWtkGZ5ewGP4XdVnCJYRHA5DGEYMu1Zw6EiKDtV+/86AibrNKyPoXB2ud1TE/BE32WWLj+rxN/nKs+jeZuZZib/CGi
+X-Gm-Message-State: AOJu0YwsIqM1dyTJzbTpy7qIwcmAV0SNxJsXtO8JLoCDdglLOb1cd7KB
+	ElfZA3MHDaXX/Uzo2QOS/sOY2Y/Wca87u/vXrrEMo4L5rE0stX3EkyWxHqabAiE=
+X-Google-Smtp-Source: AGHT+IGEJP+y4ORB/qQsSLGS1aQN67uw6XFJYR5D2HpTVdZajfNzX+EcKLbp10S7XC6/Qne2Ev/fMQ==
+X-Received: by 2002:a05:620a:4721:b0:795:55a1:9dd3 with SMTP id af79cd13be357-798d23c4382mr1195766785a.16.1718632204033;
+        Mon, 17 Jun 2024 06:50:04 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.49.59
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:01 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:03 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:48 -0400
-Subject: [PATCH v3 08/41] iio: adc: berlin2-adc: make use of
+Date: Mon, 17 Jun 2024 09:49:49 -0400
+Subject: [PATCH v3 09/41] iio: adc: cpcap-adc: make use of
  regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-8-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-9-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -107,79 +107,102 @@ regmap_clear_bits().
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/berlin2-adc.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/iio/adc/cpcap-adc.c | 46 +++++++++++++++++++--------------------------
+ 1 file changed, 19 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/iio/adc/berlin2-adc.c b/drivers/iio/adc/berlin2-adc.c
-index a4e7c7eff5ac..4cdddc6e36e9 100644
---- a/drivers/iio/adc/berlin2-adc.c
-+++ b/drivers/iio/adc/berlin2-adc.c
-@@ -129,8 +129,8 @@ static int berlin2_adc_read(struct iio_dev *indio_dev, int channel)
- 					       msecs_to_jiffies(1000));
+diff --git a/drivers/iio/adc/cpcap-adc.c b/drivers/iio/adc/cpcap-adc.c
+index b6c4ef70484e..c218acf6c9c6 100644
+--- a/drivers/iio/adc/cpcap-adc.c
++++ b/drivers/iio/adc/cpcap-adc.c
+@@ -385,9 +385,8 @@ static irqreturn_t cpcap_adc_irq_thread(int irq, void *data)
+ 	struct cpcap_adc *ddata = iio_priv(indio_dev);
+ 	int error;
  
- 	/* Disable the interrupts */
--	regmap_update_bits(priv->regmap, BERLIN2_SM_ADC_STATUS,
--			   BERLIN2_SM_ADC_STATUS_INT_EN(channel), 0);
-+	regmap_clear_bits(priv->regmap, BERLIN2_SM_ADC_STATUS,
-+			  BERLIN2_SM_ADC_STATUS_INT_EN(channel));
+-	error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-				   CPCAP_BIT_ADTRIG_DIS,
+-				   CPCAP_BIT_ADTRIG_DIS);
++	error = regmap_set_bits(ddata->reg, CPCAP_REG_ADCC2,
++				CPCAP_BIT_ADTRIG_DIS);
+ 	if (error)
+ 		return IRQ_NONE;
  
- 	if (ret == 0)
- 		ret = -ETIMEDOUT;
-@@ -139,8 +139,8 @@ static int berlin2_adc_read(struct iio_dev *indio_dev, int channel)
- 		return ret;
- 	}
+@@ -424,23 +423,19 @@ static void cpcap_adc_setup_calibrate(struct cpcap_adc *ddata,
+ 	if (error)
+ 		return;
  
--	regmap_update_bits(priv->regmap, BERLIN2_SM_CTRL,
--			   BERLIN2_SM_CTRL_ADC_START, 0);
-+	regmap_clear_bits(priv->regmap, BERLIN2_SM_CTRL,
-+			  BERLIN2_SM_CTRL_ADC_START);
+-	error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-				   CPCAP_BIT_ATOX_PS_FACTOR |
+-				   CPCAP_BIT_ADC_PS_FACTOR1 |
+-				   CPCAP_BIT_ADC_PS_FACTOR0,
+-				   0);
++	error = regmap_clear_bits(ddata->reg, CPCAP_REG_ADCC2,
++				  CPCAP_BIT_ATOX_PS_FACTOR |
++				  CPCAP_BIT_ADC_PS_FACTOR1 |
++				  CPCAP_BIT_ADC_PS_FACTOR0);
+ 	if (error)
+ 		return;
  
- 	data = priv->data;
- 	priv->data_available = false;
-@@ -180,8 +180,8 @@ static int berlin2_adc_tsen_read(struct iio_dev *indio_dev)
- 					       msecs_to_jiffies(1000));
+-	error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-				   CPCAP_BIT_ADTRIG_DIS,
+-				   CPCAP_BIT_ADTRIG_DIS);
++	error = regmap_set_bits(ddata->reg, CPCAP_REG_ADCC2,
++				CPCAP_BIT_ADTRIG_DIS);
+ 	if (error)
+ 		return;
  
- 	/* Disable interrupts */
--	regmap_update_bits(priv->regmap, BERLIN2_SM_TSEN_STATUS,
--			   BERLIN2_SM_TSEN_STATUS_INT_EN, 0);
-+	regmap_clear_bits(priv->regmap, BERLIN2_SM_TSEN_STATUS,
-+			  BERLIN2_SM_TSEN_STATUS_INT_EN);
+-	error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-				   CPCAP_BIT_ASC,
+-				   CPCAP_BIT_ASC);
++	error = regmap_set_bits(ddata->reg, CPCAP_REG_ADCC2, CPCAP_BIT_ASC);
+ 	if (error)
+ 		return;
  
- 	if (ret == 0)
- 		ret = -ETIMEDOUT;
-@@ -190,8 +190,8 @@ static int berlin2_adc_tsen_read(struct iio_dev *indio_dev)
- 		return ret;
- 	}
+@@ -455,8 +450,8 @@ static void cpcap_adc_setup_calibrate(struct cpcap_adc *ddata,
+ 		dev_err(ddata->dev,
+ 			"Timeout waiting for calibration to complete\n");
  
--	regmap_update_bits(priv->regmap, BERLIN2_SM_TSEN_CTRL,
--			   BERLIN2_SM_TSEN_CTRL_START, 0);
-+	regmap_clear_bits(priv->regmap, BERLIN2_SM_TSEN_CTRL,
-+			  BERLIN2_SM_TSEN_CTRL_START);
- 
- 	data = priv->data;
- 	priv->data_available = false;
-@@ -284,8 +284,7 @@ static const struct iio_info berlin2_adc_info = {
- 
- static void berlin2_adc_powerdown(void *regmap)
- {
--	regmap_update_bits(regmap, BERLIN2_SM_CTRL,
--			   BERLIN2_SM_CTRL_ADC_POWER, 0);
-+	regmap_clear_bits(regmap, BERLIN2_SM_CTRL, BERLIN2_SM_CTRL_ADC_POWER);
- 
+-	error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC1,
+-				   CPCAP_BIT_CAL_MODE, 0);
++	error = regmap_clear_bits(ddata->reg, CPCAP_REG_ADCC1,
++				  CPCAP_BIT_CAL_MODE);
+ 	if (error)
+ 		return;
  }
+@@ -602,26 +597,23 @@ static void cpcap_adc_setup_bank(struct cpcap_adc *ddata,
+ 		return;
  
-@@ -339,9 +338,8 @@ static int berlin2_adc_probe(struct platform_device *pdev)
- 	indio_dev->num_channels = ARRAY_SIZE(berlin2_adc_channels);
+ 	if (req->timing == CPCAP_ADC_TIMING_IMM) {
+-		error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-					   CPCAP_BIT_ADTRIG_DIS,
+-					   CPCAP_BIT_ADTRIG_DIS);
++		error = regmap_set_bits(ddata->reg, CPCAP_REG_ADCC2,
++					CPCAP_BIT_ADTRIG_DIS);
+ 		if (error)
+ 			return;
  
- 	/* Power up the ADC */
--	regmap_update_bits(priv->regmap, BERLIN2_SM_CTRL,
--			   BERLIN2_SM_CTRL_ADC_POWER,
--			   BERLIN2_SM_CTRL_ADC_POWER);
-+	regmap_set_bits(priv->regmap, BERLIN2_SM_CTRL,
-+			BERLIN2_SM_CTRL_ADC_POWER);
+-		error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-					   CPCAP_BIT_ASC,
+-					   CPCAP_BIT_ASC);
++		error = regmap_set_bits(ddata->reg, CPCAP_REG_ADCC2,
++					CPCAP_BIT_ASC);
+ 		if (error)
+ 			return;
+ 	} else {
+-		error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-					   CPCAP_BIT_ADTRIG_ONESHOT,
+-					   CPCAP_BIT_ADTRIG_ONESHOT);
++		error = regmap_set_bits(ddata->reg, CPCAP_REG_ADCC2,
++					CPCAP_BIT_ADTRIG_ONESHOT);
+ 		if (error)
+ 			return;
  
- 	ret = devm_add_action_or_reset(&pdev->dev, berlin2_adc_powerdown,
- 				       priv->regmap);
+-		error = regmap_update_bits(ddata->reg, CPCAP_REG_ADCC2,
+-					   CPCAP_BIT_ADTRIG_DIS, 0);
++		error = regmap_clear_bits(ddata->reg, CPCAP_REG_ADCC2,
++					  CPCAP_BIT_ADTRIG_DIS);
+ 		if (error)
+ 			return;
+ 	}
 
 -- 
 2.45.2
