@@ -1,48 +1,42 @@
 Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40D31607A5
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 02:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C19B15EFC9
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 02:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718590341; cv=none; b=GcWt8VFp4gsEAxZd0TlWQgeLPSlsUhiKgqIskILd7CLTxQxH3vQcgIr4vhOCqiD6gzfL9Z3Dye9wLbPHeZpq2h+hd46g1OYpyMuLGPVLxOvobzzB/vMfhKJLDX1FLYSxYkxFyswfzs5mLDEtkXI0wsnjA8pZ9grYlp/9ms8qgvc=
+	t=1718590438; cv=none; b=jY/9GU2Iby4XoKqWxTRaqpSIrY8X27FX6VpMipy7C0K5IcwF/as2EZ/hgvlxBhpxG4FJ7dGU0gFw0SQF6IdDrAjI4wvY7Y986ACZ5QoRUskQymbRJnLuLyb5Tfq9Hp9VIYJpqwNZ94ZpyEwWdOboNlde6wcpONCHxZkiPBZqmfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718590341; c=relaxed/simple;
-	bh=2hkMhVkh2nVoBTw6NJzXuRmEaWOunyw84vTzOsVqq8I=;
+	s=arc-20240116; t=1718590438; c=relaxed/simple;
+	bh=+ChJNRRhh6Ooomnz0uf9uVFqgEdgCQiqOFIj1PoFZ5U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WSHUcDoaZ6BII36SiwNzH+LL7qEzUT92DwCjvI77jEyqps7QBBegQ7pm2oggO8Jc6jrxa5SxLYmZxBHaE97H47Pr8VBOI35QQ7fi+GfdDkuXcaynkMkZEr2JH423rfxNbwaXLWdyxZazskYpVCd/9SWMKYtiNSLDCqeewI9y7xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=YZcvj283; arc=none smtp.client-ip=123.58.177.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/PSU17BlJiOY+SsR+hfvomMuWgaE4mEp3tt4JFr7+QW2z76cskCntXiPumkbwsBFPoLLmn7h/Kk3VqSMEmDOssgLpHjx7CSqAQ5N8v9weGaY5/GAKUc2BxNAQVjF/AzP2eh3kYZGdT0rjJkR+vaQ60ml96mx7JIGV2NGnzomnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PsDFP1S5; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="YZcvj283"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PsDFP1S5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=0akHP1anUFimuceQyxW2eFWvpAgkvYdidH+pYaG6Ejs=;
-	b=YZcvj283Aon/EwSllz18VWjet31sT4J91PTvreJLrD/yFEY6Y2H780mNAajZwl
-	5NYGJDdy5jhTbv82QzCTToXWLkj8t6sW+8EDAEDrEiHlUnmPlK2vpdi15bc3UPVE
-	YBMU502EeXM/PIHZnJ3c5uLsZHmgUP3BQVw3/zBReT+SE=
+	Content-Type; bh=71gC8yDm4k7eZg1Y0V9ZDsb/7u05Sw61OERK9LlIG18=;
+	b=PsDFP1S54lW+pwukb5k3tc5SV2Jw46kJRjPpnqYwFwRmZVAvbtt+iviZoNH2xF
+	DGDyURIWlyq1Gh7gNhWV2Z7Uc/Ob91WNcZanfkdjiAJxj031n3GXZeGs/IR1Q5Cm
+	Cihwi4BfUOirsyhFUNExNam2O1YCnvfCQlKJqcm3aVZrI=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrAD3P31tm29m_e_NCA--.25055S3;
-	Mon, 17 Jun 2024 10:11:58 +0800 (CST)
-Date: Mon, 17 Jun 2024 10:11:57 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrAC3H_XOm29mtfXNCA--.38477S3;
+	Mon, 17 Jun 2024 10:13:35 +0800 (CST)
+Date: Mon, 17 Jun 2024 10:13:34 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Christopher Obbard <chris.obbard@collabora.com>
-Cc: linux-kernel@vger.kernel.org, kernel@collabora.com,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/1] arm64: dts: imx8mp-debix-model-a: Enable HDMI
- output
-Message-ID: <Zm+bbZilJNup8mEN@dragon>
-References: <20240610234307.96766-1-chris.obbard@collabora.com>
- <20240610234307.96766-2-chris.obbard@collabora.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] arm64: dts: freescale: imx8mp-verdin: add HDMI support
+Message-ID: <Zm+bzkh7CgBuFs53@dragon>
+References: <20240610141001.32034-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,20 +45,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240610234307.96766-2-chris.obbard@collabora.com>
-X-CM-TRANSID:C1UQrAD3P31tm29m_e_NCA--.25055S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUID73DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGA4BZV6Nn46QnQAAs9
+In-Reply-To: <20240610141001.32034-1-francesco@dolcini.it>
+X-CM-TRANSID:C1UQrAC3H_XOm29mtfXNCA--.38477S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3zVbDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDxIBZVnxc0yGvAAAsU
 
-On Tue, Jun 11, 2024 at 12:42:38AM +0100, Christopher Obbard wrote:
-> Enable the HDMI output on the Debix Model A SBC, using the HDMI encoder
-> present in the i.MX8MP SoC.
+On Mon, Jun 10, 2024 at 04:10:01PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > 
-> This has been tested with a generic 1080p HDMI display, along with a
-> smaller 1280x800 HDMI display.
+> Enable HDMI output on Verdin iMX8MP on all the supported carrier boards
+> (dev, dahlia, mallow and yavia).
 > 
-> Signed-off-by: Christopher Obbard <chris.obbard@collabora.com>
+> HDMI DDC I2C is used in regular I2C mode, see link on the related
+> dt-bindings patch.
+> 
+> Fix CEC and HPD pinctrl, having a pull-down on HPD and a pull-up on CEC.
+> 
+> Link: https://lore.kernel.org/all/20240515062753.111746-1-marex@denx.de/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 Applied, thanks!
 
