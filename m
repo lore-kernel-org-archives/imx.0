@@ -1,72 +1,153 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E853C42AB3
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 02:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666B1176AD3;
+	Mon, 17 Jun 2024 02:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718591769; cv=none; b=WNexQUJgfb8PTsDG1U8q2GrtvH0Wk/8h+1OxcsSd5eKEymowjCZkF8ZWyPIZsuLbiLBd78Iewep3U1PqYCPdTiY3QovHZAxHOqtDD43v5Z/EIIcdXy2mLQ2PVSlklhtGiqyl58EF5/iL2rTRxps9pVWg8MBDspjKwlwK6vI/vMQ=
+	t=1718591796; cv=none; b=sDW3dl1wnXI6CVA24EhKu1Gfqq0DHGwbcLtYAKciaCrqgogBugENfI/Gt73wkNnUb+lYSIzP/EpBxCSddDhnI3UGLlNJ1qnldN6u34BQahnxLI2GpcvhWXv2NnRxEqpB3M8YM0xezFH1A3RG8dTea6WNPtTFSOKefRiINqoYppk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718591769; c=relaxed/simple;
-	bh=avLxiTbr2hZOXLZqS+bzuinJ+DnSpN8T7kEP/BWMQFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G1R7NsmlpTOt2UgQCu2OBLIcma7jQ6U7BK1LpBjN2ICMYTarx8qG1Bnm5srA4WQiHTE4knaR8rqsWA+7VubE3D9GUyewEMVF/CETPO4FWx/octn1iHVLq0dl+MS/a15nWA7G53tyReMX2D200EmvvO+UzKT3vSZri4ouSseq4bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lKni1Uel; arc=none smtp.client-ip=123.58.177.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1718591796; c=relaxed/simple;
+	bh=lczObmd9t5CNOLsW1w8BAFRVJ0CtUEDoyScV7EOYG6w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kDvdOEQgCSp2S1RGhfRLVVNms+kfnku7e01XNzbvX6oi1SyTBMM2mAO45qh0BRGHPPApa23z6MbRq06n2gjE0XCqQ1v0O2bcvc9UBaFhpxARUbzTlnAfZgmnF46YCXOas1YWMilPAnZztJP2sWeQy/r+sBfwdXwCC2jrEeIf5Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MlZmhXu/; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lKni1Uel"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=53RT71/gJhh3KSDTNrn1PfJkyyOiqhQIN18tBU+cdU0=;
-	b=lKni1Uel2RCukDr4Zf7WbwCuH/BjaijZ5Yi62kOY4yCKMHpkUIH+bNb0ghb+Kw
-	ROp6uCvehpOAQPCkueOQwGQHOM6r5SMaptLj6nSJgzoF9vxUc1rNXes87T9U/IAu
-	ydhhusOszVa/JQSeAbyEAagT1lLI6YaqD1LKkObkE6frc=
-Received: from dragon (unknown [114.216.76.201])
-	by smtp1 (Coremail) with SMTP id ClUQrAD3_3bnoG9mgmAMCA--.4517S3;
-	Mon, 17 Jun 2024 10:35:20 +0800 (CST)
-Date: Mon, 17 Jun 2024 10:35:19 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v5 3/3] arm64: dts: layerscape: Change node name from
- 'esdhc' to 'mmc'
-Message-ID: <Zm+g5x6mCX0EY64j@dragon>
-References: <20240613-ls_waring_esdhc-v5-0-36644e2fe21c@nxp.com>
- <20240613-ls_waring_esdhc-v5-3-36644e2fe21c@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MlZmhXu/"
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-250aa23752dso416610fac.3;
+        Sun, 16 Jun 2024 19:36:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718591794; x=1719196594; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3S2YurUrl5MC+fkMuKFY0ClzSCLEfz1Oc40ER8vtAUk=;
+        b=MlZmhXu/3EWsZwlv+ZFUw3yCe3GOHdiDzt4rELnxT/T4Z5+lhZHF+TnOmIyFWCIJ51
+         WTWs96iD7WMfoPcOkbWXoKBXLwib1DoP3NWRKWjBfO/P6EfzGm4kWXWYFQr9XZllCoyD
+         A2tvGLAmT9vsy8GfoaKxFxL8f1Lb8q64MInhRivMM/mkOTygIdejXtGLo1bKaicO7+ax
+         jHbLVheHV/6/BHvqpv02nqa6k6rtKcTivJ84X0FFxOpyKS/N9mRoJT/HpPF+SHvuQs/4
+         I2W9NUp2fuhnVW0Ae5L0zrT5mfMKsq2MQ5sOYE3W9o+kyq2Cgi3g5NQ9IiA3w6Wg37BF
+         4N/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718591794; x=1719196594;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3S2YurUrl5MC+fkMuKFY0ClzSCLEfz1Oc40ER8vtAUk=;
+        b=meG4gk4ovmROauLINmNPaI+xz8gvYjg8Aa2I9lCQVSDFwHHO1hzGVKruZAByUCrbDk
+         xsdTq1n1fSbdIYyR+j1eG1JuC7XiS5JodXlZEe0byUGHsLvDgYt50OVOqYULCJqR9aru
+         +bjtNqhBrDkWTD0xBRZf719E8sCckNaj2kvuJJddxOiEafwk7i0wP7QCDBXOuTFaO3hr
+         fonzxlho0043bteUcmC6wNP1ey+TelE8bvqmdFGgQGmosRQImfXx0oM1pUOfTQtMRtJy
+         J9jJEWTSq+tEfkoc/jPfTHjvvfahGmw2KwdlxSvah7XzACbTz59dR2jE7NBuA6rSp1hQ
+         CYOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUokHERd8XpvQjcXPJftRQfl5VV1qdJLJdThs4jN+hVuNK/Rn2eYlvr9yahACztozlH1ACsJgIPgJjKfR1t8M+DKnmEOE5QGfbDIJ7uau/6tn2z3+ATd+eB1ytAtRMf6Vs=
+X-Gm-Message-State: AOJu0Yy9Obbakosbe9X37keLfbJdEw0pNcyG/PpUD3l7P2ZQwwRMR6My
+	e0CL3cgJTJt8AWqiLrzJdr/inegn+GhiS+pvYqxVCyMw01oH76GSKvbe8jdQbv8eVuElIadI18T
+	sgB837TuQ783KulPAXv6jRII6cik=
+X-Google-Smtp-Source: AGHT+IGltFa0bQ5GCz9R8Qfp8q4AWMyO+O31iG05ayKCR1g5p5BB0jiP/wIlvjmzI8GEc+sBuDPZkWfe/0K++X8dom4=
+X-Received: by 2002:a05:6870:469f:b0:254:d417:351f with SMTP id
+ 586e51a60fabf-258429511admr9266807fac.1.1718591794255; Sun, 16 Jun 2024
+ 19:36:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240613-ls_waring_esdhc-v5-3-36644e2fe21c@nxp.com>
-X-CM-TRANSID:ClUQrAD3_3bnoG9mgmAMCA--.4517S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr47Ar4kCw4DXr43Cw48WFg_yoW8Wr4xp3
-	WUZr1UGrZ3KFyakasa9w1xCrnrKw4Sgrn09rnrWasFg3sxuFW0vF1rtana9w18Xw1rAw4x
-	Ka45Jry8tryYqw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jfiSdUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDhABZVszYrukEQABs-
+References: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org> <20240614-dt-bindings-thermal-allof-v1-3-30b25a6ae24e@linaro.org>
+In-Reply-To: <20240614-dt-bindings-thermal-allof-v1-3-30b25a6ae24e@linaro.org>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Sun, 16 Jun 2024 19:36:08 -0700
+Message-ID: <CA+E=qVdpw5dMSdZiBkX5i6y18vHzfG2JnBSmd2Rq=y4kkgZLQw@mail.gmail.com>
+Subject: Re: [PATCH 03/22] dt-bindings: thermal: allwinner,sun8i-a83t-ths:
+ reference thermal-sensor schema
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Guillaume La Roque <glaroque@baylibre.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Anson Huang <Anson.Huang@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+	Amit Kucheria <amitk@kernel.org>, =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+	Heiko Stuebner <heiko@sntech.de>, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Pascal Paillet <p.paillet@foss.st.com>, Keerthy <j-keerthy@ti.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	zhanghongchen <zhanghongchen@loongson.cn>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, linux-pm@vger.kernel.org, 
+	linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-amlogic@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	imx@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	Florian Fainelli <f.fainelli@gmail.com>, linux-rpi-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 13, 2024 at 10:32:07AM -0400, Frank Li wrote:
-> Use common node name 'mmc' to fix DTB_CHECK warning.
-> Add compatible string 'fsl,ls2080a-esdhc' for fsl-lx2160a.
-> 
-> arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: esdhc@1560000: $nodename:0: 'esdhc@1560000' does not match '^mmc(@.*)?$'
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: esdhc@1560000: $nodename:0: 'esdhc@1560000' does not match '^mmc(@.*)?$'
-> arch/arm64/boot/dts/freescale/fsl-ls1046a-frwy.dtb: esdhc@1560000: $nodename:0: 'esdhc@1560000' does not match '^mmc(@.*)?$'
-> arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: esdhc@2140000: $nodename:0: 'esdhc@2140000' does not match '^mmc(@.*)?$'
-> arch/arm64/boot/dts/freescale/fsl-ls2080a-qds.dtb: esdhc@2140000: $nodename:0: 'esdhc@2140000' does not match '^mmc(@.*)?$'
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: esdhc@2140000: compatible:0: 'fsl,esdhc' is not one of ['fsl,mpc8536-esdhc', 'fsl,mpc8378-esdhc', 'fsl,p2020-esdhc', 'fsl,p4080-esdhc', 'fsl,t1040-esdhc', 'fsl,t4240-esdhc', 'fsl,ls1012a-esdhc', 'fsl,ls1028a-esdhc', 'fsl,ls1088a-esdhc', 'fsl,ls1043a-esdhc', 'fsl,ls1046a-esdhc', 'fsl,ls2080a-esdhc']
->         from schema $id: http://devicetree.org/schemas/mmc/fsl,esdhc.yaml#
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: esdhc@2140000: $nodename:0: 'esdhc@2140000' does not match '^mmc(@.*)?$'
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Fri, Jun 14, 2024 at 2:46=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> Device is a thermal sensor and it requires '#thermal-sensor-cells', so
+> reference the thermal-sensor.yaml to simplify it and bring the
+> common definition of '#thermal-sensor-cells' property.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vasily Khoruzhick <anarsoul@gmail.com>
 
-Applied, thanks!
-
+> ---
+>  .../devicetree/bindings/thermal/allwinner,sun8i-a83t-ths.yaml       | 6 =
++++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/thermal/allwinner,sun8i-a8=
+3t-ths.yaml b/Documentation/devicetree/bindings/thermal/allwinner,sun8i-a83=
+t-ths.yaml
+> index 6b3aea6d73b0..dad8de900495 100644
+> --- a/Documentation/devicetree/bindings/thermal/allwinner,sun8i-a83t-ths.=
+yaml
+> +++ b/Documentation/devicetree/bindings/thermal/allwinner,sun8i-a83t-ths.=
+yaml
+> @@ -10,6 +10,8 @@ maintainers:
+>    - Vasily Khoruzhick <anarsoul@gmail.com>
+>    - Yangtao Li <tiny.windzz@gmail.com>
+>
+> +$ref: thermal-sensor.yaml#
+> +
+>  properties:
+>    compatible:
+>      enum:
+> @@ -55,7 +57,6 @@ properties:
+>      maxItems: 1
+>      description: phandle to device controlling temperate offset SYS_CFG =
+register
+>
+> -  # See Documentation/devicetree/bindings/thermal/thermal-sensor.yaml fo=
+r details
+>    "#thermal-sensor-cells":
+>      enum:
+>        - 0
+> @@ -135,9 +136,8 @@ required:
+>    - compatible
+>    - reg
+>    - interrupts
+> -  - '#thermal-sensor-cells'
+>
+> -additionalProperties: false
+> +unevaluatedProperties: false
+>
+>  examples:
+>    - |
+>
+> --
+> 2.43.0
+>
