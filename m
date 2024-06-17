@@ -1,184 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C7F194C78;
-	Mon, 17 Jun 2024 12:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36FD19B5B4
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718626287; cv=none; b=Cc7NN2yIBNR6+LzzPK8qB0csFEwN5/Noik1VtK96SqsJAkcDnWJZwUADwEXojtNfYz5sn3W8Ks2PZgaBENkShkZdBk1Ua27vBy0cfpt0r3qIeobV3MRsYS2QPfx6H/DN6uto8H8Nkd6H3SJfl933mKvw3TxqP9tzx/MiqdFmuxo=
+	t=1718632188; cv=none; b=U/l7JT7Or7Ae+M5JTVPpwDmeU/cVMtdKw0NNRhA/qQyuNYA2JS14O0uL7uDRB5iBY/TA4dSTgyjPjdMGzPwQ9azfMFP3GUB/GjpIRdR+3bH4Pldrf39UverWPJxcXwhATKOqOoBqvQBxkk5kg29hIcVeSiF4+hic32X+NVXCamE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718626287; c=relaxed/simple;
-	bh=qPKRH/m+0WU62ekkJ5fsgl1vqOCrHGJhT9fzRyzgO6s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AxpuGC1WNttG2/yFCoki99Eo0UQpLM6mwin9dmY6LkQeU72nxcuXeO1w7cSXy5EP1JEjti9aWpe8GeweA1Q0bk2POcCjPgpV/kN58s0hzocYyJP1UtGthPeeWJWdncr7F4/d6oEi9VLtYGoJmZpL0NbfWrIWBA7V4txhmMIszVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPLCzLpA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718632188; c=relaxed/simple;
+	bh=+vMkV4nmlC5o3WoCL8T3Cf/sOOrCOwcnxXg4rxYbHm8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JFNjYRdleR7TPveJ4enXzpoJmtA/098bVwGigosziIyE/AJxvlxVRnw85qfIRhKQ6tr3+EpuyY/w2H0QJmPzvTUiFHXm8wJy1FPHFcUeay3QWfCV9mXN+70yIMSV4K8dxSvErOP3qcrU+VT3CriRygdZLJMD2+L/SbYDbbjf0Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=klzuVS5H; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPLCzLpA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3E7C2BD10;
-	Mon, 17 Jun 2024 12:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718626286;
-	bh=qPKRH/m+0WU62ekkJ5fsgl1vqOCrHGJhT9fzRyzgO6s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hPLCzLpAOJkge6FvgefvE1OipNdVhLalb3LtuSsmbfbAXxBL3wsMj77hhG3sgSkA7
-	 pkD6S2QKrdQJt4uGxgoWA7IA07lE1RNBmVdz3fnrrN/0vs4mOJRwHrl85wIN4JypHQ
-	 XLYz2gwNkhUGTRxCrF0Cj06E8CQUYw6iOng8QdgLWmZkVmay/GOJPniNV44khsh1Yr
-	 wKkMCZb/kGj4+J/Fa06f0322YZT/m+K5/C4YIZZapPG/Lv3C8hBWkl+UxlQugM5Grc
-	 HBEsddfw38nQ7VxaQ8cgEv/bAv5kmaHXGOIPFhEfl4sr9RZ4FvyMlq1xN0whhcXuW3
-	 3gMgYkqui5dxg==
-Message-ID: <1f8dd436-1f01-48f5-b2f5-2ba9d998be3b@kernel.org>
-Date: Mon, 17 Jun 2024 14:11:20 +0200
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="klzuVS5H"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-797e2834c4eso366664385a.0
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632185; x=1719236985; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zEZzvAHWKcqdW88FUmiOeBtiUSRBF94/JlX6CLy/U9k=;
+        b=klzuVS5HLKto8k/O2Ug+GXrSvYRH0utqmy8L2bsu0t/KdnrFQmv/nXAY10qzWLrO1J
+         PLHVg3EZX9/7Yemt0/extqCabyFFILUEXR++ZP9IuLxzP0vSWH1Azae0J8mueZAtDO3/
+         HESPB/R7YjKw7/wl5GGik4kQCljsBGomi3kdn0z9TuYg25+Y3OUUxM8TEm/jjYx3AQL/
+         ddNXatxOHgJJ8Cac331Q2RZr26uNbDedwApOg8NnqT4UqkiJ1Vfj/1Y8yXLnaOipXBCv
+         Icb4Z6ZTyBvkJbG19aZsuYvxbadc8SyjKFBIFwoifflW77Z4xzJ21V2JtgV1Pso1jBZ7
+         s9cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718632185; x=1719236985;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zEZzvAHWKcqdW88FUmiOeBtiUSRBF94/JlX6CLy/U9k=;
+        b=HK34dH+NW3yP/6zMlf07Q3stjVsOja2uPg4x/ash71M/zqJIqgGG/PuNKVs9TQ4GoV
+         tus7DucNlxJc5rd1e+FQE8PDTcCoSodB463oUElKJ4AnztUl6bQUjOG5HGPRCxm6swtZ
+         6D/1xRPnarzdAt/208B9i3Q8Qd5G2x3gvRmV5ty7bJSvF9lh1KTHdwSaKgfLX/eEAsBN
+         y+uQ9Qb6McqAgdIRYLjp7NUolv4nAUVWt4PNVpCy8OWbi+6dF06g4Dm2ArRaDVUXwNsf
+         AsPMe0w4cKUda38GJN8kWlr0BlZ8XLQ2n05MlQU5sQsrNIDaqfJuKSVRieGscIYL4/ou
+         KQhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWRbK40wmnNtkO1H8O4CJLSbPxIY2VhRWPtq+RO0sfNRhqskcxLWnYDl6c9myx5vZJSKYwcE0KLH0HixvOENv9JTNUe
+X-Gm-Message-State: AOJu0YwlfwHpYooj6nh1nyV84L4DieOFbiHlVkEiEmPZg9zd9RX56hnZ
+	XKGnlRBhjqxsSZsnFBTQ9WaCFXkiqh6Vhh+bw0EGiwnT1gfN+qjc7/9IovEdLPg=
+X-Google-Smtp-Source: AGHT+IGl+FE2+2KgsFe4nDCWU6ldgP4GuYAR3dN1AUsj37hFWlNJf2lL8nOBoXUFKBqFYKKh6gBcWA==
+X-Received: by 2002:a05:620a:24c9:b0:795:233c:6980 with SMTP id af79cd13be357-79810103071mr2016071085a.20.1718632184654;
+        Mon, 17 Jun 2024 06:49:44 -0700 (PDT)
+Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.49.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jun 2024 06:49:44 -0700 (PDT)
+From: Trevor Gamblin <tgamblin@baylibre.com>
+Subject: [PATCH v3 00/41] iio: simplify with regmap_set_bits(),
+ regmap_clear_bits()
+Date: Mon, 17 Jun 2024 09:49:40 -0400
+Message-Id: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: firmware: secvio: Add device tree
- bindings
-To: Aisheng Dong <aisheng.dong@nxp.com>, Vabhav Sharma
- <vabhav.sharma@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Franck Lenormand <franck.lenormand@nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Varun Sethi <V.Sethi@nxp.com>,
- Silvano Di Ninno <silvano.dininno@nxp.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>, Frank Li <frank.li@nxp.com>,
- Daniel Baluta <daniel.baluta@nxp.com>
-References: <20240509-secvio-v1-0-90fbe2baeda2@nxp.com>
- <20240509-secvio-v1-1-90fbe2baeda2@nxp.com>
- <750f5388-20f9-45a3-a1e6-ceac4b91329f@kernel.org>
- <AS1PR04MB9358A2457AF05553457DE9B0F3FB2@AS1PR04MB9358.eurprd04.prod.outlook.com>
- <1486a1b6-4119-4121-b6df-3da21d06add7@kernel.org>
- <DU0PR04MB929983AB361DB081B44E7AFE80C02@DU0PR04MB9299.eurprd04.prod.outlook.com>
- <a752a912-a328-49c8-b887-fa95512785cb@kernel.org>
- <DU0PR04MB9299FB3B70920CF85CA2FB6B80C12@DU0PR04MB9299.eurprd04.prod.outlook.com>
- <f6515498-ffc4-45b0-a19c-82204e4c83c0@kernel.org>
- <DU0PR04MB92994DFA6AA23B7521B20B2680CD2@DU0PR04MB9299.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <DU0PR04MB92994DFA6AA23B7521B20B2680CD2@DU0PR04MB9299.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPQ+cGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDM0MTXZCi1HJd81QzgxRDU8tUc9MUJaDigqLUtMwKsEHRsbW1AEPlT+1
+ YAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Dmitry Rokosov <ddrokosov@sberdevices.ru>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>, 
+ Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, 
+ Scott Branden <sbranden@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Saravanan Sekar <sravanhome@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+ Crt Mori <cmo@melexis.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+ Trevor Gamblin <tgamblin@baylibre.com>
+X-Mailer: b4 0.13.0
 
-On 17/06/2024 12:11, Aisheng Dong wrote:
-> Hi Krzystof,
-> 
->> From: Krzysztof Kozlowski <krzk@kernel.org>
->> Sent: 2024年6月16日 15:34
->> On 13/06/2024 10:48, Aisheng Dong wrote:
->>> Hi Krzysztof,
->>>
->>>> From: Krzysztof Kozlowski <krzk@kernel.org>
->>>> Sent: 2024年6月13日 14:14
->>>>
->>>> On 12/06/2024 09:20, Aisheng Dong wrote:
->>>>> Hi Krzysztof
->>>>>
->>>>>> From: Krzysztof Kozlowski <krzk@kernel.org>
->>>>>> Sent: 2024年6月7日 15:08
->>>>>>
->>>>>> On 07/06/2024 06:58, Vabhav Sharma wrote:
->>>>>>>>
->>>>>>>> Missing SoC compatibles.
->>>>>>> Ok, I will use fsl,imx8dxl-sc-secvio
->>>>>>>>
->>>>>>>> So no, that's just abuse of DT to instantiate driver.
->>>>>>>>
->>>>>>>> NAK. Drop the binding.
->>>>>>> I will detail the dt binding to describe the real hardware
->>>>>>
->>>>>> Still looks like way just to instantiate driver. Why it cannot be
->>>>>> part of existing firmware SCU node?
->>>>>>
->>>>>
->>>>> Technically yes. But SCU case is a little bit complicated as
->>>>> there're many functions and all of them are already added as sub
->>>>> nodes in SCU node for consistency and handling platform difference.
->>>>>
->>>>> I guess some of them, e.g. rtc, could be part of SCU node (reuse)
->>>>> while some couldn't. e.g. pinctrl Do you want us to only make secvio
->>>>> reuse existing SCU node?
->>>>
->>>> Yes
->>>>
->>>
->>> Digging a bit more on the implementation. It seems there will be a
->>> 'parent depends on child' issue when reusing the parent SCU node for secvio.
->>> Considering the defer probe support and ocotop could be modules, I'm
->>> still thinking If any solution. Do you have a good suggestion?
->>
->> I don't see any problem there. You will have even worse if making it children
->> and using populate - unpredictable order.
-> 
-> Sorry I didn't find a good solution without making OCOTP node to be party of SCU
-> node too which we can't due to extra required properties of nvmem properties. 
-> E.g. #addr/size-cells.
-> 
-> I think the key problem is OCOTP is already a child node and there's a mismatch issue
-> If only making secvio, which depends on OCOTP, re-use their parent SCU node.
-> Maybe you have a good idea. Would you mind share a bit more?
-> 
-> BTW, I don't understand the order problem if making secvio a children as all
-> child nodes are Individual function devices and supports defer probe well.
+Simplify the way regmap is accessed in iio drivers.
 
-You keep talking about drivers but what does it have to do with bindings
-at all?
+Instead of using regmap_update_bits() and passing the mask twice, use
+regmap_set_bits().
 
-You can order your probe however you wish regardless of bindings. You
-can handle or not handle deferred probe. You can create circular
-dependencies or break them. All regardless of the bindings.
+Instead of using regmap_update_bits() and passing val = 0, use
+regmap_clear_bits().
+
+The series is marked as v3, but the previous two revisions were single
+patches. There was also a resend of v1 due to not properly CCing the
+mailing lists on the first attempt. Trailers were pulled in from those
+where relevant.
+
+Link to v2: https://lore.kernel.org/linux-iio/20240613133927.3851344-1-tgamblin@baylibre.com/
+Link to v1: https://lore.kernel.org/linux-iio/20240611165214.4091591-1-tgamblin@baylibre.com/
+
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+---
+Trevor Gamblin (41):
+      iio: accel: fxls8962af-core: Make use of regmap_set_bits(), regmap_clear_bits()
+      iio: accel: kxsd9: Make use of regmap_clear_bits()
+      iio: accel: msa311: make use of regmap_clear_bits()
+      iio: adc: ad4130: make use of regmap_clear_bits()
+      iio: adc: axp20x_adc: make use of regmap_set_bits()
+      iio: adc: axp288_adc: make use of regmap_set_bits()
+      iio: adc: bcm_iproc_adc: make use of regmap_clear_bits()
+      iio: adc: berlin2-adc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: cpcap-adc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: fsl-imx25-gcq: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: ina2xx-adc: make use of regmap_clear_bits()
+      iio: adc: intel_mrfld_adc: make use of regmap_clear_bits()
+      iio: adc: meson_saradc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: mp2629_adc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: qcom-spmi-rradc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: rn5t618-adc: make use of regmap_set_bits()
+      iio: adc: sc27xx_adc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: adc: stm32-dfsdm-adc: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: dac: ltc2688: make use of regmap_set_bits()
+      iio: dac: stm32-dac-core: make use of regmap_set_bits()
+      iio: gyro: bmg160_core: make use of regmap_clear_bits()
+      iio: gyro: mpu3050-core: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: health: afe4403: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: health: afe4404: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: health: max30100: make use of regmap_set_bits()
+      iio: health: max30102: make use of regmap_set_bits()
+      iio: imu: inv_icm42600: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: light: adux1020: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: light: iqs621-als: make use of regmap_clear_bits()
+      iio: light: isl29018: make use of regmap_clear_bits()
+      iio: light: st_uvis25_core: make use of regmap_clear_bits()
+      iio: light: veml6030: make use of regmap_clear_bits()
+      iio: magnetometer: ak8974: make use of regmap_set_bits()
+      iio: magnetometer: mmc35240: make use of regmap_set_bits()
+      iio: pressure: bmp280-core: make use of regmap_clear_bits()
+      iio: proximity: sx9324: make use of regmap_set_bits()
+      iio: proximity: sx9360: make use of regmap_set_bits()
+      iio: proximity: sx9500: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: proximity: sx_common: make use of regmap_clear_bits(), regmap_set_bits()
+      iio: temperature: mlx90632: make use of regmap_clear_bits()
+      iio: trigger: stm32-timer-trigger: make use of regmap_clear_bits(), regmap_set_bits()
+
+ drivers/iio/accel/fxls8962af-core.c                |  18 ++--
+ drivers/iio/accel/kxsd9.c                          |   6 +-
+ drivers/iio/accel/msa311.c                         |   8 +-
+ drivers/iio/adc/ad4130.c                           |   4 +-
+ drivers/iio/adc/axp20x_adc.c                       |   5 +-
+ drivers/iio/adc/axp288_adc.c                       |   4 +-
+ drivers/iio/adc/bcm_iproc_adc.c                    |   8 +-
+ drivers/iio/adc/berlin2-adc.c                      |  24 +++--
+ drivers/iio/adc/cpcap-adc.c                        |  46 ++++------
+ drivers/iio/adc/fsl-imx25-gcq.c                    |  16 ++--
+ drivers/iio/adc/ina2xx-adc.c                       |   3 +-
+ drivers/iio/adc/intel_mrfld_adc.c                  |   4 +-
+ drivers/iio/adc/meson_saradc.c                     | 101 +++++++++------------
+ drivers/iio/adc/mp2629_adc.c                       |  19 ++--
+ drivers/iio/adc/qcom-spmi-rradc.c                  |  50 +++++-----
+ drivers/iio/adc/rn5t618-adc.c                      |   5 +-
+ drivers/iio/adc/sc27xx_adc.c                       |  41 ++++-----
+ drivers/iio/adc/stm32-dfsdm-adc.c                  |  29 +++---
+ drivers/iio/dac/ltc2688.c                          |   5 +-
+ drivers/iio/dac/stm32-dac-core.c                   |   5 +-
+ drivers/iio/gyro/bmg160_core.c                     |   4 +-
+ drivers/iio/gyro/mpu3050-core.c                    |  33 +++----
+ drivers/iio/health/afe4403.c                       |   9 +-
+ drivers/iio/health/afe4404.c                       |   9 +-
+ drivers/iio/health/max30100.c                      |   5 +-
+ drivers/iio/health/max30102.c                      |   5 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |  14 ++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |   9 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c    |   4 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c    |   4 +-
+ drivers/iio/light/adux1020.c                       |  13 ++-
+ drivers/iio/light/iqs621-als.c                     |   4 +-
+ drivers/iio/light/isl29018.c                       |   6 +-
+ drivers/iio/light/st_uvis25_core.c                 |   4 +-
+ drivers/iio/light/veml6030.c                       |   4 +-
+ drivers/iio/magnetometer/ak8974.c                  |  11 +--
+ drivers/iio/magnetometer/mmc35240.c                |   8 +-
+ drivers/iio/pressure/bmp280-core.c                 |   4 +-
+ drivers/iio/proximity/sx9324.c                     |   5 +-
+ drivers/iio/proximity/sx9360.c                     |   5 +-
+ drivers/iio/proximity/sx9500.c                     |  12 +--
+ drivers/iio/proximity/sx_common.c                  |   9 +-
+ drivers/iio/temperature/mlx90632.c                 |   4 +-
+ drivers/iio/trigger/stm32-timer-trigger.c          |  34 ++++---
+ 44 files changed, 273 insertions(+), 347 deletions(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20240614-review-7e60d159e75d
 
 Best regards,
-Krzysztof
+-- 
+Trevor Gamblin <tgamblin@baylibre.com>
 
