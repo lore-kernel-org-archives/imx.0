@@ -1,61 +1,61 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6321BD4FE
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE3A1BD51B
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632208; cv=none; b=SNbsysrHoF835VmoZ1AdtFXqKzoU580Grb8we4Tn/TtaBi59LZkJulRNa71cgEBjVZkpQidHfpflsAgRCxiIFMF0R3mbgoy5rTdRFCTKvSBdxN2Y9SivAIjn+UgtD1/17cBErQPhz1CeQEylRGD82dPyZGkWQHvpUvTCurExY6I=
+	t=1718632211; cv=none; b=guxtDQXRm8AaehjZ7yGp6Y+kjOEZSLT+y/nlpfFuJvYtHiYif/CdmGZAI1MXrgfjX5c08DXmuifG3xy7Jtv4eF193pmCKi5QA8wc5NAxEaKWNZeh/T602i0rcU+sgNgmLSvTxkh4ISYgbWz5QW06nCKZJwQEtt8sZcCcYsDFZO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632208; c=relaxed/simple;
-	bh=zWMvkgbpb12CypNp6YHAF3/7MiDNI6jYeCI/ir0hmEs=;
+	s=arc-20240116; t=1718632211; c=relaxed/simple;
+	bh=5OuEWFVCpArtZhx4z8JpNnfTVTHf4ULROK8X14+lutQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XShzD1FmRY7WrHeuZQJ80N8QBiwBHYku3A2khS/Un10jLQsq94ozt8RkHY/i+YGYG0qsPLdv+NhstbO6S3reOzi5Vbc0aCxUOp7vQ0pVJBetE03T4FRLPSzFEDYVCN6rFEHeVGCoYGLGra/y27Jr4CjtadVepZfiVMxNJYotvRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eRiJDO1f; arc=none smtp.client-ip=209.85.222.171
+	 In-Reply-To:To:Cc; b=eo06vRFVyY/Wv5wpfsF/6vsoWX1rbWRisEe13MjFbUBx/SKEQMzmUf/HO3rwBeFcqTQHlmcpdR0tm3PQ5kFHpd5XQIJdfqibpN7ZD/f2vDF3xo5w8iszzefpMLWNxp5tdrws7ZvIxjRmC/Bzi6S05Pkv342DW0Ch3Kt64dTtuUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cjKuFXcE; arc=none smtp.client-ip=209.85.217.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eRiJDO1f"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-796df041d73so313355685a.3
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cjKuFXcE"
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-48e56ae9ac7so334470137.3
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632206; x=1719237006; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632208; x=1719237008; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QUJvHuZZxgwBDIkIwz1c6/5nEPPRUcnNJo5C6L4NEfc=;
-        b=eRiJDO1fRpRfsD00XPOg8xMJgEswbHDh3lP2E3Uq07UHCNQ4rFlB5awGLKN+POakCQ
-         VccFfVXNqZIMvSrOW1Vq6Ma0zhOo7vrQTEXCgVNrnZo2+4JtFcBW8MIBCJASf5qDTdFu
-         MZckcef/RbhStB/rTM9ERewn2lB+pmMF1UKEdXYX23s4V+MzowC/+ilkrXIk2A60CMnq
-         ZLoI6qpLk+mVLxYosErExV3dRRqIQbylfqgIbbFBh1qdMaQ29YMJuL8QOYAOIIPQkZ/5
-         GDnJHwZKqB/PYGQ8wyoE2TljmwEO1C0DKM9sP10HdQnLaq9g9AxPFbw53fFv97G60MUf
-         qKJA==
+        bh=SS/VahdjQ8SKQC25MQPNc7rg+KDijJeHwUtRITveNmM=;
+        b=cjKuFXcEmtNbxK8GgdFutnGoFfalqPn67urmHzXtE3ybJ7NwNhZ9SK2FqvOpzdY12/
+         9ogZYiKrasqPHEFMRkWE+IZZPZTnpVLaA+X3wLEvtLKDowHFm/I6EipbsV56wgdvEVj0
+         +Fk5DJ8MHKBot7Htlibx0aAnt6MRVab+rZKry6QXWVY1APjX32+XygZFofMGj8H95BuX
+         mLoISZK+ekL3rvrmVzZpflRD5LfpnJKMFbHeeciagSoWJ9QnMGc5uEwlV/S46hxifIeh
+         2kW3j6We7qEdgpHxpiPW8EP7O13+XdXe1BHuZte3h9xirUdVqV/VDfDiSKkTHTPo+qd0
+         0DKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632206; x=1719237006;
+        d=1e100.net; s=20230601; t=1718632208; x=1719237008;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QUJvHuZZxgwBDIkIwz1c6/5nEPPRUcnNJo5C6L4NEfc=;
-        b=eDKc77CQZJ8uNbEZMhYhZ1ZV1czuuMf9xE5aLA7gnZjWQ4UAH9SxAaMe+xIwy0l4uV
-         m2B+ZNNyDC57Nnq+Png6mf/TdHSPH8CrXccyEkY93oJ1diXI2ro4tUrfLUosDMx8iAcA
-         ML5gHZmQBycjYrDU38QM7JvfE7esI+KanHRO/d4R4AgkE4F7vvgVj+L+JmM6zm4lRFxz
-         Y5SwVYWAOB1Qv4H/Pe7A/8h7XW3EZkBkXGG8kuOeoYxg2QV5cm/K45nX9cp2Nb2RcxFY
-         nhJDaZqTR5VLROVeLRf2YWE0ZaZ67JOSfjLCaShP3gk6e4UyqYPj8d6BwuwYkUbVNPJx
-         5njw==
-X-Forwarded-Encrypted: i=1; AJvYcCVynZbw+edL+0Oprk9EouHOUWWCNuf5ZGhRIEmesp8qtnA2sgpzD+n+c7GQeCKFZg4weM8Jzl5BYf1p3ZjN3tCIKiSk
-X-Gm-Message-State: AOJu0YyKOEGP2TIUAP+GNkj4tsbuE4Bj6cKUctRge0MfH/JKs3nrH54+
-	yLxWtkesLYLKHjoKQCDD+OdyDdjSzrqt4aa4XrJ2f99RSLq3HOioaRB53J1MelA=
-X-Google-Smtp-Source: AGHT+IEuE3X+Ttrgd1pciF1gOmiGqm6CNudwXH5GABygzdDAc5BXX3iLlJx1my8INZ4E7qgPOczVYA==
-X-Received: by 2002:a05:620a:444f:b0:795:5815:2f9f with SMTP id af79cd13be357-798d241d00fmr1205475685a.25.1718632206164;
-        Mon, 17 Jun 2024 06:50:06 -0700 (PDT)
+        bh=SS/VahdjQ8SKQC25MQPNc7rg+KDijJeHwUtRITveNmM=;
+        b=j5LqB+n9uurTj6gOn5XVyw/RX4Hp0KE5bkUFXJ056TTIggMZWDxJYkN1VgkX0YAZhJ
+         nm0dRhDhnvG6l8NUAH/0xpwSs8YemWYIRO7XfNebgyv258dhtwXfzJ3U7ZJEEqujpWY7
+         y6yUBmn2ukitE6W+nokRzBWItIdyrYsaL3Ldey7j021+CkJwIDQpxLMwhoHFfSJN5C+j
+         bSv12VxQdRJvo/BxxQiYaMfkF8+JSZKbqjn0Fp/HAmBhvKNA7eLZY1XHDPSsd3r0EhGK
+         0SzkhuPyEHJWA7QLZUWtDSqfCZ8fFzsNGRaWnbLA+KxmPyaNFRWBnmZgzpigt29FJ6AC
+         I6jA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEVDIccj135CGkfEA7lNOvFt1YHxeDKsGp007UcrI7KInBHqWOOmxLNGNjTmB8A6xjqlzn7QihqB5AgfKhJU1VrGhg
+X-Gm-Message-State: AOJu0YywFzR2CUgYOf1FQzn1Z06oHGKXElgR4lZtT4/esDmNHcZ9B2qY
+	Nb1eF3EO+WYTFRmNwa6JPwO2jN/qbDNvlbFQLw8vOkWaZvJlDJxyCBxBATzAyP8=
+X-Google-Smtp-Source: AGHT+IExs5o6BBy2GiVBbRbl5RTcmAHYS/6pj70WZUFQ8c7/pJkIjoippgtnc/biSc9YFfMmt2B/ig==
+X-Received: by 2002:a67:f783:0:b0:48d:9b03:3ff4 with SMTP id ada2fe7eead31-48dae3e1559mr9042383137.28.1718632208483;
+        Mon, 17 Jun 2024 06:50:08 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.04
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:05 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:08 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:50 -0400
-Subject: [PATCH v3 10/41] iio: adc: fsl-imx25-gcq: make use of
- regmap_clear_bits(), regmap_set_bits()
+Date: Mon, 17 Jun 2024 09:49:51 -0400
+Subject: [PATCH v3 11/41] iio: adc: ina2xx-adc: make use of
+ regmap_clear_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-10-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-11-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -98,65 +98,29 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Trevor Gamblin <tgamblin@baylibre.com>
 X-Mailer: b4 0.13.0
 
-Instead of using regmap_update_bits() and passing the mask twice, use
-regmap_set_bits().
-
 Instead of using regmap_update_bits() and passing val = 0, use
 regmap_clear_bits().
 
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/fsl-imx25-gcq.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/iio/adc/ina2xx-adc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-gcq.c
-index b680690631db..b3f037510e35 100644
---- a/drivers/iio/adc/fsl-imx25-gcq.c
-+++ b/drivers/iio/adc/fsl-imx25-gcq.c
-@@ -87,13 +87,13 @@ static irqreturn_t mx25_gcq_irq(int irq, void *data)
- 	regmap_read(priv->regs, MX25_ADCQ_SR, &stats);
+diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+index 9e52207352fb..727e390bd979 100644
+--- a/drivers/iio/adc/ina2xx-adc.c
++++ b/drivers/iio/adc/ina2xx-adc.c
+@@ -1046,8 +1046,7 @@ static void ina2xx_remove(struct i2c_client *client)
+ 	iio_device_unregister(indio_dev);
  
- 	if (stats & MX25_ADCQ_SR_EOQ) {
--		regmap_update_bits(priv->regs, MX25_ADCQ_MR,
--				   MX25_ADCQ_MR_EOQ_IRQ, MX25_ADCQ_MR_EOQ_IRQ);
-+		regmap_set_bits(priv->regs, MX25_ADCQ_MR,
-+				MX25_ADCQ_MR_EOQ_IRQ);
- 		complete(&priv->completed);
- 	}
- 
- 	/* Disable conversion queue run */
--	regmap_update_bits(priv->regs, MX25_ADCQ_CR, MX25_ADCQ_CR_FQS, 0);
-+	regmap_clear_bits(priv->regs, MX25_ADCQ_CR, MX25_ADCQ_CR_FQS);
- 
- 	/* Acknowledge all possible irqs */
- 	regmap_write(priv->regs, MX25_ADCQ_SR, MX25_ADCQ_SR_FRR |
-@@ -115,11 +115,10 @@ static int mx25_gcq_get_raw_value(struct device *dev,
- 	regmap_write(priv->regs, MX25_ADCQ_ITEM_7_0,
- 		     MX25_ADCQ_ITEM(0, chan->channel));
- 
--	regmap_update_bits(priv->regs, MX25_ADCQ_MR, MX25_ADCQ_MR_EOQ_IRQ, 0);
-+	regmap_clear_bits(priv->regs, MX25_ADCQ_MR, MX25_ADCQ_MR_EOQ_IRQ);
- 
- 	/* Trigger queue for one run */
--	regmap_update_bits(priv->regs, MX25_ADCQ_CR, MX25_ADCQ_CR_FQS,
--			   MX25_ADCQ_CR_FQS);
-+	regmap_set_bits(priv->regs, MX25_ADCQ_CR, MX25_ADCQ_CR_FQS);
- 
- 	time_left = wait_for_completion_interruptible_timeout(
- 		&priv->completed, MX25_GCQ_TIMEOUT);
-@@ -272,9 +271,8 @@ static int mx25_gcq_setup_cfgs(struct platform_device *pdev,
- 				   MX25_ADCQ_CFG_REFN_MASK,
- 				   refp | refn);
- 	}
--	regmap_update_bits(priv->regs, MX25_ADCQ_CR,
--			   MX25_ADCQ_CR_FRST | MX25_ADCQ_CR_QRST,
--			   MX25_ADCQ_CR_FRST | MX25_ADCQ_CR_QRST);
-+	regmap_set_bits(priv->regs, MX25_ADCQ_CR,
-+			MX25_ADCQ_CR_FRST | MX25_ADCQ_CR_QRST);
- 
- 	regmap_write(priv->regs, MX25_ADCQ_CR,
- 		     MX25_ADCQ_CR_PDMSK | MX25_ADCQ_CR_QSM_FQS);
+ 	/* Powerdown */
+-	ret = regmap_update_bits(chip->regmap, INA2XX_CONFIG,
+-				 INA2XX_MODE_MASK, 0);
++	ret = regmap_clear_bits(chip->regmap, INA2XX_CONFIG, INA2XX_MODE_MASK);
+ 	if (ret)
+ 		dev_warn(&client->dev, "Failed to power down device (%pe)\n",
+ 			 ERR_PTR(ret));
 
 -- 
 2.45.2
