@@ -1,60 +1,60 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90591BBBCC
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FB71BBBE8
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632198; cv=none; b=kUN2NasGs+Oh/K+2N1NlzAyJwVG3Rp7ObRN9rn1lUOFcVE9L4ny1Gj6h3QNRTA2fNNaGhLiEWqq3YMgjbXpls5JQgsSqUFzbzFYa8FP02z32sqwJMJHtWnMoaF0PkWRDT4o/p8JtwaDes0LhCuOC3YywWOXPkycl38QziyP9FZ0=
+	t=1718632201; cv=none; b=QbU3IuAWvRoL7hKX2hpZUA8LXhLnex/hauDunn5cy1SR7BaWJvEg371pmt6ugnGofa/Ol5PnXuuHQoxT3+G+uKIokAgP/L7uENKxc5GvBcEWkN7dNAoeze017TVjbDnhOpnRT818zZwUZct5AFknyh3MwZOz1UNbGdk38EQPUCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632198; c=relaxed/simple;
-	bh=tZD2LK0TsNQLeO1PQXlfQAFGl//p991fLtVre5bjIaA=;
+	s=arc-20240116; t=1718632201; c=relaxed/simple;
+	bh=UCswPzc07ScF6/5JfvW+wgRVfrWxtjhgBr2M86YwQWQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B6WT0DhKYwOsasoU3wwz6kIqF8iV4djIJA+kl38iVD8xBaGm4wb3eiKPtXFFCtCcALlKL8zdGT5xdEQwtzQsMiKJEjgew3WboMKMo/Anj9SUujam1Q2WzQ9168I2GrHao/hWe7kuYZQfKJF3ehEKggaa4GEZKFLYZjFO0HGsOnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ppwVP6GD; arc=none smtp.client-ip=209.85.222.170
+	 In-Reply-To:To:Cc; b=biJBVEC/my8fBhkeTsmlEb4cKB44uTh7cYRW5W2Cu1DprRxqTT4fx2EHLrmIJeBHJ1OOyHbh5tU89nM4Ttprj+3ECfiniRUoJ8Bd93dAmmj2cyhyl2DlMxq+EKJgojHu/Iw7Sd0Bktx281yFVtUNTrrCZcrrYygQnbSR2CoeUBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=feQfbKEg; arc=none smtp.client-ip=209.85.217.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ppwVP6GD"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7955841fddaso361866585a.1
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:49:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="feQfbKEg"
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-48c37941349so1596107137.3
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:49:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632196; x=1719236996; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632197; x=1719236997; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6sTXUSoBs+YlsgH71N9X/wOixyDVYk1BR8pUCCabPaI=;
-        b=ppwVP6GD64EIaRKp7pf0XC1CrgRYKlT8DaBfAR3k/pUrH3j7NafWjk+RRhehdH7/+/
-         x1aIGEqWxvh+I2txOuwe3oZ19bjkYuTFGD4pkN7pvtQaJAuvXSA8DQtBl0/yItoFbflw
-         fPi0J5BhdP170Ct5xvjTn9ITW0zYIs9Fu1Duvr12wvU5C7WCBBSua/5ySu2wRjyuK0JO
-         OHE7IhGWlnqWAHj7lwwO2OR2FJPcGIpfxyvQSEwcxIAcYXIg2agu+VuvqtjNZj5yjwVX
-         17Cho3I8K3sbBSbw8Cpb12eWEL0vwMiEgcOhYyooflphsAPxzHZMBySwtf4f1EtdNbwH
-         +8Wg==
+        bh=g6UQvfPsoXnGJXINmWjQmEBO62NliLdepCpDJh/A7YM=;
+        b=feQfbKEgcTslk0JZfYZT96lHl1XI0zx2QRfXq9lNnLZqNKvNm3qbUkw1zy0SfuOABC
+         5o70XD34o/sxMAxJjsvuPaSnaoqxSkL3bs9pVE0aNDPo5k9uWDXE+J9s8p917pQsxD/T
+         am32I0gqFzifGA1FhOA88Av9NlegI0Ogb6sLIx1LlZblp/CXtgMmNOoiNkpPMfalv2TQ
+         k0CNRqRd6EiRTL6ecUrCGznLgVw3/xXdkfiDV56lNANeiOpa4f5R2H+Gy2xUQ3se1oyG
+         qXgBhAjfPleMVT2XE74GoVUGoL/dnHBjk7L71OSjthhHOCeDUhBK+GQvN3glYt0XZVWB
+         IjJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632196; x=1719236996;
+        d=1e100.net; s=20230601; t=1718632197; x=1719236997;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6sTXUSoBs+YlsgH71N9X/wOixyDVYk1BR8pUCCabPaI=;
-        b=CkLH7nko7lmvhIItFHGlWAEHwqCwxVWQcufGITWZqRKOgxMcsjjdvdiVn3fVQgCW1G
-         pI5bHEKUeqnrgKyLytHVI5WT+ugRW3PlN01r1cZsVqpM+KjLH8sBQsWpzYyboJ80xMHz
-         JMjiQvoTB4JDpwIcDMtM0ND4Nq+oh6hcVCZWPxbnIV7fe76sVNMVvjHGXJqJIcsJEbJB
-         ewsUOKPe9CCAIZUX3Cvh7Qv3wn9cvmP1ZuWFYakT6Yh/HzRN24G1Dm6aV3ibyU96NLK9
-         af5m46mUYzaj98TEQ9RsUMuWNozYYmhTvHIKsDyhM21UwKIlBphu71qIZ7wMRUIYMxhx
-         CAVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXcy+Gn7o8C/DiXdhnIzhFvWpWV8CvkfIeu0PGowvQ8YbkVLwDW2HMpN/UceYPUYj3L3S6AlFOGtNe3tuaX9JLGzo05
-X-Gm-Message-State: AOJu0Yyl7+KLCmnGy7SZh7vwRpJdHVK/55hycLIj2GWT0C2hNuzRQ32z
-	1j/7rav8wFRKs8V1fU82Rm0v+TWvBabjh1jLR5iVv7eW88bHa2vUlWJRt/saJRU=
-X-Google-Smtp-Source: AGHT+IGjHbBOrTl20NthbniN5xVzM8rCge08JoanAoI0amw+zX4G0dqtT7iYT1wcjjqa5iiFtvInEw==
-X-Received: by 2002:a05:620a:44c4:b0:795:5b00:edcb with SMTP id af79cd13be357-798d0243396mr1793084785a.21.1718632195400;
-        Mon, 17 Jun 2024 06:49:55 -0700 (PDT)
+        bh=g6UQvfPsoXnGJXINmWjQmEBO62NliLdepCpDJh/A7YM=;
+        b=ealuOm2RKR4Mrrbxb1LOzpqOm+MEyjv3A0pQYIuUB67MhUY7o0ZPr4lc1ecT0obpsl
+         uV5Or0suj0nn7VCWwmLikN1luHIyVzaAL3I0frPM0cmUIXwFOJxc/vAoMpcBxylE0V1H
+         DUiJtJQtNrqK0gtrcRGtrdTrzl5FDPH9vFTjQ0BeW4bc6GYy7kh+9ZGbLJrPop9Yzt7E
+         emsvV53p/b65n5Yha9kDt/2y41WwH0rzRITOIStib7U01T454FpwqGwPAQVgWU9jcbFB
+         c8fDDBDn2qvPnnvYPfqiMaa/AQXhgp4STC5mNfGy05ihVcYwD7vDsqaf1M4F8pIEjDXk
+         el0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWiEsGloQ8izsFqLlCKbueM+Gj50GpzFA/PTi9tnKNp5X63JqatiUKMJWewQv6gDo7lytvI8eN/7tn1Cw6yH5Y7CxQ6
+X-Gm-Message-State: AOJu0YyHpniAfuT8WrHPDEA3ZxnqtDT2Nl17u1lMX8rgSYs2VmTuHc/q
+	X5jcDdqQ6cwsbGaIwcm7qqCA6MXQTxRMpiKbX3eFBe7FFnwNA/WAQ5n70dDJAoM=
+X-Google-Smtp-Source: AGHT+IHh1rKlzT8+664YalrD1JcHiwA7k7yzEL0kYz4H+P2//V4FMw+RVSrpyNsoJMn06TFOuuRyhA==
+X-Received: by 2002:a67:f452:0:b0:48d:a159:dd80 with SMTP id ada2fe7eead31-48dae329fbdmr9819998137.12.1718632197524;
+        Mon, 17 Jun 2024 06:49:57 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.49.53
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.49.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:49:55 -0700 (PDT)
+        Mon, 17 Jun 2024 06:49:57 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:45 -0400
-Subject: [PATCH v3 05/41] iio: adc: axp20x_adc: make use of
+Date: Mon, 17 Jun 2024 09:49:46 -0400
+Subject: [PATCH v3 06/41] iio: adc: axp288_adc: make use of
  regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-5-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-6-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -104,25 +104,24 @@ regmap_set_bits().
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/axp20x_adc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/axp288_adc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
-index d6c51b0f48e3..00c1a01cac63 100644
---- a/drivers/iio/adc/axp20x_adc.c
-+++ b/drivers/iio/adc/axp20x_adc.c
-@@ -712,9 +712,8 @@ static int axp20x_probe(struct platform_device *pdev)
- 	regmap_write(info->regmap, AXP20X_ADC_EN1, info->data->adc_en1_mask);
+diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
+index 49fff1cabd0d..f135cf2362df 100644
+--- a/drivers/iio/adc/axp288_adc.c
++++ b/drivers/iio/adc/axp288_adc.c
+@@ -247,8 +247,8 @@ static int axp288_adc_initialize(struct axp288_adc_info *info)
+ 		return ret;
  
- 	if (info->data->adc_en2_mask)
--		regmap_update_bits(info->regmap, AXP20X_ADC_EN2,
--				   info->data->adc_en2_mask,
--				   info->data->adc_en2_mask);
-+		regmap_set_bits(info->regmap, AXP20X_ADC_EN2,
-+				info->data->adc_en2_mask);
+ 	/* Turn on the ADC for all channels except TS, leave TS as is */
+-	return regmap_update_bits(info->regmap, AXP20X_ADC_EN1,
+-				  AXP288_ADC_EN_MASK, AXP288_ADC_EN_MASK);
++	return regmap_set_bits(info->regmap, AXP20X_ADC_EN1,
++			       AXP288_ADC_EN_MASK);
+ }
  
- 	/* Configure ADCs rate */
- 	info->data->adc_rate(info, 100);
+ static const struct iio_info axp288_adc_iio_info = {
 
 -- 
 2.45.2
