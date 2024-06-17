@@ -1,61 +1,61 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12D61CCCB4
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03571D3654
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632243; cv=none; b=ExGHrM/DDqi2qQ+wDqRSFI90Q7bPhjBlZ9ypBDDsYQqUSxZrzTudln301Ya9LZKBj3l4lbmXh5J8C3uStby9KPW4GMc1LQDHmcO48/LAdq0a+0mI0U4fbOx47NBojArxUtcVp/WaqScnuSEMUHw8PpeZr5Y4g7IN1VTcpcJSEmc=
+	t=1718632245; cv=none; b=Sy69dUFyLfbLdo6pLfJ7BoBSE5QXdrFcYO9ollatB8QLVaS8pDJAFenVn/ipSeAxSqH3Ntd6ivRf6z873T62kEH3a0cZ/fWJXkE3zD9yL/p0iB0Qm6f5T53KcD9eQJ+Aa+dPlbkjBE/8w8xaY8GFtGgKg/1u/jRpExjppvcHHzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632243; c=relaxed/simple;
-	bh=hNgP/6iNEg0nlsLXnblRZQOFGnL8J5KYM7/zOiP/Ot0=;
+	s=arc-20240116; t=1718632245; c=relaxed/simple;
+	bh=+4mUxpFBa9t5WO+gS7VMEdFKNqvRfouDWQBE4gXDtPo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=APENY0QFN3N8dYeZun5SB3U+or4TSm/oiaAkLn0BNTfVCoFJokpyV61oRClE1K9hvwlIwv1RQtIBVLIU4o+sZ97kiuWcfl5w3nMffbf4eCkufXxBU+dBGnpr31X37ABzzQrF9XNMvKVd809NqmnoFw5+skFwoPCoUIO2zS9eXK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I3iouGma; arc=none smtp.client-ip=209.85.222.173
+	 In-Reply-To:To:Cc; b=FZYZuHqPAfX+jYZrtjAzj0h9FyvQ+uQRFHBKBVGGiroeegO0cSNghkBnNQHO0ewCuA3YyZvAIYhCVE87Y+71m+P7yACHnXoQXwLD9lrku0hIZyNlIgUezPWjwGR+/vWrSgZV6DHLajZICwSmqLF0ITYGwcXifZVusnrrx0uzBjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AqY95hz1; arc=none smtp.client-ip=209.85.222.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I3iouGma"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7955f3d4516so481905985a.1
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AqY95hz1"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-797f2d8b408so310934985a.1
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632241; x=1719237041; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632243; x=1719237043; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=s9IxtXAJpg0zoHi2O9sRGBPOMzr1DfcZ9EisZFYQElQ=;
-        b=I3iouGmaLXdpresWg5VsnBYOvfFAkMa6c14Rd/mcKp2yg76a1gWap5l9JCqxnF3gUI
-         lLR4uhHo/JwJRtRarXym4GYk3m8hWhsd6eKDWk32zdSkdKA+A4leqHYdxoxZQmrjZDX7
-         nCeKLoTu5j7UDLwlbrxGQIAsaKXSujs+QwByvnX+nBkcakTRgO8hgJ2XJ6M+jE50TiiE
-         t43kLvz8YW3BT414Gq3vqbitp1adz8kLmYkayiyAPUC/CDrYuQZEZWuLCtpZV5IUusBH
-         EQlHljrDvPPaHpI8RdRxidk/MrDm8qQ6YV3XjgkUWAmG/GcmRsKU8LKoe8yDEbfAnGoK
-         hfzw==
+        bh=S/wwf4Pyf9v8s/HS7lCuvhL4I665hNiJrFxeq5WtNz8=;
+        b=AqY95hz1WfQ3S5aotw3MAbwfwp/M8vWqwrKpAVxy2x7HqYL+z7PmxlFFhMClmVZIt9
+         0kPt0IU4wrho1UDAZCpFd1Zo141gvnr5W7BGJLZPL8Kt77qAcnQ+B5YuLQjuekvCA/7Y
+         kZZ+uKJ3+y0BOFn9hVozrjOx/y2D0OX2YwLAO2Cldwvj5rWLgjdxyqdQ3A2Q7uacZkAk
+         615mgTKSQcxeXEE5/kEtSbPAICaoGN9oB940YoqcCb+TaAhAQE9StNLSgT1R27KcoUAv
+         GdswVyabJfb9w4sinpl2csTkfYDudA2CFh0gL2VFhwjC6F1NaeLjGYdj4EPFWZyJEZvg
+         mRHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632241; x=1719237041;
+        d=1e100.net; s=20230601; t=1718632243; x=1719237043;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s9IxtXAJpg0zoHi2O9sRGBPOMzr1DfcZ9EisZFYQElQ=;
-        b=MJTCtAZjbJeK8I+SE/X86Xi1821/F2Vu+QgrG+JOWQg8ce263Knvdo76MRdSAEUXHo
-         i5rH6CHdFw2e1XCDJEXVmZ5S+aUhCw03CODKsHT6p8qWD6H65yeACD+wJ5fFAiRVbbjx
-         ivJIZG13ON57yXkUCRRJs3jXiXZ+5wDsrHcF/UWwIH9Z6iAX6dvy2q4FpJujPDsyldPs
-         Jnl6y4TxKNl8Y/tJnWv+gUHsNT6F2PJGIDyCGPS/bSMnr3RHZcTBN8SG7imxfpGb6aM0
-         7BdpZiGV6m2LXxbVlVeyu3hAteOm3xkO4k0aNZ7MeNQg/bXhpeSxa2diZrDdU0JJ5jtO
-         wDLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ05+3zwOuorhNjn1o629OaG2zA23AFVpcL8R6A5MTnrE35/f5180ruWnqG3Rmi8pbqVyR7ON1RVltGEmvbfoIx2r0
-X-Gm-Message-State: AOJu0YzG4eUiSi238PKabGpR+bY+yJB5J8CLTYUJCPhvrTJOjriOnSid
-	5/tJbV5DDI3RqqXIn9FRxAUUDZoiB5KC1vczxu7nLgZrhItKMPvV8sngY8s1hsc=
-X-Google-Smtp-Source: AGHT+IEvNWEsHTIz+Kh5SLMDJk99l/NCyLAOM78IKPUk0tI5a9ZCslYv7WlkhqmAtTcQfPh0VS34pA==
-X-Received: by 2002:a05:620a:2981:b0:795:5469:1b32 with SMTP id af79cd13be357-798d0242f64mr1752044785a.18.1718632240726;
-        Mon, 17 Jun 2024 06:50:40 -0700 (PDT)
+        bh=S/wwf4Pyf9v8s/HS7lCuvhL4I665hNiJrFxeq5WtNz8=;
+        b=SP9W2k4v58lGK8LZqOS0fCnpWunBW3KVDxF6ZslSCzzSyx/OA/c12fE7V5lQ8GkVv9
+         mcT/diKxLSmjBalAoX2BRIGXy6+YqnYfvC/JKx5oQ0K2xSOzyWJ/XkYOzwlhqZ4liVRY
+         YW/SnuTfx6+Ai4sNh2QFC8wGe/V/nVJmql+w+pChHtI9r54MOGDqfNBEjH/wDw68Szzc
+         VetFYxT2KEb94w3p5p2GQ3seiJ3rgAmOnOxQvhUHVX/3ViLzsu4PLwU21pyAhWZvetEG
+         aPgvgYe9YzYV/sRgHDK8U1HysT4ntrt17jZd8dQ+gjyR917gP1JMH0BfCCrg4QDb/85j
+         9eGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoGvNpfohKuOOy4Xz05bq/QJ7HnJaXi00I+0TNHBQVTBRDUZY/QrjtAQiPhLhaSQO6Y0aK44GQz/DzVgWzDF6tVUs2
+X-Gm-Message-State: AOJu0Yy64RDZJSe7XRoZlsciaU6kLCiDfOptYHapZ2kX6OfvQS0/1eFq
+	3oYZPVamiVjEd3fnzApF6GP+HAqzjX0FMlvC6tB3cw4Tn/0ZMOHQvtHX0mGjcpA=
+X-Google-Smtp-Source: AGHT+IFGOx2s8Nnos2uW+1yz9gXjI96q1FUrsSHsvdHqjpAdDpOLj6w2PTD0THhqXhocLH6W1aVi0w==
+X-Received: by 2002:a05:620a:46a1:b0:79a:2613:9b40 with SMTP id af79cd13be357-79a26139e04mr977624785a.50.1718632242836;
+        Mon, 17 Jun 2024 06:50:42 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.38
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:40 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:42 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:50:06 -0400
-Subject: [PATCH v3 26/41] iio: health: max30102: make use of
- regmap_set_bits()
+Date: Mon, 17 Jun 2024 09:50:07 -0400
+Subject: [PATCH v3 27/41] iio: imu: inv_icm42600: make use of
+ regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-26-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-27-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -101,27 +101,113 @@ X-Mailer: b4 0.13.0
 Instead of using regmap_update_bits() and passing the mask twice, use
 regmap_set_bits().
 
+Instead of using regmap_update_bits() and passing val = 0, use
+regmap_clear_bits().
+
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/health/max30102.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 14 ++++++--------
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |  9 ++++-----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c    |  4 ++--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c    |  4 ++--
+ 4 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
-index 6616729af5b7..07a343e35a81 100644
---- a/drivers/iio/health/max30102.c
-+++ b/drivers/iio/health/max30102.c
-@@ -448,9 +448,8 @@ static int max30102_get_temp(struct max30102_data *data, int *val, bool en)
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+index 63b85ec88c13..509fe6a3ae97 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -262,9 +262,8 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
+ 
+ 	/* restore watermark interrupt */
+ 	if (restore) {
+-		ret = regmap_update_bits(st->map, INV_ICM42600_REG_INT_SOURCE0,
+-					 INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN,
+-					 INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN);
++		ret = regmap_set_bits(st->map, INV_ICM42600_REG_INT_SOURCE0,
++				      INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -306,9 +305,8 @@ static int inv_icm42600_buffer_postenable(struct iio_dev *indio_dev)
  	}
  
- 	/* start acquisition */
--	ret = regmap_update_bits(data->regmap, MAX30102_REG_TEMP_CONFIG,
--				 MAX30102_REG_TEMP_CONFIG_TEMP_EN,
--				 MAX30102_REG_TEMP_CONFIG_TEMP_EN);
-+	ret = regmap_set_bits(data->regmap, MAX30102_REG_TEMP_CONFIG,
-+			      MAX30102_REG_TEMP_CONFIG_TEMP_EN);
+ 	/* set FIFO threshold interrupt */
+-	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INT_SOURCE0,
+-				 INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN,
+-				 INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN);
++	ret = regmap_set_bits(st->map, INV_ICM42600_REG_INT_SOURCE0,
++			      INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN);
  	if (ret)
- 		goto out;
+ 		goto out_unlock;
+ 
+@@ -363,8 +361,8 @@ static int inv_icm42600_buffer_predisable(struct iio_dev *indio_dev)
+ 		goto out_unlock;
+ 
+ 	/* disable FIFO threshold interrupt */
+-	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INT_SOURCE0,
+-				 INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN, 0);
++	ret = regmap_clear_bits(st->map, INV_ICM42600_REG_INT_SOURCE0,
++				INV_ICM42600_INT_SOURCE0_FIFO_THS_INT1_EN);
+ 	if (ret)
+ 		goto out_unlock;
+ 
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index 96116a68ab29..bb302f5540cf 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -435,9 +435,8 @@ static int inv_icm42600_setup(struct inv_icm42600_state *st,
+ 		return ret;
+ 
+ 	/* sensor data in big-endian (default) */
+-	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG0,
+-				 INV_ICM42600_INTF_CONFIG0_SENSOR_DATA_ENDIAN,
+-				 INV_ICM42600_INTF_CONFIG0_SENSOR_DATA_ENDIAN);
++	ret = regmap_set_bits(st->map, INV_ICM42600_REG_INTF_CONFIG0,
++			      INV_ICM42600_INTF_CONFIG0_SENSOR_DATA_ENDIAN);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -532,8 +531,8 @@ static int inv_icm42600_irq_init(struct inv_icm42600_state *st, int irq,
+ 		return ret;
+ 
+ 	/* Deassert async reset for proper INT pin operation (cf datasheet) */
+-	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INT_CONFIG1,
+-				 INV_ICM42600_INT_CONFIG1_ASYNC_RESET, 0);
++	ret = regmap_clear_bits(st->map, INV_ICM42600_REG_INT_CONFIG1,
++				INV_ICM42600_INT_CONFIG1_ASYNC_RESET);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+index 8d33504d770f..ebb31b385881 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+@@ -28,8 +28,8 @@ static int inv_icm42600_i2c_bus_setup(struct inv_icm42600_state *st)
+ 			   INV_ICM42600_INTF_CONFIG6_MASK,
+ 			   INV_ICM42600_INTF_CONFIG6_I3C_EN);
+ 
+-	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
+-				 INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY, 0);
++	ret = regmap_clear_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
++				INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+index cc2bf1799a46..eae5ff7a3cc1 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+@@ -27,8 +27,8 @@ static int inv_icm42600_spi_bus_setup(struct inv_icm42600_state *st)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
+-				 INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY, 0);
++	ret = regmap_clear_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
++				INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY);
+ 	if (ret)
+ 		return ret;
  
 
 -- 
