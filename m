@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067BD13B28A;
-	Mon, 17 Jun 2024 07:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A273C187323;
+	Mon, 17 Jun 2024 07:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718607604; cv=none; b=KAm9eH9dzt2MegscAABVLpQuvvCw4WZgqZHRdOLb79+Rx+vA/iq58D6mJkp09je7eTwidLTelsJjoqEirZqa5K7Y5K3WPKaat3quHyNB/q3WSc+Jzx1UVBeAnpTBVepLLe42slYX3fnzVkxZxO++AmMyYxYEeD2SbojQXJHKBEM=
+	t=1718608452; cv=none; b=uPQVspn/Kc1iNdtGFmQi4cpmiJNe5ZqdKYR9FHh2ehoZdfy4pja+U9YAMdC2sibt82MrdS7nqW4NUwrlbhrlB/VWV+MZvrz6mv1TyFrOE6VkZReyAkKHoX1JScYnxsnP4TUXmyrBMFHOMWK22NF/5oKwpIxs8Vpv8zpU+mBkZo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718607604; c=relaxed/simple;
-	bh=/hbaAgyGIPPhVG4P0OCPoMtvi95I8xCPbHS9u7/7aeQ=;
+	s=arc-20240116; t=1718608452; c=relaxed/simple;
+	bh=Ae70p2sXlx6ci2KzZWwD32nBpBJFBokZOQZpnUOCWCU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yrj1krC9ufh94QPVyPzXlR8ErhHEvgWfLm9inshmmFV15yp2R6sTbjwOyIWDch4vy8vOuzKUCC9JSbE4r60ynryNgdbd8GH+IY7CBKjgY2Tao6ByZw6dQR+JhJ1xXso/aEsI4w06Tsmr4KFRQA7mVMV4+EPetDvvTq5LJPpEHxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmaNH9hZ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=SuHUKKKodN6SQ8cbHV3pB01YY1p46UimT6vWoJlC/4Ie27ifMyf6uZTSgEjf2UJ7UFp9ZEt08kfT++6bV4IyQklPHs3qmLXOAeEuYia9RFoqh86AxE4S21c5PSpwLYQKHlSeZSD6tvul/F/so4ezARBeTJAtpyB2ROqh2rEFM9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNOPXzD9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmaNH9hZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE53C2BD10;
-	Mon, 17 Jun 2024 06:59:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNOPXzD9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2228C2BD10;
+	Mon, 17 Jun 2024 07:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718607603;
-	bh=/hbaAgyGIPPhVG4P0OCPoMtvi95I8xCPbHS9u7/7aeQ=;
+	s=k20201202; t=1718608452;
+	bh=Ae70p2sXlx6ci2KzZWwD32nBpBJFBokZOQZpnUOCWCU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CmaNH9hZhKG/+3f3KwCFC104mRHj15+nwXX5vTPeeUU0o6VcftZ9Uarc1FVkYyHRH
-	 FtklDNE1f2EjQu8odsTakFzuUCu+23LRwAdR/BpggkMa0jJ1or1STdRpMAhdD5nfPp
-	 euLIU7bUHubUzSXcNehJS5SHLM42cdCvV4O27SKMBnMuoLujjXnQMIpD6DUvNAu0iN
-	 jHMN3Kp0nTDdUxHGgd8OKq8HXnjg9CG3hA7ZHwrzx88/Mj7Odl2dQtP0CPM8DvlKzo
-	 Npc55b5YI+7pQfuhLhib0oCKivNSRjXwEDjuUX1RwG7Iu/v+2VYYlO6uCV4tojTLHs
-	 rZUOguS8pEfNw==
-Message-ID: <28a6ff46-ad12-45c6-9ccb-f99fd08f3265@kernel.org>
-Date: Mon, 17 Jun 2024 08:59:56 +0200
+	b=tNOPXzD9Wh+YJyvCSalSmouf/Gz6bkWk7Kuywt3gSi1ypgW5lzo2VVK17F/7vJv0+
+	 JKjYJK1V7FdUlu1tQARGH7+1eUwVqDbn6J4hG3CnrxHC+ahOVB/FsCj43aMpYr9PGg
+	 8DfdY0mLm2fyiZaj2VbgfrMVarE5+VJeavFOW9+AZzZ37ZmD4Ct7JfbB8TqBW0FgD9
+	 nu2poJr7f2mYjVaPITBGS1wm+mdim+7qD0nqeAFQJLnx429lPwxcm8HVRco7Tfm0FK
+	 DOnrRZVeAjJuNqaNoyaoRNlhDHU7vot4Fodie069MWTVTutbQH2QK8C8NT+/9Ke3k8
+	 PlIQzlDejJx7g==
+Message-ID: <a71bf75f-8c2c-44cc-baeb-3feabd1757b9@kernel.org>
+Date: Mon, 17 Jun 2024 09:14:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: ptp: Convert ptp-qoirq to yaml format
+Subject: Re: [PATCH 2/2] dt-bindings: net: Convert fsl-fman to yaml
 To: Frank Li <Frank.Li@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
@@ -46,7 +46,7 @@ To: Frank Li <Frank.Li@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>,
 Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev
 References: <20240614-ls_fman-v1-0-cb33c96dc799@nxp.com>
- <20240614-ls_fman-v1-1-cb33c96dc799@nxp.com>
+ <20240614-ls_fman-v1-2-cb33c96dc799@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,181 +92,346 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240614-ls_fman-v1-1-cb33c96dc799@nxp.com>
+In-Reply-To: <20240614-ls_fman-v1-2-cb33c96dc799@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 14/06/2024 22:33, Frank Li wrote:
-> diff --git a/Documentation/devicetree/bindings/ptp/ptp-qoriq.yaml b/Documentation/devicetree/bindings/ptp/ptp-qoriq.yaml
-> new file mode 100644
-> index 0000000000000..585e8bffd90c9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/ptp/ptp-qoriq.yaml
+> Convert fsl-fman from txt to yaml format and split it fsl,fman.yam,
+> fsl,fman-port.yaml, fsl-muram.yaml, fsl-mdio.yaml.
 
-Filename based on compatible. Can be fsl,ptp.yaml
 
-> @@ -0,0 +1,148 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/ptp/ptp-qoriq.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +  clocks:
+> +    items:
+> +      - description: A reference to the input clock of the controller
+> +          from which the MDC frequency is derived.
 > +
-> +title: Freescale QorIQ 1588 timer based PTP clock
+> +  clock-frequency:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Specifies the external MDC frequency, in Hertz, to
+> +      be used. Requires that the input clock is specified in the
+> +      "clocks" property. See also: mdio.yaml.
+
+Drop entire property. Comes from mdio.yaml.
+
 > +
-> +maintainers:
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  fsl,fman-internal-mdio:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      Fman has internal MDIO for internal PCS(Physical
+> +      Coding Sublayer) PHYs and external MDIO for external PHYs.
+> +      The settings and programming routines for internal/external
+> +      MDIO are different. Must be included for internal MDIO.
+> +
+
+...
+
 > +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description: |
+> +  FMan Internal memory - shared between all the FMan modules.
+> +  It contains data structures that are common and written to or read by
+> +  the modules.
+> +
+> +  FMan internal memory is split into the following parts:
+> +    Packet buffering (Tx/Rx FIFOs)
+> +    Frames internal context
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - fsl,etsec-ptp
-> +      - fsl,fman-ptp-timer
-> +      - fsl,dpaa2-ptp
-> +      - fsl,enetc-ptp
-> +    description: |
-> +      Should be "fsl,etsec-ptp" for eTSEC
-> +      Should be "fsl,fman-ptp-timer" for DPAA FMan
-> +      Should be "fsl,dpaa2-ptp" for DPAA2
-> +      Should be "fsl,enetc-ptp" for ENETC
-
-You can write it simpler, e.g.
-- fsl,etsec-ptp   # eTSEC
-
-and then you see that this does not bring any new information - your
-comment duplicates the compatible. Just drop.
-
+> +      - fsl,fman-muram
 > +
 > +  reg:
 > +    maxItems: 1
 > +
-> +  interrupts:
-> +    minItems: 2
-> +    maxItems: 4
+> +  ranges: true
 
-Items should be described.
+That's odd. Why do you need ranges without children?
 
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  fsl,cksel:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Timer reference clock source.
-> +
-> +      Reference clock source is determined by the value, which is holded
-> +      in CKSEL bits in TMR_CTRL register. "fsl,cksel" property keeps the
-> +      value, which will be directly written in those bits, that is why,
-> +      according to reference manual, the next clock sources can be used:
-> +
-> +      For eTSEC,
-> +      <0> - external high precision timer reference clock (TSEC_TMR_CLK
-> +            input is used for this purpose);
-> +      <1> - eTSEC system clock;
-> +      <2> - eTSEC1 transmit clock;
-> +      <3> - RTC clock input.
-> +
-> +      For DPAA FMan,
-> +      <0> - external high precision timer reference clock (TMR_1588_CLK)
-> +      <1> - MAC system clock (1/2 FMan clock)
-> +      <2> - reserved
-> +      <3> - RTC clock oscillator
-> +
-> +  fsl,tclk-period:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Timer reference clock period in nanoseconds.
-> +
-> +  fsl,tmr-prsc:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Prescaler, divides the output clock.
-> +
-> +  fsl,tmr-add:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Frequency compensation value.
-> +
-> +  fsl,tmr-fiper1:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Fixed interval period pulse generator.
-> +
-> +  fsl,tmr-fiper2:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Fixed interval period pulse generator.
-> +
-> +  fsl,tmr-fiper3:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Fixed interval period pulse generator.
-> +      Supported only on DPAA2 and ENETC hardware.
-> +
-> +  fsl,max-adj:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Maximum frequency adjustment in parts per billion.
-> +
-> +      These properties set the operational parameters for the PTP
-> +      clock. You must choose these carefully for the clock to work right.
-> +      Here is how to figure good values:
-> +
-> +      TimerOsc     = selected reference clock   MHz
-> +      tclk_period  = desired clock period       nanoseconds
-> +      NominalFreq  = 1000 / tclk_period         MHz
-> +      FreqDivRatio = TimerOsc / NominalFreq     (must be greater that 1.0)
-> +      tmr_add      = ceil(2^32 / FreqDivRatio)
-> +      OutputClock  = NominalFreq / tmr_prsc     MHz
-> +      PulseWidth   = 1 / OutputClock            microseconds
-> +      FiperFreq1   = desired frequency in Hz
-> +      FiperDiv1    = 1000000 * OutputClock / FiperFreq1
-> +      tmr_fiper1   = tmr_prsc * tclk_period * FiperDiv1 - tclk_period
-> +      max_adj      = 1000000000 * (FreqDivRatio - 1.0) - 1
-> +
-> +      The calculation for tmr_fiper2 is the same as for tmr_fiper1. The
-> +      driver expects that tmr_fiper1 will be correctly set to produce a 1
-> +      Pulse Per Second (PPS) signal, since this will be offered to the PPS
-> +      subsystem to synchronize the Linux clock.
-> +
-> +      When this attribute is not used, the IEEE 1588 timer reference clock
-> +      will use the eTSEC system clock (for Gianfar) or the MAC system
-> +      clock (for DPAA).
-> +
-> +  fsl,extts-fifo:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      The presence of this property indicates hardware
-> +      support for the external trigger stamp FIFO
-> +
-> +  little-endian:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      The presence of this property indicates the 1588 timer
-> +      support for the external trigger stamp FIFO.
-> +      IP block is little-endian mode. The default endian mode
-> +      is big-endian.
 > +
 > +required:
 > +  - compatible
-> +  - reg
+> +  - ranges
 > +
 > +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    ptp_clock@24e00 {
-
-phc@
-
-> +        compatible = "fsl,etsec-ptp";
-> +        reg = <0x24E00 0xB0>;
-
-Lowercase hex, in other places as well.
+> +    muram@0 {
+> +        compatible = "fsl,fman-muram";
+> +        ranges = <0 0x000000 0x0 0x28000>;
+> +    };
 
 
-> +        interrupts = <12 0x8>, <13 0x8>;
+> diff --git a/Documentation/devicetree/bindings/net/fsl,fman-port.yaml b/Documentation/devicetree/bindings/net/fsl,fman-port.yaml
+> new file mode 100644
+> index 0000000000000..7e69cf02bd024
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/fsl,fman-port.yaml
+> @@ -0,0 +1,86 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/fsl,fman-port.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale Frame Manager Port Device
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description: |
+> +  The Frame Manager (FMan) supports several types of hardware ports:
+> +    Ethernet receiver (RX)
+> +    Ethernet transmitter (TX)
+> +    Offline/Host command (O/H)
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,fman-v2-port-oh
+> +      - fsl,fman-v2-port-rx
+> +      - fsl,fman-v2-port-tx
+> +      - fsl,fman-v3-port-oh
+> +      - fsl,fman-v3-port-rx
+> +      - fsl,fman-v3-port-tx
+> +
+> +  cell-index:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Specifies the hardware port id.
+> +      Each hardware port on the FMan has its own hardware PortID.
+> +      Super set of all hardware Port IDs available at FMan Reference
+> +      Manual under "FMan Hardware Ports in Freescale Devices" table.
+> +
+> +      Each hardware port is assigned a 4KB, port-specific page in
+> +      the FMan hardware port memory region (which is part of the
+> +      FMan memory map). The first 4 KB in the FMan hardware ports
+> +      memory region is used for what are called common registers.
+> +      The subsequent 63 4KB pages are allocated to the hardware
+> +      ports.
+> +      The page of a specific port is determined by the cell-index.
+> +
+> +  reg:
+> +    items:
+> +      - description: There is one reg region describing the port
+> +          configuration registers.
+> +
+> +  fsl,fman-10g-port:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: The default port rate is 1G.
+> +      If this property exists, the port is s 10G port.
+> +
+> +  fsl,fman-best-effort-port:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: The default port rate is 1G.
+> +      Can be defined only if 10G-support is set.
+> +      This property marks a best-effort 10G port (10G port that
+> +      may not be capable of line rate).
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - cell-index
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    port@a8000 {
+> +        compatible = "fsl,fman-v2-port-tx";
+> +        reg = <0xa8000 0x1000>;
+> +        cell-index = <0x28>;
+> +    };
 
-Use proper defines for interrupt flags.
+Just keep one example.
 
-> +        interrupt-parent = <&ipic>;
-> +        fsl,cksel       = <1>;
+> +
+> +    port@88000 {
+> +        cell-index = <0x8>;
+> +        compatible = "fsl,fman-v2-port-rx";
+> +        reg = <0x88000 0x1000>;
+> +    };
+> +
+> +    port@81000 {
+> +        cell-index = <0x1>;
+> +        compatible = "fsl,fman-v2-port-oh";
+> +        reg = <0x81000 0x1000>;
+> +    };
+> diff --git a/Documentation/devicetree/bindings/net/fsl,fman.yaml b/Documentation/devicetree/bindings/net/fsl,fman.yaml
+> new file mode 100644
+> index 0000000000000..dfd403f9a7c9d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/fsl,fman.yaml
+> @@ -0,0 +1,335 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/fsl,fman.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale Frame Manager Device
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  Due to the fact that the FMan is an aggregation of sub-engines (ports, MACs,
+> +  etc.) the FMan node will have child nodes for each of them.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,fman
+> +    description:
+> +      FMan version can be determined via FM_IP_REV_1 register in the
+> +      FMan block. The offset is 0xc4 from the beginning of the
+> +      Frame Processing Manager memory map (0xc3000 from the
+> +      beginning of the FMan node).
+> +
+> +  cell-index:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Specifies the index of the FMan unit.
+> +
+> +      The cell-index value may be used by the SoC, to identify the
+> +      FMan unit in the SoC memory map. In the table below,
+> +      there's a description of the cell-index use in each SoC:
+> +
+> +      - P1023:
+> +      register[bit]      FMan unit  cell-index
+> +      ============================================================
+> +      DEVDISR[1]      1    0
+> +
+> +      - P2041, P3041, P4080 P5020, P5040:
+> +      register[bit]      FMan unit  cell-index
+> +      ============================================================
+> +      DCFG_DEVDISR2[6]    1    0
+> +      DCFG_DEVDISR2[14]    2    1
+> +        (Second FM available only in P4080 and P5040)
+> +
+> +      - B4860, T1040, T2080, T4240:
+> +      register[bit]      FMan unit  cell-index
+> +      ============================================================
+> +      DCFG_CCSR_DEVDISR2[24]    1    0
+> +      DCFG_CCSR_DEVDISR2[25]    2    1
+> +        (Second FM available only in T4240)
+> +
+> +      DEVDISR, DCFG_DEVDISR2 and DCFG_CCSR_DEVDISR2 are located in
+> +      the specific SoC "Device Configuration/Pin Control" Memory
+> +      Map.
+> +
+> +  reg:
+> +    items:
+> +      - description: BMI configuration registers.
+> +      - description: QMI configuration registers.
+> +      - description: DMA configuration registers.
+> +      - description: FPM configuration registers.
+> +      - description: FMan controller configuration registers.
+> +    minItems: 1
+> +
+> +  ranges: true
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: fmanclk
+> +
+> +  interrupts:
+> +    items:
+> +      - description: The first element is associated with the event interrupts.
+> +      - description: the second element is associated with the error interrupts.
+> +
+> +  fsl,qman-channel-range:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      Specifies the range of the available dedicated
+> +      channels in the FMan. The first cell specifies the beginning
+> +      of the range and the second cell specifies the number of
+> +      channels
+> +    items:
+> +      - description: The first cell specifies the beginning of the range.
+> +      - description: |
+> +          The second cell specifies the number of channels.
+> +          Further information available at:
+> +          "Work Queue (WQ) Channel Assignments in the QMan" section
+> +          in DPAA Reference Manual.
+> +
+> +  fsl,qman:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: See soc/fsl/qman.txt
+> +
+> +  fsl,bman:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: See soc/fsl/bman.txt
+> +
+> +  fsl,erratum-a050385:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: A boolean property. Indicates the presence of the
+> +      erratum A050385 which indicates that DMA transactions that are
+> +      split can result in a FMan lock.
+> +
+> +  "#address-cells": true
+> +
+> +  "#size-cells": true
+
+Make both const.
+
+> +
+> +patternProperties:
+> +  '^muram@[a-f0-9]+$':
+> +    $ref: fsl,fman-muram.yaml
+> +
+> +  '^port@[a-f0-9]+$':
+> +    $ref: fsl,fman-port.yaml
+> +
+> +  '^ethernet@[a-f0-9]+$':
+> +    $ref: fsl,fman-dtsec.yaml
+> +
+> +  '^mdio@[a-f0-9]+$':
+> +    $ref: fsl,fman-mdio.yaml
+> +
+> +  '^ptp\-timer@[a-f0-9]+$':
+> +    $ref: /schemas/ptp/ptp-qoriq.yaml
+> +
+> +required:
+> +  - compatible
+> +  - cell-index
+> +  - reg
+> +  - ranges
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - fsl,qman-channel-range
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    fman@400000 {
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +        cell-index = <1>;
+> +        compatible = "fsl,fman";
+
+Compatible is always the first property. reg follows, third ranges.
+
+> +        ranges = <0 0x400000 0x100000>;
+> +        reg = <0x400000 0x100000>;
+> +        clocks = <&fman_clk>;
+> +        clock-names = "fmanclk";
+> +        interrupts = <96 2>,
+> +                     <16 2>;
+
+Use proper defines for flags.
+
 
 
 Best regards,
