@@ -1,61 +1,61 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D10E1D18E9
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4305200119
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632273; cv=none; b=sl5/kexv0rC7UpE25S2kNlOuRFWbNqYaQTFztOMCgBpO0KqV0hrsIjvMazuO3ATqROj2KOh6iPK8UBVeRwtOe1gFbLnwVuarYSHGXZmaP0+reHYQtxa8dTG/0TdxDNOONhww60aJcEmXYLUuKaIR286XoS9LgBFz6lXAdZtIlV8=
+	t=1718632275; cv=none; b=LBk1UInn64hzemIx+Boe7Hh1yA7RDnONiUY79MwrqGmS1gjt3PgdOz02G2tu4dSckFKOIyTvGL/lJ7CktBxDTdJ3ZFDqK7+u4YZA37v0Xi/x93RJ2gFUq/1DggDL4ZJl9UhWP11xocrcO2s+ByHKzwejf+wbTlRh4m1kevNuPzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632273; c=relaxed/simple;
-	bh=/iTmUukNGLPGvGh+5363cpZBdKYe1qLwwMB3hsIs3J4=;
+	s=arc-20240116; t=1718632275; c=relaxed/simple;
+	bh=IMPpMteq51LRPDW2gSf+ThyrqorBSKEQdFy+CzbJC88=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EykoAq29jn79nRJNPUJjpQ3ErHQg2XVyISJS1FicRq5/ctr4e0eKGSa6scswdlUzmb3JnD9mo5UW6X5VEly+HqYd38TGbg28S/NYwC2wzFNpoL0b7SdRyJqGhRqCrgBlphe12iIsG2yQ0sY+elJf/CDmq4V9/RT1hxjuZhyYdxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=w9yfTBbb; arc=none smtp.client-ip=209.85.222.180
+	 In-Reply-To:To:Cc; b=drtyUZwuJfpNb0UZ9TzNp/d49cO+BdCk0/4GCduKk5ACLNLupZvnVF4m0p0vREkaK4fUNEeywY3KJOMJBGDXyrGwVJ8tmtcII6B35imoTK26VIu02aFLYw7YnZn/9w/jK0C7B4XmgxXVIlhrnaIipUJrH9P44hojw0Ies+AQVq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OoB5pxHu; arc=none smtp.client-ip=209.85.221.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="w9yfTBbb"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-795ca45c54cso246640985a.0
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:51:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OoB5pxHu"
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4ee5662fde8so942854e0c.0
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:51:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632270; x=1719237070; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632273; x=1719237073; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=DYef8rADT2ijxxEcxYPLN7/oRY6yNh5EaRUGzmb2a/I=;
-        b=w9yfTBbbTmJgJ1ByDRTwqtbsDBIMo1PrNCnBYGtpe3NOJQlNen1vS5CsUr9IOxsadW
-         8S/GSa7vIz9zzi1LofG/Wpv121iqGSNG/8gfSDzxIrELsZrWd047X5b0HrS/pKtAAv1N
-         sT5bpRJaJ0cJEAlsm0XVVdNqHOJpCkCtjanse3t8qDEDS0w1rpAVWLpKw8p8fpyIIZF2
-         l4ZfMgn/cBSRnS4qr5Tnewc5XrvRz7ZuYJ5cpxlBpEtgdlxuWqu1kBnWr0l38rRDQxpg
-         ommfHQBl62FqbtAqQjfGk+YQhME8pkFYrnxJUqvQkQDJ4HP1Af3ftc1clgF4YFbF1Ldh
-         qCzg==
+        bh=AKnuVsDBtdHGm81QL99oZtdVbIW3JEVTOu6hlNZPjXg=;
+        b=OoB5pxHuiJlRu9IGE2segV51T9fDhJYh6HhZSt0hgLJPpG7dLvmsV0Ct+TqCE2VDNj
+         AavTCAxs7dUo0fNQzHFoe8BWQFtaguJ2d7qXFmp/t53xskhyQue2F2qGHfy5t5GPMNkg
+         rC/wNidE7whwPhqQbA6Hu119i9cqrZpwvfxWnsgvizaoIy/C5hPB3fVSNwoRg9qjZGzu
+         nod2Od4IjxP8RTRRMRYsbRB9CPV8cRGxlIw506rZhhbDIe6gNQIYKAQZH1udROo5BaQY
+         FkyBeE319rAxJ+bINcGini9/rM6MZ3/n2N7gx9ztiv4kKFN7532oHuj/lIVVdlSejib7
+         i1pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632270; x=1719237070;
+        d=1e100.net; s=20230601; t=1718632273; x=1719237073;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DYef8rADT2ijxxEcxYPLN7/oRY6yNh5EaRUGzmb2a/I=;
-        b=vAgeD7jk7A91ZUZ/k73PBHqUBGPq84bAxjZZsBEsaYhMtlVR4ZkW5LBFFuN1wdh/aR
-         CWWXUsOY7XAU/aH2uhKowFocz7qA84jmuW3C785qrQLCdkCEZwfi5xKbwOT8ZVmCgVBp
-         AuuNUz/uchYAW9qU7ekIsq0NCOXlTv59G6Lx0b1x0en0Sry6xlnN0evZyyN2uRWzaGNd
-         u+X1p9TVUYhOHk8j6w5VOMpt1OGx2vtyNj2MOOY6eYeVfXMteqHsbJ6mIZfXS6Yy2/tp
-         5Z4pZ670gKLSWnSkvp6LVtJFpuFlTl9o7ZvRoJAYonno7NnCDrfX2u0LTU1d85E6NqK6
-         XXCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWSEJNl8S3mgflU/Ocjn0YVpw953LKtDU8cVNPT/yfVvC1Cz650HLOzT9cDajdjQckA6KGP8FyR39TvfYx/9yVBjxrr
-X-Gm-Message-State: AOJu0YybC36S2btS0NC2Uz7KIs7ncZN0Xa5Ezb7udxRLTRIj7YlIuB7g
-	/hcnWrxg9AEUYPRA+ropDg7OO6LnaM4cKF8Je0tlXb/RWmJt4SHFLszPMoqCccA=
-X-Google-Smtp-Source: AGHT+IG+NTpXbmfTtgLV5kgHRYZJqicJgvBNrkkmD2PI5YKClqNlpZ4QFEOEqllRaBP9Jcn3G+Ldqw==
-X-Received: by 2002:a05:620a:24d5:b0:795:50ef:4030 with SMTP id af79cd13be357-798d242f345mr1050763085a.41.1718632270523;
-        Mon, 17 Jun 2024 06:51:10 -0700 (PDT)
+        bh=AKnuVsDBtdHGm81QL99oZtdVbIW3JEVTOu6hlNZPjXg=;
+        b=gzyol47KwIW2g7AeWRU+AV9lSZQiJlZx/l90TtOizcFYc8w5bLzs7Y/c5sd7Zfsep1
+         E+HMlMo9hTGWntFOwIRG9DxATBouzvwefQNMQrfqR4e/kWrkbsXHFxVC+YqgL3qfz8jD
+         pHB88aODvxYf6q3YU78G12k2nfnokdS0931cWW0V97Zf6OJjVySDlnfry5iDCOL4nq7L
+         fX3NmmjLGYQ0pwiFRcBffmrLh+jzdlcqJJMTEWZYWkKcV3XUf/okru6A71Ml7FYXMDYp
+         eQ69B7GGDqZOlcoBTi4iYyL710ek3iwKD+FgPj6ekA3/a3TtCzHadpzScHPKvH+rroQh
+         ISmw==
+X-Forwarded-Encrypted: i=1; AJvYcCUy7neAX8yRCzuCW6pmsmisoxRJtr5FtEx5ZTfMRb0U5Kk6HWz6twblz/HnRJdHw3AEAUdKUEPBPbrWUBgym8A4ABJJ
+X-Gm-Message-State: AOJu0YyTRgnCxZafK0tJaJ6OHiCSkgcu8lxQsYs3PMS/n32/qp2qZ7ur
+	9rRxE+zNbVuZdPjXQWcJ8UxfpHbQxtCnQEvG26s9kdInfBSxGjSuy33bLzPFbVE=
+X-Google-Smtp-Source: AGHT+IHFy1tuFMwxa7P6sFsjYvAHUS1dIKxzAj2HLRYOAmnW2Gug4qjgVMG/WpGom5Qua5PdHz8vPQ==
+X-Received: by 2002:a05:6122:915:b0:4ec:efca:d2b with SMTP id 71dfb90a1353d-4ee3e59c40amr7925275e0c.8.1718632272678;
+        Mon, 17 Jun 2024 06:51:12 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.51.08
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.51.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:51:10 -0700 (PDT)
+        Mon, 17 Jun 2024 06:51:12 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:50:20 -0400
-Subject: [PATCH v3 40/41] iio: temperature: mlx90632: make use of
- regmap_clear_bits()
+Date: Mon, 17 Jun 2024 09:50:21 -0400
+Subject: [PATCH v3 41/41] iio: trigger: stm32-timer-trigger: make use of
+ regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-40-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-41-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -98,30 +98,130 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Trevor Gamblin <tgamblin@baylibre.com>
 X-Mailer: b4 0.13.0
 
+Instead of using regmap_update_bits() and passing the mask twice, use
+regmap_set_bits().
+
 Instead of using regmap_update_bits() and passing val = 0, use
 regmap_clear_bits().
 
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Acked-by: Crt Mori <cmo@melexis.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/temperature/mlx90632.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/trigger/stm32-timer-trigger.c | 34 +++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index 8a57be108620..e7de30f613d2 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -334,8 +334,8 @@ static int mlx90632_perform_measurement(struct mlx90632_data *data)
- 	unsigned int reg_status;
- 	int ret;
+diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+index d76444030a28..0684329956d9 100644
+--- a/drivers/iio/trigger/stm32-timer-trigger.c
++++ b/drivers/iio/trigger/stm32-timer-trigger.c
+@@ -158,7 +158,7 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
  
--	ret = regmap_update_bits(data->regmap, MLX90632_REG_STATUS,
--				 MLX90632_STAT_DATA_RDY, 0);
-+	ret = regmap_clear_bits(data->regmap, MLX90632_REG_STATUS,
-+				MLX90632_STAT_DATA_RDY);
- 	if (ret < 0)
+ 	regmap_write(priv->regmap, TIM_PSC, prescaler);
+ 	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, TIM_CR1_ARPE);
++	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
+ 
+ 	/* Force master mode to update mode */
+ 	if (stm32_timer_is_trgo2_name(trig->name))
+@@ -169,10 +169,10 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+ 				   0x2 << TIM_CR2_MMS_SHIFT);
+ 
+ 	/* Make sure that registers are updated */
+-	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
++	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
+ 
+ 	/* Enable controller */
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
++	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
+@@ -189,19 +189,19 @@ static void stm32_timer_stop(struct stm32_timer_trigger *priv,
+ 
+ 	mutex_lock(&priv->lock);
+ 	/* Stop timer */
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
++	regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
++	regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 	regmap_write(priv->regmap, TIM_PSC, 0);
+ 	regmap_write(priv->regmap, TIM_ARR, 0);
+ 
+ 	/* Force disable master mode */
+ 	if (stm32_timer_is_trgo2_name(trig->name))
+-		regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2, 0);
++		regmap_clear_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2);
+ 	else
+-		regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS, 0);
++		regmap_clear_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS);
+ 
+ 	/* Make sure that registers are updated */
+-	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
++	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
+ 
+ 	if (priv->enabled) {
+ 		priv->enabled = false;
+@@ -498,11 +498,9 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+ 				priv->enabled = true;
+ 				clk_enable(priv->clk);
+ 			}
+-			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+-					   TIM_CR1_CEN);
++			regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 		} else {
+-			regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+-					   0);
++			regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 			if (priv->enabled) {
+ 				priv->enabled = false;
+ 				clk_disable(priv->clk);
+@@ -555,7 +553,7 @@ static int stm32_set_trigger_mode(struct iio_dev *indio_dev,
+ {
+ 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
+ 
+-	regmap_update_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS, TIM_SMCR_SMS);
++	regmap_set_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS);
+ 
+ 	return 0;
+ }
+@@ -683,7 +681,7 @@ static ssize_t stm32_count_set_preset(struct iio_dev *indio_dev,
  		return ret;
+ 
+ 	/* TIMx_ARR register shouldn't be buffered (ARPE=0) */
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, 0);
++	regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
+ 	regmap_write(priv->regmap, TIM_ARR, preset);
+ 
+ 	return len;
+@@ -757,9 +755,9 @@ static void stm32_timer_detect_trgo2(struct stm32_timer_trigger *priv)
+ 	 * Master mode selection 2 bits can only be written and read back when
+ 	 * timer supports it.
+ 	 */
+-	regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2, TIM_CR2_MMS2);
++	regmap_set_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2);
+ 	regmap_read(priv->regmap, TIM_CR2, &val);
+-	regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2, 0);
++	regmap_clear_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2);
+ 	priv->has_trgo2 = !!val;
+ }
+ 
+@@ -820,7 +818,7 @@ static void stm32_timer_trigger_remove(struct platform_device *pdev)
+ 	/* Check if nobody else use the timer, then disable it */
+ 	regmap_read(priv->regmap, TIM_CCER, &val);
+ 	if (!(val & TIM_CCER_CCXE))
+-		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
++		regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 
+ 	if (priv->enabled)
+ 		clk_disable(priv->clk);
+@@ -841,7 +839,7 @@ static int stm32_timer_trigger_suspend(struct device *dev)
+ 		regmap_read(priv->regmap, TIM_SMCR, &priv->bak.smcr);
+ 
+ 		/* Disable the timer */
+-		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
++		regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 		clk_disable(priv->clk);
+ 	}
  
 
 -- 
