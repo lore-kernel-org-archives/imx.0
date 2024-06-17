@@ -1,29 +1,29 @@
-Received: from mail-177131.yeah.net (mail-177131.yeah.net [123.58.177.131])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25865C83
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 01:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.131
+Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368C8140E4F
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 01:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718588430; cv=none; b=fqvP+UpceAVP5LQIcLA5EbxTgwOxmS5bNRNhr0cOkaensfxHOuG0XmEYoZBbu+mpptgG8QOYkvnmDLuO1HUIjlYT/l7BrR7kWDl9oYkg9bmobCch/nH5whiviBoBVEMJmBqk7urJ9nncXTH3e6MkmeYekeOq5wGKeHgof/k2d8o=
+	t=1718588507; cv=none; b=hn1SOr5Sr39C7gUo7fMFICcBtng3pF0N4E1A05MEoCvBX2dCKaA00cGTAg1hHdtQdfNV+9VPodOpCGaBYLMBbBDQjzfJoGdeOJED3s48cA4CpRzIJ/NLqW7t1ocmof2ixCP18Ct5+GM8lpHjDU8SdCCvMreHk06u+1pU4gXe1RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718588430; c=relaxed/simple;
-	bh=zm2QmYSlPPOUfGKpEjMcX7HJpO8NnCnQ8rj14q4adJU=;
+	s=arc-20240116; t=1718588507; c=relaxed/simple;
+	bh=edcXCVjo8+FbsfYeJoQxXIcc+2zMG60j3dMm58sn1Bc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EV+kvooAjFDIogDNxUZEepvimsEAlUzDSFP/Ip66xS+TTPuAk/9o5q5ci2B/mYxAMt3VWJPJPHT7zhSWbOIq6EyISBfon2oK28hlBf1QbL4dQIpb0sWygsxs+n9HhAHOPxT5v6iMM+bXBvUoILp/iOX89mgLpDLl9diza0exdRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=E3PcAbLY; arc=none smtp.client-ip=123.58.177.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=iHooICJNHC3slUgvvQ7btK04FybAohja4HwotpKk4pcySvYn5PXMTWQ5oEM7gLatYqqt9WDq05GmfLd/BjlNGxxhjEt7KMqkqZ5HOsar0DzmBP9hqyJ0nyvRFN6wCMgJA1gGaTDqHZoKs4GO0UQK2rrMKz4fl09amKSbs7Qfv6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fdHiG8UH; arc=none smtp.client-ip=123.58.177.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="E3PcAbLY"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fdHiG8UH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=I+p47SL6dimu9f+zi9duzMmWriyBTBtbi5NfLRZ8KGA=;
-	b=E3PcAbLY8b8ZmRtbnWsycS2VEqnn4zWApJc4ZFgz0IBl3rI7U4YG8wVW1JbQMv
-	dJ+BU/v0crlUWJH5/A94Q6IK4KmT+7WORoBT3dDQ6j2vnorDiByCPCZNE8HoU7Gw
-	zIF0q+JqbYb2NQsLkZGrFIHxj5QTRZ+dKQgI5dBQtIr2c=
+	Content-Type; bh=WjkdTnC3fHUX/SExvSttwBjUZ2gM29MjAUpc7gFJ48E=;
+	b=fdHiG8UHLaVN2hNgMiwMMaCuiAWkhhyVEk5puJMecj2C/X5qeEbUdues7sifWv
+	dj475Pg9rjZhbkSPB677NwTJUxfbhMnvvVtmiumyEKD2a9BUHmrYiI52Xa9qKynG
+	AphbkMQfgqbZnDEsLWlNW0o8zWzo8S3Bus9CyZRcYTOzg=
 Received: from dragon (unknown [114.216.76.201])
-	by smtp1 (Coremail) with SMTP id ClUQrACH7voClG9mgKELCA--.41844S3;
-	Mon, 17 Jun 2024 09:40:19 +0800 (CST)
-Date: Mon, 17 Jun 2024 09:40:18 +0800
+	by smtp2 (Coremail) with SMTP id C1UQrAD3f2pNlG9mMIXNCA--.15615S3;
+	Mon, 17 Jun 2024 09:41:35 +0800 (CST)
+Date: Mon, 17 Jun 2024 09:41:33 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Michael Walle <mwalle@kernel.org>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -35,11 +35,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 08/13] ARM: dts: imx6qdl-kontron-samx6i: add
- SDIO_PWR_EN support
-Message-ID: <Zm+UAlzIKKH0IPQm@dragon>
+Subject: Re: [PATCH v2 09/13] ARM: dts: imx6qdl-kontron-samx6i: fix node names
+Message-ID: <Zm+UTbGEhzbCgy1S@dragon>
 References: <20240606090206.2021237-1-mwalle@kernel.org>
- <20240606090206.2021237-9-mwalle@kernel.org>
+ <20240606090206.2021237-10-mwalle@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,81 +47,96 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240606090206.2021237-9-mwalle@kernel.org>
-X-CM-TRANSID:ClUQrACH7voClG9mgKELCA--.41844S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7trWDCr4kXw45ur4UCr4xXrb_yoW8tr48pF
-	s3GrZagrykWry3tay3Ga42kr4rCw4kC3s7uw12gFy8AFy7Z3WUur97Krn8A3Z5XFs8Zw4a
-	kry3Zr9rA3Z2v37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+In-Reply-To: <20240606090206.2021237-10-mwalle@kernel.org>
+X-CM-TRANSID:C1UQrAD3f2pNlG9mMIXNCA--.15615S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zw1UJr17WFW7uFWDuFykKrg_yoW5JryxpF
+	WfWr9YgFs7Wa1aqa45JFyUCF93Ca1xK39IgwnrGF1UKr13ZF17Zry0k34fWrnFqFs8J3yY
+	yFnIvryxJ3W8ZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jz1v3UUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiFQMBZV6NnP+BgAAAsD
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiGA8BZV6Nn450dAAAsx
 
-On Thu, Jun 06, 2024 at 11:02:01AM +0200, Michael Walle wrote:
-> The module can enable/disable the SD card power supply and has
-> it's dedicated pin SDIO_PWR_EN for that reason. This is esp.
-> useful to be able to reset the SD card if it was in an UHS mode.
-> 
-> Signed-off-by: Michael Walle <mwalle@kernel.org>
-> ---
->  .../dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi   | 20 ++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-> index 4d3cd338a707..d36743e47552 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-> @@ -61,6 +61,18 @@ reg_3p3v_s5: regulator-3p3v-s5 {
->  		vin-supply = <&reg_smarc_suppy>;
->  	};
->  
-> +	reg_sdio: regulator-sdio {
-> +		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_reg_sdio>;
-> +		regulator-name = "V_3V3_SD";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		gpio = <&gpio1 29 GPIO_ACTIVE_HIGH>;
-> +		off-on-delay-us = <20000>;
-> +		enable-active-high;
+On Thu, Jun 06, 2024 at 11:02:02AM +0200, Michael Walle wrote:
+> Rename the nodes according to the schema. In particular, renamae the bit
 
-enable-active-high right after line of GPIO_ACTIVE_HIGH.
+s/renamae/rename
 
 Shawn
 
-> +	};
-> +
->  	reg_smarc_lcdbklt: regulator-smarc-lcdbklt {
->  		compatible = "regulator-fixed";
+> bang I2C controller to "i2c-N" and the mux nodes of the audmux to
+> "mux-*". While at it, fix the typo "adu", which should have been "aud".
+> 
+> Signed-off-by: Michael Walle <mwalle@kernel.org>
+> ---
+>  .../boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi   | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
+> index d36743e47552..85e5adac6ee9 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
+> @@ -149,7 +149,7 @@ lcd_backlight: lcd-backlight {
+>  		status = "disabled";
+>  	};
+>  
+> -	i2c_intern: i2c-gpio-intern {
+> +	i2c_intern: i2c-0 {
+>  		compatible = "i2c-gpio";
 >  		pinctrl-names = "default";
-> @@ -640,6 +652,12 @@ MX6QDL_PAD_SD1_CMD__PWM4_OUT 0x1b0b1
+>  		pinctrl-0 = <&pinctrl_i2c_gpio_intern>;
+> @@ -160,7 +160,7 @@ i2c_intern: i2c-gpio-intern {
+>  		#size-cells = <0>;
+>  	};
+>  
+> -	i2c_lcd: i2c-gpio-lcd {
+> +	i2c_lcd: i2c-1 {
+>  		compatible = "i2c-gpio";
+>  		pinctrl-names = "default";
+>  		pinctrl-0 = <&pinctrl_i2c_gpio_lcd>;
+> @@ -172,7 +172,7 @@ i2c_lcd: i2c-gpio-lcd {
+>  		status = "disabled";
+>  	};
+>  
+> -	i2c_cam: i2c-gpio-cam {
+> +	i2c_cam: i2c-2 {
+>  		compatible = "i2c-gpio";
+>  		pinctrl-names = "default";
+>  		pinctrl-0 = <&pinctrl_i2c_gpio_cam>;
+> @@ -190,7 +190,7 @@ &audmux {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_audmux>;
+>  
+> -	audmux_ssi1 {
+> +	mux-ssi1 {
+>  		fsl,audmux-port = <MX51_AUDMUX_PORT1_SSI0>;
+>  		fsl,port-config = <
+>  			(IMX_AUDMUX_V2_PTCR_TFSEL(MX51_AUDMUX_PORT3) |
+> @@ -202,7 +202,7 @@ IMX_AUDMUX_V2_PDCR_RXDSEL(MX51_AUDMUX_PORT3)
 >  		>;
 >  	};
 >  
-> +	pinctrl_reg_sdio: reg-sdiogrp {
-> +		fsl,pins = <
-> +			MX6QDL_PAD_ENET_TXD1__GPIO1_IO29 0x1b0b0 /* SDIO_PWR_EN */
-> +		>;
-> +	};
-> +
->  	pinctrl_uart1: uart1grp {
->  		fsl,pins = <
->  			MX6QDL_PAD_CSI0_DAT11__UART1_RX_DATA 0x1b0b1
-> @@ -692,7 +710,6 @@ MX6QDL_PAD_SD3_DAT3__SD3_DATA3 0x17059
->  
->  			MX6QDL_PAD_NANDF_CS1__GPIO6_IO14 0x1b0b0 /* CD */
->  			MX6QDL_PAD_ENET_RXD1__GPIO1_IO26 0x1b0b0 /* WP */
-> -			MX6QDL_PAD_ENET_TXD1__GPIO1_IO29 0x1b0b0 /* PWR_EN */
+> -	audmux_adu3 {
+> +	mux-aud3 {
+>  		fsl,audmux-port = <MX51_AUDMUX_PORT3>;
+>  		fsl,port-config = <
+>  			IMX_AUDMUX_V2_PTCR_SYN
+> @@ -210,7 +210,7 @@ IMX_AUDMUX_V2_PDCR_RXDSEL(MX51_AUDMUX_PORT1_SSI0)
 >  		>;
 >  	};
 >  
-> @@ -795,6 +812,7 @@ &usdhc3 {
->  	pinctrl-0 = <&pinctrl_usdhc3>;
->  	cd-gpios = <&gpio6 14 GPIO_ACTIVE_LOW>;
->  	wp-gpios = <&gpio1 26 GPIO_ACTIVE_HIGH>;
-> +	vmmc-supply = <&reg_sdio>;
->  	no-1-8-v;
->  };
+> -	audmux_ssi2 {
+> +	mux-ssi2 {
+>  		fsl,audmux-port = <MX51_AUDMUX_PORT2_SSI1>;
+>  		fsl,port-config = <
+>  			(IMX_AUDMUX_V2_PTCR_TFSEL(MX51_AUDMUX_PORT4) |
+> @@ -222,7 +222,7 @@ IMX_AUDMUX_V2_PDCR_RXDSEL(MX51_AUDMUX_PORT4)
+>  		>;
+>  	};
 >  
+> -	audmux_adu4 {
+> +	mux-aud4 {
+>  		fsl,audmux-port = <MX51_AUDMUX_PORT4>;
+>  		fsl,port-config = <
+>  			IMX_AUDMUX_V2_PTCR_SYN
 > -- 
 > 2.39.2
 > 
