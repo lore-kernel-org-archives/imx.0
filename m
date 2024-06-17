@@ -1,60 +1,60 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC32C1BE867
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55DE1C0DD2
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 13:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632216; cv=none; b=mGVBhs8EIePGehVgUiKFEy7o8YFbDRx68A4mHk5OYihEbnpCcZQtfOow+DoulbKaUN+XEm2fCvL4VFjCXWOs+aKFonVywgCK+ooXXvySLqWpRDOKYz5aI9Q6bup9VkpMPV2phbu9EJ934vt4tD2gnB7RZDN8S+DIc7qHsZATdHg=
+	t=1718632217; cv=none; b=bAt09glAj1URij4q0/2/W0Q3m5hzE/qT2OKLJFUTP4Sz2nQbuXfGA3KCY/CeWj2yJmp1bqzOvMuSqxHcaXHnWqVaHrBuHO0fUXrdUUInnxvB+PD+XcrOjaDfpwAS7V1NJm6iH42Sl0kDSW5mwQI/ZOksWhIOOkvgRm/CXIJ2zbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632216; c=relaxed/simple;
-	bh=4gIRZ/vu50pKU4o1TP9QUC/IjjrHpbnZ1GOSjHAMZ4M=;
+	s=arc-20240116; t=1718632217; c=relaxed/simple;
+	bh=fzPzUYcNz9V2ID3qrrApafMZGiDVZpy6ghrI0nU92Lw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KZvOHeAimwLmmq+TCa2i99lxwiHzSCvBtI5eqDRC6PBXUKNXQAEnl2Fx4vgMKqpW+s9uoamA2u2De8riCCEoc9mQXhyV8ePbm/Uqd8XocE+rDiMzBYmMNvJR5demjQiZ0VBWPeYH8PMUCBT4RWDTRoi1KdG5E8cOCMy19Oe4prg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BOGbkqc/; arc=none smtp.client-ip=209.85.222.178
+	 In-Reply-To:To:Cc; b=Gr5cjXQb0zjDHvzXd6uoZmJlibASta4KP2mPT4e4mflBtjBEjr5YtcbInF54Gn9flAYLA6czG7jc7e8vhQ00r7ZgHlH7cgQZPgdn8ZWWN5A49iy57nCGN3txIEMxwUKb88qGAQb+odrxnO1Je83oZ0qDmDWvUGG+aS/TXRBfEOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FR5emlIV; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BOGbkqc/"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7955aaf8006so368493685a.1
-        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FR5emlIV"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-795569eedcaso228709585a.3
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 06:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632213; x=1719237013; darn=lists.linux.dev;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632215; x=1719237015; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KXJIaHqTfmpNhZnTE583n/Ec2b/3cyzD9UXAylu36IA=;
-        b=BOGbkqc/0PySLk4At20sO7V9yYPrXcx9KbY3R4PZGb77lyST1Uf/eJBQCZmsgBiQje
-         nOAhXTaLSXNdtZuwre+lH/A51qF6GFeacIzOJM0zRb2TJQtd/VyDqKk6DgHLWEH53jr8
-         AT6np24jHmeQyeWP6b+cRFbOb9FSSyZduxiKbuthC6rvDvJlQNxQnZSWgB1OELvkpZPa
-         8o+x5D7MWtbbKFIxXGwmgwfYIY3nMbYBypghFerUvMzBkFI+OyWTGqFFTZWjRT9fJTkS
-         7QAPGRBPyDNi9z7JwnJiTXVrp/9WS5egBXUKzP+RXLS24ve+dLMH2fMfy5bKwaLdJ2Pv
-         c7JQ==
+        bh=GyaMuqBhP7o7wmqZwNnsnkbTtRp5AugJ4lcsefsATFM=;
+        b=FR5emlIVR5/gTeE96016BCtEuqObXY1YISSBXYIiEsCGdXJl9CPm0oEXZbHmNCjHxI
+         YMWkyHCNR15SeHuZwus/vd88ws8Vu727rdHaAUilEADfKe/yGTXUCRI9+RwaACo1+zgJ
+         XLMwxG1Ep4gDY3JA4FwM5elVcOJ8ifntqIk+hYAWuAGWzOj5g9xSkPae8IID00E96I0n
+         S30waO2zjyJeg/b+Ctu4cPdF2fQU0XIUaBWLzDDJNyew0vdqjBBkAXHIAc5b2z3+5eed
+         847YscUjzC2FS8YkS5C0JIE6LO0XgaxDwY322oNzaLWzkQ4P++1edbG8DoBYiBkiLtqb
+         7cBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632213; x=1719237013;
+        d=1e100.net; s=20230601; t=1718632215; x=1719237015;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KXJIaHqTfmpNhZnTE583n/Ec2b/3cyzD9UXAylu36IA=;
-        b=CzmqFonrG/MvBya/LHnSd2fgplvnaNqXtbTYVocLTM18EYwdP83QhdknBBkqC/FDJ6
-         9wYMBw4H6IpZS/Vum0LhwtKWylGTmiy8StJvL37CH3u3PYpaK01HB0bX7wN6MKMHV8QN
-         zbHvnKcypJ6579IZEBmzNWfQ4tCyWswmzTOheQBpCXfOzPEmCXUV7FQCV5sskQ7h5rgx
-         CreKEDEi6LxGRH8E7SYFP7fV88qk/HogiX9RkEbHvFfp6zl9bIyBzFwHE/+Xt+y4plES
-         AMDbX/WOqC2r7F9qW5S2RGN/LRAQHs20XHC4cwaKTSDw7pcZ9uVSPRh9ud/hQ9tsDVQe
-         NeIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXAIfnKi/1Jm1Vl9y057zCccdYJRGCOqT9D5VZ1J3F6vFQvAVzUpEmDRv9aPsBRpacNuR3HAxnorrPqTPpjdleX7EHs
-X-Gm-Message-State: AOJu0YzWeYrSpP4gAxPgaxTG7XXl0aWNf6ASl3pg/ftPhs4xUOfk/ccw
-	oJ2xgiSr2TgT97UzA//Q+VZVfegtISQ38MQ8nR+odWtwJ6XahPs1FHKQUWSeHd8=
-X-Google-Smtp-Source: AGHT+IFE4+GjUcRvfBj86U5p9RlM1W0UrqMbwwjDZojT1mdFRj7PyY3udpb+reAC5jxDfHM60DBB3g==
-X-Received: by 2002:a05:620a:28c7:b0:797:8564:920a with SMTP id af79cd13be357-798d2413c45mr1111201285a.29.1718632212779;
-        Mon, 17 Jun 2024 06:50:12 -0700 (PDT)
+        bh=GyaMuqBhP7o7wmqZwNnsnkbTtRp5AugJ4lcsefsATFM=;
+        b=pG377fVxTesfmmTxJyJM77FuuerXaFmH4xsPcvrCl/g60XlQd/ye8eeQKYVhnXx1su
+         9F0Uq9vY4SczNzaafqqs9BoB/3xaOuMiYdSH7ecGqu958iN18GIqz6c+B3/GfgyPYL4d
+         aNmnMUac0Qq2OJwgjBlJo7GiLGFBxWDI0A4t97E/Vebl5XbnIBonRI5a/G3Wghe9J0Kx
+         wXHqr/sfoZphyesLYQ+cJeqzYe7UZeodEcJZ7JFcT+XXIRe+Sm25E4+bchkCg8cXR1nK
+         C+5/wVqiONT88yt20jLwCJZIGnsnVg/1N8VNppHSGwW4Qs+y6NV7agZAkE7IwDE2Zm7q
+         NIXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHCd04Mz+bna2t6rZfm1y4Y2sNfCftPzsiScJVf7sbPlAfQ9glh2OKCp4Y6KjbEm1ZRMws384M8ismQSyLSC/tVRxi
+X-Gm-Message-State: AOJu0YxSfhxipmTGhpM2pfL4vfB+2yZH4ZlBQi4qOWsaMWNUl01B5+J5
+	XW6UXmwnLd22o/mRrnuDZedoqeYJBvzz8CmeJNV7ZzJBqLJ8KmCdcm08NBolsZk=
+X-Google-Smtp-Source: AGHT+IG9rvLxXHys5yM3fiDf+G14AWJNmGoLIu5wSpeGGOXNzHBF3wjPuE24N3ncETdlUUNQNA6oSA==
+X-Received: by 2002:a05:620a:45aa:b0:795:4e64:dbbe with SMTP id af79cd13be357-798d1f824a7mr1191474185a.0.1718632214915;
+        Mon, 17 Jun 2024 06:50:14 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.10
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:12 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:14 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:53 -0400
-Subject: [PATCH v3 13/41] iio: adc: meson_saradc: make use of
+Date: Mon, 17 Jun 2024 09:49:54 -0400
+Subject: [PATCH v3 14/41] iio: adc: mp2629_adc: make use of
  regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-13-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-14-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -107,204 +107,53 @@ regmap_clear_bits().
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/meson_saradc.c | 101 ++++++++++++++++++-----------------------
- 1 file changed, 44 insertions(+), 57 deletions(-)
+ drivers/iio/adc/mp2629_adc.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index 13b473d8c6c7..e16b0e28974e 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -546,35 +546,31 @@ static void meson_sar_adc_start_sample_engine(struct iio_dev *indio_dev)
+diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+index 7c66c2cd5be2..5f672765d4a2 100644
+--- a/drivers/iio/adc/mp2629_adc.c
++++ b/drivers/iio/adc/mp2629_adc.c
+@@ -131,9 +131,8 @@ static int mp2629_adc_probe(struct platform_device *pdev)
+ 	info->dev = dev;
+ 	platform_set_drvdata(pdev, indio_dev);
  
- 	reinit_completion(&priv->done);
+-	ret = regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
+-				MP2629_ADC_START | MP2629_ADC_CONTINUOUS,
+-				MP2629_ADC_START | MP2629_ADC_CONTINUOUS);
++	ret = regmap_set_bits(info->regmap, MP2629_REG_ADC_CTRL,
++			      MP2629_ADC_START | MP2629_ADC_CONTINUOUS);
+ 	if (ret) {
+ 		dev_err(dev, "adc enable fail: %d\n", ret);
+ 		return ret;
+@@ -163,10 +162,9 @@ static int mp2629_adc_probe(struct platform_device *pdev)
+ 	iio_map_array_unregister(indio_dev);
  
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_FIFO_IRQ_EN,
--			   MESON_SAR_ADC_REG0_FIFO_IRQ_EN);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			MESON_SAR_ADC_REG0_FIFO_IRQ_EN);
+ fail_disable:
+-	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
+-					 MP2629_ADC_CONTINUOUS, 0);
+-	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
+-					 MP2629_ADC_START, 0);
++	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL,
++			  MP2629_ADC_CONTINUOUS);
++	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL, MP2629_ADC_START);
  
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE,
--			   MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE);
+ 	return ret;
+ }
+@@ -180,10 +178,9 @@ static void mp2629_adc_remove(struct platform_device *pdev)
  
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_SAMPLING_START,
--			   MESON_SAR_ADC_REG0_SAMPLING_START);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			MESON_SAR_ADC_REG0_SAMPLING_START);
+ 	iio_map_array_unregister(indio_dev);
+ 
+-	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
+-					 MP2629_ADC_CONTINUOUS, 0);
+-	regmap_update_bits(info->regmap, MP2629_REG_ADC_CTRL,
+-					 MP2629_ADC_START, 0);
++	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL,
++			  MP2629_ADC_CONTINUOUS);
++	regmap_clear_bits(info->regmap, MP2629_REG_ADC_CTRL, MP2629_ADC_START);
  }
  
- static void meson_sar_adc_stop_sample_engine(struct iio_dev *indio_dev)
- {
- 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_FIFO_IRQ_EN, 0);
-+	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			  MESON_SAR_ADC_REG0_FIFO_IRQ_EN);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_SAMPLING_STOP,
--			   MESON_SAR_ADC_REG0_SAMPLING_STOP);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			MESON_SAR_ADC_REG0_SAMPLING_STOP);
- 
- 	/* wait until all modules are stopped */
- 	meson_sar_adc_wait_busy_clear(indio_dev);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE, 0);
-+	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			  MESON_SAR_ADC_REG0_SAMPLE_ENGINE_ENABLE);
- }
- 
- static int meson_sar_adc_lock(struct iio_dev *indio_dev)
-@@ -586,9 +582,8 @@ static int meson_sar_adc_lock(struct iio_dev *indio_dev)
- 
- 	if (priv->param->has_bl30_integration) {
- 		/* prevent BL30 from using the SAR ADC while we are using it */
--		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
--				   MESON_SAR_ADC_DELAY_KERNEL_BUSY,
--				   MESON_SAR_ADC_DELAY_KERNEL_BUSY);
-+		regmap_set_bits(priv->regmap, MESON_SAR_ADC_DELAY,
-+				MESON_SAR_ADC_DELAY_KERNEL_BUSY);
- 
- 		udelay(1);
- 
-@@ -614,8 +609,8 @@ static void meson_sar_adc_unlock(struct iio_dev *indio_dev)
- 
- 	if (priv->param->has_bl30_integration)
- 		/* allow BL30 to use the SAR ADC again */
--		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
--				   MESON_SAR_ADC_DELAY_KERNEL_BUSY, 0);
-+		regmap_clear_bits(priv->regmap, MESON_SAR_ADC_DELAY,
-+				  MESON_SAR_ADC_DELAY_KERNEL_BUSY);
- 
- 	mutex_unlock(&priv->lock);
- }
-@@ -869,17 +864,16 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
- 	 * disable this bit as seems to be only relevant for Meson6 (based
- 	 * on the vendor driver), which we don't support at the moment.
- 	 */
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
--			   MESON_SAR_ADC_REG0_ADC_TEMP_SEN_SEL, 0);
-+	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG0,
-+			  MESON_SAR_ADC_REG0_ADC_TEMP_SEN_SEL);
- 
- 	/* disable all channels by default */
- 	regmap_write(priv->regmap, MESON_SAR_ADC_CHAN_LIST, 0x0);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
--			   MESON_SAR_ADC_REG3_CTRL_SAMPLING_CLOCK_PHASE, 0);
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
--			   MESON_SAR_ADC_REG3_CNTL_USE_SC_DLY,
--			   MESON_SAR_ADC_REG3_CNTL_USE_SC_DLY);
-+	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG3,
-+			  MESON_SAR_ADC_REG3_CTRL_SAMPLING_CLOCK_PHASE);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG3,
-+			MESON_SAR_ADC_REG3_CNTL_USE_SC_DLY);
- 
- 	/* delay between two samples = (10+1) * 1uS */
- 	regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELAY,
-@@ -914,21 +908,17 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
- 			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_MUX_SEL_MASK,
- 			   regval);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_XP_DRIVE_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_XP_DRIVE_SW);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
-+			MESON_SAR_ADC_CHAN_10_SW_CHAN0_XP_DRIVE_SW);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_YP_DRIVE_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN0_YP_DRIVE_SW);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
-+			MESON_SAR_ADC_CHAN_10_SW_CHAN0_YP_DRIVE_SW);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_XP_DRIVE_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_XP_DRIVE_SW);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
-+			MESON_SAR_ADC_CHAN_10_SW_CHAN1_XP_DRIVE_SW);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_YP_DRIVE_SW,
--			   MESON_SAR_ADC_CHAN_10_SW_CHAN1_YP_DRIVE_SW);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_CHAN_10_SW,
-+			MESON_SAR_ADC_CHAN_10_SW_CHAN1_YP_DRIVE_SW);
- 
- 	/*
- 	 * set up the input channel muxes in MESON_SAR_ADC_AUX_SW
-@@ -944,12 +934,10 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
- 	regmap_write(priv->regmap, MESON_SAR_ADC_AUX_SW, regval);
- 
- 	if (priv->temperature_sensor_calibrated) {
--		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
--				   MESON_SAR_ADC_DELTA_10_TS_REVE1,
--				   MESON_SAR_ADC_DELTA_10_TS_REVE1);
--		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
--				   MESON_SAR_ADC_DELTA_10_TS_REVE0,
--				   MESON_SAR_ADC_DELTA_10_TS_REVE0);
-+		regmap_set_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
-+				MESON_SAR_ADC_DELTA_10_TS_REVE1);
-+		regmap_set_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
-+				MESON_SAR_ADC_DELTA_10_TS_REVE0);
- 
- 		/*
- 		 * set bits [3:0] of the TSC (temperature sensor coefficient)
-@@ -976,10 +964,10 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
- 					   regval);
- 		}
- 	} else {
--		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
--				   MESON_SAR_ADC_DELTA_10_TS_REVE1, 0);
--		regmap_update_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
--				   MESON_SAR_ADC_DELTA_10_TS_REVE0, 0);
-+		regmap_clear_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
-+				  MESON_SAR_ADC_DELTA_10_TS_REVE1);
-+		regmap_clear_bits(priv->regmap, MESON_SAR_ADC_DELTA_10,
-+				  MESON_SAR_ADC_DELTA_10_TS_REVE0);
- 	}
- 
- 	regval = FIELD_PREP(MESON_SAR_ADC_REG3_CTRL_CONT_RING_COUNTER_EN,
-@@ -1062,9 +1050,8 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
- 
- 	meson_sar_adc_set_bandgap(indio_dev, true);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
--			   MESON_SAR_ADC_REG3_ADC_EN,
--			   MESON_SAR_ADC_REG3_ADC_EN);
-+	regmap_set_bits(priv->regmap, MESON_SAR_ADC_REG3,
-+			MESON_SAR_ADC_REG3_ADC_EN);
- 
- 	udelay(5);
- 
-@@ -1079,8 +1066,8 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
- 	return 0;
- 
- err_adc_clk:
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
--			   MESON_SAR_ADC_REG3_ADC_EN, 0);
-+	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG3,
-+			  MESON_SAR_ADC_REG3_ADC_EN);
- 	meson_sar_adc_set_bandgap(indio_dev, false);
- 	regulator_disable(priv->vref);
- err_vref:
-@@ -1104,8 +1091,8 @@ static void meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
- 
- 	clk_disable_unprepare(priv->adc_clk);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
--			   MESON_SAR_ADC_REG3_ADC_EN, 0);
-+	regmap_clear_bits(priv->regmap, MESON_SAR_ADC_REG3,
-+			  MESON_SAR_ADC_REG3_ADC_EN);
- 
- 	meson_sar_adc_set_bandgap(indio_dev, false);
- 
+ static const struct of_device_id mp2629_adc_of_match[] = {
 
 -- 
 2.45.2
