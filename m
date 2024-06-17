@@ -1,523 +1,585 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3691529414
-	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 16:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718642938; cv=none; b=sKOPWxSilxnBczeSiOH3I99ybNbF4ziznjj8D+MPfvqgPdTCo0HLpX3YfzleGBqmBXXbAgznWztN3w4UnqmZRGFRliMsmrYtxaLwekLGMu9suVQcfv9EiwJoNJUdd5lisPWdw6O3dqRPtzD9Bo8oIlv13vOPbfFArBVGB5RhotA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718642938; c=relaxed/simple;
-	bh=Sw4WMbh4MR37Sjul7GaT+1B0IUYI69+si4+4QmM1hIk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lQLU/T8yvcw9pLhMGXJ66V5556CTXjyusM4F08tGKHyqFh7H/UGCbbSdhxIP4o4drT+KejOajA4pXnd4irkvmAa4PvuAMhyIzeFaRacasVNVZHkQG0+xwEsrum/XxJR/KvwyuOt9RIHfdk3FgZEmK4UzMtx3bpHKxNBrWqwHdd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A45ADA7;
-	Mon, 17 Jun 2024 09:49:20 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8BE663F64C;
-	Mon, 17 Jun 2024 09:48:53 -0700 (PDT)
-Date: Mon, 17 Jun 2024 17:48:51 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 3/6] firmware: arm_scmi: add initial support for i.MX
- BBM protocol
-Message-ID: <ZnBo84P1Av0pZ324@pluto>
-References: <20240524-imx95-bbm-misc-v2-v4-0-dc456995d590@nxp.com>
- <20240524-imx95-bbm-misc-v2-v4-3-dc456995d590@nxp.com>
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2079.outbound.protection.outlook.com [40.107.14.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430E5916B
+	for <imx@lists.linux.dev>; Mon, 17 Jun 2024 17:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718644197; cv=fail; b=ljp/XZaaOVkGmAShYNZkcQheVRTNep3N1ObQLe/0PQNDANLH3vsB5sFLtk2eB70Cd+tS8DQbPSwwxLXAxjMkTg8BvEDuI4m4corvfX0RXWrIzbMqnU8yEiwCsruKznKCYlE5GyT6z8m6MTLocZG7DxFZVzXdLRSnx9c89FHcG88=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718644197; c=relaxed/simple;
+	bh=rjOrEX/dWdOjbJMNHG5rqVmJ0ZKwhpvKSDIsorEizxo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=u9gzE32n3PRAIdyWSDn01NmZNPVWuQmD59Car5vUcll/4uaEK/nLJ72663prgtPpMxHzmOP7S/oJ1PbPHr1K5aIcGux9GJUTybzkXr0EMh3o3+u3zACRFLGfgfphxxAGHgqZLOSiN/C3liAHmvmcPKDwtL14AhfhW8FDgLr429U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=LzijGhWk; arc=fail smtp.client-ip=40.107.14.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LzijGhWk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cOl4FbQtZhVfUfmZNL6rptdNXrsp6PXWwpladspfTzCWIGEHQ5Tc6sihKfA/wQqY9KKsQ0VVw8o0K+nsLY2q2oBkQdHz88sF38w59PCrPqe5xqsxAV7XqCSA6NFCrq4rLPsuRI6g/UoJwxYiwlpKDNAzlNika8Svqo+3GE5CAc7jcVFt2J17GCpALMIIVA2A8M1mNgSSou9d99kvmLuLpKSYG3rKwlYP2386+xK3xkZNmImdWYuzKTe6UaCSRkZbrYGyjYKuXaPlkQDcDBiXJ+bPaZ46VWbgfDEAcaUnz/AfvkK5/5/1MfPxAVntt2EuUYnN5w7B+IDrAqVVoD9Qug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=32drMUEQ09/a+iNqgvk5r3b/8ECzgsVcW4Nad/5RJFQ=;
+ b=SNri/l2nUdi0lBPFv0d3JhYwbmRoD33apmnTbM9jQLMK8KnFozc4l9XFmyocphzsZv5mMJP+VHYfbHZQgwPhCnIfHuqFbt4m5zCocbwPx6YIEjlByRbUXLJjWP1vzSKYomJ7gWwLxYj0J8CPtk8b1VGMK1S/0rj6zaCnfkuzNaGkrW64Fw2Etgexi/MDgbI0vFkaWcS2RUSd7amv26eam6y6ErjtLgRpMoLXiBGY9Mu1yO63qi8a5oyxNUaOQHCPJESRWn+XCdzfFpjv0Ik+JgmPfptn8l+QtWApjoTG1r9Y+nzQeFI4r0uK1a7MiNxSorYza+b7gnCZtFjJJkuHJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=32drMUEQ09/a+iNqgvk5r3b/8ECzgsVcW4Nad/5RJFQ=;
+ b=LzijGhWkqEAWMlcbOCFU6dMmMaOo3TwJ3XBgFNctr1kyj/8OXC5c95rOBazu1RhEDTlf5gpxRCB17N0KaSDhghHAgbvXOl5JjnukX6Rc8HcUWFjwm66l7sq78IV9p/R9ppNFcAOg4wTXLlH3sN1oFHjFISXLEi/LV76jzaC2I+4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBAPR04MB7480.eurprd04.prod.outlook.com (2603:10a6:10:1a3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Mon, 17 Jun
+ 2024 17:09:51 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7677.030; Mon, 17 Jun 2024
+ 17:09:50 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: robh@kernel.org
+Cc: Frank.Li@nxp.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	krzk+dt@kernel.org,
+	laurentiu.tudor@nxp.com,
+	linux-kernel@vger.kernel.org,
+	stuyoder@gmail.com
+Subject: [PATCH v2 1/1] dt-bindings: misc: fsl,qoriq-mc: convert to yaml format
+Date: Mon, 17 Jun 2024 13:09:34 -0400
+Message-Id: <20240617170934.813321-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0044.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240524-imx95-bbm-misc-v2-v4-3-dc456995d590@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBAPR04MB7480:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2fa6062-84f9-4563-8f3c-08dc8ef04c02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230037|376011|1800799021|52116011|366013|38350700011;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?sTPYjU1rthPDvef/BwyqODplpCDSZkMN+qsWLVosEYkehid+uyuqdF7OETM2?=
+ =?us-ascii?Q?lks/MHJm5al3U9QVHOX6hP7iDDzgPWccWDcNGRAskhdfrIiyoGR1eaI+u+No?=
+ =?us-ascii?Q?4CohJxAFHa7cWP/aHVDN+mcqG4ID+wTnXSflThpaR7BUR6tDOH5dWxSGwXmY?=
+ =?us-ascii?Q?bIij9KWByV2nhLIflWljG3Oob/3z7vtNik6+NkCxNpEtAyB7md0CgzwGYvO0?=
+ =?us-ascii?Q?UsTUBps2RdNF0w1RkHV/I/1txS4MtEjOyUCyyQzpvDs6v3KAWnzCWJFLwJjj?=
+ =?us-ascii?Q?lm0uFZV1Y9jQKmjJwfkulaKrpn1yTxWg5HVKXQsIDkn16r1fSBU/eJGbRwsE?=
+ =?us-ascii?Q?WwzPICpVRo6glAyizn+8wfgrF6CFJnhKDVZwSOEf0hOevI6vVMyA1/214ePt?=
+ =?us-ascii?Q?syFk0ui6gAqKq4sTrcoebktKGgpdfEKI0WfyNyXsf9XPQIYQNGDUK/T7buLR?=
+ =?us-ascii?Q?pVIgon+u0hAz5jhIYQFAst2INO6pv/Dgq6ALGMcKdb3arRmxS5nxEaO02ArD?=
+ =?us-ascii?Q?OCfoKW1L3xGfvn+2CBUFWFo9fL5HNxLLGSqAEtr+RCa8vd3//eAMfnJrhAwK?=
+ =?us-ascii?Q?a6y5KTDiu4JNBiXFgnwQsZ7O9bFcLc77tE/I2JjBnqxN9Wc56XSWnXi59N/v?=
+ =?us-ascii?Q?fdFCyS54jr18Q1H/pgO9mMrM38CnCaWFOIcwdIi/dhY8H+VR41KVkNPRlx7h?=
+ =?us-ascii?Q?/ZR80vGl9YAuw2Cryr/dSnW2oOjXO1QkKJKMzlpObgdrPMD2vyiHM1VegMVJ?=
+ =?us-ascii?Q?Yimh3kMjXbiR4/bfFwFWf4vsG242vEkFBTPwo0jSTp6rfyb8NaC0KuBg3dTp?=
+ =?us-ascii?Q?IFQnkiiHQPogBPo7Cn7MJPEL1OxB0/75C5kXOYIKbw+AKPa+j62WOVGT/87J?=
+ =?us-ascii?Q?gF8hVNTr5lRz8gEjwgOrDkV0GH3SAXgr16X6WGtyNxnlhzmrQOwXU67Xgwbe?=
+ =?us-ascii?Q?sJd7eetL34XseMNSmzzJV1U2xtiK9GSnNTSr5glJ/W+4JlXN1R6UBJ5SzfWo?=
+ =?us-ascii?Q?H6xqblLREJr46YdVNS3wrjEG6sIycfv+8ERgV70Y0lhFEaGJKV7neyacujKh?=
+ =?us-ascii?Q?IPMKT0X55Dzqh2aryv7P5hgTZ1QqcTvdv53u4RHsvG3fPkwQ9YCtwNUd6lxr?=
+ =?us-ascii?Q?is5R5LGiiU/CfQjTOWPyeXMcAqLhCC/Tj8+gDeWrs2BGjspZIjK3DvTTHEmC?=
+ =?us-ascii?Q?c2InSe1JZsvyjk7eODhSM6WWjCIrBYLwrGLGogy/oNcKkA8mj2Mc7XCJpA9H?=
+ =?us-ascii?Q?THjCnpobmBUtOSCAdIfE5yj+6iz/W/x9eCe4qZ4GNgWQW3haethJn71mQDQB?=
+ =?us-ascii?Q?XJLU8Crzl52pNtFoMWxmtu8d?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(1800799021)(52116011)(366013)(38350700011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kqGH8VZp4POj++aaeTRxeZuYOR8r7fdNMnEDh/aohjTJaimilD1P7WT//id/?=
+ =?us-ascii?Q?u1DU/9BBPMx8L4ezYEbGcpFq1ISR6gXgfcvAngWDdD1yR8ZvDbuHhwE1EVSL?=
+ =?us-ascii?Q?MMco6fXlO/QEsJRkH9Kxfl14RdDRtc8Nz4tBsXgDX3JEsZkIHwhVAEjJqLcd?=
+ =?us-ascii?Q?cBDyZJEeXO0S0JP1RbsnV+V2vdpm5RO1XEuUQSXome/wv29TuC1mjnxYNfBX?=
+ =?us-ascii?Q?6XrcyqusVzBn3//Vwe3rowHGCuqzxi2hUfqeRHSQH87DKC7vwhe+PODRqKKq?=
+ =?us-ascii?Q?UArZ57qBxRQQiOqZMhtdTHxQmiZbTpFWx88q0serZEUMxylDGBx2JLx9qjkL?=
+ =?us-ascii?Q?xn6hsah8c5yeeZVw/Jems+6ZhkfYmIQfnjJTEdgxRuKQdh/q+PY+PPynXAVz?=
+ =?us-ascii?Q?dJGKMgwFb1K94U36Yjl8W9XfdH9/q1mbN1uBsuIU2gbhZ9y77Laj2viMa07h?=
+ =?us-ascii?Q?gGko/Se5nPYVvlz5nGfp+Zygk50qjvSwv49/Usyrk5186ECxvvKqmN7mxCq+?=
+ =?us-ascii?Q?eeh/WFIhec2+iTqahOTyhw+BuhLHKXyfWwlA3Cu7XA467geNrzhlXFur4e/M?=
+ =?us-ascii?Q?+cO30ayFmxZnsvKByCSrUaO/LJMeVfAoB9Ie/4X8xz+5FACuIWzzPKCVxA0l?=
+ =?us-ascii?Q?PrfhVWUidLuyHQXqCoaMLqN7LKJesvJj5QYePQvTdK9XJoqrxRugEb7vPoGe?=
+ =?us-ascii?Q?bhZvY3ojYPDkcWAy1Zf/5/V/jssUeBuWhd2+lrVD7s6Tao1WcLC2zq+UR8Hu?=
+ =?us-ascii?Q?vpIG1+AwtloniX18/lIMdPudw8WLQ8Cn/rz+kbsZqtgc8E/loixqxzipkNGK?=
+ =?us-ascii?Q?nFAMWE1Ue8rY8chXkjzkoR5YDIckvvSRVOC46lXHzu8gVJrW/BDheyvS1MuU?=
+ =?us-ascii?Q?dKretboI0fNoM0jnVKUSxtFiRE9GHuDfRbqoEJnFhrJ7+O59MalL0POAWEFL?=
+ =?us-ascii?Q?QO8zxFQkA0tCA423uVTjCWGl25zYU0I5j7DM/NWy8Poa73f1iTumUYdtVRhI?=
+ =?us-ascii?Q?6ooP/QEuQJAXf8FD1Iwupp6SsVn5DjY5+L7E+key/IRQmgp4ahOUrXoTg6f3?=
+ =?us-ascii?Q?260lqBMS2VonabzEtvxivaM7HKvVWi8jRAoC0gr7IxfXn4FvJWw3Bz/7oMxx?=
+ =?us-ascii?Q?M+mSNjF5bXNtMW8sY2SNWkk2+bjZRB7OLH9ZUIplbqITir6j2x6SXK9ITz6P?=
+ =?us-ascii?Q?3AI1Oii1FRnueYMRt4/blMzXh+gpX4ki8RRLQaDEYtb1Qhaj2dSBAdCgNrgy?=
+ =?us-ascii?Q?HF6zsY5qIMqmCNkd5zcNjuvastjBZxlop0kiTVUO6XSk6oGdjH6gl9scg96/?=
+ =?us-ascii?Q?UZEiSeSoPP8QrfNljQo9LlhkS4ROYf9mrWud7pXRCSXzzwYyIM80oXQmzmGn?=
+ =?us-ascii?Q?pXGJ2CJHwl52jrXt4F08oFNtkd4p1DJ42FCsbhmzwH0zbG4O/hpsiaOonZWE?=
+ =?us-ascii?Q?aAxvSidI8oDC/r4qumMFw82FHz3weqNbw1RXhiQt0rzHFbQyMbHVDtPr3lcG?=
+ =?us-ascii?Q?McVqVh21clnuqpT2urxEnL51a826H8LkEUU2ZZ7l2k3v0sxO13bvK8XPt/q/?=
+ =?us-ascii?Q?sG6muxxSzrmyTXaQT40HMuNwFVJxc6UVkyiBrFrC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2fa6062-84f9-4563-8f3c-08dc8ef04c02
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 17:09:50.2342
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4bdNfUPSVRY+2lrUF2kdtHDo0L3jgp/QsD8E5NcJ5NFrxCLnbS22x70lBxe3Ryo4ZKY2VF2IHuYwg7ZJ14gN2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7480
 
-On Fri, May 24, 2024 at 04:56:45PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> i.MX95 has a battery-backed module(BBM), which has persistent storage (GPR),
-> an RTC, and the ON/OFF button. The System Manager(SM) firmware use SCMI vendor
-> protocol(SCMI BBM) to let agent be able to use GPR, RTC and ON/OFF
-> button.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/firmware/arm_scmi/Kconfig          |   2 +
->  drivers/firmware/arm_scmi/Makefile         |   1 +
->  drivers/firmware/arm_scmi/imx/Kconfig      |  14 ++
->  drivers/firmware/arm_scmi/imx/Makefile     |   2 +
->  drivers/firmware/arm_scmi/imx/imx-sm-bbm.c | 380 +++++++++++++++++++++++++++++
->  include/linux/scmi_imx_protocol.h          |  42 ++++
->  6 files changed, 441 insertions(+)
-> 
-> diff --git a/drivers/firmware/arm_scmi/Kconfig b/drivers/firmware/arm_scmi/Kconfig
-> index aa5842be19b2..79846cbaf71b 100644
-> --- a/drivers/firmware/arm_scmi/Kconfig
-> +++ b/drivers/firmware/arm_scmi/Kconfig
-> @@ -180,4 +180,6 @@ config ARM_SCMI_POWER_CONTROL
->  	  called scmi_power_control. Note this may needed early in boot to catch
->  	  early shutdown/reboot SCMI requests.
->  
-> +source "drivers/firmware/arm_scmi/imx/Kconfig"
-> +
+Convert fsl,qoriq-mc from txt to yaml format.
 
-It could be that we fold all the Vendor drivers under
-drivers/firmware/arm_scmi/vendors once it is merged...but we will take
-care of this reowrk/refctor...still not sure about this details.
+Addition changes:
+- Child node name allow 'ethernet'.
+- Use 32bit address in example.
+- Fixed missed ';' in example.
+- Allow dma-coherent.
+- Remove smmu, its part in example.
+- Change child node name as 'ethernet'
 
->  endmenu
-> diff --git a/drivers/firmware/arm_scmi/Makefile b/drivers/firmware/arm_scmi/Makefile
-> index fd59f58ce8a2..fb9407fef60c 100644
-> --- a/drivers/firmware/arm_scmi/Makefile
-> +++ b/drivers/firmware/arm_scmi/Makefile
-> @@ -16,6 +16,7 @@ scmi-module-objs := $(scmi-driver-y) $(scmi-protocols-y) $(scmi-transport-y)
->  
->  obj-$(CONFIG_ARM_SCMI_PROTOCOL) += scmi-core.o
->  obj-$(CONFIG_ARM_SCMI_PROTOCOL) += scmi-module.o
-> +obj-$(CONFIG_ARM_SCMI_PROTOCOL) += imx/
->  
->  obj-$(CONFIG_ARM_SCMI_POWER_CONTROL) += scmi_power_control.o
->  
-> diff --git a/drivers/firmware/arm_scmi/imx/Kconfig b/drivers/firmware/arm_scmi/imx/Kconfig
-> new file mode 100644
-> index 000000000000..4b6ac7febe8f
-> --- /dev/null
-> +++ b/drivers/firmware/arm_scmi/imx/Kconfig
-> @@ -0,0 +1,14 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +menu "ARM SCMI NXP i.MX Vendor Protocols"
-> +
-> +config IMX_SCMI_BBM_EXT
-> +	tristate "i.MX SCMI BBM EXTENSION"
-> +	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
-> +	default y if ARCH_MXC
-> +	help
-> +	  This enables i.MX System BBM control logic which supports RTC
-> +	  and BUTTON.
-> +
-> +	  This driver can also be built as a module.
-> +
-> +endmenu
-> diff --git a/drivers/firmware/arm_scmi/imx/Makefile b/drivers/firmware/arm_scmi/imx/Makefile
-> new file mode 100644
-> index 000000000000..a7dbdd20dbb9
-> --- /dev/null
-> +++ b/drivers/firmware/arm_scmi/imx/Makefile
-> @@ -0,0 +1,2 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +obj-$(CONFIG_IMX_SCMI_BBM_EXT) += imx-sm-bbm.o
-> diff --git a/drivers/firmware/arm_scmi/imx/imx-sm-bbm.c b/drivers/firmware/arm_scmi/imx/imx-sm-bbm.c
-> new file mode 100644
-> index 000000000000..3f8321d247ae
-> --- /dev/null
-> +++ b/drivers/firmware/arm_scmi/imx/imx-sm-bbm.c
-> @@ -0,0 +1,380 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * System Control and Management Interface (SCMI) NXP BBM Protocol
-> + *
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#define pr_fmt(fmt) "SCMI Notifications BBM - " fmt
-> +
-> +#include <linux/bits.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/scmi_protocol.h>
-> +#include <linux/scmi_imx_protocol.h>
-> +
-> +#include "../protocols.h"
-> +#include "../notify.h"
-> +
-> +#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x10000
-> +
-> +enum scmi_imx_bbm_protocol_cmd {
-> +	IMX_BBM_GPR_SET = 0x3,
-> +	IMX_BBM_GPR_GET = 0x4,
-> +	IMX_BBM_RTC_ATTRIBUTES = 0x5,
-> +	IMX_BBM_RTC_TIME_SET = 0x6,
-> +	IMX_BBM_RTC_TIME_GET = 0x7,
-> +	IMX_BBM_RTC_ALARM_SET = 0x8,
-> +	IMX_BBM_BUTTON_GET = 0x9,
-> +	IMX_BBM_RTC_NOTIFY = 0xA,
-> +	IMX_BBM_BUTTON_NOTIFY = 0xB,
-> +};
-> +
-> +#define GET_RTCS_NR(x)	le32_get_bits((x), GENMASK(23, 16))
-> +#define GET_GPRS_NR(x)	le32_get_bits((x), GENMASK(15, 0))
-> +
-> +#define SCMI_IMX_BBM_NOTIFY_RTC_UPDATED		BIT(2)
-> +#define SCMI_IMX_BBM_NOTIFY_RTC_ROLLOVER	BIT(1)
-> +#define SCMI_IMX_BBM_NOTIFY_RTC_ALARM		BIT(0)
-> +
-> +#define SCMI_IMX_BBM_RTC_ALARM_ENABLE_FLAG	BIT(0)
-> +
-> +#define SCMI_IMX_BBM_NOTIFY_RTC_FLAG	\
-> +	(SCMI_IMX_BBM_NOTIFY_RTC_UPDATED | SCMI_IMX_BBM_NOTIFY_RTC_ROLLOVER | \
-> +	 SCMI_IMX_BBM_NOTIFY_RTC_ALARM)
-> +
-> +#define SCMI_IMX_BBM_EVENT_RTC_MASK		GENMASK(31, 24)
-> +
-> +struct scmi_imx_bbm_info {
-> +	u32 version;
-> +	int nr_rtc;
-> +	int nr_gpr;
-> +};
-> +
-> +struct scmi_msg_imx_bbm_protocol_attributes {
-> +	__le32 attributes;
-> +};
-> +
-> +struct scmi_imx_bbm_set_time {
-> +	__le32 id;
-> +	__le32 flags;
-> +	__le32 value_low;
-> +	__le32 value_high;
-> +};
-> +
-> +struct scmi_imx_bbm_get_time {
-> +	__le32 id;
-> +	__le32 flags;
-> +};
-> +
-> +struct scmi_imx_bbm_alarm_time {
-> +	__le32 id;
-> +	__le32 flags;
-> +	__le32 value_low;
-> +	__le32 value_high;
-> +};
-> +
-> +struct scmi_msg_imx_bbm_rtc_notify {
-> +	__le32 rtc_id;
-> +	__le32 flags;
-> +};
-> +
-> +struct scmi_msg_imx_bbm_button_notify {
-> +	__le32 flags;
-> +};
-> +
-> +struct scmi_imx_bbm_notify_payld {
-> +	__le32 flags;
-> +};
-> +
-> +static int scmi_imx_bbm_attributes_get(const struct scmi_protocol_handle *ph,
-> +				       struct scmi_imx_bbm_info *pi)
-> +{
-> +	int ret;
-> +	struct scmi_xfer *t;
-> +	struct scmi_msg_imx_bbm_protocol_attributes *attr;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0, sizeof(*attr), &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	attr = t->rx.buf;
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret) {
-> +		pi->nr_rtc = GET_RTCS_NR(attr->attributes);
-> +		pi->nr_gpr = GET_GPRS_NR(attr->attributes);
-> +	}
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_bbm_notify(const struct scmi_protocol_handle *ph,
-> +			       u32 src_id, int message_id, bool enable)
-> +{
-> +	int ret;
-> +	struct scmi_xfer *t;
-> +
-> +	if (message_id == IMX_BBM_RTC_NOTIFY) {
-> +		struct scmi_msg_imx_bbm_rtc_notify *rtc_notify;
-> +
-> +		ret = ph->xops->xfer_get_init(ph, message_id,
-> +					      sizeof(*rtc_notify), 0, &t);
-> +		if (ret)
-> +			return ret;
-> +
-> +		rtc_notify = t->tx.buf;
-> +		rtc_notify->rtc_id = cpu_to_le32(0);
-> +		rtc_notify->flags =
-> +			cpu_to_le32(enable ? SCMI_IMX_BBM_NOTIFY_RTC_FLAG : 0);
-> +	} else if (message_id == IMX_BBM_BUTTON_NOTIFY) {
-> +		struct scmi_msg_imx_bbm_button_notify *button_notify;
-> +
-> +		ret = ph->xops->xfer_get_init(ph, message_id,
-> +					      sizeof(*button_notify), 0, &t);
-> +		if (ret)
-> +			return ret;
-> +
-> +		button_notify = t->tx.buf;
-> +		button_notify->flags = cpu_to_le32(enable ? 1 : 0);
-> +	} else {
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +	return ret;
-> +}
-> +
-> +static enum scmi_imx_bbm_protocol_cmd evt_2_cmd[] = {
-> +	IMX_BBM_RTC_NOTIFY,
-> +	IMX_BBM_BUTTON_NOTIFY
-> +};
-> +
-> +static int scmi_imx_bbm_set_notify_enabled(const struct scmi_protocol_handle *ph,
-> +					   u8 evt_id, u32 src_id, bool enable)
-> +{
-> +	int ret, cmd_id;
-> +
-> +	if (evt_id >= ARRAY_SIZE(evt_2_cmd))
-> +		return -EINVAL;
-> +
-> +	cmd_id = evt_2_cmd[evt_id];
-> +	ret = scmi_imx_bbm_notify(ph, src_id, cmd_id, enable);
-> +	if (ret)
-> +		pr_debug("FAIL_ENABLED - evt[%X] dom[%d] - ret:%d\n",
-> +			 evt_id, src_id, ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static void *scmi_imx_bbm_fill_custom_report(const struct scmi_protocol_handle *ph,
-> +					     u8 evt_id, ktime_t timestamp,
-> +					     const void *payld, size_t payld_sz,
-> +					     void *report, u32 *src_id)
-> +{
-> +	const struct scmi_imx_bbm_notify_payld *p = payld;
-> +	struct scmi_imx_bbm_notif_report *r = report;
-> +
-> +	if (sizeof(*p) != payld_sz)
-> +		return NULL;
-> +
-> +	if (evt_id == SCMI_EVENT_IMX_BBM_RTC) {
-> +		r->is_rtc = true;
-> +		r->is_button = false;
-> +		r->timestamp = timestamp;
-> +		r->rtc_id = le32_get_bits(p->flags, SCMI_IMX_BBM_EVENT_RTC_MASK);
-> +		r->rtc_evt = le32_get_bits(p->flags, SCMI_IMX_BBM_NOTIFY_RTC_FLAG);
-> +		dev_dbg(ph->dev, "RTC: %d evt: %x\n", r->rtc_id, r->rtc_evt);
-> +		*src_id = r->rtc_evt;
-> +	} else if (evt_id == SCMI_EVENT_IMX_BBM_BUTTON) {
-> +		r->is_rtc = false;
-> +		r->is_button = true;
-> +		r->timestamp = timestamp;
-> +		dev_dbg(ph->dev, "BBM Button\n");
-> +		*src_id = 0;
-> +	} else {
-> +		WARN_ON_ONCE(1);
-> +		return NULL;
-> +	}
-> +
-> +	return r;
-> +}
-> +
-> +static const struct scmi_event scmi_imx_bbm_events[] = {
-> +	{
-> +		.id = SCMI_EVENT_IMX_BBM_RTC,
-> +		.max_payld_sz = sizeof(struct scmi_imx_bbm_notify_payld),
-> +		.max_report_sz = sizeof(struct scmi_imx_bbm_notif_report),
-> +	},
-> +	{
-> +		.id = SCMI_EVENT_IMX_BBM_BUTTON,
-> +		.max_payld_sz = sizeof(struct scmi_imx_bbm_notify_payld),
-> +		.max_report_sz = sizeof(struct scmi_imx_bbm_notif_report),
-> +	},
-> +};
-> +
-> +static const struct scmi_event_ops scmi_imx_bbm_event_ops = {
-> +	.set_notify_enabled = scmi_imx_bbm_set_notify_enabled,
-> +	.fill_custom_report = scmi_imx_bbm_fill_custom_report,
-> +};
-> +
-> +static const struct scmi_protocol_events scmi_imx_bbm_protocol_events = {
-> +	.queue_sz = SCMI_PROTO_QUEUE_SZ,
-> +	.ops = &scmi_imx_bbm_event_ops,
-> +	.evts = scmi_imx_bbm_events,
-> +	.num_events = ARRAY_SIZE(scmi_imx_bbm_events),
-> +	.num_sources = 1,
-> +};
-> +
-> +static int scmi_imx_bbm_protocol_init(const struct scmi_protocol_handle *ph)
-> +{
-> +	u32 version;
-> +	int ret;
-> +	struct scmi_imx_bbm_info *binfo;
-> +
-> +	ret = ph->xops->version_get(ph, &version);
-> +	if (ret)
-> +		return ret;
-> +
-> +	dev_info(ph->dev, "NXP SM BBM Version %d.%d\n",
-> +		 PROTOCOL_REV_MAJOR(version), PROTOCOL_REV_MINOR(version));
-> +
-> +	binfo = devm_kzalloc(ph->dev, sizeof(*binfo), GFP_KERNEL);
-> +	if (!binfo)
-> +		return -ENOMEM;
-> +
-> +	ret = scmi_imx_bbm_attributes_get(ph, binfo);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ph->set_priv(ph, binfo, version);
-> +}
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-I would move this init down below, right before the scmi_imx_bbm and
-after the proto_ops definition,  for consistency and readability.
+---
+Change from v1 to v2
+- fixed warning find by make refcheckdocs
+- Change child node name as 'ethernet'
+- move range after reg in example
 
-> +
-> +static int scmi_imx_bbm_rtc_time_set(const struct scmi_protocol_handle *ph,
-> +				     u32 rtc_id, u64 sec)
-> +{
-> +	struct scmi_imx_bbm_info *pi = ph->get_priv(ph);
-> +	struct scmi_imx_bbm_set_time *cfg;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	if (rtc_id >= pi->nr_rtc)
-> +		return -EINVAL;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, IMX_BBM_RTC_TIME_SET, sizeof(*cfg), 0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	cfg = t->tx.buf;
-> +	cfg->id = cpu_to_le32(rtc_id);
-> +	cfg->flags = 0;
-> +	cfg->value_low = cpu_to_le32(lower_32_bits(sec));
-> +	cfg->value_high = cpu_to_le32(upper_32_bits(sec));
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_bbm_rtc_time_get(const struct scmi_protocol_handle *ph,
-> +				     u32 rtc_id, u64 *value)
-> +{
-> +	struct scmi_imx_bbm_info *pi = ph->get_priv(ph);
-> +	struct scmi_imx_bbm_get_time *cfg;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	if (rtc_id >= pi->nr_rtc)
-> +		return -EINVAL;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, IMX_BBM_RTC_TIME_GET, sizeof(*cfg),
-> +				      sizeof(u64), &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	cfg = t->tx.buf;
-> +	cfg->id = cpu_to_le32(rtc_id);
-> +	cfg->flags = 0;
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret)
-> +		*value = get_unaligned_le64(t->rx.buf);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_bbm_rtc_alarm_set(const struct scmi_protocol_handle *ph,
-> +				      u32 rtc_id, u64 sec)
-> +{
-> +	struct scmi_imx_bbm_info *pi = ph->get_priv(ph);
-> +	struct scmi_imx_bbm_alarm_time *cfg;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	if (rtc_id >= pi->nr_rtc)
-> +		return -EINVAL;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, IMX_BBM_RTC_ALARM_SET, sizeof(*cfg), 0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	cfg = t->tx.buf;
-> +	cfg->id = cpu_to_le32(rtc_id);
-> +	cfg->flags = SCMI_IMX_BBM_RTC_ALARM_ENABLE_FLAG;
-> +	cfg->value_low = cpu_to_le32(lower_32_bits(sec));
-> +	cfg->value_high = cpu_to_le32(upper_32_bits(sec));
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_bbm_button_get(const struct scmi_protocol_handle *ph, u32 *state)
-> +{
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, IMX_BBM_BUTTON_GET, 0, sizeof(u32), &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret)
-> +		*state = get_unaligned_le32(t->rx.buf);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct scmi_imx_bbm_proto_ops scmi_imx_bbm_proto_ops = {
-> +	.rtc_time_get = scmi_imx_bbm_rtc_time_get,
-> +	.rtc_time_set = scmi_imx_bbm_rtc_time_set,
-> +	.rtc_alarm_set = scmi_imx_bbm_rtc_alarm_set,
-> +	.button_get = scmi_imx_bbm_button_get,
-> +};
-> +
+Pass dt_binding_check
+ake ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check DT_SCHEMA_FILES=fsl,qoriq-mc.yaml
+  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+  CHKDT   Documentation/devicetree/bindings
+  LINT    Documentation/devicetree/bindings
+  DTEX    Documentation/devicetree/bindings/misc/fsl,qoriq-mc.example.dts
+  DTC_CHK Documentation/devicetree/bindings/misc/fsl,qoriq-mc.example.dtb
+---
+ .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ------------------
+ .../bindings/misc/fsl,qoriq-mc.yaml           | 187 +++++++++++++++++
+ .../ethernet/freescale/dpaa2/overview.rst     |   2 +-
+ 3 files changed, 188 insertions(+), 197 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+ create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
 
-...just here the init
+diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+deleted file mode 100644
+index 7b486d4985dc7..0000000000000
+--- a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
++++ /dev/null
+@@ -1,196 +0,0 @@
+-* Freescale Management Complex
+-
+-The Freescale Management Complex (fsl-mc) is a hardware resource
+-manager that manages specialized hardware objects used in
+-network-oriented packet processing applications. After the fsl-mc
+-block is enabled, pools of hardware resources are available, such as
+-queues, buffer pools, I/O interfaces. These resources are building
+-blocks that can be used to create functional hardware objects/devices
+-such as network interfaces, crypto accelerator instances, L2 switches,
+-etc.
+-
+-For an overview of the DPAA2 architecture and fsl-mc bus see:
+-Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+-
+-As described in the above overview, all DPAA2 objects in a DPRC share the
+-same hardware "isolation context" and a 10-bit value called an ICID
+-(isolation context id) is expressed by the hardware to identify
+-the requester.
+-
+-The generic 'iommus' property is insufficient to describe the relationship
+-between ICIDs and IOMMUs, so an iommu-map property is used to define
+-the set of possible ICIDs under a root DPRC and how they map to
+-an IOMMU.
+-
+-For generic IOMMU bindings, see
+-Documentation/devicetree/bindings/iommu/iommu.txt.
+-
+-For arm-smmu binding, see:
+-Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
+-
+-The MSI writes are accompanied by sideband data which is derived from the ICID.
+-The msi-map property is used to associate the devices with both the ITS
+-controller and the sideband data which accompanies the writes.
+-
+-For generic MSI bindings, see
+-Documentation/devicetree/bindings/interrupt-controller/msi.txt.
+-
+-For GICv3 and GIC ITS bindings, see:
+-Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
+-
+-Required properties:
+-
+-    - compatible
+-        Value type: <string>
+-        Definition: Must be "fsl,qoriq-mc".  A Freescale Management Complex
+-                    compatible with this binding must have Block Revision
+-                    Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
+-                    the MC control register region.
+-
+-    - reg
+-        Value type: <prop-encoded-array>
+-        Definition: A standard property.  Specifies one or two regions
+-                    defining the MC's registers:
+-
+-                       -the first region is the command portal for the
+-                        this machine and must always be present
+-
+-                       -the second region is the MC control registers. This
+-                        region may not be present in some scenarios, such
+-                        as in the device tree presented to a virtual machine.
+-
+-    - ranges
+-        Value type: <prop-encoded-array>
+-        Definition: A standard property.  Defines the mapping between the child
+-                    MC address space and the parent system address space.
+-
+-                    The MC address space is defined by 3 components:
+-                       <region type> <offset hi> <offset lo>
+-
+-                    Valid values for region type are
+-                       0x0 - MC portals
+-                       0x1 - QBMAN portals
+-
+-    - #address-cells
+-        Value type: <u32>
+-        Definition: Must be 3.  (see definition in 'ranges' property)
+-
+-    - #size-cells
+-        Value type: <u32>
+-        Definition: Must be 1.
+-
+-Sub-nodes:
+-
+-        The fsl-mc node may optionally have dpmac sub-nodes that describe
+-        the relationship between the Ethernet MACs which belong to the MC
+-        and the Ethernet PHYs on the system board.
+-
+-        The dpmac nodes must be under a node named "dpmacs" which contains
+-        the following properties:
+-
+-            - #address-cells
+-              Value type: <u32>
+-              Definition: Must be present if dpmac sub-nodes are defined and must
+-                          have a value of 1.
+-
+-            - #size-cells
+-              Value type: <u32>
+-              Definition: Must be present if dpmac sub-nodes are defined and must
+-                          have a value of 0.
+-
+-        These nodes must have the following properties:
+-
+-            - compatible
+-              Value type: <string>
+-              Definition: Must be "fsl,qoriq-mc-dpmac".
+-
+-            - reg
+-              Value type: <prop-encoded-array>
+-              Definition: Specifies the id of the dpmac.
+-
+-            - phy-handle
+-              Value type: <phandle>
+-              Definition: Specifies the phandle to the PHY device node associated
+-                          with the this dpmac.
+-Optional properties:
+-
+-- iommu-map: Maps an ICID to an IOMMU and associated iommu-specifier
+-  data.
+-
+-  The property is an arbitrary number of tuples of
+-  (icid-base,iommu,iommu-base,length).
+-
+-  Any ICID i in the interval [icid-base, icid-base + length) is
+-  associated with the listed IOMMU, with the iommu-specifier
+-  (i - icid-base + iommu-base).
+-
+-- msi-map: Maps an ICID to a GIC ITS and associated msi-specifier
+-  data.
+-
+-  The property is an arbitrary number of tuples of
+-  (icid-base,gic-its,msi-base,length).
+-
+-  Any ICID in the interval [icid-base, icid-base + length) is
+-  associated with the listed GIC ITS, with the msi-specifier
+-  (i - icid-base + msi-base).
+-
+-Deprecated properties:
+-
+-    - msi-parent
+-        Value type: <phandle>
+-        Definition: Describes the MSI controller node handling message
+-                    interrupts for the MC. When there is no translation
+-                    between the ICID and deviceID this property can be used
+-                    to describe the MSI controller used by the devices on the
+-                    mc-bus.
+-                    The use of this property for mc-bus is deprecated. Please
+-                    use msi-map.
+-
+-Example:
+-
+-        smmu: iommu@5000000 {
+-               compatible = "arm,mmu-500";
+-               #iommu-cells = <1>;
+-               stream-match-mask = <0x7C00>;
+-               ...
+-        };
+-
+-        gic: interrupt-controller@6000000 {
+-               compatible = "arm,gic-v3";
+-               ...
+-        }
+-        its: gic-its@6020000 {
+-               compatible = "arm,gic-v3-its";
+-               msi-controller;
+-               ...
+-        };
+-
+-        fsl_mc: fsl-mc@80c000000 {
+-                compatible = "fsl,qoriq-mc";
+-                reg = <0x00000008 0x0c000000 0 0x40>,    /* MC portal base */
+-                      <0x00000000 0x08340000 0 0x40000>; /* MC control reg */
+-                /* define map for ICIDs 23-64 */
+-                iommu-map = <23 &smmu 23 41>;
+-                /* define msi map for ICIDs 23-64 */
+-                msi-map = <23 &its 23 41>;
+-                #address-cells = <3>;
+-                #size-cells = <1>;
+-
+-                /*
+-                 * Region type 0x0 - MC portals
+-                 * Region type 0x1 - QBMAN portals
+-                 */
+-                ranges = <0x0 0x0 0x0 0x8 0x0c000000 0x4000000
+-                          0x1 0x0 0x0 0x8 0x18000000 0x8000000>;
+-
+-                dpmacs {
+-                    #address-cells = <1>;
+-                    #size-cells = <0>;
+-
+-                    dpmac@1 {
+-                        compatible = "fsl,qoriq-mc-dpmac";
+-                        reg = <1>;
+-                        phy-handle = <&mdio0_phy0>;
+-                    }
+-                }
+-        };
+diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+new file mode 100644
+index 0000000000000..01b00d89a9921
+--- /dev/null
++++ b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+@@ -0,0 +1,187 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/misc/fsl,qoriq-mc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Management Complex
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description: |
++  The Freescale Management Complex (fsl-mc) is a hardware resource
++  manager that manages specialized hardware objects used in
++  network-oriented packet processing applications. After the fsl-mc
++  block is enabled, pools of hardware resources are available, such as
++  queues, buffer pools, I/O interfaces. These resources are building
++  blocks that can be used to create functional hardware objects/devices
++  such as network interfaces, crypto accelerator instances, L2 switches,
++  etc.
++
++  For an overview of the DPAA2 architecture and fsl-mc bus see:
++  Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
++
++  As described in the above overview, all DPAA2 objects in a DPRC share the
++  same hardware "isolation context" and a 10-bit value called an ICID
++  (isolation context id) is expressed by the hardware to identify
++  the requester.
++
++  The generic 'iommus' property is insufficient to describe the relationship
++  between ICIDs and IOMMUs, so an iommu-map property is used to define
++  the set of possible ICIDs under a root DPRC and how they map to
++  an IOMMU.
++
++  For generic IOMMU bindings, see
++  Documentation/devicetree/bindings/iommu/iommu.txt.
++
++  For arm-smmu binding, see:
++  Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
++
++  The MSI writes are accompanied by sideband data which is derived from the ICID.
++  The msi-map property is used to associate the devices with both the ITS
++  controller and the sideband data which accompanies the writes.
++
++  For generic MSI bindings, see
++  Documentation/devicetree/bindings/interrupt-controller/msi.txt.
++
++  For GICv3 and GIC ITS bindings, see:
++  Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml.
++
++properties:
++  compatible:
++    enum:
++      - fsl,qoriq-mc
++    description:
++      Must be "fsl,qoriq-mc".  A Freescale Management Complex
++      compatible with this binding must have Block Revision
++      Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
++      the MC control register region.
++
++  reg:
++    items:
++      - description:
++          the first region is the command portal for the
++          this machine and must always be present
++
++      - description:
++          the second region is the MC control registers. This
++          region may not be present in some scenarios, such
++          as in the device tree presented to a virtual machine.
++
++  ranges:
++    description: |
++      A standard property.  Defines the mapping between the child
++      MC address space and the parent system address space.
++
++      The MC address space is defined by 3 components:
++        <region type> <offset hi> <offset lo>
++
++      Valid values for region type are
++        0x0 - MC portals
++        0x1 - QBMAN portals
++
++  "#address-cells":
++    const: 3
++
++  "#size-cells":
++    const: 1
++
++  iommu-map:
++    description: |
++      Maps an ICID to an IOMMU and associated iommu-specifier
++      data.
++
++      The property is an arbitrary number of tuples of
++      (icid-base,iommu,iommu-base,length).
++
++      Any ICID i in the interval [icid-base, icid-base + length) is
++      associated with the listed IOMMU, with the iommu-specifier
++      (i - icid-base + iommu-base).
++
++  msi-map:
++    description: |
++      Maps an ICID to a GIC ITS and associated msi-specifier
++      data.
++
++      The property is an arbitrary number of tuples of
++      (icid-base,gic-its,msi-base,length).
++
++      Any ICID in the interval [icid-base, icid-base + length) is
++      associated with the listed GIC ITS, with the msi-specifier
++      (i - icid-base + msi-base).
++
++  msi-parent:
++    deprecated: true
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      Describes the MSI controller node handling message
++      interrupts for the MC. When there is no translation
++      between the ICID and deviceID this property can be used
++      to describe the MSI controller used by the devices on the
++      mc-bus.
++      The use of this property for mc-bus is deprecated. Please
++      use msi-map.
++
++  dma-coherent: true
++
++  dpmacs:
++    type: object
++    description:
++      The fsl-mc node may optionally have dpmac sub-nodes that describe
++      the relationship between the Ethernet MACs which belong to the MC
++      and the Ethernet PHYs on the system board.
++
++    properties:
++      "#address-cells":
++        const: 1
++
++      "#size-cells":
++        const: 0
++
++    patternProperties:
++      '^ethernet@[a-f0-9]+$':
++        $ref: /schemas/net/fsl,qoriq-mc-dpmac.yaml
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - ranges
++  - "#address-cells"
++  - "#size-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    fsl-mc@80c000000 {
++        compatible = "fsl,qoriq-mc";
++        reg = <0x0c000000 0x40>,    /* MC portal base */
++              <0x08340000 0x40000>; /* MC control reg */
++        /*
++         * Region type 0x0 - MC portals
++         * Region type 0x1 - QBMAN portals
++         */
++        ranges = <0x0 0x0 0x8 0x0c000000 0x4000000
++                 0x1 0x0 0x8 0x18000000 0x8000000>;
++        
++        /* define map for ICIDs 23-64 */
++        iommu-map = <23 &smmu 23 41>;
++        /* define msi map for ICIDs 23-64 */
++        msi-map = <23 &its 23 41>;
++        #address-cells = <3>;
++        #size-cells = <1>;
++
++        dpmacs {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            ethernet@1 {
++                compatible = "fsl,qoriq-mc-dpmac";
++                reg = <1>;
++                phy-handle = <&mdio0_phy0>;
++            };
++        };
++    };
+diff --git a/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst b/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+index 199647729251e..32ee827a3a2cf 100644
+--- a/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
++++ b/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+@@ -339,7 +339,7 @@ Key functions include:
+   a bind of the root DPRC to the DPRC driver
+ 
+ The binding for the MC-bus device-tree node can be consulted at
+-*Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt*.
++*Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml*.
+ The sysfs bind/unbind interfaces for the MC-bus can be consulted at
+ *Documentation/ABI/testing/sysfs-bus-fsl-mc*.
+ 
+-- 
+2.34.1
 
-> +static const struct scmi_protocol scmi_imx_bbm = {
-> +	.id = SCMI_PROTOCOL_IMX_BBM,
-> +	.owner = THIS_MODULE,
-> +	.instance_init = &scmi_imx_bbm_protocol_init,
-> +	.ops = &scmi_imx_bbm_proto_ops,
-> +	.events = &scmi_imx_bbm_protocol_events,
-> +	.supported_version = SCMI_PROTOCOL_SUPPORTED_VERSION,
-> +	.vendor_id = "NXP",
-> +	.sub_vendor_id = "i.MX95 EVK",
-> +};
-> +
-
-Beside this, LGTM.
-
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-
-Thanks,
-Cristian
