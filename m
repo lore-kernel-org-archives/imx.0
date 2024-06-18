@@ -1,23 +1,23 @@
 Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27916EB4C;
-	Tue, 18 Jun 2024 20:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1C516EBEA;
+	Tue, 18 Jun 2024 20:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718741017; cv=none; b=iB2Uu7vPqN2PDUaqXBvT52GcrszIOeus/R4oXKSQxO/A4o1ygTHU1csExp1pOgu/tq5R7rWAjEViriQuC2uluI7YEBgtU4Ddp28bze9SHb2gCemT0pmKuCfpuZlDMkl213dzzxRBkbqwaDZGi0Lz6WekCFuvRG/zHNnmj1pkDDU=
+	t=1718741164; cv=none; b=Gar+0QK6U0mzdOKY18vhJF79g9KQO2qVHUEy7kTrlGKeON+VqCd45R53oEwQ5oC0bl+SDWx9lNiph1KC627wGiLVbBu77Tfq8riBntSRSgDfBEGgfXOXdu08wI3vXfcnSq09yRtJ+BrPOL13aZV8twXiayjC7hC2XGLQuj2l3I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718741017; c=relaxed/simple;
-	bh=m2eB/dMu1og6DWfAWTWpxsH02qyBitrQbzXdWK0qvfg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AqVReNbmC5gnSMKU4TiFfutAJ+V1scl9gcJiK/AV2juNj7nVuckQ+2/YrO/EW1kotfzUp3q9epCey1gdQ2UCmId2fzBLaBeevPIxBq664jJhYkJ2qnZw9Z/COxTYBsRyfd7940zDC1/Xk17UjBHvU/VFvziJdNP9U1lK35O776Q=
+	s=arc-20240116; t=1718741164; c=relaxed/simple;
+	bh=b9tNdBU4u63N5+KBSfKpC4FnBFwazjgc6z1rS+gjuaY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GscEXXL+LiqssWbRLo5gkONeXt6eVMyjmlGJDiVQ8EYNEW/7t7JuV0e1WfgLTtRow5gKFZJ6U+ZCeGoRoz5AY8HUEqvH7WtlSbJN7HowLqe5uZMTFXM7fhsvf+Zw1MfLNls8fk+EhwGEBOpQDFmOb+l4fWDgqZcbdbjgUlm7HT4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
 	by finn.localdomain with esmtp (Exim 4.95)
 	(envelope-from <tharvey@gateworks.com>)
-	id 1sJf3A-00Cv10-JD;
-	Tue, 18 Jun 2024 20:03:28 +0000
+	id 1sJf5a-00D0Yx-4C;
+	Tue, 18 Jun 2024 20:05:58 +0000
 From: Tim Harvey <tharvey@gateworks.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -31,9 +31,9 @@ To: Rob Herring <robh@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Cc: Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH] arm64: dts: imx8mm-venice-gw700x: add support for PHY LED's
-Date: Tue, 18 Jun 2024 13:02:54 -0700
-Message-Id: <20240618200253.1738876-1-tharvey@gateworks.com>
+Subject: [PATCH] arm64: dts: imx8mp-venice-gw702x: add support for PHY LED's
+Date: Tue, 18 Jun 2024 13:05:52 -0700
+Message-Id: <20240618200551.1740178-1-tharvey@gateworks.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -43,19 +43,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The GW700x SoM has an onboard DP83867 RGMII GbE PHY that drives two
+The GW702x SoM has an onboard DP83867 RGMII GbE PHY that drives two
 LED's (LED1 and LED2, skipping LED0). Add the appropriate dt bindings to
 allow these PHY LED's to be controlled via a netdev trigger.
 
 Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 ---
- .../dts/freescale/imx8mm-venice-gw700x.dtsi   | 20 +++++++++++++++++++
+ .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 20 +++++++++++++++++++
  1 file changed, 20 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
-index de7f67a4ff2a..36803b038cd5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index 560c68e4da6d..6c75a5ecf56b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
 @@ -5,6 +5,7 @@
  
  #include <dt-bindings/gpio/gpio.h>
@@ -64,7 +64,7 @@ index de7f67a4ff2a..36803b038cd5 100644
  #include <dt-bindings/net/ti-dp83867.h>
  
  / {
-@@ -113,6 +114,25 @@ ethphy0: ethernet-phy@0 {
+@@ -102,6 +103,25 @@ ethphy0: ethernet-phy@0 {
  			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
  			tx-fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
  			rx-fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
