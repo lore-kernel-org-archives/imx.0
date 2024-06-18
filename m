@@ -1,160 +1,134 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934DDFC0E
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 06:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D6B288BD;
+	Tue, 18 Jun 2024 06:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718691352; cv=none; b=P7FRfWOt9IQ67MegfBM9ON1hs65GXpV2tC1PN/ZqcNTu5+KwSl+Dcahn9+1XqSiI2tPdpNoYaxgvdwMxGP7aChFECBfKeK5Io9wb+J0Koa1qrKOlcO4bgj3UJkfPmoPojdLYgiw/ARhMZHhmq5q9ygPSjPANMNZdoElJZOaG/t8=
+	t=1718691528; cv=none; b=JRQ071/hexIze4DS3MVXdHLUIJ2sXAxaaBKQknaDoTw6yIVNl438nyGCQ0scqwHP7KOJC45zLR2dmgUiZUVchja9z9nRDEYPEJijkj7e//PAKx6FAVV35Uwq9c4LnlbohlkWS4LbSe0gErOV+GvM/LWI/F3RKgSsmAJq/wJYAFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718691352; c=relaxed/simple;
-	bh=NYu7HmNaUXvKxLQBShfSo7YY2rt3DR0kHagqqDYAtfU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eiCeEAtNwC6/QtmP/5qo9d5WSrQswOXNPucHm4zNCJd3IZjbR4ryQfIUFFA4Ml8FzJzdOLdGyq8gIP4ZOOJAHHoLFQtR6g3/KdJXmgLW0KlHMKt075u7IRSi8iG4uhTrPdYmZPXQ6v6XsO6dgKf4/72Nix89jm2oJCPEpZ59jsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=YoN3t/kY; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=aay66l+r reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1718691528; c=relaxed/simple;
+	bh=B0wwOEW0AXU6v2wfhgxSRvC9Pm9S8DtDCbov3rbAIE8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wl5gfln7xyhaALucIjSqz41sN5yObeUjsESpUYNT8BXQAMxq6w1lMuAhoUyuTttz7jeL1TKdkUzqLBNu4UTwCWsjc0AZ3fSjVR/9PswmRrz6wmpunFFftp1xzMuv2JwnE/oxxqnVs9u3GQIrUYLKesFr1GylaOwT7MRF0MX78R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMcHrDoz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="YoN3t/kY";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="aay66l+r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1718691347; x=1750227347;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=j0CT5+u8v+Tt5ly5F8d6KLAmQFfq4ACni1Ma8+3IMes=;
-  b=YoN3t/kYSdV/TAnOOuJFoPREVrLOtU4a/g46wFWtOz2vnBCQQxewq43Q
-   hYJ+wqKG3njbniRsMRHVysTIj+7WO2NYjAcOT8bB3/ePlCoTkwmuMdPwP
-   UbEqfz3DNnOSCVyXgj3ioCr7I1k8wsRvgnFlZ/7kzK86/QGJg22Zrh03B
-   awBudcGQYFFyW5rqfW4MH9OAwrR3Vqh3C12QhcNPKrXkhvG0k1QzXxRH1
-   OrwBNI2HaPM2jIVT9PJY2AQqCiLEcX5TvBcUi9NIVdsw3/iSP2eFsBUoa
-   tEZDJtl5BWKVffqqURu1eb4GR/55oJhsVPzg40R0q1WL5RME/XsUyB8TV
-   Q==;
-X-CSE-ConnectionGUID: uSJ4tK8CTSuWQAuRdEbI8A==
-X-CSE-MsgGUID: h3c3S3bTTlqWutSMcG/7qw==
-X-IronPort-AV: E=Sophos;i="6.08,246,1712613600"; 
-   d="scan'208";a="37439566"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 18 Jun 2024 08:15:45 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 70990165E7E;
-	Tue, 18 Jun 2024 08:15:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1718691340;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=j0CT5+u8v+Tt5ly5F8d6KLAmQFfq4ACni1Ma8+3IMes=;
-	b=aay66l+rtmKWsmSR8PlojeyltfrnzJEs4Ojsh0PwJU1Qw0Hd5biwloAj5kYTFP2wfInCif
-	BSBRBzYq3NOP+iO3toNNNhJYaV3VHGieJsAvCWePli5t/fhKDFz3A5oj3sZRgVIreHYBxT
-	E6esHFpiFfZyenRu+WLY5jjs/ksYP5Cqng1DVM8nbpIn+asucWmCziml3AG762nLFoaMqf
-	CpXiTMOZ7D/pYCG7+UhbxxcIk0/HU+X/Y5lJ0HEGhX5N4Ys6Vm7jScokiYloabfnjoD96h
-	WKpPjzf/f/cKL7XSca6KYLQZ2e9Wfp9Zfwiom7UOneetaC6M6rR2zjn8LyNrBA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: linux-arm-kernel@lists.infradead.org, Adam Ford <aford173@gmail.com>
-Cc: aford@beaconembedded.com, marex@denx.de, Adam Ford <aford173@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp: Fix pgc_mlmix location
-Date: Tue, 18 Jun 2024 08:15:41 +0200
-Message-ID: <5814494.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240617223952.1899201-1-aford173@gmail.com>
-References: <20240617223952.1899201-1-aford173@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMcHrDoz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D2EC4AF1C;
+	Tue, 18 Jun 2024 06:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718691528;
+	bh=B0wwOEW0AXU6v2wfhgxSRvC9Pm9S8DtDCbov3rbAIE8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WMcHrDozcn9hytSKw6uSppeT3H7hc4riZdfEGhYhpSo+WeitzUleJuc0Aw55UmcQA
+	 uPi8C95012gsfE9xEEO3cXB8G8w8I2WDTLCl5HQL90SudLgHofKEfpKjM3MNUI5DqJ
+	 47gVvWT/8SRwJHDqcaZlH4sQuRewiAEyPH1eTkvW1p9wZhWfISDKA5Xr6QW6TFT3Iq
+	 Cwr0/DVr5uA/u8MpipjFVDKt49ZoJl0PTd0da4KrqKLJvE2AnLFMvWPJur1mth4net
+	 /yags20DbI68J0OmrHexhVw7s9KUDPuqLfleXtQGyhHQEjrP2PMcZ9jKlmEPaflco+
+	 PErYqO2MGv7jQ==
+Message-ID: <fc8a117d-9723-44fe-afa3-f1a5af37a1a6@kernel.org>
+Date: Tue, 18 Jun 2024 08:18:41 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: net: Convert fsl-fman to yaml
+To: Frank Li <Frank.li@nxp.com>
+Cc: Yangbo Lu <yangbo.lu@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson
+ <sean.anderson@seco.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20240614-ls_fman-v1-0-cb33c96dc799@nxp.com>
+ <20240614-ls_fman-v1-2-cb33c96dc799@nxp.com>
+ <a71bf75f-8c2c-44cc-baeb-3feabd1757b9@kernel.org>
+ <ZnB+HtkEh1r8EKG7@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <ZnB+HtkEh1r8EKG7@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Adam,
+On 17/06/2024 20:19, Frank Li wrote:
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  ranges: true
+>>
+>> That's odd. Why do you need ranges without children?
+> 
+> It think it is legacy method in driver.
+> 
+> 	muram_node = of_find_matching_node(fm_node, fman_muram_match);                              
+>         if (!muram_node) {                                                                          
+>                 err = -EINVAL;                                                                      
+>                 dev_err(&of_dev->dev, "%s: could not find MURAM node\n",                            
+>                         __func__);                                                                  
+>                 goto fman_free;                                                                     
+>         }                                                                                           
+>                                                                                                     
+>         err = of_address_to_resource(muram_node, 0,                                                 
+>                                      &fman->dts_params.muram_res);                                  
+>         if (err) {                                                                                  
+>                 of_node_put(muram_node);                                                            
+>                 dev_err(&of_dev->dev, "%s: of_address_to_resource() = %d\n",                        
+>                         __func__, err);                                                             
+>                 goto fman_free;                                                                     
+>         }  
 
-Am Dienstag, 18. Juni 2024, 00:39:51 CEST schrieb Adam Ford:
-> The pgc_mlmix shows a power-domain@24, but the reg value is
-> IMX8MP_POWER_DOMAIN_MLMIX which is set to 4.
->=20
-> The stuff after the @ symbol should match the stuff referenced
-> by 'reg' so reorder the pgc_mlmix so it to appear as power-domain@4.
+And how is this related to ranges?
 
-Taking a look this mismatch seems to be also true for:
-* IMX8MP_POWER_DOMAIN_VPUMIX
-* IMX8MP_POWER_DOMAIN_VPU_G1
-* IMX8MP_POWER_DOMAIN_VPU_G2
-* IMX8MP_POWER_DOMAIN_VPU_VC8000E
+>>
 
-Would you mind fixing them as well?
-
-Despite that, for this patch:
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-Thanks and best regards,
-Alexander
-
-> Fixes: 834464c8504c ("arm64: dts: imx8mp: add mlmix power domain")
-> Fixes: 4bedc468b725 ("arm64: dts: imx8mp: Add NPU Node")
->=20
-> Signed-off-by: Adam Ford <aford173@gmail.com>
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index b92abb5a5c53..3576d2b89b43 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -789,6 +789,23 @@ pgc_usb2_phy: power-domain@3 {
->  						reg =3D <IMX8MP_POWER_DOMAIN_USB2_PHY>;
->  					};
-> =20
-> +					pgc_mlmix: power-domain@4 {
-> +						#power-domain-cells =3D <0>;
-> +						reg =3D <IMX8MP_POWER_DOMAIN_MLMIX>;
-> +						clocks =3D <&clk IMX8MP_CLK_ML_AXI>,
-> +							 <&clk IMX8MP_CLK_ML_AHB>,
-> +							 <&clk IMX8MP_CLK_NPU_ROOT>;
-> +						assigned-clocks =3D <&clk IMX8MP_CLK_ML_CORE>,
-> +								  <&clk IMX8MP_CLK_ML_AXI>,
-> +								  <&clk IMX8MP_CLK_ML_AHB>;
-> +						assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL1_800M>,
-> +									 <&clk IMX8MP_SYS_PLL1_800M>,
-> +									 <&clk IMX8MP_SYS_PLL1_800M>;
-> +						assigned-clock-rates =3D <800000000>,
-> +								       <800000000>,
-> +								       <300000000>;
-> +					};
-> +
->  					pgc_audio: power-domain@5 {
->  						#power-domain-cells =3D <0>;
->  						reg =3D <IMX8MP_POWER_DOMAIN_AUDIOMIX>;
-> @@ -900,23 +917,6 @@ pgc_vpu_vc8000e: power-domain@22 {
->  						reg =3D <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
->  						clocks =3D <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
->  					};
-> -
-> -					pgc_mlmix: power-domain@24 {
-> -						#power-domain-cells =3D <0>;
-> -						reg =3D <IMX8MP_POWER_DOMAIN_MLMIX>;
-> -						clocks =3D <&clk IMX8MP_CLK_ML_AXI>,
-> -							 <&clk IMX8MP_CLK_ML_AHB>,
-> -							 <&clk IMX8MP_CLK_NPU_ROOT>;
-> -						assigned-clocks =3D <&clk IMX8MP_CLK_ML_CORE>,
-> -								  <&clk IMX8MP_CLK_ML_AXI>,
-> -								  <&clk IMX8MP_CLK_ML_AHB>;
-> -						assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL1_800M>,
-> -									 <&clk IMX8MP_SYS_PLL1_800M>,
-> -									 <&clk IMX8MP_SYS_PLL1_800M>;
-> -						assigned-clock-rates =3D <800000000>,
-> -								       <800000000>,
-> -								       <300000000>;
-> -					};
->  				};
->  			};
->  		};
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Best regards,
+Krzysztof
 
