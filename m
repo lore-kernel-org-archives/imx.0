@@ -1,24 +1,24 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3657C208293
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 09:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC09620974A
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 09:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718704441; cv=none; b=fjDPcHlPEKVVz+LVMMTGfRmIkXYf1rJQZEiXvrTNhjh/I02dKxizlyK+/IYoti0jmYoJSOkRsI8FQeqQpY09gmDoEMyVBeeSLVCUxsu4QaWVnv2YDvMjRXdcFkCPmuGTEo2/uuq9mPmPFku1HJARcHqGiQVO94PneBHQxcMkM8k=
+	t=1718704528; cv=none; b=doap/90aqu9//rzqwwPBif3YfNHsfoiBmneI9S/5ga9XmKzX/8yATgExmU/jxARXmBq6Qx+ZEnbNngsGUZmcxkcf+/KRG5xZWE2Q9+cf4+Iu4wE+/cAl5MF+2/XqhE4KOfvN/8zQ3Tf9eDER3hXgYhngfpDm1RIFJr0omPRkKvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718704441; c=relaxed/simple;
-	bh=jka7+eNs+LtSTtXvT+c1nT2l7D0Zs0hCaA+x3srTmYc=;
+	s=arc-20240116; t=1718704528; c=relaxed/simple;
+	bh=CUFBO/w85ZfNhHyUDj48ojyn4AZ07NGXPwsFh+G/1nA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8A84ihXb1coVUvOz/md1IpFD+KUTLGT0D+Lmmd1gBxd2d3YRof3zmdgudimklMuqhOv8PSUv5olNWj1NWurig+391ZxTCIQd4ZZS7doBKreEjNYP536g8DJjQVsEJcYs9yIDNvEzlRCI2rnRNDvbwUP2u06p4bFhH2pHcwQ5AI=
+	 Content-Type:Content-Disposition:In-Reply-To; b=q4LXghQE7+WQKBiTPfjfwsgV2ia1UKrEAfW/tFTugFLRQHpNqhtiKjTjD8lSw/lnm/AKSwLPpQftyFDFjFf0f15Akv/mjAHWgC1mrsDyKrDCOO6Dwo6nKeo7k1HwWfXcsNSHWiso1f6m1549ffYbqDnmxxYxvO8JN50Ferdcmi8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55C55DA7;
-	Tue, 18 Jun 2024 02:54:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3FFBDA7;
+	Tue, 18 Jun 2024 02:55:50 -0700 (PDT)
 Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 942BF3F6A8;
-	Tue, 18 Jun 2024 02:53:56 -0700 (PDT)
-Date: Tue, 18 Jun 2024 10:53:54 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EB8B3F6A8;
+	Tue, 18 Jun 2024 02:55:24 -0700 (PDT)
+Date: Tue, 18 Jun 2024 10:55:21 +0100
 From: Cristian Marussi <cristian.marussi@arm.com>
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>,
@@ -33,10 +33,10 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM module
-Message-ID: <ZnFZMt5Xao1u7Ve-@pluto>
+Subject: Re: [PATCH v4 6/6] firmware: imx: add i.MX95 MISC driver
+Message-ID: <ZnFZiV9JzU_7agjW@pluto>
 References: <20240524-imx95-bbm-misc-v2-v4-0-dc456995d590@nxp.com>
- <20240524-imx95-bbm-misc-v2-v4-5-dc456995d590@nxp.com>
+ <20240524-imx95-bbm-misc-v2-v4-6-dc456995d590@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,156 +45,54 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240524-imx95-bbm-misc-v2-v4-5-dc456995d590@nxp.com>
+In-Reply-To: <20240524-imx95-bbm-misc-v2-v4-6-dc456995d590@nxp.com>
 
-On Fri, May 24, 2024 at 04:56:47PM +0800, Peng Fan (OSS) wrote:
+On Fri, May 24, 2024 at 04:56:48PM +0800, Peng Fan (OSS) wrote:
 > From: Peng Fan <peng.fan@nxp.com>
 > 
-> The BBM module provides RTC and BUTTON feature. To i.MX95, this module
-> is managed by System Manager. Linux could use i.MX SCMI BBM Extension
-> protocol to use RTC and BUTTON feature.
+> The i.MX95 System manager exports SCMI MISC protocol for linux to do
+> various settings, such as set board gpio expander as wakeup source.
 > 
-> This driver is to use SCMI interface to get/set RTC, enable pwrkey.
+> The driver is to add the support.
 > 
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  drivers/firmware/imx/Makefile |   1 +
->  drivers/firmware/imx/sm-bbm.c | 314 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 315 insertions(+)
+>  drivers/firmware/imx/Makefile   |   1 +
+>  drivers/firmware/imx/sm-misc.c  | 108 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/firmware/imx/sm.h |  33 ++++++++++++
+>  3 files changed, 142 insertions(+)
 > 
 > diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
-> index 8f9f04a513a8..fb20e22074e1 100644
+> index fb20e22074e1..cb9c361d9b81 100644
 > --- a/drivers/firmware/imx/Makefile
 > +++ b/drivers/firmware/imx/Makefile
-> @@ -1,3 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0
+> @@ -2,3 +2,4 @@
 >  obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
 >  obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
-> +obj-${CONFIG_IMX_SCMI_BBM_EXT}	+= sm-bbm.o
-> diff --git a/drivers/firmware/imx/sm-bbm.c b/drivers/firmware/imx/sm-bbm.c
+>  obj-${CONFIG_IMX_SCMI_BBM_EXT}	+= sm-bbm.o
+> +obj-${CONFIG_IMX_SCMI_MISC_EXT}	+= sm-misc.o
+> diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
 > new file mode 100644
-> index 000000000000..5e7083bf8fd3
+> index 000000000000..22c1a5819425
 > --- /dev/null
-> +++ b/drivers/firmware/imx/sm-bbm.c
-> @@ -0,0 +1,314 @@
+> +++ b/drivers/firmware/imx/sm-misc.c
+> @@ -0,0 +1,108 @@
 > +// SPDX-License-Identifier: GPL-2.0+
 > +/*
 > + * Copyright 2024 NXP.
 > + */
 > +
-> +#include <linux/input.h>
-> +#include <linux/jiffies.h>
+> +#include <linux/firmware/imx/sm.h>
 > +#include <linux/module.h>
 > +#include <linux/of.h>
 > +#include <linux/platform_device.h>
-> +#include <linux/rtc.h>
 > +#include <linux/scmi_protocol.h>
 > +#include <linux/scmi_imx_protocol.h>
-> +#include <linux/suspend.h>
 > +
-> +#define DEBOUNCE_TIME		30
-> +#define REPEAT_INTERVAL		60
-> +
-> +struct scmi_imx_bbm {
-> +	struct rtc_device *rtc_dev;
-> +	struct scmi_protocol_handle *ph;
-> +	const struct scmi_imx_bbm_proto_ops *ops;
-> +	struct notifier_block nb;
-> +	int keycode;
-> +	int keystate;  /* 1:pressed */
-> +	bool suspended;
-> +	struct delayed_work check_work;
-> +	struct input_dev *input;
-> +};
+> +static const struct scmi_imx_misc_proto_ops *imx_misc_ctrl_ops;
+> +static struct scmi_protocol_handle *ph;
 
-You could pull out the *ops in a global like
-
-static const struct scmi_imx_bbm_proto_ops *bbm_ops;
-
-since the protocol ops handle are always the same you will end up
-overwriting it with the same value if this driver is probed multiple
-times (which is harmless)...you will get anyway a different *ph handle
-to operate on that you are already storing...
-
-..up to you really
-
-> +
-> +static int scmi_imx_bbm_read_time(struct device *dev, struct rtc_time *tm)
-> +{
-> +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
-> +	struct scmi_protocol_handle *ph = bbnsm->ph;
-> +	u64 val;
-> +	int ret;
-> +
-> +	ret = bbnsm->ops->rtc_time_get(ph, 0, &val);
-> +	if (ret)
-> +		dev_err(dev, "%s: %d\n", __func__, ret);
-> +
-
-..so if you fail to get the time via SCMI you just carry on without caring ?
-
-> +	rtc_time64_to_tm(val, tm);
-
-... converting some random val from the stack into tm ?
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int scmi_imx_bbm_set_time(struct device *dev, struct rtc_time *tm)
-> +{
-> +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
-> +	struct scmi_protocol_handle *ph = bbnsm->ph;
-> +	u64 val;
-> +	int ret;
-> +
-> +	val = rtc_tm_to_time64(tm);
-> +
-> +	ret = bbnsm->ops->rtc_time_set(ph, 0, val);
-> +	if (ret)
-> +		dev_err(dev, "%s: %d\n", __func__, ret);
-> +
-
-same here why you dont report any error ?
-
-> +	return 0;
-> +}
-> +
-> +static int scmi_imx_bbm_alarm_irq_enable(struct device *dev, unsigned int enable)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int scmi_imx_bbm_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
-> +{
-> +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
-> +	struct scmi_protocol_handle *ph = bbnsm->ph;
-> +	struct rtc_time *alrm_tm = &alrm->time;
-> +	u64 val;
-> +	int ret;
-> +
-> +	val = rtc_tm_to_time64(alrm_tm);
-> +
-> +	ret = bbnsm->ops->rtc_alarm_set(ph, 0, val);
-> +	if (ret)
-> +		dev_err(dev, "%s: %d\n", __func__, ret);
-> +
-
-same ... 
-
-....mmm... hang on ... this reminds me of something...
-
-https://lore.kernel.org/linux-arm-kernel/ZdjgSxFx9YRP107y@pluto/
-
-...I did exactly the same comments on V1 around these 2 BBM/MISC SCMI
-drivers....but you never replied, addressed or disputed those issues.
-
-You DID address other review/comments in protocols and DT in later
-versions so I suppose you just forget these latter drivers reviewes
-and just rebased on.
-
-So, this review stops here for now, please address or reply to my V1
-concerns on these last 2 BBM/MISC drivers.
+Same comments as n V1 ... please have a look :P
 
 Thanks,
 Cristian
