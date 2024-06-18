@@ -1,114 +1,101 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CD515EFDC
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 10:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C8213D888
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 10:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718706308; cv=none; b=YwaVeyhdGXwbBXFOFcVuwZXSn5UecghNmW1/O6zQsTGISu1r9SPwEE+v7cD1HQ1egbL3Eo4JeTbqy0hjRZllIGKn5Pg6cosAF8xuE5AFDW7pDploeHn1Lk4XnizKE0x4+jly+Y0a4Vqv/leBMHkzX0byg8RKRnt2UXQzclg72Dk=
+	t=1718706372; cv=none; b=TLIKnWTVnnI/gVRw4lqwI4CRnBkRbnvNn9+eN2XWm/k6oYi/AlgcwiP589MoZyK21/9vkbqHYFhpngHrcgL+6eZUOm5PoYz7OvUxrG8pldh54MaCuwgx9YUzWiDqju+3SZaZYqAkTIQaU23wJsbsJiCXXUoUmq3pA0p/gjMwSjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718706308; c=relaxed/simple;
-	bh=LqK8v8L6085Sefypgf1V3diltFl9sECNHVEvbocsyUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLr7DzPlcH1nfknnhaTdajL//Bs7zb6H4+f6Tri7wNuyajx7hT+LVOgnGDy/41b8kFu6UshqfNAvhrnbX5HctxuNNswxRZfyG3oQH4df0ojH4E8NM/JXRXYfWHDPwvg++bb142KDRIhWYohj5Gl2TxHXaWNlLJ/G+1wLa7eGs6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mogFy1uU; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1718706372; c=relaxed/simple;
+	bh=klk6lMXdngCdVEKP7J2KBH6LljlLq0Hco77UGKsQj4g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hs1nR7d81FiguPoykeblEQ1ijWRpJMS/io66s28WEgQtjih5SrzlGgB69pqmYmCIEiGaECOStif5q3+u2CoVmzYKAOo6ot9xNbVVlej1a9XONzcF3SaAcTu31p/NJi+d/o6LToii3dYiAyUrjoQlOK8RHnnjVpTD1ExfCFVtxCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=A0485SaG; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mogFy1uU"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ebe0a81dc8so57704571fa.2
-        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 03:25:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A0485SaG"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ebdfe26217so49724081fa.2
+        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 03:26:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718706304; x=1719311104; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6eO5TUpK8rT/f3c3WcP+sjjePLm+0H56buqyYkDvJss=;
-        b=mogFy1uUTYzDiqezq1rWBF+uzoh8SNDHj9giCaPAnLF4qoWxJD3EaX5ILfEan9mJCB
-         xnX52vky/skcJAvDLLZz5jMhD6tOMHsUjeZPdMO79ANk/s43INhxbrjOJPVh8/03VyWO
-         y82BO18wdonJW6RioZpp0fxGWmJdWnu0sp/5yvUdn7Xi9gWQoB1/MsiRDFrxH3xPBhJe
-         r+8VQ4gm6a4e7FLKIU374yY/rOtr8Ho6FfNjkupR7Q6hbmQZd+2txBC/uSHJ9JnkiV7W
-         DQ+Pg3kK9CdMF/qgSk4FPqZzjpeb0WJBDuYa2yIb2jwNpDCS+h0EfE0oAjwTTmcckbj2
-         ywfA==
+        d=linaro.org; s=google; t=1718706369; x=1719311169; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=klk6lMXdngCdVEKP7J2KBH6LljlLq0Hco77UGKsQj4g=;
+        b=A0485SaGxcozhY7Hps6Gnek4WDlQGySjiF17j85FwtFpy/CzqcmChLCye9XT+aRCbK
+         dFpYkFezYe5nsiOnUmMEp4St6xLSe3C6cQ0a9O9YgVc/4ZKN6xYR9Y5/zSJbMaJLyu//
+         7+u4RlWy987QQ98o627XS7mJSHPXPy5XU1FQbJpSTN4pxkbF25u9esSO3u3cvYA8NG3o
+         Knpjc8WXJc7OSzqecDfpkIVX21jZYUQiDDXoonUGS6tcbWEo0mHAc14EGinwiGntpazz
+         8ianoYS+yaUWb4ZCuhPgbI8tA1BS4nkK1lE5b8A6gLnjljSxwQJa9DMo+LaNIn9uK/bk
+         a2Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718706304; x=1719311104;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6eO5TUpK8rT/f3c3WcP+sjjePLm+0H56buqyYkDvJss=;
-        b=r0fGXYfaJDS7Q37ivypu/ZlFoS+xmNYdP3r2rZWnFqlwU2Sbjin+K+14VOe73aWsIC
-         ixiwWeBmLlqx5HCFXxXi3SEr8djMNs1trThGIEWkmtzUCElvLBKtQ/nHr+uvL9Ei+iH/
-         yQXmEQPlnc3/sd5yUEq/lkX5NFV2LBuismOlME51QTtibW8byeZC03hzxE8tYGHjG6Oq
-         cBdVxctyxNLfzipcI14JRAqTxIbAlPjFkJqC0hytrf+bMXF6z61Ev+MvYCq6e7wvJiOK
-         YmKlnnft2z0M7azfO04UXP9m6Fl3+FUOG2SXgLScAGJAByWJEV11G5BDrHLTWUIs2hFi
-         bEbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUMXfALSTgsjcRAw7sDZUk1iGcLxUXzg1OrIIfhKC/+Fw5mwdUX075E2NDvsEKhks1eQvE2waxWgAsr1nlpqmoR8qoB
-X-Gm-Message-State: AOJu0Yzj/2lzvcYi3lycRZg429xCfX1HuwlhaPaf3RuCgDm8zNkdFv2J
-	qcsHWQ8H0iAMJ/aZdkEZWJL4gXNrTMzOgTGkNBhmPtLbQR9sQzw6/6oevBjWZtg=
-X-Google-Smtp-Source: AGHT+IEiuZRNVMN76y6yOjWtf+3j+4HWW8RylKCvG8GARgK6ahHJIkTtS4MoJIzqIS0COIpvqo83xQ==
-X-Received: by 2002:a2e:9807:0:b0:2eb:d7f0:5edd with SMTP id 38308e7fff4ca-2ec0e5d15femr93327051fa.27.1718706304083;
-        Tue, 18 Jun 2024 03:25:04 -0700 (PDT)
-Received: from linaro.org ([82.79.124.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f641a64bsm185126885e9.46.2024.06.18.03.25.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 03:25:03 -0700 (PDT)
-Date: Tue, 18 Jun 2024 13:25:01 +0300
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
-Message-ID: <ZnFgfbFmHhP7wLPM@linaro.org>
-References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
+        d=1e100.net; s=20230601; t=1718706369; x=1719311169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=klk6lMXdngCdVEKP7J2KBH6LljlLq0Hco77UGKsQj4g=;
+        b=heUXaQSTN7+oRhRKkKDgnngek8zbyPB6UifPKbffOyS07VSBOIran2jZWLizDwvIXR
+         3Xxbv8XkCxEX18A6FdwU3NYlv1TqrXsyOpRJxu8iQxe+gjf92NBjA2h6L0LQ1+X8z+7g
+         DWvYVVCHao83T20P3xcrLuE7S4cZnQlLAVXorfPInI+EmQsxSxWYmIwO/8Xf+xKkEGaW
+         XqAvN7so9GgaVAQCgnmE5usgTJT0fXun0kT/lR4Kc+w9fbKexnIa8gG8Dpi+xy8/vfV2
+         hOcY4IvrqATHtwnY0XpVrqg05OkHaztqI933MgndmCqfwZrNeBtvIIG29ZJarsyFl2V5
+         OtfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCtHG+kxG796YmKlgEJ6SisbOt4u6JB7FPS/nXtQRp9Jhdzjk+oG8JeiAbh2Yt1BbyHJ2EZblqq9JANVzIZJCrXidE
+X-Gm-Message-State: AOJu0YxpTeUTivuHt5StlcoLsMQo370PmcJmN5B+KsaxWL8Q1B93HdSB
+	p69TfIQuTk3ZoaCUI55dycxsmSBogZ1IR9sA78hSyTY4H6wjOjyZU4dl7PD3kfxeEjqHheo2E5q
+	dqbC81UVXZdbBBkHra9wFHssASjgPjesyggP57A==
+X-Google-Smtp-Source: AGHT+IFVnhzqBoiu9GboooE5iY1zi/XLlllZteuuassl+ZmbxgbyJsQPD3pk6oFTjF6bKUOXQjAi+8CRlASoDk+Kx6o=
+X-Received: by 2002:a19:6912:0:b0:52c:99c9:bef6 with SMTP id
+ 2adb3069b0e04-52ca6e5639fmr6700866e87.7.1718706369027; Tue, 18 Jun 2024
+ 03:26:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
+References: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
+In-Reply-To: <20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 18 Jun 2024 12:25:57 +0200
+Message-ID: <CACRpkdZdjL7Z7qY5MTtZZRKQBLWHPKoHKKyoy56mKzZfu=WfPA@mail.gmail.com>
+Subject: Re: [PATCH] soc: add missing MODULE_DESCRIPTION() macros
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 24-06-17 08:58:28, Krzysztof Kozlowski wrote:
-> Emails to Anson Huang bounce:
-> 
->   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
-> 
-> Add IMX platform maintainers for bindings which would become orphaned.
-> 
-> Acked-by: Uwe Kleine-König <ukleinek@kernel.org>
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
-> Acked-by: Peng Fan <peng.fan@nxp.com>
-> Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com> # for I2C
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
- 
-Acked-by: Abel Vesa <abel.vesa@linaro.org>
+On Wed, Jun 12, 2024 at 7:51=E2=80=AFAM Jeff Johnson <quic_jjohnson@quicinc=
+.com> wrote:
+
+> With ARCH=3Dx86, make allmodconfig && make W=3D1 C=3D1 reports:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/imx/soc-imx=
+8m.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4=
+xx-qmgr.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4=
+xx-npe.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/mediatek/mt=
+k-cmdq-helper.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/amlogic/mes=
+on-clk-measure.o
+>
+> Add the missing invocations of the MODULE_DESCRIPTION() macro.
+>
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
