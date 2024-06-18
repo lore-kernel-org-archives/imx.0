@@ -1,44 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B599B158216;
-	Tue, 18 Jun 2024 09:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3657C208293
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 09:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718703871; cv=none; b=RSSlxhVrCXMDy8BQ1JbygOA2qCFUNasTN07dGndqxEdUjZEW37/9LEiMOr1OKz+8d2uiN799QMcCuDvYuvD7teYXjb6rsr+toxhFxQO5x4XYBZSlDyvc1bx1zNezy2mY+Df5O/bwmMB83dYL/hQB/+cOn5Vs8OKlLQ8YivW9HZk=
+	t=1718704441; cv=none; b=fjDPcHlPEKVVz+LVMMTGfRmIkXYf1rJQZEiXvrTNhjh/I02dKxizlyK+/IYoti0jmYoJSOkRsI8FQeqQpY09gmDoEMyVBeeSLVCUxsu4QaWVnv2YDvMjRXdcFkCPmuGTEo2/uuq9mPmPFku1HJARcHqGiQVO94PneBHQxcMkM8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718703871; c=relaxed/simple;
-	bh=3oAxYZunFcgJip6AK4A73PGRCJ7aIiU6dscSL48J7rY=;
+	s=arc-20240116; t=1718704441; c=relaxed/simple;
+	bh=jka7+eNs+LtSTtXvT+c1nT2l7D0Zs0hCaA+x3srTmYc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jSmagKrvY3w5YG5PQVxYWFd5O/q9pWgR4WN3ArVwYtY6JW2cvBb05SQNTpaekypdYwC3uY+k43pG4IzM813CjoNptH1lbGjzgVfrOZTzjnzpYHjZjyvR0TGUE9KBlVwz0Sfvh107IzKFy/WIn2IhiXvydqw3OmqT9n+jyd/ZGdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZTdiwBh; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZTdiwBh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F6AC3277B;
-	Tue, 18 Jun 2024 09:44:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718703871;
-	bh=3oAxYZunFcgJip6AK4A73PGRCJ7aIiU6dscSL48J7rY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lZTdiwBhX+9KSjDhSjnNqL+CrDUhMwCPPBpLP36PtsBK7q2iOrR5ViF+3jku6yg/t
-	 uXc46+MI3Z/s7cd2VtKfwtQU7w/ZcTa2gLR44n8btdWUVD1EW0Qc6cbLBgHIgJv4Mr
-	 8Bf9OxOL9kH6X3E+i96C/xs23kox4bl62v2a46hC2EqWGYXxxnEvff3gJzJiO/3rIA
-	 FDwQpE7jNnt+aJIof4HrtmVDIOkEWO1eT6uYtQwpfSh0uw3FcIx6YpiazJXNtmE8BJ
-	 HGMd4EXJ79ktmuBgko1M4nh8G77tpLnEM1oeCcXsgoGAj9XVTbqEmwUqXbDlbYrB1n
-	 mMf1oT9CpfMSA==
-Date: Tue, 18 Jun 2024 11:44:25 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Rob Herring <robh@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=a8A84ihXb1coVUvOz/md1IpFD+KUTLGT0D+Lmmd1gBxd2d3YRof3zmdgudimklMuqhOv8PSUv5olNWj1NWurig+391ZxTCIQd4ZZS7doBKreEjNYP536g8DJjQVsEJcYs9yIDNvEzlRCI2rnRNDvbwUP2u06p4bFhH2pHcwQ5AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55C55DA7;
+	Tue, 18 Jun 2024 02:54:23 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 942BF3F6A8;
+	Tue, 18 Jun 2024 02:53:56 -0700 (PDT)
+Date: Tue, 18 Jun 2024 10:53:54 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" <linux-ide@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: ata: ahci-fsl-qoriq: convert to yaml
- format
-Message-ID: <ZnFW-d1ktgWTZutZ@ryzen.lan>
-References: <20240617180241.901377-1-Frank.Li@nxp.com>
+	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM module
+Message-ID: <ZnFZMt5Xao1u7Ve-@pluto>
+References: <20240524-imx95-bbm-misc-v2-v4-0-dc456995d590@nxp.com>
+ <20240524-imx95-bbm-misc-v2-v4-5-dc456995d590@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,117 +45,156 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240617180241.901377-1-Frank.Li@nxp.com>
+In-Reply-To: <20240524-imx95-bbm-misc-v2-v4-5-dc456995d590@nxp.com>
 
-On Mon, Jun 17, 2024 at 02:02:40PM -0400, Frank Li wrote:
-> Convert ahci-fsl-qoirq DT binding to yaml format.
+On Fri, May 24, 2024 at 04:56:47PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Additional changes:
-> - Add reg-names list, ahci and sata-ecc
-> - Add fsl,ls1028a-ahci and fsl,lx2060a-ahci
+> The BBM module provides RTC and BUTTON feature. To i.MX95, this module
+> is managed by System Manager. Linux could use i.MX SCMI BBM Extension
+> protocol to use RTC and BUTTON feature.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> This driver is to use SCMI interface to get/set RTC, enable pwrkey.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  .../bindings/ata/ahci-fsl-qoriq.txt           | 21 -------
->  .../devicetree/bindings/ata/fsl,ahci.yaml     | 58 +++++++++++++++++++
->  2 files changed, 58 insertions(+), 21 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt
->  create mode 100644 Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+>  drivers/firmware/imx/Makefile |   1 +
+>  drivers/firmware/imx/sm-bbm.c | 314 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 315 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt b/Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt
-> deleted file mode 100644
-> index 7c3ca0e13de05..0000000000000
-> --- a/Documentation/devicetree/bindings/ata/ahci-fsl-qoriq.txt
-> +++ /dev/null
-> @@ -1,21 +0,0 @@
-> -Binding for Freescale QorIQ AHCI SATA Controller
-> -
-> -Required properties:
-> -  - reg: Physical base address and size of the controller's register area.
-> -  - compatible: Compatibility string. Must be 'fsl,<chip>-ahci', where
-> -    chip could be ls1021a, ls1043a, ls1046a, ls1088a, ls2080a etc.
-> -  - clocks: Input clock specifier. Refer to common clock bindings.
-> -  - interrupts: Interrupt specifier. Refer to interrupt binding.
-> -
-> -Optional properties:
-> -  - dma-coherent: Enable AHCI coherent DMA operation.
-> -  - reg-names: register area names when there are more than 1 register area.
-> -
-> -Examples:
-> -	sata@3200000 {
-> -		compatible = "fsl,ls1021a-ahci";
-> -		reg = <0x0 0x3200000 0x0 0x10000>;
-> -		interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-> -		clocks = <&platform_clk 1>;
-> -		dma-coherent;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
+> index 8f9f04a513a8..fb20e22074e1 100644
+> --- a/drivers/firmware/imx/Makefile
+> +++ b/drivers/firmware/imx/Makefile
+> @@ -1,3 +1,4 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
+>  obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
+> +obj-${CONFIG_IMX_SCMI_BBM_EXT}	+= sm-bbm.o
+> diff --git a/drivers/firmware/imx/sm-bbm.c b/drivers/firmware/imx/sm-bbm.c
 > new file mode 100644
-> index 0000000000000..162b3bb5427ed
+> index 000000000000..5e7083bf8fd3
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> @@ -0,0 +1,58 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/ata/fsl,ahci.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/firmware/imx/sm-bbm.c
+> @@ -0,0 +1,314 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2024 NXP.
+> + */
 > +
-> +title: Freescale QorIQ AHCI SATA Controller
+> +#include <linux/input.h>
+> +#include <linux/jiffies.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/rtc.h>
+> +#include <linux/scmi_protocol.h>
+> +#include <linux/scmi_imx_protocol.h>
+> +#include <linux/suspend.h>
 > +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
+> +#define DEBOUNCE_TIME		30
+> +#define REPEAT_INTERVAL		60
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,ls1021a-ahci
-> +      - fsl,ls1043a-ahci
-> +      - fsl,ls1028a-ahci
-> +      - fsl,ls1088a-ahci
-> +      - fsl,ls2080a-ahci
-> +      - fsl,lx2160a-ahci
-> +
-> +  reg:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  reg-names:
-> +    items:
-> +      - const: ahci
-> +      - const: sata-ecc
-> +    minItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  dma-coherent: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    sata@3200000 {
-> +        compatible = "fsl,ls1021a-ahci";
-> +        reg = <0x3200000 0x10000>;
-> +        interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-> +        clocks = <&platform_clk 1>;
-> +        dma-coherent;
-> +    };
-> -- 
-> 2.34.1
-> 
+> +struct scmi_imx_bbm {
+> +	struct rtc_device *rtc_dev;
+> +	struct scmi_protocol_handle *ph;
+> +	const struct scmi_imx_bbm_proto_ops *ops;
+> +	struct notifier_block nb;
+> +	int keycode;
+> +	int keystate;  /* 1:pressed */
+> +	bool suspended;
+> +	struct delayed_work check_work;
+> +	struct input_dev *input;
+> +};
 
-Applied:
-https://git.kernel.org/pub/scm/linux/kernel/git/libata/linux.git/log/?h=for-6.11
+You could pull out the *ops in a global like
+
+static const struct scmi_imx_bbm_proto_ops *bbm_ops;
+
+since the protocol ops handle are always the same you will end up
+overwriting it with the same value if this driver is probed multiple
+times (which is harmless)...you will get anyway a different *ph handle
+to operate on that you are already storing...
+
+..up to you really
+
+> +
+> +static int scmi_imx_bbm_read_time(struct device *dev, struct rtc_time *tm)
+> +{
+> +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
+> +	struct scmi_protocol_handle *ph = bbnsm->ph;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = bbnsm->ops->rtc_time_get(ph, 0, &val);
+> +	if (ret)
+> +		dev_err(dev, "%s: %d\n", __func__, ret);
+> +
+
+..so if you fail to get the time via SCMI you just carry on without caring ?
+
+> +	rtc_time64_to_tm(val, tm);
+
+... converting some random val from the stack into tm ?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int scmi_imx_bbm_set_time(struct device *dev, struct rtc_time *tm)
+> +{
+> +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
+> +	struct scmi_protocol_handle *ph = bbnsm->ph;
+> +	u64 val;
+> +	int ret;
+> +
+> +	val = rtc_tm_to_time64(tm);
+> +
+> +	ret = bbnsm->ops->rtc_time_set(ph, 0, val);
+> +	if (ret)
+> +		dev_err(dev, "%s: %d\n", __func__, ret);
+> +
+
+same here why you dont report any error ?
+
+> +	return 0;
+> +}
+> +
+> +static int scmi_imx_bbm_alarm_irq_enable(struct device *dev, unsigned int enable)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int scmi_imx_bbm_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
+> +{
+> +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
+> +	struct scmi_protocol_handle *ph = bbnsm->ph;
+> +	struct rtc_time *alrm_tm = &alrm->time;
+> +	u64 val;
+> +	int ret;
+> +
+> +	val = rtc_tm_to_time64(alrm_tm);
+> +
+> +	ret = bbnsm->ops->rtc_alarm_set(ph, 0, val);
+> +	if (ret)
+> +		dev_err(dev, "%s: %d\n", __func__, ret);
+> +
+
+same ... 
+
+....mmm... hang on ... this reminds me of something...
+
+https://lore.kernel.org/linux-arm-kernel/ZdjgSxFx9YRP107y@pluto/
+
+...I did exactly the same comments on V1 around these 2 BBM/MISC SCMI
+drivers....but you never replied, addressed or disputed those issues.
+
+You DID address other review/comments in protocols and DT in later
+versions so I suppose you just forget these latter drivers reviewes
+and just rebased on.
+
+So, this review stops here for now, please address or reply to my V1
+concerns on these last 2 BBM/MISC drivers.
+
+Thanks,
+Cristian
