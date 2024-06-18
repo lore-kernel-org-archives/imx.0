@@ -1,186 +1,75 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66E374BE0
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 16:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376991CAB3
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 17:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718727847; cv=none; b=oBarFappmhOtUQ3hy1d7eSo2XYMwbedqJjONU96+qM6pKxbBZLhEkiuYzyfd9cyQaoJMI/kbTK/jFWqPLwC8nabnAAE8NFBZeK1pymEHEkqP1h7zr21alhurKx0m3IMsQhtj91WBKR4RRiidohtPA0rf4JivOIIoJXX2uVHPkcs=
+	t=1718730400; cv=none; b=ZpneulcMR5V8R5oHMO/XVWY9Wvmsw+c67KnW1rlTMLf0z+ygvzck0CkX2DPXhIU2sXZgBUoNCFwZphG6vx2358NwsdD1HiLj3S6jjFDmczMNQfsnMkBDJqP/nvXrfz/4R29mTm9o1Fkr1me+F5cU/b19IfRz7R3XyDVbIVYtM4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718727847; c=relaxed/simple;
-	bh=iginfQEMH+QiHEvMKEZfi6Hc3mXKOtB6yNGCYGefA3w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fnwMuInSpJ14j3ufYjFfyNozaflWPAp6Bz8BvTlZ/E/3dbhXfdXGeeXi3MYW6nMbm15JsW1AqrwehY0NKH/UcpjQrDEnme3Lu4tLZoJwu36sy8jQeH6TxgtBoz8kIeLWi21z9nNTIZevp/9T+6TDGSC8NY2Nip00QZOwetvbzvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=kzlh4Fpr; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="kzlh4Fpr"
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5b970e90ab8so3213388eaf.3
-        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 09:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1718727844; x=1719332644; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=y2L36ZkKRa2ldLn+cK6LBceBfGVZn+/Ml/80DU+Rz8Y=;
-        b=kzlh4FprW1bd8wNNu0EdggMbHBGiZWA0r0MUpDPjpHSFn4qcXFBP2sFQRMNrBvdHV5
-         4d0R3xxcFO5+D2bVGn9IfPLha95/orqlAYgt3ISF1evsjwmhsBG4iC/CVa2rAt727esa
-         Ni77hduMmfGMOJ3IDFmlsqUs0/LsR4i2/ADWOLMfVNcCrJOu6TMeabwsft0zwN9/l029
-         XL7X+edCqnr2dS7srzdeQHCS4nvGimbwSw+T+Y1/JmkktTuhaajZU5Q8mut+RFGFD5iF
-         PHA8CWTiI0Exsw37lkq+nvClIEgDV4gf0b5O+rBDLrhGUni0RD+2O+Ch6VlM9kfKHIsV
-         c1iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718727844; x=1719332644;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y2L36ZkKRa2ldLn+cK6LBceBfGVZn+/Ml/80DU+Rz8Y=;
-        b=coLycc4ZKuamv6Gt7dVfxBOWEkhVQDftUTssmW2t3N6tb8uDTtoGw0LEQFjE5gODZt
-         XiyaEaeV5bmvQ4e10dYDCegsd07rNLtlz+qCtq6upSCLDrZp1s7Bxy8cA5+rFTG9NTuD
-         KEWv2vCIqD1YVzeQGr8PLJiBIGppOGrHB/INwBDVpUSHxEQIa+mOrYT80oPSNglARP/R
-         ZOd96K+QxfP1cCoK6hVLPQ6s/uKh7SNMmRLR2boLH1syCLpgHmk2yaMIbLsN0gXztI8z
-         bvtX2eZecIkkE2lZeYw3j/BjOUh1v8BaaIqsrCoCDgUwPLkAF2gPZ0vYaN08kiCa40Jq
-         kXaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhOO8NHu0tjteClJ6P3PaxThHEpfqk9rogqA77z2uu+cKh0WC5LMzkNqSu39kFU0WSBXmFJgmr29smTOa+TMmA0Dxj
-X-Gm-Message-State: AOJu0Yxy/UutxgpgbxuUCzo25S+6jzI5NN+x2tOzfxKeTa7L6lgv8TC5
-	swWjzuquDsiXz3uWt+AOtDCrmDns/w7T/T8Q//o2Zk3d3wdesfkArFYmJRrNw4k=
-X-Google-Smtp-Source: AGHT+IFJbrVxZSy5MW1kEWYhiDGt9QvD0Fml+npOhQgHsfa3dm06eYcugngrvjSxbWiA5O9MHgS/Zg==
-X-Received: by 2002:a05:6359:5fa9:b0:1a0:d4b4:5eb5 with SMTP id e5c5f4694b2df-1a1fd59877dmr34733855d.28.1718727844503;
-        Tue, 18 Jun 2024 09:24:04 -0700 (PDT)
-Received: from nicolas-tpx395.lan ([2606:6d00:17:5fb9::7a9])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798abe279c0sm532234285a.110.2024.06.18.09.24.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 09:24:04 -0700 (PDT)
-Message-ID: <036bf0d7f657cae444d20ea6d279b47e3bf0164e.camel@ndufresne.ca>
-Subject: Re: [PATCH] media: videobuf2: sync caches for dmabuf memory
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Tomasz Figa <tfiga@chromium.org>, TaoJiang <tao.jiang_2@nxp.com>
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, shawnguo@kernel.org, 
- robh+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
- eagle.zhou@nxp.com,  ming.qian@oss.nxp.com, imx@lists.linux.dev,
- linux-media@vger.kernel.org,  linux-kernel@vger.kernel.org,
- m.szyprowski@samsung.com, sumit.semwal@linaro.org, 
- christian.koenig@amd.com, dri-devel@lists.freedesktop.org, 
- linaro-mm-sig@lists.linaro.org, Ming Qian <ming.qian@nxp.com>
-Date: Tue, 18 Jun 2024 12:24:03 -0400
-In-Reply-To: <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
-References: <20240618073004.3420436-1-tao.jiang_2@nxp.com>
-	 <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1718730400; c=relaxed/simple;
+	bh=/cGqt0hi46gWUxkv2mtXgQydqEiLLDCK98sOAwQLRTM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V7fnj68Rt2fVBorR/LD5q17Tu3Nbef4k4zkVL93qb0puiYGItCiuiOezAa4oE0Es0xFHYmtmiQDLGIjDsRkpT60aFInBlLEyTIH4WJ85sNhLfdunxN0941kd3kut4CSvv1iNgN6+UKifvJWyGcvLQ5thAoVu/90cqJP2Zl6Jrs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W3Y766kYTz6K6BB;
+	Wed, 19 Jun 2024 01:06:10 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6625D1406AC;
+	Wed, 19 Jun 2024 01:06:28 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 18 Jun
+ 2024 18:06:27 +0100
+Date: Tue, 18 Jun 2024 18:06:27 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+CC: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Frank
+ Li <Frank.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yicong Yang <yangyicong@hisilicon.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <imx@lists.linux.dev>,
+	<kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] perf: add missing MODULE_DESCRIPTION() macros
+Message-ID: <20240618180627.00007668@Huawei.com>
+In-Reply-To: <20240611-md-drivers-perf-v1-1-c001bae6da5c@quicinc.com>
+References: <20240611-md-drivers-perf-v1-1-c001bae6da5c@quicinc.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Le mardi 18 juin 2024 =C3=A0 16:47 +0900, Tomasz Figa a =C3=A9crit=C2=A0:
-> Hi TaoJiang,
->=20
-> On Tue, Jun 18, 2024 at 4:30=E2=80=AFPM TaoJiang <tao.jiang_2@nxp.com> wr=
-ote:
-> >=20
-> > From: Ming Qian <ming.qian@nxp.com>
-> >=20
-> > When the memory type is VB2_MEMORY_DMABUF, the v4l2 device can't know
-> > whether the dma buffer is coherent or synchronized.
-> >=20
-> > The videobuf2-core will skip cache syncs as it think the DMA exporter
-> > should take care of cache syncs
-> >=20
-> > But in fact it's likely that the client doesn't
-> > synchronize the dma buf before qbuf() or after dqbuf(). and it's
-> > difficult to find this type of error directly.
-> >=20
-> > I think it's helpful that videobuf2-core can call
-> > dma_buf_end_cpu_access() and dma_buf_begin_cpu_access() to handle the
-> > cache syncs.
-> >=20
-> > Signed-off-by: Ming Qian <ming.qian@nxp.com>
-> > Signed-off-by: TaoJiang <tao.jiang_2@nxp.com>
-> > ---
-> >  .../media/common/videobuf2/videobuf2-core.c   | 22 +++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
-> >=20
->=20
-> Sorry, that patch is incorrect. I believe you're misunderstanding the
-> way DMA-buf buffers should be managed in the userspace. It's the
-> userspace responsibility to call the DMA_BUF_IOCTL_SYNC ioctl [1] to
-> signal start and end of CPU access to the kernel and imply necessary
-> cache synchronization.
->=20
-> [1] https://docs.kernel.org/driver-api/dma-buf.html#dma-buffer-ioctls
->=20
-> So, really sorry, but it's a NAK.
+On Tue, 11 Jun 2024 11:31:06 -0700
+Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
 
-
-
-This patch *could* make sense if it was inside UVC Driver as an example, as=
- this
-driver can import dmabuf, to CPU memcpy, and does omits the required sync c=
-alls
-(unless that got added recently, I can easily have missed it).
-
-But generally speaking, bracketing all driver with CPU access synchronizati=
-on
-does not make sense indeed, so I second the rejection.
-
-Nicolas
-
->=20
-> Best regards,
-> Tomasz
->=20
-> > diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/=
-media/common/videobuf2/videobuf2-core.c
-> > index 358f1fe42975..4734ff9cf3ce 100644
-> > --- a/drivers/media/common/videobuf2/videobuf2-core.c
-> > +++ b/drivers/media/common/videobuf2/videobuf2-core.c
-> > @@ -340,6 +340,17 @@ static void __vb2_buf_mem_prepare(struct vb2_buffe=
-r *vb)
-> >         vb->synced =3D 1;
-> >         for (plane =3D 0; plane < vb->num_planes; ++plane)
-> >                 call_void_memop(vb, prepare, vb->planes[plane].mem_priv=
-);
-> > +
-> > +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
-> > +               return;
-> > +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
-> > +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
-> > +
-> > +               if (!dbuf)
-> > +                       continue;
-> > +
-> > +               dma_buf_end_cpu_access(dbuf, vb->vb2_queue->dma_dir);
-> > +       }
-> >  }
-> >=20
-> >  /*
-> > @@ -356,6 +367,17 @@ static void __vb2_buf_mem_finish(struct vb2_buffer=
- *vb)
-> >         vb->synced =3D 0;
-> >         for (plane =3D 0; plane < vb->num_planes; ++plane)
-> >                 call_void_memop(vb, finish, vb->planes[plane].mem_priv)=
-;
-> > +
-> > +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
-> > +               return;
-> > +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
-> > +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
-> > +
-> > +               if (!dbuf)
-> > +                       continue;
-> > +
-> > +               dma_buf_begin_cpu_access(dbuf, vb->vb2_queue->dma_dir);
-> > +       }
-> >  }
-> >=20
-> >  /*
-> > --
-> > 2.43.0-rc1
-> >=20
+> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm-ccn.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/fsl_imx8_ddr_perf.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/marvell_cn10k_ddr_pmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/arm_cspmu_module.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/nvidia_cspmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/ampere_cspmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/cxl_pmu.o
+> 
+> Add the missing invocation of the MODULE_DESCRIPTION() macro to all
+> files which have a MODULE_LICENSE().
+> 
+> This includes drivers/perf/hisilicon/hisi_uncore_pmu.c which, although
+> it did not produce a warning with the x86 allmodconfig configuration,
+> may cause this warning with arm64 configurations.
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> # for CXL PMU
 
