@@ -1,111 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20569139588;
-	Tue, 18 Jun 2024 07:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AF813D272
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 07:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718696560; cv=none; b=X0O3dnbwHPHYFWwjZBRKMU5eBUEBerT9y8KfGgvjSNcveNgc8b0cm0fUUP0BEBLorDOdLdEQHDTHaY3XgrjKFxcfadDCU8Dily3sgr9HEgrXdfsClpCuWmVahh7pt/h7R4enBNYc5C4DU8l0fmtFTMH70Og8Y5PNMh8xr+Qs3Rw=
+	t=1718697212; cv=none; b=Xia7+osCQP3dHT/HdyJx2e3p4M8IT+4QLlb7oicsReUozRxOSmL9OF6O9qLWh1dm+Mi07GyEG0V5k14C7FmZmC69+W9xwq2NBBNYpYR4QbJooNGxBhMf6v9HtkbiNfIILaRtVv1SAHxgWMjO44Gl1uNSocU8kB8y1LBAqveljHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718696560; c=relaxed/simple;
-	bh=xblx0jLMc0mKBqKqru0UvnYkkN9m3GEewo6EDQw+eYM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dKC1d6Co9hL2nhKmmHCid9hZya1GMM1FLwOHLm+8GfYhk60fzaBaEVSvds+YoBuUk7m7RWikLkesshuxIPzVMDJrrOsNb0xteruX5y1Qd9S0z2JffJL/uqNj4mEohTCAObKgXu+p9lvUyYqv+V64D3ffFZ6Tvx7taFAK5ATeiPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mpmxQMI1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718697212; c=relaxed/simple;
+	bh=+i2usPNZNgsyG7GktfYMCH5Ks0ugtDc9juyqEc/9YzU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qMyDArWSRTrjmPkVzhX+Li+TvZBBU/Yz0fu0A1zgVLLmE886+GjnsG5voLjajEvA1iaH4JReWrikNi4mo2usaZ53pVLYkILyoUKsRp5bZ/Uxwt0fwPr7d7lZM3fna8gBaOOv+0nfmvoi1cI6JvEhCB1eNoGsubqq4rENGXRgUcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fm/B5zOh; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mpmxQMI1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BF4C3277B;
-	Tue, 18 Jun 2024 07:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718696559;
-	bh=xblx0jLMc0mKBqKqru0UvnYkkN9m3GEewo6EDQw+eYM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mpmxQMI1bmrv86NnpJIey63icRsZ3lAABTR/SyThGtP3Gg6Rdw2J8IuAY1ZFXJPSE
-	 auJc+YESAsOXU5Ew5X2OLeGSgp/NHil+PngACAZhCG+ElBeiANrCXS+7eqPi7xoXqn
-	 3g3O3wI3BXQiWchI3WkkU2FxExcKVhpHabVzQMuv2Mfu2/GMG075b5I99FhThD31Ce
-	 kh+ea1AbZ7nvWWgGeGVWtGdeKIsmUJ51RG9XYDTSV5IfT8ZnoogkTpQpunaTjCSFL8
-	 R9eRxBGxjey4hxNOxOhcaeogDl26Fztxz7+9BWvAdXycflJaw7xKtYwnbqGEp6RINt
-	 EPG6o/FuQhrdQ==
-Message-ID: <98cb57d6-bf2f-4383-9354-b1d32cd3646d@kernel.org>
-Date: Tue, 18 Jun 2024 09:42:33 +0200
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fm/B5zOh"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57cc1c00b97so3894954a12.0
+        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 00:53:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1718697209; x=1719302009; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sCxa0N6a/etTSTm358fxjAycnT2MNf/L62aewqr2SjQ=;
+        b=fm/B5zOhASK1m9wC57XwKoaGgG7KFJKpBlyMFVvKoakbVkRZ1r4BJ068G2PAIlTSxe
+         xHc3FyrBsJpc58VMthWB5I9nW+PdHy876RAWzimvj8UcSmVQRssCDPnYYWtt2WhZ0xB4
+         2oJiG9CAqxRTw+AUPl3CxdNDTYo9A0g3rkvT4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718697209; x=1719302009;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sCxa0N6a/etTSTm358fxjAycnT2MNf/L62aewqr2SjQ=;
+        b=HXl5WNs1WwKWB6+vxFOqCUt+IoimRYYSkUepgkNHBvdaC8gXzkYCafxDrZx2a/uq78
+         TYtwf6C+HYVL9Xdij8bOI3HjWYemrllYYFznc6zjI+SH1dtOyjLASqddGa48u7n1TmkQ
+         X1D9+BT5HIgCgLJ0x8AZQEJVF24COO/rtPhRi89l9I/kvf3bs+WVT85+KCRiciKQQGBE
+         rxX/KGc/pZ4JtUufPLFeeedsnjnIeTVvfN9lcOe8IRa1pJCht/nd8GxpIcQj6q8NNOCn
+         5cmwsioLbJLQzVSwa2E/a55zdlWOfdrjKQicU6sSu1YhUSiKHaaNTuCLb4ghzcDlmjwY
+         pXzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmRe7bN2KuyfHQ+dXft9FCVZoeHzMRUgWsMQuEoMPpNjSeHmiPjFDQBtF/pnr4iALxHJF+8D72hw2UrNa9z+MQ5C/g
+X-Gm-Message-State: AOJu0YzxebP0DVgQpMhgPs5o5dfLsAtoGgj+SZ4eTsC3VKuCUZX60pN4
+	u3mS0Yfk01S0NBAqhA7t16/Wq3I5pGu6soFsKy7vLCtEoe0QHsD9mXCnFcikVVBwGoqzqVomJts
+	5ABjC
+X-Google-Smtp-Source: AGHT+IHvRSN87Hup4Kx8LZk4yKsXY7c8bQoYwRpzd4tz/xlAh22LrHmCgadnwwWoU0bmiIMYQCgwNA==
+X-Received: by 2002:a50:9348:0:b0:57c:73a7:da08 with SMTP id 4fb4d7f45d1cf-57cbd67e4ebmr7843817a12.21.1718697209041;
+        Tue, 18 Jun 2024 00:53:29 -0700 (PDT)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72da069sm7410175a12.21.2024.06.18.00.53.28
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jun 2024 00:53:28 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4217d808034so45817275e9.3
+        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 00:53:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVl3h5fPD6legmujnxeE0DKp5uTYxbbPBEODXswLlezUAcgHxJhwesZlFp/SrdsI8hDTYa60GfDXQbYBPqfQJzal0If
+X-Received: by 2002:a17:906:ca0d:b0:a6f:fbc:b3f3 with SMTP id
+ a640c23a62f3a-a6f60dc89cbmr680235166b.47.1718696899670; Tue, 18 Jun 2024
+ 00:48:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: ata: ahci-fsl-qoriq: convert to yaml
- format
-To: Frank Li <Frank.Li@nxp.com>, Damien Le Moal <dlemoal@kernel.org>,
- Niklas Cassel <cassel@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)"
- <linux-ide@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240617180241.901377-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240617180241.901377-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240618073004.3420436-1-tao.jiang_2@nxp.com>
+In-Reply-To: <20240618073004.3420436-1-tao.jiang_2@nxp.com>
+From: Tomasz Figa <tfiga@chromium.org>
+Date: Tue, 18 Jun 2024 16:47:45 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
+Message-ID: <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
+Subject: Re: [PATCH] media: videobuf2: sync caches for dmabuf memory
+To: TaoJiang <tao.jiang_2@nxp.com>
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca, 
+	shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com, 
+	xiahong.bao@nxp.com, eagle.zhou@nxp.com, ming.qian@oss.nxp.com, 
+	imx@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, m.szyprowski@samsung.com, 
+	sumit.semwal@linaro.org, christian.koenig@amd.com, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	Ming Qian <ming.qian@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 17/06/2024 20:02, Frank Li wrote:
-> Convert ahci-fsl-qoirq DT binding to yaml format.
-> 
-> Additional changes:
-> - Add reg-names list, ahci and sata-ecc
-> - Add fsl,ls1028a-ahci and fsl,lx2060a-ahci
-> 
+Hi TaoJiang,
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Tue, Jun 18, 2024 at 4:30=E2=80=AFPM TaoJiang <tao.jiang_2@nxp.com> wrot=
+e:
+>
+> From: Ming Qian <ming.qian@nxp.com>
+>
+> When the memory type is VB2_MEMORY_DMABUF, the v4l2 device can't know
+> whether the dma buffer is coherent or synchronized.
+>
+> The videobuf2-core will skip cache syncs as it think the DMA exporter
+> should take care of cache syncs
+>
+> But in fact it's likely that the client doesn't
+> synchronize the dma buf before qbuf() or after dqbuf(). and it's
+> difficult to find this type of error directly.
+>
+> I think it's helpful that videobuf2-core can call
+> dma_buf_end_cpu_access() and dma_buf_begin_cpu_access() to handle the
+> cache syncs.
+>
+> Signed-off-by: Ming Qian <ming.qian@nxp.com>
+> Signed-off-by: TaoJiang <tao.jiang_2@nxp.com>
+> ---
+>  .../media/common/videobuf2/videobuf2-core.c   | 22 +++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>
+
+Sorry, that patch is incorrect. I believe you're misunderstanding the
+way DMA-buf buffers should be managed in the userspace. It's the
+userspace responsibility to call the DMA_BUF_IOCTL_SYNC ioctl [1] to
+signal start and end of CPU access to the kernel and imply necessary
+cache synchronization.
+
+[1] https://docs.kernel.org/driver-api/dma-buf.html#dma-buffer-ioctls
+
+So, really sorry, but it's a NAK.
 
 Best regards,
-Krzysztof
+Tomasz
 
+> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/me=
+dia/common/videobuf2/videobuf2-core.c
+> index 358f1fe42975..4734ff9cf3ce 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-core.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
+> @@ -340,6 +340,17 @@ static void __vb2_buf_mem_prepare(struct vb2_buffer =
+*vb)
+>         vb->synced =3D 1;
+>         for (plane =3D 0; plane < vb->num_planes; ++plane)
+>                 call_void_memop(vb, prepare, vb->planes[plane].mem_priv);
+> +
+> +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
+> +               return;
+> +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
+> +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
+> +
+> +               if (!dbuf)
+> +                       continue;
+> +
+> +               dma_buf_end_cpu_access(dbuf, vb->vb2_queue->dma_dir);
+> +       }
+>  }
+>
+>  /*
+> @@ -356,6 +367,17 @@ static void __vb2_buf_mem_finish(struct vb2_buffer *=
+vb)
+>         vb->synced =3D 0;
+>         for (plane =3D 0; plane < vb->num_planes; ++plane)
+>                 call_void_memop(vb, finish, vb->planes[plane].mem_priv);
+> +
+> +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
+> +               return;
+> +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
+> +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
+> +
+> +               if (!dbuf)
+> +                       continue;
+> +
+> +               dma_buf_begin_cpu_access(dbuf, vb->vb2_queue->dma_dir);
+> +       }
+>  }
+>
+>  /*
+> --
+> 2.43.0-rc1
+>
