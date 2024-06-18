@@ -1,99 +1,166 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C671F19F467
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 11:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF4D2139A0
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 11:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718709160; cv=none; b=WR1rZQDwCVQd3eEZSXinvcMJ+XK30l+68AuaYmk+OuKfDnGJEROIqV9/3XZr1M7+Jv9azxt1trU33GrpiEXtv6OXV3SOSrGfaTKdthBWP509L3JNsCTUhGkTRw32LhUXufXsFbqJxuADh2IglJa1ckTuTUtGOGM2bj66XIycbEM=
+	t=1718709639; cv=none; b=EFkPPgoRJUvjwT+g1aq1uD6E9H5hT3Aspkfn2J3N35g4oEP3QkQV5F1+hW3XJ2yqfzyx5fbpaCtnk3TN+CPDbKg08nucNw45fIgwoo125gWVaXFq4/7gyqiae7U0RLdYcG0VJa1uWVuKn6DcDgyU/flMM2tACfvGg0CmQOsujS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718709160; c=relaxed/simple;
-	bh=LytFF4Umh3FGe2BHoZB/hPX8STy/rMVhd/DWw4ViV9Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B18YgHvIsWh0XZ5VWByC6tELQWElJQ1gnUBiXKuVSGYrl+CYl6DLcUPJNGiuJ7lRBAk/WsaLkHwFl5yJ9FyLSPfVztoKuu8QAQqsj+xs9eHYBH2ww5Wp7QTEOYvm6DQplqNctmoNKid/WWkJ3zA92xrY8bdZm7NXaYs9HFnonrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tJtGY/Da; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718709639; c=relaxed/simple;
+	bh=IvE5FbcVI2pegd79JZlj+/QWHfl7QdtfKBA9OVblIcs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oBNP8XBUkOGQk/wG/lRY72l26iR0DMPtTxJWGUIqw2gBRyS+oIpu+tqk/+IMBQCg8KwuBxMzXj1HK5DRHXg58lm7fsjXJ5fz4vijmeWGNMVKNJQqXkQ5UOYGzDTkycyjsxeaVawN1Q6UZO6Gm3VAMlAxo/qrP1eQPNZ5XpX5Zho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=yjVZOyq/; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tJtGY/Da"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52c85a7f834so6816750e87.0
-        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 04:12:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718709157; x=1719313957; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LytFF4Umh3FGe2BHoZB/hPX8STy/rMVhd/DWw4ViV9Q=;
-        b=tJtGY/Dax/yHQRSFXQcDd6mlHCMhqHcb9+xLtMXYmeWnZlWmWgDQf0m2qF3iu72HaS
-         Uja+INmTFt0Z79J/2VGDyNsRWAZklOnfgUSKsoRo/lzoLqlePbY7BTZkPuX8QMSfKt2B
-         hQamI0yEpy8nb2RwoV4CEZ8MiLffmDesDRuW854oz9TCCySfz6uW+7Bt07ms2HSttvwG
-         C05yEHRgoRUnFK1yivEbAtCF7n3Uro1Ao6CSaeouHnpjCVFe6e1OwVYMaZ8PgTbnDwkY
-         iExjlWvmwsG3JwTXivVYJKxWwuyCGJ4ntFOv+EBUiGsNYBrRB/R9CtWSk/EhnW8rF/LY
-         JWng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718709157; x=1719313957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LytFF4Umh3FGe2BHoZB/hPX8STy/rMVhd/DWw4ViV9Q=;
-        b=NRXW6fxtUWiHWHTHZ2YA3UOsfEaqYuTVdWqugOKrbnNHT2zy/VPe9kd1ReDrOfuqtO
-         MQ82WzpxyAYFUP7vTPbKM/5ai3doBAf/2dVGK1FABlQZHDYjBcKeAXXZIe0cMBBULV4n
-         mowmZd6u6iqFCj2D5nbmybcnpPpn++mFHHwDYpyGsocTyc22wuRGZYBDqbRCQbejRcWS
-         j5mTfv9evFX51xcVNMcku/1VIfSUJOrcnrYAxCUZF7UjD2K3EW0RIfh54vXLjSIP/7AK
-         nAQdK5Nj9i3SzOPZmR1/VzK9Mn2rL1naXfInNkTZWA2oM9kVnMAoeI6iP5z8yklmfCRT
-         WQ6w==
-X-Forwarded-Encrypted: i=1; AJvYcCXqhBGzt9rWSKX5zXqDMnreALmP4ACZ9zsqgvzE1OxDLnj7vUUFImiYlzmDQfmZhDuqoKjOHGejhRng1s2Gzhc1SBig
-X-Gm-Message-State: AOJu0Ywkj/AzrWfBgKgKt6ah6JguKlxJHr/iHdhDmCnqDj9vkeRN4AGz
-	YRox3j3yZep3NgnlwCJ+4CrRndLYRHrqMkqW+VVdy/rWioVnIax9JJBW7/fbEAKyy99spfsPuoP
-	TYXgTKcGCIgKfp+RADRIQeftnLfPAp/AN551DEw==
-X-Google-Smtp-Source: AGHT+IFCeIOoRy25rTwUHZ/n6vBdkCPzCkJ8a//pB4Qa6c+3jDe2XeC/62v2ldwWc8Yh5JI+ho23V5WmsKqsRfZrbxc=
-X-Received: by 2002:ac2:5307:0:b0:52c:998a:77ba with SMTP id
- 2adb3069b0e04-52ca6e6e5f2mr6662065e87.36.1718709157060; Tue, 18 Jun 2024
- 04:12:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="yjVZOyq/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1718709636; x=1750245636;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IvE5FbcVI2pegd79JZlj+/QWHfl7QdtfKBA9OVblIcs=;
+  b=yjVZOyq/eIiI3pOihEQXP8AoQWsCJLf56ZxpbeJGWeWph6xBoMlXbpVd
+   mrRsl8sOgPwWeMKMExWac7L8wgd86tAilo37TEpK5Nqj5s3lCagPrbUAO
+   845yi5GimkPXu4sjwb5rjWFirg29AonCz7und5z/yYG9i09z6xETzFbZ3
+   kZEqZxlbfN8427ZuUhXMZiaoK/njyj/kfQxmEog0bR/l10g351kkS9Z9r
+   xkd5R+FuOuQ1myMb9RDm+w09jLqC8aSd/HnFCRcFwDm/TcDwSm9l4VVB5
+   d4PXEpRsBza3T/CsfCFdo9ZF9PUimEcpITnITTMolsDp8h2kQPm0wsQez
+   g==;
+X-CSE-ConnectionGUID: PuOaNyA3Q265D/HqhrKrgA==
+X-CSE-MsgGUID: hEgZvK9yRJyHfODyuYnfPw==
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
+   d="asc'?scan'208";a="30534875"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Jun 2024 04:20:34 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 18 Jun 2024 04:20:14 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 18 Jun 2024 04:20:11 -0700
+Date: Tue, 18 Jun 2024 12:19:53 +0100
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+CC: Conor Dooley <conor@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [EXT] Re: [PATCH v3 2/5] dt-bindings: arm: fsl: add imx-se-fw
+ binding doc
+Message-ID: <20240618-antonym-tabloid-8f721ee752a5@wendy>
+References: <20240617-imx-se-if-v3-0-a7d28dea5c4a@nxp.com>
+ <20240617-imx-se-if-v3-2-a7d28dea5c4a@nxp.com>
+ <20240617-control-calamari-317f59c4eb09@spud>
+ <AM9PR04MB86049915593D86599C67975F95CE2@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240617-review-v3-0-88d1338c4cca@baylibre.com> <20240617-review-v3-35-88d1338c4cca@baylibre.com>
-In-Reply-To: <20240617-review-v3-35-88d1338c4cca@baylibre.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 18 Jun 2024 13:12:26 +0200
-Message-ID: <CACRpkdYchu+muvbinPpUFvppMMQCFe9zTcApj46ip4PYUGUhVg@mail.gmail.com>
-Subject: Re: [PATCH v3 35/41] iio: pressure: bmp280-core: make use of regmap_clear_bits()
-To: Trevor Gamblin <tgamblin@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Dmitry Rokosov <ddrokosov@sberdevices.ru>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Cosmin Tanislav <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>, 
-	Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Saravanan Sekar <sravanhome@gmail.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Crt Mori <cmo@melexis.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="+fn5GsXAWL169s6l"
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB86049915593D86599C67975F95CE2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+
+--+fn5GsXAWL169s6l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 17, 2024 at 3:51=E2=80=AFPM Trevor Gamblin <tgamblin@baylibre.c=
-om> wrote:
+On Tue, Jun 18, 2024 at 10:58:47AM +0000, Pankaj Gupta wrote:
+> > From: Conor Dooley <conor@kernel.org>
+> > On Mon, Jun 17, 2024 at 12:59:40PM +0530, Pankaj Gupta wrote:
+> > > The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
+> > > creates an embedded secure enclave within the SoC boundary to enable
+> > > features like:
+> > > - HSM
+> > > - SHE
+> > > - V2X
+> > >
+> > > Secure-Enclave(s) communication interface are typically via message
+> > > unit, i.e., based on mailbox linux kernel driver. This driver enables
+> > > communication ensuring well defined message sequence protocol between
+> > > Application Core and enclave's firmware.
+> > >
+> > > Driver configures multiple misc-device on the MU, for multiple
+> > > user-space applications, to be able to communicate over single MU.
+> > >
+> > > It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+> > >
+> > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 160
+> > +++++++++++++++++++++
+> > >  1 file changed, 160 insertions(+)
+> > >
+> > > diff --git
+> > > a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> > > b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> > > new file mode 100644
+> > > index 000000000000..60ad1c4a3dfa
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> > > @@ -0,0 +1,160 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
+> > > +
+> > > +maintainers:
+> > > +  - Pankaj Gupta <pankaj.gupta@nxp.com>
+> > > +
+> > > +description: |
+> > > +  NXP's SoC may contain one or multiple embedded secure-enclave HW
+> > > +  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
+> > > +  enables features like
+> > > +    - Hardware Security Module (HSM),
+> > > +    - Security Hardware Extension (SHE), and
+> > > +    - Vehicular to Anything (V2X)
+> > > +
+> > > +  Communication interface to the secure-enclaves is based on the
+> > > + messaging unit(s).
+> > > +
+> > > +properties:
+> > > +  $nodename:
+> > > +    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
+> >=20
+> > Just "firmware@<hex>" please.
+> >=20
+>=20
+> Modified as per your suggestion,=20
+> -    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
+> +    pattern: "^[0-9a-z]*-if@<hex>"
 
-> Instead of using regmap_update_bits() and passing val =3D 0, use
-> regmap_clear_bits().
->
-> Suggested-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Firstly, that's not even what I said verbatim, which I could
+understand. <hex> isn't even a valid bit of regex for this.=20
+What I want to see is something like: "^firmware@[0-9a-f]+$"
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+--+fn5GsXAWL169s6l
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Yours,
-Linus Walleij
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnFtWQAKCRB4tDGHoIJi
+0miHAQDK5urm/jbXpXfJfqOdk/VRtRlPzLTUy47n0dGXRTwoqQD/TpLFsHuOmXDR
+ImC+g+nyDCS4DQIZFnikdx8el2/ZSw0=
+=6dVg
+-----END PGP SIGNATURE-----
+
+--+fn5GsXAWL169s6l--
