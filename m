@@ -1,237 +1,186 @@
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2085.outbound.protection.outlook.com [40.107.6.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409514D58A
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 15:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718723590; cv=fail; b=LzyUwdy4mVkPAZovFhtBd2c3BglGfC5Peii/shd0LEPtgyWtZlouOM5EMXPukvZdrSQnvukSGYphu++8gBw6TBCwMmaZ1iw9HaIia2ounoY5QJbQD4udY7EJ9Rv5ToZJjRufkkoQFCSsv2dY91gRM874EmANGm7FiUGP5THDyyQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718723590; c=relaxed/simple;
-	bh=zUu7GVI5PBIKyRZFP4OtkKKLDThNdGuQyQ2sKF8YH04=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=e0G0xG7eirp6XIPoOBQoqhxs54/gt9h0re9WeT+vy0UTvAtTS8Su1Vo1wO3mr2apFmC72Hwr75vuilyqWYn0SdLE+0nTbVWvglL2VPl6ByUVU2uBTlMwYw3rdoM2+9pXIr1XLpMRqoBL29gmgxj6k7C81oEhfdAgRvdRGG8pJUg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=P4kDpNwW; arc=fail smtp.client-ip=40.107.6.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66E374BE0
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 16:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718727847; cv=none; b=oBarFappmhOtUQ3hy1d7eSo2XYMwbedqJjONU96+qM6pKxbBZLhEkiuYzyfd9cyQaoJMI/kbTK/jFWqPLwC8nabnAAE8NFBZeK1pymEHEkqP1h7zr21alhurKx0m3IMsQhtj91WBKR4RRiidohtPA0rf4JivOIIoJXX2uVHPkcs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718727847; c=relaxed/simple;
+	bh=iginfQEMH+QiHEvMKEZfi6Hc3mXKOtB6yNGCYGefA3w=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fnwMuInSpJ14j3ufYjFfyNozaflWPAp6Bz8BvTlZ/E/3dbhXfdXGeeXi3MYW6nMbm15JsW1AqrwehY0NKH/UcpjQrDEnme3Lu4tLZoJwu36sy8jQeH6TxgtBoz8kIeLWi21z9nNTIZevp/9T+6TDGSC8NY2Nip00QZOwetvbzvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=kzlh4Fpr; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="P4kDpNwW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GpHYHJq89ParnLivB5Kg9gNmo+hwryVFVpd75oPsLDwWCvtO4sPpD6ReeJv9LBQ2rWiFlSg5uFaQjEqQ0kFDrtw+GBzmxc1MUPv++N/aoxr1QLWwhwrArGGgh8DlEhEHM7AWuA9Ew5sfQYGtAx8xkOVAf8qV3x5Hxh12rE3AoaED9aHL/M9yq14s49+kFLGcIW9Cp3qRO3YqdR4jlo4lX6DXSS4HhKW+9cZKN0JAQOpWdA5X8ePc75zBjI9dutpq0ge9EfzKbKZFt+rq2nI4TLsd3uTgeqLt4n00vTybGuQ25kqL1nuSTdksBRxGooHhmCrf8ZwWsANXypEN0w9rZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gr5jB4FBNzKsSRpXIJjNCoMukhYMPPNAIVUHvJzKIyg=;
- b=DYY5BjvgvxcGi6MAc4ciE82mbw7LD65ZlVdMou36lzsRukzhHy0rUJbegPAQ1iAbCjH6KzGIKjH2k+9pm1ShxddRcsG2pT6kBSxw2QJZF+ie4Szx04t1PW5aJRsf35/QknYQ1tXcejJ3l3STkK9MNNPU1wtX4LxPetATJ5g/tjl5CXkjDcVQnQVDtBj9wE/4yb90g38ptjU6aQlx3dJNpqfmHEXCpEzo0miy2SEIuhd914YTNRw2xkMxBMPRajsEtxz53WEBmOlJyEM+7rWngvMo+UyKapQdIJ4t5fOpHE3nkIu5JnlQAK+kvaz/luIIGtu5tdxC5y/sURqO+zYYDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gr5jB4FBNzKsSRpXIJjNCoMukhYMPPNAIVUHvJzKIyg=;
- b=P4kDpNwWlBCaBYOGTz+31VBA0C3GapImclnhmR8vZWhP+ViKv6ERvbc/8Voe70fSvNLgUdHLRfaNLwcksZIkE2rtuxBzBEfo7ZroabBM2PQh7Z3Y33IvtNnmZnVQqvyixCV65SKbMh9rf9kgXfyKyN2Rd0OBi0fTbXlKGARPhYE=
-Received: from AM6PR04MB5941.eurprd04.prod.outlook.com (2603:10a6:20b:9e::16)
- by VI0PR04MB10637.eurprd04.prod.outlook.com (2603:10a6:800:25f::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Tue, 18 Jun
- 2024 15:13:05 +0000
-Received: from AM6PR04MB5941.eurprd04.prod.outlook.com
- ([fe80::9f4e:b695:f5f0:5256]) by AM6PR04MB5941.eurprd04.prod.outlook.com
- ([fe80::9f4e:b695:f5f0:5256%5]) with mapi id 15.20.7677.030; Tue, 18 Jun 2024
- 15:13:04 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Jassi Brar
-	<jassisinghbrar@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-CC: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH] mailbox: imx: fix TXDB_V2 channel race condition
-Thread-Topic: [PATCH] mailbox: imx: fix TXDB_V2 channel race condition
-Thread-Index: AQHara6pB5d0fDZleUSTT4bcpXDYYLHNyHvg
-Date: Tue, 18 Jun 2024 15:13:04 +0000
-Message-ID:
- <AM6PR04MB5941581D46DA309123EE528888CE2@AM6PR04MB5941.eurprd04.prod.outlook.com>
-References: <20240524075632.1009044-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20240524075632.1009044-1-peng.fan@oss.nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB5941:EE_|VI0PR04MB10637:EE_
-x-ms-office365-filtering-correlation-id: 84c3e3d9-4044-402d-b448-08dc8fa9271b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230037|376011|366013|1800799021|38070700015;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?U82zqxSgF565srM5Db9gtOxx+6fMTUixWlX+1yY+d1ZQEC94aD1JmSoN6ecE?=
- =?us-ascii?Q?omX1lSXgNnYoj1DHy4I8awguOEC/T/LPNF88PAHJjDnCr51qndmsmS6xsLV4?=
- =?us-ascii?Q?/Yqggx4VIYNBpV0FQ8TMVQfTRbiRv17mwxxVB6I5laEhlq3mv2CXBa/Ys337?=
- =?us-ascii?Q?PRvLGNK4rfWPOuNvUKwWriWGooe3lyvk0hMnF/3cq6x4D4gQVFLhp+N5AKNZ?=
- =?us-ascii?Q?9itzzUTeabwm6MoZMWNOMXbHN3Bx0xWIpHElJ0SDtq7clYX+4ghnVr8RGUxl?=
- =?us-ascii?Q?dlnv0Q6ttJ3lCxc3t2BcJK2HkrRmE28CNkPhb1Lv2ZoXO8QjNFxK89ikv1M9?=
- =?us-ascii?Q?n6QnuEytkK+izUtq0SKm7ZyJ4KeYE53uFahjvk7EaghyoT7zujXFMwLqsycQ?=
- =?us-ascii?Q?2l1uXYjlGrrMRXFZTJcjyH42JFTvgBte6GfjX1Hw0Z9UGM6AmEN4zb6OjZSJ?=
- =?us-ascii?Q?eSCnezh6AOcSgaZNun5dpsG3fX9t18Fcz16Ly85b5nGZ6R4Rk5Hj9TXYIMs3?=
- =?us-ascii?Q?R/WEaoiZJ4u4axqdhT9W3DFEmjlDxQpSef31OQlqtOPSS5dOvFeycdK7RRIr?=
- =?us-ascii?Q?qNSgrSvwa2kHMQKDFFEJLYQ0C9q9RIQrxmoeFvMYcbG1Vy9WUALcuVUxXW4z?=
- =?us-ascii?Q?kkjSqcjHgizbxgqOsRK/QUsvHvWqSvKP1WJDzVF6NFdNI+vWzPSB5b0VtfpY?=
- =?us-ascii?Q?FderGG7HK2oD08OGjYsUdqlvTVuzShH2vS6OOUY1y51GmoXJ3s1ctp3sSeOW?=
- =?us-ascii?Q?bOS+bYs1Z1ocXQV2Qv5a/CXsdx8d8yOEpWH7w23bJbANVdgFytoYHbJ1xOTf?=
- =?us-ascii?Q?TQGJ/pn1Tw3gx9DH8iKrdvP7+w4QLhGuQ2ZG76JhYurlM625/xFfn74GbcAA?=
- =?us-ascii?Q?bP0yudpZZ18mmcrO5EY6rL4VzxwilXjjwYScAC9zpwGY2x4U0tsHgQ8ofb+M?=
- =?us-ascii?Q?jKvtG9OM8HfV9Huyy14dvh2byjVkSRnKFvwoW/9cr4Nj/2mbEP6cjUlLyMKI?=
- =?us-ascii?Q?/uoALTyRCFLlBd+6TvaQcwxdhJ/RUfH3AZy78qbNYL2JXIqrAIl+1G60gxnY?=
- =?us-ascii?Q?DSnPAvYvsj4MON4bibGMmsJAG1szFKajHhmhUXLCiHjL9Lw1qkMiGzgVSXT5?=
- =?us-ascii?Q?7Fb91JSM6HNXIZyDWYAROnOMcrdFbTw/FpSVYm3UaW+wGK6M6XLiTWU7nq4R?=
- =?us-ascii?Q?TCyK6N9KxJZMnOxu9LMPUB58MkXn+Mc5IvehNyeY6lAYVoM6p8o0Yj3pmdal?=
- =?us-ascii?Q?LT9ObZekU56YLM7gb64noGv+IGV+47E29WfP1JnKE11FtzwpbCmItYOPdu7G?=
- =?us-ascii?Q?i27+izVCHI3tPt46hp6pGaO8SpiNrTJTT/HANEfO3JZ2hBJOJ9Q2424I8eas?=
- =?us-ascii?Q?uvooNIM=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5941.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(366013)(1800799021)(38070700015);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?cGQhMM3cPMPvVGtef4rGZ0pZNYn0PkO99FcVCWYlgQheRwxDweOWkrAW2zwV?=
- =?us-ascii?Q?t4VN4WbBxelqxUtXTKzbDt5mfZmbVDaWh1l1L64JbvFyUT2khNyXswH0V/RG?=
- =?us-ascii?Q?ikI22TxhSNn8v/ggM1Bvn56/hz3ed6m0+xo+51EWe9vx+1UC0NzbGvPm347D?=
- =?us-ascii?Q?i5CmLQqTqsEV0yr5tjXQdUUo59NoC6A3MMYtqVW9Tkg2/7hjTvTpj0O4iCt8?=
- =?us-ascii?Q?jcEAj9bod3tWZCBOr5PVpTfytI1/faa9jUirYNNKhItHsSbWPG5xKyxqHZg+?=
- =?us-ascii?Q?8INKGMqYa/nMKVHiRe5TwNRIKBh/HUDN2dg7oKPUzMqZqTeY6PQT/7stud1s?=
- =?us-ascii?Q?0WjVsUjmzgGpNPDaJ8BoifCkQ0mnDiiSgolFfiUt4FwkxT2nBRrXGEJA9Xt2?=
- =?us-ascii?Q?QWzNV+v+tDzF7Eg0c3xRmK/3MUAomAct5Cak0CDx+jjE7N6jWwksuAOsDTdG?=
- =?us-ascii?Q?aUYJvHogcIlgjA1iavkaaGaDcsd61sPVYsI/BiMXEMofK9qzpk1FWxxFTQkK?=
- =?us-ascii?Q?TBpGsdJYGsgd7tzFjxcdBhsOXwsXqyHg41qC9mOnMh8csO2w6SvshhrI/Q9e?=
- =?us-ascii?Q?4JBl9XlaPDfFE5Z3b6f7QtdcDZSWiJeBqCPxDB/KTGWkXs8uK+O3uGSVZIRL?=
- =?us-ascii?Q?P8azBzrRdv/NrHr1PcAiRGPIFbZesJdm/uP94i6wyXJFMd53/oRKwO7Z+uhv?=
- =?us-ascii?Q?aivatNdjVO6PLeGeHuAxdX0mYHR+1kk+CNgG4zW8+xM7jRW2LqpPJFVeAef+?=
- =?us-ascii?Q?iZd1wjXj8zf7Qz8mNXo8bGBVPK5FediggVZkpHTNKZl/m+ms/c4J/sTnq9XE?=
- =?us-ascii?Q?ZU/fXzi/Nb+aQmdzyvazaQoFmA/1LKZ4KShNuyq8vShQguDe+ZRthoWNGz72?=
- =?us-ascii?Q?0Tdpt2BNyNUsc6kAUOKEIUNdUkSDlM1SaG9XUtxSAIDdVYYs6HODuIfh7cQJ?=
- =?us-ascii?Q?QvgCbcHSJPF7sdftvdPXIF28pk1Wg/aB07j0igai4SORFp0lIm2bkuKPEby9?=
- =?us-ascii?Q?KzxOZymcXmnTzYx0RzTH9l3krURkrWj9hS3HHxf13mwGPCdatLlNnrgFA72Y?=
- =?us-ascii?Q?ewnGx2cNNSWY5JsvOzneJGP09DV1YQry9Uil+jbpu9F+V525VAluytJFafPM?=
- =?us-ascii?Q?xhz320snIB20ubcWpYY+4vfgFseOLH+HLZXUbUKWcEi05kcVhgOxT27YX0ww?=
- =?us-ascii?Q?yYzijGmFs+ldyR8FfMcWzihPc5oneQR2+ayuLsMOtd+F+EUEc1ois1KyyKtJ?=
- =?us-ascii?Q?r3bkxVS/Tgk6bgIJNT1RnJmiJZyHoDo3spnXHktT+8Ygb0ocICKuUCtx5tzF?=
- =?us-ascii?Q?0fhWfxyq0g3QCddxsMaLRnU6Jcr8p19ybiaAm8rKuSx8cZ54kv0Obu3hEkIV?=
- =?us-ascii?Q?Sr2A3DRQ08LPtOLLU+uMuPOi40hvIG/k9Q19kWl77kMwr6TV0EiJCnjbZW0d?=
- =?us-ascii?Q?AC8jZi8dXPa6RA/D2WODrgAlmiJyJHLPAto6oaoW5Ia8aJGszidRmxcIpsga?=
- =?us-ascii?Q?ubXY0fjTYFNSn4xdbU9PwGcdGLtO7Gtzxgo3VCInv0inJoLBkOtxndvY3U0U?=
- =?us-ascii?Q?EhP0TJb0Sq33LHyBoE8=3D?=
-Content-Type: text/plain; charset="us-ascii"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="kzlh4Fpr"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5b970e90ab8so3213388eaf.3
+        for <imx@lists.linux.dev>; Tue, 18 Jun 2024 09:24:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1718727844; x=1719332644; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=y2L36ZkKRa2ldLn+cK6LBceBfGVZn+/Ml/80DU+Rz8Y=;
+        b=kzlh4FprW1bd8wNNu0EdggMbHBGiZWA0r0MUpDPjpHSFn4qcXFBP2sFQRMNrBvdHV5
+         4d0R3xxcFO5+D2bVGn9IfPLha95/orqlAYgt3ISF1evsjwmhsBG4iC/CVa2rAt727esa
+         Ni77hduMmfGMOJ3IDFmlsqUs0/LsR4i2/ADWOLMfVNcCrJOu6TMeabwsft0zwN9/l029
+         XL7X+edCqnr2dS7srzdeQHCS4nvGimbwSw+T+Y1/JmkktTuhaajZU5Q8mut+RFGFD5iF
+         PHA8CWTiI0Exsw37lkq+nvClIEgDV4gf0b5O+rBDLrhGUni0RD+2O+Ch6VlM9kfKHIsV
+         c1iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718727844; x=1719332644;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y2L36ZkKRa2ldLn+cK6LBceBfGVZn+/Ml/80DU+Rz8Y=;
+        b=coLycc4ZKuamv6Gt7dVfxBOWEkhVQDftUTssmW2t3N6tb8uDTtoGw0LEQFjE5gODZt
+         XiyaEaeV5bmvQ4e10dYDCegsd07rNLtlz+qCtq6upSCLDrZp1s7Bxy8cA5+rFTG9NTuD
+         KEWv2vCIqD1YVzeQGr8PLJiBIGppOGrHB/INwBDVpUSHxEQIa+mOrYT80oPSNglARP/R
+         ZOd96K+QxfP1cCoK6hVLPQ6s/uKh7SNMmRLR2boLH1syCLpgHmk2yaMIbLsN0gXztI8z
+         bvtX2eZecIkkE2lZeYw3j/BjOUh1v8BaaIqsrCoCDgUwPLkAF2gPZ0vYaN08kiCa40Jq
+         kXaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhOO8NHu0tjteClJ6P3PaxThHEpfqk9rogqA77z2uu+cKh0WC5LMzkNqSu39kFU0WSBXmFJgmr29smTOa+TMmA0Dxj
+X-Gm-Message-State: AOJu0Yxy/UutxgpgbxuUCzo25S+6jzI5NN+x2tOzfxKeTa7L6lgv8TC5
+	swWjzuquDsiXz3uWt+AOtDCrmDns/w7T/T8Q//o2Zk3d3wdesfkArFYmJRrNw4k=
+X-Google-Smtp-Source: AGHT+IFJbrVxZSy5MW1kEWYhiDGt9QvD0Fml+npOhQgHsfa3dm06eYcugngrvjSxbWiA5O9MHgS/Zg==
+X-Received: by 2002:a05:6359:5fa9:b0:1a0:d4b4:5eb5 with SMTP id e5c5f4694b2df-1a1fd59877dmr34733855d.28.1718727844503;
+        Tue, 18 Jun 2024 09:24:04 -0700 (PDT)
+Received: from nicolas-tpx395.lan ([2606:6d00:17:5fb9::7a9])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798abe279c0sm532234285a.110.2024.06.18.09.24.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 09:24:04 -0700 (PDT)
+Message-ID: <036bf0d7f657cae444d20ea6d279b47e3bf0164e.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: videobuf2: sync caches for dmabuf memory
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Tomasz Figa <tfiga@chromium.org>, TaoJiang <tao.jiang_2@nxp.com>
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, shawnguo@kernel.org, 
+ robh+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
+ eagle.zhou@nxp.com,  ming.qian@oss.nxp.com, imx@lists.linux.dev,
+ linux-media@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ m.szyprowski@samsung.com, sumit.semwal@linaro.org, 
+ christian.koenig@amd.com, dri-devel@lists.freedesktop.org, 
+ linaro-mm-sig@lists.linaro.org, Ming Qian <ming.qian@nxp.com>
+Date: Tue, 18 Jun 2024 12:24:03 -0400
+In-Reply-To: <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
+References: <20240618073004.3420436-1-tao.jiang_2@nxp.com>
+	 <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5941.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84c3e3d9-4044-402d-b448-08dc8fa9271b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2024 15:13:04.8044
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3ehvAr0NEFz/SZAA7YKM6jPhMvjHhRdbNL7tr53bbOUCU7AayNIEJDR/VcCm3JbXRQHQWu/LKK9/p8xFpDG1TQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10637
 
-Hi Jassi,
+Le mardi 18 juin 2024 =C3=A0 16:47 +0900, Tomasz Figa a =C3=A9crit=C2=A0:
+> Hi TaoJiang,
+>=20
+> On Tue, Jun 18, 2024 at 4:30=E2=80=AFPM TaoJiang <tao.jiang_2@nxp.com> wr=
+ote:
+> >=20
+> > From: Ming Qian <ming.qian@nxp.com>
+> >=20
+> > When the memory type is VB2_MEMORY_DMABUF, the v4l2 device can't know
+> > whether the dma buffer is coherent or synchronized.
+> >=20
+> > The videobuf2-core will skip cache syncs as it think the DMA exporter
+> > should take care of cache syncs
+> >=20
+> > But in fact it's likely that the client doesn't
+> > synchronize the dma buf before qbuf() or after dqbuf(). and it's
+> > difficult to find this type of error directly.
+> >=20
+> > I think it's helpful that videobuf2-core can call
+> > dma_buf_end_cpu_access() and dma_buf_begin_cpu_access() to handle the
+> > cache syncs.
+> >=20
+> > Signed-off-by: Ming Qian <ming.qian@nxp.com>
+> > Signed-off-by: TaoJiang <tao.jiang_2@nxp.com>
+> > ---
+> >  .../media/common/videobuf2/videobuf2-core.c   | 22 +++++++++++++++++++
+> >  1 file changed, 22 insertions(+)
+> >=20
+>=20
+> Sorry, that patch is incorrect. I believe you're misunderstanding the
+> way DMA-buf buffers should be managed in the userspace. It's the
+> userspace responsibility to call the DMA_BUF_IOCTL_SYNC ioctl [1] to
+> signal start and end of CPU access to the kernel and imply necessary
+> cache synchronization.
+>=20
+> [1] https://docs.kernel.org/driver-api/dma-buf.html#dma-buffer-ioctls
+>=20
+> So, really sorry, but it's a NAK.
 
-> Subject: [PATCH] mailbox: imx: fix TXDB_V2 channel race condition
 
-Ping..
 
-Thanks,
-Peng.
+This patch *could* make sense if it was inside UVC Driver as an example, as=
+ this
+driver can import dmabuf, to CPU memcpy, and does omits the required sync c=
+alls
+(unless that got added recently, I can easily have missed it).
+
+But generally speaking, bracketing all driver with CPU access synchronizati=
+on
+does not make sense indeed, so I second the rejection.
+
+Nicolas
 
 >=20
-> From: Peng Fan <peng.fan@nxp.com>
+> Best regards,
+> Tomasz
 >=20
-> Two TXDB_V2 channels are used between Linux and System
-> Manager(SM).
-> Channel0 for normal TX, Channel 1 for notification completion.
-> The TXDB_V2 trigger logic is using imx_mu_xcr_rmw which uses
-> read/modify/update logic.
->=20
-> Note: clear MUB GSR BITs, the MUA side GCR BITs will also got cleared
-> per hardware design.
-> Channel0 Linux
-> read GCR->modify GCR->write GCR->M33 SM->read GSR----->clear GSR
->                                                 |-(1)-|
-> Channel1 Linux start in time slot(1)
-> read GCR->modify GCR->write GCR->M33 SM->read GSR->clear GSR So
-> Channel1 read GCR will read back the GCR that Channel0 wrote,
-> because
-> M33 has not finish clear GSR, this means Channel1 GCR writing will
-> trigger Channel1 and Channel0 interrupt both which is wrong.
->=20
-> Channel0 will be freed(SCMI channel status set to FREE) in M33 SM
-> when processing the 1st Channel0 interrupt. So when 2nd interrupt
-> trigger (channel 0/1 trigger together), SM will see a freed Channel0,
-> and report protocol error.
->=20
-> To address the issue, not using read/modify/update logic, just use write,
-> because write 0 to GCR will be ignored. And after write MUA GCR, wait
-> the SM to clear MUB GSR by looping MUA GCR value.
->=20
-> Fixes: 5bfe4067d350 ("mailbox: imx: support channel type tx doorbell
-> v2")
-> Reviewed-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->=20
-> V1: This patch has got R-b inside NXP and could be directly applied to
->     upstream linux, so I keep the R-b tag from Ranjani.
->=20
->  drivers/mailbox/imx-mailbox.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-
-> mailbox.c index 5c1d09cad761..38abe07babdf 100644
-> --- a/drivers/mailbox/imx-mailbox.c
-> +++ b/drivers/mailbox/imx-mailbox.c
-> @@ -224,6 +224,8 @@ static int imx_mu_generic_tx(struct
-> imx_mu_priv *priv,
->  			     void *data)
->  {
->  	u32 *arg =3D data;
-> +	u32 val;
-> +	int ret;
->=20
->  	switch (cp->type) {
->  	case IMX_MU_TYPE_TX:
-> @@ -235,7 +237,13 @@ static int imx_mu_generic_tx(struct
-> imx_mu_priv *priv,
->  		tasklet_schedule(&cp->txdb_tasklet);
->  		break;
->  	case IMX_MU_TYPE_TXDB_V2:
-> -		imx_mu_xcr_rmw(priv, IMX_MU_GCR,
-> IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx), 0);
-> +		imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg-
-> >type, cp->idx),
-> +			     priv->dcfg->xCR[IMX_MU_GCR]);
-> +		ret =3D readl_poll_timeout(priv->base + priv->dcfg-
-> >xCR[IMX_MU_GCR], val,
-> +					 !(val &
-> IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
-> +					 0, 1000);
-> +		if (ret)
-> +			dev_warn_ratelimited(priv->dev, "channel
-> type: %d failure\n",
-> +cp->type);
->  		break;
->  	default:
->  		dev_warn_ratelimited(priv->dev, "Send data on wrong
-> channel type: %d\n", cp->type);
-> --
-> 2.37.1
+> > diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/=
+media/common/videobuf2/videobuf2-core.c
+> > index 358f1fe42975..4734ff9cf3ce 100644
+> > --- a/drivers/media/common/videobuf2/videobuf2-core.c
+> > +++ b/drivers/media/common/videobuf2/videobuf2-core.c
+> > @@ -340,6 +340,17 @@ static void __vb2_buf_mem_prepare(struct vb2_buffe=
+r *vb)
+> >         vb->synced =3D 1;
+> >         for (plane =3D 0; plane < vb->num_planes; ++plane)
+> >                 call_void_memop(vb, prepare, vb->planes[plane].mem_priv=
+);
+> > +
+> > +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
+> > +               return;
+> > +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
+> > +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
+> > +
+> > +               if (!dbuf)
+> > +                       continue;
+> > +
+> > +               dma_buf_end_cpu_access(dbuf, vb->vb2_queue->dma_dir);
+> > +       }
+> >  }
+> >=20
+> >  /*
+> > @@ -356,6 +367,17 @@ static void __vb2_buf_mem_finish(struct vb2_buffer=
+ *vb)
+> >         vb->synced =3D 0;
+> >         for (plane =3D 0; plane < vb->num_planes; ++plane)
+> >                 call_void_memop(vb, finish, vb->planes[plane].mem_priv)=
+;
+> > +
+> > +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
+> > +               return;
+> > +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
+> > +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
+> > +
+> > +               if (!dbuf)
+> > +                       continue;
+> > +
+> > +               dma_buf_begin_cpu_access(dbuf, vb->vb2_queue->dma_dir);
+> > +       }
+> >  }
+> >=20
+> >  /*
+> > --
+> > 2.43.0-rc1
+> >=20
 
