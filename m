@@ -1,78 +1,85 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346D75C89
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 00:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB6BEED8
+	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 02:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718671244; cv=none; b=O3HSC8uatCI6lSwuHRBNbWY5xM1/HOjLZMArPeDg38J40nw/OiCBjtYnJFw1BKdnL0b+Acok458SfONXLr5DhZFkKq7K5pJ7eC+XYOFRxtW/j5j6vHaVBM1fdntsKmVeWW98YKMdXkVGKG5C2sXb9avFBxsfAsAyZG/wVL3R890=
+	t=1718676324; cv=none; b=ZnOR0VZB6WxpvZzw4YXAErGZizp5qnZqUlyVgLzLqW4AnV0AY1NL/0skTX7NtwFIgAF4XOX5sAl5Vav3EEUb7V8uRNpzi1kJdg2WpTLtx/QfZTGI8Y/+XbDtEryAs9QCM1cT5k6ZKqfIiehrSURjD+VU2TA6icf8Rrm4LXeiqVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718671244; c=relaxed/simple;
-	bh=ALACogNECgb+ISzRL3DiR92gwMszWqoY7VYJ4/YD6oo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mymh1lGrNjKOCSi4fP2Dnf9eqrDqt4Ha7FXXqjMtFu7eWhDN7A0JW58VdWUdFzE/Mf8E2FJ5B4NGp7Z1t4AiwOTHacVrYet6XXAbSHB48EsgBYf2dQm37q9V+JtEZjEVHJ/AtqeyynzrgXcsos9O5N7V4Q6b2rk/PCVxKDGXVyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=OeHO81km; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1718676324; c=relaxed/simple;
+	bh=H49IrqUDcg3thpDEGnSkFiRW0yaw7ZnZfWWUN/Mp6Is=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yy/Twgj+Gpxq+VD8FSv3gaEgx+Ir9RR6Wfry2ehfLFy/SvCj0f/CbQlEAwgmkle6JYnI5NkqzPXGU1pSCCZvlA1wK7mlSNtuRj6PHDhL8mJfsKCrc3nuJf7b3LqSQGkOYuUsRI3q8qlvi/rTfJOpSLShQ45OIg7A2vsIUs+BLkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QpeLx5yE; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="OeHO81km"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 59EDD8840F;
-	Tue, 18 Jun 2024 02:40:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1718671240;
-	bh=49tr4flbfSKxYUh6g/+o6Wgnj89Yb+Mc42rvKfB7OMc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OeHO81kmfk/9EszbLwJhbD+74umOcIw5+TO2vC1ozEsDolZpa7ZVIkzBy7puTJfo1
-	 hFW76yH9X4Omvo5Xfyi7a1I6ElxBSBSiD3N81iVZqG0tDNzUgf0HAW5vGxTPacdBQu
-	 H3yqMQ/Idf4U+EicWi58++9ilIyP7fxHVlHIQAMOyREL4y9DIBvjQwTKut93Wk24uV
-	 1up3hGUNRvcvmVm+2roegGkM8ADW5oJ8Q+4sm4r0WHm+LZ3As8HeL0Up6+T2ZtJzBb
-	 WDo/XvmgYSLwuVq08E3g6+I5JVvNpRHoFnKEBv8uh/mawKYIGtKpnKdn3uPuSgnZT5
-	 ZpG9NWYlk0H+g==
-Message-ID: <471057ef-afd9-4a83-95a6-a2c8cff52c68@denx.de>
-Date: Tue, 18 Jun 2024 01:21:03 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QpeLx5yE"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2c4e2cd931aso696843a91.0
+        for <imx@lists.linux.dev>; Mon, 17 Jun 2024 19:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718676322; x=1719281122; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UC4CCPVGAK+nftSKrL1x2cOea/22VgZIo6YoyrbFDH8=;
+        b=QpeLx5yEShpantA7wqINye6YLGvliaOunHsjcKdB0aw8mVShZKO4EQUosjY57kw3kc
+         kB/tGVEFd7z9jxVf3yydBOC1/7mhR5LY2bWS6h7FUzuEbtP/v18E1/KVyTE8EzVBy1dL
+         ARHJOSrU1W6sQwzF1V7VebxvaoVG9uYyQeBhu+i8HVwnwgG7FSCgMw5sSvimehsFZBrJ
+         a0haAjCrJRpxZdbRmyqUP+zEpUHmiyu8fkoy/xhC8eD1rnOaKVgx8hWsFO4P5rfbghS7
+         S8ES0Vn0roRfAk0xLXHfcDbikUne5NTQmjvCIcd9e+MYjr0n0O5Iyo1hm+Pd1IolMFi8
+         Pf0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718676322; x=1719281122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UC4CCPVGAK+nftSKrL1x2cOea/22VgZIo6YoyrbFDH8=;
+        b=O155JfUyNgZtjIxppBkxle0YYnA6dEXB3x6FVA0h2XX6ODoz6McF7lYBRgPRkOrHXk
+         IQDu0RQJ5SeoKAsj/yxTosbL0/UrMyqf8olKjl/EWyoAoGzkNXCfIjojFglqauerpdQw
+         txLeMd1OcOMBXLzMmRjGgK/wZntLcBC5+KV9E+ErzHcQ4t//OmNZ88gZZ4qvQwjfWezT
+         dNfb+2UfnzsHXAFoeZ26TgE2Yy1CIkGArLQtnyIZ9wLwppvOHhsmB3vAW3qmOqHiDmF3
+         bP63E8n3nqlxUaw3AU327Lik/WO4piH4ssX4DNGyQtEcQATe/pK0f/B2R0qwzWhFpFFZ
+         3hwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfkArSmUMC2T19Rhue0TvwfHHoP2rbV3FmnKIXYihHr/zLRYzL2O+6I4kTRuzOBWG4PUNTLh2x+SKgvJh7o3wnDGZ0
+X-Gm-Message-State: AOJu0YyvpoD1d/bpRDD5mFkgcLmH8N6e8Ig20VKzV70M3vrU5TS6iulm
+	SOBgX2AmH0TMMqLpfbFmDrFpKoa4lxNXpJP1mMLlINuNne57yZy1+ymO0oIjIw3vlUrBhVp9vxm
+	ectImvj9/cH8M/z5xBkbYU2nnr6I=
+X-Google-Smtp-Source: AGHT+IGgeBKXqH2kvONTccEkgODfF9O9I+AblF0WWQlymfGDP4JfA10Y88jwvdPmqB7Trl+X1SXo8LhJrNHDFFvMR4A=
+X-Received: by 2002:a17:90a:fe0b:b0:2c3:42d2:ca91 with SMTP id
+ 98e67ed59e1d1-2c4da9cb5a2mr10866239a91.0.1718676322329; Mon, 17 Jun 2024
+ 19:05:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: imx8mp: Fix pgc_mlmix location
-To: Adam Ford <aford173@gmail.com>, linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240617223952.1899201-1-aford173@gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20240617223952.1899201-1-aford173@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+References: <20240617223100.1539796-1-Frank.Li@nxp.com> <20240617223100.1539796-3-Frank.Li@nxp.com>
+In-Reply-To: <20240617223100.1539796-3-Frank.Li@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 17 Jun 2024 23:05:10 -0300
+Message-ID: <CAOMZO5CwaXVzkJY+TP+JF78mv=9FfO2v8cFwXNiSNp+_n6Yk3g@mail.gmail.com>
+Subject: Re: [PATCH 3/4] arm64: dts: imx95-19x19-evk: add lpi2c7 and expander
+ gpio pcal6524
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/18/24 12:39 AM, Adam Ford wrote:
-> The pgc_mlmix shows a power-domain@24, but the reg value is
-> IMX8MP_POWER_DOMAIN_MLMIX which is set to 4.
-> 
-> The stuff after the @ symbol should match the stuff referenced
-> by 'reg' so reorder the pgc_mlmix so it to appear as power-domain@4.
-> 
-> Fixes: 834464c8504c ("arm64: dts: imx8mp: add mlmix power domain")
-> Fixes: 4bedc468b725 ("arm64: dts: imx8mp: Add NPU Node")
-> 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+On Mon, Jun 17, 2024 at 7:31=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
 
-Reviewed-by: Marek Vasut <marex@denx.de>
+> +&lpi2c7 {
+> +       clock-frequency =3D <1000000>;
+> +       pinctrl-names =3D "default", "sleep";
+> +       pinctrl-0 =3D <&pinctrl_lpi2c7>;
+> +       pinctrl-1 =3D <&pinctrl_lpi2c7>;
 
-Thanks !
+The default and sleep are the same. Is this intended?
