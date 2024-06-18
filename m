@@ -1,172 +1,125 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3C450246
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 17:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F96C145B31;
+	Tue, 18 Jun 2024 18:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718732072; cv=none; b=CBBxEEEouANSGWHLbDCZTQ2FWh29UrXABEigDUOpRZ8802H1lDY4NIo55is//xnokSlZTPCcJAMhNbYGWJArHWO98oOvVMBYJZjCwWG737kqh9alYHZHk5cBy02wjClCTcGNtySHVZkSFod6ZRX1o3KYYULPTr+jrKcFEbLYTZc=
+	t=1718733922; cv=none; b=ssMhmLGFAdJNWwkrRCwg5AtiIXJBhcVM326d0X/nFHRIs3TPLca6FKE2lKhXM2pKSE9opEOcbWWSEJrgyHtTuwwUBEff3VvnhULrr/YtikNq1/3hNuujwfRINWbHlkXsXlGe0EPGuxSA0E3Y2Z4krXjeKhzeC5Wj25s5LIf+AOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718732072; c=relaxed/simple;
-	bh=elNphyW/ol4aozwHns160mjwIukNaGErNRGUXtOS99c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tpWE52RATrjO6z2FALr0Wu0wyV5afgnia9dXUmkplXkwJuReiCXIjOHb9nmLgY42ml01wHAgGWfaBdqh2x51CX8Wod3SS7wokPc6licUUCKc6BQFul424puDs/fAy82+Ou2ft5KhbwG2DVeYcQpy+b2HtmeUBPHv/+BQo0UOuDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sJcix-0000eJ-DI
-	for imx@lists.linux.dev; Tue, 18 Jun 2024 19:34:27 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sJciw-003HKl-WF
-	for imx@lists.linux.dev; Tue, 18 Jun 2024 19:34:27 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id A895C2EBAC4
-	for <imx@lists.linux.dev>; Tue, 18 Jun 2024 17:34:26 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 3D6032EBABA;
-	Tue, 18 Jun 2024 17:34:24 +0000 (UTC)
-Received: from [172.20.34.65] (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 1c36f098;
-	Tue, 18 Jun 2024 17:34:23 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 18 Jun 2024 19:34:18 +0200
-Subject: [PATCH] spi: spi-imx: imx51: revert burst length calculation back
- to bits_per_word
+	s=arc-20240116; t=1718733922; c=relaxed/simple;
+	bh=CUg5GWoTtbJgy3YKhVbq5zDegd0NVrO0IUzPvWFo27I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=beD5jQcKMbMuRmeqdRPfySRiW9YrgF8/ER3owbwQdSHekTAK1bTP6AH5j4XNqLB07bWY5N88FSoJmFF4e9S9n8xfwZOXk6McMB5yGIPJUKvTseNBAdVPh+0OvwRK9cd5cWXIiLxuHtPVObfiLu6ALHrE3mgTElOMzR4t526OS9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1sJcX1-0077vb-Dj;
+	Tue, 18 Jun 2024 17:22:07 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH] arm64: dts: freescale: imx8m*-venice-*: fix gw,gsc dt-schema warnings
+Date: Tue, 18 Jun 2024 10:21:51 -0700
+Message-Id: <20240618172150.1693704-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240618-spi-imx-fix-bustlength-v1-1-2053dd5fdf87@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIABnFcWYC/x2MSQqAMAwAvyI5G6jFrX5FPKiNGtAqjYpQ/LvF4
- 8DMBBDyTAJNEsDTzcK7i5ClCYxL72ZCtpFBK52rMqtRDkbeHpz4weGScyU3nwuaSuWDnqxRpoA
- YH56i8Y/b7n0//gDa4WgAAAA=
-To: Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Stefan Moring <stefan.moring@technolution.nl>, 
- Benjamin Bigler <benjamin@bigler.one>, Carlos Song <carlos.song@nxp.com>, 
- Clark Wang <xiaoning.wang@nxp.com>, Adam Butcher <adam@jessamine.co.uk>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Stefan Bigler <linux@bigler.io>, Sebastian Reichel <sre@kernel.org>, 
- Thorsten Scherer <T.Scherer@eckelmann.de>, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-13183
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3829; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=elNphyW/ol4aozwHns160mjwIukNaGErNRGUXtOS99c=;
- b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBmccUcNxYqOSfc86+T5Y8lQ+0f4S+7ZiW2d0n2z
- PDvJ9XGwHuJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZnHFHAAKCRAoOKI+ei28
- b6CjCACD6kmrXgt2PL68SI8FmIL4q54HM2FQ3J4bstblZaBDzOQ9J69hA89VRBm6Ry++lpg3sb8
- poZyc6hYLa1NRXVNaNuO8TTULYKOfiBMDbOCBaRQrHMvXPzUnStw3zpUAXkdYqpmHZfvzKC0MGh
- lf0nCqZm6qyv0LZphvcbO7e8iqn1sPm0Ny+wiegUCrlUluEbNUO1v0V/lmqawzG/lIVNwSFpHZr
- IRdHoWRm5lpC+mPu28I8lWxq0olOKThEd7thbIb2MgKp4HQjFLuJIpYOP/5CmK0Td5/wQ4FqFBg
- +XzGq9PfHL8dHIjllzTEv2m40ojP248lZB0ulA13pQmaZ+eN
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-The patch 15a6af94a277 ("spi: Increase imx51 ecspi burst length based
-on transfer length") increased the burst length calculation in
-mx51_ecspi_prepare_transfer() to be based on the transfer length.
+Fix the dt-schema warnings due to #address-cells/#size-cells being
+unnecessary when there are no children with reg cells.
 
-This breaks HW CS + SPI_CS_WORD support which was added in
-6e95b23a5b2d ("spi: imx: Implement support for CS_WORD") and transfers
-with bits-per-word != 8, 16, 32.
-
-SPI_CS_WORD means the CS should be toggled after each word. The
-implementation in the imx-spi driver relies on the fact that the HW CS
-is toggled automatically by the controller after each burst length
-number of bits. Setting the burst length to the number of bits of the
-_whole_ message breaks this use case.
-
-Further the patch 15a6af94a277 ("spi: Increase imx51 ecspi burst
-length based on transfer length") claims to optimize the transfers.
-But even without this patch, on modern spi-imx controllers with
-"dynamic_burst = true" (imx51, imx6 and newer), the transfers are
-already optimized, i.e. the burst length is dynamically adjusted in
-spi_imx_push() to avoid the pause between the SPI bursts. This has
-been confirmed by a scope measurement on an imx6d.
-
-Subsequent Patches tried to fix these and other problems:
-
-- 5f66db08cbd3 ("spi: imx: Take in account bits per word instead of assuming 8-bits")
-- e9b220aeacf1 ("spi: spi-imx: correctly configure burst length when using dma")
-- c712c05e46c8 ("spi: imx: fix the burst length at DMA mode and CPU mode")
-- cf6d79a0f576 ("spi: spi-imx: fix off-by-one in mx51 CPU mode burst length")
-
-but the HW CS + SPI_CS_WORD use case is still broken.
-
-To fix the problems revert the burst size calculation in
-mx51_ecspi_prepare_transfer() back to the original form, before
-15a6af94a277 ("spi: Increase imx51 ecspi burst length based on
-transfer length") was applied.
-
-Cc: Stefan Moring <stefan.moring@technolution.nl>
-Cc: Stefan Bigler <linux@bigler.io>
-Cc: Clark Wang <xiaoning.wang@nxp.com>
-Cc: Carlos Song <carlos.song@nxp.com>
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Thorsten Scherer <T.Scherer@eckelmann.de>
-Fixes: 15a6af94a277 ("spi: Increase imx51 ecspi burst length based on transfer length")
-Fixes: 5f66db08cbd3 ("spi: imx: Take in account bits per word instead of assuming 8-bits")
-Fixes: e9b220aeacf1 ("spi: spi-imx: correctly configure burst length when using dma")
-Fixes: c712c05e46c8 ("spi: imx: fix the burst length at DMA mode and CPU mode")
-Fixes: cf6d79a0f576 ("spi: spi-imx: fix off-by-one in mx51 CPU mode burst length")
-Link: https://lore.kernel.org/all/20240618-oxpecker-of-ideal-mastery-db59f8-mkl@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 ---
- drivers/spi/spi-imx.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts | 2 --
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts | 2 --
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts | 2 --
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts | 2 --
+ arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts | 2 --
+ 5 files changed, 10 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index f4006c82f867..33164ebdb583 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -660,18 +660,8 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
- 		ctrl |= (spi_imx->target_burst * 8 - 1)
- 			<< MX51_ECSPI_CTRL_BL_OFFSET;
- 	else {
--		if (spi_imx->usedma) {
--			ctrl |= (spi_imx->bits_per_word - 1)
--				<< MX51_ECSPI_CTRL_BL_OFFSET;
--		} else {
--			if (spi_imx->count >= MX51_ECSPI_CTRL_MAX_BURST)
--				ctrl |= (MX51_ECSPI_CTRL_MAX_BURST * BITS_PER_BYTE - 1)
--						<< MX51_ECSPI_CTRL_BL_OFFSET;
--			else
--				ctrl |= (spi_imx->count / DIV_ROUND_UP(spi_imx->bits_per_word,
--						BITS_PER_BYTE) * spi_imx->bits_per_word - 1)
--						<< MX51_ECSPI_CTRL_BL_OFFSET;
--		}
-+		ctrl |= (spi_imx->bits_per_word - 1)
-+			<< MX51_ECSPI_CTRL_BL_OFFSET;
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
+index 35ae0faa815b..136cb30df03a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
+@@ -364,8 +364,6 @@ gsc: gsc@20 {
+ 		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
  
- 	/* set clock speed */
-
----
-base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
-change-id: 20240618-spi-imx-fix-bustlength-9704b2fd9095
-
-Best regards,
+ 		adc {
+ 			compatible = "gw,gsc-adc";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
+index c11260c26d0b..1d56f2a6c06a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
+@@ -314,8 +314,6 @@ gsc: gsc@20 {
+ 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+ 
+ 		adc {
+ 			compatible = "gw,gsc-adc";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts
+index db1737bf637d..45470160f98f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts
+@@ -280,8 +280,6 @@ gsc: gsc@20 {
+ 		interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+ 
+ 		adc {
+ 			compatible = "gw,gsc-adc";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
+index 05489a31e7fd..ef951bc9f0dd 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
+@@ -330,8 +330,6 @@ gsc: gsc@20 {
+ 		interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+ 
+ 		adc {
+ 			compatible = "gw,gsc-adc";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts b/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts
+index 0b1fa04f1d67..72004ab6bda5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts
+@@ -312,8 +312,6 @@ gsc: gsc@20 {
+ 		interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <1>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+ 
+ 		adc {
+ 			compatible = "gw,gsc-adc";
 -- 
-Marc Kleine-Budde <mkl@pengutronix.de>
-
+2.25.1
 
