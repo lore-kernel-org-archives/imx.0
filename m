@@ -1,129 +1,164 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2051.outbound.protection.outlook.com [40.107.114.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A7015B143
-	for <imx@lists.linux.dev>; Wed, 19 Jun 2024 23:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718839497; cv=none; b=YgbFJbiY9VGgR5bqJfCjalXclOYuDyoMt/nDDtsv7eMHGkQPklbNuO1UiYe5vL5n9+Zr5IL+JeVOH+zoK6NAiyzo9jkgUsA7sO2IyIHHGhDeydqNnEzmA8KVbzpIaHdoEhFgUhH1vZMZu6BR2MepW9afuoj/m0DGBJvzdHjALQY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718839497; c=relaxed/simple;
-	bh=hOZq0MsRJzwxCzPT8CTrS7U4UH5KCg6abdAycpr1YRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H37w5tvQSjfGO4p8Dx0R4vepDia/wzaJnpErYF5hyHIEHJ7MM3EjmhQkvR3aqS//ezGKT1HaYokFbmzSojpY4sYJ3CMSgW4oPTArq1xKw8LBzNN3tvFLOWduxNN2vGR5YN4TkkIi1EeanKvP1Sa1cJv/woMN/9Y4R++ZPWJzZTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=OuWxmMqY; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CBC1E515
+	for <imx@lists.linux.dev>; Wed, 19 Jun 2024 23:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.114.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718841310; cv=fail; b=hwXUJ/ouFch3rmLuG7FbaAug9fdq8Zp5MWTPFfxJcb3esNUkTfoOV77X10nzUCmt/QWtVjSr1wrWi0G6kILpX8SJgF4O+rKKfdleCWHM5yn/6rPiXW9gvxiehdOSp6FscMpJDc4unDLcWittXwvhsfnbV2leS2w7Nm2oGrwCw2U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718841310; c=relaxed/simple;
+	bh=eSSIrUdVhHzV4EszI7vuCiXk4qXtV3I1+l8147KA6nw=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=qv2rl+GE8wzqfkTgVimKH3E8rJc2p95WzDnqd/XNIBNP18D+Nzd+qCAuDNDbmPK+h1iQhuvHTkTypx4axIhgjAF/iJ6kfzPgoFMSMAZTQ2cPEcffyGwpHajrZ5CDMGasMx0+CCek6hAQVcx0XbCgeqGc4vrqbQ4WHRKvEDHTkJ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=hyGeumgs; arc=fail smtp.client-ip=40.107.114.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="OuWxmMqY"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 52EFD8E1;
-	Thu, 20 Jun 2024 01:24:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1718839475;
-	bh=hOZq0MsRJzwxCzPT8CTrS7U4UH5KCg6abdAycpr1YRc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OuWxmMqYRk8tENZ/2VPDy/xwLD2UvmLzNuUd4jeyLwMwP91PycW9IVbzkhJZNXSUQ
-	 zik/OZS3kLaXnQxdPvt3IR9XLYyfOy2hAnA+LqML4K5/X8oz0sVE5hgf6pmCGq9M2O
-	 Q1TrW0enE05CUNfo7qPjXKyTDc2TUQUobofvAGtE=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-media@vger.kernel.org
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	imx@lists.linux.dev,
-	Purism Kernel Team <kernel@puri.sm>
-Subject: [PATCH] media: imx-mipi-csis: Use v4l2_subdev_enable_streams()
-Date: Thu, 20 Jun 2024 02:24:31 +0300
-Message-ID: <20240619232431.5708-1-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.44.2
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="hyGeumgs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NDzDbqhTOeZ+DG3iXGZyRSePHSgcB16nF95uDIkRt5ec0w3+05V/+xJpVTcPPAdd+x5cTDpIA2dKreo1OvK0jbQYW3peyDAeW1y2dV++sIh2Wz3XqsDgFRy7nxmrUIwdE9c1HIg47jFzW7jg99fMEujDra3umjJIHIuec0+TDh6ekf+edSR7LeqMGtVfGZ3wTIi9TOSZqLEE/y+WNbhXGAyYQphRn52cqC2yiCWt82+bWPsf18ncy0k6LZYqdsYcNNi/3WW7C5yIcM5IR3+Tvv9W86Q6BmozVxTYk1irYpBAo6Yq6aa3CgK+fx5b4r3w5WaQYlolnI/Lup/jcNbp6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8pJqKHT0noCUcUFgqmK5KfDxeaXAYxHuyvwIja3Mwvk=;
+ b=ICxJhAqY+AQKroYb+YRkLQlxNlatqfjJHpE7RN1+YHk2GLRbrYnA8ljuSGv3etNZRKiDz6MmjsohbmFUY/XQTepj2yFE+8uMEqKtycmsxF/mlYWMVMtRbfhKlBT3QV02PbDuDFLFUKGmHqB3HbOaVfEUylHHujPU0AYQ6d7fkiqMWIZzUP0rY403jXDBPndAk0xaUEmNQVDPtHA9VzcYgYps+JjKSd+7qz5N4erDyPP0BkMG/UwAWFNWEJC3MqVfAD+seFbqYcKiiJ0RKoFFnkQPgtj1FxQco1HelwzpsHOEACE9+e258XJJxvqmcB7o9z8mB1cEawEPPPemsj3qzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8pJqKHT0noCUcUFgqmK5KfDxeaXAYxHuyvwIja3Mwvk=;
+ b=hyGeumgs3PiG3h4XEJi/dlzJOmAgIWbpSOifhjSwQcp06cnXAAxufZhl+saC6yCwYe29yk/FuFCj+hNmIj0qvsVU2CKx3q3ODOZD7H+GfRt6sFnnM3mb4hh0HYXfPbf/1YqfdqE3fCWA7JML56y5p3gFp9T1Bj198TJl/wvemFE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OS3PR01MB5909.jpnprd01.prod.outlook.com
+ (2603:1096:604:c5::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Wed, 19 Jun
+ 2024 23:55:04 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%4]) with mapi id 15.20.7698.020; Wed, 19 Jun 2024
+ 23:55:04 +0000
+Message-ID: <87y170pjxk.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: alsa-devel@alsa-project.org, imx@lists.linux.dev,linux-doc@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH v5 0/4] ASoC: grace time for DPCM cleanup
+In-Reply-To: <71a31778-5709-4342-b813-75899ed4e90f@sirena.org.uk>
+References: <87bk4oqerx.wl-kuninori.morimoto.gx@renesas.com>
+	<6bf6adc9-9620-4ace-97c9-7de0cedd7d07@sirena.org.uk>
+	<877celwmvh.wl-kuninori.morimoto.gx@renesas.com>
+	<71a31778-5709-4342-b813-75899ed4e90f@sirena.org.uk>
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Wed, 19 Jun 2024 23:55:03 +0000
+X-ClientProxiedBy: TYCPR01CA0153.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b1::12) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS3PR01MB5909:EE_
+X-MS-Office365-Filtering-Correlation-Id: b41565bc-844d-487e-c52e-08dc90bb3d33
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230037|376011|366013|52116011|1800799021|38350700011;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?IZmKS3XlziqAYna2Ih4y4fbaUijRKFQ5h30JcEnNgpQAy9CzaJAv+j8/mOFQ?=
+ =?us-ascii?Q?AhNe5563Q5kXDTZ3C9YN7G4wh2cMaN18+InWlHpWzysbXRs+DwE3Nj7hoVNy?=
+ =?us-ascii?Q?zCerEtnKM/If1dkgcXxMzGGsAFTO7pcufSO9qltgbrcYvmWAPZpj3h3lPyuB?=
+ =?us-ascii?Q?pJPhW0BdFR8/RFoJpl16Qs64+37WMESaebZvf3YkhUGiLEJB+xWLkv1oJhwr?=
+ =?us-ascii?Q?vlVf9KnodYKFZ9t4LjHvXlrWgKo4XiVgfh1KN30xkimYBiE1gTLpJEoQH4Ns?=
+ =?us-ascii?Q?WYDWTtd93/BEd5jAfI5sdSlmGQ2+9+ATOjI6haMBFUcJJRHRWVtAywDTWSYU?=
+ =?us-ascii?Q?WGmEdW5xulklfU9DnKLhPQpZjvdDUYpLJlPPa6fONI9mGZ5tCIJmQ7yv3oj6?=
+ =?us-ascii?Q?/Yk9pp/afilxSG8QJ/KCXdN/5fqvTy2lcZjF8hN2RuwnKqIh/yT48/oM3jiK?=
+ =?us-ascii?Q?Pab77vGVxUPDnIBboPqpiH7ukOHRrLKr8L2rhNLELPNUBogb2/7s/f+KV3gr?=
+ =?us-ascii?Q?BCY94so47BWxQwLIx1EA2OmFELdDKDNwSvrzSxeGFNbMBhJAVlifdw/piU2P?=
+ =?us-ascii?Q?VSK+DbfJJtqhTatlGv3mMKl4J88VXVMOD1KBFaF0UmxKNZEhmwSjjFDjzbIG?=
+ =?us-ascii?Q?dzpM/8KOyyd/jyW72NhocJPCdlPlOz8GvILD59SB7v76alTtYHBKBv2hpfom?=
+ =?us-ascii?Q?PUUA7WiL3DQdx6KsM5moLnzUWGCzFYGgofEleCG5GExlSYm4ivyq+b6jNmTt?=
+ =?us-ascii?Q?UDEL2/J71zmVg2WVeFt2HRpACNhXO+X4H7lM1pAT5pp2sWeeCIe+ppLbQzSS?=
+ =?us-ascii?Q?x9kizxtvw+NyRXpCHXjT2yW9aRLaQk5EVmEXqBAChsxD+FZr1kKMYanGQv7p?=
+ =?us-ascii?Q?6/+Gs8AeUQHejBj/0DqLYMCnaGE+eFiH/29H0J9gjFHl14FMF51irgA5WXnX?=
+ =?us-ascii?Q?4KhHRL26mfi/j9TXLdZ2UgkbU3qonLWuST6yukycalcRkbQLfG4ETo1HFD0b?=
+ =?us-ascii?Q?gHZjAM08GV5uE6HnxbOP7Q7n/gJ19dITYe+VDXqWpaGmDEyFXHWfKELA46bH?=
+ =?us-ascii?Q?LdR7LOokJTRB5hPuOFDwEa+jmpbJpza1u81OJXeJ4HxhqIU2xyducgzARXhs?=
+ =?us-ascii?Q?mmwq4O+7Dz4bsSRCmUKkAhg3xYaVOj/IKzFpk4VTkN8UyZTqNjPT9UzJoolH?=
+ =?us-ascii?Q?UxIAR9AINk+5PDxCGcm37J2pDcKTbZpDPwgPhRHocU7ggNowxXOnw6OhAgQ0?=
+ =?us-ascii?Q?3pbbjLOtqsAc8mzaGlhsZLJ5ZjTvL1+1JWdr3HgCJmvT+lmzMkebWSqjGSjY?=
+ =?us-ascii?Q?v1enGtSWgsGxZDuwiCUnHaibCdaGidWyrFPi2INScZ/WXOmX+XEdI3FIdW8k?=
+ =?us-ascii?Q?NCLQibY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(366013)(52116011)(1800799021)(38350700011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?36AFCmJ+zAvw8ZdHMS73OjQOHXM/v9fchbD9M9FF62RHYUDmeHisbxvxj+Wd?=
+ =?us-ascii?Q?RQgfzsppuLFn0rqxAsLqbDEnoo1HXjFPeUaTsTZdokoOKmuAqusNPQeueTOp?=
+ =?us-ascii?Q?hjZAeQyBi4ZI/u7p+9HDDk+aHW3qnZZlFfZUqRoRkaGHa6IgoDfJWKFRqkZ2?=
+ =?us-ascii?Q?x+Stv/y2QxgkobSA0zhfZEf5SP62td/NpTkFcG6ay23oiKqevuQV/lWMWijM?=
+ =?us-ascii?Q?hf+980ClkyBg9h5sACPB9k/GJrIUfp0i+3Yv3qqj41a4ZmlPUWkhvTWE58ui?=
+ =?us-ascii?Q?rzKNyXpRrbSXtzVrrunwTYecwX5uuICtxmbGSoZuXPzRks9QgXuiAO6Bz9oK?=
+ =?us-ascii?Q?KIJaYhx4HAtnIkfgRp7qrUxtWQ+T1RackPrJhRK6Oz08yF9b32Mqyq6RZXTc?=
+ =?us-ascii?Q?o2Mg1F2Obus/iOq13RvJFRhDz14ZqJxYrrSvaGpWfwNNK7ultoZTR+pXSJf4?=
+ =?us-ascii?Q?pqBm0mc+95mv5JfVJLe6ZkDXTWG56jPIgE7WNYw7TM+EX0x3UaOG6hOKVzpn?=
+ =?us-ascii?Q?fZwYP8/um3cKQJDPIen2hEqpl4RuOu+iDRXaAMMEtQpiPWHKC63Dd63GHv1V?=
+ =?us-ascii?Q?7yMpI/8aykzS2lwCcpsZZfOy2jhbJgcOl8wMmWXmWTZmFCCTrGaY9EU7YNIP?=
+ =?us-ascii?Q?iSxF+T4+LdnPW17xTaCeLH9KcGRsvRdAT7pl8U0SA0ArY4lxdr2HucmKAhaW?=
+ =?us-ascii?Q?09T0r8paHhWVorG+yYCyingzUGZmWPqpJfJaLwz+i3MjRgc6q86RV/Fc6q7i?=
+ =?us-ascii?Q?0V2Pk2vACy8GQoLaYU3zsKcZphzbJQ3mUiWssr2+C0v+K3DQBn49pnAb/hwl?=
+ =?us-ascii?Q?2ECsF6NMoKe5ybD9eWnQIXVkDbxC2JC80QerBnfONeTjUF43mpT60S2ELsnA?=
+ =?us-ascii?Q?HGU4wIsorZEh2EgoXE1mbkQZu1GorK4CfQDZguROYz+GtnDT+z4o0osvrurG?=
+ =?us-ascii?Q?gzHGMlwLFGQGB5d+MlnjpyQoV+wNbPFn5Nw9DuhOMICGG2swtXSjRmVEqunc?=
+ =?us-ascii?Q?itKZCV2Oh7sg2TM+J1t+gyqPDI9allu2xudAi5LxTI/qkkE9XFZmECd1gdnn?=
+ =?us-ascii?Q?sFj5Hk5zVBRmetrIEUrqgurJF7Pp5q6SWaNQAjMiMlhLbrR0QyR9Gszmhkhz?=
+ =?us-ascii?Q?hRnjIHynY+PlcSRm+2dzq+Gl5Xoo4kJ/KW5ZIeZpfE/hrEBTPuRAGU9LIOT0?=
+ =?us-ascii?Q?snAKaRHrDBY764bG28/4qNWXbfxF6tKE2qFGYGZCPp1oqhlwl+SBsfJBvkD2?=
+ =?us-ascii?Q?sUzvuOhQGHz9sQ0keXM2CIJ04kzjn/wHGhwo2np0ahvO0ZTPjD/BFWSwZ4xJ?=
+ =?us-ascii?Q?llIgztVJKgWFBqI53E0MTaN5DuWafjyYTd+i1MQZYlThR7NNZ0wCO4iy4PXy?=
+ =?us-ascii?Q?nIGTT9UkEVIHo33cbqjfCCGYddDJYNYybZISUXAeFrBsXiDb1AKXhxR7GyYa?=
+ =?us-ascii?Q?vBslQsV8p0psxMoqnImABQ9/D1+Z1ERlqFgOQ+T8ZGMkpcuorusEruPvNpdC?=
+ =?us-ascii?Q?SQSppSORigTjWsbf80XcPCw6qsa9gc137bl9dRJ7/Sdk6Eqm8oOq0ImUhu8I?=
+ =?us-ascii?Q?eLxs70Fhe1aSoa8YFBe3lu9ckFCAk8ley0b5jIDgiKmCsfPXKTb2rd9cjAq5?=
+ =?us-ascii?Q?TYeHe4gbpPAZlX2C5//fzvc=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b41565bc-844d-487e-c52e-08dc90bb3d33
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2024 23:55:04.1467
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EqAjbFVmcAg6wfyoBXelqdNUVlgnqIhZopy1j6kX8GKkoT+ZI7Br6h8E9LPXE6XaylRubUNzKxJZAuOH5sT1xzAKqePfmPMI7okD01zlgqmoon1RBY1MkdZtTuiooACC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB5909
 
-To support sources that implement the .enable_streams() and
-.disable_streams() operations, replace the manual calls to the subdev
-.s_stream() operation with the v4l2_subdev_enable_streams() and
-v4l2_subdev_disable_streams() helpers. The helpers fall back to
-.s_stream() if the source doesn't implement the new operations, so
-backward compatibility is preserved.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Hi Mark
+
+> > > This doesn't apply against current code, please check and resend (it's
+> > > simple-card and audio-graph-card2 that conflict).
+> 
+> > Ah, I guess you used "v5 original" patch-set.
+> > "v5 resend" patch-set or today's "v6" patch-set should be OK.
+> 
+> Oh, if you mark something as a resend then it sounds like it should be
+> exactly the same as it was before, if you've rebased you should increase
+> the version number.
+
+Thanks, I learned it this time. Will do since next time.
+And now I could understand the reason that sometime maintainer get strange
+conflict which I don't have :)
+
+
+Thank you for your help !!
+Best regards
 ---
- drivers/media/platform/nxp/imx-mipi-csis.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index f49b06978f14..b9729a8883d6 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -320,7 +320,11 @@ struct mipi_csis_device {
- 	struct v4l2_subdev sd;
- 	struct media_pad pads[CSIS_PADS_NUM];
- 	struct v4l2_async_notifier notifier;
--	struct v4l2_subdev *src_sd;
-+
-+	struct {
-+		struct v4l2_subdev *sd;
-+		const struct media_pad *pad;
-+	} source;
- 
- 	struct v4l2_mbus_config_mipi_csi2 bus;
- 	u32 clk_frequency;
-@@ -597,7 +601,7 @@ static int mipi_csis_calculate_params(struct mipi_csis_device *csis,
- 	u32 lane_rate;
- 
- 	/* Calculate the line rate from the pixel rate. */
--	link_freq = v4l2_get_link_freq(csis->src_sd->ctrl_handler,
-+	link_freq = v4l2_get_link_freq(csis->source.sd->ctrl_handler,
- 				       csis_fmt->width,
- 				       csis->bus.num_data_lanes * 2);
- 	if (link_freq < 0) {
-@@ -958,7 +962,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
- 	int ret;
- 
- 	if (!enable) {
--		v4l2_subdev_call(csis->src_sd, video, s_stream, 0);
-+		v4l2_subdev_disable_streams(csis->source.sd,
-+					    csis->source.pad->index, BIT(0));
- 
- 		mipi_csis_stop_stream(csis);
- 		if (csis->debug.enable)
-@@ -986,7 +991,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
- 
- 	mipi_csis_start_stream(csis, format, csis_fmt);
- 
--	ret = v4l2_subdev_call(csis->src_sd, video, s_stream, 1);
-+	ret = v4l2_subdev_enable_streams(csis->source.sd,
-+					 csis->source.pad->index, BIT(0));
- 	if (ret < 0)
- 		goto err_stop;
- 
-@@ -1233,12 +1239,14 @@ static int mipi_csis_link_setup(struct media_entity *entity,
- 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
- 
- 	if (flags & MEDIA_LNK_FL_ENABLED) {
--		if (csis->src_sd)
-+		if (csis->source.sd)
- 			return -EBUSY;
- 
--		csis->src_sd = remote_sd;
-+		csis->source.sd = remote_sd;
-+		csis->source.pad = remote_pad;
- 	} else {
--		csis->src_sd = NULL;
-+		csis->source.sd = NULL;
-+		csis->source.pad = NULL;
- 	}
- 
- 	return 0;
-
-base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
--- 
-Regards,
-
-Laurent Pinchart
-
+Kuninori Morimoto
