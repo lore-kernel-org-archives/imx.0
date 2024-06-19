@@ -1,97 +1,129 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548AD12DDBF
-	for <imx@lists.linux.dev>; Wed, 19 Jun 2024 12:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A7015B143
+	for <imx@lists.linux.dev>; Wed, 19 Jun 2024 23:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718800441; cv=none; b=dZkRw9AeV2h0oXPnwQGE98cKHaWxZFp6I3KM0QJG9ffQVXc005Do+QoPuRYSie2TNpCDu2nJa/HE7GnY79tPqV/x/l3BYaJ3bEMAFjvKQJXqXzo3z84ee9oZRLgLVFHPKtltNkQ3lWZbP1CQxwR60Ls710GraCOz3TkFYUZLwMI=
+	t=1718839497; cv=none; b=YgbFJbiY9VGgR5bqJfCjalXclOYuDyoMt/nDDtsv7eMHGkQPklbNuO1UiYe5vL5n9+Zr5IL+JeVOH+zoK6NAiyzo9jkgUsA7sO2IyIHHGhDeydqNnEzmA8KVbzpIaHdoEhFgUhH1vZMZu6BR2MepW9afuoj/m0DGBJvzdHjALQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718800441; c=relaxed/simple;
-	bh=oZTdbaFdEYV2+FSHyINXBUqdfGmskBcopBMD9x6R3WI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YTS5QqTdKB6M3p8PLKoabGNNXaBP5awB5z2XnEL1xWBLmjElsQiNP1NytI9GdtJVsc6am8xw15i/0UXcd+56qxXfr73SQ+rLL28Md0mruaFPwmaqzV3OYehPI5uhjokulqoDnYOTrLVF5DK4Wt9Y6P/0EHDpBtoAUpRxfJX5YSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=bkHwnVA/; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1718839497; c=relaxed/simple;
+	bh=hOZq0MsRJzwxCzPT8CTrS7U4UH5KCg6abdAycpr1YRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H37w5tvQSjfGO4p8Dx0R4vepDia/wzaJnpErYF5hyHIEHJ7MM3EjmhQkvR3aqS//ezGKT1HaYokFbmzSojpY4sYJ3CMSgW4oPTArq1xKw8LBzNN3tvFLOWduxNN2vGR5YN4TkkIi1EeanKvP1Sa1cJv/woMN/9Y4R++ZPWJzZTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=OuWxmMqY; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="bkHwnVA/"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 8242DA079B;
-	Wed, 19 Jun 2024 14:33:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=A/xFYTay0pnar7l4hfW8U3TeHM5unFOL8UEUrRriS+g=; b=
-	bkHwnVA/DZXBq4/4XR7vU7yjDzepxjwnDLnfrhBZnFRYuIaFWIa1FfCpVulYDpcJ
-	DWyB8qcYccVnvv/Z/JxF8qq/NXWPFNTxFfYmAf06SMhKE8KrTokcWq+uHNE1jwam
-	UhIe6XO5YGX1Leeu/+cEEENzF2wCa3s7T25k9koVY8njdoGsSPHi0ru2dLue7EuH
-	NIHOpDKP4H7oYUbpOkudNVlvOvHAwZjF1IxTdrK/00XfrF325GGtLJZEeWEdGCJZ
-	8iwz7GhJzhc6iQLy+mTHU2EYFlP/9mAvAXacjJELnQm/ZdTNjD/OklyvfIy3wB3b
-	3oQcEPqXJau7k614Vxu3xB4xW9R7OiRNkt76MHw1Zeu63fEZcVbbwEJ/4hVKxHC9
-	laZKqpTWWregEJrpyPZBhRp8RBMWT5ZwVbuivEE69n8CkoctIZ/6dJpjq5AB+JMq
-	Os+ouXQ8XmOMP4LqknHRjq5/yEg2dF4D1JKr+PDvZuAKooE+E5ONvZUCRdMjFqV8
-	omimp/yuNE/LPyYKsgJ+1WvpxxuuaPMUYOF2cxLsKh7vcStbKbNbdpb743E7Tw4L
-	7FNTKuPJDXUnORFNEFvsmBUbFDXJn9syWOK7Pr1V1zKfUQ4G0GpoPBd/DJvEpEeY
-	Jp07wnu42XVqtGVEIe5DmSNduuSizEoKzw9LymVlX5c=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: Frank Li <Frank.Li@freescale.com>, "David S. Miller"
-	<davem@davemloft.net>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Richard
- Cochran" <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH resubmit 3] net: fec: Fix FEC_ECR_EN1588 being cleared on link-down
-Date: Wed, 19 Jun 2024 14:31:11 +0200
-Message-ID: <20240619123111.2798142-1-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="OuWxmMqY"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 52EFD8E1;
+	Thu, 20 Jun 2024 01:24:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1718839475;
+	bh=hOZq0MsRJzwxCzPT8CTrS7U4UH5KCg6abdAycpr1YRc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OuWxmMqYRk8tENZ/2VPDy/xwLD2UvmLzNuUd4jeyLwMwP91PycW9IVbzkhJZNXSUQ
+	 zik/OZS3kLaXnQxdPvt3IR9XLYyfOy2hAnA+LqML4K5/X8oz0sVE5hgf6pmCGq9M2O
+	 Q1TrW0enE05CUNfo7qPjXKyTDc2TUQUobofvAGtE=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	imx@lists.linux.dev,
+	Purism Kernel Team <kernel@puri.sm>
+Subject: [PATCH] media: imx-mipi-csis: Use v4l2_subdev_enable_streams()
+Date: Thu, 20 Jun 2024 02:24:31 +0300
+Message-ID: <20240619232431.5708-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1718800428;VERSION=7972;MC=877467776;ID=563504;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2945A129576D7D61
 
-FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
-makes all 1588 functionality shut down, and all the extended registers
-disappear, on link-down, making the adapter fall back to compatibility
-"dumb mode". However, some functionality needs to be retained (e.g. PPS)
-even without link.
+To support sources that implement the .enable_streams() and
+.disable_streams() operations, replace the manual calls to the subdev
+.s_stream() operation with the v4l2_subdev_enable_streams() and
+v4l2_subdev_disable_streams() helpers. The helpers fall back to
+.s_stream() if the source doesn't implement the new operations, so
+backward compatibility is preserved.
 
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Cc: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/netdev/5fa9fadc-a89d-467a-aae9-c65469ff5fe1@lunn.ch/
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/platform/nxp/imx-mipi-csis.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 881ece735dcf..fb19295529a2 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1361,6 +1361,12 @@ fec_stop(struct net_device *ndev)
- 		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
- 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
- 	}
+diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+index f49b06978f14..b9729a8883d6 100644
+--- a/drivers/media/platform/nxp/imx-mipi-csis.c
++++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+@@ -320,7 +320,11 @@ struct mipi_csis_device {
+ 	struct v4l2_subdev sd;
+ 	struct media_pad pads[CSIS_PADS_NUM];
+ 	struct v4l2_async_notifier notifier;
+-	struct v4l2_subdev *src_sd;
 +
-+	if (fep->bufdesc_ex) {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= FEC_ECR_EN1588;
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
- }
++	struct {
++		struct v4l2_subdev *sd;
++		const struct media_pad *pad;
++	} source;
  
- static void
--- 
-2.34.1
+ 	struct v4l2_mbus_config_mipi_csi2 bus;
+ 	u32 clk_frequency;
+@@ -597,7 +601,7 @@ static int mipi_csis_calculate_params(struct mipi_csis_device *csis,
+ 	u32 lane_rate;
+ 
+ 	/* Calculate the line rate from the pixel rate. */
+-	link_freq = v4l2_get_link_freq(csis->src_sd->ctrl_handler,
++	link_freq = v4l2_get_link_freq(csis->source.sd->ctrl_handler,
+ 				       csis_fmt->width,
+ 				       csis->bus.num_data_lanes * 2);
+ 	if (link_freq < 0) {
+@@ -958,7 +962,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+ 	int ret;
+ 
+ 	if (!enable) {
+-		v4l2_subdev_call(csis->src_sd, video, s_stream, 0);
++		v4l2_subdev_disable_streams(csis->source.sd,
++					    csis->source.pad->index, BIT(0));
+ 
+ 		mipi_csis_stop_stream(csis);
+ 		if (csis->debug.enable)
+@@ -986,7 +991,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+ 
+ 	mipi_csis_start_stream(csis, format, csis_fmt);
+ 
+-	ret = v4l2_subdev_call(csis->src_sd, video, s_stream, 1);
++	ret = v4l2_subdev_enable_streams(csis->source.sd,
++					 csis->source.pad->index, BIT(0));
+ 	if (ret < 0)
+ 		goto err_stop;
+ 
+@@ -1233,12 +1239,14 @@ static int mipi_csis_link_setup(struct media_entity *entity,
+ 	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+ 
+ 	if (flags & MEDIA_LNK_FL_ENABLED) {
+-		if (csis->src_sd)
++		if (csis->source.sd)
+ 			return -EBUSY;
+ 
+-		csis->src_sd = remote_sd;
++		csis->source.sd = remote_sd;
++		csis->source.pad = remote_pad;
+ 	} else {
+-		csis->src_sd = NULL;
++		csis->source.sd = NULL;
++		csis->source.pad = NULL;
+ 	}
+ 
+ 	return 0;
 
+base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
+-- 
+Regards,
+
+Laurent Pinchart
 
