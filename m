@@ -1,44 +1,44 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2061.outbound.protection.outlook.com [40.107.241.61])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2068.outbound.protection.outlook.com [40.107.104.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561F221364
-	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 03:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199395661
+	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 03:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718853641; cv=fail; b=o7jrReIY1Bf0RM0J4bqhuxaUhSv6rnPmxX+AdNvHGAwbDvk26xGlE9ONc2ynnPENTkFvgtvJHKcc92NEawV5nOzJrdQT912tXx1XJzsV3YyF0uIgBBpGwybgnAyqSru25tqV08A034OzOWa/HSvXsEHVGImdqa/7ajpheZzoxa0=
+	t=1718854230; cv=fail; b=AGc/x2bFLm3fMC4qPD+TrVzCktWF9/gg651+9s4EDLcVCUy4sGwO2Dq6H9KJiWS6f954Q8zLoT0BsZM4MPXLYAd7gva1mUWBEiPpNJTTiMrB7LTmwhJdEgddwJXRj6fvrEH3FrXxd1KLD2H5KDz7lCM74EJC5D3vYShKm/Az4xk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718853641; c=relaxed/simple;
-	bh=HJeCgjhhpZ5xYdji/Xl0UxagIHelGNxxGx5Yu/Tlf2c=;
+	s=arc-20240116; t=1718854230; c=relaxed/simple;
+	bh=/tJSytx8DmzcHJgRBTkUr5JvhmhCMIqY6o5yemeKXs8=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cx8NAX0U/2UvAsOvrvfUZ2me3+YCHxG6xlM1f/13yiDnpVP078kJoRBtgaZYES8xDlU/q7tabjYKGQlaAQ0Mf4YMwOg3Cd4vI2Nb5FWRvAjWxPxS3/1SPZbFwyZojY/bwBKrAs3pUIBbas9mIq1qCxdNBxlI7gQFksc0azfnYMo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=s5tprcSG; arc=fail smtp.client-ip=40.107.241.61
+	 Content-Type:MIME-Version; b=YBcdaSIiKvDm+RFJkgDPyqZ9ox9Vyq4Y7wdCBOwzx7f27sYrYdrjnHbQViA8roiQb0HHOYUBGxp8Th2zJnv2SUN+C6YEjsql818Fo/K8pEHG6OfscM51m7JZymCtlx/NUsKpBWxGRxOBcfUjEFQwzDfuJdDz93J9zfMEK5nk2sA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=s9D9AQFw; arc=fail smtp.client-ip=40.107.104.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="s5tprcSG"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="s9D9AQFw"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R7Nh/qTPnnmQorVzreQgsyDEbb+GRE5nB8fEPaHHMVYljpYdADtbdbLXinxmeOF5M720BvGZizN/+sQJAGUd65FWCZyIXZAQdkcQGF/amuU7V22QytC+O1gAwNtC71V3W4tPdBRHFRcuQ5J0CKXQF0xhCVGcYvYc3vytaSvLVPWJ+8ywMEU13SQ1Lko2qlHggKv1pRB0o0UwEXZaElV3NspWMpLFIobewF9TRcDeVkeEIdC9bCmTvf/sPGK6AsPYzSOWXUrDcV2xLLMT7Zp3HQ0vjwcJkNIZxt/0nWGXyApzoIQSa07rs+d5E2gkYUk5aHXnceoP4DxgqCujIBhD9g==
+ b=KqGgkOTbIxZobG2TBw/RHghTyaEbzoVevDTiSnrEjnj00fs06Ltn1n0UqY05zQvibshx1xLBNkSwvN4FxKdsHGudhQEAGqgq/xU2n9KhxrerY0agOQgsH2p7D0YLxbBrO6f4zq2h2H5tE6alImWYRxBOIOvufMFzvixXIdUvweH1bvWLK7Hms3AYz6GT4ykMeG2v0DsXxYcXI+432NfxOGhP59360Em/Fp3Cz+/wsB3ER+zHJ2haluvQSkfAm+EFBGEJunj/DlRS0FQyMv6xML2SEHiHt0qaHGCavCaorvC4H7laS7tNNO1tf5Nc9s5DakbNiEU6aGEnIoL3iJyqyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RKqaBrwFZr63Jl5pqMnOtQTn3JVDhDiGh5ASzKTBAgA=;
- b=CJ6uSAf/OZRnsQbIql8QwrD0J4b86mVggGUq9Uk++pnniyp446tvT7EuBr2JqI3+5MWeEHNETdtwulXBB+5Q6rF1eP4hkjHtHWyxXQR3TkE1kX4dp9PeHcp50TtGiKhbb2hJiwjKmMEZ9yFrRCuPoBsf4I/THIpu5Y78c67hydtQThy2WFGVYy6rA374DVytA/9Hr6jA+6HAmxXCyo82Kr+HOmsRKA+ye1e5huEJ7sSKrHX5PXZSnBjS/LxXu9O1+Kh61GKzS5gMg22dM9VTKwAw49HRPlTWVXWq/qsaftFTxcIYOQYKmlWn/CSub2BPvMQv7291IGft0nIF4C7fvg==
+ bh=wP8EyZYU+mqgrWtKw0hKnh3MQGHB5pAtzRx80evVpwI=;
+ b=Defgcab5NHELwadwVlxVGBgi7rqTArt8SQpoQw/PeRCnrONA1iyaDfKYqAk9SZw9+uavciTYdw//Hvsxfmo6PPjvjM2kHcqIUOAeVKg9c+SOcPvxl9fycDy8hIto0RNf9tQBrYUfuooQSzh6gRUSHUfqdjhadAKO06agK/6wrJdpPZp26JrwAZqKZkWLNpvs9gRHkJBJxH+5WVLXY8LM6B3ONKE9n/0RCkz4y7q8lSiAeCOrn59CcyGJOhSTvCOn58su0HNjd0QVlAefZmp5Sh4FQbzjRmsswDfwhYkcbOUU4NoOfTCadZuuE+XWDq66+bHNRGYzLVUyuFuzVRPUDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RKqaBrwFZr63Jl5pqMnOtQTn3JVDhDiGh5ASzKTBAgA=;
- b=s5tprcSGomNmZ2RC2Cj0bWsESsZ7Kne5J1Z3LZjmQnMImZojkvhzaBmcUNmWI9mkmHwbJ45a3mOj9aHmxOA/TRVErC3kXs57NwteqmYjRuAGwXi5O3YP8qX0Z/F+3lkwkMoYz2Bqt0aKv6dmDbnMEZBSqWVVFwdmd6r4Ym1pLMM=
+ bh=wP8EyZYU+mqgrWtKw0hKnh3MQGHB5pAtzRx80evVpwI=;
+ b=s9D9AQFw6Z+NbwdcDyMHG6w2K1LCq5Xzy1mJfHuAy2sZMZMIFqpiIu79+S9kvnyEwiPbuDmIdGWobLKUXxptR7Mk3DF6hNDv7qcER7iXjr3Plj/Gbq6zfA5oM0gFYvAtJHQhx2AlfpdE/TqosPAe/4e3OEKMm3yda9ibFVhNcmY=
 Received: from AM6PR04MB5941.eurprd04.prod.outlook.com (2603:10a6:20b:9e::16)
- by AM9PR04MB8210.eurprd04.prod.outlook.com (2603:10a6:20b:3e7::17) with
+ by AS8PR04MB8626.eurprd04.prod.outlook.com (2603:10a6:20b:429::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Thu, 20 Jun
- 2024 03:20:35 +0000
+ 2024 03:30:26 +0000
 Received: from AM6PR04MB5941.eurprd04.prod.outlook.com
  ([fe80::9f4e:b695:f5f0:5256]) by AM6PR04MB5941.eurprd04.prod.outlook.com
  ([fe80::9f4e:b695:f5f0:5256%4]) with mapi id 15.20.7698.017; Thu, 20 Jun 2024
- 03:20:35 +0000
+ 03:30:24 +0000
 From: Peng Fan <peng.fan@nxp.com>
 To: Cristian Marussi <cristian.marussi@arm.com>, "Peng Fan (OSS)"
 	<peng.fan@oss.nxp.com>
@@ -53,18 +53,16 @@ CC: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>, Sascha
 	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
 	<devicetree@vger.kernel.org>
-Subject: RE: [PATCH v4 4/6] firmware: arm_scmi: add initial support for i.MX
- MISC protocol
-Thread-Topic: [PATCH v4 4/6] firmware: arm_scmi: add initial support for i.MX
- MISC protocol
-Thread-Index: AQHarbcg8tYP6XkRL0OL5bfUz062erHMaO8AgAO7ZlA=
-Date: Thu, 20 Jun 2024 03:20:35 +0000
+Subject: RE: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM module
+Thread-Topic: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM module
+Thread-Index: AQHarbcjsuJf2tlyEUupBkFkDz7Jz7HNb20AgAK4mNA=
+Date: Thu, 20 Jun 2024 03:30:24 +0000
 Message-ID:
- <AM6PR04MB59412EBBB6899EAEAF4CB93E88C82@AM6PR04MB5941.eurprd04.prod.outlook.com>
+ <AM6PR04MB5941F0157D94E57EC6F12DEC88C82@AM6PR04MB5941.eurprd04.prod.outlook.com>
 References: <20240524-imx95-bbm-misc-v2-v4-0-dc456995d590@nxp.com>
- <20240524-imx95-bbm-misc-v2-v4-4-dc456995d590@nxp.com>
- <ZnB9ANdbJ9d9MZHD@pluto>
-In-Reply-To: <ZnB9ANdbJ9d9MZHD@pluto>
+ <20240524-imx95-bbm-misc-v2-v4-5-dc456995d590@nxp.com>
+ <ZnFZMt5Xao1u7Ve-@pluto>
+In-Reply-To: <ZnFZMt5Xao1u7Ve-@pluto>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -72,68 +70,67 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB5941:EE_|AM9PR04MB8210:EE_
-x-ms-office365-filtering-correlation-id: b396e06d-058d-40fd-f8a3-08dc90d7f331
+x-ms-traffictypediagnostic: AM6PR04MB5941:EE_|AS8PR04MB8626:EE_
+x-ms-office365-filtering-correlation-id: e33226d7-545b-4e4e-88c0-08dc90d95279
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230037|366013|7416011|376011|1800799021|38070700015;
+ BCL:0;ARA:13230037|1800799021|376011|7416011|366013|38070700015;
 x-microsoft-antispam-message-info:
- =?us-ascii?Q?sfvDcq5hRgiYXUc2mLsw7Eii4FvSPxoSM53VHYS0rXpO7AzP9TMkVSSzMMp1?=
- =?us-ascii?Q?MDvy2pld2yv1A4uyEHC+qVAbfgKJVwp4NMbWq5dkuYvlbyYEMcF9wabK9XHp?=
- =?us-ascii?Q?pr1LAWy72vNvyEyQt8inbaMzQQ95Nh+ckVwEk6zMjv0OuZRrmrfKuryp01pp?=
- =?us-ascii?Q?NTXeqDxs0W4kSJSLRONOuMvs++jwqNSDiJ2Jq0KwDUMVVP4h3oo5gLNbE0Gc?=
- =?us-ascii?Q?YaV4v7DR7LUeNjqF6mQMr6NrOOKNdZESUzEF3NKYWpU57B4BK+ejYmkJ5exp?=
- =?us-ascii?Q?EzJSYbgGWQrR5d93XLEWjV03JFr8nYx0lLNx7g14qdHAciN4CO3Zb2oLL2sg?=
- =?us-ascii?Q?Kxkq4e4iHPy8DaZ/8AgugI1bq1sLjE6UqB6LR8PyNrRaKR026MFw7D3ONcIi?=
- =?us-ascii?Q?vAZe7a5OGC6u6ashG8cravT/L5J8sUVj4Oi2XWL1mh5n4wsb3EvjIjO4EU7g?=
- =?us-ascii?Q?3Yt67AFzeOT9JIejJiIs74Av7NrJhqqKjBBdiwpdY4uz6383v6SuxQAU0Ejx?=
- =?us-ascii?Q?OQUyrLKuvdKs9rTIceKPyU/MkLGfe3wnLGNp9WXYcvTAkkob8ZGE4d2OHsZe?=
- =?us-ascii?Q?hp3cjBUQ6SpAaKkE3FkAS3gnAcnp5CZUGiZDXLdqYD14c98gNd8VXxVEfqkb?=
- =?us-ascii?Q?4Y0nK2LOl0jYKpnlQLO14F96DvUBNQHhGNIS+5jgGBTxvk3l6y9SAMyse0YC?=
- =?us-ascii?Q?+2vcawXPAvkwFbxkuSWU0u0CtEtCMVoJfd/c7CqfLpRP4Zk3SCXrtR2+KL0G?=
- =?us-ascii?Q?1H3pFjGJ8qCqK0WhXyyyjrqArOxEGro7RnX1urtV94WCFz1wtg4lLSa5YuyW?=
- =?us-ascii?Q?xuDuOANHOtRYn5SNhtjt978kZrZrJepUruVob69/ZhfTqK4pnrDLfjPEMu6j?=
- =?us-ascii?Q?QwDPEQ8R9S9F4NvfeOkZ+0eDGipXj/Xv8VDrYzX3Brz/hPHkFXzUV431nEG+?=
- =?us-ascii?Q?CoDFufg+lhVTA/qGiR4uJpjwdb/skaOK+RN8N9AqKAlMwemzUEKicPPEVf4f?=
- =?us-ascii?Q?8yAJDapT7UB7YNQd/xuSG0xi7PJm5Nv1Q/oR1U7sYxuC8/kDB1AUETceimi4?=
- =?us-ascii?Q?1VPO17Oi0uHPlIABN0uoh8asbkUQp9WfaBmfSHKMDt+Dey/REi57nDO3J4CF?=
- =?us-ascii?Q?8h3zMHOq+6GlOdyU4IiX+TfdEjBYch5OpO+eo16sm4qTXZjJnrW2Vfgb6KzB?=
- =?us-ascii?Q?4LL+c5EHWNp14hB/XZnx5ocO3jQV2zy7TIB+8ZbLgsUBQwQ3Dxv3HMhv3HB3?=
- =?us-ascii?Q?X5k/lVqy/hxIgBzKlmVfU7N7FlsJ3TarmmmBFLfY3ctKLmMxp34hfwIqE0fw?=
- =?us-ascii?Q?JLEN8aSQcL7aGbbCCprFRebTjh4ARmiKlbe5t8TFmDPy3LDNKADAlOSsxdeF?=
- =?us-ascii?Q?DGWW15k=3D?=
+ =?us-ascii?Q?SLHC1XIOtoJ8NFc8hb7gmpW8FiBukRJ3VexovG9aRwbBT7fT8MxMsb4WKpsq?=
+ =?us-ascii?Q?oCDRiXbe1HwDpsWg4piHO6x4dkXVDbPOC77m7yljZxi1McgQb1qq5HgLcn50?=
+ =?us-ascii?Q?8K0GICWvttZAKfAwLjqy4bvyK3gOPATslIEzZL/3jKsS9iNJYZbsQdwrwJ7T?=
+ =?us-ascii?Q?9cGx4uvqMc+7dJK25jathlOqdieHBCCwclM3LHMjwk/ipIvELdrN+iTKxqFd?=
+ =?us-ascii?Q?v5GvOx2LzvJNdVad/7YSNA+9TEsYRfniqdxhp9MO8vHxoCFodPaUmYAcgafw?=
+ =?us-ascii?Q?bd/XZQDC+ccRIvRkK/eM0yDntBrDDTkCBN6uH8xByvMO2yheRFgQU0gX3mzX?=
+ =?us-ascii?Q?6Czqx0NBBusUBudYWEAMoqu5SQgzxBh7scsRUMShnQSG92BjiBvGSqwkMpvM?=
+ =?us-ascii?Q?d1B9T3MlMTc5t0lCGOEJJleeR83Ux9FY7jSk2nWHN/jEeVHYBw8W31hYmheG?=
+ =?us-ascii?Q?PP9HPP/9zeaM4wQEhqfXv0RHFDxCFMnhEtZ5i76qM7XCM1CPpSU4JEruI4ed?=
+ =?us-ascii?Q?aaWTH/251zNtMopwNSYGDyZkFmv9DQiUYM8YWGQVfkeCTCMblWjNglhfIvOJ?=
+ =?us-ascii?Q?mUCRg5Gx75ZI5acS5NInKyeACwpb12/WCIul594f3/S0S7BEYRJYrviYCX2k?=
+ =?us-ascii?Q?yyG6zc3B3SxKYrn7CwEC3mqMgC5C7fvXNIKz71mNKwXSAPfOPKkoEGjat7wD?=
+ =?us-ascii?Q?Zaermb/rvmdWPunZkW+VG1ALXELDJLObIQtjnz5LNs9GOnawPhVkEgwF1DPr?=
+ =?us-ascii?Q?0/ozI0puBt+jtdOru96tpmS7wKfUOIAHHEEzVKxLlm/3Xb1HK9iUocZ+R1rh?=
+ =?us-ascii?Q?7gDfA2aIxShyKl5wsQDAZjfExCvFQFnS6DFtFuw4k9dHLEEdwNv17L/qXmrI?=
+ =?us-ascii?Q?yjp+wFpWXfX9lWqKxEDyRYbbqhKWt6bQk7cN/MyQ9iB4fTm+nXupVhzHNSGE?=
+ =?us-ascii?Q?8q4b9GMNA4C+z9CYbKFk5NHo9Ph8wn+ULaMAknCEuM52bmC1v2MHkaV/eeev?=
+ =?us-ascii?Q?feBxjgy5l5uRV3PldkZ86mND8JnuK4F8WNQA+SzOc9lD1ltsoSm8bLRX+ddW?=
+ =?us-ascii?Q?xNPhZ37awICka0rA+JmgJ7ZxMJp5ftFRppMOlcXrasyqQhnBYkK3Oh1rjdtO?=
+ =?us-ascii?Q?5f3pYlSR6Oa8vn6e+8m1qmS8B1s0Hh7PvhoFrQMqpnYgG19HGGy8fG59Gymh?=
+ =?us-ascii?Q?U/9LAlPFLdmdE04QviUctQwMijbhvwfra+V3SAV3XEBVTs5EFR+IM7NHMJxj?=
+ =?us-ascii?Q?74N2jvhW0hbBiUwscCDJ/7b7e41MhRR2fb4Lvxqdpb15cNytqG2RIjX21uG/?=
+ =?us-ascii?Q?ub5IqMVMQFo5XAZRkDLd5eel?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5941.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(7416011)(376011)(1800799021)(38070700015);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5941.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(376011)(7416011)(366013)(38070700015);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ytVWCpwsJGg/7A7EuJm0d0CoekBPESSIvqI2amR/r8Fhqj5ZT75Q8rTYxKZp?=
- =?us-ascii?Q?FC5ZmP7aBennMFkjcPTGRo6t1fl+Y4BXLFp1xhERmNA/mPWy2j1zNsZ36iwr?=
- =?us-ascii?Q?bGUC7k+podhllO390pl0eusum8w2g6VWZ+0+NJsiNP0GUATP1T/lZfDWT7C+?=
- =?us-ascii?Q?AMV5zZm/yjN9/NShOWEMhfbNyQyh8z0UobFYQlkL/OfjkpoJvHCLhaTMBEpm?=
- =?us-ascii?Q?k346OXadr/TkIJNMc7loBWi71P1UV5GokQdm5cXslmZg40SXurnTS9xoCA49?=
- =?us-ascii?Q?rX73QHXDDHOIaQLYUzTl3TxB6EuYw1GLzNEyqpnEzmYGxAWU9tiicNXnYRYX?=
- =?us-ascii?Q?b0g+xEr7m32olfgc4CpqeSHWRwW+9p71k0XPjJyMGTtN2IsuNexutvQvMFoz?=
- =?us-ascii?Q?Wh+8kbkR/8rVRFlxc7QdRd9mjCvBdEn9F1iSbXujFcDdHEvFzd6Gj1gj2HTV?=
- =?us-ascii?Q?DQh9fIElib0mZHgdAOa2YnuO3hpWe3e+YF2q4ce3J0Tu7FkAh4tjKZ9qbJaR?=
- =?us-ascii?Q?vpNQme5gxnBKDFjjf221PWsbGDONSmcVJROK125bfOFjTb2L+6VjRYhCom/G?=
- =?us-ascii?Q?uHwOkRBEkVSnGkXV/nHggoCCBnnU6l07IDCY+tHFoWgsINvGvbrcx6cmMi5J?=
- =?us-ascii?Q?Nbi2UVTgu5Xkshtdnv5AgzdFe7gkCAfBQAf7Jqdn9CrwglX06STuxhLSOHiO?=
- =?us-ascii?Q?pscpYo4n7s94cGeP/jmxB1e42rSg+8kKNzRE99y4J0zvqaBsuz60dxouUvlx?=
- =?us-ascii?Q?E5Wtc7v72BA84fn+TJ/xK+J5LlEGCzVH2n79prkqVi68V5etRScRD2MNbDIq?=
- =?us-ascii?Q?L8O3uwOycZ4gMZs7533ffjtcrPfGJIO0YHBoFrst/cswo4oqz7nWTAyhfCa3?=
- =?us-ascii?Q?a3vzA9A9wjQH7v7UHq5ba00dV3pz/YGyhFAWMaS2adTfTTZSc4F+gufNR/ly?=
- =?us-ascii?Q?oIOZTfSAp98jSylZ2PUU9HbNeWkJ3VAtKEcooHQEDhxvfyY1mZMm+l/GfE5z?=
- =?us-ascii?Q?bJqjzJeR+oMx/9rWiZsyJBDIADPNJkcsgZNQytalxUTUX5BUX1tGatga3sR4?=
- =?us-ascii?Q?jXd7t2H+fo9bLlLbQLXja7fCCHnphBRAHfE5P6ms/eGZkmOZPXnemY0wb6UP?=
- =?us-ascii?Q?86d61vJ7K4eil0lWnTt17U2UnaXxsEYtfBFPiLJeDIYBJNf0x/R9wDO0sQwh?=
- =?us-ascii?Q?VDYhHrn+F49qonjc6ZLhJ2HUI2gQoGZTqdZDvvPUG1cq81ixbGyU3k6GOazt?=
- =?us-ascii?Q?8HEC7BdlFTbZsenb4r4is2Jvcq6qiIJzyQDc+yPOHPILZ1nznAOhfGjCRSxA?=
- =?us-ascii?Q?SMImkokE7/IJ/CfRZdR2w7HvZ+KPdw07ATraUUYv3PIuQK0NfwSB1i8b/EAf?=
- =?us-ascii?Q?/lX7+OUQ/Wg7xeLKpy3Rrwq3FVuebbSgmKmG5J/wSClw1Wpa2nvir6mRmtnQ?=
- =?us-ascii?Q?6mLTmuMQDOqquDHT3sCkWfG3NVeL/3uew5/yII6fJp6/MOGBgX9xFR8pfBWp?=
- =?us-ascii?Q?K8XxiVtlaEsADZkvHvQy22Ctf0TcTSqIaFg6sENDwGdymlnD+rvcAn9jpkN0?=
- =?us-ascii?Q?dgu4Bl2jAfrV6v21JRU=3D?=
+ =?us-ascii?Q?/TDiBNoRh7mWg4X8a+Yz039UU+4l/uxlYD6la0EDFfci1ztDwAZHSJ6rt0vN?=
+ =?us-ascii?Q?nPVYhSmHH6cf67XwiqM3UnQg0DxPgac0rbQPIYSNcppZ4fOysYJTovviDqAB?=
+ =?us-ascii?Q?SWN/dR6s50+7o8DVKLF+SUNcCeJVaGvFt7g/4qC1KFK4+sb2zlA0FVspN+NH?=
+ =?us-ascii?Q?PRH9ng4GvGbbFrMm3C9toSIJqxQohIe3t6w5ySkmhlFUHIlyS/Aoi044c7kQ?=
+ =?us-ascii?Q?VVCjjdA1Kwe6Az8oxDZIo/ArrzNrX9xTW0P9qKU1JpIza5n8ZNR185/PS81O?=
+ =?us-ascii?Q?expbHpIbFNCDD8bRuLr7UPIZ2Ap8ZgsbW17vsWZNay8PyCOzLHYkrsWMYTbd?=
+ =?us-ascii?Q?wA2Dgsm7fUZMdPFdZ200Aai/Cf1G3DCjW+G/m0NaAxI6XJ7BnmtTr/Ftf1xt?=
+ =?us-ascii?Q?dUQ7Dq3Z+0uUp3m5Uvu2gn0tD6iYs/YvYGLd6xhKIJf1SvftWF8M83+oj4Tl?=
+ =?us-ascii?Q?N3CO7UjUUAjljiiET/7FLMV/635cYTw0Jfv6W/k4oxARAjLxflXO39W7hwvz?=
+ =?us-ascii?Q?QD2PNtUWAQjwzknNfJ39a9GIRp+HYnnl74jzw1o4QTQiFHVAU1KPLGohYLPo?=
+ =?us-ascii?Q?TmhBe85U+dJTOK0qgsruqwRcDitaYq2LrIQ9i7bD9PWaVt5g1YrFz6u+l826?=
+ =?us-ascii?Q?R1+369DZ3zbAD6V/hnjmVQBZuNZQNV8HT/dox8WBoz0LXfAdBqIc4lXAdDoB?=
+ =?us-ascii?Q?l8gIYlHK2sJJRJ9VS9xqXhahIlUBdASZkd1QV+EUT11M/PZamwNI1kleA5GN?=
+ =?us-ascii?Q?PLLfaJX0e3KJgsVtXs47r2e5RCLm7i6lkbhgoD+/vTZ6XuaP1LwctQv1bK2Q?=
+ =?us-ascii?Q?XSP//lMG18HJT+eeUjZxADrVttxHcTYZgBdvYcZiNspUtaTaxISU3v95Ghr4?=
+ =?us-ascii?Q?t0W2nKObB9UO1xP70I3nBIoMcxRJFv2/p+MOWAjVElnKR6bBG98wSGqe5mgq?=
+ =?us-ascii?Q?aU1WBmEY+BoGQ8a+P5P+ZZFcpisq2JewffebYduTVcXh8HcLIR7Jyqohjsa0?=
+ =?us-ascii?Q?SnFNBS/or2ZuYBuYPHH3d5UOHMPCYG8uyPt4rqOhJvQOF6wYVCtfYHCkUb2m?=
+ =?us-ascii?Q?uLQ+Q7oW8GRv3U87JpqT6m7ZYqHqSJLPl3tZVAF2nzLOFO3ab2lwkjCJLxgi?=
+ =?us-ascii?Q?8Mf2Z6ntMdR2DH9xcvqvMxZlQxJnW/73LZNWPnCepxC4VVikHkcVMfUeS3W0?=
+ =?us-ascii?Q?OCWhnHPCrzTwF67FAweLSYXTDzdhuKIsX5arQIX0tAyuJB6mLz5VGjsysseD?=
+ =?us-ascii?Q?wiIOvLGxp7Q9eRQGmXnAjEhkmBrDIR3obOy6X/LGhEo7eovi7zEKCE/6edKq?=
+ =?us-ascii?Q?NGVs0/GSBPdbdE2HQvbw8IFsPjUVZ+h8enX81qirtRK1BAHa3Yl4xnC8zuGe?=
+ =?us-ascii?Q?9/27I5AmiutXHRDl/AFLmc4S+TdxMGfgIj1fD9rYF5kE3+01ms1K1wNMyOUo?=
+ =?us-ascii?Q?kfi95y2WeKfc+Dgj5h7tbzY/VEAIt4XvbMnvBKCoR5PtPjmfrHEFdBmkEFcE?=
+ =?us-ascii?Q?vF6pd89FxvOvTpVCOYV+E0idnSn29czkMcGGCz9oxuBVvAvqTXfE7fU/l5ru?=
+ =?us-ascii?Q?ZlgqNscrGFgfkIXq0dA=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -145,332 +142,194 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5941.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b396e06d-058d-40fd-f8a3-08dc90d7f331
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jun 2024 03:20:35.1803
+X-MS-Exchange-CrossTenant-Network-Message-Id: e33226d7-545b-4e4e-88c0-08dc90d95279
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jun 2024 03:30:24.5122
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4/rqjbLjD6i2I3lv7qi3OSpboZz+oYU8RCZTz4UqMJyt6FRPB+MNRJ2jTwFeddA/hBwFCd+96TQgkViQyxlExA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8210
+X-MS-Exchange-CrossTenant-userprincipalname: DJSGrecANGrla7e9gXvRgwLfLAgGqfFy+wJYGSbxXSXg9thzIkQco4O0Do4KbHN4lyOTBkBz17qqYluI6kn/VA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8626
 
-> Subject: Re: [PATCH v4 4/6] firmware: arm_scmi: add initial support for
-> i.MX MISC protocol
+> Subject: Re: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM
+> module
 >=20
-> On Fri, May 24, 2024 at 04:56:46PM +0800, Peng Fan (OSS) wrote:
+> On Fri, May 24, 2024 at 04:56:47PM +0800, Peng Fan (OSS) wrote:
 > > From: Peng Fan <peng.fan@nxp.com>
 > >
-> > i.MX95 System Manager(SM) firmware includes a SCMI vendor
-> protocol,
-> > SCMI MISC protocol which includes controls that are misc
-> > settings/actions that must be exposed from the SM to agents. They
-> are
-> > device specific and are usually define to access bit fields in various
-> > mix block control modules, IOMUX_GPR, and other General Purpose
-> > registers, Control Status Registers owned by the SM.
+> > The BBM module provides RTC and BUTTON feature. To i.MX95, this
+> module
+> > is managed by System Manager. Linux could use i.MX SCMI BBM
+> Extension
+> > protocol to use RTC and BUTTON feature.
 > >
-
-.....
+> > This driver is to use SCMI interface to get/set RTC, enable pwrkey.
+> >
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >  drivers/firmware/imx/Makefile |   1 +
+> >  drivers/firmware/imx/sm-bbm.c | 314
+> > ++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 315 insertions(+)
+> >
+> > diff --git a/drivers/firmware/imx/Makefile
+> > b/drivers/firmware/imx/Makefile index 8f9f04a513a8..fb20e22074e1
+> > 100644
+> > --- a/drivers/firmware/imx/Makefile
+> > +++ b/drivers/firmware/imx/Makefile
+> > @@ -1,3 +1,4 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >  obj-$(CONFIG_IMX_DSP)		+=3D imx-dsp.o
+> >  obj-$(CONFIG_IMX_SCU)		+=3D imx-scu.o misc.o imx-scu-
+> irq.o rm.o imx-scu-soc.o
+> > +obj-${CONFIG_IMX_SCMI_BBM_EXT}	+=3D sm-bbm.o
+> > diff --git a/drivers/firmware/imx/sm-bbm.c
+> > b/drivers/firmware/imx/sm-bbm.c new file mode 100644 index
+> > 000000000000..5e7083bf8fd3
+> > --- /dev/null
+> > +++ b/drivers/firmware/imx/sm-bbm.c
+> > @@ -0,0 +1,314 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/*
+> > + * Copyright 2024 NXP.
+> > + */
 > > +
-> > +static int scmi_imx_misc_ctrl_validate_id(const struct
-> scmi_protocol_handle *ph,
-> > +					  u32 ctrl_id)
-> > +{
-> > +	struct scmi_imx_misc_info *mi =3D ph->get_priv(ph);
+> > +#include <linux/input.h>
+> > +#include <linux/jiffies.h>
+> > +#include <linux/module.h>
+> > +#include <linux/of.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/rtc.h>
+> > +#include <linux/scmi_protocol.h>
+> > +#include <linux/scmi_imx_protocol.h>
+> > +#include <linux/suspend.h>
 > > +
-> > +	if ((ctrl_id < BRD_CTRL_START_ID) && (ctrl_id > mi-
-> >nr_dev_ctrl))
-> > +		return -EINVAL;
-> > +	if (ctrl_id >=3D BRD_CTRL_START_ID + mi->nr_brd_ctrl)
-> > +		return -EINVAL;
+> > +#define DEBOUNCE_TIME		30
+> > +#define REPEAT_INTERVAL		60
+> > +
+> > +struct scmi_imx_bbm {
+> > +	struct rtc_device *rtc_dev;
+> > +	struct scmi_protocol_handle *ph;
+> > +	const struct scmi_imx_bbm_proto_ops *ops;
+> > +	struct notifier_block nb;
+> > +	int keycode;
+> > +	int keystate;  /* 1:pressed */
+> > +	bool suspended;
+> > +	struct delayed_work check_work;
+> > +	struct input_dev *input;
+> > +};
 >=20
-> ...are these conditions fine ?
+> You could pull out the *ops in a global like
+>=20
+> static const struct scmi_imx_bbm_proto_ops *bbm_ops;
+>=20
+> since the protocol ops handle are always the same you will end up
+> overwriting it with the same value if this driver is probed multiple
+> times (which is harmless)...you will get anyway a different *ph handle
+> to operate on that you are already storing...
+>=20
+> ..up to you really
 
-Yes. they are correct.
-
- just checking because they seem a bit
-> odd...but I am certainly missing something...in case they are ok, is it
-> possible to add a comment explaining why those conds lead to -
-> EINVAL ?
-
-We have a flag "MISC_CTRL_FLAG_BRD  0x8000U" to indicate it is
-board ctrl or non-board ctrl
+I prefer to keep as it is
 
 >=20
+> > +
+> > +static int scmi_imx_bbm_read_time(struct device *dev, struct
+> rtc_time
+> > +*tm) {
+> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
+> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
+> > +	u64 val;
+> > +	int ret;
+> > +
+> > +	ret =3D bbnsm->ops->rtc_time_get(ph, 0, &val);
+> > +	if (ret)
+> > +		dev_err(dev, "%s: %d\n", __func__, ret);
+> > +
+>=20
+> ..so if you fail to get the time via SCMI you just carry on without carin=
+g ?
+>=20
+> > +	rtc_time64_to_tm(val, tm);
+>=20
+> ... converting some random val from the stack into tm ?
+>=20
+
+I will fix in v5, should return an error value.
+
 > > +
 > > +	return 0;
 > > +}
 > > +
-> > +static int scmi_imx_misc_ctrl_notify(const struct
-> scmi_protocol_handle *ph,
-> > +				     u32 ctrl_id, u32 evt_id, u32 flags)
-> {
-> > +	struct scmi_imx_misc_ctrl_notify_in *in;
-> > +	struct scmi_xfer *t;
+> > +static int scmi_imx_bbm_set_time(struct device *dev, struct
+> rtc_time
+> > +*tm) {
+> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
+> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
+> > +	u64 val;
 > > +	int ret;
 > > +
-> > +	ret =3D scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
+> > +	val =3D rtc_tm_to_time64(tm);
+> > +
+> > +	ret =3D bbnsm->ops->rtc_time_set(ph, 0, val);
 > > +	if (ret)
-> > +		return ret;
+> > +		dev_err(dev, "%s: %d\n", __func__, ret);
 > > +
-> > +	ret =3D ph->xops->xfer_get_init(ph,
-> SCMI_IMX_MISC_CTRL_NOTIFY,
-> > +				      sizeof(*in), 0, &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	in =3D t->tx.buf;
-> > +	in->ctrl_id =3D cpu_to_le32(ctrl_id);
-> > +	in->flags =3D cpu_to_le32(flags);
-> > +
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
+>=20
+> same here why you dont report any error ?
+>=20
+
+Should return error. Fix in v5.
+
+> > +	return 0;
 > > +}
 > > +
-> > +static int
-> > +scmi_imx_misc_ctrl_set_notify_enabled(const struct
-> scmi_protocol_handle *ph,
-> > +				      u8 evt_id, u32 src_id, bool enable)
-> {
+> > +static int scmi_imx_bbm_alarm_irq_enable(struct device *dev,
+> unsigned
+> > +int enable) {
+> > +	return 0;
+> > +}
+> > +
+> > +static int scmi_imx_bbm_set_alarm(struct device *dev, struct
+> > +rtc_wkalrm *alrm) {
+> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
+> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
+> > +	struct rtc_time *alrm_tm =3D &alrm->time;
+> > +	u64 val;
 > > +	int ret;
 > > +
-> > +	/* misc_ctrl_req_notify is for enablement */
-> > +	if (enable)
-> > +		return 0;
+> > +	val =3D rtc_tm_to_time64(alrm_tm);
 > > +
-> > +	ret =3D scmi_imx_misc_ctrl_notify(ph, src_id, evt_id, 0);
+> > +	ret =3D bbnsm->ops->rtc_alarm_set(ph, 0, val);
 > > +	if (ret)
-> > +		dev_err(ph->dev, "FAIL_ENABLED - evt[%X] src[%d] -
-> ret:%d\n",
-> > +			evt_id, src_id, ret);
+> > +		dev_err(dev, "%s: %d\n", __func__, ret);
 > > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int scmi_imx_misc_ctrl_get_num_sources(const struct
-> > +scmi_protocol_handle *ph) {
-> > +	return GENMASK(15, 0);
-> > +}
 >=20
-> This is statically defined at compile time..you dont need to provide this
-> method, which is just for discover number of possible event sources at
-> runtime....just drop it and use .num_sources in scmi_protocol_events
+> same ...
 >=20
+> ....mmm... hang on ... this reminds me of something...
+>=20
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F
+> lore.kernel.org%2Flinux-arm-
+> kernel%2FZdjgSxFx9YRP107y%40pluto%2F&data=3D05%7C02%7Cpeng.f
+> an%40nxp.com%7C91000402f63d4e893d8208dc8f7c9399%7C686ea1
+> d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638543012417198736
+> %7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2l
+> uMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DnK
+> leYfoIRJtMN13TNQB9xYH8aX1tUYk9UI202tYl49I%3D&reserved=3D0
+>=20
+> ...I did exactly the same comments on V1 around these 2 BBM/MISC
+> SCMI drivers....but you never replied, addressed or disputed those
+> issues.
+>=20
+> You DID address other review/comments in protocols and DT in later
+> versions so I suppose you just forget these latter drivers reviewes and
+> just rebased on.
+>=20
+> So, this review stops here for now, please address or reply to my V1
+> concerns on these last 2 BBM/MISC drivers.
 
-
-I see. Fix in v5.
-
-> > +
-> > +static void *
-> > +scmi_imx_misc_ctrl_fill_custom_report(const struct
-> scmi_protocol_handle *ph,
-> > +				      u8 evt_id, ktime_t timestamp,
-> > +				      const void *payld, size_t payld_sz,
-> > +				      void *report, u32 *src_id)
-> > +{
-> > +	const struct scmi_imx_misc_ctrl_notify_payld *p =3D payld;
-> > +	struct scmi_imx_misc_ctrl_notify_report *r =3D report;
-> > +
-> > +	if (sizeof(*p) !=3D payld_sz)
-> > +		return NULL;
-> > +
-> > +	r->timestamp =3D timestamp;
-> > +	r->ctrl_id =3D p->ctrl_id;
-> > +	r->flags =3D p->flags;
-> > +	if (src_id)
-> > +		*src_id =3D r->ctrl_id;
-> > +	dev_dbg(ph->dev, "%s: ctrl_id: %d flags: %d\n", __func__,
-> > +		r->ctrl_id, r->flags);
-> > +
-> > +	return r;
-> > +}
-> > +
-> > +static const struct scmi_event_ops scmi_imx_misc_event_ops =3D {
-> > +	.get_num_sources =3D scmi_imx_misc_ctrl_get_num_sources,
-> drop
->=20
-> > +	.set_notify_enabled =3D scmi_imx_misc_ctrl_set_notify_enabled,
-> > +	.fill_custom_report =3D scmi_imx_misc_ctrl_fill_custom_report,
-> > +};
-> > +
-> > +static const struct scmi_event scmi_imx_misc_events[] =3D {
-> > +	{
-> > +		.id =3D SCMI_EVENT_IMX_MISC_CONTROL,
-> > +		.max_payld_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_payld),
-> > +		.max_report_sz =3D sizeof(struct
-> scmi_imx_misc_ctrl_notify_report),
-> > +	},
-> > +};
-> > +
-> > +static struct scmi_protocol_events scmi_imx_misc_protocol_events
-> =3D {
-> > +	.queue_sz =3D SCMI_PROTO_QUEUE_SZ,
-> > +	.ops =3D &scmi_imx_misc_event_ops,
-> > +	.evts =3D scmi_imx_misc_events,
-> > +	.num_events =3D ARRAY_SIZE(scmi_imx_misc_events),
->=20
-> 	.num_sources =3D MAX_MISC_CTRL_SOURCES,  // GENMASK(15,
-> 0)
->=20
-> > +};
-> > +
-> > +static int scmi_imx_misc_protocol_init(const struct
-> > +scmi_protocol_handle *ph) {
-> > +	struct scmi_imx_misc_info *minfo;
-> > +	u32 version;
-> > +	int ret;
-> > +
-> > +	ret =3D ph->xops->version_get(ph, &version);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	dev_info(ph->dev, "NXP SM MISC Version %d.%d\n",
-> > +		 PROTOCOL_REV_MAJOR(version),
-> PROTOCOL_REV_MINOR(version));
-> > +
-> > +	minfo =3D devm_kzalloc(ph->dev, sizeof(*minfo), GFP_KERNEL);
-> > +	if (!minfo)
-> > +		return -ENOMEM;
-> > +
-> > +	ret =3D scmi_imx_misc_attributes_get(ph, minfo);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return ph->set_priv(ph, minfo, version); }
->=20
-> Same as previous patch please move the init downb below near the
-> scmi_protocol struct right after the ops
->=20
-
-
-Yeah. Fix in v5.
-
-> > +
-> > +static int scmi_imx_misc_ctrl_get(const struct scmi_protocol_handle
-> *ph,
-> > +				  u32 ctrl_id, u32 *num, u32 *val) {
-> > +	struct scmi_imx_misc_ctrl_get_out *out;
-> > +	struct scmi_xfer *t;
-> > +	int ret, i;
-> > +
-> > +	ret =3D scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_GET,
-> sizeof(u32),
-> > +				      0, &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	put_unaligned_le32(ctrl_id, t->tx.buf);
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +	if (!ret) {
-> > +		out =3D t->rx.buf;
-> > +		*num =3D le32_to_cpu(out->num);
->=20
-> To stay even more safer, by guarding from malformed *num fields and
-> just bail out upfront with an error
->=20
-> 	if (*num >=3D MISC_MAX_VAL ||
-> 	    *num * sizeof(__le32) > t->rx.len - sizeof(__le32))
->=20
-> and then just
->=20
-> 		for (i =3D 0; i < *num; i++)
->=20
-
-ok. looks good. I will fix in v5.
-
-> > +		for (i =3D 0; i < *num && i < MISC_MAX_VAL; i++)
-> > +			val[i] =3D le32_to_cpu(out->val[i]);
-> > +	}
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int scmi_imx_misc_ctrl_set(const struct scmi_protocol_handle
-> *ph,
-> > +				  u32 ctrl_id, u32 num, u32 *val) {
-> > +	struct scmi_imx_misc_ctrl_set_in *in;
-> > +	struct scmi_xfer *t;
-> > +	int ret, i;
-> > +
-> > +	ret =3D scmi_imx_misc_ctrl_validate_id(ph, ctrl_id);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (num > MISC_MAX_VAL)
-> > +		return -EINVAL;
-> > +
-> > +	ret =3D ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CTRL_SET,
-> sizeof(*in),
-> > +				      0, &t);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	in =3D t->tx.buf;
-> > +	in->id =3D cpu_to_le32(ctrl_id);
-> > +	in->num =3D cpu_to_le32(num);
-> > +	for (i =3D 0; i < num; i++)
-> > +		in->value[i] =3D cpu_to_le32(val[i]);
-> > +
-> > +	ret =3D ph->xops->do_xfer(ph, t);
-> > +
-> > +	ph->xops->xfer_put(ph, t);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static const struct scmi_imx_misc_proto_ops
-> scmi_imx_misc_proto_ops =3D {
-> > +	.misc_ctrl_set =3D scmi_imx_misc_ctrl_set,
-> > +	.misc_ctrl_get =3D scmi_imx_misc_ctrl_get,
-> > +	.misc_ctrl_req_notify =3D scmi_imx_misc_ctrl_notify, };
-> > +
-> > +static const struct scmi_protocol scmi_imx_misc =3D {
-> > +	.id =3D SCMI_PROTOCOL_IMX_MISC,
-> > +	.owner =3D THIS_MODULE,
-> > +	.instance_init =3D &scmi_imx_misc_protocol_init,
-> > +	.ops =3D &scmi_imx_misc_proto_ops,
-> > +	.events =3D &scmi_imx_misc_protocol_events,
-> > +	.supported_version =3D SCMI_PROTOCOL_SUPPORTED_VERSION,
-> > +	.vendor_id =3D "NXP",
-> > +	.sub_vendor_id =3D "i.MX95 EVK",
-> > +};
-> > +module_scmi_protocol(scmi_imx_misc);
-> > diff --git a/include/linux/scmi_imx_protocol.h
-> > b/include/linux/scmi_imx_protocol.h
-> > index e59aedaa4aec..e9285abfc191 100644
-> > --- a/include/linux/scmi_imx_protocol.h
-> > +++ b/include/linux/scmi_imx_protocol.h
-> > @@ -13,8 +13,14 @@
-> >  #include <linux/notifier.h>
-> >  #include <linux/types.h>
-> >
-> > +#define SCMI_PAYLOAD_LEN	100
-> > +
-> > +#define SCMI_ARRAY(X, Y)	((SCMI_PAYLOAD_LEN - (X)) /
-> sizeof(Y))
-> > +#define MISC_MAX_VAL		SCMI_ARRAY(8, uint32_t)
-> >
-> You base all of this on this fixed payload length, but the payload really
-> depends on the configured underlying transport: you can use the
-> ph->hops->get_max_msg_size to retrieve the configured max payload
-> length
-> for the platform you are running on....nad maybe bailout if the
-> minimum size required by your protocol is not available with the
-> currently configured transport...wouldnt't be more robust and reliable
-> then builtin fixing some payload ?
-
-Your point is valid. But I need check our firmware design and see
-if feasible and update.
+My bad. I will re-collect all the comments and address in new version.
 
 Thanks,
 Peng.
