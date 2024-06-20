@@ -1,116 +1,164 @@
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666A447772
-	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 09:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.18.73.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA2C433BB
+	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 09:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718876519; cv=none; b=lGWGGFiePTsyd+m1mRnFExUu7sxPSPqfQDzsFgcETgMzh9l1aLyrrKSUj7cA+oFkU9yyAPooaB/0DkMsMOtRPOYn7lkCfS0JslVlh/EstJiKyA9yUvJTgH/caKrtTdHUzFuhr9acMbyJIixQEHCzOag2txIKmug2XPDRA0lNPp8=
+	t=1718876839; cv=none; b=oiMS1yRv+Ue7LjAsGuYYDpL8D0IAoClVRKhuon/EM8lO3IlU903po8waJfx9dHRHAY3Jh3tTC1PDMNNMqkCHTa4Qkh2yoVdMCWNUzfF1o9pBZ+kYnD5CYfumayBoYElQYEPyVYXlnPiyhX8BbOeAzMYXjuFggnhGXjlj2JdMIrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718876519; c=relaxed/simple;
-	bh=+XomlozgwEM7W7jw1RV2XyzUdCf14DpPm3CMqpPk4RU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Rz9W1kqn5pj5yTbio5sRvCpUwQnKREKYQ5XWooKmi5O0P/1y3ViVNvzDvnDQzDiIBwSPXehI1vQnxopqeJ9WOt1ZNtx5NHrRB/Mkom1FYuund4lZZ6epou9+l7Q5xjC0wNeLignQ8hVukDgM2nzasNmkbAtlK2zzuSAX6XdGTw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=SJ9C2RT/; arc=none smtp.client-ip=37.18.73.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+	s=arc-20240116; t=1718876839; c=relaxed/simple;
+	bh=xAGDVdqYGF7Dwk7Zyu4pSEXvweYAZad19JaVU5lJBn0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iJFjeI7brQIhJnM0u8LcunQyyEY0ZNWZvI17ABTuWbyBMKp2TKo+Wjl5QAmyJ97aC8TOWuF7ZINw1+oPFXZKVsqGD9PLGSPMjmNbPcnaiIfdk4IVI0irjS2yghHHZQxgYS5fW0S12utrGvQkKetfPSAas43KYOeif7/VkIfKrHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PpizdUYY; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="SJ9C2RT/"
-Received: from p-infra-ksmg-sc-msk01.sberdevices.ru (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 095FB10001E;
-	Thu, 20 Jun 2024 12:41:47 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 095FB10001E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1718876507;
-	bh=eHWSHU6IOFj9d81lzeTSCSoajp29AFtL+A3T39sy4lk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=SJ9C2RT/3zxNcETOlA+R7zdR9bgqCBWrTAJKs6yKjHsLD92MS0HKFRJ6tgF47uJdC
-	 2D8JzU4ZBZKqQnlDmhNQ+jJtM1LsUuZBkWCbqfNu2SC19RrO0B826IIgjtAkuiNku/
-	 qBYufLJfpgbHyadnxpSGN91F/1bTEMqag/3CjsSxfsBxyU+Hzwmh/fAn5uZs9e27rS
-	 8oFLwkDs8ETXGGDo8UvUi5s1W0z8adnonSe/14p0m+nKmy8Hi7+NN62ydlW+kqKcR0
-	 rpbSQTmuo0fxX2N5/quj+Z7SS1mGSIC/X9sZm23PbhFf7smSqqyLTNQZASjKuMF15q
-	 OepCAAht5MUOg==
-Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Thu, 20 Jun 2024 12:41:46 +0300 (MSK)
-Received: from [172.28.129.141] (100.64.160.123) by
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 20 Jun 2024 12:41:46 +0300
-Message-ID: <dc787966-2920-459f-b091-ce09fe97315d@salutedevices.com>
-Date: Thu, 20 Jun 2024 12:41:45 +0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PpizdUYY"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42172ed3597so4150535e9.0
+        for <imx@lists.linux.dev>; Thu, 20 Jun 2024 02:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718876836; x=1719481636; darn=lists.linux.dev;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WKctuEYUZwkLxrC3E1PmqrbhxPoOg9q030v+QYhbC/c=;
+        b=PpizdUYYWm+K0scBfeLWOpcWDrIbjI8VIkDUaw2hzYJkXFm6xmNYqaJr4z3/kAfdwB
+         zc5IIusvP1Y1QY+0vZk4y37PYNflPSmmqZ7D53Wh3Y7ZUN1IvmrNqYGfsdsUumCGLy1L
+         MTyNCs/RQmz3e3pLgdDLPdKOuaEW7cJiVRs9oSSIcT9Wpx6a/liIOROcvHLFLFRGZgmY
+         hvraiCjKAgjSb8GjFoggDs4CwKinjFS7w/fEwzx3jcvqmy+l4F2MnMvMO7JL6nrjiQIR
+         Fenbfo39akOJ+GK5RmVYA2EE6IogXEUDnxvv3/+0Lqk1q/Lfb0GdcPZsZaT9slfUD4r4
+         wu/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718876836; x=1719481636;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WKctuEYUZwkLxrC3E1PmqrbhxPoOg9q030v+QYhbC/c=;
+        b=ByX8Er6Gpwcvx38yMwSWlEB2zFZjt3fcw7DGOdNCUBFEn5p1j/XvEL3fGo6eC4LsYJ
+         lYRJTmgJ5hI5PnVSC/T7fM/E4CVdzwYgBoods19ieBBeoiGYSLCL9hfz6j3lbhmycxfa
+         Sw7XzQw2VqmAKmId3aluoXQnB8W6N2QkUoqmzaCoUQUF2JFl17lW9IBszkkKv4SFCbyw
+         3X9LbG6MRJIOaesB3kvP8PDs9rDq8PsKl5Zqt+5cdQqhnukul72zP9/b6WgQvRZp3TMr
+         O45uogwhD4tZm5M1t07xlvitmBIHohpw8Kqrgda8yAAhidEyVvDOMCNdRfvQ7ld0nM1/
+         v/7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUXJTguziNM1nvmIJqSWfSLTg0aMwzaluMrPFHJ+Sv3maf2fIV2keS9NrNm76d7FEk5drMUcOATjBgbJXnYmUUoQKQi
+X-Gm-Message-State: AOJu0YzYYJslctlqwISJf4fW7f4Qah30CftXLhLSktrM1dzZpc8RQzQn
+	I9M0CHCjrQfW5x3yAWe+WFR9lA4P266fylOsLOLDqrFmqzU6XN7S
+X-Google-Smtp-Source: AGHT+IHQvG+njfu7Jbt33yKTwN3jzRduYIPw/O+RD8GZ4LC50ZQL/fKwWEW0MXBXDYbLYss3cQPfQg==
+X-Received: by 2002:a7b:cc19:0:b0:424:7871:2e9e with SMTP id 5b1f17b1804b1-42478712f14mr37774595e9.6.1718876836028;
+        Thu, 20 Jun 2024 02:47:16 -0700 (PDT)
+Received: from localhost (a109-49-32-45.cpe.netcabo.pt. [109.49.32.45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b6bsm19782365e9.32.2024.06.20.02.47.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 02:47:15 -0700 (PDT)
+From: Rui Miguel Silva <rmfrfs@gmail.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ linux-media@vger.kernel.org
+Cc: Martin Kepplinger <martink@posteo.de>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, imx@lists.linux.dev, Purism Kernel Team
+ <kernel@puri.sm>
+Subject: Re: [PATCH] media: imx-mipi-csis: Use v4l2_subdev_enable_streams()
+In-Reply-To: <20240619232431.5708-1-laurent.pinchart@ideasonboard.com>
+References: <20240619232431.5708-1-laurent.pinchart@ideasonboard.com>
+Date: Thu, 20 Jun 2024 10:47:14 +0100
+Message-ID: <m3h6do3pzx.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/41] iio: adc: meson_saradc: make use of
- regmap_clear_bits(), regmap_set_bits()
-To: Trevor Gamblin <tgamblin@baylibre.com>
-CC: <linux-iio@vger.kernel.org>, Jean-Baptiste Maneyrol
-	<jmaneyrol@invensense.com>, Crt Mori <cmo@melexis.com>, Fabio Estevam
-	<festevam@gmail.com>, Broadcom internal kernel review list
-	<bcm-kernel-feedback-list@broadcom.com>, Scott Branden
-	<sbranden@broadcom.com>, Ray Jui <rjui@broadcom.com>, Chen-Yu Tsai
-	<wens@csie.org>, Shawn Guo <shawnguo@kernel.org>, Martin Blumenstingl
-	<martin.blumenstingl@googlemail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>, Neil Armstrong
-	<neil.armstrong@linaro.org>, Jerome Brunet <jbrunet@baylibre.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Linus Walleij
-	<linus.walleij@linaro.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Saravanan Sekar <sravanhome@gmail.com>,
-	Dmitry Rokosov <ddrokosov@sberdevices.ru>, Lars-Peter Clausen
-	<lars@metafoo.de>, Kevin Hilman <khilman@baylibre.com>, Alexandre Torgue
-	<alexandre.torgue@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>, <imx@lists.linux.dev>,
-	<linux-amlogic@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
-	<u.kleine-koenig@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, Hans de
- Goede <hdegoede@redhat.com>, Orson Zhai <orsonzhai@gmail.com>
-References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
- <20240617-review-v3-13-88d1338c4cca@baylibre.com>
-Content-Language: en-US
-From: George Stark <gnstark@salutedevices.com>
-In-Reply-To: <20240617-review-v3-13-88d1338c4cca@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 186025 [Jun 20 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 20 0.3.20 743589a8af6ec90b529f2124c2bbfc3ce1d2f20f, {Tracking_from_domain_doesnt_match_to}, smtp.sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;100.64.160.123:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/06/20 08:22:00 #25655230
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain
 
-On 6/17/24 16:49, Trevor Gamblin wrote:
-> Instead of using regmap_update_bits() and passing the mask twice, use
-> regmap_set_bits().
-> 
-> Instead of using regmap_update_bits() and passing val = 0, use
-> regmap_clear_bits().
-> 
-> Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Hey Laurent,
+Laurent Pinchart <laurent.pinchart@ideasonboard.com> writes:
 
-Reviewed-by: George Stark <gnstark@salutedevices.com>
+> To support sources that implement the .enable_streams() and
+> .disable_streams() operations, replace the manual calls to the subdev
+> .s_stream() operation with the v4l2_subdev_enable_streams() and
+> v4l2_subdev_disable_streams() helpers. The helpers fall back to
+> .s_stream() if the source doesn't implement the new operations, so
+> backward compatibility is preserved.
+>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
--- 
-Best regards
-George
+Thanks for this, LGTM.
+
+Reviewed-by: Rui Miguel Silva <rmfrfs@gmail.com>
+
+Cheers,
+   Rui
+
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 22 +++++++++++++++-------
+>  1 file changed, 15 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index f49b06978f14..b9729a8883d6 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -320,7 +320,11 @@ struct mipi_csis_device {
+>  	struct v4l2_subdev sd;
+>  	struct media_pad pads[CSIS_PADS_NUM];
+>  	struct v4l2_async_notifier notifier;
+> -	struct v4l2_subdev *src_sd;
+> +
+> +	struct {
+> +		struct v4l2_subdev *sd;
+> +		const struct media_pad *pad;
+> +	} source;
+>  
+>  	struct v4l2_mbus_config_mipi_csi2 bus;
+>  	u32 clk_frequency;
+> @@ -597,7 +601,7 @@ static int mipi_csis_calculate_params(struct mipi_csis_device *csis,
+>  	u32 lane_rate;
+>  
+>  	/* Calculate the line rate from the pixel rate. */
+> -	link_freq = v4l2_get_link_freq(csis->src_sd->ctrl_handler,
+> +	link_freq = v4l2_get_link_freq(csis->source.sd->ctrl_handler,
+>  				       csis_fmt->width,
+>  				       csis->bus.num_data_lanes * 2);
+>  	if (link_freq < 0) {
+> @@ -958,7 +962,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+>  	int ret;
+>  
+>  	if (!enable) {
+> -		v4l2_subdev_call(csis->src_sd, video, s_stream, 0);
+> +		v4l2_subdev_disable_streams(csis->source.sd,
+> +					    csis->source.pad->index, BIT(0));
+>  
+>  		mipi_csis_stop_stream(csis);
+>  		if (csis->debug.enable)
+> @@ -986,7 +991,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+>  
+>  	mipi_csis_start_stream(csis, format, csis_fmt);
+>  
+> -	ret = v4l2_subdev_call(csis->src_sd, video, s_stream, 1);
+> +	ret = v4l2_subdev_enable_streams(csis->source.sd,
+> +					 csis->source.pad->index, BIT(0));
+>  	if (ret < 0)
+>  		goto err_stop;
+>  
+> @@ -1233,12 +1239,14 @@ static int mipi_csis_link_setup(struct media_entity *entity,
+>  	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+>  
+>  	if (flags & MEDIA_LNK_FL_ENABLED) {
+> -		if (csis->src_sd)
+> +		if (csis->source.sd)
+>  			return -EBUSY;
+>  
+> -		csis->src_sd = remote_sd;
+> +		csis->source.sd = remote_sd;
+> +		csis->source.pad = remote_pad;
+>  	} else {
+> -		csis->src_sd = NULL;
+> +		csis->source.sd = NULL;
+> +		csis->source.pad = NULL;
+>  	}
+>  
+>  	return 0;
+>
+> base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
+> -- 
+> Regards,
+>
+> Laurent Pinchart
