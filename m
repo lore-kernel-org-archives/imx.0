@@ -1,121 +1,99 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3201B013D
-	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 15:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDBB27456;
+	Thu, 20 Jun 2024 15:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718896507; cv=none; b=uIR4XOztAnEFtWvD3iOEFJolso+ALNE6qHlZkKo2yQmpEPlbDfQePpf/C2vtwgJGCaJXxU4DRl1a6R7yuBesFOjvj8iUNqx8VQnBu0XUN/XFxmBa0ipDt/fDLsxVvDKVRHNQQqiRZofdxOMnzd6Pt1HoaLbTyeDp+ImiMcc1UU8=
+	t=1718896884; cv=none; b=Ec+BDOacuQ8Jhj2/7XIhzrRhtdwhq+Z84d4omFYXqND6K7g9sHnPrG7ZHMyW2UwnxLliF4AVuWQJAcfwXM8r6DNWr8ejilOehsu0SNBH/dPvo6fL3RDoRZT9qlzuKAYsXqtb+fPiNptlzf57R+dur2FSn/DiiC0YhIdx7aDJdUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718896507; c=relaxed/simple;
-	bh=omKEA7183JIq4+qk4ktnB4723ZppBGp3RLv0v4fpWqI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GXRCSvUbfKfGmOloS8GPyP03giuzsU0ZmvBKeTw4zgt7CPdHMv/bYM4atO6wQgVP9ztYFxMBtnqBOjavK5052t17bNmMmmXiOW+9IwtQvKsS6qojctbnFGbPyBzCNvM0RGevWmBOjtfeX1krrhLCqE21H7/Wq/beGlxrDtRZBUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nRzgBwTw; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718896884; c=relaxed/simple;
+	bh=8/TFVK6BbkaFtuuCTEO1cNehJdCtbENbX/plMk2ZWeY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cao5hXhXjz4uQnWJz3uQq1V/+s7mN68F8CresFtrDoPL+IiZDl5DF6ZiFGOAzjGctAKA7OtaNgfJgbLcYdjQMZM4OFT5N6EUEXRpDP8rMwi0CAEkBPJLys82Q6yPhorZpO/xki4AgThJZYYAkBekvacN+C2QmHBfJ1sZ4Zv/8TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1/bWsLX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nRzgBwTw"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-632750bf73bso8782197b3.2
-        for <imx@lists.linux.dev>; Thu, 20 Jun 2024 08:15:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718896505; x=1719501305; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=B2n5KrLTZBvGu9gEb8O17y0tpUk8+ZpfDeRqP/uAfjQ=;
-        b=nRzgBwTwH+p+I+/jOFCG82H+/jsSAcJupAVp/xfBvwgBgtzkp01XTXh3ezNj+nblp0
-         JkYRbncCmxyuyeR63OhCuuiwHDabg8dLx0sFUAettH7hXyXS0CPPmzINEKFNyYdLD/yA
-         J+M87/Xp8HUIeEZvPsGthlzIY5TmCdHBQ3F/mrIPILPyw1y5HWrScAG/i4JkxcBKkVqm
-         eAAWlg/oHGzaoKroj/Qijffcr09bh3cJa/4xOPENPD54NCoYyzLvGPZIKDsYT8RLDt7n
-         YyoXHec/QtXa/Z81MHGj+W1zUCFpZ/hWhFpKGPUFa/6ATmYDTfjSlW0KqA88uGqJ0bUb
-         bceg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718896505; x=1719501305;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=B2n5KrLTZBvGu9gEb8O17y0tpUk8+ZpfDeRqP/uAfjQ=;
-        b=YAipULZbRjjzHyXMQiJ4l5NgpY2IihOEJo6EHPiYQrV+CSbGRSzk/vwsBOZQdbpLhr
-         FssgQFyhW4gE4TXZ8hBZzAMD3yYwsNSSQLT+EDTNrxqE+IICopi+4pS9raO1+KSR7m7e
-         qmOakxEzu/V5NTQAUxBLDUzqpd1SZU2GZKfubcyCnm58w9BHk5Y90XnLLFD7UBvLP5FT
-         WBEJ2n4dnnb3WD5HLSJ8K03yQ/jopWrY/eUIS6F4S1sMhdhlTFEuVUIItrlNytn56/Ni
-         8oCzQ1EX9qrY7CAh2fh4QtSa4oHfzxeFRMnwe6JtRmcY/5XuyhDAaIbWR1MevR6LUfOh
-         Z1+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWRiFYC0ZLiJc9cwu2zzd3EVPGMSa7ePzyg2PUAvzCIvObq6n3+TYXLDqFuPkaCCK7dtaJcmrTrVAzFz7KMUQlwPwzx
-X-Gm-Message-State: AOJu0YzsqOyvruzU6G1Hd36cWHB8vtYB/AgIOYxHKBDOeTJRmwS6ybW2
-	P40ajeoWT4yGoT0OUM0w1/GF0PNkfaHI5Dlmy7PC7gQb8sPcHifL567EWzh1jvu7e4AaH2vdVO5
-	y50zPtjISiWykTG3/UNsF+z1bLlYVn91wSgRNoQ==
-X-Google-Smtp-Source: AGHT+IEgsR6Axacelg4a84hDNwZ/HxzbPZz6nBbHwPbmaUBauO4zOvR4vycjA+yQ+ptsu9Vsx+lvyO9aNTZ86xfQU+o=
-X-Received: by 2002:a25:840c:0:b0:e02:b68d:b432 with SMTP id
- 3f1490d57ef6-e02be17563cmr6316451276.37.1718896505132; Thu, 20 Jun 2024
- 08:15:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1/bWsLX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53495C2BD10;
+	Thu, 20 Jun 2024 15:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718896884;
+	bh=8/TFVK6BbkaFtuuCTEO1cNehJdCtbENbX/plMk2ZWeY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=n1/bWsLXWbvCjFPzJ3L6nFPy/fcfokpv2EoyJ5a9ffixVZ5V5GCAzoJfYNY0z0Q6X
+	 OZtgsZy8IseX5K7xqNJ9QzTjYvEGtXUtB96hMBGZiKnRTHgc1/mHOgk0KBv4P8bG8K
+	 KISGpyhrh8ys40BxwxSt0XUR0aZwg0yfCOXgDjeKjtUpJiKkX7v6cW5qSe9soZr4U7
+	 ccPHjWbGMvChUJ/Xl8xQHFKQH2hVix1XRu1UKLC/2SUXR1v+/r0utmeCeHlKnz2RH9
+	 RZW4nKKsRniIoxn5LMZzUOZ61oPD+ZzYUFtQ6r3bcbRuUwFUqMOx0R8aeP28HMy3qD
+	 mKQNfrrwtck8A==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 20 Jun 2024 08:21:15 -0700
+Subject: [PATCH] phy: freescale: imx8qm-hsio: Include bitfield.h for
+ FIELD_PREP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240613-ls_waring_esdhc-v5-0-36644e2fe21c@nxp.com>
-In-Reply-To: <20240613-ls_waring_esdhc-v5-0-36644e2fe21c@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 20 Jun 2024 17:14:28 +0200
-Message-ID: <CAPDyKFrfQQu7GE2pHPHspKw3hkqf219kWCU2KwKMtTKQmKRbtA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/3] arm64: dts: convert fsl,esdhc.txt to yaml and fix
- layerscape dts warning
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, linux-mmc@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240620-phy-fsl-imx8qm-hsio-add-bitfield-include-v1-1-5c7c09ed87e6@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOpIdGYC/x2NQQqDMBBFryKzdiAGKbVXKS4SZ9IMxNQmKhbx7
+ h0Kb/MW7/8TKhfhCo/mhMK7VHlnla5tYIouvxiF1MEa25ubNbjEL4aaUObj/pkxaoCOCL2sQTg
+ RSp7SRozODz0PvvMK6NxSOMjxv3qO1/UDMkIpiXoAAAA=
+To: Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Richard Zhu <hongxing.zhu@nxp.com>, linux-phy@lists.infradead.org, 
+ imx@lists.linux.dev, patches@lists.linux.dev, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1366; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=8/TFVK6BbkaFtuuCTEO1cNehJdCtbENbX/plMk2ZWeY=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDGklHp+vxvTuUeGex1hv+rdJrmmbxKkcPcnCo3zMe7U/V
+ nZ90TrfUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTAC5yl5HhmtWXZ6cj8xyuPvlx
+ eWHz5D0WR8OsbV4f+sbMs1Gl1ypwG8P/sqdL1jxjyUo8dCzEJyA6Zd3hr+17WQ+8FqtQX/1lU48
+ GHwA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Thu, 13 Jun 2024 at 16:32, Frank Li <Frank.Li@nxp.com> wrote:
->
-> Start from v4 because fsl.esdhc.txt to yaml already sent out as v3.
->
-> Now only "bit-endian" proptery warning left.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Changes in v5:
-> - squash dts patches to one patch and fix typo.
-> - move spi-slot-mmc to first patch.
-> - add Krzysztof Kozlowski review tag for fsl,eshc patch
-> - Link to v4: https://lore.kernel.org/r/20240611-ls_waring_esdhc-v4-0-d0d8a5b3f3cb@nxp.com
->
-> Change from v3 to v4
-> - Add dts warning fixes
-> - Add mmc-spi-slot's voltage range fix, (not sure why it apply to
-> layserscape's dts file.
-> - clock-frequency is not required property
-> - add dma-conherence: true in binding doc
->
-> ---
-> Frank Li (3):
->       dt-bindings: mmc: mmc-spi-slot: Change voltage-ranges to uint32-matrix
->       dt-bindings: mmc: Convert fsl-esdhc.txt to yaml
->       arm64: dts: layerscape: Change node name from 'esdhc' to 'mmc'
->
->  .../devicetree/bindings/mmc/fsl,esdhc.yaml         | 105 +++++++++++++++++++++
->  .../devicetree/bindings/mmc/fsl-esdhc.txt          |  52 ----------
->  .../devicetree/bindings/mmc/mmc-spi-slot.yaml      |  16 ++--
->  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi     |   4 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi     |   2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi     |   2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi     |   2 +-
->  arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi     |   2 +-
->  arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     |   8 +-
->  9 files changed, 124 insertions(+), 69 deletions(-)
-> ---
-> base-commit: d35b2284e966c0bef3e2182a5c5ea02177dd32e4
-> change-id: 20240610-ls_waring_esdhc-93136a5dd794
->
-> Best regards,
-> ---
-> Frank Li <Frank.Li@nxp.com>
+In various configurations/architectures, bitfield.h may not be
+transitively included, which results in a compiler error because
+FIELD_PREP is an unexpanded macro:
 
-Patch 1 and patch 2, applied for next, thanks!
+  drivers/phy/freescale/phy-fsl-imx8qm-hsio.c:459:8: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    459 |         val = FIELD_PREP(HSIO_MODE_MASK, val);
+        |               ^
+  1 error generated.
 
-Kind regards
-Uffe
+Include bitfield.h explicitly to fix the build.
+
+Fixes: 82c56b6dd24f ("phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY driver support")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
+index dcf9c45ff5d6..5dca93cd325c 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
++++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
+@@ -3,6 +3,7 @@
+  * Copyright 2024 NXP
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+
+---
+base-commit: 82c56b6dd24fcdf811f2b47b72e5585c8a79b685
+change-id: 20240620-phy-fsl-imx8qm-hsio-add-bitfield-include-ab94e9b1bb1b
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
