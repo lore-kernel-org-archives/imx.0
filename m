@@ -1,87 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74061AE0AC;
-	Thu, 20 Jun 2024 16:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B798820B35;
+	Thu, 20 Jun 2024 16:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718901391; cv=none; b=SSLV3t8NJPtmr7BjGahorrX2B0oxT3tIuvXjMENjkS6CrGjQMQXE261kCxy4m2vuj0XuuIWW7tok+4KabGvljY3pd41Ai5DKDidnb7fTS4Vsz5zF87rlFx9miwOEZGSl1/eS/n2S5S8Sbz15AIiMGS+FiNIW+Uf550MCMUMvL10=
+	t=1718901535; cv=none; b=GpVN1TyKzMWkILPrtXMELpcEg5W+l3+WPctdAQ6+bFGgKgGlFdQcGUSVnG0d+9AWdZ37mYkG2LddXPo9gGaGAL0kfBk0HPucCtslhjLXIt/uUQ6vRmQdVGYEi5KDid4yAV8yeEqcv2+bgl4ylR56H6mgJ+a5Mh/aXMceZr4hHMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718901391; c=relaxed/simple;
-	bh=n/wJMdVVW764EMyC9g1orsXzaXY8/n571R9I+PD3W3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iMUnMptSpiLRsoLb/70Qpn+MfxtG8UJUeyJ4qiyHIEiVSluHegRh3Eji+2QEeVU44wy05icLFoqDkF1jKgPMF12zH7L6+/l8L7JXNn43W4VO0Vd1fDn3zcW9WqxHiTBrZvAjdHSw+viKz69yeTF0iTKqAFjQT2OI1HzNZqxjD9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfTvYjMI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718901535; c=relaxed/simple;
+	bh=vhy5M7zlHVNgDl+MuSd5eVL0wMhSo8/DXGAueZ30huc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=MrFXFDPLq01s6E4cGscCuMWVzVTvjQryRfk6UVzbUa40W5tPTtAcqmNbILsJhhR3h7QVPYeu4f8gOs1scFJn1KUrFAEhpzZQZeXl9Kdzqs54rPuwq1RDBq1d3whiK8PSTcV/WgWrNgQHEs5dJSWn5yjqjabv/fxpu352FVrRfqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLV1xGEC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfTvYjMI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCBDC2BD10;
-	Thu, 20 Jun 2024 16:36:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLV1xGEC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E3C4AF0D;
+	Thu, 20 Jun 2024 16:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718901391;
-	bh=n/wJMdVVW764EMyC9g1orsXzaXY8/n571R9I+PD3W3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lfTvYjMIL5ljrgcqoGOQtmrldMne0zWfSmrp3OAAQdE2DjqUwSnn6XNdMaL/SHW4u
-	 rlZWCjsf5PUlDzvO+7td+8+GageNcyvMKkhV4xMuov+Oj18ytAWXotafT+RKDiiusH
-	 H+FYLsbLH1bPbpNOAMoox2GaT53eujW8PUO9wLF4g04/HuiR71MsqurE53Pf2Zt0qF
-	 HewvG7DLabtX9ul8DhHAy7/sNjmlRXFp3pFSzGxR5dUoekzAY6z6aPfquacjBwmqUZ
-	 hYUpGsSnfmb/apiM3lV3Es15yOH//gAy4oVr8sWaT/oRlr7yKwweRbbDzmNzoRBplf
-	 zRg+dxs7TR0lw==
-Date: Thu, 20 Jun 2024 22:06:26 +0530
+	s=k20201202; t=1718901535;
+	bh=vhy5M7zlHVNgDl+MuSd5eVL0wMhSo8/DXGAueZ30huc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=FLV1xGECaLMGc0QBdBtHod/nyM41QR4hWvPhKzXHZLX57aqJ/BbYrzeY0JIa1rX0v
+	 PebxGHjVepPx6uWlu2lqqjz5cxa/5G1sLPV+nLM4IOuOpxOZjBEZ9GJ1UN23dkZD5E
+	 CbhlMvubFwj2X6+P6I7RATiFbhJesvFOb3K/XVIL5XX3siKObhTk6Kx6eH9RwUH2nt
+	 rLgwImMSAPUVhWMVM+ikRBf0ZvqBkA89ETAfyyE4w1oTlKV8tsBzIna5OUv9GY5sA5
+	 9+9WeZAiCgrgJs1uVg1ss40ZL5K8K6Su9gg/TGmQETyrIYtuoX+lMhhnXudfIYnIZF
+	 tYaPlMXnb8Wzw==
 From: Vinod Koul <vkoul@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, conor@kernel.org, kishon@kernel.org,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	frank.li@nxp.com, conor+dt@kernel.org,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, imx@lists.linux.dev
-Subject: Re: [PATCH v7 2/2] phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY
- driver support
-Message-ID: <ZnRailvwM1hMtyFD@matsya>
-References: <1716962565-2084-1-git-send-email-hongxing.zhu@nxp.com>
- <1716962565-2084-3-git-send-email-hongxing.zhu@nxp.com>
- <2f15baba-68b5-4e99-bdb5-6d2e05b7688b@roeck-us.net>
+To: Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Richard Zhu <hongxing.zhu@nxp.com>, linux-phy@lists.infradead.org, 
+ imx@lists.linux.dev, patches@lists.linux.dev
+In-Reply-To: <20240620-phy-fsl-imx8qm-hsio-add-bitfield-include-v1-1-5c7c09ed87e6@kernel.org>
+References: <20240620-phy-fsl-imx8qm-hsio-add-bitfield-include-v1-1-5c7c09ed87e6@kernel.org>
+Subject: Re: [PATCH] phy: freescale: imx8qm-hsio: Include bitfield.h for
+ FIELD_PREP
+Message-Id: <171890153156.219744.4144352903595964774.b4-ty@kernel.org>
+Date: Thu, 20 Jun 2024 22:08:51 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f15baba-68b5-4e99-bdb5-6d2e05b7688b@roeck-us.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On 20-06-24, 09:30, Guenter Roeck wrote:
-> On Wed, May 29, 2024 at 02:02:45PM +0800, Richard Zhu wrote:
-> > Add i.MX8QM HSIO PHY driver support.
-> > 
-> > i.MX8QM HSIO has three lane PHY instances, and can be bound to the
-> > following controllers in the different use cases listed in below table.
-> > - two lanes capable PCIEA controller.
-> > - one lane PCIEB controller.
-> > - AHCI SATA controller.
-> > 
-> > i.MX8QM HSIO PHYs support the following use cases.
-> > +----------------------------------------------------+
-> > |                               | Lane0| Lane1| Lane2|
-> > |-------------------------------|------|------|------|
-> > | use case 1: PCIEAX2SATA       | PCIEA| PCIEA| SATA |
-> > |-------------------------------|------|------|------|
-> > | use case 2: PCIEAX2PCIEB      | PCIEA| PCIEA| PCIEB|
-> > |-------------------------------|------|------|------|
-> > | use case 3: PCIEAPCIEBSATA    | PCIEA| PCIEB| SATA |
-> > +----------------------------------------------------+
-> > 
-> > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+On Thu, 20 Jun 2024 08:21:15 -0700, Nathan Chancellor wrote:
+> In various configurations/architectures, bitfield.h may not be
+> transitively included, which results in a compiler error because
+> FIELD_PREP is an unexpanded macro:
 > 
-> Building alpha:allmodconfig ... failed
-> --------------
-> Error log:
-> drivers/phy/freescale/phy-fsl-imx8qm-hsio.c: In function 'imx_hsio_set_mode':
-> drivers/phy/freescale/phy-fsl-imx8qm-hsio.c:459:15: error: implicit declaration of function 'FIELD_PREP'
+>   drivers/phy/freescale/phy-fsl-imx8qm-hsio.c:459:8: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>     459 |         val = FIELD_PREP(HSIO_MODE_MASK, val);
+>         |               ^
+>   1 error generated.
+> 
+> [...]
 
-It should be fixed in -next tomorrow. I have applied a patch for that
+Applied, thanks!
 
+[1/1] phy: freescale: imx8qm-hsio: Include bitfield.h for FIELD_PREP
+      commit: aefa036be8c216c8b344d34c9f35ff907b9c315a
+
+Best regards,
 -- 
-~Vinod
+Vinod Koul <vkoul@kernel.org>
+
