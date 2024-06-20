@@ -1,95 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1614B1AAE31;
-	Thu, 20 Jun 2024 11:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586921AC76D
+	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 11:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718882022; cv=none; b=U+6VqxsXGUHB5m/L0gm1mXyfJSmCP7v39rKUygsi0iimHamFGHs4olHEa/dZfe4PBvdpk2a4s8/vWiLR1Li7uhMmcHb7hOmVwRepkIXQpApDCuC1ZFrk/D42KbstanADsAwwQzgnw7iw207ngjk2poElQxh8XcQaxapvz3rF12k=
+	t=1718883444; cv=none; b=qUG2ZLv+azJlOvmxDc/CQj6304uUj1TrkAFCa+qH8Yuupl/285v2lSmV+yuoU0iu7WILmSMM7NtAcAK8IKe2r2/LBL29f7P7Et2zUxuXoSHu5J7s5qkm2yg8WgMv3myljit+3eYDKqjJezuaSGf8PMR2AQJnDsTBYkN7hwqcVdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718882022; c=relaxed/simple;
-	bh=9lU9SCunukbwJTvWp/V2/Hw3p5re4G5qwe5VJ2ixKo4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=tfPu314A8mI/DXFVNYHT+bs5qlcCxP1ZbfHaYdG0Oy1OYdsGq7d/WFdooZO1Kjk0CGubSqAUjP681KYvG3Trr9A6GTf19FulOoezWdCt/b1UB1cdWsSlvatHHRzdtaRWLsgbqnHsoBGSRHu8Jhkezpw3G63pSvd26mCT0+e/wVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+ciX+7/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718883444; c=relaxed/simple;
+	bh=qoW0vyk6HZvIQuzlKHMXqNDVBP1cdFn6kO5pF/oldM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U6wRTEbDfucf6xVdx4VOTyx4O9gfZkyjHiLjdHC7wRFefA7rNsG+sH97Iv8Cr6CN9J1fpGo63iHwk7pEfyYsrpg1jb/DtD4Qx9dVjfDl4JyUAw9o47z/u//TDlCi+JzWcbe8TlymSFqQiy6yeBu/fIf6D4O4vueOREIxFN90m/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=IaENGWEN; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ZtS6t78U reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+ciX+7/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6370DC2BD10;
-	Thu, 20 Jun 2024 11:13:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718882020;
-	bh=9lU9SCunukbwJTvWp/V2/Hw3p5re4G5qwe5VJ2ixKo4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=N+ciX+7/62Ppc/6qb11rUK2HBI+bxOV869WxqmRv6ilaF9c9POk/+qy/uGDUevwoG
-	 y0GPYyDxvLKn1oUOLfZmeHP+fFITOWGmT5B7GcpKVHiHH9wpH+T1gIbmlM7Ccx6bgT
-	 wnwxgR4BPBGKkDSZQGNnKIo6vA9QlJ9Uut203XlhHXtbpHrEdFCFYNi2HW2qZ7pj3F
-	 8wd+lIBccGY4aA4BADwEKRjBmQ5v5ALGhjNy6Bvd911Ll4GPlE0Fb5s2h2/M22hdxg
-	 v5R0ingTg1sYFIY8ZQh7Uh7LTqITEyx1o+/O09o+YN8JxV20pSUr797ahcR6ITFdmW
-	 i3vNMzy+ll6EQ==
-From: Mark Brown <broonie@kernel.org>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Stefan Moring <stefan.moring@technolution.nl>, 
- Benjamin Bigler <benjamin@bigler.one>, Carlos Song <carlos.song@nxp.com>, 
- Clark Wang <xiaoning.wang@nxp.com>, Adam Butcher <adam@jessamine.co.uk>, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Stefan Bigler <linux@bigler.io>, Sebastian Reichel <sre@kernel.org>, 
- Thorsten Scherer <T.Scherer@eckelmann.de>
-In-Reply-To: <20240618-spi-imx-fix-bustlength-v1-1-2053dd5fdf87@pengutronix.de>
-References: <20240618-spi-imx-fix-bustlength-v1-1-2053dd5fdf87@pengutronix.de>
-Subject: Re: [PATCH] spi: spi-imx: imx51: revert burst length calculation
- back to bits_per_word
-Message-Id: <171888201712.41294.3998570181399309379.b4-ty@kernel.org>
-Date: Thu, 20 Jun 2024 12:13:37 +0100
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="IaENGWEN";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ZtS6t78U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1718883440; x=1750419440;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XsMdtVrVgtV7oMw8vFBN6CYNKuXpTptfGJ0gp07/wv8=;
+  b=IaENGWENMjPh+gXPOoA15sx07VR/styddAOodo+rmdTwbQXd1u3zUwc1
+   mnKjN8byxBUzzEYYngCr+pCdRtg0JPpBuORqwYzD9A95XrE95ZBeEQQq2
+   Ju5YopLs9cwIgoFmqtZ7K+N5hdJAhVBVzbSaa5lh9qCnI5tJ1FGr9DnPY
+   FG7fh9ZqQx08wM+jifmbz6Y50aKS6V2CKJyMfSSsuEt+OWKiSixUibrVL
+   O4nlmRDlOUgUGA+oS5ZfvL0GV+RrSl6CVLmqvVqhEx/xxz/6W45lo7pYu
+   bA6sKNDX926W3nNjCuSd71F3VYcyQdH+75HSmBEQROzqdkKqb0PykjKEH
+   A==;
+X-CSE-ConnectionGUID: 80Ooz7eQSYShYhVtP4i1tg==
+X-CSE-MsgGUID: bZfMWF2hRKe3Ze1DFZItaA==
+X-IronPort-AV: E=Sophos;i="6.08,252,1712613600"; 
+   d="scan'208";a="37498585"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 20 Jun 2024 13:37:18 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A36AF1617F9;
+	Thu, 20 Jun 2024 13:37:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1718883433;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XsMdtVrVgtV7oMw8vFBN6CYNKuXpTptfGJ0gp07/wv8=;
+	b=ZtS6t78URTtXeUlQyBR9u5WP33VzQK7N6Ak8d7PVvVEyCFmUJTRJYBPYGngpHSg8x1ztYK
+	BXAJr/oO0L6ZXb4GL5sD7cReyGLMLQKyh/trKBWx5y5w5FxNObU7zasknOzDuQIG5xvTT/
+	vASsnyFYSzzodls7KjnzJDpnV/Yr9kNkE5veRio3kEFpfOAvAbS7FQyL41D8TWu52zxlTE
+	9iVM2fsVSa2VD/eeyniCmE3BR8uirP1OGptO9ETqPo7AfMKPoaH6EsftOsHfR0ksqYyFms
+	zdYRUP6yUC52vjrglCw1zHAVImizl7IT0sEr756rvaVGGpVm4M7MJJH/ESFQmw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: linux-arm-kernel@lists.infradead.org, Adam Ford <aford173@gmail.com>
+Cc: aford@beaconembedded.com, Adam Ford <aford173@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mp: Fix pgc vpu locations
+Date: Thu, 20 Jun 2024 13:37:15 +0200
+Message-ID: <2295311.iZASKD2KPV@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240619101045.6317-1-aford173@gmail.com>
+References: <20240619101045.6317-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev-d4707
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 18 Jun 2024 19:34:18 +0200, Marc Kleine-Budde wrote:
-> The patch 15a6af94a277 ("spi: Increase imx51 ecspi burst length based
-> on transfer length") increased the burst length calculation in
-> mx51_ecspi_prepare_transfer() to be based on the transfer length.
-> 
-> This breaks HW CS + SPI_CS_WORD support which was added in
-> 6e95b23a5b2d ("spi: imx: Implement support for CS_WORD") and transfers
-> with bits-per-word != 8, 16, 32.
-> 
-> [...]
+Hi Adam,
 
-Applied to
+Am Mittwoch, 19. Juni 2024, 12:10:44 CEST schrieb Adam Ford:
+> The various pgv_vpu nodes have a mismatch between the value after
+> the @ symbol and what is referenced by 'reg' so reorder the nodes
+> to align.
+>=20
+> Fixes: df680992dd62 ("arm64: dts: imx8mp: add vpu pgc nodes")
+> Suggested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Thanks for the patch.
+Reviewd-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Thanks!
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index 3576d2b89b43..ee0c864f27e8 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -838,6 +838,12 @@ pgc_gpumix: power-domain@7 {
+>  						assigned-clock-rates =3D <800000000>, <400000000>;
+>  					};
+> =20
+> +					pgc_vpumix: power-domain@8 {
+> +						#power-domain-cells =3D <0>;
+> +						reg =3D <IMX8MP_POWER_DOMAIN_VPUMIX>;
+> +						clocks =3D <&clk IMX8MP_CLK_VPU_ROOT>;
+> +					};
+> +
+>  					pgc_gpu3d: power-domain@9 {
+>  						#power-domain-cells =3D <0>;
+>  						reg =3D <IMX8MP_POWER_DOMAIN_GPU3D>;
+> @@ -853,6 +859,28 @@ pgc_mediamix: power-domain@10 {
+>  							 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+>  					};
+> =20
+> +					pgc_vpu_g1: power-domain@11 {
+> +						#power-domain-cells =3D <0>;
+> +						power-domains =3D <&pgc_vpumix>;
+> +						reg =3D <IMX8MP_POWER_DOMAIN_VPU_G1>;
+> +						clocks =3D <&clk IMX8MP_CLK_VPU_G1_ROOT>;
+> +					};
+> +
+> +					pgc_vpu_g2: power-domain@12 {
+> +						#power-domain-cells =3D <0>;
+> +						power-domains =3D <&pgc_vpumix>;
+> +						reg =3D <IMX8MP_POWER_DOMAIN_VPU_G2>;
+> +						clocks =3D <&clk IMX8MP_CLK_VPU_G2_ROOT>;
+> +
+> +					};
+> +
+> +					pgc_vpu_vc8000e: power-domain@13 {
+> +						#power-domain-cells =3D <0>;
+> +						power-domains =3D <&pgc_vpumix>;
+> +						reg =3D <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+> +						clocks =3D <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+> +					};
+> +
+>  					pgc_hdmimix: power-domain@14 {
+>  						#power-domain-cells =3D <0>;
+>  						reg =3D <IMX8MP_POWER_DOMAIN_HDMIMIX>;
+> @@ -890,33 +918,6 @@ pgc_ispdwp: power-domain@18 {
+>  						reg =3D <IMX8MP_POWER_DOMAIN_MEDIAMIX_ISPDWP>;
+>  						clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>;
+>  					};
+> -
+> -					pgc_vpumix: power-domain@19 {
+> -						#power-domain-cells =3D <0>;
+> -						reg =3D <IMX8MP_POWER_DOMAIN_VPUMIX>;
+> -						clocks =3D <&clk IMX8MP_CLK_VPU_ROOT>;
+> -					};
+> -
+> -					pgc_vpu_g1: power-domain@20 {
+> -						#power-domain-cells =3D <0>;
+> -						power-domains =3D <&pgc_vpumix>;
+> -						reg =3D <IMX8MP_POWER_DOMAIN_VPU_G1>;
+> -						clocks =3D <&clk IMX8MP_CLK_VPU_G1_ROOT>;
+> -					};
+> -
+> -					pgc_vpu_g2: power-domain@21 {
+> -						#power-domain-cells =3D <0>;
+> -						power-domains =3D <&pgc_vpumix>;
+> -						reg =3D <IMX8MP_POWER_DOMAIN_VPU_G2>;
+> -						clocks =3D <&clk IMX8MP_CLK_VPU_G2_ROOT>;
+> -					};
+> -
+> -					pgc_vpu_vc8000e: power-domain@22 {
+> -						#power-domain-cells =3D <0>;
+> -						power-domains =3D <&pgc_vpumix>;
+> -						reg =3D <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+> -						clocks =3D <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+> -					};
+>  				};
+>  			};
+>  		};
+>=20
 
-[1/1] spi: spi-imx: imx51: revert burst length calculation back to bits_per_word
-      commit: df75470b317b46affbe1f5f8f006b34175be9789
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 
