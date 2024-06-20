@@ -1,339 +1,176 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2068.outbound.protection.outlook.com [40.107.104.68])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199395661
-	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 03:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718854230; cv=fail; b=AGc/x2bFLm3fMC4qPD+TrVzCktWF9/gg651+9s4EDLcVCUy4sGwO2Dq6H9KJiWS6f954Q8zLoT0BsZM4MPXLYAd7gva1mUWBEiPpNJTTiMrB7LTmwhJdEgddwJXRj6fvrEH3FrXxd1KLD2H5KDz7lCM74EJC5D3vYShKm/Az4xk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718854230; c=relaxed/simple;
-	bh=/tJSytx8DmzcHJgRBTkUr5JvhmhCMIqY6o5yemeKXs8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YBcdaSIiKvDm+RFJkgDPyqZ9ox9Vyq4Y7wdCBOwzx7f27sYrYdrjnHbQViA8roiQb0HHOYUBGxp8Th2zJnv2SUN+C6YEjsql818Fo/K8pEHG6OfscM51m7JZymCtlx/NUsKpBWxGRxOBcfUjEFQwzDfuJdDz93J9zfMEK5nk2sA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=s9D9AQFw; arc=fail smtp.client-ip=40.107.104.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D2140855
+	for <imx@lists.linux.dev>; Thu, 20 Jun 2024 06:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718865304; cv=none; b=ZL+azoU5C9ykP64pMDdIkws2eU6aHUvihUKSuBSJb9mr3sY/zyhuRZBnsRSaOG/FSJS2p8nW024T+RpO7H3xXwviDwSwiDK2qf6QLeY3R5y0uq7oDafHdPlW9P3H9tDoUG9VGUl5uMvaF9aNOXe3IPRYPTzkUAJSKMzDRofuOw0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718865304; c=relaxed/simple;
+	bh=URN7KvW8KBERrb2PUlWof2P+ERmUiv++FPlzQKQicnQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DAdsGi1uwiWJb9xW2E935YH2N0YjqzBzCi4hzS9p9rrCs2TAfjmzHzRf5+RobgxgwydovRrhYHg2XGqpBvcHjbGspw3faYGwfDVXPhB3rVMCnVmKZSn8At2lCJ2llCC1t88TNQXATBLNtBp144VhiV8N7I1CVQ5wC9QJLU/e9jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=b8bHIowx; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="s9D9AQFw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KqGgkOTbIxZobG2TBw/RHghTyaEbzoVevDTiSnrEjnj00fs06Ltn1n0UqY05zQvibshx1xLBNkSwvN4FxKdsHGudhQEAGqgq/xU2n9KhxrerY0agOQgsH2p7D0YLxbBrO6f4zq2h2H5tE6alImWYRxBOIOvufMFzvixXIdUvweH1bvWLK7Hms3AYz6GT4ykMeG2v0DsXxYcXI+432NfxOGhP59360Em/Fp3Cz+/wsB3ER+zHJ2haluvQSkfAm+EFBGEJunj/DlRS0FQyMv6xML2SEHiHt0qaHGCavCaorvC4H7laS7tNNO1tf5Nc9s5DakbNiEU6aGEnIoL3iJyqyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wP8EyZYU+mqgrWtKw0hKnh3MQGHB5pAtzRx80evVpwI=;
- b=Defgcab5NHELwadwVlxVGBgi7rqTArt8SQpoQw/PeRCnrONA1iyaDfKYqAk9SZw9+uavciTYdw//Hvsxfmo6PPjvjM2kHcqIUOAeVKg9c+SOcPvxl9fycDy8hIto0RNf9tQBrYUfuooQSzh6gRUSHUfqdjhadAKO06agK/6wrJdpPZp26JrwAZqKZkWLNpvs9gRHkJBJxH+5WVLXY8LM6B3ONKE9n/0RCkz4y7q8lSiAeCOrn59CcyGJOhSTvCOn58su0HNjd0QVlAefZmp5Sh4FQbzjRmsswDfwhYkcbOUU4NoOfTCadZuuE+XWDq66+bHNRGYzLVUyuFuzVRPUDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wP8EyZYU+mqgrWtKw0hKnh3MQGHB5pAtzRx80evVpwI=;
- b=s9D9AQFw6Z+NbwdcDyMHG6w2K1LCq5Xzy1mJfHuAy2sZMZMIFqpiIu79+S9kvnyEwiPbuDmIdGWobLKUXxptR7Mk3DF6hNDv7qcER7iXjr3Plj/Gbq6zfA5oM0gFYvAtJHQhx2AlfpdE/TqosPAe/4e3OEKMm3yda9ibFVhNcmY=
-Received: from AM6PR04MB5941.eurprd04.prod.outlook.com (2603:10a6:20b:9e::16)
- by AS8PR04MB8626.eurprd04.prod.outlook.com (2603:10a6:20b:429::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Thu, 20 Jun
- 2024 03:30:26 +0000
-Received: from AM6PR04MB5941.eurprd04.prod.outlook.com
- ([fe80::9f4e:b695:f5f0:5256]) by AM6PR04MB5941.eurprd04.prod.outlook.com
- ([fe80::9f4e:b695:f5f0:5256%4]) with mapi id 15.20.7698.017; Thu, 20 Jun 2024
- 03:30:24 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Cristian Marussi <cristian.marussi@arm.com>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: RE: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM module
-Thread-Topic: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM module
-Thread-Index: AQHarbcjsuJf2tlyEUupBkFkDz7Jz7HNb20AgAK4mNA=
-Date: Thu, 20 Jun 2024 03:30:24 +0000
-Message-ID:
- <AM6PR04MB5941F0157D94E57EC6F12DEC88C82@AM6PR04MB5941.eurprd04.prod.outlook.com>
-References: <20240524-imx95-bbm-misc-v2-v4-0-dc456995d590@nxp.com>
- <20240524-imx95-bbm-misc-v2-v4-5-dc456995d590@nxp.com>
- <ZnFZMt5Xao1u7Ve-@pluto>
-In-Reply-To: <ZnFZMt5Xao1u7Ve-@pluto>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM6PR04MB5941:EE_|AS8PR04MB8626:EE_
-x-ms-office365-filtering-correlation-id: e33226d7-545b-4e4e-88c0-08dc90d95279
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230037|1800799021|376011|7416011|366013|38070700015;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?SLHC1XIOtoJ8NFc8hb7gmpW8FiBukRJ3VexovG9aRwbBT7fT8MxMsb4WKpsq?=
- =?us-ascii?Q?oCDRiXbe1HwDpsWg4piHO6x4dkXVDbPOC77m7yljZxi1McgQb1qq5HgLcn50?=
- =?us-ascii?Q?8K0GICWvttZAKfAwLjqy4bvyK3gOPATslIEzZL/3jKsS9iNJYZbsQdwrwJ7T?=
- =?us-ascii?Q?9cGx4uvqMc+7dJK25jathlOqdieHBCCwclM3LHMjwk/ipIvELdrN+iTKxqFd?=
- =?us-ascii?Q?v5GvOx2LzvJNdVad/7YSNA+9TEsYRfniqdxhp9MO8vHxoCFodPaUmYAcgafw?=
- =?us-ascii?Q?bd/XZQDC+ccRIvRkK/eM0yDntBrDDTkCBN6uH8xByvMO2yheRFgQU0gX3mzX?=
- =?us-ascii?Q?6Czqx0NBBusUBudYWEAMoqu5SQgzxBh7scsRUMShnQSG92BjiBvGSqwkMpvM?=
- =?us-ascii?Q?d1B9T3MlMTc5t0lCGOEJJleeR83Ux9FY7jSk2nWHN/jEeVHYBw8W31hYmheG?=
- =?us-ascii?Q?PP9HPP/9zeaM4wQEhqfXv0RHFDxCFMnhEtZ5i76qM7XCM1CPpSU4JEruI4ed?=
- =?us-ascii?Q?aaWTH/251zNtMopwNSYGDyZkFmv9DQiUYM8YWGQVfkeCTCMblWjNglhfIvOJ?=
- =?us-ascii?Q?mUCRg5Gx75ZI5acS5NInKyeACwpb12/WCIul594f3/S0S7BEYRJYrviYCX2k?=
- =?us-ascii?Q?yyG6zc3B3SxKYrn7CwEC3mqMgC5C7fvXNIKz71mNKwXSAPfOPKkoEGjat7wD?=
- =?us-ascii?Q?Zaermb/rvmdWPunZkW+VG1ALXELDJLObIQtjnz5LNs9GOnawPhVkEgwF1DPr?=
- =?us-ascii?Q?0/ozI0puBt+jtdOru96tpmS7wKfUOIAHHEEzVKxLlm/3Xb1HK9iUocZ+R1rh?=
- =?us-ascii?Q?7gDfA2aIxShyKl5wsQDAZjfExCvFQFnS6DFtFuw4k9dHLEEdwNv17L/qXmrI?=
- =?us-ascii?Q?yjp+wFpWXfX9lWqKxEDyRYbbqhKWt6bQk7cN/MyQ9iB4fTm+nXupVhzHNSGE?=
- =?us-ascii?Q?8q4b9GMNA4C+z9CYbKFk5NHo9Ph8wn+ULaMAknCEuM52bmC1v2MHkaV/eeev?=
- =?us-ascii?Q?feBxjgy5l5uRV3PldkZ86mND8JnuK4F8WNQA+SzOc9lD1ltsoSm8bLRX+ddW?=
- =?us-ascii?Q?xNPhZ37awICka0rA+JmgJ7ZxMJp5ftFRppMOlcXrasyqQhnBYkK3Oh1rjdtO?=
- =?us-ascii?Q?5f3pYlSR6Oa8vn6e+8m1qmS8B1s0Hh7PvhoFrQMqpnYgG19HGGy8fG59Gymh?=
- =?us-ascii?Q?U/9LAlPFLdmdE04QviUctQwMijbhvwfra+V3SAV3XEBVTs5EFR+IM7NHMJxj?=
- =?us-ascii?Q?74N2jvhW0hbBiUwscCDJ/7b7e41MhRR2fb4Lvxqdpb15cNytqG2RIjX21uG/?=
- =?us-ascii?Q?ub5IqMVMQFo5XAZRkDLd5eel?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5941.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(376011)(7416011)(366013)(38070700015);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?/TDiBNoRh7mWg4X8a+Yz039UU+4l/uxlYD6la0EDFfci1ztDwAZHSJ6rt0vN?=
- =?us-ascii?Q?nPVYhSmHH6cf67XwiqM3UnQg0DxPgac0rbQPIYSNcppZ4fOysYJTovviDqAB?=
- =?us-ascii?Q?SWN/dR6s50+7o8DVKLF+SUNcCeJVaGvFt7g/4qC1KFK4+sb2zlA0FVspN+NH?=
- =?us-ascii?Q?PRH9ng4GvGbbFrMm3C9toSIJqxQohIe3t6w5ySkmhlFUHIlyS/Aoi044c7kQ?=
- =?us-ascii?Q?VVCjjdA1Kwe6Az8oxDZIo/ArrzNrX9xTW0P9qKU1JpIza5n8ZNR185/PS81O?=
- =?us-ascii?Q?expbHpIbFNCDD8bRuLr7UPIZ2Ap8ZgsbW17vsWZNay8PyCOzLHYkrsWMYTbd?=
- =?us-ascii?Q?wA2Dgsm7fUZMdPFdZ200Aai/Cf1G3DCjW+G/m0NaAxI6XJ7BnmtTr/Ftf1xt?=
- =?us-ascii?Q?dUQ7Dq3Z+0uUp3m5Uvu2gn0tD6iYs/YvYGLd6xhKIJf1SvftWF8M83+oj4Tl?=
- =?us-ascii?Q?N3CO7UjUUAjljiiET/7FLMV/635cYTw0Jfv6W/k4oxARAjLxflXO39W7hwvz?=
- =?us-ascii?Q?QD2PNtUWAQjwzknNfJ39a9GIRp+HYnnl74jzw1o4QTQiFHVAU1KPLGohYLPo?=
- =?us-ascii?Q?TmhBe85U+dJTOK0qgsruqwRcDitaYq2LrIQ9i7bD9PWaVt5g1YrFz6u+l826?=
- =?us-ascii?Q?R1+369DZ3zbAD6V/hnjmVQBZuNZQNV8HT/dox8WBoz0LXfAdBqIc4lXAdDoB?=
- =?us-ascii?Q?l8gIYlHK2sJJRJ9VS9xqXhahIlUBdASZkd1QV+EUT11M/PZamwNI1kleA5GN?=
- =?us-ascii?Q?PLLfaJX0e3KJgsVtXs47r2e5RCLm7i6lkbhgoD+/vTZ6XuaP1LwctQv1bK2Q?=
- =?us-ascii?Q?XSP//lMG18HJT+eeUjZxADrVttxHcTYZgBdvYcZiNspUtaTaxISU3v95Ghr4?=
- =?us-ascii?Q?t0W2nKObB9UO1xP70I3nBIoMcxRJFv2/p+MOWAjVElnKR6bBG98wSGqe5mgq?=
- =?us-ascii?Q?aU1WBmEY+BoGQ8a+P5P+ZZFcpisq2JewffebYduTVcXh8HcLIR7Jyqohjsa0?=
- =?us-ascii?Q?SnFNBS/or2ZuYBuYPHH3d5UOHMPCYG8uyPt4rqOhJvQOF6wYVCtfYHCkUb2m?=
- =?us-ascii?Q?uLQ+Q7oW8GRv3U87JpqT6m7ZYqHqSJLPl3tZVAF2nzLOFO3ab2lwkjCJLxgi?=
- =?us-ascii?Q?8Mf2Z6ntMdR2DH9xcvqvMxZlQxJnW/73LZNWPnCepxC4VVikHkcVMfUeS3W0?=
- =?us-ascii?Q?OCWhnHPCrzTwF67FAweLSYXTDzdhuKIsX5arQIX0tAyuJB6mLz5VGjsysseD?=
- =?us-ascii?Q?wiIOvLGxp7Q9eRQGmXnAjEhkmBrDIR3obOy6X/LGhEo7eovi7zEKCE/6edKq?=
- =?us-ascii?Q?NGVs0/GSBPdbdE2HQvbw8IFsPjUVZ+h8enX81qirtRK1BAHa3Yl4xnC8zuGe?=
- =?us-ascii?Q?9/27I5AmiutXHRDl/AFLmc4S+TdxMGfgIj1fD9rYF5kE3+01ms1K1wNMyOUo?=
- =?us-ascii?Q?kfi95y2WeKfc+Dgj5h7tbzY/VEAIt4XvbMnvBKCoR5PtPjmfrHEFdBmkEFcE?=
- =?us-ascii?Q?vF6pd89FxvOvTpVCOYV+E0idnSn29czkMcGGCz9oxuBVvAvqTXfE7fU/l5ru?=
- =?us-ascii?Q?ZlgqNscrGFgfkIXq0dA=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="b8bHIowx"
+Received: from [192.168.88.20] (91-158-144-210.elisa-laajakaista.fi [91.158.144.210])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C9DF566F;
+	Thu, 20 Jun 2024 08:34:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1718865281;
+	bh=URN7KvW8KBERrb2PUlWof2P+ERmUiv++FPlzQKQicnQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=b8bHIowxxqeRSIi/He9pH4gZ4H19RpYp8zg9P/IJtnoy3U+ni5c0hAdyBJUEDykMh
+	 wbhf2DWhQMcRXlod0mUajQX/AdR4fGy9nSEeKBnRnYzSDz3qAk88pe5KbG/83EDWhD
+	 Xm6dnjtc9fFLbid3BVDfP6vFqhAvwqMVPBWKGPhI=
+Message-ID: <08df0971-8e0d-463e-a128-e9faae68dc30@ideasonboard.com>
+Date: Thu, 20 Jun 2024 09:34:56 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5941.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e33226d7-545b-4e4e-88c0-08dc90d95279
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jun 2024 03:30:24.5122
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DJSGrecANGrla7e9gXvRgwLfLAgGqfFy+wJYGSbxXSXg9thzIkQco4O0Do4KbHN4lyOTBkBz17qqYluI6kn/VA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8626
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: imx-mipi-csis: Use v4l2_subdev_enable_streams()
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ linux-media@vger.kernel.org
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger
+ <martink@posteo.de>, imx@lists.linux.dev, Purism Kernel Team <kernel@puri.sm>
+References: <20240619232431.5708-1-laurent.pinchart@ideasonboard.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Content-Language: en-US
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20240619232431.5708-1-laurent.pinchart@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Subject: Re: [PATCH v4 5/6] firmware: imx: support i.MX95 BBM
-> module
->=20
-> On Fri, May 24, 2024 at 04:56:47PM +0800, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > The BBM module provides RTC and BUTTON feature. To i.MX95, this
-> module
-> > is managed by System Manager. Linux could use i.MX SCMI BBM
-> Extension
-> > protocol to use RTC and BUTTON feature.
-> >
-> > This driver is to use SCMI interface to get/set RTC, enable pwrkey.
-> >
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  drivers/firmware/imx/Makefile |   1 +
-> >  drivers/firmware/imx/sm-bbm.c | 314
-> > ++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 315 insertions(+)
-> >
-> > diff --git a/drivers/firmware/imx/Makefile
-> > b/drivers/firmware/imx/Makefile index 8f9f04a513a8..fb20e22074e1
-> > 100644
-> > --- a/drivers/firmware/imx/Makefile
-> > +++ b/drivers/firmware/imx/Makefile
-> > @@ -1,3 +1,4 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >  obj-$(CONFIG_IMX_DSP)		+=3D imx-dsp.o
-> >  obj-$(CONFIG_IMX_SCU)		+=3D imx-scu.o misc.o imx-scu-
-> irq.o rm.o imx-scu-soc.o
-> > +obj-${CONFIG_IMX_SCMI_BBM_EXT}	+=3D sm-bbm.o
-> > diff --git a/drivers/firmware/imx/sm-bbm.c
-> > b/drivers/firmware/imx/sm-bbm.c new file mode 100644 index
-> > 000000000000..5e7083bf8fd3
-> > --- /dev/null
-> > +++ b/drivers/firmware/imx/sm-bbm.c
-> > @@ -0,0 +1,314 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * Copyright 2024 NXP.
-> > + */
-> > +
-> > +#include <linux/input.h>
-> > +#include <linux/jiffies.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/rtc.h>
-> > +#include <linux/scmi_protocol.h>
-> > +#include <linux/scmi_imx_protocol.h>
-> > +#include <linux/suspend.h>
-> > +
-> > +#define DEBOUNCE_TIME		30
-> > +#define REPEAT_INTERVAL		60
-> > +
-> > +struct scmi_imx_bbm {
-> > +	struct rtc_device *rtc_dev;
-> > +	struct scmi_protocol_handle *ph;
-> > +	const struct scmi_imx_bbm_proto_ops *ops;
-> > +	struct notifier_block nb;
-> > +	int keycode;
-> > +	int keystate;  /* 1:pressed */
-> > +	bool suspended;
-> > +	struct delayed_work check_work;
-> > +	struct input_dev *input;
-> > +};
->=20
-> You could pull out the *ops in a global like
->=20
-> static const struct scmi_imx_bbm_proto_ops *bbm_ops;
->=20
-> since the protocol ops handle are always the same you will end up
-> overwriting it with the same value if this driver is probed multiple
-> times (which is harmless)...you will get anyway a different *ph handle
-> to operate on that you are already storing...
->=20
-> ..up to you really
+On 20/06/2024 02:24, Laurent Pinchart wrote:
+> To support sources that implement the .enable_streams() and
+> .disable_streams() operations, replace the manual calls to the subdev
+> .s_stream() operation with the v4l2_subdev_enable_streams() and
+> v4l2_subdev_disable_streams() helpers. The helpers fall back to
+> .s_stream() if the source doesn't implement the new operations, so
+> backward compatibility is preserved.
+> 
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+>   drivers/media/platform/nxp/imx-mipi-csis.c | 22 +++++++++++++++-------
+>   1 file changed, 15 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index f49b06978f14..b9729a8883d6 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -320,7 +320,11 @@ struct mipi_csis_device {
+>   	struct v4l2_subdev sd;
+>   	struct media_pad pads[CSIS_PADS_NUM];
+>   	struct v4l2_async_notifier notifier;
+> -	struct v4l2_subdev *src_sd;
+> +
+> +	struct {
+> +		struct v4l2_subdev *sd;
+> +		const struct media_pad *pad;
+> +	} source;
+>   
+>   	struct v4l2_mbus_config_mipi_csi2 bus;
+>   	u32 clk_frequency;
+> @@ -597,7 +601,7 @@ static int mipi_csis_calculate_params(struct mipi_csis_device *csis,
+>   	u32 lane_rate;
+>   
+>   	/* Calculate the line rate from the pixel rate. */
+> -	link_freq = v4l2_get_link_freq(csis->src_sd->ctrl_handler,
+> +	link_freq = v4l2_get_link_freq(csis->source.sd->ctrl_handler,
+>   				       csis_fmt->width,
+>   				       csis->bus.num_data_lanes * 2);
+>   	if (link_freq < 0) {
+> @@ -958,7 +962,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+>   	int ret;
+>   
+>   	if (!enable) {
+> -		v4l2_subdev_call(csis->src_sd, video, s_stream, 0);
+> +		v4l2_subdev_disable_streams(csis->source.sd,
+> +					    csis->source.pad->index, BIT(0));
+>   
+>   		mipi_csis_stop_stream(csis);
+>   		if (csis->debug.enable)
+> @@ -986,7 +991,8 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+>   
+>   	mipi_csis_start_stream(csis, format, csis_fmt);
+>   
+> -	ret = v4l2_subdev_call(csis->src_sd, video, s_stream, 1);
+> +	ret = v4l2_subdev_enable_streams(csis->source.sd,
+> +					 csis->source.pad->index, BIT(0));
+>   	if (ret < 0)
+>   		goto err_stop;
+>   
+> @@ -1233,12 +1239,14 @@ static int mipi_csis_link_setup(struct media_entity *entity,
+>   	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
+>   
+>   	if (flags & MEDIA_LNK_FL_ENABLED) {
+> -		if (csis->src_sd)
+> +		if (csis->source.sd)
+>   			return -EBUSY;
+>   
+> -		csis->src_sd = remote_sd;
+> +		csis->source.sd = remote_sd;
+> +		csis->source.pad = remote_pad;
+>   	} else {
+> -		csis->src_sd = NULL;
+> +		csis->source.sd = NULL;
+> +		csis->source.pad = NULL;
+>   	}
+>   
+>   	return 0;
+> 
+> base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
 
-I prefer to keep as it is
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
->=20
-> > +
-> > +static int scmi_imx_bbm_read_time(struct device *dev, struct
-> rtc_time
-> > +*tm) {
-> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
-> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
-> > +	u64 val;
-> > +	int ret;
-> > +
-> > +	ret =3D bbnsm->ops->rtc_time_get(ph, 0, &val);
-> > +	if (ret)
-> > +		dev_err(dev, "%s: %d\n", __func__, ret);
-> > +
->=20
-> ..so if you fail to get the time via SCMI you just carry on without carin=
-g ?
->=20
-> > +	rtc_time64_to_tm(val, tm);
->=20
-> ... converting some random val from the stack into tm ?
->=20
+  Tomi
 
-I will fix in v5, should return an error value.
-
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int scmi_imx_bbm_set_time(struct device *dev, struct
-> rtc_time
-> > +*tm) {
-> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
-> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
-> > +	u64 val;
-> > +	int ret;
-> > +
-> > +	val =3D rtc_tm_to_time64(tm);
-> > +
-> > +	ret =3D bbnsm->ops->rtc_time_set(ph, 0, val);
-> > +	if (ret)
-> > +		dev_err(dev, "%s: %d\n", __func__, ret);
-> > +
->=20
-> same here why you dont report any error ?
->=20
-
-Should return error. Fix in v5.
-
-> > +	return 0;
-> > +}
-> > +
-> > +static int scmi_imx_bbm_alarm_irq_enable(struct device *dev,
-> unsigned
-> > +int enable) {
-> > +	return 0;
-> > +}
-> > +
-> > +static int scmi_imx_bbm_set_alarm(struct device *dev, struct
-> > +rtc_wkalrm *alrm) {
-> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
-> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
-> > +	struct rtc_time *alrm_tm =3D &alrm->time;
-> > +	u64 val;
-> > +	int ret;
-> > +
-> > +	val =3D rtc_tm_to_time64(alrm_tm);
-> > +
-> > +	ret =3D bbnsm->ops->rtc_alarm_set(ph, 0, val);
-> > +	if (ret)
-> > +		dev_err(dev, "%s: %d\n", __func__, ret);
-> > +
->=20
-> same ...
->=20
-> ....mmm... hang on ... this reminds me of something...
->=20
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F
-> lore.kernel.org%2Flinux-arm-
-> kernel%2FZdjgSxFx9YRP107y%40pluto%2F&data=3D05%7C02%7Cpeng.f
-> an%40nxp.com%7C91000402f63d4e893d8208dc8f7c9399%7C686ea1
-> d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638543012417198736
-> %7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2l
-> uMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DnK
-> leYfoIRJtMN13TNQB9xYH8aX1tUYk9UI202tYl49I%3D&reserved=3D0
->=20
-> ...I did exactly the same comments on V1 around these 2 BBM/MISC
-> SCMI drivers....but you never replied, addressed or disputed those
-> issues.
->=20
-> You DID address other review/comments in protocols and DT in later
-> versions so I suppose you just forget these latter drivers reviewes and
-> just rebased on.
->=20
-> So, this review stops here for now, please address or reply to my V1
-> concerns on these last 2 BBM/MISC drivers.
-
-My bad. I will re-collect all the comments and address in new version.
-
-Thanks,
-Peng.
-
->=20
-> Thanks,
-> Cristian
