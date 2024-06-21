@@ -1,125 +1,84 @@
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB148155C82
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 08:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021F916E86F;
+	Fri, 21 Jun 2024 09:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718957354; cv=none; b=PmXV7qHUWpRPLY25DhJCxZAsdh8+cTNFsMRAYId4O0ZGWzDGAPHcJh9ZuOgacA9uUNoh8W70QdIRCTiRZeDauVff7NO44XEigMTQTCEFCdnreg8xR9Dxtdp/J9GUM1F1JselyoFUvmjcIyk9tUMhhQnpt79rX3K7YK4i3Xe3wjk=
+	t=1718961632; cv=none; b=aIeOZXtHqBe5fuoYFP3AOJZGfK1c7rvETKNgfFl5RxUCi2vSYHYj9KOI+1ahILAzCWk772Fj/VyzFY0HJRFu9oyh1paPENjBDtJqHR/9WFY6ypAI7b7pA+z32jP6tDot/ptkoEuLudpw96qcvbhhEKpcIQRBUB6Rop2yDrLkyZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718957354; c=relaxed/simple;
-	bh=JO8jBgL5VicYON4ggakHf8zSEa0qmLKYKjl67css/90=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o108NMVy1RPY5A4uvCYjqXcp7I1jRFw1DYOBcaphorkEmmz9FNt1KTR9Yjd2kx5WY+RDjCyFA/b7PJzapiZaok147sToPamaHugr0hIlLNXRRqclRSbme1wCpAb3DeRScPGNSTlkFVW9w08Dl7UbkW8toSLmSjzlvI5YzrVL/28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjnyFiV6; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718961632; c=relaxed/simple;
+	bh=DdfBUSruCOMmVc04SJP9LQBray58f2G8GWiu7++ObGY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gPwji1nrMuH5aOTSmj/ENrY9FK3cOuOiU6dZqhB3qcCqHLFi3Y6/fNCCQVFrhti0u+3viEjlSUExlzA3Mu0SSPfefO8W/VfSaTI9+gwoANg558KpzpX1QssQY3TWUOMXZi2+z42KR4VAAmDcnp7PY/LIoMlltP3P5uFDFPR9+TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwPxV1gL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjnyFiV6"
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-375b2fe7003so6673725ab.1
-        for <imx@lists.linux.dev>; Fri, 21 Jun 2024 01:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718957352; x=1719562152; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CwClo4datysb7tCRM4Yh2KXHFdvHWi27Cv7/oywYAaE=;
-        b=hjnyFiV6HJr3dj/XJgB7KX42t8b9SFI5ERjjc+SO1lmVk+cVMDfVt5xOenoTn/z7DZ
-         Pd3R+BFJWnieGzeLJUdgekDlRMKbsRZTe3KZSJoG69XEitej0vHUrfaq/cVwAvBQdpUE
-         qUGUllj1RmscwBSPeSquQ7jpDMcbMr8KvjIVRaoEyNnDT+i2LPCWkNBt/fGI12i1jSGy
-         42IuA0mUBTBczVGnEzQ6lhknQViM+d6XT9EUHbE07PPxdU65PcNez5pcMLp8AzGpPvNF
-         HkEbyFT2YoyiWtu8Mb2IIHc7MRCFyTJtdWGmahfpP07EqYiBnnSJzutGPysXPUvo+G65
-         veVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718957352; x=1719562152;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CwClo4datysb7tCRM4Yh2KXHFdvHWi27Cv7/oywYAaE=;
-        b=vCk7fYr5PRaOymzzfPOGiMEj4is+iGMWE7Zs1JJQIIAqqQDZ73MhH0cbGJhEHxbV1s
-         uX6UT5MnizGh8enu/5oHeKLODhm7jYL3A7oU5SWQDdccefrvAzGfV9oLM5x1gGG3r5PK
-         /F9S2npp4xe9DTeP9Yy0h26h/SmHSYz3OFs7ntd0+J9QiXBIe/PTqE33VjHu/iEbxp9F
-         2q6V4HoNmanH4/fPY+PJo+Vy4mph6AarGYZHG4mc/xF3N5c5dIy4ano/DvPwRsAZ9Psq
-         7Zj8SJwalb37pNysxu0BsQoz2JOvZAlBj0Nk/BNW3+0WgLci9IDpp5mPlAKEG+E1it23
-         8rfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWegNp85vmAa9qELdDJCDWr5vNSyLS+vjjotrgFgE9lDlp5NGIUZGgWJS/yiG3c80clMX2p2d6aohbQYhr4E37b7aeX
-X-Gm-Message-State: AOJu0YzsPYuDQ20uaP8fkKgszlRFewkV8T1vTXePtisiidSe7qC0mffp
-	vkj9qbW2eJd1NQxTMEFPBaehBXg94RgiiaMJpeeWj0jOC7VmApB6Cbjq2TOdkLsNN2njqNDvH/c
-	GCgLG9n/7t1G3bL8sPjjpcqM19WE=
-X-Google-Smtp-Source: AGHT+IFwSrtGzSeEPK5TgC+oT8UOSi4rybKlq0dBAqLPHDSohAbLAOfIvFh4wZQl+7YbkvIbecRy6ybHuZFNV6WdVXA=
-X-Received: by 2002:a05:6e02:1849:b0:375:a3d8:97be with SMTP id
- e9e14a558f8ab-3761d66d1admr86716815ab.9.1718957351600; Fri, 21 Jun 2024
- 01:09:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwPxV1gL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 88ED2C4AF11;
+	Fri, 21 Jun 2024 09:20:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718961631;
+	bh=DdfBUSruCOMmVc04SJP9LQBray58f2G8GWiu7++ObGY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=hwPxV1gLc8S89t1n0Hk+M6QQuEbWSuBecMPD5HTs4oSSCRvBg6voSgWT7Mw3AJuuF
+	 xOVuyKdMB0d+pqVm1ZG/z1U+NN9bOAA48tJivS1eQup/Hi3zEESK95m5jHC9HFumRJ
+	 SmUWrTIf2P5RPVI5Slec0SJcB5dcXveJRrOXfTA/bXpDSG/BEd0j3JdFpG8ZkdgrFu
+	 w7tmotBE1cVMQmtIJJjQpOwvuuMlzdjbN0kX/mrkGt7qGK1q/8l26amztkK53BZDHj
+	 4k6+2H1W/cP0gUcWqFlJzCDYj85ApcTmY4ViS8WfDvrpkzKLUg19XWO2Vq7bc0aN6j
+	 vYLipJPpSFN8Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 78D4FCF3B9C;
+	Fri, 21 Jun 2024 09:20:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1718350923-21392-1-git-send-email-shengjiu.wang@nxp.com>
- <171895121238.3616871.12573343188535489268.b4-ty@linaro.org> <ZnUfbEBDaKqIJU0r@linaro.org>
-In-Reply-To: <ZnUfbEBDaKqIJU0r@linaro.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 21 Jun 2024 16:09:00 +0800
-Message-ID: <CAA+D8APggO9q1bC7LnEBLj4JqF_q=Arax=iO6VeO5wZsm=d12g@mail.gmail.com>
-Subject: Re: [PATCH v8 0/5] clk: imx: clk-audiomix: Improvement for audiomix
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com, 
-	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH resubmit 3] net: fec: Fix FEC_ECR_EN1588 being cleared on
+ link-down
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171896163149.20195.11694633975704847703.git-patchwork-notify@kernel.org>
+Date: Fri, 21 Jun 2024 09:20:31 +0000
+References: <20240619123111.2798142-1-csokas.bence@prolan.hu>
+In-Reply-To: <20240619123111.2798142-1-csokas.bence@prolan.hu>
+To: =?utf-8?b?Q3PDs2vDoXMgQmVuY2UgPGNzb2thcy5iZW5jZUBwcm9sYW4uaHU+?=@ci.codeaurora.org
+Cc: Frank.Li@freescale.com, davem@davemloft.net, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ richardcochran@gmail.com, andrew@lunn.ch, wei.fang@nxp.com,
+ shenwei.wang@nxp.com, xiaoning.wang@nxp.com, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com
 
-Hi Philipp Zabel
+Hello:
 
-On Fri, Jun 21, 2024 at 2:36=E2=80=AFPM Abel Vesa <abel.vesa@linaro.org> wr=
-ote:
->
-> On 24-06-21 09:26:52, Abel Vesa wrote:
-> >
-> > On Fri, 14 Jun 2024 15:41:58 +0800, Shengjiu Wang wrote:
-> > > Some improvement for audiomix driver:
-> > > Add CLK_SET_RATE_PARENT flags for clocks
-> > > Correct parent clock for earc_phy and audpll clocks.
-> > > Add reset controller for EARC function, use the auxiliary device
-> > > framework:
-> > > https://lore.kernel.org/lkml/b86c83a520f0c45a60249468fa92b1de.sboyd@k=
-ernel.org/
-> > >
-> > > [...]
-> >
-> > Applied, thanks!
-> >
-> > [1/5] dt-bindings: clock: imx8mp: Add #reset-cells property
-> >       commit: d7d9ef1f40dc0639ba0901097139fcdc4bedb32e
-> > [2/5] clk: imx: clk-audiomix: Add reset controller
-> >       commit: 6f0e817175c5b2e453f7ad6a4e9a8a7fd904ee4a
-> > [3/5] reset: imx8mp-audiomix: Add AudioMix Block Control reset driver
-> >       commit: b7604e8b805a6e52161ff98728122005e6975a46
->
-> Dropped the this one. Needs to go through different tree.
+This patch was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-In case that you may miss this commit which is in a clock driver patch set.
-Could you please have a review?  Thanks.
+On Wed, 19 Jun 2024 14:31:11 +0200 you wrote:
+> FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
+> makes all 1588 functionality shut down, and all the extended registers
+> disappear, on link-down, making the adapter fall back to compatibility
+> "dumb mode". However, some functionality needs to be retained (e.g. PPS)
+> even without link.
+> 
+> Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
+> Cc: Richard Cochran <richardcochran@gmail.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Link: https://lore.kernel.org/netdev/5fa9fadc-a89d-467a-aae9-c65469ff5fe1@lunn.ch/
+> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> 
+> [...]
 
-https://lore.kernel.org/linux-arm-kernel/20240614101727.zkh32bqe5nurnmbx@pe=
-ngutronix.de/T/#m4bd8091438d9fbe0bd1400005d681483c59607c7
+Here is the summary with links:
+  - [resubmit,3] net: fec: Fix FEC_ECR_EN1588 being cleared on link-down
+    https://git.kernel.org/netdev/net-next/c/c32fe1986f27
 
-Best regards
-Shengjiu Wang
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
->
-> > [4/5] clk: imx: clk-audiomix: Add CLK_SET_RATE_PARENT flags for clocks
-> >       commit: 163e678c0b24d0e45f617f4496c4ae9b1afd8d63
-> > [5/5] clk: imx: clk-audiomix: Correct parent clock for earc_phy and aud=
-pll
-> >       commit: 22fb849ead1b109f868e83b309223d906e4b7d96
-> >
-> > Best regards,
-> > --
-> > Abel Vesa <abel.vesa@linaro.org>
-> >
+
