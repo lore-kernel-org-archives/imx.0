@@ -1,65 +1,62 @@
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2073.outbound.protection.outlook.com [40.107.14.73])
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2044.outbound.protection.outlook.com [40.107.15.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0352179206
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 16:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9172415FA94
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 16:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.15.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718988744; cv=fail; b=ReXHhenfFs4NzJVP/sbuqz8uVEUtDWJUevgHmXNuGhCRa6yYXl1xHEnpCGB9Sdcxn1uN0+ofVl3TVHLViBbn386ExY5LdTPJkeNZz+bhg0oqreRvnWLExnpf/QhjsT9Dk3qOPumVVx0Q2jyYFjNYbFBFUkZnDwR/ohrMyx3eGkE=
+	t=1718989014; cv=fail; b=gZzmtp8uscbN7aHzrztB2oDE+HbcdwKzCRYe+C1yUVfBC6bq/ueEvRdvmHgGs7B9fYCeSzbeKJ4x5CcuEHBV3Eww7OVIbYfJjifoSoD+9//pPiGj4ssHVC1XoKbidXwtaLqHQcQJYzdN3xfmUoRZaGYxZiiues9xtFPJ9qUSHMg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718988744; c=relaxed/simple;
-	bh=gQx6uOKzzKS0Bll7jaAdB0ziR+MGyleGJaCiGybqzR4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cNyuFTZsZrDlrjKuBF3YdgfyZyxYV7lZu3tZMJtDhCheugcuM6N2TEqc5FFKS5lPoWzLXA+moWpo+vXrzogzlTXyV5oKiVW1i9tz1nS/0f3aq+w83SN5FyxzYUpkKWh+rynQqjSK8k+Frd5tvczfKN5FgdUTxRgYNXgkHikWmmk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=p7lBTVUC; arc=fail smtp.client-ip=40.107.14.73
+	s=arc-20240116; t=1718989014; c=relaxed/simple;
+	bh=Z+/AE8dTiwIc2E4JvaENeCqYtxmXLa0AEvzNZpPoPD4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=YmfaYIWcIcAK+ORhb1+NhKWChKQJup00u2sesduMDdM4pCFaVS+9HSd7wEAoWgEpT8s1vSzzORM7Te739Nooww1vGpKIneIRKfTwAJRAIuWT75hTR0Ku2psDPXLr+N4+Ykz+YyEpQPZHSS6/fn8LC3ekil5kr0NRnsHaXaDoUzQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=dZHiRBcm; arc=fail smtp.client-ip=40.107.15.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="p7lBTVUC"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="dZHiRBcm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PCC+uBGycdX4S4+RPkhN/LJmwo0cchZgzzIsWxJXCRRIXfgf8KTiHcSf1uPr9C54VbmVTQJqwlzyxkFveiPHTuzaMcmBwMWa5KTPkcVdKcI4hqFfCYsBoUKI/CFajsy6gW7kIof30HcqhGF5QMVtF6JueJ7C5YPBQZN8lGhHo9M5XZmhiyS+qH7SyrMST85iSUk3V25dcpgKMdWb1IukW2Yk6DOLqt/gmy5r7lBNr7BdB8Nly3MrpGA49e6k2+qO8SS+eh4Kvlbny11gl9y0w+0/etQpRs7vfXwdBaleg8YO6waP508e9l6QQQjWeX6Vd0338l38iuGqvYLCj4tggw==
+ b=c0BidYWeP5E8cT5DhffrUe1o/rq/XsLa9IRxeqLJ9POQwsEW69g7Gqf3IradrTo8ZiS2nlW3852BrcStJS1BnUInnYQxz6NyN3pjjeu4isqpqtW393OKG0fZqkMsgpw5HIYTwwa//xSQ7qwQ/FebN2YMMRQ0Oy7nKBUU42EymXDYBRDbDlYVs9Gqviz2K1v5vDWpYrdsEfQUbpJZsOKqGB6BDexznjtt1/g+fU8hPAeoCEI4Ff51SvhRRhPbfLH5kNm7abuFuourIqRORBMyKeDem2gTEKs8nJ1nvd2En1ME4MqpHk5gHHGb/IJngcd0TO+510+0Dli7COA6sRQbGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4qaOxvWcbSXooGjoZ0TzegtRWy2YIfbXYTnfjOw+GaA=;
- b=cFfGBl8FSTRqdoPGz43h2VvnKtla3TJUc3vWMSup6V8FQQK1b4L007qO8Xc9wcRxKAdljRyxVISdWAcYZOec+dedTb0og2TxcP1yMkFDPFsX+KoM9zPvUuuuMmMNhjhgEAKbfM6Rz2bFqczc+SCtihCoKzkZe/loJy+7aliZLAePoRTm5TRtsIKAvDF5paW8DIWClxDjUeMG5SiNeNbH+by8wnt8b4IaqNaiHisvVGoiwgwywg34pAzH87OhngJfKsiudJLTQkInDFRQwQMGqgwWYDFgoLjs+Toat4Z9Wd7xJ+IBpQygRQQHFs5eZbbj9ePNaLVCHE8pcIahO6DWgA==
+ bh=kMYsmY0fSCxB0avPYo9JTsfYPt9DlP/ON9eCfJS5rZE=;
+ b=At9SYRDN2wmnyZcwuiE3XErGFIk2IpOK1Iie36qaI86ZO/d0ymhSQcvlmSoguKQWvARbGXG7NMLf0zkHgktBCNLMhFEAaD+RINZ78cK1yCQWRf6boJIvVtT4WXeRxyJt3d8f30klZ6vXTebLv9EmtuUIHvYygWjo67jJXSW2JAsp57PZWHD7eRJRYsnLUB+plBZva1aFmr67CaV3wpnj3XwJn604+tyqpdU6qovJcbVTLTEPStuG4r4ry3OofIVLLODHNsBa1P99evwdukArEIqjdhIzEvheLrLcVB5XtKSpGRqyY3maWJwAGnCnHbEQCpWKGgnnfuoWf67jLHAGAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4qaOxvWcbSXooGjoZ0TzegtRWy2YIfbXYTnfjOw+GaA=;
- b=p7lBTVUCyMB8ZF6qKrkdacUPtossHNDxJwGYYLjkOaWZSv2agJxlg7fVkmkM3ECsfx4+vlB3oni7gSR1qgGS9JPrI/reJuq50xQ7QAgSnYhh91rjOzmN2uGKrprdeshbqWHIFEU5l80q20aprgYFzUfttPbewnEPpB31LB8T1X4=
+ bh=kMYsmY0fSCxB0avPYo9JTsfYPt9DlP/ON9eCfJS5rZE=;
+ b=dZHiRBcmVy9AR+OhFD4+LKk+iXFvtr7ZQfJ9rFberQoBwJsNqN4InEn7HvJypYPDDKMU3Ta3dPWW7RkCox7l6FOEcqgfvfXcJoZKLya/XquPd0Q7o+5Tuqeb3MI2X+E4AfzVq+z7yAioI7J+heeyC6ZzqRgvXFN3nZn30RIYMO8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM8PR04MB7937.eurprd04.prod.outlook.com (2603:10a6:20b:248::20) with
+ by VI1PR04MB9884.eurprd04.prod.outlook.com (2603:10a6:800:1d0::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Fri, 21 Jun
- 2024 16:52:21 +0000
+ 2024 16:56:49 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.020; Fri, 21 Jun 2024
- 16:52:21 +0000
+ 16:56:49 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Shawn Guo <shawnguo@kernel.org>,
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE),
+	Michael Walle <michael@walle.cc>,
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 6/6] arm64: dts: layerscape: remove compatible string 'fsl,fman-xmdio' for fman3
-Date: Fri, 21 Jun 2024 12:51:49 -0400
-Message-Id: <20240621165149.2275794-6-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: nvmem: sfp: add child node unique-id
+Date: Fri, 21 Jun 2024 12:56:37 -0400
+Message-Id: <20240621165637.2283864-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240621165149.2275794-1-Frank.Li@nxp.com>
-References: <20240621165149.2275794-1-Frank.Li@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR05CA0054.namprd05.prod.outlook.com
- (2603:10b6:a03:74::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR02CA0062.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -68,222 +65,116 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7937:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7419c542-b1a1-45e8-56ca-08dc921284ad
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9884:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0d84a8a-8dbc-407a-c862-08dc9213247e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|52116011|376011|1800799021|366013|38350700011;
+	BCL:0;ARA:13230037|1800799021|52116011|376011|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?a5/B1EtR9d/EL48EDlhABPFhGZyzlfJBO9U6RRPrrl0Di9BnfsZqufDF4Ii0?=
- =?us-ascii?Q?XsLFcg8wiJjkaouEYO8ulC6z44E8+zkBxQI9TVQzFKUv9Z2biQjnBWx45nU7?=
- =?us-ascii?Q?ZOquhP2Almo4An77y/gqnsgFnCEA1484RXbm/dBltkPxG4Tn1aRG2nQDZ5Ov?=
- =?us-ascii?Q?biAgWZloLz+Z4J4B8lkanJR+sUhB5UxXunsATFwnQTbCbO95G64twTjuMcY9?=
- =?us-ascii?Q?rIwkgy0M+/dpHovLxulzT4JahudagBGhwRNQrx1YTAGb5ZxX+Y9sWdI6k81c?=
- =?us-ascii?Q?RAOtCkZ87FD+7+dZ3JlxewHGnmAuS2hoVip5+0z7Xm4AA5YuBN1UR8mf1cee?=
- =?us-ascii?Q?14GhzWNLniFsEUNQjCn3GFUqYKYeShSlcgGpQxzXTR7hL9y/Nubs0fk8N08z?=
- =?us-ascii?Q?SCVRE3zj24HUWeDjf0EToVZ81+UcaBdCFA2jsy1h8JCOW7OpcwHBbiuNHNFp?=
- =?us-ascii?Q?78I2iU/fmXlwERLpHlAknYNqM3q/5nGnQEtaNp3uWTTyokLTt7BpkZ0NlcU7?=
- =?us-ascii?Q?jcHEUNQjwjUVzFrq3t2XZ3nXm5cD+ENu0LBOb4/WnBCkDtEZ0sI5FQ45xKMY?=
- =?us-ascii?Q?J8LSotErCe+oFAOZ4Zve4d4mVLMr15cRR3Of1+L6oAERR+n0tvZwrrIg/mr1?=
- =?us-ascii?Q?vwvv6LhEN+bn4+OmjR0twLzSBv9y7T91sVXUVW8FBVkQi8Q6mk4fq21OCbR/?=
- =?us-ascii?Q?4wx/0mAfiLCuSs43N1CbZEzNTnmwtYW0f9TTr3NmRRmnD0jfFsP7gsRC3cs0?=
- =?us-ascii?Q?K69yStCk5z0hHpl3EgBoXk+9bpNdyJGfta0B7p2Z6DudhNU3LDrE9UCowqSk?=
- =?us-ascii?Q?ZjWJ4Wz8CEMUfDplx/KMRMUIR5YM/6GqyqA7yy5GhM44ftyq4fMcXMaJj741?=
- =?us-ascii?Q?nszM1mBpTRYjuqBVGE8yuG2Xb8ETUI4vO8OzKZcwCoB2NsNxlmY5/04kXywR?=
- =?us-ascii?Q?k8e5PjMgyXO0rx5zFiMwJl7vmtFJlMuSEGpY7AsCFGyqzUHnb1e0qlK6qYpP?=
- =?us-ascii?Q?n+PxgSHjcE4bP9KtbNkO80KzMLICUyKvhs2uRi1IfEWNS9a50iL8geGVKlSx?=
- =?us-ascii?Q?0z2kpUsDR7fmSMGa/GkFA5QLP735xtmSEbI8AIz28grGE5K19XZpwNDhubfM?=
- =?us-ascii?Q?j4oUoIMkH7vDwRqtxBMzT5mf8mLv3wdvr0/DITFHrCi802NEmcGzwihv7bvp?=
- =?us-ascii?Q?rT5HkR1XB5Wr4An2pAKuauIZeuPNKtrkrPkk6Y7jgTUtpejoW46bQz8E3qoa?=
- =?us-ascii?Q?2gdXvxlV77BxkZEASyU/TTo2l2SIgguUtnOdJE6q3zWgzChHmbv0I8jOV4OA?=
- =?us-ascii?Q?Y/tayyopDV/K+fTfUP5R7mGrMd8lZ4gbqgeye9BVDMEUuQQyseIeHY45fvPV?=
- =?us-ascii?Q?f6p4J38=3D?=
+	=?us-ascii?Q?ZfE4VI39leZU6KrMhD/nVsdkDvqlP2dXxMGUNnU/c8t9EIC4mh0grcHQ4CHh?=
+ =?us-ascii?Q?fl81amXd8ED3uemhk3HY+Nc8EeiMGkj/ClbidXhJG6F05Dm9adY6s7kZJmKx?=
+ =?us-ascii?Q?f8emn3BYfgr40qzsLJtEocYKvynP98Bfp3PU2clBPsmI3BAfnMYm9uAWP1Ca?=
+ =?us-ascii?Q?z6x+JAnzMiXjw5wqY2aKCc/kibi4MxWCBWogW7rE9CmTnqkDU74EVP21957I?=
+ =?us-ascii?Q?Dk+s2ig5AeMwv3aAeGUWn33CFIKnWDtzigIQd9B/ykBOfDZsLR7uLtD8Zp4J?=
+ =?us-ascii?Q?ENxeqEdd44ul7NESvG89fdxt9Fypb8t78VAmqHIDLEpMx57s5SKvZTidS8eZ?=
+ =?us-ascii?Q?Rz2Ns+HToBBlb2XlONpfDgJ6iLPlAiVp6MOEnWE1iLgXSf3fnjGhBCIIaQCb?=
+ =?us-ascii?Q?3rT+BLcEItDN8KlaHEV3hklItkFKHSIRwV560i7tsdtRLb0ZY76Elklzj3qa?=
+ =?us-ascii?Q?eyHPlrk2N6ZMWuinYYrNKUSM5fljECB8DYscOWB1Zi/Y6+0n0Z1bUfI6AQDc?=
+ =?us-ascii?Q?z8PpxD42Dm/yk8zBq/0ZIIleS8zamlKoPaqOapm19tnDNRntuL8l345264Jp?=
+ =?us-ascii?Q?KXxiZMjM+lr3z52B1AGZpm+dbWQcu/DiWOTCqOwt5fgLwjiEEHIpXVucq4zt?=
+ =?us-ascii?Q?+A9VV6qL1OZRTYvt7ffTxUaGoe3h9PTcdUgfNb+/sFgZC2qHe3FTTj9Rqzl7?=
+ =?us-ascii?Q?mdcYrN0ToAgq2AmIbw0A68BDk0Ze1dmulzSZ2TcM421fw6NbwEqCadBXu1p3?=
+ =?us-ascii?Q?QqH3CX1sK3Z14WMSK3F6P1jAFqtQpI9fWVDJzIUV8mmUQ8nNc9TBYv7JEzlj?=
+ =?us-ascii?Q?qjBacwCrgGHumR6YlRf7bR0e6jWywpmaZ0Ac4qBYeQu+54y9F7FgCGSK8a5Y?=
+ =?us-ascii?Q?b7XA/evck9fZTIj/XdQzqPRFNeYWEpSyBbXPqRXa2jAP177OofoFrC1NhOgj?=
+ =?us-ascii?Q?DecgrO4GHnTFyySOiiPQws3mVwb7OvCBR8SnNdGtsMRExhXEjbIcb45Ahhlk?=
+ =?us-ascii?Q?sTv82QzhkcXGHfsI/oNnpqhy7KFDWFmnGdYMJ8/1lvuJ84y8Ka+y+3i5UoD3?=
+ =?us-ascii?Q?DLzr2MFyHaRtQ9/ZWIdC9qOfBZnWK3tS98bj7BmJyDYx/CtVRGIsYg3lje0D?=
+ =?us-ascii?Q?CNJ0Q5nijqYtl9cufZGkG9eE8qNzu7xsmAbCa7vu5sgNJee0tLjMWoMUVZBi?=
+ =?us-ascii?Q?UV10ML+Pys+H3EbNlMt0lPLcabv7Zsr7vQxXOvaf/TUtcOR/BpNMhRB30uS0?=
+ =?us-ascii?Q?10oYlplpH266RWQq4l0CV4Tw2i0pl75Rp9ZmTmoXQBpZXhdihAWxldP0b15W?=
+ =?us-ascii?Q?lqkuwhwGlIDlwZUsB22iI9cMDenKlvFY/hIk7artlyES206lDRB5NkONF6Uo?=
+ =?us-ascii?Q?e0dpraM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(52116011)(376011)(1800799021)(366013)(38350700011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(52116011)(376011)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0lA4ZKz8zqfL9RnXqteUkgtlUUzTIQOI45Hp11KfTMnYggBk44preE8dShCH?=
- =?us-ascii?Q?8lx6Rpb/nMP4wIgXmEIAHLByUhG5K9j+feuAzuwhcoxXXwU3muqNB1e6N2uO?=
- =?us-ascii?Q?DMeI3dAeTZ6ybbasqFikf4H9aNNl64f14dNGnQ3aERxci4/RxA2E95pUYlHm?=
- =?us-ascii?Q?ReW4dnvCt2b33o4keAMbgz0xDfHws4bCBsIjeW6sb0ZVvyV7DDt5wg2OWp0j?=
- =?us-ascii?Q?6ZJ8SdJx9mSvmaya8UVWjzpGHFPVuiRa/hQdJfjtK2OOvrgsga87aSZFNk2P?=
- =?us-ascii?Q?+CKM/6Nj8zQil0Q8w8xE1MaqCFM7UztnlZum16acmTlPr24U2aWyzsZcfq3+?=
- =?us-ascii?Q?WChtwdZPIf2UOCn8UrrJuz7auo5/Ak/Dv9ZxNoBtGhvgLLAJDxlfVued0z/M?=
- =?us-ascii?Q?6eBS7w09QE7RwNQsM4l+33DCzdYs4wbd90GMx8X1gprVUiigdTirXfiSp3Gf?=
- =?us-ascii?Q?hG041UVDEU3eq4WvZiTzuSAM7lcKf41vMeB5+dNckR+NlGYH70gyAmJnwMYe?=
- =?us-ascii?Q?oK9G1+DplQJoivO0TJ6FghESyMFycA4JQv55QNkSagIN6kXrxG+QZ2eptJaM?=
- =?us-ascii?Q?23J/jgGq8gkzjag6TvPBT7Vwb91VC/Zdea6mGZJUYhCLnpuWil1zDlGwZ9Er?=
- =?us-ascii?Q?0XubgjkCTokcOS1tJbkiL4c8q6QvR5esgYlKhynoveQcfErTmi0cGGhrEHIJ?=
- =?us-ascii?Q?aQGCas/4dXP2vf+1kpbvk4z8bvlK3tDnLb2d5g8GEX0cfVNYHa9avwbErri/?=
- =?us-ascii?Q?+6oHVGf86loeC5SHBhq+2N9RUuyF7qmS9LrJpAv3yaqFIlpl0aGGGllzKSb3?=
- =?us-ascii?Q?iEsABsnzpoKvejhOxQ4atU2I4idLvDDhqBPlIcs33Ar0EHBF9EQGd3dvkkqo?=
- =?us-ascii?Q?uFbSSeKMGIiMoadVxdHGLmD/Epx3B6xVa7d8Hk/1zpMr5wzZe5KVFV51hBgu?=
- =?us-ascii?Q?U+4zMuR2taT4IhkIiC7W6y0sTzjGuWI/naycDht+58GJHtSmCgP5SBONCgU+?=
- =?us-ascii?Q?NweTqusLSRGYZLMmPxqq7cWo5mnAzdfNGLtgmpoLTtE70edK3VkTg0b4Lxtd?=
- =?us-ascii?Q?jycUhANijYOoXAY5t+sH9XFj5EngfM+jGBeNOSE8wMvdLFAi6muVEHFLQiAH?=
- =?us-ascii?Q?M5P7fhPI0XWZBZqH/C2XxYigYu6hRe7+9v7AvodeIjjE8fp6uHBRzhYCbHde?=
- =?us-ascii?Q?I4FBvBP81MvmTEjy8SOeMvahrgG9URddQ9fzDo2Y7hnMsnAvVlbjOc3vsmwb?=
- =?us-ascii?Q?4tS//jc/1WQE2B9peMGxN4zbLtefPNw7j2zf6lSRDoz0ivGYcIHIjWvDrWsF?=
- =?us-ascii?Q?psGYJBKr86hbjVomNhgLniAwHYAf1n4F9q10FCVufqp9gHf41YtWeMOXR8YJ?=
- =?us-ascii?Q?IOGYMyjvLL82MmVsen7/yPCExaKIwr/F1xzks5MJlwXe4S5BE5u7bwoobACA?=
- =?us-ascii?Q?DEMMztFBAPydMRGYBdgpZ1fhTvlpHtxHFnAuzjfx8Oiy+KTTBgnbfSDp+fX1?=
- =?us-ascii?Q?3b14pesmPyXjQP0Yo83Geq3sDtBdgAv4YMRfkjrFwNqguhHtcU59zfnP+/ao?=
- =?us-ascii?Q?OWwB1xa721XunkmpJNUksLuEshh4hVvcCIsOuo1o?=
+	=?us-ascii?Q?Gr0pMwDdgUBV+1N87cJdnm4q2YnsJixURjr3ohFFIrmjdm7ZU1Jr80koMUSu?=
+ =?us-ascii?Q?6gyigNE9SsNs8not1yoIueLv1NriN388E02IWYzpmIIbYvvC+JwL3Ea6e3zf?=
+ =?us-ascii?Q?lxSvknHaJetbdcQRKhB4jftpuUz2W+TATbuqcSraoLNnz8PHe27AXoMl2JgC?=
+ =?us-ascii?Q?KW+fdvzZ+eIsIRkaY/KDJc1YZbRGiFLQxdVUrHp+FFhd/P/FbenSAUogSdWJ?=
+ =?us-ascii?Q?vgUv5ySnLCluwDAVMhwepFnFZONnlGcOuy7G2ri91t1CkUlFHYDoPzSTpvZV?=
+ =?us-ascii?Q?TaygrleVWu2cysJnTZrRNGzfIH2/6WvF55nB4FPgXvwLl6V0gjxIbC7HDb48?=
+ =?us-ascii?Q?0hBGHHuhjN9xhtOJDREA/3nKNtxWeny/AZhlfGkXfqmVT+6sVTPDhy709Cgd?=
+ =?us-ascii?Q?CiPzJ+g9sQX4AH69pYlPB00UsvdZuHsTma9QFIzcShID105aS6RUNxHxRZAR?=
+ =?us-ascii?Q?ZyXOHWvj3xxMZEq/tRx4vYgEAHtuLiEZIMmFTT9Eco+1gCPtCWhgOV6beZmo?=
+ =?us-ascii?Q?toPeK/3Ua/+Fn4Dzkt6SFgQWEwN2M0cp2z4lwTDRznuA3nrSLRYqjpjjWPyR?=
+ =?us-ascii?Q?pdjskBlFT+8vqyrCMWGgD0YB6RtWk0X1N1xEsdzah5b02bszdks7gLEVc4fF?=
+ =?us-ascii?Q?6WIbERWfs+08jL94YE0tek+Qg7Hj/UxmDOgoyoeLGaAf9mGH2//kwZxLgEhc?=
+ =?us-ascii?Q?8FZtfjDPbYCqUw9bdRV/4DyFtRA9m15UU+kz9zNY4wNd9y630TROQM3hosBq?=
+ =?us-ascii?Q?gPmSzSlzvN3j4/V5H8GcFzxBYebBmhf1px1+HuefgHNoCYAiZa0DyfY0wHLv?=
+ =?us-ascii?Q?0wrxP9qv0eQjws1c5gkHouOahI1NCMzI2aAbT4sKAh6Uj0GoiynkRUAsCneK?=
+ =?us-ascii?Q?aMlD1C88sWxuO9xJeQz2pfSPRuOtuZstbHYVsT4Mvb+df20y3UaYUCeDCScL?=
+ =?us-ascii?Q?SA0e486oiHvIoJAAduW9u2Lm8bGRxEM7El8hx3cBfv8y+D9kPjq8lk/b3ou1?=
+ =?us-ascii?Q?1QasuD0nhb/KHonqyYeMvb6hF8R60OaTkI4RsucBPtQLRpBQGrezxuPVxnJQ?=
+ =?us-ascii?Q?6LRk5ZslgaiwHRKhNa9EQxsZ8bmhIluXnkPkJxEvzhzg4uAMMmfvsxCoCWk6?=
+ =?us-ascii?Q?dZazQ3CtAbrb8SWC0CMwAi9vvG+z5cVElGVLgWOJiYa6B8IGHQ5SsNM9EnVm?=
+ =?us-ascii?Q?NLoVUoBpFA4/llJ6Jn2mXgbBeLj7p08pNiaq01xzP2orVCGOFmXrDF9oaIQ2?=
+ =?us-ascii?Q?T8qjGOxqVwdph3oNMCXw3DMU6eKqW6tgvOpj/cGbDTLVIWqA3dL8YHfY/Es/?=
+ =?us-ascii?Q?Y0l+JRc8gEzZx0nj1JM4Tz7vlfOauT4Em0mImXCHVfWU1Q4EJYW6uF9xr1MU?=
+ =?us-ascii?Q?6wS0a6jbV1/DBLNuKkar7uM9Yo0FPLGOiDcBVFYutq/Tf/LvXbWpPKrPlFe0?=
+ =?us-ascii?Q?S7nhBTSu3M9xCRe1P9EBDJgNwSm0BFHudrzp0I3bkLRu0meK3NiEHRZNQn9K?=
+ =?us-ascii?Q?4LPdpwXhKFRSVoxaTVFTqePeXJR1vaHaGayr734kfHxR/Yt0ACv70SA6wrim?=
+ =?us-ascii?Q?FSzm6H8r8GqIwkbABmI=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7419c542-b1a1-45e8-56ca-08dc921284ad
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0d84a8a-8dbc-407a-c862-08dc9213247e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 16:52:21.4277
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 16:56:49.6790
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6X4/00yMz+SFbkjzNvxomN4tQEC0stQZQlH9gJ8EDxTIGMQGIvSM9GGM07ziKNhX8M61p0Y8L03k9NqO1i75Rw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7937
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5wIHhjhuji3K2T5o4x1nJar13K55stb/1T+6zst81BZ3QgrH87JX53eZJ3n/0FnPvA4Oag9x0LH4iEJ7/PBMLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9884
 
-Fman3 should use 'fsl,fman-memac-mdio'. 'fsl,fman-xmdio' is for fman2.
-Fix below CHECK_DTBS warning.
-fman@1a00000: mdio@eb000:compatible: ['fsl,fman-memac-mdio', 'fsl,fman-xmdio'] is too long
+Add child node unique-id to fix below CHECK_DTBS warning.
+efuse@1e80000: Unevaluated properties are not allowed ('unique-id@1c' was unexpected)
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-1.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-1.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-2.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-3.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-4.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-5.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/qoriq-fman3-0.dtsi       | 4 ++--
- 9 files changed, 10 insertions(+), 10 deletions(-)
+ .../bindings/nvmem/fsl,layerscape-sfp.yaml      | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi
-index dbd2fc3ba790e..65f7b5a50eb51 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-0.dtsi
-@@ -32,7 +32,7 @@ ethernet@f0000 {
- 	mdio@f1000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xf1000 0x1000>;
+diff --git a/Documentation/devicetree/bindings/nvmem/fsl,layerscape-sfp.yaml b/Documentation/devicetree/bindings/nvmem/fsl,layerscape-sfp.yaml
+index 70fb2ad251037..8c0bdaab711a7 100644
+--- a/Documentation/devicetree/bindings/nvmem/fsl,layerscape-sfp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/fsl,layerscape-sfp.yaml
+@@ -42,6 +42,23 @@ properties:
+       The regulator for the TA_PROG_SFP pin. It will be enabled for programming
+       and disabled for reading.
  
- 		pcsphy6: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-1.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-1.dtsi
-index 6fc5d25600571..3f70482c98c30 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-10g-1.dtsi
-@@ -32,7 +32,7 @@ ethernet@f2000 {
- 	mdio@f3000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xf3000 0x1000>;
- 
- 		pcsphy7: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi
-index 4e02276fcf993..78841c1f32527 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-0.dtsi
-@@ -31,7 +31,7 @@ ethernet@e0000 {
- 	mdio@e1000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xe1000 0x1000>;
- 
- 		pcsphy0: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-1.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-1.dtsi
-index 0312fa43fa777..1f43fa6662221 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-1.dtsi
-@@ -31,7 +31,7 @@ ethernet@e2000 {
- 	mdio@e3000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xe3000 0x1000>;
- 
- 		pcsphy1: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-2.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-2.dtsi
-index af2df07971dd9..de0aa017701dd 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-2.dtsi
-@@ -31,7 +31,7 @@ ethernet@e4000 {
- 	mdio@e5000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xe5000 0x1000>;
- 
- 		pcsphy2: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-3.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-3.dtsi
-index 4ac98dc8b2279..6904aa5d8e547 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-3.dtsi
-@@ -31,7 +31,7 @@ ethernet@e6000 {
- 	mdio@e7000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xe7000 0x1000>;
- 
- 		pcsphy3: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-4.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-4.dtsi
-index bd932d8b0160b..a3d29d470297e 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-4.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-4.dtsi
-@@ -31,7 +31,7 @@ ethernet@e8000 {
- 	mdio@e9000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xe9000 0x1000>;
- 
- 		pcsphy4: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-5.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-5.dtsi
-index 7de1c5203f3e2..01b78c0463a74 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0-1g-5.dtsi
-@@ -31,7 +31,7 @@ ethernet@ea000 {
- 	mdio@eb000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xeb000 0x1000>;
- 
- 		pcsphy5: ethernet-phy@0 {
-diff --git a/arch/arm64/boot/dts/freescale/qoriq-fman3-0.dtsi b/arch/arm64/boot/dts/freescale/qoriq-fman3-0.dtsi
-index ae1c2abaaf362..b0390b711fef4 100644
---- a/arch/arm64/boot/dts/freescale/qoriq-fman3-0.dtsi
-+++ b/arch/arm64/boot/dts/freescale/qoriq-fman3-0.dtsi
-@@ -67,14 +67,14 @@ fman0_oh_0x7: port@87000 {
- 	mdio0: mdio@fc000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xfc000 0x1000>;
- 	};
- 
- 	xmdio0: mdio@fd000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
-+		compatible = "fsl,fman-memac-mdio";
- 		reg = <0xfd000 0x1000>;
- 	};
- };
++patternProperties:
++  '^unique-id@[0-9a-f]*$':
++    type: object
++    description:
++      Chip unique id.
++
++    properties:
++      reg:
++        description:
++          Byte offset where the unique id is stored
++        maxItems: 1
++
++    required:
++      - reg
++
++    additionalProperties: false
++
+ required:
+   - compatible
+   - reg
 -- 
 2.34.1
 
