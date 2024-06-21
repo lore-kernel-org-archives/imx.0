@@ -1,189 +1,207 @@
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2042.outbound.protection.outlook.com [40.107.14.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EC318C19
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 14:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718981316; cv=fail; b=mBkmj4jlqRAl6TCylV/pnD63iCYpaKfh139wlHg5PIvAtdEgfDxJzapDQ7YuzQExW+aagAJW0VIHX1bTMhN6OuetiZbk1PvN9G3A2GjbDrv36n+U1+40FG2d684ZPCB+xmpuyPGXdMwSkyxyQz4WhU9ArF1S841p0ixjsp0rLgU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718981316; c=relaxed/simple;
-	bh=syfEHjM/ZfGW6CTcjLiozLt/0heKxycZIsTbwcM42PM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uaZJC8NReX+AVDnquKRPiILL/KZOF8QpTJ4Bx/+Zur3x/R+KJkJDYLGcrw2NZ5O2fB0phgF0ieGURAQ6JCRjzabLLtbzjNi9xlsN4i/CPbj5+ZsV/2NAwa6P/UZ67SJtBrBsULWKoGfCIM5EaueqPulHBw4fR/nvU+omZs4C54g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=CHUy3uW3; arc=fail smtp.client-ip=40.107.14.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69778487BF
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 15:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718983372; cv=none; b=dOaBF2RWCCl8C+YMSC/g4kai20g26btyY32HjWddBLkARs5HW3prW/igiPHr6x5E3Pl62lAAA5NJI0MV0j/WD7V1k9AR/5GkNXMjRXQUkkuCmZVILiuZpF2BE6AWNAEHKgtN9SXOqhb3XTm5MEUpxY7QM8gbdtj+pqlKz0RrfuM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718983372; c=relaxed/simple;
+	bh=mibplKt7yrg2ylNU1KRpiE4uThsNa8fXKWWgYJuVF9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BJoisgII2giT+sor/bDqRzhQ64142NYDU7ndCwv0GIr0AOmy/0U5tCmpq2eSkCPD97Ab4AxJxtQGqjQ5bPkZG2GBSC9JHfW15xa8XM6tn2gcODaaWn4cmUp6pZfwnfHJuaUz74fOfyPy5qs1VEIF9jKV7fwIS5FRGxsSFF+PgyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kTCJReu1; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="CHUy3uW3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dQ/NsqJDLakQrY3ljI5wdLGQoAI0JXffpXLOVEnfOLfZ5fKkUGoBhuJGzit8GHR28/CYo1XO60mmiCWTCuHS56bVeCP8vB9SUUsAtiKdtC7gdZtAjVh4/Fxn5Wiw19bCyqX5LSq2ulCPQqiPtdTO8Uvc+LpUC3ny6hBwXa2ufsg6k0AT1drLvk4QXBm4Gg2RqKGbefnQuCIgnOKseeUduK4FBud0MfWGtUP3K/ekb/btRSdEH5V1l+NhmCOuqqrFbU3Gqs27aPBg3dKrHG0IXUadc60rzmMRTMo0fivLeXi8J8VLq3Po2TStbhvo4xCN69Kbi0XIzfCr6U7VrRqCuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Er2IedP7IeQCKZvt0PyYvWrrSs6DUXpX+poZAO6G4VI=;
- b=EYVfT5LRtASJ/En3mgD+l3tS7njp8sehBxi5WWFhZamByatzpDrrQSdmh0BgUcMqjDhLwpYlP9j54b/2ReEu/66ceOHde8lwX++/fbRGBGDEPuBBaESWAD9Z2IWUMvhmNeE8b2aUF7BuWstWmoT7oNZrMNRG9kX5nsO+EwaFqVOd4GnMEOjvAsMgb3Rh+0vPtfjNIPq1MxqDtHx93xxSJojniH3C9lSpS4RpsU+wS6kQm2RP83olJZfidEieXftOcgTLRcVnXUe7cFLAUU8eV/3YJxo+q2nsfxf1CCHat08s+SQi/T48JauMzLbMtQ7lCk4ismNT/kWnoX56RkwBxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Er2IedP7IeQCKZvt0PyYvWrrSs6DUXpX+poZAO6G4VI=;
- b=CHUy3uW3nBQCeEFShRgCcpgCAzC1HWXdp5QTVZvzvq4yTgO6J9xkZL6uzC0fe90ZK7kpnSKG2wmRz1E3vl7GnpxwXqLjWiLL0Xcpd0Gd6s3z8XkptVyGzdyJV7OQwNUHVhbo6EvJ6uRGwvk48wo0kFlgzMV462Ou2/p8/peCnTQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB10134.eurprd04.prod.outlook.com (2603:10a6:150:1b1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.18; Fri, 21 Jun
- 2024 14:48:31 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.020; Fri, 21 Jun 2024
- 14:48:31 +0000
-Date: Fri, 21 Jun 2024 10:48:23 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Joy Zou <joy.zou@nxp.com>
-Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dmaengine: fsl-edma: change to guard(mutex)
- within fsl_edma3_xlate()
-Message-ID: <ZnWStxXpe4dyWn+p@lizhi-Precision-Tower-5810>
-References: <20240621104932.4116137-1-joy.zou@nxp.com>
- <20240621104932.4116137-2-joy.zou@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240621104932.4116137-2-joy.zou@nxp.com>
-X-ClientProxiedBy: BYAPR04CA0002.namprd04.prod.outlook.com
- (2603:10b6:a03:40::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kTCJReu1"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-354b722fe81so1437626f8f.3
+        for <imx@lists.linux.dev>; Fri, 21 Jun 2024 08:22:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718983369; x=1719588169; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkGR5EJentvUL1VShfMi+kg50D4pwOAkzJOrsMjz8qk=;
+        b=kTCJReu16N8hqndfVILreLBEoAwkJOy4YHxnkwkMTQoWDdFk+Q0k9PPbpzY/bEwccP
+         jT/gS8rdvXKzyMR4lHK6hZ1QUr9BjzWDpDIramI87NO0IF+5cguCU0Qn7Dsmbt1ta6qX
+         Caqa6gLOoNdM6vzdF+Os5wSwWMcGx2Xv5kcLCZUcwOcJmlwsY9aC9LN7K0uFobbIKtJD
+         /aRzcCIzrGj4wniPo5ECeKACFD4dhYFEzGJj61fXaVLVR3H6QlS4WTPFtT6p76f9I6Bh
+         N0kad84x6K7ZLuDE3rGwgY1QcmubbPeIrvDyXiIKRp/10u2XXi21zgnckyugnH3E0lKl
+         oMtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718983369; x=1719588169;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rkGR5EJentvUL1VShfMi+kg50D4pwOAkzJOrsMjz8qk=;
+        b=fWZMiupr2BI1N93Mtjf/xp/tTACn6qrZ0Twdx7jEuq+90P56iTgAfwNlUef0pqYGxV
+         Zo7DD/4HTnqDG/644KY+mFN3k2xvnJ80Xg0UXOwUrauEagGgOwKzORIeXTzPqtilR6gD
+         HHxqZDLMIM9ir4EZfV21fb5wKLpY7VojDtlCsYGg1LPTYm8YbTYIzgCmteEsLOikN9PY
+         9Fb5yIvwpaa3SPE0TohCyyjzIirmSmAN5X4N99RJREdRcRhBQkijMo92jzvo13eNj+c9
+         /Gn/CtLzog7nikSF8S4uXR0d7ZLxy3YAf5gxFInYVbWW+ayq101X5EAjBwqtOjwhn5Jc
+         2vbw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2fOvZzFNOpL9RL45Tw2Mt+H9VdEcHVk9fTPxAPkyv+xMaOLQcbk3nt6eXB1u2HpCyhO6dgTLiwpgaOgtf2D5fFzdI
+X-Gm-Message-State: AOJu0YyLDJ/a/JISm/aF3F1UgtoEXsexXpg+axUrezpH7oM+BarWOc0a
+	j/eUFqV8BKJbGXyH4iV7BZzbnwr+WxlyDLNqnyKN399Ul7G0zWp3
+X-Google-Smtp-Source: AGHT+IF9NG8saDwxeiICFI/hTyWoeWVUie5mWBddjO6sIoRMdxV0gFAvfVhnV74lANeVsONmdrpDxg==
+X-Received: by 2002:adf:eac1:0:b0:362:3526:4ebb with SMTP id ffacd0b85a97d-36317d737cbmr6808799f8f.37.1718983368601;
+        Fri, 21 Jun 2024 08:22:48 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72:0:b162:502a:9bd1:4c8b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36638d9c1aasm2020326f8f.55.2024.06.21.08.22.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jun 2024 08:22:48 -0700 (PDT)
+Date: Fri, 21 Jun 2024 17:22:46 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
+	andriy.shevchenko@linux.intel.com, marcelo.schmitt@analog.com,
+	gnstark@salutedevices.com, francesco.dolcini@toradex.com,
+	wsa+renesas@sang-engineering.com, andrew@lunn.ch
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
+ not busy
+Message-ID: <ZnWaxtfgmLk3SplP@eichest-laptop>
+References: <20240531142437.74831-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10134:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ef6e6e3-c914-40ad-d243-08dc92013828
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|1800799021|366013|52116011|376011|38350700011;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nCnQdBKkrP0ZhFhueDe92uqiTcz5ULuKMQjJdvbFhGA3Q/34WvsFnayC9BUC?=
- =?us-ascii?Q?S/aTEIp2PvqUBTZW5EbOicecI1GbpOBdZ5xpvPPmfF2PSqYtQuSIbb8abfcp?=
- =?us-ascii?Q?sbyTqRI+RWr/GNfHSYFBJ+4QyUNRx9udPLKfRtFDb9Eebv/dt84VJmQ5i57H?=
- =?us-ascii?Q?34jSDDz8Jcpc6ifIuog2B9UEQTnG8ot70cXautwbxziyjlroEqvUN0EbeEPA?=
- =?us-ascii?Q?dwpm68SCt90uzPU6xEz9UgUVrL5a9laTtmob+XBz3V9pLl7KlxiB6FGKPGTy?=
- =?us-ascii?Q?XElE8/qenZaxQsfcFB4QjRvVq9dwEo3Q8/+cnJXbOfuExYuhebtBmYXXXsN2?=
- =?us-ascii?Q?AHfviLzqPnN42HOJmbnfwEbAB8+1SHXcX93EUTxOHzP6JErhxeDkis7FIjlA?=
- =?us-ascii?Q?IPoEZ8VxURsA/8YrEyDd+3N4XLgakozyN/m4fX4I1cvpYmNa8/7WJtJax7mp?=
- =?us-ascii?Q?sY4DM8T5lQ6w9/gj5+BGX6i21piRH4H4yUUIUhe4wYrf+ZvyPZ0ARDHnK4EA?=
- =?us-ascii?Q?uVFyzvO4H1fdlE1iv85NrPisSUV+PGpgFxIARWF0P57PRd69CvWCDHE4/Kqe?=
- =?us-ascii?Q?DzpwVY+j5yEqGuK8v67JXAG+N51Uww5x9nfZXX9cGfnF9jnPh7WDzdnVg6qm?=
- =?us-ascii?Q?aJfNwCbZuxrhux0FBkwzhROKiGbmDRfLpR/b3fY3mTDQmTu+yRRN5U3RTyHY?=
- =?us-ascii?Q?iHTKogiCnwKjdg7Em1Yhx7akGaPF/YahL9wDA0bN90Iz2DMsfytwBQbfVZRE?=
- =?us-ascii?Q?gou85OLbwfP2Z2DfHFLoWbArL+q2TRK44F0WKeAuvKgJ+TUpJB83SZGdptIj?=
- =?us-ascii?Q?aCOuJ8CnlKxyWthg70SfkKCdnAPQIGspVwn5/ZJeUuyL/auLF/8xnlBAwU5n?=
- =?us-ascii?Q?tYIXNx7dDBc7R9HkRg3MH4xmOuAHNhuhOlJAyOXygSwRz994Gm/MsGDZ/AbK?=
- =?us-ascii?Q?+1hYA/35wR13dMaaaHQatTiuSnGlOu/UTr7fE/yQrqGAra/w1iCokqNw/9bK?=
- =?us-ascii?Q?AgSXh7R7WFn9I4kimvE6BSLbfBwdoRw9Vg6Ej1a3OS60zhov8ft9hf6cxt7G?=
- =?us-ascii?Q?BAewlSefF+4DN4rpRTDdkcUNA/L4xFxpGZgI6GQKcpAmoG+/xfTB8eEBtBSv?=
- =?us-ascii?Q?4AxJcVOfYu8bmmkqEgA8Ielx7bFx9MHzndBq5Y7i1f9nInDL/Fkqjn3oEYwO?=
- =?us-ascii?Q?jfJDKL6sB0o+5fjpeIM6VCRAWO5mHiNmZ14blqgk8NvHRYvq4qFASFyFKm3G?=
- =?us-ascii?Q?siDks0bWNgbwxpxayLSmC35b0Q11eMxd6CFfATOelWGQhMXP61ZAVruZWAu7?=
- =?us-ascii?Q?sZdxaMDSGuR/ddW2o3b86CSnqWKwX6VY11qjyD99s+LT/F5L0DUbmOlnKXS7?=
- =?us-ascii?Q?iw1iT4M=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(366013)(52116011)(376011)(38350700011);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kDPwZi8PTjcTDCZvPqsm8Qcn5ur0zuFyf426a0kDzjqbZTuya4/ZrL2Y4A0W?=
- =?us-ascii?Q?Fy0r/WUvgbQS/T6boLalTm8yDrmcILDaKFIi3ux+bDuIHOTCdnZ/dGJNTAqU?=
- =?us-ascii?Q?zdrzX14Rkp+ac2houIWMiggTGEMcaIY+v42/NTMwhDNcMvTsAPkhRoApDsKQ?=
- =?us-ascii?Q?sfUlOnOOV9DyTVYNWiGj7lkLhz8um84QQ4bNT0NE9x+t5/3wJBqI7nJxj7H9?=
- =?us-ascii?Q?gtbMmtfogJvLvFAa9AmoAsjDG7bA8luiBfxLcqKLlU+m91hg2haRNtBUoHtd?=
- =?us-ascii?Q?9fToAtXQKbiIrH21MDC5EsiNbKLbP8oyk6wTiI8ISkL6Nl60+hHXHUg92obE?=
- =?us-ascii?Q?nwCg10HITmokhEs0o7u4hHY2kd7f79wZh7sLbSuIM4sisxFkTUxwDIumlDjq?=
- =?us-ascii?Q?q1EQJcDlsoE9BLHxHkNJpnnLzPQu9RgLjEiuaSA+eZrmSbJWmnm1pZlniTLU?=
- =?us-ascii?Q?ncER6IeQ23vVki5IBb+FDrojWTzx21b7wBuyH0Au7WWjuTVWFKc0pSHg9Rh5?=
- =?us-ascii?Q?3t4B0yTtfs4CjsIHTn7oFR7tS1WUGVrpw7RehPt6ZMbJk1BTZDZIOUbaZK2W?=
- =?us-ascii?Q?rxsATiA5iiGlx+QLO12aay/eaHSInCkXwMv3PYBaklgZ3GolbVRRa0Tuvvyy?=
- =?us-ascii?Q?o1gsLTARNQKe/PCNy5Q2kaRrq6RLV63y2sztFDteA46eDJfbmtEzd9KoYPqW?=
- =?us-ascii?Q?JafISr4h7A75G6irq51rTFpk+vN3bsL0vJpFML6GR/+QHxWyQA5hj0fkd4ss?=
- =?us-ascii?Q?3+VizDt8q+6lo8kbBLt5ucUnChhKFr7TLEZ8JDBRHLzp2Ev/FGprygf4vSbn?=
- =?us-ascii?Q?1QIe+dEPdJ7s9m76kuvjScvlpKNSRdnvDaNZmmyziPDby0B5vhJoP5jBREJh?=
- =?us-ascii?Q?ajDM2AoYTJdC8anDU/PABLJWVZ716kzZ/5Z6P2/Vrf4L6X+aQFuTuyfFegTB?=
- =?us-ascii?Q?zfRFgE8aH3bOiUffOM1ncpmja9Y4zCP2LkS+WwojhknM9f92hhCnhldmdhzj?=
- =?us-ascii?Q?8dQq0ui7CY1NZeYL5XJYNNySBx/aEhUwyzYThqpuU0IDyIl5THsq7WvbthH5?=
- =?us-ascii?Q?wAKvj5IB33+glywlO0/8/xlfrYUoZtRZxZYYJ1Hr89emj7dQqLhvMZyuaKBN?=
- =?us-ascii?Q?qdO7QvQBqpSVjnDor/ZkhdRfrwH4glwm0VSxGwWKLT4IsdkmKGht2pnwI+jk?=
- =?us-ascii?Q?W2sI4PqCPv3FjsLjQfI+tY87Z8hBghl+9MTrXSqyJ0cDSFPK5pwM4ShfnsKM?=
- =?us-ascii?Q?vH6OTkvhvSwFTQx8k+uc/hw3taGxmcR0q/39KWZMVWF4jFK4JWw+j+xPQSqX?=
- =?us-ascii?Q?Bhw+5eek/tMJe+EEIH7CusoJnxXNAwDr/mAOqbyPGbUg7Ey5pl7ck1CkeD2n?=
- =?us-ascii?Q?BpUEjYOuZ4nEOBYMYZpbu6ZxFjTAftJ6RRc85DM1wzSmYZcO6z4I46+gEcIE?=
- =?us-ascii?Q?F8SH4gh9DhrJ4KdkgrbHKPTcjLKXvENyV2vbwnOJzkvPjx5Nwy24tI+sXPYi?=
- =?us-ascii?Q?iwCL4FpQeUdyw9h+tjmpMRg2vMs4F5nmHd14EW0EzwCdKH23tIDQZl8e1sGu?=
- =?us-ascii?Q?DbI35jLDXUnXelbn+an3LZZRLBqwnL4F1EYnsW2d?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ef6e6e3-c914-40ad-d243-08dc92013828
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 14:48:31.7195
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8ZVuFUsjJgPdhdRY0xIXzXRSkCj1MDMWs+Wb1Pe7j/rm5+x70sNb+Sh9y+nTeoRHrD1jB/d9vp21/WiZcq266g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10134
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240531142437.74831-1-eichest@gmail.com>
 
-On Fri, Jun 21, 2024 at 06:49:31PM +0800, Joy Zou wrote:
-> Introduce a scope guard to automatically unlock the mutex within
-> fsl_edma3_xlate() to simplify the code.
+Hi Andi, Andrew, Wolfram, Oleksij,
+
+After some internal discussion we still have some questions which are
+blocking us from solving the issue.
+
+On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > 
-> Prepare to add source ID checks in the future.
+> On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
+> the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
+> bus is idle. The imx i2c driver will call schedule when waiting for the
+> bus to become idle after switching to master mode. When the i2c
+> controller switches to master mode it pulls SCL and SDA low, if the
+> ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
+> clocking, it will timeout and ignore all signals until the next start
+> condition occurs (SCL and SDA low). This can occur when the system load
+> is high and schedule returns after more than 25 ms.
 > 
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
+> This rfc tries to solve the problem by using a udelay for the first 10
+> ms before calling schedule. This reduces the chance that we will
+> reschedule. However, it is still theoretically possible for the problem
+> to occur. To properly solve the problem, we would also need to disable
+> interrupts during the transfer.
+> 
+> After some internal discussion, we see three possible solutions:
+> 1. Use udelay as shown in this rfc and also disable the interrupts
+>    during the transfer. This would solve the problem but disable the
+>    interrupts. Also, we would have to re-enable the interrupts if the
+>    timeout is longer than 1ms (TBD).
+> 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
+>    timeout, we try again.
+> 3. We use the suggested solution and accept that there is an edge case
+>    where the timeout can happen.
+> 
+> There may be a better way to do this, which is why this is an RFC.
+> 
+> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > ---
->  drivers/dma/fsl-edma-main.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  drivers/i2c/busses/i2c-imx.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-> index c66185c5a199..d4f29ece69f5 100644
-> --- a/drivers/dma/fsl-edma-main.c
-> +++ b/drivers/dma/fsl-edma-main.c
-> @@ -153,7 +153,7 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
->  
->  	b_chmux = !!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_HAS_CHMUX);
->  
-> -	mutex_lock(&fsl_edma->fsl_edma_mutex);
-> +	guard(mutex)(&fsl_edma->fsl_edma_mutex);
->  	list_for_each_entry_safe(chan, _chan, &fsl_edma->dma_dev.channels,
->  					device_node) {
->  
-> @@ -177,18 +177,15 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
->  		if (!b_chmux && i == dma_spec->args[0]) {
->  			chan = dma_get_slave_channel(chan);
->  			chan->device->privatecnt++;
-> -			mutex_unlock(&fsl_edma->fsl_edma_mutex);
->  			return chan;
->  		} else if (b_chmux && !fsl_chan->srcid) {
->  			/* if controller support channel mux, choose a free channel */
->  			chan = dma_get_slave_channel(chan);
->  			chan->device->privatecnt++;
->  			fsl_chan->srcid = dma_spec->args[0];
-> -			mutex_unlock(&fsl_edma->fsl_edma_mutex);
->  			return chan;
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 3842e527116b7..179f8367490a5 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -503,10 +503,18 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct *i2c_imx, int for_busy, bool a
+>  				"<%s> I2C bus is busy\n", __func__);
+>  			return -ETIMEDOUT;
 >  		}
+> -		if (atomic)
+> +		if (atomic) {
+>  			udelay(100);
+> -		else
+> -			schedule();
+> +		} else {
+> +			/*
+> +			 * Avoid rescheduling in the first 10 ms to avoid
+> +			 * timeouts for SMBus like devices
+> +			 */
+> +			if (time_before(jiffies, orig_jiffies + msecs_to_jiffies(10)))
+> +				udelay(10);
+> +			else
+> +				schedule();
+> +		}
 >  	}
-> -	mutex_unlock(&fsl_edma->fsl_edma_mutex);
->  	return NULL;
->  }
 >  
+>  	return 0;
 > -- 
-> 2.37.1
-> 
+> 2.40.1
+
+If we want to be sure that the ADS1015 I2C ADC will never timeout, we
+would have to add a patch to disable preemption during transmission.
+This would look like this:
+
+@@ -1244,6 +1248,12 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 	bool is_lastmsg = false;
+ 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(adapter);
+ 
++	/* If we are in SMBus mode we need to do the transfer atomically */
++	if (i2c_imx->smbus_mode) {
++		preempt_disable();
++		atomic = true;
++	}
++
+ 	/* Start I2C transfer */
+ 	result = i2c_imx_start(i2c_imx, atomic);
+ 	if (result) {
+@@ -1320,6 +1330,9 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
+ 	if (i2c_imx->slave)
+ 		i2c_imx_slave_init(i2c_imx);
+ 
++	if (i2c_imx->smbus_mode)
++		preempt_enable();
++
+ 	return (result < 0) ? result : num;
+ }
+
+However, we are aware that disabling preemption is not a good idea. So
+we were discussing how this is normally handled with SMBus devices? Is
+it just expected that SMBus devices will timeout in rare cases?
+
+For our use case, the problem would be solved if we could get rid of the
+schedule call and replace it with a udelay. It seems that the i.MX8M
+Mini I2C controller needs a few ms to clear the IBB flag. In the
+reference manual, they write:
+> I2C bus busy bit. Indicates the status of the bus. NOTE: When I2C is
+> enabled (I2C_I2CR[IEN] = 1), it continuously polls the bus data (SDA)
+> and clock (SCL) signals to determine a Start or Stop condition. Bus is
+> idle. If a Stop signal is detected, IBB is cleared. Bus is busy. When
+> Start is detected, IBB is set.
+Unfortunately, it is not clear how often they poll. In our tests the
+issue disappeard when we used udelay instead of usleep or schedule for
+the first 10 ms.
+
+Since we know we don't have a multi-master configuration, another way
+would be to not test for IBB and just start the transfer. We saw that
+other drivers use the multi-master device tree property to determine if
+multi-master is supported. Here another quote from the reference manual:
+> On a multimaster bus system, the busy bus (I2C_I2SR[IBB]) must be
+> tested to determine whether the serial bus is free.
+We assume this means it is not necessary to test for IBB if we know we
+are in a single-master configuration.
+
+Would either of these workarounds be acceptable, and which would be
+preferred?
+
+Thanks,
+Stefan
