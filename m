@@ -1,62 +1,82 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2078.outbound.protection.outlook.com [40.107.21.78])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2068.outbound.protection.outlook.com [40.107.8.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3774617C202
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 21:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C4C16EB6F
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 22:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719005456; cv=fail; b=PUFVWumFsqTLyqYfFVHIXegOZYXgGpSMtej+ecBxq6maWMDjjzlRelSV4bBFSnYoJv0kNCtdH24e5JU9LiALZrcF4Kl+SoG8n1sYWeGUUo+D8G5CVwW0Ed36SxOAmOtdNoHOEdlgvg+VfuK0B1NQwhz/nNGQicG2gnIfP2luZtM=
+	t=1719009007; cv=fail; b=pvN1aFpaDe6hIIM15EvtdUqH6bDEfF0aLqXlXlaCoA+hj4MUQASqKVK8bMbmcEG1YTL7w2/G0HVLJ/G8fE1dnbo/LOaHQFK1JnG631QveMVBADxcDuCmk3hh6In0DooqmlrUAPuKkWnyjwl1QAVtx2XQdwiLSASv0NU+Vk1Je84=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719005456; c=relaxed/simple;
-	bh=SBCOe9nPzmSQaLQNhTLJxTKxALKTl6c8P9oWRbSoy2A=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=oPdBzNlQwXQz68jVmydmhPrpJ3DYnY4y9jvhTLNQAxBPKMKtQWJfNqfTziQ6oHLE4tXHL5/Awi2AwTBESHkxR50CHm/NUm71qSZSgtjbnlwiWyLJRgnf0nK1Xc3CWWTWoAKbHp0DYBEAKzFuJ49Vvh+0LbGxX5KaJEeJc/Sdvm0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=auAWwwGE; arc=fail smtp.client-ip=40.107.21.78
+	s=arc-20240116; t=1719009007; c=relaxed/simple;
+	bh=ypLgEN/Zjn0orQJOowekBOkJ1wleHuoLiUZ4HQZeuaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=laqv2x9gO8GDprtBOU0DCvrg0DsUjU0v2NzBaVpKFh/qMfdeUXdyiDAsmn+TaRHoAc+NwCg7DFT4F5j4mc/qLSmCuBSQpz712u5qmUXBOot7Vw4T0vOKt5463UFdMnQtVJQb2GQrHfs6+Fedy7VsiJcU5pq8izDm4qCRKsu2Jac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=V+Ol/6q1; arc=fail smtp.client-ip=40.107.8.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="auAWwwGE"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="V+Ol/6q1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AyLazV2YqGttYKISletp2V6OGmpGhbKu1fd7Sybtvqf6Kd510HOnJ40w+3lmbRy1GxAxfBrQ2MHggxtzd3NKOs4wIuWST5tWbCrT4zfAIUsAoQ5c4JJd4YX9jxqxBZNBaNev/ykeNjPIgAZnLik8PGGygxivyZAzq+2iflzzUIY8r07xz5c+21zzGUJQhFtIZiO3S611ELiQXwxt9OEYz/+PdjmsbvdjCadJYf9JrIB3wijDHehQIy0qhBZlH+ao8Cojq3vM6O2dh3J10RcJm2pBp7TxwwPtWC13Px1Jv0tzgoOjx/ZzuuJlWyEWYD/EuvibFRe0q3U9qkj9in9K6g==
+ b=kRMt+4uVbbd6wDohQRJDqgwTsNYGUm43tXMzin60arGX0k8/q9XBdG+9jY4zRl5URvMuKKfhlg/t9aFkHp9DOz7d9Y3HwdZwE+EyJTTC+aZpixHLlG2cmo/uKrBaIKHY087CkgJIUYQiCt8A9KSQjAf+weytaIpCuG4s+P2NPZTU+WHaVUWMbpn3TUYKp/3/Ake077B6TxL1Mn8I6j8NwplXRLB/UGebzahtPnpKUynqpKhCD3RvVE6iG5msSkcZauIb0JIlXhtmp8yNJQBuQjt2tLdXpgKoihaYkBh/JOWhNHRT/0hi6UqtYJ/DDUG/7jVN97DVu89N49/3Swab5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B1237XlY7gSN3Qy6FjcY3xDC5xcQMrSEaf1PpKXMyos=;
- b=Pgh8phI2kr74UeVEyEwhliuWhlLoesnPbHCEWYmPWbZY7JopoEmELrwACpfYgvOWcHDCOEk+NNFYRIaG93uAKg3QWpuPttgOLYiv8wKD+kZJ9Us+vm7NXlAS42JaSY8aQxyF9U9XTfHWqCYRskyeXExHPvd9MKt2pMQa6yfK66EysxqEpTMrZcPYYj6aRHrkj8/NRkuwL9pre1aL++gXY9aEmO0KQLmXht6UoFW8POLoAgAcASl3CtIbZ/WNsb4lnlXIptlPdhyExUbl7j7+rfapZn/PqiiO+3+tvlgtfQCVZ4fcBxKBYlIT6Uokoib3j1AvSue33ycEWsUEZ7n1eg==
+ bh=2B3OA8YmVStHZQ7GGH9WJx/6/DKSSTnpsT84zN8EtQY=;
+ b=jkPAvEqx+pAf5KlH08F1jEuR7AUgQHy7Sjk1tuPPxP8/af8fx7fEZo6JHVcPuUl0f+h+RG41STF+CUJhHTUAkxTklOVAqsDKa803LjyvOCyy9zCGs/iYeFlwo5LdWoTLt7SXJnE1VyuoLjH7ooP0i+Eq2FgNpvol3Wy01tdAtA9wcfWDctxxF09wKUF8Zy4c6aisRUsryGeB9PGANwhsL5JGtTLpMS8ze7krcRkA+U7UchorqfezIuKk20FLzHKFytCJTikletYAVfAjY/pZo1mT21vU0QChhe3xeboaIXTBj0O3Uvf50uZoBYAyZoENhdvlZHU3+4fpFrF0Z/x4jg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B1237XlY7gSN3Qy6FjcY3xDC5xcQMrSEaf1PpKXMyos=;
- b=auAWwwGETqkDPEjjQNSlWv90mFYKfO3pd60m2UlKSeo2U94sC5PGWV8L/e+9uI8RxYdabpmW+yqegKJb15i6Q/U2ZxN1ne9zOWbfXNWw2SaMcujXeP08eUPw+3BLUgQmuHbsyhXu0bnafmz2OJUhLtLsPkJFXUxfwvwzR07XdjQ=
+ bh=2B3OA8YmVStHZQ7GGH9WJx/6/DKSSTnpsT84zN8EtQY=;
+ b=V+Ol/6q1eH6Lrzs0zUQVlgBIJB/IEVWjAUFHCq1cLF1eqo+HbDU6GtxolruZVLHKGuwdi1g3wG2wm3oK33mETxYW9ENu532YtX+6rfgCdALSmCUi4Yk1VdeLUXry+rC+wlXDvXR7zjkFLXLncK4WZAXiLV/W1hCoE7CyC2v4UmU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB6909.eurprd04.prod.outlook.com (2603:10a6:803:13d::24) with
+ by PAXPR04MB8879.eurprd04.prod.outlook.com (2603:10a6:102:20e::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Fri, 21 Jun
- 2024 21:30:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Fri, 21 Jun
+ 2024 22:30:00 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.020; Fri, 21 Jun 2024
- 21:30:48 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
-	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: soc: fsl: Convert q(b)man-* to yaml format
-Date: Fri, 21 Jun 2024 17:30:14 -0400
-Message-Id: <20240621213031.2759046-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0177.namprd05.prod.outlook.com
- (2603:10b6:a03:339::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 22:30:00 +0000
+Date: Fri, 21 Jun 2024 18:29:48 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support
+ MSI ITS and IOMMU for i.MX95
+Message-ID: <ZnX+3H+bwTr4FbDb@lizhi-Precision-Tower-5810>
+References: <ZmIa8dIahUdstpLo@lizhi-Precision-Tower-5810>
+ <20240613224125.GA1087289@bhelgaas>
+ <ZnBHnPTp6I2qDD7P@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnBHnPTp6I2qDD7P@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: BYAPR21CA0004.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,1098 +85,259 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6909:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7af5a8e9-5cea-4f50-ba76-08dc92396a91
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8879:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e72bfce-6b2a-4cf8-b0ec-08dc9241aff4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|366013|376011|1800799021|52116011|38350700011;
+	BCL:0;ARA:13230037|52116011|1800799021|7416011|366013|376011|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zL73QbvBC1A2YWV/GAi+CI+7osF5vpRMVWDrsl/UDFQ7oNZr2XUBHnlmKYOT?=
- =?us-ascii?Q?tNhmiGeFNkqvdLO6273QLiWwuE2GhWc5SF4xWjx/xb6utJZrUADHLokzHKci?=
- =?us-ascii?Q?L2fHoHJha8y2yEevKV6x11lPPMb5fHtjEdzsmNhndC90fwVeBr4bteeVhkC1?=
- =?us-ascii?Q?6VgUzQ/F4QW9sRXZtdGpXrNvuZsNcAgc/1vtIfaIiopvFgrTDpzXctr7qELf?=
- =?us-ascii?Q?yC7oYBKLlDtupmjmSH+T58xGms01DrrbYV+fpltvM1ivQSlP2LrNM2ZamFA1?=
- =?us-ascii?Q?W00SH33KREzh1dsknw9dzUmHZLEBVdq0MYzEtYodYScV7cWAXEI2zXC7E04V?=
- =?us-ascii?Q?fa1MihiI2+t9aH9Ke7ERZTXEN69W08jRpSZPTX9MnmCuYWNZZizUviaRjv08?=
- =?us-ascii?Q?7dxdGT3ZQtXAPoB3I+51OQ3U247r0OGZqpmJJcLQYZxbi8YTa//toxi3+/xn?=
- =?us-ascii?Q?b29rOzKYhSlVYvssmhQl+53b5Gj0QJie2nDlM5iOLQhJ1swyu8lKSg142TSS?=
- =?us-ascii?Q?i/HbAIWWAQqS1sUOJ8x+B1IrkNz6qM7Zq64G5X+tOmU4PqpkX1dbLNo950o7?=
- =?us-ascii?Q?ON+nO3CehPHlr1xJHGr2MDNFzbaAFeeuAkuei/88xTQ8FJdy4SKvQ8mfekAW?=
- =?us-ascii?Q?A9ROVk0fwS0xJltdiUNKH4BxstmzZR0If0r4uRRjIBFJSCfjd3EEsSFOvf/F?=
- =?us-ascii?Q?hjQ+j+LwG1UTxESLtDUrZBkTluRr4tQH+xRcZqP+9oOeTKCPDif6aFRnp1gr?=
- =?us-ascii?Q?wc2v+ufaSHwVAppri7RZUzo+XiYAM3Rezgp7cZ1IypvIIKnhMhkCCEWqfz+C?=
- =?us-ascii?Q?WbvLHpEKMvvGG3mLFIaZw6MvBYF3Uows4M3w7inMgME1cMf1gdm33naIXV8R?=
- =?us-ascii?Q?NiT2aZ2VkRkDYjhNwyCXYBK7XHRhfTl47aDWt1KuyioaJounxCQXN9s2AWMT?=
- =?us-ascii?Q?YnBoUzsgn1rvixhZPW4dHZ5PhmAiKQCM+sfDGle+vItg+66It2My57EjdMGL?=
- =?us-ascii?Q?De7M3qr4I8/zIRTCI+Q3VRJTwCXtoLXgYnXkRWrAlXP6UXyAz9KdrArewha/?=
- =?us-ascii?Q?D+/PNAowapTOXH4RA/yss4gJxQCK18xYCASFJUvMYERzTOmm6sjH4KJuEEU4?=
- =?us-ascii?Q?aDno4pIyScf3q/6TUttFXvprDH9bUQ9VrzL/34/7NXIBaIxWvAuEF1X3EO3B?=
- =?us-ascii?Q?gHGW7K6r23wy7QmJHbfngiWJ1iI+EYmP+hOJkUR+EN/zw6s0lKfG3i+Rihv+?=
- =?us-ascii?Q?gkhwFS5FFT/jQgddf7f2JHSAYt/YKppkxoN2sQm6HK4wAZI2RjfDDZFy8S3N?=
- =?us-ascii?Q?LrOOhQFWeZMvq/96buSzAFD9?=
+	=?us-ascii?Q?8YFSr9QyYf3vtv6ozrqcFdJy2HxSn75PtMCh5q2XK2dISYwkZldaBTE4BNXB?=
+ =?us-ascii?Q?U89m3ABM5/NvUoAvsFR3rqBsc9jOPppSfmvDCAudW9U/N4SRvyzmEdv3f8Ls?=
+ =?us-ascii?Q?u4CWJnHM/iUM7JhxOxjkM86ST76eW6Sdl1eVXiSX+n21qqYz57LcO4mpURmX?=
+ =?us-ascii?Q?Uwa+S/E4udzpiNEfMvGqYQXSTHCrCOSMy5uoePJ14yagnrNQ/zLd3Fk2d8TZ?=
+ =?us-ascii?Q?Q252WK3/uUL2i8EZ93C/yQv//YIOiPbjGCd4u9o8JNNpEaR6kZ1iNYY0OrOc?=
+ =?us-ascii?Q?NS53CS6zNAmYh0xxqxpEz9d6cBU4CFPlPdO5+e0JAyDPO9Fx/auVMeBz6kpy?=
+ =?us-ascii?Q?v/50BSs91SwaFTZp8xCSEE+knOTw95nNV5znqBvCoV32EgQGSEjcuIL801H0?=
+ =?us-ascii?Q?jneeIh/xbO+YJqxST56Y2mGGqXPCb0Q9IjItU1wQRyGuUeUxr2rHFpHNKoNC?=
+ =?us-ascii?Q?bzGZXNuyUVeSvDoJOd3lG6jhhfPBQ4GPQpwZOoEuQm4ybSYDuRm5sqGbm4rn?=
+ =?us-ascii?Q?Z546Q5rTRdgzAgsmCtAP7LCOnSJeNUI3c1JvziZuggAVFS8cGVzJ7sqax3dk?=
+ =?us-ascii?Q?9lXCRM3hTzs29czTquUuvBUIMb1aeyQ028cQHo4nTDdtXnJMILRJxqcSfm8A?=
+ =?us-ascii?Q?rgMUG6498o4VTXmoZGY+HTr6g/rxUDcVP1tgwIgFawvLpSR5xyej2whMPfWR?=
+ =?us-ascii?Q?9TSWBh03Z0LhbfxJvBUgvnQXtDiZzajL+dr3fqmQWV63xPCRpkSbGBbJYJkp?=
+ =?us-ascii?Q?xlMG6ybl/VrjWg1//BtN6qo3UZFxXaCyr6kUe3fxpNesF3eUIx/bMWMoZHBi?=
+ =?us-ascii?Q?GVj/bin9PSa1x+iLjvO2ztuUGNTnah9baLE7O3o541HQZ52k7tjBzxZlcpP7?=
+ =?us-ascii?Q?1Tlz1nWQIpl96nzucM3Y9EjUR1cO2MDeGb2qoJUrYpA42okSyQL9PHgJ1wAt?=
+ =?us-ascii?Q?txBm2b7agOsIWtU+d0ub3VAdzkBbCd2UBcq1p0hG+L/RU32G1Kf139id6yO9?=
+ =?us-ascii?Q?drsyVZOljvdO5+8BSYUW4o1vvCHdxpTk1lj1RVPiuiHQ1YyHxhgS4DaIFdFn?=
+ =?us-ascii?Q?VmMvQzyvyrcSoJJs2NlEYI8sBxdy4pavM258BYIszdlLj6ZpNA03IVwmm9lt?=
+ =?us-ascii?Q?aQXVnmPNFkpJ1Lb73Jyhq2C5d4Z8YFUHE7+rZlk0WZN4sPBqqObEA+CSHVid?=
+ =?us-ascii?Q?Q+xxocujFCj4cLDZ7/oSP66JthxDqPygXqFZEiD2PNMfhBEcSdqt40aT+7tB?=
+ =?us-ascii?Q?v1SUme2JYCScuD+rKruf92xO79Pnc1lDznlJt7RQOTMn/uWFahfNyHMpGeSS?=
+ =?us-ascii?Q?XVTfnih+9CIJ5oge5c6+VDLQsklGzAotcMwnE4kuTzVbN6uSvOQh/XDg+CiX?=
+ =?us-ascii?Q?0EWCtag=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(376011)(1800799021)(52116011)(38350700011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(52116011)(1800799021)(7416011)(366013)(376011)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2QpFGGsyrPasHPhMY4hngYD31+1aKVTFIMZY8moI6EIIt8zgFA5QWeO/PAVk?=
- =?us-ascii?Q?WhRZkYscaAXXvCJjXHbqx5Ehl1NC2iyl+7Pk9HV1HGpqJ8t8BOmtx+RKdUlm?=
- =?us-ascii?Q?dANn2OxtRNp88WFm3TGb7WNLBbHDklCUVX/gTnr7Gd0zR268L9syXibBxJFQ?=
- =?us-ascii?Q?h5SOt/rUKppPu4sIbcshFTSaQJ71b4K+5zAZnzzQDGmihGefYT5dQEVIEp0B?=
- =?us-ascii?Q?he2lFaxjXaHys/fWHiw7CCMqeR4TIQRvtTctZV+d4n7Huat5hgAIWy1DTgbN?=
- =?us-ascii?Q?WBs4a4c3GS+SwfuG6o/kuAOBklWBDerVASkvSmE6n7ET/cXSNVtcnpLSfq02?=
- =?us-ascii?Q?nJThy03T2FYMS6N2dMqY15aJZNpLnLMeeKX2xrlDGED4UztCZa4VfuIAu3Ga?=
- =?us-ascii?Q?8dqBT8rV7gIp0XZIJhgfQCCZvbJ8Ohw+X/7A4ETAjIBLd+UflR1TQZK+kP2q?=
- =?us-ascii?Q?MGxIosQL0IvuntP5euFkPsGB/A+O51SRGaygYSWJ2Eqr72za4FJVtz3/vkMf?=
- =?us-ascii?Q?zWMg9pjGdouk7nrTAgQoGyMLGMoLzpoAbH6PwxHWFzO8DUFS07vlX5IboHMc?=
- =?us-ascii?Q?cIcskRhsLFUhYVtqXT2BtFD4bWpOUFYqfT2zGh0sUozKUqw3HY5AF7uwcx4U?=
- =?us-ascii?Q?AuP20TPpi3EDboAoZx2RPLUOnpxfjlry+l7cwvraCZJKexZ36hKgkdv2RFET?=
- =?us-ascii?Q?7WEbLABWcWq12Obi32vFq1n3IcFz+EVUxZ7iZaddUW3W1sOOyAo0z1RPzCGJ?=
- =?us-ascii?Q?GMsPMPl0Azif8/NLWnaobbIScb3CYwFteAXPHNggGFn78atBs2n1o1lriehL?=
- =?us-ascii?Q?BwDnQ4t86DgTip/8fRUbybYr6treCoTlBFLAIL5PkseDrmwDGq6dqBBvSh5B?=
- =?us-ascii?Q?rXNVN1SMPoTHuIYLQCNhOyLE0E2mRdVrcNsEa8s8WSCTrtg97QXTP36YYBAA?=
- =?us-ascii?Q?Gi0yunbFlx8LOOyRVhh/DID/S9FyoBCHSxf0dvU/1FH+Z5pM0jLjyTfFT/PH?=
- =?us-ascii?Q?aEIVDbfFfrlp/WD25SHrrZbXuCXmc99IykYDh+i9RoRKdsRIPVqKMEwLSOEi?=
- =?us-ascii?Q?7z13dHlHwMyJ0HeNO1WpnMWA7YNYw0I5Udc2qlsSYrkTAbcR575Ra2iMqD7I?=
- =?us-ascii?Q?9zD86LKX34S11xzJVTcj9ydr+coyA3fTsT5FCZvGfWxe2+cE/5O6RkRuiDOr?=
- =?us-ascii?Q?S/Arpo1Q854qQTDbiHcyVKSY2MzP+kjWXrZ1SIopGFSKxUWd+vd2HqrHwPdr?=
- =?us-ascii?Q?7Yoc0EVfRrLN6U/OX54em1y+Nv9WzABwX8RCC62W9NG4aXM2sleXQK2v4vHw?=
- =?us-ascii?Q?5ZC+LsHb32GArmZ8v1W0aUhyLQgmNftu8s3I377ns6t4wBoHckMmMfNvjSCl?=
- =?us-ascii?Q?FonnM0m6vz0YZ1z9ZeuzLtdaIO90xM1sEeVADCVa6Av2pBPhl0+fYFZDqa1/?=
- =?us-ascii?Q?8wzOXuBIXs7vNe3xNJd8RNtEGBevrLNwYB9p24d2QWQb6vx/Dh4JxdC6+ztn?=
- =?us-ascii?Q?SiEtlkwpREgJ2tSsMMVbmRm4IkUPhtf+hCblHOQFnnS0dQVtMcSCTH2pOU0w?=
- =?us-ascii?Q?ZRH/BQX1MAp6r2pePq/y8A9Wt0wom9cu8bEUbUUT?=
+	=?us-ascii?Q?WYdD7AhM+WWtG0DlTohIb4SviBDpfjfgxuir2hxQhOSkh0LN40OPeuvN5HQ7?=
+ =?us-ascii?Q?ZTY0QHPaH9JWWYr35t7OXLJL3PqvcMJcjROcO4wEBZdTg2ZwT3R48B6swZAJ?=
+ =?us-ascii?Q?GQh+c+ckjWQZdZiXebKU8jueC7q9Qz17DTP4LJ8nX+0ZqLVRkyzVwp/+sCO8?=
+ =?us-ascii?Q?WZpFEgShiACpbX1NrqVQzf4NKFwFX8Um/W625zgy5CpTpxBT+Jd8L4ApUIlI?=
+ =?us-ascii?Q?SX5LjUOlK1wqQovAGZ1nMrO5Y2sJG+FIK7kcYCyezRaH4dEWy7x7g1XPnOnc?=
+ =?us-ascii?Q?L0b7sY8AIMlSoSpkYIeo5SEu5VjIhNQQn34vqCUD76vkeiz2q+hP+8n7BemE?=
+ =?us-ascii?Q?yrcMuNCSqrP3o+ARURvAM86wGMjWzTXjWRrkywl8STJ3mtvVVIENfoR7kWTY?=
+ =?us-ascii?Q?Qq+vlCW/NM0ZoVOVs/ELIub/jij20iuUp16UNCP+U3TjqbIStbYs+stHvQNF?=
+ =?us-ascii?Q?YXSxHZcOPdL3vh1syg9UIR9GYu5kOe2fJtkC2/qUxPLLtLTdHjC34ti1rnuL?=
+ =?us-ascii?Q?uIxQLwne+da6GX8TKWpFK15aLZ6rdt9i5HfJtNp/bNdpwwgbM4tdzg71WAiA?=
+ =?us-ascii?Q?nb5m/mTg5RBZmiKpQW/sew5dADAjWZiH9GpGnMmo7v6B+4l6oZBqgcVyMSt5?=
+ =?us-ascii?Q?aE2ExgSd32ZY/4qvkJ/DOpQH+9qwMKPZWvBh1y3fvBlEiTX3qFHbQxvn/L52?=
+ =?us-ascii?Q?E0vFg3qqzKPt8s2fhbjFN5vDmbVoG7ZjVpmxJuvNe5L7F/PeaFAXJmdlEATl?=
+ =?us-ascii?Q?TYJP440283Mwml6daLEsCAe0a8QhXvPyJWC2vTjaILwEIGaVYQzpUeVv19vW?=
+ =?us-ascii?Q?GpJWw1Ly7mc9GMqjfuRSbofbcKTIi9jkuz8ik2M4eNIMPku5ACiem2ZyQOji?=
+ =?us-ascii?Q?S6Go3PomRP/uDQHtzfSJxqum+vN6B1SRhaqF4kQ6J2r3nD/m4bAHu7cmpi3A?=
+ =?us-ascii?Q?ppyEXg+q6T2d9VFX2IhNg11oGWDES9BItdRm3UyHTNKgw8g75wbFRgso5aD1?=
+ =?us-ascii?Q?t3UuwtwfVHlLC+diieN1eCDAZjFV9e0XisQ1Ni2s/+JY47cZ1zfYmHv/0igb?=
+ =?us-ascii?Q?0hTMG6CbJiWYMM5MQIa77UvIlXOCXc0yB6kkV07b+V/IY5+LC+Hh3Xgzuokn?=
+ =?us-ascii?Q?4cWokFe+HMHlibA2ZSQCR/a8fQXmPJ8Zx0ZgYGO2gNov732Pv9DU9Uwp9kw1?=
+ =?us-ascii?Q?e9CGbuS2c0j7yiYcKmuQmQovGJzQp9om3GZmLBWVbQOutcsFQZ4xfQdFJLmr?=
+ =?us-ascii?Q?WmnXmGIqbjD1haGap5MBUrUjd21/GsmLIlrV4r6jJwB3F/iBwJG/pSeLf/EV?=
+ =?us-ascii?Q?/puv0JeLNqxamDCr2DblbfAmhD/vtIaKdfTbw0GxzGT+h3tFu9wiOCcgyser?=
+ =?us-ascii?Q?GJbjORhLwhcoX3NUjRazy6IJPm8/4nsFNJI6XA7qc1DLx2UqK4tZ+B0ThRLS?=
+ =?us-ascii?Q?ubv2jikBnEzaHT+fwvD6Oqh8X93mvKG7WEg5cGWtW3rHRC3Gj7gVRrt5zlTs?=
+ =?us-ascii?Q?f0Y9fa7IvS/Ic7s6TTBRnU9UcTd7oXM6uTSEx6sijer9MCmIniIheAIP3F/9?=
+ =?us-ascii?Q?Lw7V7GnTFLSa26fQURAoneCZnA5NbA9qHHkKNJol?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7af5a8e9-5cea-4f50-ba76-08dc92396a91
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e72bfce-6b2a-4cf8-b0ec-08dc9241aff4
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 21:30:48.1539
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 22:30:00.3744
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kqYmxYjTyWONmYMBey038bWA176N6Y/VaTVyE2Wj1B4E/oUdG9uo1+nssiVOzJCpgi8uJ94OTYDspMqYrkEUhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6909
+X-MS-Exchange-CrossTenant-UserPrincipalName: VbYCRD7xNQjZ9JnS9Psu5C38IE8XTkRejfMWZVMSmxpwtQ+UY9D4RoXPLlJ5Kh38ShZW6zMKy4oqACqyvef6Ig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8879
 
-Convert qman, bman, qman-portals, bman-portals to yaml format.
+On Mon, Jun 17, 2024 at 10:26:36AM -0400, Frank Li wrote:
+> On Thu, Jun 13, 2024 at 05:41:25PM -0500, Bjorn Helgaas wrote:
+> > On Thu, Jun 06, 2024 at 04:24:17PM -0400, Frank Li wrote:
+> > > On Mon, Jun 03, 2024 at 04:07:55PM -0400, Frank Li wrote:
+> > > > On Mon, Jun 03, 2024 at 01:56:27PM -0500, Bjorn Helgaas wrote:
+> > > > > On Mon, Jun 03, 2024 at 02:42:45PM -0400, Frank Li wrote:
+> > > > > > On Mon, Jun 03, 2024 at 12:19:21PM -0500, Bjorn Helgaas wrote:
+> > > > > > > On Fri, May 31, 2024 at 03:58:49PM +0100, Robin Murphy wrote:
+> > > > > > > > On 2024-05-31 12:08 am, Bjorn Helgaas wrote:
+> > > > > > > > > [+cc IOMMU and pcie-apple.c folks for comment]
+> > > > > > > > >
+> > > > > > > > > On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
+> > > > > > > > > > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
+> > > > > > > > > > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
+> > > > > > > > > > This involves examining the msi-map and smmu-map to ensure consistent
+> > > > > > > > > > mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
+> > > > > > > > > > registers are configured. In the absence of an msi-map, the built-in MSI
+> > > > > > > > > > controller is utilized as a fallback.
+> > > > > > > > > >
+> > > > > > > > > > Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
+> > > > > > > > > > upon the appearance of a new PCI device and when the bus is an iMX6 PCI
+> > > > > > > > > > controller. This function configures the correct LUT based on Device Tree
+> > > > > > > > > > Settings (DTS).
+> > > > > > > > >
+> > > > > > > > > This scheme is pretty similar to apple_pcie_bus_notifier().  If we
+> > > > > > > > > have to do this, I wish it were *more* similar, i.e., copy the
+> > > > > > > > > function names, bitmap tracking, code structure, etc.
+> > > > > > > > >
+> > > > > > > > > I don't really know how stream IDs work, but I assume they are used on
+> > > > > > > > > most or all arm64 platforms, so I'm a little surprised that of all the
+> > > > > > > > > PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
+> > > > > > > > > this notifier.
+> > > > > > > >
+> > > > > > > > This is one of those things that's mostly at the mercy of the PCIe root
+> > > > > > > > complex implementation. Typically the SMMU StreamID and/or GIC ITS DeviceID
+> > > > > > > > is derived directly from the PCI RID, sometimes with additional high-order
+> > > > > > > > bits hard-wired to disambiguate PCI segments. I believe this RID-translation
+> > > > > > > > LUT is a particular feature of the the Synopsys IP - I know there's also one
+> > > > > > > > on the NXP Layerscape platforms, but on those it's programmed by the
+> > > > > > > > bootloader, which also generates the appropriate "msi-map" and "iommu-map"
+> > > > > > > > properties to match. Ideally that's what i.MX should do as well, but hey.
+> > > > > > >
+> > > > > > > Maybe this RID-translation is a feature of i.MX, not of Synopsys?  I
+> > > > > > > see that the LUT CSR accesses use IMX95_* definitions.
+> > > > > >
+> > > > > > Yes, it convert 16bit RID to 6bit stream id.
+> > > > >
+> > > > > IIUC, you're saying this is not a Synopsys feature, it's an i.MX
+> > > > > feature.
+> > > >
+> > > > Yes, it is i.MX feature. But I think other vendor should have similar
+> > > > situation if use old arm smmu.
+> > > >
+> > > > >
+> > > > > > > > If it's really necessary to do this programming from Linux, then there's
+> > > > > > > > still no point in it being dynamic - the mappings cannot ever change, since
+> > > > > > > > the rest of the kernel believes that what the DT said at boot time was
+> > > > > > > > already a property of the hardware. It would be a lot more logical, and
+> > > > > > > > likely simpler, for the driver to just read the relevant map property and
+> > > > > > > > program the entire LUT to match, all in one go at controller probe time.
+> > > > > > > > Rather like what's already commonly done with the parsing of "dma-ranges" to
+> > > > > > > > program address-translation LUTs for inbound windows.
+> > > > > > > >
+> > > > > > > > Plus that would also give a chance of safely dealing with bad DTs specifying
+> > > > > > > > invalid ID mappings (by refusing to probe at all). As it is, returning an
+> > > > > > > > error from a child's BUS_NOTIFY_ADD_DEVICE does nothing except prevent any
+> > > > > > > > further notifiers from running at that point - the device will still be
+> > > > > > > > added, allowed to bind a driver, and able to start sending DMA/MSI traffic
+> > > > > > > > without the controller being correctly programmed, which at best won't work
+> > > > > > > > and at worst may break the whole system.
+> > > > > > >
+> > > > > > > Frank, could the imx LUT be programmed once at boot-time instead of at
+> > > > > > > device-add time?  I'm guessing maybe not because apparently there is a
+> > > > > > > risk of running out of LUT entries?
+> > > > > >
+> > > > > > It is not good idea to depend on boot loader so much.
+> > > > >
+> > > > > I meant "could this be programmed once when the Linux imx host
+> > > > > controller driver is probed?"  But from the below, it sounds like
+> > > > > that's not possible in general because you don't have enough stream
+> > > > > IDs to do that.
+> > > >
+> > > > Oh! sorry miss understand what your means. It is possible like what I did
+> > > > at v3 version. But I think it is not good enough.
+> > > >
+> > > > >
+> > > > > > Some hot plug devics
+> > > > > > (SD7.0) may plug after system boot. Two PCIe instances shared one set
+> > > > > > of 6bits stream id (total 64). Assume total 16 assign to two PCIe
+> > > > > > controllers. each have 8 stream id. If use uboot assign it static, each
+> > > > > > PCIe controller have below 8 devices.  It will be failrue one controller
+> > > > > > connect 7, another connect 9. but if dynamtic alloc when devices add, both
+> > > > > > controller can work.
+> > > > > >
+> > > > > > Although we have not so much devices now,  this way give us possility to
+> > > > > > improve it in future.
+> > > > > >
+> > > > > > > It sounds like the consequences of running out of LUT entries are
+> > > > > > > catastrophic, e.g., memory corruption from mis-directed DMA?  If
+> > > > > > > that's possible, I think we need to figure out how to prevent the
+> > > > > > > device from being used, not just dev_warn() about it.
+> > > > > >
+> > > > > > Yes, but so far, we have not met such problem now. We can improve it when
+> > > > > > we really face such problem.
+> > > > >
+> > > > > If this controller can only support DMA from a limited number of
+> > > > > endpoints below it, I think we should figure out how to enforce that
+> > > > > directly.  Maybe we can prevent drivers from enabling bus mastering or
+> > > > > something.  I'm not happy with the idea of waiting for and debugging a
+> > > > > report of data corruption.
+> > > >
+> > > > It may add a pre-add hook function to pci bridge. let me do more research.
+> > >
+> > > Hi Bjorn:
+> > >
+> > > int pci_setup_device(struct pci_dev *dev)
+> > > {
+> > > 	dev->error_state = pci_channel_io_normal;
+> > > 	...
+> > > 	pci_fixup_device(pci_fixup_early, dev);
+> > >
+> > > 	^^^ I can add fixup hook for pci_fixup_early. If not resource,
+> > > I can set dev->error_state to pci_channel_io_frozen or
+> > > pci_channel_io_perm_failure
+> > >
+> > > 	And add below check here after call hook function.
+> > >
+> > > 	if (dev->error_state != pci_channel_io_normal)
+> > > 		return -EIO;
+> > >
+> > > }
+> > >
+> > > How do you think this method? If you agree, I can continue search device
+> > > remove hook up.
+> >
+> > I think this would mean the device would not appear to be enumerated
+> > at all, right?  I.e., it wouldn't show up in lspci?  And we couldn't
+> > use even a pure programmed IO driver with no DMA or MSI?
+>
+> Make sense. Let me do more research on this.
+>
+> Frank
+> >
+> > I wonder if we should have a function pointer in struct
+> > pci_host_bridge, kind of like the existing ->map_irq(), where we could
+> > do host bridge-specific setup when enumerating a PCI device.
 
-Additional Chang for fsl,q(b)man-portal:
-- Only keep one example.
-- Add fsl,qman-channel-id property.
-- Use interrupt type macro.
-- Remove top level qman-portals@ff4200000 at example.
+Consider some device may no use MSI or DMA. It'd better set LUT when
+allocate msi irq. I think insert a irq-domain in irq hierarchy.
 
-Additional change for fsl,q(b)man:
-- Fixed example error.
-- Remove redundent part, only keep fsl,qman node.
-- Change memory-regions to memory-region.
-- fsl,q(b)man-portals is not required property
+static const struct irq_domain_ops lut_pcie_msi_domain_ops = {
+        .alloc  = lut_pcie_irq_domain_alloc,
+        .free   = lut_pcie_irq_domain_free,
+};
 
-Additional change for fsl,qman-fqd.yaml:
-- Fixed example error.
-- Only keep one example.
-- Ref to reserve-memory.yaml
-- Merge fsl,bman reserver memory part
+int dw_pcie_allocate_domains(struct dw_pcie_rp *pp)
+{
+        struct fwnode_handle *fwnode = of_node_to_fwnode(pci->dev->of_node);
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../bindings/soc/fsl/bman-portals.txt         |  56 ------
- .../devicetree/bindings/soc/fsl/bman.txt      | 137 -------------
- .../bindings/soc/fsl/fsl,bman-portal.yaml     |  51 +++++
- .../devicetree/bindings/soc/fsl/fsl,bman.yaml |  83 ++++++++
- .../bindings/soc/fsl/fsl,qman-fqd.yaml        |  68 +++++++
- .../bindings/soc/fsl/fsl,qman-portal.yaml     | 110 +++++++++++
- .../devicetree/bindings/soc/fsl/fsl,qman.yaml |  97 +++++++++
- .../bindings/soc/fsl/qman-portals.txt         | 134 -------------
- .../devicetree/bindings/soc/fsl/qman.txt      | 187 ------------------
- 9 files changed, 409 insertions(+), 514 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman-portals.txt
- delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman.txt
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
- delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman-portals.txt
- delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman.txt
+        pp->irq_domain = irq_domain_create_hierarchy(...)
 
-diff --git a/Documentation/devicetree/bindings/soc/fsl/bman-portals.txt b/Documentation/devicetree/bindings/soc/fsl/bman-portals.txt
-deleted file mode 100644
-index 2a00e14e11e02..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/bman-portals.txt
-+++ /dev/null
-@@ -1,56 +0,0 @@
--QorIQ DPAA Buffer Manager Portals Device Tree Binding
--
--Copyright (C) 2008 - 2014 Freescale Semiconductor Inc.
--
--CONTENTS
--
--	- BMan Portal
--	- Example
--
--BMan Portal Node
--
--Portals are memory mapped interfaces to BMan that allow low-latency, lock-less
--interaction by software running on processor cores, accelerators and network
--interfaces with the BMan
--
--PROPERTIES
--
--- compatible
--	Usage:		Required
--	Value type:	<stringlist>
--	Definition:	Must include "fsl,bman-portal-<hardware revision>"
--			May include "fsl,<SoC>-bman-portal" or "fsl,bman-portal"
--
--- reg
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Two regions. The first is the cache-enabled region of
--			the portal. The second is the cache-inhibited region of
--			the portal
--
--- interrupts
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Standard property
--
--EXAMPLE
--
--The example below shows a (P4080) BMan portals container/bus node with two portals
--
--	bman-portals@ff4000000 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		compatible = "simple-bus";
--		ranges = <0 0xf 0xf4000000 0x200000>;
--
--		bman-portal@0 {
--			compatible = "fsl,bman-portal-1.0.0", "fsl,bman-portal";
--			reg = <0x0 0x4000>, <0x100000 0x1000>;
--			interrupts = <105 2 0 0>;
--		};
--		bman-portal@4000 {
--			compatible = "fsl,bman-portal-1.0.0", "fsl,bman-portal";
--			reg = <0x4000 0x4000>, <0x101000 0x1000>;
--			interrupts = <107 2 0 0>;
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/soc/fsl/bman.txt b/Documentation/devicetree/bindings/soc/fsl/bman.txt
-deleted file mode 100644
-index 48eed140765b0..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/bman.txt
-+++ /dev/null
-@@ -1,137 +0,0 @@
--QorIQ DPAA Buffer Manager Device Tree Bindings
--
--Copyright (C) 2008 - 2014 Freescale Semiconductor Inc.
--
--CONTENTS
--
--	- BMan Node
--	- BMan Private Memory Node
--	- Example
--
--BMan Node
--
--The Buffer Manager is part of the Data-Path Acceleration Architecture (DPAA).
--BMan supports hardware allocation and deallocation of buffers belonging to pools
--originally created by software with configurable depletion thresholds. This
--binding covers the CCSR space programming model
--
--PROPERTIES
--
--- compatible
--	Usage:		Required
--	Value type:	<stringlist>
--	Definition:	Must include "fsl,bman"
--			May include "fsl,<SoC>-bman"
--
--- reg
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Registers region within the CCSR address space
--
--The BMan revision information is located in the BMAN_IP_REV_1/2 registers which
--are located at offsets 0xbf8 and 0xbfc
--
--- interrupts
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Standard property. The error interrupt
--
--- fsl,bman-portals
--	Usage:		Required
--	Value type:	<phandle>
--	Definition:	Phandle to this BMan instance's portals
--
--- fsl,liodn
--	Usage:		See pamu.txt
--	Value type:	<prop-encoded-array>
--	Definition:	PAMU property used for static LIODN assignment
--
--- fsl,iommu-parent
--	Usage:		See pamu.txt
--	Value type:	<phandle>
--	Definition:	PAMU property used for dynamic LIODN assignment
--
--	For additional details about the PAMU/LIODN binding(s) see pamu.txt
--
--Devices connected to a BMan instance via Direct Connect Portals (DCP) must link
--to the respective BMan instance
--
--- fsl,bman
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Description:	List of phandle and DCP index pairs, to the BMan instance
--			to which this device is connected via the DCP
--
--BMan Private Memory Node
--
--BMan requires a contiguous range of physical memory used for the backing store
--for BMan Free Buffer Proxy Records (FBPR). This memory is reserved/allocated as
--a node under the /reserved-memory node.
--
--The BMan FBPR memory node must be named "bman-fbpr"
--
--PROPERTIES
--
--- compatible
--	Usage:		required
--	Value type:	<stringlist>
--	Definition:	PPC platforms: Must include "fsl,bman-fbpr"
--			ARM platforms: Must include "shared-dma-pool"
--				       as well as the "no-map" property
--
--The following constraints are relevant to the FBPR private memory:
--	- The size must be 2^(size + 1), with size = 11..33. That is 4 KiB to
--	  16 GiB
--	- The alignment must be a muliptle of the memory size
--
--The size of the FBPR must be chosen by observing the hardware features configured
--via the Reset Configuration Word (RCW) and that are relevant to a specific board
--(e.g. number of MAC(s) pinned-out, number of offline/host command FMan ports,
--etc.). The size configured in the DT must reflect the hardware capabilities and
--not the specific needs of an application
--
--For additional details about reserved memory regions see reserved-memory.txt
--
--EXAMPLE
--
--The example below shows a BMan FBPR dynamic allocation memory node
--
--	reserved-memory {
--		#address-cells = <2>;
--		#size-cells = <2>;
--		ranges;
--
--		bman_fbpr: bman-fbpr {
--			compatible = "shared-mem-pool";
--			size = <0 0x1000000>;
--			alignment = <0 0x1000000>;
--			no-map;
--		};
--	};
--
--The example below shows a (P4080) BMan CCSR-space node
--
--	bportals: bman-portals@ff4000000 {
--		...
--	};
--
--	crypto@300000 {
--		...
--		fsl,bman = <&bman, 2>;
--		...
--	};
--
--	bman: bman@31a000 {
--		compatible = "fsl,bman";
--		reg = <0x31a000 0x1000>;
--		interrupts = <16 2 1 2>;
--		fsl,liodn = <0x17>;
--		fsl,bman-portals = <&bportals>;
--		memory-region = <&bman_fbpr>;
--	};
--
--	fman@400000 {
--		...
--		fsl,bman = <&bman, 0>;
--		...
--	};
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
-new file mode 100644
-index 0000000000000..06b51f049098f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
-@@ -0,0 +1,51 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,bman-portal.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: QorIQ DPAA Queue Manager Portals
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  QorIQ DPAA Buffer Manager Portal
-+
-+  Portals are memory mapped interfaces to BMan that allow low-latency, lock-less
-+  interaction by software running on processor cores, accelerators and network
-+  interfaces with the BMan
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: fsl,bman-portal
-+      - items:
-+          - enum:
-+              - fsl,ls1043a-bmap-portal
-+              - fsl,ls1046a-bmap-portal
-+          - const: fsl,bman-portal
-+  reg:
-+    items:
-+      - description: the cache-enabled region of the portal
-+      - description: the cache-inhibited region of the porta
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    bman-portal@0 {
-+        compatible = "fsl,bman-portal-1.0.0", "fsl,bman-portal";
-+        reg = <0x0 0x4000>, <0x100000 0x1000>;
-+        interrupts = <105 IRQ_TYPE_EDGE_FALLING 0 0>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
-new file mode 100644
-index 0000000000000..e6b3d489ce5cc
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
-@@ -0,0 +1,83 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,bman.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: QorIQ DPAA Buffer Manager
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  The Buffer Manager is part of the Data-Path Acceleration Architecture (DPAA).
-+  BMan supports hardware allocation and deallocation of buffers belonging to pools
-+  originally created by software with configurable depletion thresholds. This
-+  binding covers the CCSR space programming model
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: fsl,bman
-+      - items:
-+          - enum:
-+              - fsl,ls1043a-bman
-+              - fsl,ls1046a-bman
-+          - const: fsl,bman
-+
-+  reg:
-+    items:
-+      - description:
-+          Registers region within the CCSR address space
-+
-+          The BMan revision information is located in the BMAN_IP_REV_1/2 registers which
-+          are located at offsets 0xbf8 and 0xbfc
-+
-+  interrupts:
-+    items:
-+      - description: The error interrupt
-+
-+  memory-region:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description:
-+      List of phandles referencing the BMan private memory
-+      nodes (described below). The bman-fqd node must be
-+      first followed by bman-pfdr node. Only used on ARM
-+
-+      Devices connected to a BMan instance via Direct Connect Portals (DCP) must link
-+      to the respective BMan instance
-+
-+  fsl,bman-portals:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: ref fsl,bman-port.yaml
-+
-+  fsl,liodn:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    description:
-+      See pamu.txt, PAMU property used for static LIODN assignment
-+
-+  fsl,iommu-parent:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      See pamu.txt, PAMU property used for dynamic LIODN assignment
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - fsl,bman-portals
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    bman@31a000 {
-+        compatible = "fsl,bman";
-+        reg = <0x31a000 0x1000>;
-+        interrupts = <16 IRQ_TYPE_EDGE_FALLING 1 2>;
-+        fsl,liodn = <0x17>;
-+        fsl,bman-portals = <&bportals>;
-+        memory-region = <&bman_fbpr>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
-new file mode 100644
-index 0000000000000..f7af14dc7deb6
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,qman-fqd.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: QMan Private Memory Nodes
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  QMan requires two contiguous range of physical memory used for the backing store
-+  for QMan Frame Queue Descriptor (FQD) and Packed Frame Descriptor Record (PFDR).
-+  This memory is reserved/allocated as a node under the /reserved-memory node.
-+
-+  BMan requires a contiguous range of physical memory used for the backing store
-+  for BMan Free Buffer Proxy Records (FBPR). This memory is reserved/allocated as
-+  a node under the /reserved-memory node.
-+
-+  The QMan FQD memory node must be named "qman-fqd"
-+  The QMan PFDR memory node must be named "qman-pfdr"
-+  The BMan FBPR memory node must be named "bman-fbpr"
-+
-+  The following constraints are relevant to the FQD and PFDR private memory:
-+    - The size must be 2^(size + 1), with size = 11..29. That is 4 KiB to
-+      1 GiB
-+    - The alignment must be a muliptle of the memory size
-+
-+  The size of the FQD and PFDP must be chosen by observing the hardware features
-+  configured via the Reset Configuration Word (RCW) and that are relevant to a
-+  specific board (e.g. number of MAC(s) pinned-out, number of offline/host command
-+  FMan ports, etc.). The size configured in the DT must reflect the hardware
-+  capabilities and not the specific needs of an application
-+
-+  For additional details about reserved memory regions see reserved-memory.txt
-+
-+properties:
-+  $nodename:
-+    pattern: '^(qman-fqd|qman-pfdr|bman-fbpr|)+$'
-+
-+  compatible:
-+    enum:
-+      - fsl,qman-fqd
-+      - fsl,qman-pfdr
-+      - fsl,bman-fbpr
-+
-+required:
-+  - compatible
-+
-+allOf:
-+  - $ref: reserved-memory.yaml
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    reserved-memory {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        qman-fqd {
-+            compatible = "shared-dma-pool";
-+            size = <0 0x400000>;
-+            alignment = <0 0x400000>;
-+            no-map;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
-new file mode 100644
-index 0000000000000..6c81e0d66f4d5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
-@@ -0,0 +1,110 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,qman-portal.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: QorIQ DPAA Queue Manager Portals
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  Portals are memory mapped interfaces to QMan that allow low-latency, lock-less
-+  interaction by software running on processor cores, accelerators and network
-+  interfaces with the QMan
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: fsl,qman-portal
-+      - items:
-+          - enum:
-+              - fsl,ls1043-qman-portal
-+              - fsl,ls1046-qman-portal
-+              - fsl,qman-portal-1.2.0
-+          - const: fsl,qman-portal
-+
-+  reg:
-+    items:
-+      - description: the cache-enabled region of the portal
-+      - description: the cache-inhibited region of the portal
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  fsl,liodn:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    description: See pamu.txt. Two LIODN(s). DQRR LIODN (DLIODN) and Frame LIODN
-+      (FLIODN)
-+
-+  fsl,iommu-parent:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: See pamu.txt.
-+
-+  fsl,qman-channel-id:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: qman channel id.
-+
-+  cell-index:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      The hardware index of the channel. This can also be
-+      determined by dividing any of the channel's 8 work queue
-+      IDs by 8
-+
-+      In addition to these properties the qman-portals should have sub-nodes to
-+      represent the HW devices/portals that are connected to the software portal
-+      described here
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+additionalProperties: false
-+
-+patternProperties:
-+  '^(fman0|fman1|pme|crypto|)+$':
-+    type: object
-+    properties:
-+      fsl,liodn:
-+        description: See pamu.txt, PAMU property used for static LIODN assignment
-+
-+      fsl,iommu-parent:
-+        description: See pamu.txt, PAMU property used for dynamic LIODN assignment
-+
-+      dev-handle:
-+        $ref: /schemas/types.yaml#/definitions/phandle
-+        description:
-+          The phandle to the particular hardware device that this
-+          portal is connected to.
-+
-+    additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    qman-portal@0 {
-+        compatible = "fsl,qman-portal-1.2.0", "fsl,qman-portal";
-+        reg = <0 0x4000>, <0x100000 0x1000>;
-+        interrupts = <104 IRQ_TYPE_EDGE_FALLING 0 0>;
-+        fsl,liodn = <1 2>;
-+        fsl,qman-channel-id = <0>;
-+
-+        fman0 {
-+            fsl,liodn = <0x21>;
-+            dev-handle = <&fman0>;
-+        };
-+
-+        fman1 {
-+            fsl,liodn = <0xa1>;
-+            dev-handle = <&fman1>;
-+        };
-+
-+        crypto {
-+            fsl,liodn = <0x41 0x66>;
-+            dev-handle = <&crypto>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
-new file mode 100644
-index 0000000000000..341c3d2cfd6c7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
-@@ -0,0 +1,97 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,qman.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: QorIQ DPAA Queue Manager
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  The Queue Manager is part of the Data-Path Acceleration Architecture (DPAA). QMan
-+  supports queuing and QoS scheduling of frames to CPUs, network interfaces and
-+  DPAA logic modules, maintains packet ordering within flows. Besides providing
-+  flow-level queuing, is also responsible for congestion management functions such
-+  as RED/WRED, congestion notifications and tail discards. This binding covers the
-+  CCSR space programming model
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: fsl,qman
-+      - items:
-+          - enum:
-+              - fsl,ls1043a-qman
-+              - fsl,ls1046a-qman
-+          - const: fsl,qman
-+  reg:
-+    items:
-+      - description:
-+          Registers region within the CCSR address space
-+
-+          The QMan revision information is located in the QMAN_IP_REV_1/2 registers which
-+          are located at offsets 0xbf8 and 0xbfc
-+
-+  interrupts:
-+    items:
-+      - description: The error interrupt
-+
-+  fsl,qman-portals:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: ref fsl,qman-port.yaml
-+
-+  fsl,liodn:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    description:
-+      See pamu.txt, PAMU property used for static LIODN assignment
-+
-+  fsl,iommu-parent:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      See pamu.txt, PAMU property used for dynamic LIODN assignment
-+
-+  clocks:
-+    maxItems: 1
-+    description:
-+      See clock-bindings.txt and qoriq-clock.txt
-+      Reference input clock. Its frequency is half of the platform clock
-+
-+  memory-region:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description:
-+      List of phandles referencing the QMan private memory
-+      nodes (described below). The qman-fqd node must be
-+      first followed by qman-pfdr node. Only used on ARM
-+
-+      Devices connected to a QMan instance via Direct Connect Portals (DCP) must link
-+      to the respective QMan instance
-+
-+  fsl,qman:
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    description:
-+      List of phandle and DCP index pairs, to the QMan instance
-+      to which this device is connected via the DCP
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - fsl,qman-portals
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    qman: qman@318000 {
-+        compatible = "fsl,qman";
-+        reg = <0x318000 0x1000>;
-+        interrupts = <16 IRQ_TYPE_EDGE_FALLING 1 3>;
-+        fsl,liodn = <0x16>;
-+        fsl,qman-portals = <&qportals>;
-+        memory-region = <&qman_fqd &qman_pfdr>;
-+        clocks = <&platform_pll 1>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/qman-portals.txt b/Documentation/devicetree/bindings/soc/fsl/qman-portals.txt
-deleted file mode 100644
-index 5a34f3ab7bea3..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/qman-portals.txt
-+++ /dev/null
-@@ -1,134 +0,0 @@
--QorIQ DPAA Queue Manager Portals Device Tree Binding
--
--Copyright (C) 2008 - 2014 Freescale Semiconductor Inc.
--
--CONTENTS
--
--	- QMan Portal
--	- Example
--
--QMan Portal Node
--
--Portals are memory mapped interfaces to QMan that allow low-latency, lock-less
--interaction by software running on processor cores, accelerators and network
--interfaces with the QMan
--
--PROPERTIES
--
--- compatible
--	Usage:		Required
--	Value type:	<stringlist>
--	Definition:	Must include "fsl,qman-portal-<hardware revision>"
--			May include "fsl,<SoC>-qman-portal" or "fsl,qman-portal"
--
--- reg
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Two regions. The first is the cache-enabled region of
--			the portal. The second is the cache-inhibited region of
--			the portal
--
--- interrupts
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Standard property
--
--- fsl,liodn
--	Usage:		See pamu.txt
--	Value type:	<prop-encoded-array>
--	Definition:	Two LIODN(s). DQRR LIODN (DLIODN) and Frame LIODN
--			(FLIODN)
--
--- fsl,iommu-parent
--	Usage:		See pamu.txt
--	Value type:	<phandle>
--	Definition:	PAMU property used for dynamic LIODN assignment
--
--	For additional details about the PAMU/LIODN binding(s) see pamu.txt
--
--- cell-index
--	Usage:		Required
--	Value type:	<u32>
--	Definition:	The hardware index of the channel. This can also be
--			determined by dividing any of the channel's 8 work queue
--			IDs by 8
--
--In addition to these properties the qman-portals should have sub-nodes to
--represent the HW devices/portals that are connected to the software portal
--described here
--
--The currently supported sub-nodes are:
--	* fman0
--	* fman1
--	* pme
--	* crypto
--
--These subnodes should have the following properties:
--
--- fsl,liodn
--	Usage:		See pamu.txt
--	Value type:	<prop-encoded-array>
--	Definition:	PAMU property used for static LIODN assignment
--
--- fsl,iommu-parent
--	Usage:		See pamu.txt
--	Value type:	<phandle>
--	Definition:	PAMU property used for dynamic LIODN assignment
--
--- dev-handle
--	Usage:		Required
--	Value type:	<phandle>
--	Definition:	The phandle to the particular hardware device that this
--			portal is connected to.
--
--EXAMPLE
--
--The example below shows a (P4080) QMan portals container/bus node with two portals
--
--	qman-portals@ff4200000 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		compatible = "simple-bus";
--		ranges = <0 0xf 0xf4200000 0x200000>;
--
--		qman-portal@0 {
--			compatible = "fsl,qman-portal-1.2.0", "fsl,qman-portal";
--			reg = <0 0x4000>, <0x100000 0x1000>;
--			interrupts = <104 2 0 0>;
--			fsl,liodn = <1 2>;
--			fsl,qman-channel-id = <0>;
--
--			fman0 {
--				fsl,liodn = <0x21>;
--				dev-handle = <&fman0>;
--			};
--			fman1 {
--				fsl,liodn = <0xa1>;
--				dev-handle = <&fman1>;
--			};
--			crypto {
--				fsl,liodn = <0x41 0x66>;
--				dev-handle = <&crypto>;
--			};
--		};
--		qman-portal@4000 {
--			compatible = "fsl,qman-portal-1.2.0", "fsl,qman-portal";
--			reg = <0x4000 0x4000>, <0x101000 0x1000>;
--			interrupts = <106 2 0 0>;
--			fsl,liodn = <3 4>;
--			cell-index = <1>;
--
--			fman0 {
--				fsl,liodn = <0x22>;
--				dev-handle = <&fman0>;
--			};
--			fman1 {
--				fsl,liodn = <0xa2>;
--				dev-handle = <&fman1>;
--			};
--			crypto {
--				fsl,liodn = <0x42 0x67>;
--				dev-handle = <&crypto>;
--			};
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/soc/fsl/qman.txt b/Documentation/devicetree/bindings/soc/fsl/qman.txt
-deleted file mode 100644
-index ee96afd2af721..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/qman.txt
-+++ /dev/null
-@@ -1,187 +0,0 @@
--QorIQ DPAA Queue Manager Device Tree Binding
--
--Copyright (C) 2008 - 2014 Freescale Semiconductor Inc.
--
--CONTENTS
--
--	- QMan Node
--	- QMan Private Memory Nodes
--	- Example
--
--QMan Node
--
--The Queue Manager is part of the Data-Path Acceleration Architecture (DPAA). QMan
--supports queuing and QoS scheduling of frames to CPUs, network interfaces and
--DPAA logic modules, maintains packet ordering within flows. Besides providing
--flow-level queuing, is also responsible for congestion management functions such
--as RED/WRED, congestion notifications and tail discards. This binding covers the
--CCSR space programming model
--
--PROPERTIES
--
--- compatible
--	Usage:		Required
--	Value type:	<stringlist>
--	Definition:	Must include "fsl,qman"
--			May include "fsl,<SoC>-qman"
--
--- reg
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Registers region within the CCSR address space
--
--The QMan revision information is located in the QMAN_IP_REV_1/2 registers which
--are located at offsets 0xbf8 and 0xbfc
--
--- interrupts
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Definition:	Standard property. The error interrupt
--
--- fsl,qman-portals
--	Usage:		Required
--	Value type:	<phandle>
--	Definition:	Phandle to this QMan instance's portals
--
--- fsl,liodn
--	Usage:		See pamu.txt
--	Value type:	<prop-encoded-array>
--	Definition:	PAMU property used for static LIODN assignment
--
--- fsl,iommu-parent
--	Usage:		See pamu.txt
--	Value type:	<phandle>
--	Definition:	PAMU property used for dynamic LIODN assignment
--
--	For additional details about the PAMU/LIODN binding(s) see pamu.txt
--
--- clocks
--	Usage:		See clock-bindings.txt and qoriq-clock.txt
--	Value type:	<prop-encoded-array>
--	Definition:	Reference input clock. Its frequency is half of the
--			platform clock
--- memory-regions
--	Usage:		Required for ARM
--	Value type:	<phandle array>
--	Definition:	List of phandles referencing the QMan private memory
--			nodes (described below). The qman-fqd node must be
--			first followed by qman-pfdr node. Only used on ARM
--
--Devices connected to a QMan instance via Direct Connect Portals (DCP) must link
--to the respective QMan instance
--
--- fsl,qman
--	Usage:		Required
--	Value type:	<prop-encoded-array>
--	Description:	List of phandle and DCP index pairs, to the QMan instance
--			to which this device is connected via the DCP
--
--QMan Private Memory Nodes
--
--QMan requires two contiguous range of physical memory used for the backing store
--for QMan Frame Queue Descriptor (FQD) and Packed Frame Descriptor Record (PFDR).
--This memory is reserved/allocated as a node under the /reserved-memory node.
--
--For additional details about reserved memory regions see reserved-memory.txt
--
--The QMan FQD memory node must be named "qman-fqd"
--
--PROPERTIES
--
--- compatible
--	Usage:		required
--	Value type:	<stringlist>
--	Definition:	PPC platforms: Must include "fsl,qman-fqd"
--			ARM platforms: Must include "shared-dma-pool"
--				       as well as the "no-map" property
--
--The QMan PFDR memory node must be named "qman-pfdr"
--
--PROPERTIES
--
--- compatible
--	Usage:		required
--	Value type:	<stringlist>
--	Definition:	PPC platforms: Must include "fsl,qman-pfdr"
--			ARM platforms: Must include "shared-dma-pool"
--				       as well as the "no-map" property
--
--The following constraints are relevant to the FQD and PFDR private memory:
--	- The size must be 2^(size + 1), with size = 11..29. That is 4 KiB to
--	  1 GiB
--	- The alignment must be a muliptle of the memory size
--
--The size of the FQD and PFDP must be chosen by observing the hardware features
--configured via the Reset Configuration Word (RCW) and that are relevant to a
--specific board (e.g. number of MAC(s) pinned-out, number of offline/host command
--FMan ports, etc.). The size configured in the DT must reflect the hardware
--capabilities and not the specific needs of an application
--
--For additional details about reserved memory regions see reserved-memory.txt
--
--EXAMPLE
--
--The example below shows a QMan FQD and a PFDR dynamic allocation memory nodes
--
--	reserved-memory {
--		#address-cells = <2>;
--		#size-cells = <2>;
--		ranges;
--
--		qman_fqd: qman-fqd {
--			compatible = "shared-dma-pool";
--			size = <0 0x400000>;
--			alignment = <0 0x400000>;
--			no-map;
--		};
--		qman_pfdr: qman-pfdr {
--			compatible = "shared-dma-pool";
--			size = <0 0x2000000>;
--			alignment = <0 0x2000000>;
--			no-map;
--		};
--	};
--
--The example below shows a (P4080) QMan CCSR-space node
--
--	qportals: qman-portals@ff4200000 {
--		...
--	};
--
--	clockgen: global-utilities@e1000 {
--		...
--		sysclk: sysclk {
--			...
--		};
--		...
--		platform_pll: platform-pll@c00 {
--			#clock-cells = <1>;
--			reg = <0xc00 0x4>;
--			compatible = "fsl,qoriq-platform-pll-1.0";
--			clocks = <&sysclk>;
--			clock-output-names = "platform-pll", "platform-pll-div2";
--		};
--		...
--	};
--
--	crypto@300000 {
--		...
--		fsl,qman = <&qman, 2>;
--		...
--	};
--
--	qman: qman@318000 {
--		compatible = "fsl,qman";
--		reg = <0x318000 0x1000>;
--		interrupts = <16 2 1 3>
--		fsl,liodn = <0x16>;
--		fsl,qman-portals = <&qportals>;
--		memory-region = <&qman_fqd &qman_pfdr>;
--		clocks = <&platform_pll 1>;
--	};
--
--	fman@400000 {
--		...
--		fsl,qman = <&qman, 0>;
--		...
--	};
--- 
-2.34.1
+        pp->msi_domain = pci_msi_create_irq_domain(...);
 
+        return 0;
+}
+
+Manage lut stream id in lut_pcie_irq_domain_alloc() and
+lut_pcie_irq_domain_free().
+
+So failure happen only when driver use MSI and no-stream ID avaiable. It
+should be better than failure when add devices. Some devices may not use
+at all.
+
+How do you think this method? If it is okay, I can try research how to
+set LUT when do dma_mapping(unmap). 
+
+Frank Li
+> >
+> > We'd still have to solve the issue of preventing DMA, but a hook like
+> > that might avoid the need for a quirk or the bus notifier approach.
+> >
+> > Bjorn
