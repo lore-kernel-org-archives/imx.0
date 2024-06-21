@@ -1,104 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E193207;
-	Fri, 21 Jun 2024 00:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C5C3C0D;
+	Fri, 21 Jun 2024 00:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718928375; cv=none; b=jhR3qorLf1OfkHjOfwdvySmUj42pp2+ab+GvF7IXfRFIPgXwP6lLDPgoFJ4kiqjBAvqaDluwD3V6lBXlTg5+1NP4qHzzapuV/JXl+La5AwC7FA0M7q0Y4jVtlIK3QDufLyCRyoA/Rxm7c8S61BVf6ZfIyteJmp6h03nTWGtHYSc=
+	t=1718928538; cv=none; b=Cu1ZtNbkSAWRfm2+oVCPgxfAS0wXiT7e1ATJshb9pzwcq6mWGJvv/TS7tJ8qoDwrEgr85AAWxIro9oF0dywo5xltSW/2gtgd4u2Jp6+/oXEhNfx/OkZuuJwJYSivD15O1xlHT3WDN4rE7oDYcRZzdxFYDH6bZ+O/MRrUU4KoXMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718928375; c=relaxed/simple;
-	bh=VNSCHiO08SIk0htqWDW6NDFuvYyhidq/ovhyfUV5Kwg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Cou3aXMVkXhHGYGF+zvRkCV3R0pqhbEX9BTHjLYUA4xVAeMxd0scQxRzbzftBfbP4K28nfuKQESgoCf/8JMJTtXpQ0MlSvkQSM76fi1tHmdRRMBOWz1rL7aZdwRnkEeYWWbmeibDGEykCS5QD2iE01LOjff1d5hiPHrgUVaTq0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HneLpggF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718928538; c=relaxed/simple;
+	bh=NcYLAWARUMh+igt8rrvEXRwaLFG2bKHXFVrUT7Mk6M0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OV/869vOhXZssFz6CA8V2tCYKxEMsJoGbv1dLXYKxoHQd1/D+gPzk4fomfWBPQX67jKuCxFPN4Hw+XQwJJbkB9BtuD1KTtcK2SSHneonwFmAMS+lYzaweCPFbpdX6kwtIljYZqgBFVHSUSO5uocsxdW8tlL96XDBkQ44yxEplIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opWxR8bk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HneLpggF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3A7C2BD10;
-	Fri, 21 Jun 2024 00:06:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opWxR8bk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F23C2BD10;
+	Fri, 21 Jun 2024 00:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718928375;
-	bh=VNSCHiO08SIk0htqWDW6NDFuvYyhidq/ovhyfUV5Kwg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=HneLpggF5aKAge/YLzIW5cLkwl1JRmjRPAHCL9AVCFqQnPr25XKP9Z/YFuOrHFRQM
-	 Z8WthZPFSd05AbkIJE7UTae1fx3IHUq3s75yr3U83zQfEU7QtJmzJG4jZ8kmRpLC7g
-	 GnaeNLH2rHkUxgRcg5o5IBMpWKQ/TttntERYGpR3LDYgcAM/3dsaPM6l7wBTgQGhA/
-	 neiEPwmWUsUSVCSmbh9khUQsFK/ciT5j9FvzPL9Bf9Mf7fJu9oYg+fsrARZuPkG5Mc
-	 9+IhU4KVKb2ttRGmnF0TsxJugRTTvceAmV7z+zF4iyxnLV1CDS4yio89WNd6nDyYyV
-	 k6sIw0QXHXRaA==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Nicolin Chen <nicoleotsuka@gmail.com>, 
- Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, 
- linuxppc-dev@lists.ozlabs.org, 
- Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>
-In-Reply-To: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
-References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
-Subject: Re: (subset) [PATCHv5 0/9] ASoC: fsl-asoc-card: add S/PDIF
- controller
-Message-Id: <171892836830.273016.4379202325839599426.b4-ty@kernel.org>
-Date: Fri, 21 Jun 2024 01:06:08 +0100
+	s=k20201202; t=1718928538;
+	bh=NcYLAWARUMh+igt8rrvEXRwaLFG2bKHXFVrUT7Mk6M0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=opWxR8bkfnY2Q9SJZz9epjFx4WPQdQI/a3gm9mYCYrw4xJgMrtXSSADHxdtzlN8Oi
+	 dm9gCeaD69Kw98WHc1UYIuIKPtzZyN+0ZvCC9LBj0qVrYLHbomM03mqNQrApLVSzTc
+	 AqAH7uIrIUqwXes+qFOjkt032u8blpcyEquXLerbRhhb6Pu2zaQMvWaNYdKaHsYYLA
+	 vc16FHiinwkHn1mNKXd3Tmi25pNkKpf3xJlNylS1hLD//1znLY6Fol4ZfoNyijBpJI
+	 xNOhOAgsqf+dW5d+GvISQklqGFJiqPxVw7d+GC8Mx9QmttxZcMDcgFzlnqxSGMOh1l
+	 0cyD+2RKPYKtg==
+Date: Fri, 21 Jun 2024 02:08:54 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Frank Li <Frank.Li@nxp.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
+Message-ID: <2wdijuaqederq6sebpqvby4jpe2b7nhuc3jcvoefn2wi5vpey5@wfvbli3tv6v7>
+References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev-d4707
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
 
-On Thu, 20 Jun 2024 15:25:02 +0200, Elinor Montmasson wrote:
-> This is the v5 of the series of patches aiming to make the machine
-> driver `fsl-asoc-card` compatible with S/PDIF controllers on imx boards.
-> The main goal is to allow the use of S/PDIF controllers with ASRC
-> modules.
+Hi Krzysztof,
+
+On Mon, Jun 17, 2024 at 08:58:28AM GMT, Krzysztof Kozlowski wrote:
+> Emails to Anson Huang bounce:
 > 
-> The `imx-spdif` machine driver already has specific support for S/PDIF
-> controllers but doesn't support using an ASRC with it. However, the
-> `fsl-asoc-card` machine driver has the necessary code to create a sound
-> card which can use an ASRC module.
-> It is then possible to extend the support for S/PDIF audio cards by
-> merging the `imx-spdif` driver into `fsl-asoc-card`.
+>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
 > 
-> [...]
+> Add IMX platform maintainers for bindings which would become orphaned.
+> 
+> Acked-by: Uwe Kleine-König <ukleinek@kernel.org>
+> Reviewed-by: Fabio Estevam <festevam@gmail.com>
+> Acked-by: Peng Fan <peng.fan@nxp.com>
+> Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com> # for I2C
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/9] ASoC: fsl-asoc-card: set priv->pdev before using it
-      commit: 90f3feb24172185f1832636264943e8b5e289245
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
 Thanks,
-Mark
-
+Andi
