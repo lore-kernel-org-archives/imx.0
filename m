@@ -1,103 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC3D13D8A7;
-	Thu, 20 Jun 2024 22:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E193207;
+	Fri, 21 Jun 2024 00:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718924078; cv=none; b=FxJkidCt8sU+BD/kOkSJrF91WsNAVNA+7fIURKpqMwmrolBj+2uK8hXED7fj8F5f84Y2Ne0U2vQ4xVkWao9b7E3/cwBfjH9bcvCkj4n/tFOSZHszondMYuE7FQbC/9lRvYxdCr9y2lHkG3kF6XIhoXEsOTOr1A8eNes/l4A/xT4=
+	t=1718928375; cv=none; b=jhR3qorLf1OfkHjOfwdvySmUj42pp2+ab+GvF7IXfRFIPgXwP6lLDPgoFJ4kiqjBAvqaDluwD3V6lBXlTg5+1NP4qHzzapuV/JXl+La5AwC7FA0M7q0Y4jVtlIK3QDufLyCRyoA/Rxm7c8S61BVf6ZfIyteJmp6h03nTWGtHYSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718924078; c=relaxed/simple;
-	bh=jXdtOsUhVghD5MmyzdTFIIAxpmkvQ4thmfKjJV9QJ8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BaUo28itkYnnZbSP1FeLBg5nqKmylEJG1mzf39OkR/4Iifl/YCoOiUBZTVfq0U2qVXm4SOS9Tqgll6C2XHfFy+zsENPldaKR0DIOZebXdt/+J0E1f65qUPBhu6ZyOiCx41C1ycFP24RWRTYa7JW7o1NQ0i/KDLvPJpX+zhxl+m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B6SAYmsK; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1718928375; c=relaxed/simple;
+	bh=VNSCHiO08SIk0htqWDW6NDFuvYyhidq/ovhyfUV5Kwg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Cou3aXMVkXhHGYGF+zvRkCV3R0pqhbEX9BTHjLYUA4xVAeMxd0scQxRzbzftBfbP4K28nfuKQESgoCf/8JMJTtXpQ0MlSvkQSM76fi1tHmdRRMBOWz1rL7aZdwRnkEeYWWbmeibDGEykCS5QD2iE01LOjff1d5hiPHrgUVaTq0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HneLpggF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B6SAYmsK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718924075; x=1750460075;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jXdtOsUhVghD5MmyzdTFIIAxpmkvQ4thmfKjJV9QJ8E=;
-  b=B6SAYmsKMQ/fhm3xvIIVob9dJNlafBWkxeVcPKwwZgioXZHoBRkg1hqv
-   qpLeux1apJvbFXakzPGY2n49uYIpNX3DpO/7wXoWAjC1VC8Hu8GWQ2+gR
-   POWMtBbeQ6wFZ2hv7XRZHNV0ytG81NB0en9hTcQFQakviaNy9r5EL8OM5
-   Hf80VJcOja6EUWOnmdkwXSlbxt+alFYNIGVw5EJofsM48dfU3u8v8oco4
-   EOlgzLn6R+GzBcsV124X7JQ7sztW24y7t69qFuPK/U5S70zPzXLln1J+N
-   8FhZ4UNrAGuYSO77/UbRgz7AtELfab6hR0dK2ho1QVED+XHc7oSlg6Mgq
-   Q==;
-X-CSE-ConnectionGUID: 3Yfk/UcUT9S3w/J19rkFUA==
-X-CSE-MsgGUID: TLGHwWxaRcyrcMZi2dC23Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="26532778"
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; 
-   d="scan'208";a="26532778"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2024 15:54:35 -0700
-X-CSE-ConnectionGUID: u6Xm1W96SbmkfVZUOfFtOQ==
-X-CSE-MsgGUID: icu+aSI0S5aUK8xt6KI6LA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; 
-   d="scan'208";a="79904859"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 20 Jun 2024 15:54:31 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sKQfk-00080g-15;
-	Thu, 20 Jun 2024 22:54:28 +0000
-Date: Fri, 21 Jun 2024 06:54:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: carlos.song@nxp.com, aisheng.dong@nxp.com, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sumit.semwal@linaro.org,
-	christian.koenig@amd.com
-Cc: oe-kbuild-all@lists.linux.dev, carlos.song@nxp.com, frank.li@nxp.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org
-Subject: Re: [Patch V3] i2c: imx-lpi2c: add eDMA mode support for LPI2C
-Message-ID: <202406210604.bil4fzu2-lkp@intel.com>
-References: <20240614045616.1751784-1-carlos.song@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HneLpggF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3A7C2BD10;
+	Fri, 21 Jun 2024 00:06:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718928375;
+	bh=VNSCHiO08SIk0htqWDW6NDFuvYyhidq/ovhyfUV5Kwg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=HneLpggF5aKAge/YLzIW5cLkwl1JRmjRPAHCL9AVCFqQnPr25XKP9Z/YFuOrHFRQM
+	 Z8WthZPFSd05AbkIJE7UTae1fx3IHUq3s75yr3U83zQfEU7QtJmzJG4jZ8kmRpLC7g
+	 GnaeNLH2rHkUxgRcg5o5IBMpWKQ/TttntERYGpR3LDYgcAM/3dsaPM6l7wBTgQGhA/
+	 neiEPwmWUsUSVCSmbh9khUQsFK/ciT5j9FvzPL9Bf9Mf7fJu9oYg+fsrARZuPkG5Mc
+	 9+IhU4KVKb2ttRGmnF0TsxJugRTTvceAmV7z+zF4iyxnLV1CDS4yio89WNd6nDyYyV
+	 k6sIw0QXHXRaA==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, 
+ linuxppc-dev@lists.ozlabs.org, 
+ Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>
+In-Reply-To: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
+References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
+Subject: Re: (subset) [PATCHv5 0/9] ASoC: fsl-asoc-card: add S/PDIF
+ controller
+Message-Id: <171892836830.273016.4379202325839599426.b4-ty@kernel.org>
+Date: Fri, 21 Jun 2024 01:06:08 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240614045616.1751784-1-carlos.song@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 
-Hi,
+On Thu, 20 Jun 2024 15:25:02 +0200, Elinor Montmasson wrote:
+> This is the v5 of the series of patches aiming to make the machine
+> driver `fsl-asoc-card` compatible with S/PDIF controllers on imx boards.
+> The main goal is to allow the use of S/PDIF controllers with ASRC
+> modules.
+> 
+> The `imx-spdif` machine driver already has specific support for S/PDIF
+> controllers but doesn't support using an ASRC with it. However, the
+> `fsl-asoc-card` machine driver has the necessary code to create a sound
+> card which can use an ASRC module.
+> It is then possible to extend the support for S/PDIF audio cards by
+> merging the `imx-spdif` driver into `fsl-asoc-card`.
+> 
+> [...]
 
-kernel test robot noticed the following build warnings:
+Applied to
 
-[auto build test WARNING on andi-shyti/i2c/i2c-host]
-[also build test WARNING on linus/master v6.10-rc4 next-20240620]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-url:    https://github.com/intel-lab-lkp/linux/commits/carlos-song-nxp-com/i2c-imx-lpi2c-add-eDMA-mode-support-for-LPI2C/20240614-125044
-base:   git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git i2c/i2c-host
-patch link:    https://lore.kernel.org/r/20240614045616.1751784-1-carlos.song%40nxp.com
-patch subject: [Patch V3] i2c: imx-lpi2c: add eDMA mode support for LPI2C
-config: loongarch-randconfig-r071-20240620 (https://download.01.org/0day-ci/archive/20240621/202406210604.bil4fzu2-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240621/202406210604.bil4fzu2-lkp@intel.com/reproduce)
+Thanks!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406210604.bil4fzu2-lkp@intel.com/
+[1/9] ASoC: fsl-asoc-card: set priv->pdev before using it
+      commit: 90f3feb24172185f1832636264943e8b5e289245
 
-All warnings (new ones prefixed by >>):
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->> drivers/i2c/busses/i2c-imx-lpi2c.o: warning: objtool: unexpected relocation symbol type in .rela.discard.reachable
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
