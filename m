@@ -1,179 +1,123 @@
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA1416EB6D
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 10:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C57016E892
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 10:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718964989; cv=none; b=Dk9r/iFeb6M584HiKBEOPy8P636x+B9FtWwtH0JxpbzIzWINAD9bsfb1awyties8waGZGa4AMDrz7FnjIn03dI+tHlBgOqW3AQVVBUQvc+D/qyGKIsJtmRPki6SnbTDzJL6kKybZ10GOeT2Yyyoph02L/V+Z7mPFonpgLU5be18=
+	t=1718965378; cv=none; b=On1HmaSOxnfOWJJ7v7sMI+z8voUJGekLK45JFZm00RIxio2Vy252W/nLIxJD7oDj33wYGQ/epmvi5bh84HMXTFK53o8nQFYxYpJzpC9lefUUOCAa1clA4nLrkzr994Qn5odMn7Pu/b6f3W4MbT7RQKKBM+YwCXukaF0LxIQihS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718964989; c=relaxed/simple;
-	bh=tvFkEouXFKKtc7kniYd3ifcNhvOpKScmMlR6pCekqn0=;
-	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=WmljYqYxDfZtKORhIs5eMtinJEVH/unOblUjth4EdhrSRSFKFR13auVprXDXUlkw2vICIc3DUdULIgDjLNohzY/EsBwdvfvokt8K24h7WHqXFClT1fXWdU8mSedpfcKxLDDsSXkMnBQa/ujxt0lJmAOHqh/6/SAVq+ItfSFLrt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4W5Cny0SG2z1SCyb;
-	Fri, 21 Jun 2024 18:12:06 +0800 (CST)
-Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id 851E618001C;
-	Fri, 21 Jun 2024 18:16:23 +0800 (CST)
-Received: from [10.67.121.177] (10.67.121.177) by
- kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Fri, 21 Jun 2024 18:16:22 +0800
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <imx@lists.linux.dev>,
-	<kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] perf: add missing MODULE_DESCRIPTION() macros
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Frank Li <Frank.li@nxp.com>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Yicong Yang <yangyicong@hisilicon.com>
-References: <20240620-md-drivers-perf-v2-1-1f88f8a08e48@quicinc.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <6d9e17f7-80e6-e616-d3b8-719de73875f3@huawei.com>
-Date: Fri, 21 Jun 2024 18:16:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	s=arc-20240116; t=1718965378; c=relaxed/simple;
+	bh=TSwRMDRga/1dOIySBpm82JhQM0xRqtYGsuG5K6KhxEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LEw/DrY2Zfj/fB2vZFJzVexNnZoCK9YAHO8tBTGtCRmndxfDtGu+w5Kg8Aa26VyglsYkYpPnTNir7Jr8+JjnomgFXkEFlJEvBvD1VNPDsuU9XqAvKvZTifjVCB0uMcuh+/zEFpk8RD6DYkFJGWf2dVvl/te0/ZQm6u5Ni7UwQVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ckoNQXlv; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ckoNQXlv"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-57d106e69a2so3032946a12.0
+        for <imx@lists.linux.dev>; Fri, 21 Jun 2024 03:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718965374; x=1719570174; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KRU/CLMPMIdyJLsUDddkWEnZJa3UQNsHKLmP0cyv9wU=;
+        b=ckoNQXlvcAphfSkt/MDq7zh6p0Bsq9KdQMBX2JEfNTRGpfB9RMEg2HqxlW8PYoq4W1
+         +hBF48W1DA+eJ/HpKz5+CjDS3vcwBozvKVI/rbhGPg7s2efRnWWz0G8eB7nIlTaauZcy
+         HZX930XyefHlVQ55T1+k+dc0xklvU83+H0NlVUjeUigEgojNA3IlhIJqZ9bnrHVUanvK
+         RN9AHlSLEQNQd/41VgfU8zt96+SBgPlXIVvhOeSsL3FTlQCo/WHtjjcjN5peGNFTDWZ0
+         gA+aZaw1jPlZAxVB243lco38FlGNeYVhFwyxscUqS2Wwwwvme6aMi0SjuPgW1xR4RAox
+         tBxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718965374; x=1719570174;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KRU/CLMPMIdyJLsUDddkWEnZJa3UQNsHKLmP0cyv9wU=;
+        b=c+Y4Z/VH2cN+rBw4cUK6hk1RtKVyPcZ5Pr0JTBhLOcJ6IW2NNx8CHv4w+oBVHOvjNR
+         MzPNtrT+0veI35WmOrA+My0p3D9hwhGwbTe5aHcnVXL2XV/udqOm+Mwipi2psstfl3E+
+         sGkbfzPnH6XfLfxvHmFOt6V9gKSvnuF12ZnJsw3Ue6RTw0EUW7dXQrtVUXRKDm8zguxd
+         HXvIDXjBgeA8P13TckWFHTWz9ZKmQPwZcqQrSk6hxlVClgJHq6R0xdsEAXJwJhrhFuHw
+         gh74mjupFLHHNpM3S3bpTP3uIyq9GF0ckrgqty+5fvlEoIeRbQjrSwgt9JE8/E6DzF4N
+         z/5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWtf1uzph2zEs4nx3XwfzaRkATNtXBkIcJNJspGjJ3ui6N6Genfnatl3TArRgywsMX9DIOYGvP802JNqYpl6pnmFeD2
+X-Gm-Message-State: AOJu0YxH8LhybN4X5P8Y94i8skmt6UYh/jwUaBDfd3B3YJo06h42iqyR
+	CPbbqxCwtKNg+lcRPISEnx9V7XapEifWLjjdkg0+bw1I0p/a0sBD
+X-Google-Smtp-Source: AGHT+IGwy3qhXOfp29GIKRxhqtXvx9J6dgCw1Tr9xWky4wRxbgPQtZwYLyM+DZSsRDqAp9hh6L6OqA==
+X-Received: by 2002:aa7:c603:0:b0:578:6360:aa11 with SMTP id 4fb4d7f45d1cf-57cf7a5732fmr8074633a12.5.1718965374192;
+        Fri, 21 Jun 2024 03:22:54 -0700 (PDT)
+Received: from skbuf ([188.25.55.166])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d30564be6sm723550a12.93.2024.06.21.03.22.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jun 2024 03:22:53 -0700 (PDT)
+Date: Fri, 21 Jun 2024 13:22:50 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v3 1/3] spi: fsl-dspi: use common proptery
+ 'spi-cs-setup(hold)-delay-ns'
+Message-ID: <20240621102250.oc2cck26tpoqsywz@skbuf>
+References: <20240620-ls_qspi-v3-0-1a2afcf417e4@nxp.com>
+ <20240620-ls_qspi-v3-1-1a2afcf417e4@nxp.com>
+ <AM6PR04MB5941CD3048D65DABD19256A488C92@AM6PR04MB5941.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20240620-md-drivers-perf-v2-1-1f88f8a08e48@quicinc.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemd200014.china.huawei.com (7.221.188.8)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM6PR04MB5941CD3048D65DABD19256A488C92@AM6PR04MB5941.eurprd04.prod.outlook.com>
 
-On 2024/6/21 9:46, Jeff Johnson wrote:
-> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm-ccn.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/fsl_imx8_ddr_perf.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/marvell_cn10k_ddr_pmu.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/arm_cspmu_module.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/nvidia_cspmu.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/ampere_cspmu.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/cxl_pmu.o
+On Fri, Jun 21, 2024 at 01:28:28AM +0000, Peng Fan wrote:
+> > +		cs_sck_delay = spi_delay_to_ns(&spi->cs_setup, NULL);
+> > +		if (!cs_sck_delay)
 > 
-> Add the missing invocation of the MODULE_DESCRIPTION() macro to all
-> files which have a MODULE_LICENSE().
-> 
-> This includes drivers/perf/hisilicon/hisi_uncore_pmu.c which, although
-> it did not produce a warning with the x86 allmodconfig configuration,
-> may cause this warning with arm64 configurations.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> ---
-> Changes in v2:
-> - Updated hisi_uncore_pmu.c description per Yicong Yang
-> - Link to v1: https://lore.kernel.org/r/20240611-md-drivers-perf-v1-1-c001bae6da5c@quicinc.com
-> ---
->  drivers/perf/arm-ccn.c                   | 1 +
->  drivers/perf/arm_cspmu/ampere_cspmu.c    | 1 +
->  drivers/perf/arm_cspmu/arm_cspmu.c       | 1 +
->  drivers/perf/arm_cspmu/nvidia_cspmu.c    | 1 +
->  drivers/perf/cxl_pmu.c                   | 1 +
->  drivers/perf/fsl_imx8_ddr_perf.c         | 1 +
->  drivers/perf/hisilicon/hisi_uncore_pmu.c | 1 +
->  drivers/perf/marvell_cn10k_ddr_pmu.c     | 1 +
->  8 files changed, 8 insertions(+)
-> 
-> diff --git a/drivers/perf/arm-ccn.c b/drivers/perf/arm-ccn.c
-> index 86ef31ac7503..65f4882531db 100644
-> --- a/drivers/perf/arm-ccn.c
-> +++ b/drivers/perf/arm-ccn.c
-> @@ -1561,4 +1561,5 @@ module_init(arm_ccn_init);
->  module_exit(arm_ccn_exit);
->  
->  MODULE_AUTHOR("Pawel Moll <pawel.moll@arm.com>");
-> +MODULE_DESCRIPTION("ARM CCN (Cache Coherent Network) driver support");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/perf/arm_cspmu/ampere_cspmu.c b/drivers/perf/arm_cspmu/ampere_cspmu.c
-> index f146a455e838..426b3cfcb52e 100644
-> --- a/drivers/perf/arm_cspmu/ampere_cspmu.c
-> +++ b/drivers/perf/arm_cspmu/ampere_cspmu.c
-> @@ -269,4 +269,5 @@ static void __exit ampere_cspmu_exit(void)
->  module_init(ampere_cspmu_init);
->  module_exit(ampere_cspmu_exit);
->  
-> +MODULE_DESCRIPTION("Ampere SoC PMU (Performance Monitor Unit) driver");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
-> index c318dc909767..c21c564840d6 100644
-> --- a/drivers/perf/arm_cspmu/arm_cspmu.c
-> +++ b/drivers/perf/arm_cspmu/arm_cspmu.c
-> @@ -1427,4 +1427,5 @@ EXPORT_SYMBOL_GPL(arm_cspmu_impl_unregister);
->  module_init(arm_cspmu_init);
->  module_exit(arm_cspmu_exit);
->  
-> +MODULE_DESCRIPTION("ARM CoreSight Architecture PMU driver");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/perf/arm_cspmu/nvidia_cspmu.c b/drivers/perf/arm_cspmu/nvidia_cspmu.c
-> index 5b84b701ad62..0dea47e48ac5 100644
-> --- a/drivers/perf/arm_cspmu/nvidia_cspmu.c
-> +++ b/drivers/perf/arm_cspmu/nvidia_cspmu.c
-> @@ -417,4 +417,5 @@ static void __exit nvidia_cspmu_exit(void)
->  module_init(nvidia_cspmu_init);
->  module_exit(nvidia_cspmu_exit);
->  
-> +MODULE_DESCRIPTION("NVIDIA Coresight Architecture PMU driver");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
-> index 1f93a66eff5b..8b6ce9ea5a55 100644
-> --- a/drivers/perf/cxl_pmu.c
-> +++ b/drivers/perf/cxl_pmu.c
-> @@ -972,6 +972,7 @@ static __exit void cxl_pmu_exit(void)
->  	cpuhp_remove_multi_state(cxl_pmu_cpuhp_state_num);
->  }
->  
-> +MODULE_DESCRIPTION("CXL Performance Monitoring Unit driver");
->  MODULE_LICENSE("GPL");
->  MODULE_IMPORT_NS(CXL);
->  module_init(cxl_pmu_init);
-> diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
-> index 1bbdb29743c4..a6683b38315c 100644
-> --- a/drivers/perf/fsl_imx8_ddr_perf.c
-> +++ b/drivers/perf/fsl_imx8_ddr_perf.c
-> @@ -850,4 +850,5 @@ static struct platform_driver imx_ddr_pmu_driver = {
->  };
->  
->  module_platform_driver(imx_ddr_pmu_driver);
-> +MODULE_DESCRIPTION("Freescale i.MX8 DDR PMU driver");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.c b/drivers/perf/hisilicon/hisi_uncore_pmu.c
-> index 6392cbedcd06..0ac5182a5e45 100644
-> --- a/drivers/perf/hisilicon/hisi_uncore_pmu.c
-> +++ b/drivers/perf/hisilicon/hisi_uncore_pmu.c
-> @@ -537,4 +537,5 @@ void hisi_pmu_init(struct hisi_pmu *hisi_pmu, struct module *module)
->  }
->  EXPORT_SYMBOL_GPL(hisi_pmu_init);
->  
-> +MODULE_DESCRIPTION("HiSilicon SoC uncore PMU driver framework");
+> `if (cs_sck_delay <= 0)` ?
 
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com> # for HiSilicon PMU
+spi_delay_to_ns() returns error only for SPI_DELAY_UNIT_SCK and for
+unknown units.
 
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/perf/marvell_cn10k_ddr_pmu.c b/drivers/perf/marvell_cn10k_ddr_pmu.c
-> index e2abca188dbe..94f1ebcd2a27 100644
-> --- a/drivers/perf/marvell_cn10k_ddr_pmu.c
-> +++ b/drivers/perf/marvell_cn10k_ddr_pmu.c
-> @@ -763,4 +763,5 @@ module_init(cn10k_ddr_pmu_init);
->  module_exit(cn10k_ddr_pmu_exit);
->  
->  MODULE_AUTHOR("Bharat Bhushan <bbhushan2@marvell.com>");
-> +MODULE_DESCRIPTION("Marvell CN10K DRAM Subsystem (DSS) Performance Monitor Driver");
->  MODULE_LICENSE("GPL v2");
-> 
-> ---
-> base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-> change-id: 20240611-md-drivers-perf-5d834208964d
-> 
-> .
-> 
+The first case never appears to be set by the core. Only spi-dw-core.c
+and spi-dw-dma.c set SPI_DELAY_UNIT_SCK.
+
+The latter case seems to be mostly avoidable defensive programming.
+spi_alloc_device() gives you zero-initialized memory, which means
+spi->cs_hold.unit is by default SPI_DELAY_UNIT_USECS (0) and so is
+spi->cs_setup.unit. Nothing seems to set the unit to an invalid value,
+so the default case appears dead code. If "u8 unit" from within
+struct spi_delay was an enum type, it would have likely been fine to
+even omit the default case altogether.
+
+There's also the curious case of integer type (signedness) mismatch
+between:
+- the u32 type of "delay" processed and returned by spi_delay_to_ns()
+- the int return type of spi_delay_to_ns()
+- the u32 type of the "cs_sck_delay" and "sck_cs_delay" variables used
+  by Frank to store the output from spi_delay_to_ns() inside the dspi
+  driver
+
+The interaction between these data types means that:
+- The "if (cs_sck_delay <= 0)" snippet you suggest will simply not work,
+  because the spi_delay_to_ns() function output is assigned to an
+  unsigned variable, which is never negative.
+- There is a theoretical possibility that a large u32 delay returned by
+  spi_delay_to_ns() is misinterpreted as an error by a caller which does
+  make an attempt to check for negative values. However, simply casting
+  the value back to unsigned as Frank does eliminates that possibility.
+  Given that ultimately, the setup and hold times come from u32 device
+  tree properties which aren't range-checked, it might just well happen
+  for someone who does check for < 0 to trip over this. It might be
+  worth somebody having a closer look at this situation.
+
+I don't think that your suggestion will produce better code.
