@@ -1,229 +1,113 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2509B171E4F
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 10:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E824176256
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 11:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718967571; cv=none; b=eCpY5ej1jRgr0/fKPyuQqA3ySNnr4fnBDOKUQZTuQWUriCZcDGAw45MXqI1mHJWGRrjrbgC75dXrmak44SwA5u3qnIKM8NQrtRoTLWvmobtHQMVt8raSP3zKy2/k48qknCicL1PGIjk1NcnSJXfU2SFnXunn7qw6mRalxHjNePs=
+	t=1718969167; cv=none; b=A+O2DHhOV6yWbGLQfMMo393yJZMabjTOghVBQ2c2hxWwlhzCWPz2GJq4Gj7sYIupw6lLEl8myKZvK/6bwXLwUkDOFx5FG1QOh/6iekI4qhIEjaXITJWzQFEr0SKMCZLbdjpjujqlF7X69t3+bfz2DP41wk8T5qxbNWxbkEYhfvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718967571; c=relaxed/simple;
-	bh=BL/ludkngyLoSQa2pwczoj2NPQmhYvrmLQnBYskP7Aw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TRn1KshnYAXCDJ4MJ/476C1BxVXGNONlONFY5yMwWMlaW+QW0mySlBUTrUw8NbFDztckDQv9tPbQAg5Vgy/gJMhjzCkHf9U14Al2bXFFQydgzYDjIrH3mro5NVMVdspUGgEFzPt9P067YgefMN4a7G0EOLX8hFcLfkRUN2E9ymI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sKbz8-00044c-Va; Fri, 21 Jun 2024 12:59:14 +0200
-Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sKbz8-003vGX-1Y; Fri, 21 Jun 2024 12:59:14 +0200
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sKbz7-0007n2-36;
-	Fri, 21 Jun 2024 12:59:13 +0200
-Message-ID: <27ea1bf7de6f349426fcd7ddb056a1adfae47c73.camel@pengutronix.de>
-Subject: Re: [PATCH v8 3/5] reset: imx8mp-audiomix: Add AudioMix Block
- Control reset driver
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, 
- peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org,
- robh@kernel.org,  krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org,  s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de,  linux-clk@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- shengjiu.wang@gmail.com
-Date: Fri, 21 Jun 2024 12:59:13 +0200
-In-Reply-To: <1718350923-21392-4-git-send-email-shengjiu.wang@nxp.com>
-References: <1718350923-21392-1-git-send-email-shengjiu.wang@nxp.com>
-	 <1718350923-21392-4-git-send-email-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1718969167; c=relaxed/simple;
+	bh=Q8DyGdBcYAgq64z9X9TWI+/sf0rsMrpXcgbn82Vmdc4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FHJfWWm1GJHqy368+l5/54ZtXPdUoKAxChIVRlp7YUvVgJhP+D/G3QbQy1eENayQ7kfPN6D/J8hIGAThHmBkqXzG6yZ1Q7qHwWmKid7KXr/nNtbDUNT2/vBnisPoXmUnlSyssmi548F8ezFx+2TAT3rQZ7a3g/mWEEawsnEnDh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FzX64Vdw; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FzX64Vdw"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso193239666b.0
+        for <imx@lists.linux.dev>; Fri, 21 Jun 2024 04:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718969163; x=1719573963; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i8sLZv1n+Ku2QMjcmS+4EdIPRc6Cam45MqmcajWwNAI=;
+        b=FzX64VdwwCMCbp9heimzzHT2e/usvZGgso56gCAbM4MOCIt47TqNjom5OUTpqjvqw6
+         DMKj/NR6zi9upA+tFzr5dSIh5WURfO/NvOUCZ/UGwDrjhObPETXn1fhJjb38z/0InV7A
+         3oNewqnRTUTnjQcDIKZSKssStgjOCcgZ0O37yaoMEDgtFgo0mSile41UnkH3W9leeTHV
+         kDepL+JBfE85YkLPi0kszgagVpf6AXJdt6MwjW3x8QPqvY8i1Qnq0Cjl/Ury7mopUYpw
+         dD8ppZwDa1F0hqNS8oQ0iCWgnjJqD3DXJ3cZdgKsKrHnW5fqRrK57b60B+MbTS8Ez0y+
+         l0tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718969163; x=1719573963;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i8sLZv1n+Ku2QMjcmS+4EdIPRc6Cam45MqmcajWwNAI=;
+        b=QvUXg6zMGgXw+IOGlvqbfgJtpgq62rXRPT/gcOT1onxWL/muVtXx47mR7Iqvu9n2uf
+         cHgshmmjr7lFjM0nsvCoF6Zv2VbinMH1wULrJfVCXl07L4ZfR0yxm2l02VjtPua5xHPo
+         CznczBlG+N18zVtwylS/fDULp3D6JIBqZ8rwDfd+iuM/P1+SbJ8wFQ+7NHtp7p0HLPYU
+         EbFGDTPtEA2nGj57nJ+bD9x8vvN7l9d5GNC+NXbPZL0JzreWqvYcN6LqAHF01Dbj0OBC
+         mmdCssm3jzG2tewbqHbeuvChBpxGdF5Dn6KdTvHgxZGmQsms3anYOrcHI48twMxxmKpZ
+         T+nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxtrZYYXOOBP3cgpimTn6I+BH2C+M403C5ats8M8yVcjgWrsMGPSSt0/zuyc7N2rlnuFfrxbGpD37clZnKLUyGRK9F
+X-Gm-Message-State: AOJu0YzptmhLG+G25kJdHQjj9fV7I2Bj8G3TJ4TOb+Zr3pRegGaBFnjP
+	W/7uEsN1sRcjD3GbCLU8Q31+jHFo/Cd0W25ZZFxU/QZU4JPG7oCtbZh4OWJj
+X-Google-Smtp-Source: AGHT+IEyjIILM29yLfV/vXCYggcQVFh0n6Mx/M2e70SYGzH2rtFIwFqH2zYjTAuliqRLT+DG1jMAKA==
+X-Received: by 2002:a17:906:d283:b0:a6f:6701:cd5a with SMTP id a640c23a62f3a-a6fab643427mr420372166b.44.1718969162970;
+        Fri, 21 Jun 2024 04:26:02 -0700 (PDT)
+Received: from skbuf ([188.25.55.166])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf48b17esm73795266b.88.2024.06.21.04.26.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jun 2024 04:26:02 -0700 (PDT)
+Date: Fri, 21 Jun 2024 14:26:00 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/3] spi: fsl-dspi: use common proptery
+ 'spi-cs-setup(hold)-delay-ns'
+Message-ID: <20240621112600.sshdjicucwtigq64@skbuf>
+References: <20240620-ls_qspi-v3-0-1a2afcf417e4@nxp.com>
+ <20240620-ls_qspi-v3-1-1a2afcf417e4@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240620-ls_qspi-v3-1-1a2afcf417e4@nxp.com>
 
-Hi,
+Typo in title: property
 
-On Fr, 2024-06-14 at 15:42 +0800, Shengjiu Wang wrote:
-> Add support for the resets on i.MX8MP Audio Block Control module,
-> which includes the EARC PHY software reset and EARC controller
-> software reset. The reset controller is created using the auxiliary
-> device framework and set up in the clock driver.
->=20
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+On Thu, Jun 20, 2024 at 12:58:27PM -0400, Frank Li wrote:
+> Use SPI common DT binding properties 'spi-cs-setup-delay-ns' and
+> 'spi-cs-hold-delay-ns'. If these properties do not exist, fall back to
+> legacy 'fsl,spi-cs-sck-delay' and 'fsl,spi-sck-cs-delay'.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/reset/Kconfig                 |   8 ++
->  drivers/reset/Makefile                |   1 +
->  drivers/reset/reset-imx8mp-audiomix.c | 106 ++++++++++++++++++++++++++
->  3 files changed, 115 insertions(+)
->  create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
->=20
-> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> index 7112f5932609..b3c0e528d08c 100644
-> --- a/drivers/reset/Kconfig
-> +++ b/drivers/reset/Kconfig
-> @@ -91,6 +91,14 @@ config RESET_IMX7
->  	help
->  	  This enables the reset controller driver for i.MX7 SoCs.
-> =20
-> +config RESET_IMX8MP_AUDIOMIX
-> +	tristate "i.MX8MP AudioMix Reset Driver"
-> +	depends on CLK_IMX8MP
+>  drivers/spi/spi-fsl-dspi.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index 0a2730cd07c6a..7c1f8af9d215e 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -1018,11 +1018,15 @@ static int dspi_setup(struct spi_device *spi)
+>  	pdata = dev_get_platdata(&dspi->pdev->dev);
+>  
+>  	if (!pdata) {
+> -		of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
+> -				     &cs_sck_delay);
+> -
+> -		of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
+> -				     &sck_cs_delay);
+> +		cs_sck_delay = spi_delay_to_ns(&spi->cs_setup, NULL);
+> +		if (!cs_sck_delay)
+> +			of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
+> +					     &cs_sck_delay);
+> +
+> +		sck_cs_delay = spi_delay_to_ns(&spi->cs_hold, NULL);
+> +		if (!sck_cs_delay)
+> +			of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
+> +					     &sck_cs_delay);
 
-I'd like this to be made compile-testable without CLK_IMX8MP being
-enabled.
-
-> +	select AUXILIARY_BUS
-> +	default CLK_IMX8MP
-> +	help
-> +	  This enables the reset controller driver for i.MX8MP AudioMix
-> +
->  config RESET_INTEL_GW
->  	bool "Intel Reset Controller Driver"
->  	depends on X86 || COMPILE_TEST
-> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> index fd8b49fa46fc..a6796e83900b 100644
-> --- a/drivers/reset/Makefile
-> +++ b/drivers/reset/Makefile
-> @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) +=3D reset-brcmstb-r=
-escal.o
->  obj-$(CONFIG_RESET_GPIO) +=3D reset-gpio.o
->  obj-$(CONFIG_RESET_HSDK) +=3D reset-hsdk.o
->  obj-$(CONFIG_RESET_IMX7) +=3D reset-imx7.o
-> +obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) +=3D reset-imx8mp-audiomix.o
->  obj-$(CONFIG_RESET_INTEL_GW) +=3D reset-intel-gw.o
->  obj-$(CONFIG_RESET_K210) +=3D reset-k210.o
->  obj-$(CONFIG_RESET_LANTIQ) +=3D reset-lantiq.o
-> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-=
-imx8mp-audiomix.c
-> new file mode 100644
-> index 000000000000..1fc984bc08c0
-> --- /dev/null
-> +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> @@ -0,0 +1,106 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <linux/auxiliary_bus.h>
-> +#include <linux/device.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-
-Still needed?
-
-> +#include <linux/reset-controller.h>
-> +
-> +#define EARC			0x200
-> +#define EARC_RESET_MASK		0x3
-> +
-> +struct imx8mp_audiomix_reset {
-> +	struct reset_controller_dev rcdev;
-> +	void __iomem *base;
-> +};
-> +
-> +static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct res=
-et_controller_dev *rcdev)
-> +{
-> +	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
-> +}
-> +
-> +static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcd=
-ev,
-> +					unsigned long id)
-> +{
-> +	struct imx8mp_audiomix_reset *priv =3D to_imx8mp_audiomix_reset(rcdev);
-> +	void __iomem *reg_addr =3D priv->base;
-> +	unsigned int mask, reg;
-> +
-> +	if (id >=3D fls(EARC_RESET_MASK))
-> +		return -EINVAL;
-
-This check is not required.
-
-Since you have nr_resets set to fls(EARC_RESET_MASK), the same is
-already checked in of_reset_simple_xlate, before a reset control is
-even returned.
-
-> +	mask =3D BIT(id);
-> +	reg =3D readl(reg_addr + EARC);
-> +	writel(reg & ~mask, reg_addr + EARC);
-
-There are multiple (well, two) resets in this register, so it would be
-good style to protect the read-modify-write cycle with a spinlock.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *r=
-cdev,
-> +					  unsigned long id)
-> +{
-> +	struct imx8mp_audiomix_reset *priv =3D to_imx8mp_audiomix_reset(rcdev);
-> +	void __iomem *reg_addr =3D priv->base;
-> +	unsigned int mask, reg;
-> +
-> +	if (id >=3D fls(EARC_RESET_MASK))
-> +		return -EINVAL;
-> +
-> +	mask =3D BIT(id);
-> +	reg =3D readl(reg_addr + EARC);
-> +	writel(reg | mask, reg_addr + EARC);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct reset_control_ops imx8mp_audiomix_reset_ops =3D {
-> +	.assert   =3D imx8mp_audiomix_reset_assert,
-> +	.deassert =3D imx8mp_audiomix_reset_deassert,
-> +};
-> +
-> +static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
-> +				       const struct auxiliary_device_id *id)
-> +{
-> +	struct imx8mp_audiomix_reset *priv;
-> +	struct device *dev =3D &adev->dev;
-> +
-> +	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->rcdev.owner     =3D THIS_MODULE;
-> +	priv->rcdev.nr_resets =3D fls(EARC_RESET_MASK);
-> +	priv->rcdev.ops       =3D &imx8mp_audiomix_reset_ops;
-> +	priv->rcdev.of_node   =3D dev->parent->of_node;
-> +	priv->rcdev.dev	      =3D dev;
-> +	priv->rcdev.of_reset_n_cells =3D 1;
-> +	priv->base            =3D of_iomap(dev->parent->of_node, 0);
-
-This is missing the corresponding iounmap().
-
-I wonder why we map at all. If the parent driver already has iomem
-mapped, can't it just pass that in, like JH7110 does?
-
-
-regards
-Philipp
+Keep the 80 character line limit please.
