@@ -1,76 +1,72 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1C813C802
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 06:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C218E13C802
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 06:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718951118; cv=none; b=sR2Xcx/DPhcLtCVKoeO6hiKlyydV4foI/1zVSySQBnWu6xw8i1qbeOLOeqMxBlI+64GuHa+zwWwaSTP8VN8JON6AMtBkYKtQg21dCZ6AzLxIvKkDxI+heKDOFjUkgo+lzgRogHBUvYhdetAfd2rz8IHLsZesWLePxZZxUXx7iN8=
+	t=1718951217; cv=none; b=jqw273Lj0JwfkvKQ0it++YJrUsI0HstGKUCQrM2HcAEFEf1vjQWf0cDu3wBb6MTt9RDxKFq1RV0Mk3sram52kZbuCCnMHlXqhxBZGP8tMD/rHXWPgO40LpTJfjrmEqP+2bkRT0zFjw2M/9ah5mqgLcB+TKT4A+iR+NfsXQ8KVvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718951118; c=relaxed/simple;
-	bh=vluQpXFRuEsX4CzotufWS3BiU3gXU3CkyNzrm5f7P00=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=quVLRxxuqTnN06hkAz8u8Uvt4hrRMLhlDZc7itJIU0eByvInIGNjekUsdYcMQGnJG4Ax0z8Nri6/6iDs6cCnyd4I6J7N+Lo9e+RtIQ7JcQTq/rTyVKH9kiM9msPq1kF9AcNHhLOR8r/i4d7NBIr6mDTJmjHiWKtWR3w6DzhhoEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mWtKsrjn; arc=none smtp.client-ip=209.85.167.47
+	s=arc-20240116; t=1718951217; c=relaxed/simple;
+	bh=zFv4mioop9B0X7lvQYF/BT8imt8BNhs7fZ6tP2Yv38M=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=CjUgPaNNG4aSSrSGbK5M1nYCObiUXtCv7DRPDsZEdalhOJARutZ4yojV/w4NaPXoqjzgnoLRoVjlQGg3pfPiqLP5N+2sZ+TxOCVQyOi04NeT1ft1MKiFqWmo60Xx+Loyr2TWl1BJj7UgQXmTXY1Z5xr4BJvsS9Mnc5S5bETmMCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lch/XdrD; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mWtKsrjn"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52ccc40e72eso1277303e87.3
-        for <imx@lists.linux.dev>; Thu, 20 Jun 2024 23:25:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lch/XdrD"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4217d451f69so15250495e9.0
+        for <imx@lists.linux.dev>; Thu, 20 Jun 2024 23:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718951115; x=1719555915; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=StWMYOsCh6FPtaum53yX6NippyLiUpGWAFV7rmRXSlk=;
-        b=mWtKsrjn8B5JiTbji16TrSqr0nl27R23rzMzbSCvubD3amMkj2hKb4LoNM70BPCvak
-         E0ZO5ZoKxTAt+KSQ9bk6ztlP/uuA+y/PUd/Xu4aFCHUnba5UGkZZOa/vPpizXzCCQu29
-         AAVn+HjR+GKATluk2KFLHphuAuo/WK6ZK7RRhj3OQO6nOqemozHAC5zVPnJigxqUqA5+
-         A1rvoOjPwBhAjmokvGhtjbOynGgPhsXGcNmZUrS82XgIIKbtzjHqL4xxJphk4JddJmKe
-         mwddKL8m8jcd1pN1IfVyrVeK6X0H8tIzkUhGatvJp0VneVqQdhWlsdZRaFebe/IjdHvD
-         sc9A==
+        d=linaro.org; s=google; t=1718951214; x=1719556014; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7nWgs+bjEPUf8IVnahxV/5glWCv+VYIvB+XUT3ZBU88=;
+        b=lch/XdrD7/2zk5Oubu9GQNJUJUJxgNXjzuSGG6QUkCTkEfOfvy8WXqeLiIYkO94zVc
+         u0A+MEbtDX0txhi+pgiyTaSVyYdVTkZBkHZNkbnuoKaAWL62DJ/uUrIEZLxgue4ElDJ6
+         AHFtD2iZlZf0B1FgdI5jqgAXQFVfC2hnUlqTeBGaIJc35/pxM0Erw7nRBZlNZmDoltSM
+         ypDMGA9s/nvC94qNcw9VaS9bXzJovLfeVmlRcLJ/ScUcHTqXrxRK19N1PvorJsdqNM8C
+         ZGvmX1g/YbS7hIXf5Bvn66s9o6VJ8n0tGN2Qcl2V3SltfVDkouDbdyjwJE3RIlxtNFYB
+         UASw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718951115; x=1719555915;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1718951214; x=1719556014;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=StWMYOsCh6FPtaum53yX6NippyLiUpGWAFV7rmRXSlk=;
-        b=kDH6A/UYs75SMZK/mwPRVoGfmcRqdl+CHtOuPzOk6VYYPUMjTtW5HOTk+GDs7kw1mE
-         bYSnmcP+tWVMch37tuCCRJ0Mgo9hxYAWiDQc12aKvo6Siznx4FxRJDtO/Ljq3lglFrzE
-         nV76vs4bgCSXoKnwl0FziyVg2vfkXJAW4Ds7NwMuxIKua4gZL1tyiaNyXzJ8YFXW5qZA
-         ru6nbWCYH6yCFoe9uQAkVjJwXee37libRgP9jFqf8CNGjRKq7BwdW2y2lP6DCaUkC4xD
-         szTiAX8JO53j7D2PDIvEeDoG4RcVdg7jDDAXCqnaqWvBQcgnhGOJg4OvJXyU4/5E50tk
-         pH6g==
-X-Gm-Message-State: AOJu0YwpAa6KCOopdsO1s6/HVkwLqwkJ1rEM2P/g3ywwRU8Bd4yS+n8l
-	0gD46s+zI3r0ksKWzVB/qve1DdS/zF7X5NViRrruMqHWGfGcjkbQKGQD4fznqAI=
-X-Google-Smtp-Source: AGHT+IGOvQBVeOVRfT9OeleaCwxcfWuwyKp0KoQmrSi1Y8cbFK0mqlmwonfKGGA/D0j7pSuym3kIpA==
-X-Received: by 2002:a05:6512:3988:b0:52c:cb8d:6374 with SMTP id 2adb3069b0e04-52ccb8d6456mr6536347e87.11.1718951115118;
-        Thu, 20 Jun 2024 23:25:15 -0700 (PDT)
-Received: from hackbox.lan ([82.79.124.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424817a8ed3sm14463675e9.13.2024.06.20.23.25.13
+        bh=7nWgs+bjEPUf8IVnahxV/5glWCv+VYIvB+XUT3ZBU88=;
+        b=heQi+LmLNLDzdOegKGn/iHKTdjzkoK4cKw1mk7gZm28ArXwB8iZdlFpoDeZr3CUrSy
+         S2lCWAEa0KwYDgMGfQ1MAbyDuHtlQkL1bdTOx4p2rXP9g4N7lDsVTVTvZGNScqgsnZrh
+         SpgOMs2abrbuspzqJfw4sc4JlHMmpfK2SNJ1e3m00jLsR0Te+8lq5Y3BdU+INCHJv49Y
+         4Hv01csgtHaXpE3UK9/o3mfXyUGJaa1zuLkWCMUAUWkcPqRT4lJ/iiPXtmzva2zKwkw+
+         xWpf1YDMB96GRbq6CAeCJ9LH+6MQWEs9ymi9UL3zhSRzjnPEFFnWTTO/jJU1XPldYuxi
+         UFhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBgCNfTtLKmUElk9gPE9ZyZ82wFukCW5B6aiwWw4CO60M7AWPnC9ZiMYpPFVoGBIkfVvnN7OerBFoQiZZwOx95IXdD
+X-Gm-Message-State: AOJu0YzSVSKhEVqlOF0V2ler8LatfA93FNne610+rqePhh4nRQXSmYn2
+	m044ItCqsJx+ToC0TkFBuZi/74E9lNE/NASKkl4VXsYuLZpFsk8W+J1/Ty6II0s=
+X-Google-Smtp-Source: AGHT+IFonmbENerID4dVvrf+FLqhGaAMP/UU/IXAT+9b7VYljrDzoGq76BubZlxlU8cuj0D0Dtz4Tw==
+X-Received: by 2002:a05:600c:6552:b0:424:6d96:48ae with SMTP id 5b1f17b1804b1-4247517f18fmr58473725e9.23.1718951214007;
+        Thu, 20 Jun 2024 23:26:54 -0700 (PDT)
+Received: from [127.0.1.1] ([82.79.124.209])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42481910d5csm14424065e9.36.2024.06.20.23.26.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 23:25:14 -0700 (PDT)
+        Thu, 20 Jun 2024 23:26:53 -0700 (PDT)
 From: Abel Vesa <abel.vesa@linaro.org>
-To: abelvesa@kernel.org,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: imx@lists.linux.dev,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH V3 00/15] clk: imx: misc update/fix
-Date: Fri, 21 Jun 2024 09:24:59 +0300
-Message-Id: <171895105697.3608188.110944709510140108.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240607133347.3291040-1-peng.fan@oss.nxp.com>
-References: <20240607133347.3291040-1-peng.fan@oss.nxp.com>
+To: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com, 
+ mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+ marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1718350923-21392-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1718350923-21392-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v8 0/5] clk: imx: clk-audiomix: Improvement for
+ audiomix
+Message-Id: <171895121238.3616871.12573343188535489268.b4-ty@linaro.org>
+Date: Fri, 21 Jun 2024 09:26:52 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,54 +74,34 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
 
-On Fri, 07 Jun 2024 21:33:32 +0800, Peng Fan (OSS) wrote:
-> Changes in v3:
-> - Drop two patches
->       clk: imx: pll14xx: Add constraint for fvco frequency
->       clk: imx: pll14xx: use rate_table for audio plls
-> - Update 8ULP PCC check to not return Error
-> - Update commit log and Add R-b for
->   "clk: imx: imx8mp: fix clock tree update of TF-A managed clocks"
-> - Link to v2: https://lore.kernel.org/all/20240510-imx-clk-v2-0-c998f315d29c@nxp.com/
+On Fri, 14 Jun 2024 15:41:58 +0800, Shengjiu Wang wrote:
+> Some improvement for audiomix driver:
+> Add CLK_SET_RATE_PARENT flags for clocks
+> Correct parent clock for earc_phy and audpll clocks.
+> Add reset controller for EARC function, use the auxiliary device
+> framework:
+> https://lore.kernel.org/lkml/b86c83a520f0c45a60249468fa92b1de.sboyd@kernel.org/
 > 
 > [...]
 
 Applied, thanks!
 
-[01/15] clk: imx: composite-8m: Enable gate clk with mcore_booted
-        commit: b4c91df8118b5d4efdc9732206de81ac620f53d2
-[02/15] clk: imx: composite-93: keep root clock on when mcore enabled
-        commit: 90d91ce8e20e0df9806ce7f7c49f8ef05471b5ce
-[03/15] clk: imx: composite-7ulp: Check the PCC present bit
-        commit: afd1247ce838b4a06fb0c24e522687475583035d
-[04/15] clk: imx: fracn-gppll: fix fractional part of PLL getting lost
-        commit: af218f2d935e118582d43cbd89c81ef6f26be286
-[05/15] clk: imx: imx8mp-audiomix: remove sdma root clock
-        (no commit info)
-[06/15] clk: imx: imx8mp: fix clock tree update of TF-A managed clocks
-        commit: 6bc3d1e264ad5bace5d1980997abcc7ad5308181
-[07/15] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
-        commit: 68a3e49a2a5e75a2e1511ff75ca24b584a0f12f4
-[08/15] clk: imx: add CLK_SET_RATE_PARENT for lcdif_pixel_src for i.MX7D
-        commit: e2d956067b0b3c9a9ba5acde655bf6fc708c3ab0
-[09/15] clk: imx: imx8mn: add sai7_ipg_clk clock settings
-        commit: 40cfc8c2fccf5440fb192aa80a84bff9f3288b2c
-[10/15] clk: imx: imx8mm: Change the 'nand_usdhc_bus' clock to non-critical one
-        commit: c7f85fc3dc2facacc1851db992d485a89acde8ee
-[11/15] clk: imx: imx8qxp: Add LVDS bypass clocks
-        commit: ecee2c870be1776c483b3d1a40e3998c7cb7eb1b
-[12/15] clk: imx: imx8qxp: Add clock muxes for MIPI and PHY ref clocks
-        commit: 385e7c90bdb571677c4d16d97e8809427dc4d8d7
-[13/15] clk: imx: imx8qxp: Register dc0_bypass0_clk before disp clk
-        commit: 9cf2310e4845006f72c959d38bd1300863432194
-[14/15] clk: imx: imx8qxp: Parent should be initialized earlier than the clock
-        commit: c69e0dba43e63862ec95cbd91a2daa28e3e87a9e
-[15/15] clk: imx: fracn-gppll: update rate table
-        commit: 747cf5fbfc4326ab2ad9cc73cde8eb7776f3ba53
+[1/5] dt-bindings: clock: imx8mp: Add #reset-cells property
+      commit: d7d9ef1f40dc0639ba0901097139fcdc4bedb32e
+[2/5] clk: imx: clk-audiomix: Add reset controller
+      commit: 6f0e817175c5b2e453f7ad6a4e9a8a7fd904ee4a
+[3/5] reset: imx8mp-audiomix: Add AudioMix Block Control reset driver
+      commit: b7604e8b805a6e52161ff98728122005e6975a46
+[4/5] clk: imx: clk-audiomix: Add CLK_SET_RATE_PARENT flags for clocks
+      commit: 163e678c0b24d0e45f617f4496c4ae9b1afd8d63
+[5/5] clk: imx: clk-audiomix: Correct parent clock for earc_phy and audpll
+      commit: 22fb849ead1b109f868e83b309223d906e4b7d96
 
 Best regards,
 -- 
 Abel Vesa <abel.vesa@linaro.org>
+
