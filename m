@@ -1,170 +1,118 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2083.outbound.protection.outlook.com [40.107.22.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2F41667FA
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 17:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718989219; cv=fail; b=H1Chf6l3DYXR4dI0BFIZSKf4LmRGWE88MmnjnEb++7g7zijekn6yPKr4zIfEN8iV+6DA3u+G+/eaLzO+fKRaXthSS6tLOBgs4u+n5TCL1nh4WuecOBGrWnNYGaU+8Rs04QDlJeHDvbwFe7uClLRsbsRma7lpdBGtJpFVdyw04fs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718989219; c=relaxed/simple;
-	bh=4oEJ6r4170VGZ311I7STtncPj4JRKLaCpJpC9zyU7JY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Yem+kiNXERTUuTKH3/Ygin1Zs2bq7loJoCA4nZzyJvtc5rGjw0EW1WHHsbPSeYOVnhEIV5lYQGyqZYp8bCJMoXANM0Rl4gZbPdlUsIwuM+z5ZtuIz778M6kU5PU2uATOCJNlhnlVqH3plAfon5jAhAdGMz79R21hLbCTfuW0fS4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=NXJiy4cA; arc=fail smtp.client-ip=40.107.22.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C7D129A7B
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 17:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718990681; cv=none; b=QEFRS4mrQjIsG3wmOvUwx2ejU+JTSdF4TIdHkhIx1VQ05N7d6nThEkUW7igSBf1KRkhQ3DokfF9KZp+p8A/EDPF2sJ8ybGvwfzvekP6wQhuzKvkgT2uLxGNMU5s35WVdZaptoF4dVx+SdQPx7ZOiioJYK5EhYhjRUkXcNjQrcNg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718990681; c=relaxed/simple;
+	bh=BM3bDxKDGPmpPEKXjkEVhF9bTkX6yqKKTMfom9A1jjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=piaEmo2ctYL2HBV7izcIPMIy3Tok00LI+QLpBTPRk9yMMUyoVpOkh7fT4/9SN1BaEY5AfkyBHCWakU378Im3lztz1nizT3cApRd7YF2ZhfZntzWUDQqjJ9pZKn97ShnPT3BxVYkOVJDhmwYrqyacqzBGd/5q3zeAnOT3YPjDwlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=vshZ12n4; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="NXJiy4cA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D6EkqR2n7X9URWqh3k78spuPSAicN3xNtT74gDPJ54om6BoO2V19Hn4OdZyJ5duR4IbHu0aqu6i/1/9Dz725576Pss5hjVkcv3XHuQp5XxwqzUuoc6PG8B5ZAK5kFxRDeqVbbtUFOkleMQO45Gdy3U6EY3cH6pQa4HM9lWIMW2w0W+zWt4aKNsqXW5z1BcxwOjGBaIptapRvrj94EAZHOI3PGRdGgD5kS3Qqt+f5seIcrjePYQlbAFUp+nV+pNgXQNh2B5mNo/F4CJ04nW29bUfJW6GCjy8ClONzVevWt0RaW6oHavZ/8rJiL0s+6BqmMXWtBko1VkFbXUNSw3Yfqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GscmWzlfmPKFmVgzNHRyYP1VXn5H0FHzNccifnu3E7Q=;
- b=lXSgSfswhr+opSVhAlbjHRUP+rruRot3pQntJr+rtT4CcoKONAWS5Lf53Z/xGH6DBqKgE2kh2Wcf4phkwSf/f4Ei4a9V2h0lmEbQ4HluYH3y3n14dsguzVc+9elWOGxroWZc1arJokXXLADD6XNXZ0cYa08GluuOUqrMyjbxSqqSYSLj3U42EvH6PxbRliFAKOI4sDm+Q8MhU0q9kSI+6BQQ7Z/EzGtDN+1it0OQipenPyrM7w3jAAVI+hX2FdKmT9Bp0AqjM+CEtlTEpkWebsMbxFguLo327srh/PSn0G7SgCKerbH51KFkU1xZWkAe2HwouhmGuHnB0otUmwl7Ng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GscmWzlfmPKFmVgzNHRyYP1VXn5H0FHzNccifnu3E7Q=;
- b=NXJiy4cAvjm2QYx38uI1V39V0Me98+kCL3oN1rTUpf+1B+ESnsbAeU0HXGN4nLFHpV9w43oRb71gEXP/b4APdYC/dgLMjfK587Fy8Bbbivx6tclt+LepOAAxbApgV3rhwwlaZTuHze89mWUFZAHLQpmsn3g3vW49K4o8HusmXVA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7847.eurprd04.prod.outlook.com (2603:10a6:20b:2ad::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.22; Fri, 21 Jun
- 2024 17:00:14 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.020; Fri, 21 Jun 2024
- 17:00:14 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: net: fman: remove ptp-timer from required list
-Date: Fri, 21 Jun 2024 13:00:00 -0400
-Message-Id: <20240621170000.2289596-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0071.namprd05.prod.outlook.com
- (2603:10b6:a03:332::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="vshZ12n4"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 21E5B207FD;
+	Fri, 21 Jun 2024 19:24:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1718990667;
+	bh=Fl+iPeAvxTiHF6A13dl6jLHuoX82uG52hv+zvo4/1eA=; h=From:To:Subject;
+	b=vshZ12n4/Ge4zRe7wHkrs8ulu3+HCMZnhuejxfioEELy3kOaKYhVd1E3OO1cuKVy/
+	 +7EULopnvXbzKf7DLJT6ZHjxGYZlnXhYrZDNtJNsuC6z/G8mXoyUe4IcVSjIIuKEBl
+	 Y3BgQtqc9VKaOjPxTLUq14HBlTkIT62iadTgxJ5cQE2j5VGmAxnXifsWbF4fFjbk4a
+	 NLDuvaeVbNLHO2Pvjui8xu/2Uu4XzX6ovmVlXo3Usep0YdOGSc+yJfdT4iCLsvzZO7
+	 M5MAHdZKK5yHyrN1hj0xgWrzGH+L+ixSAXWxY8go1SEJ7D3qXcZ4cSOWl23V+PSEiC
+	 pQj+sI2coAChg==
+Date: Fri, 21 Jun 2024 19:24:21 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
+	andriy.shevchenko@linux.intel.com, marcelo.schmitt@analog.com,
+	gnstark@salutedevices.com, francesco.dolcini@toradex.com,
+	wsa+renesas@sang-engineering.com, andrew@lunn.ch,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
+ not busy
+Message-ID: <20240621172421.GA11258@francesco-nb>
+References: <20240531142437.74831-1-eichest@gmail.com>
+ <ZnWaxtfgmLk3SplP@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7847:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8404b5e1-cb61-4d5b-02dd-08dc92139e8d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|366013|376011|7416011|52116011|1800799021|38350700011|921017;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gkPBQHyaLOd8PMXP/qtB0Mox9/8mfqp9rca3IWMFrYIDzIZq1vxQhJFpZBkW?=
- =?us-ascii?Q?9saN2UjHDogC0lwMptlbjKDNqU7sfSnYuNT0u6ClUgXinpeB6QkaAZdieGnN?=
- =?us-ascii?Q?SIT/Wc4s2PL2zIigV7Pe1TJ0mfP3veJ3Zsl257LAys4iSQuXkzAVPUl/NNXg?=
- =?us-ascii?Q?iWzCMbdjGEQahEOt9i7hn2O+H0yUR63o54+AdD4gZfThOaE5918wVgbjU2dp?=
- =?us-ascii?Q?lZWIY+0AHCk8Hhyhx6TAZrcOaMgDkDiw2vUjXlGYgC1K1mr1M21iit1z+C/P?=
- =?us-ascii?Q?1MuTFHh6d2/rV3UEL+7hWxY50w68812LhSHO2MRrwUK9J/g4291srJa4d6Yq?=
- =?us-ascii?Q?+EqUcFQa7KqdnLA91fIbyK1oqw6+GVN8nmiPdsEf5KFtmhMQ88yjXkAMCmWt?=
- =?us-ascii?Q?BqdmuCovQNSPKQHZzjefj7yrFGTnPurRtTGa/Rtf2Abh/PazqDqTFyzEJ+9/?=
- =?us-ascii?Q?WdCyD334jz3IC5Nyz5PJApOP00O7OjPy61Yqy42dCEo8kzyCRR1gv57VeNFn?=
- =?us-ascii?Q?72yen8YQf1HWFEPLhtUeE/BhFogJcCkNzel2XAdhYhSDm1Vqj1OmE2plUzLd?=
- =?us-ascii?Q?9UUA+abLHRNGGKDnR2nyN0DJxZAE7dL4xZj8xKIi2wJ10rZgAS+ivGWw0ygh?=
- =?us-ascii?Q?XNOQ+hcQBuP80tZihp1P3rpqvTlIc8u5oE9hmTrlAfyJT+G+k7hSHEs4kiJF?=
- =?us-ascii?Q?aQr2kan6aWY94PL+uBZ3OSK4aRTNO6b+Kg4Syf9JwBOqVu86kymKog09LbGk?=
- =?us-ascii?Q?Sg1ZHIja+ykJp+4ticKC3JtrmFB7FQ1E28IgCtGr/PF4gsiAi0xViOIBXUWT?=
- =?us-ascii?Q?ydY37abhIlCFtomsH90ilrkPcnpRRuOHCUka2n2cw6zHOYOv01Misq4nnU4f?=
- =?us-ascii?Q?FrwwS83l7NHQHMqdVc8UNj5fR+ACVg3tv02tbRvkFkaoWLw+kQ5aYcbPSquy?=
- =?us-ascii?Q?tcsc4b1hoDz3bw4DAQJ1LmoU5dATSHfFc4OethstaoNy+eHyu/A9Px4+96HN?=
- =?us-ascii?Q?0fx8e3IycM3+0l0Ap5VTEYCAOodWvKgmLpq+NfNNcjtcSRjuKSDnL9JZGeDW?=
- =?us-ascii?Q?A61vaBQUfRQVP2pPqTT9/b3Yi4AfigpYriaRvQ9Q97DDCCaLK9ci9oILwqlG?=
- =?us-ascii?Q?DKnkAaLEEbzQo2XU9QWURKA+6xNm1G+Qyuy90hF7kp5zc8G4dqMIDwXTgJ6b?=
- =?us-ascii?Q?SJZrnjZdaCLLf+eNJqfNlhL6FeturU4SnhRnWLFndp61jX1uvd62qkYgqwZt?=
- =?us-ascii?Q?nvL5/Wb2BuvtrtyjNx7blCJ2nwnSi65O0fPcf/a6n7e9w02PO2OIYTxiJvo2?=
- =?us-ascii?Q?6trauqj8Bwo/AfnON3kLsVcaZu5QLumpCUZgIzR8bYtkRI71ZRXgGiwDKJxX?=
- =?us-ascii?Q?tMmSbriygoTtd89Tsgm1VRhV+uep?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(376011)(7416011)(52116011)(1800799021)(38350700011)(921017);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GtsYa/hjqTnTF/4/m1OluFHzZ7jL3YWlQkPu80uYOXMNnWR71HShmPn4yhHn?=
- =?us-ascii?Q?WiDbAdtpyL7KS79twvR24k9X2+xW/wMCTlTH4caPiJV+owGZ55h2IlOeki/W?=
- =?us-ascii?Q?w/wXAdqIDoc7Rel7/GLdbHEUHkbCrT5hS7/PaBE7GMxSMcMls++ueS851aNU?=
- =?us-ascii?Q?Jk6gy3Z7WNzOA+DwSRE2VcVotkm6/qbqXjKT8DXBgzcuUD89PUFZOZRyI0cx?=
- =?us-ascii?Q?vmJ6xZwvxcf4IFAPrUxRoum7Ilvzfm3vq0VnHH8yxMfgjEGDWLdX2QBlOz+R?=
- =?us-ascii?Q?WatTilFuWLHl7UuX5W+JUkenv9SHsEL/Q3NLZeaQSWjyuNhvSo+1lOPP2EFW?=
- =?us-ascii?Q?PLf86Poisa+QXKk2KzvdEPGzBpUQk9NcxIuhXiaU+V3Qfb6gacKavRFgfG3V?=
- =?us-ascii?Q?YcxRS3m0I/LNYZEACaOy/YVE99s8UXDjftEHKsjDfbzvVPmJaFeuH7acIWDi?=
- =?us-ascii?Q?kqMvKbhBmTeXdNjZC3Td3Np7pp582eZu9lDETv2vVUnAhv1Kvq+4wZgcDKUk?=
- =?us-ascii?Q?cnqo0cqL9n/uue9BBHcokSlWkGjUt6ZS+kauxqA/SZ+eo6eVuatbxYFBX+Ip?=
- =?us-ascii?Q?8jOYlAM5DzvozKgvQeVUWpEyj+dxJZCSTYZh6XBGfMEB6ZpldrcyedovVbAz?=
- =?us-ascii?Q?6YeaVxAkj9tLxRpUwZk/xRvMDGGDbegz+ht0zAIupCrtX3wzqeAmi5rk+6g+?=
- =?us-ascii?Q?vO/W36Rx5rsQpbSnSoTogyAd8mff/L71EUmKP+9h3JFb4ezGYclCHUQ63g0P?=
- =?us-ascii?Q?vnZg1QCK1i7o7Ut3cqu7cjHRqzkEzPDUeevZ9C8j3cUV9fPfbtEQfvEdkHzN?=
- =?us-ascii?Q?3GlLFvfzG+3Srr7lPDBn1jXVAk4S7YGB6Gj8rI7bfFG+nDPdmBvcyDSbNezg?=
- =?us-ascii?Q?kVExexFr/lPBYD8uoX/zbTQqvNG0E38Go3vgJ2BI2xKxPr9B7/cIxP1sW/3q?=
- =?us-ascii?Q?m0+yi78/I9o8C4DN+cJQ9U4a6BxN+TKqBw1OLK4CaHXXvnX81t3SAd/zMabV?=
- =?us-ascii?Q?Wdx7HGZGH13tLJAvTZGsnlMzal/vOLLlT0ovRcrtvUmA2EdT24P+dh46DKPo?=
- =?us-ascii?Q?JIdnULOncvVPMwNB94Q5SXp5AduM+sq76RVMFujTf5rb3duUTxM8LC2W6yaw?=
- =?us-ascii?Q?B56wWifV2N1DIHYrUoyQLw3oUWXpgb+CAbIaUZjAddy4jGA3lnR9cln8/MYL?=
- =?us-ascii?Q?mSviuJV2UQ3d7/QidGfO+wtr4Yfh43VC2W4bH+Jq165+i2JpjQkm3z74Gix7?=
- =?us-ascii?Q?2W1H5gE01rGPtQX9cm1P5KIFGADXykBZJt8cRiXQOH9TKHEG/em8NpRayR0A?=
- =?us-ascii?Q?fhD7JLkx6HwI0bYG02X/K46clpWC0w52Xmk7fWOp/yBtjAYL7Jz2ym0JBgXu?=
- =?us-ascii?Q?oG1/q47QrCknNT8j6lXyK98a/kZXa7hL08Bq2IqSizhsK7pdzmGZSak20iak?=
- =?us-ascii?Q?5EG4SQNE1BuhgvnIJHXHe1DuHLBLWEiTpEfgc/C18/L0vK+/88LEQOWn3opS?=
- =?us-ascii?Q?9eVzTDcFYnlKSPe++x8GtYyC3w1dw0I/K4BOoiCm/fQf+Ufeb04oudBONdSK?=
- =?us-ascii?Q?vdJ/trR9N6FIU+x32CkR20V7jOnRLSt1/JaW2sXf?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8404b5e1-cb61-4d5b-02dd-08dc92139e8d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 17:00:14.4540
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NgwzuDzlfNjbeLzLEJPYyDkYk1shoFVhqOG78iQd/BKJoM+armlLfI2Tg5xAfXcChXJc5XHGpFkSWOM9E/qsMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7847
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnWaxtfgmLk3SplP@eichest-laptop>
 
-IEEE1588(ptp) is optional feature for network. Remove it from required
-list to fix below CHECK_DTBS warning.
-arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: ethernet@f0000: 'ptp-timer' is a required property
+Hello Stefan,
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml | 1 -
- 1 file changed, 1 deletion(-)
+On Fri, Jun 21, 2024 at 05:22:46PM +0200, Stefan Eichenberger wrote:
+> Hi Andi, Andrew, Wolfram, Oleksij,
+> 
+> After some internal discussion we still have some questions which are
+> blocking us from solving the issue.
+> 
+> On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
+> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > 
+> > On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
+> > the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
+> > bus is idle. The imx i2c driver will call schedule when waiting for the
+> > bus to become idle after switching to master mode. When the i2c
+> > controller switches to master mode it pulls SCL and SDA low, if the
+> > ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
+> > clocking, it will timeout and ignore all signals until the next start
+> > condition occurs (SCL and SDA low). This can occur when the system load
+> > is high and schedule returns after more than 25 ms.
+> > 
+> > This rfc tries to solve the problem by using a udelay for the first 10
+> > ms before calling schedule. This reduces the chance that we will
+> > reschedule. However, it is still theoretically possible for the problem
+> > to occur. To properly solve the problem, we would also need to disable
+> > interrupts during the transfer.
+> > 
+> > After some internal discussion, we see three possible solutions:
+> > 1. Use udelay as shown in this rfc and also disable the interrupts
+> >    during the transfer. This would solve the problem but disable the
+> >    interrupts. Also, we would have to re-enable the interrupts if the
+> >    timeout is longer than 1ms (TBD).
+> > 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
+> >    timeout, we try again.
+> > 3. We use the suggested solution and accept that there is an edge case
+> >    where the timeout can happen.
+> > 
+> > There may be a better way to do this, which is why this is an RFC.
+> > 
+> > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > ---
 
-diff --git a/Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml b/Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml
-index c80c880a9dab4..60aaf30d68edf 100644
---- a/Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml
-+++ b/Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml
-@@ -128,7 +128,6 @@ required:
-   - cell-index
-   - reg
-   - fsl,fman-ports
--  - ptp-timer
- 
- dependencies:
-   pcs-handle-names:
--- 
-2.34.1
+...
+
+> > On a multimaster bus system, the busy bus (I2C_I2SR[IBB]) must be
+> > tested to determine whether the serial bus is free.
+> We assume this means it is not necessary to test for IBB if we know we
+> are in a single-master configuration.
+
+To me this is a very interesting option. If we can confirm that this
+busy-wait-loop is not required when we have a single master
+configuration we can just solve the issue in a clean way.
+
+And once the driver knows if it is multi-master mode or not we can also
+get rid of the EAGAIN that does not make any sense with single-master.
+There was an old discussion with some great contribution from Oleksij on
+this topic.
+
+Francesco
 
