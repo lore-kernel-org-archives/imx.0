@@ -1,150 +1,131 @@
 Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EE382899
-	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 04:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1C813C802
+	for <imx@lists.linux.dev>; Fri, 21 Jun 2024 06:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718945330; cv=none; b=KHZwAHrJ6Dcfx4GZtHVAGvlmVCmjf5MEhOF0SHoytw9c2TiTjPCRBL00WZXKnj+pZJFbnhfLKxzQArn9yGZCWBm11FAjzsyc/9TuMt24+nAJGOyrYJ9DmLdaw3buVh5MVO35L+rk8NKoMn0NfWvkOb1m8Xei2hP0oQhkBN/aEA0=
+	t=1718951118; cv=none; b=sR2Xcx/DPhcLtCVKoeO6hiKlyydV4foI/1zVSySQBnWu6xw8i1qbeOLOeqMxBlI+64GuHa+zwWwaSTP8VN8JON6AMtBkYKtQg21dCZ6AzLxIvKkDxI+heKDOFjUkgo+lzgRogHBUvYhdetAfd2rz8IHLsZesWLePxZZxUXx7iN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718945330; c=relaxed/simple;
-	bh=okAC9j6W98urT9FWKNpZ80XLrOwm3rAjrBQGcyQaHLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rUbNNcsRqt1sLpWdfvedZNgz+DPgdZtMnftIOf3u+nyau5joN0eBaudc2fjU9gU5ML3xfR8jtOFeEkc0ebvZc4/MDUazpkUfsGdGcRACalwyVVyojyt6HDhqd+GxD+EQr1mYktSAPSrqYgaElxHPRuNHoI/LGtZcbGikehhMEpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=z5MFAP2t; arc=none smtp.client-ip=209.85.167.47
+	s=arc-20240116; t=1718951118; c=relaxed/simple;
+	bh=vluQpXFRuEsX4CzotufWS3BiU3gXU3CkyNzrm5f7P00=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=quVLRxxuqTnN06hkAz8u8Uvt4hrRMLhlDZc7itJIU0eByvInIGNjekUsdYcMQGnJG4Ax0z8Nri6/6iDs6cCnyd4I6J7N+Lo9e+RtIQ7JcQTq/rTyVKH9kiM9msPq1kF9AcNHhLOR8r/i4d7NBIr6mDTJmjHiWKtWR3w6DzhhoEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mWtKsrjn; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="z5MFAP2t"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52c819f6146so1955636e87.1
-        for <imx@lists.linux.dev>; Thu, 20 Jun 2024 21:48:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mWtKsrjn"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52ccc40e72eso1277303e87.3
+        for <imx@lists.linux.dev>; Thu, 20 Jun 2024 23:25:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718945327; x=1719550127; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2WGzLpSHiAFMQ6rhulZPDgtq0nr+/nkWynRADUnWeOc=;
-        b=z5MFAP2tTbShQPbqYWyMl1THGRJ7j/e7oCtRdze4jZyHUcqAqhnBKjyea7MszSAdHk
-         KWnlDD0g2o81nrYnb1HMTVVUYZpwpoxL8LIDdBvYYizKOeZndeqEcT9Eknhe6ik/w+m0
-         4d+w8qnoKDhK30npgN2ZhVeb+LvVqpjuCQyjIWQOrmkP8R4WAu8J9Rmf4asFVMnkbZtm
-         ZS3W8xIptoM+W8nISmyPtIJY5WVktaLuje3a/JIrMOroVaK+tDzucnreW6d7QeL1tzGK
-         bzuskdqwkblV+0MkGWaBuWo2LHugmc6q96Z70831f4eo0a36MZYG8wK4HGN07erz475C
-         PVSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718945327; x=1719550127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1718951115; x=1719555915; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2WGzLpSHiAFMQ6rhulZPDgtq0nr+/nkWynRADUnWeOc=;
-        b=shLNnKU+gtw/VqSi57e83zxoRiQiqIeeQSuC080RqnMvh5QCcuSOaPMfybKej4FTfD
-         uiB+tqERTD/cEiBpTt6HwW8Q8YmULHeMJNI1oeKdF44MiN3cLm+J2vxB9OV8XmLooJDr
-         Ce0htk6QuXYKBJoguMTi68CFU451qWJnJ6HYP05iKdiLYJAA1MohBAOjyv6JwvmuU2YW
-         u/3GBWZAHkQzeCJphcEW9qXg7C0j++d4Zyx0mit8GHyS4bzSNhjZ/YSaMqTW7V0NFExa
-         TX3RPmC9f9NVx0VjrjBQqvo4zTrbjfiB9+FKoCsJVmt8RmODo6pdv6f2GRFL9e07ObuO
-         KWLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCdmDq7kBdbgSDtfaLXPd2moxkG1Rqm/+WZWccIXzGwZRiFBYCz1JTNVzjGaAlY/Wxnx+MOCjpRrboiTjH3CUnzH4P
-X-Gm-Message-State: AOJu0YzthEKUhHKvMpD8Pms5IgZP+CoB1+IVZzRSxji+xtI5Nu8USW1m
-	r9ulj29IE8d1YdgNZVlpl2cZ949qTDMeHUKZUlS2bxkVPlsFlbchGJTroaia11M=
-X-Google-Smtp-Source: AGHT+IHQ/LUmDuyLZQ0IaCKcHTZmjchVpKw8WeCnkMirzzuExs8oyd0Nlj5f9/vavkQGjh28g4RcMw==
-X-Received: by 2002:a05:6512:10c3:b0:52c:859c:91dd with SMTP id 2adb3069b0e04-52ccaa594cfmr4875472e87.5.1718945326588;
-        Thu, 20 Jun 2024 21:48:46 -0700 (PDT)
-Received: from linaro.org ([82.79.124.209])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3663cd5fa47sm632123f8f.0.2024.06.20.21.48.45
+        bh=StWMYOsCh6FPtaum53yX6NippyLiUpGWAFV7rmRXSlk=;
+        b=mWtKsrjn8B5JiTbji16TrSqr0nl27R23rzMzbSCvubD3amMkj2hKb4LoNM70BPCvak
+         E0ZO5ZoKxTAt+KSQ9bk6ztlP/uuA+y/PUd/Xu4aFCHUnba5UGkZZOa/vPpizXzCCQu29
+         AAVn+HjR+GKATluk2KFLHphuAuo/WK6ZK7RRhj3OQO6nOqemozHAC5zVPnJigxqUqA5+
+         A1rvoOjPwBhAjmokvGhtjbOynGgPhsXGcNmZUrS82XgIIKbtzjHqL4xxJphk4JddJmKe
+         mwddKL8m8jcd1pN1IfVyrVeK6X0H8tIzkUhGatvJp0VneVqQdhWlsdZRaFebe/IjdHvD
+         sc9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718951115; x=1719555915;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=StWMYOsCh6FPtaum53yX6NippyLiUpGWAFV7rmRXSlk=;
+        b=kDH6A/UYs75SMZK/mwPRVoGfmcRqdl+CHtOuPzOk6VYYPUMjTtW5HOTk+GDs7kw1mE
+         bYSnmcP+tWVMch37tuCCRJ0Mgo9hxYAWiDQc12aKvo6Siznx4FxRJDtO/Ljq3lglFrzE
+         nV76vs4bgCSXoKnwl0FziyVg2vfkXJAW4Ds7NwMuxIKua4gZL1tyiaNyXzJ8YFXW5qZA
+         ru6nbWCYH6yCFoe9uQAkVjJwXee37libRgP9jFqf8CNGjRKq7BwdW2y2lP6DCaUkC4xD
+         szTiAX8JO53j7D2PDIvEeDoG4RcVdg7jDDAXCqnaqWvBQcgnhGOJg4OvJXyU4/5E50tk
+         pH6g==
+X-Gm-Message-State: AOJu0YwpAa6KCOopdsO1s6/HVkwLqwkJ1rEM2P/g3ywwRU8Bd4yS+n8l
+	0gD46s+zI3r0ksKWzVB/qve1DdS/zF7X5NViRrruMqHWGfGcjkbQKGQD4fznqAI=
+X-Google-Smtp-Source: AGHT+IGOvQBVeOVRfT9OeleaCwxcfWuwyKp0KoQmrSi1Y8cbFK0mqlmwonfKGGA/D0j7pSuym3kIpA==
+X-Received: by 2002:a05:6512:3988:b0:52c:cb8d:6374 with SMTP id 2adb3069b0e04-52ccb8d6456mr6536347e87.11.1718951115118;
+        Thu, 20 Jun 2024 23:25:15 -0700 (PDT)
+Received: from hackbox.lan ([82.79.124.209])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424817a8ed3sm14463675e9.13.2024.06.20.23.25.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 21:48:46 -0700 (PDT)
-Date: Fri, 21 Jun 2024 07:48:44 +0300
+        Thu, 20 Jun 2024 23:25:14 -0700 (PDT)
 From: Abel Vesa <abel.vesa@linaro.org>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-clk@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Lukas F . Hartmann" <lukas@mntmn.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	imx@lists.linux.dev, kernel@dh-electronics.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] clk: imx: clk-imx8mp: Allow media_disp pixel clock
- reconfigure parent rate
-Message-ID: <ZnUGLCZYrSdW4f3S@linaro.org>
-References: <20240531202648.277078-1-marex@denx.de>
+To: abelvesa@kernel.org,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: imx@lists.linux.dev,
+	linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH V3 00/15] clk: imx: misc update/fix
+Date: Fri, 21 Jun 2024 09:24:59 +0300
+Message-Id: <171895105697.3608188.110944709510140108.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240607133347.3291040-1-peng.fan@oss.nxp.com>
+References: <20240607133347.3291040-1-peng.fan@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531202648.277078-1-marex@denx.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 24-05-31 22:26:26, Marek Vasut wrote:
-> The media_disp[12]_pix clock supply LCDIFv3 pixel clock output. These
-> clocks are usually the only downstream clock from Video PLL on i.MX8MP.
-> Allow these clocks to reconfigure the Video PLL, as that results in
-> accurate pixel clock. If the Video PLL is not reconfigured, the pixel
-> clock accuracy is low.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+On Fri, 07 Jun 2024 21:33:32 +0800, Peng Fan (OSS) wrote:
+> Changes in v3:
+> - Drop two patches
+>       clk: imx: pll14xx: Add constraint for fvco frequency
+>       clk: imx: pll14xx: use rate_table for audio plls
+> - Update 8ULP PCC check to not return Error
+> - Update commit log and Add R-b for
+>   "clk: imx: imx8mp: fix clock tree update of TF-A managed clocks"
+> - Link to v2: https://lore.kernel.org/all/20240510-imx-clk-v2-0-c998f315d29c@nxp.com/
+> 
+> [...]
 
-> ---
-> Cc: Abel Vesa <abelvesa@kernel.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Lukas F. Hartmann <lukas@mntmn.com>
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Peng Fan <peng.fan@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-clk@vger.kernel.org
-> ---
->  drivers/clk/imx/clk-imx8mp.c | 4 ++--
->  drivers/clk/imx/clk.h        | 4 ++++
->  2 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-> index 670aa2bab3017..f11dfe2028319 100644
-> --- a/drivers/clk/imx/clk-imx8mp.c
-> +++ b/drivers/clk/imx/clk-imx8mp.c
-> @@ -547,7 +547,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
->  	hws[IMX8MP_CLK_AHB] = imx8m_clk_hw_composite_bus_critical("ahb_root", imx8mp_ahb_sels, ccm_base + 0x9000);
->  	hws[IMX8MP_CLK_AUDIO_AHB] = imx8m_clk_hw_composite_bus("audio_ahb", imx8mp_audio_ahb_sels, ccm_base + 0x9100);
->  	hws[IMX8MP_CLK_MIPI_DSI_ESC_RX] = imx8m_clk_hw_composite_bus("mipi_dsi_esc_rx", imx8mp_mipi_dsi_esc_rx_sels, ccm_base + 0x9200);
-> -	hws[IMX8MP_CLK_MEDIA_DISP2_PIX] = imx8m_clk_hw_composite_bus("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300);
-> +	hws[IMX8MP_CLK_MEDIA_DISP2_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp2_pix", imx8mp_media_disp_pix_sels, ccm_base + 0x9300, CLK_SET_RATE_PARENT);
->  
->  	hws[IMX8MP_CLK_IPG_ROOT] = imx_clk_hw_divider2("ipg_root", "ahb_root", ccm_base + 0x9080, 0, 1);
->  
-> @@ -609,7 +609,7 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
->  	hws[IMX8MP_CLK_USDHC3] = imx8m_clk_hw_composite("usdhc3", imx8mp_usdhc3_sels, ccm_base + 0xbc80);
->  	hws[IMX8MP_CLK_MEDIA_CAM1_PIX] = imx8m_clk_hw_composite("media_cam1_pix", imx8mp_media_cam1_pix_sels, ccm_base + 0xbd00);
->  	hws[IMX8MP_CLK_MEDIA_MIPI_PHY1_REF] = imx8m_clk_hw_composite("media_mipi_phy1_ref", imx8mp_media_mipi_phy1_ref_sels, ccm_base + 0xbd80);
-> -	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00);
-> +	hws[IMX8MP_CLK_MEDIA_DISP1_PIX] = imx8m_clk_hw_composite_bus_flags("media_disp1_pix", imx8mp_media_disp_pix_sels, ccm_base + 0xbe00, CLK_SET_RATE_PARENT);
->  	hws[IMX8MP_CLK_MEDIA_CAM2_PIX] = imx8m_clk_hw_composite("media_cam2_pix", imx8mp_media_cam2_pix_sels, ccm_base + 0xbe80);
->  	hws[IMX8MP_CLK_MEDIA_LDB] = imx8m_clk_hw_composite("media_ldb", imx8mp_media_ldb_sels, ccm_base + 0xbf00);
->  	hws[IMX8MP_CLK_MEMREPAIR] = imx8m_clk_hw_composite_critical("mem_repair", imx8mp_memrepair_sels, ccm_base + 0xbf80);
-> diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-> index adb7ad649a0d2..aa5202f284f3d 100644
-> --- a/drivers/clk/imx/clk.h
-> +++ b/drivers/clk/imx/clk.h
-> @@ -442,6 +442,10 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
->  	_imx8m_clk_hw_composite(name, parent_names, reg, \
->  			IMX_COMPOSITE_BUS, IMX_COMPOSITE_CLK_FLAGS_DEFAULT)
->  
-> +#define imx8m_clk_hw_composite_bus_flags(name, parent_names, reg, flags) \
-> +	_imx8m_clk_hw_composite(name, parent_names, reg, \
-> +			IMX_COMPOSITE_BUS, IMX_COMPOSITE_CLK_FLAGS_DEFAULT | flags)
-> +
->  #define imx8m_clk_hw_composite_bus_critical(name, parent_names, reg)	\
->  	_imx8m_clk_hw_composite(name, parent_names, reg, \
->  			IMX_COMPOSITE_BUS, IMX_COMPOSITE_CLK_FLAGS_CRITICAL)
-> -- 
-> 2.43.0
-> 
+Applied, thanks!
+
+[01/15] clk: imx: composite-8m: Enable gate clk with mcore_booted
+        commit: b4c91df8118b5d4efdc9732206de81ac620f53d2
+[02/15] clk: imx: composite-93: keep root clock on when mcore enabled
+        commit: 90d91ce8e20e0df9806ce7f7c49f8ef05471b5ce
+[03/15] clk: imx: composite-7ulp: Check the PCC present bit
+        commit: afd1247ce838b4a06fb0c24e522687475583035d
+[04/15] clk: imx: fracn-gppll: fix fractional part of PLL getting lost
+        commit: af218f2d935e118582d43cbd89c81ef6f26be286
+[05/15] clk: imx: imx8mp-audiomix: remove sdma root clock
+        (no commit info)
+[06/15] clk: imx: imx8mp: fix clock tree update of TF-A managed clocks
+        commit: 6bc3d1e264ad5bace5d1980997abcc7ad5308181
+[07/15] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
+        commit: 68a3e49a2a5e75a2e1511ff75ca24b584a0f12f4
+[08/15] clk: imx: add CLK_SET_RATE_PARENT for lcdif_pixel_src for i.MX7D
+        commit: e2d956067b0b3c9a9ba5acde655bf6fc708c3ab0
+[09/15] clk: imx: imx8mn: add sai7_ipg_clk clock settings
+        commit: 40cfc8c2fccf5440fb192aa80a84bff9f3288b2c
+[10/15] clk: imx: imx8mm: Change the 'nand_usdhc_bus' clock to non-critical one
+        commit: c7f85fc3dc2facacc1851db992d485a89acde8ee
+[11/15] clk: imx: imx8qxp: Add LVDS bypass clocks
+        commit: ecee2c870be1776c483b3d1a40e3998c7cb7eb1b
+[12/15] clk: imx: imx8qxp: Add clock muxes for MIPI and PHY ref clocks
+        commit: 385e7c90bdb571677c4d16d97e8809427dc4d8d7
+[13/15] clk: imx: imx8qxp: Register dc0_bypass0_clk before disp clk
+        commit: 9cf2310e4845006f72c959d38bd1300863432194
+[14/15] clk: imx: imx8qxp: Parent should be initialized earlier than the clock
+        commit: c69e0dba43e63862ec95cbd91a2daa28e3e87a9e
+[15/15] clk: imx: fracn-gppll: update rate table
+        commit: 747cf5fbfc4326ab2ad9cc73cde8eb7776f3ba53
+
+Best regards,
+-- 
+Abel Vesa <abel.vesa@linaro.org>
