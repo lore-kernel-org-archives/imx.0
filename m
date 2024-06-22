@@ -1,273 +1,73 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7809A1755B
-	for <imx@lists.linux.dev>; Sat, 22 Jun 2024 18:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF93E5F876
+	for <imx@lists.linux.dev>; Sat, 22 Jun 2024 22:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719080560; cv=none; b=Yq2VjAHEfin9ZiaNN1CdinZ4ILfV7cAm3KyosUQgxwHFXqeyL8vhbTFSKIvnZE9tEfM3agaweDBbNg+7sb/FEtwE9D5BIIvnvSHsPHwbFK90TG9TvUk54iimsV4FUY+xyR48vtCuee0LikIMv/R9ZMHEc2LKv2Kdazf1u/Q71LE=
+	t=1719095631; cv=none; b=itcoOieivoK5vNAVVBFq4Jq5cjWbQUuONzDkKiiPup3svD8Fe/tzHXsVzsQlC3xz302zT0fPPux5dg3GgSuWIQOgq5wSe8XlBdI0hsYj4aD/mBUyvOm8I6+WvyF9EBGDrWsQ+nhwdqHj3N0IPi7PSrNAPdI9u85R5EwcmLHO9o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719080560; c=relaxed/simple;
-	bh=ICz9k805W8OYylRda156ORFIN7cEsgDT2/4ec7IeMLk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=onPhqx2Y5+vgnVdGqWYotrsYSWFZOB6G7hJojbfMRssChmtwyjEonKHA0DbCn+6POtXRLQC2dHYcOJSZpxtSjs+PyVpyNJNxZin6m6vZeb+bbHvraO1R61dqBPP7ewFKPtQQYzl4VQNVQVKxu9/ShfVFUjO8H55a6t14IYDpl3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KCmvqp13; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1719095631; c=relaxed/simple;
+	bh=QFHlACcGn7OqUVZY8YEAHPlNKeeUxY0F5pOJFUjj+S0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JSUUo1aP8dbonwreBeNB0Wz0mI4hwTVM6D/3EBkEmiaSXI4ci5rv//EhTONC/f64tF6ipr+zM6m2kf0owJ7pcPbJmgj3gUtK4hMwzdfXJKLX9vQODsu2N12q78E1fyN7Hg2vJI2ciCGtXh1vFv9zDNvxg9GUttCi1cbR2mVUk04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EyC1qKLs; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KCmvqp13"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1f9b523a15cso22678385ad.0
-        for <imx@lists.linux.dev>; Sat, 22 Jun 2024 11:22:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719080558; x=1719685358; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0kSS06er1VarQnO16XXiZ+cNjn4u2G2NLIQN3unM0EE=;
-        b=KCmvqp13psbDeX1tq5dQPGPMzUzOLbVMfWjnUh7T2aN3iYle+HfKVDxHewtteiLAzn
-         YsJGDcDfy3Zsda9R863YRLmv1zfCIh6oDaMkNp1MypHDja1mIUk1g39OuURjyucdWuJ7
-         JXe01JJdCZh92f2CwQGeQGmY1S9U6XnUYr9CBj8YgUH9/VtOEmG+3ceCW6IpEdWqiU1+
-         x556VcWfT7kIQ5I4yznGiINboPNxrmq6lYRb+cYEppKj9y53UIwVoFJlrI96fjzQ9bie
-         xJdeURKE/wPuN0BOQ5SyxvDAxjsRFyueRdjvZzF0NdPKFQ6ERmBLu7VllqNzcdH9UzyL
-         VpOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719080558; x=1719685358;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0kSS06er1VarQnO16XXiZ+cNjn4u2G2NLIQN3unM0EE=;
-        b=h0hELhK4inMijH4ePCZQqkCTOhi5TLtFvGwCcZgxi5kbpairoZuxecQ2yvDhbN3EhK
-         oweV4uHihe+WONOSFdepI+iAFIpTzbsQpSDijyxXPH7zpWyVWhIZDiGs+vdTYe3yRIuS
-         mmb2ScY6Xl6tWBqafTAdk+mJsrj3kT+BzAwhoZd5JXDyLWm8KtsHk0f+n2SmHdO7QCY2
-         yWAjYiKHnTDJ9zJC87AJR11JLDoMHIN4R8+Ckn0Ijm6qy9z/RIl6G+GQ0eV+l6mnnz/t
-         RvV3BtihG0yZMpjGScRYDpcuam+52o/mXxboETl6AOaIt3H+4IAlxUBdoQgB1s7x2dLy
-         K/2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUKd7ZA/VqJG33p3yGmS30rh2sWJc2RkcXJfZ2AoIRN6eAc422aiHnmpUedXM+dO96F9iMizD7iHCHiHr9LDt2EQLAv
-X-Gm-Message-State: AOJu0Yw/eB+wE3qnznDRo0QR341iDjZ/sXHIC9uAwDVzwlzhLkSQejFp
-	V5Gjr5QUeVgRbItSnP/i3bqOwv886uBE4RlpjeOlCfmrZHA9EV6y
-X-Google-Smtp-Source: AGHT+IFSi6Zl6roN+pMwkndNjWlqH2oNq/bbNLK+UAZlb4vSoJGqMkxrLST790YOyh4/Jg6sPZ2R1g==
-X-Received: by 2002:a17:903:a46:b0:1f9:fe14:592f with SMTP id d9443c01a7336-1fa0f8cd95cmr18266495ad.17.1719080556950;
-        Sat, 22 Jun 2024 11:22:36 -0700 (PDT)
-Received: from fedora.one.one.one.one ([2405:201:6013:c0b2:ea4b:30e0:4e3a:ab56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9ebbc7b8asm33794545ad.300.2024.06.22.11.22.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Jun 2024 11:22:36 -0700 (PDT)
-From: Animesh Agarwal <animeshagarwal28@gmail.com>
-To: 
-Cc: animeshagarwal28@gmail.com,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: dt-bindings: fsl,imx-audio-sgtl5000: Convert to dtschema
-Date: Sat, 22 Jun 2024 23:51:56 +0530
-Message-ID: <20240622182200.245339-1-animeshagarwal28@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EyC1qKLs"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C5A2BFF805;
+	Sat, 22 Jun 2024 22:33:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1719095627;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Np0HAdoh8EZv8Bq/6GLeT6pSPf91A6nHL3cv9CEp+04=;
+	b=EyC1qKLsRooRDsCc7cZWjDHJk5YCZHERbx2gBaEtJXyPYnxuQ+kvG1QzOo+N0gy6KFn9m/
+	9dTHPEI2CzmGmcq/YyoipSD6y0LXNVOSPsJqJgmzVezwuhT9FCOAyvziA7iAGHuYWPj4Ja
+	oryyWD//xLa0KNnGo97fvstUrLYdXctiq1dUQoMod7BhrDmAgJ+WXfLu69dqZaA1xeoXaH
+	Dj84+I/fc/Yh3C3uTFPITu5uuqPdNlK2QhktCuZM+3ztbg5U5Ly/RqP7fiXdXDVxiW2em1
+	kbm6OBIGkNRvj3WGMDenA1E6u3rZpXSLj74QDZqt+8bPaqQaJcAPjBJzQq924w==
+Date: Sun, 23 Jun 2024 00:33:46 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: miquel.raynal@bootlin.com, Frank Li <Frank.Li@nxp.com>
+Cc: conor.culhane@silvaco.com, imx@lists.linux.dev,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 2/2] i3c: master: svc: resend target address
+ when get NACK
+Message-ID: <171909557749.2164405.8135288010118106502.b4-ty@bootlin.com>
+References: <20240603151527.52235-1-Frank.Li@nxp.com>
+ <20240603151527.52235-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240603151527.52235-2-Frank.Li@nxp.com>
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-Convert the imx-audio-sgtl bindings to DT schema. Make bindings complete
-by adding audio-cpu property.
+On Mon, 03 Jun 2024 11:15:27 -0400, Frank Li wrote:
+> According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3:
+> 
+> If the Controller chooses to start an I3C Message with an I3C Dynamic
+> Address, then special provisions shall be made because that same I3C Target
+> may be initiating an IBI or a Controller Role Request. So, one of three
+> things may happen: (skip 1, 2)
+> 
+> [...]
 
-Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>
----
- .../sound/fsl,imx-audio-sgtl5000.yaml         | 108 ++++++++++++++++++
- .../bindings/sound/imx-audio-sgtl5000.txt     |  56 ---------
- 2 files changed, 108 insertions(+), 56 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml
- delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt
+Applied, thanks!
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml
-new file mode 100644
-index 000000000000..906dcecb73b7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml
-@@ -0,0 +1,108 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,imx-audio-sgtl5000.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale i.MX audio complex with SGTL5000 codec
-+
-+maintainers:
-+  - Animesh Agarwal <animeshagarwal28@gmail.com>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - fsl,imx25-pdk-sgtl5000
-+              - fsl,imx51-babbage-sgtl5000
-+              - fsl,imx53-m53evk-sgtl5000
-+              - tq,imx53-mba53-sgtl5000
-+              - fsl,imx53-cpuvo-sgtl5000
-+              - fsl,imx53-qsb-sgtl5000
-+              - karo,tx53-audio-sgtl5000
-+              - fsl,imx53-voipac-sgtl5000
-+              - fsl,imx6q-ba16-sgtl5000
-+              - fsl,imx6q-ventana-sgtl5000
-+              - fsl,imx-sgtl5000
-+              - fsl,imx6-armadeus-sgtl5000
-+              - fsl,imx6dl-nit6xlite-sgtl5000
-+              - fsl,imx6q-nitrogen6_max-sgtl5000
-+              - fsl,imx6q-nitrogen6_som2-sgtl5000
-+              - fsl,imx6q-nitrogen6x-sgtl5000
-+              - fsl,imx6-rex-sgtl5000
-+              - fsl,imx6q-sabrelite-sgtl5000
-+              - fsl,imx6-wandboard-sgtl5000
-+          - const: fsl,imx-audio-sgtl5000
-+      - const: fsl,imx-audio-sgtl5000
-+
-+  model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: The user-visible name of this sound complex.
-+
-+  audio-cpu:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of an CPU DAI controller
-+
-+  ssi-controller:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of the i.MX SSI controller.
-+
-+  audio-codec:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of the SGTL5000 audio codec.
-+
-+  audio-routing:
-+    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-+    description: |
-+      A list of the connections between audio components. Each entry is a pair
-+      of strings, the first being the connection's sink, the second being the
-+      connection's source. Valid names could be:
-+
-+      Power supplies:
-+        * Mic Bias
-+
-+      SGTL5000 pins:
-+        * MIC_IN
-+        * LINE_IN
-+        * HP_OUT
-+        * LINE_OUT
-+
-+      Board connectors:
-+        * Mic Jack
-+        * Line In Jack
-+        * Headphone Jack
-+        * Line Out Jack
-+        * Ext Spk
-+
-+  mux-int-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: The internal port of the i.MX audio muxer (AUDMUX).
-+    enum: [1, 2]
-+
-+  mux-ext-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: The external port of the i.MX audio muxer.
-+    enum: [3, 4, 5, 6]
-+
-+required:
-+  - compatible
-+  - model
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    sound {
-+        compatible = "fsl,imx51-babbage-sgtl5000",
-+            "fsl,imx-audio-sgtl5000";
-+        model = "imx51-babbage-sgtl5000";
-+        ssi-controller = <&ssi1>;
-+        audio-codec = <&sgtl5000>;
-+        audio-routing =
-+            "MIC_IN", "Mic Jack",
-+            "Mic Jack", "Mic Bias",
-+            "Headphone Jack", "HP_OUT";
-+        mux-int-port = <1>;
-+        mux-ext-port = <3>;
-+    };
-diff --git a/Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt b/Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt
-deleted file mode 100644
-index 2f89db88fd57..000000000000
---- a/Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt
-+++ /dev/null
-@@ -1,56 +0,0 @@
--Freescale i.MX audio complex with SGTL5000 codec
--
--Required properties:
--
--  - compatible		: "fsl,imx-audio-sgtl5000"
--
--  - model		: The user-visible name of this sound complex
--
--  - ssi-controller	: The phandle of the i.MX SSI controller
--
--  - audio-codec		: The phandle of the SGTL5000 audio codec
--
--  - audio-routing	: A list of the connections between audio components.
--			  Each entry is a pair of strings, the first being the
--			  connection's sink, the second being the connection's
--			  source. Valid names could be power supplies, SGTL5000
--			  pins, and the jacks on the board:
--
--			  Power supplies:
--			   * Mic Bias
--
--			  SGTL5000 pins:
--			   * MIC_IN
--			   * LINE_IN
--			   * HP_OUT
--			   * LINE_OUT
--
--			  Board connectors:
--			   * Mic Jack
--			   * Line In Jack
--			   * Headphone Jack
--			   * Line Out Jack
--			   * Ext Spk
--
--  - mux-int-port	: The internal port of the i.MX audio muxer (AUDMUX)
--
--  - mux-ext-port	: The external port of the i.MX audio muxer
--
--Note: The AUDMUX port numbering should start at 1, which is consistent with
--hardware manual.
--
--Example:
--
--sound {
--	compatible = "fsl,imx51-babbage-sgtl5000",
--		     "fsl,imx-audio-sgtl5000";
--	model = "imx51-babbage-sgtl5000";
--	ssi-controller = <&ssi1>;
--	audio-codec = <&sgtl5000>;
--	audio-routing =
--		"MIC_IN", "Mic Jack",
--		"Mic Jack", "Mic Bias",
--		"Headphone Jack", "HP_OUT";
--	mux-int-port = <1>;
--	mux-ext-port = <3>;
--};
+[2/2] i3c: master: svc: resend target address when get NACK
+      https://git.kernel.org/abelloni/c/2d15862dfba6
+
+Best regards,
+
 -- 
-2.45.2
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
