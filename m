@@ -1,33 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90C46B5;
-	Sun, 23 Jun 2024 11:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B5E145B2F;
+	Sun, 23 Jun 2024 11:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719141058; cv=none; b=OTww2Ovha8EINoT/XevhRwUAW5Lx9cQNSr3d8j15vHt8napEy9hQknbH7uivEFlxKfJ5P1M6e8EdbPlpa8tt67/79uYUHfwPGKDPkc+/QfkhI3pr4ygVSwZnGI+wW7gqK2l0WgP1j1Noi/vIa8pvnbW5d5ES665LJGliOlducxA=
+	t=1719143049; cv=none; b=A6O1ARNndEIM30UuIFiSK5VtxDvhMIowB9PHmlfwTiuxjASv8csmWAbY/E+7glPfKk9eD9FnYQ1NjtbnhvqsaJsSJsmC9r8QuxSxOGz8o7EjqoAsKNAuSgd+rzlrwsszv60dbPRG0sp0A8rH1E7rtx+z9I0Ixdp4Zg299zzO5Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719141058; c=relaxed/simple;
-	bh=5OKeTdayfOzgq6z3/8he9g3R7WgcX3TAzqL0zI/7dhY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ijmQ5gOX19kb+VLY1AAqc6pNzxKxzdia9A3MZWyHFZ6y8SkrUi0j36LnpDx8qXJ+WEkhJCRO11HnnNIy4nhkTEr/CncYR+GZthzGyaqvSvsjlC1UNGySBe5ZYed49yHxTiswbLj2Aaq6+R5riDdGl3nDotgx7rCoJDad9OkEthM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxYfrQ6a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719143049; c=relaxed/simple;
+	bh=wT77QYgBvgfhwTUeUy6d+WpkpCPIcYyZVdrxO4S0lmk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=IijIhD+a2ai9y10HCbwUGEmlug2jIvsobvPcoO+cyX82Ti3IL8PDC9lkhb/8DgxEbFM+bSjnZjE8cQZ1CFWLpiibA6k/0cBHtGeV4nuZttlFHjspmOn2tq4hd7qT1HlSnx9x2NoAlTqxiYDt1r0NLRn44JEXst56YNFW0NspmdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ZKOQtbdR; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxYfrQ6a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACE0C2BD10;
-	Sun, 23 Jun 2024 11:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719141058;
-	bh=5OKeTdayfOzgq6z3/8he9g3R7WgcX3TAzqL0zI/7dhY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uxYfrQ6a9pNvtge508wbaoSbZyXmO2/l/THnxvtE4NjpjtIa8JFS6YcHHrHtezCy+
-	 aRPno+PRHWybpKtKquXxVSoOzPcsU1hlx31iE8vhlWklVNF5zAYihAbDpBr66yPCD0
-	 Bq19OVeAD6Pfmf6y9BN3SnFeAlsOMyiiyYAQTR91ks83a/0sKJYut5wPn3pAvDuPuK
-	 H5Bv3LUWJCF4KJwlTxNTRfaXOagncsBq/tqQksy/G8NWQli+oFMpjAwiR+SFCldz9i
-	 2duCjRvJuVriq4zXAsxfahxIwoU10vpIS/wuE8nKSJPJzGjew6GcrUrC7HeHb8dTJw
-	 cz8lZb3uPOv2Q==
-Message-ID: <2c32e077-48ef-4d08-99ce-9072a339740c@kernel.org>
-Date: Sun, 23 Jun 2024 13:10:48 +0200
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ZKOQtbdR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719143021; x=1719747821; i=markus.elfring@web.de;
+	bh=wT77QYgBvgfhwTUeUy6d+WpkpCPIcYyZVdrxO4S0lmk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
+	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ZKOQtbdRfPMjY/lhu7q7qN2SZ7II0Q0T9Nmq9iPl9QWO7qTBjEgtYbw/hwi3Ek/N
+	 daiwbIu7w3363DB66P+10Wc657NUe6sSGuiK3MeE+vRp3uv8jtcTK4shMYJxO7tIV
+	 GJY+12lJJt44qNROTK/tmpDqrTNLiTjIjHoAb7PxeKTVc9+HtJemdzsKaod4opqpQ
+	 GtCJz3SZUdPzrtC4hdvGaoT9kxsn/0J/UiaQ8KkXg62RwNDUB/rNhXNPhpEbk6BIx
+	 04LjBRXGghUOKTRicpvavXvtKWfKhASLDfXBbb/ffdp2IxMb0uyENEmEpAA4VbNYP
+	 BY5n1yXFNfenj2/Bhg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MsrhU-1sawdh1awq-010ZpL; Sun, 23
+ Jun 2024 13:43:41 +0200
+Message-ID: <db3396e9-aad6-40d2-9d1b-0fd7fd3fceac@web.de>
+Date: Sun, 23 Jun 2024 13:43:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,89 +42,59 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 8/9] arm64: dts: imx8m: update spdif sound card node
- properties
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org,
- Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>
-References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-9-elinor.montmasson@savoirfairelinux.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240620132511.4291-9-elinor.montmasson@savoirfairelinux.com>
+Subject: Re: net: fec: Convert fec driver to use lock guards
+From: Markus Elfring <Markus.Elfring@web.de>
+To: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, imx@lists.linux.dev,
+ Andrew Lunn <andrew@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Julia Lawall <julia.lawall@inria.fr>,
+ Peter Zijlstra <peterz@infradead.org>, Simon Horman <horms@kernel.org>,
+ Waiman Long <longman@redhat.com>
+References: <20240511030229.628287-1-wei.fang@nxp.com>
+ <657b4098-60b8-4522-8ea0-f10aa338e1b6@web.de>
+Content-Language: en-GB
+In-Reply-To: <657b4098-60b8-4522-8ea0-f10aa338e1b6@web.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rfK3u4LB6cSHr1yenNSUPC6oagIs4Q/4qMo7loYiEsVLiqOk0+i
+ Ka2M62R6udHDhvTAAXo4h/4LJJs73y3n8Q2h+TK9mFJZeAIL7vIKkV8QCi5t0i/hhyV1Nvw
+ emsyOf7T9GEuIwJeuxgj+tDT4n8v9JgujbZvaOhqOXzkcDyx1KhLOd8mnnZSD6P17eV55Jn
+ jAeEHIPm5LVsqz9A8DTQw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:V7i66Ufscec=;lqGcNLZ6Sm8IL8Z/e2tzD0aPyXl
+ s0i/vGIZifA83PHOGDJuzTTpwupGv0qlgE3a1miUCwqyOX+WKhvZpBf3jzCWjB4ZROsSn6zUK
+ uVKZf5BMw5cO29JrqCjAcG+dvdswAHIkQkxPpiSlH6ss34ho5auu1EHITd5kavkgz8a39jWUh
+ llM/lwWqkwW9loZUF1BXT6ntA1JicSYuu2j8ozUPxX2bjQyvcQxaaZBc7rNdie8++9JiUVGW/
+ XbpF5yim5VaNAgjtP0HXkb+WnrT76zw55fw90W1h29iWNy7sq7hbJ7hfjes9HbwDFvutSlGGE
+ QkFcmz/+LovU+SoIE7znWN/JoyrCb6FRMReXS3KMFxtOLS74f4tJiqehr10nlCLExvG+Ku14T
+ sodUhh4P3SvaciU6IERXcRWK+kghT66PT1YrnC5HTlbSlnR7PbESckQsUF8avZM/+67nWJmYO
+ bKJZS1TnfsRZEOqZMCYKaPFBg1IQbiGhEKfkSXUKItuer9pRexjPJg1hutzOV+hmPZeF/xFms
+ V2Jz7iZPaAUA7tLMalVkP9Y1mKLBiuFVJ47hsJqVS1M+ovmisqeccdTdNSBmhzTjizOAGIayQ
+ oGLA7BLwF5cOcjCtZlfEFz6shBcEsHof0IhrUhgn/IWMA9fDsMIUqWD5meHOZWp2G4SclG6EN
+ EAzmKtniE9ckPKCoKymA9phlngZ7//AGtTMhUeBwWSePNOa/KF0Kk1FPH8v0b7OAc8PqwkTSH
+ 6mm42NIgcnI0U7lAm9QjglLjiH5lPOAlo65IU1rz7yX8oWk9Uxq8D4Ec9Fn5Ts6pfUiNheFVX
+ IQyNkevvlHskcUsvRqzC/9j1W26+nOebBz33UV0M+mViM=
 
-On 20/06/2024 15:25, Elinor Montmasson wrote:
-> Following merge of imx-spdif driver into fsl-asoc-card:
-> * update properties to match those used by fsl-asoc-card.
-> * S/PDIF in/out dummy codecs must now be declared explicitly, add and
->   use them.
-> 
-> These modifications were tested only on an imx8mn-evk board.
+> Was this source code adjustment influenced also by a hint about =E2=80=
+=9CLOCK EVASION=E2=80=9D
+> from the analysis tool =E2=80=9CCoverity=E2=80=9D?
+> https://lore.kernel.org/linux-kernel/AM0PR0402MB38910DB23A6DABF1C074EF1D=
+88E52@AM0PR0402MB3891.eurprd04.prod.outlook.com/
+> https://lkml.org/lkml/2024/5/8/77
 
-So new DTS will not work on old kernel... Can you at least explain why
-this is needed and what benefits this make? You change hardware
-description, so whatever you merged in drivers is not really relevant, I
-would say.
+A corresponding software improvement was integrated on 2024-05-23.
+
+net: fec: avoid lock evasion when reading pps_enable
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
+drivers/net/ethernet/freescale/fec_ptp.c?h=3Dv6.10-rc4&id=3D3b1c92f8e53717=
+00fada307cc8fd2c51fa7bc8c1
 
 
-Best regards,
-Krzysztof
+Will further collateral evolution become interesting accordingly?
 
+Regards,
+Markus
