@@ -1,33 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A5249633;
-	Sun, 23 Jun 2024 08:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F9515E83;
+	Sun, 23 Jun 2024 08:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719130285; cv=none; b=rAeWxVqX/01JsyyT9oQxbwrYUUxWLLYTRRbcslQjLJAUdHrTnqzkNAoanmH5t6ixzagAnYBCaAqiLEYN9I3ENRWCQ6gj7AZWQosIBzm9r7QTIgCScci2m01piOYW6CBqMtwkcOPnu3mKE1qC0a5+uowrSRyAFPrHeXsz1MwOB/8=
+	t=1719131004; cv=none; b=MqHLrOpOaweDA3YWzEtScH44X1tiBWjMbqXcCiuPFYYXBGwZbD0oWorofbY84TQpyf1a0so9uo19SqxzEnzmORNuuWlyNSKDfHEyy1IYk1vX+HxKpCv2rix2SSyBUj2grtWUJdPQTWiZYVaMabrOdEJujkQsOAh1BbyvHt1FDF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719130285; c=relaxed/simple;
-	bh=CMYRryZFEx+lHsmaSAwggmsgSfJxW0d5r/9nGe0X6/c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WzSDjtQsjdDw0Gd52L/9RRRbYzFRLB3XQkwnFsOw/z1iATG92+D87K9FRpFtCywWuSzEEk0zX/Ns4+KaaHfDjVSq1x9YX+NJkk/9lTlBLHaSeHoVRJP563IdRQqvw/a1EjvXEjW5wwjHYWwPl/q7D3J/iMk46g2sOxR58g0h7Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMF/434e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719131004; c=relaxed/simple;
+	bh=x4e8XcpJNZymn97A0V+osWFBR8uTIfDjYcM2vgAnIeo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=ACucUB34BifkxlCoBo2rTbQp1Z+73LUhFXXNt2jcQyf13AHiwPSyf2xl2pilwBH9YUh3RYoInvdFT7Hn71NujcZ87fv0B1IgsKLku49dbeOzcyIudbvtpuuu0cBrZhVqvi837uhPfAR8eNUH0eM1BoME4enfckqBLEzHGxNBmec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=NdiA2RVv; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMF/434e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2519C2BD10;
-	Sun, 23 Jun 2024 08:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719130285;
-	bh=CMYRryZFEx+lHsmaSAwggmsgSfJxW0d5r/9nGe0X6/c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UMF/434eoJ3N8G40EchpP4JF047+QtLeySAi4Rpw0y2D0flMIOjhoABeatgrucadi
-	 G0L6ZNXqbwqU2CO1c4XHaVW7kJiF3gN4f44I0yxgsmup8BW0lG+F7JBkAXNht0K5nU
-	 J2/No/MfSJExlbO69dSsY8i4xSisyl1nrMehyfckHjAvojGYyVAuJynT8h5jHgGyIq
-	 X2MvwFSgWhr5wlfcJ3rYrEBh7kQ4i8VGYdo7e6jTt+cyxDqE0ac/7Q7jjaWUcA8wuq
-	 /d0U3JMSYPfppXhIGAyUSLwZLbPpAcf4jld/qgVgLHy+fbyrgDlv8v9627VP8KcAfU
-	 jz+QztvzZaumQ==
-Message-ID: <c2cd4e38-edc4-46f3-bbeb-0a761104fce9@kernel.org>
-Date: Sun, 23 Jun 2024 10:11:19 +0200
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="NdiA2RVv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719130963; x=1719735763; i=markus.elfring@web.de;
+	bh=3B2iF2h3ohW2JdPS8V2ghJL3k8HTmL/3Td3HOCrMzss=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=NdiA2RVvQGEA4DentX5eZomaqbxNfyu3SCPJV+JnEt6X0V5NNBN1Qk5EXVYhyDVs
+	 aiy26951PT2/GNhiFyC58q1L+eBcwrrMGi9cl3op1vwtmaptaGTuMpe4ZvqaYn4qd
+	 V7yQIt24ascbaOV45UfvLLlwm0tNLm72tKDjp8/iknnFw7GRgPikB4p/BjwnxovjR
+	 N66JjVFSPVXLBKq5lmoPSGNdnTQjH6h2nKZhZF2Ja1UbR8j03noyBKrkugrKM3Msx
+	 Egrec6ZdS1N/Cdn0dVR1rDmNvc0M6TXeBr0nFvTn8AaV9Gjo/g1XFmZm9mKp2kbMF
+	 oyU4Kvq0RdLj6bOe5A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MdfCN-1su59G2BYf-00otqA; Sun, 23
+ Jun 2024 10:22:43 +0200
+Message-ID: <b0f546d2-bb6a-4761-bbc0-69d785df5eef@web.de>
+Date: Sun, 23 Jun 2024 10:22:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,80 +42,93 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: net: fman: remove ptp-timer from
- required list
-To: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240621170000.2289596-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240621170000.2289596-1-Frank.Li@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, imx@lists.linux.dev,
+ Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Julia Lawall <julia.lawall@inria.fr>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Shenwei Wang <shenwei.wang@nxp.com>, Waiman Long <longman@redhat.com>
+References: <AM0PR0402MB38910DB23A6DABF1C074EF1D88E52@AM0PR0402MB3891.eurprd04.prod.outlook.com>
+Subject: RE: [PATCH net-next] net: fec: Convert fec driver to use lock guards
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <AM0PR0402MB38910DB23A6DABF1C074EF1D88E52@AM0PR0402MB3891.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RhNAOB7zwVYK3MyZH/sACZ3FmkNf75gEXEW2BT7QSpSBf0753Rp
+ qxqGiNuMFwtHShwF3HQF6FJuw2OOXNo9PcDQlx6D5bwxSaGScX8q/YohwGjYOVmXT3CT+Nk
+ zudjRI8k1dTix64dpcyf4lml8eExuE1yKO2PvxawoYK4gp2JFwTT1r5AASxFBetnZoCi9P0
+ aw2MkJbScBbF0GoCgHtsg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:jhXu7Ls7F4g=;6Ol0DqOJu0Cat9xBMdFBH/JNn7F
+ 7uNpSp0hXWxU7rgj96/rMmcOM3lDx/DzvfFL0KOQHK2qnAmaPvIt2bzYcdYJDl64v58GZSRWz
+ eBdf3AfspiAzL147WIde3OHc0IvRnPaNYPTAE1Tqe0pdChr0HeYEMUg7CUVxyoSFB2ZjUIHmu
+ kyffBJ+YVO0rX/F8q02746kUyyrquueB+X+sDnNIT4sRm9efYOKNTQKhGak7IdUVBdaQ9l52F
+ SH9qa1kQGiazmMamsGjVlD9yF9m6qzDerHJ9oB3C9a6ebzTkcCffquqeXVshRrt92iEZZjnFp
+ TY1jdiwZ6/z87RrIeks5DHOM//G0d6WeEvmhmj2U1/H9ZxF2yVajcGLKod5mBCDWl4ijNFUqd
+ M6PXREASPi1XnsjK7HQD+/edWkqNs07P+ncMAOirxzX7DFuOL3yzKb2DH6sjp1+23yFg687WF
+ D/MpvIVjgOAUeUhnT40b7W0si00/8t2cIsRSJUZszbb4NUaElNsViGjFk+WSO9VR8uj0XbWQ0
+ O83XbGlBgpv1qn2mJYjV5YmHSaPa/22c4WJISlpa69POdUZaRcCSxelkzo2Nmc+mMtFUp0rb3
+ kmz3pnPgHM+HbDfdtXsdRsfzRDntin7jbh9zWo5Kr46+TuJpyCr3Bh4yRGI4bCfKGAFLP2JPc
+ FG/uzSq0WYdNe0YJ8mrTXjQGC5PaPpbgQVDMfmwaJBZ4yQQJjeJDE1yQ19+pn7K3kOwS8V7l+
+ 6j1n++fGvKdt2dFOYMZSX6z7T4mJrCEtZzmniQjtljsLRC3PhWD9JWppDh3bw7Z7f9eUE9Cl9
+ QBZ94z4RHzqhenRQz+bpF79hPbK06jWI115QI9rozXjLU=
 
-On 21/06/2024 19:00, Frank Li wrote:
-> IEEE1588(ptp) is optional feature for network. Remove it from required
-> list to fix below CHECK_DTBS warning.
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: ethernet@f0000: 'ptp-timer' is a required property
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml | 1 -
+=E2=80=A6
+> > > +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> > > @@ -99,18 +99,17 @@
+> > >   */
+> > >  static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint en=
+able)
+> > >  {
+> > > -	unsigned long flags;
+> > >  	u32 val, tempval;
+> > >  	struct timespec64 ts;
+> > >  	u64 ns;
+> > >
+> > > -	if (fep->pps_enable =3D=3D enable)
+> > > -		return 0;
+> > > -
+> > >  	fep->pps_channel =3D DEFAULT_PPS_CHANNEL;
+> > >  	fep->reload_period =3D PPS_OUPUT_RELOAD_PERIOD;
+> > >
+> > > -	spin_lock_irqsave(&fep->tmreg_lock, flags);
+> > > +	guard(spinlock_irqsave)(&fep->tmreg_lock);
+> > > +
+> > > +	if (fep->pps_enable =3D=3D enable)
+> > > +		return 0;
+> >
+> > This is not obviously correct. Why has this condition moved?
+> >
+> As you see, the assignment of ' pps_enable ' is protected by the 'tmreg_=
+lock',
+> But the read operation of 'pps_enable' was not protected by the lock, so=
+ the
+> Coverity tool will complain a LOCK EVASION warning which may cause data
+> race to occur when running in a multithreaded environment.
+
+Should such information trigger the addition of any corresponding tags
+(like =E2=80=9CFixes=E2=80=9D and =E2=80=9CCc=E2=80=9D)?
 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>                                                            Of course, th=
+is
+> data race issue is almost impossible, so I modified it by the way. Becau=
+se I don't
+> really want to fix it through another patch, unless you insist on doing =
+so.
 
-Best regards,
-Krzysztof
+Would you like to take the known advice =E2=80=9CSolve only one problem pe=
+r patch=E2=80=9D
+better into account?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.10-rc4#n81
 
+Please take another look at further approaches for the presentation of
+similar =E2=80=9Cchange combinations=E2=80=9D.
+
+Regards,
+Markus
