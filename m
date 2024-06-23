@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C9227453;
-	Sun, 23 Jun 2024 07:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A5249633;
+	Sun, 23 Jun 2024 08:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719126518; cv=none; b=Oc/fDrIM5RdjcykD4KmEphVXh6iQeTnSeZaQlEyBm/XOu0EPv0rpV/SPIB07FPPWmKYqNChdB11S8vuv1pRwwHGrMQNI0RtM9gbjvi09TxMORVANW9DU/ORF9RboezOWyUXd95WTH51MPRtvTIKztjAmHKKyCl+EB/HNriMm94g=
+	t=1719130285; cv=none; b=rAeWxVqX/01JsyyT9oQxbwrYUUxWLLYTRRbcslQjLJAUdHrTnqzkNAoanmH5t6ixzagAnYBCaAqiLEYN9I3ENRWCQ6gj7AZWQosIBzm9r7QTIgCScci2m01piOYW6CBqMtwkcOPnu3mKE1qC0a5+uowrSRyAFPrHeXsz1MwOB/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719126518; c=relaxed/simple;
-	bh=sxWC9NfFdX4cIViFqrOB5DHPMjVzWToQcWPQADncEsA=;
+	s=arc-20240116; t=1719130285; c=relaxed/simple;
+	bh=CMYRryZFEx+lHsmaSAwggmsgSfJxW0d5r/9nGe0X6/c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DKId/uhfpMQj8viL6WvwKER0GNOXqioHHYj4o4zrF/pvUeGmW8ToAWADzZesqTmcfpPswlzQgrW+1QFv3TbIM/qZfuKm9JZ6ftxNFHTmGRzt9r7MSo+1ChoBPNrvIlhvkQQT34bRWRE0KK6yfULzMOQ4jyti8D4iNdJr/aE8ggY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RM4PkO+8; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=WzSDjtQsjdDw0Gd52L/9RRRbYzFRLB3XQkwnFsOw/z1iATG92+D87K9FRpFtCywWuSzEEk0zX/Ns4+KaaHfDjVSq1x9YX+NJkk/9lTlBLHaSeHoVRJP563IdRQqvw/a1EjvXEjW5wwjHYWwPl/q7D3J/iMk46g2sOxR58g0h7Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMF/434e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RM4PkO+8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EA4C2BD10;
-	Sun, 23 Jun 2024 07:08:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMF/434e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2519C2BD10;
+	Sun, 23 Jun 2024 08:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719126517;
-	bh=sxWC9NfFdX4cIViFqrOB5DHPMjVzWToQcWPQADncEsA=;
+	s=k20201202; t=1719130285;
+	bh=CMYRryZFEx+lHsmaSAwggmsgSfJxW0d5r/9nGe0X6/c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RM4PkO+82ssgoMbdBGSXiBQdATN5hQW+nQKUaQx9V45NOb5v3Cjujh3zmpxxvBjjz
-	 gpLD1fCTnzwzSX1aVg27zQocwV6OkWVBre2kormJpLwIfcPE25GkuRVSG4RU5Ca3ze
-	 l5RojES8UWjYUOsaczxXXt46jTZXZtQ14TPhxhuH9mg/tLOKnMGMbEjz3kqpTvUzUn
-	 Mph4tD2Uww9kPHeXZDXeJ9aP38Lu+d18hxijeqkVZZWQ/H3W4VqWuVk556w68a/oDn
-	 9GFYupsLcrZdXXd4fwNKtgv4lS/YWDgdbQKFG59QMAQ6vgN5x/WIZrKq/BGKWYu5fU
-	 Li1JAUQ2b4JRg==
-Message-ID: <268a722a-c2e8-42fe-9cae-104e3f082a0a@kernel.org>
-Date: Sun, 23 Jun 2024 09:08:29 +0200
+	b=UMF/434eoJ3N8G40EchpP4JF047+QtLeySAi4Rpw0y2D0flMIOjhoABeatgrucadi
+	 G0L6ZNXqbwqU2CO1c4XHaVW7kJiF3gN4f44I0yxgsmup8BW0lG+F7JBkAXNht0K5nU
+	 J2/No/MfSJExlbO69dSsY8i4xSisyl1nrMehyfckHjAvojGYyVAuJynT8h5jHgGyIq
+	 X2MvwFSgWhr5wlfcJ3rYrEBh7kQ4i8VGYdo7e6jTt+cyxDqE0ac/7Q7jjaWUcA8wuq
+	 /d0U3JMSYPfppXhIGAyUSLwZLbPpAcf4jld/qgVgLHy+fbyrgDlv8v9627VP8KcAfU
+	 jz+QztvzZaumQ==
+Message-ID: <c2cd4e38-edc4-46f3-bbeb-0a761104fce9@kernel.org>
+Date: Sun, 23 Jun 2024 10:11:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,19 +35,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: dt-bindings: fsl,imx-audio-sgtl5000: Convert to
- dtschema
-To: Animesh Agarwal <animeshagarwal28@gmail.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240622182200.245339-1-animeshagarwal28@gmail.com>
+Subject: Re: [PATCH 1/1] dt-bindings: net: fman: remove ptp-timer from
+ required list
+To: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240621170000.2289596-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -93,142 +93,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240622182200.245339-1-animeshagarwal28@gmail.com>
+In-Reply-To: <20240621170000.2289596-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/06/2024 20:21, Animesh Agarwal wrote:
-> Convert the imx-audio-sgtl bindings to DT schema. Make bindings complete
-> by adding audio-cpu property.
-
-On what basis? Who needs or uses audio-cpu? Driver? DTS? Both? If only
-DTS, then is it needed? Maybe not?
-
+On 21/06/2024 19:00, Frank Li wrote:
+> IEEE1588(ptp) is optional feature for network. Remove it from required
+> list to fix below CHECK_DTBS warning.
+> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: ethernet@f0000: 'ptp-timer' is a required property
 > 
-> Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
-> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../sound/fsl,imx-audio-sgtl5000.yaml         | 108 ++++++++++++++++++
->  .../bindings/sound/imx-audio-sgtl5000.txt     |  56 ---------
->  2 files changed, 108 insertions(+), 56 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml
->  delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-sgtl5000.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml
-> new file mode 100644
-> index 000000000000..906dcecb73b7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-sgtl5000.yaml
-> @@ -0,0 +1,108 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl,imx-audio-sgtl5000.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale i.MX audio complex with SGTL5000 codec
-> +
-> +maintainers:
-> +  - Animesh Agarwal <animeshagarwal28@gmail.com>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,imx25-pdk-sgtl5000
-> +              - fsl,imx51-babbage-sgtl5000
-> +              - fsl,imx53-m53evk-sgtl5000
-> +              - tq,imx53-mba53-sgtl5000
-> +              - fsl,imx53-cpuvo-sgtl5000
-> +              - fsl,imx53-qsb-sgtl5000
-> +              - karo,tx53-audio-sgtl5000
-
-Keep list ordered alphabetically.
-
-> +              - fsl,imx53-voipac-sgtl5000
-> +              - fsl,imx6q-ba16-sgtl5000
-> +              - fsl,imx6q-ventana-sgtl5000
-> +              - fsl,imx-sgtl5000
-> +              - fsl,imx6-armadeus-sgtl5000
-> +              - fsl,imx6dl-nit6xlite-sgtl5000
-> +              - fsl,imx6q-nitrogen6_max-sgtl5000
-> +              - fsl,imx6q-nitrogen6_som2-sgtl5000
-> +              - fsl,imx6q-nitrogen6x-sgtl5000
-> +              - fsl,imx6-rex-sgtl5000
-> +              - fsl,imx6q-sabrelite-sgtl5000
-> +              - fsl,imx6-wandboard-sgtl5000
-
-None of these were in the old binding and commit msg mentions only
-audio-cpu. From where do you get these?
+>  Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml | 1 -
 
 
-> +          - const: fsl,imx-audio-sgtl5000
-> +      - const: fsl,imx-audio-sgtl5000
-> +
-> +  model:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: The user-visible name of this sound complex.
-> +
-> +  audio-cpu:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of an CPU DAI controller
-> +
-> +  ssi-controller:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of the i.MX SSI controller.
-> +
-> +  audio-codec:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of the SGTL5000 audio codec.
-> +
-> +  audio-routing:
-> +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-> +    description: |
-> +      A list of the connections between audio components. Each entry is a pair
-> +      of strings, the first being the connection's sink, the second being the
-> +      connection's source. Valid names could be:
-> +
-> +      Power supplies:
-> +        * Mic Bias
-> +
-> +      SGTL5000 pins:
-> +        * MIC_IN
-> +        * LINE_IN
-> +        * HP_OUT
-> +        * LINE_OUT
-> +
-> +      Board connectors:
-> +        * Mic Jack
-> +        * Line In Jack
-> +        * Headphone Jack
-> +        * Line Out Jack
-> +        * Ext Spk
-> +
-> +  mux-int-port:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: The internal port of the i.MX audio muxer (AUDMUX).
-> +    enum: [1, 2]
-
-default:
-
-> +
-> +  mux-ext-port:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: The external port of the i.MX audio muxer.
-> +    enum: [3, 4, 5, 6]
-
-defaukt:
-
-> +
-> +required:
-> +  - compatible
-> +  - model
-
-Several other properties were required. Why changing this? Please
-explain in commit msg all changes done to the binding comparing to pure
-conversion.
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
