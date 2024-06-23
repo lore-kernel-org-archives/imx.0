@@ -1,78 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135155C1A;
-	Sun, 23 Jun 2024 12:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8D7148825;
+	Sun, 23 Jun 2024 12:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719144030; cv=none; b=ZKQc8iCAkW+2qOVdAAGdKc4zkUoTZiBwqVzXR4zQXSF7Gy0F/46DCi4D8BuKpjscLS+/MdRtH8LeEdLPDi05WAKgo+tpbxf0UWTOG5OE6qN5bFcUERgw8sqHBbbL6C1mqI35wys1VEc3qRrvTvnTsaQo8Zv74USUy0Ve8C5jkIw=
+	t=1719144472; cv=none; b=EHHaFo/M/KTnanv83h35kqt5NwEZSvltp1ydYoXxCC0EdONPU5na7fInHAZNZwQgAXrha6/oSZuh/Vuc5OFp5Y7W4FVTMnkBaz4inj/QpqJ+7DwAuCZN7VZJAIIoGPANthF1KUB8MiRniOFB2P67LNyi73TsQR0BQn+pl4gXXzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719144030; c=relaxed/simple;
-	bh=mAN44LwTX3XKIAEy4qNZFAmyTgjXBNzHHu7xGgTUnqk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qB5vRGXkUjRknRdhyifxpVJXpgEC2q9Fvg5V9FfpljmlU7MFal0dzJO/OqugR5+1nGRSpKDkD99x7ZQFCdkSVrIAYuFbWAkUpSFVASApdBg++W8pvhAP6mDxD37WF1aMcG98LihjNT2gMrr/NP4uza2RaWEmGGDcU0AwNEhDtYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nh9z/1Ul; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719144472; c=relaxed/simple;
+	bh=Wmb/86jM43BcTSOVaNxvxMISlaSiZK/r2i4qLz3CQvE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KQv59RFb2KqiZdQAEKu0SBuelYubJUfy+p0uPNYns90IU3tXSEiTM744X4J7P9wSQ0xVAbs/zECD1p60PQQj+nmK5Y66AQ80Z89Q6236EPLO6x1/6hHfIM1dqDPkDsnM7m3JspXTQamltV22qRHvlRly/V4Te4MVV2ZjxYsAj4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLhknbsX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nh9z/1Ul"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 533B4C32782;
-	Sun, 23 Jun 2024 12:00:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLhknbsX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02540C32782;
+	Sun, 23 Jun 2024 12:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719144030;
-	bh=mAN44LwTX3XKIAEy4qNZFAmyTgjXBNzHHu7xGgTUnqk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Nh9z/1UlpjX8JpDF34aLyT2iVr8v8V4BlO7GwBSzwCJa6017lGcMS/fi1GhgJlrts
-	 P4YzUxGBARbwYPYyR/O+vIm4CiGAD6Ya4rbPgChAZ0CJodUqYqcFYnyJ243tP1rs8n
-	 uqPhCXt+BXHUbeY9l9aqF5mFpSPXbavokzhv/8GKWcGx7SD6mwiQaVL6F3mdfLa0WI
-	 WyHw+uL+TH82dXwt/9VCsVYWFnygwCjZqIIst1HjhZwaujLvMfG4oBzKw6FySNeXRP
-	 7uYYwVlTeQ9IbTGSX4BjYENQRXR/10NZOv3vdxDNQ6pJc/JrH+W1eMWXUsXqquxVvg
-	 jsaeAl1mBGkQw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3AADBC54BB3;
-	Sun, 23 Jun 2024 12:00:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1719144472;
+	bh=Wmb/86jM43BcTSOVaNxvxMISlaSiZK/r2i4qLz3CQvE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=hLhknbsXKZdSFAXCje0sl4Yoh2NcwTuNnnujBXIVlT6J/edLJ/0HH3VMF8R9NEN/3
+	 aKO7Ndy6xczDVP8p6yENufRjLjl0ETRb+FAEMioxhhfQATWR7/221yBlh3nknqtD49
+	 WCPWrFPPvifpBg9qnfKX2PupLuHZLYd2suP1m/AJhZ02BN8IyvKOnlE7PJvNVYLm3L
+	 B90A1WVG3PVx8T8IEc9mhLnGJB5EO492PlCuUrem2xnAVJ8Rapd+168Ch4Xv5mf+AS
+	 lx+ZrqbZMQJrw9QI0OKY0mokyzEzBsHftU61N0Ly81HYAlCHSlPQrOMVhrlT/A39c5
+	 W3gMWGEp9+AEw==
+From: Mark Brown <broonie@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Martin Kaiser <martin@kaiser.cx>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
+References: <20240508095610.2146640-2-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53}
+ cspi devices
+Message-Id: <171914446971.325901.17325396077527564535.b4-ty@kernel.org>
+Date: Sun, 23 Jun 2024 13:07:49 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/1] dt-bindings: net: fman: remove ptp-timer from required
- list
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171914403023.11613.628899711265897409.git-patchwork-notify@kernel.org>
-Date: Sun, 23 Jun 2024 12:00:30 +0000
-References: <20240621170000.2289596-1-Frank.Li@nxp.com>
-In-Reply-To: <20240621170000.2289596-1-Frank.Li@nxp.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- richardcochran@gmail.com, madalin.bucur@nxp.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+X-Mailer: b4 0.14-dev-d4707
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Fri, 21 Jun 2024 13:00:00 -0400 you wrote:
-> IEEE1588(ptp) is optional feature for network. Remove it from required
-> list to fix below CHECK_DTBS warning.
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: ethernet@f0000: 'ptp-timer' is a required property
+On Wed, 08 May 2024 11:56:10 +0200, Uwe Kleine-König wrote:
+> While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+> claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+> device trees don't add DMA channels. The Reference manuals of i.MX31 and
+> i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+> check the others.)
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml | 1 -
->  1 file changed, 1 deletion(-)
+> Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
+> DMA channel requests") this results in an error message
+> 
+> [...]
 
-Here is the summary with links:
-  - [1/1] dt-bindings: net: fman: remove ptp-timer from required list
-    https://git.kernel.org/netdev/net/c/8a67cbd47bf4
+Applied to
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
+Thanks!
+
+[1/1] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
+      commit: 5d0c35feea339e4a3a9c9e99731e4d49ad5ee329
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
