@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FC12BCE3;
-	Sun, 23 Jun 2024 11:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90C46B5;
+	Sun, 23 Jun 2024 11:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719140984; cv=none; b=oLHc8G7mcDOYKcWeYIA34HK4+FuTYmkMaEBbb2Q4jP73fBsDF8zNwGYOKJuSS73M7OQ2Aq4lPRBUa+L8XWeaMj1K28Vii8UwT3axjRs9csaPU7WuD2ZFpwtOqeugEctKzMT7OMpy2fOU12oLqnIAmhRJlk/NPEohQnNdWqaZUHs=
+	t=1719141058; cv=none; b=OTww2Ovha8EINoT/XevhRwUAW5Lx9cQNSr3d8j15vHt8napEy9hQknbH7uivEFlxKfJ5P1M6e8EdbPlpa8tt67/79uYUHfwPGKDPkc+/QfkhI3pr4ygVSwZnGI+wW7gqK2l0WgP1j1Noi/vIa8pvnbW5d5ES665LJGliOlducxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719140984; c=relaxed/simple;
-	bh=X1N5KktZMxFxNzUuXrv3gjBkIdpW53T6s/AuXDJL9Lc=;
+	s=arc-20240116; t=1719141058; c=relaxed/simple;
+	bh=5OKeTdayfOzgq6z3/8he9g3R7WgcX3TAzqL0zI/7dhY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N3JdvtbHEYwIB7KhJF6KgkDjDJVMLGSIVprNYP3FUR1z59AZlY37NIKAM1+rW71Mwc2fnzf2RnJyGdmlkWiNBhyneatD8jxiXWAxVBI5y38fAQ3JXF2lgJwt/XmhTiagXYRLP+ivS4JcuNZOz1bJNYO1I+vdfu4t922E17UlU3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNimWF2Z; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=ijmQ5gOX19kb+VLY1AAqc6pNzxKxzdia9A3MZWyHFZ6y8SkrUi0j36LnpDx8qXJ+WEkhJCRO11HnnNIy4nhkTEr/CncYR+GZthzGyaqvSvsjlC1UNGySBe5ZYed49yHxTiswbLj2Aaq6+R5riDdGl3nDotgx7rCoJDad9OkEthM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxYfrQ6a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNimWF2Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858FCC2BD10;
-	Sun, 23 Jun 2024 11:09:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxYfrQ6a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACE0C2BD10;
+	Sun, 23 Jun 2024 11:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719140984;
-	bh=X1N5KktZMxFxNzUuXrv3gjBkIdpW53T6s/AuXDJL9Lc=;
+	s=k20201202; t=1719141058;
+	bh=5OKeTdayfOzgq6z3/8he9g3R7WgcX3TAzqL0zI/7dhY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tNimWF2Z2UyMXLPSz33qU80q5yWMjhwAtm5dOatydFTvpLKbkCi2bbTI51j3LLSY3
-	 m3QZAPzDYnIkhIiDCdL1JACpUHG7dho6JQSrBdamUJmxq59+JTkjgJzkEVD4GitpXK
-	 IqL0BaTo0TyEbC2FESE2Al6IyzzphzRAnjTLyJTbPTRlR2urNfO5kRRdO576AE/XEm
-	 DMLyZ7Z4sxrAlrRgRBIeNapaztIdI5YwYTKX7mkZ7PkdkLLftWopMGcYvpM2JfUdcs
-	 LlfXKvPH9J/k2Tar9jRS/QeiA80PUQJYSrrj/DhysFTuqDBeHjrelVDSrbB36iZ5/7
-	 2vo92aOvMZaeg==
-Message-ID: <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
-Date: Sun, 23 Jun 2024 13:09:33 +0200
+	b=uxYfrQ6a9pNvtge508wbaoSbZyXmO2/l/THnxvtE4NjpjtIa8JFS6YcHHrHtezCy+
+	 aRPno+PRHWybpKtKquXxVSoOzPcsU1hlx31iE8vhlWklVNF5zAYihAbDpBr66yPCD0
+	 Bq19OVeAD6Pfmf6y9BN3SnFeAlsOMyiiyYAQTR91ks83a/0sKJYut5wPn3pAvDuPuK
+	 H5Bv3LUWJCF4KJwlTxNTRfaXOagncsBq/tqQksy/G8NWQli+oFMpjAwiR+SFCldz9i
+	 2duCjRvJuVriq4zXAsxfahxIwoU10vpIS/wuE8nKSJPJzGjew6GcrUrC7HeHb8dTJw
+	 cz8lZb3uPOv2Q==
+Message-ID: <2c32e077-48ef-4d08-99ce-9072a339740c@kernel.org>
+Date: Sun, 23 Jun 2024 13:10:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove binding
+Subject: Re: [PATCHv5 8/9] arm64: dts: imx8m: update spdif sound card node
+ properties
 To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -53,7 +54,7 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
  linuxppc-dev@lists.ozlabs.org,
  Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>
 References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
+ <20240620132511.4291-9-elinor.montmasson@savoirfairelinux.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -99,19 +100,23 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
+In-Reply-To: <20240620132511.4291-9-elinor.montmasson@savoirfairelinux.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 20/06/2024 15:25, Elinor Montmasson wrote:
-> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
-> removed.
+> Following merge of imx-spdif driver into fsl-asoc-card:
+> * update properties to match those used by fsl-asoc-card.
+> * S/PDIF in/out dummy codecs must now be declared explicitly, add and
+>   use them.
+> 
+> These modifications were tested only on an imx8mn-evk board.
 
-So what happens with all existing users (e.g. DTS)? They become
-invalid/not supported?
+So new DTS will not work on old kernel... Can you at least explain why
+this is needed and what benefits this make? You change hardware
+description, so whatever you merged in drivers is not really relevant, I
+would say.
 
-After quick look, I do not see backwards compatibility in the driver and
-above commit msg tells me nothing about ABI break.
 
 Best regards,
 Krzysztof
