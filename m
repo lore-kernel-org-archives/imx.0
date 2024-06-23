@@ -1,40 +1,33 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36472F25;
-	Sun, 23 Jun 2024 11:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450D2BCE3;
+	Sun, 23 Jun 2024 11:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719140514; cv=none; b=rZe151K7hWlYCtdznrsWORW22pfqi2NICqZy1lL55Jn9vMh4G0ru84lEx1I3hQLzN6iF+1+kQa8oxddh5R0ws4HDos95bK8zLkKhvr7zrEzOsyX62KITQxD13s5kUDrR8Nx8sE5AVu2g93nwk4aFCNaXT/CZT96jAPhZ7vbubLo=
+	t=1719140876; cv=none; b=l3BMhOCSl44FIhXfkQyt1neFKgdHLLCOJm6t7EkLbCjSv4GgrwIqqOFGJO8tIxeCCX11ivzL6kDPBqyBhNbnWV05Lii40r2K+ChlIFbDYnWQCisxUgq9mR9VtmuFNtrHMrYNQYQHKeJA0HlH66yMc2wyWWNEiJz+74FzC8B6XCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719140514; c=relaxed/simple;
-	bh=jA2qe5AZogCjbl9IbAFVpirimD78ae76THm9qAsC7Vc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Qv9LZg4xlWaHx5pxL6kZnOogLEV+g4DJC1z4X9EWCvasaLv9QTJaWthBp7CIHf6cPkJcBD0vwgVmZuE0a+jta8krDtoETbUHUJFeadaVC87ml7AM74zzkzgFgn1Zi+IdRuxjKax9Rox6WEN5XrkjCC2eaFxrSc9ibeyU15WPQi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=UnrEALRC; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1719140876; c=relaxed/simple;
+	bh=+M4chnujTGXjSxADVGgYQyDo0ZhysUpMH08sqJDaoIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DP+B5Kpgv5UTCXQBfC8YQxVTv86BfWGQoKV6AYn8ejfGOZ+G8lgJs6P4YCdBnQrhy4KGQaMNUndsxfqCqAjdQkQT/9TTm4W2p4u06guzafnqW/g2E0vhlwqtpjVcee7xLi23NzHqzUN+9d/kbAJU8yNDX090DWYtcJHkHLkrP2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aj7KS6CL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="UnrEALRC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1719140471; x=1719745271; i=markus.elfring@web.de;
-	bh=csftI6NjKYpBjRUO4MzTMZDIUeKT+0DyU6evFuhDjn0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=UnrEALRCv5EFq4W16tdamLLRhWIa5I+tBdPWylMHS68OWKqJ3wcs6I/MUUOndZiz
-	 jHDxPJzk8OlmVK12LHPoEuvvUlutuHaVwYB8VgtyPv2mWU3w7aAikN5a9Cfb9o4/y
-	 JTS7SoacxJbrHKn9dLEaVCUjpIgfGT3jEHs2qyta7/2CqVJxtOIrcupKNNasgovLv
-	 ToX2XeiX4FQ2RwuBWpnMqEG/bL40qqG809KKox4KqlOpghH+I2RMLkUUPTc0DMcFA
-	 k4v/Ia7yVrCZhh2l63G28IJtMjuaJ/+yyS/jKVjoCJ9QX6X4PgeWJ/gbdiXITSgrP
-	 FHvQJj1P9O5nqb7ZZA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1McIkg-1staOI43yO-00jPYW; Sun, 23
- Jun 2024 13:01:11 +0200
-Message-ID: <657b4098-60b8-4522-8ea0-f10aa338e1b6@web.de>
-Date: Sun, 23 Jun 2024 13:01:08 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aj7KS6CL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B726DC2BD10;
+	Sun, 23 Jun 2024 11:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719140876;
+	bh=+M4chnujTGXjSxADVGgYQyDo0ZhysUpMH08sqJDaoIA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aj7KS6CLYgjKAVhpExivrjQ98PXJ8c4eFVrJQ0JRTTnW5AnN9PfbPjqYAp3I3szV8
+	 gLeuBUMMTNQqUMqdgM7r+DClmt02oGIWbfzOIE0TNzPYujhQfqHM63IriO142XKuLx
+	 79hf8O22EoKcJAonpkW7VD5ZTZ8GJ2lm+AJr27bpMG+GwnfBHTv5L3K7t4SClRR6wO
+	 A2kwqWdXl815dH/x5LGqz0aH15Nkgll4/ECCbywslTtKt9yH5eGYIXojqhlJA4HBFH
+	 PrgKNQzr0Oy8KIN4J6dJ2MoZm4+fsPHv5bNZGimj5a/YzLdSuS43+pFqKAskLOkCAd
+	 M4G6y6ZfBc43w==
+Message-ID: <6fcbd97b-4172-48a9-bcdb-3bdf35aba8f7@kernel.org>
+Date: Sun, 23 Jun 2024 13:07:46 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,95 +35,190 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org,
- kernel-janitors@vger.kernel.org, imx@lists.linux.dev,
- Andrew Lunn <andrew@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Julia Lawall <julia.lawall@inria.fr>,
- Peter Zijlstra <peterz@infradead.org>, Simon Horman <horms@kernel.org>,
- Waiman Long <longman@redhat.com>
-References: <20240511030229.628287-1-wei.fang@nxp.com>
-Subject: Re: [PATCH v2 net-next] net: fec: Convert fec driver to use lock
- guards
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240511030229.628287-1-wei.fang@nxp.com>
+Subject: Re: [PATCHv5 6/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
+ string for spdif
+To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>
+References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
+ <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nceYxAwQIJBGBZ7hqj2vF269GF4C5ScdiWl63QyR/roUC5hgzKG
- 63sgpGqrhO9kIRDieTZQz4aWrI+PaDHtKvkf5ki/Cfrs8DI3VxeVdtSbMMdDOJd+QPRR3OD
- FoOFC7iBrvf+aXPnNQzmAOx5LgvBKuInLcdYi0wszjxbwBZpg7tOLQ9Yo74vnn9n1ciEhUC
- Wq502cQ0CA+wpklIKJhNg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:WftciS5HYck=;cQ1cS/xibwGzoKW1JT9qH66yusp
- SYZ/Vo7ToQuOsc5l/FEpzvoUOO3TKii6L/7+QVk/ZRUGzgq4Ago1OsU/TWx8MBoTtHx9Mq9VW
- C6aPplKM9Np2Q2WMwl+BSXIheBTDWBQUDGwm+nkAw4aTqTTPXM8H1Q/IQGOZpjcf2LeMOwfpH
- IP01Q2hzJlwac06rxQRLEzerr+5nBSMgWP3lgt4qAduMSx45UR6LQ2lU4VgE3UJ93TXKrfY7e
- iVYJsRDQ/N62pZGywdg4GWs4z2BqZyl9sPEX++0FZOga5+89husEjCjJ5E8xCW68dw0nPkVOk
- h3krm1T9NFQ2+HS5nRIqFH7eF3j+oG1oa6YWxFjHBRNgyOI5KcR7ZLvYqodA7dI2XIvLlrJdK
- /kRaR4c070hGvcAxsWLKPPG4LY98MrnHpngggllConiD8/3QbT8xHa6L2o2VFdoXYJLAoG3lq
- IJ3YhUbuF2ijloGuqUrs2KnQw0zI8LBC7Y+PaSp1aXTlQIQRX/HUZ/QVwGPlLpyPwP/xsFoaR
- GvpTIDowQEN2tEmK86cs6iPjd1S+NbEsZ5+IDq9IAAS1hBg8CCY4GOQiQxlZ5VC9knQ4P3wBY
- CvV0dcO7WFhPksmCjCgMLiGQPwg0xCcFT80FrpPD02dAL0iqYQZc5xgRZhLAYujtf7K4Glc4P
- QsUa+AefY1wFa8dghxk/8yvvwgtadElF7pHDuq6AZdawVNsrnAi/B6yOZs1dvkN9V0/w+4aSC
- f0E7sY1XDfBL0ggQkQM1dtlF/b1f2oOVJaadqt+jlhwS6g+7h3MstFV27+QZafxY8rS9pK9SX
- 6t61DqQZbxrM2ueoTpJ7+u3lXDoXuezIWu3Mv+EpoJrwA=
+Content-Transfer-Encoding: 7bit
 
-> The Scope-based resource management mechanism has been introduced into
-=E2=80=A6
-      scope?                                    was?
+On 20/06/2024 15:25, Elinor Montmasson wrote:
+> The S/PDIF audio card support was merged from imx-spdif into the
+> fsl-asoc-card driver, making it possible to use an S/PDIF with an ASRC.
+> Add the new compatible and update properties.
+
+Please use standard email subjects, so with the PATCH keyword in the
+title. `git format-patch -v5` helps here to create proper versioned
+patches. Another useful tool is b4.
+
+> 
+> Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+> ---
+>  .../bindings/sound/fsl-asoc-card.yaml         | 30 ++++++++++++++++---
+>  1 file changed, 26 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> index 9922664d5ccc..f2e28b32808e 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
+> @@ -33,6 +33,7 @@ properties:
+>        - items:
+>            - enum:
+>                - fsl,imx-sgtl5000
+> +              - fsl,imx-sabreauto-spdif
+>                - fsl,imx25-pdk-sgtl5000
+>                - fsl,imx53-cpuvo-sgtl5000
+>                - fsl,imx51-babbage-sgtl5000
+> @@ -54,6 +55,7 @@ properties:
+>                - fsl,imx6q-ventana-sgtl5000
+>                - fsl,imx6sl-evk-wm8962
+>                - fsl,imx6sx-sdb-mqs
+> +              - fsl,imx6sx-sdb-spdif
+>                - fsl,imx6sx-sdb-wm8962
+>                - fsl,imx7d-evk-wm8960
+>                - karo,tx53-audio-sgtl5000
+> @@ -65,6 +67,7 @@ properties:
+>                - fsl,imx-audio-sgtl5000
+>                - fsl,imx-audio-wm8960
+>                - fsl,imx-audio-wm8962
+> +              - fsl,imx-audio-spdif
+
+This does not look right. It's quite generic, so now you allow any
+variant to be used with this fallback.
+
+Please do not grow more this list of all possible combinations and
+instead add specific lists. Otherwise, please explain why this is valid
+hardware:
+"fsl,imx7d-evk-wm8960", "fsl,imx-audio-spdif"
 
 
-=E2=80=A6
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -99,18 +99,17 @@
->   */
->  static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable=
-)
->  {
-> -	unsigned long flags;
->  	u32 val, tempval;
->  	struct timespec64 ts;
->  	u64 ns;
->
-> -	if (fep->pps_enable =3D=3D enable)
-> -		return 0;
-> -
->  	fep->pps_channel =3D DEFAULT_PPS_CHANNEL;
->  	fep->reload_period =3D PPS_OUPUT_RELOAD_PERIOD;
->
-> -	spin_lock_irqsave(&fep->tmreg_lock, flags);
-> +	guard(spinlock_irqsave)(&fep->tmreg_lock);
+>        - items:
+>            - enum:
+>                - fsl,imx-audio-ac97
+> @@ -81,6 +84,7 @@ properties:
+>                - fsl,imx-audio-wm8960
+>                - fsl,imx-audio-wm8962
+>                - fsl,imx-audio-wm8958
+> +              - fsl,imx-audio-spdif
+
+Fallbacks should not be used alone. Why this is needed? The compatible
+is already documented, so now you create duplicated binding.
+
+This is very confusing.
+
+>  
+>    model:
+>      $ref: /schemas/types.yaml#/definitions/string
+> @@ -93,8 +97,15 @@ properties:
+>        need to add ASRC support via DPCM.
+>  
+>    audio-codec:
+> -    $ref: /schemas/types.yaml#/definitions/phandle
+> -    description: The phandle of an audio codec
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: |
+> +      The phandle of an audio codec.
+> +      With "fsl,imx-audio-spdif", either SPDIF audio codec spdif_transmitter,
+> +      spdif_receiver or both.
+> +    minItems: 1
+> +    maxItems: 2
+> +    items:
+> +      maxItems: 1
+>  
+>    audio-cpu:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> @@ -150,8 +161,10 @@ properties:
+>      description: dai-link uses bit clock inversion.
+>  
+>    mclk-id:
+> -    $ref: /schemas/types.yaml#/definitions/uint32
+> -    description: main clock id, specific for each card configuration.
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: Main clock id for each codec, specific for each card configuration.
+> +    minItems: 1
+> +    maxItems: 2
+>  
+>    mux-int-port:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> @@ -195,3 +208,12 @@ examples:
+>               "AIN2L", "Line In Jack",
+>               "AIN2R", "Line In Jack";
+>      };
 > +
-> +	if (fep->pps_enable =3D=3D enable)
-> +		return 0;
->
->  	if (enable) {
->  		/* clear capture or output compare interrupt status if have.
-=E2=80=A6
+> +  - |
+> +    sound-spdif-asrc {
+> +      compatible = "fsl,imx-audio-spdif";
+> +      model = "spdif-asrc-audio";
+> +      audio-cpu = <&spdif>;
+> +      audio-asrc = <&easrc>;
+> +      audio-codec = <&spdifdit>, <&spdifdir>;
+> +    };
 
-Was this source code adjustment influenced also by a hint about =E2=80=9CL=
-OCK EVASION=E2=80=9D
-from the analysis tool =E2=80=9CCoverity=E2=80=9D?
-https://lore.kernel.org/linux-kernel/AM0PR0402MB38910DB23A6DABF1C074EF1D88=
-E52@AM0PR0402MB3891.eurprd04.prod.outlook.com/
-https://lkml.org/lkml/2024/5/8/77
+Do not introduce another indentation style. Look what is above.
 
-Will any tags (like =E2=80=9CFixes=E2=80=9D and =E2=80=9CCc=E2=80=9D) beco=
-me relevant here?
 
-How do you think about to take the known advice =E2=80=9CSolve only one pr=
-oblem per patch=E2=80=9D
-better into account?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.10-rc4#n81
+Best regards,
+Krzysztof
 
-Under which circumstances will development interests grow for further appr=
-oaches
-according to the presentation of similar change combinations?
-
-Regards,
-Markus
