@@ -1,129 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B387E76D;
-	Mon, 24 Jun 2024 08:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFB312E1D3
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 09:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719219390; cv=none; b=BailfdWbmXq89FcVyteTyjd692/YHdokh9S5peMJpEBrmzF1b7AQyd3jSr6zOCRd9jPbc9A+8BrMQoXomFSeTErjwmzg0in80cfvti58RdMWHr39lJLF5ofaNyN9LewlT16jP57zVf1yr1iWrwOnFhkC9VFeyYsl7VAIcEFT200=
+	t=1719219916; cv=none; b=ArnYM1U1VOR7wq0mWlwb8xa4Yovxe3zbo3VPsXhRTVotPeHCl2Cx1qEJtQt9lTOgdsmpSEQqUdQemH4Ni9ys2AeByZIVUoapKOBGtZQnW2626HBvA+zNXCugVj/gW7qn07pR+zCPfKA/QsoMXN8WKs2tUQeaNOXP4/eYAa8x6B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719219390; c=relaxed/simple;
-	bh=t2YWtMH4dwKBdEs5nOu9MRpraIm82fTgm6sPhyy/Qyg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ElnTJcDpF8Qx7BCBwUQSi5up0RDfOeVeYa1Q0OqRmLXqckMkU6KRoyc7ip5gx3oJjqyZ5coJxNwa/2QtacQhnouWKTuOSdf7wHT1WqJVEhuNhgml3cAFF2PJgOmKb3Sv6gL59RA6ZbosqtuSttdggb38mWSeMm9HjEapYs+EjaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6yjuY5p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719219916; c=relaxed/simple;
+	bh=hG12t8OX9r2zsfi6mBRztzi3GNBLfq5sysaB6M3sQR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VYI3b4tsvcq+V2kj1Km7Y5lTqzxHoT3pKAwhZHgClrFS2s/s9dHjBDJaw5M1LIk36m52E6DNpDaCZdkL6pRikfosG5btJGPBHObCTYmEejgP8/aLzHcAG4HyZkxLHKN8lxKQKt3xw/AXC7F3kAlTVZc0edY/cW0aKeUyFhRhHjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jGFZQhsS; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6yjuY5p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B42BC2BBFC;
-	Mon, 24 Jun 2024 08:56:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719219389;
-	bh=t2YWtMH4dwKBdEs5nOu9MRpraIm82fTgm6sPhyy/Qyg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=S6yjuY5pSfSJgA4DtVRffaI1YXRafUPvRWxGRuBVwWvfKnWVs1X5lRkz+WfSfZk7b
-	 BLYhlA3nbQGn0wEyktsy2M9TUG4+ORu0nOfwsbD8MxKaNZbvtFSAPruiKQIP64dHGb
-	 Ce+YlnRvJmesMjvZYG04/AtVgHMHjy6ImKBk84g7tjDXFvFf3qqeketZ1GlAcXHPli
-	 Izt6NL5k7hzBiRPWFUXb44THoHuLB/E6Iu78dPsuS09VuDkBQTOkScTm2I5lmfvH0N
-	 xO4Ce7fdGcIJUt7cam/TMI0KpssMZVSxNc5avB5q24pCdS/uPYQVD9dAACIHZsskeN
-	 Nq58zhTQ+pHbg==
-Message-ID: <343b1610-e10b-46e5-9026-370b4b675940@kernel.org>
-Date: Mon, 24 Jun 2024 10:56:20 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jGFZQhsS"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4217990f8baso35803775e9.2
+        for <imx@lists.linux.dev>; Mon, 24 Jun 2024 02:05:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719219913; x=1719824713; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=di0dNpRixSPGeZUOijvt7RrcSBHiIOF2BknJfQ4DEvM=;
+        b=jGFZQhsS790EVNnKRNou7o+YtTcrn5sWwqFUu1qNcTqb0PWr4J3BbS5ywVK7SXdjV8
+         W6ru1T3yx3KVgtjT6JhpLzErSeSCKm/GpjVGTIdHHDUVwOwoCUUnwZ/Vp+AUPGWw6JVi
+         0TYi2eAJFMb4aPNututjfqIxLjhwMsSBOziBtq1UbyT1Hz07xJ25HcAUE3YiyVnFOm+P
+         J3PdLSMRZrOdzpdzD7QJoZiIE0uT62KusnlIu6+Lm4ZQtfflNtGLxqb0/fd6WU3dWive
+         J22Y8mcNvBAB3Fufc6lDTcBnefISsML5sas0qiypzq5fNns+i+VBCWEIPw6KiOY4wSN1
+         GUuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719219913; x=1719824713;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=di0dNpRixSPGeZUOijvt7RrcSBHiIOF2BknJfQ4DEvM=;
+        b=Icu5AlhqLbOaNnLUmMQIMux9c2BRpjgcL5bgq6cKCvXBDtsEQ/80ZPt2ud2tsfq50W
+         g0NkGTmxaC1NLAWfMSqh93BIEU9YG1fMCV0Hiz7nEMJZexHRdWgeVqYHgzFF8Aw8MMky
+         zlLLFOzL+E8NjGnsvVcRWbY7OJImiJ/p5eAT/FYcLj+DisabGhcBrBU0Q2lOVVUPQnvw
+         KGzB5Y5O/he94uJ6utoaC3QOWlrRBgShKmac3t0QJ1VcEMZ8qSk2Iig1J3at1HXkGOk4
+         oReVns31TB7eUR3DYOBZCTdn94QHij+eOFVtPWGwCUEabNQ4UtRoUujeoomd7UByydg+
+         jyPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfulXfH1llIF7rKeszRX+v5Yj9l6jATRSiS1vLbsyLssdH+v0LUaFlJSNaTtk69qoU62GT7F6y1xSW2/wcqf7nrk2e
+X-Gm-Message-State: AOJu0YysmJlqJ5wuOjZHqfRioSiq6jcJnimCajnI4iSxTFKCKHxADZtv
+	wvp4pX8dtfxJpy9seyH0DOKqSQNsiw+qhcWPMBgHp90iLVBrqjslOpl+OmjFU88=
+X-Google-Smtp-Source: AGHT+IFkSDPiD+yWXQfNgR70eBw92raGLyWVYw9jofSEZ+B5IYJBbmKB8z16gdgkMotEoz1Cs0mBxg==
+X-Received: by 2002:a05:6000:2c5:b0:366:e89c:342b with SMTP id ffacd0b85a97d-366e89c34bcmr3948138f8f.52.1719219913015;
+        Mon, 24 Jun 2024 02:05:13 -0700 (PDT)
+Received: from linaro.org ([82.79.124.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3663a2f8268sm9404031f8f.79.2024.06.24.02.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jun 2024 02:05:12 -0700 (PDT)
+Date: Mon, 24 Jun 2024 12:05:11 +0300
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] clk: imx: add missing MODULE_DESCRIPTION() macros
+Message-ID: <Znk2x1ON5orqjziA@linaro.org>
+References: <20240602-md-clk-imx-v1-1-5c6d240f6fab@quicinc.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 6/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
- string for spdif
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- shengjiu wang <shengjiu.wang@gmail.com>, Xiubo Lee <Xiubo.Lee@gmail.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-sound <linux-sound@vger.kernel.org>,
- devicetree <devicetree@vger.kernel.org>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- linux-kernel <linux-kernel@vger.kernel.org>,
- alsa-devel <alsa-devel@alsa-project.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
-References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
- <6fcbd97b-4172-48a9-bcdb-3bdf35aba8f7@kernel.org>
- <1327841247.1714446.1719219099909.JavaMail.zimbra@savoirfairelinux.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <1327841247.1714446.1719219099909.JavaMail.zimbra@savoirfairelinux.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240602-md-clk-imx-v1-1-5c6d240f6fab@quicinc.com>
 
-On 24/06/2024 10:51, Elinor Montmasson wrote:
+On 24-06-02 08:59:17, Jeff Johnson wrote:
+> make allmodconfig && make W=1 C=1 reports:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/mxc-clk.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/clk-imxrt1050.o
 > 
->> The compatible is already documented, so now you create duplicated binding.
->>
->> This is very confusing.
+> Add the missing invocations of the MODULE_DESCRIPTION() macro.
 > 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+
+> ---
+>  drivers/clk/imx/clk-imxrt1050.c | 1 +
+>  drivers/clk/imx/clk.c           | 1 +
+>  2 files changed, 2 insertions(+)
 > 
-> The double compatible documentation is only temporary, next commit (7/9)
-> removes the previous binding in "fsl,imx-audio-spdif.yaml".
-> I separated these changes in multiple commit to ease git history searching
-> by subject/file.
-> If required, I can merge commits 6/9 and 7/9.
-
-Yeah, squash them so it will be obvious.
-
-
-Best regards,
-Krzysztof
-
+> diff --git a/drivers/clk/imx/clk-imxrt1050.c b/drivers/clk/imx/clk-imxrt1050.c
+> index 08d155feb035..efd1ac9d8eeb 100644
+> --- a/drivers/clk/imx/clk-imxrt1050.c
+> +++ b/drivers/clk/imx/clk-imxrt1050.c
+> @@ -176,6 +176,7 @@ static struct platform_driver imxrt1050_clk_driver = {
+>  };
+>  module_platform_driver(imxrt1050_clk_driver);
+>  
+> +MODULE_DESCRIPTION("NXP i.MX RT1050 clock driver");
+>  MODULE_LICENSE("Dual BSD/GPL");
+>  MODULE_AUTHOR("Jesse Taube <Mr.Bossman075@gmail.com>");
+>  MODULE_AUTHOR("Giulio Benetti <giulio.benetti@benettiengineering.com>");
+> diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+> index e35496af5ceb..df83bd939492 100644
+> --- a/drivers/clk/imx/clk.c
+> +++ b/drivers/clk/imx/clk.c
+> @@ -226,4 +226,5 @@ static int __init imx_clk_disable_uart(void)
+>  late_initcall_sync(imx_clk_disable_uart);
+>  #endif
+>  
+> +MODULE_DESCRIPTION("Common clock support for NXP i.MX SoC family");
+>  MODULE_LICENSE("GPL v2");
+> 
+> ---
+> base-commit: 83814698cf48ce3aadc5d88a3f577f04482ff92a
+> change-id: 20240602-md-clk-imx-370fc1d85ab5
+> 
