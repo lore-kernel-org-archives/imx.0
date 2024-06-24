@@ -1,67 +1,70 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B851805E
-	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 09:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494D3745E2
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 09:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719219933; cv=none; b=sc0iBN2ZjFYZFeOZG0RN55n70uxa2AohtdTmte0G9zdMciAe2lUqpen9I0wmCdIMf+JHrsaa9PpWxOLPJ1aKaHXk67Emb2jKdcKicJCM7Tz+Kg2+Z+tLgXhsK/Y3JB0DBpbyd9jKYiLUeCl8tF/OumBgxCAO243vE/MlkS7JwK4=
+	t=1719219968; cv=none; b=bz68kHlNVO/IJrkVPzsaYVMAdIxGEkBXNSSTwjE1OSz5MMlfVxnscVwbotb03yIO6+3irWvbYjmI8QbDxr3awkT3F8Bsrzuh6tPVpgAI/TTun3aMAPaAzgrhouQ5ZJDC1PPk1VSfz1CUSmaSJ6aPiPmEJOQ3Xp6j5o9pUYw1jAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719219933; c=relaxed/simple;
-	bh=y3HVBK/bRtl4XQzsyLB6r9HO/3l+Qjcw4dVPw8dtz3Q=;
+	s=arc-20240116; t=1719219968; c=relaxed/simple;
+	bh=ZN5+orVrGT6zdLrz7ZrhzJFWY4wX858lkwUU4kdguWA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDzXEEr84+gDjVPFPAEsoE/RdHymMbmd9cNPgfbvT1Obwvl5g6gF0XBzf0hQ7gcWRHWccuYyhvk4GDgqZFtD+hMC3y9wgEk/rRsdL/O6VdGYjo9FFPOxQ3t8m+xtgWxnp6Pqg15oHfwUQN2w+u+Wwn9l8rMLSyAt3kjg2seAVzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OYC3fAE/; arc=none smtp.client-ip=209.85.128.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=krnJTggqgOPFUl3T1EUceL4ug7o37x8GqP+KFJB3DK6dpaRewGOaxRp+OW7cHSX5FqtA+GXHFHEawwG1yvktS9JJSA9qOB1Cu3x4poOWc7gVNCoJ+dyl4KzozzRdqGf5LH1+9TuULIvR4+7QSgdnUWVebJOen1fyGNdlAWS0J5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tPeoPNB8; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OYC3fAE/"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-421bb51d81aso33833475e9.3
-        for <imx@lists.linux.dev>; Mon, 24 Jun 2024 02:05:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tPeoPNB8"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52ce12707d9so1193385e87.3
+        for <imx@lists.linux.dev>; Mon, 24 Jun 2024 02:06:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719219930; x=1719824730; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1719219964; x=1719824764; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eX7dckm9u+f+lO2ZsVHDkfJuiV4Rz3AqkMPKl5tZVVE=;
-        b=OYC3fAE/tmy0L7lSaIsIfun/eIw8SrMPgAETb4dJR71flqWtWAFs3/gEJd7c6Ldi5a
-         YdtnzAcD4M9g/a3GtHH/WRn0qT7+Lf6W1qlxomj3u7Lw7Gp/zksW0qknFVpcR62f8pCn
-         eJ0K1w6kAj3C86zshSqy38uRoUzGStUN9FhAz3krBadsV6UlvG96Yrgf35BtqW7106zs
-         JsLWDYBGNP4k6rOq+RBqZlPPdUgvsi5JIqzvUAHZ842UV+W6H1dJMgLSlzQZPT2DLTTy
-         j2CF6B96Vs7M9BTBPXxDfi/E006Kms6RqqG9kmoLJ8y5KtAHtxUqENuPUlWT5AyCk3Oq
-         bxyA==
+        bh=Kew+Lkgg2/C1wK/ceEvlEA0LvihR0nCkMCFEGGDYFH0=;
+        b=tPeoPNB8DfS7wlAUz/cRQVX5fdQdIHfgyhfKD17mhVjkYDQOGlRETh8V4Wl6WCzJYw
+         BbqG5HZ4iWkVEjiQIGdT0rdGn/Mr49YpF+Ad9pj/jtbbGi0qeU68XQu+++9dq6XQxCMo
+         KCw5JeDL7Y6DGtboPTuqBSWY2OY2+XLSeMv3nJJeDk2RujMNvk52IvN0TbxidI4LP9ex
+         OeYnibKl6w5RIh5y/cswJnJQ4VZZltfWImEuhXy/oq/gZXcBtufAOudqAV1OYvvmj6FH
+         TtLvFMyTLMX7vnGRQnBZXfHLQm276p21E5Y9npAGd4KK9Z62ikpIn23iu3Y0xh0bSnLK
+         tHLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719219930; x=1719824730;
+        d=1e100.net; s=20230601; t=1719219964; x=1719824764;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eX7dckm9u+f+lO2ZsVHDkfJuiV4Rz3AqkMPKl5tZVVE=;
-        b=cfgYowGSuF84MElAL2wc6HQR30giaWnQeFicnvnJnURqHTOIsLIjHGzRbhVScFtFLd
-         AGXhL4n+d6QB6wti1iiU0fBYyXwPtUQPLDOdjG+w9jgovmeXgeoVUNUFGwcoR8GlfAuQ
-         QjI4OGFsExMVTUlkBHfPI+JKvo31sVpj04CG850JbuoOJI24knGqm/jA0mf9/XjfbtO0
-         vEVYDx7fZ5vr8rll6HO/GtXpj0qYv6swuyz3ir8JkHQUF1XJka2zci/lvCezkwOvQzgq
-         FBEWHOt4MwVL4VnOGjoJITDRwwbvrVMzjCNFvkt8cFjqIEYt2heG0w+iPkg+WIABfxkw
-         TTLA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/neE4jUevLLB11UrKecyRYJS3aCML3cWtvxKPJ0DWoozqYenPfI8JiwOqgp4dnYzrq4hlzdkv2NgmCJXFgJueMPXQ
-X-Gm-Message-State: AOJu0Yz0eHxz1FOkAf3kd81yAml8JkFg5KolqlSeaCUNkW87kkIdRrMK
-	1Iz86dZfvSSShOhJxYZe5mDj+GuScoqRdhUib74sOf1ZJTzOgKDOdS0rddyXpEc=
-X-Google-Smtp-Source: AGHT+IFCAyqdfSpwc+KusHgg6PUb11/WZSWULyobNuTMHB2rRr+sqQCcDWWC19uzTo3m9BDnUqC8tA==
-X-Received: by 2002:a05:6000:1847:b0:366:ead3:37cd with SMTP id ffacd0b85a97d-366ead33bc6mr3176993f8f.28.1719219930407;
-        Mon, 24 Jun 2024 02:05:30 -0700 (PDT)
+        bh=Kew+Lkgg2/C1wK/ceEvlEA0LvihR0nCkMCFEGGDYFH0=;
+        b=G0109LP0XsgTdlvMaiaeITFIYcsD4KawxS2ZroQwRs26R6OPyqBHQ51EflAz0ceXE8
+         YvVzrYJBeHai6fXIkpB+AJfUdC9F4GoocMmPF5Z0oqtGtF/h/3peB26jixzBYJakm/jH
+         SIg9wq6xYFaHlRkQCHFPesPdFR4HE8sG1vI1rRrEAVGlEG6pAc8yEkei0VhiF5v5fhIg
+         mLTnwhRtjIKIMQsKrBHVnsp7QGz0pm9NPcAzYxsikz+dyflyirYdngVXqeOdCWKJ1t10
+         kqOPmgsCrqeQxvCf1b6ev5tbbmrviE5M8VKfgPkK8ara/L5yRxJIkGjH2L63myq9SVtP
+         Awmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXd/OUkrlu0vRIVeEc6wrdOqcOiEhz60nv9PFjSOFcLdYmOH87LGWnyNxTNmeGLc+hXsI1Dd95RiFZFjlLdekY3LjZm
+X-Gm-Message-State: AOJu0YwQfU2/3Lgwxf+xhjdYNQFrsmm47lchJUrcGIk0ucUpXu3ErOhS
+	bQddecquYH3Vg+zN0jyOgICvy1sreU5siymbIsBYiu+63JL3OMiMCriEpygLFkw=
+X-Google-Smtp-Source: AGHT+IFLK18mj5o7O9bzNwh+9imco/emBa0iy/WB+YbshssFsZ8QxRrWGYZrnIism3ewt/VuyDJvAA==
+X-Received: by 2002:a05:6512:b8b:b0:52c:e312:2082 with SMTP id 2adb3069b0e04-52ce3122186mr2621375e87.54.1719219964284;
+        Mon, 24 Jun 2024 02:06:04 -0700 (PDT)
 Received: from linaro.org ([82.79.124.209])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-366383f6da6sm9400270f8f.12.2024.06.24.02.05.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3663a2f6af9sm9494370f8f.73.2024.06.24.02.06.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 02:05:30 -0700 (PDT)
-Date: Mon, 24 Jun 2024 12:05:28 +0300
+        Mon, 24 Jun 2024 02:06:03 -0700 (PDT)
+Date: Mon, 24 Jun 2024 12:06:02 +0300
 From: Abel Vesa <abel.vesa@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: abelvesa@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, imx@lists.linux.dev, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] clk: imx: composite-7ulp: Use NULL instead of 0
-Message-ID: <Znk22OwMJ7oKDLXo@linaro.org>
-References: <20240624024351.488492-1-peng.fan@oss.nxp.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
+	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
+Subject: Re: [PATCH v9] reset: imx8mp-audiomix: Add AudioMix Block Control
+ reset driver
+Message-ID: <Znk2+uYj4JpbP+z+@linaro.org>
+References: <1719200345-32006-1-git-send-email-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,44 +73,199 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240624024351.488492-1-peng.fan@oss.nxp.com>
+In-Reply-To: <1719200345-32006-1-git-send-email-shengjiu.wang@nxp.com>
 
-On 24-06-24 10:43:51, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On 24-06-24 11:39:05, Shengjiu Wang wrote:
+> Add support for the resets on i.MX8MP Audio Block Control module,
+> which includes the EARC PHY software reset and EARC controller
+> software reset. The reset controller is created using the auxiliary
+> device framework and set up in the clock driver.
 > 
-> Address the sparse warnings "
-> sparse warnings: (new ones prefixed by >>)
-> >> drivers/clk/imx/clk-composite-7ulp.c:85:24: sparse: sparse:
-> Using plain integer as NULL pointer
-> "
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406220536.JnAncjqz-lkp@intel.com/
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
 Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
 
 > ---
+> changes in v9:
+> - only send this commits because others have been applied
+> - remove depends on in config
+> - add spin lock
+> - call iounmmap()
 > 
-> V1:
->  Since the orignal patch is still in linux-next tree, so not add fixes tag
+> changes in v8:
+> https://lore.kernel.org/linux-arm-kernel/27ea1bf7de6f349426fcd7ddb056a1adfae47c73.camel@pengutronix.de/T/
 > 
->  drivers/clk/imx/clk-composite-7ulp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/reset/Kconfig                 |   7 ++
+>  drivers/reset/Makefile                |   1 +
+>  drivers/reset/reset-imx8mp-audiomix.c | 128 ++++++++++++++++++++++++++
+>  3 files changed, 136 insertions(+)
+>  create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
 > 
-> diff --git a/drivers/clk/imx/clk-composite-7ulp.c b/drivers/clk/imx/clk-composite-7ulp.c
-> index db7f40b07d1a..8ed2e0ad2769 100644
-> --- a/drivers/clk/imx/clk-composite-7ulp.c
-> +++ b/drivers/clk/imx/clk-composite-7ulp.c
-> @@ -82,7 +82,7 @@ static struct clk_hw *imx_ulp_clk_hw_composite(const char *name,
->  	val = readl(reg);
->  	if (!(val & PCG_PR_MASK)) {
->  		pr_info("PCC PR is 0 for clk:%s, bypass\n", name);
-> -		return 0;
-> +		return NULL;
->  	}
+> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+> index 7112f5932609..509f70e5c4c0 100644
+> --- a/drivers/reset/Kconfig
+> +++ b/drivers/reset/Kconfig
+> @@ -91,6 +91,13 @@ config RESET_IMX7
+>  	help
+>  	  This enables the reset controller driver for i.MX7 SoCs.
 >  
->  	if (mux_present) {
+> +config RESET_IMX8MP_AUDIOMIX
+> +	tristate "i.MX8MP AudioMix Reset Driver"
+> +	select AUXILIARY_BUS
+> +	default CLK_IMX8MP
+> +	help
+> +	  This enables the reset controller driver for i.MX8MP AudioMix
+> +
+>  config RESET_INTEL_GW
+>  	bool "Intel Reset Controller Driver"
+>  	depends on X86 || COMPILE_TEST
+> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+> index fd8b49fa46fc..a6796e83900b 100644
+> --- a/drivers/reset/Makefile
+> +++ b/drivers/reset/Makefile
+> @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
+>  obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
+>  obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
+>  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
+> +obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) += reset-imx8mp-audiomix.o
+>  obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
+>  obj-$(CONFIG_RESET_K210) += reset-k210.o
+>  obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
+> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
+> new file mode 100644
+> index 000000000000..6e3f3069f727
+> --- /dev/null
+> +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> @@ -0,0 +1,128 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include <linux/auxiliary_bus.h>
+> +#include <linux/device.h>
+> +#include <linux/io.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_address.h>
+> +#include <linux/reset-controller.h>
+> +
+> +#define EARC			0x200
+> +#define EARC_RESET_MASK		0x3
+> +
+> +struct imx8mp_audiomix_reset {
+> +	struct reset_controller_dev rcdev;
+> +	spinlock_t lock; /* protect register read-modify-write cycle */
+> +	void __iomem *base;
+> +};
+> +
+> +static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
+> +{
+> +	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
+> +}
+> +
+> +static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
+> +					unsigned long id)
+> +{
+> +	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
+> +	void __iomem *reg_addr = priv->base;
+> +	unsigned int mask, reg;
+> +	unsigned long flags;
+> +
+> +	mask = BIT(id);
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +	reg = readl(reg_addr + EARC);
+> +	writel(reg & ~mask, reg_addr + EARC);
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
+> +					  unsigned long id)
+> +{
+> +	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
+> +	void __iomem *reg_addr = priv->base;
+> +	unsigned int mask, reg;
+> +	unsigned long flags;
+> +
+> +	mask = BIT(id);
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +	reg = readl(reg_addr + EARC);
+> +	writel(reg | mask, reg_addr + EARC);
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
+> +	.assert   = imx8mp_audiomix_reset_assert,
+> +	.deassert = imx8mp_audiomix_reset_deassert,
+> +};
+> +
+> +static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
+> +				       const struct auxiliary_device_id *id)
+> +{
+> +	struct imx8mp_audiomix_reset *priv;
+> +	struct device *dev = &adev->dev;
+> +	int ret;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	spin_lock_init(&priv->lock);
+> +
+> +	priv->rcdev.owner     = THIS_MODULE;
+> +	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
+> +	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
+> +	priv->rcdev.of_node   = dev->parent->of_node;
+> +	priv->rcdev.dev	      = dev;
+> +	priv->rcdev.of_reset_n_cells = 1;
+> +	priv->base            = of_iomap(dev->parent->of_node, 0);
+> +	if (!priv->base)
+> +		return -ENOMEM;
+> +
+> +	dev_set_drvdata(dev, priv);
+> +
+> +	ret = devm_reset_controller_register(dev, &priv->rcdev);
+> +	if (ret)
+> +		goto out_unmap;
+> +
+> +	return 0;
+> +
+> +out_unmap:
+> +	iounmap(priv->base);
+> +	return ret;
+> +}
+> +
+> +static void imx8mp_audiomix_reset_remove(struct auxiliary_device *adev)
+> +{
+> +	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(&adev->dev);
+> +
+> +	iounmap(priv->base);
+> +}
+> +
+> +static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
+> +	{
+> +		.name = "clk_imx8mp_audiomix.reset",
+> +	},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
+> +
+> +static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
+> +	.probe		= imx8mp_audiomix_reset_probe,
+> +	.remove		= imx8mp_audiomix_reset_remove,
+> +	.id_table	= imx8mp_audiomix_reset_ids,
+> +};
+> +
+> +module_auxiliary_driver(imx8mp_audiomix_reset_driver);
+> +
+> +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
+> +MODULE_DESCRIPTION("Freescale i.MX8MP Audio Block Controller reset driver");
+> +MODULE_LICENSE("GPL");
 > -- 
-> 2.37.1
+> 2.34.1
 > 
