@@ -1,63 +1,115 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A692E400;
-	Mon, 24 Jun 2024 18:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D50E22313;
+	Mon, 24 Jun 2024 19:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719255541; cv=none; b=fvJIvSp7BC4DsSlo+84UA2JZpke7/fLy0YsSEKacWHCdlvHdCjwQMDaxRqFkEiIAuxeCa8W3/CBq5I9hyY0uNG0GhvrREUBhEu28YgJk59ULQiSNwrSvsH9F/zj94bgFP+8JFBMo5Wl0Bkbpf1iTVqNtLfI3rHKRjtJXWjXccB4=
+	t=1719257516; cv=none; b=d/bZriHUU4mdZYBhWqNVkNvha90BjuDbHyid3fsKODdKXPs67Cy12MrNiJaPeHjq4gdxWtqIx/jbODkEr8xUsGrWW6oj77eVGSAfUnuHDvih+uMcVyGmWOcy+GYP5EgfjSiDxjxAyLUPuNU2AMUVaJ+f0wMK+0KQ/h1Sr6nBIwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719255541; c=relaxed/simple;
-	bh=vjAK4BHFcZgLQEnSbH4lyl2FcXXdbm52EvC+Zt7q808=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FTEcaXLG1+GTkA97Bfw/1fUt7T/IjqMQP5p14K91Cs7RuRPxTQIogm3SYf3xRRN3WURICjjth0qGOfprsnZKUMMaTtRVEwUf1GPvXFfu+rHF6N2Z+VSSfoi7owlq0kp79ItlfbVeCRGQG10owqc3C0aW52sMu8xq78pXUJKNcgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GR1Zx25p; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1719257516; c=relaxed/simple;
+	bh=WO5bItYsgm4x9pwloWwGJ++ymNZPqAykTIN55gh+o5Q=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=JXCwUX0lSQxbs2Nx0qc2pMibTJM456cPQhuME7uD552ExiAs9gnO3JPcKSy+SQ6l9/J4HN7txyfdI01But+ewB0jIutz5XZgv01MrXX+45TeQtSH5VX2sJ4SC2AOcmNZI5LSi1rnJMe5vyUtPSxVE+BMs8e9UYLNOfX1s3LS7CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=f2mQW5BI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GR1Zx25p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=K0lyMj3UXzLsvO1X8aghEUe7sBxLcfkkq8Bk5NmS9R0=; b=GR1Zx25pDUYo+GXpfSmZwsELQt
-	AAa5cyhowk4dKjxhY8eSrpEBGFha3acBmMNL7oaLMCytLbSsEdAvJQqdZ3a/GS0FAQmt5SRl+lfyQ
-	FxUHxVoTRnAVk5UIbTS8pD/nISsPXT3JoYQVBOV2TZcKBXepFcsLFK5fzuzmIqLTbmS4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sLott-000sSc-Nk; Mon, 24 Jun 2024 20:58:49 +0200
-Date: Mon, 24 Jun 2024 20:58:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: netdev@vger.kernel.org, conor+dt@kernel.org, davem@davemloft.net,
-	devicetree@vger.kernel.org, edumazet@google.com,
-	imx@lists.linux.dev, krzk+dt@kernel.org, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, madalin.bucur@nxp.com,
-	pabeni@redhat.com, richardcochran@gmail.com, robh@kernel.org,
-	sean.anderson@seco.com, yangbo.lu@nxp.com
-Subject: Re: [PATCH 1/1] MAINTAINERS: Change fsl-fman.yaml to fsl,fman.yaml
-Message-ID: <af3c9b4b-e315-4f8b-b76f-f68911645227@lunn.ch>
-References: <20240624144655.801607-1-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="f2mQW5BI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F22EC2BBFC;
+	Mon, 24 Jun 2024 19:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1719257515;
+	bh=WO5bItYsgm4x9pwloWwGJ++ymNZPqAykTIN55gh+o5Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f2mQW5BI1BXSMdaSW0V2Eg2aSozyjzN8w5GvF3HdsotTv/seex9KXpqX7pSSkiX6Z
+	 gJ6urvSNN9CsZd1fS3AXc/JIbrrRicuswhDOGtkBkdqAmy4NteCbmm0KqgjQn3CyyA
+	 6cywjTV53TQt5Q+7hM/QEsbSNjWjDSYqgoXyhPq4=
+Date: Mon, 24 Jun 2024 12:31:54 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ amd-gfx@lists.freedesktop.org, imx@lists.linux.dev,
+ intel-xe@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-mtd@lists.infradead.org,
+ linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, Mark Brown
+ <broonie@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ f76698bd9a8ca01d3581236082d786e9a6b72bb7
+Message-Id: <20240624123154.4c3125c3093636de35b407dd@linux-foundation.org>
+In-Reply-To: <202406230716.DQbMBKh0-lkp@intel.com>
+References: <202406230716.DQbMBKh0-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240624144655.801607-1-Frank.Li@nxp.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 24, 2024 at 10:46:55AM -0400, Frank Li wrote:
-> fsl-fman.yaml is typo. "-" should be ",". Fix below warning.
+On Sun, 23 Jun 2024 07:11:24 +0800 kernel test robot <lkp@intel.com> wrote:
+
+> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> branch HEAD: f76698bd9a8ca01d3581236082d786e9a6b72bb7  Add linux-next specific files for 20240621
 > 
-> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/fsl-fman.yaml
+> Error/Warning reports:
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406211320.diuZ3XYk-lkp@intel.com/
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> https://lore.kernel.org/oe-kbuild-all/202406220536.JnAncjqz-lkp@intel.com
+> https://lore.kernel.org/oe-kbuild-all/202406220754.evK8Hrjw-lkp@intel.com
+> 
+> Error/Warning: (recently discovered and may have been fixed)
+> 
+> drivers/soc/qcom/smsm.c:(.text.qcom_smsm_remove+0x70): undefined reference to `mbox_free_channel'
+> 
+> Unverified Error/Warning (likely false positive, please contact us if interested):
+> 
+> include/linux/container_of.h:20:54: error: invalid use of undefined type 'struct thpsize'
+> include/linux/list.h:645:25: error: invalid use of undefined type 'struct thpsize'
+> include/linux/stddef.h:16:33: error: invalid use of undefined type 'struct thpsize'
+> mm/huge_memory.c:455:21: error: implicit declaration of function 'to_thpsize'; did you mean 'thp_size'? [-Werror=implicit-function-declaration]
+> mm/huge_memory.c:455:37: error: invalid type argument of '->' (have 'int')
+> mm/huge_memory.c:558:35: error: 'MTHP_STAT_FILE_ALLOC' undeclared (first use in this function); did you mean 'THP_FILE_ALLOC'?
+> mm/huge_memory.c:559:38: error: 'MTHP_STAT_FILE_FALLBACK' undeclared (first use in this function); did you mean 'THP_FILE_FALLBACK'?
+> mm/huge_memory.c:560:45: error: 'MTHP_STAT_FILE_FALLBACK_CHARGE' undeclared (first use in this function); did you mean 'THP_FILE_FALLBACK_CHARGE'?
+> mm/huge_memory.c:579:17: warning: assignment to 'struct thpsize *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+> mm/huge_memory.c:579:33: error: invalid application of 'sizeof' to incomplete type 'struct thpsize'
+> mm/huge_memory.c:583:44: error: invalid use of undefined type 'struct thpsize'
+> mm/huge_memory.c:608:15: warning: passing argument 1 of 'kfree' makes pointer from integer without a cast [-Wint-conversion]
+> 
+>
+> ...
+>
+>
+> |-- x86_64-randconfig-014-20240202
+> |   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-thpsize
+> |   |-- include-linux-list.h:error:invalid-use-of-undefined-type-struct-thpsize
+> |   |-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-thpsize
+> |   |-- mm-huge_memory.c:error:MTHP_STAT_FILE_ALLOC-undeclared-(first-use-in-this-function)
+> |   |-- mm-huge_memory.c:error:MTHP_STAT_FILE_FALLBACK-undeclared-(first-use-in-this-function)
+> |   |-- mm-huge_memory.c:error:MTHP_STAT_FILE_FALLBACK_CHARGE-undeclared-(first-use-in-this-function)
+> |   |-- mm-huge_memory.c:error:implicit-declaration-of-function-to_thpsize
+> |   |-- mm-huge_memory.c:error:invalid-application-of-sizeof-to-incomplete-type-struct-thpsize
+> |   |-- mm-huge_memory.c:error:invalid-type-argument-of-(have-int-)
+> |   |-- mm-huge_memory.c:error:invalid-use-of-undefined-type-struct-thpsize
+> |   |-- mm-huge_memory.c:warning:assignment-to-struct-thpsize-from-int-makes-pointer-from-integer-without-a-cast
+> |   `-- mm-huge_memory.c:warning:passing-argument-of-kfree-makes-pointer-from-integer-without-a-cast
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Is there a way for us to obtain that config file?
 
-    Andrew
+"mm: shmem: add multi-size THP sysfs interface for anonymous shmem"
+moved things into mm_tytpes.h but didn't include it so perhaps this
+will fix:
+
+--- a/mm/huge_memory.c~mm-shmem-add-multi-size-thp-sysfs-interface-for-anonymous-shmem-fix-4
++++ a/mm/huge_memory.c
+@@ -20,6 +20,7 @@
+ #include <linux/swapops.h>
+ #include <linux/backing-dev.h>
+ #include <linux/dax.h>
++#include <linux/mm_types.h>
+ #include <linux/khugepaged.h>
+ #include <linux/freezer.h>
+ #include <linux/pfn_t.h>
+_
+
