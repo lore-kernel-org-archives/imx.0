@@ -1,271 +1,138 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494D3745E2
-	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 09:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311272C95
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 09:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719219968; cv=none; b=bz68kHlNVO/IJrkVPzsaYVMAdIxGEkBXNSSTwjE1OSz5MMlfVxnscVwbotb03yIO6+3irWvbYjmI8QbDxr3awkT3F8Bsrzuh6tPVpgAI/TTun3aMAPaAzgrhouQ5ZJDC1PPk1VSfz1CUSmaSJ6aPiPmEJOQ3Xp6j5o9pUYw1jAs=
+	t=1719220724; cv=none; b=bRY0x6KCovi4Oy1L7jW17dkuXGAWvOoHmAHU1nUdrlDVmJOERR6Uu0B7I7zuLBdbQJvahIQQE9+39Z8PLjV1BAe5Jdc0N0xBmCAQjVAd6gyVtm2EjRMMtt6r+GZsK8agT8dZz0EVnL0D4CS1oBtnHbdrZ3eV8xQgmwrQlzITk70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719219968; c=relaxed/simple;
-	bh=ZN5+orVrGT6zdLrz7ZrhzJFWY4wX858lkwUU4kdguWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=krnJTggqgOPFUl3T1EUceL4ug7o37x8GqP+KFJB3DK6dpaRewGOaxRp+OW7cHSX5FqtA+GXHFHEawwG1yvktS9JJSA9qOB1Cu3x4poOWc7gVNCoJ+dyl4KzozzRdqGf5LH1+9TuULIvR4+7QSgdnUWVebJOen1fyGNdlAWS0J5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tPeoPNB8; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1719220724; c=relaxed/simple;
+	bh=8z0Me58ofAkCeMYK+RbmJRN1l1eSvoaq0OwoETOXuEI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=ZnG3uKj+9SbIjBAkqgVIA3u/5/TkvGMnzh+cWslOIcOXg8spGjrsbb17HY8cLCrYJQJ6c7+Cyo4ahVq4h6K/+kDlJ+oX6zgTbKm5dR00FiJLSJblcEcoxZwih0JLqJpzu5/IxJTRmWwuTHlx8gYMn+P8Hsm6uZyJOZF3rn/c3gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=dQMmv2nS; arc=none smtp.client-ip=208.88.110.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tPeoPNB8"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52ce12707d9so1193385e87.3
-        for <imx@lists.linux.dev>; Mon, 24 Jun 2024 02:06:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="dQMmv2nS"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id B63739C3240;
+	Mon, 24 Jun 2024 05:18:39 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id HR5yBegFxqJ5; Mon, 24 Jun 2024 05:18:38 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 492A09C5B61;
+	Mon, 24 Jun 2024 05:18:38 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 492A09C5B61
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719219964; x=1719824764; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kew+Lkgg2/C1wK/ceEvlEA0LvihR0nCkMCFEGGDYFH0=;
-        b=tPeoPNB8DfS7wlAUz/cRQVX5fdQdIHfgyhfKD17mhVjkYDQOGlRETh8V4Wl6WCzJYw
-         BbqG5HZ4iWkVEjiQIGdT0rdGn/Mr49YpF+Ad9pj/jtbbGi0qeU68XQu+++9dq6XQxCMo
-         KCw5JeDL7Y6DGtboPTuqBSWY2OY2+XLSeMv3nJJeDk2RujMNvk52IvN0TbxidI4LP9ex
-         OeYnibKl6w5RIh5y/cswJnJQ4VZZltfWImEuhXy/oq/gZXcBtufAOudqAV1OYvvmj6FH
-         TtLvFMyTLMX7vnGRQnBZXfHLQm276p21E5Y9npAGd4KK9Z62ikpIn23iu3Y0xh0bSnLK
-         tHLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719219964; x=1719824764;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kew+Lkgg2/C1wK/ceEvlEA0LvihR0nCkMCFEGGDYFH0=;
-        b=G0109LP0XsgTdlvMaiaeITFIYcsD4KawxS2ZroQwRs26R6OPyqBHQ51EflAz0ceXE8
-         YvVzrYJBeHai6fXIkpB+AJfUdC9F4GoocMmPF5Z0oqtGtF/h/3peB26jixzBYJakm/jH
-         SIg9wq6xYFaHlRkQCHFPesPdFR4HE8sG1vI1rRrEAVGlEG6pAc8yEkei0VhiF5v5fhIg
-         mLTnwhRtjIKIMQsKrBHVnsp7QGz0pm9NPcAzYxsikz+dyflyirYdngVXqeOdCWKJ1t10
-         kqOPmgsCrqeQxvCf1b6ev5tbbmrviE5M8VKfgPkK8ara/L5yRxJIkGjH2L63myq9SVtP
-         Awmw==
-X-Forwarded-Encrypted: i=1; AJvYcCXd/OUkrlu0vRIVeEc6wrdOqcOiEhz60nv9PFjSOFcLdYmOH87LGWnyNxTNmeGLc+hXsI1Dd95RiFZFjlLdekY3LjZm
-X-Gm-Message-State: AOJu0YwQfU2/3Lgwxf+xhjdYNQFrsmm47lchJUrcGIk0ucUpXu3ErOhS
-	bQddecquYH3Vg+zN0jyOgICvy1sreU5siymbIsBYiu+63JL3OMiMCriEpygLFkw=
-X-Google-Smtp-Source: AGHT+IFLK18mj5o7O9bzNwh+9imco/emBa0iy/WB+YbshssFsZ8QxRrWGYZrnIism3ewt/VuyDJvAA==
-X-Received: by 2002:a05:6512:b8b:b0:52c:e312:2082 with SMTP id 2adb3069b0e04-52ce3122186mr2621375e87.54.1719219964284;
-        Mon, 24 Jun 2024 02:06:04 -0700 (PDT)
-Received: from linaro.org ([82.79.124.209])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3663a2f6af9sm9494370f8f.73.2024.06.24.02.06.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 02:06:03 -0700 (PDT)
-Date: Mon, 24 Jun 2024 12:06:02 +0300
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: p.zabel@pengutronix.de, abelvesa@kernel.org, peng.fan@nxp.com,
-	mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	marex@denx.de, linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com
-Subject: Re: [PATCH v9] reset: imx8mp-audiomix: Add AudioMix Block Control
- reset driver
-Message-ID: <Znk2+uYj4JpbP+z+@linaro.org>
-References: <1719200345-32006-1-git-send-email-shengjiu.wang@nxp.com>
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1719220718; bh=4JOrFwNYAzMjJc3yCOi7qIx5d2JoABbFOVFqt1WuodE=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=dQMmv2nSrtJBDMOLXfbnYdr0xEsQ+JPCN2ISsqaHfK0rFiK0iVxB7g3L69NRikKSF
+	 tFs9D3pn8s8IrJT0B8gBXrghZesBG0biCOcu54hq0wciU5P0mB0DqJzghiLCD4GHdP
+	 AMp+VJD/fXUB64TKqeZowTL1e2NWWAuHvxalaXKz4yMRxBqj6XRpaaeL019JzRMbrc
+	 Xt8NUIaDhSAFLqFQU9ufuJqullhXIzBF96BK6f0WwRh5+a+5XdxVEesD20tbVhIBld
+	 Lafq1lysngw69xaWD5/bUlPMWd5pYLunOPrmkZ7Vg8a9GBKgukkSz1IH2wvpn6Cm74
+	 c6Y3zVSYLCvIA==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id VquOXrQmnN-2; Mon, 24 Jun 2024 05:18:38 -0400 (EDT)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id E46679C3240;
+	Mon, 24 Jun 2024 05:18:37 -0400 (EDT)
+Date: Mon, 24 Jun 2024 05:18:37 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, 
+	shengjiu wang <shengjiu.wang@gmail.com>, 
+	Xiubo Lee <Xiubo.Lee@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-sound <linux-sound@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, imx <imx@lists.linux.dev>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	alsa-devel <alsa-devel@alsa-project.org>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
+Message-ID: <1048207382.1714780.1719220717882.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
+References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com> <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com> <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org> <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com> <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
+Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove
+ binding
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1719200345-32006-1-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: ASoC: dt-bindings: imx-audio-spdif: remove binding
+Thread-Index: ewOgNpthlCv+G0hUX/mmtwgvLix7HA==
 
-On 24-06-24 11:39:05, Shengjiu Wang wrote:
-> Add support for the resets on i.MX8MP Audio Block Control module,
-> which includes the EARC PHY software reset and EARC controller
-> software reset. The reset controller is created using the auxiliary
-> device framework and set up in the clock driver.
+From: "Krzysztof Kozlowski" <krzk@kernel.org>
+Sent: Monday, 24 June, 2024 10:55:31
+> On 24/06/2024 10:51, Elinor Montmasson wrote:
+>> From: "Krzysztof Kozlowski" <krzk@kernel.org>
+>> Sent: Sunday, 23 June, 2024 13:09:33
+>>> On 20/06/2024 15:25, Elinor Montmasson wrote:
+>>>> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
+>>>> removed.
+>>>
+>>> So what happens with all existing users (e.g. DTS)? They become
+>>> invalid/not supported?
+>> 
+>> 
+>> Next commits, 8/9 and 9/9, update all DTS files that currently use
+>> the "fsl,imx-audio-spdif" compatible.
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+> You mean in-tree. I mean all users, in- and out-of-tree. Other projects.
 
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Oh you're right
 
-> ---
-> changes in v9:
-> - only send this commits because others have been applied
-> - remove depends on in config
-> - add spin lock
-> - call iounmmap()
+>> From the users point of view, currently configured spdif audio cards
+>> will behave just the same.
+>> 
+>> 
+>>> After quick look, I do not see backwards compatibility in the driver and
+>>> above commit msg tells me nothing about ABI break.
+>> 
+>> 
+>> For the next version I will state in this commit message the upcoming
+>> modifications to DTS
+>> and compatibility, why it will be done, and that support for existing DTS is not
+>> dropped.
+>> 
+>> Previous `imx-spdif` driver used the dummy codec instead of
+>> using declared spdif codecs. It was discussed in previous version of this
+>> contribution
+>> that using the dummy codec isn't good practice. So one to one backward
+>> compatibility
+>> isn't really possible.
 > 
-> changes in v8:
-> https://lore.kernel.org/linux-arm-kernel/27ea1bf7de6f349426fcd7ddb056a1adfae47c73.camel@pengutronix.de/T/
-> 
->  drivers/reset/Kconfig                 |   7 ++
->  drivers/reset/Makefile                |   1 +
->  drivers/reset/reset-imx8mp-audiomix.c | 128 ++++++++++++++++++++++++++
->  3 files changed, 136 insertions(+)
->  create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
-> 
-> diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-> index 7112f5932609..509f70e5c4c0 100644
-> --- a/drivers/reset/Kconfig
-> +++ b/drivers/reset/Kconfig
-> @@ -91,6 +91,13 @@ config RESET_IMX7
->  	help
->  	  This enables the reset controller driver for i.MX7 SoCs.
->  
-> +config RESET_IMX8MP_AUDIOMIX
-> +	tristate "i.MX8MP AudioMix Reset Driver"
-> +	select AUXILIARY_BUS
-> +	default CLK_IMX8MP
-> +	help
-> +	  This enables the reset controller driver for i.MX8MP AudioMix
-> +
->  config RESET_INTEL_GW
->  	bool "Intel Reset Controller Driver"
->  	depends on X86 || COMPILE_TEST
-> diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-> index fd8b49fa46fc..a6796e83900b 100644
-> --- a/drivers/reset/Makefile
-> +++ b/drivers/reset/Makefile
-> @@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
->  obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
->  obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
->  obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-> +obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) += reset-imx8mp-audiomix.o
->  obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
->  obj-$(CONFIG_RESET_K210) += reset-k210.o
->  obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
-> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
-> new file mode 100644
-> index 000000000000..6e3f3069f727
-> --- /dev/null
-> +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> @@ -0,0 +1,128 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +#include <linux/auxiliary_bus.h>
-> +#include <linux/device.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_address.h>
-> +#include <linux/reset-controller.h>
-> +
-> +#define EARC			0x200
-> +#define EARC_RESET_MASK		0x3
-> +
-> +struct imx8mp_audiomix_reset {
-> +	struct reset_controller_dev rcdev;
-> +	spinlock_t lock; /* protect register read-modify-write cycle */
-> +	void __iomem *base;
-> +};
-> +
-> +static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
-> +{
-> +	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
-> +}
-> +
-> +static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
-> +					unsigned long id)
-> +{
-> +	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-> +	void __iomem *reg_addr = priv->base;
-> +	unsigned int mask, reg;
-> +	unsigned long flags;
-> +
-> +	mask = BIT(id);
-> +	spin_lock_irqsave(&priv->lock, flags);
-> +	reg = readl(reg_addr + EARC);
-> +	writel(reg & ~mask, reg_addr + EARC);
-> +	spin_unlock_irqrestore(&priv->lock, flags);
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
-> +					  unsigned long id)
-> +{
-> +	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-> +	void __iomem *reg_addr = priv->base;
-> +	unsigned int mask, reg;
-> +	unsigned long flags;
-> +
-> +	mask = BIT(id);
-> +	spin_lock_irqsave(&priv->lock, flags);
-> +	reg = readl(reg_addr + EARC);
-> +	writel(reg | mask, reg_addr + EARC);
-> +	spin_unlock_irqrestore(&priv->lock, flags);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
-> +	.assert   = imx8mp_audiomix_reset_assert,
-> +	.deassert = imx8mp_audiomix_reset_deassert,
-> +};
-> +
-> +static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
-> +				       const struct auxiliary_device_id *id)
-> +{
-> +	struct imx8mp_audiomix_reset *priv;
-> +	struct device *dev = &adev->dev;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	spin_lock_init(&priv->lock);
-> +
-> +	priv->rcdev.owner     = THIS_MODULE;
-> +	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
-> +	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
-> +	priv->rcdev.of_node   = dev->parent->of_node;
-> +	priv->rcdev.dev	      = dev;
-> +	priv->rcdev.of_reset_n_cells = 1;
-> +	priv->base            = of_iomap(dev->parent->of_node, 0);
-> +	if (!priv->base)
-> +		return -ENOMEM;
-> +
-> +	dev_set_drvdata(dev, priv);
-> +
-> +	ret = devm_reset_controller_register(dev, &priv->rcdev);
-> +	if (ret)
-> +		goto out_unmap;
-> +
-> +	return 0;
-> +
-> +out_unmap:
-> +	iounmap(priv->base);
-> +	return ret;
-> +}
-> +
-> +static void imx8mp_audiomix_reset_remove(struct auxiliary_device *adev)
-> +{
-> +	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(&adev->dev);
-> +
-> +	iounmap(priv->base);
-> +}
-> +
-> +static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
-> +	{
-> +		.name = "clk_imx8mp_audiomix.reset",
-> +	},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
-> +
-> +static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
-> +	.probe		= imx8mp_audiomix_reset_probe,
-> +	.remove		= imx8mp_audiomix_reset_remove,
-> +	.id_table	= imx8mp_audiomix_reset_ids,
-> +};
-> +
-> +module_auxiliary_driver(imx8mp_audiomix_reset_driver);
-> +
-> +MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
-> +MODULE_DESCRIPTION("Freescale i.MX8MP Audio Block Controller reset driver");
-> +MODULE_LICENSE("GPL");
-> -- 
-> 2.34.1
-> 
+> Heh, that's not good. This is improvement, cleanup. While it is
+> important and useful, it should also not break existing users.
+
+
+Should I introduce then the use of the dummy codec in `fsl-asoc-card` to
+assure backward compatibility at least for a time ?
+With maybe warning messages in code to indicate that spdif codecs drivers
+should be declared and used in the future ?
+
+
+Best regards,
+Elinor Montmasson
