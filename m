@@ -1,207 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2064.outbound.protection.outlook.com [40.107.103.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C571919E819;
-	Mon, 24 Jun 2024 16:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719247741; cv=none; b=LrM1xqhtpKqXqZotq8Unbi/HhcOPt93AlSDJ89pLz5binZl97YGYH8EqglLAuwYlw5tP2LW5tpc0LfZB7Vvv1Km/L7aSQ9gQyCfmNey9DsXFkwxZ3CCE22qph1pP95Y5geM+n/Gp54Z43xXvqLXuOm4EqPo8lL4OVzmvF9+Dgbg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719247741; c=relaxed/simple;
-	bh=7EIjVKwobYxuhKEgtOIhJ9Tg39QihhVL1irIwcz75/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvNvtwUYosSeayovbF0lF6bwN3vL2R0mtKGYgxCobaXO1wliJ7RM6KjIDoCF+kAl9KIXC7cTbsPX3AIY/8XBFXwMu+OixJiair+Ki2J0HDX1rKaw/t3AoX2D1loOuZB/+d3j+kWpyipugs7sKD38p6HvNRhudOIQNpZaHOg4MLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FDuNkAqF; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314801BC20
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 18:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719255360; cv=fail; b=n/+ruzX8dQ8VEOTdTlA9QJZ+/2Z9kWSmAQngY3QV5OOtp2p3qj7GLtDWguptpn3TPSrDsiBGzAScjI1YhluD6uAupidQ9yoL9mnAGYc2YY0U/oxCU9axAo4DW1GmAiNw+kQGIK+OyLUFdrSfjN3Waj6jWYPVPmJtcz8zNrgd6Hw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719255360; c=relaxed/simple;
+	bh=KH2tDLFerBCE5xeJDaw6oNnMcLC+yp8zFvep6kWpmPE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=FOTGJH5+XOE7/b3ROVKjTGhUibEKhPLiyRtseVuscXjR0C1tRhP9Io724pDGkHhuTM+ifh9kfzlPQvr+PLXUA9MvWujeiOyzDEFNQLZ9fjqEyyT/zFovAYCyQmQPRnAzg4QF45Xci8bMzEUJwnPI8KjifbarzqR2n4R2Sbr5mJE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=RWVhYpZF; arc=fail smtp.client-ip=40.107.103.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FDuNkAqF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C50CC4AF0D;
-	Mon, 24 Jun 2024 16:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719247741;
-	bh=7EIjVKwobYxuhKEgtOIhJ9Tg39QihhVL1irIwcz75/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FDuNkAqFjP6H0PMV65mMsXcQTZqp7Yc5hB9Vav1a59LWaGP2baR9wKX1cKnpYKIJP
-	 65IXF7dazTdLnRbR05apDZcbYNMYxsmEm2ahd5tu7wv2Fn7FZXwm1FNB5P5YvNwA+T
-	 d9JHTpvpL7rB96puSoeAlTRpOewu9NuKOSsG8l9jQqFBhYcONhOm/j1ZvWIO23ao37
-	 9HiJ/bWJ1YCxp+APH7D5ez2Cg8cSvKsBENSVMPr5Vf7QO0gnqLSufsqffWpBlP6JhN
-	 JO6BqGgpNWEWkFSDV917FfwleFozoPy7OX01s9TzaFZ/2w5NtI0945dDGFK+Ft0FNd
-	 R+i+PjXjoDG0Q==
-Date: Mon, 24 Jun 2024 17:48:56 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v3 2/5] dt-bindings: arm: fsl: add imx-se-fw
- binding doc
-Message-ID: <20240624-buffalo-unison-fad374066b0e@spud>
-References: <20240617-imx-se-if-v3-0-a7d28dea5c4a@nxp.com>
- <20240617-imx-se-if-v3-2-a7d28dea5c4a@nxp.com>
- <20240617-control-calamari-317f59c4eb09@spud>
- <AM9PR04MB86049915593D86599C67975F95CE2@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20240618-antonym-tabloid-8f721ee752a5@wendy>
- <AM9PR04MB8604F9A6B01C3794CAAAF36C95D42@AM9PR04MB8604.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="RWVhYpZF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CwXQMzsop7w9BB1ocfaxMld8kgMbskqQU7P4M/1Bo40bPcMHXtDlIZlS373bUm07wjF/NZXv+ZmyS9M3Yanj5OmKhj+hHOExJXXSc7qNfF92Lh+TIQ8ItMwz4IeBywrZRBOrK0EzRwUWqw+hnPhc5SMBcadvHE7mu3iqxzh9johZ0Mw6jKLs1CZHqCxaTgKK+IZ4MYEpw6CD53mkvTdpfzxEhFTTEKn7rZiTvRGo8s2xCmYDG3/qCeS4bZ/d2JBmwgr+2rqUaMeuNPCXkC9CrMd7baiZSLe4BB2xOWA2/y7kHwgIPlFcGLHqihdP+YpLvHp4S2cLd6R6F2InfzWY6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eeq3x3Ko75+ioUzj7Wo1IGhCYqPF3AXjc0imEPKtTX8=;
+ b=PDTfuVzzXHi+ieOfetue23AH7b03qWo5umziQgkUH0VWdPHBUIfST6rTN4LuTdjsGRIOO9dzymt/2EBszeRXAcyahlal18gmOG2jZ1uymwBuceoOSb3Dh7Pan8sO2y65FM1cI9w++3MpT8X/rw4yumfCKj4F5xPly9zlFYvls4RXcFWnKIZZQDgIkoGdt6NP5gq8ByLxRo1sAuUHboOqmewyqKoMUEOvm4rKbFci0OVjVcF4jH+FXrqseRxMIXFbW6AxhSP+2Zf7C2sUefpJsovuByVm52cvXTdVe3rzLAVu/X7HU9c47G0LZd0/qETeiKwGdUu1L2dstXlWHLW9EA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eeq3x3Ko75+ioUzj7Wo1IGhCYqPF3AXjc0imEPKtTX8=;
+ b=RWVhYpZFmSWm5bj9gDo9RoLG/51SNgWemvOiFRi3d76O7yUoVIyBfdrbxszYiRr1NUK0OcoGpMUtwDajEB8vYf92Dm050Us+XCQicMzNpnY4btqF6Vd63JEajM4JGGRwuNbpeh+Xqo+RFwHPhSA4J/FiGFGZhQZPu+R6keZuHVk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI0PR04MB10138.eurprd04.prod.outlook.com (2603:10a6:800:242::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.27; Mon, 24 Jun
+ 2024 18:55:53 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.020; Mon, 24 Jun 2024
+ 18:55:53 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 0/3] spi: fsl-dspi: Convert to yaml format and use
+ common SPI property
+Date: Mon, 24 Jun 2024 14:55:26 -0400
+Message-Id: <20240624-ls_qspi-v4-0-3d1c6f5005bf@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB7BeWYC/2WMyw6CMBBFf4XM2poyLY+48j+MMVCmMolSbE2DI
+ fy7hQ0mLs/NPWeGQJ4pwCmbwVPkwG5IoA8ZmL4Z7iS4SwwoUcsyV+IRbq8wsmg7Qx1KQlUQpPf
+ oyfK0lS7XxD2Ht/OfLRxxXf8bEYUULda1LW3RVqo8D9N4NO4JayGqHwvlbqlk5Q021lidV6R3a
+ 1mWL8tvVV3SAAAA
+To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, 
+ Kuldeep Singh <kuldeep.singh@nxp.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719255350; l=1972;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=KH2tDLFerBCE5xeJDaw6oNnMcLC+yp8zFvep6kWpmPE=;
+ b=GSSICJiMmlxwfFGfRXN7QcQ0sLrCXSPd9azGddT5KlsbeXi12tIRxGdpXMHu61d4BnQc0fb6j
+ WvFhLdEsrQMDpu7bwkoQlVDfBA+U+0i/j7caoidVI9drnFq0TaC5IIS
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BYAPR03CA0014.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::27) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tq5e8PI+/1dzunEp"
-Content-Disposition: inline
-In-Reply-To: <AM9PR04MB8604F9A6B01C3794CAAAF36C95D42@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10138:EE_
+X-MS-Office365-Filtering-Correlation-Id: cea39006-6c3d-464a-a116-08dc947f45e6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230037|376011|7416011|1800799021|52116011|366013|38350700011;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eDV1U2trdnhXRGtHc0I4RTNtbFR4VldVTk5LTURHd3JjZTROald6S0xjR3JF?=
+ =?utf-8?B?WmRBbm1EZFhNaVpWcFlVOFNVZ3BWS1Fwd1pVbVcvZWR2NVBnVlI5Mzk5WmE1?=
+ =?utf-8?B?aDVtWTB5NXg3azVLU2tVSTRrR0pqNmJHVEZGSW9rWXJlNmc2NnNOc2hJUWQr?=
+ =?utf-8?B?QVZ3cWtCQVkvRm8relQya0F1MTlTMXozcGt4NmlNYkZ3Q0NVUFhPZmRYdHRI?=
+ =?utf-8?B?WmRNUjNnTW5wZWtOOW1PVXBVczVEQlRreTJ5dS9VMVYxa1JqNmFRZ28xcmc0?=
+ =?utf-8?B?cnNIdnFhM0h2WUZEeEc3bHlrUEd4UEpzUVY0VTJ5OXliRU03SERTVUlPYnhB?=
+ =?utf-8?B?WUlIUEhTcE9mN1BrVUF6Z3BwcmhhaEdpMkJVYkRocFFibnF6YnhOWDcwZHNX?=
+ =?utf-8?B?dGQxV2NreTlncXdoQWt6V0JIMGd2RTM4RXIwc0VFOUhFSnpOSEMxSHk0SC9O?=
+ =?utf-8?B?TVc0SzhTWVVDS3RQcFE4VklXbnNMeFZ5VXBCU0dDeEYrcWZkdFluUmNnR2l4?=
+ =?utf-8?B?dW9WM3NaLytVVkd1cEdsVkhrUTVIV1hMRWcrczZsL3RwNzlCQTZ2cVBWb0Nx?=
+ =?utf-8?B?M29DZitXcW5FQ1NoT1ZEQWd6QVdKM2lGMGQzL0J3VEh1NW1tWjhNMXk2bVZI?=
+ =?utf-8?B?eFp6b2dGV2Y0MStTWHArdURVYkxHaUN2YXlZSFh5akRUMnBScE5JUXFJQjZ0?=
+ =?utf-8?B?cnZvV0tHZDVObVh0VWgvZE51N044WVdHcy9UN0U2MjdaNGZhTEU2NVZmeG5S?=
+ =?utf-8?B?MGY5dFdmQ3JDdlgveGpTc1lrL2Jrd21IMFp2Ni9ZNGEwamd1cWxicVhqeUpZ?=
+ =?utf-8?B?MHZOajJoQ3VtcFRnS09ONlYrZWIrbmc4UjRUUmt4aTdFZlZLVldlNEVsakor?=
+ =?utf-8?B?T1hzMUxxOGtlVDAzZC9Cb1Z5SlhHdWNGS0thTnV6UUFBdkxOWXRSbVF2MVRN?=
+ =?utf-8?B?bGZhR1hyN0dMSHQ0ZzZNVkpLbnV1TW1kUTBrR0FPWFhLRmRQdmc5VnhvM3BM?=
+ =?utf-8?B?T2NBdkNlL0FVRGtzTXdtNlBLTGhLcFQ5K3huaEV2Vi9OaVhvMnA5ck53ZkZW?=
+ =?utf-8?B?TUJMM1RHUll5U3NackNNeTVaSEZvd0dvR052YksrRGFiNHUwZC9OYk5yU0Vu?=
+ =?utf-8?B?eTNmNS9UR0RSMm1DSUVyckxwbzk4b0RFUzJDMmJialdvRHBidm1BUThWUk9I?=
+ =?utf-8?B?bkc5R2ZncDBVTXZtbk9qTm5uTDZZZW54N3F2eXRnOVJabUUrY29GNFArQjJp?=
+ =?utf-8?B?cGU3ZXlJa0QvaGFId0xqdE95ZmNmMmFzTFk2OFFmZVpXZTVZTjlCZXdCTFJ0?=
+ =?utf-8?B?Qlc1R3QweDZVNWk5TWdQd29VK0J3UzZEYzNaMG5nbCtHa3Q5Nnl3MnNwcmVW?=
+ =?utf-8?B?L3dqNElmbjQ3bDNQOGhScWtnOHIrdml1YWV2cjFXcWRvZkxzSDV3Z1BIRXRT?=
+ =?utf-8?B?V2hLZVRpaS9xcXpRNm1pdU5pT3FJQ0VtcC9BNG8xMHk0dFZVMEJsMEV0RGRz?=
+ =?utf-8?B?ZEdCYS96TTVGcEdReVQ1NTQ2c2RBanBSamticW5kQkdSY3owa1JDT0xUZi95?=
+ =?utf-8?B?MnRobWlSUlZEZklsVlJRcVhpUmRpdmJWNTBwa3lxcGN1dmZzVCthT0x4VWZ0?=
+ =?utf-8?B?K3dCTGFSaVdVcXI3WmptRWtiSTNpUDJkdEIyK1hqOENWdWxTeFpGZ2lDaGNY?=
+ =?utf-8?B?MmJta3BTSUZBb3Bic3V4d0JVNFg4WGlKQkxPZlRkTVlpWFBmZ2c3QnV4bW5K?=
+ =?utf-8?Q?jh2n7NTadGyY9zpSVFZwdkhViBaZvJnwx6rsRTG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(7416011)(1800799021)(52116011)(366013)(38350700011);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U3ZYV211bFhJTFZiUGdMQTdyZ0dwdUZ1SHNYVE5PaXlOaE10ZE5NZ1BXQlpW?=
+ =?utf-8?B?eEp6QWRvK09HZE9GWCt0UUwvY2FITDNVaW1KbEdwUWRXU1hGdlhEbFgzN2dy?=
+ =?utf-8?B?R2kySStrWTFrZDRubW1lcFZVZExJUC9SS1I3VGVFQTFRUjVQeEFOMncwWmJu?=
+ =?utf-8?B?SlN4VE5uYkw3eVUzcndHY1ptRHFOOVNNcmt6ckFtK3BsSXpncVovMU9JaVdw?=
+ =?utf-8?B?R1VPdm9IS0RIUTQvU1g2Ynl1RUxYQUdwZzA0VmlaY2JWSmFlTFFVejBqYngv?=
+ =?utf-8?B?R1BqUCthYjJqUVVWZGsyS3ZUbTVEcndsclkrQjZYOVNIeFhtYUZyYmpNdGd4?=
+ =?utf-8?B?a2JYTUw0NmpXWU45aUU5dk9hY1RkNjdPOVUvOWRscW5LV1pFTytTZFZGSFUy?=
+ =?utf-8?B?R1VtU1ZOekxXSUVSTW9lbENiQmcrZlNrN1cyM2FyYlNacU5qNlE1SFR5VndS?=
+ =?utf-8?B?RjdaN1lWZlM2UER3TG9sUUh5cFlqY0k3WlBmNS8rbTRLSEJVUldwczVuVDZp?=
+ =?utf-8?B?YVQxZTU1UWJZZU90RDEweVk0ZlkyQlRnTm8zZVZRbHZpVU91dk42aGF4ek4x?=
+ =?utf-8?B?aUljVnEvSjhmVUE3blVqb2lkUzNqVUVTRjJDU0pReHR1WHV0NDkybWRwZ05Z?=
+ =?utf-8?B?UHozZGMyUVREV3dOb01PbkEyNzlmS2RSSk9qSXo0dHRGRXRKNlZUR0RJU3ZY?=
+ =?utf-8?B?NTB5UVVnd3laN1lkZEEvMTVUME9hcldZcW9VRm1iNm1Wb295NGZhM0VBTFVY?=
+ =?utf-8?B?T0FJVENxeGRaWVZoQnkveVQ5ZDQ5MlRxQnFteTJUTXRma0ZJWGkrV1JTN2d2?=
+ =?utf-8?B?RExrUFNlWXdqUTlzUnRjT05NUkpwaXBrb2l6SkdwTkRlVjgybTBzMmJZWm9i?=
+ =?utf-8?B?d1I5cVpwOVd1cjVGL09rR0hlT1RIWDRGbzNkSnhRRnVna1E0ekdCelp2aSt3?=
+ =?utf-8?B?bGJMRmo0Skp3OVI5ZlhjNHdsODlhcGVuazNiNjN6cUZBaWJDYXJSSVVIRHBp?=
+ =?utf-8?B?Zm45MGJXNGtGdU9oU1E1NTRiMXFGckE1d1VKWDhVd3dPZUplSEdab1JkSWJo?=
+ =?utf-8?B?Q2l6ZVVPNnZ6ejgwWnl2Kys0U0RFY0xwZHloQ2JYZjdhMWlnRmJQdHR4YTJ5?=
+ =?utf-8?B?Z0Ntcm9FS0xjK1JOTVh3Szd0UDZrc2RvZTNkQnc2QXZ3RFQxV2VWSkZSQkFU?=
+ =?utf-8?B?a2NYU0V5RFd1N2ZRajQ3Vm4reUZMcWZIVTlwejJybUVmRFQrVmVTdlVzalBl?=
+ =?utf-8?B?WVV5dEZ5NXV4T1E0WThNZ1VKUXJqQlRLaTF3NXkxb3kxMVNyZUlMZmpTMUN4?=
+ =?utf-8?B?YlNQZFJpMFd0Um16WFB4eG83N25IR21uandiQnI0MXhLVE9oMmM2VmUrTnFT?=
+ =?utf-8?B?cnhYN2ZqQUR0VGVlM3NJYnpzNC9mQ3NMQ3NYNFJKays5cjFzWEpmNmtVZFpS?=
+ =?utf-8?B?Wnk2eVdhUlJ4Q0wzSStyQ1JHT3BlbkM4MnJXOWtVNW9GN21OVldENU1PRWNC?=
+ =?utf-8?B?cWpqbXB0Q05oT0xlVklJWnNvYkVDMFhJWTlzczRKSkJORWJZS2JTanpkL3px?=
+ =?utf-8?B?NU5MSWNscWE3VFVhL0N4STk0d0xQSUxnbDg1UkFnaGVyb1d0MENMcm9iRXhR?=
+ =?utf-8?B?aS9JYzh6cmo1T2J6ZEVtSU01Z2pkZDdWYzNIcXF3YzUrb2p4cFZrSDBZc0RS?=
+ =?utf-8?B?eVBrdnNLYis0ZFZWTXQzYVMwQWtkSCtkemIzUUVqdEUxNi8ybFlHajdKczRn?=
+ =?utf-8?B?RXV5M1U3REtEb2djdzJKYlRqczN3VExPZHQ2aURqazhFaFJ1SG4vZzhLbG9i?=
+ =?utf-8?B?VGFiVWdoaFJmbVV1N0toY0ZBRUNxdnFpdGtRV3RweTROWmZnZXVpQ3dSSk1x?=
+ =?utf-8?B?Y2kxMDJKaDZZOEJZK0dpM2NSa29oaiswRWVVRTVldFRCYXNSWTdLSStoaXpL?=
+ =?utf-8?B?VUtpU3U5R05sOW9hQ0ZnS1ppYkpEWFdzd2wvblhCdmJsdmpMZ25abi9GMENa?=
+ =?utf-8?B?aTZYeUhSMHRDN3lyYzZEcXpaNGZIdXFQekYrK2NWVC9XNjBOREJJUDR5UmM5?=
+ =?utf-8?B?MjBsTjh3aFJMeWtDSDJvT3BjaGlHS3hPdDhpSFNUUjlhZkZscTFHMW1qRHRN?=
+ =?utf-8?Q?4nWwdIyEZFvqPhmdKoCrF/KOS?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cea39006-6c3d-464a-a116-08dc947f45e6
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2024 18:55:53.5305
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m/LmO/tWvBdrT2Xg37idWpWv8TFs1MCiUu8OPhp2vFGYuyBT+zNhzvFsFnw6p1p1zUOrFnUgS4MYFtlP5T7djw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10138
 
+Convert fsl-dspi binding to to yaml format.
+Using common SPI property spi-cs-setup-delay-ns and spi-cs-hold-delay-ns.
+Update driver and ls1043 dts file.
 
---tq5e8PI+/1dzunEp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+To: Vladimir Oltean <olteanv@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: imx@lists.linux.dev
+Cc: olteanv@gmail.com
 
-On Mon, Jun 24, 2024 at 01:46:19PM +0000, Pankaj Gupta wrote:
-> Thanks Conor, for the help.
->=20
-> Sorry to miss out this mail reply.
->=20
-> > -----Original Message-----
-> > From: Conor Dooley <conor.dooley@microchip.com>
-> > Sent: Tuesday, June 18, 2024 4:50 PM
-> > To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > Cc: Conor Dooley <conor@kernel.org>; Jonathan Corbet <corbet@lwn.net>;
-> > Rob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;
-> > Conor Dooley <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>;
-> > Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Rob Herring
-> > <robh+dt@kernel.org>; Krzysztof Kozlowski
-> > <krzysztof.kozlowski+dt@linaro.org>; linux-doc@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev=
-; linux-
-> > arm-kernel@lists.infradead.org
-> > Subject: Re: [EXT] Re: [PATCH v3 2/5] dt-bindings: arm: fsl: add imx-se=
--fw
-> > binding doc
-> >=20
-> > On Tue, Jun 18, 2024 at 10:58:47AM +0000, Pankaj Gupta wrote:
-> > > > From: Conor Dooley <conor@kernel.org> On Mon, Jun 17, 2024 at
-> > > > 12:59:40PM +0530, Pankaj Gupta wrote:
-> > > > > The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X
-> > > > > etc., creates an embedded secure enclave within the SoC boundary
-> > > > > to enable features like:
-> > > > > - HSM
-> > > > > - SHE
-> > > > > - V2X
-> > > > >
-> > > > > Secure-Enclave(s) communication interface are typically via
-> > > > > message unit, i.e., based on mailbox linux kernel driver. This
-> > > > > driver enables communication ensuring well defined message
-> > > > > sequence protocol between Application Core and enclave's firmware.
-> > > > >
-> > > > > Driver configures multiple misc-device on the MU, for multiple
-> > > > > user-space applications, to be able to communicate over single MU.
-> > > > >
-> > > > > It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
-> > > > >
-> > > > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > > > ---
-> > > > >  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 160
-> > > > +++++++++++++++++++++
-> > > > >  1 file changed, 160 insertions(+)
-> > > > >
-> > > > > diff --git
-> > > > > a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> > > > > b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> > > > > new file mode 100644
-> > > > > index 000000000000..60ad1c4a3dfa
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> > > > > @@ -0,0 +1,160 @@
-> > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML
-> > > > > +1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
-> > > > > +
-> > > > > +maintainers:
-> > > > > +  - Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > > > +
-> > > > > +description: |
-> > > > > +  NXP's SoC may contain one or multiple embedded secure-enclave
-> > > > > +HW
-> > > > > +  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
-> > > > > +  enables features like
-> > > > > +    - Hardware Security Module (HSM),
-> > > > > +    - Security Hardware Extension (SHE), and
-> > > > > +    - Vehicular to Anything (V2X)
-> > > > > +
-> > > > > +  Communication interface to the secure-enclaves is based on the
-> > > > > + messaging unit(s).
-> > > > > +
-> > > > > +properties:
-> > > > > +  $nodename:
-> > > > > +    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
-> > > >
-> > > > Just "firmware@<hex>" please.
-> > > >
-> > >
-> > > Modified as per your suggestion,
-> > > -    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
-> > > +    pattern: "^[0-9a-z]*-if@<hex>"
-> >=20
-> > Firstly, that's not even what I said verbatim, which I could understand=
-=2E <hex>
-> > isn't even a valid bit of regex for this.
-> > What I want to see is something like: "^firmware@[0-9a-f]+$"
->=20
-> These nodes define the interfaces(-if) to the "secure enclave" FW(-fw).
-> Will replace "-if", with "-fw".
->=20
-> There are multiple NXP IP(s) for secure enclave(s):
-> - EdgeLock Enclave (ele)
-> - Vehicular to anything (v2x)
-> - SECO (seco)
->=20
-> Having "ele-fw" helps identify the FW IP name.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v4:
+- See each patch
+- Link to v3: https://lore.kernel.org/r/20240620-ls_qspi-v3-0-1a2afcf417e4@nxp.com
 
-If you need to indentify it, just use a label. "ele-if" or "ele-fw" is
-not a generic node name.
+Changes in v3:
+- using Vladimir Oltean's https://lore.kernel.org/imx/20240613-ls_qspi-v2-0-b288f6f5b736@nxp.com/T/#t
+  for fsl periphal part to keep compatiblity.
 
->=20
-> Will it be fine to use:
-> -    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
-> +   pattern: "^[0-9a-z]*-fw@[0-9a-f]+$"
->=20
-> or
->=20
-> -    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
-> +   pattern: "^[0-9a-z]*-firmware@[0-9a-f]+$"
+- Add common property and depericated fsl private property.
+- Link to v2: https://lore.kernel.org/r/20240613-ls_qspi-v2-0-b288f6f5b736@nxp.com
 
-No, just use firmware please.
+---
+Frank Li (3):
+      spi: fsl-dspi: use common proptery 'spi-cs-setup(hold)-delay-ns'
+      spi: dt-bindings: fsl-dspi: Convert to yaml format
+      arm64: dts: fsl-ls1043a-rdb: use common spi-cs-setup(hold)-delay-ns
 
-Thanks,
-Conor.
+ .../bindings/spi/fsl,dspi-peripheral-props.yaml    |  30 ++++++
+ .../devicetree/bindings/spi/fsl,dspi.yaml          | 103 +++++++++++++++++++++
+ .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  65 -------------
+ .../bindings/spi/spi-peripheral-props.yaml         |   1 +
+ MAINTAINERS                                        |   2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dts  |  18 ++++
+ drivers/spi/spi-fsl-dspi.c                         |  19 +++-
+ 7 files changed, 167 insertions(+), 71 deletions(-)
+---
+base-commit: 03d44168cbd7fc57d5de56a3730427db758fc7f6
+change-id: 20240613-ls_qspi-bdced20e235e
 
---tq5e8PI+/1dzunEp
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnmjdwAKCRB4tDGHoIJi
-0r+gAQCyiiV0vjrfFRaz1N5YBIUMo8wNM+UMu8VCKySqxgd/AwD9GOcXAgTuK+Wj
-eugyHt5D3w4H38UNyDR/kO1WrqflYQo=
-=71M8
------END PGP SIGNATURE-----
-
---tq5e8PI+/1dzunEp--
