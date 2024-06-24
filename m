@@ -1,115 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D50E22313;
-	Mon, 24 Jun 2024 19:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B70FBEF;
+	Mon, 24 Jun 2024 21:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719257516; cv=none; b=d/bZriHUU4mdZYBhWqNVkNvha90BjuDbHyid3fsKODdKXPs67Cy12MrNiJaPeHjq4gdxWtqIx/jbODkEr8xUsGrWW6oj77eVGSAfUnuHDvih+uMcVyGmWOcy+GYP5EgfjSiDxjxAyLUPuNU2AMUVaJ+f0wMK+0KQ/h1Sr6nBIwI=
+	t=1719262922; cv=none; b=fMq0+HxWqCbot/E2lY5OjL119ruuS1MqV0WQPucxqPL4EzlUtpNny1LI1OVvidFo7mvXc0CyM2kPTzO6k0RkvsmFWWAy/0j72EPfj8D8shWMdvFv4ej2Dmzl2XrBN5YXmtrS58/jJ0O4jo/gpH2xqDW3ot10pvuDCo+cdZm9iR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719257516; c=relaxed/simple;
-	bh=WO5bItYsgm4x9pwloWwGJ++ymNZPqAykTIN55gh+o5Q=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=JXCwUX0lSQxbs2Nx0qc2pMibTJM456cPQhuME7uD552ExiAs9gnO3JPcKSy+SQ6l9/J4HN7txyfdI01But+ewB0jIutz5XZgv01MrXX+45TeQtSH5VX2sJ4SC2AOcmNZI5LSi1rnJMe5vyUtPSxVE+BMs8e9UYLNOfX1s3LS7CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=f2mQW5BI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719262922; c=relaxed/simple;
+	bh=rvvBVnTHEEzHKhjgXbOAJVsRmGU99H3KQBF7g04WdhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pmktUziFph1NFFBwqWRa3AUkcYkfVKIuUfja2SvBL2+etMWT0yConB3TalO+YlOgZ9nCrRwsOOVwFMDR8IwJ8yvypmp3v4uHzDThij2BOrX+JUd7UpCQ60pDl4FMrLqsYpcL4vQcT+bZoluuCzEMI583KxOCda/B7zLKxaEHJfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUR2uRlp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="f2mQW5BI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F22EC2BBFC;
-	Mon, 24 Jun 2024 19:31:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719257515;
-	bh=WO5bItYsgm4x9pwloWwGJ++ymNZPqAykTIN55gh+o5Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f2mQW5BI1BXSMdaSW0V2Eg2aSozyjzN8w5GvF3HdsotTv/seex9KXpqX7pSSkiX6Z
-	 gJ6urvSNN9CsZd1fS3AXc/JIbrrRicuswhDOGtkBkdqAmy4NteCbmm0KqgjQn3CyyA
-	 6cywjTV53TQt5Q+7hM/QEsbSNjWjDSYqgoXyhPq4=
-Date: Mon, 24 Jun 2024 12:31:54 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- amd-gfx@lists.freedesktop.org, imx@lists.linux.dev,
- intel-xe@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, Mark Brown
- <broonie@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [linux-next:master] BUILD REGRESSION
- f76698bd9a8ca01d3581236082d786e9a6b72bb7
-Message-Id: <20240624123154.4c3125c3093636de35b407dd@linux-foundation.org>
-In-Reply-To: <202406230716.DQbMBKh0-lkp@intel.com>
-References: <202406230716.DQbMBKh0-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUR2uRlp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B6CC2BBFC;
+	Mon, 24 Jun 2024 21:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719262921;
+	bh=rvvBVnTHEEzHKhjgXbOAJVsRmGU99H3KQBF7g04WdhE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UUR2uRlp5ABwUnI5/d5ts7U/DGQ1OTmAph7cOSw6x38hFnbtjQR2RprASVmqSMQ47
+	 yj25++1QmiiMNbl0A/hHZ/39dhGWBJTuiSrbpw2f3zFFtl5+VAGmlLDxEFJBLnH3NC
+	 z8cve5iuY11kSH2gIkP5Uexx39FKeSjCKruIw066rm7liptb+Ex7CgfJnCEJ4dLolo
+	 p7nBrOzUOfuJy8Jye4tSitZPByQVV4fdpo8+TxkDAfk/tMo3j9Z4sLD3WVGDwn+kol
+	 RMT5/ol2XCNo9Q4Qx0xVmOvYSOyiU/U14OgEb4hHOE81pYgO2RhDVoHFoNjrDYl9Ym
+	 cLKf8giSYvjDA==
+Date: Mon, 24 Jun 2024 15:02:00 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Kuldeep Singh <kuldeep.singh@nxp.com>
+Subject: Re: [PATCH v4 2/3] spi: dt-bindings: fsl-dspi: Convert to yaml format
+Message-ID: <171926291748.413012.792839544759127895.robh@kernel.org>
+References: <20240624-ls_qspi-v4-0-3d1c6f5005bf@nxp.com>
+ <20240624-ls_qspi-v4-2-3d1c6f5005bf@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240624-ls_qspi-v4-2-3d1c6f5005bf@nxp.com>
 
-On Sun, 23 Jun 2024 07:11:24 +0800 kernel test robot <lkp@intel.com> wrote:
 
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> branch HEAD: f76698bd9a8ca01d3581236082d786e9a6b72bb7  Add linux-next specific files for 20240621
+On Mon, 24 Jun 2024 14:55:28 -0400, Frank Li wrote:
+> Convert dt-binding spi-fsl-dspi.txt to yaml format.
+> Use part Vladimir Oltean's work at of
+> https://lore.kernel.org/linux-spi/20221111224651.577729-1-vladimir.oltean@nxp.com/
 > 
-> Error/Warning reports:
+> Additional changes during convert:
+> - compatible string "fsl,ls1028a-dspi" can be followed by
+> fsl,ls1021a-v1.0-dspi.
+> - Change "dspi0@4002c000" to "spi@4002c000" in example.
+> - Reorder properties in example.
+> - Use GIC include in example.
+> - Deprecated fsl,spi-cs-sck-delay and fsl,spi-sck-cs-delay by use common SPI
+> property.
+> - Use compatible string 'jedec,spi-nor' in example.
+> - Split peripheral part to fsl,dspi-peripheral-props.yaml.
+> - Remove 'interrupts' and 'pinctrl' from required list.
+> - Update 'bus-num' description.
+> - Update 'spi-num-chipselects' description by add "cs-gpios don't count
+> against this number".
+> - Remove 'big-endian' description.
 > 
-> https://lore.kernel.org/oe-kbuild-all/202406220536.JnAncjqz-lkp@intel.com
-> https://lore.kernel.org/oe-kbuild-all/202406220754.evK8Hrjw-lkp@intel.com
+> Co-developed-by: Kuldeep Singh <kuldeep.singh@nxp.com>
+> Signed-off-by: Kuldeep Singh <kuldeep.singh@nxp.com>
+> Co-developed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > 
-> Error/Warning: (recently discovered and may have been fixed)
+> ---
+> Change from v3 to v4
+> - Add Co-developed-by and Signed-off-by from Kuldeep and Vladimir
+> - Remove 'interrupts' and 'pinctrl' from required list
+> - Update 'bus-num' descripton.
+> - Update 'spi-num-chipselects' description by add "cs-gpios don't count
+> against this number".
+> - Remove 'big-endian' description.
+> ---
+>  .../bindings/spi/fsl,dspi-peripheral-props.yaml    |  30 ++++++
+>  .../devicetree/bindings/spi/fsl,dspi.yaml          | 103 +++++++++++++++++++++
+>  .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  65 -------------
+>  .../bindings/spi/spi-peripheral-props.yaml         |   1 +
+>  MAINTAINERS                                        |   2 +-
+>  5 files changed, 135 insertions(+), 66 deletions(-)
 > 
-> drivers/soc/qcom/smsm.c:(.text.qcom_smsm_remove+0x70): undefined reference to `mbox_free_channel'
-> 
-> Unverified Error/Warning (likely false positive, please contact us if interested):
-> 
-> include/linux/container_of.h:20:54: error: invalid use of undefined type 'struct thpsize'
-> include/linux/list.h:645:25: error: invalid use of undefined type 'struct thpsize'
-> include/linux/stddef.h:16:33: error: invalid use of undefined type 'struct thpsize'
-> mm/huge_memory.c:455:21: error: implicit declaration of function 'to_thpsize'; did you mean 'thp_size'? [-Werror=implicit-function-declaration]
-> mm/huge_memory.c:455:37: error: invalid type argument of '->' (have 'int')
-> mm/huge_memory.c:558:35: error: 'MTHP_STAT_FILE_ALLOC' undeclared (first use in this function); did you mean 'THP_FILE_ALLOC'?
-> mm/huge_memory.c:559:38: error: 'MTHP_STAT_FILE_FALLBACK' undeclared (first use in this function); did you mean 'THP_FILE_FALLBACK'?
-> mm/huge_memory.c:560:45: error: 'MTHP_STAT_FILE_FALLBACK_CHARGE' undeclared (first use in this function); did you mean 'THP_FILE_FALLBACK_CHARGE'?
-> mm/huge_memory.c:579:17: warning: assignment to 'struct thpsize *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-> mm/huge_memory.c:579:33: error: invalid application of 'sizeof' to incomplete type 'struct thpsize'
-> mm/huge_memory.c:583:44: error: invalid use of undefined type 'struct thpsize'
-> mm/huge_memory.c:608:15: warning: passing argument 1 of 'kfree' makes pointer from integer without a cast [-Wint-conversion]
-> 
->
-> ...
->
->
-> |-- x86_64-randconfig-014-20240202
-> |   |-- include-linux-container_of.h:error:invalid-use-of-undefined-type-struct-thpsize
-> |   |-- include-linux-list.h:error:invalid-use-of-undefined-type-struct-thpsize
-> |   |-- include-linux-stddef.h:error:invalid-use-of-undefined-type-struct-thpsize
-> |   |-- mm-huge_memory.c:error:MTHP_STAT_FILE_ALLOC-undeclared-(first-use-in-this-function)
-> |   |-- mm-huge_memory.c:error:MTHP_STAT_FILE_FALLBACK-undeclared-(first-use-in-this-function)
-> |   |-- mm-huge_memory.c:error:MTHP_STAT_FILE_FALLBACK_CHARGE-undeclared-(first-use-in-this-function)
-> |   |-- mm-huge_memory.c:error:implicit-declaration-of-function-to_thpsize
-> |   |-- mm-huge_memory.c:error:invalid-application-of-sizeof-to-incomplete-type-struct-thpsize
-> |   |-- mm-huge_memory.c:error:invalid-type-argument-of-(have-int-)
-> |   |-- mm-huge_memory.c:error:invalid-use-of-undefined-type-struct-thpsize
-> |   |-- mm-huge_memory.c:warning:assignment-to-struct-thpsize-from-int-makes-pointer-from-integer-without-a-cast
-> |   `-- mm-huge_memory.c:warning:passing-argument-of-kfree-makes-pointer-from-integer-without-a-cast
 
-Is there a way for us to obtain that config file?
-
-"mm: shmem: add multi-size THP sysfs interface for anonymous shmem"
-moved things into mm_tytpes.h but didn't include it so perhaps this
-will fix:
-
---- a/mm/huge_memory.c~mm-shmem-add-multi-size-thp-sysfs-interface-for-anonymous-shmem-fix-4
-+++ a/mm/huge_memory.c
-@@ -20,6 +20,7 @@
- #include <linux/swapops.h>
- #include <linux/backing-dev.h>
- #include <linux/dax.h>
-+#include <linux/mm_types.h>
- #include <linux/khugepaged.h>
- #include <linux/freezer.h>
- #include <linux/pfn_t.h>
-_
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
