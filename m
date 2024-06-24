@@ -1,245 +1,177 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9116FD0
-	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 04:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E857376;
+	Mon, 24 Jun 2024 04:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719201778; cv=none; b=ENbRFleJg28w0lgZGyLRDLVEAdvEXz2j+Jg2z00dtycbsFfPbrNyMYYW68z7XOOS+CMsFc05GbZqvKxODt7Ev1yhjlurDBuCdi0QHWR1/2b6+t0wRgmLsJuM8K9f2F3s2ZB7PqyN+t3eJU8tYu6MBsRHRU+QygYgEdSmtY7RsGo=
+	t=1719202208; cv=none; b=MMkRQQtVSTW2d7XkJH7hJv9MhS5KGombphoxqnrw9WV/nysPwTPMUCKlsMUE+anURLnfMRDQqAkucU4ltua//qR3b9lFqathdZbm+NEJsG9TZMHRKEcJ4G/UiE0Bu/0eBQ7W/NTXLMHftH18lMFSzuXSPSGAGl8122J34zAFpqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719201778; c=relaxed/simple;
-	bh=ohUxX1PvWv6zwsoCgYQIQEDysh4aaTx6J6uvF2CJn9E=;
-	h=From:To:Subject:Date:Message-Id; b=ES6X/x1Xzkiug8RGzdOV7kxvQvjD7NXXts412Ug3CnzlSU6fOf7uqPunhRNXu7zmFcn0sxgtsqyBmwAMgeuwqVf1GYK8gS7ccgHeySAEW9AEWcvHt/zgOjsz7xECbLuzp346meTSCc8cxIAWLuBhgkH9wJwYeeHzV+6JRxkubwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B755A2000BA;
-	Mon, 24 Jun 2024 05:56:32 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3A08920134F;
-	Mon, 24 Jun 2024 05:56:32 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id C41BC183C309;
-	Mon, 24 Jun 2024 11:56:28 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: p.zabel@pengutronix.de,
-	abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	marex@denx.de,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com
-Subject: [PATCH v9] reset: imx8mp-audiomix: Add AudioMix Block Control reset driver
-Date: Mon, 24 Jun 2024 11:39:05 +0800
-Message-Id: <1719200345-32006-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1719202208; c=relaxed/simple;
+	bh=f8MsT2ydR8FVWHQfUu9aV03i/fvtgmg81rTBmx7wZtI=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=BDbg8UXsQuKwnl38pr1dFyyykIA5bUdgqaZXlEo0KrJmyXo5ziesZV0DQmwcNIDyNEyNH8rjo5N1ooStaOofS/MrKwDF2muXZyY4N48S8ql97UdkndUr64B6f8KpUiPj2Js6KxUXLJoqJyqxDi4hutiNiCXj6D3nVnWy0xEoIFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=KrD5HtQJ; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="KrD5HtQJ"
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240624041002epoutp017f05577018b2eadddc8b8cb81ec3826f~b1Ut0SVjH1592015920epoutp01L;
+	Mon, 24 Jun 2024 04:10:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240624041002epoutp017f05577018b2eadddc8b8cb81ec3826f~b1Ut0SVjH1592015920epoutp01L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1719202202;
+	bh=f8MsT2ydR8FVWHQfUu9aV03i/fvtgmg81rTBmx7wZtI=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=KrD5HtQJlXwla8TJO98EzEGmbC6U6iFckhBxukcjB1yovmR3lz02KUcrhstmuFHwP
+	 HlU6mB/4SedvqN4YiOBGO9STneKReT3yuKLSGYAj6kOz4v/+HseOzds5BjWWMSF78Z
+	 UX56cYaK573oQ0K1epKtk2kmiCwRbV6WxQq+ulZM=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+	20240624041002epcas5p32f5ba38ddb47660961e77f59341cfae1~b1Utit_tu2048920489epcas5p3C;
+	Mon, 24 Jun 2024 04:10:02 +0000 (GMT)
+Received: from epcpadp3 (unknown [182.195.40.17]) by epsnrtp1.localdomain
+	(Postfix) with ESMTP id 4W6vcp3M22z4x9Q8; Mon, 24 Jun 2024 04:10:02 +0000
+	(GMT)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20240624040636epcas5p37dc56f380e9e84e273a040775a8e6f6a~b1RtorJGk1881818818epcas5p3e;
+	Mon, 24 Jun 2024 04:06:36 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240624040636epsmtrp207b25ba1110f1c95c77dc40514d58f15~b1Rtmp5HY1015110151epsmtrp2s;
+	Mon, 24 Jun 2024 04:06:36 +0000 (GMT)
+X-AuditID: b6c32a29-72dff700000074f4-8b-6678f0cc0a0d
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	76.5B.29940.CC0F8766; Mon, 24 Jun 2024 13:06:36 +0900 (KST)
+Received: from INBRO002756 (unknown [107.122.12.5]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20240624040628epsmtip2a5b53ed83b9eac43f0d7a7bd0cd4bb48~b1RlznvHY0728807288epsmtip2H;
+	Mon, 24 Jun 2024 04:06:27 +0000 (GMT)
+From: "Alim Akhtar" <alim.akhtar@samsung.com>
+To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, "'Krzysztof Kozlowski'"
+	<krzysztof.kozlowski@linaro.org>, "'Daniel Lezcano'"
+	<daniel.lezcano@linaro.org>, "'Zhang Rui'" <rui.zhang@intel.com>, "'Lukasz
+ Luba'" <lukasz.luba@arm.com>, "'Rob Herring'" <robh@kernel.org>, "'Conor
+ Dooley'" <conor+dt@kernel.org>, "'Guillaume La Roque'"
+	<glaroque@baylibre.com>, "'Krzysztof Kozlowski'" <krzk+dt@kernel.org>,
+	"'Vasily Khoruzhick'" <anarsoul@gmail.com>, "'Chen-Yu Tsai'"
+	<wens@csie.org>, "'Jernej Skrabec'" <jernej.skrabec@gmail.com>, "'Samuel
+ Holland'" <samuel@sholland.org>, "'Shawn	Guo'" <shawnguo@kernel.org>,
+	"'Sascha Hauer'" <s.hauer@pengutronix.de>, "'Pengutronix Kernel Team'"
+	<kernel@pengutronix.de>, "'Fabio Estevam'" <festevam@gmail.com>, "'Anson
+ Huang'" <Anson.Huang@nxp.com>, "'Thierry Reding'"
+	<thierry.reding@gmail.com>, "'Jonathan Hunter'" <jonathanh@nvidia.com>,
+	"'Dmitry Baryshkov'" <dmitry.baryshkov@linaro.org>, "'Amit Kucheria'"
+	<amitk@kernel.org>, =?utf-8?Q?'Niklas_S=C3=B6derlund'?=
+	<niklas.soderlund@ragnatech.se>, "'Heiko Stuebner'" <heiko@sntech.de>,
+	"'Biju	Das'" <biju.das.jz@bp.renesas.com>, "'Orson Zhai'"
+	<orsonzhai@gmail.com>, "'Baolin Wang'" <baolin.wang@linux.alibaba.com>,
+	"'Chunyan Zhang'" <zhang.lyra@gmail.com>, "'Alexandre Torgue'"
+	<alexandre.torgue@foss.st.com>, "'Pascal Paillet'" <p.paillet@foss.st.com>,
+	"'Keerthy'" <j-keerthy@ti.com>, "'Broadcom internal kernel review list'"
+	<bcm-kernel-feedback-list@broadcom.com>, "'Florian Fainelli'"
+	<florian.fainelli@broadcom.com>, "'Scott Branden'" <sbranden@broadcom.com>,
+	"'zhanghongchen'" <zhanghongchen@loongson.cn>, "'Matthias Brugger'"
+	<matthias.bgg@gmail.com>, "'AngeloGioacchino Del Regno'"
+	<angelogioacchino.delregno@collabora.com>, "'Bjorn Andersson'"
+	<andersson@kernel.org>, "'Geert Uytterhoeven'" <geert+renesas@glider.be>
+Cc: <linux-pm@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+	<linux-sunxi@lists.linux.dev>, <imx@lists.linux.dev>,
+	<linux-tegra@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>, "'Florian Fainelli'"
+	<f.fainelli@gmail.com>, <linux-rpi-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>, <cpgs@samsung.com>
+In-Reply-To: <003b73f2-3b5d-40b7-a87c-2fc937e81bcd@kernel.org>
+Subject: RE: [PATCH 01/22] dt-bindings: thermal: samsung,exynos: specify
+ cells
+Date: Mon, 24 Jun 2024 09:36:22 +0530
+Message-ID: <1296674576.21719202202469.JavaMail.epsvc@epcpadp3>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQGhCdcVAXQc0tvKk5x9QOKQ/J0WewGh/L0BAiWHCW4CgfI42AIboMv/sgabD1A=
+Content-Language: en-us
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0xbZRjH956ennPogp4VYs8gKiHRZBdgBGKeKcNLNj3ROJfMfcHorFAY
+	chn2DIYzbqyAWjZGOybQMsrVcSsTWi6lBYblsjEHTFEYcpFroYMBAYKWIZXSaPj2ey7/3/N+
+	eCmesITwoCJjz0mkseJob0KA17d5v+jzYCkx/FDH4LNgs2YhaMtPhNROC4L674Lg13IGGlSh
+	YG/uRFCV3oGDxrCGgba5BwOreR9oVp6H/PYePih7bQSsL7STMP77B3C7fpQHebnXERRm5hFg
+	n5jjg2o0lYD7DTIMZvJvI0hRF+FQ8X0jDlb1KAG9vdUkNM/VkVCQuxt0k/1byjvdJPQZbxLQ
+	l/wLgpX0dgR11gUMlsfsPFAObQVyelswSOuf4sONFiMB8lU1AYWyFBJkKQFwN+saH7KXchG0
+	TmfiYG8ykDA1fo2Afxp0OMxMyAlYqJxCMFsrAptRg4PN3ItB6ZiRhLX+Bt4bwGo1WsQuPkol
+	2fLZXJJV/9lNsIaREsRWT1Ty2emMOpJVdvuwjeoRki1usmKsrkJOsMP9TQTbOH6Y1ZdcYmf1
+	KsRelhVhJzxCBEFhkujIBInUL/hTwRmT5QmKqxUk6tqMvCRUTaUhF4qhA5lK/RNeGhJQQtqE
+	mHm7CTkHnsxAjYJ0shtTvjmzzULaghj1Pc7BBO3DGIq/IRxhd3rwGaZqoZR0FDz6Mc7oF8r4
+	Tu1djHk0YSUcERc6mCmxTG6fcKOPM5orU3gaoiicfolZVQU42q70YcYuv086eQ/TpXKsuGxJ
+	DzDTg9P/863COZ7zdV6MbfoW38HuW0rt5lXCuSNirB3tpAK5qXeo1DtU6h0q9Y5IAcIr0F5J
+	HBcTEcP5x/nHSs77cuIYLj42wjf0bIwObX/k/fsMqKFiydeMMAqZEUPxvN1dsy8lhAtdw8Rf
+	XpBIz56WxkdLODPypHBvkatoNj1MSEeIz0miJJI4ifS/KUa5eCRhhfrqbzfHZJHK+RPvkMNe
+	wW5rFxbPH4rZbdwbWfNKl19iYk5UskvJRenAg67VWvnf1Mb73Py8ebm5aS5izTPjdLop2e94
+	q+jzEI61jNBfLRZ2vveR5cdTTzUvrAQykw8DPhw6om/N/ixHsaFYjzYkiF696nXAqPXfCBJM
+	Hc2JbN38GAqUjZ9wsoGTip9VnjfeDfpCZdHuEq5nHFQ8N+y7p9Z0rLKsh91Aj9d6fug72vKb
+	PmXm7eXc6rd08ofxYlNelPGPLCT3R389HbkXUiT9etfJ8s6q0KGiU6a66wgrO/Lam6Uv+17J
+	Lr6zXpC0cvCy9WamsOb1Y+HKn2xpXPzQmCjwojfOnRH77+dJOfG/2JYK7DcEAAA=
+X-CMS-MailID: 20240624040636epcas5p37dc56f380e9e84e273a040775a8e6f6a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20240614094638epcas5p115d52130f45e130652b6f1d946358d19
+References: <20240614-dt-bindings-thermal-allof-v1-0-30b25a6ae24e@linaro.org>
+	<CGME20240614094638epcas5p115d52130f45e130652b6f1d946358d19@epcas5p1.samsung.com>
+	<20240614-dt-bindings-thermal-allof-v1-1-30b25a6ae24e@linaro.org>
+	<1891546521.01718433481489.JavaMail.epsvc@epcpadp4>
+	<003b73f2-3b5d-40b7-a87c-2fc937e81bcd@kernel.org>
 
-Add support for the resets on i.MX8MP Audio Block Control module,
-which includes the EARC PHY software reset and EARC controller
-software reset. The reset controller is created using the auxiliary
-device framework and set up in the clock driver.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
----
-changes in v9:
-- only send this commits because others have been applied
-- remove depends on in config
-- add spin lock
-- call iounmmap()
 
-changes in v8:
-https://lore.kernel.org/linux-arm-kernel/27ea1bf7de6f349426fcd7ddb056a1adfae47c73.camel@pengutronix.de/T/
+> -----Original Message-----
+> From: Krzysztof Kozlowski <krzk@kernel.org>
+> Sent: Saturday, June 15, 2024 3:09 PM
+> To: Alim Akhtar <alim.akhtar@samsung.com>; 'Krzysztof Kozlowski'
+> <krzysztof.kozlowski@linaro.org>; 'Daniel Lezcano'
+[snip]
+> On 14/06/2024 16:29, Alim Akhtar wrote:
+> > Hi Krzysztof,
+> >
+> >> -----Original Message-----
+> >> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> >> Sent: Friday, June 14, 2024 3:16 PM
+> >> To: Daniel Lezcano <daniel.lezcano@linaro.org
+> > .stormreply.com;
+> >> Subject: [PATCH 01/22] dt-bindings: thermal: samsung,exynos: specify
+> >> cells
+> >>
+> >> All Samsung Exynos SoCs Thermal Management Units have only one
+> >> sensor, so make '#thermal-sensor-cells' fixed at 0.
+> >>
+> > This is not entirely true, there are SoCs which have multiple temp sens=
+ors.
+> > It is true that currently only one sensor support is added though.
+>=20
+> All supported by mainline. Others do not exist now :)
+>=20
+> >
+> > So we can leave this as is or you suggest to make it to support only
+> > one sensor (to match the current DT support), and later (in near
+> > future) change it again to match what HW actually support?
+>=20
+> Yes, different devices can have different value (and bindings).
+Ok, this is fine for now.
 
- drivers/reset/Kconfig                 |   7 ++
- drivers/reset/Makefile                |   1 +
- drivers/reset/reset-imx8mp-audiomix.c | 128 ++++++++++++++++++++++++++
- 3 files changed, 136 insertions(+)
- create mode 100644 drivers/reset/reset-imx8mp-audiomix.c
+> Best regards,
+> Krzysztof
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 7112f5932609..509f70e5c4c0 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -91,6 +91,13 @@ config RESET_IMX7
- 	help
- 	  This enables the reset controller driver for i.MX7 SoCs.
- 
-+config RESET_IMX8MP_AUDIOMIX
-+	tristate "i.MX8MP AudioMix Reset Driver"
-+	select AUXILIARY_BUS
-+	default CLK_IMX8MP
-+	help
-+	  This enables the reset controller driver for i.MX8MP AudioMix
-+
- config RESET_INTEL_GW
- 	bool "Intel Reset Controller Driver"
- 	depends on X86 || COMPILE_TEST
-diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
-index fd8b49fa46fc..a6796e83900b 100644
---- a/drivers/reset/Makefile
-+++ b/drivers/reset/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_RESET_BRCMSTB_RESCAL) += reset-brcmstb-rescal.o
- obj-$(CONFIG_RESET_GPIO) += reset-gpio.o
- obj-$(CONFIG_RESET_HSDK) += reset-hsdk.o
- obj-$(CONFIG_RESET_IMX7) += reset-imx7.o
-+obj-$(CONFIG_RESET_IMX8MP_AUDIOMIX) += reset-imx8mp-audiomix.o
- obj-$(CONFIG_RESET_INTEL_GW) += reset-intel-gw.o
- obj-$(CONFIG_RESET_K210) += reset-k210.o
- obj-$(CONFIG_RESET_LANTIQ) += reset-lantiq.o
-diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
-new file mode 100644
-index 000000000000..6e3f3069f727
---- /dev/null
-+++ b/drivers/reset/reset-imx8mp-audiomix.c
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#include <linux/auxiliary_bus.h>
-+#include <linux/device.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/reset-controller.h>
-+
-+#define EARC			0x200
-+#define EARC_RESET_MASK		0x3
-+
-+struct imx8mp_audiomix_reset {
-+	struct reset_controller_dev rcdev;
-+	spinlock_t lock; /* protect register read-modify-write cycle */
-+	void __iomem *base;
-+};
-+
-+static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
-+{
-+	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
-+}
-+
-+static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
-+					unsigned long id)
-+{
-+	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-+	void __iomem *reg_addr = priv->base;
-+	unsigned int mask, reg;
-+	unsigned long flags;
-+
-+	mask = BIT(id);
-+	spin_lock_irqsave(&priv->lock, flags);
-+	reg = readl(reg_addr + EARC);
-+	writel(reg & ~mask, reg_addr + EARC);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
-+					  unsigned long id)
-+{
-+	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
-+	void __iomem *reg_addr = priv->base;
-+	unsigned int mask, reg;
-+	unsigned long flags;
-+
-+	mask = BIT(id);
-+	spin_lock_irqsave(&priv->lock, flags);
-+	reg = readl(reg_addr + EARC);
-+	writel(reg | mask, reg_addr + EARC);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
-+	.assert   = imx8mp_audiomix_reset_assert,
-+	.deassert = imx8mp_audiomix_reset_deassert,
-+};
-+
-+static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
-+				       const struct auxiliary_device_id *id)
-+{
-+	struct imx8mp_audiomix_reset *priv;
-+	struct device *dev = &adev->dev;
-+	int ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	spin_lock_init(&priv->lock);
-+
-+	priv->rcdev.owner     = THIS_MODULE;
-+	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
-+	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
-+	priv->rcdev.of_node   = dev->parent->of_node;
-+	priv->rcdev.dev	      = dev;
-+	priv->rcdev.of_reset_n_cells = 1;
-+	priv->base            = of_iomap(dev->parent->of_node, 0);
-+	if (!priv->base)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(dev, priv);
-+
-+	ret = devm_reset_controller_register(dev, &priv->rcdev);
-+	if (ret)
-+		goto out_unmap;
-+
-+	return 0;
-+
-+out_unmap:
-+	iounmap(priv->base);
-+	return ret;
-+}
-+
-+static void imx8mp_audiomix_reset_remove(struct auxiliary_device *adev)
-+{
-+	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(&adev->dev);
-+
-+	iounmap(priv->base);
-+}
-+
-+static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
-+	{
-+		.name = "clk_imx8mp_audiomix.reset",
-+	},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
-+
-+static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
-+	.probe		= imx8mp_audiomix_reset_probe,
-+	.remove		= imx8mp_audiomix_reset_remove,
-+	.id_table	= imx8mp_audiomix_reset_ids,
-+};
-+
-+module_auxiliary_driver(imx8mp_audiomix_reset_driver);
-+
-+MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
-+MODULE_DESCRIPTION("Freescale i.MX8MP Audio Block Controller reset driver");
-+MODULE_LICENSE("GPL");
--- 
-2.34.1
+
 
