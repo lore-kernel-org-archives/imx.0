@@ -1,140 +1,136 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5049E130495
-	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 09:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32A8130AD7;
+	Mon, 24 Jun 2024 09:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719220783; cv=none; b=dSJjGsvrLMZW6TrD7l3qDTm57TZRc3XXEuSEjcKsqErCY+YUEy5rBW2oOnslI0pTY8ybn/R8yCT+Q5wGt+nhJSWv0g1b1436s79ZKTAKhJmpM4c0Its8yYE8Af1cYd3cXLb+Al2yp1k/dZLG1V+spHyY8cAGbooU/xYC5YEcRWU=
+	t=1719221056; cv=none; b=NHCDxZ3MWQqYNkWjcjOm3cELmyK4VCdpTEPClJDvchhIoHWWxU4aM6tU469/yOTwYvhKOuKdoiZEr3YlGTzQT1T/shZbCknDS4OycEnVIeXjXgXRmFmQLVadU0L+bLdXIupUAxGj1Ro5x29OBXqIUShz45S4ErloFGsbFT4eB8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719220783; c=relaxed/simple;
-	bh=sINm+sQHFrY44EfnWrAkDK7SNTdTvLpj8rB7H6Xg2I4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gge8bwGCiH/zKNX0Re4Mlup1j4XGZY8Fe7HrxqS8vPc6PcghgAu+UKUd43KuHSLp3Zle91TguZ01yU9benOloMAwn4dwXkHBYukVs5VMefL9MjZ5Tu6ASrJHe2BlE8X3Rz8qeBsz+tmIoCesQMIoUq7c6lUg4ep8uTXIqsoGXTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=BTebwJMQ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mk0rGT56 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1719221056; c=relaxed/simple;
+	bh=PoG110+Vg9Kgqy0v9zC+kNlBkxyCHRY9nhFLkjlrhKE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ldiswHHBc0Nj53YJt7Dgef8eqt9hlIIUXhBiougKxpXWcY2dDdZEQhHgKaZ2rzc8uDRIiNe/8eOI4oCszK63h1pW0cXJL/r1ku+jicTuU0IzoUOym5C0G9MqISTH2f5DiC09rsTINio43ZwO2hIlVRNN8KRApjrMvTq73ePck48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=due3BtFl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="BTebwJMQ";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mk0rGT56"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1719220779; x=1750756779;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=uJW3zLdz7y8+GEGkB3RFqz/8yBoXrC/7C7PphqWWonM=;
-  b=BTebwJMQpQa2PqGydvSIS3oecPNQMPMHvOewm4mEhCY+Os8Ah/6dfpnN
-   DXyb3imFdITUugsYNhk0sDG39ajkBZ7LlTdh7UubZV1cLNieXufnX1vnL
-   WPStJtHKX+PQqyl0LWxJD84jk2ncsof5fpsz6OeeOtixlJXNWahwaueiC
-   jweuzqcTex1LwYnR/gnJx6rq0rAddn5xGUJB2Ea8/pIxvorFctvR3gw7C
-   +5L2Nhlb2d5RINhDhjUsg59QJZqi5UAKziAF05Lct4JW0M29SCIaBnSQG
-   vVNxzZfxtOS9O6RJDnZabLP/Mja+Ta9ah75SfVSSsIbzo7y4wBFtE++3H
-   Q==;
-X-CSE-ConnectionGUID: BkJsueitROW81l3R/C86nw==
-X-CSE-MsgGUID: J+yHdkulRb+CPQUvJuzl1Q==
-X-IronPort-AV: E=Sophos;i="6.08,261,1712613600"; 
-   d="scan'208";a="37547624"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 24 Jun 2024 11:19:35 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 29F94165926;
-	Mon, 24 Jun 2024 11:19:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1719220770;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uJW3zLdz7y8+GEGkB3RFqz/8yBoXrC/7C7PphqWWonM=;
-	b=mk0rGT56lQculyO1b1QLG4ZJ+l8y6ZfvbcMypcZZz5GIc5+yGTh6KVJMQ8XqA8d+DzA8sx
-	Qxwpsk6RsbOu9tf42+v76lCnXAmBeu3gdJmKSqIGuIU2IIMhshqabxw1yJiooilm8saFfy
-	iVAhsz02HQg8TqN1V0VblkWTEMJ829EI3KG2/Qv9HGa8yOiGJDyWnblaRbVBGeKDzHxNVr
-	G/yl6p7mTd0Izeil+uXyxSjqE0gQB75Dc7ehw2WmcUrtMWPEaNU9oFep0VxGRAgWxcdOo5
-	zfTCcmNysdQKRbuPvvadCNkXIVRTEiefKLSuyROTNohGMprwzONlnxLVWuNjLQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marex@denx.de>, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, "Lukas F . Hartmann" <lukas@mntmn.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of .crtc_clock
-Date: Mon, 24 Jun 2024 11:19:33 +0200
-Message-ID: <1897634.CQOukoFCf9@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240531202813.277109-1-marex@denx.de>
-References: <20240531202813.277109-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="due3BtFl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6499C2BBFC;
+	Mon, 24 Jun 2024 09:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719221056;
+	bh=PoG110+Vg9Kgqy0v9zC+kNlBkxyCHRY9nhFLkjlrhKE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=due3BtFlFpfgKEoERX3fWNf4oJKGPBMwIoryIkimKottOc66Ck0FU7HIwTfLlCARG
+	 G7Xdx+V9429rz5iPhEqY/+CegI4X+wEYm4yDrP3NwShzKh0dK3PeYSp5nWzMrnxQK8
+	 Fa3OrCbsREZxIuubaVRr2emrcHuwluCgtQnvMTcSZi4UOdoyMo0mQL9lAz/2zu2LFL
+	 5b5ZfpDvx9DGr12lX4IZKCLWoCP/TEQknzrz1DQdIA5wpWGIZOu7JgakX3wcxVkXqd
+	 XxY6Kbe+AlhjcuKHcdVPO44im+ERbE2roQFjgyxxHDuXb6AnM+T5H5ca4Ielm2Ks1I
+	 61To1rpQYfpqg==
+Message-ID: <1e26e816-5bb5-4592-8e2a-d5315bb7482d@kernel.org>
+Date: Mon, 24 Jun 2024 11:24:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove binding
+To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ shengjiu wang <shengjiu.wang@gmail.com>, Xiubo Lee <Xiubo.Lee@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-sound <linux-sound@vger.kernel.org>,
+ devicetree <devicetree@vger.kernel.org>, imx <imx@lists.linux.dev>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ alsa-devel <alsa-devel@alsa-project.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
+References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
+ <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
+ <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
+ <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
+ <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
+ <1048207382.1714780.1719220717882.JavaMail.zimbra@savoirfairelinux.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <1048207382.1714780.1719220717882.JavaMail.zimbra@savoirfairelinux.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
-> In case an upstream bridge modified the required clock frequency
-> in its .atomic_check callback by setting adjusted_mode.clock ,
-> make sure that clock frequency is generated by the LCDIFv3 block.
->=20
-> This is useful e.g. when LCDIFv3 feeds DSIM which feeds TC358767
-> with (e)DP output, where the TC358767 expects precise timing on
-> its input side, the precise timing must be generated by the LCDIF.
->=20
-> Signed-off-by: Marek Vasut <marex@denx.de>
+On 24/06/2024 11:18, Elinor Montmasson wrote:
+>>>
+>>> Previous `imx-spdif` driver used the dummy codec instead of
+>>> using declared spdif codecs. It was discussed in previous version of this
+>>> contribution
+>>> that using the dummy codec isn't good practice. So one to one backward
+>>> compatibility
+>>> isn't really possible.
+>>
+>> Heh, that's not good. This is improvement, cleanup. While it is
+>> important and useful, it should also not break existing users.
+> 
+> 
+> Should I introduce then the use of the dummy codec in `fsl-asoc-card` to
+> assure backward compatibility at least for a time ?
+> With maybe warning messages in code to indicate that spdif codecs drivers
+> should be declared and used in the future ?
+> 
 
-With the other rc358767 patches in place, this does the trick.
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+If it is doable (reasonable code), then yes, please keep backwards
+compatibility with old DTS.
 
-> ---
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Lukas F. Hartmann <lukas@mntmn.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: kernel@dh-electronics.com
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
->  drivers/gpu/drm/mxsfb/lcdif_kms.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mxsfb/lcdif_kms.c b/drivers/gpu/drm/mxsfb/lc=
-dif_kms.c
-> index 2541d2de4e45f..dbd42cc1da87f 100644
-> --- a/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_kms.c
-> @@ -407,8 +407,7 @@ static void lcdif_crtc_mode_set_nofb(struct drm_crtc_=
-state *crtc_state,
->  	struct drm_display_mode *m =3D &crtc_state->adjusted_mode;
-> =20
->  	DRM_DEV_DEBUG_DRIVER(drm->dev, "Pixel clock: %dkHz (actual: %dkHz)\n",
-> -			     m->crtc_clock,
-> -			     (int)(clk_get_rate(lcdif->clk) / 1000));
-> +			     m->clock, (int)(clk_get_rate(lcdif->clk) / 1000));
->  	DRM_DEV_DEBUG_DRIVER(drm->dev, "Bridge bus_flags: 0x%08X\n",
->  			     lcdif_crtc_state->bus_flags);
->  	DRM_DEV_DEBUG_DRIVER(drm->dev, "Mode flags: 0x%08X\n", m->flags);
-> @@ -538,7 +537,7 @@ static void lcdif_crtc_atomic_enable(struct drm_crtc =
-*crtc,
->  	struct drm_device *drm =3D lcdif->drm;
->  	dma_addr_t paddr;
-> =20
-> -	clk_set_rate(lcdif->clk, m->crtc_clock * 1000);
-> +	clk_set_rate(lcdif->clk, m->clock * 1000);
-> =20
->  	pm_runtime_get_sync(drm->dev);
-> =20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Best regards,
+Krzysztof
 
