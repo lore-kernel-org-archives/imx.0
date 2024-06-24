@@ -1,136 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32A8130AD7;
-	Mon, 24 Jun 2024 09:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13617125D6
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 10:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719221056; cv=none; b=NHCDxZ3MWQqYNkWjcjOm3cELmyK4VCdpTEPClJDvchhIoHWWxU4aM6tU469/yOTwYvhKOuKdoiZEr3YlGTzQT1T/shZbCknDS4OycEnVIeXjXgXRmFmQLVadU0L+bLdXIupUAxGj1Ro5x29OBXqIUShz45S4ErloFGsbFT4eB8o=
+	t=1719225112; cv=none; b=a/FuT+t6tNeB/uJLLrCLMI/LnqxQO2yBp0dKaCVtiGAWsSGNj6PSfn+JnX6SOI6QCzC9KVzBJ/wY8fsZHHZ5llXYu8tGJe1AHXXvE24O8HVruoLartpKb1iJdxmpWgIBGMMbJiq46nVw5J2X33MpkMzVTBOQDLAivIW6EnyG5bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719221056; c=relaxed/simple;
-	bh=PoG110+Vg9Kgqy0v9zC+kNlBkxyCHRY9nhFLkjlrhKE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ldiswHHBc0Nj53YJt7Dgef8eqt9hlIIUXhBiougKxpXWcY2dDdZEQhHgKaZ2rzc8uDRIiNe/8eOI4oCszK63h1pW0cXJL/r1ku+jicTuU0IzoUOym5C0G9MqISTH2f5DiC09rsTINio43ZwO2hIlVRNN8KRApjrMvTq73ePck48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=due3BtFl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719225112; c=relaxed/simple;
+	bh=eCJNHKpOFyvKm0QEDNLeKYcgJDFGN4EGDIDzjHn6FlM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cct715nV649rx4niYPzOsprdbH6fiBhWksHZ8ZwpsujxGejncrRMl6eYkT7FDtKDNLymPH3VxlSsiWVrIIG8DJiuLZervYb4q9xGZYMNRAhUHa/bE3OoMSepTP+6PVt/UHr0THDjTC1PffFzESjmPTPXIrkvJSQPhnnAXpAwRq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g4qMi0MF; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="due3BtFl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6499C2BBFC;
-	Mon, 24 Jun 2024 09:24:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719221056;
-	bh=PoG110+Vg9Kgqy0v9zC+kNlBkxyCHRY9nhFLkjlrhKE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=due3BtFlFpfgKEoERX3fWNf4oJKGPBMwIoryIkimKottOc66Ck0FU7HIwTfLlCARG
-	 G7Xdx+V9429rz5iPhEqY/+CegI4X+wEYm4yDrP3NwShzKh0dK3PeYSp5nWzMrnxQK8
-	 Fa3OrCbsREZxIuubaVRr2emrcHuwluCgtQnvMTcSZi4UOdoyMo0mQL9lAz/2zu2LFL
-	 5b5ZfpDvx9DGr12lX4IZKCLWoCP/TEQknzrz1DQdIA5wpWGIZOu7JgakX3wcxVkXqd
-	 XxY6Kbe+AlhjcuKHcdVPO44im+ERbE2roQFjgyxxHDuXb6AnM+T5H5ca4Ielm2Ks1I
-	 61To1rpQYfpqg==
-Message-ID: <1e26e816-5bb5-4592-8e2a-d5315bb7482d@kernel.org>
-Date: Mon, 24 Jun 2024 11:24:06 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g4qMi0MF"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52caebc6137so3954653e87.0
+        for <imx@lists.linux.dev>; Mon, 24 Jun 2024 03:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719225107; x=1719829907; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y79rUxm3lgbaqaUYltDlAHQT1o1yNbGd4AJC95vHYik=;
+        b=g4qMi0MFZ4uU18JkWpHfAUcoxYFdkziNmdaHrlBhVajJ+AnTaWMcq5RYV3shsnp9ib
+         1boF8pD2RmwYmDbVi6l7NGB/0WTwNMbkwoVBIsrbVwemdkiRwG/KycsVNTIEj1sjJx2p
+         hjYlGVHbdSij8Cmj3FNWQimk8UhAgG6mN5vEmCynu6N376r75YQ03e6JI7S8qXoji/JZ
+         k8fhCQ6/9Hsj8INRFfrIQjOwS0nC3coX/1nokB6mmaoCpPXucAEAFPBGdHeCBoX/Eeii
+         vLRXXuAGWgGz73fIxXcb/hCPdMKqmaKOHcqEHANdNg7ZQyJam+M4TW7IzkhTghA9caXU
+         kN5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719225107; x=1719829907;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y79rUxm3lgbaqaUYltDlAHQT1o1yNbGd4AJC95vHYik=;
+        b=C3VwW/udldZ+btlLsVZxrlO/+ZIingYF/VVD9A8INPlQ62uOLEd/itk+LNwN87gDXF
+         j7wEeu/Ic8f9LJeY2bVRZpHrgC4Glum870ZY9P/Ooj6XKkTGP/mBdFsmrXVr3YWOEt3c
+         MRJgUAtkxbjlMQitAK/ImENtIOpTUO5pQH0Oy3UES8i5HH5SgnEDArkm3+kVwkqJQv5n
+         xtGZH/In/D2i3JAwTZn6EPUvhq9Lcakk5AqBmki1yWyuMmrMiirYprVVF3aR620cD6qs
+         rqJ2MgFKwx6sXW5AtAZauCgWdDAByjDhZNh9kTwje8SE9wMIZJYqrkTP9zg7diiWWt31
+         vNPA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3c3QG5EBEG1XOuJrCD0t0QEK2HuOdww8yxWkwbtcx3qozSF6IUqylvivhF2nwJF89JR2wJX1l/8RfKYR0pTKupSUF
+X-Gm-Message-State: AOJu0YyWzgmUfNnWyjALzzbEqBcyX6BAH70MayXtl6vea/hMRyjTq0zX
+	Ad7ew/RyFr3fd0q4pztaVdoA3cGvUMS7ygOInImVYhh2ZwA/t52JpRDrw8WgCtc=
+X-Google-Smtp-Source: AGHT+IGQ8/4ij15CkMhnOaWlVH+mAJ1XYx0sN2OLk0VHtmIAIuWQqIv+pbQOI4C4fD5y7Z7z3JFAOw==
+X-Received: by 2002:a05:6512:138e:b0:52c:e08c:a0dc with SMTP id 2adb3069b0e04-52ce185f753mr2722847e87.51.1719225107235;
+        Mon, 24 Jun 2024 03:31:47 -0700 (PDT)
+Received: from umbar.lan ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52cd63b46ecsm953874e87.10.2024.06.24.03.31.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jun 2024 03:31:46 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Mon, 24 Jun 2024 13:31:46 +0300
+Subject: [PATCH] drm/lcdif: switch to DRM_BRIDGE_ATTACH_NO_CONNECTOR
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove binding
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- shengjiu wang <shengjiu.wang@gmail.com>, Xiubo Lee <Xiubo.Lee@gmail.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-sound <linux-sound@vger.kernel.org>,
- devicetree <devicetree@vger.kernel.org>, imx <imx@lists.linux.dev>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- alsa-devel <alsa-devel@alsa-project.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
-References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
- <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
- <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
- <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
- <1048207382.1714780.1719220717882.JavaMail.zimbra@savoirfairelinux.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <1048207382.1714780.1719220717882.JavaMail.zimbra@savoirfairelinux.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240624-mxc-lcdif-bridge-attach-v1-1-37e8c5d5d934@linaro.org>
+X-B4-Tracking: v=1; b=H4sIABFLeWYC/x2MWwqAIBAArxL73YJZ2OMq0Yfpmgu90IhAunvS5
+ zDMJIgUmCIMRYJAN0c+9gxVWYDxel8I2WYGKWQjlGxwewyuxrLDObDNXl+XNh6VqFXXiXaWrod
+ cn4EcP/95nN73A0Xa3slpAAAA
+To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2092;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=eCJNHKpOFyvKm0QEDNLeKYcgJDFGN4EGDIDzjHn6FlM=;
+ b=owGbwMvMwMXYbdNlx6SpcZXxtFoSQ1qlt9Ar59KYH7VRt3+sPjXB/Fev0SbNiiz7/1tLfh+y4
+ Z14d3JaJ6MxCwMjF4OsmCKLT0HL1JhNyWEfdkythxnEygQyhYGLUwAmolDP/r+g47nFmZ9R22/5
+ efi9nXuhhTE82Suct/H5aV5J9oMrpbZ7L7Waes+VrWm2tc15L9m9AncYm8PiVHtsVBXLjiTN3WE
+ lHnctvr2BX0f+9R69+eeKW9UZRKyfaqsxz37umtKgdfCFxaKe+cX5C3Ly0l8mSjyZciVaSlhVWV
+ zN5Nj2F2nHQs6I7X/5we3MsobNQW1X7I83GSV6pIvwfmVr27dlGuMdRwazhu+Pvu2r+bXI8kpjI
+ cen9qTndWkzN0S4MW3/ZTmpYp3d9X9Ts93q47wvJ1uKOSj95vyuuPZJzsYQg1ivGnmNRbr3pVfd
+ Y+LY2nzepa339YqjPd1M+3jzv8o2rO65sYglaLXs8Z/5AA==
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-On 24/06/2024 11:18, Elinor Montmasson wrote:
->>>
->>> Previous `imx-spdif` driver used the dummy codec instead of
->>> using declared spdif codecs. It was discussed in previous version of this
->>> contribution
->>> that using the dummy codec isn't good practice. So one to one backward
->>> compatibility
->>> isn't really possible.
->>
->> Heh, that's not good. This is improvement, cleanup. While it is
->> important and useful, it should also not break existing users.
-> 
-> 
-> Should I introduce then the use of the dummy codec in `fsl-asoc-card` to
-> assure backward compatibility at least for a time ?
-> With maybe warning messages in code to indicate that spdif codecs drivers
-> should be declared and used in the future ?
-> 
+Existing in-kernel device trees use LCDIF with the dsim + adv7533, dsim
++ tc358762 or with ldb + panel_bridge. All these combinations support
+using DRM_BRIDGE_ATTACH_NO_CONNECTOR for bridge attachment.
 
-If it is doable (reasonable code), then yes, please keep backwards
-compatibility with old DTS.
+Change lcdif driver to use this flag when attaching the bridge and
+create drm_bridge_connector afterwards.
+
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+---
+Note: compile-tested only.
+---
+ drivers/gpu/drm/mxsfb/lcdif_drv.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+index 0f895b8a99d6..1d5508449995 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+@@ -16,6 +16,7 @@
+ 
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
++#include <drm/drm_bridge_connector.h>
+ #include <drm/drm_drv.h>
+ #include <drm/drm_encoder.h>
+ #include <drm/drm_fbdev_dma.h>
+@@ -48,6 +49,7 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+ {
+ 	struct device *dev = lcdif->drm->dev;
+ 	struct device_node *ep;
++	struct drm_connector *connector;
+ 	struct drm_bridge *bridge;
+ 	int ret;
+ 
+@@ -96,13 +98,23 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+ 			return ret;
+ 		}
+ 
+-		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
++		ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 		if (ret) {
+ 			of_node_put(ep);
+ 			return dev_err_probe(dev, ret,
+ 					     "Failed to attach bridge for endpoint%u\n",
+ 					     of_ep.id);
+ 		}
++
++		connector = drm_bridge_connector_init(lcdif->drm, encoder);
++		if (IS_ERR(connector)) {
++			ret = PTR_ERR(connector);
++			of_node_put(ep);
++
++			return dev_err_probe(dev, ret,
++					     "Failed to create bridge connector for endpoint%u\n",
++					     of_ep.id);
++		}
+ 	}
+ 
+ 	return 0;
+
+---
+base-commit: f76698bd9a8ca01d3581236082d786e9a6b72bb7
+change-id: 20240624-mxc-lcdif-bridge-attach-60368807b2f9
 
 Best regards,
-Krzysztof
+-- 
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
