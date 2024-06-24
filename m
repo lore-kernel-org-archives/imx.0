@@ -1,106 +1,117 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A263A1DA;
-	Mon, 24 Jun 2024 06:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39916A33C
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 08:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719210874; cv=none; b=XvzBUFE/npMGjj38FaXW0us5rD/iYLIQIvK+ABl4qTZzlDnubwgxNzmLSyrC7jETrI9PpSmIMc8MPBzfdVJ0hhxxvchAGTLHZsm4xwyDu39kXtT3J+AaCHRqY8ODdoW2LtDBNT4RF7UThIS47EU/A+3Tr200vp9AvoqqquOd9Sg=
+	t=1719219111; cv=none; b=iO1fUf23QsDOFfZpNBiW4wU+BO2PEIJjiswpR1Xdebku0sNZS6DHjPsrcYBtEFtM8gLw7S+7aWDAIZHbdXvjvWszmtj9UVBDiAhdNR6s34GKx4fOfnx8wo0M3qPkhQldsCruoWwmg8CaSMpy/IlY+na2lwfgzR+FpFzAI9TmAo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719210874; c=relaxed/simple;
-	bh=1DMakykCIfUAlpVADCUSyn5T4zIsvaNezaKnvW8q8W0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AdMbZx2f+Zro9hDpaly+TJVVBTY6DrsDgyBpj1HLpC+GsLVHluViEybXb9htNJv4eEOdkmHv/Nb7XGslfs5OCdjq3rRTWr0/4inKNUWx1xaEMUiGR2j8yCnUEE5ZzfCW62ViZgZXmxcmPjL/KANxMSVRs89gHpLBbxB13hW0H6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Dpf9f78k; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1719219111; c=relaxed/simple;
+	bh=uQyn0xy29YFUanE0wG8ZI/is3ZrZ9f3UQZpwTIzoISM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=mzEL6l1Cnd6r03wp52ojZRO2zVSEsUJUTe18znVjKjA0PwLc2gNeGZop+tPe4CfJOjKlA+0T4WxIcRpNGwdkcustQy5aOihUHHd8mx0BFya1vSTy20xCBgkOLBXLDc7SClAIBqSVpzbKvmXz8lmguwH6L3G5LvLXcHUaZMBUuCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=ZF75jHtR; arc=none smtp.client-ip=208.88.110.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Dpf9f78k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1719210830; x=1719815630; i=markus.elfring@web.de;
-	bh=1DMakykCIfUAlpVADCUSyn5T4zIsvaNezaKnvW8q8W0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Dpf9f78kjCnyvPbDW90cWnTiE1Eql/65se/QMCiPrClB4aeB6jLUQCg50zSES4uT
-	 PZVMnaX3GhcTi9pLzjjxWHXmAepMOv9KVqxYFSGr5V3/pyMCoLbdH9cpUrqkK+kFu
-	 owYBD9zPtCFjRG4luAX1yst1A71YZWTlV/cxNRlI7ziP3mn/Cdg1NNJcjBFNdlReT
-	 fUIEc3FTnn4+WXoISG5uZSj2nCKiv+YBi+qR60kyFhpdS9h85IU/+o6tSJzAreduL
-	 J218W9g5S/9/t1BDyrNmUT8FLBd01zoRg6Bkb5k4onruarW19IBqlId7O7RZKX4s7
-	 22aJvNWkTplcYhbORw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MkVwo-1slfEG3F2E-00aped; Mon, 24
- Jun 2024 08:33:50 +0200
-Message-ID: <94b76f8d-5886-4a1e-8469-712be369ee9e@web.de>
-Date: Mon, 24 Jun 2024 08:33:24 +0200
+	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="ZF75jHtR"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id B13679C5B22;
+	Mon, 24 Jun 2024 04:51:48 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id Yay1jmjOC1gx; Mon, 24 Jun 2024 04:51:48 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 124E39C5B37;
+	Mon, 24 Jun 2024 04:51:48 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 124E39C5B37
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1719219108; bh=+ewUDykI/UOo/DB+dq3CVz3C8NuvvWDy733CasIbz4A=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=ZF75jHtRyN/E+RU5Ga21+MkO2BXXJSV6H2W+pCjcTgNujcFmOIXVqY7JjqZ9vwvFO
+	 M6t28Bvegah97B/e3A6ci9Tuz9FC4Fz45HTdnASJQ/UYgSECWsk9QNtKhyKmXi67QN
+	 ZGHHMYMKF84OOipXbCu5stuV+2k9KLWMFKXFrRTaat2k1Py1ktCbIZ+pyBdx5RFFCf
+	 r4q/lCcpIdaPfshIVVcj+KE4UhRPzv3wjWC9dxMMu4bhDseYxbJ3EdkjIpRg4jMJMI
+	 m+W7Cp2+7l7erRK0wqedzzhmDLFHVkqSE+wtSjyWoEQzpPzEufpPSXy1x8m4ZTGK6b
+	 B8k0VV056KtmA==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id m5StIy1xy9No; Mon, 24 Jun 2024 04:51:47 -0400 (EDT)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id CA5529C5B22;
+	Mon, 24 Jun 2024 04:51:47 -0400 (EDT)
+Date: Mon, 24 Jun 2024 04:51:47 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, 
+	shengjiu wang <shengjiu.wang@gmail.com>, 
+	Xiubo Lee <Xiubo.Lee@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-sound <linux-sound@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, imx <imx@lists.linux.dev>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	alsa-devel <alsa-devel@alsa-project.org>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
+Message-ID: <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
+References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com> <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com> <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
+Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove
+ binding
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v2] net: fec: Convert fec driver to use lock guards
-To: Wei Fang <wei.fang@nxp.com>, Julia Lawall <julia.lawall@inria.fr>,
- netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, imx@lists.linux.dev
-Cc: Peter Zijlstra <peterz@infradead.org>, Simon Horman <horms@kernel.org>,
- Waiman Long <longman@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- Shenwei Wang <shenwei.wang@nxp.com>
-References: <20240511030229.628287-1-wei.fang@nxp.com>
- <657b4098-60b8-4522-8ea0-f10aa338e1b6@web.de>
- <PAXPR04MB85106653965E0694C2C84E4C88D42@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <PAXPR04MB85106653965E0694C2C84E4C88D42@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:zYDgtPUyGbVR494S2aaAhBezw2rAjlld6p7OKoMYRntp28QZx/e
- CE4/G6HTWYHbUNijX/hEDkeAY4myZih3TWhk+FqR4Fe9hC7XyeVKX+bxl36mGrP1iA+B0Ad
- 6hgucoBUn43z9X/uFhcCxC2dkcKXyDF+JZ+39hOmsTymyW5Iw1GdaEhNcGmPfrA0LaFf3xC
- IRo/XaGOn+X/K79Jn2i6g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Wq5Ia2J9EVg=;FGkgTGR3qAAXJ/99JgodSWi8s+M
- cnUK2GRemrHPTe2GKsB9KEmM4cOhm9RAcZxXtfCzRHMqYEBR8kXh0LfwDRla4/m3vba+LKmal
- pr580LPxSRi+cU/ZfQPtYsknXz07n6oqea45rOyAdcvXb20mEPBZbXZajfB92LDxglLTljme6
- /ozqj9GX8YgUNRDFB+jk/AQDyXJoZei3L1RGxbFfoJsvxiAk28QSnV87zFFmnf2rLIMYk+Yvb
- VdHqYrLKci3e8eia8zaSt3rlO1rK4ilS5HcFNCpYq+BTl6KynXV7lAFWHGnmaRJYbnK3xnHjA
- 3PO/GSAtFPEdQTNLDAgxeQvuGAHpGyoFou8qLkzg9PrY9gUO9WRN2NqnlHqk5ITKc6NlzHDVN
- U2DZOW0GelBqesJloWrbN9n3bdm42XSI4djR5uir+AzoGkw/F3QhMP+k5NwtkDpruBEK1pPtc
- MiSsvgVTxQwIBfOEsMVwqPRF7+QuhC0/0lQ648VqZcMHabTpflRlT3ovpUUZ4CvudLOwSLjPg
- x9OWYOiN7Gsu+dNqsVgwJjzsEg8QUI1Lsk1ITxDXzkjcm0Qglyv4LM7K+l59/88UlH2j6F/5d
- t0zGLUWVRlSHq1e3ZJ3a4t5065FAEyCYW1z/QWl4Qc7p8FV4vOBGD48DgEGDmc8ggW9/FbE1X
- 02TwRPMRPDb0fedQM7ECtaoZpOaoniXdpsXzmicUqwyc6XaR/LPn0ADB70FpKXvDipwICP2fO
- Qpd3GEBVjdHtFpV5c9eijXwUtlUj+P8d/Nlp3UR3L+9CiWtL1F8DC9RBK0DCjwGFNniqZoGjK
- ifwfmlKYYFBgC2B+Lp3U7JpUluxsKwfz0Wh6pLUIpmIjI=
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: ASoC: dt-bindings: imx-audio-spdif: remove binding
+Thread-Index: SJweIeCS/c+5zCPba7GA4ZNFgX6eoA==
 
-> This patch has been rejected because netdev people don't want these sort of
-> conversions at present which will make backporting more difficult.
-
-Advanced development tools can help to adjust involved concerns another bit.
-Some contributors got used to capabilities of the semantic patch language
-(Coccinelle software) for example.
-Will any clarifications become more helpful here?
-
-Would you get useful insights from special information sources?
-
-Looking at guard usage (with SmPL)
-https://lore.kernel.org/cocci/2dc6a1c7-79bf-42e3-95cc-599a1e154f57@web.de/
-https://sympa.inria.fr/sympa/arc/cocci/2024-05/msg00090.html
+From: "Krzysztof Kozlowski" <krzk@kernel.org>
+Sent: Sunday, 23 June, 2024 13:09:33
+> On 20/06/2024 15:25, Elinor Montmasson wrote:
+>> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
+>> removed.
+> 
+> So what happens with all existing users (e.g. DTS)? They become
+> invalid/not supported?
 
 
-> The LOCK EVASION issue has been fixed by another patch.
+Next commits, 8/9 and 9/9, update all DTS files that currently use
+the "fsl,imx-audio-spdif" compatible.
+From the users point of view, currently configured spdif audio cards
+will behave just the same.
 
-https://lore.kernel.org/r/20240521023800.17102-1-wei.fang@nxp.com
 
-Further software evolution might become more interesting also around
-the commit 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1 ("net: fec:
-avoid lock evasion when reading pps_enable").
+> After quick look, I do not see backwards compatibility in the driver and
+> above commit msg tells me nothing about ABI break.
 
-Regards,
-Markus
+
+For the next version I will state in this commit message the upcoming modifications to DTS
+and compatibility, why it will be done, and that support for existing DTS is not dropped.
+
+Previous `imx-spdif` driver used the dummy codec instead of
+using declared spdif codecs. It was discussed in previous version of this contribution
+that using the dummy codec isn't good practice. So one to one backward compatibility
+isn't really possible.
+
+
+Best regards,
+Elinor Montmasson
