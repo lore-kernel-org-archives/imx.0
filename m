@@ -1,70 +1,81 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2066.outbound.protection.outlook.com [40.107.104.66])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2069.outbound.protection.outlook.com [40.107.6.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B08D19FA9C
-	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 14:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907DD1DFD2
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 15:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719240441; cv=fail; b=deHOhNOiH7y4LmP+tR+BmHJnnbFB4G7d972WG8fnND/I85+XXEIKIU+qsNRoqadAN+pGmAZ1/BV9uoIkifov5N80/vb2z5y74bwdljeW3wUJaE9Hxff/GSG0oqft33w3y6CmLblpnr58Cq4KNuu7WJkejlSvOimsx19xegDTde8=
+	t=1719241246; cv=fail; b=p2UBv6wYxNHolQ+wbJ+Zw90nhag0h/eH2zTjA4/Tx4ftfK97wJ//N4Ur+Qic/1SQ6KeAx67OpLum0g5iY6fRB+/XM/Q0KP+McCtiowoMwrlJDksKsiJQqNBMUby0QjqDoD1A9C2ymEj7t2rGtmMNMrmo9tv4G8JYUB/tn7iUQno=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719240441; c=relaxed/simple;
-	bh=z6Hf1Yp+zK72VPsyGMaXPxWDTrjoGe5jqMYtJoUZKKE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=n5HY3ad7InBcKkk4PKGnZdFs+/AZD9CcvSHSOj8fsJvdSaoZSttHl2QMzMF7jjOW1XLjN1Ac4IW645SLrySWw5UX8k37qubn0+itzHk9Y5/4iL6U0jbl0sg4QDDiq4eEXYKB7Xw3sUsY423AYQI3nTDl6gCSBEyQO+opFdrpKyQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=olr4n3fz; arc=fail smtp.client-ip=40.107.104.66
+	s=arc-20240116; t=1719241246; c=relaxed/simple;
+	bh=EUq12eUSawT3CQiNr9SRACjHfGzEyrgKA2lfZzC9nwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=igV8HE4jbjlwKPvgGn37R+1p/9f2LZQEEMOkS30zflCDvhs1i9EXcQ96BMcpEMMwsZWnV1eSxEQ+dCeD+6asbaO0+cnVzPm6EPeFda+XbMK0kkUmtp+CtyX4kss0U4MoecaiYwdqMzouOSL9KN90F5i/ZMkd9Tm7SOqVqtTfY3I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=C/wxKQIe; arc=fail smtp.client-ip=40.107.6.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="olr4n3fz"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="C/wxKQIe"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CySzgmODrCgbgn66BSWr9xR84ErmyIxIc69Qn54diwybvW+lag2e6jeffXUpAzYRdUeyvmglEXap+0T2LEDbNd6ktZuTnXv2jwy1uGebiPIK5mhcuuC77rO0Y1flzIMKc8rMRb+pGFeooh2Vn7uZqIYGLqvhG/5U2by5H4mIkLm7R5NphK2hDE8oJMO8aFSiIQmV9jVT+zqWzXL9MxdTY9QHm5FUAbUFZBrj0VFSpTWHEDCQ6sIOuIwb3+2zZKv4EyNpTsoJ10N5Y8QBO9BH/Woi/MNuABGPMAb6/C/xOxYCfynwebnVOr0YwEkEQ3rN0WGsQpdap9i3eFaIQ2xQPQ==
+ b=l211PTk/AlYoOyZQs8uhkol5bR7bHeromLPW8GWnJLVxa4zOzCizgT7QMf7o+J/bRGtfg7lOcVUaD0sqP3FppQz9SIRKgKdjyhjrAuvZ6cDNhivJfswphzt3ScgXqbeFX6MVQfE5yaBBlH6p36CfRgxtLD5SPnMqYBScIbM/NFrkcucPzPKI+Jq0ncvlb4TteH84FYTPtAEyGLcF0x+yxYTMbt4hFcUyayBzqc2VMdShbZ0pHZNpaGpVbnQMwLsyzViVLRaNPKg6NsBWEw52Gv90OziJZbZIf/4q/XSDaTafEl1Wd9OJ/y9PJ5lQgqhzfIn0e/Dehn9GeoInMsJEKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UKf58Qp+Q/d2Kpho8jxSODsXI1kyXdz+P/2HpUfmq1c=;
- b=F48Gol0FWDWnzSforxtC810CPBmvpPpC7mMAJV0RJbAsmRPZ2Vjx7m80h/3igbIfFstmQkNDQtYCz0i2zt6/H+q8sir1Lo7QVz9pUADVeHa+ChQTI0ywvjTcDTwy6sFuyJX9dXvWgShkzp+terWujaoTXgR1jLcTkSjFYb8OqsONKCg1mSFRLJTFS/qLiBk/NxBLi8nG6Q3LySwT/7fqLYU1fRNA4Au0j77KWryYMTJb97QnvCIUjK+GBYKOgOQSu31vqS9ErStb9p9JOA0xkDKtVSIVy6eDzItpr3Z6onPuqz3wrMJQTieQxeAqQp5qedTkmFsE27Zn5N9eEBD9iA==
+ bh=71AFezmr/iU9ajfbnv/Tt5ZKRiNW8QN7wp52wmUPvlU=;
+ b=OEPJaBWWwG+1tdsrk+1EzoTH/SRZThY8siMLbCx5dLuqGkgyeOqtoV/PWp5TVzg5LQYXfO0L8Gizt8igFuD/XQ6PXbJlmk9vHjvngz+GNi0YmeqhtuZIg1Cr/F2R1mVkvQKncN0RSk4MF6V1CinyXEXcnXlhI59rMiP/45h2IRGxRQFE7a2TZczhl9KbVzLVkXFJKJwOZnQ/9kORz/sC4p+j9dfEhzptfBzaCDj6CiBuAYWW8qILoT/XgHq4VXX0Ww/4Xoi4HpoWbkOgKJFf62XYyQ4S2DIx8N0n9OUvJY7o11NNsSj0AiJbjXK3ff+76X6k5OTjo8plbEhTLiGLxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UKf58Qp+Q/d2Kpho8jxSODsXI1kyXdz+P/2HpUfmq1c=;
- b=olr4n3fzUf2qkR41GIXWkwKNoH3hTD/KhRSXZC2HFRIk6xqWAY/dXyv6o9Nn0LMQgL6NKdHuGLO/ld8lt2xboxXy4DJ9fA77JYZ496+Iq2U4jKgSlA9AS9UoXZ9I+K1kFHn6HhBgT8oNBby2/5q5Vq77esG3wASc++zbGBpleX8=
+ bh=71AFezmr/iU9ajfbnv/Tt5ZKRiNW8QN7wp52wmUPvlU=;
+ b=C/wxKQIe1Fm03sTi0X4zVuyCRWiECS4b2TcxdekLk2wyZqh3fLKKfUuaYz2bLSp5704Zztc41zpkYLbhH9v4bCot0ANZi0mPqLPvZMUm+XSaUtLGnowEE9KGYxdZa1ICFiAx2x8ttFvQ3UQXlX3L1V548qdYKmWkkLyohsfmano=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10253.eurprd04.prod.outlook.com (2603:10a6:800:23e::12) with
+ by GVXPR04MB9849.eurprd04.prod.outlook.com (2603:10a6:150:112::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.26; Mon, 24 Jun
- 2024 14:47:15 +0000
+ 2024 15:00:40 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.020; Mon, 24 Jun 2024
- 14:47:15 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: netdev@vger.kernel.org
-Cc: Frank.Li@nxp.com,
-	conor+dt@kernel.org,
-	davem@davemloft.net,
-	devicetree@vger.kernel.org,
-	edumazet@google.com,
-	imx@lists.linux.dev,
-	krzk+dt@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	madalin.bucur@nxp.com,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	robh@kernel.org,
-	sean.anderson@seco.com,
-	yangbo.lu@nxp.com
-Subject: [PATCH 1/1] MAINTAINERS: Change fsl-fman.yaml to fsl,fman.yaml
-Date: Mon, 24 Jun 2024 10:46:55 -0400
-Message-Id: <20240624144655.801607-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0299.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 15:00:40 +0000
+Date: Mon, 24 Jun 2024 11:00:29 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v5 08/12] PCI: imx6: Config look up table(LUT) to support
+ MSI ITS and IOMMU for i.MX95
+Message-ID: <ZnmKDYg2lsJVlILk@lizhi-Precision-Tower-5810>
+References: <20240621224321.GA1410825@bhelgaas>
+ <20240622173849.GA1432357@bhelgaas>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240622173849.GA1432357@bhelgaas>
+X-ClientProxiedBy: BYAPR08CA0054.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,104 +84,280 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10253:EE_
-X-MS-Office365-Filtering-Correlation-Id: 878b04ea-1dc8-4110-6d0f-08dc945c89c0
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB9849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12621681-f679-4abb-1c0a-08dc945e69da
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230037|366013|52116011|7416011|376011|1800799021|38350700011;
+	BCL:0;ARA:13230037|366013|52116011|7416011|376011|1800799021|38350700011;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?4PaM6gtN/ZdpDbcaFmJC5aEshU+flnHjNgcIlMZZklEm6pgPZAp9hOKg5CqY?=
- =?us-ascii?Q?4uGOx87q2K1lfTgvl7vlA8At6zpM3zdO9ZmG6C1CB6Cq7IbhZm0MPHcqUn1G?=
- =?us-ascii?Q?LcncVFZpi9Hu17hwNDkRSg3911G6eKvoW3QE8riVGXbZmaAv72wCy6C6SreG?=
- =?us-ascii?Q?DN7s6M5e+HfegZItEb3gWGPRg21gk9UBLpKFgHAU1+2191EcC0TPJZaMy3g2?=
- =?us-ascii?Q?zbrBy1CYxuofacsR4CniXpNlCrTqBB9/KcI+iesjv6AJCPxj1Q+NDUA4XyRT?=
- =?us-ascii?Q?Mm+qIoatb4DKofXdEgUz/ERfpYGpxMKkY+o7UD28SFfFz2Vr1M5B5YOFB7jE?=
- =?us-ascii?Q?ARnMA5oiQLAWA5F8g8tWXIs6Yi6yUvHHQwVmyo7fVPY1Z0XXgypbT2cTpcHy?=
- =?us-ascii?Q?pi2fpSNUFAPgGA4LI/1PG0wkKk57Fy456Dx/xqop2xgUJ8VUOoPlux6/eaP8?=
- =?us-ascii?Q?tFRBt4TqsjWmAk2ogSEhZE7SVCURleWNngevIZh3S8d+5U8hY9UpK386X/EU?=
- =?us-ascii?Q?Kw5pHCorpTyoCItB3tp0xZTz/vPkhX/zfA6EnnzxP1uPZYVp5MzcCvoauA+4?=
- =?us-ascii?Q?PUHc5psl2n7IscGA4Awd/W8DOqFq3RCRrtRQgYyG8nIBPd7LeAV4ER3JtN1N?=
- =?us-ascii?Q?iIbEyTGQ0eaI6Vfe2bgACWy4lPeBBdz/4i4t6ygCdH8ovqQsUQU4Rix+ar5c?=
- =?us-ascii?Q?k+6KU9TCzVWp7iy6SWgYTBXi1muUyA9o+j8lp8DDz9UtkV/ZtjMTtm19tsL5?=
- =?us-ascii?Q?SmFhk6FnZOX/GLU1MWer7n4IVUpKqTeekzF0IdtOzii0buJ8qBi5M6klsnQv?=
- =?us-ascii?Q?t0nFB7t2B0EIPMJzbEYYNwANjrJYeqHJZGzERlRVjgJ3iM7lCXaeMNUC60Pg?=
- =?us-ascii?Q?8FDVmiYg1ml4vBn6RYTlkvpGaaWpnMmsp+eodYNZyU0CkQT6iJIqL4jwL2QZ?=
- =?us-ascii?Q?LR1hvnugS17LcUSDjZd/o2kS7hlZfIN8D5FBYCuCFqcyp2KJDRPQGjkOtriJ?=
- =?us-ascii?Q?39d8nifFRTmTA1G3DyqeMyDQwVCGFWtzYFGe3jA6KDdtnu5wBixURWs7kxNT?=
- =?us-ascii?Q?rUL+bDKdyBg3Rjonm9yFUMU573KBXABXmXVz0Q3NEnaQ92bUA9Jpq7beWWYh?=
- =?us-ascii?Q?eVd4sa+nuZLUgmKX+NxpNPV2ll2eH+dGLyrlOvCtviCiWuC1wuC4trgGqgwk?=
- =?us-ascii?Q?z/A24GyWNmugrQIbbCTaAHTg/wfduRMwWTiB08i0vE87r0pRsN1oEk+HoESA?=
- =?us-ascii?Q?Exi/PgXxlBJJ3FoclzD5gtHxgJFIOZR29Pp61z/mC5YuwEu4ljVHBdeDlT2l?=
- =?us-ascii?Q?P+GKvUTcJYilNJui/pn0uTWB?=
+	=?us-ascii?Q?yxwuQncggjGliaR8zdUKuxb/XSRMYYX10dG3YoFJle3k+5C4Ur7TmHg7p2YN?=
+ =?us-ascii?Q?ow1Uh28k/fJzuVjdgKZvmmDsrr8TDMvm//J5Q5GbnKuuEwxPLo8ZtDlv12FC?=
+ =?us-ascii?Q?4TLYixPKvasGik37iAWbqVxcZrrPHvtI2p+iYE3mPXM41gZYTZ6jNX4ZGUaY?=
+ =?us-ascii?Q?6WqRWoc+iXZUQM1e8wd1pdhahDrhfrzJQzbP0iYOcoklhuiKYICnnnd0gXDT?=
+ =?us-ascii?Q?tV242BZBWXAH/RI9S8MH5zTG63yrwNj0/ClfYDTpQ+fKanEX+kx0wttR2i8P?=
+ =?us-ascii?Q?+flrkwq6ZMHGjh0t3mX4sMP9SWuFCRIkqTsU+TyCNT/reJwq3mvI2NK+fUUb?=
+ =?us-ascii?Q?cQ+biOpPDs2W7NFt6o0QiOsOQqKUknNi0vTGnxd1mooa90TLaOZEo5lrjpbx?=
+ =?us-ascii?Q?7vkpMiIznQ8raGdPg1RVA+uxthapuj7SH6fC4ipiq7UBSG27hr/26LTAL9dN?=
+ =?us-ascii?Q?9ZGWrAcmwbhGq9spwPQaf4NXozXXe17kuPu8hp7rBosQopXkxDcC6Stvsyfa?=
+ =?us-ascii?Q?vmWlssRcmu9eULP+e9BTfc5LUk5C1Je5rNLookHUZmZITlNZsD5T7hheJKGz?=
+ =?us-ascii?Q?9xox3sOK0EN28Vq8fgPqg6FV1e1PUOYqR+Zjw+DDxJQ/L0ah/OHEA9ivV1Tp?=
+ =?us-ascii?Q?CbpniVru66SAqB4Ar1Vk8ezs71xLWr2bhaCTpl9DLtn/+CXPPuxsSAqdFCKE?=
+ =?us-ascii?Q?WySANGxSwTvch5P+iIdL/0PYN9pnSKKBr5dDooANzZpUh0hIz9zC2Ah39vqo?=
+ =?us-ascii?Q?+dvH/EigwrfoV/t4/WjO7OJlCfuTGp6VXejYmis0dsjA3pT8dpDS8vsfFV+3?=
+ =?us-ascii?Q?T4kdee1ZleyrsZxXJHHOiU/y/pQxipWPb9PAozAJtcMApB/y4lW0EBbVKMSI?=
+ =?us-ascii?Q?A7kQgUKTbigTytSckWZbuM7y8DiR++0z8kXUuDe0rQV//+/AGJ5gfDQGPe43?=
+ =?us-ascii?Q?YzO5SKOQkW3uaOEWL5K0BTq48Cu1c5ReZNEbG+D5vsVdkCp0wjMYvaWq0xgG?=
+ =?us-ascii?Q?EgY+32PqT4LruK8fmtqAfEM1DLuMhhmkbzDNY7vJG0ePuC8rUpCyuOsTtTDu?=
+ =?us-ascii?Q?s5cfvWLIim8kHF/+vyPSiGhXcexYrrrXARUOghm1Hn2dM4fm4ikzpP0UhQIn?=
+ =?us-ascii?Q?kZdOky2GaYePHp8oyRDFcrbJ2weJCawFuIV7XxBRR5JrPmggAjsZSdctQxru?=
+ =?us-ascii?Q?eCxSu5TPObrC7Ry36+1RiwSlKlVqFfPwF/FSgYjXQ9Li5bfCluXphT4eQsN0?=
+ =?us-ascii?Q?cpBeAut7SWdZyCdhcjf4k//1md5lYu3AFzAII2J8F8/cE1KMpkg3d8KZAP9i?=
+ =?us-ascii?Q?fl/3JqFa3fyl1IDvqr/WI/CJ?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(52116011)(7416011)(376011)(1800799021)(38350700011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(52116011)(7416011)(376011)(1800799021)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?VvZTebiFLsczoa10Zkv+PTJnQtZpU3mJWrSRBz1dfIP8uigaTv8rVjMZSn57?=
- =?us-ascii?Q?3qwVgEBiCyelh+MPbBFbFQMsVsl2YhilYzl9TSGdlhohQ4953YX31be8RsyD?=
- =?us-ascii?Q?xFApP1VYY2IO32Aw2z1KzHQv4MEWoJHEkT/2HGjhKjmksaTZBWPSzs/LncIp?=
- =?us-ascii?Q?UVTjLo6FRgMuvLjvNAhalD+yBzfBhVDiNZBvmKaTRk0G0OZWbqUaXx7P1y5z?=
- =?us-ascii?Q?/v2q1pATT3pfH1tli5FrAgQK04XQyidaI0flWgBFbTOYfeJAx9WQ+BD0Rnz0?=
- =?us-ascii?Q?z1ZAf7UG9VmK/VRve1LgNdUhPPHfEAmWJFb9Y9eOb8CkMBKo3aZkL1gZ+aho?=
- =?us-ascii?Q?XT6Wh7ZxoBc2IvEKEnrwuFlywn34xe42lmNRwQNiZyCMz5rC7jaAGYQzGrJc?=
- =?us-ascii?Q?wFgH6LTbMGjycBhXq3GbgqA3Y4ijal007IrVaXujGo+n+VKnnjfsVS2kGKc8?=
- =?us-ascii?Q?YxBxVjqGOZnTrhv6VwZsY3YEphmzTrNLvtyRZjlHiuW71pweYfaDcFB3atR+?=
- =?us-ascii?Q?8yR6YrP8bOeQfOyiHaAdbIvOnE4RraT5dkzCV/YSoMVsQHJIbJ5gh9RdUukZ?=
- =?us-ascii?Q?apR2LEgM7T9sZZt1ODcz5/GlxYIQYHwvvLyj3hFR1WtHkItDB0SphvZtgiQo?=
- =?us-ascii?Q?4XV2D1oef06t3vthfYrWzRLe1WlNkGVc2o1a0xSXIoR+lVUbox2WWLFgS5GN?=
- =?us-ascii?Q?M8PwKV6wxiTYQ4BsIBclyCgFZvEl91YYV7q+gLtJVS335bLn18Imbna5UwJs?=
- =?us-ascii?Q?ivlD5sHu2xtTmh+2M1OH+f8mXOQlg6Haf+gsXDn12eWPmtS8b3B5kAoJRFWt?=
- =?us-ascii?Q?5x4hfCBzB69r1PEHcgBYRbmcPP1Gjjxb0mEO32o41gNjCTB0EcS0YJmO87Bj?=
- =?us-ascii?Q?5pkymPMmamZqo/W+a9WJARqKzupkPOWmIWL3cmW2nEZgVe76P32eb8utSgC0?=
- =?us-ascii?Q?qjf2wmGuN6nXFx7LoCYIR+0lgBlbl7sD1odSPZknKWxND7WAstPgvKPFBl4Y?=
- =?us-ascii?Q?v12Q7EzNAk7jB0C8dlP34iVbXjvtQmqUzrAnJ+XIXXg4wUhAz6kS/4s0r9dY?=
- =?us-ascii?Q?taCtTBkgBxG0GdT69faz7NeUIXu/tqzzVd/nbSrQ/6kGHKMCAz++4ONXwpjx?=
- =?us-ascii?Q?Xe6hy8rkTkkFzA6OjvSX5z42YdlVkapILGfEI1ikg3APpY0a2Hs4ciKZCEtV?=
- =?us-ascii?Q?PA3LofZMd1rdnvtqaEsDzJB/Yj4yYEhr9+qgASKTJOiH/c9vP9Ae5gxiZOQC?=
- =?us-ascii?Q?iQJRj3aUWqwIaD1F63m7VYLayA6xqBl+0/hL7CxvNxaAM/75VeHgz4U+SGc2?=
- =?us-ascii?Q?YDxUqZ3l5B7gue0dhlhj6RWVQljDhctwooGgkuMRwNk19W6yR+ZC5Fu4l+Fl?=
- =?us-ascii?Q?guWsUluyzCnqcLdjFh5KlNXmveKiNvzujC2NGAZ0G3dZus1JqNqSnv5gOtH4?=
- =?us-ascii?Q?MFSFGX9h+oTqPpIL7d56gKvsI3NUbszHCEHVJsriVfZBSMq5Ms93moDrd3hu?=
- =?us-ascii?Q?zgBdKLcNqqoQv7O6N1yIkAIAnn7218pzvP8GUNDUGI3Ui47TYrbOQF9FVLta?=
- =?us-ascii?Q?IHgRbFKRY5N2dhZ/NfoAT0u6WLUhM+TvSruKyJu9?=
+	=?us-ascii?Q?HotDFeJ+qltxdOI7hlcumYPjSyujJi7uWBSOQjS2DGFN5LcANQhZmRHKiaYO?=
+ =?us-ascii?Q?2PM+SVokT1ovEdjrBLy//9cChUfyDXaIA9DFjs7xXnMfNY6b8XRH4NB5PL45?=
+ =?us-ascii?Q?340q9Xws2tijIeCQaQzKFjnU39w1CED0XTTy2p8MvPJSyDM/PKblIyLUjj4S?=
+ =?us-ascii?Q?mOpcymsZ8tgHh6Os7Wg/S1wDCqfiBaSCHiK1SUrRs/EJtEuSJkMamr9lTU06?=
+ =?us-ascii?Q?RFKKKXn9qFe6b6xIt8IOD9oqNyPY+SszMBwXxj0pKuTOPaNms61KZ3Fl04FC?=
+ =?us-ascii?Q?+WC2z4m7FJkJasp0mJnWk1R/laXyH8qn79YgbsO0GKGAEc5vyPgs7IQAT5JN?=
+ =?us-ascii?Q?oOze690/1RL0Je9SOD/hFNe1EUQS9YocRDKhaykhWaEO1KU7HMspyPdGP86v?=
+ =?us-ascii?Q?sqRYSjzfiIdr06dvDVV/Y8AX57ff+KtvQnmDTrtFiW/C4Z2SFl9tSl2cF0kj?=
+ =?us-ascii?Q?659jOpxmMisBKZCT4tVo0/I4txah7zVvx2xMcgfOuaUdCv3InUReOza0vtNH?=
+ =?us-ascii?Q?sA//7DymgNoSiJ2pp/LpmZfzXww4WT8RWRGGJvlz0K5vcB0Fs8ESXDfXm0lS?=
+ =?us-ascii?Q?JPblx8k6LUqc16WGQR6YCYvG9LIxR3qjhspiO5ePp65K1uLqzwTPUD7n7zTW?=
+ =?us-ascii?Q?jhy3khZsWrb+4WAk47Ro8m92caovDFgX3Yeg6iJ4g+zVshaZmRANLMapk2uM?=
+ =?us-ascii?Q?yevB9sFoOMoOTrEbmqFSo9BhUDRstTvJx2hfDg1zy1FrkqUBEaa3GAZ0FqcR?=
+ =?us-ascii?Q?+4LlKV0vS2elw43bPxGVv3eeSSPJdK5hy/aI5L23PxTMUSfvkEIWHVRCinF+?=
+ =?us-ascii?Q?jiZR1ikSKAKf7n3xenzubgX2caiQQYxcRgb43Wc6PVCb9beOl3+6CTseg6Cn?=
+ =?us-ascii?Q?5g1h1JRjmfbf/zmLeQt03dyCM59mqFGjG/8xVWrMej+pjnfDBghDe4JQ7Qi0?=
+ =?us-ascii?Q?OLMXhwCTc5p9Ytlrx84wfmTjFUfUmttJysAI0s3SXMoBO0BlWFuZgGzb59Qa?=
+ =?us-ascii?Q?EBQfZmcf9rId0XCm6BZEeuWUbunjXf1ulDex18UrG393siz4JmTFUtkG6Ly5?=
+ =?us-ascii?Q?Bq3Yxtd1IOLZZWBplUhzspbH+PJFoIKr0Td1l2jF6aWQusLXJpoCFMIQxc09?=
+ =?us-ascii?Q?hjF7W6pdoebqK+NRqoUx6PvsrB04jFblfNBDwSzE8u5QRzdlTzRmYOjPX3uU?=
+ =?us-ascii?Q?75fHsrM2Q8Rfjhth71lvXCdiB8hDCcT9z7+mzIAdm+llFhJ3kFMechvQaXT0?=
+ =?us-ascii?Q?Su0LNknOHLqThaEnIstJL3JAUh7ueboqWwe3gTptSy3m+YNeekAlwVACII+J?=
+ =?us-ascii?Q?tjFJ9eDrH/nzBI1zhi9G6nrXqIdHqE0dvkVXM3oAqh17mZ5+v9EuquD57jTI?=
+ =?us-ascii?Q?HjR+5C8ayhF7SGPhMQ/T5Vxi0QW7WudzQjNkCEJX/PAJGs9Op42fdgr1lX5C?=
+ =?us-ascii?Q?lnd7G9UFrP4ujRAtQZLooPN+IH6yodynRkxmPhdMk9b/l//MG6b6x82zgWPN?=
+ =?us-ascii?Q?IceztwhtP2m+E8jMLSQte2OD4C75FJ0olYhD+m8xrbN0R3p+KMEkOzNAXVUt?=
+ =?us-ascii?Q?WS3IqWC4IMUHAoonkV+KKt0GlMjVohoz3AdNaTVa?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 878b04ea-1dc8-4110-6d0f-08dc945c89c0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12621681-f679-4abb-1c0a-08dc945e69da
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2024 14:47:15.3208
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2024 15:00:40.4930
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VsMsnoM54dksKoBrRMMj/W991PDNhM2Z8UjsDK095KPeOykyyQx1Qk7A8arwY5NfL5QIJyg23bTcOCDM1TeZtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10253
+X-MS-Exchange-CrossTenant-UserPrincipalName: izNiBA7u+kn47294+P+J4hnA0EE7dqkHFHySarFgPBCrLp3EwaVuq8khhezpnIcpNI3Oqbq67zbbo8zznY3YVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9849
 
-fsl-fman.yaml is typo. "-" should be ",". Fix below warning.
+On Sat, Jun 22, 2024 at 12:38:49PM -0500, Bjorn Helgaas wrote:
+> On Fri, Jun 21, 2024 at 05:43:21PM -0500, Bjorn Helgaas wrote:
+> > On Fri, Jun 21, 2024 at 06:29:48PM -0400, Frank Li wrote:
+> > > On Mon, Jun 17, 2024 at 10:26:36AM -0400, Frank Li wrote:
+> > > > On Thu, Jun 13, 2024 at 05:41:25PM -0500, Bjorn Helgaas wrote:
+> > > > > On Thu, Jun 06, 2024 at 04:24:17PM -0400, Frank Li wrote:
+> > > > > > On Mon, Jun 03, 2024 at 04:07:55PM -0400, Frank Li wrote:
+> > > > > > > On Mon, Jun 03, 2024 at 01:56:27PM -0500, Bjorn Helgaas wrote:
+> > > > > > > > On Mon, Jun 03, 2024 at 02:42:45PM -0400, Frank Li wrote:
+> > > > > > > > > On Mon, Jun 03, 2024 at 12:19:21PM -0500, Bjorn Helgaas wrote:
+> > > > > > > > > > On Fri, May 31, 2024 at 03:58:49PM +0100, Robin Murphy wrote:
+> > > > > > > > > > > On 2024-05-31 12:08 am, Bjorn Helgaas wrote:
+> > > > > > > > > > > > [+cc IOMMU and pcie-apple.c folks for comment]
+> > > > > > > > > > > >
+> > > > > > > > > > > > On Tue, May 28, 2024 at 03:39:21PM -0400, Frank Li wrote:
+> > > > > > > > > > > > > For the i.MX95, configuration of a LUT is necessary to convert Bus Device
+> > > > > > > > > > > > > Function (BDF) to stream IDs, which are utilized by both IOMMU and ITS.
+> > > > > > > > > > > > > This involves examining the msi-map and smmu-map to ensure consistent
+> > > > > > > > > > > > > mapping of PCI BDF to the same stream IDs. Subsequently, LUT-related
+> > > > > > > > > > > > > registers are configured. In the absence of an msi-map, the built-in MSI
+> > > > > > > > > > > > > controller is utilized as a fallback.
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Additionally, register a PCI bus notifier to trigger imx_pcie_add_device()
+> > > > > > > > > > > > > upon the appearance of a new PCI device and when the bus is an iMX6 PCI
+> > > > > > > > > > > > > controller. This function configures the correct LUT based on Device Tree
+> > > > > > > > > > > > > Settings (DTS).
+> > > > > > > > > > > >
+> > > > > > > > > > > > This scheme is pretty similar to apple_pcie_bus_notifier().  If we
+> > > > > > > > > > > > have to do this, I wish it were *more* similar, i.e., copy the
+> > > > > > > > > > > > function names, bitmap tracking, code structure, etc.
+> > > > > > > > > > > >
+> > > > > > > > > > > > I don't really know how stream IDs work, but I assume they are used on
+> > > > > > > > > > > > most or all arm64 platforms, so I'm a little surprised that of all the
+> > > > > > > > > > > > PCI host drivers used on arm64, only pcie-apple.c and pci-imx6.c need
+> > > > > > > > > > > > this notifier.
+> > > > > > > > > > >
+> > > > > > > > > > > This is one of those things that's mostly at the mercy of the PCIe root
+> > > > > > > > > > > complex implementation. Typically the SMMU StreamID and/or GIC ITS DeviceID
+> > > > > > > > > > > is derived directly from the PCI RID, sometimes with additional high-order
+> > > > > > > > > > > bits hard-wired to disambiguate PCI segments. I believe this RID-translation
+> > > > > > > > > > > LUT is a particular feature of the the Synopsys IP - I know there's also one
+> > > > > > > > > > > on the NXP Layerscape platforms, but on those it's programmed by the
+> > > > > > > > > > > bootloader, which also generates the appropriate "msi-map" and "iommu-map"
+> > > > > > > > > > > properties to match. Ideally that's what i.MX should do as well, but hey.
+> > > > > > > > > >
+> > > > > > > > > > Maybe this RID-translation is a feature of i.MX, not of Synopsys?  I
+> > > > > > > > > > see that the LUT CSR accesses use IMX95_* definitions.
+> > > > > > > > >
+> > > > > > > > > Yes, it convert 16bit RID to 6bit stream id.
+> > > > > > > >
+> > > > > > > > IIUC, you're saying this is not a Synopsys feature, it's an i.MX
+> > > > > > > > feature.
+> > > > > > >
+> > > > > > > Yes, it is i.MX feature. But I think other vendor should have similar
+> > > > > > > situation if use old arm smmu.
+> > > > > > >
+> > > > > > > >
+> > > > > > > > > > > If it's really necessary to do this programming from Linux, then there's
+> > > > > > > > > > > still no point in it being dynamic - the mappings cannot ever change, since
+> > > > > > > > > > > the rest of the kernel believes that what the DT said at boot time was
+> > > > > > > > > > > already a property of the hardware. It would be a lot more logical, and
+> > > > > > > > > > > likely simpler, for the driver to just read the relevant map property and
+> > > > > > > > > > > program the entire LUT to match, all in one go at controller probe time.
+> > > > > > > > > > > Rather like what's already commonly done with the parsing of "dma-ranges" to
+> > > > > > > > > > > program address-translation LUTs for inbound windows.
+> > > > > > > > > > >
+> > > > > > > > > > > Plus that would also give a chance of safely dealing with bad DTs specifying
+> > > > > > > > > > > invalid ID mappings (by refusing to probe at all). As it is, returning an
+> > > > > > > > > > > error from a child's BUS_NOTIFY_ADD_DEVICE does nothing except prevent any
+> > > > > > > > > > > further notifiers from running at that point - the device will still be
+> > > > > > > > > > > added, allowed to bind a driver, and able to start sending DMA/MSI traffic
+> > > > > > > > > > > without the controller being correctly programmed, which at best won't work
+> > > > > > > > > > > and at worst may break the whole system.
+> > > > > > > > > >
+> > > > > > > > > > Frank, could the imx LUT be programmed once at boot-time instead of at
+> > > > > > > > > > device-add time?  I'm guessing maybe not because apparently there is a
+> > > > > > > > > > risk of running out of LUT entries?
+> > > > > > > > >
+> > > > > > > > > It is not good idea to depend on boot loader so much.
+> > > > > > > >
+> > > > > > > > I meant "could this be programmed once when the Linux imx host
+> > > > > > > > controller driver is probed?"  But from the below, it sounds like
+> > > > > > > > that's not possible in general because you don't have enough stream
+> > > > > > > > IDs to do that.
+> > > > > > >
+> > > > > > > Oh! sorry miss understand what your means. It is possible like what I did
+> > > > > > > at v3 version. But I think it is not good enough.
+> > > > > > >
+> > > > > > > >
+> > > > > > > > > Some hot plug devics
+> > > > > > > > > (SD7.0) may plug after system boot. Two PCIe instances shared one set
+> > > > > > > > > of 6bits stream id (total 64). Assume total 16 assign to two PCIe
+> > > > > > > > > controllers. each have 8 stream id. If use uboot assign it static, each
+> > > > > > > > > PCIe controller have below 8 devices.  It will be failrue one controller
+> > > > > > > > > connect 7, another connect 9. but if dynamtic alloc when devices add, both
+> > > > > > > > > controller can work.
+> > > > > > > > >
+> > > > > > > > > Although we have not so much devices now,  this way give us possility to
+> > > > > > > > > improve it in future.
+> > > > > > > > >
+> > > > > > > > > > It sounds like the consequences of running out of LUT entries are
+> > > > > > > > > > catastrophic, e.g., memory corruption from mis-directed DMA?  If
+> > > > > > > > > > that's possible, I think we need to figure out how to prevent the
+> > > > > > > > > > device from being used, not just dev_warn() about it.
+> > > > > > > > >
+> > > > > > > > > Yes, but so far, we have not met such problem now. We can improve it when
+> > > > > > > > > we really face such problem.
+> > > > > > > >
+> > > > > > > > If this controller can only support DMA from a limited number of
+> > > > > > > > endpoints below it, I think we should figure out how to enforce that
+> > > > > > > > directly.  Maybe we can prevent drivers from enabling bus mastering or
+> > > > > > > > something.  I'm not happy with the idea of waiting for and debugging a
+> > > > > > > > report of data corruption.
+> > > > > > >
+> > > > > > > It may add a pre-add hook function to pci bridge. let me do more research.
+> > > > > >
+> > > > > > Hi Bjorn:
+> > > > > >
+> > > > > > int pci_setup_device(struct pci_dev *dev)
+> > > > > > {
+> > > > > > 	dev->error_state = pci_channel_io_normal;
+> > > > > > 	...
+> > > > > > 	pci_fixup_device(pci_fixup_early, dev);
+> > > > > >
+> > > > > > 	^^^ I can add fixup hook for pci_fixup_early. If not resource,
+> > > > > > I can set dev->error_state to pci_channel_io_frozen or
+> > > > > > pci_channel_io_perm_failure
+> > > > > >
+> > > > > > 	And add below check here after call hook function.
+> > > > > >
+> > > > > > 	if (dev->error_state != pci_channel_io_normal)
+> > > > > > 		return -EIO;
+> > > > > >
+> > > > > > }
+> > > > > >
+> > > > > > How do you think this method? If you agree, I can continue search device
+> > > > > > remove hook up.
+> > > > >
+> > > > > I think this would mean the device would not appear to be enumerated
+> > > > > at all, right?  I.e., it wouldn't show up in lspci?  And we couldn't
+> > > > > use even a pure programmed IO driver with no DMA or MSI?
+> > > >
+> > > > Make sense. Let me do more research on this.
+> > > >
+> > > > Frank
+> > > > >
+> > > > > I wonder if we should have a function pointer in struct
+> > > > > pci_host_bridge, kind of like the existing ->map_irq(), where we could
+> > > > > do host bridge-specific setup when enumerating a PCI device.
+> > > 
+> > > Consider some device may no use MSI or DMA. It'd better set LUT when
+> > > allocate msi irq. I think insert a irq-domain in irq hierarchy.
+> > > 
+> > > static const struct irq_domain_ops lut_pcie_msi_domain_ops = {
+> > >         .alloc  = lut_pcie_irq_domain_alloc,
+> > >         .free   = lut_pcie_irq_domain_free,
+> > > };
+> > > 
+> > > int dw_pcie_allocate_domains(struct dw_pcie_rp *pp)
+> > > {
+> > >         struct fwnode_handle *fwnode = of_node_to_fwnode(pci->dev->of_node);
+> > > 
+> > >         pp->irq_domain = irq_domain_create_hierarchy(...)
+> > > 
+> > >         pp->msi_domain = pci_msi_create_irq_domain(...);
+> > > 
+> > >         return 0;
+> > > }
+> > > 
+> > > Manage lut stream id in lut_pcie_irq_domain_alloc() and
+> > > lut_pcie_irq_domain_free().
+> > > 
+> > > So failure happen only when driver use MSI and no-stream ID avaiable. It
+> > > should be better than failure when add devices. Some devices may not use
+> > > at all.
+> > 
+> > I'm not an IRQ expert, but it sounds plausible.  There might even be
+> > an opportunity to fall back to INTx if there's no stream ID available
+> > for MSI?
+> 
+> Sorry, I think this was a half-baked thought.  Exhaustion of stream
+> IDs should be an uncommon situation, and the important thing is to
+> prevent terrible things from happening.
+> 
+> I don't think it's worth bending over backwards to make everything
+> possible limp along.  If it's easy to just make the device
+> inaccessible, that's fine.  If there's a simple way to make it
+> available but keep from enabling bus mastering, we could do that too,
+> but only if it's really simple.
 
-Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/fsl-fman.yaml
+Mani mentions qcom use simple method to config all lut when probe at
+qcom_pcie_config_sid_1_9_0(). It is similar with my v3 version.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202406211320.diuZ3XYk-lkp@intel.com/
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://lore.kernel.org/imx/20240402-pci2_upstream-v3-8-803414bdb430@nxp.com/
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 807feae089c4d..7da4c469c14d4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8874,7 +8874,7 @@ M:	Madalin Bucur <madalin.bucur@nxp.com>
- R:	Sean Anderson <sean.anderson@seco.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
--F:	Documentation/devicetree/bindings/net/fsl-fman.yaml
-+F:	Documentation/devicetree/bindings/net/fsl,fman.yaml
- F:	drivers/net/ethernet/freescale/fman
- 
- FREESCALE QORIQ PTP CLOCK DRIVER
--- 
-2.34.1
+Of course both have not resolved run-out sid problems. But genenerally,
+one PCIE slot only connect one devices. static alloc 8/16 sid are enough
+for 99.9% user case.
+
+best regards
+Frank Li
+
+
 
