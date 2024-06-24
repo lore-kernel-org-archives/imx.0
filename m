@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8ED3F9FC;
-	Mon, 24 Jun 2024 08:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B387E76D;
+	Mon, 24 Jun 2024 08:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719219339; cv=none; b=N89rr/nxHE1pJP/sb7h+Q3iLbQmctq5ZblNMv1YAqaKUDmHA4ofxgDdRH68VTr/ThjJUOOQoR0qm+rRtWC3bWsqjsKnq6iV1vBN8fYTdpyGG5FeSViBuxfsSJ83/ncKfQ0N77P6Jp9+X3sh6l5SGoefj/TBgCuB57wjsmLAhwBk=
+	t=1719219390; cv=none; b=BailfdWbmXq89FcVyteTyjd692/YHdokh9S5peMJpEBrmzF1b7AQyd3jSr6zOCRd9jPbc9A+8BrMQoXomFSeTErjwmzg0in80cfvti58RdMWHr39lJLF5ofaNyN9LewlT16jP57zVf1yr1iWrwOnFhkC9VFeyYsl7VAIcEFT200=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719219339; c=relaxed/simple;
-	bh=GZdM7RgAiulGjt8VwbxLG+6rinyzS20ZKJ2DX8G/7DA=;
+	s=arc-20240116; t=1719219390; c=relaxed/simple;
+	bh=t2YWtMH4dwKBdEs5nOu9MRpraIm82fTgm6sPhyy/Qyg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XrvWoLaLUTexHHINhpRkE0zzQFAUKKOw908hLJtYZb1rvZGYZQ/eWW3PadCgWK+MmjkYD0UEjxQ0/g/EF+gsOb/HZAeg2rW+Ep3mIgDSnoJPstcuCG8giQXBpvU4BTG/dBSV3EjjHj3Seor7ae4VvWFbcrXIwIkDsmILgt+hMXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Trj3GrNK; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=ElnTJcDpF8Qx7BCBwUQSi5up0RDfOeVeYa1Q0OqRmLXqckMkU6KRoyc7ip5gx3oJjqyZ5coJxNwa/2QtacQhnouWKTuOSdf7wHT1WqJVEhuNhgml3cAFF2PJgOmKb3Sv6gL59RA6ZbosqtuSttdggb38mWSeMm9HjEapYs+EjaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6yjuY5p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Trj3GrNK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AB2C32782;
-	Mon, 24 Jun 2024 08:55:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6yjuY5p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B42BC2BBFC;
+	Mon, 24 Jun 2024 08:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719219339;
-	bh=GZdM7RgAiulGjt8VwbxLG+6rinyzS20ZKJ2DX8G/7DA=;
+	s=k20201202; t=1719219389;
+	bh=t2YWtMH4dwKBdEs5nOu9MRpraIm82fTgm6sPhyy/Qyg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Trj3GrNKUfHKTAjwPPQW79NqukdD4xt/4ta/5b0rD6NUqDz+ZiT898NL5vostu/ug
-	 yZuBQsoaSZI8FNDvmJCMLmCpGwlCng/ZzollweZwlCP0OpuTT8kk0k177VZxOxRwke
-	 rHC4HnCDBdT140Eplr/JH654xdjrTX5h/m5gt9oB6JgsEkZ5IxvBQcharKmho45Rmf
-	 2GBzqIPmFOsIE2T88V/3w54m6GBDJcsd7gAWw9TmZSRbQ+RQo7KAkkrUR76Vr3N12B
-	 J2Q1SulPaP/GB4xN+6iutsEV0G38xwq6LxfJb8Pyulxe2Zj+NSJNLoGL1yKJ7mYI3X
-	 aSLB2Kfeh54Kw==
-Message-ID: <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
-Date: Mon, 24 Jun 2024 10:55:31 +0200
+	b=S6yjuY5pSfSJgA4DtVRffaI1YXRafUPvRWxGRuBVwWvfKnWVs1X5lRkz+WfSfZk7b
+	 BLYhlA3nbQGn0wEyktsy2M9TUG4+ORu0nOfwsbD8MxKaNZbvtFSAPruiKQIP64dHGb
+	 Ce+YlnRvJmesMjvZYG04/AtVgHMHjy6ImKBk84g7tjDXFvFf3qqeketZ1GlAcXHPli
+	 Izt6NL5k7hzBiRPWFUXb44THoHuLB/E6Iu78dPsuS09VuDkBQTOkScTm2I5lmfvH0N
+	 xO4Ce7fdGcIJUt7cam/TMI0KpssMZVSxNc5avB5q24pCdS/uPYQVD9dAACIHZsskeN
+	 Nq58zhTQ+pHbg==
+Message-ID: <343b1610-e10b-46e5-9026-370b4b675940@kernel.org>
+Date: Mon, 24 Jun 2024 10:56:20 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove binding
+Subject: Re: [PATCHv5 6/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
+ string for spdif
 To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -48,16 +49,16 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Nicolin Chen <nicoleotsuka@gmail.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  linux-sound <linux-sound@vger.kernel.org>,
- devicetree <devicetree@vger.kernel.org>, imx <imx@lists.linux.dev>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ devicetree <devicetree@vger.kernel.org>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
  linux-kernel <linux-kernel@vger.kernel.org>,
  alsa-devel <alsa-devel@alsa-project.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
 References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
- <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
- <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
+ <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
+ <6fcbd97b-4172-48a9-bcdb-3bdf35aba8f7@kernel.org>
+ <1327841247.1714446.1719219099909.JavaMail.zimbra@savoirfairelinux.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,44 +104,25 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <1327841247.1714446.1719219099909.JavaMail.zimbra@savoirfairelinux.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 24/06/2024 10:51, Elinor Montmasson wrote:
-> From: "Krzysztof Kozlowski" <krzk@kernel.org>
-> Sent: Sunday, 23 June, 2024 13:09:33
->> On 20/06/2024 15:25, Elinor Montmasson wrote:
->>> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
->>> removed.
+> 
+>> The compatible is already documented, so now you create duplicated binding.
 >>
->> So what happens with all existing users (e.g. DTS)? They become
->> invalid/not supported?
+>> This is very confusing.
 > 
 > 
-> Next commits, 8/9 and 9/9, update all DTS files that currently use
-> the "fsl,imx-audio-spdif" compatible.
+> The double compatible documentation is only temporary, next commit (7/9)
+> removes the previous binding in "fsl,imx-audio-spdif.yaml".
+> I separated these changes in multiple commit to ease git history searching
+> by subject/file.
+> If required, I can merge commits 6/9 and 7/9.
 
-You mean in-tree. I mean all users, in- and out-of-tree. Other projects.
+Yeah, squash them so it will be obvious.
 
-> From the users point of view, currently configured spdif audio cards
-> will behave just the same.
-> 
-> 
->> After quick look, I do not see backwards compatibility in the driver and
->> above commit msg tells me nothing about ABI break.
-> 
-> 
-> For the next version I will state in this commit message the upcoming modifications to DTS
-> and compatibility, why it will be done, and that support for existing DTS is not dropped.
-> 
-> Previous `imx-spdif` driver used the dummy codec instead of
-> using declared spdif codecs. It was discussed in previous version of this contribution
-> that using the dummy codec isn't good practice. So one to one backward compatibility
-> isn't really possible.
-
-Heh, that's not good. This is improvement, cleanup. While it is
-important and useful, it should also not break existing users.
 
 Best regards,
 Krzysztof
