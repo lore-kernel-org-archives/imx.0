@@ -1,148 +1,272 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2055.outbound.protection.outlook.com [40.107.20.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7935113E888;
-	Mon, 24 Jun 2024 13:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719236014; cv=none; b=uVvTY34c8rRSmpTIdShVN9FpfHwRTVxzZPC8Xrw8gPlbM8PgagtkFC4Otj/ObffTasP3YyA5LB091jXdKu4F8FxF1e1MM6ZZvt7ugM+GZhjt7UVu1L97/diFxYnPE2LR1zLzW9S6P90FDNMmQcIONRh+wuJN4mdk+xNU04ZRIsI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719236014; c=relaxed/simple;
-	bh=9zFosSwVy43COA5LXpYQ2Dm9NEd+eTcGR2GIviXSK5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E8FT6sFL5aiWkwejHnJn+437ZnuL+KeiFEIG/IjU2iSo42PInW5dx/sOXQR/bBR9uOPIckTBp5hBgTGmR7YqELShB34kRcEp1E27lX0oOVuPNKuO57ok09Z4TBkJWR/pXQshb60fBLKktqm2AtceZGpctbWhFecRzITgW1eMiUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILygvCUw; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A19D13D882
+	for <imx@lists.linux.dev>; Mon, 24 Jun 2024 13:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719236784; cv=fail; b=Gg9p/cHumLvTG1fWxDk1P3gnO08rr0bpeIkK9ZpRzYTMoU7pjV8GffI5K0Uk8PEPeptkgj+ibKLgYRA769DNRmfLGn6rOGKIY6aYD67c9kilj9BxHgcjN03TAgNgQhvK/lS1gmdgshUzSe+BcyTexBIRU8kmnEa6tW8gmjiAnbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719236784; c=relaxed/simple;
+	bh=V3t87TgXpfU91GLu/JrDwC++TjN5qd/n5V8wT9zfyZE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=eYqxgnAxTPtWOi7VF3+tzs82yMeCgSWk0CPN8kTMAu8/BLtxMy0JY7IMnnSFuQvEAW5hGLXuYQcYpd2m55AqHgeH2swY04nSahLGLMCiGPmR/L6F1DVQAxuKM6Yyk/I6A3k614z7zeg06liwoF32ssBBa5SfUttaD+AQga8vLOw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=m2Iu9YDW; arc=fail smtp.client-ip=40.107.20.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILygvCUw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A801BC2BBFC;
-	Mon, 24 Jun 2024 13:33:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719236014;
-	bh=9zFosSwVy43COA5LXpYQ2Dm9NEd+eTcGR2GIviXSK5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ILygvCUwZtEwOsboz813cE78GyGTV1+Q536rrkhlPHQ5+yLrn2GWhzLTMIuP+Arum
-	 U3ndDYX9c8/ks0zT8QwCcVoUCfVeR3VOjK/RMfZmee50qL5/Y/ROePNjN6JkQF7Kbu
-	 4ZIGVuG0AkQKOXMzrX4zEOUvwWnZolPBaO00g44g=
-Date: Mon, 24 Jun 2024 15:33:31 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] serial: imx: ensure RTS signal is not left active after
- shutdown
-Message-ID: <2024062427-cheating-cloning-3de1@gregkh>
-References: <20240524121246.1896651-1-linux@rasmusvillemoes.dk>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="m2Iu9YDW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CXHKvIskpVSuPA6hwx8cFqp/xYpy/+Acxsic9dB2IwpY6iZVO2ci4lebPV7sZzlJzbmal3bSIQ5yQnInEG/Mnuh+e/DBAv4WW6OBAgWtxjxHkA4N35s7tvAa7OJhvJ/6Cj1beRFamPD1EoXsUqc47+dPT5AJCzbPfX7kcTd4oIS5TUYtpzMssJ+JVTISVk18wRkF89DDTdnIK85WHYK6aKuGT6tyIfRpK/bxe7seYgFrCeZCTVwX8/Grl3zQQX68Dh0wpVmfXeKSh8rU60r+ifg0z5ZuTNaWxmpWczHt2nmMKueHnrotmylv/xcWm/IuYuDjHhaZquHpXCNXp17aOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HVSOrgUQg2J/4HlnkeXibnoz1Yc9ByzfewjLCAskDsQ=;
+ b=DtdZBseDZ1AbpP6m8Tw1K4Sl50tl+FtLGvDvqgQ8UaAbpZJHHKtNQqImAs+NnqNsosMvk5O+rncUPKmignwUN5VW5/0HQDLLJ25ywKZUoMIGK+/U12Z2+Rv5Z+p3QbrHvpfl00Is0zzKYFov2PcZyK5BAQ77EnCWw3BB9M15AhRcB5VDZ/hn4DBxIfMoUX24ydsKMA+RDezXBoS+EjHY63lUc+LSc562qiyjvz/1jt81i9ehijO155ei/n1pQtp3ycKdA9iCWO4ZLsaQx5QmmmJ8bYxC2ExKBeVlsJiSiCqM23wh2/OtBuRNdTc3BQuwlrPgGAu3qgormqJMzrDUwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HVSOrgUQg2J/4HlnkeXibnoz1Yc9ByzfewjLCAskDsQ=;
+ b=m2Iu9YDWjQ1vJerokP2LwzhsMJGfAWCQ4GzKhMItnQkLsLn+ZqxaSIAqSRep2gRYt0JMhgSCqyf8YafFPiZVfws4YN5cdWhRAbSae0o4B/AnlLV05ME8hB4uaHbExHHvwEF6Cg5VWZnkBrNMjx7LFaMs4lIZBIAEIbZNeMyO5yI=
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
+ by AS8PR04MB7960.eurprd04.prod.outlook.com (2603:10a6:20b:2a8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.26; Mon, 24 Jun
+ 2024 13:46:19 +0000
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827%3]) with mapi id 15.20.7698.025; Mon, 24 Jun 2024
+ 13:46:19 +0000
+From: Pankaj Gupta <pankaj.gupta@nxp.com>
+To: Conor Dooley <conor.dooley@microchip.com>
+CC: Conor Dooley <conor@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [EXT] Re: [PATCH v3 2/5] dt-bindings: arm: fsl: add imx-se-fw
+ binding doc
+Thread-Topic: [EXT] Re: [PATCH v3 2/5] dt-bindings: arm: fsl: add imx-se-fw
+ binding doc
+Thread-Index: AQHawIiTY2uwWBJroU+O1Zn+P7i2k7HMKCYAgADPmgCAAGoQgIAJk22w
+Date: Mon, 24 Jun 2024 13:46:19 +0000
+Message-ID:
+ <AM9PR04MB8604F9A6B01C3794CAAAF36C95D42@AM9PR04MB8604.eurprd04.prod.outlook.com>
+References: <20240617-imx-se-if-v3-0-a7d28dea5c4a@nxp.com>
+ <20240617-imx-se-if-v3-2-a7d28dea5c4a@nxp.com>
+ <20240617-control-calamari-317f59c4eb09@spud>
+ <AM9PR04MB86049915593D86599C67975F95CE2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20240618-antonym-tabloid-8f721ee752a5@wendy>
+In-Reply-To: <20240618-antonym-tabloid-8f721ee752a5@wendy>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|AS8PR04MB7960:EE_
+x-ms-office365-filtering-correlation-id: 12115f92-f810-4a7b-d977-08dc945406c4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230037|366013|1800799021|376011|7416011|38070700015;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?jzbDpYT2TczeJ0z8+ZRkbrtSnLFpyJZikgbbNz6p6K2jfqx5d9cw8iPYt0Vc?=
+ =?us-ascii?Q?TwDGQQshtY5xXwl4/EdmZgdS3xBifPq4FJEUJEvuHMPKs0+tVAg9DIbOXubt?=
+ =?us-ascii?Q?dshEAo4TrOM5XIiBc/NgXQX/sn3k//sNAV5yY8w4iE4FSTypNf+l4DmTAdHK?=
+ =?us-ascii?Q?DUbg7QTyJPpHv0LqHOx40hwQS/jSmerJEl3FrPE4hHkZsx0hdM+A5Him0r31?=
+ =?us-ascii?Q?qgUR11WZQPX8wuFYTvx/LDr4h5n9pODiahU7DNWmmj4QCm0H3o33ERbxU4mi?=
+ =?us-ascii?Q?eVP+GWhBeHJAtDt1UXDiPjazJw6tkwYkdu3E5oBKHQEGIOh1EaWF0vx8TBcQ?=
+ =?us-ascii?Q?sxmYkHEJHmj9hD/TU3WEBfqhTt15kvXBV7Zl11VQgXY0NKmRMU28C04LjUYw?=
+ =?us-ascii?Q?CrLFPaUQjd/J3EKIbt+C67FVBpwQQIDsVypOaKbhW0cGObjSlkiaODSaRnO4?=
+ =?us-ascii?Q?gNHPFSk1LX3PGJetcoDykfWQvmyt/yLzPWsB/KyTVHlCt5c9pSJeS2wEC226?=
+ =?us-ascii?Q?2lZX5ub7FU8ktKOuLdWMyaNEHwSw61tZOCFO2neZOBjeCFZgdf5KJcCZeOXG?=
+ =?us-ascii?Q?m5UEy9+tZem0s1+MQ78X4fGsHACR3Vck66pQ2EWz2j3cGB2Kqv7ateZq+9uK?=
+ =?us-ascii?Q?WnK1Vw9tDmAFARfxH+M0FxwkvisYl6itZfBpD1Q6fNm+yOMfS8LFqrr2M/jQ?=
+ =?us-ascii?Q?eRLUZt9IN+CMHuwBHZRxzJnFVhTdixhjJ9mrfgJQnLanchLBNK0XHmYjXhoM?=
+ =?us-ascii?Q?pt+w5nrztl5mBtkpqXnF6JqFCDVGJBPWDAWlcad4T1K7w6Vf7tBnonkiS33/?=
+ =?us-ascii?Q?MtDhYJNO/tMiMtqOIKPHcntaq3L59l1kAlhsXNHFFksI88mu8PIDeogQXI2+?=
+ =?us-ascii?Q?TQ4esfUDU/+SeAMsLYXzRnzZrc0T5qc1NtxcKl5jgnRSpo6gQNrh80Vxae6e?=
+ =?us-ascii?Q?37nkYpjYV7LUn+P+z+plHVSL2aJ97+hOcXU2X+2xWo0YCIh4YKEO/XOwk/jn?=
+ =?us-ascii?Q?BIrdX4Ec4ewLM+feuSYv4sRCjKBjmXhLW8D1cOARZvs+eXytgWuMuYHh8T8c?=
+ =?us-ascii?Q?WRiX6/UbHoBYWbzH4cF54NDeLwntFE3OI8x5p1Z83QaNhO58R7sodqt1N36Z?=
+ =?us-ascii?Q?pe5P0JkiD7fN0jXsc18lnxYASBWz2duNZA9mmWmRlrX9Lzyn3fxgQ1Qn00LW?=
+ =?us-ascii?Q?FKWimlIP6GqgIUAHUDz7v0JlbIzAmqGWV7fZG48WaJc8fNAjx3tCNK+YPBtV?=
+ =?us-ascii?Q?AN5++cgcRvUyeBGzIEGDrDMUv3nMqJ4C3Au7LQfe3v7TP0291+3HG4Xqd7Fl?=
+ =?us-ascii?Q?7A043ZIni6TIafI/x3YFi0Ya?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(1800799021)(376011)(7416011)(38070700015);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?YUd8uBgrF41r4lRDpAQqJlT+WxrtD8tULjY8oU/YLC2SNGFhERDkTT4RQZzV?=
+ =?us-ascii?Q?6OtND35giKb6XNgWrr1Ku1MAHOZfxHsm0UgZErHNtPCG7c7r8rw+VbjFJ8KU?=
+ =?us-ascii?Q?L50k7sbw5dqW3plUBh/N9G2yz4N2Bq7SpXSKuU/imbTmcGVkGF6MzrJ0JJso?=
+ =?us-ascii?Q?RUbC8/nVd+Xcerc13np7Ow2nOR1m4sPQwkz9mmCFvAeWD5jEa1tmzM+MM3wl?=
+ =?us-ascii?Q?w+oy0dJsGoNFNRYVfNGc41bmT42MPqcxr2A9Vi0Lho/gbXILkj2miT/qkpav?=
+ =?us-ascii?Q?tWB60HNN265edixkh7tdCmz1gguVR/pEP+lqLCOvxzilZ5p2kQ4cBcozjg38?=
+ =?us-ascii?Q?ymoL67mauUmP10DB9IuDuv2wt9CqwvpvKRNeU31XTvLh+RJwFBzQju+0aw/Z?=
+ =?us-ascii?Q?DoxF/x0aEXB0j1ZdSXaNPiGPD6ZP96OgEBH3ZTOREy7qc7sXfNC/+sDCJtHQ?=
+ =?us-ascii?Q?39TAfzf2RO3uW+oFjz3IWtmGsiAL9tN+uYIg1MYc8PO62xLQVG9xPsD6HoGc?=
+ =?us-ascii?Q?Mj99+Lt1zrxYWDJf+sZ/zEeODfHkyUDvnEhVvLBkCXhcpeRmUZCCDVIY7jgE?=
+ =?us-ascii?Q?LPsXjLIAZXB7/OpZkDuyVfp+6MH5KrrWNpnf2IfwLkz1HCHHVNyxOPLLQYnX?=
+ =?us-ascii?Q?BA5GaOwb9NNEt3YNQmiUk472FPCOLMOUJFHe3BPfErRTuhgboMYva02zVEmj?=
+ =?us-ascii?Q?2T5OeOmamw5q37KPrUkASr7oW0ACNlsTUDOpvoN3UwpJ2BTDyfmqkPlTwxhi?=
+ =?us-ascii?Q?je+jNOaVK8QJVjRjYOJqGC/+9HrpeCNG/JIMzr0gcdidGIQbq9MCEaqQhgNS?=
+ =?us-ascii?Q?Cj1uqdiJm8eANv1GfSRLTj4w7YAbvnGBtGgsnk512cd99DEC46Ndkm2sQQPL?=
+ =?us-ascii?Q?CQJQBRuZI1xHOW96W2TgohCEdOgZd5cplEjy4h7Us6R6v5KvSxMkCTp0OW9F?=
+ =?us-ascii?Q?ydp/OzaY2SSOkjLimM76liNEqAQeRchuZn9UgwBlCngfb2LOsmlYads3Rw4t?=
+ =?us-ascii?Q?JJ8rU/qcKw2xc7+HEvaMOpySnUn765Fw5qFo48fk9R+nDfzgy1bIT2wgI/k/?=
+ =?us-ascii?Q?S1r9bObdaXfCSbNf8Od5mwmxUUZmHq4UjUYdzBO9eN+vxR1CkZcYQ5AjXx6S?=
+ =?us-ascii?Q?i6FPAtbrJsE0yE7r7lpq+9KjyVbU1WgED/cGgSIkz4jW1nDCARgs9mV8Rq/m?=
+ =?us-ascii?Q?r99u3Q2XozWdnLL5LZdyCzYha1z+FR3B81UvcAGVKytQy21bVZ56FvB8lscK?=
+ =?us-ascii?Q?Cr2/wMHVDP1okbgMIMRdgNI0n7A62f8FABz9zyFnaW97PjtcswmoYLox3EZH?=
+ =?us-ascii?Q?F7GjIt9z0BqnNoVDdrogJTU1qOtFmqT1S9KOyTqt5gmUSxH+n5Br+QIfkXow?=
+ =?us-ascii?Q?E+rLfP2BejGKjHp+M+fozmDzRkBj2Oxy/vVvGbYH5olChgxV26H+TiTK4Lk/?=
+ =?us-ascii?Q?tQRQ9TepxmyFtGRUYOYv3TJOpBy6UXxTh2ljKcMtg2cgUFRi9PSdSQ0ldIF8?=
+ =?us-ascii?Q?2toVY7JZfIy9cpxPUNNpZiasJdqmFZay8TuXnTpIRFrHrDh+xsvV5B50T2DC?=
+ =?us-ascii?Q?fcBL5tQQb4JhyljoZcy0UYxfOqztiwrgvCeGqWAMjlERtSEGxiaunV/Zc4IO?=
+ =?us-ascii?Q?SpVyVVR9GnKCEA2i7GpDHh4/bDFhneepLvl8up4qty+6?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240524121246.1896651-1-linux@rasmusvillemoes.dk>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12115f92-f810-4a7b-d977-08dc945406c4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jun 2024 13:46:19.1384
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZYaxL+M9Eo8qCqcLQ+fT/CqpzGNNI/t9uJpRyl/VwQofzLkLpYicRcDYGjJHLUmAzXhtIq/45A8RKaNpOXR3UA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7960
 
-On Fri, May 24, 2024 at 02:12:45PM +0200, Rasmus Villemoes wrote:
-> If a process is killed while writing to a /dev/ttymxc* device in RS485
-> mode, we observe that the RTS signal is left high, thus making it
-> impossible for other devices to transmit anything.
-> 
-> Moreover, the ->tx_state variable is left in state SEND, which means
-> that when one next opens the device and configures baud rate etc., the
-> initialization code in imx_uart_set_termios dutifully ensures the RTS
-> pin is pulled down, but since ->tx_state is already SEND, the logic in
-> imx_uart_start_tx() does not in fact pull the pin high before
-> transmitting, so nothing actually gets on the wire on the other side
-> of the transceiver. Only when that transmission is allowed to complete
-> is the state machine then back in a consistent state.
-> 
-> This is completely reproducible by doing something as simple as
-> 
->   seq 10000 > /dev/ttymxc0
-> 
-> and hitting ctrl-C, and watching with a logic analyzer.
-> 
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
-> 
-> A screen dump from a logic analyzer can be seen at:
-> 
->   https://ibb.co/xCcP7Jy
-> 
-> This is on an imx8mp board, with /dev/ttymxc0 and /dev/ttymxc2 both
-> configured for rs485 and connected to each other. I'm writing to
-> /dev/ttymxc2. This demonstrates both bugs; that RTS is left high when
-> a write is interrupted, and that a subsequent write actually fails to
-> have RTS high while TX'ing.
-> 
-> I'm not sure what commit to name as a Fixes:. This certainly happens
-> on 6.6 and onwards, but I assume the problem exists since the tx_state
-> machine was introduced in cb1a60923609 (serial: imx: implement rts
-> delaying for rs485), and possibly even before that.
-> 
-> 
->  drivers/tty/serial/imx.c | 50 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 2eb22594960f..35a47f4ab6ed 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -1551,6 +1551,7 @@ static void imx_uart_shutdown(struct uart_port *port)
->  	struct imx_port *sport = (struct imx_port *)port;
->  	unsigned long flags;
->  	u32 ucr1, ucr2, ucr4, uts;
-> +	int loops;
->  
->  	if (sport->dma_is_enabled) {
->  		dmaengine_terminate_sync(sport->dma_chan_tx);
-> @@ -1613,6 +1614,55 @@ static void imx_uart_shutdown(struct uart_port *port)
->  	ucr4 &= ~UCR4_TCEN;
->  	imx_uart_writel(sport, ucr4, UCR4);
->  
-> +	/*
-> +	 * We have to ensure the tx state machine ends up in OFF. This
-> +	 * is especially important for rs485 where we must not leave
-> +	 * the RTS signal high, blocking the bus indefinitely.
-> +	 *
-> +	 * All interrupts are now disabled, so imx_uart_stop_tx() will
-> +	 * no longer be called from imx_uart_transmit_buffer(). It may
-> +	 * still be called via the hrtimers, and if those are in play,
-> +	 * we have to honour the delays.
-> +	 */
-> +	if (sport->tx_state == WAIT_AFTER_RTS || sport->tx_state == SEND)
-> +		imx_uart_stop_tx(port);
-> +
-> +	/*
-> +	 * In many cases (rs232 mode, or if tx_state was
-> +	 * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
-> +	 * delay_rts_after_send), this will have moved directly to
-> +	 * OFF. In rs485 mode, tx_state might already have been
-> +	 * WAIT_AFTER_SEND and the hrtimer thus already started, or
-> +	 * the above imx_uart_stop_tx() call could have started it. In
-> +	 * those cases, we have to wait for the hrtimer to fire and
-> +	 * complete the transition to OFF.
-> +	 */
-> +	loops = port->rs485.flags & SER_RS485_ENABLED ?
-> +		port->rs485.delay_rts_after_send : 0;
-> +	while (sport->tx_state != OFF && loops--) {
-> +		uart_port_unlock_irqrestore(&sport->port, flags);
-> +		msleep(1);
-> +		uart_port_lock_irqsave(&sport->port, &flags);
-> +	}
-> +
-> +	if (dev_WARN_ONCE(sport->port.dev, sport->tx_state != OFF,
-> +			  "unexpected tx_state %d\n", sport->tx_state)) {
+Thanks Conor, for the help.
 
-Please don't reboot devices that have panic-on-warn enabled for
-something like this, as you are handling it, but that didn't help for
-those devices that had that option turned on :(
+Sorry to miss out this mail reply.
 
-thanks,
+> -----Original Message-----
+> From: Conor Dooley <conor.dooley@microchip.com>
+> Sent: Tuesday, June 18, 2024 4:50 PM
+> To: Pankaj Gupta <pankaj.gupta@nxp.com>
+> Cc: Conor Dooley <conor@kernel.org>; Jonathan Corbet <corbet@lwn.net>;
+> Rob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;
+> Conor Dooley <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>;
+> Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Rob Herring
+> <robh+dt@kernel.org>; Krzysztof Kozlowski
+> <krzysztof.kozlowski+dt@linaro.org>; linux-doc@vger.kernel.org; linux-
+> kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev; =
+linux-
+> arm-kernel@lists.infradead.org
+> Subject: Re: [EXT] Re: [PATCH v3 2/5] dt-bindings: arm: fsl: add imx-se-f=
+w
+> binding doc
+>=20
+> On Tue, Jun 18, 2024 at 10:58:47AM +0000, Pankaj Gupta wrote:
+> > > From: Conor Dooley <conor@kernel.org> On Mon, Jun 17, 2024 at
+> > > 12:59:40PM +0530, Pankaj Gupta wrote:
+> > > > The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X
+> > > > etc., creates an embedded secure enclave within the SoC boundary
+> > > > to enable features like:
+> > > > - HSM
+> > > > - SHE
+> > > > - V2X
+> > > >
+> > > > Secure-Enclave(s) communication interface are typically via
+> > > > message unit, i.e., based on mailbox linux kernel driver. This
+> > > > driver enables communication ensuring well defined message
+> > > > sequence protocol between Application Core and enclave's firmware.
+> > > >
+> > > > Driver configures multiple misc-device on the MU, for multiple
+> > > > user-space applications, to be able to communicate over single MU.
+> > > >
+> > > > It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+> > > >
+> > > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> > > > ---
+> > > >  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 160
+> > > +++++++++++++++++++++
+> > > >  1 file changed, 160 insertions(+)
+> > > >
+> > > > diff --git
+> > > > a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> > > > b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..60ad1c4a3dfa
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> > > > @@ -0,0 +1,160 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML
+> > > > +1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
+> > > > +
+> > > > +maintainers:
+> > > > +  - Pankaj Gupta <pankaj.gupta@nxp.com>
+> > > > +
+> > > > +description: |
+> > > > +  NXP's SoC may contain one or multiple embedded secure-enclave
+> > > > +HW
+> > > > +  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
+> > > > +  enables features like
+> > > > +    - Hardware Security Module (HSM),
+> > > > +    - Security Hardware Extension (SHE), and
+> > > > +    - Vehicular to Anything (V2X)
+> > > > +
+> > > > +  Communication interface to the secure-enclaves is based on the
+> > > > + messaging unit(s).
+> > > > +
+> > > > +properties:
+> > > > +  $nodename:
+> > > > +    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
+> > >
+> > > Just "firmware@<hex>" please.
+> > >
+> >
+> > Modified as per your suggestion,
+> > -    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
+> > +    pattern: "^[0-9a-z]*-if@<hex>"
+>=20
+> Firstly, that's not even what I said verbatim, which I could understand. =
+<hex>
+> isn't even a valid bit of regex for this.
+> What I want to see is something like: "^firmware@[0-9a-f]+$"
 
-greg k-h
+These nodes define the interfaces(-if) to the "secure enclave" FW(-fw).
+Will replace "-if", with "-fw".
+
+There are multiple NXP IP(s) for secure enclave(s):
+- EdgeLock Enclave (ele)
+- Vehicular to anything (v2x)
+- SECO (seco)
+
+Having "ele-fw" helps identify the FW IP name.
+
+Will it be fine to use:
+-    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
++   pattern: "^[0-9a-z]*-fw@[0-9a-f]+$"
+
+or
+
+-    pattern: "^[0-9a-z]*-if@[0-9a-f]+$"
++   pattern: "^[0-9a-z]*-firmware@[0-9a-f]+$"
+
+
