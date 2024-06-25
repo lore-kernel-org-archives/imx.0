@@ -1,172 +1,201 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2041.outbound.protection.outlook.com [40.107.20.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75EA3D6B
-	for <imx@lists.linux.dev>; Tue, 25 Jun 2024 20:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719347524; cv=fail; b=UoVmzxJ0e9mIRwz2J3MJlexi6yuEMDWG/8IB73D3dxEbFRjXKlAZv7qX+FtKBn95X8+j3pGANkgf9DM9Cq+QcsLLswvZHPvnNAM57A2C5R1i3a2ANgwoHTvbw1dfU5tgwHOr+kTdUSBS41oAAO9t60faTHukMjoZQvJY4n2wuqA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719347524; c=relaxed/simple;
-	bh=KIEqt6N/6HHFUSd7K+nW98TQaNO9tpTwWxmoi3HO/xA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=uaathiCMz5PxT8vrawZ3B9OLkIiomLFq1tan7fspqcOHuWX1fwR+FWYHFoc8eRvytPCV30DzlJaVIRgWeGIjxqu9LSbMKgYJ48TVay1cm7EWCNVZqAP72Og26NGZ90JplqZaFbNchJQ/9r9t3Tpi6WeJsScIVtXOJvUlt8IvItA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=CqvZnWr/; arc=fail smtp.client-ip=40.107.20.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3600F4C6E
+	for <imx@lists.linux.dev>; Tue, 25 Jun 2024 20:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719348008; cv=none; b=EMh56lp4j/bPlIexMRj/gjn+3BMSs2NYS2p6no6I78KWE0mvhPi7qBhRHQETqXYgs2rdFL064hho7pXLveegggGFub1HKF20iEj5+DZgWEUnOj16HITL0m6+XLEGUjfFtLO3NuOuhxxU2qx9pmEy/jpkGcRsfAJo37KQ1Fj8Hws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719348008; c=relaxed/simple;
+	bh=tBsPqz9KdloQlOQClLnwN02KtLwV6EXgBuETXlrvzCE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eyaCNuwM/btOMXAyzWuCysk4DhxUTdy+aACi3KGwKQ4GIsIdVBvDybiQoC6fvcVVdbmEQtivYfKs1huHScr4LtVEhfvilSNkUPXbcEwGaLoBIHWdiAfGFLTz2LXix6h8rLH/C29zqyN46YRkiwqavpTIZVISh59QncHJkZGERo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WJGD61xp; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="CqvZnWr/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MkpNyucmeR6alM/SwPX5PlSHy8Ma9CCBblreN4nOUK2gmXZxx4dR+9eu7o+8u8t2hWXPGaG2QB+4NW04erVm+mZvE+uKQlzds6R0eZAeYAvHakLpIkfHYesToDHYFMjIx397LdwTFzGrE9UgCeYeHTCDsX29NO/2yq+2iutWdCrgjjIxCfU0m3bX5W6fkxYErMMNsoSPF2CY3ga4B8ayYZ5p/9KFMb8UhENMPOcK/CRMrck+Hud1aQUuOB0QZ/mMEQuMgDflJNm/yHarGljnxkstDNpaKyWR1saBEnuf6cY8fVsEsnGs1T+DiTME+ykruvPhvzzCyF5zMPMX9WZXwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w6uaDqxJjfZ579vh1VUuf8qCmTyAxhb0nIwJj14a3/4=;
- b=IMxs4YHabsqw9XzsdXirmNW4QWF19IwsmcWGuF5JvHaMfwX1sM4Tm3Or8Hy4KV94aMTlndrMO/IrNuUu/v1Rw04LImBm9MRrtyHut5eXxH6rWYYVbr7bdrjl664VG66C3QQfIRmeGcRVbBfX4fQ+EaMAr64LpPKlOpkxyR35VfxfVfA4KIMm9d8IpQGXT6oQcWC8t18evBIMyI2tJ7Z+oJma5SZIGbZuqtI2jRajNOZUINwiLzxIcBdUwsL8QKhuWsuPoMPcP5H3x5bVBUXypa1CCNcA/ZxZ4955bCMiFcfio1NG/GU5+vKXf7AeMjAzT/CCfxDC0zfkm1yYLWBThw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w6uaDqxJjfZ579vh1VUuf8qCmTyAxhb0nIwJj14a3/4=;
- b=CqvZnWr/Y436LLo9J6cQI4v0OFdQakuyA7dHyx4h4kh8i3QgDzKzFEtxfA9OLTUBW+itteox1smJHF4npMC/413ooyLYw1PX28HaYQ84BFhkllr/+6oecHqkDVTl3uyiKx+i6rfcdM5osNYubElNLDyZbtsZ9kSNk6xh/YkamCs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI2PR04MB10219.eurprd04.prod.outlook.com (2603:10a6:800:22c::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.30; Tue, 25 Jun
- 2024 20:31:59 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.025; Tue, 25 Jun 2024
- 20:31:59 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-can@vger.kernel.org (open list:CAN NETWORK DRIVERS),
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: can: fsl,flexcan: add can-transceiver for fsl,flexcan
-Date: Tue, 25 Jun 2024 16:31:45 -0400
-Message-Id: <20240625203145.3962165-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR07CA0029.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::42) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WJGD61xp"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2c86869685aso507412a91.1
+        for <imx@lists.linux.dev>; Tue, 25 Jun 2024 13:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719348005; x=1719952805; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vTAUN47IqqElZXeBcrK8yXzS1ClqmFbCRPEYR3+9RTs=;
+        b=WJGD61xpxywcTvKw/Eu+wTahUFc4I06PaK5mNWKytiJCFifIFYzfFrzFlrLXLKIyU1
+         Jo386xcfRI/yYPdCwAmhsz9j6XRaG+kf6Em9KPysOFzLf5aJhmBc4d53+SjIA/auurN/
+         ChrL1yM5SFXDnuV/4eSk3iEUmNQzSKgcQfJaGc/waBKLgTb7SsO8ShC8U9MfClv1oJG5
+         Z3u/RpqRGbsERfkHSqoHWxZfFM2V0is7F8iX55WEUZSVY0u0HP1H7A/PCfad7bVrWDGf
+         yyuCeyA6D1IxS3IxPeB5a6T5cu0WTC3I/CvDrdiZ9QQUluM6UU0CBM6JOzksUgXiRO2q
+         ncaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719348005; x=1719952805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vTAUN47IqqElZXeBcrK8yXzS1ClqmFbCRPEYR3+9RTs=;
+        b=COAUUy/AT5bv2Fj0wbfzv42SadaReBzUJSZH/lpJormaSNkmGbjCmuTVP5LDQqqpYH
+         62jZASVypbB+i2HeL7BeBajpNQheT4A14LNl9nn8wgzSpLP2BzkvLGmc1YtBaA1nrRlf
+         lP4hO5hvmsZUnnOdn8QHl6ItbZppdZ1Jbapoa5wyU9x8zaSfesp83EStZ7WOg+Ng+nx0
+         tNiHzGKwpun/CeYMcDgDp0JOsGddLRBQpGQPRiUd6MtBoGOkfB+PDTx7aWCmJCPN7Sx0
+         42fP0OdbiGU5U63co8RhvgiesY/5+XKEM6DwaAPceInjIErbL6vjt9pybtltLuwMEzNU
+         4MwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWK+c/GZ4Nod99Nv2Lfiz63SWWPUSFfuEc0ypQ+znyPcQuzl+rJ5rJOsxTl30BTQhp7wZXb/irS7Hb61fJYkAfqe1B2
+X-Gm-Message-State: AOJu0YwCu0J9vvY2pVDKbEmA2yRcezZVWyMeNSUj7hj4GIvzvxGOi2kK
+	iJmOguASwH5IjxdKFPt0JANcBjcMydgeNxIjK3uX7IwyyH1rikrgtXxpl+y9pjZfGqfAhs516mQ
+	6mu4cqh4Qx8aiyywtH7BI95Copuc=
+X-Google-Smtp-Source: AGHT+IGgfquiJAzbCXphhDVUAqYNiuHQa5FzJ49MHmgKnDF871dkMxNZHt7A4agfHaQChwXdhlYV+okvZoeC+0Zt+io=
+X-Received: by 2002:a17:90a:fe0a:b0:2c7:ad55:85d8 with SMTP id
+ 98e67ed59e1d1-2c84291894bmr9452658a91.2.1719348005481; Tue, 25 Jun 2024
+ 13:40:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10219:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03184f60-90db-4db4-e00a-08dc9555dd01
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230038|366014|52116012|376012|7416012|1800799022|38350700012|921018;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Day1TBs7ilm1fR1yovkJHis8ERQD0Htq9Q6dvCZPFZKsqbSHoe+Wle6lWDjr?=
- =?us-ascii?Q?JrfBI7pMAltpfX6FBrzvNuKEIn2J0QPAyMuWcwcXIS5emuJBnVJgg6YVt3rH?=
- =?us-ascii?Q?DZmyQqSX1kQTAmVHXNp6GCGOKk4YJQwEIiJvVVAxOuZAlgHJmUMM5ctLwIpI?=
- =?us-ascii?Q?PIUp6XS4fMWxEjircYKALBooj1ofXvYxe3OBKYiqqv5QPj5ls3oMCjfWmj2s?=
- =?us-ascii?Q?rkNew6xPlXqOfEWhKZjOMBDxnoh4abFs4VDVpCUK3k6Q9sPK5GG2zemXo91F?=
- =?us-ascii?Q?UHZZJcn2mkGAKvOebbGshb/K87xITu1yEzhANgH9/JLkPE2f1SocyVjygNOy?=
- =?us-ascii?Q?VHbCCcqCkZQyPjZyYS/g6h4mY9vcPHECtxqypLOBHl3mJ1ZxI/W082c488b+?=
- =?us-ascii?Q?UKXYO4J1rzSIPwuOMhu9To97qDgBRjHVDq1mdp9qB2IQFo3pwKRSLI+xRHLc?=
- =?us-ascii?Q?nLGsC8NWIi8aKC9KI0wh6jIp2VFeSsQEZ9CqMSZ4gerGK6n/syPLjj5LhpxV?=
- =?us-ascii?Q?ld75Nfxd7CJvie6lKHKhoOF6LUR3b54iEgoyvWIuQnuY0UBjoJ35t+cbmRek?=
- =?us-ascii?Q?QnTJvQ5meoWjAflu3pXyld2SobTtjtmEJ7a9TvNDndLTflcLHZ9c9O3IYhIM?=
- =?us-ascii?Q?7jxumQtXzipy6GfiYnzg9RmbyhI63oEuem9Z9i4HxMYR4m2dAzlPTvC1aZk0?=
- =?us-ascii?Q?ah1RrkgalY+DBMzFsHakO02t7cg0L3sRRfCK8WFJpTUzbJCiqQy7f4RpV50t?=
- =?us-ascii?Q?jcbW/uuOU2lLRa2mWg+HXpdeP1hKnLMoWTKIi57EStwaFw7AfB01YL7/e8wH?=
- =?us-ascii?Q?e9woGOnohIGoEXEMj3JcOylylWpG/E/ms+dOl37pxWsk1/YHgyhZ20+qnUh2?=
- =?us-ascii?Q?TyY7dg/bCV6ebnrNaNzA8GajGCTUNc/Io01pEtbuRiIjHFn1+N0NjkdhFdl7?=
- =?us-ascii?Q?XSqNI9XvlGsORpcv20tKBiie6VRfm69mizNQ9cucZ0ydBwmkGglcSh76Dkve?=
- =?us-ascii?Q?2jE7TtWUKKByPtE34nfo4c+29Hacd8FR1AZu6+QxdFumRLOKtNTGz6OWW1tx?=
- =?us-ascii?Q?VUdMq3FTHE58Y69vS2gF/M+nK0AYa/nFziTHDAkvmUAcSyMw0I5ERMOaJaon?=
- =?us-ascii?Q?Pjayd2MNxVREU4KMEdSSga/XQThJVdKrmpSoJ/7dW+qpxjC/O9MHdxxxkuEN?=
- =?us-ascii?Q?3MqrbPlxZERxJ5gPVeFTEYTpCu2hkahUJ6r9DroKodZvNmlvqsIngN2mdDWT?=
- =?us-ascii?Q?fFghhU+JMpnHjyexgwa7U56l1P7Mycs3OWLBikTTMj4xacIxMRxVhzVBS68t?=
- =?us-ascii?Q?6BnXvzjAPpW/tCrRktCocXpJMvUmrJsQW1bQnGDP/xDE5745KsT8Faz8PvJi?=
- =?us-ascii?Q?NIu7NM2OCVPqiH1Zk0WW6vy8RKm/?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230038)(366014)(52116012)(376012)(7416012)(1800799022)(38350700012)(921018);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SDN68ZxqCUk/NAaNVJ7Nltd1A2Ycl8OEGv7gEy5mOolj7xZOGswda/ycg3G4?=
- =?us-ascii?Q?2atdcDgVKbUJi4o9iKUWDLmCtHdWjmymAOTFjRWlSOqzXS3S7jvGd/W+7gW0?=
- =?us-ascii?Q?cmy7ZBVoJ2RKnUOkFMlTWZAeVpoSUG6VLe5/vw4ziodBMdcfoWkyg+pbdgzR?=
- =?us-ascii?Q?4YqPHvHL9cxcXk/l9xpaXYannusDjjgryOKK7+nw8WR2SGrk8Oyt5LJ8xmjJ?=
- =?us-ascii?Q?EdPIt6gdVd4ubipTB1+ojG3ztSx/ocjXzmOTSy2zwFaCZNSEfXvDkLMU0HHi?=
- =?us-ascii?Q?psv2rEhdG3MZT3aDDFhAaNvvAIhe3vFbiaecM4epw7wvFjXKnme7A0XVYVJf?=
- =?us-ascii?Q?B1TIRzZyJPg7vA/CJkfkjSKGNMVibyG7Y6s02bLDJhW4c9BcLGBUTKEdvI0k?=
- =?us-ascii?Q?acAdol6JWvFNTzknn31dAOPPOFIzzUTZJk2EWc9SEGzqp16Oc34qyYp9B/oj?=
- =?us-ascii?Q?UhGXL7FKVlAiQcPt/MjE9BzHOxuNMuBsxu350WIcicy53W7Wb0fqMXfW9frr?=
- =?us-ascii?Q?OkePIX3Lr6YgPvcCUoBltYXducB32qC69yp56xY1YnIkyl2buKqNX6sJKjJa?=
- =?us-ascii?Q?ieOGCSJ+n7vyUuQ7cysV5z5nH2U+4xZGvFi/LpEEuoOJfn6owZ44zVjVbdQi?=
- =?us-ascii?Q?xzBBCBPsQ9E2VNyTFIPrjL692rEUj/WJT1Rwd3m3vnrT+LleenjctKMuvJZo?=
- =?us-ascii?Q?aNccJxYN8M1h0e9a0ffZw0ZDpQXVjGIxHA4xvCrqDql6Wre2yoF6tKUbTnmD?=
- =?us-ascii?Q?lhba9ivSaLVXU81aQAdpdAySamx8EzSBX/pdkI6VtNx4ZZcswdl/10sRHPJ+?=
- =?us-ascii?Q?qd9k9oo+ulKIucTR6an++Dqqr9qm+sHZnARZ0m8bGwNAs0PgoOA5ZQRcP1tR?=
- =?us-ascii?Q?5nPJ5AoQMWuRLksxxR+JrvEHR+n/6x3E1Dmnb/fUx1iFrW7GlHjG/Fle4aaF?=
- =?us-ascii?Q?MqtSHRBrxVYh9EgUrNMzy/KGNbsErgnsIWR3BPS1pnYhaXh9pcGvYQeMTEWM?=
- =?us-ascii?Q?R7Zlx3mJddpjKxbn+z62RUa/iUOm9S3EcEtnu+gEthIssQkpDPu1LRQ9Eama?=
- =?us-ascii?Q?oMt6zD12Kp3JmNKLRyPsY3ZU9o7f7Kst9w6R+TXEkWF+40n1dV6IRwto128U?=
- =?us-ascii?Q?VMftvQS3Kovvg9WmNmOmZyP7DduPYtGId6JEryjEYQn4Z/6i3mpIejmxEq//?=
- =?us-ascii?Q?6TUR7I7C6AWAk8hoiycOniV313Ai+hVzYhn4ay6PgtBfx0d9oXGAJbrjuAga?=
- =?us-ascii?Q?lqmEUUnvLvQhi1DJ2O9UxPVssrjxWJD5Bp1AXqeDrIa7k1uvzcjYJNBgIq+x?=
- =?us-ascii?Q?ZWhj8b/z+TUxuNN0VIgEuLbn3wIqCnyNtvU1D3DmmktqCoI0P8PAt70NUMMy?=
- =?us-ascii?Q?oqExyE4U+XG5twDoElxGhS6Ae/jn5ChBBDtbiPcR1yliKwKU0VBAxtFxisyH?=
- =?us-ascii?Q?QCywuAMgU1wgWFtnetZjjoTr+f80fqTtfvbfZMtZxQVkG23yTAnylurcTwEi?=
- =?us-ascii?Q?1vIMcGYzRZyvhJ6GElI2HwCrN9xKrd3VlOJegFqf+GCk5OLVxTQMG6HpwFQk?=
- =?us-ascii?Q?BHen63krz2DTVr3IkIc=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03184f60-90db-4db4-e00a-08dc9555dd01
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2024 20:31:59.4448
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jrcK/07yDpUslHDWlJbXSqdLMBxAPijJOXwwWrNMuF2JHv6C3E3Jb3LmlXHoGkwkI2In1CCBqIxZDuPiy6zJPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10219
+References: <20240625184206.508837-1-linux@rasmusvillemoes.dk>
+In-Reply-To: <20240625184206.508837-1-linux@rasmusvillemoes.dk>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 25 Jun 2024 17:39:54 -0300
+Message-ID: <CAOMZO5AejtxU4hTMWa8PK9duXYAKUGzGm_mmeLuEW=tRk7GSCQ@mail.gmail.com>
+Subject: Re: [PATCH v2] serial: imx: ensure RTS signal is not left active
+ after shutdown
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>, Marek Vasut <marex@denx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add 'can-transceiver' children node for fsl,flexcan to allow update
-can-transceiver property.
+[Adding Christoph and Marek]
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-index f197d9b516bb2..d003200247b03 100644
---- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-+++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
-@@ -80,6 +80,9 @@ properties:
-       node then controller is assumed to be little endian. If this property is
-       present then controller is assumed to be big endian.
- 
-+  can-transceiver:
-+    $ref: can-transceiver.yaml#
-+
-   fsl,stop-mode:
-     description: |
-       Register bits of stop mode control.
--- 
-2.34.1
-
+On Tue, Jun 25, 2024 at 3:42=E2=80=AFPM Rasmus Villemoes
+<linux@rasmusvillemoes.dk> wrote:
+>
+> If a process is killed while writing to a /dev/ttymxc* device in RS485
+> mode, we observe that the RTS signal is left high, thus making it
+> impossible for other devices to transmit anything.
+>
+> Moreover, the ->tx_state variable is left in state SEND, which means
+> that when one next opens the device and configures baud rate etc., the
+> initialization code in imx_uart_set_termios dutifully ensures the RTS
+> pin is pulled down, but since ->tx_state is already SEND, the logic in
+> imx_uart_start_tx() does not in fact pull the pin high before
+> transmitting, so nothing actually gets on the wire on the other side
+> of the transceiver. Only when that transmission is allowed to complete
+> is the state machine then back in a consistent state.
+>
+> This is completely reproducible by doing something as simple as
+>
+>   seq 10000 > /dev/ttymxc0
+>
+> and hitting ctrl-C, and watching with a logic analyzer.
+>
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> ---
+> v2: Use dev_warn() instead of dev_WARN_ONCE().
+>
+> v1: https://lore.kernel.org/lkml/20240524121246.1896651-1-linux@rasmusvil=
+lemoes.dk/
+>
+> A screen dump from a logic analyzer can be seen at:
+>
+>   https://ibb.co/xCcP7Jy
+>
+> This is on an imx8mp board, with /dev/ttymxc0 and /dev/ttymxc2 both
+> configured for rs485 and connected to each other. I'm writing to
+> /dev/ttymxc2. This demonstrates both bugs; that RTS is left high when
+> a write is interrupted, and that a subsequent write actually fails to
+> have RTS high while TX'ing.
+>
+> I'm not sure what commit to name as a Fixes:. This certainly happens
+> on 6.6 and onwards, but I assume the problem exists since the tx_state
+> machine was introduced in cb1a60923609 (serial: imx: implement rts
+> delaying for rs485), and possibly even before that.
+>
+>
+>  drivers/tty/serial/imx.c | 51 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 2eb22594960f..85c240e8c24e 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -1551,6 +1551,7 @@ static void imx_uart_shutdown(struct uart_port *por=
+t)
+>         struct imx_port *sport =3D (struct imx_port *)port;
+>         unsigned long flags;
+>         u32 ucr1, ucr2, ucr4, uts;
+> +       int loops;
+>
+>         if (sport->dma_is_enabled) {
+>                 dmaengine_terminate_sync(sport->dma_chan_tx);
+> @@ -1613,6 +1614,56 @@ static void imx_uart_shutdown(struct uart_port *po=
+rt)
+>         ucr4 &=3D ~UCR4_TCEN;
+>         imx_uart_writel(sport, ucr4, UCR4);
+>
+> +       /*
+> +        * We have to ensure the tx state machine ends up in OFF. This
+> +        * is especially important for rs485 where we must not leave
+> +        * the RTS signal high, blocking the bus indefinitely.
+> +        *
+> +        * All interrupts are now disabled, so imx_uart_stop_tx() will
+> +        * no longer be called from imx_uart_transmit_buffer(). It may
+> +        * still be called via the hrtimers, and if those are in play,
+> +        * we have to honour the delays.
+> +        */
+> +       if (sport->tx_state =3D=3D WAIT_AFTER_RTS || sport->tx_state =3D=
+=3D SEND)
+> +               imx_uart_stop_tx(port);
+> +
+> +       /*
+> +        * In many cases (rs232 mode, or if tx_state was
+> +        * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
+> +        * delay_rts_after_send), this will have moved directly to
+> +        * OFF. In rs485 mode, tx_state might already have been
+> +        * WAIT_AFTER_SEND and the hrtimer thus already started, or
+> +        * the above imx_uart_stop_tx() call could have started it. In
+> +        * those cases, we have to wait for the hrtimer to fire and
+> +        * complete the transition to OFF.
+> +        */
+> +       loops =3D port->rs485.flags & SER_RS485_ENABLED ?
+> +               port->rs485.delay_rts_after_send : 0;
+> +       while (sport->tx_state !=3D OFF && loops--) {
+> +               uart_port_unlock_irqrestore(&sport->port, flags);
+> +               msleep(1);
+> +               uart_port_lock_irqsave(&sport->port, &flags);
+> +       }
+> +
+> +       if (sport->tx_state !=3D OFF) {
+> +               dev_warn(sport->port.dev, "unexpected tx_state %d\n",
+> +                        sport->tx_state);
+> +               /*
+> +                * This machine may be busted, but ensure the RTS
+> +                * signal is inactive in order not to block other
+> +                * devices.
+> +                */
+> +               if (port->rs485.flags & SER_RS485_ENABLED) {
+> +                       ucr2 =3D imx_uart_readl(sport, UCR2);
+> +                       if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
+> +                               imx_uart_rts_active(sport, &ucr2);
+> +                       else
+> +                               imx_uart_rts_inactive(sport, &ucr2);
+> +                       imx_uart_writel(sport, ucr2, UCR2);
+> +               }
+> +               sport->tx_state =3D OFF;
+> +       }
+> +
+>         uart_port_unlock_irqrestore(&sport->port, flags);
+>
+>         clk_disable_unprepare(sport->clk_per);
+> --
+> 2.45.2
+>
