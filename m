@@ -1,184 +1,190 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840B6172786
-	for <imx@lists.linux.dev>; Tue, 25 Jun 2024 17:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C438517B514
+	for <imx@lists.linux.dev>; Tue, 25 Jun 2024 18:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719335075; cv=none; b=Ijjdj+V49soT298qzesPNgMXn6Ne2NEid2gvGtpezlEIzsEfDVGHR24Y5Tyg+ccEmfC63eNZ8g4UMra9RWS9rKO0WECut0yOrAQEPib6qKvsUenQup71whaG6ny1dxsTOlBJTTnEA85smAFvwE41ZnVLLqxZzpM0HpKu5vW22aA=
+	t=1719340950; cv=none; b=UfTmortRAWvQnUe1ETwVW34+x+j/hpxEeST3gvx9Tv9QQS1o+rNbxl7Z+P8RJ4zpxGI5OtQFeUPZkH5Y/8yScoGLxDC7BgzOgdb5q28Jwe1rckraqpejqhmdpKg1LVP+NJ/V8/1BJWEJXzUtJB9q7vqZjJYKlBjTM+Xp/sHkW/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719335075; c=relaxed/simple;
-	bh=8mIy0fGXv6QcXHgLeFP0z58ktCyQ8SdTbX4HogyY7kk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=ExbYahIFnqu328zHIzwmPvO9TkJSWDgPSc6dmopuDGOuNiNm0bzMcARg3U464qLjEQpHfSJsZJFFs7oF+yMQyqmrbQ6T6tufPWiC8NcTyshIFBNj3tB6zLjR6KzGMF0F5zq6S8CXg9nqpuTidfkpjabFKAeZau9RwEHRioqiEcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GP6qBp3n; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1719340950; c=relaxed/simple;
+	bh=bFf47hFEVUuKOmXsiB4H2YqzJawoxVMdG5DGlAtPhD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m4h1TAKpNmI+rDyfbQYgiA+NeSpXTUtiVV41xOaHtk1qteNHmgFLdMkwSkHVphq8g3/wTaKu3LHMMVSxkSLJlLTUnf1SUoXjTdxZCrWX3FiaGUMByLD5WG4FSS/CjFUjcQ23hOmgkBd+ITODjBkR6j7FqP7kyXJCSup4PZsg2rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk; spf=pass smtp.mailfrom=rasmusvillemoes.dk; dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b=iWb0K8f8; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rasmusvillemoes.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GP6qBp3n"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45P8YhB7001496;
-	Tue, 25 Jun 2024 17:04:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=cD7f1KxN/GsuTcb74iIdg5
-	CMVlA7CC38kO3WnLLAl3g=; b=GP6qBp3nfu9b5QWqB5BcUMajwbmCBPXj15Idzs
-	uxpKSadETDuyiWmx5rOdHpAGM02RpSf4bJ6sAwG45syBOGSq/YXaC/RLeiOL34qD
-	iyAlV3yG1f41MpH6vJUIjZpYhhD+LKahEOg2u+pq9+1aFNImpX035mfPwEnby6Zz
-	3KpT3MHpImbdMGzbR5xBwD386OQ/WvgsMFk+rDb/C0yqModzVk6QR5PgVJPGLkLm
-	Yr5kU6a/We6ftR/A62+JJurAN3UesSC1wFmBPIDWEmGs3n2AAuDvp3zPf9Jf+WD+
-	FmvwGyUATb4sa85FzvVqnOUbrQt8eELOeqQG0lZOJEP74ZEg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywmaeyjst-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 17:04:17 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45PH4HuF023610
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 17:04:17 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Jun
- 2024 10:04:16 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Tue, 25 Jun 2024 10:04:15 -0700
-Subject: [PATCH v2] soc: add missing MODULE_DESCRIPTION() macros
+	dkim=pass (1024-bit key) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.b="iWb0K8f8"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52cd80e55efso7557449e87.0
+        for <imx@lists.linux.dev>; Tue, 25 Jun 2024 11:42:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1719340946; x=1719945746; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fTRHmcetGLaYy17XrKZXgDqE5GMBbK+wOczjMxAfiWo=;
+        b=iWb0K8f8DHrwACt6k+CA6j4CdYVMpggkFquCa0SMeBJgMLKvnimcGQ6ZUxGz5niFgz
+         5djhrIBEDIEzMUBFzdWwhy4GCfS0M4nkWBKVymC1Odvis8m8nsizYKwkLRTfbBrgGWYK
+         zsI2PA2tM0sD/8T+sNTSIqtjl/29T0yWhVHk4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719340946; x=1719945746;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fTRHmcetGLaYy17XrKZXgDqE5GMBbK+wOczjMxAfiWo=;
+        b=agoXhf8DOcF8XSV/ZEmTb6I7HjTr4OMbBLAx1YFwuiL7Sdm9Z9z7KET5ze3rZg5fKa
+         TK4vFF0t3uxyADMG4g0IgDU+bqpasdWkG+QTsFYu1NKeKiKbjFFDurQnfdG0UzyUsE7p
+         LKRJ1KZndbAzQ137qRE5ff6eZPxbtaYD9C6e2/CzFLjw45kWNTKr/ejdT0jQBjOB65Lx
+         2kQQZrVVmFwmfwYDHYxIsal81+OFYJIgOwWV9KbJa4D2hy78zEj2R3yuy17L7z1S3uAA
+         vnsgTzS5ME4Jfmzq+3FXHxdzOkMeMhAkhMVfy4lyKkxOs9sLL7eud+E/cPgPZokgjkIn
+         SREg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHPTy4ZXkMLHZeMAzYZXl3x3q1A5Jr8D2966DHVwFQyUPAkGQDsGeLGXt+iCZL9u7ZeCyO1uZuVmtzTQ65ZIQYwH31
+X-Gm-Message-State: AOJu0YweKE5lqgAHE4BI3PD0LcY2rDI7Ilbsaet5DBNW28Aau+vGAt1W
+	8FO9ftuvfGVkbWdA5P9wdiSaSIxSStAlpjsELslEvfdFvmKhbajvU516Ojpv9Hc=
+X-Google-Smtp-Source: AGHT+IHzd9Y3KJ+ekIIDdL14O7HCRFyG0RNRJ50heb9Bv7+zAcEg6cULMA2lGBbpiJbMQj4at+FLzg==
+X-Received: by 2002:ac2:4c41:0:b0:52c:e1cd:39bd with SMTP id 2adb3069b0e04-52ce1cd3a79mr8123147e87.13.1719340944752;
+        Tue, 25 Jun 2024 11:42:24 -0700 (PDT)
+Received: from localhost (77.33.185.10.dhcp.fibianet.dk. [77.33.185.10])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7261795c58sm154993866b.118.2024.06.25.11.42.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jun 2024 11:42:23 -0700 (PDT)
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2] serial: imx: ensure RTS signal is not left active after shutdown
+Date: Tue, 25 Jun 2024 20:42:05 +0200
+Message-ID: <20240625184206.508837-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240625-md-drivers-soc-v2-1-8bc7c03e3e69@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAI74emYC/3WNyw6CMBBFf4V07Zi2EB6u/A/DopSpTCJFp9BgC
- P9uYe/yJPees4mATBjELdsEY6RAk0+gL5mwg/FPBOoTCy11IUulYOyhZ4rIAcJkQVW17FSTN6W
- uRDq9GR2tp/DRJu5MQOjYeDscmhf5ZYXRhBn5mA8U5om/Zz6q4/S3FBUoqJ10tnHO6by4fxay5
- O3VTqNo933/AbJv14zNAAAA
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman
-	<khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        "Martin
- Blumenstingl" <martin.blumenstingl@googlemail.com>,
-        Shawn Guo
-	<shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Pengutronix
- Kernel Team" <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        "Matthias
- Brugger" <matthias.bgg@gmail.com>, <soc@kernel.org>,
-        "AngeloGioacchino Del
- Regno" <angelogioacchino.delregno@collabora.com>
-CC: <linux-arm-kernel@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.14.0
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 36tpm4wtSvK3ie0iutjIYwwdW_YUzX7U
-X-Proofpoint-GUID: 36tpm4wtSvK3ie0iutjIYwwdW_YUzX7U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-25_12,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 malwarescore=0
- clxscore=1011 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2406250125
+Content-Transfer-Encoding: 8bit
 
-With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/imx/soc-imx8m.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-qmgr.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-npe.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/mediatek/mtk-cmdq-helper.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/amlogic/meson-clk-measure.o
+If a process is killed while writing to a /dev/ttymxc* device in RS485
+mode, we observe that the RTS signal is left high, thus making it
+impossible for other devices to transmit anything.
 
-Add the missing invocations of the MODULE_DESCRIPTION() macro.
+Moreover, the ->tx_state variable is left in state SEND, which means
+that when one next opens the device and configures baud rate etc., the
+initialization code in imx_uart_set_termios dutifully ensures the RTS
+pin is pulled down, but since ->tx_state is already SEND, the logic in
+imx_uart_start_tx() does not in fact pull the pin high before
+transmitting, so nothing actually gets on the wire on the other side
+of the transceiver. Only when that transmission is allowed to complete
+is the state machine then back in a consistent state.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Shawn Guo <shawnguo@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org> # for amlogic/meson-clk-measure.c
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+This is completely reproducible by doing something as simple as
+
+  seq 10000 > /dev/ttymxc0
+
+and hitting ctrl-C, and watching with a logic analyzer.
+
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 ---
-This is the last of the issues that I see in the soc directory
----
-Changes in v2:
-- No changes to the actual patch. Just collected the tags and sending
-  to soc@kernel.org to put in Arnd's patchwork queue
-- Link to v1: https://lore.kernel.org/r/20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com
----
- drivers/soc/amlogic/meson-clk-measure.c | 1 +
- drivers/soc/imx/soc-imx8m.c             | 1 +
- drivers/soc/ixp4xx/ixp4xx-npe.c         | 1 +
- drivers/soc/ixp4xx/ixp4xx-qmgr.c        | 1 +
- drivers/soc/mediatek/mtk-cmdq-helper.c  | 1 +
- 5 files changed, 5 insertions(+)
+v2: Use dev_warn() instead of dev_WARN_ONCE().
 
-diff --git a/drivers/soc/amlogic/meson-clk-measure.c b/drivers/soc/amlogic/meson-clk-measure.c
-index 3f3039600357..a6453ffeb753 100644
---- a/drivers/soc/amlogic/meson-clk-measure.c
-+++ b/drivers/soc/amlogic/meson-clk-measure.c
-@@ -688,4 +688,5 @@ static struct platform_driver meson_msr_driver = {
- 	},
- };
- module_platform_driver(meson_msr_driver);
-+MODULE_DESCRIPTION("Amlogic Meson SoC Clock Measure driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index ec87d9d878f3..fe111bae38c8 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -252,4 +252,5 @@ static int __init imx8_soc_init(void)
- 	return ret;
- }
- device_initcall(imx8_soc_init);
-+MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/soc/ixp4xx/ixp4xx-npe.c b/drivers/soc/ixp4xx/ixp4xx-npe.c
-index 35825ee95dff..34a6f187c220 100644
---- a/drivers/soc/ixp4xx/ixp4xx-npe.c
-+++ b/drivers/soc/ixp4xx/ixp4xx-npe.c
-@@ -764,6 +764,7 @@ static struct platform_driver ixp4xx_npe_driver = {
- module_platform_driver(ixp4xx_npe_driver);
- 
- MODULE_AUTHOR("Krzysztof Halasa");
-+MODULE_DESCRIPTION("Intel IXP4xx Network Processor Engine driver");
- MODULE_LICENSE("GPL v2");
- MODULE_FIRMWARE(NPE_A_FIRMWARE);
- MODULE_FIRMWARE(NPE_B_FIRMWARE);
-diff --git a/drivers/soc/ixp4xx/ixp4xx-qmgr.c b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-index 244ad8d7e80b..cb112f3643e9 100644
---- a/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-+++ b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-@@ -465,6 +465,7 @@ static struct platform_driver ixp4xx_qmgr_driver = {
- };
- module_platform_driver(ixp4xx_qmgr_driver);
- 
-+MODULE_DESCRIPTION("Intel IXP4xx Queue Manager driver");
- MODULE_LICENSE("GPL v2");
- MODULE_AUTHOR("Krzysztof Halasa");
- 
-diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
-index 046522664dc1..dd70d4d2bed7 100644
---- a/drivers/soc/mediatek/mtk-cmdq-helper.c
-+++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
-@@ -526,4 +526,5 @@ int cmdq_pkt_finalize(struct cmdq_pkt *pkt)
- }
- EXPORT_SYMBOL(cmdq_pkt_finalize);
- 
-+MODULE_DESCRIPTION("MediaTek Command Queue (CMDQ) driver");
- MODULE_LICENSE("GPL v2");
+v1: https://lore.kernel.org/lkml/20240524121246.1896651-1-linux@rasmusvillemoes.dk/
 
----
-base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-change-id: 20240611-md-drivers-soc-1780b1939627
+A screen dump from a logic analyzer can be seen at:
+
+  https://ibb.co/xCcP7Jy
+
+This is on an imx8mp board, with /dev/ttymxc0 and /dev/ttymxc2 both
+configured for rs485 and connected to each other. I'm writing to
+/dev/ttymxc2. This demonstrates both bugs; that RTS is left high when
+a write is interrupted, and that a subsequent write actually fails to
+have RTS high while TX'ing.
+
+I'm not sure what commit to name as a Fixes:. This certainly happens
+on 6.6 and onwards, but I assume the problem exists since the tx_state
+machine was introduced in cb1a60923609 (serial: imx: implement rts
+delaying for rs485), and possibly even before that.
+
+
+ drivers/tty/serial/imx.c | 51 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 2eb22594960f..85c240e8c24e 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1551,6 +1551,7 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 	struct imx_port *sport = (struct imx_port *)port;
+ 	unsigned long flags;
+ 	u32 ucr1, ucr2, ucr4, uts;
++	int loops;
+ 
+ 	if (sport->dma_is_enabled) {
+ 		dmaengine_terminate_sync(sport->dma_chan_tx);
+@@ -1613,6 +1614,56 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 	ucr4 &= ~UCR4_TCEN;
+ 	imx_uart_writel(sport, ucr4, UCR4);
+ 
++	/*
++	 * We have to ensure the tx state machine ends up in OFF. This
++	 * is especially important for rs485 where we must not leave
++	 * the RTS signal high, blocking the bus indefinitely.
++	 *
++	 * All interrupts are now disabled, so imx_uart_stop_tx() will
++	 * no longer be called from imx_uart_transmit_buffer(). It may
++	 * still be called via the hrtimers, and if those are in play,
++	 * we have to honour the delays.
++	 */
++	if (sport->tx_state == WAIT_AFTER_RTS || sport->tx_state == SEND)
++		imx_uart_stop_tx(port);
++
++	/*
++	 * In many cases (rs232 mode, or if tx_state was
++	 * WAIT_AFTER_RTS, or if tx_state was SEND and there is no
++	 * delay_rts_after_send), this will have moved directly to
++	 * OFF. In rs485 mode, tx_state might already have been
++	 * WAIT_AFTER_SEND and the hrtimer thus already started, or
++	 * the above imx_uart_stop_tx() call could have started it. In
++	 * those cases, we have to wait for the hrtimer to fire and
++	 * complete the transition to OFF.
++	 */
++	loops = port->rs485.flags & SER_RS485_ENABLED ?
++		port->rs485.delay_rts_after_send : 0;
++	while (sport->tx_state != OFF && loops--) {
++		uart_port_unlock_irqrestore(&sport->port, flags);
++		msleep(1);
++		uart_port_lock_irqsave(&sport->port, &flags);
++	}
++
++	if (sport->tx_state != OFF) {
++		dev_warn(sport->port.dev, "unexpected tx_state %d\n",
++			 sport->tx_state);
++		/*
++		 * This machine may be busted, but ensure the RTS
++		 * signal is inactive in order not to block other
++		 * devices.
++		 */
++		if (port->rs485.flags & SER_RS485_ENABLED) {
++			ucr2 = imx_uart_readl(sport, UCR2);
++			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
++				imx_uart_rts_active(sport, &ucr2);
++			else
++				imx_uart_rts_inactive(sport, &ucr2);
++			imx_uart_writel(sport, ucr2, UCR2);
++		}
++		sport->tx_state = OFF;
++	}
++
+ 	uart_port_unlock_irqrestore(&sport->port, flags);
+ 
+ 	clk_disable_unprepare(sport->clk_per);
+-- 
+2.45.2
 
