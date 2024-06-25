@@ -1,192 +1,124 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2051.outbound.protection.outlook.com [40.107.21.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0784017DE24
-	for <imx@lists.linux.dev>; Tue, 25 Jun 2024 22:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719353347; cv=fail; b=NQwQOUd3jo9xje0tNsJkYUjHg8nfvecn1hBV31tycwr18qFrVnDO2USlYpztAYtLrhXx831OaScBhWabrwNM93wdqwOQIzya1NVZbtUOLMHnZIdmTPMw1rMh1VjvhDkO6gh2znm8Z2N9Tpv872a0JG4wNJn7UgCXjSu0fB1qedE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719353347; c=relaxed/simple;
-	bh=74NBedbLORq9+tZi/IaCSfK3/kZYEff8S3KHeezdBh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dRlUj8BS3igS5t7Yeq2sdrDKwYM8BUlUqGu3cD/zLgn8imhhWPyFdsGmaCop6ssdcGHFnjwjg91K7TshBEkNgRniMhiGQUbXuetx/Sioj9QIDtHFURbaRFVthQHZi8WmD/V5OorKJ3oUzued+aSWHNXvxsYQvQC6BIlfFOIFKR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=KR9MimB5; arc=fail smtp.client-ip=40.107.21.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E27617E905;
+	Tue, 25 Jun 2024 22:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719354544; cv=none; b=lRLgrbZ/+i8ofiZ9DUYt0OSJt4GMsLPzhoHJ/X5TtTmLph2ype4Tm9MQ2aJwT6EaFRXz+vtjCfii9YLrpj6lwJeSP7FrpgCsj87ptZTjpeek2M913vcHz4Iwj7sLGFmh6ePznLIG7KFKfXLfM5bqBD4A/Wc/jqG/nny8T5fO23I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719354544; c=relaxed/simple;
+	bh=+L/emvVgtDd3ULOJoo20PaysUqptsWugNLJKhSGnCkg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N9xY9Hpih9mjZ7Ip6VPGC7OL0QIgFTRkTY0NzRH7cbZi4NG0U46xFjs897PTGMpgaYRXl7TndyaaWMqKR+lj3t1vyAUAnQI52Cw8/a6cqnZ4ni62Gs0BzfpDM8EmAxfcYlfB0DWLUrtJEkz6PR/rlDns0h3XaS4Fy9Bbs+F4oJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHIBw3DB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KR9MimB5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Np5ma1fSoJP1DkSvouu22hJ7fAskNjCp6U7q9iz41A3wPMknL8h2EePbVTUHfB+0vUKHXQl+guxS7Z6YhWWP/qd8FEwYHIOOn43k9kh7B7ystnMZO60JUogAfakKPFJE/A/iYklCZDRz99HSOgRki71tC7T7XXO5wsoQOco6yL+Ky/OXnIxH5YNb2qVyjEhLo2Cv57dEIfJuKcVRCK1pMCxDfBPkeELiRUUlXDixtaOmNjcUHj+UlKa30wbX3kNslclJRQfoFe93dHMvvl11STLp//g39gD+uJLZ3RnfDpVDzFsP97mISOPGJa74rdD/LCI7KVPp1PO7vDJdY65zdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JkFOShuNwR0tU4H1sic3QIBA+65ERs0DT8BAQ84NvkE=;
- b=OK024KuDDBcFgOKH+/+wVZR06X8gLjoOo3ZhUHJTwLLBpU78QJttvquRzNcp3AiBNRMNKMA1QPEAjH86GGE92/PntWmtZPIDG3YvTVimJJeHQNrDx0i9/ahbLcCb16zlOJ4vprY1KGBNo2blSilM7y8bTFwCXFiuSiILGUJgAPt2lsLJl4iZ+3uR/5SojRusIjBXsB/4fnBxVEjVQqtIOUdz6UP5SUnnVF+OpwEGZWo5uuMfrFTP6O8Yp+1o/LbXknoiBLjrDENue/qRDHLeJLUNOAoLNymRMgi+Zk0ykholqVVv2/z8NPvmEQkPdxWAXLGMcNUTD6seEB2rdH9dhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JkFOShuNwR0tU4H1sic3QIBA+65ERs0DT8BAQ84NvkE=;
- b=KR9MimB5h8IOunJJETQwoQ4Blw2ZqsRaKQps6BLk8d0H+mgYKF0kB89QfTA13+MhS37VdDp+y4Y459p1/8kqjIHnIyymXnKxtsPiDX4FzW8Q9S9Um7IyCVOzXc97yq8F8UFIahZoyOm2c/1JZBeN8q8igOWcBvDcjLEJ9iVLz/0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8407.eurprd04.prod.outlook.com (2603:10a6:102:1c7::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.30; Tue, 25 Jun
- 2024 22:09:02 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.025; Tue, 25 Jun 2024
- 22:09:02 +0000
-Date: Tue, 25 Jun 2024 18:08:55 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHIBw3DB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F0AC32781;
+	Tue, 25 Jun 2024 22:29:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719354544;
+	bh=+L/emvVgtDd3ULOJoo20PaysUqptsWugNLJKhSGnCkg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aHIBw3DBgsgjmcpsG44SasdTK/47SLheszc2AagGPy/V7LIt+KIuH7AKrKN0mdQ4m
+	 v/86HnwE7/KWPAzxgOoR5hd/JrDeNRp9OvGbCb53WyGFL4HooYtZJcZIp7AkX2QJaT
+	 +vHjK7JhSOiOAkpK9K/Uyzwtlo1NR5gjQek9RAJpOZqYT6fUx1Eow01E9Q9ijR15CZ
+	 38Zdrwgb2Jm2MNu4wtYm/QCdZo2set9VEJc9HQaVddLzXwUicN4X+XaslvpbMn/EO5
+	 WLDZHpj95vw9bZc+CTbvXsK9O1YX/XaWex8fqU8mdI6PeHJvGwff4q5XmL1qsCihxt
+	 HbV5Mb4qb0ZXA==
+Date: Tue, 25 Jun 2024 16:29:02 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+	linux-gpio@vger.kernel.org,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>, linux-pwm@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-watchdog@vger.kernel.org, linux-iio@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	linux-clk@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS" <linux-pci@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] dt-bindings: PCI: layerscape-pci-ep: Allow fallback
- to fsl,ls-pcie-ep
-Message-ID: <Zns/98sen/qBEt9y@lizhi-Precision-Tower-5810>
-References: <20240625211748.4041882-1-Frank.Li@nxp.com>
- <20240625211748.4041882-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240625211748.4041882-2-Frank.Li@nxp.com>
-X-ClientProxiedBy: BY3PR05CA0024.namprd05.prod.outlook.com
- (2603:10b6:a03:254::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	Zhang Rui <rui.zhang@intel.com>, Andi Shyti <andi.shyti@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
+Message-ID: <171935453992.325655.11101198917545671907.robh@kernel.org>
+References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8407:EE_
-X-MS-Office365-Filtering-Correlation-Id: edf05cb6-9634-4035-7b7b-08dc95636c03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230038|1800799022|366014|7416012|376012|52116012|38350700012;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nvHI92pw97oxd4W/TfhGSxBahIV6oecBN+C0LDtsNTHUSW5JbuXtQwoN70BJ?=
- =?us-ascii?Q?2GxQZg0vjO2J6s7CKOAiOFgRYwEr0yfoJFpOIZFt/ea5LeGCha8vgDetKAmt?=
- =?us-ascii?Q?DxQfZ0c9XfGcJ6SOXQ1FpWA3egoGPYRZqlponK9afeNS7w3jMOl2Y0hjKlcR?=
- =?us-ascii?Q?AEf8c6nlq64YqTO/sE7iZlu9quOiMo3OwOgJZjEker5qbfOxKXU17f8UVR/w?=
- =?us-ascii?Q?zoHhHq9hKi2GbEE7/tvtZBq2c4xt0mdz8LpotN5eLDEtcY/qBs9civBLT0Nf?=
- =?us-ascii?Q?HJNHpFnd3HwILnGHKGvMOBgC/J1GfwfEXDDXof0dgexZJ4yfcAQiLxBN2cKw?=
- =?us-ascii?Q?X6mK/kH+EJbu/KmNiM9YnmVsb6EO+qz8NjuDIla2Od7TJJXbhtnB+qsaV+HG?=
- =?us-ascii?Q?myuieBdLvSOHCuLQkwHTDzq33EMDGUPwKMvL9P9/DIw+5nY4yDEfpsnN8RYh?=
- =?us-ascii?Q?ogLCE7X4d043Gy77iB3Cd0dC6AdOVaRrP90MATUTokzHhFYWYnm3Pn4WRnyz?=
- =?us-ascii?Q?vL7AVchAxXF0TvESw3XXPGMRHhwSxhLM+HUSM6T7UE8I9OusRmpQDLeNH+Ld?=
- =?us-ascii?Q?m1r+Zbgskwma7Vmgn5Z0MtoDbQrEBXf3Ub2yI/wuQXSYjDALBdsdH/7XOzNp?=
- =?us-ascii?Q?+jjtwX3ust54ignYgOkPuWiL/RWycBByopAGj7FMHTTsCuZneAXYsPkxtuYG?=
- =?us-ascii?Q?9gpBVLdX/yHp80SOPzlp23ZZLi4z478GsfgIEuD51dpL1eSy+A3cMTFrm89O?=
- =?us-ascii?Q?NLfzrRp2sGAxnaYtF0/SSfIJwGbX+XUzNXjX3Ok9Xctf2f0H9tm/c22AVdJg?=
- =?us-ascii?Q?zuJF7YUHV0XbPuIQHW6TTHWk2wWgx0yXZ2AEhAi8FMH2PSddK2BW0WCsBEpV?=
- =?us-ascii?Q?JbutjiKNyRiULimi/HggBQ39pgk/p40z8JjqJI1J7pkRDBTGoVx1NdK3KDgg?=
- =?us-ascii?Q?TtFYM/GyRsC27XDJTHKwmvAnpZ2M2+n34RkbGd7CMo5lLSbwAchip1CxqOXe?=
- =?us-ascii?Q?7tCelt60xhi68kGP5xroUhpcDs9kQJ9kFZb38ZU2NR5MsLdEkmkX7+DHaRuW?=
- =?us-ascii?Q?qz7ITfflFw6IgTKdw7Mzz4K+npxjbKxdhkwp5e7o7iEZVO3erR3Of0//8IoS?=
- =?us-ascii?Q?1vlkoDH+bEo6CvQd7S9zI6gfN7tjRFyzcgaBk1FGOlOJfGw9JvO5A8KbPXcV?=
- =?us-ascii?Q?4rhJDSyZJW5xt3ET569IlwvkPcPamxzc9g8JPrhwjsI8U6QbrT+Be0Ufmxds?=
- =?us-ascii?Q?0mrqEIsFUXn95TXjTQa+VBUXdDcYJzBsGiPEmC0ruCCbGbzc0utk36Oy3niv?=
- =?us-ascii?Q?QPLRK9yOKyhTDN8SFmHwM9oLspY/F2TIaABaBMTuNeI9C+BycjeSLkPoBZBk?=
- =?us-ascii?Q?5UqXaU8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230038)(1800799022)(366014)(7416012)(376012)(52116012)(38350700012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aA6R4f4OPHM3qmi86tFXCPu7K1gU3rw6rgxGWfci8G4SwVTcNfoyjMjHuCbk?=
- =?us-ascii?Q?z56YV8xaI2x3Tz1bErEkcu3EkZ4qknTsrKlI/+X1GwccEhm2cuWC4cY58hjL?=
- =?us-ascii?Q?7g1++dBoONwwZ+pACBIuos7K6Aq6aMmxOLGVcA4SOOwmXbv+wByF7+L3iZoj?=
- =?us-ascii?Q?rMRqGRDMib3M1O7rktRSCLAHK1U3ZPs6lQLrOMmMNlINGgD0Anf8v4YPiJh1?=
- =?us-ascii?Q?QUzqeMxhPjZPzYQgzvHcHIMzQxdlDq+ReKMIYzdAPZ1jF7u2qK8SsTUm0iYI?=
- =?us-ascii?Q?4tWD/df28QDi1cJuYkcral9VxkC3RuLXgVN5f+0Jf1xQqPdgyptYNYYfpqcJ?=
- =?us-ascii?Q?qZ6+HeN1sIhMm4TTdsFICZPbrVRm5VtEWCRfSd4CyDaaRK+hQbyleLjFnqQN?=
- =?us-ascii?Q?y2Lhoo7/sL1CfHUrDSvoDewVUfvgZsk0tUZC6UN1gZptESJnzq1doBYnbCJ5?=
- =?us-ascii?Q?icwJjqK+zoqloGImdz9YMJxVa+FE/k2A5CxW/JZ/SODNjxO5ob2QHqHzpCBV?=
- =?us-ascii?Q?xsmliOjWRc4piMPGZiIxjUfkSc75jRnaPq2xMNAvFzE6ltObl9B6xf/XHYR3?=
- =?us-ascii?Q?lxECBvke+/oj5sJXo1ssWPzQLRWHcXxA9aiT2h40R9W046pirkslMYgo1Gf+?=
- =?us-ascii?Q?GG+jj6lmBF0s5EF6OZrhN4NWkzLi4/wzSCV4WI2j+yaeQTQbGbMwY/PyQdxh?=
- =?us-ascii?Q?Qrc5LajeX+WWK+CBT2nwnGIzuqPQujW6jcyOYwYesaw55MZgjH8Bz9hD/pUy?=
- =?us-ascii?Q?avNkmjreslBCjcSnOVulzaq/SsuSPoA61j1/bUyUI66qH8lfvPhmAG2lNT2E?=
- =?us-ascii?Q?yTbkkGXTP7xTTNj9YSXFE4fHqKan3CrY+9tK/jRxeXDDHvjKVtkSIB77+iRu?=
- =?us-ascii?Q?MxpoPffXRbAxgXf2N6HY/trhdjTklHpBPzgNz7N8jQ7FS9/Br7dUxpA6kiul?=
- =?us-ascii?Q?LGKHv8Inm4jWp/eJhW4Wwyb9oniF5GUhF7+aAFOmpy4rBIOOz8TzYnpwvBaQ?=
- =?us-ascii?Q?nyU4dIhb9Sjy51q01fTEert07WSRbKwLf0BTehv1lJeLQvXmXxhzo5tvJPJk?=
- =?us-ascii?Q?YeP7I5gQyivyJX0qHuk6CQ7zNnKVYg5FHROfofgCy97qh0yzu7oHAARXF0Pr?=
- =?us-ascii?Q?lcJr0k21jP76kaYuoLwYgeEWovBfepd2hjwtY+T4ND8Afuo4YdsDqPbJVX0j?=
- =?us-ascii?Q?aIw2PeyPRKOqkBMgwEcZ/W5pyMkCUttTekb/kUphzZNyQ/PZA/6cXPX4XTG7?=
- =?us-ascii?Q?BsylmIJfrL2MDrkuq5pJ/PUxIQ5DkRJLwBuPoyvhVhtfREC8TpVMpVmJTjC5?=
- =?us-ascii?Q?+ZfPHvC7rK8oegfJK919YG++Y8bsn4eMf/QIcd/O6ShxxO86hrA7ZQIPDfGS?=
- =?us-ascii?Q?e+oYpCUtzAPNc02yqAVrVKETThYmoOcBThZtl1iDFcMXCTMN/rApZBULEvWU?=
- =?us-ascii?Q?0X2nlcQRqp+3aEFuDqq72HSEToeZ1ndkBLmFsM16cpG91d9x4WcGmlIxPNob?=
- =?us-ascii?Q?mtRN0khTJ8pD8T6ywg53P5PCjjF5nCvJJNQ8959doWDbArWMlT6tuwnPQ4l+?=
- =?us-ascii?Q?gqgIYn9ISBfWP9IGxNE=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: edf05cb6-9634-4035-7b7b-08dc95636c03
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2024 22:09:02.7575
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h6RiXsb5IlMnVfwB6gN1l2Ku5lK5N6AAsoi7o6qRsuVSdheex4jvBpGMPvgJMaQaRAXMAX86rzZ8mP4mfSLlUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8407
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
 
-On Tue, Jun 25, 2024 at 05:17:47PM -0400, Frank Li wrote:
-> Allow compatible string fallback to general fsl,ls-pcie-ep.
-> Fix below warning:
+
+On Mon, 17 Jun 2024 08:58:28 +0200, Krzysztof Kozlowski wrote:
+> Emails to Anson Huang bounce:
 > 
-> arch/arm64/boot/dts/freescale/fsl-ls1046a-frwy.dtb: pcie_ep@3400000: compatible: ['fsl,ls1046a-pcie-ep', 'fsl,ls-pcie-ep'] is too long
+>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Add IMX platform maintainers for bindings which would become orphaned.
+> 
+> Acked-by: Uwe Kleine-König <ukleinek@kernel.org>
+> Reviewed-by: Fabio Estevam <festevam@gmail.com>
+> Acked-by: Peng Fan <peng.fan@nxp.com>
+> Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com> # for I2C
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
 > ---
-
-Sorry, this patch sent out accidently. 'fsl,ls-pcie-ep' actually are
-not used in driver.
-
-Frank Li
-
->  .../bindings/pci/fsl,layerscape-pcie-ep.yaml      | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> index 399efa7364c93..21f1edfe814d4 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie-ep.yaml
-> @@ -22,12 +22,15 @@ description:
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - fsl,ls2088a-pcie-ep
-> -      - fsl,ls1088a-pcie-ep
-> -      - fsl,ls1046a-pcie-ep
-> -      - fsl,ls1028a-pcie-ep
-> -      - fsl,lx2160ar2-pcie-ep
-> +    items:
-> +      - enum:
-> +          - fsl,ls2088a-pcie-ep
-> +          - fsl,ls1088a-pcie-ep
-> +          - fsl,ls1046a-pcie-ep
-> +          - fsl,ls1028a-pcie-ep
-> +          - fsl,lx2160ar2-pcie-ep
-> +      - const: fsl,ls-pcie-ep
-> +    minItems: 1
->  
->    reg:
->      maxItems: 2
-> -- 
-> 2.34.1
+> Changes in v2:
+> 1. Add acks/Rbs.
+> 2. Change clock maintainers to Abel Vesa and Peng Fan.
+> 3. Change iio/magnetometer maintainer to Jonathan.
+> ---
+>  .../devicetree/bindings/arm/freescale/fsl,imx7ulp-sim.yaml    | 4 +++-
+>  Documentation/devicetree/bindings/clock/imx6q-clock.yaml      | 3 ++-
+>  Documentation/devicetree/bindings/clock/imx6sl-clock.yaml     | 3 ++-
+>  Documentation/devicetree/bindings/clock/imx6sll-clock.yaml    | 3 ++-
+>  Documentation/devicetree/bindings/clock/imx6sx-clock.yaml     | 3 ++-
+>  Documentation/devicetree/bindings/clock/imx6ul-clock.yaml     | 3 ++-
+>  Documentation/devicetree/bindings/clock/imx7d-clock.yaml      | 1 -
+>  Documentation/devicetree/bindings/clock/imx8m-clock.yaml      | 3 ++-
+>  Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml      | 4 +++-
+>  Documentation/devicetree/bindings/gpio/gpio-mxs.yaml          | 1 -
+>  Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml      | 4 +++-
+>  .../devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml     | 2 +-
+>  .../devicetree/bindings/memory-controllers/fsl/mmdc.yaml      | 4 +++-
+>  Documentation/devicetree/bindings/nvmem/imx-iim.yaml          | 4 +++-
+>  Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml        | 4 +++-
+>  Documentation/devicetree/bindings/pwm/mxs-pwm.yaml            | 1 -
+>  Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml      | 4 +++-
+>  Documentation/devicetree/bindings/thermal/imx-thermal.yaml    | 1 -
+>  Documentation/devicetree/bindings/thermal/imx8mm-thermal.yaml | 4 +++-
+>  Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml  | 4 +++-
+>  Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml   | 4 +++-
+>  .../devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml         | 4 +++-
+>  24 files changed, 52 insertions(+), 24 deletions(-)
 > 
+
+Applied, thanks!
+
