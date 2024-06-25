@@ -1,78 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DB549629;
-	Tue, 25 Jun 2024 15:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840B6172786
+	for <imx@lists.linux.dev>; Tue, 25 Jun 2024 17:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719329206; cv=none; b=gv/O7BYn3TFe6+Ic7ZdzParsF8q3DukecgHhLFEKTzGTL4yzNMdrP4MF8F6tAAWNYMbfQI6zMNNqHxY13pm69EFlGAEcdou8UMVWfEZOBbQt/Y4uUM17oHeK9r5NKOFhHNLIsierEjY0eWXNiaujZcYW8K6kIEdrQ0ycLYrxCpE=
+	t=1719335075; cv=none; b=Ijjdj+V49soT298qzesPNgMXn6Ne2NEid2gvGtpezlEIzsEfDVGHR24Y5Tyg+ccEmfC63eNZ8g4UMra9RWS9rKO0WECut0yOrAQEPib6qKvsUenQup71whaG6ny1dxsTOlBJTTnEA85smAFvwE41ZnVLLqxZzpM0HpKu5vW22aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719329206; c=relaxed/simple;
-	bh=i21U0kKDJmZcg+9RnGOSZEPcabKWNuu9gG+cDI+RMG4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iaee0OYAySr3VfGpiuzjMTeWdMuRjWpYxYrgts7bRpOYfgdWtJmbGXpfVplF7A7NxszCWV9H5XdOWgKQ+UBBKCGwxZruHja9ujPvcMamoK555JV0lIUKD8C+O4T3kIKOYEmP3MZK73wyAP7txBRJ/N9Ma9rNTtiOJpTfh4sb/eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eb4+N3l/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719335075; c=relaxed/simple;
+	bh=8mIy0fGXv6QcXHgLeFP0z58ktCyQ8SdTbX4HogyY7kk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=ExbYahIFnqu328zHIzwmPvO9TkJSWDgPSc6dmopuDGOuNiNm0bzMcARg3U464qLjEQpHfSJsZJFFs7oF+yMQyqmrbQ6T6tufPWiC8NcTyshIFBNj3tB6zLjR6KzGMF0F5zq6S8CXg9nqpuTidfkpjabFKAeZau9RwEHRioqiEcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GP6qBp3n; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eb4+N3l/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F16C32781;
-	Tue, 25 Jun 2024 15:26:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719329205;
-	bh=i21U0kKDJmZcg+9RnGOSZEPcabKWNuu9gG+cDI+RMG4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eb4+N3l/QJ0r6w2kZA6JrQlLnsCesvhVsul01ikKYK4tZnXcbnJ6a+EcbSswuB3Hn
-	 CQuGouLcLTiYtqCjFmz8RmIJu4Y+hrRptVk4ZipCfXndQGoFqGmhn2gXWNc6tb2rgP
-	 xZ8dg7uA/MKWymW0st4Y8+HxMORsjIAhm40sX5JjWtLptpQdO4n4swCJgwbtesM38U
-	 txB6K5Jw5o967OBiauv+wfAAO87/x8ysWALqRPi8XjFR7Dj0qsEhrd4XN/aylcozBK
-	 tvo2MyN/U9n/V6w+FRxuuJuclRGlCOJEylAQTo90mOSHOjeEyDzg94l9YnTMDYAv/S
-	 P4D+/apjpIZRw==
-Date: Tue, 25 Jun 2024 08:26:44 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: netdev@vger.kernel.org, conor+dt@kernel.org, davem@davemloft.net,
- devicetree@vger.kernel.org, edumazet@google.com, imx@lists.linux.dev,
- krzk+dt@kernel.org, linux-kernel@vger.kernel.org, madalin.bucur@nxp.com,
- pabeni@redhat.com, richardcochran@gmail.com, robh@kernel.org,
- sean.anderson@seco.com, yangbo.lu@nxp.com
-Subject: Re: [PATCH 1/1] MAINTAINERS: Change fsl-fman.yaml to fsl,fman.yaml
-Message-ID: <20240625082644.52fdbdd9@kernel.org>
-In-Reply-To: <20240624144655.801607-1-Frank.Li@nxp.com>
-References: <20240624144655.801607-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GP6qBp3n"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45P8YhB7001496;
+	Tue, 25 Jun 2024 17:04:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=cD7f1KxN/GsuTcb74iIdg5
+	CMVlA7CC38kO3WnLLAl3g=; b=GP6qBp3nfu9b5QWqB5BcUMajwbmCBPXj15Idzs
+	uxpKSadETDuyiWmx5rOdHpAGM02RpSf4bJ6sAwG45syBOGSq/YXaC/RLeiOL34qD
+	iyAlV3yG1f41MpH6vJUIjZpYhhD+LKahEOg2u+pq9+1aFNImpX035mfPwEnby6Zz
+	3KpT3MHpImbdMGzbR5xBwD386OQ/WvgsMFk+rDb/C0yqModzVk6QR5PgVJPGLkLm
+	Yr5kU6a/We6ftR/A62+JJurAN3UesSC1wFmBPIDWEmGs3n2AAuDvp3zPf9Jf+WD+
+	FmvwGyUATb4sa85FzvVqnOUbrQt8eELOeqQG0lZOJEP74ZEg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywmaeyjst-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 17:04:17 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45PH4HuF023610
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 17:04:17 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Jun
+ 2024 10:04:16 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Tue, 25 Jun 2024 10:04:15 -0700
+Subject: [PATCH v2] soc: add missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20240625-md-drivers-soc-v2-1-8bc7c03e3e69@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAI74emYC/3WNyw6CMBBFf4V07Zi2EB6u/A/DopSpTCJFp9BgC
+ P9uYe/yJPees4mATBjELdsEY6RAk0+gL5mwg/FPBOoTCy11IUulYOyhZ4rIAcJkQVW17FSTN6W
+ uRDq9GR2tp/DRJu5MQOjYeDscmhf5ZYXRhBn5mA8U5om/Zz6q4/S3FBUoqJ10tnHO6by4fxay5
+ O3VTqNo933/AbJv14zNAAAA
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman
+	<khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        "Martin
+ Blumenstingl" <martin.blumenstingl@googlemail.com>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        "Matthias
+ Brugger" <matthias.bgg@gmail.com>, <soc@kernel.org>,
+        "AngeloGioacchino Del
+ Regno" <angelogioacchino.delregno@collabora.com>
+CC: <linux-arm-kernel@lists.infradead.org>,
+        <linux-amlogic@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 36tpm4wtSvK3ie0iutjIYwwdW_YUzX7U
+X-Proofpoint-GUID: 36tpm4wtSvK3ie0iutjIYwwdW_YUzX7U
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-25_12,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ clxscore=1011 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2406140001 definitions=main-2406250125
 
-On Mon, 24 Jun 2024 10:46:55 -0400 Frank Li wrote:
-> fsl-fman.yaml is typo. "-" should be ",". Fix below warning.
-> 
-> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/fsl-fman.yaml
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406211320.diuZ3XYk-lkp@intel.com/
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 807feae089c4d..7da4c469c14d4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8874,7 +8874,7 @@ M:	Madalin Bucur <madalin.bucur@nxp.com>
->  R:	Sean Anderson <sean.anderson@seco.com>
->  L:	netdev@vger.kernel.org
->  S:	Maintained
-> -F:	Documentation/devicetree/bindings/net/fsl-fman.yaml
-> +F:	Documentation/devicetree/bindings/net/fsl,fman.yaml
->  F:	drivers/net/ethernet/freescale/fman
->  
->  FREESCALE QORIQ PTP CLOCK DRIVER
+With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/imx/soc-imx8m.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-qmgr.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/ixp4xx/ixp4xx-npe.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/mediatek/mtk-cmdq-helper.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/soc/amlogic/meson-clk-measure.o
 
-Already fixed by commit 568ebdaba6370, thanks!
--- 
-pw-bot: nap
+Add the missing invocations of the MODULE_DESCRIPTION() macro.
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Shawn Guo <shawnguo@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org> # for amlogic/meson-clk-measure.c
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+This is the last of the issues that I see in the soc directory
+---
+Changes in v2:
+- No changes to the actual patch. Just collected the tags and sending
+  to soc@kernel.org to put in Arnd's patchwork queue
+- Link to v1: https://lore.kernel.org/r/20240611-md-drivers-soc-v1-1-8f0fc9fff234@quicinc.com
+---
+ drivers/soc/amlogic/meson-clk-measure.c | 1 +
+ drivers/soc/imx/soc-imx8m.c             | 1 +
+ drivers/soc/ixp4xx/ixp4xx-npe.c         | 1 +
+ drivers/soc/ixp4xx/ixp4xx-qmgr.c        | 1 +
+ drivers/soc/mediatek/mtk-cmdq-helper.c  | 1 +
+ 5 files changed, 5 insertions(+)
+
+diff --git a/drivers/soc/amlogic/meson-clk-measure.c b/drivers/soc/amlogic/meson-clk-measure.c
+index 3f3039600357..a6453ffeb753 100644
+--- a/drivers/soc/amlogic/meson-clk-measure.c
++++ b/drivers/soc/amlogic/meson-clk-measure.c
+@@ -688,4 +688,5 @@ static struct platform_driver meson_msr_driver = {
+ 	},
+ };
+ module_platform_driver(meson_msr_driver);
++MODULE_DESCRIPTION("Amlogic Meson SoC Clock Measure driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index ec87d9d878f3..fe111bae38c8 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -252,4 +252,5 @@ static int __init imx8_soc_init(void)
+ 	return ret;
+ }
+ device_initcall(imx8_soc_init);
++MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/soc/ixp4xx/ixp4xx-npe.c b/drivers/soc/ixp4xx/ixp4xx-npe.c
+index 35825ee95dff..34a6f187c220 100644
+--- a/drivers/soc/ixp4xx/ixp4xx-npe.c
++++ b/drivers/soc/ixp4xx/ixp4xx-npe.c
+@@ -764,6 +764,7 @@ static struct platform_driver ixp4xx_npe_driver = {
+ module_platform_driver(ixp4xx_npe_driver);
+ 
+ MODULE_AUTHOR("Krzysztof Halasa");
++MODULE_DESCRIPTION("Intel IXP4xx Network Processor Engine driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_FIRMWARE(NPE_A_FIRMWARE);
+ MODULE_FIRMWARE(NPE_B_FIRMWARE);
+diff --git a/drivers/soc/ixp4xx/ixp4xx-qmgr.c b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
+index 244ad8d7e80b..cb112f3643e9 100644
+--- a/drivers/soc/ixp4xx/ixp4xx-qmgr.c
++++ b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
+@@ -465,6 +465,7 @@ static struct platform_driver ixp4xx_qmgr_driver = {
+ };
+ module_platform_driver(ixp4xx_qmgr_driver);
+ 
++MODULE_DESCRIPTION("Intel IXP4xx Queue Manager driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Krzysztof Halasa");
+ 
+diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
+index 046522664dc1..dd70d4d2bed7 100644
+--- a/drivers/soc/mediatek/mtk-cmdq-helper.c
++++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
+@@ -526,4 +526,5 @@ int cmdq_pkt_finalize(struct cmdq_pkt *pkt)
+ }
+ EXPORT_SYMBOL(cmdq_pkt_finalize);
+ 
++MODULE_DESCRIPTION("MediaTek Command Queue (CMDQ) driver");
+ MODULE_LICENSE("GPL v2");
+
+---
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+change-id: 20240611-md-drivers-soc-1780b1939627
+
