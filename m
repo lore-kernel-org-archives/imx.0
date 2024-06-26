@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4304A1684A1;
-	Wed, 26 Jun 2024 09:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF108BEF;
+	Wed, 26 Jun 2024 09:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719393985; cv=none; b=NtEUfORJss2NUpTi8hr2nm38fXETWgDhQ0h3OWOqCqBTOef+M9yzacXR8+nKkjLejj9TZjkonUOExNtyPup6ufWP+nErxo/I6po4tNXwc8hfGKiYkgFWyKQG4RQhtxNUZy9usor4MY1lKmMwbNVtaDhLLvZrPYjlckD3C+WqnT8=
+	t=1719394498; cv=none; b=ctK1BuwKECNIvodb4+s0yGabFVBd21S+jUaS9+T346eHQ8lIYaI9doA09Nh/TwlHLQmVTgrQDPxgShGnMCoS4AAh+PHcTsA4wKDjEskt66Yc0ko8LMDFJADiu1fP9F/Khv6d1qH4j7twLnuai7hmnWioKuTk/75mbkrNUy58iRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719393985; c=relaxed/simple;
-	bh=dU3Jf3E3jO241GPXBxa5WTQyTqsdhtXznavqyzipez4=;
+	s=arc-20240116; t=1719394498; c=relaxed/simple;
+	bh=f1/+g6RzRmHsBpgyUITjf068nJRrBDTAxMPmBq2MJ/w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tkj69nNb1lkvLPu2DSW3Y6yJiXwAHamAfBtAFlWqC+UducMYjhp7CcJ+hDap5byvpp8XLNmyD1UE83/yMVQ48GO105/dxG2vUAe4yTwB0uwn+++bFPjv4UvEtaEefOI6c3O33+3SR3P2DBzySqA/qxQ9iy+Sl5I9khiE0uqAkKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rvGuClsM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=EzqqSg73o0FrYPbNe7V1V5blF6vlX/xWK4JekadiBqdXtkBgWyygZJOExpj5IbRYZs8RXOegroLxB2W3Ct6r90gqchpdCOn549GHvbIhmwuVwUhjNuqJ/aDytEY0Wr0Ije+QwHSYbbojRXvJGSIlTnD3Xc7uX0QZIRpShpzZ9uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fsdaQ1TV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rvGuClsM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBBFC2BD10;
-	Wed, 26 Jun 2024 09:26:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fsdaQ1TV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED94C2BD10;
+	Wed, 26 Jun 2024 09:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719393983;
-	bh=dU3Jf3E3jO241GPXBxa5WTQyTqsdhtXznavqyzipez4=;
+	s=k20201202; t=1719394498;
+	bh=f1/+g6RzRmHsBpgyUITjf068nJRrBDTAxMPmBq2MJ/w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rvGuClsMJi8Rp5M0RmlNKoW4ESnGgHPbSrZJoPtoYSDaSmDo5+swAXK28qxLyyiZH
-	 mKe0G9ToslSNeZIImr+2HbQVjZMejq1eR69llSY24KIH8Kod1+Ingn/g+3bRRTAMni
-	 7bPa28aQrqF3pQJzNHCU9lPqf4Egb4RvxuKrVH+m6iht67yhELWkZcfad5182D3qqn
-	 5MsF+3YAWmm5mMUb1qIaJy3dtzrHgK63MFnFJ85LpBym5CvLy7jTPnxfBHiDhUI+Nt
-	 k7X+Ol9GVwBYzfzog+bGwG/42nVgRd65OuhvDGSsCJ75Zve3PL0URTdVgXmK2JPaPb
-	 BHdJLxs9jNFTA==
-Message-ID: <b354d11e-9031-47f1-8a23-bbd14ea3d5dd@kernel.org>
-Date: Wed, 26 Jun 2024 11:26:18 +0200
+	b=fsdaQ1TVNFoqAUNalY6JH06C+UyC/QRbS5PzeR1mYQfs58TWV8ITssRoQ95GdNQU/
+	 JkhRIjzu+IOrQF9cvdRFk+K2yjzJ8oyMrU2YV1J8fIi2dpp5MfEFeseT96jKauj5HY
+	 79CxtciGiSp+vFGrKml/D+/AS9mF6K64cxMFl7+EcVRQvg4m3OF999QdqWI/a3GEXk
+	 29SQgnk6gREw8KKJ+qvcZarlCkh3g2P0dM3Ki3+/gs01D9552odlpwy1LrZjoyH6kE
+	 BUei/w9PWuucjlOAKOcLDSzaNXTDWKGiuYqde+BmXrmDmnLNBzE1aOImBbhgcWzV7z
+	 xRPBcnHOPuOYw==
+Message-ID: <549edfff-24a5-403f-b35e-8929cc14c81f@kernel.org>
+Date: Wed, 26 Jun 2024 11:34:50 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,16 +35,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: usb: Convert fsl-usb to yaml
-To: Frank Li <Frank.Li@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240625022541.2007010-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/3] ASoC: dt-bindings: fsl,xcvr: Adjust the number of
+ interrupts
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <1719291415-1168-1-git-send-email-shengjiu.wang@nxp.com>
+ <1719291415-1168-2-git-send-email-shengjiu.wang@nxp.com>
+ <293fb3d5-9b77-4321-8b31-d060cf96565d@kernel.org>
+ <CAA+D8AMQv_=X3hC5uQbrDBN0EGo3U6EToGFVjUYcOVHpf5b=aQ@mail.gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -90,112 +93,63 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240625022541.2007010-1-Frank.Li@nxp.com>
+In-Reply-To: <CAA+D8AMQv_=X3hC5uQbrDBN0EGo3U6EToGFVjUYcOVHpf5b=aQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 25/06/2024 04:25, Frank Li wrote:
-> Convert fsl-usb binding doc to yaml format.
+On 26/06/2024 11:25, Shengjiu Wang wrote:
+> On Wed, Jun 26, 2024 at 5:23 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>> On 25/06/2024 06:56, Shengjiu Wang wrote:
+>>> On i.MX8MP, there are 3 interrupts, the third interrupt is
+>>> SPDIF wakeup interrupt from PHY
+>>>
+>>> Add ref: dai-common.yaml for #sound-dai-cells is needed and
+>>> XCVR is a DAI device.
+>>>
+>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/sound/fsl,xcvr.yaml | 6 ++++--
+>>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+>>> index 197ae8ba9c30..7470866e11c6 100644
+>>> --- a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+>>> +++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+>>> @@ -42,6 +42,7 @@ properties:
+>>>      items:
+>>>        - description: WAKEUPMIX Audio XCVR Interrupt 1
+>>>        - description: WAKEUPMIX Audio XCVR Interrupt 2
+>>> +      - description: SPDIF wakeup interrupt from PHY
+>>>      minItems: 1
+>>>
+>>>    clocks:
+>>> @@ -88,6 +89,7 @@ required:
+>>>    - dma-names
+>>>
+>>>  allOf:
+>>> +  - $ref: dai-common.yaml#
+>>>    - if:
+>>>        properties:
+>>>          compatible:
+>>> @@ -112,7 +114,7 @@ allOf:
+>>>      else:
+>>>        properties:
+>>>          interrupts:
+>>> -          maxItems: 1
+>>> +          maxItems: 3
+>>
+>> I have doubts this was tested. The existing example should fail,
+>> although I did not see any reports. Not sure why.
 > 
-> Additional change:
+> it is tested, because the minItems is 1. so the example can pass
+> 
 
+That's a very unexpected change in dtschema. It indeed passes, but is
+not correct. Why interrupts are flexible? This should be constrained.
+Let's wait for Rob's confirmation that this is not a bug in dtschema.
 
-> -	usb@4000 {
-> -		compatible = "fsl,mpc5121-usb2-dr";
-> -		reg = <0x4000 0x1000>;
-> -		#address-cells = <1>;
-> -		#size-cells = <0>;
-> -		interrupt-parent = < &ipic >;
-> -		interrupts = <44 0x8>;
-> -		dr_mode = "otg";
-> -		phy_type = "utmi_wide";
-> -		fsl,invert-drvvbus;
-> -		fsl,invert-pwr-fault;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/usb/fsl-usb.yaml b/Documentation/devicetree/bindings/usb/fsl-usb.yaml
-> new file mode 100644
-> index 0000000000000..8b5724e213f09
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/usb/fsl-usb.yaml
-
-fsl,usb.yaml
-or: fsl,usb2.yaml
-
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +  The device node for a USB controller that is part of a Freescale
-> +  SOC is as described in the document "Open Firmware Recommended
-> +  Practice: Universal Serial Bus" with the following modifications
-> +  and additions.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
-> +          - fsl-usb2-mph
-> +          - fsl-usb2-dr
-> +          - fsl-usb2-dr-v2.2
-
-It cannot be standalone and not-standalone. Cannot be both. Choose one.
-
-> +      - items:
-> +          - enum:
-> +              - fsl-usb2-dr-v2.2
-> +              - fsl-usb2-dr-v2.5
-> +          - const: fsl-usb2-dr
-> +
-> +  phy_type:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [ulpi, serial, utmi, utmi_wide]
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  port0:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      Indicates port0 is connected for fsl-usb2-mph compatible controllers.
-> +
-> +  port1:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      Indicates port1 is connected for "fsl-usb2-mph" compatible controllers.
-> +
-> +  fsl,invert-drvvbus:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      for MPC5121 USB0 only. Indicates the
-> +      port power polarity of internal PHY signal DRVVBUS is inverted.
-> +
-> +  fsl,invert-pwr-fault:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      for MPC5121 USB0 only. Indicates
-> +      the PWR_FAULT signal polarity is inverted.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - phy_type
-
-Keep the same order as in "properties:". Preferably this order, so
-adjust "properties:" to match "required:".
-
-> +
-> +allOf:
-> +  - $ref: usb-drd.yaml#
-> +
-
+Anyway, update example to be complete in next version.
 
 Best regards,
 Krzysztof
