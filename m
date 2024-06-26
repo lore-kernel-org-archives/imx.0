@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A4E1D699;
-	Wed, 26 Jun 2024 08:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50224149C4E;
+	Wed, 26 Jun 2024 08:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719389881; cv=none; b=uc8XGq8I3VH/mgFoiW4JKM5h2Yv7bRjEoErmTUk7H06lMPvMcgo2clUAaCqx6R0EG+HBWeyyIo/3/SWn7KKiUJLpxBQEqebHy/424I9oN+TrLcbX0Nz3ZD3M4Sc9K2xHnt3E2sD5/8CE9AqJ+dB4MnTtOL0d5dl84o5iEDgsCQQ=
+	t=1719390004; cv=none; b=teqjwoZRF7t9obGvi9n4FnhFfPeTalSDZf48i9ooFUk5C+X5vJRSxDteyupUQTrcNKXqwYI32A0NkIZUyBDNf5pDYlhhGAJe5Q1beg0Kf6EBVCBQkGgkULTpUiSEQiOmfB04JdF8pqEz6PJalh107BJc7UchgenJ+c5wXTCkSTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719389881; c=relaxed/simple;
-	bh=n6LQpTZniLWj96fcVDYP880SPoRh9yDjthbIkIjvARQ=;
+	s=arc-20240116; t=1719390004; c=relaxed/simple;
+	bh=j/ywYji9fCX+Xr7Rt0OjtBLx1A3Se9EU1/A/Czg1tgU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RP0BPfHOwALI+2ln+rnWykagmMOMLgzcUeCrUfc8xrtrgR/5/22cGuDLvIplJCHoqwDQ6JBhnmU3bqqxlC5o0KvuZ9JLLdnMuBHZJtMOhzbSeV6m7t5k3oxdJiKnwOZ8W7RUl3NuD6GPEMcCRWT3p7BT9FMUhjRXQNCpmb/drRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izV3PQ1V; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=RLoXV27cIEwcDbq8SFtoKBcL7Djc7augLa2MoaDQviKQ8LToYPY3PSUw87NEcX84UhGAp7G+QHZWoHXSodbRIjUfTxt8ZkeZuEFpra4UiHisRGf5nXm0Z8NBnB7GdoFDUmZ+rLlCBP4Y3S2D59Td1L3ovQ4HPrtcTxalEZokK5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUS4sgYY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izV3PQ1V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5997BC2BD10;
-	Wed, 26 Jun 2024 08:17:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUS4sgYY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E53C32789;
+	Wed, 26 Jun 2024 08:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719389880;
-	bh=n6LQpTZniLWj96fcVDYP880SPoRh9yDjthbIkIjvARQ=;
+	s=k20201202; t=1719390003;
+	bh=j/ywYji9fCX+Xr7Rt0OjtBLx1A3Se9EU1/A/Czg1tgU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=izV3PQ1Vu227dyoe74lzMQ3nOLACDoJw72OZcuNZWtmGUgBupMYRlVi3KbFUm52t6
-	 48u9O/g0V8fPA2FXfbFe5YMJ2irBYCZxPTFh3shjbN9iJEa7EkVUFeYxUpVSV0Uzd3
-	 eYTg+jSyvcDseYC8bS6NAzoPWHdYp4BbYng0qjUIOOrBg/oXNMoEaNQK2kJw6tS9cd
-	 T+hYTqBLbmfQYJnWcs2zyEnXkKRIu+qrOGja457PuVb+o6yzO4rL06B7jbtYFGaaYn
-	 snLhzmz9ugJ8gNN2lFeihJNjlzoeH08dLOJjxGTRTFTNghToZnZ+vqBkMxYU3xMvfm
-	 PxsOBSq+QZVxA==
-Message-ID: <327d6dd1-3f31-4b49-96f0-afd754eae086@kernel.org>
-Date: Wed, 26 Jun 2024 10:17:55 +0200
+	b=MUS4sgYYHp8UscBOZXPT9JY4x5dSd/6GsIb6snpPIJL6tcBNpcYuf/1SS1VeKMQod
+	 72V6Q0yzNFJ2uBxHGkprxG/REtg+AqgOwdqrmF6EKBRf0zzGGImkwd/f2ayO+gip45
+	 BWqE4xDiEGxUoDVo5C0tD0ZoDt2DU2BQZXg4WZivh3IoSFz4OvLD6KiREQmfL4LyV3
+	 4bXjTdHzSHQV0b68C4Ly1EBHq98sXhpeKkp8wtHVuJ8BI2aeZu3/Ky8GYO/pEhhSYb
+	 Juv98fh6WSz9HgFM+GWWG/msYbqXMm2OAq4WmqPcQ6H0Es1Yq8ZHUoolgRdg54Yt8U
+	 pJV/AgPqAI9gA==
+Message-ID: <12853a72-190f-4aeb-9a2f-4fdc42c9e4df@kernel.org>
+Date: Wed, 26 Jun 2024 10:19:56 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,18 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: ata: ahci-fsl-qoriq: add
- fsl,ls1046a-ahci and fsl,ls1012a-ahci
-To: Frank Li <Frank.Li@nxp.com>, Damien Le Moal <dlemoal@kernel.org>,
- Niklas Cassel <cassel@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)"
- <linux-ide@vger.kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: can: fsl,flexcan: add can-transceiver
+ for fsl,flexcan
+To: Frank Li <Frank.Li@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20240625205752.4007067-1-Frank.Li@nxp.com>
+References: <20240625203145.3962165-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,50 +94,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240625205752.4007067-1-Frank.Li@nxp.com>
+In-Reply-To: <20240625203145.3962165-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 25/06/2024 22:57, Frank Li wrote:
-> Add compatible string 'fsl,ls1046a-ahci' and 'fsl,ls1012a-ahci' compatible
-> string. Allow 'fsl,ls1012a-ahci' fallback to 'fsl,ls1043a-ahci'.
-> 
-> ls1046a ahci ecc disable bit is difference with other chips.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/ata/fsl,ahci.yaml     | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> index 162b3bb5427ed..a244bc603549d 100644
-> --- a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> +++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> @@ -11,13 +11,18 @@ maintainers:
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - fsl,ls1021a-ahci
-> -      - fsl,ls1043a-ahci
-> -      - fsl,ls1028a-ahci
-> -      - fsl,ls1088a-ahci
-> -      - fsl,ls2080a-ahci
-> -      - fsl,lx2160a-ahci
-> +    oneOf:
-> +      - items:
-> +          - const: fsl,ls1012a-ahci
-> +          - const: fsl,ls1043a-ahci
-> +      - enum:
-> +          - fsl,ls1021a-ahci
-> +          - fsl,ls1043a-ahci
-> +          - fsl,ls1046a-ahci
+On 25/06/2024 22:31, Frank Li wrote:
+> Add 'can-transceiver' children node for fsl,flexcan to allow update
+> can-transceiver property.
 
-Where is the driver change for this?
+I don't understand.  Who and how updates can-transceiver property? What
+is can-transceiver property (I assume you speak about something
+different than child node)?
 
-Your commit does not explain why you are doing it and without driver
-change adding new support it is not obvious. This probably applies to
-all your patches.
 
 Best regards,
 Krzysztof
