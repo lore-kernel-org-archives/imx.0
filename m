@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB5A166304;
-	Wed, 26 Jun 2024 08:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89FF13B78F;
+	Wed, 26 Jun 2024 08:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719390285; cv=none; b=gzHITFQjG1SZye+0vGxKHzCyCHfs4EMzlGQXDiVdHJFRdFjlLN15SL+6k2tCNabXErGvwPDy9EOtvFgJvf/z3Fx/Ak2P1dSDlFBH1Afrt9jFs/AYZuZF9KNoB6PQ58pwh3gI76M6BRdazrRsOniZv9Pjz3CbgRNFygndusr8CEU=
+	t=1719390512; cv=none; b=mlY3+94zjZ0pstcoEnTuxW7FeddtFK9oh6j4uD7gpV+E4VCrGwS9PrI2fr/duO+JwodhyvASVba7DMcMyCDMbpyZKf2zVob+5ZhibozM1ynH7GRa9/Emap0PTKnXs/bMxdYgmxyRjbd/QwUe7vMzaH3+ysJHooNMtSbUjHCZcyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719390285; c=relaxed/simple;
-	bh=Pdr8Rjiwz8TRtPy9SYdKH4mQx2KSlVG9IqwB5bOTorw=;
+	s=arc-20240116; t=1719390512; c=relaxed/simple;
+	bh=9OBPMRm3bsdOPGQi4XJXnFXKJgtV2ORPTt6XgHICQ8w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ma9Sd2SlHYEj7/IpHxvmzIAysDYIUHBuQxVCx6AOMy7q9QbIurxLhdk052ngjmulOqV1GVNTOilg3Tr47QB+WqkhdY9JVutk2zhFAieGIXDotFg1kiPKBs0mh7q+/VSFg/qff6pzuNenW4s+/5x/csIz39hvsC+BauITx6ZhcXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcLHQOKc; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Xdbe/xLOOiuNCm3n6ecomHDkT2fSSu4TSB5MivkSK1Q0H+rgqg2lTKJkOYNOgAYimDu4aKfiOTZUWDenqR9SCxPxLS77tNAr4QBNXCAE4LvvTN9xlJIjOdYY/hcJL4EbahajUidZI9DgoM6SQK8CaCBJ6HAr7/48eUm1Wzcztyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bz39Wh8J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcLHQOKc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B5AC4AF09;
-	Wed, 26 Jun 2024 08:24:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bz39Wh8J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFA3C2BD10;
+	Wed, 26 Jun 2024 08:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719390284;
-	bh=Pdr8Rjiwz8TRtPy9SYdKH4mQx2KSlVG9IqwB5bOTorw=;
+	s=k20201202; t=1719390512;
+	bh=9OBPMRm3bsdOPGQi4XJXnFXKJgtV2ORPTt6XgHICQ8w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RcLHQOKcvCWhWZ8nRuOAQVvJ3GQXNUGHd201s1uTKr+dpX/+8uuXDMmCpL44ByoYw
-	 yHbeuQEzelvqB/WX9mrgpokXOcBAUO87PT04mm9UM7ce/drwKCr+Vzr2cC8mcfoLfu
-	 Io0Xp/uVwkGA3E/YgQDFgkfSeWteTpRbsz9hof2aKbrdKnnlez5rPV5kB3A5XtlZhT
-	 28vxWmyPbw9WGaxGDAzSwPuIpjXNYzis+5C1RaM0QdmDe0Q+5eoR6lzdbdWgKOC2HE
-	 NKWeWq5jI2eLk7fOpG2piQSay38Z96F9zH88CF18OxpEZULKAGFssk89ETaoMbbA94
-	 4FAm07iWIbTlg==
-Message-ID: <171cb592-1f5b-414d-bee2-ece87931f6cb@kernel.org>
-Date: Wed, 26 Jun 2024 10:24:38 +0200
+	b=Bz39Wh8JZA/GM8Za+PnsL2LJnv7HFR5l7Hs/GmZDG9e9zqT3jI30PcRHNOaYP+sDF
+	 LVXAdtbPHxGJz9GnjmvZkRbosrWiM+wFneND/+jmi9Ulvfj5dMSzvbPDPn44yipHg6
+	 loxAkhKRXQkxE6/QpxJqcS8UAGK+qnz6uZ+cOJnF9Gc4BOph6d8sgL5lbx6invt4be
+	 3VdiOCZGjIpMXTLyD9zDAolCgzdQ/Q9zJ3YWwxOJaQrDMaw/y/kReo/jHiBWoulC2I
+	 E+sVAUllCIHYjmnUv4V8Eh4FhzHcB0WkJ0K8rCR7D+ABa9kT0DH4N9meOxOfXtR9OH
+	 GNtowTfFmAjEA==
+Message-ID: <8c820056-ff20-441a-af7f-17d184c0b396@kernel.org>
+Date: Wed, 26 Jun 2024 10:28:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,17 +35,16 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: net: convert enetc to yaml
-To: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "open list:NETWORKING DRIVERS"
- <netdev@vger.kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: interrupt-controller: convert
+ fsl,ls-scfg-msi to yaml
+To: Frank Li <Frank.Li@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+ <devicetree@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20240625202255.3946515-1-Frank.Li@nxp.com>
+References: <20240625201028.3923845-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,272 +90,79 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240625202255.3946515-1-Frank.Li@nxp.com>
+In-Reply-To: <20240625201028.3923845-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 25/06/2024 22:22, Frank Li wrote:
-> Convert enetc device binding file to yaml. Split to 3 yaml files,
-> fsl-enetc.yaml, fsl-enetc-mdio.yaml, fsl-enetc-ierb.yaml.
+On 25/06/2024 22:10, Frank Li wrote:
+> Convert device tree binding fsl,ls-scfg-msi to yaml format.
 > 
-> Additional Changes:
-> - Add pci<vendor id>,<production id> in compatible string.
-> - Ref to common ethernet-controller.yaml and mdio.yaml.
-> - Remove fixed-link part.
+> Additional changes:
+> - Include gic.h and use predefined macro in example.
+> - Remove label in example.
+> - Change node name to interrupt-controller in example.
+> - Fix error in example.
+> - ls1046a allow 4 irqs, other platform only 1 irq.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/net/fsl-enetc-ierb.yaml          |  35 ++++++
->  .../bindings/net/fsl-enetc-mdio.yaml          |  46 +++++++
->  .../devicetree/bindings/net/fsl-enetc.txt     | 119 ------------------
->  .../devicetree/bindings/net/fsl-enetc.yaml    |  43 +++++++
->  4 files changed, 124 insertions(+), 119 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/fsl-enetc-ierb.yaml
->  create mode 100644 Documentation/devicetree/bindings/net/fsl-enetc-mdio.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.txt
->  create mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.yaml
 
-Filename matching compatible, so vendor prefixes+coma+device name.
 
-> 
-> diff --git a/Documentation/devicetree/bindings/net/fsl-enetc-ierb.yaml b/Documentation/devicetree/bindings/net/fsl-enetc-ierb.yaml
-> new file mode 100644
-> index 0000000000000..bb083b2f8f399
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/fsl-enetc-ierb.yaml
-> @@ -0,0 +1,35 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/fsl-enetc-ierb.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Integrated Endpoint Register Block
-> +
-> +description:
-> +  The fsl_enetc driver can probe on the Integrated Endpoint Register
-> +  Block, which preconfigures the FIFO limits for the ENETC ports.
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - fsl,ls1028a-enetc-ierb
+> +      - fsl,ls1021a-msi
+> +      - fsl,ls1043a-msi
+> +      - fsl,ls1046a-msi
+> +      - fsl,ls1043a-v1.1-msi
+> +      - fsl,ls1012a-msi
+
+Keep the list ordered alpha-numerically.
+
 > +
 > +  reg:
 > +    maxItems: 1
 > +
+> +  msi-controller: true
+
+No msi-cells?
+
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 4
+
+Please describe the interrupts (items: - description: ...)
+
+> +
 > +required:
 > +  - compatible
 > +  - reg
+> +  - msi-controller
+> +  - interrupts
 > +
 > +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    ierb@1f0800000 {
-> +        compatible = "fsl,ls1028a-enetc-ierb";
-> +        reg = <0xf0800000 0x10000>;
-> +    };
-> diff --git a/Documentation/devicetree/bindings/net/fsl-enetc-mdio.yaml b/Documentation/devicetree/bindings/net/fsl-enetc-mdio.yaml
-> new file mode 100644
-> index 0000000000000..e8d0d4aa1112f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/fsl-enetc-mdio.yaml
-> @@ -0,0 +1,46 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/fsl-enetc-mdio.yaml#
 
-fsl,enetc-mdio.yaml
+This goes after allOf: block.
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ENETC the central MDIO PCIe endpoint device
-> +
-> +description:
-> +  In this case, the mdio node should be defined as another PCIe
-> +  endpoint node, at the same level with the ENETC port nodes
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - pci1957,ee01
-> +      - const: fsl,enetc-mdio
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
 > +
 > +allOf:
-> +  - $ref: mdio.yaml
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    mdio@0,3 {
-> +        compatible = "pci1957,ee01", "fsl,enetc-mdio";
-> +        reg = <0x000300 0>;
 
-The ranges do not match unit address, at least for simple case of
-address/size-cells=1. Looks like this should be enclosed in pci {} node
-and then with proper ranges. Otherwise it is a bit confusing.
+No $ref to msi-controller.yaml?
 
-
-> diff --git a/Documentation/devicetree/bindings/net/fsl-enetc.txt b/Documentation/devicetree/bindings/net/fsl-enetc.txt
-> deleted file mode 100644
-> index 9b9a3f197e2d3..0000000000000
-> --- a/Documentation/devicetree/bindings/net/fsl-enetc.txt
-> +++ /dev/null
-> @@ -1,119 +0,0 @@
-> -* ENETC ethernet device tree bindings
-> -
-> -Depending on board design and ENETC port type (internal or
-> -external) there are two supported link modes specified by
-> -below device tree bindings.
-> -
-> -Required properties:
-> -
-> -- reg		: Specifies PCIe Device Number and Function
-> -		  Number of the ENETC endpoint device, according
-> -		  to parent node bindings.
-> -- compatible	: Should be "fsl,enetc".
-> -
-> -1. The ENETC external port is connected to a MDIO configurable phy
-> -
-> -1.1. Using the local ENETC Port MDIO interface
-> -
-> -In this case, the ENETC node should include a "mdio" sub-node
-> -that in turn should contain the "ethernet-phy" node describing the
-> -external phy.  Below properties are required, their bindings
-> -already defined in Documentation/devicetree/bindings/net/ethernet.txt or
-> -Documentation/devicetree/bindings/net/phy.txt.
-> -
-> -Required:
-> -
-> -- phy-handle		: Phandle to a PHY on the MDIO bus.
-> -			  Defined in ethernet.txt.
-> -
-> -- phy-connection-type	: Defined in ethernet.txt.
-> -
-> -- mdio			: "mdio" node, defined in mdio.txt.
-> -
-> -- ethernet-phy		: "ethernet-phy" node, defined in phy.txt.
-> -
-> -Example:
-> -
-> -	ethernet@0,0 {
-> -		compatible = "fsl,enetc";
-> -		reg = <0x000000 0 0 0 0>;
-> -		phy-handle = <&sgmii_phy0>;
-> -		phy-connection-type = "sgmii";
-> -
-> -		mdio {
-> -			#address-cells = <1>;
-> -			#size-cells = <0>;
-> -			sgmii_phy0: ethernet-phy@2 {
-> -				reg = <0x2>;
-> -			};
-> -		};
-> -	};
-> -
-> -1.2. Using the central MDIO PCIe endpoint device
-> -
-> -In this case, the mdio node should be defined as another PCIe
-> -endpoint node, at the same level with the ENETC port nodes.
-> -
-> -Required properties:
-> -
-> -- reg		: Specifies PCIe Device Number and Function
-> -		  Number of the ENETC endpoint device, according
-> -		  to parent node bindings.
-> -- compatible	: Should be "fsl,enetc-mdio".
-> -
-> -The remaining required mdio bus properties are standard, their bindings
-> -already defined in Documentation/devicetree/bindings/net/mdio.txt.
-> -
-> -Example:
-> -
-> -	ethernet@0,0 {
-> -		compatible = "fsl,enetc";
-> -		reg = <0x000000 0 0 0 0>;
-> -		phy-handle = <&sgmii_phy0>;
-> -		phy-connection-type = "sgmii";
-> -	};
-> -
-> -	mdio@0,3 {
-> -		compatible = "fsl,enetc-mdio";
-> -		reg = <0x000300 0 0 0 0>;
-> -		#address-cells = <1>;
-> -		#size-cells = <0>;
-> -		sgmii_phy0: ethernet-phy@2 {
-> -			reg = <0x2>;
-> -		};
-> -	};
-> -
-> -2. The ENETC port is an internal port or has a fixed-link external
-> -connection
-> -
-> -In this case, the ENETC port node defines a fixed link connection,
-> -as specified by Documentation/devicetree/bindings/net/fixed-link.txt.
-> -
-> -Required:
-> -
-> -- fixed-link	: "fixed-link" node, defined in "fixed-link.txt".
-> -
-> -Example:
-> -	ethernet@0,2 {
-> -		compatible = "fsl,enetc";
-> -		reg = <0x000200 0 0 0 0>;
-> -		fixed-link {
-> -			speed = <1000>;
-> -			full-duplex;
-> -		};
-> -	};
-> -
-> -* Integrated Endpoint Register Block bindings
-> -
-> -Optionally, the fsl_enetc driver can probe on the Integrated Endpoint Register
-> -Block, which preconfigures the FIFO limits for the ENETC ports. This is a node
-> -with the following properties:
-> -
-> -- reg		: Specifies the address in the SoC memory space.
-> -- compatible	: Must be "fsl,ls1028a-enetc-ierb".
-> -
-> -Example:
-> -	ierb@1f0800000 {
-> -		compatible = "fsl,ls1028a-enetc-ierb";
-> -		reg = <0x01 0xf0800000 0x0 0x10000>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/net/fsl-enetc.yaml b/Documentation/devicetree/bindings/net/fsl-enetc.yaml
-> new file mode 100644
-> index 0000000000000..e60b375395fcc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/fsl-enetc.yaml
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/fsl-enetc.yaml#
-
-fsl,enetc.yaml
-
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ENETC ethernet
-
-
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,ls1046a-msi
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          minItems: 4
+> +    else:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 1
 Best regards,
 Krzysztof
 
