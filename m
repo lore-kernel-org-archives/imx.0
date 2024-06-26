@@ -1,126 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA5D190461;
-	Wed, 26 Jun 2024 17:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDA019047A
+	for <imx@lists.linux.dev>; Wed, 26 Jun 2024 18:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719424559; cv=none; b=QslqlSdGUGFtuI7Z/W20XG6AS2WYEdzhzsTwoyYSX46B/APRpJQXP7g1Y2RXNAIRMS2K5KwJPxZiR28nvYIGHb7vGWqCvB4t7ncDkcagVvnTq5mx+oKgGdogPelduH/Pr6O5FGeayT8fevkd6UUQiHuRj7Cf+nvpKuBoeKt2BSY=
+	t=1719427141; cv=none; b=mRG+i0ANlT/2MYm+MpRI8RIQT1qVEX8XVGsUhKASFcGMeqk8k8fHry1GN8xxAPaywvEJjZHvH9lo90JxxrCH6bODiC/ExgoRDEliTOnSqptUa+n1sIanDLDOIAWLMl2ADy4SDMc0AmSBSD146y+jfGFfyVuGIotVcNN0HMkKipQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719424559; c=relaxed/simple;
-	bh=/nn9cXzOLqdpmvpMkRXeiT4dOqNiKFz+DhAQVxCofeA=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=fJvZC4R0TZk0OGAky/jN+ljabcNowOcM7hjvexRr+qx98fmc9+Gaoc6s0qVySmLmREGpauO2TFONTYJuxq6S0FkA+neqFWTtZ7UOtxfBzIItmkYFh89EPZGSPzwEzs27J2pNlxAzfPdOHrZMzH8tVfJLG7wlhLxSYkjuRwOZoyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fd95CG1f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719427141; c=relaxed/simple;
+	bh=8RC4RoOdepfw+QoKH1SDT3cAhXv1FTN2Q/e15hP70WA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d0OfY82goySwkfBpUX9Uhhxq1B7Vw74HBo+euuJPE15wWInhXkbGh5EjZunLCJIwbil5v9yVAnHNHEmdkNrnbgJOFqmB7aywm5fmY67QQTrtBTsgMIhY7E5i5SHqREc8MwUNQsJzBZvZ8z49jD09zUoHFiumbVTOc4GIgFJ/XcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XpFJ/2+x; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fd95CG1f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98507C116B1;
-	Wed, 26 Jun 2024 17:55:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719424558;
-	bh=/nn9cXzOLqdpmvpMkRXeiT4dOqNiKFz+DhAQVxCofeA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=fd95CG1fxVYNa+qAXFNsD6e8Nr9YO9Tqe/f5xGi4hvJIBewDKCPFbpZzID5W4p0qQ
-	 vgT3iR2c16aU7u+6e9p7eA9tUj9T3/osuDUTewfXw8BQr8Ci5NdT6baVbzknnKNRKk
-	 4xsKCHWxcF01jIw9NIJ70jSne1fdXHIsEiNHRnOLdfABvrE2At9FcrxAu/hLzs8Zr+
-	 uimtaFqGIcVFzwKTBuUW6uBZr1fdHvotEtV2/xf6zlgrDgS7kyRPgtKrlc99hjz05N
-	 6yM9dQZRtnRDoIZKzVFPZX8fJdPY/9znKVkOj2/QpvJzdnWVM4aQyWLPlcIau9XRtw
-	 V89A5qUWYfHHA==
-Date: Wed, 26 Jun 2024 11:55:57 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XpFJ/2+x"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1f9c4ec8e04so3239785ad.3
+        for <imx@lists.linux.dev>; Wed, 26 Jun 2024 11:39:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719427140; x=1720031940; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PlrWYffJsTAsz9VBvDLLrbP/qPvWI/3vn63/l/yn9OM=;
+        b=XpFJ/2+xrWyzOAD6+TcnJHRxu/+h/D42bEoDd9HzxhIOz7kugoAXLmQ8ipYPANvuZ1
+         PPPMvcmSCAYCvuubMkwu78zE5n1cYLO5XsG6oVeFAFsLMPD7qRwLNJ2lculTuPggzHos
+         XKEUEpiQMCPKczoJIfINkZxkZQnWw7X/Vd16R7xcO/FcYKsPt3o/u17YGtRHNnaDpVeT
+         ieYFvD9C8hW6zSDJUd7UTuOWGatLBGo3Z8yOi6vsx91XTmLXCPAgFkBO8w/0Iuss4emS
+         JvdgJ3GIna5+zcG/nCVS/x+dfv57pei7T8cPa/l+XSEFlARrSI1LtAJByu6v4ejGsScq
+         Vdcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719427140; x=1720031940;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PlrWYffJsTAsz9VBvDLLrbP/qPvWI/3vn63/l/yn9OM=;
+        b=gw4GOLCKlyF75AymZHgHoKpUWyKe23QqCU7NJ4o5n51nXRKScKorTRqu0X86yzBf6/
+         bTnac9E1pbtjNN+ZqJCKHS/TXRBEStb9kUSu52mBH+4lC9/8zbc6hsRgfYYzXN2BZuD4
+         4gpAxNmStOJP2fcuE/tBmR7mzxpiMeH0txhTNGBAWJqs1HAp6sj93per+383bNzrIaGp
+         Mog0REzCaodYSnDx4uNmqpZEGqqzVHOY/exoiqLGcVc6EobkzeAN7AeQui5MQ3JuWE2+
+         3NS1pT81CUwI6/17CG8WRmqRF2r1TXM+hOo/oSS+vmW82qqu5fnNVVxolo08dzpHMX67
+         Tx0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWoksHw9v2EfluRwI/2jQyTdBA091smW7/v0zBuuxqAXZ/dH0o1A517alQmRQ8+Fn5OfKfLyspwXFkTrSK/It0LzRdV
+X-Gm-Message-State: AOJu0YwjI/7sxZhDmvGhIGXTrwZ4nDCO8MaLPVhsmbzX4F0nhk/kS8YL
+	PVz4y45IIlcgwxia+c7BVCgCeuFHKCv02/MuIimqhZNeRvBDiZ6xf1P/cEXs3C7WFvtXDRM2YVN
+	88nXUve19ulkmXTp6qPPpSDAu1Ok=
+X-Google-Smtp-Source: AGHT+IGzh7OgcwAD1W7O2ToIpYiNPYaELd/OyNMBI7wyg0Qn9LTacpa85jfZ+S1NzS3Y42emCNPSM0U7vxCnFynye4k=
+X-Received: by 2002:a17:90a:fa96:b0:2c7:dfb6:dbe9 with SMTP id
+ 98e67ed59e1d1-2c84298b2demr12120553a91.4.1719427139827; Wed, 26 Jun 2024
+ 11:38:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev, pabeni@redhat.com, krzk@kernel.org, 
- krzk+dt@kernel.org, kuba@kernel.org, edumazet@google.com, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, conor+dt@kernel.org, 
- devicetree@vger.kernel.org, davem@davemloft.net
-In-Reply-To: <20240626162307.1748759-1-Frank.Li@nxp.com>
 References: <20240626162307.1748759-1-Frank.Li@nxp.com>
-Message-Id: <171942455738.3889614.10016713539480187733.robh@kernel.org>
+In-Reply-To: <20240626162307.1748759-1-Frank.Li@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 26 Jun 2024 15:38:48 -0300
+Message-ID: <CAOMZO5CQHMzhvP9KqPahWdeVjBvqk758uY6wMzVO4oPrt=pECQ@mail.gmail.com>
 Subject: Re: [PATCH v2 1/1] dt-bindings: net: convert enetc to yaml
+To: Frank Li <Frank.Li@nxp.com>
+Cc: krzk@kernel.org, conor+dt@kernel.org, davem@davemloft.net, 
+	devicetree@vger.kernel.org, edumazet@google.com, imx@lists.linux.dev, 
+	krzk+dt@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, robh@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jun 26, 2024 at 1:25=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
 
-On Wed, 26 Jun 2024 12:23:07 -0400, Frank Li wrote:
-> Convert enetc device binding file to yaml. Split to 3 yaml files,
-> 'fsl,enetc.yaml', 'fsl,enetc-mdio.yaml', 'fsl,enetc-ierb.yaml'.
-> 
-> Additional Changes:
-> - Add pci<vendor id>,<production id> in compatible string.
-> - Ref to common ethernet-controller.yaml and mdio.yaml.
-> - Remove fixed-link part.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change from v1 to v2
-> - renamee file as fsl,enetc-mdio.yaml, fsl,enetc-ierb.yaml, fsl,enetc.yaml
-> - example include pcie node
-> ---
->  .../bindings/net/fsl,enetc-ierb.yaml          |  35 ++++++
->  .../bindings/net/fsl,enetc-mdio.yaml          |  53 ++++++++
->  .../devicetree/bindings/net/fsl,enetc.yaml    |  50 ++++++++
->  .../devicetree/bindings/net/fsl-enetc.txt     | 119 ------------------
->  4 files changed, 138 insertions(+), 119 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
->  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
->  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.txt
-> 
+> +examples:
+> +  - |
+> +    ierb@1f0800000 {
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: 'device_type' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: reg: [[1, 4026531840], [0, 1048576]] is too long
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'mdio@0,3' were unexpected)
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: 'device_type' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc-mdio.example.dtb: pcie@1f0000000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: 'device_type' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: reg: [[1, 4026531840], [0, 1048576]] is too long
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'ethernet@0,0' were unexpected)
-	from schema $id: http://devicetree.org/schemas/pci/host-generic-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: 'device_type' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: pcie@1f0000000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240626162307.1748759-1-Frank.Li@nxp.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Node names should be generic.
