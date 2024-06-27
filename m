@@ -1,80 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEBA198A27;
-	Thu, 27 Jun 2024 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D7814EC40;
+	Thu, 27 Jun 2024 15:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719501311; cv=none; b=ggMY+v6J0dt/IwkO6o1QDELM3LHNFUglWMnHqh2ETgvNc+BY/iU4XiAkyK5Ti8iSNJuchmEA0k71Ymi/Xt9jh59qZzlMAkyVwKPVKFStSZQJX1NMZlPPtYE9RYlohESD5KSE8qjdmLfn69pWvYCjxjmt/XSYfDFXQ+HgC4ATC2Y=
+	t=1719503061; cv=none; b=rPnL+VxS/CPQdVIwpXl+fu0Ih5+sLk9TSYOMG4O6CNYhKVwxtGYc4lpyn+oOocjJDaVWz7vdypf6n+ap5arbT0xMTkocvz8t0jlNsAPlcLgr3TF96PQudjwR3T4ZfRqpNNFGfR9TBlkr8KcQZdNbw1SCH2BTxaLQpJxF+nH1xJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719501311; c=relaxed/simple;
-	bh=T6OmF/ctekeGX1Zyt8oH+D/SesyRhu4JpmwzDB/BBaE=;
+	s=arc-20240116; t=1719503061; c=relaxed/simple;
+	bh=44QTkuqqMo5CcFcIhnkykddrBuRQgTixooInaW7qoQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JFTpd2gNDVzy544rLwPyhobSNzIQgddQ0LLvJ8BAOMG0khMc0xlPHe7UrsrGFhx/9lpkuaPVEbiBct2snSWj9bSuNweP6bWaa9lvwlQcqEC9J5mB5b2VCQBEJhy19aIyXsMQhiz3Nz6oI3cmYNRxx3eOEB5KxYZNPEZmtufuO3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujNF5EcT; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=exd7c9A/2n9l6T/RI1Iln5joGvuP6makyNjGGspNHwKXvJZDTYMPQWk6weH4r2FU1Gz3Bef3psMZK78EJiMtycp9/uqGBiQ86tS3ai3sxFUHKE38Z9OlKg+qi1O+0yzGMtSPmnlc9sbakn2Nc1OCFgadT+MUfrasUjVqXqYi2Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKE8XTSy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujNF5EcT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297EBC2BBFC;
-	Thu, 27 Jun 2024 15:15:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKE8XTSy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6350C2BBFC;
+	Thu, 27 Jun 2024 15:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719501311;
-	bh=T6OmF/ctekeGX1Zyt8oH+D/SesyRhu4JpmwzDB/BBaE=;
+	s=k20201202; t=1719503061;
+	bh=44QTkuqqMo5CcFcIhnkykddrBuRQgTixooInaW7qoQg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ujNF5EcTLkpuGhwln+D9eR9CwNbDWZ362RckP5So+6S8xhkveTo04eEQdsAIXsqxN
-	 +gSXyjsFeoF2K2UgkdB3t33SUJFLhtYNmIcrL9s7iLj2g8s1+mQksOVKMdX/aJp7/t
-	 wuyOZO5LPTvT70vmTAmo6uErzQiU4rbjwhubeuedBCGZ/VVBVAj74SI7zAIn8t9l5U
-	 2DAYeW1wQ3k7Oq1DY/O5Iru1PTiUq8yma0pNdl7qeP2PcPk9TQts4DZg39hq6GXttl
-	 rxNjWRWrWFHJdeN12uyKSJ5GasXWpme0ckb1qiejDOlj7giodka4kdN8gUAsS8K/Si
-	 eTKs/t2s3clrw==
-Date: Thu, 27 Jun 2024 16:15:05 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Pengfei Li <pengfei.li_1@nxp.com>
-Cc: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org,
-	mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com,
-	ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com,
-	frank.li@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] dt-bindings: clock: imx93: Drop IMX93_CLK_END
- macro definition
-Message-ID: <20240627-circus-tricolor-e53d077981bc@spud>
-References: <20240627082426.394937-1-pengfei.li_1@nxp.com>
- <20240627082426.394937-3-pengfei.li_1@nxp.com>
+	b=oKE8XTSyxXYbryGI2PlrC2M295lHjhQWiG/C3Ru5X7eFkCqLXd4y2+V+XLRAelouB
+	 i6NaHrWkocinSgx9xBHx/LudO410JqMVuKnpv1cyP1z6pThTsAkW1QkG8WNujH5QCX
+	 xgwKbCfMmRVOO7MA6JUjLPY6iEjhVI+7cgMZ1H9VDyrG+su+lBviXDuLpngZGGvr9o
+	 jLV35SmKP+gyh4TqrjYOueyyH8P/b4gVKKvqjpCo55tJFNI/ZssQ4+N3MPj32GwU37
+	 KmACyd2Q6JvoYwCsHWqsZ0BTVabG6Zi2QGQmR6e5bnu37LaDFDDsHRKILDQ+biHLCp
+	 CGa5HTW6gvLYw==
+Date: Thu, 27 Jun 2024 09:44:19 -0600
+From: Rob Herring <robh@kernel.org>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, krzk@kernel.org, conor+dt@kernel.org,
+	davem@davemloft.net, devicetree@vger.kernel.org,
+	edumazet@google.com, imx@lists.linux.dev, krzk+dt@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: convert enetc to yaml
+Message-ID: <20240627154419.GA3480309-robh@kernel.org>
+References: <20240626162307.1748759-1-Frank.Li@nxp.com>
+ <CAOMZO5CQHMzhvP9KqPahWdeVjBvqk758uY6wMzVO4oPrt=pECQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="u5klgZjrvwX9aHyj"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240627082426.394937-3-pengfei.li_1@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOMZO5CQHMzhvP9KqPahWdeVjBvqk758uY6wMzVO4oPrt=pECQ@mail.gmail.com>
 
+On Wed, Jun 26, 2024 at 03:38:48PM -0300, Fabio Estevam wrote:
+> On Wed, Jun 26, 2024 at 1:25 PM Frank Li <Frank.Li@nxp.com> wrote:
+> 
+> > +examples:
+> > +  - |
+> > +    ierb@1f0800000 {
+> 
+> Node names should be generic.
 
---u5klgZjrvwX9aHyj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, but what would that be for this block? Unless we have (or add) a 
+documented name, then it doesn't matter too much.
 
-On Thu, Jun 27, 2024 at 04:24:26PM +0800, Pengfei Li wrote:
-> IMX93_CLK_END should be dropped as it is not part of the ABI.
->=20
-> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
---u5klgZjrvwX9aHyj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZn2B+AAKCRB4tDGHoIJi
-0mGeAQC500wqIOhI+jGHCLMnTXxAQyLeHsQUPCCXK4oumFncWwEAgio1+M+wJgzY
-1J1uWvaOISRjnyYvS/xA14tuJxE22go=
-=QaIO
------END PGP SIGNATURE-----
-
---u5klgZjrvwX9aHyj--
+Rob
