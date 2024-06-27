@@ -1,108 +1,66 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08562B9B6
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A1B4D8B9
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719472226; cv=none; b=X2SNMFqLfRocYleT0YMBcTTlNuxa8y2N1Hsqt/c/ySvKdRWNbVp3g41Zx/PH65+Kg2kROiTEj8WGW6F/5LhlzN6SCndYv8wimsmT9GwL2niS3Yv2FzmrHRMFGQKBeQSLJqJSBlKU1PW0w9kTaVxNqtAwqnbhcDyddMuWbazgotw=
+	t=1719472453; cv=none; b=kg3OhQprmmn5+Wn+Ey0QvLXoUaCwJDqCTDPkye0S/9W1MTmoMxcYTX0z98ufG5nLhb+XaOVG1PYS0/TG0qS2pczPchPGi7ukexdQsy/hJORrq2aO7pPfEmavLApzS4ckHBD44EibwrU/z4vl0y8kvr2LStFmfUtoqPt1Vfw6DfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719472226; c=relaxed/simple;
-	bh=JkyTsbt0XpHbrywuNeYXvJrV2o5AkptgABGcKkNbjZU=;
+	s=arc-20240116; t=1719472453; c=relaxed/simple;
+	bh=2A1/2HrTKjDsWOcr0jMGmUfyKlVQymgD4VQxvVVU4YU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XcZxaka1D0NJ1MUp5IjTBm8DGlo8NkYwXqeT+ZFwlvRaFC/7/IcqazNED6vyTaPEbvZaIF4n0vNmiVup7TKIOZJD6sYa5sKDvJ87736tQfUVxfvmQGNXXBo4vXqgt96M+2b1/IbJgyWF64NKkm3tuDkIPlfJKBVDUmtbgHMbia0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=iQfEbi8k; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=BSwh4Gk5ZcOyYJiqxZm4c3s9/xbL3vduHQw8eITAk5e/W+AsHUHp/lU1Z9+eMZ9D1uLOOKzZDkfFK5M36FlQ+vzmjF3UW1Onfn5mIRLZH05hnGxipd9qMULmvV0cgcc9M4d2P2rNLGfQNOu6xRWQIeotePB648zSBWU/X4Im/ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=WfHVKnWo; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="iQfEbi8k"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id DE8A91FA3E;
-	Thu, 27 Jun 2024 09:10:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1719472209;
-	bh=aIZFoMXfj1PU3tfY2GaKFw28zmjn7K0QpfMx01nMzAU=;
-	h=Received:From:To:Subject;
-	b=iQfEbi8kTmTmCjrUZbZKsFhUbS5CpAnCL2BVQTvbcn3pD1l1atpGTdXHSL6+kAe0v
-	 /Paq+AsjBSBBpRpoTqx7NtGnYTi66iNvb3TpkkI9zpTZSO6YqFExBOEbZYtIk+g/A2
-	 0ncLIXJqPKUUOFcAejHWM4Np0Hz39EP8YDTqd5f7c1Ze/y06XxSbnHH+DroqtS7/Va
-	 DqDUoRVNPIxfgw+jpjetathiUKKGcghD9YodMm9/eoDJcRNl1zYiXMmgz+2P6Zsevk
-	 ebjEpxQMf2fbllOzqXet2YdD2YV/ebFySIZzVLPRrAhtUXFtqIFcc04iT61zgUFWSM
-	 kD95Sf3uFci+Q==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 81CEF7F93B; Thu, 27 Jun 2024 09:10:08 +0200 (CEST)
-Date: Thu, 27 Jun 2024 09:10:08 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Vitor Soares <ivitro@gmail.com>, Rob Herring <robh@kernel.org>,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="WfHVKnWo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=RL696Ekw/RfvvXhAh6mLeEdJy7RchRYI7LZ9WoWmZmY=;
+	b=WfHVKnWoAYdQIAJaPD9LbvEr4LBWowDXNKWrgvQCvFNqObT3c+HJfMfpdwhJsj
+	W8D3HzHSO0ttGMSjOw8/RQ1TpAn3HKejlOrT9cnrXlK1+TVmI8GrQ2vQVfmUCouf
+	C4ohkUnREifqI4O3lp4E/haofiKgiUMPX4mlOwu/gvHa8=
+Received: from dragon (unknown [114.218.218.47])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHj2qQAn1mR28ZAA--.25037S3;
+	Thu, 27 Jun 2024 14:11:30 +0800 (CST)
+Date: Thu, 27 Jun 2024 14:11:28 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: imx8mm-verdin: add TPM device
-Message-ID: <Zn0QUJ9wR1zzFGyC@gaggiata.pivistrello.it>
-References: <20240613134150.318755-1-ivitro@gmail.com>
- <Zm+gjpsGhzjbEgP8@dragon>
- <20240617071842.GA4832@francesco-nb>
- <Zn0NbIvFdfpMPHAx@dragon>
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+Subject: Re: [PATCH] ARM: dts: nxp: imx6: convert NVMEM content to layout
+ syntax
+Message-ID: <Zn0CkGMPJ/piux2Z@dragon>
+References: <20240520060222.2980-1-zajec5@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Zn0NbIvFdfpMPHAx@dragon>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240520060222.2980-1-zajec5@gmail.com>
+X-CM-TRANSID:Mc8vCgDHj2qQAn1mR28ZAA--.25037S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVG-eUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBILZWZqryB7ewAAs7
 
-On Thu, Jun 27, 2024 at 02:57:48PM +0800, Shawn Guo wrote:
-> On Mon, Jun 17, 2024 at 09:18:42AM +0200, Francesco Dolcini wrote:
-> > Hello Shawn,
-> > 
-> > On Mon, Jun 17, 2024 at 10:33:50AM +0800, Shawn Guo wrote:
-> > > On Thu, Jun 13, 2024 at 02:41:50PM +0100, Vitor Soares wrote:
-> > > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > > 
-> > > > Add TPM device found on Verdin iMX8M Mini PID4 0090 variant.
-> > > > 
-> > > > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> > > > ---
-> > > >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 16 +++++++++++-----
-> > > >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > > > 
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > > index 4768b05fd765..c9ae5f0bb526 100644
-> > > > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > > @@ -227,15 +227,16 @@ &ecspi2 {
-> > > >  	pinctrl-0 = <&pinctrl_ecspi2>;
-> > > >  };
-> > > >  
-> > > > -/* Verdin CAN_1 (On-module) */
-> > > > +/* On-module SPI */
-> > > >  &ecspi3 {
-> > > >  	#address-cells = <1>;
-> > > >  	#size-cells = <0>;
-> > > > -	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
-> > > > +	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>, <&gpio4 19 GPIO_ACTIVE_LOW>;
-> > > >  	pinctrl-names = "default";
-> > > > -	pinctrl-0 = <&pinctrl_ecspi3>;
-> > > > +	pinctrl-0 = <&pinctrl_ecspi3>, <&pinctrl_pmic_tpm_ena>;
-> > > 
-> > > Would it make more sense to have tpm pinctrl in node tpm@1 below?
-> > It's the pinctrl of the SPI Chip Select pin, not something about the
-> > TPM, I think it's correct to have it into the ecspi node.
+On Mon, May 20, 2024 at 08:02:22AM +0200, Rafał Miłecki wrote:
+> From: Rafał Miłecki <rafal@milecki.pl>
 > 
-> The name pinctrl_pmic_tpm_ena seems confusing then.
+> Use cleaner (and non-deprecated) bindings syntax. See commit
+> bd912c991d2e ("dt-bindings: nvmem: layouts: add fixed-layout") for
+> details.
+> 
+> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 
-I agree (this is coming from the schematics net name, let's blame the HW folks).
-
-With that said, let's rename this to `pinctrl_tpm_spi_cs`. Vitor?
-
-Francesco
+Applied, thanks!
 
