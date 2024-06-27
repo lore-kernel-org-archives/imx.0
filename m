@@ -1,63 +1,64 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2066.outbound.protection.outlook.com [40.107.22.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2154E1442FE
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 14:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E25B198A0B
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 14:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719499350; cv=fail; b=lSfdmjq3BghV61+OlGkYlo/x+0fetJOelqSSTEX9eRMWqQPVFyBisykPQXuEE1rdqQ9wsgmIfQVCP2UJpQ8al89vNOXUzT8eeZjsiSzO4F0pN84l66O7xmkDY8M38a5fltvWGz/cvDLhN0vzYF4bZPgq1sm6ZwnTH7+LkDfARkU=
+	t=1719499713; cv=fail; b=lVIJXGSXBtWAxfLyuHY9xEP6r4aJbmK4YAh4C9Eta/UJQ75oY+Us6oflS2KubhVb+fDNwnmOalmLeyyFsyM0dwMV/cmr3UB5fPjG0UC9dudlfBt22Xccp/OSrDPLOf5+WymgyCCXtD5FGv7Qh5FdgUwUoCCY9TTrqT3u0HcpfN8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719499350; c=relaxed/simple;
-	bh=wyIqIOQNnlKRBWV0lVuUH+JBurXaYrTjajYDrZGqAw4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=mnIfjm2+fTOe+AJb6gewWY8mgvlkLJ6sV7wIbL2nKITZSNkkD6hlWohjAwuyon26f+/xQG9o4mR2rh2a6kglWU6uEjy76SI1kOp/54dmbgx6pIxSfH8Ph248aFgpjgK0G1wifr//6gbq0/7FTYyxnvP5casgwel2Nh532Qmgxq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TQX5ehhv; arc=fail smtp.client-ip=40.107.20.71
+	s=arc-20240116; t=1719499713; c=relaxed/simple;
+	bh=fj5lAcmG7ZC/CWhDGC4m0NN6KqhIkzx9K+OoWeTnVns=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=bo6qr1BlnfQEANkUpvjRwqiQCGG4A2rsdC5kHKCQktSASlzJUJ7avMAKt1l7t3TFX8Cy+FdPjAknaXzFFIxdTC5XKS6NxVTjYDef07oCKepkLYuVXNeZ8wyhnGuZqavkyymtGMAfpYJVVsU3leGEpMFphSK9wAz74zXCOufzWC4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=jxlm2ZN7; arc=fail smtp.client-ip=40.107.22.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TQX5ehhv"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="jxlm2ZN7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=daOwCvTflPqvNb616A3G0N/vELSRR4OvYt4RS/ijuPaeXqQJGjwZq8LL+TWxh48DahaEnOVd5vr5Me/fglsprz+uLn1E2uFtRX/YdM8r+Qx+3aL8UsNvyWEliMlVFeMOF0f5x32B7RHdccArXhMvZu5xfYzWqpvpfzTeQZOY5talg6SYmWFJCX4kCFj/fE+6Hv8iyu5joBTjRUZAEdvEpFZ597vWLwF9J0tcvIMggYHpF0YqOkjhOmJ+mth8Xu0dIXWmHsn/AyUQ38C3JTqpAV7ZCBGRSXi+U89/2ISySgAI0GVzO11CBTzz5k2XvAc6ialm6GhuW/sLfpU3Bl/WtQ==
+ b=aImYsNEd6Z6UIZjJfrkfX5HCFjq2joT4zxCC8pHI9yhzv6ZRglhYEhU8qNg7zlS4g4iNsHTzN/aAunXQSJa4nxPgb45EP1wVFPCp7BaY0Yj6S3yE6V5qq/Ll8Kaxnvg2pjwgklSQw4Ny2Ms6/iFcG4GVcvWd7gc/Ij0y+H+p8hB50A/WR1EDXOra5ZC4/zz2dJBSHNxsaBaM3O0NaXNjIjS37qMpchQTGkaMY5LLkdXRFWt43PPhSoihoMEMbzkmqphmLHvL3EVw2jFxYWQbDl7ZAVMIRpxQPfrqHnefj+y08iDl+3+XBUjrVr2AQGhVYwoGPwHAzCsesyYRywtJSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7W2my2qXRhzpf8sY/t9xZdRf4fFUgJwRoka4gxIPaN4=;
- b=MbINaeXYQKtW2VWv3CikwaVO+xrYQnM6ci8Kg0j5P4KOuOT5y/ASfULD97KxUjrABMcHCiBaAx16YXf6p/T0nGebUSyFZ8QWyT2YZAfe45EI0zdLAaEwrhF+xKB+P5p5j5ynNiWOL0qUF0tmwVyRCs9HkwmH6ev8KATnesRPT6eKtW9MYDjgdibCv/uI6eEAb1XCTyvFehrJRofJXWfJdLSjAqadqI6XXVBlP+KKvqLq1jBDf4oW5zCNlyKHJMWSjL4HxF0tteF33Y+L/IaLE/uA5bmg+gY9Ex/DgjPhY/jtLTNMrwbKeHe745WuaqtVMdudVc0XtU/04KdkXsehSg==
+ bh=7xVhZQkbJNgW7waKjsbuOc1q6thPHQ+HLtxRT5U/XMs=;
+ b=kgMAVCwve6AM/8cnMzUhd6fj012OzwkOSLHJqg4UTeLsJJzK6MU3QNBuJ63H5/5mXxc3NaenzQ6htihizf0krBw/ebFdTn0feUA+E9MY1eiTvd7G5Bolyelh0Co5lQdJ+62POuEWTlbwwI8RIJUSVkciG1RtBEA3y/+mOySYBQ0/SLfCx58H6JEZRT75dQEwGRsL+gQw1+x35evy+Jmw3jmdB0QyG79wSG5a/ymrSFox9yXDN48HGxHxAiowxus9RC/6wqPs4f3bi5ekiN3B8IsV8Cj3AhRvzuINNInpa10hp8YNtNGsa2indaUPGTmtBgQFyGtZUn4WWhMaERl6Tg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7W2my2qXRhzpf8sY/t9xZdRf4fFUgJwRoka4gxIPaN4=;
- b=TQX5ehhvlSz7X9MLiRqheDgxvkCEOBlElAEbUyjK9uwOHPA6AtpJpPifgyp3dE/dWeGcKM8l+cGQjBybMtbGLqhEhhmmGwTuUQmEC1HuW127O+tJjQ1LGuQmOURMn05BPuSqmMZ3KhoponcpAo8o42xPrb+mZj+T1uyEN7ChgPM=
+ bh=7xVhZQkbJNgW7waKjsbuOc1q6thPHQ+HLtxRT5U/XMs=;
+ b=jxlm2ZN7ZPcrAu/CqsyPKx+hkGgDfizBKXYwXbkYODw2xSBYx646iEd+pXMScSS5f4hRRO9dX9ZUIIpbEX6roLv1qU9pyQ70zHd/aW+q5X7vfdGlSKmylzG8WjwxuLpih9dXyF3dYwpLYst5T1oIkQc7jswux4+Yo+fpQXCcFTY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10973.eurprd04.prod.outlook.com (2603:10a6:800:25a::19) with
+ by DU2PR04MB8759.eurprd04.prod.outlook.com (2603:10a6:10:2e2::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.32; Thu, 27 Jun
- 2024 14:42:24 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.35; Thu, 27 Jun
+ 2024 14:48:28 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7698.025; Thu, 27 Jun 2024
- 14:42:24 +0000
+ 14:48:27 +0000
 From: Frank Li <Frank.Li@nxp.com>
 To: krzk@kernel.org
 Cc: Frank.Li@nxp.com,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org,
+	gregkh@linuxfoundation.org,
 	imx@lists.linux.dev,
 	krzk+dt@kernel.org,
 	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	tglx@linutronix.de
-Subject: [PATCH v2 1/1] dt-bindings: interrupt-controller: convert fsl,ls-scfg-msi to yaml
-Date: Thu, 27 Jun 2024 10:42:07 -0400
-Message-Id: <20240627144207.4003708-1-Frank.Li@nxp.com>
+	linux-usb@vger.kernel.org,
+	robh@kernel.org
+Subject: [PATCH v2 1/1] dt-bindings: usb: Convert fsl-usb to yaml
+Date: Thu, 27 Jun 2024 10:48:15 -0400
+Message-Id: <20240627144815.4014179-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0007.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR02CA0036.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::49) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -66,226 +67,289 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10973:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90038cef-abc4-4d5c-6dcc-08dc96b75be1
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8759:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ea57502-5b81-4413-1b79-08dc96b8346e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DsBF/+Agptpi6V43seX8HzqdVNPwb0tqyVzzO8gJraFZyTD4wQXAIlW1OCKx?=
- =?us-ascii?Q?LYPVPFJdCnKS/mRk2WzHY3zqR1TZ+pH9Vk7eNiE+2QMIduNomogN8lAXHKt0?=
- =?us-ascii?Q?57PcZUjFRYDkc/Q6TmNNiynPCOe2Z0UuD1cikl9p0AxH6Dgnc37KqfDl2DSU?=
- =?us-ascii?Q?R7GjOVkmBFqA6bVrurvRKeKulqe5ELeTlXok1NMQnqm2eu7xxDIz64mu0bWB?=
- =?us-ascii?Q?p+lU39NKjgLpZ456avCBJ2AU2pAVwbDZF/W0WO05LgfO/1li5BqUB43uAwQ2?=
- =?us-ascii?Q?SvHIXctHcquIKn5pf5E/747LvV2jjKDPnOkrdiymmK1VYIc3ym6Dn6Q6QtET?=
- =?us-ascii?Q?YYexC8pEZhomIKZ966VlXJlSg96jh4cbeZfr4teaKXXQMsY6wtqDszG8BmWz?=
- =?us-ascii?Q?i6Zlde98inuWoGVqU1rMV0eAKcclg1BSPGfClsq7GcWlPpeDsLEInLDe8PK7?=
- =?us-ascii?Q?2SiSmJ8qFqequ+CIvw9Uk9zNFjw/lSwe8j7vrE+zV/U1LO6xncRoW3mTrUb7?=
- =?us-ascii?Q?c9O6djXOoLacvdNsyTS6d6IFY9zCyKoaeNdMWFWenmaLaexL+DiWRmuIHVtp?=
- =?us-ascii?Q?wWCp5hD0Y1L1CnVZbKQiWEuYM1pmNnWg68MwjhY5aLDhi31fSQGbv7gmtP7Q?=
- =?us-ascii?Q?odX1wAGO0DkMbXV6M8MHssJcMvdPHXnAfLBH+e9iODwd6rU9e3w2KlyAcBZ7?=
- =?us-ascii?Q?w8yWV1HYGFMO8UYVRdAA9ruCJnS1gbPVn4DWOgto129LdeKC+cDODaQKslio?=
- =?us-ascii?Q?AfkhvcHbyCxpw5DWpdAmBppePt3rv3VP2yA9kbt9UqRyOEN7TbLv5vI+JAVm?=
- =?us-ascii?Q?cjGocuF/pRDJxv1OP5jkc4ooEGgxHZ4KwckFNi5Z2MgN6rBuBW9gqEs8sDDk?=
- =?us-ascii?Q?M6V1Oy02Rf/7XXpkhV49txlr6MMTaHlogRK4gViPDvM8csqaGiHtGAdHOwCh?=
- =?us-ascii?Q?mWMZyXei1Z52p2m4iCaw9jvtg1pa+WV2QE3k6DuNG8mW8X6RPXgndWKjpcR4?=
- =?us-ascii?Q?OZ5tYbQHzL/HgyNQUr4lNd1hs73CxjtN4B69O3gTyjv84sKpeeOOKklTLvlP?=
- =?us-ascii?Q?GEw6YWQwa4YFdb2fdYQQt4UrNazki7bc9U4j/TpZDT6mGH8dKSrgDKb7x49h?=
- =?us-ascii?Q?8h5Qhb66YUqcalJd3N4sVTnIm89dITCvOEVZSDzeIxcR3MPN6JZhh0nc8JMM?=
- =?us-ascii?Q?LamJzcpW0wGQBYfRUsDPMguG7pG9ioqTdFwzY5yWg669sljB7jeMjLfZvBjl?=
- =?us-ascii?Q?Clx4XwiEA7qJYerftRmc1ENFetSUEb1Q2CSovhDVaHcl5qZdEM2vmwYaUWYI?=
- =?us-ascii?Q?s+2ZvLs6gl471uWmvbiSjaukxOGgp9Nq76McleOQtFZzJAeMiaj4Hfoifokz?=
- =?us-ascii?Q?+RBZJ5U=3D?=
+	=?us-ascii?Q?thUNXXrAdzZ78a8GaJ8fUkoVkr/2ONgN9uR7XFrMr6QNGjHEgbuwI5mmadK/?=
+ =?us-ascii?Q?jjTAzeeswRt6vXnNHNKfgRnD/LiPnq995+ovraiTYemvrH3l8BWKhednY6ON?=
+ =?us-ascii?Q?fRUfN+YkPTuJyzRinEa1yFOQkgbWm0lCn9NrzdKaBmHjYMKFH+MlrRIVQxF0?=
+ =?us-ascii?Q?cYXbRA/i9UfrzHeRAeXNCktXQG3f9n8xxy3+NxgSH5wnF3NKrsTiMk4WpTyc?=
+ =?us-ascii?Q?gk9+LsxT14OqMLVsUH8Nxl6UeP/dsODZlDGhF/r8llcsvOCrIyPIy0q7GV8z?=
+ =?us-ascii?Q?rvn9seYMh0RGNda88XSU39MrVi3CK/SI1Iv8fS8vY2jbG0/g4cKmQLZcvtO9?=
+ =?us-ascii?Q?zUvdGOALz3iSTwYJNjGcohzcYGBKyz4UMvq2yQQhHXuFsdJwVpQojHbMjPig?=
+ =?us-ascii?Q?b/8Jimeso1zeH+whk4q5XeqXqzu4TQb4j5mMFujdBlU3b7c91Gv3fEozvPmI?=
+ =?us-ascii?Q?Nqft9JrNij7aiB9N/hRV7k/F2reJt+TOMUwCmBgxS6nYdc++6eKNXOwbhZp6?=
+ =?us-ascii?Q?vQPY7el1o3fGDX0AFdWUVxbnik+iJ6sQO12uuP4ZHWjE8DwV/joNp987FSVv?=
+ =?us-ascii?Q?i86UNgsD3NX+Pv0Cw/Q11e8Dlq7MFQ0Jar5yb8PWfZpyYblkyayuf18apL0w?=
+ =?us-ascii?Q?SYXmTWRtF8itMZbbAyzPLPElnRjMy3gd3s4BwrgBTh/dlE8B6QPUYl6sR1kz?=
+ =?us-ascii?Q?oI5I4+SFspTKDKt9kjwO9IjyKPsZLwE962JDz8TnIJ+IE+c4lTJSkwkkt9gv?=
+ =?us-ascii?Q?CyvuG2OCO4eJd4AfA97n4b4sE2a2B2qfMJtm2Rn18tAdIQMFwX8MKYEwiexN?=
+ =?us-ascii?Q?foIRMwwTCSLIa/5j/bILP3r/TgPm7iIkgPGcb2Bm1suBM5qdewg5UOh0NpBv?=
+ =?us-ascii?Q?o4jYo/uYP/Hg3jvNC7/9jGSN78Fh0S/4NTjFdf5BkzZVVH82sGISMT/AjHAY?=
+ =?us-ascii?Q?jkwEMI2ydaSzt/eq8uXGz1ZoCJcJ5h7B8QZfJRnglmZGqHLKV3gJ1ZEyGOVt?=
+ =?us-ascii?Q?U7TUY237wIbipM5R3EKkZS6TvzTg7RmpA1qrA1TE1/QuVMJjqtasM30vGMj5?=
+ =?us-ascii?Q?WxPE/Yin+QtJKqCA12e1Oe7LBgkMjMnrbfz4gJaMfs3XwMkyiAgaTs5XsJ3z?=
+ =?us-ascii?Q?MqqmFdr9OyKPqBHVxqk80Qbr+ldTAewnVdjAH54td+x+vpFgC2Ayez+G19p9?=
+ =?us-ascii?Q?wxIJolev8oC9vuQKIMaxSP/Xa8sdzyTzWPrcB/Vx7l8Y1xgV7e+FUq/9oXk8?=
+ =?us-ascii?Q?TGxIe6I55snNIjAXjCl92QGZXWBx7XTdEeYJTZANbphKVsvfK/6GG3Iha1KV?=
+ =?us-ascii?Q?JJvHe783kom5nOy/OoGH1g4QRTKbSLeeEj7xH3+fzLQidg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JJO4jrTSTx5UL8nvwIMqMltsVaql9qqG8DnUJWbr4IDWabpAV5iFzXfZWyEK?=
- =?us-ascii?Q?trDIuabz7SiqIJok8nEvpSLXS+S6mMSIvIVLzFp6JlJwVRys+d57VGtvwJm7?=
- =?us-ascii?Q?JU9LBV26UjZY2d7w2McOBluFAgnfBNMEoS76fbaSb1JRCs/J8ImtLKT0IYvT?=
- =?us-ascii?Q?DpgpMxraRe+8NkWpWoZ3n3LyNfjta7cVAbSEqYD70QwMwhGW+yD9jMR13vmi?=
- =?us-ascii?Q?QMmeSMhbxDGrj1ltqETAz0Xf1tY/me+wd+z4xwv66FQ7b05lH1wdMWm8R1/O?=
- =?us-ascii?Q?bTBXMmXs54gfQyxfkRQdxzSgYRGqA+5gpUpC3j26dSACd1y/cmmwaKYJodqI?=
- =?us-ascii?Q?u7fEMNCPUJrTNTNBiHNAZ8Vv/g/RfVcA4HIrcWMmRazKWrGPAtGjZNIa+INs?=
- =?us-ascii?Q?G0TtZxl2WnRtRv7SkkzSMUd63FO7dILrZj+M6cTc7mpmcSFO/bZVFZuMgPbg?=
- =?us-ascii?Q?DRmtN9NET+z/PtiFYceoXSN7oeOqItz0D0ecF19MUaB4vm5hIU8F9PDlAJJc?=
- =?us-ascii?Q?N+mG+snGaWujaoclWq9e7lGAyxCyvljEQYxZo++6D7GjwlLHQM2P1UXjlaJZ?=
- =?us-ascii?Q?sIgMacjXjkBsPfLHYfsdsc5bu98yZjP5NAGRli9XGTLFsm1ke2/G5ZArhYSd?=
- =?us-ascii?Q?q82kIgn+nIkmXzPTu6ZtxafwfYIxZZK/j5X9NwMiNg9iMf/odfOURtFJTxyt?=
- =?us-ascii?Q?6nDJcZk3xFOE9UIxbGQ6VU2PmDvb/q0t9pfqMtIgqTfvnkpeX+mVoYY2gGFL?=
- =?us-ascii?Q?hsPwrX1JtpTFM/vp5ZL+7up5/BhhebEj819ri5W4GpWFCscXeGlaNa5+bfI/?=
- =?us-ascii?Q?smxzdHch8SY7MsID8+HO2b5apACmBVHCJCpWEL/QcqTqhiQnNmv+c5+iLeJQ?=
- =?us-ascii?Q?Yk0cfCxrF88LWFUX6SBmpgLOhoiPvxhQrMU340FOhiGSukgtGbeIyHy6RBW7?=
- =?us-ascii?Q?t4kq9f5SXpgvW++j0fwaKA5dFRT1Jten8wJjrdiwXv+UTcD0FOyhdZS/CfFR?=
- =?us-ascii?Q?nkXCxMGSDS3w855Y0qKh0EKXA8eI0EIwPWYAdhVHE1Ha/Jz4vm701+ZudNey?=
- =?us-ascii?Q?ZQ2XgRq5ndxBHe6VNrVTmg9kYImx2/jibM7r3FM1C1D8gDpA/6VmhEtkZhfl?=
- =?us-ascii?Q?SeVPf5jX4mqzUgVY6KEBXdxsTcr/UpgwYQ26XzpyONG+7XbqK/1bJaNv5E6r?=
- =?us-ascii?Q?GsBqYS5/Qy+SPFTQ2MLr9j7D5FwBhOWPvYiIiLqf6L50nYoK7u+1bIHc9wZQ?=
- =?us-ascii?Q?EgUGR4CYDC0v/JC0tXGmwfR3mP1aPWDp2n3f0sy+TYeRjql4lrLe1RJPVY/x?=
- =?us-ascii?Q?JceegABwADPRThs4+5su34ZcqPTnsviIe4SzUnG+OqniuR74++EwotvYjwse?=
- =?us-ascii?Q?n+4jfLE8NmZbXZHgzskXRKyM6cVjNj73bMqkR8+vFVW1/SQ/+9Zt+Qrl3gsP?=
- =?us-ascii?Q?qIZMktH/4A95cg3zKPC6C2Sr4TxlsxXLyuRGndCZCmQneRwUtSMEorP1OwAT?=
- =?us-ascii?Q?AyMswnt8hzImh48DAvErBLulSQvmKRgpD84HHdnvLX0q3u0GZox/UEJOn+05?=
- =?us-ascii?Q?9X5Xnuki0J8ST0i+rOSk6sTrsEihWlzMAhmqKu6D?=
+	=?us-ascii?Q?hRdEFGSEZwO0T+5FHWQt2TbX5Nba3k9vYcNeUhtfKStD6MeFZZHa4WYghMHe?=
+ =?us-ascii?Q?Ss23NwkniV8O063GACz8xWy0fQEWuGHoVAekRwyfjnYej3UxEJQBIDmBO1id?=
+ =?us-ascii?Q?gqhDDUR26lYjbIIYSWoMbeR21SnkrV+nlOswLfH+T1mdjEnTV+1QFu7bxVR6?=
+ =?us-ascii?Q?aK5dg3EjzlP8Ri6tVZWvQcsaE0vcdLfXLJhedSjqNUkmpXuCC2MJaASYsyWn?=
+ =?us-ascii?Q?9YBQVoOhQbthV7OujtHvbcC26Z1UObgcHl0oNT+/oe/FgZV5i7ElwPi/ElbX?=
+ =?us-ascii?Q?piS5lntIQK239maYnepQuGlCq5KFs4ehILMI/G3bbq3mgfCJzZT5o71GKias?=
+ =?us-ascii?Q?GD3xay6MnFkbhUe07pssUjuhaGEyIRt2mIk5Tdw3+ipYBEtAkDcL4ba/oQ3S?=
+ =?us-ascii?Q?Q/1uqlsJKqSRIcFfkYf7NLdE41e7eDAqskLVLeZO5ANlbnwNCeRAIc+WaSBZ?=
+ =?us-ascii?Q?qiQU0ZfT3T47mrwQLxcudGKEXKlLpE7JEkyH2Thkc9AGRMwtnUQaxIF3Z/dt?=
+ =?us-ascii?Q?bvO1BxEjjpKTGgX0Wp4PUPg2karldcZmp0i3g8P2VmV/fUPrdPa77yGmW6m6?=
+ =?us-ascii?Q?eW11OGS7H5ZjK+H8X1XdowJN0WSNTHQE2PingRR3//OPvOg1obUI2rXa8cpP?=
+ =?us-ascii?Q?eOaLtv4Q978h1poN9vA87vKE1oF8b9XHyRrMwRJN0hFovnvdTsFc4P+/oUWp?=
+ =?us-ascii?Q?XhugGRSq33nNgUPQOsHw4yoJWdB7peRHuqYDlizC/8rLkD5IlqzeemcAjv0k?=
+ =?us-ascii?Q?sK0MGiG7LEu0uPa1Uzzp1oxMyRRQLxZSSJy/W3jIBwtMBu1hbbUqitXK7KSm?=
+ =?us-ascii?Q?X0G7lmWWqgu1L40BumdLoXtZ6yfntNXDb5hjnBLKrLr/Cft/3sOjFb8CXUic?=
+ =?us-ascii?Q?8Ka5KzQKP6QFu+4sNV+qpctdPJD6VJZFW5hUhGZAPyk/IlT9VJ7YV3Z7AAbL?=
+ =?us-ascii?Q?g/4bPwGqzBuky2FEhfH6hFszR3S8cxIsA3PTcxMpiIgKBCy3C6hFBUPqzxrv?=
+ =?us-ascii?Q?z7K17YFqDGK/10TYTUqcv00vajDXeNX4FCc4b2lPNJPnFZS6t8dcXG1vhXFL?=
+ =?us-ascii?Q?XGEXX1eSHa2E0+BJ4bE26zH2A+zJ56F1iCuDn3HOepuYWOCB0GgT+COWZGg9?=
+ =?us-ascii?Q?HTNCnD4AHUSXBVefV7jpdq8/ay2BPkzaiR1WMPkERPQsqcyHjVduYKPOk9J2?=
+ =?us-ascii?Q?hJS1SZJufGbQd3GWXbmJ40YbrrHk9H1CeJs1VVxONjOGN7sYeYBRodEW96lK?=
+ =?us-ascii?Q?qlCc2OOKqa6Iup2UN5uPk6AYWdwPJrVc6FD6AwjwVWBlBjPfPJLvIo7KXvOt?=
+ =?us-ascii?Q?hZuwY2aT/v5fSFp0va3POOSs3ZdYqh3dhdVua7xko+3UJ7fZJXwHJiSCK4TN?=
+ =?us-ascii?Q?flsSFcCvfdV/gAVP2WVqdvUEzPuy/4kFVyg1Gem4WMt+eL1J08kE0KtPIoHc?=
+ =?us-ascii?Q?0ENJgoWe4/vl1ZiTnw1G9dGGC/DoUJGJXX5AOIeDJs+tttAfHX5rF3SisalC?=
+ =?us-ascii?Q?2d0AfqlAC/wCjDfUrnMg/sfOfuCA1khOieUonNI0oB3mBoZPRGiAd1Df1tcJ?=
+ =?us-ascii?Q?YnTX8+03qp3OYGtNEtH0MZWhZoFccN0NobFjfTLP?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90038cef-abc4-4d5c-6dcc-08dc96b75be1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ea57502-5b81-4413-1b79-08dc96b8346e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2024 14:42:24.5772
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2024 14:48:27.8932
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v6HFHKaAUwhwGGWNm7eKPvVnY+VAxchxRKDs9xixSBK1J6LxC25rEF/xsUpeW8cdPyYmoXo0OvKPSyJqp3XheQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10973
+X-MS-Exchange-CrossTenant-UserPrincipalName: jgv/CL9XC4k0EKhGSe3qHIYXNEvX0arsZZJkq39NaM6HW9vGnr6IkxgVMbOXoEd7d4DnH2QfpCeEqHMsYQwJSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8759
 
-Convert device tree binding fsl,ls-scfg-msi to yaml format.
+Convert fsl-usb binding doc to yaml format.
 
-Additional changes:
-- Include gic.h and use predefined macro in example.
-- Remove label in example.
-- Change node name to interrupt-controller in example.
-- Fix error in example.
-- ls1046a allow 4 irqs, other platform only 1 irq.
-- Add $ref: msi-controller.yaml
-- Add #msi-cells.
+Additional change:
+- Remove port0 and port1 from required list.
+- Use common usb-drd.yaml for dr_mode property
+- Keep two difference examples.
+- Add interrupts to required property list.
+- Remove #address-cells and #size-cells in example.
+- Use predefined irq type macro.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
 Change from v1 to v2
-- sort compatible string
-- add ref to msi-controller.yaml
-- add msi-cells
-- add interrupts description
-- remove msi-controller, which already in msi-controller.yaml
+- move phy_type after interrupt
+- change file name to fsl,usb2.yaml
+- remove 'fsl-usb2-dr-v2.2' from standalone compatible list
 ---
- .../interrupt-controller/fsl,ls-msi.yaml      | 79 +++++++++++++++++++
- .../interrupt-controller/fsl,ls-scfg-msi.txt  | 30 -------
- 2 files changed, 79 insertions(+), 30 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,ls-msi.yaml
- delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,ls-scfg-msi.txt
+ .../devicetree/bindings/usb/fsl,usb2.yaml     | 95 +++++++++++++++++++
+ .../devicetree/bindings/usb/fsl-usb.txt       | 81 ----------------
+ 2 files changed, 95 insertions(+), 81 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/usb/fsl,usb2.yaml
+ delete mode 100644 Documentation/devicetree/bindings/usb/fsl-usb.txt
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-msi.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-msi.yaml
+diff --git a/Documentation/devicetree/bindings/usb/fsl,usb2.yaml b/Documentation/devicetree/bindings/usb/fsl,usb2.yaml
 new file mode 100644
-index 0000000000000..9ba8d4d73351b
+index 0000000000000..caedf11db2846
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-msi.yaml
-@@ -0,0 +1,79 @@
++++ b/Documentation/devicetree/bindings/usb/fsl,usb2.yaml
+@@ -0,0 +1,95 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/interrupt-controller/fsl,ls-msi.yaml#
++$id: http://devicetree.org/schemas/usb/fsl,usb2.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale Layerscape SCFG PCIe MSI controller
-+
-+description: |
-+  This interrupt controller hardware is a second level interrupt controller that
-+  is hooked to a parent interrupt controller: e.g: ARM GIC for ARM-based
-+  platforms. If interrupt-parent is not provided, the default parent interrupt
-+  controller will be used.
-+
-+  Each PCIe node needs to have property msi-parent that points to
-+  MSI controller node
++title: Freescale SOC USB controllers
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
 +
++description: |
++  The device node for a USB controller that is part of a Freescale
++  SOC is as described in the document "Open Firmware Recommended
++  Practice: Universal Serial Bus" with the following modifications
++  and additions.
++
 +properties:
 +  compatible:
-+    enum:
-+      - fsl,ls1012a-msi
-+      - fsl,ls1021a-msi
-+      - fsl,ls1043a-msi
-+      - fsl,ls1043a-v1.1-msi
-+      - fsl,ls1046a-msi
++    oneOf:
++      - enum:
++          - fsl-usb2-mph
++          - fsl-usb2-dr
++      - items:
++          - enum:
++              - fsl-usb2-dr-v2.2
++              - fsl-usb2-dr-v2.5
++          - const: fsl-usb2-dr
 +
 +  reg:
 +    maxItems: 1
 +
-+  '#msi-cells':
-+    const: 1
-+
 +  interrupts:
-+    items:
-+      - description: Shared MSI interrupt group 0
-+      - description: Shared MSI interrupt group 1
-+      - description: Shared MSI interrupt group 2
-+      - description: Shared MSI interrupt group 3
-+    minItems: 1
++    maxItems: 1
++
++  phy_type:
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [ulpi, serial, utmi, utmi_wide]
++
++  port0:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates port0 is connected for fsl-usb2-mph compatible controllers.
++
++  port1:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates port1 is connected for "fsl-usb2-mph" compatible controllers.
++
++  fsl,invert-drvvbus:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      for MPC5121 USB0 only. Indicates the
++      port power polarity of internal PHY signal DRVVBUS is inverted.
++
++  fsl,invert-pwr-fault:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      for MPC5121 USB0 only. Indicates
++      the PWR_FAULT signal polarity is inverted.
 +
 +required:
 +  - compatible
 +  - reg
-+  - msi-controller
 +  - interrupts
++  - phy_type
 +
 +allOf:
-+  - $ref: msi-controller.yaml
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,ls1046a-msi
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 4
-+    else:
-+      properties:
-+        interrupts:
-+          maxItems: 1
++  - $ref: usb-drd.yaml#
 +
 +unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
 +
-+    interrupt-controller@1571000 {
-+        compatible = "fsl,ls1043a-msi";
-+        reg = <0x1571000 0x8>;
-+        msi-controller;
-+        #msi-cells = <1>;
-+        interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
++    usb@22000 {
++        compatible = "fsl-usb2-mph";
++        reg = <22000 1000>;
++        interrupts = <27 IRQ_TYPE_EDGE_RISING>;
++        phy_type = "ulpi";
++        port0;
++        port1;
 +    };
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-scfg-msi.txt b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-scfg-msi.txt
++
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    usb@23000 {
++        compatible = "fsl-usb2-dr";
++        reg = <23000 1000>;
++        interrupts = <26 IRQ_TYPE_EDGE_RISING>;
++        dr_mode = "otg";
++        phy_type = "ulpi";
++    };
+diff --git a/Documentation/devicetree/bindings/usb/fsl-usb.txt b/Documentation/devicetree/bindings/usb/fsl-usb.txt
 deleted file mode 100644
-index 454ce04d67874..0000000000000
---- a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-scfg-msi.txt
+index 0b08b006c5ead..0000000000000
+--- a/Documentation/devicetree/bindings/usb/fsl-usb.txt
 +++ /dev/null
-@@ -1,30 +0,0 @@
--* Freescale Layerscape SCFG PCIe MSI controller
+@@ -1,81 +0,0 @@
+-Freescale SOC USB controllers
 -
--Required properties:
+-The device node for a USB controller that is part of a Freescale
+-SOC is as described in the document "Open Firmware Recommended
+-Practice : Universal Serial Bus" with the following modifications
+-and additions :
 -
--- compatible: should be "fsl,<soc-name>-msi" to identify
--	      Layerscape PCIe MSI controller block such as:
--              "fsl,ls1021a-msi"
--              "fsl,ls1043a-msi"
--              "fsl,ls1046a-msi"
--              "fsl,ls1043a-v1.1-msi"
--              "fsl,ls1012a-msi"
--- msi-controller: indicates that this is a PCIe MSI controller node
--- reg: physical base address of the controller and length of memory mapped.
--- interrupts: an interrupt to the parent interrupt controller.
+-Required properties :
+- - compatible : Should be "fsl-usb2-mph" for multi port host USB
+-   controllers, or "fsl-usb2-dr" for dual role USB controllers
+-   or "fsl,mpc5121-usb2-dr" for dual role USB controllers of MPC5121.
+-   Wherever applicable, the IP version of the USB controller should
+-   also be mentioned (for eg. fsl-usb2-dr-v2.2 for bsc9132).
+- - phy_type : For multi port host USB controllers, should be one of
+-   "ulpi", or "serial". For dual role USB controllers, should be
+-   one of "ulpi", "utmi", "utmi_wide", or "serial".
+- - reg : Offset and length of the register set for the device
+- - port0 : boolean; if defined, indicates port0 is connected for
+-   fsl-usb2-mph compatible controllers.  Either this property or
+-   "port1" (or both) must be defined for "fsl-usb2-mph" compatible
+-   controllers.
+- - port1 : boolean; if defined, indicates port1 is connected for
+-   fsl-usb2-mph compatible controllers.  Either this property or
+-   "port0" (or both) must be defined for "fsl-usb2-mph" compatible
+-   controllers.
+- - dr_mode : indicates the working mode for "fsl-usb2-dr" compatible
+-   controllers.  Can be "host", "peripheral", or "otg".  Default to
+-   "host" if not defined for backward compatibility.
 -
--This interrupt controller hardware is a second level interrupt controller that
--is hooked to a parent interrupt controller: e.g: ARM GIC for ARM-based
--platforms. If interrupt-parent is not provided, the default parent interrupt
--controller will be used.
--Each PCIe node needs to have property msi-parent that points to
--MSI controller node
+-Recommended properties :
+- - interrupts : <a b> where a is the interrupt number and b is a
+-   field that represents an encoding of the sense and level
+-   information for the interrupt.  This should be encoded based on
+-   the information in section 2) depending on the type of interrupt
+-   controller you have.
 -
--Examples:
+-Optional properties :
+- - fsl,invert-drvvbus : boolean; for MPC5121 USB0 only. Indicates the
+-   port power polarity of internal PHY signal DRVVBUS is inverted.
+- - fsl,invert-pwr-fault : boolean; for MPC5121 USB0 only. Indicates
+-   the PWR_FAULT signal polarity is inverted.
 -
--	msi1: msi-controller@1571000 {
--		compatible = "fsl,ls1043a-msi";
--		reg = <0x0 0x1571000 0x0 0x8>,
--		msi-controller;
--		interrupts = <0 116 0x4>;
+-Example multi port host USB controller device node :
+-	usb@22000 {
+-		compatible = "fsl-usb2-mph";
+-		reg = <22000 1000>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		interrupt-parent = <700>;
+-		interrupts = <27 1>;
+-		phy_type = "ulpi";
+-		port0;
+-		port1;
+-	};
+-
+-Example dual role USB controller device node :
+-	usb@23000 {
+-		compatible = "fsl-usb2-dr";
+-		reg = <23000 1000>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		interrupt-parent = <700>;
+-		interrupts = <26 1>;
+-		dr_mode = "otg";
+-		phy = "ulpi";
+-	};
+-
+-Example dual role USB controller device node for MPC5121ADS:
+-
+-	usb@4000 {
+-		compatible = "fsl,mpc5121-usb2-dr";
+-		reg = <0x4000 0x1000>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		interrupt-parent = < &ipic >;
+-		interrupts = <44 0x8>;
+-		dr_mode = "otg";
+-		phy_type = "utmi_wide";
+-		fsl,invert-drvvbus;
+-		fsl,invert-pwr-fault;
 -	};
 -- 
 2.34.1
