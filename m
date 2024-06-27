@@ -1,99 +1,145 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AD546450
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 06:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A1221350;
+	Thu, 27 Jun 2024 07:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719471508; cv=none; b=f8j0OzYwHAKd49P0aFoAvBb+7jVgJoAXtAJKcs8j0mppYWPo1YQTDEO4jyBmmupCUQLZC4QoPHJtFtDVDpngsJ2WGMMl756fYYoTbFm/aL3H+ZWAhTbp8J/4fI/azfcDnjtwzEO/J2KAz1gkUly7LLsl5S5TnB+wKeF3zHZu/Zw=
+	t=1719471609; cv=none; b=d7De81nC5XBWxGOEnlxrbgGEBCiIeDpoM2DgIMfRSrol8ViBw/BFhtrVEUC9CVumxsRVrJDFuTFvMzbv/Mb0Qv2ier9zRlddiPl+uyUS1YGNhrwU0XUllEnlDIAsX0UI/VKkfIGh99eMpCAwTBtlpQTOZY1PxL+9jvXyBoPrynQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719471508; c=relaxed/simple;
-	bh=CAiHWTasWQsvNes4gquJBgUiczd3fYgut0h3LyWdH10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K/GojqoqgKVhTmOgKm8LsERVq4KIzsYPrIfZoWLrOjkCYKOYx3tF9s55A82F5UbE6VJr7sCQQo2itIMu9NbwCnuX22HVr9cvY6lFah1TLuTqqilXt0lSffyjmGwxEb44Uuz0xaJMucxWWpQQGNIfsbUtbfV1tRh4+/G8eskcudY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PIRaZpEY; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1719471609; c=relaxed/simple;
+	bh=I8j+GaB3KF4SfGKchT3lPtkRXSSloihCL1e0OctOujc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B+6iiflwyTKxTR/sodtJdNrtpAF+BYabATws0FSOgtEemxlsBmaEr1aHggjpXfM4FcCTolFY4kcr+f31vT2C/4Pf98thuG0PEci8wB6MalGyEOYtEGn/NZKE67FMeoEdBuEQ+/skUIox7pXVOaiqhB0/cXkI8A9hxj5r4ZXr3DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDY9JI48; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PIRaZpEY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=LsbeIB50EDgsPrzDnKsKFJzpQszBkOYrVjadj/myF5I=;
-	b=PIRaZpEY1NCT+/kZFp4m1lILrLLOfrExLn06eRaO3hABYjq8151HKppNRBLPVt
-	ulsfL9045x2oscTS+0V8/SoaEQXz167ylV/O1KLVnDQ891muiaGbkSoPFOOIHBcE
-	n7mycWSqtGTekBzHRT6vvDR8DDeku14OgOuaTWJYk/Vhs=
-Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3v8ltDX1mxG8aAA--.52621S3;
-	Thu, 27 Jun 2024 14:57:51 +0800 (CST)
-Date: Thu, 27 Jun 2024 14:57:48 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Vitor Soares <ivitro@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: imx8mm-verdin: add TPM device
-Message-ID: <Zn0NbIvFdfpMPHAx@dragon>
-References: <20240613134150.318755-1-ivitro@gmail.com>
- <Zm+gjpsGhzjbEgP8@dragon>
- <20240617071842.GA4832@francesco-nb>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDY9JI48"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88869C2BBFC;
+	Thu, 27 Jun 2024 07:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719471609;
+	bh=I8j+GaB3KF4SfGKchT3lPtkRXSSloihCL1e0OctOujc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eDY9JI48MiOrJaP19e+HxBdk5Fi/MqobgPj2WrVpvpBHz9kA5im406iEHHlnVMJ1F
+	 XsE8cBb2LpsvlWbvSvb+ZDwKrt3kS5B+VSA2UB4S2hkkoEycgmVK+WPg74IzOpx88g
+	 Vc0FPhra2OZ5qV+3QWDttbtM8Vm0+LgL1Qg0frCZpfaTolT2hI86rAQ/658idIOxcL
+	 MgaLvkaOnAdWBuhfNKT6Jo2jGDpTQbDHhN8E5l2VNaGRAW4gttjs5GcFYUd0/g/cc8
+	 Wls3dxnzOHrYwDZeFmN9KzPl6d5mJKogCOyhTCSJ1SWio3w6VWn2IrhHiWPWPv+wBN
+	 pWhjZLHcsN8lA==
+Message-ID: <c26f76eb-5f1f-40e2-af5e-13029ee32a95@kernel.org>
+Date: Thu, 27 Jun 2024 09:00:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240617071842.GA4832@francesco-nb>
-X-CM-TRANSID:Ms8vCgD3v8ltDX1mxG8aAA--.52621S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF17XF15Kw15uFyxtF1fJFb_yoW8Wr4Dpr
-	WSkFs5J397Xr43Cr9Iqwn7ur9xKa1fAr4Duwn8KryUtrnIvF98GF1xGr1xur1q9r4fA3yF
-	kF15ZryS9w1rAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO8nOUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQ8LZWZv-cwmYgAAsM
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: usb: Convert fsl-usb to yaml
+To: Frank Li <Frank.li@nxp.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+References: <20240625022541.2007010-1-Frank.Li@nxp.com>
+ <b354d11e-9031-47f1-8a23-bbd14ea3d5dd@kernel.org>
+ <Znwt+vZZ0chXQp+Q@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <Znwt+vZZ0chXQp+Q@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 17, 2024 at 09:18:42AM +0200, Francesco Dolcini wrote:
-> Hello Shawn,
+On 26/06/2024 17:04, Frank Li wrote:
+> On Wed, Jun 26, 2024 at 11:26:18AM +0200, Krzysztof Kozlowski wrote:
+>> On 25/06/2024 04:25, Frank Li wrote:
+>>> Convert fsl-usb binding doc to yaml format.
+>>>
+>>> Additional change:
+>>
+>>
+>>> -	usb@4000 {
+>>> -		compatible = "fsl,mpc5121-usb2-dr";
+>>> -		reg = <0x4000 0x1000>;
+>>> -		#address-cells = <1>;
+>>> -		#size-cells = <0>;
+>>> -		interrupt-parent = < &ipic >;
+>>> -		interrupts = <44 0x8>;
+>>> -		dr_mode = "otg";
+>>> -		phy_type = "utmi_wide";
+>>> -		fsl,invert-drvvbus;
+>>> -		fsl,invert-pwr-fault;
+>>> -	};
+>>> diff --git a/Documentation/devicetree/bindings/usb/fsl-usb.yaml b/Documentation/devicetree/bindings/usb/fsl-usb.yaml
+>>> new file mode 100644
+>>> index 0000000000000..8b5724e213f09
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/usb/fsl-usb.yaml
+>>
+>> fsl,usb.yaml
+>> or: fsl,usb2.yaml
+>>
+>>> +
+>>> +maintainers:
+>>> +  - Frank Li <Frank.Li@nxp.com>
+>>> +
+>>> +description: |
+>>
+>> Do not need '|' unless you need to preserve formatting.
 > 
-> On Mon, Jun 17, 2024 at 10:33:50AM +0800, Shawn Guo wrote:
-> > On Thu, Jun 13, 2024 at 02:41:50PM +0100, Vitor Soares wrote:
-> > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > 
-> > > Add TPM device found on Verdin iMX8M Mini PID4 0090 variant.
-> > > 
-> > > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 16 +++++++++++-----
-> > >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > index 4768b05fd765..c9ae5f0bb526 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > > @@ -227,15 +227,16 @@ &ecspi2 {
-> > >  	pinctrl-0 = <&pinctrl_ecspi2>;
-> > >  };
-> > >  
-> > > -/* Verdin CAN_1 (On-module) */
-> > > +/* On-module SPI */
-> > >  &ecspi3 {
-> > >  	#address-cells = <1>;
-> > >  	#size-cells = <0>;
-> > > -	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
-> > > +	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>, <&gpio4 19 GPIO_ACTIVE_LOW>;
-> > >  	pinctrl-names = "default";
-> > > -	pinctrl-0 = <&pinctrl_ecspi3>;
-> > > +	pinctrl-0 = <&pinctrl_ecspi3>, <&pinctrl_pmic_tpm_ena>;
-> > 
-> > Would it make more sense to have tpm pinctrl in node tpm@1 below?
-> It's the pinctrl of the SPI Chip Select pin, not something about the
-> TPM, I think it's correct to have it into the ecspi node.
+> dt_binding_check report error without '|'
+> fsl,usb2.yaml:15:11: [error] syntax error: mapping values are not allowed here (syntax)
+> 
+> "Practice:" impact yaml parse.
 
-The name pinctrl_pmic_tpm_ena seems confusing then.
+Ah, indeed.
 
-Shawn
+Best regards,
+Krzysztof
 
