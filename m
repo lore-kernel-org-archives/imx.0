@@ -1,39 +1,45 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D6033987
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24C3F510
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719474157; cv=none; b=XUNl60Qadeof2hR2nBxGdOpK4rOrDx+RSebzq48YLrYHsFf4V3bCYzZvTQQsp7C/154E3PJ4V5necB+XFMwYtTiMD+eI6qRm+BjN3TMI5RueyFy3Y71KsRomg3rxDfBeW4B6H/+/mC3KPOCyUhAvIVZrrL0aCMCqiKztR8cGYNo=
+	t=1719474391; cv=none; b=ob/VOYkf837EqP/TzBiB+85JEULxW4HW+DDQLejQGOo8rF3HlKkqGlmY+qjr8GtOUxWlDYVEj1V5b3MMIgR24xvapVBstmYcNy0TD+5Sclbk+6Y6UOAaBaKftZUtXEcIs/6zKMb2dlV5arG4+0e0lk0NNM9ak2tVEbw5I1XKP6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719474157; c=relaxed/simple;
-	bh=niWifPxthY5pGSj0MPq+gFtzhUAaPd89u2s14QYBBds=;
+	s=arc-20240116; t=1719474391; c=relaxed/simple;
+	bh=9hl7XdfnuxgUw05Lbi8M3SRy5tjEHn4ou7phLlGIhMo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VAVQxsTTf6NU0KmXXzJa4aW0b/l4SRYlPmzjjt5dwFYQWDVaDp/Uhf0EqgGcLRjayj/HH1JSFQX6hw4kRFpQHVgSSxPXc8lsskckNAS2qTiMiXSxgKD9ZjUDPmvccaKrlHcUjcejDdEpwBnEh/H3xIVx3VQBx0wykAIJNFnSRl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=o1Dmlyfc; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=f9khnk5S++mfbis9YlcNwQBg7ldl/T0vu//QKvZ3j5A8jDx+9GLwqyw4OLNDg8KoiVlO8nNb/ydjCeWfcI4u7kBx9nD5H+gKZwCzDftg7lvFjIzQwR6Gx3i6qqyuds7f85ZI6Sv/T/JGbgMTa2kSWOXlxbmDQD9kRBjRVwteRMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=bCWTjkhD; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="o1Dmlyfc"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="bCWTjkhD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=K/1iSBKlF5A20UDlARtUeGLpv4GEubEh9JBHFml2Ows=;
-	b=o1DmlyfcjqqUdXfNYnY3nFYhnI/mw80C/oiJGotW+iWgIDKQZwwSjl1avS2h55
-	ModLw6PrC/dH9m2+j1h0MKFTzjO7Jgv9BXO3vne3hFt5sisZE92ohsIIIPv8WmkM
-	KBWECYLMNSLiGeS+UkMiaKcyWqTcazvbvmVM0UTsrZpBg=
+	Content-Type; bh=C1NFCWVTqKYT4fBMlQ95dp2+wCWYKMyTvR27OCmpRt4=;
+	b=bCWTjkhDJp+1GNbMEsyeXp3BqUuD2s0Sg+g2ZvZeYtH3OSszrS/dF1faOx6mWr
+	hzR6gskkfBYJvAHwxyO1FFh50/3uOM+2JhQ6AMtMkdgVRgRGtT3fmppDoG/gIquL
+	6t5ZyvE4C/21yePuo+LmozmOLjlEDTQSzepOQjy3rMZLI=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXD8rZF31mmaMaAA--.52532S3;
-	Thu, 27 Jun 2024 15:42:19 +0800 (CST)
-Date: Thu, 27 Jun 2024 15:42:17 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3v5m6GH1mw6caAA--.27497S3;
+	Thu, 27 Jun 2024 15:46:04 +0800 (CST)
+Date: Thu, 27 Jun 2024 15:46:02 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
-	imx@lists.linux.dev, kernel@pengutronix.de, krzk+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org
-Subject: Re: [PATCH v2 1/1] arm64: dts: imx8dxl-evk: add imx8dxl_cm4, lsio
- mu5, related memory region
-Message-ID: <Zn0X2dMZaQ93vwHC@dragon>
-References: <20240617184707.1058995-1-Frank.Li@nxp.com>
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
+	marex@denx.de, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mp: Fix pgc_mlmix location
+Message-ID: <Zn0YuvkauzX7FDOQ@dragon>
+References: <20240617223952.1899201-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,17 +48,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240617184707.1058995-1-Frank.Li@nxp.com>
-X-CM-TRANSID:Ms8vCgDXD8rZF31mmaMaAA--.52532S3
+In-Reply-To: <20240617223952.1899201-1-aford173@gmail.com>
+X-CM-TRANSID:Ms8vCgD3v5m6GH1mw6caAA--.27497S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3oGQUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRsLZWZv-cxqVAAAs6
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU-7KsUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRsLZWZv-cxqVAABs7
 
-On Mon, Jun 17, 2024 at 02:47:07PM -0400, Frank Li wrote:
-> Add imx8dxl_cm4, lsio mu5 and related memory region.
+On Mon, Jun 17, 2024 at 05:39:51PM -0500, Adam Ford wrote:
+> The pgc_mlmix shows a power-domain@24, but the reg value is
+> IMX8MP_POWER_DOMAIN_MLMIX which is set to 4.
 > 
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> The stuff after the @ symbol should match the stuff referenced
+> by 'reg' so reorder the pgc_mlmix so it to appear as power-domain@4.
+> 
+> Fixes: 834464c8504c ("arm64: dts: imx8mp: add mlmix power domain")
+> Fixes: 4bedc468b725 ("arm64: dts: imx8mp: Add NPU Node")
+> 
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
 Applied, thanks!
 
