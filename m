@@ -1,29 +1,29 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2DC20B33
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 06:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B420B33
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 06:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719469730; cv=none; b=PcJ1zSTuoiLY/Q3g+acE6HOBSEbAbeB45I9UVBM0RaIdkc3E4or6TU2M0bXcg1p5wflIMC3absxr7HjbfXdvap10sN15FwqDIT76Jc+RvmIiZg9G24UF18Yg7+JIDfXyWH4fDKZWlMnKU7vOiKWoswz2w3SiwLeJSnLZkamiD64=
+	t=1719469746; cv=none; b=s1cj53s0LRlLf+3sSOAzXhxOgWHifsQH+YSpyyEwaAGFPhYC5dRk9JOTvHmyHof0vhjvvpGOdUjgcdH6t2rl/yMeyWr5bIkHyJj89R0AT0Em8QsQcRtQAp0bnUhdc9mqjuU/Z0L6p76/80CPMSccfx+m7KpX4+wgsLZr0N1TSeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719469730; c=relaxed/simple;
-	bh=bJJt0FeM0KbEJPLYk2tCjgBeMwoyVLEpB+8s2fa5LfA=;
+	s=arc-20240116; t=1719469746; c=relaxed/simple;
+	bh=wHiwBzg0drLuXMvAPru+bat178YvBZzqVOLmGt0Zl6c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I1sj6eW6Ihciqxsh81DhVqW2eGKatuoxlWZumf+IBQEpt3+WLShkUlWOdwnviGsSyGiphNGNJvw8te6II8YTTvx0uw8uanZS47KPuZJ9w7HhzXttlf9KrMuWxF9KpXhN+VIoDFYzF+y42GKkPj+qkX9MGbhcsptdo619ychtNKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=dfzvGqDh; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fafh7BuriJqYLCq8dQWq+F2zyz5aw4YFQUoUdlemVx7nKkt+AbZGy21TH+my3p73mPwpkfc43h164x/a7fsTE5MtGn6RvY7dVH84G5lrMcThtihaYUuqBBEtvsBIgiwzmDeNGu1BZUMdKN8fWUyzgLmNHY6Y7KvP/kjmlJJHTSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=GYRR4Fqz; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="dfzvGqDh"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="GYRR4Fqz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=4E9CM/5/mBeIexGZwjxuNqelU9W/5r9P19OkUaKlST4=;
-	b=dfzvGqDhDzW8CIUfGN8u6wD8w3rvXo2pAA6zlf+rQX4lPDA5QpbZ/I6YFCAH/R
-	AtSNZnRznbzJIxQX9GYN1yCEM9d2DlnR33U0XRfkg1QxcmeuHPWSm5pAfp63ZeJY
-	YZZj9WZvf9XhghQZl3e5rxftZCaCaIcC0bxl20ZTq6rCI=
+	Content-Type; bh=4JVbwBMrJBsF2RiES/eofL7TJIZJsypozKg6acb8498=;
+	b=GYRR4FqzDkNp1v7oDKqNrfn9aTuYTBcS9pYvjMeIJk0GfmCpOvdr9diNXmUFDF
+	tJS8yBHis8oy2IxK4vyninFJi+/AAlhZ4jJvsiDlc9840Rlmwl9VrAr6IFENjVEE
+	iM5l9zBkUZJ9GJ+RB1iq8DZjfvoWQQxAPZm+3JpxUx3gw=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXP5t6Bn1m600aAA--.26605S3;
-	Thu, 27 Jun 2024 14:28:12 +0800 (CST)
-Date: Thu, 27 Jun 2024 14:28:06 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3vx6aBn1m1VYZAA--.51586S3;
+	Thu, 27 Jun 2024 14:28:44 +0800 (CST)
+Date: Thu, 27 Jun 2024 14:28:41 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -39,10 +39,10 @@ Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
 	linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 5/6] arm64: dts: imx8-ss-conn: add gpmi nand node
-Message-ID: <Zn0GdvvigLqcGXxn@dragon>
+Subject: Re: [PATCH v2 6/6] arm64: dts: imx8dxl-ss-conn: add gpmi nand
+Message-ID: <Zn0GmUVgk1Plj5mA@dragon>
 References: <20240520-gpmi_nand-v2-0-e3017e4c9da5@nxp.com>
- <20240520-gpmi_nand-v2-5-e3017e4c9da5@nxp.com>
+ <20240520-gpmi_nand-v2-6-e3017e4c9da5@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,14 +51,14 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240520-gpmi_nand-v2-5-e3017e4c9da5@nxp.com>
-X-CM-TRANSID:Ms8vCgDXP5t6Bn1m600aAA--.26605S3
+In-Reply-To: <20240520-gpmi_nand-v2-6-e3017e4c9da5@nxp.com>
+X-CM-TRANSID:M88vCgD3vx6aBn1m1VYZAA--.51586S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUaK0PUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBILZWZqryB7ewABs6
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVaZXUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRwLZWZv-cwmbAAAsJ
 
-On Mon, May 20, 2024 at 12:09:16PM -0400, Frank Li wrote:
-> Add gpmi nand support.
+On Mon, May 20, 2024 at 12:09:17PM -0400, Frank Li wrote:
+> Update gpmi nand and dma_apbh interrupt number for imx8dxl.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
