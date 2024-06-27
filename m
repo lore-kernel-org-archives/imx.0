@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132E5199E92
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 17:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BED519AA5F
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 17:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719508678; cv=none; b=gLxCNOPfq46+OK1L2Er6j4PffUDAzJqa9D3l4M7qQfhAE+mdWAKY2BFM6UPLaWVd5UKzPGCYAkhuk1ksGIBJz543DpobQ0B7Fg2oyzckIZPqaiFzoAdNFWSmKMaw7DEq33SFwAF8kAuIZnnvr/yXrZYRT+vtrCMT6IHAAbJPjKA=
+	t=1719508992; cv=none; b=ANnRq01ZlOFEtwqC0+xABgeHosPtI7sG4sbqgXP4di+Y/F05VZi/cM8usmd+xC3TdjehD68D1pw63p4loL89uOqI+Sej2GtOr6i9jzsup05Oys/bR871VN7s4WjCDG7SPprO32m9qnfuQ/4ckviVYvALO+/jOSN5fgstvHM388k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719508678; c=relaxed/simple;
-	bh=ND+kxnj03hKFg+c77/LHGw3ycswbF4qk9fiMKZV+Z4U=;
+	s=arc-20240116; t=1719508992; c=relaxed/simple;
+	bh=SzSQXLn35CAVEqK1pP+0y8OHPEJi33g8wq6whDfJ2U0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hMObLxEx9Xz/7FTQWj5TjowMK/fMKsKe7yaTj8tKtnuaHiUVkMG4npCJu3Wui8YALlqDvlCe7J50Q+dhO6Ydgs+W5TufTYhgCpQwqd7LBq741ZoHaWyOza5KymSy3YDKmKD3FTqWmtlLiS7qihfU/euBTf6tnFNtal1CnNJvaig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqguWVlD; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=sM70V/4b4qkezskYDUo0d5OWIRdgDpSn4KXikJKxBxpclajbFVAis618nYiwS80Lty91HKOTyJpjXG2GU5iiSxRno4qPNencXzpwH8hHSGoRR2pch+r1JeR39EwMWCiQg+3UVrW3TPvMxa8aH5fJJnPGqSq6poz5jO0iq+4HJqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpKj3Jx0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqguWVlD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E57C4AF09
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 17:17:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpKj3Jx0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E3BC4AF0B
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 17:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719508677;
-	bh=ND+kxnj03hKFg+c77/LHGw3ycswbF4qk9fiMKZV+Z4U=;
+	s=k20201202; t=1719508991;
+	bh=SzSQXLn35CAVEqK1pP+0y8OHPEJi33g8wq6whDfJ2U0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YqguWVlDtOzpjNpDhA49SzxWALisxIhQeiH5+aTOs7dYzj021HpDd8mGPRmg/ir9R
-	 4FtFIrGGoXePtNB8BIZMr7F/s28ejQEevjSTaG0AghDu8XLO/714NcEs+lh6hmLIZh
-	 gTKuPNBeCJcgLL5U/E6Ifk9RKtn/25PZdL5LbQYicTQD9ypGiSy7fh+6h2fom+DZm0
-	 Vjv7NFFg0ZX9BG2+aOnunpBcix0eVHRmNeTyRZAxKM1DcBCqc2vsdDxgImkOKPDuWy
-	 MZclf43+7Ge7mjUC4Pqmons2g8S8YVm0DEX5ATTzSE29Ue+5cO5yCBbGGpx0iVnU8c
-	 LtUfJn78T1nfg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52e714b2c06so966115e87.1
-        for <imx@lists.linux.dev>; Thu, 27 Jun 2024 10:17:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUYdKW2DoCcMYAJe2yfiGaeV4OAPqJBFvgXikRNSh2pKXHzy4GA+SsOQ9ua+GJZj4lfmuUd/VJE/19xfzUEcnmkshS5
-X-Gm-Message-State: AOJu0YyqT0umatg1hmpVsHRnHa4AJ7Ot17ceLpX/H9lWAz3aQY6O6HK9
-	MRourDTGOCH/8A66vu4VKzVaHhngW6s4VMQpWBjGgRpzYVGi4bpIWEYHojs6qQJCSOIWAbFXQ7S
-	7JSXMhrgTPUF+Mj8s1VaTsZGMRA==
-X-Google-Smtp-Source: AGHT+IF3OE5lw0/7L/P34B6XjIm/Q/MdeaYkB0SxYii0IOeonTKc+sIEbiWY8aflzadLR2ehqIJmgbysOpo4ylgcOcs=
-X-Received: by 2002:a05:6512:2314:b0:52b:9223:be33 with SMTP id
- 2adb3069b0e04-52e7038b63bmr787238e87.16.1719508676080; Thu, 27 Jun 2024
- 10:17:56 -0700 (PDT)
+	b=TpKj3Jx0kLyQULOjrQ1G1YFRj3Q5zw0TxQeZFCbz1LUqI0cZH7X2ToIdDC7LRIyMT
+	 YhMygxp+gNO5dEQkhOV16YQYCLNCiE8iAhdjPkvdtcQHjtIr0Ze9MfCAu1/oevYfRy
+	 rqeMQOmonwGgp8kFx7+jJLLdHIT3aXohVLGmwLLlm0qWBH1qBMRtZuzir/aLRLSQWG
+	 9pJjU0EPgubLlXW5/GWWdLU9FKwoDJDK2LGmirgx751gdNTpYpn14S5t9JGOpNOSUv
+	 NupAoq+lv2HnN0k4dOmcaHqRF9wFdpvbSQkWGeW9A3qtb9SWSnbbqeBtreXl07XD6W
+	 GbDASz5SfQSLQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52cdfb69724so6666998e87.1
+        for <imx@lists.linux.dev>; Thu, 27 Jun 2024 10:23:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWW2M3QHHV/VKzKH+yEHHHZB2n/b39q8u4tWHe+ACm8H/oQ5iSKDazO+XujOORLuPFCvji6i8Evb3F8CS7FXJFug2A/
+X-Gm-Message-State: AOJu0Yw+x+xM4e4GsJupGM6faW1GH5xevoAIgucIsyPuzg+X/2AN/oRa
+	cxEM5nNYDArTrC1LX5AHMbpiJaxcBQnSiXJUG+f8bldKD+Vi+YfcIVL88VDiayj/RIrHoDYXPOx
+	cHLAMajJ2SMVdiWfLfUd5RXuI2w==
+X-Google-Smtp-Source: AGHT+IHR1yCKB1utUU8LXu7iJHrZ0fIDsz546zcbjPZVWVy3CCLzPj5Ke4IQeyOr2Ol4d53PW2YtCuULHb69RX5R2yU=
+X-Received: by 2002:a05:6512:324a:b0:52c:9e25:978d with SMTP id
+ 2adb3069b0e04-52ce185e46amr7595359e87.45.1719508990016; Thu, 27 Jun 2024
+ 10:23:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,11 +43,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20240626202533.2182846-1-Frank.Li@nxp.com> <20240626202533.2182846-8-Frank.Li@nxp.com>
-In-Reply-To: <20240626202533.2182846-8-Frank.Li@nxp.com>
+ <CAL_JsqJDOgGWqggWXE-_jv6oQW9nekxU-4Fui+2JFZ6DWUqLtg@mail.gmail.com>
+In-Reply-To: <CAL_JsqJDOgGWqggWXE-_jv6oQW9nekxU-4Fui+2JFZ6DWUqLtg@mail.gmail.com>
 From: Rob Herring <robh@kernel.org>
-Date: Thu, 27 Jun 2024 11:17:43 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJDOgGWqggWXE-_jv6oQW9nekxU-4Fui+2JFZ6DWUqLtg@mail.gmail.com>
-Message-ID: <CAL_JsqJDOgGWqggWXE-_jv6oQW9nekxU-4Fui+2JFZ6DWUqLtg@mail.gmail.com>
+Date: Thu, 27 Jun 2024 11:22:57 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ1X8rRfVrw0gGeiiQaK+9RekNFSHgXR3zhcNRNw5y9mQ@mail.gmail.com>
+Message-ID: <CAL_JsqJ1X8rRfVrw0gGeiiQaK+9RekNFSHgXR3zhcNRNw5y9mQ@mail.gmail.com>
 Subject: Re: [PATCH v2 07/13] arm64: dts: layerscaple: add #dma-cells for qdma
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -58,16 +59,28 @@ Cc: Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 26, 2024 at 2:26=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+On Thu, Jun 27, 2024 at 11:17=E2=80=AFAM Rob Herring <robh@kernel.org> wrot=
+e:
 >
-> Add #dma-cells for qdma to fix below warning.
->         dma-controller@8380000: '#dma-cells' is a required property
+> On Wed, Jun 26, 2024 at 2:26=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote=
+:
+> >
+> > Add #dma-cells for qdma to fix below warning.
+> >         dma-controller@8380000: '#dma-cells' is a required property
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 1 +
+> >  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 1 +
+> >  arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 1 +
+> >  3 files changed, 3 insertions(+)
 >
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 1 +
->  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 1 +
->  arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 1 +
->  3 files changed, 3 insertions(+)
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Except for the typo in the subject...
+
+Frank, while I appreciate the great number of reductions in DT
+warnings on FSL platforms you and others have been working on, your
+work is sloppy with issues you should find yourself.
+
+Rob
