@@ -1,119 +1,83 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4267013D291
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 10:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E4313DB98
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 10:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719483045; cv=none; b=owHwPyX7pH2MV6fsD9aE6jTr77sC/gED75WJ6q2w4e2JmYei10PtjFhuJ0UUPslJAEV5AMAafmYkByEPQAxQ8FmPUaZHvhgl2YzF5im3Wl6GmjgAU+hBranxTM0nEtJsn5OICKc250wBqB3K7R8hbfSZKc5gCvkRfPJLe1ywh98=
+	t=1719484669; cv=none; b=WdP8u+ms6xgfV6Ud3uWfW+/W2ICb2xH5efzSbfFbTefJQ5tGgtBdR90dSxQg70ChRKO+jPwbbZbNOz7MqQJtrFZfRMUx3Ru+Zt82hTLEUnIhdHANGTqtynkDowEnOxgtF8f6+cJ3iSBqAu0wNDK5YjNPgsvtN0zFQsWfje9pj5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719483045; c=relaxed/simple;
-	bh=JumFjepAK5BceEeoilJQ1Y3XfINuUODu8VGkkHsJI0E=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=niwmGEUl5Qr0CaboTxco0Ls11MEIv+H9oDkfAdlF5DUjyz204kwcGOaeSqESgsiLJUYkrxnOvxTkaWjuX9A+huTWluhAlEGwgzhHaM5QJgrE6LigEv06GuiL3GPvoRPze9/94nujZp4o8VrlnxZMMUkX9zc19W6AGYb9B5y/RQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id AE3501A0868;
-	Thu, 27 Jun 2024 12:10:36 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 75CB11A0738;
-	Thu, 27 Jun 2024 12:10:36 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 9FEC3180222F;
-	Thu, 27 Jun 2024 18:10:34 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shengjiu.wang@gmail.com,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 3/3] arm64: dts: imx8mp-evk: Add audio XCVR sound card
-Date: Thu, 27 Jun 2024 17:53:01 +0800
-Message-Id: <1719481981-4069-4-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1719484669; c=relaxed/simple;
+	bh=J7HqGzCFxvM7WV0C+sFHgXvFU5LTNWgPqlRmG8ld9Bc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zgg3xB4za1Tv1N8jD2bOf05iptFbUn0EAg8U0WkHoAigj28T5qTTnZEH9cV9PvvoTKPE5F+alkACqxgeidT6A81g3NO/mByMyo9Bd6Aqx1Mf6DK0xZPfEKQp77+HSzedm7KNNlbIBLvA9CSzg788ESozhAkMx3XmmLXDYDuGDmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=T8f3RMfO; arc=none smtp.client-ip=220.197.32.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="T8f3RMfO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=9sxCIQg8fVr2efTR8sroAQlij2XuJ03C7PxfEvrRihE=;
+	b=T8f3RMfOBpTFk3XO4029KZALIhUqtMbPTWZnXxtrB8H7YZbSeIAh7fwXr/kosi
+	T+Bq4oC2xcx5bQRO9ER+K+ieawG1cpnf40Hp9M6FA+QMV+qzlc/F78BJdFgAjXsa
+	T+Kcl7+oOMyWp7GIJXrLyVRoG6YHVeTlzcUoCNZscCEQA=
+Received: from dragon (unknown [114.218.218.47])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3v2riQH1mnIwaAA--.25525S3;
+	Thu, 27 Jun 2024 18:37:24 +0800 (CST)
+Date: Thu, 27 Jun 2024 18:37:22 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, robh@kernel.org, shawnguo@kernel.org
+Subject: Re: [PATCH v2 00/13] arm64: dts: layerscaple: clean up some simple
+ CHECK_WARNING
+Message-ID: <Zn1A4gcDpOArsSof@dragon>
+References: <20240626202533.2182846-2-Frank.Li@nxp.com>
+ <20240626202809.2187404-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240626202809.2187404-1-Frank.Li@nxp.com>
+X-CM-TRANSID:Mc8vCgD3v2riQH1mnIwaAA--.25525S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AryfuryDAFWfCrWxZw1xGrg_yoW8Gr4UpF
+	Z7ZrWUKryIyr9Yg3WkZ3ZrJ34fG3y7tF45Jr1agr1qkr1Y9rnrWF9Y9F98WrWkGan2vay5
+	tF17XF4ktw1vvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jVZXrUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCw0LZWZv-czt0AABss
 
-Add audio XCVR sound card, which supports SPDIF TX & RX,
-eARC RX, ARC RX functions.
+On Wed, Jun 26, 2024 at 04:28:09PM -0400, Frank Li wrote:
+> Change from v1 to v2
+> - Combine some similar warning to one patch for difference ls chipes.
+> - Remove arm64: dts: layerscape: add '#power-control-cells' for rcpm
+> rcpm actually not power-controller, it is wakeup controller, need
+> better method to fix warning
+> - Add aux-bus fix
+> - Add pcie irq order fix
+> - Add rename to rtc fix
+> - Add thermal-node name fix
+> - Add q(b)man-portals node name fix
+> 
+> Frank Li (13):
+>   arm64: dts: layerscape: rename node 'timer' as 'rtc'
+>   arm64: dts: layerscape: add platform special compatible string for
+>     gpio
+>   arm64: dts: fsl-lx2160a: fix #address-cells for pinctrl-single
+>   arm64: dts: fsl-ls1012a: remove property 'snps,host-vbus-glitches'
+>   arm64: dts: layerscape: replace node name 'nor' with 'flash'
+>   arm64: dts: layerscape: remove compatible string 'fsl,fman-xmdio' for
+>     fman3
+>   arm64: dts: layerscaple: add #dma-cells for qdma
+>   arm64: dts: layerscape: rename node name "wdt" to "watchdog"
+>   arm64: dts: layerscape: change pcie interrupt order
+>   arm64: dts: layerscape: rename aux_bus to aux-bus
+>   arm64: dts: fsl-ls1043a: remove unused clk-name at watchdog node
+>   arm64: dts: fsl-ls1046a: rename thermal node name
+>   arm64: dts: layerscape: rename b(q)man-portals to b(q)man-portals-bus
 
-HDMI_HPD is shared with the HDMI module so use pinctrl_hog.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 27 ++++++++++++++++++++
- 1 file changed, 27 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-index c2c708c492c0..a64e8a6c830d 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-@@ -209,6 +209,19 @@ cpu {
- 		};
- 	};
- 
-+	sound-xcvr {
-+		compatible = "fsl,imx-audio-card";
-+		model = "imx-audio-xcvr";
-+
-+		pri-dai-link {
-+			link-name = "XCVR PCM";
-+
-+			cpu {
-+				sound-dai = <&xcvr>;
-+			};
-+		};
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -748,7 +761,15 @@ &wdog1 {
- 	status = "okay";
- };
- 
-+&xcvr {
-+	#sound-dai-cells = <0>;
-+	status = "okay";
-+};
-+
- &iomuxc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hog>;
-+
- 	pinctrl_audio_pwr_reg: audiopwrreggrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SAI3_RXC__GPIO4_IO29		0xd6
-@@ -838,6 +859,12 @@ MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16	0x140
- 		>;
- 	};
- 
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010
-+		>;
-+	};
-+
- 	pinctrl_i2c1: i2c1grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL		0x400001c2
--- 
-2.34.1
+Applied all, thanks!
 
