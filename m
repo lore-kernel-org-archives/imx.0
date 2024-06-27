@@ -1,43 +1,43 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CD217C6A
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504DF4D8C3
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719472625; cv=none; b=ZUNTdR32Rhww/VU30ZW/aDMTPlqMJ++T92OwVKRqzzgTYCU9miCSds44w9Afux4YuinpQz/eHKPF4jC5BQC46h3mlv4mCktD6Z1/2Tdj2bvkgtFeapMIllQDW79Bdm3UHL5byAWTVPKvEcQ5XH5qdD1Jv2ktQc9fd1Q5t9bRyBQ=
+	t=1719473182; cv=none; b=hCGQcbaJM3SaBUTwUQiPn/OsAk/QZOjnCUczXlo5Udo2h/Wk+LuAMoWspc2JKo/lRy/8NcvzUeg9GX+rudi7Xn6JAhGg7t1/6b6HYTke1aYbdoTrrXsK2FoZtHjJlSrz0MM4M2mFUCYi0apZsYkCB4B5Bp0ppB9glbzfp0ULPzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719472625; c=relaxed/simple;
-	bh=VZd1DTMsV4Y6GkhYKBwj5DfAYkl/FIXvXfestO3BbMA=;
+	s=arc-20240116; t=1719473182; c=relaxed/simple;
+	bh=k19oMRwYZixgIkDPdeaKHx3aHREHfP+8oM5zi7YlyiU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DAwcxvm2xaX4s0ySSGghL+kA9gzr8uZyOikerAaYA5jIjB7Z+RhJj+UaQ2+t2tW9ibuQwkljb8EfHhaayLn6JABscO2NqZY3JyfFdp0kYQNEhfTtIRSQRQb4bbOacNMF+/JXl7N9hk7OJzshCaXz7GybdjGZs3XqNxhECz/luNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nO3n3JOu; arc=none smtp.client-ip=1.95.21.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=DQPh5lDGAc8VM8geHFWurwcx5GJyKH5M+Oje7SPlUDNpSCXa1OgOPHWKdmSoYNMk9h6Lu7eEUxZpJmTL1WDyizyLjXSCUVlemrg76b98ned/7JJPqh+o3j+PweXlOrsoLtdiIMQCZDtRYWoc2t0fjNeIXhSwhAiJHXuXoBQb4Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=BaHhItfP; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nO3n3JOu"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="BaHhItfP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=YfzRT/YahaCVfCZjCVbpbtKPLzjuLKP7xH/d0hodVsY=;
-	b=nO3n3JOurca8Hv+kmfFWjTkQxKgHDcm4gOLb/cTbLiq0TocaEQp01vxKfkAOxc
-	1CF7UcpBTGGgphtGYNDAuhY1YYmMiGAIXg0MVnazDQqqhGblHP9c7FTPOBQS5bse
-	dR3/bDRW+A7ULMVSjCIk/vZSW3gtJ+BPmXm6lAZwaywp0=
+	Content-Type; bh=yfnR4f5J5qrRmd7Y0VQuklEvzqrooKhNJa00ntjIhf8=;
+	b=BaHhItfP4Cr8SUBN99K9wfKLESjUGYrMnhQfVViWjvezo7ka93dAz/T/COdN9S
+	snaFx2l78q5n1ITgFa1jokmGNwEYcJbILHiuBN8OQl+JSZjTn3LXi8+PP31qfNx8
+	dgjtItaWxazH6tAn/OAnjNT4CtsylVenItld7Q8AGVxAE=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3H47bEX1mGbYZAA--.52899S3;
-	Thu, 27 Jun 2024 15:16:45 +0800 (CST)
-Date: Thu, 27 Jun 2024 15:16:43 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3X8gFFH1m8I0aAA--.52410S3;
+	Thu, 27 Jun 2024 15:25:59 +0800 (CST)
+Date: Thu, 27 Jun 2024 15:25:57 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
+To: Michael Walle <mwalle@kernel.org>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Li Yang <leoyang.li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/9] arm64: dts: imx8qm: add subsystem lvds and mipi
-Message-ID: <Zn0R2/lcgcSG03CM@dragon>
-References: <20240614-imx8qm-dts-usb-v3-0-8ecc30678e1c@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Priit Laes <plaes@plaes.org>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 00/13] ARM: dts: kontron-samx6i: various fixes
+Message-ID: <Zn0UBS9vx8bJ+6Kc@dragon>
+References: <20240617091341.2375325-1-mwalle@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,23 +46,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240614-imx8qm-dts-usb-v3-0-8ecc30678e1c@nxp.com>
-X-CM-TRANSID:Mc8vCgD3H47bEX1mGbYZAA--.52899S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxEdyUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEh0LZWZv-cwvZQAAsT
+In-Reply-To: <20240617091341.2375325-1-mwalle@kernel.org>
+X-CM-TRANSID:Ms8vCgD3X8gFFH1m8I0aAA--.52410S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw1xAw1UuFykWFy5uF4fGrg_yoW8GFW7pr
+	97WrZ2yF1v9w4ftryqqF9FyayYyw4DAr9rtw1DJasFv3y3Zr17ArZIgws8XFyxZFn5ZrsI
+	q3y7urnYy34rCr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jz1v3UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQcLZWZv-cxcAQAAsF
 
-On Fri, Jun 14, 2024 at 11:06:24AM -0400, Frank Li wrote:
-> Frank Li (9):
->       arm64: dts: imx8: add basic lvds0 and lvds1 subsystem
->       arm64: dts: imx8qm: add lvds subsystem
->       arm64: dts: imx8: add basic mipi subsystem
->       arm64: dts: imx8qm: add mipi subsystem
->       arm64: dts: imx8qm-mek: add cm4 remote-proc and related memory region
->       arm64: dts: imx8qm-mek: add pwm and i2c in lvds subsystem
->       arm64: dts: imx8qm-mek: add i2c in mipi[0,1] subsystem
->       arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
->       arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes
+On Mon, Jun 17, 2024 at 11:13:28AM +0200, Michael Walle wrote:
+> While working on a new PHY support for this board I've noticed quite
+> a few errors. Fix these and introduce an actual board for the
+> module. For now, there was just a dtsi and no actual user of it.
+> 
+> v3:
+>  - fix typos and property order. Thanks Shawn.
+> 
+> v2:
+>  - new patch to fix the node names to make the schema happy
+>  - new patch to fix the PCIe reset line polarity
+>  - new patch to remove the unused and invalid wake-up-gpio property
+>  - add required poperties for the supply voltages to the wm8904 node
+>  - enable PCIe in the ADS2 device tree include
+> 
+> Michael Walle (13):
+>   ARM: dts: imx6qdl-kontron-samx6i: fix phy-mode
+>   ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset
+>   ARM: dts: imx6qdl-kontron-samx6i: fix board reset
+>   ARM: dts: imx6qdl-kontron-samx6i: cleanup the PMIC node
+>   ARM: dts: imx6qdl-kontron-samx6i: fix SPI0 chip selects
+>   ARM: dts: imx6qdl-kontron-samx6i: fix product name
+>   ARM: dts: imx6qdl-kontron-samx6i: always enable eMMC
+>   ARM: dts: imx6qdl-kontron-samx6i: add SDIO_PWR_EN support
+>   ARM: dts: imx6qdl-kontron-samx6i: fix node names
+>   ARM: dts: imx6qdl-kontron-samx6i: fix PCIe reset polarity
+>   ARM: dts: imx6qdl-kontron-samx6i: remove wake-up-gpio property
+>   dt-bindings: arm: fsl: document Kontron SMARC-sAMX6i boards
+>   ARM: dts: imx6qdl-kontron-samx6i: add actual device trees
 
 Applied all, thanks!
 
