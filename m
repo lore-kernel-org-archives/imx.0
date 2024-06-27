@@ -1,48 +1,45 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B420B33
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 06:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AD546450
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 06:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719469746; cv=none; b=s1cj53s0LRlLf+3sSOAzXhxOgWHifsQH+YSpyyEwaAGFPhYC5dRk9JOTvHmyHof0vhjvvpGOdUjgcdH6t2rl/yMeyWr5bIkHyJj89R0AT0Em8QsQcRtQAp0bnUhdc9mqjuU/Z0L6p76/80CPMSccfx+m7KpX4+wgsLZr0N1TSeU=
+	t=1719471508; cv=none; b=f8j0OzYwHAKd49P0aFoAvBb+7jVgJoAXtAJKcs8j0mppYWPo1YQTDEO4jyBmmupCUQLZC4QoPHJtFtDVDpngsJ2WGMMl756fYYoTbFm/aL3H+ZWAhTbp8J/4fI/azfcDnjtwzEO/J2KAz1gkUly7LLsl5S5TnB+wKeF3zHZu/Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719469746; c=relaxed/simple;
-	bh=wHiwBzg0drLuXMvAPru+bat178YvBZzqVOLmGt0Zl6c=;
+	s=arc-20240116; t=1719471508; c=relaxed/simple;
+	bh=CAiHWTasWQsvNes4gquJBgUiczd3fYgut0h3LyWdH10=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fafh7BuriJqYLCq8dQWq+F2zyz5aw4YFQUoUdlemVx7nKkt+AbZGy21TH+my3p73mPwpkfc43h164x/a7fsTE5MtGn6RvY7dVH84G5lrMcThtihaYUuqBBEtvsBIgiwzmDeNGu1BZUMdKN8fWUyzgLmNHY6Y7KvP/kjmlJJHTSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=GYRR4Fqz; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/GojqoqgKVhTmOgKm8LsERVq4KIzsYPrIfZoWLrOjkCYKOYx3tF9s55A82F5UbE6VJr7sCQQo2itIMu9NbwCnuX22HVr9cvY6lFah1TLuTqqilXt0lSffyjmGwxEb44Uuz0xaJMucxWWpQQGNIfsbUtbfV1tRh4+/G8eskcudY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PIRaZpEY; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="GYRR4Fqz"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PIRaZpEY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=4JVbwBMrJBsF2RiES/eofL7TJIZJsypozKg6acb8498=;
-	b=GYRR4FqzDkNp1v7oDKqNrfn9aTuYTBcS9pYvjMeIJk0GfmCpOvdr9diNXmUFDF
-	tJS8yBHis8oy2IxK4vyninFJi+/AAlhZ4jJvsiDlc9840Rlmwl9VrAr6IFENjVEE
-	iM5l9zBkUZJ9GJ+RB1iq8DZjfvoWQQxAPZm+3JpxUx3gw=
+	Content-Type; bh=LsbeIB50EDgsPrzDnKsKFJzpQszBkOYrVjadj/myF5I=;
+	b=PIRaZpEY1NCT+/kZFp4m1lILrLLOfrExLn06eRaO3hABYjq8151HKppNRBLPVt
+	ulsfL9045x2oscTS+0V8/SoaEQXz167ylV/O1KLVnDQ891muiaGbkSoPFOOIHBcE
+	n7mycWSqtGTekBzHRT6vvDR8DDeku14OgOuaTWJYk/Vhs=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgD3vx6aBn1m1VYZAA--.51586S3;
-	Thu, 27 Jun 2024 14:28:44 +0800 (CST)
-Date: Thu, 27 Jun 2024 14:28:41 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3v8ltDX1mxG8aAA--.52621S3;
+	Thu, 27 Jun 2024 14:57:51 +0800 (CST)
+Date: Thu, 27 Jun 2024 14:57:48 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>,
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Vitor Soares <ivitro@gmail.com>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Han Xu <han.xu@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>,
-	linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 6/6] arm64: dts: imx8dxl-ss-conn: add gpmi nand
-Message-ID: <Zn0GmUVgk1Plj5mA@dragon>
-References: <20240520-gpmi_nand-v2-0-e3017e4c9da5@nxp.com>
- <20240520-gpmi_nand-v2-6-e3017e4c9da5@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Vitor Soares <vitor.soares@toradex.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] arm64: dts: imx8mm-verdin: add TPM device
+Message-ID: <Zn0NbIvFdfpMPHAx@dragon>
+References: <20240613134150.318755-1-ivitro@gmail.com>
+ <Zm+gjpsGhzjbEgP8@dragon>
+ <20240617071842.GA4832@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,16 +48,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240520-gpmi_nand-v2-6-e3017e4c9da5@nxp.com>
-X-CM-TRANSID:M88vCgD3vx6aBn1m1VYZAA--.51586S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVaZXUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRwLZWZv-cwmbAAAsJ
+In-Reply-To: <20240617071842.GA4832@francesco-nb>
+X-CM-TRANSID:Ms8vCgD3v8ltDX1mxG8aAA--.52621S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WF17XF15Kw15uFyxtF1fJFb_yoW8Wr4Dpr
+	WSkFs5J397Xr43Cr9Iqwn7ur9xKa1fAr4Duwn8KryUtrnIvF98GF1xGr1xur1q9r4fA3yF
+	kF15ZryS9w1rAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO8nOUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQ8LZWZv-cwmYgAAsM
 
-On Mon, May 20, 2024 at 12:09:17PM -0400, Frank Li wrote:
-> Update gpmi nand and dma_apbh interrupt number for imx8dxl.
+On Mon, Jun 17, 2024 at 09:18:42AM +0200, Francesco Dolcini wrote:
+> Hello Shawn,
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> On Mon, Jun 17, 2024 at 10:33:50AM +0800, Shawn Guo wrote:
+> > On Thu, Jun 13, 2024 at 02:41:50PM +0100, Vitor Soares wrote:
+> > > From: Vitor Soares <vitor.soares@toradex.com>
+> > > 
+> > > Add TPM device found on Verdin iMX8M Mini PID4 0090 variant.
+> > > 
+> > > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 16 +++++++++++-----
+> > >  1 file changed, 11 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > > index 4768b05fd765..c9ae5f0bb526 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > > @@ -227,15 +227,16 @@ &ecspi2 {
+> > >  	pinctrl-0 = <&pinctrl_ecspi2>;
+> > >  };
+> > >  
+> > > -/* Verdin CAN_1 (On-module) */
+> > > +/* On-module SPI */
+> > >  &ecspi3 {
+> > >  	#address-cells = <1>;
+> > >  	#size-cells = <0>;
+> > > -	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+> > > +	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>, <&gpio4 19 GPIO_ACTIVE_LOW>;
+> > >  	pinctrl-names = "default";
+> > > -	pinctrl-0 = <&pinctrl_ecspi3>;
+> > > +	pinctrl-0 = <&pinctrl_ecspi3>, <&pinctrl_pmic_tpm_ena>;
+> > 
+> > Would it make more sense to have tpm pinctrl in node tpm@1 below?
+> It's the pinctrl of the SPI Chip Select pin, not something about the
+> TPM, I think it's correct to have it into the ecspi node.
 
-Applied, thanks!
+The name pinctrl_pmic_tpm_ena seems confusing then.
+
+Shawn
 
