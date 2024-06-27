@@ -1,43 +1,44 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533218121B
-	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D757172F
+	for <imx@lists.linux.dev>; Thu, 27 Jun 2024 07:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719474745; cv=none; b=azeudzel/AG6YdYlOp8YXvT+bgTJkrp+bUJsRonEhCM3GDTcSRTKF9lKcsmFTguRmxr5uLyA2bvhHayRQ9fKzlxlEYvHnGFJxTm7k9xzJtqwuXUbQ4Ak7GhEAGM4h0qKP2VeEYWpPUOROdG8s2TXaM1BLPgPVbRdZtz04yfgyAI=
+	t=1719474765; cv=none; b=TUsIXo+eyRU1s15hv/Bd+LV9dx7Whq3D9vEvsVv3OgI9Kswz3nmGxTnZh/5IJeRoVGIZxEbuKaCcPKTFdLrzOGEHl9GaGX+kr2rK15hdn9U9C88L8Ecb7H8Ef1ub46kyehC41Y0W7TV1YJEu6rOS0gC5xJT/NVboX52iwkDfN/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719474745; c=relaxed/simple;
-	bh=CP61DuAhOiaPLVj/P5oJkJD6WfLnU38En/Bptcpi9xo=;
+	s=arc-20240116; t=1719474765; c=relaxed/simple;
+	bh=GYU8HzIdO9hP2JGYf0FV96iOrnHzrbnLscaU/Hs1bXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A7PlkQyA4VzHUnz1Wov9LpNn2aFVydqj4cTMQyBjkWamehkhC+wJodHYvnRBEzTInehQBm49tj9C6L+w+Dw3WBhkFeCCHp8GbvQNAVj7OJItvEPGre3VQ/FjZALe/qSxfbIniEXjBNGk99YH3nuYbIspYRAA+XGmsaLXSYqRB4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iyHkCtSl; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=SpuQ4JKr/fNdjW/Z1vp+2qgCZsWkIQFCIPmjE8b+Aok7ZS+Im/uKQS5dKcpKXkl7LdsPCMclG1vhW/DKXZr5sTwNk6leXO7r+WGVhhUE8WZ5EtvwpomJg/58vBF95SUxNR7UmrOzB8u03Icb3aKz19xBbx5WnGn9G9jGhZxm7q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=SmeuuByr; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iyHkCtSl"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="SmeuuByr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=Ch/0kjw+ijLB7Q66Qm2SnEbwqYydHBlsULmBzoeBAX4=;
-	b=iyHkCtSlB8SCvD0M1Bx0CMk8Llrgkc6+Yh4HxVdcHgTHs8PU4o2jSyi8KW7XJe
-	lS+KsHkHNEOq0MrC2EiLOUuTfCSsf2hZUFkyUXl/U6rxe+j43+vA2QfGh2jIqlUx
-	QTZSoFNeFqnuqu1je4QrWS2f7hKJ7yDwgFQwiy9j7zZoc=
+	Content-Type; bh=QXWOD1o91C9uwUf55ogz7RKsgNBQyzukXCYzNlkSrzY=;
+	b=SmeuuByrA3RzzJp+BSKvb71mCndt/XQo1w/fuzaVqXpXv1Rft3U1xsVsswJ4cw
+	njUHA39THvCIDQLa5znKVjmYjJ+7EOLWDyStZFgJS/ZVDx7Kd0pf+BnFSYKznvJK
+	54xEalcn0jl7PJ79ZMXqU7eJ8DB8wBnlKHEOemYi/PojE=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3H47lGX1mYN0ZAA--.53086S3;
-	Thu, 27 Jun 2024 15:51:03 +0800 (CST)
-Date: Thu, 27 Jun 2024 15:51:01 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3H44vGn1m8t4ZAA--.53094S3;
+	Thu, 27 Jun 2024 15:52:17 +0800 (CST)
+Date: Thu, 27 Jun 2024 15:52:15 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp-venice-gw74xx: add DP83867
- configuration
-Message-ID: <Zn0Z5em1knqGLO2w@dragon>
-References: <20240618200900.1741251-1-tharvey@gateworks.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp: Fix pgc vpu locations
+Message-ID: <Zn0aL5jz8162ImRr@dragon>
+References: <20240619101045.6317-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,19 +47,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618200900.1741251-1-tharvey@gateworks.com>
-X-CM-TRANSID:Mc8vCgD3H47lGX1mYN0ZAA--.53086S3
+In-Reply-To: <20240619101045.6317-1-aford173@gmail.com>
+X-CM-TRANSID:Mc8vCgD3H44vGn1m8t4ZAA--.53094S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVLvKUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgcLZWZv-czVVAAAsS
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU-o7KDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhELZWZv-cxPuAAAsi
 
-On Tue, Jun 18, 2024 at 01:09:01PM -0700, Tim Harvey wrote:
-> The GW7400 has an onboard DP83867 RGMII GbE PHY:
->  - add RGMII delay and FIFO configuration
->  - add LED configuration required to use them via netdev trigger:
->    two LED's (LED1 and LED2, skipping LED0).
+On Wed, Jun 19, 2024 at 05:10:44AM -0500, Adam Ford wrote:
+> The various pgv_vpu nodes have a mismatch between the value after
+> the @ symbol and what is referenced by 'reg' so reorder the nodes
+> to align.
 > 
-> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> Fixes: df680992dd62 ("arm64: dts: imx8mp: add vpu pgc nodes")
+> Suggested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
 Applied, thanks!
 
