@@ -1,93 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2865B19AA4B;
-	Fri, 28 Jun 2024 17:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964354CB4B;
+	Fri, 28 Jun 2024 19:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719594414; cv=none; b=FxRzpL19syg9WnhjJG8/ZB/LwE0XQ+lnlBNwadwkMA1Tccjsyh2dLwfkxWqRqrBXAisQ1GcUVIx364UVCvrDUJEb+q7F56fh+lxAHYH2269yv5mh+AvMGc2NeQEmYBXSr+yYdmm4Tt6BaUB61yDB9dWJf4WMb5y0ZiZ5VqPg7PI=
+	t=1719603246; cv=none; b=Pq4ey8s4qALlJurFZCEaS4ppnkVeirppOnLPtnn21Qjrxlo5WlEwqzpR0YFoEBZ8x53IDjTi9H2x6OsttUlmJrfKUgugSmzTGjl02J3/lEAbAJ5rNq1JUHLm5mrTQa5OsjD6NMWFEZbPcMeeozd+Tza6Jbni3hBShAh7BXPLdK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719594414; c=relaxed/simple;
-	bh=tuzV+wlKVKinCsa1NBBT834oI6faLS64mAnDCkWoMdg=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DvOLU/QXdbeDX192tSyKcHt6D71n+AwrJHdWiSZEKHQMyGXEup/v9IVdWy0Ii9Tbr2Cvg5+RLWJE7cv7TqNLG2YgYVa7/zLkXpogKv/cYnuxFG88T4TIZbmPBIQlnrq57rFdZTZcWRfqUGNiSwiUcQX+rccka66dWy7flhCiHxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upmW2SU3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719603246; c=relaxed/simple;
+	bh=yjCUTIYEfShWpFf89z1mVEG427+uOb9/A8IYTG9e/NM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxI/vZde9tWqxfTKgi6Lg/VRiMp/X27RXLBV7vDSUrLkO4a1S1UBGENSoi6CYdgDkmUmlRghxVSgo7HMwSVB7TyoBV/BQUa6s6L4ESjKfGZ92oAwAVC3B1ulYBMIBBTFpKEvbUkF2TZFRNYk3+4OM0pV6WB06PdDb3Ojpqst7Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SW7PCzVX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upmW2SU3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E5AC116B1;
-	Fri, 28 Jun 2024 17:06:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SW7PCzVX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0591C116B1;
+	Fri, 28 Jun 2024 19:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719594413;
-	bh=tuzV+wlKVKinCsa1NBBT834oI6faLS64mAnDCkWoMdg=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=upmW2SU3SSRfsMu0ZLekbfgLlUC+h/NfkXvJv6rqSBRZp82hA38zh2lOuijhh4dOL
-	 viZfSpvhMR1eM2p8UAG0MhLJ5ILZAi44Q5YqwHxxJGVf66dFJjaQ8g07wkGhB3E059
-	 ZH7tBLAMr2Q4ifwXKAQ2MXZdJz0HrdONfnTAOpPZK2XcQRhWdWg7iJl/HPmL6EInt6
-	 Yi9HVqDyHYy2hEVbEludaT4RuCGNEYF1Uz6m4C0rPm7HHJZE3ewQ/w2C5t9vCgNBQ5
-	 tn7uKMa/7HAt06/frCRPe0kVXPdqD4h2+/4S7AEmpdNZdxarMThh0BGZ9snUqrqici
-	 Bd6p2Z/So7vrQ==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, shengjiu.wang@gmail.com, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: (subset) [PATCH v2 0/3] arm64: dts: imx8mp: add audio XCVR
- sound card
-Message-Id: <171959441065.130075.14895021485165511530.b4-ty@kernel.org>
-Date: Fri, 28 Jun 2024 18:06:50 +0100
+	s=k20201202; t=1719603246;
+	bh=yjCUTIYEfShWpFf89z1mVEG427+uOb9/A8IYTG9e/NM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SW7PCzVX3hluUKlCIYLBXkd409r8ZtagalI+cC5oRATkdJDzhkspjuEdvljwoAKC3
+	 vQJ6YP+YPTnI5dsUIFpD1ZVwU48sbb7jgwrNVxoffS6u43IRf2AbrH/u2cWXBSnFcH
+	 rsh1ICVvPDoNrqHLF5AA1sB0NAkCq78Xvh5+lXIBJ/LHOlwyS8HS2NbM+5NVU3sB2H
+	 sk17EFxOOkmgv1h6WKuFOcAdyiGcaMsE0liX1Eu9dh+jHH4ZTMo93ZnOuGthcH70E2
+	 cmC8ybSf6k7OOUusaGff9Nv2//61BM93dz8t39YZkNywe9Uo843EKpWeYM5nnj9j3k
+	 hTjcmmuNRi43A==
+Date: Fri, 28 Jun 2024 13:34:04 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: soc: fsl: Convert q(b)man-* to yaml
+ format
+Message-ID: <171960324209.86780.5210954798222723537.robh@kernel.org>
+References: <20240626193753.2088926-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev-d4707
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240626193753.2088926-1-Frank.Li@nxp.com>
 
-On Thu, 27 Jun 2024 17:52:58 +0800, Shengjiu Wang wrote:
-> Add audio XCVR sound card, which support SPDIF TX & RX,
-> eARC RX and ARC RX.
+
+On Wed, 26 Jun 2024 15:37:53 -0400, Frank Li wrote:
+> Convert qman, bman, qman-portals, bman-portals to yaml format.
 > 
-> changes in v2:
-> - use minItems:3 for i.MX8MP and update example
+> Additional Change for fsl,q(b)man-portal:
+> - Only keep one example.
+> - Add fsl,qman-channel-id property.
+> - Use interrupt type macro.
+> - Remove top level qman-portals@ff4200000 at example.
 > 
-> Shengjiu Wang (3):
->   ASoC: dt-bindings: fsl,xcvr: Adjust the number of interrupts
->   arm64: dts: imx8mp: Add audio XCVR device node
->   arm64: dts: imx8mp-evk: Add audio XCVR sound card
+> Additional change for fsl,q(b)man:
+> - Fixed example error.
+> - Remove redundent part, only keep fsl,qman node.
+> - Change memory-regions to memory-region.
+> - fsl,q(b)man-portals is not required property
 > 
-> [...]
+> Additional change for fsl,qman-fqd.yaml:
+> - Fixed example error.
+> - Only keep one example.
+> - Ref to reserve-memory.yaml
+> - Merge fsl,bman reserver memory part
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - fix typo chang
+> - fix typo porta
+> - Add | for reg description
+> - wrap to 80 for reg descritption
+> - memory-region set maxItems: 2
+> - fix regex parttern
+> - drop  See clock-bindings.txt
+> - "see reserved-memory.yaml" change to
+> "see reserved-memory/reserved-memory.yaml in dtschema project"
+> 
+> - A strange thing in fsl,qman-fqd.yaml, if example compatible string
+> change to fsl,qman-fqd, dt_binding_check report below error.
+> 	qman-fqd: False schema does not allow {'compatible': ['fsl,qman-fqd'], 'size': [[4194304]], 'alignment': [[4194304]], 'no-map': True, '$nodename': ['qman-fqd']}
+> 
+> but I replace "fsl,qman-fqd" with "abc", it pass check.
+> ---
+>  .../bindings/soc/fsl/bman-portals.txt         |  56 ------
+>  .../devicetree/bindings/soc/fsl/bman.txt      | 137 -------------
+>  .../bindings/soc/fsl/fsl,bman-portal.yaml     |  52 +++++
+>  .../devicetree/bindings/soc/fsl/fsl,bman.yaml |  83 ++++++++
+>  .../bindings/soc/fsl/fsl,qman-fqd.yaml        |  69 +++++++
+>  .../bindings/soc/fsl/fsl,qman-portal.yaml     | 110 +++++++++++
+>  .../devicetree/bindings/soc/fsl/fsl,qman.yaml |  93 +++++++++
+>  .../bindings/soc/fsl/qman-portals.txt         | 134 -------------
+>  .../devicetree/bindings/soc/fsl/qman.txt      | 187 ------------------
+>  9 files changed, 407 insertions(+), 514 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman-portals.txt
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman.txt
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman-portals.txt
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman.txt
+> 
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/3] ASoC: dt-bindings: fsl,xcvr: Adjust the number of interrupts
-      commit: 288921232dd97bb2e35cff2ee38957db5b3e5ef1
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Applied, thanks!
 
