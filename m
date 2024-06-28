@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16556558BB;
-	Fri, 28 Jun 2024 07:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD3F2D05E;
+	Fri, 28 Jun 2024 07:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719559498; cv=none; b=WOSci48z5Aaep69BWgk+pIxoYS+8sVlkR7MaoIq/mskpwbW3JkfFVdarIuNNz3WAujLyUgm8GuxanurIihRfyZ53+r4EnE9pfzkTX49GWvlk7h+nkhBluL7dRVEwuHrIJelPbij8uD2JGDH/ZmSX6RdNUezT9i6RAGO2ccYCvzk=
+	t=1719559698; cv=none; b=o7bdTxU4vJn0po2/bg9mf8t0I4nZttRpQGxcfmi0MZtj08li1ZCjOaeP8/eQ9Lvm2EooVHNT/c5H8hLunh50u9bt7b28SM1EVcFmnVNZgZ3gXsSx2dygQofhSq39r4a4NPU2VnUcGnUmFBwhzJ4QYBDBc3/9ZHROfe75gUq2/5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719559498; c=relaxed/simple;
-	bh=M7v4UiGH6tVUECVROSIjJLXmbgvVsk07DNnV1qQMklw=;
+	s=arc-20240116; t=1719559698; c=relaxed/simple;
+	bh=P1rkD1ZLttF6haWdELRr7ZVi3OVnI20vQQSBpE8Bt1g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TVN0rSwvyndpXpJf8om3cn9n4+hm+RPUiI8nuW8D4qbsqhZSVu4cbIOT/EiKSHukWP7j4UG5BloV4sjDEOR3QmzX3rzK4um2fCZweoPB7TzBOD8mi4xFO4LS2SLI5VYD5bvtafUwrzAqWyvDLkMneu1sfxcB04W+OTKbeRMdUG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0aA1pgD; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=mZfQO8HVJm/Srj8De6tWBwU/xd2Hb7PYejMw6BC8SZ6DPg44blh6/EJo4948gV5ZG4/pAF0/DIFtuaVQNddRh0/7BkBD/ZI0ZK3Pc30ARYFA5ovljXogISVEvA0Af7JaX9sTv8lJx4+eWCRqmizTGCTt8Kp6eyOFmvC5kqqKtcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGXpFF0K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0aA1pgD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC97C116B1;
-	Fri, 28 Jun 2024 07:24:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGXpFF0K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D08C116B1;
+	Fri, 28 Jun 2024 07:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719559497;
-	bh=M7v4UiGH6tVUECVROSIjJLXmbgvVsk07DNnV1qQMklw=;
+	s=k20201202; t=1719559698;
+	bh=P1rkD1ZLttF6haWdELRr7ZVi3OVnI20vQQSBpE8Bt1g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P0aA1pgDzamPYIv0yLAcM72XRj73ygv81blYgj7eTUKFStQc2FZ5Xq48A+7cnhp/S
-	 DnJid6njTTW2/74GH0DnrSHdCpYJPDjYfmN0cFHCTTvylrNOBhSRquI25lr9K0LGv+
-	 1Ha78DpDGPLRo/e7N94Cj3GJJt4KWGfWjRfNRmkw6zVCD8SXw7w2/y6KwCugYQvYcM
-	 fsrnUh/xh0E2nRVhIYudihU1YlTJ0IKPrls7K/kPQbE4k+Kd0VGR+QdZNC5oBzTEbl
-	 4TQ+2jrq7NbD0GkpDCk1/UOQU8WtRLNzoAr8y5ToypOzEnruiPJ+EgYcYqs0VdbAcG
-	 GurV0OdgVfRNQ==
-Message-ID: <72c29785-eb7a-4cc8-a74c-3aad50129a23@kernel.org>
-Date: Fri, 28 Jun 2024 09:24:52 +0200
+	b=oGXpFF0KO6sH+ORQiqWd2VaIQHoPKHscfNL6tL6UgBDDP7y2I6fCoN/qmHHLudDAc
+	 P8B5VAywvNqQtf7TOBmJTxly+zWLrtkWTwNvekNcqCHSR+3Jr1CUDlEChPJzaCQyqp
+	 iL/I88XvGusxUDaiBUB1cn+4S7+fmllBRk7vXD2c2GQsc+Ea6jPDOyP5OBmeeFX01O
+	 9K7IuYyz4UQSXC+NNmoUcVRExvnRtMsBUM1Z4U5rIw0n97PPa04VvftmXle4d90Un4
+	 hwm9hTcLHpXNxAlOMUkplAVpMP32DeJm9AkuOLaU0PF44tt+ji/E4u8Z84lWVdnXZs
+	 jctb5wkqUeE7w==
+Message-ID: <ead8926a-f56f-4102-b7de-4464dc087d3d@kernel.org>
+Date: Fri, 28 Jun 2024 09:28:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,19 +35,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: fsl-qdma: fix interrupts 'if' check
- logic
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
- <dmaengine@vger.kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: gpio: fsl,qoriq-gpio: add common
+ property gpio-line-names
+To: Frank Li <Frank.Li@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, "open list:GPIO SUBSYSTEM"
+ <linux-gpio@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20240627221217.713633-1-Frank.Li@nxp.com>
-Content-Language: en-US
+References: <20240627202151.456812-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -91,60 +91,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240627221217.713633-1-Frank.Li@nxp.com>
+In-Reply-To: <20240627202151.456812-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/06/2024 00:12, Frank Li wrote:
-> All compatible string include 'fsl,ls1021a-qdma'. Previous if check are
-> always true.
+On 27/06/2024 22:21, Frank Li wrote:
+> Add common gpio-line-names property for fsl,qoriq-gpio to fix below
+> warning.
 > 
-> if:
->   properties:
->     compatible:
->       contains:
->        enum:
->          - fsl,ls1021a-qdma
-> 
-> Change to check other compatible strings to get correct logic and fix
-> below CHECK_DTB warnings.
-> 
-> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var1.dtb:
-> dma-controller@8380000: interrupts: [[0, 43, 4], [0, 251, 4], [0, 252, 4], [0, 253, 4], [0, 254, 4]] is too long
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-kbox-a-230-ls.dtb: gpio@2300000: 'gpio-line-names' does not match any of the regexes: 'pinctrl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/gpio/fsl,qoriq-gpio.yaml
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/dma/fsl-qdma.yaml | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/dma/fsl-qdma.yaml b/Documentation/devicetree/bindings/dma/fsl-qdma.yaml
-> index 25e410a149fce..48dcf1d1f25ce 100644
-> --- a/Documentation/devicetree/bindings/dma/fsl-qdma.yaml
-> +++ b/Documentation/devicetree/bindings/dma/fsl-qdma.yaml
-> @@ -92,8 +92,16 @@ allOf:
->          compatible:
->            contains:
->              enum:
-> -              - fsl,ls1021a-qdma
-> +              - fsl,ls1028a-qdma
-> +              - fsl,ls1043a-qdma
-> +              - fsl,ls1046a-qdma
->      then:
-> +      properties:
-> +        interrupts:
 
-You need here minItems: 5 (that's a new dtschema requirement)
-
-> +          maxItems: 5
-> +        interrupt-names:
-
-You need here minItems: 5
-
-> +          maxItems: 5
-> +    else:
->        properties:
->          interrupts:
->            maxItems: 3
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
