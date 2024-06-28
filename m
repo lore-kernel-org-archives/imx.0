@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CC15C8FC;
-	Fri, 28 Jun 2024 06:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3260B7EF10;
+	Fri, 28 Jun 2024 07:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719556265; cv=none; b=ktKIXfqJf4XhAwoU5FwJ7pmo4nQrW6geKtzUbT6k60iKY7kHL2E3q/uZjzKI5xo/04tZ+ZOcwXwZpoWc4h0OBxRe02OjN05rehr4niocqlrqI/uouRxbdBICutfF3L9k7BEsGm85/ZwO/6Z1187oGQ9U2oUAoeO6NHBcDgEf45w=
+	t=1719559310; cv=none; b=ssb0qf8GAH6KBy+rPsVrmCuZM1FVVLyigPLILWiYFKJIIsKUP490oTe6QtNmGoTKUHoDMe66thLBQ3xvtx7BNh8aNgj7/bJ2GtensCyH/4eS74t3WPVgYI7xKd6NIl49q4sVSMsCjdYo/UMgUydNiY755++AQaD/ZtrT7R07qYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719556265; c=relaxed/simple;
-	bh=IPj8V9mOlzMvkFpYjYiurmdx0muqxFevIN9X8P91Vl8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=WjEqZXH03Znh5Ch/NXugnZVxszuqhwMTs6236Hq81cyK7qgDez/Ab0jClvGVcF6hDKzwfzP7TCj4x3t2C2a2ChhSjXzYF0wzmOyiHCduj7RzQRkXKZbDigiRW33zUl79vE2TjyDM5jqbU5mA0GtfnNHSx0iW8Ky/nxAyj7qDng8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMyGMCQO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719559310; c=relaxed/simple;
+	bh=SYGh3+wgopvebKlBdvpsU2nh/VSvDxCDCRg0tLLkWO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gkad6bq4UahpT4v5xTzhoASRKFeu9227awHoXDDkRSp382NqqiUJ+kcPekJlb+NLDcm2ZfDdYd94UNKSrSsnJjl3lW+0CcdtsTcoqu/xz1NG45H+OyoyifUsnZOalew0tghITC5QhoVeOCzb0HeVmFMp3LxOuk4bE9CScCPCsag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvV4tadm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMyGMCQO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F322C116B1;
-	Fri, 28 Jun 2024 06:30:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvV4tadm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82122C2BD10;
+	Fri, 28 Jun 2024 07:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719556264;
-	bh=IPj8V9mOlzMvkFpYjYiurmdx0muqxFevIN9X8P91Vl8=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=cMyGMCQOprns2pIdaIZj37zwI8hTvjo+tYhz8559I85aTA/p5N3txDY7Jw1tkfxYD
-	 D+nbApsY344CtLCtW0ooI7NkWnCtloB5coBQjwEcN6IAXyY6/9hNzF6AtDVx1BuPTs
-	 zGnLM6AsLjuboobWtKLU9GrkPG+giKIYzm9EtttMp0cg4Y0a2EpmMC8RQs8BJF8Opk
-	 aU28amPDBdX1utJT92Fdcv3HMnzFICkRe4GjHjNGJZEzoQA4IasjDbCDMaldnwMVQr
-	 0F3+pZsLnN/D2rWI6iixulqGyqMHrlgtfzdQ6byh4/9C6XLB+QmtOA5u3YKsUsWqYz
-	 X/4HKz5Ls1OaA==
-Message-ID: <68684d06-0c37-4238-b709-ffecc40fb17b@kernel.org>
-Date: Fri, 28 Jun 2024 08:30:56 +0200
+	s=k20201202; t=1719559309;
+	bh=SYGh3+wgopvebKlBdvpsU2nh/VSvDxCDCRg0tLLkWO0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kvV4tadmHL/IAM0MIkO8N7mutdPMbFOYKoIMlxG+iIKi4hUfSA/+/5WLfUeoJf6o9
+	 Yq6MKD29reDww/dsyMGiCByn8f44uEZSxuMXO7bH+GvhddW6iDUaz28xQbGHlU0l8O
+	 Z9tabKWQFhBlQzDRr1mHOrEAvd65QZ8G2DjYWspzGLgP9bg7jUYYMz7PT/FMOjun19
+	 iLreZ6ZXm4FT90ckdZVp9NsJo95DiEKvOiDtsqBIho/nNiAZYltUkQBYoy1X7pxqtL
+	 69JsovfbAaQUpRRC/+gPrMppB8prpl2tcLwtKkjwY6Xc1NOATBcEbhzoBtQHiv392m
+	 TvHWDWTyOD7xg==
+Message-ID: <8c89d74a-2fb3-40f4-bcd1-7539aee30065@kernel.org>
+Date: Fri, 28 Jun 2024 09:21:44 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,16 +35,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] ASoC: dt-bindings: fsl,xcvr: Adjust the number of
- interrupts
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com,
- broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shengjiu.wang@gmail.com, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
- <1719481981-4069-2-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 1/1] spi: dt-bindings: fsl-dspi: add dmas and dma-names
+ properties
+To: Frank Li <Frank.Li@nxp.com>, Vladimir Oltean <olteanv@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,
+ "open list:FREESCALE DSPI DRIVER" <linux-spi@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240627203308.476437-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -90,18 +91,17 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <1719481981-4069-2-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <20240627203308.476437-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 27/06/2024 11:52, Shengjiu Wang wrote:
-> On i.MX8MP, there are 3 interrupts, the third interrupt is
-> SPDIF wakeup interrupt from PHY
+On 27/06/2024 22:33, Frank Li wrote:
+> Add dmas and dma-names properties because dspi support dma transfer.
+> Fix below warnings:
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var1.dtb: spi@2120000: Unevaluated properties are not allowed ('dma-names', 'dmas', 'little-endian' were unexpected)
+>         from schema $id: http://devicetree.org/schemas/spi/fsl,dspi.yaml#
 > 
-> Add ref: dai-common.yaml for #sound-dai-cells is needed and
-> XCVR is a DAI device.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
