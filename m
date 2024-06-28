@@ -1,68 +1,92 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A4279D1
-	for <imx@lists.linux.dev>; Fri, 28 Jun 2024 02:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFC212B72
+	for <imx@lists.linux.dev>; Fri, 28 Jun 2024 02:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719541767; cv=none; b=sjm4isLtjxTnJDjopfsvwocKrz4iY0yd51aB0DJySvQ0xGmSml5VDzTtRsnGMwHRYQl/pxswP/LNybCt1H1NxHrJw5yVAWdktRCugZc8AdyuBOiPPqlaRT/SDtC061CZtQNLhW94cnIfK5bLH7L0UeXWTtDLYB97Hsc6n4OrEOU=
+	t=1719542093; cv=none; b=Hmh4aOBzOIVLFfmu+xn1/8LZ44Su2GoqbdWeNJUlvdZFSqfYOGdCz53H+tH5sq/YMM0iNILr8BHFZ03Gy88BIxnrcQ/Qe5IKipXl8O7P+Qt8hPMXP2A95r+U+dllCWbC2WdF4AouxceNDvHU8M+/4+1aoFcXTWCHRN+b35i8D8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719541767; c=relaxed/simple;
-	bh=bNXaxGOE7yGzDQ0MM/fWZtxC4sNr5L15KgziOyTpL/Q=;
+	s=arc-20240116; t=1719542093; c=relaxed/simple;
+	bh=+pdk4QsuKrrSmF01Wedd+xXBnOH2tRrw6LCT86hr5bs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XfKsRc2dRC/I0dnnILxFhiFdr6qucbp0lnfy07L/vfoAvi1rctIdeWxz4G3hlExEkFmlLrGsOda0SIUly2bPRoPmqjt050evt4/0X13szje2yUhdlVgxBT93hVVzY7YBsyIq2QGhF/wXoSAJGPvZ/cyT+8KjbH/LIbls+0BlEIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=honHcGUs; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=TbBwSNcqEO+cc+sxaBNvEwGUfwCG4uAEHxtwer9bfOyRMmoZV/eR16vEqkxk6MgX6i5gQl5gZN+7BSCMJrcE6yjNJ74uIF3Qe4PLw4VTHAdwdW4rrvdoSN54+JmRdEKTCLh4ojaKAKDn/qIa4vKaskbNRa1N7/zeIFeHD0gjHB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=etm7XznZ; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="honHcGUs"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="etm7XznZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=HLCPQcwiJ7P6c70+VDNRHU+yLHKQEpLLIYZwJta3OnE=;
-	b=honHcGUshwU0Hdwi5vsrwegLWIY/UM4Oov7pxjUzp3mnZ5aRgB503hDr1skdgX
-	GR+GDbhqndFIu58d+XalL/U7x3FoMYXrBYu3YlrdTipGEn8hMVx69FWs1ZzMMnbf
-	Je9G3dHJqkJJgrnScri5KKPT3DN37mZjqABUcC1UdWllQ=
+	Content-Type; bh=SkBFh4hAPDpC3VZwEVT9p9hKch3/AQhpyjO2Rm2yD94=;
+	b=etm7XznZEEPi9nKDqMtCp/MbKf04+3RlBz4yM6L18tE/jrrQ7MP2DnrhPulPsf
+	DRRMio4wFmFgRGpRjcnhFLtcNK1Ztt89eYMzt0cCNa+HoOAp99vkUPyl+QMmLHre
+	evTSsED5kBb6YxObSEx4x2sczm5gI3QaWfjjqzem3OQUk=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnj5LXH35miRggAA--.1821S3;
-	Fri, 28 Jun 2024 10:28:41 +0800 (CST)
-Date: Fri, 28 Jun 2024 10:28:39 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3P8czIX5meSAgAA--.57314S3;
+	Fri, 28 Jun 2024 10:34:29 +0800 (CST)
+Date: Fri, 28 Jun 2024 10:34:27 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com
-Subject: Re: [PATCH] arm64: dts: imx8mp: Do not reconfigure Audio PLL2 on DH
- i.MX8M Plus DHCOM SoM
-Message-ID: <Zn4f1x+7BHQKgglj@dragon>
-References: <20240625121128.145993-1-marex@denx.de>
+	Conor Dooley <conor+dt@kernel.org>,
+	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 07/13] arm64: dts: layerscaple: add #dma-cells for qdma
+Message-ID: <Zn4hM7rZ75F15WAh@dragon>
+References: <20240626202533.2182846-1-Frank.Li@nxp.com>
+ <20240626202533.2182846-8-Frank.Li@nxp.com>
+ <CAL_JsqJDOgGWqggWXE-_jv6oQW9nekxU-4Fui+2JFZ6DWUqLtg@mail.gmail.com>
+ <CAL_JsqJ1X8rRfVrw0gGeiiQaK+9RekNFSHgXR3zhcNRNw5y9mQ@mail.gmail.com>
+ <Zn2vEe//vELVxRae@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240625121128.145993-1-marex@denx.de>
-X-CM-TRANSID:Ms8vCgDnj5LXH35miRggAA--.1821S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIxpnUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBkMZWZqryPaBwAAsp
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zn2vEe//vELVxRae@lizhi-Precision-Tower-5810>
+X-CM-TRANSID:Ms8vCgD3P8czIX5meSAgAA--.57314S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7XrWkZFW7Wr48Xr1kWF1kGrg_yoW8Jr13pF
+	yIkFWUKr48GF4UAF1q9a1rZFyYyw43Xws5Xr9xG343Kr9I9FnayryY9rs3ury7Zr4xCw1Y
+	vF1UXry3W3sYvwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jnpnQUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhYMZWZv-c9WIwAAsj
 
-On Tue, Jun 25, 2024 at 02:11:09PM +0200, Marek Vasut wrote:
-> The DH i.MX8M Plus DHCOM SoM uses Audio PLL2 to supply clock to CLKOUT2
-> output. Those clock are used to supply on-SoM TC9595 DSI-to-(e)DP bridge
-> with RefClk and must not be reconfigured, otherwise the bridge cannot
-> work correctly. Stop reconfiguring Audio PLL2 on this SoM.
+On Thu, Jun 27, 2024 at 02:27:29PM -0400, Frank Li wrote:
+> On Thu, Jun 27, 2024 at 11:22:57AM -0600, Rob Herring wrote:
+> > On Thu, Jun 27, 2024 at 11:17 AM Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > On Wed, Jun 26, 2024 at 2:26 PM Frank Li <Frank.Li@nxp.com> wrote:
+> > > >
+> > > > Add #dma-cells for qdma to fix below warning.
+> > > >         dma-controller@8380000: '#dma-cells' is a required property
+> > > >
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > >  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 1 +
+> > > >  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 1 +
+> > > >  arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 1 +
+> > > >  3 files changed, 3 insertions(+)
+> > >
+> > > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> > 
+> > Except for the typo in the subject...
+> > 
+> > Frank, while I appreciate the great number of reductions in DT
+> > warnings on FSL platforms you and others have been working on, your
+> > work is sloppy with issues you should find yourself.
 > 
-> Fixes: f560da940e32 ("arm64: dts: imx8mp: Initialize audio PLLs from audiomix subsystem")
-> Signed-off-by: Marek Vasut <marex@denx.de>
+> I found the typo after I sent yesterday. I planned fix it after collect
+> some comments. It was already in shawn's tree. I hope shawn can help fix
+> it.
 
-Applied, thanks!
+s/layerscaple/layerscape
+
+Fixed it up.  Thanks for spotting it, Rob!
+
+Shawn
 
