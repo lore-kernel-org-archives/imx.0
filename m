@@ -1,85 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E421586D3;
-	Fri, 28 Jun 2024 12:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7308619B5A2;
+	Fri, 28 Jun 2024 14:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719578331; cv=none; b=LhXvvwvtPFG4mAZDXyHZIFqM+YDMsasheHQ3VLqSu0IEqZphf7KLsIdevXspyr3WFPrlqgm+B+GGIOEH1a1YlH+ngThA36ag0qm+eOzOtClbDU7uO6/HxgbPgo1HeXq09KfgapDVWPe4z35OecvCa9CL0IA/6j6EK8YvXcdL5hk=
+	t=1719583800; cv=none; b=h2ffSy3fu+QKMcZqyipBw7r8VNyHn9WzQq+ji7XiSJenhGk+H8VdvCwlVOQR8Z4JdyHmKdmOU2m/dYh9GsfavLllKwVKNvtSoDvu9XucZLFnyQQ02WkrjtCLJ3AvabPO8zInsIYnLh415fsdyj7ZsAev9dVQPfBAHdSXsiwrpbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719578331; c=relaxed/simple;
-	bh=v6Tmwm2SOnpAxDFJbKcNvIWNVRmLAY0tK6sWL8pyKhI=;
+	s=arc-20240116; t=1719583800; c=relaxed/simple;
+	bh=uOtQMuL1X1bCXgLRk8CEj7G6Dj5LK1iiftQXY+Rv9Lk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZLlILYj+KfW5K9bQwVPhVPBjC7vcv+NSUOEAr9K6D+y9oRI3XETFIw/xqaxPLbBphlY1GMqURsjKOVukMXX/8JOETaGRZNUQYH0LqpfbpGamR4R1UHbVNHOh9v+V8MVokjJcak7mJ5ro4HrT5Pb3IxQVVHSTaikrB/gfirwdBFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iV9LUABN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1omIVBGRdVtnLPTrt8BKY8z2/S214iMGylhI6a2nK5V/scEPFa+dZDWkKN5sWOlvuitvd3MyOlZYviK1wRYtDVOzSH88mGM/Q++G+ONQ23nFZNubvaaGjPnPfjhdRP1Sqcrl1wNNpQn+sKg0w4Gt3JuG0JabTQuxbck87X42uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Ahnfd0qh; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iV9LUABN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74767C116B1;
-	Fri, 28 Jun 2024 12:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719578330;
-	bh=v6Tmwm2SOnpAxDFJbKcNvIWNVRmLAY0tK6sWL8pyKhI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iV9LUABNUwxUeCSVH2+KO0en83O3mEy1tn0QNmBWn27DVjzBkNXW1DpPFGdKmYzqf
-	 aYM4W4FAWV39OgEks8UlCC1cbkoYDQ4JdRafnQKLnfDKTPwe9IUi6fPc+T5xonWG9e
-	 ViPTle9+gqvwtdoLkiYdLUZh1ydWPErX0Crq+XD/1uI6ALC9D/p1MPPJOfXurMLGC7
-	 C5nUxoPxer+/h2WvMF7glkcUymgm24tFW4JYDKPnjz0rGlqwX4v5VPcHi52Z7w+1Xc
-	 ke2w/mWeQAXME9068ycq8Z3BFRHe1PW5RGtGkjgOkKYVgPzc0a6cKJ0nXaqvbMcfsu
-	 iFRy0Gc1gy94A==
-Date: Fri, 28 Jun 2024 13:38:45 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Ahnfd0qh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=p9/TdaF6sDe7VwbrSuMbzC40JZtDM24SJtp78alf1DY=; b=Ahnfd0qh/15hFWKLitt7TYAlxC
+	qlfisPoWXjQK5TrxnqMA34GdmjB78L1VZufe8mes3tP3D0HqwL8NsJB8dQLCd6xaTNwebKYge8dhQ
+	9VtTKjAP/uETAaHtjbITw3pVgalTT1z0gQD8yL7eB0DQEhh4eaSCQlFFbreP826Nmops=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sNCIS-001HzG-5N; Fri, 28 Jun 2024 16:09:52 +0200
+Date: Fri, 28 Jun 2024 16:09:52 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Marek Vasut <marex@denx.de>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"open list:FREESCALE DSPI DRIVER" <linux-spi@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] spi: dt-bindings: fsl-dspi: add dmas and dma-names
- properties
-Message-ID: <195094ea-a80e-41f1-acaf-5fc54189f80b@sirena.org.uk>
-References: <20240627203308.476437-1-Frank.Li@nxp.com>
- <20240627215338.qrry6zpkusw5nazw@skbuf>
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@dh-electronics.com" <kernel@dh-electronics.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] arm64: dts: imx8mp: Update Fast ethernet PHY MDIO
+ addresses to match DH i.MX8MP DHCOM rev.200
+Message-ID: <6687963b-1cbf-4093-aa8d-b90ce9ba7c0b@lunn.ch>
+References: <20240627233045.80551-1-marex@denx.de>
+ <AM6PR04MB5941804BFE1CC6F72E776F9588D02@AM6PR04MB5941.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kaMkPeSm3pq+liID"
-Content-Disposition: inline
-In-Reply-To: <20240627215338.qrry6zpkusw5nazw@skbuf>
-X-Cookie: divorce, n:
-
-
---kaMkPeSm3pq+liID
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <AM6PR04MB5941804BFE1CC6F72E776F9588D02@AM6PR04MB5941.eurprd04.prod.outlook.com>
 
-On Fri, Jun 28, 2024 at 12:53:38AM +0300, Vladimir Oltean wrote:
+On Fri, Jun 28, 2024 at 01:01:49AM +0000, Peng Fan wrote:
+> > Subject: [PATCH v2] arm64: dts: imx8mp: Update Fast ethernet PHY
+> > MDIO addresses to match DH i.MX8MP DHCOM rev.200
+> > 
+> > The production DH i.MX8MP DHCOM SoM rev.200 uses updated PHY
+> > MDIO addresses for the Fast ethernet PHYs. Update the base SoM DT
+> > to cater for this change.
+> > Prototype rev.100 SoM was never publicly available and was
+> > manufactured in limited series, anything currently available is rev.200
+> > or newer, so it is safe to update the DT this way.
+> > 
+> > Signed-off-by: Marek Vasut <marex@denx.de>
+> > ---
+> 
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-> and FWIW, I noticed this as well, but didn't want to put yet another
-> roadblock in the conversion of a binding which was way overdue.
-> I was planning to send a patch as well, once the binding was merged.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-If I've seen a report that a new binding introduces errors then I'm very
-unlikely to apply it, I'd guess that's true for other maintainers too -
-it's probably best to fix reported errors promptly by default.
-
---kaMkPeSm3pq+liID
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ+rtUACgkQJNaLcl1U
-h9AJTQf+PEHTn93k4qLukGylGhh845NbqrD670qzR5ZpFpnl8m+8qo+eWuybYaP0
-UqbUOuZWz4AMYpNzqyXSRZjV4m3FHB5cC4o2jG4foJcdbGhuvEG0JIw1JYPEDUei
-73a+GhuspCYVFFBMhpMxUk5nispBSapETUPcZb/1xmiseM1TV6l4VEnaSFQ9Twdu
-k6dhWgyg2yIYovFaXjxYpn5eLfR102i3Ua2o1Wp02qgV23jYZ3pGHEUn2CkAdGsP
-RC/FI0AzSyPphTxvVCRr6yDpK7nZ96cxeLIoj9333nYt7fFP5FSzaqpVQ87qr1LF
-7EMM5uHx9jM00aHrVEmX5oEDw2TBRw==
-=Uh4I
------END PGP SIGNATURE-----
-
---kaMkPeSm3pq+liID--
+    Andrew
