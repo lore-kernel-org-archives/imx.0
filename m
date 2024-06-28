@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BE35FBB1;
-	Fri, 28 Jun 2024 07:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E3748788;
+	Fri, 28 Jun 2024 07:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719560343; cv=none; b=maNf8ZRXXq/Y1qZFSptepnD59DLFLU8A5h/5z2AcQTa2dE+OXdByj9lpYUGgGs/ldICRa9XpCmOUQoAjlew7YbWFXhuUNCsKWObn0OeZ+u7ieDm7PgcxwiUIkQgNckSHf6DOFGmLVd8gHbtsE2CbJrdtnTevKiKycgtfdb1SWBI=
+	t=1719560649; cv=none; b=XicOETAP+vi3FBFon9GRnVvqQylVkeHlcL+j/MaulznkfaaK+ZDFF0+s611ec9u1ZuAWMc2eMQqBIKB3sgScUcp38nrLThcfwEecnDvTNFKW4299qAMB0RGxATV7yztQfSFFYDHB2PzqXcjZFwss80lsO3jFzC51oNWrfV7KhOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719560343; c=relaxed/simple;
-	bh=dMpnGkbwBhBOmnWPOOQH3m4F6wD2W+T9VXI4HrxWb6Y=;
+	s=arc-20240116; t=1719560649; c=relaxed/simple;
+	bh=QOeIsWSJ98jNBCeKEpi9wSDKCZFBLYX7OBvTI8XAcRk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zd195SXpNFS+RUQxmTAyukirQpc3l0wKf5vDYZWQF71en2ezmtB0ihLHP3iYTlohwu0yL1wcaNmnLg5rk9cR5wQBbbUnIphEaf57zPNJKejo87zQJcHVAmHlJarQWIZpg0hzY3wqDhr1kyVXfjitPYEb6lcpuwaW/IEGjxc7jGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTuGL549; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=vEvfr77kXyi+LSgeUpRKAlL8hUBlUbtPv/kIoAKAmdweBYu4pYzQ/n8cblXIrXqlnakpsCzSt1w4CQKcg8x6pmBL9Ob2jbjTKC2Rp24bRtUnPcJbiImxHA38mXW8AgPXqV4W3UJ2ZDAk/GkLx+8CE5AtS5cNF4IIPSmlNMbLvEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzEZYGFq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTuGL549"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5A3C116B1;
-	Fri, 28 Jun 2024 07:38:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzEZYGFq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A73DC116B1;
+	Fri, 28 Jun 2024 07:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719560342;
-	bh=dMpnGkbwBhBOmnWPOOQH3m4F6wD2W+T9VXI4HrxWb6Y=;
+	s=k20201202; t=1719560648;
+	bh=QOeIsWSJ98jNBCeKEpi9wSDKCZFBLYX7OBvTI8XAcRk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uTuGL549DcSV7rSjtp7trSfkRXhEzF2SM9aWwSPe5G4Ct/lUsvueM2Uk2LG03OF6C
-	 ir2tnS9enuakcioB+InIGtR7GWUAwk7lOEoEOEEmTfOQ3ox4m+0EWu9Nog55gY1vJ3
-	 C7ER9sZtguAoaVJ02zP3hUiTTAvaBzDRcwfgitJfez1aDcE23sc3qy663ZoQhPtQJN
-	 4pcuplRvikNKBxDskrR1ZzfI5Z52V7793DAUwOjP5vcDPXi0XSX7JTIk0Cs/84GxUv
-	 puPQMiHRfZp2/Z3eMa3DLXl7ItPdgDsqypBKTeWyE4Gmalqv1zy12YzYuJ4LSI/I/X
-	 ukCr/vqgrDTHg==
-Message-ID: <60f9e733-f5bd-4bfc-9bd5-94ae18bb3901@kernel.org>
-Date: Fri, 28 Jun 2024 09:38:54 +0200
+	b=CzEZYGFqPTORPWbSrIZILcw45UObLVIlXry3yV9oH2lw1jz5s9re8o7ed/vPuS1mm
+	 c4XowgdVX5fVAvi8wtVaOllJ8JOD/zY9hjt48rMJk7Mjt+xM954Ctf9igGx4dNjhO3
+	 PIz9EZQP8VZD60+oTXyQ+irfKvWwCwMG818IAwa368Uj3Zm8GhDvtmC6gkq8BFJ8wq
+	 uU9Imp8gqmgHr7Shju69aBpPdwxH3+p48v/nf0mB8+Qn/bEojXSJHN5KILrsV3pfcm
+	 dLO07ePG4vGI3JcIUAQpP1H+wAcKwHJ0rfsd0tJjrOJzEVEIwMJW3GtgLV8PWca97V
+	 Gm57GI1//G98w==
+Message-ID: <79840ef5-d80a-46f8-9cb8-bf34bef0404a@kernel.org>
+Date: Fri, 28 Jun 2024 09:44:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,19 +35,14 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] clk: imx93: Move IMX93_CLK_END macro to clk driver
-To: Pengfei Li <pengfei.li_1@nxp.com>, krzk+dt@kernel.org, robh@kernel.org,
- abelvesa@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- ping.bai@nxp.com, ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com,
- frank.li@nxp.com
-Cc: kernel@pengutronix.de, festevam@gmail.com, linux-clk@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240627082426.394937-1-pengfei.li_1@nxp.com>
- <20240627082426.394937-2-pengfei.li_1@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v2 1/1] dt-bindings: usb: Convert fsl-usb to yaml
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
+ gregkh@linuxfoundation.org, imx@lists.linux.dev, krzk+dt@kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, robh@kernel.org
+References: <20240627144815.4014179-1-Frank.Li@nxp.com>
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -91,30 +86,24 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240627082426.394937-2-pengfei.li_1@nxp.com>
+In-Reply-To: <20240627144815.4014179-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 27/06/2024 10:24, Pengfei Li wrote:
-> IMX93_CLK_END was previously defined in imx93-clock.h to indicate
-> the number of clocks, but it is not part of the ABI, so it should
-> be moved to clk driver.
+On 27/06/2024 16:48, Frank Li wrote:
+> Convert fsl-usb binding doc to yaml format.
 > 
-> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-> ---
+> Additional change:
+> - Remove port0 and port1 from required list.
+> - Use common usb-drd.yaml for dr_mode property
+> - Keep two difference examples.
+> - Add interrupts to required property list.
+> - Remove #address-cells and #size-cells in example.
+> - Use predefined irq type macro.
 > 
-> Notes:
->     Change for v2:
->     - Use pre-processor define to simplify code.
-> 
->  drivers/clk/imx/clk-imx93.c | 2 ++
->  1 file changed, 2 insertions(+)
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Are you sure this builds fine? If you need to define it here, it means
-some part of that unit file already uses the define. If so, you include
-the header. If you include the header, you should see fat warning.
-
-Really, people, just build your patches...
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
