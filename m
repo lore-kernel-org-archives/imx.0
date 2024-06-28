@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964354CB4B;
-	Fri, 28 Jun 2024 19:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E936F2EA;
+	Fri, 28 Jun 2024 19:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719603246; cv=none; b=Pq4ey8s4qALlJurFZCEaS4ppnkVeirppOnLPtnn21Qjrxlo5WlEwqzpR0YFoEBZ8x53IDjTi9H2x6OsttUlmJrfKUgugSmzTGjl02J3/lEAbAJ5rNq1JUHLm5mrTQa5OsjD6NMWFEZbPcMeeozd+Tza6Jbni3hBShAh7BXPLdK4=
+	t=1719603272; cv=none; b=J0oGAvOGWd+cjSx0bG02v2DbC7t74lVul8jGFfG8x7ja8ahQ+q9ePAASA8E2MXAl0yEdFAuqxqMlXeroCEKS5Tnhec6l8f3sbUgM29Oez2exPUwOSGvI0kNqOT5jL56tz96C5kA4x8g0jc20c89I4nqQF7lAOUWWBNtBo0AcmkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719603246; c=relaxed/simple;
-	bh=yjCUTIYEfShWpFf89z1mVEG427+uOb9/A8IYTG9e/NM=;
+	s=arc-20240116; t=1719603272; c=relaxed/simple;
+	bh=C7EWKeZ/Itf/nMkSN+WrPJfljzpdLEJL6x6j14lwBmQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kxI/vZde9tWqxfTKgi6Lg/VRiMp/X27RXLBV7vDSUrLkO4a1S1UBGENSoi6CYdgDkmUmlRghxVSgo7HMwSVB7TyoBV/BQUa6s6L4ESjKfGZ92oAwAVC3B1ulYBMIBBTFpKEvbUkF2TZFRNYk3+4OM0pV6WB06PdDb3Ojpqst7Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SW7PCzVX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qlGIChWUO6WT0JSNMafPtHioW6j6Oc59eSHsRuyknTNx7wXEAzD2GJKCwp0ea2cszZ98xZrKsLYuK5jALLsCggJR1LoC8q8elHWvPTdQl9xxrKa2QDNd/q0C4l5K0BxL9GzAry6m7fnSqEV3PAlkJFYD9Z/AFWz1nZxW2A3Vu4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIufw0gN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SW7PCzVX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0591C116B1;
-	Fri, 28 Jun 2024 19:34:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIufw0gN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33053C116B1;
+	Fri, 28 Jun 2024 19:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719603246;
-	bh=yjCUTIYEfShWpFf89z1mVEG427+uOb9/A8IYTG9e/NM=;
+	s=k20201202; t=1719603271;
+	bh=C7EWKeZ/Itf/nMkSN+WrPJfljzpdLEJL6x6j14lwBmQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SW7PCzVX3hluUKlCIYLBXkd409r8ZtagalI+cC5oRATkdJDzhkspjuEdvljwoAKC3
-	 vQJ6YP+YPTnI5dsUIFpD1ZVwU48sbb7jgwrNVxoffS6u43IRf2AbrH/u2cWXBSnFcH
-	 rsh1ICVvPDoNrqHLF5AA1sB0NAkCq78Xvh5+lXIBJ/LHOlwyS8HS2NbM+5NVU3sB2H
-	 sk17EFxOOkmgv1h6WKuFOcAdyiGcaMsE0liX1Eu9dh+jHH4ZTMo93ZnOuGthcH70E2
-	 cmC8ybSf6k7OOUusaGff9Nv2//61BM93dz8t39YZkNywe9Uo843EKpWeYM5nnj9j3k
-	 hTjcmmuNRi43A==
-Date: Fri, 28 Jun 2024 13:34:04 -0600
+	b=lIufw0gNnTCeWAgM9QbJEGKuwG4gx/hPPI3q5+nTY0lzC1KW7jXK0D58SOO3LiqSY
+	 M4Fgy0glUlArpTSRuEu41x5i4SHVXIjR6TwzTs/sYi4cGQu7Ybklxod8BxrLQEP3xx
+	 cLiMxA/np1RbuJPa4CK9EyEm6JKITQ/DbgIwORtHJIhoRzAsSxEcjTIFtGQBm93Ut0
+	 TF/PWX3UfkgaHkhdhjdT2Bi30aACis316tco7JGu8yr8ZMkdkO2FwjYXy9rMggPqVG
+	 BzBKWnai0x3+yWKXT1HDnMctjFvW+hongVAXqdTzzz1N2k1MztxHGVn7nygmUfOCVP
+	 S2lu/baDT+rtw==
+Date: Fri, 28 Jun 2024 13:34:29 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] dt-bindings: soc: fsl: Convert q(b)man-* to yaml
- format
-Message-ID: <171960324209.86780.5210954798222723537.robh@kernel.org>
-References: <20240626193753.2088926-1-Frank.Li@nxp.com>
+Cc: krzk+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	krzk@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+	conor+dt@kernel.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: interrupt-controller: convert
+ fsl,ls-scfg-msi to yaml
+Message-ID: <171960326528.87484.2982631771011170699.robh@kernel.org>
+References: <20240627144207.4003708-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,68 +44,35 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240626193753.2088926-1-Frank.Li@nxp.com>
+In-Reply-To: <20240627144207.4003708-1-Frank.Li@nxp.com>
 
 
-On Wed, 26 Jun 2024 15:37:53 -0400, Frank Li wrote:
-> Convert qman, bman, qman-portals, bman-portals to yaml format.
+On Thu, 27 Jun 2024 10:42:07 -0400, Frank Li wrote:
+> Convert device tree binding fsl,ls-scfg-msi to yaml format.
 > 
-> Additional Change for fsl,q(b)man-portal:
-> - Only keep one example.
-> - Add fsl,qman-channel-id property.
-> - Use interrupt type macro.
-> - Remove top level qman-portals@ff4200000 at example.
-> 
-> Additional change for fsl,q(b)man:
-> - Fixed example error.
-> - Remove redundent part, only keep fsl,qman node.
-> - Change memory-regions to memory-region.
-> - fsl,q(b)man-portals is not required property
-> 
-> Additional change for fsl,qman-fqd.yaml:
-> - Fixed example error.
-> - Only keep one example.
-> - Ref to reserve-memory.yaml
-> - Merge fsl,bman reserver memory part
+> Additional changes:
+> - Include gic.h and use predefined macro in example.
+> - Remove label in example.
+> - Change node name to interrupt-controller in example.
+> - Fix error in example.
+> - ls1046a allow 4 irqs, other platform only 1 irq.
+> - Add $ref: msi-controller.yaml
+> - Add #msi-cells.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
 > Change from v1 to v2
-> - fix typo chang
-> - fix typo porta
-> - Add | for reg description
-> - wrap to 80 for reg descritption
-> - memory-region set maxItems: 2
-> - fix regex parttern
-> - drop  See clock-bindings.txt
-> - "see reserved-memory.yaml" change to
-> "see reserved-memory/reserved-memory.yaml in dtschema project"
-> 
-> - A strange thing in fsl,qman-fqd.yaml, if example compatible string
-> change to fsl,qman-fqd, dt_binding_check report below error.
-> 	qman-fqd: False schema does not allow {'compatible': ['fsl,qman-fqd'], 'size': [[4194304]], 'alignment': [[4194304]], 'no-map': True, '$nodename': ['qman-fqd']}
-> 
-> but I replace "fsl,qman-fqd" with "abc", it pass check.
+> - sort compatible string
+> - add ref to msi-controller.yaml
+> - add msi-cells
+> - add interrupts description
+> - remove msi-controller, which already in msi-controller.yaml
 > ---
->  .../bindings/soc/fsl/bman-portals.txt         |  56 ------
->  .../devicetree/bindings/soc/fsl/bman.txt      | 137 -------------
->  .../bindings/soc/fsl/fsl,bman-portal.yaml     |  52 +++++
->  .../devicetree/bindings/soc/fsl/fsl,bman.yaml |  83 ++++++++
->  .../bindings/soc/fsl/fsl,qman-fqd.yaml        |  69 +++++++
->  .../bindings/soc/fsl/fsl,qman-portal.yaml     | 110 +++++++++++
->  .../devicetree/bindings/soc/fsl/fsl,qman.yaml |  93 +++++++++
->  .../bindings/soc/fsl/qman-portals.txt         | 134 -------------
->  .../devicetree/bindings/soc/fsl/qman.txt      | 187 ------------------
->  9 files changed, 407 insertions(+), 514 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman-portals.txt
->  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman.txt
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
->  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman-portals.txt
->  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman.txt
+>  .../interrupt-controller/fsl,ls-msi.yaml      | 79 +++++++++++++++++++
+>  .../interrupt-controller/fsl,ls-scfg-msi.txt  | 30 -------
+>  2 files changed, 79 insertions(+), 30 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,ls-msi.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,ls-scfg-msi.txt
 > 
 
 Applied, thanks!
