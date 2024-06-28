@@ -1,55 +1,52 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FFB1DDE9
-	for <imx@lists.linux.dev>; Fri, 28 Jun 2024 15:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CE71DDCE;
+	Fri, 28 Jun 2024 15:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719587480; cv=none; b=ZUvxFRgmxpbRKf0VY5zEbTMdbj+feXUjj5maxKj0vKjAB+ex7XFW0bbXZgIr8/C86UlCu/PWq1tq0K10CrGrMqJH06EckK7KGFRPbUxH3EDjADLH0qjTqxrwcsaCMldDy4Lx244G+x6hbhVKDRU8XqC3C5pX5NzeAx70uecFFFI=
+	t=1719590322; cv=none; b=HpqztHRvvcz82xPFyqaBVgMjQ4uhxrkA31brTi/GCjitr8g2PufXp4RJIXxGvv4Ys/y4cC9JTloolh996qAxsJ4MFiRQd0cc/mHiJ50oUVAYbludWE+smhrbxOZ5UhDVYd9nvAWQTkIAvokHw4Id9J9X0/oMjGwsCVtTt/OSR8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719587480; c=relaxed/simple;
-	bh=IoUQMkRlutwZpLhi+B8muMB2qxCoEdTw4U8Kbs1pSW0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=q73LLhIyuqyeTZheBb71nytsOpnjKgTG9tOlIAn8poB3CEaGukawoGYWD8IH2pNDZ92RWu6FbKYn5dZsmjGSU9YuEaee9ZKgFUcnLHykqIMf8M2nOCUgp0zgXMlNxolsKSDya2CY2/0O5e4xhu0bnb/Qyykg516YduaG+10ePpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=WIGC+QvX; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1719590322; c=relaxed/simple;
+	bh=f/e4U8iAuP+2TmfcKdxe7mT1z7tLie+Lb2MQm83FeRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t2ZicU54lN8TjCzCiXANfYSRWSu8pcvFGUwHsNg1FeJCJnDvYwo/tfP+EvFxkn15EWXw+pvsqpX5FQRVQKScyP0OZv4zvl17Sq94VTf6TeFn4MaBL1uuiHcqCcWOLRjgYqDndSNMTcl0D5j+34Qqp1bfHgVdKypHF7DrwL9/HcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4+Nw2Pj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="WIGC+QvX"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6b5932383e0so15321766d6.0
-        for <imx@lists.linux.dev>; Fri, 28 Jun 2024 08:11:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1719587478; x=1720192278; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ewUlL1qV/fAyQa0r+zSGNQy6ZDoRG0k1rfyTSSVFaRw=;
-        b=WIGC+QvXnIkH90j60lBGtnCoo21slRcJinFycRhslatXQOfShOxFYND2vw1C5/Wgoq
-         hdm3FJVO44GOV+qAALmN5535MVo9Ta0JiVeTl8rN/eTxjy1Q/Vvlpf4GEUptwt7uuAW1
-         J+EwCAtRyMJPJy/PXF/WrPXJKYGY5k5uIR0ck=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719587478; x=1720192278;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ewUlL1qV/fAyQa0r+zSGNQy6ZDoRG0k1rfyTSSVFaRw=;
-        b=tckdbLBuDNlQK7CHmKLptQ5yHzteyOKdc4YyYdOZwP+Cafkyna7HKJln5Ywf/Df7+k
-         7aGJRIVrR+gGaUK762ZpAG279r+DHtBu1w0LdBADoGzphkgThQlbJ6hVNiHyHjvcbQb+
-         09ZsFkftP8d2dxGYnRIP8yIxQUWiPkSvSc8sGHZQ+XRYtzNulAUX85Q7NJVgKGSU27UD
-         rAqt9y+QTX48jefZqK+WjQdis5Fqq59P+BXfeCGWJfLeS7lJHthFhR52e4cFvxZoYxwV
-         X1zaBtMEVVj6AaJHsyrKTlz1I7aE0PRu390Il1W3lkVQ7NzbifZUlIgxh4ASrF5orDAp
-         w2Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVgK6sVBWk6vbB5vY0iiB486Uj7NDfJcN2X/8ilobojR2ko8coAr5i7Lw8zn8SVdMvLQT6edr6kGKAjMcI9rGlOFRo3
-X-Gm-Message-State: AOJu0YzOyWLAovoCx9Y9ont7sv32JB5x2jHaPQvkxhLprWrQmkOLLD5V
-	epABLfWjV+rwNBiNsvG1+0+Uq+xtof2iQv8A86Sl2bncFc6JyqmzSrk+UWQBEA==
-X-Google-Smtp-Source: AGHT+IGWfSOemKkZb5msOxo57P5Pa0H8aUEVN9sUgcscdSX3cMREFWR8el+dHT96RwEANwnK0nKXcA==
-X-Received: by 2002:a05:6214:224c:b0:6b5:101c:6473 with SMTP id 6a1803df08f44-6b5a5405c0cmr32591476d6.2.1719587477714;
-        Fri, 28 Jun 2024 08:11:17 -0700 (PDT)
-Received: from denia.c.googlers.com (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b59e564455sm8532496d6.42.2024.06.28.08.11.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 08:11:17 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 28 Jun 2024 15:11:15 +0000
-Subject: [PATCH] media: imx-pxp: Rewrite coeff expression
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4+Nw2Pj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C906C116B1;
+	Fri, 28 Jun 2024 15:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719590322;
+	bh=f/e4U8iAuP+2TmfcKdxe7mT1z7tLie+Lb2MQm83FeRE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=c4+Nw2PjtC6C8bWhaLxBPpyO6vQ9boOxSB/6VrfhUazxEfJu/+HOZuscLns+tfZLI
+	 TPA9wanTng9zSvzPG2MdLqVC3ohD+/AyEzLDZEKuLwzwIujddV13SecOQh+OwmjYWU
+	 tQ4o0wvqLBbiRemJYX3mZWT/oWVRf87aSxobcb5z4WXCUKPP+BjTmFYTg2Zyr8VXPJ
+	 G9jo/upSz85dClRRY+S7u2xLC74CdDoATU1XFDD603X7F7vGhurRSx2a9yp17CF/eq
+	 XWE+BkO8PUmLCXv0L/jQKc71Oa47S79iTKiz5SBesf2Hdg7HFy5ChGpZl0WY98AzKo
+	 zgL+3Mu1fcYoA==
+From: Kees Cook <kees@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org,
+	llvm@lists.linux.dev,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+Date: Fri, 28 Jun 2024 08:58:34 -0700
+Message-Id: <171959031201.3280156.13125871408921524311.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,75 +54,29 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240628-gcc5-v1-1-7cd56f04a6a8@chromium.org>
-X-B4-Tracking: v=1; b=H4sIAJPSfmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDMyML3fTkZFNdc8NESzOLZHOLVEsLJaDSgqLUtMwKsDHRsbW1AEhi88h
- WAAAA
-To: Philipp Zabel <p.zabel@pengutronix.de>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
- Ricardo Ribalda <ribalda@chromium.org>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
-GCC5 cannot figure out that the expressions are constant, and that
-triggers a build failure. Rewrite the expressions.
+On Wed, 29 May 2024 14:29:42 -0700, Nathan Chancellor wrote:
+> Work for __counted_by on generic pointers in structures (not just
+> flexible array members) has started landing in Clang 19 (current tip of
+> tree). During the development of this feature, a restriction was added
+> to __counted_by to prevent the flexible array member's element type from
+> including a flexible array member itself such as:
+> 
+>   struct foo {
+>     int count;
+>     char buf[];
+>   };
+> 
+> [...]
 
-The following gcc5 error is workaround:
+Applied to for-linus/hardening, thanks!
 
- #define BM_PXP_CSC1_COEF0_YCBCR_MODE 0x80000000
-                                      ^
-    BM_PXP_CSC1_COEF0_YCBCR_MODE |
-    ^
- #define BM_PXP_CSC1_COEF0_YCBCR_MODE 0x80000000
-                                      ^
+[1/1] tty: mxser: Remove __counted_by from mxser_board.ports[]
+      https://git.kernel.org/kees/c/1c07c9be87dd
 
-drivers/media/platform/nxp/imx-pxp.c: In function 'pxp_setup_csc':
-drivers/media/platform/nxp/imx-pxp.h:582:38: error: initializer element is not constant
-drivers/media/platform/nxp/imx-pxp.c:374:4: note: in expansion of macro 'BM_PXP_CSC1_COEF0_YCBCR_MODE'
-drivers/media/platform/nxp/imx-pxp.h:582:38: note: (near initialization for 'csc1_coef_bt601_lim[0]')
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
-While implementing media-ci, we have found this build error with gcc5.
----
- drivers/media/platform/nxp/imx-pxp.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Take care,
 
-diff --git a/drivers/media/platform/nxp/imx-pxp.h b/drivers/media/platform/nxp/imx-pxp.h
-index 44f95c749d2e..ae4c6021c156 100644
---- a/drivers/media/platform/nxp/imx-pxp.h
-+++ b/drivers/media/platform/nxp/imx-pxp.h
-@@ -594,12 +594,17 @@
- 	(((v) << 18) & BM_PXP_CSC1_COEF0_C0)
- #define BP_PXP_CSC1_COEF0_UV_OFFSET      9
- #define BM_PXP_CSC1_COEF0_UV_OFFSET 0x0003FE00
-+
-+/*
-+ * We use v * (1 << 9) instead of v << 9, to workaround a gcc5 bug.
-+ * The compiler cannot understand that the expression is constant.
-+*/
- #define BF_PXP_CSC1_COEF0_UV_OFFSET(v)  \
--	(((v) << 9) & BM_PXP_CSC1_COEF0_UV_OFFSET)
-+	(((v) * (1 << 9)) & BM_PXP_CSC1_COEF0_UV_OFFSET)
- #define BP_PXP_CSC1_COEF0_Y_OFFSET      0
- #define BM_PXP_CSC1_COEF0_Y_OFFSET 0x000001FF
- #define BF_PXP_CSC1_COEF0_Y_OFFSET(v)  \
--	(((v) << 0) & BM_PXP_CSC1_COEF0_Y_OFFSET)
-+	((v) & BM_PXP_CSC1_COEF0_Y_OFFSET)
- 
- #define HW_PXP_CSC1_COEF1	(0x000001b0)
- 
-
----
-base-commit: 6aa082910445aec6b1dc652a69c5178a555d8ca5
-change-id: 20240628-gcc5-71a968c78e98
-
-Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+Kees Cook
 
