@@ -1,67 +1,79 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2072.outbound.protection.outlook.com [40.107.20.72])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2103.outbound.protection.outlook.com [40.107.243.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3D478274
-	for <imx@lists.linux.dev>; Fri, 28 Jun 2024 20:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAE476025
+	for <imx@lists.linux.dev>; Fri, 28 Jun 2024 21:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.103
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719607468; cv=fail; b=AbFgina7qZ9Q2/rSmfjIEPWan/seYFvtu4fHOayltWm4t+IbuMZUaXaRb9Gg+NqurzUfcr3FynyHhGz3UmYv5QfwpMDlPbL9UEGmvgi8JeQfToNR8ilIj257gk2NXPPMKYV8fKNoT+N4oSA1qhrbkV4LMq63LwTl/jmWMc64ZkI=
+	t=1719609436; cv=fail; b=sBZX27J9zEuGiDXPd1k+D4Zw6u+/nqWwJsva63CnQs+mvl4CrENWHAtbWUm1QSp/wj5MGRehfmMNxgWzJSBvdWWKvdq5gTCDyxBiczmcFcxs8melzbrd+lCJq1BcZuSk+ht1zN8domjZsUgEoOhxXSqxt6e+xci63jc+ZDy6XnA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719607468; c=relaxed/simple;
-	bh=Ng86F4EgjhgHkO99aqgFXTZOJkvBlb+MorfZ6b4xXEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XEaETpHdcwgDGkA2ODo63Y0fTD33wk1W/PESqwx8kManYDdctq/I9UHtDPOz1C9hAfJwfiOdc/OxEOfOic1GKb91lqtgo568qhbanaEdqXO8u0jfw0i1cImaMptSZYwgpGJ97A/81nt9LA3jbwZmVynKcf6hA1P5BGoGkOXcUt4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=LUJXneGX; arc=fail smtp.client-ip=40.107.20.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1719609436; c=relaxed/simple;
+	bh=PNNkJGRHkHBDalXz9ix2gkNWTTWQ53dGil4+Ou4eGCE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=FenvShy+0LUZJ3+zwW76fRueza966yyhJA5haf9YffvsqtK32O+qmhREaCVXruR4oOZkT7FEQQpszwnLQQ0IB+MN7p2yzXfumeUMW5ufAZGvEb6p3kGfnD+KhCvS8/GGt6PnU/rT6SYGnJbzBXXcYhEXByFc+I3fXaZGGcKyTfQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=d3engineering.com; spf=pass smtp.mailfrom=d3engineering.com; dkim=pass (1024-bit key) header.d=d3engineering.com header.i=@d3engineering.com header.b=JIaZUMqx; arc=fail smtp.client-ip=40.107.243.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=d3engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=d3engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LUJXneGX"
+	dkim=pass (1024-bit key) header.d=d3engineering.com header.i=@d3engineering.com header.b="JIaZUMqx"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RhIb4A6yHEUXMTt257NXtBf4whfjdYpgJF2oY9v9UmYAi3d76TKG2qGK4VvMyvYYMLcu9GBOTWNOK/nwNORmNhTDMj8btAbbiFK+zL9fBOlktWZC+IlvQtEJLsKVGDifh3SkuylTgnNEuZBPQ8BitZ9+IhqNYwFBw9F2ZGhGi/Bmfo9NUTk2hiS2fqaiP60Oy99dkQJuozHVlgjpJv985LMzKTJgQp+vlHeWwZQOZwjqIg5Wt7QVw7iYK6dxcbxIFPL+Tr9MC28C16n6fWKu0BaPOuD7vOUl7t5E+8yTAfXFLjGoQYaUucbeXN4LQF0p0LsM93WAPK+MDsTqZHameQ==
+ b=NKc1ZxbOeDpzi/D2N4/CdzAcwF4bhVT75D0YeqbbIAUGlf7fEuN/n9leDbtLAmldTCBAMsMp/6HWDTLvbV39s6FTsMaVeoyFqtsvWHiFMVdBON7peUmDiDVpmewB90GhcFX4Bb/ly0P8D46RODMdCvNaU3+ieZ1THdc9ewEteBYANlcilko/tSjsnXHBR4+g+RB4Wp7aL1EIxahJawUgYKpIwmxB6mL9/VVPmEecjjpTaOj7foQ7IIsvL73XLUtZRSIH6xErRdISxfKOYpSqnD6daxOXPZet/46iMFGFkLrIB+QKsz7Uz9uEZrokmC4LsygvruqYo5TR24RQP9YKPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4SPl5/3jMEKtZ7AVqWIo+DaM+lors4QZu1x5TaFCWXs=;
- b=N22n/vv+kyoA/Q8jnU7GzXk+DnfsJcbLRHq4qDQS53jkhtbVeqWXFB+jq/RC+sQBFnEWwB099Fv0/CkfeypLjYqCxbzOca02WjQCDIL7JYHjLIna+BlMADN6EbqhVkEb2P6Fw4LokOw3001mhEXsyBlSP4CB4V+0eeJM4PI0KNDUtNLNkf+N8zZjj3XOTkVVMQ+xNfmiLxR51T7qnxUVvn99Tkw/L/ImVDa209rCxHWPShKBgQVMnTt94c40741FeLVfMrErmmtUPxNXSu53ZzaMCJt6ksxSB05jwQQHCSwBMVCqMZZllm8Re3ezXKJ2T51WPRzrXsYHMtJxheP7Yg==
+ bh=/vVB26Yzb3uqClPsjxAFCoiHytQlJ9Jpf+WJCOHCU+4=;
+ b=GtV/KxnsQs2Tbeyt0oovCf0NSKH1UmEKyqVjlWhruiUoOf5ipgh+vEw/nIhXbJpQJuI2l+EHf5FIQeUNPZkHujBm8ovhVsqg8qNUWTg/Blm6O/ItxsFWFETiaEp8w3sh2PADOsuonmxl34A0fcrDPM/epES5htkYTnfqxaYo57b6PvQ5aQL6/f8k/tmHlsdZlaKxrJMaB7lNBu0drlAP+Wty27+B8l6py4O9aEUKzHvpKxnijzCyacb/3kzvY8zvK9vMOsJKhteLIiCZWxFHbchJUcH9gAG0oFTb1Pu1oG/cGzMiXSEEkg5PzZf73xzFwHTsFyjKU/+oBAGkW9A8KQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=d3engineering.com; dmarc=pass action=none
+ header.from=d3engineering.com; dkim=pass header.d=d3engineering.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=d3engineering.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4SPl5/3jMEKtZ7AVqWIo+DaM+lors4QZu1x5TaFCWXs=;
- b=LUJXneGX+e4nyb/eWb3FLMl35dfO0QTlYWtrKaX2+btYBYEm00l5lwbk6m3AnRZfC+RpcXdtMmLslmvClL3sXkjFhyQERtSAillsM7H9df2eKuIBarQi1OyYgvusGyL3oIR/BFU18sJFaOPAGVEvJt1NtHu0hLb53KG1+YqZFLI=
+ bh=/vVB26Yzb3uqClPsjxAFCoiHytQlJ9Jpf+WJCOHCU+4=;
+ b=JIaZUMqxYO3fcotm/zVtgDEbT8Z3QAyX0ddDLwbeu1LcEJWoHelGDGdidmpZOB1qY4O+tGoepHDNoTMAMxqwTS6swEVVNcBTzwxeifUuHkOlvRtCR5w5/RM0Tu5ihHnG4aY9kTADMow69kcAIN+i6V+GC7F0l/RICU3bDBOuGHk=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB9104.eurprd04.prod.outlook.com (2603:10a6:150:23::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.26; Fri, 28 Jun
- 2024 20:44:21 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.022; Fri, 28 Jun 2024
- 20:44:20 +0000
-Date: Fri, 28 Jun 2024 16:44:12 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:COMMON CLK FRAMEWORK" <linux-clk@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: clock: qoriq-clock: convert to yaml
- format
-Message-ID: <Zn8gnEI7asP2w/Y2@lizhi-Precision-Tower-5810>
-References: <20240617181410.921090-1-Frank.Li@nxp.com>
- <20240627202254.GA454755-robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240627202254.GA454755-robh@kernel.org>
-X-ClientProxiedBy: SJ0PR03CA0037.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+ header.d=none;dmarc=none action=none header.from=d3engineering.com;
+Received: from CO6PR14MB4385.namprd14.prod.outlook.com (2603:10b6:5:34c::9) by
+ BN8PR14MB3314.namprd14.prod.outlook.com (2603:10b6:408:78::24) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7741.8; Fri, 28 Jun 2024 21:17:11 +0000
+Received: from CO6PR14MB4385.namprd14.prod.outlook.com
+ ([fe80::14b7:fa74:423b:6864]) by CO6PR14MB4385.namprd14.prod.outlook.com
+ ([fe80::14b7:fa74:423b:6864%4]) with mapi id 15.20.7719.014; Fri, 28 Jun 2024
+ 21:17:11 +0000
+From: Spencer Hill <shill@d3engineering.com>
+Subject: [PATCH v2 0/2] media: i2c: Add driver for Sony IMX728
+Date: Fri, 28 Jun 2024 17:16:59 -0400
+Message-Id: <20240628-imx728-driver-v2-0-80efa6774286@d3engineering.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-B4-Tracking: v=1; b=H4sIAEsof2YC/03OywqDMBCF4VeRWXckjrfYVd+jdBHMqAMmlkkRQ
+ Xz3hq66/Bbn55yQWIUT3IsTlHdJssUMuhUwLi7OjOKzgQw1pqMeJRw9WfQqOys66wfTjm7y5CF
+ v3sqTHL/e85U96Rbwsyi7/0pHVdXSUJLpbNPXWGFaZF0fvuY4S+R8Kc7luAW4ri9MeQ8DogAAA
+ A==
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Spencer Hill <shill@d3engineering.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719609428; l=4812;
+ i=shill@d3engineering.com; s=20240628; h=from:subject:message-id;
+ bh=DMtS2ZFuhnys6Y8E7NT67n2teu8l89J04bVyrbHfp9Y=;
+ b=QPhWwVh6A5VTWkKjRmdPtAKeSWrGKS9Ha1/xwgEcwj5mGoKfevwCLnvNRvyBytHN4WlCgQl4j
+ zNzRTt7d/KTBB0jwEZ8LERxRso6HG83yXnhf/jfLVp6tr9mZ3fu8+ZI
+X-Developer-Key: i=shill@d3engineering.com; a=ed25519;
+ pk=WiUnCaWmHh41mktqx3wOb/1u4lviNHgPHRL6fwkHnsY=
+X-ClientProxiedBy: MN2PR11CA0027.namprd11.prod.outlook.com
+ (2603:10b6:208:23b::32) To CO6PR14MB4385.namprd14.prod.outlook.com
+ (2603:10b6:5:34c::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,428 +81,230 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB9104:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd8e02c3-4c83-45de-a452-08dc97b31620
+X-MS-TrafficTypeDiagnostic: CO6PR14MB4385:EE_|BN8PR14MB3314:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8a9d829-e1be-4878-4588-08dc97b7ac8c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|38350700014;
+	BCL:0;ARA:13230040|7416014|376014|366016|52116014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2I4/Un6UN0kPbQhgIUeWrQmAdA8BsFfvnY4ya1uTfNRigCxtGodlvkCmeR/Q?=
- =?us-ascii?Q?MxPFGeG5NHI68+M/BntS6GUrnAAUlzp/84qZCe4UiTrQG5HrYMdB4en44+1i?=
- =?us-ascii?Q?PwQI+eLNMjV+USOhuTu9AL8gxfkSRAzJo3n6gt8g1G5Z0FUR3reF+Hc8GaNm?=
- =?us-ascii?Q?rmcK6of0AZwbxYHY6HT2ZFeL7aU3rlzSjz+dkb/TMum+oMDWUIAuQoAPrjj7?=
- =?us-ascii?Q?9N7+Cnd8voW63UClZcUiZWtLxQsrNNWMiF8f/rcVT31M5nyeFS6CU0eXKUEI?=
- =?us-ascii?Q?cU6eq3U/ATuDsBDWqKjRvSv/UQFfrRosHpSi9gJtbFOGtgrnSgEDc/4hokgA?=
- =?us-ascii?Q?DHSYyIzddXQUNa985OfvI+tWF89GuDiSaPN2n59BpX8jR6FD2+g++1rI/YiX?=
- =?us-ascii?Q?+Xv5A3kOv4uOmIcVA4FuSy1F8wY6mdLAwpimDIub/wotXEDRPB2pT4vgZw/I?=
- =?us-ascii?Q?C2JaX2+GuabdAnj8pxX0ugmgQ+1eAIgksznUHBkt11zttwqvmxUvHJJmO9tm?=
- =?us-ascii?Q?GYRQ8vjWa8OXUlaDv0VqISTfL4nOKs3jLGZaUqjWWSHI82cUCVeV7kB9kTW9?=
- =?us-ascii?Q?wSCUg30ubuvhk6Y6/Fc+WDzG7Klo8J8LYyp0ZQlUTlroVHUHNcn7CBhV9H5O?=
- =?us-ascii?Q?pf9Cpbr/Jn7qfp/nCwQ+IxrkWzlWIszupYJel2HoBCYXF5+tpGfKBxtRfJFA?=
- =?us-ascii?Q?eJzWArh0gW0ZGyT7ypkAHF+PoTQNtFGH3WZFEluy+ILVsmeVFmSHxDA++kwz?=
- =?us-ascii?Q?dAb0fOAtQerVhomsqDH3pzkBI8Y+Jmq+PMaJJcJ6loMnYMDIBwOIA2fwUEFd?=
- =?us-ascii?Q?AYTQvmH5J+w08LMLDgOOQolSTulk5mV6pfYffVcDFVHTWEnof9/spkjB/N8M?=
- =?us-ascii?Q?pRmm/eEQ7mOnL3AwfJKE98/XFWv5DCon+V0K+2XoluoNobDGgy+A+eD/UwfL?=
- =?us-ascii?Q?+5Ih4jqx/YzJQUjb+m8reTM9jIqVv8HXngq8F6NDCXQTUCiqD7cAQYDyLkm/?=
- =?us-ascii?Q?Z4933UAf3vpsw16k/UsgAJ3nuf269GRxE8Ar2jpbNpId5IsqWcQXXRlV8oW0?=
- =?us-ascii?Q?spMFV4mDrgzFfBMSwlmDqC75+e/rx6LzkP6UzMyJcGclpIHG7sJLfIVTSODm?=
- =?us-ascii?Q?lCkhAaqAB5FoXTprKgr77p0F+hrGfNZvDkoIrVYR4+HUfQK8ktwJcy/oDfxN?=
- =?us-ascii?Q?4px2a6BcFnWIhpW6s1DSBzMF89EB+7vQFlIOci1f/tUj0i36+HlfP4inwYGB?=
- =?us-ascii?Q?W9sfThqIv3V/g2zpq0VyxK6v8FjZXjdTmM2/48XMwmfz6pSTUjQWOHDP+xu+?=
- =?us-ascii?Q?zonvERYDhW1KIdmf3+L/rOFoHgl62hqdgN8oOclcwA5KhB22R7XQ8078x86E?=
- =?us-ascii?Q?I3597g0=3D?=
+	=?utf-8?B?UmFaRUNmbUZ2a080R2pWN1hEMGtGWTJ5WG9vYVNvMlVJemJoWDhpaVRzRXNi?=
+ =?utf-8?B?SVo3dkZEWHlHQ2tKR2VpbG85SjlwWnI1ZG5GdXB0YmVmODJTMGd5U09MRU51?=
+ =?utf-8?B?UjlucnNkYkNwNnhOK0p3VzdPZGJNRmMyOTZlTld2b2g5cTBzRnZVQllBZUUy?=
+ =?utf-8?B?RXlLbmlHelBRSkdDZ2J3MW9FcDh4OU1meEI2K05iNFN6UVRPZWhHVWFOL3M2?=
+ =?utf-8?B?MW9yTTdQNS9EbXRabXJUem9vUnFGaDB2Mm9vbEpmMFQveUthSVBnT3RqS1dw?=
+ =?utf-8?B?RDkrS09ZWHJlSG5KVDNvcysxMUY0RXpmMWxHSGJDSW15YkZxZ2Y1ZHh5QUg0?=
+ =?utf-8?B?eVhDd1ZOcFhISFdRSFJXSVQrbjNGNzFIKy9GTFYrbmxGOXhYUkZ3RUw0enNU?=
+ =?utf-8?B?RldGWXVSVFVGREVnN04xeFM5ZjBQbElGL2JxUjRsaDdMM0t5a1M4bGdFV2tu?=
+ =?utf-8?B?elJyZ2JhdW5na2x4aWdkL1hSU2hQNzhqaDN6ZmVLb200dGZHN09rcmJIT2Fs?=
+ =?utf-8?B?aUoySGdPNk9CL2RJTjhjMUt3WlEvQzVCSUxRUjlMS3B1U2xPL2tKeE5qa0Zz?=
+ =?utf-8?B?WWowU1RLbUs3Q0JhUkNCb3I5NlRqOU0vMkdtY0d4Kzk3ZHhJQzV6aGExSTNO?=
+ =?utf-8?B?R21vQnNGN2RvcU5mdTEyVWFRaU1hbHRWZDNIVFlUQWYxNjdCNmwrTGJESnVj?=
+ =?utf-8?B?ZzgwcHdSYk5pNU04a0tQR2QyZFdhVGc2MmlSMFRWdEZBNVNGK3oxWnNJaGIv?=
+ =?utf-8?B?UWErT3k5Q2ZyQzkxbnV4UmZoZzIyLytZYnVBT21PNi95Y3hML1ZHUm1LZ0VI?=
+ =?utf-8?B?MXpDRVEzYStmK2tma01QVUYrZlM0Vktob0FlaXYyY3pON2hURG1EME0yNUVy?=
+ =?utf-8?B?My9yV0p6R2ZYY29EbXRkMzQrZGRZeG5UYTFTWExEZzIzR2E2c3RiYlFUUjR0?=
+ =?utf-8?B?YnozQUlxWm43N0c0YTNnTmMxcFp1eEorWlFlR2lvZDZycVVFeXFmMkJGcU9E?=
+ =?utf-8?B?WEpJWDBzNll4QnhZWUxlN3JnNkg2UU41Wkc2em1sL0lma0tpQlY0cVYvN1Mz?=
+ =?utf-8?B?cVQrSUZ0S3RRZFhVSk1CbGZGUkx5VFVhQmZpV05wdFZVTndGODdMeThBYnVW?=
+ =?utf-8?B?ZGJqaGphQlRuYlF0OUJuRkE4dWR5cEgxL2ZyOG5yR3ZGdkhYWjVVNE1YRUx0?=
+ =?utf-8?B?Y3JaQzhid3lYNDBnd0pDTXgyaS8yT0lINnNBQ2NGQzFGZ3RodDRFWDZuSElr?=
+ =?utf-8?B?Q3dmbmFybjRLRHlsbmQxeU5Fak9XVm9KMXFUb2xpSDdvTTR4bWlSazAybk1G?=
+ =?utf-8?B?bktEd1RwWEFEUVdlWTA2WkxVVVdiVDgrM0NJckxWeVhtejNFQ3UzZkpKcURR?=
+ =?utf-8?B?OTR2OENjdnFFMStIUTl0UFZiR3ppL0tOMXhvWS9paFN4dldRUWJmaE5iVHRT?=
+ =?utf-8?B?NHNnQU1UNkFqaW9sQ0l3UUZHSXNvbVVFcVV6eERvRUtzUDZqZERPVE5oaXRH?=
+ =?utf-8?B?WDBZUUQ1UmpWZENhelNSL1J5aFROT0IvUFg2OU1rR1Fwam9qVFpBbXU0QUVh?=
+ =?utf-8?B?TzNWd3FNanpjbDIrQ3hkZThidWduUDg2aVE5Q2JucW11ZUtFZ2wzTTZFYUhE?=
+ =?utf-8?B?ZVpiRndyZlFrZURrdWYzVHNpMEcrY0orSXJxNjBVREgxTUMvZHVUOVZGYzR2?=
+ =?utf-8?B?UEJzVlBoVENNUnBWVmVWUHNkeURDaVJzTmtURjNPTERXNkswNGRXOE5Fb29I?=
+ =?utf-8?B?YTdmWTBqOEhWSFFoc0lLYW1taTluN1lEVE1NbGF0SkJqMkowN1pNWnBwWGty?=
+ =?utf-8?B?WnBOYWZWUFlNaUFJYVZrTG5KUDdDRFhteEZadzF0bmo5QzRjODY0L2tFbUt1?=
+ =?utf-8?B?OXNoVUNZZ2FaUS9HbUZsWm9haFQ4WkNBd1owRzI2dXEzR0FoMDBKTEdVL2oy?=
+ =?utf-8?Q?dPQODu47bfY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR14MB4385.namprd14.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Hp5qaxd9tvNSCtQY2SwuwQ5FrQ8L2bkppp/y4QTRht97G796tOR8oCmkriRx?=
- =?us-ascii?Q?gFGQREFy3y+CfhHg6Hx7rmIGieT0zka2M2poLThwIQktZDsOObGplcs3Z5k3?=
- =?us-ascii?Q?cLA+3JpqHWy+WLY6J2deAuZ8bqaXACYR9NceiltqVJ1znk5v0606+eQ1i5k4?=
- =?us-ascii?Q?Pdy5zVPc7arnnA8hKK3JR/WOw+IJrFJuOFlBIjNYqKhChzku7KGNaBuhZiwa?=
- =?us-ascii?Q?vV+nuQQWQYiAZFBuer477XzYqrXy4qTusgeosYfgB+B3eFkMCMG9OwbdX7ea?=
- =?us-ascii?Q?2hEuaMhnUNMcK2SQyc4ehMZ/u+iPp26sdAPsZdyccddxY+0jWwRN45LcBA32?=
- =?us-ascii?Q?Wuw1fULQc2AAtVWGZKZN9pMG8VAQsSdnc6QTp2ya+xhA1BUNOmcIZGfg1+gr?=
- =?us-ascii?Q?pqTyFImK3RRemCHZ8jb+5iXjihMsqlr7ofFlrfx3xdgzkrYlXpbrhI2iSHas?=
- =?us-ascii?Q?GT6xTyeOxZMGi/f0Oa4XyqjTc/1737rNlf6NrzaR6MSWKtJJM3m1NjScLeJF?=
- =?us-ascii?Q?DaEPkIbdBFrHnOHVpEZokMxMruW+gS7L9GgnJeUqPBzltBXn/Kw+7ncNJAyH?=
- =?us-ascii?Q?cpHrC3v94dfq1nb3KylOJbNxKSlpP+a575ERENUK3/rzSVe/bfUqzr/Xm1S2?=
- =?us-ascii?Q?noJsb3m0AQ4AoqpmUrnyynsG9TGr5sGsnjg75QADKOQoG9nP/H1ZCQ3NALe+?=
- =?us-ascii?Q?jheHWL1TT+DPvWjsNUHhQrkxoXjeEt3Dxtpyp2OUv3KcaRoZgqbPjO7xbRqV?=
- =?us-ascii?Q?CpALkYC+VJfmt7h9Ac0AKCNn0vFN2own5YG/EX8IgiXGJjOeDEIeK+iJUC31?=
- =?us-ascii?Q?q6Vr2cjgJS+b8mBh1Xs6F5skyMvJGjELhbSPFQJYXK0vmZv6UYKsT6Lmc1sl?=
- =?us-ascii?Q?mo+Gyf3f60Mo7MQsecnPzHh92In8jUOeBrgDrgEkMIosFiAOFg7IfGup9dNf?=
- =?us-ascii?Q?MY9+EQxZRCsPPPFaMInO/rC7bcBnjesvrgVmjECOn2E7NyFzHQZste+OkNfv?=
- =?us-ascii?Q?1ZhlWUTdviz13lIFLf743Az9j84mP+wFQQ/XEyxd2Y9TuBaKtjcq1SSr117M?=
- =?us-ascii?Q?m6HreoGAPZaff30pCbG5G8OCphhel7tPPd31ytarBKiptT+XHezR/Rq7Zi7g?=
- =?us-ascii?Q?QcIvw+qkm7fK1H10BOnSz9thDAV5K8+3OxRQIqpgzSQbCVjeP2eV2ImdDZcT?=
- =?us-ascii?Q?rq+p3nkmUDSQZPGlymo+vl8ful7KCOzAf1ljbmWyKyJdvg20TIef0xTgXaWX?=
- =?us-ascii?Q?l14EMiUYVmVBiCs0LVdGM7fFXBQyp36EloyaFPqwJMiYXFApc6ClWVEbRDMv?=
- =?us-ascii?Q?poACThbJTOxDgDzV1tTPyIMIDjhCj/0BnX04JbZeF07YRKLficrGGKBqV8Cx?=
- =?us-ascii?Q?T7wl65/Cia7Jb630geOTJPL46b4lUUaPvNNoTXaGwUoLjsAqSHB47gFZBDCI?=
- =?us-ascii?Q?i/8EnZ/0DGSMGW+fME1ziL3MvvidtXOahenl6ShKrzpYPGNKIo1/KOKd+f4B?=
- =?us-ascii?Q?WTNGf9btor3qpww/ZBHk51MxWJ59CSVymIOE3fbm7YTUVp1Iy7KQOIk7bwye?=
- =?us-ascii?Q?eWuBiT/TCO0meALmJhepXrzO+5xxivH+r0RG8nlq?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd8e02c3-4c83-45de-a452-08dc97b31620
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+	=?utf-8?B?L3RnMEIzMDNtNmQ0NktOV3NDZWFCam1WY3lGWEhJSVBwZFFSSkt2Yjg2ZHpS?=
+ =?utf-8?B?ZUNOakdpNnRXWlRiQVBPYW1VdkFSbDJwUE9tOUVOREpMdmJEcmx5OWViNm9n?=
+ =?utf-8?B?dlkwZ2ZzMlk2VEozVU5WaFRXeEhyLy81WlRHNCtwZFdiNkl3Ry8zWjdDcnVQ?=
+ =?utf-8?B?cThlTlVVdXhVemFVc2NxMFVRS0dTWTdBdUZZcVg0MVV2NUZtajZRSXdjQ1l0?=
+ =?utf-8?B?cTJIcE92K0tockM5aXJQMXdzU2UzaEtaSDNCVmVyTDhzUlBJVTlySjA3NVh1?=
+ =?utf-8?B?QlRzbTF4bnpQU2I1WC9NVEw3RDg5NGRMd3E0TDlRU2daUTRUbjUrNkNqaVcx?=
+ =?utf-8?B?OEpoK3cvdXRhTUwzODZML3RvZUZTbFhWR3gwNThUZkxlOXhmR0NXOWhZbTVt?=
+ =?utf-8?B?V24xUmg1aTdIb0YreUs4WFlsZHdnbzNrRnNTNUNtUFh6MVRDVGRDMFZ4NUpX?=
+ =?utf-8?B?dysySm12bFptU3JWVDdGS2JIeTZKSFp4VHFKZ0hialhzTUcraTRJUDcxeE9L?=
+ =?utf-8?B?dTZNL3UrQXFLQzc2Sk1VY01IblFXek1iR3pSVVVqVTR3NlZ4OUZINXZ6bzNC?=
+ =?utf-8?B?Z0xkNHoyR0hoVlQzQThyMlZTdHdCdXV5ZVFVcUMyOWdpaUpYd3VBWFBNMlU4?=
+ =?utf-8?B?NU1WUDVIZnh2QXVWQ0NyMWkvQ2ZncmtwNXRTL3Vra3YwVTJDUEtaY3R6TE9E?=
+ =?utf-8?B?V0l5YmFoNGlENlFFU1B2bVZGYlBCR29wKy9LdzVvV3dlN3BNb0xFaTRWVHlS?=
+ =?utf-8?B?N1dWazArT0JNUi9qUUhqektjU3FVMFJNRTErSjVhcEh5SDVuMGd6bS9jZDdn?=
+ =?utf-8?B?QVNzMENGZmVXZFMvTWR6WWM3MUFXd1haWXpPOEJ3UGVHNlNLcjluK2RKUmpl?=
+ =?utf-8?B?TktCdlNkQmZ3NVp6L0xuVk9pZlAyNVd0WlZzQllIeExjcFMvaSt3YnZTOWNS?=
+ =?utf-8?B?NmRJbXVOSTZOdXFoY1hpNVZsdlNRUGdhWURockhrUXZ3MmlUT2ppTWl1aVRm?=
+ =?utf-8?B?TzMwdkd2a05HNWRHbGN4YmV1Qk9CWkFCSHNvQTNSU1EzQWNhUk9nRlNHTG9v?=
+ =?utf-8?B?Z29WZ3VTTzhCV0JqMEFySlBWWHpEeTR0UWlqU1BUanZQWnRCQkNWcGxqTnhW?=
+ =?utf-8?B?MDhBVElER0ZpU3J3bHZPcXZoZndWbjJ2bitDMW1vbWJ3MVZWMWxXbFhZT3ly?=
+ =?utf-8?B?bGRwQjhELzBhWUhjQVE1blhGTm1QRXFNQzU3UFFheVg3K3pUQU15cWl1UUJq?=
+ =?utf-8?B?Q1RobjZDWXdQUjAvd3Uvby85V0xBZXMxWE1QZmVXdmlDYjN3empXUG9jb2xz?=
+ =?utf-8?B?WUEvbmJ5SmhoeGxXUGgvNFhNUCtNaXJLSnM4TnVDeW5zUkVNejY2SlZKQ2VZ?=
+ =?utf-8?B?NXdJQy8ySENYazNKRmJidjhqNnIraXJnUFMvVW5UbitSVEJ1cUNSOG9HU2li?=
+ =?utf-8?B?SllHbjh2TzA0YytJMmdma1pvR1JtZ2IzejZ5b2dWSFR0d2pPUk1YWGFocnJy?=
+ =?utf-8?B?OEl5ckh3U1p1ZGcrRFhCQ1ZHZEFQZHdzOGJDNEJ5Q1RtSVdrY1FPUGdFSUVG?=
+ =?utf-8?B?bVBKMUU1VjRQOU9IaDFUR0ZwaEQwWURqc0k0WmF2QUU5UnM2d28zMHAreUtF?=
+ =?utf-8?B?dkNleHkwalVVWUloTit0TlhPQVZpUmJzUnVJSFE2UCt2RnNUcGpna0lWUnB0?=
+ =?utf-8?B?cGJlMlhGc0J0b2traWxFaXJ5MUVVVGRGaE5kS1hwakM0a3ZwN3hmd2pZRFdu?=
+ =?utf-8?B?RjlmYkJDaG53cEdDVnNvd0U4S1ppMEF6NDNSSkpHTEpjZjg0YVg5R0tybXNL?=
+ =?utf-8?B?V3NhZlVzVmFUb0RIbU9XOENCZENYbGlJQlJISkRjdGI1dmYxSG9RcXp0Ukxx?=
+ =?utf-8?B?Z0FTUjhRekVseENyQTdXdkZFaW83Y3owQVg5YzcxakhwMFhhRG5oclBMQWZV?=
+ =?utf-8?B?d2FlNk9IYjhQUkVkYWxxUDlEMDBXK1NjWFRyOFdGbUd2dUlTbll5M2RtYUtW?=
+ =?utf-8?B?YXAyVDNzVTNnT1JuUnhYVUNiRHFhd2VCcDN0VHZ1RmVUME1KSldhck4vVkxx?=
+ =?utf-8?B?S2I4aitEYzN1THprK08wRm1HTmx3ODZWdTB0MUhVTHZxcGNrZmhNNzd2cUp0?=
+ =?utf-8?B?NmM4dlliRWxUZVR3c1kvT01VZjlqb2RnV2s0Q0dlWnBoNEpkR1NFYUM0WDRx?=
+ =?utf-8?B?T1E9PQ==?=
+X-OriginatorOrg: d3engineering.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8a9d829-e1be-4878-4588-08dc97b7ac8c
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR14MB4385.namprd14.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2024 20:44:20.7078
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2024 21:17:11.1099
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: b7153db5-3376-478b-b601-92ce9bc0d3bc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z7xDD7+8vuCLNjTkiY0ncesHlc9o6cwzLQ3pIZN299yH4Zwg5ldZgURTfR7C/fLJSUo8uhr+egsQHY8B2wvdbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9104
+X-MS-Exchange-CrossTenant-UserPrincipalName: FrqxU9f8aXTA0EM8VRZ8GGFVVDlI8YBMPAHeDgCOHidJ9Wj59ZkqzlabJJxBmjVFQu2Dvo4MqGEVmflH9tJR+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR14MB3314
 
-On Thu, Jun 27, 2024 at 02:22:54PM -0600, Rob Herring wrote:
-> On Mon, Jun 17, 2024 at 02:14:09PM -0400, Frank Li wrote:
-> > Convert qoria-clock DT binding to yaml format. Split to two files
-> > qoriq-clock.yaml and qoriq-clock-legancy.yaml.
-> > 
-> > Addtional change:
-> > - Remove clock consumer part in example
-> > - Fixed example dts error
-> > - Deprecated legancy node
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../clock/fsl,qoriq-clock-legacy.yaml         |  84 +++++++
-> >  .../bindings/clock/fsl,qoriq-clock.yaml       | 203 +++++++++++++++++
-> >  .../devicetree/bindings/clock/qoriq-clock.txt | 212 ------------------
-> >  3 files changed, 287 insertions(+), 212 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml
-> >  create mode 100644 Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml
-> >  delete mode 100644 Documentation/devicetree/bindings/clock/qoriq-clock.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml
-> > new file mode 100644
-> > index 0000000000000..97b96a1a58254
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock-legacy.yaml
-> > @@ -0,0 +1,84 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/clock/fsl,qoriq-clock-legacy.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Legacy Clock Block on Freescale QorIQ Platforms
-> > +
-> > +maintainers:
-> > +  - Frank Li <Frank.Li@nxp.com>
-> > +
-> > +description: |
-> > +  These nodes are deprecated.  Kernels should continue to support
-> > +  device trees with these nodes, but new device trees should not use them.
-> > +
-> > +  Most of the bindings are from the common clock binding[1].
-> > +  [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - fsl,qoriq-core-pll-1.0
-> > +      - fsl,qoriq-core-pll-2.0
-> > +      - fsl,qoriq-core-mux-1.0
-> > +      - fsl,qoriq-core-mux-2.0
-> > +      - fsl,qoriq-sysclk-1.0
-> > +      - fsl,qoriq-sysclk-2.0
-> > +      - fsl,qoriq-platform-pll-1.0
-> > +      - fsl,qoriq-platform-pll-2.0
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  clocks:
-> > +    minItems: 1
-> > +    maxItems: 4
-> > +
-> > +  clock-names:
-> > +    minItems: 1
-> > +    maxItems: 4
-> > +
-> > +  clock-output-names:
-> > +    minItems: 1
-> > +    maxItems: 8
-> > +
-> > +  '#clock-cells':
-> > +    minimum: 0
-> > +    maximum: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - '#clock-cells'
-> > +
-> > +additionalProperties: false
-> > +
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - fsl,qoriq-sysclk-1.0
-> > +              - fsl,qoriq-sysclk-2.0
-> > +    then:
-> > +      properties:
-> > +        '#clock-cells':
-> > +          const: 0
-> > +
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - fsl,qoriq-core-pll-1.0
-> > +              - fsl,qoriq-core-pll-2.0
-> > +    then:
-> > +      properties:
-> > +        '#clock-cells':
-> > +          const: 1
-> > +          description: |
-> > +            * 0 - equal to the PLL frequency
-> > +            * 1 - equal to the PLL frequency divided by 2
-> > +            * 2 - equal to the PLL frequency divided by 4
-> > +
-> > diff --git a/Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml
-> > new file mode 100644
-> > index 0000000000000..d641756b04635
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/clock/fsl,qoriq-clock.yaml
-> > @@ -0,0 +1,203 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/clock/fsl,qoriq-clock.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Clock Block on Freescale QorIQ Platforms
-> > +
-> > +maintainers:
-> > +  - Frank Li <Frank.Li@nxp.com>
-> > +
-> > +
-> 
-> Just 1 blank line
-> 
-> > +description: |
-> > +
-> 
-> drop blank line
-> 
-> > +  Freescale QorIQ chips take primary clocking input from the external
-> > +  SYSCLK signal. The SYSCLK input (frequency) is multiplied using
-> > +  multiple phase locked loops (PLL) to create a variety of frequencies
-> > +  which can then be passed to a variety of internal logic, including
-> > +  cores and peripheral IP blocks.
-> > +  Please refer to the Reference Manual for details.
-> > +
-> > +  All references to "1.0" and "2.0" refer to the QorIQ chassis version to
-> > +  which the chip complies.
-> > +
-> > +  Chassis Version    Example Chips
-> > +  ---------------    -------------
-> > +       1.0      p4080, p5020, p5040
-> > +       2.0      t4240, b4860
-> > +
-> > +  Clock Provider
-> > +
-> > +  The clockgen node should act as a clock provider, though in older device
-> > +  trees the children of the clockgen node are the clock providers.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - enum:
-> > +          - fsl,p2041-clockgen
-> > +          - fsl,p3041-clockgen
-> > +          - fsl,p4080-clockgen
-> > +          - fsl,p5020-clockgen
-> > +          - fsl,p5040-clockgen
-> > +          - fsl,t1023-clockgen
-> > +          - fsl,t1024-clockgen
-> > +          - fsl,t1040-clockgen
-> > +          - fsl,t1042-clockgen
-> > +          - fsl,t2080-clockgen
-> > +          - fsl,t2081-clockgen
-> > +          - fsl,t4240-clockgen
-> > +          - fsl,b4420-clockgen
-> > +          - fsl,b4860-clockgen
-> 
-> > +          - fsl,ls1012a-clockgen
-> > +          - fsl,ls1021a-clockgen
-> > +          - fsl,ls1028a-clockgen
-> > +          - fsl,ls1043a-clockgen
-> > +          - fsl,ls1046a-clockgen
-> > +          - fsl,ls1088a-clockgen
-> > +          - fsl,ls2080a-clockgen
-> > +          - fsl,lx2160a-clockgen
-> 
-> It doesn't look to me like these platforms use this binding.
+Add a v4l2 sensor driver for Sony IMX728
 
-It should be used.
+v1->v2:
+ * Elaborate on device details in dt-bindings.
+ * Add links and voltage supplies to dt-bindings.
+ * Re-order so that dt-bindings are applied first.
+ * Move pattern gen config into v4l2_ctrls.
+ * Switch to using CCI functions to access the sensor.
+ * Merge header into c file.
+ * Move verbose prints to dev_dbg.
+ * Add missing v4l2 format params.
+ * Added support for software reset if no hardware one is available.
+ * Move register constants into defines, these are vague as Sony
+   requested that I not use register names from the datasheet.
 
-git grep -r "a\-clockgen" arch/arm64/
+v4l2-compliance 1.24.1, 64 bits, 64-bit time_t
 
-arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi:                 compatible = "fsl,ls1012a-clockgen";
-arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi:                 compatible = "fsl,ls1028a-clockgen";
-arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi:                 compatible = "fsl,ls1043a-clockgen";
-arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi:                 compatible = "fsl,ls1046a-clockgen";
-arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi:                 compatible = "fsl,ls1088a-clockgen";
-arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi:                 compatible = "fsl,ls2080a-clockgen";
-arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi:                 compatible = "fsl,lx2160a-clockgen";
+Compliance test for device /dev/v4l-subdev4:
 
-Frank
+Driver Info:
+        Driver version   : 6.1.80
+        Capabilities     : 0x00000002
+                Streams Support
 
-> 
-> > +      - enum:
-> > +          - fsl,qoriq-clockgen-1.0
-> > +          - fsl,qoriq-clockgen-2.0
-> 
-> This allows invalid combinations. You need 2 entries splitting 1.0 and 
-> 2.0.
-> 
-> > +    minItems: 1
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  ranges: true
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 1
-> > +
-> > +  '#clock-cells':
-> > +    const: 2
-> > +    description: |
-> > +      The first cell of the clock specifier is the clock type, and the
-> > +      second cell is the clock index for the specified type.
-> > +
-> > +        Type#  Name       Index Cell
-> > +        0  sysclk          must be 0
-> > +        1  cmux            index (n in CLKCnCSR)
-> > +        2  hwaccel         index (n in CLKCGnHWACSR)
-> > +        3  fman            0 for fm1, 1 for fm2
-> > +        4  platform pll    n=pll/(n+1). For example, when n=1,
-> > +                          that means output_freq=PLL_freq/2.
-> > +        5  coreclk         must be 0
-> > +
-> > +  clock-frequency:
-> > +    description: Input system clock frequency (SYSCLK)
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description:
-> > +          sysclk may be provided as an input clock.  Either clock-frequency
-> > +          or clocks must be provided.
-> > +      - description:
-> > +          A second input clock, called "coreclk", may be provided if
-> > +          core PLLs are based on a different input clock from the
-> > +          platform PLL.
-> > +    minItems: 1
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: sysclk
-> > +      - const: coreclk
-> > +
-> > +patternProperties:
-> > +  '^mux[0-9]@[a-f0-9]+$':
-> > +    deprecated: true
-> > +    $ref: fsl,qoriq-clock-legacy.yaml
-> > +
-> > +  '^sysclk+$':
-> 
-> This means 'sysclkkkkkkkkkk' is valid.
-> 
-> > +    deprecated: true
-> > +    $ref: fsl,qoriq-clock-legacy.yaml
-> > +
-> > +  '^pll[0-9]@[a-f0-9]+$':
-> > +    deprecated: true
-> > +    $ref: fsl,qoriq-clock-legacy.yaml
-> > +
-> > +  '^platform\-pll@[a-f0-9]+$':
-> > +    deprecated: true
-> > +    $ref: fsl,qoriq-clock-legacy.yaml
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - '#clock-cells'
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    /* clock provider example */
-> > +    global-utilities@e1000 {
-> > +        compatible = "fsl,p5020-clockgen", "fsl,qoriq-clockgen-1.0";
-> > +        reg = <0xe1000 0x1000>;
-> > +        clock-frequency = <133333333>;
-> > +        #clock-cells = <2>;
-> > +    };
-> > +
-> > +  - |
-> > +    /* Legacy example */
-> > +    global-utilities@e1000 {
-> > +        compatible = "fsl,p5020-clockgen", "fsl,qoriq-clockgen-1.0";
-> > +        reg = <0xe1000 0x1000>;
-> > +        ranges = <0x0 0xe1000 0x1000>;
-> > +        clock-frequency = <133333333>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <1>;
-> > +        #clock-cells = <2>;
-> > +
-> > +        sysclk: sysclk {
-> > +            compatible = "fsl,qoriq-sysclk-1.0";
-> > +            clock-output-names = "sysclk";
-> > +            #clock-cells = <0>;
-> > +        };
-> > +
-> > +        pll0: pll0@800 {
-> > +            compatible = "fsl,qoriq-core-pll-1.0";
-> > +            reg = <0x800 0x4>;
-> > +            #clock-cells = <1>;
-> > +            clocks = <&sysclk>;
-> > +            clock-output-names = "pll0", "pll0-div2";
-> > +        };
-> > +
-> > +        pll1: pll1@820 {
-> > +            compatible = "fsl,qoriq-core-pll-1.0";
-> > +            reg = <0x820 0x4>;
-> > +            #clock-cells = <1>;
-> > +            clocks = <&sysclk>;
-> > +            clock-output-names = "pll1", "pll1-div2";
-> > +        };
-> > +
-> > +        mux0: mux0@0 {
-> > +            compatible = "fsl,qoriq-core-mux-1.0";
-> > +            reg = <0x0 0x4>;
-> > +            #clock-cells = <0>;
-> > +            clocks = <&pll0 0>, <&pll0 1>, <&pll1 0>, <&pll1 1>;
-> > +            clock-names = "pll0", "pll0-div2", "pll1", "pll1-div2";
-> > +            clock-output-names = "cmux0";
-> > +        };
-> > +
-> > +        mux1: mux1@20 {
-> > +            compatible = "fsl,qoriq-core-mux-1.0";
-> > +            reg = <0x20 0x4>;
-> > +            #clock-cells = <0>;
-> > +            clocks = <&pll0 0>, <&pll0 1>, <&pll1 0>, <&pll1 1>;
-> > +            clock-names = "pll0", "pll0-div2", "pll1", "pll1-div2";
-> > +            clock-output-names = "cmux1";
-> > +        };
-> > +
-> > +        platform-pll@c00 {
-> > +            #clock-cells = <1>;
-> > +            reg = <0xc00 0x4>;
-> > +            compatible = "fsl,qoriq-platform-pll-1.0";
-> > +            clocks = <&sysclk>;
-> > +            clock-output-names = "platform-pll", "platform-pll-div2";
-> > +        };
-> > +    };
+Required ioctls:
+        test VIDIOC_SUDBEV_QUERYCAP: OK
+        test invalid ioctls: OK
+
+Allow for multiple opens:
+        test second /dev/v4l-subdev4 open: OK
+        test VIDIOC_SUBDEV_QUERYCAP: OK
+        test for unlimited opens: OK
+
+Debug ioctls:
+        test VIDIOC_LOG_STATUS: OK (Not Supported)
+
+Input ioctls:
+        test VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: OK (Not Supported)
+        test VIDIOC_G/S_FREQUENCY: OK (Not Supported)
+        test VIDIOC_S_HW_FREQ_SEEK: OK (Not Supported)
+        test VIDIOC_ENUMAUDIO: OK (Not Supported)
+        test VIDIOC_G/S/ENUMINPUT: OK (Not Supported)
+        test VIDIOC_G/S_AUDIO: OK (Not Supported)
+        Inputs: 0 Audio Inputs: 0 Tuners: 0
+
+Output ioctls:
+        test VIDIOC_G/S_MODULATOR: OK (Not Supported)
+        test VIDIOC_G/S_FREQUENCY: OK (Not Supported)
+        test VIDIOC_ENUMAUDOUT: OK (Not Supported)
+        test VIDIOC_G/S/ENUMOUTPUT: OK (Not Supported)
+        test VIDIOC_G/S_AUDOUT: OK (Not Supported)
+        Outputs: 0 Audio Outputs: 0 Modulators: 0
+
+Input/Output configuration ioctls:
+        test VIDIOC_ENUM/G/S/QUERY_STD: OK (Not Supported)
+        test VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: OK (Not Supported)
+        test VIDIOC_DV_TIMINGS_CAP: OK (Not Supported)
+        test VIDIOC_G/S_EDID: OK (Not Supported)
+
+Control ioctls:
+        test VIDIOC_QUERY_EXT_CTRL/QUERYMENU: OK
+        test VIDIOC_QUERYCTRL: OK
+        test VIDIOC_G/S_CTRL: OK
+        test VIDIOC_G/S/TRY_EXT_CTRLS: OK
+        test VIDIOC_(UN)SUBSCRIBE_EVENT/DQEVENT: OK
+        test VIDIOC_G/S_JPEGCOMP: OK (Not Supported)
+        Standard Controls: 12 Private Controls: 0
+
+Format ioctls:
+        test VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: OK (Not Supported)
+        test VIDIOC_G/S_PARM: OK (Not Supported)
+        test VIDIOC_G_FBUF: OK (Not Supported)
+        test VIDIOC_G_FMT: OK (Not Supported)
+        test VIDIOC_TRY_FMT: OK (Not Supported)
+        test VIDIOC_S_FMT: OK (Not Supported)
+        test VIDIOC_G_SLICED_VBI_CAP: OK (Not Supported)
+        test Cropping: OK (Not Supported)
+        test Composing: OK (Not Supported)
+        test Scaling: OK (Not Supported)
+
+Codec ioctls:
+        test VIDIOC_(TRY_)ENCODER_CMD: OK (Not Supported)
+        test VIDIOC_G_ENC_INDEX: OK (Not Supported)
+        test VIDIOC_(TRY_)DECODER_CMD: OK (Not Supported)
+
+Buffer ioctls:
+        test VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: OK (Not Supported)
+        test VIDIOC_EXPBUF: OK (Not Supported)
+        test Requests: OK (Not Supported)
+
+Total for device /dev/v4l-subdev4: 43, Succeeded: 43, Failed: 0, Warnings: =
+0
+
+Spencer Hill (2):
+  media: i2c: Add driver for Sony IMX728
+  media: dt-bindings: Add Sony IMX728
+
+ .../bindings/media/i2c/sony,imx728.yaml       |   78 +
+ MAINTAINERS                                   |    9 +
+ drivers/media/i2c/Kconfig                     |   11 +
+ drivers/media/i2c/Makefile                    |    1 +
+ drivers/media/i2c/imx728.c                    | 1167 ++++++
+ drivers/media/i2c/imx728.h                    | 3458 +++++++++++++++++
+ 6 files changed, 4724 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx728=
+.yaml
+ create mode 100644 drivers/media/i2c/imx728.c
+ create mode 100644 drivers/media/i2c/imx728.h
+
+--
+2.40.1
+
+---
+Spencer Hill (2):
+      media: dt-bindings: Add Sony IMX728
+      media: i2c: Add driver for Sony IMX728
+
+ .../devicetree/bindings/media/i2c/sony,imx728.yaml |  119 +
+ MAINTAINERS                                        |    7 +
+ drivers/media/i2c/Kconfig                          |   11 +
+ drivers/media/i2c/Makefile                         |    1 +
+ drivers/media/i2c/imx728.c                         | 4660 ++++++++++++++++=
+++++
+ 5 files changed, 4798 insertions(+)
+---
+base-commit: 8771b7f31b7fff91a998e6afdb60650d4bac59a5
+change-id: 20240627-imx728-driver-a8d905cafd2d
+
+Best regards,
+--
+Spencer Hill <shill@d3engineering.com>
+
+Please be aware that this email includes email addresses outside of the org=
+anization.
