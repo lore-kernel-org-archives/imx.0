@@ -1,52 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CE71DDCE;
-	Fri, 28 Jun 2024 15:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2865B19AA4B;
+	Fri, 28 Jun 2024 17:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719590322; cv=none; b=HpqztHRvvcz82xPFyqaBVgMjQ4uhxrkA31brTi/GCjitr8g2PufXp4RJIXxGvv4Ys/y4cC9JTloolh996qAxsJ4MFiRQd0cc/mHiJ50oUVAYbludWE+smhrbxOZ5UhDVYd9nvAWQTkIAvokHw4Id9J9X0/oMjGwsCVtTt/OSR8k=
+	t=1719594414; cv=none; b=FxRzpL19syg9WnhjJG8/ZB/LwE0XQ+lnlBNwadwkMA1Tccjsyh2dLwfkxWqRqrBXAisQ1GcUVIx364UVCvrDUJEb+q7F56fh+lxAHYH2269yv5mh+AvMGc2NeQEmYBXSr+yYdmm4Tt6BaUB61yDB9dWJf4WMb5y0ZiZ5VqPg7PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719590322; c=relaxed/simple;
-	bh=f/e4U8iAuP+2TmfcKdxe7mT1z7tLie+Lb2MQm83FeRE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t2ZicU54lN8TjCzCiXANfYSRWSu8pcvFGUwHsNg1FeJCJnDvYwo/tfP+EvFxkn15EWXw+pvsqpX5FQRVQKScyP0OZv4zvl17Sq94VTf6TeFn4MaBL1uuiHcqCcWOLRjgYqDndSNMTcl0D5j+34Qqp1bfHgVdKypHF7DrwL9/HcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4+Nw2Pj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719594414; c=relaxed/simple;
+	bh=tuzV+wlKVKinCsa1NBBT834oI6faLS64mAnDCkWoMdg=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DvOLU/QXdbeDX192tSyKcHt6D71n+AwrJHdWiSZEKHQMyGXEup/v9IVdWy0Ii9Tbr2Cvg5+RLWJE7cv7TqNLG2YgYVa7/zLkXpogKv/cYnuxFG88T4TIZbmPBIQlnrq57rFdZTZcWRfqUGNiSwiUcQX+rccka66dWy7flhCiHxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upmW2SU3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4+Nw2Pj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C906C116B1;
-	Fri, 28 Jun 2024 15:58:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upmW2SU3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E5AC116B1;
+	Fri, 28 Jun 2024 17:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719590322;
-	bh=f/e4U8iAuP+2TmfcKdxe7mT1z7tLie+Lb2MQm83FeRE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4+Nw2PjtC6C8bWhaLxBPpyO6vQ9boOxSB/6VrfhUazxEfJu/+HOZuscLns+tfZLI
-	 TPA9wanTng9zSvzPG2MdLqVC3ohD+/AyEzLDZEKuLwzwIujddV13SecOQh+OwmjYWU
-	 tQ4o0wvqLBbiRemJYX3mZWT/oWVRf87aSxobcb5z4WXCUKPP+BjTmFYTg2Zyr8VXPJ
-	 G9jo/upSz85dClRRY+S7u2xLC74CdDoATU1XFDD603X7F7vGhurRSx2a9yp17CF/eq
-	 XWE+BkO8PUmLCXv0L/jQKc71Oa47S79iTKiz5SBesf2Hdg7HFy5ChGpZl0WY98AzKo
-	 zgL+3Mu1fcYoA==
-From: Kees Cook <kees@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
-	llvm@lists.linux.dev,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-Date: Fri, 28 Jun 2024 08:58:34 -0700
-Message-Id: <171959031201.3280156.13125871408921524311.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+	s=k20201202; t=1719594413;
+	bh=tuzV+wlKVKinCsa1NBBT834oI6faLS64mAnDCkWoMdg=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=upmW2SU3SSRfsMu0ZLekbfgLlUC+h/NfkXvJv6rqSBRZp82hA38zh2lOuijhh4dOL
+	 viZfSpvhMR1eM2p8UAG0MhLJ5ILZAi44Q5YqwHxxJGVf66dFJjaQ8g07wkGhB3E059
+	 ZH7tBLAMr2Q4ifwXKAQ2MXZdJz0HrdONfnTAOpPZK2XcQRhWdWg7iJl/HPmL6EInt6
+	 Yi9HVqDyHYy2hEVbEludaT4RuCGNEYF1Uz6m4C0rPm7HHJZE3ewQ/w2C5t9vCgNBQ5
+	 tn7uKMa/7HAt06/frCRPe0kVXPdqD4h2+/4S7AEmpdNZdxarMThh0BGZ9snUqrqici
+	 Bd6p2Z/So7vrQ==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, shengjiu.wang@gmail.com, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1719481981-4069-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: (subset) [PATCH v2 0/3] arm64: dts: imx8mp: add audio XCVR
+ sound card
+Message-Id: <171959441065.130075.14895021485165511530.b4-ty@kernel.org>
+Date: Fri, 28 Jun 2024 18:06:50 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,29 +46,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 
-On Wed, 29 May 2024 14:29:42 -0700, Nathan Chancellor wrote:
-> Work for __counted_by on generic pointers in structures (not just
-> flexible array members) has started landing in Clang 19 (current tip of
-> tree). During the development of this feature, a restriction was added
-> to __counted_by to prevent the flexible array member's element type from
-> including a flexible array member itself such as:
+On Thu, 27 Jun 2024 17:52:58 +0800, Shengjiu Wang wrote:
+> Add audio XCVR sound card, which support SPDIF TX & RX,
+> eARC RX and ARC RX.
 > 
->   struct foo {
->     int count;
->     char buf[];
->   };
+> changes in v2:
+> - use minItems:3 for i.MX8MP and update example
+> 
+> Shengjiu Wang (3):
+>   ASoC: dt-bindings: fsl,xcvr: Adjust the number of interrupts
+>   arm64: dts: imx8mp: Add audio XCVR device node
+>   arm64: dts: imx8mp-evk: Add audio XCVR sound card
 > 
 > [...]
 
-Applied to for-linus/hardening, thanks!
+Applied to
 
-[1/1] tty: mxser: Remove __counted_by from mxser_board.ports[]
-      https://git.kernel.org/kees/c/1c07c9be87dd
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Take care,
+Thanks!
 
--- 
-Kees Cook
+[1/3] ASoC: dt-bindings: fsl,xcvr: Adjust the number of interrupts
+      commit: 288921232dd97bb2e35cff2ee38957db5b3e5ef1
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
