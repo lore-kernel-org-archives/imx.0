@@ -1,52 +1,33 @@
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836EE17C66
-	for <imx@lists.linux.dev>; Fri, 28 Jun 2024 02:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3D053E22;
+	Fri, 28 Jun 2024 06:21:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719543099; cv=none; b=IjcQP5tH33tYIoTnkYqJvJQGakyTNiZDc22tHcJGHH7PFO+RpiY+P1qdayfnUq4KKw9H0vlntBdP34/5bvG6pXQ7FHPAU/yPTwhKjhqLaJP0eN4rw8w47jihjJHIirgK8pj4GVrMXo5zyeevKUdKCkHzWSOzPUFMXUfpdIiaElk=
+	t=1719555675; cv=none; b=W2BnYHmG5ihV1vLKG+qghgHvTb2OoEnXM5L4R6tO0womr/06HSEorKJlEsvmQtdEsKfZlXsPUwK7ZDBi9HHMdZ6nTT/GhOHZ8H4rQ1LTFWD/N6sFcVvDUbP5TT2EZ8nKzebG81+MzP7+acqKuoFR5sA1C4uqD5TmCvhouZZNaXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719543099; c=relaxed/simple;
-	bh=khjubVaOAxvuDngZUIjd9rj1xxZGvg6ZvVt20JfCRyY=;
+	s=arc-20240116; t=1719555675; c=relaxed/simple;
+	bh=yBTv5tI3Sw2vpf33F6ktr6RkDe8svdLFayCCcurDMy4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZC+TPornwT5GyyfHJY9Qk6Mhh+QvB8Z+eLY/N6rNd/oPJes4lU5U3nwJ0w1H8HkR6e5TiuONNbgZlfUQhOykURCjZw7IPjlERdqk2doBBjbjQaxDPwQSt8RCFbpeyeogcRSwMBVU2UH4pIA7FP07UdtqoOh3LzIP4B11NrzknVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=VrcU1cKb; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+	 In-Reply-To:Content-Type; b=RQ/f+zGBsmQti0+a7vj/KASJiTu4Q3dL4WtEKWTu2+CijtrV+bTwXQsBE0z1Twm2sksQIZgmvY9eMs/LzXBJvOPaNpJT7ukmie4ywSKMUTi/R6plBAAYXwX1zz2Lk9JQLSMxKnVUDOfhV52mxPlno+AqlTUqrZbAZUbtpX0mAnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G58EjGeC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="VrcU1cKb"
-Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
-	by cmsmtp with ESMTPS
-	id MvtTsR1gjjfBAN1hysDHEq; Fri, 28 Jun 2024 02:51:30 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id N1hwsBXDjCaXoN1hwsIxUU; Fri, 28 Jun 2024 02:51:28 +0000
-X-Authority-Analysis: v=2.4 cv=deBL3mXe c=1 sm=1 tr=0 ts=667e2531
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=frY+GlAHrI6frpeK1MvySw==:17
- a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=NEAV23lmAAAA:8 a=_Wotqz80AAAA:8 a=ijWZ9xZranq7hUifA4EA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=buJP51TR1BpY-zbLSsyS:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=rKRBHzZAJa8Y5uaYN9KzLXlsQxprz1t3tpmpYAAPIhA=; b=VrcU1cKb+9PGWke1O9Eg07jCns
-	cEqyuC544UwG5leDIPUCgceMBYSUMRHn9IY1WY5WRoINOFKk0ysi/r30O9AZSsZidOw5RZiGijYJx
-	UuxpvyG4Rx4IBZHnm+Axp5mHRB+6KrIWIrv4uQL3Ti++VdCLPxs9XtRdRleTYZFoVAQHaS++tysuP
-	lm+mHRqfVMrfp6PQac+PwDQlp4cIniJFazfMlVbg9vsHkhOL+zsUaOr9K1WzDQz9ZB2hHMU47r7W0
-	6a4vvOmWKNa2K2CekofNvgNM7wDZvLU6PHbi5zjp/47osjSB0fLMDRNIb/1iWNCoD0UpbmdQCUF7p
-	PlGiuv4Q==;
-Received: from [201.172.173.139] (port=40218 helo=[192.168.15.14])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1sN1hv-003DhV-1b;
-	Thu, 27 Jun 2024 21:51:27 -0500
-Message-ID: <4c347ab7-97f6-4e18-9aca-dcb48e8fc75a@embeddedor.com>
-Date: Thu, 27 Jun 2024 20:51:23 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G58EjGeC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E656C116B1;
+	Fri, 28 Jun 2024 06:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719555675;
+	bh=yBTv5tI3Sw2vpf33F6ktr6RkDe8svdLFayCCcurDMy4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=G58EjGeCjrdn8DXizeITnU9RyPa05/QjdYaCK1GiuLKUqD5ohnOn8HSvQFFmzA5D6
+	 qA/CmX5SJN5v3kOJFMH5EbPvAxOAx5LP7SISO/RKJxxNfwbHl6BtOlsdUmFa9z1/0O
+	 wXZJkSYU6MO6/dKroxDHTyLb/xvd9A7kP+YRCszTsevJWgnzzLOJNuFteiCtRS8Qup
+	 mhP0HMbvyo5RsPE/EeCt9qpwtq86Z9AOluvvsm3ttWC5Q4q7aYmTf51UxP/73ePpXr
+	 wb593U6nOalNTX38NmOPoeRLpNTKzovNVO+LXBF8L//zM+//PWOay0mx/RHPfmbGpv
+	 D4nmqERmet7cg==
+Message-ID: <79955001-132c-4eef-b741-9e6a35da1361@kernel.org>
+Date: Fri, 28 Jun 2024 08:21:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,101 +35,192 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-To: Kees Cook <kees@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-serial@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
- <202406271009.4E90DF8@keescook>
+Subject: Re: [PATCH 1/2] clk: imx93: Drop macro IMX93_CLK_END
+To: Peng Fan <peng.fan@nxp.com>, Pengfei Li <pengfei.li_1@nxp.com>
+Cc: "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>,
+ "abelvesa@kernel.org" <abelvesa@kernel.org>,
+ "mturquette@baylibre.com" <mturquette@baylibre.com>,
+ "sboyd@kernel.org" <sboyd@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>,
+ Aisheng Dong <aisheng.dong@nxp.com>, Frank Li <frank.li@nxp.com>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20240625175147.94985-1-pengfei.li_1@nxp.com>
+ <20240625175147.94985-2-pengfei.li_1@nxp.com>
+ <39bcab8b-ed9c-4da9-b1ee-32dbfb2a23a4@kernel.org>
+ <ZnqfIudepX4sH4oL@pengfei-OptiPlex-Tower-Plus-7010>
+ <61c1eb8b-b8fd-4e9e-b0fc-27ce1c2eb2b1@kernel.org>
+ <AM6PR04MB5941061D0DCA71B31F44497488D02@AM6PR04MB5941.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <202406271009.4E90DF8@keescook>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <AM6PR04MB5941061D0DCA71B31F44497488D02@AM6PR04MB5941.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.139
-X-Source-L: No
-X-Exim-ID: 1sN1hv-003DhV-1b
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.14]) [201.172.173.139]:40218
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 6
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfM6OCRuYQMfyfGtWA53mtTr9VqOVHqVEI7pTUFwm1k+BiCamtmNlE4C6InUvv3rYi0/3zWbZg6nkWVxn7dY3/xqHIJQdK7owzzpMHDo/lvPbzNeooxcU
- /5XsETRZ9N58r/7/yfrCW4VaIIovTZX0dAV8iGrxrYlEzaCEH9HDzKuBIcuwX9X0AZgmdT7KZbsGMs1CEwlVjPVgqL9PK53D9BI=
 
-
-
-On 27/06/24 11:14, Kees Cook wrote:
-> On Wed, May 29, 2024 at 02:29:42PM -0700, Nathan Chancellor wrote:
->> Work for __counted_by on generic pointers in structures (not just
->> flexible array members) has started landing in Clang 19 (current tip of
->> tree). During the development of this feature, a restriction was added
->> to __counted_by to prevent the flexible array member's element type from
->> including a flexible array member itself such as:
+On 28/06/2024 03:17, Peng Fan wrote:
+>> Subject: Re: [PATCH 1/2] clk: imx93: Drop macro IMX93_CLK_END
 >>
->>    struct foo {
->>      int count;
->>      char buf[];
->>    };
+>> On 25/06/2024 12:43, Pengfei Li wrote:
+>>> On Tue, Jun 25, 2024 at 09:44:42AM +0200, Krzysztof Kozlowski
+>> wrote:
+>>>> On 25/06/2024 19:51, Pengfei Li wrote:
+>>>>> IMX93_CLK_END was previously defined in imx93-clock.h to
+>> indicate
+>>>>> the number of clocks, but it is not part of the ABI, so it should be
+>>>>> dropped.
+>>>>>
+>>>>> Now, the driver gets the number of clks by querying the maximum
+>>>>> index in the clk array. Due to the discontinuity in the definition
+>>>>> of clk index, with some gaps present, the total count cannot be
+>>>>> obtained by summing the array size.
+>>>>>
+>>>>> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+>>>>> ---
+>>>>>  drivers/clk/imx/clk-imx93.c | 25 +++++++++++++++++++++----
+>>>>>  1 file changed, 21 insertions(+), 4 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/clk/imx/clk-imx93.c
+>>>>> b/drivers/clk/imx/clk-imx93.c index c6a9bc8ecc1f..68c929512e16
+>>>>> 100644
+>>>>> --- a/drivers/clk/imx/clk-imx93.c
+>>>>> +++ b/drivers/clk/imx/clk-imx93.c
+>>>>> @@ -257,6 +257,20 @@ static const struct imx93_clk_ccgr
+>> {  static
+>>>>> struct clk_hw_onecell_data *clk_hw_data;  static struct clk_hw
+>>>>> **clks;
+>>>>>
+>>>>> +static int imx_clks_get_num(void)
+>>>>> +{
+>>>>> +	u32 val = 0;
+>>>>> +	int i;
+>>>>> +
+>>>>> +	for (i = 0; i < ARRAY_SIZE(root_array); i++)
+>>>>> +		val = max_t(u32, val, root_array[i].clk);
+>>>>> +
+>>>>> +	for (i = 0; i < ARRAY_SIZE(ccgr_array); i++)
+>>>>> +		val = max_t(u32, val, ccgr_array[i].clk);
+>>>>> +
+>>>>> +	return val + 1;
+>>>>> +}
+>>>>> +
+>>>>>  static int imx93_clocks_probe(struct platform_device *pdev)  {
+>>>>>  	struct device *dev = &pdev->dev;
+>>>>> @@ -264,14 +278,17 @@ static int imx93_clocks_probe(struct
+>> platform_device *pdev)
+>>>>>  	const struct imx93_clk_root *root;
+>>>>>  	const struct imx93_clk_ccgr *ccgr;
+>>>>>  	void __iomem *base, *anatop_base;
+>>>>> +	int clks_num;
+>>>>>  	int i, ret;
+>>>>>
+>>>>> +	clks_num = imx_clks_get_num();
+>>>>> +
+>>>>>  	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data,
+>> hws,
+>>>>> -					  IMX93_CLK_END),
+>> GFP_KERNEL);
+>>>>> +					  clks_num), GFP_KERNEL);
+>>>>>  	if (!clk_hw_data)
+>>>>>  		return -ENOMEM;
+>>>>>
+>>>>> -	clk_hw_data->num = IMX93_CLK_END;
+>>>>> +	clk_hw_data->num = clks_num;
+>>>>
+>>>> Why so complicated code instead of pre-processor define or array
+>> size?
+>>>>
+>>>> Best regards,
+>>>> Krzysztof
+>>>>
+>>>>
+>>>
+>>> Hi Krzysztof,
+>>>
+>>> Thanks for the comment, here are some of our thoughts.
+>>>
+>>> Regarding the predefined method, it's easy to forget to update the
+>>> macro definition when adding some new clocks to imx93-clock.h in
+>> the future.
 >>
->>    struct bar {
->>      int count;
->>      struct foo data[] __counted_by(count);
->>    };
+>> Somehow most developers in most platforms can do it... Anyway, that
+>> would be build time detectable so no problem at all.
 >>
->> because the size of data cannot be calculated with the standard array
->> size formula:
+>>>
+>>> Also, we cannot use the array size method in this scenario, as some
+>>> unnecessary clocks have been removed in the past, resulting in
+>>> discontinuous definitions of clock indexes. This means that the
+>>> maximum clock index can be larger than the allocated clk_hw array
+>> size. At this point, using the maximum index to access the clk_hw array
+>> will result in an out of bounds error.
 >>
->>    sizeof(struct foo) * count
->>
->> This restriction was downgraded to a warning but due to CONFIG_WERROR,
->> it can still break the build. The application of __counted_by on the
->> ports member of 'struct mxser_board' triggers this restriction,
->> resulting in:
->>
->>    drivers/tty/mxser.c:291:2: error: 'counted_by' should not be applied to an array with element of unknown size because 'struct mxser_port' is a struct type with a flexible array member. This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
->>      291 |         struct mxser_port ports[] __counted_by(nports);
->>          |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->>    1 error generated.
->>
->> Remove this use of __counted_by to fix the warning/error. However,
->> rather than remove it altogether, leave it commented, as it may be
->> possible to support this in future compiler releases.
->>
->> Cc: stable@vger.kernel.org
->> Closes: https://github.com/ClangBuiltLinux/linux/issues/2026
->> Fixes: f34907ecca71 ("mxser: Annotate struct mxser_board with __counted_by")
->> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>> You mix bindings with array entries. That's independent or just clock
+>> drivers are broken.
 > 
-> Since this fixes a build issue under Clang, can we please land this so
-> v6.7 and later will build again? Gustavo is still working on the more
-> complete fix (which was already on his radar, so it won't be lost).
-> 
-> If it's easier/helpful, I can land this via the hardening tree? I was
-> the one who sent the bad patch originally. :)
+> But there is issue that binding update and clock driver are normally in
+> two patches.  So if just use the IMX93_CLK_END in this file,
+> it will be easy to break `git bisect`.
 
-+1 (It'd be great if you take it.)
+There is no issue. Srsly, this would be the only, only one driver having
+that issue.
 
-Also, it'd be great if somebody can confirm this is an acceptable fix
-for the issue:
+How is this even possible? How adding one new define for pre-processor
+would cause driver issues or some sort of bisectability problems?
 
-https://lore.kernel.org/linux-hardening/c80e41e6-793e-4311-8e15-f5eda91e723e@embeddedor.com/
+These are basics of C we talk about now...
 
-Thanks
---
-Gustavo
+Best regards,
+Krzysztof
+
