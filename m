@@ -1,58 +1,58 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4999F7C6EB
-	for <imx@lists.linux.dev>; Sat, 29 Jun 2024 12:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4E953E15
+	for <imx@lists.linux.dev>; Sat, 29 Jun 2024 13:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719663790; cv=none; b=kgj5wpjjL7/wsRAQp2pLbaNFosrDXuMdV915WilMmbgTZhuIhmyZW68/s19MWWbqikFbcLrzZsoPhSJDBs6Mamz9INVoePN6Zh8Q9XeP87Gzi3tnpAy07HcbNOp7tuZu/YgJT6QzaiVxDB2R0S2WFLtxjHLMWpJOQw827L1nyC8=
+	t=1719666335; cv=none; b=A3JacdCogyk9JgazZUIWxw2Jt7ZBTcxfdtFyvRVj+S+LPTbR43jPjURMhZP5aYIzxTMX5i360PnpuL1b8hG7K0PJg+CRqfb4LXB0TvO70FPvV4/6lhNjk3qL6Vg3Kyy7v8zuYJsem+7JMHtFeDuBPHQsMba4cmGnS34omRHmTuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719663790; c=relaxed/simple;
-	bh=0y5cSgtBlkamEEyslLX8DfwkBZ+qF4qV5H9+Ndn+Qw4=;
+	s=arc-20240116; t=1719666335; c=relaxed/simple;
+	bh=+GloaJVSprqCGpULiUI/O36iec3Yuequ8ZLM2WLDhNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pJKeRmmp7OA2RniAIb3k4rh9LsS1zFwlAR6n/pPb2SCX2vchJfd2PmAxSMSd4Ryik9GBG18fn3NkX7gKjaIEj7urRwEk1ZRlkHUc+Obiz/8ab+2NxTaSszEl7C0+McZddR/1EEMkzWvp6/QD6+5Qg0MMFITpgVrRbuLkowz06rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dJ6PXb5V; arc=none smtp.client-ip=209.85.210.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=s82XfQfVU6JJR8nuhPo1KgSs1mBYkGNCdKrC16dIkHL2FN8ml0AK/CBnwy9UFnmFeP1l6fQPpyBV+lfi5gCkqV0+B9fKsLHihCs6aSL9H4M7VfpZwA2v6Hbqne64vx+dbkHdeCgUBwJMxgK1bkhMmAYgpA1v68oECwbxNV+tRso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I77/xtfX; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dJ6PXb5V"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7082dd9bbf8so1196872b3a.1
-        for <imx@lists.linux.dev>; Sat, 29 Jun 2024 05:23:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I77/xtfX"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1fab03d2eecso11001635ad.0
+        for <imx@lists.linux.dev>; Sat, 29 Jun 2024 06:05:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719663789; x=1720268589; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1719666333; x=1720271133; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=hd/fN6JrXuuparzKe/1dgdm1z2pqZRQTyP5PJ9H207I=;
-        b=dJ6PXb5Vvg25woze3fV+EEBoCo8U32lv0PoyxGwLVwtgZpoU6I8auZxV+pSsxsSdLN
-         2YcmoIuj0YoVfWa3XLUfB2Gl7xDHwpe09PDOn/hGUSkAgX0hdQfVQhHrGRnHEdZJN2nT
-         6GGtLbN9THQXdRiJ3ci0B3ilIgTgFN4r0WZeT4ggIBjTwe52GhdhcNklmfuppoQaPTUs
-         BRZ5D3VeuwlBLWnKgoJEvku/FsPL9bshZnBeWD430rCYRlabFDgBYn+Iw0OQ85EZHQNO
-         tnhF1DbLPDhVNoj6XpZ8YF2DrTu7+o2uZQHWHuMAobDsHV/OogsT7+0yJ9oQzv407Hoi
-         p1/g==
+        bh=Hr41jn7CS+JV7JYEOXmHYOhJrr4EACp9o9fXqaxlvEQ=;
+        b=I77/xtfXNbvGxJDa6sO9ate7R/OKX2atS+jqkrWjGPoAQ1Sy8C1UMOGvVh9ZjUNDmw
+         OoaihtY4NpFZnke3COucaMqBGKteHZHvn11DxaB3UYvkxi5rHqPvsqRJ4WpZn2hF5RfR
+         ci7ZavII/g/x6ktXqEMJzZlu95ydIe6qdFOucIMMHtdPLBSWlbdL92c6qgRG5C105waI
+         J8OJzWXWo3JaUCKdegqvyt0kQeCjlf8cp3qtwpeMlZ28yfMpz11MEebQcmVd0vOgq5xn
+         yp+XvWXw87VAzPvfHvKdWhVyuEcArJP+pvxHK3A0yfUDP7M7WgxIad/Co34uE8UQq+Me
+         gwKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719663789; x=1720268589;
+        d=1e100.net; s=20230601; t=1719666333; x=1720271133;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hd/fN6JrXuuparzKe/1dgdm1z2pqZRQTyP5PJ9H207I=;
-        b=OfhomanxJFThOObcGcWNTyVf+OihH7gJSaXtVmN3CK0dM/6yAWbpErx5KVyYWmqKfj
-         jOIuMIcYWZMv3HFIjhab9YH+hmwkj2IERGaJhckkemjcQhgIo3MLb2fxQvmKzwT4cSPc
-         vp4WNS6p5jKAQ9M3qJCzGfckxqBnQGbTi6eXAIh15feyOaO37i6RJpbesaeIGanIrKQt
-         NOOdwuC4y2FYYBHG5b8KXxJI+I0ctlEhPEnOzMCIIF3EY/kuPUcWs0XUx6hvdLb1mcdB
-         M1UU/MqsQTe0t91gElKsXoR1z/OxhovUWApCRXeToRYW8kNXKQrBd25FJsvb4Q1EgR3B
-         bArA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfaSjGCwxIC0r3DqOYZHDYNDwfTZoO/EY1ApbEeWW0Ql4FCaaKdILGSS3f8wLSfGwPEyUBWIWFi0hqmu/6fMvHfk9t
-X-Gm-Message-State: AOJu0YxyGlwPLKIYzsixyiG/KcvybaI3UhTv1D2/zzRvUunjgsHWKBOj
-	pV4Lh9lmqVdlD+W3pDDl3n3K/dOEdzDp3I/AI51eqIXs2p6DsIsb/5o65Oxyyg==
-X-Google-Smtp-Source: AGHT+IEW0u5OjNVhFbntAWf/v7zidI2Sjsqla8PVFtRXPmZZ7xJh0N+dgrcQ2vSjwdtKDdMLAlmuaw==
-X-Received: by 2002:a05:6a00:2e18:b0:706:8066:5cd6 with SMTP id d2e1a72fcca58-70aaaf31a15mr736491b3a.32.1719663788507;
-        Sat, 29 Jun 2024 05:23:08 -0700 (PDT)
+        bh=Hr41jn7CS+JV7JYEOXmHYOhJrr4EACp9o9fXqaxlvEQ=;
+        b=XpT64497UKta1SU1oVwL88ZkqvSQmui8FUjtfi7KzO+3U8/u3aSqi2DEdsr5M/h7b9
+         XOV8dqpobUC/1v8H7jKqSDsmWF0YOX8BLyKoF9+GEQn8kYgmGV9g0Yqn1yow3bv+Zmiu
+         ecQJX3j//I/pc37XbrXBtFneY0u5+POkdsGB05VwWFMjJBBakAjFCrIb/R1ytCRqxTTZ
+         3iyfk5na9RPaSFg4lzm32iUk3Cn+pj5Au0FnQC5kifZ0WamM55lkezGkckLsb4Pf95wB
+         OQcVfFXKKC9smV7lkhUkwfDcGHJlaLKenaDg4lIKXXKlL+3M8TwRh+sD6tpzW4Mc4gX2
+         XkLw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTFf5IB5PVxlRLOk5iDE6fiM2bnm2wR74CCoGrMAd7xDHXg04WU82PX8kZ5dUYcA93QKjOKXo7hNVPlGfcpgPtga9j
+X-Gm-Message-State: AOJu0Ywtfiwe+nC5qOnv/S7br/7Oxnw9mxeW2xFZrEncAP1p+ZEkwv4/
+	3T2gii6EHeDRFQCbejXGVP2E2YPyEXEQyAYLEKLBt9QFq2Rbx17He4CuucnwTA==
+X-Google-Smtp-Source: AGHT+IE5aU4sW0gZNOnsBZmQhd5QPQlm2dJswEqAC+AISCYfDs6s10N0soFFT4U1SUdqSjSMRwrfaA==
+X-Received: by 2002:a17:903:2349:b0:1f7:23ee:d496 with SMTP id d9443c01a7336-1fadbcb2064mr6324365ad.30.1719666333190;
+        Sat, 29 Jun 2024 06:05:33 -0700 (PDT)
 Received: from thinkpad ([220.158.156.249])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70803ecf70asm3179116b3a.102.2024.06.29.05.23.03
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac1598576sm31531345ad.278.2024.06.29.06.05.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Jun 2024 05:23:08 -0700 (PDT)
-Date: Sat, 29 Jun 2024 17:53:01 +0530
+        Sat, 29 Jun 2024 06:05:32 -0700 (PDT)
+Date: Sat, 29 Jun 2024 18:35:25 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Richard Zhu <hongxing.zhu@nxp.com>,
@@ -72,12 +72,12 @@ Cc: Richard Zhu <hongxing.zhu@nxp.com>,
 	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 01/10] PCI: imx6: Fix establish link failure in EP
- mode for iMX8MM and iMX8MP
-Message-ID: <20240629122301.GB5608@thinkpad>
+	devicetree@vger.kernel.org, Jason Liu <jason.hui.liu@nxp.com>
+Subject: Re: [PATCH v6 02/10] PCI: imx6: Fix i.MX8MP PCIe EP's occasional
+ failure to trigger MSI
+Message-ID: <20240629130525.GC5608@thinkpad>
 References: <20240617-pci2_upstream-v6-0-e0821238f997@nxp.com>
- <20240617-pci2_upstream-v6-1-e0821238f997@nxp.com>
+ <20240617-pci2_upstream-v6-2-e0821238f997@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,52 +87,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240617-pci2_upstream-v6-1-e0821238f997@nxp.com>
+In-Reply-To: <20240617-pci2_upstream-v6-2-e0821238f997@nxp.com>
 
-On Mon, Jun 17, 2024 at 04:16:37PM -0400, Frank Li wrote:
+On Mon, Jun 17, 2024 at 04:16:38PM -0400, Frank Li wrote:
 > From: Richard Zhu <hongxing.zhu@nxp.com>
 > 
-> Add IMX6_PCIE_FLAG_HAS_APP_RESET flag to IMX8MM_EP and IMX8MP_EP drvdata.
-> This flag was overlooked during code restructuring. It is crucial to
-> release the app-reset from the System Reset Controller before initiating
-> LTSSM to rectify the issue
+> Correct occasional MSI triggering failures in i.MX8MP PCIe EP by apply 64KB
+> hardware alignment requirement.
 > 
-> Fixes: 0c9651c21f2a ("PCI: imx6: Simplify reset handling by using *_FLAG_HAS_*_RESET")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> MSI triggering fail if the outbound MSI memory region (ep->msi_mem) is not
+> aligned to 64KB.
+> 
+> In dw_pcie_ep_init():
+> 
+> ep->msi_mem = pci_epc_mem_alloc_addr(epc, &ep->msi_mem_phys,
+> 				     epc->mem->window.page_size);
+> 
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+So this is an alignment restriction w.r.t iATU. In that case, we should be
+passing 'pci_epc_features::align' instead?
 
 - Mani
 
+> Set ep->page_size to match drvdata::epc_features::align since different
+> SOCs have different alignment requirements.
+> 
+> Fixes: 1bd0d43dcf3b ("PCI: imx6: Clean up addr_space retrieval code")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Acked-by: Jason Liu <jason.hui.liu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 917c69edee1d5..9a71b8aa09b3c 100644
+> index 9a71b8aa09b3c..ca9a000c9a96d 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1578,7 +1578,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  	},
->  	[IMX8MM_EP] = {
->  		.variant = IMX8MM_EP,
-> -		.flags = IMX6_PCIE_FLAG_HAS_PHYDRV,
-> +		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
-> +			 IMX6_PCIE_FLAG_HAS_PHYDRV,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mm-iomuxc-gpr",
->  		.clk_names = imx8mm_clks,
-> @@ -1589,7 +1590,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
->  	},
->  	[IMX8MP_EP] = {
->  		.variant = IMX8MP_EP,
-> -		.flags = IMX6_PCIE_FLAG_HAS_PHYDRV,
-> +		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
-> +			 IMX6_PCIE_FLAG_HAS_PHYDRV,
->  		.mode = DW_PCIE_EP_TYPE,
->  		.gpr = "fsl,imx8mp-iomuxc-gpr",
->  		.clk_names = imx8mm_clks,
+> @@ -1118,6 +1118,8 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
+>  	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_SUPPORT_64BIT))
+>  		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+>  
+> +	ep->page_size = imx6_pcie->drvdata->epc_features->align;
+> +
+>  	ret = dw_pcie_ep_init(ep);
+>  	if (ret) {
+>  		dev_err(dev, "failed to initialize endpoint\n");
 > 
 > -- 
 > 2.34.1
