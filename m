@@ -1,183 +1,142 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2087.outbound.protection.outlook.com [40.107.21.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCA4812
-	for <imx@lists.linux.dev>; Sat, 29 Jun 2024 02:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719629464; cv=fail; b=i8Ku0V9RvHWw2cyRX2U17GjgS1zbNNxC15br4qkUt9pTtLEObrtiiYjwCg6UhGp5Ne7wHAemtP24DhRscW7220Wf/rcTAYPIrJSkRibYLyVOUmkgYMe5UY5suW1VSNA+bdwFfM1wQ5txl2jlOJThL24leqfQ4E/mRLUeW7oeRPQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719629464; c=relaxed/simple;
-	bh=KcNX8bt2ka3EoIzbKzVL57xc2KWTjijez/oHSWujrr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GTTEumFgxuWr9vZjj3XnTAmOjFTFIRPLaLJ6z/MrQ0mwt3K5Adsbad/VL/bDkp/kejl0OlHQjivQRd83vhxp+tXj7XmRQGX0ZKsu8KwFH5i8+lVFsCvVtOblWkQhH12XJFbIAV7AWUYZAjZKwR9TbNfvNXp2vNjT9b/aItA+Ku8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cy87gH/r; arc=fail smtp.client-ip=40.107.21.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4999F7C6EB
+	for <imx@lists.linux.dev>; Sat, 29 Jun 2024 12:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719663790; cv=none; b=kgj5wpjjL7/wsRAQp2pLbaNFosrDXuMdV915WilMmbgTZhuIhmyZW68/s19MWWbqikFbcLrzZsoPhSJDBs6Mamz9INVoePN6Zh8Q9XeP87Gzi3tnpAy07HcbNOp7tuZu/YgJT6QzaiVxDB2R0S2WFLtxjHLMWpJOQw827L1nyC8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719663790; c=relaxed/simple;
+	bh=0y5cSgtBlkamEEyslLX8DfwkBZ+qF4qV5H9+Ndn+Qw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pJKeRmmp7OA2RniAIb3k4rh9LsS1zFwlAR6n/pPb2SCX2vchJfd2PmAxSMSd4Ryik9GBG18fn3NkX7gKjaIEj7urRwEk1ZRlkHUc+Obiz/8ab+2NxTaSszEl7C0+McZddR/1EEMkzWvp6/QD6+5Qg0MMFITpgVrRbuLkowz06rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dJ6PXb5V; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cy87gH/r"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EbgmczOerrM0q/cmx1iKbottVxjuKu2aITcX9QaUoykqjlKYKN+eEJ6vkUFx8UarCx9wxITZvPN78ixDBAUkhlbFCR6crHLvNW7XdQ2MP/WH/mEKz2IvIBNSSKXOmBjGDfI0fhHQyOqZ3j6xMFYWc8PyoDpUQR4WlHzjgsYWOCDHPDBypavs2vkigD0e6iqq14bRlCQz2VwzdRUazeTscFQ9YVM93xJEBhT5opLNyYGhC6CiotR2nkZ1O1a8eZiwtavhegl0MmtxLbCqfe2NOkJ7UVta2BM+96RBWAHnrGuLuCZQXwLaFvBdAAT5f5qKxHi6D3b0fmoTpWaGc8hckA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nWzfBGJUdfOab4KuAyR3SmGkr8XJRnEmhUXtj/DkOn0=;
- b=OQFskNbPTZrvqnf1m2CJu4XKVTXT9gFAqAq7d0VWKnsi0qmQXlL6876yK+R8wL76cP3hiIq1YXVuFeTs4hWBGONtpQd8OlDtqyatC87A6YBHHQJqLqK4I+8e0uUxYWdqSH8owMqSOK0g1DgAncArhmT0P3QyOdEktUDNtye3afnLKz3bDSBhrLUhKfjqzAGgKPkGpovIBWtAwJFwTqNJshveWCPt4hi+zF9ubW9QMA1HgjMohT6nCq65zuI2XmX2ZgHcW1xaG25FWSrrDxzQXVsE/lAuCOEdaSgljItkcLohjBBhwG6gfKvEXGVTNIu7CA5hnKTs6fk08zNlHZ/YEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nWzfBGJUdfOab4KuAyR3SmGkr8XJRnEmhUXtj/DkOn0=;
- b=cy87gH/r87/S14ZHWILvMuEaThcyOA/FMsI2773s8OoSg7FIGlZ1iE53IyUoDWh52Zwl7Y1xbid6hN7UMmlztVSTqbb19NI4+rcoAYUIqxiggA10HMkz9WdEtSY1mEW4qwvzD/uFDU5D5642vus6qam455jmGexwIcFgyWe1DW8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB8PR04MB7065.eurprd04.prod.outlook.com (2603:10a6:10:127::9)
- by GV1PR04MB10243.eurprd04.prod.outlook.com (2603:10a6:150:17d::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.28; Sat, 29 Jun
- 2024 02:50:58 +0000
-Received: from DB8PR04MB7065.eurprd04.prod.outlook.com
- ([fe80::8af7:8659:9d42:bd84]) by DB8PR04MB7065.eurprd04.prod.outlook.com
- ([fe80::8af7:8659:9d42:bd84%4]) with mapi id 15.20.7719.028; Sat, 29 Jun 2024
- 02:50:58 +0000
-Date: Sat, 29 Jun 2024 10:49:49 +0800
-From: Pengfei Li <pengfei.li_1@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: krzk+dt@kernel.org, robh@kernel.org, abelvesa@kernel.org,
-	mturquette@baylibre.com, sboyd@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, ping.bai@nxp.com,
-	ye.li@nxp.com, peng.fan@nxp.com, aisheng.dong@nxp.com,
-	frank.li@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] clk: imx93: Move IMX93_CLK_END macro to clk driver
-Message-ID: <Zn92TX9ZsHde7g2f@pengfei-OptiPlex-Tower-Plus-7010>
-References: <20240627082426.394937-1-pengfei.li_1@nxp.com>
- <20240627082426.394937-2-pengfei.li_1@nxp.com>
- <60f9e733-f5bd-4bfc-9bd5-94ae18bb3901@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60f9e733-f5bd-4bfc-9bd5-94ae18bb3901@kernel.org>
-X-ClientProxiedBy: AM4PR0302CA0002.eurprd03.prod.outlook.com
- (2603:10a6:205:2::15) To DB8PR04MB7065.eurprd04.prod.outlook.com
- (2603:10a6:10:127::9)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dJ6PXb5V"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7082dd9bbf8so1196872b3a.1
+        for <imx@lists.linux.dev>; Sat, 29 Jun 2024 05:23:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719663789; x=1720268589; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hd/fN6JrXuuparzKe/1dgdm1z2pqZRQTyP5PJ9H207I=;
+        b=dJ6PXb5Vvg25woze3fV+EEBoCo8U32lv0PoyxGwLVwtgZpoU6I8auZxV+pSsxsSdLN
+         2YcmoIuj0YoVfWa3XLUfB2Gl7xDHwpe09PDOn/hGUSkAgX0hdQfVQhHrGRnHEdZJN2nT
+         6GGtLbN9THQXdRiJ3ci0B3ilIgTgFN4r0WZeT4ggIBjTwe52GhdhcNklmfuppoQaPTUs
+         BRZ5D3VeuwlBLWnKgoJEvku/FsPL9bshZnBeWD430rCYRlabFDgBYn+Iw0OQ85EZHQNO
+         tnhF1DbLPDhVNoj6XpZ8YF2DrTu7+o2uZQHWHuMAobDsHV/OogsT7+0yJ9oQzv407Hoi
+         p1/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719663789; x=1720268589;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hd/fN6JrXuuparzKe/1dgdm1z2pqZRQTyP5PJ9H207I=;
+        b=OfhomanxJFThOObcGcWNTyVf+OihH7gJSaXtVmN3CK0dM/6yAWbpErx5KVyYWmqKfj
+         jOIuMIcYWZMv3HFIjhab9YH+hmwkj2IERGaJhckkemjcQhgIo3MLb2fxQvmKzwT4cSPc
+         vp4WNS6p5jKAQ9M3qJCzGfckxqBnQGbTi6eXAIh15feyOaO37i6RJpbesaeIGanIrKQt
+         NOOdwuC4y2FYYBHG5b8KXxJI+I0ctlEhPEnOzMCIIF3EY/kuPUcWs0XUx6hvdLb1mcdB
+         M1UU/MqsQTe0t91gElKsXoR1z/OxhovUWApCRXeToRYW8kNXKQrBd25FJsvb4Q1EgR3B
+         bArA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfaSjGCwxIC0r3DqOYZHDYNDwfTZoO/EY1ApbEeWW0Ql4FCaaKdILGSS3f8wLSfGwPEyUBWIWFi0hqmu/6fMvHfk9t
+X-Gm-Message-State: AOJu0YxyGlwPLKIYzsixyiG/KcvybaI3UhTv1D2/zzRvUunjgsHWKBOj
+	pV4Lh9lmqVdlD+W3pDDl3n3K/dOEdzDp3I/AI51eqIXs2p6DsIsb/5o65Oxyyg==
+X-Google-Smtp-Source: AGHT+IEW0u5OjNVhFbntAWf/v7zidI2Sjsqla8PVFtRXPmZZ7xJh0N+dgrcQ2vSjwdtKDdMLAlmuaw==
+X-Received: by 2002:a05:6a00:2e18:b0:706:8066:5cd6 with SMTP id d2e1a72fcca58-70aaaf31a15mr736491b3a.32.1719663788507;
+        Sat, 29 Jun 2024 05:23:08 -0700 (PDT)
+Received: from thinkpad ([220.158.156.249])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70803ecf70asm3179116b3a.102.2024.06.29.05.23.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Jun 2024 05:23:08 -0700 (PDT)
+Date: Sat, 29 Jun 2024 17:53:01 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 01/10] PCI: imx6: Fix establish link failure in EP
+ mode for iMX8MM and iMX8MP
+Message-ID: <20240629122301.GB5608@thinkpad>
+References: <20240617-pci2_upstream-v6-0-e0821238f997@nxp.com>
+ <20240617-pci2_upstream-v6-1-e0821238f997@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB8PR04MB7065:EE_|GV1PR04MB10243:EE_
-X-MS-Office365-Filtering-Correlation-Id: db6462dc-6ded-4a19-9278-08dc97e64d9c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9LQSxOH62cBeB53MMCZPwrG4Guh6d39eYU8EAvoy2bdelHcBO1kcut2tX6Y7?=
- =?us-ascii?Q?0PpSLAg6iyXEsG6GBGDPCNjwsOF6qgqcKyD//IhuQTQaMUaIuwF2Yv6f0m8P?=
- =?us-ascii?Q?e3KbFnqukGM8bHiYfpHcAVXeJJkmGHagwdmyiR7Gug5RxaB99tAMfRfcdCeH?=
- =?us-ascii?Q?D3akDWKVs5IguYb6hKJwrmaFNX+OV7HSbbZf2BkAJHaJa+ybXj29F7atbiQF?=
- =?us-ascii?Q?lELeq7qXTrdOKrfskLrL/QU5UCgWhpY2fboR0LrHHolM4/PIxkItMdPipiGM?=
- =?us-ascii?Q?UAWb4GChz/pH73jw1B44+ADu/0VTLXFdTLOFjxvc6CaiLfHh9OmxLFL32CBl?=
- =?us-ascii?Q?alX4wTa5GxahOi/Vd1qxsu1U/0DGFDSiI8aX6QjIwwEJ7dLpFACnmV5Ck61N?=
- =?us-ascii?Q?TJ/EKb8DY4ukF5xSbnH7zfvxz4xeS8FKY+K9zPpjdivb4+KVHaorCTXauuCm?=
- =?us-ascii?Q?ki8P+5KTfDe6GSN+zX3HGab15Xea9mTzZb+Vhr8mbwAgL/mC2OSh6cN/xAek?=
- =?us-ascii?Q?3b1Up5z1Wrh7F8sjJhjnT0RGcjy9x4M/+Wwneg3Q/tQwq7sGDJ37CiCwEfW5?=
- =?us-ascii?Q?HzZkb8yLuSjj7RusQteP8/+5crRpAZHAjQnnAyqdIExA09rc3sB0+iYv3Mzd?=
- =?us-ascii?Q?TWFs1H35YaJPyQkS7ESDjjQZ9QZYMQ9lRLHGqo9zOk17MVVoB748Mw24LVW2?=
- =?us-ascii?Q?7rflOv0J3Wn/4RrPjYtqMiMbfbK+B97PHoKdI6a19wBaE1eASAmcTkM8IZkM?=
- =?us-ascii?Q?UzEaeKgKsa6fkOa958QTrpj1LsUpeYl8KKuZ1pdY7/U1c959yro9Xo15W/+Q?=
- =?us-ascii?Q?cyWv+Az78rZ+Xhe5OU9+uWCn3/IusKrTSvgUYOFFm0uM0uVjEbRcU3Z0d9Ny?=
- =?us-ascii?Q?CRYn1BHXAx+QsJGecuDXh2AFDtIRT44/yuTUMAM2wUXYn4Ub25yvZqKyhH3I?=
- =?us-ascii?Q?hA2djqh67PLOsD/PzUlEzood13yr420ShZISJ9XpZMmjwwg6n/rUf1IFmaVV?=
- =?us-ascii?Q?wVhjCCBLAgPc9fMwbCOmoTcf8QFegJIssqfNNcycCmwWnSpi75gzYl2KkRKx?=
- =?us-ascii?Q?U0BcDU/h6ciW5WeewtdlNHPaOHRsetyQtOSCvvPM60V4bU0bp3oGBfSXXnEu?=
- =?us-ascii?Q?/8nhA/ds+vzBh6CYMAgc+t8eZ1Vf+KFrOZERtzulIGUJyfHA9WIJwz5GUY+d?=
- =?us-ascii?Q?yPNfjCz5Shx1fbz+5gjTfTxLX9fvw0d1yOZZ0j4OISAxAdKpTjPRRduImaLD?=
- =?us-ascii?Q?d11psZzCec5jR487614KBQxxoPeRXpn0IHLd2IWp42RFaw/90YZ5bayjEPkR?=
- =?us-ascii?Q?7D9YpnjhFbO7kf4fxwosxa+vyFE+iUXEPUN4UB+rftutWNL60xqEUv3yVi9G?=
- =?us-ascii?Q?HvKROcSlLbT2HgIA9fsbkz9HmZseWg8SwHAhoO2ixSvFvERYvg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7065.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Pps+EvDkk9jlkTgap/lFcuTSsYIST4k8N4zT1fOW6ug6YFAeKkTLOrfJ2+lU?=
- =?us-ascii?Q?TG0Y+nlzCzUG+FQKOXWazsrSQjv7tVq2zKTLAlhnH7TOUFpvJLYNBEkOAgzE?=
- =?us-ascii?Q?CCr5OhnPs0K4hN993IyXykLS3ptVu7jvfQa6S1t+ObB+WWHVHk7XL14cfJ/z?=
- =?us-ascii?Q?fySOJgftjGJMbyvQycWE53lykyMq9orm6g7Z5E1LkUxNgpMxq8qNrQInkYAe?=
- =?us-ascii?Q?SZyA2i0VOrJdlkIFriN782UdkWoTBMTn7W0w+ADrA0GDQ8recj9nNiiJqTtm?=
- =?us-ascii?Q?KBkyu/w9GJI1rfTZVpLpC2Jcqtp8VNzbwzLIKRGztDFNs3KivstxyXrbX0zX?=
- =?us-ascii?Q?CaGGaczzUs3lPvW18w2C7S+o+U1wK0FAM0dM43PWN3paH7iJwDhc7IVsz8RL?=
- =?us-ascii?Q?TAR7zsoZIRG8AMjmV1Oq7jMCVKamSU4PaQctZVDPtD5IkGQahIaiHVlK5pAT?=
- =?us-ascii?Q?feb6k0Afx12QviikgqKGQpp9QImh3D9ALUgh6v0MJr0ifBpEBU9kaOOHrl0h?=
- =?us-ascii?Q?27rF/RCkNrzhAPBMTinoihT+CcadYey1BTQ423QdOlQwhbpdxfTAUUmCm1p/?=
- =?us-ascii?Q?mBLpaK308ff3+dr4evUIilrOqRxYA1GNCeHtDSbWTcZrVry2J7C9p1/TvAJa?=
- =?us-ascii?Q?m2J4fYbv0rFUsCHzZynTjEAPn8z2lSTbGK5CWyfEMQAxRaosAQ3wEsAimvFM?=
- =?us-ascii?Q?EWGCzuC2/TUBxtMxMzGAwSnhtMcpSgRd7K1fHp64OehOoU9WSWsKpgQqea13?=
- =?us-ascii?Q?5WsKDz2Rc/DsMgGdrgui4qN/FIBcJiERIlDNqkvvB3iU5FZrbKOqq4TCkGEf?=
- =?us-ascii?Q?QiCVhst4MTcqhpol44szZa3TTzTO0bWis5gtgBhjhfMOlTNG3dpkxRmtrxVc?=
- =?us-ascii?Q?B/IObMOAYYUlNOwTJFNGcW+d0AcJSLH+SCGg6BSKZFagp+L7wvqpJ/HLShoM?=
- =?us-ascii?Q?7exwSsEmRJ2FwexQL7dwAj3i+3r6OJe1VEiZsBiEuk9Rns6LdT8qk5oGX3sK?=
- =?us-ascii?Q?6tXYyJguQy4Db8rBvffuKVFXC9yT64CpRkCkFFSj3ZBJjjySntfdXCilPnd6?=
- =?us-ascii?Q?UPBNgFCjKJGEXrybmktj7ZyEJ5eJb+2mK9GuJJs3bVIb+MfUPFbEpGEjn5zY?=
- =?us-ascii?Q?sHltjN3uaDg6rewhkbxnQ7UCBbqP5w3qgocWdLhZfa+DbkvxuyN80pZ/csRy?=
- =?us-ascii?Q?E3RRLDhIxs5WdLCxmTXTzmST3c/k7X0R+bi9uytbE4IfxkNqPQh2LlSxu3pw?=
- =?us-ascii?Q?x2At8TBlXEUwiBtlMszS7GNLeBIfH8YiO4dpW9JolDCtKzcmlzGtHTFxNSTl?=
- =?us-ascii?Q?8uatk7yeG5TBoETHqsTHMXbZgYFqhxYJ/9FWLe9ffuoFJSpy0IjnEMsqRClD?=
- =?us-ascii?Q?uCPdA8d0h5cFn9wdBba6iSC2rxbJaYtPYoGMGH+O2ikmVBuECXUgESvP+G+I?=
- =?us-ascii?Q?oCUPZB1e9qDT6URXieEFzBqcCJgD7J42qHBUCBjmvUQLP41zv3FHkS9fnhrt?=
- =?us-ascii?Q?E1fweLAqQILRTimG4G3EKHBrBHs9pCEcejMdgY+tiGFjEChqZhZYiV0dRFI0?=
- =?us-ascii?Q?gt2w8CudujZgc/9K7BMMEHU9V8Q4dP0t6Hp6z0Qp?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db6462dc-6ded-4a19-9278-08dc97e64d9c
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB7065.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2024 02:50:58.1261
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ypy1fv01HdIESQ59RxvIbZAghlSKk1UXSO+kLwYJSGNjthEdXvbDhMdDZRA+m9+OnEbUTvS0SC56PUeH9OMRIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10243
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240617-pci2_upstream-v6-1-e0821238f997@nxp.com>
 
-On Fri, Jun 28, 2024 at 09:38:54AM +0200, Krzysztof Kozlowski wrote:
-> On 27/06/2024 10:24, Pengfei Li wrote:
-> > IMX93_CLK_END was previously defined in imx93-clock.h to indicate
-> > the number of clocks, but it is not part of the ABI, so it should
-> > be moved to clk driver.
-> > 
-> > Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-> > ---
-> > 
-> > Notes:
-> >     Change for v2:
-> >     - Use pre-processor define to simplify code.
-> > 
-> >  drivers/clk/imx/clk-imx93.c | 2 ++
-> >  1 file changed, 2 insertions(+)
+On Mon, Jun 17, 2024 at 04:16:37PM -0400, Frank Li wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
 > 
-> Are you sure this builds fine? If you need to define it here, it means
-> some part of that unit file already uses the define. If so, you include
-> the header. If you include the header, you should see fat warning.
+> Add IMX6_PCIE_FLAG_HAS_APP_RESET flag to IMX8MM_EP and IMX8MP_EP drvdata.
+> This flag was overlooked during code restructuring. It is crucial to
+> release the app-reset from the System Reset Controller before initiating
+> LTSSM to rectify the issue
 > 
-> Really, people, just build your patches...
+> Fixes: 0c9651c21f2a ("PCI: imx6: Simplify reset handling by using *_FLAG_HAS_*_RESET")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> Best regards,
-> Krzysztof
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 917c69edee1d5..9a71b8aa09b3c 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1578,7 +1578,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  	},
+>  	[IMX8MM_EP] = {
+>  		.variant = IMX8MM_EP,
+> -		.flags = IMX6_PCIE_FLAG_HAS_PHYDRV,
+> +		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
+> +			 IMX6_PCIE_FLAG_HAS_PHYDRV,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mm-iomuxc-gpr",
+>  		.clk_names = imx8mm_clks,
+> @@ -1589,7 +1590,8 @@ static const struct imx6_pcie_drvdata drvdata[] = {
+>  	},
+>  	[IMX8MP_EP] = {
+>  		.variant = IMX8MP_EP,
+> -		.flags = IMX6_PCIE_FLAG_HAS_PHYDRV,
+> +		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
+> +			 IMX6_PCIE_FLAG_HAS_PHYDRV,
+>  		.mode = DW_PCIE_EP_TYPE,
+>  		.gpr = "fsl,imx8mp-iomuxc-gpr",
+>  		.clk_names = imx8mm_clks,
 > 
+> -- 
+> 2.34.1
 > 
 
-Hi Krzysztof,
-
-Yes, you're right, this macro definition has indeed been used. But
-this clk-imx93.c driver file is the only place where this macro is
-used. So maybe it would be more appropriate to define this macro in
-C rather than in the header file. Meanwhile, I also built my patch,
-but no warnings were found.
-
-BR,
-Pengfei Li
+-- 
+மணிவண்ணன் சதாசிவம்
