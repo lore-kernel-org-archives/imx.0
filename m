@@ -1,203 +1,180 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2082.outbound.protection.outlook.com [40.107.22.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ADD812
-	for <imx@lists.linux.dev>; Sat, 29 Jun 2024 02:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719626448; cv=none; b=USCLrBbcw3Ttv7+SiueB0qNIxI+SWUVyFGb4NhwDGgVb4uXZFTX74VJrNiBxCW1SwMJc3oic43X/FB1P755qpZ4HTnhM+OF/4Nmqf4R3qljV5kWNgykgySe89mYWwKOvWZK4q0TnfwPk4LR1IlFIUWVXE7KvhCymW2uzPeGqdI0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719626448; c=relaxed/simple;
-	bh=MMIG34b0OD/xUUZyx+BBAXiIWzEG4aurl7mijEzaUo8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=abe1X/JBokVF038DIYNkzTf08vAyPU5emKyYIoupRKcFMWb0v+Mfi8Oi4E+OObp1eD8oPe7Z6v3MXHPChGEiVB/QENfJ4fCx+xpeLaSFE6hgFH1IVdA3GbSYz/XvUyKucH1KBGcho79HQlph47tMYWgK3I76ZD/ZimSP/DvjUyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4W9wQr3nqszMrH7;
-	Sat, 29 Jun 2024 09:56:52 +0800 (CST)
-Received: from kwepemf500004.china.huawei.com (unknown [7.202.181.242])
-	by mail.maildlp.com (Postfix) with ESMTPS id D6E0E18006F;
-	Sat, 29 Jun 2024 10:00:35 +0800 (CST)
-Received: from [10.67.121.175] (10.67.121.175) by
- kwepemf500004.china.huawei.com (7.202.181.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 29 Jun 2024 10:00:35 +0800
-Message-ID: <3a09fcf9-b60b-571d-3ec5-e0f7c02cd72f@huawei.com>
-Date: Sat, 29 Jun 2024 10:00:34 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426605684
+	for <imx@lists.linux.dev>; Sat, 29 Jun 2024 02:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719627501; cv=fail; b=l8W11RIycQPAsBIzn9YqeFI/ukDOzo/t1aNqQb3V2GrtpYKqeCQ6PlRfHM1R20iv9JxXLEa8m+LrvR0aIf9lWsduVGQeZGGN4ZTuoioqUNjgUMmgY8Lt+ZiRYeKk6zSJf+nmLp9/AgaXESGmlfwOYgxNhO56AKUm4Va+hMnaQC8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719627501; c=relaxed/simple;
+	bh=cFUFo87Le31AEZWSzLEV4zAP+M/n+3q3YLuNEvEh3A4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=EkxZ4RK+xO2B3TGp4ZFoyntvnXF6C33/PW3v4Z62tAImRD02Atpq/KA+jCTl5n903PmevHIWpFGX2p6EsKGiMFBG4++zIpI8rtFyIgUmfmZcOzqnEWdsDz9HUJllfv5zK5t9InhpuvhgSPbahFn5NzNOz/ET3yDVu5UY06ESwOU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=KOcN9fBc; arc=fail smtp.client-ip=40.107.22.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="KOcN9fBc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G7cuy9RViaiuOl5/B4mTmLOxRdu+iWiq7/Ogr5kkGQGCIWrFnyhcMvjDttZ+RD6pA0HnXrS/UlGQH2BIQ1RMoTcChnM6d57ef4v6BFug5IIpNKtdcHdgl4ldO6IwVTNnauF3aAmpotCja11fnVvd4v/0Ago92YFbhyerWgIzV1BOHBuLRQ9sNNU4kgQeBkK7FxoiY1khN/ohWEr8MXoFvyZjVFBu1LqET/AH731SeEbtijaiw/lGyNR9o/cM3moyVvEihbpCPEC/MWl3UfSHwnoYM62tYwaFXDPey42SGlD7SbMl/fZ/kJtBR3c4IjZU+9p8WVdPPww8R1eN4TsDJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W75/dEKxcN7qv1gFI3WU2iYxw0xPVUK0NgebHV9shaw=;
+ b=Ez5CC8u30uifa246Ir4GEl5rEjRvsftWjWNpGuUxp41RnbEmUrY5g9YZwWlLinv40ePOaDSFKeD8brg0520qNdqo7w0YlsQEe1++RjMeLIpAQxXY4j8lIPmgoXBml4BGCukdIFGBaUfFM3Q/R8W4b6DMxVyiDKLclfH+869cChMypOeLmg4zXY+WU4XlJeXZIAjIsWF27LyBEDZ4MDyn8fS1l3c6dkkr/G4/1lJt0UKPBO3x2/6HDXuWnBK2XRU3iMPIQgUsUNb7zr09WFYeDqwVLjqJS9xrMdvMMhoGTj96/SVoAAYIxF14peQISSaa57EzeniVuvhOQ5dQHzXKcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W75/dEKxcN7qv1gFI3WU2iYxw0xPVUK0NgebHV9shaw=;
+ b=KOcN9fBcnnN2ESVfzrI3oLFGdEc2uTBM8+ms3MD3PQevzXjkXedj0KkNShX+8MQBeXX3qW4BvYHLXpTRVVYJX4EQ25bZ4hIRx0o5ajBZOw99NFxMfWX/Aso+Jr/b7C1npkDNhX5MmeEq90+LpkLx9pNKBYQIjhQly1bK+U7YDR8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI0PR04MB10589.eurprd04.prod.outlook.com (2603:10a6:800:25f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.28; Sat, 29 Jun
+ 2024 02:18:16 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.022; Sat, 29 Jun 2024
+ 02:18:16 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-can@vger.kernel.org (open list:CAN NETWORK DRIVERS),
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v2 1/1] dt-bindings: can: fsl,flexcan: add common 'can-transceiver' for fsl,flexcan
+Date: Fri, 28 Jun 2024 22:17:54 -0400
+Message-Id: <20240629021754.3583641-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR21CA0027.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v2] dmaegine: virt-dma : Fix multi-user with vchan
-To: Frank Li <Frank.li@nxp.com>
-CC: <vkoul@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Samuel
- Holland <samuel.holland@sifive.com>, Li Zetao <lizetao1@huawei.com>, Guanhua
- Gao <guanhua.gao@nxp.com>, "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM"
-	<dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, "open
- list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>, "open list:SIFIVE DRIVERS"
-	<linux-riscv@lists.infradead.org>
-References: <20230720114212.51224-1-haijie1@huawei.com>
- <20240620025400.3300641-1-haijie1@huawei.com>
- <ZnQ/AyffdW+u9C8P@lizhi-Precision-Tower-5810>
-From: Jie Hai <haijie1@huawei.com>
-In-Reply-To: <ZnQ/AyffdW+u9C8P@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemf500004.china.huawei.com (7.202.181.242)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10589:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bdc58c5-cf80-4317-2e26-08dc97e1bbf3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CfoQ/Xbp7/LTR1frDS9wCGFZBgf0E5WbBctHXLXVIH9bz7F2XJO95OHJhb4e?=
+ =?us-ascii?Q?tJBH3zoOsSo+c2S/fLcph27FlsUkYYPsJjFsLKk7cwyBlW4cvrgNkNh7eh3Q?=
+ =?us-ascii?Q?KW19Fa2Ks7cIDL/Pudh9C2wSukDKoYZC3B41Ayf0Osr0yr3DB1Uxgz9+6XQF?=
+ =?us-ascii?Q?chvIVzsG5zqhWY+jRnRO9Z/cemlNyLIELHffm78m/vZloew2eP8KIG2fHRQa?=
+ =?us-ascii?Q?sf8YDv/2AIMrn3dGbHESa0WpngM2/AZ+8B66c8FOX6r7WvWCNj0mjDDHd9gx?=
+ =?us-ascii?Q?trIByG3cf/VwacpSYAa4IXATfuuFuMyPVUqJVtJPS9JXqG30mEjH6jn2Cfbz?=
+ =?us-ascii?Q?/KhkokDsT91thmSfJ3sGHJ9gHsKYahtjdsw4qTfBHQGfYFYJUSN+PThxSwP8?=
+ =?us-ascii?Q?tQGCYOsghJ7FzVfbUQPdMF0g1bqDSjIsXr1dcLreF27Q4k3HEUN/92KGqFSE?=
+ =?us-ascii?Q?0MrxlCj6g0hESOVbkd+6XApEzR3ntmiNTpgmdU+F9wSt/Oz5qg5AQasqlBzd?=
+ =?us-ascii?Q?OVHsJ+BRPoKI1kI0O34HrlwH+oggblBs04pENiL2lIbCCaMqTnp9k1e/rTy5?=
+ =?us-ascii?Q?toZU8SWniRiOfpFk1fjaKkSk/KBjQqzgU7m6WoGl1KBfwFWStN4oHCKosgVk?=
+ =?us-ascii?Q?tJYTufYx1RyGeZaO6vejI4ynDbsFXiZ9xnUSMJ/uSV93ON94uaR19Wzg0piV?=
+ =?us-ascii?Q?ijt2JFZzbkkVMXf0CyZKi1optanwoGkDj1e8dfqPmMasbuaENwnlVSE4/c+g?=
+ =?us-ascii?Q?9quygWX5H60Aud9zaxIPLOIGOtdf55hJrf/RPGIRD905slE3o0BhgwuYC3G+?=
+ =?us-ascii?Q?4u/0M19RsPymSEqYri2caRBomzumduRWHL38KmmX/P6j+Y7ChUfaDm41qwmS?=
+ =?us-ascii?Q?FS3vNf5GA6Gy/6q8lB6B4fuNztre7RpG4PCwSGXeiucXBSrmI25FY2lalIqd?=
+ =?us-ascii?Q?i2aaQfmrGB0fYhPBtm6GgilPpsDFZvFEyCdGuYq1vKX1IsJdtYNtMwU1aP56?=
+ =?us-ascii?Q?gvAnvv38yn65nqnbbuxt78q7JWt133n812ez2drQcB+uf/RJD7ZFTPdCbVji?=
+ =?us-ascii?Q?gRaIVaOkcCYzJspCFb5P/c4HJ4gw/ikBmvGd8k+rbQWNChA70LaJS9olsp4F?=
+ =?us-ascii?Q?3rdqh7IDELrvQ7o67ps++1h+f5JuAW4gEQJxOp1+amhtzqLPT9j3uxQpvniV?=
+ =?us-ascii?Q?N+cOvtwXAq/rg4oNGZhfVtdsPYDCYhqL3+O5BjS2VlfWt+lI/1DpZvhQVkpn?=
+ =?us-ascii?Q?1EFHFpBAldeszHFnCoVWE5A81cSKdBbxvB60keDRMl4RL6l5IYFRNhkWuRk2?=
+ =?us-ascii?Q?mEyK3w5WI3f23NZqjeuryFSqtRSjHO7l+A7vuWHQ2/+bNdnV17zBV5L4hY4/?=
+ =?us-ascii?Q?9PwdDrIpxeACk3rYm44S4QudBjAe?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VT06zaXj8Aonq2Z3X/9Eu/Odz+yHPRVl3MvqjReV5nH1ny45cYQC2let0Lnw?=
+ =?us-ascii?Q?hfQvy9z99PDvENVuLtq6c4wg5+koKgHQdiYFU9ukBVqRMxgZGt3JWvFy5eZc?=
+ =?us-ascii?Q?5XJvRc73iFivVsRg5rZCGiHfyuOCh2worxA8LONBo0Slq5VeayhRW/+z3DTc?=
+ =?us-ascii?Q?qGm1DjTemHYtSb/P9YJpTZkM9CrsnUGufQI6zpQWCmo93HZk9chQ198V8f4p?=
+ =?us-ascii?Q?/1Xu1RQgXS1xEYvCIzha7GI9cDyaMxx78yD/iViRUE9PH57jnV42W7Mm9bwt?=
+ =?us-ascii?Q?xSArKPYKjLxteOetv+yfqzagcKg9nFDg8VJ7VIaETfCsz91sXLxW+XANv5hd?=
+ =?us-ascii?Q?9tKB3aLG+hBKC9nx0f/1WYfG7AI2fBLfjfB3ec+zSZoSKTsaidUMe/EvM+F4?=
+ =?us-ascii?Q?izPZjpE9ZvkeOrWknSWZ5uY3Fu1yRB1tjYq+h2f3e+m9+pgG4Y1VoXjvPSBW?=
+ =?us-ascii?Q?/6UkcE7jc7teQqdnhDXCOpF8AI0NJaC//5W94Pw07fYKLRchfeyE/y8G4LqN?=
+ =?us-ascii?Q?X2okmtUJpbHw8vDg/blSj13gCvOs5VUSgjA04DPvlmfiKshTULyU6PqZY7bn?=
+ =?us-ascii?Q?aFXUHN7HgLEfJMPsQzp+CVSAusofY3sEfDD/ovTzdnMtMWnAwIKAc5QBjqA6?=
+ =?us-ascii?Q?zHJbQ2i58K/oW1q/pWBdQFlWK/qirh86Xo5heu9WiApjK5/tY20C7uEz2yUw?=
+ =?us-ascii?Q?iy3CKcvWeFk6lcmN9ZCJDHQaoxhtD99IX4ai7XsyRTrIhpEky7yIcieCySe/?=
+ =?us-ascii?Q?1wcKD2Y9xhtxC4IZRGy1gIJPYHbOP8xMpMUy3Whkk3gl7ZnDu4tStWPnOCoc?=
+ =?us-ascii?Q?F0ri5VupJ9Ptufkr4kr3p7YlrhaH/zhYAELD6S+T2dvggb+wEDTxJblX27ms?=
+ =?us-ascii?Q?c1IDzywZCGOUluJfJrqaRw3NLXhZbx2N2B1rjEwwJW/j9FM9KTZrU0p0qVkH?=
+ =?us-ascii?Q?5lz4p03UYt6SSQrReQ2ioOa8O4sOqX9x0hd6+q2P7jho+JgRT72aQi9opRDG?=
+ =?us-ascii?Q?okULLTWr898esOINrMQ2eM9UC1c47woDJL84JcCfaqdIQtjCJU2OXc0i7spF?=
+ =?us-ascii?Q?EuTuUIF40XS+x2BUt1FzZJGJde9kEe0+YEpp4tGqP3NZU7gNmpxw2Om5fdy8?=
+ =?us-ascii?Q?wYpMdF4ihb4yrrJKyQjd5IWprMjBphFwTDiU55OfbiYyxozva9jv9F44fr+K?=
+ =?us-ascii?Q?YsrLkCHB2XaJ684ZU3YjUEzSfKJ0uaUeEPVEUAEGwtYZvwXHu7AWNvxE6Vq7?=
+ =?us-ascii?Q?/VnN+qcxZFZtqCgGqviOdQ4kexdMupxgakTpzLW/A4thmhFDVlmZFQxWfgAS?=
+ =?us-ascii?Q?/G0VIIIsWd+Uht3/Rv1uk6UZcifimMQ14OBMMdQtitRMHfTNM91FgtopWxis?=
+ =?us-ascii?Q?TbVxqkcmYKiDQo9e2Y5KW+b7MwA7Iep/HRGi6SEBKf9oI99OL6+zpvtrmnZl?=
+ =?us-ascii?Q?P6cJOBMQw4waTsflJMCdnLeYVyXLBryNZxm16Ua90fhO/jnXIqQn4Et7MSwp?=
+ =?us-ascii?Q?Wk/h87j1c9CYD0hBrl/Ha1r5tMFZnA0ekQgerHyJz5TWwVpkZcv3j4JYK8Fn?=
+ =?us-ascii?Q?eCD5UqN/CadgY55varVxRs94+dWOla9TXhKuXT/d?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bdc58c5-cf80-4317-2e26-08dc97e1bbf3
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2024 02:18:15.9638
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GVlI7FajcZMELGGgNZbfqLhKO5y1ZUKohCYLc/i77r3o9qhNf6hIP2dvAGVOk0TvviX2pvMNqAVJfIfeuV5cbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10589
 
-On 2024/6/20 22:38, Frank Li wrote:
-> On Thu, Jun 20, 2024 at 10:53:53AM +0800, Jie Hai wrote:
->> List desc_allocated was introduced for the case of a transfer
->> submitted multiple times. But elegating descriptors on the list
->> causes other problems.
->>
->> For example, in the multi-thread scenario, which tasks are
->> continuously created and submitted by each thread. If one of
->> the threads calls dmaengine_terminate_all, for dirvers using
->> vchan_get_all_descriptors, all descriptors will be freed. If
->> there's another thread submitting a transfer A by
->> vchan_tx_submit, the following results may be generated:
->> 1. desc A is freeing -> visit wrong address of node prep/next.
->> 2. desc A is freed -> visit invalid address of A.
->>
->> In the above case, calltrace is generated and the system is
->> suspended. This can be tested by dmatest.
-> 
-> What's test steps to reproduce this problem?
-> 
-> Frank
-Thanks for your review.
-The operations are as follows:
-   modprobe hisi_dma
-   modprobe dmatest
-   echo 0 > /sys/module/dmatest/parameters/iterations
-   echo "dma0chan0" > /sys/module/dmatest/parameters/channel
-   echo 20 > /sys/module/dmatest/parameters/threads_per_chan
-   echo 1 > /sys/module/dmatest/parameters/run
-wait for a while and stop the test by:
-   echo 0 > /sys/module/dmatest/parameters/run
->>
->> This patch removes desc_allocated from vchan_get_all_descriptors,
->> and add new function 'vchan_get_all_allocated_descs' to get all
->> descriptors ever allocated.
->>
->> And apply vchan_get_all_allocated_descs to free chan resource and
->> vchan_get_all_descriptors to terminate all transfers, respectively.
->> This avoids freeing up descriptors in use by other threads.
->>
->> Signed-off-by: Jie Hai <haijie1@huawei.com>
->> ---
->>   drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c |  2 +-
->>   drivers/dma/fsl-edma-common.c           |  2 +-
->>   drivers/dma/fsl-qdma.c                  |  2 +-
->>   drivers/dma/sf-pdma/sf-pdma.c           |  2 +-
->>   drivers/dma/virt-dma.h                  | 20 ++++++++++++++++++--
->>   5 files changed, 22 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
->> index 36384d019263..efdecf15e1b3 100644
->> --- a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
->> +++ b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
->> @@ -71,7 +71,7 @@ static void dpaa2_qdma_free_chan_resources(struct dma_chan *chan)
->>   	LIST_HEAD(head);
->>   
->>   	spin_lock_irqsave(&dpaa2_chan->vchan.lock, flags);
->> -	vchan_get_all_descriptors(&dpaa2_chan->vchan, &head);
->> +	vchan_get_all_allocated_descs(&dpaa2_chan->vchan, &head);
->>   	spin_unlock_irqrestore(&dpaa2_chan->vchan.lock, flags);
->>   
->>   	vchan_dma_desc_free_list(&dpaa2_chan->vchan, &head);
->> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
->> index 3af430787315..1e0ad87eb7fa 100644
->> --- a/drivers/dma/fsl-edma-common.c
->> +++ b/drivers/dma/fsl-edma-common.c
->> @@ -828,7 +828,7 @@ void fsl_edma_free_chan_resources(struct dma_chan *chan)
->>   	if (edma->drvdata->dmamuxs)
->>   		fsl_edma_chan_mux(fsl_chan, 0, false);
->>   	fsl_chan->edesc = NULL;
->> -	vchan_get_all_descriptors(&fsl_chan->vchan, &head);
->> +	vchan_get_all_allocated_descs(&fsl_chan->vchan, &head);
->>   	fsl_edma_unprep_slave_dma(fsl_chan);
->>   	spin_unlock_irqrestore(&fsl_chan->vchan.lock, flags);
->>   
->> diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
->> index 5005e138fc23..7af428db404e 100644
->> --- a/drivers/dma/fsl-qdma.c
->> +++ b/drivers/dma/fsl-qdma.c
->> @@ -316,7 +316,7 @@ static void fsl_qdma_free_chan_resources(struct dma_chan *chan)
->>   	LIST_HEAD(head);
->>   
->>   	spin_lock_irqsave(&fsl_chan->vchan.lock, flags);
->> -	vchan_get_all_descriptors(&fsl_chan->vchan, &head);
->> +	vchan_get_all_allocated_descs(&fsl_chan->vchan, &head);
->>   	spin_unlock_irqrestore(&fsl_chan->vchan.lock, flags);
->>   
->>   	vchan_dma_desc_free_list(&fsl_chan->vchan, &head);
->> diff --git a/drivers/dma/sf-pdma/sf-pdma.c b/drivers/dma/sf-pdma/sf-pdma.c
->> index 428473611115..4dc8a8c8ad80 100644
->> --- a/drivers/dma/sf-pdma/sf-pdma.c
->> +++ b/drivers/dma/sf-pdma/sf-pdma.c
->> @@ -147,7 +147,7 @@ static void sf_pdma_free_chan_resources(struct dma_chan *dchan)
->>   	sf_pdma_disable_request(chan);
->>   	kfree(chan->desc);
->>   	chan->desc = NULL;
->> -	vchan_get_all_descriptors(&chan->vchan, &head);
->> +	vchan_get_all_allocated_descs(&chan->vchan, &head);
->>   	sf_pdma_disclaim_chan(chan);
->>   	spin_unlock_irqrestore(&chan->vchan.lock, flags);
->>   	vchan_dma_desc_free_list(&chan->vchan, &head);
->> diff --git a/drivers/dma/virt-dma.h b/drivers/dma/virt-dma.h
->> index 59d9eabc8b67..4492641b79f6 100644
->> --- a/drivers/dma/virt-dma.h
->> +++ b/drivers/dma/virt-dma.h
->> @@ -187,13 +187,29 @@ static inline void vchan_get_all_descriptors(struct virt_dma_chan *vc,
->>   {
->>   	lockdep_assert_held(&vc->lock);
->>   
->> -	list_splice_tail_init(&vc->desc_allocated, head);
->>   	list_splice_tail_init(&vc->desc_submitted, head);
->>   	list_splice_tail_init(&vc->desc_issued, head);
->>   	list_splice_tail_init(&vc->desc_completed, head);
->>   	list_splice_tail_init(&vc->desc_terminated, head);
->>   }
->>   
->> +/**
->> + * vchan_get_all_allocated_descs - obtain all descriptors
->> + * @vc: virtual channel to get descriptors from
->> + * @head: list of descriptors found
->> + *
->> + * vc.lock must be held by caller
->> + *
->> + * Removes all descriptors from internal lists, and provides a list of all
->> + * descriptors found
->> + */
->> +static inline void vchan_get_all_allocated_descs(struct virt_dma_chan *vc,
->> +	struct list_head *head)
->> +{
->> +	list_splice_tail_init(&vc->desc_allocated, head);
->> +	vchan_get_all_descriptors(vc, head);
->> +}
->> +
->>   static inline void vchan_free_chan_resources(struct virt_dma_chan *vc)
->>   {
->>   	struct virt_dma_desc *vd;
->> @@ -201,7 +217,7 @@ static inline void vchan_free_chan_resources(struct virt_dma_chan *vc)
->>   	LIST_HEAD(head);
->>   
->>   	spin_lock_irqsave(&vc->lock, flags);
->> -	vchan_get_all_descriptors(vc, &head);
->> +	vchan_get_all_allocated_descs(vc, &head);
->>   	list_for_each_entry(vd, &head, node)
->>   		dmaengine_desc_clear_reuse(&vd->tx);
->>   	spin_unlock_irqrestore(&vc->lock, flags);
->> -- 
->> 2.33.0
->>
-> .
+Add common 'can-transceiver' children node for fsl,flexcan.
+
+Fix below warning:
+arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: can@2180000: 'can-transceiver' does not match any of the regexes: 'pinctrl-[0-9]+'
+        from schema $id: http://devicetree.org/schemas/net/can/fsl,flexcan.yaml#
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+- rework commit message and add fix CHECK_DTBS warning
+- Add unevaluatedProperties: false
+---
+ Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+index f197d9b516bb2..a4261a201fdb6 100644
+--- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
++++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+@@ -80,6 +80,10 @@ properties:
+       node then controller is assumed to be little endian. If this property is
+       present then controller is assumed to be big endian.
+ 
++  can-transceiver:
++    $ref: can-transceiver.yaml#
++    unevaluatedProperties: false
++
+   fsl,stop-mode:
+     description: |
+       Register bits of stop mode control.
+-- 
+2.34.1
+
