@@ -1,111 +1,236 @@
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA402110F;
-	Sun, 30 Jun 2024 06:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA23282F1
+	for <imx@lists.linux.dev>; Sun, 30 Jun 2024 16:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719728214; cv=none; b=gMH3nNgNAzWGmFZPtFMGzGk2/co8iQfY1IDIkYLcxjq5i1avIKob4Btgw26wHDmSMeyYKb3HE3kxerfxEd/aYa3mxyxF8/WsTyoScalud3rQuK0MVL9QXssFqlfn5bP1rwjlK2/lMG39BtUTL7JhE8cKofk4C6lZvLeEcBM3IDU=
+	t=1719763455; cv=none; b=Xd9aIOP2lrFdXMtNo4U86sXKi38b2iqQz5W3miNNtZvUK9qBDXXmzuNK80VABVhglVy5C+RtmUKW9A/8XacPYxr1yDK1N+sTvQyALHpDxJg+S68NCTRSe5qAJvIpqBf6BFv+gOqHhdiaYVWrjmOKa5DbbdSFxOLBl7Q8E+maRFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719728214; c=relaxed/simple;
-	bh=wI703h9blYfT73BZcvvlCXmTTlLsD7MEKLp+YVNzR88=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=BBoTP+ozXosX11V0iPnvF73jWJZN0wnImzSi7oyVrFBAfbr/fIFGxbY9LqHSd5YXLcZrlsXjPR38LTWceUU6E4vKAFb+UFnUpGcED6MG2Y5vGpd/3fB/qwLqUmDpzmoPgHfCLNpszfisVq52a2xdiTJTv7+2eG7+4gRoC717rIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=FYCjnyYa; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1719763455; c=relaxed/simple;
+	bh=QSk3MLBFWYxdS1lyWaKLPfiq8c0bClBAB0cXLtw3hkE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NXR9/oKjIbhaiG+V6G3p8Q2HtE8kJofgPWbWsKbw937roHmKNSFA5uc2Ne+pdSlwpgXWM78cU03eq8JatSbpwTa79yyMoEGxHOHnMmTZIPx+rvnlJg6L43MCbUFtZ7rtNRvDP3qL/ioqQHSH+qUt/gTj3DflOxbUekUbWJy5Uu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D69AHDHo; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="FYCjnyYa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1719728177; x=1720332977; i=markus.elfring@web.de;
-	bh=yaPGlmSSlSwV2OA6Z5CKm5JEUoBuUODSJdv3TgTtAvE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=FYCjnyYaOX6r3KW1Niv4fAHwzEhwOFFsyZGqZMB2d3ZM5q61hp1KXNWuOdAAM7Rl
-	 ZQPth0DV/+0suy1mgE8LovZgN5+eUwM/QRziKCXxOgH7wuRg/ZRV/kEdnqA6hQxhT
-	 nnxewl+/icjqDXrfg3s2Qn1FnIXDDX7LeVvRebectoz2QrJsOoGC7EO4V+uHE5lXH
-	 FsBU5iKZGAJTjZxc+q5yrcD7UgVoSz6droxKNgf1Uf2+vqaXT0bPT3xWo/euodklA
-	 Pwz+YLWYirkikY/gVgSzNvVV9W/mJw29BXGjgomTV4xh7TFAhAP/QpvCjURQGE6QR
-	 aItAV7Lz1olcpeGwHg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N62yY-1sLKzQ3eEC-00vYgL; Sun, 30
- Jun 2024 08:16:16 +0200
-Message-ID: <a805ace8-6777-4616-b3ef-b475d1b71114@web.de>
-Date: Sun, 30 Jun 2024 08:15:39 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D69AHDHo"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-71816f36d4dso1508069a12.2
+        for <imx@lists.linux.dev>; Sun, 30 Jun 2024 09:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719763453; x=1720368253; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AvsobNNphpX1qA8jM6UiYbgsCJI9R8gZdoYIohlPvoU=;
+        b=D69AHDHoj0I+q8fh0X3Ul1lCYwseS+yByCu85IiAZ8gcrIU8aIniF/XrKs5BXDsniS
+         NUlsnjU1OtsPkIQT+aLGcbdvHruPPNajx8TDUGbJ3x4tGSYZaJH3NUdf1i1m9Z0ojaVg
+         6qc2TCcsTgr/PgsVWYe+iEhHn12ZSW3NNKJVlQqvsSsoGdAH+b1u0xSGlCWn1vznC8GQ
+         zc3N0rpE4wJVLEz5hre3iRdZuI6vGnyB3HXJYrVGdTTbO4MDXELcCvAmvVBCghby/WSM
+         JXIl6qGtlHVKdHL1W4eKYO6hM5L4dauLMNcGj4OpIgW2Oehe6Bl62TAywRXtyUdPqPRy
+         Hc0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719763453; x=1720368253;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AvsobNNphpX1qA8jM6UiYbgsCJI9R8gZdoYIohlPvoU=;
+        b=kbvNijUsNpZFYWtqIUCrSJXHUMmDIfjKm9EtCaYrXy2fLhjLCQ/1XAye4AxbuAqt5K
+         /1yDs7JeGsgg1af/hxl7FSaVpOq5Aj9/dLJaF5EDyKAIrp2TIi/J/jObdBPPhaRo1I7U
+         nMjUMbFjI5u0bHeQZvFKzpnMOQZUYRUIBlMWI84ACNtfNp+adOq8k9FknGQFx8g04oUK
+         c1g8aNodZWVZYBVbvJt2aQzQmdmpJrtoWwskGD+BccDtxVtA1X7SnN/RqHDZcbC/DBsm
+         1VlNp4YXmCi0nnpef1GZc16tZ09cuQ5hAuScHSVQp6Ve43uqvQ+jM8aBiG9oxS4o0ym/
+         ZaEg==
+X-Forwarded-Encrypted: i=1; AJvYcCWW7pE4/3u0tOvFjjp62hlYTRC5hLAXTKfI0lwElanJR972o/wa8bf8WzluBYp+pwIO6ILfygKxtN5ze/ypEUQz3WpJ
+X-Gm-Message-State: AOJu0YwjoNzoVe7rgMrm+uzyNSkWDBqlQ+r54mL+JwV0g6y8J6Lz7BkH
+	wt+ElfYATGHp/pmAJbEZbgwW4ICeGifAoXZEtX3B31ZoU79dmnAT1iq4y40ZMw==
+X-Google-Smtp-Source: AGHT+IGyfue7LPLZ7LilRGBZbjr/2wxVRS0FTY7k1T7f6sAuKaMo1GK7re9KdEfypZs3yJjqAb56XQ==
+X-Received: by 2002:a05:6a21:18d:b0:1be:bff2:b1b0 with SMTP id adf61e73a8af0-1bef620cb64mr6541664637.40.1719763453270;
+        Sun, 30 Jun 2024 09:04:13 -0700 (PDT)
+Received: from thinkpad ([220.158.156.215])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac11d8b18sm47987155ad.99.2024.06.30.09.04.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Jun 2024 09:04:12 -0700 (PDT)
+Date: Sun, 30 Jun 2024 21:34:04 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 04/10] PCI: imx6: Introduce SoC specific callbacks for
+ controlling REFCLK
+Message-ID: <20240630160404.GA5264@thinkpad>
+References: <20240617-pci2_upstream-v6-0-e0821238f997@nxp.com>
+ <20240617-pci2_upstream-v6-4-e0821238f997@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Spencer Hill <shill@d3engineering.com>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev, kernel@pengutronix.de,
- linux-arm-kernel@lists.infradead.org,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Conor Dooley <conor+dt@kernel.org>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <20240628-imx728-driver-v2-2-80efa6774286@d3engineering.com>
-Subject: Re: [PATCH v2 2/2] media: i2c: Add driver for Sony IMX728
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240628-imx728-driver-v2-2-80efa6774286@d3engineering.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8ukpPKLP1qBUjh0XKXvid+M9uAstTi+O0j7VU3zQO3ZxDWkDbzY
- vlEs5hCjFuI0L71xhLjlEaMentoihEutCGhfzYZBezIvuqlGma+Xu6+S78r024dGgHd2d83
- 3dEtcFUk6PlMzUuWb1aloaKs1CwXE5BkiOMhGzjyElfF+w57D6cgyWmKCRaefsDhG9yKIpi
- xLo1H21lWY5Sqk6RTel3g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:9oRHGze6iUs=;p1vkF1ut/d5zdOiymfoZh+KUREL
- 2nIPKEwhNRN3yothl+3JFjhE7k/mgB9Gzsk6wuH63nZE5Z8+ecYzFK4KE5h5J6PYL4c2mS7Nj
- RtvG+s57M3DGiKYIldF66AzY+lY6KnLhc2extYEyNmTqnjaPWnUSbN19bFc1CLB67PqnE70rG
- bGJ/XV950HK0xOilgqPSE66qWufN6zreu4pl+iSpdbrX7+UZirFa7DpQi7GbKUTS4n8imEYB/
- 7FsN3ZKXgfHD4Km+8adQ63hWWq3QEPlw5GPRSeBMDWVbbXcpdd44+7ZDsHlavXhAYli1PaSla
- MJuamf1ke+HWBf75Ck1YRytRLhhbACFklFI1O0wJ5brS1t+DzzmWj0gMq7w338NFW5kJcBPUR
- zvayhxQbOgkRABzvL9C/15tK7hkqAr/Q3I9lAAtfuDWfEo8PUs9poOa1dzN3Z6xMQrGIuWGPz
- Xlome4uj/yfO4QfHXGwQKeefKt3RqZuWj9QImYCAJwc3+XalOBUGbeIaf5ocWj3xekzViobMh
- Ln5d4dVhVftczpE+CSxYtSd435Iui8tVE+R38PqXaAuCWe7fSd5Q9+LF45jSz6yurpYQnJ9yp
- /fB2kbv4TbhZDW6GlCroS5bcJsh9w3L0JXjpTzYvnOioI2vFT9RxNJncE07l55cbAe4tkWHNp
- H3/6rpO/WsEU8j0tzZrgP/wq68sj8acWXTRmgORg+9OUfqYhdnDyELhEKIQodMaVRt/kTga/f
- I21W2MhiIpeIjZq63L52sWZVmbuDyoHNL6NokgCBn67/zRdYRokLLjTJBISYF3vydDdxgOdLQ
- qcIW3gaWpL+MBCE9YkHpALgWvgQrB5+P2o3ESm5dVzopA=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240617-pci2_upstream-v6-4-e0821238f997@nxp.com>
 
-=E2=80=A6
-> +++ b/drivers/media/i2c/imx728.c
-> @@ -0,0 +1,4660 @@
-=E2=80=A6
-> +static int imx728_set_fmt(struct v4l2_subdev *sd,
-> +                         struct v4l2_subdev_state *state,
-> +                         struct v4l2_subdev_format *fmt)
-> +{
-=E2=80=A6
-> +       mutex_lock(&imx728->lock);
-> +
-> +       fmt->format.field =3D V4L2_FIELD_NONE;
-=E2=80=A6
-> +       *format =3D fmt->format;
-> +
-> +done:
-> +       mutex_unlock(&imx728->lock);
-> +
-> +       return ret;
+On Mon, Jun 17, 2024 at 04:16:40PM -0400, Frank Li wrote:
+> Instead of using the switch case statement to enable/disable the reference
+> clock handled by this driver itself, let's introduce a new callback
+> set_ref_clk() and define it for platforms that require it. This simplifies
+
+Should this be called 'enable_ref_clk' since the callback is supposed to enable
+REFCLK?
+
+> the code.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 112 ++++++++++++++++------------------
+>  1 file changed, 52 insertions(+), 60 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 47134e2dfecf2..ff9d0098294fa 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -103,6 +103,7 @@ struct imx_pcie_drvdata {
+>  	const u32 mode_mask[IMX_PCIE_MAX_INSTANCES];
+>  	const struct pci_epc_features *epc_features;
+>  	int (*init_phy)(struct imx_pcie *pcie);
+> +	int (*set_ref_clk)(struct imx_pcie *pcie, bool enable);
+>  };
+>  
+>  struct imx_pcie {
+> @@ -585,21 +586,19 @@ static int imx_pcie_attach_pd(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int imx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie)
+> +static int imx6sx_pcie_set_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> -	unsigned int offset;
+> -	int ret = 0;
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
+> +			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+>  
+> -	switch (imx_pcie->drvdata->variant) {
+> -	case IMX6SX:
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				   IMX6SX_GPR12_PCIE_TEST_POWERDOWN, 0);
+> -		break;
+> -	case IMX6QP:
+> -	case IMX6Q:
+> +	return 0;
 > +}
-=E2=80=A6
+> +
+> +static int imx6q_pcie_set_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+> +{
+> +	if (enable) {
+>  		/* power up core phy and enable ref clock */
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				   IMX6Q_GPR1_PCIE_TEST_PD, 0 << 18);
+> +		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1, IMX6Q_GPR1_PCIE_TEST_PD, 0);
+>  		/*
+>  		 * the async reset input need ref clock to sync internally,
+>  		 * when the ref clock comes after reset, internal synced
+> @@ -608,54 +607,34 @@ static int imx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie)
+>  		 */
+>  		usleep_range(10, 100);
+>  		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				   IMX6Q_GPR1_PCIE_REF_CLK_EN, 1 << 16);
+> -		break;
+> -	case IMX7D:
+> -	case IMX95:
+> -	case IMX95_EP:
+> -		break;
+> -	case IMX8MM:
+> -	case IMX8MM_EP:
+> -	case IMX8MQ:
+> -	case IMX8MQ_EP:
+> -	case IMX8MP:
+> -	case IMX8MP_EP:
+> -		offset = imx_pcie_grp_offset(imx_pcie);
+> -		/*
+> -		 * Set the over ride low and enabled
+> -		 * make sure that REF_CLK is turned on.
+> -		 */
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
+> -				   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
+> -				   0);
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
+> -				   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
+> -				   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN);
+> -		break;
+> +				   IMX6Q_GPR1_PCIE_REF_CLK_EN, IMX6Q_GPR1_PCIE_REF_CLK_EN);
+> +	} else {
+> +		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> +				   IMX6Q_GPR1_PCIE_REF_CLK_EN, 0);
+> +		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> +				   IMX6Q_GPR1_PCIE_TEST_PD, IMX6Q_GPR1_PCIE_TEST_PD);
+>  	}
+>  
+> -	return ret;
+> +	return 0;
+>  }
+>  
+> -static void imx_pcie_disable_ref_clk(struct imx_pcie *imx_pcie)
+> +static int imx8mm_pcie_set_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> -	switch (imx_pcie->drvdata->variant) {
+> -	case IMX6QP:
+> -	case IMX6Q:
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				IMX6Q_GPR1_PCIE_REF_CLK_EN, 0);
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR1,
+> -				IMX6Q_GPR1_PCIE_TEST_PD,
+> -				IMX6Q_GPR1_PCIE_TEST_PD);
+> -		break;
+> -	case IMX7D:
+> -		regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
+> -				   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+> -		break;
+> -	default:
+> -		break;
+> -	}
+> +	int offset = imx_pcie_grp_offset(imx_pcie);
+> +
+> +	/* Set the over ride low and enabled make sure that REF_CLK is turned on.*/
 
-Under which circumstances would you become interested to apply a statement
-like =E2=80=9Cguard(mutex)(&imx728->lock);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.10-rc5/source/include/linux/mutex.h#L1=
-96
+This comment provides no useful info. So please remove it.
 
-Regards,
-Markus
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
+> +			   enable ? 0 : IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
+> +			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
+> +	return 0;
+> +}
+> +
+> +static int imx7d_pcie_set_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+> +{
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12, IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
+> +			    enable ? 0 : IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+> +	return 0;
+
+Previously imx6_pcie_enable_ref_clk() was bailing out for IMX7D. But now you are
+explicitly enabling it. What is the reason?
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
