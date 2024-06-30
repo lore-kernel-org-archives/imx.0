@@ -1,58 +1,58 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E06515250A
-	for <imx@lists.linux.dev>; Sun, 30 Jun 2024 16:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3994F154BE0
+	for <imx@lists.linux.dev>; Sun, 30 Jun 2024 16:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719764629; cv=none; b=d6z8bkGW3wGxTCbFGGuk/oglOav9YkPsvNZka8lx/x9CVUkrxfwS/JMK2to/fgmuv8JARvBIJSaL81Z9/IkES3F+gT7lSI1s/VEHePdEgugNjkll0h3rPsZD5ULtbc8nbOkmNGIyvSEW5X1d9yQE0oxeOpqndoYEm8v8yseSabM=
+	t=1719766275; cv=none; b=CTr2pmq5QdZKbx4bSGDBnGhiKKlsDVm1BPZSOOTRc87yJtNZCzOhzVGspG2vPmODcGjTcx7xqH9GvVw0vjGmcnapZinTPzx5Er7p1yob+22Puq45t7V/VZv/571taVvUCdEJhjZwgrq3HnblKlXFFjcweb3o6F6CoqD9XsYEcnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719764629; c=relaxed/simple;
-	bh=9htU6WoutJrpUNff3Wz+szGkhLvVmq0dajsxQsJ361g=;
+	s=arc-20240116; t=1719766275; c=relaxed/simple;
+	bh=KW95Xs+2SEQNSdUC2pQc9P714W11EYxOYboCC1ErVcs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nsV1v/T+HOfDDV9g0l+H3huz8BCsoI9FY19HTZLePzqs89rAnDK3bshxd9pgWjXb2B7VmEHnrx4FL67t2R7bNKz/EflgsocD3Hf3iFaEg6OOO7ro2E+PftpfKiUJWns+dQU9gUK+YBtr+gVBeOt7zxR0daY4DX8Su/RmYpXeRMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uysl842/; arc=none smtp.client-ip=209.85.215.170
+	 Content-Type:Content-Disposition:In-Reply-To; b=GUdwmaVaLSGzWCJdJIw7Dk70b0MfVQP3wzWX4TaikM9rldvQLvoi6ewpMucQimD3BixdlL2jaeUrSPiGHPhEpoDWfpA3SlEaqGQhXR171ferVZ4HAlGWDoE+SQ0cyoDIUb0psqXEJFtQMcm1HYS6kgerf9VV6Yu0k9unqQzmJzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j5CaWTTN; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uysl842/"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-70df213542bso1054889a12.3
-        for <imx@lists.linux.dev>; Sun, 30 Jun 2024 09:23:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j5CaWTTN"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1fa2ea1c443so17106305ad.0
+        for <imx@lists.linux.dev>; Sun, 30 Jun 2024 09:51:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719764626; x=1720369426; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1719766273; x=1720371073; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=meRrKUBJYAi063Ybn9ckzWyMWuNq5WiRKh+4W6KHvUo=;
-        b=uysl842/5LMp8zERPe9llOfqwV1aLzqvW7uyS1dSoZc6mr2LDvs6sHWZa9spMZjy5R
-         tIHwprdbLzcLdXV8HWu0hjRzAcAs96aVisaX5lpoT3AYi60cTiI/VHvGy/7KH0eixBvK
-         FJcw/I3N6KoGvkSw5iLzX4KzbpVCN7T+qsbUkWoq8yKKNPZ96kr36kfkUHT01vXRsy5C
-         0/IiZAtR0QbBRDg3vYi1h1aByZCwIP6YGoUeIfXTgMO9qXu3L4VBJFE9BbFldgNnnaa0
-         PcNj1QW+e6saubab+yYTVcAhGIbTLNLtF6ZdS36GSl2tC/GQ/dsp72gZ5VFz2hyc3jbz
-         tgqw==
+        bh=ZmmRRw0rUqlBzxiX2pzqJcIUiD2NcUThL2qZCGcblbE=;
+        b=j5CaWTTNXpAGB5xppyYZR8k/eqinH5jAxM12h1HKqa7qJuO0HGsVHo3o2iGl+1OWqi
+         qGuMzwleHh5OBbvR1Fh9gPdhX2ZUNh3xOubsmmBPrUOYBJsZk7e9rAbrT2YY97WxBN/G
+         eQC37S1rLYtqR9U4cGKXsfSgYLL+yChJGSFZs5P9k488ZC/vKXlSJZjTu1f/ZY2S+h6m
+         z7y+AFzuwrnkqzva802UuJdq71sqFd+X0Mob32oxUtTS3PPKOMZN7cBtzwGQo/dHXWK2
+         zvRNcYDIJ19OkN3Q1DMu20jK7yVs6hmVYCOuIQsdvN5xMip2dYN1Fk1how1AZvJ5c8u3
+         PMVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719764626; x=1720369426;
+        d=1e100.net; s=20230601; t=1719766273; x=1720371073;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=meRrKUBJYAi063Ybn9ckzWyMWuNq5WiRKh+4W6KHvUo=;
-        b=FnJ5fpLPl2SfDuXQLB4iQjIc+S+9B4dHRWrxgLJZ97LR4usa+dJ5WOl3g+udTzk0s1
-         E01NK1zzNRfXuwLEyjUfKBVtlTvB3hJEZ11wKsghovI+vlRQs6n3pHRafyI+ChxeWNBB
-         qbHKDKHKsbbexTjuT2+ZTwye45wqt+o2m6NTlzyAfnfRBrvf5Ta+o5kRZc8m6dJLdziw
-         99YuTsSprvYV0e/crPx/Mp7hTqbj9jub3IclZSFhrONVQAYOojp6FJ60OKeB2X3yNNfs
-         waXR8FIIpyRu0ZxP8zWhBxk/DpsEKiu9iE5vKbgQaLGBtvdBPxBydxhV+P78A37B05NF
-         Zflg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPA88dmMQ4ewBqa0sbrwBV0MihmvhSv+NPob2JXTI6sxUeN5MDSbkrBjx54KgOz+3L/VO7uFlVOKgfBbWkomniezS9
-X-Gm-Message-State: AOJu0YzluI2NxUr7lp0GGaVBw28N4IIiokDcnbQlYEBF+B8O3Labr7ol
-	Bu0OhtQf0+hPEeZioHDiZlOmOyk1th/d62jiXM5KGfknqY6f8fwyZPAz+JLZoA==
-X-Google-Smtp-Source: AGHT+IFB5GWSyOiS5lFM4xMyeymwyJX3RWJBnJqEHBblq0QLaA5/nACE76UedKAKXnyWt2Xoaj7jKg==
-X-Received: by 2002:a05:6a20:b22a:b0:1bd:22fe:fcaa with SMTP id adf61e73a8af0-1bef6275a83mr1942482637.51.1719764625453;
-        Sun, 30 Jun 2024 09:23:45 -0700 (PDT)
+        bh=ZmmRRw0rUqlBzxiX2pzqJcIUiD2NcUThL2qZCGcblbE=;
+        b=sGVm3X/3OPKlEc45GeDMYzk2/AEEwl9YhjNomyfGM8mn0rGDG/PE2F2Yr56O4MFOVz
+         S1ClABcNOoyXwv5UAvUqzGc9SRVuFKoNABvYbKXifb/OaZo3FMsq0mmkve1oT6T8qtML
+         YboTN8TSHVYP9oarvO1lDPStIySCC8ivKpZ12ReOJI7REQbthNK9Qq9a0zaYUlykc0PP
+         3pmIdvDjCCaqy8AQZa75r6HfloKAQMKTArG5OXBZOXMuGNTstxdfGTLXJ1m+o2brh1iN
+         ANODNGC6T17UcnnKGbH+nsjw6ry4tWxNyaK50Y0hu9pHflj9ICNEUX20+d9gWHmkQQEl
+         Dy2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXZdWec4y8O7iTEt9BT2dRQu1yKEH23s9EfuMN9ybrHgsDzWuZSrI6W3AFSCw8ogWIDYn/tylXXC59kZVfpt17ofeCF
+X-Gm-Message-State: AOJu0YyGOr2+RZBUFnyO4dVoJ10L+oV5NSjEQxmwA6Kl1oji/setYmsR
+	35ycZl15f35e6QNjiEPeSb7hNdOiq5NQxmmp1q1myVGRFqsFeiKxPf3MrG9D3A==
+X-Google-Smtp-Source: AGHT+IFb9xngZdlMkF4/QJVf4vOFYOhYP0MvzKGLF16d5uCq0aKbtbmw7vV/puD8i55ELqdRaIJQGA==
+X-Received: by 2002:a17:903:22d1:b0:1f9:d111:8a19 with SMTP id d9443c01a7336-1fadbd01fbcmr30336695ad.64.1719766273266;
+        Sun, 30 Jun 2024 09:51:13 -0700 (PDT)
 Received: from thinkpad ([220.158.156.215])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91ce73e34sm5028683a91.30.2024.06.30.09.23.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac10d1a82sm48223075ad.59.2024.06.30.09.51.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jun 2024 09:23:45 -0700 (PDT)
-Date: Sun, 30 Jun 2024 21:53:37 +0530
+        Sun, 30 Jun 2024 09:51:12 -0700 (PDT)
+Date: Sun, 30 Jun 2024 22:21:03 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Richard Zhu <hongxing.zhu@nxp.com>,
@@ -73,11 +73,11 @@ Cc: Richard Zhu <hongxing.zhu@nxp.com>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 09/10] PCI: imx6: Call: Common PHY API to set mode,
- speed, and submode
-Message-ID: <20240630162337.GD5264@thinkpad>
+Subject: Re: [PATCH v6 10/10] PCI: imx6: Add i.MX8Q PCIe root complex (RC)
+ support
+Message-ID: <20240630165103.GE5264@thinkpad>
 References: <20240617-pci2_upstream-v6-0-e0821238f997@nxp.com>
- <20240617-pci2_upstream-v6-9-e0821238f997@nxp.com>
+ <20240617-pci2_upstream-v6-10-e0821238f997@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,80 +87,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240617-pci2_upstream-v6-9-e0821238f997@nxp.com>
+In-Reply-To: <20240617-pci2_upstream-v6-10-e0821238f997@nxp.com>
 
-On Mon, Jun 17, 2024 at 04:16:45PM -0400, Frank Li wrote:
-
-You don't need the colon after 'Call' in subject.
-
-> Invoke the common PHY API to configure mode, speed, and submode. While
-> these functions are optional in the PHY interface, they are necessary for
-> certain PHY drivers. Lack of support for these functions in a PHY driver
-> does not cause harm.
+On Mon, Jun 17, 2024 at 04:16:46PM -0400, Frank Li wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
 > 
+> Implement i.MX8Q (i.MX8QM, i.MX8QXP, and i.MX8DXL) PCIe RC support. While
+> the controller resembles that of iMX8MP, the PHY differs significantly.
+> Notably, there's a distinction between PCI bus addresses and CPU addresses.
+
+Do we know the reason?
+
+> 
+> Introduce IMX_PCIE_FLAG_CPU_ADDR_FIXUP in drvdata::flags to indicate driver
+> need the cpu_addr_fixup() callback to facilitate CPU address to PCI bus
+> address conversion according to "range" property.
+
+'ranges'
+
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  drivers/pci/controller/dwc/pci-imx6.c | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index ab0ed7ab3007a..18c133f5a56fc 100644
+> index 18c133f5a56fc..d2533d889d120 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -30,6 +30,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/reset.h>
->  #include <linux/phy/phy.h>
-> +#include <linux/phy/pcie.h>
-
-This should be moved one entry above.
-
->  #include <linux/pm_domain.h>
->  #include <linux/pm_runtime.h>
+> @@ -66,6 +66,7 @@ enum imx_pcie_variants {
+>  	IMX8MQ,
+>  	IMX8MM,
+>  	IMX8MP,
+> +	IMX8Q,
+>  	IMX95,
+>  	IMX8MQ_EP,
+>  	IMX8MM_EP,
+> @@ -81,6 +82,7 @@ enum imx_pcie_variants {
+>  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+>  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
+>  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+> +#define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
 >  
-> @@ -229,6 +230,10 @@ static void imx_pcie_configure_type(struct imx_pcie *imx_pcie)
+>  #define imx_check_flag(pci, val)     (pci->drvdata->flags & val)
 >  
->  	id = imx_pcie->controller_id;
+> @@ -1012,6 +1014,22 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
+>  		regulator_disable(imx_pcie->vpcie);
+>  }
 >  
-> +	/* If mode_mask[0] is 0, means use phy driver to set mode */
-
-/* If mode_mask is 0, then generic PHY driver is used to set the mode */
-
-> +	if (!drvdata->mode_mask[0])
-> +		return;
+> +static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
+> +{
+> +	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
+> +	struct dw_pcie_rp *pp = &pcie->pp;
+> +	struct resource_entry *entry;
+> +	unsigned int offset;
 > +
->  	/* If mode_mask[id] is zero, means each controller have its individual gpr */
->  	if (!drvdata->mode_mask[id])
->  		id = 0;
-> @@ -808,6 +813,7 @@ static void imx_pcie_ltssm_enable(struct device *dev)
->  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
->  	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
+> +	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
+> +		return cpu_addr;
+> +
+> +	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> +	offset = entry->offset;
+> +
+> +	return (cpu_addr - offset);
+> +}
+> +
+>  static const struct dw_pcie_host_ops imx_pcie_host_ops = {
+>  	.init = imx_pcie_host_init,
+>  	.deinit = imx_pcie_host_exit,
+> @@ -1020,6 +1038,7 @@ static const struct dw_pcie_host_ops imx_pcie_host_ops = {
+>  static const struct dw_pcie_ops dw_pcie_ops = {
+>  	.start_link = imx_pcie_start_link,
+>  	.stop_link = imx_pcie_stop_link,
+> +	.cpu_addr_fixup = imx_pcie_cpu_addr_fixup,
+>  };
 >  
-> +	phy_set_speed(imx_pcie->phy, PCI_EXP_LNKCAP_SLS_2_5GB);
-
-Is this setting really universal? This looks like applicable only to specific
-platforms supporting this link speed.
-
->  	if (drvdata->ltssm_mask)
->  		regmap_update_bits(imx_pcie->iomuxc_gpr, drvdata->ltssm_off, drvdata->ltssm_mask,
->  				   drvdata->ltssm_mask);
-> @@ -820,6 +826,7 @@ static void imx_pcie_ltssm_disable(struct device *dev)
->  	struct imx_pcie *imx_pcie = dev_get_drvdata(dev);
->  	const struct imx_pcie_drvdata *drvdata = imx_pcie->drvdata;
+>  static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
+> @@ -1449,6 +1468,13 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  		if (ret < 0)
+>  			return ret;
 >  
-> +	phy_set_speed(imx_pcie->phy, 0);
->  	if (drvdata->ltssm_mask)
->  		regmap_update_bits(imx_pcie->iomuxc_gpr, drvdata->ltssm_off,
->  				   drvdata->ltssm_mask, 0);
-> @@ -955,6 +962,12 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  			goto err_clk_disable;
->  		}
->  
-> +		ret = phy_set_mode_ext(imx_pcie->phy, PHY_MODE_PCIE, PHY_MODE_PCIE_RC);
-> +		if (ret) {
-> +			dev_err(dev, "unable to set pcie PHY mode\n");
+> +		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_CPU_ADDR_FIXUP)) {
+> +			if (!resource_list_first_type(&pci->pp.bridge->windows, IORESOURCE_MEM)) {
+> +				dw_pcie_host_deinit(&pci->pp);
+> +				return dev_err_probe(dev, -EINVAL, "DTS Miss PCI memory range");
 
-s/pcie/PCIe
+-ENODEV
 
 - Mani
 
