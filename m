@@ -1,293 +1,146 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2ED14AD36
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 14:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C8915FA84;
+	Mon,  1 Jul 2024 14:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719842438; cv=none; b=G7ACVjF8+5Y8Zp3zMOX14rTgQXHOHeG8cfVLoAEmgANn7LwVAFsX4cAWShqLorTSc4L7YlzZhzrrCUDMJHVweUxNiAkpQIk7MZLtZDrhM98jkjLe/JiONeH3u1h4A9ZqZy+Lva9YATZ9Ygs+ugwnWsiE7pwg5QjOr3oY96Nd7zg=
+	t=1719842727; cv=none; b=Rae/gYzg2RYN4qNyi/YrdYwW5cjmZDhuW1O7nl5kw4z/m7aPEQt9if+Gn/tIH4AdMBslBLT9pHbmul7fQUSuM/yD9t6YuoN9qajDvnpnh+mLYMfwsE5nzIqvgGJzI3LJy10nOCKK70J7i3R9HrMz35kW1+J1/uAqyDoTWxT7FZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719842438; c=relaxed/simple;
-	bh=TlvbxZ9JbIdfsPX/FV+25GcJGzDSr4wkVnI2yY2DQeQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C2JAidWANEyhoYdC+HqtmgXk2+YptV9mu9J0CuAOjximGK3TAt2XtsQQXMbw8GzvXemHyexOma3dptacb98x12zgrxChZoNwm7PX1ZwZPjtscSI5uV4sPOZOcvPYx3nBQMB4TpypKcFuXwwPHlMLkEVvpXEmnp/HGqWF1mLEJLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=m48GNvce; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
+	s=arc-20240116; t=1719842727; c=relaxed/simple;
+	bh=3z7Nyih4klomXUbQ7PdjR2cY+MU5YAkFW2gKQkAGdis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QxGh9kWHPkGLr94QLnAOm0TGDC7P/dGz0J6qXMCUjREr6w+2oalSgK7i4gJT9580oxYKMR/M5IfSoIvb1DfsKhNQahSA+ug2JpMz+1xbfBw0Xk0hgAJrzOSwAb3ErelgoP0QPagMT7XLt4G15g7f4mc1E2jmhH0xiI+RPOTwAXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IelUclHL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="m48GNvce"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e0360f8901aso2428352276.2
-        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 07:00:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1719842435; x=1720447235; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vQmQhGzXksR9nKnDEcUMRooEIa3TmT02Xr/hSLyAdds=;
-        b=m48GNvceisjV/TbBq7NezHiygrZ3Pifqqp9Aan8a7mCnJfKKjGDz/yn12hEVIj6MvR
-         RTgBtyuMlyTyCSjBYVaiE1Aa7HzHnqzfERp6LDdG8ijTSfBWf/1UhUYXnjHAulrcQtmu
-         5XXXqAQY+x4bPzNiB1R5j/plnT/j7v4ScFKMwzbuRpQ26dGPTXDEa4LEb/uer8H4ZBi4
-         HphRIqIu8KaIG0vqUp1m9RSiaoBdn/vGqmkeHEVEe1HUS6nZzfX1AqAmw/0OqPjC0Wz/
-         yfASnujbnUzmRTFIHLVvYd2aU+zQlBtctryqZi5CaRGOkKkW89aKcWep3GP/Q30vRw4e
-         PdCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719842435; x=1720447235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vQmQhGzXksR9nKnDEcUMRooEIa3TmT02Xr/hSLyAdds=;
-        b=aaMxookN5UShpQNF5sZ2SjYXY/Ygxm0dqKqU0ySTUfiuolMwYmo4lAuJWktVLWE+9v
-         XoUYfmetGUnEfw9jOQKSjqocyeqHjYS6FzjDKK2m5WYaDr+xUyOfFZpfAM+zLS3TjHH3
-         OX8UTx6ayAfOMGrN/gT0qKde+rOTIbXoO2TJs49z5ZnATgcHnECF6Ut/6co3wy17wu28
-         RPP7p5+Km2m8tf52d2LaxiGW4gcbHVCF3rf6ijpEJVHn2j3ia3KEVKT4rUWtiWbPeCU2
-         vOQv9V17a/Z/mYUl4JsYAFiDurCep5NVz1ytyXqSjKyupl+2LQNANTTDTRDYCjOMI7e+
-         icUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnBd3+gyyav5yPgSMksmuWUs7BhTUgpjKH6+uZCUblHA181SicBQroKAbWUISdTu9likQmR/K0X0ca78nZglIQw9+y
-X-Gm-Message-State: AOJu0YzHpTY3MyNN2dmxp4EH8MTn7VPDgwHfZ9hWJg1lQ3Zow45phk9B
-	jfFqQHMTiOwveWbAhczJspaJ6cgQ+5ywFxHo/TLSbX3TPfTe6xR0xfLxS69fvBLYaUMUjeE/A6s
-	f46o/5Py5ok/QGO7T4E8katWOyIwEaAcAYQtDSg==
-X-Google-Smtp-Source: AGHT+IGuOCjZc1h86QjIqKAEJQJHMLC6Fum29438lWdBlbcNmDsNzjPr4JOvu0g45BKOpIOEuzSwn6JY1/6xuhjs2z4=
-X-Received: by 2002:a25:f44e:0:b0:e03:562c:7e92 with SMTP id
- 3f1490d57ef6-e036eb54999mr4457628276.24.1719842434688; Mon, 01 Jul 2024
- 07:00:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IelUclHL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6613BC116B1;
+	Mon,  1 Jul 2024 14:05:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719842726;
+	bh=3z7Nyih4klomXUbQ7PdjR2cY+MU5YAkFW2gKQkAGdis=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IelUclHLBKmH/CQ1eHdRciWb6yKC9Ex/W+yqaBRUGCDDPmIVbju1SQgHfL+JRC38g
+	 1MkB/gtU8Ml9QsNa2gkU9T2l+kaz5vvwT9VBybApM0NYkcCLnRpK2jPu6U+E0TD/fy
+	 Z9gMLVGMNITnWZM2G7os5H/nMwDigx+OZ+hpvQP46SLCzNAFsuTFM8g675o0eIJECw
+	 hThpLWmk3m5OwJpiwTyEqDqhocPwHRPRucGYu4VdbqvL03whaiAM28TrxJ3Zd2M+4g
+	 VCEA9lq/r3uyTm5yE1SyfIDDlJhSaKrYV55DU0h+p/sGm//ELBZn1GttvlBs/jSTCl
+	 9V0Ff+2WSjPEg==
+Date: Mon, 1 Jul 2024 15:05:21 +0100
+From: Will Deacon <will@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Frank Li <Frank.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, imx@lists.linux.dev,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] perf: add missing MODULE_DESCRIPTION() macros
+Message-ID: <20240701140521.GF2250@willie-the-truck>
+References: <20240620-md-drivers-perf-v2-1-1f88f8a08e48@quicinc.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240628-imx728-driver-v2-0-80efa6774286@d3engineering.com>
- <20240628-imx728-driver-v2-2-80efa6774286@d3engineering.com> <5802879.DvuYhMxLoT@steina-w>
-In-Reply-To: <5802879.DvuYhMxLoT@steina-w>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Mon, 1 Jul 2024 15:00:16 +0100
-Message-ID: <CAPY8ntDbtL_+aRr9WaBjc103Qqt8FHKWZ-oRYNwA24WR-cWGLg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] media: i2c: Add driver for Sony IMX728
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Spencer Hill <shill@d3engineering.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240620-md-drivers-perf-v2-1-1f88f8a08e48@quicinc.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hi Alexander
+On Thu, Jun 20, 2024 at 06:46:09PM -0700, Jeff Johnson wrote:
+> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm-ccn.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/fsl_imx8_ddr_perf.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/marvell_cn10k_ddr_pmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/arm_cspmu_module.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/nvidia_cspmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/ampere_cspmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/cxl_pmu.o
+> 
+> Add the missing invocation of the MODULE_DESCRIPTION() macro to all
+> files which have a MODULE_LICENSE().
+> 
+> This includes drivers/perf/hisilicon/hisi_uncore_pmu.c which, although
+> it did not produce a warning with the x86 allmodconfig configuration,
+> may cause this warning with arm64 configurations.
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> ---
+> Changes in v2:
+> - Updated hisi_uncore_pmu.c description per Yicong Yang
+> - Link to v1: https://lore.kernel.org/r/20240611-md-drivers-perf-v1-1-c001bae6da5c@quicinc.com
+> ---
+>  drivers/perf/arm-ccn.c                   | 1 +
+>  drivers/perf/arm_cspmu/ampere_cspmu.c    | 1 +
+>  drivers/perf/arm_cspmu/arm_cspmu.c       | 1 +
+>  drivers/perf/arm_cspmu/nvidia_cspmu.c    | 1 +
+>  drivers/perf/cxl_pmu.c                   | 1 +
+>  drivers/perf/fsl_imx8_ddr_perf.c         | 1 +
+>  drivers/perf/hisilicon/hisi_uncore_pmu.c | 1 +
+>  drivers/perf/marvell_cn10k_ddr_pmu.c     | 1 +
+>  8 files changed, 8 insertions(+)
+> 
+> diff --git a/drivers/perf/arm-ccn.c b/drivers/perf/arm-ccn.c
+> index 86ef31ac7503..65f4882531db 100644
+> --- a/drivers/perf/arm-ccn.c
+> +++ b/drivers/perf/arm-ccn.c
+> @@ -1561,4 +1561,5 @@ module_init(arm_ccn_init);
+>  module_exit(arm_ccn_exit);
+>  
+>  MODULE_AUTHOR("Pawel Moll <pawel.moll@arm.com>");
+> +MODULE_DESCRIPTION("ARM CCN (Cache Coherent Network) driver support");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/perf/arm_cspmu/ampere_cspmu.c b/drivers/perf/arm_cspmu/ampere_cspmu.c
+> index f146a455e838..426b3cfcb52e 100644
+> --- a/drivers/perf/arm_cspmu/ampere_cspmu.c
+> +++ b/drivers/perf/arm_cspmu/ampere_cspmu.c
+> @@ -269,4 +269,5 @@ static void __exit ampere_cspmu_exit(void)
+>  module_init(ampere_cspmu_init);
+>  module_exit(ampere_cspmu_exit);
+>  
+> +MODULE_DESCRIPTION("Ampere SoC PMU (Performance Monitor Unit) driver");
 
-On Mon, 1 Jul 2024 at 10:25, Alexander Stein
-<alexander.stein@ew.tq-group.com> wrote:
->
-> Hi,
->
-> Am Freitag, 28. Juni 2024, 23:17:01 CEST schrieb Spencer Hill:
-> > Add a driver for the Sony IMX728 image sensor.
-> >
-> > Signed-off-by: Spencer Hill <shill@d3engineering.com>
-> > ---
-> >  drivers/media/i2c/Kconfig  |   11 +
-> >  drivers/media/i2c/Makefile |    1 +
-> >  drivers/media/i2c/imx728.c | 4660 ++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  3 files changed, 4672 insertions(+)
-> >
-> > diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
-> > index c6d3ee472d81..46b6463c558a 100644
-> > --- a/drivers/media/i2c/Kconfig
-> > +++ b/drivers/media/i2c/Kconfig
-> > @@ -233,6 +233,17 @@ config VIDEO_IMX415
-> >           To compile this driver as a module, choose M here: the
-> >           module will be called imx415.
-> >
-> > +config VIDEO_IMX728
-> > +       tristate "Sony IMX728 sensor support"
-> > +       depends on OF_GPIO
-> > +       select V4L2_CCI_I2C
-> > +       help
-> > +         This is a Video4Linux2 sensor driver for the Sony
-> > +         IMX728 camera.
-> > +
-> > +         To compile this driver as a module, choose M here: the
-> > +         module will be called imx728.
-> > +
-> >  config VIDEO_MAX9271_LIB
-> >         tristate
-> >
-> > diff --git a/drivers/media/i2c/Makefile b/drivers/media/i2c/Makefile
-> > index dfbe6448b549..1188420ee1b4 100644
-> > --- a/drivers/media/i2c/Makefile
-> > +++ b/drivers/media/i2c/Makefile
-> > @@ -56,6 +56,7 @@ obj-$(CONFIG_VIDEO_IMX335) +=3D imx335.o
-> >  obj-$(CONFIG_VIDEO_IMX355) +=3D imx355.o
-> >  obj-$(CONFIG_VIDEO_IMX412) +=3D imx412.o
-> >  obj-$(CONFIG_VIDEO_IMX415) +=3D imx415.o
-> > +obj-$(CONFIG_VIDEO_IMX728) +=3D imx728.o
-> >  obj-$(CONFIG_VIDEO_IR_I2C) +=3D ir-kbd-i2c.o
-> >  obj-$(CONFIG_VIDEO_ISL7998X) +=3D isl7998x.o
-> >  obj-$(CONFIG_VIDEO_KS0127) +=3D ks0127.o
-> > diff --git a/drivers/media/i2c/imx728.c b/drivers/media/i2c/imx728.c
-> > new file mode 100644
-> > index 000000000000..190f54aaf4e9
-> > --- /dev/null
-> > +++ b/drivers/media/i2c/imx728.c
-> > @@ -0,0 +1,4660 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Sony IMX728 CMOS Image Sensor Driver
-> > + *
-> > + * Copyright (c) 2024 Define Design Deploy Corp
-> > + */
-> > +
-> > +#include <linux/delay.h>
-> > +#include <linux/clk.h>
-> > +#include <linux/gpio/consumer.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/types.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
-> > +#include <linux/pm_runtime.h>
-> > +#include <linux/v4l2-mediabus.h>
-> > +#include <linux/videodev2.h>
-> > +#include <media/v4l2-subdev.h>
-> > +#include <media/v4l2-ctrls.h>
-> > +#include <media/v4l2-event.h>
-> > +#include <media/v4l2-cci.h>
-> > +
-> > +#define IMX728_FRAMERATE_MAX           30
->
-> Bindings state the framerate is up to 45 fps, to this should be
-> set accordingly.
+Curious: why do you expand the PMU acronym here, but not for any of the
+other drivers? If we're going to add these strings to all the drivers in
+one go, then it would good to be consistent.
 
-Not necessarily. The binding describes the hardware, not the
-functionality implemented by the driver.
+>  MODULE_LICENSE("GPL");
+> diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
+> index c318dc909767..c21c564840d6 100644
+> --- a/drivers/perf/arm_cspmu/arm_cspmu.c
+> +++ b/drivers/perf/arm_cspmu/arm_cspmu.c
+> @@ -1427,4 +1427,5 @@ EXPORT_SYMBOL_GPL(arm_cspmu_impl_unregister);
+>  module_init(arm_cspmu_init);
+>  module_exit(arm_cspmu_exit);
+>  
+> +MODULE_DESCRIPTION("ARM CoreSight Architecture PMU driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/perf/arm_cspmu/nvidia_cspmu.c b/drivers/perf/arm_cspmu/nvidia_cspmu.c
+> index 5b84b701ad62..0dea47e48ac5 100644
+> --- a/drivers/perf/arm_cspmu/nvidia_cspmu.c
+> +++ b/drivers/perf/arm_cspmu/nvidia_cspmu.c
+> @@ -417,4 +417,5 @@ static void __exit nvidia_cspmu_exit(void)
+>  module_init(nvidia_cspmu_init);
+>  module_exit(nvidia_cspmu_exit);
+>  
+> +MODULE_DESCRIPTION("NVIDIA Coresight Architecture PMU driver");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
+> index 1f93a66eff5b..8b6ce9ea5a55 100644
+> --- a/drivers/perf/cxl_pmu.c
+> +++ b/drivers/perf/cxl_pmu.c
+> @@ -972,6 +972,7 @@ static __exit void cxl_pmu_exit(void)
+>  	cpuhp_remove_multi_state(cxl_pmu_cpuhp_state_num);
+>  }
+>  
+> +MODULE_DESCRIPTION("CXL Performance Monitoring Unit driver");
 
-The link frequency defined may not be sufficient to support 45fps -
-perfectly valid.
-The binding also lists that it can produce RAW24/20/16/12 and 10, but
-the driver only currently implements RAW10. Hopefully the others get
-added at a later date.
+Similarly here, we now have a conflicting expansion of the acronym.
 
-The bindings for many sensors advertise a wide range of potential
-input clock frequencies, but most only implement a 1 or 2. (I'm
-slightly surprised this sensor appears to be able to configure all
-PLLs just by being told the frequency of the clock, but it's
-possible).
-Many sensors could support using a different number of CSI2 data lanes
-and reference it in their bindings, but currently don't.
-
-AIUI All of those are acceptable to be stated in the bindings but not
-currently implemented in the drivers.
-
-
-What does appear to be an issue here is that setting the frame
-interval appears to never be programmed into the sensor, so you have
-no frame rate control (imx728->fps is never read other than in
-imx728_get_frame_interval). There's no point in advertising the
-capability if it isn't connected up.
-If frame rate/interval control was hooked up, it'd be nice if that
-also set the maximum exposure time based on the frame interval.
-
-  Dave
-
-> > +#define IMX728_FRAMERATE_DEFAULT       30
-> > +#define IMX728_FRAMERATE_MIN           10
-> > +
-> > +#define IMX728_PIXEL_ARRAY_WIDTH       3857
-> > +#define IMX728_PIXEL_ARRAY_HEIGHT      2177
-> > +#define IMX728_PIXEL_ARRAY_MARGIN_TOP  9
-> > +#define IMX728_PIXEL_ARRAY_MARGIN_LEFT 8
-> > +#define IMX728_PIXEL_ARRAY_RECORDING_WIDTH     3840
-> > +#define IMX728_PIXEL_ARRAY_RECORDING_HEIGHT    2160
-> > +
-> > +#define IMX728_PIXEL_RATE              248832000
-> > +#define IMX728_LINK_FREQ               800000000
-> > +
-> > +#define IMX728_EXPOSURE_DEFAULT                10000
-> > +
-> > +#define IMX728_PM_IDLE_TIMEOUT         1000
-> > +
-> > +#define IMX728_REG_STATE       CCI_REG8(0x2CAC)
-> > +#define IMX728_REG_PG_00       CCI_REG16_LE(0x1A2A)
-> > +#define IMX728_REG_PG_01       CCI_REG24_LE(0x1A30)
-> > +#define IMX728_REG_PG_02       CCI_REG24_LE(0x1A38)
-> > +#define IMX728_REG_PG_03       CCI_REG8(0xB58F)
-> > +#define IMX728_REG_PG_04       CCI_REG8(0xB6C5)
-> > +#define IMX728_REG_PG_05       CCI_REG16_LE(0x1A2C)
-> > +#define IMX728_REG_PG_06       CCI_REG8(0xB58E)
-> > +#define IMX728_REG_PG_07       CCI_REG8(0xB6C4)
-> > +#define IMX728_REG_EXPOSURE_00 CCI_REG32_LE(0x98DC)
-> > +#define IMX728_REG_EXPOSURE_01 CCI_REG32_LE(0x98E4)
-> > +#define IMX728_REG_EXPOSURE_02 CCI_REG32_LE(0x98EC)
-> > +#define IMX728_REG_AGAIN_00    CCI_REG32_LE(0x98F8)
-> > +#define IMX728_REG_AGAIN_01    CCI_REG32_LE(0x98FC)
-> > +#define IMX728_REG_AGAIN_02    CCI_REG32_LE(0x9900)
-> > +#define IMX728_REG_AGAIN_03    CCI_REG32_LE(0x9904)
-> > +#define IMX728_REG_AGAIN_04    CCI_REG32_LE(0x9908)
-> > +#define IMX728_REG_FLIP                CCI_REG8(0x9651)
-> > +#define IMX728_REG_HFLIP       CCI_REG8(0xB67C)
-> > +#define IMX728_REG_VFLIP       CCI_REG8(0xB67D)
-> > +#define IMX728_REG_VMINOR      CCI_REG8(0x6000)
-> > +#define IMX728_REG_VMAJOR      CCI_REG8(0x6002)
-> > +#define IMX728_REG_RESET_0     CCI_REG8(0xB661)
-> > +#define IMX728_REG_RESET_1     CCI_REG8(0x95C5)
-> > +#define IMX728_REG_INCK_0      CCI_REG8(0x1B20)
-> > +#define IMX728_REG_INCK_1      CCI_REG8(0x1B1C)
-> > +#define IMX728_REG_SLEEP       CCI_REG8(0x1B05)
-> > +#define IMX728_REG_REGMAP      CCI_REG8(0xFFFF)
-> > +#define IMX728_REG_HDR_00      CCI_REG32_LE(0x9C60)
-> > +#define IMX728_REG_HDR_01      CCI_REG32_LE(0x9C6C)
-> > +#define IMX728_REG_HDR_02      CCI_REG32_LE(0x9C64)
-> > +#define IMX728_REG_HDR_03      CCI_REG32_LE(0x9C70)
-> > +#define IMX728_REG_HDR_04      CCI_REG16_LE(0x9C68)
-> > +#define IMX728_REG_HDR_05      CCI_REG16_LE(0x9C74)
-> > +#define IMX728_REG_HDR_06      CCI_REG16_LE(0x9C6A)
-> > +#define IMX728_REG_HDR_07      CCI_REG16_LE(0x9C76)
-> > +#define IMX728_REG_AE_MODE     CCI_REG8(0x98AC)
-> > +#define IMX728_REG_AWBMODE     CCI_REG8(0xA248)
-> > +#define IMX728_REG_AWB_EN      CCI_REG8(0x1808)
-> > +#define IMX728_REG_UNIT_00     CCI_REG8(0x98E0)
-> > +#define IMX728_REG_UNIT_01     CCI_REG8(0x98E8)
-> > +#define IMX728_REG_UNIT_02     CCI_REG8(0x98F0)
-> > +#define IMX728_REG_MD_00       CCI_REG8(0x1708)
-> > +#define IMX728_REG_MD_01       CCI_REG8(0x1709)
-> > +#define IMX728_REG_MD_02       CCI_REG8(0x170A)
-> > +#define IMX728_REG_MD_03       CCI_REG8(0x1B40)
-> > +#define IMX728_REG_MODE_SEL    CCI_REG16_LE(0x9728)
-> > +#define IMX728_REG_OUT_MODE    CCI_REG8(0xEC7E)
-> > +#define IMX728_REG_OB_0                CCI_REG16_LE(0xEC12)
-> > +#define IMX728_REG_OB_1                CCI_REG8(0xEC14)
-> > +#define IMX728_REG_SKEW                CCI_REG8(0x1761)
-> > +#define IMX728_REG_SUBP_0      CCI_REG8(0x9714)
-> > +#define IMX728_REG_SUBP_1      CCI_REG8(0xB684)
-> > +#define IMX728_REG_STREAM_00   CCI_REG8(0x9789)
-> > +#define IMX728_REG_STREAM_01   CCI_REG8(0x95C1)
-> > +#define IMX728_REG_STREAM_02   CCI_REG8(0x1B04)
->
-> Can you sort them by register address?
->
-> > +#define IMX728_REG_CTRL_POINT_X(i) CCI_REG32(0xA198 + (i) * 8)
-> > +#define IMX728_REG_CTRL_POINT_Y(i) (IMX728_REG_CTRL_POINT_X(i) + 4)
->
-> >[snip]
->
-> Best regards,
-> Alexander
->
-> > --
-> > 2.43.0
-> >
-> > Please be aware that this email includes email addresses outside of the=
- organization.
-> >
->
->
-> --
-> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
-rmany
-> Amtsgericht M=C3=BCnchen, HRB 105018
-> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
-chneider
-> http://www.tq-group.com/
->
->
+Will
