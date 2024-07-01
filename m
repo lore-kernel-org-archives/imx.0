@@ -1,92 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEFA16132E;
-	Mon,  1 Jul 2024 15:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A1928F4;
+	Mon,  1 Jul 2024 15:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719847704; cv=none; b=ePXnp59zatSiSGB8tk4cBSmtZKwC9fdoVnwayChRr2n6qUZpwivREYqeroOkId3NEX0nLOjQtrKBnOatSQzkarGdW8KMIw2PROCPXuCzpCdUfU05SwkisLpJt4SWlL6UVo1taQxgJ3EKLhYOFdI1NKtLSGdgCMQIEcJ++x7o2Zw=
+	t=1719848156; cv=none; b=RTNRPyZfh8sNVN9L17G6Q95bVLiUnRod9Qg54qpf7fKhVsfOArYEAxVRW9rJaOXgJc8u+9TgXa6wkA5Oa4x8BW6uYcDyRkxqc4xPycPgV5uRKaraTU4UlcwaI2Pqoy3PrilJTklsmENmoE32F17SUZP+MwcJ3ULgHguCQrKIxBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719847704; c=relaxed/simple;
-	bh=zJG+h1pN9ClIxA4MuEYTWu+UyZIRuLS9ujKuZBOeNlE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=baE8zHJ7i6dJCF17sBei0rlszTLEBFvwgepZdmWoGMdaO6R649jsQXbWeiJYeS0pGJSnWGsoBceh/8vRLCUl9/S62I2tTI8y5PbPOGdHW02UcmeJboqLkwsX6rX7H1cPRCsIrBFmLpx+Ycc0cyV3xft27nqNmIY2e+FgwAMrXw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmTZzJpf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719848156; c=relaxed/simple;
+	bh=0NfcJ7gYnWszBYiuRk/o3+NWZLSNA+vHBD+/yPg6aHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uxo4TeBnptgKdBWxK4OjGj3kJXW2VSZL4fkQh3TR+Er60983oAafmmQdzj76ao5oRyZfUmuvNpouLxQbcZ+ZvTs4emgWtZlKCWY8zgoUeuY/ugegERRlCCIoxizsPhuqSb6aTHm8ewsn0AhZjePnGAmwRjEE7HPv5xb39G6DDYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adEJLY5R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmTZzJpf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A173CC116B1;
-	Mon,  1 Jul 2024 15:28:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adEJLY5R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039DFC32781;
+	Mon,  1 Jul 2024 15:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719847704;
-	bh=zJG+h1pN9ClIxA4MuEYTWu+UyZIRuLS9ujKuZBOeNlE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nmTZzJpftcFzvBPlfk070+hDzb58S9IUzu/fAs68U8RPJUKbvD1R8JwSdu3rR12s6
-	 TKwPTfeFSemq/cbW2Ch680yCs6/HFcG9KTSUW8qkVMgmesRLX6/tPkW57g5kbNA9Om
-	 SPQ589hC20w0TJmaD+GDxhf2hEKlJLF64WZnf/TQ6Y1pCk+QQg6IItSYD4rhbdNmXF
-	 piuqQyuJ7b9apv8H3IoZ/9toimB8AJ5TbXgI/D3LA5SJuu1Pm55cDmOdVqdwXCkcFj
-	 9s6ZFxmCBT4ywetW+v7Tn9FUiEkXCJALg3NDRcUbMRSM/LnYzSZaNHs7uP4OW7RqDO
-	 PmLMJvYNLgfDQ==
-Date: Mon, 1 Jul 2024 16:28:18 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Kuldeep Singh <kuldeep.singh@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: (subset) [PATCH v4 0/3] spi: fsl-dspi: Convert to yaml format
- and use common SPI property
-Message-ID: <4ebbd545-0371-49d8-a19d-56303cf5c67a@sirena.org.uk>
-References: <20240624-ls_qspi-v4-0-3d1c6f5005bf@nxp.com>
- <171984553050.67981.12522537296340689285.b4-ty@kernel.org>
- <ZoLKN6a2qLXrR+oX@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1719848155;
+	bh=0NfcJ7gYnWszBYiuRk/o3+NWZLSNA+vHBD+/yPg6aHU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=adEJLY5RjB7i1a+ss7/WhOQVPyqd/27E9tfDpQO4qGHsuVLyQMegZkJ/CrsIGC/eY
+	 mV2PATMpJgqnNGnfQwbFv/eg94xJX46RWkNi2xWNLOF0cRktyHYT5VNbmAKfkhUodV
+	 wch04o5GmxKGupYUTAplE1/fdWDGq6QIwUP/z6CiqrYpEvzU6x+zyH4RJa+yne7fLp
+	 /xAsVaNUB9Y1BPQ4rYXcGwp1L2TlHxMOVJazcpN2hHR++l2cEl2KhF6UEzxdH5EPKp
+	 1go793xIkl8j1Gm/d064OvowLuNGVblH1ckAa9Gf2C10SO13hg2HMBJJMNIc0YwnrQ
+	 hEYeNXIM3L0Rw==
+From: Will Deacon <will@kernel.org>
+To: frank.li@nxp.com,
+	mark.rutland@arm.com,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	john.g.garry@oracle.com,
+	jolsa@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	Xu Yang <xu.yang_2@nxp.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	mike.leach@linaro.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	alexander.shishkin@linux.intel.com,
+	adrian.hunter@intel.com,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v12 1/8] dt-bindings: perf: fsl-imx-ddr: Add i.MX95 compatible
+Date: Mon,  1 Jul 2024 16:35:43 +0100
+Message-Id: <171984498139.920238.1487474748064154257.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20240529080358.703784-1-xu.yang_2@nxp.com>
+References: <20240529080358.703784-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2Uyv1VrnGHXBOUP3"
-Content-Disposition: inline
-In-Reply-To: <ZoLKN6a2qLXrR+oX@lizhi-Precision-Tower-5810>
-X-Cookie: Microwaves frizz your heir.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
+On Wed, 29 May 2024 16:03:51 +0800, Xu Yang wrote:
+> i.MX95 has a DDR pmu. This will add a compatible for it.
+> 
+> 
 
---2Uyv1VrnGHXBOUP3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied drivers changes to will (for-next/perf), thanks!
 
-On Mon, Jul 01, 2024 at 11:24:39AM -0400, Frank Li wrote:
-> On Mon, Jul 01, 2024 at 03:52:10PM +0100, Mark Brown wrote:
+[1/8] dt-bindings: perf: fsl-imx-ddr: Add i.MX95 compatible
+      https://git.kernel.org/will/c/f26f37482457
+[2/8] perf: imx_perf: add macro definitions for parsing config attr
+      https://git.kernel.org/will/c/4773dd10fda0
+[3/8] perf: imx_perf: let the driver manage the counter usage rather the user
+      https://git.kernel.org/will/c/27e4a6523edd
+[4/8] perf: imx_perf: refactor driver for imx93
+      https://git.kernel.org/will/c/fab5e5a866e8
+[5/8] perf: imx_perf: fix counter start and config sequence
+      https://git.kernel.org/will/c/ac9aa295f7a8
+[6/8] perf: imx_perf: add support for i.MX95 platform
+      https://git.kernel.org/will/c/d0d7c66c537d
 
-> > If any updates are required or you are submitting further changes they
-> > should be sent as incremental updates against current git, existing
-> > patches will not be replaced.
+Cheers,
+-- 
+Will
 
-> Thank you very much, I sent out incremental update before this patch
-> applied since my one miss understand. Could you please check this?
-
-> https://lore.kernel.org/imx/20240627203308.476437-1-Frank.Li@nxp.com/
-
-As covered above please send an incremental patch with whatever changes
-were in the new version.
-
---2Uyv1VrnGHXBOUP3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaCyxIACgkQJNaLcl1U
-h9B3Dgf/SIrxupQ7K4lT/QT3OpDmQBlJGu0P5Wy/9zYhW+weeAN2omnVKl6wBZ/Q
-r8gGMiBouJwOI67jH9hK27m4ZaR9OOYzgxtvqcZ0BhTHHLIqBdy33KcGx0lU334c
-rNCaMva+07MtNYVFLgjXST90eQHzzTW/JLJ0XLTAJSZjj4pQUTNjONGNn2C1Jsgh
-xWFgU538ZLuXq+XetznQyY+MnmoiSBrCLdtUURHQcA1HVOjJ2pSzN00qJoXV/rXH
-HGFcYi7b+YTgWshXkeS1AXppMvizWomoD2+rBMt/STttkQYjI3DggmkxONukE04J
-L8ti3LknvPtCTlT6WW24CBuPKkD5xA==
-=3LSH
------END PGP SIGNATURE-----
-
---2Uyv1VrnGHXBOUP3--
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
