@@ -1,122 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA1616DC16
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 16:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64D9F4ED;
+	Mon,  1 Jul 2024 17:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719852227; cv=none; b=Ak6RAooBXBP0ADtDNPTHcq/p8LSAG4ZxZZ8YZkkFWo+HJdb5RdK8xyw7IEhILT53SK1oAbL9IsnVZp4KqFWeZrBsr6C+kwQgpfhNITTnZ8v7G+ZNpYrQmXGK6zyOquFIIjDZN37VhXjmeblEKyFLp5nZ4G6LLnqBYV02pnIVoCE=
+	t=1719854789; cv=none; b=gfdr3lb8y52eIGS3g8S2OHn8u5GD4jg9ZtDcGPqE6u8K9JRWNQr/0B2Enny2rfW8WBdnLKirSMOdfDMIwmhFkENbD84ACGairRhp71R70WeNbrOxw06gT1cN7gs0zfK/ObToEwEokoZfyG9UfOaZboTi19q55VMJdjY+J//xPdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719852227; c=relaxed/simple;
-	bh=RhesN34OZXRCLFEIbStTuwHzFvllKCOmzyEKt6ScGKQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JnXMfylrvWPGoDkPIX2b/oVMWUoLaQ3SVqUziY5B9YXvfrRyjOGV7fZgRtfbKTA7i90vIn7bLMIdiLrV7zllJwHcYDKL086/rAjyu9UkkRPavCMGB3xytiVhZNStbNuNM089K6iAlkSCe/rNzyXez10yI1DwkHbgXTEHQOAepwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PA7lOMC2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719854789; c=relaxed/simple;
+	bh=/tGI0wDh0FZOcJPLb7Y56quvwZ87KDaB9YsD6KJsBJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W1okmCaR+mi2UKefBF/QjcGu9M2b6dN7I3GWhWwaurkGfyCXHqi9zHEDMIP2Ar0qJoZv0IUYxR2oHZUBplnKecz0JDZd9ed3SxD5bruJFh5/Epy3AuqwBi9Fk6tL2p6iRT/GWDCoj8Sh1l/dtQRVDDoOf0/Et7n75gF/xOGU/QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQ4cA+tR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PA7lOMC2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1A7C4AF0A
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 16:43:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQ4cA+tR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABB8C116B1;
+	Mon,  1 Jul 2024 17:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719852227;
-	bh=RhesN34OZXRCLFEIbStTuwHzFvllKCOmzyEKt6ScGKQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PA7lOMC2yeT5jHq4YyMbgHj+ebNMg5lGTkbWWSUdr+Vp0Lv7dXhP4eHYPkazqLK+W
-	 DAqKl3xuorgsLurLjSt8NruWVqV1BtvSVUXft3JWmux9S0Qa8S38Obs4yAPrQ8DL2M
-	 Re/wxgG+ko3t1z/p0edpbgA5l62Ty8eW+Y8DJe4tBE/ypxtQH5G0TUerwgMbJ8oLwg
-	 CRnGI/LYdDbQXV4TAXGHif4OKddS1ZGPR1AEkF+6tIeLzysR7KNG10ScFYDPPuWuc5
-	 3f7RQa0TJOrjCOFqLQDHQpxdLoEVy9X7iAHo4TnY+GqpcLhtRAKUWpOu7a8i8xNVKO
-	 V/b/1WQTXErDA==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52ce6c8db7bso4833335e87.1
-        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 09:43:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWLTLU1P3mshQbskU7wug63j7iFvNV0BVAZsaG4KN5Awce+mBbcRyHsXAWKIIoYATAAVYemFrXbftzXdvn0PEvU73A4
-X-Gm-Message-State: AOJu0YyxXiPH0Vqero6NmkZe4OKSt3zA/gwUyeL3d6OIqUpf6cRnEDBy
-	cjRBGfxr2CuRPmLypjknmFKYP6fN/eC8m/ybFLqxjphd0H+ajlKXacJaNV+mG0idJABMErkwHuD
-	R45EkkELNdhVPzRX7goos6eD1Ng==
-X-Google-Smtp-Source: AGHT+IFG5Mq0obsNWQtCBZPRbzAd+loy81MuYfKp3AnfwKzL/l+yMY2HM7soGl/xhylLHC0NirhzM3BijXPSGg4CMbw=
-X-Received: by 2002:a19:c214:0:b0:52c:e132:799f with SMTP id
- 2adb3069b0e04-52e82691aa8mr3365838e87.31.1719852225386; Mon, 01 Jul 2024
- 09:43:45 -0700 (PDT)
+	s=k20201202; t=1719854788;
+	bh=/tGI0wDh0FZOcJPLb7Y56quvwZ87KDaB9YsD6KJsBJo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PQ4cA+tRy28Qy+mS8NDV3R/k/RPTtjTv0F1HTGXrMq4iEJK4KKHTRd7GoRYgwX5lG
+	 uLaMdo0so/hPvkU6S6sY/5sc9b7ENF50WanUfPN61ywgAl0pq78R48Le2owseps3bK
+	 CpHbNjmCdx3Jw45NAiUKdFugGMl/S2dm/aS3t8qIYx1aeJOsq67lxmxzKW2WJ/Ua0B
+	 UmoobqynglxyVQ6nUigLQKEm9eWIvib/nS46anIph1bAXhWKF2RY7uX9qEXNWKavYe
+	 9Z8oYTWCSZurGIi0/5sXgeLuuPhB9SDmSNLfcPo8sXSnlh8xkDVZq5Mmd0GcC/pBS1
+	 dwbHG0/fSxrUA==
+Date: Mon, 1 Jul 2024 11:26:27 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Madalin Bucur <madalin.bucur@nxp.com>,
+	Sean Anderson <sean.anderson@seco.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:FREESCALE QORIQ DPAA FMAN DRIVER" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] dt-bindings: net: fsl,fman: allow dma-coherence
+ property
+Message-ID: <20240701172627.GA141559-robh@kernel.org>
+References: <20240628213711.3114790-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240626202533.2182846-1-Frank.Li@nxp.com> <20240626202533.2182846-3-Frank.Li@nxp.com>
-In-Reply-To: <20240626202533.2182846-3-Frank.Li@nxp.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 1 Jul 2024 10:43:32 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+YpLk4E-Sk7otOtbZo8FKYb-9GuPC1ie3aRauP=7_1HA@mail.gmail.com>
-Message-ID: <CAL_Jsq+YpLk4E-Sk7otOtbZo8FKYb-9GuPC1ie3aRauP=7_1HA@mail.gmail.com>
-Subject: Re: [PATCH v2 02/13] arm64: dts: layerscape: add platform special
- compatible string for gpio
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, 
-	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240628213711.3114790-1-Frank.Li@nxp.com>
 
-On Wed, Jun 26, 2024 at 2:26=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Add platform special compatible string for all gpio controller to fix
-> below warning.
->
->  gpio@2300000: compatible: 'oneOf' conditional failed, one must be fixed:
->         ['fsl,qoriq-gpio'] is too short
->         'fsl,qoriq-gpio' is not one of ['fsl,mpc5121-gpio', 'fsl,mpc5125-=
-gpio', 'fsl,mpc8349-gpio', 'fsl,mpc8572-gpio', 'fsl,mpc8610-gpio', 'fsl,pq3=
--gpio']
->         'fsl,qoriq-gpio' is not one of ['fsl,ls1021a-gpio', 'fsl,ls1028a-=
-gpio', 'fsl,ls1043a-gpio', 'fsl,ls1088a-gpio', 'fsl,ls2080a-gpio']
->
+On Fri, Jun 28, 2024 at 05:37:10PM -0400, Frank Li wrote:
+> Add dma-coherence property to fix below warning.
+
+'dma-coherent property' or 'DMA coherence property'.
+
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var1.dtb: dma-controller@8380000: '#dma-cells' is a required property
+
+That doesn't look related...
+
+>         from schema $id: http://devicetree.org/schemas/dma/fsl-qdma.yaml#
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi | 4 ++--
->  arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi | 8 ++++----
->  arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 8 ++++----
->  3 files changed, 10 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi b/arch/arm64/=
-boot/dts/freescale/fsl-ls1012a.dtsi
-> index 2e1cddc11bf47..1b6ab9550cce9 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> @@ -407,7 +407,7 @@ duart1: serial@21c0600 {
->                 };
->
->                 gpio0: gpio@2300000 {
-> -                       compatible =3D "fsl,qoriq-gpio";
-> +                       compatible =3D "fsl,ls1021a-gpio", "fsl,qoriq-gpi=
-o";
->                         reg =3D <0x0 0x2300000 0x0 0x10000>;
->                         interrupts =3D <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>;
->                         gpio-controller;
-> @@ -417,7 +417,7 @@ gpio0: gpio@2300000 {
->                 };
->
->                 gpio1: gpio@2310000 {
-> -                       compatible =3D "fsl,qoriq-gpio";
-> +                       compatible =3D "fsl,ls1021a-gpio", "fsl,qoriq-gpi=
-o";
->                         reg =3D <0x0 0x2310000 0x0 0x10000>;
->                         interrupts =3D <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
->                         gpio-controller;
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi b/arch/arm64/=
-boot/dts/freescale/fsl-ls1046a.dtsi
-> index f8c9489507e7a..524b44f424272 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi
-> @@ -589,7 +589,7 @@ duart3: serial@21d0600 {
->                 };
->
->                 gpio0: gpio@2300000 {
-> -                       compatible =3D "fsl,qoriq-gpio";
-> +                       compatible =3D "fsl,ls1046a-gpio", "fsl,qoriq-gpi=
-o";
-
-ls1046a isn't documented.
-
-Rob
+>  Documentation/devicetree/bindings/net/fsl,fman.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/fsl,fman.yaml b/Documentation/devicetree/bindings/net/fsl,fman.yaml
+> index 7908f67413dea..f0261861f3cb2 100644
+> --- a/Documentation/devicetree/bindings/net/fsl,fman.yaml
+> +++ b/Documentation/devicetree/bindings/net/fsl,fman.yaml
+> @@ -78,6 +78,8 @@ properties:
+>        - description: The first element is associated with the event interrupts.
+>        - description: the second element is associated with the error interrupts.
+>  
+> +  dma-coherent: true
+> +
+>    fsl,qman-channel-range:
+>      $ref: /schemas/types.yaml#/definitions/uint32-array
+>      description:
+> -- 
+> 2.34.1
+> 
