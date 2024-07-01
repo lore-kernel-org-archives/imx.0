@@ -1,65 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3D92AD0C;
-	Mon,  1 Jul 2024 20:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0974082485
+	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 20:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719865777; cv=none; b=b1uBy1+smIdrd34bqD2+oSvjnqxYCSfAUfI+UErP4nU2xg+bzAvKKXlNNjoBW1FOE7ijAb4BgRrb4sM9zBxJ3OH7AAAORKFj923uPb5w6jYkUKrjYnOBkgCVBOEIynM3dQfR05jhr+yhU1lwlWetUsY0kK5zuv+q1C11kTQsmdU=
+	t=1719866738; cv=none; b=KQhozdTwfBa1jS1a9lTXYr/2P+o+JAHXpy3bHNOXnBV6u9qXDagXKnV5L3kWZmhJF2jE2YfVipWR1eBh0xRs5oXELq4EeqnQBp6gPojHHBGtw82d7+02YUvVuyZfyko32Wbf28+I9HVng7WotLUOcRX+MuHqZjNnHfUFo0cJlHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719865777; c=relaxed/simple;
-	bh=DfY6xZJ0wJtz6unu308rhQqHaFInyGavjVB1DMTESBU=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=kAwLXWZvsBA0XlOn5Rf4nEKhoesxhhsZkUtGijhWFCK+c8JeiZIyxxHmKErrr1sdzSFOClVFCrzE0uoAbpXmbsIcqc6FS0D5vnDv3Mp2v//j5rS1DpA/R/D0tsQHm84YLBaPv8RJIDDAccbfQ8iq3RxtKM4S3mKFu7bT4G8G1N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s64hNPq2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719866738; c=relaxed/simple;
+	bh=QZySv70Ao8F90chExN804qXvzZ2AC8LdFY40TUG2sU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iqLZsiF/cc82J8ynFs+sOomPihDQdgPNOrC7Hdll0AyPZRS4HriwviB2RKvVIkv+SSphoUjfheIXpkQGC+qE3fI843Ay06sP4tPuqSNi82qQVrnWCMhkuUO8iTNdNi9OvvUN1Gtx2NsiuPmcuxeL6nvybCwvo36bm/IFsd8ry5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FebmPetz; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s64hNPq2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBFFC116B1;
-	Mon,  1 Jul 2024 20:29:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719865777;
-	bh=DfY6xZJ0wJtz6unu308rhQqHaFInyGavjVB1DMTESBU=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=s64hNPq2WcJEVn8yTfUfT4SUceN8dFomnlhmy+p/E3CFuncAOQGkfJxMMv5uDMVv9
-	 zrsHR/JzpRrKtioUNApt8A4z41P2YTd0LX76SnA5SEZ8MWqZYmlAKkb/cmo574RXKb
-	 VO5opsh+xZL1eSlfpE3MOL+xi+y0+KUzcAIGoLvk5tx/s7CzdH5quE9q6Y9NI7RBdn
-	 Hm795HNUZ2qluh9ioF2yMVBW60wMHWEJHe1tLFLADZALK3XsxrvpP19p/e/yxBxsdL
-	 sOY/cLlArI1xSUACho8+/sooQW9LVyWSsmdYFI4TNCrV5Va7xjqFEJ06iakvOI31Lm
-	 hMiZvfZ3IYNTw==
-Message-ID: <9ed5affb3e67a6848dad5c108804f8bd.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FebmPetz"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a72510ebc3fso514087566b.2
+        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 13:45:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719866733; x=1720471533; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QA3rQcJ2PGuabVUic3t7CU8jEmUAM+rP5I8eyjHvpt8=;
+        b=FebmPetzeX35+dGpnbUBl1Yhxx2LOpzivaw3uReRItLKbstihB061WW7Sqrelmf2jE
+         DQF1zmuq9gqSO9764QnlwsWF+WM/fMVSQsgPL61gTxDazaEL4U3I3ugqWSJEDanbcu5d
+         IddAxDonrS3s7p6X4S/IRjo++tuYOtg+V/v2Z5CAwfT5VVyWGvh6smXsN3eG9OWBTtLT
+         WvHzq4YTQauh/IMm2kJRpAeNJRg7RbZMzlhu126LMF41hFUkNkL/1LHk/+8ST4eVM0DG
+         dDERRrijpj/BV+Jam53BqV1q1BiFcrqrfy4IaemT6m2yf+RotDARRmgCzxSZIHptqnN5
+         QqBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719866733; x=1720471533;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QA3rQcJ2PGuabVUic3t7CU8jEmUAM+rP5I8eyjHvpt8=;
+        b=ubFyqdMxBOly/VbjO3eEqUgEW0TugfTJE05Ah8M5UpXqSCFwBAnaGfK15+16NGdp5Q
+         LSJRPwC+sBZmCYKJ13SoOG2OIMjmkI1IirJ8jbY9bXnatxVXb8ZtXcSC0s+LvWmsfm/R
+         BxV6WTGGt2vuWfxTDc1p9sXu2Wi8kG0xQLj1KvFYXoOE9V/u00LjYcECNvlqUIkdZkgA
+         7ar6+8pYCXc4ggzY8+83YY9OrvGJK3HAbV8RrJtehfQ8JxxTZ4Z2ZqQsIEwNyUHtfXMM
+         dM7buovbXpztijqwc5xPgYKF0Oa6ZsoNwrnRNLIkdcSvJOvjWDH/Eh6QhDbMqi4R36oE
+         KYUg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1QNwtvAgIKOcQqgbd09afK+moRBk1JKQIe53bwsouPFiw3fRQIYULZdc3dXDa1BsU5l+eDlVYKPChyrnXLYgi/ts1
+X-Gm-Message-State: AOJu0YzDjsyjWucmfQ6xa6bYa8nynmw1/9HexvIldL1Th16LZr7M813p
+	8+ysK/aPKXZdAo1PsSVqWjnZMOpEAu85xm126myyW/qwNamBvjPZiU+5vIUXZZo=
+X-Google-Smtp-Source: AGHT+IFCEPxpqCTJF1ih21dkFS8hIegUWvXYCQ0ZLHtxp1c8x9erK5AfAGL5mmlQSXKipx7/97DM0Q==
+X-Received: by 2002:a17:906:190b:b0:a6f:4e1f:e60b with SMTP id a640c23a62f3a-a7514474201mr402020966b.36.1719866733208;
+        Mon, 01 Jul 2024 13:45:33 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab08ce96sm359017866b.154.2024.07.01.13.45.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jul 2024 13:45:32 -0700 (PDT)
+Date: Mon, 1 Jul 2024 22:45:31 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pwm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
+Subject: Re: [PATCH] pwm: imx-tpm: Enable pinctrl setting for sleep state
+Message-ID: <ewrvieusxer74yi7dlp55sfgy4n7u3o56ytrfqijkurapy77wi@f4hgxlamr2cx>
+References: <20240514200534.73847-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="omyqdy4rsqphw56l"
+Content-Disposition: inline
+In-Reply-To: <20240514200534.73847-1-shenwei.wang@nxp.com>
+
+
+--omyqdy4rsqphw56l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240701181825.916610-1-abel.vesa@linaro.org>
-References: <20240701181825.916610-1-abel.vesa@linaro.org>
-Subject: Re: [GIT PULL] clk: imx: Updates for v6.11
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>, linux-clk@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>, Mike Turquette <mturquette@baylibre.com>
-Date: Mon, 01 Jul 2024 13:29:34 -0700
-User-Agent: alot/0.10
 
-Quoting Abel Vesa (2024-07-01 11:18:25)
-> The following changes since commit 1613e604df0cd359cf2a7fbd9be7a0bcfacfab=
-d0:
->=20
->   Linux 6.10-rc1 (2024-05-26 15:20:12 -0700)
->=20
-> are available in the Git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/=
-clk-imx-6.11
->=20
-> for you to fetch changes up to 466da3d2d967ee87d82060df2bc9c6ad4fc4af49:
->=20
->   clk: imx: composite-7ulp: Use NULL instead of 0 (2024-06-24 14:22:08 +0=
-300)
->=20
-> ----------------------------------------------------------------
+Hello,
 
-Thanks. Pulled into clk-next
+On Tue, May 14, 2024 at 03:05:34PM -0500, Shenwei Wang wrote:
+> Apply the pinctrl setting of sleep state when system enters
+> suspend state.
+> Restore to the default pinctrl setting when system resumes.
+>=20
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  drivers/pwm/pwm-imx-tpm.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
+> index c50ddbac43c8..19245790c67c 100644
+> --- a/drivers/pwm/pwm-imx-tpm.c
+> +++ b/drivers/pwm/pwm-imx-tpm.c
+> @@ -393,7 +393,7 @@ static int pwm_imx_tpm_suspend(struct device *dev)
+> =20
+>  	clk_disable_unprepare(tpm->clk);
+> =20
+> -	return 0;
+> +	return pinctrl_pm_select_sleep_state(dev);
+>  }
+> =20
+>  static int pwm_imx_tpm_resume(struct device *dev)
+> @@ -401,6 +401,10 @@ static int pwm_imx_tpm_resume(struct device *dev)
+>  	struct imx_tpm_pwm_chip *tpm =3D dev_get_drvdata(dev);
+>  	int ret =3D 0;
+> =20
+> +	ret =3D pinctrl_pm_select_default_state(dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret =3D clk_prepare_enable(tpm->clk);
+>  	if (ret)
+>  		dev_err(dev, "failed to prepare or enable clock: %d\n", ret);
+
+If .resume() failed (consider clk_prepare_enable() failing), and
+the resume is retried later: Is there an unexpected (though maybe
+harmless) imbalance because pinctrl_pm_select_default_state() isn't
+undone in .resume()'s error path?
+
+Best regards
+Uwe
+
+--omyqdy4rsqphw56l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmaDFWkACgkQj4D7WH0S
+/k50jQgAnXkVLOJ88QBZ9v4dnYEkZbYVa0Bu71kfnE9wNjh0HIp8PRY3l7Bv2yfm
+0PPGnlE2bGBPK2bk47/Eax5bb62aJI289VRFiUwJKC6KnwnRcnxhxNvJKIp+LrTH
+H08Abx12NlJIPdIT4fQX1N/t73bjTgVqiF2nTJVYdz12+zcLK7Hg3RtGfoIL3Nhn
+mD14IrTQCfdCi7redh8L/joCMnQNrYPIV2wp73+fKV2vZlNvdVLPzl+XYmXfYnVh
+yqwJgxcPEFBFcOGAv+qDctn4cScX0axDL+4MvGVC+2qorOrDuFw823DICchazexe
+UiYNeKCqEmoHWUiHdCsckBeheH4MJg==
+=LYsK
+-----END PGP SIGNATURE-----
+
+--omyqdy4rsqphw56l--
