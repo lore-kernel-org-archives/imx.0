@@ -1,574 +1,293 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D6615F3FC
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 13:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2ED14AD36
+	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 14:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719842059; cv=none; b=c+RU7fh7m6NgDetrcFohHfdTu6D9Dz9TGwmnW1Fp1b1oYVSvWCX5wdLOCGISA8Pgq3LdQnO1RcooHZqA8ZQffqxJX2yKw+wGehPAQZ68Rf/zSjfYQ+pATLVcRV/iBzy8ZO6z0bzyAmDJriUa7qKSyex4H5uXbmckLkWUQPCR8eU=
+	t=1719842438; cv=none; b=G7ACVjF8+5Y8Zp3zMOX14rTgQXHOHeG8cfVLoAEmgANn7LwVAFsX4cAWShqLorTSc4L7YlzZhzrrCUDMJHVweUxNiAkpQIk7MZLtZDrhM98jkjLe/JiONeH3u1h4A9ZqZy+Lva9YATZ9Ygs+ugwnWsiE7pwg5QjOr3oY96Nd7zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719842059; c=relaxed/simple;
-	bh=96M+1aZCz6FD4wRDRulXAIhHUbQkINM48MDvJXCrEdU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V9Y/ztJQW2K0rbwaShOq2s5Ir+NyWtBILi+B2oPo2OXmS5sk9Ms5pu5t9E8eITVaQCJSxEpi2rWDAz5/GHACL3L1AAPoNYkbtKzAurUJx0SE9ZDfjWuXREvwZCV3/9uygrhyA4l9eYjm4Rigd0cWvg4GgNTS8bkMpd2aZWsrzh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sOHTX-0001LY-ET; Mon, 01 Jul 2024 15:53:47 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 01 Jul 2024 15:53:43 +0200
-Subject: [PATCH 4/9] mtd: devices: add AT24 eeprom support
+	s=arc-20240116; t=1719842438; c=relaxed/simple;
+	bh=TlvbxZ9JbIdfsPX/FV+25GcJGzDSr4wkVnI2yY2DQeQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C2JAidWANEyhoYdC+HqtmgXk2+YptV9mu9J0CuAOjximGK3TAt2XtsQQXMbw8GzvXemHyexOma3dptacb98x12zgrxChZoNwm7PX1ZwZPjtscSI5uV4sPOZOcvPYx3nBQMB4TpypKcFuXwwPHlMLkEVvpXEmnp/HGqWF1mLEJLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=m48GNvce; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="m48GNvce"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e0360f8901aso2428352276.2
+        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 07:00:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1719842435; x=1720447235; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vQmQhGzXksR9nKnDEcUMRooEIa3TmT02Xr/hSLyAdds=;
+        b=m48GNvceisjV/TbBq7NezHiygrZ3Pifqqp9Aan8a7mCnJfKKjGDz/yn12hEVIj6MvR
+         RTgBtyuMlyTyCSjBYVaiE1Aa7HzHnqzfERp6LDdG8ijTSfBWf/1UhUYXnjHAulrcQtmu
+         5XXXqAQY+x4bPzNiB1R5j/plnT/j7v4ScFKMwzbuRpQ26dGPTXDEa4LEb/uer8H4ZBi4
+         HphRIqIu8KaIG0vqUp1m9RSiaoBdn/vGqmkeHEVEe1HUS6nZzfX1AqAmw/0OqPjC0Wz/
+         yfASnujbnUzmRTFIHLVvYd2aU+zQlBtctryqZi5CaRGOkKkW89aKcWep3GP/Q30vRw4e
+         PdCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719842435; x=1720447235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vQmQhGzXksR9nKnDEcUMRooEIa3TmT02Xr/hSLyAdds=;
+        b=aaMxookN5UShpQNF5sZ2SjYXY/Ygxm0dqKqU0ySTUfiuolMwYmo4lAuJWktVLWE+9v
+         XoUYfmetGUnEfw9jOQKSjqocyeqHjYS6FzjDKK2m5WYaDr+xUyOfFZpfAM+zLS3TjHH3
+         OX8UTx6ayAfOMGrN/gT0qKde+rOTIbXoO2TJs49z5ZnATgcHnECF6Ut/6co3wy17wu28
+         RPP7p5+Km2m8tf52d2LaxiGW4gcbHVCF3rf6ijpEJVHn2j3ia3KEVKT4rUWtiWbPeCU2
+         vOQv9V17a/Z/mYUl4JsYAFiDurCep5NVz1ytyXqSjKyupl+2LQNANTTDTRDYCjOMI7e+
+         icUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnBd3+gyyav5yPgSMksmuWUs7BhTUgpjKH6+uZCUblHA181SicBQroKAbWUISdTu9likQmR/K0X0ca78nZglIQw9+y
+X-Gm-Message-State: AOJu0YzHpTY3MyNN2dmxp4EH8MTn7VPDgwHfZ9hWJg1lQ3Zow45phk9B
+	jfFqQHMTiOwveWbAhczJspaJ6cgQ+5ywFxHo/TLSbX3TPfTe6xR0xfLxS69fvBLYaUMUjeE/A6s
+	f46o/5Py5ok/QGO7T4E8katWOyIwEaAcAYQtDSg==
+X-Google-Smtp-Source: AGHT+IGuOCjZc1h86QjIqKAEJQJHMLC6Fum29438lWdBlbcNmDsNzjPr4JOvu0g45BKOpIOEuzSwn6JY1/6xuhjs2z4=
+X-Received: by 2002:a25:f44e:0:b0:e03:562c:7e92 with SMTP id
+ 3f1490d57ef6-e036eb54999mr4457628276.24.1719842434688; Mon, 01 Jul 2024
+ 07:00:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
-In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>, 
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
- Tony Lindgren <tony@atomide.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, 
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-tegra@vger.kernel.org, openbmc@lists.ozlabs.org, 
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, 
- loongarch@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>
-X-Mailer: b4 0.15-dev
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20240628-imx728-driver-v2-0-80efa6774286@d3engineering.com>
+ <20240628-imx728-driver-v2-2-80efa6774286@d3engineering.com> <5802879.DvuYhMxLoT@steina-w>
+In-Reply-To: <5802879.DvuYhMxLoT@steina-w>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Date: Mon, 1 Jul 2024 15:00:16 +0100
+Message-ID: <CAPY8ntDbtL_+aRr9WaBjc103Qqt8FHKWZ-oRYNwA24WR-cWGLg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] media: i2c: Add driver for Sony IMX728
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Spencer Hill <shill@d3engineering.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-At the moment there are three ways to access EEPROM content from
-user-space:
+Hi Alexander
 
-  1st) via the single nvmem device (rw)
-  2nd) via the single 'eeprom' device (rw)
-  3th) via nvmem-cells (r)
+On Mon, 1 Jul 2024 at 10:25, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hi,
+>
+> Am Freitag, 28. Juni 2024, 23:17:01 CEST schrieb Spencer Hill:
+> > Add a driver for the Sony IMX728 image sensor.
+> >
+> > Signed-off-by: Spencer Hill <shill@d3engineering.com>
+> > ---
+> >  drivers/media/i2c/Kconfig  |   11 +
+> >  drivers/media/i2c/Makefile |    1 +
+> >  drivers/media/i2c/imx728.c | 4660 ++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  3 files changed, 4672 insertions(+)
+> >
+> > diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+> > index c6d3ee472d81..46b6463c558a 100644
+> > --- a/drivers/media/i2c/Kconfig
+> > +++ b/drivers/media/i2c/Kconfig
+> > @@ -233,6 +233,17 @@ config VIDEO_IMX415
+> >           To compile this driver as a module, choose M here: the
+> >           module will be called imx415.
+> >
+> > +config VIDEO_IMX728
+> > +       tristate "Sony IMX728 sensor support"
+> > +       depends on OF_GPIO
+> > +       select V4L2_CCI_I2C
+> > +       help
+> > +         This is a Video4Linux2 sensor driver for the Sony
+> > +         IMX728 camera.
+> > +
+> > +         To compile this driver as a module, choose M here: the
+> > +         module will be called imx728.
+> > +
+> >  config VIDEO_MAX9271_LIB
+> >         tristate
+> >
+> > diff --git a/drivers/media/i2c/Makefile b/drivers/media/i2c/Makefile
+> > index dfbe6448b549..1188420ee1b4 100644
+> > --- a/drivers/media/i2c/Makefile
+> > +++ b/drivers/media/i2c/Makefile
+> > @@ -56,6 +56,7 @@ obj-$(CONFIG_VIDEO_IMX335) +=3D imx335.o
+> >  obj-$(CONFIG_VIDEO_IMX355) +=3D imx355.o
+> >  obj-$(CONFIG_VIDEO_IMX412) +=3D imx412.o
+> >  obj-$(CONFIG_VIDEO_IMX415) +=3D imx415.o
+> > +obj-$(CONFIG_VIDEO_IMX728) +=3D imx728.o
+> >  obj-$(CONFIG_VIDEO_IR_I2C) +=3D ir-kbd-i2c.o
+> >  obj-$(CONFIG_VIDEO_ISL7998X) +=3D isl7998x.o
+> >  obj-$(CONFIG_VIDEO_KS0127) +=3D ks0127.o
+> > diff --git a/drivers/media/i2c/imx728.c b/drivers/media/i2c/imx728.c
+> > new file mode 100644
+> > index 000000000000..190f54aaf4e9
+> > --- /dev/null
+> > +++ b/drivers/media/i2c/imx728.c
+> > @@ -0,0 +1,4660 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Sony IMX728 CMOS Image Sensor Driver
+> > + *
+> > + * Copyright (c) 2024 Define Design Deploy Corp
+> > + */
+> > +
+> > +#include <linux/delay.h>
+> > +#include <linux/clk.h>
+> > +#include <linux/gpio/consumer.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/types.h>
+> > +#include <linux/module.h>
+> > +#include <linux/of.h>
+> > +#include <linux/pm_runtime.h>
+> > +#include <linux/v4l2-mediabus.h>
+> > +#include <linux/videodev2.h>
+> > +#include <media/v4l2-subdev.h>
+> > +#include <media/v4l2-ctrls.h>
+> > +#include <media/v4l2-event.h>
+> > +#include <media/v4l2-cci.h>
+> > +
+> > +#define IMX728_FRAMERATE_MAX           30
+>
+> Bindings state the framerate is up to 45 fps, to this should be
+> set accordingly.
 
-EEPROMs can become quite large nowadays (>=64K). Exposing such devices
-as single device isn't always sufficient. There may be partitions which
-require different access permissions. Also write access always need to
-to verify the offset.
+Not necessarily. The binding describes the hardware, not the
+functionality implemented by the driver.
 
-Port the current misc/eeprom/at24.c driver to the MTD framework since
-EEPROMs are memory-technology devices and the framework already supports
-partitioning. This allow using of-paritions like we do for SPI-NOR
-devices already:
+The link frequency defined may not be sufficient to support 45fps -
+perfectly valid.
+The binding also lists that it can produce RAW24/20/16/12 and 10, but
+the driver only currently implements RAW10. Hopefully the others get
+added at a later date.
 
-&eeprom {
-	compatible = "atmel,24c02";
-	reg = <0x52>;
-	pagesize = <16>;
-	#address-cells = <1>;
-	#size-cells = <0>;
+The bindings for many sensors advertise a wide range of potential
+input clock frequencies, but most only implement a 1 or 2. (I'm
+slightly surprised this sensor appears to be able to configure all
+PLLs just by being told the frequency of the clock, but it's
+possible).
+Many sensors could support using a different number of CSI2 data lanes
+and reference it in their bindings, but currently don't.
 
-	partitions {
-		compatible = "fixed-partitions";
-		#address-cells = <1>;
-		#size-cells = <1>;
-		label = "board-eeprom";
+AIUI All of those are acceptable to be stated in the bindings but not
+currently implemented in the drivers.
 
-		otp@0 {
-			compatible = "nvmem-cells";
-			label = "manufaturing";
-			reg = <0x0 0xe0>;
 
-			nvmem-layout {
-				compatible = "fixed-layout";
-				#address-cells = <1>;
-				#size-cells = <1>;
+What does appear to be an issue here is that setting the frame
+interval appears to never be programmed into the sensor, so you have
+no frame rate control (imx728->fps is never read other than in
+imx728_get_frame_interval). There's no point in advertising the
+capability if it isn't connected up.
+If frame rate/interval control was hooked up, it'd be nice if that
+also set the maximum exposure time based on the frame interval.
 
-				/* MACs stored in ASCII */
-				ethmac1: mac-address@0 {
-					reg = <0x0 0xc>;
-				};
+  Dave
 
-				ethmac2: mac-address@c {
-					reg = <0xc 0xc>;
-				};
-
-				test@d8 {
-					reg = <0xd8 0x8>;
-				};
-			};
-		j};
-
-		user@e0 {
-			reg = <0xe0 0x100>;
-		};
-	};
-};
-
-The porting was straight forward:
- - at24_read/write funcs are adapted to be MTD compatible
- - (re-)adding the write-protection gpio handling since the devices can
-   now be accessed via NVMEM and MTD API
- - Replace the NVMEM with MTD registration. The mtdcore is taking care
-   of exposing the NVMEM and eeprom device correctly ensure backward
-   compatibility.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-
-Changelog:
-v2:
-- resync misc/eeprom/at24.c with mtd/at24.c driver
-- add backward compatibility
-- drop misc/eeprom/at24.c driver
-- adapt Kconfig EEPROM_AT24 Kconfig entry
-- shift infrastructure support into separate patch
-- adapt commit message
----
- MAINTAINERS                                 |   2 +-
- drivers/misc/eeprom/Kconfig                 |  30 +------
- drivers/misc/eeprom/Makefile                |   1 -
- drivers/mtd/devices/Kconfig                 |  31 +++++++
- drivers/mtd/devices/Makefile                |   1 +
- drivers/{misc/eeprom => mtd/devices}/at24.c | 122 +++++++++++++++-------------
- 6 files changed, 103 insertions(+), 84 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d6c90161c7bf..a3a56f34d754 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3355,7 +3355,7 @@ L:	linux-i2c@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux.git
- F:	Documentation/devicetree/bindings/eeprom/at24.yaml
--F:	drivers/misc/eeprom/at24.c
-+F:	drivers/mtd/devices/at24.c
- 
- ATA OVER ETHERNET (AOE) DRIVER
- M:	"Justin Sanders" <justin@coraid.com>
-diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-index 4e61ac18cc96..3a9aaec2f2c7 100644
---- a/drivers/misc/eeprom/Kconfig
-+++ b/drivers/misc/eeprom/Kconfig
-@@ -3,34 +3,10 @@ menu "EEPROM support"
- 
- config EEPROM_AT24
- 	tristate "I2C EEPROMs / RAMs / ROMs from most vendors"
--	depends on I2C && SYSFS
--	select NVMEM
--	select NVMEM_SYSFS
--	select REGMAP
--	select REGMAP_I2C
-+	select MTD_EEPROM_AT24
- 	help
--	  Enable this driver to get read/write support to most I2C EEPROMs
--	  and compatible devices like FRAMs, SRAMs, ROMs etc. After you
--	  configure the driver to know about each chip on your target
--	  board.  Use these generic chip names, instead of vendor-specific
--	  ones like at24c64, 24lc02 or fm24c04:
--
--	     24c00, 24c01, 24c02, spd (readonly 24c02), 24c04, 24c08,
--	     24c16, 24c32, 24c64, 24c128, 24c256, 24c512, 24c1024, 24c2048
--
--	  Unless you like data loss puzzles, always be sure that any chip
--	  you configure as a 24c32 (32 kbit) or larger is NOT really a
--	  24c16 (16 kbit) or smaller, and vice versa. Marking the chip
--	  as read-only won't help recover from this. Also, if your chip
--	  has any software write-protect mechanism you may want to review the
--	  code to make sure this driver won't turn it on by accident.
--
--	  If you use this with an SMBus adapter instead of an I2C adapter,
--	  full functionality is not available.  Only smaller devices are
--	  supported (24c16 and below, max 4 kByte).
--
--	  This driver can also be built as a module.  If so, the module
--	  will be called at24.
-+	  Deprecated config option to get read/write support to most I2C
-+	  EEPROMs. Please use MTD_EEPROM_AT24 instead.
- 
- config EEPROM_AT25
- 	tristate "SPI EEPROMs (FRAMs) from most vendors"
-diff --git a/drivers/misc/eeprom/Makefile b/drivers/misc/eeprom/Makefile
-index 65794e526d5d..2ace4f09d0f0 100644
---- a/drivers/misc/eeprom/Makefile
-+++ b/drivers/misc/eeprom/Makefile
-@@ -1,5 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-$(CONFIG_EEPROM_AT24)	+= at24.o
- obj-$(CONFIG_EEPROM_AT25)	+= at25.o
- obj-$(CONFIG_EEPROM_MAX6875)	+= max6875.o
- obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
-diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
-index ff2f9e55ef28..8c6720ea84e7 100644
---- a/drivers/mtd/devices/Kconfig
-+++ b/drivers/mtd/devices/Kconfig
-@@ -3,6 +3,37 @@ menu "Self-contained MTD device drivers"
- 	depends on MTD!=n
- 	depends on HAS_IOMEM
- 
-+config MTD_EEPROM_AT24
-+	tristate "MTD I2C EEPROMs / RAMs / ROMs from most vendors"
-+	depends on I2C && SYSFS
-+	select NVMEM
-+	select NVMEM_SYSFS
-+	select REGMAP
-+	select REGMAP_I2C
-+	help
-+	  Enable this driver to get read/write support to most I2C EEPROMs
-+	  and compatible devices like FRAMs, SRAMs, ROMs etc. After you
-+	  configure the driver to know about each chip on your target
-+	  board.  Use these generic chip names, instead of vendor-specific
-+	  ones like at24c64, 24lc02 or fm24c04:
-+
-+	     24c00, 24c01, 24c02, spd (readonly 24c02), 24c04, 24c08,
-+	     24c16, 24c32, 24c64, 24c128, 24c256, 24c512, 24c1024, 24c2048
-+
-+	  Unless you like data loss puzzles, always be sure that any chip
-+	  you configure as a 24c32 (32 kbit) or larger is NOT really a
-+	  24c16 (16 kbit) or smaller, and vice versa. Marking the chip
-+	  as read-only won't help recover from this. Also, if your chip
-+	  has any software write-protect mechanism you may want to review the
-+	  code to make sure this driver won't turn it on by accident.
-+
-+	  If you use this with an SMBus adapter instead of an I2C adapter,
-+	  full functionality is not available.  Only smaller devices are
-+	  supported (24c16 and below, max 4 kByte).
-+
-+	  This driver can also be built as a module.  If so, the module
-+	  will be called at24.
-+
- config MTD_PMC551
- 	tristate "Ramix PMC551 PCI Mezzanine RAM card support"
- 	depends on PCI
-diff --git a/drivers/mtd/devices/Makefile b/drivers/mtd/devices/Makefile
-index d11eb2b8b6f8..00ef5d87a957 100644
---- a/drivers/mtd/devices/Makefile
-+++ b/drivers/mtd/devices/Makefile
-@@ -4,6 +4,7 @@
- #
- 
- obj-$(CONFIG_MTD_DOCG3)		+= docg3.o
-+obj-$(CONFIG_MTD_EEPROM_AT24)	+= at24.o
- obj-$(CONFIG_MTD_SLRAM)		+= slram.o
- obj-$(CONFIG_MTD_PHRAM)		+= phram.o
- obj-$(CONFIG_MTD_PMC551)	+= pmc551.o
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/mtd/devices/at24.c
-similarity index 92%
-rename from drivers/misc/eeprom/at24.c
-rename to drivers/mtd/devices/at24.c
-index 4bd4f32bcdab..713f40a1d95c 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/mtd/devices/at24.c
-@@ -4,6 +4,7 @@
-  *
-  * Copyright (C) 2005-2007 David Brownell
-  * Copyright (C) 2008 Wolfram Sang, Pengutronix
-+ * Copyright (C) 2024 Pengutronix, Marco Felsch <kernel@pengutronix.de>
-  */
- 
- #include <linux/acpi.h>
-@@ -16,8 +17,8 @@
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/mtd/mtd.h>
- #include <linux/mutex.h>
--#include <linux/nvmem-provider.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/pm_runtime.h>
-@@ -84,8 +85,9 @@ struct at24_data {
- 	u16 page_size;
- 	u8 flags;
- 
--	struct nvmem_device *nvmem;
-+	struct mtd_info mtd;
- 	struct regulator *vcc_reg;
-+	struct gpio_desc *wp_gpio;
- 	void (*read_post)(unsigned int off, char *buf, size_t count);
- 
- 	/*
-@@ -96,6 +98,11 @@ struct at24_data {
- 	struct regmap *client_regmaps[] __counted_by(num_addresses);
- };
- 
-+static struct at24_data *mtd_to_at24(struct mtd_info *mtd)
-+{
-+	return container_of(mtd, struct at24_data, mtd);
-+}
-+
- /*
-  * This parameter is to help this driver avoid blocking other drivers out
-  * of I2C for potentially troublesome amounts of time. With a 100 kHz I2C
-@@ -424,20 +431,19 @@ static ssize_t at24_regmap_write(struct at24_data *at24, const char *buf,
- 	return -ETIMEDOUT;
- }
- 
--static int at24_read(void *priv, unsigned int off, void *val, size_t count)
-+static int at24_read(struct mtd_info *mtd, loff_t from, size_t len,
-+		     size_t *retlen, u_char *buf)
- {
--	struct at24_data *at24;
-+	struct at24_data *at24 = mtd_to_at24(mtd);
- 	struct device *dev;
--	char *buf = val;
- 	int i, ret;
- 
--	at24 = priv;
- 	dev = at24_base_client_dev(at24);
- 
--	if (unlikely(!count))
--		return count;
-+	if (unlikely(!len))
-+		return len;
- 
--	if (off + count > at24->byte_len)
-+	if (from + len > at24->byte_len)
- 		return -EINVAL;
- 
- 	ret = pm_runtime_resume_and_get(dev);
-@@ -449,13 +455,14 @@ static int at24_read(void *priv, unsigned int off, void *val, size_t count)
- 	 */
- 	mutex_lock(&at24->lock);
- 
--	for (i = 0; count; i += ret, count -= ret) {
--		ret = at24_regmap_read(at24, buf + i, off + i, count);
-+	for (i = 0; len; i += ret, len -= ret) {
-+		ret = at24_regmap_read(at24, buf + i, from + i, len);
- 		if (ret < 0) {
- 			mutex_unlock(&at24->lock);
- 			pm_runtime_put(dev);
- 			return ret;
- 		}
-+		*retlen += ret;
- 	}
- 
- 	mutex_unlock(&at24->lock);
-@@ -463,25 +470,24 @@ static int at24_read(void *priv, unsigned int off, void *val, size_t count)
- 	pm_runtime_put(dev);
- 
- 	if (unlikely(at24->read_post))
--		at24->read_post(off, buf, i);
-+		at24->read_post(from, buf, i);
- 
- 	return 0;
- }
- 
--static int at24_write(void *priv, unsigned int off, void *val, size_t count)
-+static int at24_write(struct mtd_info *mtd, loff_t to, size_t len,
-+		      size_t *retlen, const u_char *buf)
- {
--	struct at24_data *at24;
-+	struct at24_data *at24 = mtd_to_at24(mtd);
- 	struct device *dev;
--	char *buf = val;
- 	int ret;
- 
--	at24 = priv;
- 	dev = at24_base_client_dev(at24);
- 
--	if (unlikely(!count))
-+	if (unlikely(!len))
- 		return -EINVAL;
- 
--	if (off + count > at24->byte_len)
-+	if (to + len > at24->byte_len)
- 		return -EINVAL;
- 
- 	ret = pm_runtime_resume_and_get(dev);
-@@ -493,18 +499,23 @@ static int at24_write(void *priv, unsigned int off, void *val, size_t count)
- 	 */
- 	mutex_lock(&at24->lock);
- 
--	while (count) {
--		ret = at24_regmap_write(at24, buf, off, count);
-+	gpiod_set_value_cansleep(at24->wp_gpio, 0);
-+
-+	while (len) {
-+		ret = at24_regmap_write(at24, buf, to, len);
- 		if (ret < 0) {
- 			mutex_unlock(&at24->lock);
- 			pm_runtime_put(dev);
- 			return ret;
- 		}
- 		buf += ret;
--		off += ret;
--		count -= ret;
-+		to += ret;
-+		len -= ret;
-+		*retlen += ret;
- 	}
- 
-+	gpiod_set_value_cansleep(at24->wp_gpio, 1);
-+
- 	mutex_unlock(&at24->lock);
- 
- 	pm_runtime_put(dev);
-@@ -562,6 +573,8 @@ static void at24_probe_temp_sensor(struct i2c_client *client)
- {
- 	struct at24_data *at24 = i2c_get_clientdata(client);
- 	struct i2c_board_info info = { .type = "jc42" };
-+	struct mtd_info *mtd = &at24->mtd;
-+	size_t len;
- 	int ret;
- 	u8 val;
- 
-@@ -569,12 +582,12 @@ static void at24_probe_temp_sensor(struct i2c_client *client)
- 	 * Byte 2 has value 11 for DDR3, earlier versions don't
- 	 * support the thermal sensor present flag
- 	 */
--	ret = at24_read(at24, 2, &val, 1);
-+	ret = at24_read(mtd, 2, 1, &len, &val);
- 	if (ret || val != 11)
- 		return;
- 
- 	/* Byte 32, bit 7 is set if temp sensor is present */
--	ret = at24_read(at24, 32, &val, 1);
-+	ret = at24_read(mtd, 32, 1, &len, &val);
- 	if (ret || !(val & BIT(7)))
- 		return;
- 
-@@ -586,17 +599,19 @@ static void at24_probe_temp_sensor(struct i2c_client *client)
- static int at24_probe(struct i2c_client *client)
- {
- 	struct regmap_config regmap_config = { };
--	struct nvmem_config nvmem_config = { };
- 	u32 byte_len, page_size, flags, addrw;
- 	const struct at24_chip_data *cdata;
- 	struct device *dev = &client->dev;
- 	bool i2c_fn_i2c, i2c_fn_block;
- 	unsigned int i, num_addresses;
- 	struct at24_data *at24;
-+	struct device_node *np;
-+	struct mtd_info *mtd;
- 	bool full_power;
- 	struct regmap *regmap;
- 	bool writable;
- 	u8 test_byte;
-+	size_t len;
- 	int err;
- 
- 	i2c_fn_i2c = i2c_check_functionality(client->adapter, I2C_FUNC_I2C);
-@@ -703,6 +718,10 @@ static int at24_probe(struct i2c_client *client)
- 					page_size, at24_io_limit);
- 		if (!i2c_fn_i2c && at24->write_max > I2C_SMBUS_BLOCK_MAX)
- 			at24->write_max = I2C_SMBUS_BLOCK_MAX;
-+
-+		at24->wp_gpio = gpiod_get_optional(dev, "wp", GPIOD_OUT_HIGH);
-+		if (IS_ERR(at24->wp_gpio))
-+			return PTR_ERR(at24->wp_gpio);
- 	}
- 
- 	/* use dummy devices for multiple-address chips */
-@@ -712,37 +731,31 @@ static int at24_probe(struct i2c_client *client)
- 			return err;
- 	}
- 
--	/*
--	 * We initialize nvmem_config.id to NVMEM_DEVID_AUTO even if the
--	 * label property is set as some platform can have multiple eeproms
--	 * with same label and we can not register each of those with same
--	 * label. Failing to register those eeproms trigger cascade failure
--	 * on such platform.
--	 */
--	nvmem_config.id = NVMEM_DEVID_AUTO;
--
-+	mtd = &at24->mtd;
- 	if (device_property_present(dev, "label")) {
- 		err = device_property_read_string(dev, "label",
--						  &nvmem_config.name);
-+						  &mtd->name);
- 		if (err)
- 			return err;
- 	} else {
--		nvmem_config.name = dev_name(dev);
-+		mtd->name = dev_name(dev);
- 	}
--
--	nvmem_config.type = NVMEM_TYPE_EEPROM;
--	nvmem_config.dev = dev;
--	nvmem_config.read_only = !writable;
--	nvmem_config.root_only = !(flags & AT24_FLAG_IRUGO);
--	nvmem_config.owner = THIS_MODULE;
--	nvmem_config.compat = true;
--	nvmem_config.base_dev = dev;
--	nvmem_config.reg_read = at24_read;
--	nvmem_config.reg_write = at24_write;
--	nvmem_config.priv = at24;
--	nvmem_config.stride = 1;
--	nvmem_config.word_size = 1;
--	nvmem_config.size = byte_len;
-+	mtd->dev.parent = dev;
-+	mtd->type = MTD_EEPROM;
-+	mtd->flags = MTD_CAP_EEPROM;
-+	if (!writable)
-+		mtd->flags = MTD_CAP_ROM;
-+
-+	mtd->writesize = 1;
-+	mtd->writebufsize = 1;
-+	mtd->size = byte_len;
-+	mtd->_read = at24_read;
-+	mtd->_write = at24_write;
-+
-+	/* Fixed partitions are only supported on OF plaforms */
-+	np = to_of_node(dev_fwnode(dev));
-+	if (np)
-+		mtd_set_of_node(mtd, np);
- 
- 	i2c_set_clientdata(client, at24);
- 
-@@ -764,7 +777,7 @@ static int at24_probe(struct i2c_client *client)
- 	 * it's powered off right now).
- 	 */
- 	if (full_power) {
--		err = at24_read(at24, 0, &test_byte, 1);
-+		err = at24_read(mtd, 0, 1, &len, &test_byte);
- 		if (err) {
- 			pm_runtime_disable(dev);
- 			if (!pm_runtime_status_suspended(dev))
-@@ -773,13 +786,12 @@ static int at24_probe(struct i2c_client *client)
- 		}
- 	}
- 
--	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
--	if (IS_ERR(at24->nvmem)) {
-+	err = mtd_device_register(mtd, NULL, 0);
-+	if (err) {
- 		pm_runtime_disable(dev);
- 		if (!pm_runtime_status_suspended(dev))
- 			regulator_disable(at24->vcc_reg);
--		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
--				     "failed to register nvmem\n");
-+		return dev_err_probe(dev, err, "failed to register mtd\n");
- 	}
- 
- 	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
-
--- 
-2.39.2
-
+> > +#define IMX728_FRAMERATE_DEFAULT       30
+> > +#define IMX728_FRAMERATE_MIN           10
+> > +
+> > +#define IMX728_PIXEL_ARRAY_WIDTH       3857
+> > +#define IMX728_PIXEL_ARRAY_HEIGHT      2177
+> > +#define IMX728_PIXEL_ARRAY_MARGIN_TOP  9
+> > +#define IMX728_PIXEL_ARRAY_MARGIN_LEFT 8
+> > +#define IMX728_PIXEL_ARRAY_RECORDING_WIDTH     3840
+> > +#define IMX728_PIXEL_ARRAY_RECORDING_HEIGHT    2160
+> > +
+> > +#define IMX728_PIXEL_RATE              248832000
+> > +#define IMX728_LINK_FREQ               800000000
+> > +
+> > +#define IMX728_EXPOSURE_DEFAULT                10000
+> > +
+> > +#define IMX728_PM_IDLE_TIMEOUT         1000
+> > +
+> > +#define IMX728_REG_STATE       CCI_REG8(0x2CAC)
+> > +#define IMX728_REG_PG_00       CCI_REG16_LE(0x1A2A)
+> > +#define IMX728_REG_PG_01       CCI_REG24_LE(0x1A30)
+> > +#define IMX728_REG_PG_02       CCI_REG24_LE(0x1A38)
+> > +#define IMX728_REG_PG_03       CCI_REG8(0xB58F)
+> > +#define IMX728_REG_PG_04       CCI_REG8(0xB6C5)
+> > +#define IMX728_REG_PG_05       CCI_REG16_LE(0x1A2C)
+> > +#define IMX728_REG_PG_06       CCI_REG8(0xB58E)
+> > +#define IMX728_REG_PG_07       CCI_REG8(0xB6C4)
+> > +#define IMX728_REG_EXPOSURE_00 CCI_REG32_LE(0x98DC)
+> > +#define IMX728_REG_EXPOSURE_01 CCI_REG32_LE(0x98E4)
+> > +#define IMX728_REG_EXPOSURE_02 CCI_REG32_LE(0x98EC)
+> > +#define IMX728_REG_AGAIN_00    CCI_REG32_LE(0x98F8)
+> > +#define IMX728_REG_AGAIN_01    CCI_REG32_LE(0x98FC)
+> > +#define IMX728_REG_AGAIN_02    CCI_REG32_LE(0x9900)
+> > +#define IMX728_REG_AGAIN_03    CCI_REG32_LE(0x9904)
+> > +#define IMX728_REG_AGAIN_04    CCI_REG32_LE(0x9908)
+> > +#define IMX728_REG_FLIP                CCI_REG8(0x9651)
+> > +#define IMX728_REG_HFLIP       CCI_REG8(0xB67C)
+> > +#define IMX728_REG_VFLIP       CCI_REG8(0xB67D)
+> > +#define IMX728_REG_VMINOR      CCI_REG8(0x6000)
+> > +#define IMX728_REG_VMAJOR      CCI_REG8(0x6002)
+> > +#define IMX728_REG_RESET_0     CCI_REG8(0xB661)
+> > +#define IMX728_REG_RESET_1     CCI_REG8(0x95C5)
+> > +#define IMX728_REG_INCK_0      CCI_REG8(0x1B20)
+> > +#define IMX728_REG_INCK_1      CCI_REG8(0x1B1C)
+> > +#define IMX728_REG_SLEEP       CCI_REG8(0x1B05)
+> > +#define IMX728_REG_REGMAP      CCI_REG8(0xFFFF)
+> > +#define IMX728_REG_HDR_00      CCI_REG32_LE(0x9C60)
+> > +#define IMX728_REG_HDR_01      CCI_REG32_LE(0x9C6C)
+> > +#define IMX728_REG_HDR_02      CCI_REG32_LE(0x9C64)
+> > +#define IMX728_REG_HDR_03      CCI_REG32_LE(0x9C70)
+> > +#define IMX728_REG_HDR_04      CCI_REG16_LE(0x9C68)
+> > +#define IMX728_REG_HDR_05      CCI_REG16_LE(0x9C74)
+> > +#define IMX728_REG_HDR_06      CCI_REG16_LE(0x9C6A)
+> > +#define IMX728_REG_HDR_07      CCI_REG16_LE(0x9C76)
+> > +#define IMX728_REG_AE_MODE     CCI_REG8(0x98AC)
+> > +#define IMX728_REG_AWBMODE     CCI_REG8(0xA248)
+> > +#define IMX728_REG_AWB_EN      CCI_REG8(0x1808)
+> > +#define IMX728_REG_UNIT_00     CCI_REG8(0x98E0)
+> > +#define IMX728_REG_UNIT_01     CCI_REG8(0x98E8)
+> > +#define IMX728_REG_UNIT_02     CCI_REG8(0x98F0)
+> > +#define IMX728_REG_MD_00       CCI_REG8(0x1708)
+> > +#define IMX728_REG_MD_01       CCI_REG8(0x1709)
+> > +#define IMX728_REG_MD_02       CCI_REG8(0x170A)
+> > +#define IMX728_REG_MD_03       CCI_REG8(0x1B40)
+> > +#define IMX728_REG_MODE_SEL    CCI_REG16_LE(0x9728)
+> > +#define IMX728_REG_OUT_MODE    CCI_REG8(0xEC7E)
+> > +#define IMX728_REG_OB_0                CCI_REG16_LE(0xEC12)
+> > +#define IMX728_REG_OB_1                CCI_REG8(0xEC14)
+> > +#define IMX728_REG_SKEW                CCI_REG8(0x1761)
+> > +#define IMX728_REG_SUBP_0      CCI_REG8(0x9714)
+> > +#define IMX728_REG_SUBP_1      CCI_REG8(0xB684)
+> > +#define IMX728_REG_STREAM_00   CCI_REG8(0x9789)
+> > +#define IMX728_REG_STREAM_01   CCI_REG8(0x95C1)
+> > +#define IMX728_REG_STREAM_02   CCI_REG8(0x1B04)
+>
+> Can you sort them by register address?
+>
+> > +#define IMX728_REG_CTRL_POINT_X(i) CCI_REG32(0xA198 + (i) * 8)
+> > +#define IMX728_REG_CTRL_POINT_Y(i) (IMX728_REG_CTRL_POINT_X(i) + 4)
+>
+> >[snip]
+>
+> Best regards,
+> Alexander
+>
+> > --
+> > 2.43.0
+> >
+> > Please be aware that this email includes email addresses outside of the=
+ organization.
+> >
+>
+>
+> --
+> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
+rmany
+> Amtsgericht M=C3=BCnchen, HRB 105018
+> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
+chneider
+> http://www.tq-group.com/
+>
+>
