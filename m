@@ -1,218 +1,353 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2081.outbound.protection.outlook.com [40.107.247.81])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342E381C4
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 21:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620C243ABC
+	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 22:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719868476; cv=fail; b=kablmLchlJ2r/4tmRGcV0jPGtQiv0CX9lcmP+VFgUVU2dsEyAJSOcu8BB3ag0bjHQ6jJxROyDX1DXViC4gZdk32LEvdLUFggc03Nv2GCpEz9DEbBQF2lAZj98aQNnSCZH+cZzQ8m8R12w7c+Rp3joUhBXv/LzlTkTnROuyMZG1I=
+	t=1719871454; cv=fail; b=Gv3Io8nIiOcRnhfDitsTMjJYwNQztWO50cLc6RquO5OCwZO7wgsvD508srEgG/hTDxjI1G5R9zjL7Meke0Uq+9UiolChjuDz+aVYm6BG5Aq6j+3J4A8tcOQfVqjNucFCsANXWQwJ5twjmbhukCjIEPHX/6xESheenSLKZLCw7Hc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719868476; c=relaxed/simple;
-	bh=oLKEu54gFQmp2hBXDKEk3gcU4KViRlj9pXsm/mhJ434=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qod2aQVksDRyuKXK06KF+LCrguYDGWj97ll9YyCHeJg1PSgR7fnCf8bCPrf3qcp05F3Bk61fg33MtuyUGCrHGYtS62IgrqmYknp9zM5ynHy3BZYc61E+odCh+oBmzyniRbx5rHukUlzTQExNnOiSYsAQLq9yR2sVjcSWtcjbs0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=LEGJAd6+; arc=fail smtp.client-ip=40.107.247.81
+	s=arc-20240116; t=1719871454; c=relaxed/simple;
+	bh=A4sU8h3lwq8RY8DwiFw8Cj/+akW8UtHv1DRVrgvkJR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EsgYufzwX9YA/7NEDiEY527zgYXnfpM1xAfzpeopPaPxgyBKQMSLQr8qegjTuIptYAZ++ZVbX6ovxxWHCEzRQRlAlnciyFRRL/uy9m6vtjmOQKtDzuQ2IehYcS3mJ1FjkzNCXICyCwDWkKJ/QPlkLDsE34jvZeYNVv/7EveLYTk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=YDC1CcKe; arc=fail smtp.client-ip=40.107.20.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="LEGJAd6+"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="YDC1CcKe"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j7J9ufOFbbM89Qb+7Rswy7Q7vd9uF4lIhCAooxbsuTCazhElSEY7SUObUe9O+5nYK8gVlcUUa8Lx+gsJXAmAxwUh/lmAZWqvKz0rzikHubDJuU/mnOXlL4M/PpLGHATNUCFEoFC7FYZ8zmSI/DVnM+WS9x786yOswywO0cxOc9TxfdCKSahq4VcLvdyIRujTwReuON8UIqjj2z8T+CsDpT2GdprY08owiTp5E9xeyYbFZtkhg2JwxdPRlTWOvkVvCbcM8tYStUVOOL80xYbUqR98VPAk+BagQmh6oYU1hINPYpXzFoJXcrHCrfEQprITarduwY5CUCbQAFw4VdVI+Q==
+ b=dajtuEOs8/ck2r0EMzYUHxtsWjObGJitNyP2GRqJvQN03y36Etm2ySAOL5Q/tT/SjToFjqY/BjC+0aclwg7cR1u4NKEWuSXVscGLcb7Lrn2DwQQx1i5iHCmACI8bVLSJ+fM8wq1jNIsEd+PkX6Ya7jxXHfeA7x1rg14E6UWOTTtLWa65Zy9tv3dxG+kaHF5C4gVFrj4pH+ratbbji36Ukdu8o7tgmDVmibxJ1s80ws8sTCiYSGBbsO1Ph6y5/cnwrzog+xn1oIySQq7yc9fAIZF2G72irzajQPU4OQtxtyeFg1M6E0W2ddiETlysoFA+qy6MRetZ1MVNhfFND9Fhjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GywXmLD10wLUHJnAVHm7g02slbZb9lVIGqWohpQAdIY=;
- b=M8ntmD2FJ6h7B/roqE0RLnItK5xtQ6NoNH8DE3R6vCEHSIKEJsxdpzVwBSWp3KAhGsqgBhagm7J+X90wdcuJmaQw/utAjXzuNCvqns9AHS1VzfsOAj0LYO/dWFWOs0e3zsKjiBqf0ktJu8CYmiTJIGUxDHv9DlD8s+NlsSaJDl7HQD9AuFrTRH6ble/x+wi+WTGklE6K9ImISOyztzfO3EIrvKNZ0rk12+iqGuhhPmlXxnLaNLGIG0cNC4DCDLJgHpZuySurIWk3ak4zo4/vCHYgZXJhFOz+QMiLK271Qj/7nwEGwSoHcOosdmm3stTZVSPQEY/rS1s26s1a8W2Cpg==
+ bh=as6mWyz7fdE/eIShBkYN9JIVOt2wNJ94/O21+6gRVIc=;
+ b=Q55dnWEnfzTQ5J7vVdZIx2XO4VLAYuBymwWaFGMN+yBom75452c7PFeit++gejabWRY1+DWnNJDRP7Y4YuViZ99vlpMq5ZL7qQf0dzh1lcfpcQ1HmRKM4WYN2I6ffcO1/HAMLxJrFJnwvdt9mvZdCSzBlCXGOHtGB7wRDU9rw7z6++BANZXsBsxMkDvMTegYU1iVxpbwPqd8mZyxeZM+qnYxEp3d7EsCzuc5N5i/iL3sJnR8w4yzSacj2wM52WQbj7iyu74TxNoRe5F4gWanZvf5Nr2N+GOa41JgRTe2FEWIfly0+VS9Jr/tUlLfoSsjFQnRqdiG+3PzywNoNn7npQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GywXmLD10wLUHJnAVHm7g02slbZb9lVIGqWohpQAdIY=;
- b=LEGJAd6+GxIuf1sdtd7eeeRa07ubwj7xbMcY7cWnQPDDJ8F3ixLLcgoX8UNmxPTypclh2OWyazDV5u6eIjJniCeM2DGiXrI6RLVyhSnNyFqVtJ0z8XUTkYdgRk9Kjw2DUKverg1zyUfICiE8UhsmdRsJEjDXb3thg8/oyY4ye5w=
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by GVXPR04MB10972.eurprd04.prod.outlook.com (2603:10a6:150:224::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.28; Mon, 1 Jul
- 2024 21:14:28 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%2]) with mapi id 15.20.7698.025; Mon, 1 Jul 2024
- 21:14:28 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-CC: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, "linux-pwm@vger.kernel.org"
-	<linux-pwm@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH] pwm: imx-tpm: Enable pinctrl setting for sleep state
-Thread-Topic: [PATCH] pwm: imx-tpm: Enable pinctrl setting for sleep state
-Thread-Index: AQHay/uobE4WbqgwCkGjhy8d5UrNbQ==
-Date: Mon, 1 Jul 2024 21:14:28 +0000
-Message-ID:
- <PAXPR04MB9185061E57C305C17D59C66C89D32@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20240514200534.73847-1-shenwei.wang@nxp.com>
- <ewrvieusxer74yi7dlp55sfgy4n7u3o56ytrfqijkurapy77wi@f4hgxlamr2cx>
-In-Reply-To: <ewrvieusxer74yi7dlp55sfgy4n7u3o56ytrfqijkurapy77wi@f4hgxlamr2cx>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=as6mWyz7fdE/eIShBkYN9JIVOt2wNJ94/O21+6gRVIc=;
+ b=YDC1CcKeDMRA1UY3SMgOCDa23lpeM8uwKU92wjFKMwE2sLk28u8Cn5KR4fpU24/t3lLe8Ey973tuDJICv9CyHpXQNC1Jxfs7Jsm/CP5GdvaZkBX5WrAc/h+H7hWewss/ZF/sE9MIJlATsYhKT15O37bZmoQW8uOukUznjNnPWkY=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|GVXPR04MB10972:EE_
-x-ms-office365-filtering-correlation-id: 2384ed81-b80d-4e6f-c1fd-08dc9a12caf7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?gdaRrJsTXoKBrJny/p0G9+YWnuAtrZkyaKqWdu22UQWRjmihVtzq4YAjtH?=
- =?iso-8859-1?Q?jkE7wLmesKVFyAuADz+0qR3IrDZR0tk/XNgK0euD3WqFaKuhpbaLnH/PaE?=
- =?iso-8859-1?Q?1zMm1EEC/+UidKU76bEMUK6TSL68H0bHRX8E6IesUXju6Hk/q6dU5mzaz0?=
- =?iso-8859-1?Q?KNYOVNj5FmoaHmaLiBM9j88C6WDx4sCOPIg6aYnuadDceEcyPN4/vwXEpN?=
- =?iso-8859-1?Q?fOwKQM6V6k/rztoVw5/8EpOhAe2Wr6ySi0zBJ4CqSPgN9Ypp70HyJAFb3J?=
- =?iso-8859-1?Q?g2MJ6aorGhtjkjFyj8tzOktucEAdCze/BJVD0FmqZ04WISB61qYpqj0mBS?=
- =?iso-8859-1?Q?rr7F9tYsE6EM/NfVIiwYT+oHW2vSCZ8olD/2dauGIh8N1gzzjAy1rCqN7u?=
- =?iso-8859-1?Q?Jk9WxiC46gKx/++zXxyHCXHrW6G1cAGO33mtWm78sPvKl+NzmjPvGeTmCL?=
- =?iso-8859-1?Q?1Uo9IQwzdda3fmSPyIyMUQGi92eGDf/F7pgjXeGo9hfWIVViDsfYS/VABg?=
- =?iso-8859-1?Q?t9IHh9lBEghVKQ1FVGIlRPKH/XSv0+LQqI+v7VXn9k0gtBoSP0cwj96GO5?=
- =?iso-8859-1?Q?3WVvzCErtaE2avtE1td28+B6DJbCm6UFpjLbzqYU3Uqy+81UM/S2CMZQxc?=
- =?iso-8859-1?Q?o6b0zesITzGFbvlOBHhwOUD4lO35T6P0W83LLAf6eEjNjHq3tXCQJ87xth?=
- =?iso-8859-1?Q?Oa5Z8QtVwzss8uOmFZQoe09QWlLiybntw+DNm606ZmMA/30dnH/QjlMI1/?=
- =?iso-8859-1?Q?dK67LKNfbeYm/xlHYjIPqwdsM37xIvppficyoftOGJurOalBaddOjltx4/?=
- =?iso-8859-1?Q?Xu6/YMPgXwtqdcBI7qr64WzzfmsXQo//HIDEnnfP6dmqEMDK2A/Iecp20b?=
- =?iso-8859-1?Q?ub6dOumNc+uTiEXpbNFftHyY2Kh1x3K7e4TLgqsQEBjYgEa45HFRXnadaF?=
- =?iso-8859-1?Q?tLUNmT6TIydUMTOFH2Ity9tzHgri64vBBUgcTeTnkV2RhJUypfQmgS6KJz?=
- =?iso-8859-1?Q?DRXe70C0zG1W5ZgFSYmwyhLpRo8lXeBy4l45OAI0Pwl3EXdfhTnc2d1QoW?=
- =?iso-8859-1?Q?a+bpRJQQEAJQ7PDiOT5/i+uBEX/qdidsN0Paq8j/CKV5DcvIXwIgXcXwot?=
- =?iso-8859-1?Q?WHZ76VL0CpTAb/VEn9h91W0jG64f7NoTs5JPv9I52RQnatiG+3c+WG4Uqn?=
- =?iso-8859-1?Q?gGq6PSvQlMR3exZgjCBPBSTJbCuaApMhdpLHmjsEdAuuXqPWHQ/NwLrDB+?=
- =?iso-8859-1?Q?dqi75aAjfZVNCWJ/vA9lsJSUfa2dtDcSa01T+mQ0EI+IrG2Yf9pmOZwja0?=
- =?iso-8859-1?Q?NgZ0FeVvabGFzdtJUw1K/08yiFGbAg1SgxrJoNNSOdD+iFt8i+qwlUr41g?=
- =?iso-8859-1?Q?raEBhkffOQvGMifVR3I0M5x+6/QHlJ5+8FvGxTxlRqWZTdwjEbN1LlqcgV?=
- =?iso-8859-1?Q?LOPOq8A4fIPvx0uy7ULpfaeOuKBnuF8aHE6M1g=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?OzH1WNcBDjpjzKxZH3j4Pj1z9e+mtQUC94wRf16adr2Hu7q6m+oVZsIUl1?=
- =?iso-8859-1?Q?/U5fTD29L0jBRZxoTZWlwFg1OIgwyD3qTLDHQIZoD0OvtxBaGx5JX0yw61?=
- =?iso-8859-1?Q?DOQOmaOeHJavwEr7C0/MRATSVmjt4HEwZ8pGrRDo6j7tM7hXRwywKWjXuO?=
- =?iso-8859-1?Q?th/Cac2q09q+DZq2oJOJl/3wr2QJ3FA8Oj2Zd83o1C1eaBKFKckdkpCaXH?=
- =?iso-8859-1?Q?nOqaWNPSDm+R0sH775He7pgqfuY8GT/OP5A5emgjXH1YYwc8R90EP1D7Vq?=
- =?iso-8859-1?Q?9QEQshAmxdmMcQjMLwvb1cdwq9dUQdgsPxqNVTWfaQcqGjpVWKSzGlByjK?=
- =?iso-8859-1?Q?jiO6jR9zXTwyqHQOpYXSkkTiy8pNSxYqudp9wTUNcBN2jgiO3Na+DHFmqL?=
- =?iso-8859-1?Q?IVqIHxr6BAdY6RAuKjzexAcLIZo8Jq2FwXGBUnoB3FFmzCTKdHHIA403t3?=
- =?iso-8859-1?Q?4NUxB9oC4ArLWF5Jnev17jY71tLcaEeiKLSC95m7yl8vVkhlMIMVIZYTCs?=
- =?iso-8859-1?Q?akAZXIRYLZHhDOmir3lvEuIiME32YYKj2d5yQzr9QNUC0EY705UYbPhWe3?=
- =?iso-8859-1?Q?PBmK2M9HBB/FcPf4tNEDBF3rEyLuuIEVNNBcmsu1QxdEH8E6PsyGzn51w1?=
- =?iso-8859-1?Q?Y3uBReOnIJ2zxvcoD63DviQY3gdmz1OnWJbcMxBYiaMnbpJtKdSDsNmj44?=
- =?iso-8859-1?Q?ohKIhZcMDqKw5mViJSHRZssk8wNytXI3WkmEIgRIEFGK+/2MJh7hzn7Vdl?=
- =?iso-8859-1?Q?gFclGECsU74gSdLXV6YJ/R4Xi7oN6NgyIi/HvbjlBkN8vL6PgetCtUYtXP?=
- =?iso-8859-1?Q?8iurCwrx4TbdgAlQgalBl14p29pKruxsfOZGIGPHTklpVY12OnIqHbNVUx?=
- =?iso-8859-1?Q?S6VQURJxuOhokyZ8z/7VdRvlt0mLZU9UZAx+R1AkDkn6JOpXsSDVYLZqjH?=
- =?iso-8859-1?Q?4QQFLF6JK+ZKF+LV5mN43qoi+m63F+uvencaqeyh1+UqfgbiGWh3AAI7iN?=
- =?iso-8859-1?Q?GRTK1nEwqsqiVTDQ25DFMv8X6jPVkWv2lBuo8MmyL5EouDqorHg5lc6EAd?=
- =?iso-8859-1?Q?iuc2SdGwr01Scb1CSB9/miAL1aVVTs7zJe6a3kz+1NR+/tUuLU+kXyfxmG?=
- =?iso-8859-1?Q?u7WJ6ZbGzP6/VCXfQ99E1N/nsUeusHVpb9ZLMz/Suc9zhyiSE3fLT37XDl?=
- =?iso-8859-1?Q?xdkWOeR3l2vWzMDkQw0Ch+Snc+5hvq9v5ziy4NcYg/B6+8wFztq8c3AP2K?=
- =?iso-8859-1?Q?77NTbw1Lgt8m0tYxx+EeZ/JI3iou9E7aXKtxaifRMSY5LyErNwLTD9O3M7?=
- =?iso-8859-1?Q?pb80zbz5NWg1uIB6neHmodu7pkGkjrES7PGKTGCWc5Xv5cOUchxbZzZtVp?=
- =?iso-8859-1?Q?Ytp8495hNC/zIY2tioor5DpdLoNQV0XsKQIwnIh73qd5CldoVN8u+1fQFp?=
- =?iso-8859-1?Q?3yK77aGZVmHtTM6yBM8nfBydHSmgZEX5xG8wPkEEEk0Ul732vIPph8J3Hi?=
- =?iso-8859-1?Q?Gqo8U8V/gYuHprC4wNw6vOSqqjgXyT/kxlwjbP8PnPpX1kxxibrL/NTktS?=
- =?iso-8859-1?Q?0njZetzG6PiFU0mK/WA1fTevYbdWjxEJtNPEU9cjgvJOlWVU8pqU8es7HW?=
- =?iso-8859-1?Q?XI+7WEgfgnUe5T3yvFzmd0GbAIUMDLaW/y?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB7540.eurprd04.prod.outlook.com (2603:10a6:20b:283::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.32; Mon, 1 Jul
+ 2024 22:04:08 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.029; Mon, 1 Jul 2024
+ 22:04:08 +0000
+Date: Mon, 1 Jul 2024 18:04:00 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: krzk@kernel.org, conor+dt@kernel.org, davem@davemloft.net,
+	devicetree@vger.kernel.org, edumazet@google.com,
+	imx@lists.linux.dev, krzk+dt@kernel.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: convert enetc to yaml
+Message-ID: <ZoMn0Pc/agPGKeTS@lizhi-Precision-Tower-5810>
+References: <20240626162307.1748759-1-Frank.Li@nxp.com>
+ <20240627155547.GB3480309-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240627155547.GB3480309-robh@kernel.org>
+X-ClientProxiedBy: SJ0PR13CA0003.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::8) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7540:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3c66582-82cd-446e-c069-08dc9a19baff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?s0xtfJfD7fUcRIFlqBlOAHpLHzMU63CaW/E+bHSxiqr+U9OtDS95sFX6U9Kk?=
+ =?us-ascii?Q?/SG2NM+C4JGreEk2AIIXeHf5n+HpSg61hutrdI6J2IH3mtQZe/0U1KxvuPN/?=
+ =?us-ascii?Q?fD0MR0FrgLDXW72THeevyuDeqc5Khyf7PlVjUck28yczEyyhoQl4QClobn5b?=
+ =?us-ascii?Q?I5DdR8B61EyODL4MhufqronNKNmhnrzcWR/YIA5JqgUUxesNUgy7+WcQ6xL2?=
+ =?us-ascii?Q?x7GsVFQzYwXxHHUSXN3oqgHs9zgsczvaI6XOBzFBMyEqKKq4EHs6tGW6NEeR?=
+ =?us-ascii?Q?QyyiUXypnsvG0g4m1kspPYM6Dqrg3818QzY1eJkfL3yvhIP+MerGPUwoE/PU?=
+ =?us-ascii?Q?YJaBYYjY2aDIaCUPBGaH+4CKvFAMGbVOskGG1KD52Be8FZqAsgRqSDNC+W14?=
+ =?us-ascii?Q?OHXpp2PMy6CxmVEkMSpwaCBRFhG36is3ueoDoEHzT2TbKSQ+3uJilZ8Ix9oh?=
+ =?us-ascii?Q?u4J25Xycn9Elda2zRc9+W8sPgJ7V2KXJX9HvEjQ8F0UJNuTl6k6BStID+6pu?=
+ =?us-ascii?Q?TP7sh0mCcNyUlDV9yDeR3AOWOhTh4MYHWKr7B0fHgLJpHg8yXkBIlBx4/7+m?=
+ =?us-ascii?Q?2ozGljKyhg3YfFQEA26X9iBGZxGb89HnFEG9ub+5S6HGOuKJrnqkgHJU20wS?=
+ =?us-ascii?Q?sxc/ZQyHVIJeXyP8dyOdfl3bTQEYujQkpz38nRGOoc0hIWn1FDn+rD6O5s4X?=
+ =?us-ascii?Q?Nb/g3g/efVyCGtGdN3h7bVFmwfRNMdhDuALaqU7HybrrjlbjtlrHxPr21orA?=
+ =?us-ascii?Q?pTYucw4bXToR6KIGdzPnlN9AjQnXtEiR0vY1S7lov00qf3FKglqgEDw++5fc?=
+ =?us-ascii?Q?/8Ypx+AO8jixf+NHvsAVLXHVFRCuBp86uZotWrfzk8KiE6YMh6WkWcf2xuXY?=
+ =?us-ascii?Q?IsMb4LRA+yMMNiBQKFrSeovk3az9H9OyS1Nw1gbMWBly+t6HMWg9WMi29AwE?=
+ =?us-ascii?Q?MQeGkk2qq/tpL/YgYJT48NXvgde+Ga1cjnVW3saukAWx9xzRMlDiON+Dn8lC?=
+ =?us-ascii?Q?D6iEYSG4Cfu7RYp5Tne69/ysvwcCbQ5OQ2t8fU+5FWn3bbqWzBMYEKoTVflA?=
+ =?us-ascii?Q?wRAJAnlhvKWNFEYhZih4OSs3cXDs2Mwn3kWoWP3qUgUAbM8OUankrtxu6Svv?=
+ =?us-ascii?Q?8UCysbTI7mkpeMSwcHoBaxJHZeudYl5mfHzU4dQ4XA82hF3pPAjqTyC9Z89z?=
+ =?us-ascii?Q?fmKYfmaVyvh0QcfijxHTGOgAMIJ5wCnTImft6PUBinAmOsePi7E6kl2XmqJT?=
+ =?us-ascii?Q?2kOi1rJDreXv6FnDfYfiFFFtT9/KbZCGI1XLNi7cGuQArzndQfUbmmCD2hkk?=
+ =?us-ascii?Q?B1jDKeUNHbH2wwgNIoc942Y7bIgJ90KxWiM9r/peSWDkdcyh+YQuCt8O8fSQ?=
+ =?us-ascii?Q?smQ4sjI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?y55HByOkRSiURcpw/iac5Clk3gc7pY4snemwk0xrgdiIyVPQvY+QkT5QQz5R?=
+ =?us-ascii?Q?X+Q6dHv5XPawrQ6wE4lb/j6OnvtP2Jw+N5igwb9cDCfF0Uy7PcB3FUJlDikx?=
+ =?us-ascii?Q?fhDJ7qWL94MQjz0VAhB0KYWwYXuwBIrvlVWWJLNCTVNlBtx0qI++k9I7xZN/?=
+ =?us-ascii?Q?YUHm7X43xBczkxsmT1TgfGnz4Xm/5uLJmkPhUpgcBQElqQLOOOo1ywU8Y+jz?=
+ =?us-ascii?Q?9IWK4O9xWu+6XT6oWxsFOV83uIN1eHgRw/iMUNq12ty91OpKgJ3ehwmFqZs/?=
+ =?us-ascii?Q?hFyKWt+YZ1+MW8HHL0nvRq1RKpzbGkW286B2Tu61Xnciu4yfrGQGEA4V+w+p?=
+ =?us-ascii?Q?duWJMicIP/d9FMadpVPYmiHxsJjivzMWXpmCCW/LS9QqTZpuVSaP+TMMlLPs?=
+ =?us-ascii?Q?F6ytvMzQMs26qc/BiVNYYVG4BOv5V59TcN4iK7rcxIK3qG8RRgfboVKIhohF?=
+ =?us-ascii?Q?su87yzZ/QxUtqQSo7QJm7txk1JzMx0koAwUyhqxDKdQOuXMhzZNuDfrmTjpD?=
+ =?us-ascii?Q?S6aUTvEfxqtql+TKQfKRXsOo/w/w7xnVdiwF/KqzwhJwcO28czY9WL74UNyk?=
+ =?us-ascii?Q?lAAKJ56xVJjAQ49n3PfphiLRl+hhADnNXKvFxyN57TfLpNyM9yM+xhw2ZZGU?=
+ =?us-ascii?Q?PZOuyQRmu2sP75hk4c89T0x8pbjYl89riyn5ilEegS4G+K02eTZxIdMjQQ+Y?=
+ =?us-ascii?Q?iy9VWfLvkc+n2xtxEsE1lqNJ4naSmg7vgf6X/kc0qHsnw79fDtMlK1nCf3OF?=
+ =?us-ascii?Q?gC9RAqEywhAc2ERlYQzfmZdICh9k5ArphXAU2uDbgVPWp6feJQzlyzuHzcjr?=
+ =?us-ascii?Q?pary/3Zrn7DJlmnsM2oN4lpt281O2nQNn5TCxyPmbGgYSS9JHlVFLL9Wifsk?=
+ =?us-ascii?Q?JCcDqhKw2h4XHe1ErEGGhHkEKdJYLNrRQYbyN8knpx24zHDvGGtOqi7zyXKj?=
+ =?us-ascii?Q?dhfkuuU1/n5nvkTfiCOe97v7U+xuQnKzkOyg8Id32jH8h9jIFjjShuO/5aM/?=
+ =?us-ascii?Q?IIif8zjKEeqCONjEXvpxg/sjaFtNa+AIlanGTYCKrdwXW6fm7AaPf+FPyM7z?=
+ =?us-ascii?Q?8Gmzbw4Sjxm+9hO4a41DH+LZHB96rvwcVBcDxfBw5s17FH4Xya+n+pY7ryTX?=
+ =?us-ascii?Q?WYZmkBbL7C0hy1p1HwC72HEhWksOrjqIbOEA26I6DYZByE5Ma69FmfmTT9lj?=
+ =?us-ascii?Q?UVzsDd2pc7lrUvVrNeSZ9/DbGI0v4ZfmgTYTyZeEFTuzOWULVE6EfzJ+1+GG?=
+ =?us-ascii?Q?C5DLSgBdKw/ufia5YKzKtaZmZ4GGy+q7f8a+19hwPZl0XpRfQ4vbpE/T2dCK?=
+ =?us-ascii?Q?LwL2O2B8qMIss8gYbCUFD675G4A5wcKd1qf6MJwlx1hC4NglfFqVsnMJePha?=
+ =?us-ascii?Q?YdPKR2Yps1l9knM1c6ScojgaK1AykNc33j+TeORidqrJBqpwurJVUgyRVpUQ?=
+ =?us-ascii?Q?Adx8GeAWxW3S6IrUBsQu3I/huxMBZMA3smJF39c2tSQG/QiAPgSfRhbGxZ7F?=
+ =?us-ascii?Q?vgNrC4AP17IBiAzUoHoWnI5a/dhfwEY/1yofBzoSbdX2D7Yd2WWCnuazBQ4Y?=
+ =?us-ascii?Q?I+nMTrjhoGx5/bK/Y4S0xKTZ9YkFGjPGiEl8Yuan?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3c66582-82cd-446e-c069-08dc9a19baff
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2384ed81-b80d-4e6f-c1fd-08dc9a12caf7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2024 21:14:28.4652
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2024 22:04:08.4392
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vQQyOpTxSnkSmZAbvkAfUAmOibtbj57qJ61ADmHouTFzAoCUpv8UB7E+eVMd66cHq5BwJpOXQ1OuIw+Q5isQ2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10972
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uwcWOKRxQCcIa0Z1+u12QD7Lxnc4ncF9pmcp5n5ZFUJyUYXDfyvGjb8or+OKYLknhaXtpnIGyJ7kVaxNWDZZ4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7540
 
-
-
-> -----Original Message-----
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-> Sent: Monday, July 1, 2024 3:46 PM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; linux-
-> pwm@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> kernel@lists.infradead.org; dl-linux-imx <linux-imx@nxp.com>
-> Subject: [EXT] Re: [PATCH] pwm: imx-tpm: Enable pinctrl setting for sleep=
- state
->=20
-> Hello,
->=20
-> On Tue, May 14, 2024 at 03:05:34PM -0500, Shenwei Wang wrote:
-> > Apply the pinctrl setting of sleep state when system enters suspend
-> > state.
-> > Restore to the default pinctrl setting when system resumes.
-> >
-> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+On Thu, Jun 27, 2024 at 09:55:47AM -0600, Rob Herring wrote:
+> On Wed, Jun 26, 2024 at 12:23:07PM -0400, Frank Li wrote:
+> > Convert enetc device binding file to yaml. Split to 3 yaml files,
+> > 'fsl,enetc.yaml', 'fsl,enetc-mdio.yaml', 'fsl,enetc-ierb.yaml'.
+> > 
+> > Additional Changes:
+> > - Add pci<vendor id>,<production id> in compatible string.
+> > - Ref to common ethernet-controller.yaml and mdio.yaml.
+> > - Remove fixed-link part.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > > ---
-> >  drivers/pwm/pwm-imx-tpm.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-> > index c50ddbac43c8..19245790c67c 100644
-> > --- a/drivers/pwm/pwm-imx-tpm.c
-> > +++ b/drivers/pwm/pwm-imx-tpm.c
-> > @@ -393,7 +393,7 @@ static int pwm_imx_tpm_suspend(struct device
-> *dev)
-> >
-> >  	clk_disable_unprepare(tpm->clk);
-> >
-> > -	return 0;
-> > +	return pinctrl_pm_select_sleep_state(dev);
-> >  }
-> >
-> >  static int pwm_imx_tpm_resume(struct device *dev) @@ -401,6 +401,10
-> > @@ static int pwm_imx_tpm_resume(struct device *dev)
-> >  	struct imx_tpm_pwm_chip *tpm =3D dev_get_drvdata(dev);
-> >  	int ret =3D 0;
-> >
-> > +	ret =3D pinctrl_pm_select_default_state(dev);
-> > +	if (ret)
-> > +		return ret;
+> > Change from v1 to v2
+> > - renamee file as fsl,enetc-mdio.yaml, fsl,enetc-ierb.yaml, fsl,enetc.yaml
+> > - example include pcie node
+> > ---
+> >  .../bindings/net/fsl,enetc-ierb.yaml          |  35 ++++++
+> >  .../bindings/net/fsl,enetc-mdio.yaml          |  53 ++++++++
+> >  .../devicetree/bindings/net/fsl,enetc.yaml    |  50 ++++++++
+> >  .../devicetree/bindings/net/fsl-enetc.txt     | 119 ------------------
+> >  4 files changed, 138 insertions(+), 119 deletions(-)
+> >  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+> >  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+> >  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> >  delete mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.txt
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml b/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+> > new file mode 100644
+> > index 0000000000000..ce88d7ce07a5e
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+> > @@ -0,0 +1,35 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/fsl,enetc-ierb.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > > +
-> >  	ret =3D clk_prepare_enable(tpm->clk);
-> >  	if (ret)
-> >  		dev_err(dev, "failed to prepare or enable clock: %d\n", ret);
->=20
-> If .resume() failed (consider clk_prepare_enable() failing), and the resu=
-me is
-> retried later: Is there an unexpected (though maybe
-> harmless) imbalance because pinctrl_pm_select_default_state() isn't undon=
-e
-> in .resume()'s error path?
->=20
+> > +title: Integrated Endpoint Register Block
+> > +
+> > +description:
+> > +  The fsl_enetc driver can probe on the Integrated Endpoint Register
+> > +  Block, which preconfigures the FIFO limits for the ENETC ports.
+> 
+> Wrap at 80 chars
+> 
+> > +
+> > +maintainers:
+> > +  - Frank Li <Frank.Li@nxp.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - fsl,ls1028a-enetc-ierb
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    ierb@1f0800000 {
+> 
+> unit-address doesn't match
+> 
+> > +        compatible = "fsl,ls1028a-enetc-ierb";
+> > +        reg = <0xf0800000 0x10000>;
+> > +    };
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+> > new file mode 100644
+> > index 0000000000000..60740ea56cb08
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+> > @@ -0,0 +1,53 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/fsl,enetc-mdio.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: ENETC the central MDIO PCIe endpoint device
+> > +
+> > +description:
+> > +  In this case, the mdio node should be defined as another PCIe
+> > +  endpoint node, at the same level with the ENETC port nodes
+> > +
+> > +maintainers:
+> > +  - Frank Li <Frank.Li@nxp.com>.
+> 
+> stray '.'                         ^
+> 
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - enum:
+> > +          - pci1957,ee01
+> > +      - const: fsl,enetc-mdio
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +allOf:
+> > +  - $ref: mdio.yaml
+> 
+> As a PCI device, also needs pci-device.yaml.
 
-If we need to take care the imbalance of pinctrl states in the error path i=
-n .resume
-function, should I also take care of the imbalance of clk states in the err=
-or path in .suspend function?
+After I add pci-devices.yaml, I get
+Documentation/devicetree/bindings/net/fsl,enetc.example.dtb: ethernet@0,0: False schema does not allow {'compatible': ['pci1957,e100', 'fsl,enetc'], 'reg': [[0, 0, 0, 0, 0]], 'phy-handle': [[4294967295]], 'phy-connection-type': ['sgmii'], '$nodename': ['ethernet@0,0']}
 
-Thank you for the review!
-Shenwei
+It looks like match to two schemas, then report error. If I change enetc's
+compatible string to other random string. No error report.
 
-> Best regards
-> Uwe
+I am not sure how to fix this. I have not seen other schema use
+pci-device.yaml yet.
+
+Frank
+> 
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    pcie@1f0000000 {
+> > +        compatible = "pci-host-ecam-generic";
+> > +        reg = <0x01 0xf0000000 0x0 0x100000>;
+> 
+> Drop compatible and reg. Just need the minimum to define a PCI bus node.
+> 
+> > +        #address-cells = <3>;
+> > +        #size-cells = <2>;
+> > +
+> > +        mdio@0,3 {
+> > +            compatible = "pci1957,ee01", "fsl,enetc-mdio";
+> > +            reg = <0x000300 0 0 0 0>;
+> > +            #address-cells = <1>;
+> > +            #size-cells = <0>;
+> > +
+> > +            ethernet-phy@2 {
+> > +                reg = <0x2>;
+> > +            };
+> > +        };
+> > +    };
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > new file mode 100644
+> > index 0000000000000..843c27e357f2d
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+> > @@ -0,0 +1,50 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/fsl,enetc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: ENETC ethernet
+> > +
+> > +description:
+> > +  Depending on board design and ENETC port type (internal or
+> > +  external) there are two supported link modes specified by
+> > +  below device tree bindings.
+> > +
+> > +maintainers:
+> > +  - Frank Li <Frank.Li@nxp.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - enum:
+> > +          - pci1957,e100
+> > +      - const: fsl,enetc
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +allOf:
+> > +  - $ref: ethernet-controller.yaml
+> 
+> As a PCI device, also needs pci-device.yaml.
+> 
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    pcie@1f0000000 {
+> > +        compatible = "pci-host-ecam-generic";
+> > +        reg = <0x01 0xf0000000 0x0 0x100000>;
+> > +        #address-cells = <3>;
+> > +        #size-cells = <2>;
+> > +
+> > +        ethernet@0,0 {
+> > +            compatible = "pci1957,e100", "fsl,enetc";
+> > +            reg = <0x000000 0 0 0 0>;
+> > +            phy-handle = <&sgmii_phy0>;
+> > +            phy-connection-type = "sgmii";
+> > +        };
+> > +    };
