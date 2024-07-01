@@ -1,204 +1,203 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2068.outbound.protection.outlook.com [40.107.247.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB7016CD03
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 15:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719848310; cv=none; b=CTCNP9A0VxTVy7799sCGjWEu6+oDStFB0ptHDtB1uzZoqL3iqp+vrNE15VVaNiUBkc+C9iMGSky4PE4uf9cIE0H4e3N5XY9ME/ifXF+3iElgYtS638QxBziHA3mAdy2nKgIWUiaFoAO9uxP7lqqxMruMDAEoawuYiwa3cueKaPg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719848310; c=relaxed/simple;
-	bh=qGZSUpncTlrSVUhF9e8WztlZO/H62XIR+WPrDBCFjoA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YuWnMYGYAyzePifmm/52J62nKdnk6VxtghPFNtBmXoTqeNAr6wWPB24Ae61ODHWtnipOLpd5gDGpu08xrqJhFqgVVVwhBuxsIHjY8tUotYo2Zh7dNERRRg7ZnCIQWLKFuuhAV8hAOfFvBMBKh0wi9o1Pa4vs1txrpvVcGI+5D0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eA9wc509; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD0116D308
+	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 15:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719848754; cv=fail; b=FmeTSwdlY3eSBenzctLdxQRsCP03PSQ0WrFCtfpe9Q5heRXGXPvSPsIof7kwWlglC3eR7sr/uXIMwumI9HblhD+q9p/FZtrL0oxnRrNiIi2EHbePyJ8PmCjOWPonN4Oexyt1tZMuqeM3W32y/y0bhQewONI8a4Uw5h9CPKKtJ3U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719848754; c=relaxed/simple;
+	bh=AvsqKe3NAQdwNSP9t45LDirbg3NOe4/hB1HlzwcRjhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uEFbDVuo5M70hLRo5rRYZe/Rlz4gqB71jmmlJMd6MSa/Ac1+Gs1DCpp8/yxqyiJbTOQ+0lMC4LnN7kpgTJY0SFFpT3ZjN9uxZheD1GhWd3xlXM/vndBtCW3vyRoKLwSrK5rg4x/7+gAVHEbJeBc4yiVwLaWYpk+c5kcQoKZSISc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=QXA3d8eh; arc=fail smtp.client-ip=40.107.247.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eA9wc509"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4619pLsX006850;
-	Mon, 1 Jul 2024 15:38:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WQNu3HGwsBvw34NNAmVNukSruR+Bp7trDgkn2Im5fCM=; b=eA9wc509jjj1vmb7
-	eJA99ekbRO0RoJQiYpvDmWq9Ty9eAd4uA5A6oyYD/804DzfK11z0Bxey24jAVPyT
-	o+HPf31DGemAFOSYWJzQydDMB30D8ldG4qsVSE+25DS0F6L6ghVbHknsSafL3n+M
-	J+7A530TrI5vtQ5GXPK32JzgeO3QPK9BtkKZGfbxzySYxQ0LrmzCr2S3IWEROc8V
-	fZH+AZesPQbdTlUdvRsBfi8Y+I4r24MagnDUBBG9Ag6TO3Sl7A+GowtMGQzfALDh
-	WcWVzccrNxpXU6YulGeg9V/3x8LDAoAyl4HSK77SM4uNKsrnbvUBxupBRJCeuNXg
-	2Q+NaQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4027mnmyw7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 15:38:05 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 461Fc4Ff017655
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 1 Jul 2024 15:38:04 GMT
-Received: from [10.48.245.148] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 1 Jul 2024
- 08:38:03 -0700
-Message-ID: <aac18765-4278-4ce0-a0f9-d249ba1d6872@quicinc.com>
-Date: Mon, 1 Jul 2024 08:38:02 -0700
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QXA3d8eh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=f7l8KT7sUWs4JMMPa04Ssrhu9w2V4qfDWZaicmke4Sz08Jh3jJuMNNTtZDb+8u+7Zl16HoDhZ1Jlf0x7CYRPDMW8dMyb3cJnh+0yNt8jW3DWNcg2i7ymykjRcDIHWTP8XATWGHz9++JpSy/uu8oe0w4rx0uawaggU8jGnY0jehDT8KjMvu5c9L8tzODz4+ASdbzClYlfLeA4kRP2AhZSs4+yB08GUJt1btgmGWp3hmxPqH7osbl57cPBc4cm7Lxa2QNrv16Cqvuq+R2QiKGWPxF0T+WjmSYMH6TZ/I3S7B/EqId5bDDZmm7DNJfS4TfJ0H/oeDA1pz73uqhIjYCFGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=okMDi51a/kMHt5pcLQ2qcX88lbSka+BBND8WDsdvqeM=;
+ b=hj3DwuLBNY5qd/DWL9rw5KvHZ0CCI8oU+M561zWf1XNgRiHQelV5rhG6VWk8EU/1JOQZZ4+RiOa4gHfF+6ZYjycT+ieZH6CkoLeLhTGseA0ilnx+jxLeZ47zstPftECa4CE50t42A8LCmVnFTKVUMUECXX7tVP4rJ+mALrToLnGa6pJN9MZU8g2cVF7NLFkaif+NpGJkowz9Gyz3rqgt/nxbVfW0WGQm53NZDT3B65CnhA0aNXZiMdwmp18fq5cGxPt9Kc1hgzLYT+CLWcRey/iRjwz7ec3C4upH5whV8yjPyeMYoS0fJgWg/oXkPGc2AEkprMiffgkcV8Hcr/rE5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=okMDi51a/kMHt5pcLQ2qcX88lbSka+BBND8WDsdvqeM=;
+ b=QXA3d8ehBl102RCGjMZuc0rOp24Og3sZkLdUvZlp6vXmzHJsqAJWTcpBJMpR1lYgAgW3/x+vP0ng0NXxD3Y0OnUmWIo3qI7gllZfaut0C8oa7K2pg4pYEcIhjnTuLxa+/V0pyRFzjfJTy2i9W+8OLDA2BRQ0WPLPES98HlGBDbM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DB8PR04MB7115.eurprd04.prod.outlook.com (2603:10a6:10:128::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.32; Mon, 1 Jul
+ 2024 15:45:49 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.022; Mon, 1 Jul 2024
+ 15:45:49 +0000
+Date: Mon, 1 Jul 2024 11:45:40 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/7] arm64: dts: imx95-19x19-evk: Add audio related nodes
+Message-ID: <ZoLPJPR8r1+XaRAB@lizhi-Precision-Tower-5810>
+References: <20240627220001.692875-1-Frank.Li@nxp.com>
+ <20240627220001.692875-3-Frank.Li@nxp.com>
+ <AM6PR04MB5941C1138E4F33AA3FA49AA388D02@AM6PR04MB5941.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM6PR04MB5941C1138E4F33AA3FA49AA388D02@AM6PR04MB5941.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: BYAPR21CA0021.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] perf: add missing MODULE_DESCRIPTION() macros
-To: Will Deacon <will@kernel.org>
-CC: Mark Rutland <mark.rutland@arm.com>,
-        Jonathan Cameron
-	<jonathan.cameron@huawei.com>,
-        Frank Li <Frank.li@nxp.com>, Shawn Guo
-	<shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix
- Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-cxl@vger.kernel.org>, <imx@lists.linux.dev>,
-        <kernel-janitors@vger.kernel.org>
-References: <20240620-md-drivers-perf-v2-1-1f88f8a08e48@quicinc.com>
- <20240701140521.GF2250@willie-the-truck>
-Content-Language: en-US
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240701140521.GF2250@willie-the-truck>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: BbcI1LKTv-uvKs_nmSQ5TkuqOvGmHLkU
-X-Proofpoint-GUID: BbcI1LKTv-uvKs_nmSQ5TkuqOvGmHLkU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-01_15,2024-07-01_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407010120
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB8PR04MB7115:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9533c0ae-6cf6-447c-3614-08dc99e4e121
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fmjqd8QviXdDefpKmLBjlqXwtfDZPDhJ0XXyIqUXUw8HG2daJxkb669uA/fZ?=
+ =?us-ascii?Q?NeDzDBJlYH2BWfAm6KurG/3IhA+seg35xZ4Bg6y5kd8sNEqRqvWEH/YEuQjR?=
+ =?us-ascii?Q?tRMcmD/v2LDhvpuaPV0BfKQEvKDeiGpO6JpG1RsovV9vlaasxvzUVAGaGDvs?=
+ =?us-ascii?Q?bBSu/DvUJvCDxAQd647BHzTyY6g/D6N7uV7NOtq5cSfIScUQKbC0Mk1hJC7S?=
+ =?us-ascii?Q?ccRWzudNocmxI/577huKhGckkmza3/NqPwZiihccQ7QGjrkivTmIZ/eQVkmj?=
+ =?us-ascii?Q?4Wee1pea0RsB1aXjd+nNqMpOJcXwbyc0DgsjYNjHuz8aMO19+bZcGWKWdfjp?=
+ =?us-ascii?Q?R+hjt1vxZlNH50c9q+ftDNTUNFsspzLxuzNrStHMa3SmJenYvEnVFhQSaWoR?=
+ =?us-ascii?Q?PmEKeZs/pe8EqzkLSzub46/GaInCcE+27FL3/QPfElX5rt/7IZPG8ZoKwLy9?=
+ =?us-ascii?Q?4Ir+rSxoKhLjdeQS+xMsH70fATh3n+iAAnPU2L5W+mC9DHJwKcLehhgKUmMz?=
+ =?us-ascii?Q?PPP0pZJiJ4KqCKkJVflri6OtGUcBzFrIODHqM2lmJLUrMtTfQFo7ectrhJIk?=
+ =?us-ascii?Q?alB0HFmUsr9FNbHpS/8yh2SCfiM0bplKi3tkpGvEAvj1bUItwu1JDVCxYxpL?=
+ =?us-ascii?Q?IWGHpIAABR6yhfA+IxqgarI4dwAf/FiuZIOEU+LcAXvt1/z9hv8w0mZqjJVn?=
+ =?us-ascii?Q?S8gtaUEHqPCeszzgfZtXFSL0sFuyv26Yo0qIUeV6WnKIZ/YTmacQvhaWOuhk?=
+ =?us-ascii?Q?J4UO/A7XS3bM71GUp02CoNF9FkR9CjT+O9wuBL+X67dLqph5Opz7J70xEkKe?=
+ =?us-ascii?Q?+A6phXKukmy0L+TxxtG6UQd+bxnwvvqm6qaYGx5ildPVXwLl1gsEZ1TLK79/?=
+ =?us-ascii?Q?iIMw2p0AyHC3TXpbfkX+Rqd887M/0Ubq8soPdDNQ42TYdyluDwdkx/IMwYBJ?=
+ =?us-ascii?Q?QGneO9rg0W7jqHPUUDfgRefYCKNUvxIZIysww3wHX4vLFPe4z/gldfFpp6eQ?=
+ =?us-ascii?Q?KZWbEXR1HaOY2483SVYjO/FC2sAmL8+FJeVX4XhtGtV71KlXiJYBkTUCVD7I?=
+ =?us-ascii?Q?ITACfZdG0IBmguMbE4KCTmixg8AcvmZuqirfOpKO1bJHyjslUwk70l7Oy3DC?=
+ =?us-ascii?Q?wIHj+F17bmFaNTRgvzOcuu2Qg42RxHbWb8MEl7Kl6XWp9XiB84BIcX3Zm7Q4?=
+ =?us-ascii?Q?fWJXrmrm1bP9HeC4JONB8XpUft5ZFH2Ud0esgz3lrc1kT4XGQS92WmQhyFUA?=
+ =?us-ascii?Q?rVcCTyW8so2umTF+YX4XS+2to3NnBEqsgcHZqCs5LRpbPaTBzcojjgTAqCPA?=
+ =?us-ascii?Q?9yqDpz57YKeySchLhER2YuKEVMzwE0lgeJrMijv4/H8wtt+gVuLv41HCi2/b?=
+ =?us-ascii?Q?2yKP+opwhd4UbJgY2jerJTA9zGcdPbE3LXmSS0+K8RKEmCcKWA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ma32rxEBRUC8MpEo5w3bAxiZBfRiLiZpC1JhWqoTAj7NJeqRmjzliESFa7Zp?=
+ =?us-ascii?Q?OEg8rBdBBRnA1Fnju9Fqc4NDMnSbg28lX3QRI6A4VaKYIH0jDBvAb6N0okNT?=
+ =?us-ascii?Q?0C9Xtrtn6oSIeYvG6nzI/OrHOI/udzqDuZPSTQCyhieimWv5YdbTwnlL94oB?=
+ =?us-ascii?Q?7lABe2a3P7VyIH850lNzVJ+Iqe5J2NFS77wcbUd9r3J54no3y8dcPBZ5uNxD?=
+ =?us-ascii?Q?aGrQdOlPaoF2kYGihZpkQRDB7flow7WJPV1ghQd+4LWvIFw2dIJ6SPpDe2tM?=
+ =?us-ascii?Q?duRp50ZqNjydRcKQ16mNxBW3bQhCbKAltANwdSn4nEgR70aLA9lXfOub/N8Y?=
+ =?us-ascii?Q?O8TVI6kvyDW358fvgPHRgqhb/rgazJJzu1rreECJLHLbDTt15XGe5A/rNGec?=
+ =?us-ascii?Q?rbHjott3WDze/Vdzx0FYo+Cw+AFg5nWWXzbj7qnUBTKcK/MNLl0CeHqvyBUp?=
+ =?us-ascii?Q?lfa43L59py6ct/O8qAmxHnHmqGoN73Rh+MH0XK3EuuxaPyF8N4CflNF4cWv+?=
+ =?us-ascii?Q?FyjABZtCwC6NQDKck+2oczdTcsMARNafIKBwqYUUOvkfi/ScbrIMDoK/Qat7?=
+ =?us-ascii?Q?DOgVD4BHfRB/DdikNKNpHKoaZaGyVsqQ1KU+PmaU+qSGZPDk+3uYKwwCvHpy?=
+ =?us-ascii?Q?6Y0Kz+k8qVsL/tk6BGu0z0yFesRv7JgisvwTEP7IyRPOlrJKO90wg+/TyCrw?=
+ =?us-ascii?Q?9ZSQRTvg54il1pDSLq4csfn7T4HwyAyCgMREg7/VsStbmlLjm/fzgZ+awqGW?=
+ =?us-ascii?Q?4shOsxHtLV6vQxqjNYNT4EdVQl7fOJxbZ6n/p4PT9yn/QSj+QTjJCf1RgUJk?=
+ =?us-ascii?Q?Q9wJCAbPEdYB7/U1ohIfpcHV6YjBHFeRR9O0CHYZdicv+v3J91Dx7pkgC4di?=
+ =?us-ascii?Q?Ot6L9z9rlhZwRKfnaQMRTGsqnpJo4oBEtXymHKlvprLHEyqKKOhh+OZY7LgF?=
+ =?us-ascii?Q?6B1drHy5ixc6e7clteFbGuQjbTslftK4Hmm7OvK4pkxc1LGdYhYrwWiTDCUd?=
+ =?us-ascii?Q?pU12iB5QFQtI/Uh1k+1UarDhkrlB1UEss/t87EMNFsrvL3p9rZ36HlrrL5xT?=
+ =?us-ascii?Q?rMvCDxhAlus7HTCCWjbueUwuJQSGxMMtCjk9zEaDNbp1/CandLjftRUJZXk0?=
+ =?us-ascii?Q?PbImLa+64nIrUVvfT+0Y5rNosxh0wxTjP0TL6mkbboyi9Hf7E2gH3xVUSFZ/?=
+ =?us-ascii?Q?adVc1RTkn35//l1DDNctGvAwmwnFl897SkY+zgzCBWeJVkePuEWCttGIRwMt?=
+ =?us-ascii?Q?YfE5SNFVQn9I0Q+uYjp6iKU2mNIVcGz57+n1Zj3wKrzAtp4jK1WB6kRhrtRE?=
+ =?us-ascii?Q?stB9QbXci2KmYsYIvPaXC47iH2S5YTFFFwvhZ5apKj655vqSmDM/S8GhkHUG?=
+ =?us-ascii?Q?xZfc1pZe65dv9/fyREk9MDrgUBxk8Yadt67fAC19yHXyZHkl3g7VV4GYGAbg?=
+ =?us-ascii?Q?LknALay7uYjcfhO+60HE7PyxgeetpKiTA5QEs/c/HUrW6BL0TJgflVNRwAro?=
+ =?us-ascii?Q?nRx8uLzB40Xeiy5dqfKycdsFkRicVTCx6MZOauW31KRwwZmfipC3Nqkfgs44?=
+ =?us-ascii?Q?bb4DEt3aQqBBBfaurSnMywL/jg6q6MI1EJtYkZJe?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9533c0ae-6cf6-447c-3614-08dc99e4e121
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2024 15:45:49.0508
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PiyrjlEnLR80bx57Y7L31Ceed02JT/Ad3vi0IKG11t5Kukzr6JXbV/kazWrV8zkZy8sX/9XAmWqR61s6yQNXYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7115
 
-On 7/1/2024 7:05 AM, Will Deacon wrote:
-> On Thu, Jun 20, 2024 at 06:46:09PM -0700, Jeff Johnson wrote:
->> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm-ccn.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/fsl_imx8_ddr_perf.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/marvell_cn10k_ddr_pmu.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/arm_cspmu_module.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/nvidia_cspmu.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/ampere_cspmu.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/cxl_pmu.o
->>
->> Add the missing invocation of the MODULE_DESCRIPTION() macro to all
->> files which have a MODULE_LICENSE().
->>
->> This includes drivers/perf/hisilicon/hisi_uncore_pmu.c which, although
->> it did not produce a warning with the x86 allmodconfig configuration,
->> may cause this warning with arm64 configurations.
->>
->> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->> ---
->> Changes in v2:
->> - Updated hisi_uncore_pmu.c description per Yicong Yang
->> - Link to v1: https://lore.kernel.org/r/20240611-md-drivers-perf-v1-1-c001bae6da5c@quicinc.com
->> ---
->>  drivers/perf/arm-ccn.c                   | 1 +
->>  drivers/perf/arm_cspmu/ampere_cspmu.c    | 1 +
->>  drivers/perf/arm_cspmu/arm_cspmu.c       | 1 +
->>  drivers/perf/arm_cspmu/nvidia_cspmu.c    | 1 +
->>  drivers/perf/cxl_pmu.c                   | 1 +
->>  drivers/perf/fsl_imx8_ddr_perf.c         | 1 +
->>  drivers/perf/hisilicon/hisi_uncore_pmu.c | 1 +
->>  drivers/perf/marvell_cn10k_ddr_pmu.c     | 1 +
->>  8 files changed, 8 insertions(+)
->>
->> diff --git a/drivers/perf/arm-ccn.c b/drivers/perf/arm-ccn.c
->> index 86ef31ac7503..65f4882531db 100644
->> --- a/drivers/perf/arm-ccn.c
->> +++ b/drivers/perf/arm-ccn.c
->> @@ -1561,4 +1561,5 @@ module_init(arm_ccn_init);
->>  module_exit(arm_ccn_exit);
->>  
->>  MODULE_AUTHOR("Pawel Moll <pawel.moll@arm.com>");
->> +MODULE_DESCRIPTION("ARM CCN (Cache Coherent Network) driver support");
->>  MODULE_LICENSE("GPL v2");
->> diff --git a/drivers/perf/arm_cspmu/ampere_cspmu.c b/drivers/perf/arm_cspmu/ampere_cspmu.c
->> index f146a455e838..426b3cfcb52e 100644
->> --- a/drivers/perf/arm_cspmu/ampere_cspmu.c
->> +++ b/drivers/perf/arm_cspmu/ampere_cspmu.c
->> @@ -269,4 +269,5 @@ static void __exit ampere_cspmu_exit(void)
->>  module_init(ampere_cspmu_init);
->>  module_exit(ampere_cspmu_exit);
->>  
->> +MODULE_DESCRIPTION("Ampere SoC PMU (Performance Monitor Unit) driver");
+On Fri, Jun 28, 2024 at 12:03:27AM +0000, Peng Fan wrote:
+> > Subject: [PATCH 3/7] arm64: dts: imx95-19x19-evk: Add audio related
+> > nodes
+> > 
+> > Add sai1, sai2. Add i2c4 and wm8962 and other dependent nodes.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  .../boot/dts/freescale/imx95-19x19-evk.dts    | 238
+> > ++++++++++++++++++
+> >  1 file changed, 238 insertions(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> > b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> > index d14a54ab4fd47..660e623f4f964 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> > @@ -17,6 +17,11 @@ aliases {
+> >  		serial0 = &lpuart1;
+> >  	};
+> > 
+...
+> > +			     0x0000 /* 4:FN_DMICCDAT */
+> > +			     0x0000 /* 5:Default */
+> > +			   >;
+> > +	};
+> > +
+> > +	i2c4_gpio_expander_21: gpio@21 {
 > 
-> Curious: why do you expand the PMU acronym here, but not for any of the
-> other drivers? If we're going to add these strings to all the drivers in
-> one go, then it would good to be consistent.
+> Use gpio-expander@21?
+> It is easy to duplicate the node if other i2c bus also
+> has one.
 
-Since I'm modifying hundreds of files treewide, I'm not spending much time on
-individual files. In most cases I've taken these descriptions directly from
-code comments, Kconfig descriptions, or git logs.
+It should be fine, parent node is difference. gpio-expander@21 can't
+resolve your problem. 
 
-This description was derived from the prologue comment in ampere_cspmu.c (I
-added "driver"):
-/*
- * Ampere SoC PMU (Performance Monitor Unit)
- *
- * Copyright (c) 2023, Ampere Computing LLC
- */
+i2c2
+{
+	gpio-expander@21 {};
+}
 
+i2c3
+{
+	gpio-expander@21 {};
+}
+
+It should be same situation as gpio@21.
+
+DT should allow the same name under difference parent.
+
+Frank
 
 > 
->>  MODULE_LICENSE("GPL");
->> diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
->> index c318dc909767..c21c564840d6 100644
->> --- a/drivers/perf/arm_cspmu/arm_cspmu.c
->> +++ b/drivers/perf/arm_cspmu/arm_cspmu.c
->> @@ -1427,4 +1427,5 @@ EXPORT_SYMBOL_GPL(arm_cspmu_impl_unregister);
->>  module_init(arm_cspmu_init);
->>  module_exit(arm_cspmu_exit);
->>  
->> +MODULE_DESCRIPTION("ARM CoreSight Architecture PMU driver");
-
-compare to prologue for this file:
-/*
- * ARM CoreSight Architecture PMU driver.
- *
-
->>  MODULE_LICENSE("GPL v2");
->> diff --git a/drivers/perf/arm_cspmu/nvidia_cspmu.c b/drivers/perf/arm_cspmu/nvidia_cspmu.c
->> index 5b84b701ad62..0dea47e48ac5 100644
->> --- a/drivers/perf/arm_cspmu/nvidia_cspmu.c
->> +++ b/drivers/perf/arm_cspmu/nvidia_cspmu.c
->> @@ -417,4 +417,5 @@ static void __exit nvidia_cspmu_exit(void)
->>  module_init(nvidia_cspmu_init);
->>  module_exit(nvidia_cspmu_exit);
->>  
->> +MODULE_DESCRIPTION("NVIDIA Coresight Architecture PMU driver");
->>  MODULE_LICENSE("GPL v2");
->> diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
->> index 1f93a66eff5b..8b6ce9ea5a55 100644
->> --- a/drivers/perf/cxl_pmu.c
->> +++ b/drivers/perf/cxl_pmu.c
->> @@ -972,6 +972,7 @@ static __exit void cxl_pmu_exit(void)
->>  	cpuhp_remove_multi_state(cxl_pmu_cpuhp_state_num);
->>  }
->>  
->> +MODULE_DESCRIPTION("CXL Performance Monitoring Unit driver");
+> Regards,
+> Peng.
 > 
-> Similarly here, we now have a conflicting expansion of the acronym.
-
-I'll make them consistent in the MODULE_DESCRIPTION()s.
-Do you have a preference for expanding or not expanding?
-
-/jeff
