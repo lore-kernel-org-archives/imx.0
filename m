@@ -1,89 +1,258 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335D69475
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 09:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2788D86252
+	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 09:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719826239; cv=none; b=f+zpW+1YgS0xuRfu8+pxmHIQvQPTWydo/ZzkL385Cojf0m80z0Oyv3OVtkWyU238Q6s3htFP/bWjw6roe8N2k136wo7fbOhQ+6hV8uUgiMEA9IZLZQUBLkol2udeS7CrMsS0qCExO7JOhgCA7Ek4UZy9A+NsIjKa4glCOd+SNZE=
+	t=1719826569; cv=none; b=rfNmKaKXx8SmbqW8Uk/naXtKpJIkUxDaqxJj8GBJgTD0tdk1ov5fdOq81ETPbX3hDjAGzHorULaKw+1kmBT1D5sex4RtmEKwRFWDfxNL02NxdPCnfcYmcEQJYtezz1GXG+cghDF3c/nE1gOLYQtzetKwa3AduYgiPWCEG8tbhB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719826239; c=relaxed/simple;
-	bh=bXS05YXP29lYledT5VQ7UD9ves+9A8eAVmV+KKJbQtw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B+LxpQGvBK98muJaJy9lfX4y4eLtfubfkhgkx1JzSReDqFW1mheIx7qsbp32cW4tPrCmTq1KG9t0MKekHrDRDhz7M21r//a/pi/51mt9GZgxqnC3UEzsXEz1KpSYE8CXpz3sOJLkUVtQ2z3SoSGO5j8TYiY4b1Qt4xjoAgqGKr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sODMj-00022u-9n; Mon, 01 Jul 2024 11:30:29 +0200
-Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sODMi-006L4k-Jt; Mon, 01 Jul 2024 11:30:28 +0200
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1sODMi-000PmG-1m;
-	Mon, 01 Jul 2024 11:30:28 +0200
-Message-ID: <7dbda1952c9e873823d4e6d2a9534f1b3b945c4a.camel@pengutronix.de>
-Subject: Re: [PATCH] media: imx-pxp: Rewrite coeff expression
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Ricardo Ribalda <ribalda@chromium.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Hans
- Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Mon, 01 Jul 2024 11:30:28 +0200
-In-Reply-To: <20240628-gcc5-v1-1-7cd56f04a6a8@chromium.org>
-References: <20240628-gcc5-v1-1-7cd56f04a6a8@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1719826569; c=relaxed/simple;
+	bh=tY0jDUiKDP/NA4C8P00UMFT9mW6KP80g8OnUL7jr5mg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dNIHKG9PkRIXBmTmR9bEAPYGOu39cvkfM7Rx5oM4tgQE7abuN11E3l3jrFoG0RlC8s/zKhStmSKBkJK2zRpevxS3o3fzG7trcQ1ymIydX+V8QibEYfxDHMhW0EAby/3MpDUO8scUmbN/dEsfluglyNIxTvuLU/FRsQnfJz7WE4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OxMNhpqp; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OxMNhpqp"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52e8037f8a5so2264646e87.1
+        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 02:36:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719826565; x=1720431365; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=umaxw1Y4QWvbs+IDfNlNYZEXrx+s0jE7sWK8LLWjE0k=;
+        b=OxMNhpqp5qpMFxR+zG62je5yePv7AC00yEY1IpVlhmkcBTNsy+UWwLx8vOmLhbQIkE
+         UPdklmfztfwUy0wIKJFF1tkyOyY0Z0RhWj4YrQ6N4wfwiz3/juj0qcSZ7rABMugZRf83
+         7HxJkgcyHt4AILNzmIfTb/gqWOQVmEZgf0SAeIQYAWm66hV/Dzrp1FNRESAX5DgT7jnO
+         FIUIF2Sp/BqtTRphSLkxhYiT4M3q7qtlXufxo5zA24GMbWlSx5Q4+vKDFThBxynfSWbp
+         k0kXVM2+E2reSQfUmgg4hqwgUkuls3+QoLCN3sA2ji2/WLl1Iz3GWEvZiRLtVoHv+n7E
+         9BxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719826565; x=1720431365;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=umaxw1Y4QWvbs+IDfNlNYZEXrx+s0jE7sWK8LLWjE0k=;
+        b=nJg13hD1/rU79WgkkDUo7iWJgFtI52RRQq1NcNOvIHRPiOWx5Yeg3gpdcL+p1xlcKs
+         6TnBhQw+iNub3Wn+wO/JK+WoaH8MYByqbO4oqilXQywtNlgLivStFy3KM2nP8i4VQDUY
+         Oy7P8AvY6h7JNQC9UPm85Bk2tu7aG/BPRzuyXlHYCBm1i4k5d9rlkCXTIUAZeNkdDFpv
+         txYgFD1GGGfdwYVEJQdfGESoFCGPZDJrRWpH3udilkkxoKTAJj/T3hgijbyPQ3pSG8Px
+         UBvHXNu8EpTPzAvR6sHoMhc30dGDKjGURIF2k22un3mmN/6EAMQ0zOPMuhE7d+fDepHg
+         sc1A==
+X-Forwarded-Encrypted: i=1; AJvYcCURrexvagupd44B4GGDRBN24Kyt1Oui3AU4i5KrM2Piiaa+FhoQdYj0bUFNCewpa1S8Xw+bPYuKf5jcP/Mre831P9BX
+X-Gm-Message-State: AOJu0YzkWmMu2XyyjUk0fQWvmsGGuKP2c3ar0hNW32o4NoVkSubWWOVF
+	wuYcLY0wcjFiwF50dlfns133D8jGpDeQbKFm2W5OsuZaQHvOpSUNpbuVU78aZ8c=
+X-Google-Smtp-Source: AGHT+IGhh02dUWD3pu4eKVgTusl/xKoK7lHj0jG9AB/Y5RJf8e/uPTru3uksObZxoH7cIkfw3SY/4A==
+X-Received: by 2002:a05:6512:2813:b0:52d:215b:9028 with SMTP id 2adb3069b0e04-52e82747e92mr4002791e87.60.1719826565248;
+        Mon, 01 Jul 2024 02:36:05 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a103d0dsm9526058f8f.104.2024.07.01.02.36.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 02:36:04 -0700 (PDT)
+Message-ID: <a6530511-8195-48da-9796-df207a15ae2d@linaro.org>
+Date: Mon, 1 Jul 2024 11:36:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] media: dt-bindings: Add Sony IMX728
+To: Spencer Hill <shill@d3engineering.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20240628-imx728-driver-v2-0-80efa6774286@d3engineering.com>
+ <20240628-imx728-driver-v2-1-80efa6774286@d3engineering.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240628-imx728-driver-v2-1-80efa6774286@d3engineering.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fr, 2024-06-28 at 15:11 +0000, Ricardo Ribalda wrote:
-> GCC5 cannot figure out that the expressions are constant, and that
-> triggers a build failure. Rewrite the expressions.
->=20
-> The following gcc5 error is workaround:
->=20
->  #define BM_PXP_CSC1_COEF0_YCBCR_MODE 0x80000000
->                                       ^
->     BM_PXP_CSC1_COEF0_YCBCR_MODE |
->     ^
->  #define BM_PXP_CSC1_COEF0_YCBCR_MODE 0x80000000
->                                       ^
->=20
-> drivers/media/platform/nxp/imx-pxp.c: In function 'pxp_setup_csc':
-> drivers/media/platform/nxp/imx-pxp.h:582:38: error: initializer element i=
-s not constant
-> drivers/media/platform/nxp/imx-pxp.c:374:4: note: in expansion of macro '=
-BM_PXP_CSC1_COEF0_YCBCR_MODE'
-> drivers/media/platform/nxp/imx-pxp.h:582:38: note: (near initialization f=
-or 'csc1_coef_bt601_lim[0]')
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+On 28/06/2024 23:17, Spencer Hill wrote:
+> Add bindings for Sony IMX728.
+> 
+> Signed-off-by: Spencer Hill <shill@d3engineering.com>
 
-Can you elaborate on how this is triggered?
 
-At least I couldn't reproduce this by just copy & pasting the
-csc1_coef_bt601_lim initializer and the required macros into gcc 5.4 on
-godbolt.
+> +
+> +  clocks:
+> +    description: Clock frequency from 18 to 30MHz
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: inck
 
-Can this be fixed by using GENMASK / FIELD_PREP instead?
+clock-names do not seem that useful - name is pretty obvious. Drop.
 
-regards
-Philipp
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description:
+> +      Specifier for the GPIO connected to the XCLR (System Reset) pin.
+> +
+> +  avdd-supply:
+> +    description: Analog power supply (3.3V)
+> +
+> +  dvdd-supply:
+> +    description: Digital core power supply (1.1V)
+> +
+> +  ovdd-supply:
+> +    description: Digital I/O power supply (1.8V)
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: ../video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          data-lanes:
+> +            oneOf:
+> +              - items:
+> +                - const: 1
+> +                - const: 2
+> +              - items:
+> +                - const: 1
+> +                - const: 2
+> +                - const: 3
+> +                - const: 4
+> +          link-frequencies: true
+
+Drop, not needed.
+
+> +
+> +        required:
+> +          - data-lanes
+> +          - link-frequencies
+> +
+> +    required:
+> +      - endpoint
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        clock-frequency = <400000>;
+
+Drop
+
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        camera@1a {
+> +            compatible = "sony,imx728";
+> +            reg = <0x1a>;
+> +
+> +            clocks = <&fixed_clock>;
+> +            clock-names = "inck";
+> +
+> +            reset-gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
+> +
+> +            avdd-supply = <&camera_vdda_3v3>;
+> +            dvdd-supply = <&camera_vddd_1v1>;
+> +            ovdd-supply = <&camera_vddo_1v8>;
+> +
+> +            port {
+> +                camera1: endpoint {
+> +                    remote-endpoint = <&csi2_phy0>;
+> +                    data-lanes = <1 2 3 4>;
+> +                    link-frequencies = /bits/ 64 <800000000>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ef6be9d95143..a2811249ac8c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20589,6 +20589,13 @@ T:     git git://linuxtv.org/media_tree.git
+>  F:     Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
+>  F:     drivers/media/i2c/imx415.c
+> 
+> +SONY IMX728 SENSOR DRIVER
+> +M:     Spencer Hill <shill@d3engineering.com>
+> +L:     linux-media@vger.kernel.org
+> +S:     Maintained
+> +F:     Documentation/devicetree/bindings/media/i2c/sony,imx728.yaml
+> +F:     drivers/media/i2c/imx728.c
+
+There is no such file. Patches must be bisectable.
+
+Best regards,
+Krzysztof
+
