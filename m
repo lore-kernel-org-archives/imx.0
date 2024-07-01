@@ -1,76 +1,103 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087A68C1D
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 14:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DAE14B95A;
+	Mon,  1 Jul 2024 14:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719843962; cv=none; b=LQCmjPOIiR9c2Y/kcLR8PkrwCc6WVtNul525kizGTd3VFB08FHe0P7Obd95WiTovKt5kOj9bNr01FwQ2wxUHOPH61NkFdOZa3hJbZ08FL1hnxbqhu+29g7EwxiISjjdzwe6V2vwYnaaQGq5P69QVivfaJb6i6LIftKVLbDmXVxU=
+	t=1719845533; cv=none; b=RnxPdCEkn5mximaWYXNn2/EIevEB1MbksUjFRnN/Ynj18udOfx2lGPDZRKYmR/sbVV63W2CORfzoqWELfVnu3C0UMp685iUC+k6L1ItNu9Jxq3BUiAI8SCsrt4fi9A1UNDQ6bnIyz0m4iGpGJVRny7VNCoY3TwDMhHiYvDGGmQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719843962; c=relaxed/simple;
-	bh=tyXUokv7xNpsIGSP5ELpRgNWICH7u18dUF/zNyymBmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fK3Ayod0/Nr5Lnq9I5mQmoZqZQRsuHgO2hpcRp+Zhmgu+Za/j02pcuJDoWOmJduEjXHcNhD5kIirf4VJRDnjQUVhvfUck7kN8gMIAp8x2c10ldU1jlHLmsW9lX2TwOR+oB+EB6QPCMikIBM806QBHThnqULICJXhUFGSvF8bOhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OGuAEcFE; arc=none smtp.client-ip=220.197.32.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1719845533; c=relaxed/simple;
+	bh=5vB6rfS074k8h9NxKGPuRUpIHxHySANWovl75hV6ARg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WIO55miZQzICITcYraJe9/gFNxYTVftS4wuS2UUiX7OPP0qR/6UsWEd06fLIt4ZcDo2Ps6b6JiCqfgm250WPbLfmLW/DxsQQp2JQfj/UGAVFvLvg9nuHh8m9s0cYdEPLzNwCpgV6dWjOsCcgQSwis9SIYWJ8yuQvd8cOtaTERWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rnx8kpEK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OGuAEcFE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=dEno6mHhFR5G5j7SXntEr/1pWDtwK/8nwORwa7dpaH0=;
-	b=OGuAEcFE6XaT95TB6J5r9c+FrJnA68Ii+Guzble791M+e0Pa2/5cHuhus/rNwb
-	BP5kMVNDNdCO7JFJOrgp7QigMfOZrhnfG8IkBKpbAyckwVsImjrJ3bTVzOAtdL8y
-	5BOvg5WgTbd3BPf197hD8PmPhaiYBo5G6nHRLWF5cw5MA=
-Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgD3vwxavIJmPmcCAA--.6190S3;
-	Mon, 01 Jul 2024 22:25:32 +0800 (CST)
-Date: Mon, 1 Jul 2024 22:25:30 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/9] arm64: dts: imx8qm: add subsystem lvds and mipi
-Message-ID: <ZoK8WsnqxfIo6tAp@dragon>
-References: <20240614-imx8qm-dts-usb-v3-0-8ecc30678e1c@nxp.com>
- <Zn0R2/lcgcSG03CM@dragon>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rnx8kpEK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0750C116B1;
+	Mon,  1 Jul 2024 14:52:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719845533;
+	bh=5vB6rfS074k8h9NxKGPuRUpIHxHySANWovl75hV6ARg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Rnx8kpEK9JIDaxDHJudBcA0pbTOMeDB0ZuXyJYOJouuOP3Nl3kCNW9X5mJBieA+4k
+	 QSP6e3hN3/yZ/dM7XMRHRVKW/ugmtouL9wriUBK6BR5naVN+dmLnrrR66dlv2OTeRn
+	 tqFks+N0Mned2AzZCWhexR8hwPHqyd6ya6IYCFe2pycWlE0Pw/9v/GLrWnLeYhxc+I
+	 SodrOrPvwY3u15H19yBwJcIcapgQl+VHxeXBLvjuJXiIPsanR7xXcvXTL4EkvCMYCV
+	 SXB3o3VtmpLIJWFVIaLUkZhaxf0OoRyDWuz1Syg/pc2/QuNbIxaFcxU1CH6sUd2ihi
+	 Hd9Hs4ivYcZow==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, Kuldeep Singh <kuldeep.singh@nxp.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+In-Reply-To: <20240624-ls_qspi-v4-0-3d1c6f5005bf@nxp.com>
+References: <20240624-ls_qspi-v4-0-3d1c6f5005bf@nxp.com>
+Subject: Re: (subset) [PATCH v4 0/3] spi: fsl-dspi: Convert to yaml format
+ and use common SPI property
+Message-Id: <171984553050.67981.12522537296340689285.b4-ty@kernel.org>
+Date: Mon, 01 Jul 2024 15:52:10 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zn0R2/lcgcSG03CM@dragon>
-X-CM-TRANSID:M88vCgD3vwxavIJmPmcCAA--.6190S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur4DWFykKr4fKF4DuryxGrg_yoW3GFb_uw
-	4aqF1kCw1UJw4fG3sYy3ZF9rWUKr92yr98Wry7Ww1qqr17Z3W0yF9Yqr4ruryktFWSvF4D
-	JF4Yqw4xJr45GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0zT5JUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRwPZWZv-dtTeAAAs7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 
-On Thu, Jun 27, 2024 at 03:16:43PM +0800, Shawn Guo wrote:
-> On Fri, Jun 14, 2024 at 11:06:24AM -0400, Frank Li wrote:
-> > Frank Li (9):
-> >       arm64: dts: imx8: add basic lvds0 and lvds1 subsystem
-> >       arm64: dts: imx8qm: add lvds subsystem
-> >       arm64: dts: imx8: add basic mipi subsystem
-> >       arm64: dts: imx8qm: add mipi subsystem
-> >       arm64: dts: imx8qm-mek: add cm4 remote-proc and related memory region
-> >       arm64: dts: imx8qm-mek: add pwm and i2c in lvds subsystem
-> >       arm64: dts: imx8qm-mek: add i2c in mipi[0,1] subsystem
-> >       arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
-> >       arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes
+On Mon, 24 Jun 2024 14:55:26 -0400, Frank Li wrote:
+> Convert fsl-dspi binding to to yaml format.
+> Using common SPI property spi-cs-setup-delay-ns and spi-cs-hold-delay-ns.
+> Update driver and ls1043 dts file.
 > 
-> Applied all, thanks!
+> To: Vladimir Oltean <olteanv@gmail.com>
+> To: Mark Brown <broonie@kernel.org>
+> To: Rob Herring <robh@kernel.org>
+> To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> To: Conor Dooley <conor+dt@kernel.org>
+> To: Shawn Guo <shawnguo@kernel.org>
+> Cc: linux-spi@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: imx@lists.linux.dev
+> Cc: olteanv@gmail.com
+> 
+> [...]
 
-Dropped the series due to the warnings reported by kernel test robot.
+Applied to
 
-Shawn
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/3] spi: fsl-dspi: use common proptery 'spi-cs-setup(hold)-delay-ns'
+      commit: 52e78777b6bfd4bc47448791a99d5f97c82ff81c
+[2/3] spi: dt-bindings: fsl-dspi: Convert to yaml format
+      commit: 94f19d076218a193d170da6d5ab2a87c080cc69c
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
