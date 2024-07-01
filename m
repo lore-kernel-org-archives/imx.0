@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C786C16D31E;
-	Mon,  1 Jul 2024 17:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCA616D4F0;
+	Mon,  1 Jul 2024 17:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719854857; cv=none; b=Nb5LkQ6vUT0e+JOOh2Ui+CBeqYlf6jnnV5sEfmDV237F5H4IyelEf4EVwc2Zq9IJH8igiFdmMdSka3Re17qJRanMAjGbP0jRvAUNfxw4B6Gw4bHSfI01lkSdsWgDFJ2atzPGw4jpmdWtqXKW9AYRNoy8VJ8SQ3fFkxAvsrGtRIE=
+	t=1719856468; cv=none; b=qNiWJ7hg6ts4cN00rbeE41y06xliRSibw3e4gx3wHoXRzOp8Sz8KOfIlgHTuJnCaJGhdXTHMI3vmBnU1ZHRbmDU0PFYUvVF7hfsc4f+f8uuzDFfWeffdes2YsP1PaO5lIsfyPvN75V50OrCLqwm3UtebZSf5zO1uqz0XnGU5HSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719854857; c=relaxed/simple;
-	bh=WhySC+CWoDzq2eZaqyGSWY4XkTyZrFTCeeNH2YSu8oE=;
+	s=arc-20240116; t=1719856468; c=relaxed/simple;
+	bh=2M79EKuCi3pO/TN3rGqmddy5hzrxk2H0nREOY8R3wis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y5Kq8O05b/rmYLMnAfB8S/ReJ5QHVSlY7NEo2DDfShOxE6rH/0LP4gEHGbYI0V+X19ojVtndmp3sauvoxD2vHoXoOizs/LNEEWFPLHxLXa55Qs8MqtNU3vD/q6iDzfWTGHJNU/hOo5ZtD8z4XWHokS/lbev34O4nwFh/XQm6Cy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gOuUFE2I; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ifiiC+1l1DIqv1VtjGBBSF+xEw1boMO+pzJyEyilJOwEdosBAsjCoztkk4nb6Zmv6RmsYY8rcxl4HPDL4tIsADvHl1LWO0DTrAW1C44HirmNhW8ynKR/9pMG0oK679GsDso8tlKGeMDlpkxD7S1zbOcTpl83ccQ75HpVVXDoDko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwy/Cwe5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gOuUFE2I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24720C116B1;
-	Mon,  1 Jul 2024 17:27:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwy/Cwe5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6F7C32781;
+	Mon,  1 Jul 2024 17:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719854857;
-	bh=WhySC+CWoDzq2eZaqyGSWY4XkTyZrFTCeeNH2YSu8oE=;
+	s=k20201202; t=1719856468;
+	bh=2M79EKuCi3pO/TN3rGqmddy5hzrxk2H0nREOY8R3wis=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gOuUFE2IosfkrW4xYzcTId5L674CpOxtkB9KTj6mobFD08Co1NjyO9m8BpOT3gmFI
-	 X8EfygDahr0JkavhfcR8UafMgCxljoUctyHsV7ECFnUiM3m2gXCTdVp0LleybtEekA
-	 Af2Q2Q8pky/pEU2/LWLp1O6qb4bB+r0vzTCGaJK95Iwqq4a4Tyg5UPpdrbt5Xkizbp
-	 Hl3Ky2tzi7YVMSlbz25kuaQM4ecn4Xe9izWRl3YLyMopiOPqaD6ybAcUKOrHrG9K4P
-	 qy0paVhHPEyzP+l/yNWckCdpva3kDk9Tk3FuMex0SI/zqgfjgJ+ci0q8YXehtnEXHr
-	 PInpNJN/u7E7w==
-Date: Mon, 1 Jul 2024 11:27:36 -0600
+	b=pwy/Cwe5KbiPM9h1yGqBlTc2YpppR7qVimWVUnxV3WmFk1DNjr20g0uvIj5pC7ggC
+	 OQh2bbvJ7gOU2+CeZa9soDbc46Tb4F1v1koNxz44dMGHMLC+GmxNHypm0PD1nZNbwY
+	 ec8vV5qgFP06jGv11FlsXlt9q5NNZF/uEXUzljA1HMYfsSxS+47knqLQK0q00Ej8pr
+	 SNujCT/lxPqsRsC4Jtih4PJxqoCfZDyLC4hJLt17V0KYwe9Wchw6B/FJvJ+Qs7p4Gm
+	 e4/o3362FO6TjIIGqgVvMgU4sULmuqztP3lacmDHK2NomsM5NqPr3y//MgQdqxDDk/
+	 +5r8BO8fV8aVA==
+Date: Mon, 1 Jul 2024 11:54:27 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	Sean Anderson <sean.anderson@seco.com>, netdev@vger.kernel.org,
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Richard Cochran <richardcochran@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH 2/2] dt-bindings: net: fsl,fman: add ptimer-handle
- property
-Message-ID: <171985485502.144984.15918205840917891186.robh@kernel.org>
-References: <20240628213711.3114790-1-Frank.Li@nxp.com>
- <20240628213711.3114790-2-Frank.Li@nxp.com>
+	Eric Dumazet <edumazet@google.com>, linux-can@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>, imx@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: can: fsl,flexcan: add common
+ 'can-transceiver' for fsl,flexcan
+Message-ID: <171985646700.176465.4816542361707440956.robh@kernel.org>
+References: <20240629021754.3583641-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,17 +51,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240628213711.3114790-2-Frank.Li@nxp.com>
+In-Reply-To: <20240629021754.3583641-1-Frank.Li@nxp.com>
 
 
-On Fri, 28 Jun 2024 17:37:11 -0400, Frank Li wrote:
-> Add ptimer-handle property to link to ptp-timer node handle.
+On Fri, 28 Jun 2024 22:17:54 -0400, Frank Li wrote:
+> Add common 'can-transceiver' children node for fsl,flexcan.
+> 
 > Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: fman@1a00000: 'ptimer-handle' do not match any of the regexes: '^ethernet@[a-f0-9]+$', '^mdio@[a-f0-9]+$', '^muram@[a-f0-9]+$', '^phc@[a-f0-9]+$', '^port@[a-f0-9]+$', 'pinctrl-[0-9]+'
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: can@2180000: 'can-transceiver' does not match any of the regexes: 'pinctrl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/net/can/fsl,flexcan.yaml#
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  Documentation/devicetree/bindings/net/fsl,fman.yaml | 4 ++++
+> Change from v1 to v2
+> - rework commit message and add fix CHECK_DTBS warning
+> - Add unevaluatedProperties: false
+> ---
+>  Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml | 4 ++++
 >  1 file changed, 4 insertions(+)
 > 
 
