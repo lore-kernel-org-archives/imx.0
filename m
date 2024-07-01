@@ -1,140 +1,145 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0974082485
-	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 20:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B57F16DEC0
+	for <imx@lists.linux.dev>; Mon,  1 Jul 2024 20:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719866738; cv=none; b=KQhozdTwfBa1jS1a9lTXYr/2P+o+JAHXpy3bHNOXnBV6u9qXDagXKnV5L3kWZmhJF2jE2YfVipWR1eBh0xRs5oXELq4EeqnQBp6gPojHHBGtw82d7+02YUvVuyZfyko32Wbf28+I9HVng7WotLUOcRX+MuHqZjNnHfUFo0cJlHE=
+	t=1719867312; cv=none; b=GrXPuLSU5JcYBAb+ocREw8AGmPLG6yVW2LWMj3vLF65mbetFp53VVWeq4pXDJX7SH4TDkhmJIU7uxQNF7c1XZe4xRimsC34RAV03Fl6fIQwnhkApK3wWk1YVDhuvdzRSO+EZ6rMdo9fz9EuR4DnEdI7TQzqKSewkJjc/7Ru1hXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719866738; c=relaxed/simple;
-	bh=QZySv70Ao8F90chExN804qXvzZ2AC8LdFY40TUG2sU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iqLZsiF/cc82J8ynFs+sOomPihDQdgPNOrC7Hdll0AyPZRS4HriwviB2RKvVIkv+SSphoUjfheIXpkQGC+qE3fI843Ay06sP4tPuqSNi82qQVrnWCMhkuUO8iTNdNi9OvvUN1Gtx2NsiuPmcuxeL6nvybCwvo36bm/IFsd8ry5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FebmPetz; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1719867312; c=relaxed/simple;
+	bh=kX7MZxVENfv94wL+QrYqkcNlABVfQrdyPkrHiDgyWjg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bO/OMseRcilm4RDtcMvXvbd1kZ7qmp+aO8FsL6n8UbdWC83o1Z4FtF+z3AKKLry+4fkEtCAVzb/KL8hzm//qKazGtHsy73RjPWGZFSHUyjlHH+zaMjdqmEMuXgA1C4wdGMt4Dp1Jlh5PW/XMyeM8ei/PuFKQ5sQndoB1Fm2YgHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TTXz+SaW; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FebmPetz"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a72510ebc3fso514087566b.2
-        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 13:45:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TTXz+SaW"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7068ca5a807so198165b3a.3
+        for <imx@lists.linux.dev>; Mon, 01 Jul 2024 13:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719866733; x=1720471533; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QA3rQcJ2PGuabVUic3t7CU8jEmUAM+rP5I8eyjHvpt8=;
-        b=FebmPetzeX35+dGpnbUBl1Yhxx2LOpzivaw3uReRItLKbstihB061WW7Sqrelmf2jE
-         DQF1zmuq9gqSO9764QnlwsWF+WM/fMVSQsgPL61gTxDazaEL4U3I3ugqWSJEDanbcu5d
-         IddAxDonrS3s7p6X4S/IRjo++tuYOtg+V/v2Z5CAwfT5VVyWGvh6smXsN3eG9OWBTtLT
-         WvHzq4YTQauh/IMm2kJRpAeNJRg7RbZMzlhu126LMF41hFUkNkL/1LHk/+8ST4eVM0DG
-         dDERRrijpj/BV+Jam53BqV1q1BiFcrqrfy4IaemT6m2yf+RotDARRmgCzxSZIHptqnN5
-         QqBA==
+        d=gmail.com; s=20230601; t=1719867311; x=1720472111; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YkUjNOfBhiaGxWDuumc0E1As2Jd8Umf0Y+lF31dLNhY=;
+        b=TTXz+SaW8PInPh/zC8sYwdOo6quAKLM+uGD/hMoQxrbSy1SZTRauKLU7TiBrEJLHDt
+         3/BfceVB7SDe2rsm25ZZi1WzdvKsW4qUE1yScLVHxbLgnRitCswr7XhhO53KPY/kW16M
+         aOq9B9+vDTVEAStncKKgflW2W8mxQaPzMPxZcUpls3vzjLQZ0CByaLlZVtOv7Eifsb9p
+         OF8lMF1G5NCLXhjXJdzJ+pbEIFU42tf0g4nzG4+kRcjmS8tkulHmHrc9EWBfv0uObI9O
+         2krqHu9gz+ZXIyd34WCTDyAV8oD+CMKz3QTtmppbVhz2c13zue+r/CTKzCucvmVkhyid
+         dkwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719866733; x=1720471533;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QA3rQcJ2PGuabVUic3t7CU8jEmUAM+rP5I8eyjHvpt8=;
-        b=ubFyqdMxBOly/VbjO3eEqUgEW0TugfTJE05Ah8M5UpXqSCFwBAnaGfK15+16NGdp5Q
-         LSJRPwC+sBZmCYKJ13SoOG2OIMjmkI1IirJ8jbY9bXnatxVXb8ZtXcSC0s+LvWmsfm/R
-         BxV6WTGGt2vuWfxTDc1p9sXu2Wi8kG0xQLj1KvFYXoOE9V/u00LjYcECNvlqUIkdZkgA
-         7ar6+8pYCXc4ggzY8+83YY9OrvGJK3HAbV8RrJtehfQ8JxxTZ4Z2ZqQsIEwNyUHtfXMM
-         dM7buovbXpztijqwc5xPgYKF0Oa6ZsoNwrnRNLIkdcSvJOvjWDH/Eh6QhDbMqi4R36oE
-         KYUg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1QNwtvAgIKOcQqgbd09afK+moRBk1JKQIe53bwsouPFiw3fRQIYULZdc3dXDa1BsU5l+eDlVYKPChyrnXLYgi/ts1
-X-Gm-Message-State: AOJu0YzDjsyjWucmfQ6xa6bYa8nynmw1/9HexvIldL1Th16LZr7M813p
-	8+ysK/aPKXZdAo1PsSVqWjnZMOpEAu85xm126myyW/qwNamBvjPZiU+5vIUXZZo=
-X-Google-Smtp-Source: AGHT+IFCEPxpqCTJF1ih21dkFS8hIegUWvXYCQ0ZLHtxp1c8x9erK5AfAGL5mmlQSXKipx7/97DM0Q==
-X-Received: by 2002:a17:906:190b:b0:a6f:4e1f:e60b with SMTP id a640c23a62f3a-a7514474201mr402020966b.36.1719866733208;
-        Mon, 01 Jul 2024 13:45:33 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab08ce96sm359017866b.154.2024.07.01.13.45.32
+        d=1e100.net; s=20230601; t=1719867311; x=1720472111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YkUjNOfBhiaGxWDuumc0E1As2Jd8Umf0Y+lF31dLNhY=;
+        b=UJa6YGjc4BIddyALPNgpgfzItpNE+UbshtRl9xpJu466hP2BSW5fl58a2cJWBUi8Le
+         y0Nxw0ixIva3R0lfBqVBivaPWdNkydoT25ep0qy+5zDpZRVhGP1XpGVZVhM47ve8YeTx
+         I3IX+vKEM6yncUb48WwfoCy8ye144RQzGTIFlYTOad5m+49VlPEosPCjYm7nLPi/4cff
+         I8Yc1Jih1r4+FH6kk33WZnUs2mYTquA+nfQejJ6uReaMnj7TycyYPZvZhmPqhxJY+EN0
+         RvccN4ulRDtBtAaTs0Ap30Ex2Tt0XhU+G+AwPdGU4ugl+ZykBgz4/NAEyj0UByWkw2d8
+         9NxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcTefIc0A6onxbB6DNSEXOwscIGuZBOkjglENoBF5cykmgtylAkPVlsYWEw68G7cQnOT9N/1PujuIoHvHC0FQbq8dg
+X-Gm-Message-State: AOJu0YyVckTUd/tKudFQJ88W232TZEW8KlklY0OMFGQP0wm/BtOIIugl
+	/kabpjID0tpoFgkpUWvDL0D39rhZHb3Z8YzUffDTHAi6WXJStA2AxAMN+w==
+X-Google-Smtp-Source: AGHT+IFDcv7a0RpmKggtPswqll4BHilpwu061zFF6Nvcx+6O0kyHDJWFCgbtdFGQn1biI87o+bNFHA==
+X-Received: by 2002:a05:6a21:9997:b0:1bd:289f:2ccb with SMTP id adf61e73a8af0-1bef62c978amr10181144637.6.1719867310817;
+        Mon, 01 Jul 2024 13:55:10 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:27dc:3453:bfb9:bce5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70804989f5asm6994602b3a.195.2024.07.01.13.55.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jul 2024 13:45:32 -0700 (PDT)
-Date: Mon, 1 Jul 2024 22:45:31 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pwm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-Subject: Re: [PATCH] pwm: imx-tpm: Enable pinctrl setting for sleep state
-Message-ID: <ewrvieusxer74yi7dlp55sfgy4n7u3o56ytrfqijkurapy77wi@f4hgxlamr2cx>
-References: <20240514200534.73847-1-shenwei.wang@nxp.com>
+        Mon, 01 Jul 2024 13:55:10 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: shawnguo@kernel.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@denx.de>
+Subject: [PATCH] arm64: dts: imx8mp: Remove 'snps,rx-sched-sp'
+Date: Mon,  1 Jul 2024 17:54:58 -0300
+Message-Id: <20240701205458.164053-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="omyqdy4rsqphw56l"
-Content-Disposition: inline
-In-Reply-To: <20240514200534.73847-1-shenwei.wang@nxp.com>
+Content-Transfer-Encoding: 8bit
 
+From: Fabio Estevam <festevam@denx.de>
 
---omyqdy4rsqphw56l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+According to nxp,dwmac-imx.yaml, 'snps,rx-sched-sp' is not a valid
+property.
 
-Hello,
+Remove it from the imx8mp board devicetree files to avoid
+dt-schema warnings:
 
-On Tue, May 14, 2024 at 03:05:34PM -0500, Shenwei Wang wrote:
-> Apply the pinctrl setting of sleep state when system enters
-> suspend state.
-> Restore to the default pinctrl setting when system resumes.
->=20
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  drivers/pwm/pwm-imx-tpm.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-> index c50ddbac43c8..19245790c67c 100644
-> --- a/drivers/pwm/pwm-imx-tpm.c
-> +++ b/drivers/pwm/pwm-imx-tpm.c
-> @@ -393,7 +393,7 @@ static int pwm_imx_tpm_suspend(struct device *dev)
-> =20
->  	clk_disable_unprepare(tpm->clk);
-> =20
-> -	return 0;
-> +	return pinctrl_pm_select_sleep_state(dev);
->  }
-> =20
->  static int pwm_imx_tpm_resume(struct device *dev)
-> @@ -401,6 +401,10 @@ static int pwm_imx_tpm_resume(struct device *dev)
->  	struct imx_tpm_pwm_chip *tpm =3D dev_get_drvdata(dev);
->  	int ret =3D 0;
-> =20
-> +	ret =3D pinctrl_pm_select_default_state(dev);
-> +	if (ret)
-> +		return ret;
-> +
->  	ret =3D clk_prepare_enable(tpm->clk);
->  	if (ret)
->  		dev_err(dev, "failed to prepare or enable clock: %d\n", ret);
+... 'snps,tx-sched-sp' does not match any of the regexes
 
-If .resume() failed (consider clk_prepare_enable() failing), and
-the resume is retried later: Is there an unexpected (though maybe
-harmless) imbalance because pinctrl_pm_select_default_state() isn't
-undone in .resume()'s error path?
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi | 2 --
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts         | 1 -
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi     | 2 --
+ 3 files changed, 5 deletions(-)
 
-Best regards
-Uwe
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+index 8be251b69378..15f7ab58db36 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+@@ -71,7 +71,6 @@ ethphy0: ethernet-phy@3 {
+ 
+ 	mtl_rx_setup: rx-queues-config {
+ 		snps,rx-queues-to-use = <5>;
+-		snps,rx-sched-sp;
+ 
+ 		queue0 {
+ 			snps,dcb-algorithm;
+@@ -106,7 +105,6 @@ queue4 {
+ 
+ 	mtl_tx_setup: tx-queues-config {
+ 		snps,tx-queues-to-use = <5>;
+-		snps,tx-sched-sp;
+ 
+ 		queue0 {
+ 			snps,dcb-algorithm;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+index c2c708c492c0..35e0ed23bbdb 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+@@ -294,7 +294,6 @@ ethphy0: ethernet-phy@1 {
+ 
+ 	mtl_tx_setup: tx-queues-config {
+ 		snps,tx-queues-to-use = <5>;
+-		snps,tx-sched-sp;
+ 
+ 		queue0 {
+ 			snps,dcb-algorithm;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+index c96e74684e03..d23a3942174d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+@@ -241,7 +241,6 @@ ethphy0: ethernet-phy@7 {
+ 
+ 	mtl_rx_setup: rx-queues-config {
+ 		snps,rx-queues-to-use = <5>;
+-		snps,rx-sched-sp;
+ 
+ 		queue0 {
+ 			snps,dcb-algorithm;
+@@ -276,7 +275,6 @@ queue4 {
+ 
+ 	mtl_tx_setup: tx-queues-config {
+ 		snps,tx-queues-to-use = <5>;
+-		snps,tx-sched-sp;
+ 
+ 		queue0 {
+ 			snps,dcb-algorithm;
+-- 
+2.34.1
 
---omyqdy4rsqphw56l
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmaDFWkACgkQj4D7WH0S
-/k50jQgAnXkVLOJ88QBZ9v4dnYEkZbYVa0Bu71kfnE9wNjh0HIp8PRY3l7Bv2yfm
-0PPGnlE2bGBPK2bk47/Eax5bb62aJI289VRFiUwJKC6KnwnRcnxhxNvJKIp+LrTH
-H08Abx12NlJIPdIT4fQX1N/t73bjTgVqiF2nTJVYdz12+zcLK7Hg3RtGfoIL3Nhn
-mD14IrTQCfdCi7redh8L/joCMnQNrYPIV2wp73+fKV2vZlNvdVLPzl+XYmXfYnVh
-yqwJgxcPEFBFcOGAv+qDctn4cScX0axDL+4MvGVC+2qorOrDuFw823DICchazexe
-UiYNeKCqEmoHWUiHdCsckBeheH4MJg==
-=LYsK
------END PGP SIGNATURE-----
-
---omyqdy4rsqphw56l--
