@@ -1,103 +1,110 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A56150987
-	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 08:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C451514E0
+	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 09:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719910637; cv=none; b=B50AG0wsjduIkV+fT+7zNuG/x5M7l2HC1ZuiQaByjAoSikkAqEC/6voubNdsw4UzvBlCbwR1sDRgXWlc5CfDAkoKw77rmmCY0N0HPX9mRcPXO8I5CVsicaCbFcSfUtGZDfXTJyDPwCWYtyAK3giGEApo3hGOiMTRYW4/efNrX6o=
+	t=1719911804; cv=none; b=i9OJy+vrGKUW8nHOJ+zHBFkBD5TWKnArz834IZjsWfz56YObzGIWB5Jfg1NhByZAF57XseadL4D+GxYmJrbdqn80u0OiN5UIQMAQAUjxJ4WlPA7+cjIJSkGK+tBNpUxTx1OqtADFOb0HTgpLOwShx5/HGSk4mmmetibsVYjKaIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719910637; c=relaxed/simple;
-	bh=lQNWMHSAHhi1B2REf6bXB44AOtjzCQUTtwwc1XnHiu4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fx4n/SxE4dNR43gNEqgZ490EBdHwwT7qoUXy2bDyHTwDcFg7N/14ftSVleo1c7gsuj7R3v8S1/yxpUchfZlVrjRtMKUkIho0O65jJiZ8udE3nfGx3jYzqSWQ1MkQGJwjo7Ao6OVmnAJ7fLcvRSivI+NE4STG4KhFTfY1hVcgQB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=mJvDgJXM; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="mJvDgJXM"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ebe40673e8so46104361fa.3
-        for <imx@lists.linux.dev>; Tue, 02 Jul 2024 01:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1719910634; x=1720515434; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lQNWMHSAHhi1B2REf6bXB44AOtjzCQUTtwwc1XnHiu4=;
-        b=mJvDgJXM6p943Kdr0TU8PTruEywvmV7u0f9qMkF1Wx5So1MJgd3Z59fxl8m/7y7g14
-         4uu3iigp8JjS1gqdL5fNzzzn38Fbg4o4NQFhinxYpE2FlxnwzOw3T93I7T+F/UEtFdsR
-         x1c5zz31EEe2/u2+SYg9gFMQzpZIoskLh8echghd2Qkam057J7++cTmZ3VExX5s8iBGQ
-         i8zjuyfp71/mvqQZWRkjw6WyBecIZ1vBd7JVk7DRz/15NUPb8KOfqqJFe+rt4VseaztT
-         hkNFU58mbxfjQKWR2YWEFPPndMqF17in1ZlDK3rGI2+Fz8h7boz7sa1AnkkKm6jpolq8
-         jgpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719910634; x=1720515434;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lQNWMHSAHhi1B2REf6bXB44AOtjzCQUTtwwc1XnHiu4=;
-        b=tgZkCLaQARzGZ48dQCv0PZDnYdsYpHjZdfWB9mMAsST8ArE+wE9kpbPWSbxEfqY7Jl
-         8yMCnLrSRHsPJ1kKrB+GtRfEceKOkTZf2eGwUN+V4LsL8eUzEc/MFfNaHrM6VV3ZKMlf
-         wn/7icW3kdZQn43qAlt8RLvjKuyLcWIIl3c50zdp2E96LLthlth4HlsqKIgZag2xfc7w
-         crfRjg5WQ+siv5RW04nWLXB0/YvpfjdupQjwPa4LDFHGt148FF2u9qPcokT1AsvnLqcy
-         H4gnBcW2MWF+Cskewajr2GQZrFtrz/XIgos9bX2ezQjpO23OvI1gO9BYVd4jniZ+myog
-         t3Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOHpc+7fqC1WOXdG7AL1o5iQQrxuVrofEBncGyOQxcVdvO8fu9k2JZJlDbXtyoQtkAqqoFJ9QjUBKdAMLPeGJF3cM6
-X-Gm-Message-State: AOJu0YxcxctUUhlPZg+wX0xoizus+1abppFyWIBLJRz5pmuVxn2swWOd
-	gKfWPtcm3Apzk0p9NgTlNz+BYIDJd7qA5JGFiNPSjdiEh1hKGLQWJ4KVekmvS979D5jCvmVFT7M
-	W7TqBF3OjbchaQTFwwli/3ynPHKDfxmD68fw9yg==
-X-Google-Smtp-Source: AGHT+IHo5eEIsVu44pGpnRevjVwA1ZpOtmw6Mmmn4Q+VHOJCxnzpE8v3YnPOHaBgvtoU17z7s4obBrZVrOf9sLuZILM=
-X-Received: by 2002:a2e:bc06:0:b0:2ec:1dfc:45bf with SMTP id
- 38308e7fff4ca-2ee5e6ba584mr55892571fa.42.1719910633934; Tue, 02 Jul 2024
- 01:57:13 -0700 (PDT)
+	s=arc-20240116; t=1719911804; c=relaxed/simple;
+	bh=4WZAZtnHKSDJYQ5TKJuVTZiOFTMVNAPKVK4zImRkS5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A7g9ovMzeQqC+t2MaFIey1/3iK27ybwNRRVxXRsrAI0nSGqZMMsegKd5jFkUabXQFvd6eT90s9OjUY6aW3pF++n9SGSXeEh4EwNRO3JoiToP4Ig/3D3UNlmVgaeOCfsiEhRSbVkrk28h5Rzowi4v9xHWgWIrLucbDEOahsGBjT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sOZba-0004QR-Dq; Tue, 02 Jul 2024 11:15:18 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sOZbW-006ZmA-Rx; Tue, 02 Jul 2024 11:15:14 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1sOZbW-00AOUX-2L;
+	Tue, 02 Jul 2024 11:15:14 +0200
+Date: Tue, 2 Jul 2024 11:15:14 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Russell King <linux@armlinux.org.uk>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 9/9] eeprom: at24: remove deprecated Kconfig symbol
+Message-ID: <20240702091514.jjdahaseml6fpnrz@pengutronix.de>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+ <20240701-b4-v6-10-topic-usbc-tcpci-v1-9-3fd5f4a193cc@pengutronix.de>
+ <CAMRc=McP=K0jSD56JdCR9DPJmJN39Z74mjAo0qX2mEnTBN1GAA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
- <20240701-b4-v6-10-topic-usbc-tcpci-v1-9-3fd5f4a193cc@pengutronix.de>
-In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-9-3fd5f4a193cc@pengutronix.de>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Jul 2024 10:57:02 +0200
-Message-ID: <CAMRc=McP=K0jSD56JdCR9DPJmJN39Z74mjAo0qX2mEnTBN1GAA@mail.gmail.com>
-Subject: Re: [PATCH 9/9] eeprom: at24: remove deprecated Kconfig symbol
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Russell King <linux@armlinux.org.uk>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Tony Lindgren <tony@atomide.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, 
-	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=McP=K0jSD56JdCR9DPJmJN39Z74mjAo0qX2mEnTBN1GAA@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Jul 1, 2024 at 3:54=E2=80=AFPM Marco Felsch <m.felsch@pengutronix.d=
-e> wrote:
->
-> All kernel users are shifted to the new MTD_EEPROM_AT24 Kconfig symbol
-> so we can drop the old one.
->
+Hi,
 
-Nope, with this series arm64 still selects the old symbol.
+On 24-07-02, Bartosz Golaszewski wrote:
+> On Mon, Jul 1, 2024 at 3:54 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >
+> > All kernel users are shifted to the new MTD_EEPROM_AT24 Kconfig symbol
+> > so we can drop the old one.
+> >
+> 
+> Nope, with this series arm64 still selects the old symbol.
 
-Bart
+sry. I must have forgotten to add the arm64 hunk :/ I also noticed one
+powerpc config which still select the old symbol. I will fix this in v2.
+
+Thank you,
+  Marco
+
+> 
+> Bart
+> 
