@@ -1,147 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2052.outbound.protection.outlook.com [40.107.249.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A459A1E50F;
-	Tue,  2 Jul 2024 14:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719930867; cv=none; b=B2DGg+mkBkgfRWtwT/rOfL+23KQbOpma86bOszuAkwmNT5AH8XEW0dsffna5GzbmIg2yN0tZLyrnJZFBhgH0kXFfcwDoHpvcbHuuViLA4gjleiWboNeuSJYWzqCEVQLDUgpR0Q7sqbXheW6Hf5NPwDrT1hHdze1gfldysZvNT8g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719930867; c=relaxed/simple;
-	bh=98l+a3pWB42qJAPZ0GCAZ++B7ulUfPolVvoVx0ArV80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qit8F30uoJg2MF60bi3eSI9lPFVpNP2tHV11eRSOiUCG94fiIs3ZRLW2tmluX5k0yS0Q+eFpEWPjwfmMVkoPxH63YirAIvHAIybeYaAr0ob4G6sLHwaaLf/XK41oOzZjg89D/dXkecZlIK7YsnqSpL/qUfAZURP4Q8QhTrgjIE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0rEUcXO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65051BBBFB
+	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 15:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719934644; cv=fail; b=CdilGmn3NQcxK/Ouk2LLLQKseiq3r2vFGu8iIZ1Y7Tp5Icnaj1OBrU8xtVYWQnDVw/0/CTZsJlXPKt7HpjqoAwruGbOXkFWYaQscyMXxxFlCsU/fkldRqr9f/Po3PhieEUrrqVkTB2NUrJFq68HhXyuKDhi2XsP8GBdJdZuwRtM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719934644; c=relaxed/simple;
+	bh=TacrWxbI3B3P3vnjvvK0eAQtGLix/nOMQNx0ZHYXKac=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=IMFVyDAFFMc+VaqkDnIlAxpxlh/Y4U6FWzH4YnuRAD5gHwUO77dNXmCNTkHGauzPDRtfQeCqIM/VARB2VxtxsuuCED3BIx21IVVYXN2Ul/KEuFL/Nv7OEAWxwM2BRRtNrWS7hFxlCgfDAzsVt+xoUH1gjkdgvAfuxB3hUTPcQuU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=nIxCWrUy; arc=fail smtp.client-ip=40.107.249.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0rEUcXO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0D1C116B1;
-	Tue,  2 Jul 2024 14:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719930867;
-	bh=98l+a3pWB42qJAPZ0GCAZ++B7ulUfPolVvoVx0ArV80=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u0rEUcXOsmoKrUeeA1jklOR1g18AnF0Flxfk/JNfZrjZqFZs0wqyXic4zXwXwSGdj
-	 aLsOouz97xRzytjtZK2aq10SqTea7EC19f/UFenwnER62QLyQ6Lcj6yWGfHLN2AbNG
-	 Hg+15ZtFlABzxtZ2uNC3Gni4U+sPwMMrT0t0Xb9CTTA8wHTk8+nS5pPm9BMfqNnK8S
-	 BpoxZ8ZYdvrIHqwSMXp+L00o9v1Lps4Wu1Nqgg5yFxjX09CTCMdCgxemgE797kH2/b
-	 eLr0VOBUH/xaIpNk0zQetIDIfIJly0q2Dvnl0sHjtWFEjUn2t5bms0jug9msMi6A7N
-	 lZZiwIZkpMCRw==
-Date: Tue, 2 Jul 2024 16:34:24 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, 
-	Marco Felsch <m.felsch@pengutronix.de>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Gregory Clement <gregory.clement@bootlin.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org, openbmc@lists.ozlabs.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, loongarch@lists.linux.dev
-Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
-Message-ID: <20240702-mighty-brilliant-eel-b0d9fa@houat>
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
- <20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
- <07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
- <mafs0ikxnykpr.fsf@kernel.org>
- <20240702-congenial-vigilant-boar-aeae44@houat>
- <mafs0ed8byj5z.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="nIxCWrUy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YZ4OyaZ8XKXCk2QJ+SShWxBUE/rXQ3gz7ch4K7/FpXwenU/ejkuqeJP2Lxq3VG+TIz7HlmYUfLNH1wvYubydZUJ3ETwAZHZAW3yw4Ho2aFCUKrxOeIu2BHeXyvDOHuEsIaLGJyrE9p+ol8+MRNmivmjuLJTh0sMTpNMIS9ZBX2bT/i04LX6SNGxoaCIW/KE53qGc/B01KjgeHmO6iJuVJFB/R/mr7o6Cw+yscyTZDHvnWgVST1hR6U5RCAp5ezUwkBTpZ5/W2UV7bYvouvZfMTxO7dtDjmqORJmbb0sxBt2Z1TRZqyFnLIUJakJaOJgDnOlDWje86X2IOOl6btqVLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zz19bP4AKUCCv0Y+VhNIKjER2f2QHY3lZ1550breOZc=;
+ b=NWbTVRUoUrjEEndJLxRy/sCTT54AOfWRn8lGv81izwKe2L2Ysi6ZPd2ryIdxxSyhbzpCKRxDsG+rlwF0I1gEQ+CD9G3m6xj4ZROFzOXrroxsW+0cr7P5ZwSN1cr/dnkCMc0YcL7EBpdpLJNKKe2MyxAY1eZ7TxDx845kvy0pKU+RfZyR+cOg+1J12H3ubChiwTI+BlfBvKEZ8YpzONYMWGvrkK3hg0hNqqPig5sfORZZjDzxPbThtJDAqvEhXeBzFx/cWinMm5MhMHmu2pWkB+jKtVOIel2gOHkSSa3h+fTVsvzJYjdEnzXC+Mtw7aO7pu3ra+MuDdpUdkE6RjMFww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zz19bP4AKUCCv0Y+VhNIKjER2f2QHY3lZ1550breOZc=;
+ b=nIxCWrUyIAl+Px+s6mZpIcXwI5aEsfwemNAe3A2aEYYHlTzQfPmwk4swRKhn2Ns83QfcUG0UTsQfUONJUpx38T6jNHKzDWanyhvzR4lcQPGyc4KpW28AY3epYmt+CqA7PMJMqhjbwF4/C9hnTC5FNOmZ1AD9oe908l7hDu3hBP8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.28; Tue, 2 Jul
+ 2024 15:37:19 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.029; Tue, 2 Jul 2024
+ 15:37:19 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Will Deacon <will@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR GENERIC OF HOSTS),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR GENERIC OF HOSTS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: PCI: host-generic-pci: Increase maxItems to 8 of ranges
+Date: Tue,  2 Jul 2024 11:37:02 -0400
+Message-Id: <20240702153702.3827386-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ2PR07CA0002.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gypj655hqo5gwvn3"
-Content-Disposition: inline
-In-Reply-To: <mafs0ed8byj5z.fsf@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8179:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f0f84a1-1b2e-43a9-26b3-08dc9aacdb94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?em79OnpPAvg+ZZ5hZidiasTDnUsMKFEXg2966WawN1C9WYqxK0yMsIY1BvNt?=
+ =?us-ascii?Q?bp3a4AyFEQwFDT09UgK6tkK/9IusXhLOIOwvkx16aULdPbTPAEfL6QiQHxCV?=
+ =?us-ascii?Q?rqfYq/XmsXXAFpKR7GwMMtGU/szZWj9GQ+AcnFZc30PEuyRvD2cDWPbjFY3e?=
+ =?us-ascii?Q?tlaGYcLKRHfl1NfhW0FbKY3V0Ow74qKFddBk2/ihWNI5VHkKKbKTJxrKYa6d?=
+ =?us-ascii?Q?eOH0kUGYtN2AXWtNCfiMoAjBPEySaeykfMOprbVvqVAfvnjV3WFUykV7Tyu9?=
+ =?us-ascii?Q?VLWcbaj2AE2/PFSBP6rlQ/ASklr4Azz7KkEGH2oei4aUhPILnsIep6R6/VLp?=
+ =?us-ascii?Q?MHBGvB4nwgF02QxE56EuKtWXayJfSwYXzMleLqejaEYbi1JpStr71nRI+AiP?=
+ =?us-ascii?Q?gXajBWd7pa5Y0O32pFXuS8M1GGIZb7B/jWESs0R0pVUJAb2g7WTYGujmg7hl?=
+ =?us-ascii?Q?7RuQ5Fmb/aQgsQhaAYfzY8DxDe9wOiFrkCSpzVvDo2YqY3PbLPxD+t5fC4sG?=
+ =?us-ascii?Q?bLwZpHwYwo/3b+RDziuDwu1GRTosMTXauxnfojdXUh1icHMk/+yZXO5G6Fa0?=
+ =?us-ascii?Q?KxgsBCAePgTkX5At9jgFghmv+VoWaBdrpzFf5O8cVOs2tt5y2ftBLV+1d8ai?=
+ =?us-ascii?Q?CdHQWecFw8mxKy3fIJFwOpmVS2jPvcukZQQ0k0GJUDlv76pzNZ6pE7uMKVb2?=
+ =?us-ascii?Q?A4XBSojGGnDczcrI9XxValDC0a6d9m+57PxdzTRK2Ro4OLXv4jP9yuD2Bdu5?=
+ =?us-ascii?Q?xVG0OCsJrOnYxMa0kskcbGdtXMPekjoGJPH3ii6hxNdPBFfhUeHAF/gIg68o?=
+ =?us-ascii?Q?E1fUWMr7gdgtHtZG3IKK2SmQvPOVNOTWMUznKGblfLQr4NwLepcDTYRouzih?=
+ =?us-ascii?Q?zDTO7o+slpUqz/DfOh9x5zhed8E5v95Qk/qkUFS3T2vqsnPdMR8d/x4CRoaO?=
+ =?us-ascii?Q?vIcGm8OIRUVRWN7ujiWT4GJEkOiGVwj0z5/Ha5o0djeO4Pk0sHTe81A1X9p9?=
+ =?us-ascii?Q?ojPuSySRlhSbGW/sekrTSmKdG6BN4vYCmKw2WJrEnweEMsRUMjhnVqVqCGfv?=
+ =?us-ascii?Q?JWlx3p3csuqEp0FgYQlcTXeeEHiLsDPg/OVI8zpJkIE126ElnAJXR3vY1dy2?=
+ =?us-ascii?Q?xCHAMX9Pfd9+eHIraWGRWesgGpWo0LdnKcShx4FbxKOuNl+pwCA0+7z2nEJ7?=
+ =?us-ascii?Q?Y7LTKsuc/FcdefLxvT9ukEn9LXWEWFks0aNkZKqDXnR4bOtXEUcgywpn1mTd?=
+ =?us-ascii?Q?vsC81E1LxBN6aNffG5m4PSF/EbFC82lJ0qe/UfgNd/CuYlAtDsLknT2q5WyQ?=
+ =?us-ascii?Q?CEu1aeOCJwVNEXigta2YoEq2JAyEnuBdyidntXzZ1vq0HCNBmGP/4JfpbXAD?=
+ =?us-ascii?Q?4HAPWbRLPD4Bcda8vdpQWiJjT0II?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?76V6o3ab5xGlMC0kkCX7AlnfhGMWT1SthSyVOHsTy8zFts7IMRIcgvbKJMTn?=
+ =?us-ascii?Q?5dvY8zmj38Ccv1DEu0jpwhjQErYmNWQSKLlFwyYMI2ypvimT61og31k9XGJ4?=
+ =?us-ascii?Q?4CXkZzFzcdA3ukcomshB9rO6GoCChfYzXhAcnfPOkfp1o+o64l23fx4lGKwy?=
+ =?us-ascii?Q?5uGhQwsVcFaLUx8GXI9MQ5sxyyBcqDRDuKwpqcIDwiNpXlgD5ul66bFxER2Q?=
+ =?us-ascii?Q?mK2rwdgrF+xf+qkTTRPEvuYoQGuiMn03QYoWH07BZdzPbqsHNSBt32qRXBKn?=
+ =?us-ascii?Q?V62j1K+qPw9w997D9Rf1iaEjhgA/V4c46dEMjCwcStxmyzCsp12s3JQFSLNP?=
+ =?us-ascii?Q?gokudAf/bFjKnZowu8rTUjrq8AVS05XGYuB12XKJ1j70aJd8jTOksHsWc9IE?=
+ =?us-ascii?Q?ik1zqY1xg+Wb6KHg98htV4gXYjrXOcYQ4KQz+qkBgiPF5wwnADjvNVhRmuqY?=
+ =?us-ascii?Q?z8S22KfLIggpFMpvHbjzPvyS8PqQXjUsi6lk5q2p5MbslgkvvqkbkfmaJySx?=
+ =?us-ascii?Q?48FquAH2T8ye/uobL2+uTxSd/vmRKYcymlOtUm7SPulnb3oJ9yGQ+28zJVA1?=
+ =?us-ascii?Q?wZnZBGOqIRWCXsPmfl2NuoZ4zEd0+8YuBGsl50eRoh5qy7oRLU6Gv0pa3Af7?=
+ =?us-ascii?Q?hUVfHolLuEzqJ7jZqvdcBYiLfqXV/ZA7SmNo7hjk1WN6CKz42OR+L1Y8NJyA?=
+ =?us-ascii?Q?GioZIx+pvSJCztnwC092UPzZANSYDMNtByPxx10PgUX4aElEDWjoZFH/uITo?=
+ =?us-ascii?Q?M5voB03e4SfqR51bpvk8cAPWAN3zzdYXP62sqYBASQKRhSYgDnCwLw9Pi+Gp?=
+ =?us-ascii?Q?AnLTNObbK/09R525ntSyEhYF1udb67PICKELUi4/ZvY0NDprGH0/qWXcXRFo?=
+ =?us-ascii?Q?OuiHQUiAGmGwUHSY5bTKkuYJFOIqU0PNNQMIr/6UkJ55ck17La5do88vGaKJ?=
+ =?us-ascii?Q?lYj51qgCuIed+0r65nnMbCaTw47epS1EyVrtSNajvivEmTlTLUnJKkYEbD2h?=
+ =?us-ascii?Q?CZeNe26TMvpnxrBM5dyh98+l3pOfK9icqHO8LQsZpGE6ztuTT9ugklz67i7C?=
+ =?us-ascii?Q?hi1mu2qK1d59oUy/ro8MrLtGg4oSmNonuOmPBTr181OrHYoHeqOq9qGEm+pG?=
+ =?us-ascii?Q?RzHHrKNuI0SOvIzUhiw6oCJOxvEeOo579FL6R404vMeYdLDu1ck+N2yIKyP/?=
+ =?us-ascii?Q?W9sKClECc6x9YIPig+ZSlxGP279sw3fK8K3FjAxftTCpPwRx9z/cpqD8jD24?=
+ =?us-ascii?Q?EnPG4U49bQKcv7q6c3gKdb28x08bWuIPRVlzcLHwU9SOvkms66VIeGI5m0hH?=
+ =?us-ascii?Q?dn/6GHa2udI4e7Gv1CZVO5hVUZykb+TqO1Vvck+tSs2flVj2Zb7XdV6Iks3K?=
+ =?us-ascii?Q?Sxwjl05KeoZNNNp7D1PMfuKhuv/7eCnud7DlPsUIBK1AQAUuiHYkOxbzkYjW?=
+ =?us-ascii?Q?XSFAmDEPkP/8np+dNdilQweqsvCtjfnsC8A6lKumV/4IBGLVOHTLkPgo7kT1?=
+ =?us-ascii?Q?ru/Yb4+OMSyQus4+2GfzncxfZRyyhEnE7TyWAG/X7Kbwcgb6XuOf0JD6jOyV?=
+ =?us-ascii?Q?pwKEETemnoM3efGHB0wQQ1VwsXBKAknpQ4CPpFLC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f0f84a1-1b2e-43a9-26b3-08dc9aacdb94
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2024 15:37:19.2626
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +jq+CqolMdyCM7MilN1ebMlO2KZHTtmPuWex+6m90msux3kRbmSmzi/goCISCXUwCmcAlcV9I5ceWFyNRK95mw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8179
 
+IEEE Std 1275-1994 is Inactive-Withdrawn Standard according to
+https://standards.ieee.org/ieee/1275/1932/.
 
---gypj655hqo5gwvn3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+"require at least one non-prefetchable memory and One or both of
+prefetchable Memory and IO Space may also be provided". But it does not
+limit maximum ranges number is 3.
 
-On Tue, Jul 02, 2024 at 04:15:20PM GMT, Pratyush Yadav wrote:
-> On Tue, Jul 02 2024, Maxime Ripard wrote:
->=20
-> > On Tue, Jul 02, 2024 at 03:41:52PM GMT, Pratyush Yadav wrote:
-> >> On Mon, Jul 01 2024, Tudor Ambarus wrote:
-> >>=20
-> >> > On 7/1/24 2:53 PM, Marco Felsch wrote:
-> >> >> EEPROMs can become quite large nowadays (>=3D64K). Exposing such de=
-vices
-> >> >> as single device isn't always sufficient. There may be partitions w=
-hich
-> >> >> require different access permissions. Also write access always need=
- to
-> >> >> to verify the offset.
-> >> >>=20
-> >> >> Port the current misc/eeprom/at24.c driver to the MTD framework sin=
-ce
-> >> >> EEPROMs are memory-technology devices and the framework already sup=
-ports
-> >> >
-> >> > I was under the impression that MTD devices are tightly coupled by e=
-rase
-> >> > blocks. But then we see MTD_NO_ERASE, so what are MTD devices after =
-all?
-> >>=20
-> >> I was curious as well so I did some digging.
-> >>=20
-> [...]
-> >>=20
-> >> I also found a thread from 2013 by Maxime Ripard (+Cc) suggesting addi=
-ng
-> >> EEPROMs to MTD [1]. The main purpose would have been unifying the EEPR=
-OM
-> >> drivers under a single interface. I am not sure what came of it though,
-> >> since I can't find any patches that followed up with the proposal.
-> >
-> > That discussion led to drivers/nvmem after I started to work on
-> > some early prototype, and Srinivas took over that work.
->=20
-> So would you say it is better for EEPROM drivers to use nvmem instead of
-> moving under MTD?
+Inscrease maximum to 8 because freescale ls1028 and iMX95 use more than
+3 ranges.
 
-I thought so at the time, but that was more than 10y ago, and I have
-followed neither nvmem nor MTD since so I don't really have an opinion
-there.
+Fix below CHECK_DTBS warning.
+arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: pcie@1f0000000: ranges: [[2181038080, 1, 4160749568, 1, 4160749568, 0, 1441792], [3254779904, 1, 4162191360, 1, 4162191360, 0, 458752], [2181038080, 1, 4162650112, 1, 4162650112, 0, 131072], [3254779904, 1, 4162781184, 1, 4162781184, 0, 131072], [2181038080, 1, 4162912256, 1, 4162912256, 0, 131072], [3254779904, 1, 4163043328, 1, 4163043328, 0, 131072], [2181038080, 1, 4227858432, 1, 4227858432, 0, 4194304]] is too long
 
-It looks like drivers/misc/eeprom/at24.c has support for nvmem though,
-and MTD can be used as an nvmem provider too, so it's not clear to me
-why we would want to create yet another variant.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ Documentation/devicetree/bindings/pci/host-generic-pci.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-But again, you shouldn't really ask me in the first place :)
+diff --git a/Documentation/devicetree/bindings/pci/host-generic-pci.yaml b/Documentation/devicetree/bindings/pci/host-generic-pci.yaml
+index 3484e0b4b412e..506eed7f6c63d 100644
+--- a/Documentation/devicetree/bindings/pci/host-generic-pci.yaml
++++ b/Documentation/devicetree/bindings/pci/host-generic-pci.yaml
+@@ -103,7 +103,7 @@ properties:
+       definition of non-prefetchable memory. One or both of prefetchable Memory
+       and IO Space may also be provided.
+     minItems: 1
+-    maxItems: 3
++    maxItems: 8
+ 
+   dma-coherent: true
+   iommu-map: true
+-- 
+2.34.1
 
-I'm sure Miquel, Srinivas, and surely others, are much more relevant to
-answer that question.
-
-Maxime
-
---gypj655hqo5gwvn3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZoQP7wAKCRDj7w1vZxhR
-xelSAQDyHdp3qs5OhZUbyv1sIG+7PHV3rzbQJu5zbjdgtcsnUwD/Vd5FuxDSVZrq
-YEHzmHdDyuPknfgYexiAvC7jtdFIlwk=
-=B/wG
------END PGP SIGNATURE-----
-
---gypj655hqo5gwvn3--
