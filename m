@@ -1,114 +1,188 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508402A1DF
-	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 04:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3538179AF
+	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 04:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719893075; cv=none; b=tSpmNCX4GYUHd7dooblQdWAIKrsWc94IrxdcIxvA1IxrN3orolmOUyeQdXjjBMFtugUcHb6JyJytx28u3ZkQqF/EE8RD3IDIZY3GjoBPxW0C3NosXkU8fo3+rwLW6VaXMm9LikDE8c5B9GcfYCcvtJZMCWTPw6EUpTEJsIuP5n8=
+	t=1719893491; cv=none; b=NnWpYNoERyodTb0096MwEI55oKsJAfC6Pt6lwvOZIolo4q7L43nFeESKWCzocGJldkDU61htpopE7mqW5uRvD6IS1Pi1yCAVLvxvx1ioi/FcCWq37yGqWkovQULoGfr78LpJzI6o/6MbYFMqhPqL4SVfGBBG4OxEa9qrRgooCcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719893075; c=relaxed/simple;
-	bh=PjOPq/KxgdAbmyXPSE1+iFm7bMKb7JfGCfUQymEbRzY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TobYRM3PRCXtUiABGxLqIDkDg67lmjSuA4aQwMpphxZUVMHqaa73dSEunOOM3AOJ7zNIakjq9ARHjseCoVl54qq9XM7oul4GOe8Nzz2A0HMSmblEkMyFSNjU1thsISZ7ixE+Dr/adEHK/Xb2kBvwHHC0P0Ia/LupGx8NPCkW+as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gm0RF4Hw; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1719893491; c=relaxed/simple;
+	bh=WNIW031Xge/X5WvEvR0amu3sR8nBLxBVhMO5x3XuHjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tfRuKyX2RSlFzANdbU1rGME4nKMN2kBAD2wNdpvtt+UxGBhZg6DixNl3y3/uOH0gEJ0Aa/cdC+nSBf2UTnBnLKj5+fDMlKtIsxHS+DxUBBFMaezSkQ/k4QxOQX5Hbu38wFARKwJhAwXH32Iu8wrKoPRXReMJFZKMqgsDlZq3Teg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HJNsOiXH; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gm0RF4Hw"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 4FD458871C;
-	Tue,  2 Jul 2024 06:04:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1719893071;
-	bh=cwSotBxejvSMra+ZSFbi6qdkr/Lg5NoHvKxFGJcRHsI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gm0RF4Hwm96KgeUnZYKga3luMPjM9fU6FNUrgRHyiCbQvqIwN9WURROOA9/h895nm
-	 uIaYXfxEtfG0kuRsrQ2H7HvFHKkAuEEzCIyIrfHY+i227reZJLY+f5khvj3PfRgOrb
-	 DNUteB3Ensk0eYWbU7rO7oxfr9ztyHi/fmpIPsyII7UTuLNmOAlS6FP6GYd0IXn6er
-	 XnQ0BrPxSaHNK5KehgdoECI/y4zBN/gFve33Hc29YOagHOQzDzvWlChu0Z7rgjdzvt
-	 YFjo6ecqEX3BDeiDlVNZiuznFP4k3i/okKXGY6mKx5SONwR+ANTiDWTu6GMJN8XgKG
-	 h1hSJc4Lo6llw==
-Message-ID: <d36485a2-7cce-44be-b70f-54b00d671861@denx.de>
-Date: Tue, 2 Jul 2024 06:02:41 +0200
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HJNsOiXH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=BTf0yHthWHICtLSK/4rntYV8tS0Sys4XbAF0SFXsaC0=;
+	b=HJNsOiXHTnRtwPG9Yg2kDVOz0ZaPKpUOwUKh9QdsOwWcJfN2PswQTkaJv5FUNf
+	RB19sXXFqakH8VNhlfWjYirz298MUUMwISDVVYsUIaQdtlKFIXzf42kLnapoHENC
+	JfTd3ZTmLJBKjEgo8WPmxAkBNqmTYQlHc4Ug2Y/FffJ4c=
+Received: from dragon (unknown [114.218.218.47])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgC3H4nSfYNmasI+AA--.7783S3;
+	Tue, 02 Jul 2024 12:11:00 +0800 (CST)
+Date: Tue, 2 Jul 2024 12:10:58 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/8] arm64: dts: imx8qm: add lvds subsystem
+Message-ID: <ZoN90rHfpK7niqEr@dragon>
+References: <20240701-imx8qm-dts-usb-v4-0-03cdbc8c44b6@nxp.com>
+ <20240701-imx8qm-dts-usb-v4-2-03cdbc8c44b6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] serial: imx: ensure RTS signal is not left active
- after shutdown
-To: Fabio Estevam <festevam@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20240625184206.508837-1-linux@rasmusvillemoes.dk>
- <CAOMZO5AejtxU4hTMWa8PK9duXYAKUGzGm_mmeLuEW=tRk7GSCQ@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <CAOMZO5AejtxU4hTMWa8PK9duXYAKUGzGm_mmeLuEW=tRk7GSCQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240701-imx8qm-dts-usb-v4-2-03cdbc8c44b6@nxp.com>
+X-CM-TRANSID:Ms8vCgC3H4nSfYNmasI+AA--.7783S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4DKF4kJw48Cw4DAr4fKrg_yoWrWw1rpF
+	9rCa12qF1IyFyI9r9xKF18Krn5G3s8tF4j9ry3GrWjyrsxJry7tan3Cr1kury8XF42v3y0
+	gFn0qr1FkrnIvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO8nOUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAhUQZWZv-d3PvwAAs7
 
-On 6/25/24 10:39 PM, Fabio Estevam wrote:
-> [Adding Christoph and Marek]
+On Mon, Jul 01, 2024 at 11:03:28AM -0400, Frank Li wrote:
+> Add irqsteer, pwm and i2c in lvds subsystem.
 > 
-> On Tue, Jun 25, 2024 at 3:42 PM Rasmus Villemoes
-> <linux@rasmusvillemoes.dk> wrote:
->>
->> If a process is killed while writing to a /dev/ttymxc* device in RS485
->> mode, we observe that the RTS signal is left high, thus making it
->> impossible for other devices to transmit anything.
->>
->> Moreover, the ->tx_state variable is left in state SEND, which means
->> that when one next opens the device and configures baud rate etc., the
->> initialization code in imx_uart_set_termios dutifully ensures the RTS
->> pin is pulled down, but since ->tx_state is already SEND, the logic in
->> imx_uart_start_tx() does not in fact pull the pin high before
->> transmitting, so nothing actually gets on the wire on the other side
->> of the transceiver. Only when that transmission is allowed to complete
->> is the state machine then back in a consistent state.
->>
->> This is completely reproducible by doing something as simple as
->>
->>    seq 10000 > /dev/ttymxc0
->>
->> and hitting ctrl-C, and watching with a logic analyzer.
->>
->> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
->> ---
->> v2: Use dev_warn() instead of dev_WARN_ONCE().
->>
->> v1: https://lore.kernel.org/lkml/20240524121246.1896651-1-linux@rasmusvillemoes.dk/
->>
->> A screen dump from a logic analyzer can be seen at:
->>
->>    https://ibb.co/xCcP7Jy
->>
->> This is on an imx8mp board, with /dev/ttymxc0 and /dev/ttymxc2 both
->> configured for rs485 and connected to each other. I'm writing to
->> /dev/ttymxc2. This demonstrates both bugs; that RTS is left high when
->> a write is interrupted, and that a subsequent write actually fails to
->> have RTS high while TX'ing.
->>
->> I'm not sure what commit to name as a Fixes:. This certainly happens
->> on 6.6 and onwards, but I assume the problem exists since the tx_state
->> machine was introduced in cb1a60923609 (serial: imx: implement rts
->> delaying for rs485), and possibly even before that.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi | 77 +++++++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx8qm.dtsi         | 10 +++
+>  2 files changed, 87 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi
+> new file mode 100644
+> index 0000000000000..1da3934847057
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi
+> @@ -0,0 +1,77 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +&qm_lvds0_lis_lpcg {
+> +	clocks = <&lvds_ipg_clk>;
+> +	clock-indices = <IMX_LPCG_CLK_4>;
+> +};
+> +
+> +&qm_lvds0_pwm_lpcg {
+> +	clocks = <&clk IMX_SC_R_LVDS_0_PWM_0 IMX_SC_PM_CLK_PER>,
+> +		 <&lvds_ipg_clk>;
+> +	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +};
+> +
+> +&qm_lvds0_i2c0_lpcg {
+> +	clocks = <&clk IMX_SC_R_LVDS_0_I2C_0 IMX_SC_PM_CLK_PER>,
+> +		 <&lvds_ipg_clk>;
+> +	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +};
+> +
+> +&qm_pwm_lvds0 {
+> +	clocks = <&qm_lvds0_pwm_lpcg IMX_LPCG_CLK_4>,
+> +		 <&qm_lvds0_pwm_lpcg IMX_LPCG_CLK_0>;
+> +};
+> +
+> +&qm_i2c0_lvds0 {
+> +	clocks = <&qm_lvds0_i2c0_lpcg IMX_LPCG_CLK_0>,
+> +		 <&qm_lvds0_i2c0_lpcg IMX_LPCG_CLK_4>;
+> +};
+> +
+> +&lvds0_subsys {
+> +	interrupt-parent = <&irqsteer_lvds0>;
+> +
+> +	irqsteer_lvds0: interrupt-controller@56240000 {
+> +		compatible = "fsl,imx8qm-irqsteer", "fsl,imx-irqsteer";
 
-Wow, thank you for the detailed analysis of the issue.
+Is compatible "fsl,imx8qm-irqsteer" documented in bindings?
 
-Reviewed-by: Marek Vasut <marex@denx.de>
+Shawn
+
+> +		reg = <0x56240000 0x1000>;
+> +		interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+> +		interrupt-controller;
+> +		interrupt-parent = <&gic>;
+> +		#interrupt-cells = <1>;
+> +		clocks = <&qm_lvds0_lis_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names = "ipg";
+> +		power-domains = <&pd IMX_SC_R_LVDS_0>;
+> +
+> +		fsl,channel = <0>;
+> +		fsl,num-irqs = <32>;
+> +	};
+> +
+> +	lvds0_i2c1_lpcg: clock-controller@56243014 {
+> +		compatible = "fsl,imx8qxp-lpcg";
+> +		reg = <0x56243014 0x4>;
+> +		#clock-cells = <1>;
+> +		clocks = <&clk IMX_SC_R_LVDS_0_I2C_0 IMX_SC_PM_CLK_PER>,
+> +			 <&lvds_ipg_clk>;
+> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
+> +		clock-output-names = "lvds0_i2c1_lpcg_clk",
+> +				     "lvds0_i2c1_lpcg_ipg_clk";
+> +		power-domains = <&pd IMX_SC_R_LVDS_0_I2C_0>;
+> +	};
+> +
+> +	i2c1_lvds0: i2c@56247000 {
+> +		compatible = "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
+> +		reg = <0x56247000 0x1000>;
+> +		interrupts = <9>;
+> +		clocks = <&lvds0_i2c1_lpcg IMX_LPCG_CLK_0>,
+> +			 <&lvds0_i2c1_lpcg IMX_LPCG_CLK_4>;
+> +		clock-names = "per", "ipg";
+> +		assigned-clocks = <&clk IMX_SC_R_LVDS_0_I2C_0 IMX_SC_PM_CLK_PER>;
+> +		assigned-clock-rates = <24000000>;
+> +		power-domains = <&pd IMX_SC_R_LVDS_0_I2C_0>;
+> +		status = "disabled";
+> +	};
+> +};
+> +
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+> index 61986e0639e53..1e8511e8d8577 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+> @@ -560,11 +560,20 @@ clk_spdif1_rx: clock-spdif1-rx {
+>  		clock-output-names = "spdif1_rx";
+>  	};
+>  
+> +	lvds_ipg_clk: clock-controller-lvds-ipg {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <24000000>;
+> +		clock-output-names = "lvds0_ipg_clk";
+> +	};
+> +
+>  	/* sorted in register address */
+>  	#include "imx8-ss-cm41.dtsi"
+>  	#include "imx8-ss-audio.dtsi"
+>  	#include "imx8-ss-vpu.dtsi"
+>  	#include "imx8-ss-gpu0.dtsi"
+> +	#include "imx8-ss-lvds0.dtsi"
+> +	#include "imx8-ss-lvds1.dtsi"
+>  	#include "imx8-ss-img.dtsi"
+>  	#include "imx8-ss-dma.dtsi"
+>  	#include "imx8-ss-conn.dtsi"
+> @@ -576,3 +585,4 @@ clk_spdif1_rx: clock-spdif1-rx {
+>  #include "imx8qm-ss-conn.dtsi"
+>  #include "imx8qm-ss-lsio.dtsi"
+>  #include "imx8qm-ss-audio.dtsi"
+> +#include "imx8qm-ss-lvds.dtsi"
+> 
+> -- 
+> 2.34.1
+> 
+
