@@ -1,43 +1,38 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3538179AF
-	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 04:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055DB335B5
+	for <imx@lists.linux.dev>; Tue,  2 Jul 2024 04:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719893491; cv=none; b=NnWpYNoERyodTb0096MwEI55oKsJAfC6Pt6lwvOZIolo4q7L43nFeESKWCzocGJldkDU61htpopE7mqW5uRvD6IS1Pi1yCAVLvxvx1ioi/FcCWq37yGqWkovQULoGfr78LpJzI6o/6MbYFMqhPqL4SVfGBBG4OxEa9qrRgooCcY=
+	t=1719893724; cv=none; b=N4gRpcYuzSTpiZTJhP/WuwcjqUSPw/WkPMG88wEeeM/qObWwdQTYFjbdKhEdnHODT3BCFJfMT1VfFCW4ooeIdHWL/nvzDznAjTNGlGdRCxtnNITObKu5S+hl1O2W8vR1nuydEhe5jQ+ak3qg2c5RWto1QUC3W2kiGxZJyCpDcis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719893491; c=relaxed/simple;
-	bh=WNIW031Xge/X5WvEvR0amu3sR8nBLxBVhMO5x3XuHjw=;
+	s=arc-20240116; t=1719893724; c=relaxed/simple;
+	bh=B6JQ1lFaaesqbygFK3DaqXC/sXzecViX0oE8axOCyxE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tfRuKyX2RSlFzANdbU1rGME4nKMN2kBAD2wNdpvtt+UxGBhZg6DixNl3y3/uOH0gEJ0Aa/cdC+nSBf2UTnBnLKj5+fDMlKtIsxHS+DxUBBFMaezSkQ/k4QxOQX5Hbu38wFARKwJhAwXH32Iu8wrKoPRXReMJFZKMqgsDlZq3Teg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HJNsOiXH; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=WOO7Q7c3snNTmcmg+emV8s6OI5GLz5Lxgs3HNPZj9Gwbn7PjzSrQE1p9ehJyo/MN7efUsq81fLgxTNbMHRZBrUEfqGIp+7+DV2HWZ8hLxjU1c7tZ/ZZtwhWyaPZb8eDMb9x6/0Pv9ZK2dYq6eJDc9NIy96BQrnlCDfgwbDuj948=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=T0aZp4XZ; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HJNsOiXH"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="T0aZp4XZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=BTf0yHthWHICtLSK/4rntYV8tS0Sys4XbAF0SFXsaC0=;
-	b=HJNsOiXHTnRtwPG9Yg2kDVOz0ZaPKpUOwUKh9QdsOwWcJfN2PswQTkaJv5FUNf
-	RB19sXXFqakH8VNhlfWjYirz298MUUMwISDVVYsUIaQdtlKFIXzf42kLnapoHENC
-	JfTd3ZTmLJBKjEgo8WPmxAkBNqmTYQlHc4Ug2Y/FffJ4c=
+	Content-Type; bh=3vKI+MzES17VVsUxVndZKuD9mJDGOI0oaeEUsf55ffk=;
+	b=T0aZp4XZo+o5opEzlG6QWhkgCtcDcN4FJA5s+CVmJuZR6cnf180nqenx2MX4q9
+	nPHFJgwlbN6Fd30cBzk1p4egSGm7lbLytfTQ5LCIHRSZPC3P9LqAkdIhUiQdTamE
+	gZQpnf3D4cAH30W4EfVNMlWhyho+AffKE2uZMTjyUmCrA=
 Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgC3H4nSfYNmasI+AA--.7783S3;
-	Tue, 02 Jul 2024 12:11:00 +0800 (CST)
-Date: Tue, 2 Jul 2024 12:10:58 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBnjyfDfoNmhv48AA--.8122S3;
+	Tue, 02 Jul 2024 12:15:01 +0800 (CST)
+Date: Tue, 2 Jul 2024 12:14:59 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/8] arm64: dts: imx8qm: add lvds subsystem
-Message-ID: <ZoN90rHfpK7niqEr@dragon>
-References: <20240701-imx8qm-dts-usb-v4-0-03cdbc8c44b6@nxp.com>
- <20240701-imx8qm-dts-usb-v4-2-03cdbc8c44b6@nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@denx.de>
+Subject: Re: [PATCH] arm64: dts: imx8mp: Remove 'snps,rx-sched-sp'
+Message-ID: <ZoN+w6jNx+EU04dO@dragon>
+References: <20240701205458.164053-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,143 +41,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240701-imx8qm-dts-usb-v4-2-03cdbc8c44b6@nxp.com>
-X-CM-TRANSID:Ms8vCgC3H4nSfYNmasI+AA--.7783S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4DKF4kJw48Cw4DAr4fKrg_yoWrWw1rpF
-	9rCa12qF1IyFyI9r9xKF18Krn5G3s8tF4j9ry3GrWjyrsxJry7tan3Cr1kury8XF42v3y0
-	gFn0qr1FkrnIvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO8nOUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAhUQZWZv-d3PvwAAs7
+In-Reply-To: <20240701205458.164053-1-festevam@gmail.com>
+X-CM-TRANSID:Mc8vCgBnjyfDfoNmhv48AA--.8122S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUx66zUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAUQZWZqrzHYLQAAsT
 
-On Mon, Jul 01, 2024 at 11:03:28AM -0400, Frank Li wrote:
-> Add irqsteer, pwm and i2c in lvds subsystem.
+On Mon, Jul 01, 2024 at 05:54:58PM -0300, Fabio Estevam wrote:
+> From: Fabio Estevam <festevam@denx.de>
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi | 77 +++++++++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8qm.dtsi         | 10 +++
->  2 files changed, 87 insertions(+)
+> According to nxp,dwmac-imx.yaml, 'snps,rx-sched-sp' is not a valid
+> property.
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi
-> new file mode 100644
-> index 0000000000000..1da3934847057
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-lvds.dtsi
-> @@ -0,0 +1,77 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +
-> +/*
-> + * Copyright 2024 NXP
-> + */
-> +
-> +&qm_lvds0_lis_lpcg {
-> +	clocks = <&lvds_ipg_clk>;
-> +	clock-indices = <IMX_LPCG_CLK_4>;
-> +};
-> +
-> +&qm_lvds0_pwm_lpcg {
-> +	clocks = <&clk IMX_SC_R_LVDS_0_PWM_0 IMX_SC_PM_CLK_PER>,
-> +		 <&lvds_ipg_clk>;
-> +	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +};
-> +
-> +&qm_lvds0_i2c0_lpcg {
-> +	clocks = <&clk IMX_SC_R_LVDS_0_I2C_0 IMX_SC_PM_CLK_PER>,
-> +		 <&lvds_ipg_clk>;
-> +	clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +};
-> +
-> +&qm_pwm_lvds0 {
-> +	clocks = <&qm_lvds0_pwm_lpcg IMX_LPCG_CLK_4>,
-> +		 <&qm_lvds0_pwm_lpcg IMX_LPCG_CLK_0>;
-> +};
-> +
-> +&qm_i2c0_lvds0 {
-> +	clocks = <&qm_lvds0_i2c0_lpcg IMX_LPCG_CLK_0>,
-> +		 <&qm_lvds0_i2c0_lpcg IMX_LPCG_CLK_4>;
-> +};
-> +
-> +&lvds0_subsys {
-> +	interrupt-parent = <&irqsteer_lvds0>;
-> +
-> +	irqsteer_lvds0: interrupt-controller@56240000 {
-> +		compatible = "fsl,imx8qm-irqsteer", "fsl,imx-irqsteer";
+> Remove it from the imx8mp board devicetree files to avoid
+> dt-schema warnings:
+> 
+> ... 'snps,tx-sched-sp' does not match any of the regexes
+> 
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-Is compatible "fsl,imx8qm-irqsteer" documented in bindings?
-
-Shawn
-
-> +		reg = <0x56240000 0x1000>;
-> +		interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupt-controller;
-> +		interrupt-parent = <&gic>;
-> +		#interrupt-cells = <1>;
-> +		clocks = <&qm_lvds0_lis_lpcg IMX_LPCG_CLK_4>;
-> +		clock-names = "ipg";
-> +		power-domains = <&pd IMX_SC_R_LVDS_0>;
-> +
-> +		fsl,channel = <0>;
-> +		fsl,num-irqs = <32>;
-> +	};
-> +
-> +	lvds0_i2c1_lpcg: clock-controller@56243014 {
-> +		compatible = "fsl,imx8qxp-lpcg";
-> +		reg = <0x56243014 0x4>;
-> +		#clock-cells = <1>;
-> +		clocks = <&clk IMX_SC_R_LVDS_0_I2C_0 IMX_SC_PM_CLK_PER>,
-> +			 <&lvds_ipg_clk>;
-> +		clock-indices = <IMX_LPCG_CLK_0>, <IMX_LPCG_CLK_4>;
-> +		clock-output-names = "lvds0_i2c1_lpcg_clk",
-> +				     "lvds0_i2c1_lpcg_ipg_clk";
-> +		power-domains = <&pd IMX_SC_R_LVDS_0_I2C_0>;
-> +	};
-> +
-> +	i2c1_lvds0: i2c@56247000 {
-> +		compatible = "fsl,imx8qm-lpi2c", "fsl,imx7ulp-lpi2c";
-> +		reg = <0x56247000 0x1000>;
-> +		interrupts = <9>;
-> +		clocks = <&lvds0_i2c1_lpcg IMX_LPCG_CLK_0>,
-> +			 <&lvds0_i2c1_lpcg IMX_LPCG_CLK_4>;
-> +		clock-names = "per", "ipg";
-> +		assigned-clocks = <&clk IMX_SC_R_LVDS_0_I2C_0 IMX_SC_PM_CLK_PER>;
-> +		assigned-clock-rates = <24000000>;
-> +		power-domains = <&pd IMX_SC_R_LVDS_0_I2C_0>;
-> +		status = "disabled";
-> +	};
-> +};
-> +
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-> index 61986e0639e53..1e8511e8d8577 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-> @@ -560,11 +560,20 @@ clk_spdif1_rx: clock-spdif1-rx {
->  		clock-output-names = "spdif1_rx";
->  	};
->  
-> +	lvds_ipg_clk: clock-controller-lvds-ipg {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <24000000>;
-> +		clock-output-names = "lvds0_ipg_clk";
-> +	};
-> +
->  	/* sorted in register address */
->  	#include "imx8-ss-cm41.dtsi"
->  	#include "imx8-ss-audio.dtsi"
->  	#include "imx8-ss-vpu.dtsi"
->  	#include "imx8-ss-gpu0.dtsi"
-> +	#include "imx8-ss-lvds0.dtsi"
-> +	#include "imx8-ss-lvds1.dtsi"
->  	#include "imx8-ss-img.dtsi"
->  	#include "imx8-ss-dma.dtsi"
->  	#include "imx8-ss-conn.dtsi"
-> @@ -576,3 +585,4 @@ clk_spdif1_rx: clock-spdif1-rx {
->  #include "imx8qm-ss-conn.dtsi"
->  #include "imx8qm-ss-lsio.dtsi"
->  #include "imx8qm-ss-audio.dtsi"
-> +#include "imx8qm-ss-lvds.dtsi"
-> 
-> -- 
-> 2.34.1
-> 
+Applied, thanks!
 
