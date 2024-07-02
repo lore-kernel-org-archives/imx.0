@@ -1,251 +1,165 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F46823DE;
-	Tue,  2 Jul 2024 12:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1742EBA2D;
+	Tue,  2 Jul 2024 13:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719924001; cv=none; b=TQiE7qrZdXa76xG1eIdA26toPOE3OaxZytk3F4HPBj6U3Il2n931/6nOAAIJ+MrnW8bm09lS3oAMEyyJTM2HWsRYp6J8G0gOLYfNVnGHBoJ7HqDHzQgFHMHjfgniKmX8NYEs3Of0GU+P11ERPWyRaB63p9bA/gcd0d/GW7PrQ0E=
+	t=1719927720; cv=none; b=VSd2e7WZ5dwDMwBpcHNKizCkR+MZJBDQG1h3g7Wkj0U5402efaJ0SuMLEqU3yQftHO3MK6NkfafNSchwcyIaUtxrupoH7/7T5BE0MGZQsDzv7FIKRZNlq8Xy5sxaL5fuTePyBmLMFau/NsqYAsC+NNKZqrkOSXeSXHVNci5Rud4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719924001; c=relaxed/simple;
-	bh=G4lrwOm8PBJDnOGCzEkhxC+Ha38BeZflLdrxWcXKBnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DBxCFmeHWDW5fUz62zxRkrwOhu13M8McSqIEgM5yy/4Ft7bFUlhlpDVBeOvHLE/A8YCiRw9J+LTafDCW6CVxkASlGDVT0JL35Q1h94QS+WA18TL+aiNkRE00S6/jr38WiSoH5CiG7ggeVIcmGvHdP3y9WPYXvbVOkdzOO+WdMS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwjQ6HVu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719927720; c=relaxed/simple;
+	bh=xIoq5ERoFam9CoYgw94MfcDDBIP2EzSXozZdimkHqf4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=U7QjDOS/WxAMykYl9CUX0IEpZ9Ry0YloeAr3+7jjWvQuWp5c5ybaFn8f5CZTWKYewPrj158qXakirfu47a08w6rGZwCqeiVSh/ianUNbVwyT5Q/FWXhmfRfg6I9D9H9v0sN9fzYRbwCFuR1JSd3lRbCMFpDUsshdJrOwiL6mCLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=krETZqZR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwjQ6HVu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9379C2BD10;
-	Tue,  2 Jul 2024 12:40:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="krETZqZR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF12C116B1;
+	Tue,  2 Jul 2024 13:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719924001;
-	bh=G4lrwOm8PBJDnOGCzEkhxC+Ha38BeZflLdrxWcXKBnM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rwjQ6HVugtneW0zEDQh2DOGLqh/YDpFk5SsPlLV3JbU74z3nTMKyEJ/emzLvEzFh9
-	 pKNW9MRtdBvly3m1k9QNn7gVYamGu9uxV4xSMJCYzJXatRyCvKTtAs55uTryWhy5cs
-	 9nG6RDyRrT7h5KYD9We4nUCvpBiWwwxtEj7umJHvdD6qzdQKiQxnqn/Y8YCLHY/0NC
-	 dNcdlXyStmPdpi1O2expbN5C2PfHqosWCtrRBBUXkuEljiIcw4e6zy3vBjUkZRmFs2
-	 NPt3g+cAdKeqt689Oiz2mlq9VlufZS2MTa1BPuvz4ga9uihPEsqcoN7oLIOOFQx005
-	 KupHQdPmkLNKw==
-Date: Tue, 2 Jul 2024 14:39:58 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Sandor Yu <sandor.yu@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-phy@lists.infradead.org" <linux-phy@lists.infradead.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>
-Subject: Re: [PATCH v15 4/8] drm: bridge: Cadence: Add MHDP8501 DP/HDMI driver
-Message-ID: <20240702-seahorse-of-unreal-brotherhood-dce5d0@houat>
-References: <20240306101625.795732-1-alexander.stein@ew.tq-group.com>
- <20240306101625.795732-5-alexander.stein@ew.tq-group.com>
- <20240306-mysterious-hoatzin-of-faith-49aec0@houat>
- <PAXPR04MB9448829F4BA8F8AF18F371F3F4DC2@PAXPR04MB9448.eurprd04.prod.outlook.com>
+	s=k20201202; t=1719927719;
+	bh=xIoq5ERoFam9CoYgw94MfcDDBIP2EzSXozZdimkHqf4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=krETZqZRZTW0k1iXLzs/FxWIvDBiOf5o+FbJZkpGtilaCd7GZcjqyo6SomGAunMEB
+	 BUZlu7wccEG6kossKFkepABl2/j8Nsn7yh5jjmmGZM1zHjJ9xrqOuEtGVXyytIMsr2
+	 wG70VQbbYM2x2Z/V9Ig4oLAFMTqYBVlvAMt9/+Ln7Tq6kiinYWiEYV3FCbh+gW1XUs
+	 fS2rs45SRfaUC94gwzDWRVv91uNOx//oOHa5IBx4jkma5NwzrumUbaXnlnE+BGlD5D
+	 5wo+CtDPOBVAmhVS6Z9McL5acmawuElTWYvsSBGtPlNdIXCvftH0RegptVZxUnYM36
+	 rCuzSmxjJO+hA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: Marco Felsch <m.felsch@pengutronix.de>,  Miquel Raynal
+ <miquel.raynal@bootlin.com>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  Arnd Bergmann <arnd@arndb.de>,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Bartosz Golaszewski
+ <brgl@bgdev.pl>,  Russell King <linux@armlinux.org.uk>,  Joel Stanley
+ <joel@jms.id.au>,  Andrew Jeffery <andrew@codeconstruct.com.au>,  Nicolas
+ Ferre <nicolas.ferre@microchip.com>,  Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,  Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,  Shawn Guo <shawnguo@kernel.org>,  Sascha
+ Hauer <s.hauer@pengutronix.de>,  Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,  Vladimir
+ Zapolskiy <vz@mleia.com>,  Andrew Lunn <andrew@lunn.ch>,  Gregory Clement
+ <gregory.clement@bootlin.com>,  Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>,  Tony Lindgren <tony@atomide.com>,
+  Geert Uytterhoeven <geert+renesas@glider.be>,  Magnus Damm
+ <magnus.damm@gmail.com>,  Dinh Nguyen <dinguyen@kernel.org>,  Thierry
+ Reding <thierry.reding@gmail.com>,  Jonathan Hunter
+ <jonathanh@nvidia.com>,  Jonathan =?utf-8?Q?Neusch=C3=A4fer?=
+ <j.neuschaefer@gmx.net>,
+  Michael Ellerman <mpe@ellerman.id.au>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Christophe Leroy <christophe.leroy@csgroup.eu>,
+  "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,  Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>,  Huacai Chen <chenhuacai@kernel.org>,  WANG
+ Xuerui <kernel@xen0n.name>,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-i2c@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-aspeed@lists.ozlabs.org,
+  imx@lists.linux.dev,  linux-omap@vger.kernel.org,
+  linux-renesas-soc@vger.kernel.org,  linux-tegra@vger.kernel.org,
+  openbmc@lists.ozlabs.org,  linuxppc-dev@lists.ozlabs.org,
+  linux-mips@vger.kernel.org,  loongarch@lists.linux.dev,  Maxime Ripard
+ <mripard@kernel.org>
+Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
+In-Reply-To: <07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org> (Tudor
+	Ambarus's message of "Mon, 1 Jul 2024 17:14:14 +0100")
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+	<20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
+	<07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
+Date: Tue, 02 Jul 2024 15:41:52 +0200
+Message-ID: <mafs0ikxnykpr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3bvkkyl5thqxineu"
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB9448829F4BA8F8AF18F371F3F4DC2@PAXPR04MB9448.eurprd04.prod.outlook.com>
+Content-Type: text/plain
 
+On Mon, Jul 01 2024, Tudor Ambarus wrote:
 
---3bvkkyl5thqxineu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 7/1/24 2:53 PM, Marco Felsch wrote:
+>> EEPROMs can become quite large nowadays (>=64K). Exposing such devices
+>> as single device isn't always sufficient. There may be partitions which
+>> require different access permissions. Also write access always need to
+>> to verify the offset.
+>> 
+>> Port the current misc/eeprom/at24.c driver to the MTD framework since
+>> EEPROMs are memory-technology devices and the framework already supports
+>
+> I was under the impression that MTD devices are tightly coupled by erase
+> blocks. But then we see MTD_NO_ERASE, so what are MTD devices after all?
 
-Hi,
+I was curious as well so I did some digging.
 
-On Tue, Jul 02, 2024 at 12:13:16PM GMT, Sandor Yu wrote:
-> > Subject: [EXT] Re: [PATCH v15 4/8] drm: bridge: Cadence: Add MHDP8501
-> > DP/HDMI driver
-> >=20
-> > Hi,
-> >=20
-> > On Wed, Mar 06, 2024 at 11:16:21AM +0100, Alexander Stein wrote:
-> > > +static int cdns_mhdp8501_read_hpd(struct cdns_mhdp8501_device
-> > *mhdp)
-> > > +{
-> > > +	u8 status;
-> > > +	int ret;
-> > > +
-> > > +	mutex_lock(&mhdp->mbox_mutex);
-> > > +
-> > > +	ret =3D cdns_mhdp_mailbox_send(&mhdp->base,
-> > MB_MODULE_ID_GENERAL,
-> > > +				     GENERAL_GET_HPD_STATE, 0, NULL);
-> > > +	if (ret)
-> > > +		goto err_get_hpd;
-> > > +
-> > > +	ret =3D cdns_mhdp_mailbox_recv_header(&mhdp->base,
-> > MB_MODULE_ID_GENERAL,
-> > > +					    GENERAL_GET_HPD_STATE,
-> > > +					    sizeof(status));
-> > > +	if (ret)
-> > > +		goto err_get_hpd;
-> > > +
-> > > +	ret =3D cdns_mhdp_mailbox_recv_data(&mhdp->base, &status,
-> > sizeof(status));
-> > > +	if (ret)
-> > > +		goto err_get_hpd;
-> > > +
-> > > +	mutex_unlock(&mhdp->mbox_mutex);
-> > > +
-> > > +	return status;
-> > > +
-> > > +err_get_hpd:
-> > > +	dev_err(mhdp->dev, "read hpd  failed: %d\n", ret);
-> > > +	mutex_unlock(&mhdp->mbox_mutex);
-> > > +
-> > > +	return ret;
-> > > +}
-> > > +
-> > > +enum drm_connector_status cdns_mhdp8501_detect(struct
-> > > +cdns_mhdp8501_device *mhdp) {
-> > > +	u8 hpd =3D 0xf;
-> > > +
-> > > +	hpd =3D cdns_mhdp8501_read_hpd(mhdp);
-> > > +	if (hpd =3D=3D 1)
-> > > +		return connector_status_connected;
-> > > +	else if (hpd =3D=3D 0)
-> > > +		return connector_status_disconnected;
-> > > +
-> > > +	dev_warn(mhdp->dev, "Unknown cable status, hdp=3D%u\n", hpd);
-> > > +	return connector_status_unknown;
-> > > +}
-> > > +
-> > > +static void hotplug_work_func(struct work_struct *work) {
-> > > +	struct cdns_mhdp8501_device *mhdp =3D container_of(work,
-> > > +						     struct cdns_mhdp8501_device,
-> > > +						     hotplug_work.work);
-> > > +	enum drm_connector_status status =3D cdns_mhdp8501_detect(mhdp);
-> > > +
-> > > +	drm_bridge_hpd_notify(&mhdp->bridge, status);
-> > > +
-> > > +	if (status =3D=3D connector_status_connected) {
-> > > +		/* Cable connected  */
-> > > +		DRM_INFO("HDMI/DP Cable Plug In\n");
-> > > +		enable_irq(mhdp->irq[IRQ_OUT]);
-> > > +	} else if (status =3D=3D connector_status_disconnected) {
-> > > +		/* Cable Disconnected  */
-> > > +		DRM_INFO("HDMI/DP Cable Plug Out\n");
-> > > +		enable_irq(mhdp->irq[IRQ_IN]);
-> > > +	}
-> > > +}
-> > > +
-> > > +static irqreturn_t cdns_mhdp8501_irq_thread(int irq, void *data) {
-> > > +	struct cdns_mhdp8501_device *mhdp =3D data;
-> > > +
-> > > +	disable_irq_nosync(irq);
-> > > +
-> > > +	mod_delayed_work(system_wq, &mhdp->hotplug_work,
-> > > +			 msecs_to_jiffies(HOTPLUG_DEBOUNCE_MS));
-> > > +
-> > > +	return IRQ_HANDLED;
-> > > +}
-> >=20
-> > AFAICT from the rest of the driver, you support HDMI modes with a chara=
-cter
-> > rate > 340Mchar/s, and thus you need to enable the scrambler.
-> >=20
-> > If you unplug/replug a monitor with the scrambler enabled though, and if
-> > there's no userspace component to react to the userspace event, the cod=
-e you
-> > have here won't enable the scrambler again.
-> >=20
-> > You can test that by using modetest with a 4k@60Hz mode or something, a=
-nd
-> > then disconnecting / reconnecting the monitor.
-> >=20
-> > We addressed it in vc4 in commit 6bed2ea3cb38 ("drm/vc4: hdmi: Reset li=
-nk
-> > on hotplug").
-> >=20
-> > Arguably, the whole handling of the HDMI scrambling setup should be tur=
-ned
-> > into a helper, and I wanted to extend the work I've been doing around t=
-he
-> > HDMI infra to support the scrambler setup once it landed.
-> >=20
->=20
-> Yes, for userspace components that do not handle HPD events (such as
-> modetest), if they are connected to a 4K display and enable scramble
-> then the cable is unplugged/plugged, HDMI will not work. However, this
-> is a userspace component limitation.
+The Kconfig help says:
 
-No, it's not.
+    Memory Technology Devices are flash, RAM and similar chips, often
+    used for solid state file systems on embedded devices [...]
 
-I mean, yes, it's something the userspace *could* do. But it doesn't
-have to, and the expectation is very much that the display keeps
-working.
+The FAQ on the MTD documentation [0] says:
 
-> fbdev and weston could work well for this case.
+    Unix traditionally only knew block devices and character devices.
+    Character devices were things like keyboards or mice, that you could
+    read current data from, but couldn't be seek-ed and didn't have a size.
+    Block devices had a fixed size and could be seek-ed. They also happened
+    to be organized in blocks of multiple bytes, usually 512.
 
-Yeah, they could work well. We don't want them to possibly work, we want
-them to work, period. That's why amdgpu, i915 and vc4 all have that code.
+    Flash doesn't match the description of either block or character
+    devices. They behave similar to block device, but have differences. For
+    example, block devices don't distinguish between write and erase
+    operations. Therefore, a special device type to match flash
+    characteristics was created: MTD.
 
-> The patch for vc4 in commit 6bed2ea3cb38 ("drm/vc4: hdmi: Reset link
-> on hotplug") assumes unplug/replug the same monitor as stated in its
-> commit log.
+    So MTD is neither a block nor a char device. There are translations to
+    use them, as if they were. But those translations are nowhere near the
+    original, just like translated Chinese poems.
 
-Indeed.
+And in the section below, it lists some properties of an MTD device:
 
-> It does not support the case where unplug/plug to different displays.=20
-> For example, if the cable is unplugged from a 4K monitor and then plugged=
- into a 1080p monitor,=20
-> 4K video mode will be output to the 1080p monitor because this userspace =
-component cannot respond to the monitor change.
-> Therefore, for userspace components that do not handle HPD events (such a=
-s modetest),=20
-> this patch can only partially solve the limitation, but it is not a perfe=
-ct solution.
+    - Consists of eraseblocks.
+    - Eraseblocks are larger (typically 128KiB).
+    - Maintains 3 main operations: read from eraseblock, write to
+      eraseblock, and erase eraseblock.
+    - Bad eraseblocks are not hidden and should be dealt with in
+      software.
+    - Eraseblocks wear-out and become bad and unusable after about 10^3
+      (for MLC NAND) - 10^5 (NOR, SLC NAND) erase cycles.
 
-You're looking at it from the wrong PoV. What matters is the behaviour
-we offer from userspace. Userspace is in charge of setting the mode, and
-it's expectation is that the mode is going to be output until it either
-changes the mode or disables the display.
+This does support the assumption you had about MTD devices being tightly
+coupled with erase block. It also makes it quite clear that an EEPROM is
+not MTD -- since EEPROMs are byte-erasable.
 
-Reenabling the scrambler when a display is disconnected and reconnected
-matches that expectation. If we ignore the case where the display has
-changed, we still match that expectation: the userspace is in control of
-the mode.
+Of course, the existence of MTD_NO_ERASE nullifies a lot of
+these points. So it seems the subsystem has evolved. MTD_NO_ERASE was
+added by 92cbfdcc3661d ("[MTD] replace MTD_RAM with MTD_GENERIC_TYPE")
+in 2006, but this commit only adds the flag. The functionality of "not
+requiring an explicit erase" for RAM devices has existed since the start
+of the git history at least.
 
-If it wants to react to monitors being unplugged, it can. But it doesn't
-have to, and it should keep working as long as you don't change the
-moniter / panel.
+I also found a thread from 2013 by Maxime Ripard (+Cc) suggesting adding
+EEPROMs to MTD [1]. The main purpose would have been unifying the EEPROM
+drivers under a single interface. I am not sure what came of it though,
+since I can't find any patches that followed up with the proposal.
 
-And you're also completely ignoring things like AV amplifiers that
-really like to do those kind of short HPD pulses.
+Overall, I'd say that while originally MTD was written with flash
+devices with erase blocks in mind, the subsystem seems to have evolved
+with time to include other types of devices.
 
-> If helper functions are used to restore the HDMI scramble bit after
-> hotplug, I would like to use it.
+I don't see anything obviously wrong with adding EEPROMs to the type of
+devices in MTD as well. It doesn't seem to be too invasive to the
+subsystem (I do see some dubious code when skimming through the patches,
+but nothing unfixable). And the EEPROM drivers can get a common
+interface. The other option would be to create a separate subsystem for
+EEPROMs, but perhaps that would just lead to a bunch of code being
+duplicated.
 
-Those helpers don't exist yet, so feel free to work on them.
+I'd like to hear if somebody thinks otherwise, and sees reasons to _not_
+do this.
 
-Maxime
+[0] http://www.linux-mtd.infradead.org/faq/general.html
+[1] https://lore.kernel.org/linux-mtd/20130705201118.GM2959@lukather/
 
---3bvkkyl5thqxineu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZoP1HQAKCRDj7w1vZxhR
-xdkwAP40UCWrNOV2VLiJyvMg4LRN4JC8s6714BNQ8fq8rI1Q2wD+LrtpkGVb424r
-IxBXtjaaRMRF0KCaST36XTcm25I57Qc=
-=5pfl
------END PGP SIGNATURE-----
-
---3bvkkyl5thqxineu--
+-- 
+Regards,
+Pratyush Yadav
