@@ -1,82 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129681DA32A;
-	Tue,  2 Jul 2024 23:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CD039B;
+	Wed,  3 Jul 2024 01:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719964296; cv=none; b=pNXU74MwmJfPO4IC1ZqIkzIvU/czMrGwpeUdx+VgqFum1JkWlJ/OCZkj2UvBUxiO4QNX5q04gFIsz44kSyqGYBWPtcZsfCU2j2vkIEllt35nwU+i6Byu+U8FsmoaMzqC0aZr1yW9voNf4bs+E/sJY5JhscEIMgn8B1jBvEIOn4U=
+	t=1719971304; cv=none; b=sG2m5VmumQSgehnsdipG/9Ra0QRmjkvTT9IvCGWwS3+zBiQCVTqFP7r4KMfca9Ooz5R8q2WQQADZ2sp2PVlD/dVWTA6bS+6PqgKG/PRHuWeOFSj1NzeVmnCzRCAOCfB0GWTaPXDkpV6Sxr0/6gOxVXZtPDQTW3kFqcuTlQBn7xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719964296; c=relaxed/simple;
-	bh=nHz1v+q1b/0YjOK5wXThuki6AqlPU0j88B9fgnPTwbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U3k/kcsn1vg045ygX7VK5FnZD8WeAR4XUus5DEBI/XACRffchWLSJz4Fu79jjgQRNhvLXhCA86+I4UyNPFBBb3GtK4ZqRyHzhisjfkSjWS7CLejGeTxMkAYqH7UeaBKSArqmq2x6d5AU/nwcTaQTynk4U9lhZW16qZyLmVWrrfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=POYSzhvo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719971304; c=relaxed/simple;
+	bh=GZCoVWFN6u3VhMnkbEhDyzJp0J4meoC0ropIoKAfXbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ujIkhv9XaVwGFg5I+ARWyKFHS+58qA+mo/hjyJBwe6QIWsE3MrCLiFLQftHUaIgbN5/1b2C+6CE4IQ/vZOX4S9YOCFTRiK9vOsxRUnuguGU7vWyPKLnw9T1dSr8EEeY6eJNfr6NwY9wUZ8bO56BIKyC5n/dtBdHvjj5IPLLZI+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9qOMJo8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="POYSzhvo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774DEC116B1;
-	Tue,  2 Jul 2024 23:51:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9qOMJo8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6CAC116B1;
+	Wed,  3 Jul 2024 01:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719964295;
-	bh=nHz1v+q1b/0YjOK5wXThuki6AqlPU0j88B9fgnPTwbc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=POYSzhvokRm1+Seu5OWbvFI0887OQO7wkAHLFB/bs4uT40FVL4m73PGnZMuyKFTAH
-	 xlclxCPB7hqAXTgg9lKYpmY435GWUvmlic7us6q4mARf4fa5+iKTNbmRWs6m63kqKz
-	 wvnzjA3kT4VuKGDwZxHBM7P3uZY0apDhujjz9BAOlLkgPJ8SKPVgF7AIc2jcBG1aW8
-	 nvHbfCl/+NGo3CL3V75Wy/E9R+6weH7Ets50R7wV4oZnznnEzJQjyIajwD2EIoyzRI
-	 GjZ3RkF/21nG4WC54eCTzYS3vOVtXD7lQijB3VJ205Hz6CPZcK/IRaxI0kddm7bQNm
-	 4LLLlzocB+TtA==
-Date: Tue, 2 Jul 2024 16:51:34 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-	mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, james.clark@arm.com,
-	linux-perf-users@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] perf pmu: remove one dupliacte ';'
-Message-ID: <ZoSShvCcFSQPQvzJ@google.com>
-References: <20240701030339.56424-1-xu.yang_2@nxp.com>
+	s=k20201202; t=1719971303;
+	bh=GZCoVWFN6u3VhMnkbEhDyzJp0J4meoC0ropIoKAfXbg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b9qOMJo8rzsW4XkY0xCgKObkkg8xFIL8bW+E5KqDEKh3s77Rn+HjXFwUFQgE3n+LA
+	 3DjQPse0N/dgAq+aaOAtNwiXbZI5SGK924VrqnfvvwBEc4wT7Au4y5TVV3YEXNsPWf
+	 M5aPn0uKrvwUVyw+1qhxBwTyAwjHM7Xr58sg+TJ9LKUNuLblg2IjKH9QL1NlFMGTJy
+	 SgvIuB3mUHqmG7hlopvQvApJW1R4FOveptyFXnr3/sbLpRZXNxQdVj5iRfAUxUhN/f
+	 hwuw7k2xAa1qMFsTX4CDKiY7RRSG8n0a9AR200AD/dCWOzkFGHhIacICUP9wNdloFR
+	 WeYNSu3ePSp5Q==
+Date: Tue, 2 Jul 2024 18:48:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson
+ <sean.anderson@seco.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, netdev@vger.kernel.org (open list:FREESCALE QORIQ
+ DPAA FMAN DRIVER), devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND
+ FLATTENED DEVICE TREE BINDINGS), linux-kernel@vger.kernel.org (open list),
+ imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] dt-bindings: net: fsl,fman: allow dma-coherence
+ property
+Message-ID: <20240702184821.3dfb5e33@kernel.org>
+In-Reply-To: <20240701201448.1901657-1-Frank.Li@nxp.com>
+References: <20240701201448.1901657-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240701030339.56424-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On Mon,  1 Jul 2024 16:14:47 -0400 Frank Li wrote:
+> - Fix paste wrong warning mesg.
 
-On Mon, Jul 01, 2024 at 11:03:39AM +0800, Xu Yang wrote:
-> Remove one dupliacte ';' in function perf_pmu__num_events().
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-
-Thanks for the fix but it's already fixed.
-
-https://lore.kernel.org/linux-perf-users/20240628053049.44521-1-yang.lee@linux.alibaba.com/
-
-Namhyung
-
-> ---
->  tools/perf/util/pmu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-> index 888ce9912275..d8726ec5368d 100644
-> --- a/tools/perf/util/pmu.c
-> +++ b/tools/perf/util/pmu.c
-> @@ -1765,7 +1765,7 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
->  	size_t nr;
->  
->  	pmu_aliases_parse(pmu);
-> -	nr = pmu->sysfs_aliases + pmu->sys_json_aliases;;
-> +	nr = pmu->sysfs_aliases + pmu->sys_json_aliases;
->  
->  	if (pmu->cpu_aliases_added)
->  		 nr += pmu->cpu_json_aliases;
-> -- 
-> 2.34.1
-> 
+Pretty sure Rob had another comment.
+-- 
+pv-bot: feedback
+pw-bot: cr
