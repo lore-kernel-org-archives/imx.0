@@ -1,186 +1,216 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2048.outbound.protection.outlook.com [40.107.22.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19731A08A8
-	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 14:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720101748; cv=none; b=a9hRXz2AeCRAV9ZE/1csJBdPHeG7da420XqbZ3xs9GNgmJnv1R0ZwMCaW5hFxIGWqhVlBNjkHHMIkRvbh71noo4My8I9KLlYI9n6NrtH8keNtEAJVvtQop9paozRpZ0onjRDRlcE0IxJe3lf8MkPtjlwptZobfFYF0kUAs8Tu0g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720101748; c=relaxed/simple;
-	bh=misJld9OXt2HQGXdcMz5/jySo9Fl3DNg/LRqr42yRAw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V05xlvPdZIiSn1yM3QIYLv8x39okTicOWIdEbon/wgI3vUcdXa4rzyZwgABbEElHt//dP0Lx61fiLCnd/HMTzgLx8QLq91ayqrXt1AfdWTGrV0OCC4iKiqCaMjkznTxQadicgL/TgfhKujZA4iD+xTAoYwLVu3Mn4+ICDoM5Qwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Gc9esNfd; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66F31AC451
+	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 16:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720108872; cv=fail; b=a9sOJ+MF2gFLWRGtXeHeevLVOHcCR3JaTwwfoNWHCANwF9DyN8JYUn9BVEkSzM9RVOaOpYlPyt7jHxhmKHRUzWQuFC7/Cma4OMAxvmkC8A7qwemnsPWOGj17U7NomjWYHPcI6juLvJkPxpW6SztMYv7kTcLcN4l0vej7phxFcsk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720108872; c=relaxed/simple;
+	bh=IXV2qV30cSXeucJALgM0nDZoHXr5+Ymfs4Kia8vG2QI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=K49GzN5a24otxpTkei0DPJk5I2ZpA0RSDoshX5RfLZuePuf3BdNoqzgp9rzxy2kuyq3sZBmTQPg3Y5YuFmCQ4LWlAvV4ndijHiuHuh405gA0LQSqwnxW4CLumn/k3xR3WHjdNdNLRSvQxEFcJTIsjYZVj4ZAkxsZT9VOCXYfk6E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=klClIM5y; arc=fail smtp.client-ip=40.107.22.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Gc9esNfd"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2ebeefb9a7fso7815561fa.0
-        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 07:02:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1720101744; x=1720706544; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wqbXAqL9wlAuHc0SJ4u0nAeJp5BlfcD9g+Q8MysRj3Q=;
-        b=Gc9esNfdcYzKzcu2DSITVHqHf4WZCZjY7DNVIuga9VlWoExKDtBGVr8CXvGz2AH+2u
-         xKQbH52GkIhzOvOuo3FU61KzpAHLFvJ1vEhOFhphuPY4JE08j+9MysO0nJ+L/np63ERW
-         Qg38reaoStvpubJBJtkarjrSHVtHKWMr923Qagy5TvhV5FqMkHzajUpvDIlqlH9VnO0M
-         2e4cZohrO8CJuKWgTcesZmA6RsMrC+G0KCMxXc04nRqVijsDLk1UcIe2X9ZwwS+/FiIV
-         CX4xxIaw3Gw9TSOXqYGc2fYRlFXl+qAB1zCDAGmpcAdOg73k1GmP0scCFmX2uVX7WgAk
-         XmIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720101744; x=1720706544;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wqbXAqL9wlAuHc0SJ4u0nAeJp5BlfcD9g+Q8MysRj3Q=;
-        b=wnbptQ8xIBBOvWnCo/v5zXAmoKZpjgSEhTe+Sq+p2UMcort4PDswRAmcO3hx4HtvHR
-         XOScsM6CfBHTLDIPMa8N4qc8lxIw1D/rLPth5bzT9qH8Hk8bDxS1FNmccG3CJM4XDqec
-         36AjViPnRBnkS3BsycDyaKDgeSLh9QA6CzH9YPryaPIdOPe8Xu4utawbreMTXOtVRKSF
-         Yl85Gq+DVuBURQTtylB2yBE/PPugpKy5FGJ+6PHPZ/8Er/QvEGQPzExrsBVH6nrt5YWa
-         wgn9GzUmKbyhjbSmUXYxEU9SM7Q0It8dcQsKTPFl6uXZDJQrS4ifSh1JTYfPuT6V3gyY
-         05Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCWeLPakSR81NLgT7K/i+QufC/wVFBslFgeiIm5Cm0CX8AOUOhTq045MOeFb3+Pabzoec+94egJzxxWjk+NGv4iSqwIQ
-X-Gm-Message-State: AOJu0YzMiKlUylVDSnzEf6s7Gwtl3gMjGRbA2pgjY/qizgKvzOGVe3o2
-	TWHrmz8uL0/OwEr/ApvDWTAczErbvU3OPB01V3WkfMClpae1impRC0HiABafpws=
-X-Google-Smtp-Source: AGHT+IEH0ii/5bDGf3/oJxkx+BSCOwuT1536wkXWHPyM0FRssA3mk6XZ1GyCc9wc5qhQdqz90Kl+Xw==
-X-Received: by 2002:a2e:b043:0:b0:2ec:5685:f06b with SMTP id 38308e7fff4ca-2ee8eda389amr11224661fa.27.1720101744044;
-        Thu, 04 Jul 2024 07:02:24 -0700 (PDT)
-Received: from [192.168.1.135] ([207.188.161.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac10e3311sm122464035ad.79.2024.07.04.07.02.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 07:02:23 -0700 (PDT)
-Message-ID: <c1c387ad-6586-4108-88c8-1d04a65fdc49@suse.com>
-Date: Thu, 4 Jul 2024 16:02:14 +0200
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="klClIM5y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nW6Al1cZqDE8OcmXM9m14UZT5ftRd0rbrA9CzeQMdiAPP8B0YVdmnMNa8YMCto5xJQMZ+qjwy+Wf3GaNexdS6UJB0PlXqxL9MC2iZ6P0In1h+epBL18xcnfBaz4ww4hDG9VWfB++BDiJqSMPzh3CYOuIqh4Zb2Iwocgz6wenRHmpBT7NEr4MMfXE2E6Ul09ybtOvHpSgerOLs4rofIdqyiqCB5BEOdU4GkkMJKSXbq/dwBxrJaLGvFZPLlxkfQ0F+A8ObGdwzEeSrCQQzP1PWEBFUusymjqfWdDuuHdr7Rl+ZXhJbnrrU+lD+5LCpV2aZSgvuC6nESGsSmTFPyGuFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xF0RzoyMYT9jmvmtScpSlGi8X6Gy4KiLtnyr9+mNJys=;
+ b=Y2ndYkiEBRI2Vr3gfDkbqD9eNJ08qBjU9qiW762Zcs+itj9TSBJkxWmf4PrbYEvK4EDj4X2AlLep8kPK7slZL5VakicO59lYUv7a4TGcZL2b0X/DuIzzLAaFc6r7liAJXJjCf4MT6xOCoYRzBtwWkuBu61i7D1g5vQsSh2fL5tkCIwO64WtaDxTaIK+GxyW/Dh/LtxGAobfPCauoW/QSUXivNI70f+IdWyUhyKWV1a/ktud2DL3pd/rCMBv+CxISEiFFtNkmiYZQ3csXjbTlpGwP2r59odPjUTw58MMNP+DgMXn+mbSbKy9hjL6AhS2pUiqoscMsLxz44oZ7SKXyzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xF0RzoyMYT9jmvmtScpSlGi8X6Gy4KiLtnyr9+mNJys=;
+ b=klClIM5ygDtAaTqLmTmvdVsxDX80BU8uFpImbfEmuaF6l5yEYrLtNd/Brnqspbb9Du3US0OIz7mijHLBVMzFxGvNawlka5XmiU79G9HgVAwjCX7+DkRER4S37/sRQ/uPOYiQ/BiE37vPkQV1aiSkVgs/6oSfyh4DxtOQieYK0o4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GVXPR04MB9950.eurprd04.prod.outlook.com (2603:10a6:150:11a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.34; Thu, 4 Jul
+ 2024 16:01:02 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7741.027; Thu, 4 Jul 2024
+ 16:01:02 +0000
+Date: Thu, 4 Jul 2024 12:00:53 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Felipe Balbi <balbi@kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	Ran Wang <ran.wang_1@nxp.com>, Jun Li <jun.li@nxp.com>
+Subject: Re: [PATCH 0/2] usb: dwc3: Add cache type configuration support for
+ freescale layerscape
+Message-ID: <ZobHNfI9doRyd+nj@lizhi-Precision-Tower-5810>
+References: <20240703-dwc-v1-0-9cbc93d49180@nxp.com>
+ <20240703233310.2oxguahed2g2lknm@synopsys.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240703233310.2oxguahed2g2lknm@synopsys.com>
+X-ClientProxiedBy: SJ0PR03CA0149.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: s32g: Disable usdhc write-protect
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Chester Lin <chester62515@gmail.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, s32@nxp.com
-References: <20240704135653.2969532-1-ciprianmarian.costea@oss.nxp.com>
-Content-Language: en-US, ca-ES, es-ES
-From: Matthias Brugger <mbrugger@suse.com>
-Autocrypt: addr=mbrugger@suse.com; keydata=
- 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
- PVrr2NoUqi/bxI8fFQJD1jVj8K0=
-In-Reply-To: <20240704135653.2969532-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB9950:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e6795cd-1296-4833-569d-08dc9c428105
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3XLGbUf42UDmzfUoF+3B4a9CSUYHAfsXcRFjlganpODT1jLYwrbw/39N9Nkl?=
+ =?us-ascii?Q?X4rTg48wxCCzc73Io0vrSZHJrGlTPVpdWndoizlSRPjw5wJZEZqrMn+rB1LL?=
+ =?us-ascii?Q?W+T76fiHUjNUHQl4cNqsbfdUGB4wQz/j6xtsYEedCq9vkuwE0yCNQ2d8OvIN?=
+ =?us-ascii?Q?/3NrXPZii/USfR0ql3ogbzh+yB8WDz7dybgjnTN6soMlhqUTVVZ/QzFbRozG?=
+ =?us-ascii?Q?+RNHN9OFew1sITBOYUKFTDC1OZnHAgXhrM802VGIdhTXwXNW1W/YXDEo4hS1?=
+ =?us-ascii?Q?ip5nP6t9RH1dVo/O4W+CIZlJ7pRhWv/BA6NjhtqwZ5tb61SdRsXcT6ZMbTZb?=
+ =?us-ascii?Q?FsrmUbIFBqsubSAX964uqysSbllAkS4YTNGaSWBIWJw+oQrzP4vpRhF0ELMm?=
+ =?us-ascii?Q?d04yRxvLul5KQb1MEhDpI4augE3uvMgHmVGt/phwWgsrSAxAQV9BL6tFuYFg?=
+ =?us-ascii?Q?YTKcfOZ5osx2eo6/UKFZuRYbNdp/sqvEOkg0OpH9mGm7ZBnbTDi4QqjnJQWE?=
+ =?us-ascii?Q?3JIp6kV0BW4mnej2p0oAG/5wC4ftbMlIx0ezcv3Mdd/AZO4vwHYNpT1szFc9?=
+ =?us-ascii?Q?wxwiPt7fV6RMtCHi8BDiq3W9Fvw4gHRzCJpNokU2Y0uVrQvjaApLAFgMwYIG?=
+ =?us-ascii?Q?Q1oART+dFddR3W284xiAJ0CxYVgyFPPnIBtD1WRIMer/h1Ot0OKbHQLHRpxJ?=
+ =?us-ascii?Q?ebplGkMxOAH9VNyhlMbaTvEKvuVekm3rmzV4PxSPXKtd/Ku3VL6NBhWo87Bc?=
+ =?us-ascii?Q?BnVcQM/m48I+wx4ygaDXKwPKR9xtxK0tdfXRonHd45oPfetOtHH8NuMFQo8b?=
+ =?us-ascii?Q?HWD1wKjDlUAGmSWpSQFTsQR/Y37GrwLfHdqk6eVy4rzQTo2FclfLOKEfa+kh?=
+ =?us-ascii?Q?NtFr2h5xqZv7JmXZzPjMGVUxmGERj8En2Zrl8CdtMEsF2pp/y1oLnSpQgNpN?=
+ =?us-ascii?Q?pNZLcxlerTPBDXZUKnxU8lEqErXlUJKkDquoeFRQOHM3KpVhpIlripT4UMmC?=
+ =?us-ascii?Q?rgQ7BkDJLgdoAjbZdMQD1+rMN77qkrNRbeSaGSFrbbBkRYQTzG7808PZNg8k?=
+ =?us-ascii?Q?npQ+u7xylKkkO0B3kDg/i+bBnaZxLl0+/ZnZiBjjFXtHFbw2BvQjtbtVsurq?=
+ =?us-ascii?Q?dUW/DjU0o6pVmSlfvwwiVr73hjZUa8KPqrRCQOzZnSiccOn8C/7cn0pI3/sO?=
+ =?us-ascii?Q?L3eP1Cxiq2RrzqiJwfKq/WYYVUn69d2SvyQBvrSLBSuAJnaCe7SFAE/sSlIs?=
+ =?us-ascii?Q?L8jdvyxsyjbpWnwND60TL0iQrqE92BbrMEljxi3voR4Akn4grwm7ztL5Z6i5?=
+ =?us-ascii?Q?SfWI3HvkXBGofzFrzb/AXF1xYG9C2imJe0RdlJP5lDvBLx/3GCr0+ROaK6E7?=
+ =?us-ascii?Q?SqLS5Hc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?39bgXEE2UBcKr6Rrx2R+ksOlatb6NWXchzVYgOAw6Nj4oJQY5NmHiZF9YsgP?=
+ =?us-ascii?Q?vnjGqjmF+Z2oFiqlmUUkKNeuvuCuFcYSeAn7AXoMKFuHWxeYP/DcM986BdD2?=
+ =?us-ascii?Q?Ernn5AAcJRsrbviaR0BsxmEfwdtiMrPO8y/7ZJyP9CnwCJD28KS9E0cfR12n?=
+ =?us-ascii?Q?UKLVkH2sgyeKSXq7q+Ed2Iupw6NaVUlTL1gqsrK9RUY3QC0CUxdGfVtsEkRz?=
+ =?us-ascii?Q?1DTlGUsB0sCkF+xAK5gjR5Tc73lBtlt1XYVrdEz/i2Y4LTvTF7ak17uHW2YL?=
+ =?us-ascii?Q?Xn8scHLbhcHLUxVBYO/UbtF5WZLGSVvhP9WWW3gN9MXWPxICnJLVebWH2gzs?=
+ =?us-ascii?Q?MvxCMoYMqp9BBAIcO+frrw9GIB6jO93C448umbPF3hm4nHa/QViH+In78Zwg?=
+ =?us-ascii?Q?d7kCAr/d90yGM+9Ygz41tP6d9Pinj7+atB2aES1dlFRGEEeWO5xuFQLzOYWs?=
+ =?us-ascii?Q?6uiUnXdBtZmg/eNtnBmpD4TFsQpHHEIQM0lRf6eWuwTXrPbMbEKDxJTxuBit?=
+ =?us-ascii?Q?YNxGSb7n6EzbuDryvoGvzQrR6F8oZtgIsj7qYTQiNs9ex7tY102Wi1fl5jWJ?=
+ =?us-ascii?Q?K0Mcrjang9BzL/OaIE5pafhJPCOgI5ekyIySqbeAnOmtdgG4pyDv3MAEc0Ep?=
+ =?us-ascii?Q?93svg7eJY3NLImZ1CbTX4CECPjMKOliH14v5n3QlBWvXCtz0NsNA14nh+qki?=
+ =?us-ascii?Q?pcRG3B8QxEUm7F61AkSnqnn1H4c2aI0/QLDPvnL3tyfjXc0GeS+5wFaYxpUQ?=
+ =?us-ascii?Q?lMYa8Z5HLaW2RbzfbrG6hycanVOU2Zyd9RIVF7mFHze20Ps2YJ/Izm/jNGe8?=
+ =?us-ascii?Q?fBzdG5EZUca6uCfT1yvhyBVArV5NUZb3HQadBKdJfLKYWMI3RZIqUXkQwhdS?=
+ =?us-ascii?Q?HpXGBnNacPXD7wjQuCUuN1RmTqK2MwaHolXr+4E4fIlzzHyK5J9sm9rNDPMW?=
+ =?us-ascii?Q?Ukrn82ZzwJ8wYqSbUIgpEnPqjHP29H825xsSoLIPF0zOHpZUe8V0OxQt0IUR?=
+ =?us-ascii?Q?2UawznS9o2Hae7v2uPKFx2rjgE0i8CjxqTLecYe80GYO7h7jY1e23K1y1Vzo?=
+ =?us-ascii?Q?0Ba2DxLYApRWEJXliPH088DpQWxJFeReMUoeg4IDqI9yIhiP1xdRj6GWWLPy?=
+ =?us-ascii?Q?fkkmMaC+7U85GBCjXL7eOR3NTBdWoHt0xU/YnsWKjVf9bEykU1iQeVaoNwVE?=
+ =?us-ascii?Q?fEZwgIsyYEt4rBuoezd6cK39tTzDmCc6S1zySdaJsfVaypwdalo9jYgPXa3V?=
+ =?us-ascii?Q?ql8ULxzGTysFV16TvzpQs9yf3OXobbNoMpqTU5riD/WQYdGxbTMK4X1M09Bm?=
+ =?us-ascii?Q?JxZ6R2wxB7RxCd54djW0km6wzu8efnQyHkBhlliZ4jk12V92zNv8oimmjji4?=
+ =?us-ascii?Q?bEiaNnkas7wXpFuuqmdaBp9EfNLsbJ3A5aheB/A4GLRPsTeVG0kUzl2QZ2WL?=
+ =?us-ascii?Q?9g3Z/RMd9w2exBNEJOcoxXb/q8WZwyTuBKcSLNrsket9zHGTW0GS9YhX0wvT?=
+ =?us-ascii?Q?QZTmB8LoHc0IH9ggvh2AGKnZZXcRXYBVk/DUbBQMUYtqOvEfqge9G2pkimzA?=
+ =?us-ascii?Q?X2/pujB6KtJCjcrbW176eX0i02s+zCmd4zCTqyo0?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e6795cd-1296-4833-569d-08dc9c428105
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2024 16:01:02.7298
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V0Olf1DUyYUU0hQVX5+9bGrZ1AlJylooyRSlhqbdZ7DBK/9yurtUQ6mNKrFdoBeReVZ2RU/zoyp/oP+7mJxW8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9950
 
-
-
-On 04/07/2024 15:56, Ciprian Costea wrote:
-> NXP S32G2/S32G3 SoC based platforms do not
-> use a pin for SD-Card write protection used by
-> the uSDHC controller.
+On Wed, Jul 03, 2024 at 11:33:23PM +0000, Thinh Nguyen wrote:
+> Hi Frank,
 > 
-> Hence, adding 'disable-wp' usdhc device-tree property in order to fix
-> observed warnings on SD boot as the following:
-> "host does not support reading read-only switch, assuming write-enable"
+> On Wed, Jul 03, 2024, Frank Li wrote:
+> > There are several attempt to upstream this code in past year.
+> > 
+> > The first attempt:
+> > https://urldefense.com/v3/__https://lore.kernel.org/linux-usb/20191121095356.GB7503@b29397-desktop/__;!!A4F2R9G_pg!cdNydVZ64br9EHG13lgP3lKWe5VuXQvvfvA1CzKJqhXZZB1H9vcJlwI1vj1EF3ynRFl2u8tD3lYqRvrJFSs2$ 
+> > 
+> > cache type is dwc core setting, not glue layer. So It'd better change in
+> > dwc core instead of glue layer code.
 > 
-> Signed-off-by: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+> Why not glue layer?
 
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+I understand glue layer is what provide clock, reset, power and other
+control for dwc usb core and have a seperate mmio register space. All dwc
+core register access should belong to dwc-core part. You may have
+difference defination for glue layer.
 
-> ---
->   arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 1 +
->   arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 1 +
->   arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 3 ++-
->   3 files changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> index 00070c949e2a..dbe498798bd9 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> @@ -34,5 +34,6 @@ &uart0 {
->   };
->   
->   &usdhc0 {
-> +	disable-wp;
->   	status = "okay";
->   };
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> index b3fc12899cae..ab1e5caaeae7 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> @@ -40,5 +40,6 @@ &uart1 {
->   };
->   
->   &usdhc0 {
-> +	disable-wp;
->   	status = "okay";
->   };
-> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> index 9d674819876e..176e5af191c8 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> @@ -1,6 +1,6 @@
->   // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->   /*
-> - * Copyright 2021-2023 NXP
-> + * Copyright 2021-2024 NXP
->    *
->    * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
->    */
-> @@ -41,5 +41,6 @@ &uart1 {
->   
->   &usdhc0 {
->   	bus-width = <8>;
-> +	disable-wp;
->   	status = "okay";
->   };
+> > 
+> > The second attempt:
+> > https://urldefense.com/v3/__https://lore.kernel.org/linux-usb/20240123170206.3702413-1-Frank.Li@nxp.com/*t__;Iw!!A4F2R9G_pg!cdNydVZ64br9EHG13lgP3lKWe5VuXQvvfvA1CzKJqhXZZB1H9vcJlwI1vj1EF3ynRFl2u8tD3lYqRh7SiHmM$ 
+> > 
+> > DT team think there are not variable for property 'snps,dat-wr-reqinfo'.
+> > And suggest use vendor compatible string.
+> > 
+> > This is third attempt:
+> > Compared with first attempt:
+> > - reduce compatible string to one 'fsl,ls-dwc3' because all setting are the
+> > same.
+> > - move update burst type code into dwc3_set_incr_burst_type(). and check
+> > compatible string 'fsl,ls-dwc3'.
+> > - Using bit field help macro.
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Ran Wang (2):
+> >       dt-bindings: usb: Add chip-specific compatible string 'fsl,ls-dwc3'
+> >       usb: dwc3: Set cache type to 'snoop' for freescale layerscape chip
+> > 
+> >  Documentation/devicetree/bindings/usb/snps,dwc3.yaml |  1 +
+> >  drivers/usb/dwc3/core.c                              | 12 ++++++++++++
+> >  drivers/usb/dwc3/core.h                              |  4 ++++
+> >  3 files changed, 17 insertions(+)
+> > ---
+> > base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+> > change-id: 20240703-dwc-5be3e378ddbe
+> > 
+> > Best regards,
+> > ---
+> > Frank Li <Frank.Li@nxp.com>
+> > 
+> 
+> This may blow up the dwc3 core from various platforms and compatible
+> strings. This can be handled in the glue driver and create the software
+> property instead.
+> 
+> Radhey Shyam is working on this also. You can check his work here:
+> 
+> https://lore.kernel.org/linux-usb/1717657279-2631757-1-git-send-email-radhey.shyam.pandey@amd.com/
+
+This is quite good.
+
+Frank
+
+> 
+> Thanks,
+> Thinh
