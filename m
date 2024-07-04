@@ -1,60 +1,60 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A7D13AD03
-	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 17:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A011C13C682
+	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 17:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720113825; cv=none; b=UkADPDg9LivaZAKuuOJfkKjvdbJtrfrZbtYrtGkt2w8khHFXOSBzto2ZFrPzO5zVLKlv3n0VSZE4oHf/7+UtJMnDtCTx95Z7kEYvPjM/BiaGHjsRrwQ7CW08bv/kh7Hc4sovv9aK0OPchBgu9KQ+U1A3HUXvDgFO/2kSizeMoTk=
+	t=1720113827; cv=none; b=e4YlSaGTim8OWERtMB/JObkWxYMW+LNiNwMp296yDu2NluHKIezuWpIanpYWhq0fs+UIDXFHsPS4VUYDT3b6KetGMtbDXXgCmiH4kF3Qhq2oPIuRbcoFWqg41uTu/pvuFWte9M/x1BvNjwvjQbeyqIVl28KCZgudz+jzxOAU1PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720113825; c=relaxed/simple;
-	bh=1QPZacUuOeaij0so0MenKs4sY5xXKtXayfwYDVrHiWI=;
+	s=arc-20240116; t=1720113827; c=relaxed/simple;
+	bh=V1YaAN6Ae4SYUS+F2fqEOGoyBhvW6e5jyjeki/M8uo0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rq6lXcyuGvatcOMA5DqGkCqLbrZ9S791WEGsJFEf+ovabDB9FKjsJh98sJ1z2BMCm8LjEZ/L//b/XG6eLQdA/mpVXPfv3zaOZdPn1wPwQ4XZbqRNbAKDj8DvaIcFlWUKDAnrMJvaVHyIP4XzLl94xxj4k5qAznGBH+WJfgJQgiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WHnRJrHl; arc=none smtp.client-ip=209.85.128.44
+	 In-Reply-To:To:Cc; b=P0QgmXZqvkHHSNzzOLo2buCyPQX34ML2Xf6heF5qCcQRU1nquZu+i4IL4EPp8zOlpC/1pZs0VeCQ/wvaCU1hW+coRVe9OhPHObyIBt9tYlfqCsSEgMlZ9SqCEx7OBoVCZfs6rWOd3LXvqmhxxXxYDQa+DMwIrrFD2joopkqV6Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lHDu1c1A; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WHnRJrHl"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-424acfff613so7416025e9.0
-        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 10:23:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lHDu1c1A"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2ee8911b451so9834361fa.2
+        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 10:23:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720113821; x=1720718621; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1720113823; x=1720718623; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oZH0N2IdligxpGGw784EbC3Sbw2mtJNXF8+12BAAhog=;
-        b=WHnRJrHlUCSkZ49KH5AgqrMIMoFioWQufvZvXP82wBVRxDCj57OVjBiNafdR4jfMIQ
-         62XrNzJx56HdXQlBQnBIpqPIb2RU72UKnlah4PWFaZw6q6b4K4u94OzB3DlZOITmW8u0
-         j5Ynl4aKX8sls10Marr2+z9kClk5JKzlvPCWzA2PxzUSKjEWTMP3VQdKM98h/C4y+Bb3
-         O67PTT4FG8eReVjyMQHk7O9H/scCV0skUL9wuYSf5NPJ47Qrpyh9minZMz7eNDjuBuFY
-         VYQN9K50G4fg55hQzVubuaNB+ndz+gPHxFyouQIt9UXgOaaIPFgHsi4uuMzWN9d0ibBB
-         oS4g==
+        bh=jEcKMLoBT3vk4y3IWrtrUEpgZYcFGVwoc0kCUdiwlg8=;
+        b=lHDu1c1AWAQ4BeBudURgII7Gdb9IreK4X7WjF5aJQz8PmyiYxVDfZkOg4IORdQslEi
+         FYB1IZAzNJY7hGdifXFKAbD3LbzHbxOwLvMfMFCzjehcuU8+jWS20R6ozEUM8PVYrmcj
+         5zzq/pMEfGlX7hdM+oQ/gwq1pw7zBPKpC+Wz96JuMSC3KFiBHAB9AhN46Q7PWfoy1xN3
+         3mBhbPHnH9CBHSixSMxSEP/Z2gGmcwPE2ubRw7Pwv7dLuKAaQ0Er9xybZyPx2rUATTxt
+         UD+vPRm05o+xeEZIyXIMOdGnu9Vs4yDdA0F76VrnQsMd4QnHcJI6K8msUCe3/idv+30B
+         Mzzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720113821; x=1720718621;
+        d=1e100.net; s=20230601; t=1720113823; x=1720718623;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oZH0N2IdligxpGGw784EbC3Sbw2mtJNXF8+12BAAhog=;
-        b=kY2r60ssCrXN7A0SkRP5HotirC9IdqZYjfposx9BxYUI88bsbMTFIZ4XKwLuA81qkJ
-         JYaUnjSluhDBKo5iv6ojgYfVErc5QR6Z32of06RVpwnDxP0e2BrmpWpNHhYgMtfmeEaZ
-         qnkKHkcO4my44U3YpoiMzdEw/ZIuG39yTyY+UnzgjolXHEeMFQ5lcV63Y1ivngpu11MD
-         +rU8F72tvIImXjqVEdEe0KbglHokkfZ0FUISQg/kSp79fgzk9S+8sRU4iv8OiEcHjcgl
-         IR5/NxKtuAP8eSgObZ/9acxrY9uJJbf09gC9ZHlO90tkmpOD0ywuhJ1BGysl3pHpIMqG
-         usMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUi2bJ/g0aUd9c39pZ7eXPqKcN7TwKSofr+Ra+Zida2+y7dnc+T8Cesi28St3tGMTUwi8tNbsLqbnIkFziX46SBFQ0m
-X-Gm-Message-State: AOJu0YzPai8vJ64UhU6oMNGh8Znhd4E7Tf1XaEjT5MyOL/YpvftMkDd1
-	YCxY/ukrc7rwLE53kktkEqZaG6tw8XSha00OthA2k2KzLfc765TC
-X-Google-Smtp-Source: AGHT+IHVDvV5ZlABTxLnxGN+P/Oktapr3Dfo/w3DqKV5F+2RPZu1eXQFA/3w8stNEW7xOKHq54yiFg==
-X-Received: by 2002:a05:600c:1c0a:b0:425:88cb:1741 with SMTP id 5b1f17b1804b1-4264a41601bmr21035435e9.36.1720113820982;
-        Thu, 04 Jul 2024 10:23:40 -0700 (PDT)
+        bh=jEcKMLoBT3vk4y3IWrtrUEpgZYcFGVwoc0kCUdiwlg8=;
+        b=mNBZdar6/F0o3P3LIesMmY5ekOvxhwR8E9rw+1kd3QRVU7M07I63hYE6VM8yCgOl4S
+         Beun8g2eUZP56yDZWaJwvo5GBDz3t83422HQYpEdmqUOL9/gKlTZ3Q7XZYLB8m4KWmqq
+         6xMvXP8d9zC53ES+iinUEna2OZKNS/3Ia+pOYBoAfN/WWFHfAYfsM3E1Sk4y2ZHXX7+q
+         txMLMqdXVpI5KXBXv1ASum+EklxwRjPycwrVPr2dPECG4/UmMUAZiCqfGCiSy4QKe2ym
+         0bNZW1XH7BhOOd40DRF979/aYrsCd3+gHsbRi0F1lgIqJzOhrZQyo2XN1YBwG/ceFvKx
+         QvrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcal58+xRcQlgH06rSAMgPbRSeMcBneGdSl9mL7C/x7dFAVpGmCblj89Kxej/eu7jL1rb3QvFGeTafSvCksGay534D
+X-Gm-Message-State: AOJu0Yw14DjFMooz1WekxSKVBT6CIXq5Kxe7Y8y/lmx0wAKBCJnsUacc
+	PD+9lJIuIByyJmgJNQGLrU6DfpaEXoA+fas8XovLGyAXo9vuHGPt
+X-Google-Smtp-Source: AGHT+IFNP59IFboyukf1rrfIMaw6kHzCXFpazPd2dB/0uvup5SShiaC7xDpvSqu5YY267U3gS0hiPw==
+X-Received: by 2002:a19:ee12:0:b0:52e:9ebe:7318 with SMTP id 2adb3069b0e04-52ea06b7845mr1641184e87.43.1720113822765;
+        Thu, 04 Jul 2024 10:23:42 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 10:23:40 -0700 (PDT)
+        Thu, 04 Jul 2024 10:23:42 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 04 Jul 2024 19:23:18 +0200
-Subject: [PATCH v2 08/24] mfd: 88pm80x: Constify read-only regmap structs
+Date: Thu, 04 Jul 2024 19:23:19 +0200
+Subject: [PATCH v2 09/24] mfd: bd9571mwv: Constify struct regmap_irq_chip
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240704-mfd-const-regmap_config-v2-8-0c8785b1331d@gmail.com>
+Message-Id: <20240704-mfd-const-regmap_config-v2-9-0c8785b1331d@gmail.com>
 References: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 In-Reply-To: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 To: Support Opensource <support.opensource@diasemi.com>, 
@@ -82,75 +82,44 @@ Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-omap@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=2233;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=1160;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=1QPZacUuOeaij0so0MenKs4sY5xXKtXayfwYDVrHiWI=;
- b=7MzL1NssvI7gS5f5E0UMDoYA0lY9TxFldWlNp/BKaAes/ovgxyjcP6ITmOMmnZZoP6kcROg9w
- SXtwvZwXdcvAoBbxd4UY/nYYZ9shNBxeL0Q03q+Re1QIghRS9qh1ith
+ bh=V1YaAN6Ae4SYUS+F2fqEOGoyBhvW6e5jyjeki/M8uo0=;
+ b=UeWR2+z6XmU+2iBQpnyuihdm9i6qK/rcCaw1b12r8oK8MhRMJIyAVI98/jj/H9/QhGmnanzDw
+ YeBwmgZ+wdbA+6PBSsftXrA3de/3ic8/8AP/xLAgw1JjbbW7kkouDCs
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-`pm800_irq`, `pm805_irq` and `pm805_irq_chip` are not modified and can
+`bd9571mwv_irq_chip` and `bd9574mwf_irq_chip` are not modified and can
 be declared as const to move their data to a read-only section.
-
-In order to keep the const modifier for the regmap_irq_chip structures,
-the pointer used to reference them must be converted to const as well.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/mfd/88pm800.c       | 2 +-
- drivers/mfd/88pm805.c       | 4 ++--
- include/linux/mfd/88pm80x.h | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/bd9571mwv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/88pm800.c b/drivers/mfd/88pm800.c
-index 384ecf5301d2..e9941da58b18 100644
---- a/drivers/mfd/88pm800.c
-+++ b/drivers/mfd/88pm800.c
-@@ -391,7 +391,7 @@ static void device_irq_exit_800(struct pm80x_chip *chip)
- 	regmap_del_irq_chip(chip->irq, chip->irq_data);
- }
- 
--static struct regmap_irq_chip pm800_irq_chip = {
-+static const struct regmap_irq_chip pm800_irq_chip = {
- 	.name = "88pm800",
- 	.irqs = pm800_irqs,
- 	.num_irqs = ARRAY_SIZE(pm800_irqs),
-diff --git a/drivers/mfd/88pm805.c b/drivers/mfd/88pm805.c
-index 205f0762a928..f5d6663172ee 100644
---- a/drivers/mfd/88pm805.c
-+++ b/drivers/mfd/88pm805.c
-@@ -73,7 +73,7 @@ static const struct mfd_cell codec_devs[] = {
- 	 },
+diff --git a/drivers/mfd/bd9571mwv.c b/drivers/mfd/bd9571mwv.c
+index e7c2ac74d998..db8c2963fb48 100644
+--- a/drivers/mfd/bd9571mwv.c
++++ b/drivers/mfd/bd9571mwv.c
+@@ -93,7 +93,7 @@ static const struct regmap_irq bd9571mwv_irqs[] = {
+ 		       BD9571MWV_INT_INTREQ_BKUP_TRG_INT),
  };
  
--static struct regmap_irq pm805_irqs[] = {
-+static const struct regmap_irq pm805_irqs[] = {
- 	/* INT0 */
- 	[PM805_IRQ_LDO_OFF] = {
- 		.mask = PM805_INT1_HP1_SHRT,
-@@ -163,7 +163,7 @@ static void device_irq_exit_805(struct pm80x_chip *chip)
- 	regmap_del_irq_chip(chip->irq, chip->irq_data);
- }
+-static struct regmap_irq_chip bd9571mwv_irq_chip = {
++static const struct regmap_irq_chip bd9571mwv_irq_chip = {
+ 	.name		= "bd9571mwv",
+ 	.status_base	= BD9571MWV_INT_INTREQ,
+ 	.mask_base	= BD9571MWV_INT_INTMASK,
+@@ -159,7 +159,7 @@ static const struct regmap_config bd9574mwf_regmap_config = {
+ 	.max_register	= 0xff,
+ };
  
--static struct regmap_irq_chip pm805_irq_chip = {
-+static const struct regmap_irq_chip pm805_irq_chip = {
- 	.name = "88pm805",
- 	.irqs = pm805_irqs,
- 	.num_irqs = ARRAY_SIZE(pm805_irqs),
-diff --git a/include/linux/mfd/88pm80x.h b/include/linux/mfd/88pm80x.h
-index def5df6e74bf..551ef1c367d6 100644
---- a/include/linux/mfd/88pm80x.h
-+++ b/include/linux/mfd/88pm80x.h
-@@ -294,7 +294,7 @@ struct pm80x_chip {
- 	struct i2c_client *client;
- 	struct i2c_client *companion;
- 	struct regmap *regmap;
--	struct regmap_irq_chip *regmap_irq_chip;
-+	const struct regmap_irq_chip *regmap_irq_chip;
- 	struct regmap_irq_chip_data *irq_data;
- 	int type;
- 	int irq;
+-static struct regmap_irq_chip bd9574mwf_irq_chip = {
++static const struct regmap_irq_chip bd9574mwf_irq_chip = {
+ 	.name		= "bd9574mwf",
+ 	.status_base	= BD9571MWV_INT_INTREQ,
+ 	.mask_base	= BD9571MWV_INT_INTMASK,
 
 -- 
 2.40.1
