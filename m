@@ -1,185 +1,166 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010023.outbound.protection.outlook.com [52.101.69.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85451B0138
-	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 16:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720111242; cv=fail; b=YIlO1ZVkjdDFY+F0z8Wm4PLmA9ybz2p3A/HkVWQUS/04DYhOmWDraoWbhtQlFLpRW/tyzpXbedSgN2H/l90nMucHi6byW1C0qoq64Hhnc2N9T+2xtwl3BpSeJibfMn/ZglhNq3SJF8vzkSZ3tZ7HZk1nZgzcUHCvRNQxtceHLAY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720111242; c=relaxed/simple;
-	bh=TSrTxfJQEV/vRH41CEqM1AT+jFmUNlsYy3Pjp5EbEgE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PRGBsX8ttwNeT+WA2gEojSl9T5geJGfbUFR1RL7r617lvyiKLyx9qwHUtk/0YDI5x943bWUpNHxxMhikNZ6V2Hj7a3YljICE3dr+DQpKTHBMMG8xrkj5V97HupVavuSJjNGrx3efr5wVYMutB6obZi7XyddlUq/xjOf4ImFTMY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=YqZU6YS7; arc=fail smtp.client-ip=52.101.69.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFE31BC2F
+	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 17:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720113809; cv=none; b=hS+X2yM4V5QbVVoRnUGDIdyfhhdESq8p++nq0AG0mCAv/ZmyYuxhcwVznYXPFukq4g09dmFFyLBwOwT1hHXflMS0S1B+DOiUnUJYuA8LoOUqRvDsEfGE5kbBPYVlN0HKhVudmbbl+JFWZq67gavfPSkAQcqRnhpriMuFgW+7wu8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720113809; c=relaxed/simple;
+	bh=rm6V+HkqrAt3iBzlQj+eKYG83FB37ocahkPR5ID/Gns=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ItC7B9WpdLrtBuroeyvM4EH4WCJqWiM6+icPJC94DN6mQhCKTo6ANeuZgSGDpGt91sNMqcZH1NN26++FXlUIStd0tOrq4kR1lvBeFcZzMiyxFbWorCeZZu0V0Im02x7v0iMjx6J/h338cCCSfBSgBYf32XvkLxhQW6Vaa8GB6sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VI4U4Hd9; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="YqZU6YS7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XOEd30xojylZDGVPG6aMnx9EX35JFfEQ1N/I9PAGF+VCrtb0UOyLAEvKVsjY69tBGl+qaEe1SbFvc6//E22C7aRrCQ65CeRmxpVxz20Gj50iiaDyIMgxhmhSTYom39rriAtwSwr6iUlOuxqUWc4cBgS9huu9e4Dx8/pUvvLXUeAN8j6/5S8zQQK3/Tgw/RgZCpfCMeD8oeIpBfqgqMuivk0mknabHLmtlyDRJrpFH4AYGDcRRbQTfV9zzJ5sll5IpjoRzaS0Q3YT+rc5147ZJfDQUX79MLM8kfsvMlypmF7elWfzI/11JAwekTtRrb3Z15VbejjhSdkFUVhJNKe30Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uD5BwmEM+mJwWfW4Czq3K7L7DWXG2AEbxcy0yyD+/5E=;
- b=ek59qbGX4l+xWlFmyq4L2/6zYyu14/zMLM29DAO0JMATeX5UGurT3l8XUhHtgEFuK2gdpLyxidyz55bMvP0hcp+J3sLAD1wDKXC3sRKAl32fMghmJwiyNPAw6wZQV/Ek4yY0oW27hQPDYjEq5yYzyciLGPJgJDBbWssUM0hg/hIldesQ6aVZMvDOGAweyFv70EerRq84a0LsIqOiewAgtzsfHWLRbqeDfDxQuRpQM4YZwqsDWKK2fVOWe0EXNywa/1f4/D7Jj/3TKtwmfzKgIrxTEKuhjcfj5rdhP3HHa3UNuscSFNck4MG5AYTS9IQd3XXaapJ/TTbZCBeQd6tGpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uD5BwmEM+mJwWfW4Czq3K7L7DWXG2AEbxcy0yyD+/5E=;
- b=YqZU6YS7CGQ5bpNf2gWC7t2S5gviBIofoVBjPlQKnMYSSP+RlgiwfP72JwfAoJz7Hpwh1Nzbae3L3nAqxtSlv4HtZ/ensCfNN5m1hFa81bUcgnihsvRUS5ZZC8aNKcUI0/iZkQjgAvTzA/LagwGdiobkexqgYdbTs/9s1GB8zxw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7915.eurprd04.prod.outlook.com (2603:10a6:10:1ea::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.25; Thu, 4 Jul
- 2024 16:40:37 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7741.027; Thu, 4 Jul 2024
- 16:40:37 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Will Deacon <will@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR GENERIC OF HOSTS),
-	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR GENERIC OF HOSTS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: PCI: host-generic-pci: Drop minItems and maxItems of ranges
-Date: Thu,  4 Jul 2024 12:40:19 -0400
-Message-Id: <20240704164019.611454-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR08CA0071.namprd08.prod.outlook.com
- (2603:10b6:a03:117::48) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VI4U4Hd9"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ebe785b234so8975911fa.1
+        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 10:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720113806; x=1720718606; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H5ioC1B7C90z2GxGmkOViXNkTNH2Pib8pP+e0Gm1Tpg=;
+        b=VI4U4Hd9MLJwDURyZHm5lHhF1/v9fTLQwqreqleC4lqi35Iqzwj9IqwnuwUgao7lug
+         9JSP96s9ukUPg9jghJnfs8ocR1/Vpmyzy88uXCAJLeDkdALE8FN5qhnqfFrTClAwDTrD
+         rAexNjYfo857D8zDLvdbK0QleS1MItSgipGomyEz0RQknRqYenXpyEBuWnPIzVGt75UT
+         L1cKZ92gWWrEwCCWDPmFvSNvoprBi3PDVkgHvb+nV6xPRcU63YbFwt4Fe6v00pdQTi6V
+         MslKUi/XfquqeFP62Jtu6Zf9ABDpr0CHrnLGeoi1+h6vam7CnYqN3jFdlwGo60pvZnRJ
+         +NhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720113806; x=1720718606;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H5ioC1B7C90z2GxGmkOViXNkTNH2Pib8pP+e0Gm1Tpg=;
+        b=dbJlCyfRx9jDwWu7TxePSK79d6XVd0cjKrwCcbB6jwxMWSfQVA0LabXKla7RHAffK2
+         gfXriP+bHzi75p4tKFC+29a3gP+3nrdhH7pC8VyQ2nZ/EXk8HcWmlxjvPIJH3IjcYjBb
+         eHm+0UKbOeUHXqPrRaLPlqKEKUnpwCl5lm/zXKABBhVfW42QbSFmShPwJZpUBptLL6Yl
+         FYBMbrrIo1ZIZN36nV+FR99YOvd+5lx1MBByO2gTpenXtvc+tTWrOy88svBaMJlL9XHd
+         JUt0aqnSy/yxmYDLNMaHA8BbjxTQDTqR/P/pMvgyq+G49yHvhbN1FrDk8AQieX6HmYCP
+         +E/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXQNRMXS41fwh/1ZQ21EODM49ptfkVdJSXYU18Igf79JTWoEiGGllXl3ivjZhyagHEtrP/Z8o6hcyOUqI4yUQM1pQCH
+X-Gm-Message-State: AOJu0YxHo3OB14A7BTDFaKpAEUcfaVWdykbzJWAZvnWOJPfurZrW1IjE
+	fzoae/61PWjq9leKgkklWqqLY4RG/n2zNa+Dv2AjKnLaRz5H6x4w
+X-Google-Smtp-Source: AGHT+IHxpM+9xvXLDW81oYndN0iZXo5BCpV4N7sqVQvlL7P+4TIcvLG8Y0qZI6MvjWcccMRwTZBcNA==
+X-Received: by 2002:a2e:2a46:0:b0:2e1:2169:a5cc with SMTP id 38308e7fff4ca-2ee8ed42730mr17076041fa.15.1720113806204;
+        Thu, 04 Jul 2024 10:23:26 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jul 2024 10:23:25 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 00/24] mfd: Constify read-only regmap structs
+Date: Thu, 04 Jul 2024 19:23:10 +0200
+Message-Id: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7915:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e910ccb-9a35-4cf1-5323-08dc9c480896
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WAQRMwe/8wcfBUwQIjYaglmsVIDuOqVk2cEhbLlMelpmWp5PftUeOJsw4S4I?=
- =?us-ascii?Q?DJG6IcSH+iIg2j1w/cBiA8eZqZ4LlU23+9njl668CafDWZhzqFiCKT7jT/Ak?=
- =?us-ascii?Q?ZVOHE488ZJUPekqNrWqXlXR4Lnv4fEJeqz8crwJPb8zmhlxyqe+krqlgaq0V?=
- =?us-ascii?Q?jPB2IF8qKdSySVzHjWv3mdz6jFhmMBIYX/FlK8rKTU2C5kaGWQjMdEvtWHPA?=
- =?us-ascii?Q?JpEQIkveYOqyO4MPL4yY/tF0+g/pifSvkbeuV+wB8v3ApemBQ6Q5beTBl4pw?=
- =?us-ascii?Q?HMDzmeH612fUa7MRPVsE58X7xSHLiqRiJ4HwH8E85dHGX6jq6/s7pS0PejnB?=
- =?us-ascii?Q?y70U4yUj4Gp/advPMUxOAgR8ctuX7nsquTnzhy4dVvmXJZFVjfFuTQ73ON7F?=
- =?us-ascii?Q?9kfJ+TLg2ju+a8xeJCKCYPaXib+whVN7cEKuYiRxNvkLWrVJe44U+Ocdsl1r?=
- =?us-ascii?Q?bBgOVbzUbQ4ytFlyNFpIKI38vdtTxMPXq0tQb9tinQfYF86HmB4x7433QRUs?=
- =?us-ascii?Q?/9NLpqTgNal6rgtKfYleo2mK8SR7wdKDEb2cdVPCmPG/fflt/xlg+eL0jHqH?=
- =?us-ascii?Q?VRfujdMt6BgpPsYcuJbJBoWRxtY/T6yW+sEyAF3eIyTYE7Y0M5RgFVSojE8A?=
- =?us-ascii?Q?ePCAOFOB4UV5OgfeEs7LP01Bt9L/dSIbXM2huolPq2dJZo7jZ0lJj71oaqmc?=
- =?us-ascii?Q?RGx5pmwnJFsFH17ggxWOeaSi8Z326/Oji2YYms9p68GCNyp99N5oeGe5HuQW?=
- =?us-ascii?Q?6b08zj2fkcOvXJWx3CPwEOsN+ycpd2jBhR2D1Ci4PcmU0lpJeU1FRkDFLuqu?=
- =?us-ascii?Q?FbQoG4WuGyCjifrzcqBkcD1/mhP24zHR31vhfchXqMh+7XXA2h3zt14YfyfL?=
- =?us-ascii?Q?U1e4wOL2dN4hRkWE0qobLd59a5i65UbQ6mMuzfnxQoiFkrnPdHuS6W3zU6ar?=
- =?us-ascii?Q?/BG4Z93Cg20baCDMAxADPo1goGwvdqOK5nB1NlO8R7L+ks3wm1FCcXw215XN?=
- =?us-ascii?Q?c8klwqycFsFspqxUWtdG7LLmEGsb/IFuaCnVAI24x6UrN9DoID7gl3RmPlMj?=
- =?us-ascii?Q?sV9FNzjg7GjKwpPwoKRaTdp5KRSuyIPQIS0O5eSqtSQr3hmeeU8Iz0rm8oOL?=
- =?us-ascii?Q?iWXUKAugFaYeJtgfEBcUECjxDJoLtil9CcuoD71xpBifENFhIO61eZRt/Zpi?=
- =?us-ascii?Q?wlxeSaZJ5+zwiRPWwrWbAim1Cc9A53Oiqw0N/0fCfIprvmtN2Zu6+VELcbh5?=
- =?us-ascii?Q?kL2BlQtBrpWRXZXRTn21mSGjTKN0+s4ssUuC7cgkTJzXfrnOLwbmi6la0zQM?=
- =?us-ascii?Q?Pvi+8mcfYdOAaNGE7YD7sO+vJN/OWaxT3os8mmdyBjVeCMzlw/nuPWehc4Bm?=
- =?us-ascii?Q?UHb0IvVimbjtYddGvsL37FWN8NjeXvybOA6ZU3ymsCL5hV4OAjYQZE/gKswY?=
- =?us-ascii?Q?dDAAZwmuA28=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?u+nP/4UXe9D73dmxXR6btC+lHtnlw/UHjRcHgT/6IPtm23/XtR5aRHYCFyaz?=
- =?us-ascii?Q?+PbgnepmMBxQGVp92bkJEGQiZ2ZN7pco1wqfxQ+AQYYEl+/W9dKqKk1yM7b7?=
- =?us-ascii?Q?OJrwTY1Ea7yTCkHP9N1uJn1cGpTI3JMeIuEdSidtObOaX4Qx4pAewgrTLiHH?=
- =?us-ascii?Q?AbCSctCBj422EnUF49IJYWaujByUlpJKeEQbJGPoeeJywkcG32xnkZzYWjyV?=
- =?us-ascii?Q?v+tmp5OBlUJNgvBXEHRRXtzAjp02klTKsOs9FDaF59mVtWkGLuX4UZ1q994J?=
- =?us-ascii?Q?gnsHZ9+5fB0k2lQQkqyTWtjH/lK8smhVaqx2vysbsFyXGPuJIRk6WXLV50Oc?=
- =?us-ascii?Q?W5VieWW8iS6TfkYiCP2oi9siCfl8MeoW2bx0A3VQXMUOnqvCzOsN+Lf3H33J?=
- =?us-ascii?Q?ZRaeCpEUGQ47MaI7EJdxYEDLw/Qr6NARRX0IVtUl0hyQ20V3e/Qf3Isi3+ZP?=
- =?us-ascii?Q?yhPYWfhKW4JekT/rZsLyXrDfaSrgBdtlWksTGDuFGKVBE8WepmA0t+pQq/om?=
- =?us-ascii?Q?ma1GQDL4ogO4/95y2bW5Lbn9BKeYrVFhxHt4vqdXwH5rboHv2osq60ccM5qz?=
- =?us-ascii?Q?zOVCHGBWQYY2yQtyoaVFMXkz8BtlJ66DhzsRNCs53qzkaHncV/Ybk0sc4Cri?=
- =?us-ascii?Q?ydYDyX+DieYO5efSwBKyo8ybLPSCQbkztQn+4G6tnIbwsUBlQ4nSrwIktZAV?=
- =?us-ascii?Q?nrYsPK/UzAyr4Fojb8yy+N1bp0bBLT3wupUusfgmthGDf6AQDnzCHMB6tV1f?=
- =?us-ascii?Q?VffoTAXJ1xREIN0R6Y0BGzutIubnN06SsAgfv7gtnig+YIISU3m5SkM7EnNY?=
- =?us-ascii?Q?kKTSa/2ijpRn208cDVonF1zcbYjGulV+5ayPwq2vG26fvne1lI3n8RhgTeUE?=
- =?us-ascii?Q?ezpT9LMEG4yA6MLP0rPMfjxD/9Z8n82bZfvszX14nhcKb0xfNmzh+cqYvjGI?=
- =?us-ascii?Q?S/fIoMwkokHxwVQqYPMJISpBxbazqNFT1PXpSTgZIfqQAiPFe28yWfkR1WA/?=
- =?us-ascii?Q?9zcdEAN73ABPEQOCIuloLDyGvUHHj3Q0k5khd2nMCO/JcRA/aOpDqjuZh+7F?=
- =?us-ascii?Q?PC7V4I2tUEm12TEVRtTut5I0cq5rrKKnTBOqp6BS6+erHMKJJ2YhArZtLb0O?=
- =?us-ascii?Q?yl4ZesCR3ePDpsddQTVbJGcDfHbeHwwj2kiCQfFHaGVS/Dn0kAvwuNFm4yFy?=
- =?us-ascii?Q?N/1389n8hQFrICaYgdLrJBgiwAUA+KHXAGV1SRf6nrR86GOGsmeJuIAdRiRn?=
- =?us-ascii?Q?3EHH0HFrHvV0v83moDDDTQ2G18LgslrzA5BcnL2DLQjX2oIl1EfHcKzAcLzS?=
- =?us-ascii?Q?vFv23G/oLGeMQ7a8+Qr2Muhx3yCvBevPEUqYROs0WOPspkfWft0v6hE3LZM3?=
- =?us-ascii?Q?KzEN4wt/cqzcn+pZkb4LbMMuhZkapbeZE0Dyj/KDlKcQe/H+bgC3Qihv7pZ7?=
- =?us-ascii?Q?bxpGgpXnBTUB7IDOfvUupE3WByRszzgnQ8xT7t/E2AzaO6hQfT2ukce3d2J0?=
- =?us-ascii?Q?Ozb5mF4rbkN737Fi8V+1KjGB6nvLk8mSMexyoL+DVeEAN2AP1dPSxMKy4rmu?=
- =?us-ascii?Q?2cdKCAdxySWL4STHWRR8qljbdtq50fJLTyQ06VON?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e910ccb-9a35-4cf1-5323-08dc9c480896
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2024 16:40:37.7652
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Pw5Yyq9L5kzo2uu/d5qnIuMj/OLZShhULtb1ytaAdeyAx7/rZj9omqNn0Wy6PGQE3AVx/7kp1pUug1v39bSoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7915
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH7ahmYC/4WNUQ6CMBBEr0L22zULCKJf3sMQs7Zb2EQoaQnRE
+ O5u5QJ+vpnMmxWiBJUI12yFIItG9WOC4pCB6XnsBNUmhoKKE52pxMFZNH6MMwbpBp4eCZx2eKk
+ tV5I33FQO0noK4vS9m+9t4l7j7MNnP1ryX/rfueRIyFwbS8RUPu0ttfo6Gj9Au23bF1KGvO++A
+ AAA
+To: Support Opensource <support.opensource@diasemi.com>, 
+ Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, Xu Yilun <yilun.xu@intel.com>, 
+ Tom Rix <trix@redhat.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, 
+ Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Tim Harvey <tharvey@gateworks.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+ linux-omap@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=3366;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=rm6V+HkqrAt3iBzlQj+eKYG83FB37ocahkPR5ID/Gns=;
+ b=jiqTx6tSOfA604GU0jTEgspr6vMPK41qCW2J7KSX8WeC+Cfd43af+Iyi1jHlB4L6VToCSUUIQ
+ hk+lFyALj85DmYDNks2goHvTf5kC1tScvZse5SWvGRbMFsj/iQrqHay
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The ranges description states that "at least one non-prefetchable memory
-and one or both of prefetchable memory and IO space may also be provided."
+This series adds the const modifier to the remaining regmap_bus,
+regmap_config, regmap_irq and regmap_irq_chip structs within mfd
+that are effectively used as const (i.e., only read after their
+declaration), but kept as writtable data.
 
-However, it should not limit the maximum number of ranges to 3.
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-Freescale LS1028 and iMX95 use more than 3 ranges because the space splits
-some discontinuous prefetchable and non-prefetchable segments.
+Changes in v2:
+- Cover regmap_bus, regmap_irq and regmap_irq_chip too.
+- Link to v1: https://lore.kernel.org/r/20240703-mfd-const-regmap_config-v1-0-aa6cd00a03bd@gmail.com
 
-Drop minItems and maxItems. The number of entries will be limited to 32
-in pci-bus-common.yaml in dtschema, which should be sufficient.
-
-Fix the below CHECK_DTBS warning.
-arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: pcie@1f0000000: ranges: [[2181038080, 1, 4160749568, 1, 4160749568, 0, 1441792], [3254779904, 1, 4162191360, 1, 4162191360, 0, 458752], [2181038080, 1, 4162650112, 1, 4162650112, 0, 131072], [3254779904, 1, 4162781184, 1, 4162781184, 0, 131072], [2181038080, 1, 4162912256, 1, 4162912256, 0, 131072], [3254779904, 1, 4163043328, 1, 4163043328, 0, 131072], [2181038080, 1, 4227858432, 1, 4227858432, 0, 4194304]] is too long
-
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Change from v1 to v2
-- Rework commit message
-- drop minItems and maxItems according to Rob's comments.
----
- Documentation/devicetree/bindings/pci/host-generic-pci.yaml | 2 --
- 1 file changed, 2 deletions(-)
+Javier Carrasco (24):
+      mfd: da9062-core: Constify read-only regmap structs
+      mfd: fsl-imx25-tsadc: Constify struct regmap_config
+      mfd: hi655x-pmic: Constify struct regmap_config
+      mfd: wcd934x: Constify struct regmap_config
+      mfd: tps6105x: Constify struct regmap_config
+      mfd: rohm-bd9576: Constify read-only regmap structs
+      mfd: intel-m10-bmc: Constify struct regmap_config
+      mfd: 88pm80x: Constify read-only regmap structs
+      mfd: bd9571mwv: Constify struct regmap_irq_chip
+      mfd: intel_soc_pmic_bxtwc: Constify struct regmap_irq_chip
+      mfd: retu: Constify read-only regmap structs
+      mfd: rk8xx-core: Constify struct regmap_irq_chip
+      mfd: rohm-bd71828: Constify read-only regmap structs
+      mfd: rohm-bd718x7: Constify struct regmap_irq_chip
+      mfd: tps65086: Constify struct regmap_irq_chip
+      mfd: tps65090: Constify struct regmap_irq_chip
+      mfd: tps65218: Constify struct regmap_irq_chip
+      mfd: tps65219: Constify read-only regmap structs
+      mfd: tps65910: Constify struct regmap_irq_chip
+      mfd: tps65912: Constify struct regmap_irq_chip
+      mfd: twl6040: Constify struct regmap_irq_chip
+      mfd: gateworks-gsc: Constify struct regmap_bus
+      mfd: mc13xxx-spi: Constify struct regmap_bus
+      mfd: sprd-sc27xx-spi: Constify struct regmap_bus
 
-diff --git a/Documentation/devicetree/bindings/pci/host-generic-pci.yaml b/Documentation/devicetree/bindings/pci/host-generic-pci.yaml
-index 3484e0b4b412e..3be1fff411f8d 100644
---- a/Documentation/devicetree/bindings/pci/host-generic-pci.yaml
-+++ b/Documentation/devicetree/bindings/pci/host-generic-pci.yaml
-@@ -102,8 +102,6 @@ properties:
-       As described in IEEE Std 1275-1994, but must provide at least a
-       definition of non-prefetchable memory. One or both of prefetchable Memory
-       and IO Space may also be provided.
--    minItems: 1
--    maxItems: 3
- 
-   dma-coherent: true
-   iommu-map: true
+ drivers/mfd/88pm800.c              |  2 +-
+ drivers/mfd/88pm805.c              |  4 ++--
+ drivers/mfd/bd9571mwv.c            |  4 ++--
+ drivers/mfd/da9062-core.c          | 12 ++++++------
+ drivers/mfd/fsl-imx25-tsadc.c      |  2 +-
+ drivers/mfd/gateworks-gsc.c        |  2 +-
+ drivers/mfd/hi655x-pmic.c          |  2 +-
+ drivers/mfd/intel-m10-bmc-pmci.c   |  2 +-
+ drivers/mfd/intel-m10-bmc-spi.c    |  2 +-
+ drivers/mfd/intel_soc_pmic_bxtwc.c | 14 +++++++-------
+ drivers/mfd/mc13xxx-spi.c          |  2 +-
+ drivers/mfd/retu-mfd.c             | 12 ++++++------
+ drivers/mfd/rk8xx-core.c           |  6 +++---
+ drivers/mfd/rohm-bd71828.c         |  8 ++++----
+ drivers/mfd/rohm-bd718x7.c         |  2 +-
+ drivers/mfd/rohm-bd9576.c          |  6 +++---
+ drivers/mfd/sprd-sc27xx-spi.c      |  2 +-
+ drivers/mfd/tps6105x.c             |  2 +-
+ drivers/mfd/tps65086.c             |  2 +-
+ drivers/mfd/tps65090.c             |  2 +-
+ drivers/mfd/tps65218.c             |  2 +-
+ drivers/mfd/tps65219.c             |  4 ++--
+ drivers/mfd/tps65910.c             |  6 +++---
+ drivers/mfd/tps65912-core.c        |  2 +-
+ drivers/mfd/twl6040.c              |  2 +-
+ drivers/mfd/wcd934x.c              |  2 +-
+ include/linux/mfd/88pm80x.h        |  2 +-
+ 27 files changed, 55 insertions(+), 55 deletions(-)
+---
+base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+change-id: 20240703-mfd-const-regmap_config-96da5e18a85f
+
+Best regards,
 -- 
-2.34.1
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
