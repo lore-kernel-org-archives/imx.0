@@ -1,153 +1,105 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9B919DF88
-	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 09:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D4E1AAE06
+	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 10:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720083786; cv=none; b=e7IpVc6M3hJZVJSBbX9N50jrYSG7Fn893erJ+9LutRRUBGbuwUP1ZwNdAQT1JS+7rb3RWSR7KAjFemH6Zm/sdORL60SfI9Ix+Stg8FmrWDzxdqrp3fuFx9L7g5jQryGb3g7S/OfmGY9ictjkrejgw9vaemWADz+rHdzwQGs/tio=
+	t=1720087650; cv=none; b=XLxzCjSMPdICowsw3x2tAEo2Nz9sS0W0YAlOlaW4FzVXoAMDqOtJXonSI8f+j1grkKkORrJgP/pRDkqw/oN7MmeTDBWmmHMetzBQPvROFycmi8tw01zLPKGuDLnY01Q3yZIfGoIFLbvFql/LssCZVmqiSEGrGLoy8rqBUZv6M3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720083786; c=relaxed/simple;
-	bh=lJeXmk1CcWCnW6+sA0Si+XgkMXTZlK92WQIJ55qf44I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ORsMF3fYRW3jSXn0fptQ4Lmb3Y6IAr8LdNwlHrS//DAOBhuaKWwVN53VJXCD68s9DaBQioCdtgkOkAW3b9eyYuXIMcYijJ8syxczDLUAdv5JFFMO4s9OpF3c+YrE/rlv/IaKt53jym6LevdTe2MVWt22I5+E/TwiNLRVl86CoEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FEi6m+5i; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FEi6m+5i"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-36799fb93baso315524f8f.0
-        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 02:03:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720083783; x=1720688583; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cx3d5CxqTkB14K4gwBHdHmuzRMB2FNvR/ektMnAQxOM=;
-        b=FEi6m+5idm/74PbSwpSegC1V4K/mDqLDEEifr+mz+VqUD1aFUaiiJmaf3ZSRH+j/vg
-         r5e4jbdncqg/Hs0OmMn7KwKmP4WyWECuy59sGzaGvzHkkb+OOIM/AhEDvEfk8AVll9Ez
-         h+kNAIdTalqw+uG1u21XTyoygdAC76LvWyRpS6wRO1ohUrhPdu3kWwzI3KVQYoCgzZRm
-         MLKCLV5Tb+DZyTcujFHdkY418tyb/yzQRHGK+KrFdUwHIWIBNh4kD8NaPWgd9P+rDS36
-         Bg0i+1YR788xrLPYMvOgMFeCcL+yGmINeg7FKJ92kY7FzVT2H4wGfwQBDhE3cxf3NYq+
-         r63A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720083783; x=1720688583;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cx3d5CxqTkB14K4gwBHdHmuzRMB2FNvR/ektMnAQxOM=;
-        b=GDqOJIofD9EI7Yq09I8AqOQVtnFtcO7S0lGkL21+69YaA41vF3KAGwQJ081CALdAVR
-         lLCZo+Vzll5jDjSFlHsiPFyiDq7GHSb9kDtxuroxWtFCefBpcCAiNOhyubchu9V65jYh
-         f3+S5Yz7eLFiBLAfex1UuXdZ9X4sMGb7CbJ+LHlxaSVPavSoloSLqYpTjQgYErag7uiT
-         us5aS0UXlxs5+0Lky9XCpBrm9hAbKUb1BENv3AtksrXxSiQ2toJhSBJ9LARYhnf34EQF
-         86j+44QoBZqURH6F478zPX+QwQ6aDof6Zv8fMH61wLCsHFT7jrpJgT6OtU/72uI+HsVv
-         ZIAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUem5a793IFTdrdYSizZdNGU/7e/qieS7Mc/CBPGz4oRVVlGICZCV49VH4gi9d01hlAPY1IKlmXPSXW+Gpb3/lccL4B
-X-Gm-Message-State: AOJu0YwveDPViOSV/3+EA0Y4UeWkff4+utnY0iPpCeZs7cALQOvY4XEA
-	DNKtpGsETSUfAlNxFseXqbrdwZEJfKMBb8qyQPT+OztEpsnGM2qw
-X-Google-Smtp-Source: AGHT+IE5rRRgQ+3VAktBOrwvlEMxaYncLW64BefnBB2CyyVIkKT2zQeyktZpK58oIjvjEAzP4/eFaw==
-X-Received: by 2002:a5d:608e:0:b0:367:9877:750e with SMTP id ffacd0b85a97d-3679dd3df99mr753973f8f.25.1720083782983;
-        Thu, 04 Jul 2024 02:03:02 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:2c0f:6313:4446:a47? (2a02-8389-41cf-e200-2c0f-6313-4446-0a47.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:2c0f:6313:4446:a47])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3679c9008b0sm1194575f8f.80.2024.07.04.02.03.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 02:03:02 -0700 (PDT)
-Message-ID: <c83ef39f-2267-4d02-9d77-65baa5a026c1@gmail.com>
-Date: Thu, 4 Jul 2024 11:03:00 +0200
+	s=arc-20240116; t=1720087650; c=relaxed/simple;
+	bh=L1au4gRMKcI5BIEcsS+8zjDDar+BRU9MILS6EafA7W4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YJSm7x6FW1pA1b0yNfrUnykRmp3Ybjfo7kN8L9Lx71kG388HwAhogTQ4J3KVg1WXoaKh87rOtRe51zyFJYZkcNeklJSTrBMm6RtDecJC1zMSxpg/KSQuMEBRYKotiCxRp1+h/BxA/cojHfHTB7cuD5jPvCBIE6FeFMB2GzNsgZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sPJMm-0004rB-JU; Thu, 04 Jul 2024 12:07:04 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sPJMl-007460-14; Thu, 04 Jul 2024 12:07:03 +0200
+Received: from pengutronix.de (p5de45302.dip0.t-ipconnect.de [93.228.83.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 97EF92FABC2;
+	Thu, 04 Jul 2024 10:07:02 +0000 (UTC)
+Date: Thu, 4 Jul 2024 12:07:02 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: can: fsl,flexcan: add common
+ 'can-transceiver' for fsl,flexcan
+Message-ID: <20240704-outstanding-outrageous-herring-003368-mkl@pengutronix.de>
+References: <20240629021754.3583641-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] mfd: rohm-bd9576: Constify struct regmap_config
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Support Opensource <support.opensource@diasemi.com>,
- Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Xu Yilun <yilun.xu@intel.com>,
- Tom Rix <trix@redhat.com>
-Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20240703-mfd-const-regmap_config-v1-0-aa6cd00a03bd@gmail.com>
- <20240703-mfd-const-regmap_config-v1-6-aa6cd00a03bd@gmail.com>
- <0acd9da5-80ec-4a45-b00a-8e28ab4e345a@gmail.com>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <0acd9da5-80ec-4a45-b00a-8e28ab4e345a@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dr2n3t7ohmn737hp"
+Content-Disposition: inline
+In-Reply-To: <20240629021754.3583641-1-Frank.Li@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 04/07/2024 06:50, Matti Vaittinen wrote:
-> On 7/3/24 18:37, Javier Carrasco wrote:
->> `bd957x_regmap` is not modified and can be declared as const
->> to move its data to a read-only section.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->> ---
->>   drivers/mfd/rohm-bd9576.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/mfd/rohm-bd9576.c b/drivers/mfd/rohm-bd9576.c
->> index 3a9f61961721..634c65c7d108 100644
->> --- a/drivers/mfd/rohm-bd9576.c
->> +++ b/drivers/mfd/rohm-bd9576.c
->> @@ -57,7 +57,7 @@ static const struct regmap_access_table
->> volatile_regs = {
->>       .n_yes_ranges = ARRAY_SIZE(volatile_ranges),
->>   };
->>   -static struct regmap_config bd957x_regmap = {
->> +static const struct regmap_config bd957x_regmap = {
->>       .reg_bits = 8,
->>       .val_bits = 8,
->>       .volatile_table = &volatile_regs,
->>
-> 
-> Thanks a ton Javier. This looks good to me but if you feel like going an
-> extra mile while you are at it... Do you think this could be extended to:
-> 
-> 
-> diff --git a/drivers/mfd/rohm-bd9576.c b/drivers/mfd/rohm-bd9576.c
-> index 3a9f61961721..17323ae39803 100644
-> --- a/drivers/mfd/rohm-bd9576.c
-> +++ b/drivers/mfd/rohm-bd9576.c
-> @@ -57,7 +57,7 @@ static const struct regmap_access_table volatile_regs = {
->         .n_yes_ranges = ARRAY_SIZE(volatile_ranges),
->  };
-> 
-> -static struct regmap_config bd957x_regmap = {
-> +static const struct regmap_config bd957x_regmap = {
->         .reg_bits = 8,
->         .val_bits = 8,
->         .volatile_table = &volatile_regs,
-> @@ -65,7 +65,7 @@ static struct regmap_config bd957x_regmap = {
->         .cache_type = REGCACHE_MAPLE,
->  };
-> 
-> -static struct regmap_irq bd9576_irqs[] = {
-> +static const struct regmap_irq bd9576_irqs[] = {
->         REGMAP_IRQ_REG(BD9576_INT_THERM, 0, BD957X_MASK_INT_MAIN_THERM),
->         REGMAP_IRQ_REG(BD9576_INT_OVP, 0, BD957X_MASK_INT_MAIN_OVP),
->         REGMAP_IRQ_REG(BD9576_INT_SCP, 0, BD957X_MASK_INT_MAIN_SCP),
-> @@ -76,7 +76,7 @@ static struct regmap_irq bd9576_irqs[] = {
->         REGMAP_IRQ_REG(BD9576_INT_SYS, 0, BD957X_MASK_INT_MAIN_SYS),
->  };
-> 
-> -static struct regmap_irq_chip bd9576_irq_chip = {
-> +static const struct regmap_irq_chip bd9576_irq_chip = {
->         .name = "bd9576_irq",
->         .irqs = &bd9576_irqs[0],
->         .num_irqs = ARRAY_SIZE(bd9576_irqs),
-> 
-> 
-> Yours,
->     -- Matti
-> 
 
-Sure, I will generalize it and update the series to cover regmap_irq and
-regmap_irq_chip as well, of course including these two cases too.
+--dr2n3t7ohmn737hp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best regards,
-Javier Carrasco
+On 28.06.2024 22:17:54, Frank Li wrote:
+> Add common 'can-transceiver' children node for fsl,flexcan.
+>=20
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: can@2180000: 'can-tran=
+sceiver' does not match any of the regexes: 'pinctrl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/net/can/fsl,flexca=
+n.yaml#
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Applied to linux-can-next.
+
+Thanks,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--dr2n3t7ohmn737hp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmaGdEMACgkQKDiiPnot
+vG+ndwgAmTD3vI+lh+SpHXPC8faiwWnvlpIAuwu1ia2S5LNiIxhehoz6+WgxW3h/
+0KkIbn2zQva+MUsldVljBQd1tGssLrV54uni1v1OF1Hwnjd/E89cYqEZasllZEX/
+sBlUbgBOxj9DW8liWUhk7hsPxPmrSKHJIgnMDq6lW8998oT+EG2DSfTGyU19aJJr
+/mbyaZ/IXIGplQKbS/4tVGABrip20ab95BrbDf6WphlTIgtleyt9ZICdT7CQ6YCH
+WtWHrmy9L6hSNOSTR7qUSG7af7fcXVgg6P1Scmw1DyEirWKyqxXYldb9Tyl1H8gj
+RezwMSF47aHNA9/vXmPeX7WjWsH2Cw==
+=36qY
+-----END PGP SIGNATURE-----
+
+--dr2n3t7ohmn737hp--
