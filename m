@@ -1,100 +1,92 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B911E494
-	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 12:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F072846F
+	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 13:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720096664; cv=none; b=RY/3zqZivHvkOxuX5GiaSx55lohcuu820uozJQVhi2W/ePQ3tGk40Gc5upy3lAN5kBJlPHOcTxffYYHb2SoYKOP7bzeHCjshBoo1/o9SBYb/mjHvlozJFtGMyVCCLRdN4/FgZBgoe9fQVklMsIqZSwzBEibtQlc+h/83KcPv0ew=
+	t=1720098821; cv=none; b=delZj03isqrADJswjWILvyh38ogCnN2zphpSRCOPvDYItPgi96Uo9tHcfaExR+vltdFvCPwiT4cQXa7+yiMGwPjFJtQ8pwlkyrETF+CxkzPCCDWQTiXOitjbcn3LPGWdYlxq5usODO51/+Ckqq3hHCwxLZ24QvqUnNZnIMx6wz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720096664; c=relaxed/simple;
-	bh=xaDklDCnhTYn7DzUM660yyVRR9oVog/xxd1CxVhwR4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WOqC4wM2jAh18dcVall8g+EDQ/rMKljvdJqeGIu1eUf5y+/RmkA4iePvoh+ZEflJ12LE8V2xGcmFcxyxo8XOC9+CTx5JaNr9DEUAbNUieDnHUjjY2iqoNMYRKr0HZu27vvADHErBTYzqSvm+Z+2QbgLHrOM+JqoMIwXC2Th+rO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sPLiS-0005Zk-HZ; Thu, 04 Jul 2024 14:37:36 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sPLiS-0075hT-0K; Thu, 04 Jul 2024 14:37:36 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sPLiR-00EUeU-2x;
-	Thu, 04 Jul 2024 14:37:35 +0200
-Date: Thu, 4 Jul 2024 14:37:35 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: i.MX8M SNVS ONOFF key handling (secure system)
-Message-ID: <20240704123735.arh7em2lxcc42y6w@pengutronix.de>
-References: <20240703105137.fpjollqvtpysktqa@pengutronix.de>
- <AM6PR04MB5941D70C5EE91BC83E2DF4FA88DE2@AM6PR04MB5941.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1720098821; c=relaxed/simple;
+	bh=m9rR2mQ/wSygZXAZMY/B7NSsL0tnpf12HSm+Z+ZsFD4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VPaaS6kOZ7Mul/4Tc5knQPlKFw1n6Rh+vbysrrM/84K3wGkpjKR/AKWD1JXyjkTv82d+/7KsqoH0sQxzvnWvfp78Yco4rDzbIuCx38SdM8/QTAQbwhVFZPER2H99j5sMM/bRq5JbLm5eq6INa7QNKtEZiLAGy512bPXINXi7+2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jx11Tjy2; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jx11Tjy2"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ee871fd456so932521fa.0
+        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 06:13:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720098818; x=1720703618; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AJOBBEbKWmJTuqge2NQgqId9OVl2P7+HobXFfEpNUao=;
+        b=jx11Tjy2DSANIRm4GesaTpdNBlx03iy3pm37JYNte4zxe7F/Y6nxLT8laTTzI5xpAc
+         Q8a67o4LyJqe2oeOzQqXeQVahnZsUCH5ZnJ3YS9AvLqZuPXL7B0EGHVFIjzK1LMN5yu4
+         ScNrqoMxQeeZtiBKXu+bXr802vSM8rZR/l9khb1/1bGrN4QzVm926LXmzIlZg54asDt6
+         ++kHGIrYAtnV/XXsb5uNZBDEi6E98QQc9YF+9hPvd/GKLlOOvbIhgKkc9YQqmbBNRlDr
+         Mj1uszq761Hy/j7rSWbsdNbVAR69PD8gY4MfnQFrZPE+GBsret/nUEAraWZdt2O5qe+/
+         Ny/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720098818; x=1720703618;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AJOBBEbKWmJTuqge2NQgqId9OVl2P7+HobXFfEpNUao=;
+        b=rjZijVvvO/dJ1Qealoy5dGP7mbS7SCjWB3A7nrle+wTjnY30LM91puJTN1gUDY0oPX
+         LIEh187RqKf6jUA0AbU7C+4vLJYdUcLzI27LqSlQC9B7FXfutMpDq4piIfrxP/pRBW8I
+         hLxhmGPfb+cuB7aeoCyRKpn0PGrPhnzGIRix8s0xOMYoTGzoRUCdi70vcPwokGJ/pI9g
+         RMh6yr1WBVzyXtGjwPocT29bn7/8S6oANK/fXlKvEfoduc7gRJa2nGzJuLBW/V0r/Jtn
+         iQnPoj8/DJr30QTVzhCkizk+Nt/CzlOQIdxTJS4+N2XEjypbamuQal+FeBsOV02TsHGj
+         Kbbw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMNwlQxTmH5mJj6NaXgB7uhR0LKGbuDAzqYitxQPah4kF7SCUuD6hcCrV4Ixok97w+88/z+dGNsCM4b4tkFJiWrOvg
+X-Gm-Message-State: AOJu0YxSRrjv+7SZTxRueK/CIfJKDJlT3xFSPiNQ8EJKOPLJ/33WiPjk
+	S0LEarPTL47gIjxT2ndhUMknN3rxKu+SMBaelG/Zx8KMNkvKNHpGKk7xE5pNm2vVZa1H3n6Aom7
+	DmbXBeyuk0DeY8UqS7VniPFRDfPA=
+X-Google-Smtp-Source: AGHT+IFFj5rrfeuErSdp9ogor+1Ve/j/MRQZsX5zn9HGTR5tBwuQsJibSORbuPOz5HTC2RdE2S2VeDPOERJJ7117MHY=
+X-Received: by 2002:a2e:2e08:0:b0:2ec:5258:e89b with SMTP id
+ 38308e7fff4ca-2ee8eded7d0mr10868431fa.3.1720098817502; Thu, 04 Jul 2024
+ 06:13:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM6PR04MB5941D70C5EE91BC83E2DF4FA88DE2@AM6PR04MB5941.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20240704120300.2849264-1-ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20240704120300.2849264-1-ciprianmarian.costea@oss.nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 4 Jul 2024 10:13:24 -0300
+Message-ID: <CAOMZO5BVS71UWS2u15EvbNLohSqRz8DamvXBQzRxFSNTobJG=Q@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: s32g: Disable usdhc write-protect
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, s32@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Peng,
+Hi Ciprian,
 
-On 24-07-04, Peng Fan wrote:
-> Hi Marco
-> 
-> > Subject: i.MX8M SNVS ONOFF key handling (secure system)
-> > 
-> > Dear NXP team,
-> > 
-> > we do have the following situation:
-> >  - A verified boot (locked-down) system based on i.MX8MM and
-> > i.MX8MP
-> >  - The ONOFF pin is connected to an ext. MCU to initiate a shutdown
-> >  - The NPSWA_EN bit in HPCOMR is _not_ set
-> > 
-> > According the datasheet NXP introduced a new interrupt called
-> > "ipi_snvs_btn_int_b (button) interrupt" which can be enabled via HPCR
-> > register BTN_MASK bit. The interrupt level/edge trigger can be
-> > configured via the HPCR register BTN_CONFIG bit field. This interrupt
-> > can be cleared by _non_ privileged software e.g. Linux by writting an
-> > '1' to the BI bit (HPSR register).
-> > 
-> > Unfortunately I don't see how this interrupt is connected to the GIC. I
-> > can only see the snvs_lp_wrapper and snvs_hp_wrapper which do
-> > share the same IRQ number 4. According "Table 7-1. ARM Domain
-> > Interrupt Summary"
-> > IRQ 4 is triggered if: "ON-OFF button press shorter than 5 secs (pulse
-> > event)". It seems like this IRQ is controlled by the set_pwr_off_irq
-> > (SPOF) but to clear this IRQ from Linux we need to set the NPSWA_EN
-> > bit.
-> > 
-> > Now my question is how the ipi_snvs_btn_int_b irq is supposed to
-> > work?
-> 
-> My understanding is (set_pwr_off_irq | ipi_snvs_btn_int_b) connects
-> to IRQ 4.
+On Thu, Jul 4, 2024 at 9:03=E2=80=AFAM Ciprian Costea
+<ciprianmarian.costea@oss.nxp.com> wrote:
 
-That was my assumption too.
+> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> @@ -145,6 +145,7 @@ usdhc0: mmc@402f0000 {
+>                         clocks =3D <&clks 32>, <&clks 31>, <&clks 33>;
+>                         clock-names =3D "ipg", "ahb", "per";
+>                         bus-width =3D <8>;
+> +                       disable-wp;
 
-> For more details, I need check with our Design team. Will update if
-> I have more information.
+This should be better placed on the board dts instead of describing it
+in the SoC dtsi.
 
-Thank you!
-
-Regards,
-  Marco
+Some boards may use a GPIO to describe the write protect pin via the
+'wp-gpios' property.
