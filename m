@@ -1,60 +1,61 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDA913F45B
-	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 17:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4F11428F2
+	for <imx@lists.linux.dev>; Thu,  4 Jul 2024 17:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720113831; cv=none; b=MFSa4nBy4t+cRFfLF0vEq94JkqBdDBjBPi7MOliZNg6qJQue1bZtIcDz1WbsrPYLi1A4k/sei+gG5VmuuKoHByVXn/ApP7Q+GHrEbS075qLA5Wa0oVsbZiLpMHkT2NtCwreQd6I+r9EpEpPhgPv5l2xGqwznKVcXsXopuA/bCy0=
+	t=1720113832; cv=none; b=Px+LBqBSAH9Ji6qoWo7m4yc5Sk+xgn7aYkYjFQPia4B6FY9WXHCDqqnou+M1BSlIs4Xlya7rsWGaBlQYVdqxvmsUrfPdRJuSpg+PfwSJMdHWJPvd92H/7oonho8/FdAtMFsqYNj66pJdQGVd3k7T/kyPt2V2NJaPvFsevvtKtis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720113831; c=relaxed/simple;
-	bh=6atl/DrZQUwmw6JNwTSf7L3f3VWfEvhmC/OA+w6bvAo=;
+	s=arc-20240116; t=1720113832; c=relaxed/simple;
+	bh=AXOMZmt6S46YFRJErbndyKFAmqG6fzXUVqcz4xuQ2tk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lZ0T9bnkCAKSUyOH+k7h+puf0cseNfH2PYoyzSZDNvZOuxcsyGuZHoWDRe9Cg1QAaYvh6JlYbpH/KAXfaKTrIqlZvpDTTjLETjkUGDjQ/IjLy92D6Y3+PwyklCxEQ4Cn09UX2O1G9B5QTdohGXPlplwEm1eM1BQ5B1KsKRsiIKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrUeDxkC; arc=none smtp.client-ip=209.85.128.45
+	 In-Reply-To:To:Cc; b=qvU4FGZJaVq9s6LmaCg/NxF68ZlxctsQm5DRs4zyX3ZtqhDV3sXNM0gZbpTvRv0ueP5FVV6ufHTkJfLYX31vxrBIkZFkFZDOiPje3ZrIAfR9KCoa3ZlzQ1Nnl2/WafYlZSIfZFqV/m9A2WYxdZvitV6+i5oMbof5rdqRoG3shSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjQ0/1Ba; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrUeDxkC"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4256742f67fso5711195e9.3
-        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 10:23:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjQ0/1Ba"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42562a984d3so5649635e9.3
+        for <imx@lists.linux.dev>; Thu, 04 Jul 2024 10:23:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720113828; x=1720718628; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1720113829; x=1720718629; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=F7zE6lHigua1P8ymODDtiJ+ZtxaVQFbo+ktZc42qUis=;
-        b=IrUeDxkCAAy0D6jDn3URp9EuqyPeDiGiac/7Dp3ezsJOfj2To+ZCBEsc2LFNhSHja+
-         lPNlSGiCgE7SJEkNUIfAyC75wZdHB8uwXjUoiUcP0tTPC+98vFS9zAz1LlSBpusfMA6k
-         lxsHDcDVEIQ/UWzYgHupK3I2V0RPHIcoi3fevs/IYqsG4Ax/k9yKJoSLQxAvZUaLTlia
-         WpYoh+0HLT/Hdfy843V5Tvuuiw9T5LCL86aLexCqV/GPkqXO7ad8zY/hCJ21XRvI3vZA
-         XgmFkDM4tBcwXeKGNE+EjFJpqt5oPmoMvSuybV0NWPTsWblmGkZ66zNXhCyz5dq2fBh3
-         S95A==
+        bh=W+0aliNulAXRyPEDMGDv2VjbbbF1WfBGFJqmsV4Qtr4=;
+        b=RjQ0/1BanojS7azCwZWAUe26/xaNX6weCyXN2oT1ean2Js39BoTx2qqF97UzlfWUhy
+         ScfhbZ2nYYpYHe+Dd2vOPxjY9BOCQGzUtYvAUHtKBnKUjZlCSEVqBw3r2hy7ZulApoqf
+         1DkUnv+I1LwRdAouEYv10k21zU+yVLNrC/JdUVR8MpD9hZfUmrXQvr+WZnLmsxk5NaJV
+         z02x4M2Q/2X0URoEzRUBW514au7ZN8W7G8tU2uFZ9WHeMiRv/x/sY5L+j/oRiIBe1xgo
+         bs9oygJH7UcD86BwqZ+EZLY2Yam2hV6QZ07XrPYGPsYx9xg823xM1le/rSubTFLOk15z
+         M+6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720113828; x=1720718628;
+        d=1e100.net; s=20230601; t=1720113829; x=1720718629;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F7zE6lHigua1P8ymODDtiJ+ZtxaVQFbo+ktZc42qUis=;
-        b=EsQNm2WbFdIec/OKhpeW/SMaI86GM5DmfK6EBBLi0munLlQ9FSbLYMsc4pIwx43qnR
-         lYN7iOiV6h41dAtyZYSVuNEe/algbjFJy4D34h/eo4picdcnlrAASnE4H1pe7a5WrrdU
-         tJt6vK9oCKzD7oQdNFbm6N4eHe6uJQ4Fdn9hjSIaj/QL4vJyz6u3Ipw4Q7X5oxDOXriY
-         Uom2NzFh9LGFVkvVyzWHTt8RjBclD0pYRJ+wd7fLsS7DFlpcOlvzaxbI2fvCR79R9czt
-         QXSeqIXxYTVm+ybMf3SpIvOaRuVlQNfDJuF28OGWUA9tafV0WjqcW4PFaOy9xZcRqXZe
-         tOaA==
-X-Forwarded-Encrypted: i=1; AJvYcCW5s+Hn+zkYZfPeilmeM8fxox9JjWtA3kr2AdBMI+YPkcUvO81iHdZuGwCQ9twRTE5f/harKGu/xGzZYcoyTBkjBH/Q
-X-Gm-Message-State: AOJu0YxYl22IUX7ghMgq7NuHFnn2KogZBLi3sZ64W4UOcqQBJlNnm/O2
-	beoSNBuXibDgc11PPFwrXqRKBciQnUWJQKEOcRtRMLkNBuJsFmFp
-X-Google-Smtp-Source: AGHT+IEV2TScoV5U0gk+JCSE/6TuIOT7gDP7434MPboQsznm8o/auvcGlGGFMv7zURZ24WPzEpCGAg==
-X-Received: by 2002:a05:600c:4f11:b0:424:ac13:ee3c with SMTP id 5b1f17b1804b1-4264a3e162emr16522515e9.21.1720113827768;
-        Thu, 04 Jul 2024 10:23:47 -0700 (PDT)
+        bh=W+0aliNulAXRyPEDMGDv2VjbbbF1WfBGFJqmsV4Qtr4=;
+        b=DyJkggLsVHlCFlFN+ZZVu19y576f1inuf/HrOJrruAIRpzL5RgImBwr9sxx3QK24HK
+         NVzahJ5qUIRuXGGm+4jigjZx268gaFs9JWCZqoVzbWqyBT4cwAH6YqLm10jDhK+5IzJS
+         GRiHfTcN7hN1KOIqxkn/oij4U1bBcJSFQgWXmvVrPNXn5UcTb42sD2w+qg26Jl3Htw1o
+         k2TxKO9eAihkYyMQosoyoIemIegPnvfHq2FVxRyrQBZ8A3FQ3MFhlefAmnr+prPMAELg
+         mJAMEje4oyaxBZ8kFN/mH+oUSJ7GxQLxW8qJnGEPnKVPx05ceIgR0rNyx/8KNC987Ijq
+         Lb7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWPAZQ+agIRqfePAEcsXmBQqvDpR5SmGa/Rh8eLFnesQq656F/Gr7eN9152YqdAZ2XPs3JnNGOvheLm45aj+2qFIEL6
+X-Gm-Message-State: AOJu0Yy5BewL6UXMynFTgGVdL9q4ANXZpbruXNGu5mt0Q6CTzRigVFvB
+	BeM8JicoNh1jTNs52E+zRtr3W/VvxnTOMkMazRO+kpORPIMo1XpB
+X-Google-Smtp-Source: AGHT+IHa5BhDJFDyix5K8itu25mKAO+o92oPFVJcdlEdxK93UcrY5Y0/jYOh6tEheFkFp1NCVoGFeQ==
+X-Received: by 2002:a05:600c:3b90:b0:425:65c5:79b4 with SMTP id 5b1f17b1804b1-4264a3f55f6mr15114615e9.26.1720113829362;
+        Thu, 04 Jul 2024 10:23:49 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6133sm32330965e9.13.2024.07.04.10.23.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 10:23:47 -0700 (PDT)
+        Thu, 04 Jul 2024 10:23:49 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 04 Jul 2024 19:23:22 +0200
-Subject: [PATCH v2 12/24] mfd: rk8xx-core: Constify struct regmap_irq_chip
+Date: Thu, 04 Jul 2024 19:23:23 +0200
+Subject: [PATCH v2 13/24] mfd: rohm-bd71828: Constify read-only regmap
+ structs
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240704-mfd-const-regmap_config-v2-12-0c8785b1331d@gmail.com>
+Message-Id: <20240704-mfd-const-regmap_config-v2-13-0c8785b1331d@gmail.com>
 References: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 In-Reply-To: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
 To: Support Opensource <support.opensource@diasemi.com>, 
@@ -82,53 +83,62 @@ Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-omap@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=1375;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720113803; l=1911;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=6atl/DrZQUwmw6JNwTSf7L3f3VWfEvhmC/OA+w6bvAo=;
- b=VDrhdvOEM4a21M5C9PzDGgMYkfiGHRI9khEoolwkWfTbvEmLzU/atnVqu8qT3Hl2LPrJolCco
- DXFklpE9F8dDWYAFZeupXDJc4TJwL3xQ3mFoCfE5s7U6sfosUQiBSR0
+ bh=AXOMZmt6S46YFRJErbndyKFAmqG6fzXUVqcz4xuQ2tk=;
+ b=9iQxauCLJOP9HSJdseQBuXEwq1S2sUsM1z0w1yiASOG1r4aVhc5QMRCE9e57/9RYv+JRp62dU
+ PllateXXr/GAw0YAxL7TAAYxKv6tuWlR+aixvjyRaqvaeSingyY4siH
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The regmap_irq_chip structs are not modified and can be declared as
-const to move their data to a read-only section.
+The regmap_irq and regmap_irq_chip structs are not modified and can be
+declared as const to move their data to a read-only section.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/mfd/rk8xx-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mfd/rohm-bd71828.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/rk8xx-core.c b/drivers/mfd/rk8xx-core.c
-index 5eda3c0dbbdf..39ab114ea669 100644
---- a/drivers/mfd/rk8xx-core.c
-+++ b/drivers/mfd/rk8xx-core.c
-@@ -531,7 +531,7 @@ static const struct regmap_irq rk817_irqs[RK817_IRQ_END] = {
- 	REGMAP_IRQ_REG_LINE(23, 8)
+diff --git a/drivers/mfd/rohm-bd71828.c b/drivers/mfd/rohm-bd71828.c
+index 5b4290f116fc..39f7514aa3d8 100644
+--- a/drivers/mfd/rohm-bd71828.c
++++ b/drivers/mfd/rohm-bd71828.c
+@@ -316,7 +316,7 @@ static const struct regmap_irq bd71815_irqs[] = {
+ 	REGMAP_IRQ_REG(BD71815_INT_RTC2, 11, BD71815_INT_RTC2_MASK),
  };
  
--static struct regmap_irq_chip rk805_irq_chip = {
-+static const struct regmap_irq_chip rk805_irq_chip = {
- 	.name = "rk805",
- 	.irqs = rk805_irqs,
- 	.num_irqs = ARRAY_SIZE(rk805_irqs),
-@@ -542,7 +542,7 @@ static struct regmap_irq_chip rk805_irq_chip = {
- 	.init_ack_masked = true,
+-static struct regmap_irq bd71828_irqs[] = {
++static const struct regmap_irq bd71828_irqs[] = {
+ 	REGMAP_IRQ_REG(BD71828_INT_BUCK1_OCP, 0, BD71828_INT_BUCK1_OCP_MASK),
+ 	REGMAP_IRQ_REG(BD71828_INT_BUCK2_OCP, 0, BD71828_INT_BUCK2_OCP_MASK),
+ 	REGMAP_IRQ_REG(BD71828_INT_BUCK3_OCP, 0, BD71828_INT_BUCK3_OCP_MASK),
+@@ -407,7 +407,7 @@ static struct regmap_irq bd71828_irqs[] = {
+ 	REGMAP_IRQ_REG(BD71828_INT_RTC2, 11, BD71828_INT_RTC2_MASK),
  };
  
--static struct regmap_irq_chip rk806_irq_chip = {
-+static const struct regmap_irq_chip rk806_irq_chip = {
- 	.name = "rk806",
- 	.irqs = rk806_irqs,
- 	.num_irqs = ARRAY_SIZE(rk806_irqs),
-@@ -578,7 +578,7 @@ static const struct regmap_irq_chip rk816_irq_chip = {
- 	.init_ack_masked = true,
+-static struct regmap_irq_chip bd71828_irq_chip = {
++static const struct regmap_irq_chip bd71828_irq_chip = {
+ 	.name = "bd71828_irq",
+ 	.main_status = BD71828_REG_INT_MAIN,
+ 	.irqs = &bd71828_irqs[0],
+@@ -423,7 +423,7 @@ static struct regmap_irq_chip bd71828_irq_chip = {
+ 	.irq_reg_stride = 1,
  };
  
--static struct regmap_irq_chip rk817_irq_chip = {
-+static const struct regmap_irq_chip rk817_irq_chip = {
- 	.name = "rk817",
- 	.irqs = rk817_irqs,
- 	.num_irqs = ARRAY_SIZE(rk817_irqs),
+-static struct regmap_irq_chip bd71815_irq_chip = {
++static const struct regmap_irq_chip bd71815_irq_chip = {
+ 	.name = "bd71815_irq",
+ 	.main_status = BD71815_REG_INT_STAT,
+ 	.irqs = &bd71815_irqs[0],
+@@ -491,7 +491,7 @@ static int bd71828_i2c_probe(struct i2c_client *i2c)
+ 	int ret;
+ 	struct regmap *regmap;
+ 	const struct regmap_config *regmap_config;
+-	struct regmap_irq_chip *irqchip;
++	const struct regmap_irq_chip *irqchip;
+ 	unsigned int chip_type;
+ 	struct mfd_cell *mfd;
+ 	int cells;
 
 -- 
 2.40.1
