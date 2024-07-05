@@ -1,112 +1,104 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A3C16C840
-	for <imx@lists.linux.dev>; Fri,  5 Jul 2024 15:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3821F94C
+	for <imx@lists.linux.dev>; Fri,  5 Jul 2024 17:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720194013; cv=none; b=i7xck1jhWlI0gaVcJLGvPENS1Yok8vso7OyU/FM50x2VtLVHAU93BNCcp1w8BQUZiIQG59EXdty/8b+rFVQK9DzHt4vkE+B025DX1UaJRIQINJvYwjm5H6gkIxU1HuwLL0HOAz4Hf97cAYpgriRudTyWM0uyWzPIRkqZdr7+IcM=
+	t=1720201142; cv=none; b=Qo69Z0uMh9XRsb8V895+vzKNkNaaiy2c8Vrvxr1F9xjexmXQsSEm8ODr95y9sECYyiVcJgO+yARk6Sr0FMNHF73lTARD3WV10aKzqBc+gql5RjbsKeky7xRWhuYZZqjwjGPXIjeF6eU4PQ+vWwZGyLA72Lj6M7TqOSUN+GAMKEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720194013; c=relaxed/simple;
-	bh=lvk3fb6EH5rw6dp1DOnJCL3dq9tQI3MOZD7gcFF+qDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XGq2HMzud9SU7/Gk5BWJVXt8GhO6KxGgpgODsPw9Ua8qdBiR4wfW/z5rk1TT7hplgaPPsXlUL2r+jUDrzB6gAzyuEV8+B6N2xjitEmGyx3PE3aZF7Q8Ydp/y5DodmqDb2lSntxFpGw6/aAMQeU4p1JhrQ5VjUJ3/4Jy8I44gUTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=idXbd8dN; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1720201142; c=relaxed/simple;
+	bh=uLVfBqhE/F059/4NlG6w4dj5glhnxKMh93m/OyjAXcE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fIs5rEh9TBrNxZxp2Xih+SZKgZDUqwWZD4aJaPLGaknwfCBm3V7YS5hMkE7YL5Ih8zvd18yTvV2U0XvCEn66+N82na9ucmXfjPFrfv9wnrFGrxGr4A1JGt+3pRjyJOhE35HD8z3CHhk549QDCNR7LrYvvcjjAfshrf0nLuvpfxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hh3FS1y+; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="idXbd8dN"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-367ac08f80fso389307f8f.1
-        for <imx@lists.linux.dev>; Fri, 05 Jul 2024 08:40:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hh3FS1y+"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42641dec7c3so11633925e9.0
+        for <imx@lists.linux.dev>; Fri, 05 Jul 2024 10:39:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720194010; x=1720798810; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rWJsmVbnxMDiuFLY+fOlqn//TXBBmUogobIIxAviZlc=;
-        b=idXbd8dNaCzozZ2/CktK5qM87NIRIcYuvLeUU9jB6+lF8Cu/iOdEJ1JEHOlVQG/i/F
-         2v98jNyWn/yFdNxTKZlOai8yQNNaemfuMV+gV2bKjJ9EMEAt62CIeRWGD4IpGdlbK4xy
-         cwNY7vdULzsCNtulxWklxPWtudgGZ8UfXvbmr6kGS7IGiO12afzEJ5lC/FxapywX9m69
-         L7YwCUdBplxf9AG0QLSkhp5eI0Imm7a+dfPzHb1ngVIGigtJuJ1ZdNiaGq1FIMqNDCja
-         RmTaS+7Jf10eov9zZfG/Tcn2eDkIuZkaCMfCKc8vXm8XK2plKmfS+PKaiSq81Q7eneg/
-         B4xw==
+        d=gmail.com; s=20230601; t=1720201140; x=1720805940; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B0uzQFhxd/mAUsK60UuDZbgZFzTMenSzsMSc4Ot7YaY=;
+        b=hh3FS1y+evbd3oOx4/XM9lFjq9HFqB8a7adjQstbZ1Wt5HM7OCnDkofplEmF7u+QHL
+         LbZufeY/e/ZX536Cevi6xxSU7vFyGktgTJ2jaZSEnFPMGUcimb71J4TkcI467Y9kDrdg
+         2D12ui5VzKh5yorFQcwSjcBEm1I9/t6MKTQLCtdh9nBosAkx7uw0dtQ3Q/QsQr0H2+js
+         c07XmoWJW+quY8Nl1R2HH1nF0DET2zBVdbWZifMaaCUL87cQeQDJxzXW9ObtcH35bGl5
+         88SeV+zdeyY6h3Fq4H8a7+GGlVlObY6ok2SLPHbIVyoS18Hc/zUUotM4p5rhkYJ+/GM4
+         HDpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720194010; x=1720798810;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rWJsmVbnxMDiuFLY+fOlqn//TXBBmUogobIIxAviZlc=;
-        b=X00aT553QKmr8XTY9a6mjfYcvEt9vY+Fx9hDxtL0G2PsW9QaQPhaFRJ/fshXPZzp+U
-         cF/46B0W8/njTK0VrRo0Kmv/NtO9HewzQebBar9Lwzabs9AEwl1B9qCjg/4EnLsZg/rw
-         IqEj+zn1hON+XTJ5AEaWjK8DeUIRpMlw/Fy5JrUYRHsTtzwEWytGkVhVji0IzLXkps2h
-         uccSPyTkD9tXc/p0YlSZ3UQhSG3be8YnkYLEvXogZAb0XsVDs0b/O3nXWuVk1nVQ6lYz
-         hlJYYBC2l+YNgyGs+IUIO1T3BAzqzidAtkcepLZqNTtn29LnFpWXd7rrXyTilXvfrt/8
-         82nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6kqx0sKPdkXQdoruvqYCxjzWpf7oViKB84PHQl4RbCM7OuK+Srj0oeMKsTd8q/+iFEvn0XzzChMwjAcsA4aSqnqGI
-X-Gm-Message-State: AOJu0YzzvPHdBBtZak/pkdki4l81fiZyzAm3givGDtZZpF3FMjp+PX3h
-	l+y9ROTMDI/Zh2+Fds0YuR1xDVhe6Ai9dMJSXZ98Wodg0PiSJLuN6KpuPqEsUuE=
-X-Google-Smtp-Source: AGHT+IFZ5tZcHjh9afQQV6N+UDpsdiCgwUbQuOPcHUbDQTq2FuqnU3hsZXAXDh/UpS3fDJuMgQV8qw==
-X-Received: by 2002:adf:a18f:0:b0:366:f469:a8d with SMTP id ffacd0b85a97d-3679dd35e71mr3543623f8f.35.1720194009828;
-        Fri, 05 Jul 2024 08:40:09 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0? ([2a05:6e02:1041:c10:c49e:e1a5:3210:b8c0])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-36795d1fc9csm6559538f8f.83.2024.07.05.08.40.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jul 2024 08:40:09 -0700 (PDT)
-Message-ID: <c7c78d7d-c920-415f-b97b-c3b7c61eb9fe@linaro.org>
-Date: Fri, 5 Jul 2024 17:40:08 +0200
+        d=1e100.net; s=20230601; t=1720201140; x=1720805940;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B0uzQFhxd/mAUsK60UuDZbgZFzTMenSzsMSc4Ot7YaY=;
+        b=HS1+6gtpCf4+GHCS5CtqAaW0q9toapBYK56hNNACn77bxI1dUHMhTlbbrIHdEKXd3G
+         7rdLx0VxCBuP3JzOHu3mQxszdlNbJaz1xWL1dD8QaIHnfkUuRiSzQan7J3mmt7EKn5vl
+         uQ84fWDe4c2sB13BVYEd4c+TemKv6x+8f3gQFqldHX8JUEroow04acRpmN48JUU9+EsG
+         pmjaHt0Y2hbZdHJqSNlXBN1H5G29wVc8bjnoOL/+6PcBn7uADycuVqXQ8/e9hGBRHG5i
+         NWPiEMCOL8bz5pVF8utJ4lZif2lx0z0BoYWRxyKFOIYkL4RIA2cSe2uEWbglIggsF/6Y
+         /W9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVzXJdkU+IT8c7VnGKZ8DnFQZhN/Ua/NOYQ87f4TOSlDXpfroEPI4RN7HNa99wN1NdeJEXRvLjUepZcFNM/0MCQw5zz
+X-Gm-Message-State: AOJu0YyqMvqdZNuZmn66FwsSYyVcNWRT2zJufmVkaD0lV4prz4D5RzxQ
+	ieKzSDcQz069KYKY9yHrsiebm9g3xAf9wAsAbAwLeXuydyggTCK0
+X-Google-Smtp-Source: AGHT+IFelT0b09dBTjSrUvzyoZ4ltSTetwb4SzRHnt1d+1Rcyah9yX6f1nUB59ZwR+67KzoW9MVjmg==
+X-Received: by 2002:a05:600c:2059:b0:421:5609:115d with SMTP id 5b1f17b1804b1-4264a4566fbmr34869765e9.41.1720201139399;
+        Fri, 05 Jul 2024 10:38:59 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-4adb-3312-ca75-bf55.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:4adb:3312:ca75:bf55])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3679b1e5f31sm4850466f8f.33.2024.07.05.10.38.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jul 2024 10:38:58 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] Input - constify read-only struct regmap_config
+Date: Fri, 05 Jul 2024 19:38:49 +0200
+Message-Id: <20240705-input-const-regmap_config-v1-0-f712a4494883@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 00/22] dt-bindings: thermal: few cleanups
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Zhang Rui <rui.zhang@intel.com>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Guillaume La Roque <glaroque@baylibre.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKkviGYC/x3MTQqAIBBA4avErBtQ+4OuEhGVo80iE7UIorsnL
+ b/Few9ECkwR+uKBQBdHPlyGLAtYt9lZQtbZoISqRScaZOfPhOvhYsJAdp/9lGHYYt1qZZZKSrF
+ oyL0PZPj+38P4vh/4uvA4awAAAA==
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
  Fabio Estevam <festevam@gmail.com>
-Cc: linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
- linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Florian Fainelli <f.fainelli@gmail.com>,
- linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Conor Dooley <conor.dooley@microchip.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Vasily Khoruzhick <anarsoul@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Amit Kucheria <amitk@kernel.org>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
- Heiko Stuebner <heiko@sntech.de>, Biju Das <biju.das.jz@bp.renesas.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-References: <20240705-dt-bindings-thermal-allof-v1-0-554061b52fbc@linaro.org>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20240705-dt-bindings-thermal-allof-v1-0-554061b52fbc@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720201137; l=761;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=uLVfBqhE/F059/4NlG6w4dj5glhnxKMh93m/OyjAXcE=;
+ b=1Zm/Q9o4Brm2oxTFrNOWYYbIy25spad+FQanBfkmRw+ND/RqYbke2g3NvFy1O2+w1w4KZepJw
+ ncYxNxch8OHDPT1T17ijj5Uu6ZT5l4grKqy1M+07eYj4zuewX4f2T+g
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On 05/07/2024 11:51, Krzysztof Kozlowski wrote:
-> Hi,
-> 
-> Resending (with added tags) because patchset was still not applied.
-> Daniel, can you pick it up?
+This series adds the const modifier to the remaining regmap_config
+structs in the input subsystem that are effectively used as const
+(i.e., only read after their declaration), but kept as writtable data.
 
-Applied, thanks
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (2):
+      Input: qt1050 - constify struct regmap_config
+      Input: fsl-imx25-tcq - constify struct regmap_config
 
+ drivers/input/keyboard/qt1050.c           | 2 +-
+ drivers/input/touchscreen/fsl-imx25-tcq.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+change-id: 20240705-input-const-regmap_config-46d2fb3110bd
 
+Best regards,
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
