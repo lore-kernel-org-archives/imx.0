@@ -1,60 +1,60 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0277715ECC8
-	for <imx@lists.linux.dev>; Fri,  5 Jul 2024 09:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E14148FE1
+	for <imx@lists.linux.dev>; Fri,  5 Jul 2024 09:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720173149; cv=none; b=YlHGrXa6qJVfzXhiILqcDZ3LT492i54FkG6UC2xYyCn6OI5+4ZbNr3wQoAPgmBbHwtK2nukT8ayWwljoGkHZHyTT5gkmMYNwdP3S8Y/uK0vBJQ2jqHgfq8KhwsmBfQ4cn4gTNC+BzXS77N+QTVcPn7+gSU+6kpz6KWHCZ3q/41M=
+	t=1720173151; cv=none; b=Fpx5Y1bmxYLwxPTpRXPrqoxzG9j/CLaCkRGiXF5jI3Q8rI1jpejrG80HTDuEXQuYqWn1lJdYyqieIMvNw1nC+ktF/SUPpf98tvC4XVfaEgzhXPLKvCSlfH1e+UgjIHzFYUxVc5CEnfDnqJqHYKHaGKfLZB8MsbwfA5fFRAWrhaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720173149; c=relaxed/simple;
-	bh=TGEUdfIgxrn5p+oeEOU3I8iRwVeJfrhCUIuhAZVBvgE=;
+	s=arc-20240116; t=1720173151; c=relaxed/simple;
+	bh=75N+YagfjHTq72mKsUwSWer5IrId1tl7O0sy7rhdM/8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hElDTf1+WVv7h+HwvKq4nWvzv51BYV7bvMUO2exQM5pydphGd8oS1JULRIUsMcP5rYqY18rhjDSVKQ5Fm5wDJnASPTlOnKAo1sTC5W/9Pomnqp8chBuJU9abdJAdIirMYcQsZJjg58JzB/mjS2P9JGMIrKQ5BUZYEzP1PlRH2uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aFIF/7G1; arc=none smtp.client-ip=209.85.167.43
+	 In-Reply-To:To:Cc; b=ghQyEfbj2loBNy9Vw2ZNBfH29TAXKAzETvDEHZel12G+Bp60dDPRvoke0As+Ifr3ZJHZXd2pUZt8jD9o3jQ6a+gfryOt2CNXMleE7VktP+j62m6IZzNZDyQzjVjIkcEzWMiuZ2OzNvfC1JtkbsPD1YQmY7Map+RBU3n7VidEsPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OYGjUrhw; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aFIF/7G1"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52e9944764fso1720081e87.3
-        for <imx@lists.linux.dev>; Fri, 05 Jul 2024 02:52:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OYGjUrhw"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-426526d3051so3240805e9.1
+        for <imx@lists.linux.dev>; Fri, 05 Jul 2024 02:52:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720173145; x=1720777945; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1720173147; x=1720777947; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HewTxIxxAw4d0VO0IzaF9nti4qYjTs9zA5y2utlK+JY=;
-        b=aFIF/7G1Kiuo3S+4ZLEmoykI0o0SUYmwUqX+WFE0ezZ/T+Gf4rYBIlYNCqHMOcKZlR
-         iwsxccnldiTF8tKcCY+df24d8aZca/UrPJRVTfMylrjKR48Fkp1cJqAO+iiZ/HAFpaGF
-         R0qoy7icrRvhzkUl9XevkLJg3h/gVgU5zPZ++ZRXhr37ZlvPYQr6/onTIpGAe4MPIQQA
-         YBsBdgKokpoZhOTwkiK1Uw7NyrYkRSSLkV9kr1l3avRLoFWsc2H/jTkTIkb+s4tVohK1
-         W3wqN211dT70JAsdVNtqyRdinRQRtgkCPDdvCVkKVPtQ2GRdmFXOGPs+xLvQXgZQk9+H
-         BYJA==
+        bh=AuHHBQ3x8j+r0vn0WL5Gv5Q+wv3ro9XtUSu/vLsatmI=;
+        b=OYGjUrhwrf6DUWlbKmuM9WLi9ytnb7KJOQ627VJCEjv4NexCbwd5iY6/NZNg4MZyTb
+         H3WGT+bvkGGSdTwZTnghz6LMYIMku5huEpBW9ZmSFh2zhqityfAQnOTRQx7WmfXWyWod
+         mvMjITXKj/zejaK0ADn7ZH7PFl+ZSOok4Vh/bkwvC6SwfXFHAVIB9iyvRnrrd4g6Y8p3
+         9YnWoahyo8zTy7Wb6geURwlE9JEsdItNh3P5ZdN/DBcM+zPom5THq3nJQzE+zfQMKw9j
+         hKvN7cwl+qX1OshIbySuiTFqGO09+Muu6NJbqjNmGjOWhCa2lJ9jP+xUcWT/dtc6ZpmZ
+         zt3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720173145; x=1720777945;
+        d=1e100.net; s=20230601; t=1720173147; x=1720777947;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HewTxIxxAw4d0VO0IzaF9nti4qYjTs9zA5y2utlK+JY=;
-        b=cIsBrb4eYADrlIYpXs521NBJ2MhF8W5Nc4jBuEP5tzPohdnyBurRUueiLOswT9cVjS
-         9HEppz830isQZe9CiucUsU2x87gSIYHV9Plhy+WkwSg36Xu3sABRSJMBW5F+fW9bTjpy
-         AhBpx3pQSD1jq2tYjl4dnnd65gulBxCoC1WKb0kZXcZCJcAQGN8gRIlicvws+EM4cnZR
-         fMenuDM01YhhqEJbEin5yI5WwsYIVbQIh8AKjHzgThxcgMOQhzGpzygBEyzsLwmdZmxJ
-         jwg3u+kCXmuTwKKpZl9L942YfBPABwAS8kPUEQj4dJDe9POjG0km+QFdfzZIQ2KDA+/V
-         wAPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVE6CeQqTFJqHOWWoDQ7e+cSTUmLUxF9C9O/jECuNxT0NAW5SUwaLNKpT7vu0fr2cNjgei45wBLDtgqtFER61AkIhA+
-X-Gm-Message-State: AOJu0Yx/y65hFKBzX2UXIVuLjngdaM8lmQn5NYeRPl2fk6EGWA3HjnaT
-	5v9bzEkz+BMvfrSOvRl9eTLFUawEdfWWqIGjPT4F4GOThz2sputn60V5palNW2s=
-X-Google-Smtp-Source: AGHT+IGNfSuHZVFsjxGRqi721AgFHExWikVzZX/wJrHfHopGLF9m4l1eGZxSOMp6gJxffsVUPzQnDw==
-X-Received: by 2002:ac2:5e2a:0:b0:52c:e112:4b0c with SMTP id 2adb3069b0e04-52ea06133f1mr2313228e87.9.1720173145308;
-        Fri, 05 Jul 2024 02:52:25 -0700 (PDT)
+        bh=AuHHBQ3x8j+r0vn0WL5Gv5Q+wv3ro9XtUSu/vLsatmI=;
+        b=klrWnL6R9ePaNxytIqXVmoq6CfuCDtVlwe+hYz0vxBMmx34uyz9H4J4U0FOpQC5yYa
+         BHDruGHd4ZDVs2Wbs5LtIjQT6RpP22WEaJBJf3LmE2NKhSkGhdYzzqRdD9c4HXzPo8wn
+         +3yTSfgww34i+heV7HT4sMIE82kI+3S+aRXAg/n0Lc5/EY1yqDKh9dHhItVvwbbwsqZv
+         vZL8SNCmCRGSQgOnoEWd9/TWNcBgrnf5l0E3RMf5KhXUK2G2Us3a9o1qimiVk85w81dc
+         fECQ1srp4lqDHKEoyB7A9qA9l0qykBCIuLOk+YIr/LDpwJqU10oKgRUflcrZ66DLnY0H
+         Enmw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkXB80ueZ1cJy6W8RrReeZCQ4la3lpwiXCJ9VOAo/urGPlZOfPNCj+QgnskYD44Jg8BJrnFRq0aj3SJdpOjj5G7AuB
+X-Gm-Message-State: AOJu0Yz9CSkd9dzvvSPrZoE3hCC9AADORLNB2L7KoYWXAkVY3Yy85Krs
+	gycmQ3WRjJXCVUl2aS7ZQ2VJrlF5uA3fCJeop1o4CvHSx6PUCS0aCAUEOdPgl28=
+X-Google-Smtp-Source: AGHT+IGtiZW5kmWQCddksFiLkJ7NLWn4GnHc+gFB6U9WJuOeTpAWLYG47t+3PEzP4kFD/CgwHcu+8w==
+X-Received: by 2002:a05:600c:b43:b0:424:a659:c169 with SMTP id 5b1f17b1804b1-4264a3dedd4mr36118215e9.24.1720173147084;
+        Fri, 05 Jul 2024 02:52:27 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d1650sm55528995e9.2.2024.07.05.02.52.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d1650sm55528995e9.2.2024.07.05.02.52.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jul 2024 02:52:24 -0700 (PDT)
+        Fri, 05 Jul 2024 02:52:26 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 05 Jul 2024 11:51:36 +0200
-Subject: [PATCH RESEND 17/22] dt-bindings: thermal: sprd: reference
+Date: Fri, 05 Jul 2024 11:51:37 +0200
+Subject: [PATCH RESEND 18/22] dt-bindings: thermal: st,stm32: reference
  thermal-sensor schema
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240705-dt-bindings-thermal-allof-v1-17-554061b52fbc@linaro.org>
+Message-Id: <20240705-dt-bindings-thermal-allof-v1-18-554061b52fbc@linaro.org>
 References: <20240705-dt-bindings-thermal-allof-v1-0-554061b52fbc@linaro.org>
 In-Reply-To: <20240705-dt-bindings-thermal-allof-v1-0-554061b52fbc@linaro.org>
 To: Daniel Lezcano <daniel.lezcano@linaro.org>, 
@@ -82,25 +82,24 @@ Cc: linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, 
  Florian Fainelli <f.fainelli@gmail.com>, 
  linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Conor Dooley <conor.dooley@microchip.com>, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1295;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1279;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=TGEUdfIgxrn5p+oeEOU3I8iRwVeJfrhCUIuhAZVBvgE=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmh8IyLM7fgGzrFDU4lF7RNxv6EBHPu6d7Cyz/c
- 4CXChnXZxeJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZofCMgAKCRDBN2bmhouD
- 1/CkD/9EEtVLnTR6HLb+RQ8ppD8kzzvgKrlRWNFNyulVlT+RxcwDrdvWUOKWp0+Wy529rcI+BQd
- kgGT76Zk08TYdy95tjLeShJw43znJlBAgXdoQpqcMYdANi3Cy7qwy1KuhaT6REsKsYLl0lTGPWn
- xdB96EUooRu49pYHGDExtWpxE1bboFwhGkQhF+U0yk3BZcPnT68Z2cPyDn+kkSjor1+eq+SLhdd
- KgnODZtv+sqS7FXy5GBAkZn5nBTKg/Aw2FN8rGyKL9DEjZxD0r5au7pi+nhVXXRkq9l2Qls8hG2
- q/OlwGwyhik9vnJmJGSEyqJHCQ5LeXWicHypvDdBQJI6NgYYxTXP763jyentekBZQgxNuKHhLKE
- kd8C7mWcvTxwQ/uYcQI/U2CUJmCndTpCjjqJ/pdfKQbt1Kgh41Ds+H0/iO0vtdvc7ph8O4lzV5n
- jR7OVueGt5+DFCEHEoQC9Q3bzDKkn52XbUixejyhNhyiuMs/MEYCxMwYW/jmOUKrCftEOFwbpFA
- 6+vWwyww/34OR0DWbkr/f+2NJ0eIzeGTD3SI+t2lKPKRStxxS7J0ay86BxJeMhFy+lUpBuZUa5T
- 5HhaVeWBMzKTDYo/rEBbLEUVxxJirKQgaBLueIQGp1+kir47wZidQZjkUIScpS0pSFVzMsTMbqH
- Z6z7AANGQXxg0NQ==
+ bh=75N+YagfjHTq72mKsUwSWer5IrId1tl7O0sy7rhdM/8=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmh8Izbil3cUyAHoOJ1kZMbs3aE0dEw6Y2tk1gy
+ NEb1tU462WJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZofCMwAKCRDBN2bmhouD
+ 1yD0EACVU5Ga0Qcjk2Fq3mjRRSojMjyY41V+YDOx3XK5fCBF0oNvA1rTr0v1CJoGvWERXxAK1h7
+ WCGg8YdOhLZ9Y8E4RAII8mxttBUX5/vM0g8x3jMxcpSWcVg4ZzpxDSCjlmhOqF+UwJEvU7bakhl
+ PU0VLj+oO5FdpQZY7aHKXdSvo5qSPHfK1lDe6Fb8APHkCTSwPyuN/9j5FKRNXVuRF4lPNFj2nr3
+ c2vsX5GUfAb63ctTYD39a57yTpWr0niK+vi1O8h/FvlRrUm7zor1BvDQDKwiKMszV1+YSkENjDn
+ BacnePry+tKPxV6aiIogHG1XJp4/u/Zum8aSwRfThEIGFqaPg1o/9WMNdj/GjxX+KHKITVHP4s7
+ A/JSOsxdxkfsLAtUpma7Nc3xFnDuRSgjuVzes9KVBcnPptddMB+SXUCcAxIlCBY88FZvPrJEoQ+
+ C861uT3h0T46CechOycWu7onZjHx4E7q5ZGL+mi6ZvNIVDX1kjOHoN12VjhWTVGnR58B5iiaHet
+ Ry/HDQUbP9wAbIPi8MuBcvfWeeKxBlanFrWT5lT10E+b/0vZ+EYnPOzi7FL43Nv3jUsLZ9h9s2X
+ wIbik/HSCMyp1mQ3AllokuQwhDFcyaYAFkoyyDkg664V+8lpx1vLSTfDUp0dRIJpZGv+2IJwFl0
+ YGJHO4sx4OcOUsA==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
@@ -108,33 +107,35 @@ Device is a thermal sensor and it requires '#thermal-sensor-cells', so
 reference the thermal-sensor.yaml to simplify it and bring the
 common definition of '#thermal-sensor-cells' property.
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/thermal/sprd-thermal.yaml | 5 +++--
+ Documentation/devicetree/bindings/thermal/st,stm32-thermal.yaml | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-index 76aaa004c8ac..f65076fc68f9 100644
---- a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
-@@ -11,6 +11,8 @@ maintainers:
-   - Baolin Wang <baolin.wang7@gmail.com>
-   - Chunyan Zhang <zhang.lyra@gmail.com>
+diff --git a/Documentation/devicetree/bindings/thermal/st,stm32-thermal.yaml b/Documentation/devicetree/bindings/thermal/st,stm32-thermal.yaml
+index ab043084f667..1c01a80a0cdd 100644
+--- a/Documentation/devicetree/bindings/thermal/st,stm32-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/st,stm32-thermal.yaml
+@@ -9,6 +9,8 @@ title: STMicroelectronics STM32 digital thermal sensor (DTS)
+ maintainers:
+   - Pascal Paillet <p.paillet@foss.st.com>
  
 +$ref: thermal-sensor.yaml#
 +
  properties:
    compatible:
-     const: sprd,ums512-thermal
-@@ -77,11 +79,10 @@ required:
-   - clock-names
-   - nvmem-cells
-   - nvmem-cell-names
+     const: st,stm32-thermal
+@@ -30,14 +32,13 @@ properties:
+     const: 0
+ 
+ required:
 -  - "#thermal-sensor-cells"
-   - "#address-cells"
-   - "#size-cells"
+   - compatible
+   - reg
+   - interrupts
+   - clocks
+   - clock-names
  
 -additionalProperties: false
 +unevaluatedProperties: false
