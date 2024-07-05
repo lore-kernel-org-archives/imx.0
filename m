@@ -1,37 +1,37 @@
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533E51F61C;
-	Fri,  5 Jul 2024 20:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653BA364A1;
+	Fri,  5 Jul 2024 20:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720212256; cv=none; b=GbrcZZh0VFz47LL6ydqwBjSqrtk2Knxan91ApJpwBFLEGfGKpIFOVP7fBvoT7EVEWcEUciJDBzoJeA8x+HEtBjTD5tiUwD6hWH3XgdDc9HZGdjhc3NNM5uaF0aB7AiZSCebFM2KtiCZtp+nzcSUpjA2eazBL5eshqJxP+IdsXdg=
+	t=1720212449; cv=none; b=bQuoEqEO+BboA/fTGsdeCc+6lfBSCok/HkGnSVScj4n+sNUTZGKvqXIITyBxh/CVySvy5i3v/31E4fEMXd8myjbdKURX9mcmQuUyOh2kBVla7Cbit21eXAB4vnk0/NBlG0vsraBTKjE3nGHLOoakki5tAr+2Z7kyVb1z2MkNVxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720212256; c=relaxed/simple;
-	bh=E0DMI2N+rLJVjmBgl8H/STkCxc80BZbM9Ut6SYTItVE=;
+	s=arc-20240116; t=1720212449; c=relaxed/simple;
+	bh=eMozeeNDGgbnk37xu6KniIO54Iq7u9MW21qt2w/Xsx4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PUeODDXBqr/e+1LmXAGD2OHdSFeyMZuDZV8adQIpgkRg7+RsZInSb+c1eGf0PWu/aYDOArfBGWis9h6jrPfrbHda+TzWYnfKFW/lesZvSJwNFgatbVv07h/MmhMPrhF08G99bhOb6hofIwigohHTg/6wBF1Wjp6Uj/JcIxBpfaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XsLAefyy; arc=none smtp.client-ip=198.137.202.133
+	 In-Reply-To:Content-Type; b=buwWTRtct0M10Yo6ee/SLaDJSpcRJfD0FHoZs3jVmjmxjzdjplNHmgXFYdhO2GIPYrUK5hBz/OOBdx2kMkRp9HhOpo6MJ7RvDYNIX8TK9uUquhIP6ZC9S5G7dUhbT1g95vX8uqKud/EszQVrJ+hU+M4XS64iHatIXjEjk8IVmT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HDoBY2uv; arc=none smtp.client-ip=198.137.202.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XsLAefyy"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HDoBY2uv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=WAVTkyGIUNVQYbnMhsGGBhrzpc4yLy1OJogqCv6P6Bw=; b=XsLAefyyJd3YZZ+jdAB7/gxNyy
-	WYOKFxzzFdap0yqppWFgnCcQ8I96hr3/cKmIN/h58UiK9emBD8LZadOWHGWkPQBDRYb7XJ4ZYHriw
-	mh/v0P5zZKsajXgS2iQw0iHqJuvLViBz4t/bvFKeLmhtbsdHpoWLdHwAEa/5u5nlThIWu6ZfIyj6u
-	XJ+fwuUsMJiTln8rKrGHTqIyJ+WtixHoIRLIUsogVP0UwmrLCvXyAJtMIK6LqUBhtHohqOPDPCjgq
-	6GiLwZF1k2UCAUA0qkZtRAITiOzjLeQKDo0XKmKfMLqXyHocVeprSmly/LflesIJFBvTIU4pgNBNx
-	t1HJzxeg==;
+	bh=PvCy3PrwhnpHfh2tEhiH0ARV1O+qOmWrJCIYLoSkR0g=; b=HDoBY2uv5BE+KAv1dfieKfCWAs
+	mBqV1FcMGoX5ZwQhjkeHTPLXewaSb+bbFZQf4rCdoL8BOc+GwM+ZslUHEkPsxx5w22fv/o94agik1
+	h/Tfw9JbxalAMZY/aaHTPpRJfzkE5H3X84QPpUZ2ArtLy5Uh3+iruV4RpWAsaVSDtUoTObQRRzzYE
+	eIITusz9xgvb5gdVp+1dc7d7O8nI98ALyZYhwZKx2TN4YEhgUXTupScMvJ9Y7wvVj936rUSUhr8tl
+	wGxHJMuYcXsvS02HdAZ6YrI+de+VlhQvw/NUE8QR+d9dwxv9BI2Byj5euPmdLG6MgEflS+zkSNCBy
+	3+If0Svw==;
 Received: from [50.53.4.147] (helo=[192.168.254.15])
 	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sPpmm-0000000Go3q-45To;
-	Fri, 05 Jul 2024 20:44:05 +0000
-Message-ID: <318ebc29-df94-495d-b2bc-b24340c3d82a@infradead.org>
-Date: Fri, 5 Jul 2024 13:44:04 -0700
+	id 1sPpq1-0000000GoN0-1UGv;
+	Fri, 05 Jul 2024 20:47:25 +0000
+Message-ID: <f7c62def-cba4-46bf-aeda-829d2c378ee3@infradead.org>
+Date: Fri, 5 Jul 2024 13:47:24 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -39,7 +39,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] firmware: imx: add driver for NXP EdgeLock Enclave
+Subject: Re: [PATCH v4 5/5] firmware: imx: adds miscdev
 To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -51,38 +51,74 @@ Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org
 References: <20240705-imx-se-if-v4-0-52d000e18a1d@nxp.com>
- <20240705-imx-se-if-v4-4-52d000e18a1d@nxp.com>
+ <20240705-imx-se-if-v4-5-52d000e18a1d@nxp.com>
 Content-Language: en-US
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240705-imx-se-if-v4-4-52d000e18a1d@nxp.com>
+In-Reply-To: <20240705-imx-se-if-v4-5-52d000e18a1d@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 7/5/24 6:52 AM, Pankaj Gupta wrote:
-> diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
-> index 183613f82a11..56bdca9bd917 100644
-> --- a/drivers/firmware/imx/Kconfig
-> +++ b/drivers/firmware/imx/Kconfig
-> @@ -22,3 +22,15 @@ config IMX_SCU
->  
->  	  This driver manages the IPC interface between host CPU and the
->  	  SCU firmware running on M4.
-> +
-> +config IMX_SEC_ENCLAVE
-> +	tristate "i.MX Embedded Secure Enclave - EdgeLock Enclave Firmware driver."
-> +	depends on IMX_MBOX && ARCH_MXC && ARM64
-> +	default m if ARCH_MXC
-> +
-> +	help
-> +	  It is possible to use APIs exposed by the iMX Secure Enclave HW IP called:
-> +          - EdgeLock Enclave Firmware (for i.MX8ULP, i.MX93),
-> +          like base, HSM, V2X & SHE using the SAB protocol via the shared Messaging
-> +          Unit. This driver exposes these interfaces via a set of file descriptors
-> +          allowing to configure shared memory, send and receive messages.
+> diff --git a/Documentation/ABI/testing/se-cdev b/Documentation/ABI/testing/se-cdev
+> new file mode 100644
+> index 000000000000..97a5b2ca115d
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/se-cdev
+> @@ -0,0 +1,43 @@
+> +What:		/dev/<se>_mu[0-9]+_ch[0-9]+
+> +Date:		May 2024
+> +KernelVersion:	6.8
+> +Contact:	linux-imx@nxp.com, pankaj.gupta@nxp.com
+> +Description:
+> +		NXP offers multiple hardware IP(s) for  secure enclaves like EdgeLock-
 
-The 4 lines above should be indented with one tab + 2 spaces instead of _many_ spaces.
+		                                     ^^^ one space only
+
+> +		Enclave(ELE), SECO. The character device file descriptors
+> +		/dev/<se>_mu*_ch* are the interface between user-space NXP's secure-
+
+Please use "userspace" or "user space".
+
+> +		enclave shared library and the kernel driver.
+> +
+> +		The ioctl(2)-based ABI is defined and documented in
+> +		[include]<linux/firmware/imx/ele_mu_ioctl.h>
+
+End the line above with a period.
+
+> +		 ioctl(s) are used primarily for:
+> +			- shared memory management
+> +			- allocation of I/O buffers
+> +			- getting mu info
+> +			- setting a dev-ctx as receiver to receive all the commands from FW
+> +			- getting SoC info
+> +			- send command and receive command response
+> +
+> +		The following file operations are supported:
+> +
+> +		open(2)
+> +		  Currently the only useful flags are O_RDWR.
+> +
+> +		read(2)
+> +		  Every read() from the opened character device context is waiting on
+> +		  wait_event_interruptible, that gets set by the registered mailbox callback
+> +		  function, indicating a message received from the firmware on message-
+> +		  unit.
+> +
+> +		write(2)
+> +		  Every write() to the opened character device context needs to acquire
+> +		  mailbox_lock before sending message on to the message unit.
+> +
+> +		close(2)
+> +		  Stops and frees up the I/O contexts that were associated
+> +		  with the file descriptor.
+> +
+> +Users:		https://github.com/nxp-imx/imx-secure-enclave.git,
+> +		https://github.com/nxp-imx/imx-smw.git
+> +		crypto/skcipher,
+> +		drivers/nvmem/imx-ocotp-ele.c
 
 -- 
 ~Randy
