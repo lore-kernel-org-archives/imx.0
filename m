@@ -1,83 +1,147 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2E179C4
-	for <imx@lists.linux.dev>; Sat,  6 Jul 2024 00:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AFC13A3FD
+	for <imx@lists.linux.dev>; Sat,  6 Jul 2024 17:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720227527; cv=none; b=uR7G/AJLW9mGGEfcaIC3qPsvMoGy3WKw8FegzynLWGZjtZHsH5Tdl8RoxhI55Ng8mo/74GPGJikoc+sBvf09jPKa5Z4VEPALOBKTFnXM+wsrwgoiJmDDXGIO8ZRiiFVhmkVjex0K/1c1LFO2+F61nEQyTt5rkKxWx0EOYPiKcik=
+	t=1720287605; cv=none; b=Y1bf8YMwHTnwp6p4EtC0NyPGeLzH4AtXnHRRnXEOFComyv86x3KE89XlwdZWg6ZKZp7SbSw9TirsOU+WSEyKmsEgF62BLI2y7sAxxsOhRr3Jcw4jt59LlFxIS6paTN1pQQBq7MyzQUMQqk0+KuLireE1jDda1jCEjUuNLR6n6Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720227527; c=relaxed/simple;
-	bh=piwkyO/O/3vC11kd/u/KjxfzpFPdQzHA0Q2f2OYL9s0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MK7B/qZjJ8XWuFRGo/WjOlFzCGmKp9X0Jgmnddm+lnfDKq6T/GSq4KknDYiQ2niWlTzuH7YO+8Dp6/xX+FVtzujbllKf2GuCNGmVww2IrnrYTD72jC7cMDlboR79ZuX+RGTp1nI4rzG6KaX4sCnjBewtRekcokb7ocBRnkUbD7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=0Sspght0; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1720287605; c=relaxed/simple;
+	bh=K7/5S3Zqv2W8qdrNqOS6SWkrmCLz+5aP6vwqLcb5BLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=upn7Wf1u4v7ctHsBNHIrAG6J95mUhxh0pYuEYPWmWa6RuFRjdLIUkWhqcejnuvgw6Q/mUsQFYSkjifo7nQrr7UenfgmNQOfAo8dgm4to6UjLPJHZIuVFqNB/935+Yvm1bzuUtNC1UxY77w7Vq8P2/pInrePdP0IPoODP9csqHSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QqV/5gYg; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="0Sspght0"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id AA0BC8845A;
-	Sat,  6 Jul 2024 02:58:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1720227523;
-	bh=mMJou5m9J1j/u/3wLu2HdDR4nEKGjz1W+s5yXqNx4Ys=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=0Sspght0v+1OyWQqtJp/k6K5p9Na/gcSg0LupJyPo2ZX3BR8JPqdG6+TH9/8rrCOs
-	 mum0wZSzH+wYQu8n/sNQa1K7jrEucv5LGXQyRMc0W8r/VORyPyF77pS2uT8p+UKaT4
-	 V2OqGSM1v0CuDFDahYaAnqsDrv5a8DH0+qtpBvMOSLz5/ib9d46cEWvn+cgpwE50oz
-	 ev/xudaXsTkQX3z6eO2AX6Qixd0afwjhwk9IOfxL4CaCrvYD40MeD3AEtTRgRsPtlB
-	 kG/BvBDiDbZYAf60MqIGbMmJDKoVYSRSDeCoSP6vylrABxyETnh4bSYho56xtK81bF
-	 9eRbQu1z7FEag==
-Message-ID: <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
-Date: Sat, 6 Jul 2024 02:16:58 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QqV/5gYg"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1fb457b53c8so13992655ad.0
+        for <imx@lists.linux.dev>; Sat, 06 Jul 2024 10:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720287603; x=1720892403; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+w1HhCtOPF6+jQjVe2f79xd5RcxOFhfFM5UmLnkLxcg=;
+        b=QqV/5gYgrEMzcpRlM0D/38qB6A9FDLoF/OR2ck/swvpu2NFgYcxz6ynv8mfyt63Jej
+         C/yzVKqC5Oa0Cm+gkgMbl9Vmb5r20AOp0jGyBFYg7zLFTFXsw9F+6HC+jEy9wE/fYT0h
+         qla3UB48jcAK/PBoT4CX4XMHlrpOoPN6t9vZp95KLzQV+r0vg/k8v7EVQarXH2fkv997
+         107KdSXKYobozMOHJtOnNTAgby4jkM1QC/tk2b+XQu7eV7vKuj35PelvNB9ju5M4QNUE
+         ndBKPr52uE480YegC+QJf4CdrGH+m/8ksCw4Yw9d3qwXeRLAqcWXjSX4WK/lQCeRxzDO
+         5ndw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720287603; x=1720892403;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+w1HhCtOPF6+jQjVe2f79xd5RcxOFhfFM5UmLnkLxcg=;
+        b=Q6MVf+qhP1OMYgiDa+OJOvGNZNYPFj6/8BX6hVOZchmeSlWmDpUGdaSOqFPCEBoKjN
+         MYXB9+5Zt8rIr40FpDhddcIQkHeScYdXEuJc5mW/XMByANUyGHo/5x20wpAFtOE2CGJX
+         AnifiTx789CmVtj077fehf6ccNfKgyi6qxE5ZoKNPTi79DONEF1PZYHtpVqlUtQEsmmE
+         4Wa8ySOTRCWZClmSCeUot7Q9akog7qWxAaK2pYa6Me98AuEgTB0uf2lg+OXLx6Nzymv7
+         F5wlzCV0tJZW013vkYALo4aVFcvZDC4nraA25gI3L4GbGRvmWydRHALAWPyVHgJg87nV
+         bztA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQyGchBT+AdAJ/PA/hAb8jS0HSyspIaa1ZVNg0p7YHzRaC0kdn3bYeIlYxbqKe8LCBrkKsNTf0lz7kBoDwP0tHwwEo
+X-Gm-Message-State: AOJu0YyDOpBGGfpvNhc3cKtk93hLh+U5+6eKt/SmS+X9KOAIzI+wlz52
+	ldfGNPoRXvmblzxGWAfgeDP80g5/etrEg9V6uUPv4wojBHH8KfLxl6ChLOqqzw==
+X-Google-Smtp-Source: AGHT+IFfAmOh1vpybFa6ASP3tIwymsHJN+q/v+qmk1RVhTTsF5OCIrWZZWApJcwuyin0gArdkk3Wrw==
+X-Received: by 2002:a17:902:d4cd:b0:1f6:e20f:86b4 with SMTP id d9443c01a7336-1fb33f36fc1mr68382145ad.61.1720287603063;
+        Sat, 06 Jul 2024 10:40:03 -0700 (PDT)
+Received: from thinkpad ([220.158.156.249])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fb14faa241sm70616845ad.110.2024.07.06.10.39.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jul 2024 10:40:02 -0700 (PDT)
+Date: Sat, 6 Jul 2024 23:09:54 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org, Jason Liu <jason.hui.liu@nxp.com>
+Subject: Re: [PATCH v6 02/10] PCI: imx6: Fix i.MX8MP PCIe EP's occasional
+ failure to trigger MSI
+Message-ID: <20240706173954.GB3980@thinkpad>
+References: <20240617-pci2_upstream-v6-0-e0821238f997@nxp.com>
+ <20240617-pci2_upstream-v6-2-e0821238f997@nxp.com>
+ <20240629130525.GC5608@thinkpad>
+ <ZoL2W1Blrhzf19oM@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
- .crtc_clock
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- dri-devel@lists.freedesktop.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
- "Lukas F . Hartmann" <lukas@mntmn.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, kernel@dh-electronics.com,
- linux-arm-kernel@lists.infradead.org
-References: <20240531202813.277109-1-marex@denx.de>
- <1897634.CQOukoFCf9@steina-w>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <1897634.CQOukoFCf9@steina-w>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZoL2W1Blrhzf19oM@lizhi-Precision-Tower-5810>
 
-On 6/24/24 11:19 AM, Alexander Stein wrote:
-> Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
->> In case an upstream bridge modified the required clock frequency
->> in its .atomic_check callback by setting adjusted_mode.clock ,
->> make sure that clock frequency is generated by the LCDIFv3 block.
->>
->> This is useful e.g. when LCDIFv3 feeds DSIM which feeds TC358767
->> with (e)DP output, where the TC358767 expects precise timing on
->> its input side, the precise timing must be generated by the LCDIF.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
+On Mon, Jul 01, 2024 at 02:32:59PM -0400, Frank Li wrote:
+> On Sat, Jun 29, 2024 at 06:35:25PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Jun 17, 2024 at 04:16:38PM -0400, Frank Li wrote:
+> > > From: Richard Zhu <hongxing.zhu@nxp.com>
+> > > 
+> > > Correct occasional MSI triggering failures in i.MX8MP PCIe EP by apply 64KB
+> > > hardware alignment requirement.
+> > > 
+> > > MSI triggering fail if the outbound MSI memory region (ep->msi_mem) is not
+> > > aligned to 64KB.
+> > > 
+> > > In dw_pcie_ep_init():
+> > > 
+> > > ep->msi_mem = pci_epc_mem_alloc_addr(epc, &ep->msi_mem_phys,
+> > > 				     epc->mem->window.page_size);
+> > > 
+> > 
+> > So this is an alignment restriction w.r.t iATU. In that case, we should be
+> > passing 'pci_epc_features::align' instead?
 > 
-> With the other rc358767 patches in place, this does the trick.
-> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> pci_epc_features::align already set.
+> 
+> pci_epc_mem_alloc_addr(
+> 	...
+> 	align_size = ALIGN(size, mem->window.page_size);
+> 	order = pci_epc_mem_get_order(mem, align_size);
+> 	...
+> }
+> 
+> but pci_epc_mem_alloc_addr() align to page_size, instead of
+> pci_epc_features::align.
+> 
 
-I'll pick this up next week if there is no objection.
+'window.page_size' is set to what is passed as 'page_size' argument to
+pci_epc_mem_init(). In this case, 'ep->page_size' is passed which corresponds to
+size of pages that can be allocated within the memory window.
+
+Default value of 'ep->page_size' is PAGE_SIZE which is most likely 4K. So if
+your hardware cannot allocate 4K pages within the memory window, then it
+doesn't support splitting this OB region into 4K pages.
+
+But this has nothing to do with alignment AFAIU since epc_features::align is
+used for IB memory. This 'page_size' argument was introduced for some TI SoC
+that doesn't handle PAGE_SIZE splitting of OB memory window. Reference:
+
+52c9285d4745 ("PCI: endpoint: Add support for configurable page size")
+
+Can you check if your SoC also suffers from the same limitation? If so, then you
+should modify the commit message to make it clear.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
