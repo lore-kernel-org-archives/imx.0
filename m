@@ -1,37 +1,39 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653BA364A1;
-	Fri,  5 Jul 2024 20:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2E179C4
+	for <imx@lists.linux.dev>; Sat,  6 Jul 2024 00:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720212449; cv=none; b=bQuoEqEO+BboA/fTGsdeCc+6lfBSCok/HkGnSVScj4n+sNUTZGKvqXIITyBxh/CVySvy5i3v/31E4fEMXd8myjbdKURX9mcmQuUyOh2kBVla7Cbit21eXAB4vnk0/NBlG0vsraBTKjE3nGHLOoakki5tAr+2Z7kyVb1z2MkNVxY=
+	t=1720227527; cv=none; b=uR7G/AJLW9mGGEfcaIC3qPsvMoGy3WKw8FegzynLWGZjtZHsH5Tdl8RoxhI55Ng8mo/74GPGJikoc+sBvf09jPKa5Z4VEPALOBKTFnXM+wsrwgoiJmDDXGIO8ZRiiFVhmkVjex0K/1c1LFO2+F61nEQyTt5rkKxWx0EOYPiKcik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720212449; c=relaxed/simple;
-	bh=eMozeeNDGgbnk37xu6KniIO54Iq7u9MW21qt2w/Xsx4=;
+	s=arc-20240116; t=1720227527; c=relaxed/simple;
+	bh=piwkyO/O/3vC11kd/u/KjxfzpFPdQzHA0Q2f2OYL9s0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=buwWTRtct0M10Yo6ee/SLaDJSpcRJfD0FHoZs3jVmjmxjzdjplNHmgXFYdhO2GIPYrUK5hBz/OOBdx2kMkRp9HhOpo6MJ7RvDYNIX8TK9uUquhIP6ZC9S5G7dUhbT1g95vX8uqKud/EszQVrJ+hU+M4XS64iHatIXjEjk8IVmT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HDoBY2uv; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 In-Reply-To:Content-Type; b=MK7B/qZjJ8XWuFRGo/WjOlFzCGmKp9X0Jgmnddm+lnfDKq6T/GSq4KknDYiQ2niWlTzuH7YO+8Dp6/xX+FVtzujbllKf2GuCNGmVww2IrnrYTD72jC7cMDlboR79ZuX+RGTp1nI4rzG6KaX4sCnjBewtRekcokb7ocBRnkUbD7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=0Sspght0; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HDoBY2uv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=PvCy3PrwhnpHfh2tEhiH0ARV1O+qOmWrJCIYLoSkR0g=; b=HDoBY2uv5BE+KAv1dfieKfCWAs
-	mBqV1FcMGoX5ZwQhjkeHTPLXewaSb+bbFZQf4rCdoL8BOc+GwM+ZslUHEkPsxx5w22fv/o94agik1
-	h/Tfw9JbxalAMZY/aaHTPpRJfzkE5H3X84QPpUZ2ArtLy5Uh3+iruV4RpWAsaVSDtUoTObQRRzzYE
-	eIITusz9xgvb5gdVp+1dc7d7O8nI98ALyZYhwZKx2TN4YEhgUXTupScMvJ9Y7wvVj936rUSUhr8tl
-	wGxHJMuYcXsvS02HdAZ6YrI+de+VlhQvw/NUE8QR+d9dwxv9BI2Byj5euPmdLG6MgEflS+zkSNCBy
-	3+If0Svw==;
-Received: from [50.53.4.147] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sPpq1-0000000GoN0-1UGv;
-	Fri, 05 Jul 2024 20:47:25 +0000
-Message-ID: <f7c62def-cba4-46bf-aeda-829d2c378ee3@infradead.org>
-Date: Fri, 5 Jul 2024 13:47:24 -0700
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="0Sspght0"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id AA0BC8845A;
+	Sat,  6 Jul 2024 02:58:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1720227523;
+	bh=mMJou5m9J1j/u/3wLu2HdDR4nEKGjz1W+s5yXqNx4Ys=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=0Sspght0v+1OyWQqtJp/k6K5p9Na/gcSg0LupJyPo2ZX3BR8JPqdG6+TH9/8rrCOs
+	 mum0wZSzH+wYQu8n/sNQa1K7jrEucv5LGXQyRMc0W8r/VORyPyF77pS2uT8p+UKaT4
+	 V2OqGSM1v0CuDFDahYaAnqsDrv5a8DH0+qtpBvMOSLz5/ib9d46cEWvn+cgpwE50oz
+	 ev/xudaXsTkQX3z6eO2AX6Qixd0afwjhwk9IOfxL4CaCrvYD40MeD3AEtTRgRsPtlB
+	 kG/BvBDiDbZYAf60MqIGbMmJDKoVYSRSDeCoSP6vylrABxyETnh4bSYho56xtK81bF
+	 9eRbQu1z7FEag==
+Message-ID: <ab2eb32e-a458-4c9b-8324-27ccb00336c5@denx.de>
+Date: Sat, 6 Jul 2024 02:16:58 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -39,86 +41,43 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/5] firmware: imx: adds miscdev
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+Subject: Re: [PATCH] drm: lcdif: Use adjusted_mode .clock instead of
+ .crtc_clock
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ dri-devel@lists.freedesktop.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>,
+ "Lukas F . Hartmann" <lukas@mntmn.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, kernel@dh-electronics.com,
  linux-arm-kernel@lists.infradead.org
-References: <20240705-imx-se-if-v4-0-52d000e18a1d@nxp.com>
- <20240705-imx-se-if-v4-5-52d000e18a1d@nxp.com>
+References: <20240531202813.277109-1-marex@denx.de>
+ <1897634.CQOukoFCf9@steina-w>
 Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240705-imx-se-if-v4-5-52d000e18a1d@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <1897634.CQOukoFCf9@steina-w>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+On 6/24/24 11:19 AM, Alexander Stein wrote:
+> Am Freitag, 31. Mai 2024, 22:27:21 CEST schrieb Marek Vasut:
+>> In case an upstream bridge modified the required clock frequency
+>> in its .atomic_check callback by setting adjusted_mode.clock ,
+>> make sure that clock frequency is generated by the LCDIFv3 block.
+>>
+>> This is useful e.g. when LCDIFv3 feeds DSIM which feeds TC358767
+>> with (e)DP output, where the TC358767 expects precise timing on
+>> its input side, the precise timing must be generated by the LCDIF.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+> 
+> With the other rc358767 patches in place, this does the trick.
+> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-
-On 7/5/24 6:52 AM, Pankaj Gupta wrote:
-> diff --git a/Documentation/ABI/testing/se-cdev b/Documentation/ABI/testing/se-cdev
-> new file mode 100644
-> index 000000000000..97a5b2ca115d
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/se-cdev
-> @@ -0,0 +1,43 @@
-> +What:		/dev/<se>_mu[0-9]+_ch[0-9]+
-> +Date:		May 2024
-> +KernelVersion:	6.8
-> +Contact:	linux-imx@nxp.com, pankaj.gupta@nxp.com
-> +Description:
-> +		NXP offers multiple hardware IP(s) for  secure enclaves like EdgeLock-
-
-		                                     ^^^ one space only
-
-> +		Enclave(ELE), SECO. The character device file descriptors
-> +		/dev/<se>_mu*_ch* are the interface between user-space NXP's secure-
-
-Please use "userspace" or "user space".
-
-> +		enclave shared library and the kernel driver.
-> +
-> +		The ioctl(2)-based ABI is defined and documented in
-> +		[include]<linux/firmware/imx/ele_mu_ioctl.h>
-
-End the line above with a period.
-
-> +		 ioctl(s) are used primarily for:
-> +			- shared memory management
-> +			- allocation of I/O buffers
-> +			- getting mu info
-> +			- setting a dev-ctx as receiver to receive all the commands from FW
-> +			- getting SoC info
-> +			- send command and receive command response
-> +
-> +		The following file operations are supported:
-> +
-> +		open(2)
-> +		  Currently the only useful flags are O_RDWR.
-> +
-> +		read(2)
-> +		  Every read() from the opened character device context is waiting on
-> +		  wait_event_interruptible, that gets set by the registered mailbox callback
-> +		  function, indicating a message received from the firmware on message-
-> +		  unit.
-> +
-> +		write(2)
-> +		  Every write() to the opened character device context needs to acquire
-> +		  mailbox_lock before sending message on to the message unit.
-> +
-> +		close(2)
-> +		  Stops and frees up the I/O contexts that were associated
-> +		  with the file descriptor.
-> +
-> +Users:		https://github.com/nxp-imx/imx-secure-enclave.git,
-> +		https://github.com/nxp-imx/imx-smw.git
-> +		crypto/skcipher,
-> +		drivers/nvmem/imx-ocotp-ele.c
-
--- 
-~Randy
+I'll pick this up next week if there is no objection.
