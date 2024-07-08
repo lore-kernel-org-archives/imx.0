@@ -1,168 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A630200DB;
-	Mon,  8 Jul 2024 14:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982781D54A;
+	Mon,  8 Jul 2024 14:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720447782; cv=none; b=N1euL8wNU3GvzoGnSG2KCNaH1cHIRUMoNLmt5j7xTHm4Hgn7xSY4W0W0T4meLknd2FSpE3tMaTIJuAK/+u2EDPkRoFcUz6QJZ1nWufjwsoWxo6CtY2lqeyW8LerZ74MoiViCL/qewL6bDkk96We77guC6mtkXvfzdvGUs5jgdjo=
+	t=1720448709; cv=none; b=hq412v173ZYJN6NJnHWnfAQwAbjw29YpMPT4Yvn5+ELF6DJ2NEhqJZlPJqhvtjjFZD81nDlCDiNV52KKhbhGRGSOhZdIB6YLw9FX86g52X/31WIxDwIhOjD+sRU1ClNnZ5IH/ItKNWrsG4cUBoYNtgrNJGkve2vmaJXuKWbEQgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720447782; c=relaxed/simple;
-	bh=CF0DPeRn5VszrUZffHovk/7+iBXFdC6spgWpYJy3pVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OiNQ/ggyG2Nq1a9BavYey5EvGn5NlCEzKgw6W/f+AQnhHSSjmjF2OJOqQotW8k3+GX6U/o/S+hOryGwXogiaX9I9dsAa1LTHm55U7gBw6zAvKEBntmRo5z74UqMLVEhWUrhvovH4dzQrSLM5WEHXivCNBO2qaq6LdBbLOUJPxGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7FiAjt+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720448709; c=relaxed/simple;
+	bh=BqzIe6x1w65aK8oSp5pIAijyJ34V5xwuty8/FfrrAyY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=gpdVdfs+YQbo00ciugoASc7NUMMM3TJClX8WZmnz98B4bxwv7GFGdOiG8LMfVOYtYYTUaqFtdSQlrH9/ZTTq7ynP7Vt5W01OHDU/qkOtk6DBZRxLbYERBmhKptsmSXsMnQdBf2J3QyEn4JbJ8CrR7Qms57n/5dR8ZiZs54ZssKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8QJeaPF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7FiAjt+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AE8C116B1;
-	Mon,  8 Jul 2024 14:09:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8QJeaPF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAC8C116B1;
+	Mon,  8 Jul 2024 14:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720447782;
-	bh=CF0DPeRn5VszrUZffHovk/7+iBXFdC6spgWpYJy3pVU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I7FiAjt+5agFJKcl0MnCIAu8UmE3zgEkkWzikd9B1U7dPWaAWJ3OMlReTXlK1nThf
-	 w5eJZxfz7MgEYo14ah66V3iJMJ17iX2f8LuLSkSV2yScACJPvILrzW0M/Qvw21mGa7
-	 UO4CG8pldl9WzTJVmxAJyD5FiVqyCrdQqAo+eh/lSSLVaEego3Qt3EzDUB9jE53LVV
-	 xzdPkvH0WlAgv/3ci9jsYMUUyQAKg48OA/4hwCLeRA+sW+yNidOUUx9gmFbgWa5EUu
-	 d/Tbw1u3B1H5y/UlGCNSTkp3+yhOBqLrhJ05NFuw0vJOeECkdXdGkVn9PHOpWHgpi+
-	 2P0hoSJFekr5Q==
-Message-ID: <3fd67d12-4964-48eb-89cb-482b4a7e769d@kernel.org>
-Date: Mon, 8 Jul 2024 16:09:33 +0200
+	s=k20201202; t=1720448709;
+	bh=BqzIe6x1w65aK8oSp5pIAijyJ34V5xwuty8/FfrrAyY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=o8QJeaPFiV+0wuK+6XDsI3bvowA13RhKd5pn8hgeoQ/qbSCd98YNUMtX4MZ2jOGK2
+	 8NH3exPgLdtrnnpLBOerkOwwISsISJx0HKCWm3L9x6Cp49I1QbXDmQVPfK4u+GiSHt
+	 kKhahUHEJQ/HmlEJjWuz+uwZsl/585QDLFlvBgJmB7qY3oAY8DI1S8M1Zrhqqe49BQ
+	 +cZo6IYzUKiiOu/yR5e08LQwe026/sNMPEM36ZZJlBxmasMe7GY9KW7h38N/II00Bu
+	 kIRvag5UwlkTPIjRsAemCW7ycFiQr8XdCwTeCc0+2bqc65CkinLpSK/GY5CzhVDLoX
+	 QbaET9NZXGVIg==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240703165931.2325807-1-Frank.Li@nxp.com>
+References: <20240703165931.2325807-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/2] spi: dt-bindings: fsl-dspi: add dmas and
+ dma-names properties
+Message-Id: <172044870740.62411.13873431192116289183.b4-ty@kernel.org>
+Date: Mon, 08 Jul 2024 15:25:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/10] dt-bindings: interrupt-controller: Add i.MX8qxp
- Display Controller interrupt controller
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, tglx@linutronix.de
-References: <20240705090932.1880496-1-victor.liu@nxp.com>
- <20240705090932.1880496-5-victor.liu@nxp.com>
- <b0cbd659-21b8-4049-8882-f49275d4a247@kernel.org>
- <31301581-a710-4e25-a079-e017686c52ec@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <31301581-a710-4e25-a079-e017686c52ec@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 
-On 08/07/2024 08:51, Liu Ying wrote:
-> On 07/07/2024, Krzysztof Kozlowski wrote:
->> On 05/07/2024 11:09, Liu Ying wrote:
->>> i.MX8qxp Display Controller has a built-in interrupt controller to support
->>> Enable/Status/Preset/Clear interrupt bit.
->>>
->>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>> ---
->>>  .../fsl,imx8qxp-dc-intc.yaml                  | 321 ++++++++++++++++++
->>>  1 file changed, 321 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,imx8qxp-dc-intc.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,imx8qxp-dc-intc.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,imx8qxp-dc-intc.yaml
->>> new file mode 100644
->>> index 000000000000..3d0d11def505
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,imx8qxp-dc-intc.yaml
->>> @@ -0,0 +1,321 @@
->>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/interrupt-controller/fsl,imx8qxp-dc-intc.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Freescale i.MX8qxp Display Controller interrupt controller
->>> +
->>> +description: |
->>> +  The Display Controller has a built-in interrupt controller with the following
->>> +  features for all relevant HW events:
->>> +
->>> +  * Enable bit (mask)
->>> +  * Status bit (set by an HW event)
->>> +  * Preset bit (can be used by SW to set status)
->>> +  * Clear bit (used by SW to reset the status)
->>
->> 1. Why this is split from the main node?
+On Wed, 03 Jul 2024 12:59:30 -0400, Frank Li wrote:
+> Add dmas and dma-names properties because dspi support dma transfer.
+> Fix below warnings:
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var1.dtb: spi@2120000: Unevaluated properties are not allowed ('dma-names', 'dmas', 'little-endian' were unexpected)
+>         from schema $id: http://devicetree.org/schemas/spi/fsl,dspi.yaml#
 > 
-> Maxime suggested to do so:
 > 
-> "
-> But at least the CRTC and the interrupt controller should be split away,
-> or explained and detailed far better than "well it's just convenient".
-> "
-> 
-> https://lore.kernel.org/lkml/2k3cc3yfwqlpquxrdmzmaafz55b3lnqomzxjsvtetfriliqj3k@tv6uh7dzc2ea/
-> 
->>
->> 2. Who can use this interrupt controller? Children of your display unit?
-> 
-> Yes, only devices in the main display controller use it.
-> 
->> Then it is not really a separate device, is it?
-> 
-> Er, per Maxime, it is a separate device.
 
-It's not for me, especially considering small register region used here.
+Applied to
 
-Srsly, with that claim, some I2C device like PMIC also has a separate
-interrupt controller, because interrupts are in separate few registers
-(e.g. status, mask and ack).
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Can any of the children interrupts be routed differently?
+Thanks!
 
-Post entire, complete DTS for review.
+[1/2] spi: dt-bindings: fsl-dspi: add dmas and dma-names properties
+      commit: 2de9ae2044c4f6490dbbfb8d93fe6b8cc60c91d1
+[2/2] spi: dt-bindings: fsl-dspi: add compatible string 'fsl,lx2160a-dspi'
+      commit: 0f17a12787573dda66d2528fff27cd7362b34bfd
 
-Best regards,
-Krzysztof
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
