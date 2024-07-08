@@ -1,122 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51BF224F6;
-	Mon,  8 Jul 2024 07:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE0B339A1
+	for <imx@lists.linux.dev>; Mon,  8 Jul 2024 08:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720424035; cv=none; b=pF67UHQMotoIEVus6W7AHNLHwYDjWhLlK32cDLSvP+MTJ6TjuxYjKLPJwDJnXVwwI5dbNgKC0QW1srtm5xVfXnn9q43mNx/yg6ME+w3CfWD4R+QBWq2hSZbcvLlj2R46/rcvLQWSjYe+ODtvrcsfqt1UFRILm5wW3OhWGkKhxOk=
+	t=1720428096; cv=none; b=Jh8ZhdBJhTCSpr16wEzE9ejAx5fctGJPOoQjxANTBckzd+Y7JvDiHtI4mFiSVrRNHW/5vQXx9IuYc5UmKRSsaydmH2DbMAB7ZW4YAKMmGQsD+T2nuM/FYkDiwdag3zAgXt2IaYdEyWEAv4GvJW+rPCEeIRJOqE7xK/PAXdwZZIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720424035; c=relaxed/simple;
-	bh=mxMf1TrNtyc53HRtih3uOjiq76vxAUZxBn5/tCBbW0c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J4tNnHL6hkHvntrII811VggAu8ASMyreYroTyxu9u4IqsexZzLURPGdJdxh12k9FMJhDXFPWkB0MdmBcXtfOQvrlsOifUgF52IW0y9BjQ0ZIdcLm7ILCLqeloUtFdvg9Yq8wKcZScQuy5L8Ddcy/VUtp9KOWNNr6aHdN8E0GWuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHfaOZ0e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720428096; c=relaxed/simple;
+	bh=EbyMstgkGC0hj8mldRlEtHe4fvYA2Le4WLi6G4ZlrAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qrYS5wGNRWmVLCTqNdT0EAZ/ENfQpi3l7znKMk27x+iT5rT3IqhAXRgwqQZKxgQf54y9MGR9s1MEyCmrkyjkUo0yTanw6wb6Ms48puQ4+tOkiHmvo6KjgZOgyPjlw6l1Pqu1KJ96XGjfAPjumq00qTZTAo2AnsUr3NQmw0QL/rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=pUJU3jAV; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHfaOZ0e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF334C116B1;
-	Mon,  8 Jul 2024 07:33:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720424034;
-	bh=mxMf1TrNtyc53HRtih3uOjiq76vxAUZxBn5/tCBbW0c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QHfaOZ0eyaurIs232cTzHi6U0VGfa28JITak1PJ+4Cl9y8TIKdhAsJT1Rg7W9Q9TO
-	 iRlRhS/HEyOEMuBsPLcjXn5CGmFg+cAr6ldlxovSjReJv7sLtrworV30xqh424HpH3
-	 Ly+I5g3qHVYgzXtmKO+S/8qHu1MFHnu4VbVXtpTG++TUE3j/G2VYKWLFRqAzZSbaXL
-	 CUVmvhNspD+kDKOoi1hfpjxs3wh96lb09AM1+vDZShce0z0FY5c33bNV5oZDsqVo+R
-	 gj0mOW9bCC+2l6r54orlfkZT2boznT9tXz0s3lMCmy8puRdJCmajq3VkwW5p9fBrSt
-	 AjFcEmL7fG67Q==
-Message-ID: <23e80ead-1b52-4db8-af61-44f622458f97@kernel.org>
-Date: Mon, 8 Jul 2024 09:33:45 +0200
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="pUJU3jAV"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99346BFB3E;
+	Mon,  8 Jul 2024 10:41:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
+	t=1720428084; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=NveMWMLf1KKss1u30fBLh9RzfeK0IK5Gk36rVhpiHb0=;
+	b=pUJU3jAVou5Tg4YmrtMeZGhGmK6WS7KWRoMLsDsH8i89ySc+f1/q7Bc/TaCRAvFV9Z5MuL
+	t2IZKpWNNi4+8SimyplauJhDPUb8bwP01GEOp79OBJ5omUMzVgv6zSyzUyZhClBBqM2atd
+	2dwxcMvQw4SoDtBRxUvlJpk+80J6oCSmQJAgopKUGXG8yvhOixRL71ZQ/FJ19z9enzkEN9
+	+BL9R86YOPcOCX2vyU3O6Vs+Qz6pY/eBfy4lA4I18c3diM1KZ0EfQmVj2ZIc1fhL8ewZRC
+	EkBAr/qfSxKyNLom4uKLJ9zY+RCwKqjQUyPb203LnENHXKtmXjAgLyj81osJuA==
+From: Frieder Schrempf <frieder@fris.de>
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Li Yang <leoyang.li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Agner <stefan@agner.ch>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bo Liu <liubo03@inspur.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Joy Zou <joy.zou@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH v2 0/5] Add support for Kontron OSM-S i.MX93 SoM and carrier board
+Date: Mon,  8 Jul 2024 10:40:30 +0200
+Message-ID: <20240708084107.38986-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [09/10] drm/imx: Add i.MX8qxp Display Controller KMS
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- kernel@pengutronix.de, devicetree@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Thomas Zimmermann <tzimmermann@suse.de>
-References: <20240705090932.1880496-10-victor.liu@nxp.com>
- <6595d4fa-2e83-4380-b36e-9c4d910aadea@web.de>
- <3b91320f-730e-46e4-9c96-8c348bf9a2a2@nxp.com>
- <5bb059a0-b94c-44cd-b18f-4e2a79a6e8a3@web.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <5bb059a0-b94c-44cd-b18f-4e2a79a6e8a3@web.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 08/07/2024 09:09, Markus Elfring wrote:
->>> Under which circumstances would you become interested to apply a statement
->>> like “guard(spinlock_irqsave)(&crtc->dev->event_lock);”?
->>
->> I just follow the kerneldoc of drm_crtc_send_vblank_event() to
->> hold event lock like many other drivers do.
-> 
-> Please take another look at software design possibilities to benefit more
-> from further applications of scope-based resource management.
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-<form letter>
-Feel free to ignore all comments from Markus, regardless whether the
-suggestion is reasonable or not. This person is banned from LKML and
-several maintainers ignore Markus' feedback, because it is just a waste
-of time.
-</form letter>
+Patch 1-2: small DT binding fixups
+Patch 3: board DT bindings
+Patch 4: support PMIC driver without IRQ
+Patch 5: add devicetrees
 
-Best regards,
-Krzysztof
+Changes for v2:
+* remove applied patches 1 and 2
+* add tags
+* improvements suggested by Krzysztof (thanks!)
+* add missing Makefile entry for DT
 
+Frieder Schrempf (5):
+  dt-bindings: gpio: vf610: Allow gpio-line-names to be set
+  dt-bindings: regulator: pca9450: Make interrupt optional
+  dt-bindings: arm: fsl: Add Kontron i.MX93 OSM-S based boards
+  regulator: pca9450: Make IRQ optional
+  arm64: dts: Add support for Kontron i.MX93 OSM-S SoM and BL carrier
+    board
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ .../devicetree/bindings/gpio/gpio-vf610.yaml  |   4 +
+ .../regulator/nxp,pca9450-regulator.yaml      |   1 -
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx93-kontron-bl-osm-s.dts  | 165 ++++++
+ .../dts/freescale/imx93-kontron-osm-s.dtsi    | 547 ++++++++++++++++++
+ drivers/regulator/pca9450-regulator.c         |  41 +-
+ 7 files changed, 742 insertions(+), 23 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
+
+-- 
+2.45.2
