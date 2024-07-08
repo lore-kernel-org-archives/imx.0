@@ -1,87 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout3-smtp.messagingengine.com (fout3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F1578C99;
-	Mon,  8 Jul 2024 16:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D7146593
+	for <imx@lists.linux.dev>; Mon,  8 Jul 2024 16:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720454664; cv=none; b=RlgdY8Z7MdzdAXUjLYuo1ptLldTPOqwCDvspPgcOygABn1gU7roPTwFKRUyGtpVlhFdCMciEwJNEQh2C9/dk0ZFm0p8RmEEpL0sB2AIaFEQp40V59q92FHJ65/xCfOni8azsQzEwrRbfyvlb6veazbWLGXiZUa0qRtwvW5LqjEY=
+	t=1720455236; cv=none; b=YG2UKf3UoAPz2VqmfH9MQxNATM/golPJZx/C2bs7OToJp038Q+EeKjSHhbIMM70ES341uM8CkYghlr8V0EduCmAg51vC6mhInAbwfloFwI3DApyagQjrMhKW2xgHAUWRU2uhIgddFzJ9xO9zQHTsgg/mFbQ5deB/O0vJUzXefqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720454664; c=relaxed/simple;
-	bh=B+wgdQOGBCJumVIrWn6svGrdoWlDkgcqo510Z+SmmF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CEcW1APp1N85J3w6IEONwPokSEufidb0KZA+x2aFgmMcjzMByHuw5reOW5hg2V8zg+O4p6qwy6vwZEkyrrueSp+rc7SvXHYmRXXDdaZT0rPCYRVQnYYmU980R3QcQbHpA9qQ9dcvW+901gxFa84nQJc6RrQl7Ul1isydv7q5368=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zv64vPdr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720455236; c=relaxed/simple;
+	bh=Oy7Vf1A6WIZDmWgwE8xqjC8eexuXO8J+Ff76rIe+pMg=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=LNEH5Y/x2oYqBEglLvkXGOqmwbGyMoXGk5V8RCuvFNhiooZMPpAYC453XFmMnr5jGqU/PwkTiu1E1IbzMn4i3KKH1Ww73Adnz7nSv5MHO+52qcAat6ruF0WLy8s188bh82rK5a8gF2N5+6i31OXhVCyzus1jg8298AQjFoW4qaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=vC7pc1vs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K7ZFPT6c; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zv64vPdr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D915C116B1;
-	Mon,  8 Jul 2024 16:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720454663;
-	bh=B+wgdQOGBCJumVIrWn6svGrdoWlDkgcqo510Z+SmmF4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zv64vPdrwmX3RZ/8XTQyyyazgJhxqmXoVpgxynC7Ym2Gx2kfPGByiTvjznRhIyWjU
-	 Yw78ddCOk9aQNqKbk9ErcZh6E36/AQGcPsKsDtRRXic4NuJ41yirYE3ij0OOsXHIh6
-	 G2FbBQxAbTdHadfYYJQ0mZIyxKKiGkzM2HTOWFL9swaxQkpu+2lwT5q3BIjH9q/JcR
-	 sBm7fdCCoXdZqX74/js6i58mE6060hAT8ZgCR2UCqHMLvZByzZeqQ8jQsD+U0g/xJf
-	 MSb0oFXcaEgbirQZKm8hvDmNRFCjwN1xom6zl/mNfI26he0kUX0p5ZWhphdZKirnAv
-	 2zDpv6wAZBEcw==
-Date: Mon, 8 Jul 2024 10:04:21 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: soc: fsl: cpm_qe: convert to yaml format
-Message-ID: <172045465945.3262448.18446369145755550940.robh@kernel.org>
-References: <20240703-ls_qe_warning-v1-0-7fe4af5b0bb0@nxp.com>
- <20240703-ls_qe_warning-v1-1-7fe4af5b0bb0@nxp.com>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="vC7pc1vs";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K7ZFPT6c"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 5C2A2138019E;
+	Mon,  8 Jul 2024 12:13:53 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 08 Jul 2024 12:13:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1720455233; x=1720541633; bh=Dm+j1g201r
+	WzbPX565s9oKjpW3n6J7GSGb1eKskHe8U=; b=vC7pc1vsLCabenxleJ1LRKf+Gf
+	4ZfdYn0I1pCCPZoFVFtFzEHZatN/a8vEtbbAeace8s4dzYLBW4+foQ8r5BzzVR9U
+	mEnmtFm7w6OIn/EYHfSrB+OJjSkLKlQ2f9355xaOtyInGy374Deo5UsGdcuAkYhy
+	84vgJvPxUl63Nujpl/NtW4MUZtlLo3injdasrfLRr0L2GyhfPBFtJtFrICED6bxN
+	bZwkeqUmST3Mz6W4SlWjqILCaPNqDwx95LEUN91YjDsk8i32ZbByAzu48LMrmiHc
+	MUgif+e1jgpn/PJk43DZyBTpMAKeufbSZ2yrIo/LYcf5zdYZ7P7pzdl6GpHg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1720455233; x=1720541633; bh=Dm+j1g201rWzbPX565s9oKjpW3n6
+	J7GSGb1eKskHe8U=; b=K7ZFPT6cy7sJL9AJyBd/V7kLl0rOVn0bZSFV74Gpll1N
+	LhvVWs2t+DtQo+2DiF09Jf3v2Mm7TBvv16epg2g62FQCUT+9Jx0RVVE/agbgSn6M
+	dZuX35P5OaXog/OIx4OMZXqYePJHzCAix2UZzgIJt+rDNYM/3L4406VCTCZhM32T
+	VF+4bFJ3zU62ja7FFaU9l7bVNKttgIxkax4zO+CuWGmvUn8EJfDRMJ3K2SmUgofO
+	+gFo7sGDZIQJjwBYBXQqZt/aDYBv/Vg0qJ/rPlZkGPUZnwNyl6u42S0Y58txG/HM
+	tlmIxhs4IBt7fs88LbuKpl48KjkiJxAsomSxKr+z5Q==
+X-ME-Sender: <xms:QBCMZphSoNOYZZpLPL20nzS_3l1oZH5BroySH1wEW4KU85aqpNa5Eg>
+    <xme:QBCMZuDWjWHnGCfkUlCjWlwzjEUUSj1iRGUUZCV5EgpUHQ3JVou5wSxWdi78yJXIO
+    NvuB1Uss5Gn6Yw2yYc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejgdeljecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:QBCMZpEVUkZy-2MC17xW0WtxOYJbXAZpYbJ68GLgWuqgo44O14Rx7Q>
+    <xmx:QBCMZuTg4pSOqgz4Yf-SG69-JrttcZEnLPdMPQZtsyf9axCBPQMFxw>
+    <xmx:QBCMZmxdGoF3ryXgyg6ktnJ682VGL5iuCQnvFdMMGrm-gFRNV676rA>
+    <xmx:QBCMZk5rn_DNXupzPq4eRe_bCohYb6DLgVDv52eTJYh7-hVjsPSgqQ>
+    <xmx:QRCMZhzZmjDs3n-efWualp55dmmklYYu1XQPRMDqD7DIk_0qSr7A5nL1>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 0A657B6008D; Mon,  8 Jul 2024 12:13:51 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-568-g843fbadbe-fm-20240701.003-g843fbadb
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240703-ls_qe_warning-v1-1-7fe4af5b0bb0@nxp.com>
+Message-Id: <37bdee4b-cde6-496d-8217-80575c3e55ce@app.fastmail.com>
+In-Reply-To: <20240702142153.413061-5-shawnguo2@yeah.net>
+References: <20240702142153.413061-1-shawnguo2@yeah.net>
+ <20240702142153.413061-5-shawnguo2@yeah.net>
+Date: Mon, 08 Jul 2024 18:13:27 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Shawn Guo" <shawnguo2@yeah.net>, soc@kernel.org, arm <arm@kernel.org>
+Cc: "Shawn Guo" <shawnguo@kernel.org>, "Fabio Estevam" <festevam@gmail.com>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [GIT PULL 5/5] i.MX defconfig change for 6.11
+Content-Type: text/plain
 
+On Tue, Jul 2, 2024, at 16:21, Shawn Guo wrote:
+> ----------------------------------------------------------------
+> i.MX defconfig change for 6.11:
+>
+> - Enable a few drivers needed by TQMa7x/MBa7x and i.MX53 QSB/QSRB in
+>   imx_v6_v7_defconfig
+> - Enable RAM block device and IWLWIFI driver support in arm64 defconfig
+>
+> Fabio Estevam (2):
+>       arm64: defconfig: Enable RAM block device support
 
-On Wed, 03 Jul 2024 12:49:39 -0400, Frank Li wrote:
-> Convert binding doc qe.txt to yaml format. Split it to
-> fsl,qe-firmware.yaml, fsl,qe-ic.yaml, fsl,qe-muram.yaml, fsl,qe-si.yaml
-> fsl,qe-siram.yaml, fsl,qe.yaml.
-> 
-> Additional Changes:
-> - Fix error in example.
-> - Change to low case for hex value.
-> - Remove fsl,qe-num-riscs and fsl,qe-snums from required list.
-> - Add #address-cell and #size-cell.
-> - Add interrupts description for qe-ic.
-> - Add compatible string fsl,ls1043-qe-si for fsl,qe-si.yaml
-> - Add compatible string fsl,ls1043-qe-siram for fsl,qe-siram.yaml
-> - Add child node for fsl,qe.yaml
-> 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000: failed to match any schema with compatible: ['fsl,qe-muram', 'fsl,cpm-muram']
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000: failed to match any schema with compatible: ['fsl,qe-muram', 'fsl,cpm-muram']
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000/data-only@0: failed to match any schema with compatible: ['fsl,qe-muram-data', 'fsl,cpm-muram-data']
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/uqe@2400000: failed to match any schema with compatible: ['fsl,qe', 'simple-bus']
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000/data-only@0: failed to match any schema with compatible: ['fsl,qe-muram-data', 'fsl,cpm-muram-data']
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/uqe@2400000/qeic@80: failed to match any schema with compatible: ['fsl,qe-ic']
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/soc/fsl/cpm_qe/fsl,qe-firmware.yaml   |  48 ++++++
->  .../bindings/soc/fsl/cpm_qe/fsl,qe-ic.yaml         |  47 ++++++
->  .../bindings/soc/fsl/cpm_qe/fsl,qe-muram.yaml      |  71 ++++++++
->  .../bindings/soc/fsl/cpm_qe/fsl,qe-si.yaml         |  40 +++++
->  .../bindings/soc/fsl/cpm_qe/fsl,qe-siram.yaml      |  39 +++++
->  .../devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml | 148 +++++++++++++++++
->  .../devicetree/bindings/soc/fsl/cpm_qe/qe.txt      | 178 ---------------------
->  7 files changed, 393 insertions(+), 178 deletions(-)
-> 
+I don't really like this one change. This has pretty much been
+deprecated for decades, and I don't see a reason to enable
+it now without a really good explanation. 
 
-Applied, thanks!
+Is there ever a reason for not using regular initramfs any more?
 
+Shawn, can you resend the pull request without this one for
+the moment?
+
+    Arnd
