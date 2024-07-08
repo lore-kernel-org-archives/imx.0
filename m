@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865B077F2D;
-	Mon,  8 Jul 2024 12:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8D15381B;
+	Mon,  8 Jul 2024 14:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720443410; cv=none; b=lykyXWzryqNCi6MQ3HiFMbDFahPB6GlCnJZikAvCouJMQZlgcaPD6YJ2iyCrtGz0rXo7HofAaORim4PzlxBkPT/MMj2t3sNXJp6Cs13jt1WlsTfp0zWWmfry4qkhWAwR0GHe2KXyS3RYDbUcpN8qGCcayrcQKLUUUtu3PPFnRjA=
+	t=1720447470; cv=none; b=YJsMie1V3sSVpTd4VzdgvXMmJPIlFn5ZTrof0YTfVKwV7/0M3/KtZIkCj/UL7gyCqRhXigT3jUQbO5VFXHRWOyLZd3U/gK5/iPUtDmaT1/oBfIO6esVvwiuD1txHcCqfEEuV/ZyiE+6LtIim+GY622WMP/VyuYpdeQa5DxHY9eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720443410; c=relaxed/simple;
-	bh=/STq94y5BucUy148QyQXugFOCO4wsisJOD6ne/kmRmE=;
+	s=arc-20240116; t=1720447470; c=relaxed/simple;
+	bh=sU//YEXkZ7jfva2ENxty2a+qho5n0tDVgvY1hYo24wc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fEMT6TzTSTWotKaxP5HjAn4HYbrfDiWBgbqx34Pz+8LFsCis2DmWN/lInsKswM3+8sCDzi9k9iiffxdcryoBRoL2vDEKvp/prnRCNzmExHi7cLpjinwIw2SAABuA9zIL+4PCf94s2aFifPNuHJJJTRrSfU+KgujVjwFuB+wJ0GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeqwS7lG; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=X5PpgS7sbVL6t5s2jBurBCHeLC5K8adN2M4S5t51f6KRzKFnWCj1mYb+3Lru9FfBOZzsKvNEYfjHyMpVWMV4VrpoYbQt8UBhmPGGqqsFbWzhs+GbcX3DZItv0nPwr0guP7qXSAtI1yGFKpL/Fedp0LKKFInHDPS9fbDkcDycKw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BThpioBs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeqwS7lG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4B9C116B1;
-	Mon,  8 Jul 2024 12:56:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BThpioBs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2695BC116B1;
+	Mon,  8 Jul 2024 14:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720443410;
-	bh=/STq94y5BucUy148QyQXugFOCO4wsisJOD6ne/kmRmE=;
+	s=k20201202; t=1720447469;
+	bh=sU//YEXkZ7jfva2ENxty2a+qho5n0tDVgvY1hYo24wc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aeqwS7lGQsnJTczhbkCnE1fyprGlCu9QMt3sdILKiSNYhAWHB0utPTHhEQv9sishQ
-	 E1imHSee/PylvIKs5vpw4EDLALXPwTYmMJfepoF5zTf71g/EfApRHReSFGkatvtkEo
-	 S54n5/+1GgrccBo+Niymqq/jpgUjPWqrIjyFG3nDOpmLME68q8TFDwJYUr/B4bo8r0
-	 QNhfWWcWljuFXaEfgr/LfFEcHCqPTToqp3iaoDp76h2LDhS2OTY2CNIgxIAX7ghc7i
-	 Ogg0oZU6dNpr95hHdXLgntSSNaouHcOk1cp72MR4DpoqJTZbPhpJEYGUIZ4in7DXXz
-	 mb3KnFveY93tg==
-Message-ID: <1036b35a-1d9f-4851-8299-4b42290967d5@kernel.org>
-Date: Mon, 8 Jul 2024 14:56:42 +0200
+	b=BThpioBsTdqrF5dMdzK2Cdsv1E7TZtDH7YeNe45ZR7Eo2RJTzOkGT1VwgzxYazt2m
+	 rEpB7sQLEtXqVg5Npk6q25gSCLE3vMsuqGVkZz4VkJ6Qu0jPCBRHlQUNYV8otQcYQI
+	 xVC6cJoNihv59O6h/VHQK0WeNSVk+QbJEQDdaSaCjtGtNG41cwQGIfYPSzIi2gjAqz
+	 3G9mRIRbe6LiVqu7TnazINfzE8gfglTgcSAxtfOVFpJGLM9ueSMzarc8eC2ItmWDHM
+	 CubnXFeZN7oWnEJG+z875pnFrem40xUzOyP3aklr4rRvWn8l/5k1HtkSwNxbiplqF2
+	 R2UNQgfe2lytw==
+Message-ID: <eda90514-e40c-4edd-8c15-18717a5e9784@kernel.org>
+Date: Mon, 8 Jul 2024 16:04:21 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,28 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXT] Re: [PATCH v4 2/5] dt-bindings: arm: fsl: add imx-se-fw
- binding doc
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240705-imx-se-if-v4-0-52d000e18a1d@nxp.com>
- <20240705-imx-se-if-v4-2-52d000e18a1d@nxp.com>
- <450d1575-c9b3-413b-bfa9-8dc4352fa263@kernel.org>
- <AM9PR04MB8604B9A9F3D22C35679AD1D195DA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <c7688fba-0570-4dc6-80c4-23cd75ed29aa@kernel.org>
- <AM9PR04MB86040DFD0C0EF5D904BF960D95DA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <d9d334cd-543d-4316-ab0b-9ab253fffbd0@kernel.org>
- <AM9PR04MB8604AE7ABC833D77D403229795DA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH 02/10] dt-bindings: display: imx: Add i.MX8qxp Display
+ Controller display engine
+To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, tglx@linutronix.de
+References: <20240705090932.1880496-1-victor.liu@nxp.com>
+ <20240705090932.1880496-3-victor.liu@nxp.com>
+ <cd558335-6e72-46d1-911b-68ccbb211136@kernel.org>
+ <b9583c86-b5ed-4642-9baf-2ac850656ee3@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,71 +94,42 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <AM9PR04MB8604AE7ABC833D77D403229795DA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+In-Reply-To: <b9583c86-b5ed-4642-9baf-2ac850656ee3@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 08/07/2024 13:54, Pankaj Gupta wrote:
-> 
-> 
->> -----Original Message-----
->> From: Krzysztof Kozlowski <krzk@kernel.org>
->> Sent: Monday, July 8, 2024 4:54 PM
->> To: Pankaj Gupta <pankaj.gupta@nxp.com>; Jonathan Corbet
->> <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
->> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn Guo
->> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
->> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; Rob Herring <robh+dt@kernel.org>; Krzysztof
->> Kozlowski <krzysztof.kozlowski+dt@linaro.org>
->> Cc: linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
->> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
->> kernel@lists.infradead.org
->> Subject: Re: [EXT] Re: [PATCH v4 2/5] dt-bindings: arm: fsl: add imx-se-fw
->> binding doc
+On 08/07/2024 08:40, Liu Ying wrote:
+>>> +
+>>> +  "^framegen@[0-9a-f]+$":
+>>> +    type: object
+>>> +    additionalProperties: true
+>>> +
+>>> +    properties:
+>>> +      compatible:
+>>> +        const: fsl,imx8qxp-dc-framegen
+>>> +
+>>> +  "^gammacor@[0-9a-f]+$":
 >>
->> Caution: This is an external email. Please take care when clicking links or
->> opening attachments. When in doubt, report the message using the 'Report
->> this email' button
->>
->>
->> On 08/07/2024 13:19, Pankaj Gupta wrote:
->>>>>> 4 mailboxes? This cannot be different.
->>>>> mbox-names can have any of the above mentioned 4 values.
->>>>> And  two values are minimum, required.
->>>>
->>>> No, I said it cannot be different. If two are minimum, then you can
->>>> have here 4, right? But earlier you said you can have only 2. It does not
->> make any sense.
->>>
->>> Understood.  Will fix this with following changes.
->>>
->>> -      - const: tx
->>> -      - const: rx
->>> -      - const: txdb
->>> -      - const: rxdb
->>> -    minItems: 2
->>> +      - enum:
->>> +          - tx
->>> +          - txdb
->>> +      - enum:
->>> +          - rx
->>> +          - rxdb
->>
->> OK, this is now clear and answer is also clear:
->> No, you cannot have different names, except some rare cases.
->> Please explain why this should be an exception?
+>> This looks like you are organizing bindings per your driver architecture.
 > 
-> The name suggests the type of protocol for:
-> - sending:    tx or txdb (with doorbell).
-> - receiving:  rx & rxdb  (with doorbell).
-> 
-> NXP IP SECO on i.MX8DXL/8QXP supports txdb & rxdb. Hence added these names.
-> 
-> It is just for readability to understand from platform's DTSI file.
+> As I mentioned in cover letter, this series addresses Maxime's
+> comment for the previous series - split the display controller
+> into multiple internal devices.  Maxime insisted on doing this.
 
-Then no, that's not a reason to break fixed naming rule. These are
-supposed to be just tx and rx.
+But these are not separate devices. Look:
+1. parent DC:
+reg = <0x56180000 0x40000>;
+
+2. child interrupt controller:
+reg = <0x56180040 0x60>;
+
+That address is within parent.
+
+3. Then we go to things like:
+reg = <0x5618b400 0x14>, <0x5618b800 0x1c00>;
+
+Still within parent's range and just few words in address range. That's
+a clear indication that you choose few registers and call it a "device".
 
 Best regards,
 Krzysztof
