@@ -1,74 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B068845BEF;
-	Mon,  8 Jul 2024 22:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4391527A9
+	for <imx@lists.linux.dev>; Mon,  8 Jul 2024 23:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720478743; cv=none; b=fTybRQDwbVUrT+MLJ0zWGgR+xE+qgArhbXgehnzsehxaUquRpAi7gTyRb/5fI7xtQWBW5ZYIW2xgbl304lgDyn9VIU8IYLoM8KyVSBKImIeHei91G5FAu3EPa2d7AWCVjVK3Huqc8k97igqBBFCK/0fPzWfTvrbFMEMc9PobSc0=
+	t=1720480218; cv=none; b=HeEee/c4ZPmUPGq5FqRp4mSWjVcdq4fRIFWZua5xJx8UJd1/dIdF1pWBqvCqbQgn+s5SSsS0XwKnTWFKBbZQTM53FkoiQWkwUvpzgkhggubfgZaGOiLnFH9T2TDb/iT2szgDfqv0wD4SuQ3bC+57W82CYlTuM729K8RrwUBYSZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720478743; c=relaxed/simple;
-	bh=5Bj4mfHABx1NE5EIeXJOYIM0rpkZPkJMea6TmXqAFOE=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=YqNHi84L6uwEi1s9Rdyz/32GGM2+Obe1O377du6OmzW1MgUaXm+d29Z2mwTHxaQGJkyJpMaVD3pf0bqKjc7okVln8xz+ERr8CeOZQRKslrO7j6yFLhG30svYZhex7JmBSFK2sZ5bpbM7OMt2tFaFThSpUQJXFm7qc1XK7JXRvlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+xozJoN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720480218; c=relaxed/simple;
+	bh=TtrFMUHs/W2r2VOSo2ppvM/WhSliMAnQyowd3rIp5SY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=K5s/RCfBQi+koRBZqjGhjINiXKWLfBp9qwzoqHN+RnUzGHKGp4oMd4hVHEX4GtlFKJelMCBjmcmfrzWe3QeH5w8qU0n8SGQOMKReyc3tr2kXtybGcCWaGne/9KvO/3rcLCwsb7Cl3JWJmL7cj1HiTIlzfLxZKT90oxi/QAleou0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FnnQ8RiF; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+xozJoN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23195C116B1;
-	Mon,  8 Jul 2024 22:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720478743;
-	bh=5Bj4mfHABx1NE5EIeXJOYIM0rpkZPkJMea6TmXqAFOE=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=I+xozJoNsd4zVOsALiXWV96n36e7MJp4cZ4XcSlGG8x4EsVSEy+CULfd2+jFDkHMw
-	 VLPxhrQxYnjGwbg2h0yskTbMhAEexZc34OohD1N6Jyh9z8jQMXswUsga+viODi0mbW
-	 NvAQaRGrht1EZGbmm2pU7KZM5XR9qUl1o4t5wuqj/vY7SClwIn+MadEVPQPXCY2qBU
-	 +gm6ERKxktjJAMlyG81RsIon0e6SpXKAv0GqzdFVTdky26NazKWpUgTDjxZgr6xVeM
-	 UikPXyp5yRpwwdcCAIEB5IlDspIfUrtYADoKNaTag1DlRNuWPNfe/FVE5bvgoMyU4q
-	 4pFoVIDhGWKDA==
-Message-ID: <232c2342061b17b9f750c4ad52b0766e.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FnnQ8RiF"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 468MjaYQ009259;
+	Mon, 8 Jul 2024 23:10:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	dy2UesldC4XElGF1LE9xs2PmRBnT4drShFX9fHnwLlI=; b=FnnQ8RiFtxR4b+io
+	rMrIm0Pbs2bb/HF4PJ73tYBzJNHs00g0KKZc5OEUTodQ9tyKiVKSL6vv8F4XstLi
+	ogquKqr9dhAkbsIYM9pwoCH2YQrmxooeHoSNIXr5r2RuXroehQPcv0CFawylfvQz
+	zIWCacyJFFL5V5seLm7/s8zH0DYhWvbTC3VvWunN7h/KBQD3k2I2qr3ZumtM55CU
+	HG5+eXU42MfDNyn6ysLqboPuWKALZp1hP5b7SvLlvcZ0z5y3isIFVPYkQy/tMVOq
+	6M6H07E/U/juV18GPthuZtYVYc/3JcggUJ1i35mDW3h+m6OhvreW2DgjkzNO16gE
+	yI6i2A==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406wjn500d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jul 2024 23:10:07 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 468NA6Ye000939
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 8 Jul 2024 23:10:06 GMT
+Received: from [10.71.109.148] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 8 Jul 2024
+ 16:10:02 -0700
+Message-ID: <5c363e91-581c-4d33-ad5a-154da915b3fb@quicinc.com>
+Date: Mon, 8 Jul 2024 16:10:01 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <1719996771-11220-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1719996771-11220-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] clk: imx: imx8: Add .name for "acm_aud_clk0_sel" and "acm_aud_clk1_sel"
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, mturquette@baylibre.com, peng.fan@nxp.com, s.hauer@pengutronix.de, shawnguo@kernel.org, shengjiu.wang@gmail.com
-Date: Mon, 08 Jul 2024 15:45:40 -0700
-User-Agent: alot/0.10
+User-Agent: Mozilla Thunderbird
+Subject: Re: CMA Regression issue - [PATCH v2] of: reserved_mem: Restructure
+ code to call reserved mem init functions earlier
+To: Aisheng Dong <aisheng.dong@nxp.com>
+CC: Rob Herring <robh@kernel.org>,
+        "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        Jason Liu <jason.hui.liu@nxp.com>,
+        "dongas86@gmail.com" <dongas86@gmail.com>,
+        "saravanak@google.com"
+	<saravanak@google.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>, <kernel@quicinc.com>
+References: <DU0PR04MB9299C3EC247E1FE2C373440F80DE2@DU0PR04MB9299.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+In-Reply-To: <DU0PR04MB9299C3EC247E1FE2C373440F80DE2@DU0PR04MB9299.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: NQCTMusJS45gloHO2U81phdJdvWkemll
+X-Proofpoint-GUID: NQCTMusJS45gloHO2U81phdJdvWkemll
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-08_13,2024-07-05_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=881 clxscore=1011
+ mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407080172
 
-Quoting Shengjiu Wang (2024-07-03 01:52:51)
-> "acm_aud_clk0_sel" and "acm_aud_clk1_sel" are registered by this ACM
-> driver, but they are the parent clocks for other clocks, in order to
-> use assigned-clock-parents in device tree, they need to have the
-> global name.
->=20
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  drivers/clk/imx/clk-imx8-acm.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/clk/imx/clk-imx8-acm.c b/drivers/clk/imx/clk-imx8-ac=
-m.c
-> index 1bdb480cc96c..a1affcf6daff 100644
-> --- a/drivers/clk/imx/clk-imx8-acm.c
-> +++ b/drivers/clk/imx/clk-imx8-acm.c
-> @@ -114,8 +114,8 @@ static const struct clk_parent_data imx8qm_mclk_out_s=
-els[] =3D {
->  static const struct clk_parent_data imx8qm_mclk_sels[] =3D {
->         { .fw_name =3D "aud_pll_div_clk0_lpcg_clk" },
->         { .fw_name =3D "aud_pll_div_clk1_lpcg_clk" },
-> -       { .fw_name =3D "acm_aud_clk0_sel" },
-> -       { .fw_name =3D "acm_aud_clk1_sel" },
-> +       { .fw_name =3D "acm_aud_clk0_sel", .name =3D "acm_aud_clk0_sel" },
-> +       { .fw_name =3D "acm_aud_clk1_sel", .name =3D "acm_aud_clk1_sel" },
 
-This doesn't make any sense. Why are we adding fallback names?  Is
-"acm_aud_clk0_sel" not part of the DT binding for this clk controller?
+On 7/4/2024 4:41 AM, Aisheng Dong wrote:
+> Hi Oreoluwa,
+>
+> We observed a CMA regression issue on MX8MN that the CMA region failed to be
+> setup by rmem_cma_setup() since the following patch:
+> f2a524d9ef5b ("of: reserved_mem: Restructure code to call reserved mem init functions earlier") [1]
+> And the CMA node was incorrect parsed (e.g. non-reuseable) due to NULL node pointer.
+> Below is one line boot log tested with the tag next-20240703 of linux-next tree.
+> OF: reserved mem: 0x0000000058000000..0x000000007fffffff (655360 KiB) map non-reusable linux,cma
+> NOTE: actually there is a reusable property:
+> linux,cma {
+>         compatible = "shared-dma-pool";
+>         reusable;
+>         size = <0 0x28000000>;
+>         alloc-ranges = <0 0x40000000 0 0x40000000>;
+>         linux,cma-default;
+> };
+>
+> The root cause was that the CMA region was initialized at a very early stage
+> since above commit in question.
+> The call flow became:
+> early_init_fdt_scan_reserved_mem()->fdt_scan_reserved_mem()->
+> __reserved_mem_alloc_size()->of_reserved_mem_save_node(NULL, xxx)->
+> of_init_reserved_mem_node()->__reserved_mem_init_node().
+>
+> The rmem->dev_node is still NULL when calling __reserved_mem_init_node()
+> which fails to call the rmem_cma_setup().
+>
+> Please let me know if there's already a fix patch.
+>
+> [1] https://lore.kernel.org/all/20240620001027.2326275-1-quic_obabatun@quicinc.com/
+>
+> Regards
+> Aisheng
+Hi Aisheng,
+
+I have uploaded a fix here:
+https://lore.kernel.org/all/20240708230613.448846-1-quic_obabatun@quicinc.com/
+
+Please test and see if this fixes the issue.
+
+Thank you!
+Oreoluwa
