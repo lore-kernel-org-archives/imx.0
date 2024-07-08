@@ -1,212 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3A313DDCA;
-	Mon,  8 Jul 2024 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB7B7E56B;
+	Mon,  8 Jul 2024 14:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720449284; cv=none; b=CEf0FCydVHbZn0k8zj+OJbZNd2xLfHnu+nRcP7XpX0H3ig8uYgtAGad9ow7giNJ7avYGh2DTFJfvK2ShQCwyqDE2m9mQv/1Xl/5JK2UKEgX+r3UGM5Uy7j9l58tYHQGoJFkDYWvDD1bK7gRbpYYq4LiyWdN+6wSsTEiI/RvEi/Y=
+	t=1720450046; cv=none; b=kjDMZKau/4ZtiR1vKHKxGxZQmrfpNr+Zm3DEYKWkIR6KgPulVzp1V7ApLFQZgfwWc2wlRLIIZRxT+4lye7M8jvos7zu/55hGMZWyJIIaEqf150CwxV9Hs8W+kt89yszYajXxO4R0YOvibrnZyAIhVSkSPjrD7uJ22o6lGboZXkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720449284; c=relaxed/simple;
-	bh=s6M5nbZ68G8/iy6k6aEBsfDMDF5Vn95v0Ca9+I2QOc8=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=YmURIobfDUNszgYsfZ42DFpTinLKhBVdVH7fvaHGJA0s8lvaq+wihoZZB7/RsNkFHD2ew49fCuABjEj29AyS9l2MzvWOOCHAn4pmpwsxuAupFentOkal5hc0gNzP6gL8C3TPAALTF2Yqn3JRQLjgm+aqvsSbE8nOM/L2IR4xGeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GX1WBYmB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720450046; c=relaxed/simple;
+	bh=+vH5Wl2pf2rKsw1/NxNTENPBRL2nLneoS1IPUz/ojvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CfokjO+YiYF+ap2EXGepx5SIK+RKsELm0z1TDK5YNpbuoNXzIQM7ACaQg6h1BK56ZDc9yyJTqknKlDr4XzCuF1CwS3DQmXrb5YnH07vJ8tZXgJP5DoVY+RHHDbOKdcFYi9usx09OKCbGVKuAJOq5/VEO+fudexKi1V2FI8ladcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jc5AjsVs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GX1WBYmB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7E2C4AF11;
-	Mon,  8 Jul 2024 14:34:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jc5AjsVs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C65C116B1;
+	Mon,  8 Jul 2024 14:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720449284;
-	bh=s6M5nbZ68G8/iy6k6aEBsfDMDF5Vn95v0Ca9+I2QOc8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=GX1WBYmB87KtyQYfL/zkSXTc46d8R4QfTs51tMzD6UrTsbRHupKHoss7UcbnjrriA
-	 FrfQ5FCFndwES9UaUQIspNwuwgxrcK7IiztP3HhDaxaWUx08TwqGXEhQbN4xM0dKJZ
-	 cgUHnFhYcevQ+honH7gopOD8mJ6OcAP8zqQS2hvHqa0KPVXnnl8bBKpTIg70Exibch
-	 pSfiEel5fIHzNQOtjayOiakEpnpTIP1dqH2uQPz4kJ6Zof08hr1cLotZXjrkxx3haL
-	 YxiaECtSbU6zZwi8kSTxAqv8ccKKYfEnuUH4j1eRr7cuc7fNMna8nxJLylAPI6vmrz
-	 Z1M7+0zraY9sw==
-Date: Mon, 08 Jul 2024 08:34:42 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1720450046;
+	bh=+vH5Wl2pf2rKsw1/NxNTENPBRL2nLneoS1IPUz/ojvk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jc5AjsVsDc+SYPNGAWZ3Ost1NVoAo4ADtJwYBoKm7KKgJebfDvDfxFGeKFx+u0w4X
+	 ocJDEfZ749lyVO+vQE8+bqZRP3iiZGaVm7WJYbngnkqmwIrqZquE89a72M+NiNAp0l
+	 zJUAWN2pUilGM8R7aFaKUK4b88rYnXtjYSZXTs/mwhAAjx4YCVfFfKbQUYdDNg24ah
+	 ukJlyiV8d5UM2gxY3ReeqGsGtREqYr1vXBR/N0mSsCGoAT5NHhQcnCdzk+ucMEpwHC
+	 ljesqdK27ntzO+EPHiQjNnpnOFV9wdL68scZxZm1v6XjHSYWe9eblBVPXSBKxlyPtP
+	 c73m3wWsUDSsQ==
+Date: Mon, 8 Jul 2024 08:47:25 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	imx@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+	devicetree@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, Xiubo Li <Xiubo.Lee@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Will Deacon <will@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, linux-sound@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>
+Subject: Re: [PATCH v6 5/7] ASoC: dt-bindings: update fsl-asoc-card bindings
+ after imx-spdif merge
+Message-ID: <172045004389.3168553.9456011538931000974.robh@kernel.org>
+References: <20240627083104.123357-1-elinor.montmasson@savoirfairelinux.com>
+ <20240627083104.123357-6-elinor.montmasson@savoirfairelinux.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frieder Schrempf <frieder@fris.de>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
- Stefan Agner <stefan@agner.ch>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
- Bo Liu <liubo03@inspur.com>, Frieder Schrempf <frieder.schrempf@kontron.de>, 
- linux-kernel@vger.kernel.org, 
- Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
- devicetree@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
- Hiago De Franco <hiago.franco@toradex.com>, 
- Tim Harvey <tharvey@gateworks.com>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Markus Niebel <Markus.Niebel@ew.tq-group.com>, linux-gpio@vger.kernel.org, 
- Bartosz Golaszewski <brgl@bgdev.pl>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>, 
- Marco Felsch <m.felsch@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Alexander Stein <alexander.stein@ew.tq-group.com>, 
- Robin Gong <yibin.gong@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Mathieu Othacehe <m.othacehe@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Peng Fan <peng.fan@nxp.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
- Li Yang <leoyang.li@nxp.com>, Fabio Estevam <festevam@gmail.com>
-In-Reply-To: <20240708084107.38986-1-frieder@fris.de>
-References: <20240708084107.38986-1-frieder@fris.de>
-Message-Id: <172044909550.3146333.2379422584888739611.robh@kernel.org>
-Subject: Re: [PATCH v2 0/5] Add support for Kontron OSM-S i.MX93 SoM and
- carrier board
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240627083104.123357-6-elinor.montmasson@savoirfairelinux.com>
 
 
-On Mon, 08 Jul 2024 10:40:30 +0200, Frieder Schrempf wrote:
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+On Thu, 27 Jun 2024 10:31:02 +0200, Elinor Montmasson wrote:
+> The S/PDIF audio card support with compatible "fsl,imx-audio-spdif"
+> was merged from imx-spdif into the fsl-asoc-card driver.
+> It makes possible to use an S/PDIF with an ASRC.
 > 
-> Patch 1-2: small DT binding fixups
-> Patch 3: board DT bindings
-> Patch 4: support PMIC driver without IRQ
-> Patch 5: add devicetrees
+> This merge introduces new DT bindings to use with compatible
+> "fsl,imx-audio-spdif" to follow the way fsl-asoc-card works:
+> * the "spdif-controller" property from imx-spdif is named "audio-cpu"
+>   in fsl-asoc-card.
+> * fsl-asoc-card uses codecs explicitly declared in DT
+>   with "audio-codec".
+>   With an SPDIF, codec drivers spdif_transmitter and
+>   spdif_receiver should be used.
+>   Driver imx-spdif used instead the dummy codec and a pair of
+>   boolean properties, "spdif-in" and "spdif-out".
 > 
-> Changes for v2:
-> * remove applied patches 1 and 2
-> * add tags
-> * improvements suggested by Krzysztof (thanks!)
-> * add missing Makefile entry for DT
+> In an upcoming commit, in-tree DTs will be modified to follow these new
+> properties:
+> * Property "spdif-controller" will be renamed "audio-cpu".
+> * spdif_transmitter and spdif_receiver nodes will be declared
+>   and linked to the fsl-asoc-card node with the property "audio-codec".
 > 
-> Frieder Schrempf (5):
->   dt-bindings: gpio: vf610: Allow gpio-line-names to be set
->   dt-bindings: regulator: pca9450: Make interrupt optional
->   dt-bindings: arm: fsl: Add Kontron i.MX93 OSM-S based boards
->   regulator: pca9450: Make IRQ optional
->   arm64: dts: Add support for Kontron i.MX93 OSM-S SoM and BL carrier
->     board
+> To keep backward compatibility with other DTs, support for
+> "spdif-controller", "spdif-in" and "spdif-out" properties is kept.
+> However, it is recommended to use the new properties if possible.
+> It is better to declare transmitter and/or receiver
+> in DT than using the dummy codec.
 > 
->  .../devicetree/bindings/arm/fsl.yaml          |   6 +
->  .../devicetree/bindings/gpio/gpio-vf610.yaml  |   4 +
->  .../regulator/nxp,pca9450-regulator.yaml      |   1 -
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../dts/freescale/imx93-kontron-bl-osm-s.dts  | 165 ++++++
->  .../dts/freescale/imx93-kontron-osm-s.dtsi    | 547 ++++++++++++++++++
->  drivers/regulator/pca9450-regulator.c         |  41 +-
->  7 files changed, 742 insertions(+), 23 deletions(-)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
+> DTs using compatible "fsl,imx-audio-spdif" are still supported, and
+> fsl-asoc-card will behave the same as imx-spdif for these DTs.
 > 
-> --
-> 2.45.2
-> 
+> Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+> ---
+>  .../bindings/sound/fsl,imx-audio-spdif.yaml   | 66 -------------------
+>  .../bindings/sound/fsl-asoc-card.yaml         | 53 +++++++++++++--
+>  2 files changed, 49 insertions(+), 70 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-spdif.yaml
 > 
 
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx93-kontron-bl-osm-s.dtb' for 20240708084107.38986-1-frieder@fris.de:
-
-arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dtb: eeprom@50: compatible: 'oneOf' conditional failed, one must be fixed:
-arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dtb: eeprom@50: compatible: 'oneOf' conditional failed, one must be fixed:
-		'onnn,n24s64b' does not match 'c00$'
-		'onnn,n24s64b' does not match 'c01$'
-		'onnn,n24s64b' does not match 'cs01$'
-		'onnn,n24s64b' does not match 'c02$'
-		'onnn,n24s64b' does not match 'cs02$'
-		'onnn,n24s64b' does not match 'mac402$'
-		'onnn,n24s64b' does not match 'mac602$'
-		'onnn,n24s64b' does not match 'c04$'
-		'onnn,n24s64b' does not match 'cs04$'
-		'onnn,n24s64b' does not match 'c08$'
-		'onnn,n24s64b' does not match 'cs08$'
-		'onnn,n24s64b' does not match 'c16$'
-		'onnn,n24s64b' does not match 'cs16$'
-		'onnn,n24s64b' does not match 'c32$'
-		'onnn,n24s64b' does not match 'cs32$'
-		'onnn,n24s64b' does not match 'c64$'
-		'onnn,n24s64b' does not match 'cs64$'
-		'onnn,n24s64b' does not match 'c128$'
-		'onnn,n24s64b' does not match 'cs128$'
-		'onnn,n24s64b' does not match 'c256$'
-		'onnn,n24s64b' does not match 'cs256$'
-		'onnn,n24s64b' does not match 'c512$'
-		'onnn,n24s64b' does not match 'cs512$'
-		'onnn,n24s64b' does not match 'c1024$'
-		'onnn,n24s64b' does not match 'cs1024$'
-		'onnn,n24s64b' does not match 'c1025$'
-		'onnn,n24s64b' does not match 'cs1025$'
-		'onnn,n24s64b' does not match 'c2048$'
-		'onnn,n24s64b' does not match 'cs2048$'
-		'onnn,n24s64b' does not match 'spd$'
-		'atmel,24c64' does not match 'c00$'
-		'atmel,24c64' does not match 'c01$'
-		'atmel,24c64' does not match 'cs01$'
-		'atmel,24c64' does not match 'c02$'
-		'atmel,24c64' does not match 'cs02$'
-		'atmel,24c64' does not match 'mac402$'
-		'atmel,24c64' does not match 'mac602$'
-		'atmel,24c64' does not match 'c04$'
-		'atmel,24c64' does not match 'cs04$'
-		'atmel,24c64' does not match 'c08$'
-		'atmel,24c64' does not match 'cs08$'
-		'atmel,24c64' does not match 'c16$'
-		'atmel,24c64' does not match 'cs16$'
-		'atmel,24c64' does not match 'c32$'
-		'atmel,24c64' does not match 'cs32$'
-		'atmel,24c64' does not match 'cs64$'
-		'atmel,24c64' does not match 'c128$'
-		'atmel,24c64' does not match 'cs128$'
-		'atmel,24c64' does not match 'c256$'
-		'atmel,24c64' does not match 'cs256$'
-		'atmel,24c64' does not match 'c512$'
-		'atmel,24c64' does not match 'cs512$'
-		'atmel,24c64' does not match 'c1024$'
-		'atmel,24c64' does not match 'cs1024$'
-		'atmel,24c64' does not match 'c1025$'
-		'atmel,24c64' does not match 'cs1025$'
-		'atmel,24c64' does not match 'c2048$'
-		'atmel,24c64' does not match 'cs2048$'
-		'atmel,24c64' does not match 'spd$'
-	['onnn,n24s64b', 'atmel,24c64'] is too long
-	'onnn,n24s64b' does not match '^(atmel|catalyst|microchip|nxp|ramtron|renesas|rohm|st),(24(c|cs|lc|mac)[0-9]+|spd)$'
-	'belling,bl24c16a' was expected
-	'onnn,n24s64b' is not one of ['rohm,br24g01', 'rohm,br24t01']
-	'onnn,n24s64b' is not one of ['nxp,se97b', 'renesas,r1ex24002']
-	'onnn,n24s64b' is not one of ['onnn,cat24c04', 'onnn,cat24c05', 'rohm,br24g04']
-	'renesas,r1ex24016' was expected
-	'giantec,gt24c32a' was expected
-	'onnn,n24s64b' is not one of ['renesas,r1ex24128', 'samsung,s524ad0xd1']
-	'onnn,n24s64b' does not match '^atmel,24c(32|64)d-wl$'
-	'atmel,24c16' was expected
-	'atmel,24c01' was expected
-	'atmel,24c02' was expected
-	'atmel,24c04' was expected
-	'atmel,24c32' was expected
-	'atmel,24c128' was expected
-	from schema $id: http://devicetree.org/schemas/eeprom/at24.yaml#
-arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dtb: eeprom@50: Unevaluated properties are not allowed ('compatible' was unexpected)
-	from schema $id: http://devicetree.org/schemas/eeprom/at24.yaml#
-arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dtb: /soc@0/bus@44000000/i2c@44340000/eeprom@50: failed to match any schema with compatible: ['onnn,n24s64b', 'atmel,24c64']
-
-
-
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
