@@ -1,487 +1,210 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013070.outbound.protection.outlook.com [52.101.67.70])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C1318005B
-	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 21:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720561746; cv=fail; b=NnLqHrpi+2cUYvDp8Poi29VolU6wUDSN3ZmNlsJOxUU4bIF/50E6bEXTc+3txNagvESq+TKskG1bgWKWiuRMSFzg1btuJoQ3qfUVhwesPW60jW4enk6c9JmK5mMOX1bKrsguVy+AF4fdFyPhLU/wQKADRksZV7NnLsplJlaYVss=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720561746; c=relaxed/simple;
-	bh=E/XMdZWE9aJ+A27IUhYbLIkDpEgCB+yfa8KFaalHCTE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sKYXTIU9XRWyjToxf4VyL3L8e8aIysvbSE3DWu5SULrWQtXjg0EdOmhx2Ean/oqjiEfqJIB+rem2W8J8N6YLhNahYBvnUBn4+Vr08mGCbk64P/hrfCWeirOEE1ZCVj9yea6wIk7H4xwPYk1OoBr00lLMjIF1D3/TnmhAAE1cm9M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TlFD/ngm; arc=fail smtp.client-ip=52.101.67.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3AD1B86D6
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 22:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720562901; cv=none; b=qngRHv5NPKIBPtUVxozoRDx0laSMmgDJ1GtqBOjAaYl3dZzC25ot1SoBY/Ea/cSL8kLH8CsEiyP7UL19hAQxHodjCmieia9yMeyqc4c05ACDrO5M5IM92ZL0jZdIlpFK6MwODDHODm59eQdfqXoSDXupP3kw4WW7NT1Cook8pa4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720562901; c=relaxed/simple;
+	bh=lkzWomeVwq/YRJmwTAIEZ93bVceNo/kXZvVtzOy1Wd0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Uycco5gcSuOG5SHXQSnLLEqbIjy3KJfS6WIaCxE0m7odJQcLbomFSZgkFfqmr4cxrsmEojybV4hNr/zZOU+ci5GXzl8/J3FI0ja4elF8VQjE5D5Xnlv7hJALnIJlZdtiz/eLPn4qZtvwT8V4+BWk6IFUnMqKvB0b+2NREBHGFHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YISv2mlK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TlFD/ngm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZRg0CCMxNfJ8KfNLckM70dey1OJe5/6iSfilAdc7IqRdd++ZBCuo70nX0GuRyJi6ngIwFh/gmdZtffZ0F2mFZCiRJsPLkNMc8Gkpuf4ItB1vja6otsoUaYnFzm+msRKqLCHO8PK0/fgBNWwgBCjq87PZSF4JnQzzAjaz6aHbQHC5zaVsjx5IYPGfab3kpV3jdDWMazbZXoD7MLLNqWw5o0TtWrOp0XDAm7GQyZI0xTeyMltDsMictzCZQ/n8crxJ1kEMtSMOT1uwT4diikT6kz5F35k4BgfiP65xMq7Eqt9YLSYfSf1IVleMzjeC0ojYwELT54piaCut2jsmNGHxWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ePr9Qg+GpTnLb5HwdTn/liJiQ+K/eMCpO/f7QPu9zfs=;
- b=eB8xuM0URyTSAj+Rh9bL/+58AzVySRE4o/xBpew4bohFfsD8JqD0sjcHD3Qdyk+M2G2FfA30upqLCsKvpoCpkc6pob9SH7/BWzKN72AUpxZCgTWyVMZ6xG8Qx3wW3cB54ggDo79yNIxGPoZGUdjDbQZeJ4Cq/SmduheYi8HdJtJNSVHgC5DfQA+FQypolO6uvWMJdqaBuEFajUyVmysvInQDnFvguK6kkKel09+g/3XVrNtdndNouRtVQdSPeMI329XS017rPJbO0jfL1iJySDNUUujebJ0OLMkXSwIKS6RbnCVyLB8acQlxxqZggSiuQvR5d9UuTKKVf2e1xeoytA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ePr9Qg+GpTnLb5HwdTn/liJiQ+K/eMCpO/f7QPu9zfs=;
- b=TlFD/ngmVNGTEfJt4crm8aT25CdBhRa4rj1XUDL1ubVPSpqsApyYKtWPmG5+XefsCnGv7VZKNutxskLJ20sw9c2ycwfgiTU7vS8bs5LYLnN+77DXIOVUeSUu/1WIRuxNEvG/DGHLZOSm1iemLdzXUlnumjVEh6G568EVzL3mJp0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7391.eurprd04.prod.outlook.com (2603:10a6:800:1b3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.35; Tue, 9 Jul
- 2024 21:48:58 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7741.033; Tue, 9 Jul 2024
- 21:48:58 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: robh@kernel.org
-Cc: Frank.li@nxp.com,
-	conor+dt@kernel.org,
-	davem@davemloft.net,
-	devicetree@vger.kernel.org,
-	edumazet@google.com,
-	imx@lists.linux.dev,
-	krzk+dt@kernel.org,
-	krzk@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH v3 1/1] dt-bindings: net: convert enetc to yaml
-Date: Tue,  9 Jul 2024 17:48:41 -0400
-Message-Id: <20240709214841.570154-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0198.namprd05.prod.outlook.com
- (2603:10b6:a03:330::23) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YISv2mlK"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469J6FoH019368;
+	Tue, 9 Jul 2024 22:07:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=qlBjtF6+Nl6p3pxoPrJXX6
+	P3qWoG4zdVGdJPJXfQSu0=; b=YISv2mlKxrtaQNwSg0QGrgLDzM5cpQUh0X8NHO
+	HeZkjGl8BN0285CD755VQZZVfhQ23yfLwGH9/4ZdLUG0M0sJePB0DBpY254B/pcn
+	5hkhLkW2Sm4IQO6ZnfHJf2X5d6XmEvia2sAUPK+h7FQnOrjBiRQYlHoeJ5y+QxG6
+	18EbhrWzNLoL6eHH9UkmUTW8v56nvPRL+jBBVdqrqWbOyZkIl43Li/gBi9pE9gr3
+	w/6/eFrQE693/oyb1D/6H97ExEhSO/A542D1vPyv0Oq0fhQJjchNanEDZegCatgs
+	1JeQsT04EreTjJcDoPM7YLX7UrExTQOpc/TraBIlsiagJjwA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406wg3yvgd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jul 2024 22:07:57 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 469M7uXu022335
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jul 2024 22:07:56 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 9 Jul 2024
+ 15:07:56 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Tue, 9 Jul 2024 15:07:55 -0700
+Subject: [PATCH v3] perf: add missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7391:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3461e8e-7f98-4334-c83e-08dca060efe6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EFjQObO1L1WojZWNeHKq1rTU1mHPEyOJoFDCq3kWhWAL/dfgPutAeoRi79v4?=
- =?us-ascii?Q?o0dl6iZm65l2KcUEukydDFvcFqTt6bR5Mdtv1mnKNrU+BT1ikSP4gmycOrUd?=
- =?us-ascii?Q?x8aDEeeKLgzBBnCPm4Iho0pPJu7BzF3fWRAqquL6cfvXj7WsxzD7LLuapdUu?=
- =?us-ascii?Q?QQrBY4De3UqyLrO0g918S11CKK8+OWXrXTKBVS1cZ8L8+XFnW+XFs6MnX4Uh?=
- =?us-ascii?Q?PqXviZcQrhYb9JSO3a6j2PpAolfLdU1It680hN1Y3+rl3hvBP96i2oIQEICe?=
- =?us-ascii?Q?Hmug8AqMLH4tQcJ9TBqn0KwPUISzeNtDYpnPQNyHiJwavlCGzlCgQnMikglp?=
- =?us-ascii?Q?2InjXGYLvokT98h4JrJ6K0mlmb7cti2sKDQ9/RPxF4PfYTvN/MQtMl4vm5SL?=
- =?us-ascii?Q?ZT++1UD4B0wcgB2GtqUjfadgc3UFjxX+NbVvqzSrYmVhkXa9QPaA/IlxWAzl?=
- =?us-ascii?Q?cfCeyTbxlK6CVXzVdtw/X2CNAsDEIQwaWGDaI15kpzyDpz0H+S3AjwezkPaY?=
- =?us-ascii?Q?DjUqTQ2jv9NVrH0G67SugImNTo4FZDxEizaVb+z+4hwZggIouQgkNXVmQBxT?=
- =?us-ascii?Q?rV7v/L5hAF7uJyDvoW8u4OLn1u3Cl1Mg8ApzoJbHlln9c4KOHuRsR2e8Qjdl?=
- =?us-ascii?Q?IKSx1oeV81KcK/NqISXjP2F91C+mRTcfnrsnTTu/DhqlX1fDlDD7bCOP0ejX?=
- =?us-ascii?Q?GTpmbsLcZEaHziVNkgR6HDhD8Jvq6DlJuqttRfWmNT1q3W1aoDnhNYaxRxDq?=
- =?us-ascii?Q?RVm9lEITHr/Hdxze8jBDtfd3PpCTTh4M1NHeMV/5VsA2kN2KdkuAsM9nFVlI?=
- =?us-ascii?Q?OKC9lEHH5ZzYlGheKqmFrPzxk8FcZnIOZ2tujW7PdCAILf3YiKyOmj59z6cw?=
- =?us-ascii?Q?3iCZFEI7TGHU/Y51QjtXoi7tkKjK3MgJA16FDilcHXU33BCkeNnUzusBj0J8?=
- =?us-ascii?Q?Z20mXl9BpMq1JxDogA4Ub3e2zIxI8wtcaHjRGItFn8Ka52sJA4zHiyuB8pED?=
- =?us-ascii?Q?55dgheNNe9DQ0BK/K7PSgiZZ9R6YT2yc95DNJglxnaW4UVxUKbk6ErSzk7rY?=
- =?us-ascii?Q?qHRtudDe1ah/g4Py+H6F0x5iI7+nm8BJPGVsBbNbqxN51Gd5FHVqfWMUgkWk?=
- =?us-ascii?Q?0PYHwxghc2P+Qc3RWohbIlUX+XP9jQ1U6l83e3NYWMKUn0mByXsDRCzAEQuB?=
- =?us-ascii?Q?fr6jYtDv9k3XzyS+MY06CIA4dxqUaeciFBaDvY1nEgt9R0yvDotMRlXF+aaQ?=
- =?us-ascii?Q?t45iDK8qd7F2VYfEHDA/C/GuYlyNu0kYKVtFcmFmlvhRYph/tBd7LIgpgBqC?=
- =?us-ascii?Q?N4VAvX9K17FyNGJMDMAJi+n/SrK+iVz9I3+AxdQUsbO9qseIY3/tl0EQUkRz?=
- =?us-ascii?Q?OX/gOQg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Jk+dcqH0QloR7d8FzM5M04eXMUCbtRLyFmpX311MNgVWiQ/Wj/ba8WL5apvN?=
- =?us-ascii?Q?DTmN/9znCsfdPgh4cPgykvJ8uIHPdBE9i2DHrLokTcnK/+FCUkABayP4QGw6?=
- =?us-ascii?Q?KxNUv/5onU7LdyIN0QIOP/AJc+MDIqUfGNTi16Srp546ZT45aDrwC6ZV+sD8?=
- =?us-ascii?Q?+Vm5odkNjOKBgODB/H3vO8rsKK7HH6MHLOSf1SwOn5lmJcVI3kFu3BKn0uuv?=
- =?us-ascii?Q?hHlDwoy5aUw5RgnZKb3cdUrWXEWnsTZlB5/RvMbTPaLwYIpAtbv54SRI7/ET?=
- =?us-ascii?Q?0IRodBTYW0UP790oCJbKOwxAZoWLPEDTxTzg1ndHecgxTnbxUDD62qvZEicV?=
- =?us-ascii?Q?9wSNI/BZK/3YAih8c5L6mk9jYEWhLOQGRwQwABihDvk7gggj80MkEUCx53T/?=
- =?us-ascii?Q?dYURGMq5z+5dH33bSvRReTVVfE0f0GpXJ3zhanq1240EQVqMC1cCeLC5Qp9c?=
- =?us-ascii?Q?+2FF0BOb6FC8lwVVIgy48uPpDX/bkh22JoDIE1SW+whhhTeL13yNPTviw+Ph?=
- =?us-ascii?Q?dKl56lshiFnBVdFrSc/WaU41crDxDh3jAGNCfcmrF/W6geNlLiL1JrN311be?=
- =?us-ascii?Q?SFoxH0/wO1oDIWkdiLNgne59Wf6B0V2OMZdIJSAgEHfk4hI6/vLSFTMey0UT?=
- =?us-ascii?Q?VS7E2pQKQCzzU/VR4J3OwlcrUpBGvSpB3ojSMDtkBkOv9O4s0E7FrPDIYGM6?=
- =?us-ascii?Q?5Dc0SEYmFbaPsLyJ8Q34dZmczskBvdOY0+HaJFQUK7QpSJjjdgQXG1WCNhu2?=
- =?us-ascii?Q?LCgGvU35xfSoE1VdLf+jQrt+eXvirCsIw3wa+fiB8N5vXlKdQKowh4nCIibv?=
- =?us-ascii?Q?UazpftJqyzMoEX/oHyz3ISUhxZkZEeSGNhd/fh8JdKc0dYFWsMKcWr2TYFw8?=
- =?us-ascii?Q?I5Wu3CdIufsiShcTx0hK4ebsg8bA2MTf0yWjVCwn6L1v1Zmf38DKDg8WYdlb?=
- =?us-ascii?Q?ikpOoMvEaWh2JGuvn+C6jpej+GkXfY2BXMAy7mpccpwId5+4pMcfBN/e5V6n?=
- =?us-ascii?Q?KnkkuIoatysqu29SQv1EIvFZMpl+txIyaxcMVnj+8NInAIrOifedVUey7RCW?=
- =?us-ascii?Q?NTxBz5erE2nRHKyqsqIE6G7CIx5jUPolo5MZ9LFYPS5kmanIKZdmaR2Pq1+H?=
- =?us-ascii?Q?/xFDeifPpZTwR61fr73VPNVy+2E6sEdeX15TeW+VbCZsauq8ZQtfkfGg0mko?=
- =?us-ascii?Q?VUWOGV9ThIyCphNDYJvE9wpIyofbCD/r8JGHOwS3sSZEtokxyBJ5TNl9NYNg?=
- =?us-ascii?Q?rCTe+iRZqcS/nNto9JQH4T3MHa3pJGkwOSA+mPJptQuYeScH/qbNRSbVkoD6?=
- =?us-ascii?Q?oV+QpGHbJNUyuaez2hLBF78MQS4N1Du3Mlg/gjOAVPXshveEeQAjIbX4IJRd?=
- =?us-ascii?Q?sDYStNZo0MbBb+1aMnhNMPnyIQIspc4XeHSjkOqGFLK9q+3RAQNp7u+Bep1q?=
- =?us-ascii?Q?ZrihXP4Aw4h9bXQNVBPBK/EsxGhLRCBW9cbuTE6+8OXGPbug2tF+penXQorP?=
- =?us-ascii?Q?3CNAzf+TUpP1QvGTtLw5l+jF3GAFuzj6C3p0Ewt7AUFt/dQ5hpf2ERt033YZ?=
- =?us-ascii?Q?u77W0VPR1Elk/8TvzfJekiapkPeszpJnKuo79g9O?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3461e8e-7f98-4334-c83e-08dca060efe6
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2024 21:48:58.5244
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aWlXN/9NXx5/q4Fh2cJxR/i+vRkY3hlvnPEso/tjzw4mpp+05UgIQrxG5A142Szi2eiFJ939onTwQZ8M2sp5SQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7391
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240709-md-drivers-perf-v3-1-513275b75ed0@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIALq0jWYC/3WNQQ6CMBBFr0K6dkxbgVRX3sO4KO0gk0jBKTQaw
+ 90trjTG5Uv+f+8pIjJhFIfiKRgTRRpCht2mEK6z4YJAPrPQUpeyVgp6D54pIUcYkVuovNmVWpp
+ 9XXqRXyNjS/e38XTO3NiI0LANrls9VwrzHXobJ+R13lGcBn68+0mtp/+ppECBk1I1FmtvK3e8z
+ eQouK0berHGkv4waPlr0NmgWmNaY6XB0nwblmV5Abxhll8RAQAA
+To: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Frank Li <Frank.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam
+	<festevam@gmail.com>,
+        Yicong Yang <yangyicong@hisilicon.com>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-cxl@vger.kernel.org>, <imx@lists.linux.dev>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: NIEQ1DEPAW5LxLD-pOtMBJdkRdU74cC0
+X-Proofpoint-GUID: NIEQ1DEPAW5LxLD-pOtMBJdkRdU74cC0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-09_10,2024-07-09_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 clxscore=1015 impostorscore=0 malwarescore=0 mlxscore=0
+ bulkscore=0 spamscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407090151
 
-Convert enetc device binding file to yaml. Split to 3 yaml files,
-'fsl,enetc.yaml', 'fsl,enetc-mdio.yaml', 'fsl,enetc-ierb.yaml'.
+With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm-ccn.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/fsl_imx8_ddr_perf.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/marvell_cn10k_ddr_pmu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/arm_cspmu_module.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/nvidia_cspmu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/ampere_cspmu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/cxl_pmu.o
 
-Additional Changes:
-- Add pci<vendor id>,<production id> in compatible string.
-- Ref to common ethernet-controller.yaml and mdio.yaml.
-- Add Wei fang, Vladimir and Claudiu as maintainer.
-- Update ENETC description.
-- Remove fixed-link part.
+Add the missing invocation of the MODULE_DESCRIPTION() macro to all
+files which have a MODULE_LICENSE().
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+This includes drivers/perf/hisilicon/hisi_uncore_pmu.c which, although
+it did not produce a warning with the x86 allmodconfig configuration,
+may cause this warning with arm64 configurations.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 ---
-Change from v2 to v3
-- use endpoint-config as node name for fsl,enetc-ierb.yaml,
-- wrap to 80 in fsl,enetc-ierb.yaml.
-- fix unit address don't match
-- Remove reg/compatible string for pci
-- Add pci-device.yaml, which need absolute path.
-- Use example which have mdio sub node.
+Changes in v3:
+- Consistently use "Performance Monitor" in the descriptions
+- Did not carry forward Yicong Yang's Reviewed-by since I tweaked the
+  description that was reviewed
+- Link to v2: https://lore.kernel.org/r/20240620-md-drivers-perf-v2-1-1f88f8a08e48@quicinc.com
 
-Change from v1 to v2
-- renamee file as fsl,enetc-mdio.yaml, fsl,enetc-ierb.yaml, fsl,enetc.yaml
-- example include pcie node
+Changes in v2:
+- Updated hisi_uncore_pmu.c description per Yicong Yang
+- Link to v1: https://lore.kernel.org/r/20240611-md-drivers-perf-v1-1-c001bae6da5c@quicinc.com
 ---
- .../bindings/net/fsl,enetc-ierb.yaml          |  38 ++++++
- .../bindings/net/fsl,enetc-mdio.yaml          |  57 +++++++++
- .../devicetree/bindings/net/fsl,enetc.yaml    |  66 ++++++++++
- .../devicetree/bindings/net/fsl-enetc.txt     | 119 ------------------
- 4 files changed, 161 insertions(+), 119 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
- create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
- create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.txt
+ drivers/perf/arm-ccn.c                   | 1 +
+ drivers/perf/arm_cspmu/ampere_cspmu.c    | 1 +
+ drivers/perf/arm_cspmu/arm_cspmu.c       | 1 +
+ drivers/perf/arm_cspmu/nvidia_cspmu.c    | 1 +
+ drivers/perf/cxl_pmu.c                   | 1 +
+ drivers/perf/fsl_imx8_ddr_perf.c         | 1 +
+ drivers/perf/hisilicon/hisi_uncore_pmu.c | 1 +
+ drivers/perf/marvell_cn10k_ddr_pmu.c     | 1 +
+ 8 files changed, 8 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml b/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
-new file mode 100644
-index 0000000000000..c8a654310b905
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
-@@ -0,0 +1,38 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,enetc-ierb.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Integrated Endpoint Register Block
-+
-+description:
-+  The fsl_enetc driver can probe on the Integrated Endpoint Register Block,
-+  which preconfigures the FIFO limits for the ENETC ports.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+  - Vladimir Oltean <vladimir.oltean@nxp.com>
-+  - Wei Fang <wei.fang@nxp.com>
-+  - Claudiu Manoil <claudiu.manoil@nxp.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,ls1028a-enetc-ierb
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    endpoint-config@f0800000 {
-+        compatible = "fsl,ls1028a-enetc-ierb";
-+        reg = <0xf0800000 0x10000>;
-+    };
-diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
-new file mode 100644
-index 0000000000000..c1dd6aa04321e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
-@@ -0,0 +1,57 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,enetc-mdio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ENETC external MDIO PCIe endpoint device
-+
-+description:
-+  NETC provides an external master MDIO interface (EMDIO) for managing external
-+  devices (PHYs). EMDIO supports both Clause 22 and 45 protocols. And the EMDIO
-+  provides a means for different software modules to share a single set of MDIO
-+  signals to access their PHYs.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+  - Vladimir Oltean <vladimir.oltean@nxp.com>
-+  - Wei Fang <wei.fang@nxp.com>
-+  - Claudiu Manoil <claudiu.manoil@nxp.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - pci1957,ee01
-+      - const: fsl,enetc-mdio
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: mdio.yaml
-+  - $ref: /schemas/pci/pci-device.yaml
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    pcie{
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+
-+        mdio@0,3 {
-+            compatible = "pci1957,ee01", "fsl,enetc-mdio";
-+            reg = <0x000300 0 0 0 0>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            ethernet-phy@2 {
-+                reg = <0x2>;
-+            };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-new file mode 100644
-index 0000000000000..e152c93998fe1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-@@ -0,0 +1,66 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/fsl,enetc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: The NIC functionality of NXP NETC
-+
-+description:
-+  The NIC functionality in NETC is known as EtherNET Controller (ENETC). ENETC
-+  supports virtualization/isolation based on PCIe Single Root IO Virtualization
-+  (SR-IOV), advanced QoS with 8 traffic classes and 4 drop resilience levels,
-+  and a full range of TSN standards and NIC offload capabilities
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+  - Vladimir Oltean <vladimir.oltean@nxp.com>
-+  - Wei Fang <wei.fang@nxp.com>
-+  - Claudiu Manoil <claudiu.manoil@nxp.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - pci1957,e100
-+      - const: fsl,enetc
-+
-+  reg:
-+    maxItems: 1
-+
-+  mdio:
-+    $ref: mdio.yaml
-+    unevaluatedProperties: false
-+    description: Optional child node for ENETC instance, otherwise use NETC EMDIO.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: /schemas/pci/pci-device.yaml
-+  - $ref: ethernet-controller.yaml
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    pcie {
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+
-+        ethernet@0,0 {
-+            compatible = "pci1957,e100", "fsl,enetc";
-+            reg = <0x000000 0 0 0 0>;
-+            phy-handle = <&sgmii_phy0>;
-+            phy-connection-type = "sgmii";
-+
-+            mdio {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+                phy@2 {
-+                    reg = <0x2>;
-+                };
-+            };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/fsl-enetc.txt b/Documentation/devicetree/bindings/net/fsl-enetc.txt
-deleted file mode 100644
-index 9b9a3f197e2d3..0000000000000
---- a/Documentation/devicetree/bindings/net/fsl-enetc.txt
-+++ /dev/null
-@@ -1,119 +0,0 @@
--* ENETC ethernet device tree bindings
--
--Depending on board design and ENETC port type (internal or
--external) there are two supported link modes specified by
--below device tree bindings.
--
--Required properties:
--
--- reg		: Specifies PCIe Device Number and Function
--		  Number of the ENETC endpoint device, according
--		  to parent node bindings.
--- compatible	: Should be "fsl,enetc".
--
--1. The ENETC external port is connected to a MDIO configurable phy
--
--1.1. Using the local ENETC Port MDIO interface
--
--In this case, the ENETC node should include a "mdio" sub-node
--that in turn should contain the "ethernet-phy" node describing the
--external phy.  Below properties are required, their bindings
--already defined in Documentation/devicetree/bindings/net/ethernet.txt or
--Documentation/devicetree/bindings/net/phy.txt.
--
--Required:
--
--- phy-handle		: Phandle to a PHY on the MDIO bus.
--			  Defined in ethernet.txt.
--
--- phy-connection-type	: Defined in ethernet.txt.
--
--- mdio			: "mdio" node, defined in mdio.txt.
--
--- ethernet-phy		: "ethernet-phy" node, defined in phy.txt.
--
--Example:
--
--	ethernet@0,0 {
--		compatible = "fsl,enetc";
--		reg = <0x000000 0 0 0 0>;
--		phy-handle = <&sgmii_phy0>;
--		phy-connection-type = "sgmii";
--
--		mdio {
--			#address-cells = <1>;
--			#size-cells = <0>;
--			sgmii_phy0: ethernet-phy@2 {
--				reg = <0x2>;
--			};
--		};
--	};
--
--1.2. Using the central MDIO PCIe endpoint device
--
--In this case, the mdio node should be defined as another PCIe
--endpoint node, at the same level with the ENETC port nodes.
--
--Required properties:
--
--- reg		: Specifies PCIe Device Number and Function
--		  Number of the ENETC endpoint device, according
--		  to parent node bindings.
--- compatible	: Should be "fsl,enetc-mdio".
--
--The remaining required mdio bus properties are standard, their bindings
--already defined in Documentation/devicetree/bindings/net/mdio.txt.
--
--Example:
--
--	ethernet@0,0 {
--		compatible = "fsl,enetc";
--		reg = <0x000000 0 0 0 0>;
--		phy-handle = <&sgmii_phy0>;
--		phy-connection-type = "sgmii";
--	};
--
--	mdio@0,3 {
--		compatible = "fsl,enetc-mdio";
--		reg = <0x000300 0 0 0 0>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		sgmii_phy0: ethernet-phy@2 {
--			reg = <0x2>;
--		};
--	};
--
--2. The ENETC port is an internal port or has a fixed-link external
--connection
--
--In this case, the ENETC port node defines a fixed link connection,
--as specified by Documentation/devicetree/bindings/net/fixed-link.txt.
--
--Required:
--
--- fixed-link	: "fixed-link" node, defined in "fixed-link.txt".
--
--Example:
--	ethernet@0,2 {
--		compatible = "fsl,enetc";
--		reg = <0x000200 0 0 0 0>;
--		fixed-link {
--			speed = <1000>;
--			full-duplex;
--		};
--	};
--
--* Integrated Endpoint Register Block bindings
--
--Optionally, the fsl_enetc driver can probe on the Integrated Endpoint Register
--Block, which preconfigures the FIFO limits for the ENETC ports. This is a node
--with the following properties:
--
--- reg		: Specifies the address in the SoC memory space.
--- compatible	: Must be "fsl,ls1028a-enetc-ierb".
--
--Example:
--	ierb@1f0800000 {
--		compatible = "fsl,ls1028a-enetc-ierb";
--		reg = <0x01 0xf0800000 0x0 0x10000>;
--	};
--- 
-2.34.1
+diff --git a/drivers/perf/arm-ccn.c b/drivers/perf/arm-ccn.c
+index 86ef31ac7503..5c66b9278862 100644
+--- a/drivers/perf/arm-ccn.c
++++ b/drivers/perf/arm-ccn.c
+@@ -1561,4 +1561,5 @@ module_init(arm_ccn_init);
+ module_exit(arm_ccn_exit);
+ 
+ MODULE_AUTHOR("Pawel Moll <pawel.moll@arm.com>");
++MODULE_DESCRIPTION("ARM CCN (Cache Coherent Network) Performance Monitor Driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/perf/arm_cspmu/ampere_cspmu.c b/drivers/perf/arm_cspmu/ampere_cspmu.c
+index f146a455e838..f72f5689923c 100644
+--- a/drivers/perf/arm_cspmu/ampere_cspmu.c
++++ b/drivers/perf/arm_cspmu/ampere_cspmu.c
+@@ -269,4 +269,5 @@ static void __exit ampere_cspmu_exit(void)
+ module_init(ampere_cspmu_init);
+ module_exit(ampere_cspmu_exit);
+ 
++MODULE_DESCRIPTION("Ampere SoC Performance Monitor Driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/perf/arm_cspmu/arm_cspmu.c b/drivers/perf/arm_cspmu/arm_cspmu.c
+index c318dc909767..2158a5975c90 100644
+--- a/drivers/perf/arm_cspmu/arm_cspmu.c
++++ b/drivers/perf/arm_cspmu/arm_cspmu.c
+@@ -1427,4 +1427,5 @@ EXPORT_SYMBOL_GPL(arm_cspmu_impl_unregister);
+ module_init(arm_cspmu_init);
+ module_exit(arm_cspmu_exit);
+ 
++MODULE_DESCRIPTION("ARM CoreSight Architecture Performance Monitor Driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/perf/arm_cspmu/nvidia_cspmu.c b/drivers/perf/arm_cspmu/nvidia_cspmu.c
+index 5b84b701ad62..d0ef611240aa 100644
+--- a/drivers/perf/arm_cspmu/nvidia_cspmu.c
++++ b/drivers/perf/arm_cspmu/nvidia_cspmu.c
+@@ -417,4 +417,5 @@ static void __exit nvidia_cspmu_exit(void)
+ module_init(nvidia_cspmu_init);
+ module_exit(nvidia_cspmu_exit);
+ 
++MODULE_DESCRIPTION("NVIDIA Coresight Architecture Performance Monitor Driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
+index 1f93a66eff5b..43d68b69e630 100644
+--- a/drivers/perf/cxl_pmu.c
++++ b/drivers/perf/cxl_pmu.c
+@@ -972,6 +972,7 @@ static __exit void cxl_pmu_exit(void)
+ 	cpuhp_remove_multi_state(cxl_pmu_cpuhp_state_num);
+ }
+ 
++MODULE_DESCRIPTION("CXL Performance Monitor Driver");
+ MODULE_LICENSE("GPL");
+ MODULE_IMPORT_NS(CXL);
+ module_init(cxl_pmu_init);
+diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
+index 1bbdb29743c4..746b92330ca7 100644
+--- a/drivers/perf/fsl_imx8_ddr_perf.c
++++ b/drivers/perf/fsl_imx8_ddr_perf.c
+@@ -850,4 +850,5 @@ static struct platform_driver imx_ddr_pmu_driver = {
+ };
+ 
+ module_platform_driver(imx_ddr_pmu_driver);
++MODULE_DESCRIPTION("Freescale i.MX8 DDR Performance Monitor Driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/perf/hisilicon/hisi_uncore_pmu.c b/drivers/perf/hisilicon/hisi_uncore_pmu.c
+index 6392cbedcd06..918cdc31de57 100644
+--- a/drivers/perf/hisilicon/hisi_uncore_pmu.c
++++ b/drivers/perf/hisilicon/hisi_uncore_pmu.c
+@@ -537,4 +537,5 @@ void hisi_pmu_init(struct hisi_pmu *hisi_pmu, struct module *module)
+ }
+ EXPORT_SYMBOL_GPL(hisi_pmu_init);
+ 
++MODULE_DESCRIPTION("HiSilicon SoC uncore Performance Monitor driver framework");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/perf/marvell_cn10k_ddr_pmu.c b/drivers/perf/marvell_cn10k_ddr_pmu.c
+index e2abca188dbe..94f1ebcd2a27 100644
+--- a/drivers/perf/marvell_cn10k_ddr_pmu.c
++++ b/drivers/perf/marvell_cn10k_ddr_pmu.c
+@@ -763,4 +763,5 @@ module_init(cn10k_ddr_pmu_init);
+ module_exit(cn10k_ddr_pmu_exit);
+ 
+ MODULE_AUTHOR("Bharat Bhushan <bbhushan2@marvell.com>");
++MODULE_DESCRIPTION("Marvell CN10K DRAM Subsystem (DSS) Performance Monitor Driver");
+ MODULE_LICENSE("GPL v2");
+
+---
+base-commit: 34afb82a3c67f869267a26f593b6f8fc6bf35905
+change-id: 20240611-md-drivers-perf-5d834208964d
 
