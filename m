@@ -1,115 +1,278 @@
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2055.outbound.protection.outlook.com [40.107.20.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A62B12CDB6
-	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 03:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720495270; cv=none; b=gxHYvJppJUVT/Xm854P05Nis+6DRF8UIJ+fwoy6g9rE4pZQGBYEorW2+3PjD1UNUnuqAWdAV2cOi3Qq6GOSp232MCcg4s0KkP0g076lgXrl3iOUxgtTAZkKoVBJgBGUQPMeFzoqmMvGyQ55jnrF3CoyHZk/37rvNrI9lcQJSsYs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720495270; c=relaxed/simple;
-	bh=ao0yuvoGESK5ztONeHNNgZ2DK/RhVIQhcs2Jo2M4dqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SuozC8WikE3NQIMum0+S5xfaJM6HFs0+yp0NQFrmqFypyfkPRP7pI8hvAJ13Evu6aajFekUO8CPRM+b6fwdgqNhmWKGUAM4d+1Gl4yTiFbfm4+/UCDVOim5bW/y5SNiBfZg8j2HIgs7zzCFq8a8I534HAmyDiWa67tkuotI2xO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZEExKQ8y; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BC7136671
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 06:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720505477; cv=fail; b=pjjt2G6RIaUTS1S+LuA6+6LDARQe/QAhsdawd4NaCJ1c2v+plrenZOccPS1p8iTHVGiSU0atiMjUL6nJ/gUWuspM4mwSAiM7lt21xf108+colzZnUffcmc8ZWaDuvAmCrrYBJUZ4Xx3p5bB4QrM1cdULxB23PROzS+ArsNhhz14=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720505477; c=relaxed/simple;
+	bh=IgYOzuMKR5cr7dIFiJ5ZwtfEojjtu/hcvotp0MqWKks=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DGnjROSF73RgC9zKO1gDlslefRIJrV8wWBUZTU7sfQ3K4atJMha/LBD4EdNHmYFPTo/QFFZFiNKBWGYV2uGrKjBZ3/YSztX4ljlwH4+pHGSAvwYZuzIaR0NO3rpF6OOTO+9dsfzNkJqI46wkFSogBTB4ybC/0xQytbZYPhgrAGU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=NCJGeXZO; arc=fail smtp.client-ip=40.107.20.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZEExKQ8y"
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3811d62a668so17523485ab.3
-        for <imx@lists.linux.dev>; Mon, 08 Jul 2024 20:21:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720495268; x=1721100068; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v5x3hUylQoog2uNJJGGlDPCeKvEn4xMplYTvm1tLAKE=;
-        b=ZEExKQ8y2aSeIDeNN8pniDpGe74mFT3W5e5vna9BeLYgnamoF5wW/BXLCCTPohx2pE
-         3qdYmKBfu6+fpdPiCuOv+5LmIE1HSzwkC2wGJQkUy1+Amnff2X2fmTXZDDIo5BRLpatk
-         2RZrYci5A6kjo1TFu/GbhjVjAUPwc867ZWIS0TqMIfqcZddiaEmrL9GjuBQq6BONBk+3
-         6MdXR0RXdqWD11xcL1he8xPstAuBhiVIXyDGlIUlWN7oDKTILEAlpcpst1Z9MrKoOB6h
-         HylInuYEVNaSin4Rx9Ed9wZ18Y6umjuu2gTyXNU7vap3R7bIhMByZi31D/A7hjL3HvHH
-         OrvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720495268; x=1721100068;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v5x3hUylQoog2uNJJGGlDPCeKvEn4xMplYTvm1tLAKE=;
-        b=hWd9uyyRw2GGYqkYATcoyyUL3KMbYTn6Ma4cbNBh5IMDFMkhclb7A+e5Rvkh2+YfQo
-         PvxMuESatFhsOEyTtHGf/bsUFFwLUHkZsmCRyIA/t4bghutjn/MUY+z2zbCRJRJdfbym
-         8cMa+mWCn9RaYC/R0RrO5TVelNxepvvrAfz0ujEm5XhGsNm2huxsOxuGdOxGMMCYqgG2
-         MsAnpkjVwomddONFRvXZWBfUQu++MTD1Yrb6va+KbJjKLAYryVYcP6RbOjdLY49UGluk
-         Hp6JLqBYbptdn9tbx850TtYgxOH8eOpwn8ONi1vvfk1c00rtxVKHMGYE4A5QrBQhBFTp
-         V6Qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxjtbFdCNJp66gzhJeakoOLeVKCMIzBvfX5zHSlo2w5tiXBm799s/c8unBZ2mpe8IYGORp/GSeidVH0dBZSoBxzp84
-X-Gm-Message-State: AOJu0YxtjFgDlPwjETOrAIL2Rt1UeXP2mNnK37MTzkgzJJCF8FD8WdOq
-	dxw+HiCGaGfROY9+dobbtju0mtIR9DeRGF3Yy41ucYxIsuw49hQZgDkBpLPdAN6vL9SvNcPOl0p
-	POW9z0OuOlZ+H9VDby2ZgpjAhslQ=
-X-Google-Smtp-Source: AGHT+IEDeHIw0M3dms9M1TQ7pOStsM6niLKah4sS4MXdNOsgiHYC/fBdJqkh52w8HlhM4gaopahy21Ep/QLxviGgtOo=
-X-Received: by 2002:a05:6e02:18cd:b0:379:4564:1228 with SMTP id
- e9e14a558f8ab-38a598b3998mr15380945ab.30.1720495267594; Mon, 08 Jul 2024
- 20:21:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="NCJGeXZO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S0ObGqTRe1ConIM+qiK3lbcqtoyPlIOEaSHh1XgAbFEb791HAQKaFF5/PawglM1LWfhhsanoFuA3KIGFcyJf85g/oHpDftQQe1X6WMAUEazJ3vV9+ksyzw5jrwFMYqOspKt9aZoeYdyuffNRqNuE9D4G6bU8bKisgd5JlDge5x0t1vcfeujOzcmKzy1htv+jpSoCQJctWRU5T0Aqv2c0S6T3iTzw2grt0dmlfeOmWdhQyfGNORc6gSXcbMKTyU881SG0dB2jpGQOzS4Sk0kaFGC/hBwiXLOzxzgD68RbNEaq0DkZMDKh+1hTCoDhyQ7qtnqC63qQjbTYMknnbyZsnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M3q5CIewp1Iqsb/6Or8N9aLfH7ZaOXZ4EWf2k74AfH4=;
+ b=LhWOZRKnIS3hozNZ5Exs1ejn9uBitkpI940RfQniJYXKONnCk1D7oLGUm7x3lWAPTV7ct7aJcbUSY4FL52yJZEKzeKe3Qqr8K68qgZf3sPrhMu9Rts2mGdIpRd0L/DeHenz/IBVC57Han9K3DLLhcxUvNhuuF+mL4uUQ/lsZb14n4T+ubJY/HUCLsj26WY9uEweLOfB6uXO6KcSbdlLqHkGnmVsM/nUaoNuI7PTysC5plmmEA7t0EWxhQYnm2NDDTaVfVJQTBlv/FVe6Grj+oFtIXc/pw4+bnY5bmE3MhUFLU3u16RIya0zWXEgbQQqzNWhKMo9IcMg7V0Gs5WvWOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M3q5CIewp1Iqsb/6Or8N9aLfH7ZaOXZ4EWf2k74AfH4=;
+ b=NCJGeXZOIdNk+hVF+tz/JDsPv6BcD0LjAKwP/zk3EAkFVI3rY6c8G4VjQt4D5FXh6LXe/gULWAoUKCX5GQ2RSweFueGHFo7LfeWBFLR9SpSNOoIv5nZAhGXNJ4aAR/TFcr3saY+cS2pjqX5jNk6uL4chUV7FKMEz2FDf8AoyouM=
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
+ by AS4PR04MB9691.eurprd04.prod.outlook.com (2603:10a6:20b:4f4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.35; Tue, 9 Jul
+ 2024 06:11:11 +0000
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827%3]) with mapi id 15.20.7741.033; Tue, 9 Jul 2024
+ 06:11:11 +0000
+From: Pankaj Gupta <pankaj.gupta@nxp.com>
+To: Randy Dunlap <rdunlap@infradead.org>, Jonathan Corbet <corbet@lwn.net>,
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+CC: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [EXT] Re: [PATCH v4 5/5] firmware: imx: adds miscdev
+Thread-Topic: [EXT] Re: [PATCH v4 5/5] firmware: imx: adds miscdev
+Thread-Index: AQHazuMaW6O/AO44ZkGR+7lF1ox0ArHom00AgAVT9yA=
+Date: Tue, 9 Jul 2024 06:11:11 +0000
+Message-ID:
+ <AM9PR04MB8604BFB982C535C8E9C6C0F095DB2@AM9PR04MB8604.eurprd04.prod.outlook.com>
+References: <20240705-imx-se-if-v4-0-52d000e18a1d@nxp.com>
+ <20240705-imx-se-if-v4-5-52d000e18a1d@nxp.com>
+ <f7c62def-cba4-46bf-aeda-829d2c378ee3@infradead.org>
+In-Reply-To: <f7c62def-cba4-46bf-aeda-829d2c378ee3@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|AS4PR04MB9691:EE_
+x-ms-office365-filtering-correlation-id: 68432436-66b5-4a2c-1184-08dc9fddee5b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|1800799024|376014|366016|921020|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?rnhBltbnbBrE7VUmiq50XNq+8LlxBEjQGXCDHbvLRnLNTO7rPWHbwK4SD8qJ?=
+ =?us-ascii?Q?HzePdTvxADylg4yv2yoBQYqA+m5hd5VR/Hq76+Ld6jDDnFIOSTP3m2jipAZ7?=
+ =?us-ascii?Q?7Taw0/wESefAUUbxulAh7MAE1demVyS01drsttAnss4z0IOnsAW2OMkJ1Wkg?=
+ =?us-ascii?Q?6yiO2Rl4qT2o711cmmRb9GbEyvxAhJqxwxApAd2zWBursv+Ypg5woTKc8HM1?=
+ =?us-ascii?Q?w/McU/y4VThqqzj7a+3gO4E9Ft7PBFKN+4iOnoNq+s9fLX7Ydrcqamyi115S?=
+ =?us-ascii?Q?8r+qtyEa1vu4fI8Iv0zrqZ6S7LbzSo/t1RJQ5fG45iZ2xJ7IpHdxet2r7Sny?=
+ =?us-ascii?Q?nBkCCV0PS9sTYMfzseXf5evOBAOMP9bOPD4tEmkcs+FfcjusGnB/iaQEizwf?=
+ =?us-ascii?Q?MrbK2XsUPraR3ulXHfPPwlA2BEzH195kdFaZ35N/ZZl+xLeWzygPMgbTl6Ll?=
+ =?us-ascii?Q?wuglamXzpL6Qbwik2cDqNc3T37wi/z4rG/FoKBmqkGkF1komJ/ACwysLqGvk?=
+ =?us-ascii?Q?pZIuzmAQv2hVmzauUBl5eNMqqCLbTdp422PiqGi9fR6Bni3h8QDSDRnsTWIp?=
+ =?us-ascii?Q?x6Qfq21A4td79LV+J312UbRyyes5HvOYpTUuulhnMJbTWjb/w0XBUwUNKagN?=
+ =?us-ascii?Q?Mj6ZcvWaHPaSOs0no6nhSggtMeOtdKQjVudhGwPRHLWM3Tp3yMAmpwRPbR8u?=
+ =?us-ascii?Q?t8WuBp9EROGO6L9uWMCksMoXalPyXA6Du3G4Q/PmobHxLTo1PgzSpVcupwsg?=
+ =?us-ascii?Q?EiCavE1BJU4qN32z/4dbBIhgl9DC9lQoM+1Hn65PeeYmHYjW+NeHrcYUm9Q4?=
+ =?us-ascii?Q?wNBKUJv95l4kbL/56l5UcOlgsIKDsBv3emZuvrxMAk0AHKO/yo89sZZNt2NQ?=
+ =?us-ascii?Q?AzQTMamUiIBBdIDAI99hCbELw9VOYpt1qWb3w1iPB2GfCus9tcB1Aew7G3Uy?=
+ =?us-ascii?Q?J7pVNcX7oHSxSmzrbOqwKvoEI2sUlgB+8+HVFm+ZXN4djlEURLk7PpcTzSRr?=
+ =?us-ascii?Q?GrjOrYzFZqrXpNzmZlRhb5cr1ZqYGry+piomCosC8vx92OEOphZ+ORkdyHW+?=
+ =?us-ascii?Q?NgnGUQbq5RlE6eF5f+bQRqqCMl6FYNYK/lQxxzmARTg2lPegOcnLJemxjB93?=
+ =?us-ascii?Q?InJtCBLJhFauYW1lDg4+YPfzBH0EeNfWLOaBIhMEMDkCI9WfIOSW6xDcQD9A?=
+ =?us-ascii?Q?vup50+pgzL9id1ub3ZXaARrJenVq93sXlk2y2DOb97G2T/KY85TLdVNvyDA2?=
+ =?us-ascii?Q?xBLHarbLe/Xnb9wY8CQeKgQZaGMKqcKn7Jr7dJqNKSj+LVxA1UYRD3VfCtxJ?=
+ =?us-ascii?Q?adHcBVjurB+SRM3nerAu2xDrOSl5E0QLBsyHNB1NE5fZ2MnoQ9fphzHag+rV?=
+ =?us-ascii?Q?7mTFVktOZkPwl4GCR3lfnsUhpu6/2q/g/6msRcUUgvIlO7fxlFooWaUxXbrv?=
+ =?us-ascii?Q?p5uQ47QBznA=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(921020)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?mAh5nDv5QgjdhviSf3up8p3dKNdF2/YYYTzk06sG4TGQ62T94ThZc8DVmCNd?=
+ =?us-ascii?Q?mLQuYgZIvyKDPqtHpe9cxDKOBbZq8iF88guwM6NEmx7HEMPqCPTlALqS+Vr4?=
+ =?us-ascii?Q?vl5Lts3EHQGJwiU098FqG1hhYMn1zzHDrnHWUKPzCI9X1Vqfak+2VARcCcKO?=
+ =?us-ascii?Q?XhtR5MOZkfIa98JtZEg05dswry1m8N/3Z4JrVNiO3KwtKVDRGPoD5z9uwpYv?=
+ =?us-ascii?Q?BbTUFv/fWLE7Jylo19zNIkO5w0DZuxIAcAI2yZCknjnj6CxBoAX+w6F6pGtq?=
+ =?us-ascii?Q?PBRiT512jAeVaSmkSQ0YB8Vjll5wmddOAJuGJJitO3ezPrEPagE2W/BYVBxD?=
+ =?us-ascii?Q?57DX3gIYL7JuCfZJwXaPfTp1ztP/eeukU8Lg32IJ0L4uwqNAI45KMZv/d3Y9?=
+ =?us-ascii?Q?nlMM9tzbak3wkqld24c31wYk4+T/44MF0eKcEjUdQOnxWqTFM+QJWxv3LmHe?=
+ =?us-ascii?Q?zieR0dUCkJ7ckIx0aJ3wzinMwVDTpkww/DQYGh+kNIiD/I2qXm3crwpGezng?=
+ =?us-ascii?Q?fkVtABU3EPUa8u+qEY5/rVqv2FaRhiyGbEeMh5Q9kPBJmprjxfWaNlpcYZ/i?=
+ =?us-ascii?Q?jXZyyJN/FrgZHTCw/KMTZvvwwqD2GfZA4sCX3O992JsAdrTDjwBVhbdWECj4?=
+ =?us-ascii?Q?W5LRCkYFEhsHDY4emAcZwjAN08XsTW+KNt5GaoyXqUt7TZ3Z9QXU+dJUrySO?=
+ =?us-ascii?Q?oIoKe6OzWN8Oda8vZEq4951N74eIE1COpzW0Y/z3b4pKpsrjOMOvpA7As7pk?=
+ =?us-ascii?Q?QJeEyHBzpAYr7CmxiNCWcvNBh3wf2uv+hTROQ9VOb2HcZPz+nstqCHxnctHc?=
+ =?us-ascii?Q?JAf3MnZp1SosaYHezLiUUeUZhUSYdQ/p2yYK7df1+fp36GNQ1r7Tk5En9NB7?=
+ =?us-ascii?Q?+FVqxnNNjpZRuXHW7KeKBaWiMT6jE7SaHJi9FpjMBEc53n+DWhDGOwRDBdFA?=
+ =?us-ascii?Q?c71k8wuKaSaKwhUSYyzbrSusGuTE+uhtcQCR3EY/bPPsruKBH47W6+sW+Cmh?=
+ =?us-ascii?Q?7pS5Me295n+kLfgdtTr7/9P7D+0bikDDuID8B5Geus1JT6DpTsrxbB8H9/Tt?=
+ =?us-ascii?Q?BA0sD78WfNGcVF7LAZaMBj2hEF0pacjfue0M3+JH9g70UDzmpCgKMU6x6k3q?=
+ =?us-ascii?Q?FnaJXwHImIMYPuCTMlMT+8WqQ3SGjq76X/kxkLdBNsU6R5GYDpwAzIYoTcm8?=
+ =?us-ascii?Q?g3824bjhua4XnPS2GwZRkVArrwVQIcaz4CLStNMMxbEN7mNk98Ufx7ai503H?=
+ =?us-ascii?Q?m1vOY1WjBk6apCzTd+1+whgOsbvECkW2EPy5fjWB7XeM0AuP0aJ0E/yxFWf8?=
+ =?us-ascii?Q?wbISRBaO5K8Bx5rzbBIpoyTnge1CFuChjW7JTZKQv4yWL1bobnjOaoeAc0OJ?=
+ =?us-ascii?Q?DoMSQ+ZU5mjhsSnbb0dNWOe/AxXFFHEUctEpxFsMFq2zBun53bwO2T587Ben?=
+ =?us-ascii?Q?oHKkeIV1D/YRxVX7y+3O6R9KJRGPLUijghDXh+m645vJB6hJ82Kg9GL8OULe?=
+ =?us-ascii?Q?r2C+qpsLruGdYTB96LVmC/+gRO+XIEuloYKtJ2tWzztt/gnFVt8/xpYZSRMc?=
+ =?us-ascii?Q?KIBxoPHrvLkU2D7cAsIENQzice+ZJkDY6WdSptRU?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1719996771-11220-1-git-send-email-shengjiu.wang@nxp.com> <232c2342061b17b9f750c4ad52b0766e.sboyd@kernel.org>
-In-Reply-To: <232c2342061b17b9f750c4ad52b0766e.sboyd@kernel.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 9 Jul 2024 11:20:56 +0800
-Message-ID: <CAA+D8APumdP97QQHObF6NEw6jwDJRb+0R=aAjqftrX1wR170Yw@mail.gmail.com>
-Subject: Re: [PATCH] clk: imx: imx8: Add .name for "acm_aud_clk0_sel" and "acm_aud_clk1_sel"
-To: Stephen Boyd <sboyd@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, abelvesa@kernel.org, festevam@gmail.com, 
-	imx@lists.linux.dev, kernel@pengutronix.de, mturquette@baylibre.com, 
-	peng.fan@nxp.com, s.hauer@pengutronix.de, shawnguo@kernel.org, 
-	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68432436-66b5-4a2c-1184-08dc9fddee5b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2024 06:11:11.4842
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: W83hTTYnm7pbLwh5hRO7CBrOZ8i8u5UKRsiFp3LQdXUtPBnjE7uBxGECqsWCVjDXUuuu+JRQvzyxGTo5SXfa+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9691
 
-On Tue, Jul 9, 2024 at 6:45=E2=80=AFAM Stephen Boyd <sboyd@kernel.org> wrot=
-e:
->
-> Quoting Shengjiu Wang (2024-07-03 01:52:51)
-> > "acm_aud_clk0_sel" and "acm_aud_clk1_sel" are registered by this ACM
-> > driver, but they are the parent clocks for other clocks, in order to
-> > use assigned-clock-parents in device tree, they need to have the
-> > global name.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  drivers/clk/imx/clk-imx8-acm.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/clk/imx/clk-imx8-acm.c b/drivers/clk/imx/clk-imx8-=
-acm.c
-> > index 1bdb480cc96c..a1affcf6daff 100644
-> > --- a/drivers/clk/imx/clk-imx8-acm.c
-> > +++ b/drivers/clk/imx/clk-imx8-acm.c
-> > @@ -114,8 +114,8 @@ static const struct clk_parent_data imx8qm_mclk_out=
-_sels[] =3D {
-> >  static const struct clk_parent_data imx8qm_mclk_sels[] =3D {
-> >         { .fw_name =3D "aud_pll_div_clk0_lpcg_clk" },
-> >         { .fw_name =3D "aud_pll_div_clk1_lpcg_clk" },
-> > -       { .fw_name =3D "acm_aud_clk0_sel" },
-> > -       { .fw_name =3D "acm_aud_clk1_sel" },
-> > +       { .fw_name =3D "acm_aud_clk0_sel", .name =3D "acm_aud_clk0_sel"=
- },
-> > +       { .fw_name =3D "acm_aud_clk1_sel", .name =3D "acm_aud_clk1_sel"=
- },
->
-> This doesn't make any sense. Why are we adding fallback names?  Is
-> "acm_aud_clk0_sel" not part of the DT binding for this clk controller?
 
-It is not part of DT binding for this clk controller.  it is registered by =
-this
-clk controller itself.  As it is a parent clock, so my understanding
-is that we need to add a fallback name,  or change "fw_name" to "name",
-please correct me if I am wrong.
 
-Best regards
-Shengjiu Wang
+> -----Original Message-----
+> From: Randy Dunlap <rdunlap@infradead.org>
+> Sent: Saturday, July 6, 2024 2:17 AM
+> To: Pankaj Gupta <pankaj.gupta@nxp.com>; Jonathan Corbet
+> <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn Guo
+> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
+> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> <festevam@gmail.com>; Rob Herring <robh+dt@kernel.org>; Krzysztof
+> Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> Cc: linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
+> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> kernel@lists.infradead.org
+> Subject: [EXT] Re: [PATCH v4 5/5] firmware: imx: adds miscdev
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> On 7/5/24 6:52 AM, Pankaj Gupta wrote:
+> > diff --git a/Documentation/ABI/testing/se-cdev
+> b/Documentation/ABI/testing/se-cdev
+> > new file mode 100644
+> > index 000000000000..97a5b2ca115d
+> > --- /dev/null
+> > +++ b/Documentation/ABI/testing/se-cdev
+> > @@ -0,0 +1,43 @@
+> > +What:                /dev/<se>_mu[0-9]+_ch[0-9]+
+> > +Date:                May 2024
+> > +KernelVersion:       6.8
+> > +Contact:     linux-imx@nxp.com, pankaj.gupta@nxp.com
+> > +Description:
+> > +             NXP offers multiple hardware IP(s) for  secure enclaves l=
+ike EdgeLock-
+>=20
+>                                                      ^^^ one space only
+
+Will replace "for  secure enclaves", with "for secure enclaves"
+
+
+>=20
+> > +             Enclave(ELE), SECO. The character device file descriptors
+> > +             /dev/<se>_mu*_ch* are the interface between user-space NX=
+P's
+> secure-
+>=20
+> Please use "userspace" or "user space".
+
+Accepted.
+>=20
+> > +             enclave shared library and the kernel driver.
+> > +
+> > +             The ioctl(2)-based ABI is defined and documented in
+> > +             [include]<linux/firmware/imx/ele_mu_ioctl.h>
+>=20
+> End the line above with a period.
+
+Accepted.
+
+>=20
+> > +              ioctl(s) are used primarily for:
+> > +                     - shared memory management
+> > +                     - allocation of I/O buffers
+> > +                     - getting mu info
+> > +                     - setting a dev-ctx as receiver to receive all th=
+e commands from
+> FW
+> > +                     - getting SoC info
+> > +                     - send command and receive command response
+> > +
+> > +             The following file operations are supported:
+> > +
+> > +             open(2)
+> > +               Currently the only useful flags are O_RDWR.
+> > +
+> > +             read(2)
+> > +               Every read() from the opened character device context i=
+s waiting on
+> > +               wait_event_interruptible, that gets set by the register=
+ed mailbox
+> callback
+> > +               function, indicating a message received from the firmwa=
+re on
+> message-
+> > +               unit.
+> > +
+> > +             write(2)
+> > +               Every write() to the opened character device context ne=
+eds to
+> acquire
+> > +               mailbox_lock before sending message on to the message u=
+nit.
+> > +
+> > +             close(2)
+> > +               Stops and frees up the I/O contexts that were associate=
+d
+> > +               with the file descriptor.
+> > +
+> > +Users:
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgithu
+> b.com%2Fnxp-imx%2Fimx-secure-
+> enclave.git&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7Cce675eed648
+> 24848da5308dc9d33ae7f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0
+> %7C0%7C638558092493138985%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi
+> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0
+> %7C%7C%7C&sdata=3DfJ97U1mUja7gSpb%2FE1GOx6JdsYpfAUf9rnTuul4TOHs
+> %3D&reserved=3D0,
+> > +
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgithu
+> b.com%2Fnxp-imx%2Fimx-
+> smw.git&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7Cce675eed648248
+> 48da5308dc9d33ae7f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C
+> 0%7C638558092493147090%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
+> wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C
+> %7C%7C&sdata=3DoH0zIc2YQeERpc8lDXuyvQsGMtKjKZSp46t6X9irntU%3D&re
+> served=3D0
+> > +             crypto/skcipher,
+> > +             drivers/nvmem/imx-ocotp-ele.c
+>=20
+> --
+> ~Randy
