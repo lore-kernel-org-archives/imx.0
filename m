@@ -1,100 +1,170 @@
-Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4EE17C203
-	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 14:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1127E1581FC
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 14:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720533956; cv=none; b=CVsK+zbREs4C5Z0RAhaaMO+6ZM1yP8LGMmQKIWb2RqP2cggISCoRS9K5ZPdx1IEPZGqv1EKLPjca74BG7ZH0v/qzrXMerOc9uHbyKlQ699d8BVkA4R9EL9L3+txafI0J+TjAZhzP0YkC10XCVJJP2H5sPwA2t1p6lsDNkWhkcAs=
+	t=1720534256; cv=none; b=XgHe8WqgugBz6LU10A03p/muF0AX76vYyFJl3cpVYQwnIa8M02Pkm+zoz8krTjau6fbXSgRbPVLq1BDbA9b2mxqBZlCM6i4gop95gt/zPzkHtX2KyOKm6YcFQ6w5oIESVbS9yVfL2R7tYpWvO/msJWGu2U4yS/OBZEwSIL6HRQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720533956; c=relaxed/simple;
-	bh=AFKAuDaA1+nRwYw9VJREBeMq9OmdelkMzuszZBuC0ec=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=nJiR1YRaMPLSgiwhmEABCn0wlS0WYTKtB7scPMLyZ6nUP1acd28akUrnmHgV1MtEykVFA0u5u+dQE0XvVZS7jik+QZxGQVFJbY/7ug2sLiNKQiwaN7YXIrdkalJTsvNfeRGHdOCQl5wX2lxBccNJP2jBDQ7KHgMMxKuZMQVGDJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=nuMtTVWa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iiFbwqSc; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1720534256; c=relaxed/simple;
+	bh=jrwgOSqLnDVXE3Ir5Kqt1EGFwtQZ92EcQiFwkAGb7Ig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MoDh6c74U+XonkBpc8AqN86JU0O3cvisB2FPNMN0q7RT9nGwEOshNX7kJ7bBbCgMbV0iha6of7c8HS9ln+HBBQiCU1SGixvkkFfkvNWFv3ljl5+faHknWqpAKanSkrswdkI91Dp+LBbjSPnuq0S5GxeTwPdpHHOlm3+5k3HRAVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0WxFHkw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="nuMtTVWa";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iiFbwqSc"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 93096114157F;
-	Tue,  9 Jul 2024 10:05:53 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 09 Jul 2024 10:05:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1720533953; x=1720620353; bh=uSokVZ/jYb
-	izoOUPkyP4m8kYy5Z4b5K1kNS5Gc+/qJk=; b=nuMtTVWavWFH5jrC5EoKmPom99
-	xGlVEc296AgMigy95QkDxOsnqMejw8kjsgkbBSjDZLFGuFLoNk74KW9xhTN2p3w0
-	jbxX0Nwtjwq4VejKLg7rFoQ/akCTUwkXholSwHJYrqJqPDBEvcIs73F8jQQT+f0u
-	qnvixpAY69W+udOboWWdhx3abMTk9ZbIP7bADAtM469Kz+dDtDo8Hs10mLR+sQl5
-	LmtMmqxScDVVc2JFrtywqMo3GPIL7qY9yiEADVjQ6VMiQhwp8PJWWtl2U+OtWRLA
-	iuZBAojAvJpbKHnl/WitbNvF8czf25l+3JdXh0tilJEVGlfJTi9ZKLX59ujw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1720533953; x=1720620353; bh=uSokVZ/jYbizoOUPkyP4m8kYy5Z4
-	b5K1kNS5Gc+/qJk=; b=iiFbwqScyWKcoCnuvRKstwg0UKxo+GvxqlpOLy8pRO9y
-	ACzk93ULFBTpWaYjTcSMydb5hNGlnGFNA2QgJsyA67BRJnwVHU6ybFTWCiLKQaKx
-	ClgFfFRVh0XwrcJOQq7nHN3cd5BmNdPxgxjo2ri6qfL6ZKfm6RMDDDAHdZwJGEGQ
-	g736P+jHiL3R01naxMi2ONelas340gNzQykZsDO2qqmmgFP47jZWhK/oRwzARc9H
-	xUGsj6+upUYWlnqCKxWSEJW1T/AFxdijB1+QeBwwBaIACnlTNdyboaeJ4pCDxfzz
-	sqb3HVAAKWINxbD9DoJRc1GtDVsSCXmRxNaKdZeT0w==
-X-ME-Sender: <xms:wEONZt3jfORzQnefClkMpPlBEAyJ517cQcoowh9D1YsFvsmlPdSw6Q>
-    <xme:wEONZkGvl3sTleVujoLsowjgVDn95UWH0ZyEOVZFgn7-KmmYSijHS5q2UF7ovL4lK
-    VDogNdp1AcCYYGXSOc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdelgdejvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:wEONZt5cVsxhaXDuCyqqeueb5pnPXCdqfg5mC-WAk4uzvAJVBDWmGg>
-    <xmx:wEONZq1qwP3XNPxUYL-hK00WbTyU90uxSuD-BYjBdj0S7JFh576cTA>
-    <xmx:wEONZgGehIRx1aYpo9yRbuTybdRbLLIeSurcLRdooZuMwJ15r1N38w>
-    <xmx:wEONZr_IPpqoYTrASJN_IyZRoENXrPk--Mjhe666yccK3jpa_Tz8BA>
-    <xmx:wUONZr2Lv0xly3QtVL67pOK6PJA0WOpNFm7F8L-w3UgzURQn27rlwjIV>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id EE86BB6008F; Tue,  9 Jul 2024 10:05:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-568-g843fbadbe-fm-20240701.003-g843fbadb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0WxFHkw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A580AC4AF17
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 14:10:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720534255;
+	bh=jrwgOSqLnDVXE3Ir5Kqt1EGFwtQZ92EcQiFwkAGb7Ig=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=E0WxFHkwNCoOYL12JtMm5dm1ewNJPL1fF4A6uE073OEbk+NfiXWC9XhhxKgcwdw4K
+	 WOhoUXzBtRGPgsoNKi9plDP7xi/6htrNPgqRx9EJdtLTVGsPnA73le/4NWbMjvVhM3
+	 fSIIXSZYBy9eHAuQrwBoe4VNhMNUTLMEr9cBMCjous/B7eNMauXn7gDPu6hreRG9sU
+	 KHXtp0u9MQ5mzhRBTQO95FMpfPKto/EAIE/5rQsIrHFhtbHViDPg5CdaqqEFtZpBT6
+	 Ffq4PLu+qyxQGau/9sQ1XSQrsbxokDQW0LPo2418bWKcVnFnMG5cPpggRxmWYdzPAi
+	 i54Bl+11v4AEw==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52ea5dc3c66so7155923e87.3
+        for <imx@lists.linux.dev>; Tue, 09 Jul 2024 07:10:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXfEUvhM1lNOopE8JdMTxMXndB7ZeKyiGD5RAmkUJEnisI/7Ush/Lvx9yCBpcV4i5JVKACBlFmDYz6FoVF+aRiVd03L
+X-Gm-Message-State: AOJu0YyBMBLQWW6XEgRWf2ErQTYyQm3rYiUJUsZFFHXYXy36LaxzeHDp
+	rq28n0sjugztQhki2jMWZe/tXK7Ijv96ro+meB6+Web00ZdaXyC49QBRcyrfBvRhy+1S2WL31wA
+	fM56CblcPO8WfJ3F3FedAliqf5w==
+X-Google-Smtp-Source: AGHT+IEQmv0+WiicMvKYnKq41lc5Tr8jd8opmyylh2uppeRiuhPL2X8bz0Bic+Ci/n4FuePRj8iO7NcnOVzDh6HBDow=
+X-Received: by 2002:a05:6512:3b9d:b0:52b:be6b:d16a with SMTP id
+ 2adb3069b0e04-52eb99a3526mr2633731e87.31.1720534254056; Tue, 09 Jul 2024
+ 07:10:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <3d480ce9-863a-4d2b-ab31-294207a0a924@app.fastmail.com>
-In-Reply-To: <20240709012534.3106441-1-shawnguo2@yeah.net>
-References: <20240709012534.3106441-1-shawnguo2@yeah.net>
-Date: Tue, 09 Jul 2024 16:05:29 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Shawn Guo" <shawnguo2@yeah.net>, soc@kernel.org, arm <arm@kernel.org>
-Cc: "Shawn Guo" <shawnguo@kernel.org>, "Fabio Estevam" <festevam@gmail.com>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL v2 5/5] i.MX defconfig change for 6.11
-Content-Type: text/plain
+References: <20240626162307.1748759-1-Frank.Li@nxp.com> <PAXPR04MB85101FF8C01B57F87DF1B04A88DA2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB85101FF8C01B57F87DF1B04A88DA2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 9 Jul 2024 08:10:40 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJt+6_YrUaapxd+u7GjQffFi=okirkq+cotTUE43Knwqw@mail.gmail.com>
+Message-ID: <CAL_JsqJt+6_YrUaapxd+u7GjQffFi=okirkq+cotTUE43Knwqw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: convert enetc to yaml
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, "krzk@kernel.org" <krzk@kernel.org>, 
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
+	"kuba@kernel.org" <kuba@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 9, 2024, at 03:25, Shawn Guo wrote:
-> ----------------------------------------------------------------
-> i.MX defconfig change for 6.11:
+On Mon, Jul 8, 2024 at 4:07=E2=80=AFAM Wei Fang <wei.fang@nxp.com> wrote:
 >
-> - Enable a few drivers needed by TQMa7x/MBa7x and i.MX53 QSB/QSRB in
->   imx_v6_v7_defconfig
-> - Enable IWLWIFI driver support in arm64 defconfig
+> > -----Original Message-----
+> > From: Frank Li <Frank.Li@nxp.com>
+> > Sent: 2024=E5=B9=B46=E6=9C=8827=E6=97=A5 0:23
+> > To: krzk@kernel.org
+> > Cc: Frank Li <frank.li@nxp.com>; conor+dt@kernel.org;
+> > davem@davemloft.net; devicetree@vger.kernel.org; edumazet@google.com;
+> > imx@lists.linux.dev; krzk+dt@kernel.org; kuba@kernel.org;
+> > linux-kernel@vger.kernel.org; netdev@vger.kernel.org; pabeni@redhat.com=
+;
+> > robh@kernel.org
+> > Subject: [PATCH v2 1/1] dt-bindings: net: convert enetc to yaml
+> >
+> > Convert enetc device binding file to yaml. Split to 3 yaml files, 'fsl,=
+enetc.yaml',
+> > 'fsl,enetc-mdio.yaml', 'fsl,enetc-ierb.yaml'.
+> >
+>
+> Sorry I didn't see this patch until now, I was planning to make this conv=
+ersion
+> but didn't realize you had started it first. It's very nice, thanks!
+>
+> > Additional Changes:
+> > - Add pci<vendor id>,<production id> in compatible string.
+> > - Ref to common ethernet-controller.yaml and mdio.yaml.
+> > - Remove fixed-link part.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Change from v1 to v2
+> > - renamee file as fsl,enetc-mdio.yaml, fsl,enetc-ierb.yaml, fsl,enetc.y=
+aml
+> > - example include pcie node
+> > ---
+> >  .../bindings/net/fsl,enetc-ierb.yaml          |  35 ++++++
+> >  .../bindings/net/fsl,enetc-mdio.yaml          |  53 ++++++++
+> >  .../devicetree/bindings/net/fsl,enetc.yaml    |  50 ++++++++
+> >  .../devicetree/bindings/net/fsl-enetc.txt     | 119 ------------------
+> >  4 files changed, 138 insertions(+), 119 deletions(-)  create mode 1006=
+44
+> > Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+> >  create mode 100644
+> > Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+> >  create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc.yam=
+l
+> >  delete mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.txt
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+> > b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+> > new file mode 100644
+> > index 0000000000000..60740ea56cb08
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+>
+> I suggest changing the file name to nxp,netc-emdio.yaml. "fsl" is a very =
+outdated
+> prefix. For new files, I think "nxp" is a better prefix.
 
-Hi Shawn,
+Convention is filenames use the compatible string. So no.
 
-I have queued all five pull requests now. I think patchwork
-got confused by the v2, so you did not get an automated email
-for them.
+> > @@ -0,0 +1,53 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
+> > +---
+> > +
+> > +title: ENETC the central MDIO PCIe endpoint device
+> external is better, that is why we call it EMDIO.
+>
+> > +
+> > +description:
+> > +  In this case, the mdio node should be defined as another PCIe
+> > +  endpoint node, at the same level with the ENETC port nodes
+> > +
+> This my local description, excerpted from NETC's block guide, FYI.
+> description: |
+>   NETC provides an external master MDIO interface (EMDIO) for managing ex=
+ternal
+>   devices (PHYs). EMDIO supports both Clause 22 and 45 protocols. And the=
+ EMDIO
+>   provides a means for different software modules to share a single set o=
+f MDIO
+>   signals to access their PHYs.
+>
+> > +maintainers:
+> > +  - Frank Li <Frank.Li@nxp.com>.
+> Vladimir and Claudiu as the driver maintainer, it is best to add them
+> to this list
+>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - enum:
+> > +          - pci1957,ee01
+> > +      - const: fsl,enetc-mdio
+>
+> " fsl,enetc-mdio" is meaningless, we did not use it ever.
 
-      Arnd
+arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi:
+ compatible =3D "pci1957,ee01", "fsl,enetc-mdio";
+
+In fact, until I recently added the standard PCI compatibles, these
+were the only compatible strings used.
+
+
+Rob
