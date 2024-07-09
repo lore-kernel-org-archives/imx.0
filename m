@@ -1,61 +1,60 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C5D15FD1B
-	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 13:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95859168497
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 13:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720530005; cv=none; b=SoM9Chv4oIGHEriPautPPn1mrV5SAicpvHVWcYgUh0GhPUMTrBRloQ+l+PibFADyqrkXflD2KpRCqY+1l8TSRqsOUzEoKdFQyuaHUxDb5+DJKpWvBKMODGgtd9Eml5u5sJDDv16npily1MdP71P0Lq9M0hDAIt7QwhcTMnAJNsM=
+	t=1720530008; cv=none; b=WhHyNRE0z9E9IOTmT5pf77Di6Oi529hvVCuDANcNSFicRfrbxDQZC8iGgh7GhMBRqt7WjQdchruxneroBOpjeIBvLvYiQxFEbLXn7YWWo4TKvGQko9aImdn9abMyKymENijXdDvX0vjjZEreOcailJLBbskkeKYDwZ2ryX4wcuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720530005; c=relaxed/simple;
-	bh=V4wSJ9/Zb1OXU1R9ZZfaP5PWSHjzT4TIbVQkHNfaWtE=;
+	s=arc-20240116; t=1720530008; c=relaxed/simple;
+	bh=Q6+hCxLVHj6awAkKLZL/lFMRRO+jJnpOsXWYwuQTpws=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YRnIFVX64YlZrFsYwdiJhZfWMbgtTjTB6hnDK8i3BGImz7ftjA1lHZB1+paC5/l2Ez0B3FrzSLd+UajpMIsrnAStdl0iQ+YHvNiHQ2eztGcuBe6iesm5F7gxCWwC2iH6BNzqtf8/1GfCnL2GbhW1I5vuFFuv88PdXNKtOv4oyG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k0Q1ULMz; arc=none smtp.client-ip=209.85.218.54
+	 In-Reply-To:To:Cc; b=oEKrmIBG8NMPKaXPfdQPOF5VPSxOpdozJ+thJrtSlUD3sRsXU36ROAoJT5Cwro8KRBGV0TlIF1dSxOY10qfpIyZlrExl8V03zyZF/9GWwgPZ/FS+p0U02BjXP6eoP1mi95/lQcjrRdK1uUG1T2FXM79Bx5XKZTRIE7UIXemEXDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uTP0Y2TW; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k0Q1ULMz"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a77c9d3e593so445008166b.0
-        for <imx@lists.linux.dev>; Tue, 09 Jul 2024 06:00:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uTP0Y2TW"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a77cbb5e987so465066166b.3
+        for <imx@lists.linux.dev>; Tue, 09 Jul 2024 06:00:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720530002; x=1721134802; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1720530005; x=1721134805; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=f78oiEcMG7OsR22tQ6+SmmwoeavBfLjWwNnYHK7srHU=;
-        b=k0Q1ULMz2x7fZPK1wUb41/lawIdAbBK9D1l3pX9p7hV+jAhsxXjH1DVGZKpjJ4cJP0
-         qH5bE4L7dryVtulKgYPcgPWlzV1u4Y16/I9Oy04Qxl0voyB8IKgY0ekHKN4T3BSxTtWb
-         FYyMAxbf6Kxa2aozVmD1+tvtHmKMrmuTJFkG4dM4vcVu2WmxS/lr+DGqXA/Gw5tY7rer
-         o5h5EMeD1kOaTs6Kj1Jl+ju/FdYWH0wWhmUPgN5J4ve9rdx27LRlhcIphUzXCYq+Do9A
-         DcaQU4k+X7FNiGjKEHhdVEsnx2/GARXMYd4Jl1XKEKXBUGV0Fjm0HZdaFSDy4pwTWKDX
-         8T1Q==
+        bh=lpaXR5hesM6QQA2KpWYBxtlXYQSJSMhrc0LMERSNaQc=;
+        b=uTP0Y2TWdMBGlCunYkcmtEbFSka/U7etFdjJ/3Au3OIStWWZLXVBypXmyr5AALRqG4
+         j5bmFl39PjvLAxfcHLHFT5MEMZPXoY9xumzGEpRgt4Ohv6RteezKGl6lYd8u5RE3MdMr
+         +l2GBOxUlCprcTjeVh4qeQ+vs6tOP4tbsplY582L/SdYQpaUkM3LaIMh/3oQI/EwukMm
+         cBj/gjXKQZHMtIKZ0nxsYLQ/1UuUlPuNBsMHCckmMc6WIUm4Yp+0snORxVj1wyH7diGN
+         zjm6w2PqYWyibZwA5gXHOkucpAp9gmpuV7aqLU0vTZNOjI+hjgd02xAyFs3WdvZ41XOV
+         rsOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720530002; x=1721134802;
+        d=1e100.net; s=20230601; t=1720530005; x=1721134805;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f78oiEcMG7OsR22tQ6+SmmwoeavBfLjWwNnYHK7srHU=;
-        b=mHWvBkDlOrJK1M4Pyy+0NQVQCZQGILxkRoR29v9BhmbVfGNXpC96YVIK5quyG9cmWf
-         dYJr796TuHihgA0UNth3fTYcF41RxYOFh4f1DB8TN+QVomoyPvS0vkjZqY7y/bSqIzrA
-         kvJ4HBO9VhcOS8mjNoeIODnT6GmbQgvGpgOBm9VUTBa5smqEAnhP7Py4ZQiZQijpBFpK
-         Vz5Uz8wbJ+GpLmG44Yz3/a0yqf9wnuWXiT+0lt45UsEQRTHNwhviUbyHbJu5sm2EekfK
-         kN/6FEcTDGPoL28EKQ5Z7ofbt4yts3lEOm/cl2V0swxWkSGYQ3WQvJlHm4hDSM01uDIe
-         PQtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqC8rb9Y8kd4YRblEszr2Wt7WzpyMHLJxhm+8QXwWJTjcnNi0ln/oLRzvFxXMM7C5E4jT+VkZ8wJ40wroiC4EjcI+z
-X-Gm-Message-State: AOJu0YyLWdUoSWRD9xLzqfaiPy2w+XHfpQh2jSjiQ4/TVGq5JwNt8rOz
-	6NOOwa4825/uCyWv4yPZ3S0G1VY6PRK8AhttfNEUIoRVq6T7EcKLfyczQVxJBHk=
-X-Google-Smtp-Source: AGHT+IEeriJvbTmGkLzoFhu4w4DX/KE/KgTI6bDgim7aEIkTDJf0fpBsm7D1mMLhV9g+9hF62pQ5nw==
-X-Received: by 2002:a17:906:4713:b0:a75:4723:b3b3 with SMTP id a640c23a62f3a-a780b705254mr136181866b.44.1720530000690;
-        Tue, 09 Jul 2024 06:00:00 -0700 (PDT)
+        bh=lpaXR5hesM6QQA2KpWYBxtlXYQSJSMhrc0LMERSNaQc=;
+        b=ke/A2rZLdd0h0iH4sSHiQLSK2jGv80mCRAh28Sv66qLJZHEcP3t7a5/6k2uXvykQFJ
+         yuhv66EARLzpsMBXj5/vUCDX02Kl5CFLxyVc1xVtU1xQbjabo7VClyEQXEvTC1ktdeMz
+         wh79ttAD1ms0mbrsHP/cVz+0Z/430wf8zPumx+D/W815cTrNQ94m1xmPUc8Zyx7/5bTE
+         1lmOEX6Mv7ueuFhZgr4cs/lxglaymCnSqyXVu6jiOlfsNo9CLfoYqXxxOxqEBFXX1mux
+         Da+vfUKT93DTUT/p8NJVvez0DHqJ/MwkUtN/L2myt4/ksgml9Ghmbub3pQnFqquGyuQL
+         UKeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXNuaatcoJ7z5GPjwjXsfhJu0YI4g83b0HveiQMRgR2S3wH24Lvyoj29W/oGn6Lq47c+8g78VJm40aACpq508n5lXvm
+X-Gm-Message-State: AOJu0Yy+m6+t2FQ+oAJm9Ybe1Z9WkSsjb7q1R5Ymzfm2DGK0yujClkac
+	OnYGqZeEzkoFPua1sZFaeskumXafVNSG2DcC68nU9WLrhN7HkwBp7hgH6h+svVw=
+X-Google-Smtp-Source: AGHT+IFpuXSVDfR9zcYD6UEE6dUM0zQ38CBB1md2Ad0sjVV+v+MC1CRRqx3iEirLTHQ2eq8mi1TqYA==
+X-Received: by 2002:a17:906:fb96:b0:a77:c26c:a56e with SMTP id a640c23a62f3a-a780b7053cfmr141321866b.45.1720530005087;
+        Tue, 09 Jul 2024 06:00:05 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6e157bsm76643166b.80.2024.07.09.05.59.59
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6e157bsm76643166b.80.2024.07.09.06.00.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 06:00:00 -0700 (PDT)
+        Tue, 09 Jul 2024 06:00:04 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 09 Jul 2024 14:59:34 +0200
-Subject: [PATCH 04/12] thermal/drivers/exynos: simplify probe() with local
- dev variable
+Date: Tue, 09 Jul 2024 14:59:36 +0200
+Subject: [PATCH 06/12] thermal/drivers/hisi: simplify with dev_err_probe()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +63,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-thermal-probe-v1-4-241644e2b6e0@linaro.org>
+Message-Id: <20240709-thermal-probe-v1-6-241644e2b6e0@linaro.org>
 References: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
 In-Reply-To: <20240709-thermal-probe-v1-0-241644e2b6e0@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -86,165 +85,53 @@ Cc: linux-pm@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
  linux-arm-msm@vger.kernel.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4669;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1065;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=V4wSJ9/Zb1OXU1R9ZZfaP5PWSHjzT4TIbVQkHNfaWtE=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmjTQ/AnkEzKq5ROG0a+eokqfAmnj00xbIkiQ4a
- TFG6e2ZyWSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZo00PwAKCRDBN2bmhouD
- 1yZiD/4jNvAShM4vglgexAc6XF/2hixi58swvYJA00t+uj23rUy04E4TT5ciStwziYrSXtyTYS2
- 0ZILGpEelDV1fULI+qPc72lCRi/CsxEDWDVwbyz2vcmzrjpPg8TLVNEF2bDYMEzWZJuF3fcyJVg
- MArkSKydEbI8fK7VkN/oIypSNFYPLK1kX1O2kFB1MxqRBeYNlGxrJ5Cpi2E5B10JKTa2bWoq6Cl
- t5SKAgFs0pmuMaxbNkFk5M2kMv19vubS3mdRbTM0MAVpm+1ahnkR4ITwRWLn4Z45+mkD7Vq28PU
- IREO9oeydPTG2P8Qzy6GgWyqM0es0aTTqrKsYlhOUehuusp+fIScfz+4Dm+9RPT75gw6K7WG0Nu
- FM87LThd67ixjFpPpEz2Y5EWtbbNQhX654q1xukNTqfBgUuTkxRsm0FC3od7CR+B2EEoMCpKbhe
- FVSvaKDt1C9tqzJGPto4TKWlsjsZC0fBnhFdAuA5jxRV1nV0Oq6i9WozDtIEqRthg2XR/ACSylx
- feEUOeSiCcD7O30FLRBLUQlql/MieIi2CuvNFHrfQme6Ae0FmS2bWWUCBGOwGKk+QrNeMmS2BdD
- Cj7XmcbgfRI2bor7fZTkZIWy33PLEDmtlrIU9lJJKx1t30DFM2FMhVJjL13bf37N1kJbF5YF9nD
- HzUVw4zpL0aqBJg==
+ bh=Q6+hCxLVHj6awAkKLZL/lFMRRO+jJnpOsXWYwuQTpws=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmjTRBwaAjkvl6lx45yY9/ImDeEubME5uwgWFGE
+ i+bNA0kPUGJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZo00QQAKCRDBN2bmhouD
+ 11BuD/4vPwK3V9A2LjND5Im9CSALekgwK8+81reARKO6RvGE9eBpawhpL5BznjBw1QsJ6n5wEDW
+ u4HfkL6X73SnVpVPx3wBkV55taP5y2WeYsDyuiSHFVYjPy+iGBCstOTmi+I2w9ep99Qoi+C4f0S
+ saeTt6RowTWLn+n8PNcDYWh0bl6kkVTt25vdxaIEkifGnPnDCOUPrcA9eG0BzgEk4B1pXdyxQun
+ xnzdYByJAnsbHiozgVSObIsmTDQfpk5guaL10G+OlcAWbN8L1i1pAukfDqQvcgRJGuAKviAWrkg
+ EX+bMPSx0PZi2MtGkX53wq5+BHeGXMTuLFGuYXqXKE3i2FhBwAjY5wJp8+ay7pr3PVITVz4/5pD
+ 7bf+V8ig7bAjt2E7vXkYTf79XHF+bZZnmyyyOZfANe/PGCcn7TAS+WTz9KBuN2zDgnYHcpcnIZG
+ il2JHZSSkpyLmdulaW1Zw9To9yd7c6+A3okG8069epEysKAZ90Jy+Vg7xOjiLCe0q5/n27wcgFv
+ oh6z4UgCqokMVSzGM/BdzM5D1DhOqbjQ99uxdOBtm7s3jSZHxnXnl/4v2XW0SNCdrgze9x9ttdu
+ /+Kw/YJn0iYsTK/MqqjfXF/gOCBGincfblbkRGlpqnqB25c0g8opnegbeXBSaEu0tf3nGxYLLZN
+ Hj6BN/VzrNndFyw==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Simplify the probe() function by using local 'dev' instead of
-&pdev->dev.  While touching devm_kzalloc(), use preferred sizeof(*)
-syntax.
+Error handling in probe() can be a bit simpler with dev_err_probe().
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/thermal/samsung/exynos_tmu.c | 42 +++++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ drivers/thermal/hisi_thermal.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/thermal/samsung/exynos_tmu.c b/drivers/thermal/samsung/exynos_tmu.c
-index 6482513bfe66..1152871cc982 100644
---- a/drivers/thermal/samsung/exynos_tmu.c
-+++ b/drivers/thermal/samsung/exynos_tmu.c
-@@ -1004,11 +1004,11 @@ static const struct thermal_zone_device_ops exynos_sensor_ops = {
- 
- static int exynos_tmu_probe(struct platform_device *pdev)
+diff --git a/drivers/thermal/hisi_thermal.c b/drivers/thermal/hisi_thermal.c
+index dd751ae63608..0eb657db62e4 100644
+--- a/drivers/thermal/hisi_thermal.c
++++ b/drivers/thermal/hisi_thermal.c
+@@ -388,15 +388,10 @@ static int hi6220_thermal_probe(struct hisi_thermal_data *data)
  {
-+	struct device *dev = &pdev->dev;
- 	struct exynos_tmu_data *data;
- 	int ret;
+ 	struct platform_device *pdev = data->pdev;
+ 	struct device *dev = &pdev->dev;
+-	int ret;
  
--	data = devm_kzalloc(&pdev->dev, sizeof(struct exynos_tmu_data),
--					GFP_KERNEL);
-+	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
+ 	data->clk = devm_clk_get(dev, "thermal_clk");
+-	if (IS_ERR(data->clk)) {
+-		ret = PTR_ERR(data->clk);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get thermal clk: %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(data->clk))
++		return dev_err_probe(dev, PTR_ERR(data->clk), "failed to get thermal clk\n");
  
-@@ -1020,7 +1020,7 @@ static int exynos_tmu_probe(struct platform_device *pdev)
- 	 * TODO: Add regulator as an SOC feature, so that regulator enable
- 	 * is a compulsory call.
- 	 */
--	ret = devm_regulator_get_enable_optional(&pdev->dev, "vtmu");
-+	ret = devm_regulator_get_enable_optional(dev, "vtmu");
- 	switch (ret) {
- 	case 0:
- 	case -ENODEV:
-@@ -1028,8 +1028,7 @@ static int exynos_tmu_probe(struct platform_device *pdev)
- 	case -EPROBE_DEFER:
- 		return -EPROBE_DEFER;
- 	default:
--		dev_err(&pdev->dev, "Failed to get enabled regulator: %d\n",
--			ret);
-+		dev_err(dev, "Failed to get enabled regulator: %d\n", ret);
- 		return ret;
- 	}
- 
-@@ -1037,44 +1036,44 @@ static int exynos_tmu_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	data->clk = devm_clk_get(&pdev->dev, "tmu_apbif");
-+	data->clk = devm_clk_get(dev, "tmu_apbif");
- 	if (IS_ERR(data->clk)) {
--		dev_err(&pdev->dev, "Failed to get clock\n");
-+		dev_err(dev, "Failed to get clock\n");
- 		return PTR_ERR(data->clk);
- 	}
- 
--	data->clk_sec = devm_clk_get(&pdev->dev, "tmu_triminfo_apbif");
-+	data->clk_sec = devm_clk_get(dev, "tmu_triminfo_apbif");
- 	if (IS_ERR(data->clk_sec)) {
- 		if (data->soc == SOC_ARCH_EXYNOS5420_TRIMINFO) {
--			dev_err(&pdev->dev, "Failed to get triminfo clock\n");
-+			dev_err(dev, "Failed to get triminfo clock\n");
- 			return PTR_ERR(data->clk_sec);
- 		}
- 	} else {
- 		ret = clk_prepare(data->clk_sec);
- 		if (ret) {
--			dev_err(&pdev->dev, "Failed to get clock\n");
-+			dev_err(dev, "Failed to get clock\n");
- 			return ret;
- 		}
- 	}
- 
- 	ret = clk_prepare(data->clk);
- 	if (ret) {
--		dev_err(&pdev->dev, "Failed to get clock\n");
-+		dev_err(dev, "Failed to get clock\n");
- 		goto err_clk_sec;
- 	}
- 
- 	switch (data->soc) {
- 	case SOC_ARCH_EXYNOS5433:
- 	case SOC_ARCH_EXYNOS7:
--		data->sclk = devm_clk_get(&pdev->dev, "tmu_sclk");
-+		data->sclk = devm_clk_get(dev, "tmu_sclk");
- 		if (IS_ERR(data->sclk)) {
--			dev_err(&pdev->dev, "Failed to get sclk\n");
-+			dev_err(dev, "Failed to get sclk\n");
- 			ret = PTR_ERR(data->sclk);
- 			goto err_clk;
- 		} else {
- 			ret = clk_prepare_enable(data->sclk);
- 			if (ret) {
--				dev_err(&pdev->dev, "Failed to enable sclk\n");
-+				dev_err(dev, "Failed to enable sclk\n");
- 				goto err_clk;
- 			}
- 		}
-@@ -1085,33 +1084,32 @@ static int exynos_tmu_probe(struct platform_device *pdev)
- 
- 	ret = exynos_tmu_initialize(pdev);
- 	if (ret) {
--		dev_err(&pdev->dev, "Failed to initialize TMU\n");
-+		dev_err(dev, "Failed to initialize TMU\n");
- 		goto err_sclk;
- 	}
- 
--	data->tzd = devm_thermal_of_zone_register(&pdev->dev, 0, data,
-+	data->tzd = devm_thermal_of_zone_register(dev, 0, data,
- 						  &exynos_sensor_ops);
- 	if (IS_ERR(data->tzd)) {
- 		ret = PTR_ERR(data->tzd);
- 		if (ret != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "Failed to register sensor: %d\n",
--				ret);
-+			dev_err(dev, "Failed to register sensor: %d\n", ret);
- 		goto err_sclk;
- 	}
- 
- 	ret = exynos_thermal_zone_configure(pdev);
- 	if (ret) {
--		dev_err(&pdev->dev, "Failed to configure the thermal zone\n");
-+		dev_err(dev, "Failed to configure the thermal zone\n");
- 		goto err_sclk;
- 	}
- 
--	ret = devm_request_threaded_irq(&pdev->dev, data->irq, NULL,
-+	ret = devm_request_threaded_irq(dev, data->irq, NULL,
- 					exynos_tmu_threaded_irq,
- 					IRQF_TRIGGER_RISING
- 						| IRQF_SHARED | IRQF_ONESHOT,
--					dev_name(&pdev->dev), data);
-+					dev_name(dev), data);
- 	if (ret) {
--		dev_err(&pdev->dev, "Failed to request irq: %d\n", data->irq);
-+		dev_err(dev, "Failed to request irq: %d\n", data->irq);
- 		goto err_sclk;
- 	}
- 
+ 	data->sensor = devm_kzalloc(dev, sizeof(*data->sensor), GFP_KERNEL);
+ 	if (!data->sensor)
 
 -- 
 2.43.0
