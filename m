@@ -1,77 +1,67 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2075.outbound.protection.outlook.com [40.107.104.75])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013070.outbound.protection.outlook.com [52.101.67.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5DA185632
-	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 20:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C1318005B
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 21:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720556641; cv=fail; b=kT9bCtntI6lGLJzrl1sT/NX1hXPItGza3Cgztzn9IZca62UC2tO94aNzw/kzPJqAyydTp49BQqmuHjjqI3xhjHm52TUEZM8lv4NY+UWVTdLIhNnK/8hv38DAApQyiIBuWaCPUbjOgdtszuKoga4riPDk2C/fKjJX0eoOhzsLpY0=
+	t=1720561746; cv=fail; b=NnLqHrpi+2cUYvDp8Poi29VolU6wUDSN3ZmNlsJOxUU4bIF/50E6bEXTc+3txNagvESq+TKskG1bgWKWiuRMSFzg1btuJoQ3qfUVhwesPW60jW4enk6c9JmK5mMOX1bKrsguVy+AF4fdFyPhLU/wQKADRksZV7NnLsplJlaYVss=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720556641; c=relaxed/simple;
-	bh=s8pNnrdq56Ppj8eEPtENwxRkzkEKcLwgHNFgBUHLUgg=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=HK98liiZUU/rYD7ShyXcNusaki/Ihndw0OH/sg4gcuowNgp8zWJqhPE/MkAqym2pIzI9qMlEIvw+TVQ5x+5NN3LFcjpF4vkuu1v/oJ/1oDs5vUFVHBHAlPkBbZeJ0KBH2YaZiH4UJJoM234f4uv9+TnXG1D0vMKzQJnF7cQvZKw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=BVvG2akz; arc=fail smtp.client-ip=40.107.104.75
+	s=arc-20240116; t=1720561746; c=relaxed/simple;
+	bh=E/XMdZWE9aJ+A27IUhYbLIkDpEgCB+yfa8KFaalHCTE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sKYXTIU9XRWyjToxf4VyL3L8e8aIysvbSE3DWu5SULrWQtXjg0EdOmhx2Ean/oqjiEfqJIB+rem2W8J8N6YLhNahYBvnUBn4+Vr08mGCbk64P/hrfCWeirOEE1ZCVj9yea6wIk7H4xwPYk1OoBr00lLMjIF1D3/TnmhAAE1cm9M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=TlFD/ngm; arc=fail smtp.client-ip=52.101.67.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="BVvG2akz"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="TlFD/ngm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SR8qnkzscrWlPVJDR/g6CEu8oZqAruVjoT94dDBrUzDiZJANQxxRMuBwBgpFXTO1k3trQ/kubNZPKduIyUCRpu/cipYripFzhtAi8oOmLCKC0KsHhI6SMCilzRSnDRF5hm18duTLLtdF/ijlrGbwMp9ro0YL88aXrDzkxptvfOSI+4SNnjv4fVlBgGFlpqtRC+v2yrK5xzn+Iw5kLxnZ5P9zaxHrh4wZrXJx1ViPwlvlwOwi24K4Up0alGtXKmlwGDAbKGd6hWRpehClbi77VuykBM2h/zu/bM09Ph9LZWI24ESCmpVTHouONvg1yL2xQ6xktAVJ67MOzTt3DCLvvA==
+ b=ZRg0CCMxNfJ8KfNLckM70dey1OJe5/6iSfilAdc7IqRdd++ZBCuo70nX0GuRyJi6ngIwFh/gmdZtffZ0F2mFZCiRJsPLkNMc8Gkpuf4ItB1vja6otsoUaYnFzm+msRKqLCHO8PK0/fgBNWwgBCjq87PZSF4JnQzzAjaz6aHbQHC5zaVsjx5IYPGfab3kpV3jdDWMazbZXoD7MLLNqWw5o0TtWrOp0XDAm7GQyZI0xTeyMltDsMictzCZQ/n8crxJ1kEMtSMOT1uwT4diikT6kz5F35k4BgfiP65xMq7Eqt9YLSYfSf1IVleMzjeC0ojYwELT54piaCut2jsmNGHxWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tcyyOpXR/elxOWjMLNQTI1/X+neU4CKgNbG534icVsg=;
- b=ZJRnD8yxBDwlVHM1Mz6rZMa7Q+edvvKJfRofdznhVMt6z08WGA5dcIeu2eOqjE/v9O8T6efYrGk112HMfJn1uHQ33YI8RSaPKR5CbbC044LgZNenxMAPG99dRAg1zxApln/G9fs6BDu8gTZtNTy04LBKLbp4Ih5YCf2azv3SGoAOVQokNXXWVBior0IskvcwXiLheIHCb50ydybunyMCrO83Anu1X/8i0FMf/LHK3OBeZ4g5O7PNwwBJgd65dJMRlOfmNmhKD6m4eOZeE2kQfn6w4z5boPmUQksaGB9VopsaekLb658Z9L3+06b3LADA1e1spdch1oEZ90oPHwirwQ==
+ bh=ePr9Qg+GpTnLb5HwdTn/liJiQ+K/eMCpO/f7QPu9zfs=;
+ b=eB8xuM0URyTSAj+Rh9bL/+58AzVySRE4o/xBpew4bohFfsD8JqD0sjcHD3Qdyk+M2G2FfA30upqLCsKvpoCpkc6pob9SH7/BWzKN72AUpxZCgTWyVMZ6xG8Qx3wW3cB54ggDo79yNIxGPoZGUdjDbQZeJ4Cq/SmduheYi8HdJtJNSVHgC5DfQA+FQypolO6uvWMJdqaBuEFajUyVmysvInQDnFvguK6kkKel09+g/3XVrNtdndNouRtVQdSPeMI329XS017rPJbO0jfL1iJySDNUUujebJ0OLMkXSwIKS6RbnCVyLB8acQlxxqZggSiuQvR5d9UuTKKVf2e1xeoytA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tcyyOpXR/elxOWjMLNQTI1/X+neU4CKgNbG534icVsg=;
- b=BVvG2akzLDSCVCWhNcPW7uLqXwlY2y+VXFbe4Ayirod2iScDiyUlnterDlvcy6Bd0vV7f0/F5gI2uGa6I983q5CSZ+0G04emiP1q/KJoVy8mXlj8h+Jo4I1rdJmL0/+9EmB0EBBOgCSLZhFogNUfX5ULeRkpj9KEORP8iIQND7A=
+ bh=ePr9Qg+GpTnLb5HwdTn/liJiQ+K/eMCpO/f7QPu9zfs=;
+ b=TlFD/ngmVNGTEfJt4crm8aT25CdBhRa4rj1XUDL1ubVPSpqsApyYKtWPmG5+XefsCnGv7VZKNutxskLJ20sw9c2ycwfgiTU7vS8bs5LYLnN+77DXIOVUeSUu/1WIRuxNEvG/DGHLZOSm1iemLdzXUlnumjVEh6G568EVzL3mJp0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB8267.eurprd04.prod.outlook.com (2603:10a6:10:24b::23) with
+ by VE1PR04MB7391.eurprd04.prod.outlook.com (2603:10a6:800:1b3::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.35; Tue, 9 Jul
- 2024 20:23:57 +0000
+ 2024 21:48:58 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7741.033; Tue, 9 Jul 2024
- 20:23:57 +0000
+ 21:48:58 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Date: Tue, 09 Jul 2024 16:23:07 -0400
-Subject: [PATCH 6/6] arm64: dts: imx93: add ddr edac support
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-imx95_edac-v1-6-3e9c146c1b01@nxp.com>
-References: <20240709-imx95_edac-v1-0-3e9c146c1b01@nxp.com>
-In-Reply-To: <20240709-imx95_edac-v1-0-3e9c146c1b01@nxp.com>
-To: York Sun <york.sun@nxp.com>, Borislav Petkov <bp@alien8.de>, 
- Tony Luck <tony.luck@intel.com>, James Morse <james.morse@arm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Robert Richter <rric@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Borislav Petkov <bp@suse.de>, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720556601; l=859;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=s8pNnrdq56Ppj8eEPtENwxRkzkEKcLwgHNFgBUHLUgg=;
- b=AwHYQq0Qcdnoz25sGb152A0P9wfUumjviii1fP58m1xcjkJv5OuEUCOxuWuyKAwnM3sXhYyDH
- y+rERn1bs2xCQ/2h5MQW40E6KA4RolfzBrPvGIIlvDP5Ad8nFMSDUqu
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR03CA0033.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
+To: robh@kernel.org
+Cc: Frank.li@nxp.com,
+	conor+dt@kernel.org,
+	davem@davemloft.net,
+	devicetree@vger.kernel.org,
+	edumazet@google.com,
+	imx@lists.linux.dev,
+	krzk+dt@kernel.org,
+	krzk@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH v3 1/1] dt-bindings: net: convert enetc to yaml
+Date: Tue,  9 Jul 2024 17:48:41 -0400
+Message-Id: <20240709214841.570154-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0198.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::23) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -80,125 +70,418 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB8267:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8358489-1b22-49b1-6d95-08dca0550fb9
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7391:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3461e8e-7f98-4334-c83e-08dca060efe6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|1800799024|7416014|366016|921020|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SjdLamNlMWpSRjRMQ0ZGSkRLRWdmM1R1R0F4dUNzakUvSXFGUkpnMEl6V1l3?=
- =?utf-8?B?a2dQV3R2K2Rub3liNUpudTFYZjJscHhKSVl1YlN5cDFucTdjMjZnaE9yWk9D?=
- =?utf-8?B?ckgybDVVZXhQRThGNDZVcm8vVlRkWHJoU2h5VDZQMDBoN09sOEROVzNqaytk?=
- =?utf-8?B?M0svb1NCVDRKMHgvUGNVdUZCSE9CYU9LYmVqQWZSVzd0RDJSY0ZFbXpXb21B?=
- =?utf-8?B?THg0Qm1BT0xmbXdUci9RSEpyZjZobE12RU5VMUM3Vm5VY0xPeTJJS2YyUTFU?=
- =?utf-8?B?eU9rdFFKeVF5TWpkaTltN1NRY0JpanNDQmxGT3FKOU9aVno0VjdLeGx0eHd3?=
- =?utf-8?B?bTJyZVNPZUs2NFlrTVpwd0p3REYxemJLSkpaTmNaVG9wU1h0Ym1TRkxHRkl4?=
- =?utf-8?B?UEZxVk1sbytoVER6eU9QRDhyMUtCTitheFJXZ0dIRlR4dXhhUVRnVXVISEhk?=
- =?utf-8?B?YTdxQ3RnVXVmd3ZlWDErV045MHQ1cUVIL2xpdmpSbzcyRjhtYTNxcUVFV0o5?=
- =?utf-8?B?SDdBRzhrcWo0c1lETFIwSXkzODE1V05paVMreitDS21hNEVaakVwMEdqaWMw?=
- =?utf-8?B?UHpFLy9QUEZ6eW5xYU5ES2RoL2Q1eTJHaUZXUEZ5TWlXMy9Qb1RJdGxnRHZy?=
- =?utf-8?B?bnI4TTNIQnliVmdLZ3pLaUFZbWNhWDhPWlhUb012YXFwL1VMa3RVanlnLzRz?=
- =?utf-8?B?YzUrOS9YTDF6YUhQOUkveEFMaldTQjEwaXdBYlBERWlkeXVzYW5kZVVFYkJ5?=
- =?utf-8?B?YksxUmt2Y2prSjdyZ0xVd21tV3M2clA1MzVpZFJjL1YvZHNxRWI1bFVGQnNx?=
- =?utf-8?B?d09rZVNQNmttOGhEWXNKKy95NHNGdFg3Y0V4Y1F1WUthdzdEdmFHOE5LQU9y?=
- =?utf-8?B?VzRCT3IvazlLREVodGVUVGo4MHFVWFRtL3czOUowWnVWSTBpNjQ1empZeXhR?=
- =?utf-8?B?eWsybXJsekU1ellzY1hYcWFsbHhpTHMrdUR6NWp4RDVRdW1RRnVSWGIyQlV3?=
- =?utf-8?B?dGZlQStrQWdRVDhNcnpvY3hTNGdNYVE3NlAxeVVQTVRJSWhFY3V3dzlUajRs?=
- =?utf-8?B?YVFYd2hOdHJHVzZLa1JWVlVFY3Y3eXJCaC9FcnFSMUE1UkVnOUZpb01qbVdJ?=
- =?utf-8?B?MFFndkV5aHNPbFE1QU4xODU4b1VGZTdibzZobS8yeGY2RWxDMTdGWnE2dHVv?=
- =?utf-8?B?Q0U2VlkwMUlaQThzSXhNV256RWtISkROeGw0U0s1akkzVFlicW9ZOFh6M0hI?=
- =?utf-8?B?eGJBYm5oMlhWOVliaTZPM0IvZnA0NWFqVXRUSDJHYUltUjRKaHduUU85amR6?=
- =?utf-8?B?STVxYXNQQzZ5UC9pSi9rMUxjd1Y5M3hkVkFPY1Q4MWJIODdUZnVLS0dDQUNF?=
- =?utf-8?B?cEtzTHArSkRLNElQU091L1NzSWR0bEtHc1ZuM1R4N1FnNHg0MS9oc1lFZkkw?=
- =?utf-8?B?anJJVnhlUExIWVF0U2pvc1daRFZPV0JVKzlLK01aRThjekdpdzlQMEd1STdN?=
- =?utf-8?B?WTA1aDJTeVlSUEtXamhwL1VZRU9zenZNekNObVFxckc0WTdhTll4ZnV0cEds?=
- =?utf-8?B?MVZSSEc2cFoxQUJpNlBmYU1EZUJndUdxLysrdHJnSk1tSVJkMHh0dkErRXRL?=
- =?utf-8?B?eDhFSGM0Kzc2UzkzYk1nSjdVL3hsZFNJUmNwNjlOVURQMmZzaFJKejhsWnJT?=
- =?utf-8?B?WU95eXdRZ2wwaWZzWi9mU09HMTRpRVV0a2VlOUdEc1V5eEp2aU1aN085Mm9W?=
- =?utf-8?B?emR3OVRiYTJjc2VhV2RtWU1xbTZOcWw0OS9BVXdOY09RQ0ZSdFV1cmF2MlB3?=
- =?utf-8?B?clZGZEcycWQvZ1NNZWFFVU4ydmZjY0xuZ0ttV2ZBajhnbkFHbmVGSHFsbGhm?=
- =?utf-8?B?amJUVDc4Rkw5NmJ1ajFiUXBQd0VMM003SG01K0hsRFkzbys4Uld0Tm9XMUdX?=
- =?utf-8?Q?P4TL9CudueM=3D?=
+	=?us-ascii?Q?EFjQObO1L1WojZWNeHKq1rTU1mHPEyOJoFDCq3kWhWAL/dfgPutAeoRi79v4?=
+ =?us-ascii?Q?o0dl6iZm65l2KcUEukydDFvcFqTt6bR5Mdtv1mnKNrU+BT1ikSP4gmycOrUd?=
+ =?us-ascii?Q?x8aDEeeKLgzBBnCPm4Iho0pPJu7BzF3fWRAqquL6cfvXj7WsxzD7LLuapdUu?=
+ =?us-ascii?Q?QQrBY4De3UqyLrO0g918S11CKK8+OWXrXTKBVS1cZ8L8+XFnW+XFs6MnX4Uh?=
+ =?us-ascii?Q?PqXviZcQrhYb9JSO3a6j2PpAolfLdU1It680hN1Y3+rl3hvBP96i2oIQEICe?=
+ =?us-ascii?Q?Hmug8AqMLH4tQcJ9TBqn0KwPUISzeNtDYpnPQNyHiJwavlCGzlCgQnMikglp?=
+ =?us-ascii?Q?2InjXGYLvokT98h4JrJ6K0mlmb7cti2sKDQ9/RPxF4PfYTvN/MQtMl4vm5SL?=
+ =?us-ascii?Q?ZT++1UD4B0wcgB2GtqUjfadgc3UFjxX+NbVvqzSrYmVhkXa9QPaA/IlxWAzl?=
+ =?us-ascii?Q?cfCeyTbxlK6CVXzVdtw/X2CNAsDEIQwaWGDaI15kpzyDpz0H+S3AjwezkPaY?=
+ =?us-ascii?Q?DjUqTQ2jv9NVrH0G67SugImNTo4FZDxEizaVb+z+4hwZggIouQgkNXVmQBxT?=
+ =?us-ascii?Q?rV7v/L5hAF7uJyDvoW8u4OLn1u3Cl1Mg8ApzoJbHlln9c4KOHuRsR2e8Qjdl?=
+ =?us-ascii?Q?IKSx1oeV81KcK/NqISXjP2F91C+mRTcfnrsnTTu/DhqlX1fDlDD7bCOP0ejX?=
+ =?us-ascii?Q?GTpmbsLcZEaHziVNkgR6HDhD8Jvq6DlJuqttRfWmNT1q3W1aoDnhNYaxRxDq?=
+ =?us-ascii?Q?RVm9lEITHr/Hdxze8jBDtfd3PpCTTh4M1NHeMV/5VsA2kN2KdkuAsM9nFVlI?=
+ =?us-ascii?Q?OKC9lEHH5ZzYlGheKqmFrPzxk8FcZnIOZ2tujW7PdCAILf3YiKyOmj59z6cw?=
+ =?us-ascii?Q?3iCZFEI7TGHU/Y51QjtXoi7tkKjK3MgJA16FDilcHXU33BCkeNnUzusBj0J8?=
+ =?us-ascii?Q?Z20mXl9BpMq1JxDogA4Ub3e2zIxI8wtcaHjRGItFn8Ka52sJA4zHiyuB8pED?=
+ =?us-ascii?Q?55dgheNNe9DQ0BK/K7PSgiZZ9R6YT2yc95DNJglxnaW4UVxUKbk6ErSzk7rY?=
+ =?us-ascii?Q?qHRtudDe1ah/g4Py+H6F0x5iI7+nm8BJPGVsBbNbqxN51Gd5FHVqfWMUgkWk?=
+ =?us-ascii?Q?0PYHwxghc2P+Qc3RWohbIlUX+XP9jQ1U6l83e3NYWMKUn0mByXsDRCzAEQuB?=
+ =?us-ascii?Q?fr6jYtDv9k3XzyS+MY06CIA4dxqUaeciFBaDvY1nEgt9R0yvDotMRlXF+aaQ?=
+ =?us-ascii?Q?t45iDK8qd7F2VYfEHDA/C/GuYlyNu0kYKVtFcmFmlvhRYph/tBd7LIgpgBqC?=
+ =?us-ascii?Q?N4VAvX9K17FyNGJMDMAJi+n/SrK+iVz9I3+AxdQUsbO9qseIY3/tl0EQUkRz?=
+ =?us-ascii?Q?OX/gOQg=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R2hQT2k5cC9LZ0lma1dRU0xaWmxKbzlhRG9hbU1MZ1JMNUo5bytOTkpIYUY1?=
- =?utf-8?B?SWM5UUFVeWNDVDE2ZVBFWHRlQUFaOXFVOVNFQkFTTElGc2swRDVuSjk4K1pm?=
- =?utf-8?B?ZVgzRm5UMzZ3bERwWEx3UmRuZk41UWFIVEd2cXkrdUoxdWlTRjV3Vm9FMldC?=
- =?utf-8?B?dDNnVXNwaDFCVyt5L0NtR1lhVEFxajFvSnh3K1ZiVVVOM2ZybFFUc3JXd1Rv?=
- =?utf-8?B?a3FmbnVQbDRDb2kwZE5hUXZabklxcDRjQUJDTW5pdkRGMlUxOEh5ODBhUjAw?=
- =?utf-8?B?d21aVHNHSzNoakg5eTNTZUc0a3dCWFlxVk04aHlZMDI1YUROOE5KejNyS0Rs?=
- =?utf-8?B?ZlNYM3NXZDk1c1FUbTV0T3JDNXpzdnZwcFdiWVgyRmszdXVxMjR6U3Myd1h3?=
- =?utf-8?B?M0RLQnRvalZoV2VKSkZmSjgrYzJSWUhTUmlYdmRYeG1zK3UyNW9PaHlLWFNu?=
- =?utf-8?B?RGhXc21EZytURkRnQXpBaSswTHVNSHpPY2s3QjlOS2d5aHpjaUd6b2t3bDFh?=
- =?utf-8?B?cWJUTkNqZnhadEtuekd0MUJ0bys3WUN2a0ZGbC9LNk1oNDVQZGRLaEtkWi9w?=
- =?utf-8?B?OUdCV2FMRERqVCtJT1lVTlZlUlJOQXNjQ21OVXQ0bUp2MHY1Q1NwSmhUMW9N?=
- =?utf-8?B?dGkrZkFEbU9RcU94UHNudm1vMVQ5Z2Mvd0pKM3JKck5QOEp1UG5HaExNSTQz?=
- =?utf-8?B?TDVXSVpISnYyeGIzbXhSM21BQi9MNWhTcTA3anFoZktxcDY3Z05PcnYzOTFX?=
- =?utf-8?B?M0JDNmtsVkdReThGU1lINjgyS240Q3Q5aTRKSmZFVy9CcnZjaXJVdE1aTGZ5?=
- =?utf-8?B?TG96Wkk5MUlNRXFBTEkvQ3JUWjg5QWpydkxIWUI0VVNiRnB2dWVWUVpQQzQw?=
- =?utf-8?B?RFh3bCtzQ3hjaFAvcERybWZNK3d5alNibnlmZFJJRWRWeU9sVUdoUFRPSkNE?=
- =?utf-8?B?VXpUdHF6YXlZekJHTGRHcFRZc0RwTzhmUUlJUnBNRE41YUJ3NU9vdnVGa3ZK?=
- =?utf-8?B?Q1g5RktyYmk1TTJKRG81blZkTjd3SnhGT1k3azJiSlB1S09sZHdPaDVjUlVt?=
- =?utf-8?B?dnBmYlZ2bGdOUlFKS3RNVS9FRE8wMEEvb2MvL1JkdEZEVXZ2WGdlUlpyRTE0?=
- =?utf-8?B?ak50MUxBU0xBbkNrQ0JhdWYzT0t2aFpOYzY1cjQ2NHVEWDhnd2xyUzRXcFd4?=
- =?utf-8?B?K0J4WWVMdXVtbUlMRXlnRVczdG5VRkFwV2pzc203WEFVQUtwbW4wMVFQcG9E?=
- =?utf-8?B?dWZyUEd4aFhScHl5UXNpYysxUHF4dlRKcC9kNWNNZzdZdERHWmRmdlh0VkZl?=
- =?utf-8?B?NDJwQ01aRG9KQjdIT1ZYYUs1V0UyalBmQ3IvK0FBSkl1RzZCejM3T2NCUWpy?=
- =?utf-8?B?NTYxNlZMbDRqN2FOTi9VTnBaTThBOVNDTkJQMkdiT0hRdjRpMFkyNWNHajNL?=
- =?utf-8?B?aDdBNVNCbmJkSVAwcG93VER3L2g1bHJrdTdYTWtrQkhXb24rYU1TT3g1a09P?=
- =?utf-8?B?cVg1MVVUNHBaZm9GWDE4NUpxSTlXSWJTblFJU0hza2JuNmxoWjRGczRLMkF2?=
- =?utf-8?B?eTBDSHN3dVF4K0ZYVUhGb3pPWWJ6aUJPaklsSE51UlN2NHJMRjdEZDQzS3NO?=
- =?utf-8?B?M2t0WkRzRUNlOXArNmJJMGNZN3hGeWIvb1dsaUZ1czl1Z3ZwWjZGY0UyVnpm?=
- =?utf-8?B?RFliWmRhb0tsYzFoUGlEOCsyT2hYZjViL01lZ0JSL0JrbW5sSGdqYXNRRjlI?=
- =?utf-8?B?Wk9BME1lM1JyWDlxaDRtdWUweW5TWDBVWUtlNThYeEM0R3VqVEsxcDA3TTgw?=
- =?utf-8?B?RTA2emZ3V1d3TVBBZVBuRTl1dm1nVlZ6dHE2bi9Ea3Z3c2VYbDcwb28rL1Ix?=
- =?utf-8?B?NVlxc2RiUm5KWXVuZGJ6azE0Nmh0aEE0WkpPZTdpVzJLZ3ZUVzAyMmRHM2xT?=
- =?utf-8?B?c09nN0h4K2Mwb2E3SVBGY2NQSDRORlFvKzFPS0JWQWVLYnpwTFJ4YmVONk5a?=
- =?utf-8?B?bUhSL1Y0VDZZTTZBNnI0Rm9SRmRUaytndnZaRmJJY1VGYUZFT0ZFaFhvbHNj?=
- =?utf-8?B?VnFpQUJta0NDc0JKRkxwb3hZcVBXcEU0MUh3TG12ZVBvSnZVRlVoTjlrQlZl?=
- =?utf-8?Q?ImqAerI0oybYJKjI+HFHNsuUP?=
+	=?us-ascii?Q?Jk+dcqH0QloR7d8FzM5M04eXMUCbtRLyFmpX311MNgVWiQ/Wj/ba8WL5apvN?=
+ =?us-ascii?Q?DTmN/9znCsfdPgh4cPgykvJ8uIHPdBE9i2DHrLokTcnK/+FCUkABayP4QGw6?=
+ =?us-ascii?Q?KxNUv/5onU7LdyIN0QIOP/AJc+MDIqUfGNTi16Srp546ZT45aDrwC6ZV+sD8?=
+ =?us-ascii?Q?+Vm5odkNjOKBgODB/H3vO8rsKK7HH6MHLOSf1SwOn5lmJcVI3kFu3BKn0uuv?=
+ =?us-ascii?Q?hHlDwoy5aUw5RgnZKb3cdUrWXEWnsTZlB5/RvMbTPaLwYIpAtbv54SRI7/ET?=
+ =?us-ascii?Q?0IRodBTYW0UP790oCJbKOwxAZoWLPEDTxTzg1ndHecgxTnbxUDD62qvZEicV?=
+ =?us-ascii?Q?9wSNI/BZK/3YAih8c5L6mk9jYEWhLOQGRwQwABihDvk7gggj80MkEUCx53T/?=
+ =?us-ascii?Q?dYURGMq5z+5dH33bSvRReTVVfE0f0GpXJ3zhanq1240EQVqMC1cCeLC5Qp9c?=
+ =?us-ascii?Q?+2FF0BOb6FC8lwVVIgy48uPpDX/bkh22JoDIE1SW+whhhTeL13yNPTviw+Ph?=
+ =?us-ascii?Q?dKl56lshiFnBVdFrSc/WaU41crDxDh3jAGNCfcmrF/W6geNlLiL1JrN311be?=
+ =?us-ascii?Q?SFoxH0/wO1oDIWkdiLNgne59Wf6B0V2OMZdIJSAgEHfk4hI6/vLSFTMey0UT?=
+ =?us-ascii?Q?VS7E2pQKQCzzU/VR4J3OwlcrUpBGvSpB3ojSMDtkBkOv9O4s0E7FrPDIYGM6?=
+ =?us-ascii?Q?5Dc0SEYmFbaPsLyJ8Q34dZmczskBvdOY0+HaJFQUK7QpSJjjdgQXG1WCNhu2?=
+ =?us-ascii?Q?LCgGvU35xfSoE1VdLf+jQrt+eXvirCsIw3wa+fiB8N5vXlKdQKowh4nCIibv?=
+ =?us-ascii?Q?UazpftJqyzMoEX/oHyz3ISUhxZkZEeSGNhd/fh8JdKc0dYFWsMKcWr2TYFw8?=
+ =?us-ascii?Q?I5Wu3CdIufsiShcTx0hK4ebsg8bA2MTf0yWjVCwn6L1v1Zmf38DKDg8WYdlb?=
+ =?us-ascii?Q?ikpOoMvEaWh2JGuvn+C6jpej+GkXfY2BXMAy7mpccpwId5+4pMcfBN/e5V6n?=
+ =?us-ascii?Q?KnkkuIoatysqu29SQv1EIvFZMpl+txIyaxcMVnj+8NInAIrOifedVUey7RCW?=
+ =?us-ascii?Q?NTxBz5erE2nRHKyqsqIE6G7CIx5jUPolo5MZ9LFYPS5kmanIKZdmaR2Pq1+H?=
+ =?us-ascii?Q?/xFDeifPpZTwR61fr73VPNVy+2E6sEdeX15TeW+VbCZsauq8ZQtfkfGg0mko?=
+ =?us-ascii?Q?VUWOGV9ThIyCphNDYJvE9wpIyofbCD/r8JGHOwS3sSZEtokxyBJ5TNl9NYNg?=
+ =?us-ascii?Q?rCTe+iRZqcS/nNto9JQH4T3MHa3pJGkwOSA+mPJptQuYeScH/qbNRSbVkoD6?=
+ =?us-ascii?Q?oV+QpGHbJNUyuaez2hLBF78MQS4N1Du3Mlg/gjOAVPXshveEeQAjIbX4IJRd?=
+ =?us-ascii?Q?sDYStNZo0MbBb+1aMnhNMPnyIQIspc4XeHSjkOqGFLK9q+3RAQNp7u+Bep1q?=
+ =?us-ascii?Q?ZrihXP4Aw4h9bXQNVBPBK/EsxGhLRCBW9cbuTE6+8OXGPbug2tF+penXQorP?=
+ =?us-ascii?Q?3CNAzf+TUpP1QvGTtLw5l+jF3GAFuzj6C3p0Ewt7AUFt/dQ5hpf2ERt033YZ?=
+ =?us-ascii?Q?u77W0VPR1Elk/8TvzfJekiapkPeszpJnKuo79g9O?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8358489-1b22-49b1-6d95-08dca0550fb9
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3461e8e-7f98-4334-c83e-08dca060efe6
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2024 20:23:57.6982
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2024 21:48:58.5244
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /59MVkA05iGzu5pp0egeyKki2ltqHT3DkA8rxiT+1xCe9zDAZqV4dKMh7ek8TblbFT6zbemvjVNFo5/PHH3zcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8267
+X-MS-Exchange-CrossTenant-UserPrincipalName: aWlXN/9NXx5/q4Fh2cJxR/i+vRkY3hlvnPEso/tjzw4mpp+05UgIQrxG5A142Szi2eiFJ939onTwQZ8M2sp5SQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7391
 
-Add ddr edac support for imx93.
+Convert enetc device binding file to yaml. Split to 3 yaml files,
+'fsl,enetc.yaml', 'fsl,enetc-mdio.yaml', 'fsl,enetc-ierb.yaml'.
+
+Additional Changes:
+- Add pci<vendor id>,<production id> in compatible string.
+- Ref to common ethernet-controller.yaml and mdio.yaml.
+- Add Wei fang, Vladimir and Claudiu as maintainer.
+- Update ENETC description.
+- Remove fixed-link part.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx93.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Change from v2 to v3
+- use endpoint-config as node name for fsl,enetc-ierb.yaml,
+- wrap to 80 in fsl,enetc-ierb.yaml.
+- fix unit address don't match
+- Remove reg/compatible string for pci
+- Add pci-device.yaml, which need absolute path.
+- Use example which have mdio sub node.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 4a3f42355cb8f..6faba848fe286 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -1279,6 +1279,14 @@ usbmisc2: usbmisc@4c200200 {
- 			#index-cells = <1>;
- 		};
- 
-+		memory-controller@4e300000 {
-+			compatible = "nxp,imx9-memory-controller";
-+			reg = <0x4e300000 0x800>, <0x4e301000 0x1000>;
-+			reg-names = "ctrl", "inject";
-+			interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
-+			little-endian;
-+		};
+Change from v1 to v2
+- renamee file as fsl,enetc-mdio.yaml, fsl,enetc-ierb.yaml, fsl,enetc.yaml
+- example include pcie node
+---
+ .../bindings/net/fsl,enetc-ierb.yaml          |  38 ++++++
+ .../bindings/net/fsl,enetc-mdio.yaml          |  57 +++++++++
+ .../devicetree/bindings/net/fsl,enetc.yaml    |  66 ++++++++++
+ .../devicetree/bindings/net/fsl-enetc.txt     | 119 ------------------
+ 4 files changed, 161 insertions(+), 119 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,enetc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/fsl-enetc.txt
+
+diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml b/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+new file mode 100644
+index 0000000000000..c8a654310b905
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/fsl,enetc-ierb.yaml
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/fsl,enetc-ierb.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 		ddr-pmu@4e300dc0 {
- 			compatible = "fsl,imx93-ddr-pmu";
- 			reg = <0x4e300dc0 0x200>;
-
++title: Integrated Endpoint Register Block
++
++description:
++  The fsl_enetc driver can probe on the Integrated Endpoint Register Block,
++  which preconfigures the FIFO limits for the ENETC ports.
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++  - Vladimir Oltean <vladimir.oltean@nxp.com>
++  - Wei Fang <wei.fang@nxp.com>
++  - Claudiu Manoil <claudiu.manoil@nxp.com>
++
++properties:
++  compatible:
++    enum:
++      - fsl,ls1028a-enetc-ierb
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    endpoint-config@f0800000 {
++        compatible = "fsl,ls1028a-enetc-ierb";
++        reg = <0xf0800000 0x10000>;
++    };
+diff --git a/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+new file mode 100644
+index 0000000000000..c1dd6aa04321e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/fsl,enetc-mdio.yaml
+@@ -0,0 +1,57 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/fsl,enetc-mdio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ENETC external MDIO PCIe endpoint device
++
++description:
++  NETC provides an external master MDIO interface (EMDIO) for managing external
++  devices (PHYs). EMDIO supports both Clause 22 and 45 protocols. And the EMDIO
++  provides a means for different software modules to share a single set of MDIO
++  signals to access their PHYs.
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++  - Vladimir Oltean <vladimir.oltean@nxp.com>
++  - Wei Fang <wei.fang@nxp.com>
++  - Claudiu Manoil <claudiu.manoil@nxp.com>
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - pci1957,ee01
++      - const: fsl,enetc-mdio
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: mdio.yaml
++  - $ref: /schemas/pci/pci-device.yaml
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    pcie{
++        #address-cells = <3>;
++        #size-cells = <2>;
++
++        mdio@0,3 {
++            compatible = "pci1957,ee01", "fsl,enetc-mdio";
++            reg = <0x000300 0 0 0 0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            ethernet-phy@2 {
++                reg = <0x2>;
++            };
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+new file mode 100644
+index 0000000000000..e152c93998fe1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
+@@ -0,0 +1,66 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/fsl,enetc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: The NIC functionality of NXP NETC
++
++description:
++  The NIC functionality in NETC is known as EtherNET Controller (ENETC). ENETC
++  supports virtualization/isolation based on PCIe Single Root IO Virtualization
++  (SR-IOV), advanced QoS with 8 traffic classes and 4 drop resilience levels,
++  and a full range of TSN standards and NIC offload capabilities
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++  - Vladimir Oltean <vladimir.oltean@nxp.com>
++  - Wei Fang <wei.fang@nxp.com>
++  - Claudiu Manoil <claudiu.manoil@nxp.com>
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - pci1957,e100
++      - const: fsl,enetc
++
++  reg:
++    maxItems: 1
++
++  mdio:
++    $ref: mdio.yaml
++    unevaluatedProperties: false
++    description: Optional child node for ENETC instance, otherwise use NETC EMDIO.
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/pci/pci-device.yaml
++  - $ref: ethernet-controller.yaml
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    pcie {
++        #address-cells = <3>;
++        #size-cells = <2>;
++
++        ethernet@0,0 {
++            compatible = "pci1957,e100", "fsl,enetc";
++            reg = <0x000000 0 0 0 0>;
++            phy-handle = <&sgmii_phy0>;
++            phy-connection-type = "sgmii";
++
++            mdio {
++                #address-cells = <1>;
++                #size-cells = <0>;
++                phy@2 {
++                    reg = <0x2>;
++                };
++            };
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/net/fsl-enetc.txt b/Documentation/devicetree/bindings/net/fsl-enetc.txt
+deleted file mode 100644
+index 9b9a3f197e2d3..0000000000000
+--- a/Documentation/devicetree/bindings/net/fsl-enetc.txt
++++ /dev/null
+@@ -1,119 +0,0 @@
+-* ENETC ethernet device tree bindings
+-
+-Depending on board design and ENETC port type (internal or
+-external) there are two supported link modes specified by
+-below device tree bindings.
+-
+-Required properties:
+-
+-- reg		: Specifies PCIe Device Number and Function
+-		  Number of the ENETC endpoint device, according
+-		  to parent node bindings.
+-- compatible	: Should be "fsl,enetc".
+-
+-1. The ENETC external port is connected to a MDIO configurable phy
+-
+-1.1. Using the local ENETC Port MDIO interface
+-
+-In this case, the ENETC node should include a "mdio" sub-node
+-that in turn should contain the "ethernet-phy" node describing the
+-external phy.  Below properties are required, their bindings
+-already defined in Documentation/devicetree/bindings/net/ethernet.txt or
+-Documentation/devicetree/bindings/net/phy.txt.
+-
+-Required:
+-
+-- phy-handle		: Phandle to a PHY on the MDIO bus.
+-			  Defined in ethernet.txt.
+-
+-- phy-connection-type	: Defined in ethernet.txt.
+-
+-- mdio			: "mdio" node, defined in mdio.txt.
+-
+-- ethernet-phy		: "ethernet-phy" node, defined in phy.txt.
+-
+-Example:
+-
+-	ethernet@0,0 {
+-		compatible = "fsl,enetc";
+-		reg = <0x000000 0 0 0 0>;
+-		phy-handle = <&sgmii_phy0>;
+-		phy-connection-type = "sgmii";
+-
+-		mdio {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			sgmii_phy0: ethernet-phy@2 {
+-				reg = <0x2>;
+-			};
+-		};
+-	};
+-
+-1.2. Using the central MDIO PCIe endpoint device
+-
+-In this case, the mdio node should be defined as another PCIe
+-endpoint node, at the same level with the ENETC port nodes.
+-
+-Required properties:
+-
+-- reg		: Specifies PCIe Device Number and Function
+-		  Number of the ENETC endpoint device, according
+-		  to parent node bindings.
+-- compatible	: Should be "fsl,enetc-mdio".
+-
+-The remaining required mdio bus properties are standard, their bindings
+-already defined in Documentation/devicetree/bindings/net/mdio.txt.
+-
+-Example:
+-
+-	ethernet@0,0 {
+-		compatible = "fsl,enetc";
+-		reg = <0x000000 0 0 0 0>;
+-		phy-handle = <&sgmii_phy0>;
+-		phy-connection-type = "sgmii";
+-	};
+-
+-	mdio@0,3 {
+-		compatible = "fsl,enetc-mdio";
+-		reg = <0x000300 0 0 0 0>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		sgmii_phy0: ethernet-phy@2 {
+-			reg = <0x2>;
+-		};
+-	};
+-
+-2. The ENETC port is an internal port or has a fixed-link external
+-connection
+-
+-In this case, the ENETC port node defines a fixed link connection,
+-as specified by Documentation/devicetree/bindings/net/fixed-link.txt.
+-
+-Required:
+-
+-- fixed-link	: "fixed-link" node, defined in "fixed-link.txt".
+-
+-Example:
+-	ethernet@0,2 {
+-		compatible = "fsl,enetc";
+-		reg = <0x000200 0 0 0 0>;
+-		fixed-link {
+-			speed = <1000>;
+-			full-duplex;
+-		};
+-	};
+-
+-* Integrated Endpoint Register Block bindings
+-
+-Optionally, the fsl_enetc driver can probe on the Integrated Endpoint Register
+-Block, which preconfigures the FIFO limits for the ENETC ports. This is a node
+-with the following properties:
+-
+-- reg		: Specifies the address in the SoC memory space.
+-- compatible	: Must be "fsl,ls1028a-enetc-ierb".
+-
+-Example:
+-	ierb@1f0800000 {
+-		compatible = "fsl,ls1028a-enetc-ierb";
+-		reg = <0x01 0xf0800000 0x0 0x10000>;
+-	};
 -- 
 2.34.1
 
