@@ -1,132 +1,89 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4391527A9
-	for <imx@lists.linux.dev>; Mon,  8 Jul 2024 23:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E162837D
+	for <imx@lists.linux.dev>; Tue,  9 Jul 2024 01:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720480218; cv=none; b=HeEee/c4ZPmUPGq5FqRp4mSWjVcdq4fRIFWZua5xJx8UJd1/dIdF1pWBqvCqbQgn+s5SSsS0XwKnTWFKBbZQTM53FkoiQWkwUvpzgkhggubfgZaGOiLnFH9T2TDb/iT2szgDfqv0wD4SuQ3bC+57W82CYlTuM729K8RrwUBYSZ8=
+	t=1720488387; cv=none; b=rgF4RGOaFX1jt0S90NfpWABK1xD/Uq/b58//CDnaF12djGcummdRBRSISuGf2wjrXulA0Uwrc/M0pi/TcvoUd0nYOTbF5+d1r4YN6rUG4jhzuSOWgt2YkkMpSEPjakyYNnGpZ+ai/020YO8MEv541oQyxGfpCy90+7IyJltv9v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720480218; c=relaxed/simple;
-	bh=TtrFMUHs/W2r2VOSo2ppvM/WhSliMAnQyowd3rIp5SY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=K5s/RCfBQi+koRBZqjGhjINiXKWLfBp9qwzoqHN+RnUzGHKGp4oMd4hVHEX4GtlFKJelMCBjmcmfrzWe3QeH5w8qU0n8SGQOMKReyc3tr2kXtybGcCWaGne/9KvO/3rcLCwsb7Cl3JWJmL7cj1HiTIlzfLxZKT90oxi/QAleou0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FnnQ8RiF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1720488387; c=relaxed/simple;
+	bh=aCelitde5WSfD7OWo7F+CE4VhDTsTYIIExGV4KA6QKg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BQbonFya1C7JEkt0Qeh6dRhBnDRcRxPwDx/lDONGD2kn0CPL+XPZx+9xrhrIU1euBB69lvR1oDXjcJhVusI+1BfpETrCS8TepBzKcvfHQIWjhDJl15nTd9wOS1QrtgkV+1bm3nOHnFzH6dn7+hhdF4MSWqBztp/RCnl9BTgTrMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k1wWxPJC; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FnnQ8RiF"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 468MjaYQ009259;
-	Mon, 8 Jul 2024 23:10:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dy2UesldC4XElGF1LE9xs2PmRBnT4drShFX9fHnwLlI=; b=FnnQ8RiFtxR4b+io
-	rMrIm0Pbs2bb/HF4PJ73tYBzJNHs00g0KKZc5OEUTodQ9tyKiVKSL6vv8F4XstLi
-	ogquKqr9dhAkbsIYM9pwoCH2YQrmxooeHoSNIXr5r2RuXroehQPcv0CFawylfvQz
-	zIWCacyJFFL5V5seLm7/s8zH0DYhWvbTC3VvWunN7h/KBQD3k2I2qr3ZumtM55CU
-	HG5+eXU42MfDNyn6ysLqboPuWKALZp1hP5b7SvLlvcZ0z5y3isIFVPYkQy/tMVOq
-	6M6H07E/U/juV18GPthuZtYVYc/3JcggUJ1i35mDW3h+m6OhvreW2DgjkzNO16gE
-	yI6i2A==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406wjn500d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jul 2024 23:10:07 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 468NA6Ye000939
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 8 Jul 2024 23:10:06 GMT
-Received: from [10.71.109.148] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 8 Jul 2024
- 16:10:02 -0700
-Message-ID: <5c363e91-581c-4d33-ad5a-154da915b3fb@quicinc.com>
-Date: Mon, 8 Jul 2024 16:10:01 -0700
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k1wWxPJC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=AEUWH
+	4plKaCEPOBgp5vOEnmyE7XmaClMjVAFu1RppSc=; b=k1wWxPJCurQKWZYYVd6OH
+	3yZpNxdu66frPNIWM2zGeZGQJD+QOqI3Ms9LzLvuCq43VSHfv9TuUiXtk3n1dumE
+	5SEs/fDEwjLU0MJXtxZxOAZ8Vnh4JTKapdaQgrG/IlnioDA0zKrASzeVSbJxmNmA
+	RE2fCKqYPU2FRrMQ3Tp0WU=
+Received: from localhost.localdomain (unknown [117.62.10.72])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCHrSWZkYxmRP93AA--.24850S2;
+	Tue, 09 Jul 2024 09:25:45 +0800 (CST)
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org,
+	arm@kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL v2 5/5] i.MX defconfig change for 6.11
+Date: Tue,  9 Jul 2024 09:25:34 +0800
+Message-Id: <20240709012534.3106441-1-shawnguo2@yeah.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: CMA Regression issue - [PATCH v2] of: reserved_mem: Restructure
- code to call reserved mem init functions earlier
-To: Aisheng Dong <aisheng.dong@nxp.com>
-CC: Rob Herring <robh@kernel.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        Jason Liu <jason.hui.liu@nxp.com>,
-        "dongas86@gmail.com" <dongas86@gmail.com>,
-        "saravanak@google.com"
-	<saravanak@google.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>, <kernel@quicinc.com>
-References: <DU0PR04MB9299C3EC247E1FE2C373440F80DE2@DU0PR04MB9299.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
-In-Reply-To: <DU0PR04MB9299C3EC247E1FE2C373440F80DE2@DU0PR04MB9299.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: NQCTMusJS45gloHO2U81phdJdvWkemll
-X-Proofpoint-GUID: NQCTMusJS45gloHO2U81phdJdvWkemll
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-08_13,2024-07-05_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=881 clxscore=1011
- mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407080172
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Mc8vCgCHrSWZkYxmRP93AA--.24850S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrtr4UXr1kCrykCw47Cr1rZwb_yoW8JF1kpF
+	W3urnxGr48JFWrGr47XF9F9a4rAwsrJr15Jr1UJw1rXry7A34UXr1Ut34xWFWUtr92gFW8
+	tF18GF1DKr1UJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uq0PhUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRoXZWZv-fa7AAAAsY
+
+From: Shawn Guo <shawnguo@kernel.org>
+
+Changes for v2:
+- Drop the commit that enables RAM block device for arm64 defconfig
 
 
-On 7/4/2024 4:41 AM, Aisheng Dong wrote:
-> Hi Oreoluwa,
->
-> We observed a CMA regression issue on MX8MN that the CMA region failed to be
-> setup by rmem_cma_setup() since the following patch:
-> f2a524d9ef5b ("of: reserved_mem: Restructure code to call reserved mem init functions earlier") [1]
-> And the CMA node was incorrect parsed (e.g. non-reuseable) due to NULL node pointer.
-> Below is one line boot log tested with the tag next-20240703 of linux-next tree.
-> OF: reserved mem: 0x0000000058000000..0x000000007fffffff (655360 KiB) map non-reusable linux,cma
-> NOTE: actually there is a reusable property:
-> linux,cma {
->         compatible = "shared-dma-pool";
->         reusable;
->         size = <0 0x28000000>;
->         alloc-ranges = <0 0x40000000 0 0x40000000>;
->         linux,cma-default;
-> };
->
-> The root cause was that the CMA region was initialized at a very early stage
-> since above commit in question.
-> The call flow became:
-> early_init_fdt_scan_reserved_mem()->fdt_scan_reserved_mem()->
-> __reserved_mem_alloc_size()->of_reserved_mem_save_node(NULL, xxx)->
-> of_init_reserved_mem_node()->__reserved_mem_init_node().
->
-> The rmem->dev_node is still NULL when calling __reserved_mem_init_node()
-> which fails to call the rmem_cma_setup().
->
-> Please let me know if there's already a fix patch.
->
-> [1] https://lore.kernel.org/all/20240620001027.2326275-1-quic_obabatun@quicinc.com/
->
-> Regards
-> Aisheng
-Hi Aisheng,
+The following changes since commit 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0:
 
-I have uploaded a fix here:
-https://lore.kernel.org/all/20240708230613.448846-1-quic_obabatun@quicinc.com/
+  Linux 6.10-rc1 (2024-05-26 15:20:12 -0700)
 
-Please test and see if this fixes the issue.
+are available in the Git repository at:
 
-Thank you!
-Oreoluwa
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-defconfig-6.11
+
+for you to fetch changes up to 465830ad25346aa7945e8e0ac5b8ca7d53217043:
+
+  arm64: defconfig: Enable the IWLWIFI driver (2024-07-09 09:18:05 +0800)
+
+----------------------------------------------------------------
+i.MX defconfig change for 6.11:
+
+- Enable a few drivers needed by TQMa7x/MBa7x and i.MX53 QSB/QSRB in
+  imx_v6_v7_defconfig
+- Enable IWLWIFI driver support in arm64 defconfig
+
+----------------------------------------------------------------
+Alexander Stein (1):
+      ARM: imx_v6_v7_defconfig: Enable drivers for TQMa7x/MBa7x
+
+Dmitry Baryshkov (1):
+      ARM: imx_v6_v7_defconfig: enable DRM_SII902X and DRM_DISPLAY_CONNECTOR
+
+Fabio Estevam (1):
+      arm64: defconfig: Enable the IWLWIFI driver
+
+ arch/arm/configs/imx_v6_v7_defconfig | 7 +++++++
+ arch/arm64/configs/defconfig         | 3 +++
+ 2 files changed, 10 insertions(+)
+
