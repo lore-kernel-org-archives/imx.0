@@ -1,110 +1,145 @@
 Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EE18288F
-	for <imx@lists.linux.dev>; Wed, 10 Jul 2024 09:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6095C17BB31
+	for <imx@lists.linux.dev>; Wed, 10 Jul 2024 10:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720605091; cv=none; b=l3G35rAc0w/0RnAtMP772bWcwL55bsjKIQR89yRqKKDtI0kBFCQmLmH4Kiecj4i4gp/vk/EqM78nVejTXQBM5uIBnVbjr4mDPxFm6XpWw61NJ1kcYiZiH96vMq///Y81nCb+ySZfoPcmM19HODg7UP2rl4jxD8GwgNyNajc7mMY=
+	t=1720605860; cv=none; b=uQPpV7iHNxL8gln2AbFD950HrZonYZbCq76XfvGi5NqJLwP0dOzsB3k2PqH0LQhRWHmjnuIozAuA2pVH7YwGDaVFUI5Se8Ivx/uL7nEuGW/0WNHq8M9IkzglKlmoqnHhDwBKkuv/rfbXQEzGivSpLlAwL7t+O3kGLpYEAkG7Q2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720605091; c=relaxed/simple;
-	bh=5vy6X0O6qEnfmBFIMy66z8mbjzBObduDt7gIIzeMJf0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=B4acS3grPV2UGKEoJo690S/hy7vVAOffMl4URnWSCcAid0+PEw/pG0xkuQFWkyuX4jhoi72/jqiqAtrYyXk1oyeZwBk/uplSABwmtcUSxQBX6zKNgJvx4pqEMSSvRhxKDp3dFvZxlrK5WBf1uQnRb58oEZpCtaSGAVKLizvc6s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=m8EqlA+p; arc=none smtp.client-ip=91.26.50.163
+	s=arc-20240116; t=1720605860; c=relaxed/simple;
+	bh=O/iKLOi01DL02R3LaUPQITYi6Ex6Mg2vmu5xThjEQd0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=quLuAqMa6B9lXwdsVYmylz7hI4oxkqR6/AhsdHWNvGLCX78VXF6lk3ByUe/5wNTmJHPPp1SfhXA4muhShhG7Y0dnu6DLMHfnNZl5vbtaJPo0eu3AkZWhnJqN9b9I3wgIyKd3Rymsw1RGosm5zZpYwZ265zamoz7N99siKiFfVJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=epXu2/ac; arc=none smtp.client-ip=91.26.50.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="m8EqlA+p"
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="epXu2/ac"
 DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1720605086; x=1723197086;
+	q=dns/txt; i=@phytec.de; t=1720604949; x=1723196949;
 	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5vy6X0O6qEnfmBFIMy66z8mbjzBObduDt7gIIzeMJf0=;
-	b=m8EqlA+paYoBgUaLDhjoUNJTSZc9qT5Ei0rlLfOHx8Quwvf81nB/uYM9fRc5YUFm
-	XSM8dFP1BbRuzkQaNyCn3T3fhdaSV/GICatMauruOfVSeJaTis8A+bQyBOD9A8Eb
-	rb89pTvD/BnJaUK5OaA3wtmjv+FhtCP+EJMAab9NPGo=;
-X-AuditID: ac14000a-03e52700000021bc-46-668e599e3cbe
+	bh=O/iKLOi01DL02R3LaUPQITYi6Ex6Mg2vmu5xThjEQd0=;
+	b=epXu2/acK3RTjp1fN3JkHmFk4hIJnM9RGaPIVHWXB6qw2IedCbMT4xgdA8gattbS
+	p9NjLqmetlUD4A/e8unoHqIqt3i/BocgOBtAkh4KHZDtF1Cf1C5+XFfZNV02e9PJ
+	6L/S0k8GcB00Unr6eHbZde08gH5zKV4NnQRyiLhS1z8=;
+X-AuditID: ac14000a-03251700000021bc-0c-668e59142468
 Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
 	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id BD.7F.08636.E995E866; Wed, 10 Jul 2024 11:51:26 +0200 (CEST)
-Received: from Berlix.phytec.de (172.25.0.12) by Berlix.phytec.de
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id C6.7F.08636.4195E866; Wed, 10 Jul 2024 11:49:08 +0200 (CEST)
+Received: from llp-hahn.phytec.de (172.25.0.11) by Berlix.phytec.de
  (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 10 Jul
- 2024 11:51:25 +0200
-Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
- berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
- Wed, 10 Jul 2024 11:51:25 +0200
+ 2024 11:49:08 +0200
 From: Benjamin Hahn <B.Hahn@phytec.de>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"Rob Herring" <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
-CC: PHYTEC Upstream <upstream@lists.phytec.de>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] arm64: dts: freescale: imx8mp-phycore: Add no-eth
+Date: Wed, 10 Jul 2024 11:48:54 +0200
+Subject: [PATCH v3] arm64: dts: freescale: imx8mp-phycore: Add no-eth
  overlay
-Thread-Topic: [PATCH v2] arm64: dts: freescale: imx8mp-phycore: Add no-eth
- overlay
-Thread-Index: AQHaztTwwwIaBQqxY0i9PdyfIGTAlrHsiQGAgAMVQoA=
-Date: Wed, 10 Jul 2024 09:51:25 +0000
-Message-ID: <829ab483-fb96-4fd2-be7c-03548ba22ce5@phytec.de>
-References: <20240705-bspimx8m-3180-v2-1-dc1a7e1689be@phytec.de>
- <1764670d-0248-46fd-b0ce-03bcbcd6977b@linaro.org>
-In-Reply-To: <1764670d-0248-46fd-b0ce-03bcbcd6977b@linaro.org>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7CD51A38C1FC3D4991D2BFE0AD5067E4@phytec.de>
-Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHIsWRmVeSWpSXmKPExsWyRpKBR3deZF+awYV/fBZr9p5jsph/5Byr
-	xcOr/hYz77WyWayaupPFou/FQ2aLva+3sltsenyN1eLyrjlsFq17j7Bb/N2+icXixRZxi+53
-	6g68Hjtn3WX32LSqk83jzrU9bB6bl9R7vNg8k9Gjv7uF1aP/r4HH501yARxRXDYpqTmZZalF
-	+nYJXBnbJy9iLmjhrWi+/4+1gfEGTxcjJ4eEgInEjM9HGbsYuTiEBJYwSTw8MY0VwrnPKNH1
-	+AQ7hLOBUWL3jQUsIC1sAmoSu968BqsSEXjAJNH0+CxYP7PAGiaJk1dWMHcxcnAICwRLbDzD
-	CtIgIhAisfrILRYI20pix/WzbCA2i4CqxJ79G8DivAI2Ev8OL2EEsYUESiQ+zloMNoZTwE5i
-	0lNFkDCjgKzEhg3nmUFsZgFxiU3PvrNCvCAgsWQPRFxCQFTi5eN/UHF5iRO3pjGBjGEW0JRY
-	v0sfotVC4klHJ9QYRYkp3Q/ZIS4QlDg58wnLBEbxWUg2zELonoWkexaS7llIuhcwsq5iFMrN
-	TM5OLcrM1ivIqCxJTdZLSd3ECEoDIgxcOxj75ngcYmTiYDzEKMHBrCTCO/9Gd5oQb0piZVVq
-	UX58UWlOavEhRmkOFiVx3tUdwalCAumJJanZqakFqUUwWSYOTqkGxsRXeR0n+XKXPbpScX9R
-	xMZcLYtVvvmmJ1YnsSxpk39YV7ZQh/O6bPEdo937Hlgte8/SdeztN59ndQ69st/n2hvu2eDW
-	/fTrvL6QB5+dfSo+3DY0eZlw6/XpRapMc09zNz2rzPP7sW+ryL+vztMyvWbLfHN8vEigLeJE
-	uaDN8zOlDlGON9uPVSqxFGckGmoxFxUnAgBYqL1j8QIAAA==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240710-bspimx8m-3180-v3-1-8ef55381172c@phytec.de>
+X-B4-Tracking: v=1; b=H4sIAAVZjmYC/13MSw6DIBSF4a0YxqXhAgp21H00HYDcVgY+AoZoj
+ Hsv2olxeE7yfyuJGDxG8ihWEjD56Ic+D3ErSNOa/ovUu7wJZ1yyChS1cfTdrDsqQDMqlUUHWhp
+ dSpKbMeDHz4f3eufd+jgNYTn4BPv7lxQTFykBBYpSIBOlqS03z7FdJmzuDskuJX6uy2vNc+0aM
+ Aqh0rXFc71t2w8ypN926AAAAA==
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<upstream@lists.phytec.de>, Benjamin Hahn <B.Hahn@phytec.de>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720604948; l=2166;
+ i=B.Hahn@phytec.de; s=20240126; h=from:subject:message-id;
+ bh=O/iKLOi01DL02R3LaUPQITYi6Ex6Mg2vmu5xThjEQd0=;
+ b=54CcNOt2P672ZNgEbr8B9/EoettTLoQnRD4ejM/OwaOnkvJ5anrQiNuVgdnRHhpA6Z4IDbOhP
+ 4g83FLbkEh0DZ+8JbcD43Qwq0nBZePzbC42VEZe0ah2nzLtvtb19U1q
+X-Developer-Key: i=B.Hahn@phytec.de; a=ed25519;
+ pk=r04clMulHz6S6js6elPBA+U+zVdDAqJyEyoNd8I3pSw=
+X-ClientProxiedBy: Florix.phytec.de (172.25.0.13) To Berlix.phytec.de
+ (172.25.0.12)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphkeLIzCtJLcpLzFFi42JZI8nAoysS2ZdmcP2DucWaveeYLOYfOcdq
+	8fCqv8XMe61sFqum7mSxeDnrHpvFpsfXWC0u75rDZvF/zw52i7/bN7FYvNgibtH9Tt2Bx2Pn
+	rLvsHptWdbJ5bF5S7/Fi80xGj/7uFlaP/r8GHp83yQWwR3HZpKTmZJalFunbJXBlPN66hK3g
+	h0DF/ImlDYwv+LoYOTkkBEwkGrsesHcxcnEICSxhknjQOpcRwnnIKHF43ycmkCo2ATWJXW9e
+	s4LYLAKqEgd+d7CB2MIC/hIX/8xhBrF5BQQlTs58wtLFyMHBLKApsX6XPkiYWUBeYvtbmBIH
+	iTM/ephB5ksINDNJND78xgbiiAhMYpL4tn0mmMMscJBRYtfHK0wgkyQEhCU27dSC6NjNJDG9
+	+QobRDxRYudrOZCpQgKyEjfPb2GDeEdeYtq518wQdqjEkU2rmSYwCs9Cct8shPtmIblvASPz
+	Kkah3Mzk7NSizGy9gozKktRkvZTUTYygGBNh4NrB2DfH4xAjEwfjIUYJDmYlEd75N7rThHhT
+	EiurUovy44tKc1KLDzFKc7AoifOu7ghOFRJITyxJzU5NLUgtgskycXBKNTByvum5NmPD6Ybe
+	R9abJkqYRnN1+EVvOiY/vcBkIsvOhOvBenf4rPZKRLy+dCOiZfmxd93O5/L9uDstcjRbvla/
+	KDidfuv5ad5EKUfuNfLfHs0MOdlaaZvfplN70k3/ypGI4IZ9OaaG3KmSSvv82ItqnTY5yxT1
+	3dZ9spd7n4L7ohCzPX+kTyuxFGckGmoxFxUnAgCAcR9bnwIAAA==
 
-T24gMDguMDcuMjQgMTI6NDYsIEtyenlzenRvZiBLb3psb3dza2kgd3JvdGU6DQo+IE9uIDA1LzA3
-LzIwMjQgMTQ6MTQsIEJlbmphbWluIEhhaG4gd3JvdGU6DQo+PiBBZGQgYSBkZXZpY2V0cmVlIG92
-ZXJsYXkgdG8gZGlzYWJsZSBldGhlcm5ldCBmb3IgYm9hcmRzIHdoZXJlIGl0IGlzIG5vdA0KPj4g
-cG9wdWxhdGVkLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IEJlbmphbWluIEhhaG4gPEIuSGFobkBw
-aHl0ZWMuZGU+DQo+PiAtLS0NCj4+IENoYW5nZXMgaW4gdjI6DQo+IFRoYXQncyBzb21lIG9sZCBr
-ZXJuZWwgeW91IGFyZSBkZXZlbG9waW5nIG9uLCByaWdodD8NCg0KWW91IGFyZSBjb3JyZWN0LiBJ
-IHdhcyBzdGlsbCBvbiBLZXJuZWwgdmVyc2lvbiA2LjguDQoNCkkgcmViYXNlZCB0byBtYXN0ZXIg
-YW5kIHNlbnQgYSB2My4NCg0KUmVnYXJkcywNCg0KQmVuamFtaW4NCg0KPg0KPiA8Zm9ybSBsZXR0
-ZXI+DQo+IFBsZWFzZSB1c2Ugc2NyaXB0cy9nZXRfbWFpbnRhaW5lcnMucGwgdG8gZ2V0IGEgbGlz
-dCBvZiBuZWNlc3NhcnkgcGVvcGxlDQo+IGFuZCBsaXN0cyB0byBDQyAoYW5kIGNvbnNpZGVyIC0t
-bm8tZ2l0LWZhbGxiYWNrIGFyZ3VtZW50KS4gSXQgbWlnaHQNCj4gaGFwcGVuLCB0aGF0IGNvbW1h
-bmQgd2hlbiBydW4gb24gYW4gb2xkZXIga2VybmVsLCBnaXZlcyB5b3Ugb3V0ZGF0ZWQNCj4gZW50
-cmllcy4gVGhlcmVmb3JlIHBsZWFzZSBiZSBzdXJlIHlvdSBiYXNlIHlvdXIgcGF0Y2hlcyBvbiBy
-ZWNlbnQgTGludXgNCj4ga2VybmVsLg0KPg0KPiBUb29scyBsaWtlIGI0IG9yIHNjcmlwdHMvZ2V0
-X21haW50YWluZXIucGwgcHJvdmlkZSB5b3UgcHJvcGVyIGxpc3Qgb2YNCj4gcGVvcGxlLCBzbyBm
-aXggeW91ciB3b3JrZmxvdy4gVG9vbHMgbWlnaHQgYWxzbyBmYWlsIGlmIHlvdSB3b3JrIG9uIHNv
-bWUNCj4gYW5jaWVudCB0cmVlIChkb24ndCwgaW5zdGVhZCB1c2UgbWFpbmxpbmUpIG9yIHdvcmsg
-b24gZm9yayBvZiBrZXJuZWwNCj4gKGRvbid0LCBpbnN0ZWFkIHVzZSBtYWlubGluZSkuIEp1c3Qg
-dXNlIGI0IGFuZCBldmVyeXRoaW5nIHNob3VsZCBiZQ0KPiBmaW5lLCBhbHRob3VnaCByZW1lbWJl
-ciBhYm91dCBgYjQgcHJlcCAtLWF1dG8tdG8tY2NgIGlmIHlvdSBhZGRlZCBuZXcNCj4gcGF0Y2hl
-cyB0byB0aGUgcGF0Y2hzZXQuDQo+IDwvZm9ybSBsZXR0ZXI+DQo+DQo+IEJlc3QgcmVnYXJkcywN
-Cj4gS3J6eXN6dG9mDQo+DQoNCg==
+Add a devicetree overlay to disable ethernet for boards where it is not
+populated.
+
+Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+---
+Changes in v3:
+- rebase to master
+- Link to v2: https://lore.kernel.org/r/20240705-bspimx8m-3180-v2-1-dc1a7e1689be@phytec.de
+
+Changes in v2:
+- Remove the compatible from the overlay
+- Link to v1: https://lore.kernel.org/r/20240703-bspimx8m-3180-v1-1-e43e035a9b2a@phytec.de
+---
+ arch/arm64/boot/dts/freescale/Makefile                   |  2 ++
+ arch/arm64/boot/dts/freescale/imx8mp-phycore-no-eth.dtso | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index bd443c2bc5a4..647282cc861b 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -173,6 +173,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-msc-sm2s-ep1.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-navqp.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
++imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-no-eth.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phycore-no-eth.dtso
+new file mode 100644
+index 000000000000..5f0278bf61ee
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-no-eth.dtso
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2024 PHYTEC Messtechnik GmbH
++ * Author: Cem Tenruh <c.tenruh@phytec.de>
++ */
++
++/dts-v1/;
++/plugin/;
++
++&ethphy1 {
++	status = "disabled";
++};
++
++&fec {
++	status = "disabled";
++};
+
+---
+base-commit: 34afb82a3c67f869267a26f593b6f8fc6bf35905
+change-id: 20240617-bspimx8m-3180-47bed184a854
+
+Best regards,
+-- 
+Benjamin Hahn <B.Hahn@phytec.de>
+
