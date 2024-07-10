@@ -1,132 +1,85 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F761E488
-	for <imx@lists.linux.dev>; Wed, 10 Jul 2024 12:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D181922E3;
+	Wed, 10 Jul 2024 12:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720614860; cv=none; b=l0id6vImmv7AQxlKOqavZFAWwD+eTlWXapAWN/G7FLAYDAdiJ0m0N0IMYQrJiKBBox6xSU9K05w5dmdjBikGjHYUyaDOqq7WEgZ4V6lopnTvQg+8Q3sh7W/XlNua3Yeibh5UxMy031uvYJLbajgdpoYWFCXR3WL/m5qGMiOt8Rw=
+	t=1720615157; cv=none; b=GVIPsrRMcFODFhAErE+tsS3d5oUtMDHAUveeHDv/wh6R/5RHR67BFriVi5qrCmj/loxoul6BQHgUfV2iLndJXp2vMFmSBsourgO1HiOXOfPqmGr82z6uFS2Sgk+UjM3OAbE0ElcEEm/eUaWclqx7glExgcgyCCNVpz9KH12+qOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720614860; c=relaxed/simple;
-	bh=BFEunEcs5aC7iaDHnjDB4ntE9xA4uD5Oi8bIhDKbpc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rZ8FhaDeF3LrUY73kAANLRLq3KlBZ68aea0ZtQXx45k1YD54iNey2WUocC2FKTJW7iwDYP0fY40QJqTWFve43TXLYfkfyhSdf8GnQV59uO4N+Itwetu61X6rxBAYWXjug1UfMjERcbKFBdtRnVO6SQnHeZSIi6pgPYxxyvAYpHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NJtdrsdc; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1720615157; c=relaxed/simple;
+	bh=s2RaCEI4wR41c3BO5uw81gT6/k/TIddLsTFnZWRBHBw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uZxhAcSB7b7aGcP94b5HV/u6M32sBWSa3ATGJKoNTJ4Gy4E67scPY4eb2MLnUImJuRjPamlbXFUjzkJyyxmt2OEOv8VZ60Qt/lHYna28Wu/kzz/UUAHe9NPG90x6P2j8EVBdZT1rX7DWgixD9deGRcrcxl2xlDCXantqy27o1SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjxroEH8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NJtdrsdc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720614859; x=1752150859;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BFEunEcs5aC7iaDHnjDB4ntE9xA4uD5Oi8bIhDKbpc4=;
-  b=NJtdrsdczb+XKWRDq1ZbDDrI4FrU2JQ+xS11w3mQcQXIK3b14IwQXEy7
-   LL0VIzz3qp1vl0KB1R5tMkYfXRzD9N+UtJn0AfSwBs4zkzOkS70AqWOEH
-   ppCXxrdr/7Skm2sTU8aTQbgipPA/UriQewkzrQiXsHIPJ6coopjcUi5D8
-   Vrh8/yAn0dIq+y5p4F5QPzpzKh/S0D/8vxum1wOFl5K1gHzyisVQHGZam
-   hbjO6iSF+6kw3zdkNONM9CoZbovVUTiluLlDUdNM1TL6BpNCvjNLrXYlm
-   jE7ICl5tz5i7Gwr+XUGeL4zQTaCktX3B5IC4rpoeGEYqOp5heBxFVTUJx
-   A==;
-X-CSE-ConnectionGUID: 10NKKS/8Sr+GK758AGogBg==
-X-CSE-MsgGUID: z5rvsSL/R0mW8yKAqw9y+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="18136685"
-X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; 
-   d="scan'208";a="18136685"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 05:34:18 -0700
-X-CSE-ConnectionGUID: xa8q9aYMQ1eK4DrvGkWfqw==
-X-CSE-MsgGUID: puOcjTheTg+Cvxk4wOtLjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; 
-   d="scan'208";a="48082515"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.246.49.253])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 05:34:15 -0700
-Message-ID: <6a577d6c-04ad-4c12-bfad-815e811deee3@intel.com>
-Date: Wed, 10 Jul 2024 15:34:10 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjxroEH8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8290C4AF0A;
+	Wed, 10 Jul 2024 12:39:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720615156;
+	bh=s2RaCEI4wR41c3BO5uw81gT6/k/TIddLsTFnZWRBHBw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gjxroEH8w8w9RPM434seJwV9COaOkd9UmRTwLFwZunjhWQsXf+egnwDlcgSp1oBpk
+	 GsUo98wxUcgpJnFogSshO311/In5d/eGoOeN+X4/3Tk4/BKr9rFszXGS1Omx8gUTMv
+	 XX+NaEp2Lar8ZT2XkVrDF/Bwk+d9P3RpJvoqIZBte1BoB33qXa8TTdFoU+BtQgs8Vd
+	 awfXtekaxXrh8cLPO8MIgM9XDd16Xg9bEgSLO4W9ghIo+oAo1gjrCOji+8g+IbojxB
+	 VOIhohZ8bywWK5nq44OMB6PsBQqLLUJ5eHSBo0bOxgDWiyUa938zLHZwFJFCjQzdJc
+	 mb5++ndsBuczA==
+From: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Frank Li <Frank.li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3] perf: add missing MODULE_DESCRIPTION() macros
+Date: Wed, 10 Jul 2024 13:39:05 +0100
+Message-Id: <172061307957.623411.17142418937279057988.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20240709-md-drivers-perf-v3-1-513275b75ed0@quicinc.com>
+References: <20240709-md-drivers-perf-v3-1-513275b75ed0@quicinc.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mmc: sdhci-esdhc-imx: disable card detect wake for
- S32G based platforms
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Haibo Chen <haibo.chen@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, s32@nxp.com
-References: <20240708121018.246476-1-ciprianmarian.costea@oss.nxp.com>
- <20240708121018.246476-2-ciprianmarian.costea@oss.nxp.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20240708121018.246476-2-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 8/07/24 15:10, Ciprian Costea wrote:
-> In case of S32G based platforms, GPIO CD used for card detect
-> wake mechanism is not available.
+On Tue, 09 Jul 2024 15:07:55 -0700, Jeff Johnson wrote:
+> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm-ccn.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/fsl_imx8_ddr_perf.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/marvell_cn10k_ddr_pmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/arm_cspmu_module.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/nvidia_cspmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/arm_cspmu/ampere_cspmu.o
+> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/perf/cxl_pmu.o
 > 
-> For this scenario the newly introduced flag
-> 'ESDHC_FLAG_SKIP_CD_WAKE' is used.
-> 
-> Signed-off-by: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+> [...]
 
-Should have:
+Applied to will (for-next/perf), thanks!
 
- - put the patch set version number (v2) in the subject e.g.
-   [PATCH v2 1/3] mmc: sdhci-esdhc-imx: disable card detect wake for S32G based platforms
+[1/1] perf: add missing MODULE_DESCRIPTION() macros
+      https://git.kernel.org/will/c/42bebc7cca79
 
- - added Haibo Chen's Reviewed-by tag
+Cheers,
+-- 
+Will
 
-Anyway:
-
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-
-
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index 40a6e2f8145a..21d984a77be8 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -201,6 +201,9 @@
->  /* ERR004536 is not applicable for the IP  */
->  #define ESDHC_FLAG_SKIP_ERR004536	BIT(17)
->  
-> +/* The IP does not have GPIO CD wake capabilities */
-> +#define ESDHC_FLAG_SKIP_CD_WAKE		BIT(18)
-> +
->  enum wp_types {
->  	ESDHC_WP_NONE,		/* no WP, neither controller nor gpio */
->  	ESDHC_WP_CONTROLLER,	/* mmc controller internal WP */
-> @@ -298,7 +301,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
->  	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
->  			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
->  			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
-> -			| ESDHC_FLAG_SKIP_ERR004536,
-> +			| ESDHC_FLAG_SKIP_ERR004536 | ESDHC_FLAG_SKIP_CD_WAKE,
->  };
->  
->  static struct esdhc_soc_data usdhc_imx7ulp_data = {
-> @@ -1726,7 +1729,8 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
->  		host->mmc->caps |= MMC_CAP_1_8V_DDR | MMC_CAP_3_3V_DDR;
->  
->  		/* GPIO CD can be set as a wakeup source */
-> -		host->mmc->caps |= MMC_CAP_CD_WAKE;
-> +		if (!(imx_data->socdata->flags & ESDHC_FLAG_SKIP_CD_WAKE))
-> +			host->mmc->caps |= MMC_CAP_CD_WAKE;
->  
->  		if (!(imx_data->socdata->flags & ESDHC_FLAG_HS200))
->  			host->quirks2 |= SDHCI_QUIRK2_BROKEN_HS200;
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
