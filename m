@@ -1,99 +1,157 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from flow2-smtp.messagingengine.com (flow2-smtp.messagingengine.com [103.168.172.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACBE18560A
-	for <imx@lists.linux.dev>; Wed, 10 Jul 2024 13:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67FF19344F;
+	Wed, 10 Jul 2024 14:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720617590; cv=none; b=PEMJ4PGiJuAIYWjwdh0SiDTTcAnWugZRKxTEa5CduOUuJgu3DkLg0LEAc1+XQeeGDtcbgUvhIwoaex1y6ODHKFt/6XUzwga+HY0PvCIB3xko7E0FNWXHd7dh11Gz717p9rLSyCXTnSNRXEJ6rT5mwSqQY8HAAp1lTUmdRJzAUuQ=
+	t=1720620391; cv=none; b=oVkrnHfATG7StPK/uYc4DDM7Bo3V3RmE1CUaUHX3EGMTgJcwKaxOATNokq71n12HkolHaId7ZA3LVCc6f7oGbtdL0P69SB1GmtWhsx6vtfNPbrTXLZQiQF9RKRzDVhGTH2GHa8wUeHa8d7IyfNyv8ae2nGNq6XK1nV7hYUfZwoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720617590; c=relaxed/simple;
-	bh=O90TUUQx+d7jTk9J2Q8dS1mhFLB0RMxcOegUeSAxLyg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NrfQO/nqBH1gntYMHRTRLoRNhjbJ350F4zc9JzNQ9ehH9si29Vzxf5oqtpcLi+0VM8dJjrC2mOUHLWrr7UiGaeOPXTm17C43hOuo9SIdWtNgr21zlwkuo5yJm0DSv2w6HWJHggOFKQlQ/SHLeBY99fdtPHhdOBO5wgj/P/j6Yng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LMbJauc9; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1720620391; c=relaxed/simple;
+	bh=MLXBuqKlLfNGgq9/cmxPtB7IYgDifqCjYyvR42wX/UQ=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=oFYEf/GhLqBkYrQTCfUC4wwYyYJobGKSgdk8dBO7Q0s9Z/n8S4rlnms+Qpbo1fb3Z50GhgbZP19+SLpDRm0OEA2BKJ4TyD2xKe9ydMn6DIYlkaeZVJO8ea8FsdTABpU39ES5v7oDCYEoHG6IrFNqnmZvz8WyyO+bX/Th/hrhESQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=b1QSu0yR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=l/UJxZbD; arc=none smtp.client-ip=103.168.172.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LMbJauc9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720617589; x=1752153589;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=O90TUUQx+d7jTk9J2Q8dS1mhFLB0RMxcOegUeSAxLyg=;
-  b=LMbJauc9ucKiz1/PGNk/5wxutySGIKstmaytsxmIIUhp1GgGi0X5875T
-   vAO081bbVH4lHNRGiZ/jyu7rdAQCkLvcLhZgOGeFywA0ePRX8zPP7TXG2
-   y9cD4fvxzgwovp9XwhPA/dKsfSNSwM2pVnHyqbPedEirhbvA4jH3sTtJd
-   rV20czQ6/rf91gA+w//Z97bEj7DGpp1IwqaGf2pZFmVP06YkcHFEui9fj
-   CQE0aMZ5l+O4DB+F9lbk/R88qomlzGIBFbkFza/15HzbDkAaNoga8T0xz
-   YCtYZRilQyjLdZ0wmzs0W2kVoRbPCuQnSAjoRodZpu5AL4IGLsThFJyR5
-   g==;
-X-CSE-ConnectionGUID: RxjRfTfRQUysea9EcSQwQg==
-X-CSE-MsgGUID: 16PczZsUTniyeE6vAJR2xg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="35471950"
-X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
-   d="scan'208";a="35471950"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 06:19:49 -0700
-X-CSE-ConnectionGUID: 4pkrzRjdRvGn4yNDTdpFag==
-X-CSE-MsgGUID: wdHDs67BR0+uToyXBuDIgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,198,1716274800"; 
-   d="scan'208";a="52605856"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.246.49.253])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2024 06:19:45 -0700
-Message-ID: <70473b16-4636-4121-a534-f5095cf51cd9@intel.com>
-Date: Wed, 10 Jul 2024 16:19:40 +0300
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="b1QSu0yR";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="l/UJxZbD"
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailflow.nyi.internal (Postfix) with ESMTP id B9B1820041E;
+	Wed, 10 Jul 2024 10:06:28 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Wed, 10 Jul 2024 10:06:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1720620388;
+	 x=1720627588; bh=FPzIeyUoxgy/zsvmREOhCT66sbHOjXoV3rwrfvjo/oM=; b=
+	b1QSu0yRwxmUk4T9e11CNmCLrSiiiDvCTM+p6gNGgF4NyrNSLVIOHkUZBUOxpgxl
+	d9vXjGnvw1RIRFEnGbndv/NcsmA2GLHmGzS5rJQPxTUIVRHIc5YsWzN3YlDlG8/w
+	vwY2PFDGlan7ERoJa/sElHU/md+4c0p5HPfL6l9s8ZmMuKw48t/vLeQtyNT7xGQA
+	08JzF7ADIoyXkY9zBh7hy27GqOe5iBkl5T6KQBAg4I7sSnV3Bx0wxfh4IffSCDrD
+	EIVAL8hHH2Si9T8S7nGauN4LncCjezn9OQ+3j17vNfQLsEMR2BpYb0oenTLEqeam
+	BkMUq/IWBWnOKLgWug2rTQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1720620388; x=
+	1720627588; bh=FPzIeyUoxgy/zsvmREOhCT66sbHOjXoV3rwrfvjo/oM=; b=l
+	/UJxZbDwRbte/g2yuSkS7yviFUoG8LxQcRmLaiOWFtKAn6XFD9z5i8BhgFiwj0y8
+	29JjOMIc2w4FtrW9IR6h2qT2CtX2uPI+r/FHtrpLoTkSoPbJe3J1cehcgwZANS3t
+	XYMJKq7TPb5u/bjrOem4WITUkAc4LfU2b5bDaz8AwaT3QByZ35D8ZMjHSS1yi35y
+	36/dyXCkN+nwX8HvtBeT3ddkLpikQS8EZ4XXcTy6LBfF5l17hW9zP7dZMzOmMwhD
+	XVJREG2So1zHmWfmY5D9lvTGvCqcKkIECCEfL0l0Epvm0v8FzfUmUtTmU/hw+Ez6
+	qJJNz78tvzr+wlzfmgwog==
+X-ME-Sender: <xms:YZWOZnV51EQeUhqFAlZ7tF76IbGPDn0AZ7wRftLLqANLQ8M0Tit2-g>
+    <xme:YZWOZvnwaOkIlW8JDpVJ4uVPdX-o79KWjlklZpPYf1atbq30ICIdwRgOUhrJ5p-D2
+    Q0py9B8mmaXogLqMVM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfedvgdduvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
+    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:YZWOZjaoGrXUw2M4_1y1ixokbMZsjZ3j3fcIkHhdLxC9KxWjE7s4BQ>
+    <xmx:YZWOZiWPJTo6_33m1wPp7E5VWb0uw6xuIw-rKVLCCKI-iKqUbc-UEw>
+    <xmx:YZWOZhn1-MjLOZ3xu0SsbEEBMly36iOA_myUgrsipjQv0pKFdaMeCQ>
+    <xmx:YZWOZvdtJ2DdefwHMUz8i_IkZzQem-fWQbBtb87UMDnBEk3or4GmNA>
+    <xmx:ZJWOZilNKpqeyxqgV0ZboZyCiXV66jXIKgbBPX_yaK6wioTafD0Okj0c>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 213BBB6008F; Wed, 10 Jul 2024 10:06:25 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-568-g843fbadbe-fm-20240701.003-g843fbadb
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] MAINTAINERS: add 's32@nxp.com' as relevant mailing
- list for 'sdhci-esdhc-imx' driver
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>
-Cc: linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, s32@nxp.com
-References: <20240708121018.246476-1-ciprianmarian.costea@oss.nxp.com>
- <20240708121018.246476-4-ciprianmarian.costea@oss.nxp.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20240708121018.246476-4-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-Id: <64662665-929e-4d95-a9ac-c8f66bd83168@app.fastmail.com>
+In-Reply-To: 
+ <CAMRc=McvRLeCTTXgC_OD5z5OAxQ0pZ46dTKP8XO+T-LkXKgRfQ@mail.gmail.com>
+References: 
+ <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+ <20240701-b4-v6-10-topic-usbc-tcpci-v1-5-3fd5f4a193cc@pengutronix.de>
+ <27cf3056-5c7b-4759-b03a-1fa9b785611e@app.fastmail.com>
+ <CAMRc=McvRLeCTTXgC_OD5z5OAxQ0pZ46dTKP8XO+T-LkXKgRfQ@mail.gmail.com>
+Date: Wed, 10 Jul 2024 16:06:03 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Bartosz Golaszewski" <brgl@bgdev.pl>
+Cc: "Andrew Lunn" <andrew@lunn.ch>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+ "Vignesh Raghavendra" <vigneshr@ti.com>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>, imx@lists.linux.dev,
+ "Tony Lindgren" <tony@atomide.com>,
+ "Marco Felsch" <m.felsch@pengutronix.de>,
+ "Thierry Reding" <thierry.reding@gmail.com>,
+ linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org,
+ "Miquel Raynal" <miquel.raynal@bootlin.com>,
+ "WANG Xuerui" <kernel@xen0n.name>, "Fabio Estevam" <festevam@gmail.com>,
+ linux-aspeed@lists.ozlabs.org, "Richard Weinberger" <richard@nod.at>,
+ "Gregory Clement" <gregory.clement@bootlin.com>,
+ "Huacai Chen" <chenhuacai@kernel.org>,
+ "Magnus Damm" <magnus.damm@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Jon Hunter" <jonathanh@nvidia.com>, "Joel Stanley" <joel@jms.id.au>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ "Andrew Jeffery" <andrew@codeconstruct.com.au>,
+ "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Vladimir Zapolskiy" <vz@mleia.com>, loongarch@lists.linux.dev,
+ linux-tegra@vger.kernel.org, Linux-OMAP <linux-omap@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ linux-mips@vger.kernel.org,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ linux-kernel@vger.kernel.org,
+ Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+ "Dinh Nguyen" <dinguyen@kernel.org>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Shawn Guo" <shawnguo@kernel.org>, openbmc@lists.ozlabs.org
+Subject: Re: [PATCH 5/9] ARM: defconfig: convert to MTD_EEPROM_AT24
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 8/07/24 15:10, Ciprian Costea wrote:
-> Since NXP S32G2 and S32G3 SoCs share the SDHCI controller with
-> I.MX platforms it would be valuable to add 's32@nxp.com' as a
-> relevant mailing list in this area.
-> 
-> Signed-off-by: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a39c237edb95..26b1ec2ba094 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -20098,6 +20098,7 @@ SECURE DIGITAL HOST CONTROLLER INTERFACE (SDHCI) NXP i.MX DRIVER
->  M:	Haibo Chen <haibo.chen@nxp.com>
->  L:	imx@lists.linux.dev
->  L:	linux-mmc@vger.kernel.org
-> +L:	s32@nxp.com
->  S:	Maintained
->  F:	drivers/mmc/host/sdhci-esdhc-imx.c
->  
+On Wed, Jul 10, 2024, at 14:59, Bartosz Golaszewski wrote:
+> On Wed, Jul 10, 2024 at 2:49=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
+wrote:
+>>
+>> On Mon, Jul 1, 2024, at 15:53, Marco Felsch wrote:
+>> > The EEPROM_AT24 Kconfig symbol is marked as deprecated. Make use of=
+ the
+>> > new Kconfig symbol to select the I2C EEPROM driver support.
+>> >
+>> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+>> > ---
+>> >  arch/arm/configs/aspeed_g4_defconfig   | 2 +-
+>> >  arch/arm/configs/aspeed_g5_defconfig   | 2 +-
+>> >  arch/arm/configs/at91_dt_defconfig     | 2 +-
+>> >  arch/arm/configs/axm55xx_defconfig     | 2 +-
+>> >  arch/arm/configs/davinci_all_defconfig | 2 +-
+>> >  arch/arm/configs/imx_v4_v5_defconfig   | 2 +-
+>> >  arch/arm/configs/imx_v6_v7_defconfig   | 2 +-
+>> >  arch/arm/configs/ixp4xx_defconfig      | 2 +-
+>> >  arch/arm/configs/keystone_defconfig    | 2 +-
+>> >  arch/arm/configs/lpc18xx_defconfig     | 2 +-
+>>
+>> Applied to soc/defconfig, thanks
+>
+> No! Why? This is still being discussed and it's not clear it will even
+> make it upstream.
 
-Assuming Haibo has no objections:
+Ok, dropped again, thanks for catching this.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+     Arnd
