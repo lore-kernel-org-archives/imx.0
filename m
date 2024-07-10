@@ -1,172 +1,110 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAD717C9F5
-	for <imx@lists.linux.dev>; Wed, 10 Jul 2024 08:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EE18288F
+	for <imx@lists.linux.dev>; Wed, 10 Jul 2024 09:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720601967; cv=none; b=G7falHcYlUStMVVuY9n/+73zXKTGPw8LY4R1PJN5w3kh/xzfxdKpZHSdcs+q79CfE+a4KERhPfV/DTjclCyZD/5CDTLTjPgWSvrkGWEsIFWlTu9ySTodrPWjyXZO/Oa5Ul1y/GtCRDx54tzYjQjyKLJeN59SgZlAeEQORoj0MWI=
+	t=1720605091; cv=none; b=l3G35rAc0w/0RnAtMP772bWcwL55bsjKIQR89yRqKKDtI0kBFCQmLmH4Kiecj4i4gp/vk/EqM78nVejTXQBM5uIBnVbjr4mDPxFm6XpWw61NJ1kcYiZiH96vMq///Y81nCb+ySZfoPcmM19HODg7UP2rl4jxD8GwgNyNajc7mMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720601967; c=relaxed/simple;
-	bh=QR3vrdm6Tw0jXM4c95/q8aSOd5Fb+85TowCeTOlRDVQ=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=TMbVRXc75hDzjvogPhMXr9emfZaPQ3mfowS02Kutfuc8lQ/qQ0pGL2edxzvR1/kvDJP+5tt64pZNJETfzPV+chOlvSw0tZlcAzP7obmssO+8LVZJTnmhCO9M1ZJlPhhj8tcINc+h6iG2lD4gDHPDKjnIxszToN4LqGssiW2os6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C52001A054C;
-	Wed, 10 Jul 2024 10:59:18 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 625971A0543;
-	Wed, 10 Jul 2024 10:59:18 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id AF2A6183487B;
-	Wed, 10 Jul 2024 16:59:16 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	shengjiu.wang@gmail.com
-Cc: linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] clk: imx: imx8: Use clk_hw pointer for self registered clock in clk_parent_data
-Date: Wed, 10 Jul 2024 16:41:00 +0800
-Message-Id: <1720600860-18866-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1720605091; c=relaxed/simple;
+	bh=5vy6X0O6qEnfmBFIMy66z8mbjzBObduDt7gIIzeMJf0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=B4acS3grPV2UGKEoJo690S/hy7vVAOffMl4URnWSCcAid0+PEw/pG0xkuQFWkyuX4jhoi72/jqiqAtrYyXk1oyeZwBk/uplSABwmtcUSxQBX6zKNgJvx4pqEMSSvRhxKDp3dFvZxlrK5WBf1uQnRb58oEZpCtaSGAVKLizvc6s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=m8EqlA+p; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="m8EqlA+p"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1720605086; x=1723197086;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5vy6X0O6qEnfmBFIMy66z8mbjzBObduDt7gIIzeMJf0=;
+	b=m8EqlA+paYoBgUaLDhjoUNJTSZc9qT5Ei0rlLfOHx8Quwvf81nB/uYM9fRc5YUFm
+	XSM8dFP1BbRuzkQaNyCn3T3fhdaSV/GICatMauruOfVSeJaTis8A+bQyBOD9A8Eb
+	rb89pTvD/BnJaUK5OaA3wtmjv+FhtCP+EJMAab9NPGo=;
+X-AuditID: ac14000a-03e52700000021bc-46-668e599e3cbe
+Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id BD.7F.08636.E995E866; Wed, 10 Jul 2024 11:51:26 +0200 (CEST)
+Received: from Berlix.phytec.de (172.25.0.12) by Berlix.phytec.de
+ (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 10 Jul
+ 2024 11:51:25 +0200
+Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
+ berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
+ Wed, 10 Jul 2024 11:51:25 +0200
+From: Benjamin Hahn <B.Hahn@phytec.de>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"Rob Herring" <robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
+CC: PHYTEC Upstream <upstream@lists.phytec.de>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] arm64: dts: freescale: imx8mp-phycore: Add no-eth
+ overlay
+Thread-Topic: [PATCH v2] arm64: dts: freescale: imx8mp-phycore: Add no-eth
+ overlay
+Thread-Index: AQHaztTwwwIaBQqxY0i9PdyfIGTAlrHsiQGAgAMVQoA=
+Date: Wed, 10 Jul 2024 09:51:25 +0000
+Message-ID: <829ab483-fb96-4fd2-be7c-03548ba22ce5@phytec.de>
+References: <20240705-bspimx8m-3180-v2-1-dc1a7e1689be@phytec.de>
+ <1764670d-0248-46fd-b0ce-03bcbcd6977b@linaro.org>
+In-Reply-To: <1764670d-0248-46fd-b0ce-03bcbcd6977b@linaro.org>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7CD51A38C1FC3D4991D2BFE0AD5067E4@phytec.de>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHIsWRmVeSWpSXmKPExsWyRpKBR3deZF+awYV/fBZr9p5jsph/5Byr
+	xcOr/hYz77WyWayaupPFou/FQ2aLva+3sltsenyN1eLyrjlsFq17j7Bb/N2+icXixRZxi+53
+	6g68Hjtn3WX32LSqk83jzrU9bB6bl9R7vNg8k9Gjv7uF1aP/r4HH501yARxRXDYpqTmZZalF
+	+nYJXBnbJy9iLmjhrWi+/4+1gfEGTxcjJ4eEgInEjM9HGbsYuTiEBJYwSTw8MY0VwrnPKNH1
+	+AQ7hLOBUWL3jQUsIC1sAmoSu968BqsSEXjAJNH0+CxYP7PAGiaJk1dWMHcxcnAICwRLbDzD
+	CtIgIhAisfrILRYI20pix/WzbCA2i4CqxJ79G8DivAI2Ev8OL2EEsYUESiQ+zloMNoZTwE5i
+	0lNFkDCjgKzEhg3nmUFsZgFxiU3PvrNCvCAgsWQPRFxCQFTi5eN/UHF5iRO3pjGBjGEW0JRY
+	v0sfotVC4klHJ9QYRYkp3Q/ZIS4QlDg58wnLBEbxWUg2zELonoWkexaS7llIuhcwsq5iFMrN
+	TM5OLcrM1ivIqCxJTdZLSd3ECEoDIgxcOxj75ngcYmTiYDzEKMHBrCTCO/9Gd5oQb0piZVVq
+	UX58UWlOavEhRmkOFiVx3tUdwalCAumJJanZqakFqUUwWSYOTqkGxsRXeR0n+XKXPbpScX9R
+	xMZcLYtVvvmmJ1YnsSxpk39YV7ZQh/O6bPEdo937Hlgte8/SdeztN59ndQ69st/n2hvu2eDW
+	/fTrvL6QB5+dfSo+3DY0eZlw6/XpRapMc09zNz2rzPP7sW+ryL+vztMyvWbLfHN8vEigLeJE
+	uaDN8zOlDlGON9uPVSqxFGckGmoxFxUnAgBYqL1j8QIAAA==
 
-"acm_aud_clk0_sel" and "acm_aud_clk1_sel" are registered by this ACM
-driver, but they are the parent clocks for other clocks, in order to
-use assigned-clock-parents in device tree, the ".fw_name" can't be used,
-need to assign the clk_hw pointer for the imx8qm_mclk_sels[],
-imx8qxp_mclk_sels[], imx8dxl_mclk_sels[].
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
-
-changes in v2:
-- don't use string name, but use the clk_hw pointer for "acm_aud_clk0_sel"
-  and "acm_aud_clk1_sel"
-
- drivers/clk/imx/clk-imx8-acm.c | 38 ++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/clk/imx/clk-imx8-acm.c b/drivers/clk/imx/clk-imx8-acm.c
-index 1bdb480cc96c..61d8c7e9ae0b 100644
---- a/drivers/clk/imx/clk-imx8-acm.c
-+++ b/drivers/clk/imx/clk-imx8-acm.c
-@@ -54,10 +54,12 @@ struct clk_imx8_acm_sel {
-  * struct imx8_acm_soc_data - soc specific data
-  * @sels: pointer to struct clk_imx8_acm_sel
-  * @num_sels: numbers of items
-+ * @mclk_sels: pointer to imx8qm/qxp/dxl_mclk_sels
-  */
- struct imx8_acm_soc_data {
- 	struct clk_imx8_acm_sel *sels;
- 	unsigned int num_sels;
-+	struct clk_parent_data *mclk_sels;
- };
- 
- /**
-@@ -111,11 +113,14 @@ static const struct clk_parent_data imx8qm_mclk_out_sels[] = {
- 	{ .fw_name = "sai6_rx_bclk" },
- };
- 
--static const struct clk_parent_data imx8qm_mclk_sels[] = {
-+#define ACM_AUD_CLK0_SEL_INDEX  2
-+#define ACM_AUD_CLK1_SEL_INDEX  3
-+
-+static struct clk_parent_data imx8qm_mclk_sels[] = {
- 	{ .fw_name = "aud_pll_div_clk0_lpcg_clk" },
- 	{ .fw_name = "aud_pll_div_clk1_lpcg_clk" },
--	{ .fw_name = "acm_aud_clk0_sel" },
--	{ .fw_name = "acm_aud_clk1_sel" },
-+	{  }, /* clk_hw pointer of "acm_aud_clk0_sel" */
-+	{  }, /* clk_hw pointer of "acm_aud_clk1_sel" */
- };
- 
- static const struct clk_parent_data imx8qm_asrc_mux_clk_sels[] = {
-@@ -176,11 +181,11 @@ static const struct clk_parent_data imx8qxp_mclk_out_sels[] = {
- 	{ .fw_name = "sai4_rx_bclk" },
- };
- 
--static const struct clk_parent_data imx8qxp_mclk_sels[] = {
-+static struct clk_parent_data imx8qxp_mclk_sels[] = {
- 	{ .fw_name = "aud_pll_div_clk0_lpcg_clk" },
- 	{ .fw_name = "aud_pll_div_clk1_lpcg_clk" },
--	{ .fw_name = "acm_aud_clk0_sel" },
--	{ .fw_name = "acm_aud_clk1_sel" },
-+	{  }, /* clk_hw pointer of "acm_aud_clk0_sel" */
-+	{  }, /* clk_hw pointer of "acm_aud_clk1_sel" */
- };
- 
- static struct clk_imx8_acm_sel imx8qxp_sels[] = {
-@@ -228,11 +233,11 @@ static const struct clk_parent_data imx8dxl_mclk_out_sels[] = {
- 	{ .index = -1 },
- };
- 
--static const struct clk_parent_data imx8dxl_mclk_sels[] = {
-+static struct clk_parent_data imx8dxl_mclk_sels[] = {
- 	{ .fw_name = "aud_pll_div_clk0_lpcg_clk" },
- 	{ .fw_name = "aud_pll_div_clk1_lpcg_clk" },
--	{ .fw_name = "acm_aud_clk0_sel" },
--	{ .fw_name = "acm_aud_clk1_sel" },
-+	{  }, /* clk_hw pointer of "acm_aud_clk0_sel" */
-+	{  }, /* clk_hw pointer of "acm_aud_clk1_sel" */
- };
- 
- static struct clk_imx8_acm_sel imx8dxl_sels[] = {
-@@ -375,6 +380,18 @@ static int imx8_acm_clk_probe(struct platform_device *pdev)
- 			imx_check_clk_hws(hws, IMX_ADMA_ACM_CLK_END);
- 			goto err_clk_register;
- 		}
-+
-+		/*
-+		 * The IMX_ADMA_ACM_AUD_CLK0_SEL and IMX_ADMA_ACM_AUD_CLK1_SEL are
-+		 * registered first. After registration, update the clk_hw pointer
-+		 * to imx8qm/qxp/dxl_mclk_sels structures.
-+		 */
-+		if (sels[i].clkid == IMX_ADMA_ACM_AUD_CLK0_SEL)
-+			priv->soc_data->mclk_sels[ACM_AUD_CLK0_SEL_INDEX].hw =
-+								hws[IMX_ADMA_ACM_AUD_CLK0_SEL];
-+		if (sels[i].clkid == IMX_ADMA_ACM_AUD_CLK1_SEL)
-+			priv->soc_data->mclk_sels[ACM_AUD_CLK1_SEL_INDEX].hw =
-+								hws[IMX_ADMA_ACM_AUD_CLK1_SEL];
- 	}
- 
- 	ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get, clk_hw_data);
-@@ -406,16 +423,19 @@ static void imx8_acm_clk_remove(struct platform_device *pdev)
- static const struct imx8_acm_soc_data imx8qm_acm_data = {
- 	.sels = imx8qm_sels,
- 	.num_sels = ARRAY_SIZE(imx8qm_sels),
-+	.mclk_sels = imx8qm_mclk_sels,
- };
- 
- static const struct imx8_acm_soc_data imx8qxp_acm_data = {
- 	.sels = imx8qxp_sels,
- 	.num_sels = ARRAY_SIZE(imx8qxp_sels),
-+	.mclk_sels = imx8qxp_mclk_sels,
- };
- 
- static const struct imx8_acm_soc_data imx8dxl_acm_data = {
- 	.sels = imx8dxl_sels,
- 	.num_sels = ARRAY_SIZE(imx8dxl_sels),
-+	.mclk_sels = imx8dxl_mclk_sels,
- };
- 
- static const struct of_device_id imx8_acm_match[] = {
--- 
-2.34.1
-
+T24gMDguMDcuMjQgMTI6NDYsIEtyenlzenRvZiBLb3psb3dza2kgd3JvdGU6DQo+IE9uIDA1LzA3
+LzIwMjQgMTQ6MTQsIEJlbmphbWluIEhhaG4gd3JvdGU6DQo+PiBBZGQgYSBkZXZpY2V0cmVlIG92
+ZXJsYXkgdG8gZGlzYWJsZSBldGhlcm5ldCBmb3IgYm9hcmRzIHdoZXJlIGl0IGlzIG5vdA0KPj4g
+cG9wdWxhdGVkLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IEJlbmphbWluIEhhaG4gPEIuSGFobkBw
+aHl0ZWMuZGU+DQo+PiAtLS0NCj4+IENoYW5nZXMgaW4gdjI6DQo+IFRoYXQncyBzb21lIG9sZCBr
+ZXJuZWwgeW91IGFyZSBkZXZlbG9waW5nIG9uLCByaWdodD8NCg0KWW91IGFyZSBjb3JyZWN0LiBJ
+IHdhcyBzdGlsbCBvbiBLZXJuZWwgdmVyc2lvbiA2LjguDQoNCkkgcmViYXNlZCB0byBtYXN0ZXIg
+YW5kIHNlbnQgYSB2My4NCg0KUmVnYXJkcywNCg0KQmVuamFtaW4NCg0KPg0KPiA8Zm9ybSBsZXR0
+ZXI+DQo+IFBsZWFzZSB1c2Ugc2NyaXB0cy9nZXRfbWFpbnRhaW5lcnMucGwgdG8gZ2V0IGEgbGlz
+dCBvZiBuZWNlc3NhcnkgcGVvcGxlDQo+IGFuZCBsaXN0cyB0byBDQyAoYW5kIGNvbnNpZGVyIC0t
+bm8tZ2l0LWZhbGxiYWNrIGFyZ3VtZW50KS4gSXQgbWlnaHQNCj4gaGFwcGVuLCB0aGF0IGNvbW1h
+bmQgd2hlbiBydW4gb24gYW4gb2xkZXIga2VybmVsLCBnaXZlcyB5b3Ugb3V0ZGF0ZWQNCj4gZW50
+cmllcy4gVGhlcmVmb3JlIHBsZWFzZSBiZSBzdXJlIHlvdSBiYXNlIHlvdXIgcGF0Y2hlcyBvbiBy
+ZWNlbnQgTGludXgNCj4ga2VybmVsLg0KPg0KPiBUb29scyBsaWtlIGI0IG9yIHNjcmlwdHMvZ2V0
+X21haW50YWluZXIucGwgcHJvdmlkZSB5b3UgcHJvcGVyIGxpc3Qgb2YNCj4gcGVvcGxlLCBzbyBm
+aXggeW91ciB3b3JrZmxvdy4gVG9vbHMgbWlnaHQgYWxzbyBmYWlsIGlmIHlvdSB3b3JrIG9uIHNv
+bWUNCj4gYW5jaWVudCB0cmVlIChkb24ndCwgaW5zdGVhZCB1c2UgbWFpbmxpbmUpIG9yIHdvcmsg
+b24gZm9yayBvZiBrZXJuZWwNCj4gKGRvbid0LCBpbnN0ZWFkIHVzZSBtYWlubGluZSkuIEp1c3Qg
+dXNlIGI0IGFuZCBldmVyeXRoaW5nIHNob3VsZCBiZQ0KPiBmaW5lLCBhbHRob3VnaCByZW1lbWJl
+ciBhYm91dCBgYjQgcHJlcCAtLWF1dG8tdG8tY2NgIGlmIHlvdSBhZGRlZCBuZXcNCj4gcGF0Y2hl
+cyB0byB0aGUgcGF0Y2hzZXQuDQo+IDwvZm9ybSBsZXR0ZXI+DQo+DQo+IEJlc3QgcmVnYXJkcywN
+Cj4gS3J6eXN6dG9mDQo+DQoNCg==
