@@ -1,324 +1,216 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F24B15A87C
-	for <imx@lists.linux.dev>; Thu, 11 Jul 2024 10:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BAD14F9E5;
+	Thu, 11 Jul 2024 10:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720693212; cv=none; b=nhk7vf7Oz0nYzJAVg9QfOT7V3CHR1NFJd/9wOAY28YpF8tQPdqf5WZp1jI71dd8aBFEiIe/G+Un6GnYWftGN7Sol2LaqkaZzz3vuDLIZa2/Y3zwSF3UkNqbR8VSXP6g0ndH6uvDf7jD2Y5yMJJ+Qyd12dzzY7O+o+SuCnjt5Y50=
+	t=1720693346; cv=none; b=rUFvWRExDe0ZT5NWlSG8GWdLviEgOPCFbMRGWoa25wclJRlOuNQxSaMKMe8ldlB19wxzuzcAcjcioW7vk88b8V6o71CPd4/HbGatTRiEierCwwNyRzPEjncF8VQT3pwsU0pu3zOqn7OvT3twT/L/c/qUW6vqvGvUtKfCSw3yLQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720693212; c=relaxed/simple;
-	bh=ia3wSdShWzabjtDv3342ycjfQe9yOGzqDVhoscZXAc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PiGL0EJ3ZCVPUdB4KHDvWm60cTY0I5/lqkHuXfoUGuIwcgcIrf08XITl/e2thhQZZTeCUZV3FtA5XeFYHEfyTvrgjDw9zGnYLh+8SvhHgnZflH0iyQyO9QzzDtR24S5Vrep5vLh9k8kR+slqQlQ+PEGDl5ZcekcrswLe2x1ZmxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LEKGmjfs; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1720693346; c=relaxed/simple;
+	bh=EyWzKZsfMO/99Gx/qMNlFvM30nWMnlAjusAD8RQXwQ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eDq0pvE3JxH8Hyl9K6kfLSygsIOi8t92EwBxzha3FVzXttTswCbUt1pwhwZnFNoCbaAefDH/nnc25EkWgKvW29GXmJK7ZERjOR8BTzk2Fw4zYv8Ty6+FmrKF/hE+e/KYW3Svo6HecfZsyYCKvzWZXeFu9miAs6cgkEuRSz3IUkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl5jJqhB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LEKGmjfs"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ee90f56e02so7054761fa.2
-        for <imx@lists.linux.dev>; Thu, 11 Jul 2024 03:20:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1720693207; x=1721298007; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q4pKxsdxjVBHn5/3r7YaaRkxW/WuW1rZwIMp/JW62Xo=;
-        b=LEKGmjfswOdYqJEK0Ocf4NP7TI2bHH+9+tso6NBSJRK8cBkbWFtibsXeI507lTcEBO
-         ZCG8lMuYIFMdb1VkDPF/bqaKNbjA3nMGxciy/V3aklLm/oYlTHx55YKcOQtENTzxaxLP
-         2IHdBQdUNIgdaG4OEqVBqO+dSmrp5Ea7LKVc0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720693207; x=1721298007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q4pKxsdxjVBHn5/3r7YaaRkxW/WuW1rZwIMp/JW62Xo=;
-        b=CEpoCSK2ERNUSj8PqKSpflrByM0lmJHkVfJYate0LZxKJyWsgJtdGuHpsD9ZTWbWgH
-         FJwA1eDpXuJPhZHIhG3thZaiw3kfMSkRrKg7oYa/GnmX1bxmIcVnStmCjUn+DaqTZSO8
-         /C+kKjZRjEXf2kg7iR7qH5wMrAc3wky6XQT9qClvG56+ViCaWzpfITloIWh5QnOVx23h
-         Anvv8XgDgcqpSbnZK1pA7PkUkcnREHWt3tRsO8Oii6NoBZ1H8uZnRpu1sAg+ptP0omm3
-         Q/ATTtR6gO9MU9jSAkEgRaBOp8UDz2oT/7xmuYQUtzElpk3zJibyHFXouvl7fz/JxExJ
-         C/LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXl/oJjR0Vy2ivi7W1tWggSwUWPjMO7V+0Ota+3z2XMGa1Rs9rfjA041pt+SymhSGoylGyFORdHrFAkMgZzgmXDI9Oz
-X-Gm-Message-State: AOJu0Yx83nIoifZ4DnGSzy5itSSNklfPp1h//2n1AGI+okUNVbxBhpGW
-	FAtcwBKB8xeDDZywcbVIyiRpdStQjaeIOVSYJ36M8d5lFqO8EV87NdVp9uHKiNO0K3X5tar4HQg
-	A7w==
-X-Google-Smtp-Source: AGHT+IEyQGqVyAn0c9Sw49XGDpecnkqWnW4zEPdXvw1WTuCgrZU/463QQcdkUx7OeOEFn8Bxo7RHGA==
-X-Received: by 2002:a2e:82d0:0:b0:2ee:493b:a4ee with SMTP id 38308e7fff4ca-2eeb30fcb53mr49742971fa.24.1720693207534;
-        Thu, 11 Jul 2024 03:20:07 -0700 (PDT)
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-594bd459af1sm3299082a12.59.2024.07.11.03.20.07
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jul 2024 03:20:07 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a7523f0870cso85724466b.3
-        for <imx@lists.linux.dev>; Thu, 11 Jul 2024 03:20:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVl83U9zpoKZkBUaVoD99bSy3WIZoO6w8K1NcpXI55rINdsAzO2kZpacm6u+ldt6AxcsaNm2aR7AlQapdJykfJLm9Ez
-X-Received: by 2002:a17:907:608d:b0:a6e:f7ee:b1fa with SMTP id
- a640c23a62f3a-a780b89cbb7mr555703466b.72.1720693206473; Thu, 11 Jul 2024
- 03:20:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl5jJqhB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D39C116B1;
+	Thu, 11 Jul 2024 10:22:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720693346;
+	bh=EyWzKZsfMO/99Gx/qMNlFvM30nWMnlAjusAD8RQXwQ4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Kl5jJqhBhTHW8QtePtDMuRT5zxJ2kzc1klnKTdYZpbVnH93KJqizGC8IHB4fLYonk
+	 Hcmxe9EbfMcVTXyfN9xStZT3SxFPWXfQCLincHnAo6UKR0x4zttXieN5Cds8EFn4RY
+	 k4h2gorWjKoFE71dg4PWRTtmE03daranfhvXJbuELRmXA5AUNVp/l3ZCXbzYsSc20D
+	 7h4AfDaIKZBdfjDB7FdLp44qqypw7+SPHMlh3Wg1eeWshnxQQbyY5svIYVv9MjWOmq
+	 1eNvDnbDAY0kXSKA6f4og6HrI3ooMXKYEtNcB2bnLRQZCMEc7EluBRTjFhtvOFoe8/
+	 dvpbSnoGuLyng==
+Message-ID: <e6b1c275-9a56-4b1b-becd-89a01cfb51c5@kernel.org>
+Date: Thu, 11 Jul 2024 19:22:23 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240618073004.3420436-1-tao.jiang_2@nxp.com> <CAAFQd5B_RTHsMwMdD59RAAyFne_0Ok_A4ExdkVOgi=G6-UGfRQ@mail.gmail.com>
- <036bf0d7f657cae444d20ea6d279b47e3bf0164e.camel@ndufresne.ca>
- <CAAFQd5DfbqOkZzPfCNRMGeMgv2NfM6WENWXeLUNsuMgkzeBQKw@mail.gmail.com> <443d109f-c817-4f47-9368-ff8b09a9a49e@xs4all.nl>
-In-Reply-To: <443d109f-c817-4f47-9368-ff8b09a9a49e@xs4all.nl>
-From: Tomasz Figa <tfiga@chromium.org>
-Date: Thu, 11 Jul 2024 19:19:39 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5Am5jBev5P1HmsdeHoJfROZat3bi1W=UsN7wpVqw-XUQQ@mail.gmail.com>
-Message-ID: <CAAFQd5Am5jBev5P1HmsdeHoJfROZat3bi1W=UsN7wpVqw-XUQQ@mail.gmail.com>
-Subject: Re: [PATCH] media: videobuf2: sync caches for dmabuf memory
-To: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc: Nicolas Dufresne <nicolas@ndufresne.ca>, m.szyprowski@samsung.com, 
-	TaoJiang <tao.jiang_2@nxp.com>, mchehab@kernel.org, shawnguo@kernel.org, 
-	robh+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com, 
-	eagle.zhou@nxp.com, ming.qian@oss.nxp.com, imx@lists.linux.dev, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	sumit.semwal@linaro.org, christian.koenig@amd.com, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	Ming Qian <ming.qian@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/4] ata: ahci_imx: Clean up code by using i.MX8Q HSIO
+ PHY driver
+To: Richard Zhu <hongxing.zhu@nxp.com>, tj@kernel.org, cassel@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com
+Cc: linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, kernel@pengutronix.de
+References: <1720685518-20190-1-git-send-email-hongxing.zhu@nxp.com>
+ <1720685518-20190-3-git-send-email-hongxing.zhu@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <1720685518-20190-3-git-send-email-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 20, 2024 at 3:52=E2=80=AFPM Hans Verkuil <hverkuil-cisco@xs4all=
-.nl> wrote:
->
-> On 19/06/2024 06:19, Tomasz Figa wrote:
-> > On Wed, Jun 19, 2024 at 1:24=E2=80=AFAM Nicolas Dufresne <nicolas@ndufr=
-esne.ca> wrote:
-> >>
-> >> Le mardi 18 juin 2024 =C3=A0 16:47 +0900, Tomasz Figa a =C3=A9crit :
-> >>> Hi TaoJiang,
-> >>>
-> >>> On Tue, Jun 18, 2024 at 4:30=E2=80=AFPM TaoJiang <tao.jiang_2@nxp.com=
-> wrote:
-> >>>>
-> >>>> From: Ming Qian <ming.qian@nxp.com>
-> >>>>
-> >>>> When the memory type is VB2_MEMORY_DMABUF, the v4l2 device can't kno=
-w
-> >>>> whether the dma buffer is coherent or synchronized.
-> >>>>
-> >>>> The videobuf2-core will skip cache syncs as it think the DMA exporte=
-r
-> >>>> should take care of cache syncs
-> >>>>
-> >>>> But in fact it's likely that the client doesn't
-> >>>> synchronize the dma buf before qbuf() or after dqbuf(). and it's
-> >>>> difficult to find this type of error directly.
-> >>>>
-> >>>> I think it's helpful that videobuf2-core can call
-> >>>> dma_buf_end_cpu_access() and dma_buf_begin_cpu_access() to handle th=
-e
-> >>>> cache syncs.
-> >>>>
-> >>>> Signed-off-by: Ming Qian <ming.qian@nxp.com>
-> >>>> Signed-off-by: TaoJiang <tao.jiang_2@nxp.com>
-> >>>> ---
-> >>>>  .../media/common/videobuf2/videobuf2-core.c   | 22 ++++++++++++++++=
-+++
-> >>>>  1 file changed, 22 insertions(+)
-> >>>>
-> >>>
-> >>> Sorry, that patch is incorrect. I believe you're misunderstanding the
-> >>> way DMA-buf buffers should be managed in the userspace. It's the
-> >>> userspace responsibility to call the DMA_BUF_IOCTL_SYNC ioctl [1] to
-> >>> signal start and end of CPU access to the kernel and imply necessary
-> >>> cache synchronization.
-> >>>
-> >>> [1] https://docs.kernel.org/driver-api/dma-buf.html#dma-buffer-ioctls
-> >>>
-> >>> So, really sorry, but it's a NAK.
-> >>
-> >>
-> >>
-> >> This patch *could* make sense if it was inside UVC Driver as an exampl=
-e, as this
-> >> driver can import dmabuf, to CPU memcpy, and does omits the required s=
-ync calls
-> >> (unless that got added recently, I can easily have missed it).
-> >
-> > Yeah, currently V4L2 drivers don't call the in-kernel
-> > dma_buf_{begin,end}_cpu_access() when they need to access the buffers
-> > from the CPU, while my quick grep [1] reveals that we have 68 files
-> > retrieving plane vaddr by calling vb2_plane_vaddr() (not necessarily a
-> > 100% guarantee of CPU access being done, but rather likely so).
-> >
-> > I also repeated the same thing with VB2_DMABUF [2] and tried to
-> > attribute both lists to specific drivers (by retaining the path until
-> > the first - or _ [3]; which seemed to be relatively accurate), leading
-> > to the following drivers that claim support for DMABUF while also
-> > retrieving plane vaddr (without proper synchronization - no drivers
-> > currently call any begin/end CPU access):
-> >
-> >  i2c/video
-> >  pci/bt8xx/bttv
-> >  pci/cobalt/cobalt
-> >  pci/cx18/cx18
-> >  pci/tw5864/tw5864
-> >  pci/tw686x/tw686x
-> >  platform/allegro
-> >  platform/amphion/vpu
-> >  platform/chips
-> >  platform/intel/pxa
-> >  platform/marvell/mcam
-> >  platform/mediatek/jpeg/mtk
-> >  platform/mediatek/vcodec/decoder/mtk
-> >  platform/mediatek/vcodec/encoder/mtk
-> >  platform/nuvoton/npcm
-> >  platform/nvidia/tegra
-> >  platform/nxp/imx
-> >  platform/renesas/rcar
-> >  platform/renesas/vsp1/vsp1
-> >  platform/rockchip/rkisp1/rkisp1
-> >  platform/samsung/exynos4
-> >  platform/samsung/s5p
-> >  platform/st/sti/delta/delta
-> >  platform/st/sti/hva/hva
-> >  platform/verisilicon/hantro
-> >  usb/au0828/au0828
-> >  usb/cx231xx/cx231xx
-> >  usb/dvb
-> >  usb/em28xx/em28xx
-> >  usb/gspca/gspca.c
-> >  usb/hackrf/hackrf.c
-> >  usb/stk1160/stk1160
-> >  usb/uvc/uvc
-> >
-> > which means we potentially have ~30 drivers which likely don't handle
-> > imported DMABUFs correctly (there is still a chance that DMABUF is
-> > advertised for one queue, while vaddr is used for another).
-> >
-> > I think we have two options:
-> > 1) add vb2_{begin/end}_cpu_access() helpers, carefully audit each
-> > driver and add calls to those
->
-> I actually started on that 9 (!) years ago:
->
-> https://git.linuxtv.org/hverkuil/media_tree.git/log/?h=3Dvb2-cpu-access
->
-> If memory serves, the main problem was that there were some drivers where
-> it wasn't clear what should be done. In the end I never continued this
-> work since nobody complained about it.
->
-> This patch series adds vb2_plane_begin/end_cpu_access() functions,
-> replaces all calls to vb2_plane_vaddr() in drivers to the new functions,
-> and at the end removes vb2_plane_vaddr() altogether.
->
-> > 2) take a heavy gun approach and just call vb2_begin_cpu_access()
-> > whenever vb2_plane_vaddr() is called and then vb2_end_cpu_access()
-> > whenever vb2_buffer_done() is called (if begin was called before).
-> >
-> > The latter has the disadvantage of drivers not having control over the
-> > timing of the cache sync, so could end up with less than optimal
-> > performance. Also there could be some more complex cases, where the
-> > driver needs to mix DMA and CPU accesses to the buffer, so the fixed
-> > sequence just wouldn't work for them. (But then they just wouldn't
-> > work today either.)
-> >
-> > Hans, Marek, do you have any thoughts? (I'd personally just go with 2
-> > and if any driver in the future needs something else, they could call
-> > begin/end CPU access manually.)
->
-> I prefer 1. If nothing else, that makes it easy to identify drivers
-> that do such things.
->
-> But perhaps a mix is possible: if a VB2 flag is set by the driver, then
-> approach 2 is used. That might help with the drivers where it isn't clear
-> what they should do. Although perhaps this can all be done in the driver
-> itself: instead of vb2_plane_vaddr they call vb2_begin_cpu_access for the
-> whole buffer, and at buffer_done time they call vb2_end_cpu_access. Shoul=
-d
-> work just as well for the very few drivers that need this.
+On 7/11/24 17:11, Richard Zhu wrote:
+> Clean up code by using PHY interface.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
 
-That's a good point. I guess we don't really need to dig so much into
-those drivers in this case. Just mechanically do the same for all of
-them (+/- maybe checking for some obvious corner cases which don't
-need the extra calls). Let me see if I can give it a stab.
 
-Best,
-Tomasz
+> +	ret = phy_init(imxpriv->cali_phy0);
+> +	if (ret) {
+> +		dev_err(dev, "cali PHY init failed\n");
+>  		return ret;
+>  	}
+> -	ret = clk_prepare_enable(imxpriv->phy_pclk1);
+> -	if (ret < 0) {
+> -		dev_err(dev, "can't enable phy_pclk1.\n");
+> -		goto disable_phy_pclk0;
+> +	ret = phy_power_on(imxpriv->cali_phy0);
+> +	if (ret) {
+> +		dev_err(dev, "cali PHY power on failed\n");
+> +		goto err_cali_phy0_power_on;
 
->
-> Regards,
->
->         Hans
->
-> >
-> > [1] git grep vb2_plane_vaddr | cut -d":" -f 1 | sort | uniq
-> > [2] git grep VB2_DMABUF | cut -d":" -f 1 | sort | uniq
-> > [3] by running [1] and [2] through | cut -d"-" -f 1 | cut -d"_" -f 1 | =
-uniq
-> >
-> > Best,
-> > Tomasz
-> >
-> >>
-> >> But generally speaking, bracketing all driver with CPU access synchron=
-ization
-> >> does not make sense indeed, so I second the rejection.
-> >>
-> >> Nicolas
-> >>
-> >>>
-> >>> Best regards,
-> >>> Tomasz
-> >>>
-> >>>> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drive=
-rs/media/common/videobuf2/videobuf2-core.c
-> >>>> index 358f1fe42975..4734ff9cf3ce 100644
-> >>>> --- a/drivers/media/common/videobuf2/videobuf2-core.c
-> >>>> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
-> >>>> @@ -340,6 +340,17 @@ static void __vb2_buf_mem_prepare(struct vb2_bu=
-ffer *vb)
-> >>>>         vb->synced =3D 1;
-> >>>>         for (plane =3D 0; plane < vb->num_planes; ++plane)
-> >>>>                 call_void_memop(vb, prepare, vb->planes[plane].mem_p=
-riv);
-> >>>> +
-> >>>> +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
-> >>>> +               return;
-> >>>> +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
-> >>>> +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
-> >>>> +
-> >>>> +               if (!dbuf)
-> >>>> +                       continue;
-> >>>> +
-> >>>> +               dma_buf_end_cpu_access(dbuf, vb->vb2_queue->dma_dir)=
-;
-> >>>> +       }
-> >>>>  }
-> >>>>
-> >>>>  /*
-> >>>> @@ -356,6 +367,17 @@ static void __vb2_buf_mem_finish(struct vb2_buf=
-fer *vb)
-> >>>>         vb->synced =3D 0;
-> >>>>         for (plane =3D 0; plane < vb->num_planes; ++plane)
-> >>>>                 call_void_memop(vb, finish, vb->planes[plane].mem_pr=
-iv);
-> >>>> +
-> >>>> +       if (vb->memory !=3D VB2_MEMORY_DMABUF)
-> >>>> +               return;
-> >>>> +       for (plane =3D 0; plane < vb->num_planes; ++plane) {
-> >>>> +               struct dma_buf *dbuf =3D vb->planes[plane].dbuf;
-> >>>> +
-> >>>> +               if (!dbuf)
-> >>>> +                       continue;
-> >>>> +
-> >>>> +               dma_buf_begin_cpu_access(dbuf, vb->vb2_queue->dma_di=
-r);
-> >>>> +       }
-> >>>>  }
-> >>>>
-> >>>>  /*
-> >>>> --
-> >>>> 2.43.0-rc1
-> >>>>
-> >>
-> >
->
+Very confusing lable name. "goto err_phy_exit;" would be better.
+
+>  	}
+> -	ret = clk_prepare_enable(imxpriv->epcs_tx_clk);
+> -	if (ret < 0) {
+> -		dev_err(dev, "can't enable epcs_tx_clk.\n");
+> -		goto disable_phy_pclk1;
+> +	ret = phy_init(imxpriv->cali_phy1);
+> +	if (ret) {
+> +		dev_err(dev, "cali PHY1 init failed\n");
+> +		goto err_cali_phy1_init;
+
+Same here. The usual thing to do is to have a label name descriptive of what is
+going to be done at the label definition, so phy1 power off in this case. That
+also corresponds to undoing the previous operation, which makes reading the code
+and checking it less confusing.
+
+>  	}
+> -	ret = clk_prepare_enable(imxpriv->epcs_rx_clk);
+> -	if (ret < 0) {
+> -		dev_err(dev, "can't enable epcs_rx_clk.\n");
+> -		goto disable_epcs_tx_clk;
+> +	ret = phy_power_on(imxpriv->cali_phy1);
+> +	if (ret) {
+> +		dev_err(dev, "cali PHY1 power on failed\n");
+> +		goto err_cali_phy1_power_on;
+
+same here.
+
+>  	}
+> -	ret = clk_prepare_enable(imxpriv->phy_apbclk);
+> -	if (ret < 0) {
+> -		dev_err(dev, "can't enable phy_apbclk.\n");
+> -		goto disable_epcs_rx_clk;
+> +	ret = phy_init(imxpriv->sata_phy);
+> +	if (ret) {
+> +		dev_err(dev, "sata PHY init failed\n");
+> +		goto err_sata_phy_init;
+
+And here too. And many other labels after that.
+
+[...]
+
+> -	imxpriv->phy_apbclk = devm_clk_get(dev, "phy_apbclk");
+> -	if (IS_ERR(imxpriv->phy_apbclk)) {
+> -		dev_err(dev, "can't get phy_apbclk clock.\n");
+> -		return PTR_ERR(imxpriv->phy_apbclk);
+> +	if (!(dev->bus_dma_limit)) {
+> +		dev->bus_dma_limit = DMA_BIT_MASK(32);
+> +		dev_dbg(dev, "imx8qm sata only supports 32bit dma.\n");
+
+I do not think this is a useful debug message.
+
+>  	}
+>  
+> -	/* Fetch GPIO, then enable the external OSC */
+> -	imxpriv->clkreq_gpiod = devm_gpiod_get_optional(dev, "clkreq",
+> -				GPIOD_OUT_LOW | GPIOD_FLAGS_BIT_NONEXCLUSIVE);
+> -	if (IS_ERR(imxpriv->clkreq_gpiod))
+> -		return PTR_ERR(imxpriv->clkreq_gpiod);
+> -	if (imxpriv->clkreq_gpiod)
+> -		gpiod_set_consumer_name(imxpriv->clkreq_gpiod, "SATA CLKREQ");
+> -
+> +	imxpriv->sata_phy = devm_phy_get(dev, "sata-phy");
+> +	if (IS_ERR(imxpriv->sata_phy))
+> +		return dev_err_probe(dev, PTR_ERR(imxpriv->sata_phy),
+> +				     "failed to get sata_phy\n");
+> +
+> +	imxpriv->cali_phy0 = devm_phy_get(dev, "cali-phy0");
+> +	if (IS_ERR(imxpriv->cali_phy0))
+> +		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy0),
+> +				     "failed to get cali_phy0\n");
+> +	imxpriv->cali_phy1 = devm_phy_get(dev, "cali-phy1");
+> +	if (IS_ERR(imxpriv->cali_phy1))
+> +		return dev_err_probe(dev, PTR_ERR(imxpriv->cali_phy1),
+> +				     "failed to get cali_phy1\n");
+>  	return 0;
+>  }
+>  
+> @@ -1077,12 +877,6 @@ static int imx_ahci_probe(struct platform_device *pdev)
+>  		return PTR_ERR(imxpriv->sata_ref_clk);
+>  	}
+>  
+> -	imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
+> -	if (IS_ERR(imxpriv->ahb_clk)) {
+> -		dev_err(dev, "can't get ahb clock.\n");
+
+s/can't/Failed to/
+
+and drop the period.
+
+> -		return PTR_ERR(imxpriv->ahb_clk);
+> -	}
+> -
+>  	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
+>  		u32 reg_value;
+>  
+> @@ -1142,11 +936,8 @@ static int imx_ahci_probe(struct platform_device *pdev)
+>  		goto disable_clk;
+>  
+>  	/*
+> -	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL,
+> -	 * and IP vendor specific register IMX_TIMER1MS.
+> -	 * Configure CAP_SSS (support stagered spin up).
+> -	 * Implement the port0.
+> -	 * Get the ahb clock rate, and configure the TIMER1MS register.
+> +	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL.
+> +	 * Set CAP_SSS (support stagered spin up) and Implement the port0.
+>  	 */
+>  	reg_val = readl(hpriv->mmio + HOST_CAP);
+>  	if (!(reg_val & HOST_CAP_SSS)) {
+> @@ -1159,8 +950,19 @@ static int imx_ahci_probe(struct platform_device *pdev)
+>  		writel(reg_val, hpriv->mmio + HOST_PORTS_IMPL);
+>  	}
+>  
+> -	reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
+> -	writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
+> +	if (imxpriv->type != AHCI_IMX8QM) {
+> +		/*
+> +		 * Get AHB clock rate and configure the vendor specified
+> +		 * TIMER1MS register on i.MX53, i.MX6Q and i.MX6QP only.
+> +		 */
+> +		imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
+> +		if (IS_ERR(imxpriv->ahb_clk)) {
+> +			dev_err(dev, "can't get ahb clock.\n");
+
+Same here.
+
+> +			goto disable_sata;
+> +		}
+> +		reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
+> +		writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
+> +	}
+>  
+>  	ret = ahci_platform_init_host(pdev, hpriv, &ahci_imx_port_info,
+>  				      &ahci_platform_sht);
+
+-- 
+Damien Le Moal
+Western Digital Research
+
