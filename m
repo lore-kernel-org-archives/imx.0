@@ -1,136 +1,130 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25F316FF2A
-	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 15:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9606A440C;
+	Fri, 12 Jul 2024 15:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720796595; cv=none; b=gNeCoDNbKK5ADy+1aTjEU1748eQSiEuWUe8XIAhpFksNfj6JLcSloYQchUWHQ9a2AvFKKNZpiAyCD7DpTgIbu5ICb1vzeXKs/ADgV3+AOgfqYh3tmGS6g6NNRQXl9yRbnZYcoqaGb095fzqFNlFZHCTJyi1Mt8cjCZx64mNj+2g=
+	t=1720797580; cv=none; b=tV3PFAacjUG1+Rf8MLX1MbvuWioB2bjRt41ZCgRItmqY3UvvEWV/qhfQaEiJWyfA5XndPv2ldiaud3ZyO85s+mlRaptKSnSiTijaVwAxTEKqqvx7906AWyQ2HcsXMHvEX9Oe2HlY+idx5iiSBc9Mr22GD+OyI2fgzx0tuUcOZuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720796595; c=relaxed/simple;
-	bh=Dl9FP+M/lbN4nwU5NPuc4lScl8rfAmTSX9BsDt6brxM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HW4oqJtW3N1jC2zDk0EqSFe1BLB6O9UlC1/cFdAXtzEr7b76Dc+srRp1RHzWdg0Jhq7+A12ov5PPM7Ey2BdtkCmUBSAc0gg8Sa9Sz5s8+9WPMrxRc9fmpxienZcTlcDsa5vjQO5ncbjTA6AVKUSqbWTcbEIVei0C8bQWaluJwnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iauHKMKd; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720797580; c=relaxed/simple;
+	bh=1aWPDrLVCK4aP22T5tyX3D1uSz8ajQJ3TSOvHn2sEaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SBNk5KvxySktviXtCNhwi1bzdlZIzZ9qMa6/dd+fL0i7FoUCcdVWQq//u9gvTPR2Lv/xP+kvNpRtxhQSpFsmY2gtujIVZ1c1Yd3oeJup3JXkazCdKmgOS8QRQdgvLpYPKQq1ti7w/jb1N7MGNh8sg66jrXZKBGgRFS+fbxP3n1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPqJSl4Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iauHKMKd"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1fbfb8e5e0cso4918745ad.0
-        for <imx@lists.linux.dev>; Fri, 12 Jul 2024 08:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720796593; x=1721401393; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=yrHTmXoY1JLklwwCecSAq5dVc5htyPNVeI+zdJ/A3U0=;
-        b=iauHKMKd93CyC1jLh59XoSnlcsLK5QbTfFaUTBnPgFKxZMqeQFZKR+emDH8+GMdLKy
-         y733ofUWavaxLBVHEPCWStDuqVa4ahpfeOmQtniLquUXUQdaosKjYIndzyUB6l96K0yC
-         OuT+lGZnrFbsq/pgLPAUFbawbbpnF4cY6p5Fqc3EFk++wG9kOcR7QvJZOUWq5yVUt2bL
-         b4/wLtzxKr2vVjGZB1uyiFfUsN0UcWE47W5flYYghBrC1nbMnVDb+uyATVK4K1I2lvK9
-         iZouHSuFZMON0WAphqaEmf8aXBvccOnmgOB15HQ2V34iBlZdrNeRq709pczYy6IbtaWr
-         PGOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720796593; x=1721401393;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yrHTmXoY1JLklwwCecSAq5dVc5htyPNVeI+zdJ/A3U0=;
-        b=vqgjkeHEy0ROTeXZWDQ4AgSwqD1Lo8RJYG+nwMfm3BgbiO3Weoi1T+U64Y4jTHRg3V
-         mhEFauhybqw27fVXbd0oR6RUyyLGMffHacV7b2bu4DZFZCsefVLIJd7q+L4uruLE+0en
-         oPzMlfQLXWCjr4rBHSgzCIe2PnVbIzqmc5I1fEMHYYmsKqtgzLup5fEdOylKvXpmW6JW
-         3wUqohiKmZJOoIcF7ouW0+Dwjj4moas7/VOjciWnn3OoKLrqi/iBNKp8rYb2pZabkS9Y
-         6HNvzbONte0gHZ5+nH82VXkfmgYHnCYU7zsNkBUqOsloHzrIwrDZsBV+wE/I0gJjyvYz
-         AT9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWroG8q+cKrrRIx5t/KhZe+osFV/+AiVnX/4D5dLDEpuyPunc4Hzg0X+q/4uW3GPolAt3kHly7G3bTKY1zZluakNLZb
-X-Gm-Message-State: AOJu0Yzgk+dNZEMPTwUbhyNZjEO5Db5nI9wtcDnyOsvXh/1+4ljhEIKg
-	miicyuScoFMeXwU1C4oTpthUZSblgaaMHjWLL1KPCi59U/lFNL/s
-X-Google-Smtp-Source: AGHT+IFhIiuSBTMz8Q6UdaDo7gOKDnVFdswPpmFpIRZYLWu+kL287Q1N9EREpdY68oEmGKmqv9N3Jw==
-X-Received: by 2002:a17:90b:1645:b0:2c9:cbdd:ac8 with SMTP id 98e67ed59e1d1-2ca35d3b196mr9567487a91.37.1720796593100;
-        Fri, 12 Jul 2024 08:03:13 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cacd6da488sm1643792a91.40.2024.07.12.08.03.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jul 2024 08:03:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <284f8569-1bea-4d41-ab44-3aa0935d7b11@roeck-us.net>
-Date: Fri, 12 Jul 2024 08:03:10 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPqJSl4Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E1CC32782;
+	Fri, 12 Jul 2024 15:19:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720797580;
+	bh=1aWPDrLVCK4aP22T5tyX3D1uSz8ajQJ3TSOvHn2sEaQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uPqJSl4ZPIKlj453qNkRZRUX2zQm5FoN4ZiR86uVW2Zqd+Q/KD/q7ATFwcJMPe/oq
+	 Fvd++Xx7nfTB+bUqHkHASiDP3dK2avToCzQRUx/s4kW26VxqtShcgv67RcJk6lvFWX
+	 afbUvQUPNwE369ES4D4oHMyPmjfB+zAUbN6JoKOichEGylcKzbNaWSaQxzIwBC2IUR
+	 PCfRBWWwxNpys8CSvbW6ZqkT2DKNVTqnRtWiyyg0zEl9QzXy9Mv3zWzAXpGUNfJk8m
+	 qOzeOPjh7BsIm0vyoIyTh6M0BfCAj80jXhLCeJOt/iQZD/nAOGvAy2phNxZp7sEKd2
+	 sqvFSdO9ywBuA==
+Date: Fri, 12 Jul 2024 17:19:34 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" <linux-ide@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: ata: ahci-fsl-qoriq: add
+ fsl,ls1046a-ahci and fsl,ls1012a-ahci
+Message-ID: <ZpFJhk_HgQhGAQMU@ryzen.lan>
+References: <20240712142922.3292722-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
- struct imx_wdt_hw_feature
-To: Frank Li <Frank.Li@nxp.com>
-Cc: alice.guo@nxp.com, festevam@gmail.com, imx@lists.linux.dev,
- kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
- s.hauer@pengutronix.de, shawnguo@kernel.org, wim@linux-watchdog.org,
- ye.li@nxp.com
-References: <20240712141844.3274214-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240712141844.3274214-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240712142922.3292722-1-Frank.Li@nxp.com>
 
-On 7/12/24 07:18, Frank Li wrote:
-> Move post_rcs_wait into struct imx_wdt_hw_feature to simple code logic for
-> difference compatible string.
+On Fri, Jul 12, 2024 at 10:29:22AM -0400, Frank Li wrote:
+> Add missing documented compatible strings 'fsl,ls1046a-ahci' and
+> 'fsl,ls1012a-ahci'. Allow 'fsl,ls1012a-ahci' to fallback to
+> 'fsl,ls1043a-ahci'.
 > 
-> i.MX93 watchdog needn't wait 2.5 clocks after RCS is done. So needn't set
-> post_rcs_wait.
+> Fix below CHECK_DTB warnings
+> arch/arm64/boot/dts/freescale/fsl-ls1012a-frwy.dtb: /soc/sata@3200000: failed to match any schema with compatible: ['fsl,ls1012a-ahci', 'fsl,ls1043a-ahci']
 > 
-> Signed-off-by: Alice Guo <alice.guo@nxp.com>
-> Reviewed-by: Ye Li <ye.li@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - rework commit message to show fix CHECK_DTB warning.
+> ---
+>  .../devicetree/bindings/ata/fsl,ahci.yaml     | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> index 162b3bb5427ed..a244bc603549d 100644
+> --- a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> +++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> @@ -11,13 +11,18 @@ maintainers:
+>  
+>  properties:
+>    compatible:
+> -    enum:
+> -      - fsl,ls1021a-ahci
+> -      - fsl,ls1043a-ahci
+> -      - fsl,ls1028a-ahci
+> -      - fsl,ls1088a-ahci
+> -      - fsl,ls2080a-ahci
+> -      - fsl,lx2160a-ahci
+> +    oneOf:
+> +      - items:
+> +          - const: fsl,ls1012a-ahci
+> +          - const: fsl,ls1043a-ahci
+> +      - enum:
+> +          - fsl,ls1021a-ahci
+> +          - fsl,ls1043a-ahci
+> +          - fsl,ls1046a-ahci
+> +          - fsl,ls1028a-ahci
+> +          - fsl,ls1088a-ahci
+> +          - fsl,ls2080a-ahci
+> +          - fsl,lx2160a-ahci
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+I think that you should add the following Fixes-tag:
+Fixes: e58e12c5c34c ("dt-bindings: ata: ahci-fsl-qoriq: convert to yaml format")
 
+Considering that the commit that your are fixing is only in libata for-6.11,
+and has thus never been in a released kernel version, perhaps the following
+patch would be better (if it also solves the warnings):
+
+diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+index 162b3bb5427e..8953b1847305 100644
+--- a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
++++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+@@ -12,8 +12,10 @@ maintainers:
+ properties:
+   compatible:
+     enum:
++      - fsl,ls1012a-ahci
+       - fsl,ls1021a-ahci
+       - fsl,ls1043a-ahci
++      - fsl,ls1046a-ahci
+       - fsl,ls1028a-ahci
+       - fsl,ls1088a-ahci
+       - fsl,ls2080a-ahci
+
+
+This assumes that we can get the patch included before 6.11 final is released,
+but considering that the merge window hasn't even opened yet, that should be
+doable.
+
+
+Thoughts from DT maintainers?
+
+
+
+Kind regards,
+Niklas
