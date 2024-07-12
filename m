@@ -1,109 +1,107 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA2B85C56;
-	Fri, 12 Jul 2024 09:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F01179AA;
+	Fri, 12 Jul 2024 10:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720778183; cv=none; b=pGpruw11q1hgswPhGWcud2pX6kt9+84uafaiJifZrqmu6wsYmIm+NB+IlLcFSgHAkK7yEYE/c39lfxORoEfNdoA7Y7zfyh3Jw2daCc8y7Vn/VZDXdLl8ExQtfVkj9Wj84sTQx+wghlcEOTRrfS1PwxPYAZS21ZoTglDP5YBPZKk=
+	t=1720779447; cv=none; b=TDxOctQTBQiCIiFtozTULer4pW6dVZ929J9IbPhzEa4T0kFhTVygPa3LgeAzSTFgUpkWExcqqnJZ5i0pT/uXykXmptIRhr4jTDhT5IOfR4mp4PHBLklXUYSBpi2OmoxkZlA85IbOxUAFbd79Zo8Nf8L74q4KaI92gqP0cqdbMNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720778183; c=relaxed/simple;
-	bh=tl6N0hu6dDW8dL4edLLnimfluXh5GhPNCtgrIxcUBRM=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=IGFM5EO2vCC2T4VQZ9LLJxIYh7R9osQe7wdNADRbkbtRT39t/CFDGQ7Wnj7mkcdNTu/GlGAnhqLOKY9OX3sMbiLbvUfY+QM11bOt82nXvt3dKS8eIDURPeuyPOcqSpxs4+MEp9gFs7r94BWJt0OM/gSRzFdEnrZQI/DBQGv8IW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dbR6Ekqj; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1720779447; c=relaxed/simple;
+	bh=k+12JrJcwlPHxwOcQuMgYDvLeH/luxPbX/wCoxHA094=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U2m7U8HtXNt6rgA97ZdiMsqzB5MKXOQAiTuzxZwFvTXUE7G7dv6FfZxs4sBzcYPLPjCDQ/+z93JQtBuAuWdhq3gaT1twRXLuvluGyG7KOheq2J7K8Dt0SQdHRLiCgeKB/1dPg6x7S9AAPbqNzHPDrV2rg8++iRaymTvei3GjY4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpdfebqI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dbR6Ekqj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720778130; x=1721382930; i=markus.elfring@web.de;
-	bh=qA8dZxx5ZAywJE0Ce/DvrSCgak1qKg/qBSRGPZMW8gA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=dbR6EkqjUFukvLWHaRUTvXDZ9Q3eh2KY+bnr9u0PzwHn8JOXU+2s/bLlAU0nLVe9
-	 QvAFPPlYMy/RuXwut44zlkSZ0xzBv5FeQ/LEAsLp2MhVjkOsM2IOGPAC7cAVr9dAK
-	 UoCMq5LMERNdaDq6vsLOJ97/1PV8FMtinIrSYNW+2IrFu7yKcIMjjUNLctBZ+Oq+1
-	 s9u4qmipSYoPLMlLpF1TZhPZG3T0NK7OU50HjWl4KEh9GysgmBCExnchvh92ppN2y
-	 y97jzSqZeZPemiVieJRZ6Idvuxf9PCEe40iY16M5rK6ST4TBgeoPke+jOfwk2+QwO
-	 INUGAEyvltYlVPOvQQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MiuSe-1rpYG625Ei-00aqKn; Fri, 12
- Jul 2024 11:55:30 +0200
-Message-ID: <bb82eb1b-e284-45c4-b80f-7bdb65e0449d@web.de>
-Date: Fri, 12 Jul 2024 11:55:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpdfebqI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189EBC32782;
+	Fri, 12 Jul 2024 10:17:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720779447;
+	bh=k+12JrJcwlPHxwOcQuMgYDvLeH/luxPbX/wCoxHA094=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TpdfebqIpGb2gBlG2fLlOrQMUaudFqIZ/9vuw/bwVEHve5yYCXO7EGZxstRcHyMfX
+	 r2W8JgW59PLEPFTISBJUqG2kVajQ8VqxZUaWRPfWJPQy+AkyNkrYF2/HJqb5mkaHTM
+	 7mkWbI60H9hph1iigbG9GtKHjoY4Cg1ILvsqrtkdapdo6N8WksATgHqCFfG7myDP5m
+	 wIQUC3WI3NkONCOW0nR1hAuznabNv4OxuxTlLk26x0BvDtUD2B3K8eYRsp8UclRpSX
+	 6Z8sjuu3+AHwVQ9Si3Sl5ygSDogIE3e4HC33fNtVNXUwPzoFYT1Mo4k4JDxbcupK1S
+	 IkppNCcXi5kYg==
+Date: Fri, 12 Jul 2024 12:17:21 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" <linux-ide@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: ata: ahci-fsl-qoriq: add
+ fsl,ls1046a-ahci and fsl,ls1012a-ahci
+Message-ID: <ZpECsX92IXxVdYrc@ryzen.lan>
+References: <20240625205752.4007067-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Liu Ying <victor.liu@nxp.com>, imx@lists.linux.dev,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
- kernel@pengutronix.de
-Cc: LKML <linux-kernel@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Francesco Dolcini <francesco@dolcini.it>, Frank Li <Frank.Li@nxp.com>,
- =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Thomas Zimmermann <tzimmermann@suse.de>, Vinod Koul <vkoul@kernel.org>
-References: <20240712093243.2108456-10-victor.liu@nxp.com>
-Subject: Re: [PATCH v2 09/16] drm/imx: Add i.MX8qxp Display Controller KMS
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240712093243.2108456-10-victor.liu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:x9ykM0EokxdM3FPtkxqlt9BWgSTGc7SN4QMfykDtXMfy4tE/R4V
- VIutO0wDF9pNtFqDiB2Sw/ippBTdON8SV/JXiqxA1GNrH0RlaXK9gPs+v22H8lJRlDFrZYb
- eg/WVdGIfHbFpD7NNh8SnaBSI5Qrdv4LCw8HoDuVRO4NyLTSmzQVpEiuQ4TQ84UTqmKKBCL
- AksP3YqG6upl26uMsoG4Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:cmvPTZFViww=;IPRzr2aMIAI2Eacf50wbgoYbdk5
- TOdtCR+2fvYykEtrSZrVUcSam1mZVyNtKhdnF4hk7dWgpdkejJ2bs+InkkcWWXphjw7vN7DZN
- Aotcw8N015YTbepLD7+93uloalx9djgetGsf1ELc2534uxqcOtZeGcRJt5UfmZNWBbXbnAyka
- geAXRUXxnHONW0Kic+v1ohsrzvxZFcqvTgXD0vXrsxE4hSme/yzlfAXSOaIVS/elAMIFvGC6A
- QzO0IKkcQrXxur/LyOfiv5zmDZJ6t2tYH9W1o7eE8TExFzFVL7g+NzoDOGkFhtG2LFGogPd4U
- IZ9r4lU84oKckhcj+FPv3ezk2tYrXTo4om2BxH6cqdB/LeExUZ6Q1qiDX3b3j38pW4fo+kJlj
- GJtyxvFEwOjFcXOaBsWsFSnUF/Dde4bKFsq5qPjrOzINVBc2xtbdKASuWr4MCxWDFr/DGggof
- +gUR701hj3xIQB8W4YYecYyynry81nAMDZ93ePD6h08My9PEAewu/jSgZumsa1NthBYX0aKEe
- f1A2WDyeclq67htJ4zOPjtq6SL5vzQT8S6NTIQjSUkEVEVEDAeAMyGzfM97lUxgK9op2adFJp
- yBYYzn033Rxe82PAImS+59rZ1HQCSfkqZVIpvaCKC3gbIoVyk0sASyUB0deNpejYtZSmvO+S8
- aaWSd8ckIIwyqtJ0o2jCDyqdRUk17b//UpHyGdVM5NTyE9Od2sJkCO7EPcPg1ZHs9i/dr9kn1
- gkhTdVRhOUtL7HSlfgLYblcS5DrolohfLnnEDDke/+St7e2CBw5M6yc+0CttQ7AvQSlHqdwwk
- CvIIwV8Mh+WKgvGJ80U/In0g==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240625205752.4007067-1-Frank.Li@nxp.com>
 
-=E2=80=A6
-> +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
-> @@ -0,0 +1,578 @@
-=E2=80=A6
-> +static void dc_crtc_queue_state_event(struct drm_crtc_state *crtc_state=
-)
-> +{tglx@linutronix.de
-=E2=80=A6
-> +	spin_lock_irq(&crtc->dev->event_lock);
-> +	if (crtc_state->event) {
-=E2=80=A6
-> +	}
-> +	spin_unlock_irq(&crtc->dev->event_lock);
-> +}
-=E2=80=A6
+On Tue, Jun 25, 2024 at 04:57:52PM -0400, Frank Li wrote:
+> Add compatible string 'fsl,ls1046a-ahci' and 'fsl,ls1012a-ahci' compatible
+> string. Allow 'fsl,ls1012a-ahci' fallback to 'fsl,ls1043a-ahci'.
+> 
+> ls1046a ahci ecc disable bit is difference with other chips.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/ata/fsl,ahci.yaml     | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> index 162b3bb5427ed..a244bc603549d 100644
+> --- a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> +++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
+> @@ -11,13 +11,18 @@ maintainers:
+>  
+>  properties:
+>    compatible:
+> -    enum:
+> -      - fsl,ls1021a-ahci
+> -      - fsl,ls1043a-ahci
+> -      - fsl,ls1028a-ahci
+> -      - fsl,ls1088a-ahci
+> -      - fsl,ls2080a-ahci
+> -      - fsl,lx2160a-ahci
+> +    oneOf:
+> +      - items:
+> +          - const: fsl,ls1012a-ahci
+> +          - const: fsl,ls1043a-ahci
+> +      - enum:
+> +          - fsl,ls1021a-ahci
+> +          - fsl,ls1043a-ahci
+> +          - fsl,ls1046a-ahci
+> +          - fsl,ls1028a-ahci
+> +          - fsl,ls1088a-ahci
+> +          - fsl,ls2080a-ahci
+> +          - fsl,lx2160a-ahci
+>  
+>    reg:
+>      minItems: 1
+> -- 
+> 2.34.1
+> 
 
-Under which circumstances would you become interested to apply a statement
-like =E2=80=9Cguard(spinlock_irq)(&crtc->dev->event_lock);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.10-rc7/source/include/linux/spinlock.h=
-#L567
+Frank,
 
-Regards,
-Markus
+if the check_dts warning is still there,
+will you submit a new patch with a better commit message that explains that
+the patch fixes the initial commit that converted the binding to yaml?
+
+Such that DT maintainers can review your v2 patch.
+
+
+Kind regards,
+Niklas
