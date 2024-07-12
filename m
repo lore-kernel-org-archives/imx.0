@@ -1,114 +1,170 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34B5171066
-	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 13:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4FC16F85A;
+	Fri, 12 Jul 2024 14:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720792672; cv=none; b=U5QRR5NeT2ibzv3ZAaXpaLRinCnUZKuE9TrWMb0L+8QT4KO7AoKA64z52053YfqRyx6SJSiTL/JkzeWhKdVxnRGyH4xKpSLrrPz3OQIlHo8nEeh3izHFRu1Zdo4nebKl62TLns6nL/gmFUr10r6oul3aOit8vZOF4vx5Ydsam+c=
+	t=1720793196; cv=none; b=C8a2JJiKkDiBWua8z5onRXf5RseuCtEpYn1rCcfZNQjJKlWt/J5RlrNspNs9vp9BC+ObULTrxmbkJdnZUqSz8MCP9UXqg/oUhmeq3oANY3EX0I1hmYo6uhillaGbVftZhNcq/tteZ+Jg6Y970n7VZauJCCRo9RE7Xtzyynng9t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720792672; c=relaxed/simple;
-	bh=VwmcOFQa6+zLy28MNBBHf0p+J5lgD6t6G0cBronB+vc=;
-	h=Content-Type:MIME-Version:Content-Disposition:From:To:Subject:Cc:
-	 Date:Message-ID; b=d51kAlW2GX27oOnKWYO9RKpI7u+2EbmJ5T6xf36GvZ8kC5tPIw9NBKw8+QOeVIiuVg+ckHTBoqar+NOZDRQyjcyfFmhhOVtyccfoAu8ELU0f+orHnC8i3I7mHc31CkC+kVdX4CKJnk5w4NDE8oAEUiYzP9c+4Vcb9nho/4+BT4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=O/tw71X+; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1720793196; c=relaxed/simple;
+	bh=WPERRxXlbQFKhcwOK8ZIyfxpsLzkQC4aKZvfMn+JrAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UlRFF0GubDPUqnHxyyuWQlcgKsfk/tUHhxw4VYg/TSTbeSxkQjsSR9OIz1iSL9vkKsUhyr+BtCKK9cPE2lsyhoIQrn3E8v9BpcVcLrt4EqsmVDBIAe6ScohBjsaQA0d9ZhEycMos7lw3kb7S/6DCvjdXLDThHWXTQdrjXLAisYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s/YM1ouc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="O/tw71X+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Message-ID:Date:Cc:Subject:To:From:
-	MIME-Version:Content-Type:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=cyzZqWwRyvsBEnNWCbMBuygBvQCg75ywBkylgPd8fW0=; b=O/tw71X+zi3BRzUMpUZ/M818lY
-	gpkCCOxRuj4Fs5Oo/8XcCDGBJ77v+nLDjjQwAkL+th+aurKd6hqADyr2oNiw2h09uyjBcnhFB75r0
-	6XIK9CqKp2X36IIkz130yaHzTjTgywSXkEONIfquvtE73rzCWIJPHYSFcy8DEf3sU9sM+s/X9PTpu
-	Z4RbO1+2zQXMPKlTBWeomu7KdpRoRDwZ6uqkFIkMTdGIsuzderJwE/JPmwhU1l95BRIxUVbcl4c+3
-	MKfzGTsEEYB5O50I9NE+/qD3V6Qo/MeRreJH0Tm5QvatmuDHb1n1R9Vo6y8/7CymchPHokSKAV9+a
-	EdBTXfqQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <josch@debian.org>)
-	id 1sSGmS-00BQvM-4y; Fri, 12 Jul 2024 13:57:48 +0000
-Content-Type: multipart/signed; micalg="pgp-sha512"; protocol="application/pgp-signature"; boundary="===============7771091298551443791=="
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/YM1ouc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1F4C32782;
+	Fri, 12 Jul 2024 14:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720793195;
+	bh=WPERRxXlbQFKhcwOK8ZIyfxpsLzkQC4aKZvfMn+JrAE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s/YM1oucc/pGbGd9GyTbAZ3r9Es5qx6j9iFxYX66g0MxRgNZtK8bT4LFKhRPRPK+I
+	 JayOFdCtjDVvQwhEiqZLeEaKU/4V/a7QcmRcHtnAn+tysmjdn7hsmu76wrcu7RiSz9
+	 lw2etQ5gPlvLZ22OT4BsLi4G5UK+vuTFbjUyzaokd9UJ/SWFC7BiOuHxURgBtrC8xb
+	 FPDaGn0ojNrMLYyhjGM3zFm7UI/aDefDKzgjcqy7SUYHJS4T7JTtE9VVsox5Og3eLG
+	 a+CRBdL8K52UUFa9wzN4P4RECa0ivj68kmbflQ29loDzokNN3zCy5Wt8S0zjrL7236
+	 3tWII4eBFHSGQ==
+Date: Fri, 12 Jul 2024 08:06:34 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pwm@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Liu Ying <victor.liu@nxp.com>
+Subject: Re: [PATCH 2/3] pwm: imx27: Add 32k clock for pwm in i.MX8QXP MIPI
+ subsystem
+Message-ID: <20240712140634.GA595171-robh@kernel.org>
+References: <20240711-pwm-v1-0-4d5766f99b8b@nxp.com>
+ <20240711-pwm-v1-2-4d5766f99b8b@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-From: Johannes Schauer Marin Rodrigues <josch@debian.org>
-To: imx@lists.linux.dev
-Subject: Distributing NXP i.MX 8 firmware blobs in Debian
-Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
-Date: Fri, 12 Jul 2024 15:57:47 +0200
-Message-ID: <172079266731.2928366.7031846226118749814@localhost>
-User-Agent: alot/0.10
-X-Debian-User: josch
+In-Reply-To: <20240711-pwm-v1-2-4d5766f99b8b@nxp.com>
 
---===============7771091298551443791==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+On Thu, Jul 11, 2024 at 05:08:57PM -0400, Frank Li wrote:
+> From: Liu Ying <victor.liu@nxp.com>
+> 
+> PWM in i.MX8QXP MIPI subsystem needs the clock '32k'. Use it if the DTS
+> provides that.
+> 
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pwm/pwm-imx27.c | 33 ++++++++++++++++++++++++++++-----
+>  1 file changed, 28 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+> index 9e2bbf5b4a8ce..032bce7d1fdd3 100644
+> --- a/drivers/pwm/pwm-imx27.c
+> +++ b/drivers/pwm/pwm-imx27.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/err.h>
+>  #include <linux/io.h>
+> +#include <linux/iopoll.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> @@ -82,6 +83,7 @@
+>  struct pwm_imx27_chip {
+>  	struct clk	*clk_ipg;
+>  	struct clk	*clk_per;
+> +	struct clk	*clk_32k;
+>  	void __iomem	*mmio_base;
+>  
+>  	/*
+> @@ -101,23 +103,36 @@ static int pwm_imx27_clk_prepare_enable(struct pwm_imx27_chip *imx)
+>  {
+>  	int ret;
+>  
+> +	if (imx->clk_32k) {
+> +		ret = clk_prepare_enable(imx->clk_32k);
 
-Dear NXP team,
+IIRC, no need for the 'if' here. clk_prepare_enable() returns success 
+for a NULL clock which is what devm_clk_get_optional() returns if the 
+clock doesn't exist.
 
-I'm writing you as a member of the Debian project. I am trying to add suppo=
-rt
-for platforms like the NXP i.MX8MQ to the debian-installer disk images. The=
-se
-images need to (for example) contain the DDR training blobs which can be
-downloaded from
-https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.24-fbe0a4c.bin
+> +		if (ret)
+> +			goto err1;
+> +	}
+> +
+>  	ret = clk_prepare_enable(imx->clk_ipg);
+>  	if (ret)
+> -		return ret;
+> +		goto err2;
+>  
+>  	ret = clk_prepare_enable(imx->clk_per);
+> -	if (ret) {
+> -		clk_disable_unprepare(imx->clk_ipg);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		goto err3;
+>  
+>  	return 0;
+> +err3:
+> +	clk_disable_unprepare(imx->clk_ipg);
+> +err2:
+> +	if (imx->clk_32k)
+> +		clk_disable_unprepare(imx->clk_32k);
+> +err1:
+> +	return ret;
+>  }
+>  
+>  static void pwm_imx27_clk_disable_unprepare(struct pwm_imx27_chip *imx)
+>  {
+>  	clk_disable_unprepare(imx->clk_per);
+>  	clk_disable_unprepare(imx->clk_ipg);
+> +	if (imx->clk_32k)
+> +		clk_disable_unprepare(imx->clk_32k);
 
-Unfortunately, the NXP Software License Agreement states:
+Same here.
 
-> 2.3. [..] If expressly authorized in the
-> Software Content Register, subject to the terms and conditions of this
-> Agreement, NXP grants you a [...] license solely in connection with your
-> manufacturing and distribution of an Authorized System:
-> [...]
-> (b)	to copy and distribute as needed, solely in connection with an
-> Authorized System and for use in combination with a NXP Product,
+>  }
+>  
+>  static int pwm_imx27_get_state(struct pwm_chip *chip,
+> @@ -223,6 +238,7 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>  	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+>  	unsigned long long c;
+>  	unsigned long long clkrate;
+> +	int val;
 
-My reading of that agreement is, that Debian is not permitted to redistribu=
-te
-these blobs. But this in turn means that our disk images will not work
-out-of-the box with NXP platforms that require these blobs to be loaded ear=
-ly
-during boot to function.
+Goes in next patch.
 
-Could you assist me in connecting with the appropriate person who can help
-resolve this issue? Maybe there is a possibility for the Debian project to =
-be
-allowed to distribute these blobs in its repositories?
+>  	int ret;
+>  	u32 cr;
+>  
+> @@ -325,6 +341,13 @@ static int pwm_imx27_probe(struct platform_device *pdev)
+>  		return dev_err_probe(&pdev->dev, PTR_ERR(imx->clk_per),
+>  				     "failed to get peripheral clock\n");
+>  
+> +	imx->clk_32k = devm_clk_get_optional(&pdev->dev, "32k");
+> +	if (IS_ERR(imx->clk_32k)) {
+> +		dev_err(&pdev->dev, "getting 32k clock failed with %ld\n",
+> +				PTR_ERR(imx->clk_32k));
 
-Thanks a lot in advance and have a nice weekend!
+dev_err_probe.
 
-Johannes Schauer Marin Rodrigues
---===============7771091298551443791==
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Description: signature
-Content-Type: application/pgp-signature; name="signature.asc"; charset="us-ascii"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElFhU6KL81LF4wVq58sulx4+9g+EFAmaRNlcACgkQ8sulx4+9
-g+H4CBAAnQBl/7kHKkGSg+YsVIgwEm+jNR7PRAvKul+oEKOTyyyqQLwb0JfEc5k6
-de3L+UFHnjMdutB9ODEmin5XLiW+38Cjni0+JZc9tpBkD61WVdo919N7in9f3GPA
-w8GJv7KgiOyDDwed32XDheDb8BG762fJQM1XgEZQkSFT2PD9XJ4XIJ+Ts4EsOhs+
-tu3+At86x2SWse9jhsFuOQuTwQblT0EFq2XGFvcymlMLevnzvjcPvgChoQs6uDdU
-qr+oZQBgDUi5gGe63Q2Cv6zMR0iJ6y8YJSGFxteC9JMszzVreV0HeHxBQOTnliZx
-6Mvm+Xcm80oQBoO3PaBVXxZ/oAgyM8DGa+LpI3fgGQN6rv3OWe6CRCFtHQ0sHp63
-NZ7JyW0KxI8wSSMI8d438CfcU1poEO2dU5zN2oQZN/pGUaBMweJ+WaMW1PkS3SzF
-ks+XTofoU0FPWlrwEDE8ZrapChxFH3HAd7qDcmptesU2hQspTWYmqp2x5ICnhYVO
-nVfCl8IvNmj9fhA81l0ci7X36rNmzIXkGmJqTWu08DXBgXgRzwNd5Xj6RWhasUyB
-rYMDlCJCZKqzwCrcUxJvEBN9No4trYQs9x6MMFX0MQdCJZUMZc2fgtEEiZNoVHDS
-1Uf9y0TsOOZl1Ufmpisc2MY2qcRdBybxPcdbSGtCnxmNzf6a6FU=
-=JgnZ
------END PGP SIGNATURE-----
-
---===============7771091298551443791==--
+> +		return PTR_ERR(imx->clk_32k);
+> +	}
+> +
+>  	chip->ops = &pwm_imx27_ops;
+>  
+>  	imx->mmio_base = devm_platform_ioremap_resource(pdev, 0);
+> 
+> -- 
+> 2.34.1
+> 
