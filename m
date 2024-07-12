@@ -1,107 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F01179AA;
-	Fri, 12 Jul 2024 10:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037CA15957E
+	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 13:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720779447; cv=none; b=TDxOctQTBQiCIiFtozTULer4pW6dVZ929J9IbPhzEa4T0kFhTVygPa3LgeAzSTFgUpkWExcqqnJZ5i0pT/uXykXmptIRhr4jTDhT5IOfR4mp4PHBLklXUYSBpi2OmoxkZlA85IbOxUAFbd79Zo8Nf8L74q4KaI92gqP0cqdbMNI=
+	t=1720791293; cv=none; b=aAkq6+iK3JWXYZ8tJ3zCmu9SWJrUVFke/ajuZM9zxU+eGy7awbUld+Zz+uvPS0Z6zhk1BcdnSvvUBZL/HK6sihnOIkHsbFkaW8YsCRz3lCJdrFfupAcgEL7KWDGmGxTzhhg6M7OugTaCGTg0I8llJeeVFW8Ft9gGWBP5rK6vsFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720779447; c=relaxed/simple;
-	bh=k+12JrJcwlPHxwOcQuMgYDvLeH/luxPbX/wCoxHA094=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U2m7U8HtXNt6rgA97ZdiMsqzB5MKXOQAiTuzxZwFvTXUE7G7dv6FfZxs4sBzcYPLPjCDQ/+z93JQtBuAuWdhq3gaT1twRXLuvluGyG7KOheq2J7K8Dt0SQdHRLiCgeKB/1dPg6x7S9AAPbqNzHPDrV2rg8++iRaymTvei3GjY4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpdfebqI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720791293; c=relaxed/simple;
+	bh=yLguL9IS/tTpZo82sbn8FxthUie+o8Bk4E2qK1Cergs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p7Gcvs+5lsJbt3UBpW66MaNrNz6gEgIZ94dxxJcrXfcvRB+KSoF6SmSL3GwTa7N3y8FFR8ROzEWyUh0jjzHepOYrpj6ipVjCaLN/8j5j1GbqJtumRmiZfqPZC2rznWANWHTSFEoYfJPN1XX6S0pXM8OqMukHgjiX/GWk6Nwj430=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BVODHXoM; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpdfebqI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189EBC32782;
-	Fri, 12 Jul 2024 10:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720779447;
-	bh=k+12JrJcwlPHxwOcQuMgYDvLeH/luxPbX/wCoxHA094=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TpdfebqIpGb2gBlG2fLlOrQMUaudFqIZ/9vuw/bwVEHve5yYCXO7EGZxstRcHyMfX
-	 r2W8JgW59PLEPFTISBJUqG2kVajQ8VqxZUaWRPfWJPQy+AkyNkrYF2/HJqb5mkaHTM
-	 7mkWbI60H9hph1iigbG9GtKHjoY4Cg1ILvsqrtkdapdo6N8WksATgHqCFfG7myDP5m
-	 wIQUC3WI3NkONCOW0nR1hAuznabNv4OxuxTlLk26x0BvDtUD2B3K8eYRsp8UclRpSX
-	 6Z8sjuu3+AHwVQ9Si3Sl5ygSDogIE3e4HC33fNtVNXUwPzoFYT1Mo4k4JDxbcupK1S
-	 IkppNCcXi5kYg==
-Date: Fri, 12 Jul 2024 12:17:21 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" <linux-ide@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: ata: ahci-fsl-qoriq: add
- fsl,ls1046a-ahci and fsl,ls1012a-ahci
-Message-ID: <ZpECsX92IXxVdYrc@ryzen.lan>
-References: <20240625205752.4007067-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BVODHXoM"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0B28F40002;
+	Fri, 12 Jul 2024 13:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720791289;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zsIQ40b9k5VvrZKyuXL7OJ2FO+xOflyP76hRNF0J6zA=;
+	b=BVODHXoMJ06+cRjiYiP5PkKZqMfnTd0SHEHEZ/AbF5SbGOmDuiz+FsyWyYeHKo9ohZbicb
+	5ODll117HMaIK+GgBbfJLlQ2bWtcXYNRlFa3OvVhmtmwL5uEp9/wgeWfFYpho70ZAqSHoR
+	vY8YY0wAp0i8CBGh2T8+lLhWxXvLTzQ3i8sWcAe8Wp31VEGXv4nyukDwEiJN222Eg2yMFZ
+	aKceAkB79SYoexDrzd5alr4Idb5IrMGjOHHjT6PjPqVipmOQHr4GDPzJfA/F8vLLDqw2ip
+	vom/FeYbQErkaKIAettZJwR+bw8tmxCpe4a8dCe7Rc/H1nJm+Uo4P6w7hAD5aQ==
+Date: Fri, 12 Jul 2024 15:34:46 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Rob Herring <robh@kernel.org>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, kernel-team@android.com, Wolfram Sang
+ <wsa@kernel.org>, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 0/2] fw_devlink overlay fix
+Message-ID: <20240712153446.37e26d34@bootlin.com>
+In-Reply-To: <20240423103924.366eba43@bootlin.com>
+References: <20240411235623.1260061-1-saravanak@google.com>
+	<20240423103924.366eba43@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240625205752.4007067-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Tue, Jun 25, 2024 at 04:57:52PM -0400, Frank Li wrote:
-> Add compatible string 'fsl,ls1046a-ahci' and 'fsl,ls1012a-ahci' compatible
-> string. Allow 'fsl,ls1012a-ahci' fallback to 'fsl,ls1043a-ahci'.
+Hi Saravana,
+
+On Tue, 23 Apr 2024 10:39:24 +0200
+Herve Codina <herve.codina@bootlin.com> wrote:
+
+> Hi Saravana,
 > 
-> ls1046a ahci ecc disable bit is difference with other chips.
+> On Thu, 11 Apr 2024 16:56:20 -0700
+> Saravana Kannan <saravanak@google.com> wrote:
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/ata/fsl,ahci.yaml     | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
+> > Overlays don't work correctly with fw_devlink. This patch series fixes
+> > it. This series is now ready for review and merging once Geert and Herve
+> > give they Tested-by.
+> > 
+> > Geert and Herve,
+> > 
+> > This patch series should hopefully fix both of your use cases [1][2][3].
+> > Can you please check to make sure the device links created to/from the
+> > overlay devices are to/from the right ones?
+> > 
+> > Thanks,
+> > Saravana
+> >   
 > 
-> diff --git a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> index 162b3bb5427ed..a244bc603549d 100644
-> --- a/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> +++ b/Documentation/devicetree/bindings/ata/fsl,ahci.yaml
-> @@ -11,13 +11,18 @@ maintainers:
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - fsl,ls1021a-ahci
-> -      - fsl,ls1043a-ahci
-> -      - fsl,ls1028a-ahci
-> -      - fsl,ls1088a-ahci
-> -      - fsl,ls2080a-ahci
-> -      - fsl,lx2160a-ahci
-> +    oneOf:
-> +      - items:
-> +          - const: fsl,ls1012a-ahci
-> +          - const: fsl,ls1043a-ahci
-> +      - enum:
-> +          - fsl,ls1021a-ahci
-> +          - fsl,ls1043a-ahci
-> +          - fsl,ls1046a-ahci
-> +          - fsl,ls1028a-ahci
-> +          - fsl,ls1088a-ahci
-> +          - fsl,ls2080a-ahci
-> +          - fsl,lx2160a-ahci
->  
->    reg:
->      minItems: 1
-> -- 
-> 2.34.1
+> I tested the series.
+> 
+> On my Microchip use case (i.e. DT overlay on a PCIe device), I observed that
+> some driver removal were done in a wrong order. For instance, the onboard
+> PCIe device interrupt controller (oic@e00c0120) was removed before its
+> consumers.
+> 
+> I enabled debug traces in core.c and observed that many links were dropped.
+> These links are related to pinctrl, clock, reset, interrupts, ...
+> I have the feeling that these links should not be dropped.
 > 
 
-Frank,
+Have you made any progress on this topic ?
 
-if the check_dts warning is still there,
-will you submit a new patch with a better commit message that explains that
-the patch fixes the initial commit that converted the binding to yaml?
+I haven't seen any updates.
+Maybe I missed something.
 
-Such that DT maintainers can review your v2 patch.
-
-
-Kind regards,
-Niklas
+Best regards,
+Hervé
