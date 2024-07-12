@@ -1,110 +1,114 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037CA15957E
-	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 13:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34B5171066
+	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 13:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720791293; cv=none; b=aAkq6+iK3JWXYZ8tJ3zCmu9SWJrUVFke/ajuZM9zxU+eGy7awbUld+Zz+uvPS0Z6zhk1BcdnSvvUBZL/HK6sihnOIkHsbFkaW8YsCRz3lCJdrFfupAcgEL7KWDGmGxTzhhg6M7OugTaCGTg0I8llJeeVFW8Ft9gGWBP5rK6vsFI=
+	t=1720792672; cv=none; b=U5QRR5NeT2ibzv3ZAaXpaLRinCnUZKuE9TrWMb0L+8QT4KO7AoKA64z52053YfqRyx6SJSiTL/JkzeWhKdVxnRGyH4xKpSLrrPz3OQIlHo8nEeh3izHFRu1Zdo4nebKl62TLns6nL/gmFUr10r6oul3aOit8vZOF4vx5Ydsam+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720791293; c=relaxed/simple;
-	bh=yLguL9IS/tTpZo82sbn8FxthUie+o8Bk4E2qK1Cergs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p7Gcvs+5lsJbt3UBpW66MaNrNz6gEgIZ94dxxJcrXfcvRB+KSoF6SmSL3GwTa7N3y8FFR8ROzEWyUh0jjzHepOYrpj6ipVjCaLN/8j5j1GbqJtumRmiZfqPZC2rznWANWHTSFEoYfJPN1XX6S0pXM8OqMukHgjiX/GWk6Nwj430=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BVODHXoM; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1720792672; c=relaxed/simple;
+	bh=VwmcOFQa6+zLy28MNBBHf0p+J5lgD6t6G0cBronB+vc=;
+	h=Content-Type:MIME-Version:Content-Disposition:From:To:Subject:Cc:
+	 Date:Message-ID; b=d51kAlW2GX27oOnKWYO9RKpI7u+2EbmJ5T6xf36GvZ8kC5tPIw9NBKw8+QOeVIiuVg+ckHTBoqar+NOZDRQyjcyfFmhhOVtyccfoAu8ELU0f+orHnC8i3I7mHc31CkC+kVdX4CKJnk5w4NDE8oAEUiYzP9c+4Vcb9nho/4+BT4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=O/tw71X+; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BVODHXoM"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0B28F40002;
-	Fri, 12 Jul 2024 13:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720791289;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsIQ40b9k5VvrZKyuXL7OJ2FO+xOflyP76hRNF0J6zA=;
-	b=BVODHXoMJ06+cRjiYiP5PkKZqMfnTd0SHEHEZ/AbF5SbGOmDuiz+FsyWyYeHKo9ohZbicb
-	5ODll117HMaIK+GgBbfJLlQ2bWtcXYNRlFa3OvVhmtmwL5uEp9/wgeWfFYpho70ZAqSHoR
-	vY8YY0wAp0i8CBGh2T8+lLhWxXvLTzQ3i8sWcAe8Wp31VEGXv4nyukDwEiJN222Eg2yMFZ
-	aKceAkB79SYoexDrzd5alr4Idb5IrMGjOHHjT6PjPqVipmOQHr4GDPzJfA/F8vLLDqw2ip
-	vom/FeYbQErkaKIAettZJwR+bw8tmxCpe4a8dCe7Rc/H1nJm+Uo4P6w7hAD5aQ==
-Date: Fri, 12 Jul 2024 15:34:46 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Rob Herring <robh@kernel.org>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, kernel-team@android.com, Wolfram Sang
- <wsa@kernel.org>, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 0/2] fw_devlink overlay fix
-Message-ID: <20240712153446.37e26d34@bootlin.com>
-In-Reply-To: <20240423103924.366eba43@bootlin.com>
-References: <20240411235623.1260061-1-saravanak@google.com>
-	<20240423103924.366eba43@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="O/tw71X+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Message-ID:Date:Cc:Subject:To:From:
+	MIME-Version:Content-Type:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=cyzZqWwRyvsBEnNWCbMBuygBvQCg75ywBkylgPd8fW0=; b=O/tw71X+zi3BRzUMpUZ/M818lY
+	gpkCCOxRuj4Fs5Oo/8XcCDGBJ77v+nLDjjQwAkL+th+aurKd6hqADyr2oNiw2h09uyjBcnhFB75r0
+	6XIK9CqKp2X36IIkz130yaHzTjTgywSXkEONIfquvtE73rzCWIJPHYSFcy8DEf3sU9sM+s/X9PTpu
+	Z4RbO1+2zQXMPKlTBWeomu7KdpRoRDwZ6uqkFIkMTdGIsuzderJwE/JPmwhU1l95BRIxUVbcl4c+3
+	MKfzGTsEEYB5O50I9NE+/qD3V6Qo/MeRreJH0Tm5QvatmuDHb1n1R9Vo6y8/7CymchPHokSKAV9+a
+	EdBTXfqQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <josch@debian.org>)
+	id 1sSGmS-00BQvM-4y; Fri, 12 Jul 2024 13:57:48 +0000
+Content-Type: multipart/signed; micalg="pgp-sha512"; protocol="application/pgp-signature"; boundary="===============7771091298551443791=="
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Disposition: inline
+From: Johannes Schauer Marin Rodrigues <josch@debian.org>
+To: imx@lists.linux.dev
+Subject: Distributing NXP i.MX 8 firmware blobs in Debian
+Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>
+Date: Fri, 12 Jul 2024 15:57:47 +0200
+Message-ID: <172079266731.2928366.7031846226118749814@localhost>
+User-Agent: alot/0.10
+X-Debian-User: josch
 
-Hi Saravana,
+--===============7771091298551443791==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 23 Apr 2024 10:39:24 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+Dear NXP team,
 
-> Hi Saravana,
-> 
-> On Thu, 11 Apr 2024 16:56:20 -0700
-> Saravana Kannan <saravanak@google.com> wrote:
-> 
-> > Overlays don't work correctly with fw_devlink. This patch series fixes
-> > it. This series is now ready for review and merging once Geert and Herve
-> > give they Tested-by.
-> > 
-> > Geert and Herve,
-> > 
-> > This patch series should hopefully fix both of your use cases [1][2][3].
-> > Can you please check to make sure the device links created to/from the
-> > overlay devices are to/from the right ones?
-> > 
-> > Thanks,
-> > Saravana
-> >   
-> 
-> I tested the series.
-> 
-> On my Microchip use case (i.e. DT overlay on a PCIe device), I observed that
-> some driver removal were done in a wrong order. For instance, the onboard
-> PCIe device interrupt controller (oic@e00c0120) was removed before its
-> consumers.
-> 
-> I enabled debug traces in core.c and observed that many links were dropped.
-> These links are related to pinctrl, clock, reset, interrupts, ...
-> I have the feeling that these links should not be dropped.
-> 
+I'm writing you as a member of the Debian project. I am trying to add suppo=
+rt
+for platforms like the NXP i.MX8MQ to the debian-installer disk images. The=
+se
+images need to (for example) contain the DDR training blobs which can be
+downloaded from
+https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.24-fbe0a4c.bin
 
-Have you made any progress on this topic ?
+Unfortunately, the NXP Software License Agreement states:
 
-I haven't seen any updates.
-Maybe I missed something.
+> 2.3. [..] If expressly authorized in the
+> Software Content Register, subject to the terms and conditions of this
+> Agreement, NXP grants you a [...] license solely in connection with your
+> manufacturing and distribution of an Authorized System:
+> [...]
+> (b)	to copy and distribute as needed, solely in connection with an
+> Authorized System and for use in combination with a NXP Product,
 
-Best regards,
-Hervé
+My reading of that agreement is, that Debian is not permitted to redistribu=
+te
+these blobs. But this in turn means that our disk images will not work
+out-of-the box with NXP platforms that require these blobs to be loaded ear=
+ly
+during boot to function.
+
+Could you assist me in connecting with the appropriate person who can help
+resolve this issue? Maybe there is a possibility for the Debian project to =
+be
+allowed to distribute these blobs in its repositories?
+
+Thanks a lot in advance and have a nice weekend!
+
+Johannes Schauer Marin Rodrigues
+--===============7771091298551443791==
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Description: signature
+Content-Type: application/pgp-signature; name="signature.asc"; charset="us-ascii"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElFhU6KL81LF4wVq58sulx4+9g+EFAmaRNlcACgkQ8sulx4+9
+g+H4CBAAnQBl/7kHKkGSg+YsVIgwEm+jNR7PRAvKul+oEKOTyyyqQLwb0JfEc5k6
+de3L+UFHnjMdutB9ODEmin5XLiW+38Cjni0+JZc9tpBkD61WVdo919N7in9f3GPA
+w8GJv7KgiOyDDwed32XDheDb8BG762fJQM1XgEZQkSFT2PD9XJ4XIJ+Ts4EsOhs+
+tu3+At86x2SWse9jhsFuOQuTwQblT0EFq2XGFvcymlMLevnzvjcPvgChoQs6uDdU
+qr+oZQBgDUi5gGe63Q2Cv6zMR0iJ6y8YJSGFxteC9JMszzVreV0HeHxBQOTnliZx
+6Mvm+Xcm80oQBoO3PaBVXxZ/oAgyM8DGa+LpI3fgGQN6rv3OWe6CRCFtHQ0sHp63
+NZ7JyW0KxI8wSSMI8d438CfcU1poEO2dU5zN2oQZN/pGUaBMweJ+WaMW1PkS3SzF
+ks+XTofoU0FPWlrwEDE8ZrapChxFH3HAd7qDcmptesU2hQspTWYmqp2x5ICnhYVO
+nVfCl8IvNmj9fhA81l0ci7X36rNmzIXkGmJqTWu08DXBgXgRzwNd5Xj6RWhasUyB
+rYMDlCJCZKqzwCrcUxJvEBN9No4trYQs9x6MMFX0MQdCJZUMZc2fgtEEiZNoVHDS
+1Uf9y0TsOOZl1Ufmpisc2MY2qcRdBybxPcdbSGtCnxmNzf6a6FU=
+=JgnZ
+-----END PGP SIGNATURE-----
+
+--===============7771091298551443791==--
