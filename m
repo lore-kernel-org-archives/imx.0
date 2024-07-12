@@ -1,85 +1,89 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B077014A4C8
-	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 14:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E92B16F903
+	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 14:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720794630; cv=none; b=laWg/NOHs6fGh+sJElm0Kw9yFBV9VOXNNoO5eI3NsHXh2hQ/HUPL8P6NV0Sfm0bI7mxZo0EebIcixAuchI7wyf2yoC91cuv5NIpkyZSbB1vG+26MR4ydC5bJZCnReTvugjhCnjscAqyTdQc65jaqfxGVRD08rL0ZIYX6V2Ap+X0=
+	t=1720794914; cv=none; b=GpU/rAo+lCMFJkKRXgZNpbsV9ld9z5TL8ra23MAnukSpchHQckzNkcszZJlQzMLE6mj3uKjgZrWenmXdLGHWo1GoK/dEwBQBBsaQ9+QgmD2uUeGS9Obfge0EkdwExDV4QNigLtPSe6c/haV/qxfx6ENNQXpc0fsbQL4Ge82Dr+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720794630; c=relaxed/simple;
-	bh=alcBCeBHwiXj0n+hXF8W7ZUTjf6ut9oBuOsr8yu14vw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cxsN2uWG6lhuBlQUUGz1TBHHBMRdI/XfecSWduHTxSMOmXwOgeEDA/W4zQ9yq7kpq7AFJfhN9Lm4krY46RMSykyNd1qknHcO89biMvibuZTezDER/0BietA4iaJ8aValrlAjTUBYgkddhzmsMMF+1+KzSef8uBCxNX0LgSJc2NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YTrTsKKG; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720794914; c=relaxed/simple;
+	bh=+CiVeB36WC3XhinXVvw3aBG/Q6TEMnuDcanTg5z9DXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M34KyUjSR9On4IRe1eM31VFKjxe9rcji5DGwQKdn/MxWtUDV0ScsxT7wyn51sBkzaB9u3riHBlsLwFCY/pDikCYZ/iEKv0ZYigqKFlXsraRtxWMm+I+iphtqgPl/jRpvduhytNFZGx1N4dc1Xw4EC8Y1sCDIFY1zklfXe/fUJnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RCA9lVVX; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YTrTsKKG"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2eebc75b36cso2314381fa.3
-        for <imx@lists.linux.dev>; Fri, 12 Jul 2024 07:30:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720794627; x=1721399427; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=alcBCeBHwiXj0n+hXF8W7ZUTjf6ut9oBuOsr8yu14vw=;
-        b=YTrTsKKGOBslH1KKbjdCnwdpkHaMLCNOi+I4GJiblRj282FYVTAgP6530T+cBq4y34
-         We83RqlKBtS8+rdlmZtIeF6yPiDqLwxWrIDh4ny608ngWytZPnyBfInSPnK2Ri31FtTe
-         ICEP+MGlVxxbta9b+m9ZQuEn0At7Nmw+KocCvgzKZnbJYA95D+hU4xEqpFtK/7Qpzmj+
-         jGTDCk+F7go5a2Gio2+1G3cx8v+SqxQ8c1FWUtQTBc807IpTRfcbhWM4Rd6XEOWzJ5tt
-         wCfvymfv9AT9qc9gLW3+xbJsjLNJLrgKWkIzpGZ+xgHSJ+kYmp3T/XAUed62/tWXJTFC
-         u42A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720794627; x=1721399427;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=alcBCeBHwiXj0n+hXF8W7ZUTjf6ut9oBuOsr8yu14vw=;
-        b=InRz2e5tOfu6jaQM1Vl+BvnAAIEUJd4Eq7L8pO0WPLvdTaJPTHynT2ZXArcp7Kv3jV
-         YQrOOosGhcxsARdBNE8qq+pVse9OnUq1lFHEZF+x3Fb3mZWXjzjyVW7pEa4mzTLBb+0G
-         tWGmHuY918BDVyv7Eth+FxZnXYXtDulVngjTSgNGvteEfm64TDjw+qD0rZ7EX4L+sq05
-         bO5kybIaI+gF/6Jn6+gZH5IVl76WtbS/ZrKiwGIhIzriYot+6OTk9Soy8UbDWOV+1TGO
-         ReULvMQbJgyKEye21lsbYm48W467k5VZf2OuNWagU0KPQeCTy0xwI50WeVjUbuE8qYA/
-         Ig7A==
-X-Forwarded-Encrypted: i=1; AJvYcCUf7zEVhhm6jzuUodA1c35pgjHfLh7WOxEce3/m2YjEShPNLPy9LNSUh2Mx+yJ1WdFMoUi7YzG3IFo7TmUfl2W7Kd31
-X-Gm-Message-State: AOJu0YxWsXbgrnFUCXgmR7UjqSfH+2V/Y7DZnFnlKmJQ3igxAx/bDocx
-	oV+slnsB22/3kTcrQ6RWCVvnJcsUoyNK+T3R/zTiqOf1rKJTIMvdG0sNtYyuKLzot1te6yNyG/a
-	dl88g1F+tiOTktoMVndoWn/ijWYA=
-X-Google-Smtp-Source: AGHT+IG8gtYHcWhYIa/raxAMEUfMDAXaH2ixSD7lXeKGzT1uyDGpJqXE7og93Moj5HtYaifBaQHPa90q88CmIKnndh0=
-X-Received: by 2002:a2e:9859:0:b0:2ec:4a95:5f05 with SMTP id
- 38308e7fff4ca-2eec98bbdfcmr29501431fa.3.1720794626549; Fri, 12 Jul 2024
- 07:30:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RCA9lVVX"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0858B6000B;
+	Fri, 12 Jul 2024 14:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720794905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+CiVeB36WC3XhinXVvw3aBG/Q6TEMnuDcanTg5z9DXE=;
+	b=RCA9lVVX1fd75spCVuVahSk1RoqL9eZbgexe3LnZmD+IsA7s0KLR4kU0QT6UQzVSQrcrPX
+	hRiL3pPLMNwY4j16hbLtdlG5J+BEEA1PW7OW7sjOjXbSeY14TvMoAj1mIPMbsItiZvowOQ
+	piShlvO2atXTdq/ISgShhl/xtRHkX+Z96RhtZHiU1TLZR7Gnw5w1RasNCG0SS+DHpspE3C
+	dZUPWp3bNqaTriRX3hgPZNbOHazHGNgNQK8n++DqtMVk37DB13EUCRlel7A9e3Q4Zwg3Ay
+	L9g8Ji7Nb82hIJNCnIwTjQT/ej4Az4/PbJYd7xyyek1Zmaaf4T3FbmlAXVsP/w==
+Date: Fri, 12 Jul 2024 16:35:03 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Han Xu <han.xu@nxp.com>, Vinod Koul
+ <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>
+Cc: linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/6] dt-bindings: dma: fsl-mxs-dma: Add compatible
+ string "fsl,imx8qxp-dma-apbh"
+Message-ID: <20240712163503.69dad6b1@xps-13>
+In-Reply-To: <20240527121836.178457-1-miquel.raynal@bootlin.com>
+References: <20240520-gpmi_nand-v2-2-e3017e4c9da5@nxp.com>
+	<20240527121836.178457-1-miquel.raynal@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240712141844.3274214-1-Frank.Li@nxp.com>
-In-Reply-To: <20240712141844.3274214-1-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 12 Jul 2024 11:30:14 -0300
-Message-ID: <CAOMZO5DyP_V7+hSGm6q2ReTUhQ6ebTaLrx=qNhkuFSpCHc+8NA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
- struct imx_wdt_hw_feature
-To: Frank Li <Frank.Li@nxp.com>
-Cc: linux@roeck-us.net, alice.guo@nxp.com, imx@lists.linux.dev, 
-	kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org, 
-	s.hauer@pengutronix.de, shawnguo@kernel.org, wim@linux-watchdog.org, 
-	ye.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, Jul 12, 2024 at 11:19=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Move post_rcs_wait into struct imx_wdt_hw_feature to simple code logic fo=
-r
-> difference compatible string.
->
-> i.MX93 watchdog needn't wait 2.5 clocks after RCS is done. So needn't set
+Hi Vinod,
 
-s/needn't/does not need
+miquel.raynal@bootlin.com wrote on Mon, 27 May 2024 14:18:36 +0200:
 
-You mention i.MX93 here, but the code touches i.MX8ULP. Is that correct?
+> On Mon, 2024-05-20 at 16:09:13 UTC, Frank Li wrote:
+> > Add compatible string "fsl,imx8qxp-dma-apbh". It requires power-domains
+> > compared with "fsl,imx28-dma-apbh".
+> >=20
+> > Allow 'power-domains' property because i.MX8DXL i.MX8QM and i.MX8QXP ne=
+ed
+> > it.
+> >=20
+> > Keep the same restriction about 'power-domains' for other compatible
+> > strings.
+> >=20
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > Reviewed-by: Rob Herring (Arm) <robh@kernel.org> =20
+>=20
+> Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git =
+nand/next, thanks.
+
+I just realize now I picked this up whereas it was not intended to be
+merged through mtd. I'm fine keeping this patch for the next merge
+window if I get your explicit agreement otherwise I'll drop it.
+
+Thanks,
+Miqu=C3=A8l
