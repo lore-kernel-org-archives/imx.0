@@ -1,60 +1,63 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013071.outbound.protection.outlook.com [52.101.67.71])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011034.outbound.protection.outlook.com [52.101.65.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D0E176AC4
-	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 16:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52A8178365
+	for <imx@lists.linux.dev>; Fri, 12 Jul 2024 17:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.34
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720802779; cv=fail; b=NJLcsAeNka31+M5vkwF3kbO8qpuVit/XI2dgGS2u/9mjXSRem5sYo2bMy2VRDAj1koZiMiu9MWuG760mUlOAkArtBpxYnXPF051kGkpGiG2n4T5QsDuW6W926IY2B3U1A02mv56jXh9eD/rcjXS7FtFD7qBWBDtNUsDnLph+d5s=
+	t=1720804024; cv=fail; b=JnMNQSJ4jvrGLgVMp5Fgexzm7nZXiVYSUi01qSZJWEVaWkObjZVfWCdeH01F8JufyLdXTmKLo1YYMDtO5kS7EqMhrt6db44GXN9hsY7mJv0Dv2noFnE4kRusG7/ZRGRM4ocCAokAoSaxnLZyYej0J5rf0zFjVDLu/JY+80oCytQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720802779; c=relaxed/simple;
-	bh=2LW4iG5U0HJUjz92YWDadk9q9jwoIIUbg0TYl3++Qrg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=CMzT8ECU88Ha22OJwQW+20AgkxCCDh6hvGvYfBT7cMad2TBn5HYcRD1hACUZM7mWENCvE0RMSbN6vUsDWXqnpBlHczawbaa0Ubvd1hwwtvEpGWgvuOKAMzv9H/F7Ou6FZalM+ebLyiJU2LRw1qrHuRGb6gtkIQeC4W4LjUkjjo8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ffefQIYq; arc=fail smtp.client-ip=52.101.67.71
+	s=arc-20240116; t=1720804024; c=relaxed/simple;
+	bh=aHrdmbOz2MM5HsXHak6b1MCtDok1mwtV3KKVfgHywhM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UzZYJx9xPkNUNYPEbgoobEKlCbzw8Cd0fHz1nfBiRVXg3W+OSvugX+4jyREnKTaEE1x/GYaP9PoMeOYyfJhehehzVdSqDnTXKWJLyoIOCgA0bJoWlhA24epi5RyVyCEUn6LBqO3nm7rwCXYNtglABIQhp/QTtKcH3ut9kFvMbMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=iX1a6xm3; arc=fail smtp.client-ip=52.101.65.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ffefQIYq"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="iX1a6xm3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y6aRh8QQyeqcL/BNILz6C5HU8Bs1Co1hTkaxVi9GOcOLC9BD/wsThVHqQbo4WIAog396K3AB74JAUS0QRXMwjQDV83HbA/vXvHYyVsYTA620FvZv0/3PCcGnjIiAD1mO6GUBiNGpehxnqlSngS2N2k5WC7lCtNrQTC5KC+AciksHgjzhCBflPMSVENFEv6k3BmigqxZ22AjK8//aSDC6QDqJYWCOUYUrdSXesE3uKiXlJGILoW1bDgQWdwWsmrhTKin/m8ZuzlCBoZjFLcRl2pD+wLKDBIxFbn6558JkXJ0y4lF5iwW0u7rzQb2sAUSTud9LMRr6sKvNRxek/YltSw==
+ b=ggzjpdknmvSgMmVzSpuyeQE5gAHkleRcwefuHOWZe42OQER8qH+kL2WbAec4ky8hE66tD5GfHRc+/lajsBn8nJImvzOSqasWmE+njArzEWhO8XJKpjFPqF6yPunymkVsdn7sIWkrrv+C3jysztK4dbVn2v5j8kyc5Y+19oCTEN7Z+ULMGPFxDKDZQTivkPi9R9usPrywixPythJtU7GCoIwcTXEwZAWRNzuSYxS4ma7t0jXZaQzItfTpvCKQd2EQ9TGt5c96czbMoEIlWJjK2wBLx1PmUUZZiiiUgHjkJjIyxQdd0miwHyCqIuZY+SI19lpA7XFeRc/v8836Bx5a3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cJTiKcqbvXuQJu/cvx6FQbzHBOJkEOWkZjHAfAhHVE4=;
- b=HEXWfK34fWhCCdaajDN5Gs9uU2ko1o2WExnSqXUuZXb/p6kWFlKWRIwZn3sUbupScT1m/70hFutErUrifj5Q3ZTEhSxfQEEPCBWzJhbvGc1pleh2lsoYmX4g+6LAtbiq87t+eXG0eA9vH2+jsMrPmNN6gfwvueZQlJhmxpIebj7aCLSMNra8MDPyf3qOf2OCbucEyjvlCyuverLCn7gzjCXR/UTeit2XdIFi289OJEk/AC3fCmlFTvChcd72pTiV6OeEXZM6mKIL+yn6Z0b/48NQhmZsLBpQmvucg1D5QlSg3KjTXOlOgCraI/IkXcQ+qejc6FRRZ7VuTGoitWTlNA==
+ bh=NjPUtpkxr34CmDx7g7lN7HugJ8CCI+KKQ4XXqJDkjQE=;
+ b=s7kpWv1aW7s9Q+AsQyhGkO2DbdO6fpOLBKBbSwfN/F3CTrS2qOMdFFIpYnhcCBrb4ruRIciScGYjTSuy6L/CguoCucxN+Fnrkh7Td3GmFmgKceTC2hl/s/GSrfwOmedEVYzOZ5r1KhJrLfkwMx7G82qHhuiGeXkJscYWzfSi28rqrNYlWjfpbg201jnNpaMosibOof9RpUqYM2Li30AzAXNoNCo83FDOsE53bjhUqYTMHy0zB0I5/vLr2zoGqZMNQdn8Wc440kyzer8vxejI9zWrpl1tso8AzPoarFGVriTIXnc6MY8wlpmc0ne5qo24iDdoYPRwXd9+LNOVMhaHJQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cJTiKcqbvXuQJu/cvx6FQbzHBOJkEOWkZjHAfAhHVE4=;
- b=ffefQIYqFBM30FZuom0vNPO0TkCKTR8S8qmqgfeupAc8KEOFIUJq/wuHSTeEU3kJEGGFVLRplAFAAhTG+t8KwptiGiYanoHSjQ+id7Iub0eewf33FrwjLi7XCveyFEieXq9+wDBlugeZoPlKAEWFwD6DKEnqkp3d4GDE6aaVsTU=
+ bh=NjPUtpkxr34CmDx7g7lN7HugJ8CCI+KKQ4XXqJDkjQE=;
+ b=iX1a6xm3GlGZfnw/0kIEAPgtPMWEJkmXv9rH9cGzboaMhKRy6ZvssH516Ud7rwSCBOoyEK4cgx9SZrve+gpIRfQUK/ni/1e2XNiqGvZnU0r+kHBuWgs6Jj7L0zb7+cv33/46RLoCaaqlCnIxR98uT01IKlgWkjgvoGohxvZJWAg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8756.eurprd04.prod.outlook.com (2603:10a6:20b:42f::11) with
+ by VI2PR04MB11075.eurprd04.prod.outlook.com (2603:10a6:800:27a::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.20; Fri, 12 Jul
- 2024 16:46:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23; Fri, 12 Jul
+ 2024 17:06:59 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7762.020; Fri, 12 Jul 2024
- 16:46:14 +0000
+ 17:06:59 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Conor Culhane <conor.culhane@silvaco.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-i3c@lists.infradead.org (moderated list:SILVACO I3C DUAL-ROLE MASTER),
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-i3c@lists.infradead.org (moderated list:I3C SUBSYSTEM),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] i3c: master: svc: adjust SDR timing according to i3c spec
-Date: Fri, 12 Jul 2024 12:46:02 -0400
-Message-Id: <20240712164602.3600659-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: i3c: add header for generic I3C flags
+Date: Fri, 12 Jul 2024 13:06:39 -0400
+Message-Id: <20240712170640.3635096-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0007.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR13CA0045.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -63,199 +66,159 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8756:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c4ddb58-0274-474b-b568-08dca2922476
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB11075:EE_
+X-MS-Office365-Filtering-Correlation-Id: a8f6fc23-463e-4a29-079d-08dca2950af0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JC99mTOU6G4a3ZO5ecgAyberam71dvci4RAtNkeEN8m2QVvKAKUqJXt3a1Nb?=
- =?us-ascii?Q?d9aLE0UK+5lf6UnKeEK+clXhjwxhbirgge1/ozXzM0Vo0HA2TxAtEQvVdI7P?=
- =?us-ascii?Q?KUAZGyXGMVcXWSHpHtXOe14C2NxqZMQrJfKYNUhipZ8Y1vcWF+uYYGURHHnt?=
- =?us-ascii?Q?vSohswqwNbB6qrWMoZQTHyesVzr9lzIehIVvZcbMvVKKWPfeQXJd3V/sGays?=
- =?us-ascii?Q?y30LLKydfZjG+c62E2hAMftE4wXYsmrB5YdL70CgmfqU/eNtfpKxtALLVmh2?=
- =?us-ascii?Q?cBIqXWG37khkKWRxOFabwVVIrdSQ8u8tTvxalOxKeKMNlo9cuBQxptOAncNr?=
- =?us-ascii?Q?me+skuEIv6YiUyrke623MdGs1rc69EjDKt5ed7WXF5i+2INLOeOa0gFnoy2u?=
- =?us-ascii?Q?SUujgy3eqSPQM6L6Vlqpf3bzdRo/wIIydnmfymJVcLAwe/ekjCxiIqm8ouCJ?=
- =?us-ascii?Q?2G9LCpjO0R4nOCvbZbO5p1vbVSggn6wHxwgXK1xbkmWdbWfVzs3FpxjtPr1p?=
- =?us-ascii?Q?wyQAhhhrq2AcI4U0FrTYzCsZvaMdX3M3xr3vz4ZFrJVgY2PWWZn0cL53l4ye?=
- =?us-ascii?Q?bTUJTScvroT5UW31URrPZQgJcfgXagkJBbUlLK5kkYzfzmFmG/xSAmd3td2n?=
- =?us-ascii?Q?kzRH6OyRRHoYPB5uCrJ/m+mpGaK2BqJcO26sKLyYor97FTQN/oQ42SAhtGL3?=
- =?us-ascii?Q?sOXVQdEqK6eiZQeQT0xaKE4u/8oSwXRyWyhYJzBb5yG6mxODSeTHZfJSxScC?=
- =?us-ascii?Q?2SKNy4agDiT12hkpUhTEL2khn5x78RqNUQkh8FP6u2MGKuR43kgu+8Xg7Qy6?=
- =?us-ascii?Q?nbcYW0Y/zFPY4TT5wfEVP6qT1ZIq35pMIRNTNoWnGIdj+j36PlHdsQ02T9w9?=
- =?us-ascii?Q?zWSnc4cXJWDM1nbRyZvFnoQAqkNWEzZ3SOK65kr9MYAMy9g058SAAifatuks?=
- =?us-ascii?Q?UsX5XywIz+j0RldkQj17wkXqQMtx7mDsX736lUuhHT4UUp3+QyrpTOjtthDf?=
- =?us-ascii?Q?rYbxktfAiiRfn8vP40hoRh9awAPoy557jjtPtle88bb1CGI0cyyPFklb5Hdj?=
- =?us-ascii?Q?vaFWDtSFN6Givbb1lgWYP4CfApByEcvwAyP7sbOX9GcvrFb3ehnFU6kUXBsP?=
- =?us-ascii?Q?T0DANm29KnFhgEoRxI9EBSuUrR2coLHN/7Tost4ySvWKa1klwj+dKI7YaTKP?=
- =?us-ascii?Q?xAYIAiqNgt/K+Jd1jYm3InoKDngY148DNPlYRmMeV3kg9cPh6j8slGP+5Pae?=
- =?us-ascii?Q?1m+vGAE2ifzTG2uPm2PjR2ZAJte9KJOvPKPM8hrn3xPYS3MuCw366NOqw1sH?=
- =?us-ascii?Q?tus2g+p5eo0ut/5uohm1SWM6DvWQMtzmd0UkaV6k/tvQzece5HhG/KNvyNbX?=
- =?us-ascii?Q?I1N1iT9FdDiXUq2BPeLtCbODEom2mop8OUsFEEQfBSdRLhbhtA=3D=3D?=
+	=?us-ascii?Q?g+tb+1Png+sJ7S5oW3n7Yl4uVM2hmbNizoMSEAXyfn1g5wYtQf1lDp2N4Tw/?=
+ =?us-ascii?Q?pLMla0z1WRdkhuuBMzv26O4CGZ315l4Xqkk6EBesgjNKkZVnwkhz5cU7sGQY?=
+ =?us-ascii?Q?v+lbfLqhBTUFlf3zcZHcvv3WILcdQaM7JQD0gvRzoG6LSu3mC68PdG3ZCmPO?=
+ =?us-ascii?Q?nXlqqqMxrIK1aIjNQAPU+EPKxrhbm5YxSOUZY2thgHYNZPAb0IqLYdPVDXSn?=
+ =?us-ascii?Q?wEAXIP9PTFuUeJhg90eDX80+0tR/L0XJ0GZhohuhx9rgMpbNkM1+O7w8zbi4?=
+ =?us-ascii?Q?MaZEzvmrDVnRxsIZrYB6CxaxdZI7ozlSxIix6SGAL30TCZJ9BRBTwcsav4nu?=
+ =?us-ascii?Q?hxtCU7D1LbWa5Z6gUOPyhjzZo4l81biDgD9H1+gjtbnvwv72ols4hNg/UXvE?=
+ =?us-ascii?Q?XPwVFEnmuK6SNUKiIbBtv4MP95kZWU5YatYcQ5uk3EMhWQVqIsaT5INqSu6t?=
+ =?us-ascii?Q?80Wl2Mq6d/gBgCJyUZZECqoJ5fTO5NCJUtOUMeTlt+Fj82omazJ1d+FPBs7Z?=
+ =?us-ascii?Q?9W+6NG77W+APWUEwhxQT8wkwgUFxFSp9hBUy9vT2d4dCoDiKn0yYyreRz7CF?=
+ =?us-ascii?Q?VfXGNNksDJsaiIJ7oKJNt6+6KwcJ/BNdrut42vxEac0awgLT6YPahxZcKYGs?=
+ =?us-ascii?Q?m0nqur7qkq+3qUVHgC4Dkrfjg/VaP1+xJjXsuHNxwpvXB3h/AeEiEi4ZjU5n?=
+ =?us-ascii?Q?QfDA/tV4FdO5hYolDzWib+I0Dv5fKv8vdil3Ue2Ffnyk3L29MguTiijssXfD?=
+ =?us-ascii?Q?LqYTblyqprNtqUFmhwr9L4KAnYYriIwwlwySK26EHBzkSsh6TD3u+bDTTQ76?=
+ =?us-ascii?Q?4Xy8PIwBkbUdG+6Lhzmsdjq72VFEtVfJl4isy8wl6vAMnBXnJBc207s3ijni?=
+ =?us-ascii?Q?NSkOF1OCrWHw12y9kq1l2Od1wD1bWyiNan9Ji5gXQXW3SU2WAoKvDdlXDEqo?=
+ =?us-ascii?Q?T++22kCY/ktGpHrzaWO0WyCzf/y/ueHUj50Bk2K4SYR7XEQv4/nqb/inM5+t?=
+ =?us-ascii?Q?RoB1LS7vlIPYSYKHbMuhApdChF8sk9auTTuTKbhrJQSRdpTeK4x1WHQtiarL?=
+ =?us-ascii?Q?WNZhq1EgCHBnI6/yjeHZVoBWZEKiJIK9xuAxu4CU9a54+A5HfR1OD5EH4Z9j?=
+ =?us-ascii?Q?Ez4Aeo95wNLAIsSph2AJ/PkenUI9JAthZxi/kWo9xX1AbIp63BuKfbzU5lrT?=
+ =?us-ascii?Q?kkGRGZVzDI3+0vrIJQyZ2KmAtxC+yJQYOMwhQFqKmCj71fRTbZHM52wBr+uP?=
+ =?us-ascii?Q?EFvoqd4N+9rPyH2Wi1Fh2070mG+IKGR8T445pnPnHiFqns/HfD2ur7sEvoMM?=
+ =?us-ascii?Q?P3aoC7p0qCXOneXX+ToWLB2BczuSDDUB5734OGO4pDsANCb5VIK5NfHpsOQD?=
+ =?us-ascii?Q?aPo1pXRAqtvgmMJ8uA6dfKP/S/GojzJlDxhjIiVV3hQEa/kRmQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4y16WC5k3Hf3Ro46jzSWnkW6tChByvXuSCOU55d3f/oJvO9CawX+o4K7pUbd?=
- =?us-ascii?Q?n64cl4xstKa6fDNP7nA1D1ZHwyXkr4YzMzMFiSmL5tLkJCLpHwP8phim8EbD?=
- =?us-ascii?Q?o9JML7ciCAxccrLSRqfiNiU8u6Q2FoAopJ/4Ty0QVFB/qJAfP9EttiZYcBiC?=
- =?us-ascii?Q?OaTUP2nFYLQeC/9cFSSbxcTG1MjThFZ5WQ3mDhjrVOcduLUg1IPWCrSnTPnO?=
- =?us-ascii?Q?NKwSNFCVHWXQRUpfjbqQcDl+3eAtDCxMl5948i/xjwMkgPkCPK/v5XLvkeFk?=
- =?us-ascii?Q?Ktw6SX389QTyy22r/fZCuPVQ87Jwsa25ngzYMZuFC3dvOG7Im6n/6fM6IzQ5?=
- =?us-ascii?Q?GsvcMxA+t+qMBZHFjgvdDxfrAH0KQpiO4iTKs+jiNmn7fLzuGlEmoD+7WTMq?=
- =?us-ascii?Q?klKjOrlgjSTADUyy4HjGZ0uCdMwzkX8qkKQvsMPqOnO04rfxMx2pRbaBHxNn?=
- =?us-ascii?Q?fnVTWo4gEhtBDFWDrRXOpeF7y+4CeEq3+YFxSNLLFqsSNNZfS3yWpxojRxf5?=
- =?us-ascii?Q?hb/3wEERnWBGVFccWJpdLMOIwxi5wmJHj4PKOpZ6Q8KFv6mwqlwb+x7ND1os?=
- =?us-ascii?Q?BZMO0mpBUJjOnucoZ4TwiNEiJ1MTQXFrF5iH8pOhgrd53WuS0MeO13nKIVlD?=
- =?us-ascii?Q?LlXacegdFGhbjZiub4ThdYNyBtdR8WJ0TQ/Qc86cjzkZqBzD1znxGx/uetz7?=
- =?us-ascii?Q?Y85r7jt/mxijj+hXXZu8e9N0sMXr7HIpaZGDO5Gklijx5WoKi86vrFmLxYgR?=
- =?us-ascii?Q?maMkEVt701ugOIHzZ8FzGcOFSxxbgXn153vKByRaJxpqy+cSHc/EDj4Zcegj?=
- =?us-ascii?Q?t3D5UlFz4EPdrK2SnLk0L0hChxDYn7C4jA3xdSR2p2ksMGBXQFct7xo/7CPu?=
- =?us-ascii?Q?vXC2UieTXwMBSQoXk+J9zSkD/joCGGPhZjVu33fswMit+KLLc/to0ftqauqL?=
- =?us-ascii?Q?lmpfYVKTNaLukWOsk50oprVZTdeKkeMktA7TUcFjDJQIblSQ7R6w9VseqsdV?=
- =?us-ascii?Q?jKsv60Q9Hoi6JBN/Bch+8OumkpBjV/phS2ZsulN11JYj3ysO17TR8vGxoPq2?=
- =?us-ascii?Q?vNQwnYr31wPKMDEWarGp1bpbPsbr6aUnEdHWTnZIB+Kq+Ow2kq1TblK2k0t8?=
- =?us-ascii?Q?GAlfRs7WgzxwOT5P8oTZK+WoU4qF+uAaYyTNCtKQC5VU29o8bFYVO934DE6E?=
- =?us-ascii?Q?Rg1odvRF2/YZ5BfwvjVqpIOE9Ebmj3J0XtTnEEWJKYhRCa5MRZE6S7HTE8eO?=
- =?us-ascii?Q?MM+BnybZcf39mCT5rfeGOsKeZMxrkwoCo3XnIrAyc86VTXsHucztyhpVUdxl?=
- =?us-ascii?Q?dcR6Tl6QH0V+1K5ERr7hNSFe6fu28eRr8j0PZBHWW6rM/YzXE0e3dH1mEdU2?=
- =?us-ascii?Q?FDE5DfhUD5kXBm+wF06ukaxWafQV7uyv/4+VM70NUTCv3CxAgW5b8bb5+x8+?=
- =?us-ascii?Q?ffRHA3tr/Odeb74R441aosWH3/enSHKoF+3MxR+Cvucs+BOLrtLF2pCz3Ndt?=
- =?us-ascii?Q?Irrmf+XN6PsBk2ZgKQhaJKvPI5F/nmIE3Iy4q+Vg8sj9rzQUXfLROi+i02ew?=
- =?us-ascii?Q?ZPP9gPZKgtjL5x6O4zZQTum2jqDF0IgMkf1NFiyR?=
+	=?us-ascii?Q?0lrRtsIa+1QxBzydWfbx2q5bv2RzIy06rgu3taEdQSevMNhxmwm9kpJfr/JO?=
+ =?us-ascii?Q?EWRBHJEwI5jVVIuDpIb2jw4vHVVBlYMWITo0KDnoz246hygamn+PJdzAGEjC?=
+ =?us-ascii?Q?ECc+TinOSc5mA1wpK5od+ybVFCJwcY+n5frCYwbNI+bse2rMxIxL4Um6o4Nf?=
+ =?us-ascii?Q?VkgMKVfx1oq5wqjScHQlD5+MXm8JzajgRDwXQ1vVI8KR+nYHSP6DZ3hxNWlO?=
+ =?us-ascii?Q?MJ/bzobMoUjr21n3D3UaJTRndTsc5GiUJc7aggw8C29ujO0fyRUFRUFcJD/J?=
+ =?us-ascii?Q?/iXq6+76oHzftTyj7VCobXLkWMWWwU4eY+u4Phe1dhY5fuzmvVyjRR9n7zU+?=
+ =?us-ascii?Q?k02Jez1vfoIgMTTWUcXzlrdxWurYjGvXUp8Hn93vj36o96qsLagf0ZwWKsAC?=
+ =?us-ascii?Q?l5AFBWkS2tPgoTsjYW0PLHzUbqyZVI2G6xYrhVVUbszTk0fCQGTqn2/Lk9gG?=
+ =?us-ascii?Q?KnFOy6pLL/CMO0S4XGQ+eelOb7Gcwl2N1hTm7vWBoGrZd1T1d7p5uoAllXgk?=
+ =?us-ascii?Q?lXQsQrS02Q9yDn8m+JtAjfz2qV0BxxCw5J2F4HVCxxgqjHLV/vz423CMc+qj?=
+ =?us-ascii?Q?pBf3XGmZCBKpa+XG5itdTX9xQhyLyE+HfFjsN3qYBacsGb4jEIeHVlvbxazf?=
+ =?us-ascii?Q?rn2fwdKkBSvorTldgSj1kJ16YP6yCSOH8XvaHWzGRONr/8JbL8yZFX7hIawY?=
+ =?us-ascii?Q?Z2tHPzERSZWGa9nflf1KxjOj+m3pGjny1yffhmwxAvKkgqcFImYH/plzzUFK?=
+ =?us-ascii?Q?p1w5Foyr47rvit0CHlv7xcaY9/2DL4A8i64uWi9xfkftWG1h8drLjoYHVJ0W?=
+ =?us-ascii?Q?Hx+df837r2mEVVcCsExmGF0O09ZKRe53+w5Z25sbnjBN0G1BJTJ6tNeACPMg?=
+ =?us-ascii?Q?/xxlOFPuWtabcBp1qTitYLw2maLlSM4RUpYsVUgnmUmWnEbtjoLSWeubVskR?=
+ =?us-ascii?Q?E5B0Whdkh/uE5IuxVGuptLU/d+WNxXJujzXrEaR/CA9tN86SbIc6nXYfRM8q?=
+ =?us-ascii?Q?GMXpIqGgED015+I7hSo32pf8fcdj6oM54iohiwubur4BzJnWDfuSVsw9V8TS?=
+ =?us-ascii?Q?7LRGX++rfYEtJZ2UfDx4/ENTAiP1/udC10VPh6z5zS09KIF31pt5YC+pjW8F?=
+ =?us-ascii?Q?uVDROzHOKuTkVN+/3IdmrN+Axqs5bR2vTQB/5Ehbv63lS0KUcFrAOoa5QzOy?=
+ =?us-ascii?Q?xpU+w6RbeiArqAJjqod9hQHYPiAWzUPcR8/4CIMU8uPizgEcqnVvb8cdo9h2?=
+ =?us-ascii?Q?jxxvhyodJO8kx7IHfS88VGslYawdMXKirvPLFLXzE98stUNugydFba/s1Vtq?=
+ =?us-ascii?Q?oIxHOups+GvuGrsqjfCqoc1GqWDYi7ey7d5c3pqxNi6Je5shm64JIWqiJWDi?=
+ =?us-ascii?Q?f3gjab41BSgmZM2q/uauNaj0Ck0ACj6Lv9AIM0tHIuAh2xOwLEC9Jj9EdpQc?=
+ =?us-ascii?Q?CBISsJsP1cx27sB7+8GKDQLSVLmeCkhBP3A7cQbkVPE2Gq7l+aSrfGXtuyil?=
+ =?us-ascii?Q?VL9X1I36hYNScKd+UcpV17SXqA7F+0QdjEmy8c+mtuv1B5UkwHmC7oolJB8h?=
+ =?us-ascii?Q?yY8KnJ6meSI9Clbq6YKyCPu8KHobDh6yMXFL0saL?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c4ddb58-0274-474b-b568-08dca2922476
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8f6fc23-463e-4a29-079d-08dca2950af0
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 16:46:14.1512
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 17:06:59.8413
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s8+ELPX7zygIk9+vgeG16+HgJrmXCu1zu5+eFLY3DTb40+9mhNMZ7qwEewVYKt05kAWVDqgNegFaaUJcu3cqNA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8756
+X-MS-Exchange-CrossTenant-UserPrincipalName: ld/IV6ZigF7GILgiIHJUdfLPQ2s87XALZCVpFPtnRcqRJuEMN/s0QAnpraKmmcGl8xDY1a1u0g9EBLJC/BvQSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11075
 
 From: Carlos Song <carlos.song@nxp.com>
 
-According to I3C Specification(Version 1.1) 5.1.2.4 "Use of Clock
-Speed to Prevent Legacy I2C Devices From Seeing I3C traffic", when
-slow i2c devices(FM/FM+ rate i2c frequency without 50ns filter)
-works on i3c bus, i3c SDR should work at FM/FM+ rate.
+Add header file for generic I3C flags to avoid hard code in dts file.
 
-Adjust timing for difference mode.
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Frank Li <frank.li@nxp.com>
+Acked-by: Jason Liu <jason.hui.liu@nxp.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/i3c/master/svc-i3c-master.c | 66 +++++++++++++++++------------
- 1 file changed, 40 insertions(+), 26 deletions(-)
+ Documentation/devicetree/bindings/i3c/i3c.yaml |  5 ++++-
+ MAINTAINERS                                    |  1 +
+ include/dt-bindings/i3c/i3c.h                  | 16 ++++++++++++++++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
+ create mode 100644 include/dt-bindings/i3c/i3c.h
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index bb299ce02cccb..26dc6d833c6e3 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -127,6 +127,8 @@
+diff --git a/Documentation/devicetree/bindings/i3c/i3c.yaml b/Documentation/devicetree/bindings/i3c/i3c.yaml
+index 113957ebe9f1d..90f3610725185 100644
+--- a/Documentation/devicetree/bindings/i3c/i3c.yaml
++++ b/Documentation/devicetree/bindings/i3c/i3c.yaml
+@@ -91,6 +91,7 @@ patternProperties:
+               - const: 0
+               - description: |
+                   Shall encode the I3C LVR (Legacy Virtual Register):
++                  See dt-bindings/i3c/i3c.h
+                     bit[31:8]: unused/ignored
+                     bit[7:5]: I2C device index. Possible values:
+                       * 0: I2C device has a 50 ns spike filter
+@@ -153,6 +154,8 @@ additionalProperties: true
  
- /* This parameter depends on the implementation and may be tuned */
- #define SVC_I3C_FIFO_SIZE 16
-+#define SVC_I3C_PPBAUD_MAX 15
-+#define SVC_I3C_QUICK_I2C_CLK 4170000
+ examples:
+   - |
++    #include <dt-bindings/i3c/i3c.h>
++
+     i3c@d040000 {
+         compatible = "cdns,i3c-master";
+         clocks = <&coreclock>, <&i3csysclock>;
+@@ -166,7 +169,7 @@ examples:
+         /* I2C device. */
+         eeprom@57 {
+             compatible = "atmel,24c01";
+-            reg = <0x57 0x0 0x10>;
++            reg = <0x57 0x0 (I2C_FM | I2C_FILTER)>;
+             pagesize = <0x8>;
+         };
  
- #define SVC_I3C_EVENT_IBI	BIT(0)
- #define SVC_I3C_EVENT_HOTJOIN	BIT(1)
-@@ -535,6 +537,7 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
- 	struct i3c_bus *bus = i3c_master_get_bus(m);
- 	struct i3c_device_info info = {};
- 	unsigned long fclk_rate, fclk_period_ns;
-+	unsigned long i2c_period_ns, i2c_scl_rate, i3c_scl_rate;
- 	unsigned int high_period_ns, od_low_period_ns;
- 	u32 ppbaud, pplow, odhpp, odbaud, odstop, i2cbaud, reg;
- 	int ret;
-@@ -555,44 +558,55 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
- 	}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3c4fdf74a3f9d..f0ce22e04d467 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10479,6 +10479,7 @@ F:	Documentation/ABI/testing/sysfs-bus-i3c
+ F:	Documentation/devicetree/bindings/i3c/
+ F:	Documentation/driver-api/i3c
+ F:	drivers/i3c/
++F:	include/dt-bindings/i3c/
+ F:	include/linux/i3c/
  
- 	fclk_period_ns = DIV_ROUND_UP(1000000000, fclk_rate);
--
--	/*
--	 * Using I3C Push-Pull mode, target is 12.5MHz/80ns period.
--	 * Simplest configuration is using a 50% duty-cycle of 40ns.
--	 */
--	ppbaud = DIV_ROUND_UP(40, fclk_period_ns) - 1;
--	pplow = 0;
--
--	/*
--	 * Using I3C Open-Drain mode, target is 4.17MHz/240ns with a
--	 * duty-cycle tuned so that high levels are filetered out by
--	 * the 50ns filter (target being 40ns).
--	 */
--	odhpp = 1;
--	high_period_ns = (ppbaud + 1) * fclk_period_ns;
--	odbaud = DIV_ROUND_UP(240 - high_period_ns, high_period_ns) - 1;
--	od_low_period_ns = (odbaud + 1) * high_period_ns;
-+	i2c_period_ns = DIV_ROUND_UP(1000000000, bus->scl_rate.i2c);
-+	i2c_scl_rate = bus->scl_rate.i2c;
-+	i3c_scl_rate = bus->scl_rate.i3c;
- 
- 	switch (bus->mode) {
- 	case I3C_BUS_MODE_PURE:
-+		/* Using I3C Push-Pull mode and I2C OP 50% duty-cycle. */
-+		pplow = 0;
-+		ppbaud = DIV_ROUND_UP(fclk_rate / 2, i3c_scl_rate) - 1;
-+		high_period_ns = (ppbaud + 1) * fclk_period_ns;
-+		odbaud = DIV_ROUND_UP(fclk_rate, SVC_I3C_QUICK_I2C_CLK * (1 + ppbaud)) - 2;
-+		od_low_period_ns = (odbaud + 1) * high_period_ns;
- 		i2cbaud = 0;
- 		odstop = 0;
- 		break;
- 	case I3C_BUS_MODE_MIXED_FAST:
--	case I3C_BUS_MODE_MIXED_LIMITED:
- 		/*
--		 * Using I2C Fm+ mode, target is 1MHz/1000ns, the difference
--		 * between the high and low period does not really matter.
-+		 * I3C in <= 12.5M PP + I3C OP + I2C OP in clk rate
-+		 * keep I3C OD clk high period <= 40ns and use odbaud and pplow
-+		 * to adjust the i2c/i3c duty cycle.
- 		 */
--		i2cbaud = DIV_ROUND_UP(1000, od_low_period_ns) - 2;
-+		ppbaud = DIV_ROUND_UP(fclk_rate / 2, I3C_BUS_TYP_I3C_SCL_RATE) - 1;
-+		high_period_ns = (ppbaud + 1) * fclk_period_ns;
-+		pplow =  DIV_ROUND_UP(fclk_rate, i3c_scl_rate) - (2 + 2 * ppbaud);
+ IBM Operation Panel Input Driver
+diff --git a/include/dt-bindings/i3c/i3c.h b/include/dt-bindings/i3c/i3c.h
+new file mode 100644
+index 0000000000000..2513947e70cd2
+--- /dev/null
++++ b/include/dt-bindings/i3c/i3c.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
++/*
++ * Copyright 2024 NXP
++ */
 +
-+		odhpp = 1;
-+		odbaud = DIV_ROUND_UP(fclk_rate, SVC_I3C_QUICK_I2C_CLK * (1 + ppbaud)) - 2;
++#ifndef _DT_BINDINGS_I3C_I3C_H
++#define _DT_BINDINGS_I3C_I3C_H
 +
-+		/* i2c FM/FM+ */
-+		od_low_period_ns = (odbaud + 1) * high_period_ns;
-+		i2cbaud = DIV_ROUND_UP(i2c_period_ns, od_low_period_ns) - 2;
- 		odstop = 1;
- 		break;
-+	case I3C_BUS_MODE_MIXED_LIMITED:
- 	case I3C_BUS_MODE_MIXED_SLOW:
--		/*
--		 * Using I2C Fm mode, target is 0.4MHz/2500ns, with the same
--		 * constraints as the FM+ mode.
--		 */
--		i2cbaud = DIV_ROUND_UP(2500, od_low_period_ns) - 2;
-+		/* I3C PP + I3C OP + I2C OP both use i2c clk rate */
-+		ppbaud = DIV_ROUND_UP(fclk_rate / 2, i3c_scl_rate) - 1;
-+		pplow = 0;
-+		if (ppbaud > SVC_I3C_PPBAUD_MAX) {
-+			ppbaud = SVC_I3C_PPBAUD_MAX;
-+			pplow =  DIV_ROUND_UP(fclk_rate, i3c_scl_rate) - (2 + 2 * ppbaud);
-+		}
++#define I2C_FM      (1 << 4)
++#define I2C_FM_PLUS (0 << 4)
 +
-+		high_period_ns = (ppbaud + 1) * fclk_period_ns;
-+		odhpp = 0;
-+		odbaud = DIV_ROUND_UP(fclk_rate, i2c_scl_rate * (2 + 2 * ppbaud)) - 1;
++#define I2C_FILTER  (0 << 5)
++#define I2C_NO_FILTER_HIGH_FREQUENCY    (1 << 5)
++#define I2C_NO_FILTER_LOW_FREQUENCY     (2 << 5)
 +
-+		od_low_period_ns = (odbaud + 1) * high_period_ns;
-+		i2cbaud = DIV_ROUND_UP(i2c_period_ns, od_low_period_ns) - 2;
- 		odstop = 1;
- 		break;
- 	default:
++#endif
 -- 
 2.34.1
 
