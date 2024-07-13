@@ -1,152 +1,238 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFA2A41
-	for <imx@lists.linux.dev>; Sat, 13 Jul 2024 00:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54A229D0C;
+	Sat, 13 Jul 2024 15:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720829517; cv=none; b=stMBa53/KmjNBKyiUUbCURKGPEHOfDUp5+jXgJVfrre3NizruJqoj2Lsedqtz3bD6K9QbJzWhJH7HBR8+keDDiDT/ZRu8dKwFt7E3x7k8suzM9EgjpDA9Ed6KO8xvJVFtRP7Uyem555lv+5EpLddmN9HGIlEQqMO1KWbjg6fHwA=
+	t=1720884944; cv=none; b=X3GNdGYwq52KEsRvRqe3mKnz9g4fgy9sd7ft7E7OqMUkcSmLVK700GUZihFsn0exCSyXSKWcyAfe3dhPmcWLdv87vE8SvINK7a3/ohaP/fvrfyDyXzbGnPCD0BbyaAyMoAnD/MNaUvpdOYvdFFyjrCTUxy2akom9qqeOV15nF6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720829517; c=relaxed/simple;
-	bh=Phxk21ZRQHBWO8Fk+3b1KHjGX6RECntBicJRnbKr46U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AZcy0Ledc1PEpV8tfnDn5SJhvO8BCCX+e152zCqI3w+eOGMJndzMg77qj3VRUp6KMUsQI+vwZ9ifcT4vJOBzsC9etTW770Z5xOk3Re8fBdDF0Qymqy88U/+AAjq4jSnpJdFccu886Qq62azRIWjWOxSJruVjGF9TyiNcdkP9g2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gin7wQY8; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720884944; c=relaxed/simple;
+	bh=Hzx4jXYfR48a5NNIXZ6q4jR9oFl2lLbXwlEJFK/dl8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P4CoDHGUqGqmtV28MkraU8FQ+zC9yFNRgWzw0CPVBsWaeJEzr3hENSpl7xGlzl/dDEnotHR4VYkymfSek0tiIV0lfUQxj7of0NX8a80ezBE7dqDBYhuZPEIorh2YSoL1eJMqQHqWge+Ddvw/ssILDCTpA5JqjO/0kGxwoIYa0IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=skrZZD4L; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gin7wQY8"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ca8dfa2cceso1931942a91.2
-        for <imx@lists.linux.dev>; Fri, 12 Jul 2024 17:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720829515; x=1721434315; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q7pphgwh/0pG0XDQwktVo+yWTDf7IpCH6Ju6MKVkTgw=;
-        b=Gin7wQY8XLkoXDvS+7xsUzXhMgwYR0fmf4GYC/Ef1ht8yCua226VfGsK7+JJkEBOag
-         QdO2+/VnDuXKnX3s0B4HGgM8OpTvspoApIsE/Bhit1nT/Ova/3yDjk+LAhupiZ/MwWD+
-         NtYe0oPqCnv3rFYTFYJTBisL1JrpHakkxUc6FeG4/qqwjiAMHUifH3BUZmesJqzSmTAT
-         PyvnJSjrgcf3oxOPctwY8aXFM7tM3JbJlrXDaNfDtW6RHaYRdZsLVyQ9DqR3KM4COTBd
-         tVYWF63pVo8d1yiiC4xLa5/63Q76XeqUdS2LEupgqB1NhwcXZmwXsuGKr6HQzzjzFytz
-         JkAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720829515; x=1721434315;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q7pphgwh/0pG0XDQwktVo+yWTDf7IpCH6Ju6MKVkTgw=;
-        b=scopc8tDGIPX1pHw8CfPIIv4KZiThdx3DfEOfG6BVE5PeeiBr8T5xegsfxA/mMmUM4
-         1WljagFPJLPhLMW9bNN45AQoDXq0QCc4NFDZPHsHu4V6eeahpST9QjCb5EEi1O69MiSg
-         MPPwY6bWShd03UFh6FOwz9I2l5tNTrfl13VGED8sLIsCV19yWIjur2I2o4Fv0d5i5zRw
-         zdjY3uCa9zJP30Va2J2Kto851DqQj0JeF1R5IyTOM8KlFG0+hdSXjpSZQwQtPyd7ag1R
-         wSu4wH1pTnl2HWIxgdNobOo9Gnmys3HoRIpPoisfXZSXY/s1mfD+F+ZnMULishoP4Sby
-         ZjUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPvHkJMuwzPJ1acP70ilm+zCF/Q2ST4TDqtW4oTsO9EABng5pAxk7Vr38da+CaSjM3X+61w+JSQdchzWr4cAOwglq7
-X-Gm-Message-State: AOJu0YwKJJDmAYzZcnI7oWihA3OcucFWwSA+2F6+PDiuNzQuSZNFpA0d
-	42wHvBCYbl6skLp7/2dUaIGW7gRsGP9aU29KsrjY5KZD61U1opom
-X-Google-Smtp-Source: AGHT+IEjh/xpVfdgoQwIz90ulydeyB6ybkbqta+ytUx2VzxoLaOfYGkrxLhV5izrDYes3VNsqaxoXg==
-X-Received: by 2002:a17:90b:118:b0:2c4:dcf6:2130 with SMTP id 98e67ed59e1d1-2ca35d4b252mr10162252a91.32.1720829515082;
-        Fri, 12 Jul 2024 17:11:55 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:669e:eb9d:e30c:18b4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-78e386d5437sm20011a12.57.2024.07.12.17.11.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jul 2024 17:11:54 -0700 (PDT)
-Date: Fri, 12 Jul 2024 17:11:52 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Jacky Bai <ping.bai@nxp.com>, Jason Liu <jason.hui.liu@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] input: bbnsm_pwrkey: Fix missed key press after
- suspend
-Message-ID: <ZpHGSCzckXncmeRv@google.com>
-References: <20240712224352.82190-1-Frank.Li@nxp.com>
- <ZpG2fNQ9-inLN8-Q@google.com>
- <ZpG5d1/EsOU4eJEj@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="skrZZD4L"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 0747F874AC;
+	Sat, 13 Jul 2024 17:35:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1720884934;
+	bh=R8x8SOnjSlig4/B74pItuN9fRZ0Xwlht5fPrjiL7tgM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=skrZZD4L3XEQqgU+V4vyIzS7I+JCBpVZ5fxx5Cx4x/B9EK9E9hWjyruFvZHAhsCri
+	 7LcSPKnIZIvvvJZ/6XPdf2dRpXDSXvgOIMitIfFu7en6Z1gNTgGLmpbv6NGl+IKMl7
+	 x9i/uQicqbnNa5hdzW8w9fq6rOXUdOUj6vQNVaK3Nu8/istUP0khmd1mF3zMDQZDlB
+	 QA4w4mM0D3lZ3azOXK6m/jm54/kJT4otgiXRVj/oEHQdA/x4sjEjlYDNfSe3B7LY6N
+	 i+LOC5BXX0QoBVlXfz4kuxj/y7NL/YTi0g65Oa4bxsNZnFbKIPZ8HbZBRBxyopvlus
+	 uQCevR8gGXLbg==
+From: Marek Vasut <marex@denx.de>
+To: linux-media@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev
+Subject: [PATCH] gpu: ipu-v3: image-convert: Drop unused single conversion request code
+Date: Sat, 13 Jul 2024 17:35:00 +0200
+Message-ID: <20240713153524.107019-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZpG5d1/EsOU4eJEj@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Fri, Jul 12, 2024 at 07:17:11PM -0400, Frank Li wrote:
-> On Fri, Jul 12, 2024 at 04:04:28PM -0700, Dmitry Torokhov wrote:
-> > Hi Frank,
-> > 
-> > On Fri, Jul 12, 2024 at 06:43:51PM -0400, Frank Li wrote:
-> > > From: Jacky Bai <ping.bai@nxp.com>
-> > > 
-> > > Report input event directly on wakeup to ensure no press event is missed
-> > > when resuming from suspend.
-> > > 
-> > > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> > > Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> > > Acked-by: Jason Liu <jason.hui.liu@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/input/misc/nxp-bbnsm-pwrkey.c | 36 +++++++++++++++++++++++++++
-> > >  1 file changed, 36 insertions(+)
-> > > 
-> > > diff --git a/drivers/input/misc/nxp-bbnsm-pwrkey.c b/drivers/input/misc/nxp-bbnsm-pwrkey.c
-> > > index 1d99206dd3a8b..9675717ecbdfe 100644
-> > > --- a/drivers/input/misc/nxp-bbnsm-pwrkey.c
-> > > +++ b/drivers/input/misc/nxp-bbnsm-pwrkey.c
-> > > @@ -38,6 +38,7 @@ struct bbnsm_pwrkey {
-> > >  	int irq;
-> > >  	int keycode;
-> > >  	int keystate;  /* 1:pressed */
-> > > +	bool suspended;
-> > >  	struct timer_list check_timer;
-> > >  	struct input_dev *input;
-> > >  };
-> > > @@ -70,6 +71,7 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
-> > >  {
-> > >  	struct platform_device *pdev = dev_id;
-> > >  	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
-> > > +	struct input_dev *input = bbnsm->input;
-> > >  	u32 event;
-> > >  
-> > >  	regmap_read(bbnsm->regmap, BBNSM_EVENTS, &event);
-> > > @@ -81,6 +83,16 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
-> > >  	mod_timer(&bbnsm->check_timer,
-> > >  		   jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
-> > >  
-> > > +	/*
-> > > +	 * Directly report key event after resume to make sure key press
-> > > +	 * event is never missed.
-> > > +	 */
-> > 
-> > How do you know that wakeup was caused by the key press on this device?
-> > As far as I can see the driver requests the interrupt as shared, so we
-> > could end up in bbnsm_pwrkey_interrupt() even if button was not pressed.
-> > 
-> 
-> In bbnsm_pwrky_interrupt()
-> {	...
-> 	regmap_read(bbnsm->regmap, BBNSM_EVENTS, &event);                                           
->         	if (!(event & BBNSM_BTN_OFF))                                                               
->                 	return IRQ_NONE;
-> 
-> 	...
-> }
-> 
-> If wakeup was not caused by pwr key,  irq will do nothing, code will not
-> reach to here.
+Neither ipu_image_convert_sync() nor ipu_image_convert() is used or call
+from anywhere. Remove this unused code.
 
-OK, so the case you are trying to fix is when interrupt is delayed so
-the key is either already released or it will be released by the time
-the normal debouncing interval passes?
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Steve Longerbeam <slongerbeam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-staging@lists.linux.dev
+---
+ drivers/gpu/ipu-v3/ipu-image-convert.c | 76 --------------------------
+ include/video/imx-ipu-image-convert.h  | 46 ----------------
+ 2 files changed, 122 deletions(-)
 
-I think you want to reset ->suspended in the interrupt handler so that
-this block fires at most once per suspend/resume cycle. And maybe move
-it before calling mod_timer().
-
-Thanks.
-
+diff --git a/drivers/gpu/ipu-v3/ipu-image-convert.c b/drivers/gpu/ipu-v3/ipu-image-convert.c
+index 841316582ea9d..c87866253eee9 100644
+--- a/drivers/gpu/ipu-v3/ipu-image-convert.c
++++ b/drivers/gpu/ipu-v3/ipu-image-convert.c
+@@ -2395,82 +2395,6 @@ void ipu_image_convert_unprepare(struct ipu_image_convert_ctx *ctx)
+ }
+ EXPORT_SYMBOL_GPL(ipu_image_convert_unprepare);
+ 
+-/*
+- * "Canned" asynchronous single image conversion. Allocates and returns
+- * a new conversion run.  On successful return the caller must free the
+- * run and call ipu_image_convert_unprepare() after conversion completes.
+- */
+-struct ipu_image_convert_run *
+-ipu_image_convert(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
+-		  struct ipu_image *in, struct ipu_image *out,
+-		  enum ipu_rotate_mode rot_mode,
+-		  ipu_image_convert_cb_t complete,
+-		  void *complete_context)
+-{
+-	struct ipu_image_convert_ctx *ctx;
+-	struct ipu_image_convert_run *run;
+-	int ret;
+-
+-	ctx = ipu_image_convert_prepare(ipu, ic_task, in, out, rot_mode,
+-					complete, complete_context);
+-	if (IS_ERR(ctx))
+-		return ERR_CAST(ctx);
+-
+-	run = kzalloc(sizeof(*run), GFP_KERNEL);
+-	if (!run) {
+-		ipu_image_convert_unprepare(ctx);
+-		return ERR_PTR(-ENOMEM);
+-	}
+-
+-	run->ctx = ctx;
+-	run->in_phys = in->phys0;
+-	run->out_phys = out->phys0;
+-
+-	ret = ipu_image_convert_queue(run);
+-	if (ret) {
+-		ipu_image_convert_unprepare(ctx);
+-		kfree(run);
+-		return ERR_PTR(ret);
+-	}
+-
+-	return run;
+-}
+-EXPORT_SYMBOL_GPL(ipu_image_convert);
+-
+-/* "Canned" synchronous single image conversion */
+-static void image_convert_sync_complete(struct ipu_image_convert_run *run,
+-					void *data)
+-{
+-	struct completion *comp = data;
+-
+-	complete(comp);
+-}
+-
+-int ipu_image_convert_sync(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
+-			   struct ipu_image *in, struct ipu_image *out,
+-			   enum ipu_rotate_mode rot_mode)
+-{
+-	struct ipu_image_convert_run *run;
+-	struct completion comp;
+-	int ret;
+-
+-	init_completion(&comp);
+-
+-	run = ipu_image_convert(ipu, ic_task, in, out, rot_mode,
+-				image_convert_sync_complete, &comp);
+-	if (IS_ERR(run))
+-		return PTR_ERR(run);
+-
+-	ret = wait_for_completion_timeout(&comp, msecs_to_jiffies(10000));
+-	ret = (ret == 0) ? -ETIMEDOUT : 0;
+-
+-	ipu_image_convert_unprepare(run->ctx);
+-	kfree(run);
+-
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(ipu_image_convert_sync);
+-
+ int ipu_image_convert_init(struct ipu_soc *ipu, struct device *dev)
+ {
+ 	struct ipu_image_convert_priv *priv;
+diff --git a/include/video/imx-ipu-image-convert.h b/include/video/imx-ipu-image-convert.h
+index 3c71b8b94b33a..39906b0cbf2d8 100644
+--- a/include/video/imx-ipu-image-convert.h
++++ b/include/video/imx-ipu-image-convert.h
+@@ -149,50 +149,4 @@ int ipu_image_convert_queue(struct ipu_image_convert_run *run);
+  */
+ void ipu_image_convert_abort(struct ipu_image_convert_ctx *ctx);
+ 
+-/**
+- * ipu_image_convert() - asynchronous image conversion request
+- *
+- * @ipu:	the IPU handle to use for the conversion
+- * @ic_task:	the IC task to use for the conversion
+- * @in:		input image format
+- * @out:	output image format
+- * @rot_mode:	rotation mode
+- * @complete:	run completion callback
+- * @complete_context:	a context pointer for the completion callback
+- *
+- * Request a single image conversion. Returns the run that has been queued.
+- * A conversion context is automatically created and is available in run->ctx.
+- * As with ipu_image_convert_prepare(), the input/output formats and rotation
+- * mode must already meet IPU retrictions.
+- *
+- * On successful return the caller can queue more run requests if needed, using
+- * the prepared context in run->ctx. The caller is responsible for unpreparing
+- * the context when no more conversion requests are needed.
+- */
+-struct ipu_image_convert_run *
+-ipu_image_convert(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
+-		  struct ipu_image *in, struct ipu_image *out,
+-		  enum ipu_rotate_mode rot_mode,
+-		  ipu_image_convert_cb_t complete,
+-		  void *complete_context);
+-
+-/**
+- * ipu_image_convert_sync() - synchronous single image conversion request
+- *
+- * @ipu:	the IPU handle to use for the conversion
+- * @ic_task:	the IC task to use for the conversion
+- * @in:		input image format
+- * @out:	output image format
+- * @rot_mode:	rotation mode
+- *
+- * Carry out a single image conversion. Returns when the conversion
+- * completes. The input/output formats and rotation mode must already
+- * meet IPU retrictions. The created context is automatically unprepared
+- * and the run freed on return.
+- */
+-int ipu_image_convert_sync(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
+-			   struct ipu_image *in, struct ipu_image *out,
+-			   enum ipu_rotate_mode rot_mode);
+-
+-
+ #endif /* __IMX_IPU_IMAGE_CONVERT_H__ */
 -- 
-Dmitry
+2.43.0
+
