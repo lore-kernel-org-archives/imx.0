@@ -1,489 +1,307 @@
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012053.outbound.protection.outlook.com [52.101.66.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854482F32
-	for <imx@lists.linux.dev>; Sun, 14 Jul 2024 01:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720921066; cv=none; b=s7/CrIRSDcRGJBHU5SwVNUeHTHK3QKf1K5f3tTqlEcXHPyK/57wCDxrkVJZpqBntJqk1nmJ+Z2WtVZ23wofadV3HeTHVz8mIbUya8tKTs+QwmiSk1YTI0c1OD+UwyxS2I6LMljqGt9tjOEdk1czjkuHYACpt3wJSOdepYhkJJ5M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720921066; c=relaxed/simple;
-	bh=vbPxETCnjUf19AZphAXxoZR2oWMmQPPj4/uGGMFT1Lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jxLHOxgJ/Twj9siu9ztU8AthVHCH3PjWPzJ2GaPODO2OSS2lMGY+apn+uaojT+UzVlE7/MGg/fAc/dxowyfT2neekoYphx5OBUX1VMIQORIvc1MWhBnuKQ/ZDEZlvOaRUXDQC9qb+kHyJjEjwVKBpiproyStJ6xm3Ib/W0pQ1Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=v1houfaP; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FF722318
+	for <imx@lists.linux.dev>; Sun, 14 Jul 2024 08:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720945392; cv=fail; b=f3jzAXmc9VOS1mANAHxOwAVEAKq3ZaOm56griOt3Bzhw6GBwzGL53PdZ3Q3OYM1vqVqrCTcbpoSMBmSAVvXlumRsHCucjVkrw6SJyq3ZTKhyjYcDcuwU5NUAbctqCC9l7M+Huc1U4vvglePpcBTgL/nwFUHbAZmhYNCbrKcJl1U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720945392; c=relaxed/simple;
+	bh=TfMmuiuXsbW6uTbCnqd/1GacvgQDrgsa25IyLvP0+N4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=O0oRYKcACPDP/OI8oRuQfgGxBxGHH4Z9zT/qzz6/nqUz/78mUD6WR86ZIY3GtcIIeG4dL8Pdr3OMapBfhvTvErhnb/72TcbY5tSh5s4txXz4rLxAXzz+DEJVs2R6rmiHRav3Fq7uMHCnoNzsq/T0iEdvh6iUQYEen5ajOcpU8so=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=QzVXB+Sv; arc=fail smtp.client-ip=52.101.66.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="v1houfaP"
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5c46c8b0defso1748235eaf.1
-        for <imx@lists.linux.dev>; Sat, 13 Jul 2024 18:37:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720921063; x=1721525863; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NkkPlnzI7f+qQKC1m7qqtAGk1jqbVPd0COHuqZug0WY=;
-        b=v1houfaPzeACJnfHHMyXjh6inMvlMweGd9qXUhnSHpxGabgBYyTTzpD7V44BTngiyH
-         +DS57lnCw2UEqWffT6c27OkM6JPBOeXNdaDWn7ahh3jf2BEWHgzcMKDjPTHS5SqsW5hr
-         nw9EWAn9tLa5cp7u3XHY0VY23L9nvwpq/NWsU3xrEudhDVsh0W/j9iiiQKw1+vYJPW33
-         1/sZkO3gteji1jUYyw0m89EBsYe6XzrJLQhsyZBwJyAT8gTqr5GOpbil6PAixdhpI5VE
-         8rij5PLPiQDDmVfrJDCXvCq5aJVWn3XVIQvByIgzVeeQhrYBZFVlESfvnoj0TOerfGrl
-         TZRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720921063; x=1721525863;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NkkPlnzI7f+qQKC1m7qqtAGk1jqbVPd0COHuqZug0WY=;
-        b=W5ysTq9i0xeirjwNORiZz803ExLFM9JrFIomMMCMkwPiRySyZ8GiWZEDpy/3d8VQfb
-         vpuV827vusCtJRE+xWNIP23zs2IJmhjtJapzPXIsUFXkY1Uf6jmhqMzIFbDMWXuicUaF
-         mB/QmKFVN7HER9jec6R3TBrPcUdwkpWbFC/vUS2BhJ3IADUQCtnlSenTbzfNbGoceuP2
-         zPft4P7MZgi7qL/ln6MQpaei/oB80keyb68zJyk5s2HXEOUJq3M6kXwg2/U8hbxvjWmP
-         DFk5NCoVXvA8TPhC6onq2tM4EKtEEUYRDXmfvKaxQKg7F30LAwRUwBcgdcxZFb+52zC2
-         HmbA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6agLph1dfbLQRL/FqCSt26IAM67AgocPGoo/pOjs/vU92RyjZmKEAgM+W1tCKyCfYiVOxPkv1ZWIIAq+4nQ4fDyx4
-X-Gm-Message-State: AOJu0Yw4oh7UbSJYg8WcYqnQ7i12i9p3VAvbyl2UEVpHR/MZ0HsR8vkW
-	DCieOLNfktOpMYa1qmi1VHWpl3yTqjlT+UDk1AbayNhkaY0XzmNQlGJ2oXBPSis=
-X-Google-Smtp-Source: AGHT+IEzQnaTQ+Pu4qAlZFzP3hWTzj2x4i5JRUt3MAcUsxqNIfhdGFun/+zNguBPpwhqoOWKVFDSyg==
-X-Received: by 2002:a05:6820:2686:b0:5c4:57b6:ffbf with SMTP id 006d021491bc7-5cce0a4d350mr7394313eaf.0.1720921063514;
-        Sat, 13 Jul 2024 18:37:43 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700::17c0])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ce753d1a3dsm360634eaf.12.2024.07.13.18.37.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jul 2024 18:37:43 -0700 (PDT)
-Date: Sat, 13 Jul 2024 20:37:41 -0500
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-media@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Helge Deller <deller@gmx.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [PATCH 2/2] media: imx: vdic: Introduce mem2mem VDI deinterlacer
- driver
-Message-ID: <9f4cd132-6a4d-413a-badb-19e9f988c9a1@suswa.mountain>
-References: <20240713154934.109318-1-marex@denx.de>
- <20240713154934.109318-2-marex@denx.de>
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QzVXB+Sv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dpn0ZMh4ghL9zWLN/cM/Eem9DDgT4vQ9sUHv4cf5v4kevX71rO6Fs6MVHU9aIsSd9WFmyIr4TauApgkQEYJ25CvJWET1OkJGta2ZuspK10z3BWPRerCuPEfxa8ETQ2Fw7QxCYj7hjSNqpteeAnhVey2N27e+w1PH6s6QDw7C56DcUwC0RTq0O2Ps1HFEd8CtBP2KEkCfAEKj/bO0EQ8w9vHyIgqBrcp99a3yggeRU9bapUKZNH9zvoaiguAYhPIw5MHoa50U+rKw28h+wyHZX9ZUkRLNp/u3F6lFQ95hwC1AT/x24AZsp50zpbJPlpmiwcxTQ0dKnqAGp7FYQZ/kQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kv4a09498Xu0QrLCq8rZJZdheGGSYMoLw6N6Ze9OFI0=;
+ b=frsEqbxOPnBuyUohlaDysybUBgCw/oS63YS67/pTA4rEJeXbe0k11GedDWZh79OnXyvilcSjA3C7e1hd7iuX/y13FVwTkKeOWPq9oRLt2yzLt90F+ae86mS7lgBmKTQSlhvBHd4YUxo1nMdVfOCNyezby2oSAieYwkEJwK5twMNo5xvfsuBuRG/4BQmyWFAi51AjGiXx0E+Cy8OuIjudVHbEhORdM+SpPbvkGZNfxkhA0pii+e0dHflVheXOdqxZoMNu87g90OXZcpJZ/z8MBVZbktGXhHxsUf98tMVMKNZhKb+dKs2l5+kLKnz6NSCnoD2NsuhwByeWPmx7CCZKJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kv4a09498Xu0QrLCq8rZJZdheGGSYMoLw6N6Ze9OFI0=;
+ b=QzVXB+Sv639G701nskNmJ7JbzATO7AyVwnk1CHtlIOvsuqDVnw88Gob4ZeMG9d1CazX2aP6cxJOgfRiniCcBKhIg9P2lBYmmad0zMwzx3BfVcrB/Z34GU5xaTAVvXPljikngPNPXXS4vQEfuuCCwcF8jhAnEjo323LX6oOBwLSI=
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AS8PR04MB7544.eurprd04.prod.outlook.com (2603:10a6:20b:23f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.27; Sun, 14 Jul
+ 2024 08:22:59 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.7762.020; Sun, 14 Jul 2024
+ 08:22:59 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>, "Peng Fan (OSS)"
+	<peng.fan@oss.nxp.com>
+CC: Jonathan Corbet <corbet@lwn.net>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Sudeep Holla
+	<sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "arm-scmi@vger.kernel.org"
+	<arm-scmi@vger.kernel.org>, "linux-rtc@vger.kernel.org"
+	<linux-rtc@vger.kernel.org>, "linux-input@vger.kernel.org"
+	<linux-input@vger.kernel.org>
+Subject: RE: [PATCH v5 6/7] rtc: support i.MX95 BBM RTC
+Thread-Topic: [PATCH v5 6/7] rtc: support i.MX95 BBM RTC
+Thread-Index: AQHaw6ge58HQEpAf9E+7KDL38YKrDrHyG+aAgAPmEjA=
+Date: Sun, 14 Jul 2024 08:22:59 +0000
+Message-ID:
+ <PAXPR04MB8459B4870DB4CBC47BEE511688A02@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20240621-imx95-bbm-misc-v2-v5-0-b85a6bf778cb@nxp.com>
+ <20240621-imx95-bbm-misc-v2-v5-6-b85a6bf778cb@nxp.com>
+ <202407112033378dbbea83@mail.local>
+In-Reply-To: <202407112033378dbbea83@mail.local>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AS8PR04MB7544:EE_
+x-ms-office365-filtering-correlation-id: 82c988d5-64b6-4f71-eac7-08dca3de2bd6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?5YJeP7eAZbK+pnC53pjQ8Ny5qNjSEur4/GGyxGOw8KPe2JlGXgpNd0EWE7sF?=
+ =?us-ascii?Q?wXvjKV8EKog7ImWLrJu9WBXP34dnJU8Fs3Fv9x2bf4lJMqs0V4SOoiuKqi9k?=
+ =?us-ascii?Q?BsoGjOMlPW0FdjniRUtEAg3yjzeKMhxd5+Z7JyQhKYQik1ARRZ9+USAvsL3h?=
+ =?us-ascii?Q?ayrgPMPtTDauphfBmW5zZHDBxgIEqHcAKCmGacQqv5OLwJPMvA5hTpKWghVv?=
+ =?us-ascii?Q?BvmSxZ5NbM2Yb90Qnp3TA8LZN6C3F6DXMB+bo3bZMQSxTWH5lHa6BQIY05yQ?=
+ =?us-ascii?Q?Xhhq/q6Pp9MidYCXF0l8DG9vqt+xNQIbbVKs5m1pecK80FR+CqfcQs4LM0mH?=
+ =?us-ascii?Q?umZ5l4+kTe9fWZVLBKmFBFnTyYNXyu0LF1HeHbtO8vDdkGn2qFhDb6sPwAdV?=
+ =?us-ascii?Q?nnGY8Mcy3PUxcKLpeLKRVN0IKPHOMtwFmhu2h01BYDq/bY6lDSveyx0eqhOt?=
+ =?us-ascii?Q?BflDII0VO9cIxcXznfCdCG1h4xPJdA2csaRaiVt2f96huviQc2c+2kTXQdCn?=
+ =?us-ascii?Q?oAmRhgEm0mhFxaw3gIyrWxPckllWF1Oj1vDoYB2ptOC0TgJ5pKojxxR6vwaJ?=
+ =?us-ascii?Q?f5N18jeqRq8RRpnHjXaTSa/YYbkyp5dw8Ht+LRaLiM3zgjWodPfOWM8ximP2?=
+ =?us-ascii?Q?/GgcWp+zd3dMyQAvHIp8FPB+LxlbWMwRLhiQ042RIxTpVOKOBEb3Og4xBI8x?=
+ =?us-ascii?Q?j3KDlGw/7V5qDm+Ep/vODvGWGL2da0PkWLpOVaFRur1aMVf1s2718cUofzCD?=
+ =?us-ascii?Q?zLa18smOaMWTXaAF5JR9q9dPrFgcu9m9BFralyNJrnEVFrmZPM6t11hVurtD?=
+ =?us-ascii?Q?WfP1oxIrhYgpD5wG2NZP0rVoga89xNAjL30g/hiB0iOnZFT7SZ2tZGixAuyO?=
+ =?us-ascii?Q?Lx3VsFgjb/eAcRxl6nwBcGzUaiL7rEcmVyG9DGPT3p5KMXqIvJfD+Kp+Qb4d?=
+ =?us-ascii?Q?87haSss7RsR+SGWZ0UawzzJyRjMjtwo+unippU83PbE8cD8cdGe+E6SyrV6X?=
+ =?us-ascii?Q?P9arhRxBr89mztP07UCJ0f0baZ54ZTlgnqRTxbUFA4fJw0mmcp1MJoVKsxZD?=
+ =?us-ascii?Q?cnvg/YqpI/YKgbTzLCJ8VF6Vr54XCjeLrE/DVsceTq3oniywYRa3nI2Oo9DH?=
+ =?us-ascii?Q?2hZyokUuHNBDbbUd5nlmIRio9epZ8qdIu7iQ+r1bKmiKQ6ZsSc4OkFDfJNry?=
+ =?us-ascii?Q?pvxC/nrvrUQE0qFdOy+26dm1NBpe7CPBclXV0RayKq1RYAHuKwiQczkCoD4Y?=
+ =?us-ascii?Q?BSk0zPhgEZz6/QiQuq2vfp85YJoYHIh+irvcnYV3hdJq7xIB9Dfl49KRPyLj?=
+ =?us-ascii?Q?SJYgyEaSrCXF9VPqlUcPvzGdHyEGjK0KSDc6dVZ8hHPF831swqTEt9O4I0Y0?=
+ =?us-ascii?Q?U+URJU4=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Zat9BfPnuVf9+pll8zibivznITZ8DKBzXpblKhw+T0ltwMKgFLxZhwsp1AdK?=
+ =?us-ascii?Q?+YA2XNazaZi8pkepoRuVs5GPhbZ+zzj6b8ZhPuBllpPV6Zmk78esoVJ0hscA?=
+ =?us-ascii?Q?J1Q5PMjtAa3sFJbZ4xvl5/UkEHCue1gGu8MDfEdOz5j+xH6uXfBWfaHaKO+a?=
+ =?us-ascii?Q?ZbPVfmkKV+joHvnUb6AVynKnctGMbNBdHqLLhVSMaKH7vJfwlsarOMLkt1PA?=
+ =?us-ascii?Q?nuEa0PqoA8+RXiGIXw8zX0Ewt505B4LCqDOZIaprluycyESp7FvXrgOOUlMU?=
+ =?us-ascii?Q?E2En/8EkvoXjhM+iK6xd2S9/0zHMS4P4oD8YiFFhxElQ74N9Fdfp41XV0II4?=
+ =?us-ascii?Q?8waI93ZIrOFoYUkOd0fgYqXJAOnBEBUr6+YCgVfKBpVPGXike45Eq9mVxRtA?=
+ =?us-ascii?Q?IE7VDEYWbROpfGBJ2vHH0MofXkpgZgvvmhLsn5nfMQHVXdwa31IUdxv/PRCv?=
+ =?us-ascii?Q?cIJW+C4dG07fKfEIdZm1KYA/r/Vwnq5Y1abdpk0eklZcDGJwGrC/YRxQvSPR?=
+ =?us-ascii?Q?Ivl3b5BpEal8bhbRS4L2UDBgeLd1x8ySuofi1CEozCS9od33c4IJHrfkjlur?=
+ =?us-ascii?Q?in3lolGq/DS6qI+UBqZYJZetlECRHImR6DgkSzgpL2hZvIXrwF2hriHK9e01?=
+ =?us-ascii?Q?AowYs7PyCdulwgWhG39KVGlDiBM4IT+rSubGWcPZMdus0PwJxdMajskY/q9p?=
+ =?us-ascii?Q?DeobFtsDVpahh9bQVHUffOl565s6niljhD7WR4yTL57/7PpcalEIzweGutcl?=
+ =?us-ascii?Q?WHsCKd0V0bSd7lWa7kzeSUzMVMA3kRaIV1WtrxNBTisLQq4HKjWo/9UxkO0w?=
+ =?us-ascii?Q?x5lPqeS3B++CZ2pVdUYX4u3OXoT0Xe3NOUmlDEtL4WfUQQbRUDq0bkzUJXYN?=
+ =?us-ascii?Q?DzM/TlT36ftRtiUCRmFPvYH8gy2YxCfJstFBok6T5PLMAyczCkMeRnBAcIDI?=
+ =?us-ascii?Q?F4KBVHGA9i+Fkku0KQnn60TxtgCSXceOAOC72P233iFRugMTo0HmZwAACBvN?=
+ =?us-ascii?Q?hJXdwRoZHhUnmNerGWkrEebERt8P4nEdDkdTP7hmzkpoaS8veucp5HdY0Qrk?=
+ =?us-ascii?Q?RFQJdvze2JddWlP54Tu5F0UMYUJczo0rdz3jEh4scJgULLysK0uLPWUbMXNT?=
+ =?us-ascii?Q?y0tE6r+dZQrFNQvWmkmAVmrLj2A3K8zmKVllZ7EYqn++uWkVKFG59Yx4GVMp?=
+ =?us-ascii?Q?C5lLxJCCowYANOk1lNHBcfYz+BcjqbQ/rIrUchdfYTD+9fBw0SKJpspUCgmt?=
+ =?us-ascii?Q?wK2ZunJ1IoyDiH8d3VxRNCxRX/jKGBfwUO2u4FCJOxn9dK8yF1zxHjHBfFIv?=
+ =?us-ascii?Q?BiCLrV0Ws1+4T3XEa9paXKcBlumjbpAQllt1XDIhFdHQoTL37ZPmixytcb4l?=
+ =?us-ascii?Q?Hd8NK5oQkvAhhqtf3Ay5mpZF9RSxLFTiCr9D8ejCgdTjlMg6ZCxvfI4VstRt?=
+ =?us-ascii?Q?fsi3lR6cXBuB15DdLV4IkmVxXLqnmYsp07W53FPcm/c2MIKdYSWPwNsLFZso?=
+ =?us-ascii?Q?d2kEPvMRcocfeXLzQjeR3cBeqzb1Ng6ohFdw2TlEhoH4TYxLmpM7QC1FC1Pg?=
+ =?us-ascii?Q?VFUMBGbJVX4Vtkf3w9s=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240713154934.109318-2-marex@denx.de>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82c988d5-64b6-4f71-eac7-08dca3de2bd6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2024 08:22:59.3099
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZmEOHTNttnoRFlzHk0bSurFPldvISdLhVHF9+ZrdvhWNGnn/HlWx04/pjq1KYVH0X7pVLr8Zw+y1vgLKSsb/jQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7544
 
-On Sat, Jul 13, 2024 at 05:48:02PM +0200, Marek Vasut wrote:
-> diff --git a/drivers/staging/media/imx/imx-media-dev.c b/drivers/staging/media/imx/imx-media-dev.c
-> index be54dca11465d..b75eec4513eab 100644
-> --- a/drivers/staging/media/imx/imx-media-dev.c
-> +++ b/drivers/staging/media/imx/imx-media-dev.c
-> @@ -57,7 +57,47 @@ static int imx6_media_probe_complete(struct v4l2_async_notifier *notifier)
->  		goto unlock;
->  	}
->  
-> +	imxmd->m2m_vdic[0] = imx_media_mem2mem_vdic_init(imxmd, 0);
-> +	if (IS_ERR(imxmd->m2m_vdic[0])) {
-> +		ret = PTR_ERR(imxmd->m2m_vdic[0]);
-> +		imxmd->m2m_vdic[0] = NULL;
-> +		goto unlock;
-> +	}
-> +
-> +	/* MX6S/DL has one IPUv3, init second VDI only on MX6Q/QP */
-> +	if (imxmd->ipu[1]) {
-> +		imxmd->m2m_vdic[1] = imx_media_mem2mem_vdic_init(imxmd, 1);
-> +		if (IS_ERR(imxmd->m2m_vdic[1])) {
-> +			ret = PTR_ERR(imxmd->m2m_vdic[1]);
-> +			imxmd->m2m_vdic[1] = NULL;
-> +			goto unlock;
+> Subject: Re: [PATCH v5 6/7] rtc: support i.MX95 BBM RTC
+>=20
+> Hello,
+>=20
+> On 21/06/2024 15:04:41+0800, Peng Fan (OSS) wrote:
+> > +	ret =3D bbnsm->ops->rtc_time_get(ph, 0, &val);
+> > +	if (ret) {
+> > +		dev_err(dev, "%s: %d\n", __func__, ret);
+>=20
+> This is not super useful, you should drop the various dev_err or pr_err
+> as there is no action the user can take to solve the erro apart from
+> retrying.
 
+Sure. I will remove the various dev_err or pr_err in v6.
 
-There should be some clean up on this error path.  Ideally
-imx_media_mem2mem_vdic_init() would have a matching uninit() function
-we could call.
+>=20
+> > +		return ret;
+> > +	}
+> > +
+> > +	rtc_time64_to_tm(val, tm);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int scmi_imx_bbm_set_time(struct device *dev, struct
+> rtc_time
+> > +*tm) {
+> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
+> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
+> > +	u64 val;
+> > +	int ret;
+> > +
+> > +	val =3D rtc_tm_to_time64(tm);
+> > +
+> > +	ret =3D bbnsm->ops->rtc_time_set(ph, 0, val);
+> > +	if (ret)
+> > +		dev_err(dev, "%s: %d\n", __func__, ret);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int scmi_imx_bbm_alarm_irq_enable(struct device *dev,
+> unsigned
+> > +int enable) {
+>=20
+> How can userspace disable the alarm?
 
-> +		}
-> +	}
-> +
->  	ret = imx_media_csc_scaler_device_register(imxmd->m2m_vdev);
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	ret = imx_media_mem2mem_vdic_register(imxmd->m2m_vdic[0]);
-> +	if (ret)
-> +		goto unreg_csc;
-> +
-> +	/* MX6S/DL has one IPUv3, init second VDI only on MX6Q/QP */
-> +	if (imxmd->ipu[1]) {
-> +		ret = imx_media_mem2mem_vdic_register(imxmd->m2m_vdic[1]);
-> +		if (ret)
-> +			goto unreg_vdic;
-> +	}
-> +
-> +	mutex_unlock(&imxmd->mutex);
-> +	return ret;
+The SCMI notify has kernel level enable/disable
+drivers/firmware/arm_scmi/notify.c
 
-return 0;
+But indeed, userspace not able to disable the alarm.
 
-> +
-> +unreg_vdic:
-> +	imx_media_mem2mem_vdic_unregister(imxmd->m2m_vdic[0]);
-> +	imxmd->m2m_vdic[0] = NULL;
-> +unreg_csc:
-> +	imx_media_csc_scaler_device_unregister(imxmd->m2m_vdev);
-> +	imxmd->m2m_vdev = NULL;
->  unlock:
->  	mutex_unlock(&imxmd->mutex);
->  	return ret;
+I need use=20
+if (!enable) return -EOPNOTSUPP;
 
-[ snip ]
+>=20
+> > +	return 0;
+> > +}
+> > +
+> > +static int scmi_imx_bbm_set_alarm(struct device *dev, struct
+> > +rtc_wkalrm *alrm) {
+> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
+> > +	struct scmi_protocol_handle *ph =3D bbnsm->ph;
+> > +	struct rtc_time *alrm_tm =3D &alrm->time;
+> > +	u64 val;
+> > +	int ret;
+> > +
+> > +	val =3D rtc_tm_to_time64(alrm_tm);
+> > +
+> > +	ret =3D bbnsm->ops->rtc_alarm_set(ph, 0, val);
+> > +	if (ret)
+> > +		dev_err(dev, "%s: %d\n", __func__, ret);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static const struct rtc_class_ops smci_imx_bbm_rtc_ops =3D {
+> > +	.read_time =3D scmi_imx_bbm_read_time,
+> > +	.set_time =3D scmi_imx_bbm_set_time,
+> > +	.set_alarm =3D scmi_imx_bbm_set_alarm,
+> > +	.alarm_irq_enable =3D scmi_imx_bbm_alarm_irq_enable, };
+> > +
+> > +static int scmi_imx_bbm_rtc_notifier(struct notifier_block *nb,
+> > +unsigned long event, void *data) {
+> > +	struct scmi_imx_bbm *bbnsm =3D container_of(nb, struct
+> scmi_imx_bbm, nb);
+> > +	struct scmi_imx_bbm_notif_report *r =3D data;
+> > +
+> > +	if (r->is_rtc)
+> > +		rtc_update_irq(bbnsm->rtc_dev, 1, RTC_AF |
+> RTC_IRQF);
+> > +	else
+> > +		pr_err("Unexpected bbm event: %s\n", __func__);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int scmi_imx_bbm_rtc_init(struct scmi_device *sdev) {
+> > +	const struct scmi_handle *handle =3D sdev->handle;
+> > +	struct device *dev =3D &sdev->dev;
+> > +	struct scmi_imx_bbm *bbnsm =3D dev_get_drvdata(dev);
+> > +	int ret;
+> > +
+> > +	bbnsm->rtc_dev =3D devm_rtc_allocate_device(dev);
+> > +	if (IS_ERR(bbnsm->rtc_dev))
+> > +		return PTR_ERR(bbnsm->rtc_dev);
+> > +
+> > +	bbnsm->rtc_dev->ops =3D &smci_imx_bbm_rtc_ops;
+> > +	bbnsm->rtc_dev->range_min =3D 0;
+>=20
+> range_min is set to 0 by default, this is not necessary
+>=20
+> > +	bbnsm->rtc_dev->range_max =3D U32_MAX;
+> > +
+> > +	ret =3D devm_rtc_register_device(bbnsm->rtc_dev);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	bbnsm->nb.notifier_call =3D &scmi_imx_bbm_rtc_notifier;
+> > +	return handle->notify_ops->devm_event_notifier_register(sdev,
+> SCMI_PROTOCOL_IMX_BBM,
+> > +
+> 	SCMI_EVENT_IMX_BBM_RTC,
+> > +
+> 	NULL, &bbnsm->nb);
+>=20
+> Note that failing after devm_rtc_register_device opens the driver to a
+> race condition as the character device will exist at that time.
 
-> +static void ipu_mem2mem_vdic_device_run(void *_ctx)
-> +{
-> +	struct ipu_mem2mem_vdic_ctx *ctx = _ctx;
-> +	struct ipu_mem2mem_vdic_priv *priv = ctx->priv;
-> +	struct vb2_v4l2_buffer *curr_buf, *dst_buf;
-> +	dma_addr_t prev_phys, curr_phys, out_phys;
-> +	struct v4l2_pix_format *infmt;
-> +	u32 phys_offset = 0;
-> +	unsigned long flags;
-> +	int ret;
-> +
-> +	infmt = ipu_mem2mem_vdic_get_format(priv, V4L2_BUF_TYPE_VIDEO_OUTPUT);
-> +	if (V4L2_FIELD_IS_SEQUENTIAL(infmt->field))
-> +		phys_offset = infmt->sizeimage / 2;
-> +	else if (V4L2_FIELD_IS_INTERLACED(infmt->field))
-> +		phys_offset = infmt->bytesperline;
-> +	else
-> +		dev_err(priv->dev, "Invalid field %d\n", infmt->field);
-> +
-> +	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
-> +	out_phys = vb2_dma_contig_plane_dma_addr(&dst_buf->vb2_buf, 0);
-> +
-> +	curr_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
-> +	if (!curr_buf) {
-> +		dev_err(priv->dev, "Not enough buffers %d\n", ret);
+Could you please share more info on this?
 
-ret is uninitialized.  Just delete it.
+Won't the devm_rtc_register_device could automatically remove
+the rtc is notifier register fails?
 
-> +		return;
-> +	}
-> +
-> +	spin_lock_irqsave(&priv->irqlock, flags);
-> +
-> +	if (ctx->curr_buf) {
-> +		ctx->prev_buf = ctx->curr_buf;
-> +		ctx->curr_buf = curr_buf;
-> +	} else {
-> +		ctx->prev_buf = curr_buf;
-> +		ctx->curr_buf = curr_buf;
-> +		dev_warn(priv->dev, "Single-buffer mode, fix your userspace\n");
-> +	}
-> +
-> +	prev_phys = vb2_dma_contig_plane_dma_addr(&ctx->prev_buf->vb2_buf, 0);
-> +	curr_phys = vb2_dma_contig_plane_dma_addr(&ctx->curr_buf->vb2_buf, 0);
-> +
-> +	priv->curr_ctx = ctx;
-> +	spin_unlock_irqrestore(&priv->irqlock, flags);
-> +
-> +	ipu_cpmem_set_buffer(priv->vdi_out_ch,  0, out_phys);
-> +	ipu_cpmem_set_buffer(priv->vdi_in_ch_p, 0, prev_phys + phys_offset);
-> +	ipu_cpmem_set_buffer(priv->vdi_in_ch,   0, curr_phys);
-> +	ipu_cpmem_set_buffer(priv->vdi_in_ch_n, 0, curr_phys + phys_offset);
-> +
-> +	/* No double buffering, always pick buffer 0 */
-> +	ipu_idmac_select_buffer(priv->vdi_out_ch, 0);
-> +	ipu_idmac_select_buffer(priv->vdi_in_ch_p, 0);
-> +	ipu_idmac_select_buffer(priv->vdi_in_ch, 0);
-> +	ipu_idmac_select_buffer(priv->vdi_in_ch_n, 0);
-> +
-> +	/* Enable the channels */
-> +	ipu_idmac_enable_channel(priv->vdi_out_ch);
-> +	ipu_idmac_enable_channel(priv->vdi_in_ch_p);
-> +	ipu_idmac_enable_channel(priv->vdi_in_ch);
-> +	ipu_idmac_enable_channel(priv->vdi_in_ch_n);
-> +}
+Thanks,
+Peng.
 
-[ snip ]
-
-> +static int ipu_mem2mem_vdic_queue_setup(struct vb2_queue *vq, unsigned int *nbuffers,
-> +					unsigned int *nplanes, unsigned int sizes[],
-> +					struct device *alloc_devs[])
-> +{
-> +	struct ipu_mem2mem_vdic_ctx *ctx = vb2_get_drv_priv(vq);
-> +	struct ipu_mem2mem_vdic_priv *priv = ctx->priv;
-> +	struct v4l2_pix_format *fmt = ipu_mem2mem_vdic_get_format(priv, vq->type);
-> +	unsigned int count = *nbuffers;
-> +
-> +	*nbuffers = count;
-
-count and *nbuffers are the same already.  Delete this statement.
-
-> +
-> +	if (*nplanes)
-> +		return sizes[0] < fmt->sizeimage ? -EINVAL : 0;
-> +
-> +	*nplanes = 1;
-> +	sizes[0] = fmt->sizeimage;
-> +
-> +	dev_dbg(ctx->priv->dev, "get %d buffer(s) of size %d each.\n",
-                                     ^^
-%u for unsigned int.
-
-> +		count, fmt->sizeimage);
-> +
-> +	return 0;
-> +}
-
-[ snip ]
-
-> +static int ipu_mem2mem_vdic_get_ipu_resources(struct ipu_mem2mem_vdic_priv *priv,
-> +					      struct video_device *vfd)
-> +{
-> +	char *nfbname, *eofname;
-> +	int ret;
-> +
-> +	nfbname = devm_kasprintf(priv->dev, GFP_KERNEL, "%s_nfb4eof:%u",
-> +				 vfd->name, priv->ipu_id);
-> +	if (!nfbname)
-> +		return -ENOMEM;
-> +
-> +	eofname = devm_kasprintf(priv->dev, GFP_KERNEL, "%s_eof:%u",
-> +				 vfd->name, priv->ipu_id);
-> +	if (!eofname)
-> +		goto err_eof;
-> +
-> +	priv->vdi = ipu_vdi_get(priv->ipu_dev);
-> +	if (IS_ERR(priv->vdi)) {
-> +		ret = PTR_ERR(priv->vdi);
-> +		goto err_vdi;
-> +	}
-> +
-> +	priv->ic = ipu_ic_get(priv->ipu_dev, IC_TASK_VIEWFINDER);
-> +	if (IS_ERR(priv->ic)) {
-> +		ret = PTR_ERR(priv->ic);
-> +		goto err_ic;
-> +	}
-> +
-> +	priv->vdi_in_ch_p = ipu_idmac_get(priv->ipu_dev,
-> +					  IPUV3_CHANNEL_MEM_VDI_PREV);
-> +	if (IS_ERR(priv->vdi_in_ch_p)) {
-> +		ret = PTR_ERR(priv->vdi_in_ch_p);
-> +		goto err_prev;
-> +	}
-> +
-> +	priv->vdi_in_ch = ipu_idmac_get(priv->ipu_dev,
-> +					IPUV3_CHANNEL_MEM_VDI_CUR);
-> +	if (IS_ERR(priv->vdi_in_ch)) {
-> +		ret = PTR_ERR(priv->vdi_in_ch);
-> +		goto err_curr;
-> +	}
-> +
-> +	priv->vdi_in_ch_n = ipu_idmac_get(priv->ipu_dev,
-> +					  IPUV3_CHANNEL_MEM_VDI_NEXT);
-> +	if (IS_ERR(priv->vdi_in_ch_n)) {
-> +		ret = PTR_ERR(priv->vdi_in_ch_n);
-> +		goto err_next;
-> +	}
-> +
-> +	priv->vdi_out_ch = ipu_idmac_get(priv->ipu_dev,
-> +					 IPUV3_CHANNEL_IC_PRP_VF_MEM);
-> +	if (IS_ERR(priv->vdi_out_ch)) {
-> +		ret = PTR_ERR(priv->vdi_out_ch);
-> +		goto err_out;
-> +	}
-> +
-> +	priv->nfb4eof_irq = ipu_idmac_channel_irq(priv->ipu_dev,
-> +						  priv->vdi_out_ch,
-> +						  IPU_IRQ_NFB4EOF);
-> +	ret = devm_request_irq(priv->dev, priv->nfb4eof_irq,
-> +			       ipu_mem2mem_vdic_nfb4eof_interrupt, 0,
-> +			       nfbname, priv);
-> +	if (ret)
-> +		goto err_irq_nfb4eof;
-> +
-> +	priv->eof_irq = ipu_idmac_channel_irq(priv->ipu_dev,
-> +					      priv->vdi_out_ch,
-> +					      IPU_IRQ_EOF);
-> +	ret = devm_request_irq(priv->dev, priv->eof_irq,
-> +			       ipu_mem2mem_vdic_eof_interrupt, 0,
-> +			       eofname, priv);
-> +	if (ret)
-> +		goto err_irq_eof;
-> +
-> +	/*
-> +	 * Enable PRG, without PRG clock enabled (CCGR6:prg_clk_enable[0]
-> +	 * and CCGR6:prg_clk_enable[1]), the VDI does not produce any
-> +	 * interrupts at all.
-> +	 */
-> +	if (ipu_prg_present(priv->ipu_dev))
-> +		ipu_prg_enable(priv->ipu_dev);
-> +
-> +	return 0;
-> +
-> +err_irq_eof:
-> +	devm_free_irq(priv->dev, priv->nfb4eof_irq, priv);
-        ^^^^
-
-> +err_irq_nfb4eof:
-> +	ipu_idmac_put(priv->vdi_out_ch);
-> +err_out:
-> +	ipu_idmac_put(priv->vdi_in_ch_n);
-> +err_next:
-> +	ipu_idmac_put(priv->vdi_in_ch);
-> +err_curr:
-> +	ipu_idmac_put(priv->vdi_in_ch_p);
-> +err_prev:
-> +	ipu_ic_put(priv->ic);
-> +err_ic:
-> +	ipu_vdi_put(priv->vdi);
-> +err_vdi:
-> +	devm_kfree(priv->dev, eofname);
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-> +err_eof:
-> +	devm_kfree(priv->dev, nfbname);
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Any time we call devm_kfree() it's a red flag.  Sometimes it makes sense
-but I haven't looked at it closely enough to see how it makes sense
-here.  Is it an ordering issue where we had to do devm_free_irq() and
-then we just freed oefname and nfbname for consistency and because why
-not?
-
-
-> +	return ret;
-> +}
-> +
-> +static void ipu_mem2mem_vdic_put_ipu_resources(struct ipu_mem2mem_vdic_priv *priv)
-> +{
-> +	devm_free_irq(priv->dev, priv->eof_irq, priv);
-> +	devm_free_irq(priv->dev, priv->nfb4eof_irq, priv);
-> +	ipu_idmac_put(priv->vdi_out_ch);
-> +	ipu_idmac_put(priv->vdi_in_ch_n);
-> +	ipu_idmac_put(priv->vdi_in_ch);
-> +	ipu_idmac_put(priv->vdi_in_ch_p);
-> +	ipu_ic_put(priv->ic);
-> +	ipu_vdi_put(priv->vdi);
-> +}
-> +
-> +int imx_media_mem2mem_vdic_register(struct imx_media_video_dev *vdev)
-> +{
-> +	struct ipu_mem2mem_vdic_priv *priv = to_mem2mem_priv(vdev);
-> +	struct video_device *vfd = vdev->vfd;
-> +	int ret;
-> +
-> +	vfd->v4l2_dev = &priv->md->v4l2_dev;
-> +
-> +	ret = ipu_mem2mem_vdic_get_ipu_resources(priv, vfd);
-> +	if (ret) {
-> +		v4l2_err(vfd->v4l2_dev, "Failed to get VDIC resources (%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = video_register_device(vfd, VFL_TYPE_VIDEO, -1);
-> +	if (ret) {
-> +		v4l2_err(vfd->v4l2_dev, "Failed to register video device\n");
-
-Probably should call ipu_mem2mem_vdic_put_ipu_resources() on this error
-path?
-
-> +		return ret;
-> +	}
-> +
-> +	v4l2_info(vfd->v4l2_dev, "Registered %s as /dev/%s\n", vfd->name,
-> +		  video_device_node_name(vfd));
-> +
-> +	return 0;
-> +}
-> +
-> +void imx_media_mem2mem_vdic_unregister(struct imx_media_video_dev *vdev)
-> +{
-> +	struct ipu_mem2mem_vdic_priv *priv = to_mem2mem_priv(vdev);
-> +	struct video_device *vfd = priv->vdev.vfd;
-> +
-> +	video_unregister_device(vfd);
-> +
-> +	ipu_mem2mem_vdic_put_ipu_resources(priv);
-> +}
-> +
-> +struct imx_media_video_dev *
-> +imx_media_mem2mem_vdic_init(struct imx_media_dev *md, int ipu_id)
-> +{
-> +	struct ipu_mem2mem_vdic_priv *priv;
-> +	struct video_device *vfd;
-> +	int ret;
-> +
-> +	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	priv->md = md;
-> +	priv->ipu_id = ipu_id;
-> +	priv->ipu_dev = md->ipu[ipu_id];
-> +	priv->dev = md->md.dev;
-> +
-> +	mutex_init(&priv->mutex);
-> +
-> +	vfd = video_device_alloc();
-> +	if (!vfd) {
-> +		ret = -ENOMEM;
-> +		goto err_vfd;
-> +	}
-> +
-> +	*vfd = mem2mem_template;
-> +	vfd->lock = &priv->mutex;
-> +	priv->vdev.vfd = vfd;
-> +
-> +	INIT_LIST_HEAD(&priv->vdev.list);
-> +	spin_lock_init(&priv->irqlock);
-> +	atomic_set(&priv->stream_count, 0);
-> +
-> +	video_set_drvdata(vfd, priv);
-> +
-> +	priv->m2m_dev = v4l2_m2m_init(&m2m_ops);
-> +	if (IS_ERR(priv->m2m_dev)) {
-> +		ret = PTR_ERR(priv->m2m_dev);
-> +		v4l2_err(&md->v4l2_dev, "Failed to init mem2mem device: %d\n",
-> +			 ret);
-> +		goto err_m2m;
-> +	}
-> +
-> +	/* Reset formats */
-> +	priv->fmt[V4L2_M2M_SRC] = ipu_mem2mem_vdic_default;
-> +	priv->fmt[V4L2_M2M_SRC].pixelformat = V4L2_PIX_FMT_YUV420;
-> +	priv->fmt[V4L2_M2M_SRC].field = V4L2_FIELD_SEQ_TB;
-> +	priv->fmt[V4L2_M2M_SRC].bytesperline = DEFAULT_WIDTH;
-> +	priv->fmt[V4L2_M2M_SRC].sizeimage = DEFAULT_WIDTH * DEFAULT_HEIGHT * 3 / 2;
-> +
-> +	priv->fmt[V4L2_M2M_DST] = ipu_mem2mem_vdic_default;
-> +	priv->fmt[V4L2_M2M_DST].pixelformat = V4L2_PIX_FMT_RGB565;
-> +	priv->fmt[V4L2_M2M_DST].field = V4L2_FIELD_NONE;
-> +	priv->fmt[V4L2_M2M_DST].bytesperline = DEFAULT_WIDTH * 2;
-> +	priv->fmt[V4L2_M2M_DST].sizeimage = DEFAULT_WIDTH * DEFAULT_HEIGHT * 2;
-> +
-> +	return &priv->vdev;
-> +
-> +err_m2m:
-> +	video_set_drvdata(vfd, NULL);
-
-video_device_release(vfd)
-
-regards,
-dan carpenter
-
-> +err_vfd:
-> +	kfree(priv);
-> +	return ERR_PTR(ret);
-> +}
-
-
+>=20
+>=20
+> --
+> Alexandre Belloni, co-owner and COO, Bootlin Embedded Linux and
+> Kernel engineering
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F
+> bootlin.com%2F&data=3D05%7C02%7Cpeng.fan%40nxp.com%7C91ef3c1
+> 72dc04c6ed2b908dca1e8befb%7C686ea1d3bc2b4c6fa92cd99c5c3016
+> 35%7C0%7C0%7C638563268206282814%7CUnknown%7CTWFpbGZs
+> b3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXV
+> CI6Mn0%3D%7C0%7C%7C%7C&sdata=3Dx8j754poti%2Bo07tbvO3p7XM
+> QB5jrbkBPWKORIKZdE%2BU%3D&reserved=3D0
