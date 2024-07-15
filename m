@@ -1,61 +1,61 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2FF25632
-	for <imx@lists.linux.dev>; Mon, 15 Jul 2024 18:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBE04643B
+	for <imx@lists.linux.dev>; Mon, 15 Jul 2024 18:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721066469; cv=none; b=UhEhPMOSwFGP9fBiNUsjXfJjZZwQsun7CcBFS6eU47aXf1NHJszntEk2Ar2fEGn18Lxb4OsT9HO/b4/8ovn1oJFyXuyyTrYSyfsbdMgTkn69M1mN36p+yGdWdy2m7kNT/FOo6hf4L9JLKU2+YfyNTtyaTjvIQgrbg2+QitUs/kc=
+	t=1721066521; cv=none; b=GVWoIwBeJoIsBjOKtU9ES7xUsu3bOp5a0cFKoLzFuKltFEqBxd4rTKoANCvJHgmEuBWevq+9VOK1n69uUpCKa9hshjJS7w90TTzuKKv4HMM5wIkHwNRIQkPqpm+662vkFGa/D/SOtrZxGXKkAHsNbI7+3PZP5R4GZX2ZlRejLiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721066469; c=relaxed/simple;
-	bh=BcyPQ0Hj8u9GJvpamxo1r3Jm4m2qApmFxC5M2AK53WU=;
+	s=arc-20240116; t=1721066521; c=relaxed/simple;
+	bh=JwPBxHAWtoQoxygEw6krFcHWhPS6KH1JtDf73X5Skck=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ly9ygNw1S71E+QlcDTyuUWME9oEwaUVcI+YOz0Lw+ZDCPnM5biD/WbdPYcZOVXh1UQMgvHUIRDdBthHR+HTWypKGS5g86TsbYvnIILGUJkm1h3ufJGX4xnOaOk1s0eEx9BEMUO1u5gxn6/y3APFra2AxvhUPfpISE9ZvIPqjhtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=drEF+VPt; arc=none smtp.client-ip=209.85.210.176
+	 In-Reply-To:Content-Type; b=fE6Sg4CNhA+V78h7t2Y+rQYl6sfmNOWzH8/GmcCJfN4ioIrTUgovdeiDTKOoQUqo1rXrqUaYkmelW35B+cq7qCHz+PGbmzJQg42g8DZZp5bU58sXMVvPWwOKOpn6jiEXPCXlIK+TgvIwXk+GZXGIor+KVhIcnbgmzF4A4QrxMxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kYew1mIy; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="drEF+VPt"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-70aec66c936so3345872b3a.0
-        for <imx@lists.linux.dev>; Mon, 15 Jul 2024 11:01:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kYew1mIy"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-78512d44a17so3418657a12.3
+        for <imx@lists.linux.dev>; Mon, 15 Jul 2024 11:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721066467; x=1721671267; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1721066520; x=1721671320; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+h7WH+E6mlrKsMBP9aO9Jw1AWxzVauLZHBjsy6ZfU0w=;
-        b=drEF+VPtYMTyk3eRdB77WZrrKnvh0Njr3te2YYSf7ALCdPpHrTwpgfa9Yq2ank5rZN
-         nD83dna9qOZnbfFUWevDNLuPn4bRbTTYKCjgR5k9V+CuK63N+EGROBy/DB8QB/kW5Qsd
-         cUzeMaT1eo2lx4H/YPezTRytEZmpAakdP5c8qbXaR7ezPsHxGORQIaweUT2zNvWIzBYA
-         vSAuZf5NCvep4TJT3xYIkrtUKcrxFHj8pWkOnXjuzkW25+gE00hvYla+Vjf4SwG050ny
-         0Goox+vYfczRHR/tMGzmUUWfTVMacLi/vkIDYClRRiiVClQmoZls7MZivMjxbtSNFVKr
-         Ynrw==
+        bh=vUWbQ2KlyuBvi5SiVJnONpg4b1PJ1YqEC0tuFG5cYeQ=;
+        b=kYew1mIyBbO3+EHS6FFZec0yTgqpztx0DM26K9i2I6N4Np3iKGHXIWCF7K5+PPLQ+X
+         38TuHJkOTSNwh41WAxwsU9BPigx6qx0NCHbBYNTFcuMxBjC+E7VLRroWA/Gi9tjFFRfJ
+         i7P58UWcPkf+0pkcDecRorMK0E5/kSqgH7+jX0NhkaVdpcIC3U5FEalyyd+Is9osHFTl
+         9uuGeuZhSTPhvavef+NFdipy/Ss9fuBesTS0oB6uDFkdert44AJCQq/GJqZRxZwkZMFU
+         8NoVuUf5SFN4FUn1CTz1A4ul4DHgDcA+4EVvQlSc7hdDNp5wsG0mxoVlPvYkQvCfrA9y
+         Xv1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721066467; x=1721671267;
+        d=1e100.net; s=20230601; t=1721066520; x=1721671320;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+h7WH+E6mlrKsMBP9aO9Jw1AWxzVauLZHBjsy6ZfU0w=;
-        b=faERe/UOZp5qf7iuxoevlXDq/2hUtOQyOxTmB+H9c5d/PjiTeeKcztGxVvUpBU6ohl
-         zfw9pw4vgf1DnaRylVl/ZyLXcQGGRylnOHJsaQ1/fI1LNFl1qpPIK1P+RpKLiuH8NxUx
-         hWfhfitBCKZmlUYDm1TA93Di+MSuuPbvcMFXxfGtCwOwPXqYabf29a1Q6YR9fD8QjX7k
-         50zJk1joyibG/K0x9QX6hB2V+p65OpjZ/70879ukmYTXrwAff4BMmCqs1kLRPuRW2pP3
-         v0TCpG5kFtcT4AmvmfIGBOJFwdmRgIA3GAIVPHU1va4Q/RAAyCiymHqnsN9BOYjj9cB0
-         ppHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWb4TWhNymO92IQyHUMvPxOx34f5Bi3Nt2UmwoOL9+UfAyOLTo5DBBWWhwX+51jzBDexT7tvwzbH4lDVCmfWP115rtC
-X-Gm-Message-State: AOJu0YzAD4L4sz0BAP7LANpVFY+WOgjOlK7uY67CugiciXmtzOBL/1Gg
-	U5PXgkqenBtajJUlCU3ETl8VWYYuQT/NEUkNfU+pE1wgADPjXiez
-X-Google-Smtp-Source: AGHT+IHC5bMiW2MzoXPLdvYkW+PZnFqyLJJu7/s2px3zxWmln+cxA3JommrImWXDVcepOSrqpEBa6w==
-X-Received: by 2002:a05:6a00:4b04:b0:70b:8190:d555 with SMTP id d2e1a72fcca58-70ba4925d8bmr488476b3a.32.1721066467301;
-        Mon, 15 Jul 2024 11:01:07 -0700 (PDT)
+        bh=vUWbQ2KlyuBvi5SiVJnONpg4b1PJ1YqEC0tuFG5cYeQ=;
+        b=orYCXkbxm6Xb3rx2R3uGS1WgftPzcW4veMfTsRIQR2Vf3n4GkzCz2KYn8HHBtc3l4L
+         5iw3roDJKJWY5dsY5Xc5AXs8uiBCqYJIqFVNVH8mOpsSNzM0kN7mdUB2VxwqGVZ6BEWH
+         uaOGLiyh/XfkpV5GfbxvGZOD+3dpFo05EWMDMXU300uvGmGCXAgLi6Zj7LVAewx5vjqH
+         y6ZzCyd+MGKmrzPmUcJY6RzwKIxGOHijm7iUNzIcrnHL6nj4wP5I1THLsR4iePd1Ix3r
+         HMLwk8BctLg08RkpH2maUPqjByGfAQ8ZOfYd4qm5YagD/h9Giqc9TbLJJtUvtj/0I+fH
+         qemQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpXBt+cOKDPmu6E43sNjRqYCrdg0a5D3nku9QLZi3pDBtrGLz1bWraSXSvdjWXbSlhElxWGrrRD/g5JvUHHmpioEvH
+X-Gm-Message-State: AOJu0YyG/egwy2fKl7E22oxagf36c6r4sgMzGH9kmmxGp5ohJpFxd505
+	nR6Qj+xgZGQznXfdQcuYccT+DWwZOPtvmCCfKwUG9DDAahzzthw2
+X-Google-Smtp-Source: AGHT+IGJg88rQeW+DWBrT1E/rwGH/TnMyrRf/QhqqmTcdnNjL2JUOZMHA0cQaD/ZdXIvBV+FziWFbw==
+X-Received: by 2002:a05:6a20:9145:b0:1c0:f23b:d35a with SMTP id adf61e73a8af0-1c3ee4903a3mr770780637.5.1721066519581;
+        Mon, 15 Jul 2024 11:01:59 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7ecc988dsm4690746b3a.198.2024.07.15.11.01.05
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7eccc19asm4649745b3a.200.2024.07.15.11.01.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 11:01:06 -0700 (PDT)
+        Mon, 15 Jul 2024 11:01:59 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <3ae98ea1-23a4-4e0f-9a1c-62eed84b42ef@roeck-us.net>
-Date: Mon, 15 Jul 2024 11:01:04 -0700
+Message-ID: <57b1d9da-ea7a-4df8-bc02-a3c9db4f28da@roeck-us.net>
+Date: Mon, 15 Jul 2024 11:01:57 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,13 +65,13 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
  struct imx_wdt_hw_feature
-To: Frank Li <Frank.Li@nxp.com>
-Cc: alice.guo@nxp.com, festevam@gmail.com, imx@lists.linux.dev,
- kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
- s.hauer@pengutronix.de, shawnguo@kernel.org, wim@linux-watchdog.org,
- ye.li@nxp.com
+To: Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
+Cc: alice.guo@nxp.com, imx@lists.linux.dev, kernel@pengutronix.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-watchdog@vger.kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org,
+ wim@linux-watchdog.org, ye.li@nxp.com
 References: <20240715170717.2490688-1-Frank.Li@nxp.com>
+ <CAOMZO5AqX25zduLXfXq6zU4SLRC_zs6ZU_D7ouA70iCdp-bt_g@mail.gmail.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -117,108 +117,32 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240715170717.2490688-1-Frank.Li@nxp.com>
+In-Reply-To: <CAOMZO5AqX25zduLXfXq6zU4SLRC_zs6ZU_D7ouA70iCdp-bt_g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/15/24 10:07, Frank Li wrote:
-> Move post_rcs_wait into struct imx_wdt_hw_feature to simplify code logic
-> for different compatible strings
+On 7/15/24 10:16, Fabio Estevam wrote:
+> Hi Frank,
 > 
-> i.MX93 and i.MX8ULP watchdog do not need to wait 2.5 clocks after RCS is
-> done. Set post_rcs_wait to false explicitly to maintain code consistency.
+> On Mon, Jul 15, 2024 at 2:07 PM Frank Li <Frank.Li@nxp.com> wrote:
+>>
+>> Move post_rcs_wait into struct imx_wdt_hw_feature to simplify code logic
+>> for different compatible strings
+>>
+>> i.MX93 and i.MX8ULP watchdog do not need to wait 2.5 clocks after RCS is
+>> done. Set post_rcs_wait to false explicitly to maintain code consistency.
+>>
+>> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+>> Signed-off-by: Alice Guo <alice.guo@nxp.com>
+>> Reviewed-by: Ye Li <ye.li@nxp.com>
+>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> It looks better now, thanks:
 > 
 
-Why ? That is not necessary and typically frowned upon for static variables.
-
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
-Please drop. I did not approve this change.
+Not in my opinion. As requested in my other e-mail, please drop my Reviewed-by: tag.
 
 Guenter
 
-> Signed-off-by: Alice Guo <alice.guo@nxp.com>
-> Reviewed-by: Ye Li <ye.li@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change from v2 to v3
-> - Set post_rcs_wait to false explicitly to maintain code consistency
-> - Add Guenter review tag.
-> Change from v1 to v2
-> - Combine to one patch
-> ---
->   drivers/watchdog/imx7ulp_wdt.c | 23 +++++++++++------------
->   1 file changed, 11 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
-> index 94914a22daff7..a4aa02f388b15 100644
-> --- a/drivers/watchdog/imx7ulp_wdt.c
-> +++ b/drivers/watchdog/imx7ulp_wdt.c
-> @@ -55,6 +55,7 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
->   
->   struct imx_wdt_hw_feature {
->   	bool prescaler_enable;
-> +	bool post_rcs_wait;
->   	u32 wdog_clock_rate;
->   };
->   
-> @@ -62,7 +63,6 @@ struct imx7ulp_wdt_device {
->   	struct watchdog_device wdd;
->   	void __iomem *base;
->   	struct clk *clk;
-> -	bool post_rcs_wait;
->   	bool ext_reset;
->   	const struct imx_wdt_hw_feature *hw;
->   };
-> @@ -95,7 +95,7 @@ static int imx7ulp_wdt_wait_rcs(struct imx7ulp_wdt_device *wdt)
->   		ret = -ETIMEDOUT;
->   
->   	/* Wait 2.5 clocks after RCS done */
-> -	if (wdt->post_rcs_wait)
-> +	if (wdt->hw->post_rcs_wait)
->   		usleep_range(wait_min, wait_min + 2000);
->   
->   	return ret;
-> @@ -334,15 +334,6 @@ static int imx7ulp_wdt_probe(struct platform_device *pdev)
->   	/* The WDOG may need to do external reset through dedicated pin */
->   	imx7ulp_wdt->ext_reset = of_property_read_bool(dev->of_node, "fsl,ext-reset-output");
->   
-> -	imx7ulp_wdt->post_rcs_wait = true;
-> -	if (of_device_is_compatible(dev->of_node,
-> -				    "fsl,imx8ulp-wdt")) {
-> -		dev_info(dev, "imx8ulp wdt probe\n");
-> -		imx7ulp_wdt->post_rcs_wait = false;
-> -	} else {
-> -		dev_info(dev, "imx7ulp wdt probe\n");
-> -	}
-> -
->   	wdog = &imx7ulp_wdt->wdd;
->   	wdog->info = &imx7ulp_wdt_info;
->   	wdog->ops = &imx7ulp_wdt_ops;
-> @@ -402,16 +393,24 @@ static const struct dev_pm_ops imx7ulp_wdt_pm_ops = {
->   
->   static const struct imx_wdt_hw_feature imx7ulp_wdt_hw = {
->   	.prescaler_enable = false,
-> +	.post_rcs_wait = true,
-> +	.wdog_clock_rate = 1000,
-> +};
-> +
-> +static const struct imx_wdt_hw_feature imx8ulp_wdt_hw = {
-> +	.prescaler_enable = false,
-> +	.post_rcs_wait = false,
->   	.wdog_clock_rate = 1000,
->   };
->   
->   static const struct imx_wdt_hw_feature imx93_wdt_hw = {
->   	.prescaler_enable = true,
-> +	.post_rcs_wait = false,
->   	.wdog_clock_rate = 125,
->   };
->   
->   static const struct of_device_id imx7ulp_wdt_dt_ids[] = {
-> -	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx7ulp_wdt_hw, },
-> +	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx8ulp_wdt_hw, },
->   	{ .compatible = "fsl,imx7ulp-wdt", .data = &imx7ulp_wdt_hw, },
->   	{ .compatible = "fsl,imx93-wdt", .data = &imx93_wdt_hw, },
->   	{ /* sentinel */ }
+> Reviewed-by: Fabio Estevam <festevam@gmail.com>
 
