@@ -1,61 +1,61 @@
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB183AC0F
-	for <imx@lists.linux.dev>; Mon, 15 Jul 2024 21:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7792828F0
+	for <imx@lists.linux.dev>; Mon, 15 Jul 2024 21:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721079749; cv=none; b=aB5V1ZVKJzWqkcZ3Gje/TV6HcQcGEt+dQoilpCmZiP5Aibi3JeqMGlturra3KV/0ggNY6ZZhpTyfpk/+7Sx5ILIR5yNGAgPR6JDurfyJXS1+5Mkml8IiSVRUI5rCHKF/RBMJFB2Mz18Dd9VmXxks4w58EA8Acxms7u+/wVaI9FU=
+	t=1721079860; cv=none; b=uKtCjwiTHZP7yRUM398vQjkXd+32JTy3fujSg/rnhtxpKf2FjNY+nBt+sUj5gGKFkJ8kTx5FCcUXI15Qm2AVyxC1PJNgEWTRjKt3aC8QJ4rcW7XGUVoL846ONEAoS8e1b3oIW69nQ5WokisOz8SzRsjt9iHaEf1Ad9Wo55FfKz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721079749; c=relaxed/simple;
-	bh=arZWug27IcQkXdsXmC1XbiFLh+ij7nNt6WOmMldScUc=;
+	s=arc-20240116; t=1721079860; c=relaxed/simple;
+	bh=Begtk3IiHPFU1NBNDHGc1hPdMq19v36TtALrWX3JKkg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lsTuA6luF/iKDYzgIfbd/wta6HMlXZqI3QDiOuOz9lkos5shkKiQa2EqH78F7ARAF9d7UGEu0Ep20zQn128vVvywTEQ4Psf1VfYXfZFnFuYb9XVU4GUDhb0p58/RrAurGrGmIedO1FpWe00VnMxZJRIUE/e+26aI0CZM5bQjBYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kiHHuBcE; arc=none smtp.client-ip=209.85.210.47
+	 In-Reply-To:Content-Type; b=AtRACvhpyRQNdhonqkQNLHpF9h5UXWswpxCkHSD1ppYH2+hXU8PsAfJDh5EIVmfATRCaMDNWlphDSM5Az4RPbgdudGEFwGu65uIHGxnFLJPWOcPotHSziR8o+pTNcTnh4M7+cko47EvKzAFetoLFekW3m3/+7MBbp8UNuxDspV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NgqLfIB4; arc=none smtp.client-ip=209.85.161.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kiHHuBcE"
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7035d5eec5aso2468450a34.1
-        for <imx@lists.linux.dev>; Mon, 15 Jul 2024 14:42:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NgqLfIB4"
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5c1d2f7ab69so2698986eaf.3
+        for <imx@lists.linux.dev>; Mon, 15 Jul 2024 14:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721079747; x=1721684547; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1721079858; x=1721684658; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=VYAGhYRjifYhzMKJdhkptuS7CtCn148ldXzyC77p4CU=;
-        b=kiHHuBcEH6I8y/5FYR0Mgq8VW3B9lGZYBa30dgJ6SdlN90wJJZqTk9D0oxFpbNmNPe
-         uZP9BPFPMYcUR/ra+LEnKuln0KH+EqkxfafMxlMhvBMgHeQo/3Ti0DMkhmsgNnawCh0u
-         XH4IScZHL3DOjPLsBYArSZXvNW1XAZdE5d6zzlcX1XM+TuJ6Dh1ziKihakRv4J1jGdAl
-         yXDgg3Z1n0PlMbI9Bha6RgPh5wqvROKNXZU7i4EtI2yxhTC5BsMzC4O4Zgt8csfmZXlZ
-         NjD7iEHoqmWH0jJCzlX4JWfEgAm2PWiNZ4k8zaqCilehrzj/shOOWNo9iECn51As3L1o
-         1AOQ==
+        bh=zkpZvD+cPZbJVdCKmHKhHWJ8jRdIFbMWTXKLTjjjFiA=;
+        b=NgqLfIB4UjKBbxxVUR9PUwRp2lWof9c4b/OO3LUJDM5cNoX2oMwy9Ii2IwPc5xSSLA
+         SN+TqQjOm5eoZBNQTTSOtvEG2vA0wm2KqYuAcCBg6S9fQTykT3o6men0w5rcx4iqSNBz
+         pIgkSVpzBvhXKpbw6LLMzQhjRMRh+ZXOQ1kerWK5vXEfLxNByYnDoau9MboYaqhXE3Em
+         0JHtXMp6GObpGQBnSkC1Fs28RVw9qxy3HHOgrwjrckjIolJy90jEoqHpjzjQQQ1kiJOV
+         gpIsMHwPv4FExpxtGlLL/RK8fvWaH2A8CQKSaOeG1/J+y5djbXCwoWKAyJM0DWgIiBHD
+         3d6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721079747; x=1721684547;
+        d=1e100.net; s=20230601; t=1721079858; x=1721684658;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VYAGhYRjifYhzMKJdhkptuS7CtCn148ldXzyC77p4CU=;
-        b=BFW+cAEBD4BzIIA1Q6SWIW9GdP98mDfcThlA/tWwUGfdBwM74AUfm91po2X5SPBVZh
-         jkTuqljdiKLpQuw1t+bM5F06ifP1w9VA0i6nqFws5WPRFN4pQ6qlo3FWfMo4JS0P71Sf
-         2nhP3EPdpBi8KF5uYNXd6dTAKXo0wIagB53UrA0cyyZJ74n++HM9fVECKmqJu94jHUHi
-         qtKos/4c7vi7EJWXbdpFh0TxBvbjcizBSkbmPVIqt4jVAlLMyYKnvTc+LETUytZTq0pT
-         CAaCNUKB/UVFL9sq/TEsYnpTdhq80XbGDJ5ZCV2/6T2DdaAu3fgpFymBt1JH0molRwBp
-         XlrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWN71c/c/TQk+DrJJbDGBgiKxRHtt/fjLHffIETCkvqkxY2uimziGlolETqoLpRGaaD15oS3E39XIkO2MYhwe9P3Fno
-X-Gm-Message-State: AOJu0YxSRvqYWdmMD40N6fUYQzSZAU0VJHaZXRX72LxUzS8mn0ND8c/M
-	NF2j4YgAVBcqBmpgN/tH1WRw4h2Z3oEr4Rl/Ykp/+QHgaVjpVwWy
-X-Google-Smtp-Source: AGHT+IE+CdyJ6BUn/1t+39m10arPNQnga6eSnwBOEb5+s+y7OLe/lSZIdMKfWs0nUIbxgC7hN8wDSw==
-X-Received: by 2002:a05:6830:61c6:b0:703:6988:dbed with SMTP id 46e09a7af769-708d99c31fcmr487911a34.34.1721079746864;
-        Mon, 15 Jul 2024 14:42:26 -0700 (PDT)
+        bh=zkpZvD+cPZbJVdCKmHKhHWJ8jRdIFbMWTXKLTjjjFiA=;
+        b=uQ+8GMEmYzPd/X2ahX0oljW/upeBi6XF7KyfTEPP45j9jJVidC0+b/aFKTlMUVIwcf
+         oNLpVC60+isozHQLvrKKvcNVFHOhRgwPTO2svgOrRwKsZjejVIyP0ekfD17JVxjsK4Jq
+         GP20DfXRYkKQUBzlhMWy7CxliYmQt9fFkiVj6meW/b0DPWu5d/m9eC4XKxXxUxMtK8tT
+         8Q1FXW1SKuXJp10TJ+3WQJnKweAMo6+Z8gXxUAdfE9xFrw2hFDRMqyrmpZhriJ1uLRWT
+         KxNAM6kletakonewscS/SAFzyr9CoekXAsFIR29vTdpVxpleeZgt60v/jl32a5obZSzL
+         rI8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWfVuMe+ToImBEx3tguRhroSelZwv2BplNE57Ych3BTSotfNZnYAVH/2dUIYp1tw/JArXK2AATdL/fsMUtC8hWf1ZHn
+X-Gm-Message-State: AOJu0YxPvvk15ZoyQ9kyuc/voHMnBwyduWZnxT5zJHjiCKxvVHWTbn4R
+	PRt2nHG58Y8uyo3upqUzAdAglD22XisjU3tWPi/B/KsfYatmE2u+
+X-Google-Smtp-Source: AGHT+IFadyZPGf/D3cSaCT7jnCUUAAu9ZFUWrD3j/GRyY6V0fIgo/IixMqbNYPqPSQgHBi9fJJlbxw==
+X-Received: by 2002:a05:6358:7f13:b0:1aa:b152:c7c5 with SMTP id e5c5f4694b2df-1ac90338671mr35738355d.12.1721079858460;
+        Mon, 15 Jul 2024 14:44:18 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7ecc947fsm4892666b3a.195.2024.07.15.14.42.24
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-78e3982b87esm3766507a12.77.2024.07.15.14.44.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 14:42:25 -0700 (PDT)
+        Mon, 15 Jul 2024 14:44:17 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1829e700-6b0f-42cb-8b08-81ca2bca4e24@roeck-us.net>
-Date: Mon, 15 Jul 2024 14:42:23 -0700
+Message-ID: <28bd11d3-2487-4dd4-ac44-896f972f7e97@roeck-us.net>
+Date: Mon, 15 Jul 2024 14:44:16 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,15 +65,13 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
  struct imx_wdt_hw_feature
-To: Frank Li <Frank.li@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: alice.guo@nxp.com, festevam@gmail.com, imx@lists.linux.dev,
  kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
  s.hauer@pengutronix.de, shawnguo@kernel.org, wim@linux-watchdog.org,
  ye.li@nxp.com
 References: <20240715170717.2490688-1-Frank.Li@nxp.com>
- <3ae98ea1-23a4-4e0f-9a1c-62eed84b42ef@roeck-us.net>
- <ZpVryrvsypzFrbma@lizhi-Precision-Tower-5810>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -119,34 +117,26 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <ZpVryrvsypzFrbma@lizhi-Precision-Tower-5810>
+In-Reply-To: <20240715170717.2490688-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 7/15/24 11:34, Frank Li wrote:
-> On Mon, Jul 15, 2024 at 11:01:04AM -0700, Guenter Roeck wrote:
->> On 7/15/24 10:07, Frank Li wrote:
->>> Move post_rcs_wait into struct imx_wdt_hw_feature to simplify code logic
->>> for different compatible strings
->>>
->>> i.MX93 and i.MX8ULP watchdog do not need to wait 2.5 clocks after RCS is
->>> done. Set post_rcs_wait to false explicitly to maintain code consistency.
->>>
->>
->> Why ? That is not necessary and typically frowned upon for static variables.
+On 7/15/24 10:07, Frank Li wrote:
+> Move post_rcs_wait into struct imx_wdt_hw_feature to simplify code logic
+> for different compatible strings
 > 
-> Some maintainer in other subsystem like explicity set to false to read code
-> easily even though not necessary for static variable espcially there are
-> already one which set to false.
+> i.MX93 and i.MX8ULP watchdog do not need to wait 2.5 clocks after RCS is
+> done. Set post_rcs_wait to false explicitly to maintain code consistency.
 > 
-> I am fine for each ways. You are free to pick up v2 instead of v3 if you
-> don't like v3's change.
-> 
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Alice Guo <alice.guo@nxp.com>
+> Reviewed-by: Ye Li <ye.li@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-That is not the point. The point here is that you made an - in my opinion
-unnecessary - change to this patch while at the same time adding my
-Reviewed-by: tag which applied to another version of the patch.
-This is inappropriate. Please refrain from doing that in the future.
+Being more explicit here, to make sure this isn't picked up with my
+Reviewed-by: tag:
+
+NACK for the explicit and unnecessary additional initializations.
 
 Guenter
 
