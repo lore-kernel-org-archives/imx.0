@@ -1,99 +1,205 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010028.outbound.protection.outlook.com [52.101.69.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2606013A3E8;
-	Mon, 15 Jul 2024 20:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721076449; cv=none; b=EHOnTNS9ChABFutMuhyS4NLnaeFF0aRoV07h18rVrcj5YF/nqXnVkWknpJEM+dG9q5o7ouZ0rR2Gk6oC3JeE4777A9JtlZmVGHZBZRdssdtadEkf1t9dFSWAkwqswYjvZ50ZMWhdX9FboreyJe6MmKZJJ7EmPbI5T5VQpwqZHNo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721076449; c=relaxed/simple;
-	bh=pb2oCnJWKQIhzo9wXBYUYrMHHmaf+b7rPM/tkxJu0Is=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GGI/0OEyiEk3Uh9qO+56E3/DDPo8MG70+g4t2J8HZIDlZtPBHiOThkJms0woN/+0JQxlHH0Hi3n1j120itCEIfjRmYTX6UpfcMgdUKM0jP9QzvS44gziecHQVOXrrC0AnVHhCkJ3b80XhhFnIiZV4IWbkmjaVcC0uot0O5edXGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=iZDLEJK5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D130EC15B
+	for <imx@lists.linux.dev>; Mon, 15 Jul 2024 21:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721077765; cv=fail; b=UMdD9RrSuEqiAnq4jvzGUULCkpBza01uYqIbTxK16icuLKc3U7jObq4lNuRl9f60wPz2s/Qv04QKfX1Yn2bLTEPAAfpHNJhVOEzuBNTa/ZTG4mNXHXSwGqRHAmR0Kr3iYsXde/ALO7abNxlDfyHNEUuirkfZWgoQb3AvNqpZFjc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721077765; c=relaxed/simple;
+	bh=kK2n5uj4HN3+rhSW8BRmwkU4htKKn1mq4EgTcrG06VI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PN7BOdAccVMh/33MfWZCSJTHMgfwyopgeHM3HDG7aqxxVaNRYqQdhyuqyGcy9WU16UkObTgr2GabIiSBgKs8v6nr4hLg4JxEjz9v8LsbEIEDoqAfkqAuEv5+elr6fgZzIdOgSpCroHh/3PXtRPssJ3I472/d2Luq4/J44zn3Rf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=bPqatG1p; arc=fail smtp.client-ip=52.101.69.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="iZDLEJK5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=h6mb+ttP+p/S1IA97Zq2CR38QMY+RuQZ7bDACOxXijc=; b=iZDLEJK5uOykGDsmQ7TeUDkAh1
-	/HTAGLtLV5/6VdX16fRGRkZVQv3G0iQiDvdtE4k/VQHJ1IsGz/QeFizK4W1EIo1uGaZQZq4P9Xxvv
-	eCRpjeJb/+b1yTJRmHtDFfjfjuFdA11/NNz07vSH9K2V1bt5wZGUdNEWYFNdcOOPwpLw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sTSbN-002bAW-Hr; Mon, 15 Jul 2024 22:47:17 +0200
-Date: Mon, 15 Jul 2024 22:47:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-imx@nxp.com
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="bPqatG1p"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dPnnIF8pBLkUxVPK93wo6NbqjhgnRObny1o0FLi7ijwHVDbzP8Chy9Z5ri95Ja4HBbGtyA7RSB6S0XkrI8cCLzwAIkzw9HCUTAkIIT4htDHi9kY+onIBG3dQeQ8QjHyAO1pmI2Ry7AnakRnvUjNVL11LcRZu+6xLN/qUpJI88Io+uQQZo0IAg0ycTA3rva1/YfxFKXaiP8oG9pqrMqZhBQ8cE/nsEdb8si9U2/uVnlR1SNOYvJn3I89SI5SX/fU/R1B7cQe0iPxDx1X43VJDtR4uM7QS/nlwgOd//y+kH1K5bS3OA+Z23O9qbcB3CitfaZKLBear9/T4QWU+zYD8ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bUxQiNZO34Qul+hnIuVB7gCfHhvwCVmO4SwqfrST9/w=;
+ b=sZE3HcDvf81xk0VQpMoXKf7umdwKu6J49um0jEngpGexOWMY++mDmK5vEx/Ql4i1BmyXosDIQhOzqC1+fzNjbDN5SGD3cjWw0uIZCNdhE7055qFanQnOMgbO+fOfxqyA5678bfLQnzLpl0NVsEONvqIluIhhxDVvbRCZv2c+++r/Hz1Jz3x55u3vYXPwxEygnDDb6q8nt7ncWrwKP2Wb/yhpvxJ/o9AM5gCNXVaYstKYhqF9ozBBS7JPwUvRVHlLgi9+8NoEZBFQZkedckZrMylnQF5gBk8wiZ2QDXQsgk3YcXeCxeog8YLYKP8fDiMfKqVTdkua18c0KF51t3RsEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bUxQiNZO34Qul+hnIuVB7gCfHhvwCVmO4SwqfrST9/w=;
+ b=bPqatG1pnp5b2M3ohC9LsYwvsKP2d0s5inngPeh4txO+UPP/HFCOKj6nOC/1L/lm3E/V/vCXScN2PsGcnU32ON3JkdLmL9znCL6izPW1e9MCxA/ojNJOCBuAKVoZbEKdTFgWGlFef5hUt9NsvfgKzJMlIDGXmbFo1AWRgcqb1Qg=
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by PA2PR04MB10085.eurprd04.prod.outlook.com (2603:10a6:102:3ff::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.28; Mon, 15 Jul
+ 2024 21:09:19 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%3]) with mapi id 15.20.7762.027; Mon, 15 Jul 2024
+ 21:09:19 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Clark Wang <xiaoning.wang@nxp.com>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, dl-linux-imx
+	<linux-imx@nxp.com>
 Subject: Re: [PATCH net-next] net: fec: Enable SOC specific rx-usecs
  coalescence default setting
-Message-ID: <6521b6ed-ed67-469e-9cc8-b08c489cba10@lunn.ch>
+Thread-Topic: [PATCH net-next] net: fec: Enable SOC specific rx-usecs
+ coalescence default setting
+Thread-Index: AQHa1vtBr9HotV69LEGJ3rmed88HiA==
+Date: Mon, 15 Jul 2024 21:09:19 +0000
+Message-ID:
+ <PAXPR04MB9185762B86A4A17A7E2C716189A12@PAXPR04MB9185.eurprd04.prod.outlook.com>
 References: <20240715195449.244268-1-shenwei.wang@nxp.com>
+ <6521b6ed-ed67-469e-9cc8-b08c489cba10@lunn.ch>
+In-Reply-To: <6521b6ed-ed67-469e-9cc8-b08c489cba10@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA2PR04MB10085:EE_
+x-ms-office365-filtering-correlation-id: bdbbc860-cb32-4017-66bd-08dca5126468
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?4Uxo2QUqmYXVdOCe5VwDPPohoJ59iThkbLnnVxaxUiLEkz6hawN61GWSaaoA?=
+ =?us-ascii?Q?gQcKwUGWU0XnIb190Hm/Xvl2Q5k2biUNjAV3ijP00B9KMv6GP258R1/Br9Mj?=
+ =?us-ascii?Q?KzPyUa9olzzeq9SalCS5rwpNVleFivjgQN4HNXrE/MBuBJkFGCCP0saZDnVH?=
+ =?us-ascii?Q?3LfYV/YW5m3T0X5utERT5exU3ky7RjEXOSEk1qApmbforWE9xgk73zAgy9KN?=
+ =?us-ascii?Q?JzroCR82YB41uEtX+L00uURrD8FAWwdWSRTRs1X7DxeMRcSCTdED5f5vnUPX?=
+ =?us-ascii?Q?FSVf9BPmBS44CGIoKYLhGTMebJg4zlhDOMa/r6r0yN05u5Y5UWGhjtUR/kXH?=
+ =?us-ascii?Q?vjp/tcSO7b/jtI+q1IG1qW4fA/RQOIgsk2vg3ARFpVKkTnxeaM65Rf/6skZr?=
+ =?us-ascii?Q?N8ET4gJKbMkkuYdvUVDgmxGgmHvC9ojTdOoreneC9XkHUkspJCRy2F9KrpW7?=
+ =?us-ascii?Q?zPWy4Tff5jPqkKKnZhLap3A16dC72pB8IJ/CSFXO3QxVlb2tHFr1+0cg/CeZ?=
+ =?us-ascii?Q?QRG6vZkvycPK8OxV85qmCcjvlV/l5/XeU4LbKPnV8FylihYD95YPQq9rtTTv?=
+ =?us-ascii?Q?A52G/oVPO+IPP53ykKA0BWVnmNJnOi7bD3EjW2xrEVEEtRKqkNiu/lCbWPtW?=
+ =?us-ascii?Q?KwlN4FZZbn4TxO6vXnWxIoNkMqUB3SfL8qoXEBewjsmgyzogfjf6y/DIJr8d?=
+ =?us-ascii?Q?KKmIMcI/Jmt3lzTys7Ppi1Xf1faiKE5Iw6KX6YtKGPqnIm1HlAnPkemB0uAb?=
+ =?us-ascii?Q?3o3M4uxqDVeHvFVkyBzpJVVyN3Fy+GFEyhgGXtAYA2hn+qWKRMqLdfaS7+rd?=
+ =?us-ascii?Q?Thgs4CdfJQNrgq2JW5mdE7kAuXu94u7aHivkOtq11SvgtnMunVLZSfIfEFIQ?=
+ =?us-ascii?Q?NVRdyh1jKylV51z3tMMBBQpoRzuCwF23rCE9KG8Nr8UgQSdo+0IuMUWH8JJK?=
+ =?us-ascii?Q?wQdlpoJbie26NMA+8Wsq0vClolnqUHqDiKGQL2k+Wg2i1mrYmtLqO6ONBYRX?=
+ =?us-ascii?Q?/GT6sBZqAv5s/0vXyDZwnadUZ/a+1nlKHnpc5AIHRZYWGsBixVMA3PZItK/y?=
+ =?us-ascii?Q?suMouxBUKgFIfX58wQ+U4rnZQPBWQFd2ALaefq15SlStdK7me+9yYtgDdoRx?=
+ =?us-ascii?Q?BBJ+HrebjLE8Nx+uq3oZUx5rxac7Y6PuxyNh01ZWcok/+f7ci0yLuZftIvsz?=
+ =?us-ascii?Q?BFv8dgL9OEs9b1hBARiZbSZFyxiurmZGEqStk98p9va3eGYYu0Xu790lvyF/?=
+ =?us-ascii?Q?1na3KBsm+1hS+I17w0I6yZYYQdWFhwJXCQCJvTQ+2WQ1rOQCn4Ld5rnLfUe/?=
+ =?us-ascii?Q?0/MwL6uLKJ4J0Io84MRmmxmRai/3XuWEnpGxZMFu9PjO+eZJ3GmzoahkTBYb?=
+ =?us-ascii?Q?Hq4E0kGivkTxOAyeP5keHdlEXJRH3atLWP5FrRfS8WWqTwNSYw=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?tkaj6Et4BkW0Ad/JognzN1gbptQulN4N6Z8MQEWc3ZTSHiGm8XOPTZejjxsI?=
+ =?us-ascii?Q?9EjEH172gWFRmORz2AVWn+RFl2xg7CtepAChS9mWkkn+naEEJ86z9NjH3myZ?=
+ =?us-ascii?Q?U+/cKutsXKwHh4kYS9sAmqmAj35nV940HvvV/JjseGKPUCwMFGM8ZP+gPFRW?=
+ =?us-ascii?Q?CFVEbMGaCMgqoPAX2YCO738IMFofd4xArg0firSrHsBaEByCcxcet9RS37Al?=
+ =?us-ascii?Q?EIcYsoUn3XE6rB2Bh3exyo41nKkliqLVYr1WWbn9o1awmiwsuM6KtyNonYuh?=
+ =?us-ascii?Q?44xpsrtlF1nbaY7k/ABpFv2HCZvtmlLUqEXWkE7uSjoysLwsknC73ppa8nci?=
+ =?us-ascii?Q?tr1OMIn4fIQlLBynlOvVqAlRrt5SKSqsVFcoNr3A4+xyAqqQdF8AxhOfGH77?=
+ =?us-ascii?Q?e4iy4FjIA6DbRfEfRxcZS+pxSy9JPrUHHPGfEzBm3T+RxjnqGxcLVHoNyTdy?=
+ =?us-ascii?Q?fCINFlzNDhfcpX0Kz3Bm8u/LnETQwP9xFkvvnvAvA/6BYmEcd/Lg1mDdzrH4?=
+ =?us-ascii?Q?FcYBI2hclfdfdKQavDTL6dkWzmwtwaGtFrxGcXX3Davh3zL0bqi95hWKL/lh?=
+ =?us-ascii?Q?zkJS0/5azXtcCSnWDJ8D1aEOniB9w6IBR28TQglRxTmJDcnO/Q+fSiRLf/Rb?=
+ =?us-ascii?Q?nHDHx7wVDrs5457NlD9fyXpE3EOzE35Z0zcHNxvcxrGmeyEU7MUsSTCO0m4r?=
+ =?us-ascii?Q?gbWZUabgH//C0uehyC9RAFAtt9iSkPo2B9wDO31M2hC2vNEsfsrQ1MJbejpT?=
+ =?us-ascii?Q?FjHycCHnyk9s3RBqak0Td/XozSuUyeXmnDNl1vCxBuRIH/SUEKCvhLFWLq7v?=
+ =?us-ascii?Q?3nW24IJYEPa+oOJ2dBa9nkhjMK5u85Vu/+z1ys5crJzJDc5C5fcCmQM3z/c8?=
+ =?us-ascii?Q?HY7D9sAu1Ek2MpzuqOjLba2dDqo67uAQ0975km79HZ/3V2h625WO2DC3GM+V?=
+ =?us-ascii?Q?u4vw8nv0vWBk12jR6FHCOzSDSPVCzqQItz42QlRaLFe8KLS7+5kjf7cVXAoW?=
+ =?us-ascii?Q?bXdeubNhrJPxIBQQ4UBwDX9B7wTp3QhzjlAZrpNQeUbe+mamokNxGEKYxQxv?=
+ =?us-ascii?Q?A9XNYjstEig8xXZsY7vXbNG121GMNBQjDf8rIavOIHl+aewSQyyeLpv99z9B?=
+ =?us-ascii?Q?zmVYUhoqun5VuZSxgXR9cK36eZhCILT9DuqtJVTdM0pZO1ArQoa/0uT3SuZg?=
+ =?us-ascii?Q?aNRb0/WEEC8jnAqNgrlJOR8FiWKMgnTqzQ6TMBFevXolotbfNEEnweIHtzbl?=
+ =?us-ascii?Q?jdLlNScmknDiuKDMxH4HrHNSFUyyz0lyvI/Kvyye7pjdn1KnsNMYLCb9bWRt?=
+ =?us-ascii?Q?tWN8Ran2NPlyrIJw712bxpUpHPJ79n/8Yhofa1nFNj7SjiLSsCoTHTS+W+JV?=
+ =?us-ascii?Q?t1KwMQn8/QaEj7lijecViQmFWjl3QHjqlSkXvaEHoVfsyIyXQ+q8AwyczwM/?=
+ =?us-ascii?Q?9dW2UMD0uHYj1IpJrLs0aTdj1L35shgBJ6s5bWrn90ppB/Hsm4tCFWfT7i43?=
+ =?us-ascii?Q?KwXLj5Gq2NOH+P41/aP6C8kDCUNWNp+akfGZSc0KzPJNAP2kxt8V4o40Kju4?=
+ =?us-ascii?Q?SHspK211quAJZu65Rogib2oyJ8V7ZMaGZj8XeTI9?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240715195449.244268-1-shenwei.wang@nxp.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdbbc860-cb32-4017-66bd-08dca5126468
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2024 21:09:19.1905
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OMEIdynZz9gRBGxhEF9I35Iv9wavY8c9XrgREdJqbRMj7mCDSGg9Yhvv6CjR8qXn5oC3ZkEoauyxAW0pOSgFqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10085
 
-On Mon, Jul 15, 2024 at 02:54:49PM -0500, Shenwei Wang wrote:
-> The current FEC driver uses a single default rx-usecs coalescence setting
-> across all SoCs. This approach leads to suboptimal latency on newer, high
-> performance SoCs such as i.MX8QM and i.MX8M.
 
-Does ethtool -C work on these devices?
 
-Interrupt coalescence is more than latency. It is also about CPU load.
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Monday, July 15, 2024 3:47 PM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Wei Fang <wei.fang@nxp.com>; David S. Miller <davem@davemloft.net>;
+> Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>;
+> Paolo Abeni <pabeni@redhat.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> Rasmus Villemoes <linux@rasmusvillemoes.dk>; imx@lists.linux.dev;
+> netdev@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>
+> Subject: [EXT] Re: [PATCH net-next] net: fec: Enable SOC specific rx-usec=
+s
+> coalescence default setting
+> On Mon, Jul 15, 2024 at 02:54:49PM -0500, Shenwei Wang wrote:
+> > The current FEC driver uses a single default rx-usecs coalescence
+> > setting across all SoCs. This approach leads to suboptimal latency on
+> > newer, high performance SoCs such as i.MX8QM and i.MX8M.
+>=20
+> Does ethtool -C work on these devices?
+>=20
 
-Does NAPI polling work correctly on these devices? If so, interrupts
-should be disabled quite a bit, and then interrupt latency does not
-matter so much.
+Yes, ethtool -C also works. This patch is to enable the proper default valu=
+e so that=20
+a user won't have to reconfigure it via ethtool.
 
-Have you benchmarked CPU usage with this patch, for a range of traffic
-bandwidths and burst patterns. How does it differ?
+> Interrupt coalescence is more than latency. It is also about CPU load.
+>=20
+> Does NAPI polling work correctly on these devices? If so, interrupts shou=
+ld be
+> disabled quite a bit, and then interrupt latency does not matter so much.
+>=20
+> Have you benchmarked CPU usage with this patch, for a range of traffic
+> bandwidths and burst patterns. How does it differ?
+>=20
 
-> For example, the following are the ping result on a i.MX8QXP board:
-> 
-> $ ping 192.168.0.195
-> PING 192.168.0.195 (192.168.0.195) 56(84) bytes of data.
-> 64 bytes from 192.168.0.195: icmp_seq=1 ttl=64 time=1.32 ms
-> 64 bytes from 192.168.0.195: icmp_seq=2 ttl=64 time=1.31 ms
-> 64 bytes from 192.168.0.195: icmp_seq=3 ttl=64 time=1.33 ms
-> 64 bytes from 192.168.0.195: icmp_seq=4 ttl=64 time=1.33 ms
-> 
-> The current default rx-usecs value of 1000us was originally optimized for
-> CPU-bound systems like i.MX2x and i.MX6x. However, for i.MX8 and later
-> generations, CPU performance is no longer a limiting factor. Consequently,
-> the rx-usecs value should be reduced to enhance receive latency.
-> 
-> The following are the ping result with the 100us setting:
-> 
-> $ ping 192.168.0.195
-> PING 192.168.0.195 (192.168.0.195) 56(84) bytes of data.
-> 64 bytes from 192.168.0.195: icmp_seq=1 ttl=64 time=0.554 ms
-> 64 bytes from 192.168.0.195: icmp_seq=2 ttl=64 time=0.499 ms
-> 64 bytes from 192.168.0.195: icmp_seq=3 ttl=64 time=0.502 ms
-> 64 bytes from 192.168.0.195: icmp_seq=4 ttl=64 time=0.486 ms
-> 
-> Fixes: df727d4547de ("net: fec: don't reset irq coalesce settings to defaults on "ip link up"")
+The NAPI polling works correctly. The traffic bandwidth and CPU usage is=20
+no notable impact during iperf testing.
 
-Fixes is not correct here. It was never broken. This is maybe an
-optimisation, maybe a deoptimisation, depending on your use case.
+> > 64 bytes from 192.168.0.195: icmp_seq=3D4 ttl=3D64 time=3D0.486 ms
+> >
+> > Fixes: df727d4547de ("net: fec: don't reset irq coalesce settings to
+> > defaults on "ip link up"")
+>=20
+> Fixes is not correct here. It was never broken. This is maybe an optimisa=
+tion,
+> maybe a deoptimisation, depending on your use case.
+>=20
 
-And next-next is closed at the moment anyway.
+Em, just an optimization.=20
 
-	Andrew
+Regards,
+Shenwei
+
+> And next-next is closed at the moment anyway.
+>=20
+>         Andrew
