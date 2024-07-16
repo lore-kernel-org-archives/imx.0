@@ -1,162 +1,77 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DD1335D3
-	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 08:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52D829CF7;
+	Tue, 16 Jul 2024 09:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721119089; cv=none; b=EKwtgfi16oplMb0f6eFzrL9JD5gHzVq56/s2APtOhtpySM1Tv/rsT8Tlk7PQ+LcDHUzkGIO71BZvokdOKfkPiTS/1GDLXkOTixeZ/Iv65SAe+jVgLPH7GehfT5NwSXH5eUiNW3vIp8IrLFmGMg1+K3zFeT3IE5ZWsXBUwo5QPAI=
+	t=1721122974; cv=none; b=FxFhB0sp1ttAWZ8b0iagXGNEMO8b0Ncqc+hkJcAKqIScbVLOkAEJ7edM2Q42QRgsMuqJXLWeX6lGgG92RX4ERVjZXiUXhGy5xpv1fkz6d3eHfxTi1OxPOtWwRrTsSVSazwu3jUuQFf2UfVYiekyqow5UAAbgeh03S5L/NdFzB8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721119089; c=relaxed/simple;
-	bh=h8o3oRHmLl/azwP+hpM8aQmxsMBmeviL+0DH7hM8/js=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hhiJ5z+094BD6JE5wlOrtdpakZWwTeAlNsldT0tqgHAs3wn3xWJlmDxWvYon0PaGjs/k1D5iGPpahZ8qF9lcn9OclsOUIzPCX51rpm5O3x5QeV57IN4IaLB6w2ol/DnmL8rZ6Y85rLBczAuwcg+suL/vi6i+GyAO6agw892TxrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jbeXH7k9; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jbeXH7k9; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1721122974; c=relaxed/simple;
+	bh=gDVpLTlm7lBzqAAT1y+n80sMgKwLRhbqPLufAivER2Q=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=BmphCKgwVxnPsHOKKoyHgLwFHufwXmBXtFuaW9/WtWLq21tAteYa7EDmSq/ed599YddG9KdFk3dXLmLK/IvXlgMU0iw3RTW+GPJzKIilS0EEPyKa40Gdz0BZSup2MVVCFoA0Osw9p7MXQKCQqQvzzf1jzOkKR4zeJriqT/Jkilg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bs6ovHpw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jbeXH7k9";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jbeXH7k9"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4WNXWw5Jzpz9sVN;
-	Tue, 16 Jul 2024 10:38:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1721119084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ow+QdwIrgyh8EvIaH+qkUT5SOVpYbVc8f2Oz9+7S0Cg=;
-	b=jbeXH7k9JqKT3QrM2Q6d12suCfHzCxiTvjNc4NGyLb3eZn/n4zZ/4t33lGJPs2pOu5fUX0
-	lEfD3gKgeiNcTA/odlFIs1zkf2dHmh8xUH6PGSghZfhYSnAUzyTGgRLZUG+Tvm8sA33vnF
-	4+2fvuS/TSbOmK135gOAN8l2mN45lEGzODrKCE5Vt5a7qmjgk7V26huXrRhkoYJlDF/tX5
-	Wc49bjWaAMIHpTMc97YoX64YsjZFi4f74KBzXW4Y8hQ8BGALArF+hYO7c/rucPiRxyHXMS
-	Qrr3j34DnlJfqm5xIBIN6/RKWP4NdEYphUEjTVa2wXB0Kxm7yPf7bU3SbxoqWw==
-From: Christopher Wecht <cwecht@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1721119084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ow+QdwIrgyh8EvIaH+qkUT5SOVpYbVc8f2Oz9+7S0Cg=;
-	b=jbeXH7k9JqKT3QrM2Q6d12suCfHzCxiTvjNc4NGyLb3eZn/n4zZ/4t33lGJPs2pOu5fUX0
-	lEfD3gKgeiNcTA/odlFIs1zkf2dHmh8xUH6PGSghZfhYSnAUzyTGgRLZUG+Tvm8sA33vnF
-	4+2fvuS/TSbOmK135gOAN8l2mN45lEGzODrKCE5Vt5a7qmjgk7V26huXrRhkoYJlDF/tX5
-	Wc49bjWaAMIHpTMc97YoX64YsjZFi4f74KBzXW4Y8hQ8BGALArF+hYO7c/rucPiRxyHXMS
-	Qrr3j34DnlJfqm5xIBIN6/RKWP4NdEYphUEjTVa2wXB0Kxm7yPf7bU3SbxoqWw==
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Christopher Wecht <cwecht@mailbox.org>
-Subject: [PATCH] arm64: dts: freescale: imx8mp-phyboard-pollux-rdk: add HDMI support
-Date: Tue, 16 Jul 2024 10:36:35 +0200
-Message-Id: <20240716083635.626596-1-cwecht@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bs6ovHpw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82D1C116B1;
+	Tue, 16 Jul 2024 09:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721122973;
+	bh=gDVpLTlm7lBzqAAT1y+n80sMgKwLRhbqPLufAivER2Q=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=bs6ovHpwe2yWXn0F3AasvaT0I9cp3MjORXkUWDKeHHYlApUX1laz7G3TE5RZ+3Jj+
+	 TG3VKC2uWktVdXdjJSwxZIndsY1UKZiG5nbjx5vL8Abybaldxg7kysjkpNAWhg6Lmq
+	 5bmHBMyoZIqgckSmPy0d6bP2O+MLst1RjKorDzb3JQJFOYdYHaQWVkFeMVRRgdkbJh
+	 pTfAUkUn5zsWg83t3X60WPPtiOZWLV7FLoTmJZDom4O/G/wIC+stSHFYKlevzxvqcN
+	 s5lQPuqdxuKPnESNh+3vSaZGWggDoMyzSYJzZuyqtHqJ/crn4o61e9U0WvX46e7R5K
+	 jfUFkHbLvy3+g==
+Message-ID: <26a64cd3ad422eaa9367917dd90d65b7@kernel.org>
+Date: Tue, 16 Jul 2024 09:42:50 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v4 5/5] drm/bridge-connector: reset the HDMI connector
+ state
+In-Reply-To: <20240715-drm-bridge-connector-fix-hdmi-reset-v4-5-61e6417cfd99@linaro.org>
+References: <20240715-drm-bridge-connector-fix-hdmi-reset-v4-5-61e6417cfd99@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, igt-dev@lists.freedesktop.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, "Abhinav
+ Kumar" <quic_abhinavk@quicinc.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "Andy
+ Yan" <andy.yan@rock-chips.com>, "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>, "Anitha
+ Chrisanthus" <anitha.chrisanthus@intel.com>, "Biju Das" <biju.das.jz@bp.renesas.com>, "Chun-Kuang
+ Hu" <chunkuang.hu@kernel.org>, "Daniel Vetter" <daniel@ffwll.ch>, "Dave
+ Stevenson" <dave.stevenson@raspberrypi.com>, "David Airlie" <airlied@gmail.com>, "Edmund
+ Dea" <edmund.j.dea@intel.com>, "Fabio Estevam" <festevam@gmail.com>, "Geert
+ Uytterhoeven" <geert+renesas@glider.be>, =?utf-8?b?SGVpa28gU3TDvGJuZXI=?= <heiko@sntech.de>, "Jernej
+ Skrabec" <jernej.skrabec@gmail.com>, "Jerome Brunet" <jbrunet@baylibre.com>, "Jonas
+ Karlman" <jonas@kwiboo.se>, "Jonathan Hunter" <jonathanh@nvidia.com>, "Jyri
+ Sarha" <jyri.sarha@iki.fi>, "Kevin Hilman" <khilman@baylibre.com>, "Kieran
+ Bingham" <kieran.bingham+renesas@ideasonboard.com>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Laurentiu
+ Palcu" <laurentiu.palcu@oss.nxp.com>, "Lucas Stach" <l.stach@pengutronix.de>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marijn Suijten" <marijn.suijten@somainline.org>, "Martin
+ Blumenstingl" <martin.blumenstingl@googlemail.com>, "Matthias Brugger" <matthias.bgg@gmail.com>, "Maxime
+ Ripard" <mripard@kernel.org>, "Mikko Perttunen" <mperttunen@nvidia.com>, "Neil
+ Armstrong" <neil.armstrong@linaro.org>, "Paul Cercueil" <paul@crapouillou.net>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, "Philipp Zabel" <p.zabel@pengutronix.de>, "Rob
+ Clark" <robdclark@gmail.com>, "Robert Foss" <rfoss@kernel.org>, "Sandy
+ Huang" <hjc@rock-chips.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Sean
+ Paul" <sean@poorly.run>, "Shawn Guo" <shawnguo@kernel.org>, "Thierry Reding" <thierry.reding@gmail.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 072d6153867c17ad5d9
-X-MBO-RS-META: 4k3pbw9cnfn889ay8kianab16t8kpfnk
-X-Rspamd-Queue-Id: 4WNXWw5Jzpz9sVN
 
-Enable the HDMI output on the phyBOARD Pollux, using the HDMI encoder
-present in the i.MX8MP SoC.
+On Mon, 15 Jul 2024 09:33:05 +0300, Dmitry Baryshkov wrote:
+> On HDMI connectors which use drm_bridge_connector and DRM_BRIDGE_OP_HDMI
+> IGT chokes on the max_bpc property in several kms_properties tests due
+> to the drm_bridge_connector failing to reset HDMI-related
+> properties.
+> 
+> 
+> [ ... ]
 
-Please note that lcdif3 has not bee enabled. This is due the fact
-that as of now either HDMI or LVDS may be enabled. If both are
-enabled it won't worked. With this patch, however, HDMI can be
-enabled by turning ldcif3 on and ldcif2 off.
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-Signed-off-by: Christopher Wecht <cwecht@mailbox.org>
----
- .../freescale/imx8mp-phyboard-pollux-rdk.dts  | 53 +++++++++++++++++++
- 1 file changed, 53 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 00a240484c25..3ea67bada2c1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -101,6 +101,18 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 	};
-+
-+	hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "hdmi";
-+		type = "a";
-+
-+		port {
-+			hdmi_connector_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
- };
- 
- &eqos {
-@@ -127,6 +139,38 @@ ethphy0: ethernet-phy@1 {
- 	};
- };
- 
-+
-+/* HDMI */
-+&irqsteer_hdmi {
-+	status = "okay";
-+};
-+
-+&hdmi_blk_ctrl {
-+	status = "okay"";
-+};
-+
-+&hdmi_pvi {
-+	status = "okay"";
-+};
-+
-+&hdmi_tx {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hdmi>;
-+	status = "okay"";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&hdmi_connector_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
- /* CAN FD */
- &flexcan1 {
- 	pinctrl-names = "default";
-@@ -346,6 +390,15 @@ MX8MP_IOMUXC_SAI5_RXD0__GPIO3_IO21	0x154
- 		>;
- 	};
- 
-+	pinctrl_hdmi: hdmigrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL     0x400001c3
-+			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA     0x400001c3
-+			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD         0x40000019
-+			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC         0x40000019
-+		>;
-+	};
-+
- 	pinctrl_i2c2: i2c2grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400001c2
--- 
-2.34.1
-
+Thanks!
+Maxime
