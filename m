@@ -1,146 +1,95 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1BA54BD4
-	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 17:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD171643A;
+	Tue, 16 Jul 2024 18:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721152254; cv=none; b=MnUxuBRrqlyvZ2IIlHXa2vc2jTVlbcV+I6AEDGXulhmKeI5KCV8gswFxZulkIcIPcNJkbvzsgVCVCeJGdN97O8+UhUPbSegvXeD5eEhxGxmRn00QbjXz1gssxxAEiqLOqTAdMIWK0cENGcgy79smJ3/sK9hC0zVpZW1LP2Op6pA=
+	t=1721154746; cv=none; b=cCH9lsamekDjwmSfA5P6/cAeVx6samGWqLbiIa4sZBnK4sPkwnbLh00zPFxChIBsVlRvC8EQUYGP+fp8XwcULKc+lBzY3YCvv8h/SaJhQZq/k8lSog9HoVTvH9CeSWqktVFXNyfZaQ3P3671gmIcL3YF2M52qqJDF1FNFTszza4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721152254; c=relaxed/simple;
-	bh=ic2sbABp4tHp3UGGNyn+mzu/e840S3TaNk0qjVFGVfk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bUXUmHaYM9miDvAnJ6+QBQRseUYbsnr77jhi92RmD0vYay9Q24NJVYbkNltZNacAKvpVn/3jkMOZQepxB8pr96lT0UoK1/+qrCZDYaFQLXWNUcvgNEndIKxZNaMrjAEMbnhBs1eN9iTewZtn4/VrwzAh+Jpr/tbTYK+4aEcwW1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sTmJy-0000eT-4W; Tue, 16 Jul 2024 19:50:38 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sTmJv-0001tg-EK; Tue, 16 Jul 2024 19:50:35 +0200
-Received: from pengutronix.de (p5de45302.dip0.t-ipconnect.de [93.228.83.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 26D7D305380;
-	Tue, 16 Jul 2024 14:45:36 +0000 (UTC)
-Date: Tue, 16 Jul 2024 16:45:33 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	haibo.chen@nxp.com, imx@lists.linux.dev, han.xu@nxp.com
-Subject: Re: [PATCH v2 4/4] can: flexcan: add wakeup support for imx95
-Message-ID: <20240716-chowchow-of-massive-joviality-77e833-mkl@pengutronix.de>
-References: <20240715-flexcan-v2-0-2873014c595a@nxp.com>
- <20240715-flexcan-v2-4-2873014c595a@nxp.com>
- <20240716-curious-scorpion-of-glory-8265aa-mkl@pengutronix.de>
- <ZpaF4Wc70VuV4Cti@lizhi-Precision-Tower-5810>
+	s=arc-20240116; t=1721154746; c=relaxed/simple;
+	bh=GCyw3wZavAMC99QfaxVM5H72XYf2IXkOHKGfTxLKjDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UkeS6ElSIydo0gbHKeNnFfiRjE0iq3IRHNALVBbO9PY96/PDLaaBuavyUSSwgWxzLzOGQIXkDR9hL82HobCr9n3LyZZx5LYfXSbAZGgDF8U0+NZQBFc4uWjY081z/eJ271UhffuQ+/7Mu7AFBgZCDpfnCYyzx/mPKmxRY/6AOk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3CUcyJc; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3CUcyJc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8324EC116B1;
+	Tue, 16 Jul 2024 18:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721154745;
+	bh=GCyw3wZavAMC99QfaxVM5H72XYf2IXkOHKGfTxLKjDw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b3CUcyJcRgnmsLwZyI6oQxHUVztGAgrD79TQzlX9xayt1o7WFanNNxaR3zQw56R3N
+	 +R/JMuG9vb9y88Wy7iuUYDm0FjEjfj2QGbcQnjNnSopaMFeXMl8bZTwwjWx4N/KFSl
+	 phweh2r/FZBOUbUIB+yQhffQUetxJcFCM4R9sNs79jdzAQR5vC/iQC66Imokzi9D9e
+	 +F+p6XYkkYTgdGQ03Sqj1qXOuh0XzyIAXcGEkY6Q7eVXfSTAvoOEQC+dYCTQy6Quvt
+	 heuyl1q/36x7sq/ep5Lo1JKqmBUCFBvqjH3BMoiL6a9ZR4vAJUyobtwdjnhr7kMbIP
+	 Hpz+jRYZ5IbaQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shawnguo@kernel.org,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.9 01/11] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
+Date: Tue, 16 Jul 2024 14:31:45 -0400
+Message-ID: <20240716183222.2813968-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="l2syr324jbfki6hb"
-Content-Disposition: inline
-In-Reply-To: <ZpaF4Wc70VuV4Cti@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.9
+Content-Transfer-Encoding: 8bit
 
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
---l2syr324jbfki6hb
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
 
-On 16.07.2024 10:40:31, Frank Li wrote:
-> > > @@ -2330,9 +2366,12 @@ static int __maybe_unused flexcan_noirq_resume=
-(struct device *device)
-> > >  	if (netif_running(dev)) {
-> > >  		int err;
-> > > =20
-> > > -		err =3D pm_runtime_force_resume(device);
-> > > -		if (err)
-> > > -			return err;
-> > > +		if (!(device_may_wakeup(device) &&
-> >                       ^^^^^^^^^^^^^^^^^^^^^^^^
-> >=20
-> > Where does this come from?
->=20
-> include/linux/pm_wakeup.h
->=20
-> static inline bool device_may_wakeup(struct device *dev)                 =
-                          =20
-> {                                                                        =
-                          =20
->         return dev->power.can_wakeup && !!dev->power.wakeup;             =
-                          =20
-> }
+While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
+claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
+device trees don't add DMA channels. The Reference manuals of i.MX31 and
+i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
+check the others.)
 
-Sorry for the confusion. I wanted to point out, that the original driver
-doesn't have the check to device_may_wakeup(). Why was this added?
+Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
+DMA channel requests") this results in an error message
 
-> >=20
-> > > +		      priv->devtype_data.quirks & FLEXCAN_QUIRK_SETUP_STOP_MODE_SC=
-MI)) {
-> > > +			err =3D pm_runtime_force_resume(device);
-> > > +			if (err)
-> > > +				return err;
-> > > +		}
-> > > =20
-> > >  		if (device_may_wakeup(device))
-> > >  			flexcan_enable_wakeup_irq(priv, false);
-> > > diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flex=
-can/flexcan.h
-> > > index 025c3417031f4..4933d8c7439e6 100644
-> > > --- a/drivers/net/can/flexcan/flexcan.h
-> > > +++ b/drivers/net/can/flexcan/flexcan.h
-> > > @@ -68,6 +68,8 @@
-> > >  #define FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR BIT(15)
-> > >  /* Device supports RX via FIFO */
-> > >  #define FLEXCAN_QUIRK_SUPPORT_RX_FIFO BIT(16)
-> > > +/* Setup stop mode with ATF SCMI protocol to support wakeup */
-> > > +#define FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI BIT(17)
-> > > =20
-> > >  struct flexcan_devtype_data {
-> > >  	u32 quirks;		/* quirks needed for different IP cores */
+	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
 
-regards,
-Marc
+during boot. However that isn't fatal and the driver gets loaded just
+fine, just without using DMA.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---l2syr324jbfki6hb
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 09b6c1b45f1a1..09c676e50fe0e 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1050,7 +1050,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	.rx_available = mx31_rx_available,
+ 	.reset = mx31_reset,
+ 	.fifo_size = 8,
+-	.has_dmamode = true,
++	.has_dmamode = false,
+ 	.dynamic_burst = false,
+ 	.has_targetmode = false,
+ 	.devtype = IMX35_CSPI,
+-- 
+2.43.0
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmaWh4sACgkQKDiiPnot
-vG9pnwf+JoS4BGqt9+eauMHhwkSi1Z1OupbzhlhGwMBtIeQWPmhjM0f0/N0XDNyA
-vFmZZs6HIj9lcXNADBVtKvB92MJFV4UbvGyPSqs4cU8r/cZdPr+I5j0gVHHCmtiq
-RZcPzP+Jm6U6NV4C8Oj6RZxhPVCKKlNfckBW9pcjjhKg4XmEFksYC5J9G4ldofBz
-DHivW/RXq2mcals9q7N2JTkgH6Zmw7wxnOWIUdFItj7Jt1XFDWQSO7ha4UC1ntmK
-FgdCfR0anEHNOucDeLCyXw63FOBro/pD3iQ6xdIBCR/IVnhSIgkAjkIjFV6K5d+G
-nvSKa9wCyX8iqQJuRZNp6HBTEvex/Q==
-=Vri0
------END PGP SIGNATURE-----
-
---l2syr324jbfki6hb--
