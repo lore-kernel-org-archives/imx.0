@@ -1,230 +1,235 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011052.outbound.protection.outlook.com [52.101.65.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB4913BC26
-	for <imx@lists.linux.dev>; Mon, 15 Jul 2024 22:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721084053; cv=fail; b=GeBimZK2SfMLNw8mTbseVkZOJ0BGlPfY/NIrXOIBP9B33k3lL3x9Jg100c4qxKauLam6ug6VAHjHKoXGJAgYfU5cG3y41KrAjesDl83vPoaa4C8coc1lsgEl0G4lOZvmRojcB4U0eJyQJgPu4xLXLpfKpreRy0JAA02uFwAZInE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721084053; c=relaxed/simple;
-	bh=eJGYjyy2+/AAn5LRS7ekD4voF98roh8b+/mecV7Zd04=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XMCvEtpGklGEalmZpXS4rcRw3GW8WOC25ZmM0eHMvAdNx0I8pOorfJva834z3xvSNE1xvZ0Zh2f6cSf1Rayrc5xuHo9G4n+njBhnL4n2o0u2FpPOH7r1EsSIojq6HL9t2F0i2R7dVcH23ybB4OV7sIwy51g4wJ9DGqhT6+7dt6E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=i3FN+2TU; arc=fail smtp.client-ip=52.101.65.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0331E1CA92
+	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 00:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721088178; cv=none; b=i4aB6/U8K1RNcXLdwO/kVyhj2l+V+HuJydECy15QnycMpWVgYfjlQdWOTwOimots7gVaPYINdUUPCP7VPMqSurFM7Wtabc1l/xvJeA+TVgyooQzESqsDH/1nRA8BSPivWieTqlFbaEKRMQ7FMbMRUqZUEUD7EtesUVdbY1Ku1uw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721088178; c=relaxed/simple;
+	bh=zSeIktFotF7MC0Z1hV2Kez5mmgh32C6omUyLCRc5ZZ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uC9+7aPvhoG8MSu+Cawa0vU9CSkTM1P6b1Rdqc+0ktdLx7yW5ie3Kspz04k0bZ1VBR6okTZg0uAjNDkAKpQPlYEZVg4CSRIwVWqzRBl6xJkW7J96u4gWuB3WBLxE73ZYk3Ayn5314+1jm8d6TVLwaoj/3iA3hJOFFyNRhbUABrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WFFb/klb; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="i3FN+2TU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qblMoy+lyLnYCp1I1+rQKEd7M6+ebJxKXDSobc1+6tyR690M3T+y0Ko+6WG1aQz4Q7X9frELa/EVvR3tkrO/J7inAxyS+3jOEnljfFvYeE1h/ZR8tBy++2PEsZJBi6+k0hFYbAcCO9A6olkPn9U5Ly5tpGLSe4327HCeKKc00HnRMF0+T7ZQ/Ybh73hQTCACKK5/P0zoZo/pJJGbQK6/s2lFaGGTJiBQgM6J9XEBsFoOGjFW55wXQeQQMLp+VgNPCqYBcc/eeX9iH5JRhZINlHH0geCydBDbVVR6m8+GMlECvQjqw86uUbIW1P3osr+pkJDtbQWD4swQNd38g2Orcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yPH23LFMgAbUUYmqG73yuG4FV3P9ta+eYzNlAMag3s0=;
- b=es3riojWIuVYgs9VV+9PZ0awZTxk5Ip/OxkqqNXLLWH6rjXAxNuSkcUSOz5HlC1+lek2RIH6cLe+BjGF0Pq2MbrlqsFykQLZ1Hm73rdsVBR/dNLHW4+/xQujM7zD00wgT+2iJL1G7Vno6T95HrIvzHZO+VRR5G5CFRucS3yyRbqZA1EkjmzcgT2reNesScg2saBvIZ1x27qguhAtmSRAsnMIRYL5RqlbFn14CndDwoBtlnqmFKnlfCoeL9189KB/R1IbdbbIY/kvty0zCBYplWXZpHWzYuKAdA+2bpxeWGXJ/NXaVvyjx8kiRYAXuP1sAYGYN1JH6+i44ie+JtnPKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yPH23LFMgAbUUYmqG73yuG4FV3P9ta+eYzNlAMag3s0=;
- b=i3FN+2TUzRIbwLmgzNtETasd4leULHnrSvhs2fRjibkezZ8sLAfTHAbg4IydicYk0qSa4FqmTPwO30XqRXJzfdsi4qKgGImfi57Xi1lcfLzGUQvBg34Zd0ClSnWBmnsYJv5CmEbmHgHyPJ1w8SAYZVNdUaEf72QCeygsv+Nr2T4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB8074.eurprd04.prod.outlook.com (2603:10a6:10:24a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.28; Mon, 15 Jul
- 2024 22:54:07 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7762.027; Mon, 15 Jul 2024
- 22:54:07 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: krzk@kernel.org
-Cc: Frank.Li@nxp.com,
-	alexandre.belloni@bootlin.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	krzk+dt@kernel.org,
-	linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	miquel.raynal@bootlin.com,
-	robh@kernel.org
-Subject: [PATCH v2 1/1] dt-bindings: i3c: add header for generic I3C flags
-Date: Mon, 15 Jul 2024 18:53:51 -0400
-Message-Id: <20240715225351.3237284-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0096.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::11) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WFFb/klb"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-656d8b346d2so2876650a12.2
+        for <imx@lists.linux.dev>; Mon, 15 Jul 2024 17:02:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721088176; x=1721692976; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6OllUJ9VLJq55ccW5uQ5M246KQQ6K4mJU68va+dsYyM=;
+        b=WFFb/klbVaMasvdKzJ20jDe1+TosOVi3eQaMfnRWLdlyze4RRg5/vaWWZ3g3GSRcIv
+         LvVmqX1sXCsgFyfZ9LP6IOwpmjHsYH80Gew2BjNsi80wTHHmzjyMepSgbUT2UhCU7/Hm
+         3RwMvHvnH+jMVVgqmidO+bv9TakpcrKOU3ze6HJvrboFmzNhQ3j7slhRtItZF0T2vfbM
+         glmCCoP6VazRezggP6wNA0Ca1lggq80DfDO2TFUedV6G8Sds1+ENuX41fVzRo40q42MO
+         zssRIMG+QsTl0H0RmuN4Yz94UIdNAFJwqkhVVcIvazBKeMpRVqoZvwo/E7xZV98y0dOH
+         g63A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721088176; x=1721692976;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6OllUJ9VLJq55ccW5uQ5M246KQQ6K4mJU68va+dsYyM=;
+        b=g6S5uLVwYYV0PebRXp+3O9VcU+M9Bavk3okwRp7v1PrVskcuiCksMu+QskgTaAKTkc
+         E+qQJSCHIMigwm+fynzjvxaaTsigznZ5TIZ+s8wI7tWUtl6WDdV7LKwHq3TwJjj6CSXF
+         HzsmB7qmkzeipfShHc+lbQSzn/qZ21VNDNjBWodEUbHZqrCwVaCk1zAphXkbJCIRoo9b
+         m3olXf6gbZ/U8MSO+HVq+lw0qkW4Ifv9EQGan+KB8pq7xnLRuaGOUqU8OWm0PDvr5fVj
+         DY9yjee89PW5+w/oBapCMY9lDM9fypw7T6tLcMETJBbQLNv5KBG5AQ/vBE74vS0j37YE
+         If+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWJOibSXzVovJGgkzVQoo2Fmxz4Empzq+Lbvf09diy9dy1inOfiUNqJSlpae6Cr5c2FcWCh14h3iCV8WAOQL2RnCtDX
+X-Gm-Message-State: AOJu0YyaXIxYchTWennDbU++0FF6EqWA3Xk32xHTxU4i7Z5wDiXsfe1o
+	FcI25QbItE7XTzzvFpCfBL7Cx46p51FFfnpRkdwywW72kvAcIsAVRcTj+K/Bi4eZiW/UWhPdhrN
+	wsoWJ+UOoiayu3k0FF3Xj9nUAX6w=
+X-Google-Smtp-Source: AGHT+IE4QMrZIlQ8B9v5YVwd5uq0vAhpYI3DROGAOO5sccBX4Fr/1ACHq+awzUc5R+yepVZ63AaSJQlFxKsCm5ZNTXA=
+X-Received: by 2002:a05:6a21:6b0a:b0:1c2:8949:5ba1 with SMTP id
+ adf61e73a8af0-1c3f12b4f4emr602954637.53.1721088176180; Mon, 15 Jul 2024
+ 17:02:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB8074:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d13bcd8-e381-47b3-fd2d-08dca5210859
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|7416014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hJkITxf/DbZfM8POmzhApL6XGiYzItMddHi2iwkJxVbp+yzaOX01iuZQj/Ef?=
- =?us-ascii?Q?8weM0C0/w+6Kye7eeD7oj69WI36Ksc/gd6FZtVyN+hIOMiFxbNKNUSiN7S5g?=
- =?us-ascii?Q?ImpweKBMmflNFicOHNHSMNW2pD7OWmj8NBb4NUBTNGX4B0EVesSuPv6Xmv/i?=
- =?us-ascii?Q?Owk9B7qHuihABcY4leJD2WeumoQW8Q/QawasI8D4E3HS/SLjLa8Q96JmC977?=
- =?us-ascii?Q?IPoRfVCj8kbrQkpkiBKjko5yClvyHAKIPkve/sDHvGXBA3piqjrJHOZH2Ebi?=
- =?us-ascii?Q?h1ce34eXLdQ6wAzhKGOTGZ87fSZGQwMN05jFHbAFqXdtXExSQx4e0UJ3TJM5?=
- =?us-ascii?Q?LWfNlYEj4JgRjsvfgc+GLy2Qi6mHbVU6cwQMy2H3JQRuNEAYJLjw+zlq5stn?=
- =?us-ascii?Q?5rEZCAAb63FeE2gcY4U5RXFtLO/Qd4i5ZXnPQ/kIyf6MidHgN+7OqrkDBj1P?=
- =?us-ascii?Q?uKyopRBvlZCnCAJUnYaKWJIIx8GoAgww3HKFysW4M6+SXJudNuPHimVEc14Q?=
- =?us-ascii?Q?gIChMNNnub4uyNaAhoyCOEBvh5xGGA4UjI7m+ZjEazQy1WMPJe77QOeugBM3?=
- =?us-ascii?Q?7wOvhu1vKVeaCORjDhZ8p8f+zWqj/A4qdZjo8AUBiyoOCcOoOjDFESq8X56G?=
- =?us-ascii?Q?PkRsDbMnn2eq+9ugXwWNx4Qh0iH2ZdDOryRvy1gD088toG6WTrteDjT3++Zp?=
- =?us-ascii?Q?8/ZB4H8JnLizdTNM0n58HreGnCGxAd57YiIB0uo1nDxGL4ZzcZcWvu/zh8J/?=
- =?us-ascii?Q?wE3MlTEiLT9tpa3DqsBMQi6uK99PljN+kTuiuTp/IGst31xeCAFkXZN87aeW?=
- =?us-ascii?Q?keY96p8Y4HBG1Tl4iGTlbdfQ7vzlmP/+MnSBlJZI4yDIJFhkR3sWkZhzYJbi?=
- =?us-ascii?Q?CV86JCLN9EWibIp+hwzWz26cVPJTxSUw9uSmPqlJgT6qDSt9M2cmJFzEIMfF?=
- =?us-ascii?Q?zhN0dZ35vF0K8FNtOSEoyHRHmk+qHwky4YezRMCxPV9PUh04j88an/HuLj32?=
- =?us-ascii?Q?1Jsu1ZLAHPX2WF42B4aokCv020oTGLnHe/cLlLLXoTj7MixBwNVJGTxEpfwg?=
- =?us-ascii?Q?yH/h51YQ+/jlqI/OlAlotlTbEWkXTSh5e1mNZbKRMbh1PkZ17PM3+ULSDsJX?=
- =?us-ascii?Q?8eGdlaSvL1+IDJKmL3PjhqWKWpjgcWL/qxdBrBLVUxsykApWQ8NGGgFB0yao?=
- =?us-ascii?Q?mOdACUT9a9nSA71pg4XnnEsxG7mVfP+VjMyyoxHNKyw0bIXwi2hzoLP+3PAx?=
- =?us-ascii?Q?4teL+XT/aFuXO2zDpqtahMAMsKiKhuuwG5QFeB3EM6x21NXRuUhJ5ngTR79c?=
- =?us-ascii?Q?EN2VmPoKv/Gw24SrXZ7/2R8WlxEE9xQOenQvnyk3DwJJ3tp2WsDpBXywFTSx?=
- =?us-ascii?Q?Kgq/xPCqACG5jHls9snziuUQnOcS27yTfmxZijdj//pvuGxyJw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OOuAqtQry5xtF/+WLNlYP1trSvSSFs4pU8JTydHKe6MxpWX4wA+haP0Azc6z?=
- =?us-ascii?Q?1luSzQkm2br6tu9LbOaLhW9Hw8VGEBQJcpQJgpyCO29nreUv8psbYxLyI0Ri?=
- =?us-ascii?Q?4Hz5FvRtOeqBp11fiU7PvKxIbavPB0GqYwx8uLvnike8awDmV6EMt8nRguLI?=
- =?us-ascii?Q?wkDZujEP7DBHmGLaOPXRHSa0tniVwUdSc+R5GSPHH/gHPDmY2fHAg96TXnPV?=
- =?us-ascii?Q?yWDJZUGFgM99xf6FPJmCoPMJbTYHV0ozmBmp3mqxDzXzXhL/X2f9Dpf6lxic?=
- =?us-ascii?Q?pCNBHIvrrR0WCIZWj/YLmZUh2KsxfMspCSZqyT1XC6Cbxy9i0eaoXoN4ydmS?=
- =?us-ascii?Q?a7x3JzJvKub2tXPBlBmeKIPL3jm4V7L84oNBxOkBgY+sMp/YMiNz5/yruaB3?=
- =?us-ascii?Q?i9cIip9mDTvRY9+Fm9EtfXGMN0QE5CU1Q3tj1h4N9Mnrp0N7TMwhVePIQzd8?=
- =?us-ascii?Q?hyHkltyjdJh6tyz8tR0BsDqMEsFKStcrjHLlE48Sl+uPBTjanyiEkvpvQ4g5?=
- =?us-ascii?Q?hjYqVdOrtloDjTexLlNI+/q77Zzu9O8UHc9q8jRnPheTQiz+OS52Puq90dVL?=
- =?us-ascii?Q?7YwnmCOnmd2JbiPkpNy1XbTzL5GJkF5zSILdl3Inm6bb50BCnbFZIlar3Lm1?=
- =?us-ascii?Q?ERCK9c8QQqj0DQjx46Dv4EacOIhVXCHhcOSuPX9xDzKxVotNeRbt0PZTKDRJ?=
- =?us-ascii?Q?mL/IJYQ+zLHtbN018g4Yha760tfeoGaORy1o9mA+iQpRFhOoSQ0JJ/pHUmuK?=
- =?us-ascii?Q?sTmuqGUdRYBqodUfdH7stkXaSUimMTgSKrBw64BV5D+DALuamYxla+mWsBYA?=
- =?us-ascii?Q?/pDoXi/0dhJ9g566zLWeaaKlXI8FjQA/2fB3/eBHchJky82JaHAmKiVRydlK?=
- =?us-ascii?Q?VCNX00jrgZ/7RoIAXC/SYvvmhbaPxcE04Xp3BmjtfKBGeLUP8sbJOA/eONEj?=
- =?us-ascii?Q?Hg7UtuoVWPCi7QiEobWc1+k9CpcBE8DsZwPnsMbRjd8uQDFpHNHuDhVAPH4A?=
- =?us-ascii?Q?vvq6T/0E7em+9GEKt6j9xY4CbyLFy32k6KnQOJlusExYGFrmQH1acASvKeIi?=
- =?us-ascii?Q?LSq2XiTp39K38KbrmG2KRQ3ZvNciKv8aZcWeibR9aBDLXLMTsRnlmWNx11PS?=
- =?us-ascii?Q?aYFcSdROP/tgLQSjYG8iz1wzqWj9neqc5FiV+k36QXxV2zmtGZvTd6ZO1jOd?=
- =?us-ascii?Q?+3bkfP+8DuKvScl4158IfDZD+YtcNGBwlaN2F8X28RMywc2bGgUf1q8JQHzV?=
- =?us-ascii?Q?NweEZFe7Y3nw9GgdwWetbBo0fzxxY7K1TwiZUuxienDokUt1guKRD56sESWz?=
- =?us-ascii?Q?3AtvMS+FeReRuoFIjFjHCGifczndXfOYRFdJEK+QQeFZfqnxDN4aW9aDO5pY?=
- =?us-ascii?Q?kxVKoS+gIyT2UC1D9tGVq+D7CeSzSfD+A2oif8M7fDxZDwoyMJnjfpqL9FMs?=
- =?us-ascii?Q?hOjNBnzLwHAw1JGXeFKL6xYiTAf7LarVE6xZQDo+ps4tdmHMYm2xjKSiI8nz?=
- =?us-ascii?Q?c77hj8DhDSkaoClkRINupCFT85gKClYe8yHocNOm/ioN+PmBpZbkEmVQVG+2?=
- =?us-ascii?Q?tGg9zN6gd9CvWdTFYe0Hc9ZGf6C3SjFcAXA8cH1k?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d13bcd8-e381-47b3-fd2d-08dca5210859
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2024 22:54:07.4085
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D7hkr72AZ5ZQj/JClLw8RRtHXOHUo67i10mrGgVBHLIurA7pVEgAgiB14QrUM93y++lDzAGxuKi0irBxRv+43w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8074
+References: <20240607133347.3291040-1-peng.fan@oss.nxp.com>
+ <20240607133347.3291040-6-peng.fan@oss.nxp.com> <CAHCN7x+pzcdwSq19LefsyYAPUp8=kQYJeVbHm9sgSeaKXigMZg@mail.gmail.com>
+ <PAXPR04MB8459E0FEFFFC4F7FB257F32B88A12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB8459E0FEFFFC4F7FB257F32B88A12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Mon, 15 Jul 2024 19:02:44 -0500
+Message-ID: <CAHCN7xLDqLOe9Y8J7R5cEij9Xq=GS1Au8t3hrayf=-zSyorG-w@mail.gmail.com>
+Subject: Re: [PATCH V3 05/15] clk: imx: imx8mp-audiomix: remove sdma root clock
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, "abelvesa@kernel.org" <abelvesa@kernel.org>, 
+	"mturquette@baylibre.com" <mturquette@baylibre.com>, "sboyd@kernel.org" <sboyd@kernel.org>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "S.J. Wang" <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Carlos Song <carlos.song@nxp.com>
+On Sun, Jul 14, 2024 at 8:11=E2=80=AFPM Peng Fan <peng.fan@nxp.com> wrote:
+>
+> > Subject: Re: [PATCH V3 05/15] clk: imx: imx8mp-audiomix: remove
+> > sdma root clock
+> >
+> > On Fri, Jun 7, 2024 at 8:28=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp=
+.com>
+> > wrote:
+> > >
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > There is an issue:
+> > > SDMA3 can't work without setting AUDIOMIX_CLKEN0[SDMA2] (bit-
+> > 26) to 1
+> > >
+> > > The workaround is:
+> > > As the reset state of AUDIOMIX_CLKEN0[SDMA2] is enabled, we just
+> > need
+> > > to keep it on as reset state, don't touch it in kernel, then every
+> > > thing is same as before, if we register the clock in clk-audiomix,
+> > > then kernel will try to disable it in idle.
+> > >
+> > > Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block
+> > control")
+> > > Reviewed-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > ---
+> >
+> > With this patch,I found it broke the imx8mp-beacon board when
+> > running audio through a codec connected to sai3.  Reverting this patch
+> > made the crash go away.  Is there a way to mark the clock as critical s=
+o
+> > it doesn't get idled?
+>
+> Mark it as critical means the blk ctrl needs to be powered on always.
+>
+> You driver touched the SDMA2_ROOT clock?
 
-Add header file for generic I3C flags to avoid hard code in dts file.
+I have a WM8962 CODEC connected through sai3.  Without this patch, the
+sound plays just fine.  With this patch, I get the following:
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Reviewed-by: Frank Li <frank.li@nxp.com>
-Acked-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v1 to v2
-- use full path for include header
-- s/MIT/BSD-2-Clause/
----
- Documentation/devicetree/bindings/i3c/i3c.yaml |  5 ++++-
- MAINTAINERS                                    |  1 +
- include/dt-bindings/i3c/i3c.h                  | 16 ++++++++++++++++
- 3 files changed, 21 insertions(+), 1 deletion(-)
- create mode 100644 include/dt-bindings/i3c/i3c.h
+[   73.245199] imx-sdma 30e10000.dma-controller: Timeout waiting for CH0 re=
+ady
+[   73.252197] ------------[ cut here ]------------
+[   73.256816] WARNING: CPU: 1 PID: 1080 at kernel/dma/mapping.c:586
+dma_free_attrs+0x94/0xc0
+[   73.256832] Modules linked in: overlay af_alg dw_hdmi_gp_audio
+dw_hdmi_cec tpm_tis_spi snd_soc_hdmi_codec caam_jr tpm_tis_core
+caamhash_desc caamalg_desc crypto_engine authenc libdes hantro_vpu
+v4l2_jpeg v4l2_vp9 v4l2_h264 v4l2_mem2mem videobuf2_dma_contig
+videobuf2_memops videobuf2_v4l2 videodev imx8mp_hdmi_tx btnxpuart nvme
+videobuf2_common dw_hdmi mc nvme_core etnaviv imx_lcdif bluetooth
+fsl_imx8_ddr_perf drm_display_helper dwmac_imx gpu_sched
+phy_fsl_samsung_hdmi imx8mp_hdmi_pvi drm_dma_helper samsung_dsim
+snd_soc_fsl_sai stmmac_platform snd_soc_fsl_xcvr snd_soc_fsl_micfil
+snd_soc_fsl_aud2htx stmmac adv7511 ecdh_generic imx_pcm_dma
+snd_soc_fsl_utils ecc pcs_xpcs cec tcpci flexcan tcpm hd3ss3220
+snd_soc_wm8962 spi_imx can_dev typec at24 caam rtc_pcf85363 rtc_snvs
+error snvs_pwrkey imx8mm_thermal crct10dif_ce snd_soc_imx_hdmi
+coresight_tmc snd_soc_imx_card snd_soc_simple_card coresight_funnel
+snd_soc_simple_card_utils display_connector snd_soc_dmic coresight
+drm_kms_helper imx_cpufreq_dt imx_sdma mwifiex_sdio
+[   73.256997]  mwifiex cfg80211 rfkill fuse drm backlight ipv6
+[   73.257015] CPU: 1 UID: 0 PID: 1080 Comm: speaker-test Not tainted
+6.10.0-rc7-next-20240709-ga90ee5931efe-dirty #9
+[   73.257022] Hardware name: Beacon EmbeddedWorks i.MX8MPlus
+Development kit (DT)
+[   73.257025] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[   73.257031] pc : dma_free_attrs+0x94/0xc0
+[   73.257037] lr : dma_free_attrs+0x50/0xc0
+[   73.257041] sp : ffff800084f6b980
+[   73.257043] x29: ffff800084f6b980 x28: 0000000000000010 x27: 00000000000=
+003c2
+[   73.257051] x26: 0000000000000005 x25: 0000000000000010 x24: 00000000000=
+00000
+[   73.257057] x23: 00000000c5504000 x22: 0000000000000000 x21: ffff8000831=
+83000
+[   73.257064] x20: 00000000000000c0 x19: ffff0000c0e54410 x18: 00000000000=
+00006
+[   73.257071] x17: 0000000000000000 x16: 0000000000000000 x15: ffff800084f=
+6b330
+[   73.257078] x14: 0000000000000000 x13: ffff8000826845d8 x12: 00000000000=
+00639
+[   73.257085] x11: 0000000000000213 x10: ffff8000826dc5d8 x9 : ffff8000826=
+845d8
+[   73.257092] x8 : 00000000ffffefff x7 : ffff8000826dc5d8 x6 : 00000000000=
+00040
+[   73.257098] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000c55=
+04000
+[   73.257105] x2 : ffff800083183000 x1 : 0000000000000000 x0 : 00000000000=
+000c0
+[   73.257112] Call trace:
+[   73.257115]  dma_free_attrs+0x94/0xc0
+[   73.257121]  sdma_free_bd+0x60/0x6c [imx_sdma]
+[   73.257130]  sdma_transfer_init+0x1e8/0x270 [imx_sdma]
+[   73.257137]  sdma_prep_dma_cyclic+0x74/0x200 [imx_sdma]
+[   73.257143]  snd_dmaengine_pcm_trigger+0xd8/0x18c
+[   73.257152]  dmaengine_pcm_trigger+0x18/0x24
+[   73.257159]  snd_soc_pcm_component_trigger+0x170/0x21c
+[   73.257168]  soc_pcm_trigger+0xdc/0x1c8
+[   73.257175]  snd_pcm_do_start+0x44/0x70
+[   73.257183]  snd_pcm_action_single+0x48/0xa4
+[   73.257189]  snd_pcm_action+0x80/0x9c
+[   73.257195]  snd_pcm_start+0x24/0x30
+[   73.257203]  __snd_pcm_lib_xfer+0x6a4/0x7d8
+[   73.257208]  snd_pcm_common_ioctl+0x1140/0x1780
+[   73.257215]  snd_pcm_ioctl+0x34/0x4c
+[   73.257222]  __arm64_sys_ioctl+0xac/0xf0
+[   73.257231]  invoke_syscall+0x48/0x114
+[   73.257239]  el0_svc_common.constprop.0+0x40/0xe0
+[   73.257246]  do_el0_svc+0x1c/0x28
+[   73.257252]  el0_svc+0x34/0xd8
+[   73.257260]  el0t_64_sync_handler+0x120/0x12c
+[   73.257267]  el0t_64_sync+0x190/0x194
+[   73.257273] ---[ end trace 0000000000000000 ]---
+[   73.565659] fsl-sai 30c30000.sai: ASoC: error at
+soc_component_trigger on 30c30000.sai: -12
 
-diff --git a/Documentation/devicetree/bindings/i3c/i3c.yaml b/Documentation/devicetree/bindings/i3c/i3c.yaml
-index 113957ebe9f1d..e25fa72fd7857 100644
---- a/Documentation/devicetree/bindings/i3c/i3c.yaml
-+++ b/Documentation/devicetree/bindings/i3c/i3c.yaml
-@@ -91,6 +91,7 @@ patternProperties:
-               - const: 0
-               - description: |
-                   Shall encode the I3C LVR (Legacy Virtual Register):
-+                  See include/dt-bindings/i3c/i3c.h
-                     bit[31:8]: unused/ignored
-                     bit[7:5]: I2C device index. Possible values:
-                       * 0: I2C device has a 50 ns spike filter
-@@ -153,6 +154,8 @@ additionalProperties: true
- 
- examples:
-   - |
-+    #include <dt-bindings/i3c/i3c.h>
-+
-     i3c@d040000 {
-         compatible = "cdns,i3c-master";
-         clocks = <&coreclock>, <&i3csysclock>;
-@@ -166,7 +169,7 @@ examples:
-         /* I2C device. */
-         eeprom@57 {
-             compatible = "atmel,24c01";
--            reg = <0x57 0x0 0x10>;
-+            reg = <0x57 0x0 (I2C_FM | I2C_FILTER)>;
-             pagesize = <0x8>;
-         };
- 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3c4fdf74a3f9d..f0ce22e04d467 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10479,6 +10479,7 @@ F:	Documentation/ABI/testing/sysfs-bus-i3c
- F:	Documentation/devicetree/bindings/i3c/
- F:	Documentation/driver-api/i3c
- F:	drivers/i3c/
-+F:	include/dt-bindings/i3c/
- F:	include/linux/i3c/
- 
- IBM Operation Panel Input Driver
-diff --git a/include/dt-bindings/i3c/i3c.h b/include/dt-bindings/i3c/i3c.h
-new file mode 100644
-index 0000000000000..373439218bba6
---- /dev/null
-+++ b/include/dt-bindings/i3c/i3c.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
-+/*
-+ * Copyright 2024 NXP
-+ */
-+
-+#ifndef _DT_BINDINGS_I3C_I3C_H
-+#define _DT_BINDINGS_I3C_I3C_H
-+
-+#define I2C_FM      (1 << 4)
-+#define I2C_FM_PLUS (0 << 4)
-+
-+#define I2C_FILTER  (0 << 5)
-+#define I2C_NO_FILTER_HIGH_FREQUENCY    (1 << 5)
-+#define I2C_NO_FILTER_LOW_FREQUENCY     (2 << 5)
-+
-+#endif
--- 
-2.34.1
+Write error: -5,Input/output erro[   76.767120] imx-sdma
+30e10000.dma-controller: Timeout waiting for CH0 ready
 
+No sound is heard.
+
+I haven't looked far into the driver to see what was touched, but I
+was able to reproduce this by enabling and disabling the patch several
+times, so it's repeatable. imx-sdma 30e10000.dma-controller seems to
+correspond to sdma2.
+
+adam
+>
+> Regards,
+> Peng.
+>
+> >
+> > adam
+> > >  drivers/clk/imx/clk-imx8mp-audiomix.c | 1 -
+> > >  1 file changed, 1 deletion(-)
+> > >
+> > > diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > index b381d6f784c8..88d8ba975b5a 100644
+> > > --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+> > > @@ -172,7 +172,6 @@ static struct clk_imx8mp_audiomix_sel sels[]
+> > =3D {
+> > >         CLK_GATE("ocrama", OCRAMA_IPG),
+> > >         CLK_GATE("aud2htx", AUD2HTX_IPG),
+> > >         CLK_GATE("earc_phy", EARC_PHY),
+> > > -       CLK_GATE("sdma2", SDMA2_ROOT),
+> > >         CLK_GATE("sdma3", SDMA3_ROOT),
+> > >         CLK_GATE("spba2", SPBA2_ROOT),
+> > >         CLK_GATE("dsp", DSP_ROOT),
+> > > --
+> > > 2.37.1
+> > >
+> > >
