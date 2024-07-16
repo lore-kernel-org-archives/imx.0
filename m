@@ -1,247 +1,167 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011037.outbound.protection.outlook.com [52.101.70.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B888D2374C
-	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 21:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721163640; cv=fail; b=ZxqMdPWNOkhRftFyB1mDfeV2f+falhX6eJwg3HakVx1YGo1nI5Ut9/zjrJ3DjR9kSmJiDntUuTfYhJBNCkB1Gmt+wym4vmT3v1FrNpJY+qM8jJU5R06MSiP5RXy963HFhf0qMcKB7z1gfjyPxweJF3W4YGPMf2+Ux5+rwgWelYM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721163640; c=relaxed/simple;
-	bh=S0diCktvVorgB8AQelw3ILPPu0rCUMHfVd3fqDjI8FE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ndB+oe05pJvXSAZFTQPqSGFr7d0UWkT57pOkeAeHydgw4J5Z56GLZzJUv48cFFdW46jMpAev8hJaEf0G/BhBupVFfarvXRX67kexzgTWPbQHwCdOapIJqRWso/TIOh5W15ZX1+ijySHOmDkygPIdVjD52ral6kdSUIlbCNJRHYc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Aupqk2Tl; arc=fail smtp.client-ip=52.101.70.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C56155894;
+	Tue, 16 Jul 2024 21:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721164279; cv=none; b=TxPSgiLM86lWTblezeoihhGxnVvchw8+RSqD37ANO9O6c2NMMd0wh3KSA2lgFkS1f6a+yWwcLkEbQ+FtO+Vy9qEJ88JxrENlRwG5P54fcCzT7TUZhN8MlD3OByXE2soTRDgpB/m6/5TxHs60GroLom80xsUQpOvytes/Zt5/oiA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721164279; c=relaxed/simple;
+	bh=1jW0L9A3iRqmH7/WtH+jzNTYliriggcP44IDfWuj9xs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAkvXAYrZh84LOptooEL3ehskJs7j5DU933k1BApAIQ57NRV+IRzw/lgDR7zyQsn4NxhPt6EchkErTaZdfo1JD7atBPvOOEtBGUUR25EU9CFg0VU0nUqykI9aJlZHSAcC8J9R2fVgTNwnVQBspvU2IXpv5g+BsKoLsf+4ZqtHlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tghLh9jf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Aupqk2Tl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F40NpGxT9omPqSc2DAimj85A0QNqeqq3b5nobHsRzQ7hfndRsv0Y2UbwhM55CPlltFncQjsZtx+Ou25oCvANvSqO50MTIxl5wcLtLXMyi26JjRlgXmlOPzCyHBvKYzO2T0IBWYCe5HFhYOXifyzoW7mnJaDOppFODxBR1JOpuqE5e4ay82b3IXx+gEmz37rS3MuXtXQmisx9msCLXr0CLBqiMOJWNmOPqGzZRYNE7RIZaLEpFqqBoDvxe7nJQdaTV4v9b3x0QhSZONBEOoWn52lxLna1hmR/pogq5s9SoxPxN286ri3FbuAuKE9H6UaeroesJSJmnbWBjE3LFPgjWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OP9ZKz0lUPFk8ciAndZVqHUgBMHVl/GRh5o2sR2X9T4=;
- b=rLqFHtCDFH/y//TwkmMJ61AiftLInXIHfqMw/vQol2+lormBVLYpes580/yJY6iEUcZ4lGXlP5eoyAQIPJOvYHm8cAa0NWdEXo+N9YkCyrjL21VIujnxzZpMbC1rFM2yQxREb1F8eM1T1SBxWdi5eCbiTTkmJgFqjv5maK088LNRVjEULtEzMC3EAD3qsT9wWsLrVRVYQI9fPRml5xvtQLZIK/e2bdlb+Jcx6mKHON8ewRjuHIhlhrV4M/aOOJF05bjm9lSddnztTkkLUq+C6DuE/xqNABouybAMN5sqjj+MyFWQcRqGzZYlFqhPF4d5qBgIiVZcsuAZ48m20RcaGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OP9ZKz0lUPFk8ciAndZVqHUgBMHVl/GRh5o2sR2X9T4=;
- b=Aupqk2TlqESmNW4okosgEW6PNFDLokHRoXekTDpDSloqtk9dLa6tTGFP4pGolbJ0mBJi25kbxKLKYQB1BtkLq5OREIo1xUd1TroKXmSq1MlTDxOx/Cm4akYX0/HMERHysE7J3uitp5k+fDnUAAGSHYd6C7PLAUBq7kKDRREjSCg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8321.eurprd04.prod.outlook.com (2603:10a6:20b:3ed::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.29; Tue, 16 Jul
- 2024 21:00:35 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7762.027; Tue, 16 Jul 2024
- 21:00:35 +0000
-Date: Tue, 16 Jul 2024 17:00:28 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Jason Liu <jason.hui.liu@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] input: bbnsm_pwrkey: Fix missed key press after
- suspend
-Message-ID: <ZpbfbJOiuuRyFrGT@lizhi-Precision-Tower-5810>
-References: <20240716205612.1502608-1-Frank.Li@nxp.com>
- <20240716205612.1502608-3-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240716205612.1502608-3-Frank.Li@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0118.namprd03.prod.outlook.com
- (2603:10b6:a03:333::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tghLh9jf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC982C116B1;
+	Tue, 16 Jul 2024 21:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721164279;
+	bh=1jW0L9A3iRqmH7/WtH+jzNTYliriggcP44IDfWuj9xs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tghLh9jfOMBim3IX1QfM4yS2ofpN385lvpnXmFBp0BfF5oCxcniZ0tkKnocDQTqd/
+	 c8XPw4rL2wdcmKF15SxMmzDfCWDFSSuUv2L0O0nkePDvp3igaULT1EO95aHbsMpR1K
+	 0qGUejPBbh+Bx429UbcQtuozzegrutlE9LCl/l9XrudayzjyML9933cVEFWExtK5I/
+	 5NdKIUBZWOxxo+pGqZCueUAXxngGiwkDg2bgMaXznBMWoWZELO5Jqghqk6i0OQDsJQ
+	 aJgP89unBMxjg7/iCi/f+EyySFTuwbpjqq7NljneNSmUDix0HbUGYPfFn2ikM4zHyd
+	 9qmwVfzEH77ng==
+Date: Tue, 16 Jul 2024 15:11:17 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lee Jones <lee@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-pwm@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/6] dt-bindings: mfd: Add i2c device adi5585
+Message-ID: <20240716211117.GA387758-robh@kernel.org>
+References: <20240716-adi-v1-0-79c0122986e7@nxp.com>
+ <20240716-adi-v1-1-79c0122986e7@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8321:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6415634a-e24a-4506-5a02-08dca5da5675
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Fjh6L5Pw25/YVVxf2SSaQX+RYdaAAolSGUOXJQ5Hao1F8dxTSjUmaLvJNUdH?=
- =?us-ascii?Q?5VL5VLFT7ixeZVE+GDKFDVSlUtLszg6XLODbOV2ETKNWW2qO5j3SGyKn81SA?=
- =?us-ascii?Q?KxSbjFgUcZqlJulPz8pHdJC28eiBbehWuX5imly5m0y4R4VvYrmNyYMab8IQ?=
- =?us-ascii?Q?WkDGTnyLtrJATgirIzqET0/NLlCowbpG1Wi8vl+5t1CG++N8IhvLFvpQrlM/?=
- =?us-ascii?Q?TCEGIod/0PyaCmU7Oz5OezX7Lx7j4kLI9SXRHIrOtJL3f2qAyr1tTWVePxB+?=
- =?us-ascii?Q?4NZqfywIg9edqlDqt0o+v3q6U1QYcxLao79tx2YzpE2x9kQLXAMSqy+zpodj?=
- =?us-ascii?Q?FcOxsGxG7xy91fjPs0/eKhjklLewrbkwUVs8WR/Uo1AJHowcMoqDnHnVcIj3?=
- =?us-ascii?Q?rHU/8flhkP3o0KONVPLqDEVj6zQN+eZor9j+0KYraWCX7J8At20VrY2FrcQ6?=
- =?us-ascii?Q?Xw+0A6Bvpe5lCLii9YMxL4oGphyD+sq4tKuXWJ2AI8Li8Feo28+ehaf8oBn9?=
- =?us-ascii?Q?To2ASgxmxsu2QiZ7+BeK9I+Za88oHv1/LxSrS1iLvJwG/9sYu6xCgoTq/y7b?=
- =?us-ascii?Q?gLgehty9LcUHI95xe+yCglEm4HdTEDAPs0vJ6jLuc55y4wh7U+Kffnqn8Ctm?=
- =?us-ascii?Q?OOvfGKcWxKJ7sJf44heWWJOJJ34M4CdRq1MQcs1I3VpTkeifGQ7YEtSOJniG?=
- =?us-ascii?Q?E2lxTqTsbd1gi+rRIV3H5Jd08/EDpw1zOFpWXhOePWboFUEGlyALrj8z2qCq?=
- =?us-ascii?Q?SgZD5wlACQlDMxL+4inIrd6A0sMa1hHiIV4H8kYPMG1j6Z79uiDvn9PRIML2?=
- =?us-ascii?Q?UvLdVd/oszP3E9yWqjRqJMxhMkvO8XWuIDFaIa+E5M4IgmyCAQbgjrJV5bfS?=
- =?us-ascii?Q?a5KI8oco2T773osbLji9SfYVP4bI9+505xFfBs2gw50W+ND8hxKNuzXMM5mm?=
- =?us-ascii?Q?UF4ZJIiIfHJ8RVrSWjZmR4GrnqtC+GMzzGTzyeeerD7qUFBlh2gnMWp0H54T?=
- =?us-ascii?Q?tvIBuQ/Kgv1p2ZD8M+SaU9ryj7ZsXkW0CEE0REGeQy7P6jo25v4XqNQ6J2i8?=
- =?us-ascii?Q?1w8a1q7XHDob5slohZVBj5PZeLXGH7BCzzB+N19pHckFL8BZQ7QplMZ1nqcu?=
- =?us-ascii?Q?OFzGCgUdnbPSSfNsUiM1mTXlkpfXnw3ejIl9CovGomwdfexPQjiwfLW/f0zS?=
- =?us-ascii?Q?mueqF6UEqdyyBmA8x6rneXq6Cwu98R/MNwM+JMI/VNkMCaBlGVb/DRregj+1?=
- =?us-ascii?Q?4El7utoTr+SJT1Q95WbUJ7oUmtlWPQjdOmHWUNnAIJBO6A2flpKts5uaGGyz?=
- =?us-ascii?Q?XRQnph//rTM7ahHoadLi+Py608LDhzQtnLhpGk0ulPbVn3p2vm1lQgdk6JzK?=
- =?us-ascii?Q?GN7yv9+xnSHlHyZbDyvx/aMmBEREMMV/JlMx13dGCiXtAzg2Xw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NrNuV1ET9CMKqXWDsJENdSPuS8/7Zbn8M3KILD0Tm0pkqLATQ9ryVQswvIoJ?=
- =?us-ascii?Q?zQfHGhSlCvYZNgmnx/bhwnNPwH7+mSxHQ8dcCWxTfOGuvAcGqTh909KlBhLH?=
- =?us-ascii?Q?soEIHzYMgDvYGVZfxKsWZ+q6URrLzvRd7wB4f0PZ2UB/95/6uKLHrv1g9xjC?=
- =?us-ascii?Q?4aJAxY5f4VttDF3TGf/6d0IswT6W5GEt9QYF9EW0VUx5X9KvjKRbhUFEVXqi?=
- =?us-ascii?Q?Q8giwzQxoswhwH20PZ5xq8/wB/ZlXAlTBqfun3hJ4CimPdR7wIcBKG2JTAie?=
- =?us-ascii?Q?yqu4CmEb0OaV9ExdJRNdE4gWZWuuqkN8sFq7YBtaMBreuDymC8CQf4mfFEGJ?=
- =?us-ascii?Q?wC9x9HwRojD3qv6aRkaU1Ntx2I5FSlSRccYy1dXwxNewGPjnI+WJ6OKsY4OM?=
- =?us-ascii?Q?74r5DqvJvkKUW2ICvG7scP1V4LYliCkRifwON+n/ewBxGW0JQ7Zdpz4/UyoE?=
- =?us-ascii?Q?KQ4SYO2563wlLg1+n2vN3MaVIwlsZuTO0rXTZUBZqFdK4mdDmdsmL0M+c7F3?=
- =?us-ascii?Q?4kwUqKu537xpLWxK9j9mee86xCZvmbAPvT5pKPScuSWkxNHHUrOqPN/5hPsO?=
- =?us-ascii?Q?Gb6bGfNTYPyoblrk3QllcbwYZabqSFs7zLdfrkM3YYE7FX6f/yfAiPqgrwCN?=
- =?us-ascii?Q?AHmbV6eRsG3DKqBKbgLk5RCYRTo4ueVDx6OmOcb21zLcKJozqcTT8SBOItS+?=
- =?us-ascii?Q?0hI8ZWJedUAsheeYmwlFe0uwJqwtgt5Mm40r5WpjmTXt/EIn0Zd+t6DixV7Z?=
- =?us-ascii?Q?zznKdNuAqa7OeM4nQtU4U0olAiqQP4aMla9vtV/zW1DhfXXpmoq/N6t7ZHOR?=
- =?us-ascii?Q?osHbm3EqpQYenCnftYy943J0inr0HD8hA4yx/pihxJz6AqKEyXnTigMu63hW?=
- =?us-ascii?Q?1M/Z0ERO4k5AOxPoVEEsYKvYNr2ZM8wMZXFGF5Rk3jbGheZ/kqyUGwy/DN5P?=
- =?us-ascii?Q?d3Xnxb0bLdNqdbwUTaX0hG9yd+QsbrNTg0veTyb/Y94cFT2C50ymYpHhk5d9?=
- =?us-ascii?Q?bNt+UytOioHnAqw8A1QXuyu3tihqh7hlm6C+yPIneqwfpDscUOmCDaSvP1l4?=
- =?us-ascii?Q?omRuc1WmOcxPnBlWpRq/CI+ekwU65dKFzPcoy6T3/2hmmjV5Sv3sv8y5SSMu?=
- =?us-ascii?Q?LNYh7MB8dTq90CtjdRKbSb/BRUr/o/xC5241p/0lr4cWUFOaqBNsaYA/4v1r?=
- =?us-ascii?Q?PLt85JbYeZRyNzniNJME8q16zTXanMK5HwQzp2TProj0CFnPHa3bI3blTB80?=
- =?us-ascii?Q?nD+jVXyNLe7qbvLlfRdxtBug5eF4AyFTk19JmJTVNdGFHohv9lIJ8f0FlX/4?=
- =?us-ascii?Q?n1ZYULsugr3y0CFNZchKat6TYwpPMWoAycDwCu8dxwdL6i4BqaIHrY8aJg9y?=
- =?us-ascii?Q?jJMZcKqdN2vDTzAOc1ilpeYnmerRL8S5BRQLhnhykuWvDv46p1XU4RzQ6QgG?=
- =?us-ascii?Q?dyYP3Bg/aVVxg3j6+9xYPB40d64sghoovw/kM5pEwI5IChxVr7pxMWyDtPtX?=
- =?us-ascii?Q?w5rS4dO6WUbbhjWqj1sVCNDSRshj9cI5sO+SUnOnR3M1GcfoUY5RNdFRwi2s?=
- =?us-ascii?Q?1u7HirC58lAKJOgDgYAxmkxbAVEVJ0WwRA+pLsX6?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6415634a-e24a-4506-5a02-08dca5da5675
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2024 21:00:35.4788
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xyv+OPzzg0K3i4w+GJRZnymQ/nA6hmmo8vxjtY3z1RjumydRgHY9Q115oQWY8pZyJq+UmpHn7DGDQsgpfvwyjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8321
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716-adi-v1-1-79c0122986e7@nxp.com>
 
-On Tue, Jul 16, 2024 at 04:56:11PM -0400, Frank Li wrote:
-> From: Jacky Bai <ping.bai@nxp.com>
-
-Sorry, Please forget this patch, this one accidently sent out with other
-2 patches. And this one already applied.
-
-Frank
-
+On Tue, Jul 16, 2024 at 03:28:24PM -0400, Frank Li wrote:
+> Add adi5585, which provide gpio, pwm and keypad controller.
 > 
-> Report input event directly on wakeup to ensure no press event is missed
-> when resuming from suspend.
-> 
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Acked-by: Jason Liu <jason.hui.liu@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Change from v1 to v2
-> - move before mod_time
-> - clean suspend flag to make sure only fire once
-> ---
->  drivers/input/misc/nxp-bbnsm-pwrkey.c | 38 +++++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
+>  .../devicetree/bindings/mfd/adi,adp5585.yaml       | 83 ++++++++++++++++++++++
+>  1 file changed, 83 insertions(+)
 > 
-> diff --git a/drivers/input/misc/nxp-bbnsm-pwrkey.c b/drivers/input/misc/nxp-bbnsm-pwrkey.c
-> index 1d99206dd3a8b..eb4173f9c8204 100644
-> --- a/drivers/input/misc/nxp-bbnsm-pwrkey.c
-> +++ b/drivers/input/misc/nxp-bbnsm-pwrkey.c
-> @@ -38,6 +38,7 @@ struct bbnsm_pwrkey {
->  	int irq;
->  	int keycode;
->  	int keystate;  /* 1:pressed */
-> +	bool suspended;
->  	struct timer_list check_timer;
->  	struct input_dev *input;
->  };
-> @@ -70,6 +71,7 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
->  {
->  	struct platform_device *pdev = dev_id;
->  	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
-> +	struct input_dev *input = bbnsm->input;
->  	u32 event;
->  
->  	regmap_read(bbnsm->regmap, BBNSM_EVENTS, &event);
-> @@ -78,6 +80,18 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
->  
->  	pm_wakeup_event(bbnsm->input->dev.parent, 0);
->  
-> +	/*
-> +	 * Directly report key event after resume to make sure key press
-> +	 * event is never missed.
-> +	 */
-> +	if (bbnsm->suspended) {
-> +		bbnsm->keystate = 1;
-> +		input_event(input, EV_KEY, bbnsm->keycode, 1);
-> +		input_sync(input);
-> +		/* Fire at most once per suspend/resume cycle */
-> +		bbnsm->suspended = false;
-> +	}
+> diff --git a/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml b/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+> new file mode 100644
+> index 0000000000000..03c4760242ddd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+> @@ -0,0 +1,83 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/adi,adp5585.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  	mod_timer(&bbnsm->check_timer,
->  		   jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
->  
-> @@ -173,6 +187,29 @@ static int bbnsm_pwrkey_probe(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> +static int __maybe_unused bbnsm_pwrkey_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
+> +title: ADI adp5585 GPIO, PWM, keypad controller
 > +
-> +	bbnsm->suspended = true;
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
 > +
-> +	return 0;
-> +}
+> +description:
+> +  adp5585 is a multifunctional device that can provide GPIO, PWM and keypad.
 > +
-> +static int __maybe_unused bbnsm_pwrkey_resume(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
+> +properties:
+> +  compatible:
+> +    const: adi,adp5585
 > +
-> +	bbnsm->suspended = false;
+> +  reg:
+> +    items:
+> +      description: I2C device address.
 > +
-> +	return 0;
-> +}
+> +  gpio:
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        const: adp5585-gpio
 > +
-> +static SIMPLE_DEV_PM_OPS(bbnsm_pwrkey_pm_ops, bbnsm_pwrkey_suspend,
-> +		bbnsm_pwrkey_resume);
+> +      gpio-controller: true
 > +
->  static const struct of_device_id bbnsm_pwrkey_ids[] = {
->  	{ .compatible = "nxp,imx93-bbnsm-pwrkey" },
->  	{ /* sentinel */ }
-> @@ -182,6 +219,7 @@ MODULE_DEVICE_TABLE(of, bbnsm_pwrkey_ids);
->  static struct platform_driver bbnsm_pwrkey_driver = {
->  	.driver = {
->  		.name = "bbnsm_pwrkey",
-> +		.pm = &bbnsm_pwrkey_pm_ops,
->  		.of_match_table = bbnsm_pwrkey_ids,
->  	},
->  	.probe = bbnsm_pwrkey_probe,
-> -- 
-> 2.34.1
-> 
+> +      "#gpio-cells":
+> +        const: 2
+> +
+> +    required:
+> +      - compatible
+> +      - gpio-controller
+> +      - "#gpio-cells"
+> +
+> +    additionalProperties: false
+> +
+> +  pwm:
+> +    $ref: /schemas/pwm/pwm.yaml
+> +    properties:
+> +      compatible:
+> +        const: adp5585-pwm
+> +
+> +      "#pwm-cells":
+> +        const: 3
+> +
+> +    required:
+> +      - compatible
+> +      - "#pwm-cells"
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mfd@34 {
+> +            compatible = "adi,adp5585";
+> +            reg = <0x34>;
+> +
+> +            gpio {
+> +                compatible = "adp5585-gpio";
+
+Missing vendor prefix. However, ...
+
+> +                gpio-controller;
+> +                #gpio-cells = <2>;
+> +            };
+> +
+> +            pwm {
+> +                compatible = "adp5585-pwm";
+> +                #pwm-cells = <3>;
+> +            };
+
+There's no need for these child nodes. This can be just:
+
+mfd@34 {
+    compatible = "adi,adp5585";
+    reg = <0x34>;
+    gpio-controller;
+    #gpio-cells = <2>;
+    #pwm-cells = <3>;
+};
+
+Rob
