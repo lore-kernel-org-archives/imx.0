@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E891B182B9;
-	Tue, 16 Jul 2024 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F65F1A08AD;
+	Tue, 16 Jul 2024 18:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154872; cv=none; b=fDSQ7IgDVGWf8ywAmj67ERIA6LjR+p0r/nuMf14pK7/sSsTltoi02E94UzGhVA0K/G89nCdTqPGfkRmgv/JAKYcwhlxswmg5JxdXFdWrfYnSHuC6/HUw8NBwOatY+xblSqZttUNquVvrR4yIhisuxWPPwRQNrUOrtPccudG0zRI=
+	t=1721154886; cv=none; b=hb8/a1ndrA+MRi1o2m8fM/Qn8HGxNrjDfgKeKD6wLsQEvYdbUGk9VYam/f57vbgjfWG8sUj9b+jUUXneM85+/tsYJomdtsTm71bfrR5q1ShBvRqn/OEg+8WRiq6Fh+1Cg23hprTCAcBDMm+5pdx2eQxRHrflSGMw8Hr27P49Re8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154872; c=relaxed/simple;
-	bh=hqnJeSaPQO5SFRt/bAfqmzR4G9Has0SnV56u/O3vOD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ntah/Efdu+VxoRJA+ZpvhFTh5uuJgPVDMEv97l6rzCiFcLQq0jplXImFblEhrBimSjonGChGeSoUrAoWn2J155kqUTPs6G/NORWTY/cr+PZB24xi21B7XY0k5koFg0FldzyFQUdVy4ATh25LLbjNUsUW35pGyBCH2v6vJRatcog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOoZ87mg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721154886; c=relaxed/simple;
+	bh=E1spAak1GIDfHhmoaZTykJRIXR72EBgWlpy2wKn63Hs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aImM1vNN+WdTmO6OsLfOnPeNTIFchz58TkU9vab6WjWERPbE6dNTUR/rlEBKp9kkyT5aBmOZT+WkVvKOsoWsI/3/oDhu/1Kqbwj8cXPaWhU+W0MUYsnFs5nVeQF4kKZDcTq0tPJzL6gO6Yz7WvnSKPTmGuBExKuCSi33Q+6K740=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLFNU4eM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOoZ87mg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D129C116B1;
-	Tue, 16 Jul 2024 18:34:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLFNU4eM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D961AC4AF0B;
+	Tue, 16 Jul 2024 18:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154870;
-	bh=hqnJeSaPQO5SFRt/bAfqmzR4G9Has0SnV56u/O3vOD8=;
+	s=k20201202; t=1721154886;
+	bh=E1spAak1GIDfHhmoaZTykJRIXR72EBgWlpy2wKn63Hs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HOoZ87mg40FJwCp2ZRCIfcnVO5OE6NmmzfJpjrS8K5JI/6Y7LtKF4hcHLkbly/sfm
-	 yuFAnSJtVQ7nP6jGRwsvEXnRXhGpcNhoprS4a6uhL74cF2ocOEnxGQT8xUoZ1ZkcVG
-	 GNJCOaeyrubnqxqQqCGQZ6dRRYbslLU6uBI1D2H25/fTY45nJeFyV15Fzp/KPgebsm
-	 bKpxiaa85M+uyzMs03KwYCjJ28UFLp5/cWFRqOxmVukAgaDvAIzClRjPC2+hJRLgys
-	 nH7KCnDzeeJ1cZGUPHUgsgmY/dPgwrDDoR8IDDGj+iX/Z1TqJ7m+bfRWAgGUV2iyuQ
-	 oq7QQt1zPUuqQ==
+	b=RLFNU4eM3Gk2H7oXXVwO6vUJ6vLEDAaQP3lcMS3BCUG36NMH8NEAKTfbjBygvtqOV
+	 CSQKS4A1agK5LH81cWQ77Fce6GNDQgow5oAfBoBhJqY0tk91nUogTMjXRttDcf/yFo
+	 e8j2oeEGCpGyMfmfyC/9j41fUkEP91wZqiIfMcijabBLOTc30fZLnvfG5cEPsTBjAD
+	 PlccOlmIeaqoVWiJ23L3PPZDgsTqKquX4fXf/e/RxhxuWMdSRZ+zy52aCB13QHqpI4
+	 tXoGZwzG9wrO+SDWpL1hJaxbIzKIFqLX1buybQgoy1oNVC9XRkWz9x2kNaVqSfrLYC
+	 V1CJtN1uaqxUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -35,9 +35,9 @@ Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 1/4] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
-Date: Tue, 16 Jul 2024 14:34:20 -0400
-Message-ID: <20240716183427.2814662-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 1/4] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
+Date: Tue, 16 Jul 2024 14:34:36 -0400
+Message-ID: <20240716183443.2814769-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -48,7 +48,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.162
+X-stable-base: Linux 5.10.221
 Content-Transfer-Encoding: 8bit
 
 From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index f201653931d89..c806ee8070e5a 100644
+index 21297cc62571a..8566da12d15e3 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -1016,7 +1016,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+@@ -1001,7 +1001,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
  	.rx_available = mx31_rx_available,
  	.reset = mx31_reset,
  	.fifo_size = 8,
