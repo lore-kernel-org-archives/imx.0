@@ -1,95 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F601A0AF2;
-	Tue, 16 Jul 2024 18:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768B11A01DA
+	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 18:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721154916; cv=none; b=YGMCmqEGGTc87/WSKHd5mnDBOIZ4KtyqSvf+KvKWx4oFfiQF0IDpnPCoVOpUv1W5V7pxDKyZf4NHWvEd9P0PdhNapbpXyDaQfwC4QppL/nIROBhXvp5ewZpuJeEujDUs532CHELwPos33YiB+Gu8ms4lUAdcy6zZrsnZpCrKbGw=
+	t=1721155824; cv=none; b=bvR01L43RymAZMhqRN4nHN1zzoJrdODal2q4528gnhNYHy/uGtJOdp0V+SlrBIaIMI2iFyf8eXEmAhqF7+6qY2BANhnwtmlgGnaAcoutBk1ZcW6QviLWu6rEfpqVNd74ubebe++K/eBwrPDKs8zMfDAigWhLEvlmnSn/2fN1ZTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721154916; c=relaxed/simple;
-	bh=SBYrAkqv84dVvEbUsoTvLPS9PdMvlFOSaor4FSxESvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=szo2BB0ye3Ff+9y/Dojpgb5A/LQ89SzTv9RTQxuhNeoCB1wrOcVFqt56RUXQoaSNOBay69v9OGzG9ncV5wjV2IwXtdWS4E9Rc6v0pSBCW/Wr991dyP0/CThHN0jcSZnSgXjwFB63UlxtMvWhnRCwOzH/OmquiNSqZli4GOqYSlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVpH4aBD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721155824; c=relaxed/simple;
+	bh=JbHDzSk339pVt8FIkuVLH3SiTT1tiWmH6YYuqnIdXf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u8h0lekivlxdT88DSa3sPEGPdkNauoCWPssTmYFaUl9COY92jTXK+GqTCc2B8gBZCUgBQNpY9iB6ZPgpjBFsQ6sT6QiV3NRctUKt3BiJCQl2j4glMSKTYwpPvfwT4CAen6dfAoC/fbtNcRMkRm4a4c7F9YAUiQ5WynE9FDuVMTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=En/lnwRE; arc=none smtp.client-ip=80.12.242.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVpH4aBD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E73C116B1;
-	Tue, 16 Jul 2024 18:35:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721154915;
-	bh=SBYrAkqv84dVvEbUsoTvLPS9PdMvlFOSaor4FSxESvY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iVpH4aBDLK9ti7qpfr5U1YNLhsygX4O+mO7CxEMrtoVn64GOfh3IeAOm09ocV8Ige
-	 lyqsdE5QvFa4v60MHTlDg+ZdAxED+RYHezVCOlSb/16UUEImJpmnRShSTeHPmkfZLp
-	 iKctQxA/0ulDkL9md1lSJvmKnGxmfR3KqjMLJSuLb9tS9YzkwfXqxswR+nDX0fnHrS
-	 Jp4pl//xmhXuW5YOKrBqDmaleXPOMgxeHlKrMH93apLP1rbZhMChMAx1GncTYiMS3e
-	 hWZfuzinZvkIEgI95mYCjzUjdhFw2xz7PgTpmOVWGLW4x7DpMdkGuTC9M7gn1esL8w
-	 TgJO+jOY6LWNA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.19 1/3] spi: imx: Don't expect DMA for i.MX{25,35,50,51,53} cspi devices
-Date: Tue, 16 Jul 2024 14:35:07 -0400
-Message-ID: <20240716183513.2814965-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="En/lnwRE"
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id TnEWsVD3Ct4p9TnEWsmpjH; Tue, 16 Jul 2024 20:49:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1721155746;
+	bh=Y9EqEgYNw6i/aumvZC5AG9uD8+LrAD0SR2i8Uffr6Gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=En/lnwREl/G1EMb4RmSKJtvC4NiyhXrykXj1RwOoNswa7dbPoEsQgHQU0Sq4DSQ62
+	 +XAmm0b5MBjP9jBcNjj6U+y1lWbiIGMdoraox5vYhYOJb7KfgRFD08gLN/GiGuCnRU
+	 z4qCFv8XFq+4mCDEwDM872MrIn5dg11YmAUxwbSHxQPjXCUw0vcBEtu1KcvC6/iAOp
+	 8LvJ62Zb910kd8JnO2uQRn40gDfVhR4xwU1pbFp+X77SiXMruTvCbvB/E02mtFpSLn
+	 UJwldAPapM+L6c2XYpxcd7Tq/e9De1enJDSkwhQLplQNc1pavi+nXCxdjfSzsvoGLe
+	 UnnxYIQQeaShw==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Tue, 16 Jul 2024 20:49:06 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <4cdcfde7-1b79-411d-9a1b-131105b113ab@wanadoo.fr>
+Date: Tue, 16 Jul 2024 20:49:04 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.317
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] pwm: imx27: Add 32k clock for pwm in i.MX8QXP MIPI
+ subsystem
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+ francesco@dolcini.it, imx@lists.linux.dev, kernel@pengutronix.de,
+ krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+ p.zabel@pengutronix.de, pratikmanvar09@gmail.com, robh@kernel.org,
+ s.hauer@pengutronix.de, shawnguo@kernel.org, ukleinek@kernel.org,
+ victor.liu@nxp.com
+References: <20240715-pwm-v2-0-ff3eece83cbb@nxp.com>
+ <20240715-pwm-v2-2-ff3eece83cbb@nxp.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240715-pwm-v2-2-ff3eece83cbb@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Le 15/07/2024 à 22:29, Frank Li a écrit :
+> From: Liu Ying <victor.liu-3arQi8VN3Tc@public.gmane.org>
+> 
+> PWM in i.MX8QXP MIPI subsystem needs the clock '32k'. Use it if the DTS
+> provides that.
+> 
+> Signed-off-by: Liu Ying <victor.liu-3arQi8VN3Tc@public.gmane.org>
+> Signed-off-by: Frank Li <Frank.Li-3arQi8VN3Tc@public.gmane.org>
+> ---
+> Change from v1 to v2
+> - remove if check for clk
+> - use dev_err_probe
+> - remove int val
 
-[ Upstream commit ce1dac560a74220f2e53845ec0723b562288aed4 ]
+Hi,
 
-While in commit 2dd33f9cec90 ("spi: imx: support DMA for imx35") it was
-claimed that DMA works on i.MX25, i.MX31 and i.MX35 the respective
-device trees don't add DMA channels. The Reference manuals of i.MX31 and
-i.MX25 also don't mention the CSPI core being DMA capable. (I didn't
-check the others.)
+maybe, switching to clk_bulk_get_all() and the clk_bulk API would 
+simplify the code?
 
-Since commit e267a5b3ec59 ("spi: spi-imx: Use dev_err_probe for failed
-DMA channel requests") this results in an error message
+See [1] for a similar discussion related to devicetrees and binding if 
+such a change is done.
+I'm not familiar with it, so I just point it out.
 
-	spi_imx 43fa4000.spi: error -ENODEV: can't get the TX DMA channel!
+Just my 2c.
 
-during boot. However that isn't fatal and the driver gets loaded just
-fine, just without using DMA.
+CJ
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://patch.msgid.link/20240508095610.2146640-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1]: 
+https://lore.kernel.org/all/65b422fe-ecc1-4f57-bb72-f2fef3a5af28@collabora.com/
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0078cb365d8c2..adcd519c70b19 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -968,7 +968,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
- 	.rx_available = mx31_rx_available,
- 	.reset = mx31_reset,
- 	.fifo_size = 8,
--	.has_dmamode = true,
-+	.has_dmamode = false,
- 	.dynamic_burst = false,
- 	.has_slavemode = false,
- 	.devtype = IMX35_CSPI,
--- 
-2.43.0
+> ---
+>   drivers/pwm/pwm-imx27.c | 26 +++++++++++++++++++++-----
+>   1 file changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+> index 9e2bbf5b4a8ce..253afe94c4776 100644
+> --- a/drivers/pwm/pwm-imx27.c
+> +++ b/drivers/pwm/pwm-imx27.c
+> @@ -15,6 +15,7 @@
+>   #include <linux/delay.h>
+>   #include <linux/err.h>
+>   #include <linux/io.h>
+> +#include <linux/iopoll.h>
+>   #include <linux/kernel.h>
+>   #include <linux/module.h>
+>   #include <linux/of.h>
+> @@ -82,6 +83,7 @@
+>   struct pwm_imx27_chip {
+>   	struct clk	*clk_ipg;
+>   	struct clk	*clk_per;
+> +	struct clk	*clk_32k;
+>   	void __iomem	*mmio_base;
+>   
+>   	/*
+> @@ -101,23 +103,32 @@ static int pwm_imx27_clk_prepare_enable(struct pwm_imx27_chip *imx)
+>   {
+>   	int ret;
+>   
+> +	ret = clk_prepare_enable(imx->clk_32k);
+> +	if (ret)
+> +		goto err1;
+> +
+>   	ret = clk_prepare_enable(imx->clk_ipg);
+>   	if (ret)
+> -		return ret;
+> +		goto err2;
+>   
+>   	ret = clk_prepare_enable(imx->clk_per);
+> -	if (ret) {
+> -		clk_disable_unprepare(imx->clk_ipg);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		goto err3;
+>   
+>   	return 0;
+> +err3:
+> +	clk_disable_unprepare(imx->clk_ipg);
+> +err2:
+> +	clk_disable_unprepare(imx->clk_32k);
+> +err1:
+> +	return ret;
+>   }
+>   
+>   static void pwm_imx27_clk_disable_unprepare(struct pwm_imx27_chip *imx)
+>   {
+>   	clk_disable_unprepare(imx->clk_per);
+>   	clk_disable_unprepare(imx->clk_ipg);
+> +	clk_disable_unprepare(imx->clk_32k);
+>   }
+>   
+>   static int pwm_imx27_get_state(struct pwm_chip *chip,
+> @@ -325,6 +336,11 @@ static int pwm_imx27_probe(struct platform_device *pdev)
+>   		return dev_err_probe(&pdev->dev, PTR_ERR(imx->clk_per),
+>   				     "failed to get peripheral clock\n");
+>   
+> +	imx->clk_32k = devm_clk_get_optional(&pdev->dev, "32k");
+> +	if (IS_ERR(imx->clk_32k))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(imx->clk_32k),
+> +				     "failed to get 32k clock\n");
+> +
+>   	chip->ops = &pwm_imx27_ops;
+>   
+>   	imx->mmio_base = devm_platform_ioremap_resource(pdev, 0);
+> 
 
