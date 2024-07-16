@@ -1,129 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95961F934;
-	Tue, 16 Jul 2024 07:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DD1335D3
+	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 08:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721115122; cv=none; b=kNoY4UO+Ssis3gPjAWEsGtlkH+jRfTEKWbZYerO6CNAPkdKXR2XcUTOdnmrsFyWEbH8zISxm4/1gsMJCZwoWnx2DeJRYVN0CxSh/ax/6ou0yPtxUF77EdNdx1wTCpWHjEacY/B54vFlXDG8g7AWfclxDDwNCvs9eIE5r6WWIyZs=
+	t=1721119089; cv=none; b=EKwtgfi16oplMb0f6eFzrL9JD5gHzVq56/s2APtOhtpySM1Tv/rsT8Tlk7PQ+LcDHUzkGIO71BZvokdOKfkPiTS/1GDLXkOTixeZ/Iv65SAe+jVgLPH7GehfT5NwSXH5eUiNW3vIp8IrLFmGMg1+K3zFeT3IE5ZWsXBUwo5QPAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721115122; c=relaxed/simple;
-	bh=VXnbYi7kQvcqZf/oDyfvoTJ5K7E4jBtVfexeovJ13Ic=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RbMaLhs6dfv92pqvIulkOfhbeD8o+Sm4uIwu5Juj8UaswyH9jrxsePnqztyCt6Rm+R+1ebQUe5tCHDmUXoy3C2Zzouj1iby9G8b1rUfqgKKnK0eu/l3dHse5Kbt/Uvi+aZFU5Y+87YrCNBQgm7nMfz8veWkkp10NmsXTtsSeInQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAmPB5Ih; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721119089; c=relaxed/simple;
+	bh=h8o3oRHmLl/azwP+hpM8aQmxsMBmeviL+0DH7hM8/js=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hhiJ5z+094BD6JE5wlOrtdpakZWwTeAlNsldT0tqgHAs3wn3xWJlmDxWvYon0PaGjs/k1D5iGPpahZ8qF9lcn9OclsOUIzPCX51rpm5O3x5QeV57IN4IaLB6w2ol/DnmL8rZ6Y85rLBczAuwcg+suL/vi6i+GyAO6agw892TxrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jbeXH7k9; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jbeXH7k9; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAmPB5Ih"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A30BC116B1;
-	Tue, 16 Jul 2024 07:31:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721115122;
-	bh=VXnbYi7kQvcqZf/oDyfvoTJ5K7E4jBtVfexeovJ13Ic=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VAmPB5IhYe55cCRijuOQyjVT8aDWoda45SMq5bU6fvZX2iH6ht6/ig8DOGN5XmI5b
-	 wd/FgMhuDKz3X/Ts+3v36gh1rXtMNKRIjhJRQvirkG2i6RNqLM1neqyZjIO5AKam1F
-	 WqtZiY3uoQlfeRFH6E1K8PcHnjVISlkrSCRgxGdtPG+/rrBQQPglLmCHXbORkxaT2j
-	 7KfYtjWLHAoHQXI+6/EgDOnHCdi4KCJsVlstFnUiEHQ15ZHqdNEhAi5RvHtZ5D7M89
-	 RKZ30e7nTPTmbFD6oD0h+x/ovm95dSl0R/0MiIk19MGUBpdIbDJgwCHpJRBQc+pHUU
-	 Amh9wFVfOwKTw==
-Message-ID: <ee6532bd-cf66-408d-bf8a-c38330f1f42d@kernel.org>
-Date: Tue, 16 Jul 2024 09:31:55 +0200
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jbeXH7k9";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jbeXH7k9"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4WNXWw5Jzpz9sVN;
+	Tue, 16 Jul 2024 10:38:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1721119084;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ow+QdwIrgyh8EvIaH+qkUT5SOVpYbVc8f2Oz9+7S0Cg=;
+	b=jbeXH7k9JqKT3QrM2Q6d12suCfHzCxiTvjNc4NGyLb3eZn/n4zZ/4t33lGJPs2pOu5fUX0
+	lEfD3gKgeiNcTA/odlFIs1zkf2dHmh8xUH6PGSghZfhYSnAUzyTGgRLZUG+Tvm8sA33vnF
+	4+2fvuS/TSbOmK135gOAN8l2mN45lEGzODrKCE5Vt5a7qmjgk7V26huXrRhkoYJlDF/tX5
+	Wc49bjWaAMIHpTMc97YoX64YsjZFi4f74KBzXW4Y8hQ8BGALArF+hYO7c/rucPiRxyHXMS
+	Qrr3j34DnlJfqm5xIBIN6/RKWP4NdEYphUEjTVa2wXB0Kxm7yPf7bU3SbxoqWw==
+From: Christopher Wecht <cwecht@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1721119084;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ow+QdwIrgyh8EvIaH+qkUT5SOVpYbVc8f2Oz9+7S0Cg=;
+	b=jbeXH7k9JqKT3QrM2Q6d12suCfHzCxiTvjNc4NGyLb3eZn/n4zZ/4t33lGJPs2pOu5fUX0
+	lEfD3gKgeiNcTA/odlFIs1zkf2dHmh8xUH6PGSghZfhYSnAUzyTGgRLZUG+Tvm8sA33vnF
+	4+2fvuS/TSbOmK135gOAN8l2mN45lEGzODrKCE5Vt5a7qmjgk7V26huXrRhkoYJlDF/tX5
+	Wc49bjWaAMIHpTMc97YoX64YsjZFi4f74KBzXW4Y8hQ8BGALArF+hYO7c/rucPiRxyHXMS
+	Qrr3j34DnlJfqm5xIBIN6/RKWP4NdEYphUEjTVa2wXB0Kxm7yPf7bU3SbxoqWw==
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Christopher Wecht <cwecht@mailbox.org>
+Subject: [PATCH] arm64: dts: freescale: imx8mp-phyboard-pollux-rdk: add HDMI support
+Date: Tue, 16 Jul 2024 10:36:35 +0200
+Message-Id: <20240716083635.626596-1-cwecht@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] dt-bindings: reset: add schema for imx8ulp SIM
- reset
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Liu Ying <victor.liu@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240715164514.8718-1-laurentiumihalcea111@gmail.com>
- <20240715164514.8718-2-laurentiumihalcea111@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240715164514.8718-2-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 072d6153867c17ad5d9
+X-MBO-RS-META: 4k3pbw9cnfn889ay8kianab16t8kpfnk
+X-Rspamd-Queue-Id: 4WNXWw5Jzpz9sVN
 
-On 15/07/2024 18:45, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add schema for imx8ulp's SIM reset controller.
-> 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Enable the HDMI output on the phyBOARD Pollux, using the HDMI encoder
+present in the i.MX8MP SoC.
 
-...
+Please note that lcdif3 has not bee enabled. This is due the fact
+that as of now either HDMI or LVDS may be enabled. If both are
+enabled it won't worked. With this patch, however, HDMI can be
+enabled by turning ldcif3 on and ldcif2 off.
 
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  '#reset-cells':
-> +    const: 1
-> +
-> +  mux-controller:
-> +    $ref: /schemas/mux/reg-mux.yaml#
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#reset-cells'
-> +  - mux-controller
-> +  - clocks
+Signed-off-by: Christopher Wecht <cwecht@mailbox.org>
+---
+ .../freescale/imx8mp-phyboard-pollux-rdk.dts  | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-List here should have the same order as list of properties.
-
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 00a240484c25..3ea67bada2c1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -101,6 +101,18 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 	};
++
++	hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "hdmi";
++		type = "a";
++
++		port {
++			hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
+ };
+ 
+ &eqos {
+@@ -127,6 +139,38 @@ ethphy0: ethernet-phy@1 {
+ 	};
+ };
+ 
++
++/* HDMI */
++&irqsteer_hdmi {
++	status = "okay";
++};
++
++&hdmi_blk_ctrl {
++	status = "okay"";
++};
++
++&hdmi_pvi {
++	status = "okay"";
++};
++
++&hdmi_tx {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay"";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ /* CAN FD */
+ &flexcan1 {
+ 	pinctrl-names = "default";
+@@ -346,6 +390,15 @@ MX8MP_IOMUXC_SAI5_RXD0__GPIO3_IO21	0x154
+ 		>;
+ 	};
+ 
++	pinctrl_hdmi: hdmigrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL     0x400001c3
++			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA     0x400001c3
++			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD         0x40000019
++			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC         0x40000019
++		>;
++	};
++
+ 	pinctrl_i2c2: i2c2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400001c2
+-- 
+2.34.1
 
