@@ -1,77 +1,86 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6EF20DC4
-	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 03:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9EB11711
+	for <imx@lists.linux.dev>; Tue, 16 Jul 2024 04:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721101016; cv=none; b=dKRPVKUQlXn761C7OkvGM/24rp5ozySTa4g5oi4UvqiOVP7vctGWsT3nM9wGeKsTF3JdHQqX030J2+wk+oFkph4EtSo/Ij3bORLqdBy8SBF+HduNjNSRoLgj+/HZl01Ae9tiIz7/yRGLDFT9OIgsHZOMFPzJ/IsZl7dvPQBJZ6U=
+	t=1721104871; cv=none; b=CcSo+ZdI10MXcPyCAOErO09zSX7/gJnNLr2lDDFJY4n/vOCcQejbCy8a8V7/fVIPVZRtTqf2CmLxPBAnP/Eie4RcPp+ZSJaWceGsEWbPul1XIHkcI6HTF0sr3q2OnTWaZQEY9qgDALrG4M8nWYV/iA4b8wfwqJEpSVatmKkWaQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721101016; c=relaxed/simple;
-	bh=K6Es3M0LOa/W0gyl83mVOEgzXNqpRKkL4E6g7DtzYh0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=fIRpKtpxS2sO8CWr72nZagVP4JaYCd99qDMPJxxbIe4SZ2s2h9Z52wRlW2Tj9yg6M9BYtVdiMbNtjD6XG0DRMiOJdor/SEpda8N8zzUw1mUrx8Kx6CLg2cP4WvEGLIg5b46/0rB2Co2K2tEu2RPWdIg5YAIgZiAuONz/86tzmJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 655321A091E;
-	Tue, 16 Jul 2024 05:36:48 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3601F1A0914;
-	Tue, 16 Jul 2024 05:36:48 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 38D84180222B;
-	Tue, 16 Jul 2024 11:36:46 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: tj@kernel.org,
-	dlemoal@kernel.org,
-	cassel@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-ide@vger.kernel.org,
-	stable@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v3 4/4] ata: ahci_imx: Correct the email address
-Date: Tue, 16 Jul 2024 11:18:15 +0800
-Message-Id: <1721099895-26098-5-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1721099895-26098-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1721099895-26098-1-git-send-email-hongxing.zhu@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1721104871; c=relaxed/simple;
+	bh=hzYmxgDmvsP6hIVfcRVfgcV4s5KlHUL7eoF2AKFvUBs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LWf2wwusJRrwxHs7wAcePVbVpxxaksyA7sMvwyk9ZB+hODZ14RcQf+dEU81fb+ezNISiGHv96ZtkGfHeycxqbtyQMlpP5dLYn3JX+c0rkyOwwxdLiNtfpvPTUP7DRsuZktuSRryyLJPlGK0MvoqlZVOlApgmomURb1GGIHfkjho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NR0wRwQR; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NR0wRwQR"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-643f3130ed1so45422727b3.2
+        for <imx@lists.linux.dev>; Mon, 15 Jul 2024 21:41:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721104869; x=1721709669; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oNt0VrlwxxM/+VXkbaJkQD0zqJ7BRglW5s9ByOdVbmI=;
+        b=NR0wRwQRwsSMpZcFo/rIZ4gv2EnGFDe0hkUA29fmJPJRuvpHiS98GFSkIhUB/xtkKb
+         ql0wBckmNsRkcRmrx9YH/itVsKkVDBvLtmn01IpaJ5DjbW2Io5UQIBOPsgIuLZKWXa/l
+         tA8FQ54mm/ic50iqZIMsxLHMWmbVB19QTzfS0Jv6gPXsfVgwgz+kQ9pVQ6xAo/XfOV02
+         VOH67vAzBNemHUEXyEA5KtL5uo93LIVscF/cQRz2yzYs7x6R9bOCLtnIoBThWZv1YsT2
+         gA3EGEauASODLQSV7KYOFs2O2D1VUPEZVSlCDRnJTQMr9Nv3+9FUYZ3tQpJRTydwsgzW
+         sDgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721104869; x=1721709669;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oNt0VrlwxxM/+VXkbaJkQD0zqJ7BRglW5s9ByOdVbmI=;
+        b=swbfALCpivjraLTbNj+XvNTSxXwn0JHgTubm6EG4vQtK0Jg4IabCWJQ+oKkIr+FC1Y
+         Mjy1pScO6fquwKZMbdG4LFWGW4awC75OY389NUBXTXQ/M4z83Bpe4J0RzYJJYSV5AftV
+         jJtmTYO99MiFdBx38VDFy+2DYROOoAMDN1Ap1H+iZzx7MSc0bxEFmS7Kp39/6ZHUCwzU
+         obc8kfiODKIP5RrHJM7W12rTm+cW26Q7Z4xztgV08iBHatBU1ubxIxrVmqrLDfTrdvva
+         TMFAWozH/C4+IWfdzntVCekap/iyH5rtB/LmXWF3eF7SJ897bisfiAzqVYxGYa4xXyUV
+         v6+g==
+X-Gm-Message-State: AOJu0YxRMlb813aVg1Uk8wGvp0FpM+clhLqyvcjrPGexXey5eqVQUeoC
+	ukLOh3C5gEafgKPpn2pIBBAzp2MkzAQixsliBE2cL4gL/1MJW48l
+X-Google-Smtp-Source: AGHT+IHIec/0an27SOuTNnbL8RmkB+xctdldhSlhKPyModG7vZpxXpaVEpMrnMx+98lqMCN2xUlP8Q==
+X-Received: by 2002:a81:b40c:0:b0:650:672e:9c64 with SMTP id 00721157ae682-66380e12b54mr11811167b3.33.1721104869417;
+        Mon, 15 Jul 2024 21:41:09 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:6d45:d4db:b14d:ea69])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-78e34d2b21fsm3372881a12.47.2024.07.15.21.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 21:41:09 -0700 (PDT)
+Date: Mon, 15 Jul 2024 21:41:06 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, jason.hui.liu@nxp.com, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, peng.fan@nxp.com, ping.bai@nxp.com
+Subject: Re: [PATCH v2 1/1] input: bbnsm_pwrkey: Fix missed key press after
+ suspend
+Message-ID: <ZpX54vqOo6RfuVwb@google.com>
+References: <20240716000721.3485597-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716000721.3485597-1-Frank.Li@nxp.com>
 
-Correct the email address of driver author.
+On Mon, Jul 15, 2024 at 08:07:21PM -0400, Frank Li wrote:
+> From: Jacky Bai <ping.bai@nxp.com>
+> 
+> Report input event directly on wakeup to ensure no press event is missed
+> when resuming from suspend.
+> 
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Acked-by: Jason Liu <jason.hui.liu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
----
- drivers/ata/ahci_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thank you.
 
-diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-index b6ad0fe5fbbcc..965466c7a27e5 100644
---- a/drivers/ata/ahci_imx.c
-+++ b/drivers/ata/ahci_imx.c
-@@ -1039,6 +1039,6 @@ static struct platform_driver imx_ahci_driver = {
- module_platform_driver(imx_ahci_driver);
- 
- MODULE_DESCRIPTION("Freescale i.MX AHCI SATA platform driver");
--MODULE_AUTHOR("Richard Zhu <Hong-Xing.Zhu@freescale.com>");
-+MODULE_AUTHOR("Richard Zhu <hongxing.zhu@nxp.com>");
- MODULE_LICENSE("GPL");
- MODULE_ALIAS("platform:" DRV_NAME);
 -- 
-2.37.1
-
+Dmitry
