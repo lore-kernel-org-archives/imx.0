@@ -1,99 +1,122 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8249E2C694
-	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 08:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B56D1BF2A;
+	Wed, 17 Jul 2024 08:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721203424; cv=none; b=C3HFLBNsjhS30t6stoDXV/L+0DkkrqIXzppQrT1DZpIX38WSK731v0E2PfUFWreBOYOhpjGb5J/wSGe50X9e34GF4ad+p86yvNWjGqJFBR8tHst7L7Eplw4S/BSMfTSgFrviJr6TT8UGVEkK6qRgv+ztl5HgsbkNzY14TsdRCP8=
+	t=1721204405; cv=none; b=KT0BigP3rZ8uuZ4gx/LQ3UeF+dasWLObD+t33igVRaH7gdUlu7wq0x0Aw+PFyVhRIdvUVdr9NcL7GPhoMe4mwnQiyc8ebwhgNKRXdqVUaIzhMgYWfl1QjMa47je0ubAEZLIDpMXY2u/fkX4IpcuAIMePQ6UsyTk2wJxxnMQhNwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721203424; c=relaxed/simple;
-	bh=XPf6FraqAY5Pnc0921qTtkEWqT98FeTp2J69L7xL064=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MnU587qMMcg4so+IxDxM428JjYqldsO1MN1K+ZrbCcqSbM4SbIJsSHzg92/zAIrU3A8yZKVLoXmoIIzKvyTP+L0PosvzN1nIsX6sjROxZ5lgmU4uPs24UHNYjfYKmwebKYKdo8zizr+GhXMXBbzaJpOmNCpBW8q/jz1Mh+t/Y+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=T+cwgzpk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=c4/g1VU1 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1721204405; c=relaxed/simple;
+	bh=2CLtcxjWryy+ZrxMy3V6QLAyq9Tcxt0Pcwt6s+Wmc1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kBcSA844G4wn2Pa3dZeboTJKFdsOBmK0hfbggFabnGmDfv89VkY9rOQdLlnKedbdKJwmRiaWksLg5lHzgAsoAnYRATRpIOlFqjm1YtxUbAfnC+mILlhQMBoA53kGc2502CjVx7H/nn4mu0h25tSgWkB0PkLied8Cj5mD0LQWF94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q8RMbd3X; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="T+cwgzpk";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="c4/g1VU1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1721203420; x=1752739420;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/AfJrwnzPB93tg8xRLJ+lSVIdfMPUjr5wVivkuJa62s=;
-  b=T+cwgzpkT8soeQZBdFbA9Hlr5NytLvyMBZWyodpy1kiBq3CW84Gyn8cW
-   VfKSwYGYyQ3gc7U6Ufu4ywiugsfhus0JQCz5M5Cg75hZfTrnWFJ2WSc5N
-   QNNMh+U5K3X6Csn2min0uDUwcqBR6u6lxZ9YA9nOK5GNr3cKIZtcnEKot
-   /ciAMMMIP4yAmPjutAcO7d3mnJN0rKcVmOBtbI39FTaGdFUidzsPJNZmE
-   Tj7YO5COiF5XkEEJ2S74q1jc0c8hGWCaL+cIgQQAB6dXdRirxLdEvtWVV
-   7NwfFYhseaGdOVXsBxFZgxZMPgvNG9dkGWG8uGNuRkK7xbJrQGE93AotS
-   A==;
-X-CSE-ConnectionGUID: g/oQUe2TQSy4TdPmv9qhIg==
-X-CSE-MsgGUID: va+o87CQT+Ggl3lcXeqvzw==
-X-IronPort-AV: E=Sophos;i="6.09,214,1716242400"; 
-   d="scan'208";a="37944923"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 17 Jul 2024 10:03:38 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44ADF161428;
-	Wed, 17 Jul 2024 10:03:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1721203418; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=/AfJrwnzPB93tg8xRLJ+lSVIdfMPUjr5wVivkuJa62s=;
-	b=c4/g1VU16nGwwQPwN6MWQ8dfHI0V92TxbMWjcBPCVmtqoi+WRJb7S9nBWVuMu/R0hR4ALO
-	Vis93GlwsysQusTIb1TcXPhFO3CqG1htAZM+tqg+MAa80FtTCrDzyvloL9QPblb2hmuMdl
-	SAwfIJRMa3gncbOcx8s/01hB3oOBiDdgXVS4vCTqRbqkffzkJj7fGjaFs5JqicEcSE4KWA
-	cozC7WSZBWMo/28OSLB+INKCDOsp+mo07E6UmPmGZYsrN1LC63Jy4+fo+h5AgFvu56hWhj
-	b+9N5caKcx3SJXElSP8Jg6tgvFo6yNlMC0sqnfPygwkq8HMBM7qhJDIhz/fffA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] pmdomain: imx: scu-pd: Remove duplicated clocks
-Date: Wed, 17 Jul 2024 10:03:33 +0200
-Message-Id: <20240717080334.2210988-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q8RMbd3X"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 255A8FF803;
+	Wed, 17 Jul 2024 08:19:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1721204394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vYy4jlSppC2pcc6cg+3nF/8GvPZv6nmewlb2L7o9Nw8=;
+	b=Q8RMbd3XCm3mkOoSML4rikXKiJwOmxmdsX2NkXlZwRplYxuKqVu6DdyLJ7G/4YQS4TR3e0
+	tQ9HYyVU0QaJ7mJKdjZ58+NY03/Y4pQSR1nheyy9/gpjRgXyPcN/SYNbnfEvcXYx78cKK1
+	DspBdEnmtUUE2Vh7fB3axwb52s022qgb/fQK8B7JQxuL+DVdX8knHLZC7Oxu4B+r0HSgWa
+	t6AmHSpNSofRHkmWqrwexOh4wFUvNGOiGe2R2Gz1nk0z8FDgM9iuuAszfZbHO/r1L/BknS
+	0yhBDc0k6PoqJGn8/jBTZsc9id1S9XZ4jdCo9jE7HgZr9sw+Ct/c9wyvI/5QfA==
+Date: Wed, 17 Jul 2024 10:19:48 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Maxime Ripard <mripard@kernel.org>, Pratyush Yadav
+ <pratyush@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, Richard
+ Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Arnd
+ Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>, Tony Lindgren <tony@atomide.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
+Message-ID: <20240717101948.2e99f472@xps-13>
+In-Reply-To: <20240709103841.7x7n4hdtqrunyoc3@pengutronix.de>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+	<20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
+	<07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
+	<mafs0ikxnykpr.fsf@kernel.org>
+	<20240702-congenial-vigilant-boar-aeae44@houat>
+	<mafs0ed8byj5z.fsf@kernel.org>
+	<20240702-mighty-brilliant-eel-b0d9fa@houat>
+	<20240708084440.70186564@xps-13>
+	<20240709092214.omr7ccphdzdk7z7j@pengutronix.de>
+	<20240709114302.3c604ef3@xps-13>
+	<20240709103841.7x7n4hdtqrunyoc3@pengutronix.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-These clocks are already added to the list. Remove the duplicates ones.
+Hi Marco,
 
-Fixes: a67d780720ff ("genpd: imx: scu-pd: add more PDs")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- drivers/pmdomain/imx/scu-pd.c | 5 -----
- 1 file changed, 5 deletions(-)
+> > > > Overall I think the idea of getting rid of these misc/ drivers is g=
+oes
+> > > > into the right direction, but registering directly into NVMEM makes
+> > > > more sense IMO.   =20
+> > >=20
+> > > So you propose to have two places for the partition handling (one for
+> > > MTD and one for NVMEM) instead of one and moving the code into NVMEM
+> > > directly? =20
+> >=20
+> > Why two places for the partitions handling? Just one, in NVMEM. Also =20
+>=20
+> Without checking the details I think that converting the MTD
+> partitioning code into NVMEM partitioning code is a bigger task. As you
+> said below there are many legacy code paths you need to consider so they
+> still work afterwards as well.
+>=20
+> > usually EEPROMs don't require very advanced partitioning schemes,
+> > unlike flashes (which are the most common MTD devices today). =20
+>=20
+> As said in my cover letter EEPROMs can become quite large and MTD
+> supports partitioning storage devices which is very handy for large
+> EEPROMs as well.
 
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 05841b0bf7f30..01d465d88f60d 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -223,11 +223,6 @@ static const struct imx_sc_pd_range imx8qxp_scu_pd_ranges[] = {
- 	{ "lvds1-pwm", IMX_SC_R_LVDS_1_PWM_0, 1, false, 0 },
- 	{ "lvds1-lpi2c", IMX_SC_R_LVDS_1_I2C_0, 2, true, 0 },
- 
--	{ "mipi1", IMX_SC_R_MIPI_1, 1, 0 },
--	{ "mipi1-pwm0", IMX_SC_R_MIPI_1_PWM_0, 1, 0 },
--	{ "mipi1-i2c", IMX_SC_R_MIPI_1_I2C_0, 2, 1 },
--	{ "lvds1", IMX_SC_R_LVDS_1, 1, 0 },
--
- 	/* DC SS */
- 	{ "dc0", IMX_SC_R_DC_0, 1, false, 0 },
- 	{ "dc0-pll", IMX_SC_R_DC_0_PLL_0, 2, true, 0 },
--- 
-2.34.1
+Did you had a look at nvmem-layouts ? In particular the fixed-layout.
 
+Is there anything you would like to achieve already that is not
+possible with nvmem but is with mtd?
+
+Thanks,
+Miqu=C3=A8l
