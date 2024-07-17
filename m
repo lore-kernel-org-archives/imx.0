@@ -1,118 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341ED180A60;
-	Wed, 17 Jul 2024 13:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5BF180A67
+	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 13:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721223769; cv=none; b=nH4Ds2aKv2Bdq37RH1XsB6PrB9ITLmkgBZkTIE4DY2dR2ydfzLIz7sI0cyHbK/1+bMbxCHfszckW928eCWSyOWwYniY5Sly7Fvxa4otvE2qvgtqcD15KGoYda1BiybtKDiUaRrR5q4iBM+dc2DyX2EWdkyIkna4zGpiEZbdQiM4=
+	t=1721224239; cv=none; b=A5XbA8tfDi5uu+N1KOmg59Pm30FLtMW79VGM3S4VD4LwtKawAEP+DRgeVQm7FT6iwp96XhJ9rvMUe/OHkGvTIq8Zp/+PPn31BC9CwzwXh+lV7KwVL68rlJ9cUaMUwjY/01OOfxVUgtMN5LzU9hWumGnpKFGglQYACInq5ZdjJXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721223769; c=relaxed/simple;
-	bh=b6M2u0O/VcQWX4e8CRgM/0cmwdYjHB7jwSQO7Cq366U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mDtSeqXCDYSKoxsl3wUaGmGrFtH2MwvcaMHaTLDvFfowpBzIFXl6okcZd/N29AMq8SwpFunjKvvZaFH2U8GN5idcf6ae9ULbt7BEKBcsOwOQAi5SsciHT4wrlxkbNEs3mYcp4hRzxDjHs+Az+t/mV/aImYcBubjFuqjAG33ZYew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbvj/YA1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721224239; c=relaxed/simple;
+	bh=DoPxYrJkvrWRCXhmrFuOTOuVm29tK5TC6szwdunInAc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TvDHsKp6qV+zHOnXoAEHK8L9xCrE0RLW5v08BMD7U0hmx0mMn2cIc2MQ7i1UQqCR5LM1s8Zu1kiI0lApLJGUdh1vwH/2NxEZOcjemlt/1AZr4/5yAmAXijh/WmyzIrqTX17y8vFrNkCLO86e7h7XQY28tDp9tpXJ5ROGXOHca2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=eIbvHzwc; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Rr2AtOr4 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbvj/YA1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E96C32782;
-	Wed, 17 Jul 2024 13:42:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721223769;
-	bh=b6M2u0O/VcQWX4e8CRgM/0cmwdYjHB7jwSQO7Cq366U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pbvj/YA1Gs/hjRDC0IXr3+tRYix4k2pKaNUcxopwUOt2F3ENxPAeCd7DoRcMp7O0B
-	 UtRs91T42G/Tgpa0EcWDxZUv+lc0rM4ypbkFy3zjVSDe8hbjRV8lOGcgAAws7/rWT2
-	 hMWfV99wFXGsid9gYH9JPJe+Gwp7nsq2+Ti798NJ4mv4beRMWBtHXM07O8c+D1ncb5
-	 3Na3BkeEPeVECGuoDdhPLJch/+W5um8v4lCcvbzDZnLj51nlSj0p8xOEqgfiFUbvG+
-	 3zkYm6sbagImtoDSlJXsv9/nR27VdgbTGY8ixgsZkEWeJB/1U5WF01yc3llYodPJSe
-	 LpWYqd26vKK/g==
-Date: Wed, 17 Jul 2024 15:42:46 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
-	Edmund Dea <edmund.j.dea@intel.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Sandy Huang <hjc@rock-chips.com>, Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, 
-	Andy Yan <andy.yan@rock-chips.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Jyri Sarha <jyri.sarha@iki.fi>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Rob Clark <robdclark@gmail.com>, 
-	Abhinav Kumar <quic_abhinavk@quicinc.com>, dri-devel@lists.freedesktop.org, igt-dev@lists.freedesktop.org, 
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] drm/drm_property: require DRM_MODE_PROP_IMMUTABLE
- for single-value props
-Message-ID: <20240717-bouncy-horned-mamba-5691b8@houat>
-References: <20240715-drm-bridge-connector-fix-hdmi-reset-v4-0-61e6417cfd99@linaro.org>
- <20240715-drm-bridge-connector-fix-hdmi-reset-v4-2-61e6417cfd99@linaro.org>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="eIbvHzwc";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Rr2AtOr4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1721224235; x=1752760235;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2y7nYfeZdJ6DryTb57/sSzAXz78Ly9UaH+MjhDPihRU=;
+  b=eIbvHzwcszExkIi3WjK5saIZiRNggVSq7GRsCp5STzh1U1JRbHSTcZHg
+   Z8kqWOxzMDvBS6GWuCfbmkiOVRQU/yt+a+rOl3lW+FXHXrSmt9t9zISkC
+   8t5K1yjgACBww9Yz8XfZ/Sr26Gi2GenVHoTrdINlTRzxwFNj1fUGLFLlG
+   Os5eB4oPM7FRsuX+mztTemFGZpEBmvBg3kxCDm8eJ/BEZWEhlZu+vxWom
+   ctJWChKQlNMXd5K94KmwsNe/w8F7Y1YFFyeH/3MC3rB9nuN4P4ljFt6wM
+   rKeYybamkqocYPa97chlyhqn35vYCFs1EVy/SWVtOcBW9OKby6aPsyTX2
+   A==;
+X-CSE-ConnectionGUID: XZ3ROfsfRNGwBRkiS4zoAQ==
+X-CSE-MsgGUID: rnFblU/iRh6UL2GGKHPAkw==
+X-IronPort-AV: E=Sophos;i="6.09,214,1716242400"; 
+   d="scan'208";a="37953366"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 17 Jul 2024 15:50:33 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 66585165BDF;
+	Wed, 17 Jul 2024 15:50:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1721224233; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=2y7nYfeZdJ6DryTb57/sSzAXz78Ly9UaH+MjhDPihRU=;
+	b=Rr2AtOr4AjFwZ1uyeMDdO80Wfkvruug4E2LerVJ3tTOEMigninwJfHxhLIA5YvDVVKtIOB
+	LMY7sr7TYC98NJ9qZXBqazoy20+ZI1zsMNlg6FzyxXH02WPYyOagroDZUpKkTaHnIXwMs7
+	4Xfks1zIZa3R9SiLVtGFsIeP71PKze8phGVPg6mldBvsa7n324TIglC0NOzBSN+DLxDKgZ
+	yHjJXsPNBvyXiuCxexvYvuWa+urTJxHDX+8FnM9ia4wVvN1sD6xDg8wbeTZhZQi+uF8UsN
+	89Ihu05UgBRfgfFmP/PeRTihT7fLdnbGA++GbeeZ/FdG3I3z+YBkMe5k5Tzg0Q==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: imx8-ss-dma: add #address-cells and #size-cells to LPI2C nodes
+Date: Wed, 17 Jul 2024 15:50:25 +0200
+Message-Id: <20240717135027.4116101-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6ldj6ctz25xj6y7b"
-Content-Disposition: inline
-In-Reply-To: <20240715-drm-bridge-connector-fix-hdmi-reset-v4-2-61e6417cfd99@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+These properties are required by i2c-controller.yaml bindings.
+Add them on SoC level, rather than on board level.
 
---6ldj6ctz25xj6y7b
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Hi,
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+index f7a91d43a0ffe..3f521441faf7e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+@@ -303,6 +303,8 @@ adma_pwm_lpcg: clock-controller@5a590000 {
+ 
+ 	i2c0: i2c@5a800000 {
+ 		reg = <0x5a800000 0x4000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		interrupts = <GIC_SPI 220 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&i2c0_lpcg IMX_LPCG_CLK_0>,
+ 			 <&i2c0_lpcg IMX_LPCG_CLK_4>;
+@@ -315,6 +317,8 @@ i2c0: i2c@5a800000 {
+ 
+ 	i2c1: i2c@5a810000 {
+ 		reg = <0x5a810000 0x4000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		interrupts = <GIC_SPI 221 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&i2c1_lpcg IMX_LPCG_CLK_0>,
+ 			 <&i2c1_lpcg IMX_LPCG_CLK_4>;
+@@ -327,6 +331,8 @@ i2c1: i2c@5a810000 {
+ 
+ 	i2c2: i2c@5a820000 {
+ 		reg = <0x5a820000 0x4000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&i2c2_lpcg IMX_LPCG_CLK_0>,
+ 			 <&i2c2_lpcg IMX_LPCG_CLK_4>;
+@@ -339,6 +345,8 @@ i2c2: i2c@5a820000 {
+ 
+ 	i2c3: i2c@5a830000 {
+ 		reg = <0x5a830000 0x4000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&i2c3_lpcg IMX_LPCG_CLK_0>,
+ 			 <&i2c3_lpcg IMX_LPCG_CLK_4>;
+-- 
+2.34.1
 
-On Mon, Jul 15, 2024 at 09:33:02AM GMT, Dmitry Baryshkov wrote:
-> Document that DRM_MODE_PROP_IMMUTABLE must be set for the properties
-> that are immutable by definition - e.g. ranges with min =3D=3D max or enu=
-ms
-> with a single value. This matches the behaviour of the IGT tests, see
-> kms_properties.c / validate_range_prop(), validate_enum_prop(),
-> validate_bitmask_prop().
->=20
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-We had a discussion yesterday about it on IRC with Sima, Simon and
-Xaver.
-
-https://oftc.irclog.whitequark.org/dri-devel/2024-07-16#33374622;
-
-The conclusion was that it would create an inconsistency between drivers
-on whether a given property is immutable or not, which will lead to more
-troubles for userspace.
-
-It's not clear why Ville added that check in the first place, so the
-best course of action is to remove the IGT test and get the discussion
-started there.
-
-Maxime
-
---6ldj6ctz25xj6y7b
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZpfKVgAKCRDj7w1vZxhR
-xYH7AQD8w8myEhco9CqAfjh20D1tXY/mlB+W4/bdaby3K0NuIQD/cGVo42JNkoo/
-jCNbgBRkiSwOXLi0a+whYQOE0kxTmwY=
-=bR0t
------END PGP SIGNATURE-----
-
---6ldj6ctz25xj6y7b--
