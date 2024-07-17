@@ -1,74 +1,65 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010056.outbound.protection.outlook.com [52.101.69.56])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010061.outbound.protection.outlook.com [52.101.69.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E993FB1B
-	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 14:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D77181313
+	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 14:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721226564; cv=fail; b=qrVrPt/JB9XfjGJhy6N6Hlfz+Zl1k04J0avwAKl9yxmfCMZlSum+nkcSeH2Ds/1DPkCot5W4eup6i7ejCP3JcZYUT+Mkim0bb6zOoKMjYHSErxQdkLZ+CCWu51ubK6MJ9PDu927tawk9PlCqVgAM80YPmOqbQ/9iE/7aTdHkWns=
+	t=1721226965; cv=fail; b=cESTUL8Yw0H9ge1t76ujpZX57ZnMriXojMjqQcHy8ddAbAICfsRT2NauWcbIJixyLp48Aq/cojj2DjVCEhmZr9itKSmXU00bfMKEx4g1jpdDOfLqLFiA3JE+xhyuI6xYOFAjAttweRLE+zzf5qsRGjwvc4TwCsEMOPMDTEBLXN0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721226564; c=relaxed/simple;
-	bh=jxVZQd6K0mFG3wMZF4MZufpXPTBagVQqSq0xHsdD64U=;
+	s=arc-20240116; t=1721226965; c=relaxed/simple;
+	bh=BEwcKd6ucRB1dNB6PP5lBm0zWq9/mxYL3Rg6wJHl+Qo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rGrsYdjmSxFNrBkos9BBMhoolPRwZA7BCkpEXpQFm2RUgdugn12RC/lu5ZUQDoEXFtEAACMiaBzSJFJ2rDw7sdMdmfhEn9yo5sPFy7T8n3Wh9BYORZImQD7NsrFvmOhMEMVHJjU8i86BnQ6gfRaqs+9Hv3bVbN5u5bfOGw8pP+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=gJ6oDZIY reason="signature verification failed"; arc=fail smtp.client-ip=52.101.69.56
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dAQ6LBmzWXBMPLyfExjOHVmH9k2Xd/u2JrMwJn8dWl+eVyi4K745ma7gv6dJtueXIqx2UxrvXLD3aq11zbeDqtvw1f1HL4RR9wzIyA5HRYTaghxGRgnyTitwubRfhMlMwUpcMpdmexoeBj1nkE86jYPdzWeD0dLPlrTvTy/Ak3o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=RTLbBIFh; arc=fail smtp.client-ip=52.101.69.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="gJ6oDZIY"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="RTLbBIFh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cbhXSbsrk2LMpStUr9RUXJebXv1edwGNCdrqQYgDS3IGPiF8tiNA/A0Z9BdK15F2sVZ/S0DLb7+ZASLowD1J8Xm7lHMCXN/DAqB/5jUo/1LneYa7lucckNL5lRn85ape+e8m/+WPRnnhT0nlae1YvXF8OdXKrsluJQJvchc61h88Kaj4oS7De8U6BcSnziljxUINRW5g5vKWChHdxgjAAxerpVh3O6AhUovRErB+9T1LAMBW0+7wLzFcpzUaze6e0lD1MB7Tt0iPluKYR7vAeFNbOcOeA86UmepdxyYDTjxxY/RbUXknPaf3fYye2k+X2wjKZTlA/vMBP9zAADzsMw==
+ b=cxzPAgwiWbYvB0GAe4UoycCdCHdoKlT83DDfpL3qZtbpiy6HzvzmDgkDoHeqZ5SmXdDz2eP3rHQnQxSJd72cGf81Bogcg78QHzJO4OCwfryXiHGlstzUAd+m76p0lTDVWtdybQl10CHqlySNrG5/orBO04JtGYNZ4UeZELOHlMF/VEv4C7TtF8o1qj3omqNvTPz0AnxvheOnb7GlAdRkRDdt2hRguADU2igDsSOqZEOnrLtRoj0tLTevZSbi41q44LwKAyKT4g2OFXdKE6YTYbzrFmYlWglGHfaUec7fEGAqZBQ0H8iWSf/VWQebKw/KlX2ossc6j75wVYX4/ormXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DsMiSh4/vUTv4ynap2iPmG5gFV2sWaTXvhYnpdal6hM=;
- b=QNd6SLNlXGHCzR6z8vNsvi+DTEXPihvMPhFJg9iXAnHkrGbeur6Duy/Lizr0uT6PO+6ul3rID814JXCNSjrMlbLoyePmnM8hcz4bhsGFbAsotukMMBrJNyHJ0FEedCd9QsrDEQoZMIU4NuCs0DavVX9XrMREiPgxB2avH2+/HWohYr0Ill8tukgGedOsFG1tk3hQZ8nO3dK41y4EdRXbTGKZD+eL2yqE7Jy/d6OAebSMeoJ+E24IBGlRPT5qzUchlhZqSJY1pYv14YJXCBcKgRynPuNhyfx20edVcjpRrbzfiwuKTuHuemSLIJFACX0ZJ+rWioPPI0aa4WL/2H9zkw==
+ bh=fAnhf6Yyw8k32jyykkBYg+PRCCY38szr3hhy+sP7V/U=;
+ b=t//+aRZM1rk4VuEZpIJvl6gxAUiJjgyr1XQV06JdiVYgw5d8+aIEqfTi1YHW3kvslpjhh0RFSBfmXGJI32J8+TllDXACIJtYMqHpELb5Yp9BnxaS/TzjrrRi08d99Q0tUo77W27jB1VxHvWKBo/LOCHAznigVllUcbHFY8P1R5GsXgOObBz8ancxHJJMbnM19ORatt/hSWRNQilUax5KYkXsr1usBhtVMwBTpPvd2aD3qdq50C4TwhTXznwEBnp6COXGwBFRUGBiPomE4m+LQqEPcjMm1jTpNbYV1XamUIWi4z475Yc4GGKwj1cUYGiqeQhzaZYbZThwhQUGK6C1SA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DsMiSh4/vUTv4ynap2iPmG5gFV2sWaTXvhYnpdal6hM=;
- b=gJ6oDZIYf1+sJELsRbZAJY4If1mwwm5iZ2rFyaxUvBqwgHJ09z0YqMvUDAEEmA2n5i4/6aA0nFWKKAU+IdPWQBjKBhVt1121NV4cQ5g9aqI62anwkqiBaAaPVWKjLQzP6r9dtOJNlV0a08WHnk5jdNURkpbcwd2GU241aVfjrdI=
+ bh=fAnhf6Yyw8k32jyykkBYg+PRCCY38szr3hhy+sP7V/U=;
+ b=RTLbBIFhE3VhKOIMNrnRQxql54eNqEM/Ayp+SmjOgxjojlM8JR8h0o29KuzkgnqAkopP4OSih/2XJ19JO7/myk0dTVn9VQEEOp8zIaf18kiDe7RjmQSUNhRwNYB8HHraw9VSQRp6u2Dp+k1xKC6zs4PGViygr2gyfRUi/MmrEZY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7559.eurprd04.prod.outlook.com (2603:10a6:20b:295::13) with
+ by AM7PR04MB7015.eurprd04.prod.outlook.com (2603:10a6:20b:117::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.14; Wed, 17 Jul
- 2024 14:29:18 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16; Wed, 17 Jul
+ 2024 14:36:00 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7762.027; Wed, 17 Jul 2024
- 14:29:18 +0000
-Date: Wed, 17 Jul 2024 10:29:08 -0400
+ 14:36:00 +0000
+Date: Wed, 17 Jul 2024 10:35:51 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Shawn Guo <shawnguo@kernel.org>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-pwm@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Clark Wang <xiaoning.wang@nxp.com>, Haibo Chen <haibo.chen@nxp.com>,
-	Jindong Yue <jindong.yue@nxp.com>
-Subject: Re: [PATCH 4/6] pwm: adp5585: add adp5585 PWM support
-Message-ID: <ZpfVNHQQaJvdnB+B@lizhi-Precision-Tower-5810>
-References: <20240716-adi-v1-0-79c0122986e7@nxp.com>
- <20240716-adi-v1-4-79c0122986e7@nxp.com>
- <u7xii4lfvjk6gbpmq7qtqckoznddiyno7xsaa74ufuxwdob532@wxuawwiwjpgm>
-Content-Type: text/plain; charset=iso-8859-1
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: dts: imx8-ss-dma: add #address-cells and
+ #size-cells to LPI2C nodes
+Message-ID: <ZpfWx4jlZmrA2Tqx@lizhi-Precision-Tower-5810>
+References: <20240717135027.4116101-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <u7xii4lfvjk6gbpmq7qtqckoznddiyno7xsaa74ufuxwdob532@wxuawwiwjpgm>
-X-ClientProxiedBy: BYAPR02CA0008.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20240717135027.4116101-1-alexander.stein@ew.tq-group.com>
+X-ClientProxiedBy: BY3PR10CA0029.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,425 +68,132 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7559:EE_
-X-MS-Office365-Filtering-Correlation-Id: 765e2576-0701-4b47-0421-08dca66cd79a
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB7015:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2048344-b6e9-4358-481e-08dca66dc6ee
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|366016|376014|38350700014;
+	BCL:0;ARA:13230040|376014|52116014|7416014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?S+o2FMWodwBbUdbp+98Od58BzlDLorFGNv9k+7XvEcp/4DH+2tlexFXhgg?=
- =?iso-8859-1?Q?rzm+mUaFnXWO8Cc30PdiqKyxEFZSgpSgJw0qb+lVIVuPSZVvB1rYWXM5TO?=
- =?iso-8859-1?Q?8o079vmXIC0o6Z6n1PIXMbB6EYY5SpuvZaHUr7k+kaMsZ3QUP54kmMxLuE?=
- =?iso-8859-1?Q?8rrJNaWFegDznfuSF7ft7/VeNwRKQ8Jwx348xGk3MieTA4yuXgzIj9AVqz?=
- =?iso-8859-1?Q?DSWiimGpyZLLkz9KOCtUxcYBkNyIJhlyDm3urnpawIOdoyv7AjQ6Hh2myA?=
- =?iso-8859-1?Q?cs9Ryqlpf5ldNvmkBI4+6qFD0DdeABKZhggUEQR76MR1cF6O7+bIs90oY9?=
- =?iso-8859-1?Q?dF4VIdW4dhqh3hOh6+JuOwMy/9xReHAUcFYLbSNjPN/hMSepkoL5amL3P0?=
- =?iso-8859-1?Q?TzlIoXOxPdAoZfyi9Slse7iKJlfdHgUsbW66T4GiE7J4M8PvWZKI5SbDuD?=
- =?iso-8859-1?Q?EbhcmURlZCgABYKqABUn4fUCYaQmT9BG7qJ3qxJGuX3ZJGJ5lGo6vzWqxW?=
- =?iso-8859-1?Q?Uv7ee0FPOp/iiKXF82BYUkG4bWFU/knG4lGn7Y59pBK6mpVDIa9Y6AsCgw?=
- =?iso-8859-1?Q?zkyjH4lzLuxf8z9DhcC5sID2MmdOFDhQegG4NUYrtkCUhhV0ml64++9Nts?=
- =?iso-8859-1?Q?hUutBPO1/jlzJwjxj0MZ4Fvd6DBvFKY3BmHv7kxLFPwwo46eNxqotNhF9i?=
- =?iso-8859-1?Q?Fo1SQGMm4YwTyT6j5rYYZV1Usz2Kf+NTlAGtoHWoZqhBimtv9HbdRRduOW?=
- =?iso-8859-1?Q?XOr2tJidjaK03D5c7V4yon8MPdsyBz7SY5i+Gm6SDjxEwpi6lYTwKVSTV3?=
- =?iso-8859-1?Q?JTuqhkMaQHjrgMnHs0572XobkZ9GwrVxvojup2TLsu6bWTlSnrTN6kfol0?=
- =?iso-8859-1?Q?TAAu7mfaTovAAoeKILRbrA62+suvMs5JnIcsfyM8n9Ksx8jYDXvdFrGc5i?=
- =?iso-8859-1?Q?2Hq1gY6MB1TP0+CfW/6sZu0Ax3Tyxcb66rJsFylb5Daz3EIOqYO7YaoR3Q?=
- =?iso-8859-1?Q?8ohhTXbrdlVyXeLyUmErcJoMSuHzhnin3JWfEVrf5ZRc6JJ3VII6hInDsm?=
- =?iso-8859-1?Q?nw0j0I8IDVmgyukBPHSRt06w9FC4Z9WdhcGq3OKmrxmchXqOzi61xYU9a9?=
- =?iso-8859-1?Q?8wjUs7O1bNSPO15ivPudodyBV4w3GokmjuIcSsCp2LrwfQ2m4Pnl8PVExh?=
- =?iso-8859-1?Q?X0/lzSgHL34mAO438L13y72S46r/dihjqiligKaBUi/+J+bMg2hESzGssk?=
- =?iso-8859-1?Q?55cRIs/Ybp3TWYbzVdYSWReJh/kgn3B41v4utrpjB8jwWCIkW8mDV5uGEF?=
- =?iso-8859-1?Q?F4/bejqGyifKJ2cerc9CGybkZEWfF0tbt4vJfzbtIfMOLovp4M9pnUnJU1?=
- =?iso-8859-1?Q?JrN6GyE0P4rsPvRkAM6aeo6e3MsfPws4jiv6Dg3knhDkGAGm8IMGs=3D?=
+	=?us-ascii?Q?hqinOSRDIkq4Hrj9gDeDxatA9ZTTWSg2KCZnTPDZ3d4YX6BOnNDYiFtKHJd4?=
+ =?us-ascii?Q?mkz4MncC1vKQ46FlxyC6BnnnvptVKtKOO1GLfMZh1U7x3fzMTJOcCTyOTsoO?=
+ =?us-ascii?Q?8BgAATiwT9pUomWFhCZHaDybqJmwKiEdRH4ccBgTSNvn1kBlqbSGuS8pw7Hq?=
+ =?us-ascii?Q?BIIXS1X+cugWVAPzNvcfQvEPGrNfcqQiBlXBDCyj9f+7cC+KeYLOUVgdFiDE?=
+ =?us-ascii?Q?PsZDPYc6XYpDnUAdV8c/nN/P08ClHo0Y+FDv9JHXzcBkM/w1MhT8iKUUw/hq?=
+ =?us-ascii?Q?kDvPwRz76PXs7T8NP3nvEXr/mnFQRziku80ilquFUWyD4qNbbIEOqmimrnfJ?=
+ =?us-ascii?Q?W386RcQ6ijHsyjpjyTSzml3RX9cilfVyqS8wp49k3it57AjJ8Qj+vrXCm9O3?=
+ =?us-ascii?Q?Nv9QFHbBMLFuQrV7/Suc/O6tekkuGh9jWN8rMRKxuDqkai56Nb4koYwNb/0K?=
+ =?us-ascii?Q?c07KHtUSIudMK+VcYGKJ5ha+aWSinrkBWXaqRdYE1G+4/tOEDnX23OwuJl/p?=
+ =?us-ascii?Q?P0Aault75TudLTHd4ngDgV+5M9lypJ1V3exq0skeGgztADv17z5wlbjf24uB?=
+ =?us-ascii?Q?29dRcNixfyKS4vQMLsUBIsiwpMKBfp0XrA4GxZicJEy9FlXqsoHSwBPsjuEg?=
+ =?us-ascii?Q?0iLVBQN2AhclpZZO8kwu6ajnf6gfi5CiPdUWjbBhq9FB93pg/wAt2XxkvpE0?=
+ =?us-ascii?Q?wHVil5O6Th8rpjiyiZj+NDYF8bGp2FElYYBTDId2wHKOt0PBshKNxsoPk9Gv?=
+ =?us-ascii?Q?ci3CpVFyLksgMqtJWtqe81dzJ8cgqt8QC5lNYgM0Cf6j/5oYm6HLogRIF0eK?=
+ =?us-ascii?Q?sLHGuoF2r4zt+wEp3WPVSTem7Lod5m+yLr0jEwaY2Af9Bz151K7SFk5DogsP?=
+ =?us-ascii?Q?SbyXxhHwVNYRy6GsnibDOD2f1CnlDvhyOMq1hwy4XnJJFsc3O3cT58PKKDZR?=
+ =?us-ascii?Q?knYfeiRYcPygsonOLXHZuQoSHGjAwW+4YDsFH5ULsPI6i456O8zyOEdQa3Qj?=
+ =?us-ascii?Q?zidgIjy9hkLeiZmho8w0v9IHI4DaEPe5WGgcPSrqHVN2XwD4pMt1lVCjsbJy?=
+ =?us-ascii?Q?xzjoE6a1B1tXeqhNoGVyQ2xejjSj41j85qM6vcSjgZYo0USHVsC4v/xuirRi?=
+ =?us-ascii?Q?dD5ULKrWxsp8PiwLPsphunJB1bp3nykujN9V1Ptt9fj13YjYGrKszNgTxYk7?=
+ =?us-ascii?Q?tFSvTfWy9msLkslFUACApmT+SVIIRyD2KAKCoAPFmpcpDF2OFJPeAGUMpZ0p?=
+ =?us-ascii?Q?o9tjQldAwoP1wnwDQH24InivOtDvvfLmv3dyMwNlkLG4RuOM0uUlAa8pi3IY?=
+ =?us-ascii?Q?7z7RJazE7u/3Ue5d7mZA/nDBdH95Cmk8AbWPwhdKl5JPtbuQdBwl31so3J+D?=
+ =?us-ascii?Q?b8EnH41RSq/KIzDNixGk9xc1dX1nkA2EqhKi+5xHDksQMIqigw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?qIjZe4Oisa9odDDYNtfENt1hmQFQR8itB6489Le7BXE6JEonAIs1UP2bkF?=
- =?iso-8859-1?Q?/3uY4W0LGjrO9UYLTbxwyevjd2WE5P8H+x6KTV0Vxn6sQjeLzaXGCS1ntD?=
- =?iso-8859-1?Q?xHVGu2BxYAisbltA8+1NpEcQeqfuEUrkQzSAiLdw7k0k/id3fp2a38Gu+g?=
- =?iso-8859-1?Q?6s7Ih3B+4pGwud+/FjjHA5NYOm1Xu+E3UpA/VJ8nVP8k9KUu1pyxiFzuIA?=
- =?iso-8859-1?Q?8d3dcICgnxYB9o7eEb2WzGtEdxzhNQn+jw140VIf3Ak2q3webgiSJJxRjg?=
- =?iso-8859-1?Q?11beTW3/raaSkSi5S9Mwu/F6h/yBGKeYtE65BYqaCg0bJJJ6+02vYHba/E?=
- =?iso-8859-1?Q?CR9o8ewhBVKvRdRYAfM7wItNm7mixRhu+croItdsAIRx+BiJEVxmTVLRph?=
- =?iso-8859-1?Q?D/qBMUPKy/cQpC1rhi4F/iSqTxiDKcyWbVThvqvR/T2pOm0VXbiB0jT7Ek?=
- =?iso-8859-1?Q?a9CZrtnm/A/LEfDhS3X7V6Z/iKSk8t6Rr9eKczGxbk13X18XrBOmuiiAP4?=
- =?iso-8859-1?Q?XqLxpFGMlyRGZ47+mui2Y3Lvaa85JxXzlaOR3XH9VVcxx0A2vwrBgHslBg?=
- =?iso-8859-1?Q?lmDG8An7JXXvVmwJoY3tvTHJooyuqiOfGIqfM8lJiJvAVUie9oAtnNQGln?=
- =?iso-8859-1?Q?jywu9C1hmCbOjVAkkkm+0+bAuVSNYWK0Sd17BKd+Rcur6tJds0lCJjPG6X?=
- =?iso-8859-1?Q?A64ek0Sw1D1C83WyR55n7XhM4DqjpGJghp3sP2BBYdUb9GdsxJTK29LiaH?=
- =?iso-8859-1?Q?WQwDGYmhMoL+dR51jEsBXCtgxIiicxov/GAIenmDsSnrbCNKlxoFBGYGXj?=
- =?iso-8859-1?Q?NTTnyAactI4TA08NHmCqstNZ07lLw2zeem9/s0RZCbZbuctgb2G+ZEGt3O?=
- =?iso-8859-1?Q?xkU0Kjj7V1Fz+zVL44fMVbjXH0zNn2PKOQeDZ8kF2YUgC2bXdJ1x9ZJzSC?=
- =?iso-8859-1?Q?4iBRRvIXN0dlhSVaIWksWf/aIX+L96aqzYKgt5EBWdE/M+505emQ9rRUrT?=
- =?iso-8859-1?Q?We288YJrvjf4hwAhX5Xv+rtH+Gnio1pp2QRiM2lr49iTZVzuzUuTEZuo94?=
- =?iso-8859-1?Q?hmcZ63xobwQHd054YXk1sqIWI3EV+Z3MnEHpG/+D87x3QQgebYNr7ejdj3?=
- =?iso-8859-1?Q?RVzE25qOFokfykgNDt7PxbrtRO8R/q4hxjtJsrXR3O9MZb068VJsosGoI4?=
- =?iso-8859-1?Q?smI7077AP9TQSw3pHSgtcmInrPlwL+Da/y4ja3SVcHmj85PPDkfTCPxNMt?=
- =?iso-8859-1?Q?MtCRx9I35uKI162mXftjGH7PDGP0Nx7gm3YLKfNNafvKNCXwF/jEqhIsjU?=
- =?iso-8859-1?Q?gHG+C3C8sHJLVj62HS5vDSZsPPTKsdAk6PZuNtJFX/SMJnHBN0baJkWT0e?=
- =?iso-8859-1?Q?5/Uw0gUFO9nmjmQqccOFh0DpSx+jPjrmOe+DprC7Q+fMB19oTcnn6v3Al3?=
- =?iso-8859-1?Q?VtGhxSLLiuNm0/sbjmbj0/qddsfJvvtEWoCqcFbJ4kSQ4l0deKTZC926gW?=
- =?iso-8859-1?Q?r6noAQu+s5QQl8SjSrQElmZ1la+fOWkKKpzbz1ku9gSo7hYzmCGoV0LpOu?=
- =?iso-8859-1?Q?LpxW5VRPk7RY2lxAMzpwoeD+8YFDMySGxH3wlWj2Bq3nBpEarUgfb3mYro?=
- =?iso-8859-1?Q?C2mCSk6w+5X8U=3D?=
+	=?us-ascii?Q?FXWrld51plGEfd57rd5UvVCDhZrHsILJzT2UlSDzBakKxzFdnzz8H+x4W4ip?=
+ =?us-ascii?Q?LpzW3x+1j8U/TUMmnzNsQ0wz2QdMAJLcNoxEn+agVSpM4DUYNGeVsNTIp/NY?=
+ =?us-ascii?Q?o3JFObTgikxpMlKgEbE0qQcvIglDx25JuEe6BhQ5SFP3s6iQtbP7vaJkMEUx?=
+ =?us-ascii?Q?5++M+5C6SirI4xxByDiof14Nt2T8B5h3VmKb9d/+9nCJLcf4zQfni9KbT1qB?=
+ =?us-ascii?Q?A74A4XFYgyMIi32DC8yH0UoZnpFsv5CjhRtHaDvdnCCClI9X1+LEHxz4q/AD?=
+ =?us-ascii?Q?Qo9b66vGhs/S5oXqQMb319gXjWfxssov9thIfPvct11EWNJQAjvql35h3Lul?=
+ =?us-ascii?Q?qomS6iH4qtdmv7necd26apigB+/RFyjv1Pp5hY3qWz9OI1PPwXWmBwMFwrFr?=
+ =?us-ascii?Q?FFJW5Ln+GFx2vzJfACowVp5EFKktmvxg6hB2KxLzQqP/XoALVk7RiKh2i9JF?=
+ =?us-ascii?Q?df+HV/4m0n7eZrV89y1Tr/dO4SAK4NlvNhGmGhPRmmp4o9WSbkpsTHQjKGrN?=
+ =?us-ascii?Q?7yJKiGXUTQ8v2ecAJuV2ZEsCXwNRhNBRtsPgVonk3UieF2AUHf0irfqdwDfE?=
+ =?us-ascii?Q?l9qPkJDkFALh672XxyUgBBa0cE2MqmcfA9pTUeOWvbVeGcxzGA/1s4OH+nSi?=
+ =?us-ascii?Q?PczMJQT7s6pMvAXxJVqLArNV39cF+ae7wEQOR3G+Db6uYoRzUNt5OfQpB4iQ?=
+ =?us-ascii?Q?z0YbWZHMUioFS/YfdaylrUozLo33NemSnA21fPFxbygp0BXE6aDs/Y0vQMRj?=
+ =?us-ascii?Q?mOMTcfZH3b0g38nWea40wLu4AQPsHtLZxnq96mUP6lmzHThhbnmFTD6W3U9o?=
+ =?us-ascii?Q?cKJ92FcCzeIabJVMovLG9cdA6gVsUNv2gVe1E6v53kWTqU4aH85WokChS5Pu?=
+ =?us-ascii?Q?9A9nrkyrZ96C0UwQxJrRXpGN+GUJDAKRUOCGk6TYeeAQAJclyTVD8ju8GVmj?=
+ =?us-ascii?Q?2hbAJ07V4R2wnfrAaNnKsf0Sl4z1LN7yccX4J0pjL/2YxZd/SUvNFlke9MRM?=
+ =?us-ascii?Q?40m+DM4CW7uMM4lS4/x+kUDptFOB/f9fYDGI8T3SHaxa4UvKzcgY65yaG9Vr?=
+ =?us-ascii?Q?lexQbsdtyowsaz6wb7kGy/tJAqbSMT3W0//JTaXG4nD0M2evFMNXd4gm3bfb?=
+ =?us-ascii?Q?HeWa6GFEy/qal3tqmW8n33Wv9e9Tg/7KDM6vuCtSELPuKuSiBCXdathyl03F?=
+ =?us-ascii?Q?tzArgsOvxbSIwko8AMewXGsjQcomutBCobGi1PMptQhQ0nkvxt0CRHTeVdyE?=
+ =?us-ascii?Q?PEXXtd4d7iEIPQqlCNpAamRiDG7/Z+egbEaJW7MSEnUQBVIMjACE5ssG/53g?=
+ =?us-ascii?Q?82axvwsJzOnZlw+b1uDqR3b+CDUPK4iYrYbRyuhR/S6YK707Dyp9H1W6w9dD?=
+ =?us-ascii?Q?nhEm9LqILF/oJjWqjUz4CMWH0xpOlLI7XyAQ90FUu2a08QipbBu90IDB4Qph?=
+ =?us-ascii?Q?GbuLi0u4fB54rilKl6bBTezb+bQwrbyGKS0UTVjtJdtmBQLKcby8+0oaViW1?=
+ =?us-ascii?Q?pCNf9Phwj3HyPZ6JOTyS163vKzVcmxRYI1BKr4k9S/2w60mIp/KvkohN1sDz?=
+ =?us-ascii?Q?UCDcwxtSt//WA4++Eyj34ubyolejr9Ms2KOYkNKf?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 765e2576-0701-4b47-0421-08dca66cd79a
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2048344-b6e9-4358-481e-08dca66dc6ee
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2024 14:29:18.5446
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2024 14:35:59.9866
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RzP0tNJPeeAUtdYvdNNLMbBZqM201e8xgp8S8jglEfucgtc5hXKeOSjonsHiRWxQQkAkKbDimFxwlLhJi1gIEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7559
+X-MS-Exchange-CrossTenant-UserPrincipalName: 71gInDpn/JDOTMjWKVG+2sYlya4rIP1L7exO4jbFs/60LAOJQ85oBmSUaXFAZXlsIJiqQIouNfDzPMq9Ni1CSg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7015
 
-On Wed, Jul 17, 2024 at 11:04:50AM +0200, Uwe Kleine-König wrote:
-> Hello Clark,
+On Wed, Jul 17, 2024 at 03:50:25PM +0200, Alexander Stein wrote:
+> These properties are required by i2c-controller.yaml bindings.
+> Add them on SoC level, rather than on board level.
 > 
-> On Tue, Jul 16, 2024 at 03:28:27PM -0400, Frank Li wrote:
-> > From: Clark Wang <xiaoning.wang@nxp.com>
-> > 
-> > Add PWM function support for MFD adp5585.
-> > 
-> > Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-> > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> > Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/pwm/Kconfig       |   8 ++
-> >  drivers/pwm/Makefile      |   1 +
-> >  drivers/pwm/pwm-adp5585.c | 215 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 224 insertions(+)
-> > 
-> > diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> > index 3e53838990f5b..baaadf877b9c6 100644
-> > --- a/drivers/pwm/Kconfig
-> > +++ b/drivers/pwm/Kconfig
-> > @@ -38,6 +38,14 @@ config PWM_DEBUG
-> >  	  It is expected to introduce some runtime overhead and diagnostic
-> >  	  output to the kernel log, so only enable while working on a driver.
-> >  
-> > +config PWM_ADP5585
-> > +	tristate "ADP5585 PWM support"
-> > +	depends on MFD_ADP5585
-> > +	help
-> > +	  This option enables support for on-chip PWM found
-> > +	  on Analog Devices ADP5585.
-> > +
-> > +
-> >  config PWM_AB8500
-> >  	tristate "AB8500 PWM support"
-> >  	depends on AB8500_CORE && ARCH_U8500
-> 
-> alphabetic ordering (by config symbol) please.
 
-Thank you for you review. I just found someone already submit similar patch
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-https://lore.kernel.org/linux-gpio/20240608141633.2562-5-laurent.pinchart@ideasonboard.com/
-
-Let's wait for laurent. If he is busy, I can rework base on the above one.
-
-Frank
-
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> > diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-> > index 0be4f3e6dd432..161131a261e94 100644
-> > --- a/drivers/pwm/Makefile
-> > +++ b/drivers/pwm/Makefile
-> > @@ -2,6 +2,7 @@
-> >  obj-$(CONFIG_PWM)		+= core.o
-> >  obj-$(CONFIG_PWM_AB8500)	+= pwm-ab8500.o
-> >  obj-$(CONFIG_PWM_APPLE)		+= pwm-apple.o
-> > +obj-$(CONFIG_PWM_ADP5585)	+= pwm-adp5585.o
-> >  obj-$(CONFIG_PWM_ATMEL)		+= pwm-atmel.o
-> >  obj-$(CONFIG_PWM_ATMEL_HLCDC_PWM)	+= pwm-atmel-hlcdc.o
-> >  obj-$(CONFIG_PWM_ATMEL_TCB)	+= pwm-atmel-tcb.o
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> index f7a91d43a0ffe..3f521441faf7e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> @@ -303,6 +303,8 @@ adma_pwm_lpcg: clock-controller@5a590000 {
+>  
+>  	i2c0: i2c@5a800000 {
+>  		reg = <0x5a800000 0x4000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+>  		interrupts = <GIC_SPI 220 IRQ_TYPE_LEVEL_HIGH>;
+>  		clocks = <&i2c0_lpcg IMX_LPCG_CLK_0>,
+>  			 <&i2c0_lpcg IMX_LPCG_CLK_4>;
+> @@ -315,6 +317,8 @@ i2c0: i2c@5a800000 {
+>  
+>  	i2c1: i2c@5a810000 {
+>  		reg = <0x5a810000 0x4000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+>  		interrupts = <GIC_SPI 221 IRQ_TYPE_LEVEL_HIGH>;
+>  		clocks = <&i2c1_lpcg IMX_LPCG_CLK_0>,
+>  			 <&i2c1_lpcg IMX_LPCG_CLK_4>;
+> @@ -327,6 +331,8 @@ i2c1: i2c@5a810000 {
+>  
+>  	i2c2: i2c@5a820000 {
+>  		reg = <0x5a820000 0x4000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+>  		interrupts = <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>;
+>  		clocks = <&i2c2_lpcg IMX_LPCG_CLK_0>,
+>  			 <&i2c2_lpcg IMX_LPCG_CLK_4>;
+> @@ -339,6 +345,8 @@ i2c2: i2c@5a820000 {
+>  
+>  	i2c3: i2c@5a830000 {
+>  		reg = <0x5a830000 0x4000>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+>  		interrupts = <GIC_SPI 223 IRQ_TYPE_LEVEL_HIGH>;
+>  		clocks = <&i2c3_lpcg IMX_LPCG_CLK_0>,
+>  			 <&i2c3_lpcg IMX_LPCG_CLK_4>;
+> -- 
+> 2.34.1
 > 
-> alphabetic ordering please.
-> 
-> > diff --git a/drivers/pwm/pwm-adp5585.c b/drivers/pwm/pwm-adp5585.c
-> > new file mode 100644
-> > index 0000000000000..f578d24df5c74
-> > --- /dev/null
-> > +++ b/drivers/pwm/pwm-adp5585.c
-> > @@ -0,0 +1,215 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +/*
-> > + * PWM driver for Analog Devices ADP5585 MFD
-> > + *
-> > + * Copyright 2024 NXP
-> > + */
-> > +
-> > +#include <linux/clk.h>
-> > +#include <linux/init.h>
-> > +#include <linux/io.h>
-> > +#include <linux/mfd/adp5585.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/pwm.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/time.h>
-> > +
-> > +#define ADP5585_PWM_CHAN_NUM		1
-> 
-> This is only used once. I'd prefer to pass the 1 verbatim to
-> pwmchip_alloc.
-> 
-> > +#define ADP5585_PWM_FASTEST_PERIOD_NS	2000
-> > +#define ADP5585_PWM_SLOWEST_PERIOD_NS	131070000
-> 
-> Funny number. I wonder where this comes from.
-> 
-> > +struct adp5585_pwm_chip {
-> > +	struct device *parent;
-> > +	struct mutex lock;
-> > +	u8 pin_config_val;
-> > +};
-> > +
-> > +static inline struct adp5585_pwm_chip *
-> > +to_adp5585_pwm_chip(struct pwm_chip *chip)
-> > +{
-> > +	return pwmchip_get_drvdata(chip);
-> > +}
-> > +
-> > +static int adp5585_pwm_reg_read(struct adp5585_pwm_chip *adp5585_pwm, u8 reg, u8 *val)
-> > +{
-> > +	struct adp5585_dev *adp5585  = dev_get_drvdata(adp5585_pwm->parent);
-> 
-> s/  / /;
-> ditto below in adp5585_pwm_reg_write().
-> 
-> > +
-> > +	return adp5585->read_reg(adp5585, reg, val);
-> > +}
-> > +
-> > +static int adp5585_pwm_reg_write(struct adp5585_pwm_chip *adp5585_pwm, u8 reg, u8 val)
-> > +{
-> > +	struct adp5585_dev *adp5585  = dev_get_drvdata(adp5585_pwm->parent);
-> > +
-> > +	return adp5585->write_reg(adp5585, reg, val);
-> > +}
-> > +
-> > +static int pwm_adp5585_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
-> > +				 struct pwm_state *state)
-> > +{
-> > +	struct adp5585_pwm_chip *adp5585_pwm = to_adp5585_pwm_chip(chip);
-> > +	u32 on, off;
-> > +	u8 temp;
-> > +
-> > +	/* get period */
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PWM_OFFT_LOW, &temp);
-> > +	off = temp;
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PWM_OFFT_HIGH, &temp);
-> > +	off |= temp << 8;
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PWM_ONT_LOW, &temp);
-> > +	on = temp;
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PWM_ONT_HIGH, &temp);
-> > +	on |= temp << 8;
-> > +	state->period = (on + off) * NSEC_PER_USEC;
-> > +
-> > +	state->duty_cycle = on;
-> > +	state->polarity = PWM_POLARITY_NORMAL;
-> > +
-> > +	/* get channel status */
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PWM_CFG, &temp);
-> > +	state->enabled = temp & ADP5585_PWM_CFG_EN;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int pwm_adp5585_apply(struct pwm_chip *chip,
-> > +			     struct pwm_device *pwm,
-> > +			     const struct pwm_state *state)
-> > +{
-> > +	struct adp5585_pwm_chip *adp5585_pwm = to_adp5585_pwm_chip(chip);
-> > +	u32 on, off;
-> > +	u8 enabled;
-> > +	int ret;
-> > +
-> > +	if (state->period > ADP5585_PWM_SLOWEST_PERIOD_NS ||
-> > +	    state->period < ADP5585_PWM_FASTEST_PERIOD_NS)
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&adp5585_pwm->lock);
-> 
-> What does this protect? You're allowed (and expected) to assume that the
-> consumer serializes calls to .apply() for a single pwm_device. Given
-> that you have npwm=1 I think this lock can be dropped.
-> 
-> > +	/* set on/off cycle*/
-> > +	on = DIV_ROUND_CLOSEST_ULL(state->duty_cycle, NSEC_PER_USEC);
-> > +	off = DIV_ROUND_CLOSEST_ULL((state->period - state->duty_cycle), NSEC_PER_USEC);
-> 
-> Please enable PWM_DEBUG your tests and make sure it doesn't produce
-> warnings. (Hint: round_closest is wrong)
-> 
-> > +	ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PWM_OFFT_LOW, off & ADP5585_REG_MASK);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PWM_OFFT_HIGH,
-> > +				    (off >> 8) & ADP5585_REG_MASK);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PWM_ONT_LOW, on & ADP5585_REG_MASK);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PWM_ONT_HIGH,
-> > +				    (on >> 8) & ADP5585_REG_MASK);
-> > +	if (ret)
-> > +		return ret;
-> 
-> How does the hardware behave in between these register writes? Can it
-> happen that an intermediate state is visible on the output pin? (E.g.
-> because off is already written but on is still the old value. Or even
-> off is only partly written after the first byte write.)
-> 
-> Please document this behaviour in a paragraph at the top of the driver
-> in the same way as many other PWM drivers do it. The details should be
-> extractable by
-> 
-> 	sed -rn '/Limitations:/,/\*\/?$/p' drivers/pwm/*.c
-> 
-> > +
-> > +	/* enable PWM and set to continuous PWM mode*/
-> 
-> Missing space before comment ending delimiter
-> 
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PWM_CFG, &enabled);
-> > +	if (state->enabled)
-> > +		ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PWM_CFG, ADP5585_PWM_CFG_EN);
-> > +	else
-> > +		ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PWM_CFG, 0);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int pwm_adp5585_request(struct pwm_chip *chip, struct pwm_device *pwm)
-> > +{
-> > +	struct adp5585_pwm_chip *adp5585_pwm = to_adp5585_pwm_chip(chip);
-> > +	u8 reg_cfg;
-> > +	int ret;
-> > +
-> > +	guard(mutex)(&adp5585_pwm->lock);
-> > +
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PIN_CONFIG_C, &adp5585_pwm->pin_config_val);
-> > +	reg_cfg = adp5585_pwm->pin_config_val & ~ADP5585_PIN_CONFIG_R3_MASK;
-> > +	reg_cfg |= ADP5585_PIN_CONFIG_R3_PWM;
-> > +	ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PIN_CONFIG_C, reg_cfg);
-> 
-> ret is only written to here, ditto for &adp5585_pwm->pin_config_val.
-> 
-> > +
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_GENERAL_CFG, &adp5585_pwm->pin_config_val);
-> > +	reg_cfg |= ADP5585_GENERAL_CFG_OSC_EN;
-> > +	ret = adp5585_pwm_reg_write(adp5585_pwm, ADP5585_GENERAL_CFG, reg_cfg);
-> 
-> Please add a comment about what is happening here. I assume this sets up
-> pinmuxing and enabled the oscillator. I wonder if it is sensible to do
-> the latter only in .apply() iff state->enabled = true.
-> 
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static void pwm_adp5585_free(struct pwm_chip *chip, struct pwm_device *pwm)
-> > +{
-> > +	struct adp5585_pwm_chip *adp5585_pwm = to_adp5585_pwm_chip(chip);
-> > +	u8 reg_cfg;
-> > +
-> > +	guard(mutex)(&adp5585_pwm->lock);
-> > +
-> > +	adp5585_pwm_reg_read(adp5585_pwm, ADP5585_PIN_CONFIG_C, &reg_cfg);
-> > +	reg_cfg &= ~ADP5585_PIN_CONFIG_R3_MASK;
-> > +	reg_cfg |= adp5585_pwm->pin_config_val & ADP5585_PIN_CONFIG_R3_MASK;
-> > +	adp5585_pwm_reg_write(adp5585_pwm, ADP5585_PIN_CONFIG_C, reg_cfg);
-> 
-> It would be consequent to clear ADP5585_GENERAL_CFG_OSC_EN in this
-> function given that it's set in .request().
-> 
-> > +}
-> > +
-> > +static const struct pwm_ops adp5585_pwm_ops = {
-> > +	.request = pwm_adp5585_request,
-> > +	.free = pwm_adp5585_free,
-> > +	.get_state = pwm_adp5585_get_state,
-> > +	.apply = pwm_adp5585_apply,
-> > +};
-> > +
-> > +static int adp5585_pwm_probe(struct platform_device *pdev)
-> > +{
-> > +	struct adp5585_pwm_chip *adp5585_pwm;
-> > +	struct pwm_chip *chip;
-> > +	unsigned int npwm = ADP5585_PWM_CHAN_NUM;
-> > +	int ret;
-> > +
-> > +	chip = devm_pwmchip_alloc(&pdev->dev, npwm, sizeof(*adp5585_pwm));
-> > +	if (IS_ERR(chip))
-> > +		return PTR_ERR(chip);
-> 
-> Error message using dev_err_probe() please.
-> 
-> > +
-> > +	adp5585_pwm = to_adp5585_pwm_chip(chip);
-> > +	adp5585_pwm->parent = pdev->dev.parent;
-> > +
-> > +	platform_set_drvdata(pdev, adp5585_pwm);
-> > +
-> > +	chip->ops = &adp5585_pwm_ops;
-> > +	mutex_init(&adp5585_pwm->lock);
-> > +
-> > +	ret = devm_pwmchip_add(&pdev->dev, chip);
-> > +	if (ret)
-> > +		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
-> 
-> Please use dev_err_probe().
-> 
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static void adp5585_pwm_remove(struct platform_device *pdev)
-> > +{
-> > +	struct pwm_chip *chip = platform_get_drvdata(pdev);
-> > +
-> > +	pwmchip_remove(chip);
-> 
-> Did you test this? I'd expect this to explode.
-> 
-> > +}
-> > +
-> > +static const struct of_device_id adp5585_pwm_of_match[] = {
-> > +	{.compatible = "adp5585-pwm", },
-> 
-> Missing space after the opening brace.
-> 
-> > +	{ /* sentinel */ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, adp5585_pwm_of_match);
-> > +
-> > +static struct platform_driver adp5585_pwm_driver = {
-> > +	.driver	= {
-> > +		.name	= "adp5585-pwm",
-> > +		.of_match_table = adp5585_pwm_of_match,
-> > +	},
-> > +	.probe		= adp5585_pwm_probe,
-> > +	.remove		= adp5585_pwm_remove,
-> > +};
-> > +module_platform_driver(adp5585_pwm_driver);
-> > +
-> > +MODULE_AUTHOR("Xiaoning Wang <xiaoning.wang@nxp.com>");
-> 
-> The email address matches one of the S-o-b lines, the name however is
-> different. Is this by mistake?
-> 
-> > +MODULE_DESCRIPTION("ADP5585 PWM Driver");
-> > +MODULE_LICENSE("GPL");
-
-
