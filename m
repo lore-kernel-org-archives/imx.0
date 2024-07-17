@@ -1,117 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9FF4F88C;
-	Wed, 17 Jul 2024 09:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D1519A;
+	Wed, 17 Jul 2024 09:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721209176; cv=none; b=LjoPfKMKUuKgkGx0pOX3+SBo4n7KX44wN7X4SJ8iynv18qTG35pmjoFyF+SosK3R7I3pCu/rXuak9Sygyfmnlz+PsGJXHifImsUfOsIkAMGALA3guny4/VEPNF8F+Rr+59qhjCMjCgRVB/XMR1zHYh6UdHqrN69Tu9uPEujXebE=
+	t=1721210397; cv=none; b=QyIZrG5IQkZmW6V9e02Su7F8/Z9xogPyxW8K8bWSQeEO5wSG1XjWrU6ceTzJ8TzLUrl86odBSf8IQsWls28P8K09A5yelGuJ5F6kakXBRqtn6YnUYuDx4/W/P4jllb5BpEu/7RUjF1PmCXv0tKj6Q4dtuvozAPEVE6YAXoH+1qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721209176; c=relaxed/simple;
-	bh=d9O95bzVbKkcxfhQls1Vk/glISShfsvYzhZ9V8sNQB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e5H2HjfFhOspfpc3d7GFI9W2VYM9LwNNhTFeSqvaBhfGaQaJ9KGRWl6YwiNzgZsagdV26V+LUhmsLIBeH1GU5f1Tl0q+cOy8dTPSRL+xISnJsVCnWHLo/O8cPPqduvMn4ZQ4uJfPGCFTJ51ldIPsJl4xQQwFQz6IAah5g5jz6dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQ15Gko1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721210397; c=relaxed/simple;
+	bh=he8VWgNCU7bzrhPOnD5ILCidOl9wz74EGBi7h5aUUVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e3k+7aq9dMJluiIDEoIPLYdwMXxvJhOyMSGkqhcP2OI4HGghUuuOSXQy7EbYZ3eUs2SXSWXOTkV6t+oJWbpkW4AenhQyAoZDQFPkIHRiHqf1awvkVRD4cxR1ysEbDVpa4xoOkt0x7cs+cCv2I2DLV9csH3vp7GtmGR8VWKRSxpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5FDNrGJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQ15Gko1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3A0C4AF09;
-	Wed, 17 Jul 2024 09:39:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5FDNrGJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52BC32782;
+	Wed, 17 Jul 2024 09:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721209176;
-	bh=d9O95bzVbKkcxfhQls1Vk/glISShfsvYzhZ9V8sNQB8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eQ15Gko1TkOhgvEGXhGzyZPsHH2m+yS7gglLBzqTgOOG1f+1i046JIb4kjh0qIumv
-	 cc5iz+XAC2+ItnnKwPYxmsoyB0bpYe6oy9nByWYdUXFN9bofNq0XwfrCn0a7uU/x4f
-	 lkTO3vdJGjwLRRvaPx1ZIz/ho2Z/gkOzW0dt8Hxk+XxazVAPRNDZkQTgLVio/8Na/E
-	 kY0GH+t5qJZyl59A182MxH6yFoOJlK5owy3RvvHBi3gU9P1BG1h3IkE1mEd1JXHOxZ
-	 OeUAaPir6grNhqkqWPs/pW8T46JcbONy9EPh296Y0FEqE86mnTRk3TKSCt37dDWGGU
-	 PlrtdQ9m5L2+Q==
-Message-ID: <6ff32295-f614-458b-9174-f86fa86f3764@kernel.org>
-Date: Wed, 17 Jul 2024 11:39:29 +0200
+	s=k20201202; t=1721210396;
+	bh=he8VWgNCU7bzrhPOnD5ILCidOl9wz74EGBi7h5aUUVI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j5FDNrGJFkKFbMFZzndQ7w/ViOHm42OKGAGKool9+monXimfoeWgrN3er6T8Glbzj
+	 l1rQlIzYd8GJR5yk+16H71qR4YJQQnyCsJjGofH65XyOLop8zwEUKBQElA9HafpXU8
+	 8xDwWpQDDVoGdNGT2mj6AEFIvU6Ot1EF5WKd2+fmJ9EfYNR3MQPCHQtPa5o6fxVI0g
+	 2xRgEx6oqukNNYe16Sh4zQK3T/dN/MWjDltqExW5jqphfZlHP60C+jWJLxFt+dIvjZ
+	 MiFbYSPoeGSyn2kzWXtdYe3Ya1FwJFe3N3BtT7YVrrZZjIAoTXKrPj1yoC0q9Is+FH
+	 q9+2qOWCZK21A==
+From: Conor Dooley <conor@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org
+Subject: [PATCH v1 0/3] Fix incorrect bh2228fv compatible
+Date: Wed, 17 Jul 2024 10:59:47 +0100
+Message-ID: <20240717-impotence-zippy-254b86593069@spud>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/4] ARM: dts: socfpga: remove non-existent DAC from
- CycloneV devkit
-To: Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Conor Dooley <conor.dooley@microchip.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- imx@lists.linux.dev, loongarch@lists.linux.dev
-References: <20240717-anvil-ashy-544e80a1317c@spud>
- <20240717-partake-antivirus-3347e415fb7d@spud>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240717-partake-antivirus-3347e415fb7d@spud>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1332; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=fLnuQZh3UkLE29exKILxLN0rP8lhx9J0NWCTV9wmm0c=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGnTpwnnzXIS7z3tlKa0j69Ne/Um6fBbYaxigXlnZV5v+ R0XZxTbUcrCIMbBICumyJJ4u69Fav0flx3OPW9h5rAygQxh4OIUgIksSmVk+GLqtmGBbOX1Fb3l D2xDKy12fdJb1GftGKI4qWDKpQme/YwMO7ee5PA5/njHXH3f9rV5SUs+fp307new7Hr/HUyHO1j O8QIA
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
-On 17/07/2024 11:37, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> There is no Rohm DAC on the CycloneV devkit according to the online
-> documentation for it that I could find, and it definitely does not have
-> a dh2228fv as this device does not actually exist! Remove the DAC node
-> from the devicetree as it is not acceptable to pretend to have a device
-> on a board in order to bind the spidev driver in Linux.
-> 
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Maxime made a typo when adding this device to the kernel all the way
+back in 2012, fix the spelling mistake.
 
-Best regards,
-Krzysztof
+Really this device should not be in trivial-devices.yaml, but I'm
+leaving the creation of a dedicated binding for when I get my hands on a
+device :smiling_imp:
+
+Cheers,
+Conor.
+
+CC: Rob Herring <robh@kernel.org>
+CC: Krzysztof Kozlowski <krzk+dt@kernel.org>
+CC: Conor Dooley <conor+dt@kernel.org>
+CC: Shawn Guo <shawnguo@kernel.org>
+CC: Sascha Hauer <s.hauer@pengutronix.de>
+CC: Pengutronix Kernel Team <kernel@pengutronix.de>
+CC: Fabio Estevam <festevam@gmail.com>
+CC: Mark Brown <broonie@kernel.org>
+CC: Maxime Ripard <mripard@kernel.org> (blamed_fixes:1/1=100%)
+CC: devicetree@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: imx@lists.linux.dev
+CC: linux-arm-kernel@lists.infradead.org
+CC: linux-spi@vger.kernel.org
+
+Conor Dooley (3):
+  dt-bindings: trivial-devices: fix Rohm BH2228FV compatible string
+  spi: spidev: add correct compatible for Rohm BH2228FV
+  ARM: dts: nxp: correct DAC compatible on Crystalfontz's CFA10049
+
+ Documentation/devicetree/bindings/trivial-devices.yaml | 4 +++-
+ arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts           | 2 +-
+ drivers/spi/spidev.c                                   | 1 +
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
 
