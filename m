@@ -1,89 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24D17E91D;
-	Wed, 17 Jul 2024 10:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF17114A61B;
+	Wed, 17 Jul 2024 10:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721210410; cv=none; b=cpHIyinjzcifncECtyBP9MKRWmSx1+J6rRl3n3dluXSEF5BerRNTr574cJmna3BsUC9PHoGgbX/aC3lpqZ8YKiTFHmqvCmqQUY9nmehDNJDPMZlbWM103hgkh//tb6ejj6+b68Nm613rBB2j+1dT7FdtHhW3XYDOBRpT0LrlidE=
+	t=1721211508; cv=none; b=HS47QLg86CBaUe1VtPUdYi6ApdxAXWIrqPjOOud0Rkwh14X5eY1N+UsOJOBzt8/aV0uQA3PPHfSTXmfW7fg/nL6csYvotpqKiSIl6JMR9V5n0sGkjFQCDyKNsCccww/dD4+DKuWxywGFk7BKo/EnNKDJS3DSU3o6TnszU7RRpV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721210410; c=relaxed/simple;
-	bh=apvG84V5D72A2ovX8Ym5o4GyiAqCNrUwmsljBqYzti4=;
+	s=arc-20240116; t=1721211508; c=relaxed/simple;
+	bh=UXQ+/dLLvHe5K0edkzLL8yMcOsAqy8P4gh1aXFyY9PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBdPlNioEp55niQpcDcMblYVzI/+LEu1pkRuVTPFR8ZEc0IC2I8/qwMcF83Qayo0mHDopgQzxBDlGbSDTeQM7sHCzjEu3g2zTP4Q3ewjsOH579W2WrsR7cKM9We4+0QSi7ucOn4MA7nq3RTlT2XNfXNZn60IjUKfinadzJ4t7cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAMxBM7d; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAMxBM7d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD3EC4AF0C;
-	Wed, 17 Jul 2024 10:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721210409;
-	bh=apvG84V5D72A2ovX8Ym5o4GyiAqCNrUwmsljBqYzti4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAMxBM7dM3iZM90G09J2sTpcTYpvsVGIavBmWZyzFQL4/DSzwqvfSXS0MtcJDwh44
-	 ZyEujha0/1Rh6u+ryIuXzHi1KXHWorR9lMt+5zSyEiC8+5AHkv1ahoFmywS/jO05RN
-	 4YxpNrtmavjmQHpe0kn6nB/E8ctiC5Qb9dAUmFZrxD2JoFVkGaomRBLKoy0IOYnNu/
-	 HZ7RZyQ3nf2n4VnjoxdXRqNJLByFfvDoNKWTDXVabxeECcvVg7RjZGBB+mZxE2OLb8
-	 WcXwVLP9YbYZsuQW8o3Ov+6YaVjKcqbUMBXeWhkY/2+45Ip5Ge06qKgPHaU0Kp107z
-	 7z648utjzWGZw==
-From: Conor Dooley <conor@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH v1 3/3] ARM: dts: nxp: correct DAC compatible on Crystalfontz's CFA10049
-Date: Wed, 17 Jul 2024 10:59:50 +0100
-Message-ID: <20240717-ruse-cardinal-c30cf11bbf1e@spud>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240717-impotence-zippy-254b86593069@spud>
-References: <20240717-impotence-zippy-254b86593069@spud>
+	 MIME-Version:Content-Type; b=KBABHUQmIJYBRrAS7RLVilhUSTc/iQltR63JtKgz894d7BJD2yUZAQPzhJuHTgOLMbqDEjTrXxpUpS1U/z9vJEgoZ++vYkpZkmJ2Oyz6Qhj0WryHOrx4mPAMm72p8dUEC1CNPJYWG9AdhnmZrSxTZhc1HICEyd7GOVed/YKj7uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i5e860d09.versanet.de ([94.134.13.9] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sU1je-0006py-5K; Wed, 17 Jul 2024 12:18:10 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>,
+ Otavio Salvador <otavio@ossystems.com.br>
+Cc: conor@kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+ Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ imx@lists.linux.dev, loongarch@lists.linux.dev
+Subject:
+ Re: [PATCH v1 2/4] ARM: dts: rockchip: remove unlikly-to-exist DAC from
+ elgin-r1
+Date: Wed, 17 Jul 2024 12:18:08 +0200
+Message-ID: <3870188.FjKLVJYuhi@diego>
+In-Reply-To: <20240717-parrot-malt-83cc04bf6b36@spud>
+References:
+ <20240717-anvil-ashy-544e80a1317c@spud>
+ <20240717-parrot-malt-83cc04bf6b36@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=868; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=po4ukk2TtrTbTP6VRex1woV9O4IoqV8AZfS3boi8AP0=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGnTp4kYKOQ98du0snKlpi5ztLVBwPSoH0v7dPQNJne8c bW9ECDeUcrCIMbBICumyJJ4u69Fav0flx3OPW9h5rAygQxh4OIUgInEfWRkWJH67I1ayQXV7/wh up3X71lVHfNSkFNw5GjS/PnMnH/7bIb/sTNy5rt9eHDk/J7q+8XtfzbV9fmfmm957P3G3Tsyf74 5zAAA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-From: Conor Dooley <conor.dooley@microchip.com>
+adding Otavio,
 
-When Maxime originally added the BH2228FV to the kernel, he spelt it
-incorrectly - the d should have been a b. Correct the compatible used in
-the devicetree.
+Am Mittwoch, 17. Juli 2024, 11:37:54 CEST schrieb Conor Dooley:
+> From: Conor Dooley <conor.dooley@microchip.com>
+> 
+> The Rohm dh2228fv (really the bh2228fv, the compatible in the kernel has
+> a typo) does not support frequencies above 10 MHz, nor per the
+> datasheet appear to use either CPOL or CPHA. I suspect that this
+> devicetree is abusing the compatible in order to bind the spidev driver
+> in Linux. Pretending to have devices on a board for this purpose is not
+> acceptable, so remove it.
 
-Fixes: db7a8946dc40 ("ARM: dts: cfa10049: Add the DH2228FV DAC to the DTS")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
- arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reasoning is sound, so I'll pick this up after the merge window.
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts
-index f0ce897b9d5c..3cd2acbd8931 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts
-@@ -143,7 +143,7 @@ gpio6: gpio6@1 {
- 		};
- 
- 		dac0: dh2228@2 {
--			compatible = "rohm,dh2228fv";
-+			compatible = "rohm,bh2228fv";
- 			reg = <2>;
- 			spi-max-frequency = <100000>;
- 		};
--- 
-2.43.0
+
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+> I could not find any documentation for this board online, and it does
+> not blatantly say that the device is a "spidev" like other [ab]users, so
+> it is possible there's actually a DAC here - but I doubt it is a
+> bh2228fv given the other incompatibilities.
+
+Otavio, as the original submitter of the Elgin R1 [0], do you happen
+to know what type of device this is? Especially as there really do not
+seem to be any schematics around for that board.
+
+
+Heiko
+
+
+
+[0] https://patchwork.kernel.org/project/linux-rockchip/patch/20190104014023.17973-4-otavio@ossystems.com.br/
+
+> ---
+>  arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dts | 8 --------
+>  1 file changed, 8 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dts b/arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dts
+> index 2d9994379eb2..9df1cef406c5 100644
+> --- a/arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dts
+> +++ b/arch/arm/boot/dts/rockchip/rv1108-elgin-r1.dts
+> @@ -167,14 +167,6 @@ &spi {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&spim1_clk &spim1_cs0 &spim1_tx &spim1_rx>;
+>  	status = "okay";
+> -
+> -	dh2228fv: dac@0 {
+> -		compatible = "rohm,dh2228fv";
+> -		reg = <0>;
+> -		spi-max-frequency = <24000000>;
+> -		spi-cpha;
+> -		spi-cpol;
+> -	};
+>  };
+>  
+>  &u2phy {
+> 
+
+
+
 
