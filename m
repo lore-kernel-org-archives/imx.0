@@ -1,98 +1,115 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC7B33D8
-	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 06:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F67A17C66;
+	Wed, 17 Jul 2024 06:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721199061; cv=none; b=n6KPu28couWTHutnHCl5HQU1WK8DG9+6557F5Nptf0e/rqSOxrfWCsJ7Z+lYBucdzMSBTcCVDLjBaqyNtVr+UWGvfwrtMNBZ5A/A2kDMH8XZpwOSBHZoCX+4IMBBWR0MwXnd6tNererdyL/SquFGbs6BCEg29+xLbPXqj2FnFGE=
+	t=1721199588; cv=none; b=uDGGWiB650xjL5OgY/coboOyDN0EH9t5FdFmae/W/XcacRu9zXwX9KvElKwcqGDDs5WhRaopifLNrawOEs8BL7UW2Evd9cwBuhlq4/c6AjD4Kn9yJ9ByuawKl+S9z0L8+CBn97Ko3ndA2ooccUjKzj0ptMboFVO1E+XqTMqsEFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721199061; c=relaxed/simple;
-	bh=dpOBx/JaJzJ9k+pu39P9pH1jVrhVAxMSt45ni74svac=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y0724EzzU0rBsMS0S1ixMVOAmiCDFiGBBIIjiB90sqqi7Jsk5Q5JylbeTW6kyLnDRywj1Pwi1J7zStxeMNgbavMhqEWHfJSSxeFSSpK0V8mPrIuRF6WJPXbxmoBT4mxzcFrYrjAtvL3PPWjnY3UxO0XChKRsc4pUn5x/Wf5Af/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=GWpXxs5q; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ZZVpa7q6 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1721199588; c=relaxed/simple;
+	bh=GtOgORRYMWszJwNCSDlGW+roFQ9+QPNsaZ082A7wGJY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lpqa6VjIcPxE99BK/Yz18JV9LCURVa7tm8x9ByOb00O3oBCpJTitjzs/xQJqGiwND8jmveik20nJS+sC/vtnFhz3j/wT505feozmceP5Q0c0iVwoAuD1q+MgSI90SwRaAQRFjfkWYrd08icPKcbbLj7VMJmX/ac7JExhVtf0PTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nC26tcJD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="GWpXxs5q";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ZZVpa7q6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1721199059; x=1752735059;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rjcdWGSUL4wzFk1sXQX07yknR07Yxl1IIBPaDUB1jgg=;
-  b=GWpXxs5qMnLf+5RPIgP0hHsLsqGrkMtuW5vepe/WDTBKezxpBXb2rUXo
-   MWpxC8juJwmkVllcbfp+a/AtRJ9xTTEpEkOUz7QDFr0LLzZOb+WYP5nTw
-   QwhTaecORfgrHy05kNwENKKSleB12WVH85F10GC41jq6KBG1fYGXbdlj5
-   B9btekNpT7YrtlpTBEH0/pJ1BfilFQyOMTaQp/OVREYqIQCgCZIHPRUbg
-   uT1Syubd9wEE4nKNJgPPd59F0gNsHUSlohIY2mWbNHi81aXsqVAltTenB
-   3bRSWrupvaIiKcFfxSbTjWVysNN9I58MAV1Kww8I8SFzGJe2freYlBt1y
-   Q==;
-X-CSE-ConnectionGUID: WopxBByAQ9Gi02fl3Kjx+g==
-X-CSE-MsgGUID: krEEA6B9TFG9TJrXiKBFiw==
-X-IronPort-AV: E=Sophos;i="6.09,213,1716242400"; 
-   d="scan'208";a="37942401"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 17 Jul 2024 08:49:46 +0200
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 362DB165A43;
-	Wed, 17 Jul 2024 08:49:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1721198986; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=rjcdWGSUL4wzFk1sXQX07yknR07Yxl1IIBPaDUB1jgg=;
-	b=ZZVpa7q6uWratn3eaxrUbIJ+oQHqBUdSGlECKTHD5d+kEllZF8HYFGpo0pC5qwK+9W8pNJ
-	mvGN+No1v9yCSfvyGDh1DadJxXCijrHqiyGFhnNdd9PiYq66HbI+g8ctKjoYVhrXY5xtXV
-	7yCNMZM+iVrJhcgQvUeK6zj8K6ABbExbkBoVQihui5YXfJQevqVQv7Jj7z/r1f+MdC2+jL
-	WMx5Bq5F2YxxGl71HAEMz9dEZdYeBE30dQfIq1oX4C6P2381ECo5U796vEXIzVHfq0aQiU
-	wCstvKVbSGaHYEVyr/3ys7PP9L5nyjGHt+BMijIUTSSPi9LvDtan8yX578Qfpw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] arm64: dts: mba8mx: Add Ethernet PHY IRQ support
-Date: Wed, 17 Jul 2024 08:49:15 +0200
-Message-Id: <20240717064916.1670702-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nC26tcJD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5D2C32782;
+	Wed, 17 Jul 2024 06:59:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721199588;
+	bh=GtOgORRYMWszJwNCSDlGW+roFQ9+QPNsaZ082A7wGJY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nC26tcJD67QaLU4sOxSBwZQ8PjR17Bdzl4rdOKAQbgBLqSlzIQFXQa6Gzv3wVSut0
+	 TXLJmKLQaObCKTHrutjDD18ONxonj1eY5/i540hhI8QhslDUA/DWotccwaWTaKBTKG
+	 ckL9xfPDVF2wB0yFYGi0l9wF06rfxOuWnJrgUeUgZnS1vKTyrrDHqNrOJruWl4+Pxp
+	 6UjMKGxqJAK+lxVhVDN8EpFRN9okw7XABcutgHT1yaTagtYjks4Xhl2DwOuj0BdliB
+	 ZPLV2fz9m3ZuqQQBFx5WZIJcdpPcVWJdqxQ6U1RV7VHWw4/Kh0v6A7N/fdYVTNjnpQ
+	 4J5jiWKlrbN6A==
+Message-ID: <1f9227a8-7c96-41ad-aaba-d6cf4435631d@kernel.org>
+Date: Wed, 17 Jul 2024 08:59:37 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] mfd: add adp5585 gpio and pwm support
+To: Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>,
+ Jun Li <jun.li@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ Jindong Yue <jindong.yue@nxp.com>
+References: <20240716-adi-v1-0-79c0122986e7@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240716-adi-v1-0-79c0122986e7@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The interrupt pin of the PHY is connected to the GPIO expander, configure
-it accordingly.
+On 16/07/2024 21:28, Frank Li wrote:
+> adp5585 is totally difference adp5588, which in
+> drivers/input/keyboard/adp5588-keys.c.
+> 
+> So create new driver for it.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/mba8mx.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+There is ongoing work (v4 if I recall) for adp5585, so please rebase on
+that. Existing patches do not look abandoned.
 
-diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-index 7b221f43d761e..1ab5cddac0659 100644
---- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
-@@ -204,6 +204,8 @@ ethphy0: ethernet-phy@e {
- 			reset-gpios = <&expander2 7 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <500000>;
- 			reset-deassert-us = <500>;
-+			interrupt-parent = <&expander2>;
-+			interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
- 
- 			leds {
- 				#address-cells = <1>;
--- 
-2.34.1
+Best regards,
+Krzysztof
 
