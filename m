@@ -1,141 +1,82 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AEEB64C
-	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 07:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4969A1CA80
+	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 07:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721200889; cv=none; b=c9Asp9EOrnS2KfRnNLcAb0TD9REmYZi0fHx9dfzYqKFs+c9IHt85FrS2KAodZq1GCJfsiUT6WkiRtHo/7gaKS4laxzJu/9zZEvtfOtGqmB11DPBlkkrtuvthfFlhzoyoy9BwffbMsk/x8SGgDkgSmKQIEjPSkwC3lfvfCj6SkNY=
+	t=1721202995; cv=none; b=Z88zhz68PPa05d57dwIGTesAAuMbynK9+CuPyq8Td48VLafcFSum1dZJEgc8Xa1036+gtYiu2X0Bv/eXXQAw18aZTFSUB9RaPXDxhlTwjQZa5fj74+9MUwwlfg2uRyjFmv1Dgh9Of0xNmH0eEsD9btDDWtFCEDloSpZrPo9GMpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721200889; c=relaxed/simple;
-	bh=7dyhTQjy+22B7GIQfMe+2jE4/DTU5dL5I/JauqWJc+Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PZ6WiG9YD8dmk1pOZWuW99s29JS7hKT5aJ0+uFbCCNuETAkQMsHlt83L/qguEMBC3FMCIaFtWcQ0dSiewoeV0guYfk4gotwDMhWPSUe2aPO32jIho5cr+V+vb/wSAJO7whlSdjScD9+lnkKmYmIu37YG3aSgUZW0oRgiW/z7zyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sTyyQ-0006wr-Ga; Wed, 17 Jul 2024 09:21:14 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sTyyO-000A17-Cx; Wed, 17 Jul 2024 09:21:12 +0200
-Received: from pengutronix.de (p5de45302.dip0.t-ipconnect.de [93.228.83.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 524B830595B;
-	Wed, 17 Jul 2024 07:20:46 +0000 (UTC)
-Date: Wed, 17 Jul 2024 09:20:45 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"linux-can@vger.kernel.org" <linux-can@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, Han Xu <han.xu@nxp.com>
-Subject: Re: RE: [PATCH v2 4/4] can: flexcan: add wakeup support for imx95
-Message-ID: <20240717-porpoise-of-imminent-inspiration-ef2fc6-mkl@pengutronix.de>
-References: <20240715-flexcan-v2-0-2873014c595a@nxp.com>
- <20240715-flexcan-v2-4-2873014c595a@nxp.com>
- <20240716-curious-scorpion-of-glory-8265aa-mkl@pengutronix.de>
- <ZpaF4Wc70VuV4Cti@lizhi-Precision-Tower-5810>
- <20240716-chowchow-of-massive-joviality-77e833-mkl@pengutronix.de>
- <DU0PR04MB9496C653249E66016A43F97790A32@DU0PR04MB9496.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1721202995; c=relaxed/simple;
+	bh=urZJ1/84wIytql9BIcugNB1IyCTILe2NsmTy/SWnd4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WTL3/mCQAoDVbADdmgWhRx7m42mBmP/dSD6/raAHaWRMbP4mdjoF/UwuRk6cAQhcVeROW9R/vwbAgf4TSu2pJPsoH0x0ovlDBPFU30OWY9f9GYojHfE+ujQTqgjrgFw1F/RHfFLkr/LlFSEBgCrecneg4myAwHg6zIKspPlEGIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pxpGccyb; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pxpGccyb"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 27C88C0002;
+	Wed, 17 Jul 2024 07:56:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1721202989;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=urZJ1/84wIytql9BIcugNB1IyCTILe2NsmTy/SWnd4M=;
+	b=pxpGccybf6wrT60Y6gYN4tEb20R8rqUM/wWxuNqafOpanLoLTBtCSy2kUcnKmkEUwI7yl5
+	SjNcy3cc/b2hvahovJe6IxQNE9G/Z6q89oma+DoHH/YbN97Q1i9+bKgIpNnjHG03iM/yyj
+	cuUkEPCR/Yk2k6HsxpfWH+QQQ9akby9ZorzJseYPe0jHm+AauVtKKbpDF9UIST39yD736Y
+	mmLebk0mk9fqvd7SH64kde7OdVNEQJP4VlZvwQ+wJs+0yF2vxPOGrpx4YENByPl/H13XcR
+	a6TOpN8CVvFo/KDHZDvQRHLNumVGW+ckZqTOnQbHMNXOcFnhP+DyeeM8CD0KoA==
+Date: Wed, 17 Jul 2024 09:56:26 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, linux-i3c@lists.infradead.org (moderated
+ list:SILVACO I3C DUAL-ROLE MASTER), linux-kernel@vger.kernel.org (open
+ list), imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] i3c: master: svc: adjust SDR timing according to
+ i3c spec
+Message-ID: <20240717095626.278d6e62@xps-13>
+In-Reply-To: <20240712164602.3600659-1-Frank.Li@nxp.com>
+References: <20240712164602.3600659-1-Frank.Li@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lyoxbz5qrcbtajuw"
-Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9496C653249E66016A43F97790A32@DU0PR04MB9496.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---lyoxbz5qrcbtajuw
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 17.07.2024 02:03:35, Bough Chen wrote:
-> > On 16.07.2024 10:40:31, Frank Li wrote:
-> > > > > @@ -2330,9 +2366,12 @@ static int __maybe_unused
-> > flexcan_noirq_resume(struct device *device)
-> > > > >  	if (netif_running(dev)) {
-> > > > >  		int err;
-> > > > >
-> > > > > -		err =3D pm_runtime_force_resume(device);
-> > > > > -		if (err)
-> > > > > -			return err;
-> > > > > +		if (!(device_may_wakeup(device) &&
-> > > >                       ^^^^^^^^^^^^^^^^^^^^^^^^
-> > > >
-> > > > Where does this come from?
-> > >
-> > > include/linux/pm_wakeup.h
-> > >
-> > > static inline bool device_may_wakeup(struct device *dev)
-> > > {
-> > >         return dev->power.can_wakeup && !!dev->power.wakeup;
-> > > }
-> >=20
-> > Sorry for the confusion. I wanted to point out, that the original drive=
-r doesn't
-> > have the check to device_may_wakeup(). Why was this added?
+Hi Frank,
+
+Frank.Li@nxp.com wrote on Fri, 12 Jul 2024 12:46:02 -0400:
+
+> From: Carlos Song <carlos.song@nxp.com>
 >=20
-> Here add this to make sure for CAN with flag
-> FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI and really used as wakeup source,
-> do not need to call pm_runtime_force_resume(), keep it align with what
-> we do in flexcan_noirq_suspend.
+> According to I3C Specification(Version 1.1) 5.1.2.4 "Use of Clock
+> Speed to Prevent Legacy I2C Devices From Seeing I3C traffic", when
+> slow i2c devices(FM/FM+ rate i2c frequency without 50ns filter)
+> works on i3c bus, i3c SDR should work at FM/FM+ rate.
+>=20
+> Adjust timing for difference mode.
 
-> As the comment in flexcan_noirq_suspend, CAN with flag
-> FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI, when used as wakeup source, need
-> to keep CAN clock on when system suspend, let ATF part logic works,
-> detail steps please refer to this patch commit log. Whether gate off
-> the CAN clock or not depends on the Hardware design. So for this case,
-> in flexcan_noirq_suspend, directly return0, do not call the
-> pm_runtime_force_suspend(), then in flexcan_noirq_resume(), use the
-> same logic to skip the pm_runtime_force_resume().
+The calculations below look quite complex, but if you believe this is
+right, I'm fine with it.
 
-Please change the control flow, so that flexcan_noirq_suspend() and
-flexcan_noirq_resume() look symmetrical.
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-regards,
-Marc
+>=20
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---lyoxbz5qrcbtajuw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmaXcMoACgkQKDiiPnot
-vG+oPQf/YPWUrvcT++JZ07FcseBQUWKsH7dE6a2zvUJix3NiJbujU/7ZWRis8Bhl
-CGbvtpAmEkpcNuKWucYwTYt2eB8y4d0h3qCHeSi1B6Jsg+SGccThY+3/WxfCmwUu
-pMcw4nfvza024LNjyeZLBtys3O81K/GIg3iJ2NULzgQNeKfM8oalPvoEhrMVHEVn
-J+GyKB4zCaZAGfbndeG7OBQleiFSTQ4oi7OEq8rr8lsnjcCfPYDKDfLZQIpFZtqa
-VRiFq7hTayk/qYyVsZhRf8089C4wsp6zhLDoe9Dweu/J8sQ03klMIOUvpKuRD5jC
-FbL9ybQfk28QbWIANcLZnko0sBa6RA==
-=3SL7
------END PGP SIGNATURE-----
-
---lyoxbz5qrcbtajuw--
+Thanks,
+Miqu=C3=A8l
