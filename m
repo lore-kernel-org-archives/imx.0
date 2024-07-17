@@ -1,92 +1,80 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEDB1DFCB;
-	Wed, 17 Jul 2024 16:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D1C182A6C
+	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 17:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721234776; cv=none; b=rq2ZiG9EgoQqVEU4L5VX20cp+lW3pwo7j1rwpHh09PxkNbQZH2iSg0HgT77Y+x3RtzgTivzsqF4hDkCbq9a0taLVU5BBsp3oRYIgUbgbnlUsnqeR5EIBiK7BpHUujCmCKsV6GnZ53DHYBlrDG/co44t0Jyak1iC/IRal2XMICzE=
+	t=1721238604; cv=none; b=KzIalPW1SmwVSKVPvz8vC702A4ae96NSNh5Dg4V97SZr0NYrJIxOyTwO29z8e/2s+6qT6jFUevi+s4OsAUUXYh0JpaHPTBijiJG3B3X1cFthy5zv8epJD3An3uQUIx5Iqo0AQkjEJpWYxWCA1YCwS4l5izrzKtaokC3ndDvQmLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721234776; c=relaxed/simple;
-	bh=2S0ab5SdmVZu6CHXw0oDlN+TBmAuaYsarb+i1qS+Q+I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YbgIy8xJSic0IJNYQicmyZbZPD4NnhmNx3++flzbHGQbKC9UvM/g34FNTlK0SW0txqmuirhkUQbklukGJetxMtnpklDUmbCQdkOVzzdEH+G2L8cC7uxuFLdYqtE7CgEFtKpGNjmqR+OTb383DaJxki5GZdq9fh3aFy4aey9qDx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFAJXqCH; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721238604; c=relaxed/simple;
+	bh=bloGZeSyi/BjK2fTP+teodHTpU0UW42MPHzRk885YhA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=ii2wAy/RfC3qUZdtsIR/Jxha+mdnJFNGzqCg5dMuhkxzuyo5jzusfuIAKoe7hHHSuBjC/Cz3+nSeoAdmJ+/Jp1FFSi7BS5kjaRG7r9xi6BNUfgYp9gLQ/F33gun4fHqoirJknhg9/C4ksXunx6wPncYFMcuqL2lbHnO+9GfQU8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=AV1MGQAV; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFAJXqCH"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ee98a224b8so10900651fa.2;
-        Wed, 17 Jul 2024 09:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721234773; x=1721839573; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2S0ab5SdmVZu6CHXw0oDlN+TBmAuaYsarb+i1qS+Q+I=;
-        b=gFAJXqCHqFjXcWfHbKp2pzBsIFOEkZeWtPABU22OjatxK1anymY6XfY3nTJldfhdKe
-         DoVTL6Hu8sW91dFye27LLccH0IB1pgEfeZL6KgnNhHJ/krEQXket6L8gBzQNsWhPDVle
-         0FN3oNFI68Ei5dqHVuqz6ngcTuw2XM00glBfXoaoaw4SGWxFl6fSZ9Op3zs6MO1h1nA5
-         7LBh60gRS/Gaf3IFaQ8Zk04EzGs4MgurFdaYCwEGwELE1mADthc6O37A+7E1rkgVxssx
-         TI/GDrHLLlzmr9Z8elKP7BhnfjfCJ4qTCwg4bLIgY7EK1qolqJFcr41QDh8lRamZ9RfU
-         L8mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721234773; x=1721839573;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2S0ab5SdmVZu6CHXw0oDlN+TBmAuaYsarb+i1qS+Q+I=;
-        b=FTuO+0Qf7aHzPBCXi1ogUdgFfh8elhTb1fNf8ipnJGbL/eLUiahixy/7eocSZ+3gSL
-         y4az6PCRiz2XVuHsboarVpU3RoxzrTpNm0J9ptwPaf4aVzyr4kZpOhKhlgggE/jw55zN
-         egnpnP8K6NE14ov6scuossEim2/gZTo/fRI2FjP3mA1XSXQ/1yZDi+/8oddgLd0zhehr
-         dBGTECqkFMDFQVS+W9REAm/iL4PMMIPIzZHGmslXsiXFvHObwPoSicc+SW7ILB47GpHR
-         33cYL3Ukh48BsQDsuyOknJ8SDx1klwp0dxFMbHQJY4CvPWNW6TXs7JmHcdd5PTpiWSUC
-         SIQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUzOf9jzi/gDMQVCsMC4LuNS1ui9MgFC4Tk1vPkxUEBLzuE0qmrtOKKxQO3l1QkKS9JYI=@lists.linux.dev, AJvYcCXjbAClEVO3FS0ekx/ZqrZbskhVhHdb7GXgJpIX842a3QBpVo2LD9Wyib8qOZP+31pCYDVg1JWDH4Gc@lists.linux.dev
-X-Gm-Message-State: AOJu0YyrcC/QXLV+Cc7eE3WUDnnoWOeloF2/Yjj95MDloti4LMsIsGR+
-	MGT4HCCjwx+NuqhOy3cO1p1d6ay6QbX9haEuGeIrM66TI6mAFstkCGu9LjN/ja1MV8xpaofQN7a
-	eu9IzIxPl0WTaagV58f5oV8kedaE=
-X-Google-Smtp-Source: AGHT+IHoe46620+UsVuITlGPh3/c/KNcEkZ5F6Uq8F7R6XszLx9r5KYDXHcT2MQwJr48RLgG03dD62MwkhoqroWKBWc=
-X-Received: by 2002:a2e:6e15:0:b0:2ec:4399:9bfc with SMTP id
- 38308e7fff4ca-2ef05997667mr23791fa.0.1721234772478; Wed, 17 Jul 2024 09:46:12
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="AV1MGQAV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1721238586; x=1721843386; i=wahrenst@gmx.net;
+	bh=bloGZeSyi/BjK2fTP+teodHTpU0UW42MPHzRk885YhA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=AV1MGQAVSxB1NwOQnynsXJ5TKvSXFioU4z/Q1wqom9k0nLOnfMI36RGzVLGNwYJz
+	 9N8lmiC1rIgPPDSUhJ/iU6NyL1Y7QKWSSQ2hjv28/wSt0HnJnDM+OdfFghejlRFh2
+	 kNoy0C6rWB8rBLQiNdwOgdH+lIPF4FxSQIMYjRO92/nksvkcR86tgBncDp3EVc7LT
+	 2HbtaqefALZZr8NKgfBSWj0Rb/DhVApkpXie4QJSqKs8im2ZgIqtT/InU2kHdeAJH
+	 kt67hLclvW0MumZcqUM2OalggbdWtSH+I4JC1Y2hRMMD9XXL7EAMqgGNLuLlMXF43
+	 opbwAZLnpWd33OiIJw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7iCg-1sHkgl434E-00vbSC; Wed, 17
+ Jul 2024 19:49:46 +0200
+Message-ID: <bffb5d44-4eca-49cb-8624-e7bcce525fbb@gmx.net>
+Date: Wed, 17 Jul 2024 19:49:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240717-anvil-ashy-544e80a1317c@spud> <20240717-parrot-malt-83cc04bf6b36@spud>
-In-Reply-To: <20240717-parrot-malt-83cc04bf6b36@spud>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 17 Jul 2024 13:46:00 -0300
-Message-ID: <CAOMZO5DuwjQxMG4dT-_HcLjA_4U-+B2kR8FW1580RFiHcxo6OQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] ARM: dts: rockchip: remove unlikly-to-exist DAC
- from elgin-r1
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	imx@lists.linux.dev, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Peng Fan <peng.fan@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
+From: Stefan Wahren <wahrenst@gmx.net>
+Subject: mx93: No cache hierachy definitions for ARM cores
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZqFNJuzCp12lIBnEqMXEIjrVDNt1dI1ggHsTtxpA6ZlSpFdcAzA
+ oz86owB3wspAWiusXoJU+smDZrWq7pCeByux6ZPmD9aUwzHJMOJzRSH5+FhvNxa3HDASktd
+ +7kZeJatofyHxfSg4CdomUSf8EBE3QXiO27OmcUvAhf9MYU6+JLANLzCMBNB7DduSjLddLM
+ HL9uWKXzG3wfvRN9jIpOQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:rMcG9beqokI=;y4AuKR5GfIwp3xFrsyP0vQpQceJ
+ rxXNuL1LOyfNT3zDxK0BjubpBxbxbxoqjWTV9J2nDulsghLpSeuG5VYzQ98Il7W4Usnh7Ak27
+ Q1wcW8ExgW9ayeST5QULTRM2Fc+tW9Sy/BhIzvPrv17iGis4ymN2rhBgPBaJdHZuW4/JsrjY9
+ K3xOscq3vcl7Brrz4a7n9jnwQPn6x+VmT0g9YKhym2Ias6bAbdPoBr4MfZw1qd9Zj0k6NrzHk
+ Hv++a4dApuj52Ts6dcutz/hgRcMoT1O6Vh/1kNY6A7ecWtLj1nZDZTigga0O18X1FgmvHLcqj
+ Fuf+bx+v7xoNKJOtNpEUy7UmzIlsULtyHin92oGrYp++xhoxH4GSZy/VOf+HYNOH2lxQFeFT+
+ TyYX0vu/sz+8zWriuZUoTOukvGKcrqYgkt5VW53KIhaqhjHtHKmdTrBUYqY5vH7WqQfSD6siP
+ 3VmG4NJ6uXXzW22UFHD8fbvQnHCD49SkaWKwx2s5Ye2WdTUZ9nPgYVCB4MUiwisc6cUgQ5Bmu
+ dkvXt1Hstcy3B1iKSlNl+rGR3UPHr1/zmhV+qdt5sMY/GcjpUvseOv1RXyNEuDntHebJYPZch
+ 2Xfjoq5cttCIuByI08blKXVapO9RcFPGfdawnd7mcBRw+8oXPtKjNYF567ewlTIWddQ2eQ++9
+ NH/MPTdtCzlsGdfr6yD7bT3ajyIBySnEXxUw5YmxuxNkuMh5J9iUlP4wC6kD6854L9eV4WZLL
+ MFykdMor434+WVVGez4Rv1aFQtzFLfpJ1SUUqkRqxU21QIP51SOeMVWJAQkhfJNnnPDlE2RkG
+ 43wBY5Em8kXuHAZ/3ZEDKQ2A==
 
-On Wed, Jul 17, 2024 at 6:38=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> The Rohm dh2228fv (really the bh2228fv, the compatible in the kernel has
-> a typo) does not support frequencies above 10 MHz, nor per the
-> datasheet appear to use either CPOL or CPHA. I suspect that this
-> devicetree is abusing the compatible in order to bind the spidev driver
-> in Linux. Pretending to have devices on a board for this purpose is not
-> acceptable, so remove it.
+Hi,
+today i noticed that imx93.dtsi lacks the cache definitions for the
+Cortex-A55 cores:
 
-In the Subject: s/unlikly/unlikely
+cacheinfo: Unable to detect cache hierarchy for CPU 0
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Maybe someone with more insight can add this to the imx93.dtsi file.
+
+Best regards
