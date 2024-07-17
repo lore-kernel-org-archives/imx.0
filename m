@@ -1,82 +1,99 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4969A1CA80
-	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 07:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8249E2C694
+	for <imx@lists.linux.dev>; Wed, 17 Jul 2024 08:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721202995; cv=none; b=Z88zhz68PPa05d57dwIGTesAAuMbynK9+CuPyq8Td48VLafcFSum1dZJEgc8Xa1036+gtYiu2X0Bv/eXXQAw18aZTFSUB9RaPXDxhlTwjQZa5fj74+9MUwwlfg2uRyjFmv1Dgh9Of0xNmH0eEsD9btDDWtFCEDloSpZrPo9GMpM=
+	t=1721203424; cv=none; b=C3HFLBNsjhS30t6stoDXV/L+0DkkrqIXzppQrT1DZpIX38WSK731v0E2PfUFWreBOYOhpjGb5J/wSGe50X9e34GF4ad+p86yvNWjGqJFBR8tHst7L7Eplw4S/BSMfTSgFrviJr6TT8UGVEkK6qRgv+ztl5HgsbkNzY14TsdRCP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721202995; c=relaxed/simple;
-	bh=urZJ1/84wIytql9BIcugNB1IyCTILe2NsmTy/SWnd4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WTL3/mCQAoDVbADdmgWhRx7m42mBmP/dSD6/raAHaWRMbP4mdjoF/UwuRk6cAQhcVeROW9R/vwbAgf4TSu2pJPsoH0x0ovlDBPFU30OWY9f9GYojHfE+ujQTqgjrgFw1F/RHfFLkr/LlFSEBgCrecneg4myAwHg6zIKspPlEGIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pxpGccyb; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1721203424; c=relaxed/simple;
+	bh=XPf6FraqAY5Pnc0921qTtkEWqT98FeTp2J69L7xL064=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MnU587qMMcg4so+IxDxM428JjYqldsO1MN1K+ZrbCcqSbM4SbIJsSHzg92/zAIrU3A8yZKVLoXmoIIzKvyTP+L0PosvzN1nIsX6sjROxZ5lgmU4uPs24UHNYjfYKmwebKYKdo8zizr+GhXMXBbzaJpOmNCpBW8q/jz1Mh+t/Y+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=T+cwgzpk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=c4/g1VU1 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pxpGccyb"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 27C88C0002;
-	Wed, 17 Jul 2024 07:56:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1721202989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=urZJ1/84wIytql9BIcugNB1IyCTILe2NsmTy/SWnd4M=;
-	b=pxpGccybf6wrT60Y6gYN4tEb20R8rqUM/wWxuNqafOpanLoLTBtCSy2kUcnKmkEUwI7yl5
-	SjNcy3cc/b2hvahovJe6IxQNE9G/Z6q89oma+DoHH/YbN97Q1i9+bKgIpNnjHG03iM/yyj
-	cuUkEPCR/Yk2k6HsxpfWH+QQQ9akby9ZorzJseYPe0jHm+AauVtKKbpDF9UIST39yD736Y
-	mmLebk0mk9fqvd7SH64kde7OdVNEQJP4VlZvwQ+wJs+0yF2vxPOGrpx4YENByPl/H13XcR
-	a6TOpN8CVvFo/KDHZDvQRHLNumVGW+ckZqTOnQbHMNXOcFnhP+DyeeM8CD0KoA==
-Date: Wed, 17 Jul 2024 09:56:26 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Conor Culhane <conor.culhane@silvaco.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, linux-i3c@lists.infradead.org (moderated
- list:SILVACO I3C DUAL-ROLE MASTER), linux-kernel@vger.kernel.org (open
- list), imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] i3c: master: svc: adjust SDR timing according to
- i3c spec
-Message-ID: <20240717095626.278d6e62@xps-13>
-In-Reply-To: <20240712164602.3600659-1-Frank.Li@nxp.com>
-References: <20240712164602.3600659-1-Frank.Li@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="T+cwgzpk";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="c4/g1VU1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1721203420; x=1752739420;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/AfJrwnzPB93tg8xRLJ+lSVIdfMPUjr5wVivkuJa62s=;
+  b=T+cwgzpkT8soeQZBdFbA9Hlr5NytLvyMBZWyodpy1kiBq3CW84Gyn8cW
+   VfKSwYGYyQ3gc7U6Ufu4ywiugsfhus0JQCz5M5Cg75hZfTrnWFJ2WSc5N
+   QNNMh+U5K3X6Csn2min0uDUwcqBR6u6lxZ9YA9nOK5GNr3cKIZtcnEKot
+   /ciAMMMIP4yAmPjutAcO7d3mnJN0rKcVmOBtbI39FTaGdFUidzsPJNZmE
+   Tj7YO5COiF5XkEEJ2S74q1jc0c8hGWCaL+cIgQQAB6dXdRirxLdEvtWVV
+   7NwfFYhseaGdOVXsBxFZgxZMPgvNG9dkGWG8uGNuRkK7xbJrQGE93AotS
+   A==;
+X-CSE-ConnectionGUID: g/oQUe2TQSy4TdPmv9qhIg==
+X-CSE-MsgGUID: va+o87CQT+Ggl3lcXeqvzw==
+X-IronPort-AV: E=Sophos;i="6.09,214,1716242400"; 
+   d="scan'208";a="37944923"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 17 Jul 2024 10:03:38 +0200
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44ADF161428;
+	Wed, 17 Jul 2024 10:03:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1721203418; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=/AfJrwnzPB93tg8xRLJ+lSVIdfMPUjr5wVivkuJa62s=;
+	b=c4/g1VU16nGwwQPwN6MWQ8dfHI0V92TxbMWjcBPCVmtqoi+WRJb7S9nBWVuMu/R0hR4ALO
+	Vis93GlwsysQusTIb1TcXPhFO3CqG1htAZM+tqg+MAa80FtTCrDzyvloL9QPblb2hmuMdl
+	SAwfIJRMa3gncbOcx8s/01hB3oOBiDdgXVS4vCTqRbqkffzkJj7fGjaFs5JqicEcSE4KWA
+	cozC7WSZBWMo/28OSLB+INKCDOsp+mo07E6UmPmGZYsrN1LC63Jy4+fo+h5AgFvu56hWhj
+	b+9N5caKcx3SJXElSP8Jg6tgvFo6yNlMC0sqnfPygwkq8HMBM7qhJDIhz/fffA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] pmdomain: imx: scu-pd: Remove duplicated clocks
+Date: Wed, 17 Jul 2024 10:03:33 +0200
+Message-Id: <20240717080334.2210988-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+These clocks are already added to the list. Remove the duplicates ones.
 
-Frank.Li@nxp.com wrote on Fri, 12 Jul 2024 12:46:02 -0400:
+Fixes: a67d780720ff ("genpd: imx: scu-pd: add more PDs")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ drivers/pmdomain/imx/scu-pd.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-> From: Carlos Song <carlos.song@nxp.com>
->=20
-> According to I3C Specification(Version 1.1) 5.1.2.4 "Use of Clock
-> Speed to Prevent Legacy I2C Devices From Seeing I3C traffic", when
-> slow i2c devices(FM/FM+ rate i2c frequency without 50ns filter)
-> works on i3c bus, i3c SDR should work at FM/FM+ rate.
->=20
-> Adjust timing for difference mode.
+diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
+index 05841b0bf7f30..01d465d88f60d 100644
+--- a/drivers/pmdomain/imx/scu-pd.c
++++ b/drivers/pmdomain/imx/scu-pd.c
+@@ -223,11 +223,6 @@ static const struct imx_sc_pd_range imx8qxp_scu_pd_ranges[] = {
+ 	{ "lvds1-pwm", IMX_SC_R_LVDS_1_PWM_0, 1, false, 0 },
+ 	{ "lvds1-lpi2c", IMX_SC_R_LVDS_1_I2C_0, 2, true, 0 },
+ 
+-	{ "mipi1", IMX_SC_R_MIPI_1, 1, 0 },
+-	{ "mipi1-pwm0", IMX_SC_R_MIPI_1_PWM_0, 1, 0 },
+-	{ "mipi1-i2c", IMX_SC_R_MIPI_1_I2C_0, 2, 1 },
+-	{ "lvds1", IMX_SC_R_LVDS_1, 1, 0 },
+-
+ 	/* DC SS */
+ 	{ "dc0", IMX_SC_R_DC_0, 1, false, 0 },
+ 	{ "dc0-pll", IMX_SC_R_DC_0_PLL_0, 2, true, 0 },
+-- 
+2.34.1
 
-The calculations below look quite complex, but if you believe this is
-right, I'm fine with it.
-
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
->=20
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-
-Thanks,
-Miqu=C3=A8l
