@@ -1,136 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE461836C4;
-	Wed, 17 Jul 2024 18:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FA948CCD;
+	Wed, 17 Jul 2024 23:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721240693; cv=none; b=Ztxl+yVvo/knW4+i9t6fqQR7Rkp4dEhKM+RM2F7HTRBfhmOQzIemqSl1QwDTNo4FF66eHJ4JCCCenP/t9URWuNgFgSHJh+vV6XQwnRby5a9biG9MGUK8CH+gk0wOLnxPQxAxKpQi3cWJJgreoflcJqY+EbLEvIS8LlPbuh04E3g=
+	t=1721259801; cv=none; b=QidCxD26tq7FkcxyXPShDRBBpMX3QcaC18+teAbxRaKsQKlgUg/aQKTzrZt+J7IM6jImZckRNdSEDPqpkV47ruo+M9dypgkwCcJBCOlPtwvoU56nIsrKC858Pxknml6yuj61pCACKE6PqUMnLgb+Y8tDQY5B2IfFYTLl9vsReHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721240693; c=relaxed/simple;
-	bh=C++kSOLhIP5PSq6tF2bjAs5Xhpug33YPSaVFZ8do+YU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JJELVKY4kwgg/DeZm92+/s73PUX8kcfejyF1qZJoeyD1I6hYkgu2FHIyFtWbjZ0t7VM6j2TB2wpyotgX2PyUK/w3x5Bz3KmgJ3EXJj9DAjjSU34GphgtgItbFLzk7cCCaeUr2V3/Yo87BlDyM/2ZiyCDfvSm/t4RLzGb2Yzqw1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIqOSzqm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721259801; c=relaxed/simple;
+	bh=0SzqE6acgChptScakbVHZAGE65kPCaxYYa36nc5MtF0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Iu7T/CbVIMRQhESD5GcCXqTLf9vSI/mD2Ng5kR37guxFnsLniEK+Q677mD3nb0pju9ERd1uRCCdkr/su45PVtbVi6yhf43wyn2kQc/XZP5VxhR/leGCdIl24/ECcmfNdg1qRswLhRZrZ60nhAirv009WS6AY9TiI+pTChCA29ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZxRf+ku; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIqOSzqm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6429EC4AF0B;
-	Wed, 17 Jul 2024 18:24:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZxRf+ku"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B61C2BD10;
+	Wed, 17 Jul 2024 23:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721240692;
-	bh=C++kSOLhIP5PSq6tF2bjAs5Xhpug33YPSaVFZ8do+YU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hIqOSzqmR44B1nzxPCPJH2o6GTxE2nt2Hhe9ArYOEprmgc8xLjQAmduIF9Bs6Vdew
-	 EUnltYNEoe7YcYxEGpDsK8jwk6A9LBGIp69e3oGFwox9uG8tS7BX2tOhpc2oK/qRU1
-	 aGIJaQG5x1UA3E3heOVTQ7diXTF5eS4mVIXluetMD8a34yUe6t6BN+AbptVTBUKBq2
-	 zkdEZmSiYnUDy4vBmofSpsz9l1vuYAptvR7N1jLZ4rZGKpGPFj1ReJOo3LnT2FigrR
-	 Mlz4in3o8Lv6qZyXaOc/Fmg4PCWgRwIk7zo4UNx/xwZVoiHTN/V6K1Qkjt9y/OtrWP
-	 VAL7rD1O6AC4Q==
-Date: Wed, 17 Jul 2024 20:24:46 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: tj@kernel.org, dlemoal@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	festevam@gmail.com, linux-ide@vger.kernel.org,
-	stable@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v3 2/4] ata: ahci_imx: Clean up code by using i.MX8Q HSIO
- PHY driver
-Message-ID: <ZpgMbvuSpgGoISN1@ryzen.lan>
-References: <1721099895-26098-1-git-send-email-hongxing.zhu@nxp.com>
- <1721099895-26098-3-git-send-email-hongxing.zhu@nxp.com>
+	s=k20201202; t=1721259800;
+	bh=0SzqE6acgChptScakbVHZAGE65kPCaxYYa36nc5MtF0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mZxRf+ku72/5+0Ss1CsbzU8f5+EnZcYo6kPyRsA/FGKPCLlWx1rTjlXcSORXsYDEU
+	 P/PUC94hPfK56AdsaJjpjrDaO4ZivMqyMadaOWjNJ8TzAIUO03AOT+br3Ouey1SmYm
+	 Pcvpz+lB1qA9sg2x/kS/Wa+cowo16YAiaXdrSxBL463HjEMsUETerp4GeLdnOjvh2x
+	 ensqj+AlNzia/H0EuHrW4/2xe/U4ZaS3zO97TIY5oS0fI4WsyjX09dYND8NhlXM6iA
+	 7hP3gXlCGsqiG7IA3nSkgLECVluZ26aci+26ic9oEu8byJUkfVDNxEZGj8IedDzp6n
+	 alTWHeegfaaNg==
+Message-ID: <daf86dec-9c35-49a5-ab81-ee667074f503@kernel.org>
+Date: Thu, 18 Jul 2024 08:43:16 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1721099895-26098-3-git-send-email-hongxing.zhu@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] ata: ahci_imx: Enlarge RX water mark for i.MX8QM
+ SATA
+To: Niklas Cassel <cassel@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>
+Cc: tj@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+ linux-ide@vger.kernel.org, stable@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ kernel@pengutronix.de
+References: <1721099895-26098-1-git-send-email-hongxing.zhu@nxp.com>
+ <1721099895-26098-4-git-send-email-hongxing.zhu@nxp.com>
+ <ZpgKxwziGXqNYLfc@ryzen.lan>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <ZpgKxwziGXqNYLfc@ryzen.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 16, 2024 at 11:18:13AM +0800, Richard Zhu wrote:
-> Clean up code by using PHY interface.
+On 7/18/24 3:17 AM, Niklas Cassel wrote:
+> Hello Richard,
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  drivers/ata/ahci_imx.c | 396 ++++++++++-------------------------------
->  1 file changed, 98 insertions(+), 298 deletions(-)
+> On Tue, Jul 16, 2024 at 11:18:14AM +0800, Richard Zhu wrote:
+>> The RXWM(RxWaterMark) sets the minimum number of free location within
+>> the RX FIFO before the watermark is exceeded which in turn will cause
+>> the Transport Layer to instruct the Link Layer to transmit HOLDS to
+>> the transmitting end.
+>>
+>> Based on the default RXWM value 0x20, RX FIFO overflow might be
+>> observed on i.MX8QM MEK board, when some Gen3 SATA disks are used.
+>>
+>> The FIFO overflow will result in CRC error, internal error and protocol
+>> error, then the SATA link is not stable anymore.
+>>
+>> To fix this issue, enlarge RX water mark setting from 0x20 to 0x29.
+>>
+>> Fixes: 027fa4dee935 ("ahci: imx: add the imx8qm ahci sata support")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+>> ---
 > 
-> diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-> index cb768f66f0a70..e94c0fdea2260 100644
-> --- a/drivers/ata/ahci_imx.c
-> +++ b/drivers/ata/ahci_imx.c
-> @@ -986,65 +827,22 @@ static const struct scsi_host_template ahci_platform_sht = {
->  
->  static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
->  {
-> -	struct resource *phy_res;
-> -	struct platform_device *pdev = imxpriv->ahci_pdev;
-> -	struct device_node *np = dev->of_node;
-> -
-> -	if (of_property_read_u32(np, "fsl,phy-imp", &imxpriv->imped_ratio))
-> -		imxpriv->imped_ratio = IMX8QM_SATA_PHY_IMPED_RATIO_85OHM;
-> -	phy_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "phy");
-> -	if (phy_res) {
-> -		imxpriv->phy_base = devm_ioremap(dev, phy_res->start,
-> -					resource_size(phy_res));
-> -		if (!imxpriv->phy_base) {
-> -			dev_err(dev, "error with ioremap\n");
-> -			return -ENOMEM;
-> -		}
-> -	} else {
-> -		dev_err(dev, "missing *phy* reg region.\n");
-> -		return -ENOMEM;
-> -	}
-> -	imxpriv->gpr =
-> -		 syscon_regmap_lookup_by_phandle(np, "hsio");
-> -	if (IS_ERR(imxpriv->gpr)) {
-> -		dev_err(dev, "unable to find gpr registers\n");
-> -		return PTR_ERR(imxpriv->gpr);
-> -	}
-> -
-> -	imxpriv->epcs_tx_clk = devm_clk_get(dev, "epcs_tx");
-> -	if (IS_ERR(imxpriv->epcs_tx_clk)) {
-> -		dev_err(dev, "can't get epcs_tx_clk clock.\n");
-> -		return PTR_ERR(imxpriv->epcs_tx_clk);
-> -	}
-> -	imxpriv->epcs_rx_clk = devm_clk_get(dev, "epcs_rx");
-> -	if (IS_ERR(imxpriv->epcs_rx_clk)) {
-> -		dev_err(dev, "can't get epcs_rx_clk clock.\n");
-> -		return PTR_ERR(imxpriv->epcs_rx_clk);
-> -	}
-> -	imxpriv->phy_pclk0 = devm_clk_get(dev, "phy_pclk0");
-> -	if (IS_ERR(imxpriv->phy_pclk0)) {
-> -		dev_err(dev, "can't get phy_pclk0 clock.\n");
-> -		return PTR_ERR(imxpriv->phy_pclk0);
-> -	}
-> -	imxpriv->phy_pclk1 = devm_clk_get(dev, "phy_pclk1");
-> -	if (IS_ERR(imxpriv->phy_pclk1)) {
-> -		dev_err(dev, "can't get phy_pclk1 clock.\n");
-> -		return PTR_ERR(imxpriv->phy_pclk1);
-> -	}
-> -	imxpriv->phy_apbclk = devm_clk_get(dev, "phy_apbclk");
-> -	if (IS_ERR(imxpriv->phy_apbclk)) {
-> -		dev_err(dev, "can't get phy_apbclk clock.\n");
-> -		return PTR_ERR(imxpriv->phy_apbclk);
-> -	}
-> -
-> -	/* Fetch GPIO, then enable the external OSC */
-> -	imxpriv->clkreq_gpiod = devm_gpiod_get_optional(dev, "clkreq",
-> -				GPIOD_OUT_LOW | GPIOD_FLAGS_BIT_NONEXCLUSIVE);
-> -	if (IS_ERR(imxpriv->clkreq_gpiod))
-> -		return PTR_ERR(imxpriv->clkreq_gpiod);
-> -	if (imxpriv->clkreq_gpiod)
-> -		gpiod_set_consumer_name(imxpriv->clkreq_gpiod, "SATA CLKREQ");
-> -
-> +	if (!(dev->bus_dma_limit))
-> +		dev->bus_dma_limit = DMA_BIT_MASK(32);
+> Looking at the title of this patch:
+> "ahci_imx: Enlarge RX water mark for i.MX8QM SATA"
+> 
+> This suggests that this fix is only needed for i.MX8QM.
+> 
+> Support for i.MX8QM was added to the device tree binding in patch 1/4 in
+> this series.
+> 
+> Doing a git grep in linux-next gives the following result:
+> 
+> $ git grep fsl,imx8qm-ahci linux-next/master
+> linux-next/master:drivers/ata/ahci_imx.c:       { .compatible = "fsl,imx8qm-ahci", .data = (void *)AHCI_IMX8QM },
+> 
+> 
+> This is interesting for two reasons:
+> 1) drivers/ata/ahci_imx.c already has support for this compatible string,
+> even though this compatible string does not exist in any DT binding
+> (in linux-next).
+> 
+> 2) There is not a single in-tree device tree (DTS) that uses this compatible
+> string ....and we do not care about out of tree device trees.
+> 
+> 
+> Considering 2) I do NOT think that we should have
+> Cc: stable@vger.kernel.org on this... we shouldn't just backport random driver
+> fixes is there are no in-tree users of this compatible string.
+> 
+> So I suggest that:
+> -Drop the CC: stable.
+> -I actually think that it is better that you drop the Fixes tag too, because if
+> you keep it, the stable bots will automatically select this for backporting,
+> and then we will need to reply and say that this should not be backported, so
+> better to avoid adding the Fixes tag in the first place.
+> (Since there are no users of this compatible string, there is nothing that is
+> broken, so there is nothing to fix.)
+> 
+> 
+> Damien, when applying this patch, I suggest that we apply it to for-6.12
+> together with the rest of the series (instead of applying it to
+> for-6.11-fixes).
 
-These two lines look like a unrelated change, should be in a separate commit
-with a proper commit message.
+It was me who asked for the Fixes and Cc-stable tags, but I had not checked
+that the compatible is not being used in any DT. So good catch.
+I will apply everything to for-6.12.
 
+> 
+> 
+> Kind regards,
+> Niklas
 
-Kind regards,
-Niklas
+-- 
+Damien Le Moal
+Western Digital Research
+
