@@ -1,150 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4242A8FE;
-	Thu, 18 Jul 2024 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B58E4D8B7;
+	Thu, 18 Jul 2024 15:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721315608; cv=none; b=cwzt7XzeqzSyTyFfhvxmFRIkpOs0cFfNmpeKNoQVCTbR7rVufbdak4gFbXadY7Q8t+68jGJa/euRZ/Nmtyze0KrR/VBuU46pi4QbQgSVvwVQIBShTOTTDWLazG4faYcWuB+jzyE38eoxhgA4sI5NGFB5zc0FkblK8k5b68w+D2A=
+	t=1721317984; cv=none; b=LZrKpM62j4TR/UvoSu89WGFoq65VcjZAtbS5KUo/iLEU+7BaZe+QUQK/3+DrA4EDqroTu9cIl5DPDtCsRY6bNFBCQh6qGfDWaenh+H8ZE8zqysMW8SMM4sT65sPF4AcruF1QK2aWZ7Rdg7CW1ksE1CnUZD/MxAKHuNEiyGlnwDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721315608; c=relaxed/simple;
-	bh=KGyvEQ54So9d/QSHQz8COPueg/2S62+77cBcHg1eiQk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T9BxwU8JTOftJc/Qq485t7bFFb+uP1HNFiXazHqf6XdSfYp5NtJHWskZArOquepiCA3i04HxkO2T+h5d3MeXY/9+lzCRQilylQCVyjqthdAUWYn2fyan5SsTsLxOzNaPbvtYc6tvPtIluj3mBSoV/gSCdOMU+cqAuSrZ7D2aM3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eFcriuRp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721317984; c=relaxed/simple;
+	bh=B6iJ8irjzz/fOi4lxXcJbV9yEeC3eoXu0jTG6TiEPUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rjgHsvR6mMyS4PpcUmgOTQnfJvfeGLHQh3+1aF7MAhbx2Z1E8PTdfkDCh+NqDaP9y+VfZbpGxMWoSQIVTc+q7/w3njGI8Xh+UZH3GSERrWqzU15B/IRBXOqxgRpDS8udXCKUHPudKsM/FwtRPRGa905vpSzmv5BqMOXswOxLqe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKH5T1rb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eFcriuRp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FEFC116B1;
-	Thu, 18 Jul 2024 15:13:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKH5T1rb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872FDC116B1;
+	Thu, 18 Jul 2024 15:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721315607;
-	bh=KGyvEQ54So9d/QSHQz8COPueg/2S62+77cBcHg1eiQk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eFcriuRpt2IrddShWruMkpSuTxZRhE5FthCbkGHMdZMbV3E5kb/2ifSgVZk8XgpP6
-	 DlrbqC+x3duLCM+iR0NQvXlC7TDwlBhSY4FgEnqQGS3+e8BvahzC0rlA66RKQUfLMY
-	 vikckXZTV48GNjJhCuKSkAhn6MKIk/XVaCdXLT54omcTX3TXJqT0bXOo9uiwM9BLQg
-	 sBQWeIGv6RwJMxaTaL5L76qicIzjYJNvnKA42kTp8sY/sr0jxqtRyS5XlDeEgNxsqV
-	 JWla6cRAkTka7yWlLY2DnoeQsTiW2ETeod84C086LfV4H2iwDP4R4KvfAcuboniE9o
-	 4AY1/gxhBfRgg==
-Message-ID: <b61742b9-0767-4e28-8b26-dfeb240726c7@kernel.org>
-Date: Thu, 18 Jul 2024 17:13:22 +0200
+	s=k20201202; t=1721317984;
+	bh=B6iJ8irjzz/fOi4lxXcJbV9yEeC3eoXu0jTG6TiEPUs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mKH5T1rbFec9wRNcHrkmhjzBr2c1uhMGVcP9KX45hACZt+yoOXyRiclZLBZL5g7MQ
+	 7cQkLgnxDCmdLt5++A2K+OuFLyM4frb5WPnyM/NPRwKgGX6mpSYaWqEVqJ6TdWzM7A
+	 fw44b5e0UH7LYuas5XxKZxFljegRv35N3S2A3opwtT2+NAHy9pDV1kBrSDGutYtZPT
+	 Lt0nKiTCV8rVeYGHQjPmgO4FMUyBPK3ikcSSiQl9LiPBovx0BwXUsfMLkJFbZN0f8T
+	 2Md7mFGAjfTyhfn9ZtImQXKTts+K7GUBXJsgVLu2jw5VaXTAt0aBU3tIHeHwcG4Zk3
+	 efq+uA0gw5pmQ==
+Date: Thu, 18 Jul 2024 17:53:00 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch, 
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de
+Subject: Re: [PATCH 02/10] dt-bindings: display: imx: Add i.MX8qxp Display
+ Controller display engine
+Message-ID: <20240718-watchful-macho-muskrat-dcda01@houat>
+References: <20240705090932.1880496-1-victor.liu@nxp.com>
+ <20240705090932.1880496-3-victor.liu@nxp.com>
+ <cd558335-6e72-46d1-911b-68ccbb211136@kernel.org>
+ <b9583c86-b5ed-4642-9baf-2ac850656ee3@nxp.com>
+ <eda90514-e40c-4edd-8c15-18717a5e9784@kernel.org>
+ <20240708-mega-nautilus-of-champagne-cd4be6@houat>
+ <35667bd4-bfb4-4939-9fd7-328e2e8c228f@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Question about gpio-hog
-To: Conor Dooley <conor@kernel.org>, Bough Chen <haibo.chen@nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
- "'devicetree@vger.kernel.org'" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- Aisheng Dong <aisheng.dong@nxp.com>, Frank Li <frank.li@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>
-References: <DU0PR04MB949657D9575090C71714D2A090AC2@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <20240718-smudge-splashy-6e8addc80c02@spud>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240718-smudge-splashy-6e8addc80c02@spud>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gkwlffv6qrxgj6ri"
+Content-Disposition: inline
+In-Reply-To: <35667bd4-bfb4-4939-9fd7-328e2e8c228f@kernel.org>
 
-On 18/07/2024 16:47, Conor Dooley wrote:
-> On Thu, Jul 18, 2024 at 03:40:49AM +0000, Bough Chen wrote:
->> Hi All,
->>
->> I have a question of ‘gpio-hog’, the property gpio-hog seems to be used in GPIO node rather than in users device node, so we can’t use the device-link feature.
->> (sorry for resend, I use text/plain messages this time)
->>
->> e.g.
->>
->> pcal6524: gpio@22 { 
->>       …
->> 　　　/* usdhc3 and QSPI share the same pin, here select SD3 pins */
->> 　　　usdhc3-qspi-sel-hog {
->> 　　　　　　gpio-hog;
->> 　　　　　　gpios = <16 GPIO_ACTIVE_HIGH>;
->> 　　　　　　output-high;
->> 　　　};
->> 　　　…
->> };
->>
->> &usdhc3 {
->>      …
->> }
->>
->> The board share the pins of usdhc3 and QSPI, a MUX use one GPIO pad from one I2C GPIO expander to control the selection.
->> So before usdhc3 probe, need to make sure the gpio-hog is configed. Which means usdhc3 need to depend on usdhc3-qspi-sel-hog.
->>
->> To achieve that, I can add a fake GPIO properties like below:
->> &usdhc3{
->>      …
->>      hog-gpio = <&pcal6524 16 GPIO_ACTIVE_HIGH>;
->> }
->>
->> Usdhc driver do not handle the hog-gpio, just use this fake hog-gpio to let the usdhc3 depends on pcal6524 IO expander. Make sure when usdhc driver probe, already select the usdhc3 pads on board.
->>
->> But this will trigger the DT check warning if related device binding has ““additionalProperties: false”  or  “unevaluatedProperties: false”.
->>
->> Can this be acceptable? Any thoughts for this case? I think this might be common user case for gpio-hog.
-> 
-> I've got no idea what this device you're talking about is - but it seems
-> to me like the "hog-gpio" property is what you should be doing (although
-> probably called something like "enable-gpios" instead.
-> What you would do is send a patch for the dt-binding for this device,
-> adding a property, in which case the *Properties: false will stop
-> warning.
 
-If there is device dependency on the hog, I would say by definition of a
-hog that's not a hog. Hogs are for controller to initialize, but here
-your device driver needs it. This sounds like simple pin configuration
-for device.
+--gkwlffv6qrxgj6ri
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best regards,
-Krzysztof
+On Tue, Jul 09, 2024 at 08:50:35AM GMT, Krzysztof Kozlowski wrote:
+> On 08/07/2024 16:52, Maxime Ripard wrote:
+> > On Mon, Jul 08, 2024 at 04:04:21PM GMT, Krzysztof Kozlowski wrote:
+> >> On 08/07/2024 08:40, Liu Ying wrote:
+> >>>>> +
+> >>>>> +  "^framegen@[0-9a-f]+$":
+> >>>>> +    type: object
+> >>>>> +    additionalProperties: true
+> >>>>> +
+> >>>>> +    properties:
+> >>>>> +      compatible:
+> >>>>> +        const: fsl,imx8qxp-dc-framegen
+> >>>>> +
+> >>>>> +  "^gammacor@[0-9a-f]+$":
+> >>>>
+> >>>> This looks like you are organizing bindings per your driver architec=
+ture.
+> >>>
+> >>> As I mentioned in cover letter, this series addresses Maxime's
+> >>> comment for the previous series - split the display controller
+> >>> into multiple internal devices.  Maxime insisted on doing this.
+> >>
+> >> But these are not separate devices. Look:
+> >> 1. parent DC:
+> >> reg =3D <0x56180000 0x40000>;
+> >>
+> >> 2. child interrupt controller:
+> >> reg =3D <0x56180040 0x60>;
+> >>
+> >> That address is within parent.
+> >>
+> >> 3. Then we go to things like:
+> >> reg =3D <0x5618b400 0x14>, <0x5618b800 0x1c00>;
+> >>
+> >> Still within parent's range and just few words in address range. That's
+> >> a clear indication that you choose few registers and call it a "device=
+".
+> >=20
+> > That's never really been a metric though?
+> >=20
+> > If not, one could just create a "soc" device node covering the entire
+> > register map, and since it would overlap despite clearly defined
+> > features, you would claim it's a single device?
+>=20
+> Since I do not create such one-address-soc devices, I claim I have
+> separate devices in the SoC. Here is not the case: there is a device
+> covering entire address space.
+>=20
+> Soc is a good example, because components/blocks of the SoC are being
+> re-used among different SoCs. Is the case here?
+>=20
+> BTW, it could be that some of the sub-devices here are worth to be
+> devices, I agree.
 
+This was the binding of the previous version:
+https://lore.kernel.org/dri-devel/20230822085949.816844-2-victor.liu@nxp.co=
+m/
+
+To me, the duplication of interrupts, clocks and power domains with
+different indices kind of proves that it's all separate devices
+
+Maxime
+
+--gkwlffv6qrxgj6ri
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZpk6XAAKCRDj7w1vZxhR
+xYY5AQDq8KMOoRmdOKy1XHix4IqZooYahpg3GzvOtZ/WqsMsZwEA8vf7t6Uk7oIc
+BmI0C5iPkUa2dgea9uKW9CpOO3yBXAM=
+=8Z54
+-----END PGP SIGNATURE-----
+
+--gkwlffv6qrxgj6ri--
