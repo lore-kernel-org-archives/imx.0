@@ -1,139 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B58E4D8B7;
-	Thu, 18 Jul 2024 15:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE1A2F877;
+	Thu, 18 Jul 2024 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721317984; cv=none; b=LZrKpM62j4TR/UvoSu89WGFoq65VcjZAtbS5KUo/iLEU+7BaZe+QUQK/3+DrA4EDqroTu9cIl5DPDtCsRY6bNFBCQh6qGfDWaenh+H8ZE8zqysMW8SMM4sT65sPF4AcruF1QK2aWZ7Rdg7CW1ksE1CnUZD/MxAKHuNEiyGlnwDk=
+	t=1721319940; cv=none; b=B3uXs6jbzXhS1SDZV/0a291VyBufHEBo4SfARAjx1JN1EP/3d7EVZsmvul4csgsh7xoqPQ/CFOgJ04SbyOIW+fs/SM8gtbY3A44LMDYC37jBChOokhBixXh9DFSOaJHzzaEYqzpnia0CoW5rOg8bb78hLB5lgRkVLZvHs1zAyd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721317984; c=relaxed/simple;
-	bh=B6iJ8irjzz/fOi4lxXcJbV9yEeC3eoXu0jTG6TiEPUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rjgHsvR6mMyS4PpcUmgOTQnfJvfeGLHQh3+1aF7MAhbx2Z1E8PTdfkDCh+NqDaP9y+VfZbpGxMWoSQIVTc+q7/w3njGI8Xh+UZH3GSERrWqzU15B/IRBXOqxgRpDS8udXCKUHPudKsM/FwtRPRGa905vpSzmv5BqMOXswOxLqe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKH5T1rb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721319940; c=relaxed/simple;
+	bh=eAYqluCiv6LpOeEE/Gjs6FAht/2LLqsRLhVkGs8Q4rY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TgiZ7FrQo/KIIM9hWcLz5P3NcFy7mh1Ofr8cn5Z27krI/1UNHf4TxkLWS5m/QQpZBs529VB/akP9tIdT+Y1sQvfQJ6tycRltXajSSQ0RunqUh59OtX7/165OXNPPos5ah1jZJDfxbgxsajPOFOG5zfg3Ah75sfjuY0CXWtq/jno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pOSlvqrz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKH5T1rb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872FDC116B1;
-	Thu, 18 Jul 2024 15:53:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pOSlvqrz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA19C4AF10;
+	Thu, 18 Jul 2024 16:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721317984;
-	bh=B6iJ8irjzz/fOi4lxXcJbV9yEeC3eoXu0jTG6TiEPUs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mKH5T1rbFec9wRNcHrkmhjzBr2c1uhMGVcP9KX45hACZt+yoOXyRiclZLBZL5g7MQ
-	 7cQkLgnxDCmdLt5++A2K+OuFLyM4frb5WPnyM/NPRwKgGX6mpSYaWqEVqJ6TdWzM7A
-	 fw44b5e0UH7LYuas5XxKZxFljegRv35N3S2A3opwtT2+NAHy9pDV1kBrSDGutYtZPT
-	 Lt0nKiTCV8rVeYGHQjPmgO4FMUyBPK3ikcSSiQl9LiPBovx0BwXUsfMLkJFbZN0f8T
-	 2Md7mFGAjfTyhfn9ZtImQXKTts+K7GUBXJsgVLu2jw5VaXTAt0aBU3tIHeHwcG4Zk3
-	 efq+uA0gw5pmQ==
-Date: Thu, 18 Jul 2024 17:53:00 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de
-Subject: Re: [PATCH 02/10] dt-bindings: display: imx: Add i.MX8qxp Display
- Controller display engine
-Message-ID: <20240718-watchful-macho-muskrat-dcda01@houat>
-References: <20240705090932.1880496-1-victor.liu@nxp.com>
- <20240705090932.1880496-3-victor.liu@nxp.com>
- <cd558335-6e72-46d1-911b-68ccbb211136@kernel.org>
- <b9583c86-b5ed-4642-9baf-2ac850656ee3@nxp.com>
- <eda90514-e40c-4edd-8c15-18717a5e9784@kernel.org>
- <20240708-mega-nautilus-of-champagne-cd4be6@houat>
- <35667bd4-bfb4-4939-9fd7-328e2e8c228f@kernel.org>
+	s=k20201202; t=1721319940;
+	bh=eAYqluCiv6LpOeEE/Gjs6FAht/2LLqsRLhVkGs8Q4rY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=pOSlvqrzQfLn/3M4AcllF/jMT74KnCxbxNX0McsxiQkH+D0bn71LMZa991bKhAIqL
+	 J4JeMJNvtyOORdryJNbeekoMVk+42FhYu6x/Ert8GJhDQdXircn1h9VKOucAfz+j6R
+	 EuA6135fS31k9/qJxcRybtlIlr5bc0QUAEnmNvHr+yU0zSln8zS2tHnw8oFvFoqVyz
+	 /eqtDStijsgIlKLmYlzC2Rbh1JyQqasP3O456sMskPfPE/rdKNwdoNknNkWRKYHNH5
+	 hJu4xLSberQs8/AxJt/1txFloTcLwvKePFfQ35oc5O36ISTdZ4L2U/DVfh7rUvNpjE
+	 WlKdKozfyK1GQ==
+From: Mark Brown <broonie@kernel.org>
+To: linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>
+Cc: Conor Dooley <conor.dooley@microchip.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+In-Reply-To: <20240717-impotence-zippy-254b86593069@spud>
+References: <20240717-impotence-zippy-254b86593069@spud>
+Subject: Re: (subset) [PATCH v1 0/3] Fix incorrect bh2228fv compatible
+Message-Id: <172131993701.119619.18261000113153693411.b4-ty@kernel.org>
+Date: Thu, 18 Jul 2024 17:25:37 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gkwlffv6qrxgj6ri"
-Content-Disposition: inline
-In-Reply-To: <35667bd4-bfb4-4939-9fd7-328e2e8c228f@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 
+On Wed, 17 Jul 2024 10:59:47 +0100, Conor Dooley wrote:
+> Maxime made a typo when adding this device to the kernel all the way
+> back in 2012, fix the spelling mistake.
+> 
+> Really this device should not be in trivial-devices.yaml, but I'm
+> leaving the creation of a dedicated binding for when I get my hands on a
+> device :smiling_imp:
+> 
+> [...]
 
---gkwlffv6qrxgj6ri
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Tue, Jul 09, 2024 at 08:50:35AM GMT, Krzysztof Kozlowski wrote:
-> On 08/07/2024 16:52, Maxime Ripard wrote:
-> > On Mon, Jul 08, 2024 at 04:04:21PM GMT, Krzysztof Kozlowski wrote:
-> >> On 08/07/2024 08:40, Liu Ying wrote:
-> >>>>> +
-> >>>>> +  "^framegen@[0-9a-f]+$":
-> >>>>> +    type: object
-> >>>>> +    additionalProperties: true
-> >>>>> +
-> >>>>> +    properties:
-> >>>>> +      compatible:
-> >>>>> +        const: fsl,imx8qxp-dc-framegen
-> >>>>> +
-> >>>>> +  "^gammacor@[0-9a-f]+$":
-> >>>>
-> >>>> This looks like you are organizing bindings per your driver architec=
-ture.
-> >>>
-> >>> As I mentioned in cover letter, this series addresses Maxime's
-> >>> comment for the previous series - split the display controller
-> >>> into multiple internal devices.  Maxime insisted on doing this.
-> >>
-> >> But these are not separate devices. Look:
-> >> 1. parent DC:
-> >> reg =3D <0x56180000 0x40000>;
-> >>
-> >> 2. child interrupt controller:
-> >> reg =3D <0x56180040 0x60>;
-> >>
-> >> That address is within parent.
-> >>
-> >> 3. Then we go to things like:
-> >> reg =3D <0x5618b400 0x14>, <0x5618b800 0x1c00>;
-> >>
-> >> Still within parent's range and just few words in address range. That's
-> >> a clear indication that you choose few registers and call it a "device=
-".
-> >=20
-> > That's never really been a metric though?
-> >=20
-> > If not, one could just create a "soc" device node covering the entire
-> > register map, and since it would overlap despite clearly defined
-> > features, you would claim it's a single device?
->=20
-> Since I do not create such one-address-soc devices, I claim I have
-> separate devices in the SoC. Here is not the case: there is a device
-> covering entire address space.
->=20
-> Soc is a good example, because components/blocks of the SoC are being
-> re-used among different SoCs. Is the case here?
->=20
-> BTW, it could be that some of the sub-devices here are worth to be
-> devices, I agree.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-This was the binding of the previous version:
-https://lore.kernel.org/dri-devel/20230822085949.816844-2-victor.liu@nxp.co=
-m/
+Thanks!
 
-To me, the duplication of interrupts, clocks and power domains with
-different indices kind of proves that it's all separate devices
+[1/3] dt-bindings: trivial-devices: fix Rohm BH2228FV compatible string
+      commit: 5170dae5591036dba7daa519ea3126169300e275
+[2/3] spi: spidev: add correct compatible for Rohm BH2228FV
+      commit: fc28d1c1fe3b3e2fbc50834c8f73dda72f6af9fc
 
-Maxime
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---gkwlffv6qrxgj6ri
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZpk6XAAKCRDj7w1vZxhR
-xYY5AQDq8KMOoRmdOKy1XHix4IqZooYahpg3GzvOtZ/WqsMsZwEA8vf7t6Uk7oIc
-BmI0C5iPkUa2dgea9uKW9CpOO3yBXAM=
-=8Z54
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---gkwlffv6qrxgj6ri--
+Thanks,
+Mark
+
