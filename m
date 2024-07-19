@@ -1,27 +1,27 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152861487C8
-	for <imx@lists.linux.dev>; Fri, 19 Jul 2024 06:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33096148851
+	for <imx@lists.linux.dev>; Fri, 19 Jul 2024 06:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721368887; cv=none; b=C/wBemZLxEy8atp1QHTEJBFZ4WWHYEPArAwwZvLYoMjzZScvYMsjqm1nO2/jlonejAFOD127ue0DLHzo9VLbugh26MH7sWTkpodAzf4nDrJKw9cunBLF31Zkn9KfakbCd4mUmhz1eiSc1RRwGWBurDlyhWtSVVhl2lzmWCi+H+U=
+	t=1721368890; cv=none; b=a34hSlaZ+ArltntzkleRy3GVTWzq6uI3cK96z0jne/6LCK+3xETOEjk3CMXhJ7nYGwv6RJVuB1UUgxyQX0CzGX7ISeqLJpDu6E8BbnwzokLiZ7MQPk6xyhsIKmAF5RJfYumLPuBd3CTIIvlrRGRJa56eql53QCOEhxKbB8m5btE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721368887; c=relaxed/simple;
-	bh=B8R0+soTkRLKX7M1hwzeNsFHB8sKJ5BpKxBTvbjHMGU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=M7QWFRMJ8voAoMdLWHLjjx68c6KiYXymBUQcazKIkPSZuePRKxV2FfUWYhUgFNGIRhUjNTDdjlbQFo/atP9J02J3kc8UEoE3LQz5FO5/e1DDqixf2OuE2b6T2062VuOZE2He61EEHpWd+UZb/J/9i7G1IuAZIuc7XuhCm1Qx7h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	s=arc-20240116; t=1721368890; c=relaxed/simple;
+	bh=pA6k4V9dwaoeIp5xyfNNE1f4Xu/kAiokzrri2F4N/yE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=CdqHsRDIXwlvNJTCECH48wAtvQM3oiLQPt3YA6nlPweAtt/vnTjfbo/3CfZfv3p+Y6aKgM5UzWsCLvGzzypxBLommPowav5A0EciF5tV434PXEhsp1bmZHTseOjnBja6qwbNiKRiQYS2ZiMioRlIWMHOkKJH4LONN5Fxxhw5kRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E73D5202753;
-	Fri, 19 Jul 2024 08:01:18 +0200 (CEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id E664C1A0264;
+	Fri, 19 Jul 2024 08:01:21 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B57662015F8;
-	Fri, 19 Jul 2024 08:01:18 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B41D41A01B8;
+	Fri, 19 Jul 2024 08:01:21 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BD1DA181D0FE;
-	Fri, 19 Jul 2024 14:01:16 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BF6571820F77;
+	Fri, 19 Jul 2024 14:01:19 +0800 (+08)
 From: Richard Zhu <hongxing.zhu@nxp.com>
 To: tj@kernel.org,
 	dlemoal@kernel.org,
@@ -40,9 +40,9 @@ Cc: linux-ide@vger.kernel.org,
 	imx@lists.linux.dev,
 	kernel@pengutronix.de,
 	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v4 3/6] ata: ahci_imx: AHB clock rate setting is not required on i.MX8QM AHCI SATA
-Date: Fri, 19 Jul 2024 13:42:13 +0800
-Message-Id: <1721367736-30156-4-git-send-email-hongxing.zhu@nxp.com>
+Subject: [PATCH v4 5/6] ata: ahci_imx: Enlarge RX water mark for i.MX8QM SATA
+Date: Fri, 19 Jul 2024 13:42:15 +0800
+Message-Id: <1721367736-30156-6-git-send-email-hongxing.zhu@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1721367736-30156-1-git-send-email-hongxing.zhu@nxp.com>
 References: <1721367736-30156-1-git-send-email-hongxing.zhu@nxp.com>
@@ -53,68 +53,52 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-i.MX8QM AHCI SATA doesn't need AHB clock rate to set the vendor
-specified TIMER1MS register.
-Do the AHB clock rate setting for i.MX53 and i.MX6Q AHCI SATA only.
+The RXWM(RxWaterMark) sets the minimum number of free location within
+the RX FIFO before the watermark is exceeded which in turn will cause
+the Transport Layer to instruct the Link Layer to transmit HOLDS to
+the transmitting end.
+
+Based on the default RXWM value 0x20, RX FIFO overflow might be
+observed on i.MX8QM MEK board, when some Gen3 SATA disks are used.
+
+The FIFO overflow will result in CRC error, internal error and protocol
+error, then the SATA link is not stable anymore.
+
+To fix this issue, enlarge RX water mark setting from 0x20 to 0x29.
 
 Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 ---
- drivers/ata/ahci_imx.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/ata/ahci_imx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-index 75258ed42d2ee..4dd98368f8562 100644
+index e94c0fdea2260..b6ad0fe5fbbcc 100644
 --- a/drivers/ata/ahci_imx.c
 +++ b/drivers/ata/ahci_imx.c
-@@ -872,12 +872,6 @@ static int imx_ahci_probe(struct platform_device *pdev)
- 		return PTR_ERR(imxpriv->sata_ref_clk);
- 	}
+@@ -45,6 +45,10 @@ enum {
+ 	/* Clock Reset Register */
+ 	IMX_CLOCK_RESET				= 0x7f3f,
+ 	IMX_CLOCK_RESET_RESET			= 1 << 0,
++	/* IMX8QM SATA specific control registers */
++	IMX8QM_SATA_AHCI_PTC			= 0xc8,
++	IMX8QM_SATA_AHCI_PTC_RXWM_MASK		= GENMASK(6, 0),
++	IMX8QM_SATA_AHCI_PTC_RXWM		= 0x29,
+ };
  
--	imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
--	if (IS_ERR(imxpriv->ahb_clk)) {
--		dev_err(dev, "can't get ahb clock.\n");
--		return PTR_ERR(imxpriv->ahb_clk);
--	}
--
- 	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
- 		u32 reg_value;
+ enum ahci_imx_type {
+@@ -466,6 +470,12 @@ static int imx8_sata_enable(struct ahci_host_priv *hpriv)
+ 	phy_power_off(imxpriv->cali_phy0);
+ 	phy_exit(imxpriv->cali_phy0);
  
-@@ -937,11 +931,8 @@ static int imx_ahci_probe(struct platform_device *pdev)
- 		goto disable_clk;
++	/* RxWaterMark setting */
++	val = readl(hpriv->mmio + IMX8QM_SATA_AHCI_PTC);
++	val &= ~IMX8QM_SATA_AHCI_PTC_RXWM_MASK;
++	val |= IMX8QM_SATA_AHCI_PTC_RXWM;
++	writel(val, hpriv->mmio + IMX8QM_SATA_AHCI_PTC);
++
+ 	return 0;
  
- 	/*
--	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL,
--	 * and IP vendor specific register IMX_TIMER1MS.
--	 * Configure CAP_SSS (support stagered spin up).
--	 * Implement the port0.
--	 * Get the ahb clock rate, and configure the TIMER1MS register.
-+	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL.
-+	 * Set CAP_SSS (support stagered spin up) and Implement the port0.
- 	 */
- 	reg_val = readl(hpriv->mmio + HOST_CAP);
- 	if (!(reg_val & HOST_CAP_SSS)) {
-@@ -954,8 +945,19 @@ static int imx_ahci_probe(struct platform_device *pdev)
- 		writel(reg_val, hpriv->mmio + HOST_PORTS_IMPL);
- 	}
- 
--	reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
--	writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
-+	if (imxpriv->type != AHCI_IMX8QM) {
-+		/*
-+		 * Get AHB clock rate and configure the vendor specified
-+		 * TIMER1MS register on i.MX53, i.MX6Q and i.MX6QP only.
-+		 */
-+		imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
-+		if (IS_ERR(imxpriv->ahb_clk)) {
-+			dev_err(dev, "Failed to get ahb clock\n");
-+			goto disable_sata;
-+		}
-+		reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
-+		writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
-+	}
- 
- 	ret = ahci_platform_init_host(pdev, hpriv, &ahci_imx_port_info,
- 				      &ahci_platform_sht);
+ err_sata_phy_exit:
 -- 
 2.37.1
 
