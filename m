@@ -1,280 +1,116 @@
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C8D41C6E
-	for <imx@lists.linux.dev>; Sat, 20 Jul 2024 10:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBEA1487D1;
+	Sat, 20 Jul 2024 18:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721470154; cv=none; b=nibRZ/Nsvo7LYvi+/94JSELNGiuPlOUR+a3wTAYMtKL4WahKNp0DyDfzfLAuN/L2wVA4sVJJmPklBrRBLaCk7HDGe+Q0QEcSfzxJ6tb2qpFeYyCQ9L7Dgd93sDE0ff1Gyazxi1zYM72yuzdOMnjqcnbCf3FZvd7kcwuhpp358Ig=
+	t=1721499975; cv=none; b=gCTslrEtaSiMX/48ZZKU/3ny6EcrQX6AqK37bs6aSXGmOxfMIvJU1BzdjxjREYntkOuxwsejPJHD9BZbwmwkRTJJ37u7TPquuCDBHuPNUorqSPjGOezu1jW6UiiS5b9SQ3aCYT4HdpbcDqUe8Y/CEEa1sRpCdl3cYSSsgYSpZj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721470154; c=relaxed/simple;
-	bh=qkzTRSoui91UTwraDoNj/kZN0RD7tb8SwvicWbh8QeQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EOvxP91GHD/aV0329jVqA6vm+6qoEZ/SFzoQI6FR5garIrUOqpXT20kuaWOXPizcI0LBk46tAxL0hXCz7ybzWjNbFkeHvMqbaYxACWsNyIk7HsumsmgiEnGhsXEYH+RVVq/3/nUrvKV1ZJJjbMKgzLCGP7e4LM/zGFhGlchtdKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WdlIkXzP; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721499975; c=relaxed/simple;
+	bh=Pr1vn1X/YIKUKHn+Ua9qAMVD/xKOpFnygy+niw1KA0Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iNWYjMdAG2y1SMcIMBqGhW1EQkogRoFo5IE07nywRyy70thnEfBpnJasxDHGKU/8PX/vg78b4zAfu0achi9kPErFBSqNTQk2LPa+qDexoYU31M+8xBKSQmD49aELNh031XmeaAiYtdRP6WsxzGvs3U84DejxYXNRf2uoCDXkbgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNnWUZO5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WdlIkXzP"
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-25d6dd59170so1388807fac.0
-        for <imx@lists.linux.dev>; Sat, 20 Jul 2024 03:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721470151; x=1722074951; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bW5+wJPul1XSgUhvOdeAPOioFRHQZTQPxe+x1R0qvME=;
-        b=WdlIkXzPzsGITfmT8CtVg3XYFlKxQ+wDBJSTrBbpg7viGgh0w7qnqW6D/26huSRAeY
-         wgAVbsIllEpa68c9wGMd3eCOEpOBSFJlWldXIIB0Xtim9x1r7GZQnHcw2jUN7zH0ciod
-         wPi4WP/b5/WUUe80RAnF18Alqh35Y9cGsjqoy3Q0bGLqYmuAa+GKglo1gASr22jSZTI0
-         urDA8BlOcRQbxGXyOl1GO/He6vb1OhfPAfz+CnF7HP62EKPpaORExLQGwMRg3y2T1xgj
-         pndTEdurAfXY2D1YJ2PWRBRuSftCisIlGYFgMJWyEDUYJxC/MeV7uHMxrw9JbMVG+FEV
-         XkbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721470151; x=1722074951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bW5+wJPul1XSgUhvOdeAPOioFRHQZTQPxe+x1R0qvME=;
-        b=g0pNFqi+jpFG6HriYB4tvGlC3xTnNqB9C3Ahb3f4c31g6p2tqaYzkumWrY89dfBv2r
-         ubtFlglbfDdsQNztzNjcOTFv3GPDXWXLz6FriULhthF/yNnsMf5vtNN0jv19tfYTBXdV
-         JR0EEnXi1Sgpxm1ztl0uhYW6AggPA/tuaFh40fI3uqWDR23HbxAUCQTJZQEUIclpY31O
-         /pZz2b0GZkHgBQVQHHINeGqVcQ6fL7CdJ0y79ePXE7JhaAJvKWv11/QeQh75qY68epyO
-         G/Eg8X5gbAaS/S45WnWpVO8tAfmYBE/bYQ4OymWLoKjM/aorqatkTlU+9HxsazzXDK44
-         zNuA==
-X-Forwarded-Encrypted: i=1; AJvYcCWYaudgka4zHll6SEvpJC+js/4dWnQNgbUyGMMEnmi0I46szUyRDBovKvzUQGqRVRYtFXMut/sJV9My4//biiG6EgF+
-X-Gm-Message-State: AOJu0YyZIUCtXXg4B3sNmaX7T4XahVyRD3HCCYHKDnYsQquwGsra7xaP
-	eWr6w8Zol+CWfk6Bz0dfgBTGOevqr7+eOXYd2yw6j/seE6Vdh+Ms
-X-Google-Smtp-Source: AGHT+IFm7DfKM8u1iF0Y/SvTZ2QTe3xVLLmUxTj2IgklWCPIwAENmQwjKKNDmaBLExgtf6EO0tBFPw==
-X-Received: by 2002:a05:6871:b12:b0:263:3b45:b7dd with SMTP id 586e51a60fabf-2638df809ffmr715555fac.1.1721470151335;
-        Sat, 20 Jul 2024 03:09:11 -0700 (PDT)
-Received: from localhost.localdomain ([115.240.194.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70cff491070sm2396724b3a.24.2024.07.20.03.09.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jul 2024 03:09:10 -0700 (PDT)
-From: Animesh Agarwal <animeshagarwal28@gmail.com>
-To: 
-Cc: Animesh Agarwal <animeshagarwal28@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to dtschema
-Date: Sat, 20 Jul 2024 15:38:40 +0530
-Message-ID: <20240720100848.203546-1-animeshagarwal28@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNnWUZO5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064D9C2BD10;
+	Sat, 20 Jul 2024 18:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721499974;
+	bh=Pr1vn1X/YIKUKHn+Ua9qAMVD/xKOpFnygy+niw1KA0Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tNnWUZO5bJk+fx80BkN/M4hPkz1Dr222fvuIiochEVGEyqxllVXMDGfvr51ykJNjH
+	 xdxPpqa8zy/ge+A+hNUBoZ+6NulDEgsAfExUWgmhmvnODWa0v/2liTHHJDtKNAHdIw
+	 dFpuaXtLfjkFZxdb3gXT6Qq8y4DvvWewSP4SGFQe8oSHMvYhKaGFpzQt02xm2+s+6V
+	 OHVGye5l140FZVSwkBYBEfh5X6WPmvJpwpVEykATeBmnXxJ33hj1TXR+4/RT63YuY/
+	 wIbWYtQZhSNknPzoqOZHJnwUWh0Ek7nDXXxu7EHYnUXs4BXUkNqUVy7cVgD+9Yd+/3
+	 hrsSVuoQAhRNg==
+Message-ID: <2599a8a5-1bbc-41a7-9842-57caec3a3815@kernel.org>
+Date: Sat, 20 Jul 2024 20:26:09 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/3] ARM: dts: nxp: correct DAC compatible on
+ Crystalfontz's CFA10049
+To: Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Conor Dooley <conor.dooley@microchip.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Maxime Ripard <mripard@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+References: <20240717-impotence-zippy-254b86593069@spud>
+ <20240717-ruse-cardinal-c30cf11bbf1e@spud>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240717-ruse-cardinal-c30cf11bbf1e@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Convert the Freescale i.MX audio complex with ES8328 codec bindings to
-DT schema format.
+On 17/07/2024 11:59, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
+> 
+> When Maxime originally added the BH2228FV to the kernel, he spelt it
+> incorrectly - the d should have been a b. Correct the compatible used in
+> the devicetree.
+> 
+> Fixes: db7a8946dc40 ("ARM: dts: cfa10049: Add the DH2228FV DAC to the DTS")
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
 
-Cc: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
----
- .../bindings/sound/fsl,imx-audio-es8328.yaml  | 111 ++++++++++++++++++
- .../bindings/sound/imx-audio-es8328.txt       |  60 ----------
- 2 files changed, 111 insertions(+), 60 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
- delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
-new file mode 100644
-index 000000000000..5a023c2d73f5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
-@@ -0,0 +1,111 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,imx-audio-es8328.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale i.MX audio complex with ES8328 codec
-+
-+maintainers:
-+  - Shawn Guo <shawnguo@kernel.org>
-+  - Sascha Hauer <s.hauer@pengutronix.de>
-+
-+allOf:
-+  - $ref: dai-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: fsl,imx-audio-es8328
-+
-+  model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: The user-visible name of this sound complex
-+
-+  ssi-controller:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of the i.MX SSI controller
-+
-+  jack-gpio:
-+    description: Optional GPIO for headphone jack
-+    maxItems: 1
-+
-+  audio-amp-supply:
-+    description: Power regulator for speaker amps
-+
-+  audio-codec:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle to the ES8328 audio codec
-+
-+  audio-routing:
-+    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-+    description: |
-+      A list of the connections between audio components. Each entry
-+      is a pair of strings, the first being the connection's sink, the second
-+      being the connection's source. Valid names could be power supplies,
-+      ES8328 pins, and the jacks on the board:
-+
-+      Power supplies:
-+        * audio-amp
-+
-+      ES8328 pins:
-+        * LOUT1
-+        * LOUT2
-+        * ROUT1
-+        * ROUT2
-+        * LINPUT1
-+        * LINPUT2
-+        * RINPUT1
-+        * RINPUT2
-+        * Mic PGA
-+
-+      Board connectors:
-+        * Headphone
-+        * Speaker
-+        * Mic Jack
-+
-+  mux-int-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: The internal port of the i.MX audio muxer (AUDMUX)
-+    enum: [1, 2, 7]
-+    default: 1
-+
-+  mux-ext-port:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: The external port of the i.MX audio muxer (AUDMIX)
-+    enum: [3, 4, 5, 6]
-+    default: 3
-+
-+required:
-+  - compatible
-+  - model
-+  - ssi-controller
-+  - jack-gpio
-+  - audio-amp-supply
-+  - audio-codec
-+  - audio-routing
-+  - mux-int-port
-+  - mux-ext-port
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    sound {
-+        compatible = "fsl,imx-audio-es8328";
-+        model = "imx-audio-es8328";
-+        ssi-controller = <&ssi1>;
-+        audio-codec = <&codec>;
-+        jack-gpio = <&gpio5 15 0>;
-+        audio-amp-supply = <&reg_audio_amp>;
-+        audio-routing =
-+            "Speaker", "LOUT2",
-+            "Speaker", "ROUT2",
-+            "Speaker", "audio-amp",
-+            "Headphone", "ROUT1",
-+            "Headphone", "LOUT1",
-+            "LINPUT1", "Mic Jack",
-+            "RINPUT1", "Mic Jack",
-+            "Mic Jack", "Mic Bias";
-+        mux-int-port = <1>;
-+        mux-ext-port = <3>;
-+    };
-diff --git a/Documentation/devicetree/bindings/sound/imx-audio-es8328.txt b/Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
-deleted file mode 100644
-index 07b68ab206fb..000000000000
---- a/Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
-+++ /dev/null
-@@ -1,60 +0,0 @@
--Freescale i.MX audio complex with ES8328 codec
--
--Required properties:
--- compatible       : "fsl,imx-audio-es8328"
--- model            : The user-visible name of this sound complex
--- ssi-controller   : The phandle of the i.MX SSI controller
--- jack-gpio        : Optional GPIO for headphone jack
--- audio-amp-supply : Power regulator for speaker amps
--- audio-codec      : The phandle of the ES8328 audio codec
--- audio-routing    : A list of the connections between audio components.
--                     Each entry is a pair of strings, the first being the
--		     connection's sink, the second being the connection's
--		     source. Valid names could be power supplies, ES8328
--		     pins, and the jacks on the board:
--
--			Power supplies:
--			   * audio-amp
--
--			ES8328 pins:
--			   * LOUT1
--			   * LOUT2
--			   * ROUT1
--			   * ROUT2
--			   * LINPUT1
--			   * LINPUT2
--			   * RINPUT1
--			   * RINPUT2
--			   * Mic PGA
--
--			Board connectors:
--			   * Headphone
--			   * Speaker
--			   * Mic Jack
--- mux-int-port     : The internal port of the i.MX audio muxer (AUDMUX)
--- mux-ext-port     : The external port of the i.MX audio muxer (AUDMIX)
--
--Note: The AUDMUX port numbering should start at 1, which is consistent with
--hardware manual.
--
--Example:
--
--sound {
--	compatible = "fsl,imx-audio-es8328";
--	model = "imx-audio-es8328";
--	ssi-controller = <&ssi1>;
--	audio-codec = <&codec>;
--	jack-gpio = <&gpio5 15 0>;
--	audio-amp-supply = <&reg_audio_amp>;
--	audio-routing =
--		"Speaker", "LOUT2",
--		"Speaker", "ROUT2",
--		"Speaker", "audio-amp",
--		"Headphone", "ROUT1",
--		"Headphone", "LOUT1",
--		"LINPUT1", "Mic Jack",
--		"RINPUT1", "Mic Jack",
--		"Mic Jack", "Mic Bias";
--	mux-int-port = <1>;
--	mux-ext-port = <3>;
--};
--- 
-2.45.2
+Best regards,
+Krzysztof
 
