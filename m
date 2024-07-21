@@ -1,183 +1,148 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393E48F70
-	for <imx@lists.linux.dev>; Sun, 21 Jul 2024 08:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1950C8C0;
+	Sun, 21 Jul 2024 09:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721550229; cv=none; b=YAXh9ll8GE+pp/xFPPzCiarCqPMhJ/QfZXtXInAvBuYmMoqQ8JBHGIgL0+20yHhM91AwF2MqJYGmTk/wVxlNOa4G2iPBcsIzDEhXd+S1RB7FEjV90+69RC/HgkHmYBaEWV55wFcat/Vczf3QYJrPiMrLOUQCV92OPnQ1b4f8vjI=
+	t=1721554405; cv=none; b=NdeprvsXtmy1yvTLYfBNTQAjxOPQGXI2XCc/esa0LITDEM1FIdrcHCrto4XJDHcsfMNY6RRDcWJvUXPDPBy9xMY1CGS/Eu3dkohQEzfNKEc0TMs+5/lutjxkj4zplJb/OTGYKhgddGMC0PHWTaOe8ZqlSs5TXXA8C28F8b7hyZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721550229; c=relaxed/simple;
-	bh=o+DJ6waEVY3RvqLvdv4FT/TEOumYoApMdITMhfQ0u5E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MXBYByoOBxCqzP+qsjBQIT7z14dp+ZYuLwp8uTprSpCwMYluZyAbD4Xb2cOovdhN5wR7vkoOhGczX0RUvQQVOsDZLmQNEUonv6nA4s19x4UOSnffyk4b/3CmNME2cYV2wAkxhXFe8fo/VIpZg3WZNuMS6GSJEVv/H8T/bNgAwjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F10YPYHf; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1721554405; c=relaxed/simple;
+	bh=XQSfekAujQd1rpQs5S4fac2LZfgmuPBgVx7Y+jzVKFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PVFQCRrvKFZMvn4Z5jKoI318XIQYYO9ruz+o1WaPojflgxqjSY3hDrCNyGiLV+jXSbzpMdO8ifEGr0cDBQAcAq50GllkPXGTGL5wRo5eo4mgTBY8+qi0ED4enSHaaJC4yZ3EwX4EXYrdXU0cXlcDrXoa1tCTQJJrWCYuCG1ff0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DG7SfLfK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F10YPYHf"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7035d5eec5aso1704464a34.1
-        for <imx@lists.linux.dev>; Sun, 21 Jul 2024 01:23:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721550225; x=1722155025; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=CZWtiPJtZ43++/gnJNwx4X2rQpR8wl/UQidt0ugSAnI=;
-        b=F10YPYHfQhfXS9xCAxSzqALY4xF823GN0i7u90MVcQfUAeE7r2Zrf23TTrJfd4VSyY
-         gHWSPCx9jNhZzK2FPBP5VS5/lyesnqr6PyxctOoa40kHPXK4MziILb/mrdlFkoheW8Hb
-         98bDYQWOWxqiy2ML9BP8eldmD3zO8tosFPtP/K0bZj6dEjU5jMhKLIgnaXN885u2whTD
-         ZZTcP5pvCli5mJc5p3NXYZFMv+Pesqvx7YoM5SbgtgUkQUmmxgMVbZSEQzhPYtIUmZY5
-         d20cyyc1RFRPL9K0Adc2/ReUV3juIYUiIIvHho46HPLzkZWWBnifURQSk3RbUIj9gTkj
-         hl0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721550225; x=1722155025;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CZWtiPJtZ43++/gnJNwx4X2rQpR8wl/UQidt0ugSAnI=;
-        b=mbeRYJSX8Zb97zpbdZ3Ky2YWOGyYz1qRcrjDxgZHb0daf75ZChFktKAr6k9+gl0cgv
-         0zEBNpwLKxirXiFr9UNjfQRseAlRMBTX66Z+coROjnKX5xkTjyigxpvKPlUORBmdOKpA
-         0dYzG9ofGBJOZM2rKSiQ5raUbLoHiNJUx9oQeZg2BhqV79/dmuSJvXYzsuSc8KlGmal+
-         tnCkNZPM0FK98tMFh29kyR5sQbDQxLJ+NVKGP7qYhYAnENGa96wOzI7r8s2c8vMWCYLb
-         mFDxUNh/jF4fhwE2hIscXSuQ8cGoFo1ZEySRxHQvdH1s/OG14fK8CmrQvogSXCv/yH2q
-         bMqg==
-X-Forwarded-Encrypted: i=1; AJvYcCWoJIrm4eBxkSUuSFOvW7XunUtlD3LK7xaGsDC+eGNteFAD/7/OeXvc6VNHBCWtg5y7IFwX0geKLEHbMewQ6mlegrBD
-X-Gm-Message-State: AOJu0YzjrnfcmyGTrJNSc4X2pn/qUxxmZntFOVcfN0CGhF9QaaOXuUvb
-	RBhGUY0EMxTd3Xyb7zTSxdw+9Uh3tAJvJTsaDI2XmBZ3Wr18V+lRR2ygSgjOAA==
-X-Google-Smtp-Source: AGHT+IFfjJ8Cc595RCoBIrmV7WXBKOr6HnF25bvKEhlw/SDpWj45/smT1TJlSOniO5oPcyQREg2Jnw==
-X-Received: by 2002:a05:6830:3986:b0:704:4808:1d7a with SMTP id 46e09a7af769-708fdb22d04mr6996262a34.13.1721550225266;
-        Sun, 21 Jul 2024 01:23:45 -0700 (PDT)
-Received: from thinkpad ([120.56.206.118])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70cff59e188sm3520618b3a.157.2024.07.21.01.23.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jul 2024 01:23:44 -0700 (PDT)
-Date: Sun, 21 Jul 2024 13:53:36 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 10/10] PCI: imx6: Add i.MX8Q PCIe root complex (RC)
- support
-Message-ID: <20240721082336.GG1908@thinkpad>
-References: <20240708-pci2_upstream-v7-0-ac00b8174f89@nxp.com>
- <20240708-pci2_upstream-v7-10-ac00b8174f89@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DG7SfLfK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DA9C116B1;
+	Sun, 21 Jul 2024 09:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721554405;
+	bh=XQSfekAujQd1rpQs5S4fac2LZfgmuPBgVx7Y+jzVKFk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DG7SfLfK1iw5uyuLBeMPX83K45hugRA0GDrxC4D1oQva4x2CDkJ3eLc9hARamTcKy
+	 B6w4k7TCz9OBm3AmaHWmuCupZ57QPN+d4vq5Gh5Dwwx/3shsrNSr0xkIYkIj3glAeW
+	 2xv00bCpYrDjSxEthy2CDY//aQcFhwJxJRRk5Sv4WYfB726U6Wj1YgT5eEV/pmeDAA
+	 /zE23KkNXBk6ysvYc59NQSAds+K9JrE9R0BqpxyW9sDuBNL0QwhaX33WNPfPZhAYpN
+	 eEJl33KDl5rRlt9CYiLqNDCLXKaTAChMoq8Xdkp7QusRcoxV928ZAa7USwZpLpTkOQ
+	 7LJOoqhvkXAmg==
+Message-ID: <ac09aec1-0c42-4f8a-b4cb-64eb67018d15@kernel.org>
+Date: Sun, 21 Jul 2024 11:33:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240708-pci2_upstream-v7-10-ac00b8174f89@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to
+ dtschema
+To: Animesh Agarwal <animeshagarwal28@gmail.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240720100848.203546-1-animeshagarwal28@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240720100848.203546-1-animeshagarwal28@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 08, 2024 at 01:08:14PM -0400, Frank Li wrote:
-> From: Richard Zhu <hongxing.zhu@nxp.com>
+On 20/07/2024 12:08, Animesh Agarwal wrote:
+> Convert the Freescale i.MX audio complex with ES8328 codec bindings to
+> DT schema format.
 > 
-> Implement i.MX8Q (i.MX8QM, i.MX8QXP, and i.MX8DXL) PCIe RC support. While
-> the controller resembles that of iMX8MP, the PHY differs significantly.
-> Notably, there's a distinction between PCI bus addresses and CPU addresses.
-> 
-> Introduce IMX_PCIE_FLAG_CPU_ADDR_FIXUP in drvdata::flags to indicate driver
-> need the cpu_addr_fixup() callback to facilitate CPU address to PCI bus
-> address conversion according to "ranges" property.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-One comment below.
-
+> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
+>  .../bindings/sound/fsl,imx-audio-es8328.yaml  | 111 ++++++++++++++++++
+>  .../bindings/sound/imx-audio-es8328.txt       |  60 ----------
+>  2 files changed, 111 insertions(+), 60 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index c72c7a0b0e02d..4e029d1c284e8 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -66,6 +66,7 @@ enum imx_pcie_variants {
->  	IMX8MQ,
->  	IMX8MM,
->  	IMX8MP,
-> +	IMX8Q,
->  	IMX95,
->  	IMX8MQ_EP,
->  	IMX8MM_EP,
-> @@ -81,6 +82,7 @@ enum imx_pcie_variants {
->  #define IMX_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
->  #define IMX_PCIE_FLAG_HAS_SERDES		BIT(6)
->  #define IMX_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
-> +#define IMX_PCIE_FLAG_CPU_ADDR_FIXUP		BIT(8)
->  
->  #define imx_check_flag(pci, val)     (pci->drvdata->flags & val)
->  
-> @@ -1015,6 +1017,22 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  		regulator_disable(imx_pcie->vpcie);
->  }
->  
-> +static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
-> +{
-> +	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
-> +	struct dw_pcie_rp *pp = &pcie->pp;
-> +	struct resource_entry *entry;
-> +	unsigned int offset;
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+> new file mode 100644
+> index 000000000000..5a023c2d73f5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+> @@ -0,0 +1,111 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/fsl,imx-audio-es8328.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
-> +		return cpu_addr;
+> +title: Freescale i.MX audio complex with ES8328 codec
 > +
-> +	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-> +	offset = entry->offset;
+> +maintainers:
+> +  - Shawn Guo <shawnguo@kernel.org>
+> +  - Sascha Hauer <s.hauer@pengutronix.de>
 > +
-> +	return (cpu_addr - offset);
-> +}
+> +allOf:
+> +  - $ref: dai-common.yaml#
+
+That's not a DAI but audio card / complex. Drop.
+
+Did you used dai-common in other conversions already?
+
+...
+
 > +
->  static const struct dw_pcie_host_ops imx_pcie_host_ops = {
->  	.init = imx_pcie_host_init,
->  	.deinit = imx_pcie_host_exit,
-> @@ -1023,6 +1041,7 @@ static const struct dw_pcie_host_ops imx_pcie_host_ops = {
->  static const struct dw_pcie_ops dw_pcie_ops = {
->  	.start_link = imx_pcie_start_link,
->  	.stop_link = imx_pcie_stop_link,
-> +	.cpu_addr_fixup = imx_pcie_cpu_addr_fixup,
->  };
->  
->  static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
-> @@ -1452,6 +1471,13 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		if (ret < 0)
->  			return ret;
->  
-> +		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_CPU_ADDR_FIXUP)) {
-> +			if (!resource_list_first_type(&pci->pp.bridge->windows, IORESOURCE_MEM)) {
-> +				dw_pcie_host_deinit(&pci->pp);
-> +				return dev_err_probe(dev, -ENODEV, "DTS Miss PCI memory range");
-> +			}
+> +unevaluatedProperties: false
 
-Is this check really necessary? Can the driver work if there is no MEM region
-defined in DT (irrespective of the flag)?
+additionalProperties instead
 
-I can understand your intentions, but this check seems pointless to me.
 
-- Mani
+Best regards,
+Krzysztof
 
--- 
-மணிவண்ணன் சதாசிவம்
