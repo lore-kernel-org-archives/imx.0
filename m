@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1427C15FD15;
-	Sun, 21 Jul 2024 13:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4104216132B;
+	Sun, 21 Jul 2024 13:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721568450; cv=none; b=KK16dDczcQq3lqHZrMkqr+41sUssxhsnfBdS1nJpThtZIbMUH/42luO1Ij3fJZs+fKO3dr/g7uDta8WnuVZx94/mpvtnDXP++uyxMqPcqFu9jqUDMXFlN2bFLfs1YXqbz0Ek5SBJEOYMRqsK9NwWMwIE0MIJTa1sbSPV2TwuPgk=
+	t=1721569028; cv=none; b=li43eO4MRZv5dEekfs5H4TJksTywPuCh0s5U3ttTjQzDF62TFBc5NQnQE3Ftz7QwiGQbtTSvwEBsmcHBVz+N/07r7PQhPSuLs6YUV6u3D9cZ0QY8MpCkyn6KUPKe3vP7dg4ourMkG7YHqJCW1Z6rL0YJXbPzlERbR2w6gJ0i6Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721568450; c=relaxed/simple;
-	bh=HezH/tvdxDCsu4MOD1Y/U6aKVxvjAus43G7k7Y1xgv8=;
+	s=arc-20240116; t=1721569028; c=relaxed/simple;
+	bh=WbM+yH7jBU/gy7hkBVSNdb8VjTuK9EahNaYjK7vso+w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ejrRfh4K/eNP53M0p7o2TCHGOSAPB4Q8mK8uYtqUh0hZOxKZ1GqC99TbXQ/KZLhCFXUlK3lqCy2A9Vrjl7navJLLH8Go1mFq4NwstIsh98XJgyh3NRjCmURfQRaDWMdPWV0sxK52BE86z3tcrvbknv2CH5jXIvk8QX9XdHw0QF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tkqc2lAj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=b7HmY4ZTs5uvXOIv87NrDiQ09Z8fCrp/k9ueKBIHeVmYaq4PL8ck1A+ipyQFjuVzw3FSsOI/6rxyaW3Aayf7GjQkhwbE4WBlo5TeQAoEtIGcB6h19lhZdGnta6QLO+nbFS2eFXJg4XKgVsjV7Md9Ms46NXqwIOEaWhlJXY5qex4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJwBmgNc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tkqc2lAj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A678C116B1;
-	Sun, 21 Jul 2024 13:27:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJwBmgNc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EA5C116B1;
+	Sun, 21 Jul 2024 13:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721568449;
-	bh=HezH/tvdxDCsu4MOD1Y/U6aKVxvjAus43G7k7Y1xgv8=;
+	s=k20201202; t=1721569027;
+	bh=WbM+yH7jBU/gy7hkBVSNdb8VjTuK9EahNaYjK7vso+w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tkqc2lAjHO7fUlGQipP4eUFzIAfT2xIeH7tzEPeELVn1WJh7CGuZKEvKfC4SLpiQg
-	 0c6zOZt7G6hMrN5odbaajIv6hhO80TfEaDcbwlPlcy0vLHkGvumkjSBKHmYQvQ1gsN
-	 luBNAQprwbh8Kq4WTFgOZTkwVDikdA40WNocw6vHrFhMt0i7PXrJ4gcWNroVSfnPFr
-	 h9G3M3jMVBegHKSsIgGLr6TIezH1lxXE+R1jwxNXjuYU/3S85zjV0GCYDung3EyhL6
-	 YejTkU34nEfYKmuEBVM9D6GleCIqnJGtjm6VHCuG4xGZ1B+FE1IfHEy8h2ShnX4ZeC
-	 /da28cFZXSc5Q==
-Message-ID: <a65a1668-beec-417f-a278-514ab3a61e7f@kernel.org>
-Date: Sun, 21 Jul 2024 15:27:22 +0200
+	b=mJwBmgNc8A+A6X6qseLbk5OI51mNkH8b4vO/LPh0ZNp/u199TIXoaCK8uzAi9oQdi
+	 qocDh5wciNtIRT+H2Mf2UZfS/8VDxnAKl3Uiwx1PP5arjZh9dS2ojDjylroZF0WU8o
+	 oTWCt/ddugRBsam4tpqCCCzZHZKzyFqtwYUfI52cpJxUzKplgP5+78KnDs6ps4WzOV
+	 h8nQpVx21VwkgxdpfTN/C2RyIp3B5o299JKptddSMBZwacbXHRPTtmq1EEMvuuEsTP
+	 RqadBfVxJWc5r0vi0nkIUd4e3vunDATbXtjYVJTDHI3dUklxp/DS9iNUbxjiYHFJ7L
+	 q8VnetqaUmlkg==
+Message-ID: <dee6e871-daa3-4886-be57-e4d4b3fa198d@kernel.org>
+Date: Sun, 21 Jul 2024 15:36:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,21 +35,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to
- dtschema
-To: Animesh Agarwal <animeshagarwal28@gmail.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Subject: Re: [PATCH v6 1/7] dt-bindings: firmware: add i.MX95 SCMI Extension
+ protocol
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Cristian Marussi <cristian.marussi@arm.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240720100848.203546-1-animeshagarwal28@gmail.com>
- <ac09aec1-0c42-4f8a-b4cb-64eb67018d15@kernel.org>
- <CAE3Oz81jhzAiwJXPiE4rQjD8TzBghugvA9sWV+Tb_kz9CdQyiQ@mail.gmail.com>
+ Fabio Estevam <festevam@gmail.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Peng Fan <peng.fan@nxp.com>, arm-scmi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-rtc@vger.kernel.org, linux-input@vger.kernel.org
+References: <20240718-imx95-bbm-misc-v2-v6-0-18f008e16e9d@nxp.com>
+ <20240718-imx95-bbm-misc-v2-v6-1-18f008e16e9d@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,18 +98,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <CAE3Oz81jhzAiwJXPiE4rQjD8TzBghugvA9sWV+Tb_kz9CdQyiQ@mail.gmail.com>
+In-Reply-To: <20240718-imx95-bbm-misc-v2-v6-1-18f008e16e9d@nxp.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 21/07/2024 13:40, Animesh Agarwal wrote:
-> On Sun, Jul 21, 2024 at 3:03 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> That's not a DAI but audio card / complex. Drop.
+On 18/07/2024 09:41, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> A reference to sound-card-common.yaml is required instead, if I'm not wrong?
+> Add i.MX SCMI Extension protocols bindings for:
+> - Battery Backed Module(BBM) Protocol
+>   This contains persistent storage (GPR), an RTC, and the ON/OFF button.
+>   The protocol can also provide access to similar functions implemented via
+>   external board components.
+> - MISC Protocol.
+>   This includes controls that are misc settings/actions that must be exposed
+>   from the SM to agents. They are device specific and are usually define to
+>   access bit fields in various mix block control modules, IOMUX_GPR, and
+>   other GPR/CSR owned by the SM.
+> 
+> Reviewed-by: "Rob Herring (Arm)" <robh@kernel.org>
 
-Most likely yes, assuming the properties there match properties here.
+Why quotes? Which tools did you use?
 
 Best regards,
 Krzysztof
