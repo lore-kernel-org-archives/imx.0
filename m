@@ -1,111 +1,284 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8CF18030
-	for <imx@lists.linux.dev>; Mon, 22 Jul 2024 06:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6BE23DE
+	for <imx@lists.linux.dev>; Mon, 22 Jul 2024 06:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721630059; cv=none; b=MUUgDbObgmi5TidoNU32ZfXLkHYmzBOrSxTccpOdn6/Pw7Xn4mWqtk6WGmCkny4aONqQMsIEVxIvpp/9UWsdmzvaE/rYiI9axsgQRfBV8hXfyY9l7W+b/RyrwjrVBZOoCziW6yycBDPFholFrntclBVkbcCS8GkPQ2L4cinKEGs=
+	t=1721630253; cv=none; b=F7nzsnodzGYkn9T4ogF+EkP6cwyV0Fuve/2itN5GhNhE5B+eCRpBxFAA6lmH1BBc+XrswXno8Yd5d60U/EPPdDHEzSNtxOgjb9OO7psbkn7x6CRjunD7pN5VBfR1aUcDCjaJFY0LWT8vcSTwhjrCOLAlrT7Xd3bqFrYPRBYFF8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721630059; c=relaxed/simple;
-	bh=xRJH4YLDXNzYsFzPjS7ocicNqmtabVQEM0ATruD2Xss=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=iIR3YLs71Yg2xz4KkhDJvbWJMY6UJK5Rjd1dggDCdlsBDwlLJurnG2ORzWPuDwqwPhD21pXyLL8SykTFF7jNWD1dIEEg/sUfrIGXoWgkyMcnniFhZQCvely5kQ57dQl1FaJcg6KCrGQLP8B7lxuKfnBpmzt4Q4ujGtSHE8LqjTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 456F5200DE2;
-	Mon, 22 Jul 2024 08:34:10 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0AD1C200DE1;
-	Mon, 22 Jul 2024 08:34:10 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 748521802183;
-	Mon, 22 Jul 2024 14:34:08 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: kwilczynski@kernel.org,
-	bhelgaas@google.com,
-	lorenzo.pieralisi@arm.com,
-	frank.li@nxp.com,
-	mani@kernel.org
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
+	s=arc-20240116; t=1721630253; c=relaxed/simple;
+	bh=tCiUOPC+LHGq7yVm6U1jnO+V/S+Vj3cMrsyAv3mqaN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dSLStj7vajmczz8Cz05V+3STvAGWbRB1qiUA1GXG+srz1jYKl3vN+lTEjQ2FGrNlHNc3mdtHjnnP397OaMJTLIkJP0xNXQ2iM05w/eXvkXNAf26gfgVUOGxdKovLDM3BwVWOCt7vMgQa+fxg0uDrpNMRDVKdDvP3a/hZSng9mxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IIspm1kI; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IIspm1kI"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70d2b921cd1so389678b3a.1
+        for <imx@lists.linux.dev>; Sun, 21 Jul 2024 23:37:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721630251; x=1722235051; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H3OdDRR0s7gFlYGOFG3KlnC5bWBGEwt6D2ZCwoIo8Ls=;
+        b=IIspm1kIP4HHH5GM9vVqnVtVfV7hh3qVdAW5U3g/d67bW6Wq+vei/ZjY6cT+EP4WSO
+         25EFVb0yoJiKjVValTHLqv/scTX6dIYRhLR/rNkPdvMQ8NOFHyT6+WrNl9hl56v6YXEh
+         SENI+kGJPeTA1F8shelGiG1Fx24Rhv1wbM1O0M8NR9twCHlYIIVVWG8jIuJApYh51IS+
+         u/RNqFGWqi5H2282DV53GwvILcxPE1DiIGc0qqRvb+uYQQzPdoXr9qd7vL8NB6XZlgpp
+         sclpIHOsIFEaHGd8LYv8xyssJwykXgTzfV/1VlXbF4VihhQjHELvZjlRmnNQu52ywFAz
+         1qFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721630251; x=1722235051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H3OdDRR0s7gFlYGOFG3KlnC5bWBGEwt6D2ZCwoIo8Ls=;
+        b=wX+iLkeo1ucqEPdOjorj4VJUcDh9Bv4Ip21v0jyL/lTy7mukRLgC0GrLcRGDFOFFfs
+         zrkAr182QgqQHC+NHPOAmsWx2RDU0KwC1EfxycCV7DYJm78W+2RhqHjL7CZtmscBoouF
+         0JfHymBzgs93ToowItzCqcF6CkNAnhT3edSWgFqm4HTfs6D+y0+JCDzZevUWw/gga0fS
+         uJbrsb48s04NNWCrjJvCILqX0cJUyhhPvEOXlSnd/3fj44xGW7uLhAbvlJnvNtvG/Zvx
+         5xDh5SBNY8zz8phbBBfEPSbarRiaAOvH7AriLc6EV93ac/b12YerDrPt7RGC0Ro/bWwp
+         B1sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvMb/Nu2yS7K/wzy6NlQeToHd0raK9is8GKf2lqSf7GKcqXxzoWVG3t5e7wVWwViFnq31SmYwRcMSf+rhoteZHVx9Z
+X-Gm-Message-State: AOJu0YxKkIGEGc8MlmvAHqBVrwWnhW5eJPsTfvH16VqiOThqGyzmnLBf
+	4hxK0X4bkgiwwUxx2vjHJJVOHG9j+cpSZhVUIyDq8QNCO7fjj3cT
+X-Google-Smtp-Source: AGHT+IFXYNzbTnKGTt9iEE6dtvm0saWHOBj8QQ6eRdU15WdgpiZx+d+Tjpig6aIZgQzB7p/YCNmoAA==
+X-Received: by 2002:a05:6a21:3117:b0:1c3:b16f:31 with SMTP id adf61e73a8af0-1c4228c37f0mr8833544637.30.1721630251167;
+        Sun, 21 Jul 2024 23:37:31 -0700 (PDT)
+Received: from localhost.localdomain ([115.240.194.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fd6f485bbbsm46499085ad.277.2024.07.21.23.37.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Jul 2024 23:37:30 -0700 (PDT)
+From: Animesh Agarwal <animeshagarwal28@gmail.com>
+To: 
+Cc: Animesh Agarwal <animeshagarwal28@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v2] PCI: dwc: Fix resume failure if no EP is connected at some platforms
-Date: Mon, 22 Jul 2024 14:15:13 +0800
-Message-Id: <1721628913-1449-1-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to dtschema
+Date: Mon, 22 Jul 2024 12:06:51 +0530
+Message-ID: <20240722063657.23018-1-animeshagarwal28@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The dw_pcie_suspend_noirq() function currently returns success directly
-if no endpoint (EP) device is connected. However, on some platforms, power
-loss occurs during suspend, causing dw_resume() to do nothing in this case.
-This results in a system halt because the DWC controller is not initialized
-after power-on during resume.
+Convert the Freescale i.MX audio complex with ES8328 codec bindings to
+DT schema format.
 
-Change call to deinit() in suspend and init() at resume regardless of
-whether there are EP device connections or not. It is not harmful to
-perform deinit() and init() again for the no power-off case, and it keeps
-the code simple and consistent in logic.
+Cc: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
 
-Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../pci/controller/dwc/pcie-designware-host.c | 30 +++++++++----------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+Changes in v2:
+  - Changed top level ref to sound-card-common.yaml
+---
+ .../bindings/sound/fsl,imx-audio-es8328.yaml  | 111 ++++++++++++++++++
+ .../bindings/sound/imx-audio-es8328.txt       |  60 ----------
+ 2 files changed, 111 insertions(+), 60 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+ delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index a0822d5371bc5..cb8c3c2bcc790 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -933,23 +933,23 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
- 	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
- 		return 0;
- 
--	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_ACT)
--		return 0;
+diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+new file mode 100644
+index 000000000000..5eb6f5812cf2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+@@ -0,0 +1,111 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/fsl,imx-audio-es8328.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale i.MX audio complex with ES8328 codec
++
++maintainers:
++  - Shawn Guo <shawnguo@kernel.org>
++  - Sascha Hauer <s.hauer@pengutronix.de>
++
++allOf:
++  - $ref: sound-card-common.yaml#
++
++properties:
++  compatible:
++    const: fsl,imx-audio-es8328
++
++  model:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: The user-visible name of this sound complex
++
++  ssi-controller:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: The phandle of the i.MX SSI controller
++
++  jack-gpio:
++    description: Optional GPIO for headphone jack
++    maxItems: 1
++
++  audio-amp-supply:
++    description: Power regulator for speaker amps
++
++  audio-codec:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: The phandle to the ES8328 audio codec
++
++  audio-routing:
++    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
++    description: |
++      A list of the connections between audio components. Each entry
++      is a pair of strings, the first being the connection's sink, the second
++      being the connection's source. Valid names could be power supplies,
++      ES8328 pins, and the jacks on the board:
++
++      Power supplies:
++        * audio-amp
++
++      ES8328 pins:
++        * LOUT1
++        * LOUT2
++        * ROUT1
++        * ROUT2
++        * LINPUT1
++        * LINPUT2
++        * RINPUT1
++        * RINPUT2
++        * Mic PGA
++
++      Board connectors:
++        * Headphone
++        * Speaker
++        * Mic Jack
++
++  mux-int-port:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: The internal port of the i.MX audio muxer (AUDMUX)
++    enum: [1, 2, 7]
++    default: 1
++
++  mux-ext-port:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: The external port of the i.MX audio muxer (AUDMIX)
++    enum: [3, 4, 5, 6]
++    default: 3
++
++required:
++  - compatible
++  - model
++  - ssi-controller
++  - jack-gpio
++  - audio-amp-supply
++  - audio-codec
++  - audio-routing
++  - mux-int-port
++  - mux-ext-port
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    sound {
++        compatible = "fsl,imx-audio-es8328";
++        model = "imx-audio-es8328";
++        ssi-controller = <&ssi1>;
++        audio-codec = <&codec>;
++        jack-gpio = <&gpio5 15 0>;
++        audio-amp-supply = <&reg_audio_amp>;
++        audio-routing =
++            "Speaker", "LOUT2",
++            "Speaker", "ROUT2",
++            "Speaker", "audio-amp",
++            "Headphone", "ROUT1",
++            "Headphone", "LOUT1",
++            "LINPUT1", "Mic Jack",
++            "RINPUT1", "Mic Jack",
++            "Mic Jack", "Mic Bias";
++        mux-int-port = <1>;
++        mux-ext-port = <3>;
++    };
+diff --git a/Documentation/devicetree/bindings/sound/imx-audio-es8328.txt b/Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
+deleted file mode 100644
+index 07b68ab206fb..000000000000
+--- a/Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
++++ /dev/null
+@@ -1,60 +0,0 @@
+-Freescale i.MX audio complex with ES8328 codec
 -
--	if (pci->pp.ops->pme_turn_off)
--		pci->pp.ops->pme_turn_off(&pci->pp);
--	else
--		ret = dw_pcie_pme_turn_off(pci);
-+	if (dw_pcie_get_ltssm(pci) > DW_PCIE_LTSSM_DETECT_ACT) {
-+		/* Only send out PME_TURN_OFF when PCIE link is up */
-+		if (pci->pp.ops->pme_turn_off)
-+			pci->pp.ops->pme_turn_off(&pci->pp);
-+		else
-+			ret = dw_pcie_pme_turn_off(pci);
- 
--	if (ret)
--		return ret;
-+		if (ret)
-+			return ret;
- 
--	ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
--				PCIE_PME_TO_L2_TIMEOUT_US/10,
--				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
--	if (ret) {
--		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
--		return ret;
-+		ret = read_poll_timeout(dw_pcie_get_ltssm, val, val == DW_PCIE_LTSSM_L2_IDLE,
-+					PCIE_PME_TO_L2_TIMEOUT_US/10,
-+					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-+		if (ret) {
-+			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-+			return ret;
-+		}
- 	}
- 
- 	if (pci->pp.ops->deinit)
+-Required properties:
+-- compatible       : "fsl,imx-audio-es8328"
+-- model            : The user-visible name of this sound complex
+-- ssi-controller   : The phandle of the i.MX SSI controller
+-- jack-gpio        : Optional GPIO for headphone jack
+-- audio-amp-supply : Power regulator for speaker amps
+-- audio-codec      : The phandle of the ES8328 audio codec
+-- audio-routing    : A list of the connections between audio components.
+-                     Each entry is a pair of strings, the first being the
+-		     connection's sink, the second being the connection's
+-		     source. Valid names could be power supplies, ES8328
+-		     pins, and the jacks on the board:
+-
+-			Power supplies:
+-			   * audio-amp
+-
+-			ES8328 pins:
+-			   * LOUT1
+-			   * LOUT2
+-			   * ROUT1
+-			   * ROUT2
+-			   * LINPUT1
+-			   * LINPUT2
+-			   * RINPUT1
+-			   * RINPUT2
+-			   * Mic PGA
+-
+-			Board connectors:
+-			   * Headphone
+-			   * Speaker
+-			   * Mic Jack
+-- mux-int-port     : The internal port of the i.MX audio muxer (AUDMUX)
+-- mux-ext-port     : The external port of the i.MX audio muxer (AUDMIX)
+-
+-Note: The AUDMUX port numbering should start at 1, which is consistent with
+-hardware manual.
+-
+-Example:
+-
+-sound {
+-	compatible = "fsl,imx-audio-es8328";
+-	model = "imx-audio-es8328";
+-	ssi-controller = <&ssi1>;
+-	audio-codec = <&codec>;
+-	jack-gpio = <&gpio5 15 0>;
+-	audio-amp-supply = <&reg_audio_amp>;
+-	audio-routing =
+-		"Speaker", "LOUT2",
+-		"Speaker", "ROUT2",
+-		"Speaker", "audio-amp",
+-		"Headphone", "ROUT1",
+-		"Headphone", "LOUT1",
+-		"LINPUT1", "Mic Jack",
+-		"RINPUT1", "Mic Jack",
+-		"Mic Jack", "Mic Bias";
+-	mux-int-port = <1>;
+-	mux-ext-port = <3>;
+-};
 -- 
-2.37.1
+2.45.2
 
