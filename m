@@ -1,76 +1,69 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013056.outbound.protection.outlook.com [52.101.67.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915AA17597
-	for <imx@lists.linux.dev>; Mon, 22 Jul 2024 11:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E77E16D9AE
+	for <imx@lists.linux.dev>; Mon, 22 Jul 2024 15:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721648285; cv=fail; b=NLNj4AKowdk+LbyGPYsXzs3emrRhfafV3h87JHeUQB0/T2EKgexxBeP7E3dkZUUPqAaQZ+JF5tRRBcqClicB6RPjEVI1+DJ8iCu2R+n0iDapNVy88WwHkjzkPydnIb5+dFOd28KgtXrb2KtzJW8q7t9ZtGH3a/jib7lvV/BTtAY=
+	t=1721660558; cv=fail; b=Q5G4RZBNEailuwWjYqVfEONJHdmyO6PnN/Rnv9F1qLrfCFzlwZs8+BxPcDBNSaMXN/FR8p+zZ1gwpOcb/ne6SieJdVoV7IdTqiG0mwYbGGd5AqhI8mheYqP/i+YTd/Mof51LO4DAdfZA5F98+raUYqFr7BJ8bkang3C68dfP79I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721648285; c=relaxed/simple;
-	bh=HqkJCc79eAyPaDHbfc1LRdZMbUcxKxh1d+PIoi09f1g=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=HM7QVHhE6/zFnYdeotn+ta1kpmbJhuraTpMgNhsYZ6rFLXr4B8hyv/l94hOJK9+5Xf4fbG7Fbf62EHplDqjOvqQfQgeNEu7dGQ5TdF30i0/ILtMNikQjhTeycSjjDQnB+eUs1CgF5SmKrN5tIaJWvz1O6FiOkpH2aDLa8U8CBcM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=W0CanuZc; arc=fail smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1721660558; c=relaxed/simple;
+	bh=q+kyLXQ/6sIGPvHnDtEeVOLZgLTrZnQiZ5a79WvFI5I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iS8mD/rJT4KldAGJqBmgLRkWJhcS4iI+psVLvxN4JDEMG1aEA/W76YJGAeB7RtySTge7O5UEmSJASFAJxDMYYOTZtb8zcsoDwbXuBx9ObOzjY9DujJ/ml6urKMVIHlJl+PHvn54f/Zv5NZQZVaI/JJazJ3i/FvJpuouiTMn1mpk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=IDUFbk7p; arc=fail smtp.client-ip=52.101.67.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="W0CanuZc"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46M8G3C9003625;
-	Mon, 22 Jul 2024 04:37:43 -0700
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2046.outbound.protection.outlook.com [104.47.66.46])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 40hkrwgj2b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jul 2024 04:37:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="IDUFbk7p"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LUzAEnRw8S/30Ysuf8TSGV6JC12pXwVH35yEITiL1EVz3jtzjo9YT3HV5Hu+1oYedPlVwqrQTLh5VLVfihEykqdD60mRK1Nh3XHzH2DZcoTs/EcbQzCrfKP0CtXsgHudwGLYBynyuI1UuPkbPQjbdXFsfvggV2FSmiqDeWt9vWZ2ob4keFH/vIQorSsJqKRReLqod5e7TRj6cSrLqEw/pG5fcu6447FFuoQAxnT+YKQSjfX3fukfnj/JLAThBASyzOec/DU5KhzfmbyYy+vqy1Ym/h8ZwMIMh5e+QCe1qJfHO4bY7fH5SifDpp+FTsftgDkIZ1URW/nznxCdtz82qA==
+ b=okJN+VciGSTjWZu0YTCSe6uvzHmw9N9rsj3IfTrYhAUnivbxNB+NOUegFQMqnQ55n6CJENwDq5oWiYWM07mifUbjzmlwO5jtIj5A+XbbS5ONQhGLbbT2NZp5dDOFOwUeuW4lkONOpRqcCXBe+KOvzEv7BLEQ5r2OI0mKUJ+eK9Jri3wIqdUulNVmL73R0XzdjSKWXOYCqpRss66N+Y17SL95ILQs06zGdjVQnnD44wzJN85tToujo4oNaJOoqaPdC4UpMmsXp3t+XZdjqWrSS5hwfiRZgajyH71tugGhODWjLG9S4W53TEJqDqN+BPQ1/A6Vp8V1P0F8KfU5hQ2VBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gOgN5KCzN0lrzVR5u4+p4JNWr8F2SMKYHNeEnJtpgOs=;
- b=UtZYEMespIovjsgK1DCVbur8k1kfGzzx3Iv39F8A8rep/G/xJtnoj/g6Z6ZwKgA6Ti4AzHuTRgbvSa+9RbRlcNAbJY8O0lX2uDWf26A9zTNW77duJUvTll2sfbKBFSQxwQwRW0rN34fw0hhoOBno0SKEC/LfJKx0p4CqlvohelSg1OrOD1eWJ21HRM5p7O6yFu/o2UfvwjNYXs0iNrdryKNb85LozU52WGrgG3pjMYwXTVTYo2hJoxIDo4fKb1ovhfd7UU5OVkc6Sb8H+Zta0wtQtxfUkHmFt9Au2POESy3Oo2tjjkSGB4iBKmuXcVoXfAvkZJEvv8ZeiuNf3YgfUQ==
+ bh=XfZaXoYXRx1ao+yBvRghDdC13sAxlW3E5uQKMBXKZPI=;
+ b=yT/fftTLc8PV1tyCwf+1mpnfPd09nL6Ef4JwcQ+W5JSTEqSf+sPXCyqcdGuUFgBEnRQld0KMJOjGaAuyj6px1+epHHy8Nu4bbcdelGurzmi21gtqMRw0MAvN8R/eGxSCxmut28L9nLzV+qxwdBFtXiCx8k0Z5cJ5K5R5FZ+YMaERkPS5BJ6QLDuDwodDQFYIGfjgcyO+W0DHGOYUfZImZI1HWkK7u3vqr9wQFxRgk6/fMtk1TuqAU1uhZ7zVb3RBMmHXOQqH4BqlP4mD623T2Mdz0poUPYw/E7U28iokp0FqCcMEj+j91c8Qt/yh7knp9axh3Y4mYm8LAgUQavDqMQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gOgN5KCzN0lrzVR5u4+p4JNWr8F2SMKYHNeEnJtpgOs=;
- b=W0CanuZchpc2xP93Sa96uL1fj3E1vcKrzkqjpsXqVjHOCkcZgpAxi6sI/yq5XcCXTJaoq8T/kSI9NrcjsZb1S5gL4r/TyHnoify23FDvY1Fn1oKq/az/qCvQqCK0HM7josmp0hSrkKQ9wbCcwaUxrhYckgrS/mJ4DOFhf66bUVk=
-Received: from MW4PR18MB5084.namprd18.prod.outlook.com (2603:10b6:303:1a7::8)
- by SN7PR18MB5316.namprd18.prod.outlook.com (2603:10b6:806:2dd::17) with
+ bh=XfZaXoYXRx1ao+yBvRghDdC13sAxlW3E5uQKMBXKZPI=;
+ b=IDUFbk7pcO6HcScp+15JFPfOFT0YhRIP+bTBAjRNuPnDEvMk06h2dNCCdF7eyM9T2EkhCxPM1eO3dUwaBQbsGivYmZrQnFt+FGfKF6kqauRcQJvE4u3J+GNYXcReJDS4qbV34KLyw+EvSbFwOCq5+d4CE/rk49vCOnP9FGBf8Rg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS5PR04MB9771.eurprd04.prod.outlook.com (2603:10a6:20b:650::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.28; Mon, 22 Jul
- 2024 11:37:40 +0000
-Received: from MW4PR18MB5084.namprd18.prod.outlook.com
- ([fe80::1fe2:3c84:eebf:a905]) by MW4PR18MB5084.namprd18.prod.outlook.com
- ([fe80::1fe2:3c84:eebf:a905%6]) with mapi id 15.20.7784.016; Mon, 22 Jul 2024
- 11:37:40 +0000
-Message-ID: <35f28f0b-1014-4058-a073-96464a278a0a@marvell.com>
-Date: Mon, 22 Jul 2024 17:07:31 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] [PATCH v6 5/5] firmware: imx: adds miscdev
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Rob Herring <robh+dt@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org
-References: <20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com>
- <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
-Content-Language: en-US
-From: Amit Singh Tomar <amitsinght@marvell.com>
-In-Reply-To: <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0P287CA0010.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::15) To MW4PR18MB5084.namprd18.prod.outlook.com
- (2603:10b6:303:1a7::8)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.20; Mon, 22 Jul
+ 2024 15:02:31 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7784.017; Mon, 22 Jul 2024
+ 15:02:31 +0000
+Date: Mon, 22 Jul 2024 11:02:24 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+	"conor.culhane@silvaco.com" <conor.culhane@silvaco.com>,
+	"alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v2] i3c: master: svc: adjust the first broadcast speed
+Message-ID: <Zp50gJvEN0NOsPpm@lizhi-Precision-Tower-5810>
+References: <20240719080351.842848-1-carlos.song@nxp.com>
+ <Zpp/uv0yeEhld6We@lizhi-Precision-Tower-5810>
+ <VI1PR04MB50058C9E30C4A357E43CB34FE8AD2@VI1PR04MB5005.eurprd04.prod.outlook.com>
+ <Zpqvs+ok7UQtlYkZ@lizhi-Precision-Tower-5810>
+ <VI1PR04MB5005A8FA5CF72161C7654DB3E8AE2@VI1PR04MB5005.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VI1PR04MB5005A8FA5CF72161C7654DB3E8AE2@VI1PR04MB5005.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: SA9PR03CA0004.namprd03.prod.outlook.com
+ (2603:10b6:806:20::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,376 +71,355 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR18MB5084:EE_|SN7PR18MB5316:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9c7809d-5f7c-45a8-1239-08dcaa42b143
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9771:EE_
+X-MS-Office365-Filtering-Correlation-Id: 891776b9-8e7f-4e85-4e14-08dcaa5f4f9c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|921020;
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cndlcDA1Qm9zK3pnKzFFU0xMME9yUmtyZ3FaSVRiQ2JoVG9WUDg0YWFreFBi?=
- =?utf-8?B?d1l4UXduK01ndXVKSXpxUk1JSGF1RmFlazRaUVBlaE5KelA0ZWc4V0VqZURu?=
- =?utf-8?B?MHI5ZzJUYTVGbWtEYlBZbG5GZkFGSjVtOTNVdzQrYXRwVTZVcFdPV0QrR01M?=
- =?utf-8?B?WVd5bHJQV28wSGNiaDVKU0wzZTFuOFdiTWR3VEJsSDBiMVR6TmxtR3pDVVV5?=
- =?utf-8?B?ckRFVzVrbWk1bEpGeWVaUmU1dDNmMmwzTFdaSDVMVGx5WlQ2b1lmWWo1TFBC?=
- =?utf-8?B?Sk5qZXBiaUMrQm5WVDVYUFZjWUJCeDdCUjkremtqUE9zbVduRlZXT0hQRXFB?=
- =?utf-8?B?MTZaQy8rVkQzQm1BVFR6VklaSGIwNVpHNllZMG1TU1lmWlVBa1pQNmtKVWMw?=
- =?utf-8?B?cFFFVkdRUjVUYldrZ0s1N0RIcC9GdTVabXpJTFFkLzhTQ1AyemRoMjhwM0xu?=
- =?utf-8?B?dFVmS3BHbVJBMXZxQm0vZDF2MmRYdlRQaytlK0pWTDIwR3k2OWZiQjZWZk1P?=
- =?utf-8?B?elJ5UWpCVHF6eHNXTUs1ekRMMnF3VHBlQ1pLNWZHMng2TE1kdnVkaldmVDZ1?=
- =?utf-8?B?bkNFajdwVE8wNHhSSEQxWE9yNVo4SjZnS2VPTVZjeHhOdGhVR254cTJLeXdu?=
- =?utf-8?B?MmdtM1JCZC9FUW5rVks4K0h0MW81WWNIVFZIeU5VWmpBeGVwNzFIaVo0SFRi?=
- =?utf-8?B?ZDhvUWNzd3ptYS9ETXdyU2VyY21qVXhwNVp6TmxvM3ZobHN6cFlZMEYyZTZU?=
- =?utf-8?B?T0pOVGhFZHhFanNrNGpMa0M2MHJKY2kvYTR1K0x4RFI1ZC84ZDFnWUhGWXRs?=
- =?utf-8?B?eUZEK0dhWThtc2QvZ0w5NkxlbTVDK0huQmc3M2xKalJ4TjY3U1dNY2FRQ2RV?=
- =?utf-8?B?OVlZOVpWTHV2U1BMeEtVdHpxaEpyektGbHJVY0wvd2MxSTFGY2ZTY2FvUzlI?=
- =?utf-8?B?QWdGV3AwSEhua2hKV2JwWlhRMC9uZmVmTGQ1d2czNW1HUVNwUHlZNUVRWkNB?=
- =?utf-8?B?V2E5d3I2L3BRdVdQc2J0K3pvSnFYMVl5YUs2VEtneEpqSHUzMkloMDFocjBp?=
- =?utf-8?B?WGgvY2ppdTJRMFlYVkRwNmtpTzZjTC92bnFyQXBhZ1hNN01QUXE2cEZqQXJZ?=
- =?utf-8?B?WFNvVnBFTHFCREwrSEQyZlU1QWxjaVVwUm4weHNHMG1tcmJYbktMWVdIZjky?=
- =?utf-8?B?MUozTnh4ekp1QzdkVStwcnoyNWxRYW9FcXFjTTRPQkJHUERId3VsY0xydXRh?=
- =?utf-8?B?eHB6ZXRLYzJ2cmZ3U0FXU3FRSXRKcnA4MHd6dXJVQ2NpeW56aTBkNFFETkJz?=
- =?utf-8?B?aHphZGNuYjI5b2Z2MTBjR1NrQkVSYjdFUnRiMm9ZMjdTZC9iUW1rR2tpd1Nt?=
- =?utf-8?B?bDQ1RXFNRXVKazk2MExzLzJGeE5meU5rNm9wYnJad2NJR3ZmWGxOZzVpeXlK?=
- =?utf-8?B?cjdicTJISFNIcDB4ZzNMTWJIWU5RSkhiQlBRZUIvMlcxOW9rckJBUE0wcytR?=
- =?utf-8?B?Z2hXQzMvR3gyY1Vzd0ZnODcvdEhoMmxTM2xsTnkzcURIQm9VemJtQ2RlYTJs?=
- =?utf-8?B?bmFaaGNnMWxERjRsL3R5RzRnaXY2bmE1ZGNPQXJZZ1VwTVNwYk9xZ1FTUWFw?=
- =?utf-8?B?VVJ4Q0ZpZjFhWllFbFlBMTRIbTdrQ0RpNkFzb0o1UENZZVRBd09SWDk0S2JY?=
- =?utf-8?B?aVl6NEh1amN6OWJFdVVpNW1PeFRVbUtDTDFsSVp6UG41THVqV3hVMHpoU2Uz?=
- =?utf-8?B?Wm5YZVlXSDlkeTkwcGl5V3VkVm1sSUd3clVwNGx1cmlmNWVHSE5CVUVlM2Vu?=
- =?utf-8?Q?nGgvzDNoc1qDmgYQJGVR1+04eaoaKmjZ2UeZI=3D?=
+	=?us-ascii?Q?hbnxeyi2Tcr7ZEuHM5Wha41HnJqXb5JCf00mapAe8iXfMxyaLh5h7FGikuE2?=
+ =?us-ascii?Q?ABMb70zEKbIoc2XuVwrD2gRSPu+cG8zoEBcwG+pGDFP05RPoK35ohjr6+PrN?=
+ =?us-ascii?Q?wH5Nqr9tWB4SH4GT9bqB3ZFI8SyQMJP/yuoQuA2Dvt3zPZm4IZJQdLt+ROHd?=
+ =?us-ascii?Q?q4H2CjP/+gFWT/jzLg9lEjyhE+r2zoYQmqKwOf9q49OwLPp13kosSPGFCPo2?=
+ =?us-ascii?Q?W8q9sw/I5YyAIUy0j55i4iUip0ZAXnGDaxLX5zaQtWMZsI5rMB5j7HyOONzo?=
+ =?us-ascii?Q?4WQbcbh+7Gd8FLEuHW7EhY8P16v0RIM31w68HGNPTHBEBpRDj5JFV36tCSZ5?=
+ =?us-ascii?Q?MGaoRkZzrHVsWKdDysy4wMmcsLjd5BNEqxivISBiZ14vQjQxSJioG4bSpyAz?=
+ =?us-ascii?Q?xfn7k/y1mKPoO4MY+4y1d+Ie9459x6Oskdr52BtxGMlCqI7aucjGKCM+uY0I?=
+ =?us-ascii?Q?56jZlzlvCDh8iSdW611ZwwuJuUgaY9CQ5o7lh7xiHnmreuO4s9Be1Zx5Mjiv?=
+ =?us-ascii?Q?FpL5z4DsVDi+uELMyR6OuPHic3RuFtzHneMVO+gJCIb//ncF+37YOP8cVERJ?=
+ =?us-ascii?Q?Kk+Qz1OzGgmMFSvbTvHWQlwN0CEL4I9Ugx7jLQ612Xo7rAXCn+UsB7+rFWiW?=
+ =?us-ascii?Q?T/ZSItFEgkFU6SUZLe7yRwNBkNblMOD5Io8YZ3e1Nxzo+PMSzr+2B8voAHdq?=
+ =?us-ascii?Q?ha2dSqSdLWTwOzpG7M3cK0aWbP4xda4g8gHGXQOG+TcT3JE5Pqq1z3N5hYgt?=
+ =?us-ascii?Q?uCsUIkboJI8X9a08UHBU6mNbg5amBWA0BZoZO801pFue88/LgZRUP2d42n62?=
+ =?us-ascii?Q?c/MkLRKyFq1PbcNJlQZ9kenvPtkrWKOmcYPbG3sQluXWbbj1+aUEQdJA18ux?=
+ =?us-ascii?Q?gbX9OEncDU1liCgs4NyzCXuSGla4mUOW0Kvo87caCIDpM5+kTtOMPjx2VadK?=
+ =?us-ascii?Q?LRYW3Mpac9COjlGHWSOBjW4g+tMrs4LCKb/ZwfdIcPLFkRBa6jRbzbLDVlck?=
+ =?us-ascii?Q?8pmyVh5Pju6KC3086G7p6BbM0AnHb+1qR057Leqtc611T6OHXKrDSfFL1Hvh?=
+ =?us-ascii?Q?7nOoSD8AMGhZ0EODumv4VtvvmPagpl0BttA4vGI3QNMOi5WvvuVeQnfl5CJo?=
+ =?us-ascii?Q?z2oGcUUGuoUgTV7LSpBLRSeCt07ET/Whtc/ryBSgMtADBICl0hxCm+zLBhoh?=
+ =?us-ascii?Q?/2Cqx7czzOSAtWG3YpuwT0uIF/Z25JZzyJGl39rcBhiTxmhbLMC2HjciPL8A?=
+ =?us-ascii?Q?6kxBdZBnUJ4QuT3rjCAfITmxTbhXBOYvpc+R6xWlK+cIv6qCuzWJysPsjE/h?=
+ =?us-ascii?Q?ISjeyjH4E2SdlryCasz2lJ48ykCTMuGtsicE4sq51cK5AfR9cGYyEeRwQ7Aj?=
+ =?us-ascii?Q?XzWfdAPik3/zhBHuii7VjW5KqkpU9459qOGtTCvc4k3rfG+vdw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR18MB5084.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzFvR29NcTU0NnNZS054WkFvaGtJd0l1Z09za0VoVFhyd0lwVnIyWGJNTE5L?=
- =?utf-8?B?VjlMNDcvdE1pL29Uc1NVWmRPU3AwY2l6MThhN2lheVFmWmFuU2o4WnlxK2tU?=
- =?utf-8?B?cDBZV0pkdzdDM1dLOG11RDl0NnNsZ1ZnYXBWVjIxaVVCbkhhOU1RVTUrR0c5?=
- =?utf-8?B?NzhtVE0zZ2hFUHhsYmJOUzdtRHBZaWJLYXdUZ3FFTUhZWEhuaUc1WUpXNHg4?=
- =?utf-8?B?WWZUb29EK1hGSXdNTVRDV2tuL2YyeGVwWUlPZVRaUjhRYXZhblNvVnZtaEk3?=
- =?utf-8?B?SThFT2RhNEdYeVBKU01rSVlNUXhSdlN5OWVmNUQvR0doSGNRZTZJbDBmQkh5?=
- =?utf-8?B?Z2RzbTNoMURVTzA3ekVqcUFaQ3FSNDRTK1RDa3NPT0VFc1pURm9XRVpPd0E1?=
- =?utf-8?B?QnFxNThGL1VvNVM2cWlka3VOazhyT1ZuZ2lXbWxESFllb3Y4YXAwZ1RKWnRB?=
- =?utf-8?B?d3R1eFRQNjNRRmpRTjh4YzVZc0RGSStPM3V6UUtTUkQzUmVOa2txR2xHZ2FH?=
- =?utf-8?B?TUd0WElna1B2YU1hcXNGMGx4dG52Rjg1YXNGZSt1dFM0b0NHZklUakZGbmVQ?=
- =?utf-8?B?QjdSNmlKZlRsK05Na1BlWHQ0ODkvTGtuallaM3BvNFFJUE1wTlVQeVIxUThv?=
- =?utf-8?B?aVBGanMyaUdyL2tXOFJocURVeVdyL0pSb2xmNERDMTBneFJaVHBsZWhsRlFN?=
- =?utf-8?B?aFlJa01FeEk5NnpQaFBKYlF2eEl4SWdBM0RtbTl4aTZ1YnpQY1k2V0N5OHgr?=
- =?utf-8?B?S2loc3QrUU9tN2lhSDFxVmZNVjIzUy80MkNTdDg2SzdYZFp2aDBRUHJXVEkv?=
- =?utf-8?B?bXJSWUhSUkxadks2ZGd5NGcwdmhqbC9OSW9vQ2hrTG9xc09NaEdTV1UzWmRV?=
- =?utf-8?B?Y2VwaHFIZXkzOEpKSnQvYUxweGFDQ3Z0RW1uTFduWG0xbEVkNGFyVUduZGNt?=
- =?utf-8?B?bFJ5QmxSS2lBdHpJUWZ6ZEloenpIbU56RC9ORTNvK1JaS3duWjUxNEFxMGNw?=
- =?utf-8?B?Nno2bldrSU41ZTJ6aktCMDJqM2JwckdaVkt4WmQrKytUeGhqRmY3MFhHb1Rx?=
- =?utf-8?B?cWJQZnYrL3BDNE84aVJLZXRGYytvTWVrTS9xd1hnWXpZbTVLTUk1dFlxcXRR?=
- =?utf-8?B?OXEyeHBNNmY2bUZwVDNTaCtKcWJxdUJaQW9vUHIxaWNraFYwS05ITHE2NEtO?=
- =?utf-8?B?UGJwV09qT1o5NGRUUGd6L3NIZkRtN1h3YjNxZm5lWHVxRWVVUStOOTZtM3ZO?=
- =?utf-8?B?R2hXemRIWGxLbEgwOUQrcUE3ZU5FWk82cWtyVUdyQ2Rxb2RCM2M4MzVZMjlV?=
- =?utf-8?B?cVY1U2JwWXRzZzh2V3JFWU9rVjIwWXVvcGhDcG0rMklzY2tuWTRMRmsrV1FZ?=
- =?utf-8?B?OUtMS3BwUEpGN3ZWS1hzK3c3UE5zenFxWitlZHF1MFVTaHcvYTF3bitHUXF1?=
- =?utf-8?B?dGVDUGkrSmNyc1J1SXF4NHdSUlUvS0xpN1NZMlhEb1lQNUdpNjdCMWptb0dL?=
- =?utf-8?B?Vm8rM2FrWnZCL3lSL3d2Um5UU2xjSXpRMkFvRU1GKzF2WmhkUUxXNkxVYXVN?=
- =?utf-8?B?SlBEOHBqTGJpMjVHK1ZvWFErNE5YZmJsSTMvUGMwL3U1eG1aME0xOHI2WXFK?=
- =?utf-8?B?NE54em5tbW9idWVDZ0w3ZjhBL0JzWmlrekh0VXZVNFNiVnJLYXhuVWlXZXV4?=
- =?utf-8?B?UnJaSnc5a0ZSc0JTNkdMbmVkWTZCcmkxMmt2K0Vzb1BKakFNMHdqYUM5ODZ6?=
- =?utf-8?B?YzBqU3lLdm8ycXhZMkx0b21rRzZrOEc1cjdUdXBxalRRQWN2UGJSZkRWVVZj?=
- =?utf-8?B?L2F6a0xxTDdQbWpMcVlFWUMvSndqTzRSdnU0aE1LMzBEdzl2VnJQMFJiaDZ0?=
- =?utf-8?B?cFNVbGlRM1ZBeWlMN2ptdUNrTFIySFRTeVY3L0JMK2RiTmpJY2JpcVhRNjE1?=
- =?utf-8?B?dU11M1U2SDl0TDRVWmFncVFBSnMxcmJEQUdjb3Z6WmZuNHdRcFdwZ28zOXpp?=
- =?utf-8?B?cmYwT25nc0Naalo0WXNQZUdLZXpvRG4vanRpWjY3akZ5TTZjenpDNDhiYVJ3?=
- =?utf-8?B?dXVjRnVGdXEyTGtqSUIxNHVvdENZUXpRenVBbEFtN2x5Tm5RUUw1VmVXQmVM?=
- =?utf-8?Q?vA7UR65Qcoj0HeWCbNRxnc7kF?=
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9c7809d-5f7c-45a8-1239-08dcaa42b143
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR18MB5084.namprd18.prod.outlook.com
+	=?us-ascii?Q?EYaLwQTYM6ihu7XlzYfAxYhZ+YvLUimAUXppBmOio+jRHySs3JmLt1C5x1go?=
+ =?us-ascii?Q?B5DJngc+lBm/MJGrywtRuOOOJq/JWLdlI7T2aqP9Yfo5gIQhyHUUG05o1lw2?=
+ =?us-ascii?Q?QBVmnTugGLr/IAnP7sZQZ/SeDQMZ/jh+d7cn11+s6jwP6IphPAHvFLRpXEFH?=
+ =?us-ascii?Q?JeFlI0pNeXj7gj3RcYW9Kbh1gojtPs1+O3H7J1HotvAJGXYUg01SNL0J4yiY?=
+ =?us-ascii?Q?1ls0sNbd8UCbP9x83lurESLf7GfQ7/jQTXzN4oPS63YxlZ1cJpv9zvR/IeBy?=
+ =?us-ascii?Q?SG4ZQx8giT9fK9M68Ri+hR8zPvhC42CFpJSWfBL69jfson1w3IRXmCjzPPfF?=
+ =?us-ascii?Q?wpeDBbB0ulWNUiZ6yLBsQIUuvr0q3IRHvVSqZgNlEhbo318fN4XndL9cTJxF?=
+ =?us-ascii?Q?FA++D7Qw30VbUctlqg4zHS2wregDlPJpY1165CW4mPsKc9vPibykAntqFPLx?=
+ =?us-ascii?Q?aRKzOUYGv7Vt6dcw1peWoqGDQmThL9ZFZQfbfcR8a3sP116/A2fVdyxhGjx1?=
+ =?us-ascii?Q?+nZw6GcHUr8PGFsXToTvpPrdkYk5rh19zQGpxzZ1YUIyU3/fBO964ZAKdJNf?=
+ =?us-ascii?Q?oIN7Pb6E0UIWOk6v0Rb9NAYx6SvlxY+ReERLrxhvQ4ScZza0b0Dg9xzlXWbh?=
+ =?us-ascii?Q?SZANNy6U+w3vwu1fw9+1m/gYhrWmzlmBEk5qTEhSNbcDErpsoFe7cOrcvX8S?=
+ =?us-ascii?Q?DeZk1oNsnJLExWR41t3l/c0ogwLL7+TvMuj9473nYLYrJVg6fKKvBfVLBzab?=
+ =?us-ascii?Q?sEHgmlVc0x39otOJY0UsVr72vTgtBRks2weS+xirgqwim9WK5GRuu6jWCzXM?=
+ =?us-ascii?Q?hyfIzkQQZ3lxG1GWVYPNh1rIQpwR6rLEG2cNFwIm347XYk4kW3QqzVydypJK?=
+ =?us-ascii?Q?CGixKsSfr42FiVwtekFA/LZcW4jiMWbtmAjjwuFCpOz9pXYJw8XU3GN4RrQK?=
+ =?us-ascii?Q?rJiI4sSkx/cXmD/N8mUGG+Yj5kjOxLbOAOSut+YhuBBeFF2ucsYNKUXUupBI?=
+ =?us-ascii?Q?wMJFgVg99uTvGcn6/phMsmz3kxlN7sN4i6pfv9UTFl2Pvjcr2b8/NmCdrf75?=
+ =?us-ascii?Q?sryf3J8QJ6F0+yP4QyKIkYpF07mzU0Hq9g/TiEifk9nEg6BQKNvGrzeVrpPZ?=
+ =?us-ascii?Q?Vn+96rxzrzU3ijQHbS4iMFCs8I9nLROT/GcG/M4BZ/Mlic+iNzMcigjcRhp3?=
+ =?us-ascii?Q?ljkMG77hkQZb2+CHfAgswkEviROOUyoFyZxCHGWXuXM+qWn/rpmsVekQGPe2?=
+ =?us-ascii?Q?6Lq7giV3yssJ4ZPKO/tSfKWg3124aoTTyhU/X2hE7kb8eHGgDT5BFU25qz2f?=
+ =?us-ascii?Q?4Vsuxy960VeHm32JRYdUA0Nqw7pq2rXNu4Kh1YP8EXrGDUdc/I4bWApP05ym?=
+ =?us-ascii?Q?26gcOpWpQn4bneT/pYNTsebST1yztrxg9HiETe4kwIxXZuCfbKtWRKXLiVKL?=
+ =?us-ascii?Q?28XoMSoS0VoWXGlOoPz+Qqh2diZbU+6MZ3Y7VOM/9wi+lSZKKfTP2GaubSX9?=
+ =?us-ascii?Q?gUAeLfIGnEBnO58vtSQdIakDvcA4uDRAm2HcvtBBPNO12IossUw9hNjlpY3Y?=
+ =?us-ascii?Q?kJqAMFLiJzmaaH+NAZv04nYDFuSd+F9M1vQ0sg5Y?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 891776b9-8e7f-4e85-4e14-08dcaa5f4f9c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2024 11:37:40.1077
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2024 15:02:31.7132
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VwBIUGxO/od/Ttj82Tps60poNM0BqoOkotJrHmnZTC3Lxs28QUdWE7MHD9PzzsPrAmfb+5Z05Ci6mSNJybdIWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR18MB5316
-X-Proofpoint-ORIG-GUID: iY1PwLnXFDQdFu9ZpK4WdWnwZVH7F8hk
-X-Proofpoint-GUID: iY1PwLnXFDQdFu9ZpK4WdWnwZVH7F8hk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-22_06,2024-07-22_01,2024-05-17_01
+X-MS-Exchange-CrossTenant-UserPrincipalName: xesRsA4j6oD3Xzud8lQiyE7V5jexwdeW7BGqcBQO3gLeJ4NwrF2z399/cFmCoWlZ3rCqi596XN1J+7zVUqUFhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9771
 
-Hi Pankaj,
+On Sat, Jul 20, 2024 at 04:42:18AM +0000, Carlos Song wrote:
 > 
-> Adds the driver for communication interface to secure-enclave,
-> for exchanging messages with NXP secure enclave HW IP(s) like
-> EdgeLock Enclave from:
-> - User-Space Applications via character driver.
 > 
-> ABI documentation for the NXP secure-enclave driver.
+> > -----Original Message-----
+> > From: Frank Li <frank.li@nxp.com>
+> > Sent: Saturday, July 20, 2024 2:26 AM
+> > To: Carlos Song <carlos.song@nxp.com>
+> > Cc: miquel.raynal@bootlin.com; conor.culhane@silvaco.com;
+> > alexandre.belloni@bootlin.com; linux-i3c@lists.infradead.org;
+> > linux-kernel@vger.kernel.org; imx@lists.linux.dev; dl-linux-imx
+> > <linux-imx@nxp.com>
+> > Subject: Re: [PATCH v2] i3c: master: svc: adjust the first broadcast speed
+> > 
+> > On Fri, Jul 19, 2024 at 04:37:01PM +0000, Carlos Song wrote:
+> > >
+> > >
+> > > > -----Original Message-----
+> > > > From: Frank Li <frank.li@nxp.com>
+> > > > Sent: Friday, July 19, 2024 11:01 PM
+> > > > To: Carlos Song <carlos.song@nxp.com>
+> > > > Cc: miquel.raynal@bootlin.com; conor.culhane@silvaco.com;
+> > > > alexandre.belloni@bootlin.com; linux-i3c@lists.infradead.org;
+> > > > linux-kernel@vger.kernel.org; imx@lists.linux.dev; dl-linux-imx
+> > > > <linux-imx@nxp.com>
+> > > > Subject: Re: [PATCH v2] i3c: master: svc: adjust the first broadcast
+> > > > speed
+> > > >
+> > > > On Fri, Jul 19, 2024 at 04:03:51PM +0800, carlos.song@nxp.com wrote:
+> > > > > From: Carlos Song <carlos.song@nxp.com>
+> > > > >
+> > > > > According to the i3c spec 6.2 Timing Specification, the first
+> > > > > broadcast open drain timing should be adjust to High Period of SCL
+> > > > > Clock is 200ns at least. I3C device working as a i2c device will
+> > > > > see the broadcast to close its Spike Filter to change to i3c mode.
+> > > > > After that I3C open drain SCL high level should be adjust to 32ns~45ns.
+> > > > >
+> > > > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> > > > > ---
+> > > > > Change for V2:
+> > > > > - use slow_speed instead of first_broadcast
+> > > > > - add default_speed variable in svc_i3c_xfer to avoid set default
+> > > > >   speed every time
+> > > > > - change start_xfer if else for easy understand
+> > > > > ---
+> > > > >  drivers/i3c/master/svc-i3c-master.c | 55
+> > > > > +++++++++++++++++++++++++++++
+> > > > >  1 file changed, 55 insertions(+)
+> > > > >
+> > > > > diff --git a/drivers/i3c/master/svc-i3c-master.c
+> > > > > b/drivers/i3c/master/svc-i3c-master.c
+> > > > > index 78116530f431..7cd3a9a4d7dd 100644
+> > > > > --- a/drivers/i3c/master/svc-i3c-master.c
+> > > > > +++ b/drivers/i3c/master/svc-i3c-master.c
+> > > > > @@ -142,6 +142,7 @@ struct svc_i3c_cmd {
+> > > > >  	unsigned int actual_len;
+> > > > >  	struct i3c_priv_xfer *xfer;
+> > > > >  	bool continued;
+> > > > > +	bool slow_address;
+> > > > >  };
+> > > > >
+> > > > >  struct svc_i3c_xfer {
+> > > > > @@ -214,6 +215,11 @@ struct svc_i3c_master {
+> > > > >  	} ibi;
+> > > > >  	struct mutex lock;
+> > > > >  	int enabled_events;
+> > > > > +
+> > > > > +	unsigned long fclk_rate;
+> > > > > +	u32 mctrl_config;
+> > > > > +	bool slow_speed;
+> > > > > +	bool default_speed;
+> > > >
+> > > > I think you needn't two varible 'slow_speed' and 'default_speed'.
+> > > > 	default_speed should always !slow_speed
+> > > >
+> > > > Frank
+> > > >
+> > >
+> > > Hi, Frank
+> > >
+> > > In fact, I am struggling for using just one variable: slow speed. Adding a
+> > variable "default_speed "was also a have-to move.
+> > >
+> > > If I use "if else" in xfer for easy understand, it means I only can change the
+> > MCTRL register value one time in every xfer. So in the first xfer, I must change
+> > slow_speed to false, then next xfer cmd->slow_address will be false. So in next
+> > xfer, I can set initial configuration back to the controller.
+> > > But the question is I have to set it every time, so I add the extra variable to
+> > avoid writel in every xfer.
+> > > It looks bad... Sorry for my poor coding.
+> > >
+> > > If only one variable " slow_speed " is used , I think "if else" and "writel one
+> > time", only one can be used. Maybe there is a better code method but I don't
+> > get it?
+> > 
+> > If I understand correct.
+> > 
+> > svc_i3c_master_set_slow_address_speed()
+> > {
+> > 	...
+> > 	master->slow_speed = true;
+> > }
+> > 
+> > svc_i3c_master_set_default_speed()
+> > {
+> > 	if (master->slow_speed) {
+> > 		writel();
+> > 		master->slow_speed false;
+> > 	}
+> > }
+> > 
+> >   if (cmd->slow_address)
+> > 	svc_i3c_master_set_slow_address_speed(master);
+> >   else
+> > 	svc_i3c_master_set_default_speed(master);
+> > 
 > 
-> User-space library using this driver:
-> - i.MX Secure Enclave library:
->     -- URL:https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsecure-2Denclave.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=C67hc24yMATzUglvGvywzpn0Efjurb6sOLm2V_9VpsI&e=  <https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsecure-2Denclave.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=C67hc24yMATzUglvGvywzpn0Efjurb6sOLm2V_9VpsI&e=>,
-> - i.MX Secure Middle-Ware:
->     -- URL:https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsmw.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=NACAFfnEzGKFI7FlqdL4kxlt8PtxeXRorc3IWanqgtY&e=  <https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsmw.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=NACAFfnEzGKFI7FlqdL4kxlt8PtxeXRorc3IWanqgtY&e=>
-> 
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> ---
->    Documentation/ABI/testing/se-cdev |  43 +++
->    drivers/firmware/imx/ele_common.c | 192 ++++++++++-
->    drivers/firmware/imx/ele_common.h |   4 +
->    drivers/firmware/imx/se_ctrl.c    | 677 ++++++++++++++++++++++++++++++++++++++
->    drivers/firmware/imx/se_ctrl.h    |  46 +++
->    include/uapi/linux/se_ioctl.h     |  94 ++++++
->    6 files changed, 1053 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/se-cdev b/Documentation/ABI/testing/se-cdev
-> new file mode 100644
-> index 000000000000..3451c909ccc4
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/se-cdev
-> @@ -0,0 +1,43 @@
-> +What:		/dev/<se>_mu[0-9]+_ch[0-9]+
-> +Date:		May 2024
-> +KernelVersion:	6.8
-> +Contact:	linux-imx@nxp.com, pankaj.gupta@nxp.com
-> +Description:
-> +		NXP offers multiple hardware IP(s) for secure enclaves like EdgeLock-
-> +		Enclave(ELE), SECO. The character device file descriptors
-> +		/dev/<se>_mu*_ch* are the interface between userspace NXP's secure-
-> +		enclave shared library and the kernel driver.
-> +
-> +		The ioctl(2)-based ABI is defined and documented in
-> +		[include]<linux/firmware/imx/ele_mu_ioctl.h>.
-> +		ioctl(s) are used primarily for:
-> +			- shared memory management
-> +			- allocation of I/O buffers
-> +			- getting mu info
-> +			- setting a dev-ctx as receiver to receive all the commands from FW
-> +			- getting SoC info
-> +			- send command and receive command response
-> +
-> +		The following file operations are supported:
-> +
-> +		open(2)
-> +		  Currently the only useful flags are O_RDWR.
-> +
-> +		read(2)
-> +		  Every read() from the opened character device context is waiting on
-> +		  wait_event_interruptible, that gets set by the registered mailbox callback
-> +		  function, indicating a message received from the firmware on message-
-> +		  unit.
-> +
-> +		write(2)
-> +		  Every write() to the opened character device context needs to acquire
-> +		  mailbox_lock before sending message on to the message unit.
-> +
-> +		close(2)
-> +		  Stops and frees up the I/O contexts that were associated
-> +		  with the file descriptor.
-> +
-> +Users:		https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsecure-2Denclave.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=C67hc24yMATzUglvGvywzpn0Efjurb6sOLm2V_9VpsI&e=  <https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsecure-2Denclave.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=C67hc24yMATzUglvGvywzpn0Efjurb6sOLm2V_9VpsI&e=>,
-> +		https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsmw.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=NACAFfnEzGKFI7FlqdL4kxlt8PtxeXRorc3IWanqgtY&e=  <https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_nxp-2Dimx_imx-2Dsmw.git&d=DwICaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-JKU&m=hqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-WqLaM_utz&s=NACAFfnEzGKFI7FlqdL4kxlt8PtxeXRorc3IWanqgtY&e=>
-> +		crypto/skcipher,
-> +		drivers/nvmem/imx-ocotp-ele.c
-> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele_common.c
-> index 3a6584d6f6f2..8167ae201b83 100644
-> --- a/drivers/firmware/imx/ele_common.c
-> +++ b/drivers/firmware/imx/ele_common.c
-> @@ -78,6 +78,149 @@ int ele_msg_send_rcv(struct se_if_priv *priv, void *tx_msg, void *rx_msg)
->    	return err;
->    }
->    
-> +int ele_miscdev_msg_rcv(struct se_if_device_ctx *dev_ctx,
-> +			void *rx_buf,
-> +			int rx_buf_sz)
-> +{
-> +	struct se_msg_hdr *header;
-> +	int err;
-> +
-> +	err = wait_event_interruptible(dev_ctx->wq, dev_ctx->pending_hdr != 0);
-> +	if (err) {
-> +		dev_err(dev_ctx->dev,
-> +			"%s: Err[0x%x]:Interrupted by signal.\n",
-> +			dev_ctx->miscdev.name, err);
-> +		goto exit;
-> +	}
-> +
-> +	header = (struct se_msg_hdr *) dev_ctx->temp_resp;
-> +
-> +	if (header->tag == dev_ctx->priv->rsp_tag) {
-> +		if (dev_ctx->priv->waiting_rsp_dev && dev_ctx->priv->waiting_rsp_dev != dev_ctx) {
-> +			dev_warn(dev_ctx->dev,
-> +			"Dev-ctx waiting for response mismatch (%s != %s).\n",
-> +			dev_ctx->miscdev.name, dev_ctx->priv->waiting_rsp_dev->miscdev.name);
-> +			err = -EPERM;
-> +			goto exit;
-> +		}
-> +	}
-> +
-> +	dev_dbg(dev_ctx->dev,
-> +		"%s: %s %s\n",
-> +		dev_ctx->miscdev.name,
-> +		__func__,
-> +		"message received, start transmit to user");
-> +
-> +	/*
-> +	 * Check that the size passed as argument is larger than
-> +	 * the one carried in the message.
-> +	 *
-> +	 * In case of US-command/response, the dev_ctx->temp_resp_size
-> +	 * is set before sending the command.
-> +	 *
-> +	 * In case of NVM Slave-command/response, the dev_ctx->temp_resp_size
-> +	 * is set after receing the message from mailbox.
-> +	 */
-> +	if (dev_ctx->temp_resp_size > rx_buf_sz) {
-> +		dev_err(dev_ctx->dev,
-> +			"%s: User buffer too small (%d < %d)\n",
-> +			dev_ctx->miscdev.name,
-> +			rx_buf_sz, dev_ctx->temp_resp_size);
-> +		 dev_ctx->temp_resp_size = rx_buf_sz;
-> +	}
-> +
-> +	/* We may need to copy the output data to user before
-> +	 * delivering the completion message.
-> +	 */
-> +	err = se_dev_ctx_cpy_out_data(dev_ctx, true);
-> +	if (err < 0)
-> +		goto exit;
-> +
-> +	/* Copy data from the buffer */
-> +	print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4,
-> +			     dev_ctx->temp_resp, dev_ctx->temp_resp_size, false);
-> +	if (copy_to_user(rx_buf, dev_ctx->temp_resp, dev_ctx->temp_resp_size)) {
-> +		dev_err(dev_ctx->dev,
-> +			"%s: Failed to copy to user\n",
-> +			dev_ctx->miscdev.name);
-> +		err = -EFAULT;
-> +		goto exit;
-> +	}
-> +
-> +	err = dev_ctx->temp_resp_size;
-> +exit:
-> +	if (err < 0)
-> +		se_dev_ctx_cpy_out_data(dev_ctx, false);
-> +
-> +	/* free memory allocated on the shared buffers. */
-> +	dev_ctx->secure_mem.pos = 0;
-> +	dev_ctx->non_secure_mem.pos = 0;
-> +
-> +	dev_ctx->pending_hdr = 0;
-> +	se_dev_ctx_shared_mem_cleanup(dev_ctx);
-> +
-> +	return err;
-> +}
-> +
-> +int ele_miscdev_msg_send(struct se_if_device_ctx *dev_ctx,
-> +			 void *tx_msg, int tx_msg_sz)
-> +{
-> +	struct se_if_priv *priv = dev_ctx->priv;
-> +	struct se_msg_hdr *header;
-> +	u32 size_to_send;
-> +	int err;
-> +
-> +	header = (struct se_msg_hdr *) tx_msg;
-> +
-> +	/*
-> +	 * Check that the size passed as argument matches the size
-> +	 * carried in the message.
-> +	 */
-> +	size_to_send = header->size << 2;
-> +
-> +	if (size_to_send != tx_msg_sz) {
-> +		err = -EINVAL;
-> +		dev_err(priv->dev,
-> +			"%s: User buf hdr(0x%x) sz mismatced with input-sz (%d != %d).\n",
-> +			dev_ctx->miscdev.name, *(u32 *)header, size_to_send, tx_msg_sz);
-> +		goto exit;
-> +	}
-> +
-> +	/* Check the message is valid according to tags */
-> +	if (header->tag == priv->rsp_tag) {
-> +		/* Check the device context can send the command */
-> +		if (dev_ctx != priv->cmd_receiver_dev) {
-> +			dev_err(priv->dev,
-> +				"%s: Channel not configured to send resp to FW.",
-> +				dev_ctx->miscdev.name);
-> +			err = -EPERM;
-> +			goto exit;
-> +		}
-> +	} else if (header->tag == priv->cmd_tag) {
-> +		if (priv->waiting_rsp_dev != dev_ctx) {
-> +			dev_err(priv->dev,
-> +				"%s: Channel not configured to send cmd to FW.",
-> +				dev_ctx->miscdev.name);
-> +			err = -EPERM;
-> +			goto exit;
-> +		}
-> +		lockdep_assert_held(&priv->se_if_cmd_lock);
-> +	} else {
-> +		dev_err(priv->dev,
-> +			"%s: The message does not have a valid TAG\n",
-> +			dev_ctx->miscdev.name);
-> +		err = -EINVAL;
-> +		goto exit;
-> +	}
-> +	err = ele_msg_send(priv, tx_msg);
-> +	if (err < 0)
-> +		goto exit;
-> +
-> +	err = size_to_send;
-> +exit:
-> +	return err;
-> +}
-> +
->    static bool exception_for_size(struct se_if_priv *priv,
->    				struct se_msg_hdr *header)
->    {
-> @@ -99,6 +242,7 @@ static bool exception_for_size(struct se_if_priv *priv,
->    void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg)
->    {
->    	struct device *dev = mbox_cl->dev;
-> +	struct se_if_device_ctx *dev_ctx;
->    	struct se_if_priv *priv;
->    	struct se_msg_hdr *header;
->    	u32 rx_msg_sz;
-> @@ -114,8 +258,50 @@ void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg)
->    	header = msg;
->    	rx_msg_sz = header->size << 2;
->    
-> -	if (header->tag == priv->rsp_tag) {
-> -		if (!priv->waiting_rsp_dev) {
-> +	/* Incoming command: wake up the receiver if any. */
-> +	if (header->tag == priv->cmd_tag) {
-> +		dev_dbg(dev, "Selecting cmd receiver\n");
-> +		dev_ctx = priv->cmd_receiver_dev;
-> +		/* Pre-allocated buffer of MAX_NVM_MSG_LEN
-> +		 * as the NVM command are initiated by FW.
-> +		 * Size is revealed as part of this call function.
-> +		 */
-> +		if (rx_msg_sz > MAX_NVM_MSG_LEN) {
-> +			dev_err(dev,
-> +				"%s: Msg recvd hdr(0x%x) with greater[%d] than allocated buf-sz.\n",
-> +				dev_ctx->miscdev.name,
-> +				*(u32 *) header,
-> +				rx_msg_sz);
-> +		} else
-> +			memcpy(dev_ctx->temp_resp, msg, rx_msg_sz);
+> Above logic will never enter the svc_i3c_master_set_default_speed(master);
+> Because this :
+> svc_i3c_master_send_bdcast_ccc_cmd(){
+>    if (master->slow_speed)
 
-It is categorically stated (in the Linux kernel coding style guide) that 
-this rule does not apply if only one branch of a conditional statement 
-consists of a single statement. In such cases, you should categorically 
-use braces for both branches of the conditional statement:
+I think, it should be master->first_cmd, which reflect the real means.
+Then it means use two variables.
 
-if (condition) {
-         do_this();
-         do_that();
-} else {
-         otherwise();
+If it is i3c standard, I prefer it should do by framework to avoid every
+driver add similar logic.
+
+May Alexandre Belloni can provide comemnts about this.
+
+static int i3c_master_bus_init(struct i3c_master_controller *master)
+{
+	...
+	master->ops->set_speed(low);
+
+	ret = i3c_master_rstdaa_locked(master, I3C_BROADCAST_ADDR);
+
+	master->ops->set_speed(normal);
+	...
 }
 
-Also, made a similar comment on the earlier version (v5) as well:
-https://patchwork.kernel.org/project/imx/patch/20240712-imx-se-if-v5-4-66a79903a872@nxp.com/
-
-Thanks
--Amit
-
-
+> 		cmd->slow_address = true;
+>    else
+> 		cmd->slow_address = false;
+> }
+> 
+> Then svc_i3c_master_start_xfer_locked(){
+> 	if (cmd->slow_address)
+>  		svc_i3c_master_set_slow_address_speed(master);
+> 	else
+>  		svc_i3c_master_set_default_speed(master);
+> }
+> 
+> In svc_i3c_master_send_bdcast_ccc_cmd, we always need slow_speed to dicide cmd->slow_address is true or false. Then in svc_i3c_master_start_xfer_locked,
+> We use cmd->slow_address to chose set slow_speed or default speed.
+> when use "if else", it means we put slow_speed true->false into next xfer.
+> 
+> When first xfer finish, slow_speed is still true. So in next svc_i3c_master_send_bdcast_ccc_cmd:
+> then cmd->slow_address=ture, so in next xfer it will continue enter the "if" branch not the "else" branch:
+> 
+> if (cmd->slow_address)
+>  	svc_i3c_master_set_slow_address_speed(master);
+> else
+>  	svc_i3c_master_set_default_speed(master);
+> 
+> so whatever we need change master->slow_speed = false in the first xfer, don't put it into next xfer.
+> This is the reason I always do taht in my V1 V2 patch.
+> 
+> Carlos
+> 
+> > When slow_address is ture, always set slow_speed = ture when slow_address is
+> > false, call to set_sefault_speed, if previous
+> > 	slow_speed is true, then change to default speed, slow_speed will be false.
+> > 	when next time call to set_default_speed() do nothing.
+> > 
+> > Frank
+> > >
+> > > Carlos
+> > > > >  };
+> > > > >
+> > > > >  /**
+> > > > > @@ -531,6 +537,43 @@ static irqreturn_t
+> > > > > svc_i3c_master_irq_handler(int
+> > > > irq, void *dev_id)
+> > > > >  	return IRQ_HANDLED;
+> > > > >  }
+> > > > >
+> > > > > +static void svc_i3c_master_set_slow_address_speed(struct
+> > > > > +svc_i3c_master *master) {
+> > > > > +	struct i3c_bus *bus = i3c_master_get_bus(&master->base);
+> > > > > +	u32 ppbaud, odbaud, odhpp, mconfig;
+> > > > > +
+> > > > > +	master->mctrl_config = readl(master->regs + SVC_I3C_MCONFIG);
+> > > > > +	mconfig = master->mctrl_config;
+> > > > > +
+> > > > > +	/*
+> > > > > +	 * Set the I3C OPEN-DRAIN mode to the FM speed of 50%
+> > > > duty-cycle(400K/2500ns),
+> > > > > +	 * so that the first broadcast is visible to all devices on the i3c bus.
+> > > > > +	 * I3C device with 50ns filter will turn off the filter.
+> > > > > +	 */
+> > > > > +
+> > > > > +	ppbaud = FIELD_GET(GENMASK(11, 8), mconfig);
+> > > > > +	odhpp = 0;
+> > > > > +	odbaud = DIV_ROUND_UP(master->fclk_rate, bus->scl_rate.i2c * (2
+> > > > > ++ 2 *
+> > > > ppbaud)) - 1;
+> > > > > +	mconfig &= ~GENMASK(24, 16);
+> > > > > +	mconfig |= SVC_I3C_MCONFIG_ODBAUD(odbaud) |
+> > > > > +SVC_I3C_MCONFIG_ODHPP(odhpp);
+> > > > > +
+> > > > > +	writel(mconfig, master->regs + SVC_I3C_MCONFIG);
+> > > > > +	master->slow_speed = false;
+> > > > > +}
+> > > > > +
+> > > > > +static void svc_i3c_master_set_default_speed(struct
+> > > > > +svc_i3c_master
+> > > > > +*master) {
+> > > > > +	/*
+> > > > > +	 * The bus mode is already determined when the bus is
+> > > > > +initialized, so
+> > > > setting initial
+> > > > > +	 * configuration back to the controller. No need to set it in
+> > > > > +every transfer,
+> > > > just
+> > > > > +	 * restore it once time.
+> > > > > +	 */
+> > > > > +	if (!master->default_speed) {
+> > > > > +		writel(master->mctrl_config, master->regs +
+> > SVC_I3C_MCONFIG);
+> > > > > +		master->default_speed = true;
+> > > > > +	}
+> > > > > +}
+> > > > > +
+> > > > >  static int svc_i3c_master_bus_init(struct i3c_master_controller
+> > > > > *m) {
+> > > > >  	struct svc_i3c_master *master = to_svc_i3c_master(m); @@ -624,6
+> > > > > +667,8 @@ static int svc_i3c_master_bus_init(struct
+> > > > > +i3c_master_controller
+> > > > *m)
+> > > > >  	      SVC_I3C_MCONFIG_I2CBAUD(i2cbaud);
+> > > > >  	writel(reg, master->regs + SVC_I3C_MCONFIG);
+> > > > >
+> > > > > +	master->slow_speed = true;
+> > > > > +	master->fclk_rate = fclk_rate;
+> > > > >  	/* Master core's registration */
+> > > > >  	ret = i3c_master_get_free_addr(m, 0);
+> > > > >  	if (ret < 0)
+> > > > > @@ -1251,6 +1296,11 @@ static void
+> > > > svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
+> > > > >  	for (i = 0; i < xfer->ncmds; i++) {
+> > > > >  		struct svc_i3c_cmd *cmd = &xfer->cmds[i];
+> > > > >
+> > > > > +		if (cmd->slow_address)
+> > > > > +			svc_i3c_master_set_slow_address_speed(master);
+> > > > > +		else
+> > > > > +			svc_i3c_master_set_default_speed(master);
+> > > > > +
+> > > > >  		ret = svc_i3c_master_xfer(master, cmd->rnw, xfer->type,
+> > > > >  					  cmd->addr, cmd->in, cmd->out,
+> > > > >  					  cmd->len, &cmd->actual_len, @@ -1346,6
+> > +1396,11 @@ static
+> > > > > int
+> > > > svc_i3c_master_send_bdcast_ccc_cmd(struct svc_i3c_master *master,
+> > > > >  	cmd->actual_len = 0;
+> > > > >  	cmd->continued = false;
+> > > > >
+> > > > > +	if (master->slow_speed)
+> > > > > +		cmd->slow_address = true;
+> > > > > +	else
+> > > > > +		cmd->slow_address = false;
+> > > > > +
+> > > > >  	mutex_lock(&master->lock);
+> > > > >  	svc_i3c_master_enqueue_xfer(master, xfer);
+> > > > >  	if (!wait_for_completion_timeout(&xfer->comp,
+> > > > > msecs_to_jiffies(1000)))
+> > > > > --
+> > > > > 2.34.1
+> > > > >
