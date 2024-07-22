@@ -1,44 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6644526ACD;
-	Mon, 22 Jul 2024 16:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BA5C2FD;
+	Mon, 22 Jul 2024 16:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721666239; cv=none; b=cnZf+QLY8evXCp0bivcsNZF3HzJRM6mRsL33YtnSC2ReXgZPgSvb23ZttC2CFVVBunGBk09B+e0JuSMOpE3fbzudgMA4lp3xQa1rXTSCyosTLvddxk2wda7C4d7ts/E8WwRVb+eDlf6mzUcc7/BYI1QRnKRwtm/1GO9TPjvD3do=
+	t=1721667029; cv=none; b=t78jwwV0l1Qd7q2+DbWmoOjUwzegD5e+nkl1t83srI4IiBgjAMGf1oaUfvMaKFRnIGQ2DAr0DMrctPVk1/Ayyl7PRngoBh9Vw1ZXAJsc+aN8j1JxAnYtOzHSjD4SiBriT470W2faUMmHKV3UniPfHAS7LYCDtJ2LlcawPsPuw6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721666239; c=relaxed/simple;
-	bh=r7wrzTEhZ4vHnTem3SM0inPLsOlVUJANiUV8d/psgLo=;
+	s=arc-20240116; t=1721667029; c=relaxed/simple;
+	bh=66t+9hIP68IAhD6QVB6l6ykYDYgg5yCXHj2vD1KEeC8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3/QPm8Pm0C/3MuELDA6OWGotEVKlmCl8qYHWV7KPYF/gLecXxCrTub+bxPnBfFUNSYygc2M/vmVJaVgLKoLO97CtllUYBnOT2AWNvm0scN4qz75FnxNqOP6IbzcKsMsTxik6wKXWpfELIOsYiWCJhtW5GMkSHG8zmqp1gd/ZYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCt7bRqg; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=H8pCBFqGWusERRJnTan23hLHuFseM3OxWfMTQ6lTFr+Wc8wKaEeUhKZYV4KUt/3aFSbV/RdkkLan/dg0Pbb7Iyj3XRTArJ4jqCi5Pw3OH7DG790LJmGEBc6dRNMaz5IXl3T3bFllLZIXRGtPRqCZQmaJaQhtKX01Br3P6DIhvAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZdnvfcv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCt7bRqg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA3FC116B1;
-	Mon, 22 Jul 2024 16:37:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZdnvfcv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04DCC116B1;
+	Mon, 22 Jul 2024 16:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721666239;
-	bh=r7wrzTEhZ4vHnTem3SM0inPLsOlVUJANiUV8d/psgLo=;
+	s=k20201202; t=1721667028;
+	bh=66t+9hIP68IAhD6QVB6l6ykYDYgg5yCXHj2vD1KEeC8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NCt7bRqgrIJtorXDDgsI6aVgh2IyB/qT8wPQEcU4ritxCOg5W2l4bfnNPTpo0vnRa
-	 qXZOIcU7D/Y+y47Eb0F8p4FC0gACBAUSVYAdkpp4eU2DFNP74XRFgZcmUZOWu2x565
-	 vgqaSTi0bLF6+fQEgrWPDomt3kCdf+HQBNZUoX4Xi+Q7AFVPXUsQekJu0wN9R6fOwS
-	 J24bebXY4t1ldyKxlhp0qRNcnl1zzvFEKCV/aHT2eEFDvm17R3KnFeGHV8uyhiF5oh
-	 EAd0xzza24suP4hsWn5fS9Y5dhZtDW823bb67/8S1NzVgaSF6m2qC6GSW2X+jVRheg
-	 9/iBsMc0CKh3Q==
-Date: Mon, 22 Jul 2024 17:37:14 +0100
+	b=HZdnvfcvywZmjx/4GCW4ffOgZMwSc6LrqwpgC81/5bGJmqrVexcqlmZcNLOVHI+AZ
+	 +0AtmEFhW9DvYm8o+uNN0Eca8u2W6QjJmCs25AikaTXpfHKQAe4FaSzV1OCcWrk5OA
+	 G+Pwk07KBkUYjU3kWljsFUBr0yPbEcbhbs6f8IJha/2ZiLcw05PH9SefUdrNcU9c5y
+	 eYrAsVLFtXu8l8ABy04bZgx3AEibJnu88xyKBEdoE/GVXmczYPPi2TZD5jUJmgHFd0
+	 3zsEb0NO4+k9FmU7QRrzU2glc3NP3d5CW2GsRySdmMEjfwKZPtT2/EKfmOijhYTd6Q
+	 /WKB9fMquIvlw==
+Date: Mon, 22 Jul 2024 17:50:23 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, l.stach@pengutronix.de,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, imx@lists.linux.dev
-Subject: Re: [PATCH v1 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and
- "atu" for i.MX8M PCIe Endpoint
-Message-ID: <20240722-displace-amusable-a884352e0ff9@spud>
-References: <1721634979-1726-1-git-send-email-hongxing.zhu@nxp.com>
- <1721634979-1726-2-git-send-email-hongxing.zhu@nxp.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add imx-se-fw binding doc
+Message-ID: <20240722-popper-comfort-7538ea70c77b@spud>
+References: <20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com>
+ <20240722-imx-se-if-v6-2-ee26a87b824a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,76 +49,158 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xyn3EpKJewT48NFm"
+	protocol="application/pgp-signature"; boundary="iLD5d4oSUIlBzqiU"
 Content-Disposition: inline
-In-Reply-To: <1721634979-1726-2-git-send-email-hongxing.zhu@nxp.com>
+In-Reply-To: <20240722-imx-se-if-v6-2-ee26a87b824a@nxp.com>
 
 
---xyn3EpKJewT48NFm
+--iLD5d4oSUIlBzqiU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 22, 2024 at 03:56:16PM +0800, Richard Zhu wrote:
-> Add reg-name: "dbi2", "atu" for i.MX8M PCIe Endpoint.
+On Mon, Jul 22, 2024 at 10:21:37AM +0530, Pankaj Gupta wrote:
+> The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
+> creates an embedded secure enclave within the SoC boundary to enable
+> features like:
+> - HSM
+> - SHE
+> - V2X
 >=20
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Secure-Enclave(s) communication interface are typically via message
+> unit, i.e., based on mailbox linux kernel driver. This driver enables
+> communication ensuring well defined message sequence protocol between
+> Application Core and enclave's firmware.
+>=20
+> Driver configures multiple misc-device on the MU, for multiple
+> user-space applications, to be able to communicate over single MU.
+>=20
+> It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+>=20
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
 > ---
->  .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml  | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+>  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 91 ++++++++++++++++=
+++++++
+>  1 file changed, 91 insertions(+)
 >=20
-> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml=
- b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
-> index a06f75df8458..309e8953dc91 100644
-> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
-> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
-> @@ -65,11 +65,13 @@ allOf:
->      then:
->        properties:
->          reg:
-> -          minItems: 2
-> -          maxItems: 2
-> +          minItems: 4
-> +          maxItems: 4
->          reg-names:
->            items:
->              - const: dbi
-> +            - const: dbi2
-> +            - const: atu
+> diff --git a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml b=
+/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> new file mode 100644
+> index 000000000000..7511d0e9cf98
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
+> +
+> +maintainers:
+> +  - Pankaj Gupta <pankaj.gupta@nxp.com>
+> +
+> +description: |
+> +  NXP's SoC may contain one or multiple embedded secure-enclave HW
+> +  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
+> +  enables features like
+> +    - Hardware Security Module (HSM),
+> +    - Security Hardware Extension (SHE), and
+> +    - Vehicular to Anything (V2X)
+> +
+> +  Communication interface to the secure-enclaves(se) is based on the
+> +  messaging unit(s).
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8ulp-se
+> +      - fsl,imx93-se
+> +      - fsl,imx95-se
+> +
+> +  mboxes:
+> +    items:
+> +      - description: mailbox phandle to send message to se firmware
+> +      - description: mailbox phandle to receive message from se firmware
+> +
+> +  mbox-names:
+> +    items:
+> +      - const: tx
+> +      - const: rx
+> +
+> +  memory-region:
+> +    maxItems: 1
+> +
+> +  sram:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - mboxes
+> +  - mbox-names
+> +
+> +allOf:
+> +  # memory-region
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8ulp-se
+> +              - fsl,imx93-se
+> +    then:
+> +      required:
+> +        - memory-region
+> +    else:
+> +      properties:
+> +        memory-region: false
+> +
+> +  # sram
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8ulp-se
+> +    then:
+> +      required:
+> +        - sram
+> +
+> +    else:
+> +      properties:
+> +        sram: false
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    senclave-firmware {
 
-New properties in the middle of the list is potentially an ABI break.
-Why not add them at the end?
+Last revision this was "firmware", but now you've got something that
+appears non-generic. Why did you change it? The normal differentiator for
+multiple nodes is -[0-9]*, why can't you use that, if you're worried
+about multiple nodes?
 
->              - const: addr_space
-> =20
->    - if:
-> @@ -129,8 +131,11 @@ examples:
-> =20
->      pcie_ep: pcie-ep@33800000 {
->        compatible =3D "fsl,imx8mp-pcie-ep";
-> -      reg =3D <0x33800000 0x000400000>, <0x18000000 0x08000000>;
-> -      reg-names =3D "dbi", "addr_space";
-> +      reg =3D <0x33800000 0x100000>,
-> +            <0x33900000 0x100000>,
-> +            <0x33b00000 0x100000>,
-> +            <0x18000000 0x8000000>;
-> +      reg-names =3D "dbi", "dbi2", "atu", "addr_space";
->        clocks =3D <&clk IMX8MP_CLK_HSIO_ROOT>,
->                 <&clk IMX8MP_CLK_HSIO_AXI>,
->                 <&clk IMX8MP_CLK_PCIE_ROOT>;
+> +      compatible =3D "fsl,imx95-se";
+> +      mboxes =3D <&ele_mu0 0 0>, <&ele_mu0 1 0>;
+> +      mbox-names =3D "tx", "rx";
+> +    };
+> +...
+>=20
 > --=20
-> 2.37.1
+> 2.34.1
 >=20
 
---xyn3EpKJewT48NFm
+--iLD5d4oSUIlBzqiU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZp6KugAKCRB4tDGHoIJi
-0iZjAP9MWw8PkOtx8+vjhpvxv3uO7ors0U0S+LKqUtQKj1HO2wD/YM74SYCGKKyu
-CopteoUYR8rynNHrukYnXQJY+Zqavg8=
-=T1co
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZp6NzwAKCRB4tDGHoIJi
+0mt9AP9uT5bF8Ef28A5zuCf5EZWLfCY/xWhJNXCln3owDgovygEAqM+oWbWX2nnG
+KKHdKE+HM2QM274P7GaHl3aqBtYhBAk=
+=B9e0
 -----END PGP SIGNATURE-----
 
---xyn3EpKJewT48NFm--
+--iLD5d4oSUIlBzqiU--
