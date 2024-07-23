@@ -1,48 +1,48 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D39154454
-	for <imx@lists.linux.dev>; Tue, 23 Jul 2024 14:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4132154C05;
+	Tue, 23 Jul 2024 14:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721744458; cv=none; b=VEySEqjaAFu2jPhlbprkgHh2FsLf0X65PJg4QPbMgE142HNjjAEesVBASq5QB3vF9xbbenPabTv4VihaEoO9q4sP6GJHQKdZ3j5Oh13lzI9vuDGmGbSBPePL/Tf2kaa2a5aHLHdmCrSKauUyWQp9tpddjYtVnXi435SN7amijYU=
+	t=1721744922; cv=none; b=Nh2ccQj8ShoJRwEPViHZ9Q8acoT8HP0ENHbDwD/MmvjZbpM/6bO9o3PUgoLvx5D6yfpJoocRh8kd+LHxSLc8Mn6e5KYivc/4iOUYAVBhW7BAfmnCQHoQjnpx8sNNkJs1HU+gFJVEggHOc5+jKx17i1rBW6uzSfoguRhAhxycDQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721744458; c=relaxed/simple;
-	bh=i12Xm/Li3GL40njshAMHceCt7UZ0nD8ZBeTSiCRmf0U=;
+	s=arc-20240116; t=1721744922; c=relaxed/simple;
+	bh=15cKbkKLCHSvqsyLYXRKTBYJvAWhsD+yZ2TWL6IBELM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B08OX8k5VDa8Zz2gHUs8x+xp0eWT8h0TzEPCQKUhqK9xTSDDFjaOmj+wCNFit7CkXHHcu6HmDuh3lGXVKD83fJ6DkkwvHC1Oln4IhPU+BuRprzT/bReEsTxoXmilvCe4WgkUsTC8VIIpvjanpHTWqZuWHVZXdA1f1Unt0Kph7A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sWGNV-0008Px-90; Tue, 23 Jul 2024 16:20:33 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sWGNU-001df0-Hm; Tue, 23 Jul 2024 16:20:32 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sWGNU-00DTyT-1O;
-	Tue, 23 Jul 2024 16:20:32 +0200
-Date: Tue, 23 Jul 2024 16:20:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=uU5KI56mJMxcsP9bEAcQjL++LIjbOM+dPPwIyzypt/lDKPe6DZciND4e1WhSzMLDO+LYLLZxL1XDShXCuAqDXEJqVZhsEt8uYnGtl5Hb5hjl81QDlOTqVAOXCOp1kOgEdo3dKIwn14LDC5wr/3u+y7NqG1obtR0E4WN+aSjNqLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkV4Bxad; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkV4Bxad"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1D9C4AF12;
+	Tue, 23 Jul 2024 14:28:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721744922;
+	bh=15cKbkKLCHSvqsyLYXRKTBYJvAWhsD+yZ2TWL6IBELM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dkV4BxadumsKlLALlkxrdsZ1RV+59WN42Rv9UbOZdF2wNN7bKEae2qJ97H03hdUiI
+	 2TirdXYi1GtkX13NnplKeLZsmFFU2an/ZdDCFjkuaD7X2UP2nTmmkLS6asIOeUsyDX
+	 PgBHUx3hZHKGdZ9IlRyDXJvlK0ABJkcvL9RS4vNsAzJU8TXrtjcJdxeeMNu9c+7H7T
+	 d1VcSCCoIrQNdtcYibWpYUuP5K0w6dKSvdMCTGzghra7xXZ5osLe+VE8obqfMpAuFV
+	 /bCx3QkNZU+qoJPhT5bHzPwFHhauDBu/oL4Yk5ULXUlVLg5XCaYaByCS5/tkoKB+Ex
+	 6GYG8kJKPkx+Q==
+Date: Tue, 23 Jul 2024 08:28:41 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Animesh Agarwal <animeshagarwal28@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	imx@lists.linux.dev, Daniel Baluta <daniel.baluta@nxp.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v6 5/5] firmware: imx: adds miscdev
-Message-ID: <Zp-8MPdWdAhGG9de@pengutronix.de>
-References: <20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com>
- <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to
+ dtschema
+Message-ID: <172174491993.340929.3967279887834783302.robh@kernel.org>
+References: <20240722063657.23018-1-animeshagarwal28@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,245 +51,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20240722063657.23018-1-animeshagarwal28@gmail.com>
 
-Hi Pankaj,
 
-On Mon, Jul 22, 2024 at 10:21:40AM +0530, Pankaj Gupta wrote:
-> +static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
-> +					    u64 arg)
-> +{
-> +	struct se_if_priv *priv = dev_get_drvdata(dev_ctx->dev);
-> +	struct se_ioctl_cmd_snd_rcv_rsp_info cmd_snd_rcv_rsp_info;
-> +	struct se_api_msg *tx_msg __free(kfree) = NULL;
-> +	struct se_api_msg *rx_msg __free(kfree) = NULL;
-> +	int err = 0;
-> +
-> +	if (copy_from_user(&cmd_snd_rcv_rsp_info, (u8 *)arg,
-> +			   sizeof(cmd_snd_rcv_rsp_info))) {
-> +		dev_err(dev_ctx->priv->dev,
-> +			"%s: Failed to copy cmd_snd_rcv_rsp_info from user\n",
-> +			dev_ctx->miscdev.name);
-> +		err = -EFAULT;
-> +		goto exit;
-> +	}
-> +
-> +	if (cmd_snd_rcv_rsp_info.tx_buf_sz < SE_MU_HDR_SZ) {
-> +		dev_err(dev_ctx->priv->dev,
-> +			"%s: User buffer too small(%d < %d)\n",
-> +			dev_ctx->miscdev.name,
-> +			cmd_snd_rcv_rsp_info.tx_buf_sz,
-> +			SE_MU_HDR_SZ);
-> +		err = -ENOSPC;
-> +		goto exit;
-> +	}
-> +
-> +	rx_msg = kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
-> +	if (!rx_msg) {
-> +		err = -ENOMEM;
-> +		goto exit;
-> +	}
-> +
-> +	tx_msg = memdup_user(cmd_snd_rcv_rsp_info.tx_buf,
-> +			     cmd_snd_rcv_rsp_info.tx_buf_sz);
-> +	if (IS_ERR(tx_msg)) {
-> +		err = PTR_ERR(tx_msg);
-> +		goto exit;
-> +	}
-> +
-> +	if (tx_msg->header.tag != priv->cmd_tag) {
-> +		err = -EINVAL;
-> +		goto exit;
-> +	}
-> +
-> +	guard(mutex)(&priv->se_if_cmd_lock);
-> +	priv->waiting_rsp_dev = dev_ctx;
-> +	dev_ctx->temp_resp_size = cmd_snd_rcv_rsp_info.rx_buf_sz;
-> +
-> +	/* Device Context that is assigned to be a
-> +	 * FW's command receiver, has pre-allocated buffer.
-> +	 */
-> +	if (dev_ctx != priv->cmd_receiver_dev)
-> +		dev_ctx->temp_resp = rx_msg;
-> +
-> +	err = ele_miscdev_msg_send(dev_ctx,
-> +				   tx_msg,
-> +				   cmd_snd_rcv_rsp_info.tx_buf_sz);
-> +	if (err < 0)
-> +		goto exit;
-> +
-> +	cmd_snd_rcv_rsp_info.tx_buf_sz = err;
-> +
-> +	err = ele_miscdev_msg_rcv(dev_ctx,
-> +				  cmd_snd_rcv_rsp_info.rx_buf,
-> +				  cmd_snd_rcv_rsp_info.rx_buf_sz);
+On Mon, 22 Jul 2024 12:06:51 +0530, Animesh Agarwal wrote:
+> Convert the Freescale i.MX audio complex with ES8328 codec bindings to
+> DT schema format.
+> 
+> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Animesh Agarwal <animeshagarwal28@gmail.com>
+> 
+> ---
+> Changes in v2:
+>   - Changed top level ref to sound-card-common.yaml
+> ---
+>  .../bindings/sound/fsl,imx-audio-es8328.yaml  | 111 ++++++++++++++++++
+>  .../bindings/sound/imx-audio-es8328.txt       |  60 ----------
+>  2 files changed, 111 insertions(+), 60 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-es8328.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/imx-audio-es8328.txt
+> 
 
-Ok, here you now have serialized sending and receiving messages,
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-With this you no longer need priv->waiting_rsp_dev, dev_ctx->temp_resp
-and dev_ctx->temp_resp_size. Drop these for further cleanup.
-
-> +}
-> +
-> +static int se_ioctl_get_mu_info(struct se_if_device_ctx *dev_ctx,
-> +				u64 arg)
-> +{
-> +	struct se_if_priv *priv = dev_get_drvdata(dev_ctx->dev);
-> +	struct se_if_node_info *if_node_info;
-> +	struct se_ioctl_get_if_info info;
-> +	int err = 0;
-> +
-> +	if_node_info = (struct se_if_node_info *)priv->info;
-> +
-> +	info.se_if_id = if_node_info->se_if_id;
-> +	info.interrupt_idx = 0;
-> +	info.tz = 0;
-> +	info.did = if_node_info->se_if_did;
-> +	info.cmd_tag = if_node_info->cmd_tag;
-> +	info.rsp_tag = if_node_info->rsp_tag;
-> +	info.success_tag = if_node_info->success_tag;
-> +	info.base_api_ver = if_node_info->base_api_ver;
-> +	info.fw_api_ver = if_node_info->fw_api_ver;
-
-This really shouldn't be here. You pass cmd_tag and rsp_tag to userspace
-just to guide userspace how to construct a message.
-
-This shows that the messages should be constructed in the Kernel rather
-than in userspace. Just pass the message content from userspace to the
-kernel and let the kernel build the message on the sender side.
-
-> +/* IOCTL entry point of a character device */
-> +static long se_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
-> +{
-> +	struct se_if_device_ctx *dev_ctx = container_of(fp->private_data,
-> +							struct se_if_device_ctx,
-> +							miscdev);
-> +	struct se_if_priv *se_if_priv = dev_ctx->priv;
-> +	int err = -EINVAL;
-> +
-> +	/* Prevent race during change of device context */
-> +	if (down_interruptible(&dev_ctx->fops_lock))
-> +		return -EBUSY;
-> +
-> +	switch (cmd) {
-> +	case SE_IOCTL_ENABLE_CMD_RCV:
-> +		if (!se_if_priv->cmd_receiver_dev) {
-> +			err = 0;
-> +			se_if_priv->cmd_receiver_dev = dev_ctx;
-> +			dev_ctx->temp_resp = kzalloc(MAX_NVM_MSG_LEN, GFP_KERNEL);
-> +			if (!dev_ctx->temp_resp)
-> +				err = -ENOMEM;
-> +		}
-
-cmd_receiver_dev isn't locked by anything, still it can be accessed by
-different userspace processes.
-
-Besides, when already another instance is configured for receiving
-commands I would expect an -EBUSY here instead of silently ignoring the
-ioctl.
-
-> +		break;
-> +	case SE_IOCTL_GET_MU_INFO:
-> +		err = se_ioctl_get_mu_info(dev_ctx, arg);
-> +		break;
-> +	case SE_IOCTL_SETUP_IOBUF:
-> +		err = se_ioctl_setup_iobuf_handler(dev_ctx, arg);
-> +		break;
-> +	case SE_IOCTL_GET_SOC_INFO:
-> +		err = se_ioctl_get_se_soc_info_handler(dev_ctx, arg);
-> +		break;
-> +	case SE_IOCTL_CMD_SEND_RCV_RSP:
-> +		err = se_ioctl_cmd_snd_rcv_rsp_handler(dev_ctx, arg);
-> +		break;
-> +
-> +	default:
-> +		err = -EINVAL;
-> +		dev_dbg(se_if_priv->dev,
-> +			"%s: IOCTL %.8x not supported\n",
-> +				dev_ctx->miscdev.name,
-> +				cmd);
-> +	}
-> +
-> +	up(&dev_ctx->fops_lock);
-> +	return (long)err;
-> +}
-> +
-
-...
-
-> +static int init_device_context(struct se_if_priv *priv)
-> +{
-> +	const struct se_if_node_info *info = priv->info;
-> +	struct se_if_device_ctx *dev_ctx;
-> +	u8 *devname;
-> +	int ret = 0;
-> +	int i;
-> +
-> +	priv->ctxs = devm_kzalloc(priv->dev, sizeof(dev_ctx) * priv->max_dev_ctx,
-> +				  GFP_KERNEL);
-> +
-> +	if (!priv->ctxs) {
-> +		ret = -ENOMEM;
-> +		return ret;
-> +	}
-> +
-> +	/* Create users */
-> +	for (i = 0; i < priv->max_dev_ctx; i++) {
-> +		dev_ctx = devm_kzalloc(priv->dev, sizeof(*dev_ctx), GFP_KERNEL);
-> +		if (!dev_ctx) {
-> +			ret = -ENOMEM;
-> +			return ret;
-> +		}
-> +
-> +		dev_ctx->dev = priv->dev;
-> +		dev_ctx->status = SE_IF_CTX_FREE;
-> +		dev_ctx->priv = priv;
-> +
-> +		priv->ctxs[i] = dev_ctx;
-> +
-> +		/* Default value invalid for an header. */
-> +		init_waitqueue_head(&dev_ctx->wq);
-> +
-> +		INIT_LIST_HEAD(&dev_ctx->pending_out);
-> +		INIT_LIST_HEAD(&dev_ctx->pending_in);
-> +		sema_init(&dev_ctx->fops_lock, 1);
-> +
-> +		devname = devm_kasprintf(priv->dev, GFP_KERNEL, "%s_ch%d",
-> +					 info->se_name, i);
-> +		if (!devname) {
-> +			ret = -ENOMEM;
-> +			return ret;
-> +		}
-> +
-> +		dev_ctx->miscdev.name = devname;
-> +		dev_ctx->miscdev.minor = MISC_DYNAMIC_MINOR;
-> +		dev_ctx->miscdev.fops = &se_if_fops;
-> +		dev_ctx->miscdev.parent = priv->dev;
-> +		ret = misc_register(&dev_ctx->miscdev);
-> +		if (ret) {
-> +			dev_err(priv->dev, "failed to register misc device %d\n",
-> +				ret);
-> +			return ret;
-> +		}
-
-Here you register four character devices which all allow a single open.
-
-There's no need to artificially limit the number of users. Just register
-a single character device, allow it to be opened multiple times and
-allocate the instance specific context as necessary in se_if_fops_open().
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
