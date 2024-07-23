@@ -1,118 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8C213B599;
-	Tue, 23 Jul 2024 16:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C472C1586E7
+	for <imx@lists.linux.dev>; Tue, 23 Jul 2024 18:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721750671; cv=none; b=JpvlXGG4Smya5pu86sHMpJKWBVL4z9728Ig04VTzl9sDakJ7atkf3dt3B67kOqBE//661xOpPtcp/7IQydGKow+rLnAZe+3jmvuQ6C5TVul+WD91tyIQPT01NtZxrCGFpekj86HTvZDR7H3wvY1Rerjy3PYhc8xzbdVA3GOOqjo=
+	t=1721759243; cv=none; b=Kqwqg/xTIozlKuruHKm6l1Xa1p/86oGZgrfw2R+30FdHSdlCRuJcpxf32YUTXEA5gpYexEqt2mgwVN7zrkahfY0UA4LR2zkYeFrEMpTYm9W0xnAsH+HPmRCAnBuP5FHdWJWRbvOe3DxPyA/0HQL/xdrUNzRQCawCVRr59ebFeW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721750671; c=relaxed/simple;
-	bh=W/+fwuK1CNAAfIupAvdNDpGXw3AXSDiI3VRVBEBzu8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jwt/W0sdlvrjVJwVhtt/FXUtnocVxwLH2b2EDBQF5yGEAQl/gMc8pbhnDrP5c+YHkYGfQSIsDHehltGk81eOH6c5wFBb5VZcOM6dvWXQAdfb67lpQYJxtBeP9iMO4Imy2akgM4bwBxZRTNs89T+HSTCYoPMuUHPpmIUJWfG2Gfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOqphG6H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721759243; c=relaxed/simple;
+	bh=7HK/DMMkgTcwkTdzzH3kdsFcEBaz2rUtURvULSG77QA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=d14ox2V6+aiPD10eeSYPp929AnBAvnyY/ws2E/6AqkvrodyvdbbhBPwMnDnzF4ExSEXfDc+mD2UcPsQtZlIJzEBdWznwwlcWCib+YckKleBraTjgMt0g2hTsmer8Mrc9eLRi31dOQIpYUeo6dM/1veqvTqXG9npQVw74q1gzE5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=moUdw95I; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOqphG6H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8A1C4AF09;
-	Tue, 23 Jul 2024 16:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721750671;
-	bh=W/+fwuK1CNAAfIupAvdNDpGXw3AXSDiI3VRVBEBzu8E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FOqphG6HOCuTixwQcQs2fjwA/9NFC7QrHNjGwhIaGxyVvlj8WV8bSPo0km0+hJZOZ
-	 PPZPunccS1zR+DEcDXuuioers0KBGQOF7vIlFYWTM1EwwNP1XqCTEYyfizf4WRmIQ2
-	 1A1crfZiXkCbMOyaNPP0rwrSMRDhD90CK9gNidt5rzsRy4LzqFlQMokCVySxdkYNF2
-	 qO4NXzinLAEPSWMF8l5A66NJE/7jhse9NnPBH9Xx1ZtiLmYf84w6GT6WMqCgyIxqVB
-	 459IZv6cKBTpqg3XcGdh7eKvpOyEz32AJ4PqyFBSWbcs/XdTriGfKgJpTRnzRx49pF
-	 6rFOxePeCXeWg==
-Date: Tue, 23 Jul 2024 18:04:23 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: tj@kernel.org, dlemoal@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	festevam@gmail.com, linux-ide@vger.kernel.org,
-	stable@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v4 4/6] ata: ahci_imx: Add 32bits DMA limit for i.MX8QM
- AHCI SATA
-Message-ID: <Zp/Uh/mavwo+755Q@x1-carbon.lan>
-References: <1721367736-30156-1-git-send-email-hongxing.zhu@nxp.com>
- <1721367736-30156-5-git-send-email-hongxing.zhu@nxp.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="moUdw95I"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46N9wYKb004696;
+	Tue, 23 Jul 2024 18:27:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Fw30OEhuHwCRjgbtq5C9lGL+3YIoOYO6hiSFpsN8Jms=; b=moUdw95IBax6Mzle
+	uobuNjz82NHceGOBdzLqvWoxLdUyJLuzZiRsBBZchSNPN1NwbnZ9azeXkzM3dmnl
+	u9RkDGwT6vcvKfPIjyftAAv4Q5L+pWXoyxOsAoQnGhD/f+sgCKWJv2dLKChldowL
+	swl3HPw016tOAH+vsjfYZqYy0ZI7YM9+xR7rJPf97VDI5MfOZco019lNDtIf20+x
+	0QQGTxHcygzi51yUTu/rYDZewqeO3b+OPL0r3EImZuu9ENL2l9WNsWzpTxD5H5+x
+	zQB/Gftpl/qXU1BMetxsEIPVF4jvyfDK96VouqLFNheRkm1E4g9AgtX0saDUUqTX
+	ee6/kg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40g6djyqv3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jul 2024 18:27:07 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46NIR654026949
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jul 2024 18:27:06 GMT
+Received: from [10.111.176.36] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 23 Jul
+ 2024 11:27:06 -0700
+Message-ID: <13e24ef9-f2e5-478b-8854-0e33a2c497b3@quicinc.com>
+Date: Tue, 23 Jul 2024 11:27:05 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1721367736-30156-5-git-send-email-hongxing.zhu@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: imx: add missing MODULE_DESCRIPTION() macros
+Content-Language: en-US
+To: Abel Vesa <abel.vesa@linaro.org>, Abel Vesa <abelvesa@kernel.org>,
+        Peng
+ Fan <peng.fan@nxp.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen
+ Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+CC: <linux-clk@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20240602-md-clk-imx-v1-1-5c6d240f6fab@quicinc.com>
+ <171923430571.3352368.17603224359381270285.b4-ty@linaro.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <171923430571.3352368.17603224359381270285.b4-ty@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: F0V6ygj9nRYO0KsyfgvjBakyfc_-5ZuP
+X-Proofpoint-ORIG-GUID: F0V6ygj9nRYO0KsyfgvjBakyfc_-5ZuP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-23_09,2024-07-23_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 suspectscore=0 impostorscore=0 phishscore=0 mlxlogscore=999
+ malwarescore=0 spamscore=0 adultscore=0 bulkscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407230127
 
-On Fri, Jul 19, 2024 at 01:42:14PM +0800, Richard Zhu wrote:
-> Since i.MX8QM AHCI SATA only has 32bits DMA capability.
-> Add 32bits DMA limit here.
+On 6/24/2024 6:05 AM, Abel Vesa wrote:
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  drivers/ata/ahci_imx.c | 3 +++
->  1 file changed, 3 insertions(+)
+> On Sun, 02 Jun 2024 08:59:17 -0700, Jeff Johnson wrote:
+>> make allmodconfig && make W=1 C=1 reports:
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/mxc-clk.o
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/clk-imxrt1050.o
+>>
+>> Add the missing invocations of the MODULE_DESCRIPTION() macro.
+>>
+>>
+>> [...]
 > 
-> diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-> index 4dd98368f8562..e94c0fdea2260 100644
-> --- a/drivers/ata/ahci_imx.c
-> +++ b/drivers/ata/ahci_imx.c
-> @@ -827,6 +827,9 @@ static const struct scsi_host_template ahci_platform_sht = {
->  
->  static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
->  {
-> +	if (!(dev->bus_dma_limit))
-> +		dev->bus_dma_limit = DMA_BIT_MASK(32);
-> +
->  	imxpriv->sata_phy = devm_phy_get(dev, "sata-phy");
->  	if (IS_ERR(imxpriv->sata_phy))
->  		return dev_err_probe(dev, PTR_ERR(imxpriv->sata_phy),
-> -- 
-> 2.37.1
+> Applied, thanks!
 > 
-
-Why is this needed?
-
-ahci_imx.c calls ahci_platform_init_host(), which calls
-dma_coerce_mask_and_coherent():
-https://github.com/torvalds/linux/blob/v6.10/drivers/ata/libahci_platform.c#L750-L756
-
-Should this code perhaps look more like:
-https://github.com/torvalds/linux/blob/v6.10/drivers/ata/ahci.c#L1048-L1054
-
-where we set it to 64 or 32 bit explicitly.
-
-Does this solve your problem:
-diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform.c
-index 581704e61f28..fc86e2c8c42b 100644
---- a/drivers/ata/libahci_platform.c
-+++ b/drivers/ata/libahci_platform.c
-@@ -747,12 +747,11 @@ int ahci_platform_init_host(struct platform_device *pdev,
-                        ap->ops = &ata_dummy_port_ops;
-        }
- 
--       if (hpriv->cap & HOST_CAP_64) {
--               rc = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(64));
--               if (rc) {
--                       dev_err(dev, "Failed to enable 64-bit DMA.\n");
--                       return rc;
--               }
-+       rc = dma_coerce_mask_and_coherent(dev,
-+                       DMA_BIT_MASK((hpriv->cap & HOST_CAP_64) ? 64 : 32));
-+       if (rc) {
-+               dev_err(dev, "DMA enable failed\n");
-+               return rc;
-        }
- 
-        rc = ahci_reset_controller(host);
+> [1/1] clk: imx: add missing MODULE_DESCRIPTION() macros
+>       commit: 1919d77a9591aa692c8de11540ffc0e7d18eabb4
 
 
+Hi Abel,
+I see this landed in linux-next, but is not currently in Linus' tree for 6.11.
+Will you be able to have this pulled during the merge window?
+I'm trying to eradicate all of these warnings before 6.11 rc-final.
 
-Kind regards,
-Niklas
+Thanks!
+/jeff
