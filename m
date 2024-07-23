@@ -1,659 +1,365 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2058.outbound.protection.outlook.com [40.107.20.58])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010040.outbound.protection.outlook.com [52.101.69.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E077814D439
-	for <imx@lists.linux.dev>; Tue, 23 Jul 2024 09:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F88214B94E
+	for <imx@lists.linux.dev>; Tue, 23 Jul 2024 09:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721727378; cv=fail; b=KwKLpWWPu7Lp73oRnckFYOieuwJ1gC1Jbx7Z1t9JbCsXRrKzofH3WQrRbfp/Rcv+kJxRHkcszfWvv61S6RAmaX9HdZfAeAJ46FmFVAF5D62I0cbArE+Pyt8ugmXts9HHVYAICceSKn2mFR8CWQQi0zRGCLXvZhkH132DxviPDv0=
+	t=1721728132; cv=fail; b=iunmJE0CE4hyBYHwT+tRsFP3wcsPIMEXqtclCQPLKy7Es4NR1thnoZwFXyIW0c6rVZZLN97h6j2dI83hg3/9Bk5Mv6Lf6M4jbOrK3ovXJ7yFMqq7KPriknm6yGXlvoW7gQZ/iyQHUAauUpx6HjEZruYIA2HwRwC0lRvKNMsiOG0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721727378; c=relaxed/simple;
-	bh=IVpIPbIDCG6BKq/6LEJ8+wenMNqZTCMWiF8kQ+EUzrY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=raxMluM2I9t0uCl4ANr7EYafsUZV4TVmyCDDG+8u1Z/YHoVg2HaZdq/p5pwI7a8kGgcBb9eBzoK4/As0GKt2c0nBlBvi15pm8gh8G+HFUYfrljJb8j+QjenfOpcHajFtKSPVg5tKf1As7NpmgDuxhKZaTrQA8Yzd3p/XpDPJ0xs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=DLxchlRr; arc=fail smtp.client-ip=40.107.20.58
+	s=arc-20240116; t=1721728132; c=relaxed/simple;
+	bh=uAuDFVH1R8yoi3MIB2drJTIGOssujSaXcE6BZ1axf/Q=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fHmX7rMJU3tJzb1ACmgi0S3XORm4GR8jjCWBPwMrLnL8yEDGOb0oo92qKLrtU2fzTlERdWIVOWwP7j/LLAZzgLpBo2cLVxxWBLqnjCwSiIGOZHXuHZawuDcSKPNmQnmMd3nhVJPGixAFgmIgOZwtHkEVXFDMQBBFp1n9DRKHofo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Z2qrl5yG; arc=fail smtp.client-ip=52.101.69.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="DLxchlRr"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Z2qrl5yG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BwH2hgqzjA6kNr2oFBf3dIMIy91929mRXZlkZwohosfIG1mZu67rb/ycAkXm7/9xlJk7wn9J6LitDQCkADZu8GmCOawyWWxbJTrvF7nJ5sDixd6vLQHgTx9VyIh+wO2mJgmu6ogjdzJOV7Q68pR7D8cswQl29nMhvbXBwE1kzIWEfIgZ7fUMhQr9XRAWnAZUFTFb/lvGVpIQogpIST2u9DXa+5AVALGIhIG6W/O0iBAoOVgs3Ixq58BkyDXiBHegUTmutBIF1k6/Qq6ZH0+7W6dujBG8V2KEY0xP2J6H7T+YaoHt+Rn0jBgYEdAHpYxi1IEAvKsqU0c0WlKd/xPvoQ==
+ b=RpjvEEFHO1zoCeG5YMZ9L6kz5txsjO3aks/FyxLmh78myc30wSkm62vc2Ct9bk8ScN2fI6VmfN9AglcOe7xVuDGOsDf83FnMltTGMqZJRcAFdsklK1hlbRIYIbSkn8KJYeiES8VltwS9PaidzQ8bsg0QC25x+1EzhUKhwbmwHxGpRQmjz/V/k3GkVrp0MTP0RhZGc94gtLKVUEoA/YJx6OUPyIWFyvI79re9fH+S35bIwWFLWh7+7Rn5WYt0VHuMvubzYIQtnXrVJunmbuNV9v6aIB/RnIAKVmlZColvC8sPogZwKDp2+doOywWkQI6ScGuR4nAR5ZuSvQDUyfyKLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XaoZIc7R2+BAeLtJpBAVjrJSAQhmEoVb7Eq1jCXYGRI=;
- b=Kg1D1edUdGtG1fNdvxV5oDZbiF5MH2Xia+B2PdcDuGnOmt+GAp1OpV+GzST6xg7Sb9IzMZ/HF4FNFpGCif2WcZoTxRLQMNJR62oaiNK+gEkR4tOy6NAPaEcnxymY6XPhaLj8ndn5goPDEcZ+uY/uCUSAsCEV7qoBgdFmNaeNXjtsHbdCJTLN4dy8e3NrSfw2UKPl6ZQdmAX3Uz/+fSpXffIgH7k0S8cstwBRmyf9z3Gig15D98br37zQxeqm12hWhl9c+T7zo494riUNLUH3PbXGXH4D+MYCamr3A/JPauwOJNb22ZQdZY2SZJsL2Bn4shguaDPW/Wf5b7/wceoFjw==
+ bh=LPPNh0CIuIc1+XX1YQ9hVZcJp6s7lBSIg5tKyLU/9Yw=;
+ b=lmv/7/tAUrTARD1Jx1r9CnCc9A2ts3e7ATFbLOolRIH9hQu62Yh+a58B7Nrdrob1Z7p1xyfv6+0vgkI7BZn37pD+hlnBUlLTeheSrhmwaucjFpK6vmivKoIMnPk/fBh3ntc2HM4K5kigo2KJtSfhUK9NdNQFJ8e9z0aHzZKuIEFtxFMduGpmxsQaNB+yOpvs8IZxLV5fJHpf4kHQNFuzEgr6mUy4sJYkd/ya3viGTh/vG/BD6kiFx3oyHnCrpq+4hQNsp40UbZuvMkJKt9LXpSqFwo+4CWG93i5ubEVoQUDl7NnFhH0dwrT2o522oOA80MJO2YUf4UzNnqaHqOmqqQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XaoZIc7R2+BAeLtJpBAVjrJSAQhmEoVb7Eq1jCXYGRI=;
- b=DLxchlRr1L3vRv09t59AuXKdVhaY37pICY6zp+raMK8f0R6VlpjzdD08ENGh6L2fkHPG34GoYhSO/h4jR50t0jCMAetlHuJtc09dK/u88vTiam70m/JSumqcd8XhSF3fsga3Z3tBXaiaSMXDWn1Ta9myADRG5wrqg8CuZQO44qk=
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
- by DU0PR04MB9227.eurprd04.prod.outlook.com (2603:10a6:10:352::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.20; Tue, 23 Jul
- 2024 09:36:10 +0000
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827%3]) with mapi id 15.20.7784.017; Tue, 23 Jul 2024
- 09:36:10 +0000
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
-To: Amit Singh Tomar <amitsinght@marvell.com>, Jonathan Corbet
-	<corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob
- Herring <robh+dt@kernel.org>
-CC: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [EXT] Re: [EXTERNAL] [PATCH v6 5/5] firmware: imx: adds miscdev
-Thread-Topic: [EXT] Re: [EXTERNAL] [PATCH v6 5/5] firmware: imx: adds miscdev
-Thread-Index: AQHa2/NcuiznhUStfE6qn0+OVrPkAbICnyyAgAFuxZA=
-Date: Tue, 23 Jul 2024 09:36:10 +0000
-Message-ID:
- <AM9PR04MB86047F2B9B1C758C21B0490295A92@AM9PR04MB8604.eurprd04.prod.outlook.com>
-References: <20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com>
- <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
- <35f28f0b-1014-4058-a073-96464a278a0a@marvell.com>
-In-Reply-To: <35f28f0b-1014-4058-a073-96464a278a0a@marvell.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=LPPNh0CIuIc1+XX1YQ9hVZcJp6s7lBSIg5tKyLU/9Yw=;
+ b=Z2qrl5yGFIcQYnOVgZuoNZ6+hAge9db7V1+ltCNW19Xyq9C9lPk6xfLgmg5NHY4ejoatM5YILBi/WObzVjphAzYJexmOd+/UT9rT9+15ANT2e+BvijUE64xduIAoeEP/mLYdIVsKXAKUpRR8fmayttisY5y85lb0qfkfwKaB2B4=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|DU0PR04MB9227:EE_
-x-ms-office365-filtering-correlation-id: 35b1f510-0ecf-47b7-58aa-08dcaafae300
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018|921020;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?SW18piJXhrsj2xDMXTwxxqAI07++XAqWE54cAerLceotlUvp0bJvfZlVg3vx?=
- =?us-ascii?Q?tCZ+VV274VQde7vf7kgBpp/8EKiDH35K7xcvtXdrslewS09z3qYJxZkYnjU9?=
- =?us-ascii?Q?su+lIZT1VAsgiZxpONe3rtm+Sk+h1cy73EUHyD8HX4sWRYaxLjzS/gYi6j97?=
- =?us-ascii?Q?ZEBNyE0PVdBoQ7fIdChqzFH4nTh2whtliFJlszwQ9j7qU0a1oeplRt5/nEnV?=
- =?us-ascii?Q?YNgiqvaaVMUc+uUhGdJt0y4n+p35jjJWGCqujBhtDgf7MoGS/JBBVkHhYXnS?=
- =?us-ascii?Q?ZMR71f58zcaBbIMItfwBiyVEFEnMoapnFQjkE1tBGHl9xZ377nqFRK0nmZVc?=
- =?us-ascii?Q?RdxI634CTqfa4tC12PFCs5ryNPTu5C34z1iPAEvBDQ2BSjyLL9F7bQh9IC3D?=
- =?us-ascii?Q?86TMjLCMBOE40Lf7h6+rHJxAPwdnNwQsT5KNkk+dIypqv1ifiaQplTNsQJcn?=
- =?us-ascii?Q?PY5BPZIo1U6Ps2nQLt5dB5JnatOK6Oi0EZa0Nc1F27AZn+FgVvsej3mEKRQ6?=
- =?us-ascii?Q?/b0LSWmgXPT0YlRWTiFXCXo4kHagaoAkPemJ8JqaqCTHR4WjvJSWFVNNdU9A?=
- =?us-ascii?Q?TXqT4MHCL8Ot1VfEO5bDzmJXUE0dW2Gpegc2iHfVK1TJbSMyjATuWKGiqS2O?=
- =?us-ascii?Q?fz+hpRvK1I3AXkmAStpP+GxojMpAoTP/EdcFDa4vS9HwIarE+Y4Y4oq9X81D?=
- =?us-ascii?Q?ao16SgVYsMyS6QThu9EQrliuzGahO2hpRPL0iz7jYjrQu7YrGmq6KiViGi6V?=
- =?us-ascii?Q?UHVjI/p+HThRnmaSs+35IsljIUc72bJsWwn+KAYXsiQop/fQSD8xoPS0piUG?=
- =?us-ascii?Q?dTbHhWIrwqI4go9SxADwPfpTzPOe2N+BwtnTewBm20pFMEYPndrgs+w9+2VO?=
- =?us-ascii?Q?q+uiYtlPPUKzNcdgVUGL8rsmQ3nK/zcaRIEznSYX/l1VXGzjMjAIvqD0p6PU?=
- =?us-ascii?Q?Yseou1Zlmxp+oJN9RS/gh89m0VhoJjIzOvXZNEFxC/rXxSLiebg/GGPFtusV?=
- =?us-ascii?Q?haBeP0jovEoTYXbmGq2RqDApOrtEBih51vEvFntbAh99ycbm44HEXT/2bvBe?=
- =?us-ascii?Q?4BVi6KQCdrrRuIiAaWhRNPQswnhFLJ/qTBbdqKD3RoY39Rl1x+EJd8+kMe44?=
- =?us-ascii?Q?uM056dBW0zGnOJ0edCX9wbmlkOmWvAZ0EQ6/aCeJldn62oQKI0KkZK3eTQny?=
- =?us-ascii?Q?rJD/UH9zftK6XVc7YBSZhAJSzePg4WsSVr5D4wQ5rbrAvPy4o7dWX+rV/ena?=
- =?us-ascii?Q?pAPa8s4OM8X6zbtuwhSyGbu8bUZMqEnBa6lMts7BReMFjBdRvkbxyGseQWLJ?=
- =?us-ascii?Q?iHv/HWAovPuUb34el5TSn84gF8Etmbs27vhncG3mu45Szw1zTAQSdRFU/3/d?=
- =?us-ascii?Q?F/5AJf785QR6LEXWjhzRJmUOGt6P?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?msdum79+UZJ37Ke2D9x41l63sg+ULuE/UFpASMQjIG17mlAD7Qerr0AcP8LN?=
- =?us-ascii?Q?463SmQhXdWUSw97ddt1MKPMR/Ool9o8W0hjjf+qYyABLgcnG98lcwz2dvsEN?=
- =?us-ascii?Q?jE4wciWJTnRsMPMnLiHQyvRhLTIoxakQrpSYGCnPjH5FnT69rI5ZB22oUrrC?=
- =?us-ascii?Q?GbAhFwGnvt+nUJ8SzFOsZFLJU91gBLLJdG+/Ku9FviytouXc2YSk1Fpvt0l0?=
- =?us-ascii?Q?NLwPfo/MzmneJKs+DJhN2T+vOEp90QK/s+jpD5u2oBO/H4TrDsPHok3fc3JO?=
- =?us-ascii?Q?Na69EPNisq+vglSS6sofJzjH57E75CRxZYSG+tu5fFVDWkMUnqauIsYvD+dh?=
- =?us-ascii?Q?2j6M5uzRHnBfly0KeNOfFG+Js8/MPsSOVCQZzmZok9ltKd/8w+5R1V0Ppm+M?=
- =?us-ascii?Q?Bcjkeeg9FUcYKui/ZrkA34ldW2lEC/JSpFjoGCCFqNsZv1cnlwAa2wFp+hXy?=
- =?us-ascii?Q?FnjPDK4yzzmzj6JyhZWV0rZ5zI9E8CjIYde3PCc0WHE/MlSWRis5USRiduIo?=
- =?us-ascii?Q?e1CHkvAQtCXJ7F1nYU87oQ5AxLcmB4kZW8rKA4uZq6Oau1xLHt5GxQFOsDy7?=
- =?us-ascii?Q?MO8NuxI4wKAL8FbO9LUEJ9r48ttcAXOuPruufD0AJy+yS+zSCSyOkEXDB4sX?=
- =?us-ascii?Q?LG57KWTglUGmF+g+hx4lmTlKjktAx1wAuSKXu9lpAzjcD/k3yWVAneJtdamD?=
- =?us-ascii?Q?fOc9PVRgK56wFiotK27wd3I04JbqZopO1s2OHdxWw3SQquxRgVRxaFMzQbnj?=
- =?us-ascii?Q?8bdFy02sd+7bp3cY5Ee46FeHrsX0GwGsPAT70WZUPkXdB9wpmnpHyBV3M0+n?=
- =?us-ascii?Q?E9rjh7pOXUXpjvAaO4kf2Om2L2MTup/tA5d1m88L5eEEtIk5GCLQbxSNn5T1?=
- =?us-ascii?Q?N+cY/7H8ejH19dSenCipKtaFscBsTOW8F8O9I5ooIiyimZTWUs9z8Kvejh5z?=
- =?us-ascii?Q?Qigm/mNYyjmDXQrE8g62KHdcjj/jcPxxDRsIrYVTDqknerAiuhxeEky/kg5M?=
- =?us-ascii?Q?pSZiJ8XxD8z7sRyE/4QQHSkj4C/hcCu/g8Ab3xrEHf0tu64xteG90tUYjKgU?=
- =?us-ascii?Q?yW941W704cguwUmXntkgaHFKo0rVeP6VBHewyD2IpF4O5Hy+15qzp6YrJGgZ?=
- =?us-ascii?Q?XqZ3eqPWs5QyWCJxa9JpqhTwyh50FuTFgfZ0U2RIZNNdKyApsFix890bvmw7?=
- =?us-ascii?Q?mXHx0fI68yWO4tcpIk205lRj23UKva43U504TU7Bm60nO04H5sm/S0VNxJcS?=
- =?us-ascii?Q?MqPW7303H/meuEsWMQRcTCHYe5z/glbXs2GyjOTa2tc3mcndHURBRquEB5Wp?=
- =?us-ascii?Q?BUD2Ox0CfNTjngGtsaWJPJgdYbn2gJ/P3U/llGeVkDm6dHqA/aUrja1xypZS?=
- =?us-ascii?Q?BjRQoOY5Tsu/k0WwMStH6cvrZYy01rPbrpsGjM4jXa2X96GreUJbfEKIunmO?=
- =?us-ascii?Q?EnTcjETDoWejKmi3aA6PZ3nqV2OwdAzltiGH0gocCnTa23TYHWDxT1YfCGI6?=
- =?us-ascii?Q?0qrjjmpfi+ZTKulQUdBoQlkhxU0gbTX4Wy++JyGWJpufpzA2GJfMiCYI/naG?=
- =?us-ascii?Q?49elHmsw17tuzFx3EDpL7PT0Z9xFBcmcr80g5lzw?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by GVXPR04MB9830.eurprd04.prod.outlook.com (2603:10a6:150:113::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16; Tue, 23 Jul
+ 2024 09:48:46 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7784.017; Tue, 23 Jul 2024
+ 09:48:46 +0000
+Message-ID: <442c51f3-f675-4599-a0a3-654c0a4b756f@nxp.com>
+Date: Tue, 23 Jul 2024 17:49:07 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/16] dt-bindings: display: imx: Add some i.MX8qxp
+ Display Controller processing units
+To: Rob Herring <robh@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
+ aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, frank.li@nxp.com
+References: <20240712093243.2108456-1-victor.liu@nxp.com>
+ <20240712093243.2108456-2-victor.liu@nxp.com>
+ <20240722223814.GA183822-robh@kernel.org>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20240722223814.GA183822-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SI2PR01CA0017.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::19) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GVXPR04MB9830:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c492439-bf07-4731-86ed-08dcaafca569
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OU13V2VKbEZPNUREaEJHbEN1a0F5eDYvMi94K2tWVDFMN0NEYTc4S2llbHM0?=
+ =?utf-8?B?M0xyWXdMdElVQkkxTWhHaGd2OXJEcHJONmlQb09mRTBjbUZJcDZ1NnArNU82?=
+ =?utf-8?B?OFdHYktOTUhIWEFpejd4cjM5ZEs3WFZKTzN1TjZmVEN4WWYxTFZyVit5U0dH?=
+ =?utf-8?B?TXcrbVl1dlNrUVIvakhWVjhoanFsVVc4NENMRks3RGJ4UnhJRU1ZQWx3emoz?=
+ =?utf-8?B?eXNnOGJJUVFacVh0WEVOSU9IMFVNM1ZUK09MUnI3T3JBUUdLcG1yNUJGbk12?=
+ =?utf-8?B?WG1iV3k0NWFESUtZRjJ2OGZPREZEMGRoTUZBYmxoOU1jdUIvREUwZDU1aE5r?=
+ =?utf-8?B?SG1aKzVJMkMwQTlONWEvcXREanBSYlE0anlkWkJBdENzRmJIaWlONFM2aVBv?=
+ =?utf-8?B?cEtRN1JxRmlNLy9jQ04xT2o2ZjRRaEdRWEgzZ3JqSE1KbFM2aE1STkxMc2dI?=
+ =?utf-8?B?Zm4xMWRpVmRWQ1pDcHBBd3I0Ni9talhlTHpOUHhYT0dsK211d0pNTUpuMllR?=
+ =?utf-8?B?aVMzeVEzc2JWVVdGSmRxNTcyRFlkVEUra1Exa3Q2KzhpZkVHNWdjMml6T3FT?=
+ =?utf-8?B?ZHhtaXJ2REc0MzVqWVZHVkIyVUVaa3YvT0VZOHVaZ1U1M1lTc2p2ZlhvRGx6?=
+ =?utf-8?B?UTFOVi9tU0t1Z0c4UFB3ayttdlRKZGZxMFB0dng3NGpKWGRFK3NqaFk5RFh2?=
+ =?utf-8?B?WW0wWG1wWmFmVVFoVFJuNm9YVG9najJST2xwRzFQS1Jha2lXeGN6Qk9EL29x?=
+ =?utf-8?B?dVh2RE84RGh2ellEaXExS2s0aTZQNmxwU3VkSkNEVVZGUTZ1YzNPemRyY3Zv?=
+ =?utf-8?B?TmZGZ1pRNHljVzJGSXN3Um1kRHkxQ1lML0MrYzRuOEtBYlVjQjUxamVtYWdn?=
+ =?utf-8?B?ZHJrMGRRY0FUbldzdFVDSm85TnNNOHIvbWxnOUpsMUs5elFzdTdYUkY3Z0Rx?=
+ =?utf-8?B?cWluRk54c3QyL2pCTDJTSkpDWGR0ZUk4d2FMZ3ZWUzl2aElpUDBIOXRTR1Qz?=
+ =?utf-8?B?Rmd0SFQwamRkUldFTXNwSTBnWFpjMndVcmJuWmVGTEpLQUR3NUNmeGpNS2xp?=
+ =?utf-8?B?RWNoQ1I1R3IwQ2ttc09RR0ZtVE0vRS9hMEFOWHNDTkZzN1pzYTNjazBQTXBm?=
+ =?utf-8?B?cGZVREwvbUV2LzJmMWY3Nnhiclk3UmZPb0xERVNkSnJrSkdnNDlwVEswcUlp?=
+ =?utf-8?B?d1ErbXdtSXpyVDRPNFlXUC9WSjhFa050WkdXbGhLbDZWeG1KY2tIL2JkTERW?=
+ =?utf-8?B?VlRud0hXVVN5OCtrOWVqWndmOGNkRSt1SkR4bG85QmVzb3p6K056QmthMzl0?=
+ =?utf-8?B?ZUZMc0N3Y2ptSEdoejlWVC9JQnN2N0Fib2l1OG9mNXdVb054MmNlSmRWTWg4?=
+ =?utf-8?B?d1J6QmpCeHFxVXhCa0kwL2UxY2FyUHEwY2ZiMjFwZkJPaGZhMW1objNMUy9w?=
+ =?utf-8?B?Rnh1QkFlaXBKVGpxTkVGaHVKaENmUmcrRkhzUFFBaUZhMWdRU0xldHJ5cW1F?=
+ =?utf-8?B?c1BzTGN2YmJ0SFBFSEltNTJ4WmJoU1I3dVhsZ2lYd0x4S0pxUjM2QzhIZnBJ?=
+ =?utf-8?B?TkhLUDdTRnh3dlFKZ2o1Sy9kYUU1ZjRqK2l4MzV5MWNIRldJQ3pYd2YyWmUy?=
+ =?utf-8?B?SmhtWU5QUVI3K0FKeXJJUklZUlFzeTRzd1lLTHVyVWJVTkJYcUloc21vWDlJ?=
+ =?utf-8?B?MnVqamJHc2ZSVlpiRTZIb1pYbXJWNXRJUVQ0YkJuS2Zna1FodGd4L0phaU0r?=
+ =?utf-8?Q?yl19wcntUUL1y+xydo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZnJlR1VLbFFDNG9MU094c1hlZ09uazZ5eTRPVTVWWW9uZFdyK3k3NFJpZnFy?=
+ =?utf-8?B?UWpPQ09yMTEwRjllT05WTkIwaktyMllUSWd6dldYOXRhaFhya0VzaXErbXha?=
+ =?utf-8?B?Ykk3Sk50MGt2MkZWbld2UEJrbEJZbHZSQnNjbklZZFNIY29GNytmcVdVYmJJ?=
+ =?utf-8?B?R2hxdjlnSmZERHBMbVo5alFxeENJM1RuSGtiMGdHeEZYaW44Nkp1OHV1cnkz?=
+ =?utf-8?B?TkNPVnpGWUdlcGpWNkcwS0NyL1FERlRHemJRTU5zcUJHTkMvQ0RESjRUL0xV?=
+ =?utf-8?B?Ykp1NFBXb3hMWjg3VkJENThQS21MSkZlMFRqVnVoalhobXgzem1QYU13a1Q2?=
+ =?utf-8?B?Nm9icnRoT1ZtbC84NThOeDRPUkZjMnZHaWJ2aU5tWjBTcUdyc0w5VzJBc1VY?=
+ =?utf-8?B?amxDYmEzQlh3RWRsK1lLenVGd0d4cjRPcnp2TDNwOXFJQjlkbmJkK2ZCWHB4?=
+ =?utf-8?B?bjJ6c2puZ3lScGdGL2ZVN2tHRlFoYjQxaFNiTUYzeHdaK3JiQlBvY2NCU1dJ?=
+ =?utf-8?B?Y29aQnowRHU3UDRxQk9yLzVFWmN3MzQ1bUNWcFBKZ1BHYkFpNEp4VS9ESHFE?=
+ =?utf-8?B?WGFQWmxsSzEwUCtKSmoxd013UXZSSmRMRFBhWjNNaEFOb3ppaHJpMVFzRmNG?=
+ =?utf-8?B?aTd4NEhSaXJaKzFuS2FtV0RzckZ5REhWSVVzOVdlQXp0ajFWOGUvSFF5WkVY?=
+ =?utf-8?B?TFdJOHF2b2hwNFdURU5qbWVnSDlUVnhZS2FuSEJINzkxU2YyU2VrM2Jpc1lp?=
+ =?utf-8?B?bzJSWUR1cUdVN0FDbzdabGZMWEpGa0VIc2ZTWExXaE1yYUV1SVdUczIrczlI?=
+ =?utf-8?B?QlNzTitWV2JhZXlHM2NzL0xTbTFRRHhsMlhrWVdDbkkwR3JscCt4SUtXK24y?=
+ =?utf-8?B?aEVMRGFodnNkM1RpTVJwSzFWa1pjcXVEa3MxZUVnOWYzZ2NZaEpMVmFROFdW?=
+ =?utf-8?B?VExpeTBYZWRUUm9XR0NSRUlOd1gvWEl3SzdsSzZoTDF0TDdCQ3NZMEpJYnpx?=
+ =?utf-8?B?QVB4OGlmSUlHdTI2U0pGSFRFNkcyTkpJTVZ2RkdybnMxTC82Q3VRbVk0bXNU?=
+ =?utf-8?B?dDVXSGhKWGJsN1pqM29MYXI3TVRVNVFMWUV4cmlOY0lPOUlYaDNxSERhMGJ4?=
+ =?utf-8?B?c1U1SnhGcERXL1YzZVNpcWwwSDNQaXNuVTJHWUlyY0tqZ1RCdmZVY0w0aysx?=
+ =?utf-8?B?eFZLc1Z1UU5iRk9TUkFEM013aXF4MEx2am03MUNRVlJkZWVEdTM2VWU5L053?=
+ =?utf-8?B?aUNuTnBPaEh6d2Y0L0lJQTlpajROWXhuR1Y2d2ErY3RNcHc4M2p4dG1mMGl2?=
+ =?utf-8?B?bFlFcXVQOTVaOFVqcUJhZGFQMnVsNDlQMGEzTXlKUXpSUG10Yk9hQlpuNEND?=
+ =?utf-8?B?dmp4bDJ3MkNybi9tTHU3bDk4YWhGKzkrWm92b3NiNGJ2ZjhHbnlDZjM3cFZa?=
+ =?utf-8?B?QlBaMFdDcmdZVTFCeFZDd1drZXN5N3V4OGsra2lWTmVmT203SEtCK0RZaUhU?=
+ =?utf-8?B?UFJaUFJmY3IyWURJdG5VVE00dmpiYTJxelN1VHgvVkJDZWpwZzBwM3d5WDNH?=
+ =?utf-8?B?cE5ZbitUWk5WcDVOWnVmNlU0Q0VmdzVWdVlUa3JoQjQ1a3NhZkRUT3ZSMFh6?=
+ =?utf-8?B?N3pRSGhmdUZlNlJEWDZ0VDkwNE9hemR5ay9YbzdmRW9QS2ErbGlNMldVbFdG?=
+ =?utf-8?B?azhsWDR4a2IwNXRycGlhNFlkV0lVck1RS1V2SFFEMVR2V21lN056OWlKZ0Za?=
+ =?utf-8?B?em1lNmx2eGhGVC9jZ0Y4OVM1ck4zbWxWVG1abDVQSjNyWW5TOHdvV1paMjVS?=
+ =?utf-8?B?RlhlZzJyU3pYWi9EaDZ0MGMvWWxhY3R3MWZJWVBiSHF0ZGIyTzlQRTB4a1ZO?=
+ =?utf-8?B?Mm9GblFVMXlxVzZxUkFIcytJNWo2N3hDNVJSVXFQaFB5NU8xWHdOdUpad0pJ?=
+ =?utf-8?B?YzhFZERaKzBXdlE0eFVFM3pIUldEZ3Y5N1N3S29wQU14MU1XN1c0LzNDVVFS?=
+ =?utf-8?B?RVo0bjI0d3JaamJMRitwZlVTQXZEaU5jSGw5OFZWdmVvdE11cm5BaHFSRWxV?=
+ =?utf-8?B?b25qS29PYUUzSGhvSUM2alVDaWdSTFVmeTlSOTYyUEV3anRRN2FaQlJBMEY3?=
+ =?utf-8?Q?tt5Gxhjj7Fvmz1iUdUEWHJYfo?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c492439-bf07-4731-86ed-08dcaafca569
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35b1f510-0ecf-47b7-58aa-08dcaafae300
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2024 09:36:10.6404
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 09:48:46.5068
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bBf2k8qcLArqSMjbNoNSfY8RE7Q0t/lN98Dc/WsG8XSIPPxtQitxDavLa6dBzXmq05IKRBMCVou4kZ7KttfsSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9227
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hyxOh1i93rSAN/2V4SWJunR9RTy5AJcjoh281MWDkLoJIGKCnPdqqA3o6zd4ahmpuBb96u3u/wbuKzhD8Flt5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9830
 
+On 07/23/2024, Rob Herring wrote:
+> On Fri, Jul 12, 2024 at 05:32:28PM +0800, Liu Ying wrote:
+>> Freescale i.MX8qxp Display Controller is implemented as construction set of
+>> building blocks with unified concept and standardized interfaces.
+>>
+>> Document some processing units to support two display outputs.
+>>
+>> ConstFrame, ExtDst, FetchLayer, FetchWarp and LayerBlend processing units
+>> are in pixel engine.  FrameGen and TCon processing units are in display
+>> engine.
+>>
+>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>> ---
+>> v2:
+>> * Drop fsl,dc-*-id DT properties. (Krzysztof)
+>> * Add port property to fsl,imx8qxp-dc-tcon.yaml. (Krzysztof)
+>> * Fix register range sizes in examples.
+>>
+>>  .../imx/fsl,imx8qxp-dc-constframe.yaml        |  44 ++++++
+>>  .../display/imx/fsl,imx8qxp-dc-extdst.yaml    |  72 ++++++++++
+>>  .../imx/fsl,imx8qxp-dc-fetchlayer.yaml        |  30 +++++
+>>  .../imx/fsl,imx8qxp-dc-fetchunit-common.yaml  | 125 ++++++++++++++++++
+>>  .../display/imx/fsl,imx8qxp-dc-fetchwarp.yaml |  30 +++++
+>>  .../display/imx/fsl,imx8qxp-dc-framegen.yaml  |  64 +++++++++
+>>  .../imx/fsl,imx8qxp-dc-layerblend.yaml        |  39 ++++++
+>>  .../display/imx/fsl,imx8qxp-dc-tcon.yaml      |  45 +++++++
+>>  8 files changed, 449 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchlayer.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchunit-common.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchwarp.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-framegen.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-layerblend.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-tcon.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml
+>> new file mode 100644
+>> index 000000000000..94f678563608
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml
+>> @@ -0,0 +1,44 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-constframe.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Freescale i.MX8qxp Display Controller Constant Frame
+>> +
+>> +description: |
+>> +  The Constant Frame unit is used instead of a Fetch unit where generation of
+>> +  constant color frames only is sufficient. This is the case for the background
+>> +  planes of content and safety streams in a Display Controller.
+>> +
+>> +  The color can be setup to any RGBA value.
+>> +
+>> +maintainers:
+>> +  - Liu Ying <victor.liu@nxp.com>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: fsl,imx8qxp-dc-constframe
+>> +
+>> +  reg:
+>> +    maxItems: 2
+>> +
+>> +  reg-names:
+>> +    items:
+>> +      - const: pec
+>> +      - const: cfg
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - reg-names
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    constframe@56180960 {
+>> +        compatible = "fsl,imx8qxp-dc-constframe";
+>> +        reg = <0x56180960 0xc>, <0x56184400 0x20>;
+>> +        reg-names = "pec", "cfg";
+>> +    };
+>> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml
+>> new file mode 100644
+>> index 000000000000..dfc2d4f94f8e
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml
+>> @@ -0,0 +1,72 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-extdst.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Freescale i.MX8qxp Display Controller External Destination Interface
+>> +
+>> +description: |
+>> +  The External Destination unit is the interface between the internal pixel
+>> +  processing pipeline of the Pixel Engine, which is 30-bit RGB plus 8-bit Alpha,
+>> +  and a Display Engine.
+>> +
+>> +  It comprises the following built-in Gamma apply function.
+>> +
+>> +  +------X-----------------------+
+>> +  |      |          ExtDst Unit  |
+>> +  |      V                       |
+>> +  |  +-------+                   |
+>> +  |  | Gamma |                   |
+>> +  |  +-------+                   |
+>> +  |      |                       |
+>> +  |      V                       +
+>> +  +------X-----------------------+
+>> +
+>> +  The output format is 24-bit RGB plus 1-bit Alpha. Conversion from 10 to 8
+>> +  bits is done by LSBit truncation.  Alpha output bit is 1 for input 255, 0
+>> +  otherwise.
+>> +
+>> +maintainers:
+>> +  - Liu Ying <victor.liu@nxp.com>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: fsl,imx8qxp-dc-extdst
+>> +
+>> +  reg:
+>> +    maxItems: 2
+>> +
+>> +  reg-names:
+>> +    items:
+>> +      - const: pec
+>> +      - const: cfg
+>> +
+>> +  interrupts:
+>> +    maxItems: 3
+>> +
+>> +  interrupt-names:
+>> +    items:
+>> +      - const: shdload
+>> +      - const: framecomplete
+>> +      - const: seqcomplete
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - reg-names
+>> +  - interrupts
+>> +  - interrupt-names
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    extdst@56180980 {
+>> +        compatible = "fsl,imx8qxp-dc-extdst";
+>> +        reg = <0x56180980 0x1c>, <0x56184800 0x28>;
+>> +        reg-names = "pec", "cfg";
+>> +        interrupt-parent = <&dc0_intc>;
+>> +        interrupts = <3>, <4>, <5>;
+>> +        interrupt-names = "shdload", "framecomplete", "seqcomplete";
+>> +    };
+>> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchlayer.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchlayer.yaml
+>> new file mode 100644
+>> index 000000000000..804a3ea7419f
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchlayer.yaml
+>> @@ -0,0 +1,30 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-fetchlayer.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Freescale i.MX8qxp Display Controller Fetchlayer
+>> +
+>> +maintainers:
+>> +  - Liu Ying <victor.liu@nxp.com>
+>> +
+>> +allOf:
+>> +  - $ref: fsl,imx8qxp-dc-fetchunit-common.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: fsl,imx8qxp-dc-fetchlayer
+> 
+> As the fetch units only differ by compatible, combine them and the 
+> common schema into 1 schema doc.
 
+Ok, will combine all into fsl,imx8qxp-dc-fetchunit.yaml in v3
+if no objections.
 
-> -----Original Message-----
-> From: Amit Singh Tomar <amitsinght@marvell.com>
-> Sent: Monday, July 22, 2024 5:08 PM
-> To: Pankaj Gupta <pankaj.gupta@nxp.com>; Jonathan Corbet
-> <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
-> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn Guo
-> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
-> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> <festevam@gmail.com>; Rob Herring <robh+dt@kernel.org>
-> Cc: linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
-> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> kernel@lists.infradead.org
-> Subject: [EXT] Re: [EXTERNAL] [PATCH v6 5/5] firmware: imx: adds miscdev
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->=20
->=20
-> Hi Pankaj,
-> >
-> > Adds the driver for communication interface to secure-enclave, for
-> > exchanging messages with NXP secure enclave HW IP(s) like EdgeLock
-> > Enclave from:
-> > - User-Space Applications via character driver.
-> >
-> > ABI documentation for the NXP secure-enclave driver.
-> >
-> > User-space library using this driver:
-> > - i.MX Secure Enclave library:
-> >     --
-> >
-> URL:https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F
-> > urldefense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-
-> 3A__github.com_nxp-2D
-> > imx_imx-2Dsecure-
-> 2Denclave.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xt
-> > fQ%26r%3DV_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0
-> > jujItfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DC67hc24yMA
-> >
-> TzUglvGvywzpn0Efjurb6sOLm2V_9VpsI%26e%3D&data=3D05%7C02%7Cpanka
-> j.gupta%4
-> >
-> 0nxp.com%7C5acd31c1cfc14661861c08dcaa42c232%7C686ea1d3bc2b4c6f
-> a92cd99c
-> >
-> 5c301635%7C0%7C0%7C638572450920546605%7CUnknown%7CTWFpbG
-> Zsb3d8eyJWIjoi
-> >
-> MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0
-> %7C%7C%7
-> >
-> C&sdata=3DcV67vBSDb5uPaABT8RDTmtNOtqePRAALqo7QuUaV4QQ%3D&rese
-> rved=3D0
-> > <https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fur=
-l
-> > defense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-
-> 3A__github.com_nxp-2Dimx
-> > _imx-2Dsecure-
-> 2Denclave.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%
-> > 26r%3DV_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0juj
-> > Itfaaf7PHhtqSHj4aoWie1-b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DC67hc24yMATzU
-> >
-> glvGvywzpn0Efjurb6sOLm2V_9VpsI%26e%3D&data=3D05%7C02%7Cpankaj.gu
-> pta%40nx
-> >
-> p.com%7C5acd31c1cfc14661861c08dcaa42c232%7C686ea1d3bc2b4c6fa92
-> cd99c5c3
-> >
-> 01635%7C0%7C0%7C638572450920558539%7CUnknown%7CTWFpbGZsb
-> 3d8eyJWIjoiMC4
-> >
-> wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C
-> %7C%7C&s
-> >
-> data=3DyrSEmLSlxZrIZG%2Bk4J%2BbDyvzdEams5ux%2F8nKhQBLq74%3D&rese
-> rved=3D0>,
-> > - i.MX Secure Middle-Ware:
-> >     --
-> >
-> URL:https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F
-> > urldefense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-
-> 3A__github.com_nxp-2D
-> > imx_imx-
-> 2Dsmw.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%26r%3D
-> V_GK
-> > 7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0jujItfaaf7PHh
-> > tqSHj4aoWie1-b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DNACAFfnEzGKFI7FlqdL4kxl
-> >
-> t8PtxeXRorc3IWanqgtY%26e%3D&data=3D05%7C02%7Cpankaj.gupta%40nxp.
-> com%7C5a
-> >
-> cd31c1cfc14661861c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd99c5c3016
-> 35%7C0%
-> >
-> 7C0%7C638572450920566218%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiM
-> C4wLjAwMDAiL
-> >
-> CJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdat
-> a=3DvuTve
-> > lCrdOFlGPGGpwpx0YgA6So%2BRIPJQRSzOjfo2LM%3D&reserved=3D0
-> > <https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fur=
-l
-> > defense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-
-> 3A__github.com_nxp-2Dimx
-> > _imx-
-> 2Dsmw.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%26r%3D
-> V_GK7jR
-> > uCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0jujItfaaf7PHhtqS
-> > Hj4aoWie1-b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DNACAFfnEzGKFI7FlqdL4kxlt8P
-> >
-> txeXRorc3IWanqgtY%26e%3D&data=3D05%7C02%7Cpankaj.gupta%40nxp.co
-> m%7C5acd3
-> >
-> 1c1cfc14661861c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd99c5c301635
-> %7C0%7C0
-> > %7C638572450920572062%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC
-> 4wLjAwMDAiLCJQ
-> >
-> IjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DE
-> DDL3DFE
-> > erSUqrBRGQchaAsN3L0H2nkkRw4AsoNBMqA%3D&reserved=3D0>
-> >
-> > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > ---
-> >    Documentation/ABI/testing/se-cdev |  43 +++
-> >    drivers/firmware/imx/ele_common.c | 192 ++++++++++-
-> >    drivers/firmware/imx/ele_common.h |   4 +
-> >    drivers/firmware/imx/se_ctrl.c    | 677
-> ++++++++++++++++++++++++++++++++++++++
-> >    drivers/firmware/imx/se_ctrl.h    |  46 +++
-> >    include/uapi/linux/se_ioctl.h     |  94 ++++++
-> >    6 files changed, 1053 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/Documentation/ABI/testing/se-cdev
-> > b/Documentation/ABI/testing/se-cdev
-> > new file mode 100644
-> > index 000000000000..3451c909ccc4
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/se-cdev
-> > @@ -0,0 +1,43 @@
-> > +What:                /dev/<se>_mu[0-9]+_ch[0-9]+
-> > +Date:                May 2024
-> > +KernelVersion:       6.8
-> > +Contact:     linux-imx@nxp.com, pankaj.gupta@nxp.com
-> > +Description:
-> > +             NXP offers multiple hardware IP(s) for secure enclaves li=
-ke EdgeLock-
-> > +             Enclave(ELE), SECO. The character device file descriptors
-> > +             /dev/<se>_mu*_ch* are the interface between userspace NXP=
-'s
-> secure-
-> > +             enclave shared library and the kernel driver.
-> > +
-> > +             The ioctl(2)-based ABI is defined and documented in
-> > +             [include]<linux/firmware/imx/ele_mu_ioctl.h>.
-> > +             ioctl(s) are used primarily for:
-> > +                     - shared memory management
-> > +                     - allocation of I/O buffers
-> > +                     - getting mu info
-> > +                     - setting a dev-ctx as receiver to receive all th=
-e commands from
-> FW
-> > +                     - getting SoC info
-> > +                     - send command and receive command response
-> > +
-> > +             The following file operations are supported:
-> > +
-> > +             open(2)
-> > +               Currently the only useful flags are O_RDWR.
-> > +
-> > +             read(2)
-> > +               Every read() from the opened character device context i=
-s waiting on
-> > +               wait_event_interruptible, that gets set by the register=
-ed mailbox
-> callback
-> > +               function, indicating a message received from the firmwa=
-re on
-> message-
-> > +               unit.
-> > +
-> > +             write(2)
-> > +               Every write() to the opened character device context ne=
-eds to
-> acquire
-> > +               mailbox_lock before sending message on to the message u=
-nit.
-> > +
-> > +             close(2)
-> > +               Stops and frees up the I/O contexts that were associate=
-d
-> > +               with the file descriptor.
-> > +
-> > +Users:
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Furlde=
-f
-> ense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-3A__github.com_nxp-
-> 2Dimx_imx-2Dsecure-
-> 2Denclave.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%26r%
-> 3DV_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-
-> b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DC67hc24yMATzUglvGvywzpn0Efjurb6sOLm2V_9VpsI%
-> 26e%3D&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7C5acd31c1cfc146
-> 61861c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C
-> 0%7C638572450920577297%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
-> wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C
-> %7C%7C&sdata=3DFvSTP3MVF%2BSghK36fmJ8u%2FySJ80DP7VQjNYAytj9gws
-> %3D&reserved=3D0
-> <https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Furld
-> efense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-3A__github.com_nxp-
-> 2Dimx_imx-2Dsecure-
-> 2Denclave.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%26r%
-> 3DV_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-
-> b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DC67hc24yMATzUglvGvywzpn0Efjurb6sOLm2V_9VpsI%
-> 26e%3D&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7C5acd31c1cfc146
-> 61861c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C
-> 0%7C638572450920582198%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
-> wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C
-> %7C%7C&sdata=3D%2Fb342eydDBBpn451JY9h36udCBWaJmzMbMOQcJHWI%
-> 2BQ%3D&reserved=3D0>,
-> > +
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Furlde=
-f
-> ense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-3A__github.com_nxp-
-> 2Dimx_imx-
-> 2Dsmw.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%26r%3D
-> V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-
-> b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DNACAFfnEzGKFI7FlqdL4kxlt8PtxeXRorc3IWanqgtY%26e
-> %3D&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7C5acd31c1cfc146618
-> 61c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7
-> C638572450920586967%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLj
-> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C
-> %7C&sdata=3DsXtVRno2qOn6aGvIr2HpJrB0WbhexELpRMNQE8JPUxY%3D&res
-> erved=3D0
-> <https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Furld
-> efense.proofpoint.com%2Fv2%2Furl%3Fu%3Dhttps-3A__github.com_nxp-
-> 2Dimx_imx-
-> 2Dsmw.git%26d%3DDwICaQ%26c%3DnKjWec2b6R0mOyPaz7xtfQ%26r%3D
-> V_GK7jRuCHDErm6txmgDK1-MbUihtnSQ3gPgB-A-
-> JKU%26m%3Dhqz6ztDhob0jujItfaaf7PHhtqSHj4aoWie1-
-> b4nAGXTUrSyBQtV9W-
-> WqLaM_utz%26s%3DNACAFfnEzGKFI7FlqdL4kxlt8PtxeXRorc3IWanqgtY%26e
-> %3D&data=3D05%7C02%7Cpankaj.gupta%40nxp.com%7C5acd31c1cfc146618
-> 61c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7
-> C638572450920591699%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLj
-> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C
-> %7C&sdata=3DXVI6X7w5FBckyuDIklwBvWTvYQ69GJPvR%2FnIvgyWulU%3D&r
-> eserved=3D0>
-> > +             crypto/skcipher,
-> > +             drivers/nvmem/imx-ocotp-ele.c
-> > diff --git a/drivers/firmware/imx/ele_common.c
-> > b/drivers/firmware/imx/ele_common.c
-> > index 3a6584d6f6f2..8167ae201b83 100644
-> > --- a/drivers/firmware/imx/ele_common.c
-> > +++ b/drivers/firmware/imx/ele_common.c
-> > @@ -78,6 +78,149 @@ int ele_msg_send_rcv(struct se_if_priv *priv, void
-> *tx_msg, void *rx_msg)
-> >       return err;
-> >    }
-> >
-> > +int ele_miscdev_msg_rcv(struct se_if_device_ctx *dev_ctx,
-> > +                     void *rx_buf,
-> > +                     int rx_buf_sz)
-> > +{
-> > +     struct se_msg_hdr *header;
-> > +     int err;
-> > +
-> > +     err =3D wait_event_interruptible(dev_ctx->wq, dev_ctx->pending_hd=
-r !=3D 0);
-> > +     if (err) {
-> > +             dev_err(dev_ctx->dev,
-> > +                     "%s: Err[0x%x]:Interrupted by signal.\n",
-> > +                     dev_ctx->miscdev.name, err);
-> > +             goto exit;
-> > +     }
-> > +
-> > +     header =3D (struct se_msg_hdr *) dev_ctx->temp_resp;
-> > +
-> > +     if (header->tag =3D=3D dev_ctx->priv->rsp_tag) {
-> > +             if (dev_ctx->priv->waiting_rsp_dev && dev_ctx->priv-
-> >waiting_rsp_dev !=3D dev_ctx) {
-> > +                     dev_warn(dev_ctx->dev,
-> > +                     "Dev-ctx waiting for response mismatch (%s !=3D %=
-s).\n",
-> > +                     dev_ctx->miscdev.name, dev_ctx->priv->waiting_rsp=
-_dev-
-> >miscdev.name);
-> > +                     err =3D -EPERM;
-> > +                     goto exit;
-> > +             }
-> > +     }
-> > +
-> > +     dev_dbg(dev_ctx->dev,
-> > +             "%s: %s %s\n",
-> > +             dev_ctx->miscdev.name,
-> > +             __func__,
-> > +             "message received, start transmit to user");
-> > +
-> > +     /*
-> > +      * Check that the size passed as argument is larger than
-> > +      * the one carried in the message.
-> > +      *
-> > +      * In case of US-command/response, the dev_ctx->temp_resp_size
-> > +      * is set before sending the command.
-> > +      *
-> > +      * In case of NVM Slave-command/response, the dev_ctx-
-> >temp_resp_size
-> > +      * is set after receing the message from mailbox.
-> > +      */
-> > +     if (dev_ctx->temp_resp_size > rx_buf_sz) {
-> > +             dev_err(dev_ctx->dev,
-> > +                     "%s: User buffer too small (%d < %d)\n",
-> > +                     dev_ctx->miscdev.name,
-> > +                     rx_buf_sz, dev_ctx->temp_resp_size);
-> > +              dev_ctx->temp_resp_size =3D rx_buf_sz;
-> > +     }
-> > +
-> > +     /* We may need to copy the output data to user before
-> > +      * delivering the completion message.
-> > +      */
-> > +     err =3D se_dev_ctx_cpy_out_data(dev_ctx, true);
-> > +     if (err < 0)
-> > +             goto exit;
-> > +
-> > +     /* Copy data from the buffer */
-> > +     print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4,
-> > +                          dev_ctx->temp_resp, dev_ctx->temp_resp_size,=
- false);
-> > +     if (copy_to_user(rx_buf, dev_ctx->temp_resp, dev_ctx-
-> >temp_resp_size)) {
-> > +             dev_err(dev_ctx->dev,
-> > +                     "%s: Failed to copy to user\n",
-> > +                     dev_ctx->miscdev.name);
-> > +             err =3D -EFAULT;
-> > +             goto exit;
-> > +     }
-> > +
-> > +     err =3D dev_ctx->temp_resp_size;
-> > +exit:
-> > +     if (err < 0)
-> > +             se_dev_ctx_cpy_out_data(dev_ctx, false);
-> > +
-> > +     /* free memory allocated on the shared buffers. */
-> > +     dev_ctx->secure_mem.pos =3D 0;
-> > +     dev_ctx->non_secure_mem.pos =3D 0;
-> > +
-> > +     dev_ctx->pending_hdr =3D 0;
-> > +     se_dev_ctx_shared_mem_cleanup(dev_ctx);
-> > +
-> > +     return err;
-> > +}
-> > +
-> > +int ele_miscdev_msg_send(struct se_if_device_ctx *dev_ctx,
-> > +                      void *tx_msg, int tx_msg_sz) {
-> > +     struct se_if_priv *priv =3D dev_ctx->priv;
-> > +     struct se_msg_hdr *header;
-> > +     u32 size_to_send;
-> > +     int err;
-> > +
-> > +     header =3D (struct se_msg_hdr *) tx_msg;
-> > +
-> > +     /*
-> > +      * Check that the size passed as argument matches the size
-> > +      * carried in the message.
-> > +      */
-> > +     size_to_send =3D header->size << 2;
-> > +
-> > +     if (size_to_send !=3D tx_msg_sz) {
-> > +             err =3D -EINVAL;
-> > +             dev_err(priv->dev,
-> > +                     "%s: User buf hdr(0x%x) sz mismatced with input-s=
-z
-> (%d !=3D %d).\n",
-> > +                     dev_ctx->miscdev.name, *(u32 *)header, size_to_se=
-nd,
-> tx_msg_sz);
-> > +             goto exit;
-> > +     }
-> > +
-> > +     /* Check the message is valid according to tags */
-> > +     if (header->tag =3D=3D priv->rsp_tag) {
-> > +             /* Check the device context can send the command */
-> > +             if (dev_ctx !=3D priv->cmd_receiver_dev) {
-> > +                     dev_err(priv->dev,
-> > +                             "%s: Channel not configured to send resp =
-to FW.",
-> > +                             dev_ctx->miscdev.name);
-> > +                     err =3D -EPERM;
-> > +                     goto exit;
-> > +             }
-> > +     } else if (header->tag =3D=3D priv->cmd_tag) {
-> > +             if (priv->waiting_rsp_dev !=3D dev_ctx) {
-> > +                     dev_err(priv->dev,
-> > +                             "%s: Channel not configured to send cmd t=
-o FW.",
-> > +                             dev_ctx->miscdev.name);
-> > +                     err =3D -EPERM;
-> > +                     goto exit;
-> > +             }
-> > +             lockdep_assert_held(&priv->se_if_cmd_lock);
-> > +     } else {
-> > +             dev_err(priv->dev,
-> > +                     "%s: The message does not have a valid TAG\n",
-> > +                     dev_ctx->miscdev.name);
-> > +             err =3D -EINVAL;
-> > +             goto exit;
-> > +     }
-> > +     err =3D ele_msg_send(priv, tx_msg);
-> > +     if (err < 0)
-> > +             goto exit;
-> > +
-> > +     err =3D size_to_send;
-> > +exit:
-> > +     return err;
-> > +}
-> > +
-> >    static bool exception_for_size(struct se_if_priv *priv,
-> >                               struct se_msg_hdr *header)
-> >    {
-> > @@ -99,6 +242,7 @@ static bool exception_for_size(struct se_if_priv *pr=
-iv,
-> >    void se_if_rx_callback(struct mbox_client *mbox_cl, void *msg)
-> >    {
-> >       struct device *dev =3D mbox_cl->dev;
-> > +     struct se_if_device_ctx *dev_ctx;
-> >       struct se_if_priv *priv;
-> >       struct se_msg_hdr *header;
-> >       u32 rx_msg_sz;
-> > @@ -114,8 +258,50 @@ void se_if_rx_callback(struct mbox_client
-> *mbox_cl, void *msg)
-> >       header =3D msg;
-> >       rx_msg_sz =3D header->size << 2;
-> >
-> > -     if (header->tag =3D=3D priv->rsp_tag) {
-> > -             if (!priv->waiting_rsp_dev) {
-> > +     /* Incoming command: wake up the receiver if any. */
-> > +     if (header->tag =3D=3D priv->cmd_tag) {
-> > +             dev_dbg(dev, "Selecting cmd receiver\n");
-> > +             dev_ctx =3D priv->cmd_receiver_dev;
-> > +             /* Pre-allocated buffer of MAX_NVM_MSG_LEN
-> > +              * as the NVM command are initiated by FW.
-> > +              * Size is revealed as part of this call function.
-> > +              */
-> > +             if (rx_msg_sz > MAX_NVM_MSG_LEN) {
-> > +                     dev_err(dev,
-> > +                             "%s: Msg recvd hdr(0x%x) with greater[%d]=
- than allocated
-> buf-sz.\n",
-> > +                             dev_ctx->miscdev.name,
-> > +                             *(u32 *) header,
-> > +                             rx_msg_sz);
-> > +             } else
-> > +                     memcpy(dev_ctx->temp_resp, msg, rx_msg_sz);
->=20
-> It is categorically stated (in the Linux kernel coding style guide) that =
-this rule
-> does not apply if only one branch of a conditional statement consists of =
-a
-> single statement. In such cases, you should categorically use braces for =
-both
-> branches of the conditional statement:
->=20
-> if (condition) {
->          do_this();
->          do_that();
-> } else {
->          otherwise();
-> }
+> 
+> Rob
+> 
 
-Checkpatch.pl donot throw either warning or error, for this.
-
-Adding the braces to else, do not throw error or warning, either.
-
-Thus, will add this change.=20
-
->=20
-> Also, made a similar comment on the earlier version (v5) as well:
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatch
-> work.kernel.org%2Fproject%2Fimx%2Fpatch%2F20240712-imx-se-if-v5-4-
-> 66a79903a872%40nxp.com%2F&data=3D05%7C02%7Cpankaj.gupta%40nxp.c
-> om%7C5acd31c1cfc14661861c08dcaa42c232%7C686ea1d3bc2b4c6fa92cd
-> 99c5c301635%7C0%7C0%7C638572450920596406%7CUnknown%7CTWF
-> pbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJX
-> VCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DnnkWdELMd%2BaYqAcqFoeTaSOib
-> VnSoMBegxXsn8PMePc%3D&reserved=3D0
->=20
-> Thanks
-> -Amit
->=20
+-- 
+Regards,
+Liu Ying
 
