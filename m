@@ -1,103 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lx20.hoststar.hosting (lx20.hoststar.hosting [168.119.41.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D312F32;
-	Tue, 23 Jul 2024 02:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B3513CF85;
+	Tue, 23 Jul 2024 06:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.41.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721703073; cv=none; b=hh4/yCTZjiNS8WkI9rnzlSPtJALOG6zERE0Lw6cCInCxXafISWzGWDINfQBLgspD5AFZJHPgiJnEfnMFd4X3iXJmbWyRf67ieeflvfSXRSnALB5ezfKHFV6LMPJ8IlzE48sp4X/oIjWlzWFHEal6j3IdHdyhWAD8YKxlObIemSs=
+	t=1721717485; cv=none; b=DvKvCjDDObCI2kA9c34OoI3pSd+uVDhEeQNWP9xIoGkUB/cdV0WRB2+jAS7MAyX3Fp215tYkGFcPbTnRoaILa2H7Zlt4A7jSg5/Yp0ZoW9Z208eJ7dctCl7x7t+QdjHbcqR1dPxjI9juutY4/s0K7kxoCbNmNj2mC4ZXDr331Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721703073; c=relaxed/simple;
-	bh=8f4JRcrwXHy++9/5/z8Qgm+dkVwDQLC/tLAYNCJRVqI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HN9t0DCZQbn2aL+IqsZITpQdHcJOZwiZn8tA58SG54se38BytyKZPY78U7l5BZs3RIMXf7km4sIUZgib3T+4ThsWAuBm+QSscvfU+CgSbGbeKBs+mkQtRtllXJc1rwWnelwhcNCKsYM3yAPmGpKxASV9Rt3u8PCIrPLlr+0qZuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4bcjXKl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721717485; c=relaxed/simple;
+	bh=hzm4zDypja5gz5Itp4dPQP3GWgVYqyypukzntSlys8k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=khTMetBGD03QS+77Al1sBVZLpOhM+jWCkB2ZB6ctz2VWBsnOBMZVyRtBbErs/dLCOTrm82Hs5bZ7X+ItPZa4fjr405hU3PXQeaeoaEMVC89t72IXNFiV8IBZlpXss0C6CGxHb+n1b6q5FyoMgUZdAxvb1scWexywcaG/tWMk/v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emfend.at; spf=pass smtp.mailfrom=emfend.at; dkim=pass (1024-bit key) header.d=emfend.at header.i=@emfend.at header.b=Yptz1zD/; arc=none smtp.client-ip=168.119.41.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emfend.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emfend.at
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4bcjXKl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD138C116B1;
-	Tue, 23 Jul 2024 02:51:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721703073;
-	bh=8f4JRcrwXHy++9/5/z8Qgm+dkVwDQLC/tLAYNCJRVqI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I4bcjXKlbq3vK4A9Yxj2HSavSoovc0HlmseEJt4vDSZcNzer0SiJ/s+E9VTqaUbrU
-	 LaLyhBgjeNWPjj3LUSmxQik0aF/cd9dq5919wLw4/zkF8Eu9Ysu0/bOv59SmU6QiVH
-	 453v6jicu2ak8/Bs74njb+yZEFa9g/mLr7Gd6bdBVjiViXztkcgwPI49ZQA96gYLOg
-	 gdtKUzDyjLRSZy8dMXbRB91A8T0VqgsU2jUO512Ze/v8TBsW4rIXXyK79mvQqYmwyx
-	 JdTiOUdOECE+H9EelMvQYBUQMkjJ1f76XM9wzJDhBR18sfLqrgnzERxBV4jkYuk38/
-	 3TSKVzFGpi6qA==
-Date: Mon, 22 Jul 2024 20:51:10 -0600
-From: Rob Herring <robh@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	gregkh@linuxfoundation.org, peter.chen@kernel.org,
-	herve.codina@bootlin.com, linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-	jun.li@nxp.com
-Subject: Re: [PATCH 3/6] dt-bindings: phy: mxs-usb-phy: add nxp,sim property
-Message-ID: <20240723025110.GA199927-robh@kernel.org>
-References: <20240718102637.3964232-1-xu.yang_2@nxp.com>
- <20240718102637.3964232-3-xu.yang_2@nxp.com>
+	dkim=pass (1024-bit key) header.d=emfend.at header.i=@emfend.at header.b="Yptz1zD/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at;
+	 s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:
+	To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=g/eLgGJborLiVboZJO/DPw/dEglaiSY/mbEUz91hDyw=; b=Yptz1zD/1a/yBelKDILByZsYDb
+	+c2Qk0o2skekmKL/7VPC6wMj3voimqse9pEtUyNCHTnwFT7pJ0dFRbXVbf3DoHEBrdA+yyr2MWPJ/
+	gRler5xstujk3R1EumGUkRdP6b+g0MFVwyr/shWeEeTE3d8e6qHpp0QkjURT9pqu6tRo=;
+Received: from 194-208-208-245.tele.net ([194.208.208.245]:52751 helo=localhost.localdomain)
+	by lx20.hoststar.hosting with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <matthias.fend@emfend.at>)
+	id 1sW8i0-007mSg-4d; Tue, 23 Jul 2024 08:09:12 +0200
+From: Matthias Fend <matthias.fend@emfend.at>
+To: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] media: imx-mipi-csis: avoid logging while holding spinlock
+Date: Tue, 23 Jul 2024 08:09:08 +0200
+Message-Id: <20240723060909.534584-1-matthias.fend@emfend.at>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240718102637.3964232-3-xu.yang_2@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: 
+X-Spam-Bar: 
+X-Spam-Report: 
 
-On Thu, Jul 18, 2024 at 06:26:34PM +0800, Xu Yang wrote:
-> i.MX7ULP need properly set System Integration Module(SIM) module to make
-> usb wakeup work well. This will add a "nxp,sim" property.
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  .../devicetree/bindings/phy/fsl,mxs-usbphy.yaml    | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/fsl,mxs-usbphy.yaml b/Documentation/devicetree/bindings/phy/fsl,mxs-usbphy.yaml
-> index f4b1ca2fb562..2141f271f8f1 100644
-> --- a/Documentation/devicetree/bindings/phy/fsl,mxs-usbphy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/fsl,mxs-usbphy.yaml
-> @@ -87,6 +87,12 @@ properties:
->      maximum: 119
->      default: 100
->  
-> +  nxp,sim:
-> +    description:
-> +      The system integration module (SIM) provides system control and chip
-> +      configuration registers.
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +
->  required:
->    - compatible
->    - reg
-> @@ -110,6 +116,14 @@ allOf:
->        required:
->          - fsl,anatop
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: fsl,imx7ulp-usbphy
-> +    then:
-> +      required:
-> +        - nxp,sim
+Refactor mipi_csis_log_counters() to prevent calling dev_info() while
+IRQs are disabled. This reduces crucial IRQs off time to a bare minimum.
 
-       else:
-         properties:
-           nxp,sim: false
+Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+---
+ drivers/media/platform/nxp/imx-mipi-csis.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+index f49b06978f14..0c34d316ed29 100644
+--- a/drivers/media/platform/nxp/imx-mipi-csis.c
++++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+@@ -857,18 +857,21 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
+ {
+ 	unsigned int num_events = non_errors ? MIPI_CSIS_NUM_EVENTS
+ 				: MIPI_CSIS_NUM_EVENTS - 8;
++	unsigned int counters[MIPI_CSIS_NUM_EVENTS];
+ 	unsigned long flags;
+ 	unsigned int i;
+ 
+ 	spin_lock_irqsave(&csis->slock, flags);
++	for (i = 0; i < num_events; ++i)
++		counters[i] =  csis->events[i].counter;
++	spin_unlock_irqrestore(&csis->slock, flags);
+ 
+ 	for (i = 0; i < num_events; ++i) {
+-		if (csis->events[i].counter > 0 || csis->debug.enable)
++		if (counters[i] > 0 || csis->debug.enable)
+ 			dev_info(csis->dev, "%s events: %d\n",
+ 				 csis->events[i].name,
+-				 csis->events[i].counter);
++				 counters[i]);
+ 	}
+-	spin_unlock_irqrestore(&csis->slock, flags);
+ }
+ 
+ static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
+-- 
+2.25.1
 
-> +
->  additionalProperties: false
->  
->  examples:
-> -- 
-> 2.34.1
-> 
