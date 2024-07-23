@@ -1,263 +1,295 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21945153800;
-	Tue, 23 Jul 2024 14:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D39154454
+	for <imx@lists.linux.dev>; Tue, 23 Jul 2024 14:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721743702; cv=none; b=NwzIZTFUpTU2jrI4oysIL1u9qdjnG9gBEKC0Jd7tYF47uqWGMDYpT1cf9K2L3X0ZFnlMDMFca3fXPZNH0NjiDxiM5gm28FzlhOSFnHcsI6Z49ic/ErLATyCXO6PiNNRp9BnUKCJZfyRYIb+2nEkVbSwpveeb3u2RlrnsFIlqUeY=
+	t=1721744458; cv=none; b=VEySEqjaAFu2jPhlbprkgHh2FsLf0X65PJg4QPbMgE142HNjjAEesVBASq5QB3vF9xbbenPabTv4VihaEoO9q4sP6GJHQKdZ3j5Oh13lzI9vuDGmGbSBPePL/Tf2kaa2a5aHLHdmCrSKauUyWQp9tpddjYtVnXi435SN7amijYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721743702; c=relaxed/simple;
-	bh=rIR6ptMSospz1fBXm3NdOc/NDWzLkQ7d8uaI/p2zgvs=;
+	s=arc-20240116; t=1721744458; c=relaxed/simple;
+	bh=i12Xm/Li3GL40njshAMHceCt7UZ0nD8ZBeTSiCRmf0U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jgKusE9Y+A01ezD0WYHQl0uXF3KH69Yzy0JJZXZi9INpMOANsp5QBU16Nj6Cliuzd22nE0hU6Ni6jYLG/edxhRaf4NcqbEbXIJlb6AjZEmSDfE2i25ahqx0CLFPC4cW99QvEQKoyJ77/GTrfHXI3/bbYOWA94oJMKseYMTGtwvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8iOCGcg; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8iOCGcg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033A9C4AF0A;
-	Tue, 23 Jul 2024 14:08:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721743702;
-	bh=rIR6ptMSospz1fBXm3NdOc/NDWzLkQ7d8uaI/p2zgvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J8iOCGcg/qL2HCfhahlZnvGRqWZNwaDk2N/N4zh/0cSy5XZ4yWFYIstWkt55VQsNh
-	 klFDOMaEkL7gVEG+JpVAjeOfWk8afIbNjGErk1QJ+Agi9GmSxJK6PoxFaILOHmvWst
-	 gNcSXRfHViqpM3OXE9+NYSqtYpJaFLiGIeY22UMmdt5x6NjL9IaetJ7B1Uxn8h//y9
-	 JFfj1xzKZZzlbjmIZuAjzHt+jKRNmnyOq1jyDJHjb88a3Hf5H40J91oqOVKuFm5M5W
-	 ziUyEsdK2fdsbRdgF1EUv78pTWOCIZP4vMcYs6T0h8GayaX7dKhKLwCdjAHgRBEbhF
-	 mhtjAfYLx+taA==
-Date: Tue, 23 Jul 2024 15:08:16 +0100
-From: Conor Dooley <conor@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=B08OX8k5VDa8Zz2gHUs8x+xp0eWT8h0TzEPCQKUhqK9xTSDDFjaOmj+wCNFit7CkXHHcu6HmDuh3lGXVKD83fJ6DkkwvHC1Oln4IhPU+BuRprzT/bReEsTxoXmilvCe4WgkUsTC8VIIpvjanpHTWqZuWHVZXdA1f1Unt0Kph7A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sWGNV-0008Px-90; Tue, 23 Jul 2024 16:20:33 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sWGNU-001df0-Hm; Tue, 23 Jul 2024 16:20:32 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sWGNU-00DTyT-1O;
+	Tue, 23 Jul 2024 16:20:32 +0200
+Date: Tue, 23 Jul 2024 16:20:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Pankaj Gupta <pankaj.gupta@nxp.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add imx-se-fw
- binding doc
-Message-ID: <20240723-smitten-shower-1d15c0f3cf97@spud>
+	Rob Herring <robh+dt@kernel.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v6 5/5] firmware: imx: adds miscdev
+Message-ID: <Zp-8MPdWdAhGG9de@pengutronix.de>
 References: <20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com>
- <20240722-imx-se-if-v6-2-ee26a87b824a@nxp.com>
- <20240722-popper-comfort-7538ea70c77b@spud>
- <AM9PR04MB8604123E065315093347F66C95A92@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Jzq89wAQ2QEgaltg"
-Content-Disposition: inline
-In-Reply-To: <AM9PR04MB8604123E065315093347F66C95A92@AM9PR04MB8604.eurprd04.prod.outlook.com>
-
-
---Jzq89wAQ2QEgaltg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240722-imx-se-if-v6-5-ee26a87b824a@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Jul 23, 2024 at 09:28:31AM +0000, Pankaj Gupta wrote:
->=20
-> > -----Original Message-----
-> > From: Conor Dooley <conor@kernel.org>
-> > Sent: Monday, July 22, 2024 10:20 PM
-> > To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>;
-> > Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> > <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Rob
-> > Herring <robh+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
-> > linux-arm-kernel@lists.infradead.org
-> > Subject: [EXT] Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add imx-se-fw =
-binding
-> > doc
+Hi Pankaj,
 
-Please fix this ^
+On Mon, Jul 22, 2024 at 10:21:40AM +0530, Pankaj Gupta wrote:
+> +static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
+> +					    u64 arg)
+> +{
+> +	struct se_if_priv *priv = dev_get_drvdata(dev_ctx->dev);
+> +	struct se_ioctl_cmd_snd_rcv_rsp_info cmd_snd_rcv_rsp_info;
+> +	struct se_api_msg *tx_msg __free(kfree) = NULL;
+> +	struct se_api_msg *rx_msg __free(kfree) = NULL;
+> +	int err = 0;
+> +
+> +	if (copy_from_user(&cmd_snd_rcv_rsp_info, (u8 *)arg,
+> +			   sizeof(cmd_snd_rcv_rsp_info))) {
+> +		dev_err(dev_ctx->priv->dev,
+> +			"%s: Failed to copy cmd_snd_rcv_rsp_info from user\n",
+> +			dev_ctx->miscdev.name);
+> +		err = -EFAULT;
+> +		goto exit;
+> +	}
+> +
+> +	if (cmd_snd_rcv_rsp_info.tx_buf_sz < SE_MU_HDR_SZ) {
+> +		dev_err(dev_ctx->priv->dev,
+> +			"%s: User buffer too small(%d < %d)\n",
+> +			dev_ctx->miscdev.name,
+> +			cmd_snd_rcv_rsp_info.tx_buf_sz,
+> +			SE_MU_HDR_SZ);
+> +		err = -ENOSPC;
+> +		goto exit;
+> +	}
+> +
+> +	rx_msg = kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		err = -ENOMEM;
+> +		goto exit;
+> +	}
+> +
+> +	tx_msg = memdup_user(cmd_snd_rcv_rsp_info.tx_buf,
+> +			     cmd_snd_rcv_rsp_info.tx_buf_sz);
+> +	if (IS_ERR(tx_msg)) {
+> +		err = PTR_ERR(tx_msg);
+> +		goto exit;
+> +	}
+> +
+> +	if (tx_msg->header.tag != priv->cmd_tag) {
+> +		err = -EINVAL;
+> +		goto exit;
+> +	}
+> +
+> +	guard(mutex)(&priv->se_if_cmd_lock);
+> +	priv->waiting_rsp_dev = dev_ctx;
+> +	dev_ctx->temp_resp_size = cmd_snd_rcv_rsp_info.rx_buf_sz;
+> +
+> +	/* Device Context that is assigned to be a
+> +	 * FW's command receiver, has pre-allocated buffer.
+> +	 */
+> +	if (dev_ctx != priv->cmd_receiver_dev)
+> +		dev_ctx->temp_resp = rx_msg;
+> +
+> +	err = ele_miscdev_msg_send(dev_ctx,
+> +				   tx_msg,
+> +				   cmd_snd_rcv_rsp_info.tx_buf_sz);
+> +	if (err < 0)
+> +		goto exit;
+> +
+> +	cmd_snd_rcv_rsp_info.tx_buf_sz = err;
+> +
+> +	err = ele_miscdev_msg_rcv(dev_ctx,
+> +				  cmd_snd_rcv_rsp_info.rx_buf,
+> +				  cmd_snd_rcv_rsp_info.rx_buf_sz);
 
-> >=20
-> > On Mon, Jul 22, 2024 at 10:21:37AM +0530, Pankaj Gupta wrote:
-> > > The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
-> > > creates an embedded secure enclave within the SoC boundary to enable
-> > > features like:
-> > > - HSM
-> > > - SHE
-> > > - V2X
-> > >
-> > > Secure-Enclave(s) communication interface are typically via message
-> > > unit, i.e., based on mailbox linux kernel driver. This driver enables
-> > > communication ensuring well defined message sequence protocol between
-> > > Application Core and enclave's firmware.
-> > >
-> > > Driver configures multiple misc-device on the MU, for multiple
-> > > user-space applications, to be able to communicate over single MU.
-> > >
-> > > It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
-> > >
-> > > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/firmware/fsl,imx-se.yaml   | 91
-> > ++++++++++++++++++++++
-> > >  1 file changed, 91 insertions(+)
-> > >
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> > > b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> > > new file mode 100644
-> > > index 000000000000..7511d0e9cf98
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/firmware/fsl,imx-se.yaml
-> > > @@ -0,0 +1,91 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/firmware/fsl,imx-se.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: NXP i.MX HW Secure Enclave(s) EdgeLock Enclave
-> > > +
-> > > +maintainers:
-> > > +  - Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > +
-> > > +description: |
-> > > +  NXP's SoC may contain one or multiple embedded secure-enclave HW
-> > > +  IP(s) like i.MX EdgeLock Enclave, V2X etc. These NXP's HW IP(s)
-> > > +  enables features like
-> > > +    - Hardware Security Module (HSM),
-> > > +    - Security Hardware Extension (SHE), and
-> > > +    - Vehicular to Anything (V2X)
-> > > +
-> > > +  Communication interface to the secure-enclaves(se) is based on the
-> > > + messaging unit(s).
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - fsl,imx8ulp-se
-> > > +      - fsl,imx93-se
-> > > +      - fsl,imx95-se
-> > > +
-> > > +  mboxes:
-> > > +    items:
-> > > +      - description: mailbox phandle to send message to se firmware
-> > > +      - description: mailbox phandle to receive message from se
-> > > + firmware
-> > > +
-> > > +  mbox-names:
-> > > +    items:
-> > > +      - const: tx
-> > > +      - const: rx
-> > > +
-> > > +  memory-region:
-> > > +    maxItems: 1
-> > > +
-> > > +  sram:
-> > > +    maxItems: 1
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - mboxes
-> > > +  - mbox-names
-> > > +
-> > > +allOf:
-> > > +  # memory-region
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            enum:
-> > > +              - fsl,imx8ulp-se
-> > > +              - fsl,imx93-se
-> > > +    then:
-> > > +      required:
-> > > +        - memory-region
-> > > +    else:
-> > > +      properties:
-> > > +        memory-region: false
-> > > +
-> > > +  # sram
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            enum:
-> > > +              - fsl,imx8ulp-se
-> > > +    then:
-> > > +      required:
-> > > +        - sram
-> > > +
-> > > +    else:
-> > > +      properties:
-> > > +        sram: false
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    senclave-firmware {
-> >=20
-> > Last revision this was "firmware", but now you've got something that ap=
-pears
-> > non-generic. Why did you change it?=20
->=20
-> In case you missed, there was a previous email requesting your view on th=
-is change.
-> Having node as "firmware {", is very generic that has wide interpretation.
-> Hence, replaced firmware with "senclave-firmware".
+Ok, here you now have serialized sending and receiving messages,
 
-Which I came across after reading the updated series. If you ask me for
-my opinion on something, just wait til I reply to you before sending
-another version.
+With this you no longer need priv->waiting_rsp_dev, dev_ctx->temp_resp
+and dev_ctx->temp_resp_size. Drop these for further cleanup.
 
-> Why "senclave"?
-> Like sram, for secure RAM, I proposed senclave for secure enclave.
->=20
->=20
-> Moreover, there are plenty of examples of YAML(s), that were already comm=
-itted; that are using this:
-> linux_bkp$:> find Documentation/ -name "*.yaml" | xargs grep -r "\-firmwa=
-re {"
+> +}
+> +
+> +static int se_ioctl_get_mu_info(struct se_if_device_ctx *dev_ctx,
+> +				u64 arg)
+> +{
+> +	struct se_if_priv *priv = dev_get_drvdata(dev_ctx->dev);
+> +	struct se_if_node_info *if_node_info;
+> +	struct se_ioctl_get_if_info info;
+> +	int err = 0;
+> +
+> +	if_node_info = (struct se_if_node_info *)priv->info;
+> +
+> +	info.se_if_id = if_node_info->se_if_id;
+> +	info.interrupt_idx = 0;
+> +	info.tz = 0;
+> +	info.did = if_node_info->se_if_did;
+> +	info.cmd_tag = if_node_info->cmd_tag;
+> +	info.rsp_tag = if_node_info->rsp_tag;
+> +	info.success_tag = if_node_info->success_tag;
+> +	info.base_api_ver = if_node_info->base_api_ver;
+> +	info.fw_api_ver = if_node_info->fw_api_ver;
 
-Just because something got in before doesn't mean it should now.
+This really shouldn't be here. You pass cmd_tag and rsp_tag to userspace
+just to guide userspace how to construct a message.
 
-> Documentation/devicetree/bindings/crypto/xlnx,zynqmp-aes.yaml:      zynqm=
-p_firmware: zynqmp-firmware {
-> Documentation/devicetree/bindings/fpga/xlnx,zynqmp-pcap-fpga.yaml:      z=
-ynqmp_firmware: zynqmp-firmware {
-> Documentation/devicetree/bindings/gpio/xlnx,zynqmp-gpio-modepin.yaml:    =
-zynqmp-firmware {
->  And more...
->=20
-> If you any other suggested word to pre-fix , that narrows down this broad=
- referenced word "firmware".
+This shows that the messages should be constructed in the Kernel rather
+than in userspace. Just pass the message content from userspace to the
+kernel and let the kernel build the message on the sender side.
 
-> Please suggest.
+> +/* IOCTL entry point of a character device */
+> +static long se_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+> +{
+> +	struct se_if_device_ctx *dev_ctx = container_of(fp->private_data,
+> +							struct se_if_device_ctx,
+> +							miscdev);
+> +	struct se_if_priv *se_if_priv = dev_ctx->priv;
+> +	int err = -EINVAL;
+> +
+> +	/* Prevent race during change of device context */
+> +	if (down_interruptible(&dev_ctx->fops_lock))
+> +		return -EBUSY;
+> +
+> +	switch (cmd) {
+> +	case SE_IOCTL_ENABLE_CMD_RCV:
+> +		if (!se_if_priv->cmd_receiver_dev) {
+> +			err = 0;
+> +			se_if_priv->cmd_receiver_dev = dev_ctx;
+> +			dev_ctx->temp_resp = kzalloc(MAX_NVM_MSG_LEN, GFP_KERNEL);
+> +			if (!dev_ctx->temp_resp)
+> +				err = -ENOMEM;
+> +		}
 
- I already did:
-> > The normal differentiator for multiple
-> > nodes is -[0-9]*, why can't you use that, if you're worried about multi=
-ple
-> > nodes?
-> Thanks Conor, for the suggestion this. Will use this. Thanks.
+cmd_receiver_dev isn't locked by anything, still it can be accessed by
+different userspace processes.
 
---Jzq89wAQ2QEgaltg
-Content-Type: application/pgp-signature; name="signature.asc"
+Besides, when already another instance is configured for receiving
+commands I would expect an -EBUSY here instead of silently ignoring the
+ioctl.
 
------BEGIN PGP SIGNATURE-----
+> +		break;
+> +	case SE_IOCTL_GET_MU_INFO:
+> +		err = se_ioctl_get_mu_info(dev_ctx, arg);
+> +		break;
+> +	case SE_IOCTL_SETUP_IOBUF:
+> +		err = se_ioctl_setup_iobuf_handler(dev_ctx, arg);
+> +		break;
+> +	case SE_IOCTL_GET_SOC_INFO:
+> +		err = se_ioctl_get_se_soc_info_handler(dev_ctx, arg);
+> +		break;
+> +	case SE_IOCTL_CMD_SEND_RCV_RSP:
+> +		err = se_ioctl_cmd_snd_rcv_rsp_handler(dev_ctx, arg);
+> +		break;
+> +
+> +	default:
+> +		err = -EINVAL;
+> +		dev_dbg(se_if_priv->dev,
+> +			"%s: IOCTL %.8x not supported\n",
+> +				dev_ctx->miscdev.name,
+> +				cmd);
+> +	}
+> +
+> +	up(&dev_ctx->fops_lock);
+> +	return (long)err;
+> +}
+> +
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZp+5UAAKCRB4tDGHoIJi
-0q7tAQCPrTH8oQp81LnUqAxW0aIBbOmWOERuWjwoAeRPTg11oAEAuQZuN8bt6s/u
-opD9Ek20yVXFya29Hbn2nTmfXQ0skAU=
-=l8OU
------END PGP SIGNATURE-----
+...
 
---Jzq89wAQ2QEgaltg--
+> +static int init_device_context(struct se_if_priv *priv)
+> +{
+> +	const struct se_if_node_info *info = priv->info;
+> +	struct se_if_device_ctx *dev_ctx;
+> +	u8 *devname;
+> +	int ret = 0;
+> +	int i;
+> +
+> +	priv->ctxs = devm_kzalloc(priv->dev, sizeof(dev_ctx) * priv->max_dev_ctx,
+> +				  GFP_KERNEL);
+> +
+> +	if (!priv->ctxs) {
+> +		ret = -ENOMEM;
+> +		return ret;
+> +	}
+> +
+> +	/* Create users */
+> +	for (i = 0; i < priv->max_dev_ctx; i++) {
+> +		dev_ctx = devm_kzalloc(priv->dev, sizeof(*dev_ctx), GFP_KERNEL);
+> +		if (!dev_ctx) {
+> +			ret = -ENOMEM;
+> +			return ret;
+> +		}
+> +
+> +		dev_ctx->dev = priv->dev;
+> +		dev_ctx->status = SE_IF_CTX_FREE;
+> +		dev_ctx->priv = priv;
+> +
+> +		priv->ctxs[i] = dev_ctx;
+> +
+> +		/* Default value invalid for an header. */
+> +		init_waitqueue_head(&dev_ctx->wq);
+> +
+> +		INIT_LIST_HEAD(&dev_ctx->pending_out);
+> +		INIT_LIST_HEAD(&dev_ctx->pending_in);
+> +		sema_init(&dev_ctx->fops_lock, 1);
+> +
+> +		devname = devm_kasprintf(priv->dev, GFP_KERNEL, "%s_ch%d",
+> +					 info->se_name, i);
+> +		if (!devname) {
+> +			ret = -ENOMEM;
+> +			return ret;
+> +		}
+> +
+> +		dev_ctx->miscdev.name = devname;
+> +		dev_ctx->miscdev.minor = MISC_DYNAMIC_MINOR;
+> +		dev_ctx->miscdev.fops = &se_if_fops;
+> +		dev_ctx->miscdev.parent = priv->dev;
+> +		ret = misc_register(&dev_ctx->miscdev);
+> +		if (ret) {
+> +			dev_err(priv->dev, "failed to register misc device %d\n",
+> +				ret);
+> +			return ret;
+> +		}
+
+Here you register four character devices which all allow a single open.
+
+There's no need to artificially limit the number of users. Just register
+a single character device, allow it to be opened multiple times and
+allocate the instance specific context as necessary in se_if_fops_open().
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
