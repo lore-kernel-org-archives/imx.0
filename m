@@ -1,27 +1,27 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964BB1A702
-	for <imx@lists.linux.dev>; Wed, 24 Jul 2024 03:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A07F1CAA1
+	for <imx@lists.linux.dev>; Wed, 24 Jul 2024 03:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721791389; cv=none; b=qSTHa5rd6StkG+fSBxho1ierwCQaWBI9bE1rqMBWmqBl8NhKy5w/Lr1bsI+kfe5Y2B3Mu3jdUYzsONV+vdhOOG3d1yR3wEdT2IbsEeNKDPYer9am9/Zc3ppI4+J6RK0yNOJBDY7SuSN99cl7mo7aZQKo0CVMX+BYN1jyy9jTCXo=
+	t=1721791391; cv=none; b=YZusPmA4ObvBNIQ1+/bCUhCt0ZBLu8QLfDYEe5eZHAxJ0fd5Dxk/s1lGBazKS18qjC8CzbGbQ4ELoZPzW+IFnzyCPv6mDXv3JkB9FyqI2ky+dzzG0Fu0RTfjkp46cKl2lOUrbGaym5QLhzw9VzYUfDTka9pehYwSY3SjYZgkc80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721791389; c=relaxed/simple;
-	bh=D8QDJ2ojO7FAUPA5rx7ivu8QpNZQ6Bv860bh4GVgg3w=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=mx3ksxBFW/9As4zrDnzqpTF6FqF7+Zt219o3CqlHfswSnUFSv5RrvEaEhN8FaXIdVALkRnlzuKJATT1/Cl8jl4/J9dJ1EwY3VbetBIpFnc50DfbcHKOF95hH8wWhyodCFB6UaTowtAPEfbANqFcqY/IBEGSCEzn4j7SrODsn2x4=
+	s=arc-20240116; t=1721791391; c=relaxed/simple;
+	bh=sPwe3n0DE7blsMI4XfasIZ57pT+RVsquDg/IhVslWPw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=hdToNmE/4uDKy8rPuNwNBHdXjxvb7H2KTcE1COH20l6lMv5Cp7K17iWbx4G+LPzuEkA9VE+9yFMYQsRIST9ZjTpgvGg8+QZVpSBbmjZ0iGORt9lenrf9V4lYz4xOsNTLxnBWVj7PJNIKhuFzGs4bdzoOx8zTWokE32gs1iW1jjc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7DF2F201294;
-	Wed, 24 Jul 2024 05:23:00 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BCA9A20129A;
+	Wed, 24 Jul 2024 05:23:01 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 461372015B2;
-	Wed, 24 Jul 2024 05:23:00 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8478E2015B2;
+	Wed, 24 Jul 2024 05:23:01 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id DE9071802183;
-	Wed, 24 Jul 2024 11:22:58 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 29304183487B;
+	Wed, 24 Jul 2024 11:23:00 +0800 (+08)
 From: Richard Zhu <hongxing.zhu@nxp.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -35,10 +35,12 @@ Cc: hongxing.zhu@nxp.com,
 	linux-kernel@vger.kernel.org,
 	kernel@pengutronix.de,
 	imx@lists.linux.dev
-Subject: [PATCH v2 0/4] Add dbi2 and atu for i.MX8M PCIe EP 
-Date: Wed, 24 Jul 2024 11:03:52 +0800
-Message-Id: <1721790236-3966-1-git-send-email-hongxing.zhu@nxp.com>
+Subject: [PATCH v2 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and "atu" for i.MX8M PCIe Endpoint
+Date: Wed, 24 Jul 2024 11:03:53 +0800
+Message-Id: <1721790236-3966-2-git-send-email-hongxing.zhu@nxp.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1721790236-3966-1-git-send-email-hongxing.zhu@nxp.com>
+References: <1721790236-3966-1-git-send-email-hongxing.zhu@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -46,21 +48,48 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-v2 changes:
-Thanks for Conor's comments.
-- Place the new added properties at the end.
+Add reg-name: "dbi2", "atu" for i.MX8M PCIe Endpoint.
 
-Ideally, dbi2 and atu base addresses should be fetched from DT.
-Add dbi2 and atu base addresses for i.MX8M PCIe EP here.
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+ .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml  | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-[PATCH v2 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and "atu"
-[PATCH v2 2/4] dts: arm64: imx8mq: Add dbi2 and atu reg for i.MX8MQ
-[PATCH v2 3/4] dts: arm64: imx8mp: Add dbi2 and atu reg for i.MX8MP
-[PATCH v2 4/4] dts: arm64: imx8mm: Add dbi2 and atu reg for i.MX8MM
-
-Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml | 13 +++++++++----
-arch/arm64/boot/dts/freescale/imx8mm.dtsi                    |  8 +++++---
-arch/arm64/boot/dts/freescale/imx8mp.dtsi                    |  7 +++++--
-arch/arm64/boot/dts/freescale/imx8mq.dtsi                    |  8 +++++---
-4 files changed, 24 insertions(+), 12 deletions(-)
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+index a06f75df8458..84ca12e8b25b 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+@@ -65,12 +65,14 @@ allOf:
+     then:
+       properties:
+         reg:
+-          minItems: 2
+-          maxItems: 2
++          minItems: 4
++          maxItems: 4
+         reg-names:
+           items:
+             - const: dbi
+             - const: addr_space
++            - const: dbi2
++            - const: atu
+ 
+   - if:
+       properties:
+@@ -129,8 +131,11 @@ examples:
+ 
+     pcie_ep: pcie-ep@33800000 {
+       compatible = "fsl,imx8mp-pcie-ep";
+-      reg = <0x33800000 0x000400000>, <0x18000000 0x08000000>;
+-      reg-names = "dbi", "addr_space";
++      reg = <0x33800000 0x100000>,
++            <0x18000000 0x8000000>,
++            <0x33900000 0x100000>,
++            <0x33b00000 0x100000>;
++      reg-names = "dbi", "addr_space", "dbi2", "atu";
+       clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
+                <&clk IMX8MP_CLK_HSIO_AXI>,
+                <&clk IMX8MP_CLK_PCIE_ROOT>;
+-- 
+2.37.1
 
