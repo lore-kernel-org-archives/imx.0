@@ -1,92 +1,119 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1D22595
-	for <imx@lists.linux.dev>; Wed, 24 Jul 2024 11:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70EA158A3E
+	for <imx@lists.linux.dev>; Wed, 24 Jul 2024 12:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721818991; cv=none; b=p+G3e1TxXq7LpF4zbW2gCUOdFkeNvH9Oac+aApz0UJSYcJ9vDaioeiMyWiWGTbc4ruR5ujiMpb793JowThCWZ8/5w0L+ESXT1JE3+lRbWvC+6PRPJMUOoqoILCTlHuZqK8Ox4o6K9nWJckILXJavY5M4uOERBEP9oDd4RgdvSLM=
+	t=1721825960; cv=none; b=CrZRXgqJ28DxOgO9vGUFdzVFVK+zH852gICDJhlmr9MZQv1G8VcqkqAC3UmYcbxAcVnsjoCcT3gVzvo1vGd+Qe1QIJRY23xxjnbt1Wzk8Td7C3wLsiiSeTuQRRqLKy/3vksXORxsD0sg6Jj1uE39eFoxOIXjtRa2EFTp+Cd+KYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721818991; c=relaxed/simple;
-	bh=ZN7NNcyU0S1YfbfqhcSpoRrSZCDKUwIk4FytmHMztN4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IcxSPi/fFOb8p5hFSB1ZbwRSEsWVWay1pGRBuMJ7wQmOucc24GPYn5TlryJ3FvVrLGldcFXluDuuErf24LPxwxVpqi1dvf8MrKssH4HDHDBCSSPVgRuky6rYs6z0t/rDtBk4BxQKTOXuWFOyzrfbnYYHKoldBLySmlEqof2CErc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/PuaHfb; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721825960; c=relaxed/simple;
+	bh=BjLz3vvlKoIFphRRwm9pVGCXXoqHf2HFuzlo+D5Mmhk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mnST3SHRTS5vkgr6r5mbEzFl4J7um6ulK0gNraFqUu2EShdwKy2A//KsyEgf5SzzKTBa30SaMjbn3QW96HR4RVSxXCnm54qWV4NPKFplzenbIyKVAYxczxg+4TKloKS7OHNYdir3XuW4TjaWVP96/gH9a96WRsH3HoZqo2pzgps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=K6IFPlQh; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=YPMbgdHe reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/PuaHfb"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52fd119f09aso45884e87.3
-        for <imx@lists.linux.dev>; Wed, 24 Jul 2024 04:03:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="K6IFPlQh";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="YPMbgdHe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721818988; x=1722423788; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OyZGnPtusGipb+xlX5GGLVHXWIPkIHym0QAfrDKBQw0=;
-        b=P/PuaHfbJiAnQdnphgnfoq/Gktr8XRHMrdntrgzWOGsJJZnQ6dKkXgnEsYiRnPWkZ3
-         4LtP7vt5CfY9La92irtdRHXNEY3mpWpovUIxuHrk8+Q211L64jDQ1cIwHtZU/kmjGnLs
-         AmeqyZWhP1MPZObZHj98Ts4IZxB9AOiLP/Y4/BKFjKvzyIrXSzq+Re/2zLIXHI63HvA+
-         WvSciiK24o8cmxZ1303KrxKgfXfOdOMRMeygm/B12rrfB8HT1C81+zHkQS/jq2X1hPgB
-         mm1/w8FR7+lLh6sx2CYuzBotgfpsLdIoS7aBIioVePy0dwGvpZzCV0cQ8OO8y3zCZmr/
-         89tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721818988; x=1722423788;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OyZGnPtusGipb+xlX5GGLVHXWIPkIHym0QAfrDKBQw0=;
-        b=GybXYWP5JXwrydkbNo4mQzok3HqVNj0uTR7wMeuIJbDKDS0Nba0WoJoSMlgWyPDBHd
-         WIhXhblSXtjR2h+gTr/qkFYTjWAXEBsrlBtGKz0eB/cqY3gREmVeX4oJSkKqlg6/YmXt
-         1uq7m+l+WXBoAGFBTFLB0s3TNdWEsbcta5fmVE4ZD8IhnVj7LF66apUj5S1rtmjhUHnx
-         qw7XEYY42UzGDiOHvGVleBbYwuO/Y8cpRsblayrY/wyqj9ik8rTVmDklvmO6XFuq4jwP
-         DTCvBnPjYVf6itlMvvrtI2OHYLeF2b/yAgiIHdXNEcnM5vfKeyxjmHoCtRrqDg4sXzmq
-         phqg==
-X-Forwarded-Encrypted: i=1; AJvYcCWfZnuG4eR2sagYY9dNMeXrPpmQQspTrspZ9aR6YjEi26V+PIrsW7liJKlRDr8nZL90NYE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4KNyigrmsqBC6a1YUh4fXPmcQPbS+DNa5X54lIkmkaQoRPuu3
-	MtkRye/aEkhWeK9UhQWLyD71C1W88nTRVsBr3LQGCtHIQau8+D6JNP++PFUgusOzWFsp8LrinnD
-	E/Pn2jrFYeBfx8Ulhd0DK8HDHezA=
-X-Google-Smtp-Source: AGHT+IHZ28WTL9zR0J5KAqNR5wSGYqOK6qMP43wFHJpRsp/GYZIHczD0y+ox1z8i9Eixd7+YrYjgxA4F1tkro8kjh5c=
-X-Received: by 2002:a05:6512:3f29:b0:52e:ccf5:7c3e with SMTP id
- 2adb3069b0e04-52ef8db6223mr4997174e87.7.1721818987347; Wed, 24 Jul 2024
- 04:03:07 -0700 (PDT)
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1721825957; x=1753361957;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xrLriYpIHkASuQ0PhpaaclUZukREhQCI/m6LAzkECy4=;
+  b=K6IFPlQhCkrS8TDy45kILmuLAZNpNxRUu7FhAmNiY5NPdTboDv5VVl3g
+   ANHeDWAqhq/wYAoSA5mGnbDqYKoBSat1N5f87F0Hlpder4hnM+dgkXK02
+   OpJvguaCZVo0+8dwJVoxBlrX+yIH6M0jqT8xaJ1sxtMyuYO+PSgrfjuuq
+   WsjEt3gP06hWwOldYRppzWmYF66UYFGvE/3e1lALdDXyr6/Mq7Afwtp83
+   LgmJw8v/0gtHdK6efayxxN1pM1Pzu8PnMsMKvm9M3EjXms3A3Z4zBzgbA
+   gLnxsB5Ok8/wAE2O5PCzZaD+rjQKX/297b+nxYEZ9h+zvRn+Aojr5B/pM
+   g==;
+X-CSE-ConnectionGUID: 36PoJbGKRVaEZ6kxLE6ZzQ==
+X-CSE-MsgGUID: xG9v/kseTh2C/YF+7vR4Nw==
+X-IronPort-AV: E=Sophos;i="6.09,232,1716242400"; 
+   d="scan'208";a="38058820"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 24 Jul 2024 14:59:08 +0200
+X-CheckPoint: {66A0FA9C-19-6C016D47-F93F7C64}
+X-MAIL-CPID: 2CF9144EBBBA82907B2D39FA10BE1A90_0
+X-Control-Analysis: str=0001.0A782F17.66A0FA9C.0190,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 34309160A85;
+	Wed, 24 Jul 2024 14:59:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1721825948; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=xrLriYpIHkASuQ0PhpaaclUZukREhQCI/m6LAzkECy4=;
+	b=YPMbgdHetOion5w6ieCRISjWvy4w10b9Y1+L6noXrF0EV3s4hcrSY4yefqun3q7prrJ1+C
+	stxVxtWN2hTI73jJwkkVTgJHd93UnZBgwpEO7U8MhCrKqacAyL5EFfCR2jV84RIPLcQuva
+	t3rnUHZeNT8pTEjk7iu4Xm/R0JgGeux3e9MP4Zlu14NneSC7+85pphQNp9ExN69y0GUCkg
+	Ky1WY0cJA2mn78IyfLQ1yfOyb9sd0TiS+c21hzxNajOvjrexuaRZ0QKQpw28V7N5OVAwdr
+	GcAONgPLG1s3cleC/dlzEl4L2CQhsNubVW4t9w4W++7dVD1xFWf5xlDzJ0IOjg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/14] TQMa93xx improvements
+Date: Wed, 24 Jul 2024 14:58:47 +0200
+Message-Id: <20240724125901.1391698-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240724105847.46962-1-tarang.raval@siliconsignals.io>
-In-Reply-To: <20240724105847.46962-1-tarang.raval@siliconsignals.io>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 24 Jul 2024 08:02:55 -0300
-Message-ID: <CAOMZO5AuiYD4KBZcfELRZsjEYXpPi7zGprvC7vq0hxfp75v5_w@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: freescale: Add Ethernet Support
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Tarang,
+Hi all,
 
-Please mention the board name in the Subject:
+this series add improvements for the TQMa93xx series.
+Despite changes for pad configuration as requested form hardware team, this also
+adds the PMIC node which allows to specify correct supplies for e.g. eMMC.
+Also GPIO lin enames are added for userspace usage using e.g. libgpiod.
+This series also includes a workaround for USDHCI errata.
 
-arm64: dts: imx8mm-emtop-baseboard: Add Ethernet Support
+Best regards,
+Alexander
 
-On Wed, Jul 24, 2024 at 7:59=E2=80=AFAM Tarang Raval
-<tarang.raval@siliconsignals.io> wrote:
+Alexander Stein (4):
+  arm64: dts: freescale: imx93-tqma9352: Add PMIC node
+  arm64: dts: freescale: imx93-tqma9352: add eMMC regulators
+  arm64: dts: freescale: imx93-tqma9352-mba91xxla: Add ethernet aliases
+  arm64: dts: freescale: imx93-tqma9352-mba91xxca: Add ethernet aliases
 
-> +       mdio {
-> +               #address-cells =3D <1>;
-> +               #size-cells =3D <0>;
-> +
-> +               ethphy0: ethernet-phy@4 {
-> +                       compatible =3D "ethernet-phy-ieee802.3-c22";
-> +                       reg =3D <4>;
-> +                       at803x,eee-disabled;
-> +                       at803x,vddio-1p8v;
+Markus Niebel (10):
+  arm64: dts: freescale: imx93-tqma9352: fix CMA alloc-ranges
+  arm64: dts: freescale: imx93-tqma9352: improve pad configuration
+  arm64: dts: freescale: imx93-tqma9352-mba93xxla: fix typo
+  arm64: dts: freescale: imx93-tqma9352-mba93xxla: improve pad
+    configuration
+  arm64: dts: freescale: imx93-tqma9352-mba93xxla: add irq for temp
+    sensor
+  arm64: dts: freescale: imx93-tqma9352-mba93xxla: add GPIO line names
+  arm64: dts: freescale: imx93-tqma9352-mba93xxca: improve pad
+    configuration
+  arm64: dts: freescale: imx93-tqma9352-mba93xxca: add RTC / temp sensor
+    IRQ
+  arm64: dts: freescale: imx93-tqma9352-mba93xxca: add GPIO line names
+  arm64: dts: freescale: imx93-tqma9352: set SION for cmd and data pad
+    of USDHC
 
-These two properties are not valid and not documented anywhere.
+ .../freescale/imx93-tqma9352-mba93xxca.dts    | 299 ++++++++++++-----
+ .../freescale/imx93-tqma9352-mba93xxla.dts    | 308 +++++++++++++-----
+ .../boot/dts/freescale/imx93-tqma9352.dtsi    | 174 +++++++---
+ 3 files changed, 581 insertions(+), 200 deletions(-)
+
+-- 
+2.34.1
+
