@@ -1,68 +1,162 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD541494CD
-	for <imx@lists.linux.dev>; Tue, 23 Jul 2024 23:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7075C99;
+	Wed, 24 Jul 2024 00:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721778679; cv=none; b=XkBmQLAMRHLDxKD5LBnfYI8EqDJMzqAv1Si/PKOZ9NGqDvnP7BaZU6YvsbH+hvHrRHOSIGyNqEQfSOkBXw6mqv7WggHfpCVcb7ARFYeOH08sZVcJIixTjdgJ8YbKQm5FM7sG4EXL5LpWpDsKy+NQTIT9fE/iFdcY/cwkBzdFeAo=
+	t=1721780523; cv=none; b=YJD0Ga/q/oNokAtj3oVDV1w2ABDXj/0N7942sxGwZDSxF+oKZSSQSFxYzsEDFY58mS82qlTPzDPuqPtekT/GEogxlbsQao9I8HAbP1RA0QH78W4+GlmZByjBNBBq44Xu46WdkCJDCG2LZ6Q8LNmZl+0r8fiDg/ogjAPcNLrK9Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721778679; c=relaxed/simple;
-	bh=Wm5UoIr/OEWSQDZrBp+0/uQLHVeb0HROI6tDskMIEJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxfBoIZM6lSCnejf0ElQtFfYzeDXhmC5ezyssdkxDqz0TaYRklMvZ4teZ+f3QyHq80bRMVE4saFs0XHiXSPOvq8KAPf8Sh3aZzxAcioznJ8GIVqplHlHBeb5r+PcgdWKqtOPqvBf2NuijmkMjVkrpyMDA8bhqEUAJmeu8fZhSTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DRflxrL8; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1721780523; c=relaxed/simple;
+	bh=dgd/OcEspbL0figukOqEGtV2NRHnQVoOgGT5jlBZo3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rQDLwoIvP7TSykheqNK0lKVDsTvnFZRjoW6ITNUWzmbG4kNPlQdmxYEHQflwQrQnFVlGX/3IfYky465QzuqvrtknNbhCIo17EeIqTEFZ0GztDrw01SK08+cOURaylJwprbjboSdB2Mtfavn8AQKcdDhki2mzx97GxSzBUmwEzF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=OvUyh11v; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DRflxrL8"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B1EE0E0002;
-	Tue, 23 Jul 2024 23:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1721778669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X+SKAQmjNRPaji+Q2BhvyaBaM+HsQEPmFK6Rpkla9Fg=;
-	b=DRflxrL8MpVMUI+uncAzrlRx98puYtmSGXghvzQCd/+DZgH/bsKS8yRFALNOCojPtD4oDo
-	5/hF9fHZOKaiiEskupQZsBbn9Y8gFeu4adMmsrCzp4rhPDQbtKOmZTMu0FzV4oevLkXX29
-	/tZZ6HD3oshkLBTCq5UFv1uXLxg8veoFQ7SiAzOWssmex1/YwER/Motfc2RfRSFMqn/0/s
-	SISdwrIyk2gc8rTQVRgxqTxk1yVal2EVLdrhhMx5jmKS0uHoDL6K4VR8ahQeH5apsGdpV9
-	Tz0ASG0b62bTdsfSoATrToj8E3iJlI6tsuBdbaJyaH4owYgAK7gp5jq9SbboIA==
-Date: Wed, 24 Jul 2024 01:51:08 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: krzk@kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	krzk+dt@kernel.org, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, miquel.raynal@bootlin.com,
-	robh@kernel.org
-Subject: Re: [PATCH v2 1/1] dt-bindings: i3c: add header for generic I3C flags
-Message-ID: <172177859264.478132.7118416055894101559.b4-ty@bootlin.com>
-References: <20240715225351.3237284-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="OvUyh11v"
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id DF5B087C80;
+	Wed, 24 Jul 2024 02:21:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1721780514;
+	bh=buFVoy2hJsNwGvBRNg4PlWZklo7fzyoTQ8popzjEw5w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OvUyh11v3eFPKAWFibYDozqWQbqEr0M831jpRfk3jTzz0TW4EW3eC9tFrn0QTt3RM
+	 DgLoRW2Wf0fk04gcXEUFSQB0HsdHVetV2FbXKkDxF7WCOz90SXIw22PtYZHm2unS43
+	 PcAJhocNYiGA9BGUs3Gw4ww8Q89x5Abmxok+F+dSIfHopjPqzL1zjl9pG1dj0fOG8h
+	 BNNRtURw3X1ZjhkNDft8cXa0Xp6rYoHryjcv33hIqbp4/66IcKfXX1b8WfTGj5WL4j
+	 uY1zaH0ubtG5suGZBlzp3au+bOMOA6AqnL47+j8rqZH5TB+6j932fWwIxPPeSmk3h+
+	 fC5OSHfau0tIA==
+From: Marek Vasut <marex@denx.de>
+To: linux-media@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev
+Subject: [PATCH v2 1/2] gpu: ipu-v3: vdic: Simplify ipu_vdi_setup()
+Date: Wed, 24 Jul 2024 02:19:37 +0200
+Message-ID: <20240724002044.112544-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240715225351.3237284-1-Frank.Li@nxp.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Mon, 15 Jul 2024 18:53:51 -0400, Frank Li wrote:
-> Add header file for generic I3C flags to avoid hard code in dts file.
-> 
-> 
+The 'code' parameter only ever selects between YUV 4:2:0 and 4:2:2
+subsampling, turn it into boolean to select exactly that and update
+related code accordingly.
 
-Applied, thanks!
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Steve Longerbeam <slongerbeam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-staging@lists.linux.dev
+--
+V2: No change
+---
+ drivers/gpu/ipu-v3/ipu-vdi.c               | 14 +++-----------
+ drivers/staging/media/imx/imx-media-vdic.c |  3 +--
+ include/video/imx-ipu-v3.h                 |  2 +-
+ 3 files changed, 5 insertions(+), 14 deletions(-)
 
-[1/1] dt-bindings: i3c: add header for generic I3C flags
-      https://git.kernel.org/abelloni/c/3564d9eb607d
-
-Best regards,
-
+diff --git a/drivers/gpu/ipu-v3/ipu-vdi.c b/drivers/gpu/ipu-v3/ipu-vdi.c
+index a593b232b6d3e..4df2821977c0c 100644
+--- a/drivers/gpu/ipu-v3/ipu-vdi.c
++++ b/drivers/gpu/ipu-v3/ipu-vdi.c
+@@ -117,10 +117,10 @@ void ipu_vdi_set_motion(struct ipu_vdi *vdi, enum ipu_motion_sel motion_sel)
+ }
+ EXPORT_SYMBOL_GPL(ipu_vdi_set_motion);
+ 
+-void ipu_vdi_setup(struct ipu_vdi *vdi, u32 code, int xres, int yres)
++void ipu_vdi_setup(struct ipu_vdi *vdi, bool yuv422not420, int xres, int yres)
+ {
+ 	unsigned long flags;
+-	u32 pixel_fmt, reg;
++	u32 reg;
+ 
+ 	spin_lock_irqsave(&vdi->lock, flags);
+ 
+@@ -131,16 +131,8 @@ void ipu_vdi_setup(struct ipu_vdi *vdi, u32 code, int xres, int yres)
+ 	 * Full motion, only vertical filter is used.
+ 	 * Burst size is 4 accesses
+ 	 */
+-	if (code == MEDIA_BUS_FMT_UYVY8_2X8 ||
+-	    code == MEDIA_BUS_FMT_UYVY8_1X16 ||
+-	    code == MEDIA_BUS_FMT_YUYV8_2X8 ||
+-	    code == MEDIA_BUS_FMT_YUYV8_1X16)
+-		pixel_fmt = VDI_C_CH_422;
+-	else
+-		pixel_fmt = VDI_C_CH_420;
+-
+ 	reg = ipu_vdi_read(vdi, VDI_C);
+-	reg |= pixel_fmt;
++	reg |= yuv422not420 ? VDI_C_CH_422 : VDI_C_CH_420;
+ 	reg |= VDI_C_BURST_SIZE2_4;
+ 	reg |= VDI_C_BURST_SIZE1_4 | VDI_C_VWM1_CLR_2;
+ 	reg |= VDI_C_BURST_SIZE3_4 | VDI_C_VWM3_CLR_2;
+diff --git a/drivers/staging/media/imx/imx-media-vdic.c b/drivers/staging/media/imx/imx-media-vdic.c
+index 09da4103a8dbe..ea5b4ef3573de 100644
+--- a/drivers/staging/media/imx/imx-media-vdic.c
++++ b/drivers/staging/media/imx/imx-media-vdic.c
+@@ -376,8 +376,7 @@ static int vdic_start(struct vdic_priv *priv)
+ 	 * only supports 4:2:2 or 4:2:0, and this subdev will only
+ 	 * negotiate 4:2:2 at its sink pads.
+ 	 */
+-	ipu_vdi_setup(priv->vdi, MEDIA_BUS_FMT_UYVY8_2X8,
+-		      infmt->width, infmt->height);
++	ipu_vdi_setup(priv->vdi, true, infmt->width, infmt->height);
+ 	ipu_vdi_set_field_order(priv->vdi, V4L2_STD_UNKNOWN, infmt->field);
+ 	ipu_vdi_set_motion(priv->vdi, priv->motion);
+ 
+diff --git a/include/video/imx-ipu-v3.h b/include/video/imx-ipu-v3.h
+index c422a403c0990..75f435d024895 100644
+--- a/include/video/imx-ipu-v3.h
++++ b/include/video/imx-ipu-v3.h
+@@ -466,7 +466,7 @@ void ipu_ic_dump(struct ipu_ic *ic);
+ struct ipu_vdi;
+ void ipu_vdi_set_field_order(struct ipu_vdi *vdi, v4l2_std_id std, u32 field);
+ void ipu_vdi_set_motion(struct ipu_vdi *vdi, enum ipu_motion_sel motion_sel);
+-void ipu_vdi_setup(struct ipu_vdi *vdi, u32 code, int xres, int yres);
++void ipu_vdi_setup(struct ipu_vdi *vdi, bool yuv422not420, int xres, int yres);
+ void ipu_vdi_unsetup(struct ipu_vdi *vdi);
+ int ipu_vdi_enable(struct ipu_vdi *vdi);
+ int ipu_vdi_disable(struct ipu_vdi *vdi);
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
+
