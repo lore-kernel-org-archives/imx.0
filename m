@@ -1,256 +1,317 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2044.outbound.protection.outlook.com [40.107.20.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F9C15DBA3
-	for <imx@lists.linux.dev>; Wed, 24 Jul 2024 12:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721825978; cv=none; b=TvIqy0UfCmngiSp8ZuIAYGd6OKmPAdbs8Ai4sflzEp6teZEVw10myMsAGt/Ty7x4kyUHOYl6C4xb9Fup21nMR/uec/C4S8tPuFBmDQFu/SKHxSy0umwamEtpvASMKGxTbPEfT6Uz48zNQpTp56UU/y2kM212KTCJWKNKxiL/A78=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721825978; c=relaxed/simple;
-	bh=cG1vxcg27UYNr6KO1Dw3Rty7LcY4a1pdn1b2VdxrMqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RPqtG0Ape5s4xOAPbb6s5PGpZWYw0QiEYIfWfhW0JuQIw/fA8huy1Y49OjV7GjyTOSdlHRpAJarpVIG8F0t8nhGPfTT0bpsGlYfqO2T+BuvD0+1ktdXrBJWFmwp2v2M49Ihf70waG8c+PJIs1tNPXBIa9s/9NJ8l/eWMnaEXbMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=CU5ZSDw8; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=BPnXI/xB reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A435A158D8C
+	for <imx@lists.linux.dev>; Wed, 24 Jul 2024 13:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721827495; cv=fail; b=D03XqMHypg95uvyx0T05+StEsH1Qyi++yDW9zvucD0Icqee42+B0le1zoUmstN73k6Vhsym5KJl7m/vMO2ajIGCa9H5qzV6kVknccXYRuIXg/d2y4jGLSEdPEymkvYbQjTCt7FQYl9MTEmb4TnfGMBhJvkwVOPGlwGG3SoMLhgc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721827495; c=relaxed/simple;
+	bh=5hobGSPnLQ9g787oqD3FJb3qUWcYKFEiWWIavo1pImU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Ykd+qexqL1CyPpwtYYGMamjFui7bQismiaQzEy4GQqwhTTz9V8gLSwQ98Zp4DDbEli62XNC5Uxrk6zapbqJwVh3BeBajtLJia9a9KqsAgHRfK6J+ugphiSBbOhoy5qEjUMJ39i4pYPx8g1lluU8Oea5Q2b6sn/azdCt+jmaIAtk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CZD7J24S; arc=fail smtp.client-ip=40.107.20.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="CU5ZSDw8";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="BPnXI/xB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1721825976; x=1753361976;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VoRAr118RELuLU4PNp2N2Pwvgnpo2+h/bxpuDi77974=;
-  b=CU5ZSDw8Cc29j/TcQ3wAgsX1ciS3mR6Q4+xMfif6FYkFcaedatUzzK35
-   tdOy6ChPCatF2crL4beSMoDYdOfwtXeeYxF9MZRwbZp8J4fAaj2ZGf0vu
-   5zC82edEHLjtWnCEG2Eo9TxckHWXDhFeNVaqTvzfugUrNyOGe7jHudMz0
-   3kF3Ev1X2F4mNzygf6Jz2LHOzYqX8KEaZ867QmzlIqE8TaZKOXu64Zlmj
-   w/NK7PwFqwrGBm8Pz046J7hBN47gffFkPffBimN58hRdYTPbGyhWMQFuK
-   NOxuoh3+f4JCogDttoTp7rSxIeCS8T/l+zEIw9pgWNiH5j3pLApMESkCh
-   w==;
-X-CSE-ConnectionGUID: ZC39gJLQRJiRB450Ypyp3Q==
-X-CSE-MsgGUID: cqkZCC8QS8KM18wsbEqiCw==
-X-IronPort-AV: E=Sophos;i="6.09,232,1716242400"; 
-   d="scan'208";a="38058836"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 24 Jul 2024 14:59:35 +0200
-X-CheckPoint: {66A0FAB7-1D-E8EE7C4B-C1098986}
-X-MAIL-CPID: 4CAE6E05A5E9BB3A4A3FF4AF72142B5A_5
-X-Control-Analysis: str=0001.0A782F26.66A0FAB8.006C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 59B1F1634BB;
-	Wed, 24 Jul 2024 14:59:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1721825975; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VoRAr118RELuLU4PNp2N2Pwvgnpo2+h/bxpuDi77974=;
-	b=BPnXI/xB0ti2L7NtMgVrwVCwhv+MoJsqSBW/m2FtOGRQbO0Lw3oGc5TDMZa5tteyJJmshx
-	TLIJB+jc9Ts58ZHeudqPyzitxLgr+uvJcSRxGDHX80LQIwflw/MNZUH6HktL817CdvRkMk
-	ZVXlbXFpyUPIu/TqPpNvOWiPb6hiayYActAVELyO9PQ2O8Oe6QkeOyC9vwRrMDoF5widsA
-	JtDWzEMC/6IlUI3Y2SUEk0w8aM4TPe71eKwpC+isN1iP7+g36mq/Ev/gdtvTGtoOWZvcb2
-	TFSJcfnbRwb0H7SGZPpDwG23KdpzbYDM9kNPOY73oYQEklegfmTTDzomIkSAEg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CZD7J24S"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UxIabgsZIi00qpkQ2wz8LvhA/7JVjWT8mvloKAH7I7mnao98ndk1evBpv10J9af4afr0909IO6kHgDEe1bne2g21GvYQZ6Rns5f+r5pb0dSwJ8UUB8OQPoE0Gw7FOP89JaBMrChqYcHkXR0gxZVMR1J0zUnG+Ujr/Dq1MA30Ux+ekkIHugj0pyn0Q9U92T2mRDoLmMu/KuyyLchMN4F7tV23s4Q0mTbG4tNS+1TAK3dri9PKN0+IWaV77rtZEpp5fI1D7kDW+oX5vA0AwnJIFVhNmiHuTxODNDvH9iZ6G3OYCXDWPGoQbjHRkMEqJORIdENfTOI6efVOzZqDOih9oQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sO/U7fWduLRshbpwerqO5uzduPDDHvvJmy3zgcsOBBw=;
+ b=BiO/5HgtszvjvKZpPwqKH4HrzkBh+i+gRaKxwdqQA5oI3TMuZvETMT0NUh9agM8T0PuNHIzyp+lZva9wlckCx6mjUyoage4kHjwuGTeIJwFQugTuWkKMV19onezq+R9RrVRADSZzisUXL1RbxvGkSrR40fjPRk5Rg3j87FlFmn8VjzXti816g11922K8M/paqKByo57xOnidVwpfTfvB5LAssiqTOF72SlkIaLYIrx6DeVR9POHy3fmT3phSjAb3anpy4r1+rkw76vPPNbACD0CJM7W4Y2E+8vZecc+grHUzaaDM6zIMXAKaJvvNRRqOfWs0hdFrJr/mdixpT47UDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sO/U7fWduLRshbpwerqO5uzduPDDHvvJmy3zgcsOBBw=;
+ b=CZD7J24Sm1ZVKNUoY48XKzvruNoVTuS2m8yq6mDzv6mz9e1ahj0oTpYpkYOyNN0j3onOZgtXNqV25V+YvR4FNW9tYqjUAWdteBjawXnSBQY7M7ngdh1ULwm9e5WdIKS//oIMQpA3vwkcdROMDWeM7+v1r4yD97ewbbdGGzfjox57S0PFJw0y+QD2l0NcXr6+RkwaPPnWLjqKFeCVv7f+/upG9fyR5dBGwOciX/VU49U/SWze7O3yLgUSQpGVYNI5szQC7JrCXeQVa7p6TnwVyyKNrtkdY1hcmvO78anGIo4wvk/K3qSdQs3HJM6VwaTWwQd+AkmfEXhesSdDWRX+Rw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com (2603:10a6:20b:41a::6)
+ by PA4PR04MB7998.eurprd04.prod.outlook.com (2603:10a6:102:c5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16; Wed, 24 Jul
+ 2024 13:24:49 +0000
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455]) by AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455%5]) with mapi id 15.20.7784.013; Wed, 24 Jul 2024
+ 13:24:49 +0000
+From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+To: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 14/14] arm64: dts: freescale: imx93-tqma9352: set SION for cmd and data pad of USDHC
-Date: Wed, 24 Jul 2024 14:59:01 +0200
-Message-Id: <20240724125901.1391698-15-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240724125901.1391698-1-alexander.stein@ew.tq-group.com>
-References: <20240724125901.1391698-1-alexander.stein@ew.tq-group.com>
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+Subject: [PATCH v2] arm64: dts: s32g: add the pinctrl node
+Date: Wed, 24 Jul 2024 16:24:15 +0300
+Message-ID: <20240724132415.1700386-1-andrei.stefanescu@oss.nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P190CA0027.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::16) To AM9PR04MB8487.eurprd04.prod.outlook.com
+ (2603:10a6:20b:41a::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8487:EE_|PA4PR04MB7998:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83b473be-853c-4ecb-affd-08dcabe3fe65
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YytieGNWMWtIY3B4L2ljTDV1b0RkZTZla2o0aFBpN1MwZzVMR01sOEpFWTho?=
+ =?utf-8?B?MUVHZmZ2dGtwYXZacC9QSjdSK08zbzU1b2hWWVltRGhrdEMySkpJVDVrZ2hl?=
+ =?utf-8?B?eml2d09SQlhKTDNoTkFSYkZTRkQ3YUFEek16V1hhWWd6L0FMNmdyS1VzQmk1?=
+ =?utf-8?B?RlVYYVMzY2pDRlVoZG9LQ09menFkQjFhVlVvOUJHc0xmN3VYTGJvbFZEbkhP?=
+ =?utf-8?B?UE5HNWhXUUJGa1VPeExlT09WTVBvZllpa09pVVRMZlI5SmwySzBGSDg3MmxI?=
+ =?utf-8?B?VlcyVng1SlVnN0pxZnA5VzYydHJaYXlWcEpFNHYyajNJQW8ycG5TNGtsb0JB?=
+ =?utf-8?B?eDVEM00wb1d6Ny85YkJRSzZHOFRDeTIyalZDajRzbVVNak1GekIybkd5TWFn?=
+ =?utf-8?B?ZDd3ZmU0eUtRTGhIeU9FbnQ3ZzE0VHJHVVdzZXZHeWViUjliR3I5WXVzb0Zj?=
+ =?utf-8?B?RlBDdEJITGJqWVZXbi9sNXR4dDk4a0U2Yk9wSXd6eEpkZkZxNWlwV3gvYUFF?=
+ =?utf-8?B?cTFXeURjTkV5cEd2dkV1VkhHakYwVVFQVVhyYkVZc2k0dG5jZ215a3h6cGk3?=
+ =?utf-8?B?eVdmWndpK2hiUENPejhiemhOV3RDeHJ1cU81dFoxODJGeVFKbk5GZ2ZpVXRk?=
+ =?utf-8?B?V2NXRXNCYWMzYjIwSm1HMnRGYkQ5cm5mNmY3NzVOQkRmeWsrblJXOVhZVlZO?=
+ =?utf-8?B?bE5iZDhleUx4bjFaei8vZkVlZ1IyZzNQTHZIbmJEZTNkMndvWi9aQVRxZ3pD?=
+ =?utf-8?B?eXc2YXZWMEdSVkZhT0c2V1JsNXdoSEV1YTBLdFdmWU9YdWJBYklXSjBCZENG?=
+ =?utf-8?B?amsyM0dUVXJINm5YUTJxa2UrZ0N6Z1NLN04reGVmT3Exa2tkQ3lEVW9QS3ls?=
+ =?utf-8?B?WWdlWERlZXczYjVOTnZHTFJUZ0Ewakt5bThXUkNOOWJ6aUdlOUcrdHcyVG5D?=
+ =?utf-8?B?WHlOTm94ZmRDU21zL2krYndYOVI2VGY0b2hSaEZFU3did0kyazZIUWhNaFF6?=
+ =?utf-8?B?U0sxSTBFakhiUEdQSWxwTzNnQ2cxRHVaTmNSanRHc1VwcHk2N09UL1FlbndT?=
+ =?utf-8?B?RWhOUGhGZ1YwRlA4cHJqQ1hqY3VMVHpsNWFhMHpEZTVZV0Z6bmpRUjNNZjl1?=
+ =?utf-8?B?TjhkbzJDeDVrYTVqM2tLMTBONCtSTHhwaHhVc0tpV0U4bGVIald1YmFBQlZQ?=
+ =?utf-8?B?RHlLRUNMb1lmWDhhN2pkV2hOYWtXdjdaSkRqYjdqcElsV2czd1BJVW1oWlRw?=
+ =?utf-8?B?bmFSaU10TlJRcWFFZms5c2JDNEphQXZnZkxpZEFrb0E4VzI5SEoyYUJoRnNv?=
+ =?utf-8?B?Q2JQSW0zbVRGbFBEY0VEVG05cStZVHRMcSsyUTNDRko0NzJrcitCMHRFOVhO?=
+ =?utf-8?B?SkxKNVNxcDNIMjNRdnExa256M25FbmNFT2FxSndIOHYxbWJ0YXVwYlBYdk1J?=
+ =?utf-8?B?emxSck1mRk9wRHNIMEJ1S0ZMSzBkMGdJa2VlU0VwRGhtSWhNeFptbzJCcmNp?=
+ =?utf-8?B?a0FBQ29XMVFjMjJaSndLMVlRQXBicVRPclF1cWVoak51d2hMaWNsODgwMW8y?=
+ =?utf-8?B?MlR6N1daZjRxTDJ3UEpXMHJ4eDFnSlcyakM0RVZ6OTdkWTg3eWRlWHIrU2p6?=
+ =?utf-8?B?bkpyMFdqOXhZOEZsbzVUTTFmM1hqeTZmUUtoaDFZVGNuOE1oYXlUYWZPTkd5?=
+ =?utf-8?B?cXlXeStKVUdTbVZkQWN3Yit5YjhjeitLNGxUTVoxbnBEZFkyaStLUVM0cWRw?=
+ =?utf-8?B?dVFaclZudE1HREc4NWVIcmo4TEIxVDZSbFBJUjRPTHJjMkpDc0dnRUpRV0l1?=
+ =?utf-8?B?VGNBM2ZONUdGV1h0VWNRMEVYelFnMi8yc0psSlJoL1Nrc0kxWVJMNWt1YlNp?=
+ =?utf-8?B?a2VwVW9Qa1pjRXoxY1RPWjJhNVJUbWZFY1kwMFdKdUFMNHE4U1JrTE05bHlT?=
+ =?utf-8?Q?DWSJnmLbIik=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8487.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjF1c1lYR0dKR1U1UWM3cjVOYnRJeEhrc3EwZkpoeVE0YU1TaFVIa3hoem80?=
+ =?utf-8?B?a3NsQ2Q5QlBlbEVVY2NtNS9nSWdJMTAza09lTExNbExxOFQyeDN3MzRvMGlL?=
+ =?utf-8?B?dlVRQmZYNTNmUnpUTnRVNlpjTHZqWm5tTDdaNlB0NDJTcFZSREEzZ1ltWSto?=
+ =?utf-8?B?ZVdlRWt5NXJqdFpjakFpMFBLeVNnWVdXcVpha0pUQndNWTQrVkhDSDNNOGdH?=
+ =?utf-8?B?T0tPQjRSRWZlRTMzVFg3bEFjMS9peVY2R2swRWhSWFluSEhRbU1SZEE4cG85?=
+ =?utf-8?B?QXRqTkxBRHVaVU1SUmNlQkxsNG9PYjBsdkM0QWJZdlZlWXI1dkdIc1M4UGwv?=
+ =?utf-8?B?ZHpjVE16Zko4WXJMWERmSXRiMFRDVFRFRTJkTlcwd2hNOXFYSTQ1RE1rcDl3?=
+ =?utf-8?B?T2pzN0tVSUNiQW44MGUzd0g5VndUUDZzb3FDdmdFbkZYaWpuQ09uaEFiQUF6?=
+ =?utf-8?B?NXl1Ky9TVGFMcmo2SDBMV3lGU0RPd2xqSTZIaXdOYmNrdnF6c3Jmdmx2U2xJ?=
+ =?utf-8?B?L29BQ3JpYThiQjlnd3VJNFZzVVZCY29yU2xDOFhHbWgrdWNzYmlReXc5T1Rk?=
+ =?utf-8?B?Rm8xMyt0NUlsekJ1Y1hNOCswNWNhOE1PZDczMU43dVo2eVZKdnV1dnh5WVNK?=
+ =?utf-8?B?RWVCUGQ2U0FTMjR4Z3JRRDRST1lkd1cxN0NDWEVBRElTUWVWd0NrTnNUdDBU?=
+ =?utf-8?B?Q0ZsN3dUWFlOVjR6Yi9iQTRtMHZQZDlQTFV3L1pOaTJNWlEvVDJaNHJudVQv?=
+ =?utf-8?B?N05OYVFKNXRxNnMyemdHblVRVlV3VE4xNW92ank1ZkNzQ3ZuaENhRGVuNkpO?=
+ =?utf-8?B?YlZidUgrTi9xcXVuVjNkN3pRWFlveG9FZDNxNTJieVlVM1JtSUJxMHd0U0to?=
+ =?utf-8?B?Wnc5T0pEYWJneWVYM0w0c0h2QTVCd0ZzVjI2QUNwbkJXVUZacmt2T2cxTnZI?=
+ =?utf-8?B?Q0FGeXA0TUdZTkFrTkZ0RUFMeUZNTzV1Wk5HbU9Fdk5HRHY1OUpjbDZ2b0NN?=
+ =?utf-8?B?VExGQlQxR0U1VmNGL00rNWZhdnVLbXZlV2Y4NGdYNU1icTkwTGRzd3J1REFz?=
+ =?utf-8?B?MGVoWi9JNDJNdnFra0F5dm55OHdCZXMzNkV6c091OTY5MFRTTzZWTUxsVCty?=
+ =?utf-8?B?WW5sdUJKb2NMRmY3SllHcVhZRDRVYmRtTVNIVzVjeWowRnQ4cEZCbkFRM28r?=
+ =?utf-8?B?cjVqQzBObVhTbiswaHN0eDBLMlRaWXgvQmxuS2hmd0dUSkUzaEhXWEdLbng2?=
+ =?utf-8?B?bjRkbWlyMmd4MDF0czc3OHVvTXpYMmZmZXUrckNOSkppRVNveDRaMDQ1SmV4?=
+ =?utf-8?B?eVhTTTgvVTAxOE5VTzgvbTFqK3ZyVTc1QjJ5WUt4UTdYS2ZMM0V6ODRCSllo?=
+ =?utf-8?B?clhCYkNBUEVVdEVtS1VYdWVHaXJMYVJCaTNQdWlKQVk5dEROQ1lPVzJrVUpC?=
+ =?utf-8?B?ekhrNVh5NEpCV21Ca1BQRmIvK0tydVUvSHVWY1ZqYkJqbjdhWTg4Q29GWWVD?=
+ =?utf-8?B?dzdkbU9lRHBJMEhOM0drVkZEVEM3SmJCOHNIR2FRZkdITm5na3BOcllTVG5J?=
+ =?utf-8?B?RmpiZUI4QTJ3KzdVRGNtczgreGVyd2dBQ2xDR1ZqZ2xYM3BiYldicnR1Y1pC?=
+ =?utf-8?B?eThWdzBrZDY4OSs4UERGby9aQ0hYbFAzSWp3MEM2SEl1WXpmd1FoY0NCSHJ0?=
+ =?utf-8?B?RGtyS1h2S1VJYWRkelpQMHBLVDdVaGJXUElIWUhvUjVWNVlBeW56N1dLRDU2?=
+ =?utf-8?B?SlJ2S2Q5MHBIQkgzd1lkQ0JWWWVkZkZCRjBxeDNXOUQrQytKdERGdWF5SUw5?=
+ =?utf-8?B?RThEc3l2M3huN01tNUR5RkUrSWVFVnRLT0FJQmhOSHdoUU5sZTM4eXNLamwz?=
+ =?utf-8?B?bkxVUm1yVDN2Z2w2K2hBdG5RSEdVek0wc3AxRk9DN3NOZzZzR04zSFJYUmxI?=
+ =?utf-8?B?ZzNYZkNia0hvRXZ2bGZ4WXpLM25iTDl5ZWFzdHRENHVNUjBnU05Mam85UHho?=
+ =?utf-8?B?TE9qR2tFaWRsTHhDVVFhcmQ5SThUQjdoVlkrNzlqd2RydWRHQkFVZGUxVm5k?=
+ =?utf-8?B?UzFTT1hmV0RqV2d3SkhZK21wd1ZMeFN2eFhPNitndzNFVTZJUExXNGdnVW5m?=
+ =?utf-8?B?SXdXc2lodjZxeXJ1dUlYTXp4LzlybHdvcmpmY0NvcDI3M2prcmhrdUU5RXVx?=
+ =?utf-8?B?a1E9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83b473be-853c-4ecb-affd-08dcabe3fe65
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8487.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2024 13:24:49.5755
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zSNh+qWOmrHSKJOLQ8NsHksu/jUbaRmr5nNL9MVkmtg4+ZKcDiavAtD0x1UWRTp85tnAaoAok3+XOM6R2kAQwjRMj6hjj88uekuy8J4TT64=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7998
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Add the pinctrl node in the device tree in order to enable the
+S32G2/S32G3 pinctrl driver to probe.
 
-imx93 pad integrate has one issue, refer to ERR052021:
-
-ERR052021 uSDHC: Sometimes uSDHC does not work under VDD_SOC low
-		 drive mode and nominal mode
-Description:
-uSDHC PADs have one integration issue.
-When CMD/DATA lines direction change from output to input, uSDHC
-controller begin sampling, the integration issue will make input
-enable signal from uSDHC propagated to the PAD with a long delay,
-thus the new input value on the pad comes to uSDHC lately. The
-uSDHC sampled the old input value and the sampling result is wrong.
-
-Workaround:
-Set uSDHC CMD/DATA PADs iomux register SION bit to 1, then PADs will
-propagate input to uSDHC with no delay, so correct value is sampled.
-
-This issue will wrongly trigger the start bit when sample the USDHC
-command response, cause the USDHC trigger command CRC/index/endbit
-error, which will finally impact the tuning pass window, espically
-will impact the standard tuning logic, and can't find a correct delay
-cell to get the best timing.
-
-This follows changes made for i.MX93 EVK with commit
-bb89601282fc ("arm64: dts: imx93-11x11-evk: set SION for cmd and data pad of USDHC")
-
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 ---
- .../freescale/imx93-tqma9352-mba93xxca.dts    | 22 ++++++++++---------
- .../freescale/imx93-tqma9352-mba93xxla.dts    | 22 ++++++++++---------
- .../boot/dts/freescale/imx93-tqma9352.dtsi    | 19 ++++++++--------
- 3 files changed, 34 insertions(+), 29 deletions(-)
+V2 -> V1: moved the pinctrl node before the uart1 one to sort based
+	  on the reg value, removed the status property, renamed the
+	  jtag_pins node and jtag_grp* subnodes
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
-index 9a21fbf986fe..d7c067450503 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
-@@ -870,32 +870,34 @@ MX93_PAD_SD2_CD_B__GPIO3_IO00			0x1000
- 		>;
- 	};
+ arch/arm64/boot/dts/freescale/s32g2.dtsi | 50 +++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi | 52 +++++++++++++++++++++++-
+ 2 files changed, 101 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index fc19ae2e8d3b..fa054bfe7d5c 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -114,6 +114,56 @@ soc@0 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0 0 0x80000000>;
  
-+	/* enable SION for data and cmd pad due to ERR052021 */
- 	pinctrl_usdhc2_hs: usdhc2hsgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_3 | DSE X5 */
- 			MX93_PAD_SD2_CLK__USDHC2_CLK			0x05be
- 			/* HYS | PU | FSEL_3 | DSE X4 */
--			MX93_PAD_SD2_CMD__USDHC2_CMD			0x139e
-+			MX93_PAD_SD2_CMD__USDHC2_CMD			0x4000139e
- 			/* HYS | PU | FSEL_3 | DSE X3 */
--			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x138e
--			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x138e
--			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x138e
--			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x138e
-+			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x4000138e
-+			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x4000138e
-+			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x4000138e
-+			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x4000138e
- 			/* FSEL_2 | DSE X3 */
- 			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT		0x010e
- 		>;
- 	};
++		pinctrl: pinctrl@4009c240 {
++			compatible = "nxp,s32g2-siul2-pinctrl";
++				/* MSCR0-MSCR101 registers on siul2_0 */
++			reg = <0x4009c240 0x198>,
++				/* MSCR112-MSCR122 registers on siul2_1 */
++			      <0x44010400 0x2c>,
++				/* MSCR144-MSCR190 registers on siul2_1 */
++			      <0x44010480 0xbc>,
++				/* IMCR0-IMCR83 registers on siul2_0 */
++			      <0x4009ca40 0x150>,
++				/* IMCR119-IMCR397 registers on siul2_1 */
++			      <0x44010c1c 0x45c>,
++				/* IMCR430-IMCR495 registers on siul2_1 */
++			      <0x440110f8 0x108>;
++
++			jtag_pins: jtag-pins {
++				jtag-grp0 {
++					pinmux = <0x0>;
++					input-enable;
++					bias-pull-up;
++					slew-rate = <166>;
++				};
++
++				jtag-grp1 {
++					pinmux = <0x11>;
++					slew-rate = <166>;
++				};
++
++				jtag-grp2 {
++					pinmux = <0x40>;
++					input-enable;
++					bias-pull-down;
++					slew-rate = <166>;
++				};
++
++				jtag-grp3 {
++					pinmux = <0x23c0>,
++						 <0x23d0>,
++						 <0x2320>;
++				};
++
++				jtag-grp4 {
++					pinmux = <0x51>;
++					input-enable;
++					bias-pull-up;
++					slew-rate = <166>;
++				};
++			};
++		};
++
+ 		uart0: serial@401c8000 {
+ 			compatible = "nxp,s32g2-linflexuart",
+ 				     "fsl,s32v234-linflexuart";
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index c1b08992754b..b4226a9143c8 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2023 NXP
++ * Copyright 2021-2024 NXP
+  *
+  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+@@ -171,6 +171,56 @@ soc@0 {
+ 		#size-cells = <1>;
+ 		ranges = <0 0 0 0x80000000>;
  
-+	/* enable SION for data and cmd pad due to ERR052021 */
- 	pinctrl_usdhc2_uhs: usdhc2uhsgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_3 | DSE X6 */
- 			MX93_PAD_SD2_CLK__USDHC2_CLK			0x05fe
- 			/* HYS | PU | FSEL_3 | DSE X4 */
--			MX93_PAD_SD2_CMD__USDHC2_CMD			0x139e
--			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x139e
--			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x139e
--			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x139e
--			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x139e
-+			MX93_PAD_SD2_CMD__USDHC2_CMD			0x4000139e
-+			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x4000139e
-+			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x4000139e
-+			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x4000139e
-+			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x4000139e
- 			/* FSEL_2 | DSE X3 */
- 			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT		0x010e
- 		>;
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-index b9a22d6c1de2..0409dffe844c 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-@@ -820,32 +820,34 @@ MX93_PAD_SD2_CD_B__GPIO3_IO00			0x1000
- 		>;
- 	};
- 
-+	/* enable SION for data and cmd pad due to ERR052021 */
- 	pinctrl_usdhc2_hs: usdhc2hsgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_3 | DSE X5 */
- 			MX93_PAD_SD2_CLK__USDHC2_CLK			0x05be
- 			/* HYS | PU | FSEL_3 | DSE X4 */
--			MX93_PAD_SD2_CMD__USDHC2_CMD			0x139e
-+			MX93_PAD_SD2_CMD__USDHC2_CMD			0x4000139e
- 			/* HYS | PU | FSEL_3 | DSE X3 */
--			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x138e
--			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x138e
--			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x138e
--			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x138e
-+			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x4000138e
-+			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x4000138e
-+			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x4000138e
-+			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x4000138e
- 			/* FSEL_2 | DSE X3 */
- 			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT		0x010e
- 		>;
- 	};
- 
-+	/* enable SION for data and cmd pad due to ERR052021 */
- 	pinctrl_usdhc2_uhs: usdhc2uhsgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_3 | DSE X6 */
- 			MX93_PAD_SD2_CLK__USDHC2_CLK			0x05fe
- 			/* HYS | PU | FSEL_3 | DSE X4 */
--			MX93_PAD_SD2_CMD__USDHC2_CMD			0x139e
--			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x139e
--			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x139e
--			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x139e
--			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x139e
-+			MX93_PAD_SD2_CMD__USDHC2_CMD			0x4000139e
-+			MX93_PAD_SD2_DATA0__USDHC2_DATA0		0x4000139e
-+			MX93_PAD_SD2_DATA1__USDHC2_DATA1		0x4000139e
-+			MX93_PAD_SD2_DATA2__USDHC2_DATA2		0x4000139e
-+			MX93_PAD_SD2_DATA3__USDHC2_DATA3		0x4000139e
- 			/* FSEL_2 | DSE X3 */
- 			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT		0x010e
- 		>;
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-index 63b02552c55d..ac9f94baf4cd 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-@@ -269,6 +269,7 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x106
- 		>;
- 	};
- 
-+	/* enable SION for data and cmd pad due to ERR052021 */
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = <
- 			/* PD | FSEL 3 | DSE X5 */
-@@ -276,16 +277,16 @@ MX93_PAD_SD1_CLK__USDHC1_CLK		0x5be
- 			/* HYS | FSEL 0 | no drive */
- 			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x1000
- 			/* HYS | FSEL 3 | X5 */
--			MX93_PAD_SD1_CMD__USDHC1_CMD		0x11be
-+			MX93_PAD_SD1_CMD__USDHC1_CMD		0x400011be
- 			/* HYS | FSEL 3 | X4 */
--			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x119e
--			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x119e
--			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x119e
--			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x119e
--			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x119e
--			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x119e
--			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x119e
--			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x119e
-+			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000119e
-+			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000119e
-+			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000119e
-+			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000119e
-+			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000119e
-+			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000119e
-+			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000119e
-+			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000119e
- 		>;
- 	};
- 
++		pinctrl: pinctrl@4009c240 {
++			compatible = "nxp,s32g2-siul2-pinctrl";
++				/* MSCR0-MSCR101 registers on siul2_0 */
++			reg = <0x4009c240 0x198>,
++				/* MSCR112-MSCR122 registers on siul2_1 */
++			      <0x44010400 0x2c>,
++				/* MSCR144-MSCR190 registers on siul2_1 */
++			      <0x44010480 0xbc>,
++				/* IMCR0-IMCR83 registers on siul2_0 */
++			      <0x4009ca40 0x150>,
++				/* IMCR119-IMCR397 registers on siul2_1 */
++			      <0x44010c1c 0x45c>,
++				/* IMCR430-IMCR495 registers on siul2_1 */
++			      <0x440110f8 0x108>;
++
++			jtag_pins: jtag-pins {
++				jtag-grp0 {
++					pinmux = <0x0>;
++					input-enable;
++					bias-pull-up;
++					slew-rate = <166>;
++				};
++
++				jtag-grp1 {
++					pinmux = <0x11>;
++					slew-rate = <166>;
++				};
++
++				jtag-grp2 {
++					pinmux = <0x40>;
++					input-enable;
++					bias-pull-down;
++					slew-rate = <166>;
++				};
++
++				jtag-grp3 {
++					pinmux = <0x23c0>,
++						 <0x23d0>,
++						 <0x2320>;
++				};
++
++				jtag-grp4 {
++					pinmux = <0x51>;
++					input-enable;
++					bias-pull-up;
++					slew-rate = <166>;
++				};
++			};
++		};
++
+ 		uart0: serial@401c8000 {
+ 			compatible = "nxp,s32g3-linflexuart",
+ 				     "fsl,s32v234-linflexuart";
 -- 
-2.34.1
+2.45.2
 
