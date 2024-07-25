@@ -1,68 +1,90 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B35F171E6A
-	for <imx@lists.linux.dev>; Thu, 25 Jul 2024 08:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF2013BAEE
+	for <imx@lists.linux.dev>; Thu, 25 Jul 2024 09:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721894579; cv=none; b=Fk7WqkpeAf15pv7b4w8BACwaFwZPWgwp+Vz9wFANJQzeEQcR8Qy+S2vU92k5JpdvN8dhPI3asqOLzZ5A5DVygDxWBXeJJ8JjJu9Rqm3e6lUdXor1CrKkaf7t4APhXlPEBr5r35Snf2oaZA+UpEImaDnAF0VMrYJcieHD4VC2grk=
+	t=1721900774; cv=none; b=fzxlgQp8R925r0ZUhLEJQGnhNSSqBKBU5d9ml+Mx2RYO4lRyuXCoqelNmL0LalWZmcDUmWyM0uqZEmlfgHEdrgRtme6RlGsdlH1DlfhX6+3ta2Z9QO9E3v6AHpiaS20cVXcFoEFVagiJ3NqmcBOxCUUPyjWWrRRjmmB68mHcDrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721894579; c=relaxed/simple;
-	bh=pJm0eGj47PP4sVSZ8RsbPyJ1rm5u/FVQfAgFSwim3pA=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=c+NCPsDvsTBGrdb6OmuZKXw1zegzkS+Wk7lGqOS43nzFjUR1djMdK4giZ3ZtLiHcz6bIOtkZD+M0KmPUj3t7HScB0y/o2NTCOnvVI06bakBYSlILkmi4/00stn4VbKqlxx7pcj0L3ifeIytWE42Oy2FxOCI8Q0ik0WBbBCObi74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 42C1820050F;
-	Thu, 25 Jul 2024 09:54:16 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0912E200512;
-	Thu, 25 Jul 2024 09:54:16 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 5EEEC1802183;
-	Thu, 25 Jul 2024 15:54:14 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	l.stach@pengutronix.de
-Cc: hongxing.zhu@nxp.com,
-	devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev
-Subject: [PATCH v3 0/4] Add dbi2 and atu for i.MX8M PCIe EP
-Date: Thu, 25 Jul 2024 15:35:12 +0800
-Message-Id: <1721892916-5782-1-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1721900774; c=relaxed/simple;
+	bh=xJbE3/+oDT4lzzvGx9f9iayJZeqlQwh8BmnzVVqNqV0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VNdq4wRYUlIYXjOfiQZhjv9RQavYpkU/U4e5EeGvdDf/woZKksC3uXXgLnQYdBDLZS9174rkJfMKu/6cpOTCOt/0iicpleGMPSF2+DQEBJFkLxN4oxFdhbfh+a7BtkVHXLpTXmjqAc/wAUPRcRzwAo77X8btquPXwGUiyfRbN7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=hZdsN0DP; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="hZdsN0DP"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1721900762; x=1724492762;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xJbE3/+oDT4lzzvGx9f9iayJZeqlQwh8BmnzVVqNqV0=;
+	b=hZdsN0DPdXxzTdESLOrkWpNwdHNLlUqtg6nVIT1KwibvedsK+BQ4vVRqfvPRPs4M
+	r0hidalpr3ko0+J9gLfbWYrW1qrYTUgsOCbiEZ/49SI37/gExXgS9oGYelVMmBmv
+	Zy/XeTTr8l0+8Y9nioxDlq8o0gcE62t+qQOPeB93aaI=;
+X-AuditID: ac14000a-03e52700000021bc-ed-66a21ed93aac
+Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id A3.CC.08636.9DE12A66; Thu, 25 Jul 2024 11:46:01 +0200 (CEST)
+Received: from llp-varakala.phytec.de (172.25.0.11) by Florix.phytec.de
+ (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Thu, 25 Jul
+ 2024 11:46:01 +0200
+From: Yashwanth Varakala <y.varakala@phytec.de>
+To: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+	<festevam@gmail.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>
+CC: <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<upstream@lists.phytec.de>, <y.varakala@phytec.de>
+Subject: [PATCH 0/3] arm64: dts: freescale: imx8mp-phycore: Add devicetree overlays
+Date: Thu, 25 Jul 2024 11:44:54 +0200
+Message-ID: <20240725094457.37739-1-y.varakala@phytec.de>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Florix.phytec.de (172.25.0.13) To Florix.phytec.de
+ (172.25.0.13)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJLMWRmVeSWpSXmKPExsWyRpKBV/eW3KI0g78bWSzW7D3HZDH/yDlW
+	i4dX/S1m3mtls1g1dSeLxctZ99gsNj2+xmpxedccNov/e3awW/zdvonF4sUWcYvud+oOPB47
+	Z91l99i0qpPNY/OSeo8Xm2cyevR3t7B69P818Pi8SS6APYrLJiU1J7MstUjfLoEr48DJn6wF
+	q9gqdu38xdjAuJG1i5GTQ0LAROLk/S72LkYuDiGBJUwSE35fB0sICTxllDgwVRjEZhPQl1ix
+	bhErSJGIwDJGiW+nu1lAHGaB7YwSJya+Y+pi5OAQFgiW+LDeB6SBRUBVYt+Ck2wgNq+ApcTs
+	l2uhtslL7D94lhkiLihxcuYTFhCbGSjevHU2M4QtIXHwxQtmiCMUJd4/7GCH6Z127jUzhB0q
+	MX/Nd/YJjAKzkIyahWTULCSjFjAyr2IUys1Mzk4tyszWK8ioLElN1ktJ3cQIig4RBq4djH1z
+	PA4xMnEwHmKU4GBWEuFddn9hmhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHe1R3BqUIC6Yklqdmp
+	qQWpRTBZJg5OqQZGp5o5f6Z1cj6Q6/13lue7qpr6zqUfbkq1RK8/kV1i6qE98cuFg9vYQnKj
+	bm+ZtfIj25P4NWUp5v0zN3LwFoay1TQ+WWJ53Gn36r6V4Zmiu1kYp86UaHgo5sqYfNdRv6xh
+	+f9z/580yR4Q131xqnDlXZmoCyu9Hxh4PzGTZZrz7mvvpIbZpwQ5lViKMxINtZiLihMBq3XS
+	+XwCAAA=
 
-v3 changes:
-- Refine the commit descriptions.
+Adding overlays for the phyboard imx8mp and updating them in
+the Makefile.
 
-v2 changes:
-Thanks for Conor's comments.
-- Place the new added properties at the end.
+Yashwanth Varakala (3):
+  arm64: dts: freescale: imx8mp-phycore: Add no-rtc overlay
+  arm64: boot: dts: freescale: Add no-spiflash overlay
+  arm64: dts: Add phyBOARD-Pollux dts for rpmsg
 
-Ideally, dbi2 and atu base addresses should be fetched from DT.
-Add dbi2 and atu base addresses for i.MX8M PCIe EP here.
+ arch/arm64/boot/dts/freescale/Makefile        |  6 ++
+ .../dts/freescale/imx8mp-phycore-no-rtc.dtso  | 12 ++++
+ .../freescale/imx8mp-phycore-no-spiflash.dtso | 16 ++++++
+ .../dts/freescale/imx8mp-phycore-rpmsg.dtso   | 57 +++++++++++++++++++
+ 4 files changed, 91 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-no-rtc.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-no-spiflash.dtso
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
 
-[PATCH v3 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and "atu"
-[PATCH v3 2/4] dts: arm64: imx8mq: Add dbi2 and atu reg for i.MX8MQ
-[PATCH v3 3/4] dts: arm64: imx8mp: Add dbi2 and atu reg for i.MX8MP
-[PATCH v3 4/4] dts: arm64: imx8mm: Add dbi2 and atu reg for i.MX8MM
+-- 
+2.34.1
 
-Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml | 13 +++++++++----
-arch/arm64/boot/dts/freescale/imx8mm.dtsi                    |  8 +++++---
-arch/arm64/boot/dts/freescale/imx8mp.dtsi                    |  7 +++++--
-arch/arm64/boot/dts/freescale/imx8mq.dtsi                    |  8 +++++---
-4 files changed, 24 insertions(+), 12 deletions(-)
