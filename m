@@ -1,123 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6036916D4EB;
-	Thu, 25 Jul 2024 07:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6AF16D4EB;
+	Thu, 25 Jul 2024 07:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721893125; cv=none; b=UyYXvK/sRk20UyxiMuk0Q8zkQrA5AG9Blfn71mAiV9+x2pidH4+qs1mWBiORJyEiXQhAnyXXEoaZt0eWyfC5Xk/fmOX/2G/lrQWM4DaJlP+3+I7kCpIvKRh6JnHzjb+s6wmzQ49hULD8dBnceIijOXpoOxiSH3Qbm62VaJMtP78=
+	t=1721893214; cv=none; b=t5gDHh1nrmYza6Of1ej6FEi7ITcIz0MaxwsNg28NFFuUXEKZ7HERfoqZm1QHawOOF/boC+4R2D63q+jgRhWGdkzvKgJP6ZAOwh/wTrci8buZku9r2ScBKQOwGUjkQBzd0ZYwYGbNmtI5sOhvt++MUik/lsWCARzC+LU3mwl3aJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721893125; c=relaxed/simple;
-	bh=HMZ59d0QQcFxIU/3yuJzYmOoxTfYErWIJCpFef5W/1o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=HqxjNhL3CD4gRVRt+ufLaj1CouDEwbhr+h0ysSImQXlzXlYiqtvM2fNEao3yO9BB+48b1qdAQVMVMl5QrEtPNsc2OmF36vPKR7/FpYQzFyXwshK7qyAfNHu+y/ZXvcdwoI7GKkMy8SMFgvOkayku52f6keRJfMsjkW1HBXZOGIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iWooGVUF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721893214; c=relaxed/simple;
+	bh=bLfWZWLf4HI+k4oPVEQDi25zZ9zZTh9lQt9Sv79AXSo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BjBd8BIczvhqgxtSF9jDv12A6YvvMo2lCLop9yXtJvlkaoXQiwzyWglfVIPBOn5Q4JogHM9OdsXz7s99nU52wdN1tC+u9ZicRxQ60ENQcUsQewylRa6k72g8Uw2eZmvSbQtB2+x850FY3K8QmXW9GjcTgXvhlw5J/x0xz0CR0M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S740IzT0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWooGVUF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D35C116B1;
-	Thu, 25 Jul 2024 07:38:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S740IzT0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546A0C116B1;
+	Thu, 25 Jul 2024 07:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721893124;
-	bh=HMZ59d0QQcFxIU/3yuJzYmOoxTfYErWIJCpFef5W/1o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=iWooGVUF8ucSxkV6Xf5ZZIXDbPnYWxO63OAYbvQwY2wIuxRxUmGIyVJovZxxURnRg
-	 O6NOSa84jx0tDbi7gTNHHszT3dBZtOESJDj77EVDPr3lLulogEauVu7Czecq+JmWQE
-	 EpZCecEKsZrGVEWm1wQlpPAuAfRX9DyOt/jWD7R66lbZXdpe6GhdiaJ4vAktca6iQd
-	 s16xH1MAa73XCbuSmYyDE5Ro29ZEaxRRpZIhAC66vuGGXgCVk0jdwSvz32+M4agvWq
-	 EEDU032FsHx/d7hNyiam/Uh5CEtojryquR/iLdaNN2uW3I7nYBMerkOeohpG5561zg
-	 dh7y6s0xepAyw==
-From: Lee Jones <lee@kernel.org>
-To: Support Opensource <support.opensource@diasemi.com>, 
- Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Matti Vaittinen <mazziesaccount@gmail.com>, Xu Yilun <yilun.xu@intel.com>, 
- Tom Rix <trix@redhat.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, 
- Andy Shevchenko <andy@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Tim Harvey <tharvey@gateworks.com>, Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
- linux-omap@vger.kernel.org
-In-Reply-To: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
-References: <20240704-mfd-const-regmap_config-v2-0-0c8785b1331d@gmail.com>
-Subject: Re: [PATCH v2 00/24] mfd: Constify read-only regmap structs
-Message-Id: <172189312066.829443.1132991130296167068.b4-ty@kernel.org>
-Date: Thu, 25 Jul 2024 08:38:40 +0100
+	s=k20201202; t=1721893214;
+	bh=bLfWZWLf4HI+k4oPVEQDi25zZ9zZTh9lQt9Sv79AXSo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=S740IzT0C4dNQnTsAhq8ahjWG58ZqU8cK0rUYT9vKtomlRffsTSA7ZXHIjZ5abFL0
+	 tdsLX/okOxLnN7UHk6nq81aeyZ63PAHnyWTRV4O5qm0jaPa4U4NNVcymV+7B0kB8mq
+	 otKeUAZ0Ojp+vE6pqnr6tdu9swza9hwQxy5bR2NmuWGoki3Eu/Jw2cQLXS+3a4X2eC
+	 gqO6bLXmgHKXq4m5SpNlkftuW/31gRYz2M5tahFAPHmackPCC2yMdtZ27P9lpXM4OF
+	 npSJSUpmAhZ8g83+h7yxQbFMbADRqN9mv769oRXFPnynTTqEq44Q9xr237T6/aoZGi
+	 4wNL5g4I/l4sw==
+Message-ID: <dd6370f9-8abb-4837-af2b-b1d5909be9e1@kernel.org>
+Date: Thu, 25 Jul 2024 09:40:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: dts: imx8mm-emtop-baseboard: Add Ethernet
+ Support
+To: Tarang Raval <tarang.raval@siliconsignals.io>, krzk+dt@kernel.org,
+ shawnguo@kernel.org, festevam@gmail.com
+Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240725065342.9308-1-tarang.raval@siliconsignals.io>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240725065342.9308-1-tarang.raval@siliconsignals.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 04 Jul 2024 19:23:10 +0200, Javier Carrasco wrote:
-> This series adds the const modifier to the remaining regmap_bus,
-> regmap_config, regmap_irq and regmap_irq_chip structs within mfd
-> that are effectively used as const (i.e., only read after their
-> declaration), but kept as writtable data.
+On 25/07/2024 08:53, Tarang Raval wrote:
+> Change in V2
+
+Missing appropriate commit msg.
+
 > 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> 
-> [...]
+> 	1. Add Board name into subject
+> 	2. Remove below properties
+> 	- at803x,eee-disabled;
+> 	- at803x,vddio-1p8v;
 
-Applied, thanks!
+Changelog goes under ---.
 
-[01/24] mfd: da9062-core: Constify read-only regmap structs
-        commit: 7115800617cd41295bb617e865997f227acd480b
-[02/24] mfd: fsl-imx25-tsadc: Constify struct regmap_config
-        commit: d932e461919cfa45185a0a22fb1a8427154b62cb
-[03/24] mfd: hi655x-pmic: Constify struct regmap_config
-        commit: d63abd1ced3613df64ed3e1d2e9f96895082f4bc
-[04/24] mfd: wcd934x: Constify struct regmap_config
-        commit: 3a782d2bf136c965f906f46d6cd35d4a0dabb5c7
-[05/24] mfd: tps6105x: Constify struct regmap_config
-        commit: 717df26d77b2ccd8d4f0caf3c2eb618dde2ebc81
-[06/24] mfd: rohm-bd9576: Constify read-only regmap structs
-        commit: 8235b063a2f8dcf2134fe6473da9cf35992ac305
-[07/24] mfd: intel-m10-bmc: Constify struct regmap_config
-        commit: 00bec2661357619d6eab7ea1cf5c6e8f5c1e1126
-[08/24] mfd: 88pm80x: Constify read-only regmap structs
-        commit: d038949e314c44db404ca49a4e997541c820e375
-[09/24] mfd: bd9571mwv: Constify struct regmap_irq_chip
-        commit: cb3394781af9e0047eb8e8c011cff0ad896d01cb
-[10/24] mfd: intel_soc_pmic_bxtwc: Constify struct regmap_irq_chip
-        commit: b830d915328f3077b3348a755e4178ddde588ce8
-[11/24] mfd: retu: Constify read-only regmap structs
-        commit: 9b0addc34a642670e73c551fe3625b137ddbae1c
-[12/24] mfd: rk8xx-core: Constify struct regmap_irq_chip
-        commit: 5ca2a7c1b45ba098e6795a3c93381192f8e430bb
-[13/24] mfd: rohm-bd71828: Constify read-only regmap structs
-        commit: 2d008372467f94872a47fbc51da4bee5a1fadbd7
-[14/24] mfd: rohm-bd718x7: Constify struct regmap_irq_chip
-        commit: 0bc081166936b66a600b0d898515032fd8cc0399
-[15/24] mfd: tps65086: Constify struct regmap_irq_chip
-        commit: 013e84b4d3f99c6e193123a4cf5c0c522361eb71
-[16/24] mfd: tps65090: Constify struct regmap_irq_chip
-        commit: 75a23bda7f86ebd6142dce395da6a1e30ecd1c58
-[17/24] mfd: tps65218: Constify struct regmap_irq_chip
-        commit: 9ae187b9b12674742c44a3ce0bb2249f3896b41e
-[18/24] mfd: tps65219: Constify read-only regmap structs
-        commit: 40ec8b0e239907768d9e3ab07184fde43ffaff9b
-[19/24] mfd: tps65910: Constify struct regmap_irq_chip
-        commit: 4a8ff7bf4d296e41bb334261be609c8c8bfbda49
-[20/24] mfd: tps65912: Constify struct regmap_irq_chip
-        commit: 9e94b883c645f7d0579d39b4b72490664bc743f0
-[21/24] mfd: twl6040: Constify struct regmap_irq_chip
-        commit: 430a8ffb83bf078ad7c63ba4c9eb0c3273302ef7
-[22/24] mfd: gateworks-gsc: Constify struct regmap_bus
-        commit: 07d43b15688c17a2dc93c9b1ac415c85e81d6bcc
-[23/24] mfd: mc13xxx-spi: Constify struct regmap_bus
-        commit: e23fd4be80dd6b9b6f55c1968a2b89725e9755b7
-[24/24] mfd: sprd-sc27xx-spi: Constify struct regmap_bus
-        commit: 8b5a164a9f8396aab242b14d00ad58b8ed7ef7d8
+Please read carefully submitting patches.
 
---
-Lee Jones [李琼斯]
+Best regards,
+Krzysztof
 
