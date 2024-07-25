@@ -1,186 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A041D19AA56;
-	Thu, 25 Jul 2024 14:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B944F1E895
+	for <imx@lists.linux.dev>; Thu, 25 Jul 2024 15:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721918348; cv=none; b=XHU6PY0QH4Tz07GSyTg1/w21YhPrQhObXbn1sh0uPqBk7h1AmIW0ZqUu6ibQFMOjSMtlNYJfYJWtdr4RSvsGqoUIve/68qRbsKvN8lmx4oSbb4sJgUbCGN9GKtDCS1swNKQzBt3Q+uWWTd7xsxnqDE77WofCsUiwrHQefyDGPTY=
+	t=1721920874; cv=none; b=f+s+ml2NNuyx9oAcuKTnZ5WKfER8yXNB38attDMwoRptTL2OVEzndHOWqLtaX2sgKwgUBBaFZ8jko+XL1sjuCFD92e81Bo0/BrR/GlZ+YBS+GxWk86PkqJEUUdUBy9uhUGsmK/0JLrv1YsOFmDKuG4DAQwbgylukq2Ex8qNEn9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721918348; c=relaxed/simple;
-	bh=ZpN2ZJEJffbl5pQjjoIFQo1fZ8paO1e2ecxVl4HvIW8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PQZiZzREYkg/2skvfmAj95C8C88SPK9eSfbR8YFDOQhmPfumON7x7+bO8xP/nsVdoDzqd6YRoNpz/hqXa51wGJrbmLM5n4KwWMTW1omjYm84RJrm0kescj7a2I4Nh1aao52DKt2402hIaZg4DKodCj5xK2ILiiJZP+KZy7y4CU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEj72h3Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721920874; c=relaxed/simple;
+	bh=BACA7lc/U3kuyTopB/C6+lFqL+M0+mPuPcll+QYABvU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pyjXERXFwxx9dNNq196RTSnUXcm70GWb/s559G7lRhvQIN2h0vhd2izq14Pok5IRmSpka13zYKgaHzdfqUUzZcdp6+HHRMbZAhA4BkCEMmb4iSzjYUNojc8AkWldBdaOqAs1WgmN7xN9WBO2g/fjsirIz6jI+HGOoMU82XMGGfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ljp0mfWa; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEj72h3Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFB2C32782;
-	Thu, 25 Jul 2024 14:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721918348;
-	bh=ZpN2ZJEJffbl5pQjjoIFQo1fZ8paO1e2ecxVl4HvIW8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZEj72h3ZDXezeNf/UAMg90fRPyND01zgbh194/2NZlbzCI16RuIa9UGzu4g+MjgB3
-	 va7ZDr59/mZE77rOcUbcCArK1yAHCafuFZfc2tmdUqGqa9vwB/0r669dHNXjoKaUwo
-	 CUupQIQ19WxijEdzmJJ1F+O8N7xd9oof/o/7IRJo11+J0GXqG0zvFaIMqt3S3Ud/Nc
-	 MuibNgV/NvkKR6LL6pfqd0SO1WXFytrLrnixCacDc8lvs9Lj3ajQDOpoxnmBXWx2ju
-	 9WWWn+j2O19QYx0EwlVhfLeZ5J++e5v5BUimiY1P8fZzKI7+pU7aF9YMlaZ0mIF7V/
-	 I/gYx5EiGxocw==
-Date: Thu, 25 Jul 2024 15:39:03 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add imx-se-fw
- binding doc
-Message-ID: <20240725-filled-outscore-24149588d958@spud>
-References: <20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com>
- <20240722-imx-se-if-v6-2-ee26a87b824a@nxp.com>
- <20240722-popper-comfort-7538ea70c77b@spud>
- <AM9PR04MB8604123E065315093347F66C95A92@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20240723-smitten-shower-1d15c0f3cf97@spud>
- <AM9PR04MB86043E4B4B2FB206BF9223C695AA2@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20240724-huddling-neatly-88813c0b1f1d@spud>
- <DU2PR04MB85990A0AB8AF8ABFCDA4CBD995AB2@DU2PR04MB8599.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ljp0mfWa"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4272738eb9eso8160075e9.3
+        for <imx@lists.linux.dev>; Thu, 25 Jul 2024 08:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721920871; x=1722525671; darn=lists.linux.dev;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2eq6cgeg4tjNK/UJ0dS0DsHH+PJFVARgjid38ZB1fJQ=;
+        b=ljp0mfWak2RkIgGV8++ojohMOEzDP6MwwCnQSrf8Ez47YiffPqCqlYlQhUjRratKQO
+         LINb8cTocBgUfbcWmLZ19WUW5MY5jh8mbOlftklmGpNEkn6nqrQP4cz2s/mQQHO9q7Og
+         s2lom1sgMDO4vImbUNiOo/zzjbjajM5H3vU6yGFf4ynKwKwiTjpgcK29i7+NrxUUcVQh
+         aMMfYq5G656zPivVBAt3Oys2TcSVm3POYO2OicDYKyvJBCLNOTKg97MP2Ve93W1CxTRU
+         AQ22kLzaHHwkHdOe31UUVS2wjQrqFzIi3mpH0+ksj2nIj2iy2BBHQYWqlBO/tgHZWs8C
+         454Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721920871; x=1722525671;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2eq6cgeg4tjNK/UJ0dS0DsHH+PJFVARgjid38ZB1fJQ=;
+        b=dRA9dji0UmPUdUxZ1z0NK0gCjTEeyaWtLXlqz/2s7badyorY9Mmlm78NdGwMw5GOji
+         PLihif7ErwAG+4dpqCIuSwlzXeShiCrsmTpBbq0+GCKR2ykv223ljdQxrjx7Emz9+lzS
+         5ra8xY0kBZ2ztxPcFr3o/olj0I4seUfU6KWEp8lQqwy1nuvkcSM1GrcDPfuCa97klpuA
+         7yowtSo9yF/uJpc8CVPNPEsquXiBamGgop4IYyamKNxNNt2e/jNIvWLZyaVe2G+EwA+G
+         XUzO21hvYAbdilCxk/PBHZHvScsszeUD3GHUkREJ2WQrrwpRItKbs/0ryeXJEpBkQRVO
+         2HKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpc839CRXpYVNHbhQ/EQLqON3mCbKhCTqd8D/tYwhwI85T3UXd9zIFuvOSEyQBThgUBKFy2xqbwyViMuJnZxgnlzlc
+X-Gm-Message-State: AOJu0YzjgSVfeXGjiNTdFpnfB/DkTHkakFgVUnU7jTmGAdYcMYL0MWvm
+	gsCKLAvMSqx/EyCCV2R1G6QeYTkk22/D/bFaBK9v7WH6LYXbYxt+
+X-Google-Smtp-Source: AGHT+IFRSWnlAYYHtp7B9TX/pm1tmW2wA1dlSwpQdMVtFjf9eyzO/iDYb0W5WyvQviIngjgeTfAO0g==
+X-Received: by 2002:a05:600c:1f8c:b0:426:5ee5:3130 with SMTP id 5b1f17b1804b1-4280550879dmr16655795e9.3.1721920870644;
+        Thu, 25 Jul 2024 08:21:10 -0700 (PDT)
+Received: from localhost (a109-49-32-45.cpe.netcabo.pt. [109.49.32.45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427f935933csm81735615e9.7.2024.07.25.08.21.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jul 2024 08:21:10 -0700 (PDT)
+From: Rui Miguel Silva <rmfrfs@gmail.com>
+To: Matthias Fend <matthias.fend@emfend.at>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Martin Kepplinger
+ <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: imx-mipi-csis: avoid logging while holding spinlock
+In-Reply-To: <20240723060909.534584-1-matthias.fend@emfend.at>
+References: <20240723060909.534584-1-matthias.fend@emfend.at>
+Date: Thu, 25 Jul 2024 16:21:09 +0100
+Message-ID: <m3wml9mra2.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="DB1xP50rYS+x7RPj"
-Content-Disposition: inline
-In-Reply-To: <DU2PR04MB85990A0AB8AF8ABFCDA4CBD995AB2@DU2PR04MB8599.eurprd04.prod.outlook.com>
+Content-Type: text/plain
+
+Hey Matthias,
+Many thanks for the patch.
+
+Matthias Fend <matthias.fend@emfend.at> writes:
+
+> Refactor mipi_csis_log_counters() to prevent calling dev_info() while
+> IRQs are disabled. This reduces crucial IRQs off time to a bare minimum.
+>
+> Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+
+LGTM
+
+Reviewed-by: Rui Miguel Silva <rmfrfs@gmail.com>
+
+Cheers,
+   Rui
 
 
---DB1xP50rYS+x7RPj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jul 25, 2024 at 07:06:30AM +0000, Pankaj Gupta wrote:
->=20
->=20
-> > -----Original Message-----
-> > From: Conor Dooley <conor@kernel.org>
-> > Sent: Wednesday, July 24, 2024 9:00 PM
-> > To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>;
-> > Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> > <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Rob
-> > Herring <robh+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
-> > linux-arm-kernel@lists.infradead.org
-> > Subject: Re: [EXT] Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add imx-se=
--fw
-> > binding doc
-
-For the third time, please fix your mail client so it stops inserting
-this garbage.
-
-> >=20
-> > On Wed, Jul 24, 2024 at 11:02:21AM +0000, Pankaj Gupta wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Conor Dooley <conor@kernel.org>
-> > > > Sent: Tuesday, July 23, 2024 7:38 PM
-> > > > To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>;
-> > > > Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > > > <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha
-> > Hauer
-> > > > <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> > > > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Rob
-> > > > Herring <robh+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> > > > kernel@vger.kernel.org; devicetree@vger.kernel.org;
-> > > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org
-> > > > Subject: Re: [EXT] Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add
-> > > > imx-se-fw binding doc
-> >=20
-> > Please fix this ^
-> >=20
-> > > > On Tue, Jul 23, 2024 at 09:28:31AM +0000, Pankaj Gupta wrote:
-> > > > >
-> > > > > > -----Original Message-----
-> > > > > > From: Conor Dooley <conor@kernel.org>
-> > > > > > Sent: Monday, July 22, 2024 10:20 PM
-> > > > > > To: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > > > > > Cc: Jonathan Corbet <corbet@lwn.net>; Rob Herring
-> > > > > > <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;
-> > > > > > Conor Dooley <conor+dt@kernel.org>; Shawn Guo
-> > > > > > <shawnguo@kernel.org>; Sascha
-> > > > Hauer
-> > > > > > <s.hauer@pengutronix.de>; Pengutronix Kernel Team
-> > > > > > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Rob
-> > > > > > Herring <robh+dt@kernel.org>; linux-doc@vger.kernel.org; linux-
-> > > > > > kernel@vger.kernel.org; devicetree@vger.kernel.org;
-> > > > > > imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org
-> > > > > > Subject: [EXT] Re: [PATCH v6 2/5] dt-bindings: arm: fsl: add
-> > > > > > imx-se-fw binding doc
-> > > >
-> > > > Please fix this ^
-> > > >
-> > > > > >
-> > > > > > On Mon, Jul 22, 2024 at 10:21:37AM +0530, Pankaj Gupta wrote:
-> > > In case of imx8ulp, there is a single node.
-> > > Having a same node name for both parent and child, is bit strange.
-> > > firmware {
-> > > 	firmware {
-> > > 	};
-> > > };
-> > >
-> > > Request you to allow to re-evaluate this point.
-> >=20
-> > I dunno, it's all firmware so I don't really get why it is so strange!
-> > Can you remind me again why it is inside a parent node to begin with?
->=20
-> Three type of security firmware(s): HSM, V2X-SHE, V2X-HSM, are running at=
- the cores dedicated to the each different secure-enclave hardware IP(s).
-> Each firmware receives the message to act and response back with the comp=
-leted act.
-> This message exchanges happens through the Message-Unit hardware interfac=
-e.=20
-> There could be multiple MU for multiple security firmware, that would be =
-used for respective message exchanges.
->=20
-> This node defines the details of each such MU interface.
->=20
-> Reason to put under firmware:
-> 	Since this node specifies interface details between kernel and firmware,=
- it was put under parent "firmware {".
-> 	I am not sure if this reason is correct enough to begin with.
->=20
-> Thanks for allowing to revisit.
->=20
-> I will make the change to whatever you finalize now. Thanks.
-
-I'm sorry, I still don't understand why you have the parent node. It
-seems pointless to me, and this new node could be added at the top
-level.
-
---DB1xP50rYS+x7RPj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZqJjhwAKCRB4tDGHoIJi
-0vAQAQDbMuDjmie7EWxnnWqDa2jGC6LmbY6qAHkFO27uKsQt+wD6Ax+NJWtrZz69
-lI1yzCU2LhiJN9t8XJxOoMELVtoPsAI=
-=qgEY
------END PGP SIGNATURE-----
-
---DB1xP50rYS+x7RPj--
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index f49b06978f14..0c34d316ed29 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -857,18 +857,21 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
+>  {
+>  	unsigned int num_events = non_errors ? MIPI_CSIS_NUM_EVENTS
+>  				: MIPI_CSIS_NUM_EVENTS - 8;
+> +	unsigned int counters[MIPI_CSIS_NUM_EVENTS];
+>  	unsigned long flags;
+>  	unsigned int i;
+>  
+>  	spin_lock_irqsave(&csis->slock, flags);
+> +	for (i = 0; i < num_events; ++i)
+> +		counters[i] =  csis->events[i].counter;
+> +	spin_unlock_irqrestore(&csis->slock, flags);
+>  
+>  	for (i = 0; i < num_events; ++i) {
+> -		if (csis->events[i].counter > 0 || csis->debug.enable)
+> +		if (counters[i] > 0 || csis->debug.enable)
+>  			dev_info(csis->dev, "%s events: %d\n",
+>  				 csis->events[i].name,
+> -				 csis->events[i].counter);
+> +				 counters[i]);
+>  	}
+> -	spin_unlock_irqrestore(&csis->slock, flags);
+>  }
+>  
+>  static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
+> -- 
+> 2.25.1
