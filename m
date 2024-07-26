@@ -1,134 +1,108 @@
-Received: from lx20.hoststar.hosting (lx20.hoststar.hosting [168.119.41.54])
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A35178399;
-	Fri, 26 Jul 2024 12:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.41.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BB023775
+	for <imx@lists.linux.dev>; Fri, 26 Jul 2024 12:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721996190; cv=none; b=W6iDIxBKur/U6e12Wa9WczvBJVuLbDIukbzFfnM7NKYGDTR9mnV3926RV51/5pSJE1liiy1v3QOzfELCbAgai94zUUjEFWZPtuiTxP7E5fmf4/8DRlOp/U4N6PBO7jBzXIDT2zX2U7RmRuA34yb4JLSPIN/UrLbj0kahp8qHr1w=
+	t=1721997078; cv=none; b=A8u2Vb58GZVi898aybSy7PfJgoFCZimoBjTnw5rVOLYmrUm4i2K1K1RmnQkZot89khY/Z0jL8XtFSlVyjEiJpyGMA4gqulqADHz9jp4rIo0yHBdczYyvFcwfGBYMmYUGaDmtRLN/L/e7exEPh+eR0aUL+VzaZRWohs7SZOhUZdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721996190; c=relaxed/simple;
-	bh=EKxhdOOgldYUX3epbyf3o7zi1yBmGlOkw9vISam+8w8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qPVmMdThK96c5BIBUZqlimOLarrgs3QIJJz4tQmiLHGj+kWk2q80q55snLGc7fTKyUnK+SZm0u3mtAKaRti+0sVEkVnVq5no3yCtLi8dvKpdR/xsCKGJYXEGlodX+IIHKhhuhXahk8kmEtePWXI/39U0qS0mYO/nJ+o8vjWH/Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emfend.at; spf=pass smtp.mailfrom=emfend.at; dkim=pass (1024-bit key) header.d=emfend.at header.i=@emfend.at header.b=ZY2okx7U; arc=none smtp.client-ip=168.119.41.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emfend.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emfend.at
+	s=arc-20240116; t=1721997078; c=relaxed/simple;
+	bh=MlJwlbjUlcCc+ZZTtdm6Pi/qZeMa/wtqkGavYiLkVXA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AwSPWoueJX9TyxLnrGMjiJ8WJEjyYxDhgZPdStOmL1Znn+4Lw4uLWdZWkIImVAs8UP3Ahnkdwt881S7auzA0HXv6WmomTlZP8CeOnno6xuru1d+4swj/rEv1jfq0xKALynizfCPaDV/L3CVc62zTCuRKd/ZX4KYkP5Oh1ghSqRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=HvezL4Jb; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=emfend.at header.i=@emfend.at header.b="ZY2okx7U"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=emfend.at;
-	 s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References
-	:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=3elkBGi780aPe4wVl1oeACPtRruuFHebc1c5YmjLFR8=; b=ZY2okx7UiwE08BLIgwev1B7z16
-	6nFn+G4nQqcjtwPVRJwV1EYxbJTWN1kCyuunm5Uy3eRrKeAdqNlDxQFY1ZppHnRURMiY9vSJrPL5P
-	ABjkv8BJ/WVySNLVl/Ax2nN/wMS/pdCSmRPTKHBDTIu7YX/PtPXSddv7rjH++zTiVAEw=;
-Received: from 194-208-208-245.tele.net ([194.208.208.245]:62774 helo=[192.168.0.218])
-	by lx20.hoststar.hosting with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.93)
-	(envelope-from <matthias.fend@emfend.at>)
-	id 1sXJrl-00AkNV-Ep; Fri, 26 Jul 2024 14:16:09 +0200
-Message-ID: <3e38bf09-734d-4cbf-a0a5-b01cd1998037@emfend.at>
-Date: Fri, 26 Jul 2024 14:16:07 +0200
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="HvezL4Jb"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1721997064; x=1724589064;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=MlJwlbjUlcCc+ZZTtdm6Pi/qZeMa/wtqkGavYiLkVXA=;
+	b=HvezL4JbN5+QhxNyQoo487S9B50vvZ3KGzpyLr0S0009mQL67/QUGedFy8tfxI0Y
+	f/ZcFRoxdCwm5gStCdJRhKaUD43H8nKecX/4Y2+AgKnWE2emCBmZOChPCAOi0oNd
+	tPux8v7EWWw1m9nbQCxVNRCzHOG7XXt8Vz/HD9mA/QI=;
+X-AuditID: ac14000a-03251700000021bc-77-66a3970808c3
+Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id A2.F1.08636.80793A66; Fri, 26 Jul 2024 14:31:04 +0200 (CEST)
+Received: from Berlix.phytec.de (172.25.0.12) by Florix.phytec.de
+ (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Fri, 26 Jul
+ 2024 14:31:04 +0200
+Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
+ berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
+ Fri, 26 Jul 2024 14:31:03 +0200
+From: Benjamin Hahn <B.Hahn@phytec.de>
+To: Andrej Picej <andrej.picej@norik.com>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>
+CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, PHYTEC Upstream
+	<upstream@lists.phytec.de>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: Re: [Upstream] [PATCH] arm64: dts: imx8mp-phyboard-pollux: Disable
+ write-protect on SD card
+Thread-Topic: [Upstream] [PATCH] arm64: dts: imx8mp-phyboard-pollux: Disable
+ write-protect on SD card
+Thread-Index: AQHa31euUtK0aNEroEae9APeWMkSoA==
+Date: Fri, 26 Jul 2024 12:31:03 +0000
+Message-ID: <0b2eecd0-cd5f-48d9-9377-164b5ad5b78d@phytec.de>
+References: <20240716085114.3205582-1-andrej.picej@norik.com>
+In-Reply-To: <20240716085114.3205582-1-andrej.picej@norik.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BE72787A14AC7346A57308D98746FC04@phytec.de>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: imx-mipi-csis: avoid logging while holding
- spinlock
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger
- <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240723060909.534584-1-matthias.fend@emfend.at>
- <20240726104255.GH14252@pendragon.ideasonboard.com>
-Content-Language: de-DE
-From: Matthias Fend <matthias.fend@emfend.at>
-In-Reply-To: <20240726104255.GH14252@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: 
-X-Spam-Bar: 
-X-Spam-Report: 
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLIsWRmVeSWpSXmKPExsWyRpKBV5dj+uI0g7cXRSym7mW0WLP3HJPF
+	/CPnWC0eXvW3mHmvlc1i1dSdLBYvZ91js9j0+BqrxeVdc9gs/u/ZwW7xd/smFosXW8Qtut+p
+	O/B67Jx1l91j06pONo/NS+o9XmyeyejR393C6vH96wZWj/6/Bh6fN8kFcERx2aSk5mSWpRbp
+	2yVwZZxrDC6YwVPxa9ZdlgbGD9xdjJwcEgImEp+v72fuYuTiEBJYwiSx68BfdgjnPqPE3JbZ
+	LBDOBkaJi9cfsoK0sAmoSex685oVJCEi8IZJ4uT9n2D9zAJrmCQ6p90GqxIWSJO41NvD1MXI
+	AVSVLrH1fSFIWERAT+Jl60YWEJtFQFWi59xnNhCbV8BGovnPMmYQW0jAVmJB3y8mEJtTwE5i
+	S9sRsJGMArISGzacB6thFhCX2PTsOyvEDwISS/ZAxCUERCVePv4HFZeXOHFrGtgJzAKaEut3
+	6UO0WkisWnqdCcJWlJjS/ZAd4gRBiZMzn7BMYBSfhWTDLITuWUi6ZyHpnoWkewEj6ypGodzM
+	5OzUosxsvYKMypLUZL2U1E2MoCQgwsC1g7FvjschRiYOxkOMEhzMSiK8y+4vTBPiTUmsrEot
+	yo8vKs1JLT7EKM3BoiTOu7ojOFVIID2xJDU7NbUgtQgmy8TBKdXAuPnB/f1t+mslHs9x+ewq
+	MfPf52qDfyU7pE7dnllpqZR6fdprVofeF1dcnC9l5x1/0fFKxmFW5R/JCqP2TNmFGddfiaa7
+	Xjg2IUXqzSkZ9mqNkGkXnl6U2n/eZuIcr9TA4EdzzANmON+VVdjNPFWxSiFj3b6lUbPzNUJW
+	vn2iFu0szlu9eLWwqBJLcUaioRZzUXEiAD277ETwAgAA
 
-Hi Laurent,
-
-Am 26.07.2024 um 12:42 schrieb Laurent Pinchart:
-> Hi Matthias,
-> 
-> Thank you for the patch.
-> 
-> On Tue, Jul 23, 2024 at 08:09:08AM +0200, Matthias Fend wrote:
->> Refactor mipi_csis_log_counters() to prevent calling dev_info() while
->> IRQs are disabled. This reduces crucial IRQs off time to a bare minimum.
-> 
-> Should we add
-> 
-> Cc: stable@vger.kernel.org
-> 
-> to get this backported to stable kernels ?
-
-
-Hard for me to tell. Since this problem only occurs when you explicitly 
-trigger the debug output from this driver, it probably only affects very 
-few end users. So I'm not sure if a backport would be worth it.
-
-> 
->> Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
->> ---
->>   drivers/media/platform/nxp/imx-mipi-csis.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
->> index f49b06978f14..0c34d316ed29 100644
->> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
->> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
->> @@ -857,18 +857,21 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
->>   {
->>   	unsigned int num_events = non_errors ? MIPI_CSIS_NUM_EVENTS
->>   				: MIPI_CSIS_NUM_EVENTS - 8;
->> +	unsigned int counters[MIPI_CSIS_NUM_EVENTS];
->>   	unsigned long flags;
->>   	unsigned int i;
->>   
->>   	spin_lock_irqsave(&csis->slock, flags);
->> +	for (i = 0; i < num_events; ++i)
->> +		counters[i] =  csis->events[i].counter;
->> +	spin_unlock_irqrestore(&csis->slock, flags);
->>   
->>   	for (i = 0; i < num_events; ++i) {
->> -		if (csis->events[i].counter > 0 || csis->debug.enable)
->> +		if (counters[i] > 0 || csis->debug.enable)
->>   			dev_info(csis->dev, "%s events: %d\n",
->>   				 csis->events[i].name,
->> -				 csis->events[i].counter);
->> +				 counters[i]);
-> 
-> The last two lines now fit in a single line. No need for a v2, I'll
-> rewrap the code myself, and add the Cc line if you think that's a good
-> idea.
-
-Thanks! Regarding Cc, I would like to leave it up to you; you have the 
-necessary experience and overview to judge that.
-
-~Matthias
-
-> 
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> 
->>   	}
->> -	spin_unlock_irqrestore(&csis->slock, flags);
->>   }
->>   
->>   static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
-> 
+T24gMTYuMDcuMjQgMTA6NTEsIEFuZHJlaiBQaWNlaiB3cm90ZToNCj4gTWljcm8gU0QgY2FyZHMg
+Y2FuJ3QgYmUgcGh5c2ljYWxseSB3cml0ZS1wcm90ZWN0ZWQgbGlrZSBmdWxsLXNpemVkDQo+IGNh
+cmRzLiBEaXNhYmxlIHRoaXMgZmVhdHVyZSBpbiBkZXZpY2UtdHJlZSB0byBnZXQgcmlkIG9mIHRo
+ZSBrZXJuZWwNCj4gd2FybmluZzoNCj4NCj4gImhvc3QgZG9lcyBub3Qgc3VwcG9ydCByZWFkaW5n
+IHJlYWQtb25seSBzd2l0Y2gsIGFzc3VtaW5nIHdyaXRlLWVuYWJsZSINCj4NCj4gU2lnbmVkLW9m
+Zi1ieTogQW5kcmVqIFBpY2VqIDxhbmRyZWoucGljZWpAbm9yaWsuY29tPg0KUmV2aWV3ZWQtYnk6
+IEJlbmphbWluIEhhaG4gPEIuSGFobkBwaHl0ZWMuZGU+DQo+IC0tLQ0KPiAgIGFyY2gvYXJtNjQv
+Ym9vdC9kdHMvZnJlZXNjYWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0cyB8IDEgKw0K
+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBoeWJvYXJkLXBvbGx1eC1yZGsuZHRz
+IGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBoeWJvYXJkLXBvbGx1eC1y
+ZGsuZHRzDQo+IGluZGV4IDAwYTI0MDQ4NGMyNS4uNzkxOTA5ZGNhNmUxIDEwMDY0NA0KPiAtLS0g
+YS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9sbHV4LXJk
+ay5kdHMNCj4gKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBoeWJv
+YXJkLXBvbGx1eC1yZGsuZHRzDQo+IEBAIC0yNjcsNiArMjY3LDcgQEAgJnVzZGhjMiB7DQo+ICAg
+CXBpbmN0cmwtMSA9IDwmcGluY3RybF91c2RoYzJfMTAwbWh6PiwgPCZwaW5jdHJsX3VzZGhjMl9w
+aW5zPjsNCj4gICAJcGluY3RybC0yID0gPCZwaW5jdHJsX3VzZGhjMl8yMDBtaHo+LCA8JnBpbmN0
+cmxfdXNkaGMyX3BpbnM+Ow0KPiAgIAljZC1ncGlvcyA9IDwmZ3BpbzIgMTIgR1BJT19BQ1RJVkVf
+TE9XPjsNCj4gKwlkaXNhYmxlLXdwOw0KPiAgIAl2bW1jLXN1cHBseSA9IDwmcmVnX3VzZGhjMl92
+bW1jPjsNCj4gICAJYnVzLXdpZHRoID0gPDQ+Ow0KPiAgIAlzdGF0dXMgPSAib2theSI7DQoNCg0K
