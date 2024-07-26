@@ -1,92 +1,182 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5EFE57E;
-	Fri, 26 Jul 2024 06:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C098174E;
+	Fri, 26 Jul 2024 09:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721976973; cv=none; b=DlZT7IQh0tgphPlL49LGfY8QZzwFY+H2L5ywgkdz9E7gxh3GmS/bmmcjO+0m8Tf4/M6mSvEH42JIdn5QWNWCftzf81sx1Zy6khupWa1yI3qNnG4vAjw8Tq09NJ1BcHoy0qgeUhZmwEkjbHL5ZlrDxMnKqzTJizvzLeSKT3ZaApI=
+	t=1721985563; cv=none; b=EiujpkpAr8xILhoGJOxIhece1sKe8OmF3ekhnbeT5au9V9ZedTcxypRC8W2a9RwFeRdS5FsSTOHi36ln951h5+SItUC3/qQGQYZybQ9QvtJVV9XAke63bzD4OtEtjTBaKcWeVgzDH0UZ4vRuD2B31aBoftCjESYI9RtYMPzJ6GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721976973; c=relaxed/simple;
-	bh=EygN46D+ZOSQfBsGpwSJSZRKjgFCh9by288IRTwLntw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P3zjOUovJMTBW08RnJigih5EPfh92Bwme1Sf7iK16ShBTZKaZz+AKF3xTfmplaaJ3HRMkoaHZaFYOvrWGByBKvNGuf11tro6phkjQNyijDasaRGa5i0EBShs3o0RVt9489OJauSZBtRAWj0KugY7lLwuNOKfhrD59mDDgjPWyAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdE36ooJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721985563; c=relaxed/simple;
+	bh=tMi0zgrFMpPuBV9tMsXKq38gTeYqBlk4gkAooZNByMQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tk+PVqLfcDiVs03EQ95GQUv3LHas3D1H5X3tx358jKZW31WFvWIRq6bhPT6Pc6nLublAqUE6XnCpXYJqhqUY/pTRQiB7uwYsuvKpZhdiFUEZ3CQk3xiUPGoCUg8mtT5iZREKqRwjAW4Gb7RmlI/BXCfRzQVBhXKhMBNanrAofC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0d2+CaX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdE36ooJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A04C32782;
-	Fri, 26 Jul 2024 06:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721976973;
-	bh=EygN46D+ZOSQfBsGpwSJSZRKjgFCh9by288IRTwLntw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MdE36ooJZm6cjMTNUBLQerBYjH8R6lEWTNXhYoW6nvJsTdXKCV9FtMoGdO9oV5gtV
-	 2kJ/fIXMUyTo8tywBI1TYZCKVQyuN5xCCmW6IjlRaGHA1GqIW4qtQpUW0tVSugk+MJ
-	 2UkLiBQrnhyn4kwoTUEKAeDrTAUaww5jEdBXNhLc=
-Date: Fri, 26 Jul 2024 08:56:10 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Roger Quadros <rogerq@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-Subject: Re: [PATCH] usb: cdns3: imx: simplify system pm using
- _force_suspend/_resume
-Message-ID: <2024072659-scouting-humble-f05d@gregkh>
-References: <20240725212811.296307-1-shenwei.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0d2+CaX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FE1C32782;
+	Fri, 26 Jul 2024 09:19:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721985563;
+	bh=tMi0zgrFMpPuBV9tMsXKq38gTeYqBlk4gkAooZNByMQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Z0d2+CaXqpcgY/qKxO4r8zT0cguOQK8rctC3XSCYroSY6aJqFiDrs1gQpdx68XTd5
+	 rqaDHk+1sdfmFKFVrdy4tTfEBhsmP+SvR4/sSkvuzkIY2qFDGfFy1J3VXGiXWTy2bY
+	 hyViXo7x48g/b06dj8lnO9ppKWkAUMANWdvQB4qpZ/SEYVHr1dh6yOrTij1/wU80At
+	 aExo4vEUFZaRVKk51HshkGctPkWA7ZYsKu0KwvB8+DRvdk7AEK0YpuxEpAtqzZV5Jz
+	 6pw1gXMrAXHdd1HwiEYXHQyL8Qqy3mMQZctQxjxyYxD64tO9SpND/s32Y56/KDR4z1
+	 iPJBPeJKEd7iQ==
+Message-ID: <ff922cad-0e0a-4ab7-981b-62ac60ff2d26@kernel.org>
+Date: Fri, 26 Jul 2024 11:19:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725212811.296307-1-shenwei.wang@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] arm64: dts: Add phyBOARD-Pollux dts for rpmsg
+To: Yashwanth Varakala <y.varakala@phytec.de>, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de
+References: <20240725094457.37739-1-y.varakala@phytec.de>
+ <20240725094457.37739-4-y.varakala@phytec.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240725094457.37739-4-y.varakala@phytec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 25, 2024 at 04:28:11PM -0500, Shenwei Wang wrote:
-> By utilizing _force_suspend and _force_resume, ensures a more consistent
-> and simple approach to handling system sleep states. It also aligns the
-> driver's PM behavior with the other drivers' common practices.
+On 25/07/2024 11:44, Yashwanth Varakala wrote:
+> Adds a devicetree containing reserved memory regions used for intercore
+> communication between A53 and M7 cores.
 > 
-> Fixes: db3c4e366287 ("usb: cdns3: imx: Rework system PM to avoid duplicated operations")
-> Reviewed-by: Frank Li <frank.li@nxp.com>
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
 > ---
->  drivers/usb/cdns3/cdns3-imx.c | 18 +++++++-----------
->  1 file changed, 7 insertions(+), 11 deletions(-)
+>  arch/arm64/boot/dts/freescale/Makefile        |  2 +
+>  .../dts/freescale/imx8mp-phycore-rpmsg.dtso   | 57 +++++++++++++++++++
+>  2 files changed, 59 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
 > 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index dedea4b5c319..80cc87d50301 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -177,9 +177,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
+>  imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
+>  imx8mp-phyboard-pollux-rdk-no-rtc-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-rtc.dtbo
+>  imx8mp-phyboard-pollux-rdk-no-spiflash-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-spiflash.dtbo
+> +imx8mp-phyboard-pollux-rdk-rpmsg-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-rpmsg.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-rtc.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-spiflash.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-rpmsg.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
+> new file mode 100644
+> index 000000000000..a5694f3aecaa
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
+> @@ -0,0 +1,57 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2024 PHYTEC Messtechnik GmbH
+> + * Author: Dominik Haller <d.haller@phytec.de>
+> + * 	   Cem Tenruh <c.tenruh@phytec.de>
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/clock/imx8mp-clock.h>
+> +
+> +&{/} {
+> +	imx8mp-cm7 {
 
-Hi,
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+> +		compatible = "fsl,imx8mn-cm7";
+> +		clocks = <&clk IMX8MP_CLK_M7_DIV>;
+> +		mboxes = <&mu 0 1
+> +			&mu 1 1
+> +			&mu 3 1>;
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+That's one or there entries? look wrong.
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+> +		mbox-names = "tx", "rx", "rxdb";
+> +		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
+> +		rsc-da = <0x55000000>;
+> +		status = "okay";
 
-thanks,
+Why? Did you disable it anywhere? You add a new node.
 
-greg k-h's patch email bot
+> +	};
+> +
+> +	reserved-memory {
+> +		ranges;
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +
+> +		m7_reserved: m7@0x80000000 {
+> +			no-map;
+> +			reg = <0 0x80000000 0 0x1000000>;
+> +		};
+> +
+> +		rsc_table: rsc_table@550ff000 {
+
+Please follow DTS coding style... This applies to all your contributions.
+
+Best regards,
+Krzysztof
+
