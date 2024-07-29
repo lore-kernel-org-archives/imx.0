@@ -1,27 +1,27 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320A978C68
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 02:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB18A7BAF7
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 02:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722219361; cv=none; b=qarzxVxxjGwjj6n6fUCg6iwaUTmF/wtTcv6o0a9GuanjjXxT+4WfeJwLP/B5dUh3KwiVGMrrdBOym1Xy5UlO7NDGStpBVsKkwevA/14qw6vlcuUoIUMcdlHYs+S3a/xl1eX99tFuSgIhf4BbV5w52b01CUaUxX/U1N1m071YAY8=
+	t=1722219362; cv=none; b=gRhcKeU/ynIfge5ag+BNjiLmx9J3mc7C+1Am1+c7UWvUkS6Q3F79eqUtAgCHd1m2UhU1VtQEWEfepBGvcc3x1PnJBLdTGXjikpTK884vbparnRjZVIlqmt81DLaKgm6lvTpuL4xwOVOjB9a8HliLHHc+uza7bExf+PGEbIVQG58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722219361; c=relaxed/simple;
-	bh=ZFVhHkPTDo6FoZoGON2cwcym53yrgu8xxzROJaE3ohw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=tB8mpyzIFXw2KiKftekdD8+hjpUYS+VmeasAy93uoFgX0yH6LZSqcKQrjXKP4cfw7hF3dTTRfAaPhKZCZg3SJLufgh2yKnyHj4eO4nTrcngocql7+PNNNYE+7hOdrP6qnywq/g7kIjLte7uOZ9jXsf6f6GyYuW9QWL2gH8xZeqM=
+	s=arc-20240116; t=1722219362; c=relaxed/simple;
+	bh=jUz1JOh/2k7wU3uH9YIn6s6nrjSbpT25iIzTCuHpEHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Wtnb2yiaPvflKiQw2oHegjjnIYNfUxHXK/ji3sASAqqsVRUgGejsHb1Lou41NYLK6VcJCXO9/AhQAPl9SbyjyvRQHHgx6iSb2+hLyHm0lTLBU44+82AWsIbMRoosWhOIaLl7Zj9sRWzn897wSQILlS3NfPzq8C6+SC+qRzrK1Es=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B1A3C200CB4;
-	Mon, 29 Jul 2024 04:15:57 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 46000200662;
+	Mon, 29 Jul 2024 04:15:59 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7A1902000C6;
-	Mon, 29 Jul 2024 04:15:57 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 0E76C2000C6;
+	Mon, 29 Jul 2024 04:15:59 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 3990E183AD44;
-	Mon, 29 Jul 2024 10:15:56 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 5BD3C183AD45;
+	Mon, 29 Jul 2024 10:15:57 +0800 (+08)
 From: Richard Zhu <hongxing.zhu@nxp.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -35,9 +35,9 @@ Cc: hongxing.zhu@nxp.com,
 	linux-kernel@vger.kernel.org,
 	kernel@pengutronix.de,
 	imx@lists.linux.dev
-Subject: [PATCH v4 2/4] dts: arm64: imx8mq: Add dbi2 and atu reg for i.MX8MQ PCIe EP
-Date: Mon, 29 Jul 2024 09:56:43 +0800
-Message-Id: <1722218205-10683-3-git-send-email-hongxing.zhu@nxp.com>
+Subject: [PATCH v4 3/4] dts: arm64: imx8mp: Add dbi2 and atu reg for i.MX8MP PCIe EP
+Date: Mon, 29 Jul 2024 09:56:44 +0800
+Message-Id: <1722218205-10683-4-git-send-email-hongxing.zhu@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1722218205-10683-1-git-send-email-hongxing.zhu@nxp.com>
 References: <1722218205-10683-1-git-send-email-hongxing.zhu@nxp.com>
@@ -48,14 +48,14 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Add dbi2 and iatu reg for i.MX8MQ PCIe EP.
+Add dbi2 and iatu reg for i.MX8MP PCIe EP.
 
 For i.MX8M PCIe EP, the dbi2 and atu addresses are pre-defined in the
 driver. This method is not good.
 
 In commit b7d67c6130ee ("PCI: imx6: Add iMX95 Endpoint (EP) support"),
 Frank suggests to fetch the dbi2 and atu from DT directly. This commit is
-preparation to do that for i.MX8MQ PCIe EP.
+preparation to do that for i.MX8MP PCIe EP.
 
 These changes wouldn't break driver function. When "dbi2" and "atu"
 properties are present, i.MX PCIe driver would fetch the according base
@@ -65,28 +65,27 @@ PCIe driver would fall back to the old method.
 Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mq.dtsi | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index e03186bbc415..d51de8d899b2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -1819,9 +1819,11 @@ pcie1: pcie@33c00000 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 603dfe80216f..53748227db10 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -2125,8 +2125,11 @@ pcie: pcie@33800000 {
  
- 		pcie1_ep: pcie-ep@33c00000 {
- 			compatible = "fsl,imx8mq-pcie-ep";
--			reg = <0x33c00000 0x000400000>,
--			      <0x20000000 0x08000000>;
+ 		pcie_ep: pcie-ep@33800000 {
+ 			compatible = "fsl,imx8mp-pcie-ep";
+-			reg = <0x33800000 0x000400000>, <0x18000000 0x08000000>;
 -			reg-names = "dbi", "addr_space";
-+			reg = <0x33c00000 0x100000>,
-+			      <0x20000000 0x8000000>,
-+			      <0x33d00000 0x100000>,
-+			      <0x33f00000 0x100000>;
++			reg = <0x33800000 0x100000>,
++			      <0x18000000 0x8000000>,
++			      <0x33900000 0x100000>,
++			      <0x33b00000 0x100000>;
 +			reg-names = "dbi", "addr_space", "dbi2", "atu";
- 			num-lanes = <1>;
- 			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "dma";
+ 			clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
+ 				 <&clk IMX8MP_CLK_HSIO_AXI>,
+ 				 <&clk IMX8MP_CLK_PCIE_ROOT>;
 -- 
 2.37.1
 
