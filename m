@@ -1,66 +1,65 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011035.outbound.protection.outlook.com [52.101.70.35])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011070.outbound.protection.outlook.com [52.101.70.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F7C15A87C
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 19:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD0B186E25
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 19:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722280325; cv=fail; b=PG4OgogTp5CnwJFeEfjmCWZHNr1AK2WTgFnaULycVL18Rqqb/QsMaOwA13XxSVXpatSy0cnn0L+zmfv5uF4T2HLVFX11o26Z21Pd2JIE4OHJvX+1nquZX/MJ9QAnHssdSF/Tk+650UMQFEJT4HYXqvUywVzLZbrDLtLZhJ+f+SE=
+	t=1722281756; cv=fail; b=q/dgFvz03aemL0zG7XnYYYSHN7bSqTELyt2cxA+QJMoxxgXNesQvMMZzQp+1OnPY0w64hn0rdAwVGcuFfunppTzt23lBcDCLsd7A9tqT4B+rhM+6N1ELbdMOhl6IBUDQmh+TdVerUAmwA42umZ1qt0BzIM1jBOGznc+sph1ESys=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722280325; c=relaxed/simple;
-	bh=/RogscTK2/eFMWy5hCLda6Rka08tIQv6wYoGxfQP1xA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=T5sl62xqND9o37rIL1A4GaRx6Ero/83SKjfjY2aaTQN7BK/B/pQ7Lz9PwPJXHPQ+yaOwvgx4NRTSkfDebIQIgS9gP5W4wqvyTnITKTD8TmWNys+SrufYmPriKl0a/1WeS88rYfvz2ORCM4LndTrSUP6Uv7YadBlb/oTyYV5zq1g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WRbnqhgg; arc=fail smtp.client-ip=52.101.70.35
+	s=arc-20240116; t=1722281756; c=relaxed/simple;
+	bh=DNhd2f0C3IFNkpJtJ3K1Dggbblm6bnyJcwakCk+Za+w=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WoM5107OcrHwTww8RRUESRSY3nY/2z4XneacDf+gawb9POKtzlPbHW++Wke7+WTl4baxxOEkiZ3eyjkcuwl+Paiav0Yy2ELDWLmyx7nKqDpPv8Zzwahje4rDLBWPlvYRtMOsxgg6K4RZuo8zUFwIU1nJs0nflhMx78iNIjYRcsw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TxGQ5HwN; arc=fail smtp.client-ip=52.101.70.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WRbnqhgg"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TxGQ5HwN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e652HF/JEDQPW4Ssd2XH2hID1EpV3Fd8EQOioUwCAc0cuK5yWE3kfvY3B0fIvSFrV6Jy8SvEVI7emSPXeot96eoMojPpsoV3E5wbnpRwdXnND0uFma7qP3rs3mF2t6LSXI1f145/gUIaQokY4SkQXsLnMHxH6ZUOemXVjuvOVionti4tp0TpknUZQVocuUPptZklhjhUGZtyyzzSkvW7EYEd3yxeXyVpMTymwYeFI13YxdDcc+Kuo9UJ4BuHnG+tu3OBuuXbuLf1gCf9OH+4pqRYFB6rTXDRr0IVxqXOWhe36pkuaplXgBumvWkcs7SJJsHpESleMZfltx+LEOa0xQ==
+ b=M3g9UKq+hsWLJr512JFfKcnkqSzQbCoLzugT2ME7p7vfNUG+TA1laLheTeOAmoDe+sDsYXPpoTHkHjkHreNNsLDrIMMVR7uIXrWHKSGa3bOheyzirFyP3PYe1YzRgwIY9U5qm1mM0X7+iQmllJ+w8LNEjupv0xlyVxM1MgscnFJzUyKcOYHbK10Hpns7dYH4uRPONpMp/qZN1b8Z39WH46GMWdzD8T5x6UxESmxyY9Tx+d2vz1/Ffsco8sVqcTIhnFejmlFu68bWesmwecM/aqElHDVMBCFPf/vI/xyKBpkVQ7goWQrz5Nu+VuXsLT2AnQAdXrMpjSrJ0yeFvdOe7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JCsi7YEvLI9ZylUJ9nzGtVjkEG917DqbNXG+mkLGto8=;
- b=fsZ0qtY9F8LPSbXpD/s3Z4BEy+HW8GdGh63x0ZWlk9cAnewbXZWA+DJnuKzwf1X82ZZMyy/XdLgicct235f8V0Pzukj3ObtpXsf+nhHyt0W+4vyMD1DUkngeJ66PLaENCUMyiEcufChmGvQDfIgVSe+JDdDDHptTZwcr8Y0Y4QoDI0N43mWXqq3HTtSvjOuUJGUrbKZ/y9jNjbg1CxCRb5GyeReHH5JaoygxJYTXCyYlzNaSgY7Iu0g4WTsF/2Mfq6HvZ2FtsGsE0rBjp8KzLYUaKLgAyZ6xiAiPlOcUAsYFkSMBGbjjIIwK7xVysY+N6t5pLI2zFmg7zLp06jlGOg==
+ bh=sCR5O3OIdzW1hlWJVQUzhhb5ckHp9QdKFALG8jkyxHQ=;
+ b=zF0R6Ae1ZnRNYatb2ADH86o9ueMEBzOcvD2JNfNaAGsRKYtZhqKmU60cqUn+GaMH/QPvV+iGToZtWFaDMhzlH4BfjpnMZZkJoxFKnBB2NB+iwbKi6ghW881hksoJkA2MplV9+CFb8KyCphQy/OSm9WG/reivqR2SLqUWKUf2QM79liw50ELq71YR8YHpxTv1CyPxuB0n5twGNyC0QfcWlqaCXZAFzhRGizuY3DEccMyoZ904fTaef5tpk4LpmMunjLqEcZAYD3woRrzFggVdpii12VvdYrRIRx7fqOHVzqumvuuGCVHl/Qxaj81QmXCmLT3ZtfbAUVfeRe1bNd/BoQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JCsi7YEvLI9ZylUJ9nzGtVjkEG917DqbNXG+mkLGto8=;
- b=WRbnqhgg0m05vo/2bk4gkYYouezqJuke+X9U3B0Upj7AWH2h2wnjr1A6GygcvFmaq3zG0S8ilgXHWfX9pJOUO7VCdafT0eWzDcVaWthPMqIfD4PEQtl+eZiyQiM0J15VlNvAJMSBgq0IXg8hKG9v2yLb5xRSWeWRtihkATVvbdRoJXCtfMUKCCebB3paT57Xnt8kIJPn4HmT1zi8GjFLSPrT5rvomjZUw+yxa70f+TjkSX+2bKI1s9wOssSgOU+bTbllBy0I6Ns3P2uiBDx4+WiPdsEDqjSspz9BwRXTq9Hqh4l23+U8pbcbEL0apnSj5UjBpXrXaimKksmvaurKbQ==
+ bh=sCR5O3OIdzW1hlWJVQUzhhb5ckHp9QdKFALG8jkyxHQ=;
+ b=TxGQ5HwNA5yv1jRNt4/bSL5MmVfwPGwCCu4bFAH4X6JjG3d46r6HIWxGBdwmG+Rd0V7R5BPlPa03EtFiNfi1a5jAxYk9WYou88XJuun0V5mIY9GYkqYfTZs9BCNpOn6A7v49+C64ikMsR09IbtDfi+H//HdSLPyeqf2i5Re5/dBNIlqzXetRUm1y/vIjLAE3VIg8I7tiML/O5eZO0BRmGokX1b3bDpR20cZH8Y63QpZRfxq2v3VrYT3HU5IbqUBb+pcAG/mixLu54bp0amw8JXQMYa16rP/Hz/0NhnzG94RXuV/BZpVQukzoLVIGJL7hrp5YyTWeMH1/0FmbwB0pmg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7557.eurprd04.prod.outlook.com (2603:10a6:20b:294::5) with
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DB8PR04MB7003.eurprd04.prod.outlook.com (2603:10a6:10:11d::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Mon, 29 Jul
- 2024 19:12:00 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7807.026; Mon, 29 Jul 2024
- 19:12:00 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-rtc@vger.kernel.org (open list:REAL TIME CLOCK (RTC) SUBSYSTEM),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
-	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: soc: fsl: Convert rcpm to yaml format
-Date: Mon, 29 Jul 2024 15:11:42 -0400
-Message-Id: <20240729191143.1826125-1-Frank.Li@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Mon, 29 Jul
+ 2024 19:35:50 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%4]) with mapi id 15.20.7807.026; Mon, 29 Jul 2024
+ 19:35:49 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-imx@nxp.com
+Subject: [PATCH v2 net-next resent] net: fec: Enable SOC specific rx-usecs coalescence default setting
+Date: Mon, 29 Jul 2024 14:35:27 -0500
+Message-Id: <20240729193527.376077-1-shenwei.wang@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY3PR05CA0041.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+X-ClientProxiedBy: SJ0PR03CA0332.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::7) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,277 +67,169 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7557:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a61ad68-8192-403a-587b-08dcb0025266
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|DB8PR04MB7003:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03b81d5e-53a7-4ac8-ac88-08dcb005a68b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|52116014|366016|921020|38350700014;
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BtJOyh2Suhgalp3PFNlzZd2I+X89QGuiw5iu06Sfdv1c8VvpIZbPHw2ljyXu?=
- =?us-ascii?Q?fMMSVMPe1fhAbWwQex6Xxx8Ua4/2GbECzVakUZmn6B7zfnMsax5yvOKW3TFt?=
- =?us-ascii?Q?xp9/KUxM00xlHsFuwFUI9OkRqLCFgfCkapOwHeJqaeAmUv1oaF4Ii6ydiCGo?=
- =?us-ascii?Q?mvdccExI1yFnz3GtpQYnftQszEdUZdGdhY60Q0yFZUgsECOUZyot0vS7iybH?=
- =?us-ascii?Q?SGeyI4qH0URxoiz0Xu4tWzslZ/iSpV2gvAEQol4pwH3CNpGtZTDRUcOiG4Ep?=
- =?us-ascii?Q?fNaSQq8zCufnUf4eKjnCmtpI+2amiViuWl7Wwl6RYjHbNngS4fezuE/LAUbB?=
- =?us-ascii?Q?6LQvg5sL13VzRl75wN/a+MWsZlaIhdzUlRqAEWCtZhxNBEIOCHOQjLPGsYOl?=
- =?us-ascii?Q?J6o43fUb2e+Ey9lvMcGwlAcm/SNCyPvW1BKpnkfvQ23BwAQrcqFFYMnSaXs5?=
- =?us-ascii?Q?kLRFy/yz/shS44kYFBbvw4yQ9BPUKGQQPnXmgXSu5pE/KfvisZ4aai3V4dyi?=
- =?us-ascii?Q?Xf1f/uBi0t0RR7HbvU3GABOAYCUXW8BA5W/whTK5mKi1JuemKzRdU3uEi7Gg?=
- =?us-ascii?Q?bCG0ThCisarr9OvIibUBJ3gpisRzWpHXpYBNUssfmr72i3x8DrNnRL2WR9K1?=
- =?us-ascii?Q?vWA8CGbxGHi5SIHTkO+OKRtM3wGQT11ZuH+x3hyacWd1uUGCgQ6dOC4bAto4?=
- =?us-ascii?Q?U0FaaN/Hu2AI0Qv9Z7VfYMmr8u9TmAANZMFfDArLmxQXwBXlEm19GeIGxock?=
- =?us-ascii?Q?hGHGr/fyHDNki6/DdGb2wAOByUqMph+jLelHlliGRDobiiFLuF760PIWGC/l?=
- =?us-ascii?Q?fxagolvTdwIMEx/FTP8Hwxp2lrEtbYnlj70gXJWCh0CmwZpVj1jUU8pCCa1R?=
- =?us-ascii?Q?nvHYicDPWgesNRv7xeE2Em5S1UqnOnZOZriigiUapV06r56Y/wjZ/KAEIed1?=
- =?us-ascii?Q?XqmGyQjaVFsh9jcU07mVl5YduKG0QNHj0j9ubeQluILFlV48I6mp3mGboxZi?=
- =?us-ascii?Q?z8R+mCHn87MbUWwnizVUx5hrvnSbMWw5TkG7sbnl0KMJ6whX6JEXScrFgpk+?=
- =?us-ascii?Q?sEqeUFUsAKtNC8GNkE1x5dLjV9lnKiUbVt/pmRtOcgYt1JJSN6OSVggsqzSP?=
- =?us-ascii?Q?9WaoEdsTM3geo3VBLKAf7hoS2Xkkkkdsm08YuwOHFghh98UACCvytZ4HXVs8?=
- =?us-ascii?Q?vvdOi8OZFgDtY/euB12GgCDtwMtAyPRqrzf7/6fwXHiOipIGsScNYjHyDjc6?=
- =?us-ascii?Q?em66Kdb/wtdGZm/yoTWEq+0dYNlUu66F7vkVlsYKngzp20kGeE0I1CoxTH2D?=
- =?us-ascii?Q?ItuO6q/tdj90mYFmr0/BdR0Qup3xDp7gcUbtMkn0YSZNAFbre7COYMEDcmOZ?=
- =?us-ascii?Q?N8qu8itP47h0xNGgQJz0wHfhjEZi?=
+	=?us-ascii?Q?2dkpvITQsP3jK3YmYsQO3/KDHnpHkF70odrX9xaqB3Hj79LL93SvCT0R66Xx?=
+ =?us-ascii?Q?r2VEy4Ldx1wk3hUp/pZ6lhT0gXT6UGZ3TH5hZsUytAKzb59/IJWSJzd9vOjU?=
+ =?us-ascii?Q?984k4gsgCXT4IlzXvng6qmnGfsCYsvIkhnlqJFqY6FEbT8zN8UnFjOFX0njt?=
+ =?us-ascii?Q?XfBqlWL4WJEsy8dfuE4r9B3vBTZj3DKZF16KttbhGUkiVqDl452S+FZcAxER?=
+ =?us-ascii?Q?N4z6GSv3Ady7sUlG9Isfn8TLDMeNdEk/CNIDAAeC+gwHjVehZcd+SxYCFJjB?=
+ =?us-ascii?Q?E2/SEPO2Ih44Wuusep8+WFgZh1/k6G0JUsaE6TMnNMNm0FxQ8G7NXWFpss60?=
+ =?us-ascii?Q?u1ervUfgRfjEh+T80ovcwylZDwjh9fbOU4OqaeGwLyDLZEWf/BLmfF9rYi8N?=
+ =?us-ascii?Q?G7f48nToPy+LNF20SmzBsaWesiQQsjfhkRJVi6PWMjNujxAyqXctuMulnPy5?=
+ =?us-ascii?Q?35h11wPvhvdU7eVo43yZTuht/NMLIeoZi3mlJwkJAvGB5URgmfPjS52sIg5j?=
+ =?us-ascii?Q?bp63yq6Z9bWotzm15y8U00Yb36Cs53eMrAnjrOyV2a4Uv2Mrc6DsUtH1kLgZ?=
+ =?us-ascii?Q?LOkCS+izV9k9EQamcxYZOk8wT+pbczJX0f2My9f65dgwSrlwKiI8ifCPn1Wp?=
+ =?us-ascii?Q?nSqjciSeFJoNZj84R/+wve89M71z0zOHO9rNIi788H+g6ZGFCWFHMqLoDgge?=
+ =?us-ascii?Q?znUZXzeRwiS+iP6HvzZlkH2zQwT4yOdgen97nLGxFozQlfsUn8ejgErOPw64?=
+ =?us-ascii?Q?+03AUZI65rYJvl7TRk8FydmzAaZDa8G2opZy/7BMyuP59Nlyr3k9Iqhb/ZNw?=
+ =?us-ascii?Q?yd9xooTuZz+NKeW79IVjD+HGGxIl4669RozfFzYoKeVaZdluFCW/IAErSq8p?=
+ =?us-ascii?Q?8vftMG+bgVAvgiehWjVpceqw4lQchx+VJByBhGgRi79SWaO/KkJA5ifBXJdb?=
+ =?us-ascii?Q?zVyOc5RefFd4eMAW/lvbTml2iFViDX5OmLLIrZoyS/Nid9tHrJDb3wUWR7mx?=
+ =?us-ascii?Q?JiP5RxGYyaKzpTaixDlyRKrRkKHNlVIGYueBa8N/PM4+zF7On0KNLJbLrQJJ?=
+ =?us-ascii?Q?c6FYCSWyU3SQR9WVDm4K6j4c50JHJ/jP7V5Vayi4SsR3A2j2D/bHBpD3A3N9?=
+ =?us-ascii?Q?fufSCb0VgyThy6VP+pHnxOMK/neuEtGzNyXLjN+KBHZONaBt8W06oo8ff6Av?=
+ =?us-ascii?Q?oT3mZppOwLJlKrHMaeDbqGwwZmic5xw/+t7jydmQzoaRxuSOqHCZXrOyTNZj?=
+ =?us-ascii?Q?rJvzlEKShDkV8LGTuQCcZpmEbo8N1ADA8s4GmiqeCOnMEGsa4TYJUvbYJFhD?=
+ =?us-ascii?Q?Yu+zCPt19YTOtqf1wQSkDcj4YkDEz4rnO1M4EFbWzRfwjAeymW6cZRDc2J59?=
+ =?us-ascii?Q?g9oX8FVpOKschhQSg2LeReAgKIeYbDdEN9ONGcG0xb+89hZnYA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(52116014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?el+yGtakbAF7x32ItC8Bb7npe3yQ/0R8wsaeiTr01DV7gw89bWOCDynIAImc?=
- =?us-ascii?Q?j7/3vIA0EJooKD2OrF87mLuvjBgXwf+JuyoFM06rN+lhG4w6kIhQ/5eJQp58?=
- =?us-ascii?Q?vhVA7GegmLbCw47PIZoXii1pfzo3l0yzjgNJs3zFeMFxXrDZqJIHlKhe1P1Y?=
- =?us-ascii?Q?oLjWYbcVHcNVF7RmRKwHL+HBwEsVm+f/p7kwLgpWmPDlIaIpDrJw4ce9XSq2?=
- =?us-ascii?Q?TGvgcx0cOjGdDuIS3Vq04lYTtiDOQ8BFSlglXOIxo4WZ1KGq6xGB/VKCwzKZ?=
- =?us-ascii?Q?OXrRhTo8V2CRcjNKPCTwKJUuxYZYe94vGK5oHLgmsNGALyHYvkbSVHAD0sIK?=
- =?us-ascii?Q?F7yQLpF3hS47l6YIrdWndPis/ZSS4PwmdJY8bH7oMHRyOmPjk4a2tQwuukra?=
- =?us-ascii?Q?ZV9lY7TynZa3mZeZaUL923+huQ0/c11negt+laRi5NzVhCH1YqV9ZRDaEcUq?=
- =?us-ascii?Q?9IUdedZtNbi1TuftI9+NpJSvONtTR5GicmA6lke+nK74kzL8K8jhnpgsFxq2?=
- =?us-ascii?Q?ELKMDL3d+OFOaf3aXBunRsrpOY52WiNn/rBBAATDTJE4CssrVjDMery1uHzM?=
- =?us-ascii?Q?WQl44ufp8w2vCFC+l703bzbcJi/5ijwwiPlELWxE4GkXS6yifIA9rjLSBdbr?=
- =?us-ascii?Q?ntGQe2/rC3HuYrqaxkATQlmXmc50XAyQQnSrWHPp+LDjNAstkqLEdt7CNS7/?=
- =?us-ascii?Q?Dryax5T/5soeDTPP2aG3+xp/3ZBawo/17auOkhe7o9PPETF0KpVURbohGY52?=
- =?us-ascii?Q?7bSerJfvl8YDzu9YdOjPYqW5dTZY0BEHuK39BvIf9OFXecpIv6U8ia9RoKrV?=
- =?us-ascii?Q?LhWnd1yMcn3fSNmXGA0OZfDgUkYpWwP6gK9jsodxANtRFNeJM/NCQX2TwYxN?=
- =?us-ascii?Q?3L1wfLdGBiImo4ODuUV7tCln2POjbYGbCbPIdpwxYEcX3N6Nz5/Kx9GKDd/U?=
- =?us-ascii?Q?HHp3vHkxlAQwTQkk0DZ64kKjBsyN8mb+UkVobMO7hORmVCWdztuaUCWIvtBq?=
- =?us-ascii?Q?LLMOY2Djoa7eInhVP2Qxd3D07W2e/vTDcAz3OyzJRZbC2Ywx/Xwjix3kYGFY?=
- =?us-ascii?Q?nVwbZ+1GM97vJ1LGRX2wn76TQZi2NLAoqV6l3PDObGX6uoH7m1ln4oIC4Vle?=
- =?us-ascii?Q?jmCB0erNGcl3ELTSWSQyL/oPCRwtyWzb/vnDqvDC/ENhxGr5IJkK1dmdHM9G?=
- =?us-ascii?Q?ZsqvE975DPQStu7JJZCtUapWaMQtohT455fv1NLnB+cH3ScWi9fwL4z25Ryb?=
- =?us-ascii?Q?dSD0xKEkzz6d0JVVSkulykAGEuQu6LSWZ1cxHHBvyu9VZPMRfJ9Xu1J/3Rt0?=
- =?us-ascii?Q?k4zm5SkLMFtn4PcyoRjvAxqXc1xx2EiRduuqlyjgrYLkUa7E0wqpfMkImQzF?=
- =?us-ascii?Q?q6XNYig1z5Ae+mdZZgaBWqFwpQrZ4h/HeY27cY/sPFwn9GbIEOWb188ya/NE?=
- =?us-ascii?Q?FyNdRHxhRUlFvuhFMMIeVpzYLoX4A5p2ODLgIezHvhK6UbW1prSFIGOMuwIn?=
- =?us-ascii?Q?Q7Lr3L8AvtKVKqeOMQXa4Wio5s5Opu0GVrl2gpNYU87dIE9axIT+vSOKNwwK?=
- =?us-ascii?Q?rvZ7vUQHZd34f6v77Yaqp0IunkfOiYHTG82EOQGb?=
+	=?us-ascii?Q?M1ZTCNjnnMUsxnOv7eUViyyUXUY6Zg1TXJyOpEhZvTB+zMfLmM52l+CaEmn9?=
+ =?us-ascii?Q?ejel/+P45KdwSb5RyZinLy/Q01gQ51180s2ZCVY3Rh7IDfxop5uBaV1FRYDa?=
+ =?us-ascii?Q?rUoQ0unKu8glaaJysqsyqhFI15C1fUnkYjpkeBIJnN5iTT6/BSIdRDQdQqIl?=
+ =?us-ascii?Q?jdyPF0KjuccEHlK+rXrWU9a1mr++Fu6Qj//4nZWvUOQKMNhG16mtg8OpB2Rb?=
+ =?us-ascii?Q?OxJdvx3YtWQEp3ooGwHlRU0O5PUD7D7OnpSHPWXG+J0CrW+z5c+kNNa4rJSc?=
+ =?us-ascii?Q?UxpVM2Sj1qhf5O0hgf6Mbje82e1pW/nrH2ebdzgrjjKpB/ATCiuWoXoEgQC1?=
+ =?us-ascii?Q?X0QWtrKxtIgOXxR1guHAXTf/ApR+/PHcfN6ET/N2nJDUFDc5IsF9hpINgcHb?=
+ =?us-ascii?Q?Fov2PcGjiKbZcZeEBPYi+v/EuQTxHE7TupXRXnJZAOHAeBnybXA2iJ0SsDu9?=
+ =?us-ascii?Q?zsdFnkVOCgs32Ej7HzJJBiB8w5CoVfP3BX3y/HWIGmf4s/4Agu073bEFGE+R?=
+ =?us-ascii?Q?VyG82Fi2ZhfdjvWbHyWJQTG6ch5PWCc8AInbdLiFMXXkmxCJ4Qx7TSi0Ha25?=
+ =?us-ascii?Q?IYfR70n+7v7D4jImofFr2l5Z0cLgHruB+C6HSOh6OHaR/IGRF8xd5KAkOpqg?=
+ =?us-ascii?Q?vnxVvov9T1L+gLXDO5kSN2KVdZIHEa3hCDJzjPzdPOzgBuFGku2Fn/PfZBCO?=
+ =?us-ascii?Q?lMETHa/egnfEKNmUMqKF/tYDJ2c5W3XS/LRPv892hXv7R0DpS1zzShXE3iEC?=
+ =?us-ascii?Q?xEHaleBhDBrwi00WVavYtDVvDvUkuIY4kFBT09j2at3rSNKLC0tpfNO7Cyc5?=
+ =?us-ascii?Q?f9r9Wsa1e27P6FJkZXDDOVC9W401aDbQneU5+U4nzHN6HdtkKCb5S/u+pYE0?=
+ =?us-ascii?Q?tU++ESvBaJ0gh7MJEw4EjM4GLw0lenJAwl1BlDWBfD95Gbc/gsyIZ/kaCuuz?=
+ =?us-ascii?Q?0lQcPBSDyon5MDLrz4nACXWeNNp3nd89t13wzbQAvMjQ2TW8YWfatryMaOWi?=
+ =?us-ascii?Q?XW6Fi1pPew4zKALLqxfWwuSIDUfADMi1q9mSQjivA4DQQ65Y5F+J5yEN57xt?=
+ =?us-ascii?Q?UQYMTfavoOOOIaGrzWZ+IyxUYtdYftDZqpToJbttgDr3RTotodkvVy/ynoBS?=
+ =?us-ascii?Q?2FZFFsodOM81UWNlhT94rmp1CMFkorlE9LkL9sm4FxnJFNwUuMqRGueKFw5k?=
+ =?us-ascii?Q?DFm7kQzuAkBmG27HDB9w9exTrCeWjJ2+xMnOTzGRKwhjc2vO18oyggUp8mDc?=
+ =?us-ascii?Q?H+5e+ynELWgP+S2DPiEIb/jRT0nrZxp5l+mrB7Oe+Sncbt4DRLCEfbmRGGuR?=
+ =?us-ascii?Q?QEjTvUjKtv33puAlnF5Schipnj2uzVvokCadkQEcA6od1TcR39EMgSd6CEYC?=
+ =?us-ascii?Q?8qNVYhX8Rv+CK7BWN7T8WfKld90q6i7VJ3Y5ITIAlyXyrUyinHvrIbKqMisv?=
+ =?us-ascii?Q?ZnqRLvT68aIr1nEsZcGKeE+WhX2RR69FdDe8fj/8otRNTdUVp1l6Wfu3PDyn?=
+ =?us-ascii?Q?cZfqnI+8QBfpD/s3GZfA/XqQ2S82/ZNelG5bPFyxuL9BiSUvna0Jd/icPNge?=
+ =?us-ascii?Q?5g1Vd0v04l9lgMFeCOgL20ifu56V5Zm1StZ6R8it?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a61ad68-8192-403a-587b-08dcb0025266
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03b81d5e-53a7-4ac8-ac88-08dcb005a68b
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2024 19:11:59.9919
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2024 19:35:49.8238
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HyOzITQ9HYW6yMmEqniN+zvMNdTAfhW36EFJE1mls22249Z3XTFnywyuls49L0Ac5XGobZZy9/wjGknnksmHjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7557
+X-MS-Exchange-CrossTenant-UserPrincipalName: xvk7zhV+jOsEk666FbxqmSrEPNiA0f0yf4MsCwxaVBUkXy5JP9aMmDZqo1sT8/PcPBGMpGuakHBV3UwTJ7tEfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7003
 
-Convert dt-binding rcpm from txt to yaml format.
-Add fsl,ls1028a-rcpm compatible string.
+The current FEC driver uses a single default rx-usecs coalescence setting
+across all SoCs. This approach leads to suboptimal latency on newer, high
+performance SoCs such as i.MX8QM and i.MX8M.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+For example, the following are the ping result on a i.MX8QXP board:
+
+$ ping 192.168.0.195
+PING 192.168.0.195 (192.168.0.195) 56(84) bytes of data.
+64 bytes from 192.168.0.195: icmp_seq=1 ttl=64 time=1.32 ms
+64 bytes from 192.168.0.195: icmp_seq=2 ttl=64 time=1.31 ms
+64 bytes from 192.168.0.195: icmp_seq=3 ttl=64 time=1.33 ms
+64 bytes from 192.168.0.195: icmp_seq=4 ttl=64 time=1.33 ms
+
+The current default rx-usecs value of 1000us was originally optimized for
+CPU-bound systems like i.MX2x and i.MX6x. However, for i.MX8 and later
+generations, CPU performance is no longer a limiting factor. Consequently,
+the rx-usecs value should be reduced to enhance receive latency.
+
+The following are the ping result with the 100us setting:
+
+$ ping 192.168.0.195
+PING 192.168.0.195 (192.168.0.195) 56(84) bytes of data.
+64 bytes from 192.168.0.195: icmp_seq=1 ttl=64 time=0.554 ms
+64 bytes from 192.168.0.195: icmp_seq=2 ttl=64 time=0.499 ms
+64 bytes from 192.168.0.195: icmp_seq=3 ttl=64 time=0.502 ms
+64 bytes from 192.168.0.195: icmp_seq=4 ttl=64 time=0.486 ms
+
+Performance testing using iperf revealed no noticeable impact on
+network throughput or CPU utilization.
+
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 ---
- .../bindings/rtc/fsl,ls-ftm-alarm.yaml        |  2 +-
- .../devicetree/bindings/soc/fsl/fsl,rcpm.yaml | 91 +++++++++++++++++++
- .../devicetree/bindings/soc/fsl/rcpm.txt      | 69 --------------
- 3 files changed, 92 insertions(+), 70 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
- delete mode 100644 Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+Changes in V2:
+- improved the commit comments and removed the fix tag per Andrew's feedback
 
-diff --git a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-index 388102ae30cd8..3ec111f2fdc40 100644
---- a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-+++ b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-@@ -42,7 +42,7 @@ properties:
-         minItems: 1
-     description:
-       phandle to rcpm node, Please refer
--      Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-+      Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
- 
-   big-endian:
-     $ref: /schemas/types.yaml#/definitions/flag
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-new file mode 100644
-index 0000000000000..6c6cda7f2b220
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-@@ -0,0 +1,91 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,rcpm.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Run Control and Power Management
-+
-+description:
-+  The RCPM performs all device-level tasks associated with device run control
-+  and power management.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - fsl,ls1012a-rcpm
-+          - fsl,ls1021a-rcpm
-+          - fsl,ls1028a-rcpm
-+          - fsl,ls1043a-rcpm
-+          - fsl,ls1045a-rcpm
-+          - fsl,p2041-rcpm
-+          - fsl,p5020-rcpm
-+          - fsl,t4240-rcpm
-+      - enum:
-+          - fsl,qoriq-rcpm-1.0
-+          - fsl,qoriq-rcpm-2.0
-+          - fsl,qoriq-rcpm-2.1
-+          - fsl,qoriq-rcpm-2.1+
-+    minItems: 1
-+    description: |
-+      All references to "1.0" and "2.0" refer to the QorIQ chassis version to
-+      which the chip complies.
-+      Chassis Version         Example Chips
-+      ---------------         -------------------------------
-+      1.0                     p4080, p5020, p5040, p2041, p3041
-+      2.0                     t4240, b4860, b4420
-+      2.1                     t1040,
-+      2.1+                    ls1021a, ls1012a, ls1043a, ls1046a
-+
-+  reg:
-+    maxItems: 1
-+
-+  "#fsl,rcpm-wakeup-cells":
-+    description: |
-+      The number of IPPDEXPCR register cells in the
-+      fsl,rcpm-wakeup property.
-+
-+      Freescale RCPM Wakeup Source Device Tree Bindings
-+
-+      Required fsl,rcpm-wakeup property should be added to a device node if
-+      the device can be used as a wakeup source.
-+
-+      fsl,rcpm-wakeup: Consists of a phandle to the rcpm node and the IPPDEXPCR
-+      register cells. The number of IPPDEXPCR register cells is defined in
-+      "#fsl,rcpm-wakeup-cells" in the rcpm node. The first register cell is
-+      the bit mask that should be set in IPPDEXPCR0, and the second register
-+      cell is for IPPDEXPCR1, and so on.
-+
-+      Note: IPPDEXPCR(IP Powerdown Exception Control Register) provides a
-+      mechanism for keeping certain blocks awake during STANDBY and MEM, in
-+      order to use them as wake-up sources.
-+
-+  little-endian:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      RCPM register block is Little Endian. Without it RCPM
-+      will be Big Endian (default case).
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    rcpm: global-utilities@e2000 {
-+          compatible = "fsl,t4240-rcpm", "fsl,qoriq-rcpm-2.0";
-+          reg = <0xe2000 0x1000>;
-+          #fsl,rcpm-wakeup-cells = <2>;
-+    };
-+
-+    serial@2950000 {
-+         compatible = "fsl,ls1021a-lpuart";
-+         reg = <0x2950000 0x1000>;
-+         interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-+         clocks = <&sysclk>;
-+         clock-names = "ipg";
-+         fsl,rcpm-wakeup = <&rcpm 0x0 0x40000000>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-deleted file mode 100644
-index 5a33619d881d0..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-+++ /dev/null
-@@ -1,69 +0,0 @@
--* Run Control and Power Management
---------------------------------------------
--The RCPM performs all device-level tasks associated with device run control
--and power management.
--
--Required properites:
--  - reg : Offset and length of the register set of the RCPM block.
--  - #fsl,rcpm-wakeup-cells : The number of IPPDEXPCR register cells in the
--	fsl,rcpm-wakeup property.
--  - compatible : Must contain a chip-specific RCPM block compatible string
--	and (if applicable) may contain a chassis-version RCPM compatible
--	string. Chip-specific strings are of the form "fsl,<chip>-rcpm",
--	such as:
--	* "fsl,p2041-rcpm"
--	* "fsl,p5020-rcpm"
--	* "fsl,t4240-rcpm"
--
--	Chassis-version strings are of the form "fsl,qoriq-rcpm-<version>",
--	such as:
--	* "fsl,qoriq-rcpm-1.0": for chassis 1.0 rcpm
--	* "fsl,qoriq-rcpm-2.0": for chassis 2.0 rcpm
--	* "fsl,qoriq-rcpm-2.1": for chassis 2.1 rcpm
--	* "fsl,qoriq-rcpm-2.1+": for chassis 2.1+ rcpm
--
--All references to "1.0" and "2.0" refer to the QorIQ chassis version to
--which the chip complies.
--Chassis Version		Example Chips
-----------------		-------------------------------
--1.0				p4080, p5020, p5040, p2041, p3041
--2.0				t4240, b4860, b4420
--2.1				t1040,
--2.1+				ls1021a, ls1012a, ls1043a, ls1046a
--
--Optional properties:
-- - little-endian : RCPM register block is Little Endian. Without it RCPM
--   will be Big Endian (default case).
--
--Example:
--The RCPM node for T4240:
--	rcpm: global-utilities@e2000 {
--		compatible = "fsl,t4240-rcpm", "fsl,qoriq-rcpm-2.0";
--		reg = <0xe2000 0x1000>;
--		#fsl,rcpm-wakeup-cells = <2>;
--	};
--
--* Freescale RCPM Wakeup Source Device Tree Bindings
---------------------------------------------
--Required fsl,rcpm-wakeup property should be added to a device node if the device
--can be used as a wakeup source.
--
--  - fsl,rcpm-wakeup: Consists of a phandle to the rcpm node and the IPPDEXPCR
--	register cells. The number of IPPDEXPCR register cells is defined in
--	"#fsl,rcpm-wakeup-cells" in the rcpm node. The first register cell is
--	the bit mask that should be set in IPPDEXPCR0, and the second register
--	cell is for IPPDEXPCR1, and so on.
--
--	Note: IPPDEXPCR(IP Powerdown Exception Control Register) provides a
--	mechanism for keeping certain blocks awake during STANDBY and MEM, in
--	order to use them as wake-up sources.
--
--Example:
--	lpuart0: serial@2950000 {
--		compatible = "fsl,ls1021a-lpuart";
--		reg = <0x0 0x2950000 0x0 0x1000>;
--		interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&sysclk>;
--		clock-names = "ipg";
--		fsl,rcpm-wakeup = <&rcpm 0x0 0x40000000>;
--	};
--- 
+ drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index a923cb95cdc6..13c663dbf7b1 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -99,6 +99,7 @@ static const u16 fec_enet_vlan_pri_to_queue[8] = {0, 0, 1, 1, 1, 2, 2, 2};
+
+ struct fec_devinfo {
+ 	u32 quirks;
++	unsigned int rx_time_itr;
+ };
+
+ static const struct fec_devinfo fec_imx25_info = {
+@@ -159,6 +160,7 @@ static const struct fec_devinfo fec_imx8mq_info = {
+ 		  FEC_QUIRK_CLEAR_SETUP_MII | FEC_QUIRK_HAS_MULTI_QUEUES |
+ 		  FEC_QUIRK_HAS_EEE | FEC_QUIRK_WAKEUP_FROM_INT2 |
+ 		  FEC_QUIRK_HAS_MDIO_C45,
++	.rx_time_itr = 100,
+ };
+
+ static const struct fec_devinfo fec_imx8qm_info = {
+@@ -169,6 +171,7 @@ static const struct fec_devinfo fec_imx8qm_info = {
+ 		  FEC_QUIRK_HAS_RACC | FEC_QUIRK_HAS_COALESCE |
+ 		  FEC_QUIRK_CLEAR_SETUP_MII | FEC_QUIRK_HAS_MULTI_QUEUES |
+ 		  FEC_QUIRK_DELAYED_CLKS_SUPPORT | FEC_QUIRK_HAS_MDIO_C45,
++	.rx_time_itr = 100,
+ };
+
+ static const struct fec_devinfo fec_s32v234_info = {
+@@ -4027,8 +4030,9 @@ static int fec_enet_init(struct net_device *ndev)
+ #endif
+ 	fep->rx_pkts_itr = FEC_ITR_ICFT_DEFAULT;
+ 	fep->tx_pkts_itr = FEC_ITR_ICFT_DEFAULT;
+-	fep->rx_time_itr = FEC_ITR_ICTT_DEFAULT;
+ 	fep->tx_time_itr = FEC_ITR_ICTT_DEFAULT;
++	if (fep->rx_time_itr == 0)
++		fep->rx_time_itr = FEC_ITR_ICTT_DEFAULT;
+
+ 	/* Check mask of the streaming and coherent API */
+ 	ret = dma_set_mask_and_coherent(&fep->pdev->dev, DMA_BIT_MASK(32));
+@@ -4325,8 +4329,10 @@ fec_probe(struct platform_device *pdev)
+ 	dev_info = device_get_match_data(&pdev->dev);
+ 	if (!dev_info)
+ 		dev_info = (const struct fec_devinfo *)pdev->id_entry->driver_data;
+-	if (dev_info)
++	if (dev_info) {
+ 		fep->quirks = dev_info->quirks;
++		fep->rx_time_itr = dev_info->rx_time_itr;
++	}
+
+ 	fep->netdev = ndev;
+ 	fep->num_rx_queues = num_rx_qs;
+--
 2.34.1
 
