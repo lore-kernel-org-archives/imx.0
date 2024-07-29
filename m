@@ -1,71 +1,70 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682013A869
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 09:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B60A1487C1
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 12:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722246329; cv=none; b=mYZw1OPm+8ANtLX3nnlQ8kBjaaGcpTsMNKfVmxfQPd/7T7B17fEYHmoCsO41Sun5fzEiLzy7InkUmpZZNpWGDtz+vr6z9/AuriFJl1SYp0xlBNWBMFe68PUKjqgTvR5Hpa57EZPXi2CX4UgLWL3kb+sUKsK4Vbp2bJxxNV5/Pa8=
+	t=1722256564; cv=none; b=A1SOjGQgGROILN8fHSz5ef7nH+8++qKI/c8TRm0S/V6Wg/7QkAIp14ga15/ZSn+KkwjUqrZU8alh+xodQWro8RMP4n/haV54yqH/oOdtjNiGQr0d/HiJILDL528zZol8vP4+IrWAOveKY3vpUvKgou1JbdCm5kYzXEUqoav280U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722246329; c=relaxed/simple;
-	bh=BhaZ7Rc9aF9i9ArddOfTXrgPz6tl9rJUNGxa29a61yE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n4klMrFHkzeb1F46RLHilSI/ls1SZLqtsl3SRrCRAQGizaTdgqz/UyKoibFjsD/jVAF7Aqs/bkVFIwMc3RNWqnDhg80sYPPxRNUSy/JLA/+KLoyWn86E5U9cA2kqmTv2QYTs8i4QX5U79cgK2OoDqETXUoQrgjS4T7prX2jKw2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UA3P/trA; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ltiJPzbF reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1722256564; c=relaxed/simple;
+	bh=F1JZZ3VxwsSKTg2LjGq0rUIE/gVME8qmJ40fxossfJc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XrROFZrNoRRQk9KzftdNuAUMhDlUP/PyBcDWgNYZ+TOM94ydtfNkc7dvB1mXGEvBpWow4l0Su0Rw8/uIeZL+YzMPYDSNvAftbfwieVp9jrLaee+Pzo7x7af5yDghQ2UQPrBkeW0MM5FNUMvs8JEeDJsXtViDO+n1aFjSMGAXGJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wK1EcbJk; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UA3P/trA";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ltiJPzbF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1722246325; x=1753782325;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=L/Jlbrty+MzML5G8tyzzNVjp9Rsyo7JZTTPa+J3gl+E=;
-  b=UA3P/trAgFMd2HmKsxzHw8gUcKpcj9tHRE2O1ErkcUXZyRzIwTTGhN7l
-   v4imTTr1Mi1tUqW/1Caw+/Hce+8HcK3FvB0eu+qXoLxW8alwgA1DNp6u5
-   7n9CYo2qQy+uon0OEWqUW8A8QGjVd2vyrLLZdFBk9iqU1hipEtxkq8PBw
-   YWb7a2t3/klC4Ict59NoPVeYLwXirgK1bMo+LsDK9sD8uu9wY9hSpHr7Q
-   hgVlt/ba6UrN99MVI+fLj4hdcLVg6BLh2Fb4w8Vfq96LyPt4ZCu+LWQlR
-   2bsFwovLxJXZHMI8mAKj8duiZdZ1AEOIjUhkvsUE+5A6knWTPSSqsIos+
-   Q==;
-X-CSE-ConnectionGUID: WhuqI1NHSkWRwviwQYtdlA==
-X-CSE-MsgGUID: SBieUcVESaS1e0LRa0kXAg==
-X-IronPort-AV: E=Sophos;i="6.09,245,1716242400"; 
-   d="scan'208";a="38121794"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 29 Jul 2024 11:45:16 +0200
-X-CheckPoint: {66A764AC-17-E6D9A9-F72EA055}
-X-MAIL-CPID: 21804CAF3C8574BEB2D5434E4405EE3F_4
-X-Control-Analysis: str=0001.0A782F15.66A764AC.0136,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23648161486;
-	Mon, 29 Jul 2024 11:45:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1722246312; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=L/Jlbrty+MzML5G8tyzzNVjp9Rsyo7JZTTPa+J3gl+E=;
-	b=ltiJPzbFhPHwDr/MsWqnk1ArQIjbSe/kNebypNeVBvk589n5QmV7V4tPFXnQhKAoRKZC/r
-	/+AHn8bYS9wLzW4pyteIHttWRQ5+fljm3OuhUw+0KzsNSAX8c5/dsU7r196mhWm3ikMqv0
-	x0zZZP5AgoNpZb7J7DYulz3HnPtHA4p3iHkbU6jxiQxRGEHgHTsc7/X5H7r2gSRKOW+1rU
-	WuATx4UOkyGK+23NAe4B/9k8ovoCp5sv4Z0jNSmJKM1wSUWWMdwqLlVnRjKjelIyMOogJY
-	8oQk8lyIa2Oj4dLJaZ8UX9U7S6GYR0GCkWT70WMAN7emw1xGlnXwNzGvJp6qqg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Clark Wang <xiaoning.wang@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
-Date: Mon, 29 Jul 2024 11:45:10 +0200
-Message-Id: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wK1EcbJk"
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 46TCZhLS067707;
+	Mon, 29 Jul 2024 07:35:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1722256543;
+	bh=8gIz69rx+O7g3l2dUBVUwaQsvlZ4QBJNSMujzHzSCeo=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=wK1EcbJksvvv8QlXaTWe6V1cHbusdhpC5D2jQhy/OXwO4hGjdXpANdj1zZEYI80CK
+	 twCmoZf7cHEKOfu54KFGZ+3viRAe/6Gl3ArJ/1kgRu0u8MGo88aNFRRX3YheABpeRA
+	 L3NeEXpBrabQxYTjR0SmNm+FDbQKw4rLKu4tZFvY=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 46TCZhTB017830
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 29 Jul 2024 07:35:43 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 29
+ Jul 2024 07:35:43 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 29 Jul 2024 07:35:43 -0500
+Received: from fllvsmtp7.itg.ti.com ([10.249.42.149])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 46TCZd0m128014;
+	Mon, 29 Jul 2024 07:35:42 -0500
+From: Andrew Davis <afd@ti.com>
+To: Andre Przywara <andre.przywara@arm.com>,
+        Russell King
+	<linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Sebastian
+ Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement
+	<gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian
+ Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <imx@lists.linux.dev>, Andrew Davis <afd@ti.com>
+Subject: [PATCH v2 5/7] ARM: sa1100: Switch to new sys-off handler API
+Date: Mon, 29 Jul 2024 07:35:36 -0500
+Message-ID: <20240729123538.175704-6-afd@ti.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240729123538.175704-1-afd@ti.com>
+References: <20240729123538.175704-1-afd@ti.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,61 +72,32 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+Kernel now supports chained power-off handlers. Use
+register_platform_power_off() that registers a platform level power-off
+handler. Legacy pm_power_off() will be removed once all drivers and archs
+are converted to the new sys-off API.
 
-Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Andrew Davis <afd@ti.com>
 ---
-Using the DMA configuration bits from downstream kernel.
-Tested on TQMa8XxS.
+ arch/arm/mach-sa1100/generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-index 1ee9496c988c5..8ae5f065b4180 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
- 		assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
- 		power-domains = <&pd IMX_SC_R_SPI_0>;
-+		dma-names = "tx","rx";
-+		dmas = <&edma2 1 0 0>, <&edma2 0 0 FSL_EDMA_RX>;
- 		status = "disabled";
- 	};
+diff --git a/arch/arm/mach-sa1100/generic.c b/arch/arm/mach-sa1100/generic.c
+index 0c586047d130f..5383a26f51169 100644
+--- a/arch/arm/mach-sa1100/generic.c
++++ b/arch/arm/mach-sa1100/generic.c
+@@ -298,7 +298,7 @@ static struct platform_device *sa11x0_devices[] __initdata = {
+ static int __init sa1100_init(void)
+ {
+ 	struct resource wdt_res = DEFINE_RES_MEM(0x90000000, 0x20);
+-	pm_power_off = sa1100_power_off;
++	register_platform_power_off(sa1100_power_off);
  
-@@ -50,6 +52,8 @@ lpspi1: spi@5a010000 {
- 		assigned-clocks = <&clk IMX_SC_R_SPI_1 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
- 		power-domains = <&pd IMX_SC_R_SPI_1>;
-+		dma-names = "tx","rx";
-+		dmas = <&edma2 3 0 0>, <&edma2 2 0 FSL_EDMA_RX>;
- 		status = "disabled";
- 	};
- 
-@@ -66,6 +70,8 @@ lpspi2: spi@5a020000 {
- 		assigned-clocks = <&clk IMX_SC_R_SPI_2 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
- 		power-domains = <&pd IMX_SC_R_SPI_2>;
-+		dma-names = "tx","rx";
-+		dmas = <&edma2 5 0 0>, <&edma2 4 0 FSL_EDMA_RX>;
- 		status = "disabled";
- 	};
- 
-@@ -82,6 +88,8 @@ lpspi3: spi@5a030000 {
- 		assigned-clocks = <&clk IMX_SC_R_SPI_3 IMX_SC_PM_CLK_PER>;
- 		assigned-clock-rates = <60000000>;
- 		power-domains = <&pd IMX_SC_R_SPI_3>;
-+		dma-names = "tx","rx";
-+		dmas = <&edma2 7 0 0>, <&edma2 6 0 FSL_EDMA_RX>;
- 		status = "disabled";
- 	};
+ 	regulator_has_full_constraints();
  
 -- 
-2.34.1
+2.39.2
 
