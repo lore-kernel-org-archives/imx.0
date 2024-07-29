@@ -1,239 +1,191 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2051.outbound.protection.outlook.com [40.107.247.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF7C37147
-	for <imx@lists.linux.dev>; Sat, 27 Jul 2024 22:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722118106; cv=none; b=VJPCRoNJLN4KlzNKxO6jFdFAfJ92hIQd4Wq8gNsGaGsMMGlRqbgBS+xzrlDVjbpdySkatlEW1DtdPUlcRBAR9L87FrJoI7uvUch0aHxu5cSFfNA2o2oi9oLq36hZ0U+EJ6TgtRDb1PMLaYzPbZKqquX0aixFn5xH/RCibkLJUds=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722118106; c=relaxed/simple;
-	bh=HTtH6lIft5ZQOLIYIWCibqht64/060nP/EZnnBgGREk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YGfNTntW7i7nwfDok+uiNUlRIyC18g9j9jEevYPl1HFjT4hDh6aRtDQMES6/YYEPZHwd7Qvt9yluw7nepdjZnD/o291xK63M04aA+tEHXsSUwImLgzEcL9fmJ2+rNAq9RhwFag+2g29BZNd2LaFdQm0yo6FYeZUZGTQ0u40rMQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dhoAOoJU; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150662BD04
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 01:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722215035; cv=fail; b=j+I2CukQ/fXwvFpcgej2veTk9B+edEXcfcEItgVFgg7pSM8/Dza7ZqiLUDPz2Cpv1gNwOh/Rx3aRSou6gzOKTh8jWIx/bck8KQFg0l3r7Dd0Cx6i8a1FWx3KOufBiJbSa+EFx2pXDw1W6LlPs3UBjSwhy/mzo06cHUArTVOlCyY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722215035; c=relaxed/simple;
+	bh=WKMUKpAnqWeFNbgUGbUh1z8ksbcnEZdBO/NHSTJ9yMk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qfoSZLcHBSxaCxNzzv27esogA7Fl2s8iDrWYuaDxKKnno70YbvjvxDkM3lXa0QkwhQWMsE1xtF/FwVMupI8DEdEsXznB8MM5p48heWIg2Bczzg+FYXKjG8FTKIFDHBdiBtG5/7ZG5qMg+zLq2qVOl4CTylFmQzr+rPlz0o4w5h4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iZWRX4AJ; arc=fail smtp.client-ip=40.107.247.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dhoAOoJU"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52f04b3cb33so5220130e87.0
-        for <imx@lists.linux.dev>; Sat, 27 Jul 2024 15:08:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722118101; x=1722722901; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mwqWPO6eJP4Qec95t6HNVfe9KGEXFic++ajRHBM7iSo=;
-        b=dhoAOoJUQuflkku7BC08YVCu0gw1K7wLuUqu0XtPqLKEAXXqAFOJbryBBI35y8CX87
-         KubL9coGtbHj1DiFI7XOftcVGMeYrLX1Xw92OFIuNqP8UdgHYgpBGG7Rrt9u7n0OKiuo
-         W54A8FaUmPH03Mf5REFes2rr3fNeDAVAjRX4Qdeur21zaLwh7Pi+yTlnzN+3Xt3QqcDl
-         Ad9sP5ldWyrcegHqoQ8EVd2Ff3KctCdo1wmgR4WH3oYkmGOO8K3cqyoo5sut4l6+X8Cm
-         oPVgfmXbfyiQpjiaGn54PfmYe9dNsLLfCOMsjmD4P3cqM7RuxhrwP3XyMeiBUdOq7VZM
-         U3xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722118101; x=1722722901;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mwqWPO6eJP4Qec95t6HNVfe9KGEXFic++ajRHBM7iSo=;
-        b=Kut6lUfboqBPljBcoLuKVMkdXnNMIdSTmhD7x8bJXS61G7K4U8dZG156Zhgkxyd9ZT
-         ACZzAnrvgUZa+Utg7bxQpBAqq+oc3eH6hl7yKEoq9IFgWL6m4UsACtl4YioecdiN1k07
-         mRhr4ClNjnuAcF8MIQPe3mIAbtlNq+No2tvvoXZUJVSdXmrMhNlidpRM9pFO57VBCtRK
-         YpW+TkZf2rkN40fJWmEChXQzhsG8kOCsWDARRhqsQpZAGziVmS8nSdVuB9MGit5Vw0RE
-         F/iPwAgaQ33rLTe8J76PmZ9SH7boLr9k22hNJBLztMVqvkQm9xOgIMfEA41HWdKzZxPq
-         B2pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHYh+OEeNZ/9SHMgKd1Z0X8hIuw6Q9U1ca/Z2jQewnYzmv/3rH8hu8cYczE/orjnwtWl9uqvIBNHpqQcNHF2rsURtF
-X-Gm-Message-State: AOJu0YwdFZvwoTirXYd2/EVcErQODgmA+S1Uc3SztezQM2pbOeJqnQQR
-	IGxD3ZmaApBx5cMw8kGf+64oOoVNyBI7bskiCybUTp1oWvMDKunjhLpCg8NdAuw=
-X-Google-Smtp-Source: AGHT+IEESjcuV3/3oS+Os1zyf2LB2n6lMR6DUHxbQ1nXgYeN+N3EfPjlTdSC2SKSZtLypC95ksepqA==
-X-Received: by 2002:a05:6512:1296:b0:52e:933f:f1fa with SMTP id 2adb3069b0e04-5309b2e0b62mr2773797e87.61.1722118101176;
-        Sat, 27 Jul 2024 15:08:21 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5bd1292sm872881e87.105.2024.07.27.15.08.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jul 2024 15:08:20 -0700 (PDT)
-Date: Sun, 28 Jul 2024 01:08:18 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Sui Jingfeng <sui.jingfeng@linux.dev>
-Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, p.zabel@pengutronix.de, 
-	airlied@gmail.com, daniel@ffwll.ch, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, 
-	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, 
-	frank.li@nxp.com
-Subject: Re: [PATCH v3 00/19] Add Freescale i.MX8qxp Display Controller
- support
-Message-ID: <no7cgb4vfd4cxhsjoftfeizvzby4vfbq2okvneq4nbxs4ogwvt@ohplzz5bez4j>
-References: <20240724092950.752536-1-victor.liu@nxp.com>
- <wky3mjl7fn773myatyrdsea6oc2xebkvrgmigmmoj36eswgqry@2kox5ad5dynl>
- <aba35ecb-2357-4c4f-8366-08d14e40d436@linux.dev>
- <zr2t6deyvwacawj7s36gols2vxu24fah25x6ofy7xpqyvc4s2d@luavybrlxpaf>
- <8014238b-2668-4602-add1-64a0c6e480ad@linux.dev>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iZWRX4AJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XciUhdBfTmsxPLcfjFC9TOKMslAJzfN99zWDYGyyOeoHl2KuHUpoGDoAtDuXr4b6LB94oWFpn1hNczX/hE8nRo6sLv6T90ZAb2czdq5OhqttIJ3JsnSIX0nGnZAfxoYILdAtE1+C4eIemLi9zBwIOdivtWHEzEg6Yok9XYJIvgk86TEAJaHY71/3CI6bdtdgxPSDvLX6GACTP1YEHgA+PeA206DqkcpvTPIUmhXK4o66ZEsZjdl3XTVsnv/772XWqZLuFX1va6dJK4VWXo/MY8uO+T5+cg5qLrWKIncCE1LPeuhrgg85za9B4v8wYOPdMzd2xpGCB39S8lpQ/gIJig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aKgHp1QlBYHiclx3UxpVVM8WaxxMDCL+j9UjleQ1UTk=;
+ b=AqHD3yEi3dmbFylUtfm7TiJi6WxlZWasOcF+lLvCzInJh/7jTJO0fJXSUborOftfI9x9Uoa3kCnS8R5wHjJlAWttJwBPqDLwKs7BJHK/oI17edMqJLx0GBW4tXclIL6n9zbGi8hBSCTmx4w4HigppLk2lCRaN3HtBj2TyH2RIlsAAoevGD36zl8nIe/dR/TStXpgUtRtZLpXHR23/PUvXJsz7fhz4d2vUjPhMkBB5+VBV9eKOkF74HJSXcdipFrZUOHttXPzYwcE1liwHvkmOx3vlhLmpDiChAtY5Fc9nE/bLV+DksP7kPCbvihmzXRrcI1wEVL764yFfINedrd/Dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aKgHp1QlBYHiclx3UxpVVM8WaxxMDCL+j9UjleQ1UTk=;
+ b=iZWRX4AJuMjiPBpgO2IWnllySyU5Fy5plBu8CtBGzJssMlPLRAR2fiWVVV6ymHsPntsXGfyx9IZF+CcI4iE8pSNisI7Hv/cW1jQTR86FOok2UnUYInNRpaxwWWfKjFYcoh0D58wOZ9X5z7aJCR4py5zESfoaWma3/ut7mtTh66f/i/TDaDvgJ0/2K2QSFzp/ge0xx/jjVDL2wBsXxRYxKA+/PGfIpSYqHza4XuuNqCysFZxTSZiql+B4fJ71SO9Pc15I6ELmaxrzQkYGHRzkU/j9vWWuFblW7K17d/g40AlOTXOqfMiPq4q0YwPZLyItkkP0qFlwlMuoIFX//7XdSA==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GVXPR04MB10684.eurprd04.prod.outlook.com (2603:10a6:150:218::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.28; Mon, 29 Jul
+ 2024 01:03:47 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.7784.020; Mon, 29 Jul 2024
+ 01:03:47 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>, "vkoul@kernel.org" <vkoul@kernel.org>,
+	"kishon@kernel.org" <kishon@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"peter.chen@kernel.org" <peter.chen@kernel.org>, "herve.codina@bootlin.com"
+	<herve.codina@bootlin.com>
+CC: "linux-phy@lists.infradead.org" <linux-phy@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, Jun Li <jun.li@nxp.com>
+Subject: RE: [PATCH v2 3/6] dt-bindings: phy: mxs-usb-phy: add nxp,sim
+ property
+Thread-Topic: [PATCH v2 3/6] dt-bindings: phy: mxs-usb-phy: add nxp,sim
+ property
+Thread-Index: AQHa3097fNjJlnhH/0ODxZBb+E47dbIM53LA
+Date: Mon, 29 Jul 2024 01:03:47 +0000
+Message-ID:
+ <PAXPR04MB8459517F5F5BC4E1C7A5E67888B72@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20240726113207.3393247-1-xu.yang_2@nxp.com>
+ <20240726113207.3393247-3-xu.yang_2@nxp.com>
+In-Reply-To: <20240726113207.3393247-3-xu.yang_2@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|GVXPR04MB10684:EE_
+x-ms-office365-filtering-correlation-id: 3438573e-06f9-4a82-5d24-08dcaf6a4d04
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|7416014|921020|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?EwfRVDymF1pqnHxtPtIBtvMU7TkBaHU5nJ+0bRWXRdno4Epg3m3ZX69kAahs?=
+ =?us-ascii?Q?KHurtvzywPI7tZ5Hh43Jt9aW4pdokzpp0mWZ9E7Pj7nj1U5SfPVUDHbwiDK3?=
+ =?us-ascii?Q?BuRdDq1MmXEm3bsUCGDwWHNGG18Lk/VZQSdeiR1j4nUGOxyPuJcAgUiajNCM?=
+ =?us-ascii?Q?ByItETsViy0hG0RJC0akoayyOOPWB3R+HUanaEQwW4goeKGi0OXJhxNFd8eU?=
+ =?us-ascii?Q?RBGZD46rZEoBQFvPzzyuTypfxCEH8iRKF3PVQ8qzmpkBgxdCOdTgOe0T2RGG?=
+ =?us-ascii?Q?wHZnlWidZcbmAGKx9/TswqebKx0hwKqKLCs3KwKi6sENZzvd9rkdgGVlRpyX?=
+ =?us-ascii?Q?MTeJMDXwA11+WpDwT6w/p5wRV8KPbm3Ym9RfYtuDM9eQo/3HOnyjEZkLjSx2?=
+ =?us-ascii?Q?0NULDmuzrXWGBZG5XY6ZNq/mg0JYAUs2hgzbYLIxs25vUmwqfClOeu6GNuiT?=
+ =?us-ascii?Q?S+A5cwZ4dU20WTpNR2wP9SQf3xGQQPodbUWs/kTZ4Hdq60JuhVu1kL/T81hj?=
+ =?us-ascii?Q?fz70kocl2Ed+MQWosFGM6b2CsoNkDJ6cvDiOYvkyEY8xvQ8iwlNWnXkH/Qxj?=
+ =?us-ascii?Q?GTWbGAeD68+mhS5UwNhl9MvFSKPTzkaxLY/ES53dFW8gHkKiQ6q+wAUAE1Hs?=
+ =?us-ascii?Q?dIrBJNcYcZZYnHIL3Qdx0uLJwGU4mOQrPy0DKw8tsz3ZVYLwGVThfiiWSbjN?=
+ =?us-ascii?Q?54G8GnjtCmnd8Fsg7zjg7FzRpOGaoWOcA9PnPM2fQ/yE6lwHL82zKl+0G/st?=
+ =?us-ascii?Q?wvCjYMlwAaI1akPoHRfTn8dOSXJe53SscTLshibsOPred2QXkvUhltPmPHBk?=
+ =?us-ascii?Q?NZThDEednyIoiYL7UigyNZFc5RBb6ljbfb4u3mmdyGstTwjEJ9z+Ews1F0gG?=
+ =?us-ascii?Q?/x417vqlaVIj/Ut2LzNf/22Uug2RIqUqHvV8/Rja5cFnzVnt9L4RtjLiTUZ8?=
+ =?us-ascii?Q?+7DCOnW60ekUGVV1cWndqBkaoL4U29roj/dQwrHdtzfsbs2TDJeWBYPpuk+A?=
+ =?us-ascii?Q?Q8Ay9vPE3JF7ZjtX0jOly1Sw+iYGHDaQdGoBzK93aoZYz7Urox0gBROVHUP9?=
+ =?us-ascii?Q?s79wp03lQKyvw8oU81redD+IB05s699n5Sl+GKot2yxBC3Y9sojN8/dHcMdE?=
+ =?us-ascii?Q?XGeoWwOhQ3b/fp3kuCCD5+2TY4xJchBBGrTT44Na5XG77qmH24fLSCewV4R1?=
+ =?us-ascii?Q?5aDL9Uz/b3IAn5cqdkm3IHmKlkLKu2V/159oachVg5i/44bCnbF+NAzHAAdc?=
+ =?us-ascii?Q?uY7SjmzZ2IkL4MFQmqui9YceXy0TUtOiHSYRAaTH3VrOMU1zt5sHrUiOwTHV?=
+ =?us-ascii?Q?rfW1RinHm2RICcOORHhgwdkxw/2kTb3RAa/RG26Lf0gUvTFlVaibEooP48fq?=
+ =?us-ascii?Q?TpLBGU+QdixM2xckmnX6LNLN1XASOjHkv96h1VTTRFBl7nbeLruX92oRuVQm?=
+ =?us-ascii?Q?R4mVjUOALGg=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(921020)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?MnhqTfecGFr/a7fO+ks1eW5Q1m0L43zraBDjJVNh54tY7DjImxV9kf6QLNiy?=
+ =?us-ascii?Q?FNL3QZPjhWKSVmX/M+NFBTxCYLtZF2T2I+30+5iQ3RPZ28DK+hADwjbQpQsr?=
+ =?us-ascii?Q?9om2oKUPKHwAQQh6GtJqP9+ZFU/b3uXmkEXlSfiD9iWURc4zYVMr0Mlm/4pT?=
+ =?us-ascii?Q?e0kpylk43B87iGXxVDp5+NbnoDZBmIB47NnAioDrGCD85184ZcLxP35hcwlk?=
+ =?us-ascii?Q?gWyuHQI3iBUPHhwKovCMdzapANR6GoscyFjP1otjQ8Q568tIYfISUCpIlJDK?=
+ =?us-ascii?Q?PbSvGCkO/SW+yH/DUm+HRktX8g+SSpkntfXxPfpQim+cosMb8B/53QC7qCIF?=
+ =?us-ascii?Q?g2l0MMvyK5TT2dUddEV4pRVU6ZmpIJfkiWSew0acgGs6kAncLBaYOqHRcsXP?=
+ =?us-ascii?Q?YdMSvG7Km5MV4gj/lTlfbHNlN05NqZXC8QD+8o5WaJEppWiSFkwG+PPd9kbQ?=
+ =?us-ascii?Q?BCwA5MEuscDKlA/ve+bgUOj20gqBVbuD3jpkZikOxwwLCU11NFPrkRb4+hpu?=
+ =?us-ascii?Q?oNrxR0HEfPK5R3JjTsqDfDT0agsnl4h+ypBO593ZGItjdg8n6ppyDeF020DE?=
+ =?us-ascii?Q?GFgBOVIoeu8iZ/94F6aahzyBXlQMeHhOvSh66JaSfbrkdGsRWkqwY/9HWvN0?=
+ =?us-ascii?Q?ewGTid6RmkgT5+mjqSfuuN3b1wh12BS3AqMh14m2Bd6Ibgu1toS/oNDgLYFG?=
+ =?us-ascii?Q?cB86c9r1sT5Lc6SO8YVp9HCzZGWUdmm7RmsKQmzLtlY0q5+tRFgedEREPazI?=
+ =?us-ascii?Q?YluxgkmZRrmtomAkSe1NuxWd9GSQaU9sPhDdtiEVD+USSye0gY0drjE4pno3?=
+ =?us-ascii?Q?/xmvM/C5H1CV8r86c3R1cPgCvqYni9ONRBCH/jA8nGzcF+sjUieVARhoJ2cG?=
+ =?us-ascii?Q?/Pm97B54Ll2IU1grAFqQo6BYaXd7A7JMSXB2y98H4W5rBVa+bhknGPsde0hs?=
+ =?us-ascii?Q?+IAoZe8GUnNSJz0hx7Acq7MOGFZJ+RI/IzGfdRRP6TWyk31jqNcSz562wteN?=
+ =?us-ascii?Q?2LttuyfbwsYQt+iJCfeJDvi2H+0USfGBqHAWl7TvC1ejnkthu/4r06EDZFrb?=
+ =?us-ascii?Q?V2An90qdRsWdwqXdQ4NVZVWf8cX91xJ2Qc2/7Yk/McKUg0sX9oO9fx/GDukr?=
+ =?us-ascii?Q?WApjbdcwLsTrmZxiHu47551nIu3fPYDddkUrUzkCVM9WfnYQB1F6ZFNYoLt6?=
+ =?us-ascii?Q?Z+h+mO15ZTxGctAwLkgDar5ZLVeXqCkfO/AzsrlGaoGUdLxeXZJPot140Fvb?=
+ =?us-ascii?Q?X1UrEP+XllCT/CuriS91bbaM1rHHcStDKgqcIRzzdNbxDSqGQe1OmyLM0JOg?=
+ =?us-ascii?Q?KpjhMHbNZF9DW0FWdCPdh0860KdpYEY9TIOXPd7RoyinNctnugjXaGA9fiWV?=
+ =?us-ascii?Q?362a0HXdej39zceEhYyLUzQ96G0/3q6TTYk2fAkDTuAPwvZD7agh97OgNUZH?=
+ =?us-ascii?Q?IJvsXnNCRWpSl1WfXgurac/f3wyrfyvDWBc4Py4WmVBEwVZDEUmIP0M5FBGl?=
+ =?us-ascii?Q?F7Txj/4hX/c2BPZ2vJCAzyxmSaGLWXI4hj7ZDWpx53Q283ps0WqoDuGeA9A0?=
+ =?us-ascii?Q?lyZFRLJtb/lkFxVdWFc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8014238b-2668-4602-add1-64a0c6e480ad@linux.dev>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3438573e-06f9-4a82-5d24-08dcaf6a4d04
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jul 2024 01:03:47.2847
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Vji+O+wFHr0LaGgJgczdok1FiQvSheyawLgbFpuYqW+V6pfF9wgYoTQq6kLGaEQoR2MlJosT5bzp1cx6S8yKug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10684
 
-On Sun, Jul 28, 2024 at 05:38:37AM GMT, Sui Jingfeng wrote:
-> Hi,
-> 
-> On 7/28/24 04:28, Dmitry Baryshkov wrote:
-> > On Sun, Jul 28, 2024 at 03:10:21AM GMT, Sui Jingfeng wrote:
-> > > Hi,
-> > > 
-> > > On 7/28/24 00:39, Dmitry Baryshkov wrote:
-> > > > > Hi,
-> > > > > 
-> > > > > This patch series aims to add Freescale i.MX8qxp Display Controller support.
-> > > > > 
-> > > > > The controller is comprised of three main components that include a blit
-> > > > > engine for 2D graphics accelerations, display controller for display output
-> > > > > processing, as well as a command sequencer.
-> > > > > 
-> > > > > Previous patch series attempts to do that can be found at:
-> > > > > https://patchwork.freedesktop.org/series/84524/
-> > > > > 
-> > > > > This series addresses Maxime's comments on the previous one:
-> > > > > a. Split the display controller into multiple internal devices.
-> > > > >      1) List display engine, pixel engine, interrupt controller and more as the
-> > > > >         controller's child devices.
-> > > > >      2) List display engine and pixel engine's processing units as their child
-> > > > >         devices.
-> > > > > 
-> > > > > b. Add minimal feature support.
-> > > > >      Only support two display pipelines with primary planes with XR24 fb,
-> > > > >      backed by two fetchunits.  No fetchunit dynamic allocation logic(to be done
-> > > > >      when necessary).
-> > > > > 
-> > > > > c. Use drm_dev_{enter, exit}().
-> > > > > 
-> > > > > Since this series changes a lot comparing to the previous one, I choose to
-> > > > > send it with a new patch series, not a new version.
-> > > > I'm sorry, I have started reviewing v2 without noticing that there is a
-> > > > v3 already.
-> > > > 
-> > > > Let me summarize my comments:
-> > > > 
-> > > > - You are using OF aliases. Are they documented and acked by DT
-> > > >     maintainers?
-> > > > 
-> > > > - I generally feel that the use of so many small devices to declare
-> > > >     functional blocks is an abuse of the DT. Please consider creating
-> > > >     _small_ units from the driver code directly rather than going throught
-> > > >     the components.
-> > > 
-> > > Well, I really don't think so. I don't agree.
-> > > 
-> > > I have checked the DTSpec[1] before type, the spec isn't define how
-> > > many is considered to be "many", and the spec isn't define to what
-> > > extent is think to be "small" as well.
-> > 
-> > Yeah. However _usually_ we are not defining DT devices for sub-device
-> > components.
-> 
-> I guess, this depended on their hardware (i.MX8qxp) layout, reflecting
-> exactly what their hardware's layout is perfectly valid. It also depend
-> on if specific part of those sub-device will be re-visioned or not. If
-> only a small part of the whole is re-versioned in the future, we can still
-> re-using this same driver with slightly modify(update) the DTS.
-> 
-> The point is to controll the granularity and forward compatibility.
+> Subject: [PATCH v2 3/6] dt-bindings: phy: mxs-usb-phy: add nxp,sim
+> property
+>=20
+> i.MX7ULP need properly set System Integration Module(SIM) module
+> to make usb wakeup work well. This will add a "nxp,sim" property.
+>=20
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>=20
+> ---
+> Changes in v2:
+>  - add else branch suggested by Rob
+> ---
+>  .../devicetree/bindings/phy/fsl,mxs-usbphy.yaml | 17
+> +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/phy/fsl,mxs-
+> usbphy.yaml b/Documentation/devicetree/bindings/phy/fsl,mxs-
+> usbphy.yaml
+> index f4b1ca2fb562..ce665a2779b7 100644
+> --- a/Documentation/devicetree/bindings/phy/fsl,mxs-usbphy.yaml
+> +++ b/Documentation/devicetree/bindings/phy/fsl,mxs-usbphy.yaml
+> @@ -87,6 +87,12 @@ properties:
+>      maximum: 119
+>      default: 100
+>=20
+> +  nxp,sim:
 
-That's why I asked for the comments or explanations. The cover letter is
-a usual place, as it is an introduction to the series. The reviewers
-don't start the series from 8/N, they start from 00/NN.
+"nxp,imx7ulp-sim" should be better. SIM is specific to i.MX7ULP as of now.
 
-> 
-> > So at least such decisions ought to be described and
-> > explained in the cover letter.
-> 
-> Agree, but I see 08/19 patch has a beautiful schematic. I have learned
-> a lot when reading it. I can't see any abuse of the DT through this
-> bulk series anyway.
-> 
-> 
-> Comments below are not revelant to Ying's patch series itself.
-> 
-> /*----------------------------------------------------------------*/
-> 
-> By the way, the last time that I have ever seen and feel abuse of the
-> DT is the aux-bridge.c[1] and aux-hpd-bridge.c[2]. I strongly feel that
-> those two *small* programs are abuses to the DT and possibily abuse to
-> the auxiliary bus framework.
+Regards,
+Peng.
 
-Off-topic should be directed as an answer to the original series. And if
-you tried, you'd have seen the reason and the explanation. And a quick
-glance around would have shown you the ti-sn65dsi86 bridge, which also
-has similar structure for exactly the same reasons.
-
-Nevertheless, the aux-bridge and aux-hpd-bridge provide a way to link
-two different directions of the probe dependency chains: from the SoC to
-the connector (DRM bridge chains) and from the connector to the SoC
-(USB-C chains).
-
-> 1) It's so *small* that it don't even have a hardware entity (physical
->    device) to corresponding with. As far as I can see, all hardware
->    units in this patch series are bigger than yours. Because your HPD
->    bridge is basically a "virtual wire".
-> 
->    An non-physical-exist wire hold reference to several device node,
->    this is the most awful abuse to the DT I have ever seen. In other
->    words, despite you want to solve some software problems, but then,
->    you could put a device not in the DTS, and let the 'OF' system
->    create a device for you. Just like what this series do.
-
-Thank you for your opinion. However you have clearly provided the reason
-why these devices do not have a separate DT node: they are internal
-parts of the existing device.
-
-> 
-> 2) I feel your HPD fake bridge driver abuse to the philosophy of
->    auxiliary bus [3]. The document of auxiliary bus tell us that
-> 
->    "These individual devices split from the core cannot live on
->     the platform bus as they are not physical devices that are
->     controlled by DT/ACPI"
-
-This is correct and two mentioned bridges follow this approach. This
-phrase mostly provides a boundary between platform-based MFD devices
-which usually have MMIO-like addressing for cells and non-MMIO,
-non-platform devices living on the aux bus.
-
->     Which is nearly equivalent to say that devices that are controlled
->     by DT/ACPI have better ways to enforce the control. When using
->     auxiliary bus, we *generally* should not messed with DT. See
->     golden examples[4][5]. At least, their code are able to run on
->     X86, while the code you write just can't.
-> 
-> [0] https://patchwork.freedesktop.org/patch/605555/?series=135786&rev=3
-> [1] https://elixir.bootlin.com/linux/v6.10.2/source/drivers/gpu/drm/bridge/aux-bridge.c
-> [2] https://elixir.bootlin.com/linux/v6.10.2/source/drivers/gpu/drm/bridge/aux-hpd-bridge.c
-> [3] https://www.kernel.org/doc/html/latest/driver-api/auxiliary_bus.html
-> 
-> [4] https://patchwork.freedesktop.org/series/136431/
-> [5] https://patchwork.freedesktop.org/series/134837/
-> 
-> 
-> Best regards
-> Sui
-> 
-> > > 
-> > > [1]
-> > > https://github.com/devicetree-org/devicetree-specification/releases/tag/v0.4
-> > 
-> 
-> -- 
-> Best regards
-> Sui
-> 
-
--- 
-With best wishes
-Dmitry
