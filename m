@@ -1,90 +1,123 @@
-Received: from mail.fris.de (mail.fris.de [116.203.77.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3F3149E09
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 12:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB523155751
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 14:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722257523; cv=none; b=mLvKzOV8lYiMsDcTwDdrVprw1IvKYihA53HYtp+xDmHtkws9kbmBcYcsInnN5gcSwOaMvHZAZZIGsc9P/HEzZQB77r6tBE0NzBmUQH3piHSLE3JxafIod65iWTf1fFS1U8i/altpAM7Pm/H6uz807nKMBfJ+VOt9iQCUhvieqQQ=
+	t=1722265163; cv=none; b=fg2MpgShNCLABDeM+R/H/ipKQo/VvUaw1P9viBgBQb5BpC7hsmolnNhIofnlgeFYpF3WTaF31847eV8g9Ey8AkNkxTf0KXaZCGNIkoaIPIdj3NtqSfvFPFEslkjmeWmk0JjrtKNNnhPfDZ9oyAcOXkDrPagRiYBXipepw6IVbtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722257523; c=relaxed/simple;
-	bh=sVol7CCKvMaaj4cV778tSQMTceaUobuUv8VI8vIyV3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a95rO4a/+IvzR5oIrMd0GLI+cVzLHzXncg7kZ3IwMQgrF/f3D3uvtgOZrEnwvScYu5aQQA9z8N0cQDONecPV46Sj/1pkKEPOa/TtYgoRiVgKOm20y9hOewjm0bAC/6lwyK1dEtpVxyWDmh8KX1KcMcpFW+qKPhm2yFdq4Mk9e4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=CqF08xnD; arc=none smtp.client-ip=116.203.77.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
+	s=arc-20240116; t=1722265163; c=relaxed/simple;
+	bh=BNOXPZtZKWW/vqL54/YmXApUaSlHoTjVustBzHzHkRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NhsCLdR4ccOkBsCktjU3Mpf4xbLvMLtEAbofB+6TS6t9nZgVSP79tZkK3WwFSDdjNbxK7APHapBXGIVoQU2FyEFf/ySAB6aHhUoY8beBODfRShU814foXr4NYVAnYTNU/6HGoBo49gdgTh1MSA9/GOwUxHUJXpB2saIlaTePYLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vxseU6gm; arc=none smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="CqF08xnD"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0A45BFB30;
-	Mon, 29 Jul 2024 14:45:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
-	t=1722257163; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=41E+2ee+3+BIiOkpYpN0gRFPVvr9+0trL/IaKGKh1Wo=;
-	b=CqF08xnD+Uqyq5EmLVxFgp85xs1ioES7Ka2TTSncaPdpw62pTTBqxMHZCxDR4mUORcAX8w
-	Bo3QTJ9LjRpYft4T/SNhR02m4GvYd1VxpPo/IgwJSRmYlbqi6F2eyXu2PLFOEDTBf+SlaK
-	sv+5vhIyRu6RNqpyZu6f08XYLDa8ENOrHeebWUVKb5LB/2I0S0quuyJzzO0EOHLH1Aysiu
-	F4TJozOmmtHjsNx/70u6tmYKRQZbLcRro2UNe6ZSSuNuwKirGPoHBGFett2FAAkmjBIlPL
-	g+ZvuhEt/UaDQgVUfdtygeu1HqMmq1b+jT8SRKiKK6RiNDj9zvPK8KoO7ctVWA==
-From: Frieder Schrempf <frieder@fris.de>
-To: Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vxseU6gm"
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-261112c303bso2536268fac.1
+        for <imx@lists.linux.dev>; Mon, 29 Jul 2024 07:59:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722265158; x=1722869958; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2dhV9pLkwnO6TngFTZ6PEmd1aRr+aIvv72OqFegZv0k=;
+        b=vxseU6gmdGxP73/BpSlm13aDK3TiTfz4c6BZmBDyi5PKJYF90PMSP/HdoOc13dSQ+E
+         dl8pP1NgxDoxvm/w3MfPjaHfgVHEx9Ci5ZdWhtpG/xR4tLylH4Y0YDEwAzcAPeIcL6pk
+         puq9sZPXMGFIOy9Af2Wd0A8Pqjcj9SRYCiZT0wnCe47L6aiingj7RDwtAfwxFMLnE9cr
+         VCO4bC7rcH4dALeJ0EygFW7DcIVxBFN0O7pmMvd4g1AxFKOUyG8k7aQLZkP5Fpt8Bh+f
+         ZVVMj1u6nmMo31rDtGetgAsuLplx7lV+T0PTx1PbmNcxL1DPcw9lJT/4UCpYfIo+rSrS
+         8frQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722265158; x=1722869958;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2dhV9pLkwnO6TngFTZ6PEmd1aRr+aIvv72OqFegZv0k=;
+        b=MfQYqD752YKc7Al2hqMqar9qZsqRHJ/q3cfiwApNgmPCpCv6NsuBNhBBDFAYLrqf6i
+         I84n0q+2KLRZ9qVl+dqjOc+drZXPLlECxoVxI2B7/O8BcyAcAJhuZyGkhnf1MI/QHsL6
+         SkDIwFWNmf4YXu27eH7fkzcnV3HA6zny2d6qK2ro0NLdZko7PYKiMyGG0+i/VneUiXQ5
+         OaEDisHMSA3/PQIQB5fpGgkTGyutz+yrk79Jk85AhE5Q2R+EbfGSvgVq299kTumDYjzr
+         z58IUYXiQ6KGN0Y75nPpegT4uBF5PsLehpa4YVwvYYwNQvhdfEWSW/8vad7rgtvmQo8R
+         ykKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWHaRd4bhHbsFOjVM7OFJvHrRP9IVH/Tu5FIaNCUUPXtvD0wk+W1wlhyhCfa3CaA0BPv8gowKBqjbaa4HS4PI8GRT5z
+X-Gm-Message-State: AOJu0YzV4IFBgb2QZuoeqVMGRzl/I+QvUKJ5ITUSE2Pc8BBYThXLOytC
+	3KrqE+jnBr878M0ySg+YFI3foM9kafkclKqOsweOm8zKgfcS3W1gjnsRdGHzESc=
+X-Google-Smtp-Source: AGHT+IEdbCnGqwPNsJw9sRMXxW9hssPlB3eNzpMfeFiqhxqlaGC54wLTPHxF2sPrKmY2qW30e4vafQ==
+X-Received: by 2002:a05:6871:520f:b0:25e:368:b5a4 with SMTP id 586e51a60fabf-267d4d0a47cmr9601699fac.18.1722265157961;
+        Mon, 29 Jul 2024 07:59:17 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:b771:7ecc:900e:e070])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7a9f7b7b1besm7398510a12.2.2024.07.29.07.59.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 07:59:17 -0700 (PDT)
+Date: Mon, 29 Jul 2024 08:59:13 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH v3 0/2] Add support for Kontron OSM-S i.MX93 SoM and carrier board
-Date: Mon, 29 Jul 2024 14:44:22 +0200
-Message-ID: <20240729124450.118497-1-frieder@fris.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Marek Vasut <marex@denx.de>, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	Terry Lv <terry.lv@nxp.com>
+Subject: Re: [PATCH v2 0/4] remoteproc: imx_rproc: various patches for misc
+Message-ID: <ZqeuQSNUA1X1wlD2@p14s>
+References: <20240719-imx_rproc-v2-0-10d0268c7eb1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719-imx_rproc-v2-0-10d0268c7eb1@nxp.com>
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+On Fri, Jul 19, 2024 at 04:36:10PM +0800, Peng Fan (OSS) wrote:
+> This patchset is to upstream a few patches that in NXP downstream for
+> quite sometime. For patches directly cherry-picked from NXP downstream,
+> I keep the R-b tags.
+> 
+> Patch 1 is a minor fix to DDR alias.
+> Patch 2 was sent out before,
+> https://patchwork.kernel.org/project/linux-remoteproc/patch/20220111033333.403448-1-peng.fan@oss.nxp.com/#25144792
+> this is just a resend
+> Patch 3 is to avoid mu interrupt trigger earlier.
+> Patch 4 is merge small area to support elf that has large section
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Changes in v2:
+> - Add R-b for patch 1,2,4
+> - Add Fixes tag for patch 3
+> - Drop downstream R-b tag
+> - Drop patch 5,6 which will be in a new patchset for 7ULP
+> - Link to v1: https://lore.kernel.org/r/20240712-imx_rproc-v1-0-7bcf6732d328@nxp.com
+> 
+> ---
+> Peng Fan (4):
+>       remoteproc: imx_rproc: correct ddr alias for i.MX8M
+>       remoteproc: imx_rproc: use imx specific hook for find_loaded_rsc_table
+>       remoteproc: imx_rproc: initialize workqueue earlier
+>       remoteproc: imx_rproc: merge TCML/U
+> 
 
-Patch 1: board DT bindings
-Patch 2: add devicetrees
+I have applied this set.
 
-Changes for v2:
-* remove applied patches
-* rebase onto v6.11-rc1
+Thanks,
+Mathieu
 
-Frieder Schrempf (2):
-  dt-bindings: arm: fsl: Add Kontron i.MX93 OSM-S based boards
-  arm64: dts: Add support for Kontron i.MX93 OSM-S SoM and BL carrier
-    board
-
- .../devicetree/bindings/arm/fsl.yaml          |   6 +
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- .../dts/freescale/imx93-kontron-bl-osm-s.dts  | 165 ++++++
- .../dts/freescale/imx93-kontron-osm-s.dtsi    | 547 ++++++++++++++++++
- 4 files changed, 719 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi
-
--- 
-2.45.2
-
+>  drivers/remoteproc/imx_rproc.c | 37 +++++++++++++++++++++----------------
+>  1 file changed, 21 insertions(+), 16 deletions(-)
+> ---
+> base-commit: f477dd6eede3ecedc8963478571d99ec3bf3f762
+> change-id: 20240712-imx_rproc-25f3ab753c58
+> 
+> Best regards,
+> -- 
+> Peng Fan <peng.fan@nxp.com>
+> 
