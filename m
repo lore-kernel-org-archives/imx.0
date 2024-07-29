@@ -1,132 +1,133 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120798C07
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 09:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682013A869
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 09:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722245603; cv=none; b=J9mx8bhke8Y2A4BVZK15ANF81NTS0L5NuLD1rHe/ipZZ9CVNhpnYOaziYn/bNgAYIaxNlLwdpVCqZ9kT0o6EI/VFgjj0H/4+hOl9koNKyYrOceT5808rVK11ynW4MRC5SuYSg2s+zVKUUYR1l6AxmkT/t6IWpE1VUcveKRRFhCk=
+	t=1722246329; cv=none; b=mYZw1OPm+8ANtLX3nnlQ8kBjaaGcpTsMNKfVmxfQPd/7T7B17fEYHmoCsO41Sun5fzEiLzy7InkUmpZZNpWGDtz+vr6z9/AuriFJl1SYp0xlBNWBMFe68PUKjqgTvR5Hpa57EZPXi2CX4UgLWL3kb+sUKsK4Vbp2bJxxNV5/Pa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722245603; c=relaxed/simple;
-	bh=eLtXGh0GNrE0GjB2gfA9Puv6Yku+pwVZoF3jaTnn9iQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uIoVUdpas5SAfzpE3EOLKyEfpIiiCPPCG741sOkaS+sKKduUrxoWHPH+o/Tn2HbcDjubxnGS7yTzaN+nWAYxPqigZe2Uzwcu2FBAJ954AGFbiTtMHkINOQb0nBaRlzCzqc8nOmzSBG/MvJsLhvn7xMIJ7L78uLwEMUih2vrnD04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wTjnsjyc; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1722246329; c=relaxed/simple;
+	bh=BhaZ7Rc9aF9i9ArddOfTXrgPz6tl9rJUNGxa29a61yE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n4klMrFHkzeb1F46RLHilSI/ls1SZLqtsl3SRrCRAQGizaTdgqz/UyKoibFjsD/jVAF7Aqs/bkVFIwMc3RNWqnDhg80sYPPxRNUSy/JLA/+KLoyWn86E5U9cA2kqmTv2QYTs8i4QX5U79cgK2OoDqETXUoQrgjS4T7prX2jKw2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UA3P/trA; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ltiJPzbF reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wTjnsjyc"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CD8E545A;
-	Mon, 29 Jul 2024 11:32:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1722245553;
-	bh=eLtXGh0GNrE0GjB2gfA9Puv6Yku+pwVZoF3jaTnn9iQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wTjnsjyc1kECtkioC5DBaOj0ifg26xDHoKtE1O3FBON6vtPaPLT2BDXU3U0L1hicR
-	 G/Mk2+6AxMMwY2YKxSR459dM36yHjCC88IansIf4z9ZYzAc1hOwbxHJ/ymI3vR3BFL
-	 PfAW13rL+iQVdbiM/BV+8XtV22JxloMKqHLtx+rI=
-Date: Mon, 29 Jul 2024 12:32:59 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Matthias Fend <matthias.fend@emfend.at>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UA3P/trA";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ltiJPzbF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1722246325; x=1753782325;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=L/Jlbrty+MzML5G8tyzzNVjp9Rsyo7JZTTPa+J3gl+E=;
+  b=UA3P/trAgFMd2HmKsxzHw8gUcKpcj9tHRE2O1ErkcUXZyRzIwTTGhN7l
+   v4imTTr1Mi1tUqW/1Caw+/Hce+8HcK3FvB0eu+qXoLxW8alwgA1DNp6u5
+   7n9CYo2qQy+uon0OEWqUW8A8QGjVd2vyrLLZdFBk9iqU1hipEtxkq8PBw
+   YWb7a2t3/klC4Ict59NoPVeYLwXirgK1bMo+LsDK9sD8uu9wY9hSpHr7Q
+   hgVlt/ba6UrN99MVI+fLj4hdcLVg6BLh2Fb4w8Vfq96LyPt4ZCu+LWQlR
+   2bsFwovLxJXZHMI8mAKj8duiZdZ1AEOIjUhkvsUE+5A6knWTPSSqsIos+
+   Q==;
+X-CSE-ConnectionGUID: WhuqI1NHSkWRwviwQYtdlA==
+X-CSE-MsgGUID: SBieUcVESaS1e0LRa0kXAg==
+X-IronPort-AV: E=Sophos;i="6.09,245,1716242400"; 
+   d="scan'208";a="38121794"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 29 Jul 2024 11:45:16 +0200
+X-CheckPoint: {66A764AC-17-E6D9A9-F72EA055}
+X-MAIL-CPID: 21804CAF3C8574BEB2D5434E4405EE3F_4
+X-Control-Analysis: str=0001.0A782F15.66A764AC.0136,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23648161486;
+	Mon, 29 Jul 2024 11:45:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1722246312; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=L/Jlbrty+MzML5G8tyzzNVjp9Rsyo7JZTTPa+J3gl+E=;
+	b=ltiJPzbFhPHwDr/MsWqnk1ArQIjbSe/kNebypNeVBvk589n5QmV7V4tPFXnQhKAoRKZC/r
+	/+AHn8bYS9wLzW4pyteIHttWRQ5+fljm3OuhUw+0KzsNSAX8c5/dsU7r196mhWm3ikMqv0
+	x0zZZP5AgoNpZb7J7DYulz3HnPtHA4p3iHkbU6jxiQxRGEHgHTsc7/X5H7r2gSRKOW+1rU
+	WuATx4UOkyGK+23NAe4B/9k8ovoCp5sv4Z0jNSmJKM1wSUWWMdwqLlVnRjKjelIyMOogJY
+	8oQk8lyIa2Oj4dLJaZ8UX9U7S6GYR0GCkWT70WMAN7emw1xGlnXwNzGvJp6qqg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Clark Wang <xiaoning.wang@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: imx-mipi-csis: avoid logging while holding
- spinlock
-Message-ID: <20240729093259.GB2320@pendragon.ideasonboard.com>
-References: <20240723060909.534584-1-matthias.fend@emfend.at>
- <20240726104255.GH14252@pendragon.ideasonboard.com>
- <3e38bf09-734d-4cbf-a0a5-b01cd1998037@emfend.at>
+Subject: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
+Date: Mon, 29 Jul 2024 11:45:10 +0200
+Message-Id: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3e38bf09-734d-4cbf-a0a5-b01cd1998037@emfend.at>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jul 26, 2024 at 02:16:07PM +0200, Matthias Fend wrote:
-> Hi Laurent,
-> 
-> Am 26.07.2024 um 12:42 schrieb Laurent Pinchart:
-> > Hi Matthias,
-> > 
-> > Thank you for the patch.
-> > 
-> > On Tue, Jul 23, 2024 at 08:09:08AM +0200, Matthias Fend wrote:
-> >> Refactor mipi_csis_log_counters() to prevent calling dev_info() while
-> >> IRQs are disabled. This reduces crucial IRQs off time to a bare minimum.
-> > 
-> > Should we add
-> > 
-> > Cc: stable@vger.kernel.org
-> > 
-> > to get this backported to stable kernels ?
-> 
-> Hard for me to tell. Since this problem only occurs when you explicitly 
-> trigger the debug output from this driver, it probably only affects very 
-> few end users. So I'm not sure if a backport would be worth it.
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-I slept over it and decided not to Cc stable.
+Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
 
-> >> Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-> >> ---
-> >>   drivers/media/platform/nxp/imx-mipi-csis.c | 9 ++++++---
-> >>   1 file changed, 6 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> >> index f49b06978f14..0c34d316ed29 100644
-> >> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> >> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> >> @@ -857,18 +857,21 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
-> >>   {
-> >>   	unsigned int num_events = non_errors ? MIPI_CSIS_NUM_EVENTS
-> >>   				: MIPI_CSIS_NUM_EVENTS - 8;
-> >> +	unsigned int counters[MIPI_CSIS_NUM_EVENTS];
-> >>   	unsigned long flags;
-> >>   	unsigned int i;
-> >>   
-> >>   	spin_lock_irqsave(&csis->slock, flags);
-> >> +	for (i = 0; i < num_events; ++i)
-> >> +		counters[i] =  csis->events[i].counter;
-> >> +	spin_unlock_irqrestore(&csis->slock, flags);
-> >>   
-> >>   	for (i = 0; i < num_events; ++i) {
-> >> -		if (csis->events[i].counter > 0 || csis->debug.enable)
-> >> +		if (counters[i] > 0 || csis->debug.enable)
-> >>   			dev_info(csis->dev, "%s events: %d\n",
-> >>   				 csis->events[i].name,
-> >> -				 csis->events[i].counter);
-> >> +				 counters[i]);
-> > 
-> > The last two lines now fit in a single line. No need for a v2, I'll
-> > rewrap the code myself, and add the Cc line if you think that's a good
-> > idea.
-> 
-> Thanks! Regarding Cc, I would like to leave it up to you; you have the 
-> necessary experience and overview to judge that.
-> 
-> ~Matthias
-> 
-> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > 
-> >>   	}
-> >> -	spin_unlock_irqrestore(&csis->slock, flags);
-> >>   }
-> >>   
-> >>   static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Using the DMA configuration bits from downstream kernel.
+Tested on TQMa8XxS.
 
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+index 1ee9496c988c5..8ae5f065b4180 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+@@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
+ 		assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <60000000>;
+ 		power-domains = <&pd IMX_SC_R_SPI_0>;
++		dma-names = "tx","rx";
++		dmas = <&edma2 1 0 0>, <&edma2 0 0 FSL_EDMA_RX>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -50,6 +52,8 @@ lpspi1: spi@5a010000 {
+ 		assigned-clocks = <&clk IMX_SC_R_SPI_1 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <60000000>;
+ 		power-domains = <&pd IMX_SC_R_SPI_1>;
++		dma-names = "tx","rx";
++		dmas = <&edma2 3 0 0>, <&edma2 2 0 FSL_EDMA_RX>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -66,6 +70,8 @@ lpspi2: spi@5a020000 {
+ 		assigned-clocks = <&clk IMX_SC_R_SPI_2 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <60000000>;
+ 		power-domains = <&pd IMX_SC_R_SPI_2>;
++		dma-names = "tx","rx";
++		dmas = <&edma2 5 0 0>, <&edma2 4 0 FSL_EDMA_RX>;
+ 		status = "disabled";
+ 	};
+ 
+@@ -82,6 +88,8 @@ lpspi3: spi@5a030000 {
+ 		assigned-clocks = <&clk IMX_SC_R_SPI_3 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <60000000>;
+ 		power-domains = <&pd IMX_SC_R_SPI_3>;
++		dma-names = "tx","rx";
++		dmas = <&edma2 7 0 0>, <&edma2 6 0 FSL_EDMA_RX>;
+ 		status = "disabled";
+ 	};
+ 
 -- 
-Regards,
+2.34.1
 
-Laurent Pinchart
