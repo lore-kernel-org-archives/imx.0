@@ -1,126 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D3E14B087;
-	Mon, 29 Jul 2024 15:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C19C13BC3F
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 15:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722265853; cv=none; b=iUxULAJ0+JYNuwcpotAuMQMell1o0HKFLtz1kQVKmRsL3nEMCVOubRLBKtyD9ZlERImHN1itetgn9PmGDi/vSjPwM0OLYB48L9KzyJas4n7K7aryM9WgB+QXFOeBPI1dbepP2htmqvyE9ef6j6tStJZOov79g+54cmWL3FXGiXY=
+	t=1722267362; cv=none; b=OItqwAwCMldH/nA56topN7o/Iit3ivO9DiTerCyx7B8VVPMZWgx7owLKMrYU1PPSm9OJnjvZTjMWkT2TgjKb0Zjdv0KvKProG5Z6YplS/Wb822ajnTt5laXfhfRe8Ghi42VUMuEGRAHI5SBqVkLJq85fq7ONIy3kI3S8ksp365g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722265853; c=relaxed/simple;
-	bh=jcci7z4PwjhgEDOaAxC+tw4UeosmJl4Bgx+sNpCjg+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p4Yk43ipybeRsmeZJsv53IDUYJ7QcpCgg7Cdt5wcLyV1Fe8NO0Ha0MaFclxxOzVDNv6G5JNcrALpIJDM/T2NoMJjiZLEKqEd3mRmNJMaOrRUOS3mJYxGpyvN0/njwrecyeUbb4CcnfKh/z6gQxX7LSOFYSPO/9ukv2TdInhrutw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9ZXO8d5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722267362; c=relaxed/simple;
+	bh=OSgiIctFBG71PBIruKSdysdvSsvvf8L97+jvmFIa5Bw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TyCWBnEnFlWg+TwuQAPu48tat89PHeHwVIQHBSkByTrggQpVbRbth2nzxjnI6qG5fly0HZbbMJ2cFeV5VOb2xvzhnEzWseLPhIAk6Dh1HPwENEpsUpq7rdGADr67QMSl7y+tYmqb2fATIpqMyzm7IeKi+YEL6wOdfP+A89JKv/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NY6wLWYL; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9ZXO8d5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1773DC32786;
-	Mon, 29 Jul 2024 15:10:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722265853;
-	bh=jcci7z4PwjhgEDOaAxC+tw4UeosmJl4Bgx+sNpCjg+s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V9ZXO8d5hXIc/yfn5uK3Ft/hyQWL4K9MU0OcWNS0dStS4pehZnhlJ8MJpiIWQz2+o
-	 +zvOX8gFfhSxzy2pP2KJVuqNafsAztOO2kyVk9QKPL2jJFxSoq3+90ozoh+718y/pV
-	 8I7yb30BtNBpRX8XJuCAJ6g0LZ1Ge8m6JBwVb5kB9GSMsxdJQlkh+aJl0d8jhVmEYk
-	 Qg2vt2K9g7PF+Lbt5zs98HtfPZxSMb6kHOMXDQSFl61exvV70v0+O7W+IUkXinKnl6
-	 y9bSlotJi0ST6d23ZyIDJymL4vJJT/ukYMZEfI6O4548Ag1d9vQI+wmG9oPeooZM/2
-	 /Z/RJgUN91IVw==
-Message-ID: <6c6bb89e-a9d8-4d5c-837a-30f3bae56f0f@kernel.org>
-Date: Mon, 29 Jul 2024 17:10:48 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NY6wLWYL"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70d1cbbeeaeso2337624b3a.0
+        for <imx@lists.linux.dev>; Mon, 29 Jul 2024 08:36:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722267360; x=1722872160; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R3oyZEs5pd+yus/xSJY0J3CYufbcoKy2KGG+eQ20D0A=;
+        b=NY6wLWYLj7j7bBV+9OqY5wMKSiRDxNbUGv9eg8NmgOGdnNkssNUmnb77+owLHwObFz
+         7pDAMFgtRR0qyIjBxXVF+FqNsCm59/oqXivSXClPFe3xpnTiuQBIi2KTY0hrt+4+NvSf
+         1XpODH4xvJKY8mkUfIZGfrey7ht3xbAmMnYbn+3BRkv9G+W6gzWffa+0qBEeT8PE5bg4
+         Nn8YGuQCHqUmqQCH30yz+a0kZDohBUouK/pYsTKGRsKQi5gDPpJJjc+9j+0yUERG3jxN
+         9Hm1STGKguXspnsNkyl50IFtECu5PMjMBOmDWNUaB3dEDIghpjtMjy1baeZQ4yGIbKXi
+         JW3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722267360; x=1722872160;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R3oyZEs5pd+yus/xSJY0J3CYufbcoKy2KGG+eQ20D0A=;
+        b=ABMTEYnUCqdd/DygDK8zFHQsFahIctQ8l98UTUUtwb3XXequtrhdpfDzUaa7Hf2jV3
+         ESngw8b8rPTKZYTJYo2q6KVycddY5KgltZEz/FOoh/eeIfvY2ZRyMyc7UTMrt8pMF9y0
+         lMiOc6VXOBpVHE8pzHmRvPqK3rtx3vSSxdIXEcmGw7w7dVwhrMyYp7oeRgcNR3BU1FJr
+         nEqn3wWdQyrIIuJSeiXjdH8kO20LJRUSEn1zmMxee+vQ0SGRw2r540IR6MDRKgOoOMej
+         tHpUgkkqJL+Lg8bbfrYg6/pBbf/KDQht+A0TKZbZIzTHmrazMP2n4eIwByRCcJ3vdNlt
+         sPkA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWD6RvypMx2MsZdeGP+f4/+yqZOh7trZ+0M5b16y9TzePJJ8AyksDMjzkuJIGnHeBXdw+wNUcbnYIkOQ9ruoUae7fe
+X-Gm-Message-State: AOJu0YwERbh2KJvGgVgCHWptkL5N44Y/a22phaSElGUty1E4BZV8TpET
+	DqqjWmR6gembPRNi+QrsDtoWabLAHKsd2q2rnHs05aGnYVbwBpXAZP7Tdr9kUZY=
+X-Google-Smtp-Source: AGHT+IFv84T5GiiA/Y8AELuClni1irIXmvrexGVaWXq7ByE0ZTiWAk3x3pV3qNV4LBt5YfUQwHgEqw==
+X-Received: by 2002:a05:6a21:3414:b0:1c0:eb1e:868e with SMTP id adf61e73a8af0-1c4a12aed16mr5789802637.19.1722267359947;
+        Mon, 29 Jul 2024 08:35:59 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:b771:7ecc:900e:e070])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7fccb63sm84195465ad.284.2024.07.29.08.35.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 08:35:59 -0700 (PDT)
+Date: Mon, 29 Jul 2024 09:35:56 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Marek Vasut <marex@denx.de>, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 2/2] remoteproc: imx_rproc: handle system off for
+ i.MX7ULP
+Message-ID: <Zqe23DlboRPSXiQO@p14s>
+References: <20240719-imx_rproc-v2-0-cd8549aa3f1f@nxp.com>
+ <20240719-imx_rproc-v2-2-cd8549aa3f1f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Clark Wang <xiaoning.wang@nxp.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719-imx_rproc-v2-2-cd8549aa3f1f@nxp.com>
 
-On 29/07/2024 11:45, Alexander Stein wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
+On Fri, Jul 19, 2024 at 04:49:04PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
+> The i.MX7ULP Cortex-A7 is under control of Cortex-M4. The i.MX7ULP Linux
+> poweroff and restart rely on rpmsg driver to send a message to Cortex-M4
+> firmware. Then Cortex-A7 could poweroff or restart by Cortex-M4 to
+> configure the i.MX7ULP power controller properly.
 > 
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> However the reboot and restart kernel common code use atomic notifier,
+> so with blocking tx mailbox will trigger kernel dump, because of
+> blocking mailbox will use wait_for_completion_timeout. In such case,
+> linux no need to wait for completion.
+> 
+> Current patch is to use non-blocking tx mailbox channel when system
+> is going to poweroff or restart.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
-> Using the DMA configuration bits from downstream kernel.
-> Tested on TQMa8XxS.
+>  drivers/remoteproc/imx_rproc.c | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 > 
->  arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 01cf1dfb2e87..e1abf110abc9 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_domain.h>
+> +#include <linux/reboot.h>
+>  #include <linux/regmap.h>
+>  #include <linux/remoteproc.h>
+>  #include <linux/workqueue.h>
+> @@ -114,6 +115,7 @@ struct imx_rproc {
+>  	u32				entry;		/* cpu start address */
+>  	u32				core_index;
+>  	struct dev_pm_domain_list	*pd_list;
+> +	struct sys_off_data		data;
+
+What is this for?  I don't see it used in this patch.
+
+>  };
+>  
+>  static const struct imx_rproc_att imx_rproc_att_imx93[] = {
+> @@ -1050,6 +1052,22 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
+>  	return 0;
+>  }
+>  
+> +static int imx_rproc_sys_off_handler(struct sys_off_data *data)
+> +{
+> +	struct rproc *rproc = data->cb_data;
+> +	int ret;
+> +
+> +	imx_rproc_free_mbox(rproc);
+> +
+> +	ret = imx_rproc_xtr_mbox_init(rproc, false);
+> +	if (ret) {
+> +		dev_err(&rproc->dev, "Failed to request non-blocking mbox\n");
+> +		return NOTIFY_BAD;
+> +	}
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+>  static int imx_rproc_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+> @@ -1104,6 +1122,24 @@ static int imx_rproc_probe(struct platform_device *pdev)
+>  	if (rproc->state != RPROC_DETACHED)
+>  		rproc->auto_boot = of_property_read_bool(np, "fsl,auto-boot");
+>  
+> +	if (of_device_is_compatible(dev->of_node, "fsl,imx7ulp-cm4")) {
+> +		ret = devm_register_sys_off_handler(dev, SYS_OFF_MODE_POWER_OFF_PREPARE,
+> +						    SYS_OFF_PRIO_DEFAULT,
+> +						    imx_rproc_sys_off_handler, rproc);
+
+Why does the mailbox needs to be set up again when the system is going down...
+
+> +		if (ret) {
+> +			dev_err(dev, "register power off handler failure\n");
+> +			goto err_put_clk;
+> +		}
+> +
+> +		ret = devm_register_sys_off_handler(dev, SYS_OFF_MODE_RESTART_PREPARE,
+> +						    SYS_OFF_PRIO_DEFAULT,
+> +						    imx_rproc_sys_off_handler, rproc);
+
+... and why does it need to be free'd when the system is going up?
+
+> +		if (ret) {
+> +			dev_err(dev, "register restart handler failure\n");
+> +			goto err_put_clk;
+> +		}
+> +	}
+> +
+>  	ret = rproc_add(rproc);
+>  	if (ret) {
+>  		dev_err(dev, "rproc_add failed\n");
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> index 1ee9496c988c5..8ae5f065b4180 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> @@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
->  		assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
->  		assigned-clock-rates = <60000000>;
->  		power-domains = <&pd IMX_SC_R_SPI_0>;
-> +		dma-names = "tx","rx";
-
-Missing spaces. Unexpected order, unless that's the coding style for imx.
-
-Best regards,
-Krzysztof
-
+> -- 
+> 2.37.1
+> 
+> 
