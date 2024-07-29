@@ -1,123 +1,126 @@
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB523155751
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 14:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D3E14B087;
+	Mon, 29 Jul 2024 15:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722265163; cv=none; b=fg2MpgShNCLABDeM+R/H/ipKQo/VvUaw1P9viBgBQb5BpC7hsmolnNhIofnlgeFYpF3WTaF31847eV8g9Ey8AkNkxTf0KXaZCGNIkoaIPIdj3NtqSfvFPFEslkjmeWmk0JjrtKNNnhPfDZ9oyAcOXkDrPagRiYBXipepw6IVbtk=
+	t=1722265853; cv=none; b=iUxULAJ0+JYNuwcpotAuMQMell1o0HKFLtz1kQVKmRsL3nEMCVOubRLBKtyD9ZlERImHN1itetgn9PmGDi/vSjPwM0OLYB48L9KzyJas4n7K7aryM9WgB+QXFOeBPI1dbepP2htmqvyE9ef6j6tStJZOov79g+54cmWL3FXGiXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722265163; c=relaxed/simple;
-	bh=BNOXPZtZKWW/vqL54/YmXApUaSlHoTjVustBzHzHkRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NhsCLdR4ccOkBsCktjU3Mpf4xbLvMLtEAbofB+6TS6t9nZgVSP79tZkK3WwFSDdjNbxK7APHapBXGIVoQU2FyEFf/ySAB6aHhUoY8beBODfRShU814foXr4NYVAnYTNU/6HGoBo49gdgTh1MSA9/GOwUxHUJXpB2saIlaTePYLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vxseU6gm; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1722265853; c=relaxed/simple;
+	bh=jcci7z4PwjhgEDOaAxC+tw4UeosmJl4Bgx+sNpCjg+s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p4Yk43ipybeRsmeZJsv53IDUYJ7QcpCgg7Cdt5wcLyV1Fe8NO0Ha0MaFclxxOzVDNv6G5JNcrALpIJDM/T2NoMJjiZLEKqEd3mRmNJMaOrRUOS3mJYxGpyvN0/njwrecyeUbb4CcnfKh/z6gQxX7LSOFYSPO/9ukv2TdInhrutw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9ZXO8d5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vxseU6gm"
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-261112c303bso2536268fac.1
-        for <imx@lists.linux.dev>; Mon, 29 Jul 2024 07:59:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722265158; x=1722869958; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2dhV9pLkwnO6TngFTZ6PEmd1aRr+aIvv72OqFegZv0k=;
-        b=vxseU6gmdGxP73/BpSlm13aDK3TiTfz4c6BZmBDyi5PKJYF90PMSP/HdoOc13dSQ+E
-         dl8pP1NgxDoxvm/w3MfPjaHfgVHEx9Ci5ZdWhtpG/xR4tLylH4Y0YDEwAzcAPeIcL6pk
-         puq9sZPXMGFIOy9Af2Wd0A8Pqjcj9SRYCiZT0wnCe47L6aiingj7RDwtAfwxFMLnE9cr
-         VCO4bC7rcH4dALeJ0EygFW7DcIVxBFN0O7pmMvd4g1AxFKOUyG8k7aQLZkP5Fpt8Bh+f
-         ZVVMj1u6nmMo31rDtGetgAsuLplx7lV+T0PTx1PbmNcxL1DPcw9lJT/4UCpYfIo+rSrS
-         8frQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722265158; x=1722869958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2dhV9pLkwnO6TngFTZ6PEmd1aRr+aIvv72OqFegZv0k=;
-        b=MfQYqD752YKc7Al2hqMqar9qZsqRHJ/q3cfiwApNgmPCpCv6NsuBNhBBDFAYLrqf6i
-         I84n0q+2KLRZ9qVl+dqjOc+drZXPLlECxoVxI2B7/O8BcyAcAJhuZyGkhnf1MI/QHsL6
-         SkDIwFWNmf4YXu27eH7fkzcnV3HA6zny2d6qK2ro0NLdZko7PYKiMyGG0+i/VneUiXQ5
-         OaEDisHMSA3/PQIQB5fpGgkTGyutz+yrk79Jk85AhE5Q2R+EbfGSvgVq299kTumDYjzr
-         z58IUYXiQ6KGN0Y75nPpegT4uBF5PsLehpa4YVwvYYwNQvhdfEWSW/8vad7rgtvmQo8R
-         ykKw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHaRd4bhHbsFOjVM7OFJvHrRP9IVH/Tu5FIaNCUUPXtvD0wk+W1wlhyhCfa3CaA0BPv8gowKBqjbaa4HS4PI8GRT5z
-X-Gm-Message-State: AOJu0YzV4IFBgb2QZuoeqVMGRzl/I+QvUKJ5ITUSE2Pc8BBYThXLOytC
-	3KrqE+jnBr878M0ySg+YFI3foM9kafkclKqOsweOm8zKgfcS3W1gjnsRdGHzESc=
-X-Google-Smtp-Source: AGHT+IEdbCnGqwPNsJw9sRMXxW9hssPlB3eNzpMfeFiqhxqlaGC54wLTPHxF2sPrKmY2qW30e4vafQ==
-X-Received: by 2002:a05:6871:520f:b0:25e:368:b5a4 with SMTP id 586e51a60fabf-267d4d0a47cmr9601699fac.18.1722265157961;
-        Mon, 29 Jul 2024 07:59:17 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:b771:7ecc:900e:e070])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7a9f7b7b1besm7398510a12.2.2024.07.29.07.59.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jul 2024 07:59:17 -0700 (PDT)
-Date: Mon, 29 Jul 2024 08:59:13 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Marek Vasut <marex@denx.de>, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Terry Lv <terry.lv@nxp.com>
-Subject: Re: [PATCH v2 0/4] remoteproc: imx_rproc: various patches for misc
-Message-ID: <ZqeuQSNUA1X1wlD2@p14s>
-References: <20240719-imx_rproc-v2-0-10d0268c7eb1@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9ZXO8d5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1773DC32786;
+	Mon, 29 Jul 2024 15:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722265853;
+	bh=jcci7z4PwjhgEDOaAxC+tw4UeosmJl4Bgx+sNpCjg+s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=V9ZXO8d5hXIc/yfn5uK3Ft/hyQWL4K9MU0OcWNS0dStS4pehZnhlJ8MJpiIWQz2+o
+	 +zvOX8gFfhSxzy2pP2KJVuqNafsAztOO2kyVk9QKPL2jJFxSoq3+90ozoh+718y/pV
+	 8I7yb30BtNBpRX8XJuCAJ6g0LZ1Ge8m6JBwVb5kB9GSMsxdJQlkh+aJl0d8jhVmEYk
+	 Qg2vt2K9g7PF+Lbt5zs98HtfPZxSMb6kHOMXDQSFl61exvV70v0+O7W+IUkXinKnl6
+	 y9bSlotJi0ST6d23ZyIDJymL4vJJT/ukYMZEfI6O4548Ag1d9vQI+wmG9oPeooZM/2
+	 /Z/RJgUN91IVw==
+Message-ID: <6c6bb89e-a9d8-4d5c-837a-30f3bae56f0f@kernel.org>
+Date: Mon, 29 Jul 2024 17:10:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240719-imx_rproc-v2-0-10d0268c7eb1@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Clark Wang <xiaoning.wang@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 19, 2024 at 04:36:10PM +0800, Peng Fan (OSS) wrote:
-> This patchset is to upstream a few patches that in NXP downstream for
-> quite sometime. For patches directly cherry-picked from NXP downstream,
-> I keep the R-b tags.
+On 29/07/2024 11:45, Alexander Stein wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
 > 
-> Patch 1 is a minor fix to DDR alias.
-> Patch 2 was sent out before,
-> https://patchwork.kernel.org/project/linux-remoteproc/patch/20220111033333.403448-1-peng.fan@oss.nxp.com/#25144792
-> this is just a resend
-> Patch 3 is to avoid mu interrupt trigger earlier.
-> Patch 4 is merge small area to support elf that has large section
+> Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > ---
-> Changes in v2:
-> - Add R-b for patch 1,2,4
-> - Add Fixes tag for patch 3
-> - Drop downstream R-b tag
-> - Drop patch 5,6 which will be in a new patchset for 7ULP
-> - Link to v1: https://lore.kernel.org/r/20240712-imx_rproc-v1-0-7bcf6732d328@nxp.com
+> Using the DMA configuration bits from downstream kernel.
+> Tested on TQMa8XxS.
 > 
-> ---
-> Peng Fan (4):
->       remoteproc: imx_rproc: correct ddr alias for i.MX8M
->       remoteproc: imx_rproc: use imx specific hook for find_loaded_rsc_table
->       remoteproc: imx_rproc: initialize workqueue earlier
->       remoteproc: imx_rproc: merge TCML/U
+>  arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> index 1ee9496c988c5..8ae5f065b4180 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> @@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
+>  		assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
+>  		assigned-clock-rates = <60000000>;
+>  		power-domains = <&pd IMX_SC_R_SPI_0>;
+> +		dma-names = "tx","rx";
 
-I have applied this set.
+Missing spaces. Unexpected order, unless that's the coding style for imx.
 
-Thanks,
-Mathieu
+Best regards,
+Krzysztof
 
->  drivers/remoteproc/imx_rproc.c | 37 +++++++++++++++++++++----------------
->  1 file changed, 21 insertions(+), 16 deletions(-)
-> ---
-> base-commit: f477dd6eede3ecedc8963478571d99ec3bf3f762
-> change-id: 20240712-imx_rproc-25f3ab753c58
-> 
-> Best regards,
-> -- 
-> Peng Fan <peng.fan@nxp.com>
-> 
