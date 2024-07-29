@@ -1,243 +1,229 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011030.outbound.protection.outlook.com [52.101.65.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1A4187555
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 21:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722287814; cv=fail; b=iMWNmmXwGKrnSLcpKojwDGNke+zXqRhbr7c11vaQs5SBLrpUIT8vKG0y/eFC4tYil+hq5330QRGSIP/5/bT9iUCmnlRT3X6nLSPoCyiMRIdID6KW8vTkYiRo+Ua03DP8Lwzbe2UXajUktF9g6RTLIDmuO8z5pqry7ppo0CuMQcM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722287814; c=relaxed/simple;
-	bh=daqazDMDLJh5ZxWNM9JjrcyizSMqQ3O6q4gQJsKRSUk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ei8m+IiX9m+8/QKp56BiTVfW8oEqedhLSW+rphxiMnVF4PVbhqxBOty6nUcXj0cQpwaoyPtLJ2H+o0emMPEDRtIq6TxzlXSraDW5k+22Bz91Yn4UyA9kzAawKMOdmqou9Ose0fE23cppAuaWK3NJzSdfDC57snGmdi5PjVYJsVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XyO6gXct reason="signature verification failed"; arc=fail smtp.client-ip=52.101.65.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687A318C33E
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 21:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722289878; cv=none; b=V5U2LoDH16c5uKz6nCx6KXgwZc+QK+IDHP4ntn1hepr2eKcdJ9wfkx2dd5DmVNyXb2Qk6XGYkcexx/WTUvjv/ccsPu+YwCzzdOnIjHssAKiWAldsGse0/2oOmhz1lG1yhmVmoDIZ+faBAYjagi7sBfrrDPXnMuPUbKgKtP0M4aM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722289878; c=relaxed/simple;
+	bh=LrWqnISsEK8XrCpLK4+pJridYRM/C8H1gnw5Ws+3Xps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q3JOAUbHXCDq8peNo18aqhCLDbknPdtJgWMIS7VkUvZlrYvogpCk9McA42yRy4Au0hRLpbIm0v2sPfnNyJo2YBqrYF2t7dVJX4hbHeL22NFcmmTNUgcHvYqM96zxUFlBeVQkW66PgUWqGPIh97aeKq8udQGQx0FGbOKODPjDTtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bSqMwZZL; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XyO6gXct"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NjyviWwzP2+9CrfulhOfJ+9Cq1U6Sr7Ta9vwhmSM2AProU9FrWSz9jzpia/IcPTZEPtNF1Mz5prYCoXxHfwCGNC2ixbzjje/eX3+ELWZAOfH74N53cOPZ00cIz38ipxyAYCIjcRfU5Ze6xgkYXo8gvv2fcDPaZX/1YUiKU7aADgCSnUfHhZHYx4NL6BuzMWC3weiFCTGwa54HiKvSwLbjo2c0LJ3P1aNGLurT6d+/rhfgwS+Pzfv4/ivg8Lew8NldNZ2C57Q353RoJbYYacwogOXjyrKan8yENyLKvyuNwqPQ2NbP/hoHFO6irwN61IYECVU0ZaJ5R84GeqymzcInw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Px9qktkK62dS/PPsmtxdli+ncCOZGtP2m4oEkwEVue0=;
- b=g1UHI8ntZjW6kYsU5NpfOlJ0PkWQCwt2sRA8haGrn1Bkl0+Vp5b5sg049w8fTaVumriWuFnGJH8ry1gXfqiVekSCSmDR/k/OBBzGkY8GKaRUOL+Ls4IhxA3c3BZ8JxQ3dutim3QvNIeTbVvp/l5f3xE4ILPsfxAWOQziB69uag3n9tK5hPA+wTem07y9OSDm32FqIsa2iQ+OR+WVXjOZqteQBnwnyGC89pcosXch+sQspReQ65UyUtvTHFpZKs3gyTBOxFFQfKNRlrHuU0lIqUtNntJXFN3CfvFJ86Y/XlkvpNDkFxg3Bi0IsUAEJEu1gE281SyL9WZwH5NPF5xJJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Px9qktkK62dS/PPsmtxdli+ncCOZGtP2m4oEkwEVue0=;
- b=XyO6gXctd7nbFWO/ii7Mjb0VYHX5W+7+8RU9WPLmRdardWuNwTKdV2T6NNXllcsPg7XyOY1M21R5NPbhF9VT6BHWCF/rvvlpIldb4aOzEt4bBVOzr4YUcwoQHZx8/dgj0BeOD5p3J6UbPPS6RHVJMI+A3TGnJ66XRJQKAh1NtaZB1n7hNXRSlrsXEC3LV3u2zqMj0peGFY+GOnNzjem157rN4A5saU8vvhOEZyy++lgXolMeTyt46A8jo3Wm7LBGQ1Qpcr2aXtuEJKeRYV7bcJdCDos3Q3uHe5m5p5ifjLLSWLxvWB3qAsCOYDJ2gIZM81ApeGPNdcVIkeTbMfPZnA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS5PR04MB9873.eurprd04.prod.outlook.com (2603:10a6:20b:672::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.26; Mon, 29 Jul
- 2024 21:16:48 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7807.026; Mon, 29 Jul 2024
- 21:16:48 +0000
-Date: Mon, 29 Jul 2024 17:16:39 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: alice.guo@nxp.com, festevam@gmail.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-	linux@roeck-us.net, s.hauer@pengutronix.de, shawnguo@kernel.org,
-	wim@linux-watchdog.org, ye.li@nxp.com
-Subject: Re: [PATCH v4 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
- struct imx_wdt_hw_feature
-Message-ID: <ZqgGtzLvV0QGR0PW@lizhi-Precision-Tower-5810>
-References: <20240729200601.1995387-1-Frank.Li@nxp.com>
- <716b9d31-f978-4384-b605-64896f8b2643@wanadoo.fr>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <716b9d31-f978-4384-b605-64896f8b2643@wanadoo.fr>
-X-ClientProxiedBy: BY3PR04CA0020.namprd04.prod.outlook.com
- (2603:10b6:a03:217::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bSqMwZZL"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-70d25b5b6b0so2606188b3a.2
+        for <imx@lists.linux.dev>; Mon, 29 Jul 2024 14:51:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722289876; x=1722894676; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=HpKFNPu/eyMggjx9nIejJskxEf3iq1M/LEytVjF0bmE=;
+        b=bSqMwZZLdYEUsZeyDCixrEgqxFzd+dwg7sowDySQyoW7ZrerYfyjpE6QRJUdBOdvQh
+         fLvZZ4bQtuKCLO0Cu+xbI4WwbkyAww9UvZNvD9mOLCLSp5zBdebFsLxTiOTucXGeKrre
+         ww3o8N9AEHgO5pz2jZfHU7T/HQa4W4LDMmyWwOGtbjrWdnxTtX6uLVLA2gqv9sQW7fhw
+         gQ4Mysk1NSZWIVM57dFdqJa58nT03DWG21cXhbLV2wMaSqrF/GyG6VhL/rm7wfDG46ul
+         lMKX4dDjkZS9l1t8Ex9iC29swlqv022f/eA59A10Ae6N9V1Mt5BxhLsHwT3BBjCgqHaC
+         Wzgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722289876; x=1722894676;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HpKFNPu/eyMggjx9nIejJskxEf3iq1M/LEytVjF0bmE=;
+        b=GyOhKx9wTOi6RvINNap+tnE9gCfrSmZkJOERbnQEi9QtNXR1hM+O69kchyfuDjk5q8
+         cenYTF317dLOEFN5NWUv7UOkZVrcCobqeDtumpjQySSSqUNn2HLpVLoTDUW8R7Ku3e0Z
+         det5yyTQDMgRQAIViRJa3up/Y+mOLKMnFDm421o6O7uttA0nv1llQCkIRgdNGnsxEvg7
+         PGyoIFhIUwz7Als6DuWKx48yzI6H1YXpBImt8oFf5BjTLdWTBT0LsG+EhCATe1x13rUl
+         sPGeEUiKWO25BGjEyNTSNPb8+Hd0eIVud6uMsnpeMB2V9Xrz+0qRe2CzQa8k6fi8eL70
+         cB1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVMY7iI2cOa9Ala+xnxRA9UzdP2VQva0oIrDemaGN3b7nztHVY+tjniAN4G3VLW/S4Zrp3pHOmpxioqWEE5K0z99fq8
+X-Gm-Message-State: AOJu0YyWzFOkSrG23nKbQa1RAwkMnxEEF8T3KycxY+PP0Jjs0K6fKt9L
+	F9YZ3hnF1lvHJBmho1M2g1XEICOkNaBGMn3QYkQlSdJEWbw102LnCQ96WA==
+X-Google-Smtp-Source: AGHT+IFdoeF4n/4YIqBvowTatVW1tarAT1SSgsixYzO9oJIPThavqzeT2b87gN+FXSmK7pl8YlOz6g==
+X-Received: by 2002:a05:6a00:b88:b0:70a:efd7:ada1 with SMTP id d2e1a72fcca58-70ecea3fd57mr7470387b3a.17.1722289875450;
+        Mon, 29 Jul 2024 14:51:15 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead8aa702sm7223969b3a.215.2024.07.29.14.51.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jul 2024 14:51:14 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <ca762afb-07e1-4b3e-9ab7-5bd5c128d7b7@roeck-us.net>
+Date: Mon, 29 Jul 2024 14:51:13 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9873:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2654837-2ae8-442b-7313-08dcb013c1d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?h6TruY1dAwqC1ecbh1a5NNU4iLOBeT0xqxhUduSPSf/GOP/K7AzLwdJycb?=
- =?iso-8859-1?Q?0KgJa7bWexXeL5m9v3Hwr6Lh/949ICBeemIKt3oJDJwagm8fvMGSaftgyH?=
- =?iso-8859-1?Q?TkKFgQEoSeekrseIPX7Qe6PJ/Xh/rI5YQHnPvKkmvTRGWM3fo+Fn/UuTXf?=
- =?iso-8859-1?Q?Rqws4d4lsPLfWc6HWFG52WXrVl5iZ7r2iZ2fGGCFpCXR4+tY1Y4404whN2?=
- =?iso-8859-1?Q?kZ3QQ5Rz5EcV9HSvkjNpW66RovOHKWUI6p4w+nyKS8z3hh3QxNcrvEHDzK?=
- =?iso-8859-1?Q?62+vMYvkmbHnHFyBX1EluUdmU5g7OvO1/LqkbfeQN4hvSV/44ekYJqNbT8?=
- =?iso-8859-1?Q?6l3QSN76HP7wXEA/LIW/P5apt/Ph5SOPr6045YsUd+XZnPPgdE8saqjLeH?=
- =?iso-8859-1?Q?HNWah3J5xWtF/VxAD9wI7yiuqEp2Nhhk6rOWWbpdbglxTwldTzFRtUcxDM?=
- =?iso-8859-1?Q?0jX4PP5vfcp2eD9zNPwW2DFELlBxsjByeY6bpwWgwUd3Y2v+caITNBULMW?=
- =?iso-8859-1?Q?R38tfyiv7XLQAsBAxdDEKAW/eix7kRNPCa92XjNiPGvY96qhNEptgiy2Ix?=
- =?iso-8859-1?Q?u8z1CIvW3u5ku/oWclI+giN6toWWsew+YXeKW1GCDPBWHdyaRyLNGHJfEr?=
- =?iso-8859-1?Q?IBszYs9IeJZtX6masJ5zvab+MTXDnJWc45gjNbL/JoZa7oFofI8GSZzUEo?=
- =?iso-8859-1?Q?HgexR0viEyoTnerM6JeGqnynIhbAUcgWvPjmHH2Oy35FkXS4OAWzxQpxVV?=
- =?iso-8859-1?Q?3+NfHXMpPzMI3iYry5/KXezS2UdsyrdgE61UtC0SOomP3K4Xqb1ZLh/yyM?=
- =?iso-8859-1?Q?fc1XR07V+M0HAQx1fAcpKuWUhH6IPLpH0FRhc9glyPGzsfdYT+oH9fTO1D?=
- =?iso-8859-1?Q?NWxe6de3t81rF/608z39Ynj6pIIKoGATkxmT99c/+INsYSSXVRv5YNFHFR?=
- =?iso-8859-1?Q?ccfem3tf8whlE+YsQPLa+Mkav4VTJyYru/pfF00wpXx9jZjm9tW/Hhjupk?=
- =?iso-8859-1?Q?BnP7/+YQj1cRnPZaYNynsWaZjn3U7QhtWCK9xxJDMt4QgrRORr3yBBDF+g?=
- =?iso-8859-1?Q?8Ec2kfTBypyT8mOu8KN9K3N8rgB3FgzUliuSN7aqwrBU5M+9xzkP2/gF9z?=
- =?iso-8859-1?Q?rveulCabi0X9hmXBXam9qRC1k9wrPGjzttIoMULbLf3xfg3zK5zZ8ihe5z?=
- =?iso-8859-1?Q?aJPU9ftry2Gpa3npiQ+aGLDCFNNGxwq+nNGEjoPP0qmOUbg6vm7V8PYRPE?=
- =?iso-8859-1?Q?gxRoBdiVwNkt0yXsVQ9OFAoPXWqeuHDTslyw3NLqCp/jNnuDyf/r9D/iXN?=
- =?iso-8859-1?Q?mWdLYdjNZ3EmBACiDbnRjWzDKYToY+EPZxpc4QwklOOChMy5sVMgJZcuxf?=
- =?iso-8859-1?Q?/qUzd/maX0yOI155FOzp0Ns+y0tTNRItKMLET5ghHukhrAyCaUHg0BlFGD?=
- =?iso-8859-1?Q?rXJUNtpdgB3hDv8+h9ds38zYvGutD52G8w0iaw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?D921x1dqyBzS1awu34ZdIMyspNq9966SS/J6bG6c3Z71N+kTndAOMkWQqV?=
- =?iso-8859-1?Q?0sBFryitxtQncYSWM2kKFR3EhSMvO9h/uQiu/wyvfsg5RMjuzcxh8vrbXa?=
- =?iso-8859-1?Q?pVZKsN7KCqljFRK2rm4uJcjjuEbIGjOQim4fPGJ8VwtjmroMleGvQ8NCzb?=
- =?iso-8859-1?Q?iaqT9SMDdhhduM2VP8Z7ERJT0hjLTurRpMi65YNzXpQL1bWyIiLJwgH3H0?=
- =?iso-8859-1?Q?NGBAt7gvfp5UjWnqCIUOPJtR7k/volcVxveYu0oemHNBxOrobw6GsBZQPZ?=
- =?iso-8859-1?Q?I420y130nkzEdC9/W0E0w6bedAuzOGurE5b2KK9WDCVy5Z+cFToI2rLH1q?=
- =?iso-8859-1?Q?DS6TXiWp51owGa6rT4f9TMU2OuyT6QZhAMJBTjXtaWTxvNXRwHVfRv0RZt?=
- =?iso-8859-1?Q?EA9ejrg3RMcaONgB57VAvUqCYjaoOrgor2YjiWQn1Wl5bgh7JOwls6FCOF?=
- =?iso-8859-1?Q?mhc/rCfkD5vFmAr7zZ/3SSV1fE+C7x6bzQZ1akw4Pp7+v5dHVBgokbBQ3g?=
- =?iso-8859-1?Q?cDeFulFTUOGXBRi8Humo2rzr9hIPhhlMmXLppOvhwk1k2/Iq68y8f7sBJx?=
- =?iso-8859-1?Q?4fiOOPA8lUuziIeeD2MI4F7a+2M7nwQAaUD4oFXOxf4EyAijTRN1gqpQvC?=
- =?iso-8859-1?Q?DWi69Herflo7oSg7N2540kafrvGRa7RrJfeSG8zNYNmf7NR/iu5DQXbak+?=
- =?iso-8859-1?Q?h3luu4CF7s8gWkvK4dHO8pWhiuQ+yOxPd+kHxyMobYSJCumE8mVEIYJ6bE?=
- =?iso-8859-1?Q?wBU4s7b63jVsUGLfGvn82YnNBFqgvuo3Nc+HUnozbrRCjvWdWIbAOmEf02?=
- =?iso-8859-1?Q?v82LndmprZ/Fsgw+0uU2FDNetMVll+f0V8hn8QCXxrkbIrvYf+qDBeDxv4?=
- =?iso-8859-1?Q?6ojmVXnV6C4YaQdyaIMZRYlhzMEoxZlkbMYTO7TluLlBGSuYL8vi4/oK69?=
- =?iso-8859-1?Q?a7QWTQulSRgCB9Jkb2tDb/uofAmfxpLiGQKf+si7r6cOj01is5CF8JQ3C3?=
- =?iso-8859-1?Q?Uy3mWb+JEaamqLxaOE0qGMv1CTky4Ok9jqLjrn1zJ4G3c0KXjuoVgkj4v0?=
- =?iso-8859-1?Q?koEdJzKhOsDvCmJPW5ZXC0Ziyycpp7pHj7DWDQXlekIupqiNE8D9r1xv4r?=
- =?iso-8859-1?Q?F8+uIWBH3q4dh/Y9ncIFSSUCSnLTaPG2v7OdV3TvcLgzVRvn4WumkvRiIY?=
- =?iso-8859-1?Q?K9kQxJRQPasqQdhYbV6TqWpynFCBF+0+wQpBShNKb2B56+vbzlWABuYZI0?=
- =?iso-8859-1?Q?U+A6+gNl91WIwJ3fGbHVq/Pr7P/iwm8CIkeE3gEl2ju+at3ydFjDORVY7B?=
- =?iso-8859-1?Q?ChJIE1G787qz2FscIwd+VA5xCNuWCCnGk4mgbv/0iEVYJ/9n0sR9SaxRdB?=
- =?iso-8859-1?Q?tzQlzZ8lPRxvNUEje28NUvpH8zw3XQpk+CutuGoRDK3RurbE6ETTSaekJZ?=
- =?iso-8859-1?Q?jqwwbE0gISvJko/3IKh8x6oGQcWBmvrb6WbgqKSyl1Yd4z9EVUKfIzGdqA?=
- =?iso-8859-1?Q?NuLXto0NyQGZqYmWmqC0e8n2zat+2uxay+9uTHNcbfXJiswtNN1WXu0w5e?=
- =?iso-8859-1?Q?ruEYnqXtwa9JrMGHEjrtyZVunRt5v4gxkazoxddXYlBR4ikm7DMDmD7Hl2?=
- =?iso-8859-1?Q?uUIq9IZQ4Yi94SIxRxD90/O1CeyV483d0o?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2654837-2ae8-442b-7313-08dcb013c1d8
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2024 21:16:48.4314
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nox1lXuo7eSZ98cwn4VWvf6pLfG23V5lVVhqGOeZUQa5wyagMkV+CTGY1Pm0gCrgzp9i+6D2Tm7H69ZohWRI8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9873
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/1] watchdog: imx7ulp_wdt: move post_rcs_wait into
+ struct imx_wdt_hw_feature
+To: Frank Li <Frank.li@nxp.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: alice.guo@nxp.com, festevam@gmail.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+ s.hauer@pengutronix.de, shawnguo@kernel.org, wim@linux-watchdog.org,
+ ye.li@nxp.com
+References: <20240729200601.1995387-1-Frank.Li@nxp.com>
+ <716b9d31-f978-4384-b605-64896f8b2643@wanadoo.fr>
+ <ZqgGtzLvV0QGR0PW@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <ZqgGtzLvV0QGR0PW@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 29, 2024 at 11:12:13PM +0200, Christophe JAILLET wrote:
-> Le 29/07/2024 à 22:06, Frank Li a écrit :
-> > Move post_rcs_wait into struct imx_wdt_hw_feature to simple code logic for
-> > difference compatible string.
-> > 
-> > i.MX93 watchdog needn't wait 2.5 clocks after RCS is done. So needn't set
-> > post_rcs_wait.
-> > 
-> > Reviewed-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-> > Signed-off-by: Alice Guo <alice.guo-3arQi8VN3Tc@public.gmane.org>
-> > Reviewed-by: Ye Li <ye.li-3arQi8VN3Tc@public.gmane.org>
-> > Signed-off-by: Frank Li <Frank.Li-3arQi8VN3Tc@public.gmane.org>
-> > ---
-> > Chagne from v3 to v4:
-> > - Go back to v2 according to Guenter's feedback
-> > Change from v2 to v3:
-> > - Set post_rcs_wait to false explicitly to maintain code consistency
-> > - Add Guenter review tag.
-> > Change from v1 to v2:
-> > - Combine to one patch
-> > ---
-> >   drivers/watchdog/imx7ulp_wdt.c | 21 +++++++++------------
-> >   1 file changed, 9 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
-> > index 94914a22daff7..3a75a6f98f8f0 100644
-> > --- a/drivers/watchdog/imx7ulp_wdt.c
-> > +++ b/drivers/watchdog/imx7ulp_wdt.c
-> > @@ -55,6 +55,7 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
-> >   struct imx_wdt_hw_feature {
-> >   	bool prescaler_enable;
-> > +	bool post_rcs_wait;
-> >   	u32 wdog_clock_rate;
-> >   };
-> > @@ -62,7 +63,6 @@ struct imx7ulp_wdt_device {
-> >   	struct watchdog_device wdd;
-> >   	void __iomem *base;
-> >   	struct clk *clk;
-> > -	bool post_rcs_wait;
-> >   	bool ext_reset;
-> >   	const struct imx_wdt_hw_feature *hw;
-> >   };
-> > @@ -95,7 +95,7 @@ static int imx7ulp_wdt_wait_rcs(struct imx7ulp_wdt_device *wdt)
-> >   		ret = -ETIMEDOUT;
-> >   	/* Wait 2.5 clocks after RCS done */
-> > -	if (wdt->post_rcs_wait)
-> > +	if (wdt->hw->post_rcs_wait)
-> >   		usleep_range(wait_min, wait_min + 2000);
-> >   	return ret;
-> > @@ -334,15 +334,6 @@ static int imx7ulp_wdt_probe(struct platform_device *pdev)
-> >   	/* The WDOG may need to do external reset through dedicated pin */
-> >   	imx7ulp_wdt->ext_reset = of_property_read_bool(dev->of_node, "fsl,ext-reset-output");
-> > -	imx7ulp_wdt->post_rcs_wait = true;
-> > -	if (of_device_is_compatible(dev->of_node,
-> > -				    "fsl,imx8ulp-wdt")) {
-> > -		dev_info(dev, "imx8ulp wdt probe\n");
-> > -		imx7ulp_wdt->post_rcs_wait = false;
-> > -	} else {
-> > -		dev_info(dev, "imx7ulp wdt probe\n");
-> > -	}
-> > -
-> >   	wdog = &imx7ulp_wdt->wdd;
-> >   	wdog->info = &imx7ulp_wdt_info;
-> >   	wdog->ops = &imx7ulp_wdt_ops;
-> > @@ -403,6 +394,12 @@ static const struct dev_pm_ops imx7ulp_wdt_pm_ops = {
-> >   static const struct imx_wdt_hw_feature imx7ulp_wdt_hw = {
-> >   	.prescaler_enable = false,
-> >   	.wdog_clock_rate = 1000,
-> > +	.post_rcs_wait = true,
-> > +};
-> > +
-> > +static const struct imx_wdt_hw_feature imx8ulp_wdt_hw = {
-> > +	.prescaler_enable = false,
-> > +	.wdog_clock_rate = 1000,
-> >   };
-> >   static const struct imx_wdt_hw_feature imx93_wdt_hw = {
-> > @@ -411,7 +408,7 @@ static const struct imx_wdt_hw_feature imx93_wdt_hw = {
-> >   };
-> >   static const struct of_device_id imx7ulp_wdt_dt_ids[] = {
-> > -	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx7ulp_wdt_hw, },
-> > +	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx8ulp_wdt_hw, },
+On 7/29/24 14:16, Frank Li wrote:
+> On Mon, Jul 29, 2024 at 11:12:13PM +0200, Christophe JAILLET wrote:
+>> Le 29/07/2024 Ã  22:06, Frank Li a Ã©critÂ :
+>>> Move post_rcs_wait into struct imx_wdt_hw_feature to simple code logic for
+>>> difference compatible string.
+>>>
+>>> i.MX93 watchdog needn't wait 2.5 clocks after RCS is done. So needn't set
+>>> post_rcs_wait.
+>>>
+>>> Reviewed-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+>>> Signed-off-by: Alice Guo <alice.guo-3arQi8VN3Tc@public.gmane.org>
+>>> Reviewed-by: Ye Li <ye.li-3arQi8VN3Tc@public.gmane.org>
+>>> Signed-off-by: Frank Li <Frank.Li-3arQi8VN3Tc@public.gmane.org>
+>>> ---
+>>> Chagne from v3 to v4:
+>>> - Go back to v2 according to Guenter's feedback
+>>> Change from v2 to v3:
+>>> - Set post_rcs_wait to false explicitly to maintain code consistency
+>>> - Add Guenter review tag.
+>>> Change from v1 to v2:
+>>> - Combine to one patch
+>>> ---
+>>>    drivers/watchdog/imx7ulp_wdt.c | 21 +++++++++------------
+>>>    1 file changed, 9 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
+>>> index 94914a22daff7..3a75a6f98f8f0 100644
+>>> --- a/drivers/watchdog/imx7ulp_wdt.c
+>>> +++ b/drivers/watchdog/imx7ulp_wdt.c
+>>> @@ -55,6 +55,7 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
+>>>    struct imx_wdt_hw_feature {
+>>>    	bool prescaler_enable;
+>>> +	bool post_rcs_wait;
+>>>    	u32 wdog_clock_rate;
+>>>    };
+>>> @@ -62,7 +63,6 @@ struct imx7ulp_wdt_device {
+>>>    	struct watchdog_device wdd;
+>>>    	void __iomem *base;
+>>>    	struct clk *clk;
+>>> -	bool post_rcs_wait;
+>>>    	bool ext_reset;
+>>>    	const struct imx_wdt_hw_feature *hw;
+>>>    };
+>>> @@ -95,7 +95,7 @@ static int imx7ulp_wdt_wait_rcs(struct imx7ulp_wdt_device *wdt)
+>>>    		ret = -ETIMEDOUT;
+>>>    	/* Wait 2.5 clocks after RCS done */
+>>> -	if (wdt->post_rcs_wait)
+>>> +	if (wdt->hw->post_rcs_wait)
+>>>    		usleep_range(wait_min, wait_min + 2000);
+>>>    	return ret;
+>>> @@ -334,15 +334,6 @@ static int imx7ulp_wdt_probe(struct platform_device *pdev)
+>>>    	/* The WDOG may need to do external reset through dedicated pin */
+>>>    	imx7ulp_wdt->ext_reset = of_property_read_bool(dev->of_node, "fsl,ext-reset-output");
+>>> -	imx7ulp_wdt->post_rcs_wait = true;
+>>> -	if (of_device_is_compatible(dev->of_node,
+>>> -				    "fsl,imx8ulp-wdt")) {
+>>> -		dev_info(dev, "imx8ulp wdt probe\n");
+>>> -		imx7ulp_wdt->post_rcs_wait = false;
+>>> -	} else {
+>>> -		dev_info(dev, "imx7ulp wdt probe\n");
+>>> -	}
+>>> -
+>>>    	wdog = &imx7ulp_wdt->wdd;
+>>>    	wdog->info = &imx7ulp_wdt_info;
+>>>    	wdog->ops = &imx7ulp_wdt_ops;
+>>> @@ -403,6 +394,12 @@ static const struct dev_pm_ops imx7ulp_wdt_pm_ops = {
+>>>    static const struct imx_wdt_hw_feature imx7ulp_wdt_hw = {
+>>>    	.prescaler_enable = false,
+>>>    	.wdog_clock_rate = 1000,
+>>> +	.post_rcs_wait = true,
+>>> +};
+>>> +
+>>> +static const struct imx_wdt_hw_feature imx8ulp_wdt_hw = {
+>>> +	.prescaler_enable = false,
+>>> +	.wdog_clock_rate = 1000,
+>>>    };
+>>>    static const struct imx_wdt_hw_feature imx93_wdt_hw = {
+>>> @@ -411,7 +408,7 @@ static const struct imx_wdt_hw_feature imx93_wdt_hw = {
+>>>    };
+>>>    static const struct of_device_id imx7ulp_wdt_dt_ids[] = {
+>>> -	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx7ulp_wdt_hw, },
+>>> +	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx8ulp_wdt_hw, },
+>>
+>> Nitpick: while touching something here, should imx8ulp be after imx7ulp?
 > 
-> Nitpick: while touching something here, should imx8ulp be after imx7ulp?
-
-Yes, it should be better. 
-
-Guenter: do you think it is okay to move it after 7ulp?
-
-Frank
-
+> Yes, it should be better.
 > 
-> CJ
+> Guenter: do you think it is okay to move it after 7ulp?
 > 
-> >   	{ .compatible = "fsl,imx7ulp-wdt", .data = &imx7ulp_wdt_hw, },
-> >   	{ .compatible = "fsl,imx93-wdt", .data = &imx93_wdt_hw, },
-> >   	{ /* sentinel */ }
+Sure
+
+Guenter
+
+> Frank
 > 
+>>
+>> CJ
+>>
+>>>    	{ .compatible = "fsl,imx7ulp-wdt", .data = &imx7ulp_wdt_hw, },
+>>>    	{ .compatible = "fsl,imx93-wdt", .data = &imx93_wdt_hw, },
+>>>    	{ /* sentinel */ }
+>>
+
