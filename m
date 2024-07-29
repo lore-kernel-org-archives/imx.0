@@ -1,89 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0494C16B73E;
-	Mon, 29 Jul 2024 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBA6187344;
+	Mon, 29 Jul 2024 18:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722273452; cv=none; b=ezCid8o7V1xJdFwIO6hcIx0qjPQp4s0G/r5De3XTc5iyz1JjAmEgtMmhYxXfkrRPj3PhO7LZ2B49gqq2ppNtxaAPu0E6R4UbzCondPO963X348DHM6NDf1j2gip1bh+UNDsMMmkmtx3WScMF4qHcqOqJXLweBm4KtI2vLdIc65A=
+	t=1722279177; cv=none; b=YjfWu6c2JaM1aauxfOW7ufhHI9+HoGrz0qM+t2ouWwPLl4pCFMWhbg6OWsAQtZfVHnRoDTJaRaeffnGqilG/FABkbm+Q5M3asYxaS7X8BmHkM9kLE4ELIVwSxGddERp3DI1IcSNHde+IPxryPyHxRLEsYDOVN2hbDUDhcGvAX3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722273452; c=relaxed/simple;
-	bh=0oCbFyazV4V0QRH9pY87aoH1nnqT33dgn4DPEnU0YzU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rvEMt0ZjUneHGhGCafR1vMGqu1nZfvQHXXpF9iJwAMirWpyThvXWnfboaxDh4LO6mAqwQb6V8g3jcaxRMWk0mQa+xiwFE7Yy8XCIgzTlKVuLv5zoRZZHErp5jCHTmNluSKwNIdy5AANCf3p6bORaIZxVOFThXpUf8fyIJkI5iA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bb+yU8MG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722279177; c=relaxed/simple;
+	bh=vsqLLDDZY6D3lJdg9vpCEv/GMhqruvs+fapG3j0a0QU=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=lfhe+79fMoqbPHJNaiKQFVCP0UJvNdROGWCo9CQSoSGZhd/pep7SIU92ZA84EWIdKCaP2zyEWo6s0Rydg9JapWrfCFyOj6a9xpOvW68UZs3JwhnmJRonfyfj6VapTjLvUZCRtLp6npc8i0i8qMocdJuYv8t9nzwqtI7yGp5VWSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQKb85Qk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bb+yU8MG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D37C4AF0A;
-	Mon, 29 Jul 2024 17:17:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQKb85Qk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F75EC4AF0B;
+	Mon, 29 Jul 2024 18:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722273451;
-	bh=0oCbFyazV4V0QRH9pY87aoH1nnqT33dgn4DPEnU0YzU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Bb+yU8MGUF1IoSzYeWvnDsHGJBnVuRXCrPW0wi8hgaYIMkhrQFoBcIuyi+sEErph3
-	 jNTTYUbUdqbBf79ye+aiDNTfWqSGoI13QRXz99deSGPDEl+xVzm3XIvFRwLRkc3ILf
-	 kr7VARZNBmqx02C0KM01IaZGiTbz9ElR+p4VPVh6tWtJQFevl1PS6juWFFib4SPIuK
-	 ZwERUjhJZszoeOY/b4cvP4vvsjz/P6Aoc9dy9ScuAQy/Dgtvs+deWx8WT3DOQx59Gf
-	 hx51tO/xdMizRm0W+IAHuxv445V/tlE9oSaWF7CQeEGnqzUXyP4NhwmwqP2K54WFlM
-	 aQqIUAryeu32Q==
-From: Mark Brown <broonie@kernel.org>
-To: Animesh Agarwal <animeshagarwal28@gmail.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240722063657.23018-1-animeshagarwal28@gmail.com>
-References: <20240722063657.23018-1-animeshagarwal28@gmail.com>
-Subject: Re: [PATCH v2] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to
- dtschema
-Message-Id: <172227344847.109775.11150603605763736185.b4-ty@kernel.org>
-Date: Mon, 29 Jul 2024 18:17:28 +0100
+	s=k20201202; t=1722279177;
+	bh=vsqLLDDZY6D3lJdg9vpCEv/GMhqruvs+fapG3j0a0QU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=nQKb85Qkji/RdhYlHQt0ujUtUIMnXbcBi+YRXFaYcfamKcriesDmMyUAD1gt5E9M7
+	 zxo+Gl/0dChFsv8XTvrfb++4x3/LidUl0jC5SrmhVm3xYKCYeg12ugHlz4WGBR72kI
+	 Ny4szV1ulxYzb7zPuskv04jZM4rjbZufKkZupiLHQ/IAAktm3h4SOuYCFyiIrWHLIM
+	 +DQlSX5PqnVdAx/uhtUEJxOTAZG4JoFefvfvANZ9owtmBKXea6lnxaAKMhUP6Gk5Pq
+	 g+tgFietVVs2hsB0/WDz5zuyWaL5dMr0zK7mBHX1LawcIep+VkT1F3+B85sQn+IjYf
+	 bwM9qKc7cJhaA==
+Date: Mon, 29 Jul 2024 12:52:56 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-37811
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: devicetree@vger.kernel.org, andersson@kernel.org, 
+ s.hauer@pengutronix.de, krzk+dt@kernel.org, conor+dt@kernel.org, 
+ gregkh@linuxfoundation.org, festevam@gmail.com, 
+ linux-arm-kernel@lists.infradead.org, shawnguo@kernel.org, 
+ linux-usb@vger.kernel.org, imx@lists.linux.dev, kernel@pengutronix.de, 
+ jun.li@nxp.com
+In-Reply-To: <20240729081039.3904797-1-xu.yang_2@nxp.com>
+References: <20240729081039.3904797-1-xu.yang_2@nxp.com>
+Message-Id: <172227905062.1346514.6301429778096950851.robh@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: usb: gpio-sbu-mux: Add an entry for
+ PTN36043
 
-On Mon, 22 Jul 2024 12:06:51 +0530, Animesh Agarwal wrote:
-> Convert the Freescale i.MX audio complex with ES8328 codec bindings to
-> DT schema format.
+
+On Mon, 29 Jul 2024 16:10:37 +0800, Xu Yang wrote:
+> Add a compatible entry for the NXP PTN36043 GPIO-based mux hardware
+> used for connecting, disconnecting and switching orientation of
+> the SBU lines in USB Type-C applications.
 > 
+> PTN36043 datasheet: https://www.nxp.com/docs/en/data-sheet/PTN36043A.pdf
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 
-Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Thanks!
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-[1/1] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to dtschema
-      commit: 00645b42e3ca6a35fc4a357dd769bcef41d4a077
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+  pip3 install dtschema --upgrade
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+New warnings running 'make CHECK_DTBS=y freescale/imx8mp-evk.dtb freescale/imx8mq-evk.dtb' for 20240729081039.3904797-1-xu.yang_2@nxp.com:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mq-dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mq-dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'assigned-clock-parents', 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'dr_mode', 'hnp-disable', 'interrupts', 'phy-names', 'phys', 'port', 'power-domains', 'reg', 'role-switch-default-mode', 'snps,dis-u1-entry-quirk', 'snps,dis-u2-entry-quirk', 'snps,parkmode-disable-ss-quirk', 'srp-disable', 'usb-role-switch' were unexpected)
+	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mq-dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb-phy@381f0040: 'fsl,pcs-tx-deemph-3p5db', 'fsl,phy-comp-dis-tune', 'fsl,phy-pcs-tx-swing-full', 'fsl,phy-tx-preemp-amp-tune', 'fsl,phy-tx-vboost-level', 'fsl,phy-tx-vref-tune' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@32f10100: usb@38100000:role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mp-dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@32f10100: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mp-dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@38100000: role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb-phy@382f0040: 'fsl,phy-tx-preemp-amp-tune', 'fsl,phy-tx-vref-tune' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
 
-Thanks,
-Mark
+
+
+
 
