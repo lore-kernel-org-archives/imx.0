@@ -1,46 +1,46 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544907D09D
-	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 01:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAC42BD04
+	for <imx@lists.linux.dev>; Mon, 29 Jul 2024 02:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722218365; cv=none; b=eHFeZ2LXd4rTi6obtyqsgi65nWJm0HwmvkrGESRlOXGfnQ3Rhc8h2zkGOaDWawNUhBMFuPQG86GSeAg1gHnIVeKBgjQMcyp22+x6RNyqi4f9j8rakhX4UTPsVPVHzk6wwMDrW6cFxCkqv33n/MNZKc5qj8459VD8Z+zATzcuO8A=
+	t=1722219359; cv=none; b=SEKbBnIbyCpm5u7YXtRFaIbkBrOoBlRHYGDn3zLqHDXRkPPXFL/XOKRpWdVkPNa/S4JEC1TPy5RJvJw3nmO8wIkawyrJg1uedQy8oMcIVFbGb4jGkBJsT78dVith4jsuAeB+Cew6jVdgoUsbDOdIvCNeOtgW2uXurFFb5tHYPAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722218365; c=relaxed/simple;
-	bh=U7Np1fALoLvcYwudL78JmNiASbH1dH46YPvNYqBt96U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=lm3ZKwPy9eEOjGPo/gEqnkDfJjv0MHh0Jkn1pgKuxuYdnb59ErQrM7G+6B+h9IO0j59vA1CsUVSVDITuyAupuVJQmF6/79xS0jMqtYnhKEKdQ94bSLvvmqNruZ3anfrHawT9q0WbnvzsKt7jhXemDv+dYO9eRVqJQuk+qKhJRhY=
+	s=arc-20240116; t=1722219359; c=relaxed/simple;
+	bh=PBVxTpmzAj3S5x0cRCD2X+EpBUj60QIbx/qURLaqUjQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=nNfqyMRRjuGS3QR41aQWDhjKOl6N3HdS8BIF51fNAoLSBRw/+8BeVDgm+ktv77/8ngxekY5OPh3j2HW9FSpUF2F5CE8Cnbo8OiaUSRonZJ2ibQGT6k3juZKonhOesOlinjZTx4VPLvCegSpSwsLHUjsIV5GBvjMGJPeClFFxjAU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id CB6C5201261;
-	Mon, 29 Jul 2024 03:59:16 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E5E032000FC;
+	Mon, 29 Jul 2024 04:15:56 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 94315200C5D;
-	Mon, 29 Jul 2024 03:59:16 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AC0FA2000C6;
+	Mon, 29 Jul 2024 04:15:56 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 01991181D0F9;
-	Mon, 29 Jul 2024 09:59:14 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 0AFDD183AD45;
+	Mon, 29 Jul 2024 10:15:54 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
 	conor+dt@kernel.org,
 	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
+	l.stach@pengutronix.de
+Cc: hongxing.zhu@nxp.com,
 	devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: shengjiu.wang@gmail.com
-Subject: [PATCH v2 4/4] arm64: dts: imx93-11x11-evk: Add audio XCVR sound card
-Date: Mon, 29 Jul 2024 09:39:59 +0800
-Message-Id: <1722217199-10640-5-git-send-email-shengjiu.wang@nxp.com>
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev
+Subject: [PATCH v4 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and "atu" for i.MX8M PCIe Endpoint
+Date: Mon, 29 Jul 2024 09:56:42 +0800
+Message-Id: <1722218205-10683-2-git-send-email-hongxing.zhu@nxp.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1722217199-10640-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1722217199-10640-1-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1722218205-10683-1-git-send-email-hongxing.zhu@nxp.com>
+References: <1722218205-10683-1-git-send-email-hongxing.zhu@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -48,78 +48,61 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Add audio XCVR sound card, which supports SPDIF TX & RX only,
-eARC RX, ARC RX are not supported.
+Add reg-name: "dbi2", "atu" for i.MX8M PCIe Endpoint.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+For i.MX8M PCIe EP, the dbi2 and atu addresses are pre-defined in the
+driver. This method is not good.
+
+In commit b7d67c6130ee ("PCI: imx6: Add iMX95 Endpoint (EP) support"),
+Frank suggests to fetch the dbi2 and atu from DT directly. This commit is
+preparation to do that for i.MX8M PCIe EP.
+
+These changes wouldn't break driver function. When "dbi2" and "atu"
+properties are present, i.MX PCIe driver would fetch the according base
+addresses from DT directly. If only two reg properties are provided, i.MX
+PCIe driver would fall back to the old method.
+
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../boot/dts/freescale/imx93-11x11-evk.dts    | 39 +++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ .../devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml  | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-index 5e4c162e0355..0bb39eda39c1 100644
---- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-@@ -118,6 +118,19 @@ cpu {
- 			};
- 		};
- 	};
-+
-+	sound-xcvr {
-+		compatible = "fsl,imx-audio-card";
-+		model = "imx-audio-xcvr";
-+
-+		pri-dai-link {
-+			link-name = "XCVR PCM";
-+
-+			cpu {
-+				sound-dai = <&xcvr>;
-+			};
-+		};
-+	};
- };
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+index a06f75df8458..84ca12e8b25b 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-ep.yaml
+@@ -65,12 +65,14 @@ allOf:
+     then:
+       properties:
+         reg:
+-          minItems: 2
+-          maxItems: 2
++          minItems: 4
++          maxItems: 4
+         reg-names:
+           items:
+             - const: dbi
+             - const: addr_space
++            - const: dbi2
++            - const: atu
  
- &adc1 {
-@@ -467,6 +480,18 @@ &wdog3 {
- 	status = "okay";
- };
+   - if:
+       properties:
+@@ -129,8 +131,11 @@ examples:
  
-+&xcvr {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_spdif>;
-+	pinctrl-1 = <&pinctrl_spdif_sleep>;
-+	assigned-clocks = <&clk IMX93_CLK_SPDIF>,
-+			 <&clk IMX93_CLK_AUDIO_XCVR>;
-+	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>,
-+			 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
-+	assigned-clock-rates = <12288000>, <200000000>;
-+	status = "okay";
-+};
-+
- &iomuxc {
- 	pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
-@@ -678,6 +703,20 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
- 		>;
- 	};
- 
-+	pinctrl_spdif: spdifgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__SPDIF_IN		0x31e
-+			MX93_PAD_GPIO_IO23__SPDIF_OUT		0x31e
-+		>;
-+	};
-+
-+	pinctrl_spdif_sleep: spdifsleepgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__GPIO2_IO22		0x31e
-+			MX93_PAD_GPIO_IO23__GPIO2_IO23		0x31e
-+		>;
-+	};
-+
- 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
- 		fsl,pins = <
- 			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
+     pcie_ep: pcie-ep@33800000 {
+       compatible = "fsl,imx8mp-pcie-ep";
+-      reg = <0x33800000 0x000400000>, <0x18000000 0x08000000>;
+-      reg-names = "dbi", "addr_space";
++      reg = <0x33800000 0x100000>,
++            <0x18000000 0x8000000>,
++            <0x33900000 0x100000>,
++            <0x33b00000 0x100000>;
++      reg-names = "dbi", "addr_space", "dbi2", "atu";
+       clocks = <&clk IMX8MP_CLK_HSIO_ROOT>,
+                <&clk IMX8MP_CLK_HSIO_AXI>,
+                <&clk IMX8MP_CLK_PCIE_ROOT>;
 -- 
-2.34.1
+2.37.1
 
