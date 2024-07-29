@@ -1,130 +1,89 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B2815EFC8;
-	Mon, 29 Jul 2024 16:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0494C16B73E;
+	Mon, 29 Jul 2024 17:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722270435; cv=none; b=QB6lgtdniwj8oqF/qIJcWAajj0m3SWe0tF6BjetLtynhCj9maHIXNaVdTxOpysDBPod1yXao+q9Z4P7+4qbjrKTFAjYAPFm+5TLhg1368kOknZtQVZtMZ6x+c6MzBAjzqvJcd0qdi5LEBtxeYmNZZkaYqEW1cJhfnYMMzMNR28Y=
+	t=1722273452; cv=none; b=ezCid8o7V1xJdFwIO6hcIx0qjPQp4s0G/r5De3XTc5iyz1JjAmEgtMmhYxXfkrRPj3PhO7LZ2B49gqq2ppNtxaAPu0E6R4UbzCondPO963X348DHM6NDf1j2gip1bh+UNDsMMmkmtx3WScMF4qHcqOqJXLweBm4KtI2vLdIc65A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722270435; c=relaxed/simple;
-	bh=cBp/RizqX+dGUL9k7pxYf0+07L/ZUOrdrCuMDPx33IU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P0/eR6RhuPBAiKG9kugilr+tYVgVxr9LrHr6mkC4LajCEihfZsTjAh7iJxUenb+CgwwIIkyAbZm2c4178eQyqlN2n+tP8crCR6LUWZY4WnpNRrhBPeRSMIf0vklX8iVC6o2usIOD2ihd5U3yXP34M1+8DwPiOS7qYWUGSWUNA5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=CeCR6EuO; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1722273452; c=relaxed/simple;
+	bh=0oCbFyazV4V0QRH9pY87aoH1nnqT33dgn4DPEnU0YzU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=rvEMt0ZjUneHGhGCafR1vMGqu1nZfvQHXXpF9iJwAMirWpyThvXWnfboaxDh4LO6mAqwQb6V8g3jcaxRMWk0mQa+xiwFE7Yy8XCIgzTlKVuLv5zoRZZHErp5jCHTmNluSKwNIdy5AANCf3p6bORaIZxVOFThXpUf8fyIJkI5iA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bb+yU8MG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="CeCR6EuO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1722270429; x=1722875229; i=wahrenst@gmx.net;
-	bh=CPdnaIAoXXo1X/Vj+jyI1YPMnpPkxnZy+xibg2I7caY=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=CeCR6EuOJSqiLBnXbvlAoVBZnOpuU5t81NR1D21484AIo+gVenqTp+ga3ejT3AJN
-	 joAEYi0zTYmoxlr1Lp2IlI81iioBBy3UeXzEVt4HIx03KvYeZL+gv0tRlbynvRY9f
-	 Tr9/S3Dp20wBprAWJGYXSz3jq7qoKu6Zt1yMYmXHvfniJ4v4gsdUUu8tBSgFdOwqa
-	 OVYZo3S3HYzqoyd/1Q1NpN07DOTueXJcYvtGAHKJ9PkQ6lynJOlPgVFhAv2nWWSNe
-	 3nMqpxg8Mgy+GL1ngud5CnBB9xFYFYodfv3SSe4ihD7BTMHq9XOQDv5iYpV2pBy9b
-	 0FF6OIqfcWcKveXqZw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mf078-1s5Cvn02Is-00kGRc; Mon, 29
- Jul 2024 18:27:09 +0200
-Message-ID: <0c8fe963-50c3-44be-b2ba-10a9f99a28ff@gmx.net>
-Date: Mon, 29 Jul 2024 18:27:08 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bb+yU8MG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D37C4AF0A;
+	Mon, 29 Jul 2024 17:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722273451;
+	bh=0oCbFyazV4V0QRH9pY87aoH1nnqT33dgn4DPEnU0YzU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Bb+yU8MGUF1IoSzYeWvnDsHGJBnVuRXCrPW0wi8hgaYIMkhrQFoBcIuyi+sEErph3
+	 jNTTYUbUdqbBf79ye+aiDNTfWqSGoI13QRXz99deSGPDEl+xVzm3XIvFRwLRkc3ILf
+	 kr7VARZNBmqx02C0KM01IaZGiTbz9ElR+p4VPVh6tWtJQFevl1PS6juWFFib4SPIuK
+	 ZwERUjhJZszoeOY/b4cvP4vvsjz/P6Aoc9dy9ScuAQy/Dgtvs+deWx8WT3DOQx59Gf
+	 hx51tO/xdMizRm0W+IAHuxv445V/tlE9oSaWF7CQeEGnqzUXyP4NhwmwqP2K54WFlM
+	 aQqIUAryeu32Q==
+From: Mark Brown <broonie@kernel.org>
+To: Animesh Agarwal <animeshagarwal28@gmail.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240722063657.23018-1-animeshagarwal28@gmail.com>
+References: <20240722063657.23018-1-animeshagarwal28@gmail.com>
+Subject: Re: [PATCH v2] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to
+ dtschema
+Message-Id: <172227344847.109775.11150603605763736185.b4-ty@kernel.org>
+Date: Mon, 29 Jul 2024 18:17:28 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpio: vf610: add get_direction() support
-To: Bough Chen <haibo.chen@nxp.com>,
- "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
- "brgl@bgdev.pl" <brgl@bgdev.pl>
-Cc: "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>
-References: <20240722062809.915867-1-haibo.chen@nxp.com>
- <8ebb5430-93fa-4239-b09a-59f35b0dd94d@gmx.net>
- <DU0PR04MB9496B93A0336D50B8545660890A92@DU0PR04MB9496.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <DU0PR04MB9496B93A0336D50B8545660890A92@DU0PR04MB9496.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:F0ufmCEc+UMGh5e+pNUvZ8X2viYuJSe7FN5DtHRSPbDvnpB3isW
- otJbnknmnvUKgwYSzNsx3DdAo6zXeMbCWYMSwv95pYXQkwdo0xzFwIgyGT5mrpemYbOX6dt
- VTY27E3ZLavqFFsxyl0xyaQxoiyLuwfhWifawfIStzgMyB0hUj02zCn4pqzDOcX22dZSXM8
- 8N2wPa5d3xVq9i1rkeT5A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XmhZ0AzoILg=;9SyJuRkxX+16V41ezd2ymvFlGUc
- k696rhNeLosWip7ZwrKaogY18p+zKa1f8Y7T7UL9uQs+Oaba6w/SZFSVneDpswF79GXKUSZdA
- 5HnAacfSI/a0t+FARZDVUTkK2UFYstBCpwS5DBvvzVCtFlHOhYF3CHLMA1lVkl3W9pIt0hKVr
- SM0RJI2iCzWaZrIaXD1I5qa2t50DjaOFSYROGSQRgX6PuO+O1sWCnTbTvHqVGLRV8HjrpuV1g
- ooIy+pjJxG+vTPqUZnX2Acm26HoMCr+mF6wbGBTWb3B1xZCeLDTjjsXcvzlsGdTHcY6sx50mw
- XaMh14jU668l9SSALL1WlKLJbaxHGn81CoIXmGIUtuYSYVnUiZ8SFFONua/ipoNKZe+y/OrOw
- ULiBe22zSMJYmJpCRxRcFKH358tzETyMVwmEY2Cq1HMlnieXsRI8xVFK0/l+WSZG7S8cgqLCX
- NvvrKAJC4lpyGltLhWfiWTuec+KE1LhlqwrUZnKRczO0ckTQMpeXyhwAuYHeyTR+mZH4eFCF0
- R+nxtb/qFb+6QxzPj1FU7scVok4FcL4NL7rYw6pnya4f6WXZzqoc+6/KEQyQQzrT/b7HRrE+c
- 90YheJbCFTEtUivGWgjI52zLwnY9lHP0iuuVm5cLvwAwCBDTu7iLK/tJDLfkXPBTheVzrSxiN
- JEzhF2QpmjpHBhQLdyZqwEeS4KlOhBapho7P1viPGe/De+nvyh56E0TxBYWFbCvFLJoJJG+0v
- GAJJjzKEX7gUcLucV5oPKBGypCCUFQlCto9bUa09dC5nsj+tzwDm4mEOKD4TWetGjWoDiPj2q
- gl1SVVCA6w7KuJiYhWnARXLw==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
+On Mon, 22 Jul 2024 12:06:51 +0530, Animesh Agarwal wrote:
+> Convert the Freescale i.MX audio complex with ES8328 codec bindings to
+> DT schema format.
+> 
+> 
 
-Am 23.07.24 um 04:45 schrieb Bough Chen:
->> -----Original Message-----
->> From: Stefan Wahren <wahrenst@gmx.net>
->> Sent: 2024=E5=B9=B47=E6=9C=8822=E6=97=A5 18:32
->> To: Bough Chen <haibo.chen@nxp.com>; linus.walleij@linaro.org;
->> brgl@bgdev.pl
->> Cc: linux-gpio@vger.kernel.org; linux-kernel@vger.kernel.org;
->> imx@lists.linux.dev
->> Subject: Re: [PATCH] gpio: vf610: add get_direction() support
->>
->> Hi Haibo,
->>
->> Am 22.07.24 um 08:28 schrieb haibo.chen@nxp.com:
->>> From: Haibo Chen <haibo.chen@nxp.com>
->>>
->>> For IP which do not contain PDDR, currently use the pinmux API
->>> pinctrl_gpio_direction_input() to config the output/input, pinmux
->>> currently do not support get_direction(). So here add the GPIO
->>> get_direction() support only for the IP which has Port Data Direction
->>> Register (PDDR).
->>>
->>> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
->>> ---
->>>    drivers/gpio/gpio-vf610.c | 19 +++++++++++++++++++
->>>    1 file changed, 19 insertions(+)
->>>
->>> diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
->>> index 07e5e6323e86..08ca8377b19c 100644
->>> --- a/drivers/gpio/gpio-vf610.c
->>> +++ b/drivers/gpio/gpio-vf610.c
->>> @@ -151,6 +151,19 @@ static int vf610_gpio_direction_output(struct
->> gpio_chip *chip, unsigned gpio,
->>>    	return pinctrl_gpio_direction_output(chip, gpio);
->>>    }
->>>
->>> +static int vf610_gpio_get_direction(struct gpio_chip *gc, unsigned
->>> +int gpio) {
->>> +	struct vf610_gpio_port *port =3D gpiochip_get_data(gc);
->>> +	unsigned long mask =3D BIT(gpio);
->> thanks for sending this patch. I'm fine with this patch, but could we u=
-se u32 to
->> make it clear about the range of the mask?
-> Yes, u32 seems more clear here, but I notice all other place use unsigne=
-d long, so I keep the same code style.
-> I go through the history of this driver, seems no specific explanation a=
-bout the unsigned long.
-I understand, but i don't think there is a reason for using unsigned
-long. So maybe this is a good opportunity to clean this up.
+Applied to
 
-Regards
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: dt-bindings: fsl,imx-audio-es8328: Convert to dtschema
+      commit: 00645b42e3ca6a35fc4a357dd769bcef41d4a077
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
