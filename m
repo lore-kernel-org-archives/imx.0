@@ -1,114 +1,138 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2446A84D34
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 07:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630F215FCEB;
+	Tue, 30 Jul 2024 07:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722324628; cv=none; b=mYiZLJYx+fibB1Zr8VFpVTUUC/HM3+6ooXImXtxrFvL3pOsEvX1lABTww0vC9kQ5Vx84NmSCT2qqIKUrPfV/UHfDzBqIxtjsEyogqaDnHyYL208HO277knVSuqVzRuphrsKghdDxzkXIL9xQR/Ckxb8jYAz2I3nMpcTxzFsDXSQ=
+	t=1722325080; cv=none; b=Ku10R65t51LJjowlPvCzHqsoctoMmye39b0mNMVZxHZQ9ALTtuvufVHKyHJGhyniGH1Y4YAqJpcFBAdFR8fsmYNFFe2+kDn8qNRXTOXugh4xa3EmhOU8NWMmWvKB9a/WB6D9e42UZjpr+fQaET+XuKCebGDYvi2koTNB3goPqiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722324628; c=relaxed/simple;
-	bh=JdKJLcs14SxN51YwQ8AqZjX1VBfSECpjMN02hOEUTqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hx/yJBBdsdTS5F6uRwvHm0jolTCrYq1alMo3ja2Wf5gFf7n6Kv+SaUEmqN7FQy+8BOG45r8Uum/lxLST62F6SyJJUyExdXe9Bm4zDbgyq21Raj+pb8CYWXpwLDIdCPeVx8ztDBsDiGi8HWn4OHNzwQki/dq0rJRO8LMIkBPG1RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=SCpnZRFO; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=gOjKUvEg reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1722325080; c=relaxed/simple;
+	bh=cx18RWz/Q0dJA++wmm0JEr4FnIDVx54JnxLn9NQ8Nfw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vGHjYOqFJRjrv+QsS80Mmvc0qbofGzSDzrEjM42BTwxNzq8DwumOTT3aFCFGi9ObL9srhJ491Q0DVH21UGHP5KNDH1tkI7vB6ElZTh8Igm3+wg6hOAcHtIR1+drR/PXNOzxHyZfTJkZ75HRui/Tcqq+OWDevgpt1gEBvP8B0fUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCPajhIE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="SCpnZRFO";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="gOjKUvEg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1722324624; x=1753860624;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=phzzdkq7fOGAfE/5nN2HQ8Rb+AHqVU2SBA1vaHHG5FY=;
-  b=SCpnZRFOxzdyboo8HFnTW5ABckHj4j9wZu3blVjkUpaqsBe4X/qGOR0r
-   Dik4mUwZ+9h0z8sl0DR51UZGjQNb+DeubFpv/LLgLBws0ptyqKV4O5lU5
-   VQp738GSdZQ1OpqtVDBwm+UcxbmeFXzvGv3ZJJrsHLFMACTPLEA7Z7D1e
-   JJjw4uT/U1k+3UwVcmje3AkRQoq1ozOb3mURRIdFAjwP2gpahJtLxYs0I
-   Nu03P9k0IayW9/r8DAxg/OXSidM/904eSxXCpazR92xRn104pND6oJ+9H
-   WXNHhfahuNzHhHk5Ls/mSgyRMGQMwbgMOO8FO/ihovh7VKo72Dlay9EEk
-   A==;
-X-CSE-ConnectionGUID: kypxY0/5SNCSnqMUHtlmgQ==
-X-CSE-MsgGUID: BxK5qmE6Tnuw52PxG5QURQ==
-X-IronPort-AV: E=Sophos;i="6.09,248,1716242400"; 
-   d="scan'208";a="38139756"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 30 Jul 2024 09:30:21 +0200
-X-CheckPoint: {66A8968D-20-CA1431AC-CF855369}
-X-MAIL-CPID: 1C57A42B986A162BA27F0E30C682380C_1
-X-Control-Analysis: str=0001.0A782F1F.66A8968D.0165,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1DA58167B75;
-	Tue, 30 Jul 2024 09:30:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1722324617;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=phzzdkq7fOGAfE/5nN2HQ8Rb+AHqVU2SBA1vaHHG5FY=;
-	b=gOjKUvEgQdABiwt2rGFfKsC2GaDVi1OjvnUHPzG4nHO9QcJSqcVG0m5wLIsNEuPL8NQx1q
-	QOd6uuKxN9Gu15HJjw9PPlz27O+GMgXDFzZeLwAkiJZPYSKKDPK2u/uNyRbKs+j8IV7QYr
-	e/S68gvGaErQKHLLbEXw00ZjPWN/v6KR7tXx1ZfqebVwPb+wdz7xLdK7kq24/hXPHKGbOh
-	HBsuFCzJhLbe9TxYtgbZkIWI2THz+4RQCv0hgHrXuHbNdt2O3NQMXxmdrMfiidW7lAPLvg
-	aFMQa2CpRrQ0snmip0vYxUUXjl6sUsvE82lr+U1j2kHXoc1KMersq4sG+nZLTA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Clark Wang <xiaoning.wang@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
-Date: Tue, 30 Jul 2024 09:30:16 +0200
-Message-ID: <2840074.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <6c6bb89e-a9d8-4d5c-837a-30f3bae56f0f@kernel.org>
-References: <20240729094511.159467-1-alexander.stein@ew.tq-group.com> <6c6bb89e-a9d8-4d5c-837a-30f3bae56f0f@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCPajhIE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B8DC32782;
+	Tue, 30 Jul 2024 07:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722325080;
+	bh=cx18RWz/Q0dJA++wmm0JEr4FnIDVx54JnxLn9NQ8Nfw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rCPajhIEHbHxWaFOSOqNMrmE4DuRMVrcNxyzC1ZY48KY6xyJg+IDYw5v8fool12bD
+	 BXFAeRCk75SG2Q+OHTnoJzPMzFWH9X6pO7aU7FnpCpbkXI2EloTRQvX55HmJoWeG0c
+	 YLd9eeNrl/4jCB5pUcRPGICxfuGK6OfxJdtsqyEc/uRv+kX92x3lUS7GBKCItxcZ+P
+	 n2ZbSQBjakdhzyjBFe5aaiQFD85oTM39s3pxvixoJ/0+mRPARLcIIOZtm4WwM9Eqos
+	 nfUrTghsvATb2CHbolgqOKdXOx+Gy7yfJyG07MB+hUUELB/OUdDNCUeXYi5KVjoGoT
+	 x6TbvzLN5d+/w==
+Message-ID: <d3f4dce4-9d44-4bf6-816f-e4f8ddaa0932@kernel.org>
+Date: Tue, 30 Jul 2024 09:37:53 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Clark Wang <xiaoning.wang@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240729094511.159467-1-alexander.stein@ew.tq-group.com>
+ <6c6bb89e-a9d8-4d5c-837a-30f3bae56f0f@kernel.org>
+ <2840074.mvXUDI8C0e@steina-w>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <2840074.mvXUDI8C0e@steina-w>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Krzysztof,
+On 30/07/2024 09:30, Alexander Stein wrote:
+> Hi Krzysztof,
+> 
+> Am Montag, 29. Juli 2024, 17:10:48 CEST schrieb Krzysztof Kozlowski:
+>> On 29/07/2024 11:45, Alexander Stein wrote:
+>>> From: Clark Wang <xiaoning.wang@nxp.com>
+>>>
+>>> Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
+>>>
+>>> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+>>> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+>>> ---
+>>> Using the DMA configuration bits from downstream kernel.
+>>> Tested on TQMa8XxS.
+>>>
+>>>  arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+>>>  1 file changed, 8 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+>>> index 1ee9496c988c5..8ae5f065b4180 100644
+>>> --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+>>> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+>>> @@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
+>>>  		assigned-clocks = <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
+>>>  		assigned-clock-rates = <60000000>;
+>>>  		power-domains = <&pd IMX_SC_R_SPI_0>;
+>>> +		dma-names = "tx","rx";
+>>
+>> Missing spaces. Unexpected order, unless that's the coding style for imx.
+> 
+> Ack for the space, will correct. But the order is defined that way in
+> Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
 
-Am Montag, 29. Juli 2024, 17:10:48 CEST schrieb Krzysztof Kozlowski:
-> On 29/07/2024 11:45, Alexander Stein wrote:
-> > From: Clark Wang <xiaoning.wang@nxp.com>
-> >=20
-> > Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
-> >=20
-> > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> > Using the DMA configuration bits from downstream kernel.
-> > Tested on TQMa8XxS.
-> >=20
-> >  arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8-ss-dma.dtsi
-> > index 1ee9496c988c5..8ae5f065b4180 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-> > @@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
-> >  		assigned-clocks =3D <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
-> >  		assigned-clock-rates =3D <60000000>;
-> >  		power-domains =3D <&pd IMX_SC_R_SPI_0>;
-> > +		dma-names =3D "tx","rx";
->=20
-> Missing spaces. Unexpected order, unless that's the coding style for imx.
-
-Ack for the space, will correct. But the order is defined that way in
-Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+Bindings do not define the order of properties. The coding style does
+and usually we expect property-x followed by property-x-names.
 
 Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Krzysztof
 
