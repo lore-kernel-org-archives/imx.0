@@ -1,204 +1,142 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2063.outbound.protection.outlook.com [40.107.241.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E041B4C51
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 15:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354523; cv=fail; b=uBLlq9hwgqVHtu5B44FC4OL0nMWr3j9KKd3KXrDyzFR7i74KwkOg4gAif2aLMRQ474WMVAfQcszLGTyBLb4IcorIOfq1Yxkx945RM6Hj1spCEkFIAjVFhsgHSl7eZ7QwqKoXRNsuxrRaYZalXWY+oDDn5RlgDdw8npnABm0psbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354523; c=relaxed/simple;
-	bh=LMWnbSrtaR4qWrU/o5yEYHwnhFjP2yRg0OF69n7CBnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DD+SN3mcnWVUg737TBAg0Edr6jBEFlhwWksG8zIEo9zg3h1Q2vPuFjE3ahREzT7BUgpuC5AWaDSW7pBq2g6ArkAUGm0i2W3scY3JtqcbMmDZhphsCr9O58golMFfqq5XfJemyS2yiAD7REEFwrK+R9ZFW3zSCNI8YGyV29qhTEw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Cj9AwbfL; arc=fail smtp.client-ip=40.107.241.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7358718C91E
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 16:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722355531; cv=none; b=URjwin8pzK2oSUeV4Llk6hPfQ4BoBduHg/g7aSUEnewESDWrdlZdBfdhDrva3NccmHIP5juyXbPku5wQi2O3XCUU6ZutICs4/7yXvWWMNUTlkv0Ii6kyeRFpvMJS0fPgccl0aPnN7/BKKX4hCAkUWotO0IGZyWN4aDEFBSMv+qk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722355531; c=relaxed/simple;
+	bh=ciJceeDlK4Y/meCsbSLF/LMnhpaQTDx0EUKSZhsR9W4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G2K6/unD51V9Qe83FdNytw7FCwdsWReYa/fP2hHbtU92CBFCiHsZHO3z8By1Uy0y5T+uUdC933FgJpa6R3dSelviO0NBIo/ZERo42F20xelRdYflhpDZBjSTfECM8rG4oRgJGpCTNyqBhZ8ttodDJBHBgfPnTehQER/FCQuwTRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=S/GyJdL9; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Cj9AwbfL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xbSsftcOnnhxi9tPasU+ZcZjOx+hEjKWI3OJPSQiz0BnpQVM5SwiMEIBZdP6Xr6szimGMNbGrX/U2oO9zDuAiMM2EICFCByRcjz7dWJM5NCa8rzN2VgNLWYyH10VAc86Qe8Pw4JgNuNCRZZiXI4+ctXbzDHPKiyam1DjnABx7aOqvylmP4p2wcISzpv0y4iyKunWusc4dsre5lJDduejHsPwmKuwqtZW3bi1zYK9tq6obMci0dqoV2lGwl1a/GQVlxTVRjhc0qbrbj8rLznjwZRB+nHcfkXYd1LJf/aI/r/JH65Z4vMAnUvyzyAkbYZfeSMATtZVqXdxqzHQZ629SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cxgr+jGJ26Td48XD0u4lS6ZxKlCIkQ7YPu2en6xMBUA=;
- b=wtp+vDtGorM4mbEOrCu3uzzjjilkB93z4ZExdsUz7XP+EJf8HdOwqbjERMr7s72uJG0imz+QmBQjoNS2CTJf6qb6opqw02l6TKs1TaiARzhw8ex2uDE8koZxHFC3k7rgnVsc9pfjhYkXW56nSIB6MK7wmyKF1n/81g6+NMK/k4IV1YwR+AEqR9cyoduSLPvWeD34b5nMCd8/aw50cZE7zY0JnT6z61FRJ+hxuXaZhPMPGzcp2OaWZeza0Z9XbhSKOVYE5olYB3IJPJSKfUewQ2BuSo+degCno5X6G+ljc1hPhw29+Frh6CjwkU9cSnoeWJGPmy//Xm3nDyt0uQjbGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cxgr+jGJ26Td48XD0u4lS6ZxKlCIkQ7YPu2en6xMBUA=;
- b=Cj9AwbfLcgcyVs2vx/ri226cmkYYbnFpGnLmGFv4P4wI0SHrBlm/LrLdv5ImiOx5cBkhraO09B/9O1pkaMoNSz551OWlzRxhfzn0OZPa5noxWmvmAQ8v23eVE0tTJgEXvDgrc286wK3YEC0JqjW2WYH2D5jEFqohZyBl8bcRiKOi3U5Cd4xL4AHZIz0OoBbmRtIqNoy+Abzi9xV7cypyYA2NVCnkEOMZzvwvoakpJFanZxGPm+sttpyMGGm5WG9yoQnS9pE+RD9W+n26beEWhA1WH6pukjPq5T54xb42OkpNU2gfOZNtEegrysbDzE8DPvCmw5ZwT7Dtrp9NSrXTsA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7864.eurprd04.prod.outlook.com (2603:10a6:20b:2a4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
- 2024 15:48:38 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
- 15:48:38 +0000
-Date: Tue, 30 Jul 2024 11:48:31 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Shawn Guo <shawnguo@kernel.org>, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 3/3] arm64: dts: layerscape: move dwc3 usb under glue
- layer node
-Message-ID: <ZqkLT/2myU7S4uYu@lizhi-Precision-Tower-5810>
-References: <20240710-ls-dwc-v1-0-62f8cbed31d7@nxp.com>
- <20240710-ls-dwc-v1-3-62f8cbed31d7@nxp.com>
- <20240711213846.GA3049961-robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240711213846.GA3049961-robh@kernel.org>
-X-ClientProxiedBy: SJ0P220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::23) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="S/GyJdL9"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7a1d7a544e7so339885985a.3
+        for <imx@lists.linux.dev>; Tue, 30 Jul 2024 09:05:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1722355528; x=1722960328; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ciJceeDlK4Y/meCsbSLF/LMnhpaQTDx0EUKSZhsR9W4=;
+        b=S/GyJdL9n0D1Z08eMtnCx+5bveMSRkNpRRg/N3CbdKMaDecP+QxnF3S7fB3wHSX4mo
+         LCLsPUR9pNmdIMpL4c7SbTq3AW6hW/rlWGwWn3PMDV/H78lRokNAJ262EDaI7Rdlx0T0
+         OuaXPlFmNwX7tJ+sHllmn1QAyffUPcJULQkDuITe4oqCStxNYfHAuHfFs1eQaEEpmPJZ
+         jRErEeVtLKWHLeCSHMPDuQX+uAikeYDh/9BjnYtWvYz2cMU2z5kU5YmDXvdax6Q/HZyE
+         hHtSswh57gV4Iov2ngDaED11pvk2naomdFbNCNYsMHql4F16HCwXXAh7rTscA8kz17F5
+         yQyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722355528; x=1722960328;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ciJceeDlK4Y/meCsbSLF/LMnhpaQTDx0EUKSZhsR9W4=;
+        b=Liod8087vyZSP0h9f/ufcwcar2DJ8561yRbY/Pl2lVICnX0Qk00LrIIUEKEiZd/WID
+         d+TVdG7OZG7A0FAtlB+dUwMLq8+9MVdb9AGVTzyWC5BaT9UmpzRDH8uEq5d2YgeoA1oa
+         WuOfcqiYHgNSU4PwtOxO3GYIas/1KGl8WUqmHfNWBSaRxwXC2Dco8DMTsBJDo8hv/LMv
+         6S4HMZX1LnSZ6RF7TXHv0h69v3WAzWwvrkP5OREtcFaSPzi2y6jbxdAqO2KfK7G3av0v
+         qjzFVA5XY3a5vclM86CG30obmLtQvyRoUNPZZYmrZuJN9QCMRz6+P1qDa8+QTV8n4M48
+         MfQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUDz0vUfkbf7dD5Gm7UCJ0IPJeBWE7J31sfL9EtJx7b9bxKMV9UkA/jb9h2D1wJ5HsIsYn1v1qtKF4FZOQyRz7PvIA
+X-Gm-Message-State: AOJu0Yy+mqbyX+G3ajAEz2fQo0q3Hmj15nPlH1sQa9xCOxEYNpZO1cvv
+	q1Qfjn4rIA9MPSJyy/PslUwKc0fcgnqf5Y5t499DmidvRlYpFVmTYlHFpdzspp0=
+X-Google-Smtp-Source: AGHT+IEqLv3C2h4BQ+3fI7pKVhff0eutIQIkZ2jsV14fbu5lHsoFKAnZxlGiOhZ4pHufize9xVS64Q==
+X-Received: by 2002:a05:620a:4090:b0:79b:efe1:1222 with SMTP id af79cd13be357-7a1e52fbb32mr1673543485a.63.1722355528312;
+        Tue, 30 Jul 2024 09:05:28 -0700 (PDT)
+Received: from nicolas-tpx395.lan ([2606:6d00:15:820c::580])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d745f06asm644089685a.134.2024.07.30.09.05.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 09:05:28 -0700 (PDT)
+Message-ID: <2229769f3a9baf58fbeeed93fa4b0373a02055e3.camel@ndufresne.ca>
+Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
+ deinterlacer driver
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Marek Vasut <marex@denx.de>, linux-media@vger.kernel.org
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Steve
+ Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+ linux-fbdev@vger.kernel.org,  linux-staging@lists.linux.dev
+Date: Tue, 30 Jul 2024 12:05:26 -0400
+In-Reply-To: <8aea6cc0-10bf-48b8-add9-eb3f1caa2d66@denx.de>
+References: <20240724002044.112544-1-marex@denx.de>
+	 <20240724002044.112544-2-marex@denx.de>
+	 <5e5fba4fd6c3c0c9df23697bd328367e5fdfa923.camel@ndufresne.ca>
+	 <8aea6cc0-10bf-48b8-add9-eb3f1caa2d66@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7864:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf09440e-1775-440f-4aa5-08dcb0af1414
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vYjrNpm2+oX06Ad7f6hbaaYv4CBUOjNMu/ZG7nIfzhQhS0hv19SRH/zvt7qW?=
- =?us-ascii?Q?hb+OEHXsg6Xj6p9VGv9PJ5HGxaG3FdH33VAImOV69JEDS6/FLsc9hC5pOo01?=
- =?us-ascii?Q?kyO0tT/oT9DcIyAacVk3Edn3x8ZGIK2kxmiozDyGX4/g+fLt8EoYPT7G8iZF?=
- =?us-ascii?Q?Wf1o4u+6YiKND1QvgVrUmRBiedLndRMQC9bJd8JChOUyJTMs3K0tZmHU0X2g?=
- =?us-ascii?Q?Ya4ZI2W0jFayePpaj4XYTX7huCkV2nYbAVc0uHK80vYBRD8VjLbKAmW8If6z?=
- =?us-ascii?Q?167yifBnn3Gj2tnS/q2c9gCBmFqQNKMp3jvsohaz0aJb0Ger2clNnb6kDG2A?=
- =?us-ascii?Q?OUnW2rBTVIMsXuvzGX6XLWs8WEk4tnjFYKctBDMuho79+i+w8phpHWxIV+Js?=
- =?us-ascii?Q?vypfVr9z8MxOVfeN+unCcahVvm4340P2XZXlya8suGlP8ZhE39op2AReFI/N?=
- =?us-ascii?Q?WKZPiV+bbIgo88U9OllnPxWuOsjo1BDoh3Y6oKZl5Q3yAgmvvEmmbqSe0NIC?=
- =?us-ascii?Q?bN4of/reXwPSg+3RovABLIFshPtTQutFiOIuJvqsXUnKBJbc5a5ygCxwftJI?=
- =?us-ascii?Q?QEyRZeUb0ljTvKqvxeoh9gTuSV6Xx+9PNa5/FHn5JaUgegwVALlOGf+BxTZS?=
- =?us-ascii?Q?ITmhWHeDPaAuZfLscOISdMi/KBO6tGaTUj7ahvxF9HAdpc6D6SJqfBkdTr3e?=
- =?us-ascii?Q?pB3WJWEDV9n7bYrmoOnFoQ9M3sZdOD+F3T3PGIDkOg3gqTKrcegQKZBeqaSs?=
- =?us-ascii?Q?4dtzQyQe1ZvmHuwf5PHNwolkxRugzSpemqKbQWPmYEzBNgy+k2niDf88cZXF?=
- =?us-ascii?Q?/A0AymEst0rq2/vPYjufCEfOvVF9SNCzQhqBdjSbycYlHkPb8btBAt2D+ucX?=
- =?us-ascii?Q?hRW0oGe4aiQCYkkQTC7f0VrLVVmK1dktdVJN7PvXbShuVUdvzjp1C5kqtbfL?=
- =?us-ascii?Q?EKTZo4FhCTZmSewxKf7g08ybzTYMCpvof8oZSvMcXXWDZyP5S8mPKc/s+Mxc?=
- =?us-ascii?Q?mRAkCT27NwnO93G/KrD33FtBFSMN2o3V0HYQAFXoBgnW83FXEukBD4ncGC2O?=
- =?us-ascii?Q?Fy3H0wTI5XsSZUUPiqw2Y6EUgDJu2JGLihO44B/pUA5S//JLJtLWYSlaJzgr?=
- =?us-ascii?Q?BCoc2b5MEe0qTktylDwJ1RqFKDBu5NyWbTKqg3KgQDQk1q6eZF7Kn5VOMUKm?=
- =?us-ascii?Q?fYUKagTpo8g2j9ifAQ8OyMGrzH5kSEeBX6FTaLOhJSKB1oN+g54WincNRrvw?=
- =?us-ascii?Q?Z5x6caQ8e+WmwjZw3QpjJHqK3dSOa19Ax+hWfzVow1T0+TOOuTzC0h4ggCGP?=
- =?us-ascii?Q?uPtOZv2O1CQgoLOZDPRRXkptb2eSDk1O8z5w5fjriLJ9IxglCXtlBw+mA34P?=
- =?us-ascii?Q?7PuN6+bWxq19l602fmV0msF1epfSZ2JqCuycdI2RWy2wOMnD1Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kFlk8kJZg6eE1JBEoxndD++NONuBlpA9e0IuwBiIisJk158SEM4cl+k945se?=
- =?us-ascii?Q?AIMPcccarjPPK0rAbLOyl4J+QpqC6WmytpJVfBQv2jwUMgDZmDPSAlhvOLpm?=
- =?us-ascii?Q?UsNcAARwgIyJ4Cc+ln8zzQwBxfoiRgRBwqUnrksxMwL//1DFWWhf/w6b7C4n?=
- =?us-ascii?Q?8DbXeG3gWeZyHK63GO4qXGQxHAKh20ZHxwWndghDIwH4QWA/GtEcjMDO83lX?=
- =?us-ascii?Q?x8MAuFjVUswk6YwrJimvSRusIUY5zRP2BXwYP+8vU7/i0fv9NT02FTTi/0EF?=
- =?us-ascii?Q?HDIBOWsp9BiYzrrF7eH0I3D8S6aWwEV4OnOI6IrYeWf2kdBSjUkdSj2O3DpL?=
- =?us-ascii?Q?Z2vOo3nVsJQYggJtDcmz+k71OS7cd4/8+qyxyO5rHrFixctYXpNJ+DPhlRdn?=
- =?us-ascii?Q?yOQ6prnywXtoMBoOxx9zwSU+Pf8yZJuMyzcTMfRvYur/TfDtz0jhXogjgsiQ?=
- =?us-ascii?Q?jl537wkHdTGbiPQaAiww9UjO2ucJQsimYRKFrT+h7BhQxHmK88ufBSDwzpt1?=
- =?us-ascii?Q?hrQSp759/5L/wBZgvRGCq20tbMvgMNcnIPM1DBBgbAfTEuoFs8chA2jok+xr?=
- =?us-ascii?Q?OlCVsCnIR3+web64ZLJBSHdw5S3Wfh1WRo2bLuKIQBAUvQMQgVnjcUrsfC7E?=
- =?us-ascii?Q?so+OD63exPDhEeSegeTh3JOb7p2VvPG8EVAq0ZTN4czUYRmVfE0n1SO0DNKx?=
- =?us-ascii?Q?nlyU8wC1kIX/R4Yb4qhnZ1cblYzBa/UQMZDuSkrUacCTdCqxIRqB/htShqvS?=
- =?us-ascii?Q?m3KzOnc2fDRjKvWrls0coOziNBSy5LLIuKmY98SiNm2RvdUVB8pGO0LuNifx?=
- =?us-ascii?Q?J6Zwe9f8TU/FHn84OBV1z6GqucAeIiw24pMGeLX3WCXJMyUculNAbNGG1FlC?=
- =?us-ascii?Q?WZ88ZZa73563a2NUym+DUdRf6qDW8iDbDhXWHxLkeIUdFR6jcttp7Yc5LWwI?=
- =?us-ascii?Q?JL0/pO33Kiq4xbKr1YsFjBHhORAq7ryJ6DTyzfDUzs+RX/P2KRov/eaFOH0Y?=
- =?us-ascii?Q?zvzDNl5wXIp33K/CfUUFrhAr9zOc3G5kdYFRQVZ+WlM9003tGnLpqy3dr+xB?=
- =?us-ascii?Q?tyK2ivk/BkdG6XJ9tphCE/0gpqMei/0pNPXxsMCAaf68kYccblMqvI/YeJ0F?=
- =?us-ascii?Q?jslCmvZVaPoAsBQ+PuD7pyqyhMC1Zd8vI1s8TExD5rRUSEA3ybjoDX6rgJE/?=
- =?us-ascii?Q?z/GOjwdRnQl3LD3yId1GISgTngX/r0toQa2zTznWGYmZyLFzcXLaLUg6fGNp?=
- =?us-ascii?Q?xBFyZu45Iusez7MW4dYA22iqSFmfyQpkld8nM4eqvf5bjB8zVcNMvbjA2QO0?=
- =?us-ascii?Q?jRSUyegN0N3C9z/81Hhjs5M+9lMzQFlIA5hY/wxLZZ63hB2xfhBRqyKXf5Eu?=
- =?us-ascii?Q?geVtAiXfXovluX/rHi7ofJantGhE8szjn4qMjLqtt5xygtiaNpFCv6kQI+Kw?=
- =?us-ascii?Q?3kKLTlvUqDLj+f4oiWI5cz9VAtgvkWrOEa0VJlzjLxU8cfBJgTKX/EJF0zpe?=
- =?us-ascii?Q?PUSeLeYAp+Bq2k/jbGfFVjMa1nhQH8m/P0pdCc5YOVZrzreAceZCpD7fgOg7?=
- =?us-ascii?Q?02qePoCL9gjqXQnGacEeud7BlsEU2mg7YnF+uPEW?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf09440e-1775-440f-4aa5-08dcb0af1414
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 15:48:38.3814
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zlo+CDgUuLCdChnhtO1tv+aZ1/kcImdmyp1b/UOk1itFeufIk1PPIxZwkSFH/9hqU7VZofO0ZFGCOyM0sZfY7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7864
 
-On Thu, Jul 11, 2024 at 03:38:46PM -0600, Rob Herring wrote:
-> On Wed, Jul 10, 2024 at 07:02:24PM -0400, Frank Li wrote:
-> > New usb glue layer driver support enable dma-coherent. So put dwc3 usb node
-> > under glue layer node and enable dma-coherent.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 43 ++++++++++++++++----------
-> >  1 file changed, 26 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> > index 70b8731029c4e..24b937032480f 100644
-> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> > @@ -615,24 +615,33 @@ gpio3: gpio@2320000 {
-> >  			little-endian;
-> >  		};
-> >  
-> > -		usb0: usb@3100000 {
-> > -			compatible = "fsl,ls1028a-dwc3", "snps,dwc3";
-> > -			reg = <0x0 0x3100000 0x0 0x10000>;
-> > -			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-> > -			snps,dis_rxdet_inp3_quirk;
-> > -			snps,quirk-frame-length-adjustment = <0x20>;
-> > -			snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
-> > -			status = "disabled";
-> > -		};
-> > +		usb {
-> > +			compatible = "fsl,ls1028a-dwc3";
-> > +			#address-cells = <2>;
-> > +			#size-cells = <2>;
-> > +			ranges;
-> 
-> No, the existing way is preferred unless you have actual glue/wrapper 
-> registers. Plus this breaks compatibility.
+Le lundi 29 juillet 2024 =C3=A0 04:16 +0200, Marek Vasut a =C3=A9crit=C2=A0=
+:
+> On 7/24/24 6:08 PM, Nicolas Dufresne wrote:
+> > Hi Marek,
+>=20
+> Hi,
+>=20
+> > Le mercredi 24 juillet 2024 =C3=A0 02:19 +0200, Marek Vasut a =C3=A9cri=
+t=C2=A0:
+> > > Introduce dedicated memory-to-memory IPUv3 VDI deinterlacer driver.
+> > > Currently the IPUv3 can operate VDI in DIRECT mode, from sensor to
+> > > memory. This only works for single stream, that is, one input from
+> > > one camera is deinterlaced on the fly with a helper buffer in DRAM
+> > > and the result is written into memory.
+> > >=20
+> > > The i.MX6Q/QP does support up to four analog cameras via two IPUv3
+> > > instances, each containing one VDI deinterlacer block. In order to
+> > > deinterlace all four streams from all four analog cameras live, it
+> > > is necessary to operate VDI in INDIRECT mode, where the interlaced
+> > > streams are written to buffers in memory, and then deinterlaced in
+> > > memory using VDI in INDIRECT memory-to-memory mode.
+> >=20
+> > Just a quick design question. Is it possible to chain the deinterlacer =
+and the
+> > csc-scaler ?
+>=20
+> I think you could do that.
+>=20
+> > If so, it would be much more efficient if all this could be
+> > combined into the existing m2m driver, since you could save a memory ro=
+untrip
+> > when needing to deinterlace, change the colorspace and possibly scale t=
+oo.
+>=20
+> The existing PRP/IC driver is similar to what this driver does, yes, but=
+=20
+> it uses a different DMA path , I believe it is IDMAC->PRP->IC->IDMAC .=
+=20
+> This driver uses IDMAC->VDI->IC->IDMAC . I am not convinced mixing the=
+=20
+> two paths into a single driver would be beneficial, but I am reasonably=
+=20
+> sure it would be very convoluted. Instead, this driver could be extended=
+=20
+> to do deinterlacing and scaling using the IC if that was needed. I think=
+=20
+> that would be the cleaner approach.
 
-Actually, it has glue layer, such as wakeup controller. Remote wakeup have
-not implement at layerscape platform yet. But this register distribute to
-difference place with other module misc controller registers. It is
-difference for difference chips. I can think deep how to handle this. 
+Not that I only meant to ask if there was a path to combine
+CSC/Scaling/Deinterlacing without a memory rountrip. If a rountrip is neede=
+d
+anyway, I would rather make separate video nodes, and leave it to userspace=
+ to
+deal with. Though, if we can avoid it, a combined driver should be highly
+beneficial.
 
-but anyways, it will break compatibility. I have not find good way to
-keep compatibility and add glue layer, such as wakeup support.
-
-Frank
-
-> 
-> > +
-> > +			usb0: usb@3100000 {
-> > +				compatible = "snps,dwc3";
-> > +				reg = <0x0 0x3100000 0x0 0x10000>;
-> > +				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-> > +				dma-coherent;
-> > +				snps,dis_rxdet_inp3_quirk;
-> > +				snps,quirk-frame-length-adjustment = <0x20>;
-> > +				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
-> > +				status = "disabled";
-> > +			};
+cheers,
+Nicolas
