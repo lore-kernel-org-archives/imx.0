@@ -1,66 +1,65 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012050.outbound.protection.outlook.com [52.101.66.50])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012053.outbound.protection.outlook.com [52.101.66.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94307CA6F
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 02:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8671DCA6F
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 02:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722307697; cv=fail; b=IUrHYdEiiZIBfZ+VCuVzlQbN73JERTVTNsqWem02d3bDWCxk21+pJHKrDDKTYtA7uMNKfkT/O+jeZhGFZl5nlAjEw73Wgai9/G7Xz51lQk1JDGSHIjqCuR7zbz6UcIv20oZS6BTovYR50w1c6itTyjTYD+yRmTPSa3PYdR+1P88=
+	t=1722307869; cv=fail; b=DErEe6IHIyr8KiG2fwGZn5Dfm7GszBM7iyTXDS4yPXlW+TGVj0OCbjdAkCMldaRcgZvgELyv+Un/+cVlEIuc0uJfw4uzJePVoIvxhaEh+K/vKoMQBl1Ooz7bhDLM2P3X9T7wjX/Jp4KD87T5kFyRhitPVv+ogbuWOHs34KAxzP8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722307697; c=relaxed/simple;
-	bh=BfZ0bA3XHb6HxUYObf1BkZmd96dBbxWNfg6sh/HCrOo=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=l6m71CpW+DNCnHMb2jbczGE1i4pqKDAlMXe3WNuldPft8VnAr+LS/QUL8vJIjMmXLbBbiYR0wDUDVMa3n2seg2BZHqoW1Fsml3vz5g4Rjm8HGazKUZwTT3Clj26pwuz5P9LPnMIB1l4M+bXPrpvMQEqazx1l3o8GLq75S6ojtf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IRRFDmNK; arc=fail smtp.client-ip=52.101.66.50
+	s=arc-20240116; t=1722307869; c=relaxed/simple;
+	bh=+8Lh5aIM4B0gpGG0ZZ9E0iOHmbOIx5TPRO3TRYiBAuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QMpou1l0HWwU9ZNqzJtzzpv5fLwnVK0yr7fiVFu/TSd6ANrgjR8Ri1bbOTmHx0m+JkPEs8XatDdpLGXiOsCMo6M4URIO4RCm6n95IwAtBuIe3rzgEDcJOvQfPcv3YzCRAMZYzGLSlqoVYN+gM84uto117K+p+UlZQTlj0LQ4eg8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Dru6wQ0H; arc=fail smtp.client-ip=52.101.66.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IRRFDmNK"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dru6wQ0H"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D6fiwcswBxqYdIA28koLuInpBWFD6EuRpUwshjMxKi35Y8jJTqzpMHpkggkzEzxociD3hOGh9rISjYuVhSbl4pXS2AaB+iFY3hI0jCWST9b1q/91n1HoggayPvIKFGbwqjICn6thg91iWnfChwU8k6+Z/thrP6Smfs2zgRw5JpUeCBs2N6u10+rp21Dap7enTq8KogfQYkDYMd2fvPDDheoU22rUy67Pld8iT/1OdAoGovJe6wXTDOeK2KzsDvQwJwiTGPkDNSylYvQbXLBD+zuLLkvjpGWP94hLHuqzU4niRSHrljrXXXsLybzpwexrDseHV3SRQmY4lyo8bF8Kew==
+ b=MtU7j+dV7OzuGE5qHKR0WQJ2mkxuiP0ay+uHB4jvcIN3kTh/HrtsPVMKRnQojKF1LmYhwsj0CnwM4VsH+g/Q0nL58bkXCCs84/7pyQ2SWxWRsQXQA45Uybyo4MyWAADTHKYEr3oV+AFfCNWAyGf0UC3h+ycZZEcE9jFuqn82raZgPJIKSn/sFVbryxkaYZsGhngapASJUBh8znVZoVtUHpg28gTfUagGx+gR/CbuKzTEPBw3xpI7Rt/JK+1xvO4HnINCip0SEDD1vg6zWMah5BA0bc3IiK4uWke9ApGCFKdi4iwcLgJiQajnk5X5ca6bx0GWcA5WkroH7QjZHEKRYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ARWLxu2Y/w1UsMdvTXbBk+blJhCd2KJRwmitIbURASs=;
- b=qGEuI6YLdDJfeGGwWoSPAqqeYaHInDvsDrc7zvLVs0o3Q6YqfGtqy2P7/HJUKmjzgGL0mtJM9823+KeKEklkZST29syeF4dBpt17ab/ESuy9UGiHx5Y/znNQCtH9iRccHYqq/U4DIckHHJ/ofule699vuuT6HRLNS1x73XuP1dHdWZxqcDcdEUAnPZhQVCX7fLinkXxau7f/KoOe5pKsmr7i+x0f7ohQvn7Dpys+X9CGcrGa2uqaIe3neEUH04Bnh3LM7fHKXaBp4Ws9EEtAIAkol6+tpdkdGrJJLRqrvxOHbkcvp7L7/Qkfnaj99mrnxS2K1/B72nEX2fXNxeP2Qw==
+ bh=dknsd7jrKHMaVQ/tRNUPKiSpxLJAKE6nZ/cjxX0SI8c=;
+ b=GSAdag8SUmu4hkY27eDGMJSMGxGjWHmk35i3pqNgDgjhYkM+NENus7vHNjCQb9p5uNYMgHeu0L9Ln5WoVShWVlY0AZSYgb8+OC+oM9mmhdMWpIONqjc4gl0NnapZhx2IAjuWOX0GQ1d2LswIRZsBEaa5aJes+GgYofrfqlDz5OMw2fTptjCjvwXxupADAe2SZlyzGPTiF8GJ54iJVmgiu6yAYGXKvM5tqfOcsDXzIxSgYc9q2xyQXfr5xceHJyBiywzNHeRr32rMnq1zWLt35pPaV+gs27vXWTc8UBTdIFkiXuayd7r15W8m/TAKinIF0Fs7yrETDrE96an7cf2aMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ARWLxu2Y/w1UsMdvTXbBk+blJhCd2KJRwmitIbURASs=;
- b=IRRFDmNKzt61omvttjl15RK9zTHn7bPpTnvMf5Mp928r8SF117OuLIZoSfEmKmhwoc+JR8ZtCMj7wreTJvXH8+56Du9+SWh/MJiwZBYjXheKWDxcmsYUwAprHu6N25h5sfvfBvGELjfp6DGYslHrdNEM3iRqBQrTevjAJ0TvEo0Zg9Z5JvCMrPvKyeFzi24/GehjTBCsVcNm0twhHOqnFBjkp20Pz9iCXgDOMEqnq7m0P/0AStMl+my+jO0hQvlkGZb3vEQHCuabVFfQlo++CNdDEZb8/3VPFVB+o22u7H3rhffiKKLa5AopQ8ROIrqz3vlX069jWDOtq+ZdM6c26A==
+ bh=dknsd7jrKHMaVQ/tRNUPKiSpxLJAKE6nZ/cjxX0SI8c=;
+ b=Dru6wQ0HCJzLoCm7IyY7J7btB3VhfSBPpyb7j9FRBVBwlDVahb7Og3ftS8Wcv1CnVhSkOeZeCyR68UJwlxAhbk1fWX4jmxm0GVCkPBjCg4HkVE3HMhXIQTN00TNBF2pcQOPFl6d+OJa19iE1v20qbLNdLo3fu2KFU1aPoI7e8IgFxvBOpE1PDm+DxW62jdytQUB/YVOj9IJsKPFxAnJqq/mal6eQ6GN77/z6OEuMome76e5rQ3+eIBa+B4bymeDLvr3wyG4U/Jpy5Dw8cn5NZ7B+gCrp/aoZjYfXQtcycNrT3DspHHwPFLAfzcFy5AyJXGER75YH6YVlpURyI4vldQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AS8PR04MB7703.eurprd04.prod.outlook.com (2603:10a6:20b:23c::14) with
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VE1PR04MB7247.eurprd04.prod.outlook.com (2603:10a6:800:1a2::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
- 2024 02:48:10 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
- 02:48:10 +0000
-Message-ID: <15ff5315-57a3-46ae-9f1d-f707165294e2@nxp.com>
-Date: Tue, 30 Jul 2024 10:48:38 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] ARM: dts: imx53-qsb: Add MCIMX-LVDS1 display module
- support
-From: Liu Ying <victor.liu@nxp.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, saravanak@google.com
-References: <20240726065012.618606-1-victor.liu@nxp.com>
- <xoj4sypxndql62k64ztmco5ufddeysp26fyc46prwr4ezik223@sssy5zmefwtg>
- <2488314e-7a0f-406c-acec-ee106038f238@nxp.com>
-Content-Language: en-US
-In-Reply-To: <2488314e-7a0f-406c-acec-ee106038f238@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SG2P153CA0042.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::11)
- To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
+ 2024 02:51:01 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%5]) with mapi id 15.20.7784.016; Tue, 30 Jul 2024
+ 02:51:01 +0000
+Date: Tue, 30 Jul 2024 10:48:03 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, andersson@kernel.org,
+	s.hauer@pengutronix.de, krzk+dt@kernel.org, conor+dt@kernel.org,
+	gregkh@linuxfoundation.org, festevam@gmail.com,
+	linux-arm-kernel@lists.infradead.org, shawnguo@kernel.org,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	kernel@pengutronix.de, jun.li@nxp.com
+Subject: Re: [PATCH 1/3] dt-bindings: usb: gpio-sbu-mux: Add an entry for
+ PTN36043
+Message-ID: <20240730024803.zvv3esqynjwfpiv6@hippo>
+References: <20240729081039.3904797-1-xu.yang_2@nxp.com>
+ <172227905062.1346514.6301429778096950851.robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <172227905062.1346514.6301429778096950851.robh@kernel.org>
+X-ClientProxiedBy: SG3P274CA0021.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::33)
+ To DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,321 +67,142 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB7703:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd5227ce-0d08-43ec-d6d2-08dcb0420c4a
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VE1PR04MB7247:EE_
+X-MS-Office365-Filtering-Correlation-Id: 701c7f6d-6f27-4b27-dd63-08dcb042721f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cmg4NFE3R2NCMXJqSng3UFRTQVJiTVBJVk05TVBCQWZ3L0Q2TTJ3OUlvVnJr?=
- =?utf-8?B?QmFOSlNkUDE3WkM5TVQ3Q0liaEVLS2tESGw5QkNock1mUzE4VHl2KzlIMTNW?=
- =?utf-8?B?TTlxZ2xTaTBob1FjckpkdXNEQzVSVUFmUkVITUhKZk11N1pleDhSS3dVSHFy?=
- =?utf-8?B?MmlYMFByZDVHYnh5OXJneHRBOVJ2dVIvM3NwQ0Nhc1c5RzFJQTZVMXlReFo3?=
- =?utf-8?B?bXNkM1phVURvYWJ3bCtaWVVSTXhVekU0cnc5SjdNRVNTN1NaaUhoTGJob1Bv?=
- =?utf-8?B?bGVDcEpMUjVRdFVmam9IeERqTktXa1M3WWlMV3hXZXF3S0xPbnYxUWdLeGNR?=
- =?utf-8?B?WTR3YnJNSFA5eklhU0IwWUxzQjIwbDl5bUJJdWpFek1lSnpKVHVsck5ObTc1?=
- =?utf-8?B?VU1wSFAvNTNaUWpKc0VyNGIwZnR2cHJZNEpibENodGRNV0pIKzZQZjdORm0v?=
- =?utf-8?B?NjM1MUFZYXRYcDV5TVNreHdac3hPMkd1VktCUnNUSjlVVGM1TWdYZ0w5Ui94?=
- =?utf-8?B?eHhsdUJrWmZnYUlnMmtEWkxvRXZ0L0xYMlpha3FGRUtHTXhTaXppeTQwbVhJ?=
- =?utf-8?B?WXhONS92MnpZbTE4UW4vOEhRWnNCRHBVQ2RpMlltb2JLUTBXdFY3dFNEQUdB?=
- =?utf-8?B?SzRpa1AzYkxHNmZaakx0QStkdWJOWE5xLzlBUkJodVBkcFhWZTJhZFRteE9l?=
- =?utf-8?B?ME9SM3RkOU11ZUtEdWE0V2tWcEpkOXI1ZFRhb0NQUXZGWFo3L1JEUmIvcGt6?=
- =?utf-8?B?eGx0c1g0dFV2TEl2TjUxWm4yZmFkeldzVTlTVUozQVl5c2VVZ0pDZzlFeC9G?=
- =?utf-8?B?aFFXNG9LWHM4YU5zeHkycHZ3MUZtMGUzODVVL09KRExQRUVNTGo0bnkxLzQ1?=
- =?utf-8?B?YjhGZ3NYd2tPVEJ3bndWeHBQcHM2bTVIUW9XVVFVRHZsUGh6b3JoUHMzK2E2?=
- =?utf-8?B?ZzJDc2ZSVUtaOEFkNy83QVdINlNQL3c2czZ6dE5HcGs4eDRWUE1JSmczYU1J?=
- =?utf-8?B?UlcySFprNTZYUGdPS3JRMTNkMTdTM0V6RVFTUkh0QkxyeFIzRGtyV01wMDFp?=
- =?utf-8?B?b2xkN09PaTB5RUdlaCtDNEZRckwxcXR4Y01GV2dYRmpaYVRRRU03Z2FjZnlY?=
- =?utf-8?B?YlRQdjh5ZXVYaGpqRnRDcEVmNnQzeHd0YjA3NEM4bEcvM1d1Vk53TmVBZGZj?=
- =?utf-8?B?NTlONGNWbUxPWmtNK21raHdQYkdsKzJ4dklCMFAxTVhnREs4bXozcndHUW1F?=
- =?utf-8?B?bndnQ0txaVBMN240ckpXL00xSFp0S0Y5Qnpnb1V4MVpLWlRIWHhUTHV1RnB4?=
- =?utf-8?B?WUFROGFWaDMwTFR3WEtuejdiNWVVT3hSclBiSnllLzBIOWNUcXg2OU5PTmFO?=
- =?utf-8?B?enlvQjNpQ0tUWmhEY1lvazcyTkNrMjJzSzU0YlUyTVZZTnRrL3dKNW8vZzl1?=
- =?utf-8?B?bmNrbEd0ZDVQbkJPNmxxMFlNTzEySG5Xczh2YjY0OHF4UFAxRHBJZTdzeVAr?=
- =?utf-8?B?Zm1zc0p6V1hDS0YrK3cvMXZnVVZrTGZtbTc1UVhEN1BBNXZRS0VzYjg5bGtl?=
- =?utf-8?B?NWlIbGkrTXRLRzcwNVJoN0JKWVg0UVgxb0NkR055YkxWUFZlZGlvRGphOFVs?=
- =?utf-8?B?a1RydVNUN0JmTG5sMWdVN1ZKZTNXZVN0VDlYNnZ5N2lWMXQyM2JsdWIwc2RH?=
- =?utf-8?B?S3pydTJrdlN4N2ZnNDd2andqY2htUnRUY3VrRlNSenc2ZEM5cUxLQWxUbG5C?=
- =?utf-8?B?a1VoZHFBV01OeVl1WjlxcmJHeHV4SDdWLzlMLzltVytvY1pEdTEzREN4M3dl?=
- =?utf-8?B?Z3QwUVIyS1RINmpHVzNzQT09?=
+	=?us-ascii?Q?oafz8CO3RFgC7dPjvrlLv1ib93SYJmlkZCp4mdpcSumNrmihsLDY2vM0pdeD?=
+ =?us-ascii?Q?GA/e3useexw54SCISeiUVijCelH7BGVUrr1+VOtJzc7Q8rbv62EMKJa7x42A?=
+ =?us-ascii?Q?x0vjOoyWBeDdh9fl1a9PDbhg0LMd20UPpStYl1si+GSY3dgTgwQbInNk3AmW?=
+ =?us-ascii?Q?DBAlmvt22/pjmzWLR8ZXjJyXC+q7YHETLdhjob0z/cZKLUufkQNa+54tt0Sp?=
+ =?us-ascii?Q?yqC98kHk9FmH6nxBsKp21eJz3mTpU4I3PXRXEULOagEQueT7lQDVCu1TPeyc?=
+ =?us-ascii?Q?PZvWq7RsHx4w+tMgw6hForUJfJiSAI6pJ/M19ELp1kxvkonp2fln+OXPknyU?=
+ =?us-ascii?Q?8YtCKU0jkiMUzQKwDQr9M+JlKr4IdVsaSRBLwhFwLnXInR/hjJPcOSV+Bfey?=
+ =?us-ascii?Q?QVsYH2YK7Z2C+1OiyAYDYiB3CE9Qj2jpJV+ipNUQY4iXfllpi67YG63FKNQ1?=
+ =?us-ascii?Q?TlDNDPJFS8LpTTWDfPTalrSSLYZEzdiRMK8nKzE7won+DVdYkhNMNQQJrqS1?=
+ =?us-ascii?Q?jL7nP8bfztZx6ZFep6+IVkXTmPCG/ZWh7tFAN4u5O+B9axX0D7Xg4zZjTf8p?=
+ =?us-ascii?Q?AW4Ry/hT2ENFP7wGrcLn6TEDwprlEjU1V+xc4E1C/V7EYmY/O6m5M4oyoF5L?=
+ =?us-ascii?Q?qOgTpHMysJJcYNZ19RGX6aLYYuBhG5q6rMFNWvsO2Z5SipEe5U8mV3VG/oIV?=
+ =?us-ascii?Q?ZX8Z6TwrQ15f/NdR7iIrv5eKrm6FgjhJB4yfHIXlG8JAhatW+yN6Vwng1eLA?=
+ =?us-ascii?Q?qPGLxONhOByZovHuZsnpANZoHN4FAGh0NJ1bfXW9OOUArGBBHgbIS/zPFK3f?=
+ =?us-ascii?Q?Tz4KyQS+p+2BL+qmqZsQsE6VMiCgf2H+CPM+OvYg/tM4bRMiMnjrBAKGUD8V?=
+ =?us-ascii?Q?OFeytfCmZx01VzeGv9rtEtq3LkrMA1q/jYXHJmA6ssT5c1zxn3PnerjU+rGy?=
+ =?us-ascii?Q?/fNPX+YN4cC+K3cYn3Xsp8spctVkN4PjyVmR7mzKHmk94GiywIDHrXMyl+lA?=
+ =?us-ascii?Q?bwcM1Ez7RFtLFWDbiCkdXfNnxDLIZ6gpr1azcm6sbWsncoUvVqaRFSZ1Jm+D?=
+ =?us-ascii?Q?Nku8Sifbywtzp/Qsx7GGUBANhEHrwtOm8j7uXU59P07izb2VrsaghX07f7l1?=
+ =?us-ascii?Q?68yqGMuVysetFxSEwC6OBr7R3muS+u6i+FqwSIFys3s1eQFTyRQ6+gZmYI3n?=
+ =?us-ascii?Q?jXBtQOQCJNDYnVKZDFMI6xtpnkDZ/QQsa3Gf60h4Xwcj8+unzezDZuBY7qU1?=
+ =?us-ascii?Q?hiI0pk64LuaQCvioVkusVjg8RdsuOggPtI/dPxAbD4p2yajPsCvmCjE5Dq4M?=
+ =?us-ascii?Q?+/m+0N3+UAnY1lLvLCg4QdJ8zXvVQMSo/viL+QTciJMkzg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dVBIVngwcDdFaU9hSTNmUGFRbDFBRFcyTkNSdHYyMVZONHVWcGJIbG1nZ2Y0?=
- =?utf-8?B?SG9XSjZtKy9KUzBSeExNQ3FsR2pWTTloNTFuaDlqSDEzejVFMHQvUm1udTZC?=
- =?utf-8?B?dkNvdGFvaWU4L05OY003c0xTNEQ5MDE0V01MYXlCUlBPNXc1SGNKSEtmNTBS?=
- =?utf-8?B?bVJweUcrczl4OUFTdnFVeEZrMmdUK2N4c3hQczNLNGNzSUthNUpQT0VnQ1JF?=
- =?utf-8?B?OWtoeGRHQ1QwbElQWGVFL1RYR0JhajBsUUNtZTBjQ2VQZVpHM054TlFaUjhL?=
- =?utf-8?B?QlN4K3lEUFdPL0xacmhWZXluSUlwa0R5N0lQWU5kc0VuSHpleXowMlpBeVJH?=
- =?utf-8?B?dzVzK0E1NWlUZU9uRmxBY3prOFZlQ3Jvdm9lbVdaRDhiQll2SUN6WWg0bEM1?=
- =?utf-8?B?QkdvWkdpSTNoQzc4a2cydEYvdk0zMWNYN3g4YTJ1NE52dkNjTmthK21mN2NC?=
- =?utf-8?B?b0dkemtXdEZOYmpLNS9CR2YvTDMvU21ZOWxwT25vSU9zOWJoYSsrSWpObXFz?=
- =?utf-8?B?d2FMY2tRMnBRYmFveGQyUGlEZHlTaGtITkJ1WmszNXhjN2g3a2dZaUU4Szlz?=
- =?utf-8?B?SERTUE4xSDhIWWNaK1BNMVFyRURhTUdxWFZ1VkpaN0RRK0xsMXRKQUFUaHE5?=
- =?utf-8?B?cFNCZFlqdkJiV29xRFpKeXhrY0M3VDQ4bzU3WEh5VjVEeHdlZjhac2t3MU9j?=
- =?utf-8?B?VmNKeEt0blhlZlp6cWFoOEh2d0FLaFEwc1V6SVlqYzJsMmpTdnhkbzdmU08w?=
- =?utf-8?B?V0VQOXV3OXlpWWRnSk1vZWoweGl3REo3aE5KNldwQ0ZiR284MUhkYS9Zcnow?=
- =?utf-8?B?MUNHUTFRUUFKOFJwSUxzbGtkcmlFZnZCZ2N0RTRZS3Z5NXFTR2ZJdjd3N214?=
- =?utf-8?B?c1BoMzNZMmswL0Foa3NjcUhWV2ZHVzZMWEw1K3k3TkN1MTR5T3k1bjFIc0Zi?=
- =?utf-8?B?TzBzTTFaVFVLRzkzTTNIQ2RJWXdMQ0gwdU1CWUVRYVhrQnQ5Rll2cG9wRG43?=
- =?utf-8?B?aFcxc05vZWRNZG1YajdJbURYWEFLQUFVc0hJdnQralBsNU5raTJCcDRZQjgr?=
- =?utf-8?B?RlhTV29DZ3BnRWxpSmN6U3NuaU55Sm1yOVFjQUNXakZGbzhZQU5SZ0JzZG10?=
- =?utf-8?B?cWlueitpRVZ6dHRKdFAyT1MrT0RYSzdjT3RHcDhtYmtnbVBmWjNOdm1XVjhm?=
- =?utf-8?B?c2IzRW0yR3p0RmpiMFlSOFdPRG1vczljbzN3LzU5TFhvSFptbnVtU1l0eVEx?=
- =?utf-8?B?MlNsVTZoZTlwQ2FzN0YvWkJyY3UzbmZ6QU1BN1pwRjByS1hhcGFkc3pFMmxU?=
- =?utf-8?B?VnRsang4ajhZU1l0ZEt2bW5VVFZBUmxxQ0FUeWNUcndlL0NOVUxIZUNTaDVi?=
- =?utf-8?B?Ny91QzZ4Umk1UmpPNmNoWUpOVStTR1BjVjdzc3pYeFVJNnhIZytKOEUrZTc4?=
- =?utf-8?B?OUJCMm9VUlBvL3pQQTFndStvQm0rNUR3N2pRTVYyZW1zam9yTkdhZUhYS2Vm?=
- =?utf-8?B?eFFaeUJEdjdHOXdCa2dTZGxaRU5PUHNYekNuWjZHd0JId25XVDA3N3J2bC85?=
- =?utf-8?B?dk1Id3hCYVFEQkdVNzYxckhkMXVPMWxxcnR2SjBNbFZhWWU3ZDdrbVk0cnJE?=
- =?utf-8?B?SmRmZFB6QUM1K2kwQ1BQcWUyT0RCNFlkRlM1aTVmajhKNXA4N0NCZDFGd1hw?=
- =?utf-8?B?U0w0SzY1dXQ4QitzaVJzc2Q4bngwMVRmc1NsN2dhNWRhdGpLZHVHcHVuSlUx?=
- =?utf-8?B?VmNaOWUwSStmNStScEhiRVQ3aFQvU3E4ZEV5ZVpSekJ5czRmL1ZwRlhpSEpC?=
- =?utf-8?B?UTBDdk4vU2lJRWVOZDZObFEvZVJWeloxdTdwaTdndjlkQURic2VqdEk0WkRU?=
- =?utf-8?B?cXFKditEb05kRVpSdmQxOUlTQlA2MWg2aTNHZkx2RTlVZElNa1JOcjhuZFdv?=
- =?utf-8?B?bkpDV0NMdTdsc0FVaWRiTDBYLzZWLzNqR3pNK21zWFRKb2NUL3FJZzR0Y3Mw?=
- =?utf-8?B?M0M0d3BtUVpBVllqSk1iRVZ2LzJqODhXSHBML1hiQ3NCZFdUWHg1V1NKNnNE?=
- =?utf-8?B?QzdQSGRaUkNzZGIyN25qOXB6ejFkUkJOSUhLNnhjZWNoeGd1Ky9XQmRWMmFT?=
- =?utf-8?Q?Pus9yvxq4oy1CIVsYZ0FHAeOv?=
+	=?us-ascii?Q?6cQuIRZZAsv67lG28Vy2ZGPw4nAHgN4ObJBh0BjQ54VleysvLM23AAWeSViT?=
+ =?us-ascii?Q?KgTRihL93pN2SKqmd5XywnOeWmPgI1AvQaSrMevKdJRt50LwDGrYdzhaDTEi?=
+ =?us-ascii?Q?N/iDD891jnf1FSk7Xjk56NsSAX09wMy00oEPlgJ8pRxpso28lqpZ7raGFMd8?=
+ =?us-ascii?Q?y5NJVeis+U9WTeRQ6GFoE4x2W/GrumWhUhb6DzLxtC52HWYrSLlcDqaAsumC?=
+ =?us-ascii?Q?zSPJ1q/Cxpfii+lqCclfUZ8QrD8FcdYgOTmtpawhZiuQyCBwzQ+olIE5lnmV?=
+ =?us-ascii?Q?3OAEV8zChTQ4inDsirQQAmNRiSaKcgnqXZPm1vJScSxFEj4/5Jpto+6yMu2S?=
+ =?us-ascii?Q?SoI1t7VSCzrsW47kpTAEk/3L7o848vyKaxUXUptDafNcjy9tEwe4/lkU/p8H?=
+ =?us-ascii?Q?rc44jY9JFUMGnJGQ11CmBH5qyk/MwEFdWYBc12of5nyqdXjoWkCZXT9bG3GE?=
+ =?us-ascii?Q?oJ2QXVwcMvwtuw434JJXpVsdYnrcbRradJRosWIqKhkNiAiwhL+a/fYEPcKj?=
+ =?us-ascii?Q?9BrMF2YNjEwHRov+F6Dq1NG0LDrHFeNRynP4n2EW5VIhOeJsgfUI9ih0nAWo?=
+ =?us-ascii?Q?RxPsDHTdZm8eE9lcQdcD51tEPXNyutgEafnD7btP33DKTk5Nt5AY+5+Sswv4?=
+ =?us-ascii?Q?tHXk8q89wSL3/iZhWcLM/vJubJFwpy0GqKxlMA+nCSz9t+W67YzDB7wsrf9S?=
+ =?us-ascii?Q?IeGhrIpKUPI7iHzXLlnotN8cb1j1ve8hp+Y173N6Vf8i2aDypFa4uvZjZeej?=
+ =?us-ascii?Q?Yeb8O+UmM4b6MWn0RYqehlETk7xZpvBgf3Ibdn/XXyyeO/Ne+ORTiFlUrpsO?=
+ =?us-ascii?Q?7fZFI0s89A1pe1idze2Yq+R/HYvMSE/JibjjXL21/E+tZDnJ+5rpanvk/L1S?=
+ =?us-ascii?Q?nJi96TmT8Mi+31EgkaHHoqcQuxoVuhRgbSrZgZaA7VT2yk62uLtoCprt8eTO?=
+ =?us-ascii?Q?jiS84ABPZZfEHa6WyYrsDpAdd7YPVy6iwZE0jTviWUpN2GtZu7/2BaG0I5qK?=
+ =?us-ascii?Q?Bc/udVlgC2gwRRx+CV3A3tObTW2+e3M55SYmI/EFQfjtq0eT8gcchOY/PXIP?=
+ =?us-ascii?Q?Tf3NON+16YCZWcEz9bur13rOoV3nj4mq/0gDCeGgx+dsWRkjklJAPAEwz8u0?=
+ =?us-ascii?Q?ypeGUBZxCsjyAw9C8WzZNLAku1/WvEkvHcVXa/8qDpvmahclx7ABc0yfPLYX?=
+ =?us-ascii?Q?lRNMGJQlOmyhNVuwo74an2NPSQITmFvnoh19P7Tm++5674d/Yx+RzRJ+yCeg?=
+ =?us-ascii?Q?SvwdX4AqJRyBEy07/7S1CsvmxZwP9Om5ZH0zwWvBptibHJ0EHttTCV5vlXRb?=
+ =?us-ascii?Q?ciApbm5zoTc8F4lMy8hGO0O1cmZlcGndtpY0ueR563zLBDho4AS9NOU8rTxV?=
+ =?us-ascii?Q?wLZAmtK7cRJcETSTkcw460dQz88Z3P+JkJU9N2iHaZ3TXWNYj4RlGqK8RqAE?=
+ =?us-ascii?Q?5DVEM9JgNvMq9IdNczDunaYzQVgdNnU1suhhTWpqPoh1fufnwoaMJ8RuB4I5?=
+ =?us-ascii?Q?TSjeYWqxkTPfi17JtWa4PBV1v/Khwb/+AKO9cNNnEeotXvRVUazbi77K/YdS?=
+ =?us-ascii?Q?/5jVP5zfgxzEBxtg9+yUnVZYShEHL1k0Z+TWsJ7H?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd5227ce-0d08-43ec-d6d2-08dcb0420c4a
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 701c7f6d-6f27-4b27-dd63-08dcb042721f
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 02:48:10.1757
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 02:51:01.1952
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cWUN++Lf6inuzlPUvCDFsbvffLSYsPV04ikw41H0w1TwGGfZzcnGR4X3+sO9x9+s/gaV5qOjfMmUDuM+ejI1mA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7703
+X-MS-Exchange-CrossTenant-UserPrincipalName: xAKTEwkt0wGYmTPkfsrGQ8LUWshExsIUoIdrzpmPszNNGBR+w3ABGPbvT9BiaUC/teyT1ZFc+w4+3OMGKiXUYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7247
 
-On 07/29/2024, Liu Ying wrote:
-> Hi Dmitry,
+On Mon, Jul 29, 2024 at 12:52:56PM -0600, Rob Herring (Arm) wrote:
 > 
-> On 07/27/2024, Dmitry Baryshkov wrote:
->> On Fri, Jul 26, 2024 at 02:50:12PM GMT, Liu Ying wrote:
->>> MCIMX-LVDS1[1] display module integrates a HannStar HSD100PXN1 LVDS
->>> display panel and a touch IC.  Add an overlay to support the LVDS
->>> panel on i.MX53 QSB / QSRB platforms.
->>>
->>> [1] https://www.nxp.com/part/MCIMX-LVDS1
->>>
->>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>> ---
->>> I mark RFC in patch subject prefix because if the DT overlay is used, both ldb
->>> and panel devices end up as devices deferred.  However, if the DT overlay is
->>> not used and the devices are defined in imx53-qsb-common.dtsi, then they can be
->>> probed ok.
->>>
->>> With a dev_err_probe() added to imx_ldb_probe() in imx-ldb.c, devices_deferred
->>> indicates 53fa8008.ldb and panel-lvds kind of depend on each other.
->>>
->>> root@imx53qsb:~# cat /sys/kernel/debug/devices_deferred
->>> 53fa8008.ldb    imx-ldb: failed to find panel or bridge for channel0
->>> panel-lvds      platform: wait for supplier /soc/bus@50000000/ldb@53fa8008/lvds-channel@0
->>>
->>> It looks like the issue is related to fw_devlink, because if "fw_devlink=off"
->>> is added to kernel bootup command line, then the issue doesn't happen.
->>
->> Could you please fdtdump /sys/firmware/fdt (or just generated DTB files)
->> in both cases and compare the dumps for sensible differences?
+> On Mon, 29 Jul 2024 16:10:37 +0800, Xu Yang wrote:
+> > Add a compatible entry for the NXP PTN36043 GPIO-based mux hardware
+> > used for connecting, disconnecting and switching orientation of
+> > the SBU lines in USB Type-C applications.
+> > 
+> > PTN36043 datasheet: https://www.nxp.com/docs/en/data-sheet/PTN36043A.pdf
+> > 
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
 > 
-> I fdtdump imx53-qsrb-mcimx-lvds1.dtb and imx53-qsrb.dtb.
 > 
-> I see three sensible differences.
-> 1) panel-lvds node position.
->    For imx53-qsrb-mcimx-lvds1.dtb, it comes very early and is next to
->    'compatible = "fsl,imx53-qsrb", "fsl,imx53";'.
->    For imx53-qsrb.dtb, it comes later and is next to panel node in '/' node.
+> My bot found new DTB warnings on the .dts files added or changed in this
+> series.
+> 
+> Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+> are fixed by another series. Ultimately, it is up to the platform
+> maintainer whether these warnings are acceptable or not. No need to reply
+> unless the platform maintainer has comments.
+> 
+> If you already ran DT checks and didn't see these error(s), then
+> make sure dt-schema is up to date:
+> 
+>   pip3 install dtschema --upgrade
+> 
+> 
+> New warnings running 'make CHECK_DTBS=y freescale/imx8mp-evk.dtb freescale/imx8mq-evk.dtb' for 20240729081039.3904797-1-xu.yang_2@nxp.com:
+> 
+> arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+> 	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+> 	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+> 	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mq-dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+> 	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mq-dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mq-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'assigned-clock-parents', 'assigned-clock-rates', 'assigned-clocks', 'clock-names', 'clocks', 'dr_mode', 'hnp-disable', 'interrupts', 'phy-names', 'phys', 'port', 'power-domains', 'reg', 'role-switch-default-mode', 'snps,dis-u1-entry-quirk', 'snps,dis-u2-entry-quirk', 'snps,parkmode-disable-ss-quirk', 'srp-disable', 'usb-role-switch' were unexpected)
+> 	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mq-dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb-phy@381f0040: 'fsl,pcs-tx-deemph-3p5db', 'fsl,phy-comp-dis-tune', 'fsl,phy-pcs-tx-swing-full', 'fsl,phy-tx-preemp-amp-tune', 'fsl,phy-tx-vboost-level', 'fsl,phy-tx-vref-tune' do not match any of the regexes: 'pinctrl-[0-9]+'
+> 	from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@32f10100: usb@38100000:role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+> 	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mp-dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@32f10100: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+> 	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mp-dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@38100000: role-switch-default-mode:0: 'none' is not one of ['host', 'peripheral']
+> 	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb@38100000: Unevaluated properties are not allowed ('adp-disable', 'dr_mode', 'hnp-disable', 'role-switch-default-mode', 'srp-disable', 'usb-role-switch' were unexpected)
+> 	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dtb: usb-phy@382f0040: 'fsl,phy-tx-preemp-amp-tune', 'fsl,phy-tx-vref-tune' do not match any of the regexes: 'pinctrl-[0-9]+'
+> 	from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
 
-It turns out only 1) panel-lvds node position matters.
+Sorry for this. I've checked gpio-sbu-mux and ptn5110 binding but missed usb part.
+Will fix it.
 
-I can reproduce the issue with imx53-qsrb.dtb(no DT overlay) if I put
-the panel-lvds node before the soc node.  If the panel-lvds node is
-after the soc node, then the issue doesn't happen with imx53-qsrb.dtb.
-
-The ldb node(LVDS display bridge) and IPU(display controller) node are
-in the soc node.  Maybe, the order of the ldb node and the panel-lvds
-node in DT blob matters(be my guess).
+Thanks,
+Xu Yang
 
 > 
-> 2) properties order in panel-lvds node.
->    For imx53-qsrb-mcimx-lvds1.dtb, it shows
->    panel-lvds {                                                                 
->         power-supply = <0x0000001c>;                                             
->         backlight = <0x00000030>;                                                
->         compatible = "hannstar,hsd100pxn1";                                      
->         port {                                                                   
->             endpoint {                                                           
->                 phandle = <0x0000007d>;                                          
->                 remote-endpoint = <0x0000007c>;                                  
->             };                                                                   
->         };                                                                       
->     };
->     For imx53-qsrb.dtb, it shows
->     panel-lvds {                                                                 
->         compatible = "hannstar,hsd100pxn1";                                      
->         backlight = <0x00000031>;                                                
->         power-supply = <0x0000001d>;                                             
->         port {                                                                   
->             endpoint {                                                           
->                 remote-endpoint = <0x00000033>;                                      
->                 phandle = <0x00000017>;                                              
->             };                                                                   
->         };                                                                       
->     };         
 > 
-> 3) No 'lvds0_out' and 'panel_lvds_in' in __symbols__ node for
->    imx53-qsrb-mcimx-lvds1.dtb, but for imx53-qsrb.dtb they are in it.
-> lvds0_out = "/soc/bus@50000000/ldb@53fa8008/lvds-channel@0/port@2/endpoint";
-> panel_lvds_in = "/panel-lvds/port/endpoint";
 > 
-> BTW, reverting Saravana's commits
-> 7cb50f6c9fba ("of: property: fw_devlink: Fix stupid bug in remote-endpoint parsing")
-> and/or
-> 7fddac12c382 ("driver core: Fix device_link_flag_is_sync_state_only()")
-> avoids the issue from happening.
 > 
->>
->>>
->>> Saravana, DT folks, any ideas?
->>>
->>> Thanks.
->>>
->>>  arch/arm/boot/dts/nxp/imx/Makefile            |  4 ++
->>>  .../boot/dts/nxp/imx/imx53-qsb-common.dtsi    |  4 +-
->>>  .../dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso    | 43 +++++++++++++++++++
->>>  3 files changed, 49 insertions(+), 2 deletions(-)
->>>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso
->>>
->>> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
->>> index 92e291603ea1..7116889e1515 100644
->>> --- a/arch/arm/boot/dts/nxp/imx/Makefile
->>> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
->>> @@ -46,8 +46,10 @@ dtb-$(CONFIG_SOC_IMX53) += \
->>>  	imx53-ppd.dtb \
->>>  	imx53-qsb.dtb \
->>>  	imx53-qsb-hdmi.dtb \
->>> +	imx53-qsb-mcimx-lvds1.dtb \
->>>  	imx53-qsrb.dtb \
->>>  	imx53-qsrb-hdmi.dtb \
->>> +	imx53-qsrb-mcimx-lvds1.dtb \
->>>  	imx53-sk-imx53.dtb \
->>>  	imx53-sk-imx53-atm0700d4-lvds.dtb \
->>>  	imx53-sk-imx53-atm0700d4-rgb.dtb \
->>> @@ -57,7 +59,9 @@ dtb-$(CONFIG_SOC_IMX53) += \
->>>  	imx53-usbarmory.dtb \
->>>  	imx53-voipac-bsb.dtb
->>>  imx53-qsb-hdmi-dtbs := imx53-qsb.dtb imx53-qsb-hdmi.dtbo
->>> +imx53-qsb-mcimx-lvds1-dtbs := imx53-qsb.dtb imx53-qsb-mcimx-lvds1.dtbo
->>>  imx53-qsrb-hdmi-dtbs := imx53-qsrb.dtb imx53-qsb-hdmi.dtbo
->>> +imx53-qsrb-mcimx-lvds1-dtbs := imx53-qsrb.dtb imx53-qsb-mcimx-lvds1.dtbo
->>>  dtb-$(CONFIG_SOC_IMX6Q) += \
->>>  	imx6dl-alti6p.dtb \
->>>  	imx6dl-apf6dev.dtb \
->>> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
->>> index 05d7a462ea25..430792a91ccf 100644
->>> --- a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
->>> +++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
->>> @@ -16,7 +16,7 @@ memory@70000000 {
->>>  		      <0xb0000000 0x20000000>;
->>>  	};
->>>  
->>> -	backlight_parallel: backlight-parallel {
->>> +	backlight: backlight {
->>
->> Nit: this seems unrelated to the LVDS support
 > 
-> Do you suggest to do this in a separate patch?
-> If yes, is it worth adding a Fixes tag?
-> 
->>
->>>  		compatible = "pwm-backlight";
->>>  		pwms = <&pwm2 0 5000000 0>;
->>>  		brightness-levels = <0 4 8 16 32 64 128 255>;
->>> @@ -89,7 +89,7 @@ panel_dpi: panel {
->>>  		compatible = "sii,43wvf1g";
->>>  		pinctrl-names = "default";
->>>  		pinctrl-0 = <&pinctrl_display_power>;
->>> -		backlight = <&backlight_parallel>;
->>> +		backlight = <&backlight>;
->>>  		enable-gpios = <&gpio3 24 GPIO_ACTIVE_HIGH>;
->>>  
->>>  		port {
->>> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso b/arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso
->>> new file mode 100644
->>> index 000000000000..27f6bedf3d39
->>> --- /dev/null
->>> +++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso
->>> @@ -0,0 +1,43 @@
->>> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>> +/*
->>> + * Copyright 2024 NXP
->>> + */
->>> +
->>> +/dts-v1/;
->>> +/plugin/;
->>> +
->>> +&{/} {
->>> +	panel-lvds {
->>
->> Nit: Just 'panel' should be enough.
-> 
-> Nope.
-> 
-> 'panel-lvds' is needed to differentiate it from 'panel' in
-> imx53-qsb-common.dtsi which is a DPI panel.
-> 
-> Using 'panel-lvds', procfs lists exactly the properties needed.
-> root@imx53qsb:~# ls /proc/device-tree/panel-lvds/
-> backlight     compatible    name          port          power-supply
-> 
-> Using 'panel', more are listed.
-> root@imx53qsb:~# ls /proc/device-tree/panel/
-> backlight      compatible     enable-gpios   name           phandle        pinctrl-0      pinctrl-names  port           power-supply
-> 
->>
->>> +		compatible = "hannstar,hsd100pxn1";
->>> +		backlight = <&backlight>;
->>> +		power-supply = <&reg_3p2v>;
->>> +
->>> +		port {
->>> +			panel_lvds_in: endpoint {
->>> +				remote-endpoint = <&lvds0_out>;
->>> +			};
->>> +		};
->>> +	};
->>> +};
->>> +
->>> +&ldb {
->>> +	#address-cells = <1>;
->>> +	#size-cells = <0>;
->>> +	status = "okay";
->>> +
->>> +	lvds-channel@0 {
->>> +		#address-cells = <1>;
->>> +		#size-cells = <0>;
->>> +		fsl,data-mapping = "spwg";
->>> +		fsl,data-width = <18>;
->>> +		status = "okay";
->>> +
->>> +		port@2 {
->>> +			reg = <2>;
->>> +
->>> +			lvds0_out: endpoint {
->>> +				remote-endpoint = <&panel_lvds_in>;
->>> +			};
->>> +		};
->>> +	};
->>> +};
->>> -- 
->>> 2.34.1
->>>
->>
-> 
-
--- 
-Regards,
-Liu Ying
-
