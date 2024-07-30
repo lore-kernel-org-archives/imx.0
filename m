@@ -1,183 +1,288 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2029118C938;
-	Tue, 30 Jul 2024 19:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790D91AA3EE
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 22:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722368614; cv=none; b=QNGINuuJL7OWe9Eh2K16+gvWGfbWpj0QNCJvjp+A4J9HiNwvQ/GYP7rIqBhWB2kYbj3huvYdLu0o0/qkDQa4bTTz9e9lF/VHmFLMomgIVIFr4q2DeJ4HSmTFOFsXIWLclxxr9hDuEQd2OuUpPTq9ATgeuwzCD1x4Qn5RKS9Zuhk=
+	t=1722377075; cv=none; b=MbYhhJB/25+bO17kjVrU+QEEzQGifmafh6N/LqJzdeR+pD9LilpvR3koYr2o3WkwsDPzgQ1SQXYNwnp8K81imSDfZJ38fb9Ai6902zs8R77/ZNpGe3Zf3JXEZ5eOO5EIFbrkWb6JcsUfUMmGwiHGrmYtoQasshLDmhY6HrQCo5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722368614; c=relaxed/simple;
-	bh=7ZWS8u9aPiBFISBPRpifvY/WoT4OE1+Bi2YojbT+WFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MuqWHs+m38mYa5SKnIoOweiimzUaJapsJZD/qMnqkZwODtCwJIGeBI2XHlhR9IVGbwYmX5aeieCKdZmtuWUMpKhEkjtUG87gvj04miwVdJI2h3xCUc9vQohpgyGUc7LDFOs9wnGhfeNbf/uk3AX+Y+1f5iWGy1G3FmLSsYNSlkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h16IfaV0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722377075; c=relaxed/simple;
+	bh=7R5vy4mzepzaYp/WvefjDb72imB4mI6hl0dLiKlthRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Oo+V9X8fUc38/wMiCcmPLt0yLs+yjZGpigjcPxg0NitRjl9yAc6Q8RlXqw6VpPDkyktNw/0bNE/gkBOgfckLo3+NkgS2FRi9H/EpbF0HSrCLeApTrc6KVFNcPipRJuFj6fVVNjWIlJa1kv63J7GtbJEqBvR7x8o+gV/ob36q/JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=jZPCrk6/; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h16IfaV0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED71C32782;
-	Tue, 30 Jul 2024 19:43:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722368613;
-	bh=7ZWS8u9aPiBFISBPRpifvY/WoT4OE1+Bi2YojbT+WFI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h16IfaV09C1EP1HeYxv9Lfjjb2QZyn6y/AGl00vvL51gux3ZdTtCtkgu1PIeevz3U
-	 YrtJ9cB2kTu+C92kK9ODdHm62FWdQ9kRPww0iYG2WF2JZNknNKf7OJ4pBS+3Ra3ZUm
-	 TLrcthVrzu2tpe2tHmCZayfZLHjFltdbNsnyxOaO4LmqVyj1w+bYWGy8ONNaxa3MT3
-	 BqEVfWi00ONraIbPRf+advZiGJIkjyui2jnFDq/0hSCCWxMoRgmjqyHGJfDjvgL0dF
-	 78gLkeyOjG83pes5QNqVGE+uugTbXEdwA/Ewsoz0mC6xJ4W6104pzswLOYoh/YY9Q2
-	 rBxV0kM3qlooA==
-Date: Tue, 30 Jul 2024 13:43:32 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: soc: fsl: Convert rcpm to yaml format
-Message-ID: <20240730194332.GA2029820-robh@kernel.org>
-References: <20240729191143.1826125-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="jZPCrk6/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=CcSAv36yv7IbKf
+	FtDxqWUi5Diosg6MwOf+yrK4IAbCI=; b=jZPCrk6/E2oAkPeJr61ZZRMFPj6fKs
+	3e8InET8RA4dlSMRdPh4H+jxxUnZLaw0d8XLCN93VcZDsrV55sgnn0kBUtsJGGw/
+	2blwiCg53xABQr2FmtkW461oYfi5I//7V/BgGUSralrPfsiZWVNGPDrevd8M0eek
+	jZd2RmSF1+TehGfDOcvGn+7zfogvshHDLCvk8i5memUezlfEpOHlj/WzUGXYEzIN
+	AftyeWTI8G2anoc+8Uwfa9t7Dwf2CwcL7GZGpVtfLDP4vsb8MfJ1hKfUpAIx9q1i
+	1MYNUyJXz2w8Z4R08bboYgZT+LTd214JS2Q7Glv9MpXF7JirqYpQRZ/w==
+Received: (qmail 344796 invoked from network); 31 Jul 2024 00:04:22 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 31 Jul 2024 00:04:22 +0200
+X-UD-Smtp-Session: l3s3148p1@Laj4KH4e3Ixehh9q
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-i2c@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Elie Morisse <syniurge@gmail.com>,
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Vignesh R <vigneshr@ti.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	openbmc@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: [PATCH] i2c: don't use ',' after delimiters
+Date: Wed, 31 Jul 2024 00:01:59 +0200
+Message-ID: <20240730220401.3649-2-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240729191143.1826125-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 29, 2024 at 03:11:42PM -0400, Frank Li wrote:
-> Convert dt-binding rcpm from txt to yaml format.
-> Add fsl,ls1028a-rcpm compatible string.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/rtc/fsl,ls-ftm-alarm.yaml        |  2 +-
->  .../devicetree/bindings/soc/fsl/fsl,rcpm.yaml | 91 +++++++++++++++++++
->  .../devicetree/bindings/soc/fsl/rcpm.txt      | 69 --------------
->  3 files changed, 92 insertions(+), 70 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
->  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-> index 388102ae30cd8..3ec111f2fdc40 100644
-> --- a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-> +++ b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-> @@ -42,7 +42,7 @@ properties:
->          minItems: 1
->      description:
->        phandle to rcpm node, Please refer
-> -      Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> +      Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
->  
->    big-endian:
->      $ref: /schemas/types.yaml#/definitions/flag
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-> new file mode 100644
-> index 0000000000000..6c6cda7f2b220
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-> @@ -0,0 +1,91 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/soc/fsl/fsl,rcpm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Run Control and Power Management
-> +
-> +description:
-> +  The RCPM performs all device-level tasks associated with device run control
-> +  and power management.
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,ls1012a-rcpm
-> +          - fsl,ls1021a-rcpm
-> +          - fsl,ls1028a-rcpm
-> +          - fsl,ls1043a-rcpm
-> +          - fsl,ls1045a-rcpm
-> +          - fsl,p2041-rcpm
-> +          - fsl,p5020-rcpm
-> +          - fsl,t4240-rcpm
-> +      - enum:
-> +          - fsl,qoriq-rcpm-1.0
-> +          - fsl,qoriq-rcpm-2.0
-> +          - fsl,qoriq-rcpm-2.1
-> +          - fsl,qoriq-rcpm-2.1+
+Delimiters are meant to be last, no need for a ',' there. Remove a
+superfluous newline in the ali1535 driver while here.
 
-You can't just allow any combination.
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
 
-> +    minItems: 1
-> +    description: |
-> +      All references to "1.0" and "2.0" refer to the QorIQ chassis version to
-> +      which the chip complies.
-> +      Chassis Version         Example Chips
-> +      ---------------         -------------------------------
-> +      1.0                     p4080, p5020, p5040, p2041, p3041
-> +      2.0                     t4240, b4860, b4420
-> +      2.1                     t1040,
-> +      2.1+                    ls1021a, ls1012a, ls1043a, ls1046a
+@Andi: These changes are super trivial so I put them into one patch. Let
+me know if you prefer broken out patches. I think it is better if it
+goes through your tree, but I can also take if you prefer.
 
-The compatible lists above needs to match this.
+ drivers/i2c/busses/i2c-ali1535.c      | 3 +--
+ drivers/i2c/busses/i2c-amd-mp2-plat.c | 2 +-
+ drivers/i2c/busses/i2c-aspeed.c       | 2 +-
+ drivers/i2c/busses/i2c-digicolor.c    | 2 +-
+ drivers/i2c/busses/i2c-imx-lpi2c.c    | 2 +-
+ drivers/i2c/busses/i2c-omap.c         | 2 +-
+ drivers/i2c/busses/i2c-piix4.c        | 2 +-
+ drivers/i2c/busses/i2c-pnx.c          | 2 +-
+ drivers/i2c/busses/i2c-pxa-pci.c      | 2 +-
+ drivers/i2c/busses/i2c-pxa.c          | 2 +-
+ drivers/i2c/busses/i2c-qcom-geni.c    | 2 +-
+ drivers/i2c/busses/i2c-qup.c          | 2 +-
+ drivers/i2c/busses/i2c-s3c2410.c      | 2 +-
+ drivers/i2c/i2c-core-base.c           | 2 +-
+ 14 files changed, 14 insertions(+), 15 deletions(-)
 
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#fsl,rcpm-wakeup-cells":
-> +    description: |
-> +      The number of IPPDEXPCR register cells in the
-> +      fsl,rcpm-wakeup property.
-> +
-> +      Freescale RCPM Wakeup Source Device Tree Bindings
-> +
-> +      Required fsl,rcpm-wakeup property should be added to a device node if
-> +      the device can be used as a wakeup source.
-> +
-> +      fsl,rcpm-wakeup: Consists of a phandle to the rcpm node and the IPPDEXPCR
-> +      register cells. The number of IPPDEXPCR register cells is defined in
-> +      "#fsl,rcpm-wakeup-cells" in the rcpm node. The first register cell is
-> +      the bit mask that should be set in IPPDEXPCR0, and the second register
-> +      cell is for IPPDEXPCR1, and so on.
-> +
-> +      Note: IPPDEXPCR(IP Powerdown Exception Control Register) provides a
-> +      mechanism for keeping certain blocks awake during STANDBY and MEM, in
-> +      order to use them as wake-up sources.
-> +
-> +  little-endian:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      RCPM register block is Little Endian. Without it RCPM
-> +      will be Big Endian (default case).
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    rcpm: global-utilities@e2000 {
-> +          compatible = "fsl,t4240-rcpm", "fsl,qoriq-rcpm-2.0";
-> +          reg = <0xe2000 0x1000>;
-> +          #fsl,rcpm-wakeup-cells = <2>;
-> +    };
-> +
-> +    serial@2950000 {
-> +         compatible = "fsl,ls1021a-lpuart";
-> +         reg = <0x2950000 0x1000>;
-> +         interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-> +         clocks = <&sysclk>;
-> +         clock-names = "ipg";
-> +         fsl,rcpm-wakeup = <&rcpm 0x0 0x40000000>;
-> +    };
+diff --git a/drivers/i2c/busses/i2c-ali1535.c b/drivers/i2c/busses/i2c-ali1535.c
+index 9d7b4efe26ad..544c94e86b89 100644
+--- a/drivers/i2c/busses/i2c-ali1535.c
++++ b/drivers/i2c/busses/i2c-ali1535.c
+@@ -479,9 +479,8 @@ static struct i2c_adapter ali1535_adapter = {
+ 
+ static const struct pci_device_id ali1535_ids[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AL, PCI_DEVICE_ID_AL_M7101) },
+-	{ },
++	{ }
+ };
+-
+ MODULE_DEVICE_TABLE(pci, ali1535_ids);
+ 
+ static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
+diff --git a/drivers/i2c/busses/i2c-amd-mp2-plat.c b/drivers/i2c/busses/i2c-amd-mp2-plat.c
+index d3ac1c77a509..6f0ef587e76d 100644
+--- a/drivers/i2c/busses/i2c-amd-mp2-plat.c
++++ b/drivers/i2c/busses/i2c-amd-mp2-plat.c
+@@ -340,7 +340,7 @@ static void i2c_amd_remove(struct platform_device *pdev)
+ 
+ static const struct acpi_device_id i2c_amd_acpi_match[] = {
+ 	{ "AMDI0011" },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, i2c_amd_acpi_match);
+ 
+diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
+index ce8c4846b7fa..f411576a024c 100644
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -991,7 +991,7 @@ static const struct of_device_id aspeed_i2c_bus_of_table[] = {
+ 		.compatible = "aspeed,ast2600-i2c-bus",
+ 		.data = aspeed_i2c_25xx_get_clk_reg_val,
+ 	},
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, aspeed_i2c_bus_of_table);
+ 
+diff --git a/drivers/i2c/busses/i2c-digicolor.c b/drivers/i2c/busses/i2c-digicolor.c
+index 3e6b80e59b90..3dc5a46698fc 100644
+--- a/drivers/i2c/busses/i2c-digicolor.c
++++ b/drivers/i2c/busses/i2c-digicolor.c
+@@ -357,7 +357,7 @@ static void dc_i2c_remove(struct platform_device *pdev)
+ 
+ static const struct of_device_id dc_i2c_match[] = {
+ 	{ .compatible = "cnxt,cx92755-i2c" },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, dc_i2c_match);
+ 
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 0197786892a2..976d43f73f38 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -559,7 +559,7 @@ static const struct i2c_algorithm lpi2c_imx_algo = {
+ 
+ static const struct of_device_id lpi2c_imx_of_match[] = {
+ 	{ .compatible = "fsl,imx7ulp-lpi2c" },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, lpi2c_imx_of_match);
+ 
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 35a3f0a64986..1d9ad25c89ae 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1261,7 +1261,7 @@ static const struct of_device_id omap_i2c_of_match[] = {
+ 		.compatible = "ti,omap2420-i2c",
+ 		.data = &omap2420_pdata,
+ 	},
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, omap_i2c_of_match);
+ #endif
+diff --git a/drivers/i2c/busses/i2c-piix4.c b/drivers/i2c/busses/i2c-piix4.c
+index 4e32d57ae0bf..febbd9950d8f 100644
+--- a/drivers/i2c/busses/i2c-piix4.c
++++ b/drivers/i2c/busses/i2c-piix4.c
+@@ -146,7 +146,7 @@ static const struct dmi_system_id piix4_dmi_ibm[] = {
+ 		.ident = "IBM",
+ 		.matches = { DMI_MATCH(DMI_SYS_VENDOR, "IBM"), },
+ 	},
+-	{ },
++	{ }
+ };
+ 
+ /*
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index f448505d5468..1dafadda73af 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -721,7 +721,7 @@ static void i2c_pnx_remove(struct platform_device *pdev)
+ #ifdef CONFIG_OF
+ static const struct of_device_id i2c_pnx_of_match[] = {
+ 	{ .compatible = "nxp,pnx-i2c" },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, i2c_pnx_of_match);
+ #endif
+diff --git a/drivers/i2c/busses/i2c-pxa-pci.c b/drivers/i2c/busses/i2c-pxa-pci.c
+index 6b3c6a733368..af2094720a4d 100644
+--- a/drivers/i2c/busses/i2c-pxa-pci.c
++++ b/drivers/i2c/busses/i2c-pxa-pci.c
+@@ -135,7 +135,7 @@ static int ce4100_i2c_probe(struct pci_dev *dev,
+ 
+ static const struct pci_device_id ce4100_i2c_devices[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x2e68)},
+-	{ },
++	{ }
+ };
+ 
+ static struct pci_driver ce4100_i2c_driver = {
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index 031175113dd4..4d76e71cdd4b 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -218,7 +218,7 @@ static const struct platform_device_id i2c_pxa_id_table[] = {
+ 	{ "ce4100-i2c",		REGS_CE4100 },
+ 	{ "pxa910-i2c",		REGS_PXA910 },
+ 	{ "armada-3700-i2c",	REGS_A3700  },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(platform, i2c_pxa_id_table);
+ 
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 0a8b95ce35f7..e435dcbac688 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -721,7 +721,7 @@ static const struct i2c_algorithm geni_i2c_algo = {
+ static const struct acpi_device_id geni_i2c_acpi_match[] = {
+ 	{ "QCOM0220"},
+ 	{ "QCOM0411" },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, geni_i2c_acpi_match);
+ #endif
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 4a2c745751a2..d480162a4d39 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -1648,7 +1648,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 
+ static const struct acpi_device_id qup_i2c_acpi_match[] = {
+ 	{ "QCOM8010"},
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, qup_i2c_acpi_match);
+ 
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index 01419c738cfc..7698d9d59744 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -130,7 +130,7 @@ static const struct platform_device_id s3c24xx_driver_ids[] = {
+ 	}, {
+ 		.name		= "s3c2440-hdmiphy-i2c",
+ 		.driver_data	= QUIRK_S3C2440 | QUIRK_HDMIPHY | QUIRK_NO_GPIO,
+-	}, { },
++	}, { }
+ };
+ MODULE_DEVICE_TABLE(platform, s3c24xx_driver_ids);
+ 
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index b63f75e44296..6cf57e32119c 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1068,7 +1068,7 @@ EXPORT_SYMBOL(i2c_find_device_by_fwnode);
+ static const struct i2c_device_id dummy_id[] = {
+ 	{ "dummy", },
+ 	{ "smbus_host_notify", },
+-	{ },
++	{ }
+ };
+ 
+ static int dummy_probe(struct i2c_client *client)
+-- 
+2.43.0
+
