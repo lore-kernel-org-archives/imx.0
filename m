@@ -1,142 +1,82 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7358718C91E
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 16:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5441A76C9
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 17:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355531; cv=none; b=URjwin8pzK2oSUeV4Llk6hPfQ4BoBduHg/g7aSUEnewESDWrdlZdBfdhDrva3NccmHIP5juyXbPku5wQi2O3XCUU6ZutICs4/7yXvWWMNUTlkv0Ii6kyeRFpvMJS0fPgccl0aPnN7/BKKX4hCAkUWotO0IGZyWN4aDEFBSMv+qk=
+	t=1722361655; cv=none; b=KYUpZhSrwOh59JD7KSOjyR3MKKb7N5nlFl+GjrORIrA4BlJ/WYcMhqcPAHDIag7ASdB+FlVhZvpohaeL7IT3TSXPT6EanDQgOlyXcBMcNp+akS8n8mNxbc4cvmK7yLJL2i1wo8Gy0e2QKVHkQ/JN7UA1e/s0Z/OJoY3DoM1pLck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355531; c=relaxed/simple;
-	bh=ciJceeDlK4Y/meCsbSLF/LMnhpaQTDx0EUKSZhsR9W4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G2K6/unD51V9Qe83FdNytw7FCwdsWReYa/fP2hHbtU92CBFCiHsZHO3z8By1Uy0y5T+uUdC933FgJpa6R3dSelviO0NBIo/ZERo42F20xelRdYflhpDZBjSTfECM8rG4oRgJGpCTNyqBhZ8ttodDJBHBgfPnTehQER/FCQuwTRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=S/GyJdL9; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1722361655; c=relaxed/simple;
+	bh=VMOf7yDS1ve5N8z058oJ++LYu2tPK6pGSiRvIYPQ5fk=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=pP3a5AJ9mYeobXljaxxaabWiumxWQBI94kcKg+NucF9ap2+10I5vz9uc4QcjNEH2Kt7hSY5lcTPCk9k0jglI3BOYYZQ9H2y17driH68Y1yLB3sqVAvMrIvvcm4GxeChv1geNd43MYKaRE1DGVn5T+5qG2S3P/Q2IH2Od2z8RQH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=g/vqCh3T; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="S/GyJdL9"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7a1d7a544e7so339885985a.3
-        for <imx@lists.linux.dev>; Tue, 30 Jul 2024 09:05:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1722355528; x=1722960328; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ciJceeDlK4Y/meCsbSLF/LMnhpaQTDx0EUKSZhsR9W4=;
-        b=S/GyJdL9n0D1Z08eMtnCx+5bveMSRkNpRRg/N3CbdKMaDecP+QxnF3S7fB3wHSX4mo
-         LCLsPUR9pNmdIMpL4c7SbTq3AW6hW/rlWGwWn3PMDV/H78lRokNAJ262EDaI7Rdlx0T0
-         OuaXPlFmNwX7tJ+sHllmn1QAyffUPcJULQkDuITe4oqCStxNYfHAuHfFs1eQaEEpmPJZ
-         jRErEeVtLKWHLeCSHMPDuQX+uAikeYDh/9BjnYtWvYz2cMU2z5kU5YmDXvdax6Q/HZyE
-         hHtSswh57gV4Iov2ngDaED11pvk2naomdFbNCNYsMHql4F16HCwXXAh7rTscA8kz17F5
-         yQyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722355528; x=1722960328;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ciJceeDlK4Y/meCsbSLF/LMnhpaQTDx0EUKSZhsR9W4=;
-        b=Liod8087vyZSP0h9f/ufcwcar2DJ8561yRbY/Pl2lVICnX0Qk00LrIIUEKEiZd/WID
-         d+TVdG7OZG7A0FAtlB+dUwMLq8+9MVdb9AGVTzyWC5BaT9UmpzRDH8uEq5d2YgeoA1oa
-         WuOfcqiYHgNSU4PwtOxO3GYIas/1KGl8WUqmHfNWBSaRxwXC2Dco8DMTsBJDo8hv/LMv
-         6S4HMZX1LnSZ6RF7TXHv0h69v3WAzWwvrkP5OREtcFaSPzi2y6jbxdAqO2KfK7G3av0v
-         qjzFVA5XY3a5vclM86CG30obmLtQvyRoUNPZZYmrZuJN9QCMRz6+P1qDa8+QTV8n4M48
-         MfQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUDz0vUfkbf7dD5Gm7UCJ0IPJeBWE7J31sfL9EtJx7b9bxKMV9UkA/jb9h2D1wJ5HsIsYn1v1qtKF4FZOQyRz7PvIA
-X-Gm-Message-State: AOJu0Yy+mqbyX+G3ajAEz2fQo0q3Hmj15nPlH1sQa9xCOxEYNpZO1cvv
-	q1Qfjn4rIA9MPSJyy/PslUwKc0fcgnqf5Y5t499DmidvRlYpFVmTYlHFpdzspp0=
-X-Google-Smtp-Source: AGHT+IEqLv3C2h4BQ+3fI7pKVhff0eutIQIkZ2jsV14fbu5lHsoFKAnZxlGiOhZ4pHufize9xVS64Q==
-X-Received: by 2002:a05:620a:4090:b0:79b:efe1:1222 with SMTP id af79cd13be357-7a1e52fbb32mr1673543485a.63.1722355528312;
-        Tue, 30 Jul 2024 09:05:28 -0700 (PDT)
-Received: from nicolas-tpx395.lan ([2606:6d00:15:820c::580])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d745f06asm644089685a.134.2024.07.30.09.05.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 09:05:28 -0700 (PDT)
-Message-ID: <2229769f3a9baf58fbeeed93fa4b0373a02055e3.camel@ndufresne.ca>
-Subject: Re: [PATCH v2 2/2] media: imx: vdic: Introduce mem2mem VDI
- deinterlacer driver
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Marek Vasut <marex@denx.de>, linux-media@vger.kernel.org
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Fabio
- Estevam <festevam@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Philipp Zabel <p.zabel@pengutronix.de>, Sascha
- Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Steve
- Longerbeam <slongerbeam@gmail.com>, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
- linux-fbdev@vger.kernel.org,  linux-staging@lists.linux.dev
-Date: Tue, 30 Jul 2024 12:05:26 -0400
-In-Reply-To: <8aea6cc0-10bf-48b8-add9-eb3f1caa2d66@denx.de>
-References: <20240724002044.112544-1-marex@denx.de>
-	 <20240724002044.112544-2-marex@denx.de>
-	 <5e5fba4fd6c3c0c9df23697bd328367e5fdfa923.camel@ndufresne.ca>
-	 <8aea6cc0-10bf-48b8-add9-eb3f1caa2d66@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="g/vqCh3T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1722361638; x=1722966438; i=wahrenst@gmx.net;
+	bh=VMOf7yDS1ve5N8z058oJ++LYu2tPK6pGSiRvIYPQ5fk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=g/vqCh3THj61pylsuU5ijECaxzl8i8SWz6/iI3gNNgo8uIUKWuyUGtLak7csPXZU
+	 tnYe9/pxRNjH60NnfFb2b+9y1dgvjZ1K4ckZcBNJqOia4Dlr0Sr6GXGaFWZcItbCn
+	 0+yQEnKsIzysbvsFMMkAg6i6gAdmQBU3c8rVMUp0AzzmNrtQ4R6mejigz+qKHZLvl
+	 DzgJv7wF9yQGirvVF29+QYDuw3ZPx2TCVLr6XJYIgqlmx99UzBitrMGa/gIIQHiNJ
+	 ZpV/aeUteHqXjP3x9TjJG5cqdVsETzTUf/y5GnekFl2QPVly1T99Zyj1MSCRvhopb
+	 G5DEh6ylIDhI9Q3daw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mlw7f-1rrENp0qih-00agrr; Tue, 30
+ Jul 2024 19:47:18 +0200
+Message-ID: <0848d006-092a-45fe-a1fb-949b55a3177a@gmx.net>
+Date: Tue, 30 Jul 2024 19:47:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Fabio Estevam <festevam@gmail.com>, Clark Wang <xiaoning.wang@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: spi-fsl-lpspi: No effective_speed_hz support yet
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:PVpfFJGwOizDRSDokGh/lWXBeDNOJWj5dYljNLcYNQvWVJMwkJx
+ zVveLPkIJUls2ofhIa/uX/QALUP2TZjmFzTj3QB2pUJZruEv1s+tCTXK6BNamE9cWCJNbLW
+ jOt6CtmjX0rGpeLsUHLyP6/TNkIDYkjYHogB8domUHa3M725QVCec8cJyoiKH9wAYCWVZXE
+ /Dqbj2jcgeH5d/j7lbUXA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Kc4wkDL7niA=;Hd2m7LfcWVIvHm68uUiIV6Yi6ve
+ nsW69xAa+UB9wx2ZpGYnmwlYxJF3jV5UMWUKJXVtmelWu1WZHeunoMC6S5QQajRbQwJ01X6fr
+ Q9p1BO+xkPXcShFkJKybavMl2L7mFwlFqnOWYk9ymq+9htuqY3qc9Fl9RXIrj4c+Q+2REPhS9
+ nyhxujjsbB8qQJAP8bqk4eEmVhvCDIsHjyFpjRVekxJ6/0SnfnSpZXCnoQ3VhU3HAcgBTbxrA
+ mCxGgIQy/Rf5p5qeLaDHSYiMaReff9NLRuWksLYiY1VYqwKRNOybSc9VbGYximuvONktxuFd1
+ dSb/DDEXz82PJBFI24MLew8z0GHxjx0SNnWFL0GIxnmHIBkDA/781yi9Hudfme+zwQGvJ17Kx
+ /KvJi3m9zBXibr0RiT6VkH/k3nxufpif4KcRfZfkhAy9mTi5NFWgvVaJbPFMACG9pSC+Ns6X/
+ F4hQtGpsSSQQxO/UlkiQrxN2tEXMit+TMEVciLGrpzsL0Yce+95w7uTXWit3FFL9uQNtcjiaF
+ uCQIucpN+IMPuCcp5Smsf8OUW+A1qr+JJTDG5H74JTf0FLj4hlTRL2hFr8Bqq0anHweIYMYOK
+ ZqA8amAsfVNulvkd0MPkK1JBpw2os9zyNTmZ99iDeO1wJGEgsPtvS2nIKtQOerwAbVNlNjo+5
+ fi9IElatrthKmK6tv8D6p4AN29xbeKwMHCpPQu23IxvM+caSK5E0c4oTmVjA0m1rKJgYHDLmS
+ D6xE9KBe17QlrzBp89fp4rICopvtNxPZddmkqAJaRGImXKdG3hqry1JYLiEcGf+TyTeKU206K
+ 5m3085XzFUxDkWwUlBLxbGDQ==
 
-Le lundi 29 juillet 2024 =C3=A0 04:16 +0200, Marek Vasut a =C3=A9crit=C2=A0=
-:
-> On 7/24/24 6:08 PM, Nicolas Dufresne wrote:
-> > Hi Marek,
->=20
-> Hi,
->=20
-> > Le mercredi 24 juillet 2024 =C3=A0 02:19 +0200, Marek Vasut a =C3=A9cri=
-t=C2=A0:
-> > > Introduce dedicated memory-to-memory IPUv3 VDI deinterlacer driver.
-> > > Currently the IPUv3 can operate VDI in DIRECT mode, from sensor to
-> > > memory. This only works for single stream, that is, one input from
-> > > one camera is deinterlaced on the fly with a helper buffer in DRAM
-> > > and the result is written into memory.
-> > >=20
-> > > The i.MX6Q/QP does support up to four analog cameras via two IPUv3
-> > > instances, each containing one VDI deinterlacer block. In order to
-> > > deinterlace all four streams from all four analog cameras live, it
-> > > is necessary to operate VDI in INDIRECT mode, where the interlaced
-> > > streams are written to buffers in memory, and then deinterlaced in
-> > > memory using VDI in INDIRECT memory-to-memory mode.
-> >=20
-> > Just a quick design question. Is it possible to chain the deinterlacer =
-and the
-> > csc-scaler ?
->=20
-> I think you could do that.
->=20
-> > If so, it would be much more efficient if all this could be
-> > combined into the existing m2m driver, since you could save a memory ro=
-untrip
-> > when needing to deinterlace, change the colorspace and possibly scale t=
-oo.
->=20
-> The existing PRP/IC driver is similar to what this driver does, yes, but=
-=20
-> it uses a different DMA path , I believe it is IDMAC->PRP->IC->IDMAC .=
-=20
-> This driver uses IDMAC->VDI->IC->IDMAC . I am not convinced mixing the=
-=20
-> two paths into a single driver would be beneficial, but I am reasonably=
-=20
-> sure it would be very convoluted. Instead, this driver could be extended=
-=20
-> to do deinterlacing and scaling using the IC if that was needed. I think=
-=20
-> that would be the cleaner approach.
+Hi,
 
-Not that I only meant to ask if there was a path to combine
-CSC/Scaling/Deinterlacing without a memory rountrip. If a rountrip is neede=
-d
-anyway, I would rather make separate video nodes, and leave it to userspace=
- to
-deal with. Though, if we can avoid it, a combined driver should be highly
-beneficial.
+I want to use a Vertexcom MSE1021 SPI device with the i.MX93. This chip
+is a little bit special, because it must be operated within the range of
+6 and 7 MHz. That's why the mse102x driver provides debugfs output of
+effective_speed_hz. But I noticed that the spi-fsl-lpspi driver doesn't
+support the calculation of this, that's why effective_speed_hz is always 0=
+.
 
-cheers,
-Nicolas
+Are there plans to implement this?
