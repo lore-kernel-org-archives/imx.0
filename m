@@ -1,50 +1,51 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2040.outbound.protection.outlook.com [40.107.21.40])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011019.outbound.protection.outlook.com [52.101.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415401957E7
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 08:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CB8192B77
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 08:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722328277; cv=fail; b=orIkO/YYZdEEIpN+jxLmx5wotiyxfOpFLmHujL3AwjwPRk88vrBObfjKJHBRTVEME6hEcvkd6P1VKi+cu4uzv3Z36jK9FKP7RjAZUbTnj+b2Z2GNsW88pqEz/bNzOb8KWdKa8GQcyguJHh+35+pYUmTVwLwrwr4u2hY0GgNx8SM=
+	t=1722328909; cv=fail; b=huvF20knGojH93bfwSB5Vaap7VW4dDG5w1qXTYFI5D+pBqic2H6temKjJHtOObGse2ynDXnnnIkvGDCTAbUZhVDyzgLqJ/GjV/EiCCOFwhg5dBZIOjzQiIzIY+ySq1sYOvfbozZvMOoW0ITxCWYEWuhSUOHmSmaebm8wDhF2c94=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722328277; c=relaxed/simple;
-	bh=Fae17zTe0KVzvP7br114K1qrYCaQtp7BSOyEtkExVz0=;
+	s=arc-20240116; t=1722328909; c=relaxed/simple;
+	bh=DGnrtqybJmKgrGViDDQIBYSRKx1b/2QKG3AD7Oyb2lU=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=p+S6R32QjslAAr884SFNjeM0c26zKO9ybI3wRv7c3JHxasKlKnxTHolE/DLy1yiQxbrdIF1NaE2UrISEB8rcqpuK5geIfuY246E/zwZ/FuYVFp1DylSw7HcSA4U462LsROy0mcOR8Uyo4PBG/H/qUXS7tGKSxmr5YydHqcJh3kI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CMuVOE9w; arc=fail smtp.client-ip=40.107.21.40
+	 Content-Type:MIME-Version; b=Vs1hFp80KuHzPkghpW6W58JMEpvT8fVa6CdKLKh6OjbID980JFnNiLSGgVtW93ldtExubDnClWsngfDRkaA5WUuaDQp4kVJPnBwsMhjoBPrFPlQgGeSrkwSuQzvfVjC3plpiNzSUUaiP+Zgi5c13REYTjj/+5WpwhwjPBjWf/P0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XLpoUlUN; arc=fail smtp.client-ip=52.101.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CMuVOE9w"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XLpoUlUN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hh2i+1xGuIACdUnTBCQeK/damVi8bvEdoAPVJTsSzHC8LMkwGm4CXp6EVUjDgX4KnFQ05Xg9iVuRgbRNPfQS4hpdNq/T3iiD/U9pkKQifrupHHLICADoyU3cA9+JZRzlCjWlnDS2m8EnAErU+Ku01wUULq0EtpFDEYnLBp/wmt2mTlk+kM4fOEiYM+KEc31iOtoZ6dAavBY6vJ9n7OrVlg/0qiYIYnQX5hT87Ce3Hb6HZmEEbdKEHH/5FyKeRJHT1RcrbKcGepl2d6to5TkRKK/E1us5qwDML9AmcEnrrXS0u8BTgjBPB0WktfdlC8CGwMFOe2OOikSxyRaTcRFrDg==
+ b=yLMUCKRTbz00+1vyLxPceC4BxTRjA6Hdz6yUtGRMw4V3N7SGK8qrURKmBbVZ9uqeImBKgxoFT1Kc74XQGAdC9cclA+LQ2p+ALDIxXWBRNFDSJny+bN6porxGKKqisoZRZX8peZ5NZ8eIlMKBMfCR2lgQRUEwlzNbkQSbEbULAB3l8bAaTFyupYs28WKQk+tOvwiC1oi0mFMBhKNWAGS3qremN3WsQZ3JfcKwZM6hZis1Av1hhqm2EBmpVyVICxeJnJsDwM2bvwjhCNdF6wFH9hkbtqq9R4NO5/C1sxEa4GLAKtvRzXEGOwXlblJj9VPnoX+rVoDCXCbSVB1ydopBDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wx3PY8lenZt5TEjyXXDqzW5UxxYAX44rQZqV8WwuBiU=;
- b=nABt8G+CJ5n0u33AhNR54zXJIldfgC5KBqhBxzHEhIYV2t5DnKZOdmN4RJSH3GKNTIel5fzTnwimIZaqwIztJwRZo7xACeaAx1QTZpyYtkGdptvF7DcZun0QNBGR6XHvGmiZrSs8AcF/Tx+jSeHAhbJRiKyTjFAq4NpXxapDuWWKJMDliVOD+jO7Zib1gOYNhKJkkeArSc1GPy87lmnTfZNDaL49sv/5DG3g1oPY0syQVXcHoWYPGRilDsZz1xnTL/Xf8WGeGK+WqogIwAp4DVsk+QX3l6+iHsclDsEnkW08/sh6XFTHB67xp89JTeju0bJ5NFeRghoIls/QHRHaTA==
+ bh=X3ziwvcj0ZmvG5mHe9O+hAXIRptooor/Ie3mdZw/MIk=;
+ b=t9GaDmlOia5Hvl1ObwTvLhoL0MXEilFIIi74lrkMzkzQnaKe6ImYzF4O3WNRIvxXOwYOBPW/lXWwKE9+geI/Hq2SnMQeWRB/mwbbnn4Gr9YcVoGDJJvfhDBHBtdk3cyY3BQwa6rNa3Q74HeyH7J3DWEn+1C8xAtvqe78uUDqD9gp0zDgL4v0/9hbBAtiOGy7Os8oQz6fJJAT5ZNFIaF5r38rmxAvlhoKSswsNcvzHL7RnjkYMmxUBB/qGH/FK67Dn0iBsqe+0kRY/Fq58eV1K3i7r/oImenzaPXFbfxQKx4fUoQLXh0rUeqrMu73y6KB/xmPFvtFeJJWrgCN+aVk3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wx3PY8lenZt5TEjyXXDqzW5UxxYAX44rQZqV8WwuBiU=;
- b=CMuVOE9w2tp65lsXUbMncyGZESa7NED/LzCSGlxRMHRH0jUtObD4geHW5rl3KUmL7yzLl043gLdABB3WWJl/H3+I98AlWOhw7USgecQx1bvCV44hJgSRuotRgBGluVyIwE7ZVAqnDe6/tX+Ea944dhun+Y9EbfTuS41LoQIhD+TpqBV3akG4SpladEj3Gvskg9OOga2m+OyGbGE6OQhy39r9pQeWaOOjb/hUH4xK9JF6YoXeAmTd/3Ee8r5HS946Koz17hmfDTgcAmbQbWGgrIWFDHB+PQn+fMRovmTrcP7tfhp4AcYNluNykaUu8fyNGveHYhaHoV6h543l6XwMXg==
+ bh=X3ziwvcj0ZmvG5mHe9O+hAXIRptooor/Ie3mdZw/MIk=;
+ b=XLpoUlUNUeBkoJV8vz9ec7dahV91oKVEz0nG7RlB9wJEYqxg+evfwD/tS/iOov58soshwZoyJkwbp7mf/pS5AN8f7UB88ytDDS+IkPk3edX93rx2zT5dGXtTvAZ57+U65bjZWf4IDqULhvL1ctXzBLvqaYVt93ehAxULAj2s1I55rOero3jHgYZSsbCZWZaoRlqi2I2juSRjBfKy98LsowohkV0JNaFbvRBXd3jCVaUxllv+X9H4ZtG3rhUBDUjXjbStbRwcfOKwxTTMciA9ClzrhfqgWLA5X3DafPdKTnLq/A7ySv5q2toc+0f9ApYGO1aAT9/1Tfj1r/y7SPhKSA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AS4PR04MB9412.eurprd04.prod.outlook.com (2603:10a6:20b:4eb::5) with
+ by AS8PR04MB7589.eurprd04.prod.outlook.com (2603:10a6:20b:291::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.26; Tue, 30 Jul
- 2024 08:31:09 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
+ 2024 08:41:43 +0000
 Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
  ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
  ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
- 08:31:09 +0000
-Message-ID: <93485a85-65d6-4c49-9869-19248efefae7@nxp.com>
-Date: Tue, 30 Jul 2024 16:31:35 +0800
+ 08:41:43 +0000
+Message-ID: <e407affd-84a8-4556-8707-65ec79455317@nxp.com>
+Date: Tue, 30 Jul 2024 16:42:09 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/16] drm/imx: Add i.MX8qxp Display Controller KMS
+Subject: Re: [PATCH v3 00/19] Add Freescale i.MX8qxp Display Controller
+ support
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
@@ -55,16 +56,14 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
  festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
  aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, frank.li@nxp.com
-References: <20240712093243.2108456-1-victor.liu@nxp.com>
- <20240712093243.2108456-10-victor.liu@nxp.com>
- <reuwtcszfrh5vtkuckkng5zejbj3nh7ahgf2igy2kpyskxrgox@oigld6uy55aw>
+References: <20240724092950.752536-1-victor.liu@nxp.com>
+ <wky3mjl7fn773myatyrdsea6oc2xebkvrgmigmmoj36eswgqry@2kox5ad5dynl>
 From: Liu Ying <victor.liu@nxp.com>
 Content-Language: en-US
-In-Reply-To: <reuwtcszfrh5vtkuckkng5zejbj3nh7ahgf2igy2kpyskxrgox@oigld6uy55aw>
+In-Reply-To: <wky3mjl7fn773myatyrdsea6oc2xebkvrgmigmmoj36eswgqry@2kox5ad5dynl>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR02CA0054.apcprd02.prod.outlook.com
- (2603:1096:4:196::13) To AM7PR04MB7046.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SG2PR03CA0095.apcprd03.prod.outlook.com
+ (2603:1096:4:7c::23) To AM7PR04MB7046.eurprd04.prod.outlook.com
  (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,997 +72,353 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS4PR04MB9412:EE_
-X-MS-Office365-Filtering-Correlation-Id: db6e9ddf-adc8-44b3-167b-08dcb071f69f
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB7589:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63bb8d8e-49f6-4058-52cf-08dcb0737066
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QlAwOEl2YWVLcTU5WE1RWjNjOHR4S0lhRmhWR1pMSS9GYjdHY3ZiYTVMRjdh?=
- =?utf-8?B?N0RUT1BnZHgwSDliZmFSc05mekIzQ1g1Q1hkb0laRHZid1B3UzM2RkhwakxS?=
- =?utf-8?B?Yms0UWpkY2d5eDFzMnVBUVliK3FuUU9WdElqSk5ib0FxVWkwLzk5N2NjVkRI?=
- =?utf-8?B?bUxTa05TM1NoTGJiRlZvYXM2ZVIxYWFmOVEwYmtnRjVMSDhqQS9panR1czlE?=
- =?utf-8?B?ZEtzOUw4dFFiYmtscHg0TVpHQU9XTnR0Wm1JbVJrN2ZWUVFHTVVCY094eUVJ?=
- =?utf-8?B?dlZscHk1VjJKV3gzTmE4anc4bnovNE9IK3R4ZWVXQ3FjU0IyWjJZTS9KYjNa?=
- =?utf-8?B?b1JUY1E0SlprM3pGNXVlbEFaV1lXaitreDBuMlVXZFN0ckU4WTJVVnRicm03?=
- =?utf-8?B?bVhJNXdFVm03OFVlNlQxd1hlV1RvVmRXT3NsZ3ZhNEJGankxcFJpdDlOQVow?=
- =?utf-8?B?TmdMd0o4aFpXOXpFTEk4ZDlUU2t5b1NVTnZSMjRqeTVWUFNDNnpiQVRJcmZM?=
- =?utf-8?B?aC9yNGlQS2hCaEYxUFcveDFFbG42L01ZN1p5TEM0RVFlVzJ1WXRFT1hiSHJl?=
- =?utf-8?B?MERBenFFQmJmMTIwZTZkeWppYXo1TS9HcThqZGcwTGVmQ0tQNjlEWlcrOFcz?=
- =?utf-8?B?VFBUeS9CTFJEM2NsY0NQb2poWjBpZ0E4aU1qOXg5K0o0SjZrbzltckVqbytv?=
- =?utf-8?B?dGdVNzNLcHc0QkZvcUZkUGdqbXNJTCtUeE9wMGtWM1h4aS9ZaG1lWS9qNzZE?=
- =?utf-8?B?M2pCNk9tcDhVTVA1Ymx0WkdESWJibS95anVCTytGSFBOaWJRVGpHOWhISndY?=
- =?utf-8?B?VnB5Nzg0SjY3cXNsR1ptU3AvMC8wYksrMWE0QXFoeVA3MzBSb29nd0MxNG9M?=
- =?utf-8?B?djZlY3V1UU9rRmdaVzlXSEcyZE9PQlVSM1JWS3h5cTc1T0NUaEw0Tm94WkZn?=
- =?utf-8?B?RkRzcWFnSzBlMUlscisyeHJNR0xrUmtkWHNyb3RYbHBodlcwMDBpY3gyYSsx?=
- =?utf-8?B?STlOSE9lQWlYb2JxbjZHaktMMVkrOXVXQWg0d0xZSGxaVUtxVVg2TG1VTDRB?=
- =?utf-8?B?RzBPVi8zbmtGZS9CVi9NUHlrMkVYTkRkMlZnOXRlMG1uL2NHalBzMUI0YWtH?=
- =?utf-8?B?Tjg3L2FkWFFEV0JjRjlMbWJaelFiTDg3ZG5qSUhzd0c2L090ZmFHTlhzN2Ny?=
- =?utf-8?B?OEdURXBtRXFOakMyU1QrV1F0VG0yL1daazh1ZHNrNm1JUGVRUkgrWE5tcUxr?=
- =?utf-8?B?b0tucDVMSVJvQmdUL2d3VnhzN09pa1NtSmRjMmpnU2R4cG5PcFFWdjlYTWVv?=
- =?utf-8?B?Y0Y4TnR4Tk1PRjRWM0puYWZwSHhlR0k2MnZ4QkZVdXd6Y3NuVUg1emU3dnQ4?=
- =?utf-8?B?RGY5WkR2NjAyaW1NWmRrcnQrT1V1cUxvZTdPL0pNYXBvM2tOK2JBbDNONmk1?=
- =?utf-8?B?NWFacS9objhGUXZRUitodWUwK0RKSmdJTjFkVlZYM2NabjB3ZXppWXBlRlhh?=
- =?utf-8?B?RUdwa3p6OHFSYllpZ3pDVjdFK3h5YjVGcVZCUnRtZzVvaVlKWXlqVG9ReFFR?=
- =?utf-8?B?M0Z6WmVTS01LbFBjVGFSMjdrNnJvT1NjMXh4eXhOU3VVRW84UlFDbnFVQ2FP?=
- =?utf-8?B?bytJUGdaVy9IQzNNOXo3SDM2aUVzdjB3a0pWd0FEQUZPcTYzbWkxYzdkNDFj?=
- =?utf-8?B?OFc2eFdwcXhwQmZMWDQrZXdYaVZvUWdHQVNoTFZwR2V1Q0tsZHpzSS9ENTBV?=
- =?utf-8?B?U1dQKy9yaGowUlBQSzArVmZDSFZ5Rm1KSHpZQ3E2RWZVM3VYRzVRUjdFd09y?=
- =?utf-8?B?a3VnZ2VzZ2dtbXVnUHN6dz09?=
+	=?utf-8?B?WlVMOWZqQUsvblFKNHZzY2RWM2JvUjRFT2hVRmJGMkJKNnlYTTNQQVAwNGF0?=
+ =?utf-8?B?cE4zZnY4TTRGQXNIc2dFWnBNMWVKK0hSY0NvdS9CY2NiZ1FHVVRjSzZUMnNR?=
+ =?utf-8?B?N3lEeEhkcFU4VlNRc2NtNDExbXlBWVJ3L0tORWt4Z2l2VDQyZDE3MHR4bm01?=
+ =?utf-8?B?ZmZnMk5taVNOOUFJRVh0L2N4MGJONDdHcCs0YmphSHlOQmVuSUdGK0NEb0RH?=
+ =?utf-8?B?aVVJekd0cnJaeDRuWUlQOCtadEJvc2U0cnhtRXBrSC9VNytTb3RpallUM1VX?=
+ =?utf-8?B?eDAranF6RGt1RDNqZWFtMEQwTlF3ZDJlSTY0b282TXQ2ZkNTM0NqdkZJUWk1?=
+ =?utf-8?B?ZnFITnh6d0ZKWklpNGRETUhtS21ueXE5QXhvcHpNZmFjU0Q5QkdCUk5ZYnlp?=
+ =?utf-8?B?N0tSNFB5c3RDdTlrQXJNQlA4YkVwbWNoZlRjWDFLRW1mSW1VdFh3T3d1L0xO?=
+ =?utf-8?B?T25hc29VQTVrQTJsUEJ4NlRDNWhVR0tyZlhmNVFiWFNjREhlUmdZNmhIcnNv?=
+ =?utf-8?B?K1FmQkRJazNIdldNMVdIQmNxd3hjVmltbTVyamFVdXNsenRhZzAxZmZIdm8v?=
+ =?utf-8?B?WC9aT1FPeXN2MGkwRjhrZ0pFTU1HclBCUHh3UStsRXRCVzF2MmZLRlVDcDY5?=
+ =?utf-8?B?VDY2d0hERkhRUzJLc3Vtc3pGUloveEluV2JtbjQ4ayt2NHpIdmRNRnNZb0J4?=
+ =?utf-8?B?ZFp4bnNoMnlzd1lmR3hFSXlpSWlrNEpyajJtTkRHN2cvWmljc1ZCOUFrUnRa?=
+ =?utf-8?B?ck1BNU5oVXo2bU1mMUdCMHdvWDZNVVhYcitwRWRHb3poT2M3aVFrMU00a1h0?=
+ =?utf-8?B?NGtMZEpSM0ZXelBOSGJWR0p0amJ3eUgzbkRRRUZGU3NvSWZGbVpuVGZQREVk?=
+ =?utf-8?B?SlREcTRXV3VoWWtIRmJleG5aVkNDa3UrVGVuYW1QdFRkU1ZTc1FjdFJrMGxI?=
+ =?utf-8?B?UzlOaUswOGduRXk4NGlJVHlweE5jajAvZTVLVXpMUi85RnphUS9CU01SaVF2?=
+ =?utf-8?B?TzZVVzlaS2lFWFFId1A3T21qVURhM0sraG45UVh1RzdZNXU4eHZEMkMrcDVq?=
+ =?utf-8?B?WDV2aXVwZVBYWTZZYk1Ob2hiMHh6dHRLenBQdUlVcFBzalBjaENvczQwaGZv?=
+ =?utf-8?B?YkFQOFNReFh5RS82UTVPNjkyalZmMVBzMHlvSjFNL2EwbFdrNlNRRnU1Q0lO?=
+ =?utf-8?B?cDZGR2lSN3RZNEVnRkVnYms1MWtSSkJVMFdRRG5nLzY0MzVCVzl6NzlnQ2ZR?=
+ =?utf-8?B?a2VRSnlkQ3JyVVRPTGthNEN5azcydHYva2pWT1l0bVhRYVNUWHFSVVBINGZS?=
+ =?utf-8?B?anIrYk5HSTRjYVp6c3dodmZ2MS9NeGxHaS9kQ3FEcTNrVWRNL3R4R01hdU9I?=
+ =?utf-8?B?aHVzNVJ4SnpSQTR3UlltUm84dklmTVhWWXcycUJ1Szk0SGdXYW5FQlpGSkRR?=
+ =?utf-8?B?TUVvMW15azVwVmxlai9IMGU1ay9UcWNOL3h1akhKYURsUS83UWlrbm96ckFH?=
+ =?utf-8?B?TjlXTkpST2xtR3BVMG1xWUpSVnVxK0FWNzYwL3RPK3ZJNFZYQkd0bWhvVUlz?=
+ =?utf-8?B?aEk1MFhDODFRYUVMaS94OEp0S1dLUGUxTWxoSDU5Vzc3STJCSzdudHdGanBw?=
+ =?utf-8?B?OENaM3RYL21QYUNlazZUZmF4R1dDMVZycC9NdHNnWVFkUERwVUYyRXlHNWxK?=
+ =?utf-8?B?UE92RXRSWHdCOHFBRmNiZjJWeUl3a1NXdGM5clV6ZGVrRCtrRGlIVWVFYWUz?=
+ =?utf-8?Q?CY+mxPYlRee+Vz6sxE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eUxuOWJDbU9OZFhHclhNK05oN1FXeHJhKyt4TFlGbSszRFM3dm9leldPRE56?=
- =?utf-8?B?RFpFdHVVc0lsdHBsbHVKb01yaloyMzZ2bFpMVnd2UWIrZW9zemJ2RVliT21H?=
- =?utf-8?B?TU5tN1VSTllLWkhZVFU2Q2o3RmxSSmwxZ1ZSZUlYZndqVTR0RHRlWW1XMmd3?=
- =?utf-8?B?dHpZaENEQ2tWQkEycTgwb2VmcEowU2tYYngvaVgzaG5WUGcwaXFObHZEZWRQ?=
- =?utf-8?B?amJxQkRZTXgrVHlYcjVNSFlSMmp3K3V0MlRuUlZtMmE0blpzL0VsK3ZNVzR0?=
- =?utf-8?B?cUtEeGdnMFdtdUJzTUoxWlROQ1ozQXdRTHhvYXlobkM5cVdBYnFKNjRGZDVw?=
- =?utf-8?B?N0pJbkpWVHplS0V6ZFg4M3pSUnBWenhQd29NbGI1d2dmSDZOaEU0TGVrMUpW?=
- =?utf-8?B?ZzRjRkZjb0loMDZUbnByRjJ1NmROTkplUFJIVFFGamtuNGNVRFNPZFdPelAx?=
- =?utf-8?B?OU1QNlRTaWxQWWhoSW5tMEFiQW8vU2d4STBNZ0g1Z2dDbEFla0JCb2lSQkEr?=
- =?utf-8?B?UWlHaW5oL2pZOWJBaWR4NU5EamNIMUl3RnI4eFhSbFgyeHRIWlcvNzEyVTN1?=
- =?utf-8?B?bWxlQ3RDT2IzK1pEOWpTWU1IODB5SUhZNERERVZoZ0lFUWhHdnpIay9mK01u?=
- =?utf-8?B?WGxscnRXUlFMc25CWDdVNTRoYjlTOStzZ3VYeG9tcCtReHliWmlldmVqaTdt?=
- =?utf-8?B?aXg2aDZoN2JCUUU0VzRjSlpIRldjMGxiVSsvdVYyWFZTeitYc1hPS0pyN3lQ?=
- =?utf-8?B?Nks5N2MxUDJ0NjY5UWNTTUE2QTIwenkxUVNhMVNUZGdzVUdEMnFka2J2WXlO?=
- =?utf-8?B?cm9GOUx0WmVyNXZXemF1b29qbzFsVm1nN2dPbG5IR0ZSaDIrVG5jQ2hTN0hO?=
- =?utf-8?B?aitoRHFRekxueU9TM3V5bit6TDk2dVZ5N25KaFNMY1k3eDdlcDQ2a1luSHJ1?=
- =?utf-8?B?d3VaTittSlVRbDB5OUhmY1cyZG9MODJ1eXFYOGp5UmYwTTVmZmlrM1lMUzFm?=
- =?utf-8?B?TGRyRDQvU1B1Z203d3lCY21sL05CcllnaGZQcGZtSytSUUszZitQVk5IWWFH?=
- =?utf-8?B?T2xrUEN5R0t5ZWtwSEFBOHFxSlpocmQvUWZnUnNZT1hlaWNYTDlONFpYRjBt?=
- =?utf-8?B?cFJxalJPTzB3eFJtUnJVTitFdWJkTWNuT3V1eDVOMGNIVitxb0p0Nm5IMTFt?=
- =?utf-8?B?cDJ0SGdpTXZZeVZWUFJha2tUeURHT2dReWVUdWUzdXhXUy9jam0vRXR4M09W?=
- =?utf-8?B?UDAwMTJCN245UmdCaUdsNkYzU2Z3aEh5cWt6YVVGOW40THV5MVVmUncyajEz?=
- =?utf-8?B?UERTNlowTjcwOThoZ1BtTWtSTHJJNjlEMDJaTVc5UlMrZDdld1pZSVc3c3Zy?=
- =?utf-8?B?ZDZuTjZGdnVOVzQwMWFtZkhRRko3UnoyMnh0WmtScE1KeVNTUEY0QVF2T0ha?=
- =?utf-8?B?ajZObm9Vd2ZHdWtJWmhNTjludmVDWVdVQVRCQVgwd1kwbklTdjBITlJscEhv?=
- =?utf-8?B?Y0lobHk1NXdjZU54ZzYvYUJuTThoNHlleFM5OUlRc011K3g0NEZmVVd0Y3gx?=
- =?utf-8?B?NmV3Nmw0empKQ1YxQ3Z4cDFqTHVuRUl5Ny9sdTdNMVY2YXFETG5TbEtxeTVa?=
- =?utf-8?B?U2FmalRNSVZaOFViR21GV2QzdlQ0andGT2syTTFRZXNNZnlBdURKeDVkQ2xD?=
- =?utf-8?B?NERudEMxaUdnUGlia25WdXVCUE1yNGdoS2k3VzZRbmVrNWNSNDNhYmFkY2J1?=
- =?utf-8?B?SkI4YVZQelNkSmJmcC9sWjUrUVk3bGk2MzN4cHBpM2tGMCtiN051c1MrRFk2?=
- =?utf-8?B?K3ZndnlpMEZQTm15MGtiYmU1RWxyc3FlY2VyTDF5NUxGS1VFTGl0b2tXU09P?=
- =?utf-8?B?bTFtVDU2VXZ4V2VIYjRIRkpsUGYyc3Y2Nk1VcXNsQWNyUGJKSWh5RWIrQXdo?=
- =?utf-8?B?Z3JiUndNVW1oMEVzMS9HMWpzTUIrM3h0T2JPQzBaaThQZW82Z3JFMHdKRng4?=
- =?utf-8?B?RExtak5OUUVJTjRVOHdNVHF1MW90WVVKZjR4MmhGWlRFSG0ra3dNWHNTVlFL?=
- =?utf-8?B?S3BhMWlQMTdnNWxFUEJMaWw1aGlJRzVpcjFHUEJjUDNxblJXWU15OVVGNUcr?=
- =?utf-8?Q?mdDbJ0HE8sOP+4MEvBzv11fgC?=
+	=?utf-8?B?SFNBSTdSblFwengwdjVpemlqeGlDc3pyVkJLaURBRmtYZkFicFk0YkgwbWZO?=
+ =?utf-8?B?dlNSbWp5WFNiMlYwSGhBSU5aZVNaVHJNeWFYN1lOWGlsQWk0eTdzNThMQzJK?=
+ =?utf-8?B?ZWZDQ1dKbU1kZHROc2Y2S2wvZnJZVXlNWTRYWXNQcWNTeURCSGZJZzdTbVpq?=
+ =?utf-8?B?a1dUWG44Um84MUhFUWV5U01RNEhFSDl3VDhXZ2tXRTNWTURLY1l6czJtR3N6?=
+ =?utf-8?B?d05TdHhsSU4ycFRpS3lneTRWZWRkUGNHbHhvcXhhWUU0WHV5ekJkWXgxNnNP?=
+ =?utf-8?B?OWNuMUQ5a3NlMXNKSi9RdENnNjQ0cENISGNsZEgrY0hmMGhYYVluR1J0Q3JU?=
+ =?utf-8?B?ZzVzeEFObURxbkNnTm5lL25jU1dLSlFzVjQ5OU9PRWViR3RoZVM4dGkxcHVG?=
+ =?utf-8?B?dnRWYjViYllDOS9jRyszWVRORC9aNk9pb0tWQkg4TUEvV2grbGxrblE4MWRW?=
+ =?utf-8?B?bWhnRkl2MkFQTGFQSVAxMmZBdXZhUjhCelg5VWpZNHpOcjFuZFF1OFpocWRt?=
+ =?utf-8?B?S1N3bUUwdm93TENsSy9jK2RKbVhLV0xwUXNpQVlPbzRkcnR5WExITmZFL2lx?=
+ =?utf-8?B?RzN5Y3ZIZ3dqc294cEd0RlI0eVlmSGhsU1JOOHBZaFIxWmY3dmFSU3V2dUJW?=
+ =?utf-8?B?N3hhTkt6RDJnbVlQcEwyTEJuMzQ1blFyQmxCSlJmR3k4SERzK21BSmlYQ0tv?=
+ =?utf-8?B?R2NyZUl2ODVsenRtakF5anZpTFhYKy9IZ0IvZXh1YUkxdWZwaWJQNE1zdGhX?=
+ =?utf-8?B?TE1JMC9NU25RMmZjNFI5dGhCMjFnQThuNjNsclBkQzViM01KT2VmRXo3cytW?=
+ =?utf-8?B?SC9nTkM1U2RNdWZhd3BZNEtTeTIrcjNHM21YZmdFUWUzdlB1NEp4MitzWVJU?=
+ =?utf-8?B?MTMyRWYydHA5ZTJEdjZ0ZktzQXFXYzRJUjVJNVV6NDd0VTNmcFBIMUpGc0dq?=
+ =?utf-8?B?R1JMYzFPV2Z1VlhVSzlwZmxsd1NWQ0k1L1BNU2lMcDVJTDVGYlRhT1BOZUV5?=
+ =?utf-8?B?SG5wNHFhalc4bk5WMVQzakhqcHQxM1MrOVppbkQ5eUNnVUcwUjNGUGg5ODRG?=
+ =?utf-8?B?dy92cjJVL29QU1JuSitMaWM0c25ZS2FmMEFZU1c4V1R1UTcvUTd3c08yU3Q3?=
+ =?utf-8?B?dHRNUGtoazVrWWtuVXBORUZBTndiSThYa2E2ZlQ1S1hxV1Y5MUh5VVNzVUFm?=
+ =?utf-8?B?Y2wwb0J6RlBqNDUrYW9RMkUyT08yemQzdzRHbDVrQWNBWGttdFBwSGg1clJr?=
+ =?utf-8?B?V1VxMWZTQzJ0Q1NZclBuTndESDBSR0c3d214eEhQUnhuN0FSeG9uQm13a2tk?=
+ =?utf-8?B?R0FZaTBHdFlPRTZjenFpTUZZNXdtNlJpdkpWczZ1ajdSN1JtZjRTTm9UNzZ5?=
+ =?utf-8?B?V0VhK1JTNUt1dUdDdW50QSt3NVdyYnZ2aFFVVzdOdndtd3A1MEVVeXhKcExQ?=
+ =?utf-8?B?dERTUTlFS2pqVnA4RlVqS2Y4d3lPRnExQjNlUGxCQllXdlpZV09hRmlNVTJO?=
+ =?utf-8?B?QlUxYmJ5VWdjQy9wbCsrdjlhQU5wdG5UVCt0TENOWEhTVDljMm9CYlZJZXRX?=
+ =?utf-8?B?Um1UWHVwajJYNWpTOUd2QzE4M1RzUGVUaXlITlVyRHQ5MTFCY0d2a3laTmor?=
+ =?utf-8?B?OExMdE5mVEsvaG5PS3hvNU9WTnYyK1pINWNyRFVtVUN3YnhnSFdwMUYydzRT?=
+ =?utf-8?B?ZFNsMDJYZURCeWdEeFlwWnhjck9jRFY3c044K2l6cEw2cENybzVkUmEyeUtI?=
+ =?utf-8?B?aDJ6NzBUTE5hRU05WStOc3d0bDFjVUVtTWhaUG1ocSsrU05rMEZGOS84UkIx?=
+ =?utf-8?B?VHlic3poZGltUHNqbmNDZ0h3dFhTcjk1Y3crc0JxM0dENW1yUWFhSndSYzBm?=
+ =?utf-8?B?MEc0OGMvOVRLbXZsVDM1a2w4MHdaV01HUE9nVzQwQ2U5Uk9rdG1jT2RqaVEr?=
+ =?utf-8?B?TW9VOTQ0VDYrSWo1L0g4NVdTekVub3pjckVtMVlkc3ovTXVxRUN2WFQ3dkRT?=
+ =?utf-8?B?dTk5MUVTUlBrMDJ1L1hOUDZyL2lVNjRiK05wZGp3T0Q2bW90cmM5VU9Kb2Yy?=
+ =?utf-8?B?OXZwckJ4RHpWU2MyZHpJaW9JWkkza25UNTMwWllMR3NPYi81Sng2S3NnK2d1?=
+ =?utf-8?Q?2euPgy9y1AaNMxdFDCQMN2FaC?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db6e9ddf-adc8-44b3-167b-08dcb071f69f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63bb8d8e-49f6-4058-52cf-08dcb0737066
 X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 08:31:09.6541
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 08:41:43.4354
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sKN/2mWSCjktvW25PDMKeG/1lEnaX3YJnNjfDP91Uzu3BXB0cYjxGtpiYMgGR9ANvKNug9Vew8VAdoGxGlvDqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9412
+X-MS-Exchange-CrossTenant-UserPrincipalName: vsFnvKCsQtXgR75frWw+A4Siwx+qYkIkBogNlknv5vahF6qPooih5wze3uMqjVgkY/tBTzswELUSL783ohnxGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7589
 
 On 07/28/2024, Dmitry Baryshkov wrote:
-> On Fri, Jul 12, 2024 at 05:32:36PM GMT, Liu Ying wrote:
->> i.MX8qxp Display Controller(DC) is comprised of three main components that
->> include a blit engine for 2D graphics accelerations, display controller for
->> display output processing, as well as a command sequencer.  Add kernel
->> mode setting support for the display controller part with two CRTCs and
->> two primary planes(backed by FetchLayer and FetchWarp respectively).  The
->> registers of the display controller are accessed without command sequencer
->> involved, instead just by using CPU.  The command sequencer is supposed to
->> be used by the blit engine.
-> 
-> Generic comment: please consider moving dc_plane / dc_crtc defines to
-> the source files and dropping the headers.
-
-struct dc_crtc is referenced from dc-drv.h and dc-kms.c.
-struct dc_plane is referenced from dc-crtc.c and dc-drv.h.
-
-If no objections, I may drop dc-crtc.h and dc-plane.h,
-and move necessary stuff to dc-kms.h.
-
-> 
+> On Wed, Jul 24, 2024 at 05:29:31PM GMT, Liu Ying wrote:
+>> Hi,
 >>
->> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->> ---
+>> This patch series aims to add Freescale i.MX8qxp Display Controller support.
+>>
+>> The controller is comprised of three main components that include a blit
+>> engine for 2D graphics accelerations, display controller for display output
+>> processing, as well as a command sequencer.
+>>
+>> Previous patch series attempts to do that can be found at:
+>> https://patchwork.freedesktop.org/series/84524/
+>>
+>> This series addresses Maxime's comments on the previous one:
+>> a. Split the display controller into multiple internal devices.
+>>    1) List display engine, pixel engine, interrupt controller and more as the
+>>       controller's child devices.
+>>    2) List display engine and pixel engine's processing units as their child
+>>       devices.
+>>
+>> b. Add minimal feature support.
+>>    Only support two display pipelines with primary planes with XR24 fb,
+>>    backed by two fetchunits.  No fetchunit dynamic allocation logic(to be done
+>>    when necessary).
+>>
+>> c. Use drm_dev_{enter, exit}().
+>>
+>> Since this series changes a lot comparing to the previous one, I choose to
+>> send it with a new patch series, not a new version.
+> 
+> I'm sorry, I have started reviewing v2 without noticing that there is a
+> v3 already.
+
+I've replied your comments on v2.
+
+Thanks for your review!
+
+> 
+> Let me summarize my comments:
+> 
+> - You are using OF aliases. Are they documented and acked by DT
+>   maintainers?
+
+As I replied in v2, I may document them if needed.
+No Nack/Ack from DT maintainers as of now.
+
+> 
+> - I generally feel that the use of so many small devices to declare
+>   functional blocks is an abuse of the DT. Please consider creating
+>   _small_ units from the driver code directly rather than going throught
+>   the components. Also please describe how everything fits together in
+>   the cover letter.
+
+As I replied in v2, they are modelled as separated devices and kinda
+accepted by Maxime and Rob.
+
+I'll try to describe more in cover letter.
+
+> 
+> - I assume that there more functional units that you are cunrretly
+>   adding and there is more versatility. Please describe that in the
+>   commit messages.
+
+I've documented all processing units and the other devices in the
+main display controller, nothing more.
+
+I'll list all processing units in commit message in next version.
+
+> 
+> - I see a lot of small functions, which can be inlined without the lost
+>   of code clarify. Please consider self-reviewing your code from this
+>   perspective.
+
+Can you please point out typical ones in patches in question?
+
+> 
+> - There were other small comments, but I think they are less important
+>   now. You might still consider them for v4.
+
+Thanks again for your review.
+
+> 
+>> To follow up i.MX8qxp TRM, I changed the controller name to "Display Controller"
+>> instead of the previous "DPU".  "DPU" is only mentioned in the SoC block
+>> diagram and represents the whole display subsystem which includes the display
+>> controller and prefech engines, etc.
+>>
+>> With an additional patch[1] for simple-pm-bus.c, this series facilitates
+>> testing a LVDS panel on i.MX8qxp MEK.
+>>
+>> Please do NOT merge patch 14-19.
+>>
+>> [1] https://lkml.org/lkml/2023/1/25/120
+>>
+>> v3:
+>> * Collect Rob's R-b tag on the patch for adding fsl,imx8qxp-dc-intc.yaml.
+>> * Combine fsl,imx8qxp-dc-fetchunit-common.yaml,
+>>   fsl,imx8qxp-dc-fetchlayer.yaml and fsl,imx8qxp-dc-fetchwarp.yaml
+>>   into 1 schema doc fsl,imx8qxp-dc-fetchunit.yaml. (Rob)
+>> * Document all processing units, command sequencer, axi performance counter
+>>   and blit engine. (Rob)
+>>
 >> v2:
->> * Find next bridge from TCon's port.
+>> * Drop fsl,dc-*-id DT properties from fsl,imx8qxp-dc*.yaml. (Krzysztof)
+>> * Move port property from fsl,imx8qxp-dc-display-engine.yaml to
+>>   fsl,imx8qxp-dc-tcon.yaml. (Krzysztof)
+>> * Drop unneeded "|" from fsl,imx8qxp-dc-intc.yaml. (Krzysztof)
+>> * Use generic pmu pattern property in fsl,imx8qxp-dc.yaml. (Krzysztof)
+>> * Fix register range size in fsl,imx8qxp-dc*.yaml.
+>> * Use OF alias id to get instance id from display driver.
+>> * Find next bridge from TCon's port from display driver.
 >> * Drop drm/drm_module.h include from dc-drv.c.
+>> * Improve file list in MAINTAINERS. (Frank)
+>> * Add entire i.MX8qxp display controller device tree for review. (Krzysztof)
+>> * Add MIPI/LVDS subsystems device tree and a DT overlay for imx8qxp
+>>   MEK to test a LVDS panel as an example. (Francesco)
 >>
->>  drivers/gpu/drm/imx/dc/Kconfig    |   2 +
->>  drivers/gpu/drm/imx/dc/Makefile   |   5 +-
->>  drivers/gpu/drm/imx/dc/dc-crtc.c  | 578 ++++++++++++++++++++++++++++++
->>  drivers/gpu/drm/imx/dc/dc-crtc.h  |  67 ++++
->>  drivers/gpu/drm/imx/dc/dc-de.h    |   3 +
->>  drivers/gpu/drm/imx/dc/dc-drv.c   | 236 ++++++++++++
->>  drivers/gpu/drm/imx/dc/dc-drv.h   |  21 ++
->>  drivers/gpu/drm/imx/dc/dc-kms.c   | 143 ++++++++
->>  drivers/gpu/drm/imx/dc/dc-kms.h   |  15 +
->>  drivers/gpu/drm/imx/dc/dc-plane.c | 227 ++++++++++++
->>  drivers/gpu/drm/imx/dc/dc-plane.h |  37 ++
->>  11 files changed, 1332 insertions(+), 2 deletions(-)
+>> Liu Ying (19):
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller processing
+>>     units
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller blit engine
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller display
+>>     engine
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller pixel
+>>     engine
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller AXI
+>>     performance counter
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller command
+>>     sequencer
+>>   dt-bindings: interrupt-controller: Add i.MX8qxp Display Controller
+>>     interrupt controller
+>>   dt-bindings: display: imx: Add i.MX8qxp Display Controller
+>>   drm/imx: Add i.MX8qxp Display Controller display engine
+>>   drm/imx: Add i.MX8qxp Display Controller pixel engine
+>>   drm/imx: Add i.MX8qxp Display Controller interrupt controller
+>>   drm/imx: Add i.MX8qxp Display Controller KMS
+>>   MAINTAINERS: Add maintainer for i.MX8qxp Display Controller
+>>   dt-bindings: phy: mixel,mipi-dsi-phy: Allow assigned-clock* properties
+>>   dt-bindings: firmware: imx: Add SCU controlled display pixel link
+>>     nodes
+>>   arm64: dts: imx8qxp: Add display controller subsystem
+>>   arm64: dts: imx8qxp: Add MIPI-LVDS combo subsystems
+>>   arm64: dts: imx8qxp-mek: Enable display controller
+>>   arm64: dts: imx8qxp-mek: Add MX8-DLVDS-LCD1 display module support
+>>
+>>  ...sl,imx8qxp-dc-axi-performance-counter.yaml |  57 ++
+>>  .../imx/fsl,imx8qxp-dc-blit-engine.yaml       | 204 +++++++
+>>  .../display/imx/fsl,imx8qxp-dc-blitblend.yaml |  41 ++
+>>  .../display/imx/fsl,imx8qxp-dc-clut.yaml      |  44 ++
+>>  .../imx/fsl,imx8qxp-dc-command-sequencer.yaml |  67 ++
+>>  .../imx/fsl,imx8qxp-dc-constframe.yaml        |  44 ++
+>>  .../imx/fsl,imx8qxp-dc-display-engine.yaml    | 152 +++++
+>>  .../display/imx/fsl,imx8qxp-dc-dither.yaml    |  45 ++
+>>  .../display/imx/fsl,imx8qxp-dc-extdst.yaml    |  72 +++
+>>  .../display/imx/fsl,imx8qxp-dc-fetchunit.yaml | 141 +++++
+>>  .../display/imx/fsl,imx8qxp-dc-filter.yaml    |  43 ++
+>>  .../display/imx/fsl,imx8qxp-dc-framegen.yaml  |  64 ++
+>>  .../display/imx/fsl,imx8qxp-dc-gammacor.yaml  |  32 +
+>>  .../imx/fsl,imx8qxp-dc-layerblend.yaml        |  39 ++
+>>  .../display/imx/fsl,imx8qxp-dc-matrix.yaml    |  44 ++
+>>  .../imx/fsl,imx8qxp-dc-pixel-engine.yaml      | 250 ++++++++
+>>  .../display/imx/fsl,imx8qxp-dc-rop.yaml       |  43 ++
+>>  .../display/imx/fsl,imx8qxp-dc-safety.yaml    |  34 ++
+>>  .../imx/fsl,imx8qxp-dc-scaling-engine.yaml    |  83 +++
+>>  .../display/imx/fsl,imx8qxp-dc-signature.yaml |  53 ++
+>>  .../display/imx/fsl,imx8qxp-dc-store.yaml     |  96 +++
+>>  .../display/imx/fsl,imx8qxp-dc-tcon.yaml      |  45 ++
+>>  .../bindings/display/imx/fsl,imx8qxp-dc.yaml  | 236 +++++++
+>>  .../devicetree/bindings/firmware/fsl,scu.yaml |  20 +
+>>  .../fsl,imx8qxp-dc-intc.yaml                  | 318 ++++++++++
+>>  .../bindings/phy/mixel,mipi-dsi-phy.yaml      |   5 -
+>>  MAINTAINERS                                   |   8 +
+>>  arch/arm64/boot/dts/freescale/Makefile        |   4 +
+>>  .../arm64/boot/dts/freescale/imx8-ss-dc0.dtsi | 408 +++++++++++++
+>>  .../imx8qxp-mek-mx8-dlvds-lcd1-lvds0-odd.dtso | 183 ++++++
+>>  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts |  34 ++
+>>  .../boot/dts/freescale/imx8qxp-ss-dc.dtsi     | 240 ++++++++
+>>  .../dts/freescale/imx8qxp-ss-mipi-lvds.dtsi   | 437 +++++++++++++
+>>  arch/arm64/boot/dts/freescale/imx8qxp.dtsi    |  28 +-
+>>  drivers/gpu/drm/imx/Kconfig                   |   1 +
+>>  drivers/gpu/drm/imx/Makefile                  |   1 +
+>>  drivers/gpu/drm/imx/dc/Kconfig                |   8 +
+>>  drivers/gpu/drm/imx/dc/Makefile               |   7 +
+>>  drivers/gpu/drm/imx/dc/dc-cf.c                | 157 +++++
+>>  drivers/gpu/drm/imx/dc/dc-crtc.c              | 578 ++++++++++++++++++
+>>  drivers/gpu/drm/imx/dc/dc-crtc.h              |  67 ++
+>>  drivers/gpu/drm/imx/dc/dc-de.c                | 151 +++++
+>>  drivers/gpu/drm/imx/dc/dc-de.h                |  65 ++
+>>  drivers/gpu/drm/imx/dc/dc-drv.c               | 275 +++++++++
+>>  drivers/gpu/drm/imx/dc/dc-drv.h               |  54 ++
+>>  drivers/gpu/drm/imx/dc/dc-ed.c                | 266 ++++++++
+>>  drivers/gpu/drm/imx/dc/dc-fg.c                | 366 +++++++++++
+>>  drivers/gpu/drm/imx/dc/dc-fl.c                | 136 +++++
+>>  drivers/gpu/drm/imx/dc/dc-fu.c                | 241 ++++++++
+>>  drivers/gpu/drm/imx/dc/dc-fu.h                | 129 ++++
+>>  drivers/gpu/drm/imx/dc/dc-fw.c                | 149 +++++
+>>  drivers/gpu/drm/imx/dc/dc-ic.c                | 249 ++++++++
+>>  drivers/gpu/drm/imx/dc/dc-kms.c               | 143 +++++
+>>  drivers/gpu/drm/imx/dc/dc-kms.h               |  15 +
+>>  drivers/gpu/drm/imx/dc/dc-lb.c                | 300 +++++++++
+>>  drivers/gpu/drm/imx/dc/dc-pe.c                | 140 +++++
+>>  drivers/gpu/drm/imx/dc/dc-pe.h                |  91 +++
+>>  drivers/gpu/drm/imx/dc/dc-plane.c             | 227 +++++++
+>>  drivers/gpu/drm/imx/dc/dc-plane.h             |  37 ++
+>>  drivers/gpu/drm/imx/dc/dc-tc.c                | 137 +++++
+>>  60 files changed, 7598 insertions(+), 6 deletions(-)
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-axi-performance-counter.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blit-engine.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-blitblend.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-clut.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-command-sequencer.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-constframe.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-dither.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-extdst.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-fetchunit.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-filter.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-framegen.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-gammacor.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-layerblend.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-matrix.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-pixel-engine.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-rop.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-safety.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-scaling-engine.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-signature.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-store.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-tcon.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc.yaml
+>>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,imx8qxp-dc-intc.yaml
+>>  create mode 100644 arch/arm64/boot/dts/freescale/imx8-ss-dc0.dtsi
+>>  create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-mek-mx8-dlvds-lcd1-lvds0-odd.dtso
+>>  create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-dc.dtsi
+>>  create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-mipi-lvds.dtsi
+>>  create mode 100644 drivers/gpu/drm/imx/dc/Kconfig
+>>  create mode 100644 drivers/gpu/drm/imx/dc/Makefile
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-cf.c
 >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-crtc.c
 >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-crtc.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-ed.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fg.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fl.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fu.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fu.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fw.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-ic.c
 >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.c
 >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-lb.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-pe.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-pe.h
 >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-plane.c
 >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-plane.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-tc.c
 >>
->> diff --git a/drivers/gpu/drm/imx/dc/Kconfig b/drivers/gpu/drm/imx/dc/Kconfig
->> index b66b815fbdf1..dac0de009273 100644
->> --- a/drivers/gpu/drm/imx/dc/Kconfig
->> +++ b/drivers/gpu/drm/imx/dc/Kconfig
->> @@ -1,6 +1,8 @@
->>  config DRM_IMX8_DC
->>  	tristate "Freescale i.MX8 Display Controller Graphics"
->>  	depends on DRM && COMMON_CLK && OF && (ARCH_MXC || COMPILE_TEST)
->> +	select DRM_GEM_DMA_HELPER
->> +	select DRM_KMS_HELPER
->>  	select GENERIC_IRQ_CHIP
->>  	help
->>  	  enable Freescale i.MX8 Display Controller(DC) graphics support
->> diff --git a/drivers/gpu/drm/imx/dc/Makefile b/drivers/gpu/drm/imx/dc/Makefile
->> index 1ce3e8a8db22..b9d33c074984 100644
->> --- a/drivers/gpu/drm/imx/dc/Makefile
->> +++ b/drivers/gpu/drm/imx/dc/Makefile
->> @@ -1,6 +1,7 @@
->>  # SPDX-License-Identifier: GPL-2.0
->>  
->> -imx8-dc-drm-objs := dc-cf.o dc-de.o dc-drv.o dc-ed.o dc-fg.o dc-fl.o dc-fu.o \
->> -		    dc-fw.o dc-ic.o dc-lb.o dc-pe.o dc-tc.o
->> +imx8-dc-drm-objs := dc-cf.o dc-crtc.o dc-de.o dc-drv.o dc-ed.o dc-fg.o dc-fl.o \
->> +		    dc-fu.o dc-fw.o dc-ic.o dc-kms.o dc-lb.o dc-pe.o \
->> +		    dc-plane.o dc-tc.o
->>  
->>  obj-$(CONFIG_DRM_IMX8_DC) += imx8-dc-drm.o
->> diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc-crtc.c
->> new file mode 100644
->> index 000000000000..e151e14a6677
->> --- /dev/null
->> +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
->> @@ -0,0 +1,578 @@
->> +// SPDX-License-Identifier: GPL-2.0+
->> +/*
->> + * Copyright 2024 NXP
->> + */
->> +
->> +#include <linux/completion.h>
->> +#include <linux/interrupt.h>
->> +#include <linux/irqreturn.h>
->> +#include <linux/pm_runtime.h>
->> +#include <linux/spinlock.h>
->> +
->> +#include <drm/drm_atomic.h>
->> +#include <drm/drm_atomic_helper.h>
->> +#include <drm/drm_atomic_state_helper.h>
->> +#include <drm/drm_crtc.h>
->> +#include <drm/drm_device.h>
->> +#include <drm/drm_drv.h>
->> +#include <drm/drm_managed.h>
->> +#include <drm/drm_modes.h>
->> +#include <drm/drm_modeset_helper_vtables.h>
->> +#include <drm/drm_plane.h>
->> +#include <drm/drm_vblank.h>
->> +
->> +#include "dc-crtc.h"
->> +#include "dc-de.h"
->> +#include "dc-drv.h"
->> +#include "dc-pe.h"
->> +#include "dc-plane.h"
->> +
->> +#define DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(c)				\
->> +do {									\
->> +	unsigned long ret;						\
->> +	ret = wait_for_completion_timeout(&dc_crtc->c, HZ);		\
->> +	if (ret == 0)							\
->> +		dc_crtc_err(crtc, "%s: wait for " #c " timeout\n",	\
->> +							__func__);	\
->> +} while (0)
->> +
->> +#define DC_CRTC_CHECK_FRAMEGEN_FIFO(fg)					\
->> +do {									\
->> +	typeof(fg) _fg = (fg);						\
->> +	if (dc_fg_secondary_requests_to_read_empty_fifo(_fg)) {		\
->> +		dc_fg_secondary_clear_channel_status(_fg);		\
->> +		dc_crtc_err(crtc, "%s: FrameGen FIFO empty\n",		\
->> +							__func__);	\
->> +	}								\
->> +} while (0)
->> +
->> +#define DC_CRTC_WAIT_FOR_FRAMEGEN_SECONDARY_SYNCUP(fg)			\
->> +do {									\
->> +	if (dc_fg_wait_for_secondary_syncup(fg))			\
->> +		dc_crtc_err(crtc,					\
->> +			"%s: FrameGen secondary channel isn't syncup\n",\
->> +							__func__);	\
->> +} while (0)
->> +
->> +static u32 dc_crtc_get_vblank_counter(struct drm_crtc *crtc)
->> +{
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +
->> +	return dc_fg_get_frame_index(dc_crtc->fg);
->> +}
->> +
->> +static int dc_crtc_enable_vblank(struct drm_crtc *crtc)
->> +{
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +
->> +	enable_irq(dc_crtc->irq_dec_framecomplete);
->> +
->> +	return 0;
->> +}
->> +
->> +static void dc_crtc_disable_vblank(struct drm_crtc *crtc)
->> +{
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +
->> +	disable_irq_nosync(dc_crtc->irq_dec_framecomplete);
->> +}
->> +
->> +static irqreturn_t
->> +dc_crtc_dec_framecomplete_irq_handler(int irq, void *dev_id)
->> +{
->> +	struct dc_crtc *dc_crtc = dev_id;
->> +	struct drm_crtc *crtc = &dc_crtc->base;
->> +	unsigned long flags;
->> +
->> +	drm_crtc_handle_vblank(crtc);
->> +
->> +	spin_lock_irqsave(&crtc->dev->event_lock, flags);
->> +	if (dc_crtc->event) {
->> +		drm_crtc_send_vblank_event(crtc, dc_crtc->event);
->> +		dc_crtc->event = NULL;
->> +		drm_crtc_vblank_put(crtc);
->> +	}
->> +	spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
->> +
->> +	return IRQ_HANDLED;
->> +}
->> +
->> +static irqreturn_t dc_crtc_common_irq_handler(int irq, void *dev_id)
->> +{
->> +	struct dc_crtc *dc_crtc = dev_id;
->> +	struct drm_crtc *crtc = &dc_crtc->base;
->> +
->> +	if (irq == dc_crtc->irq_dec_seqcomplete) {
->> +		complete(&dc_crtc->dec_seqcomplete_done);
->> +	} else if (irq == dc_crtc->irq_dec_shdld) {
->> +		complete(&dc_crtc->dec_shdld_done);
->> +	} else if (irq == dc_crtc->irq_ed_cont_shdld) {
->> +		complete(&dc_crtc->ed_cont_shdld_done);
->> +	} else if (irq == dc_crtc->irq_ed_safe_shdld) {
->> +		complete(&dc_crtc->ed_safe_shdld_done);
->> +	} else {
->> +		dc_crtc_err(crtc, "invalid CRTC irq(%u)\n", irq);
->> +		return IRQ_NONE;
-> 
-> And this is a counter-example to my previous questions. If you had 4
-> separate handlers, there would have been no need for the futile "invalid
-> CRTC" error, because it would not be possible at all.
-
-Ok, will drop the else clause.  Thanks.
-
-> 
->> +	}
->> +
->> +	return IRQ_HANDLED;
->> +}
->> +
->> +static const struct drm_crtc_funcs dc_crtc_funcs = {
->> +	.reset			= drm_atomic_helper_crtc_reset,
->> +	.destroy		= drm_crtc_cleanup,
->> +	.set_config		= drm_atomic_helper_set_config,
->> +	.page_flip		= drm_atomic_helper_page_flip,
->> +	.atomic_duplicate_state	= drm_atomic_helper_crtc_duplicate_state,
->> +	.atomic_destroy_state	= drm_atomic_helper_crtc_destroy_state,
->> +	.get_vblank_counter	= dc_crtc_get_vblank_counter,
->> +	.enable_vblank		= dc_crtc_enable_vblank,
->> +	.disable_vblank		= dc_crtc_disable_vblank,
->> +	.get_vblank_timestamp	= drm_crtc_vblank_helper_get_vblank_timestamp,
->> +};
->> +
->> +static void dc_crtc_queue_state_event(struct drm_crtc_state *crtc_state)
->> +{
->> +	struct drm_crtc *crtc = crtc_state->crtc;
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +
->> +	spin_lock_irq(&crtc->dev->event_lock);
->> +	if (crtc_state->event) {
->> +		WARN_ON(drm_crtc_vblank_get(crtc));
->> +		WARN_ON(dc_crtc->event);
->> +		dc_crtc->event = crtc_state->event;
->> +		crtc_state->event = NULL;
->> +	}
->> +	spin_unlock_irq(&crtc->dev->event_lock);
->> +}
->> +
->> +static enum drm_mode_status
->> +dc_crtc_check_clock(struct dc_crtc *dc_crtc, int clk_khz)
->> +{
->> +	return dc_fg_check_clock(dc_crtc->fg, clk_khz);
->> +}
->> +
->> +static enum drm_mode_status
->> +dc_crtc_mode_valid(struct drm_crtc *crtc, const struct drm_display_mode *mode)
->> +{
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +	enum drm_mode_status status;
->> +
->> +	status = dc_crtc_check_clock(dc_crtc, mode->clock);
->> +	if (status != MODE_OK)
->> +		return status;
->> +
->> +	if (mode->crtc_clock > DC_FRAMEGEN_MAX_CLOCK_KHZ)
->> +		return MODE_CLOCK_HIGH;
->> +
->> +	return MODE_OK;
->> +}
->> +
->> +static int
->> +dc_crtc_atomic_check(struct drm_crtc *crtc, struct drm_atomic_state *state)
->> +{
->> +	struct drm_crtc_state *new_crtc_state =
->> +				drm_atomic_get_new_crtc_state(state, crtc);
->> +	struct drm_display_mode *adj = &new_crtc_state->adjusted_mode;
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +	enum drm_mode_status status;
->> +
->> +	status = dc_crtc_check_clock(dc_crtc, adj->clock);
->> +	if (status != MODE_OK)
->> +		return -EINVAL;
->> +
->> +	return 0;
->> +}
->> +
->> +static void
->> +dc_crtc_atomic_begin(struct drm_crtc *crtc, struct drm_atomic_state *state)
->> +{
->> +	struct drm_crtc_state *new_crtc_state =
->> +				drm_atomic_get_new_crtc_state(state, crtc);
->> +	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
->> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
->> +	int idx, ret;
->> +
->> +	if (!drm_atomic_crtc_needs_modeset(new_crtc_state) ||
->> +	    !new_crtc_state->active)
->> +		return;
-> 
-> Why? Can it be called under such conditions?
-
-This is needed to make sure the balance of calling
-pm_runtime_resume_and_get(dc_crtc->pe->dev)
-from dc_crtc_atomic_begin() and calling
-pm_runtime_put(dc_crtc->pe->dev)
-from dc_crtc_atomic_disable().
-
-pm_runtime_resume_and_get(dc_crtc->pe->dev) is called
-only when the CRTC is to be enabled with a modeset
-commit.
-
-> 
->> +
->> +	if (!drm_dev_enter(crtc->dev, &idx))
->> +		return;
-> 
-> Can you please give an example of a driver using drm_dev_enter()/_exit()
-> in DRM callbacks?
-
-vc4.
-
-BTW, this is required by Maxime, as noted in cover letter.
-
-> 
->> +
->> +	/* request pixel engine power-on when CRTC starts to be active */
->> +	ret = pm_runtime_resume_and_get(dc_crtc->pe->dev);
-> 
-> This function doesn't return an error. So if pm_runtime_resume_and_get()
-
-Kerneldoc of pm_runtime_resume_and_get() mentions error code.
-'
-or a negative error code otherwise
-'
-So, it may return an error.
-
-> didn't increment the counter, corresponding pm_runtime_put() might cause
-> an underflow. Instead void functions should use pm_runtime_get_sync()
-
-pm_runtime_resume_and_get() is called from dc_crtc_atomic_begin(), which
-is atomic considering the general DRM atomic KMS idea.  So, if the call
-returns an error, the best we can do is to print the error out like
-this driver does IMO.  The call should not fail in the first place due
-to the "atomic" sense, though it can fail in theory.
-
-pm_runtime_get_sync() may also return an error. And it's Kerneldoc kinda
-says pm_runtime_resume_and_get() is better.
-'
-Consider using pm_runtime_resume_and_get() instead of it, especially
-if its return value is checked by the caller, as this is likely to result
-in cleaner code.
-'
-
-> 
-> Also can any of the code running afterwards result in the unclocked
-> exception if resume fails?
-
-Yes.  But, it's all atomic anyway...
-
-> 
->> +	if (ret)
->> +		dc_crtc_err(crtc, "failed to get DC pixel engine RPM: %d\n",
->> +			    ret);
->> +
->> +	atomic_inc(&dc_drm->pe_rpm_count);
-> 
-> Why do you need a separate RPM count? RPM code already has one.
-
-If no objections, I will drop the count and call
-pm_runtime_active(dc_crtc->pe->dev) from dc_crtc_disable_at_unbind().
-
-Thanks.
-
-> 
->> +
->> +	drm_dev_exit(idx);
->> +}
->> +
-> 
-> 
-> [...]
-> 
->> +
->> +static int
->> +dc_crtc_request_irq(struct dc_crtc *dc_crtc, struct device *dev,
->> +		    unsigned int irq,
->> +		    irqreturn_t (*irq_handler)(int irq, void *dev_id))
->> +{
->> +	int ret;
->> +
->> +	ret = request_irq(irq, irq_handler, IRQF_NO_AUTOEN, dev_name(dev),
->> +			  dc_crtc);
->> +	if (ret < 0)
->> +		dev_err(dev, "failed to request irq(%u): %d\n", irq, ret);
->> +
->> +	return ret;
->> +}
->> +
->> +static int dc_crtc_request_irqs(struct drm_device *drm, struct dc_crtc *dc_crtc)
->> +{
->> +	struct {
->> +		struct device *dev;
->> +		unsigned int irq;
->> +		irqreturn_t (*irq_handler)(int irq, void *dev_id);
->> +	} irqs[] = {
->> +		{
->> +			dc_crtc->de->dev,
->> +			dc_crtc->irq_dec_framecomplete,
->> +			dc_crtc_dec_framecomplete_irq_handler,
->> +		}, {
->> +			dc_crtc->de->dev,
->> +			dc_crtc->irq_dec_seqcomplete,
->> +			dc_crtc_common_irq_handler,
->> +		}, {
->> +			dc_crtc->de->dev,
->> +			dc_crtc->irq_dec_shdld,
->> +			dc_crtc_common_irq_handler,
->> +		}, {
->> +			dc_crtc->ed_cont->dev,
->> +			dc_crtc->irq_ed_cont_shdld,
->> +			dc_crtc_common_irq_handler,
->> +		}, {
->> +			dc_crtc->ed_safe->dev,
->> +			dc_crtc->irq_ed_safe_shdld,
->> +			dc_crtc_common_irq_handler,
->> +		},
->> +	};
->> +	struct drm_crtc *crtc = &dc_crtc->base;
->> +	int i, ret;
->> +
->> +	dc_crtc->irqs = drmm_kcalloc(drm, ARRAY_SIZE(irqs),
->> +				     sizeof(*dc_crtc->irqs), GFP_KERNEL);
-> 
-> Using array would remove the necessity to call drmm_kcalloc here().
-
-Ok, I may use a macro to define the array size instead.
-
-#define DC_CRTC_IRQS    5
-
-
-> 
->> +	if (!dc_crtc->irqs) {
->> +		dev_err(drm->dev, "failed to allocate CRTC%u irqs\n",
->> +			crtc->index);
->> +		return -ENOMEM;
->> +	}
->> +
->> +	for (i = 0; i < ARRAY_SIZE(irqs); i++) {
->> +		struct dc_crtc_irq *irq = &dc_crtc->irqs[i];
->> +
->> +		ret = dc_crtc_request_irq(dc_crtc, irqs[i].dev, irqs[i].irq,
->> +					  irqs[i].irq_handler);
->> +		if (ret)
->> +			return ret;
->> +
->> +		irq->dc_crtc = dc_crtc;
->> +		irq->irq = irqs[i].irq;
->> +
->> +		ret = drmm_add_action_or_reset(drm, dc_crtc_free_irq, irq);
-> 
-> Can you use devm_request_irq() instead?
-
-No.
-
-The requested irqs would be freed too late as devm_of_platform_populate()
-is called early from dc_probe().  They would be freed later than the time
-point where irq domain is removed from dc_ic_unbind().  That would cause
-a kernel Oops as I tried.
-
-> 
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
-> 
-> [...]
-> 
->> +
->> +static int dc_kms_init_encoder_per_crtc(struct dc_drm_device *dc_drm,
->> +					int crtc_index)
->> +{
->> +	struct dc_crtc *dc_crtc = &dc_drm->dc_crtc[crtc_index];
->> +	struct drm_device *drm = &dc_drm->base;
->> +	struct drm_crtc *crtc = &dc_crtc->base;
->> +	struct drm_connector *connector;
->> +	struct device *dev = drm->dev;
->> +	struct drm_encoder *encoder;
->> +	struct device_node *remote;
->> +	struct drm_bridge *bridge;
->> +	int ret = 0;
->> +
->> +	remote = of_graph_get_remote_node(dc_crtc->de->tc->dev->of_node, 0, -1);
->> +	if (!of_device_is_available(remote))
->> +		goto out;
->> +
->> +	bridge = of_drm_find_bridge(remote);
-> 
-> drm_of_find_panel_or_bridge() instead.
-
-Nope.
-
-The first bridge is always pixel combiner according to SoC design.
-It can't be a panel.
-
-> 
->> +	if (!bridge) {
->> +		ret = -EPROBE_DEFER;
->> +		dev_err_probe(dev, ret, "failed to find bridge for CRTC%u\n",
->> +			      crtc->index);
->> +		goto out;
->> +	}
->> +
->> +	encoder = &dc_drm->encoder[crtc_index];
->> +	ret = drm_simple_encoder_init(drm, encoder, DRM_MODE_ENCODER_NONE);
->> +	if (ret) {
->> +		dev_err(dev, "failed to initialize encoder for CRTC%u: %d\n",
->> +			crtc->index, ret);
->> +		goto out;
->> +	}
->> +
->> +	encoder->possible_crtcs = drm_crtc_mask(crtc);
->> +
->> +	ret = drm_bridge_attach(encoder, bridge, NULL,
->> +				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
->> +	if (ret) {
->> +		dev_err(dev,
->> +			"failed to attach bridge to encoder for CRTC%u: %d\n",
->> +			crtc->index, ret);
->> +		goto out;
->> +	}
->> +
->> +	connector = drm_bridge_connector_init(drm, encoder);
->> +	if (IS_ERR(connector)) {
->> +		ret = PTR_ERR(connector);
->> +		dev_err(dev, "failed to init bridge connector for CRTC%u: %d\n",
->> +			crtc->index, ret);
->> +		goto out;
->> +	}
->> +
->> +	ret = drm_connector_attach_encoder(connector, encoder);
->> +	if (ret)
->> +		dev_err(dev,
->> +			"failed to attach encoder to connector for CRTC%u: %d\n",
->> +			crtc->index, ret);
->> +
->> +out:
->> +	of_node_put(remote);
->> +	return ret;
->> +}
->> +
->> +int dc_kms_init(struct dc_drm_device *dc_drm)
->> +{
->> +	struct drm_device *drm = &dc_drm->base;
->> +	int ret, i;
->> +
->> +	ret = drmm_mode_config_init(drm);
->> +	if (ret)
->> +		return ret;
->> +
->> +	atomic_set(&dc_drm->pe_rpm_count, 0);
->> +
->> +	drm->mode_config.min_width = 60;
->> +	drm->mode_config.min_height = 60;
->> +	drm->mode_config.max_width = 8192;
->> +	drm->mode_config.max_height = 8192;
->> +	drm->mode_config.funcs = &dc_drm_mode_config_funcs;
->> +
->> +	drm->vblank_disable_immediate = true;
->> +	drm->max_vblank_count = DC_FRAMEGEN_MAX_FRAME_INDEX;
->> +
->> +	for (i = 0; i < DC_CRTCS; i++) {
->> +		ret = dc_crtc_init(dc_drm, i);
->> +		if (ret)
->> +			return ret;
->> +
->> +		ret = dc_kms_init_encoder_per_crtc(dc_drm, i);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	ret = drm_vblank_init(drm, DC_CRTCS);
->> +	if (ret) {
->> +		dev_err(drm->dev, "failed to init vblank support: %d\n", ret);
->> +		return ret;
->> +	}
->> +
->> +	drm_mode_config_reset(drm);
->> +
->> +	drm_kms_helper_poll_init(drm);
->> +
->> +	return 0;
->> +}
->> +
->> +void dc_kms_uninit(struct dc_drm_device *dc_drm)
->> +{
->> +	drm_kms_helper_poll_fini(&dc_drm->base);
->> +}
->> diff --git a/drivers/gpu/drm/imx/dc/dc-kms.h b/drivers/gpu/drm/imx/dc/dc-kms.h
->> new file mode 100644
->> index 000000000000..4f66b11c106a
->> --- /dev/null
->> +++ b/drivers/gpu/drm/imx/dc/dc-kms.h
->> @@ -0,0 +1,15 @@
->> +/* SPDX-License-Identifier: GPL-2.0+ */
->> +/*
->> + * Copyright 2024 NXP
->> + */
->> +
->> +#ifndef __DC_KMS_H__
->> +#define __DC_KMS_H__
->> +
->> +#include "dc-de.h"
->> +
->> +#define DC_CRTCS	DC_DISPLAYS
->> +#define DC_ENCODERS	DC_DISPLAYS
->> +#define DC_PRIMARYS	DC_DISPLAYS
-> 
-> If they are all equal, why do you need separate defines?
-
-Hmm, just for meaningful macro names to make code easy to read.
-
-> 
->> +
->> +#endif /* __DC_KMS_H__ */
->> diff --git a/drivers/gpu/drm/imx/dc/dc-plane.c b/drivers/gpu/drm/imx/dc/dc-plane.c
->> new file mode 100644
->> index 000000000000..a49b043ca167
->> --- /dev/null
->> +++ b/drivers/gpu/drm/imx/dc/dc-plane.c
->> @@ -0,0 +1,227 @@
->> +// SPDX-License-Identifier: GPL-2.0+
->> +/*
->> + * Copyright 2024 NXP
->> + */
->> +
->> +#include <drm/drm_atomic.h>
->> +#include <drm/drm_atomic_helper.h>
->> +#include <drm/drm_atomic_state_helper.h>
->> +#include <drm/drm_crtc.h>
->> +#include <drm/drm_drv.h>
->> +#include <drm/drm_fb_dma_helper.h>
->> +#include <drm/drm_fourcc.h>
->> +#include <drm/drm_framebuffer.h>
->> +#include <drm/drm_gem_atomic_helper.h>
->> +#include <drm/drm_plane_helper.h>
->> +
->> +#include "dc-drv.h"
->> +#include "dc-fu.h"
->> +#include "dc-plane.h"
->> +
->> +#define DC_PLANE_MAX_PITCH	0x10000
->> +#define DC_PLANE_MAX_PIX_CNT	8192
->> +
->> +static const uint32_t dc_plane_formats[] = {
->> +	DRM_FORMAT_XRGB8888,
->> +};
->> +
->> +static const struct drm_plane_funcs dc_plane_funcs = {
->> +	.update_plane		= drm_atomic_helper_update_plane,
->> +	.disable_plane		= drm_atomic_helper_disable_plane,
->> +	.destroy		= drm_plane_cleanup,
->> +	.reset			= drm_atomic_helper_plane_reset,
->> +	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
->> +	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
->> +};
->> +
->> +static int dc_plane_check_no_off_screen(struct drm_plane_state *state,
->> +					struct drm_crtc_state *crtc_state)
->> +{
->> +	if (state->dst.x1 < 0 || state->dst.y1 < 0 ||
->> +	    state->dst.x2 > crtc_state->adjusted_mode.hdisplay ||
->> +	    state->dst.y2 > crtc_state->adjusted_mode.vdisplay) {
->> +		dc_plane_dbg(state->plane, "no off screen\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int dc_plane_check_max_source_resolution(struct drm_plane_state *state)
->> +{
->> +	int src_h = drm_rect_height(&state->src) >> 16;
->> +	int src_w = drm_rect_width(&state->src) >> 16;
->> +
->> +	if (src_w > DC_PLANE_MAX_PIX_CNT || src_h > DC_PLANE_MAX_PIX_CNT) {
->> +		dc_plane_dbg(state->plane, "invalid source resolution\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int dc_plane_check_fb(struct drm_plane_state *state)
->> +{
->> +	struct drm_framebuffer *fb = state->fb;
->> +	dma_addr_t baseaddr = drm_fb_dma_get_gem_addr(fb, state, 0);
->> +
->> +	/* base address alignment */
->> +	if (baseaddr & 0x3) {
->> +		dc_plane_dbg(state->plane, "fb bad baddr alignment\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* pitches[0] range */
->> +	if (fb->pitches[0] > DC_PLANE_MAX_PITCH) {
->> +		dc_plane_dbg(state->plane, "fb pitches[0] is out of range\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* pitches[0] alignment */
->> +	if (fb->pitches[0] & 0x3) {
->> +		dc_plane_dbg(state->plane, "fb bad pitches[0] alignment\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int
->> +dc_plane_atomic_check(struct drm_plane *plane, struct drm_atomic_state *state)
->> +{
->> +	struct drm_plane_state *plane_state =
->> +				drm_atomic_get_new_plane_state(state, plane);
->> +	struct drm_crtc_state *crtc_state;
->> +	int ret;
->> +
->> +	/* ok to disable */
->> +	if (!plane_state->fb)
->> +		return 0;
->> +
->> +	if (!plane_state->crtc) {
->> +		dc_plane_dbg(plane, "no CRTC in plane state\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	crtc_state =
->> +		drm_atomic_get_existing_crtc_state(state, plane_state->crtc);
->> +	if (WARN_ON(!crtc_state))
->> +		return -EINVAL;
->> +
->> +	ret = drm_atomic_helper_check_plane_state(plane_state, crtc_state,
->> +						  DRM_PLANE_NO_SCALING,
->> +						  DRM_PLANE_NO_SCALING,
->> +						  true, false);
->> +	if (ret) {
->> +		dc_plane_dbg(plane, "failed to check plane state: %d\n", ret);
->> +		return ret;
->> +	}
->> +
->> +	ret = dc_plane_check_no_off_screen(plane_state, crtc_state);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = dc_plane_check_max_source_resolution(plane_state);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return dc_plane_check_fb(plane_state);
->> +}
->> +
->> +static void
->> +dc_plane_atomic_update(struct drm_plane *plane, struct drm_atomic_state *state)
->> +{
->> +	struct drm_plane_state *new_state =
->> +				drm_atomic_get_new_plane_state(state, plane);
->> +	struct dc_plane *dplane = to_dc_plane(plane);
->> +	struct drm_framebuffer *fb = new_state->fb;
->> +	const struct dc_fu_ops *fu_ops;
->> +	struct dc_lb *lb = dplane->lb;
->> +	struct dc_fu *fu = dplane->fu;
->> +	dma_addr_t baseaddr;
->> +	int src_w, src_h;
->> +	int idx;
->> +
->> +	if (!drm_dev_enter(plane->dev, &idx))
->> +		return;
->> +
->> +	src_w = drm_rect_width(&new_state->src) >> 16;
->> +	src_h = drm_rect_height(&new_state->src) >> 16;
->> +
->> +	baseaddr = drm_fb_dma_get_gem_addr(fb, new_state, 0);
->> +
->> +	fu_ops = dc_fu_get_ops(dplane->fu);
->> +
->> +	fu_ops->set_layerblend(fu, lb);
->> +	fu_ops->set_burstlength(fu, baseaddr);
->> +	fu_ops->set_src_stride(fu, fb->pitches[0]);
->> +	fu_ops->set_src_buf_dimensions(fu, src_w, src_h);
->> +	fu_ops->set_fmt(fu, fb->format);
->> +	fu_ops->set_framedimensions(fu, src_w, src_h);
->> +	fu_ops->set_baseaddress(fu, baseaddr);
->> +	fu_ops->enable_src_buf(fu);
-> 
-> Are you expecting that these ops might change? Can you call the function
-> directly?
-
-Looking at struct dc_fl and struct dc_fw, you may find struct dc_fu
-is the base class.  These function calls take struct dc_fu as
-arguments so that derived instances may specify their implementations.
-
-So, I can't call their implementation functions directly.
-
-> 
->> +
->> +	dc_plane_dbg(plane, "uses %s\n", fu_ops->get_name(fu));
->> +
->> +	dc_lb_pec_dynamic_prim_sel(lb, dc_cf_get_link_id(dplane->cf));
->> +	dc_lb_pec_dynamic_sec_sel(lb, fu_ops->get_link_id(fu));
->> +	dc_lb_mode(lb, LB_BLEND);
->> +	dc_lb_blendcontrol(lb);
->> +	dc_lb_position(lb, new_state->dst.x1, new_state->dst.y1);
->> +	dc_lb_pec_clken(lb, CLKEN_AUTOMATIC);
->> +
->> +	dc_plane_dbg(plane, "uses LayerBlend%u\n", dc_lb_get_id(lb));
->> +
->> +	/* set ExtDst's source to LayerBlend */
->> +	dc_ed_pec_src_sel(dplane->ed, dc_lb_get_link_id(lb));
->> +
->> +	drm_dev_exit(idx);
->> +}
->> +
->> +static void dc_plane_atomic_disable(struct drm_plane *plane,
->> +				    struct drm_atomic_state *state)
->> +{
->> +	struct dc_plane *dplane = to_dc_plane(plane);
->> +	const struct dc_fu_ops *fu_ops;
->> +	int idx;
->> +
->> +	if (!drm_dev_enter(plane->dev, &idx))
->> +		return;
->> +
->> +	/* disable fetchunit in shadow */
->> +	fu_ops = dc_fu_get_ops(dplane->fu);
->> +	fu_ops->disable_src_buf(dplane->fu);
->> +
->> +	/* set ExtDst's source to ConstFrame */
->> +	dc_ed_pec_src_sel(dplane->ed, dc_cf_get_link_id(dplane->cf));
->> +
->> +	drm_dev_exit(idx);
->> +}
->> +
->> +static const struct drm_plane_helper_funcs dc_plane_helper_funcs = {
->> +	.atomic_check = dc_plane_atomic_check,
->> +	.atomic_update = dc_plane_atomic_update,
->> +	.atomic_disable = dc_plane_atomic_disable,
->> +};
->> +
->> +int dc_plane_init(struct dc_drm_device *dc_drm, struct dc_plane *dc_plane)
->> +{
->> +	struct drm_plane *plane = &dc_plane->base;
->> +	int ret;
->> +
->> +	ret = drm_universal_plane_init(&dc_drm->base, plane, 0, &dc_plane_funcs,
->> +				       dc_plane_formats,
->> +				       ARRAY_SIZE(dc_plane_formats),
->> +				       NULL, DRM_PLANE_TYPE_PRIMARY, NULL);
->> +	if (ret)
->> +		return ret;
->> +
->> +	drm_plane_helper_add(plane, &dc_plane_helper_funcs);
->> +
->> +	dc_plane->fu = dc_drm->pe->fu_disp[plane->index];
->> +	dc_plane->cf = dc_drm->pe->cf_cont[plane->index];
->> +	dc_plane->lb = dc_drm->pe->lb[plane->index];
->> +	dc_plane->ed = dc_drm->pe->ed_cont[plane->index];
->> +
->> +	return 0;
->> +}
->> diff --git a/drivers/gpu/drm/imx/dc/dc-plane.h b/drivers/gpu/drm/imx/dc/dc-plane.h
->> new file mode 100644
->> index 000000000000..e72c3a7cb66f
->> --- /dev/null
->> +++ b/drivers/gpu/drm/imx/dc/dc-plane.h
->> @@ -0,0 +1,37 @@
->> +/* SPDX-License-Identifier: GPL-2.0+ */
->> +/*
->> + * Copyright 2024 NXP
->> + */
->> +
->> +#ifndef __DC_PLANE_H__
->> +#define __DC_PLANE_H__
->> +
->> +#include <linux/container_of.h>
->> +
->> +#include <drm/drm_plane.h>
->> +#include <drm/drm_print.h>
->> +
->> +#include "dc-fu.h"
->> +#include "dc-pe.h"
->> +
->> +#define dc_plane_dbg(plane, fmt, ...)					\
->> +do {									\
->> +	typeof(plane) _plane = (plane);					\
->> +	drm_dbg_kms(_plane->dev, "[PLANE:%d:%s] " fmt,			\
->> +		    _plane->base.id, _plane->name, ##__VA_ARGS__);	\
->> +} while (0)
->> +
->> +struct dc_plane {
->> +	struct drm_plane base;
->> +	struct dc_fu *fu;
->> +	struct dc_cf *cf;
->> +	struct dc_lb *lb;
->> +	struct dc_ed *ed;
->> +};
->> +
->> +static inline struct dc_plane *to_dc_plane(struct drm_plane *plane)
->> +{
->> +	return container_of(plane, struct dc_plane, base);
->> +}
->> +
->> +#endif /* __DC_PLANE_H__ */
 >> -- 
 >> 2.34.1
 >>
