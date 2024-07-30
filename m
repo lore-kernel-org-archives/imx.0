@@ -1,159 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758661662E8;
-	Tue, 30 Jul 2024 07:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1F0192B7E
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 07:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722325451; cv=none; b=VO/FaICqnKgQRQhqNhziCDWBMWhMhsqgGux3K1Mo0Ea1ZgR/A9dftF7EyVooab0e56qkqmsh+KtJXsdf+4Qb+3cWfQWgAgy2MewOvIRxXBITZpehtZ2mr+BMZvOtNcx+tjh7XmO9M4kVib2CU5yjiGzcfBXpuC4AZLsge9NRBUM=
+	t=1722325896; cv=none; b=L7MKB30sxSGAPgom7rGIaRC6HCkqmBw519nzMeHwLhEixyGzb9tHLER5E799CQGbpvVDs821XBqLl9ZG0JjGvQDHdh2q99rDNV2Ylw8GkxYpiAajd8HNf7g46rO0C5XrMtd726FaYWXvXbXfVJpKvlZe3t8qU7YyPVRikf8uhFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722325451; c=relaxed/simple;
-	bh=1g/t7ljDEEMZaF9QKFLSVrGcCV6DmGX+hiOIu+Dzc0E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GIOeg/IFmvgEWtsM7fDJbrUcAW3U2sImZYHqXUuPNwSgzu3596IAr071ZPxbzchbZkYWBYxagxuDW1Nj7SKGgIL8q+fC9ctpYTdkquz9L9y9yhVQ3fvtcPT0ylaW/R6pv9eWyQ79DDNlzkRZEF8bS38u/aHc8f29GHT1wYdfq3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKqPk131; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722325896; c=relaxed/simple;
+	bh=UG5WMBUA4OYVMeeEpBB6RKqHmwAMJbKUTbNJZrchjVU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i+pxRPUzyYCnp0GDo/D6vF9PsPS2ujlAOGHvO1nPWv27PRS8PvJRmtpPbeYmAn0ls9A+yy6LIwnUHi3nFw4wTqTBTMlU+UlMxUKxJXgXL6n3gyZ4u+mCCx4sFIKsrIiczYKqrB+1PT4i92fdu/fE0cGgt9nTUTwl31PBqOHW2Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Zfjr/kpq; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=o/W7PHNZ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKqPk131"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ADFC32782;
-	Tue, 30 Jul 2024 07:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722325451;
-	bh=1g/t7ljDEEMZaF9QKFLSVrGcCV6DmGX+hiOIu+Dzc0E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aKqPk131CCKu2OCRZYxmUf2q9yg/o2hqvU0QgKY8jDuxZSbKubqzyGBDof+eVRp7E
-	 P7SqGs3O+HWjYndUwjPOxzbQTR2dLa/tPPLv+QrDg9MzySUJ32+yw+rvRwoZ2+lDq4
-	 +5dDhEVr85Fdvr/cBIZcjP02wdfVJrbkYxawukWzjfKt19C3HmHW8eEwNeZksZ5yN+
-	 z+B2b4KhusPFp/4I840W7HshgOB0/40DMf2WuuTttGm+0sM9Rk9vaxaDwl0/wGhrkn
-	 vF8hsaYbO09GeWNRl6UGbMboYr3XpKsL1OuY6lHmS8DTWX5fNwZwEtlEabsCITjyGA
-	 SE2aYky5wR5tA==
-Message-ID: <0e7a8d52-6556-4531-882f-73513f99259b@kernel.org>
-Date: Tue, 30 Jul 2024 09:44:00 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Zfjr/kpq";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="o/W7PHNZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1722325892; x=1753861892;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4EFhy66mb2EN5Xg6Nodx0UoD7jYf664PaudI15ViaSI=;
+  b=Zfjr/kpqCDku63Z90NMZRhDzqQJ8mhPQ3PJ7CQSQpdiFy+St3wwmPgDl
+   /E5Q6fSqB9vDG6ve4NI4uj99BejhbfYAWefhBIXMQGoOPjFzmngn2U8kn
+   arkGOhvYVPTXx3UaCLKC/5+nQS2ISyPB3E3Fvh9zOBIREZS9/fxnkvLVB
+   5OV7A0Hh57Klni/hvb3N3wq8Rqgk8Thw/niW7xrjp9rrZR/hKYfp5Glkp
+   j/vwSvV1XqooiMiPJeZVnA0CAaL3ZV5FTxO1GpiwVyf9A77Y51T7EFw+o
+   m8YtfJbFGf577RcOLuy3q4VUSz5TXImLcnqbtfa1L9ZYFBrV3Q2bbc5mI
+   Q==;
+X-CSE-ConnectionGUID: fGX8/Tf4RF6A9OI8eUv2xQ==
+X-CSE-MsgGUID: DbIpd4ZkRgiQdzWtPw3XNw==
+X-IronPort-AV: E=Sophos;i="6.09,248,1716242400"; 
+   d="scan'208";a="38140493"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 Jul 2024 09:51:30 +0200
+X-CheckPoint: {66A89B82-11-2D4D5AC2-F2EAEA09}
+X-MAIL-CPID: 8507E70011AE48B9C1D51CE44F20DD35_3
+X-Control-Analysis: str=0001.0A782F1E.66A89B82.0148,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 51443167BE9;
+	Tue, 30 Jul 2024 09:51:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1722325886;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4EFhy66mb2EN5Xg6Nodx0UoD7jYf664PaudI15ViaSI=;
+	b=o/W7PHNZz/wnnj+4OjAeR7xhptF0tks0684Pr4Qvvl1a3fPcJ4GnKPj8rvDboL1MnZcXqO
+	XieU6y/F6DsGmxHRNwqBW7400W/mQkpbW81I+3kh3Ks7qNDiTPgL/Ea1znoJ551vBk4UFb
+	JMjFfD6axGZTohCgJQHRk3cOS+BhZkzz8v73ZDL3h/vVaPWVJm0+2thWI6EfrSUGkVCaHe
+	ynFdugcIq/0Ct0HP5E56enI8+DPBqqGAheJHLRvM6Ap8mw8T3bG2vlGLEK1k020pTFiHTB
+	fnzXneARZMf8Jvg1+bj5d7FULrAaTHlWWdC+d2XpZp2CJgRXP9cd5LMfRaRkVQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Clark Wang <xiaoning.wang@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-dma: enable dma support for lpspi
+Date: Tue, 30 Jul 2024 09:51:25 +0200
+Message-ID: <6166407.lOV4Wx5bFT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <d3f4dce4-9d44-4bf6-816f-e4f8ddaa0932@kernel.org>
+References: <20240729094511.159467-1-alexander.stein@ew.tq-group.com> <2840074.mvXUDI8C0e@steina-w> <d3f4dce4-9d44-4bf6-816f-e4f8ddaa0932@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/16] drm/imx: Add i.MX8qxp Display Controller pixel
- engine
-To: Liu Ying <victor.liu@nxp.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
- aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, frank.li@nxp.com
-References: <20240712093243.2108456-1-victor.liu@nxp.com>
- <20240712093243.2108456-8-victor.liu@nxp.com>
- <ibdzow7lvbimaefrp2z2aolgp4pytpq3dcr2y3pegjavvknhgm@2e6j3f4zytqp>
- <107d89b9-e7b8-4613-bc07-9af7b52c2b8a@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <107d89b9-e7b8-4613-bc07-9af7b52c2b8a@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 30/07/2024 08:55, Liu Ying wrote:
-> On 07/28/2024, Dmitry Baryshkov wrote:
->> On Fri, Jul 12, 2024 at 05:32:34PM GMT, Liu Ying wrote:
->>> i.MX8qxp Display Controller pixel engine consists of all processing
->>> units that operate in the AXI bus clock domain.  Add drivers for
->>> ConstFrame, ExtDst, FetchLayer, FetchWarp and LayerBlend units, as
->>> well as a pixel engine driver, so that two displays with primary
->>> planes can be supported.  The pixel engine driver as a master binds
->>> those unit drivers as components.  While at it, the pixel engine
->>> driver is a component to be bound with the upcoming DRM driver.
->>
->> Same question / comment: create subnodes directly, without going
->> through the subdevices. A lot of small functions that would benefit
->> being inlined.
-> 
-> Like I replied in patch 06/16, I can't create sub devices directly.
-> 
-> Can you please point out typical ones for those small functions if
-> the comment still stands?
-> 
->>
->>> +static int dc_cf_bind(struct device *dev, struct device *master, void *data)
->>> +{
->>> +	struct platform_device *pdev = to_platform_device(dev);
->>> +	struct dc_drm_device *dc_drm = data;
->>> +	struct dc_pe *pe = dc_drm->pe;
->>> +	struct dc_cf_priv *priv;
->>> +	int id;
->>> +
->>> +	priv = drmm_kzalloc(&dc_drm->base, sizeof(*priv), GFP_KERNEL);
->>> +	if (!priv)
->>> +		return -ENOMEM;
->>> +
->>> +	priv->reg_cfg = devm_platform_ioremap_resource_byname(pdev, "cfg");
->>> +	if (IS_ERR(priv->reg_cfg))
->>> +		return PTR_ERR(priv->reg_cfg);
->>> +
->>> +	id = of_alias_get_id(dev->of_node, "dc0-constframe");
->>
->> Is it documented? Acked?
-> 
-> Like I replied in patch 06/16, I can add aliases nodes to examples,
-> if needed.
-> 
-> No Nak from DT maintainers I'd say, but I hope there will be direct
-> Ack(s).
-> 
+Am Dienstag, 30. Juli 2024, 09:37:53 CEST schrieb Krzysztof Kozlowski:
+> On 30/07/2024 09:30, Alexander Stein wrote:
+> > Hi Krzysztof,
+> >=20
+> > Am Montag, 29. Juli 2024, 17:10:48 CEST schrieb Krzysztof Kozlowski:
+> >> On 29/07/2024 11:45, Alexander Stein wrote:
+> >>> From: Clark Wang <xiaoning.wang@nxp.com>
+> >>>
+> >>> Add DMA configurations for LPSPI nodes on i.MX8QX/QM/DXL.
+> >>>
+> >>> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> >>> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> >>> ---
+> >>> Using the DMA configuration bits from downstream kernel.
+> >>> Tested on TQMa8XxS.
+> >>>
+> >>>  arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+> >>>  1 file changed, 8 insertions(+)
+> >>>
+> >>> diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/ar=
+m64/boot/dts/freescale/imx8-ss-dma.dtsi
+> >>> index 1ee9496c988c5..8ae5f065b4180 100644
+> >>> --- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> >>> +++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+> >>> @@ -34,6 +34,8 @@ lpspi0: spi@5a000000 {
+> >>>  		assigned-clocks =3D <&clk IMX_SC_R_SPI_0 IMX_SC_PM_CLK_PER>;
+> >>>  		assigned-clock-rates =3D <60000000>;
+> >>>  		power-domains =3D <&pd IMX_SC_R_SPI_0>;
+> >>> +		dma-names =3D "tx","rx";
+> >>
+> >> Missing spaces. Unexpected order, unless that's the coding style for i=
+mx.
+> >=20
+> > Ack for the space, will correct. But the order is defined that way in
+> > Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+>=20
+> Bindings do not define the order of properties. The coding style does
+> and usually we expect property-x followed by property-x-names.
 
-It was not Acked, because there was no documentation added for it.
-Anyway, naming is quite cryptic, e.g. "0" in "dc0" is quite confusing.
-Do you expect different aliases for dc1 or dc9? But anyway, aliases for
-sub-devices of pipeline look wrong.
+Ah, you were talking about order of properties, not order of property
+values, my bad. Unfortunately imx (and also layerscape) is inconsistent,
+having both ways :(
+I'll go for you suggestion, this seems also to be the order used mostly.
 
 Best regards,
-Krzysztof
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
