@@ -1,136 +1,198 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011042.outbound.protection.outlook.com [52.101.70.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C498C19F466
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 13:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722344669; cv=none; b=kgeMgzM5apAyp8V7PvRzX84r4eC41LWtqmiIzVqnoRwGbxzhtCo0QyVf6bTeQnJEc9+0JB69o2Hq1pPb1jSrUPE/7/wrhnJ0XDrS5B/px2iPc2Vmv6+Qumx3bapFbSSg0/hVrfVhoS66G0wfrGihIU6c/RLhzsnfQa3LJBUzhqQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722344669; c=relaxed/simple;
-	bh=o7jV0TsjHShHuJW+lvGQPrtCv1eUSRwbwdqYfZNvf5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KYs4goctbnjXmqt0Om++8VY/g3r9vVrBl8t0D5sqYxGJMyIfdRMbbdIiaukwXFGin9jJ7g+SinSnGpeX628a1ugOmz06LD5kx4Zxez/LbN06n5n1mQGH1yooiUJ00wWAf4OpoDfTBhAli/sjC+u0azJ/HV1vv0vurDnj5VPllyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFPKnHPp; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E329719FA92
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 13:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722347246; cv=fail; b=rcICxqJXM/pxenOVovm/5CkAP08vWA3SZROcXq+wZH5UTt5tT6X9XABuK4A4x7zyEtcdfm6sbMl5LOPHqv3o+ikkGjNuQxDUg9BiBZGNG4yBbLueoDv8nxKfW113guyqBCCdVyITgcWH42+XgWhvnimKfodqeVoLCL19txsUsYk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722347246; c=relaxed/simple;
+	bh=4x5EeZ1QH4C+ZTBJ6d86bfP5sgTdag7r8OFUWCWLrRA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sZh147BGJ3tbASD5MyZK7nRURDEfkyh6fYhSDgbEhJxv6fJ5QW/KxY6OIAKu+FnAWBgzqov6yblKobjd97x/L2qMgcws1tOeyreopYxF+AHgETiMpCJK8R11/lK8ZQmJxOkPBY0533XS+F7AR3V5ZANr7uw7N4RK41KQRZMDq5E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JqDsdKDu; arc=fail smtp.client-ip=52.101.70.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFPKnHPp"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-6bce380eb96so2590428a12.0
-        for <imx@lists.linux.dev>; Tue, 30 Jul 2024 06:04:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722344667; x=1722949467; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HeccX9FlLPnJUb8SbtR469SLQigZSvmfeJTapPIcJEo=;
-        b=jFPKnHPpUhSyL4ivHeEbpdfYMEhSRqrG4HhCY6AlFOK+IB4m/9rx9sUvpSFkfiw+p5
-         zQnAekW47foT8Eb9yS3RYbchBHkMDC+ax7de1m8G9cnlzdelojyQMDz/P33+GrwRMxtK
-         zG1qbFWsH89oBHECXaqcWKaKzys95mcxBED2EZQY5nrDjz+Zws6o/CmTBY19XNRe8It0
-         +6DUsLtyWwT29YtvEXMrVTfXBER/9sS07H4V2P7wxoc2TPHeDc+lY40w0xBgDCvutb0o
-         1dGKxUf6kDUJVjp/OnqAJZRbBaQb8/01o/yiT0URifVsDp6/uBoJWNHlKzuB6AW1J+pF
-         zy0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722344667; x=1722949467;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HeccX9FlLPnJUb8SbtR469SLQigZSvmfeJTapPIcJEo=;
-        b=avm11zFGcdDoyFWg/cVng8TRMT5G7oL97UWXGN7XicNkWfLTyvqY4w4cqUcTLA51PS
-         luJDF9pJHhi88eu6Rykvs8PF0pLcnqGVAmceJqjlwqQ3rIQt28kFRuWTKTtFvZRJc+ta
-         BUV+jFbhewkm2d6KBW2oIrTcaL30+KUkGitEqK7ZCScZ9jLje5QZQtiTo3Ddajf0XmxA
-         5znPNq1t3VaDc5mjMAn1ulTr8NrnZwLP+nZseNv8Diu+ahB32H4OtEgzR4b2Bf0k+Uny
-         4bzA9ayIu/A/jXF+lTPy9y5dvw2phdeJFmurmI2yp5iu42cI79sOYxqEvN3SqJgohUIU
-         0ECg==
-X-Forwarded-Encrypted: i=1; AJvYcCULP4CNYLViyLqhpQwwqx/kUxkmElwbxgrD+0YZbfQUvJI5h1LbIS3uOaqRdoSQohjEBxCFKsOj4d/CfUm3Bi8csw0R
-X-Gm-Message-State: AOJu0YyOhf1EoizHAjyQjCZJgEvDnv0cvy7GRBngjS5jLrRg7riIHeRA
-	RWTxWhQ4EDyuWGPY2SWaG1CGODD/Gb7qOSYGHidUOQXDydb9m935TdqzuCSe84jHfhZX4jNWaWD
-	btgu9UKMOPu6ljd5/FzO6vkFfENw=
-X-Google-Smtp-Source: AGHT+IHgcXQCsSqKIUHuUWZSHKpsG+ja+gPjqOUYutQQRnCj/8Yw7YUXnXOnDA1PxG+ZugQo8W1m/pNBPvI+7DKcWA0=
-X-Received: by 2002:a17:90a:ac2:b0:2c9:5c67:dd9e with SMTP id
- 98e67ed59e1d1-2cf7e1ff4e8mr8772739a91.19.1722344666339; Tue, 30 Jul 2024
- 06:04:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JqDsdKDu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YfErtorGneVrn/lHqztGXc/8HVakgMvU5OT3sdUP5+vpgxf8jwEjAIaGE9/AB5LZ4tHqHgj74KYdFj03+gq13pAbkKPgkOAIxhT/uAl2uSfenUkMAImudRnpcDweQuvKl3kKL/2jpehey0Knf83zi3tMUBLNvd36ZeYbNteJsVAfaFgzXopmZRngseHF4uiNs8pzWG2La7qpR7E5gpEsNaSreT5tIpsxkpgAC9TR1mBYPY1D7lj6ZhZzNEo3IoHN8zALfwHh6OI4mO/2+bWP0QK3W44KZRjcd2zIpRxwL4e+hBsOXDanIqjXJTTsIwoTJudtcxlpienS8Uz5gVe8Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7J/LIG1WXAnyGN0K2mEphG3IX5ITYEdeFlwJNW5FFqU=;
+ b=iJkocKbxLSxdP7YZ+Hc1GGslluIv452nV28JTu7Kw+fkmYD1Xi1XQ4BzoFdmiOSIrr2EIPBgX6cPgYm19n1SimKcViF+bS+fGVKBKgMPQLFIELDIQcye77QLZdUi/BldrYtri+cLsv6+ehCcz1qGa/D5JiaXGm8yudwwfkSQeFky6k29RaltDZkHB2glSrzU4xIyfjRYfHsfTDFwb6Ul0l/AU/Qf7gpv9KbHRZa+L40JSOkSxptpOyG5MA2yjGNRQqyFCfwrZIbsjNUA555n1wCgdBeFgmBq29ztQosyXkkihi6Sv8lfCbLDatJc+uLLvHsolDkR50INbfunObL2QQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7J/LIG1WXAnyGN0K2mEphG3IX5ITYEdeFlwJNW5FFqU=;
+ b=JqDsdKDuJtIAwv6D/XIXZ5kXK5ZaARZl2zS4xx7MkuBg+Gx9XuwVqRQb/jwT1UJUYGdMacJExDF2Vvwl7XdkYNvzmoTFtMKgJIWWRsnqFOWTYMdXlBOtAciyuEQXtWJnbgF6aurKSMlTinHMODa+/Wtw5kf3AG13VyrTlR98wxRdcbpZjfo2Zw+fM+adJovmYtNTgDlPsOaVzGcih8asGKVrwepUGp+GbVz8t1V79DF6z7PUJxgzBctR/mu+U3fkvtjOJiolhwMuFb9bEQsI7q6vz4Lp8U8N7B18iEmCjxwXpGMLpVYKos0n+461TwTad5OYDT0FEWSoh983VtWAww==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DB8PR04MB6778.eurprd04.prod.outlook.com (2603:10a6:10:111::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
+ 2024 13:47:19 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%4]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
+ 13:47:18 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Joe Damato <jdamato@fastly.com>
+CC: Wei Fang <wei.fang@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v2 net-next resent] net: fec: Enable SOC specific rx-usecs
+ coalescence default setting
+Thread-Topic: [PATCH v2 net-next resent] net: fec: Enable SOC specific
+ rx-usecs coalescence default setting
+Thread-Index: AQHa4ob+MHX6Uf7SV0G4/XN7U5Secw==
+Date: Tue, 30 Jul 2024 13:47:18 +0000
+Message-ID:
+ <PAXPR04MB9185CBA946F34FA6CD853DD489B02@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20240729193527.376077-1-shenwei.wang@nxp.com>
+ <Zqi9oRGbTGDUfjhi@LQ3V64L9R2>
+In-Reply-To: <Zqi9oRGbTGDUfjhi@LQ3V64L9R2>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DB8PR04MB6778:EE_
+x-ms-office365-filtering-correlation-id: ad17304b-870e-4dcd-aadc-08dcb09e2140
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?R2S6ulLpvO7t4AAxfVMjLfAG8uYyzA4s49SuregudJ91hCQ9uiJKP2wG55S7?=
+ =?us-ascii?Q?7c/1jfSZ6Qoy0o/3kL2gFA9bguxHb7Btte/x1Z7U/nB4jelbHAaVTc3NUTBs?=
+ =?us-ascii?Q?8on8SkgPf4A3TkVdIVTRAW5Pjo99RhR4QkMqMbd1JYp4KlJViLQraytBnPnt?=
+ =?us-ascii?Q?utsocehDj/1XisBDwxN/bTDUvCbdg6aO7+HMWpmNJN4o06w7vAbSynp/v4kX?=
+ =?us-ascii?Q?vm3z6tVvDBmwg01oT5LzwVNK3wzClCTqFwNiXfP+oLfi4MuK6JDNjoH/tIul?=
+ =?us-ascii?Q?wa2bqClFMA0RfMGCXQIehayPkB0/lwFLIE7rrP9pdvpDgvA21h2V5tGvwy6z?=
+ =?us-ascii?Q?eQMHalSnwh2+Oenq6xwcr+gZhMIEviWrqNpiRfFzRmpqEoa6EcEJvRUrxvH6?=
+ =?us-ascii?Q?sFe3AyiFmdMrmT3Oa2n5mHKY8NOFBBzFK9dOmdicV5CTh0XD9m7Az5hoz0vG?=
+ =?us-ascii?Q?aNnsj0fxdOE8Ypm/lGB7VJAdwcP9VdekASejGNlm2Pi0aWd2T2+qNGOoa1X8?=
+ =?us-ascii?Q?qQ8ayNr2hxloIpSITAi6JKUqJd20v/rvklDYVEP16NHpa2hbmafkY9qXVQhj?=
+ =?us-ascii?Q?14JkdeFWSiXM2b2sPaCN0LPx0K7+CjuipOaNt64MK7T6AF9TczHiIL3xVyAu?=
+ =?us-ascii?Q?kG2AskOwDZhHAtZebYEsPtzuJGjk+ZB/lrNj4TyuXFxiavVpVwl2V7whI2my?=
+ =?us-ascii?Q?37ZKpzXtOn1ZahPXBYv+3Ia+sKLnNz1Ftuw+qe/hGy/Et1VwmChQAIv+aiPO?=
+ =?us-ascii?Q?zh+bPEAlUpbFPhyaCalF0aBCzUQrD8zAL1yQW5gH3nuT/1ZzPU8eNW3rZlrS?=
+ =?us-ascii?Q?EJ1qflskse0oAA2TRRDdvpNq/WgAc9ml8oJ+bf7OieVLiN9+hhs74OSam7G9?=
+ =?us-ascii?Q?QITH/CzgzDYesPsccfVc319y7qZhpI8vlipoWpXVPVe8xyAKsCmw6S/f9ATz?=
+ =?us-ascii?Q?tVBhmxw2RdrV4C6kJLVW3STQT62QU5edknxu+2SOh5F7St3Tq2dXxVCYbYh4?=
+ =?us-ascii?Q?JnETc2u+6rvWZoLcZrSshUPJGkSWtgIIjQLcnu7D6ccxdJm6oWs6elJnYGDY?=
+ =?us-ascii?Q?2EYwBD4YnNdbmcmR0gLa5qYFKpebd23SbNFF168gWoNhYw18K1OcwzTrrFCp?=
+ =?us-ascii?Q?pz2IZGIfpLmErAwKxtzyIEwkY+6JWBIdat9HgBoj0A3wqAZkP/IWlkz6EqMy?=
+ =?us-ascii?Q?XqoIsjeI9D/tu5k+dfcYcwtYUBTP9UMQ4VmI1Rs+3b7ZbI+ipHv4IVNWmD4e?=
+ =?us-ascii?Q?kxWajel84nHEF/cbv0x2f0Tt88mBnGX5bLSq1HbV6IXgkEVzvHfe05x5JbYd?=
+ =?us-ascii?Q?2r3OcB2hR/bMn28VjFLKpnwZIyXxws9uWPvmLSZbpxu4P/QemxrRwtTJQfL0?=
+ =?us-ascii?Q?jhFe3DMJ7E2Z1dNuRw2Ux1bEqHj/OK3FTPHaV3b43MX+Nv1FlA=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?sgiDdHNhef5JrlJxKhsbeojAbnvN9z3/Zk+7wflRmmqqYXr2JdUDMKHhoXTY?=
+ =?us-ascii?Q?pZuD6oBKkVMe/fVuGWDVLv8AA81NrfJpL8l9MQ9LEDmJwNia1cMgG1InS336?=
+ =?us-ascii?Q?Vl+PIcYhZBXZRAmaTlQjFfMdjP40fFjC6t54ZkG1H7X+c31SHFTat4Kjm9tP?=
+ =?us-ascii?Q?61o2jqIKT1d1XSUZxDZ+uR2AmLYB8B82jIp1QhrxPmzgr1uyIOrZmORVT5Gi?=
+ =?us-ascii?Q?wTf6sw1B1guKqkd7OwztzvKhhNMthbengcZ65zaejS3WybuGjWL+Kq5G3E3s?=
+ =?us-ascii?Q?MMSVHOXJBrGnvix7TaGAQR8l+MdYBJxe+swrRp/7yd/KTC9uFDerWWMfXFte?=
+ =?us-ascii?Q?rupzYousdHXfJYwfK4bP8m05kzVs2pvS137X0Qm133oAtiYdlUrBPZHi4sNo?=
+ =?us-ascii?Q?nhHmCdQzwvfppgOJaNjt2t0XvP035QW91N1WqyNK9UZNQVhgBbp2U7s/hI2e?=
+ =?us-ascii?Q?I+gI+hW+6UD7wB+TBly0a8vZkNfmuLztZlAJfpCmlitP4wTt0iknwqkPj2wn?=
+ =?us-ascii?Q?IIdKsbcabSQBOPEzqtftePN/08FnNMUJ6qNJ9Zoz1/PgqxLVC2yxR8uXtjDL?=
+ =?us-ascii?Q?rSlTsI2Ubt7CNkX5fBLAH6llxqSyf1RRMHZtO7FD7ykzyMrBUF6GQ2o7BFnD?=
+ =?us-ascii?Q?cgStvTof6nZAP4I7FYvEjfRbIhLROG0yNnA/HnhLHmAZ9kn9wTwa5ADWFKmW?=
+ =?us-ascii?Q?cYIElZnEJVKBAIwDwP7WdLxptq+WrhkD7uwQtYfmNXZyuXdahZtt/kw95zVb?=
+ =?us-ascii?Q?nihu57GFdaMpm44ip21rleY4JqeaR3M6jAG84U3+KUrSE4ubv3bEJKB7MZLh?=
+ =?us-ascii?Q?OuS+MIIO5Vl8YnyM4T/vzmqXhs6wzYdQ9cvTvaorpdEuQcoW7NVrwrJNnwOS?=
+ =?us-ascii?Q?9a6Y4JFD50+7oCFWP8vD2vmpKyGwDHiJYovU+5W2rk90Q2pl0vu7QQMGzhZ0?=
+ =?us-ascii?Q?rreRmqVnK5pR68d5q2IzaM7gcu94cb+eQ4FQtf2tbDRV66zqpXL6VRO9+b+q?=
+ =?us-ascii?Q?M7uxwh8/hN4iSJHSuZEWkNJ8A9Yd3eJvQFO10pTO8wTo2foxInkRpmaL2czy?=
+ =?us-ascii?Q?tcLTLxD8weThMUT6OPiq6mgxGp2EQaBqBGy8U8ffgUtaW6rxtsoRLYY67Ha8?=
+ =?us-ascii?Q?y7T8AkvJC0MoD98nEEdNltnpgzyyoEuNtXhBlm+4qxobdGpUI9KLcP782sGG?=
+ =?us-ascii?Q?7DATnWb6smevezDhWAeOFZ+kHSBhDOGYCHiP9EgrSEFJT9Z5u+uUrg7NQEhd?=
+ =?us-ascii?Q?zXd4AagKbK8I0Bx/SNxWTiXEPiw5HV+RXQYFJMxcZg6kuO/brpRBkMkvpb1e?=
+ =?us-ascii?Q?l1EZBzDD4uAnzVWMqqw4YzMlAL3kvdK57Ptef6hbTCwGjD7qOr1laP5773Ag?=
+ =?us-ascii?Q?PCJ9Y3S/tJYDkbI3yX50rUBMDmuDcn3brF5b0Upz3W7HqPmxl+h8fiL1gpVI?=
+ =?us-ascii?Q?zODgvgFSSRBesUQCDh7FuKrzkT6svae7JnoYunlM8khUO4E37ZvOw6edTWWm?=
+ =?us-ascii?Q?Em63kd6cAkw0+c4MYotEzTNkzrL0sSd80ZJzpW+jP4f2n8ufdmnX56d7tacI?=
+ =?us-ascii?Q?tZzW3rhH7ARbacdiLDNZWoGdj3cGLSuVpC/n5Onk?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240714172017.422811-1-aford173@gmail.com>
-In-Reply-To: <20240714172017.422811-1-aford173@gmail.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Tue, 30 Jul 2024 08:04:14 -0500
-Message-ID: <CAHCN7x+_M6Mmo8OmvA4EWcWwtedSHB4uFT0+7n+s6iVK+dxrkw@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: imx8mp-beacon-kit: Fix Stereo Audio on WM8962
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad17304b-870e-4dcd-aadc-08dcb09e2140
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 13:47:18.8811
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TTGS7Sa/mfTua/qqnjkqWtvSMQgJ+ytPcz17StyYBcL90wFF/nI+G8ra/W+hgr6aJxZEhV5cIkR9Tm081b0zZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6778
 
-On Sun, Jul 14, 2024 at 12:20=E2=80=AFPM Adam Ford <aford173@gmail.com> wro=
-te:
->
-> The L/R clock needs to be controlled by the SAI3 instead of the
-> CODEC to properly achieve stereo sound. Doing this allows removes
-> the need for unnecessary clock manipulation to try to get the
-> CODEC's clock in sync with the SAI3 clock, since the CODEC can cope
-> with a wide variety of clock inputs.
 
-Shawn,
 
-Any chance this could get reviewed and/or applied?
+> -----Original Message-----
+> From: Joe Damato <jdamato@fastly.com>
+> Sent: Tuesday, July 30, 2024 5:17 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Wei Fang <wei.fang@nxp.com>; David S. Miller <davem@davemloft.net>;
+> Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>;
+> Paolo Abeni <pabeni@redhat.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> imx@lists.linux.dev; netdev@vger.kernel.org; dl-linux-imx <linux-
+> imx@nxp.com>
+> Subject: [EXT] Re: [PATCH v2 net-next resent] net: fec: Enable SOC specif=
+ic rx-
+> usecs coalescence default setting
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> On Mon, Jul 29, 2024 at 02:35:27PM -0500, Shenwei Wang wrote:
+> > Performance testing using iperf revealed no noticeable impact on
+> > network throughput or CPU utilization.
+>=20
+> I'm not sure this short paragraph addresses Andrew's comment:
+>=20
+>   Have you benchmarked CPU usage with this patch, for a range of traffic
+>   bandwidths and burst patterns. How does it differ?
+>=20
+> Maybe you could provide more details of the iperf tests you ran? It seems=
+ odd
+> that CPU usage is unchanged.
+>=20
+> If the system is more reactive (due to lower coalesce settings and IRQs f=
+iring
+> more often), you'd expect CPU usage to increase, wouldn't you?
+>=20
 
-thanks,
+The driver operates under NAPI polling, where several factors influence IRQ=
+ triggering:=20
+NAPI polling weight, RX timer threshold, and RX frame count threshold.=20
+During iperf testing, my understanding is that the NAPI polling weight is l=
+ikely the primary=20
+factor affecting triggering frequency, as IRQs are disabled during NAPI pol=
+ling cycles.
 
-adam
-
->
-> Fixes: 161af16c18f3 ("arm64: dts: imx8mp-beacon-kit: Fix audio_pll2 clock=
-")
-> Fixes: 69e2f37a6ddc ("arm64: dts: imx8mp-beacon-kit: Enable WM8962 Audio =
-CODEC")
-> Signed-off-by: Adam Ford <aford173@gmail.com>
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/a=
-rm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> index 1871c10f5c12..de5b64fa479a 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-> @@ -222,13 +222,12 @@ sound-wm8962 {
->
->                 simple-audio-card,cpu {
->                         sound-dai =3D <&sai3>;
-> +                       frame-master;
-> +                       bitclock-master;
->                 };
->
->                 simple-audio-card,codec {
->                         sound-dai =3D <&wm8962>;
-> -                       clocks =3D <&clk IMX8MP_CLK_IPP_DO_CLKO1>;
-> -                       frame-master;
-> -                       bitclock-master;
->                 };
->         };
->  };
-> @@ -544,10 +543,9 @@ &pcie_phy {
->  &sai3 {
->         pinctrl-names =3D "default";
->         pinctrl-0 =3D <&pinctrl_sai3>;
-> -       assigned-clocks =3D <&clk IMX8MP_CLK_SAI3>,
-> -                         <&clk IMX8MP_AUDIO_PLL2> ;
-> -       assigned-clock-parents =3D <&clk IMX8MP_AUDIO_PLL2_OUT>;
-> -       assigned-clock-rates =3D <12288000>, <361267200>;
-> +       assigned-clocks =3D <&clk IMX8MP_CLK_SAI3>;
-> +       assigned-clock-parents =3D <&clk IMX8MP_AUDIO_PLL1_OUT>;
-> +       assigned-clock-rates =3D <12288000>;
->         fsl,sai-mclk-direction-output;
->         status =3D "okay";
->  };
-> --
-> 2.43.0
->
+Thanks,
+Shenwei
+=09
+> - Joe
