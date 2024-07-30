@@ -1,66 +1,71 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011071.outbound.protection.outlook.com [52.101.70.71])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013058.outbound.protection.outlook.com [52.101.67.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F228B7F484
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 03:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A81118A953
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 06:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722309080; cv=fail; b=VM6ahXV73PtB4jEFKq+PocruEGMbM8HbxyJ2O9pT9biIcJTx6/X0Hb7qbr10ioiUgfkQMB8D3fl5rW7Sh7FZw3vZ/vgZzYeKDzMGKEago9n77YfTb3FVXlQRGRlYMwqjcUf5lKITNeLqBTcxhxJccsIw+pianXGJw0lWLDIIXX0=
+	t=1722320723; cv=fail; b=aspWScce16rvhbWvR/gGvsjfzVpqL3+AsfAOA++RMY79eZtjGeMhyJGJR9lys2MPA5cUexTiApeVrFrCDCSSRszBTfLrDSW7PjOYafOxVQNsudt+F/2HvCno6lX2+tf8SZGL/DaAWc4FHCAd+vl/gCDd6J+54quSHo0WtgfmrW4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722309080; c=relaxed/simple;
-	bh=msDmlF4cughrc3gSPdQ3M2C3/87Tvr2eLN1rS7gd2pE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NQ5aZ2oLJXIySUrFenl9CyaIOvDl0DsXG+5zoKjdw7+aRDxEUh1p3aOc3QLKw+KFKg2842Cpppw930O71MypM+wYmnuGlUucU7D4V8yoI5JKk6Z8bfbF5etUK4TtIH2YReDVR9RyW5+5mVkYzBdWamAGuHGTaIiZyO5pMYxIgf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nVNfHea+; arc=fail smtp.client-ip=52.101.70.71
+	s=arc-20240116; t=1722320723; c=relaxed/simple;
+	bh=53Zq6nJG05kAQt/xf9oSQcQ3XyH+ARFQ+hUGyr8yVOU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TvsxDrgNlSXpJB1TiUbQQPQ1kJed81XMZOnkcDWfsy3WNbpCFnkaiUQ/SA6w+L5QU5TbNdvlIGkmoU82kme+YKXuHG2j3yjpWByUYk8G8gbeGbMVcpDW0KdZDWyOxa99yrwfYEcZacLakAThsgqC9YFsklpOvrFwZG/TrlwMGAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=m/bdIN7t; arc=fail smtp.client-ip=52.101.67.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nVNfHea+"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="m/bdIN7t"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kN3DGcLTAAGqUQhK0bz0l06d0IgZyq2DHVI/MZas1EYcZzUd6puUunl0a22so2d8kGbvo8maPfjuiW/oadfnVa/+/rlskllOsiRGZ8YeYNmbHuz8+Bmrc/XQRXV5nt3GO+n6nbHSsx6YbbQIOKPE0Qsxjx3tCYf8FTFROVhIXcB9nxs76PUnRI530M1F2eAzblFLRg8V76SUMM4P+Jf2E+adg2lmSIA+XDi2QkcViAW2nhQBc3P+rsMKYJztq42CGeRudz2V5Rn61L0Nz+clrYAdW1q6LsB/F1NvOWo3ZKUp0QrPRNq9AT2w7l8qM26pnr4EA8xAA3z11Gez99UblQ==
+ b=vGdzuEg6QtwWNbIEJuxZMZQi2w9rPCJ7pmZOSqA8GPllbTnnO1fXIYhoC5SPSOZpIBT8O14Oz+tnnaKqnWNXuN9K8ivNAZRcDqRUPmkuSeL4ShSV/sqnjCP4gsC4OA7IsNzG865rcAzR6KgKJ4FoMpC/9mNBNGnGfx/9qDd+aEaDRHHQTIj3avFnMkN8P4rgSpEwHGt/6BFb7gWc157cQ7nrORa12/LJFPNDT2KWyj3qzV4xBzFnrABV5uq2t9jIRzZpacgnhosmbc5KZDraWZ7rx53PKwLRyjeJC+YpdF656WqHfI660plUD7w71u8gJe8SUg34LS0YqvE7wBrw9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MWaHd6n9LY8WfFFmvR4gTGMysZNPElevp23FLVT5WI8=;
- b=agUeuS1Sn9W72xUI+xhK8LTfmeW2JaB9Npp2HMsPdyhb3kjL+VYOnxhXVVsp9X/o4DwWmks/IoDyOQMTp4Y6Y3KEALiJBVdQZPce6qjbN7jFcMYEWgqRsLBbkAbn0VUd2jxWr+2lP/Hl63ty3WQdNQE5VhjLPlS/Ax3hxsgtI95bm8nykbxSwEJjwtDnQiBz9APQinF+hWHTn8JJAGjXV9XYmpr+KIBgLQ/fYUMBWrK+064PecZQ+3884ViepFHKjOpFwMuKeVweDrr1F6aGYGPnlRYFCj9VzwHsvdXVELBwRh2Lky3A7kEYxuXYtyjKQKxK2zgUZ9oL6EApN98+Nw==
+ bh=jIXJomD+2cbN1vsRLKEwUM8DfXFO5FTjqiYmRtzOf3w=;
+ b=rVUaNZ9EXqDRENt+TQkG9IFf+VLLX3E4haiCw3GgDNPSathE6AFUH37O3qF0oqDgZG57xOXXr4zyUxvagIAMt/gAlUkwMDts5Ld32ZTej7A7puA82EvSJ9D+LoalILBs7b4T7oYvvfnkEW1tzSN/HGf8wDcCBrmxB5w8UNTEP+U4JpGe86QmrGmZdzUzkN6tY5bcD8XrKkwus6zTkBbuXDH7yUXhLhBfBlRwPu7GRfjjKfUEnwHEakJ6kOr1NN5AeHZLlOGHyOPj9TIttxzacMN9nmYCe5HQE9dLNoeWcH60TRguIpxG0sTeyaVOtecbKeMLaCq7lmRtk5QfybbUzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MWaHd6n9LY8WfFFmvR4gTGMysZNPElevp23FLVT5WI8=;
- b=nVNfHea+TC4M+PS3yzR0m5jymEAYe8h4PoN7b4awFtd/9Arnv8p4eR1EdJbf+cw+CsCPaHzut1nJeQe8gRdnTTXmPUGcUFkLnWGekSpOdQrgN/0KTcxS7HSJ2Jf4dEDxSlGkEui8L45dEeGhm58AIQCqK8NM9cRRljJLUAW+iwoH2GgaudpwVaUrhnTcPLe3rE1piGNmqrQ3mx5eTVFFcbWZLQsJFK/13G8YyCtQ/A7j7usftOFhMXcR7J9HO2U1qZ3i5c0+4yg06M9dyGqLmL0P20iWcx6oe94i6W5neijMyyM/NLpHc7sQRJ/5KtfYnsz8poUKitcL+NX2BT9iCA==
+ bh=jIXJomD+2cbN1vsRLKEwUM8DfXFO5FTjqiYmRtzOf3w=;
+ b=m/bdIN7tqwTpXZNoPLXFPOiKiLU5sPoSFjjoSVdKDjOp42kEEEKGGEdsoIOyvJ6ixkJ78BMKG7kwKpD/ak/6C9Eg83nW17DL1v2923ZPq3kNt2TBvgBDvHd/tngiHbsiu0LhmgBYlE9Xaulx4hj/LNHPW32wGJqhX4XiNYTqJzOFwbOQxLaavXqSjr9VmYYsLNSJtO3zIAnN1pIgl8WfnbWpEnpdw2q0lu0DEGQn5ya2sZkg/nRBsnWcgpqBZRvAoKK54l8rAIgA60yWxLA9jOzoOJyVjWa+eggCgn5Z86fwTXswRGcCsrBeo5wUdJNDOL0QZt75CClMidD83N+PRg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AS1PR04MB9630.eurprd04.prod.outlook.com (2603:10a6:20b:475::16) with
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by PAXPR04MB9448.eurprd04.prod.outlook.com (2603:10a6:102:2b1::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
- 2024 03:11:13 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%5]) with mapi id 15.20.7784.016; Tue, 30 Jul 2024
- 03:11:13 +0000
-Date: Tue, 30 Jul 2024 11:08:36 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
+ 2024 06:25:16 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
+ 06:25:16 +0000
+Message-ID: <8071fdf8-6813-4707-8a9c-ad24f8b6a32f@nxp.com>
+Date: Tue, 30 Jul 2024 14:25:41 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/16] drm/imx: Add i.MX8qxp Display Controller display
+ engine
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, andersson@kernel.org,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	jun.li@nxp.com
-Subject: Re: [PATCH 3/3] arm64: dts: imx8mq-evk: add typec node
-Message-ID: <20240730030836.xu5qq7xgse77gzb3@hippo>
-References: <20240729081039.3904797-1-xu.yang_2@nxp.com>
- <20240729081039.3904797-3-xu.yang_2@nxp.com>
- <2qifmfgul7ks6kozm455jci4rdbfnh5wft3nyt6pdnov6tcbst@vjosluwibkg7>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2qifmfgul7ks6kozm455jci4rdbfnh5wft3nyt6pdnov6tcbst@vjosluwibkg7>
-X-ClientProxiedBy: SI1PR02CA0009.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::10) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
+ aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, frank.li@nxp.com
+References: <20240712093243.2108456-1-victor.liu@nxp.com>
+ <20240712093243.2108456-7-victor.liu@nxp.com>
+ <ib6brwxeai3wkgzglihfbqx7jakjslnftydbzo32xthijkd4u6@y4ebhgk5o3ec>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <ib6brwxeai3wkgzglihfbqx7jakjslnftydbzo32xthijkd4u6@y4ebhgk5o3ec>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR06CA0191.apcprd06.prod.outlook.com (2603:1096:4:1::23)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,250 +73,343 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS1PR04MB9630:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99599304-dc7a-447d-8744-08dcb045449c
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|PAXPR04MB9448:EE_
+X-MS-Office365-Filtering-Correlation-Id: ceb61d9b-481f-44ae-0de9-08dcb0606094
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c71K7NmNs35iwuZ+HK+p5cttP5vK7OSXDarjCPZls9GRLIudUGhSbrjD/hhS?=
- =?us-ascii?Q?kul1N8fEAWiNOxljiz/hhaAn4xjszjAUaFzRPWaWhV/z2gj15W1YfC1JN2ql?=
- =?us-ascii?Q?+TnkyHNl9+rjaS8suuwuULGdLT7RHaYDVonFg+r4hcJEMQlypFGuzU1tBSCz?=
- =?us-ascii?Q?gkywmGSQomnRe3ILLCw6QOd8xWgc8OqwosxGdfiA4nP8PXvouSMSx1cpMnnd?=
- =?us-ascii?Q?SFXrDZDelO9Fpj22Nkjvjgakwxywx9EzKh+GnuQaQ8dHpfGX4f/x7jRUxYfq?=
- =?us-ascii?Q?xVNMRd7W8wg/RTg8Nn6d9VFJZrvQpn57KfgVST3dameW+CON4JVFTPISZnUm?=
- =?us-ascii?Q?Kb0W0gddCywyJJj6D9PAEYU/8TXdZLy06CC0tTSjrqNeJPzK06rQztZC3eEe?=
- =?us-ascii?Q?/2ZKbVsDH7t6SccTEmVRTtyXKcfPDZWuoghANzq1snx+rquo8tOEVE/x5gIq?=
- =?us-ascii?Q?FnxPxkGtKjmRgjgi1BmyrqTQbodnYodAL+fxzfFeoUPH/H8yzBCzpZzmyqfz?=
- =?us-ascii?Q?LmHGNK5qLSKt3oNEscZfxdCyekhJYUDpggzWqICmtZeYXi5oJ0tvTx5DEI/+?=
- =?us-ascii?Q?zNTTZ2cm0zoi77xj86DOuqtkFzV2QPNAnCW+YQFqXykCaY7+UFIXnS+7KPk7?=
- =?us-ascii?Q?ooUkBkapX5/b5jyRnZhw2SgqSqOMjQXj9YVvxI0JrNo8qKKuPmX52aZkHJt/?=
- =?us-ascii?Q?4DGAQgNEC7yUcpnmZilgkaX0mIlx/8DGOS3rj4C4ZuuZ1fq5Rkqj+TiT06vY?=
- =?us-ascii?Q?xTgjtUBn8wBX2OLGXgMdwdfmIWbaxpFa+GvH/RRNvrJQAppHsH2uWKFZx7Iu?=
- =?us-ascii?Q?9V3qt3QjD9D6ErgBX6H+Ja2PMl1R7yChpdXaZ2xCtjqA2lBvSqJVheJ5s35S?=
- =?us-ascii?Q?1QEmh0YajR/1SVyZ/nKi28oyXRhpYfE5ZbhC0FY8pjhN6SZoHHFwTwXtW3Np?=
- =?us-ascii?Q?yuR8TPahob/7kS4HjpjUhElKbaIUc5Ayl459EQpxu30YRbC6IRU3nQdTPehQ?=
- =?us-ascii?Q?jPACesMvS1gTUXxdE1jsxd4oh+aXtFg/vPEqnM/4ZFZfA3ceY1zF+RoNGQ/5?=
- =?us-ascii?Q?auXyPyfpv3GG9zQFKluvsurXA+7LEP/1wD2Z7cZZs0b7zz2HTFVyIJMUWj9A?=
- =?us-ascii?Q?yesG7eqsgw93bSg/V+o0LcFDIYCaO9uCHJc90qHllnmogtfMm2eHyMFd1usL?=
- =?us-ascii?Q?naz4oAYXbRgENbKkb7evBpsWQVZutTO1YPNY0ahKioo9Ex6iG0BIYcyJsLMc?=
- =?us-ascii?Q?kuRhyye3rHdOoQ36nxT2o5kFBx4L1umAoUHkHVAGqjy3csh9yHxICYn3gfkP?=
- =?us-ascii?Q?S5m0aLz4tB2bMLj9/hFx9B1x8GXRsnKZ6G66Qo6qRMovxjGlIADSnVd+bKuH?=
- =?us-ascii?Q?38R5mK0JeavsOidyOdu/r5nr+R/Jcc5P/MdA/aJlYhBY26XPfg=3D=3D?=
+	=?utf-8?B?dEppM1VQWDhLOHg0c0MxbWNuQU1IR3lEbVN4S2JteU5icDNxQVFablQzVkw5?=
+ =?utf-8?B?amF6eFVrclRZVjJwWFNNMVZkL3FNUXhybzlxWDY3K0FwQ2JKTENoVnFoakto?=
+ =?utf-8?B?T3liaUZjMWlwRGFpVi9iUHluR1gxYlc2RFluRGZnVFJNdE1XTUgzdUE5Q0Zx?=
+ =?utf-8?B?d281R0Y2VjcyZkUwODBsTzJGTlRXd2x3Rm9DVDZzRUZmY05odGNrcVBmcmhR?=
+ =?utf-8?B?cm1VRW00bjhOMXo4TGpMam12SnBIRWc1RXFrNEtURGdvcEo4eVJzNnJkeFA2?=
+ =?utf-8?B?OFF0cnpINHppcmJiRkZBNjdqUzFBV215bEpmdmpwaHVTNGRaa3RMbnZxWElw?=
+ =?utf-8?B?NE5Jd1VoK0loc2IxUDlGWjYvdXhFaHJES3JXRFR4MWJYT3dpUGtiQ1JpbHBI?=
+ =?utf-8?B?ZEgvUUZrRVlSU2s0V1RvWTdBVXJHdjB0QmxWNkFzSVgrS3BRMWlvaSs2SVIv?=
+ =?utf-8?B?eFdwazdDSlNZYXRtcmtOdEh1VEs4Z0VlaTVCbUJKTTJKR2dvN0VpL0Zpc2Iz?=
+ =?utf-8?B?K25MdUwzQThRdE0zbjRuRXU3U2NnV21xcy94QnBmaHRGTzYvdEc1UjZJcXVQ?=
+ =?utf-8?B?dGY5STdDQWlpcm5XeHdSUmI1Zjd0QVdyRUVYNzRQQ3E2QnFIWHdYcUx5MEFa?=
+ =?utf-8?B?c0ZtNFlHbGd1Z1I2OUk1ZlB6cnN1bWhST2JSd1BLbTZPTy9VN1JlUFE4UVVL?=
+ =?utf-8?B?a3ZDVkRFSjdGQTRjMjlEUWhnQmphODRpdEk0SDl1NjVHa011WDg5OFhVZlhN?=
+ =?utf-8?B?RVNUNytJZVIwTkVGbk5BU2R5VlVQL3gwZXFyMWNUc0xjVDFnNElYaUdjc25s?=
+ =?utf-8?B?bU1keVZUcENhL1paQlhkanBwYXl1QkFSd0hnQ1BSQmxQendvbE9hVXppbHF0?=
+ =?utf-8?B?Z0M4M0o2aE1lMDBGc3BlT3FaVWErMG41WEtmeE43b3ViVWJVQ2ZiZ0g0ai9L?=
+ =?utf-8?B?Y295UEJFaHo5MlJpVWNCbEdrcE1ZdVJIeG1UUkI5TDRTem8yWTlEaWJUTFBB?=
+ =?utf-8?B?Yi9WbDZXMWpMbmRPNTBMNUx1VDl2L2c0eStNTldaYVliSGFoeVN0V0NGSlpU?=
+ =?utf-8?B?bkVNOWcwSDZtSUxMV21HR3ovWU5hYU55cmJZTGlxNTJOeHVnVkd0Vk90Y3cz?=
+ =?utf-8?B?anFvVlNTQWZUUVQyb3JySHQ4Uk9WcnBCeGJjdXg4Z0pxTDNMR21mUEUvaVZ5?=
+ =?utf-8?B?WVR2MUIxckpoWWg3Tm0rcTZOZWJhenoyd0FvMVJPMlVheXJJWjZRZWxRMXZx?=
+ =?utf-8?B?dEFuVmhVMGU3Z3BmQnd1TGw1N3dvNkx6RytneEgyOUZ0TmJjaXRlRjJNcm1D?=
+ =?utf-8?B?bjY1anQyRFJiM0VYK2c4OXJZSkJiUXBxZmJYRzVwdFJnNW8xZStONHMxN1VX?=
+ =?utf-8?B?S1VsbndMaFFxQldzdTJlSE5jOElyOXo4ZUYwT1l1MUU3M2kvZ0xJY3J5ZnBq?=
+ =?utf-8?B?OGdtWWh0TVhZblJvQUxZWDRVb0dzMHpqeFhqS0dzbWdYT1JQeWp3VVp0ZjhN?=
+ =?utf-8?B?ajFSanhuK1pYdzhVKzlhVHZEaEYwU2tRMHBpN2lXQVpUeEc3U0V0clk0Q2xr?=
+ =?utf-8?B?TmNydytSazJJTnNzdGZlL3Q1S2NzRkZseGo4Zng4VkJ3ZFhSOEpzNHFubEti?=
+ =?utf-8?B?cDJYWkZKc0tOVmdZUWtiQjFFejVoeC96QjF6a1U0YjlibWxjY0pOdVlNZ2hB?=
+ =?utf-8?B?S0RvM2NCYm0wTGxMRmF3Y1kxclBWUWxYQnRMemJQMUg4ajl6OCtIQUw3OHl0?=
+ =?utf-8?B?MVI1YTFJTmxOeGd4TDhZUzQrUkVXL2Q3cWhmbGJYL0w2elo5bm80TGZDeEE0?=
+ =?utf-8?B?OG1tbVVwdnF2WVUwenFTZz09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ggIjnI+vm2w5U9ORveGMM+9HgEb+MZbWUFAoWKdgozsotXTNSeTkLd96+JHA?=
- =?us-ascii?Q?B5mhwHnykpJeKXTTYqXNrDOjykW07alUqTFJVi2vBW8klq0dDmgt01GOjYXP?=
- =?us-ascii?Q?o32qOWQpvNJE4/ZzR02EJLVFvMVaqBHESsrJGbJuqZrQNDpPIdmqjUuwDd18?=
- =?us-ascii?Q?p15LZTiftf0q0JVGnL/16cKoYdCoE5UJb6MFX4gRqnm2P+viIxr0ZKz1Rxa1?=
- =?us-ascii?Q?yxsayDZIkgUQX4+QLUlJVKZEokXo7an0wQcNH4g3/YCJvWkplrfk90kF4pny?=
- =?us-ascii?Q?GqSKvyeIblLpSrcDzITmGlZRW/JaAQy1WguNjDmUxVTtdxIkNYfbjMm0bVKt?=
- =?us-ascii?Q?+PoAQUT5HAgTPGGbVCGj6J17mORsUKuu8ykhNssloAlR2CrY4HIWyea87fxv?=
- =?us-ascii?Q?0s7pi8dE6sE4aaPVWz0L4FO+EaRHFl+A7DccB3UAqLrUx2T11v1kGHit8pwW?=
- =?us-ascii?Q?9/LAnnm449qHPPR0XduP5gKqXm82IfAq+wUYVQYWpwbaB5bZpkXU4gokzRbq?=
- =?us-ascii?Q?CEFPwXtbjMp+74nIYNUeOL/UkjgmFKnQqi7wmeotNLrdmLyA1vpxR0lwwcIv?=
- =?us-ascii?Q?1fcYtRu3WdjzYFyxUFxdtL4AYaqLcUjRpsomoPL1cBTTmBXXfDvWY0hO4+Uh?=
- =?us-ascii?Q?WJxYkxJhtZvLqTQb0WW5A9tA00k4L3GKSFI9LuAD/DdTREenez+KVjxPssyT?=
- =?us-ascii?Q?NgMLxWSlgLP5QjfeP3+fdKXPfTgG1Pi9UpDjkwVUfjDVob1ZVAE58Q8/QOnR?=
- =?us-ascii?Q?mOUMOXXRKFHfuqk1Z4qvx4u7DEECm54aCixPQ105cUSO9VBMuDj+riqq4jLF?=
- =?us-ascii?Q?o/1dq6D1azhqCY7z+4Gbzrj0txddqG5zGN9pmZPlPlQXNl+jashZcWamEM2o?=
- =?us-ascii?Q?AKOztahQAGtcP5XT9fpqaIffAVWiCxg55iJBBVS1yUJRp3JaT4l4DI6Dn0Q6?=
- =?us-ascii?Q?00osKb7o3atO/Y6o3KGZcBNFEa0QtnzMTdXt5DDcdlkV84JSa7PfWsiBEKoq?=
- =?us-ascii?Q?71Swn/0UMDNdO5VFR48DjNoPu9hUhhMghepEd5gzUuiZJhChiFd1HvVxqX4T?=
- =?us-ascii?Q?QGiDXeS3M+x1EbSq2FLoxPQ8Qb6vBqJLqX+ags3G9rnUbmxuq00sWbbluLR/?=
- =?us-ascii?Q?Q0LJrm+rlNmkwKGs7nUhf3ZFny/9s4dRb+izhDGeAwfxSF/bp1fPjC3FfMiL?=
- =?us-ascii?Q?IB829eECym4JUELymcOpEOFYw9Je2DpmzLcSGVmo5/1R4KnWjUFqNyn3R73r?=
- =?us-ascii?Q?pDJzAir5CXNnN1UigzxhRZHayg8dBqp2epQSAFDjmmX33wtoXi33y11GM1gB?=
- =?us-ascii?Q?8mpZLCHzUCGTw8pOnRAEtOAQ881cDFbvFhDoxwY7PB9ZRwsF9Fkd2ROEwoke?=
- =?us-ascii?Q?0uHW7q/1X/v/GbQTf9ySbq8tHjku8hUnuKV1CEts3CtiLyC97QM0Sir1GkMf?=
- =?us-ascii?Q?78W9Hv/BEkXELx5lqIvZFUEhHFCTXRcoNJ5Qi1nptFJupE23W6M5bDyg/Ysw?=
- =?us-ascii?Q?K0RStDictjRHR9A7DoHfWuHba7fhsIvAD95+PwPwdceEGf/hp20WVNowmrF+?=
- =?us-ascii?Q?NjhCvH/DwzO3R98I8fMcCBifJoOMlIheyJOv6V9C?=
+	=?utf-8?B?ZkdqUzZYQzVwVTV0VC96dVg3Ti9rKzlIWTduMnp3SmxJdjdXWHYySlEwMTFQ?=
+ =?utf-8?B?c3RIb21lTE9aZ0RSVXpTNTFMVk9sd2lxMWxJOEFjWnBCSjJOUmZyWS9YS3Zq?=
+ =?utf-8?B?UEwrVTJxb2VzdVdZZXh1TDZvOEFaSzdCMkRMWitNVVl4NWlTYnlsNS96M1JL?=
+ =?utf-8?B?V0N0OWM4QVh4U01FOTcwdEpNTUZMemhFQ2RrWmdRcG9EUW5GTDJnQ2h3c0Yr?=
+ =?utf-8?B?cXV3Mk45d1h4KzN6ZWtEOEJOUHVPdWpUWExhZ3pxL3A5d0hkQzdaRnR5S2wz?=
+ =?utf-8?B?dVkwZUM3SUlUSisrQkUvRldEeXpPWm5RY2RhSFUzZW8zS05CNWZEL2UwVCtO?=
+ =?utf-8?B?MTNJeGFydGRBeDFVckRwV2lYSDlkOCs4c0NjZVUzdkViUWZ2dXhWbEl6cXFY?=
+ =?utf-8?B?aDdLZ0JPU2Z3Rk1KdHhSeDhZUzNEakNFMDBBa1M2K1hiUTk4dDYzdmlRcFN0?=
+ =?utf-8?B?Q3ZwNGtPMTgrQlcvYkp4N085cEJRSTlYM2NlS2FxeTg2R2I3a25neUIwTS9h?=
+ =?utf-8?B?dit3Znc4TFoyMkdJYkxySUVsYWQ0NDJGdy9CZXFIRW1BbXRDYjMxU0Q3eUR2?=
+ =?utf-8?B?Mzc5UHFJcVdTZnNqQ2NGWGsrRkNMMUFpWVkyaGRrUllqOS9aQTJkVjlxQjUw?=
+ =?utf-8?B?WW5wbUZicWV0TXRaK2JENGNjMEM5YUNsWGZEME1jVzRubWtjbUFHS1ZEWGlK?=
+ =?utf-8?B?eVJnUXdSeVZGYkFaR0xlQnRvZU5kMGpyT0pKMURUaDZJWkhEYmp4YU12T2lG?=
+ =?utf-8?B?THhqdHEvNTQ2NXA5SDlmYTJ0L0hXTlc2bkVqNGJDZXZkcHp3c0NuaERVaVZa?=
+ =?utf-8?B?ZzhHNVl4cHhPY0lycHUybVNocjlHR0lWUEVSWlY4SUExVlEraDhPOHF2c3FZ?=
+ =?utf-8?B?azZqeGFNK1hDYi9jRm10NDJwQk9wZ25nSnBEREhVWUE0MEdLWDZrN3g5NHJk?=
+ =?utf-8?B?WUhuMEQ5ZHA1VHdURVNIeEdDWDJ0WC9rQUdDaEQwTmx5NDhoV0RDdmpZaEg0?=
+ =?utf-8?B?UXJzNjQ1aDRUa2tRMHlZM203dkM4dHJlUDQvT2p3VjhOb3FlNG5wNkZGUGZp?=
+ =?utf-8?B?aXZJbEs0Mjc3Z0Q1elZLNElybUk4WkpGTUN3d01WYWdhc25kejFZaUhDamYr?=
+ =?utf-8?B?WndyR01VNlREUjRpZ3JzallLZDNGd1VXNmhaYVgrRmV4U0ZmRTV5dGxpaEZM?=
+ =?utf-8?B?ei84d29zSytLc2RmUGVrY0JORjFxNmFqVkduSFpsTm9IcGNkcmNkWHUwbERZ?=
+ =?utf-8?B?cnZwS0U0R0FkRDc4QUFncmI3RGQwRjIySjVlZHZydGtzWWtqMEJ5VnJMdUpY?=
+ =?utf-8?B?dkZiWmEzL0Uxa2VIUUNlUE9qOG5DcCtWczRWNEFaandQVk5pT3RqcVJvVi9O?=
+ =?utf-8?B?MktpUjdlS0ZjTEoyMUxMNzR4NXZhTElPbEdxQTdRZEluVnlQN1JnSFRoZm9W?=
+ =?utf-8?B?Tjd2QVkvb0J5U0RvMkxveC9wSFhBVytjN1lwOUNYQk1xSUVSOHJ6L3grQ1dL?=
+ =?utf-8?B?emszYzZnQzVZWTRSdllrNVA5NVU4dXVIL0FLOWNBczRKbGNqb0hpNGEzczRt?=
+ =?utf-8?B?aUlrZlpmU3FlRWFOU244NFFENXhuczZ6R0xxc3R4aXdRTUR1YS8vMUlTMXdQ?=
+ =?utf-8?B?cll5OTBUTW82QndYNE1PeVZibXkzUDBDRk5ycXpBdlhleGFreEYrZnd4ZU9J?=
+ =?utf-8?B?NHBoZXI4NGtTaVA0L3ZjTXZFdk9FU29EeW43VnduUHdHQjM3eVMzRU5ZMURE?=
+ =?utf-8?B?UzRNeWwyZUpFK3Q4WU03VkVoR09HU1RIM3dheE1lZC9tWUpCb1p4aElxc3pI?=
+ =?utf-8?B?YS9KSlZpSC9QeUtaSmhIQnlqamx2WWFPdTVYODRNQW1hQkJ3S29vbWYxZ2pQ?=
+ =?utf-8?B?UnpLMUVjdldtZWdVSUpjNXVEMVhNTjJTd2JXZzdSbURkektUNFoybmQ4a0NR?=
+ =?utf-8?B?WVovaHl5NEVMQkVLR3p0Q1ZuOU5NbUMxYUNBUkRLSE5xUmluVHJ3ZFJpMXg3?=
+ =?utf-8?B?WEZZNi9PbjNqUzVSa2krRHJsejFRSUJUa1AydExlZnhiKzRoUVMwbGI0N3I2?=
+ =?utf-8?B?ZU9RdVVDeUNtbEdSeFN1YkFZcmpmajlValQ2QUVvS05NbWtqQ2tLUG9LMkRi?=
+ =?utf-8?Q?EO/gAjKYNzEnAnqYkHug0+RUY?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99599304-dc7a-447d-8744-08dcb045449c
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ceb61d9b-481f-44ae-0de9-08dcb0606094
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 03:11:13.1500
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 06:25:16.4642
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1xU7VrZzbBCdLFznfjJb1N3Wr3NDicDUVMhmYUr+rauZ0qH40cIRv6+JzTucwtjN+tjHItiDJ5mc9Lbs5aR9CQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9630
+X-MS-Exchange-CrossTenant-UserPrincipalName: e/NXU35QQQ2CLctyq0QKBgyR7BHFqc3cpOxwLRjHvuj6EEWhDsY89epyJTq1j2dfebyNv/VCY6FUGdGJUJuKUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9448
 
-On Mon, Jul 29, 2024 at 10:56:31PM +0300, Dmitry Baryshkov wrote:
-> On Mon, Jul 29, 2024 at 04:10:39PM GMT, Xu Yang wrote:
-> > The first port of USB with type-C connector, which has dual data
-> > role and dual power role.
-> > 
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mq-evk.dts | 93 ++++++++++++++++++++
-> >  1 file changed, 93 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> > index 7507548cdb16..008e8c37c76b 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
-> > @@ -6,6 +6,7 @@
-> >  
-> >  /dts-v1/;
-> >  
-> > +#include <dt-bindings/usb/pd.h>
-> >  #include "imx8mq.dtsi"
-> >  
-> >  / {
-> > @@ -27,6 +28,20 @@ pcie0_refclk: pcie0-refclk {
-> >  		clock-frequency = <100000000>;
-> >  	};
-> >  
-> > +	ptn36043: typec-mux {
-> > +		compatible = "nxp,ptn36043", "gpio-sbu-mux";
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_typec_mux>;
-> > +		select-gpios =<&gpio3 15 GPIO_ACTIVE_LOW>;
-> > +		orientation-switch;
-> > +
-> > +		port {
-> > +			usb3_data_ss: endpoint {
-> > +				remote-endpoint = <&typec_con_ss>;
-> > +			};
-> > +		};
+On 07/28/2024, Dmitry Baryshkov wrote:
+> On Fri, Jul 12, 2024 at 05:32:33PM GMT, Liu Ying wrote:
+>> i.MX8qxp Display Controller display engine consists of all processing
+>> units that operate in a display clock domain.  Add minimal feature
+>> support with FrameGen and TCon so that the engine can output display
+>> timings.  The display engine driver as a master binds FrameGen and
+>> TCon drivers as components.  While at it, the display engine driver
+>> is a component to be bound with the upcoming DRM driver.
 > 
-> If this the "SBU" mux, then why is it connected to the SS lines?
-> Where are the SS lines further going?
+> Generic question: why do you need so many small subdrivers? Are they
 
-The gpio-mux is able to switch SS line. ptn36043 is SS orientation
-swich here.
+As we model processing units, interrupt controller, display engine
+and pixel engine as devices, relevant drivers are created to bind
+them.
+
+Maxime insisted on splitting the main display controller(the overall
+IP) into separate devices.  Also, Rob asked me to document every
+processing units and the other sub-devices in v2.  So, splitting the
+controller is kinda accepted from both DT PoV and DRM PoV.
+
+> used to represent the flexibility of the pipeline? Can you instantiate
+
+No. They are just used to bind the devices created from DT.
+
+> these units directly from the de(?) driver and reference created
+> structures without the need to create subdevices?
+
+Given the separated devices created from DT, I can't.
 
 > 
-> > +	};
-> > +
-> >  	reg_pcie1: regulator-pcie {
-> >  		compatible = "regulator-fixed";
-> >  		pinctrl-names = "default";
-> > @@ -315,6 +330,50 @@ vgen6_reg: vgen6 {
-> >  			};
-> >  		};
-> >  	};
-> > +
-> > +	ptn5110: tcpc@50 {
-> > +		compatible = "nxp,ptn5110", "tcpci";
-> > +		reg = <0x50>;
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_typec>;
-> > +		interrupt-parent = <&gpio3>;
-> > +		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-> > +
-> > +		usb_con: connector {
-> > +			compatible = "usb-c-connector";
-> > +			label = "USB-C";
-> > +			power-role = "dual";
-> > +			data-role = "dual";
-> > +			try-power-role = "sink";
-> > +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-> > +			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
-> > +				     PDO_VAR(5000, 20000, 3000)>;
-> > +			op-sink-microwatt = <15000000>;
-> > +			self-powered;
-> > +
-> > +			ports {
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +
-> > +				port@0 {
-> > +					reg = <0>;
-> > +
-> > +					typec_dr_sw: endpoint {
+>>
+>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>> ---
+>> v2:
+>> * Use OF alias id to get instance id.
+>> * Add dev member to struct dc_tc.
+>>
+>>  drivers/gpu/drm/imx/Kconfig     |   1 +
+>>  drivers/gpu/drm/imx/Makefile    |   1 +
+>>  drivers/gpu/drm/imx/dc/Kconfig  |   5 +
+>>  drivers/gpu/drm/imx/dc/Makefile |   5 +
+>>  drivers/gpu/drm/imx/dc/dc-de.c  | 151 +++++++++++++
+>>  drivers/gpu/drm/imx/dc/dc-de.h  |  62 ++++++
+>>  drivers/gpu/drm/imx/dc/dc-drv.c |  32 +++
+>>  drivers/gpu/drm/imx/dc/dc-drv.h |  24 +++
+>>  drivers/gpu/drm/imx/dc/dc-fg.c  | 366 ++++++++++++++++++++++++++++++++
+>>  drivers/gpu/drm/imx/dc/dc-tc.c  | 137 ++++++++++++
+>>  10 files changed, 784 insertions(+)
+>>  create mode 100644 drivers/gpu/drm/imx/dc/Kconfig
+>>  create mode 100644 drivers/gpu/drm/imx/dc/Makefile
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.h
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fg.c
+>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-tc.c
+>>
+>> diff --git a/drivers/gpu/drm/imx/Kconfig b/drivers/gpu/drm/imx/Kconfig
+>> index 03535a15dd8f..3e8c6edbc17c 100644
+>> --- a/drivers/gpu/drm/imx/Kconfig
+>> +++ b/drivers/gpu/drm/imx/Kconfig
+>> @@ -1,5 +1,6 @@
+>>  # SPDX-License-Identifier: GPL-2.0-only
+>>  
+>> +source "drivers/gpu/drm/imx/dc/Kconfig"
+>>  source "drivers/gpu/drm/imx/dcss/Kconfig"
+>>  source "drivers/gpu/drm/imx/ipuv3/Kconfig"
+>>  source "drivers/gpu/drm/imx/lcdc/Kconfig"
+>> diff --git a/drivers/gpu/drm/imx/Makefile b/drivers/gpu/drm/imx/Makefile
+>> index 86f38e7c7422..c7b317640d71 100644
+>> --- a/drivers/gpu/drm/imx/Makefile
+>> +++ b/drivers/gpu/drm/imx/Makefile
+>> @@ -1,5 +1,6 @@
+>>  # SPDX-License-Identifier: GPL-2.0
+>>  
+>> +obj-$(CONFIG_DRM_IMX8_DC) += dc/
+>>  obj-$(CONFIG_DRM_IMX_DCSS) += dcss/
+>>  obj-$(CONFIG_DRM_IMX) += ipuv3/
+>>  obj-$(CONFIG_DRM_IMX_LCDC) += lcdc/
+>> diff --git a/drivers/gpu/drm/imx/dc/Kconfig b/drivers/gpu/drm/imx/dc/Kconfig
+>> new file mode 100644
+>> index 000000000000..32d7471c49d0
+>> --- /dev/null
+>> +++ b/drivers/gpu/drm/imx/dc/Kconfig
+>> @@ -0,0 +1,5 @@
+>> +config DRM_IMX8_DC
+>> +	tristate "Freescale i.MX8 Display Controller Graphics"
+>> +	depends on DRM && COMMON_CLK && OF && (ARCH_MXC || COMPILE_TEST)
+>> +	help
+>> +	  enable Freescale i.MX8 Display Controller(DC) graphics support
+>> diff --git a/drivers/gpu/drm/imx/dc/Makefile b/drivers/gpu/drm/imx/dc/Makefile
+>> new file mode 100644
+>> index 000000000000..56de82d53d4d
+>> --- /dev/null
+>> +++ b/drivers/gpu/drm/imx/dc/Makefile
+>> @@ -0,0 +1,5 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +
+>> +imx8-dc-drm-objs := dc-de.o dc-drv.o dc-fg.o dc-tc.o
+>> +
+>> +obj-$(CONFIG_DRM_IMX8_DC) += imx8-dc-drm.o
+>> diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
+>> new file mode 100644
+>> index 000000000000..2c8268b76b08
+>> --- /dev/null
+>> +++ b/drivers/gpu/drm/imx/dc/dc-de.c
+>> @@ -0,0 +1,151 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> +/*
+>> + * Copyright 2024 NXP
+>> + */
+>> +
+>> +#include <linux/component.h>
+>> +#include <linux/container_of.h>
+>> +#include <linux/io.h>
+>> +#include <linux/mod_devicetable.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of.h>
+>> +#include <linux/of_platform.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/pm.h>
+>> +#include <linux/pm_runtime.h>
+>> +
+>> +#include <drm/drm_managed.h>
+>> +
+>> +#include "dc-de.h"
+>> +#include "dc-drv.h"
+>> +
+>> +#define POLARITYCTRL		0xc
+>> +#define  POLEN_HIGH		BIT(2)
+>> +
+>> +struct dc_de_priv {
+>> +	struct dc_de engine;
+>> +	void __iomem *reg_top;
+>> +};
+>> +
+>> +static inline struct dc_de_priv *to_de_priv(struct dc_de *de)
+>> +{
+>> +	return container_of(de, struct dc_de_priv, engine);
+>> +}
+>> +
+>> +static inline void
+>> +dc_dec_write(struct dc_de *de, unsigned int offset, u32 value)
+>> +{
+>> +	struct dc_de_priv *priv = to_de_priv(de);
+>> +
+>> +	writel(value, priv->reg_top + offset);
 > 
-> the DR (dual role) isn't a physical signal. These ports descrbie HS
-> (high speed) lanes, please consider naming them correspondingly.
+> Is there a point in this wrapper? Can you call writel directly? This
 
-Okay.
+At least, it helps finding read/write ops upon interested devices through
+'git grep'.
 
-> 
-> > +						remote-endpoint = <&usb3_drd_sw>;
-> > +					};
-> > +				};
-> > +
-> > +
-> > +				port@1 {
-> > +					reg = <1>;
-> > +
-> > +					typec_con_ss: endpoint {
-> > +						remote-endpoint = <&usb3_data_ss>;
-> > +					};
-> > +				};
-> 
-> No SBU port?
+Also, since we have dc_*_write_mask() helpers, it doesn't look too bad to
+have dc_*_read/write() helpers.
 
-Yes, this board doesn't use SBU signal.
+> question generally applies to the driver. I see a lot of small functions
+> which can be inlined without losing the clarity.
 
-Thanks,
-Xu Yang
+Can you please point out typical ones?
 
 > 
-> > +			};
-> > +		};
-> > +	};
-> >  };
-> >  
-> >  &lcdif {
-> > @@ -445,6 +504,28 @@ &uart1 {
-> >  	status = "okay";
-> >  };
-> >  
-> > +&usb3_phy0 {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&usb_dwc3_0 {
-> > +	dr_mode = "otg";
-> > +	hnp-disable;
-> > +	srp-disable;
-> > +	adp-disable;
-> > +	usb-role-switch;
-> > +	role-switch-default-mode = "none";
-> > +	snps,dis-u1-entry-quirk;
-> > +	snps,dis-u2-entry-quirk;
-> > +	status = "okay";
-> > +
-> > +	port {
-> > +		usb3_drd_sw: endpoint {
-> > +			remote-endpoint = <&typec_dr_sw>;
-> > +		};
-> > +	};
-> > +};
-> > +
-> >  &usb3_phy1 {
-> >  	status = "okay";
-> >  };
-> > @@ -597,6 +678,18 @@ MX8MQ_IOMUXC_SPDIF_RX_SPDIF1_IN		0xd6
-> >  		>;
-> >  	};
-> >  
-> > +	pinctrl_typec: typecgrp {
-> > +		fsl,pins = <
-> > +			MX8MQ_IOMUXC_NAND_CE2_B_GPIO3_IO3		0x17059
-> > +		>;
-> > +	};
-> > +
-> > +	pinctrl_typec_mux: typecmuxgrp {
-> > +		fsl,pins = <
-> > +			MX8MQ_IOMUXC_NAND_RE_B_GPIO3_IO15		0x16
-> > +		>;
-> > +	};
-> > +
-> >  	pinctrl_uart1: uart1grp {
-> >  		fsl,pins = <
-> >  			MX8MQ_IOMUXC_UART1_RXD_UART1_DCE_RX		0x49
-> > -- 
-> > 2.34.1
-> > 
+>> +}
+>> +
+>> +static void dc_dec_init(struct dc_de *de)
+>> +{
+>> +	dc_dec_write(de, POLARITYCTRL, POLEN_HIGH);
+>> +}
+>> +
+>> +static int dc_de_bind(struct device *dev, struct device *master, void *data)
+>> +{
+>> +	struct platform_device *pdev = to_platform_device(dev);
+>> +	struct dc_drm_device *dc_drm = data;
+>> +	struct dc_de_priv *priv;
+>> +	int ret;
+>> +
+>> +	priv = drmm_kzalloc(&dc_drm->base, sizeof(*priv), GFP_KERNEL);
+>> +	if (!priv)
+>> +		return -ENOMEM;
+>> +
+>> +	priv->reg_top = devm_platform_ioremap_resource_byname(pdev, "top");
+>> +	if (IS_ERR(priv->reg_top))
+>> +		return PTR_ERR(priv->reg_top);
+>> +
+>> +	priv->engine.irq_shdld = platform_get_irq_byname(pdev, "shdload");
+>> +	if (priv->engine.irq_shdld < 0)
+>> +		return priv->engine.irq_shdld;
+>> +
+>> +	priv->engine.irq_framecomplete =
+>> +				platform_get_irq_byname(pdev, "framecomplete");
+>> +	if (priv->engine.irq_framecomplete < 0)
+>> +		return priv->engine.irq_framecomplete;
+>> +
+>> +	priv->engine.irq_seqcomplete =
+>> +				platform_get_irq_byname(pdev, "seqcomplete");
+>> +	if (priv->engine.irq_seqcomplete < 0)
+>> +		return priv->engine.irq_seqcomplete;
+>> +
+>> +	priv->engine.id = of_alias_get_id(dev->of_node, "dc0-display-engine");
 > 
-> -- 
-> With best wishes
-> Dmitry
+> Is this alias documented somewhere? Is it Acked by DT maintainers?
+
+I see aliases nodes in about 10 .yaml files as examples.
+If needed, I can add them to examples.
+
+Rob said "Ideally, no" to use alias in v1. However, IMHO, it is the only
+appropriate way to get instance id. In v1 review cycles, we've seen kinda
+4 ways:
+
+1) fsl,dc-*-id DT property
+   Rejected by Krzystof.
+
+2) OF alias
+
+3) OF graph ports (Rob)
+   This doesn't directly get instance id but just tell the connections.
+   Since there are too many input/output options between some processing
+   units, I hope we don't end up using this approach, as I mentioned in v1.
+   It seems be difficult for display driver to handle those ports.   
+
+   VC4 Hardware Video Scaler(HVS) is not using OF graph ports to tell the
+   connections to display controllers, either. See brcm,bcm2835-hvs.yaml.
+ 
+4) fsl,imx8qxp-dc-*{id} DT compatible string
+   It doesn't seem necessary to add the id information to compatible string.
+
+> 
+>> +	if (priv->engine.id < 0) {
+>> +		dev_err(dev, "failed to get alias id: %d\n", priv->engine.id);
+>> +		return priv->engine.id;
+>> +	}
+>> +
+>> +	priv->engine.dev = dev;
+>> +
+>> +	dev_set_drvdata(dev, priv);
+>> +
+>> +	ret = devm_pm_runtime_enable(dev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	dc_drm->de[priv->engine.id] = &priv->engine;
+>> +
+>> +	return 0;
+>> +}
+>> +
+> 
+
+-- 
+Regards,
+Liu Ying
+
