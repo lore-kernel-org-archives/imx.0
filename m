@@ -1,86 +1,66 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010023.outbound.protection.outlook.com [52.101.228.23])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012050.outbound.protection.outlook.com [52.101.66.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E177979CC
-	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 01:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94307CA6F
+	for <imx@lists.linux.dev>; Tue, 30 Jul 2024 02:48:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722301393; cv=fail; b=PxGtLnFzQgDwUe3zuzXE/tyawy8OtWqzZXEer1nDHLt2WizSUz6AUaC3XRI1FStOvnALziVDxAI3A8DyOUoLPLfMLP1KikHnojiFpLQi7udZWwDENSzQbJA9/Z8fovgyMgeNYbhr6fkz9NHYxcEMammG2KNcyPh4bzFMCuHD6bs=
+	t=1722307697; cv=fail; b=IUrHYdEiiZIBfZ+VCuVzlQbN73JERTVTNsqWem02d3bDWCxk21+pJHKrDDKTYtA7uMNKfkT/O+jeZhGFZl5nlAjEw73Wgai9/G7Xz51lQk1JDGSHIjqCuR7zbz6UcIv20oZS6BTovYR50w1c6itTyjTYD+yRmTPSa3PYdR+1P88=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722301393; c=relaxed/simple;
-	bh=Uz/kPhm+sBwzmYBtIrAWuxVrZiYDofB26JFdChMs134=;
-	h=Message-ID:From:Subject:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=Yz8mhMZIozvyHU5D6LIr6Lv0nfp/eZCgGjbEZweiIJVSe22yTmWhPb3KVa24/PXfj015yzbzXzocCiwY0iMYXGZnmMOOzBgbiYivNT6f94Yl2HPZqkp1J6tBt6Em8q/fqA5+CWGR9xNkqdsi2n9MKlzPu24D12gOgJw/dIzXxa0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=Y0l4oqQi; arc=fail smtp.client-ip=52.101.228.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	s=arc-20240116; t=1722307697; c=relaxed/simple;
+	bh=BfZ0bA3XHb6HxUYObf1BkZmd96dBbxWNfg6sh/HCrOo=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=l6m71CpW+DNCnHMb2jbczGE1i4pqKDAlMXe3WNuldPft8VnAr+LS/QUL8vJIjMmXLbBbiYR0wDUDVMa3n2seg2BZHqoW1Fsml3vz5g4Rjm8HGazKUZwTT3Clj26pwuz5P9LPnMIB1l4M+bXPrpvMQEqazx1l3o8GLq75S6ojtf8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IRRFDmNK; arc=fail smtp.client-ip=52.101.66.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="Y0l4oqQi"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IRRFDmNK"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FHNM4yw/4tpGy78Dm2088keqxeZRKvlSjUTTVDLIOFVflyDR9qeZohVQRLb9Pbxo3mYLxMib1mPhqmeIvmmIKFZHtSxRyig0DZX1RSu7aNl18ZTgUTfyBaRr+iX24Q1hc/wlLLbTDh5d5XrmMp+Bf1Eb4om989dGT6Mrmx12EyXkDaPJ3Ntprbt6JuAPpJ9j2LNEUER3Opx3AYekyKm972te3ZrxzthRYoh2eL3CD1sEUzkIs4LQaUtQzwtgJn8W6A/P1jioTh66Ay5Odl30EgJHlYVrZujSX0y2iz8a4D0cfGt063kUvvmS64BZXOO4Epe9cNpLwa+wyPSvzw+yuA==
+ b=D6fiwcswBxqYdIA28koLuInpBWFD6EuRpUwshjMxKi35Y8jJTqzpMHpkggkzEzxociD3hOGh9rISjYuVhSbl4pXS2AaB+iFY3hI0jCWST9b1q/91n1HoggayPvIKFGbwqjICn6thg91iWnfChwU8k6+Z/thrP6Smfs2zgRw5JpUeCBs2N6u10+rp21Dap7enTq8KogfQYkDYMd2fvPDDheoU22rUy67Pld8iT/1OdAoGovJe6wXTDOeK2KzsDvQwJwiTGPkDNSylYvQbXLBD+zuLLkvjpGWP94hLHuqzU4niRSHrljrXXXsLybzpwexrDseHV3SRQmY4lyo8bF8Kew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d07BmDK5flRTcQ0+f2XxaGi76mesJGwHsriDAB1CJ1A=;
- b=qfCgpnH4UijxuZOMRZH+ERg1dF5VDEw+7pWMmpKdRiyFfqqlmP2RB9QjphZh7qs4wsBLChIVw7EO5b3TYGzG/nNlLQZ+HOdT8jXOXOeGzI3FT+0jH69Xv3qNvqwaFm3PgjGPoK3aD3+Cpu9hgDZgB8uDTm8hAP/Hmd18l7u3MC6flC4sBQ/hsV2yYpzGZX3+kt86Z1c6SuKwezX6Aq/8+bmXyhqbxfOpvCnKzyr8I0P6tnTvIfPRTOrBGhNFN/A+QDKnLHDAco/fWq/xtVWQ1+yihRd1F/rhAEU95A+9L552at5J+Zr/4v++fW00W9mjV4GNYPSH3RocoHZC9zVmtA==
+ bh=ARWLxu2Y/w1UsMdvTXbBk+blJhCd2KJRwmitIbURASs=;
+ b=qGEuI6YLdDJfeGGwWoSPAqqeYaHInDvsDrc7zvLVs0o3Q6YqfGtqy2P7/HJUKmjzgGL0mtJM9823+KeKEklkZST29syeF4dBpt17ab/ESuy9UGiHx5Y/znNQCtH9iRccHYqq/U4DIckHHJ/ofule699vuuT6HRLNS1x73XuP1dHdWZxqcDcdEUAnPZhQVCX7fLinkXxau7f/KoOe5pKsmr7i+x0f7ohQvn7Dpys+X9CGcrGa2uqaIe3neEUH04Bnh3LM7fHKXaBp4Ws9EEtAIAkol6+tpdkdGrJJLRqrvxOHbkcvp7L7/Qkfnaj99mrnxS2K1/B72nEX2fXNxeP2Qw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d07BmDK5flRTcQ0+f2XxaGi76mesJGwHsriDAB1CJ1A=;
- b=Y0l4oqQiogsdFZQ7V/GyprTLPoCxbs36z1UqZjXV598Te68Vdg2T4w7joKXkjsSi2ZGfwkhkiInP4AwO7rxTXWYxNJrAY8Gy+Rafkk1OMa7PsLpzcstYAMAD7xzhrxHluxHcgeIBTnpWOLfOq37CqhB18p2K6LYiPBG+FeoMXDU=
+ bh=ARWLxu2Y/w1UsMdvTXbBk+blJhCd2KJRwmitIbURASs=;
+ b=IRRFDmNKzt61omvttjl15RK9zTHn7bPpTnvMf5Mp928r8SF117OuLIZoSfEmKmhwoc+JR8ZtCMj7wreTJvXH8+56Du9+SWh/MJiwZBYjXheKWDxcmsYUwAprHu6N25h5sfvfBvGELjfp6DGYslHrdNEM3iRqBQrTevjAJ0TvEo0Zg9Z5JvCMrPvKyeFzi24/GehjTBCsVcNm0twhHOqnFBjkp20Pz9iCXgDOMEqnq7m0P/0AStMl+my+jO0hQvlkGZb3vEQHCuabVFfQlo++CNdDEZb8/3VPFVB+o22u7H3rhffiKKLa5AopQ8ROIrqz3vlX069jWDOtq+ZdM6c26A==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11) by OS9PR01MB12484.jpnprd01.prod.outlook.com
- (2603:1096:604:2f6::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
- 2024 01:03:09 +0000
-Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
- ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
- 01:03:09 +0000
-Message-ID: <877cd3lmid.wl-kuninori.morimoto.gx@renesas.com>
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Subject: [PATCH v7 4/4] ASoC: Intel: sof_sdw: use playback/capture_only flags
-User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
-To: =?ISO-8859-2?Q?=22Amadeusz_S=B3awi=F1ski=22?=
- <amadeuszx.slawinski@linux.intel.com>,	Alexandre Belloni
- <alexandre.belloni@bootlin.com>,	Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,	AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,	Banajit Goswami
- <bgoswami@quicinc.com>,	Bard Liao <yung-chuan.liao@linux.intel.com>,	Brent
- Lu <brent.lu@intel.com>,	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,	Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,	Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>,	Daniel Baluta <daniel.baluta@nxp.com>,
-	Hans de Goede <hdegoede@redhat.com>,	Jaroslav Kysela <perex@perex.cz>,
-	Jerome Brunet <jbrunet@baylibre.com>,	Jiawei Wang <me@jwang.link>,	Jonathan
- Corbet <corbet@lwn.net>,	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Kevin Hilman <khilman@baylibre.com>,	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,	Maso Huang <maso.huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,	Neil Armstrong
- <neil.armstrong@linaro.org>,	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,	Pierre-Louis Bossart
- <pierre-louis.bossart@linux.intel.com>,	Ranjani Sridharan
- <ranjani.sridharan@linux.intel.com>,	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,	Sylwester Nawrocki
- <s.nawrocki@samsung.com>,	Takashi Iwai <tiwai@suse.com>,	Vinod Koul
- <vkoul@kernel.org>,	Xiubo Li <Xiubo.Lee@gmail.com>
-Cc: alsa-devel@alsa-project.org,
-	imx@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-sound@vger.kernel.org
-In-Reply-To: <87cymvlmki.wl-kuninori.morimoto.gx@renesas.com>
-References: <87cymvlmki.wl-kuninori.morimoto.gx@renesas.com>
-Content-Type: text/plain; charset=US-ASCII
-Date: Tue, 30 Jul 2024 01:03:07 +0000
-X-ClientProxiedBy: TYCP286CA0226.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c7::20) To TYCPR01MB10914.jpnprd01.prod.outlook.com
- (2603:1096:400:3a9::11)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AS8PR04MB7703.eurprd04.prod.outlook.com (2603:10a6:20b:23c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
+ 2024 02:48:10 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
+ 02:48:10 +0000
+Message-ID: <15ff5315-57a3-46ae-9f1d-f707165294e2@nxp.com>
+Date: Tue, 30 Jul 2024 10:48:38 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] ARM: dts: imx53-qsb: Add MCIMX-LVDS1 display module
+ support
+From: Liu Ying <victor.liu@nxp.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, saravanak@google.com
+References: <20240726065012.618606-1-victor.liu@nxp.com>
+ <xoj4sypxndql62k64ztmco5ufddeysp26fyc46prwr4ezik223@sssy5zmefwtg>
+ <2488314e-7a0f-406c-acec-ee106038f238@nxp.com>
+Content-Language: en-US
+In-Reply-To: <2488314e-7a0f-406c-acec-ee106038f238@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SG2P153CA0042.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::11)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,109 +68,321 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS9PR01MB12484:EE_
-X-MS-Office365-Filtering-Correlation-Id: b35b8924-a2a2-4393-0867-08dcb0336069
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB7703:EE_
+X-MS-Office365-Filtering-Correlation-Id: bd5227ce-0d08-43ec-d6d2-08dcb0420c4a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|1800799024|366016|921020|38350700014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LzhuE6S7FTCY8JV4E3zNKQ+i5PS37TT3plLNTNimkd7129ry5xrm1KzKhsb7?=
- =?us-ascii?Q?31dy1ERfQWsb1JU08Df3XAYV9hjbbQxNYSmTBG4d9c22uo+RnSEpzfMPlxuD?=
- =?us-ascii?Q?n7mLzi83otz0YWcdG/VdS3VX27O9GgafUpuhTzAP7t5/g6/cP28OBXAySjR7?=
- =?us-ascii?Q?Y+YfbesBF55gBAkvVlF5Z1dKJKIEMjNA8oI2/rrkfJL6/Yp9FyW2RQYflxPU?=
- =?us-ascii?Q?x+uAylYHQvuSXmnknmgM3b4cEGqHkYVi6SEkrfq/8z1y6R5ts9w6+hbjnETA?=
- =?us-ascii?Q?RuSceVq5REtMHQ5oS+xGnae/G4WDxVb44t9DsyqULTOjD9xJah24tIIokpKh?=
- =?us-ascii?Q?6I4Yn3Os9c1GYejT9/TbKwoCqQNsdW0qn/85sn66bumEvvLJ2aJnTnYVeYFz?=
- =?us-ascii?Q?xHg5etZpTB2l827ReabcMxEAEj5bBnRtGMUE7DQ/Z6p0w4kebKo9/3Gbyrsn?=
- =?us-ascii?Q?ZC98/2Lu9KGgveBe3XF3lxCiN90qCN/4GKAhwM5eg+sKTKYm5BkVqT5oB64M?=
- =?us-ascii?Q?2FP+EL+Wlo5pbanRpiS/IAE1D6uHwIn7jH0i9m84FBHTBJlP1LNF4wcraiC2?=
- =?us-ascii?Q?jyo0ioWLFmhG7Ky72IGfSvX8S41aRWhREeJYl8lHm+n/A5fXQakI8xOa+NK1?=
- =?us-ascii?Q?2DnkQnCgFN2gJyz9lHph2voDEY/XrksCWFu2czvJkF1rPCtjmuh+5fcJrQeC?=
- =?us-ascii?Q?EdGzi56h5DI5UxgRMSGykd03E6rYdRoZlLqBfrW0r+cdZZ6MSPVVPuTex9Lg?=
- =?us-ascii?Q?vSWuqjAZElyLW8DfRbN2YKzHhVNl+r5ky89cna7N1HuCT3tycmXr6fP+GMZX?=
- =?us-ascii?Q?vRu6FKKU7lh22krideaOMSkB3cZMWJIR7U8CWv+qpK3MMFEum01WrEM41DET?=
- =?us-ascii?Q?QTVPRpNljaSRADATK/WIYpq3korsbpPmX8R1UoPeLFSYKlMUOSl2c2Sm2lQy?=
- =?us-ascii?Q?kBeeEqNv+6O4jgLRxhjNi29hpYZ7YfbcB+h4IdWUcwnXwDFikkSVUSSyNINp?=
- =?us-ascii?Q?vFoH1+6hFnd98/HsFuXxKm7lNveu1u+B4voL0cREJYHrhT0l13Dj8YjRtoVf?=
- =?us-ascii?Q?22i//VS0r0sgKG0FbRgsHf5rOHef31wHSxKcE1+cGLYvhqvprtAyb9UtcHnV?=
- =?us-ascii?Q?GxLFa+Rs5kO6fAYuSyouKatqHSchpZ2jNiNpabU8JxVb8uJ94cQDxDbxLVGB?=
- =?us-ascii?Q?Hldx3QEyZ9F3cr9TTppE+R2sskqBw7aGYCaqiaw3h1W67qvmrbLM3Ptsl8tV?=
- =?us-ascii?Q?TdG+RfQrInFhQLEMtZWDm8VG4n6VZBJ1gTKJtccHaKhAQmtPzC1QUxyfs/YQ?=
- =?us-ascii?Q?8Z+fUbJ/SD4JX+lxGwiZ9x8UsOtFPYw3xepbLlPSFLGNybHX2C+UoES1vYxO?=
- =?us-ascii?Q?mmH8YTfShmNfwrlx90dDDh3rC3hwl6YSRroWUX8PRAJbPx0tVxk+VFka1aET?=
- =?us-ascii?Q?jIZU1FuBtew=3D?=
+	=?utf-8?B?cmg4NFE3R2NCMXJqSng3UFRTQVJiTVBJVk05TVBCQWZ3L0Q2TTJ3OUlvVnJr?=
+ =?utf-8?B?QmFOSlNkUDE3WkM5TVQ3Q0liaEVLS2tESGw5QkNock1mUzE4VHl2KzlIMTNW?=
+ =?utf-8?B?TTlxZ2xTaTBob1FjckpkdXNEQzVSVUFmUkVITUhKZk11N1pleDhSS3dVSHFy?=
+ =?utf-8?B?MmlYMFByZDVHYnh5OXJneHRBOVJ2dVIvM3NwQ0Nhc1c5RzFJQTZVMXlReFo3?=
+ =?utf-8?B?bXNkM1phVURvYWJ3bCtaWVVSTXhVekU0cnc5SjdNRVNTN1NaaUhoTGJob1Bv?=
+ =?utf-8?B?bGVDcEpMUjVRdFVmam9IeERqTktXa1M3WWlMV3hXZXF3S0xPbnYxUWdLeGNR?=
+ =?utf-8?B?WTR3YnJNSFA5eklhU0IwWUxzQjIwbDl5bUJJdWpFek1lSnpKVHVsck5ObTc1?=
+ =?utf-8?B?VU1wSFAvNTNaUWpKc0VyNGIwZnR2cHJZNEpibENodGRNV0pIKzZQZjdORm0v?=
+ =?utf-8?B?NjM1MUFZYXRYcDV5TVNreHdac3hPMkd1VktCUnNUSjlVVGM1TWdYZ0w5Ui94?=
+ =?utf-8?B?eHhsdUJrWmZnYUlnMmtEWkxvRXZ0L0xYMlpha3FGRUtHTXhTaXppeTQwbVhJ?=
+ =?utf-8?B?WXhONS92MnpZbTE4UW4vOEhRWnNCRHBVQ2RpMlltb2JLUTBXdFY3dFNEQUdB?=
+ =?utf-8?B?SzRpa1AzYkxHNmZaakx0QStkdWJOWE5xLzlBUkJodVBkcFhWZTJhZFRteE9l?=
+ =?utf-8?B?ME9SM3RkOU11ZUtEdWE0V2tWcEpkOXI1ZFRhb0NQUXZGWFo3L1JEUmIvcGt6?=
+ =?utf-8?B?eGx0c1g0dFV2TEl2TjUxWm4yZmFkeldzVTlTVUozQVl5c2VVZ0pDZzlFeC9G?=
+ =?utf-8?B?aFFXNG9LWHM4YU5zeHkycHZ3MUZtMGUzODVVL09KRExQRUVNTGo0bnkxLzQ1?=
+ =?utf-8?B?YjhGZ3NYd2tPVEJ3bndWeHBQcHM2bTVIUW9XVVFVRHZsUGh6b3JoUHMzK2E2?=
+ =?utf-8?B?ZzJDc2ZSVUtaOEFkNy83QVdINlNQL3c2czZ6dE5HcGs4eDRWUE1JSmczYU1J?=
+ =?utf-8?B?UlcySFprNTZYUGdPS3JRMTNkMTdTM0V6RVFTUkh0QkxyeFIzRGtyV01wMDFp?=
+ =?utf-8?B?b2xkN09PaTB5RUdlaCtDNEZRckwxcXR4Y01GV2dYRmpaYVRRRU03Z2FjZnlY?=
+ =?utf-8?B?YlRQdjh5ZXVYaGpqRnRDcEVmNnQzeHd0YjA3NEM4bEcvM1d1Vk53TmVBZGZj?=
+ =?utf-8?B?NTlONGNWbUxPWmtNK21raHdQYkdsKzJ4dklCMFAxTVhnREs4bXozcndHUW1F?=
+ =?utf-8?B?bndnQ0txaVBMN240ckpXL00xSFp0S0Y5Qnpnb1V4MVpLWlRIWHhUTHV1RnB4?=
+ =?utf-8?B?WUFROGFWaDMwTFR3WEtuejdiNWVVT3hSclBiSnllLzBIOWNUcXg2OU5PTmFO?=
+ =?utf-8?B?enlvQjNpQ0tUWmhEY1lvazcyTkNrMjJzSzU0YlUyTVZZTnRrL3dKNW8vZzl1?=
+ =?utf-8?B?bmNrbEd0ZDVQbkJPNmxxMFlNTzEySG5Xczh2YjY0OHF4UFAxRHBJZTdzeVAr?=
+ =?utf-8?B?Zm1zc0p6V1hDS0YrK3cvMXZnVVZrTGZtbTc1UVhEN1BBNXZRS0VzYjg5bGtl?=
+ =?utf-8?B?NWlIbGkrTXRLRzcwNVJoN0JKWVg0UVgxb0NkR055YkxWUFZlZGlvRGphOFVs?=
+ =?utf-8?B?a1RydVNUN0JmTG5sMWdVN1ZKZTNXZVN0VDlYNnZ5N2lWMXQyM2JsdWIwc2RH?=
+ =?utf-8?B?S3pydTJrdlN4N2ZnNDd2andqY2htUnRUY3VrRlNSenc2ZEM5cUxLQWxUbG5C?=
+ =?utf-8?B?a1VoZHFBV01OeVl1WjlxcmJHeHV4SDdWLzlMLzltVytvY1pEdTEzREN4M3dl?=
+ =?utf-8?B?Z3QwUVIyS1RINmpHVzNzQT09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(1800799024)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MGQmcfyLZzR/5AP04xnEHxecs4D8H0AhKKnF0/GM2ohF30/tZ8wDJ007nl8T?=
- =?us-ascii?Q?o8PbYA1Er/XhsNf48FtH1KRRrg1FOpz8poihFU7SoiguzPkHFHiryP+PZDJW?=
- =?us-ascii?Q?uhHDYJhF/6NlX+qVk21QWBe3bqEgnjwjWDaVprL9+Y5xTs8wqSS4E2ztQEW/?=
- =?us-ascii?Q?ZEFotHlcPIGlQWoERO7DyCCsPhsk8QBry8KbeOC4qmi9lUsUvbE01BzeKbad?=
- =?us-ascii?Q?dPnV5cKpH5W2YsKW3Uzx3+YpqaLe6/YM/4eEbep7bizIvCChGN0VtxtXoawM?=
- =?us-ascii?Q?tZ8qDs8ntvHWOEltFTAJn7yvIg65/qD5kFejWF0Y/yZ0ou11/yq61TyjJzcl?=
- =?us-ascii?Q?MSMA5x95qjZ+QFJZ32jBvBSXPCHv3dmEzyfv+lqjYU1hLf+3Dhic2XWUjhjx?=
- =?us-ascii?Q?yxmXD8GTfnBdQREfqZLsRR71JyfjM12ImEqKgZfbKztSnQCjmRK6A/uF+4IJ?=
- =?us-ascii?Q?GNKswD9TZPPiwodI898Lk1m6MNxsF0EL2nhg0aC+nYcdDkBJAtLOPjkbjV76?=
- =?us-ascii?Q?BxF1MGczINInGhPe7re4MhQePrIm3vxSeTG4uMLtBERyhZLkP5BzrYVmVpqY?=
- =?us-ascii?Q?rwgZcJAYl2SyAKHXGpI35RF9g8ovF6VljOfGWYvl6Dxi2du97JHpyvCQIEjU?=
- =?us-ascii?Q?2aM5zwzYSMFv8SeyydfJkFU4Eys7q7ALUDSoFYt7cRbrFGmkRTcYHBWii5VW?=
- =?us-ascii?Q?uR4EyMYwJnXuO1fpqqGpwNcv3I5W51ShgDZ4yjNBuAjz2p5HSWcMpyE+mvNT?=
- =?us-ascii?Q?BrxGNzEbfBNHvpIG2+8yw31G1fU6qm2uDJlegaVCuTrXNglhj7q68aDeCyF7?=
- =?us-ascii?Q?a0+pUn1yZRO3dGnx9ZBdfVGpnJN9kmCnmYiqOv03kY+SpqPoASD5Nh2ViirO?=
- =?us-ascii?Q?m6roSqb+wuKu/ZCpYrxx75+O6mkWi9bXCxdS+rSUW+CDbZGH0Yi3X34WXwe5?=
- =?us-ascii?Q?lQYByEOC2mEodeGXUmuTPD9MYFQ8hovfSObCa6OrFGo2z6CzEvD1Sih/FJWt?=
- =?us-ascii?Q?fnVR+FiBZ38W701AYwQ5PLaZ+hM+W1WgdGZA9C6yn8gOdnBd6903qnzxma7U?=
- =?us-ascii?Q?oEvW2fH60x/Z6JMn8qUIqX6VpXtW92lJrUXS2kYxvxzGmicuAqq1J7ohJ16P?=
- =?us-ascii?Q?jEHQ6YfQzgo3dfHp5H+5oOour1vhp0zGsLBGhQU4xomkLDWqDrYB5yPsYy1+?=
- =?us-ascii?Q?1e91e/r5LhJOJ1LlPVCCbwB7lDC+47llq7BYwwSCk6kQ9i6XIVIlfnsr9cyo?=
- =?us-ascii?Q?d8XFCDsqov6q1F9O3IDETJUBwiKBUxK4hwTxT6jfXQ0P4bfLU/APGLGeMsre?=
- =?us-ascii?Q?Xkq6sKIVTQITEShwl/HafIV6y1+OV5b4kZXhMXDFb35zZ+5c/4t/wk2hjKfs?=
- =?us-ascii?Q?8agKUlsdolGAHpJ6hoKvGgOkuCcci2zgWBLsd3dYoShYhlVKyS9AMV+HfRvk?=
- =?us-ascii?Q?auEKSa44EzvgH7eoQBUXkfUWjRj2RG9SKCvykbHjXHNfhxhicexePVqYKju7?=
- =?us-ascii?Q?Qg3GB+Re9eLTmAarpSj4QL4apxMGlzAi3gggES2hfTU8gHzf0ZWjLKIgfBxV?=
- =?us-ascii?Q?x2HsaeMksIkQtp4N4fvA6jDrgRKsvvIKj8RjcXsTt59+ZZyiwv9kDQJWDx6O?=
- =?us-ascii?Q?0OVACVfnhkGgGMbxRZVqTUE=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b35b8924-a2a2-4393-0867-08dcb0336069
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+	=?utf-8?B?dVBIVngwcDdFaU9hSTNmUGFRbDFBRFcyTkNSdHYyMVZONHVWcGJIbG1nZ2Y0?=
+ =?utf-8?B?SG9XSjZtKy9KUzBSeExNQ3FsR2pWTTloNTFuaDlqSDEzejVFMHQvUm1udTZC?=
+ =?utf-8?B?dkNvdGFvaWU4L05OY003c0xTNEQ5MDE0V01MYXlCUlBPNXc1SGNKSEtmNTBS?=
+ =?utf-8?B?bVJweUcrczl4OUFTdnFVeEZrMmdUK2N4c3hQczNLNGNzSUthNUpQT0VnQ1JF?=
+ =?utf-8?B?OWtoeGRHQ1QwbElQWGVFL1RYR0JhajBsUUNtZTBjQ2VQZVpHM054TlFaUjhL?=
+ =?utf-8?B?QlN4K3lEUFdPL0xacmhWZXluSUlwa0R5N0lQWU5kc0VuSHpleXowMlpBeVJH?=
+ =?utf-8?B?dzVzK0E1NWlUZU9uRmxBY3prOFZlQ3Jvdm9lbVdaRDhiQll2SUN6WWg0bEM1?=
+ =?utf-8?B?QkdvWkdpSTNoQzc4a2cydEYvdk0zMWNYN3g4YTJ1NE52dkNjTmthK21mN2NC?=
+ =?utf-8?B?b0dkemtXdEZOYmpLNS9CR2YvTDMvU21ZOWxwT25vSU9zOWJoYSsrSWpObXFz?=
+ =?utf-8?B?d2FMY2tRMnBRYmFveGQyUGlEZHlTaGtITkJ1WmszNXhjN2g3a2dZaUU4Szlz?=
+ =?utf-8?B?SERTUE4xSDhIWWNaK1BNMVFyRURhTUdxWFZ1VkpaN0RRK0xsMXRKQUFUaHE5?=
+ =?utf-8?B?cFNCZFlqdkJiV29xRFpKeXhrY0M3VDQ4bzU3WEh5VjVEeHdlZjhac2t3MU9j?=
+ =?utf-8?B?VmNKeEt0blhlZlp6cWFoOEh2d0FLaFEwc1V6SVlqYzJsMmpTdnhkbzdmU08w?=
+ =?utf-8?B?V0VQOXV3OXlpWWRnSk1vZWoweGl3REo3aE5KNldwQ0ZiR284MUhkYS9Zcnow?=
+ =?utf-8?B?MUNHUTFRUUFKOFJwSUxzbGtkcmlFZnZCZ2N0RTRZS3Z5NXFTR2ZJdjd3N214?=
+ =?utf-8?B?c1BoMzNZMmswL0Foa3NjcUhWV2ZHVzZMWEw1K3k3TkN1MTR5T3k1bjFIc0Zi?=
+ =?utf-8?B?TzBzTTFaVFVLRzkzTTNIQ2RJWXdMQ0gwdU1CWUVRYVhrQnQ5Rll2cG9wRG43?=
+ =?utf-8?B?aFcxc05vZWRNZG1YajdJbURYWEFLQUFVc0hJdnQralBsNU5raTJCcDRZQjgr?=
+ =?utf-8?B?RlhTV29DZ3BnRWxpSmN6U3NuaU55Sm1yOVFjQUNXakZGbzhZQU5SZ0JzZG10?=
+ =?utf-8?B?cWlueitpRVZ6dHRKdFAyT1MrT0RYSzdjT3RHcDhtYmtnbVBmWjNOdm1XVjhm?=
+ =?utf-8?B?c2IzRW0yR3p0RmpiMFlSOFdPRG1vczljbzN3LzU5TFhvSFptbnVtU1l0eVEx?=
+ =?utf-8?B?MlNsVTZoZTlwQ2FzN0YvWkJyY3UzbmZ6QU1BN1pwRjByS1hhcGFkc3pFMmxU?=
+ =?utf-8?B?VnRsang4ajhZU1l0ZEt2bW5VVFZBUmxxQ0FUeWNUcndlL0NOVUxIZUNTaDVi?=
+ =?utf-8?B?Ny91QzZ4Umk1UmpPNmNoWUpOVStTR1BjVjdzc3pYeFVJNnhIZytKOEUrZTc4?=
+ =?utf-8?B?OUJCMm9VUlBvL3pQQTFndStvQm0rNUR3N2pRTVYyZW1zam9yTkdhZUhYS2Vm?=
+ =?utf-8?B?eFFaeUJEdjdHOXdCa2dTZGxaRU5PUHNYekNuWjZHd0JId25XVDA3N3J2bC85?=
+ =?utf-8?B?dk1Id3hCYVFEQkdVNzYxckhkMXVPMWxxcnR2SjBNbFZhWWU3ZDdrbVk0cnJE?=
+ =?utf-8?B?SmRmZFB6QUM1K2kwQ1BQcWUyT0RCNFlkRlM1aTVmajhKNXA4N0NCZDFGd1hw?=
+ =?utf-8?B?U0w0SzY1dXQ4QitzaVJzc2Q4bngwMVRmc1NsN2dhNWRhdGpLZHVHcHVuSlUx?=
+ =?utf-8?B?VmNaOWUwSStmNStScEhiRVQ3aFQvU3E4ZEV5ZVpSekJ5czRmL1ZwRlhpSEpC?=
+ =?utf-8?B?UTBDdk4vU2lJRWVOZDZObFEvZVJWeloxdTdwaTdndjlkQURic2VqdEk0WkRU?=
+ =?utf-8?B?cXFKditEb05kRVpSdmQxOUlTQlA2MWg2aTNHZkx2RTlVZElNa1JOcjhuZFdv?=
+ =?utf-8?B?bkpDV0NMdTdsc0FVaWRiTDBYLzZWLzNqR3pNK21zWFRKb2NUL3FJZzR0Y3Mw?=
+ =?utf-8?B?M0M0d3BtUVpBVllqSk1iRVZ2LzJqODhXSHBML1hiQ3NCZFdUWHg1V1NKNnNE?=
+ =?utf-8?B?QzdQSGRaUkNzZGIyN25qOXB6ejFkUkJOSUhLNnhjZWNoeGd1Ky9XQmRWMmFT?=
+ =?utf-8?Q?Pus9yvxq4oy1CIVsYZ0FHAeOv?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd5227ce-0d08-43ec-d6d2-08dcb0420c4a
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 01:03:08.9756
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 02:48:10.1757
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q8EDUJ2BGlab+gfaviJXpGPcS2xLqxTblHsAl3Pax2ZzdDzfjEshquDy9Djs4jT2Uz7yowyrkk0uc0uSo6LpHMNejMbx6aMxFZ5/82vbtrw/H2hJyPSBMpwNJIqpi/Su
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9PR01MB12484
+X-MS-Exchange-CrossTenant-UserPrincipalName: cWUN++Lf6inuzlPUvCDFsbvffLSYsPV04ikw41H0w1TwGGfZzcnGR4X3+sO9x9+s/gaV5qOjfMmUDuM+ejI1mA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7703
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+On 07/29/2024, Liu Ying wrote:
+> Hi Dmitry,
+> 
+> On 07/27/2024, Dmitry Baryshkov wrote:
+>> On Fri, Jul 26, 2024 at 02:50:12PM GMT, Liu Ying wrote:
+>>> MCIMX-LVDS1[1] display module integrates a HannStar HSD100PXN1 LVDS
+>>> display panel and a touch IC.  Add an overlay to support the LVDS
+>>> panel on i.MX53 QSB / QSRB platforms.
+>>>
+>>> [1] https://www.nxp.com/part/MCIMX-LVDS1
+>>>
+>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>>> ---
+>>> I mark RFC in patch subject prefix because if the DT overlay is used, both ldb
+>>> and panel devices end up as devices deferred.  However, if the DT overlay is
+>>> not used and the devices are defined in imx53-qsb-common.dtsi, then they can be
+>>> probed ok.
+>>>
+>>> With a dev_err_probe() added to imx_ldb_probe() in imx-ldb.c, devices_deferred
+>>> indicates 53fa8008.ldb and panel-lvds kind of depend on each other.
+>>>
+>>> root@imx53qsb:~# cat /sys/kernel/debug/devices_deferred
+>>> 53fa8008.ldb    imx-ldb: failed to find panel or bridge for channel0
+>>> panel-lvds      platform: wait for supplier /soc/bus@50000000/ldb@53fa8008/lvds-channel@0
+>>>
+>>> It looks like the issue is related to fw_devlink, because if "fw_devlink=off"
+>>> is added to kernel bootup command line, then the issue doesn't happen.
+>>
+>> Could you please fdtdump /sys/firmware/fdt (or just generated DTB files)
+>> in both cases and compare the dumps for sensible differences?
+> 
+> I fdtdump imx53-qsrb-mcimx-lvds1.dtb and imx53-qsrb.dtb.
+> 
+> I see three sensible differences.
+> 1) panel-lvds node position.
+>    For imx53-qsrb-mcimx-lvds1.dtb, it comes very early and is next to
+>    'compatible = "fsl,imx53-qsrb", "fsl,imx53";'.
+>    For imx53-qsrb.dtb, it comes later and is next to panel node in '/' node.
 
-Prepare for removal of dpcm_playback and dpcm_capture flags in
-dailinks.
+It turns out only 1) panel-lvds node position matters.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
----
- sound/soc/intel/boards/sof_sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I can reproduce the issue with imx53-qsrb.dtb(no DT overlay) if I put
+the panel-lvds node before the soc node.  If the panel-lvds node is
+after the soc node, then the issue doesn't happen with imx53-qsrb.dtb.
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index e5feaef669d14..17581473343f3 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1289,8 +1289,8 @@ static void init_dai_link(struct device *dev, struct snd_soc_dai_link *dai_links
- 	dai_links->num_cpus = cpus_num;
- 	dai_links->codecs = codecs;
- 	dai_links->num_codecs = codecs_num;
--	dai_links->dpcm_playback = playback;
--	dai_links->dpcm_capture = capture;
-+	dai_links->playback_only = playback && !capture;
-+	dai_links->capture_only = !playback && capture;
- 	dai_links->init = init;
- 	dai_links->ops = ops;
- }
+The ldb node(LVDS display bridge) and IPU(display controller) node are
+in the soc node.  Maybe, the order of the ldb node and the panel-lvds
+node in DT blob matters(be my guess).
+
+> 
+> 2) properties order in panel-lvds node.
+>    For imx53-qsrb-mcimx-lvds1.dtb, it shows
+>    panel-lvds {                                                                 
+>         power-supply = <0x0000001c>;                                             
+>         backlight = <0x00000030>;                                                
+>         compatible = "hannstar,hsd100pxn1";                                      
+>         port {                                                                   
+>             endpoint {                                                           
+>                 phandle = <0x0000007d>;                                          
+>                 remote-endpoint = <0x0000007c>;                                  
+>             };                                                                   
+>         };                                                                       
+>     };
+>     For imx53-qsrb.dtb, it shows
+>     panel-lvds {                                                                 
+>         compatible = "hannstar,hsd100pxn1";                                      
+>         backlight = <0x00000031>;                                                
+>         power-supply = <0x0000001d>;                                             
+>         port {                                                                   
+>             endpoint {                                                           
+>                 remote-endpoint = <0x00000033>;                                      
+>                 phandle = <0x00000017>;                                              
+>             };                                                                   
+>         };                                                                       
+>     };         
+> 
+> 3) No 'lvds0_out' and 'panel_lvds_in' in __symbols__ node for
+>    imx53-qsrb-mcimx-lvds1.dtb, but for imx53-qsrb.dtb they are in it.
+> lvds0_out = "/soc/bus@50000000/ldb@53fa8008/lvds-channel@0/port@2/endpoint";
+> panel_lvds_in = "/panel-lvds/port/endpoint";
+> 
+> BTW, reverting Saravana's commits
+> 7cb50f6c9fba ("of: property: fw_devlink: Fix stupid bug in remote-endpoint parsing")
+> and/or
+> 7fddac12c382 ("driver core: Fix device_link_flag_is_sync_state_only()")
+> avoids the issue from happening.
+> 
+>>
+>>>
+>>> Saravana, DT folks, any ideas?
+>>>
+>>> Thanks.
+>>>
+>>>  arch/arm/boot/dts/nxp/imx/Makefile            |  4 ++
+>>>  .../boot/dts/nxp/imx/imx53-qsb-common.dtsi    |  4 +-
+>>>  .../dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso    | 43 +++++++++++++++++++
+>>>  3 files changed, 49 insertions(+), 2 deletions(-)
+>>>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso
+>>>
+>>> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
+>>> index 92e291603ea1..7116889e1515 100644
+>>> --- a/arch/arm/boot/dts/nxp/imx/Makefile
+>>> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
+>>> @@ -46,8 +46,10 @@ dtb-$(CONFIG_SOC_IMX53) += \
+>>>  	imx53-ppd.dtb \
+>>>  	imx53-qsb.dtb \
+>>>  	imx53-qsb-hdmi.dtb \
+>>> +	imx53-qsb-mcimx-lvds1.dtb \
+>>>  	imx53-qsrb.dtb \
+>>>  	imx53-qsrb-hdmi.dtb \
+>>> +	imx53-qsrb-mcimx-lvds1.dtb \
+>>>  	imx53-sk-imx53.dtb \
+>>>  	imx53-sk-imx53-atm0700d4-lvds.dtb \
+>>>  	imx53-sk-imx53-atm0700d4-rgb.dtb \
+>>> @@ -57,7 +59,9 @@ dtb-$(CONFIG_SOC_IMX53) += \
+>>>  	imx53-usbarmory.dtb \
+>>>  	imx53-voipac-bsb.dtb
+>>>  imx53-qsb-hdmi-dtbs := imx53-qsb.dtb imx53-qsb-hdmi.dtbo
+>>> +imx53-qsb-mcimx-lvds1-dtbs := imx53-qsb.dtb imx53-qsb-mcimx-lvds1.dtbo
+>>>  imx53-qsrb-hdmi-dtbs := imx53-qsrb.dtb imx53-qsb-hdmi.dtbo
+>>> +imx53-qsrb-mcimx-lvds1-dtbs := imx53-qsrb.dtb imx53-qsb-mcimx-lvds1.dtbo
+>>>  dtb-$(CONFIG_SOC_IMX6Q) += \
+>>>  	imx6dl-alti6p.dtb \
+>>>  	imx6dl-apf6dev.dtb \
+>>> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
+>>> index 05d7a462ea25..430792a91ccf 100644
+>>> --- a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
+>>> +++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
+>>> @@ -16,7 +16,7 @@ memory@70000000 {
+>>>  		      <0xb0000000 0x20000000>;
+>>>  	};
+>>>  
+>>> -	backlight_parallel: backlight-parallel {
+>>> +	backlight: backlight {
+>>
+>> Nit: this seems unrelated to the LVDS support
+> 
+> Do you suggest to do this in a separate patch?
+> If yes, is it worth adding a Fixes tag?
+> 
+>>
+>>>  		compatible = "pwm-backlight";
+>>>  		pwms = <&pwm2 0 5000000 0>;
+>>>  		brightness-levels = <0 4 8 16 32 64 128 255>;
+>>> @@ -89,7 +89,7 @@ panel_dpi: panel {
+>>>  		compatible = "sii,43wvf1g";
+>>>  		pinctrl-names = "default";
+>>>  		pinctrl-0 = <&pinctrl_display_power>;
+>>> -		backlight = <&backlight_parallel>;
+>>> +		backlight = <&backlight>;
+>>>  		enable-gpios = <&gpio3 24 GPIO_ACTIVE_HIGH>;
+>>>  
+>>>  		port {
+>>> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso b/arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso
+>>> new file mode 100644
+>>> index 000000000000..27f6bedf3d39
+>>> --- /dev/null
+>>> +++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-mcimx-lvds1.dtso
+>>> @@ -0,0 +1,43 @@
+>>> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>>> +/*
+>>> + * Copyright 2024 NXP
+>>> + */
+>>> +
+>>> +/dts-v1/;
+>>> +/plugin/;
+>>> +
+>>> +&{/} {
+>>> +	panel-lvds {
+>>
+>> Nit: Just 'panel' should be enough.
+> 
+> Nope.
+> 
+> 'panel-lvds' is needed to differentiate it from 'panel' in
+> imx53-qsb-common.dtsi which is a DPI panel.
+> 
+> Using 'panel-lvds', procfs lists exactly the properties needed.
+> root@imx53qsb:~# ls /proc/device-tree/panel-lvds/
+> backlight     compatible    name          port          power-supply
+> 
+> Using 'panel', more are listed.
+> root@imx53qsb:~# ls /proc/device-tree/panel/
+> backlight      compatible     enable-gpios   name           phandle        pinctrl-0      pinctrl-names  port           power-supply
+> 
+>>
+>>> +		compatible = "hannstar,hsd100pxn1";
+>>> +		backlight = <&backlight>;
+>>> +		power-supply = <&reg_3p2v>;
+>>> +
+>>> +		port {
+>>> +			panel_lvds_in: endpoint {
+>>> +				remote-endpoint = <&lvds0_out>;
+>>> +			};
+>>> +		};
+>>> +	};
+>>> +};
+>>> +
+>>> +&ldb {
+>>> +	#address-cells = <1>;
+>>> +	#size-cells = <0>;
+>>> +	status = "okay";
+>>> +
+>>> +	lvds-channel@0 {
+>>> +		#address-cells = <1>;
+>>> +		#size-cells = <0>;
+>>> +		fsl,data-mapping = "spwg";
+>>> +		fsl,data-width = <18>;
+>>> +		status = "okay";
+>>> +
+>>> +		port@2 {
+>>> +			reg = <2>;
+>>> +
+>>> +			lvds0_out: endpoint {
+>>> +				remote-endpoint = <&panel_lvds_in>;
+>>> +			};
+>>> +		};
+>>> +	};
+>>> +};
+>>> -- 
+>>> 2.34.1
+>>>
+>>
+> 
+
 -- 
-2.43.0
+Regards,
+Liu Ying
 
