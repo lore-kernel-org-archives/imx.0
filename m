@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A223168499;
-	Wed, 31 Jul 2024 19:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C76B16D322;
+	Wed, 31 Jul 2024 19:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722453226; cv=none; b=axJMIUBNfOSy96VTPNJRx1JNKqUgdqwMxEzUt2MN+thnMuOOV5ZE8uHYNvGeMX0CXTxIkhnoXkHIDZwmlRTlhfLUmla1NmvziC3z2rbyzUiq/BfO49eorOvZAVhvixCOvhiakaidGxCxHUe1x0FqwFX4pqjihx49and+mN68s5o=
+	t=1722453234; cv=none; b=T0TSxJbdaWo2XMnBrmmvB4vjd02ahf3YvHRyZBta2vup1w9UiMQzivFYgRcZENkgij52queO6GHnRakphy4pfc5Yixv6Hz4qUC0zslGSJ8zr3hoVUQdVtD6hK+ZjUBo7eaLEIKOIKJNyetKwt4UIGi13bsVPBjgv9pp514tKgpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722453226; c=relaxed/simple;
-	bh=T3/ZGvRIcdVcWhXLfnt/8UVdJ+xNtaUxWIZV3H2kVCU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ty45vITlLAjaQ6iztfZu+tufLcfHJEx8YhkUmTrRU8pXZM4cEkAWGBYV+TvNSpAkn++Q5RROBOitPikgfrCVve7fOKtC2KwAhQYx71sG9Dn2KHl6/XYt9Wh5ayyjb0TcZ0K6KkZROOfG+Gb723MPAStRUePAWIg7/RjdDPT2RkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOor4D1V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722453234; c=relaxed/simple;
+	bh=kdjbGvEdRLgyREDQqkBuCZiTKYlAO4pgknOpuCR42LA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U/lH47PE+KjSW0N6k1fTmNzEaOAdecnRY6rNZ0/dnRWHB/YMwReHYikx3+5nVcz5AwVPZgFfsx/491A8MkVHugwFpLuK+HZFTkgWwWwl1pTi3mPN+bjHaA8UHFEIitgJk/U1Bs0Gv0L53HqaWyL7zKekOJe0uUHyklyLuz/FWJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caf5xRQG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOor4D1V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFD1C4AF09;
-	Wed, 31 Jul 2024 19:13:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caf5xRQG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A923EC4AF09;
+	Wed, 31 Jul 2024 19:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722453225;
-	bh=T3/ZGvRIcdVcWhXLfnt/8UVdJ+xNtaUxWIZV3H2kVCU=;
+	s=k20201202; t=1722453233;
+	bh=kdjbGvEdRLgyREDQqkBuCZiTKYlAO4pgknOpuCR42LA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LOor4D1VhBJFEasQ3A3MIR41sQ3gAixx0q7gkAZoxz6dhbSh+FNnKmWWGPcc946ls
-	 WHzzefQBiHjcAUg51BiB7Bmuc3R1Q31+qo7Z/CZGhbIGHgWh05sS/kQSJS1hc1EvnO
-	 EevmIBr3f/WsP+VsD3TmCqaNmZMVGN4DQqnmQU8XXayeXDP4PUrjtT6swKnT3zU0aj
-	 Jx8ru+JZvB3LX09nTTVkDmrtPti9Eid4TVxqg1iqxwwEYPntWG+vytKjARuYaLR5jQ
-	 NrEh6L7Uh98TIZKtkoWIXQcYXq8ImHzEXVkvsNDmPr+HO1u83boiFYN+PDwSOSykKS
-	 K1Rb8panMCDWA==
+	b=caf5xRQGUr+uSGQD4LDsPEdVwHh1TUG0gg5a8oemletv6sayaVMH+sj0LJAcmi9/c
+	 FhX+Xb856DHFCuOBOLR5LKi/UeN/UYpQeT3Inz0rgVq4Djx1irVgA7w5FeGNbbm0/I
+	 1PboGV+ogVV117gbsLkz8wXbwNH9xk4WnDYCb3yMjqRJoePYgBNaMJg6xTvI/13hNr
+	 x73p+54bC33ieU+jmJUszf1A1MrErgt4hnL+Burltxs2sLxwqA7eveXFBpDnd2pK/Q
+	 +Hj5sdTlr8QgnP6u6GWg8sTX7CZjovW20+ED+GA3I4zId1y5tioldO5gd9jSHosQH8
+	 QRz3gIMT6UPYQ==
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: linux-remoteproc@vger.kernel.org,
+Cc: linux-pm@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] remoteproc: Use of_property_present()
-Date: Wed, 31 Jul 2024 13:12:45 -0600
-Message-ID: <20240731191312.1710417-7-robh@kernel.org>
+Subject: [PATCH] devfreq: imx-bus: Use of_property_present()
+Date: Wed, 31 Jul 2024 13:12:49 -0600
+Message-ID: <20240731191312.1710417-11-robh@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -49,75 +50,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Use of_property_present() to test for property presence rather than
-of_(find|get)_property(). This is part of a larger effort to remove
-callers of of_find_property() and similar functions. of_find_property()
-leaks the DT struct property and data pointers which is a problem for
-dynamically allocated nodes which may be freed.
+of_get_property(). This is part of a larger effort to remove callers
+of of_get_property() and similar functions. of_get_property() leaks
+the DT property data pointer which is a problem for dynamically
+allocated nodes which may be freed.
 
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- drivers/remoteproc/imx_dsp_rproc.c      | 2 +-
- drivers/remoteproc/imx_rproc.c          | 2 +-
- drivers/remoteproc/xlnx_r5_remoteproc.c | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/devfreq/imx-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index 087506e21508..376187ad5754 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -509,7 +509,7 @@ static int imx_dsp_rproc_mbox_alloc(struct imx_dsp_rproc *priv)
- 	struct mbox_client *cl;
- 	int ret;
+diff --git a/drivers/devfreq/imx-bus.c b/drivers/devfreq/imx-bus.c
+index 86850b7dea09..49798f542d68 100644
+--- a/drivers/devfreq/imx-bus.c
++++ b/drivers/devfreq/imx-bus.c
+@@ -59,7 +59,7 @@ static int imx_bus_init_icc(struct device *dev)
+ 	struct imx_bus *priv = dev_get_drvdata(dev);
+ 	const char *icc_driver_name;
  
--	if (!of_get_property(dev->of_node, "mbox-names", NULL))
-+	if (!of_property_present(dev->of_node, "mbox-names"))
+-	if (!of_get_property(dev->of_node, "#interconnect-cells", NULL))
++	if (!of_property_present(dev->of_node, "#interconnect-cells"))
  		return 0;
- 
- 	cl = &priv->cl;
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 144c8e9a642e..8d7ecc809c67 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -807,7 +807,7 @@ static int imx_rproc_xtr_mbox_init(struct rproc *rproc)
- 	if (priv->tx_ch && priv->rx_ch)
- 		return 0;
- 
--	if (!of_get_property(dev->of_node, "mbox-names", NULL))
-+	if (!of_property_present(dev->of_node, "mbox-names"))
- 		return 0;
- 
- 	cl = &priv->cl;
-diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
-index 596f3ffb8935..2cea97c746fd 100644
---- a/drivers/remoteproc/xlnx_r5_remoteproc.c
-+++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
-@@ -1059,7 +1059,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
- 	r5_core = cluster->r5_cores[0];
- 
- 	/* Maintain backward compatibility for zynqmp by using hardcode TCM address. */
--	if (of_find_property(r5_core->np, "reg", NULL))
-+	if (of_property_present(r5_core->np, "reg"))
- 		ret = zynqmp_r5_get_tcm_node_from_dt(cluster);
- 	else if (device_is_compatible(dev, "xlnx,zynqmp-r5fss"))
- 		ret = zynqmp_r5_get_tcm_node(cluster);
-@@ -1086,7 +1086,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
- 			return ret;
- 		}
- 
--		if (of_find_property(dev_of_node(dev), "xlnx,tcm-mode", NULL) ||
-+		if (of_property_present(dev_of_node(dev), "xlnx,tcm-mode") ||
- 		    device_is_compatible(dev, "xlnx,zynqmp-r5fss")) {
- 			ret = zynqmp_pm_set_tcm_config(r5_core->pm_domain_id,
- 						       tcm_mode);
-@@ -1147,7 +1147,7 @@ static int zynqmp_r5_cluster_init(struct zynqmp_r5_cluster *cluster)
- 		return -EINVAL;
- 	}
- 
--	if (of_find_property(dev_node, "xlnx,tcm-mode", NULL)) {
-+	if (of_property_present(dev_node, "xlnx,tcm-mode")) {
- 		ret = of_property_read_u32(dev_node, "xlnx,tcm-mode", (u32 *)&tcm_mode);
- 		if (ret)
- 			return ret;
+ 	if (!IS_ENABLED(CONFIG_INTERCONNECT_IMX)) {
+ 		dev_warn(dev, "imx interconnect drivers disabled\n");
 -- 
 2.43.0
 
