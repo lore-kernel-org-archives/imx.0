@@ -1,116 +1,120 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67F81AE871
-	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 12:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A271A7F73
+	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 13:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722430733; cv=none; b=Kb6FMPwcFKXNkwahYpJYZUh0eOkcmt+sUKe7EoAAPE2Jh/afZguLFaSWt0yojk9i9spOqzHYtLGViT+ea6CB03VXzs8kgU1J5hcrhB1yMwxZjXebXVtq3w6mAQZ9rG9J6NwgXlY4jfv7wkoGFyZv3WExEJRB6tGxtGJ+FhF1hd0=
+	t=1722431603; cv=none; b=sl0r0w8CUo14G5bcGjG3BoBkhvr7iIQwHBottoAqSmkuowwQ0m2t/l1U1ULJnQuPvgB/EhI0y3QQe2Y1q7ELHovtwio/hECky+IkelFzAe2qU/Qb8jahEADu4Qv78BDfQIs+hF8fJBrVKQz7R7jFyDwu04YzpFD0boy9lM71q44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722430733; c=relaxed/simple;
-	bh=Cz9rXVlUuUIx2KdvrKVffZhncBvWWxea9mzmttsi2Cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rlWl2yuY/ibSKRlO2hJe0hiwgLA5WuHeTG/ysX7Izu5IqaTomOemGzJ/0IxDp5P53fi3/B5la2rKo3K0b8LMIY8F1ASmrlvJMS8cEIjyg4hQE6n9irjLne5R2vUDOowpMhMju8LPBgPvNP5d3N0IL8bBqXY00yBQVwqPUK+5D8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D69881007;
-	Wed, 31 Jul 2024 05:59:16 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78EE43F766;
-	Wed, 31 Jul 2024 05:58:48 -0700 (PDT)
-Date: Wed, 31 Jul 2024 13:58:46 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>
-Subject: Re: [PATCH v6 1/7] dt-bindings: firmware: add i.MX95 SCMI Extension
- protocol
-Message-ID: <Zqo1BpZ9i3LC_TIQ@bogus>
-References: <20240718-imx95-bbm-misc-v2-v6-0-18f008e16e9d@nxp.com>
- <20240718-imx95-bbm-misc-v2-v6-1-18f008e16e9d@nxp.com>
- <dee6e871-daa3-4886-be57-e4d4b3fa198d@kernel.org>
- <PAXPR04MB84592DE4592FC5D270F0820B88B12@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <ZqovdlPcnBbZn0Ue@bogus>
- <PAXPR04MB84599389611E0E789E425FD588B12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1722431603; c=relaxed/simple;
+	bh=dV9KdtfBSYpIAf4v8QDqlQQtQ0aBT6+oDvGxdIzO3rg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HipU382HfYubDn86sFLVcVBhjmJmbLCLJi9AEtGKqjZFASB4gkaHscu7Smc+yo238xWIQ44xVEHAJ5Xz5dUd4xHJfrTWCZ+RRN28GLZA5xNGJdCXna1UDIj9v0ZbLiYtSFSboEQ/lLcRVHfCSgUJul5l5gbEn6r2SFx3AyGfU8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sZ98I-0002IM-JL; Wed, 31 Jul 2024 15:12:46 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sZ98H-003XP9-50; Wed, 31 Jul 2024 15:12:45 +0200
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1sZ98H-000AP7-0D;
+	Wed, 31 Jul 2024 15:12:45 +0200
+Message-ID: <e4cf5a6a2be51fe9c7fff54e30cf3bd6f1d3534e.camel@pengutronix.de>
+Subject: Re: [PATCH v3 00/12] drm/imx/ipuv3: switch LDB and parallel-display
+ driver to use drm_bridge_connector
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Date: Wed, 31 Jul 2024 15:12:44 +0200
+In-Reply-To: <uqsnphe2pm366xenpdvtsxvpkiewgmxoqyv2zvbgc3ewlx23mp@guesbce35jcm>
+References: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
+	 <uqsnphe2pm366xenpdvtsxvpkiewgmxoqyv2zvbgc3ewlx23mp@guesbce35jcm>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB84599389611E0E789E425FD588B12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, Jul 31, 2024 at 12:49:59PM +0000, Peng Fan wrote:
-> > Subject: Re: [PATCH v6 1/7] dt-bindings: firmware: add i.MX95 SCMI
-> > Extension protocol
-> >
-> > On Wed, Jul 31, 2024 at 12:18:28PM +0000, Peng Fan wrote:
-> > > > Subject: Re: [PATCH v6 1/7] dt-bindings: firmware: add i.MX95
-> > SCMI
-> > > > Extension protocol
-> > > >
-> > > > On 18/07/2024 09:41, Peng Fan (OSS) wrote:
-> > > > > From: Peng Fan <peng.fan@nxp.com>
-> > > > >
-> > > > > Add i.MX SCMI Extension protocols bindings for:
-> > > > > - Battery Backed Module(BBM) Protocol
-> > > > >   This contains persistent storage (GPR), an RTC, and the ON/OFF
-> > > > button.
-> > > > >   The protocol can also provide access to similar functions
-> > > > implemented via
-> > > > >   external board components.
-> > > > > - MISC Protocol.
-> > > > >   This includes controls that are misc settings/actions that must
-> > > > > be
-> > > > exposed
-> > > > >   from the SM to agents. They are device specific and are usually
-> > > > define to
-> > > > >   access bit fields in various mix block control modules,
-> > > > > IOMUX_GPR,
-> > > > and
-> > > > >   other GPR/CSR owned by the SM.
-> > > > >
-> > > > > Reviewed-by: "Rob Herring (Arm)" <robh@kernel.org>
-> > > >
-> > > > Why quotes? Which tools did you use?
-> > >
-> > > I could not recall why have this. I will drop and resend the patchset.
-> > >
-> >
-> > Resend only if you have any other comments addressed, no spin just
-> > for this one please.
->
-> Sorry, I pushed the button too quick to send out v7(just correct
-> this R-b tag and rebased to linux-next) before checking my inbox.
->
+Hi Dmitry,
 
-Just makes me wonder if I should wait for 3-4 pings + 2-3 weeks after the
-last version of any of your patch set without any version bump before I
-can look at it. Otherwise it is quite impossible to match your speed of
-patch respinning and the whole review process gets complicated to follow.
+On Sa, 2024-07-27 at 14:17 +0300, Dmitry Baryshkov wrote:
+> On Sun, Jun 02, 2024 at 03:04:40PM GMT, Dmitry Baryshkov wrote:
+> > The IPUv3 DRM i.MX driver contains several codepaths for different
+> > usescases: both LDB and paralllel-display drivers handle next-bridge,
+> > panel and the legacy display-timings DT node on their own.
+> >=20
+> > Drop unused ddc-i2c-bus and edid handling (none of the DT files merged
+> > upstream ever used these features), switch to panel-bridge driver,
+> > removing the need to handle drm_panel codepaths separately and finally
+> > switch to drm_bridge_connector, removing requirement for the downstream
+> > bridges to create drm_connector on their own.
+> >=20
+> > This has been tested on the iMX53 with the DPI panel attached to LDB vi=
+a
+> > LVDS decoder, using all possible usecases (lvds-codec + panel, panel
+> > linked directly to LDB node and the display-timings node).
+> >=20
+> > To be able to test on the iMX53 QSRB with the HDMI cape apply [1], [2]
+> >=20
+> > [1] https://lore.kernel.org/all/20240514030718.533169-1-victor.liu@nxp.=
+com/
+> > [2] https://lore.kernel.org/all/20240602-imx-sii902x-defconfig-v1-1-71a=
+6c382b422@linaro.org/
+> >=20
+> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > ---
+> > Changes in v3:
+> > - Notice (soft) dependencies in the cover letter (Chris)
+> > - Select DRM_BRIDGE instead of depending on it (Philipp)
+> > - Dropped unused selection of DRM_PANEL (Philipp)
+> > - Added missing include of <drm/bridge/imx.h> to parallel-display.c
+> >   (Philipp)
+> > - Link to v2: https://lore.kernel.org/r/20240331-drm-imx-cleanup-v2-0-d=
+81c1d1c1026@linaro.org
+> >=20
+> > Changes in v2:
+> > - Fixed drm_bridge_attach flags in imx/parallel-display driver.
+> > - Moved the legacy bridge to drivers/gpu/drm/bridge
+> > - Added missing EXPORT_SYMBOL_GPL to the iMX legacy bridge
+> > - Link to v1: https://lore.kernel.org/r/20240311-drm-imx-cleanup-v1-0-e=
+104f05caa51@linaro.org
+>=20
+> Just a gracious ping, this has been without maintainer's review for
+> nearly two months.
 
-Also it is bit sad that you thought it needs to be re-spinned just for this
-which can be easily fixed when applying. Also I haven't even started looking
-at this series for the reason I mentioned above.
+I don't have any active i.MX6 projects right now, which increases
+latency. I'll get around to reviewing the remaining changes and testing
+on i.MX6 this week or next.
 
---
-Regards,
-Sudeep
+> Should we change ipu-v3 to the 'S: Odd Fixes' state?
+
+Odd is on point, but fixes-only doesn't really fit.
+
+regards
+Philipp
