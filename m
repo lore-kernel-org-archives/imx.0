@@ -1,149 +1,123 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31B01AC421
-	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 17:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A223168499;
+	Wed, 31 Jul 2024 19:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722446887; cv=none; b=SxF/hMOoJ3xxFkGNh3sL2j06vsWWOF5JWrwrkDxTf37BxiHYaN5dWlO6Ru9hmn387OdIx0yQZYmP+MgdfDYwdyNBQoBXpS0Ltrc0XzIcYsOOz07h8zZ+Uxr3IK3G1b5Y7U9rDp8OOeDuILqBZFUVRFmmrG00259qkW/sOFP3Z2g=
+	t=1722453226; cv=none; b=axJMIUBNfOSy96VTPNJRx1JNKqUgdqwMxEzUt2MN+thnMuOOV5ZE8uHYNvGeMX0CXTxIkhnoXkHIDZwmlRTlhfLUmla1NmvziC3z2rbyzUiq/BfO49eorOvZAVhvixCOvhiakaidGxCxHUe1x0FqwFX4pqjihx49and+mN68s5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722446887; c=relaxed/simple;
-	bh=v42xTc0oCCwicMaNmmOfMJfqEsCKrbNyJaEIMbAOXxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GmAkDb3tUMKSWAUm9EMcUTC7zTPUz8YpAh6397Xt1FFAOY4soIBniNnOB7Zj7u9auAfs9hBb6bl0IuevEyBWBxRWeG0K7X9vbGJxPiZU8RUlbTlVJxdrAfGLl1TaWBW+VIHVzG3uENRUB+Itl7BFekdHbnAf8O8+VLue1c2rnnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IBKw1Bkm; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722453226; c=relaxed/simple;
+	bh=T3/ZGvRIcdVcWhXLfnt/8UVdJ+xNtaUxWIZV3H2kVCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ty45vITlLAjaQ6iztfZu+tufLcfHJEx8YhkUmTrRU8pXZM4cEkAWGBYV+TvNSpAkn++Q5RROBOitPikgfrCVve7fOKtC2KwAhQYx71sG9Dn2KHl6/XYt9Wh5ayyjb0TcZ0K6KkZROOfG+Gb723MPAStRUePAWIg7/RjdDPT2RkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOor4D1V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IBKw1Bkm"
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3db14930a1aso4107983b6e.3
-        for <imx@lists.linux.dev>; Wed, 31 Jul 2024 10:28:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722446885; x=1723051685; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DRt+wirySSP/0rxSfCYSdxmXJCuEIe74VBuQeagotrY=;
-        b=IBKw1BkmH3uikMHppdTFSfTfItTUEDbG/kPTefBPFhCl+nLyGDe3ebQZwghdiRJe+E
-         UrpklNcVNM/ZZETXSV1xzM7/+mRoNI32r6/DWKhQeGdMWIj0VQqVmrK2FlzCFnhreXpM
-         l2NgxZnPx4wzO1FZSHZj5fjUeD07oqzNY4ZCbtilH3ahbtoNqCPbokdaoqO/yNnTMHLu
-         dleEnFB3aDO0aMxJCKA3K+zd3EXKiy8GP44tT1IznZGHZI+pPgbjSQT9wIapfPDcuGO/
-         Fo6TvaotzN/MkotIOfyrxOk6RSREVEbcrsO/5DwRgMxaulzU486nhdDXo2QE0wkwml/O
-         gD2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722446885; x=1723051685;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DRt+wirySSP/0rxSfCYSdxmXJCuEIe74VBuQeagotrY=;
-        b=a4gdkjKqW2eX4r6wmP+hiDiLNH9E68uEy6PWM6s9RdIi2cVhuLxs72JSEQgXscA4SH
-         XOL+WARY3ons21CA3+zSRpvgPJav+Y9jBUpVhJ0/sE+2ZBr6ckdmKOfJRBOstw2QqfCl
-         EExIYzh1fVTzWzkAGJoObGfziY3pnJ1a48WpaNil7IVp6cAMTSjyI/v7KVJWsDQhd7S4
-         D7kSX8cAdFGTpk4CtOI0FKP2duKW8WndPNiIqaBD0OqhPuJU/4VzRri61N8jl1j0uH80
-         4b6dTDySFHdge0lzjumzRnnvRVNXrfBcY3cORkIwk0Ddm9SOeIfoUzxQQNqfkB56ABZk
-         CxaA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2k69PFziz5x2EbOjoxjZlQG88GqOM2YWdAhL14y+wBhYUUPXqFhk47SGBlAeign+3b5XE0+scYIHHly48iC7537kE
-X-Gm-Message-State: AOJu0Yxq+CAmu0jWLGOhcOBOetSfLwiwHy8XrLP+fj2UFEABcmJBfo/v
-	JEQ0EfrDAiii5COFtEZHoVZwdCuiiZGrlHwGLFl7lgFLHedJl2Jy
-X-Google-Smtp-Source: AGHT+IFJbEbhXaPmjuoxCmR+/hmNt9JvEc6afSJEmUV9Ud116y5IbhnecHFxJGgYOSL+laQhmm8OlQ==
-X-Received: by 2002:a05:6808:30aa:b0:3d9:4147:4e38 with SMTP id 5614622812f47-3db23cb417fmr16579228b6e.36.1722446884744;
-        Wed, 31 Jul 2024 10:28:04 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:1da7:72de:e91f:aa85])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7a9f8273af7sm9200866a12.30.2024.07.31.10.28.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 10:28:04 -0700 (PDT)
-Date: Wed, 31 Jul 2024 10:28:01 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOor4D1V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFD1C4AF09;
+	Wed, 31 Jul 2024 19:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722453225;
+	bh=T3/ZGvRIcdVcWhXLfnt/8UVdJ+xNtaUxWIZV3H2kVCU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LOor4D1VhBJFEasQ3A3MIR41sQ3gAixx0q7gkAZoxz6dhbSh+FNnKmWWGPcc946ls
+	 WHzzefQBiHjcAUg51BiB7Bmuc3R1Q31+qo7Z/CZGhbIGHgWh05sS/kQSJS1hc1EvnO
+	 EevmIBr3f/WsP+VsD3TmCqaNmZMVGN4DQqnmQU8XXayeXDP4PUrjtT6swKnT3zU0aj
+	 Jx8ru+JZvB3LX09nTTVkDmrtPti9Eid4TVxqg1iqxwwEYPntWG+vytKjARuYaLR5jQ
+	 NrEh6L7Uh98TIZKtkoWIXQcYXq8ImHzEXVkvsNDmPr+HO1u83boiFYN+PDwSOSykKS
+	 K1Rb8panMCDWA==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>
-Subject: Re: [PATCH v7 7/7] input: keyboard: support i.MX95 BBM module
-Message-ID: <Zqp0IZfUobg6dq8G@google.com>
-References: <20240731-imx95-bbm-misc-v2-v7-0-a41394365602@nxp.com>
- <20240731-imx95-bbm-misc-v2-v7-7-a41394365602@nxp.com>
- <ZqpCwOhXiLzxK43-@pluto>
- <PAXPR04MB84598B36C6721748FB98905088B12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] remoteproc: Use of_property_present()
+Date: Wed, 31 Jul 2024 13:12:45 -0600
+Message-ID: <20240731191312.1710417-7-robh@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB84598B36C6721748FB98905088B12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Peng,
+Use of_property_present() to test for property presence rather than
+of_(find|get)_property(). This is part of a larger effort to remove
+callers of of_find_property() and similar functions. of_find_property()
+leaks the DT struct property and data pointers which is a problem for
+dynamically allocated nodes which may be freed.
 
-On Wed, Jul 31, 2024 at 03:37:18PM +0000, Peng Fan wrote:
-> Hi Cristian,
-> 
-> > Subject: Re: [PATCH v7 7/7] input: keyboard: support i.MX95 BBM
-> > module
-> > 
-> > On Wed, Jul 31, 2024 at 08:56:11PM +0800, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > The BBM module provides BUTTON feature. To i.MX95, this module is
-> > > managed by System Manager and exported using System
-> > Management Control
-> > > Interface(SCMI). Linux could use i.MX SCMI BBM Extension protocol
-> > to
-> > > use BUTTON feature.
-> > >
-> > > This driver is to use SCMI interface to enable pwrkey.
-> > >
-> > > +}
-> > > +
-> > > +static void scmi_imx_bbm_key_remove(struct scmi_device *sdev) {
-> > > +	struct device *dev = &sdev->dev;
-> > > +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
-> > > +
-> > > +	device_init_wakeup(dev, false);
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ drivers/remoteproc/imx_dsp_rproc.c      | 2 +-
+ drivers/remoteproc/imx_rproc.c          | 2 +-
+ drivers/remoteproc/xlnx_r5_remoteproc.c | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-I do not believe you need to reset the wakeup flag on driver unbind, as
-well as in the error handling path of probe(). If this is needed then
-driver core should do this cleanup (maybe it already does?).
-
-> > > +
-> > > +	cancel_delayed_work_sync(&bbnsm->check_work);
-> > > +}
-> > > +
-> > 
-> > ..so in v6 I asked you to add a cancel_delayed_work_sync() on the
-> > removal path, BUT I missed, my bad, that indeed above there was
-> > already a call to cancel_delayed_work_sync() associated to a
-> > devm_add_action_or_reset....so now we have 2....also you should try
-> > not to mix devm_add_action_or_reset and plain .remove methods..use
-> > one or the other.
-> 
-> Thanks for your detailed reviewing on this. I will wait to see if Sudeep
-> has any comments to patch 1-4. If no comments, I will not do a new
-> version to this patchset.
-> 
-> If v7 patch 1-4 are good for Sudeep to pick up, I will separate this patch
-> out as a standalone one for input subsystem maintainer.
-
-If you remove the duplicated cancel_delayed_work_sync() in remove() and
-unneded device_init_wakeup(dev, false); then you can merge the input
-patch with the rest of them with my:
-
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-
-Thanks.
-
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index 087506e21508..376187ad5754 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -509,7 +509,7 @@ static int imx_dsp_rproc_mbox_alloc(struct imx_dsp_rproc *priv)
+ 	struct mbox_client *cl;
+ 	int ret;
+ 
+-	if (!of_get_property(dev->of_node, "mbox-names", NULL))
++	if (!of_property_present(dev->of_node, "mbox-names"))
+ 		return 0;
+ 
+ 	cl = &priv->cl;
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 144c8e9a642e..8d7ecc809c67 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -807,7 +807,7 @@ static int imx_rproc_xtr_mbox_init(struct rproc *rproc)
+ 	if (priv->tx_ch && priv->rx_ch)
+ 		return 0;
+ 
+-	if (!of_get_property(dev->of_node, "mbox-names", NULL))
++	if (!of_property_present(dev->of_node, "mbox-names"))
+ 		return 0;
+ 
+ 	cl = &priv->cl;
+diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
+index 596f3ffb8935..2cea97c746fd 100644
+--- a/drivers/remoteproc/xlnx_r5_remoteproc.c
++++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+@@ -1059,7 +1059,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
+ 	r5_core = cluster->r5_cores[0];
+ 
+ 	/* Maintain backward compatibility for zynqmp by using hardcode TCM address. */
+-	if (of_find_property(r5_core->np, "reg", NULL))
++	if (of_property_present(r5_core->np, "reg"))
+ 		ret = zynqmp_r5_get_tcm_node_from_dt(cluster);
+ 	else if (device_is_compatible(dev, "xlnx,zynqmp-r5fss"))
+ 		ret = zynqmp_r5_get_tcm_node(cluster);
+@@ -1086,7 +1086,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
+ 			return ret;
+ 		}
+ 
+-		if (of_find_property(dev_of_node(dev), "xlnx,tcm-mode", NULL) ||
++		if (of_property_present(dev_of_node(dev), "xlnx,tcm-mode") ||
+ 		    device_is_compatible(dev, "xlnx,zynqmp-r5fss")) {
+ 			ret = zynqmp_pm_set_tcm_config(r5_core->pm_domain_id,
+ 						       tcm_mode);
+@@ -1147,7 +1147,7 @@ static int zynqmp_r5_cluster_init(struct zynqmp_r5_cluster *cluster)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (of_find_property(dev_node, "xlnx,tcm-mode", NULL)) {
++	if (of_property_present(dev_node, "xlnx,tcm-mode")) {
+ 		ret = of_property_read_u32(dev_node, "xlnx,tcm-mode", (u32 *)&tcm_mode);
+ 		if (ret)
+ 			return ret;
 -- 
-Dmitry
+2.43.0
+
