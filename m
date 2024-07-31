@@ -1,43 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21101A76B3;
-	Wed, 31 Jul 2024 08:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725F018DF92;
+	Wed, 31 Jul 2024 08:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722414041; cv=none; b=BBebYcsyZHFRyq116qw1hgTb1vIHOmQMwmv2T+kMT6SP9PNcKv53/jwFqHaVSFGABZAv5fSE13tfsEI/JeFxHQfP207qdX3jRWFdNIPoXJ0Vc31GiDbmfjl/hO9fZiK38VLXipgw1OHqs7wQaxVgtEtU9+UNLBWndL0V0lbIIL4=
+	t=1722414657; cv=none; b=ErWzpmf8MEqe+psCP0alLhqaPrtBfegXUNRuEVdOY6he2WcEpOtZEVL6c7ef1A3lEmw3lKLsFdZn7Oy805q5h8puH4A45w8brfgDi2nEyDG5NWRI2wMu07rQkWIItTY5nrYKvDgq5+2eIgGCUmr+MlhkB/P8PuSsIVEVQuKpbxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722414041; c=relaxed/simple;
-	bh=om43aKASU793K0N4gd1w31XPTjATtLQ+XdXzAviVw4g=;
+	s=arc-20240116; t=1722414657; c=relaxed/simple;
+	bh=9noKt1gXJuh8lgzIR1ZC4PKp4tydTmDjkcAQeRQaFls=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UvQvb41nCvnujbRhT8eHWosUFTkbLIZs9P5q7W3I5rYMHIhKwggstlnp6W6UZXH5eSIxAM/8TnIJAZ+VCJafqufnrSKY0Hfh7zz3WfDRzvl2KEygxPF5uRCT2T2BRPSZGRE6uSM/Fo6MjvRIIwGfyS2chRguzqkaZ+Ey7Ha/Bhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYAdf0Gt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UnOKtEd8hUoPXqPGVQ7GZqcgTvhUN2yoLqRO4C8XSVMSbFZ39BFN/BfmpdrVYxfqwAFeF17UtsNuvFwa2HYnvH66agef7eol82ot8LHvhfP2dx5pns6DiEWHAeH7qTX1Xb+TO0ZCSm0trhWmIgrjTDSQgFhEqE7WrfkIudgHrl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jG8VQcFR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYAdf0Gt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F6AC116B1;
-	Wed, 31 Jul 2024 08:20:39 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jG8VQcFR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE15C116B1;
+	Wed, 31 Jul 2024 08:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722414040;
-	bh=om43aKASU793K0N4gd1w31XPTjATtLQ+XdXzAviVw4g=;
+	s=korg; t=1722414657;
+	bh=9noKt1gXJuh8lgzIR1ZC4PKp4tydTmDjkcAQeRQaFls=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AYAdf0GtaEDcmj73MNbltRiU3NGm2GhJYyBIgimyfmzOYfeBtrzrNyB7NntCBfJo9
-	 HFReU8ZZwvE/muKa9fkVRvV852lSyqwBs3mimpMguKToIK/7SPi84+OFI6WXuC2WR6
-	 rO0E8r33UMBRGqgG34TdG/LR9umC3Mc2MxUEcaUo=
-Date: Wed, 31 Jul 2024 10:20:37 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Roger Quadros <rogerq@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com
-Subject: Re: [PATCH v2] usb: cdns3: imx: simplify system pm using
- _force_suspend/_resume
-Message-ID: <2024073113-overstep-credit-57fc@gregkh>
-References: <20240726150731.297443-1-shenwei.wang@nxp.com>
+	b=jG8VQcFRh39D93U1KZoPssouQGDco1vkfbe2zgQuTIHiZ9c+HUssC3PX5iBpDdOEk
+	 IBBiYcgFxJtpO/lSnfyzY+U2w7Vga6J0yRmP1NyWgBa3ds/SA/PgVup5cs0xYkI4lh
+	 D5iCMhcNeCEocdUKXDTbwJCC3ttGsE4s1AN4XZ2E=
+Date: Wed, 31 Jul 2024 10:30:54 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org, jun.li@nxp.com,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2] usb: dwc3: core: remove spin_lock/unlock_* to avoid
+ deadlock when suspend gadget
+Message-ID: <2024073141-demeanor-amniotic-8f01@gregkh>
+References: <20240527170413.1107831-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,17 +40,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240726150731.297443-1-shenwei.wang@nxp.com>
+In-Reply-To: <20240527170413.1107831-1-xu.yang_2@nxp.com>
 
-On Fri, Jul 26, 2024 at 10:07:31AM -0500, Shenwei Wang wrote:
-> By utilizing _force_suspend and _force_resume, ensures a more consistent
-> and simple approach to handling system sleep states. It also aligns the
-> driver's PM behavior with the other drivers' common practices.
+On Tue, May 28, 2024 at 01:04:13AM +0800, Xu Yang wrote:
+> In current design, spin_lock_irqsave() will run twice when suspend gadget
+> device if the controller is using OTG block:
 > 
-> Fixes: db3c4e366287 ("usb: cdns3: imx: Rework system PM to avoid duplicated operations")
+> dwc3_suspend_common()
+>   spin_lock_irqsave(&dwc->lock, flags);      <-- 1st
+>   dwc3_gadget_suspend(dwc);
+>     dwc3_gadget_soft_disconnect(dwc);
+>       spin_lock_irqsave(&dwc->lock, flags);  <-- 2nd
+> 
+> This will cause deadlock on the suspend path. To let it work, just remove
+> spin_lock/unlock_* in dwc3_suspend_common() since they are redundant.
+> 
+> Fixes: 5265397f9442 ("usb: dwc3: Remove DWC3 locking during gadget suspend/resume")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> ---
+> Changes in v2:
+>  - add fix tag and stable list
+> ---
+>  drivers/usb/dwc3/core.c | 3 ---
+>  1 file changed, 3 deletions(-)
 
-This is not really a "fix" but rather a cleanup, right?  Please don't
-add Fix tags that are not actually fixing things.
+Is this still needed?  if so, can you rebase and resubmit?
 
 thanks,
 
