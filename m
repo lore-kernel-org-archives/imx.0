@@ -1,103 +1,111 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D10161339
-	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 06:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024331A4B39
+	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 07:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722406297; cv=none; b=Y17YiqCz/wrUct7kV/WwIcR/OS5px8A2npxQ+CQ9Bk/BX9dAigP9WrCdk9rPUf9FHslaF9Pv62ETG2iqYQVpV4bAPsEJjGo0xYZ0NbsfIwacn6KJJzHAXhkoQDOiJ4G9gigBX4fRJBMoF7OrYeYEj+UpNZNDz/gIX67D2CiPNx8=
+	t=1722409382; cv=none; b=KRQKxQ3NQLhMNoDzYhsd6+DE1d4NKt+UdUWvpVajziCo86dTB18i+yvHQ4W7rC+ch/+QXyM4P78GeShjZowb0VBByeEoUD2J7B6TxLzpSjeHX542Hju/oTEVMKT7K7+OGmNq4fNqQ6jR00HC9Q3G6MC8qLeNj/FGLr7ZV/Hm9jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722406297; c=relaxed/simple;
-	bh=HM/PNjDwStd+QZL8YNQOqRwjwHWb9vzI34hWlvpWHdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mcmUmOifdrWtNgQyEptMNP8LMbJLwKa30NlAvNOPUh5MEOt2W6YsR7jbKCuWG6IH+rJ+4DwSWbqNv/nBX8VSnlDeEBqwg1wXcdGlm+kwCvInTE+otGmEHYuAh2+WSE33GLK7kcgGc2Nqx5DMYMcy+WL7Eo9caDn+pRlra2BgXJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sZ2YX-0001Ht-4a; Wed, 31 Jul 2024 08:11:25 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sZ2YV-003SUS-Oc; Wed, 31 Jul 2024 08:11:23 +0200
-Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E4FA1312332;
-	Wed, 31 Jul 2024 06:11:22 +0000 (UTC)
-Date: Wed, 31 Jul 2024 08:11:21 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Fabio Estevam <festevam@gmail.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: spi-fsl-lpspi: No effective_speed_hz support yet
-Message-ID: <20240731-vigorous-kagu-of-masquerade-45655d-mkl@pengutronix.de>
-References: <0848d006-092a-45fe-a1fb-949b55a3177a@gmx.net>
+	s=arc-20240116; t=1722409382; c=relaxed/simple;
+	bh=liF0sXKHqjDKpx94oIxqmUf1lDsy3nU2IMMBID62o+E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i2Msxk+4jriTcGilc4gG6mupLX8fXtYz22JakHnGqbJXmqnGG/ElxNmqtjksqZwOgGxBtMHYInjrsUmcNF+awF0qdJp+3G98RdvLZbrDHqmykz0VQs/VpCHAdpQXKKXwkSffKYgomG5PLcTUgg7TAMaHUg231Cik39orSXCmpZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=VTqvPk1u; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="VTqvPk1u"
+Received: from [192.168.29.25] (unknown [IPv6:2405:201:2015:f873:55f8:639e:8e9f:12ec])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 43CB6842;
+	Wed, 31 Jul 2024 09:02:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1722409331;
+	bh=liF0sXKHqjDKpx94oIxqmUf1lDsy3nU2IMMBID62o+E=;
+	h=From:Subject:Date:To:Cc:From;
+	b=VTqvPk1usTRwO6vA8uspqkmnqJPEC+ZokX+w4D/B8DAg5/0wvBaz/D9LVL3KWsa2r
+	 3ECkq3C6m8U917kFyRUU35oZlwbMjoqo4+gnqbd1lHU0ZyDzPCeBqzoDWJnYBgPa92
+	 ozOS3KxDwWwABAJyU9LkqjP7Nj74HRvbTR6FdVxw=
+From: Umang Jain <umang.jain@ideasonboard.com>
+Subject: [PATCH v3 0/2] media: imx335: Fix reset-gpio handling
+Date: Wed, 31 Jul 2024 12:32:40 +0530
+Message-Id: <20240731-imx335-gpio-v3-0-443bfa6ce864@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xktflcv6wbiez2aq"
-Content-Disposition: inline
-In-Reply-To: <0848d006-092a-45fe-a1fb-949b55a3177a@gmx.net>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJDhqWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDc2ND3czcCmNjU930gsx8XQtDixRzY7M0SyNLUyWgjoKi1LTMCrBp0bG
+ 1tQDrVJMCXQAAAA==
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ "Paul J. Murphy" <paul.j.murphy@intel.com>, 
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Martina Krasteva <martinax.krasteva@intel.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Umang Jain <umang.jain@ideasonboard.com>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722409375; l=1367;
+ i=umang.jain@ideasonboard.com; s=20240731; h=from:subject:message-id;
+ bh=liF0sXKHqjDKpx94oIxqmUf1lDsy3nU2IMMBID62o+E=;
+ b=vuOEomY0cQDyzahht6nf3VDWeVkMWHOG1+/Px1nw7idTbw0BNwniKEzHLG+Hz80zUztxlFMxh
+ VOIRJoDKonYBogAwvaO9JfsrEeJh4sLWI6Z56PHBY5VPD5AJDT4Hfso
+X-Developer-Key: i=umang.jain@ideasonboard.com; a=ed25519;
+ pk=7pvnIBNsDpFUMiph0Vlhrr01+rAn5fSIn/QtDeLeXL0=
 
+These couple of patches intends to fix the reset-gpio handling
+for imx335 driver.
 
---xktflcv6wbiez2aq
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Patch 1/2 mentions reset-gpio polarity in DT binding example.
 
-On 30.07.2024 19:47:17, Stefan Wahren wrote:
-> I want to use a Vertexcom MSE1021 SPI device with the i.MX93. This chip
-> is a little bit special, because it must be operated within the range of
-> 6 and 7 MHz. That's why the mse102x driver provides debugfs output of
-> effective_speed_hz. But I noticed that the spi-fsl-lpspi driver doesn't
-> support the calculation of this, that's why effective_speed_hz is always =
-0.
->=20
-> Are there plans to implement this?
+Patch 2/2 fixes the logical value of reset-gpio during
+power-on/power-off sequence.
 
-At least from my side not. At least for the spi-imx the change was not
-that complicated: bf253e6bf6b8 ("spi: spi-imx: spi_imx_transfer(): add
-support for effective_speed_hz").
+--
+Changes in v3:
+- Rework 1/2 commit message
+- Fix gpio include in DT example in 1/2
+- Remove not-so-informative XCLR comment in 2/2
 
-regards,
-Marc
+Changes in v2:
+- Also include reset-gpio polarity, mention in DT binding
+- Add Fixes tag in 2/2
+- Set the reset line to high during init time in 2/2
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Link to v2:
+https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
 
---xktflcv6wbiez2aq
-Content-Type: application/pgp-signature; name="signature.asc"
+Link to v1:
+https://lore.kernel.org/linux-media/tyo5etjwsfznuk6vzwqmcphbu4pz4lskrg3fjieojq5qc3mg6s@6jbwavmapwmf/T/#m189ccfa77ddceda6c3b29be3306f1a27ed0934d6
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+---
+Umang Jain (2):
+      dt-bindings: media: imx335: Add reset-gpios to the DT example
+      media: imx335: Fix reset-gpio handling
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmap1YYACgkQKDiiPnot
-vG+T1Qf7Bu32N0myWl1h2m24Cju7EGU0vK18vQD/JafRFCQ3tRloqHDLNRN32rLa
-xYbS3aKehR0rqM+tiK03XPrlZsJR5YCHlz26wm3m7C5Mz1s3LMrnBdQ/mAEAWAZy
-0sbIAs9exhF1OpqQpTPeJb5ZEzXfLthIrAwa2R9Vx9x91rr8uQP0OcJihEZn907S
-bcdV1z1j8P1vhCNui687MT7soRWJKihZsBU/DZAyzuJJleFgWpmBRYJ89wNuIW9P
-yHD+ftBt2HLD2ArT1Z/O71qsGX47M71u62PDKxW+oJmcqYJlfs3YmEyAokV5aKkR
-gdlzE/Uu3i4j9RgcrajKcaKCVDseXw==
-=1wWI
------END PGP SIGNATURE-----
+ Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 4 ++++
+ drivers/media/i2c/imx335.c                                   | 9 ++++-----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+---
+base-commit: f3d2b941adafcdfba9ef63d9ca5bb2d9b263e2af
+change-id: 20240731-imx335-gpio-818d736f9295
 
---xktflcv6wbiez2aq--
+Best regards,
+-- 
+Umang Jain <umang.jain@ideasonboard.com>
+
