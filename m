@@ -1,178 +1,382 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2082.outbound.protection.outlook.com [40.107.21.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7F618DF9D
-	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 08:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722416283; cv=fail; b=cACv3vMHtcIOA0uO3Hx8+mCGbJ3nZSMExHZoufilfGU2dPurdOy+HRfZYQ0qgk3E5ohHDT6eearBzox+h7c2/R0Jkg0i0cZAuQfODT5Mzsgiud+xP58wuNh8dO2Z8m93jLKf5qVbafHt/J+Xa7sRWhzbtI0lSQfU55ymq7kDHvU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722416283; c=relaxed/simple;
-	bh=nViZSoexEhrZepPWXv1J45A4la/RGBXD4uFbwjrujhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fjizIzMqPu2lb/eo3WEXj8IKbjgahCi0LHJ6EtRsIigH+VDZmZXvwXCup5EjDnS4UYQQaiZvHWnU2yU+1nzs5lFcBl6kswTpJNWVIc7Ej8+VVKhtTJ0PXn0dnbjvmEpOURT47JbMO88Ym83CHy/gB2TZsfUcKWs3Rd0qY9A5RoM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NSGnTeTG; arc=fail smtp.client-ip=40.107.21.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A69B1AE842
+	for <imx@lists.linux.dev>; Wed, 31 Jul 2024 11:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722426876; cv=none; b=UPfBIIyB8umXCIQ3MP0uQXlgr/PJqd92DxUKpPGdzSkMeND1Twp+G/HdC/fhETnr9viC5mm7Gq3If//MpNQ662KwfZOHOh2acG/Ft+foXOAC9kQAEo34eOgirSHgMX0OL2OWmPkIJtMb61wuSo0BovZfe00GIgJfJhi5hGFgOeQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722426876; c=relaxed/simple;
+	bh=rjbZh0Q3rEwtUzUP5YeP00rs4ZGQ1DfaFGZNNesKrUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OjHm3ybpc8kaAM1puIeNhsVAJwPR5ew/jWVhqnRI0qxop2CXGRf8AFc3l/+ug7Fjnr/2OgSzjZpaJxIksgSCQNooebVeLNPWSkOjh0+J/1uCGVIYeNUf1+MIdZWT6rGFZliWtFhvti06lccjMowCSMd7vRxNn7cFA3thFfj5LN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J5pBq1KE; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NSGnTeTG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LB1sE45HtB2P9Cn8UxQ5ceFMkFtNzN8HxrU19DGr6paZb+MuCTgkTu4hMSPzi/B2rUR+Br0OgPXyA7kkVVFGVXwqfsYW3tXtv9hjXP+qmpYwHHoTWgzTbvURKVnuSCif+gTpx7QkfhK0Aly37S6YxMYcqOmPrsNz0MGB2O2fyrunr3f1rnrGx+zXldNAmJKGckI0xc/QKvpZMw6Iv8b+UmtC2/fzkDo28V77xOjs5BooKhik3UjmGv2oWGhnXpopaeeMXS8GcEJKw5I6Wi7a4Q4vW7LvnB2KNXP/qoqVXgKJ0GU6YTgWfFQeoxDRwVY++1KlYnP9U6txvVnIarYonQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RgF0A+vTW8nOSH1nxwfztYsXJ+vhCLWCIUEZVZXmnpM=;
- b=gkODfe7iy/4FqPL1YMrx2aF2z3XtvwjpWU0oDZCf52vn21OixNx//VqpvhhqbPoonWDyot2KIwCkho6iecCcKvok0r8VTe5KuEEeGsAc4s0dAcK4Plh5YDWYKbySeSvdgIS68RQxP9Vs/g5CLJ4mCNGUEpFQhDnCL556Htq5Of6kqyeEL/tO0YqB/uKthUPVodUPXf1KgM7hGj9Bwuu+yRk7oztmg/Sq6/RARTfn29T77ULlpmaIjxaztglwne796TWPitdl9pbVZKg0C4FJn4qOPt+ho/Q07E4QtAWA4e/z4jALd7Gd+fVHMtWO4OU+lk5TUz1psL2vqUJm90ii8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RgF0A+vTW8nOSH1nxwfztYsXJ+vhCLWCIUEZVZXmnpM=;
- b=NSGnTeTGEOqbIFaeAPvk+5adyIg/7iHpCzRHNzXjm4YjRGhol8Gteo+YiZ27MG0hXtPHLhpFTcAx6lace5Zhol2ixo/70Rh740e1RRXVRwMOoTHQF2cJ10Iar4rxAEnSHnTgOhH1DeNV1BmjRflpzpZJRG3QjBf0ixbbwSfymcjbumjMUDRGwQWAFadEP0cH3nvxqZiBVTrq34GVp7andx5S29gB1d36iEtliyB4mtHUIDrCcv7e10HqEigDr3CsHjjq5QXF9Sd9rUFaOeVHDJ8pZA65PoxSbCHyv7W/IU3KQKSvOWt6e5EyCFRadW16ukXkNFAVk227AC0qd6KLhg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DB9PR04MB9723.eurprd04.prod.outlook.com (2603:10a6:10:4ce::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Wed, 31 Jul
- 2024 08:57:57 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%5]) with mapi id 15.20.7784.016; Wed, 31 Jul 2024
- 08:57:57 +0000
-Date: Wed, 31 Jul 2024 16:55:24 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org, jun.li@nxp.com,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2] usb: dwc3: core: remove spin_lock/unlock_* to avoid
- deadlock when suspend gadget
-Message-ID: <20240731085524.kdxub25lv2yvnqn5@hippo>
-References: <20240527170413.1107831-1-xu.yang_2@nxp.com>
- <2024073141-demeanor-amniotic-8f01@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024073141-demeanor-amniotic-8f01@gregkh>
-X-ClientProxiedBy: SI1PR02CA0041.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::18) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J5pBq1KE"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52efabf5d7bso6746542e87.1
+        for <imx@lists.linux.dev>; Wed, 31 Jul 2024 04:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722426872; x=1723031672; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/tSzw1ZB1Nz5Tc2tcLBbnlYlKFmdCPO73C3dMrVaia0=;
+        b=J5pBq1KEvSEOkGpEyZFDz0x5JAjEr3asew/RSJELd6UnVG7Xor+z8KAQ8E1mt9cM5H
+         xbFs80p0moIl0mwQ61TcKOpA6xHimMaplLFYvwQt/QOImUxtflqv5JXAtpGv7Ru0AUqh
+         AakiDv+GHqwZr2+Z0w2hKz14lVLxx9hKbY8opy9dJDZeSyLLeIDqD40++knDAeIIS1Vl
+         a5nFBUybwAwVKKSiFsxx17BH38ugJftW4hwV5FTBXMc04idpHAncK42Ix87+riupd42b
+         UbBeO/3gzB7iJyzlvnQsbHm89a04QN/yCinNOv+yvfl7FwnXzwoLxNQ+YAaT75yaDgzO
+         a5qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722426872; x=1723031672;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/tSzw1ZB1Nz5Tc2tcLBbnlYlKFmdCPO73C3dMrVaia0=;
+        b=Dsk9Q1XNjzUP//tXshxGIC1Ht4mKYZxOFpCZM9Q4KP7EZhS0OxySVCHJEo1lCvslPK
+         liFcej94A8GtASyakCNdVMvVVQUMJqAZo1GxnE36QmDqmBaUvTn1jJNr9keZHIKweNus
+         Zc3WC0JpjR8sYbQVSij665z1PJfGDuZjIMMcZHd9Au/nfzNm3VATMaQn5S5XzO7zXR7V
+         jyWoiRDHId6KvH/XKsu4PdnjkB3YSOU7TgPY/CTFATz6oePor1fh314IUaMeMREqXKRN
+         M1w52b+tlXqydq+OVK439cvdXV2mRZde6ygEifGJ69AvXLAH8cq19aLjGuSOe71I5aJs
+         ykGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMl2bAh26z6xeRQguLBtjCYc9Rsbw91yu0uI+nvz/COoPmQhzgovwSASLXFZ+J/a60b9dWFZYmu9E36sNJVHbrobcj
+X-Gm-Message-State: AOJu0Yyq0JkWOmc1eLlTQBfjmoAMKgkg1BGcwhzhKWjSO4xFdPZHj21s
+	bU5qoL6vLPTDNOaH9nKs4APnPfokMWEJSOwQgy5WbSGrtolRRZWoxUb7HP/x0IU=
+X-Google-Smtp-Source: AGHT+IFDX5VOQq12CjYJKbH5TLCQZO1fSa3Id5idEuIEkUhLXxfFu0OdqK6fCnnHllm7jAiKoqzSlg==
+X-Received: by 2002:a05:6512:32c7:b0:52e:943c:c61a with SMTP id 2adb3069b0e04-5309b2e0adbmr10958703e87.57.1722426872000;
+        Wed, 31 Jul 2024 04:54:32 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5bc40e7sm2193549e87.39.2024.07.31.04.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jul 2024 04:54:31 -0700 (PDT)
+Date: Wed, 31 Jul 2024 14:54:29 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, p.zabel@pengutronix.de, 
+	airlied@gmail.com, daniel@ffwll.ch, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, 
+	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, 
+	frank.li@nxp.com
+Subject: Re: [PATCH v2 06/16] drm/imx: Add i.MX8qxp Display Controller
+ display engine
+Message-ID: <vlnpy7abizzzh7sj5zrgakwyams3w6k7ee4kaagiw646atmnjf@xkimtr43d4hr>
+References: <20240712093243.2108456-1-victor.liu@nxp.com>
+ <20240712093243.2108456-7-victor.liu@nxp.com>
+ <ib6brwxeai3wkgzglihfbqx7jakjslnftydbzo32xthijkd4u6@y4ebhgk5o3ec>
+ <8071fdf8-6813-4707-8a9c-ad24f8b6a32f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DB9PR04MB9723:EE_
-X-MS-Office365-Filtering-Correlation-Id: 248b288e-ef68-45c0-9155-08dcb13edf5d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|1800799024|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eSgYpSMmCUslk95E3MBZfCKNbtzfPb4wD+iIqGglRR0mlQXHIF9Ne0u+lS2D?=
- =?us-ascii?Q?XRIHIJKem+RK3pPcAWPBgHxoar5lMYBhG70XITdXH8xVGNFAPTAy7Etec6Hx?=
- =?us-ascii?Q?0EabgqVTJoqNFuPTqLSVq/9FMC0uqBMQAgs7js1mNxuXMD4NriN0/P+wa/F8?=
- =?us-ascii?Q?N4GbNDG1zt+lip+TdrSUGnYc1BhzQ7Bp1s/6ykMYbofSVkdFmYhd1sx8pW+c?=
- =?us-ascii?Q?bieUb9tzYYpCw6q65DPLuQnss7lPYPyzqOMQ8/Q8CFgBpCRTazLv/T/vqB1l?=
- =?us-ascii?Q?jj0/nAvL8OYjNoA/5YDnsWErbX4dKbvW6MTLMeOMs1saGbtky6sJUMJo2/Df?=
- =?us-ascii?Q?61wgZdmj7jr7jSE1FqOX93h/fMkl5fkp5Pt9RocBlwQChOg9P6I5G7PutsET?=
- =?us-ascii?Q?rMB9xSKfjjAjJoUF30q86h65mUTviJeIkqHU+fAUTFHlOGN/qeY4fmYT4psw?=
- =?us-ascii?Q?XJotoxcIGeYTQinGypdYd7QB1pGaIlgfhOcEDvhRuY6l/Mjr3JdzCfOpYLd9?=
- =?us-ascii?Q?zLVy0wr4H76kz+MrBCDLYopuKpEifcFaKr/3iBk+oV750h+vyBLtql2hWdDL?=
- =?us-ascii?Q?/xBi/dm1JQYsO9rgfRj/zJfArlFzx6By0yZP9OhOhsnTOd29qoXvzx2e1RaV?=
- =?us-ascii?Q?Cv1T3xk1ebwAR18cCjrs85VGlTj2O+94UEVLu1xbNmG6PqGNmHUvJemp5vEh?=
- =?us-ascii?Q?jpoekaaM6A0Tqs2InnY/p73eRDzyoRoYij7Ylq3DxyE6AC1FXtvhh9iNZkh4?=
- =?us-ascii?Q?iJUZBpKNvi3/KIcfk33nkjlirGyexNSDwUVhrzixRvxLfhcpmlYDULSKQ0dW?=
- =?us-ascii?Q?C9K0gcOngN2RWQM7QnWDoTPDPqmhL9gS3cH46SSVw48YkepJt1K+h2UDwLU5?=
- =?us-ascii?Q?7Nj6dhIymL9PtRIxW/OPGJICOwmoPJewDPgj3e+pjwweA2hfecTROHMTkGGB?=
- =?us-ascii?Q?KMr+Dig71U3kECOnTU6pVYbZo+7XlzobDSjj1wIg3EgLKqJlXDBEvPp+jZxH?=
- =?us-ascii?Q?hI5InM7oVBb5N8zliPorhOttv4SDKghI4ItOWrrbGoQbB2A+YJLOj2Uh2VRF?=
- =?us-ascii?Q?xJy2cr6DipyqI2AvXMxb6h98nABR/sJbu00kv1V1fMZ/Nm1eCOGW6hILNXcT?=
- =?us-ascii?Q?/CTwzCNepn7WsYw+37UWVROXv8vKSn3c+/8GMcAejy7+PNAchRuxtIkM0CtH?=
- =?us-ascii?Q?WfDZct1VJFD5fI3z3nYYmEThxvueHpCwNuXzxVjXbf766PrmzrVrNZ6Q3C/C?=
- =?us-ascii?Q?vOnkIkxCvnNwM+9guEMd7zG19hmPqJvUrma2LxtbUnx0KYzNVwHLt4t3g1PJ?=
- =?us-ascii?Q?Cr9IitD8+jVnTAkzM4eDSR4xMjbqL44rhdAUp1WGXIcgGTJTTmXkHK6DOEMD?=
- =?us-ascii?Q?Qu362Mw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nwt++F1hYTGgr5bw3Zt5T5BFAfyv1WM/6Ps5bGummK2h1AQ71kPCUNCKgKnc?=
- =?us-ascii?Q?FjruSTmENpAwNETiK+Bto+VgILOYqEIgtFpkes62FK2Y8dSL9nCb3AzeUeCD?=
- =?us-ascii?Q?DJ1ujefrWfYHXSyRS18EVqu5C6hFLtH9WwcrTZ/EtsEIcAfVxbad1CKqWy7B?=
- =?us-ascii?Q?3wp84XVzmo7hq7jA02JGKTUepC8BLZMlXGI0o/3tZFIomEUB1s86MHY3Avdr?=
- =?us-ascii?Q?wbzWgq1zi6YG8USqBuYjPzEBSUh8HoXGFT2GsL5eeI7YV170VN37u99lDRZ6?=
- =?us-ascii?Q?P5VWekMqWfeh35lRYJ4LhOmVg4zMSdiW8vXo5luZ32uIB52yQan3hjNzcHGW?=
- =?us-ascii?Q?GbMM5n4VSiuvbjU7dZnBP29d18+I2/YLqRyO2MJL2fsWK1QTY57Ym2O1L6Hz?=
- =?us-ascii?Q?dKFeltlfpyZ1/gEhzPm7CygOPkqXQJaf/Gw7hnnfPmdmuoC2VmeRXUMhA44X?=
- =?us-ascii?Q?Sg+cMflAOI+c1DmKH5Yfu1euRFtP+pCEU0Haaph6eJnKe5USrnSO4dRpQV5o?=
- =?us-ascii?Q?Ah81niUUvMcVp/RxotsWJCKB44cPgHDzyNVV2uptMhqInRQ01aX6kj9kZHL4?=
- =?us-ascii?Q?zYFH8oKdDLhP9RAhkTN97uwmT7bAyaH6MuHZiGB9OYwz/Q8F/v+DXwfBIMo4?=
- =?us-ascii?Q?AzcCWavfWRvPudi3T07Qv0Kb9bcJ4eqUSdzqXylTKhQawIOUT75JtZGXlUFg?=
- =?us-ascii?Q?sgYjEt5gl8uHy2gDizDeElmPOyp/IFRTpx43CFjpSXFlHc561pB9AXYDPTuu?=
- =?us-ascii?Q?hS7U8IUNrcxtnsKIWLUoJdRHmcGxbH9UZm0yJioHko12zB8qxSue7m7ltBVM?=
- =?us-ascii?Q?ABpGdlGwDyCuNzRhe5SkxyKi6hYC16F0KE1JmD3CCKN7sE7+RBSqB5N1bH1T?=
- =?us-ascii?Q?Rj8E2MhUOfBB7FBsCj1rfGJZv5DAiSdJcinDynu2sD+O9TSwJbTu63y16XN0?=
- =?us-ascii?Q?HSukfzsnFWgQT8UuX1jtpDlo3xdfZSryX9wHsDMcxTW3EX/P/fyBp52D7bub?=
- =?us-ascii?Q?WMo1LJgmYBzEqVt0VABgie8iftb6FY4uWwdntp5nwqljKikRQg+Atj5so0RV?=
- =?us-ascii?Q?eGsJoZVNnznZrvW0sGBD57OUSEY2iG+TDVujjCE+cqVoC6dw7EcqJeKHFung?=
- =?us-ascii?Q?71bz9ND4z2HHPWNbsKpatxx1eXlro5kcLr4r+LwAsupGFWqtfqhrVTOMMW7a?=
- =?us-ascii?Q?LWSuDUHZHVsaP6q9eUhETa2m0Qz9iYWdRm2X63g4lsc6bDQrPUkLDnHKxc8U?=
- =?us-ascii?Q?hKNgCI1RuwLeX2FdBTJqCxO5ANRC0yvc67K4bmApyxNj3G8jJRkruowHye+B?=
- =?us-ascii?Q?ZR0ObMyDd/bGK2AS18t3xNopZu6jxENi0zxLg98cUSw90pcfa2f5kXZSOtTR?=
- =?us-ascii?Q?T+au0PHJMw8PG5MdwoRaWyw7agr0J3bWJS+8GKbUaPfehjrslkw4qz0g0dqk?=
- =?us-ascii?Q?2U2al+/njYfGSo/sd0p5LpPvAJDOpiPgSmjAqRe1akZ/CKd19O1GAtkc1itv?=
- =?us-ascii?Q?pKMjC4ICi9zMWwx88rb6FOleTBPknnz1hmTk18tTbIPB/lSj90Y/ii9nchA4?=
- =?us-ascii?Q?pnNz6dDP6ZIF8gtRBAsSHB0CR9hNVMSXdd/wLOqt?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 248b288e-ef68-45c0-9155-08dcb13edf5d
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2024 08:57:57.8368
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o6D0DNi54sYAwkpQcfjPUzHrRYg2MI8ujtJJjDArMzw/azZacJfN12l5qpGPL9LNBqRkKprTo6T49+Hh/VPqow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9723
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8071fdf8-6813-4707-8a9c-ad24f8b6a32f@nxp.com>
 
-On Wed, Jul 31, 2024 at 10:30:54AM +0200, Greg KH wrote:
-> On Tue, May 28, 2024 at 01:04:13AM +0800, Xu Yang wrote:
-> > In current design, spin_lock_irqsave() will run twice when suspend gadget
-> > device if the controller is using OTG block:
+On Tue, Jul 30, 2024 at 02:25:41PM GMT, Liu Ying wrote:
+> On 07/28/2024, Dmitry Baryshkov wrote:
+> > On Fri, Jul 12, 2024 at 05:32:33PM GMT, Liu Ying wrote:
+> >> i.MX8qxp Display Controller display engine consists of all processing
+> >> units that operate in a display clock domain.  Add minimal feature
+> >> support with FrameGen and TCon so that the engine can output display
+> >> timings.  The display engine driver as a master binds FrameGen and
+> >> TCon drivers as components.  While at it, the display engine driver
+> >> is a component to be bound with the upcoming DRM driver.
 > > 
-> > dwc3_suspend_common()
-> >   spin_lock_irqsave(&dwc->lock, flags);      <-- 1st
-> >   dwc3_gadget_suspend(dwc);
-> >     dwc3_gadget_soft_disconnect(dwc);
-> >       spin_lock_irqsave(&dwc->lock, flags);  <-- 2nd
-> > 
-> > This will cause deadlock on the suspend path. To let it work, just remove
-> > spin_lock/unlock_* in dwc3_suspend_common() since they are redundant.
-> > 
-> > Fixes: 5265397f9442 ("usb: dwc3: Remove DWC3 locking during gadget suspend/resume")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > 
-> > ---
-> > Changes in v2:
-> >  - add fix tag and stable list
-> > ---
-> >  drivers/usb/dwc3/core.c | 3 ---
-> >  1 file changed, 3 deletions(-)
+> > Generic question: why do you need so many small subdrivers? Are they
 > 
-> Is this still needed?  if so, can you rebase and resubmit?
+> As we model processing units, interrupt controller, display engine
+> and pixel engine as devices, relevant drivers are created to bind
+> them.
+> 
+> Maxime insisted on splitting the main display controller(the overall
+> IP) into separate devices.  Also, Rob asked me to document every
+> processing units and the other sub-devices in v2.  So, splitting the
+> controller is kinda accepted from both DT PoV and DRM PoV.
 
-It's not needed now. 
-Meng Li sent a better one and it's already accepted.
-https://lore.kernel.org/r/20240618031918.2585799-1-Meng.Li@windriver.com
+I went back to the previous series, where Maxime commented on the
+"multiple devices glued together". With the split architecture it
+becomes even more strange, because now you have a separate IRQ
+controller which enumerates interrupts for all subdevices and then glues
+them back.
 
-Thanks,
-Xu Yang
+If it was an actually split device, I'd have expected that each of
+subdevices has interrupts going to the external controller, without the
+glue controller. Or that the glue controller has a limited set of the
+externally-generated interrupts that it further splits into per-block
+IRQs.
+
+Could you please point out the patches that describe and implement the
+<&dc0_irqsteer> device?
 
 > 
-> thanks,
+> > used to represent the flexibility of the pipeline? Can you instantiate
 > 
-> greg k-h
+> No. They are just used to bind the devices created from DT.
+> 
+> > these units directly from the de(?) driver and reference created
+> > structures without the need to create subdevices?
+> 
+> Given the separated devices created from DT, I can't.
+
+I'd allow Maxime to override me here, but I think that subblocks should
+not be described in DT, unless that is required to describe
+possible versatility in the display pipeline.
+
+> >>
+> >> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> >> ---
+> >> v2:
+> >> * Use OF alias id to get instance id.
+> >> * Add dev member to struct dc_tc.
+> >>
+> >>  drivers/gpu/drm/imx/Kconfig     |   1 +
+> >>  drivers/gpu/drm/imx/Makefile    |   1 +
+> >>  drivers/gpu/drm/imx/dc/Kconfig  |   5 +
+> >>  drivers/gpu/drm/imx/dc/Makefile |   5 +
+> >>  drivers/gpu/drm/imx/dc/dc-de.c  | 151 +++++++++++++
+> >>  drivers/gpu/drm/imx/dc/dc-de.h  |  62 ++++++
+> >>  drivers/gpu/drm/imx/dc/dc-drv.c |  32 +++
+> >>  drivers/gpu/drm/imx/dc/dc-drv.h |  24 +++
+> >>  drivers/gpu/drm/imx/dc/dc-fg.c  | 366 ++++++++++++++++++++++++++++++++
+> >>  drivers/gpu/drm/imx/dc/dc-tc.c  | 137 ++++++++++++
+> >>  10 files changed, 784 insertions(+)
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/Kconfig
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/Makefile
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.c
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.h
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.c
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.h
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fg.c
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-tc.c
+> >>
+> >> diff --git a/drivers/gpu/drm/imx/Kconfig b/drivers/gpu/drm/imx/Kconfig
+> >> index 03535a15dd8f..3e8c6edbc17c 100644
+> >> --- a/drivers/gpu/drm/imx/Kconfig
+> >> +++ b/drivers/gpu/drm/imx/Kconfig
+> >> @@ -1,5 +1,6 @@
+> >>  # SPDX-License-Identifier: GPL-2.0-only
+> >>  
+> >> +source "drivers/gpu/drm/imx/dc/Kconfig"
+> >>  source "drivers/gpu/drm/imx/dcss/Kconfig"
+> >>  source "drivers/gpu/drm/imx/ipuv3/Kconfig"
+> >>  source "drivers/gpu/drm/imx/lcdc/Kconfig"
+> >> diff --git a/drivers/gpu/drm/imx/Makefile b/drivers/gpu/drm/imx/Makefile
+> >> index 86f38e7c7422..c7b317640d71 100644
+> >> --- a/drivers/gpu/drm/imx/Makefile
+> >> +++ b/drivers/gpu/drm/imx/Makefile
+> >> @@ -1,5 +1,6 @@
+> >>  # SPDX-License-Identifier: GPL-2.0
+> >>  
+> >> +obj-$(CONFIG_DRM_IMX8_DC) += dc/
+> >>  obj-$(CONFIG_DRM_IMX_DCSS) += dcss/
+> >>  obj-$(CONFIG_DRM_IMX) += ipuv3/
+> >>  obj-$(CONFIG_DRM_IMX_LCDC) += lcdc/
+> >> diff --git a/drivers/gpu/drm/imx/dc/Kconfig b/drivers/gpu/drm/imx/dc/Kconfig
+> >> new file mode 100644
+> >> index 000000000000..32d7471c49d0
+> >> --- /dev/null
+> >> +++ b/drivers/gpu/drm/imx/dc/Kconfig
+> >> @@ -0,0 +1,5 @@
+> >> +config DRM_IMX8_DC
+> >> +	tristate "Freescale i.MX8 Display Controller Graphics"
+> >> +	depends on DRM && COMMON_CLK && OF && (ARCH_MXC || COMPILE_TEST)
+> >> +	help
+> >> +	  enable Freescale i.MX8 Display Controller(DC) graphics support
+> >> diff --git a/drivers/gpu/drm/imx/dc/Makefile b/drivers/gpu/drm/imx/dc/Makefile
+> >> new file mode 100644
+> >> index 000000000000..56de82d53d4d
+> >> --- /dev/null
+> >> +++ b/drivers/gpu/drm/imx/dc/Makefile
+> >> @@ -0,0 +1,5 @@
+> >> +# SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +imx8-dc-drm-objs := dc-de.o dc-drv.o dc-fg.o dc-tc.o
+> >> +
+> >> +obj-$(CONFIG_DRM_IMX8_DC) += imx8-dc-drm.o
+> >> diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
+> >> new file mode 100644
+> >> index 000000000000..2c8268b76b08
+> >> --- /dev/null
+> >> +++ b/drivers/gpu/drm/imx/dc/dc-de.c
+> >> @@ -0,0 +1,151 @@
+> >> +// SPDX-License-Identifier: GPL-2.0+
+> >> +/*
+> >> + * Copyright 2024 NXP
+> >> + */
+> >> +
+> >> +#include <linux/component.h>
+> >> +#include <linux/container_of.h>
+> >> +#include <linux/io.h>
+> >> +#include <linux/mod_devicetable.h>
+> >> +#include <linux/module.h>
+> >> +#include <linux/of.h>
+> >> +#include <linux/of_platform.h>
+> >> +#include <linux/platform_device.h>
+> >> +#include <linux/pm.h>
+> >> +#include <linux/pm_runtime.h>
+> >> +
+> >> +#include <drm/drm_managed.h>
+> >> +
+> >> +#include "dc-de.h"
+> >> +#include "dc-drv.h"
+> >> +
+> >> +#define POLARITYCTRL		0xc
+> >> +#define  POLEN_HIGH		BIT(2)
+> >> +
+> >> +struct dc_de_priv {
+> >> +	struct dc_de engine;
+> >> +	void __iomem *reg_top;
+> >> +};
+> >> +
+> >> +static inline struct dc_de_priv *to_de_priv(struct dc_de *de)
+> >> +{
+> >> +	return container_of(de, struct dc_de_priv, engine);
+> >> +}
+> >> +
+> >> +static inline void
+> >> +dc_dec_write(struct dc_de *de, unsigned int offset, u32 value)
+> >> +{
+> >> +	struct dc_de_priv *priv = to_de_priv(de);
+> >> +
+> >> +	writel(value, priv->reg_top + offset);
+> > 
+> > Is there a point in this wrapper? Can you call writel directly? This
+> 
+> At least, it helps finding read/write ops upon interested devices through
+> 'git grep'.
+
+git grep writel also works.
+
+> 
+> Also, since we have dc_*_write_mask() helpers, it doesn't look too bad to
+> have dc_*_read/write() helpers.
+
+Please use regmap_update_bits instead of dc_*_write_mask.
+
+> 
+> > question generally applies to the driver. I see a lot of small functions
+> > which can be inlined without losing the clarity.
+> 
+> Can you please point out typical ones?
+
+dc_fg_enable_shden(), dc_fg_syncmode(), dc_dec_init()
+
+To provide an example, this is the code from dc_crtc_atomic_enable().
+
+	dc_fg_displaymode(dc_crtc->fg, FG_DM_SEC_ON_TOP);
+	dc_fg_panic_displaymode(dc_crtc->fg, FG_DM_CONSTCOL);
+	dc_fg_cfg_videomode(dc_crtc->fg, adj);
+
+the FG parameters are fixed here. I'd expect a single call from dc_dcrtc
+to dc_fg, which internally does all the settings. This removes a need to
+export low-level details to other modules.
+
+> 
+> > 
+> >> +}
+> >> +
+> >> +static void dc_dec_init(struct dc_de *de)
+> >> +{
+> >> +	dc_dec_write(de, POLARITYCTRL, POLEN_HIGH);
+> >> +}
+> >> +
+> >> +static int dc_de_bind(struct device *dev, struct device *master, void *data)
+> >> +{
+> >> +	struct platform_device *pdev = to_platform_device(dev);
+> >> +	struct dc_drm_device *dc_drm = data;
+> >> +	struct dc_de_priv *priv;
+> >> +	int ret;
+> >> +
+> >> +	priv = drmm_kzalloc(&dc_drm->base, sizeof(*priv), GFP_KERNEL);
+> >> +	if (!priv)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	priv->reg_top = devm_platform_ioremap_resource_byname(pdev, "top");
+> >> +	if (IS_ERR(priv->reg_top))
+> >> +		return PTR_ERR(priv->reg_top);
+> >> +
+> >> +	priv->engine.irq_shdld = platform_get_irq_byname(pdev, "shdload");
+> >> +	if (priv->engine.irq_shdld < 0)
+> >> +		return priv->engine.irq_shdld;
+> >> +
+> >> +	priv->engine.irq_framecomplete =
+> >> +				platform_get_irq_byname(pdev, "framecomplete");
+> >> +	if (priv->engine.irq_framecomplete < 0)
+> >> +		return priv->engine.irq_framecomplete;
+> >> +
+> >> +	priv->engine.irq_seqcomplete =
+> >> +				platform_get_irq_byname(pdev, "seqcomplete");
+> >> +	if (priv->engine.irq_seqcomplete < 0)
+> >> +		return priv->engine.irq_seqcomplete;
+> >> +
+> >> +	priv->engine.id = of_alias_get_id(dev->of_node, "dc0-display-engine");
+> > 
+> > Is this alias documented somewhere? Is it Acked by DT maintainers?
+> 
+> I see aliases nodes in about 10 .yaml files as examples.
+> If needed, I can add them to examples.
+> 
+> Rob said "Ideally, no" to use alias in v1. However, IMHO, it is the only
+> appropriate way to get instance id. In v1 review cycles, we've seen kinda
+> 4 ways:
+> 
+> 1) fsl,dc-*-id DT property
+>    Rejected by Krzystof.
+> 
+> 2) OF alias
+> 
+> 3) OF graph ports (Rob)
+>    This doesn't directly get instance id but just tell the connections.
+>    Since there are too many input/output options between some processing
+>    units, I hope we don't end up using this approach, as I mentioned in v1.
+>    It seems be difficult for display driver to handle those ports.   
+> 
+>    VC4 Hardware Video Scaler(HVS) is not using OF graph ports to tell the
+>    connections to display controllers, either. See brcm,bcm2835-hvs.yaml.
+>  
+> 4) fsl,imx8qxp-dc-*{id} DT compatible string
+>    It doesn't seem necessary to add the id information to compatible string.
+
+For the similar issue we ended up hardcoding IO address / masks into the
+driver. This is far from being optimal (and I'd like to get away from
+it). If we were designing drm/msm from scratch now, we'd probably have used OF
+graph port IDs.
+
+> 
+> > 
+> >> +	if (priv->engine.id < 0) {
+> >> +		dev_err(dev, "failed to get alias id: %d\n", priv->engine.id);
+> >> +		return priv->engine.id;
+> >> +	}
+> >> +
+> >> +	priv->engine.dev = dev;
+> >> +
+> >> +	dev_set_drvdata(dev, priv);
+> >> +
+> >> +	ret = devm_pm_runtime_enable(dev);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	dc_drm->de[priv->engine.id] = &priv->engine;
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> > 
+> 
+> -- 
+> Regards,
+> Liu Ying
+> 
+
+-- 
+With best wishes
+Dmitry
