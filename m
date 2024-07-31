@@ -1,77 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392A116E86F;
-	Wed, 31 Jul 2024 19:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB29516087B;
+	Wed, 31 Jul 2024 21:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722453248; cv=none; b=l2M3I1PGWt2oPrIYV9l5dQVLQ/qitVKask8CcgapD11uGna56uZ1zT4MxziLYLUD1odk7s4CiqZrZgbYmj5dmPdOU4cYzqKQGT6Ye3bOH7QmYIT09cdr/QXYMouk71HcwEC3iaP1argdyCS58klBydCdqXqnFL5yNQ5xij1hZts=
+	t=1722460812; cv=none; b=SpicDaHrsGjDb2tm+E2eY6awjkOeSljN11XDe3E8vxx3SB8ImSpPVDnObpm2zkapu8cK/H8BjwHKrdwrHOAqmoKJ/PBH13F3zt0Mje0+EhOLrvXQO10Nl57SbiZf0M5KU31HyC/EQvxOjEgt6CV7gqT/Cd3Xxdzm+PoY/vp/RBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722453248; c=relaxed/simple;
-	bh=FZnEeld0Lth4UK91GvRatrGqtdswn6yWY0BBRWmhQps=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TwsQ3+EdcDnJMjsNQ2Xbg84FxhH8UXncY7G7I9yCk8j7xSAWuWxlXjNfnaUmqkhzM/U09qDRq1T5kBINT3k5KpoSW4NqFAcOQAlk9iyc03zrRrjHImvJR22O81ZaG5bv/DzEmTVdXjyIl9llMGF7vdlX/lWlEboytpsICD4lENw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P6BtyNQZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722460812; c=relaxed/simple;
+	bh=5Fj1Q/lUDhBXjkp75CAf4AT/JrWwYEZL9sY+S+Ln4H8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SDsV3LNo5s84ix252GYK7GCP4/1krMOU8mDkA7O8oNPPsGkXy/VLfy2foiVCc+ljOVz1XDOPkX4N12pd4YeHG7KukxhmpQItGoD4k2z7wKRX+YA/8uZGpCBFN9pn9qhEN//0u57O8VyvfJ4hZ70FQYwYWgvYdkSl27qRnIe6Oks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s9yVd2lX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P6BtyNQZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB01EC116B1;
-	Wed, 31 Jul 2024 19:14:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s9yVd2lX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5F3C116B1;
+	Wed, 31 Jul 2024 21:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722453248;
-	bh=FZnEeld0Lth4UK91GvRatrGqtdswn6yWY0BBRWmhQps=;
-	h=From:To:Cc:Subject:Date:From;
-	b=P6BtyNQZD1Oa70wh5KRZjYDxUITJ40xp/xoL0dpLHa/tccxjP2hvTOJdA/jTzG6fN
-	 DhGdbEyeXFJUodGpse3h5Zl2oE1ao9fGaDEoCiGJfTPoUe/Zl7BSfNplvKASxiSk81
-	 DXEjqInWnmkRKHt2Pg8aAjI/J6iHy7sk6ApC2kxr1IP8YqO47PIgykWHKs/w2Cxk9H
-	 zY6fkmKvZ2KoP8waeyxrLTeF61sGeSpNY4qTCxpaww8pMCRaaY1XgUmU/cAUDNVmUw
-	 1Sl6ZvEkn2oZW0Sq/t+dYrzy23YE/7jGVF5bYtR2vMpAY1ugvBDAgNS/RtMEhBbzNE
-	 beSL2PViZYa9Q==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: linux-usb@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: chipidea: Use of_property_present()
-Date: Wed, 31 Jul 2024 13:12:56 -0600
-Message-ID: <20240731191312.1710417-18-robh@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1722460812;
+	bh=5Fj1Q/lUDhBXjkp75CAf4AT/JrWwYEZL9sY+S+Ln4H8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s9yVd2lXbkzILnqi9yLyP/0rumTwOpKdrwEGjipJji17psciiK7ak469kCJhYOZLR
+	 uiYU3C9cIWIBq3JJwhN/OIQpBxAQ2ydaiSR78/XbcOt8wIDs3KkuPgtsVudU/EoAma
+	 HV/BoMPKY8ERxWDf/lpAnXY6FPtHCUHSpO3dDnZXwYv0DEBdsdsh5fKwFJqtVGDSgD
+	 DBRNerbRJYhwuHBRuyMham5jD8yvlTWMSJuB43wOvqGiTHlu67dW6ZyM9cE63pnzxH
+	 wy/JruOuhf4wRaDHZ6MezB7ltIUbsbKLjLR6tlJhr5CzZy4S4CY1Fc4xqTS+2Me9m1
+	 GoKow52eZrq5w==
+Date: Wed, 31 Jul 2024 15:20:10 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: alexandre.belloni@bootlin.com, christophe.leroy@csgroup.eu,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-rtc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: soc: fsl: Convert rcpm to yaml format
+Message-ID: <20240731212010.GA1918811-robh@kernel.org>
+References: <20240731150420.2217925-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240731150420.2217925-1-Frank.Li@nxp.com>
 
-Use of_property_present() to test for property presence rather than
-of_get_property(). This is part of a larger effort to remove callers
-of of_get_property() and similar functions. of_get_property() leaks
-the DT property data pointer which is a problem for dynamically
-allocated nodes which may be freed.
+On Wed, Jul 31, 2024 at 11:04:20AM -0400, Frank Li wrote:
+> Convert dt-binding rcpm from txt to yaml format.
+> Add fsl,ls1028a-rcpm compatible string.
+> 
+> Additional changes:
+> - Add missed compatible string fsl,<chip>-rcpm.
+> - Remove map fsl,<chip>-rcpm to fsl,qoriq-rcpm-<version>.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - add missed compatible string
+> - Remove compatible string map table
+> - use oneof Item to align compatible string map table
+> - Fix typo 1045a
+> ---
+>  .../bindings/rtc/fsl,ls-ftm-alarm.yaml        |   2 +-
+>  .../devicetree/bindings/soc/fsl/fsl,rcpm.yaml | 101 ++++++++++++++++++
+>  .../devicetree/bindings/soc/fsl/rcpm.txt      |  69 ------------
+>  3 files changed, 102 insertions(+), 70 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
+> index 388102ae30cd8..3ec111f2fdc40 100644
+> --- a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
+> +++ b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
+> @@ -42,7 +42,7 @@ properties:
+>          minItems: 1
+>      description:
+>        phandle to rcpm node, Please refer
+> -      Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> +      Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+>  
+>    big-endian:
+>      $ref: /schemas/types.yaml#/definitions/flag
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+> new file mode 100644
+> index 0000000000000..762316ef4d150
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+> @@ -0,0 +1,101 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/fsl,rcpm.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Run Control and Power Management
+> +
+> +description:
+> +  The RCPM performs all device-level tasks associated with device run control
+> +  and power management.
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - fsl,ls1012a-rcpm
+> +              - fsl,ls1021a-rcpm
+> +              - fsl,ls1028a-rcpm
+> +              - fsl,ls1043a-rcpm
+> +              - fsl,ls1045a-rcpm
+> +          - enum:
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- drivers/usb/chipidea/ci_hdrc_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+"const" for the fallbacks.
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index bdc04ce919f7..c64ab0e07ea0 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -128,7 +128,7 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
- 	 * In case the fsl,usbmisc property is not present this device doesn't
- 	 * need usbmisc. Return NULL (which is no error here)
- 	 */
--	if (!of_get_property(np, "fsl,usbmisc", NULL))
-+	if (!of_property_present(np, "fsl,usbmisc"))
- 		return NULL;
- 
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
--- 
-2.43.0
+> +              - fsl,qoriq-rcpm-2.1+
 
+
+> +        minItems: 1
+
+Why? I don't see any .dts files without the fallback.
+
+> +      - items:
+> +          - enum:
+> +              - fsl,p2041-rcpm
+> +              - fsl,p3041-rcpm
+> +              - fsl,p4080-rcpm
+> +              - fsl,p5020-rcpm
+> +              - fsl,p5040-rcpm
+> +          - enum:
+> +              - fsl,qoriq-rcpm-1.0
+> +        minItems: 1
+> +      - items:
+> +          - enum:
+> +              - fsl,b4420-rcpm
+> +              - fsl,b4860-rcpm
+> +              - fsl,t4240-rcpm
+> +          - enum:
+> +              - fsl,qoriq-rcpm-2.0
+> +        minItems: 1
+> +      - items:
+> +          - enum:
+> +              - fsl,t1040-rcpm
+> +          - enum:
+> +              - fsl,qoriq-rcpm-2.1
+> +        minItems: 1
