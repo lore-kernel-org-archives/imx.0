@@ -1,182 +1,193 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010046.outbound.protection.outlook.com [52.101.69.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808EB171658
-	for <imx@lists.linux.dev>; Thu,  1 Aug 2024 14:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722521805; cv=none; b=CJ8fx3HfmaHndolQBOUO05E+hfAQWlkKKwNp75iVRDki+oFkVJV7s9EEPVL9ZPVPy5PefUFLtyQ0MEr8DESA1DupVXESGGybIE3v7+ACkLwGVDLeONZ4rpL3oOR8od4FPv4BcAvKu5v1DNZO+7/uv1MPMHQNKuB2mjmyk2ZPrbw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722521805; c=relaxed/simple;
-	bh=/dupWhpAP6cxdPHzZCN/DFOGIGI+w43PjLfN9l7Uwe4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bt9Vw9ob4aLxNeuSWk1Cy5rBQJ6+jxxLQAfbTVQ6bqH05DuuawK3AY/eWw9lqK9YIxsULaMXswXh4ElIJ7y7DgmyD3UQCp8rXvPRq0b59O4x5iBHnxPEN7uCoLcZHtVEJjgKcRcf98eMOKnrenlDzUhpPRG5NekrE7oaE/u5HVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lJB/YIH4; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AE41A4867
+	for <imx@lists.linux.dev>; Thu,  1 Aug 2024 14:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722521865; cv=fail; b=cxrG/WmuofevwORAcGTmH886ibEbTmY+9LFYwJ4gOhGgTfi+cZOllZNfFo6KmaP+ITkPfo40zNAQXWY/bLYJ91Wx+HFEwLyc7nXPDEmwNea5wWAj5V1EEzNdElGOXqqaokLtvlhA1ke8pxrGJLpM2mhpm624FKJuEkz+3bjwQzA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722521865; c=relaxed/simple;
+	bh=G0riEwA/1K8d2D2X8gcdUSy82bjJ3pPZFjCQGs4sBpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JEKm2QeG6jv0M9BAJErHMHzw3OcThzo44eblZcNICCJ2GGbW+XzoiPDsDYqI0J8KI0SNUV6N1xyZfP230uAnKs5qGN5JT4uJ6Q4iGtxptBDrgP4zNuNTtBeNFLdtHZG78ldXYgIMKF12J8l6AG6Ue6Zr5TbCF8kp3tTAipHntQo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BotdY0ck; arc=fail smtp.client-ip=52.101.69.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lJB/YIH4"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1ff1cd07f56so50157475ad.2
-        for <imx@lists.linux.dev>; Thu, 01 Aug 2024 07:16:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722521803; x=1723126603; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0YOAZ4MEIwSMs3ZVqhSp3JzNSyETrbdw0jGKvXahsgI=;
-        b=lJB/YIH4JUDXJSLjFXNn1pEoJ4cVoFygjnbgCgQBiF8Q3up26lNvqh2Gys0DrDnbi1
-         yW5ZOP27w9DMLFu6iImJgQEs1bRhi41jQli2WBS+bdTT/b0zd2kFw9wP9UYNJpTqbjYf
-         KyG0BQ8WJCJ7JC0jPfxtoaL+z4Tbir1Gy+fgRwwNdCzfVyWoZShyWCss6CfkKlWfm9c+
-         dvvxjx2Xo4hPt/lJNcCRlILEAaDPW6nfXyIIcKbJxgHw/NE/EyLIZDoDXpdwbZsmR/fq
-         jyo+2luxmNZs1HBXH9QEUSWdlWRbrSi0YJ1BzmmbQIfcblcO0xmOHWYCdYecY+Z2na/Z
-         msLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722521803; x=1723126603;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0YOAZ4MEIwSMs3ZVqhSp3JzNSyETrbdw0jGKvXahsgI=;
-        b=hx1aRDRILhWOgrAWb3D0BYbPNTOePjEgW1VyExlQUaDWRX5X4GcqTfBXZB/vUoPlNw
-         qMrPUQ/9rv3EDuQqpTRv8IIIHwXj80Nmh2KW3ONGcwj0WA4UYRYicqSVaxuEHrUNwnA4
-         dduhUE8ZylXFEZAYBrdAdQ0eAkZTbfiHfYIYAF57paQrNo2L0IjEtOKw2d+2y1XDLW7W
-         +xgxXAoT1t74c1cguY3f6EbxjRhhmjdqEZf+RgLezHKe428D9kCSNE5Zfwr3xucDNE4o
-         snCb6lqBhXUbf/frN98zDnfWoh7Fjv38+kPTWQEyNT3Qu3mH5KfL7JiKVonwwyDkIEWD
-         OfxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKSusKakD/S8MIb37naiqzw0x6ZzDufZULDWFGHwIYXN0MbprhqXHpLQRDTXPIANlwydeNRNeWS4tyBN0ohSdQIAzX
-X-Gm-Message-State: AOJu0Ywg4Fl6F3GTIIPaJIo7xPoXhxZL/94Ehds/bdzYbtMJc2k8zoVO
-	dvR+47DUQCemGQJ3G1OUQZK3QWtZc9V3TgaKeykIz71DsnWY7K5B
-X-Google-Smtp-Source: AGHT+IG+19HQ6LAfZQIafMZSXLZH9DW7qQdwJzX3Af//sEjh4IjSWNR2u9UD50qNDMNcvkZIcJkQKg==
-X-Received: by 2002:a17:903:120c:b0:1fa:2e45:bcb8 with SMTP id d9443c01a7336-1ff5722dec9mr4839105ad.2.1722521802721;
-        Thu, 01 Aug 2024 07:16:42 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7d3947esm139772055ad.116.2024.08.01.07.16.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Aug 2024 07:16:40 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <2936c3cc-acdc-4bbd-9dd8-871d5f04b841@roeck-us.net>
-Date: Thu, 1 Aug 2024 07:16:38 -0700
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BotdY0ck"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dBg+yaA0YZdtBSK2tXD42APLmkH451ZX/VN53bNf1wMjDb2JVTXfA/mbmKW7sQRRQdOqTdh0pycEOny2rCb6W8lSxnxV8IaZj/LQgqJvk2FSSq+pUgimXfC4vTERj2pdiOTuJ23BAQ5OIt+B2Ce/5zWe9i93GbobBPg8Cz51zASCtefTurGcjnwvUR+o8U/dkVQ8mpMZmZqqYciX9W9THbn6i6Qb1IVzfz059lnzLXk9DZohTNDg08VtVJwDESlf3fVB3Phw46fyhDDBG6cIxCTu81IxMln9uKc1t2CFzWFBgbJPrUTmO8cVlSDhVnUhI/CafAzSmwcTr1IoIl39Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JE5V7YIfmJNfWGybE/X37C/ZIkMrTGrwQ7oXdOFalxU=;
+ b=r0HNtOWLaaXhlTm/6Peo2KTUj9SHdBXI1P2UOwlqHsW1CmIq7Z/65hbc7h3AWXbpax69ukULMfhmha5vCzyaphs/REvh5NgD6C5CQ903SSO9WW6yEm56EbrxVviLvA+twMhExn8ulhackLHpHd95El9XjFalnVtJ9ELL20Gw/k2+k3CZf4jcENlv5+hGTkCXqZcXftwtiCeA7XDrbbAtnOGXUCwvQPdIqn4aMhnezpzKgSPdlHp14I5hbXJxfuzki5gNksifl8lvuu3WqU6z9bdIl3HghsejBBedR6Vf7DbbslQy9R+nY48IOZ1Dd0xYUllMBptVEDpUtnadicHzyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JE5V7YIfmJNfWGybE/X37C/ZIkMrTGrwQ7oXdOFalxU=;
+ b=BotdY0ckK4Au1xhMu3orRevMgW/M/v859zfppMT3Lha33boO4bC0uKPle1luJsuzoM9QXmoCJYHopAN7vvu6d29mvJIzce+A2xcwYMxO+4sJP9E3IYgUOTf/CtWU6rawti6vmWG8RJB8Bi/5Trh4Bd4wIfqMGp/rsrxfJZDR+c4hugL2wem6qbaA3PS4qqcUtw6k3ajPXVOHyeaMrLpBGz3bHsc1c2rI7Ugkg/zpmXATSjYwn5mNN3vH3wzj8RtOh2hhiyUTUtaWrwOxNixFqZlwMj26tkEOAdeWL4bda28rTeReMdhDDx8dOiPDQWafPu7DxKLr1xhQtKYwvu4qxA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
+ by GVXPR04MB9831.eurprd04.prod.outlook.com (2603:10a6:150:11c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.21; Thu, 1 Aug
+ 2024 14:17:38 +0000
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::cdc5:713a:9592:f7ad]) by PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::cdc5:713a:9592:f7ad%3]) with mapi id 15.20.7784.016; Thu, 1 Aug 2024
+ 14:17:38 +0000
+Date: Thu, 1 Aug 2024 22:15:01 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, andersson@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	jun.li@nxp.com
+Subject: Re: [PATCH v2 1/3] dt-bindings: usb: gpio-sbu-mux: Add an entry for
+ PTN36043
+Message-ID: <20240801141501.yt6ytrf2gzmravwx@hippo>
+References: <20240801064907.3818939-1-xu.yang_2@nxp.com>
+ <3akk6hydu6iguqik3ek2pb67knihnjcepyxtbsnnasq74ikpsg@7txsek3mx5rp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3akk6hydu6iguqik3ek2pb67knihnjcepyxtbsnnasq74ikpsg@7txsek3mx5rp>
+X-ClientProxiedBy: SG2PR04CA0183.apcprd04.prod.outlook.com
+ (2603:1096:4:14::21) To PAXPR04MB8829.eurprd04.prod.outlook.com
+ (2603:10a6:102:20c::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] watchdog: imx_sc_wdt: Don't disable WDT in suspend
-To: Jonas Blixt <jonas.blixt@actia.se>, wim@linux-watchdog.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, linux-watchdog@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: john.ernberg@actia.se, Anson Huang <anson.huang@nxp.com>
-References: <20240801121845.1465765-1-jonas.blixt@actia.se>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240801121845.1465765-1-jonas.blixt@actia.se>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|GVXPR04MB9831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b9cabc3-efc8-4b0b-d833-08dcb234b231
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?mOYee2wozZUWOK769xb+21Z2BkbVTrnQf5Y1Tk33fsCYSrKAAIdRMXV3fSMB?=
+ =?us-ascii?Q?VAB1QbMBwPgGrBj0oVDws+JJE3mJRnbWqRVyDA3MOGfA8YF0Ks1xCjtI8pEf?=
+ =?us-ascii?Q?wOx5lrKRZq3iWP964mUK5yo9xdWMFUnae3TrfZZlUq1Exbvi3wQE1s2Az6AL?=
+ =?us-ascii?Q?AODn+jpsiB92edUKGnlfmMdb/K4aUs36/euhBTX6oabw0B4bTv8yOLdLMADk?=
+ =?us-ascii?Q?rVkgmSAsrP7padH8ymrcV3S7VOd2AwtgRcrtVGbnWEmwpr+NFp/oDroXqp0v?=
+ =?us-ascii?Q?7+aYRs+b/kZgDX1G6wsGe2d8+IHp+zv7lE6nQgibDVBQIv4VC6+cisiXv3cx?=
+ =?us-ascii?Q?Fc88fhaqYpt7uKejk8qznPr1xvA68UYFVkr+IgVLgi847rLpYTpSjwqXi0rf?=
+ =?us-ascii?Q?mcBGAMlaoswjq1rnt3h05nyiQBZSERG1860JHlw/YLCdPD0xKeRyamsPs8mP?=
+ =?us-ascii?Q?cGPGlhi79V7juCY0Nvd2lObc/KibjpatknjlseWG/fLcvjWtdgfFNe8YmPMT?=
+ =?us-ascii?Q?RQxr6d7W3EKY50qwu4Y9LEpGzSPc2/WSF4I5fXZi0WpknEi9otI78C0NrTTB?=
+ =?us-ascii?Q?tLo0gajHVehD3ehGXXQ9S4DiRqBNnzNHV0lUC+8gl9q/WVDhHN39UW0AJb//?=
+ =?us-ascii?Q?ladaKwzVIP8xwrNLuaLwjixJMJydY00ff9XI51WufgqJRftiq+6Z1dEUQBwP?=
+ =?us-ascii?Q?A9zj8Uo8yAaDTYtyu9fgdojKo6ZYYp5vQFrbr578T2JIeh8YLylq66zzgPmo?=
+ =?us-ascii?Q?KB0d7uuXAFOtilygCoL+EuFF6wIq2GWpFQAc090rXKrgTzj3MDDPLW91Um9y?=
+ =?us-ascii?Q?MelAvtCDRg96UAOT4sWeniAWx0Azv4+ZYWiA/Os6ygAk+jSHBVLj//z4KV5K?=
+ =?us-ascii?Q?UlQ4e4LWAsSkWNyi+XBTfBZFto7n4HHMyecSOjRJJ2EvHlrBIMx39GhbsAQQ?=
+ =?us-ascii?Q?K1cy42S/7UTsS6kUgbDx4aFKn8Ph4nL4uEffOi/l0SJGzU+fDcf7zGO8v4/E?=
+ =?us-ascii?Q?c4d5Ux6+4n3R0SOH4NiJ3EjtcibNmIMMrldVYSF0xJ2+s7fB55dsY7JLWVoK?=
+ =?us-ascii?Q?d8ruSMcdIcm9OR118InV1BG6NvGs0PfadRowC8It+LBTVdw0AelCp8jbNgrp?=
+ =?us-ascii?Q?v0uL/wfrsuGKdIXGALfyJ+fas0YhLRvDPF0TC9/WHBa8GFVrsC5yNoSDFcRk?=
+ =?us-ascii?Q?G+J44iMuCrj+qOKPbbDJPIAFP2AjDg+aZ1WOHQWYDkUb7Dbwp3pS3XoqJ6rf?=
+ =?us-ascii?Q?ncGIyFj6d6ccQHwZWhetVu4mVWIs8n3s2Bi1WaKuqd2BNNcmAuraN2fj9G55?=
+ =?us-ascii?Q?MtdyneUb72c+OtIDkfaRmgZ9izzf+v+ZAag1Q8HfZ/zZ3fAGSR0uQ/dfkDLV?=
+ =?us-ascii?Q?mtyIQ7I=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?SHfXmISv5GN81pO2uAWAdj5oh2ZvCgYDpQ6JoyQ+APYkSrbJCzXlGUMQ6C0F?=
+ =?us-ascii?Q?ytjNzrT6/RGCHc6sVQ8iOj0FzYoL234nT5AugZaruYN+TYd/DfDCYa8AaqAL?=
+ =?us-ascii?Q?j7Z63bcFQ7g4B5ReA+lua7yjBLn7cWQOiJLHIt1j70ITVNJpU2thauEpNueM?=
+ =?us-ascii?Q?3wSEvG29rk3taUFBZ5yPaVksgMPhxNL0eygdJpnZTme1N5sN0K5EAYhNEoPk?=
+ =?us-ascii?Q?tNacZ4RJ8+oRoeEciGMdzLV9Nq10rboDoF7bARZw+Ec5adZG9OaFnm2cqzfK?=
+ =?us-ascii?Q?g0MidZp03gDhafVvEiGQ71QqBTZS8XLH6DEOYi/mujYF52p00ay095Xq6YMG?=
+ =?us-ascii?Q?XBJtAWqJbw/n7Sxtu5lwxFWhib1el54Npev/iz+pCXZnKYZ85xkyGC4OKDEf?=
+ =?us-ascii?Q?P2lUXkC/yp9SsTzaqAROLOgbxB+aKxLy2lBhs9OyVSJN6A7ZiaTd/2/48a8Q?=
+ =?us-ascii?Q?OuJBANkkFFmYX2mp2ioqhF5vLB5rt+SjPS2U6JQ+jbdJJTsZ4kBYzyCGsXNH?=
+ =?us-ascii?Q?4GJPGrnso2/by7vzmL2vS+YY15/UF3YlqyodL4B9ZNRiX5Lz9i6Hf1W4Oha5?=
+ =?us-ascii?Q?39cIlA7grVOWZjrAQKQivyX9u+gIK0k++L0q/sQJ7XdJgmrKyg61zMu5Ao36?=
+ =?us-ascii?Q?fI9jr+temWg6aH2YjvKjJCYV9KeaSzEfHF3FIJof1ydGMWP7lFdD4trmLONT?=
+ =?us-ascii?Q?bn6nQLfdnD6vOOXMSsU8iHXIWCf2PspkthkoD5JcYJ5vTLk/tda+eE0Ku4gY?=
+ =?us-ascii?Q?XSbe97wxh7HUlNIjKKk96LK9SLB8zRgXXn9+NwYr/YL6a6MRwJlFL8D9cnMT?=
+ =?us-ascii?Q?u/ljZ2ovVjD6nPGDazEMn31FmdYBAVRHD4/HwCEzDeMimevw4UvksWmiA1FY?=
+ =?us-ascii?Q?bULrE9Lf1rGEUZyZT9H3os+aft9v7dOAtc1qLZTYYvpX3XXZwW9A6zS3Ahxo?=
+ =?us-ascii?Q?vwfH8CVJBpMzfRYIFvQF/QOHUIiwsm64+WBJcjkPXcReh5CikVT7Cwa9SYYG?=
+ =?us-ascii?Q?If1qnVIvHSHVyLLmzL6oEQkTCKzbBJJjwHg5o7TYlp298qjgzsshYaj8su/o?=
+ =?us-ascii?Q?5hVCU9DAmTB3AGN4xcxIaLKg0h/4c96g5PI5fkZ+6jCymbosBTaV3fvNQyeC?=
+ =?us-ascii?Q?ZY0726+Ve4OAWyaF2GUOoCbWnFM0F8LMAU8qsu5glisJGMd5v3zHIXvZRqdd?=
+ =?us-ascii?Q?WZCilk7jV9WIwguOZcxIOMiNCFpF9qhOfFRiVYhhKu29Xkd/M6ooV+B4Vwt0?=
+ =?us-ascii?Q?p8MJ5niBFleFh1VSn3wtKJvfXjIRSycMJZMsUxWrKVO5zjaf3ZFNViBhaXhQ?=
+ =?us-ascii?Q?DAj0sWDyg7HacWuKJ3ptA7YqtWThs2vCSQGKXN7F6ODqiEbUXh4EjOv+Kzvp?=
+ =?us-ascii?Q?skr5i7+rZJ7qXQk5mLrY4HbKcB9hi30H+tejOHP22miXmJKm1UI9X37Rs7FE?=
+ =?us-ascii?Q?9yBDNjp4Ekws49EVQ3SZBLikngHRt0P9HD2FrSK5MJ78upOmmzokLlSYKs7y?=
+ =?us-ascii?Q?pawHn5X3f4vEmMvRhfQNAdSwok6dDP1VskALFusT2Jw+6OLLK+sevy4evFA9?=
+ =?us-ascii?Q?rxrh2WQLPMRIi2G5JC0WykTJfxQOFptvbZ+VvjeC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b9cabc3-efc8-4b0b-d833-08dcb234b231
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 14:17:38.0998
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6nWjhH0jv9JmH2mwkzaxIZd4RHh+XJ+Hfv1+iwfYqgjuY4gQOnOGAcmFp5K/gORwTlaPTgdom9DDumCyDs52gw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9831
 
-On 8/1/24 05:18, Jonas Blixt wrote:
-> Parts of the suspend and resume chain is left unprotected if we disable
-> the WDT here.
+On Thu, Aug 01, 2024 at 02:49:33PM +0300, Dmitry Baryshkov wrote:
+> On Thu, Aug 01, 2024 at 02:49:05PM GMT, Xu Yang wrote:
+> > Add a compatible entry for the NXP PTN36043 GPIO-based mux hardware
+> > used for connecting, disconnecting and switching orientation of
+> > the SuperSpeed lines in USB Type-C applications.
+> > 
+> > PTN36043 datasheet: https://www.nxp.com/docs/en/data-sheet/PTN36043A.pdf
+> > 
+> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > 
+> > ---
+> > Changes in v2:
+> >  - add Acked-by tag
+> >  - s/SBU/SuperSpeed in commit message
+> > ---
+> >  Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml b/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml
+> > index 8a5f837eff94..152849f744c1 100644
+> > --- a/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml
+> > +++ b/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml
+> > @@ -20,6 +20,7 @@ properties:
+> >      items:
+> >        - enum:
+> >            - nxp,cbdtu02043
+> > +          - nxp,ptn36043
 > 
->>From experiments we can see that the SCU disables and re-enables the WDT
-> when we enter and leave suspend to ram. By not touching the WDT here we
-> are protected by the WDT all the way to the SCU.
+> PTN36043 isn't an SBU mux, so it is incorrect to declare that it is
+> compatible with the "gpio-sbu-mux".
+
+Well, so I should create a compatible such as "gpio-ss-mux" and make some
+changes on the driver, right?
+
+Thanks,
+Xu Yang
+
 > 
-> CC: Anson Huang <anson.huang@nxp.com>
-> Fixes: 986857acbc9a ("watchdog: imx_sc: Add i.MX system controller watchdog support")
-> Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
-
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
-> ---
->   drivers/watchdog/imx_sc_wdt.c | 24 ------------------------
->   1 file changed, 24 deletions(-)
+> >            - onnn,fsusb43l10x
+> >            - pericom,pi3usb102
+> >            - ti,tmuxhs4212
+> > -- 
+> > 2.34.1
+> > 
 > 
-> diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
-> index e51fe1b78518..d73076b686d8 100644
-> --- a/drivers/watchdog/imx_sc_wdt.c
-> +++ b/drivers/watchdog/imx_sc_wdt.c
-> @@ -216,29 +216,6 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
->   	return devm_watchdog_register_device(dev, wdog);
->   }
->   
-> -static int __maybe_unused imx_sc_wdt_suspend(struct device *dev)
-> -{
-> -	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
-> -
-> -	if (watchdog_active(&imx_sc_wdd->wdd))
-> -		imx_sc_wdt_stop(&imx_sc_wdd->wdd);
-> -
-> -	return 0;
-> -}
-> -
-> -static int __maybe_unused imx_sc_wdt_resume(struct device *dev)
-> -{
-> -	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
-> -
-> -	if (watchdog_active(&imx_sc_wdd->wdd))
-> -		imx_sc_wdt_start(&imx_sc_wdd->wdd);
-> -
-> -	return 0;
-> -}
-> -
-> -static SIMPLE_DEV_PM_OPS(imx_sc_wdt_pm_ops,
-> -			 imx_sc_wdt_suspend, imx_sc_wdt_resume);
-> -
->   static const struct of_device_id imx_sc_wdt_dt_ids[] = {
->   	{ .compatible = "fsl,imx-sc-wdt", },
->   	{ /* sentinel */ }
-> @@ -250,7 +227,6 @@ static struct platform_driver imx_sc_wdt_driver = {
->   	.driver		= {
->   		.name	= "imx-sc-wdt",
->   		.of_match_table = imx_sc_wdt_dt_ids,
-> -		.pm	= &imx_sc_wdt_pm_ops,
->   	},
->   };
->   module_platform_driver(imx_sc_wdt_driver);
-
+> -- 
+> With best wishes
+> Dmitry
