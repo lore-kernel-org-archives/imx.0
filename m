@@ -1,66 +1,66 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2043.outbound.protection.outlook.com [40.107.20.43])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012005.outbound.protection.outlook.com [52.101.66.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4056313B7B3
-	for <imx@lists.linux.dev>; Thu,  1 Aug 2024 15:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71580137742
+	for <imx@lists.linux.dev>; Thu,  1 Aug 2024 16:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722525884; cv=fail; b=HIJKEFsY4phMpyXmgFNrkLS/IfLa0JCJq8T1kIcUSlD1JDBXnKl8RLrkLITc7IXWdsMZgth1U1irtHc4vGBNG9V55cu3mWpZzDgd8ondFNnGKJvh4IIfWLVV3zdqqaDINiC01uHpYXDl6X1XsUjogdqY6darFj3ycXJNYqk0Yq8=
+	t=1722528588; cv=fail; b=joO/W/0A+gFids503hNfsQEQ/C51J7xNOIbwVXTRyCG4xQCPBseunY0tPxGwLkhA7o6UdAmYYKze3m9AVww+FSbQ0AU/1ZFIKjeFZVj1NJaff8yDJkxKuXq5r101BKrsUWl4/H1voaeacpo+w6RUmrZrRfujMWu3Ypc1sBhufHQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722525884; c=relaxed/simple;
-	bh=wrPJI4B71t0iSozcr2btPWAmf4C7olQIpjppeVZx0BY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=S+wa/GA/Lz49eVQaigEAk6mE6olTwfUVTMs/ItZmXUnkJmEiC1gbNVO+ZElWF/tpwgV44CaZnPkb8cGQVt921s+YRNF2QP5oK6+R3R8HYvIHnJ8iG5vaAYNj7bQ5tqqhuTgIqt0/6QBilcu6fvjFaCf+WenWhdMSmx1K2Yob3Mg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZfGiPPlo; arc=fail smtp.client-ip=40.107.20.43
+	s=arc-20240116; t=1722528588; c=relaxed/simple;
+	bh=CVR99jyTK6sdeMvxfSvJye9UvZiY+PahjNyz6zQNE8I=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Bep5JFI03RSHlKmvCWg316V62GgCbW08lvyBmQsJM6tKqN8k5xMhA8BDeoafyt+eDPvdIUfBjtNYv51WC/Kk2QKEX7WDB19gVXMIGctiHt0XKfNJu/yBmjUVi3ZtiEntZ9IdTUWv7VemNanzteOnREgVt4a81Fs2/c7KWjxwtoo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aziJYbaj; arc=fail smtp.client-ip=52.101.66.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZfGiPPlo"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aziJYbaj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DxaFXeCLSvfPqLneDVXHtPxWYxTEfmrhrJNgQLwGtlKwWKbTDONUsP/CY/CLnsLpChNfdggJRlc/2XyvC5WYtQVM/1WyNl2H55U2KMrdnAYM7zNQKRtfSuxeGpuY9WcgZ0YJOLO8js4HU6owU9tFWIQiOsT+9116AcijkHkXlI0Rc1EUOimXo2TyPgdOVmPgP1c3ouHwM0OvMKpwmunXXYBq/hSAM2xDRWsyW/h8+y4+CK/oecq+6XOQpxcw/cBtxdfiQ3nhiTpcU/X5MOcCcIYdOvyCznDUiTevPAsKW+BS6vK59zuwF8mCHPJa4WoGvknT56+f6D/6ypkE31ON+g==
+ b=Zx4H7v8ySwWmWgcF2gykV0zVpYj/vbQtxeM2xRYSsqxv/eDobH18oULIicDMRev3GCVIWMv+7uZ5mOwCxg1UIW3ynqQxIbBze5ZhHJ118X9I83U86bqY+2tiWaUWuwFsLEyFd/L9ixjdOaBYTrYmLDm3R9zrBvokZU26s2mdJ/w5+QOed13gTS5F21iYNf97zCMnSG0d0ta+1xKG/cUgaoV1vOtd5zpb2EuWKEglFr/hFywpu/q7pedXRpimBrhPmcanOYUddXVDjvfEimSjPrHKA5/3L0faelMLnrg11w0V7wFjgJXfCAWmlYIxNvzxq6lgKEx88IIzvW2i1J2Efg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VxSw/LMNYTJp7J+3fXT7WuX2fWrAtDH4i3kKWBtS5rs=;
- b=w2IwzlDQ9fGtzltyZs8385kdCJYqa2C+OdR8oJM17dQ94/oH25Kb2d302sRE4ZEvibUCdvLgt35GyGWehB1ryaZQfYSqpPUEeL8b8TZW7cjHQ1OLA2HIX9HOZs6gziFFcCKYe+KVoh8XU93JTgKRk1+4tW6CoIEHh7rMsh2Rz/WBjwTr+4FVRNhDEoosIiZ4sZnypagLwhRUOOB8yWRbTsfhg8t/PP7DoFPDIEO/+hFlBDAWi8PfHhAohFxi6bkNy98iSAun7nO1OUqUjx9Ddk2JW+icDv+MW483CVhLZeoUAmChQCVBVgJhAefzPHY0iNteYGzyG5bWTZ6TAmJGqA==
+ bh=vDXvsGs66OAUtbgolodcjwdsjM19+VseTX6MKZjWQ4g=;
+ b=Y0lWke+bcJ49rS+VVTLTuQbK7PSofgwdkn3gr37hbW5N7x6qnp4LT1a+4s11nQ/4AtTBkOoLF6At3rZ+kEQ+KVZH8l4s6xYwRMb8WzYuRTvt4PwodLfGDURMYQz5to6QmtW5bwB/SAETRIjKVTE9z1goVDEdPARU+iwysxsp3eafF33fRACkpV900mXD1hUkS+W/fBi4xw6uUv9wnjNHpVNiqr3VZNiuKwAkdlP5MzcULbioP4WUOnG6KLkszi9ZBYY0iN1hmwicSt5JVx5GU7ctKUBqo7+tCnbc2QiI0IPMat616R2Dx2sN6izoUkS+ygtsuZ9eSfPf7QuXi2+8dg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VxSw/LMNYTJp7J+3fXT7WuX2fWrAtDH4i3kKWBtS5rs=;
- b=ZfGiPPloDTb617MXP8Xn7pEaYGMt6f8+tmxqUUtyO4TEveb/ZqUJEwwqB6cMGvM/pLQ/Zrj85/jn1gjb8rQTJryUuh/9qezXqKQ3VMrRe+7IBBjDvMN1EvUKxqdjefmDzjk2J7gW8tU5jdEgIxvx8hl0caI/cdn1xg1b9gyNNK/3EsU7hGTNHSnZZ5JvHhV9gpyHRyHgG7Ik4dbWGZWPE3m72OzUKCxlVDH8TR3s4j+WfoJlFQCqc7MD60tSUuAT9X6yS690+w7gLdIA+hsFKOB3XbGFJ6MThVnC+0nQbrnSflorEtVjOXgkuAbTusfLQix+j5B5VwlsDc702TTYBg==
+ bh=vDXvsGs66OAUtbgolodcjwdsjM19+VseTX6MKZjWQ4g=;
+ b=aziJYbajvN2rxXxxNT/W2Mxo9hFbT3z/LAuZbjpgxBXi0Ym+L7DBLLORdToMB5frJL9XYu8hnUugI5dQkPfjsTtMupAGhndhk0Wmc4jL+ObzP1JKLD80K8y2SU2u6eH8v0ZqNvSyP0/GxMdt3zGapBrrAmug/98H3MDCsU6mieoCcyOMwlGgAAa4w0f39qjSWkAcwDcxpTH/1t8lTLVOhLSq3/ok5geAf9I8iM36HDhaxM+yH3MrZTe3o251tB4wj5nM/nbfNHLfCF0ZT2u0sO2SD4VvvD+6gLf/qQTMYcl+rDhTceRnh5ImdOAxfWcLxkFGm45f9awP4ioDvbsTdA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU4PR04MB10669.eurprd04.prod.outlook.com (2603:10a6:10:58e::7) with
+ by PAXPR04MB8960.eurprd04.prod.outlook.com (2603:10a6:102:20f::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.23; Thu, 1 Aug
- 2024 15:24:38 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.20; Thu, 1 Aug
+ 2024 16:09:43 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.021; Thu, 1 Aug 2024
- 15:24:38 +0000
+ 16:09:43 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: robh@kernel.org
-Cc: Frank.Li@nxp.com,
-	alexandre.belloni@bootlin.com,
-	christophe.leroy@csgroup.eu,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	krzk+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-rtc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 1/1] dt-bindings: soc: fsl: Convert rcpm to yaml format
-Date: Thu,  1 Aug 2024 11:24:21 -0400
-Message-Id: <20240801152421.2501617-1-Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] arm64: dts: imx93: add lpi2c1 and child node
+Date: Thu,  1 Aug 2024 12:09:14 -0400
+Message-Id: <20240801160915.2505610-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY5PR17CA0022.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BY3PR05CA0023.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,293 +69,133 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10669:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9bc1101-63f5-4267-c7af-08dcb23e0eb2
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8960:EE_
+X-MS-Office365-Filtering-Correlation-Id: dce0520e-34cd-4561-0138-08dcb2445b10
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
+	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dml9eWYaa1ZLQsBVia3wlRuqyKttPi3f0KP1W6L97V5skzaG66zsfkIy6Fu7?=
- =?us-ascii?Q?lE4UFI6J6I89Mg1F+hNH48qiJ4u5lYLJlspOV/DOV3sLgPr2afLZF0+XSb/m?=
- =?us-ascii?Q?RJU6wi/Wze2gOByyxqvmfofE7A4M++Jr5qLqAB+HRYlRqneIDg6HGdbrjzw2?=
- =?us-ascii?Q?8kF8BpirHCW0FJCGMiIMniq/gofXPJY3OqxXTUP4iGGLJObFzzYHh2VU4NpH?=
- =?us-ascii?Q?nU7Gggf64ZEG3WFHIsOrWCzPKIazJfdGvun9qaNbZbM+g4lTCCIRuOPUCAnG?=
- =?us-ascii?Q?Y2R+Tv5wuGn0tKEOPEk6hB2GXkTMeepbVlVu5fM1gzK66mjbfDe6XwzRuDVR?=
- =?us-ascii?Q?aKRJ0NWS64RdZ0mw2eAWduV2wrc0+dxqOCFjvqb1Q6ekjeM8LuCc1zsLBmfd?=
- =?us-ascii?Q?GvePjQV5uZR3CvXF4V7EVKuCDlplaHgfmSpnsGGKHGF5NxfJZqZw1Uc6iX74?=
- =?us-ascii?Q?hhCOs6z+OONOLzXsVkA7qqsGfJur4Fv68J3hD1OaImFCU7xWJk0xAx6ujBBj?=
- =?us-ascii?Q?ijF45WxUFboV/0nQTbzjxgK+S5KqqOI88QSZveendOpfvpTsuekoUL4kzC8K?=
- =?us-ascii?Q?lmVE4OZ9SaoWtV3xI9Di7lUR0UFkG8K3XaPUS1cY7YkMcLZoAuiXmoHOWJKz?=
- =?us-ascii?Q?AtLV9G+Hy9oeEmY6CSbifpnRlPIfT5TJpf08MReayCRjwj2P/5rmTe/03HZM?=
- =?us-ascii?Q?33+h2XWM/Wl/+GbtvpaowK4ftAG1/03C3h2Jnacp4o349Jo57G+uEe/x+Lba?=
- =?us-ascii?Q?KmqkO/lJwLRHwy70JJXOzq/tqV8QRP0z95TuqmR3lH9Jf/ZHuzjvOcUA3JdM?=
- =?us-ascii?Q?mxzfKQM+7WBIbKjSBAupoN6j4hWDYeM92FTuRTdCLCP/l+s+vMqXBS9AXHn6?=
- =?us-ascii?Q?1WoUemycF7ks5m8FmNdSpPy3x94fceb3uZQkMrbZn1eX/F1YyBttgwPy08ga?=
- =?us-ascii?Q?MXZWP5KwJbZPJgVGPORodY9Y2NjBj64qpxctPvl455dGzOC7Op2IRrK10KUR?=
- =?us-ascii?Q?UAQ6xuFpGxa7hrsZDsqMFuvNjcUG+aMnsmmMn0yVZZ08Y/lJP2nWHHdnVfkM?=
- =?us-ascii?Q?nlt9/0WXuKlc4SqbBR7pshmNl4//aGDyDxFGNgAVOxwBB6l/+d9nuCRLW+/h?=
- =?us-ascii?Q?voa1LxvVDfgrM/x35xYY9GBbAo0n2R40dArbc8B9thhdLjY5XCiozCOHbKGZ?=
- =?us-ascii?Q?ene2j2jb8Q2HE0iVeR71q8zOezxmIdyw5bNQ5vxON1rZ9F4o04d4zfZqhdCI?=
- =?us-ascii?Q?40rjNXBmWPykOaVHjtVir83mC3dggaB9cSMhS7QHtO9fR0CK5RgbLFZC48fz?=
- =?us-ascii?Q?wXpK8s6tDuB+DaroWFZxz9V5mQNWwfnrjgWHBCxvZ84jMkV+rtr1l8Z/hS2q?=
- =?us-ascii?Q?6feRY/Y=3D?=
+	=?us-ascii?Q?jhE5QIhXwL3jZQx68i+8UHMfnRnvDFgH3ugwIyCqVodGjGnWEasUrPozhX31?=
+ =?us-ascii?Q?SZ/vL4CE2f/VeK1bN9hLf2w2QZiURk7wJmqdYKsKVds5BL0WTZl9UFPQjje6?=
+ =?us-ascii?Q?p4LhmdBAYWCMnHiMX8aUD+CkfIwLQNb5Wahhaoy1luT/TG2ohPseDv0O45FZ?=
+ =?us-ascii?Q?kqGCtZt2w667mNgh+Uc8T5nf2pChGRqzQ5FseRV8aM5+C4CM7yh3LoneAzOq?=
+ =?us-ascii?Q?CWRqEQugR5ZZKjboqkZ4Lduzx3bkSNRQ+kKOHOdTA81VbGX4WZWZs4h9se9q?=
+ =?us-ascii?Q?RcwKVII5TvLgNtmehYTUzW9z94C3i/+l4E5XBN0HXdjZ+mheBmq3QVbD0aeR?=
+ =?us-ascii?Q?9re9wTFOBZ0LIJw0ur40D+/607uLI06m4D25Jw6a5KftZGXK/4+3A0kH46nQ?=
+ =?us-ascii?Q?YxFADzn91COfk0R4RFQMmSgF76R+VC2HiU/NDT2APYg0tU7pE9cQeNJBd7Ip?=
+ =?us-ascii?Q?1yAjE4fDG6/hoUvQdvf+YTsc1qZWL8h4EbcPJmVFoavBINH49p7lPzF0YoeZ?=
+ =?us-ascii?Q?6tVqDscrdK98wsDE97Ka5W/Ilmcw6eGSaHQuESwDa0THcRyhGOMmRd9GT09m?=
+ =?us-ascii?Q?X7XbRe9JKcy9X6vaXg/AUZiyDDMYK9FeDht+YocinqZwfY7Ebj3OytfNZUl+?=
+ =?us-ascii?Q?pN1zb6yr8AsTWc26smvSwzRf4yr5yfwYh+OoKuGPemt3gXJxE5akIi1v61QQ?=
+ =?us-ascii?Q?BdwbJHftu20z0lKuJWQeZzY+vuPunn9c5uqRGae4eHz2AQM0c3uP//sWQj4X?=
+ =?us-ascii?Q?2g+I9RBudm2Y4JMYRFjNXhs8zJyqlmG6+ghdF3R+eDwpZiUlxgMS9XvQ0uFk?=
+ =?us-ascii?Q?CjN4iQ88U0GsZ2xyL6P1fMIXFqzKLBPq/QL2Nb/+mn0nDpSoD0GW1OFkv2In?=
+ =?us-ascii?Q?4eHxAE6QCbj1UaDtF9kAcbbXN/nAV3vwURWHqMtaXmbsHzd9itwXuTOWwuAA?=
+ =?us-ascii?Q?/wxZLwnDjPhJefIXxs+nzk1s0AprXMQYkrr2At9lmvoMgFJRYXLjbypFqvgI?=
+ =?us-ascii?Q?qEdS3CYKs9g2QiOWuxtel1WBACOKaoLgrkLZPKGrsa2620WGJ3cbTZ5XcKvl?=
+ =?us-ascii?Q?Mx7ozf6rIxRLmzNOjCl75N5NTcCDusZbmgDmEI5Ey2ACovyVCQo2PobGX9xp?=
+ =?us-ascii?Q?g+SLZJYuBMU8CBTIalNoCkpdDBfSDwfOh9cLV6pCe3p7GCx7qxsVmIkeALpK?=
+ =?us-ascii?Q?d45XqyebRSBUnbzvKAAaFqcWOxoi7FSYJ7bLvXJ+7wqwZ6rnndrG9wE765It?=
+ =?us-ascii?Q?Mnjw812I7EudRCfXF+0xwNbdluzRYlADFjQQvpe7KkFJwrbJ4X55pZ3bWeKh?=
+ =?us-ascii?Q?yVHE+90V+lvdPSIiMXEcbktfZnuTv2bZMqp4aU2DkSEREQhkw8cp7jxelkKc?=
+ =?us-ascii?Q?0213ctcHWSP3vRvcnZY765e5NnsmO0iZPTafAuUyAqWK/OEoA0JErjBhy8UO?=
+ =?us-ascii?Q?SbNNpMsN/m0=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?IvLWDnZaDal+JgSSMDSxEj0T80x1A3MzMtUOh1Rex1QLUyLD6+tt82vf+BiX?=
- =?us-ascii?Q?UrKSQL6IDntBM/l0Lqcbf/AXfft6K6HUDG2hUKRUWXO47WJANdIoNiG8rOue?=
- =?us-ascii?Q?sKqoVSQkdNy3NKA4tPpLVNcr9d2T0QjcCd9v4AT8FrZeFctqV/AXztIN4DH7?=
- =?us-ascii?Q?WIDDG3p7XLTozK773Fuh7Iemb8Kyd18CMHqXL3PdD3tC+CozZaTRMTh2G3zX?=
- =?us-ascii?Q?nhIOsVCHEVCYx9dBh+634SYI1g8AfxZinSpK4CZ3EO3Mh8XMm86+N543syrM?=
- =?us-ascii?Q?xvDy6YJgBqb5W7wNxhh28H0D62fXimEeuLhOupFihVePpE62Uj43lY/nYj3S?=
- =?us-ascii?Q?LuIvN+lvpSlWboqzyaNktlpYp5Xf1FS91gxWr2vUggXVwD3/yJVvRfV3tBzd?=
- =?us-ascii?Q?+Om6zMUZVfMpFRFoIr9VMDWgql2pZV9lY3Fbko0w6KFbTMxZIileiZHLGOsk?=
- =?us-ascii?Q?7DDla1m9WL/mg2zFGC+GHkBEUAwnosaAYHSQuikDzONfrdOB8PHmRpcnVPh3?=
- =?us-ascii?Q?sfHOD7d2NV2em/TXgdS3qWGTtCXDFyxGLuWAIjH/ANKGFDvnUyabNwPL3JXW?=
- =?us-ascii?Q?+5NeOySaDkLtTOxqbDIQ+94Ct11YU5xogzDkeib1t9RjDAN+eH7+7mLF5uBk?=
- =?us-ascii?Q?jGb73jQU89bN7zS2Hs4UqPYg9LsEDAoyfHqiTHfZ2x7MT4nM5UDziOagWsOi?=
- =?us-ascii?Q?5zJJaon3/HrBj0812cuKaE3RPm9Dt3oEehH38wRkcbMi11trdTjIN3Il/cP7?=
- =?us-ascii?Q?qP+YkwiSfUmNsAmUVAIxvJu61Q+hfOtgKuIR6O4dVCHxnsCHfTgtZ1Lr37dP?=
- =?us-ascii?Q?0ZdWdV+q2Z5Ks6rK9IzGFIpUbG+JM2+qa05gbakrD5D+gfB0WGI4e4mU5JC2?=
- =?us-ascii?Q?Nqm2ch45ErrtyZ/iyZEgKs9CPeddecWOCCnIljhm0cxJnwcaAZSkg20/1o+g?=
- =?us-ascii?Q?2Yc0Byyrsp+KWxCjOq5H9+kvwCbqSTVAWw5gHZlL0rIC3Vc1d1CoY4Rcw3XH?=
- =?us-ascii?Q?lmCCdmiojuy6UWpBP1rMZKKwmR577fN5hNxSzaRmrIUuXKGCrn4AoSMgCcTZ?=
- =?us-ascii?Q?TudvYf7V0Yptt43F1LlgvHzPyL219hxJFXX0V9erT7Nzs9dJbZ3KVyYzNu6m?=
- =?us-ascii?Q?LrLWCmLDVP+CA8fVXRRwVj4a2sMfezUXZwBskssGqbZlO3TSZrb/4fOTzrcV?=
- =?us-ascii?Q?A27SK+jCwDew7v7NAhbtN3rQMW/VvZSeernMsceVE1qEoDdgsIITjXnLhNEv?=
- =?us-ascii?Q?L1H4Hdw6KeAmQVbkadEh2a6ovXkXgImujURpAqQAe9wQbo5gob9+8fUTIGhV?=
- =?us-ascii?Q?/JxtEm7BGpMuwvUJqHnb/7CxSCTIt2stlwO271bLokBl1pP3n4RN7Xt8SZWw?=
- =?us-ascii?Q?oCpEZqovT+QpsOjG4S2IioBH6MlWGayfOzqoBJEmSKxRREQxAAQXdic8z6dd?=
- =?us-ascii?Q?Hl4mqEPoq8iKZ4FgXyokYfLecFJ1RsIgx/tdLFnW8JAVTAmfY9EJqsxgjVLz?=
- =?us-ascii?Q?RGg8dUr0GqRK3NTI6WM8tWJGa8rKNY2xG8XB36MUEnvKrkVuFrif2trXauW1?=
- =?us-ascii?Q?lUYEQLjB8smQLZfN40vC6gbJ00Bt0ItCLndP3da1?=
+	=?us-ascii?Q?Fry+YLV/xlyzk+t+wy4i3lvES7GyR4aWKXbYdAfSx3eLv8cbtRA4+gOYBOYM?=
+ =?us-ascii?Q?Bd5VuJvqq6YD8BNjjHMRN6FuG2Ak4hIU0keSjDwFQ1Ua3xp19dqeEEeEJDiV?=
+ =?us-ascii?Q?9QS/7ynzoLwhxmwVanTTYFQrUNSCYGp0NV5EtXAyNo+QkFnL9Ey1c1JhZOw2?=
+ =?us-ascii?Q?9UBsLcG29s+yoXGuDp4d3ahJqj00PLOdR/cvhf4rLlqHm9LX4+foeNN/KYqg?=
+ =?us-ascii?Q?F/5G1yNdCirROO0teoGrvc62NwMc9WyoikGT8zS5VwVZrgVzz5gt/1T3Fb+0?=
+ =?us-ascii?Q?MtpV9qTaxP4tsjs7kXtsjrnVok3Va1zofBRE6AATDai/grJb38EykLc7gEd/?=
+ =?us-ascii?Q?GC6VVD7OsGi3egLRsjY5yDQlhUWV1EC5zZU56HEt2CwmxG2p33oFAwfR+5qu?=
+ =?us-ascii?Q?8nHDGw6wHWmfnhdVjT5mcGtJ8WKwrduzx/bdnyk/Rp1aRC375KANK7Dgt4qJ?=
+ =?us-ascii?Q?nzRFAtsu26NydjSFxQ6y+fhIxcYb70wYF45UoWGgSlQAq7eX+kCGBFb8vsjL?=
+ =?us-ascii?Q?BMXB3n2Imd2XFSomFHYLyhPC431OwwSMoAg65yqmTdZ5HEZVI8OaT5m7PTFc?=
+ =?us-ascii?Q?KHrTUPZtr4Vlo1ApAb8o6wSCBJ9FfFrUXmNINC2N/Jdpx4jSUnZ2xcPYI4SU?=
+ =?us-ascii?Q?kgUZLWUgad89G9dymRU1GJusFfemA/YpEK0Z5zs3hA1arDCneN3O/+fh11+S?=
+ =?us-ascii?Q?7gWVeoPAjgUcaqnuEEzfpceSEj7cyeGWr5XNtF1aeEMzNUyKT5Xaw9pTJade?=
+ =?us-ascii?Q?AFG4InAHb7g2XUMSt2IUbMDCXYnyl4a0aLVlKZorxeRMbWnnkB54DODIOkfY?=
+ =?us-ascii?Q?mmwUVTxWcXVWuddec1waM1tF38bPkr3A4NSW6m5GX5LbbIqmWfal93BGGFOI?=
+ =?us-ascii?Q?9w/H08BGxxAjyghrlhi9T+C3h/h6HOWWVC+jBMMKRgu+dDDvh8Kw/sIkZaw1?=
+ =?us-ascii?Q?wlochWDK/SRrZY0m97jIJZpfKCIWVjimkYdBIfIFxyOqFshje9qo906SkLe5?=
+ =?us-ascii?Q?kqtRrmzEjHoQFHik5hh+c5W50ZKPowXYiwi+wQT6huaxEqEuJe4gSnGqccd8?=
+ =?us-ascii?Q?SFDELmN8ypvWKndipYx8VQUPdSMh7cev9BcKIpFgHgsFkFKcjR87uIdiPTnC?=
+ =?us-ascii?Q?3oGRek5w5p83h0S44kqpuEMx0Ci8ZiVWYnAl0ZLf+EBBPDWGoBarmt5yADDg?=
+ =?us-ascii?Q?vb23dlCRX7BoMX+TODZZEUk8kVqMzhI7fqWHQ/RMPOhSLijHtdPZQbIGbJnC?=
+ =?us-ascii?Q?jgCVV9xHWRm8i62RoCDNsoQItiZUWh1L1y+dNij+y3iBBlnHsr6jK7Rda48G?=
+ =?us-ascii?Q?b1DejbfCzvpadqa9kY0DIJEinWMYrA/hZ7kXKxjUrMBArIDZQWXjTk1s4m2O?=
+ =?us-ascii?Q?UkJAT7x11/27i39yFIlXGmnQvXErrxUt6lodXJIqkTgscoHNeebF61FnO5yW?=
+ =?us-ascii?Q?8GUp/k8gznD3T5vtHg6n1j8k7OGjaZYsiPa7hH4iJ87FTLA0dfc0ym9AJ6CG?=
+ =?us-ascii?Q?K4cDoS/DmmIp4bJ+DS4FUf8iB5gGBFrFWRf3UyPn94qTPGd4ovXN1sHBivg9?=
+ =?us-ascii?Q?SUVCzyjrO3eu9V3K7MY=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9bc1101-63f5-4267-c7af-08dcb23e0eb2
+X-MS-Exchange-CrossTenant-Network-Message-Id: dce0520e-34cd-4561-0138-08dcb2445b10
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 15:24:38.6019
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 16:09:43.6888
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: raP0H5rhIeOveRBhmEsmEheTdwoKjpnjkY+ra9ZMPtujwp8wl++DejlZFfb7AtiefeE1+2T3viPV4Us4f+fVJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10669
+X-MS-Exchange-CrossTenant-UserPrincipalName: TBhQAgrXnuHwFqFd3mwuztPBuRXe9CMJPXXiEBLR72S6KgxC6KuTr248jFcHAIaA5kbDzPQSJXwN2e7n7W3ZNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8960
 
-Convert dt-binding rcpm from txt to yaml format.
-Add fsl,ls1028a-rcpm compatible string.
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-Additional changes:
-- Add missed compatible string fsl,<chip>-rcpm.
-- Remove map fsl,<chip>-rcpm to fsl,qoriq-rcpm-<version>.
+Add lpi2c1 and child node for imx93-11x11-evk board.
 
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Chagne from v2 to v3
-- fallback use const
-- order as fallback compatible string
-- remove minItems for compatible string
-- Fix typo 1045a
-Change from v1 to v2
-- add missed compatible string
-- Remove compatible string map table
-- use oneof Item to align compatible string map table
----
- .../bindings/rtc/fsl,ls-ftm-alarm.yaml        |  2 +-
- .../devicetree/bindings/soc/fsl/fsl,rcpm.yaml | 93 +++++++++++++++++++
- .../devicetree/bindings/soc/fsl/rcpm.txt      | 69 --------------
- 3 files changed, 94 insertions(+), 70 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
- delete mode 100644 Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+ .../boot/dts/freescale/imx93-11x11-evk.dts    | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-index 388102ae30cd8..3ec111f2fdc40 100644
---- a/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-+++ b/Documentation/devicetree/bindings/rtc/fsl,ls-ftm-alarm.yaml
-@@ -42,7 +42,7 @@ properties:
-         minItems: 1
-     description:
-       phandle to rcpm node, Please refer
--      Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-+      Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+index a15987f49e8d6..dd387b820831a 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+@@ -145,6 +145,20 @@ ethphy2: ethernet-phy@2 {
+ 	};
+ };
  
-   big-endian:
-     $ref: /schemas/types.yaml#/definitions/flag
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-new file mode 100644
-index 0000000000000..fa8491c8c2088
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-@@ -0,0 +1,93 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,rcpm.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++&lpi2c1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpi2c1>;
++	status = "okay";
 +
-+title: Run Control and Power Management
++	lsm6dsm@6a {
++		compatible = "st,lsm6dso";
++		reg = <0x6a>;
++	};
++};
 +
-+description:
-+  The RCPM performs all device-level tasks associated with device run control
-+  and power management.
+ &lpi2c2 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+@@ -508,6 +522,13 @@ MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B		0x31e
+ 		>;
+ 	};
+ 
++	pinctrl_lpi2c1: lpi2c1grp {
++		fsl,pins = <
++			MX93_PAD_I2C1_SCL__LPI2C1_SCL			0x40000b9e
++			MX93_PAD_I2C1_SDA__LPI2C1_SDA			0x40000b9e
++		>;
++	};
 +
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - fsl,p2041-rcpm
-+              - fsl,p3041-rcpm
-+              - fsl,p4080-rcpm
-+              - fsl,p5020-rcpm
-+              - fsl,p5040-rcpm
-+          - const: fsl,qoriq-rcpm-1.0
-+      - items:
-+          - enum:
-+              - fsl,b4420-rcpm
-+              - fsl,b4860-rcpm
-+              - fsl,t4240-rcpm
-+          - const: fsl,qoriq-rcpm-2.0
-+      - items:
-+          - enum:
-+              - fsl,t1040-rcpm
-+          - const: fsl,qoriq-rcpm-2.1
-+      - items:
-+          - enum:
-+              - fsl,ls1012a-rcpm
-+              - fsl,ls1021a-rcpm
-+              - fsl,ls1028a-rcpm
-+              - fsl,ls1043a-rcpm
-+              - fsl,ls1046a-rcpm
-+          - const: fsl,qoriq-rcpm-2.1+
-+
-+  reg:
-+    maxItems: 1
-+
-+  "#fsl,rcpm-wakeup-cells":
-+    description: |
-+      The number of IPPDEXPCR register cells in the
-+      fsl,rcpm-wakeup property.
-+
-+      Freescale RCPM Wakeup Source Device Tree Bindings
-+
-+      Required fsl,rcpm-wakeup property should be added to a device node if
-+      the device can be used as a wakeup source.
-+
-+      fsl,rcpm-wakeup: Consists of a phandle to the rcpm node and the IPPDEXPCR
-+      register cells. The number of IPPDEXPCR register cells is defined in
-+      "#fsl,rcpm-wakeup-cells" in the rcpm node. The first register cell is
-+      the bit mask that should be set in IPPDEXPCR0, and the second register
-+      cell is for IPPDEXPCR1, and so on.
-+
-+      Note: IPPDEXPCR(IP Powerdown Exception Control Register) provides a
-+      mechanism for keeping certain blocks awake during STANDBY and MEM, in
-+      order to use them as wake-up sources.
-+
-+  little-endian:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      RCPM register block is Little Endian. Without it RCPM
-+      will be Big Endian (default case).
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    rcpm: global-utilities@e2000 {
-+          compatible = "fsl,t4240-rcpm", "fsl,qoriq-rcpm-2.0";
-+          reg = <0xe2000 0x1000>;
-+          #fsl,rcpm-wakeup-cells = <2>;
-+    };
-+
-+    serial@2950000 {
-+         compatible = "fsl,ls1021a-lpuart";
-+         reg = <0x2950000 0x1000>;
-+         interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-+         clocks = <&sysclk>;
-+         clock-names = "ipg";
-+         fsl,rcpm-wakeup = <&rcpm 0x0 0x40000000>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-deleted file mode 100644
-index 5a33619d881d0..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-+++ /dev/null
-@@ -1,69 +0,0 @@
--* Run Control and Power Management
---------------------------------------------
--The RCPM performs all device-level tasks associated with device run control
--and power management.
--
--Required properites:
--  - reg : Offset and length of the register set of the RCPM block.
--  - #fsl,rcpm-wakeup-cells : The number of IPPDEXPCR register cells in the
--	fsl,rcpm-wakeup property.
--  - compatible : Must contain a chip-specific RCPM block compatible string
--	and (if applicable) may contain a chassis-version RCPM compatible
--	string. Chip-specific strings are of the form "fsl,<chip>-rcpm",
--	such as:
--	* "fsl,p2041-rcpm"
--	* "fsl,p5020-rcpm"
--	* "fsl,t4240-rcpm"
--
--	Chassis-version strings are of the form "fsl,qoriq-rcpm-<version>",
--	such as:
--	* "fsl,qoriq-rcpm-1.0": for chassis 1.0 rcpm
--	* "fsl,qoriq-rcpm-2.0": for chassis 2.0 rcpm
--	* "fsl,qoriq-rcpm-2.1": for chassis 2.1 rcpm
--	* "fsl,qoriq-rcpm-2.1+": for chassis 2.1+ rcpm
--
--All references to "1.0" and "2.0" refer to the QorIQ chassis version to
--which the chip complies.
--Chassis Version		Example Chips
-----------------		-------------------------------
--1.0				p4080, p5020, p5040, p2041, p3041
--2.0				t4240, b4860, b4420
--2.1				t1040,
--2.1+				ls1021a, ls1012a, ls1043a, ls1046a
--
--Optional properties:
-- - little-endian : RCPM register block is Little Endian. Without it RCPM
--   will be Big Endian (default case).
--
--Example:
--The RCPM node for T4240:
--	rcpm: global-utilities@e2000 {
--		compatible = "fsl,t4240-rcpm", "fsl,qoriq-rcpm-2.0";
--		reg = <0xe2000 0x1000>;
--		#fsl,rcpm-wakeup-cells = <2>;
--	};
--
--* Freescale RCPM Wakeup Source Device Tree Bindings
---------------------------------------------
--Required fsl,rcpm-wakeup property should be added to a device node if the device
--can be used as a wakeup source.
--
--  - fsl,rcpm-wakeup: Consists of a phandle to the rcpm node and the IPPDEXPCR
--	register cells. The number of IPPDEXPCR register cells is defined in
--	"#fsl,rcpm-wakeup-cells" in the rcpm node. The first register cell is
--	the bit mask that should be set in IPPDEXPCR0, and the second register
--	cell is for IPPDEXPCR1, and so on.
--
--	Note: IPPDEXPCR(IP Powerdown Exception Control Register) provides a
--	mechanism for keeping certain blocks awake during STANDBY and MEM, in
--	order to use them as wake-up sources.
--
--Example:
--	lpuart0: serial@2950000 {
--		compatible = "fsl,ls1021a-lpuart";
--		reg = <0x0 0x2950000 0x0 0x1000>;
--		interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&sysclk>;
--		clock-names = "ipg";
--		fsl,rcpm-wakeup = <&rcpm 0x0 0x40000000>;
--	};
+ 	pinctrl_lpi2c2: lpi2c2grp {
+ 		fsl,pins = <
+ 			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
 -- 
 2.34.1
 
