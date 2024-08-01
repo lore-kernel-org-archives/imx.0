@@ -1,227 +1,113 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2089.outbound.protection.outlook.com [40.107.22.89])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CDE481DD
-	for <imx@lists.linux.dev>; Thu,  1 Aug 2024 08:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722499349; cv=fail; b=SquMO4L3r2n1CmQvipFy2vHIdY4ngK13YSigC9q0GZvhzlfDCWStVMt/lj1C+NXLN4e9XoVqlYVPeZf0lGWCPUKZ8PcB29CQyWp/qjrIWQoQL4EFewtpJ82XwZDCylUkd/1TtLIguIgHePh7FOmdGJB8v+Td3H3rHd8fEro/sNg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722499349; c=relaxed/simple;
-	bh=+vAnaOTE5zHbDxEv/Qvb0cvyqkl98EgAB0124Auj1O4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=bQo4yUgEfAD9iZ9iFsiaINNC+ue+g0kRm/4brIWr1vlMVD+YdI9lUXNtsPK4NE8lNmmo57rMbhgTWuHM5FSFOLw3VaWrpqfmbdkozkVG81OGDHSek3ba92+B5EMqRh20KiKrdOSzPHcQGRAd3uym1jhbmr+6832Hy9QeYLObZ4Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fay2Yckd; arc=fail smtp.client-ip=40.107.22.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C11945BEC
+	for <imx@lists.linux.dev>; Thu,  1 Aug 2024 08:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722501332; cv=none; b=VVLqKAAqpRE9tt/MqgkY0Ueg8U94gSOzTtFMMi+3ZCSnsGcIBq/NYV2yJ1eE1OKwK+GuFjyzpKpwkhI7nqz894Yq1J8Q4qUq2/1e/zk8sx3C4fQc2uFJydnRPGmw3+jyCbuhQG8JJ+tkvjjQxi5+7La40L41ZwMQQsE9Xbr8cGk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722501332; c=relaxed/simple;
+	bh=s5cu1q2+ZQtA9fPTEFQQgsSNqAwMloYk1udsdbOntZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qJfhrO8PfG4YbI2T6XCDkyxPSGMfHsof89/K368I9RSG//0oTVTJ041YxVee8dpDOLgZsxGD4EmF2xb1ZL7M7HRBJueKdeMIpe9B9DSj3WKXMVK5LBhz4as9UlNERDr8UdOvih+IfSe2VQjHVdeVUrN80ZGrrizhUA/bmt4GYaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UYtmAWEc; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=SS5wm3pI reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fay2Yckd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AAa9niW7kiFJSlV3x0VNTw0Ppx7/nEHfcO7+sB4RPXqs/EQABQLNrfHp/CMXSAgQQTvkFwN9KTR7ioguOMmkNhqV25nMpTkMfWLAhq3lByY69p7vRP6pUruBZrczgKwHoxbQORfF50ycINmPqdPtVTW3lvWe1eejt3fkUHrv4ZY58Jqe4OA1akHZricoSUlOobFWvYa6RdpFaebCdsPziDSYpSL4K1vCesvn0K9FMqdq4+9xC3lTEXibhYuya0wIdj+2KeqaGGdS8T1ahL5WXReZjrzddv1XBT7aiaBjmOzUHTlPYMGuKwYhNSfCQAeRQ9VCIRgCFVs9qcLcX88tSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tNpmcbzJwQgdUW8vv1c1Txh+EMY78wFw4tmfV0bHHqc=;
- b=K79uGoQictKWmWP9aQafLH+Uo40rDzt9kk8baRkDEX5Azg7Q2Nl8BI92IXDePC42Gc38SHESGtYyxy7K/voLgZMh+wLW3PY854PweY5dHGerLBvVc96IcxJb3k4H0fCpimnb7Qs6IM9KHDZNklnbJmQE64vKaB3PLEO23mUDZN1bbvjdvG0FzgRkF2dXlzA52xBZqm0uI7Fk5soAH7KB3TI3//ccyT9ZTox6OgxD8j9UtB04RJVfe0yCXOaVMY94RDXnHuu07O1Hsi674359onSGX44tRPeohs9oT1bZAjZp3Jg8eJv990i/zb1Xx+KmgHcFlm0JNILa05rmEHB6Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tNpmcbzJwQgdUW8vv1c1Txh+EMY78wFw4tmfV0bHHqc=;
- b=fay2YckdIVmgjdwH1mM4CAd691Wwywez0GPC0FA0n3r/RGcI2hge0kUV53qIes+PRKtPf51ZRoiX1sCG1JOnJ8a+axBhLP04+H54Hr4aL5Eor7IE3KJ7lJmt4HjZEgygeRN9BhJdSlqZ5lXrnFsM0IHRWgKwJV6+890XP4jLotx6flojz2QCz1Aa9rPhDMxKIjOX1ASKkVLyjuoqOzGU3M8bAcM7/Utf6Z3YHrs/nf/C25DXmJCRmWqoBC0CVr810kzyL+VEPZ8sy1VTH6/XiHlpRDwpGhatoAqrCkaav7QaFhGVtb61RLlKqcingsDC2KV27r12y2UhU+Q5BNBeOg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB8PR04MB7036.eurprd04.prod.outlook.com (2603:10a6:10:12f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Thu, 1 Aug
- 2024 08:02:23 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.7784.020; Thu, 1 Aug 2024
- 08:02:23 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	wahrenst@gmx.net,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH] arm64: dts: imx93: add cache info
-Date: Thu,  1 Aug 2024 16:11:11 +0800
-Message-Id: <20240801081111.1492688-1-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG3P274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::15)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UYtmAWEc";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="SS5wm3pI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1722501329; x=1754037329;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=e2z2XK6Q2ktr4OcaidIWXvGR/XpR94af8Q5pcDbFQ28=;
+  b=UYtmAWEc2hxL29N9UWu+FX7vf+wn3zWPjtd4CQLeauIJEBJdmjuR9usw
+   hr/AW5Rbtt33RmMH8x3bWlu593lE6Sn3Ig1gRaErIB0mXwQXBB3OyrEpe
+   9moKWaV4cXGAQEvAAvggK0s2xI+JuD2ERbysMlXvZObV6fBbhVnZCQa7c
+   Q8+MOi8O4WbPSzUC8dyMKC5gZkBKBC7KvCqnndpED0vJcClEbdXENub8g
+   pN846S+s6875HiI63l1W/NiTJius5gX/aFpXuCHyil7zkyW+k4xcjzmtB
+   8S2aueg8ejXysRFZvJ9LxW8ySCa2uvsYv7uLvfgze+r430/IkSXydi1Wd
+   Q==;
+X-CSE-ConnectionGUID: tCTULouRR8iw2dDlX5uW3w==
+X-CSE-MsgGUID: wOK98NYFTW2+gIrxHtOQQQ==
+X-IronPort-AV: E=Sophos;i="6.09,254,1716242400"; 
+   d="scan'208";a="38191023"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 01 Aug 2024 10:35:20 +0200
+X-CheckPoint: {66AB48C8-24-2D4D5AC2-F2EAEA09}
+X-MAIL-CPID: 25B8214773C672C9B011DFACE12BA7A9_3
+X-Control-Analysis: str=0001.0A782F1B.66AB48C9.002D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0CA01656CA;
+	Thu,  1 Aug 2024 10:35:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1722501316;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=e2z2XK6Q2ktr4OcaidIWXvGR/XpR94af8Q5pcDbFQ28=;
+	b=SS5wm3pIEqH5lkOGgxtNTaa1Mlt7GIP/o5fFB9NN0abWohsWtg4JDhJWJPkzDNiuOHphRL
+	KGAXBoa7LcEHTRxyXhEEP0zBjwQoPBOrJG9jp3+CHiGpzWZmb3ufr8zdH6xRY27L2ov4ZA
+	2zTllFbMTz3fqv+86CppDfk/Qlvk75FC1Dm0CE+5SjbkXhGDNk6UAM0lWyzF12N9NW9F8a
+	ya4DbAWjdV1tUCRqP2utQPc3o/mtQhZosEwGxgWUFV9kR6F12le+LZdvj9WsLWZKfSQXxc
+	T3wH2lNUHmDdWJGlAo7/sRzf7w1K1W9iFz5O69LvJ0XaW4SJ9reKLerpkCE0Pg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: vkoul@kernel.org, kishon@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, Xu Yang <xu.yang_2@nxp.com>
+Cc: jun.li@nxp.com, xu.yang_2@nxp.com, linux-phy@lists.infradead.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] phy: fsl-imx8mq-usb: fix tuning parameter name
+Date: Thu, 01 Aug 2024 10:35:15 +0200
+Message-ID: <5802707.GXAFRqVoOG@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240801065716.3819399-1-xu.yang_2@nxp.com>
+References: <20240801065716.3819399-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB8PR04MB7036:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95bec647-9373-433d-2c33-08dcb2004679
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TBFq766uOFSHAryBdSXiv/lPdWmvyC/pXXONJm+iqhgw9q5Sx9qwdg2vBS08?=
- =?us-ascii?Q?o9Vv/PIovMwuBKJ0ZMr+oJ6B87MdIEPSX+rSK9ivy19Bssx+e4W2aDFG9NIV?=
- =?us-ascii?Q?wg99Y42vuH1i6UTQwP0SgMRv4+A8zsQ3huuHVt3BCq6WE9cweNS3ycTecg/v?=
- =?us-ascii?Q?kxjzZyBrszAysdhySatFFA673IiDYlJqPPmIAwLEncEuxf6WuXu01m/085/Y?=
- =?us-ascii?Q?o60aBWF7fASlnwbWVbygWjluhlyTGC8HcaFpevQl4OYhlc4/XvmsT7XS4ReQ?=
- =?us-ascii?Q?HkIkNTebyNhQJMcSMsj2bE67rdxMSDVbYbrRVEHQkToDAbvJX980Bi9XCSh/?=
- =?us-ascii?Q?ElU7FS5HJLYB8eAPL89IqRyEy5iFQM5o06HmkVOcFppZsgfuHF+uZUFlrfp1?=
- =?us-ascii?Q?dhkMeq/KSu/St4xL8d7ot7jlyY1JrrFhUa3iC0v3lDCu9tF4agcS2auhq0UG?=
- =?us-ascii?Q?T+BHD6qQv560DOYOcD924Ner8Cudro9f6anbFx7BgFwv9+qfW8Ka5XGkpf6p?=
- =?us-ascii?Q?UEDX6+GjrS/wcyoyzERutt432P+OWMFbBFGYaoXua7hJE0WFvW3z4YeoBwUK?=
- =?us-ascii?Q?KIqQ2ekw/ixJJpOO8oeCKMK05oWPn7fZBwLLjAVr4MhGg34+Ed9V0Y76eoMq?=
- =?us-ascii?Q?JQuEuxGgYM6Gf+gnOfmaUoJaNQ6eMaMTZmfZ7VvsdbJ+SozLxd3jMH+GjcUj?=
- =?us-ascii?Q?M7B8/pbzuP6vilIfvXRDf7n6Oow2rp926f5Xgo1aq2XtH0A2TIA5ciiSKf8O?=
- =?us-ascii?Q?6E7zK3kkG2V46e04kJBDlkLRYISGnHUClZC9yCPZFOMv0oamizgqYModW+vA?=
- =?us-ascii?Q?NSKpm555AyzG+De7aISGnOAL0mlTmHJPGpYXdxbPsLhZDWn1sJwDfJ8cv+yC?=
- =?us-ascii?Q?0b2d12edHeTS0xsm93tWgjsACyGLVyW/s7mnxJB0o1wreWXmmU/eMqdCBtF4?=
- =?us-ascii?Q?j9T0Sat9YI6ETLWPBczGh3aFodZ86BrL3w29KBIUDKF19kkF32KfdPy8NryB?=
- =?us-ascii?Q?8fm+/4HsX/LfuU1peC+NVm/Xwq0BUPgNgVLf/UPoEUkDpT4epEws9EgxucBO?=
- =?us-ascii?Q?aJfI7x+BbHbMmHPxhQNq6vqykxO5tzGGsxpCwxZE9gZXo+Zxnn7UxEyQMSqJ?=
- =?us-ascii?Q?C5DM5kbFMxY9i2myZqynkx8i79luIEN8BF09T617sA8a6jmv3ufiYsNA9jvb?=
- =?us-ascii?Q?vjsChfgiAqpU+NnwTUDc0yqdcGehbNiBqwlfFiBzXyvpArG4/n4JIWemnw+1?=
- =?us-ascii?Q?BWQjk1wduXtpNxKnoNKO5ktl0EHyPyYVn6NrFnSH1WPGT6Td6PoGvk2dHqsM?=
- =?us-ascii?Q?2nwXtehq7Ov9Jl87Mg/Y03aXgsiu1VIPybpu1L7wKi+sbb6NEHDjhi9rzssS?=
- =?us-ascii?Q?okzjK1q8a5iNnpUjjeUIlED2ot/gjRGhmUVSDmhfZD+s83GbKg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vhb0cKLjiUwB7QSN5/F1/GBSYB9YTOKumrDTvSc3dFWxPrnuWJbfF5szyxEq?=
- =?us-ascii?Q?YoYvVnnd9ScOpPhH4hz4MCt0d7rcWqNpz0fhd73NWpcZKbEMDlk5iLvnwegu?=
- =?us-ascii?Q?kVfToWyyMcevBQo9TIZyVdIWs1Xi75uFvm6Q8IYuC6lnOCgzUeMWR1Z+XQTU?=
- =?us-ascii?Q?8vF8LWMtYNsZcYQ4K5e+aHvEv5J+MjjN0MR4rVl+PS9jMpHGL95W9rMEZytr?=
- =?us-ascii?Q?wg2zKkYnmNA9pspIodtTlHcLWnPTCRxmYxKffe8DLvmOZMwGJp4HjY4osB1n?=
- =?us-ascii?Q?T6s3IdVekuicq9dfgLFDN393i18KKMBAOoeWIvW/2+DKof6isVeVp+5cGTAm?=
- =?us-ascii?Q?Odm0uhZivx8l9ZBzrvx1WupSPIwmEO7OADdXuqUyFfTmoeQhcs1VKflsPNZD?=
- =?us-ascii?Q?Va8Ur9R5jvRmBrynY/8NTyD3Mg7ebY3rX/lui7g8WIZLmJ/0Y8vQSNlbWWaQ?=
- =?us-ascii?Q?tj0E2ghTj6eFFk40L6kRLM0ihdzVYgZPjZ9XqsujhfaRf5GTVt/96dmJ1O2b?=
- =?us-ascii?Q?SIv+JSN3nIlR+fWcDM056T1jcq11gao/EuFj83a7wEisSOKUuY04CLdxkPkj?=
- =?us-ascii?Q?jPsZt1jUqL9Pjtt70ns955fgx5SLMGGlCcPP3DeB0MP5/ntV/vJmO87RHtp+?=
- =?us-ascii?Q?YsvwXtml/s28IOBagt1217P6CXxHnh2x7w+0ar3cBa0ZMhWRRluwSHqiLso+?=
- =?us-ascii?Q?xJwK4iV0JPdOuQJqQ/HrApEAEiCQ3gsgctmF+kwwfj9AZ5L0r6FwzRAWiKqM?=
- =?us-ascii?Q?0GOYpJRX/V4k+/Nd+JkfAWNmQCXEgR3+J8+x34lbDkgihdaZ/wWjRtTWlNFP?=
- =?us-ascii?Q?QfaOEnQCDe4TvT+a7fjc/7to3ZQAa11En1NECjzazyLdGSwaMuny2LiWczEg?=
- =?us-ascii?Q?8ubqZpoUjSR+cj5fnSwgfcEyFGFUKHkchTIDm7xuMtu8GlZHfRoPEbQgHYRd?=
- =?us-ascii?Q?oFm3m/2LFOYL8Q8tpmj31XNddBpSeoskR93T7rSLlKjrPJQa2Uo9y1rfIQmU?=
- =?us-ascii?Q?snyNnuWoGR9GdN4/ux5QrWJdWpY0rDU3nBMO4AbUBOSF4IJb/c92WTOM295u?=
- =?us-ascii?Q?QsXtgBHB/wfJAOyIeCqDcGpsEOz2cdjUXsZrI+KKn/5ooTmaCMiauawit2Me?=
- =?us-ascii?Q?tmZEha4CQFWrX+kLE9B6LZ8ZlAk+133TcwhIRb3yYMQenXW18gfE7RVlx9o/?=
- =?us-ascii?Q?MvxeNZpmhkBbUYMtR5fMa1PVhUORya5Bee34SVw+vdE9rrxysakEUO5+ypXX?=
- =?us-ascii?Q?dgMXHdVPub083kUYpLdXrt3jQoZ2YPR2ytn52TmksKdGX9+szTo2CdMx1u46?=
- =?us-ascii?Q?8VBqY+h47D/mtmTOGNnRPPGJBA3SBQdZx9Uo0rdCckv70iUvU60EJJsAwXJL?=
- =?us-ascii?Q?FvCzfa3RDsdC9PnmVEnv7rT0aYBXGCkMP+x/hNDnIjE/YDHCH/404+XsDsA7?=
- =?us-ascii?Q?nXBrCXxOXFEWsjbVNZDcgK8f7IZnggF8Y8gTIk0Nmf2l/iTAC9PsvKCZIIrr?=
- =?us-ascii?Q?6/jX2RvJfABgneL16PSVJSmEFarY2GIQPscyX8UA5kqAjxQ4kUXgpfEBENUZ?=
- =?us-ascii?Q?jMIHuKY4V6QMh6uTxLF3OQvWvEwBTqmZhXdZKIIm?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95bec647-9373-433d-2c33-08dcb2004679
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 08:02:23.3405
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ILkq3ZSfqpb2C6kFOZpB1JQ/3b432o5WymqZ1Cvp9EA1qOGEIcrkt5y15Pxqzg3XOvAynLh8miQPNM8JwqEHlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7036
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Peng Fan <peng.fan@nxp.com>
+Am Donnerstag, 1. August 2024, 08:57:16 CEST schrieb Xu Yang:
+> According to fsl,imx8mq-usb-phy.yaml, this tuning parameter should be
+> fsl,phy-pcs-tx-deemph-3p5db-attenuation-db.
 
-i.MX93 features two Cortex-A55 cores with per core L1 Instruction
-cache size 32KB, L1 data cache size 32KB, per core L2 cache 64KB, and
-unified 256KB L3 cache.
+Should this include a Fixes tag?
 
-Add the cache info to remove cacheinfo warnings at boot:
-"cacheinfo: Unable to detect cache hierarchy for CPU 0"
+Best regards,
+Alexander
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx93.dtsi | 42 ++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/fre=
+escale/phy-fsl-imx8mq-usb.c
+> index 0b9a59d5b8f0..adc6394626ce 100644
+> --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+> +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+> @@ -176,7 +176,7 @@ static void imx8m_get_phy_tuning_data(struct imx8mq_u=
+sb_phy *imx_phy)
+>  		imx_phy->comp_dis_tune =3D
+>  			phy_comp_dis_tune_from_property(imx_phy->comp_dis_tune);
+> =20
+> -	if (device_property_read_u32(dev, "fsl,pcs-tx-deemph-3p5db-attenuation-=
+db",
+> +	if (device_property_read_u32(dev, "fsl,phy-pcs-tx-deemph-3p5db-attenuat=
+ion-db",
+>  				     &imx_phy->pcs_tx_deemph_3p5db))
+>  		imx_phy->pcs_tx_deemph_3p5db =3D PHY_TUNE_DEFAULT;
+>  	else
+>=20
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 4a3f42355cb8..8f17b1fbfba0 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -69,6 +69,13 @@ A55_0: cpu@0 {
- 			enable-method = "psci";
- 			#cooling-cells = <2>;
- 			cpu-idle-states = <&cpu_pd_wait>;
-+			i-cache-size = <32768>;
-+			i-cache-line-size = <64>;
-+			i-cache-sets = <128>;
-+			d-cache-size = <32768>;
-+			d-cache-line-size = <64>;
-+			d-cache-sets = <128>;
-+			next-level-cache = <&l2_cache_l0>;
- 		};
- 
- 		A55_1: cpu@100 {
-@@ -78,8 +85,43 @@ A55_1: cpu@100 {
- 			enable-method = "psci";
- 			#cooling-cells = <2>;
- 			cpu-idle-states = <&cpu_pd_wait>;
-+			i-cache-size = <32768>;
-+			i-cache-line-size = <64>;
-+			i-cache-sets = <128>;
-+			d-cache-size = <32768>;
-+			d-cache-line-size = <64>;
-+			d-cache-sets = <128>;
-+			next-level-cache = <&l2_cache_l1>;
- 		};
- 
-+		l2_cache_l0: l2-cache-l0 {
-+			compatible = "cache";
-+			cache-size = <65536>;
-+			cache-line-size = <64>;
-+			cache-sets = <256>;
-+			cache-level = <2>;
-+			cache-unified;
-+			next-level-cache = <&l3_cache>;
-+		};
-+
-+		l2_cache_l1: l2-cache-l1 {
-+			compatible = "cache";
-+			cache-size = <65536>;
-+			cache-line-size = <64>;
-+			cache-sets = <256>;
-+			cache-level = <2>;
-+			cache-unified;
-+			next-level-cache = <&l3_cache>;
-+		};
-+
-+		l3_cache: l3-cache {
-+			compatible = "cache";
-+			cache-size = <262144>;
-+			cache-line-size = <64>;
-+			cache-sets = <256>;
-+			cache-level = <3>;
-+			cache-unified;
-+		};
- 	};
- 
- 	osc_32k: clock-osc-32k {
--- 
-2.37.1
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
