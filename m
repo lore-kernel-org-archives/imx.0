@@ -1,87 +1,141 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032811DAC4F;
-	Fri,  2 Aug 2024 13:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA32481AA
+	for <imx@lists.linux.dev>; Fri,  2 Aug 2024 13:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722604979; cv=none; b=NfrIQHEt0UVIOYFBVlNXA7dY4U5QprA3ZJXp/UA9VrVJ+LWhUxpg/U5BhJGSTpXQjXe6jxImOcPEQxCyyLgFIbmUCgloxjZGAFUddFRg7g+8Li476LNuC15nJvQ7Unu6pXq6eAq0cZta3YA8PrgHT41jocnH3u7EzkU58GIkwIY=
+	t=1722606733; cv=none; b=BdwgsvZDtiiGztoSgQwfe4ljcqhcOgqjeJYEVuxr2nqRoR/jfbtB0VnI/7WiukCaXVWduNEE+Gope1QHf/Snk+5ryeUqYA5mqBFJD0//+KdG+W0qkZILn0VrqVRVd8KpPU3L82D2ZhgFmlXPtQsb8Cto8Y6LBtkdMDRBjhxTSxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722604979; c=relaxed/simple;
-	bh=iF99Mx9vfjOeLSKRf1z3zC/U579GD3O17tu0LQls3hI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vAW4pd33SuUDlvpSIji3iSO/pOuVCeMYoF4uG8mRAS9BnN2+Rrc9vahn1YwBRk2AWBo/a3hyZ+ropo8op5XlOZHvVHioAffBUsaDudi1XjL8wRswhqDrWGBrGFDJEsC0u56cME9+RO1EY8k4sG3t42BNz+93ajJyl4g+md2i138=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=YW2Z3uJq; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1722606733; c=relaxed/simple;
+	bh=ou0DITIpMt48ak8JPLbfXRmSg/K+0yvdjanPFGT+N/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uMtsmaiZD/ctIXWYZ9m0RVUzOR2EvuXB/LnPbgfWe60LzOCiahZ5pkRKv4qcLgwz3p/xnTAzGPCXjL0zMgUiz/MSoLEjRJ+gEjQpB5UJs5m5PiTNcq3b4VBlIasWR6+oDMNx1w4eyAsmqINjL9xznKvaNY2k18uiO0q5cPxeP0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xBEtw5uh; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="YW2Z3uJq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1722604972; x=1723209772; i=wahrenst@gmx.net;
-	bh=iF99Mx9vfjOeLSKRf1z3zC/U579GD3O17tu0LQls3hI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=YW2Z3uJqvp6xuMK+YrsQk0WiJfyGTTX2H//PXOrbVvk8mBk8MfJHJbkJ9yo/DAh3
-	 fPQP6PODYW0SlCO1/zG9lPxwoCRniTp81sPlJl3rk3KqjJxnC9d29uxjicuHPbA8B
-	 v/IaS9qAiueP+9AICc0KoaR67Fvu/3WXZVd+TaEBUAlw8K8yasRkRNPSXmI/Kt+AM
-	 zwUV/3GRuOp1CEzYkZhuvKZO0SzIPoe2MYGgPS7pzS7Skx97JHzQcysE9j61lgorw
-	 ptvhmpz0LEAzASzz8lrNOaxlAq4wibZUr0tUS2hX+MIxqXOscEqbLw8gk+ily7XBZ
-	 igV36+LROQHg/K0hvA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MDysm-1sQ0L22xcK-004Oqi; Fri, 02
- Aug 2024 15:22:52 +0200
-Message-ID: <a211c017-be01-4689-b78a-cba0644b7984@gmx.net>
-Date: Fri, 2 Aug 2024 15:22:52 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xBEtw5uh"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52efd8807aaso12096939e87.3
+        for <imx@lists.linux.dev>; Fri, 02 Aug 2024 06:52:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722606729; x=1723211529; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ux3ZfNQ7ZOcoxTiKnqgkpQxKEOA6xyXfmnITSx+smY=;
+        b=xBEtw5uh1Vere6Cb8Emm+wIZKLX9zsgM7jFcMbOcZQG++w5fQ56067QRB/qDnfNRdr
+         SHqlOq91BfX1AK2HFOPN7w7hP1+mP0M9YV3Jl6oUAsyYyXeMCLiZbdlsvAWlvsM4eFq7
+         52rG3bLUZXtQSrE8G3n28RBuDx5YNTYnR82NZR3cJ6sBliB+aMTZCsnMcUIEdiShaWkV
+         ohvxVgGXYg20s4NT17QhsVJN1rDF4y6y7wjn1yo+upB1Pgq+dPLBBz8tZnYuFtwMJ385
+         B3IYkjnyI2RmgCwL2oxbc59R/JHQsA54LclA4IETSDs5uuujMYA/OW080BBhqQZROb3C
+         s+Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722606729; x=1723211529;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4ux3ZfNQ7ZOcoxTiKnqgkpQxKEOA6xyXfmnITSx+smY=;
+        b=FGBQ3dJ7dL/Ry2Juup9hEcpS40s+imDhdHw7hERrFqmSVNjSveIYyg+vGd/MdUAD9F
+         ukE+Bg+KqlkAEjClqKoKqYbt9DvD/65U6jfkCcgrRfPatb0lzuAPYjfrjN4A9rLpPUjm
+         6aEZ+WqOQaUHR0/HzJelQ+n7KT+I/aJ2tOQq1lGtlMNa3RVMl/FM9dJ5hmVYJ7nXZ+ma
+         x5oSm+Dr/QC43MyLAQdF5EGr3Kw6vShiLgYfBkzbY5Mu3D4HIzu0JMj4nNzdOgC6PDKr
+         Je1Lo4smEyEKa22QpH2jNM3EoqAUhByY8DF4u+QpT8MPRGjXnBYSSCG4y8ht4lvZOQMo
+         mJmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVhl89pagBzZk8KudMQVqLTh5ejkIOuO8kZfnVof14/eLp1ETR3Gjik+zR7Lh5+FA37lFccLaRQGiZn5YC7eXzOTgm7
+X-Gm-Message-State: AOJu0Yzssguj+fc/N8Fjs0VZgxJp2LiRlCIh/sEznXJj0YX+zTHJLaNT
+	QVlD+s5+PK6DM3wuFA4a+/VCQA8VhIu/6YeP4JeWwmaagoMNk5GhinIHW/Vu+T8=
+X-Google-Smtp-Source: AGHT+IEINrdmFAx3zONnth4QNFrZH1h1meVudf30GLFqW4gmfs8ViUeInYhBNlmQrFmaR8IU0V+aZg==
+X-Received: by 2002:a05:6512:108b:b0:52c:8a12:3d3b with SMTP id 2adb3069b0e04-530bb3c8259mr2169856e87.56.1722606728406;
+        Fri, 02 Aug 2024 06:52:08 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530bba35252sm233281e87.196.2024.08.02.06.52.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Aug 2024 06:52:08 -0700 (PDT)
+Date: Fri, 2 Aug 2024 16:52:06 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, gregkh@linuxfoundation.org, Frank.Li@nxp.com, 
+	jun.li@nxp.com, l.stach@pengutronix.de, aford173@gmail.com, hongxing.zhu@nxp.com, 
+	alexander.stein@ew.tq-group.com, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 3/5] phy: fsl-imx8mq-usb: add tca function driver for
+ imx95
+Message-ID: <i2o5pk7jnni4bgc6txktus26dtnd6quivxkslgqkelmyb334k6@s5waxd5ep75f>
+References: <20240802091702.2057294-1-xu.yang_2@nxp.com>
+ <20240802091702.2057294-3-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] gpio: gpio-vf610: use u32 mask to handle 32 number
- gpios
-To: haibo.chen@nxp.com, linus.walleij@linaro.org, brgl@bgdev.pl
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-References: <20240801093028.732338-1-haibo.chen@nxp.com>
- <20240801093028.732338-2-haibo.chen@nxp.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20240801093028.732338-2-haibo.chen@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:v0T10rKYpYNc9oUuw1mTkH7cZmCszBxy0YDT74AHO0FDs3iff5R
- OFTNE7jQtSdo+xSNDHrO1SqVjW6rlxklDdkR0/monxY3g+M0AF8TgKOL2NK7fMqQ4flw9Jg
- +dqRtZE9nJVl+VlkS7Iq+lpGoAPQMCH6s4Fc1jwSPdJps4HdQs4i2QV6xhR7fLL5bgHVLBt
- v20BSew7S+cX4gOqIFSuw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:idrP3R7J94M=;lprWANLSeB3pT7QBAfb1WmF1o8t
- 2lO8Niq2Je+XdySiUgA5+C8m0V8TwVsvpyDojiXsbZNLw219+r+PQI485AaGmgLCyxYdAzLnq
- TPyA1UKRdy96VFOcMMDLMobwp+GqCesfSOcnZCAcGbglzDL4dKmjsaBEAaEy0K3NBADuKgxfW
- KN5eWZLrNdBwbT4ZO52NnSuT0Q/lY2/Hq3CzIaJ2QuaOPgZuelRaZJ1jNDePJpnpjAB94G/iY
- zQKE5OvuFhfcyCDi1C7V7ipZJ7/lFWGL0omzWpAFplEFxxJBvgk9OXp+VaHH8r/1WC7+D0uXh
- BINXKvFJu86fhNYZ7p3LX/RmfUL3h97KcIguvKmkyzwN71ibWVZS22G0hZ5kMAvgQJc9L1ofI
- IPH4oHu/AAZ4SfAexfEUrS2wfZP22DGrWmjJIS3ltoy2Q6cXskQeecS/xUEgtCyELjDbmkku3
- tOkrj/x0nxLH2j6uaqr0lS+dtQtk9l4YloGNL7c5jyrddWXhFPRSNMZsAiQYNZCDsx42dqo1Z
- yS2UEg8rNOgTiCLWpeTOqBC7ejG9cwicJo84KwU/Hg5FYjAT2ebjAaU0q/i1NFGbsnV3IWziU
- uefqwbS+vGh08gS08Gqhu35DbcJ7fv8jNFFZnVSyws5/9OGlsEJUvFZ9iGVxm8TPyrL6/tFMe
- F8U5kb32QG0ZarE9qQ/xSDw2rIoAx0oUBgM69Dtc3eK1bMu1eVPtJnQE4J9ojVRmNLvapU00E
- 5MFqmNhFBLINv+TksABJsMfmxqEi5HueOjSjGPhUcPR3LO/Bpaa8a1+pmMNhz/vZIS5Y7rgd+
- SdduobbbpSJWQfCSya5pTasQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240802091702.2057294-3-xu.yang_2@nxp.com>
 
-Am 01.08.24 um 11:30 schrieb haibo.chen@nxp.com:
-> From: Haibo Chen <haibo.chen@nxp.com>
->
-> This gpio controller support up to 32 pins per port. And all the
-> register width is 32 bit. So here use u32 to replace the original
-> unsigned long.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+On Fri, Aug 02, 2024 at 05:17:00PM GMT, Xu Yang wrote:
+> The i.MX95 USB3 phy has a Type-C Assist block (TCA). This block consists
+> two functional blocks (XBar assist and VBus assist) and one system
+> access interface using APB.
+> 
+> The primary functionality of XBar assist is:
+>  - switching lane for flip
+>  - moving unused lanes into lower power states.
+> 
+> This info can be get from:
+> i.MX95 RM Chapter 163.3.8 Type-C assist (TCA) block.
+> 
+> This will add support for TCA block to achieve lane switching and tca
+> lower power functionality.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Reviewed-by: Jun Li <jun.li@nxp.com>
+> ---
+>  drivers/phy/freescale/Kconfig              |   1 +
+>  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 238 +++++++++++++++++++++
+>  2 files changed, 239 insertions(+)
+> 
 
-Thanks
+[..]
+
+> @@ -398,6 +624,10 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+>  
+>  	phy_set_drvdata(imx_phy->phy, imx_phy);
+>  
+> +	if (device_is_compatible(dev, "fsl,imx95-usb-phy") &&
+> +			imx95_usb_phy_get_tca(pdev, imx_phy) < 0)
+> +		return dev_err_probe(dev, -ENODEV, "failed to get tca\n");
+
+Pleas propagate error returned by imx95_usb_phy_get_tca() instead of
+always returning -ENODEV.
+
+> +
+>  	imx8m_get_phy_tuning_data(imx_phy);
+>  
+>  	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+> @@ -405,8 +635,16 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+>  	return PTR_ERR_OR_ZERO(phy_provider);
+>  }
+>  
+> +static void imx8mq_usb_phy_remove(struct platform_device *pdev)
+> +{
+> +	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
+> +
+> +	imx95_usb_phy_put_tca(imx_phy);
+> +}
+> +
+>  static struct platform_driver imx8mq_usb_phy_driver = {
+>  	.probe	= imx8mq_usb_phy_probe,
+> +	.remove = imx8mq_usb_phy_remove,
+>  	.driver = {
+>  		.name	= "imx8mq-usb-phy",
+>  		.of_match_table	= imx8mq_usb_phy_of_match,
+> -- 
+> 2.34.1
+> 
+
+-- 
+With best wishes
+Dmitry
