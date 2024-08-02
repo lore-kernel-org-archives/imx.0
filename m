@@ -1,115 +1,146 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5066915F3EC
-	for <imx@lists.linux.dev>; Fri,  2 Aug 2024 07:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3B933991;
+	Fri,  2 Aug 2024 07:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722582397; cv=none; b=KVFdiRksOfljMV/ecBh+KD7DaoCZ+Zh1mqFV5ydnwiLZC3C9yQEhq9uFQzqI6Uz779yz3HUgFuCIrbwgat/RMmxZI4tqIP1kJ7sCY/WfvpLQsGRvdywHkRzxrNiyVmO0x6QXflGaAPEfDS4NO4Wz1Z9FLl95OIeAyL7BK6rxDME=
+	t=1722583561; cv=none; b=ppQPMQef4j3nbQhlonuuY3P3YlWxd8ZyUioGkx71TowygzyGe8q7yLNBcW9nI4UzaRNG1Fj4gCwscPnjNlqjYG0i6/YdSk+nEGpzJjtNoTVsGOQl6XxBPzFget1sGKWuxvl3K2BsJYNzU4h+da4M+uhDQDV+lYWuApulKKbnqYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722582397; c=relaxed/simple;
-	bh=B8R0+soTkRLKX7M1hwzeNsFHB8sKJ5BpKxBTvbjHMGU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=eakRsX8DDhdmrSuLbH9k8MnvWnTKfRkFyjc7RhJSbpai4ifG88raFjSUQkNBHUYB75xGD3BnWzXPtyxlcQ8/AIp5qJr2gVEjVW+Nb6FBSUusC7mWtNmuuUpNfdXXHtrUJAmJb+R9YcaRzdgf04eidxJRV6foU36THT1lbcWyPjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BE84F201067;
-	Fri,  2 Aug 2024 09:06:27 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 855972001CA;
-	Fri,  2 Aug 2024 09:06:27 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 0990E183ACAC;
-	Fri,  2 Aug 2024 15:06:24 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	l.stach@pengutronix.de
-Cc: hongxing.zhu@nxp.com,
-	devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev
-Subject: [PATCH v5 3/5] ata: ahci_imx: AHB clock rate setting is not required on i.MX8QM AHCI SATA
-Date: Fri,  2 Aug 2024 14:46:51 +0800
-Message-Id: <1722581213-15221-4-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1722581213-15221-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1722581213-15221-1-git-send-email-hongxing.zhu@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1722583561; c=relaxed/simple;
+	bh=tIDBugnnIao0rCesYd8gdUdjsah0ZDt4iRLJv46cdP8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Gka5C/aewIu6x38kw0NNbcjRcG4sPgkdZ3hmMBwhtHVZlnl+CwtHwMidxiX7EE9P5qIyjBwo+i6N8JX+6vGiKrOjnVTQpxjq2WLT4R20m2xYC1DrsKRnHKkua7gWBGt850JnkBKzk6mgH+127LpumzUy+Ps8fnAeMHppKp1J1xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qth+KIxl; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qth+KIxl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D58C32782;
+	Fri,  2 Aug 2024 07:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722583560;
+	bh=tIDBugnnIao0rCesYd8gdUdjsah0ZDt4iRLJv46cdP8=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=qth+KIxlQlztEPXb2C6gf5swH0ESG0QtUXGvsYkCGQQ4rXEs5MgsmJOrtVDKDsw2n
+	 5f35yO1GuHfYZdmtPYJigwIf1x4D2gQ/wDV6k1I6CGk0u4NNY/zAlZDBZFZydLEv9e
+	 O/gs/v01ABQ/IUiEFT4FOOQWgbe8ql7Qn6ftrrvbyePXjzBnBTtE5AW5J9yuHPy04y
+	 HiQWi5BUEWP7lImu2xo2dO2kAZhzr86bBOsceR35/KHBoGswS2986jRmPuJGqg6Id6
+	 wlkv91eK9XJ5sXUcljcjbW2GzLEljchb467LID7mNaYmMbncafGU+F4UAmuAMj/l68
+	 mtIpYczulyf4g==
+Message-ID: <944715e8-e91e-46dd-a053-7e00a17dea72@kernel.org>
+Date: Fri, 2 Aug 2024 09:25:54 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] arm64: dts: imx93: add lpi2c1 and child node
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20240801160915.2505610-1-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240801160915.2505610-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-i.MX8QM AHCI SATA doesn't need AHB clock rate to set the vendor
-specified TIMER1MS register.
-Do the AHB clock rate setting for i.MX53 and i.MX6Q AHCI SATA only.
+On 01/08/2024 18:09, Frank Li wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
+> 
+> Add lpi2c1 and child node for imx93-11x11-evk board.
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
----
- drivers/ata/ahci_imx.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+Why? What for? What are these? We see all this from the diff, so commit
+msg should explain why and what do you want to achieve.
 
-diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-index 75258ed42d2ee..4dd98368f8562 100644
---- a/drivers/ata/ahci_imx.c
-+++ b/drivers/ata/ahci_imx.c
-@@ -872,12 +872,6 @@ static int imx_ahci_probe(struct platform_device *pdev)
- 		return PTR_ERR(imxpriv->sata_ref_clk);
- 	}
- 
--	imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
--	if (IS_ERR(imxpriv->ahb_clk)) {
--		dev_err(dev, "can't get ahb clock.\n");
--		return PTR_ERR(imxpriv->ahb_clk);
--	}
--
- 	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
- 		u32 reg_value;
- 
-@@ -937,11 +931,8 @@ static int imx_ahci_probe(struct platform_device *pdev)
- 		goto disable_clk;
- 
- 	/*
--	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL,
--	 * and IP vendor specific register IMX_TIMER1MS.
--	 * Configure CAP_SSS (support stagered spin up).
--	 * Implement the port0.
--	 * Get the ahb clock rate, and configure the TIMER1MS register.
-+	 * Configure the HWINIT bits of the HOST_CAP and HOST_PORTS_IMPL.
-+	 * Set CAP_SSS (support stagered spin up) and Implement the port0.
- 	 */
- 	reg_val = readl(hpriv->mmio + HOST_CAP);
- 	if (!(reg_val & HOST_CAP_SSS)) {
-@@ -954,8 +945,19 @@ static int imx_ahci_probe(struct platform_device *pdev)
- 		writel(reg_val, hpriv->mmio + HOST_PORTS_IMPL);
- 	}
- 
--	reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
--	writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
-+	if (imxpriv->type != AHCI_IMX8QM) {
-+		/*
-+		 * Get AHB clock rate and configure the vendor specified
-+		 * TIMER1MS register on i.MX53, i.MX6Q and i.MX6QP only.
-+		 */
-+		imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
-+		if (IS_ERR(imxpriv->ahb_clk)) {
-+			dev_err(dev, "Failed to get ahb clock\n");
-+			goto disable_sata;
-+		}
-+		reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
-+		writel(reg_val, hpriv->mmio + IMX_TIMER1MS);
-+	}
- 
- 	ret = ahci_platform_init_host(pdev, hpriv, &ahci_imx_port_info,
- 				      &ahci_platform_sht);
--- 
-2.37.1
+> 
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+> Signed-off-by: Li Yang <leoyang.li@nxp.com>
+> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx93-11x11-evk.dts    | 21 +++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> index a15987f49e8d6..dd387b820831a 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> @@ -145,6 +145,20 @@ ethphy2: ethernet-phy@2 {
+>  	};
+>  };
+>  
+> +&lpi2c1 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_lpi2c1>;
+> +	status = "okay";
+> +
+> +	lsm6dsm@6a {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+
+
+Best regards,
+Krzysztof
 
