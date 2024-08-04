@@ -1,121 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C701CD29;
-	Sun,  4 Aug 2024 08:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896111D545;
+	Sun,  4 Aug 2024 11:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722760444; cv=none; b=Oft4wP3cABPbl/adsquTIa9OCRiEr973bGedPfC2tvA+TTrwRS0OgU4PuCwE8L7d1qCHWIr8fvzMdJ5wGnmDMa70e9PdAoxGAgjU+b8svHihLqcLF2u80DFg8utNDIvKS7izH0pPKseZNbhbt5LgXDH72gpF80Na8GIsbwqXbl8=
+	t=1722771396; cv=none; b=qGt/UB7i5gL66zu8gFiYF1BAQQLEDc7Gfu6N7A4I9Q4wxyC81zTUKxfjlO+AOirJWNh6qoqB45hxVA4JeKdIz2ckk2nQh9utqAk64s491p2ckNrlsgF8cEKjftCQM8o6rPkp4zME9DsVfIV12hjwHHkt36BrWnylWUe016ybnjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722760444; c=relaxed/simple;
-	bh=OMK/1AlyjBhsJbz0/YMwqYNLlUR2T3JfGFvZmUPddjE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W1c+9w3chzwbrBDKE2R3xCb4huYIEeMk2zwAgkfP8/9Mu73Oj9x0moY5Aapw5pArSSXokJxNFYI2HB/KWvbAo2XzrHRXtvgIdW95SXvo0AubBb6bLIT2Km4qlS/prV/pp8bE6nU6zlpiCoh4i6UpoOQ9c+Gm9pwyB6vmPVaILaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZK3AEC8p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722771396; c=relaxed/simple;
+	bh=rPc4OVNtOL0903UNmvVJ4agBWd8+MncDod+sYX9roPA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aLORBi18o2w8IN8aTobLANfJd488fI3+OwVIQ18YJJ80LsgHILirzwhdLfed5qUFi3wlIKrJIq+N6R9nlfxe2aS0ZwvmkmYQEOWO+/MANFWb6wd020LNmYSK3s3SF9+Hn7am2uLvdFzyEDdsS/nPEJEceLGeRXllU9rMxB03XhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Gisk60Q1; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZK3AEC8p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B86C32786;
-	Sun,  4 Aug 2024 08:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722760443;
-	bh=OMK/1AlyjBhsJbz0/YMwqYNLlUR2T3JfGFvZmUPddjE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZK3AEC8pjgllzcUU6P8HveTEq2HVeVY+u+Zy34LRf30i2IYPYhfmYAJSZfD6VED6s
-	 Spj7RBce8HXZOwFBSCb0NNy7wiWCxMVG8BEpd42iZO/n6KiVWiLg2/W5p9U1mKefQu
-	 Vh4Tjj0n6m5eXSFKvvsWkyhelmU08myJqAsUc+96aDUYmig5SrESkg4BhgBYXoF0FT
-	 CI+fZitn/Onv++HDJLThZnUbiXwCXRrWi3ayZQCmuQY834DvmKw6/kox8KQrEKn8fW
-	 Dmt58jCMB8rZQwUuLfX/SJzrjOn1d+lObplrao83oZqxroMStHn8QTUUSY+eg5iaxH
-	 jeJEzwvAnU9sQ==
-Message-ID: <80fd755e-071e-44d3-a3b9-6ca16e97a447@kernel.org>
-Date: Sun, 4 Aug 2024 10:33:57 +0200
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Gisk60Q1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1722771377; x=1723376177; i=wahrenst@gmx.net;
+	bh=o8wiZyuTf+7p/7c8oFkjGNg7jlgN2Y4Wy2pe5S8ALnk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Gisk60Q1HhtUwBYr2a/n4ldu6Me2TBzpyivB1gjE+z5+ahV0TyX7f9gSBO6CCgGM
+	 2hEJEigUVIjYVV8qeiGNdrxkIFv7Rt1KcJ35xcxOVARYZ8FEVkNBjiVU0sT+Lcrmr
+	 d/8onTdYorrpt+rh1jlvhAGtXrSXZWLKa7sBn1PNG8LI49R6Qkkdnbcm1aFlTMyfv
+	 lKUzwPPk/xDmDRXOGWqQzRqr+8MvU2S0y8QvVn1reKw5OiZBAkSl+vV2ipnqWMHeJ
+	 q8BMQM+AXoVmFF42+gXUxFMY24dTIqGSsIlOdUJiSZf+/zeGn9GzkWVZ0YtHl8AtA
+	 IdoRO+mWmWjTXj+09w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N8GQs-1sEcmv2tXc-013vNO; Sun, 04
+ Aug 2024 13:36:17 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Mark Brown <broonie@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Gao Pan <pandy.gao@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>
+Cc: imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH] spi: spi-fsl-lpspi: Fix scldiv calculation
+Date: Sun,  4 Aug 2024 13:36:11 +0200
+Message-Id: <20240804113611.83613-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] arm64: dts: imx93: add lpi2c1 and child node
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20240801160915.2505610-1-Frank.Li@nxp.com>
- <944715e8-e91e-46dd-a053-7e00a17dea72@kernel.org>
- <Zqztwh3yghN8Drnj@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Zqztwh3yghN8Drnj@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:niX0Js6Gc3sxUv1LEoco3KU9bIwI3f6AQv2+SLIljqq331yyAO4
+ hE3XEJBSC+yFsBPVH+I0Sl92+2Af0ovj3nGSCewbSOJ304vfiA3r1DlVYXHv0O6hWrFYX0r
+ yPoMeGAEr3YGEtIxcDMuTSmsAfKFQaUgMCdtCWtyN/CRcNVr1WJjfAXxsRrGXmmHDcWq9jE
+ WmMU+06dioxipOsnd/yxw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:9ulYULqnHBk=;B1BJ6ZR0sqUMWtNhJoVob21OZZJ
+ QeGCYBaogUOH+8h8M+1XPE6fvQDOLxqhH82SYBVdn9NZ3AB7+Iimqrx1dJvstS4tfAMCxzhNN
+ Qqmq7IQERP0P+e6YnPsCmlJSH4eclMVB5zZv7GK8PklGsotP/BKNJcG4jjBcNgIsixEd6SZK7
+ FNRxOwLQj9LoNOjQMEwtegjUjNJT8AqXpJSFw1jg+KbqxQeFNuVGfPVaS2lUnibXDKwEBRXdx
+ worZJqvoNW5rdxHBFHzgQnegt8iJexz6awY2CqSa1Zhxjj9135YFu1s2CukJIH7KFKFXNqOOB
+ GB8f5y9wjM79iPvpyLocjxsDDfkZA0jJY3JAlylCgZitE8uoC641vzeekCoKnBHztNDRTp5u0
+ 2BXnzjZtZvjcO1SNjfkIfAkDScnrGr9HZZLdYw/daQG39GV0iHAYdJrTTt/ACuVd9aOkk3x7J
+ wRz+Fr7QKsL0eLB6kaRYiqwSNcyr/CVBg3p+RBa+oDNmo+a0IPnaGHx00VhdanahR/NYHaeYU
+ Lyp388n8Pcf4ijfTHrjzB9XCzAWwPNCKWvXX7Cck+H5OsnRuwEv3hL3vRigqG5zsHLVG03gnP
+ uGp4G4iKZRmI9CX527LEVKwvrBpMTkUzvwJiGOYqryerLhZ+SjC9yXMzmiMDWXWn2QJGOMZeS
+ +X0Lt0/69PBT1mv1vUQ6RlrPDHjtjxhW3aCjTYh2Lcyy/AJ+y86WH0tSdokQ1xXOFlor6PJUs
+ Fm1zLKECpd/AvSlcuhAM1El3vvtBwMGMwH70yHhvR5A3SvI6iOpxncfOzBPWji6ckVE3luT2A
+ d7JEybXiNnwQFKoBS+vr6Q3A==
 
-On 02/08/2024 16:31, Frank Li wrote:
-> On Fri, Aug 02, 2024 at 09:25:54AM +0200, Krzysztof Kozlowski wrote:
->> On 01/08/2024 18:09, Frank Li wrote:
->>> From: Clark Wang <xiaoning.wang@nxp.com>
->>>
->>> Add lpi2c1 and child node for imx93-11x11-evk board.
->>
->> Why? What for? What are these? We see all this from the diff, so commit
->> msg should explain why and what do you want to achieve.
-> 
-> I really don't know how to explain why/what for these straing forward
-> thing, hardware board has such component, just add it dts file.
+The effective SPI clock frequency should never exceed speed_hz
+otherwise this might result in undefined behavior of the SPI device.
 
-You can explain what you are adding in terms of hardware. "child node"
-is really useless description.
+Currently the scldiv calculation could violate this constraint.
+For the example parameters perclk_rate =3D 24 MHz and speed_hz =3D 7 MHz,
+the function fsl_lpspi_set_bitrate will determine perscale =3D 0 and
+scldiv =3D 1, which is a effective SPI clock of 8 MHz.
 
-Best regards,
-Krzysztof
+So fix this by rounding up the quotient of perclk_rate and speed_hz.
+While this never change within the loop, we can pull this out.
+
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/spi/spi-fsl-lpspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 32baa14dfd83..be261ac09df8 100644
+=2D-- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -296,7 +296,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_d=
+ata *fsl_lpspi)
+ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config =3D fsl_lpspi->config;
+-	unsigned int perclk_rate, scldiv;
++	unsigned int perclk_rate, scldiv, div;
+ 	u8 prescale;
+
+ 	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
+@@ -313,8 +313,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_dat=
+a *fsl_lpspi)
+ 		return -EINVAL;
+ 	}
+
++	div =3D DIV_ROUND_UP(perclk_rate, config.speed_hz);
++
+ 	for (prescale =3D 0; prescale < 8; prescale++) {
+-		scldiv =3D perclk_rate / config.speed_hz / (1 << prescale) - 2;
++		scldiv =3D div / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale =3D prescale;
+ 			break;
+=2D-
+2.34.1
 
