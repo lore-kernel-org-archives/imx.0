@@ -1,187 +1,121 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714D97482
-	for <imx@lists.linux.dev>; Sat,  3 Aug 2024 06:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C701CD29;
+	Sun,  4 Aug 2024 08:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722665625; cv=none; b=bOu4gYhzsyzL+w8OazGqLjM1wWXpdYps0eT3ZgDuLr3muEIOKaB8QVcnBXpI//jvMjoWrVmqtw3LiaqlQ6WNbVNzTkwjhRRX2T1oQ2ZZdHX6ygPkMxKr1XA13A652e6GbD+87bgMGULy87LQQIofIbu+7R97nCK42PzR44emDH8=
+	t=1722760444; cv=none; b=Oft4wP3cABPbl/adsquTIa9OCRiEr973bGedPfC2tvA+TTrwRS0OgU4PuCwE8L7d1qCHWIr8fvzMdJ5wGnmDMa70e9PdAoxGAgjU+b8svHihLqcLF2u80DFg8utNDIvKS7izH0pPKseZNbhbt5LgXDH72gpF80Na8GIsbwqXbl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722665625; c=relaxed/simple;
-	bh=f3SsyA0A03ghx59fpFfz4bnYCHxtXxzbra9YDmRBIeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=efDG/BciY+F8+Bh586iOMiTpxXkqaQXA6nUEDy0q/aQHnro6I7H9bPjAw6CB5NisIDxQjAZk+LWxY2vMeAhOpeGqOz9KSWBA7v2hVrPdbJV+wG0C2piToIc38YOnAo7+NEL29LfNEYYg/Ylj4KV6zlBYyfQxRO+D0bWRZXuH4xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H3u+HLB7; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722760444; c=relaxed/simple;
+	bh=OMK/1AlyjBhsJbz0/YMwqYNLlUR2T3JfGFvZmUPddjE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W1c+9w3chzwbrBDKE2R3xCb4huYIEeMk2zwAgkfP8/9Mu73Oj9x0moY5Aapw5pArSSXokJxNFYI2HB/KWvbAo2XzrHRXtvgIdW95SXvo0AubBb6bLIT2Km4qlS/prV/pp8bE6nU6zlpiCoh4i6UpoOQ9c+Gm9pwyB6vmPVaILaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZK3AEC8p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H3u+HLB7"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7b396521ff6so3658749a12.1
-        for <imx@lists.linux.dev>; Fri, 02 Aug 2024 23:13:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722665623; x=1723270423; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hXMFhCUn5D/KqrMjKOKnbi8o/0EVbx6C+turhkcsq08=;
-        b=H3u+HLB7ZBOr+rdEWxDGXjG42S9dgRfum/3WM8cyFS7DHcvi4nf7mIk0veqO72lQg3
-         ISVjIuqxg7q07aVzcnBN7svvDc8R6pmSDOHH1t43gpboK3rpI3Rm8S+tLH5xqP7+nzzR
-         nG2Yg98j2SUpxHdELmI755TucroTs5ZEx2bDiseJzShBAWl6wWEOjcqHt/ZmszByct5I
-         2hWVed7V5KEGi8mL2em36LeIv1OaFH/kcA5JuS9vAsy+toJCeKvKNTLTTNL92EKPq3/2
-         Okp+D8cjM9PxFUW0GarrJ7k2ZPXJWOklmDdDuGFCysgoe0+8NUVp3KI0tGJEa8Sv/ZwC
-         9Uzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722665623; x=1723270423;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hXMFhCUn5D/KqrMjKOKnbi8o/0EVbx6C+turhkcsq08=;
-        b=eK1TpxnXhrUlDcRsxJo+uP8J20LabC+Qs6XgeLROLtE2hzkFPRF4D/iyRhEFAObmMM
-         DyJ/6mwBo9lJDDpn+4XAgiTjbBRnwiHPOS96vmNrxvZ67R2MyzrzE1dD+ulCeRsQreP+
-         mF1nAVLLoQ1F2nDnd3cgSciWv6uBj8GD5SdkSPneEcXvBLvBOfoYzVX4HaZmcCp4A/Uu
-         Gt51usVjEhqwB4WW8uMNqnJKFVoIR/Quz3SxTBALOrIFD1A66g9kHeB1N1knQEPwFAQM
-         vl2EryoUbM3AJ44wSysbMIQKiMqq+RNuG17MEzVT3rPH2Ay19eh3LMQ6XLLZ2UFU0F7/
-         fYEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnqw3ks/ZiF0Km71RtYXihXGjt8QZS0rgApYNH5esQzZTk5smFnomPGif/WxH89th784YwDjx/sq8Pnu4l1rGiNkWw
-X-Gm-Message-State: AOJu0YzyPsqtmRz9FbWCdeIvgfGdOhEKy6VdF7Kv7pR1GKHRRKy8nDkd
-	EwWHCZMITnRWomsdEPd1xVBKEUQy5VLUVx/P8WU0J1N63AEfvOF9
-X-Google-Smtp-Source: AGHT+IGgAjO3iklC0xXjAakpcmHNCbSd220ilCOUTPiEuu5dLNSN0mr4009Uq6sYz/UQhR1i8+qevw==
-X-Received: by 2002:a05:6a21:8cc5:b0:1c0:f323:1b9d with SMTP id adf61e73a8af0-1c6995a1a4fmr7777869637.20.1722665622623;
-        Fri, 02 Aug 2024 23:13:42 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:47be:b3e2:7c00:141c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ece0895sm2164970b3a.125.2024.08.02.23.13.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 23:13:42 -0700 (PDT)
-Date: Fri, 2 Aug 2024 23:13:39 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>
-Subject: Re: [PATCH v7 7/7] input: keyboard: support i.MX95 BBM module
-Message-ID: <Zq3KkwhB89zUfAjn@google.com>
-References: <20240731-imx95-bbm-misc-v2-v7-0-a41394365602@nxp.com>
- <20240731-imx95-bbm-misc-v2-v7-7-a41394365602@nxp.com>
- <ZqpCwOhXiLzxK43-@pluto>
- <PAXPR04MB84598B36C6721748FB98905088B12@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <Zqp0IZfUobg6dq8G@google.com>
- <PAXPR04MB8459CE89FFF5662AED66D9AA88B22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZK3AEC8p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B86C32786;
+	Sun,  4 Aug 2024 08:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722760443;
+	bh=OMK/1AlyjBhsJbz0/YMwqYNLlUR2T3JfGFvZmUPddjE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZK3AEC8pjgllzcUU6P8HveTEq2HVeVY+u+Zy34LRf30i2IYPYhfmYAJSZfD6VED6s
+	 Spj7RBce8HXZOwFBSCb0NNy7wiWCxMVG8BEpd42iZO/n6KiVWiLg2/W5p9U1mKefQu
+	 Vh4Tjj0n6m5eXSFKvvsWkyhelmU08myJqAsUc+96aDUYmig5SrESkg4BhgBYXoF0FT
+	 CI+fZitn/Onv++HDJLThZnUbiXwCXRrWi3ayZQCmuQY834DvmKw6/kox8KQrEKn8fW
+	 Dmt58jCMB8rZQwUuLfX/SJzrjOn1d+lObplrao83oZqxroMStHn8QTUUSY+eg5iaxH
+	 jeJEzwvAnU9sQ==
+Message-ID: <80fd755e-071e-44d3-a3b9-6ca16e97a447@kernel.org>
+Date: Sun, 4 Aug 2024 10:33:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8459CE89FFF5662AED66D9AA88B22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] arm64: dts: imx93: add lpi2c1 and child node
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20240801160915.2505610-1-Frank.Li@nxp.com>
+ <944715e8-e91e-46dd-a053-7e00a17dea72@kernel.org>
+ <Zqztwh3yghN8Drnj@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <Zqztwh3yghN8Drnj@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 01, 2024 at 01:36:10AM +0000, Peng Fan wrote:
-> Hi Dmitry,
+On 02/08/2024 16:31, Frank Li wrote:
+> On Fri, Aug 02, 2024 at 09:25:54AM +0200, Krzysztof Kozlowski wrote:
+>> On 01/08/2024 18:09, Frank Li wrote:
+>>> From: Clark Wang <xiaoning.wang@nxp.com>
+>>>
+>>> Add lpi2c1 and child node for imx93-11x11-evk board.
+>>
+>> Why? What for? What are these? We see all this from the diff, so commit
+>> msg should explain why and what do you want to achieve.
 > 
-> > Subject: Re: [PATCH v7 7/7] input: keyboard: support i.MX95 BBM
-> > module
-> > 
-> > Hi Peng,
-> > 
-> > On Wed, Jul 31, 2024 at 03:37:18PM +0000, Peng Fan wrote:
-> > > Hi Cristian,
-> > >
-> > > > Subject: Re: [PATCH v7 7/7] input: keyboard: support i.MX95 BBM
-> > > > module
-> > > >
-> > > > On Wed, Jul 31, 2024 at 08:56:11PM +0800, Peng Fan (OSS) wrote:
-> > > > > From: Peng Fan <peng.fan@nxp.com>
-> > > > >
-> > > > > The BBM module provides BUTTON feature. To i.MX95, this
-> > module is
-> > > > > managed by System Manager and exported using System
-> > > > Management Control
-> > > > > Interface(SCMI). Linux could use i.MX SCMI BBM Extension
-> > protocol
-> > > > to
-> > > > > use BUTTON feature.
-> > > > >
-> > > > > This driver is to use SCMI interface to enable pwrkey.
-> > > > >
-> > > > > +}
-> > > > > +
-> > > > > +static void scmi_imx_bbm_key_remove(struct scmi_device
-> > *sdev) {
-> > > > > +	struct device *dev = &sdev->dev;
-> > > > > +	struct scmi_imx_bbm *bbnsm = dev_get_drvdata(dev);
-> > > > > +
-> > > > > +	device_init_wakeup(dev, false);
-> > 
-> > I do not believe you need to reset the wakeup flag on driver unbind, as
-> > well as in the error handling path of probe(). If this is needed then
-> > driver core should do this cleanup (maybe it already does?).
-> 
-> I just check the driver core code, you are right, there is
-> no need do this.
-> 
-> DevAttrError:
->  device_pm_remove-> device_wakeup_disable(dev);
->  dpm_sysfs_remove
-> 
-> > 
-> > > > > +
-> > > > > +	cancel_delayed_work_sync(&bbnsm->check_work);
-> > > > > +}
-> > > > > +
-> > > >
-> > > > ..so in v6 I asked you to add a cancel_delayed_work_sync() on the
-> > > > removal path, BUT I missed, my bad, that indeed above there was
-> > > > already a call to cancel_delayed_work_sync() associated to a
-> > > > devm_add_action_or_reset....so now we have 2....also you should
-> > try
-> > > > not to mix devm_add_action_or_reset and plain .remove
-> > methods..use
-> > > > one or the other.
-> > >
-> > > Thanks for your detailed reviewing on this. I will wait to see if
-> > > Sudeep has any comments to patch 1-4. If no comments, I will not do
-> > a
-> > > new version to this patchset.
-> > >
-> > > If v7 patch 1-4 are good for Sudeep to pick up, I will separate this
-> > > patch out as a standalone one for input subsystem maintainer.
-> > 
-> > If you remove the duplicated cancel_delayed_work_sync() in remove()
-> > and unneded device_init_wakeup(dev, false); then you can merge the
-> > input patch with the rest of them with my:
-> > 
-> > Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> 
-> Thanks for your Ack. But I think patch 1-4 needs go to arm-scmi tree,
-> Patch 5 to arm imx tree, patch 6 to rtc tree, patch 7 to input tree.
-> 
-> I put the patches together in a patchset is to let reviewers could
-> get a full picture how the whole stuff work.
-> 
-> For patch 7, I will send out it as a separate patch with fix and tag
-> after patch 1-4 is ready in arm-scmi tree.
+> I really don't know how to explain why/what for these straing forward
+> thing, hardware board has such component, just add it dts file.
 
-Right, but to accelerate getting support for your part into the mainline
-I am OK with input piece not going through the input tree but together
-with the rest of the patches through some other tree, probably through
-arm-scmi. If they are not willing to take it then we will have to wait
-till core support lands in mainline and then I can pick up the input
-piece and move it through my tree.
+You can explain what you are adding in terms of hardware. "child node"
+is really useless description.
 
-Thanks.
+Best regards,
+Krzysztof
 
--- 
-Dmitry
