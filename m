@@ -1,121 +1,181 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896111D545;
-	Sun,  4 Aug 2024 11:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A39C1CA9F;
+	Sun,  4 Aug 2024 14:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722771396; cv=none; b=qGt/UB7i5gL66zu8gFiYF1BAQQLEDc7Gfu6N7A4I9Q4wxyC81zTUKxfjlO+AOirJWNh6qoqB45hxVA4JeKdIz2ckk2nQh9utqAk64s491p2ckNrlsgF8cEKjftCQM8o6rPkp4zME9DsVfIV12hjwHHkt36BrWnylWUe016ybnjU=
+	t=1722781004; cv=none; b=GKcQ/77X1fRiJG5v7c+o6wBeOwdb2x6GXvb3VhACK5Pb50cZ74h9hQelRgbe7cP6LgWdy2iuklxowG7RhFZ7Mc2eFQVHVaxzLLCi6Qf6W9/hA7ff8cdE3wVegbW9hsOd8ezD7jd4tqERIikBnpW4zyBUjRjkflMsZcs0rjxW8Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722771396; c=relaxed/simple;
-	bh=rPc4OVNtOL0903UNmvVJ4agBWd8+MncDod+sYX9roPA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aLORBi18o2w8IN8aTobLANfJd488fI3+OwVIQ18YJJ80LsgHILirzwhdLfed5qUFi3wlIKrJIq+N6R9nlfxe2aS0ZwvmkmYQEOWO+/MANFWb6wd020LNmYSK3s3SF9+Hn7am2uLvdFzyEDdsS/nPEJEceLGeRXllU9rMxB03XhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Gisk60Q1; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1722781004; c=relaxed/simple;
+	bh=+yrDRlrOYDFtWrAPd7APp27cogwl15HKJx4AENWPh9U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rcvPPcoYv1PUsIsVvfr6F1WPSTF485T4fGix71ZX9eGP8EH2gQNsOlt3o/EfCgYCy7oQXbQ1ux8yhpUyixqYK4NSNNzB6Mu+811BEndcn5V7QVNd+81el026avqRMHAmi0BAZYR5uB+0A9rUteO92ssBJua3+fbDOnHioOsD6nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CqtjtW/f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Gisk60Q1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1722771377; x=1723376177; i=wahrenst@gmx.net;
-	bh=o8wiZyuTf+7p/7c8oFkjGNg7jlgN2Y4Wy2pe5S8ALnk=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Gisk60Q1HhtUwBYr2a/n4ldu6Me2TBzpyivB1gjE+z5+ahV0TyX7f9gSBO6CCgGM
-	 2hEJEigUVIjYVV8qeiGNdrxkIFv7Rt1KcJ35xcxOVARYZ8FEVkNBjiVU0sT+Lcrmr
-	 d/8onTdYorrpt+rh1jlvhAGtXrSXZWLKa7sBn1PNG8LI49R6Qkkdnbcm1aFlTMyfv
-	 lKUzwPPk/xDmDRXOGWqQzRqr+8MvU2S0y8QvVn1reKw5OiZBAkSl+vV2ipnqWMHeJ
-	 q8BMQM+AXoVmFF42+gXUxFMY24dTIqGSsIlOdUJiSZf+/zeGn9GzkWVZ0YtHl8AtA
-	 IdoRO+mWmWjTXj+09w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N8GQs-1sEcmv2tXc-013vNO; Sun, 04
- Aug 2024 13:36:17 +0200
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Mark Brown <broonie@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Gao Pan <pandy.gao@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>
-Cc: imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH] spi: spi-fsl-lpspi: Fix scldiv calculation
-Date: Sun,  4 Aug 2024 13:36:11 +0200
-Message-Id: <20240804113611.83613-1-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqtjtW/f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E6FC32786;
+	Sun,  4 Aug 2024 14:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722781003;
+	bh=+yrDRlrOYDFtWrAPd7APp27cogwl15HKJx4AENWPh9U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CqtjtW/fYJtZKbWrdXYbDbVDA70a1eRNhXn3bCZSu6bEO1KOlT0aXmBq5pfX/aRQp
+	 hQxJnUaLu9fzFY506j5P0ZDrv6VKIX52OeKXrmW+x7i/bMXg2el2i1AnXBRgPjKGNn
+	 pjQWAuZZrYrXzUk73aJLDbbilYHoYKq+WjdRUJIK9pGcLC1Kox61a4Q2Z3BfiPNw54
+	 1iFbAx+OMD2rFTWVsyzWDoQiJ/22tmAX19hk0gorvKq2O77KB6mjhEIklw+VTLyO4o
+	 zN2+ygG9auqOwS37118DfQE3axh68aIRRjmOcGmdkhQkQdYhi1L7ixmnAyhQPu78RU
+	 pM3OwpylLRbmA==
+Message-ID: <21557eac-44f0-451d-a194-c5d545cacbee@kernel.org>
+Date: Sun, 4 Aug 2024 16:16:34 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:niX0Js6Gc3sxUv1LEoco3KU9bIwI3f6AQv2+SLIljqq331yyAO4
- hE3XEJBSC+yFsBPVH+I0Sl92+2Af0ovj3nGSCewbSOJ304vfiA3r1DlVYXHv0O6hWrFYX0r
- yPoMeGAEr3YGEtIxcDMuTSmsAfKFQaUgMCdtCWtyN/CRcNVr1WJjfAXxsRrGXmmHDcWq9jE
- WmMU+06dioxipOsnd/yxw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:9ulYULqnHBk=;B1BJ6ZR0sqUMWtNhJoVob21OZZJ
- QeGCYBaogUOH+8h8M+1XPE6fvQDOLxqhH82SYBVdn9NZ3AB7+Iimqrx1dJvstS4tfAMCxzhNN
- Qqmq7IQERP0P+e6YnPsCmlJSH4eclMVB5zZv7GK8PklGsotP/BKNJcG4jjBcNgIsixEd6SZK7
- FNRxOwLQj9LoNOjQMEwtegjUjNJT8AqXpJSFw1jg+KbqxQeFNuVGfPVaS2lUnibXDKwEBRXdx
- worZJqvoNW5rdxHBFHzgQnegt8iJexz6awY2CqSa1Zhxjj9135YFu1s2CukJIH7KFKFXNqOOB
- GB8f5y9wjM79iPvpyLocjxsDDfkZA0jJY3JAlylCgZitE8uoC641vzeekCoKnBHztNDRTp5u0
- 2BXnzjZtZvjcO1SNjfkIfAkDScnrGr9HZZLdYw/daQG39GV0iHAYdJrTTt/ACuVd9aOkk3x7J
- wRz+Fr7QKsL0eLB6kaRYiqwSNcyr/CVBg3p+RBa+oDNmo+a0IPnaGHx00VhdanahR/NYHaeYU
- Lyp388n8Pcf4ijfTHrjzB9XCzAWwPNCKWvXX7Cck+H5OsnRuwEv3hL3vRigqG5zsHLVG03gnP
- uGp4G4iKZRmI9CX527LEVKwvrBpMTkUzvwJiGOYqryerLhZ+SjC9yXMzmiMDWXWn2QJGOMZeS
- +X0Lt0/69PBT1mv1vUQ6RlrPDHjtjxhW3aCjTYh2Lcyy/AJ+y86WH0tSdokQ1xXOFlor6PJUs
- Fm1zLKECpd/AvSlcuhAM1El3vvtBwMGMwH70yHhvR5A3SvI6iOpxncfOzBPWji6ckVE3luT2A
- d7JEybXiNnwQFKoBS+vr6Q3A==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] dt-bindings: phy: imx8mq-usb: add compatible
+ "fsl,imx95-usb-phy"
+To: Xu Yang <xu.yang_2@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, gregkh@linuxfoundation.org, Frank.Li@nxp.com,
+ jun.li@nxp.com, l.stach@pengutronix.de, aford173@gmail.com,
+ hongxing.zhu@nxp.com, alexander.stein@ew.tq-group.com
+Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-usb@vger.kernel.org
+References: <20240802091702.2057294-1-xu.yang_2@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240802091702.2057294-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The effective SPI clock frequency should never exceed speed_hz
-otherwise this might result in undefined behavior of the SPI device.
+On 02/08/2024 11:16, Xu Yang wrote:
+> The usb phy in i.MX95 is compatible with i.MX8MP's, this will add a
+> compatible "fsl,imx95-usb-phy" for i.MX95. Also change reg maxItems
+> to 2 since i.MX95 needs another regmap to control Type-C Assist (TCA)
+> block. Since i.MX95 usb phy is able to switch SS lanes, this will also
+> add orientation-switch and port property to the file.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  .../bindings/phy/fsl,imx8mq-usb-phy.yaml      | 40 +++++++++++++++++--
+>  1 file changed, 36 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+> index dc3a3f709fea..b0a614a9556d 100644
+> --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+> @@ -11,12 +11,17 @@ maintainers:
+>  
+>  properties:
+>    compatible:
+> -    enum:
+> -      - fsl,imx8mq-usb-phy
+> -      - fsl,imx8mp-usb-phy
+> +    oneOf:
+> +      - enum:
+> +          - fsl,imx8mq-usb-phy
+> +          - fsl,imx8mp-usb-phy
+> +      - items:
+> +          - const: fsl,imx95-usb-phy
+> +          - const: fsl,imx8mp-usb-phy
+>  
+>    reg:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 2
+>  
+>    "#phy-cells":
+>      const: 0
+> @@ -28,6 +33,17 @@ properties:
+>      items:
+>        - const: phy
+>  
+> +  orientation-switch:
+> +    description:
+> +      Flag the PHY as possible handler of USB Type-C orientation switching
 
-Currently the scldiv calculation could violate this constraint.
-For the example parameters perclk_rate =3D 24 MHz and speed_hz =3D 7 MHz,
-the function fsl_lpspi_set_bitrate will determine perscale =3D 0 and
-scldiv =3D 1, which is a effective SPI clock of 8 MHz.
+No need to duplicate definitions of properties.
 
-So fix this by rounding up the quotient of perclk_rate and speed_hz.
-While this never change within the loop, we can pull this out.
+> +    type: boolean
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    description:
+> +      A port node to link the PHY to a TypeC controller for the purpose of
+> +      handling orientation switching.
 
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/spi/spi-fsl-lpspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Same here. You probably miss reference to usb-switch.
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 32baa14dfd83..be261ac09df8 100644
-=2D-- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -296,7 +296,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_d=
-ata *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config =3D fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv;
-+	unsigned int perclk_rate, scldiv, div;
- 	u8 prescale;
+> +
+>    power-domains:
+>      maxItems: 1
+>  
+> @@ -89,6 +105,22 @@ required:
+>    - clocks
+>    - clock-names
+>  
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx95-usb-phy
+> +    then:
+> +      properties:
+> +        reg:
+> +          minItems: 2
 
- 	perclk_rate =3D clk_get_rate(fsl_lpspi->clk_per);
-@@ -313,8 +313,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_dat=
-a *fsl_lpspi)
- 		return -EINVAL;
- 	}
+list and describe the items here, instead.
 
-+	div =3D DIV_ROUND_UP(perclk_rate, config.speed_hz);
-+
- 	for (prescale =3D 0; prescale < 8; prescale++) {
--		scldiv =3D perclk_rate / config.speed_hz / (1 << prescale) - 2;
-+		scldiv =3D div / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale =3D prescale;
- 			break;
-=2D-
-2.34.1
+
+Krzysztof
 
