@@ -1,118 +1,91 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0C42C6BD
-	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 13:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEAF38F97
+	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 14:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722865211; cv=none; b=hNmuW34igpu1CGVkHUhtrWnH6uYWlY/B3GLW3T3O0cQDEFK+hfaxvnsce4w0/H+ONrFUWZnwlKIcnikuFfWBrxQOf7/RNYECK7FxRC9tZmUA48e5STHZgUFW8+W1bJADYZk9pUK+C5xkrkceYhPNHgM0v2bmzAGsOgIK082kzw0=
+	t=1722869830; cv=none; b=t8coO8iK4bOZvVd3zbJegPvrho9N9GigcLlcG6xVBzS/xBw4v0o6cc0acFqmQ9e5ABMAJKbftLV9lFrrbJr3+K93odmdrTnuSc2YbOMJtzTOQkoR2iUiFShgUPeG//MUJVVkAWGOZ0y28Hb33YgPQaBDKt1gYnDfvqiI2NGrOfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722865211; c=relaxed/simple;
-	bh=ruk6mOOD/J6EGS1DmhBnxOfoM7b7J30uZ5JPOGJ6aDg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UPBrEG4cxZV7ppKtbOJK2xghbKQy5E6feS0whx8vtLQRwzPovNMYbPIc2hRA4w4YzppsK5fySxUQQLri/w+7VAoLjuqbO4cfdQQnLfMm/LL7/Eak6jJIrFjtRUcQQQx01QVIglEffsL3AN6zMG34DlYp9WqHdACUiAx9cTz/QKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z6d5sKrN; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722869830; c=relaxed/simple;
+	bh=Fkt20XYz9Qi4FsxLYqbwpAbiAsbWZpK+l/hr5hWMwPM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ccabPazx0f6OmcT7yTbKvBUqJy7aXSzDm+yZiYhscdAXk3O5EITXyw0X1arxTnuLTPa3HKuc/ZX4l7WpAzuYx9lFeUSwwWDjO/i5I7n5FKeUTGS3uYoV2nHygznnKSdvrrCF56eam39QFXOq6cFkrA8qLbgRXUSgNQp1xDMFu1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=KEY3ON4r; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z6d5sKrN"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ef260c4467so20803041fa.0
-        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 06:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722865208; x=1723470008; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b46iJ32H/7QhFKQjeBDvVn66a9XBRt1jPCCUgibPNOY=;
-        b=Z6d5sKrNgY10w5RufRc0fVgnYLjT+kAzH0uhhTG/WAwYbrKwwr2tSdiLKfcjVjTagd
-         NfnxEXowbfP7SMPTh4vanBHbs4M+TRM5F79BzCAYDknmLpqBA98MNRFtNLoorn6ozDG5
-         uEyyD5p+xFQGuBFTzjhL2+r3gZotv61RdO5NXJE4FUwML1oFWdZrKxHu3lBy3VeRCtye
-         JKTP4FtJecO+yo1aRQe6W4tvbofuOcc9ukHgK8yUAvZ1Q7THLxETwIsPnwa9gfGooXNX
-         0++rBrf+hQksHWs3JpLC5qI3inORxQL3Epebq2Q5M8I9kdz0rZGL7FhaNPxSPuK90o5o
-         WDWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722865208; x=1723470008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b46iJ32H/7QhFKQjeBDvVn66a9XBRt1jPCCUgibPNOY=;
-        b=rCNHZKG+gm+RvpTScqt6Bs8XBp1MkCKjbFjm3L4qczH9Jxk7AexJBfYOO9ersynzT5
-         ujtrgpJ8oL7gKCy3TJPRerf80w2QjyBP7jlmysrpGcoF83kawgT+bJEYp/jSuvQzMSh3
-         XewPSLMlU7SrKsq0diAP8NNkv6/kPkzxMFIrTO+DFecmTjV0ia3dihAFkrZNv9waoOF+
-         d++lpZu7r38zwNifti3c6d894V27p1K14OpimHHwFtOZ35T9Oa0Wy6WiOydV+DlvelBk
-         FEihv8VeeozsW8/wbCJTyZS/EMXBh6jWS2UcLJW56Iq0BGyjE88DEL15QcLkpdAL2JR3
-         1nHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCxeZ2H7mWEBu8ORsVsllNMm+faJh5bwKwOLuUthngQegtI1rgWG41jymTdr6OO2a7xuM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwX6eSiokHcl+qBaCVDRnqcjwwusdHoAkNG8UNV5YMOGi23uMof
-	X/+4PFoc7fs56p4BVfZ2ItLnDAsPIaF8iuiLl4qncS8wfBn0F6AkvBlawYMjShF2fcKc2kweGRg
-	iHxb3P02vhmIOA+nMyar40JBthSA=
-X-Google-Smtp-Source: AGHT+IET0zibODSKGLqBpAyFlOzXNn5BGpAezMR6EMww3A49Me0AsCpIlHGcaMhKnEUXB8jG1dP1asr/bLudntWRt98=
-X-Received: by 2002:a05:6512:1307:b0:52e:ccf5:7c3e with SMTP id
- 2adb3069b0e04-530bb3bd143mr4066577e87.7.1722865207262; Mon, 05 Aug 2024
- 06:40:07 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="KEY3ON4r"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id E5999A0CB7;
+	Mon,  5 Aug 2024 16:48:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=2hYbkfzllAEjZBmcKvceliNAUoS+7aQN2EKiLnRG54g=; b=
+	KEY3ON4rTXhI8qZ5nA449UEZGDiAxJQNyZFKL/6/kRbS9B/fIXcF0uhcphMtlWfq
+	HsfoaVJq6pLQKySDGUSmRHAkaC6qVteocp+GRoJbfys8m44APqX3lTy2/0YWh/c0
+	5ldUvjiKqFAsV8uzZ5P1e7AZT7/gfmNhF0sSTK3mfp60OYoIAzfH3Q8sO0jXgoQO
+	uc0Mye26oBq+euozufpS8dm5FwXZym2liWaZIg2LiQkATfoK5z12Y8vBiNDZAcEN
+	rhiL78YqeTl77+tWHzHpWQazWmtxIglAc4Yjq10FSYpKWITxvsKr5z7HMwLQo0UI
+	RqleEqulpZxBwKpMLapC49aqFcD+21YGyrtrNNm/EG8eLLG17nS/LhS/SPxb0YVi
+	HU0kB8+pawiPPBzRsPWi/KrufFoNFlIYYVahyUEGL1DoJxTYp4eSd4uOwgXHa5M+
+	kV9vL0LOeRoaA++er6axnQJn+AcChIKga3GahMtihaBkVSrBA45v2OytISalZYmW
+	95swTTgW61bVsFPIqmQ9fk0k4KOobiO4+vE2aWmnFPXzaaoUqsKnFLsa/odQjFAE
+	jhc0aeNi0NCKd+aHESE+K3vmfBL8f6LRkpEiZMfXT/6n9p2kqoaAGUcP7IlhOS2g
+	DyD/th9NZs893OmNcAi1v87OS7b1fa+iECiDXP1JDCw=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
+Subject: [PATCH] net: fec: Remove duplicated code
+Date: Mon, 5 Aug 2024 16:47:55 +0200
+Message-ID: <20240805144754.2384663-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de>
-In-Reply-To: <20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 5 Aug 2024 10:39:56 -0300
-Message-ID: <CAOMZO5DzH1Ldfg1rr7ET+2Y138Sv+G9HV6iRiTPOaOUgJ+asHQ@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
- enable TPM
-To: Benjamin Hahn <B.Hahn@phytec.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Teresa Remmet <t.remmet@phytec.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1722869289;VERSION=7975;MC=1667799009;ID=774119;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94854667C61
 
-Hi Benjamin,
+`fec_ptp_pps_perout()` reimplements logic already
+in `fec_ptp_read()`. Replace with function call.
 
-On Mon, Aug 5, 2024 at 10:33=E2=80=AFAM Benjamin Hahn <B.Hahn@phytec.de> wr=
-ote:
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
+ drivers/net/ethernet/freescale/fec_ptp.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-> +/* TPM */
-> +&ecspi1 {
-> +       #address-cells =3D <1>;
-> +       #size-cells =3D <0>;
-> +       cs-gpios =3D <&gpio5 9 GPIO_ACTIVE_LOW>;
-> +       num-cs =3D <1>;
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 0cc96dac8b53..19e8fcfab3bc 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -211,13 +211,7 @@ static int fec_ptp_pps_perout(struct fec_enet_private *fep)
+ 	timecounter_read(&fep->tc);
+ 
+ 	/* Get the current ptp hardware time counter */
+-	temp_val = readl(fep->hwp + FEC_ATIME_CTRL);
+-	temp_val |= FEC_T_CTRL_CAPTURE;
+-	writel(temp_val, fep->hwp + FEC_ATIME_CTRL);
+-	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
+-		udelay(1);
+-
+-	ptp_hc = readl(fep->hwp + FEC_ATIME);
++	ptp_hc = fep->cc.read(&fep->cc);
+ 
+ 	/* Convert the ptp local counter to 1588 timestamp */
+ 	curr_time = timecounter_cyc2time(&fep->tc, ptp_hc);
+-- 
+2.34.1
 
-num-cs is not needed.
 
-The number of chip selects can be retrieved from cs-gpios.
-
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
-> +       status =3D "okay";
-> +
-> +       tpm: tpm_tis@0 {
-
-Node names should be generic.
-
-Documentation/devicetree/bindings/tpm/tcg,tpm_tis-spi.yaml suggests 'tpm', =
-so:
-
-tpm: tmp@0 {
-
->  &iomuxc {
-> +       pinctrl_ecspi1: ecspi1grp {
-> +               fsl,pins =3D <
-> +                       MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO   0x80
-> +                       MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI   0x80
-> +                       MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK   0x80
-> +               >;
-> +       };
-> +
-> +       pinctrl_ecspi1_cs: ecspi1csgrp {
-> +               fsl,pins =3D <
-> +                       MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09     0x00
-
-Maybe simpler to put MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09 as part of
-pinctrl_ecspi1.
