@@ -1,74 +1,69 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2046.outbound.protection.outlook.com [40.107.21.46])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2062.outbound.protection.outlook.com [40.107.249.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC65A13C9B3
-	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 03:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EE313D635
+	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 03:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722828217; cv=fail; b=Fq2JO1k7uNzZzlHQTZ/s8DCmlxsvEYhOWHWt8x/0X1gnCERQfcVeITKY4shuOpHk6BQzCEnSxPFpAk5zVQVWV0tLctSaJzERry9OktqckzYjtRqF5Wxte4KeHBHiou9UR54LcfvE8Zd7DY70/pqE44bw2YVBSR7ZG29x6EahQYU=
+	t=1722828493; cv=fail; b=kSyIby8jWLUuSspyYSlQUPB/fuRJR0Q8QIcxUqjBmnDlgzxHQObBgz++q+K+UvLJdc2/Z4PBjtAEZjazYrQotTboXvctbkedTbUzmINp2H4Fmlv62u9nqqtcnXVk+Wls8a0F5+oZLKLajYMqN/uOiIr9kxpqUvsgrWMdA8bBK7M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722828217; c=relaxed/simple;
-	bh=3RxRB8c0pPDeNaLGs0PvBy4cVgTPYO+oJQAI7cpUaqE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SwHNPCBWBUPt2kKd208F3jHVgWAur0bR4OesJHOInf4tA7hU6MTY8wYrbdREeGZt436M9UtLcqgMuqgjDfYVYmSSngLLg/TuJROalhBmjV4DHH+Be8ThV0/pxBuEfbxhOxwdWy1TUzsdK1VMcVoeqDB10kraObNrWThwQeOhQOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZqBm8oiA; arc=fail smtp.client-ip=40.107.21.46
+	s=arc-20240116; t=1722828493; c=relaxed/simple;
+	bh=MV/2p04RVOc4pCiZnKFuASmRAG21Xoojb4pSrji1izY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NPLnlH33ePoX39SBNRMWT/QXH4GDQ5NojjqC8TUJdvvseUdY3YnOJTNoVxnoUliqQcDj0qiYYsho9LPgDWD/qZSiW37+BwUlymGj9Rn8gOC6vtw/DAC9ON/8gdY5vgvYo5lYoM4f10ijylH0Xf7f4x9KMrrEtRmhPxMiK596qxE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kk3vldSq; arc=fail smtp.client-ip=40.107.249.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZqBm8oiA"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kk3vldSq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jQcf9oJKHAh35ufL4Q2vsEoc1LsdyjC0l09bLT24s7obUDEvbRREa+FgOJYEU3h8/2exoIbHGc4wCh1oIZQFY06nOoed2VkpovJ7LC9x2XhfR1VzjG8GGppcPxmLkl/EymN6GqVyMedev+LolrppRWccXOqiXyzklNJL9R+0V8cSP5Ts7DMltNTFLjSNHgVsFBWqLWLORz4Nmoiec/z+hgwYcsbNeGcY09++JdKiIo/TRrS3qFhNnIBcR+clCVcUubtGm1GHh0TixazGxOrYxMfuAUe/2CcDyKf2I3QxtoBJ5Esve0LSnHvdjMSo7an+e8dTZ6Pl70cbpZ0By4RxwA==
+ b=oDBpBcWm86sGFr4K8MMH4o0rmObCHvLBGC1EjfY7YGUMt4JTJiDgKY+G8gXsLhNeJYDljaPva/YhldYDpdfVHj6Cm84VanwaluJc6S0r6s/p3WgaP5GelBZVNIOnt56T/DdqI2nCami9OCFfpBccefFdB3aH3Bmdh2N/I35dz+d0Zyk/z3JsRLhq2/xtbcpURFwsz9t1szbOjdh+WiefR8DKJiYOdKjzo2hkq0wRi4IO7eIJJlhtXbcMzwkgQzvLYEDlwLce6S/vooYk9oR8wMB9H6ZWLG52fgSvkVqfQpnvx7cMjnwrlJN6XaeMHGh8ZVichXeac8aPFGoWHXDukg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J/OsJmtBLjtZ+fJv/A4I7IiiM4h/iA9KghkikKV3ma4=;
- b=lzvFvsMrY/ZaqhiT/n5wN3Lrw6nFatczm/WKE5ugi8lgd46TZBRDa/imdM3LtkwmgQ23YsnzNA4fOSsZYkWWFjBvov4DjPBDKyhCbmCyXfAB9J3aO5kvSOpbRUah1KEykIvGh+BWtzVPDNG+kaqBDcDbc5Dz5Gm6/wZIH9PIv5DO3SckIYNdVJuFIUYjhp5U55LB/JovwuuaXl3SeOb65fbDKj40wCLrC+M00byqANcT9asoc8dfoL0qFCmSWb6eYE28iQoJj+tC7XfJFEw/Nu4uyC+BEAUDURTBJCHswPEu4bE8NVPq/cbKw7x/P7+QqxdYqjqgRbDI8KmkgYXwhw==
+ bh=r0qOyrV6M5AusPuIo/30TQcHI+a93osSIsiuWpmO9a4=;
+ b=ObUmsV5UeYf4gA9FmqkwDeTtMM1yh4WpTBxVfDJ3KPx0JgfYhD57+sIR7vdf7m+3GDGTHdWHZYqlUblQnv11q1AsT5sbP9V0W9mR7y12qiYwHGRWkytVR2pO0M/uGzdgiLhr5tcDnC5ggdBc+iaDTdq7ZxqMUOy5B77yIwW6LxS7R/ER5DS0QjpxcePGyF/YdEYtV7E6uNOvOYABBeP7e7DWI/iIghIdLNnvNn5RPG17kv1nPqgVR4sF3MI4fSJNb+KsX4H2Py6ay18GBLcFG3+hlJqURWS+SVkQSPINw/0BEBl0KIqYQbKejgQcFt+InkR0MBIdgzjZFVqBl/CZ8A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J/OsJmtBLjtZ+fJv/A4I7IiiM4h/iA9KghkikKV3ma4=;
- b=ZqBm8oiAzrEGDFskaM/ad6PZMUB1eLOjeeVFyU1BPrGKcLGcfw4ChReJFSC3ft0YPv+1XbPzfBRo0vBcwryRSF8Q9uAGaWLH46fvbRthQJgzjZwO+6S4dmnN2UH9z+P43lWfPGePnv1p4tnMYB7v2GulyIzTFrr+5JtCLD72+BZ0Jz7N8t8A7g7mle/4A7cXc7mTVptcyBl1pM48FpAS9RZ+U/MW2wcX8wxwrtcIBmr9K0XWMUsPBmRrYbC/okFTP5G1x7pvp+2BNgpapPrcSyNwtBk2m5KQdMd37PkwTh3YooZRPmDkx61h5qNthRHc42Cr3DXC6K7BUqDBSVtyiQ==
+ bh=r0qOyrV6M5AusPuIo/30TQcHI+a93osSIsiuWpmO9a4=;
+ b=kk3vldSqkXAvK9bRfBFzc3H3QHzO/wJIiDkZhET9uHfRcUFK5V1CBvhkeoYKTaY6GfPfiPFUHvhDFo9AQvugHXoCwHDKIsWn+iPhx3BvVMGFEcqe+Kpta8GD5LV2M46xA5FfcgETROnGYRGNpkT0JFAZ4ctyT0nIS2bDdPzuKpgB3UxQwHUVd4JhCGAyMQwRefRDgvBn+JC9lvU2m2npRA9rwbfQfueCbrsbDelYa8MVTPkFzZGWenS1M4mps1vX/8dRXtLY9OiHPXezfNZ93n0l4s4YU6xGmCyTW5tQqFVV+53QViqKdaH06Am4ffj8+6EmSs8jNDSDIKaTepuBJQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AS8PR04MB8611.eurprd04.prod.outlook.com (2603:10a6:20b:426::17) with
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by DU0PR04MB9466.eurprd04.prod.outlook.com (2603:10a6:10:35a::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Mon, 5 Aug
- 2024 03:23:31 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7828.023; Mon, 5 Aug 2024
- 03:23:31 +0000
-Message-ID: <677a5492-8f88-4ad6-8652-278d24b1b8a1@nxp.com>
-Date: Mon, 5 Aug 2024 11:23:59 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/16] drm/imx: Add i.MX8qxp Display Controller display
- engine
+ 2024 03:28:09 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%5]) with mapi id 15.20.7828.024; Mon, 5 Aug 2024
+ 03:28:08 +0000
+Date: Mon, 5 Aug 2024 11:27:29 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
- aisheng.dong@nxp.com, agx@sigxcpu.org, francesco@dolcini.it, frank.li@nxp.com
-References: <20240712093243.2108456-1-victor.liu@nxp.com>
- <20240712093243.2108456-7-victor.liu@nxp.com>
- <ib6brwxeai3wkgzglihfbqx7jakjslnftydbzo32xthijkd4u6@y4ebhgk5o3ec>
- <8071fdf8-6813-4707-8a9c-ad24f8b6a32f@nxp.com>
- <vlnpy7abizzzh7sj5zrgakwyams3w6k7ee4kaagiw646atmnjf@xkimtr43d4hr>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <vlnpy7abizzzh7sj5zrgakwyams3w6k7ee4kaagiw646atmnjf@xkimtr43d4hr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR02CA0013.apcprd02.prod.outlook.com
- (2603:1096:4:194::21) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	gregkh@linuxfoundation.org, Frank.Li@nxp.com, jun.li@nxp.com,
+	l.stach@pengutronix.de, aford173@gmail.com, hongxing.zhu@nxp.com,
+	alexander.stein@ew.tq-group.com, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 3/5] phy: fsl-imx8mq-usb: add tca function driver for
+ imx95
+Message-ID: <20240805032729.awuai5v67lmzq5mm@hippo>
+References: <20240802091702.2057294-1-xu.yang_2@nxp.com>
+ <20240802091702.2057294-3-xu.yang_2@nxp.com>
+ <i2o5pk7jnni4bgc6txktus26dtnd6quivxkslgqkelmyb334k6@s5waxd5ep75f>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <i2o5pk7jnni4bgc6txktus26dtnd6quivxkslgqkelmyb334k6@s5waxd5ep75f>
+X-ClientProxiedBy: SI1PR02CA0050.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::12) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,443 +71,148 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB8611:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d417626-a066-4198-52b8-08dcb4fdfb0c
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DU0PR04MB9466:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99c8a9be-8d77-4ef6-dfb2-08dcb4fea071
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|1800799024|366016|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QkRJQ2QvU09aRElTVzFZOXA5NC81OGRON1Z1MnZxWmc1L0NWWk1xZzl5Vk5m?=
- =?utf-8?B?TlFzRFNpbXU3eG1KWGU1TnowU2h1Z3E5Vy93YzJlRzdzYzhnQUR5bnNOL1BN?=
- =?utf-8?B?Umx4UFE2Z1F6SGN2KzVJYzJGTENqTFdZbUprbGVtUGlvTXNlK3owVkxITnBD?=
- =?utf-8?B?STRuZTRkd3lpaVVHK3oyNHdrdEdhcTk2aEl4azRKTlcwZ3QxVVQyQllwK1hD?=
- =?utf-8?B?bVBxTzR3S3RDMjVOVVRmc0ZkOXJpNlMvMlhucjRNU3pVeVR5QXlaTnVObmZm?=
- =?utf-8?B?ODNSS0NtSDVaQ05reXo1U3FTYU5adWZNQitUcW9BNTNNNXRKbnBYUlV6UUZU?=
- =?utf-8?B?UndoSmRCOHdnTk1iOXJjTWRzVGozcE04ek5OMEVJVEVsRFhMUmp3TUNMaEVa?=
- =?utf-8?B?VjRZS0YvTUxsU0RsZVhhdXlvNEZEVGNMMkpWd3V1Tmt0a2FMTXJWcTlvRXc0?=
- =?utf-8?B?dlZ3WGNqdktsZ0o2Tkg4Q21ZUDI3UjZvMlltS1V0eWFzWHFwWjVNbFg4UzQy?=
- =?utf-8?B?b01zNGZTUEVRVDUyNjljVGtDelpSYTNJa2ZPZGRXL1NrNzIzaDhjMlhOSWFJ?=
- =?utf-8?B?Q05xY2Y4UHNkd3FueS9ZRWp4N25DajFqVzloK0FaNUtKVUFMNWxxQWRlaDNw?=
- =?utf-8?B?emkyMHhKSlUrblZZZDMwR2RtZHNFOTN3YnRiZVY2c3RrYmM4TnhMQVh3R3cw?=
- =?utf-8?B?Qk9ETXpDYVZPN2JJRFlSd0gzQWkzbUkyODVtL2Q1MVJiVWUxUThlcG9laDcw?=
- =?utf-8?B?b1ExWjZnZ3dLa2x1ZnhwZVB3K3VSbGxIbkxYMjArcmlyMmhGRk5zUTY2T2E5?=
- =?utf-8?B?a1JlNndRNndoM3Y1TGY5TzRnUlhjMjZyTEQ4NmdDZ1k5QTlxRlVUbkdjMVJt?=
- =?utf-8?B?N0hObnpUODQ1T0pTUlA0djhZWnhsQTRzZENFYk1LS25pNDdBSG9qeVpDV05S?=
- =?utf-8?B?c2Zod0w1VTkycnVoLzR6OE5Wb0lvQ2NEYUJ3ODgxa0MvdUp4S2kzOXBERTVu?=
- =?utf-8?B?L0NEc2hrNW5hclovQTZtQjU4T3EwS1B5VFpOelhsWlZYVXJxRDNkeVpFaDV2?=
- =?utf-8?B?aHUydTBaWE4rRi9sSWtMY0tjamNDQkdqR2JVdFlZMEQwSERoY0MrRTNhbHNx?=
- =?utf-8?B?U1ZTUlNOTTR2NkNhY0piMGNZMm9PZFczZk1JQ2oxYUpMZEduVXNnTktBQmw5?=
- =?utf-8?B?Tm9XajdaVCtuaDdIbnFLWXF6eFpXbDA0aFU1VXFvMlBIanBUQWxjN2VRTFJ5?=
- =?utf-8?B?d0h4cG1OSi94ZkxPYzlmTFB1YzlKcUszZnpKQXlqdHVNK25PTkorWHlMWUdR?=
- =?utf-8?B?SVBIYkNlYmdDTTR2dExDdExYVkRjbWVNQUxzem9tNE8rQzRNZytBV2RYNXhm?=
- =?utf-8?B?d3hWSllvRUd1ZW1idWhTYThuQTI5Y2ExclhJVFFkRWFSNWJSekptVXQzNmli?=
- =?utf-8?B?aWsxcFhZekE2L21ISlA4UnB5dFRhWEorQ2h5bHczbHBGT3FhSGUwNDF4RERw?=
- =?utf-8?B?ZDdkcnNZOU03ZVVxZ2Z3ck5kUThvbGRjM2YvejZ0MmJmVTZqYkJBa21jQXpy?=
- =?utf-8?B?elVicTMwZElmRE1NNHhqRDIvUEc3K1kxUUEzTFhzaE1ST0crc2NldlA5K3dI?=
- =?utf-8?B?YXB4UmlFL0xuOThhNXYwVTRGdU9laEVzTnpqQU1xd1VxOFk3S2lzSmltdUNS?=
- =?utf-8?B?SEtHbVAveExEK1VZdmlzUmdMYjR5Zlg3RzltdVQ5NUQrcHRlaVRNQ3BjZ28r?=
- =?utf-8?B?anJzUVVrVnJqclRHTXRFeXd0K3JEWlcwNHhaeWJWQkdBVW4zTXlxaTZDcUQ4?=
- =?utf-8?B?ZFdBMWR0UFB5WlZ1ZFVSdz09?=
+	=?us-ascii?Q?N5ZC9plnJgdQHih20ZFTHvM+Im3C60jzKw64rUmHhfuf6vsy6ucqgmr0vOxu?=
+ =?us-ascii?Q?7ynhIZGd8WioA5DO4M5c1evVPLaRodWkB28Ln6AoYTSiXO7GE9Xfrxv89vf9?=
+ =?us-ascii?Q?7Mqm9riJs7WIBjtj24C57Mht/veelc63v8WmCqtYQRlmDm5853iaNGzlMeiL?=
+ =?us-ascii?Q?+rtNpE85GOspMSY5W9b4xKxkPMyw4aVy2CbQ0HCTMSSGUQ53puc01Ap02ZwO?=
+ =?us-ascii?Q?hEM9zDSpgx/Jjv9lrmrN6ngBnqygK19aePkw5Ms9c4s7a5spauEes5U1otw4?=
+ =?us-ascii?Q?lupmD/EQo41Dt9xniqO5Yo2NOk4QPTWVRWN18oDP6M4H0vUXJneHakfnNGaf?=
+ =?us-ascii?Q?lA9H5vUbAhzHwzyZYUl0IJ+h8eAhp7Ob/0yNO42bCINGEiuD4FVGuReuCUUj?=
+ =?us-ascii?Q?g3tj/yOkn1ytHn/UHNqGYyXNx6SQRgTIGUuXUXtHcI6RHcbghO79oZf6GBkf?=
+ =?us-ascii?Q?EHJo5AX5dKajpCWCTZiJ46laG1ti2RkLob9NfPvkt7dD3SJ90MNer+nYhpQj?=
+ =?us-ascii?Q?lrcQvWSpzfiN+6l//Z9wNwglbjJ5XTlWnW9GUsmb9WHexsCYdO2CWZ81VB5+?=
+ =?us-ascii?Q?6V6nD9rCAARgDuLvcWCbmxyGECVhsvoHmnm3hoZ4zOb7r+6wLd1vUIc+Htha?=
+ =?us-ascii?Q?LtH0uZdR/gKTOfCTOSa0hgP3nxiEBxe2GnsfA/7qkkd/oMIpeVEQGvU5FYQZ?=
+ =?us-ascii?Q?8i9v/HWNsx04nbieuMl3BrsWdPG7rgnuu3AKZe+kUyLu7B3b4urclDMBnNP5?=
+ =?us-ascii?Q?f840advHUUSTbDVIG7aGOE/8KO+aM/fZZqURkWVserCe4C4HpyQVlqeOXDgJ?=
+ =?us-ascii?Q?XpI85y0964MaodeYTyFXUKxRnRszxgsdzMV42W7lVEYqMoDiGEjLoqPNfFOX?=
+ =?us-ascii?Q?nht5JCeOsvESrxkQG1RzS/1A9FWE+wIKey0xlzRB8TTx3LxRDV3ti4KL6UIf?=
+ =?us-ascii?Q?B/VUki2XXPTepaCT16cTnOpDQt+Q2CEwTdys+LEJqGCa6yYrKhvTobmxRu27?=
+ =?us-ascii?Q?UifoeZY4KBRoUC3IPu+prAjWS76OPLycvZu83GvjnGpZNOtXDUn/ynBUoQCX?=
+ =?us-ascii?Q?GiUyk8L7pUSWB4ik82hvIa+nv7ln+wtQuLsK156YhcftHZt0qq+ZUFRzT8TU?=
+ =?us-ascii?Q?N7IsK0sYCgY4A+w6NvzWl484ajPVR0khasuFusln+2toyUD6Hm4jaUDGAea2?=
+ =?us-ascii?Q?7kHxzFKVEouMyL7oSeG0Fyne6QFRktuFGWUzcwC8KBIRteHOcMvgVG2fUxZU?=
+ =?us-ascii?Q?D34aTFvcAx3HUqTGl6LZJeXmF3owDkgm/14VAFP5yJ0/eIGGR0nqZyEyHL+4?=
+ =?us-ascii?Q?hxbJ7tgvdqNbB/w8CIM86ycIDnAKTponEYNRkm60PFICoVcJ+5WqIWpjSnya?=
+ =?us-ascii?Q?kObPMQ3bVx4PY3/2FLkPE4OqTDPSqQsGYPOUz7iHbi4wtbMO9g=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eTJjbnFtL2tJd21tcjZoc3lTR0pJYll4Rk5lMWZpMG0rRDVhcTBJQ3pFOEVt?=
- =?utf-8?B?VkN4Rno5Y2tqNFFjcUMwNzdEb3JUVFRDNDFFcWJZaE1pWXJXVCtmQkVQQ1pO?=
- =?utf-8?B?TTN0amxieVpSY1ZadFNDQW9EbVVhUXQrVVJKS0RmQUE3bUxleklrNnUvNlk1?=
- =?utf-8?B?VmNkek8rNFduOXF6N0kxWXBqY2gwSm9hYmo5U3FCWHEwZFFhY3B6bGdpanVr?=
- =?utf-8?B?Z0NWTFZ5YzhOeVBXUVRCK1gvSEYzMVBVdGRuMmhYQlRwVnJadkZISDhIdGQ3?=
- =?utf-8?B?bS9YRE90MFBJSHdFNWl0OXdmc2FKOVQwNzFUdmh6ek1VUUJ4Z2IzOFNCckRL?=
- =?utf-8?B?azFtbHhOdTNSMFhORXJ4RHRTM21qL1E4Vm9DK3hNblllRGQwWEFDaVNBWUhR?=
- =?utf-8?B?a2dDNEdzc2plaGlTVkRFMUlFc09yL3BKWEVaU1ZSVkV5STlpd2I2MG5OUjRu?=
- =?utf-8?B?TnI4UHo0UUxPK09YdEtXbjFWTHVsWTZWWVpyRG1GNUliT2RiTG45UDRLYjMr?=
- =?utf-8?B?UjRvVS9NY1FpWVpOZXB1dGREZXladmt0VllJZmNrVnJ4YlAxY3NEUms3QzhY?=
- =?utf-8?B?M1lQbzl0dVNOYkNLbzRFbUFsaHRQSVpHd1I2ZStqMTdoM2xQZW9ISmYvT2hu?=
- =?utf-8?B?eTFKSHUzWFdVUU85b1V6ZFExQ202bTUxOVByc05ydEFKN2FBM0xtbThqako3?=
- =?utf-8?B?TXZjeWptMkxrZFVQSUVoVWErM2FpSkxaRTdGazVIWEZWRzI3STNFczAzTHZl?=
- =?utf-8?B?VTJKbVYxcWtGUW1SOS9lZ2lyTGxxejU2M0JyWFBjWjZoc1AwcW1vcmFaZlNG?=
- =?utf-8?B?QlpWeHpxR2JRc0REWitnODBiQWZzOVpaczFPMVFRWnpMR1lmZy9tM0ptdFF5?=
- =?utf-8?B?eHpXTy9Jd3BxbVd3OEI1Z3E4dUtLYVNoYi9DUzZOcXJuTUpFLzZjT01MRU13?=
- =?utf-8?B?SGt1MDdZMlp3dVhUOTBOQVJ2YU5IdXhxYS9nZnpzblk3ZmIvSzRBMXVsTHMy?=
- =?utf-8?B?K0tibk5TYmluZWNZTnVKNTl4ckJuS1M2RUJuaHNsRE1IUnhqTnlqUVA1VTdv?=
- =?utf-8?B?TFVtVHg4MG9ySmYvQy9EVTdBTjlCOGJFMHBDVll0RnllcTF3WmNQM0tzVWMz?=
- =?utf-8?B?VlM5bVNJNUtiNlN1SFBEanZBdEpJaTNqY3pKSElPRFQxNElnd1IxbDdacGhJ?=
- =?utf-8?B?Z004WDA5TGRKMWJqb0ZBUmxlRy9ESHVmQXVUV3NOZFdvcjRzdjFCRHllczVx?=
- =?utf-8?B?MWYxQXd2dE56Q3JEbDQ5SUhvbmo0WkFVYmNFczlkbDEyQkJaS1YvK2hETkNk?=
- =?utf-8?B?QldiZUZlQzlqS3MxR3VnQVVQZkRmVmh3Wkc4bEphcy96KzdNVGo5SUJxaVVS?=
- =?utf-8?B?Zks4cDM1TTNkR20zeEZqRXJFQ3lXNEhBMWRJYWo0SUdlNFVpRzlHa0lDKzJr?=
- =?utf-8?B?Wks3QmVQeFVHeG0yQnI4Q245Qi9RM0N0VEpOSEJmbS8xdHpGYlZVRm5aaDlM?=
- =?utf-8?B?Ni9IOW5qdzV4MngvSkJBQWVmVjdnY2hveVBvb0F1RExlanBZQkRwdGwvNjlT?=
- =?utf-8?B?Ynlwdk94ZVMzTkl4bmdGUXVzTnpQZXFlK1VmeGRPMVFjdTlVWTJKdXcrbzVl?=
- =?utf-8?B?cTRVVmtnS29tQVNOTlp0Sll1TjRHNStBQS9NbFBiMUJobmxBOXg4c1pmazk0?=
- =?utf-8?B?ck9pUHVzYlM2b2p5UTRzNzZTd2tPWm0wTFNPTHUwcWNhOWZ4aUR1bmVJSzZD?=
- =?utf-8?B?MDVWWjIvVndOdVhJOTA5Tm1qYUVsMDRuc3VQbUVDanluemYwTGZsN0FFSjA4?=
- =?utf-8?B?YmI1QTFKcStSTENxeE1qVGg1NDN3RG1naU1wTFdySzRldTBhZjNDdDA1QUxV?=
- =?utf-8?B?ejJraHBIMGkxV1d4Y1FFZ1p4N2w3TUNQdnVLOHRuelJhazZoc1NBWThQYWpO?=
- =?utf-8?B?cEdNNDlSTmlaTDdkSXc1QWdIVDU1QVNxOGhpblRMMEhkTFpyNnFjUGZ1QXo0?=
- =?utf-8?B?VkZ1YldEYXRqMjUwLy9XRDNKbDAraEhZaTJBdHM1V0h1QVE1bDdBdTY3bGwr?=
- =?utf-8?B?K2MrSnYrMHBNb0hveDFYVFhhMko0TWVhMUxGRWw4aGd1bFB6ZlVPYVRZeTFZ?=
- =?utf-8?Q?xY5zKa7olSnuxF+AOwkjNrvhH?=
+	=?us-ascii?Q?eV7+093SZlt2yJq5Qc0umGqEF7E+HiIENpDgn/5ESP0lK1Fk/Tj1z0JC0GMi?=
+ =?us-ascii?Q?oZszReVM3OJPzb9QFB5wjKus1mbJBRVqQZwHI+AvQ/C5qMDKuckzramiQRv3?=
+ =?us-ascii?Q?k4amkiC6XqVBjRVE9tCuLI5VvdmVzRerRaXrOVWZHtxQd2nctEs8ayns5FFj?=
+ =?us-ascii?Q?UFonuoeymYrKiRv5ps4dFDb6W6KaaEilwk6fNT7pfJ06XnxSAeRF/oeJ5WUm?=
+ =?us-ascii?Q?oLGYWX3/y0vSJL3gLkS1/lRZQRL4r/BUxMN0ol1lCpmsFG7XAwlkvxscHX+7?=
+ =?us-ascii?Q?UJ2PJGtcbPj7FC+6w9BjkSTrIRbBu1LMPvYL+iKi3U+DiAwlAm2XgO+KrLku?=
+ =?us-ascii?Q?SiYqVAQOQYk3VV4AGBo1C1os9gn77rN+TIwSYj+9gwh9g4DIQRBKVV234GW6?=
+ =?us-ascii?Q?cq9oCMw6UlGh57to+TmjjB2UYOFX5xtFBD6+rrsHCmxp+kU2GQzP4jIWb6+m?=
+ =?us-ascii?Q?MZBr1ESi2M4fvaruQmG0NTdFKJDcm4AQe1SW11eIWIWsIlVgIuMCAehD1oai?=
+ =?us-ascii?Q?3C4+o5e82aVgIXYCVpQRrS8tL9h2M72LBWUWsKP1YXKsVUFjdYiUl4GKfNP4?=
+ =?us-ascii?Q?iFMPuhfZDl/pIATYzPYFoqK+dBFOd7lIXkGJp+8DPqNJY/4wv17zbaFjytig?=
+ =?us-ascii?Q?0r7qOQuf7G021w+OP2GImTfIeWjpWg28hh11sT9/jTghVgAAeRCsSAhEjVlf?=
+ =?us-ascii?Q?YkwxqTilRS+ZFBKAUBvRFqYVbkIXWRl77pzsl/BKPc0frqWU3ZAe9BembSQG?=
+ =?us-ascii?Q?qJWqXakmzkggOl/4tQxXSwzqLi4kLdysjqodNits3vm6yLt0QVF1LTmkmq6j?=
+ =?us-ascii?Q?39UuOG2G1/hr0UaJufD1xJBJCPfUp16McI8upVWFzd9JzlqolSzZvboP9zBh?=
+ =?us-ascii?Q?zw9t81rMgFWEcsiyK1RAqvvladvEzwiloP96iqGYcwVhhKNL2EEu4IDon0va?=
+ =?us-ascii?Q?MZeqAXlZ4BKFdEj+D94ECKubFQkZd7XKEchRfBeqLTWwfnkP3WMI0jsPihMP?=
+ =?us-ascii?Q?omijNeltDKIn+nmWCnOu4H45dWNOL6UFWEEV/P27BFUdQ1OEs+5sJSphz7bM?=
+ =?us-ascii?Q?RYhcJuZvz9+fsU5p+hf+3uyHfwIQT15j7FBff+eyCXzjL26+fnzEkZRx9BEI?=
+ =?us-ascii?Q?HboQhM9TGhSn3rUKjoybsSdCpE/pwZdIu1ApXxIw0aL1DgAhhYhuV5OHVjIm?=
+ =?us-ascii?Q?IvGJv8u2O1qLaZTLEyKHxmsvVqlHEw6HAH8HRl2rC9ThdnW7RYNMqorFtfQi?=
+ =?us-ascii?Q?xLeR89TonlOEgYrxFd4hITbzKBh54piOY3Cy32xcaxRtCkDiq25SurQzljJS?=
+ =?us-ascii?Q?DfqFAUvaZJ+ozGYmiN+E026ozCVbK/yenGUG6p+ZZh69QtiqauZKGG3vlI0j?=
+ =?us-ascii?Q?eQRTXrSjWp2eWrMaYz57pTeCv+WB9p16Rh9x/+L2E+BGyns5fn2FN0bRVbFh?=
+ =?us-ascii?Q?WLbQ85Km2d23v1br8Dp/H+boDup9pFnN7D8dwBX73xSqRJbLJnYh1Y6h2PLa?=
+ =?us-ascii?Q?s4CJm2VcgtmmsRlliz9UDDqFAQdu+IRjf+kGcOQ5QvYdUehjhlBdDg2R0qic?=
+ =?us-ascii?Q?Ls4vQjxOiX8UgHr6lULq71bWJ1tHk6d5g11lyGG5?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d417626-a066-4198-52b8-08dcb4fdfb0c
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99c8a9be-8d77-4ef6-dfb2-08dcb4fea071
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 03:23:31.2426
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 03:28:08.7785
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4lbIg25fA5+PAAQhhtJnuK4fjyL4ZpkjwdcUIQxpT/8B2SkhajQ4xCAbUAGUCp9Eeb7HpnuIXLbC7L03ZS1jjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8611
+X-MS-Exchange-CrossTenant-UserPrincipalName: agLNNliHnkLocX5F6V847BUw4U2nvoIHlOlu1yFkbeaX30aN6yX1kyJfnjSEG5R+yLacOj8qj2SAIdAN6SOH7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9466
 
-On 07/31/2024, Dmitry Baryshkov wrote:
-> On Tue, Jul 30, 2024 at 02:25:41PM GMT, Liu Ying wrote:
->> On 07/28/2024, Dmitry Baryshkov wrote:
->>> On Fri, Jul 12, 2024 at 05:32:33PM GMT, Liu Ying wrote:
->>>> i.MX8qxp Display Controller display engine consists of all processing
->>>> units that operate in a display clock domain.  Add minimal feature
->>>> support with FrameGen and TCon so that the engine can output display
->>>> timings.  The display engine driver as a master binds FrameGen and
->>>> TCon drivers as components.  While at it, the display engine driver
->>>> is a component to be bound with the upcoming DRM driver.
->>>
->>> Generic question: why do you need so many small subdrivers? Are they
->>
->> As we model processing units, interrupt controller, display engine
->> and pixel engine as devices, relevant drivers are created to bind
->> them.
->>
->> Maxime insisted on splitting the main display controller(the overall
->> IP) into separate devices.  Also, Rob asked me to document every
->> processing units and the other sub-devices in v2.  So, splitting the
->> controller is kinda accepted from both DT PoV and DRM PoV.
+On Fri, Aug 02, 2024 at 04:52:06PM +0300, Dmitry Baryshkov wrote:
+> On Fri, Aug 02, 2024 at 05:17:00PM GMT, Xu Yang wrote:
+> > The i.MX95 USB3 phy has a Type-C Assist block (TCA). This block consists
+> > two functional blocks (XBar assist and VBus assist) and one system
+> > access interface using APB.
+> > 
+> > The primary functionality of XBar assist is:
+> >  - switching lane for flip
+> >  - moving unused lanes into lower power states.
+> > 
+> > This info can be get from:
+> > i.MX95 RM Chapter 163.3.8 Type-C assist (TCA) block.
+> > 
+> > This will add support for TCA block to achieve lane switching and tca
+> > lower power functionality.
+> > 
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > Reviewed-by: Jun Li <jun.li@nxp.com>
+> > ---
+> >  drivers/phy/freescale/Kconfig              |   1 +
+> >  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 238 +++++++++++++++++++++
+> >  2 files changed, 239 insertions(+)
+> > 
 > 
-> I went back to the previous series, where Maxime commented on the
-> "multiple devices glued together". With the split architecture it
-> becomes even more strange, because now you have a separate IRQ
-> controller which enumerates interrupts for all subdevices and then glues
-> them back.
+> [..]
 > 
-> If it was an actually split device, I'd have expected that each of
-> subdevices has interrupts going to the external controller, without the
-> glue controller. Or that the glue controller has a limited set of the
-> externally-generated interrupts that it further splits into per-block
-> IRQs.
-
-People may have different opinions on whether the main display controller
-should be split into sub-devices or not, or even how it should be split,
-which looks quite subjective.  Given this situation, I tend to follow
-the kind of agreement reached by Rob and Maxime that it should be split
-entirely and each processing unit should have a dt-binding doc.
-
+> > @@ -398,6 +624,10 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+> >  
+> >  	phy_set_drvdata(imx_phy->phy, imx_phy);
+> >  
+> > +	if (device_is_compatible(dev, "fsl,imx95-usb-phy") &&
+> > +			imx95_usb_phy_get_tca(pdev, imx_phy) < 0)
+> > +		return dev_err_probe(dev, -ENODEV, "failed to get tca\n");
 > 
-> Could you please point out the patches that describe and implement the
-> <&dc0_irqsteer> device?
+> Pleas propagate error returned by imx95_usb_phy_get_tca() instead of
+> always returning -ENODEV.
 
-drivers/irqchip/irq-imx-irqsteer.c
-Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
+Okay.
 
-You may find an irqsteer DT node in patch 13/16 in v2.
+Thanks,
+Xu Yang
 
 > 
->>
->>> used to represent the flexibility of the pipeline? Can you instantiate
->>
->> No. They are just used to bind the devices created from DT.
->>
->>> these units directly from the de(?) driver and reference created
->>> structures without the need to create subdevices?
->>
->> Given the separated devices created from DT, I can't.
+> > +
+> >  	imx8m_get_phy_tuning_data(imx_phy);
+> >  
+> >  	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+> > @@ -405,8 +635,16 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+> >  	return PTR_ERR_OR_ZERO(phy_provider);
+> >  }
+> >  
+> > +static void imx8mq_usb_phy_remove(struct platform_device *pdev)
+> > +{
+> > +	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
+> > +
+> > +	imx95_usb_phy_put_tca(imx_phy);
+> > +}
+> > +
+> >  static struct platform_driver imx8mq_usb_phy_driver = {
+> >  	.probe	= imx8mq_usb_phy_probe,
+> > +	.remove = imx8mq_usb_phy_remove,
+> >  	.driver = {
+> >  		.name	= "imx8mq-usb-phy",
+> >  		.of_match_table	= imx8mq_usb_phy_of_match,
+> > -- 
+> > 2.34.1
+> > 
 > 
-> I'd allow Maxime to override me here, but I think that subblocks should
-> not be described in DT, unless that is required to describe
-> possible versatility in the display pipeline.
-> 
->>>>
->>>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>>> ---
->>>> v2:
->>>> * Use OF alias id to get instance id.
->>>> * Add dev member to struct dc_tc.
->>>>
->>>>  drivers/gpu/drm/imx/Kconfig     |   1 +
->>>>  drivers/gpu/drm/imx/Makefile    |   1 +
->>>>  drivers/gpu/drm/imx/dc/Kconfig  |   5 +
->>>>  drivers/gpu/drm/imx/dc/Makefile |   5 +
->>>>  drivers/gpu/drm/imx/dc/dc-de.c  | 151 +++++++++++++
->>>>  drivers/gpu/drm/imx/dc/dc-de.h  |  62 ++++++
->>>>  drivers/gpu/drm/imx/dc/dc-drv.c |  32 +++
->>>>  drivers/gpu/drm/imx/dc/dc-drv.h |  24 +++
->>>>  drivers/gpu/drm/imx/dc/dc-fg.c  | 366 ++++++++++++++++++++++++++++++++
->>>>  drivers/gpu/drm/imx/dc/dc-tc.c  | 137 ++++++++++++
->>>>  10 files changed, 784 insertions(+)
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/Kconfig
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/Makefile
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.c
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.h
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.c
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.h
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fg.c
->>>>  create mode 100644 drivers/gpu/drm/imx/dc/dc-tc.c
->>>>
->>>> diff --git a/drivers/gpu/drm/imx/Kconfig b/drivers/gpu/drm/imx/Kconfig
->>>> index 03535a15dd8f..3e8c6edbc17c 100644
->>>> --- a/drivers/gpu/drm/imx/Kconfig
->>>> +++ b/drivers/gpu/drm/imx/Kconfig
->>>> @@ -1,5 +1,6 @@
->>>>  # SPDX-License-Identifier: GPL-2.0-only
->>>>  
->>>> +source "drivers/gpu/drm/imx/dc/Kconfig"
->>>>  source "drivers/gpu/drm/imx/dcss/Kconfig"
->>>>  source "drivers/gpu/drm/imx/ipuv3/Kconfig"
->>>>  source "drivers/gpu/drm/imx/lcdc/Kconfig"
->>>> diff --git a/drivers/gpu/drm/imx/Makefile b/drivers/gpu/drm/imx/Makefile
->>>> index 86f38e7c7422..c7b317640d71 100644
->>>> --- a/drivers/gpu/drm/imx/Makefile
->>>> +++ b/drivers/gpu/drm/imx/Makefile
->>>> @@ -1,5 +1,6 @@
->>>>  # SPDX-License-Identifier: GPL-2.0
->>>>  
->>>> +obj-$(CONFIG_DRM_IMX8_DC) += dc/
->>>>  obj-$(CONFIG_DRM_IMX_DCSS) += dcss/
->>>>  obj-$(CONFIG_DRM_IMX) += ipuv3/
->>>>  obj-$(CONFIG_DRM_IMX_LCDC) += lcdc/
->>>> diff --git a/drivers/gpu/drm/imx/dc/Kconfig b/drivers/gpu/drm/imx/dc/Kconfig
->>>> new file mode 100644
->>>> index 000000000000..32d7471c49d0
->>>> --- /dev/null
->>>> +++ b/drivers/gpu/drm/imx/dc/Kconfig
->>>> @@ -0,0 +1,5 @@
->>>> +config DRM_IMX8_DC
->>>> +	tristate "Freescale i.MX8 Display Controller Graphics"
->>>> +	depends on DRM && COMMON_CLK && OF && (ARCH_MXC || COMPILE_TEST)
->>>> +	help
->>>> +	  enable Freescale i.MX8 Display Controller(DC) graphics support
->>>> diff --git a/drivers/gpu/drm/imx/dc/Makefile b/drivers/gpu/drm/imx/dc/Makefile
->>>> new file mode 100644
->>>> index 000000000000..56de82d53d4d
->>>> --- /dev/null
->>>> +++ b/drivers/gpu/drm/imx/dc/Makefile
->>>> @@ -0,0 +1,5 @@
->>>> +# SPDX-License-Identifier: GPL-2.0
->>>> +
->>>> +imx8-dc-drm-objs := dc-de.o dc-drv.o dc-fg.o dc-tc.o
->>>> +
->>>> +obj-$(CONFIG_DRM_IMX8_DC) += imx8-dc-drm.o
->>>> diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
->>>> new file mode 100644
->>>> index 000000000000..2c8268b76b08
->>>> --- /dev/null
->>>> +++ b/drivers/gpu/drm/imx/dc/dc-de.c
->>>> @@ -0,0 +1,151 @@
->>>> +// SPDX-License-Identifier: GPL-2.0+
->>>> +/*
->>>> + * Copyright 2024 NXP
->>>> + */
->>>> +
->>>> +#include <linux/component.h>
->>>> +#include <linux/container_of.h>
->>>> +#include <linux/io.h>
->>>> +#include <linux/mod_devicetable.h>
->>>> +#include <linux/module.h>
->>>> +#include <linux/of.h>
->>>> +#include <linux/of_platform.h>
->>>> +#include <linux/platform_device.h>
->>>> +#include <linux/pm.h>
->>>> +#include <linux/pm_runtime.h>
->>>> +
->>>> +#include <drm/drm_managed.h>
->>>> +
->>>> +#include "dc-de.h"
->>>> +#include "dc-drv.h"
->>>> +
->>>> +#define POLARITYCTRL		0xc
->>>> +#define  POLEN_HIGH		BIT(2)
->>>> +
->>>> +struct dc_de_priv {
->>>> +	struct dc_de engine;
->>>> +	void __iomem *reg_top;
->>>> +};
->>>> +
->>>> +static inline struct dc_de_priv *to_de_priv(struct dc_de *de)
->>>> +{
->>>> +	return container_of(de, struct dc_de_priv, engine);
->>>> +}
->>>> +
->>>> +static inline void
->>>> +dc_dec_write(struct dc_de *de, unsigned int offset, u32 value)
->>>> +{
->>>> +	struct dc_de_priv *priv = to_de_priv(de);
->>>> +
->>>> +	writel(value, priv->reg_top + offset);
->>>
->>> Is there a point in this wrapper? Can you call writel directly? This
->>
->> At least, it helps finding read/write ops upon interested devices through
->> 'git grep'.
-> 
-> git grep writel also works.
-
-I said "interested devices".  For example, write ops upon LayerBlend can
-be easily found by 'git grep dc_lb_write'.  'git grep writel' is not enough
-to tell interested device.
-
-> 
->>
->> Also, since we have dc_*_write_mask() helpers, it doesn't look too bad to
->> have dc_*_read/write() helpers.
-> 
-> Please use regmap_update_bits instead of dc_*_write_mask.
-
-Then, you are suggesting to use both regmap_update_bits and writel.
-This doesn't look very consistent.  Why not use regmap_write and
-regmap_update_bits?
-
-Anyway, this is a bit bike-shedding.  If you don't have too strong opinion
-on this, I'd hope to keep the read/write ops as-is.
-
-> 
->>
->>> question generally applies to the driver. I see a lot of small functions
->>> which can be inlined without losing the clarity.
->>
->> Can you please point out typical ones?
-> 
-> dc_fg_enable_shden(), dc_fg_syncmode(), dc_dec_init()
-
-I'll inline them and some others.
-
-> 
-> To provide an example, this is the code from dc_crtc_atomic_enable().
-> 
-> 	dc_fg_displaymode(dc_crtc->fg, FG_DM_SEC_ON_TOP);
-> 	dc_fg_panic_displaymode(dc_crtc->fg, FG_DM_CONSTCOL);
-> 	dc_fg_cfg_videomode(dc_crtc->fg, adj);
-> 
-> the FG parameters are fixed here. I'd expect a single call from dc_dcrtc
-> to dc_fg, which internally does all the settings. This removes a need to
-> export low-level details to other modules.
-
-The display modes set by dc_fg_displaymode() and dc_fg_panic_displaymode()
-are kinda key settings for KMS.  IMHO, setting them in ->atomic_enable()
-makes maintenance and code reading a bit easier though with trivial and
-neglectable performance penalty since they are done for each mode setting.
-
-Anyway, since you asked, I'll move the two to dc_fg_init() and move
-some others where apply.
-
-> 
->>
->>>
->>>> +}
->>>> +
->>>> +static void dc_dec_init(struct dc_de *de)
->>>> +{
->>>> +	dc_dec_write(de, POLARITYCTRL, POLEN_HIGH);
->>>> +}
->>>> +
->>>> +static int dc_de_bind(struct device *dev, struct device *master, void *data)
->>>> +{
->>>> +	struct platform_device *pdev = to_platform_device(dev);
->>>> +	struct dc_drm_device *dc_drm = data;
->>>> +	struct dc_de_priv *priv;
->>>> +	int ret;
->>>> +
->>>> +	priv = drmm_kzalloc(&dc_drm->base, sizeof(*priv), GFP_KERNEL);
->>>> +	if (!priv)
->>>> +		return -ENOMEM;
->>>> +
->>>> +	priv->reg_top = devm_platform_ioremap_resource_byname(pdev, "top");
->>>> +	if (IS_ERR(priv->reg_top))
->>>> +		return PTR_ERR(priv->reg_top);
->>>> +
->>>> +	priv->engine.irq_shdld = platform_get_irq_byname(pdev, "shdload");
->>>> +	if (priv->engine.irq_shdld < 0)
->>>> +		return priv->engine.irq_shdld;
->>>> +
->>>> +	priv->engine.irq_framecomplete =
->>>> +				platform_get_irq_byname(pdev, "framecomplete");
->>>> +	if (priv->engine.irq_framecomplete < 0)
->>>> +		return priv->engine.irq_framecomplete;
->>>> +
->>>> +	priv->engine.irq_seqcomplete =
->>>> +				platform_get_irq_byname(pdev, "seqcomplete");
->>>> +	if (priv->engine.irq_seqcomplete < 0)
->>>> +		return priv->engine.irq_seqcomplete;
->>>> +
->>>> +	priv->engine.id = of_alias_get_id(dev->of_node, "dc0-display-engine");
->>>
->>> Is this alias documented somewhere? Is it Acked by DT maintainers?
->>
->> I see aliases nodes in about 10 .yaml files as examples.
->> If needed, I can add them to examples.
->>
->> Rob said "Ideally, no" to use alias in v1. However, IMHO, it is the only
->> appropriate way to get instance id. In v1 review cycles, we've seen kinda
->> 4 ways:
->>
->> 1) fsl,dc-*-id DT property
->>    Rejected by Krzystof.
->>
->> 2) OF alias
->>
->> 3) OF graph ports (Rob)
->>    This doesn't directly get instance id but just tell the connections.
->>    Since there are too many input/output options between some processing
->>    units, I hope we don't end up using this approach, as I mentioned in v1.
->>    It seems be difficult for display driver to handle those ports.   
->>
->>    VC4 Hardware Video Scaler(HVS) is not using OF graph ports to tell the
->>    connections to display controllers, either. See brcm,bcm2835-hvs.yaml.
->>  
->> 4) fsl,imx8qxp-dc-*{id} DT compatible string
->>    It doesn't seem necessary to add the id information to compatible string.
-> 
-> For the similar issue we ended up hardcoding IO address / masks into the
-> driver. This is far from being optimal (and I'd like to get away from
-
-I thought about using IO address to tell instance id in driver before v1,
-and chose not to do that since it's not straightforward and kinda abusing IO
-address.
-
-> it). If we were designing drm/msm from scratch now, we'd probably have used OF
-> graph port IDs.
-
-Don't know drm/msm and it's backing HW(s), so not sure how OF graph ports
-can bring benefits for it.  For i.MX8 DC, it will be too complex for DT and
-display driver to use OF graph ports. 
-
-> 
->>
->>>
->>>> +	if (priv->engine.id < 0) {
->>>> +		dev_err(dev, "failed to get alias id: %d\n", priv->engine.id);
->>>> +		return priv->engine.id;
->>>> +	}
->>>> +
->>>> +	priv->engine.dev = dev;
->>>> +
->>>> +	dev_set_drvdata(dev, priv);
->>>> +
->>>> +	ret = devm_pm_runtime_enable(dev);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	dc_drm->de[priv->engine.id] = &priv->engine;
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->>>
->>
->> -- 
->> Regards,
->> Liu Ying
->>
-> 
-
--- 
-Regards,
-Liu Ying
-
+> -- 
+> With best wishes
+> Dmitry
