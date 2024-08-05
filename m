@@ -1,59 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F1017C64;
-	Mon,  5 Aug 2024 17:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1122D15ECFB;
+	Mon,  5 Aug 2024 17:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722879026; cv=none; b=CxEI7OnSTlZ30TI2q00juN6RBCLCMk3aX7TR/ggW0/Z80GkCMPn+OUhtEPwLYQGgi0TkDlwQSJ3c3D/72LXEZGkkehEZAnS4wOzbKTV58g2w2OaP5riSCknLYogUkqTvLyTiIUU3CiCcB9dITF+PJMjsBOaKfXLpGgah2Ui78bA=
+	t=1722879485; cv=none; b=tCfPiYXzPohHgtKUGAY6koUEZRnrU77ZfJba7hCq70taU6lfUtu3MftFcQzs9gKFwuD3zSVQu58GeBqKKm+zjk1RwudvtjDncK3xbr/pt24OEpzn7/ijXE4i6uE2s3yIS4Q16BR4liS4Pmp4FZfUfSwcKAZYTlV0o7i1sNWRId8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722879026; c=relaxed/simple;
-	bh=HMmdU3ZbYWB/563oquMicHskGpOAbjwkdkx67Dh+ymc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e939AiB33YdVWT28SunhnGjSd99DTcL9Q4GX68DJQaClNiNvQZ6A8HE0/DKjMjtKmMqjihDXp2HHWEFQIdvxDCOaXP6tn/m2KP008csGWy8bjGJcs+L/L3hwHQWMA5mGczctr75GlaYbygvbM7fSZlymU122tx2s6zS4NRsIvy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XjN9P6Qm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722879485; c=relaxed/simple;
+	bh=KFH4+hoD9XuYSQpXUgYBPFSN1NDPjp3nh1R+qPccr9w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qdpTp+rrvKb81mQXriAtOgdyFJfoWV3g9pNyJDCyvYGDh6ioJF2LetAHZPygj78gp+vx7X22OX4Wpt3B/XmM95+LlM3FSUX1fKASssVKeYA2V5sb6/PWNxPzRp3G7HbofgXjjCO8T4sI1TvTyW9GTlHUQgPs/XAcUwiv01g0BfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jIGmDgCi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XjN9P6Qm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F420C32782;
-	Mon,  5 Aug 2024 17:30:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jIGmDgCi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B01C32782;
+	Mon,  5 Aug 2024 17:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722879026;
-	bh=HMmdU3ZbYWB/563oquMicHskGpOAbjwkdkx67Dh+ymc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XjN9P6Qmc1kvluuH/sYzLTgFD4e++TzSgq9mhGtEV3uvnSVBrX6n1mimRiy5/3bwl
-	 Xq3R9wcz5TixZf4PvZJWGFjYy2iljuUNhXaAPkbnONXv/v0vOMtp7izSRyE8A+PTsG
-	 pjJYqRIQ0GR0EsRngwCuFkFsZUl+74bM/X05oQTtWaASthLT96VKFOG1VRbQYXM72w
-	 Wjlzk0I4Us19YR7MGRS+acG8jUCUwgYbpLmw7wp59PcFVzZ7ojKCEV+HXrx4qWVfJE
-	 pdZkDFjcpzPJxKyOBdRNFCdgoebnFMgC2y/utWKA1P7yYsjOd7/L6JyvUJcxNB6+yK
-	 +vDLcpWOWjilA==
-Date: Mon, 5 Aug 2024 19:30:20 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org, openbmc@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH] i2c: don't use ',' after delimiters
-Message-ID: <gipvrndaja55f2fh3iwjvcenvdbizuzwrkcf6wow3c2y3pimgr@vorn7q2snn2o>
-References: <20240730220401.3649-2-wsa+renesas@sang-engineering.com>
+	s=k20201202; t=1722879484;
+	bh=KFH4+hoD9XuYSQpXUgYBPFSN1NDPjp3nh1R+qPccr9w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jIGmDgCifmHgJgnRpBfH4w9R5n0wDfJF2iHBQXhKzD/NUckY7Ug9GOTEjeStfHqmo
+	 pPMS8TQ5S7vxijcva8OVzRZuDQ6TAeOufjhjOscnESj8lgi3nTmPo2GJUlqFF9ao7z
+	 IEEvixYAR/tJ/AH+FmwlPcMSa9xVfchG3hloDGBVtKVZn1VBbFxNDEkyXgI8BhGUQb
+	 j+ZnwIoO3YxcJMwEJpo48Mg0qZoyodsKwEvr3tEKN7XxLfulLpclUR4/dhdq7T+y+S
+	 F6PL2mmjLLrBc/CyRItE/eu6gIXaah3bDXl1QrOzGPmQrhzLlu5SL2I+5fv3MmqfBY
+	 08rLiKCkvUQYw==
+From: Vinod Koul <vkoul@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, dmaengine@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240704020802.3371203-1-Frank.Li@nxp.com>
+References: <20240704020802.3371203-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/1] dt-bindings: fsl-qdma: allow compatible string
+ fallback to fsl,ls1021a-qdma
+Message-Id: <172287948210.489137.3448026012813865082.b4-ty@kernel.org>
+Date: Mon, 05 Aug 2024 23:08:02 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730220401.3649-2-wsa+renesas@sang-engineering.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-Hi Wolfram,
 
-On Wed, Jul 31, 2024 at 12:01:59AM GMT, Wolfram Sang wrote:
-> Delimiters are meant to be last, no need for a ',' there. Remove a
-> superfluous newline in the ali1535 driver while here.
+On Wed, 03 Jul 2024 22:08:02 -0400, Frank Li wrote:
+> The IP of QDMA ls1028/ls1043/ls1046/ is same as ls1021. So allow compatible
+> string fallback to fsl,ls1021a-qdma.
 > 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> The difference is that ls1021a-qdma have 3 irqs, and other have 5 irqs.
+> 
+> Fix below CHECK_DTB warning.
+> arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dtb: dma-controller@8380000: compatible: ['fsl,ls1046a-qdma', 'fsl,ls1021a-qdma'] is too long
+> 
+> [...]
 
-pushed into i2c/i2c-host.
+Applied, thanks!
 
-Thanks,
-Andi
+[1/1] dt-bindings: fsl-qdma: allow compatible string fallback to fsl,ls1021a-qdma
+      commit: 0204485c5a1e2de00acfd83c3931bd9dc6493c64
+
+Best regards,
+-- 
+Vinod Koul <vkoul@kernel.org>
+
