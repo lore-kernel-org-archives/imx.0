@@ -1,87 +1,86 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2ED7F486
-	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 14:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4971A15F330;
+	Mon,  5 Aug 2024 15:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722869865; cv=none; b=nEv6fjA80iSjN6kr5cpN2o0p7n4+0L82dUn7AJ2TqeDwop1CvttPgE7g00g7Dcoe3xojVHdxC5TqR2K0HQdomRS4kg+X06H9bJ5rkvYNgqFWGSA42ssTAKqTAzTXKNKQcG6FzDIgZXwb4NztlZlNvHHQqlQ3wgeMHlYTWIhhtNo=
+	t=1722870020; cv=none; b=Ze/tkxpPJQ3XN9KNmrQlU7v7dj8nsneOGWhFhxrohaRbo7YRGBqncR2OxRzHio29gUm7JQ0TrHvKdoJR4OUylLP6oemjT9YBDhuEjb/5SxG+CID11SB78gQzN32NVUTmqqfyAmE2eX3YuwiDlH0p3ph8+kEdWw3vvcKEyWcj41k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722869865; c=relaxed/simple;
-	bh=xQxs5tA86O7NH6G9PP9yTirBnWcDZOoo7XIjpVLI+xY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P6J+wrcWfVMopBWtF2QFU0SMywLQQQUcbfIW/DF5SOMtXnB6nPviJotg9KcdVdIdHaKinISrj5Qk9YCItFxJ73CZXjAduHizrXZRAHn03waXCV1f+n7752crIkJtImRBn9yNiC1L+sqpASRmLn2wtjGzgABHYFA353gE+yg33jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=DqdNJ6Qa; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1722870020; c=relaxed/simple;
+	bh=tfgBwylZtYmd8rGUyotRtDhn3AR0oXSUI6WU08SNoFM=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=jQO3ZiB4KzRKK1hAEYOtl+un0XBvs2Yidm1T5fAsBt6dpPkcm+5qJ2FH0kvfjzxiPCI8Uw2z5ptR4QqzMc69wNIfdgv9RKdreqw/V/PtxdVp+d3qkPMUGoWG4yBA638MiktaSSv/KQkdQcXWtPjrmkacc6AQd+yzJeYgsYnw4+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eM5LpTVv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="DqdNJ6Qa"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id CDA6AA1020;
-	Mon,  5 Aug 2024 16:57:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=rt0/DzSJHh0VO/aLzwYC4bGQHdS29kdGzx/bnV7v0b4=; b=
-	DqdNJ6QajXuCswon2Ki8MzHdHH1KWtMMPtFZSTDwStmjN2bytgjJnPb9PoMIp3HP
-	StVCZJhwc2Q1AtT1GYcEh1RcEBsDoQkYuPpU9kBq7cs3T7I//PTaJJ0ZVZG4OZI/
-	zC9nJMFTkFuVfqZK59zHS0s7xB7JAVN0y6t9hqos3RYTDjUrkNvyf618PhbJJTyy
-	QsasJz3Sp/m/vWGjagHWsquZlMC2nDPlCW1JL8uPsPPmvUl8e/HIGrTkGRuAdZx2
-	XJC1WAbKVEozZOa2GYcoNUT5CfVIcBYf6RjyqTHFNdcidVeIDWZQ+9AIL5aQYE4n
-	OWlQ5wi2p7PAp9xmqBvhCPwWOro9iPrGR2zESFpmr6vdL6K7crJNOuZjMkfDbPrY
-	IoVVUxc1L96fr/d8AYLD3cqv1CvCUEzvrjFoIl85melnItoExvFWXmIRHARAbK76
-	s79zQqfP2RrxaVnpcRbOMfbJpr/8YX6PbjW31PjeHkFfhVWngpDD5HbqHbWWr+hh
-	ztVuRwpbLqH/YGpUJPLWzlHyYMhF84l8ATXfNu2honf+A2aP4nTOl5QlVYojmq5i
-	tr930Hri0dH7xaXzRY/KDN3+2WpUHSOq7SSoNEUZhz3C43bZdC/AZMEsrLG8Mqlj
-	SN/Rjf517O+Khqr0eJvjerv/dX12a2HkhaR4jadwtiQ=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH] net: fec: Stop PPS on driver remove
-Date: Mon, 5 Aug 2024 16:57:36 +0200
-Message-ID: <20240805145735.2385752-1-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eM5LpTVv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B7DC32782;
+	Mon,  5 Aug 2024 15:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722870019;
+	bh=tfgBwylZtYmd8rGUyotRtDhn3AR0oXSUI6WU08SNoFM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=eM5LpTVvX/fZXooVCAOwc4yavHLGQ1roRJNC0pbB26h1bCL8rShDYhUcpFGcOcFu8
+	 XdDlgX1pnhK130l2Ud3MYs5Gq27gZeWM5NDsV7V6rg8vJ8bYc11qpnbBTZdJbG+5X5
+	 LyxcEvBUg8nwW9i5EAaj8oiYWL1xQl2DiIXAfTnPJeOP7vaLQ/vhHUaa1tzNmW6oTP
+	 F56lEjF1edaKRL5Y9BE93WCuIwWY0XLfXq3ucQwvucPZ8bH5U1d4E2/XO7x2de5Thh
+	 ye0Y68n49cjBXkqxifFquTIISnoat1n0CW9LFWamehyLIyLg/sm0SP66PBoGSabqSE
+	 1u7BjC7EGJJIQ==
+Date: Mon, 05 Aug 2024 09:00:18 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1722869861;VERSION=7975;MC=3706177826;ID=151856;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD94854667C61
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Benjamin Hahn <B.Hahn@phytec.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>, 
+ imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, 
+ Teresa Remmet <t.remmet@phytec.de>
+In-Reply-To: <20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de>
+References: <20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de>
+Message-Id: <172286967208.2710507.3691130639449006628.robh@kernel.org>
+Subject: Re: [PATCH] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
+ enable TPM
 
-PPS was not stopped in `fec_ptp_stop()`, called when
-the adapter was removed. Consequentially, you couldn't
-safely reload the driver with the PPS signal on.
 
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
- 1 file changed, 3 insertions(+)
+On Mon, 05 Aug 2024 15:33:27 +0200, Benjamin Hahn wrote:
+> Add support for TPM for phyBOARD Pollux.
+> 
+> Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
+> ---
+>  .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 32 ++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+> 
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index c5b89352373a..93953d252d99 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -787,6 +787,9 @@ void fec_ptp_stop(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 
-+	if (fep->pps_enable)
-+		fec_ptp_enable_pps(fep, 0);
-+
- 	cancel_delayed_work_sync(&fep->time_keep);
- 	hrtimer_cancel(&fep->perout_timer);
- 	if (fep->ptp_clock)
--- 
-2.34.1
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx8mp-phyboard-pollux-rdk.dtb' for 20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de:
+
+arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb: tpm_tis@0: $nodename:0: 'tpm_tis@0' does not match '^tpm(@[0-9a-f]+)?$'
+	from schema $id: http://devicetree.org/schemas/tpm/tcg,tpm_tis-spi.yaml#
+
+
+
 
 
