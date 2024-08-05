@@ -1,86 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4971A15F330;
-	Mon,  5 Aug 2024 15:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1489055E53
+	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 15:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722870020; cv=none; b=Ze/tkxpPJQ3XN9KNmrQlU7v7dj8nsneOGWhFhxrohaRbo7YRGBqncR2OxRzHio29gUm7JQ0TrHvKdoJR4OUylLP6oemjT9YBDhuEjb/5SxG+CID11SB78gQzN32NVUTmqqfyAmE2eX3YuwiDlH0p3ph8+kEdWw3vvcKEyWcj41k=
+	t=1722870290; cv=none; b=PwFW7GmcFxSgqnJoyP2ujJdvhHYvvnINOuzupCFEWg2Xqh7h34vwfTg53g1TogHqqDvXS1wpdEkp0pEtTbKU54VVPeCnK66vCRrCXpfbP951K+zwIXbNjLSEoR/Fk851p4WrqUu9x37wB0yIOMBdAwzdGccUskFf1RCDs/8d44I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722870020; c=relaxed/simple;
-	bh=tfgBwylZtYmd8rGUyotRtDhn3AR0oXSUI6WU08SNoFM=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=jQO3ZiB4KzRKK1hAEYOtl+un0XBvs2Yidm1T5fAsBt6dpPkcm+5qJ2FH0kvfjzxiPCI8Uw2z5ptR4QqzMc69wNIfdgv9RKdreqw/V/PtxdVp+d3qkPMUGoWG4yBA638MiktaSSv/KQkdQcXWtPjrmkacc6AQd+yzJeYgsYnw4+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eM5LpTVv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722870290; c=relaxed/simple;
+	bh=/Gqb82182GJ7ifqE0uk/Nla2L7+0JFR4zbzbtq/Xhqs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZQoGtLJPRsCZfkDSI0JMVuHXMVswsGLca3w3RFN2Msu6ZQbiNY/Z6P5lyMwwPnYrCKArhWa/eWBQ45W6I7MPFodfJbc18/wToK1gqy2VbT7nszkEILFxrm/dTg4I3u6gZZhu/rwcSMWhO+7H8yWldVbmNrRdaF/gAlRLCzDHcKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRE7aQwD; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eM5LpTVv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B7DC32782;
-	Mon,  5 Aug 2024 15:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722870019;
-	bh=tfgBwylZtYmd8rGUyotRtDhn3AR0oXSUI6WU08SNoFM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=eM5LpTVvX/fZXooVCAOwc4yavHLGQ1roRJNC0pbB26h1bCL8rShDYhUcpFGcOcFu8
-	 XdDlgX1pnhK130l2Ud3MYs5Gq27gZeWM5NDsV7V6rg8vJ8bYc11qpnbBTZdJbG+5X5
-	 LyxcEvBUg8nwW9i5EAaj8oiYWL1xQl2DiIXAfTnPJeOP7vaLQ/vhHUaa1tzNmW6oTP
-	 F56lEjF1edaKRL5Y9BE93WCuIwWY0XLfXq3ucQwvucPZ8bH5U1d4E2/XO7x2de5Thh
-	 ye0Y68n49cjBXkqxifFquTIISnoat1n0CW9LFWamehyLIyLg/sm0SP66PBoGSabqSE
-	 1u7BjC7EGJJIQ==
-Date: Mon, 05 Aug 2024 09:00:18 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRE7aQwD"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52ef9714673so1685884e87.0
+        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 08:04:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722870287; x=1723475087; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/Gqb82182GJ7ifqE0uk/Nla2L7+0JFR4zbzbtq/Xhqs=;
+        b=LRE7aQwDm1ROZJq6NpiguImu8uYmAC6RefprEL3LSSUfiqdU3yU6zjlORVuAsCA+68
+         hamZOV8uuZXQp2rf3GcGj5Vzg3Xwq+puzqAKGPKqc6nkAmTOIgefSaES9tm0YnS3UrOi
+         +trPhg5NWJELOnnm5qPVwx47f/FcViC3/IFjxZ5BOkb0yrx22Bg+/OxBEhf3hnyY6i91
+         D5pi7mVp0ba4pBybi2YlN40ykhy/G63NGkFWStBTZ/vb92aIonI/rs2FNqqD//fyGr34
+         vQDE1s40I/J72jAHiD2rrBjZOwvny9UnRCl5+4pkWrGR8i+3xU/hdyUG1AkbbipUQfdg
+         kgAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722870287; x=1723475087;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/Gqb82182GJ7ifqE0uk/Nla2L7+0JFR4zbzbtq/Xhqs=;
+        b=lQaEcKDLHiLbna1JE20kSpK1wrJZC+7ALP4NFmIaUK0nwGmCL+5tuYNrxtMftSMFZg
+         jY200P9ToTfKZ1Otj3zV97K0VT4lS/C17FSpqABkNKvdhZ20BeI2KjGjpQ3pHndnqEyp
+         cNV9zOlBIyCVmKd77cAQLGGSixrBVJPqxpvzk0zy7idM9NTVzlnDIXIaNPxKJFSMHeyM
+         ut0dekIjjBRdbOVkFLnJ+WgwqGDuqwrUHdMaDYlUXDW0ql2uwQfRgEoLihr82zqYwysj
+         HJiRZPnkJCduJxgBIq1LPLhRihv3J7wWWTGZCnfDa4jRAhFxbzSIb038+FiJscmrQC50
+         hYFg==
+X-Gm-Message-State: AOJu0Ywki58TdmLLq/iY8r75GHMEsc5xN02DPiesfH38GIamTpGn2ScR
+	pNhC22KN5r78zr4WEgwK9FUMwu96+RyeGsWE0KwxiNdwVHjwc86hLAKl6nhdqG6KObN70r4/Mi1
+	mVHf4g4K5B6GEY9FzSOB7UqBlVBw=
+X-Google-Smtp-Source: AGHT+IHtXF/b+BdgRW8ydHE95gguroW5hoRvA3hMIjAViRuKfUcgtBZQtCBnMeKEeFvh1998hhv6k2Xrmz0ePllO4Kk=
+X-Received: by 2002:a05:6512:3ca4:b0:52e:ccf4:c222 with SMTP id
+ 2adb3069b0e04-530bb3b7bdemr4459342e87.9.1722870286858; Mon, 05 Aug 2024
+ 08:04:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Benjamin Hahn <B.Hahn@phytec.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>, 
- imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, 
- Teresa Remmet <t.remmet@phytec.de>
-In-Reply-To: <20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de>
-References: <20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de>
-Message-Id: <172286967208.2710507.3691130639449006628.robh@kernel.org>
-Subject: Re: [PATCH] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
- enable TPM
+References: <20240805145735.2385752-1-csokas.bence@prolan.hu>
+In-Reply-To: <20240805145735.2385752-1-csokas.bence@prolan.hu>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 5 Aug 2024 12:04:35 -0300
+Message-ID: <CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com>
+Subject: Re: [PATCH] net: fec: Stop PPS on driver remove
+To: =?UTF-8?B?Q3PDs2vDoXMsIEJlbmNl?= <csokas.bence@prolan.hu>
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Aug 5, 2024 at 11:59=E2=80=AFAM Cs=C3=B3k=C3=A1s, Bence <csokas.ben=
+ce@prolan.hu> wrote:
+>
+> PPS was not stopped in `fec_ptp_stop()`, called when
+> the adapter was removed. Consequentially, you couldn't
+> safely reload the driver with the PPS signal on.
+>
+> Signed-off-by: Cs=C3=B3k=C3=A1s, Bence <csokas.bence@prolan.hu>
 
-On Mon, 05 Aug 2024 15:33:27 +0200, Benjamin Hahn wrote:
-> Add support for TPM for phyBOARD Pollux.
-> 
-> Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
-> ---
->  .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 32 ++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
-> 
+It seems this one deserves a Fixes tag.
 
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y freescale/imx8mp-phyboard-pollux-rdk.dtb' for 20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de:
-
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb: tpm_tis@0: $nodename:0: 'tpm_tis@0' does not match '^tpm(@[0-9a-f]+)?$'
-	from schema $id: http://devicetree.org/schemas/tpm/tcg,tpm_tis-spi.yaml#
-
-
-
-
-
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
