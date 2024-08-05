@@ -1,278 +1,107 @@
-Received: from IND01-MAX-obe.outbound.protection.outlook.com (mail-maxind01on2101.outbound.protection.outlook.com [40.107.222.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AA714F122
-	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 10:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.222.101
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722852779; cv=fail; b=Jx3Gf5gRQCC2qDLpNH/TXXXazs/Jfi/FbA6blH7G3cEqDNf6umM0439WLhi9tNjdwiTcUyAu85dOKAaHMzm2nkg4uw0xhwLIksd5FDVrdGpqtcMCKBu2otWCU6BWIMyz7WmjZkyWGnjeQ1LmKoQ8p+4hqEA4I6xcwkATFcMiUtk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722852779; c=relaxed/simple;
-	bh=dD0WL0W4/+H1mBToZMEDpen5wtF6gHuVZeYD7ayGCEY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=COiujxFAPL2Opyof5vdl9BV5DRtJcfJQSKiF7mSdIUsu+BBYZVLLlSV6M+DMgOxvjonNanf2nnnf7pxP4ZUo1apX279/XcMbA5r6aX9h1am5eyQm7i+LGzRrLX80o4WwQY2TMd4qffQrraKtcE/83agQqyriZfRkL31b07H1qUg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.222.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=laavLBrcKm5QFQJ/FYVfhbpdWAqxpcUzDSlQIVyaFuOWey5jtXpmmul855FA1phI84vPtWP98auGq+Mh6ZSU9LKtImw9haWELrrVoBFXL2o+/jkI5Pf/GlVjH0WquMRfw/JLDL3pKMeNudWmgJUyitjiqoR8+Q0zGmTyfh5p7pa/r6DdXDkE0JmX/Vk6a17gtMXVbVoscRwdlVZWli5uCXjtMDVUObZG1jWuivPmxg9hOyeJ1O0QKi1p4fBXpjqoPPoCS8FpQxnNJfenR2Xq5NnDtaxL3vFTrk3gS6o68MFibF0eavTJiLDx0Nel+7ZRqZa+2Bjj7bLlC+9yosjIMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dD0WL0W4/+H1mBToZMEDpen5wtF6gHuVZeYD7ayGCEY=;
- b=X5r4qGKEYG2XC4i+fKESGdgB8IiUjW+gcadD9pA3RLRZX7SgaNneEoUqCycd6/o4xZelIYMq+HE1bsXl2UPEwMWjn7IHYFJDeXTv2RJKlWERsKuVzNjwhf159obKgjBe/2gkip23mOfGHd/L1k51LfxtPwVklckhNP18qGJr6IxI+CcJnaHz9+GpXXdMErgu8YyxI1vSPhvlDwcVA78K9lKQ9AAIe0Cr4T8plKNhL3qKcvcgcgmlFUvYuVFoVmSmIW4uTfT4JO04yDKD/h9KzJLJjKJDY7m99eSJ3feJ27bLr7ObQDUIwUjdaUEMvNeFglHTMQSi6v72aArYjS2uUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
- by PN0P287MB0198.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:e5::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Mon, 5 Aug
- 2024 10:12:53 +0000
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f%5]) with mapi id 15.20.7828.023; Mon, 5 Aug 2024
- 10:12:53 +0000
-From: Tarang Raval <tarang.raval@siliconsignals.io>
-To: "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "festevam@gmail.com" <festevam@gmail.com>
-CC: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] arm64: dts: imx8mm-emtop-baseboard: Add Ethernet
- Support
-Thread-Topic: [PATCH v3] arm64: dts: imx8mm-emtop-baseboard: Add Ethernet
- Support
-Thread-Index: AQHa3o3H1+ScWhvARkGVPfAPDdG7LrIYgdtl
-Date: Mon, 5 Aug 2024 10:12:52 +0000
-Message-ID:
- <PN3P287MB182947A91A8E381988B6F6198BBE2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-References: <20240725122522.5030-1-tarang.raval@siliconsignals.io>
-In-Reply-To: <20240725122522.5030-1-tarang.raval@siliconsignals.io>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN3P287MB1829:EE_|PN0P287MB0198:EE_
-x-ms-office365-filtering-correlation-id: bde0c7be-fcfe-4c4f-a616-08dcb5372b13
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?35imuW+/fQDblUAMMFRp4gp3lcJ2sIX/v+NKkQGksV02O89/4o78WEzXzJ?=
- =?iso-8859-1?Q?nXTCYDxLHU3ng9nACYNvgna7x8XO27UF04gsbHudxOmoESQTlvgqzRqYxi?=
- =?iso-8859-1?Q?JyhEyAKz7a90VjbZj58U4mWWwXs2aUy3xSezjRorCksPNCSlgpqOSwTdoS?=
- =?iso-8859-1?Q?FfcPtHVgSRuJ5IEuhI8fH2xz4KPtPT1TAl20G4naNZqjyMolPYqj36A/Zt?=
- =?iso-8859-1?Q?HENhIrZNwXY6/S36kzbOf94jUkqZNIpCuRrJ/AlNTy5+tFFyZdpkq1qPQY?=
- =?iso-8859-1?Q?TKeARFpghj5HFxc1J9bHR86WHxV5kIqfvaJWUpkcXr0zolE7FftkEcVegG?=
- =?iso-8859-1?Q?smuwapUIk3XKy/Dboj3YyIIU5vCYVwZTKw8kKxbilbFXFvF6U4n/QtDIjW?=
- =?iso-8859-1?Q?TJ2B8MbKWYA/kasMPxtKMKeVCA8r9/rEpjX0+hloI/jJXbc8eXRaWsHS3V?=
- =?iso-8859-1?Q?5JzrZtxBatcg5wZiB1vo1WJr56kRk56aOR5wRDbRNy10n5zDLh1DkPKtmd?=
- =?iso-8859-1?Q?PM37I8yN/6hnKCBv0XsgnsCi6a1krevux53vpPzZPndwK2Bx1ky/KPgQOk?=
- =?iso-8859-1?Q?bwNOqWW/buhV8JdjlAFLg4Skxc7EKkY5F0Jp51jgQ3il6V//S1OEZo4E3O?=
- =?iso-8859-1?Q?vjdEXCNC9MbfQZ9oSzYIyPotqZqsXWhGj/YOSUTSUXbE8crV2MJhqoOtrb?=
- =?iso-8859-1?Q?+vhNKIh/YgL4jxM4e+BqfYj+xO/jEvEphYa1ts4rEc4goeuis5xmif3RNH?=
- =?iso-8859-1?Q?BCYBwCYgCMsFp9hpxf1XcFhUDPJH2P6jycGJym12dXbMgf0HccA2AKPg4s?=
- =?iso-8859-1?Q?SyUl8OjjMuJi0FGbjVgKQKYRe8SRws79bgjfM5NDVYLHxEuap7c24csR71?=
- =?iso-8859-1?Q?hL1ET+PSdtWnaT3EM6tGXvhquI3pK35gbZ4nW3rE8/XcKvmOhxrbpJzteJ?=
- =?iso-8859-1?Q?vFI62YVzYqdQU0ASN7jVOgLzawXO8Xs+hh5v7+Gq142aDNFjPiy+hlYIFz?=
- =?iso-8859-1?Q?VGRedaHNuDWd9TSC7bj/JpotYTy1Yw8jfsE0tTnCMJ710BtiNXFP7HgHAe?=
- =?iso-8859-1?Q?1W34Ml+iIgn2PWQHjWPVlzOIP0CavXrNTifNMxPP2rhlGkVqMgdyDWBgwY?=
- =?iso-8859-1?Q?5a/iSzhtHJmW4pMrekdB/tMMYdGP9663QziUm5ipgm5QCyg2xXJbvcSBVd?=
- =?iso-8859-1?Q?f8mDxbRVBN06WAYd2RFl5gjp1WqPpucLLrvkJwwXeP7qAbxllfNfSTo+wi?=
- =?iso-8859-1?Q?xaZfui85HFa+MziQO5+ENX101igI5sxdZ6n55ARKrfloBDr4xOiohtj94C?=
- =?iso-8859-1?Q?KhQqDQnULwE92VHjH0huKN0L11iLD36/N8ppsA2LgBwdWZm19QHiQDe8fq?=
- =?iso-8859-1?Q?aUw3mqChrCc38GN1VdTzg5lYcBOkfkFxb19ZqV8QuKYK0j4BfSAjIaLf20?=
- =?iso-8859-1?Q?tD/EM3xd4sglXIx3fQrtdKQHS+U1RjkPlmvf7w=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?2+kejFrBl6AnADyOHV0QBbEMB1y11PPd+wcJY9wHzUEponTPU72MRvX8Sb?=
- =?iso-8859-1?Q?PYwaaaTRIoXkaG8EFmb4Uok+i21Mhi0kwgF08ChlJAloifFQlGGv0/QLBK?=
- =?iso-8859-1?Q?HejEsLErOUg4XkgysheFMKYf2jOcpdpefI+YQl+qSVi2rQ8dYM3u7a0O9o?=
- =?iso-8859-1?Q?9uTx8duIUYxdKpGhf78fy3MRBI3B5xzMiZmd852Y3p4C373Cv4AmDFovdY?=
- =?iso-8859-1?Q?Yb5NszTA6h8EiSmmz8zD9KQKInXUIbhhlH75xPcdeXJWaIyCZCSd39LT5C?=
- =?iso-8859-1?Q?KlM8E2Rnt9OTLp3SaTKZfHMgkLQq38sgX1uXmRsf98LLghDN12lQp5xYIG?=
- =?iso-8859-1?Q?DuFOg1fxeYojLOFv8Rugpefm4RF2ATq2cxWJouEq6h9vfImSn3575KJR1S?=
- =?iso-8859-1?Q?Gj05jYi4ETocpaWuqW4pj2eO9yZy7QpRdwvwL7e/N8bYOxroY2bJuT6lwp?=
- =?iso-8859-1?Q?GYB0aekGGQU2PGoYcQFmT1jYGHBacumItJjS2NSUPCo+DhQ6MUgB4SaLUS?=
- =?iso-8859-1?Q?iyx8hOcZQAeLTM68hKLJyuYKiVb4m22Ru5B/D0vnTVqne71VyZEt3TSFVn?=
- =?iso-8859-1?Q?iFEEIT8iAvKUzuzmCKPu1SDy5FMDpRuo1dyve1a6AvU7pk43kKrtul7qYF?=
- =?iso-8859-1?Q?qbPE4pBhxNYVLZzVaF3uIEKw64XuvUry85r8xv/ER/lEWmJseu/vxBJ2bG?=
- =?iso-8859-1?Q?7pXrcK4QoXPCocAAFl5mxg0jQmr4jFqAPvD0mGnUXOMCP2muVgucl4ou0J?=
- =?iso-8859-1?Q?VvWjiiPpdlPaEMbCSneC7A267WduFfTM4vdncp8zgUbfK1sxEPSXBsUvXQ?=
- =?iso-8859-1?Q?AdvbomvQM2BeVbJIRTiztAS0mVfcGNt2TGIeBG1jIHyC4vtuPWpYnMOLX/?=
- =?iso-8859-1?Q?nybfJSmrPjwN7YEGL45h2wGFOibU8LZ7IjwA+c79neRIZwWeUahpQEOrP/?=
- =?iso-8859-1?Q?Uu1NAwOzwpMycxHs1FD/GXDPcIi1i+NUnqUzhh9Qh6+N7zXJ+IHOnltvEg?=
- =?iso-8859-1?Q?b6L035uIsQn+kJNrz6t0mCiOe6wum4weI5spyDeB8o/qHblf184zFvwd/y?=
- =?iso-8859-1?Q?qpVITkQ7dKsSrF8Z+NdP6u5pmXogfBrBAJwrWDJNI6SYK6NG+KK36Q4eZS?=
- =?iso-8859-1?Q?zIViiD4oNyIH1rZOE47oumpMelApOx0zTHo9LAgJzLoFYR5SV5cC8hSCy5?=
- =?iso-8859-1?Q?Wu39XEvXSJgdX5WP6F4M1CB5U3nXvL4KIsQj5cSGWfJH0NaIz1kNkhZ+N4?=
- =?iso-8859-1?Q?8PmXE/5jgaGnmHmTKgBOavxW7onUkkf7oPFF9U3U/Cw2XXLENcPCz5FmDP?=
- =?iso-8859-1?Q?/Cb1APP33zHCRaFaXV4rYcPRT/GqQPHUTbYn6mAa4oOuuk3qOQUpyAMK/5?=
- =?iso-8859-1?Q?oNOVjYmT8dRTXl4yxTrTy1TI/MzE5Vme1U7tga1dxZz0WIl/eEa9Ug4Fwn?=
- =?iso-8859-1?Q?1k+oek6FTVYPG2sr5yYndk/RQmrqngyfg+6XWxcTtM2Qc8qwWpJIcqhxyd?=
- =?iso-8859-1?Q?LcdjdtZpwrgJpxTvhLkgQdCniGadzhPkhKhZdbLKlk/wGJ8vm9+TpcvnlA?=
- =?iso-8859-1?Q?5waHWOZoDTQCMXuQnZGC0xzpJFC6T0UvsgG4lJeu9XjmZD+JFMRK4AwYgW?=
- =?iso-8859-1?Q?J9DtGhN7d8DK8+37q7ksmLcEkuB/RrDZ6ineMvbZzpT/zcbvORJqlWAw?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ECA155735
+	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 11:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722857718; cv=none; b=pTU36LwXJ3VObm8BhAJhXreqRHyH+UZZKeJbAWySdOfCXH3kmcAkRLeo0ACexeJ/6I1ZE5y8/Ximi0McNKVjo7u/VQjk/ZnqVgtnqovLtXt2pldSORzoQVbqNpEkpIZWZVFyvUMiwgsuDdA/8JKvOj5CA+/fBYfNyth63+Ijt+4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722857718; c=relaxed/simple;
+	bh=qnEoHAbLbztYtJlZvfey0ZsPGaJzZstgHfUoEiNAM6c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QZx0ZNmJQgoxbA216w+eC9aUthZThoNbS6VwOgsI9NQ1ZUiEruqjd2+JP1Kv2n7Glih/Yj7250Nq3Hup2JgUhN7fGbxsTgWIkPBHQcaNDnLZyUkSRQeCdI47TBZGBGCeny11pU+5ecgXD95k+y8Lpj1cn2O2NX2UCcWVRXhinpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QM4M7uUM; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QM4M7uUM"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e0b9d344d66so6452164276.1
+        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 04:35:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722857716; x=1723462516; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TO0MJPO0zx9jBVGkTEuM3whZ8sbaCUqD/Pjnqip+vro=;
+        b=QM4M7uUMZFsaIn5CLnCiKZ1Vch5zbKRUct5qwG5lK8bpw5zIaSrqy17lqhiGJ3wgh9
+         +tiv++ky3+x7zJsEvUigWkZVuWsWgEQey5W7f+vSlB5PZGaEo5vlmxQV6h4YOr8sEAKr
+         IfBncVkNLz3qP5hKESGFZfwhJPr1/MnIP3PVAzcYUZcoWyeRG39MHaqriRBDSdxeXRr3
+         EP9W/lYl645jXqQC0eBbSrb0XSJWYOr9CPdCUDvLH0xamTa7is9PV6bmfywdSNF0svmg
+         e8t6RTA2EZmRec0sJCpPmTrRxIo2qsKN7brAZSZSH/TpkKP2/8DFVnL9OSLaHRYTJCec
+         3GjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722857716; x=1723462516;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TO0MJPO0zx9jBVGkTEuM3whZ8sbaCUqD/Pjnqip+vro=;
+        b=w1C+VJS0k2kSafHhzWkiEbbIlC4PjJVfIeNCHkeKi7y2CsbJkng4J/D/T6Iu1oOMwe
+         9Eb00ZfHcsEkxkHAuNfm9UR+oC3YgtMDCckdIo3D0L5rkX4ySjQ0vgVhdodr+CKDbWCk
+         LPu1kA/j9APspdWMlgaRoMfmVT5xPMXGfmvHVGwVnuu3vLtiELJzdAZo/g9K51vpJT+r
+         gqf0AiPcsxeLiLT7Ix1D24IG2npZ/Lhbvxmj9l5qQDVoH3jtl8iMyo32ol9GjHTSFKlQ
+         /nA3OSyJI8R7qnZEZz/QC4WNCwuvz08bpeiCMWk3EBP7Ilw305lpMRu3S1y1t2Z7A/ek
+         A/CA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbjNUo3hAz0JZt9rbz/cLHL0cXF1iuJ+gij0Gjg1QN/aWTCqIEIz5LVoAO6LnalJeRNQ15sJQTwcnQohCQkFkuACc0
+X-Gm-Message-State: AOJu0YwK4xGbdkVVDx5QikSUtj7MPa/Nz7KRCcBU1NRcEimUw62R+olS
+	GwZLpfPTkCHtxpna5FOKM2X0SMi8cXVdUjQQlhNKBsd2DH8Z3K5578rPaPZyq8Mi6gDnIbEwmWV
+	5AbQeCiDS76fb73zu9BfQyPpzs33rkBVWEj/zXA==
+X-Google-Smtp-Source: AGHT+IFbg8tWI5RFE3KRag3rDI4C+uv6ImGTWbvbo77ifO+g1kVWnL3yOQ5zXRyTZnSTnvqDHetlpPcxkjMcvAO70QE=
+X-Received: by 2002:a05:6902:72e:b0:e0b:e2df:b422 with SMTP id
+ 3f1490d57ef6-e0be2dfd3dbmr11385051276.24.1722857715924; Mon, 05 Aug 2024
+ 04:35:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: bde0c7be-fcfe-4c4f-a616-08dcb5372b13
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2024 10:12:52.9858
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ulbHUF/upwLwqhdJwIfd3v3v0g8474zogNaE8Db9xsE8XSoHy6s+pU6Z7hvhjmiPB7GZ7RJEcWjBxwxmSY6/Ff1QoFRyWOmKiYkUeFixzvc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0P287MB0198
+References: <20240717080334.2210988-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20240717080334.2210988-1-alexander.stein@ew.tq-group.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 5 Aug 2024 13:34:39 +0200
+Message-ID: <CAPDyKFojBzKCoRZ-buDQ3LK4wm2EUrE4uZDv7_f-k3bebNWUew@mail.gmail.com>
+Subject: Re: [PATCH 1/1] pmdomain: imx: scu-pd: Remove duplicated clocks
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-As per your comments on v2 patch I have shared an updated version of the pa=
-tch (v3-0001-arm64-dts-imx8mm-emtop-baseboard-Add-Ethernet-Sup.patch) with =
-the recommended corrections.=0A=
-is there any updates on this patch?=0A=
-=0A=
-Best regards, =0A=
-Tarang =0A=
-=0A=
-________________________________________=0A=
-From:=A0Tarang Raval=0A=
-Sent:=A0Thursday, July 25, 2024 5:55 PM=0A=
-To:=A0krzk+dt@kernel.org <krzk+dt@kernel.org>; shawnguo@kernel.org <shawngu=
-o@kernel.org>; festevam@gmail.com <festevam@gmail.com>=0A=
-Cc:=A0Tarang Raval <tarang.raval@siliconsignals.io>; Rob Herring <robh@kern=
-el.org>; Conor Dooley <conor+dt@kernel.org>; Sascha Hauer <s.hauer@pengutro=
-nix.de>; Pengutronix Kernel Team <kernel@pengutronix.de>; devicetree@vger.k=
-ernel.org <devicetree@vger.kernel.org>; imx@lists.linux.dev <imx@lists.linu=
-x.dev>; linux-arm-kernel@lists.infradead.org <linux-arm-kernel@lists.infrad=
-ead.org>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>=0A=
-Subject:=A0[PATCH v3] arm64: dts: imx8mm-emtop-baseboard: Add Ethernet Supp=
-ort=0A=
-=A0=0A=
-Add ethernet support for emtop imx8mm basboard=0A=
-=0A=
-Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>=0A=
----=0A=
-Change in V3=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0 1. Add appropriate commit=0A=
-=A0=A0=A0=A0=A0=A0=A0 2. Add Changelog at correct place=0A=
-=0A=
-Change in V2=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0 1. Add Board name into subject=0A=
-=A0=A0=A0=A0=A0=A0=A0 2. Remove below properties=0A=
-=A0=A0=A0=A0=A0=A0=A0 - at803x,eee-disabled;=0A=
-=A0=A0=A0=A0=A0=A0=A0 - at803x,vddio-1p8v;=0A=
----=0A=
-=A0.../dts/freescale/imx8mm-emtop-baseboard.dts=A0 | 48 +++++++++++++++++++=
-=0A=
-=A01 file changed, 48 insertions(+)=0A=
-=0A=
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts b/arc=
-h/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts=0A=
-index 1c4e4d175989..7d2cb74c64ee 100644=0A=
---- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts=0A=
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts=0A=
-@@ -11,5 +11,53 @@ / {=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 model =3D "Emtop Embedded Solutions i.MX8M Mini Ba=
-seboard V1";=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 compatible =3D "ees,imx8mm-emtop-baseboard", "ees,=
-imx8mm-emtop-som",=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "fsl,imx8mm";=0A=
-+};=0A=
-+=0A=
-+&fec1 {=0A=
-+=A0=A0=A0=A0=A0=A0 pinctrl-names =3D "default";=0A=
-+=A0=A0=A0=A0=A0=A0 pinctrl-0 =3D <&pinctrl_fec1>;=0A=
-+=A0=A0=A0=A0=A0=A0 phy-mode =3D "rgmii-id";=0A=
-+=A0=A0=A0=A0=A0=A0 phy-handle =3D <&ethphy0>;=0A=
-+=A0=A0=A0=A0=A0=A0 fsl,magic-packet;=0A=
-+=A0=A0=A0=A0=A0=A0 status =3D "okay";=0A=
-+=0A=
-+=A0=A0=A0=A0=A0=A0 mdio {=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 #address-cells =3D <1>;=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 #size-cells =3D <0>;=0A=
-+=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ethphy0: ethernet-phy@4 {=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 compati=
-ble =3D "ethernet-phy-ieee802.3-c22";=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 reg =3D=
- <4>;=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 reset-g=
-pios =3D <&gpio4 22 GPIO_ACTIVE_LOW>;=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 reset-a=
-ssert-us =3D <10000>;=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 vddio-s=
-upply =3D <&vddio>;=0A=
-+=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 vddio: =
-vddio-regulator {=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0 regulator-min-microvolt =3D <1800000>;=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0 regulator-max-microvolt =3D <1800000>;=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 };=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 };=0A=
-+=A0=A0=A0=A0=A0=A0 };=0A=
-+};=0A=
-=A0=0A=
-+&iomuxc {=0A=
-+=A0=A0=A0=A0=A0=A0 pinctrl_fec1: fec1grp {=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 fsl,pins =3D <=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_MDC_ENET1_MDC=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x=
-3=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_MDIO_ENET1_MDIO=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x3=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_TD3_ENET1_RGMII_TD3=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x1f=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_TD2_ENET1_RGMII_TD2=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x1f=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_TD1_ENET1_RGMII_TD1=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x1f=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_TD0_ENET1_RGMII_TD0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x1f=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_RD3_ENET1_RGMII_RD3=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x91=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_RD2_ENET1_RGMII_RD2=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x91=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_RD1_ENET1_RGMII_RD1=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x91=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_RD0_ENET1_RGMII_RD0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x91=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_TXC_ENET1_RGMII_TXC=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x1f=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_RXC_ENET1_RGMII_RXC=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x91=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL=A0=A0=A0=A0 0x91=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL=A0=A0=A0=A0 0x1f=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 MX8MM_I=
-OMUXC_SAI2_RXC_GPIO4_IO22=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x19=
-=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 >;=0A=
-+=A0=A0=A0=A0=A0=A0 };=0A=
-=A0};=0A=
---=0A=
-2.34.1=0A=
+On Wed, 17 Jul 2024 at 10:03, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> These clocks are already added to the list. Remove the duplicates ones.
+>
+> Fixes: a67d780720ff ("genpd: imx: scu-pd: add more PDs")
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+Applied for fixes and by adding a stable tag, thanks!
+
+Kind regards
+Uffe
+
+
+> ---
+>  drivers/pmdomain/imx/scu-pd.c | 5 -----
+>  1 file changed, 5 deletions(-)
+>
+> diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
+> index 05841b0bf7f30..01d465d88f60d 100644
+> --- a/drivers/pmdomain/imx/scu-pd.c
+> +++ b/drivers/pmdomain/imx/scu-pd.c
+> @@ -223,11 +223,6 @@ static const struct imx_sc_pd_range imx8qxp_scu_pd_ranges[] = {
+>         { "lvds1-pwm", IMX_SC_R_LVDS_1_PWM_0, 1, false, 0 },
+>         { "lvds1-lpi2c", IMX_SC_R_LVDS_1_I2C_0, 2, true, 0 },
+>
+> -       { "mipi1", IMX_SC_R_MIPI_1, 1, 0 },
+> -       { "mipi1-pwm0", IMX_SC_R_MIPI_1_PWM_0, 1, 0 },
+> -       { "mipi1-i2c", IMX_SC_R_MIPI_1_I2C_0, 2, 1 },
+> -       { "lvds1", IMX_SC_R_LVDS_1, 1, 0 },
+> -
+>         /* DC SS */
+>         { "dc0", IMX_SC_R_DC_0, 1, false, 0 },
+>         { "dc0-pll", IMX_SC_R_DC_0_PLL_0, 2, true, 0 },
+> --
+> 2.34.1
+>
