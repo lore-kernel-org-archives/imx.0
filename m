@@ -1,174 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B314D8B6;
-	Mon,  5 Aug 2024 07:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06614148312
+	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 07:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722842548; cv=none; b=roFQsObWhg8k53BXQo9VlSD0jzkEFjWZXfhjDPEZ7y2IQ8wYUIlTl310DlDIRyXrvTb+OBGXxqVc3/uV5ZSsJ3cNds5KNnL+93KRE6B4YQZ+RaVeeOcXanPMGhiQDZ7C5r4sfkJ9q9+osbnlsf/dVwjrd2Yl/a37FAUOx+V1m7A=
+	t=1722844138; cv=none; b=uAD2ooDgCTOndhExUNZY9hPAa2yZ74OeNOA0uCjgjmHfMPN6vu4A4KNoFuie+meCo8JmjXVm4ItWhZ7EtkmC5fgIImxo51z5HgeIMP62UxBNhLceR8LIwYsBYyaDsXdbx1UTi6GjoT5MK2qWKAy6MLftQjaCDjxo8it42aVpbpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722842548; c=relaxed/simple;
-	bh=gkzU71gwV9NOWBEDhdykWzyAwPSJx6HCNBlYUDmMQ4k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nLSMM6VQVIG9F5hkBhhbfOEokkhxqhV7dTQBKxGdBUXtDeY7TireclW0crmbXaA/5R9UttqqgziMMzxfk29bv83csj8dGcQKB6gf7CaV/K1xvfiNWLutZ7AokzK2w85rpHnElcqrGLjVEQyY+V+fCtmDG9UpbxrcCibHZ2/ROhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrfMdLxb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722844138; c=relaxed/simple;
+	bh=m9jMRwN7D/g9ylb+qVmMEn3jD7LEDE289u1oCoCvFi8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a2Ti5x6ywu5lNmTiNh8VHeypRF5kEQIWnWWIrC4uquj/vO5YCpCadlBwX/QNGKdbMx9nKQk491QbOzvte7MaPQD4kfQsCAPLE0Pvjy9AeGMd4m17v4E0sRALfb99kWsDoTYDDGplsbkNLALrtVuqShG/pwtAaDXIMX8/SgylbJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ssGDOK2A; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrfMdLxb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BECC4AF0D;
-	Mon,  5 Aug 2024 07:22:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722842547;
-	bh=gkzU71gwV9NOWBEDhdykWzyAwPSJx6HCNBlYUDmMQ4k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GrfMdLxbUWEzrOxUZrAMduOAYLiUS+Q95Ab9qziw+lcD+cidKYOCo+lowJyBx70T9
-	 KAehLRGEYjZM9d6vS0p6JKS3m82oi/wvdnya/Z4XinGd8Hc4UKut2f32j1HSvDzXrd
-	 +hO8ZAg9/t8rkFLhlMvFhO9apl9X5b2Pezs+o34xTWD+CJzRcT3xLjfz6NTDKek/eU
-	 sVbYieHAiHSOp9eXnhB4IYmaJ4TUnh1DUv/k+jFzm7vZdi1vvwxDS/9ppuRDV9Dlhb
-	 jeOPNFmV0sgYpYWP/a51srYgnaZmvGX8b7OMfnF0kR8qywamk+3N9g1o/CjChhwGEl
-	 tqD5Faf6E1dXA==
-Message-ID: <0e1b0f11-152e-402c-97ea-788c7830267f@kernel.org>
-Date: Mon, 5 Aug 2024 09:22:18 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ssGDOK2A"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52f025ab3a7so14060543e87.2
+        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 00:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722844135; x=1723448935; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kKGwudayEl/s2GCBYHOT4CD2FeDk2bfVh99IyAaA7Kk=;
+        b=ssGDOK2A3tvxlkkpwx88qidXsTtVbOngx7/f4JlbReo3mcXrtRZ18/u8WK+au6Vasl
+         Xo20zYvBfn1SqiW5x7kyH4E7ZA12FoScMbX4yhtpmIaKXCLeLfey9NeIySwdsr/tUl18
+         Vcn/2RQTnh4I6BsU5vnkPzcOrEvrMh9ANb2y9RKmnocylRItENvQEsZN3kuO3lQBkI8N
+         ArhfSsFtSLWq3FPHbJ3t31VmD24m+9a9lc77f0+2AY2mOZVhXZgHzIfdsVP/dYjRziTi
+         Qf6WYPMJdqCqEakZXPUgJK4E5J+qCBS98JtjWpjayUDsrwk28uJKS6OagB8OuBjdUIWX
+         +Ixg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722844135; x=1723448935;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kKGwudayEl/s2GCBYHOT4CD2FeDk2bfVh99IyAaA7Kk=;
+        b=jzYbZNzSQ+pyf5Sl9ry7m4NdUtJ8jpKkznXRsPeeVw3Ud0nCBO6tm8e3CoEUhJ/zpn
+         +9eKeIxwmn7P5e1wFQ7GS/JWfLQjvphnF/ffVRXFZ8T1XJID5XuCtZv+YKWzDnvyNpwo
+         QNv9kVsuT85ViIk0shuZdpxGvD8bSnM79zmZsCi+j/uSxM8HZx8QgcjVbjnyLDPb9VIC
+         +ICX1namvVtNv3PTvpITI8shrfQS46pLE1puVzju+vje19+dF0Pokkszr2x2Aw9wPUDC
+         JZLdjseq28Yp8js7GeNvOqgmI6RVb7f0VSfYREIkeWZs/xV57KFGbvAJNtiTLqkxkgWl
+         oqCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3ne6q27VO0+il7HlAiuIq2P/DJY6ajUD+aVg56MZmFCP7qgla/f8alZ25zqkKG5uWOeaFGV8w2Las7dG2s2tXhk/0
+X-Gm-Message-State: AOJu0Yyac0vIwTiAwFcI1wf+tDaQKLQsh+3iq0Lq2WX0pFptDEfvAm+V
+	BntCQ95FQdw8mSyf/wYz8i/01iVvTqi6hAIK5cbRLaliyKmDACVtfDLiSC/zDAUIq0Lb+7x0cOq
+	EgM6Dgxo1OeNZSJxylGgUp4ycGfkL+uOOeo0qBg==
+X-Google-Smtp-Source: AGHT+IEXIMB9nJG0TyIkPR9yKzdJtpYi5iceZ1E2YZ4ASFuMPTP6yq98iQjwWp8kP8YFpv+0ZSWlHsT8AQDqV2sKD8k=
+X-Received: by 2002:a05:6512:2804:b0:52e:fc01:ddfa with SMTP id
+ 2adb3069b0e04-530bb387c7cmr7077635e87.7.1722844135078; Mon, 05 Aug 2024
+ 00:48:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] dt-bindings: phy: imx8mq-usb: add compatible
- "fsl,imx95-usb-phy"
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, gregkh@linuxfoundation.org,
- Frank.Li@nxp.com, jun.li@nxp.com, l.stach@pengutronix.de,
- aford173@gmail.com, hongxing.zhu@nxp.com, alexander.stein@ew.tq-group.com,
- linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-usb@vger.kernel.org
-References: <20240802091702.2057294-1-xu.yang_2@nxp.com>
- <21557eac-44f0-451d-a194-c5d545cacbee@kernel.org>
- <20240805070429.rqykjd3ap5swd5vl@hippo>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240805070429.rqykjd3ap5swd5vl@hippo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240716-adi-v1-0-79c0122986e7@nxp.com> <20240716-adi-v1-2-79c0122986e7@nxp.com>
+In-Reply-To: <20240716-adi-v1-2-79c0122986e7@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 5 Aug 2024 09:48:44 +0200
+Message-ID: <CACRpkdaiG+Gr+asDHsztR3A=iNNCUsCFXfrW2ZUidWYLn9RcVA@mail.gmail.com>
+Subject: Re: [PATCH 2/6] mfd: adp5585: add ADI adp5585 core support
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>, 
+	Jun Li <jun.li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 05/08/2024 09:04, Xu Yang wrote:
-> On Sun, Aug 04, 2024 at 04:16:34PM +0200, Krzysztof Kozlowski wrote:
->> On 02/08/2024 11:16, Xu Yang wrote:
->>> The usb phy in i.MX95 is compatible with i.MX8MP's, this will add a
->>> compatible "fsl,imx95-usb-phy" for i.MX95. Also change reg maxItems
->>> to 2 since i.MX95 needs another regmap to control Type-C Assist (TCA)
->>> block. Since i.MX95 usb phy is able to switch SS lanes, this will also
->>> add orientation-switch and port property to the file.
->>>
->>> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
->>> ---
->>>  .../bindings/phy/fsl,imx8mq-usb-phy.yaml      | 40 +++++++++++++++++--
->>>  1 file changed, 36 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
->>> index dc3a3f709fea..b0a614a9556d 100644
->>> --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
->>> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
->>> @@ -11,12 +11,17 @@ maintainers:
->>>  
->>>  properties:
->>>    compatible:
->>> -    enum:
->>> -      - fsl,imx8mq-usb-phy
->>> -      - fsl,imx8mp-usb-phy
->>> +    oneOf:
->>> +      - enum:
->>> +          - fsl,imx8mq-usb-phy
->>> +          - fsl,imx8mp-usb-phy
->>> +      - items:
->>> +          - const: fsl,imx95-usb-phy
->>> +          - const: fsl,imx8mp-usb-phy
->>>  
->>>    reg:
->>> -    maxItems: 1
->>> +    minItems: 1
->>> +    maxItems: 2
->>>  
->>>    "#phy-cells":
->>>      const: 0
->>> @@ -28,6 +33,17 @@ properties:
->>>      items:
->>>        - const: phy
->>>  
->>> +  orientation-switch:
->>> +    description:
->>> +      Flag the PHY as possible handler of USB Type-C orientation switching
->>
->> No need to duplicate definitions of properties.
-> 
-> I replace it with "orientation-switch: true".
-> 
->>
->>> +    type: boolean
->>> +
->>> +  port:
->>> +    $ref: /schemas/graph.yaml#/properties/port
->>> +    description:
->>> +      A port node to link the PHY to a TypeC controller for the purpose of
->>> +      handling orientation switching.
->>
->> Same here. You probably miss reference to usb-switch.
-> 
-> How about port? Should I replace it with "port: true" or
-> 
-> "port:"
-> "  $ref: /schemas/usb/usb-switch.yaml#/properties/port"
+Hi Frank,
 
-You can drop both if you add ref to usb-switch and use
-unevaluatedProperties.
+thanks for your patch!
 
-Best regards,
-Krzysztof
+On Tue, Jul 16, 2024 at 9:29=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
 
+> +struct adp5585_dev {
+> +       struct device *dev;
+> +       struct i2c_client *i2c_client;
+> +
+> +       int (*read_reg)(struct adp5585_dev *adp5585, u8 reg, u8 *val);
+> +       int (*write_reg)(struct adp5585_dev *adp5585, u8 reg, u8 val);
+> +};
+
+The read_reg() and write_reg() accessors looks like a reimplementation
+of regmap.
+
+Can you check if you can just let the subdrivers access a regmap
+for the parent MFD device and use that to read/write registers?
+
+There are many examples of this in recent MFD drivers.
+
+Yours,
+Linus Walleij
