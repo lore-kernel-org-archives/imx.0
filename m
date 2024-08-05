@@ -1,84 +1,113 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1489055E53
-	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 15:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8790515350D
+	for <imx@lists.linux.dev>; Mon,  5 Aug 2024 15:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722870290; cv=none; b=PwFW7GmcFxSgqnJoyP2ujJdvhHYvvnINOuzupCFEWg2Xqh7h34vwfTg53g1TogHqqDvXS1wpdEkp0pEtTbKU54VVPeCnK66vCRrCXpfbP951K+zwIXbNjLSEoR/Fk851p4WrqUu9x37wB0yIOMBdAwzdGccUskFf1RCDs/8d44I=
+	t=1722871115; cv=none; b=FktOny7RVS5N8hevF+v0LCqdrJ7I+qKu/hWmn+HgcApDvaKJ7wJbD7OS2Fdwyva+WkYnNM/I6ctG6H764oPMDkADHEJLbJ+aCvISbkgKhtsSYMXHYdG2ZKDPUJ3nCXoXVVODSOnpSN7gjcX7nuKvXMJHOfvlnc0G4/7hqpjwuAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722870290; c=relaxed/simple;
-	bh=/Gqb82182GJ7ifqE0uk/Nla2L7+0JFR4zbzbtq/Xhqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZQoGtLJPRsCZfkDSI0JMVuHXMVswsGLca3w3RFN2Msu6ZQbiNY/Z6P5lyMwwPnYrCKArhWa/eWBQ45W6I7MPFodfJbc18/wToK1gqy2VbT7nszkEILFxrm/dTg4I3u6gZZhu/rwcSMWhO+7H8yWldVbmNrRdaF/gAlRLCzDHcKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRE7aQwD; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRE7aQwD"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52ef9714673so1685884e87.0
-        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 08:04:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722870287; x=1723475087; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Gqb82182GJ7ifqE0uk/Nla2L7+0JFR4zbzbtq/Xhqs=;
-        b=LRE7aQwDm1ROZJq6NpiguImu8uYmAC6RefprEL3LSSUfiqdU3yU6zjlORVuAsCA+68
-         hamZOV8uuZXQp2rf3GcGj5Vzg3Xwq+puzqAKGPKqc6nkAmTOIgefSaES9tm0YnS3UrOi
-         +trPhg5NWJELOnnm5qPVwx47f/FcViC3/IFjxZ5BOkb0yrx22Bg+/OxBEhf3hnyY6i91
-         D5pi7mVp0ba4pBybi2YlN40ykhy/G63NGkFWStBTZ/vb92aIonI/rs2FNqqD//fyGr34
-         vQDE1s40I/J72jAHiD2rrBjZOwvny9UnRCl5+4pkWrGR8i+3xU/hdyUG1AkbbipUQfdg
-         kgAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722870287; x=1723475087;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Gqb82182GJ7ifqE0uk/Nla2L7+0JFR4zbzbtq/Xhqs=;
-        b=lQaEcKDLHiLbna1JE20kSpK1wrJZC+7ALP4NFmIaUK0nwGmCL+5tuYNrxtMftSMFZg
-         jY200P9ToTfKZ1Otj3zV97K0VT4lS/C17FSpqABkNKvdhZ20BeI2KjGjpQ3pHndnqEyp
-         cNV9zOlBIyCVmKd77cAQLGGSixrBVJPqxpvzk0zy7idM9NTVzlnDIXIaNPxKJFSMHeyM
-         ut0dekIjjBRdbOVkFLnJ+WgwqGDuqwrUHdMaDYlUXDW0ql2uwQfRgEoLihr82zqYwysj
-         HJiRZPnkJCduJxgBIq1LPLhRihv3J7wWWTGZCnfDa4jRAhFxbzSIb038+FiJscmrQC50
-         hYFg==
-X-Gm-Message-State: AOJu0Ywki58TdmLLq/iY8r75GHMEsc5xN02DPiesfH38GIamTpGn2ScR
-	pNhC22KN5r78zr4WEgwK9FUMwu96+RyeGsWE0KwxiNdwVHjwc86hLAKl6nhdqG6KObN70r4/Mi1
-	mVHf4g4K5B6GEY9FzSOB7UqBlVBw=
-X-Google-Smtp-Source: AGHT+IHtXF/b+BdgRW8ydHE95gguroW5hoRvA3hMIjAViRuKfUcgtBZQtCBnMeKEeFvh1998hhv6k2Xrmz0ePllO4Kk=
-X-Received: by 2002:a05:6512:3ca4:b0:52e:ccf4:c222 with SMTP id
- 2adb3069b0e04-530bb3b7bdemr4459342e87.9.1722870286858; Mon, 05 Aug 2024
- 08:04:46 -0700 (PDT)
+	s=arc-20240116; t=1722871115; c=relaxed/simple;
+	bh=DibMZJWK5NQD3RRWExVa4EWPR7ZifgfwPkDUEaB7joM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X9Kiv1Xtxm8lmqtZSNTfYGLw6WrXr/geJxqFU2Rb0UgwqqC9DJ0SPzL4j2kitiZuoNhXwE2lsTLMN54kQHAFW3OuL0OcaorWUyVXOQGCjxq79K+u04f8yg09qIRUn0zAeeSeg9yuiJBQQC7HvZbbEColLvy/M9oxaqD+rKJ2A4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sazTY-0000aQ-8t; Mon, 05 Aug 2024 17:18:20 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sazTW-004k75-Ra; Mon, 05 Aug 2024 17:18:18 +0200
+Received: from pengutronix.de (p5de45302.dip0.t-ipconnect.de [93.228.83.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D55773172C8;
+	Mon, 05 Aug 2024 14:44:05 +0000 (UTC)
+Date: Mon, 5 Aug 2024 16:44:05 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: can: fsl,flexcan: add common
+ 'can-transceiver' for fsl,flexcan
+Message-ID: <20240805-capable-fox-of-grandeur-e88dbc-mkl@pengutronix.de>
+References: <20240629021754.3583641-1-Frank.Li@nxp.com>
+ <20240704-outstanding-outrageous-herring-003368-mkl@pengutronix.de>
+ <Zqv5+St34E7hR2Ou@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240805145735.2385752-1-csokas.bence@prolan.hu>
-In-Reply-To: <20240805145735.2385752-1-csokas.bence@prolan.hu>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 5 Aug 2024 12:04:35 -0300
-Message-ID: <CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com>
-Subject: Re: [PATCH] net: fec: Stop PPS on driver remove
-To: =?UTF-8?B?Q3PDs2vDoXMsIEJlbmNl?= <csokas.bence@prolan.hu>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zxfbvnp33c2bstsb"
+Content-Disposition: inline
+In-Reply-To: <Zqv5+St34E7hR2Ou@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--zxfbvnp33c2bstsb
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 5, 2024 at 11:59=E2=80=AFAM Cs=C3=B3k=C3=A1s, Bence <csokas.ben=
-ce@prolan.hu> wrote:
->
-> PPS was not stopped in `fec_ptp_stop()`, called when
-> the adapter was removed. Consequentially, you couldn't
-> safely reload the driver with the PPS signal on.
->
-> Signed-off-by: Cs=C3=B3k=C3=A1s, Bence <csokas.bence@prolan.hu>
+On 01.08.2024 17:11:21, Frank Li wrote:
+> On Thu, Jul 04, 2024 at 12:07:02PM +0200, Marc Kleine-Budde wrote:
+> > On 28.06.2024 22:17:54, Frank Li wrote:
+> > > Add common 'can-transceiver' children node for fsl,flexcan.
+> > >
+> > > Fix below warning:
+> > > arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dtb: can@2180000: 'can-=
+transceiver' does not match any of the regexes: 'pinctrl-[0-9]+'
+> > >         from schema $id: http://devicetree.org/schemas/net/can/fsl,fl=
+excan.yaml#
+> > >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> >
+> > Applied to linux-can-next.
+>=20
+> I have not seen it at v6.11-rc1. Anything wrong?
 
-It seems this one deserves a Fixes tag.
+No, it go mainline by v6.12.
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--zxfbvnp33c2bstsb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmaw5TMACgkQKDiiPnot
+vG80qwf/d2For99JejteDIEgMbTKcbTED5H+Tb+mj3pcjOWnJ1di6f6C4PcZ2oPP
+Ha8qDRNNq//f2hZXfUT2MTQ4sCnAwyMmvOmYdjn24SXmsA4x3QY3mdwzrf1sAXnK
+fbD549B0mymBH00K6X2d4rMGPSq8k4z7keOoZDVxyPHCevGccesxEZz7JKu9HS4/
+bSt/YuCiHIHMtur3C/FVE4QDczWVnZ8wBcMMBGzKanOi19gPVy1QgfwjYeeioNv7
+GIqqbp0IpI0O1PRRgDu+yknNZf8gjpWyZdKjkZshbmP6ZScxHAAXX7n5sw6BXjUB
+Sgb9V2nEQ0s6FSHuvVtMmEYoRw7HKg==
+=QCNJ
+-----END PGP SIGNATURE-----
+
+--zxfbvnp33c2bstsb--
