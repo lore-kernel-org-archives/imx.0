@@ -1,65 +1,50 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3281C37A5
-	for <imx@lists.linux.dev>; Tue,  6 Aug 2024 11:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741881D1F52
+	for <imx@lists.linux.dev>; Tue,  6 Aug 2024 13:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722944588; cv=none; b=pLpaOGAv0ENpxl38aTNuZTzhcJ9ao/e7BVkFajhcQAJFZeOqN+GJ5BuXQWAeehSd94rtFgy/eTgi/rMRIieIN9sOzBqbMp/Gzhby3SUeOlGjO39nJV+Uj8XJr6hrLRbsBpmj9XDtJSkaxcnRv8k/KvVumg3nZBdTW2cJV6g0amY=
+	t=1722951297; cv=none; b=RP27afZhS6SdIymHKznpQ/QRH5AktlnelTlyBxaMVLmIpYEbKNXXkB0TBhrWcbvq1mN2b+2KVc5bw/Z+yLLVBjbL7zJQIdX3nJu9WeuEtqNjrds4vuQoRGbcGJ1wO8gsUkbE/2XNO7WIdu3BiaoEdszzGAe4K0tGYz1JpD4tgrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722944588; c=relaxed/simple;
-	bh=Z6xlId7q0Vfm+FeJ3zQeLCCXzCKiMho5wSh4gtbswc0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Nf6rwwQVWdpmcW0x6KY237Q4U8zD9SgdlpjkGHbMZFZAwUVuMCAMlD6vmrOtbbLClXCUc4YChnakZ3zP7Sommw+CROUhh/lp0U9Ngl5OT1PGuCOP9f/h5q0they0j123AS+2q0IB87T3Jwlboipl1fyQCWsXbwmwKWrNGD/1htk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lwHUStvK; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722951297; c=relaxed/simple;
+	bh=UdzWhsd9oz0+AmDdGddx8suhoSHnbzpjtEd4LPJVNzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M97FxKQHaLrS9IAlG3Q7gIagZkTsOfyS1YEo0Z6jxSYobRXnRZaRaqGuLR1QujScLPIeW0xtHmBqMjNGXi9UEyd7dLsj6XDIyJSPYAhwfcQboVualVOMZQLbLXbZuBrCSDa2a1ainqIYaFpM05oSl/qjho+/F6YMmolBF31eIT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=S0b8PbWB; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwHUStvK"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2cb77ecd7a2so170274a91.1
-        for <imx@lists.linux.dev>; Tue, 06 Aug 2024 04:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722944586; x=1723549386; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pH/NKRMVdwEmIgLR7UulwVxQzWNz1LIelnNAG0aSToQ=;
-        b=lwHUStvKr8oEWzQulUDbG14INpZLC8SNgEuPmlxBcfLiECM2VJv+Jb21Kmk+Hvhi9T
-         Zy0U9FdV7DPC2sC59I8xSNSlvJjfuJkm2NcyNr9aegB7NqVvi6v7+WMiGgB0NgLGbocC
-         3f1F60uQ5wNPzHfwzreVN4wL5eaiMXolG1ToFBkKaDf0LqqP/ll+PACU0LnmYnf6ruLV
-         M3Cph7LDbyZtoatacGy51mHf8yPiXGKxCMNRNmPu06Lt5uRbPbsjRPvdkgOi4jp0AHwK
-         0YZ1L30UTJIL476CBkGVcjowqWNrv7oFqjY9yzE4Gr6EWg8LVAPvvcTO64j6BfQ32QYo
-         f3tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722944586; x=1723549386;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pH/NKRMVdwEmIgLR7UulwVxQzWNz1LIelnNAG0aSToQ=;
-        b=khwYOl/T+RkcSOd5VUrc9/dYBEC6kNm6np8+P4Dito8zqBmEuqIdKdUWIHYN6WfGAo
-         eyDo5AJsVaJgV50nFKKvQLlQrKT5GZp4V8jIXO4k0NPrETonPKxg39Ddddd1QvFRRa9/
-         FAIE03Xn2oNaS160wiVNBE8KRS+b7BKP03zEHx6Ybx2QtK/JOw/2yDKoBGalzED27dAC
-         0sCkRpiqQygW/8KCsuuDewVgjEDAJ0OEOpTrmz1BFngMKRFp0A+8bUfibbtC/qJ9iSGp
-         0PTmaXTSgo+QtQsB52H39hWZd5KzRA1IPviIccRXJMemhgyQia4atHtkEJQ8EhZ75PX+
-         58xg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2b4ksHeXGDeU0g/vypP9+Q7CezzSm7uK8RcxeUXjOeicNejsRGKCjTlZ8W2SpDfILmmQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz38iEuaxVei6jBr4QlFc7n1C+mC8NP0bP1BZFtRr1ZCenJZXzF
-	Mwe81JA7W69IBLck3Uu5IWaeKaboT8AmrVISQlbKXwmplXJgGt7dDCD4dA==
-X-Google-Smtp-Source: AGHT+IFgvhOHFRNvB5yg48uIGUBXXpWCcGVIkdqI3DQEmLQNwk7SE1SYo72hNTyEEkGV82QRW8043Q==
-X-Received: by 2002:a17:90a:c68b:b0:2cb:4382:668f with SMTP id 98e67ed59e1d1-2cff958fd7amr10079172a91.5.1722944585723;
-        Tue, 06 Aug 2024 04:43:05 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:3668:14ca:30e:638f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cffaf96996sm9007938a91.16.2024.08.06.04.43.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Aug 2024 04:43:05 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: Thinh.Nguyen@synopsys.com,
-	linux-usb@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="S0b8PbWB"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0F3DEBFBCA;
+	Tue,  6 Aug 2024 15:34:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
+	t=1722951292; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=oGGBzcnOnP0mo+bJ5KHmTIO9dRW6gvWt4+kpJJygojQ=;
+	b=S0b8PbWBmhssF5D9k42QB4s6ZzguC5h/YbvfPLQdBtYJ4ffo8kF/5LbZYfVoGiVZ+qLA14
+	CaqVihMfpLlqKc5S/wIU01hVRBpoHr1eKMgL38NgPbWwM55lRaAg0C7d0LD0HyTvvbUzpa
+	kYxC+WLEZVaqKg6aL8TXO+eXByLlhaC68f6XEmjUes6FWCDinyIlXMk6B8PXD0uQHplPXe
+	3QJiK+dgjoq4t2G2TvT1skNCy+Bd32bgoB4tdCvWAkBQXZOW4+DKIjBopGOOf6zl6oaQIX
+	m9XmgT9e7cD/1ONDkxuiFvs1TEiIdN+J3hgUdBpVak1nOm6dbYFnGDm8HpOhIg==
+From: Frieder Schrempf <frieder@fris.de>
+To: Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH] usb: dwc3: imx8mp: Switch to RUNTIME/SYSTEM_SLEEP_PM_OPS()
-Date: Tue,  6 Aug 2024 08:42:31 -0300
-Message-Id: <20240806114231.2603055-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH 3/4] arm64: dts: imx8mm-kontron: Add support for display bridges on BL i.MX8MM
+Date: Tue,  6 Aug 2024 15:33:01 +0200
+Message-ID: <20240806133352.440922-4-frieder@fris.de>
+In-Reply-To: <20240806133352.440922-1-frieder@fris.de>
+References: <20240806133352.440922-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,106 +52,214 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Fabio Estevam <festevam@denx.de>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Replace SET_RUNTIME_PM_OPS()/SET SYSTEM_SLEEP_PM_OPS() with their modern
-RUNTIME_PM_OPS() and SYSTEM_SLEEP_PM_OPS() alternatives.
+The Kontron Electronics BL i.MX8MM has oboard disply bridges for
+DSI->HDMI and DSI->LVDS conversion. The DSI interface is muxed by
+a GPIO-controlled switch to one of these two bridges.
 
-The combined usage of pm_ptr() and RUNTIME_PM_OPS/SYSTEM_SLEEP_PM_OPS()
-allows the compiler to evaluate if the runtime suspend/resume() functions
-are used at build time or are simply dead code.
+By default the HDMI bridge is enabled. The LVDS bridge can be
+selected by loading an additional (panel-specific) overlay.
 
-This allows removing the __maybe_unused notation from the runtime
-suspend/resume() functions.
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- drivers/usb/dwc3/dwc3-imx8mp.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ .../boot/dts/freescale/imx8mm-kontron-bl.dts  | 146 ++++++++++++++++++
+ 1 file changed, 146 insertions(+)
 
-diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8mp.c
-index 8ee448068503..a8bd0850a873 100644
---- a/drivers/usb/dwc3/dwc3-imx8mp.c
-+++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-@@ -282,8 +282,7 @@ static void dwc3_imx8mp_remove(struct platform_device *pdev)
- 	pm_runtime_put_noidle(dev);
- }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+index aab8e24216501..2b344206dfd16 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+@@ -25,6 +25,17 @@ osc_can: clock-osc-can {
+ 		clock-output-names = "osc-can";
+ 	};
  
--static int __maybe_unused dwc3_imx8mp_suspend(struct dwc3_imx8mp *dwc3_imx,
--					      pm_message_t msg)
-+static int dwc3_imx8mp_suspend(struct dwc3_imx8mp *dwc3_imx, pm_message_t msg)
- {
- 	if (dwc3_imx->pm_suspended)
- 		return 0;
-@@ -297,8 +296,7 @@ static int __maybe_unused dwc3_imx8mp_suspend(struct dwc3_imx8mp *dwc3_imx,
- 	return 0;
- }
- 
--static int __maybe_unused dwc3_imx8mp_resume(struct dwc3_imx8mp *dwc3_imx,
--					     pm_message_t msg)
-+static int dwc3_imx8mp_resume(struct dwc3_imx8mp *dwc3_imx, pm_message_t msg)
- {
- 	struct dwc3	*dwc = platform_get_drvdata(dwc3_imx->dwc3);
- 	int ret = 0;
-@@ -331,7 +329,7 @@ static int __maybe_unused dwc3_imx8mp_resume(struct dwc3_imx8mp *dwc3_imx,
- 	return ret;
- }
- 
--static int __maybe_unused dwc3_imx8mp_pm_suspend(struct device *dev)
-+static int dwc3_imx8mp_pm_suspend(struct device *dev)
- {
- 	struct dwc3_imx8mp *dwc3_imx = dev_get_drvdata(dev);
- 	int ret;
-@@ -349,7 +347,7 @@ static int __maybe_unused dwc3_imx8mp_pm_suspend(struct device *dev)
- 	return ret;
- }
- 
--static int __maybe_unused dwc3_imx8mp_pm_resume(struct device *dev)
-+static int dwc3_imx8mp_pm_resume(struct device *dev)
- {
- 	struct dwc3_imx8mp *dwc3_imx = dev_get_drvdata(dev);
- 	int ret;
-@@ -379,7 +377,7 @@ static int __maybe_unused dwc3_imx8mp_pm_resume(struct device *dev)
- 	return ret;
- }
- 
--static int __maybe_unused dwc3_imx8mp_runtime_suspend(struct device *dev)
-+static int dwc3_imx8mp_runtime_suspend(struct device *dev)
- {
- 	struct dwc3_imx8mp *dwc3_imx = dev_get_drvdata(dev);
- 
-@@ -388,7 +386,7 @@ static int __maybe_unused dwc3_imx8mp_runtime_suspend(struct device *dev)
- 	return dwc3_imx8mp_suspend(dwc3_imx, PMSG_AUTO_SUSPEND);
- }
- 
--static int __maybe_unused dwc3_imx8mp_runtime_resume(struct device *dev)
-+static int dwc3_imx8mp_runtime_resume(struct device *dev)
- {
- 	struct dwc3_imx8mp *dwc3_imx = dev_get_drvdata(dev);
- 
-@@ -398,9 +396,9 @@ static int __maybe_unused dwc3_imx8mp_runtime_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops dwc3_imx8mp_dev_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(dwc3_imx8mp_pm_suspend, dwc3_imx8mp_pm_resume)
--	SET_RUNTIME_PM_OPS(dwc3_imx8mp_runtime_suspend,
--			   dwc3_imx8mp_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(dwc3_imx8mp_pm_suspend, dwc3_imx8mp_pm_resume)
-+	RUNTIME_PM_OPS(dwc3_imx8mp_runtime_suspend, dwc3_imx8mp_runtime_resume,
-+		       NULL)
++	hdmi-out {
++		compatible = "hdmi-connector";
++		type = "a";
++
++		port {
++			hdmi_in_conn: endpoint {
++				remote-endpoint = <&bridge_out_conn>;
++			};
++		};
++	};
++
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		pinctrl-names = "default";
+@@ -132,6 +143,90 @@ ethphy: ethernet-phy@0 {
+ 	};
  };
  
- static const struct of_device_id dwc3_imx8mp_of_match[] = {
-@@ -414,7 +412,7 @@ static struct platform_driver dwc3_imx8mp_driver = {
- 	.remove_new	= dwc3_imx8mp_remove,
- 	.driver		= {
- 		.name	= "imx8mp-dwc3",
--		.pm	= &dwc3_imx8mp_dev_pm_ops,
-+		.pm	= pm_ptr(&dwc3_imx8mp_dev_pm_ops),
- 		.of_match_table	= dwc3_imx8mp_of_match,
- 	},
++&gpio4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio4>;
++
++	dsi_mux_sel_hdmi: dsi-mux-sel-hdmi-hog {
++		gpio-hog;
++		gpios = <14 GPIO_ACTIVE_HIGH>;
++		output-high;
++		line-name = "dsi-mux-sel";
++	};
++
++	dsi_mux_sel_lvds: dsi-mux-sel-lvds-hog {
++		gpio-hog;
++		gpios = <14 GPIO_ACTIVE_HIGH>;
++		output-low;
++		line-name = "dsi-mux-sel";
++		status = "disabled";
++	};
++
++	dsi-mux-oe-hog {
++		gpio-hog;
++		gpios = <15 GPIO_ACTIVE_LOW>;
++		output-high;
++		line-name = "dsi-mux-oe";
++	};
++};
++
++&i2c3 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++
++	hdmi: hdmi@39 {
++		compatible = "adi,adv7535";
++		reg = <0x39>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_adv7535>;
++
++		interrupt-parent = <&gpio4>;
++		interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
++
++		adi,dsi-lanes = <4>;
++
++		a2vdd-supply = <&reg_vdd_1v8>;
++		avdd-supply = <&reg_vdd_1v8>;
++		dvdd-supply = <&reg_vdd_1v8>;
++		pvdd-supply = <&reg_vdd_1v8>;
++		v1p2-supply = <&reg_vdd_1v8>;
++		v3p3-supply = <&reg_vdd_3v3>;
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++
++				bridge_in_dsi_hdmi: endpoint {
++					remote-endpoint = <&dsi_out_bridge>;
++				};
++			};
++
++			port@1 {
++				reg = <1>;
++
++				bridge_out_conn: endpoint {
++					remote-endpoint = <&hdmi_in_conn>;
++				};
++			};
++		};
++	};
++
++	lvds: bridge@2c {
++		compatible = "ti,sn65dsi84";
++		reg = <0x2c>;
++		enable-gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_sn65dsi84>;
++		status = "disabled";
++	};
++};
++
+ &i2c4 {
+ 	clock-frequency = <100000>;
+ 	pinctrl-names = "default";
+@@ -144,6 +239,30 @@ rx8900: rtc@32 {
+ 	};
  };
+ 
++&lcdif {
++	status = "okay";
++};
++
++&mipi_dsi {
++	samsung,esc-clock-frequency = <54000000>;
++	/*
++	 * Let the driver calculate an appropriate clock rate based on the pixel
++	 * clock instead of using the fixed value from imx8mm.dtsi.
++	 */
++	/delete-property/ samsung,pll-clock-frequency;
++	status = "okay";
++
++	ports {
++		port@1 {
++			reg = <1>;
++
++			dsi_out_bridge: endpoint {
++				remote-endpoint = <&bridge_in_dsi_hdmi>;
++			};
++		};
++	};
++};
++
+ &pwm2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_pwm2>;
+@@ -207,6 +326,12 @@ &iomuxc {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_gpio>;
+ 
++	pinctrl_adv7535: adv7535grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI1_TXD4_GPIO4_IO16		0x19
++		>;
++	};
++
+ 	pinctrl_can: cangrp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x19
+@@ -277,6 +402,20 @@ MX8MM_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x19
+ 		>;
+ 	};
+ 
++	pinctrl_gpio4: gpio4grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14		0x19
++			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15		0x19
++		>;
++	};
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_I2C3_SCL_I2C3_SCL			0x40000083
++			MX8MM_IOMUXC_I2C3_SDA_I2C3_SDA			0x40000083
++		>;
++	};
++
+ 	pinctrl_i2c4: i2c4grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_I2C4_SCL_I2C4_SCL			0x40000083
+@@ -290,6 +429,13 @@ MX8MM_IOMUXC_SPDIF_RX_PWM2_OUT			0x19
+ 		>;
+ 	};
+ 
++	pinctrl_sn65dsi84: sn65dsi84grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_SAI2_TXD0_GPIO4_IO26		0x19
++			MX8MM_IOMUXC_SD2_WP_GPIO2_IO20			0x19
++		>;
++	};
++
+ 	pinctrl_uart1: uart1grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SAI2_RXC_UART1_DCE_RX		0x0
 -- 
-2.34.1
+2.45.2
 
