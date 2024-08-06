@@ -1,70 +1,62 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982258BEE
-	for <imx@lists.linux.dev>; Tue,  6 Aug 2024 02:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D5CF9E6
+	for <imx@lists.linux.dev>; Tue,  6 Aug 2024 02:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722910607; cv=none; b=rIshfcHa6v3mDFww3VZO858+gMp2+6GYOx2WhTZwjTEE7d4EgIyRr7PYALDe4j18t0PRzEasqTgSHo1vrMaKSA0+T5x2X78stTgqbAytp9FJiARFIWpQyKxTr6aW4MOM6z4SRHhu01mvZAlcW0MXFQuiX7HnIPVJfr4VIwPPKtU=
+	t=1722910674; cv=none; b=Up2EFbosr9efWT+TqWcChSOaLxF1+n+ofZjTUzUve69mf9aOytrKdn+qTeZ1UcPdNP4s6As9O+lnu42qP5ixGeJeXPU2nxxrbtLo/x1dhXnCLb717UcrISm3q/K3AxgM2RO0UZX4HXAPogMcRAc33gbMAFFKzlgCUNH17yDHoos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722910607; c=relaxed/simple;
-	bh=ebSWJSj/buxW44/rQoQph4W+aePCGg6KpmYyKZK1snY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qR5CMqjd+kA3skC3drdhC1mH8ZRI5VALyKXqrN9iaVtkaspQDcAidubL6o+0JUtCOiV57ZcDna+9aq8ALjQl9AlecrochmeIf7yzC8O/OxR1DVh+XogY/ow0iY4v0I+anVfII58KIclkZywJFAvHy36JCT42uT677aYj/8Wa+SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EzZPsGRU; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1722910674; c=relaxed/simple;
+	bh=JRhQfo/ztHvpjlrb+wxSoTmiRBUjOuL3IDj6gu4IOT4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qtBr4ZkUlYb3vPdLC5u+B/S4s6wEzj4j+DxgGtk4WbN2/0Z32r3KF5gKN1t64b+6j4yMc1obD+oAMwHyDF5FD0L8kCuVUQjGlPg9rYdARYq3l98b4sCHkBLxO/sJtcDO4FkUSqIJJcUDopL7FLOt4wEkZZXjo/qacJvI9q2uoYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ntOyRNBS; arc=none smtp.client-ip=209.85.167.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EzZPsGRU"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2cb80633dcfso97415a91.0
-        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 19:16:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ntOyRNBS"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3db165f8211so70764b6e.1
+        for <imx@lists.linux.dev>; Mon, 05 Aug 2024 19:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722910605; x=1723515405; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1722910671; x=1723515471; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7mvtGZEsuHPzWX3pW4fYKh4Cjh9maArqhFHH/gvuGQ=;
-        b=EzZPsGRUDj9nEEhvqVdJ7zRSnV9clWNfm+MJw0q31lkRDDDdU7iNWmgSUeb/nKZKyE
-         Hi5cxDprEWmixQPtxosX6bEXEF9eq0S3/cFttb1bWSfFAh6eXnUjpat5tZju8rvjhi6z
-         acQBkm7vMyoF1d+gYDJwuEf8Aoe3ife9El4UcmxmZrcHRdQCSFL01+OeuDw3PDgrsFek
-         49EUapmXBr2jhaxFsyICe1qJrElAHAYipVrAoPHfkkOdC5B18KiKR35bfzNHXDU/Up6l
-         25T3glupcA0+tVP+B9iggVkVlQQkuwXfJ/2MMGSVScIhKgZ6kdnWIH3OgG0U6/3nKNAo
-         TzDg==
+        bh=f+ehD75BWluQoZLMCLsE4DRj4fPkWd2bPdDlGv/84Is=;
+        b=ntOyRNBSS0aDVzeOKMTGR3DiQwvfmPXF/MC7wmFLealrOqHaoZ++WmhxDanblBRHKt
+         jYmN7H85vgM7SuDG/xiIgq7h9xXJgnXfREHYfgzxRro5oZvOA5XDvfphKo2OB110de6w
+         A0CkD8yGJNQm/Qy1bLo1d9MlEvkMgJuiReIsy5WlnH2kGLLVTxLWaOFS3Usb7bKZ2es8
+         wV9mks+q3uqPwBM2KuaUIcqKj331H8Gs5uWyVybeABjHNwNj/N7W/6Fik1jCepl+hLbf
+         ZUiEiqo+rFlUknmIPnwbKfcFdeTuDuww7pCLpVw/rEsWVUu/GYU4HmjApwKLEe1PqKfj
+         SHTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722910605; x=1723515405;
+        d=1e100.net; s=20230601; t=1722910671; x=1723515471;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l7mvtGZEsuHPzWX3pW4fYKh4Cjh9maArqhFHH/gvuGQ=;
-        b=ou1cYb97c7W6Allhi+52bnevsd5JQ7wu5cKAgMCgkAB82w1YW9qr9yWYhE2HzrOvmr
-         3FCvNfEqYPNgOmMq1pyx7ougzq2E2rwZOuX9jdkKXU9f8FYG9UmjRpn+7TYFxWs5dFy7
-         WFYEFk3PXisWUH8DVH755InFgFk9seAbnEicmxvlL5nNY/fqOr+eO3bv1Nf19GCKFwAl
-         g9TRJi8y5WUQgGYN3o/SSiNnWcdT2WH9ckIhXcSm0OUNcgK0ifTriA3k1/Z5sQNj/E6k
-         Lvxtvnc4txpzjIpDcHySbg0a5gYrccgEp0DDD3oDDQSzEEKtlj0qDH0BlOEOD3odnrRS
-         dtSA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQzVghsW7eZSn8DXot8sua6/uyC2VDOS6EQAOOlS0zXN+yHyFkmhR3jqjmhH4BQ7lZn4M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWJ01276m4KvzRFNYfN69L0Pcqf1FNs1l/ySPJNXXVMFKBFKbp
-	GdNcbrAaI/jPVXFoGhqht3ahLHjquFfSxXupMfLSbCPSohO617lj
-X-Google-Smtp-Source: AGHT+IFGIIZ+nhDuGefYZ1y1WVR21yakH6dk3osLDORN1mCGnbZ1+JngnuuwyDq0uaosvESzYiK9fg==
-X-Received: by 2002:a17:902:d505:b0:1f7:3ed:e7b2 with SMTP id d9443c01a7336-1ff570f16cfmr91474625ad.0.1722910604865;
-        Mon, 05 Aug 2024 19:16:44 -0700 (PDT)
+        bh=f+ehD75BWluQoZLMCLsE4DRj4fPkWd2bPdDlGv/84Is=;
+        b=Oh4R5XTfpYtoxs5y5CghNtvb4D6th1QXUBUtzM70AviccvEHis7Qfa0N3jej3oGnBW
+         p8wE+AJ3YJ+hwvwEB3jDhxv5ZWUNu6iWUcyzN8WaOxKhC+tuFzpq8DCpYvxuo53pw6ig
+         g8oFKyihDYfP2hXnGXoUfng51+GDBeQMs6IgG0oo0suau6+fjSSIzsok1AYsxkO404Xi
+         NLzBSyqaovW7Gf3NfljmhQcSQ5wk0daFpQBD/72HJZK+n46Tn2YiqyFVxz/WElp/wsai
+         zqLxO4BT4Df6N0kaNmdxXlcxcvlFVwZyXll1COa2L+NOnP1iLmar2iJJlb04DhusPaNY
+         5rNA==
+X-Gm-Message-State: AOJu0Yw75QqNpwR2wH3TRXynTzL599PVJnwo73xDZqiHD2FFVypJhaM4
+	o6mZT2k5nD0uiGZDU35bQTdwB57oP71XPjLaQluonL0RdXPMGKq2
+X-Google-Smtp-Source: AGHT+IGipj1l5BHjyuJ8T+rj9N2QAzB76ZmbF3UgMJBLoPA5tI9PQ/S7wtGfIv+QxEGplcX38KeNUQ==
+X-Received: by 2002:a05:6808:1811:b0:3d9:402e:4d17 with SMTP id 5614622812f47-3db557f613emr8289854b6e.2.1722910671397;
+        Mon, 05 Aug 2024 19:17:51 -0700 (PDT)
 Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:3668:14ca:30e:638f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff5929ac42sm76095385ad.267.2024.08.05.19.16.41
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7b764fb50ccsm6087006a12.71.2024.08.05.19.17.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 19:16:44 -0700 (PDT)
+        Mon, 05 Aug 2024 19:17:50 -0700 (PDT)
 From: Fabio Estevam <festevam@gmail.com>
-To: kuba@kernel.org
-Cc: wei.fang@nxp.com,
-	shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+To: vkoul@kernel.org
+Cc: imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
 	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH net-next] net: fec: Switch to RUNTIME/SYSTEM_SLEEP_PM_OPS()
-Date: Mon,  5 Aug 2024 23:16:28 -0300
-Message-Id: <20240806021628.2524089-1-festevam@gmail.com>
+Subject: [PATCH v2] dmaengine: imx-dma: Remove i.MX21 support
+Date: Mon,  5 Aug 2024 23:17:44 -0300
+Message-Id: <20240806021744.2524233-1-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,79 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Fabio Estevam <festevam@denx.de>
 
-Replace SET_RUNTIME_PM_OPS()/SET SYSTEM_SLEEP_PM_OPS() with their modern
-RUNTIME_PM_OPS() and SYSTEM_SLEEP_PM_OPS() alternatives.
+i.MX21 support has been removed since commit 4b563a066611 ("ARM: imx:
+Remove imx21 support").
 
-The combined usage of pm_ptr() and RUNTIME_PM_OPS/SYSTEM_SLEEP_PM_OPS()
-allows the compiler to evaluate if the runtime suspend/resume() functions
-are used at build time or are simply dead code.
-
-This allows removing the __maybe_unused notation from the runtime
-suspend/resume() functions.
+Remove the i.MX21 support inside the imx-dma driver.
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+Changes since v1:
+- Fix typo in commit log (th --> the)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index a923cb95cdc6..8c3bf0faba63 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -4606,7 +4606,7 @@ fec_drv_remove(struct platform_device *pdev)
- 	free_netdev(ndev);
- }
+ drivers/dma/imx-dma.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
+index ebf7c115d553..e913f0db99da 100644
+--- a/drivers/dma/imx-dma.c
++++ b/drivers/dma/imx-dma.c
+@@ -167,7 +167,6 @@ struct imxdma_channel {
  
--static int __maybe_unused fec_suspend(struct device *dev)
-+static int fec_suspend(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-@@ -4659,7 +4659,7 @@ static int __maybe_unused fec_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused fec_resume(struct device *dev)
-+static int fec_resume(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-@@ -4714,7 +4714,7 @@ static int __maybe_unused fec_resume(struct device *dev)
- 	return ret;
- }
- 
--static int __maybe_unused fec_runtime_suspend(struct device *dev)
-+static int fec_runtime_suspend(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-@@ -4725,7 +4725,7 @@ static int __maybe_unused fec_runtime_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused fec_runtime_resume(struct device *dev)
-+static int fec_runtime_resume(struct device *dev)
- {
- 	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-@@ -4746,14 +4746,14 @@ static int __maybe_unused fec_runtime_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops fec_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(fec_suspend, fec_resume)
--	SET_RUNTIME_PM_OPS(fec_runtime_suspend, fec_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(fec_suspend, fec_resume)
-+	RUNTIME_PM_OPS(fec_runtime_suspend, fec_runtime_resume, NULL)
+ enum imx_dma_type {
+ 	IMX1_DMA,
+-	IMX21_DMA,
+ 	IMX27_DMA,
  };
  
- static struct platform_driver fec_driver = {
- 	.driver	= {
- 		.name	= DRIVER_NAME,
--		.pm	= &fec_pm_ops,
-+		.pm	= pm_ptr(&fec_pm_ops),
- 		.of_match_table = fec_dt_ids,
- 		.suppress_bind_attrs = true,
- 	},
+@@ -194,8 +193,6 @@ struct imxdma_filter_data {
+ static const struct of_device_id imx_dma_of_dev_id[] = {
+ 	{
+ 		.compatible = "fsl,imx1-dma", .data = (const void *)IMX1_DMA,
+-	}, {
+-		.compatible = "fsl,imx21-dma", .data = (const void *)IMX21_DMA,
+ 	}, {
+ 		.compatible = "fsl,imx27-dma", .data = (const void *)IMX27_DMA,
+ 	}, {
 -- 
 2.34.1
 
