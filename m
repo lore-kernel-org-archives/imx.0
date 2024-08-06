@@ -1,57 +1,70 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1161D1F7A
-	for <imx@lists.linux.dev>; Tue,  6 Aug 2024 13:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8721D47C3
+	for <imx@lists.linux.dev>; Tue,  6 Aug 2024 13:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722951308; cv=none; b=uMXJug8lqFv+HegqYuNflGWojIdPbJ5a2Kr//0VqOSn9/JNx2ANl/prgXy/E1JPf4stJ/kVeK7tmji5Gr61l8/V4zc+EkwOw0p6SpZM19TuMQhSz1oxrAQbzHrSlZmpDiHsyfuVo42XCdODQFS+m8uZ4EK3R7UIDZTU9XJ55pXM=
+	t=1722952318; cv=none; b=p5+YqvYEHqNP5fACbeFAf0Obe0HFZZK7W8do9gNsC/SMGSBB/lAMlwokz//gcdkPCjNYr6X+bYC6bX9XD5UklJlnzIKTki3YDoqY1oJdohrPJvuZTQw8lmbhD6XIR67/+KYc7h6Z9fF+GufuBDEcOlzrzJjoyDC9rE1pFWl19zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722951308; c=relaxed/simple;
-	bh=+rcwjnlVUXpMP0DLLVDC43f15ije4+YjD0I5MJMDpRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0x23pybAO7GJY4iGZYt1vWq3xCnT7ORcCmqRpdocC7rFN1url8pFI2PlSxebyO7FIGlzGSldG4Sh6+Dtso8rAdr3f1x5Nb2vLPCsUh04tycwxWycn7utzwPuGrChOIkS3/72scE+GY7cmWBj6MrQ0+fz264Eko7E7dq7nRS9qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=oj4gNLkL; arc=none smtp.client-ip=116.203.77.234
+	s=arc-20240116; t=1722952318; c=relaxed/simple;
+	bh=8rybmepnuNG/Fm0NjZD4Qp7/jNS4BX4w/ave4TQ7X1Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qA+H+6i3tJQ3q2XGl2oiiPAYtl/78YlXGPzQKgTvwLQwGoGmAHj+ebIoumJmxdKUta0ZnkT9fUpFYTOXc7tDvdcAwBHFngy6++q6SoFWY/u54zmZWiTOAchcBNC0g1lQ2VKTlf38qbtW+m6WRDEUYFwTkWGfJfBtb7dL1yVwnBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=nsESuk2s; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="oj4gNLkL"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6D48BFBCA;
-	Tue,  6 Aug 2024 15:35:03 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="nsESuk2s"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 88FF1BFB06;
+	Tue,  6 Aug 2024 15:34:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
-	t=1722951304; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=yYAWlvlFpcv953bwrA/R1Uh/nypbpFD6Q8hQPr+IE80=;
-	b=oj4gNLkL5w7jiNzhUxrADUMvq9ZtRM22/fsBc8MoR2o4+j/DjD6U+py15/IaE3RSgC3iqe
-	EgrGPV9fiTy+mMUU1c7WO8JJ39gWGPP54zvJXsVdl5FrpKeYV0nrxcy9mMB6Y4OIRSbiLM
-	odXCO5g8meE0dV/zUTSoha6sUVP+GMufvSdB7br1aP1hden0Y1A42uOoMGC5X1NLu/NJQ4
-	4TBC6BBRBBTMW5FajZ7pArti/k4plOgf5KKquFWkYiB8jeuCCUSYINLbseDCIMxC1hnMRZ
-	7AfBTHc2ZcR+8jh+vP9NTnY5ysfMOa16bUE3E6VHllcV0QxaRq8fcMdvuHcUow==
+	t=1722951281; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=cyPHxdswqOb5N+EqzIxpN2i+5Izf1AnteHGpt/ataIA=;
+	b=nsESuk2sVBWj2SesqVt3A1EOdeQ4/vRf6w6WccdSt2uhfIqTmi27B07agGlrLJ/m/A9Ku9
+	qYJSFQk02oVwssdIZH6GL6EtTzm2GsZO14f0QCmTxiIGcK57DgSAQCnaOJG6XfLN25KTTf
+	xHiwKKb2lvidS5m5qJYCAhByorTU2cLwIklqrTYNRID7jtNTqjJzD1xhYf1Y3bcNEm05S/
+	WLltmZXvc25z2h03u8boQGeybd9E0IxrPB6GYAhRR9+959NN0XzN7ZcgsyA75AtTZhCVth
+	UTAZOkw4AgI4lrPn4LlLGL8KiTvyX5nD7kTPxtcW5FhmFB+GcFbfZCHz6obyEg==
 From: Frieder Schrempf <frieder@fris.de>
 To: Conor Dooley <conor+dt@kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
 	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
+	Shawn Guo <shawnguo@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
 Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Parthiban Nallathambi <parthiban@linumiz.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH 4/4] arm64: dts: imx8mm-kontron: Add DL (Display-Line) overlay with LVDS support
-Date: Tue,  6 Aug 2024 15:33:02 +0200
-Message-ID: <20240806133352.440922-5-frieder@fris.de>
-In-Reply-To: <20240806133352.440922-1-frieder@fris.de>
-References: <20240806133352.440922-1-frieder@fris.de>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 0/4] arm64: dts: imx8mm-kontron: Add HDMI and LVDS display support
+Date: Tue,  6 Aug 2024 15:32:58 +0200
+Message-ID: <20240806133352.440922-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,260 +76,33 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-The Kontron Electronics DL i.MX8MM consists of the BL i.MX8MM board
-and a 7" LVDS panel. Provide an overlay that enables the panel.
+This add support for the display bridges (DSI->LVDS and DSI->HDMI)
+on the BL i.MX8MM and the 7" LVDS panel in a separate overlay.
 
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
----
-Note: This currently throws the following warnings:
+Only one of the interfaces (HDMI or LVDS) is supported at the same
+time. Enabling the LVDS overlay will disable the HDMI interface.
 
-Warning (graph_port): /fragment@3: graph port node name should be 'port'
-Warning (graph_endpoint): /fragment@3/__overlay__: graph endpoint node name should be 'endpoint'
-Warning (graph_endpoint): /fragment@3/__overlay__: graph connection to node '/fragment@7/__overlay__/ports/port@0/endpoint' is not bidirectional
+* Patch 1 and 2: Add the necessary binding changes
+* Patch 3: Extend the BL devicetree
+* Patch 4: Add the LVDS panel overlay
 
-There is the following commit in DTC that relaxes these checks and
-will eventually resolve these warnings:
+Frieder Schrempf (4):
+  dt-bindings: vendor-prefixes: Add Jenson Display
+  dt-bindings: display: panel-lvds: Add compatible for Jenson
+    BL-JT60050-01A
+  arm64: dts: imx8mm-kontron: Add support for display bridges on BL
+    i.MX8MM
+  arm64: dts: imx8mm-kontron: Add DL (Display-Line) overlay with LVDS
+    support
 
-84b056a89d ("checks: relax graph checks for overlays")
-
-https://git.kernel.org/pub/scm/utils/dtc/dtc.git/commit/?id=84b056a89d3c5b6cf6c5eeeafd4c4b14d6333aa9
----
+ .../bindings/display/panel/panel-lvds.yaml    |   2 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
  arch/arm64/boot/dts/freescale/Makefile        |   4 +
+ .../boot/dts/freescale/imx8mm-kontron-bl.dts  | 146 ++++++++++++
  .../boot/dts/freescale/imx8mm-kontron-dl.dtso | 210 ++++++++++++++++++
- 2 files changed, 214 insertions(+)
+ 5 files changed, 364 insertions(+)
  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index f04c22b7de72e..d8af069139920 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -244,6 +244,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
- 
-+imx8mm-kontron-dl-dtbs			:= imx8mm-kontron-bl.dtb imx8mm-kontron-dl.dtbo
-+
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-kontron-dl.dtb
-+
- imx8mm-venice-gw72xx-0x-imx219-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-imx219.dtbo
- imx8mm-venice-gw72xx-0x-rpidsi-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rpidsi.dtbo
- imx8mm-venice-gw72xx-0x-rs232-rts-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rs232-rts.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
-new file mode 100644
-index 0000000000000..b2d593d700e2d
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
-@@ -0,0 +1,210 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2023 Kontron Electronics GmbH
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include "imx8mm-pinfunc.h"
-+
-+&{/} {
-+	compatible = "kontron,imx8mm-bl", "kontron,imx8mm-sl", "fsl,imx8mm";
-+
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm1 0 50000 0>;
-+		brightness-levels = <0 100>;
-+		num-interpolated-steps = <100>;
-+		default-brightness-level = <100>;
-+	};
-+
-+	panel {
-+		compatible = "jenson,bl-jt60050-01a", "panel-lvds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_panel>;
-+		backlight = <&backlight>;
-+		data-mapping = "vesa-24";
-+		enable-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
-+		height-mm = <86>;
-+		width-mm = <154>;
-+
-+		panel-timing {
-+			clock-frequency = <51200000>;
-+			hactive = <1024>;
-+			vactive = <600>;
-+			hsync-len = <1>;
-+			hfront-porch = <160>;
-+			hback-porch = <160>;
-+			vsync-len = <1>;
-+			vfront-porch = <12>;
-+			vback-porch = <23>;
-+		};
-+
-+		port {
-+			panel_out_bridge: endpoint {
-+				remote-endpoint = <&bridge_out_panel>;
-+			};
-+		};
-+	};
-+};
-+
-+&dsi_mux_sel_hdmi {
-+	status = "disabled";
-+};
-+
-+&dsi_mux_sel_lvds {
-+	status = "okay";
-+};
-+
-+&dsi_out_bridge {
-+	remote-endpoint = <&bridge_in_dsi_lvds>;
-+};
-+
-+&gpio3 {
-+	panel-rst-hog {
-+		gpio-hog;
-+		gpios = <20 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "panel-reset";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_panel_rst>;
-+	};
-+
-+	panel-stby-hog {
-+		gpio-hog;
-+		gpios = <21 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "panel-standby";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_panel_stby>;
-+	};
-+
-+	panel-hinv-hog {
-+		gpio-hog;
-+		gpios = <24 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "panel-horizontal-invert";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_panel_hinv>;
-+	};
-+
-+	panel-vinv-hog {
-+		gpio-hog;
-+		gpios = <25 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "panel-vertical-invert";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_panel_vinv>;
-+	};
-+};
-+
-+&hdmi {
-+	status = "disabled";
-+};
-+
-+&i2c2 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	status = "okay";
-+
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	gt911@5d {
-+		compatible = "goodix,gt928";
-+		reg = <0x5d>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touch>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <22 8>;
-+		reset-gpios = <&gpio3 23 0>;
-+		irq-gpios = <&gpio3 22 0>;
-+	};
-+};
-+
-+&lvds {
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@0 {
-+			reg = <0>;
-+
-+			bridge_in_dsi_lvds: endpoint {
-+				remote-endpoint = <&dsi_out_bridge>;
-+				data-lanes = <1 2>;
-+			};
-+		};
-+
-+		port@2 {
-+			reg = <2>;
-+
-+			bridge_out_panel: endpoint {
-+				remote-endpoint = <&panel_out_bridge>;
-+			};
-+		};
-+	};
-+};
-+
-+&pwm1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm1>;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL			0x40000083
-+			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA			0x40000083
-+		>;
-+	};
-+
-+	pinctrl_panel: panelgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXFS_GPIO3_IO19		0x19
-+		>;
-+	};
-+
-+	pinctrl_panel_hinv: panelhinvgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXD3_GPIO3_IO24		0x19
-+		>;
-+	};
-+
-+	pinctrl_panel_rst: panelrstgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20		0x19
-+		>;
-+	};
-+
-+	pinctrl_panel_stby: panelstbygrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21		0x19
-+		>;
-+	};
-+
-+	pinctrl_panel_vinv: panelvinvgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25		0x19
-+		>;
-+	};
-+
-+	pinctrl_pwm1: pwm1grp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SPDIF_EXT_CLK_PWM1_OUT		0x6
-+		>;
-+	};
-+
-+	pinctrl_touch: touchgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22		0x19
-+			MX8MM_IOMUXC_SAI5_RXD2_GPIO3_IO23		0x19
-+		>;
-+	};
-+};
 -- 
 2.45.2
 
