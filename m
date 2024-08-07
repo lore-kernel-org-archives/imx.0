@@ -1,139 +1,125 @@
-Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C750163CB
-	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 20:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97FF84037;
+	Wed,  7 Aug 2024 22:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723063213; cv=none; b=gguPIxJpaIT+Iw53ZRqXWKEp+TKvSyj3Nogs6Zax9IZDNmKpZywPcMLnBvXMYOud0Bov1pgsFC4OhEWGDvDDBq22FoF64Q2FQqcvBQ5axCRTn1BYl2CWh2gwWXCMo2grWZCQkCv1jYq2fDLdEwhJ7/r6awz1zJ1N/FihCjsmcTw=
+	t=1723070108; cv=none; b=XCnzPEfbbKSmE0FYqOCQHyXwbMCn28AsvM0J3px/m8XWLSt0kWYb/I2detg3cRCrE34Vs/BcM25TUONSj0JqcbczJh+3MkF8UngQZEKzqBLRF3bAbV2d5e66uQeob9wCuujiXedgv1Sbd6uGp2+n1dabASveplxG02D1FtgRM2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723063213; c=relaxed/simple;
-	bh=blkBUwuYNV1jdiG9n3ec84ATSv7sX+2uYwyxvMbrnlQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XYhLdk8VGft/bPJm3fNy2PDCsF86ei8bdF/V27UVjTV9XuZEiZOlhdVKK4guMBcjkcPuHjrm84GudeWmMxXaHSTQcyvGtJvlOt8HrKa0a2lWgov/Gvuz4K2xyxuJMaqKCKCN6LjOB+J/N9NOrzXT95DhOehAvKe66P41zlrVHKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me; spf=pass smtp.mailfrom=beims.me; dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b=CEx/5bhW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H3H9+oWz; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=beims.me
+	s=arc-20240116; t=1723070108; c=relaxed/simple;
+	bh=4SW2koNLSR3UGJDCQ4tfaSCI1PPYQl+YNGBqJggCxkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ilraU9e/cz3fYtA6PfXDaJc3wMJnj3TIe90njjQU1nbiPyxhezSoc+LrrJ+4EdTuKKOwD3sE8arkZxHwf3To27iRdbbXMoIUTvHQhUjJHk1ETTfohBMOdmZ/gx2F11VyVBjYXrfS8HHU2WZngxcM+EdpbPMs5RzGTHHPlpsVB/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEGa2nht; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b="CEx/5bhW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H3H9+oWz"
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfout.nyi.internal (Postfix) with ESMTP id EA886138DD80;
-	Wed,  7 Aug 2024 16:40:10 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 07 Aug 2024 16:40:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beims.me; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1723063210;
-	 x=1723149610; bh=gcQqS4Nvw3oVR6X1QO70/HzE1Wr/SNsmwf90YobtWTs=; b=
-	CEx/5bhW09PdllSKPc+RQvB5sAQJMIjAModMHZtf4adcZIN8reAKRDrVEze8nw25
-	4MQaxdsW3+nB2G/MnTTrXmrkSxUFGoAoPI8SsiB+vyfmYyiavhWpHYkWaSA/o+Pt
-	QLMEV54ZFxTABaNEIR3Uj9qN1AHK5owOMQ1bPeTZGYlsbcdjChtrtWTynfsoZyB3
-	jBnoeq49u213jL1aIkhfPtyeVBwMwf6I913s+NeQfMWlb45gqR9ZPwDzi55lzvZl
-	aMQavA6w1jbbrIie/fKVguBH7PXoMD/pYTa41hHHQga8ZqC6r5v5r+sf3yvYCJxC
-	o2WZaNZKyN/s8GJr+k1VNg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723063210; x=
-	1723149610; bh=gcQqS4Nvw3oVR6X1QO70/HzE1Wr/SNsmwf90YobtWTs=; b=H
-	3H9+oWzmCH7q+Ht+i284uG0J0DLScMPq8j3wo05s2VPr9hCz5ekfk3M9abJy/6T6
-	gYfyOgL3ClHTGKm6yYuuk/XoluWUEd5VYVRj2m1NF5Livx/tNhySzaKFRA8a93DI
-	6gyzsqB9gGUhVJXZziIUBNpM9x31n7f6pzJyfESW1HTJTIsGwaxDNkYcpMrY+S4v
-	XnrG91BxWxOfpFlooTyxg03IY+Jie5Wy7TiZFptqVjtfH3sQZbQP5yQcKcm0hotn
-	ldSUIH5cu5iJYqqXaNA5PA7/GSGAnEpYb1BoDvzs5xDFccTx7svffXRqGUspwPqy
-	fIchm5WXpXQPOKicbPqUw==
-X-ME-Sender: <xms:qtuzZjFxgfhhUOupIBdlvye-FdoN4-RZy68WKu30K6XIcnIURiZpgw>
-    <xme:qtuzZgVU8TnmjI28CmY8MMMb3LhV3XlatXn69r2iOYFYnrpdqu-S3Kb2-xvwDmb8V
-    bf--woQ3lAjpxiEvFQ>
-X-ME-Received: <xmr:qtuzZlKcOT-pYdn4gO3k-5o3FhIvMrID9a8XLwng6iNqNC7eXhENzs7whupchc6MDg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrledtgdduhedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeftrghf
-    rggvlhcuuegvihhmshcuoehrrghfrggvlhessggvihhmshdrmhgvqeenucggtffrrghtth
-    gvrhhnpeejieejvdelgeduveejgeeltdevieefteejleeiieejgeeihfelleehtdegudei
-    ieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehrrg
-    hfrggvlhessggvihhmshdrmhgvpdhnsggprhgtphhtthhopedt
-X-ME-Proxy: <xmx:qtuzZhGndCpJc4kIoZyNZ_3CzsB9hxJ3vmFRpVJQKINWz7yZYf5-mg>
-    <xmx:qtuzZpUstN_arVCzhotyH2QspzMCki5qg_QDHYcE3JEsuIegV1R8kg>
-    <xmx:qtuzZsN1B_CjUqx0l31gl5PFWCHaRzD-232qDIghDfQRIwlNNR_TJA>
-    <xmx:qtuzZo3nWwPreQ_Vk0OzFcT1NwFGl3I0WHxkDXJH5WBOQ3Oeh1Etsw>
-    <xmx:qtuzZuWw737ZV9JHTniMVYgh5NPYY0TFgxQy0RdnNxflmjnYac4Zudlj>
-Feedback-ID: idc214666:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 7 Aug 2024 16:40:07 -0400 (EDT)
-Message-ID: <48d37621-13d4-42e0-8cd2-c4b031149b1e@beims.me>
-Date: Wed, 7 Aug 2024 17:40:06 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEGa2nht"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2001FC4AF0D;
+	Wed,  7 Aug 2024 22:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723070108;
+	bh=4SW2koNLSR3UGJDCQ4tfaSCI1PPYQl+YNGBqJggCxkI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gEGa2nhtWx0OmR2n5WPnJGF7lXEYDWPQbd9goc340or6vClcv7BK8g+LXX5K7zMbm
+	 7gTaJJ8GueY/qPpqV3LI6rPdh1sb9V818kNypu3NDb1MlunXw+/i98worzpGRUUy4O
+	 jhpHTyuOR3zUiKUoKU+DTQyGfnVKaLlWHXaKl8V2bNClU9NDY/s89LdDt0qOZo8oNF
+	 BLTgshL4skQl6QHFdslAxXtOFGYUfB0DpczeDbwAn5ciEjMXyfNDVhMO9DMFeQWF4e
+	 eRlSqLrTFOFFnwckjRICPqfoFNnUC744CAYuS2wtbHhxTCynLgeVJSLPWTvdHVWZLF
+	 RdiqgOdEPYXCA==
+Date: Thu, 8 Aug 2024 00:35:01 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: "tj@kernel.org" <tj@kernel.org>,
+	"dlemoal@kernel.org" <dlemoal@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [PATCH v4 4/6] ata: ahci_imx: Add 32bits DMA limit for i.MX8QM
+ AHCI SATA
+Message-ID: <ZrP2lUjTAazBlUVO@x1-carbon.lan>
+References: <1721367736-30156-1-git-send-email-hongxing.zhu@nxp.com>
+ <1721367736-30156-5-git-send-email-hongxing.zhu@nxp.com>
+ <Zp/Uh/mavwo+755Q@x1-carbon.lan>
+ <AS8PR04MB867612E75A6C08983F7031528CB32@AS8PR04MB8676.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/4] net: fec: make PPS channel configurable
-Content-Language: pt-BR
-To: Francesco Dolcini <francesco@dolcini.it>, Wei Fang <wei.fang@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240807144349.297342-1-francesco@dolcini.it>
- <20240807144349.297342-4-francesco@dolcini.it>
-From: Rafael Beims <rafael@beims.me>
-In-Reply-To: <20240807144349.297342-4-francesco@dolcini.it>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS8PR04MB867612E75A6C08983F7031528CB32@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-On 07/08/2024 11:43, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->
-> Depending on the SoC where the FEC is integrated into the PPS channel
-> might be routed to different timer instances. Make this configurable
-> from the devicetree.
->
-> When the related DT property is not present fallback to the previous
-> default and use channel 0.
->
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
->   drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-> index 6f0f8bf61752..8e17fd0c8e6d 100644
-> --- a/drivers/net/ethernet/freescale/fec_ptp.c
-> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-> @@ -529,8 +529,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
->   	unsigned long flags;
->   	int ret = 0;
->   
-> -	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-> -
->   	if (rq->type == PTP_CLK_REQ_PPS) {
->   		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
->   
-> @@ -712,12 +710,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
->   {
->   	struct net_device *ndev = platform_get_drvdata(pdev);
->   	struct fec_enet_private *fep = netdev_priv(ndev);
-> +	struct device_node *np = fep->pdev->dev.of_node;
->   	int irq;
->   	int ret;
->   
->   	fep->ptp_caps.owner = THIS_MODULE;
->   	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
->   
-> +	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-> +	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-> +
->   	fep->ptp_caps.max_adj = 250000000;
->   	fep->ptp_caps.n_alarm = 0;
->   	fep->ptp_caps.n_ext_ts = 0;
-Tested-by: rafael.beims@toradex.com
+On Fri, Aug 02, 2024 at 02:30:45AM +0000, Hongxing Zhu wrote:
+> >
+> > Does this solve your problem:
+> > diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform.c
+> > index 581704e61f28..fc86e2c8c42b 100644
+> > --- a/drivers/ata/libahci_platform.c
+> > +++ b/drivers/ata/libahci_platform.c
+> > @@ -747,12 +747,11 @@ int ahci_platform_init_host(struct platform_device
+> > *pdev,
+> >                         ap->ops = &ata_dummy_port_ops;
+> >         }
+> >
+> > -       if (hpriv->cap & HOST_CAP_64) {
+> > -               rc = dma_coerce_mask_and_coherent(dev,
+> > DMA_BIT_MASK(64));
+> > -               if (rc) {
+> > -                       dev_err(dev, "Failed to enable 64-bit DMA.\n");
+> > -                       return rc;
+> > -               }
+> > +       rc = dma_coerce_mask_and_coherent(dev,
+> > +                       DMA_BIT_MASK((hpriv->cap & HOST_CAP_64) ? 64 :
+> > 32));
+> > +       if (rc) {
+> > +               dev_err(dev, "DMA enable failed\n");
+> > +               return rc;
+> >         }
+> >
+> >         rc = ahci_reset_controller(host);
+> >
+> Hi Niklas:
+> I'm so sorry to reply late.
+> About the 32bit DMA limitation of i.MX8QM AHCI SATA.
+> It's seems that one "dma-ranges" property in the DT can let i.MX8QM SATA
+>  works fine in my past days tests without this commit.
+> How about drop these driver changes, and add "dma-ranges" for i.MX8QM SATA?
+> Thanks a lot for your kindly help.
+
+Hello Richard,
+
+did you try my suggested patch above?
+
+
+If you look at dma-ranges:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#dma-ranges
+
+"dma-ranges" property should be used on a bus device node
+(such as PCI host bridges).
+
+It does not seem correct to add this property (describing the DMA limit
+of the AHCI controller, a PCI endpoint) on the PCI host bridge/controller.
+
+This property belongs to the AHCI controller, not the upstream PCI
+host bridge/controller.
+
+AHCI has a specific register to describe if the hardware can support
+64-bit DMA addresses or not, so if my suggested patch works for you,
+it seems like a more elegant solution (which also avoids having to
+abuse device tree properties).
+
+
+Kind regards,
+Niklas
