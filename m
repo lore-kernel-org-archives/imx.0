@@ -1,113 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5B11C68BE;
-	Wed,  7 Aug 2024 07:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5F9144D29
+	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 08:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723015229; cv=none; b=HNT2zy7CvddQBy+0SaOvDBWsNj9ZzxAVGivIghxI5ANARlmzkd2GXUzNbXQzCtDw9I+QgQL6i2lBjDpM1PSXO/1s3AMiKvfdr/Avvzk9gG5mwIpj92SzG9hMjOpBsAhzWNOjDEVdobWUhqFjNBO+AGpzjlaRayP7+y41liAdBBY=
+	t=1723018283; cv=none; b=V0xxc8vBiW3utXpflr2kgsED+D/xiZHBAF9br6MFMLG/0f9IR+ZjMYl9yFAkVyeGpaW12y3VsJ3Ahj+lj72nA6nu8XBRdd8QM3dAbloPxCJw5u/3ax6oT10OFfmFWxMDAFg+K8mmx9Y5Ec5H9PIehhmN+q22RcMU3bkvoCe1dDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723015229; c=relaxed/simple;
-	bh=HD4LnSWSyV6PVk9RhNL//poYJ6zC6iircMPlAlvsRag=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=boMj6ZwfKQyqAoA7+dLPTmQdyKD70s0a3guU39Cokt45BHvRATsrXkXSGtDGbWLwWs8iVFwcBuCVG6kolBLR0vnJoBNfWx0mcfCNC86Kos7c9mXyGdFde3klKrC52a9ZkE5uFnCSp87ufBb07D1D81tG4PS48rfXNMHDfnFHZgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a5HL9W/x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723018283; c=relaxed/simple;
+	bh=O7WCjeIvWkbZgBS6vM4vQIgl4u3loiquJKhsttv30Po=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EHsL717DxWAxNCeNdGVChaBmZI0Nl/9vehtktRvyn2lo6K2Qh27DYRIbLzn8st8h4rWqKvHdWpig934hyP4vDxsxAIJN9+99syFW0w0idbR9lakK2D20v8/2nKGP71mPm4KM563MMXeSErqoPo/O5MbKkpSGI7zI68fl86ZyqHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=F4Tprxxe; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a5HL9W/x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FC5C4AF0B;
-	Wed,  7 Aug 2024 07:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723015228;
-	bh=HD4LnSWSyV6PVk9RhNL//poYJ6zC6iircMPlAlvsRag=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a5HL9W/xJWqRFGBgKr9vkFFDwj4BelAF0jYZUtxH5D/jmUz4m1AxU4sTMxnWgPB2j
-	 8N85EyK0dBfjCTxC304kBvBOVjvZNOSZjZgxJ+OiPhLK9ZOCXa7GmIIbouSpNLsQHh
-	 XF+3WlmcLA5A3rZMfqidj/O0yR2WmjU3ILTNCLKV/gwVJBfjJv4+pKIZXUGS9vE2sJ
-	 45ch25GTdLL+KIrSH15a5mCskKtXFB0RgIgsAZgIemrpROaggHyFgqDt8E1abTVm3d
-	 YK138k5DLEEANPzSmdkVroCx+gEFYhzjpjsWuVyrIGD/12VpN3EPEszBP2Yq7l4Bo5
-	 jsuLjbQCbxnIw==
-Message-ID: <ad38013a-f132-4b64-b895-12eb3611d557@kernel.org>
-Date: Wed, 7 Aug 2024 09:20:22 +0200
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="F4Tprxxe"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 0EB16A05B2;
+	Wed,  7 Aug 2024 10:11:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=KEun1WLwGlElpIBwl7qA
+	hygYiEvU6poeyl+GGcKm/bA=; b=F4TprxxeNJ+M6GhE6PQniqBPwzBMc+icwTzv
+	1BIsuzc2IezHaUkTzzuaZLcrvQwHj3yP92v4f8oKOabIhQCZkI5kUyaiir2vQEoM
+	15RwQPKIuaC2zhXaO2iLINuGGtd7+4j1c0l/wEK9VbZSwFrpkXUiqslxlbxzVsjZ
+	J1n73dXoH9jLgU2qnaURR3/otgTfqd5XPDk68AeLpKDP2NtMzOCsoJ0N0EDjMGhj
+	/xqsCQ+9oJplBg1/3t3AlwIGRBhATFg7z99983wmrme/8KpoMdB3nL3MyophbCXH
+	MbR3Eb1Ey2D8O1vA+4GSsOWnxybyG6yZfxsdca+8l3cBMTmAuY9ThL6wVPcvuCen
+	yp/zJLHZFNSKAEs6GCAYHRdPJRo83L0iAMWtHI9NCZxJlfvT4Yu6uXgiwHKZGgVq
+	gEDFV6CwniZaR+RkDRl7dSfoa9Elxhv67f7bzzuIYnonewjVehgFv5h8PPHaSXfw
+	lwMk23fJWLzzyW1ZV0OaaPscbnKPegqlg/ciBrz5j9KHUdDLqNkGZdFAKl2WR0Ky
+	S8W4FykvWAl7U+ICYzy4v6o39GHNMnaKeHArD6Z2xPXIKakuqDuiBU+WyBBQMtYr
+	zOOYaCpNYIBBkI9gbhuOOQIkvdGU9wYBlJfBsnfkeqA1UAwojDLdhWOlcB/9hgXI
+	i4AOvXk=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: Fugang Duan <B38611@freescale.com>, "David S. Miller"
+	<davem@davemloft.net>, Lucas Stach <l.stach@pengutronix.de>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Fabio
+ Estevam" <festevam@gmail.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
+Subject: [PATCH resubmit net] net: fec: Stop PPS on driver remove
+Date: Wed, 7 Aug 2024 10:09:56 +0200
+Message-ID: <20240807080956.2556602-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240805145735.2385752-1-csokas.bence@prolan.hu>
+References: <20240805145735.2385752-1-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] dt-bindings: phy: imx8mq-usb: add compatible
- "fsl,imx95-usb-phy"
-To: Xu Yang <xu.yang_2@nxp.com>, vkoul@kernel.org, kishon@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, gregkh@linuxfoundation.org, Frank.Li@nxp.com,
- jun.li@nxp.com, l.stach@pengutronix.de, aford173@gmail.com,
- hongxing.zhu@nxp.com, alexander.stein@ew.tq-group.com
-Cc: linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-usb@vger.kernel.org
-References: <20240806050639.1013152-1-xu.yang_2@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240806050639.1013152-1-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1723018272;VERSION=7975;MC=1504705215;ID=810479;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94854617461
 
-On 06/08/2024 07:06, Xu Yang wrote:
-> The usb phy in i.MX95 is compatible with i.MX8MP's, this will add a
-> compatible "fsl,imx95-usb-phy" for i.MX95. Also change reg maxItems
-> to 2 since i.MX95 needs another regmap to control Type-C Assist (TCA)
-> block. Since i.MX95 usb phy is able to switch SS lanes, this will also
-> add orientation-switch and port property to the file.
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+PPS was not stopped in `fec_ptp_stop()`, called when
+the adapter was removed. Consequentially, you couldn't
+safely reload the driver with the PPS signal on.
 
+Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/netdev/CAOMZO5BzcZR8PwKKwBssQq_wAGzVgf1ffwe_nhpQJjviTdxy-w@mail.gmail.com/T/#m01dcb810bfc451a492140f6797ca77443d0cb79f
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
+ drivers/net/ethernet/freescale/fec_ptp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index e32f6724f568..2e4f3e1782a2 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -775,6 +775,9 @@ void fec_ptp_stop(struct platform_device *pdev)
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+ 
++	if (fep->pps_enable)
++		fec_ptp_enable_pps(fep, 0);
++
+ 	cancel_delayed_work_sync(&fep->time_keep);
+ 	hrtimer_cancel(&fep->perout_timer);
+ 	if (fep->ptp_clock)
+-- 
+2.34.1
+
 
