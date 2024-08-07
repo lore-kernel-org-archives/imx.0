@@ -1,149 +1,137 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C0352F62
-	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 15:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1E84A22;
+	Wed,  7 Aug 2024 15:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043938; cv=none; b=jnlW5kX5CASiKyv3ii/t+pylzFCYP26dMUOv5YzjJtrGNJ2srDIbfhflKnU0c6kT1cFSF4FsEp7KHdVeXSWLqEYeq5i70JUd/xJk15R4q0k6c0WBv+/4RDitZmVDpn/ECo6QgWZd5UY3DxGxM/Oa4dNuOzlvonmfVsuwOY/NgaE=
+	t=1723044031; cv=none; b=pxJjQLKu/34cznMn9PGxdwCaOQje1YoX9ybKWbuCzw1gcWZqC4xSoes78g1dymVsHAMS2gAi8pHNv01Ym3C4G/tjDDI+FT/abN/A2CBk2DAU9ZEWloEFH+1+geDhMxfIn2cvm24urs6CxMq+9ahwJL67DwFYOD9/oVNKXDQAkiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043938; c=relaxed/simple;
-	bh=lYKP4jlnJQ6qy18txJgXJHYM8dA1dqMocHmQGEgVKG4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=AJJpX2OmXXBgFWjfS+hXY7eSRUM38YYsoFS9SDFMOOphPphSzvIK/p/9U9zpx8pWWy+kg5I9wUDQHSAjNAF0A30Y5BrrguI3rWj8A/qbwbiC5kkid+5peEkEImkaLmpPMbxr1S6A2nFvJwJWXmGi+HpW4QHQ/v5OcxPGelzM96E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=sJp3RhL1; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1723044031; c=relaxed/simple;
+	bh=JxBWdZG47Tqqae9MVZdBLLmCto0I5YOx82vyGjZCLzQ=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=gFQLlTMuwjId2r9xau8h54q3ERIz/3AoXmYsOVK89NOYfYVo5HnCeKcDQ2PETZPZ31htMnmWy3Igjo4XR9CJPdGa6TarzQRBGMxwduKlJwvCMBHgRFufH0CT9aeKPIZDykFqAdBbgmY+Lbt7NsYESCockLj+Y2vPFfgFpUKriIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7J4rpa8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="sJp3RhL1"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1723043933; x=1725635933;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lYKP4jlnJQ6qy18txJgXJHYM8dA1dqMocHmQGEgVKG4=;
-	b=sJp3RhL17qPn0GbNGMrpWViLknwsSUH6QPWT0fLg/he0WVxTRX34QjadtE9bzx3a
-	n29VFjBi2AHw1uJfNhh8xXhl/eY/ytYf/yVatR1ayW23XpEA3z3cDtODnd5/tvZy
-	6SFmqQ9+ydnXnM+yD2/TEQmBOGvUAqG5g9IqbtnaXKY=;
-X-AuditID: ac14000a-03e52700000021bc-c0-66b3905c93ec
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 7A.C6.08636.D5093B66; Wed,  7 Aug 2024 17:18:53 +0200 (CEST)
-Received: from llp-hahn.hahn.test (172.25.0.11) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 7 Aug 2024
- 17:18:52 +0200
-From: Benjamin Hahn <B.Hahn@phytec.de>
-Date: Wed, 7 Aug 2024 17:18:45 +0200
-Subject: [PATCH v2] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
- enable TPM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7J4rpa8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F4FC4AF0D;
+	Wed,  7 Aug 2024 15:20:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723044031;
+	bh=JxBWdZG47Tqqae9MVZdBLLmCto0I5YOx82vyGjZCLzQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=B7J4rpa8+EdoC2MJqgw7hncTeHgs7C6fj0KiwrUG8pJo8xBzFsg7QxRDwaqfeWXmp
+	 v9cYTWPx4uFBxZcNV3Bm32f8ZgOEmF0h9QWP63miQMIC0HIq7NQGqYjOOb2BQ8HMNT
+	 EoazbxNgU3GCrkWQGCuNWELdyjUiwXnMfuUG+9YE2gK7R7VoDo0OBzhk6tUttGE5iZ
+	 noGi87C3DawR9bPS2sZrMvRNrDHdomULs6Bz2yVxK2LZB5uYbmAVDFjLHaHQrCrGU2
+	 t/+xum7qDdKyC1tjUatdTupoAABjL1VZk/iCte8NkFigjwrUk+1y4UiaQRZ1UGW9g1
+	 WPZEj74+qhhlQ==
+Date: Wed, 07 Aug 2024 09:20:30 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240807-imx8mp-tpm-v2-1-d43f1e8f70ac@phytec.de>
-X-B4-Tracking: v=1; b=H4sIAFSQs2YC/22MwQ7CIBAFf6XZsxhAW8GT/2F60LLIHmgJENKm4
- d/Fns07zUtmdkgYCRPcux0iFkq0zA3kqYPJveYPMjKNQXJ55Yr3jPyqfGA5eHYxduC3t7C9FdC
- EENHSesSeY2NHKS9xO9pF/N6/mSJYGyptuRyU1voR3JZxOhuEsdb6BYpjRp6kAAAA
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Teresa Remmet
-	<t.remmet@phytec.de>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	Benjamin Hahn <B.Hahn@phytec.de>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723043932; l=1781;
- i=B.Hahn@phytec.de; s=20240126; h=from:subject:message-id;
- bh=lYKP4jlnJQ6qy18txJgXJHYM8dA1dqMocHmQGEgVKG4=;
- b=pz9z8SjBnAc8U4WIi3QE5fAAkH4to7rcO48THerSVJ7guPCRvkaJ9omfpvNMCwqsQExz7zfvW
- KNS1qZRKCgODhrcf7YsrE/whAB9NpQMdHq6TcJZGm2KUp3LNzTDVYg5
-X-Developer-Key: i=B.Hahn@phytec.de; a=ed25519;
- pk=r04clMulHz6S6js6elPBA+U+zVdDAqJyEyoNd8I3pSw=
-X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
- (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmphkeLIzCtJLcpLzFFi42JZI8nAoxs7YXOawZF9jBZr9p5jsph/5Byr
-	xcOr/hYz77WyWayaupPF4uWse2wWmx5fY7W4vGsOm8X/PTvYLf5u38Ri8WKLuAO3x85Zd9k9
-	Nq3qZPPYvKTe48XmmYwe/X8NPD5vkgtgi+KySUnNySxLLdK3S+DKmNt9m73gO2/FzEmX2RsY
-	j3F3MXJySAiYSFzdtpOli5GLQ0hgCZPE5QPXGCGcB4wSD+7fZgSpYhNQk9j15jUriM0ioCJx
-	aPMCFhBbWCBc4u7hLiYQm1dAUOLkzCdAcQ4OZgFNifW79EHCzALyEtvfzmGGKLGV6JgKMV9C
-	4A6jxISdW8HmiwjsYJJ43G8IkmAWWMoocWf6N1aI84QlPu9ewwbRsZtJYvmKXrANEgKJEjtf
-	y4HUCAnIStw8v4UNol5eYtq518wQdqjE1i/bmSYwCs9Cct8shPtmIblvASPzKkah3Mzk7NSi
-	zGy9gozKktRkvZTUTYygmBJh4NrB2DfH4xAjEwfjIUYJDmYlEd7m8E1pQrwpiZVVqUX58UWl
-	OanFhxilOViUxHlXdwSnCgmkJ5akZqemFqQWwWSZODilGhi1wlYsKTQ6uCb73M+C6VL37L5f
-	ZOMICXkn1v/gaI7NX85jsufyXb55x3MfEJLnM631yXB3t18yVUa7/1uUtvYBt8OTT6ctWit2
-	7EaeHcPEk4Uz+974B9XNqBUE6oy33nan2Pq7v4/O96ZDOZYJFamZrJ+tOubcm3OXY/PRpZ5z
-	GowXHbflUGIpzkg01GIuKk4EAIHbMPeXAgAA
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frieder Schrempf <frieder@fris.de>
+Cc: Parthiban Nallathambi <parthiban@linumiz.com>, 
+ devicetree@vger.kernel.org, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Joao Paulo Goncalves <joao.goncalves@toradex.com>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Conor Dooley <conor.dooley@microchip.com>, linux-kernel@vger.kernel.org, 
+ Marco Felsch <m.felsch@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
+ Shawn Guo <shawnguo@kernel.org>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, 
+ Mathieu Othacehe <m.othacehe@gmail.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Hiago De Franco <hiago.franco@toradex.com>
+In-Reply-To: <20240807104137.558741-1-frieder@fris.de>
+References: <20240807104137.558741-1-frieder@fris.de>
+Message-Id: <172304386093.2508296.15187561674368738035.robh@kernel.org>
+Subject: Re: [PATCH v2 0/3] Add support for Kontron OSM-S i.MX8MP SoM and
+ carrier boards
 
-Add support for TPM for phyBOARD Pollux.
 
-Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
----
-Changes in v2:
-- renamed tpm node to tpm@0
-- removed num-cs
-- cleanup pinctrl
-- Link to v1: https://lore.kernel.org/r/20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de
----
- .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 26 ++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+On Wed, 07 Aug 2024 12:38:45 +0200, Frieder Schrempf wrote:
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+> 
+> Patch 1: board DT bindings
+> Patch 2: OSM-S i.MX8MP SoM and BL carrier board devicetrees
+> Patch 3: i.MX8MP SMARC module and eval carrier board devicetrees
+> 
+> Changes for v2:
+> 
+> DT bindings (patch1):
+> * Add tags from Krzysztof and Conor (thanks!)
+> 
+> SMARC DTs (patch 3):
+> * Fix GPIO labels
+> * Add support for TPM chip on SMARC module
+> * Disable PWM in favor of GPIO5 on SMARC carrier
+> * Enable LCDIF node to make HDMI work
+> * Add support for GPIO expanders on SMARC carrier
+> * Remove SPI flash as its removable and should be in an overlay
+> * Add CAN regulators to fix transceiver enable
+> 
+> Frieder Schrempf (3):
+>   dt-bindings: arm: fsl: Add Kontron i.MX8MP OSM-S based boards
+>   arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier
+>     board
+>   arm64: dts: Add support for Kontron i.MX8MP SMARC module and eval
+>     carrier
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |  13 +
+>  arch/arm64/boot/dts/freescale/Makefile        |   6 +
+>  .../dts/freescale/imx8mp-kontron-bl-osm-s.dts | 307 ++++++
+>  .../boot/dts/freescale/imx8mp-kontron-dl.dtso | 112 +++
+>  .../dts/freescale/imx8mp-kontron-osm-s.dtsi   | 908 ++++++++++++++++++
+>  .../imx8mp-kontron-smarc-eval-carrier.dts     | 258 +++++
+>  .../dts/freescale/imx8mp-kontron-smarc.dtsi   | 281 ++++++
+>  7 files changed, 1885 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc.dtsi
+> 
+> --
+> 2.45.2
+> 
+> 
+> 
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 00a240484c25..0e8200413557 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -103,6 +103,23 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
- 	};
- };
- 
-+/* TPM */
-+&ecspi1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>;
-+	status = "okay";
-+
-+	tpm: tpm@0 {
-+		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
-+		reg = <0>;
-+		spi-max-frequency = <38000000>;
-+		status = "okay";
-+	};
-+};
-+
- &eqos {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_eqos>;
-@@ -300,6 +317,15 @@ &gpio4 {
- };
- 
- &iomuxc {
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO   0x80
-+			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI   0x80
-+			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK   0x80
-+			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09     0x00
-+		>;
-+	};
-+
- 	pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC			0x2
 
----
-base-commit: 17712b7ea0756799635ba159cc773082230ed028
-change-id: 20240805-imx8mp-tpm-3df607b1f5f1
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Best regards,
--- 
-Benjamin Hahn <B.Hahn@phytec.de>
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx8mp-kontron-bl-osm-s.dtb freescale/imx8mp-kontron-smarc-eval-carrier.dtb' for 20240807104137.558741-1-frieder@fris.de:
+
+arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dtb: /usbc: failed to match any schema with compatible: ['linux,extcon-usb-gpio']
+arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dtb: /usbc: failed to match any schema with compatible: ['linux,extcon-usb-gpio']
+
+
+
+
 
