@@ -1,93 +1,227 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE841C9DD9
-	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 09:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5159A1803A
+	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 10:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723024177; cv=none; b=gw5qSdQTWhBjGt+e9DcL7pv5KA2NERFIFo+kzv4gx8yKb9LkX3um4KNxX3H7bOKjHfY+hIZ97KhjbYTaccrXx7bY927kn5p9lj5QcpjYDR3sjVFJAwmgepbLmG+8+VZ2LngLw+AyXlz2Nw25uXNk5XKEwLlum7zs1ad/FXayINQ=
+	t=1723026419; cv=none; b=eYkwrc+wjsNkBfZ0vebxlazfr1uQ+z9Ej3qnMhX44xoDOzsKcv/SD5H8gaEaMCbSZXO8tRsLrIfP58ws3ZZMbdcNfw3N/J3FAKsiQgwlTlEyyjgagc1sji1z48CMDX/iYsssE1DDZnVh07YuPoDPnHY/EQVA9KxD5Ro2VJJTVt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723024177; c=relaxed/simple;
-	bh=p8oOle8j0YyFB8aei5q+8ZxQH0nnNcOH9u81uVEH3kQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=tAPiqN2pwadE3qF+Y/VD5t0BfH2bEa/ApJk53meEcugurcVlXjaxk4IygOrFTK+W220OLkObDLh9pmqD8/6CLwJZwLeXIugJ0HyJUQOJjVjZSSgXqlln2NVU49JryTZTZg3StwZ/Yj03Z63W9Gj+Xd1XKmQIhH46V+unvviii+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HsJ8c/6z; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HsJ8c/6z"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42808071810so10739225e9.1
-        for <imx@lists.linux.dev>; Wed, 07 Aug 2024 02:49:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723024174; x=1723628974; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pc/1iktJr3p9PLDHAKJFkcEhANCClecq2itvdxpvggU=;
-        b=HsJ8c/6zkE7cB0n/F3JPCV2cKXOg3fok5ibbvSBcP7JwKw4OKQwf0g9RUTzzRvqCBU
-         0GhM0O7LDBc3V5r5oS8OhuMSR6jgjGFLWAyExGy2yc75zYefMLd97Mb1RTlawtzPcwCk
-         uDmEzj/K+bxMbZfkFu+2ef8EFwjuBe9LF2Fx2rG2726zPD7VHic6muUFkgoB6qxRMhJ6
-         JDOhUmxsgHq1tJbQmU6ourS0QjYD27cLNHveC0f3uxUtfcr8Y8zmgbSPBucV5Muax7oh
-         nVz+d8jCmWIVRIIhnrAzs/L6BtT/0at/8vNfdHbWSoQVcMJflGn8++MSoo0Y0RsS8oN1
-         o+Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723024174; x=1723628974;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pc/1iktJr3p9PLDHAKJFkcEhANCClecq2itvdxpvggU=;
-        b=vE1c/VeWY6NWHITFcah924p+BziLa3GcRcEpcj01oUcpxzXculMEHqsSBVUkJZVoTd
-         p7UiX+8H73rHbxHO9QflxDnBZLHpQ9vwIeJvhXmjhLPAguFG+Zq19Sm6oA2whXN2L0xr
-         Whc+jMJnuzUF4+JfLOkz72tvKTouENWk7UhfbDbrDZbpT2WIgeuUmCv149U9y3N2t4yL
-         jKB8wjo8/0qtA1TX6dtlRXOa8nyWELJexZVGlrOJJeJRe58UaVShqG0TJdLjzij2fNdQ
-         qIlQmQZKsIU6JyrdAPxI1DiB+JloGrTaG0NS9zjTDwNq6PeZkfCdYoXu6JxRh1rQEYIt
-         4q8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWFVFLP55F/YcvJb9JMY3wtaqMflYITxMXAbtFh6TxNSOU2myKlROk2t+XU25AV8H0qqV1JjlWb8M3S6v1IZxml6Uzt
-X-Gm-Message-State: AOJu0Yx6mUbFz0/B+PU5X3TSkzbon2Kr5trgnLHhKnlsbMTGF7h7eSb/
-	pbbx5SBBLRlzWy2EIYENtvJpeqNye7QTN938HgnJf+fMWOSsfkDGdwrkuBsKvmE=
-X-Google-Smtp-Source: AGHT+IG7C+gyfAmIU5emdVImNYDBwmPpefND5NNGBZ5h26Nijfjr5hlnMITUlNJ6c7ynyH03xWfJyA==
-X-Received: by 2002:a5d:4ac7:0:b0:367:9237:611d with SMTP id ffacd0b85a97d-36bbc17bfebmr11861794f8f.60.1723024174050;
-        Wed, 07 Aug 2024 02:49:34 -0700 (PDT)
-Received: from [192.168.68.116] ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd05982bsm15530967f8f.86.2024.08.07.02.49.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 02:49:33 -0700 (PDT)
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To: robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, 
- "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>
-In-Reply-To: <20240228081355.1627744-1-peng.fan@oss.nxp.com>
-References: <20240228081355.1627744-1-peng.fan@oss.nxp.com>
-Subject: Re: [PATCH 1/2] dt-bindings: nvmem: imx-ocotp: support i.MX95
-Message-Id: <172302417240.381927.16775224846160228092.b4-ty@linaro.org>
-Date: Wed, 07 Aug 2024 10:49:32 +0100
+	s=arc-20240116; t=1723026419; c=relaxed/simple;
+	bh=8INA9PN3D3vFUNYja6UFIHKU2EbiqBnPoJpxLq2TfxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YvNjs9kVpwKEz8lzyUJXKLvwoUWpssX93MwmlTkCRY+m0B+u/G0eWsxu5jL0JkBJcyrpBtBiAYtk8KY5rt9Ty7eGgkTJ0CveU+At5e3QfaTOTYAy6d8LXQXUE7tbeG2ZihXje9DHWqJpKUMalJSyuw/83DsUCHViIDnIfItjXbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sbdsS-0003ur-4r; Wed, 07 Aug 2024 12:26:44 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sbdsP-005AZU-K2; Wed, 07 Aug 2024 12:26:41 +0200
+Received: from pengutronix.de (p5de45302.dip0.t-ipconnect.de [93.228.83.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3BC37318A36;
+	Wed, 07 Aug 2024 10:26:41 +0000 (UTC)
+Date: Wed, 7 Aug 2024 12:26:41 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Wei Fang <wei.fang@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, kernel@pengutronix.de
+Subject: Re: [PATCH v2 1/1] net: fec: using page pool to manage RX buffers
+Message-ID: <20240807-rustling-literate-cormorant-08d7a8-mkl@pengutronix.de>
+References: <20220930204427.1299077-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.2
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s4llhy42hfqhiqap"
+Content-Disposition: inline
+In-Reply-To: <20220930204427.1299077-1-shenwei.wang@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
-On Wed, 28 Feb 2024 16:13:54 +0800, Peng Fan (OSS) wrote:
-> Add i.MX95 ocotp compatible string
-> 
-> 
+--s4llhy42hfqhiqap
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+Hello,
 
-[1/2] dt-bindings: nvmem: imx-ocotp: support i.MX95
-      commit: 62e39987d3d5f27e2c074398805d101d7b9abaf4
-[2/2] nvmem: imx-ocotp-ele: support i.MX95
-      commit: 04d372dd5562ed8aed4cdbb1004fe33a3bc4fa24
+while looking at the fec driver I noticed the following not explicitly
+initialized variable.=20
 
-Best regards,
--- 
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+On 30.09.2022 15:44:27, Shenwei Wang wrote:
+> This patch optimizes the RX buffer management by using the page
+> pool. The purpose for this change is to prepare for the following
+> XDP support. The current driver uses one frame per page for easy
+> management.
 
+[...]
+
+> diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/=
+freescale/fec.h
+> index b0100fe3c9e4..33f84a30e167 100644
+> --- a/drivers/net/ethernet/freescale/fec.h
+> +++ b/drivers/net/ethernet/freescale/fec.h
+> @@ -17,6 +17,7 @@
+>  #include <linux/clocksource.h>
+>  #include <linux/net_tstamp.h>
+>  #include <linux/pm_qos.h>
+> +#include <linux/bpf.h>
+>  #include <linux/ptp_clock_kernel.h>
+>  #include <linux/timecounter.h>
+>  #include <dt-bindings/firmware/imx/rsrc.h>
+> @@ -346,8 +347,11 @@ struct bufdesc_ex {
+>   * the skbuffer directly.
+>   */
+>=20
+> +#define FEC_ENET_XDP_HEADROOM	(XDP_PACKET_HEADROOM)
+> +
+>  #define FEC_ENET_RX_PAGES	256
+> -#define FEC_ENET_RX_FRSIZE	2048
+> +#define FEC_ENET_RX_FRSIZE	(PAGE_SIZE - FEC_ENET_XDP_HEADROOM \
+> +		- SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+>  #define FEC_ENET_RX_FRPPG	(PAGE_SIZE / FEC_ENET_RX_FRSIZE)
+>  #define RX_RING_SIZE		(FEC_ENET_RX_FRPPG * FEC_ENET_RX_PAGES)
+>  #define FEC_ENET_TX_FRSIZE	2048
+> @@ -517,6 +521,12 @@ struct bufdesc_prop {
+>  	unsigned char dsize_log2;
+>  };
+>=20
+> +struct fec_enet_priv_txrx_info {
+> +	int	offset;
+> +	struct	page *page;
+> +	struct  sk_buff *skb;
+> +};
+> +
+>  struct fec_enet_priv_tx_q {
+>  	struct bufdesc_prop bd;
+>  	unsigned char *tx_bounce[TX_RING_SIZE];
+> @@ -532,7 +542,14 @@ struct fec_enet_priv_tx_q {
+>=20
+>  struct fec_enet_priv_rx_q {
+>  	struct bufdesc_prop bd;
+> -	struct  sk_buff *rx_skbuff[RX_RING_SIZE];
+> +	struct  fec_enet_priv_txrx_info rx_skb_info[RX_RING_SIZE];
+> +
+> +	/* page_pool */
+> +	struct page_pool *page_pool;
+> +	struct xdp_rxq_info xdp_rxq;
+> +
+> +	/* rx queue number, in the range 0-7 */
+> +	u8 id;
+
+This number is never explicitly initialized, I think it's always 0.
+
+>  };
+>=20
+>  struct fec_stop_mode_gpr {
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
+rnet/freescale/fec_main.c
+> index 59921218a8a4..169950e43b88 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -66,6 +66,8 @@
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/regmap.h>
+>  #include <soc/imx/cpuidle.h>
+> +#include <linux/filter.h>
+> +#include <linux/bpf.h>
+>=20
+>  #include <asm/cacheflush.h>
+>=20
+> @@ -422,6 +424,48 @@ fec_enet_clear_csum(struct sk_buff *skb, struct net_=
+device *ndev)
+>  	return 0;
+>  }
+>=20
+> +static int
+> +fec_enet_create_page_pool(struct fec_enet_private *fep,
+> +			  struct fec_enet_priv_rx_q *rxq, int size)
+> +{
+> +	struct page_pool_params pp_params =3D {
+> +		.order =3D 0,
+> +		.flags =3D PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+> +		.pool_size =3D size,
+> +		.nid =3D dev_to_node(&fep->pdev->dev),
+> +		.dev =3D &fep->pdev->dev,
+> +		.dma_dir =3D DMA_FROM_DEVICE,
+> +		.offset =3D FEC_ENET_XDP_HEADROOM,
+> +		.max_len =3D FEC_ENET_RX_FRSIZE,
+> +	};
+> +	int err;
+> +
+> +	rxq->page_pool =3D page_pool_create(&pp_params);
+> +	if (IS_ERR(rxq->page_pool)) {
+> +		err =3D PTR_ERR(rxq->page_pool);
+> +		rxq->page_pool =3D NULL;
+> +		return err;
+> +	}
+> +
+> +	err =3D xdp_rxq_info_reg(&rxq->xdp_rxq, fep->netdev, rxq->id, 0);
+
+But it's used here.
+
+> +	if (err < 0)
+> +		goto err_free_pp;
+> +
+> +	err =3D xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
+> +					 rxq->page_pool);
+> +	if (err)
+> +		goto err_unregister_rxq;
+> +
+> +	return 0;
+> +
+> +err_unregister_rxq:
+> +	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+> +err_free_pp:
+> +	page_pool_destroy(rxq->page_pool);
+> +	rxq->page_pool =3D NULL;
+> +	return err;
+> +}
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--s4llhy42hfqhiqap
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmazS90ACgkQKDiiPnot
+vG8Fkwf+Ps9pjpSLtQV8dyl9uZnQPKfe7NElj8fvdZfRsIsj5CtvCyFCyebQn4HZ
+5Lz9KDa1mJszjuou3Lpp5t9mrMfxDcCeiF1wLBZRYB2gz+MNNtRJmtGrszljVfJx
+PeUFt1H0BnqOgxpNyOk6SJ8Qc50bK+ekikcrHIXv4Hn1UQIVJU/SEfqpQ2ZJ7ggh
+JR07NflWtzD7OrMuHLE+kfXxKIZpj9sJ59b2t0LujGRjo5a61+yuajYIr/aXtq/7
+Y17Oi6Pz9JqP1z/Q/VviCSsOqCg+hri+BSo3cFJc1Q7emgw6CDC32C5S++U83W9h
+Xq41EHPD7Sz3mjPbOx3JpmgcColM5g==
+=NCqU
+-----END PGP SIGNATURE-----
+
+--s4llhy42hfqhiqap--
