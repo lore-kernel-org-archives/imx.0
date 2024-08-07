@@ -1,227 +1,188 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2080.outbound.protection.outlook.com [40.107.20.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC0F20012A
-	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 13:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723038888; cv=none; b=Kcr5vAIzophAS4jYSjXcrpA3eAeauwcNVSp7VyaHU/SLOpI8x5xfgvb93OWBYeDl5GalUzZIwKcEsPXknAkkgYqy/PYEA7ihiCDGg1zeoCTCmrxbSf2EYIW8mafCi4i8PxPNCAauMLZ76ulUgVsljiLZUS+yz1qS6/yF7om32C0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723038888; c=relaxed/simple;
-	bh=CGQ7vncQJWkiGyiABlgtGn2V24lwV03xREUk34vTOv4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Lrus/x1r7oY6Y2fZwItl5AFRXCAZMRx1nhNL0l3XiLDhBa3ABG57PRvxQNAXILERDiVxxH0+S/lXHM8Kow7QXX+AtI/oHl/WqRR3pp+eVr3oVgJ1y3nDQxWnINGA+4jLMEPw5zkdLUQqsRkJhgYEQAY5Mlp685cN4MgUgq6I6nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hcT56da3; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CCD26AC3
+	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 14:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723039318; cv=fail; b=CWkV62nwWzBG16tHVqgiHF/kRO6x5EyoGVBbAhHVVo7jejY0RpBWy7koY98q6WY90ljcEDks+D62KeGgaeIeA93+I3Ddiyta3hsr1ukKohR6gLuB1M7oDk0HQE8HdkeDl55257A78cG9juymssFngMqCBSHjMX1lMfoWZfAvMBg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723039318; c=relaxed/simple;
+	bh=jnRVV2qmhh/yYrERqI4FX6mU70KJDG4APAhVxxLswfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=u55ADQXptA9MgbZbvgsq+O7TF8Qq9pEuk7LU9GkEschgQR12wX2rF0acLHeJGmbnwRmD82IFcB9XWuEDtgFyFuLvWo9JH/TmGj+1nW4ngMs1A8JKmcIac3t7B7qaRd4V/rxmjcn/tuyfJ7kX4eGsP2cuLtR7eY9RXHv6k0fd9Es=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XkXwC8PM reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hcT56da3"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-70d2b921cdfso1583272b3a.0
-        for <imx@lists.linux.dev>; Wed, 07 Aug 2024 06:54:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723038885; x=1723643685; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+7ZjMlY8No3qSDfq4wKYHrpdYKh1AhNqpfBDU3gqWg=;
-        b=hcT56da3P54B0kP9jkXhrr/kkarSzN1ajzP9jyAvof7BCZXrO6Jrts2omTcmjSFohW
-         13LH9P14S95MJVQf61Y1U3EB6K+Jxd2qv9E2RezaCXcTXNv+hLlC7A4tmujSOOlIowEu
-         eVcXLIqAPONHk4AW5kKFF4BgH/FcwBkFgNrmEVvO9iFcrOBV152VVLZiVz3sJ3rhHwzn
-         y6bLAUJwyPGG5/wmTVVfDCA8B3Ib45og/ZD+wZ1bP9c82We0y4LBcZSAOLozaloEm3kO
-         3R3KcxPdyuqVKFAd2gTtgfuBjSZSE/TtuZXoiua4/SirhOAkS/CsoBAsZgYimMwaHSTp
-         a1BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723038885; x=1723643685;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2+7ZjMlY8No3qSDfq4wKYHrpdYKh1AhNqpfBDU3gqWg=;
-        b=Xpn9dhXeUolZI0k0f+D5alq9HLIfpOcglG/s9te4Xo+ZLJZaY4GSejYUpzX/x8crkb
-         q0SmtmK2qtqHi8/64nmZ3oqDKRB5pVfoV5QGll9+ltiQkehSwqY1YbCUuMG/ViEmdjXS
-         6qqKPN192ZpcFY5z4FH7+eEAId0aygwVRxE3JHp2FOJNkMu6OMc35HPVs+2uBIKF2F6r
-         S9sZ5Dx73dOixuarWmCYRYEj7/mGlldI/tcTSrv7iGj94xSaNUWfcpo/77VkSY8BjIUi
-         I607kefKCQCWVFWXqyf7YUrHn3u9ZXV7/ohThP0yvA7jf9XdKG+dw8BicafI+YfCbONA
-         dsmw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbYSGX+y5L9cGzCTHDZeEHs2d0bR9nMejsALbOQqc7F+fxD4mftbPUTkGVKNgaZcZHQqJ5VQt0PeHuIQYP1vfsUkW1
-X-Gm-Message-State: AOJu0YxFSGm8I7RnmC/OsabaWv40Cl//LUpzmIxIWvGwG/CNy0rXEcQE
-	8tWbL7zo45sGvVF6DHEehnV3c+NncPmwKaGsj0UI4g4xMgNqt/Uw
-X-Google-Smtp-Source: AGHT+IEQC3SA5Rtjou8jJDGYcDGSdERECkY0cz/9nJegnkoYsE/gA/jz3C8dGg6iDpJ2Kx2OjiiguA==
-X-Received: by 2002:a05:6a21:2785:b0:1c6:a561:d387 with SMTP id adf61e73a8af0-1c6a561d6d5mr16712995637.53.1723038884835;
-        Wed, 07 Aug 2024 06:54:44 -0700 (PDT)
-Received: from joaog-nb.corp.toradex.com ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ec410d1sm8451996b3a.66.2024.08.07.06.54.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 06:54:44 -0700 (PDT)
-From: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: =?utf-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2] arm64: dts: imx8mp-verdin: add HDMI audio support
-Date: Wed,  7 Aug 2024 10:54:20 -0300
-Message-Id: <20240807135419.248219-1-jpaulo.silvagoncalves@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XkXwC8PM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bMgjgcRGALcol2CW4PIZ6MAwJE3DD4tN+XxPQM1389CEOPR6EILIIVa/VQE+wjucID6n9ftnehtyCqi07K7eJZ3ePVcYVjhbi0Vx6/IfhAjz30RQSAx5akxg8Pw8wGXtUoOypfvtnmG9lpTuZfuTUF4HoqXgL4+VkltG34MNaoLKzNS45oNMgELIrZ+xf7kY8ThkGaC1qY+LzQ5GWuoX0ZB/N3uCGgmD5rj9km9brH6Bg++HGWGUZLAx9wANYrzLIwPwCa3urn4LC5+XvGORMXjj6l1JSB24gLe6wFAcYfxsUmAt8p5K4m2VwguNxGdzlQYlYIKh+Xh/e+Yof9QY8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ONa+88zL6xFsXUqPzDf2TNrNPIStO6HBH2dn3e3a74w=;
+ b=bY8u1/tVu72S6whbleVvni/yL0T9o03DdGLGNnjCQN+mI+n7vU1vGMOydmBHOYjR338QK4idJiZyM7MleRhzu5+Kfnhe4Wkf2CgLPCIvI+IXthP5xvdBPgj4MeSvf5LUSXE5X+4d18pnw47K4CeCCpJLAMDSkNAf+X86R/N8d5Oj93bwMHohMifGsBP3fbzDl0L6pCoT83pDIyhX6fd0ST7fUI/Neq14oSpJYO8kxh1mLuE7O69G7TWgA67rdZqRFzWmpWsiSn9GyjhSiLtwx5/4DY4bO6JD7hrtgWAKjdYpAn/6ZJ7pjWF5eliyVfd7EvM/PB3XIpuERMoFmouRhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ONa+88zL6xFsXUqPzDf2TNrNPIStO6HBH2dn3e3a74w=;
+ b=XkXwC8PMNv6O4qMTGH6szY2OyeV1GEypciTvKo0TPGGEhtbC25yB3HurYDXH5J+PJIgbNCx31jkgtxJZwB+NVPM1hys/H1SrQIFIcRlDimy8A4FRQWEiW138G2R69+DbiEbTe1vneASHb0qktLnoiOCth/n2glyJDh4zrHC0C777XoUNj4jywCTs1bno7k7Mag9+LmX4oUBaIo5+VPwgkscVhaS3beuH2O/bL9bLAGCvzCcrnr9twrP6PTofdW30jWdbfvOTOPE47IAofClZYYcvOFFiN1jla5GblljsboFEMctv7GzEPJNzmODIV2QuMrcGAUsb+jFkabzdLJixKw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VE1PR04MB7328.eurprd04.prod.outlook.com (2603:10a6:800:1a5::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
+ 2024 14:01:53 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.023; Wed, 7 Aug 2024
+ 14:01:53 +0000
+Date: Wed, 7 Aug 2024 10:01:44 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
+Cc: Jakub Kicinski <kuba@kernel.org>, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: Re: [PATCH resubmit net 1/2] net: fec: Forward-declare
+ `fec_ptp_read()`
+Message-ID: <ZrN+SM0LOY0yQxBl@lizhi-Precision-Tower-5810>
+References: <20240807082918.2558282-1-csokas.bence@prolan.hu>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240807082918.2558282-1-csokas.bence@prolan.hu>
+X-ClientProxiedBy: BY3PR05CA0041.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 817d1aef-0a0c-4b44-12ad-08dcb6e97d77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?TPqbn7AR7wQfyv7jlxJdurjpjFAka3WebIQK+YAJRYiILlO4lF7JlhDkVr?=
+ =?iso-8859-1?Q?wMpG5OCOGDXTWxDy+2jqUZWkLx2W9+/Ercf9qAzKMEUzNBe+gnd5E+xevd?=
+ =?iso-8859-1?Q?f8GDySoPBOnn/H9+3SAOPDfSmF6PNH1wKWjHNUUgNqrex7j2/1eveqmu4J?=
+ =?iso-8859-1?Q?q5XrhHduU6633ZiZ6dxsUnpYWgtP819CalTIxpbHFqP9zDorXOLdhogOFv?=
+ =?iso-8859-1?Q?dTVGW8oBe2f7L6nas9OBN8LxEbBTle3LYQvDQvZQFRrTlTD6oIHamZLFSr?=
+ =?iso-8859-1?Q?tuDyKtQWR0MHUhljj0tj2O4wbdhIsKd22sv/c5RQV6YA0uU3IrjZm8KWD9?=
+ =?iso-8859-1?Q?FrB808SkIY0/akyXTsw2bzPCYFsjZnmtBSMva3w+4Mx7DEUfxB6+HToolh?=
+ =?iso-8859-1?Q?yIfAHf75VR/ld4EFWdzoSJaj6h8uvuK7xK8FEf6xpw2h7a7UeD/l8aF0cs?=
+ =?iso-8859-1?Q?Ze/W920F4RoTyILY3/0kt1lybLuYNOHPjQcI86smlH8IQaf++F+pJFCNJY?=
+ =?iso-8859-1?Q?aDdeZxfuHnMUCf2PN/xODnpdHc/LOTTjAoaJvYTH+w/jpFo75pKfrdBzCE?=
+ =?iso-8859-1?Q?lbmfrr5Ad+DOl8PgSdT4KJxUViZgjagGgqVskxQihslFtJnKyZcyN2uTlU?=
+ =?iso-8859-1?Q?uriK12rYL2k6rLn7Px1dxEQVc3uAjyEMI0Q+TdV8bkdfg3g9PSFO99JV2Y?=
+ =?iso-8859-1?Q?eiSFlHrV2tSXEUd/+IgTTIS4lZ5fbyP4cQ35h/iw2QLTf9zdy994XizMkE?=
+ =?iso-8859-1?Q?SfAxMSsN5iy5k2RK84CY8KEGfQk9BgeNk2IHwFR15Va2LN9VzHWUoEJwld?=
+ =?iso-8859-1?Q?5pgRlnrq9kEv+1vgAT/Qy5g61vg5eHmWUqDwbmMWL58FBItOZ3QzAI5p4j?=
+ =?iso-8859-1?Q?inF5dL5+KineOHyHPx/z0s1z5AIUZy2emkyV2BvD5zLExYUoeC/Ta2KF7i?=
+ =?iso-8859-1?Q?21ejJ22yIupqSVcp9gf3OYO0TRLu1dr+4qkpsvRC1RreUxAOlNaOzu3bqs?=
+ =?iso-8859-1?Q?GsvfiogpDk23V3TmFcAYn/ZqmXXW9PO641Pt1qLafESo9L+D1P0TPT5Alv?=
+ =?iso-8859-1?Q?OR8tS8RJAnp1hfYElOMjpSWd662TrQkh5r6/QAp1/AHClw3Px6MkvdsErh?=
+ =?iso-8859-1?Q?jpAJy5c/cZaIyUf69ieMx7xu5/a2+J02lFQ/CX1CySC4DLa1UUQ6Hl7kfm?=
+ =?iso-8859-1?Q?zZV5p29Y3nLWYeePbmd9qO88eiSNM+5QzMUJs2o93GkoYpHMX1RHNZgz1K?=
+ =?iso-8859-1?Q?xgRbj6NHqnyJqd75pTudBs6JFRmCvRVbMlGP00codTcXldbNs7Wxmr5+01?=
+ =?iso-8859-1?Q?K88NGxxcXYTw4WPyUqduYPlrpQ9L/oncAcLgkT2zXZ4rcWFZhP1R5M0m9R?=
+ =?iso-8859-1?Q?kdp22w/gomMIRvjOtA4fKssdbsfL8aVQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?MrQCPn71b+Vt5/4HGkPEFpalxvwB+vQOuRabkVyWNAEsv+YL1WD4r7Unmw?=
+ =?iso-8859-1?Q?j6GHSNHwVfYz2Kn1WPxh5jrE9v7ndaabeHeY9gmbFpD3n/M81JA3CtONxl?=
+ =?iso-8859-1?Q?benT2aTkPJtSqvTGYrb3bp3/XwAPo3hG8+0IUx1BOeUr/kIkc8bFoL9ScT?=
+ =?iso-8859-1?Q?zybO/OPqk/qrhPmLMTsDPJBHIxODquTO0WoU+X++bBFjonuBVwDDpwsksG?=
+ =?iso-8859-1?Q?fYpHl7sEPp85cwuMEBRtuKjTUYtFS/iKMM6wZB2LXTAXbyuHYc0MKvNqCX?=
+ =?iso-8859-1?Q?62FiirIZyqf3KzVjH8+wfrOGlg1nkNDfh704FCSN/oor527vye3rAFDXPO?=
+ =?iso-8859-1?Q?sj9Wyr4enyN32LVrU7+JuF5OSgD9wVRcxdLLLrtz6aOVBIsOlEOFMBLmu4?=
+ =?iso-8859-1?Q?HOfXB5zKf1ODhMecjAX5HfVLvNgCjZW/VlxC7QKdwT1MFPYbjB6ms+pRSu?=
+ =?iso-8859-1?Q?mJ1vi/ruyujID8WOUVtN3OgCQpqJibFnTauQbewspBIS4Bolwnnvh0Qbpm?=
+ =?iso-8859-1?Q?7PpZ+J60V6guky2mtZEt6lkY5jHxPsvTi5TSLmWPrq8AJWDYumv7qq/1Gs?=
+ =?iso-8859-1?Q?Tw0/g4TG6vbkW51wviVuUOcKfIUSqSD7iktBsU1RNCSbIAwPan8DCZbhxJ?=
+ =?iso-8859-1?Q?E7t9jGL4HjPEKlQOwwPOOYj1Y9R+ze3MHdoEPWBRkuXys0bOy7lbJzpduF?=
+ =?iso-8859-1?Q?aVHNZWNxSmvzZMHKSmloP+9gYuv5ciRiP+Riegecrig4AtbX6i2bih93gw?=
+ =?iso-8859-1?Q?kc9sjWU8x4hEJav1zBb0DIF+LaFSKjrU3SbJolIegthdOgxUIv4D1oVa/O?=
+ =?iso-8859-1?Q?TfRiPzEz+luqkbg/kHO9k2FrXLeaocjOFfCRCGq6xTUg0SHB5l2nj2jqW+?=
+ =?iso-8859-1?Q?iZ1+i/CVd/5sgvmYphTzu1onq3hHOm+Lxh0i4Wn6suAnUo3I56OCaggwNr?=
+ =?iso-8859-1?Q?7eqUSja4a2JXAIa5g7gRYjalyCouyJmoIXmSQJwDhtY58BHdTPv0Ak4A0X?=
+ =?iso-8859-1?Q?St/b+ib0LxiOfxSCd/McUyQ74UISHe9zfGZ3DlWWYspmwD3uAn33T6v94O?=
+ =?iso-8859-1?Q?IUPSBIdV/qZBH7J1XDI+nzS7cCdIE+Z+mpcP98oZ131EvEDWp6M8DQs4rk?=
+ =?iso-8859-1?Q?kbT3BGfDWqbqw7luDT2r5cQ2DGTEEvPApntr+vATi24WckZIhAgjS4t+4H?=
+ =?iso-8859-1?Q?73AFRFcNA7IUcbQ1uOJft/bHEkILSSUDhnPaXWa7lXD+KouVhJpOJwWfN+?=
+ =?iso-8859-1?Q?h5XdAEmwyQbffybdL3hl9oRPgyk7+qKTFFWWZW6O2aOh7V1+JgidPAFCv2?=
+ =?iso-8859-1?Q?ftFFt7GeAP+qx8/H2nT/N7u0BknpqOSPqOQTD1w1mTBfUr0t6cAY6W6PuG?=
+ =?iso-8859-1?Q?DqCWzx7jiPv7u9cXcwnfdaVmQjkXSciwvvWu19nBYALG2N59+rfKzO1TJV?=
+ =?iso-8859-1?Q?At9I4UsJIEpQMURfbkgohrMn56vtt6vhGolqLhl8XB9clDA/Fd89tWwZoH?=
+ =?iso-8859-1?Q?QVusQWpSfMLy0CRurJu1EIsTPMLgg9eRT8tpjdL7Vxakv8MU22U6hAtS7C?=
+ =?iso-8859-1?Q?ns70TLMTukmFDiGpeQIxN/JLf4AWaQPJJVKMwbrCgRYR6F6GFDvESjjuoT?=
+ =?iso-8859-1?Q?adTqxj6xkZpQzaO2ucsCBQydgUiAUn2cj1?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 817d1aef-0a0c-4b44-12ad-08dcb6e97d77
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 14:01:52.9667
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l7DEbFmli3WDvD/HVgJ3Y/FpFqDJE/+i0IXJGpE1kuV/dUGuMQqMwcC313eS9vnohuWYIKSwJQ4TVITw4qnSxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7328
 
-From: Jo√£o Paulo Gon√ßalves <joao.goncalves@toradex.com>
+On Wed, Aug 07, 2024 at 10:29:17AM +0200, CsÛk·s, Bence wrote:
+> This function is used in `fec_ptp_enable_pps()` through
+> struct cyclecounter read(). Forward declarations make
+> it clearer, what's happening.
+>
+> Fixes: 61d5e2a251fb ("fec: Fix timer capture timing in `fec_ptp_enable_pps()`")
+> Suggested-by: Frank Li <Frank.li@nxp.com>
+> Link: https://lore.kernel.org/netdev/20240805144754.2384663-1-csokas.bence@prolan.hu/T/#ma6c21ad264016c24612048b1483769eaff8cdf20
+> Signed-off-by: CsÛk·s, Bence <csokas.bence@prolan.hu>
 
-Add native HDMI audio to Verdin iMX8MP and all its carriers boards.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Jo√£o Paulo Gon√ßalves <joao.goncalves@toradex.com>
----
-v1:
-- Fixed wrong "From:" for the patch
-
-.../arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi | 10 ++++++++++
- arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi   | 10 ++++++++++
- .../arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi | 10 ++++++++++
- arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi | 10 ++++++++++
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi       |  8 ++++++++
- 5 files changed, 48 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-index fbcd93e33aea..da8902c5f7e5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-@@ -65,6 +65,11 @@ reg_pcie: regulator-pcie {
- 	};
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&aud2htx {
-+	status = "okay";
-+};
-+
- &backlight {
- 	power-supply = <&reg_3p3v>;
- };
-@@ -219,6 +224,11 @@ &sai1 {
- 	status = "okay";
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&sound_hdmi {
-+	status = "okay";
-+};
-+
- /* Verdin UART_1 */
- &uart1 {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-index 09733fea036d..a38e7c947a42 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-@@ -64,6 +64,11 @@ simple-audio-card,cpu {
- 	};
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&aud2htx {
-+	status = "okay";
-+};
-+
- &backlight {
- 	power-supply = <&reg_3p3v>;
- };
-@@ -215,6 +220,11 @@ &sai1 {
- 	status = "okay";
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&sound_hdmi {
-+	status = "okay";
-+};
-+
- /* Verdin UART_1, connector X50 through RS485 transceiver */
- &uart1 {
- 	linux,rs485-enabled-at-boot-time;
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-index 3a40338cf2d8..11cf3bdc95c4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-@@ -62,6 +62,11 @@ led-3 {
- 	};
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&aud2htx {
-+	status = "okay";
-+};
-+
- &backlight {
- 	power-supply = <&reg_3p3v>;
- };
-@@ -182,6 +187,11 @@ &reg_usdhc2_vmmc {
- 	vin-supply = <&reg_3p3v>;
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&sound_hdmi {
-+	status = "okay";
-+};
-+
- /* Verdin UART_1 */
- &uart1 {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-index 533b7fe218ce..cc389cda2af2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-@@ -85,6 +85,11 @@ led-5 {
- 	};
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&aud2htx {
-+	status = "okay";
-+};
-+
- &backlight {
- 	power-supply = <&reg_3p3v>;
- };
-@@ -192,6 +197,11 @@ &reg_usdhc2_vmmc {
- 	vin-supply = <&reg_3p3v>;
- };
- 
-+/* Verdin HDMI_1 Audio */
-+&sound_hdmi {
-+	status = "okay";
-+};
-+
- /* Verdin UART_1 */
- &uart1 {
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index d23a3942174d..a19ad5ee7f79 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -77,6 +77,14 @@ key-wakeup {
- 		};
- 	};
- 
-+	sound_hdmi: sound-hdmi {
-+		compatible = "fsl,imx-audio-hdmi";
-+		model = "audio-hdmi";
-+		audio-cpu = <&aud2htx>;
-+		hdmi-out;
-+		status = "disabled";
-+	};
-+
- 	/* Carrier Board Supplies */
- 	reg_1p8v: regulator-1p8v {
- 		compatible = "regulator-fixed";
--- 
-2.34.1
-
+> ---
+>  drivers/net/ethernet/freescale/fec_ptp.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+> index e32f6724f568..fdbf61069a05 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -90,6 +90,8 @@
+>  #define FEC_PTP_MAX_NSEC_PERIOD		4000000000ULL
+>  #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
+>
+> +static u64 fec_ptp_read(const struct cyclecounter *cc);
+> +
+>  /**
+>   * fec_ptp_enable_pps
+>   * @fep: the fec_enet_private structure handle
+> @@ -136,7 +138,7 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+>  		 * NSEC_PER_SEC - ts.tv_nsec. Add the remaining nanoseconds
+>  		 * to current timer would be next second.
+>  		 */
+> -		tempval = fep->cc.read(&fep->cc);
+> +		tempval = fec_ptp_read(&fep->cc);
+>  		/* Convert the ptp local counter to 1588 timestamp */
+>  		ns = timecounter_cyc2time(&fep->tc, tempval);
+>  		ts = ns_to_timespec64(ns);
+> --
+> 2.34.1
+>
+>
