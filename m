@@ -1,105 +1,173 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0225378C7E
-	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 18:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30770145FE1
+	for <imx@lists.linux.dev>; Wed,  7 Aug 2024 19:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723056182; cv=none; b=OVFnhBPt3sqoUXkSS5uquXC8GPIDnMu+V161RTWQQR0ScgVsW3hxMyOobQufr16qMMsgqa+hlCJpdmapc9SnoLqmhMtOf7QrN/CBIpVuC1KVFT1DBzJd40+a48OjMmahPm+jJAYo2CcqQjy0fghf3W6XRPwHCV90U/ChZqQvNRw=
+	t=1723060108; cv=none; b=rgZLOsZDtgcXGPfyMGQYTS0MUm1D/GOanR7aegN/BKTdrWmZYa9tAQxFEdPPSlA22fsUJi2qE1Nq4vCInJcTMSX24XGhwhym1OwWgpheD0vjupo1T2hWeMfbAlOiFkbrPCS/KBICKD1eGqgdVEnBqMdhR7T0r/3TZXS4VDz4pjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723056182; c=relaxed/simple;
-	bh=pjQWUW7q5HQDIJGAFqqVY+CDA9M9vwP1peG/rZG94os=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BD2L2PLIpFG5OvFlpN+QSGeExREs/HghySFkfPk9P+VrSl3Zg5hiwjOUVM9s8MiCqqKl5TMbKMlo5bnMuAZdtywqLu5sdR5VEOwOPLIuQ5qJ9NZbOVcx0/Ep0Aa0+RSDADwHUCHL/VP8GzZ94NbThrtyCPPzrla9GRyWo3XZhDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOFR3uLC; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723060108; c=relaxed/simple;
+	bh=AxWnwCIkk1T2IX7npYkbTtiEviZmWYipWVqeuFPz+u0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G2kGyFRrtR4zC7atU2j35KSnFfZizfRndYjfufqJUOrXidhVPSZhwCt0hA3mzjDeSz9Q6Ok5iopOEqIVOQoC73bymK5QUt0HCx40wTxkGnPH9XSOGXkoBXaFyE/yZpnK8Onk/lYuIRzirSHhTifZNptDNj3innMw4l1pdaszJf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me; spf=pass smtp.mailfrom=beims.me; dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b=WzdOIO09; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=l8ma3b+r; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=beims.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOFR3uLC"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52fd0904243so17901e87.3
-        for <imx@lists.linux.dev>; Wed, 07 Aug 2024 11:43:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723056179; x=1723660979; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vi22Z7/z7KGaeL5sryaJg6znudrYZaucY8JSso4zVMA=;
-        b=hOFR3uLC4zIkFbPgQi7MXJfcd+gk4uZs33jCQJRIMRhRkPZSVifWOKIrEnXgjG7O6D
-         KGoaU92NP2EzRWtvEyUm90PDD8VzdqXFpoEN+rZko0F8Ox6GlxuZNRSwhzglHImxO/+K
-         fp7d/dqpsH9l3m4HpPsjfwUEo5CdlopDp+miFjBFb1VKgZzwOxPgNKRfSiogGY1B6wxV
-         JM1NPhPQ9mW45R/rBQkCOhvKLNuZPmcYvEf92L936LoILLFhs4YNh8N03X1c6ermhp9z
-         rR6uRHvpl88Ms5INzhT/boQmtDFxeWxOBXs0aL3FP806piYy1e90YbofzxEQli+nV7M0
-         tMxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723056179; x=1723660979;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vi22Z7/z7KGaeL5sryaJg6znudrYZaucY8JSso4zVMA=;
-        b=b07f29u/dBSXbhG3G9DJo506HNWtRQHYqMtQVyD7GRQnhhllMboH6+/2HUTSynK4ua
-         CX8DL7/Miy28XKdizoAjOUY0Z2rAq9W+IwNXaHx5nbuV1ouLNfPbcNs9Gykcm/p6X7tM
-         L2/FXd9XbxXMeQSdgQ5Qc9uM9NSfArqd5YPHPEKRSxbgIboHGe3uW1uRtbzgLHXRjR6U
-         /ERBQCbaTTUtMo1jroiIOIoJCvck7May9zEVm6Vuf4fY2lcoidsCkVaUh+I7lK4iUa5x
-         HX95HF+erjKUqY7Hoc1me8ss4HiaQU5zdKM7o8bvXuUpFUcSQ0I3aS+UcKAfiQzUvVdq
-         z2hA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKXsvw6xPrzjwctRaiECgoiRxp/u7HuabMYsqrFMDcIOBnrVl2EL8uIKObycCVzSM8OvjWXMW072qIYMFiwKRgMO3T
-X-Gm-Message-State: AOJu0YzKK1tZp1ykzSHvBh31hWh0343wFRkknFCMr97X4EyNDwPWjpFD
-	XfuXXEjYn5x2hjpO8PlGvjVqyn+qjKaZmNcwjkkI9+UQdoMnPkPSNb2rzLrmMmamjXEAyZyYMiR
-	lKTTX5N4agOy98EL9zBl+BQKn6uROQw==
-X-Google-Smtp-Source: AGHT+IErDQ9+7pwORIsutODey2VWREwIo+wqFfhXfY42C+j14tgspSe8U5il7QB4nP2cMGLiMo1jeiIdsiqEcMuj4xI=
-X-Received: by 2002:a05:6512:31c9:b0:52f:cad0:2d4a with SMTP id
- 2adb3069b0e04-530bb3bdc62mr7540743e87.9.1723056178707; Wed, 07 Aug 2024
- 11:42:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b="WzdOIO09";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="l8ma3b+r"
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 5214C1151127;
+	Wed,  7 Aug 2024 15:48:25 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Wed, 07 Aug 2024 15:48:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beims.me; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1723060105;
+	 x=1723146505; bh=WqIAsC3nNZca859GcENtmVYMTR1G28vKUTVcJQ7Y3Ng=; b=
+	WzdOIO09v6ZJbT/RLQwC3rKwV8sl9gmCfMfXoaw0iZVqBsBjOJpjxMoQrIXcQ7nI
+	Zbyl3xhBdjS910qMmqO9dfgBUeg6lHMwnI1Mi4BfsJeAcckOBwtE+2fQhLR0s20S
+	iATHkONVNBxaMRDQgTsjYEXzSvJNodAT9mODHoUaiHSBTLGt5pJ6UkgToA2hHwdu
+	aswm1C3jRF/sHtNbQl6daq9cXOCJRXwZTO4riZCuFr6BMkjQYickbEuYTO1TUetw
+	uQ8FMrR3+cC3H1U+J2hzK2i7t+AQRSDrsjx5XNdnDJF21+nkSjckIl2Uy3a9X28h
+	2/kQq+LDwR1wD0E3CRq8lw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723060105; x=
+	1723146505; bh=WqIAsC3nNZca859GcENtmVYMTR1G28vKUTVcJQ7Y3Ng=; b=l
+	8ma3b+r2CbKRNmGtIol3bjattsK9IFqzqirG7h1EUEkvUrzEY9jf68pPLTuRiVER
+	BldvwFSW7xn8ZZYEBx/dmHIL2pscLhMbR1VOh9XUG7UFUTkU8adXdSrfiDSaCKs8
+	kjHqWDJYvaFXMfYw/Dvw5zxafGolhd1VX8sWc9vQgD8TYUfbZZPSD2CQD/WmIjZP
+	lfIIJ4aEY6kbLA5N3mJOc3Ut8C9JggfrJ0nFlyDrb5yBn80czAbIkeCshNURrjjt
+	O68JKhiWHubxtIh//8uXitATkXsUL2DUSOtfRnNwsmDdkloaYbBebZKKn0LYxe96
+	AYPw+RoNeJpk0XhduRmfg==
+X-ME-Sender: <xms:iM-zZot5iDPkDSCkud4KCnhe6csrkwqBPXdyQTFLbc0gjaANT40mAQ>
+    <xme:iM-zZle-aGwATy8QVztMSxW1ZXmS5oNoHzL7yxuDYby5LRVjd8-93h203ulMJSFdP
+    SAxyx49xHN1bAWKaOk>
+X-ME-Received: <xmr:iM-zZjyNLyXxbukOZcWKvXbJm1cwe-Mou5mlAARMH5jGHn7h1qggfBX5n3xgb8FxDA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrledtgddugeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeftrghf
+    rggvlhcuuegvihhmshcuoehrrghfrggvlhessggvihhmshdrmhgvqeenucggtffrrghtth
+    gvrhhnpeeuffefgedvkeevudeiieekhfduteegffekfeehleektefhkeegfeelffduheef
+    leenucffohhmrghinhepnhigphdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehrrghfrggvlhessggvihhmshdrmhgvpdhnsggprhgt
+    phhtthhopedt
+X-ME-Proxy: <xmx:iM-zZrN2Vg7Cf3jU_syOcEn4F3meu02PuGRFQJDH1blYxfJBAC-Sow>
+    <xmx:ic-zZo8gvayU3JFZs_UVzK6WbMi7yliSf37Tni8UpBnqEYMgZvNaPg>
+    <xmx:ic-zZjXzgf6fv7gcH4a4lct2794_Z9injKeGDK6xLqGH61gsX9F5CQ>
+    <xmx:ic-zZhe9T7tO-MFvuZTcysJEeFtsuIy3kJMViBt2ahC8K1z7El2oHQ>
+    <xmx:ic-zZrevQPH5DQuLYVCzPJmvfrXp4HcHMp4i-O9i-gkfpZRPQgBolIp9>
+Feedback-ID: idc214666:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Aug 2024 15:48:21 -0400 (EDT)
+Message-ID: <ee39f8ce-683d-4144-909a-972ce74b95d8@beims.me>
+Date: Wed, 7 Aug 2024 16:48:19 -0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240807-fsl_dts_warning-v2-0-89e08c38831a@nxp.com> <20240807-fsl_dts_warning-v2-4-89e08c38831a@nxp.com>
-In-Reply-To: <20240807-fsl_dts_warning-v2-4-89e08c38831a@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 7 Aug 2024 15:42:47 -0300
-Message-ID: <CAOMZO5A3FKPurXZ6ZoUB7zzXBC5xRLEHPsTQ-hRyDs=g2ZaqUQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] arm64: dts: imx8mp-data-modul-edm-sbc: remove
- #clock-cells for sai3
-To: Frank Li <Frank.Li@nxp.com>, Marek Vasut <marex@denx.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 4/4] arm64: dts: imx8-ss-conn: add PPS channel to the
+ FEC nodes
+To: Francesco Dolcini <francesco@dolcini.it>, Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ rafael.beims@toradex.com
+References: <20240807144349.297342-1-francesco@dolcini.it>
+ <20240807144349.297342-5-francesco@dolcini.it>
+ <ZrOUGLJPYC/K4MlP@lizhi-Precision-Tower-5810>
+ <20240807175148.GA299582@francesco-nb>
+Content-Language: pt-BR
+From: Rafael Beims <rafael@beims.me>
+In-Reply-To: <20240807175148.GA299582@francesco-nb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Adding Marek.
+On 07/08/2024 14:51, Francesco Dolcini wrote:
+> Hello Frank,
+>
+> +Rafael
+>
+> On Wed, Aug 07, 2024 at 11:34:48AM -0400, Frank Li wrote:
+>> On Wed, Aug 07, 2024 at 04:43:49PM +0200, Francesco Dolcini wrote:
+>>> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+>>>
+>>> On i.MX8 the FEC PPS channel is routed to the instance 1, not to the
+>>> default 0.
+>> According to my understand, it should be board level configuration. FEC
+>> support output pps to any one. choose which one by board design.
+> This seems different from the information we got from NXP some time ago,
+> unfortunately this was happening over some private email exchange and
+> not documented anywhere public. But the message was about SoC internal
+> routing, not something at the board level, at least for i.MX8 SoCs that
+> is what this patch is changing.
+>
+> For example to use PPS on i.MX8QXP we need to have this
+>
+> IMX8QM_ENET0_REFCLK_125M_25M_CONN_ENET0_PPS 0x06000020
+>
+> pinctrl configuration _and_ use PPS channel 1. Same is for i.MX8QP.
+>
+> Maybe Rafael can provide you some more details and the name of the
+> person that provided this information.
+>
+> And maybe you can also try to double check this internally within NXP.
+>
+> Depending on what we find out we can decide if this patch needs to be
+> dropped or not.
+>
+> Francesco
+>
+Hello Frank,
 
-On Wed, Aug 7, 2024 at 11:52=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Remove #clock-cells for sai3 because sai3 is not clock controller to fix
-> below warning:
-> /arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dtb: sai@30c3000=
-0: Unevaluated properties are not allowed ('#clock-cells' was unexpected)
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts =
-b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> index 7e1b58dbe23a7..837ea79741e8d 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> @@ -499,7 +499,6 @@ &pwm4 {
->  };
->
->  &sai3 {
-> -       #clock-cells =3D <0>;
->         #sound-dai-cells =3D <0>;
->         assigned-clocks =3D <&clk IMX8MP_CLK_SAI3>;
->         assigned-clock-parents =3D <&clk IMX8MP_AUDIO_PLL1_OUT>;
->
-> --
-> 2.34.1
->
+We have received the information from NXP support that the iMX8X only 
+supports channel 1. Here's the link of the public question I asked:
+
+https://community.nxp.com/t5/i-MX-Processors/IMX8X-PPS-output-configuration/m-p/1552154
+
+Unfortunately, the response came directly to my e-mail address with no 
+public update, but you can probably check the internal support case 
+number 00500877.
+
+Here's an excerpt from the response:
+
+> I have checked this issue from soc level, the pps signal is routed to 
+the 1588_timer1, not routed to 1588_timer0( being used in code default).
+
+At the time, I asked a followup question:
+
+> Can I assume that  IMX8QM_ENET0_REFCLK_125M_25M_CONN_ENET1_PPS is connected to 
+1588_timer3 then?
+
+To which I got the reply:
+
+> No, ENET1_PPS is also routed through timer1. One can't use ENET0_PPS and 
+ENET1_PPS at a same time because of same routing path.
+
+I also asked for confirmation if this behavior was the same on the 
+iMX8Q, which I didn't get. However, we had another customer also 
+reporting problems getting the PPS output to work on our Apalis iMX8QM 
+module, and in this case, the change to channel 1 also made it work. 
+This leads me to believe that the iMX8X and iMX8Q are behaving the same 
+way in this regard.
+
+We would really appreciate some clarification if we got some of the 
+details wrong.
+
+Rafael
+
