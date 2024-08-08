@@ -1,102 +1,199 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012062.outbound.protection.outlook.com [52.101.66.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A06D18CBF9;
-	Thu,  8 Aug 2024 13:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723124053; cv=none; b=qxWY8CDuYi6zrQDZauN1KUDSZywgkrnXEP2izNzBwffy+7DXrrX6YRjgYg7wL8NdqCJkxZbjPqd3OU/X8SiF1Xx5jopmJPpqnOXzXDjyxFRgposQc/Ke6NPu4EA+ClberLEprNuwEMRnhmeNOXz/t9tUh7xHzZrs+Dwo5AMyigg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723124053; c=relaxed/simple;
-	bh=dQPzyySCXLyZFd8NmQ9l/x6DDKkXjc5nUN1HzZcUkAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xu6myTe2Ph3TFCIS7M2ggojgVTNpcQfEVcBM/RoQI1SQ4ouarVb1SDeUKjelhFIMSH8CsA8J6jgyXwJW8l84awUSGmmpnhp2aegL3zc/K7G+1T1TwBg1PrLTmwbXj2nmpmqcIPRmLhmTEjI2pJrfPV/KGl9nFTNpAoUlmXo8MO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sELRpCqF; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4381518E050
+	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 13:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723125461; cv=fail; b=MQYU1X9lJKKIb5N2csdO5TiWecvaIELp0AEm9j52RO65CR8hrrRB5FAAIhw070qdxT3F9UxhEp9+Qe2u7Zb1XOTMJ2HqNzZ7Pg8lpOzr9tMzjEq5/p6I4r4daSrq178/WT+M/H5HeAXwe6PJp1Q0M4o2aki7AEG4NX41B7csSiQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723125461; c=relaxed/simple;
+	bh=M3oQxtYbstu/L/DNa+3AfUCScSj+Vha/85hX4b+CWxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DOpsFIYC8kmxU9EDCVZRT/qM0Ys73ufZhI4ZaMXK71evIgqVyhsPtf/c3NbdcZy2wzcvdXOVo0MQd9jVZmFd8UbaGy08w9oLy1AYm6yIG9iLiZo1L6eUVtyd18fE6OSU6dfiCroZi/K6jt0G49IXGLFrzcaduWbmKS/P50WRkqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hqo0o6uy; arc=fail smtp.client-ip=52.101.66.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sELRpCqF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=PzlJ5mngJfIiAjkLx0ehprzUhkgfxcL0aVoE2kvi+1g=; b=sE
-	LRpCqFfWeTZY8l8TGI4Qid1RdFr7DHf/TzKQhGHQxy9h7BlCxXBOOVE1byUl4NG6FmDLGwjMahU6W
-	M9yg6wUjoBfkGJbPA7q025sEfl+VSvx+Xr7IkrCD7Sq0PyYcIJo5NN78KLbgP6BV8W/Jm2PHfJBxI
-	GpzZHMUDtuT9rEY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sc3H7-004I6m-2f; Thu, 08 Aug 2024 15:33:53 +0200
-Date: Thu, 8 Aug 2024 15:33:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Simon Horman <horms@kernel.org>
-Cc: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>,
-	Jakub Kicinski <kuba@kernel.org>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Frank Li <Frank.li@nxp.com>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH resubmit net 1/2] net: fec: Forward-declare
- `fec_ptp_read()`
-Message-ID: <30145adc-b1bc-46c8-beb2-80799f2f1608@lunn.ch>
-References: <20240807082918.2558282-1-csokas.bence@prolan.hu>
- <1d87cbd1-846c-4a43-9dd3-2238670d650e@lunn.ch>
- <20240808094116.GG3006561@kernel.org>
- <449a855a-e3e2-4eed-b8bd-ce64d6f66788@prolan.hu>
- <20240808113741.GH3006561@kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hqo0o6uy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qEZZY3XY6pmLvUT75nc3sb0hBdk4n/heEyLDS1SYNjXjbUyq1V037LJv/2G4IQ8MPmuLzwiZ5sqx+1kT5IV6asN0mG6v8zC6S8OcptcwqNsdMWjlrSFuhrFWPs00x1+rIIY7eSx9GyBp84IjW1t4rlTqYao3PO8Ms8+oMVv5Rkj2soBJn+bJjka/YFGM3xrIwMLaGevexDUni8AAyY5m6cYbPNHPX61ZwIvjjeuxnh7VmNrakACqI9mj8JBmWLOeA/ViODBXqaS4GI7+/nYM2iZNDq34hxgfUCu2AtID6zSpMJ0GNGEVk0hPCXbqQYeJhJ5WoOSVpDksaflhSHeBrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zx/rT/z8JTUGox05D3zzZI7HXXzgYiapX2ELtmeFHeA=;
+ b=cec7cHHwLnVEt7otccr5y5yiHLaGu64+0QsRg7sryRon/Q5Zy4pX7/MU3CY0ACCSaQt1ZfUPTDFcxacnExG9ZG7oeRh161SMNrJZXHzeiKKkcWYXvFOIChPCxTbCVqFBhG1a/EyIVd0s423CekKOfOL/P1238VSyVNxIn9Wx+dhvfGG34i4QpeXgdOF7GoEGOnhaSKElYt3kQ0E8DCpI37yS4U9FmFBgW6fti152+rICYYh3tduHqMGS3S1Pp1I/XzZmKP8YXDiUCTwUtPoTuyhpXST1WpX/0pIgdxh9wWZ0LC7moBJVWzjYde3ATscrrH+QCcAa30d5ouQo2FVJoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zx/rT/z8JTUGox05D3zzZI7HXXzgYiapX2ELtmeFHeA=;
+ b=hqo0o6uyiryZWZ3h8FLUpAam+ldw5//brh1AAe5CgV4qY0Lf1HI7KNkIl+pJdamm/cFnXGR0kIq1QXMZxg60C1r+iWZ48GRspy5UQEt3s4Fj9xRpk+59BF+XjMV7QtdDkBV9CcMEYaymp0ELk/+yuuZzOz9948aL122mKCvZrvpGx3Z7IIVfbMuYp1k1ftO9AMwpZBsuYW9QfolemTeNmVXt5X622BF/55GxPw47bVYqgkRWPO+A/BgAbAYoEsnxOEpkWcHWCbiasny6JsWS3HMkL66QHhQbO0MylUs4o6VGzoWCcqYoE2zlnORFsuq0usWnVTThe+0MKzEQ+Po6vg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBBPR04MB7499.eurprd04.prod.outlook.com (2603:10a6:10:203::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Thu, 8 Aug
+ 2024 13:57:35 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.023; Thu, 8 Aug 2024
+ 13:57:35 +0000
+Date: Thu, 8 Aug 2024 09:57:24 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2 5/6] arm64: dts: imx8mp-venice-gw74xx-imx219: remove
+ compatible in overlay file
+Message-ID: <ZrTOxCe2heOuzlD+@lizhi-Precision-Tower-5810>
+References: <20240807-fsl_dts_warning-v2-0-89e08c38831a@nxp.com>
+ <20240807-fsl_dts_warning-v2-5-89e08c38831a@nxp.com>
+ <PAXPR04MB8459249991934356CA4CDFEB88B92@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB8459249991934356CA4CDFEB88B92@PAXPR04MB8459.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: BYAPR06CA0033.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240808113741.GH3006561@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7499:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75b46d63-3289-480a-6347-08dcb7b20e17
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ldxvvBOgFMUqhqzv0ZnEDvWWWILjjnp/vu9zyB66ndNhbtXHM9mbQMttMITR?=
+ =?us-ascii?Q?nRD3A18FmZVFX9z36kGyFuqJsk5bS3vrK7K1yfW55UjyPyx+kEZ+CuqaQ5v6?=
+ =?us-ascii?Q?5IFEYnuYJ+wRLiWl1zMdhzD1iy3MfUd1sQzROgqDhM/263/Yj9xk7ErnOjhz?=
+ =?us-ascii?Q?hl5FnZ4Q365QHm3dDBL/nxE7SN2oAPwK2zudABPtsG3tfXfp3Kxduz5VIikN?=
+ =?us-ascii?Q?KKpXkvca5YFGi49obH0TXO1ISgvWV+D4itJzXCGwNFVBaAuz0yhBe1dx+S7J?=
+ =?us-ascii?Q?DHUuQgGDwmo3+r0g1EkEXaG8IccqGihIok+rpMY8OuKhRtEnP35AsLNYoqQo?=
+ =?us-ascii?Q?DpXn2/c42YRmfgJxf7OvgCaZPcI+QRCqaiu8FeDZZoKhzEWlMJmME9fMqA/a?=
+ =?us-ascii?Q?uoTarPgdygZeWvjE8UAPQ6cI6Fg6J/SEXQEFuDKmPJWfVG/LEUFnEY+ozcsl?=
+ =?us-ascii?Q?11p8Ab2vdpVNWvTZTZk5yUpTv0m5LacTk7bPag24D7ai5aJFzIFTp3i0GB7I?=
+ =?us-ascii?Q?4dsvuJgpOkscryVGowOKoqPqWz1gpR2UfGnh7jBL+I0a1dNs7Nn7n975uVbf?=
+ =?us-ascii?Q?Dw/+boiyH3QhWbJMMHTTk1bDu0776nq+melm+++QFhpJS4TcLc2XqVWKl2iV?=
+ =?us-ascii?Q?fOWFivq73rjsZloslLSF3hnW0uYKgOTul/qhidn10wVzN9MZ89vq/2EtK9Ha?=
+ =?us-ascii?Q?xePrwHmMUNlMCK1e7oWVWhQuqp/jqmTfMMjPJGe8cI6lpU7hSf40Y4GVCO7w?=
+ =?us-ascii?Q?GTcNSvz1LkNq3S//m+NZN5A84FHVdZVH5tTPM0t3cbiW2JGDLHRDNo14ukIB?=
+ =?us-ascii?Q?X/JWu0D9lV9mRkZxz3Rlc1XjuN9gDWm73Nundf6xGDGDES8IifsJu9iugRPC?=
+ =?us-ascii?Q?ecp6iUUP0awm+ZJ+KblTFctAH5GZ3HnQl3LcxTsYRKFo9bkpKP8+LQ4HJbYA?=
+ =?us-ascii?Q?dN2PoZFVI+CL4AzdLf9zwIArRmJ6LfOh1on4WanGV5w/D6xVeuB8HI8y7MKu?=
+ =?us-ascii?Q?4agWzyTil3Fd+0PaX2aJ6EwUZvBwghFWHKSFvhZnnK6qBlgIubZt58wubrJj?=
+ =?us-ascii?Q?uKiVy99HkTK9zpGs/hKz2FZhA3bApH7JBpIE5ZsBkZiWinRK+N92EYotVr7/?=
+ =?us-ascii?Q?8YjnpHSMOiwVByZlJTclRShpj5NXq3QDTlSicY9MoiftN8CnHQWBrP8R7rm+?=
+ =?us-ascii?Q?AlUZu1hGHdEdq5spbu6rZY1zgwPBbez9hRyC2H7ArXFY176NIQ6UI1SxYl+v?=
+ =?us-ascii?Q?bkwxiuLoNfghNr07iLUlhY+tDcxG/lpG2ByaUC87I+e+btH7vhm5EERhYzEl?=
+ =?us-ascii?Q?CMtWYOHMvNXnOjphZwpEffhFAM3FQ126+7sqv3PsiFwZuRJ5kBKCrfrcBtYj?=
+ =?us-ascii?Q?VftalLmAUMK/yTTdL9EaJ30mSLq8ogh+R7k/P6R3HYROVVQCIQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QA0Vh2uU2yntk/0VpkywtH9cGdfp6Hk/9QSS7ZbIV4CbiQspKzTIXV3vzrFD?=
+ =?us-ascii?Q?O3nkOwVvvGV5ZXLvImtvYUev2Tuf9TNtTaYwN1hrIc5ScerICwBMKGxSJb+V?=
+ =?us-ascii?Q?/Nk9LaTKIs/0+fRtXGSGcC33NNlQVozDPFuhb+AHetqygrQeu8ZadmVRIDfs?=
+ =?us-ascii?Q?dWN/akYGgPlzhtfwkg9ekAsVBZDYktT1tZZZe3AWKB1YQ7XVWxY1cieUAUYZ?=
+ =?us-ascii?Q?yF9E849+E1Mam5B4ww2IzoGNxPeziL77xamVPpMKu78VtxZQxxsKf+7dB+yI?=
+ =?us-ascii?Q?nW6NBGAtyLldq7dM681GXB1c4ugdv4joXDDYbiHywH6r/PCB7txDUbqy1eMc?=
+ =?us-ascii?Q?/TtJuEAO4sYT9mpufyQTvYTjaSxRN1ZYcRybgKJn9f3SnWnWaN1y4tEFscVe?=
+ =?us-ascii?Q?bM6Lvhx+SJVD5/sXlpJXjz/vO00adCDN1NMQpO9ym1/yfLKWD0EEkYJADkOK?=
+ =?us-ascii?Q?pG6qaNwMngeWYvAyLC4Um5q/Ltqtljgrj+3RO9X9AeXxuOTLJ+gbCrV7GCWv?=
+ =?us-ascii?Q?zyHLGwgzs+JX0AG4VboLKeLfyuKzvrOFrRoqRFDUrHEd6Td8CTdE3jcx5aFc?=
+ =?us-ascii?Q?6kgY8U3EcQJF2VHYtGUj2XOIElJWHnFfCHSPst2FtjhFou6YwrjN+Q722LO2?=
+ =?us-ascii?Q?tL7a2Im/8LSZDuw5QDzCeYMIZlAQWIiPvGZ7mdDOSdUSQbunsLulUgAKDLKJ?=
+ =?us-ascii?Q?ZeXTXrcLEQd8yC+7Epm8G517bb7tY4a33LWkQRSMMm2cd3KsWLMAVD5xWZXH?=
+ =?us-ascii?Q?NSeN+Ht4glQndJ7vmd1yv25b0tV/JBtZCubEakJ/RnakpcXyFax5WGq2DVeg?=
+ =?us-ascii?Q?Q0zgQSuEWPbo8eC7rw7YMojIONcJKE+iSrlGf+biNSGxrCjhLj0yLCbQdn9R?=
+ =?us-ascii?Q?F0zCEjIyqYPUPEtWa46bSVks1pmcW8UcgmnIkIQn7U5R1r+QmH/CCKE7dZX3?=
+ =?us-ascii?Q?39rYN2fUy4Rimrjq0LOQjPrTLXRkAq3X3FgGM08gLhrNCKjij5GWHHaqZ5aC?=
+ =?us-ascii?Q?/muPVN8ueBtxthOtJfvxr1L2nCOg1kovCN38U0VgUVKqmihX+ld404B1F3EO?=
+ =?us-ascii?Q?vejLBAxamedBbW0XBqHeV31FV5h3iBPaT/PGWMpqsbaJNDABLmJwUBNHVBr5?=
+ =?us-ascii?Q?8CrZ4f/fRskgxed0Qg44PkbVFHThGTIanLDL8deQljA+DGDl8PzjjM/NPEKE?=
+ =?us-ascii?Q?ZJS2aW48M06HUESRCu5fRNuU8hSQ4gxl68rkpbiRJ0t9e61gaaFnDuXsnptb?=
+ =?us-ascii?Q?MDSx1d+9tfhTjKhI9V+khXNQOuY1qtN2xOLftnhDU8P/0bzApiHYQhBz00iu?=
+ =?us-ascii?Q?XjKNtsBjKg//ljOY0MMHbBuGLNErkIYvvW/odM4rDeZtU9UiuqeSsBItf4ke?=
+ =?us-ascii?Q?neot88YJJsT+RpKxUNUWyeXvGHx+yVQzIn/YuTvg2vu6pW3VnmrDZ7J8DWpd?=
+ =?us-ascii?Q?owmkAO7mqQQGNudEG74EysNF1naeKK+pil6aQRcR5CKObhGR+t148Bgp7Ki2?=
+ =?us-ascii?Q?pOT0TyWw88gEzJUIgNDHyTMvKtBroJhkljVyWxNSFQL4hBlpqRYN1SrVwjLL?=
+ =?us-ascii?Q?HMb9PwETaHvw71wopAY=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75b46d63-3289-480a-6347-08dcb7b20e17
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2024 13:57:34.9250
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: h03gYLogKU/r2QDj9bOt5R4A7yIrK8Cb/gnL+8bw+UbAbp77GKKXPCfLchX5CwzYaEY1A7VA4tla9mvMJJJ0AQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7499
 
-On Thu, Aug 08, 2024 at 12:37:41PM +0100, Simon Horman wrote:
-> On Thu, Aug 08, 2024 at 11:49:29AM +0200, Csókás Bence wrote:
-> > On 8/8/24 11:41, Simon Horman wrote:
-> > > On Wed, Aug 07, 2024 at 03:53:17PM +0200, Andrew Lunn wrote:
-> > > > On Wed, Aug 07, 2024 at 10:29:17AM +0200, Csókás, Bence wrote:
-> > > > > This function is used in `fec_ptp_enable_pps()` through
-> > > > > struct cyclecounter read(). Forward declarations make
-> > > > > it clearer, what's happening.
-> > > > 
-> > > > In general, forward declarations are not liked. It is better to move
-> > > > the code to before it is used.
-> > > > 
-> > > > Since this is a minimal fix for stable, lets allow it. But please wait
-> > > > for net to be merged into net-next, and submit a cleanup patch which
-> > > > does move fec_ptp_read() earlier and remove the forward declaration.
-> > > 
-> > > That makes sense.
-> > > 
-> > > However, is this a fix?
-> > > It's not clear to me that it is.
-> > 
-> > Well, it's not clear to me either what constitutes as a "fix" versus "just a
-> > cleanup". But, whatever floats Andrew's boat...
-> 
-> Let me state my rule of thumb: a fix addresses a user-visible bug.
-> 
-> > > And if it is a pre-requisite for patch 2/2,
-> > > well that doesn't seem to be a fix.
-> > 
-> > It indeed is.
-> > 
-> > > So in all, I'm somewhat confused.
-> > > And wonder if all changes can go via net-next.
-> > 
-> > That's probably what will be happening.
-> 
-> It does seem like the cleanest, and coincidently easiest, path.
+On Thu, Aug 08, 2024 at 02:39:19AM +0000, Peng Fan wrote:
+> > Subject: [PATCH v2 5/6] arm64: dts: imx8mp-venice-gw74xx-imx219:
+> > remove compatible in overlay file
+> >
+> > Remove compatible string in overlay file to fix below warning:
+> > gw,imx8mp-gw74xx' is not one of ['fsl,ls1043a-rdb', 'fsl,ls1043a-qds']
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Change from v1 to v2
+> > - remove compatible string totally
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-imx219.dtso |
+> > 2 --
+> >  1 file changed, 2 deletions(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-
+> > imx219.dtso b/arch/arm64/boot/dts/freescale/imx8mp-venice-
+> > gw74xx-imx219.dtso
+> > index edf22ff549a47..eb673a947484a 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-
+> > imx219.dtso
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-
+> > imx219.dtso
+> > @@ -11,8 +11,6 @@
+> >  /plugin/;
+> >
+> >  &{/} {
+> > -	compatible = "gw,imx8mp-gw74xx", "fsl,imx8mp";
+>
+>
+> This machine string should be added to device tree, but not just delete.
 
-If it does not really fix anything, then net-next.
+This overlay file, this compatible string should already in major dts file.
 
-   Andrew
+Frank
+
+>
+> Regards,
+> Peng.
+>
+> > -
+> >  	reg_cam: regulator-cam {
+> >  		pinctrl-names = "default";
+> >  		pinctrl-0 = <&pinctrl_reg_cam>;
+> >
+> > --
+> > 2.34.1
+> >
+>
