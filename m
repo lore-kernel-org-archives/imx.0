@@ -1,60 +1,61 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79EE190479
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDBE19047C
 	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 14:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723128182; cv=none; b=WS/bh1cus8aGsuAIRkQva/zif34kWZuUzmbNptt9mSH8PyoLFqsT6RuEZ6jK3ZGelhsTL8MlFeIy3WwY0duMdnphOxGkVit2HRA5IJ/2IZytFqWAiNlddjANK1DQOP6zqbUFjl5t62FaMGyMRuAsXP8GB1SwsUHe9PRWI/9OXzg=
+	t=1723128182; cv=none; b=XYoApJXV/ICfuM6HHBUGJyKHvTsbX/ehnDHRbGnUli66wchI4bzAV/LHnN36qf/zG5l/fXUN5+ubjbONmnWhvn0e1by+jwx0Vg+fOx4wY95hsGQeUhGqgXDp5IvmdgWoxibJclg89B2+DAN1hT72wB4HND0/7hwyDr5y+syv1JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723128182; c=relaxed/simple;
-	bh=nXzI2w3ThoiSRcRj8fOXuTW+n6yOdH+9/0PqUvo2i28=;
+	bh=n+1hhj763mEFqV1dem2n36RFOjE3WvEU7qjocs6Feh4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NB2jlvbXXbrROJq4QoKsymCQSRlv4wwiN0z1OGbBmFsR5eEo/atms6lTE4bnuFSdCwugbfMxmfUr7WmjkC4ANLSq4ADPEDsMNs0A9yYrTkHTC8qBLoeR/RyjMfVPE7sAKzqQebjlVVmeqqGo8oHmjZn3bW0LLG32CDQcd1M/4Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kFEuKQoD; arc=none smtp.client-ip=209.85.218.49
+	 In-Reply-To:To:Cc; b=AjK1Kns6TZwoeoqY7xbeED85lhCNQcHDN4j8UmWk/PD4I4Br2Iu4m9Ntkp0RmVYbWel8q+q7+ZhxUZ6vQTv7a3Pp14PGHnEX8anMutXbq58PeUb8mEIUeLsoKjUE0jgK6CZn6zfOsUypA6DJbASynlXSvhB+0sgwkUMuaNQV1O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pZDQkvBH; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kFEuKQoD"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a7a9a369055so106387066b.3
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pZDQkvBH"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a7aa086b077so106623166b.0
         for <imx@lists.linux.dev>; Thu, 08 Aug 2024 07:42:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723128178; x=1723732978; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1723128177; x=1723732977; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g4eCyKnwzwhvgvotyhGHB+vsH3GCQ4YaY3HQS5YaZiA=;
-        b=kFEuKQoD+lmlaeqol83mYG1qALHfRNCP4j93nvwnq3lx8VDUbIm2KNvzUFjATfVgtJ
-         515uZXCm0IdBK8kJ7WKwfTr3yBT0/rvKhVe+LAgbHa29DoqT6eMB/w/wpn0g/Loz+21S
-         WJvrj2ChnTsGP33w8XbYQjQxQY6ajslOqF+VHg3YNixtZnOVWY8Fx/tUly6FvKkQKsqY
-         uCEPiJxKND+/RTYDzXr+qH/qa010ezuBM7ARDNJAB8d7gSTj9efVH55g1wL0rS13fPOh
-         vPsiD3X7u4C821WL6zttZMoTk8UOQlJaaauYW90s0ZCQChPVfh5Sb4EfdT3yshsctxkb
-         Iuig==
+        bh=Lpweh87gijIIJF4cQA1mk27Giq5WUQNyR9nG1a9dx7o=;
+        b=pZDQkvBH0bUB6GYjqr71gnMrfLxgQGl/Ol+gRUMjJcg3gqnXpVA2bj5EfaXu6QUEc3
+         Vir7UpP7xUIn8uiRDfclP2UqZ5geqGTSMQm9wWqfkIals+NfsnGPbs4ovWHE651QKQkJ
+         upteElcjTLXoA1/MuR5uvpbQfZ5AXSgedBekcUZ9owmP4uZj5eqQBcrlnTCKayOqm75O
+         MShIWqCI4cCeprm77CYCOVWR8oXRQrXKN/9hEncZaAHHmQIOttDAw8G7W+PYE4J04sh4
+         y3+yP2S+G0SZb/uJUzeJj0rxmwsN5Eoxt4baxHc0SevulZ1bw6ZokIvE+Qr/ntDcrBRp
+         ICng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723128178; x=1723732978;
+        d=1e100.net; s=20230601; t=1723128177; x=1723732977;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g4eCyKnwzwhvgvotyhGHB+vsH3GCQ4YaY3HQS5YaZiA=;
-        b=FaR0lc5RfmhX6lA2K7O+CnksyHjhEq6XqbuEYFnRu4c5sII304obVgWjCE4GfGPnEQ
-         VlguWAZk+TQYVgYSIqOOw6BV2l4CigToVsm0eWYuZXFNUnR2wG6QvPS1pGWTNTEtkGIN
-         Hb00nyEHsUvHYhnaTZogNj7zB54Hz0ev7LIMVJipdY1wh8zxylzG4g+zOHYFp9chd8Q5
-         R3vJEdrJ9oxjJ8QumRiywqCGrXcl/7xGu7B75VHOQoFS2tmwB1mvjsYuadF+jqiAOXa9
-         /itfyiYok396w1YkDpUwLMtSL6we8MpsPPv3wWjR+KKR4vHH23NEmQNwRguy6oHU8a7Q
-         jLQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnFgsvznoSRjVG+OlpIkTQwciE59qX4Y12yvp8xWW0OUjjSY7ipzFQBsLXHe6sRKdg+E8P5N5v/yZFZZkwFylYYIRE
-X-Gm-Message-State: AOJu0YxdOBM4MBJIfo6KmHmBcgDUFuA3PfUiQiUV4lj7je1+dwH42Rj9
-	a+4xSHHXwb9NCyDvZRV8VR3o6Pd1Tp7ItHN7wvr8keixykFxjJzTiUWWL202UJE=
-X-Google-Smtp-Source: AGHT+IHqbohN5vuse2tZu05wgsB0D/3481cW3wuuO9L9OkxukplhEORcbJpoFFUAYLw6KR5UnB87lg==
-X-Received: by 2002:a17:907:da6:b0:a7a:c106:3640 with SMTP id a640c23a62f3a-a8090eff092mr152706366b.66.1723128177570;
+        bh=Lpweh87gijIIJF4cQA1mk27Giq5WUQNyR9nG1a9dx7o=;
+        b=capwgiZPdLxJwhGMupbyTAA4ceUOrr2wR8G+bxhdoe0GY3idxDPvid9UMzo6zpF+/U
+         XqlEdpZDKE3IsNcGMAnVdbC0Kmb8s+46A8OUWSKHOhFXWlhF0N39PL5QeOZkzjDhyHLQ
+         NQXxu1msGzad9uSiAUVzPsHzsY4QVOIa/r8Xjh5NmcSs0D9LSRQjQsZ4SYPAAoIQSHrC
+         jliSZQReOMNgJjBxi2BchpyhG2dRQv0o5SSZcRhHBXN0eY7LMKh+mz1ZmR/kgwpoBioQ
+         5gwHiTq1ymmLPT3NI4m8L+hCnpXRd4cG3AgS2TnqtaLCu/behu2QWJrqCcl1B5m705ra
+         DAZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXBElJqorxKhHfSyraryctTwgm9fDesxrPF3WzaBIRkrCIJwnry8KWjGj8voTpbQo8ANzpS0MSINzK7qXyPKjPff2b
+X-Gm-Message-State: AOJu0YwX3/E1koBTyor+YrkGmiR+XdBtf2HvkVEaYl+L1k4kJ1v2Sixl
+	7QUG9WwKYgMLf1r+F8wIwRh3UNy0K6ISMkbPcm3insyXnOqRDewg6GNb/Sv7bug=
+X-Google-Smtp-Source: AGHT+IEwPmF6AHiigxgHBV+EJFuVs6w3OGWE4wzZqmI7eDvxo4EYmmOjzDlsuV9hWRsxZBFpbrUimg==
+X-Received: by 2002:a17:907:d59a:b0:a7a:c812:36c8 with SMTP id a640c23a62f3a-a8090c6b841mr159287966b.18.1723128177139;
         Thu, 08 Aug 2024 07:42:57 -0700 (PDT)
 Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9e80e04sm759298966b.175.2024.08.08.07.42.57
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9e80e04sm759298966b.175.2024.08.08.07.42.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 07:42:57 -0700 (PDT)
+        Thu, 08 Aug 2024 07:42:56 -0700 (PDT)
 From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Thu, 08 Aug 2024 15:43:01 +0100
-Subject: [PATCH v6 20/20] clk: imx: drop imx_register_uart_clocks()
+Date: Thu, 08 Aug 2024 15:43:00 +0100
+Subject: [PATCH v6 19/20] clk: imx: imx93: drop call to
+ imx_register_uart_clocks()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240808-gs101-non-essential-clocks-2-v6-20-e91c537acedc@linaro.org>
+Message-Id: <20240808-gs101-non-essential-clocks-2-v6-19-e91c537acedc@linaro.org>
 References: <20240808-gs101-non-essential-clocks-2-v6-0-e91c537acedc@linaro.org>
 In-Reply-To: <20240808-gs101-non-essential-clocks-2-v6-0-e91c537acedc@linaro.org>
 To: Michael Turquette <mturquette@baylibre.com>, 
@@ -84,118 +85,28 @@ Cc: Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
  =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
 X-Mailer: b4 0.13.0
 
-There are no users of this anymore in the tree and the clk core
-implements something similar now, we can remove
-imx_register_uart_clocks().
-
-Do so.
+The clk core now does something similar for us as part of
+of_clk_add_provider() and of_clk_add_hw_provider() and this i.MX
+specific call isn't necessary anymore.
 
 Signed-off-by: André Draszik <andre.draszik@linaro.org>
 ---
- drivers/clk/imx/clk.c | 72 ---------------------------------------------------
- drivers/clk/imx/clk.h |  7 -----
- 2 files changed, 79 deletions(-)
+ drivers/clk/imx/clk-imx93.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
-index df83bd939492..5f998e56a4ed 100644
---- a/drivers/clk/imx/clk.c
-+++ b/drivers/clk/imx/clk.c
-@@ -154,77 +154,5 @@ void imx_cscmr1_fixup(u32 *val)
- 	return;
- }
+diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
+index c6a9bc8ecc1f..9b8006b15d0c 100644
+--- a/drivers/clk/imx/clk-imx93.c
++++ b/drivers/clk/imx/clk-imx93.c
+@@ -343,8 +343,6 @@ static int imx93_clocks_probe(struct platform_device *pdev)
+ 		goto unregister_hws;
+ 	}
  
--#ifndef MODULE
+-	imx_register_uart_clocks();
 -
--static bool imx_keep_uart_clocks;
--static int imx_enabled_uart_clocks;
--static struct clk **imx_uart_clocks;
--
--static int __init imx_keep_uart_clocks_param(char *str)
--{
--	imx_keep_uart_clocks = 1;
--
--	return 0;
--}
--__setup_param("earlycon", imx_keep_uart_earlycon,
--	      imx_keep_uart_clocks_param, 0);
--__setup_param("earlyprintk", imx_keep_uart_earlyprintk,
--	      imx_keep_uart_clocks_param, 0);
--
--void imx_register_uart_clocks(void)
--{
--	unsigned int num __maybe_unused;
--
--	imx_enabled_uart_clocks = 0;
--
--/* i.MX boards use device trees now.  For build tests without CONFIG_OF, do nothing */
--#ifdef CONFIG_OF
--	if (imx_keep_uart_clocks) {
--		int i;
--
--		num = of_clk_get_parent_count(of_stdout);
--		if (!num)
--			return;
--
--		if (!of_stdout)
--			return;
--
--		imx_uart_clocks = kcalloc(num, sizeof(struct clk *), GFP_KERNEL);
--		if (!imx_uart_clocks)
--			return;
--
--		for (i = 0; i < num; i++) {
--			imx_uart_clocks[imx_enabled_uart_clocks] = of_clk_get(of_stdout, i);
--
--			/* Stop if there are no more of_stdout references */
--			if (IS_ERR(imx_uart_clocks[imx_enabled_uart_clocks]))
--				return;
--
--			/* Only enable the clock if it's not NULL */
--			if (imx_uart_clocks[imx_enabled_uart_clocks])
--				clk_prepare_enable(imx_uart_clocks[imx_enabled_uart_clocks++]);
--		}
--	}
--#endif
--}
--
--static int __init imx_clk_disable_uart(void)
--{
--	if (imx_keep_uart_clocks && imx_enabled_uart_clocks) {
--		int i;
--
--		for (i = 0; i < imx_enabled_uart_clocks; i++) {
--			clk_disable_unprepare(imx_uart_clocks[i]);
--			clk_put(imx_uart_clocks[i]);
--		}
--	}
--
--	kfree(imx_uart_clocks);
--
--	return 0;
--}
--late_initcall_sync(imx_clk_disable_uart);
--#endif
--
- MODULE_DESCRIPTION("Common clock support for NXP i.MX SoC family");
- MODULE_LICENSE("GPL v2");
-diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
-index aa5202f284f3..314730f848f7 100644
---- a/drivers/clk/imx/clk.h
-+++ b/drivers/clk/imx/clk.h
-@@ -11,13 +11,6 @@ extern bool mcore_booted;
+ 	return 0;
  
- void imx_check_clocks(struct clk *clks[], unsigned int count);
- void imx_check_clk_hws(struct clk_hw *clks[], unsigned int count);
--#ifndef MODULE
--void imx_register_uart_clocks(void);
--#else
--static inline void imx_register_uart_clocks(void)
--{
--}
--#endif
- void imx_mmdc_mask_handshake(void __iomem *ccm_base, unsigned int chn);
- void imx_unregister_hw_clocks(struct clk_hw *hws[], unsigned int count);
- 
+ unregister_hws:
 
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
