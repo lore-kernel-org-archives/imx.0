@@ -1,103 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0691F18E752;
-	Thu,  8 Aug 2024 16:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6996B18E743
+	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 16:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723134258; cv=none; b=KwdlOU4OmpGYATK7iWQGRhfW6/CW5Decad+33bzY3qDqIEg7OHsl4KwvrLiCfO2Qdavbam0Y2lyYVwV6WqNqfdI4jVGFKb5vnCpRav7Vlnlp574iG7vEyMu/YdyCLlzv5fvPA8vC3vQOAWZAaRGeRyCnakXJx8UCuA6ZFEA6WmM=
+	t=1723134486; cv=none; b=B+xxzq23TWWgcgAX772ake9IEaOg4T2fW0jWhyvnmyhwI7bPM+8zIp6ziJekDepFxwToKBbCSmo/lSCj2381GJ5sAuIeN2+XRAI/ekGxgRXibZDyfCMdJ6rKr77eYHTNxPx306syTUc1X/h6jSbCZEjIxPvKhfERRAyNMVxV28M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723134258; c=relaxed/simple;
-	bh=LbWQSf2pCqgQzt6P1kYq5tJgjgYEyq/E5jxvh5xYMUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XKkFfF1oj287AZOQn5V04tag7nFoFlpoNLR6oAiQdp/xPyNf+TPS2bMooGrkNCek9B8tvolBg4k7if7xAgmz1wX0mETk+zBiOv/qaTKQCn+ZlQKx9tlemMmC0GD7FUo5XMzPOvfl2wD8m7imni4EARCIdnGuPwzun0ifzd1eMUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5biSwfs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723134486; c=relaxed/simple;
+	bh=UK/cETamLxpyFIOG9UuHmjCuwYs5yCzAVU3e8VKJjaU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X7mynLmp0uvbkQ4KYJ88tT8cAt2DhLxQ3aEbeF+0mV+wx83Ju7Jh2TeGcIR3qcW9F+S6OVnU96cvuh6AQIr7hyh6MugdC0OtJplIGK54mKmXQDvaah0/KyjLw3JmOTeoGiT9nXP2QzEXbnN5QHXhTzS21GAj2/8fycbWG++Rmfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6XU9owV; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5biSwfs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110CDC32782;
-	Thu,  8 Aug 2024 16:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723134257;
-	bh=LbWQSf2pCqgQzt6P1kYq5tJgjgYEyq/E5jxvh5xYMUg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U5biSwfsv1UsPpfRXmOPczwEe60uQvDeFR5QlpcCRqx0bGPO/3GVP7Ya9zh18RWb3
-	 v1KDbkAxaGCTUBpbmknrEENObrTtn0ICTamJcd19NnIMl9mHLP/kIlbOG5ynxCFPzn
-	 iennuszdwVpygz2v6EESemjsqM0+1agEX10SNtIjUIn0dIH9yHOge/oYzjDS1BQRst
-	 oviixmWkD786bhGSrRfmOsdBBgkER6xZ9xd0ye2TPi4kxIZMg8psyFEpZAkfI61zw9
-	 SZYvAqp5hfDx+wYvzFo+2hsG33RYJFoD4LfVQjM84CtsLlSEPpV5arXHR+uof7U3cg
-	 paFjyroAbmtIA==
-Date: Thu, 8 Aug 2024 18:24:07 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Hongxing Zhu <hongxing.zhu@nxp.com>, "tj@kernel.org" <tj@kernel.org>,
-	"dlemoal@kernel.org" <dlemoal@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v4 4/6] ata: ahci_imx: Add 32bits DMA limit for i.MX8QM
- AHCI SATA
-Message-ID: <ZrTxJzmWJyH2P0Ba@x1-carbon.lan>
-References: <1721367736-30156-1-git-send-email-hongxing.zhu@nxp.com>
- <1721367736-30156-5-git-send-email-hongxing.zhu@nxp.com>
- <Zp/Uh/mavwo+755Q@x1-carbon.lan>
- <AS8PR04MB867612E75A6C08983F7031528CB32@AS8PR04MB8676.eurprd04.prod.outlook.com>
- <ZrP2lUjTAazBlUVO@x1-carbon.lan>
- <ZrTQJSjxaQglSgmX@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L6XU9owV"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2cdba9c71ebso219855a91.2
+        for <imx@lists.linux.dev>; Thu, 08 Aug 2024 09:28:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723134485; x=1723739285; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h55Ss4x4ropCBofo0X6KlfEBUKmmcmXJv6SUvAqr8VE=;
+        b=L6XU9owVpOfLY/4tXuAq4d9Moh42A89iXGC67Q6HA706E7rlDf4lAcGeKKG65ravvp
+         Cl+cvukksZshhGXwjEOQtxiiCJpXfN8NkqP2zzF6oOZWHai5M7QpJeNmgnNS7zTrXw5/
+         E36B8hPh3eDBn3+SPRej6gZHp7CbF1uBIPMwv40wkTSIrKAy4frsFeTBAqOiZb0bLvHJ
+         rPVDhMwm0UzSt1Gm3OgUZaTfZIKuuX1dW0VxIO9H5JULp1LRY8dQN3sBW7DxXbcS7JNQ
+         agBfoYyTjkVIExa+QSWy8KrknWHLhXCyplS+mXIS5i+TCUHp1dhJg1IB6EzdBjsHydxh
+         B9eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723134485; x=1723739285;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h55Ss4x4ropCBofo0X6KlfEBUKmmcmXJv6SUvAqr8VE=;
+        b=cXiCumvH+Xv5Sh3NTnbxXWxD99kPZqT9T5WarrTTO1LSLq69WT857tcNgEw1r57PI6
+         19VtCbgTVwcewvl1/3HM7rbFDGffetrlCny50iSEQ61j1VcFXvUA24GltMoDRh1IpfIX
+         rTr9uW1NyuVqkpbb3f6YQExD0fAB7Kj7qZ68lJNj91gDMYm5y4A8vVbDlri3yW1KiBRR
+         SLDiE7Y+TEJZxm2iwtQFD8aDbWyjaNzvGT0Y3ukAqe/CZVOSReQkHOPPy6uX03hBr3nA
+         RFSJ7xJmYVQD22d8DiDxEG3PzaOSWk+MH+uCRVeT23cOiIdbM9bebT63kJRz61kMTzFp
+         H7hg==
+X-Forwarded-Encrypted: i=1; AJvYcCV0C41Ky5SJkGTF5vfP+3JY7rVgGrhZ9N/coIen2qdLbw5M1FW/vZNWGddS1SuTTEPvFaQTX5cnx6HunGgFaiy8Fs8z
+X-Gm-Message-State: AOJu0Yy8W4bdu6Y+18sPk/mlBZihyENPthIEz4BhlTInBGwhwjTMXEp4
+	WkwjyqIV6/y8rW4idphgACL9gr+caOPz9FUSh/AemgYKkeAsJQR8
+X-Google-Smtp-Source: AGHT+IGRTgtmm4ljHUK/mCPuCaC5RCAN35nHV+wyRTJR8W+TGHEqgLOwkGi16J1pvUjgVOVGJ/6qLg==
+X-Received: by 2002:a17:90b:3cc8:b0:2ca:63a7:6b9d with SMTP id 98e67ed59e1d1-2d1c3465e32mr1669631a91.3.1723134484560;
+        Thu, 08 Aug 2024 09:28:04 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:d689:1e02:dd79:b72c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d1c9dce50asm1327934a91.54.2024.08.08.09.28.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Aug 2024 09:28:04 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: linus.walleij@linaro.org
+Cc: aisheng.dong@nxp.com,
+	ping.bai@nxp.com,
+	linux-gpio@vger.kernel.org,
+	peng.fan@nxp.com,
+	imx@lists.linux.dev,
+	Fabio Estevam <festevam@denx.de>
+Subject: [PATCH v3] pinctrl: imx: Switch to LATE_SYSTEM_SLEEP_PM_OPS()
+Date: Thu,  8 Aug 2024 13:27:50 -0300
+Message-Id: <20240808162750.244092-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZrTQJSjxaQglSgmX@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 08, 2024 at 10:03:17AM -0400, Frank Li wrote:
-> On Thu, Aug 08, 2024 at 12:35:01AM +0200, Niklas Cassel wrote:
-> > On Fri, Aug 02, 2024 at 02:30:45AM +0000, Hongxing Zhu wrote:
-> > > >
-> > > Hi Niklas:
-> > > I'm so sorry to reply late.
-> > > About the 32bit DMA limitation of i.MX8QM AHCI SATA.
-> > > It's seems that one "dma-ranges" property in the DT can let i.MX8QM SATA
-> > >  works fine in my past days tests without this commit.
-> > > How about drop these driver changes, and add "dma-ranges" for i.MX8QM SATA?
-> > > Thanks a lot for your kindly help.
-> >
-> > Hello Richard,
-> >
-> > did you try my suggested patch above?
-> >
-> >
-> > If you look at dma-ranges:
-> > https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#dma-ranges
-> >
-> > "dma-ranges" property should be used on a bus device node
-> > (such as PCI host bridges).
-> 
-> Yes, 32bit is limited by internal bus farbic, not AHCI controller.
+From: Fabio Estevam <festevam@denx.de>
 
-If the limit is by the interconnect/bus, then the limit will affect all
-devices connected to that bus, i.e. both the PCIe controller and the AHCI
-controller, and using "dma-ranges" in that case is of course correct.
+Replace SET_LATE_SYSTEM_SLEEP_PM_OPS() with its modern
+LATE_SYSTEM_SLEEP_PM_OPS() alternative.
 
-I guess I'm mostly surprised that i.MX8QM doesn't already have this
-property defined in its device tree.
+The combined usage of pm_sleep_ptr() and LATE_SYSTEM_SLEEP_PM_OPS() allows
+the compiler to evaluate if the runtime suspend/resume() functions
+are used at build time or are simply dead code.
 
-Anyway, please send a v5 of this series without the patch in $subject,
-and we should be able to queue it up for 6.12.
+This allows removing the __maybe_unused notation from the runtime
+suspend/resume() functions.
 
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+Changes since v2:
+- Use pm_sleep_ptr() (Peng).
 
-Kind regards,
-Niklas
+ drivers/pinctrl/freescale/pinctrl-imx.c    | 7 +++----
+ drivers/pinctrl/freescale/pinctrl-imx8mq.c | 2 +-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pinctrl/freescale/pinctrl-imx.c b/drivers/pinctrl/freescale/pinctrl-imx.c
+index 9c2680df082c..d05c2c478e79 100644
+--- a/drivers/pinctrl/freescale/pinctrl-imx.c
++++ b/drivers/pinctrl/freescale/pinctrl-imx.c
+@@ -804,14 +804,14 @@ int imx_pinctrl_probe(struct platform_device *pdev,
+ }
+ EXPORT_SYMBOL_GPL(imx_pinctrl_probe);
+ 
+-static int __maybe_unused imx_pinctrl_suspend(struct device *dev)
++static int imx_pinctrl_suspend(struct device *dev)
+ {
+ 	struct imx_pinctrl *ipctl = dev_get_drvdata(dev);
+ 
+ 	return pinctrl_force_sleep(ipctl->pctl);
+ }
+ 
+-static int __maybe_unused imx_pinctrl_resume(struct device *dev)
++static int imx_pinctrl_resume(struct device *dev)
+ {
+ 	struct imx_pinctrl *ipctl = dev_get_drvdata(dev);
+ 
+@@ -819,8 +819,7 @@ static int __maybe_unused imx_pinctrl_resume(struct device *dev)
+ }
+ 
+ const struct dev_pm_ops imx_pinctrl_pm_ops = {
+-	SET_LATE_SYSTEM_SLEEP_PM_OPS(imx_pinctrl_suspend,
+-					imx_pinctrl_resume)
++	LATE_SYSTEM_SLEEP_PM_OPS(imx_pinctrl_suspend, imx_pinctrl_resume)
+ };
+ EXPORT_SYMBOL_GPL(imx_pinctrl_pm_ops);
+ 
+diff --git a/drivers/pinctrl/freescale/pinctrl-imx8mq.c b/drivers/pinctrl/freescale/pinctrl-imx8mq.c
+index 529eebe46298..e59e4fc80193 100644
+--- a/drivers/pinctrl/freescale/pinctrl-imx8mq.c
++++ b/drivers/pinctrl/freescale/pinctrl-imx8mq.c
+@@ -341,7 +341,7 @@ static struct platform_driver imx8mq_pinctrl_driver = {
+ 	.driver = {
+ 		.name = "imx8mq-pinctrl",
+ 		.of_match_table = imx8mq_pinctrl_of_match,
+-		.pm = &imx_pinctrl_pm_ops,
++		.pm = pm_sleep_ptr(&imx_pinctrl_pm_ops),
+ 		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = imx8mq_pinctrl_probe,
+-- 
+2.34.1
+
