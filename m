@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB7F189BBE;
-	Thu,  8 Aug 2024 10:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E60184526;
+	Thu,  8 Aug 2024 10:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723112014; cv=none; b=TavDAhTdx/Pt5K5Ux3qm0Q62fgygyNjkoeSOayJC+DqKIjHSNbe2Z5nZX1PV8zfiAtGTgj0hWqIYbi0IRLfhgIfVynScZ37Z5vo6G13Ruvzqc3s1mSCIzyUWoTsfQIH6w23L7kkEu8XK4XDfZLXcCC3Px8/v/Il5iwQi3pdKRtg=
+	t=1723112827; cv=none; b=Pjpvqx2HjH4Dm6IuiNBDR8K2rCqa9WZPac79BtKW+01TN8U3F1MrC9G6LAiuFLe/3qZlIAlpcXKFU0do66kdg2oP8xjWR9zd/o1jYMJkX4/gRdDADDLv+IEdT4vC36lgnLfvymPGpRdBIyGh91m/5DswwoHlvAjsmSblHmICMN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723112014; c=relaxed/simple;
-	bh=rd+oY/Z+gGFvpzSEbw3nLCjfXoqAu6PJS+M82iYChm8=;
+	s=arc-20240116; t=1723112827; c=relaxed/simple;
+	bh=3N/3C7uYxmY0AxlsVDlje+AyMBX1BRmPAcw6TVCfc0A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cb3x6EsoWbl4jAv9LFU5N3kHcRrmFFceh71AudFdAzdfELFhpUcN6U8rg8WiyiEsXW1PuIep0huKw5bpr/hyno5inbWQrRe2fnSrV9aTQAXOGvHA/0LCs46r0c1XtaYD+XOvp0sa+QGGV/zNywqm9aCrgE+T2LEGMDf40tyJiWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2bY9T/O; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=itkAgQmlZ9Rtqx0ZLORhk141edG+A2rMF+YkBybj/rlUc6YCxrlyyIC10QTUPmGtX3hHXkV2v4fbh4scel4S1xTRL6K61syx0pQLL42SKd6Gu7rnD1np6im4PbImy/m92u5MZ3PWYUFihxC371gxYcpRA6/h2empunh7HA7b8ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WvwpToDv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2bY9T/O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128D9C32782;
-	Thu,  8 Aug 2024 10:13:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WvwpToDv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4670C32782;
+	Thu,  8 Aug 2024 10:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723112013;
-	bh=rd+oY/Z+gGFvpzSEbw3nLCjfXoqAu6PJS+M82iYChm8=;
+	s=k20201202; t=1723112827;
+	bh=3N/3C7uYxmY0AxlsVDlje+AyMBX1BRmPAcw6TVCfc0A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c2bY9T/O/ZSQR6iGaMY2lrietT6YcB9OZbiS2XkJshSNRcnFPMANFoh6ujJ4b5+j7
-	 eLtVwdZ8gplezvKfJZgQbEASmrkTM3Fi/nv7j2FcDC23diYalpfhC2k1Mh5gaLVZfK
-	 0oB2MQyzXclc3vSwKk0SLZe91EPim8nekExu0AAP2BfEPtzCBmzO+UxWLmMOufK/rb
-	 kMR51vpKNUtMkBdQHOxsrMa1WVZKB851XMjGHaUV0xJ/afLa9IBlE9JaSUFSBh08oU
-	 BDXvZ1jNWOw+jQjQQlFZYFafH8i/qwlPA4zr/Lw30kUAp5h0YBk+HIc1UsK2IOHIQC
-	 0xnr5ANOjNYfw==
-Message-ID: <ebc46895-6d46-4c24-ac1f-9aecfd2617d6@kernel.org>
-Date: Thu, 8 Aug 2024 12:13:26 +0200
+	b=WvwpToDvj7MZTbumcrJzlLyqm9KpSwOjVO1rCjfuznApo9Uy+xzl1RgRmSwDVlJ4/
+	 dV8Oa4xlB+ehoWyPEQ1abHkDHVQsOZ5Fm88iO0Ry7S10aUomy1B1sPwY/eI4Bj0Qs3
+	 5ZK+yc0K4rYS/Jx368H4h/k7VW5tiYudoS1HrtBdqfg6KDaad2StwzwGRR3WRBj9sH
+	 PRIH8WxnZM2gHVLh6fbbMrMl48ykEynsDcEY9Dp57Rjexvy6BTjXPGju7xf8m6jNjq
+	 RPWO+Zikh4lVPTF1huZxHiqGl3DnG8WKBuAV4bGqvbwbr7jvmWe7/DwEB3chaEgk6x
+	 2oiPol2yZdT6g==
+Message-ID: <311d8a95-33bf-4549-812a-db52debc7487@kernel.org>
+Date: Thu, 8 Aug 2024 12:27:01 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dts: freescale: imx8mp-phyboard-pollux-rdk: Add console
- UART bootargs
+Subject: Re: [PATCH v2] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
+ enable TPM
 To: Benjamin Hahn <B.Hahn@phytec.de>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -44,9 +44,8 @@ To: Benjamin Hahn <B.Hahn@phytec.de>, Rob Herring <robh@kernel.org>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>, Teresa Remmet <t.remmet@phytec.de>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- upstream@lists.phytec.de
-References: <20240808-add_bootargs_to_devicetree-v1-1-79f7ba50b174@phytec.de>
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240807-imx8mp-tpm-v2-1-d43f1e8f70ac@phytec.de>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,30 +91,48 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240808-add_bootargs_to_devicetree-v1-1-79f7ba50b174@phytec.de>
+In-Reply-To: <20240807-imx8mp-tpm-v2-1-d43f1e8f70ac@phytec.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 08/08/2024 11:34, Benjamin Hahn wrote:
-> Pass the console UART bootargs parameter via the devicetree for booting
-> EFI binaries.
+On 07/08/2024 17:18, Benjamin Hahn wrote:
+> Add support for TPM for phyBOARD Pollux.
 > 
 > Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
 > ---
->  arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts | 1 +
->  1 file changed, 1 insertion(+)
+> Changes in v2:
+> - renamed tpm node to tpm@0
+> - removed num-cs
+> - cleanup pinctrl
+> - Link to v1: https://lore.kernel.org/r/20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de
+> ---
+>  .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 26 ++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 > 
 > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-> index 00a240484c25..552b528fb663 100644
+> index 00a240484c25..0e8200413557 100644
 > --- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
 > +++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-> @@ -16,6 +16,7 @@ / {
->  		     "phytec,imx8mp-phycore-som", "fsl,imx8mp";
+> @@ -103,6 +103,23 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
+>  	};
+>  };
 >  
->  	chosen {
-> +		bootargs = "console=ttymxc0,115200";
+> +/* TPM */
+> +&ecspi1 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_ecspi1>;
+> +	status = "okay";
+> +
+> +	tpm: tpm@0 {
+> +		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+> +		reg = <0>;
+> +		spi-max-frequency = <38000000>;
+> +		status = "okay";
 
-Sorry, but stdout is sufficient. If it is not, something else needs fixing.
+Did you disabled it anywhere?
 
 Best regards,
 Krzysztof
