@@ -1,60 +1,61 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDE118DF6E
-	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 14:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F81A18E76B
+	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 14:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723126282; cv=none; b=Pz8R3FgGcHjoRxlFk4uM6BZj6uuQHLYQw9GKZPdj5gWUH1CljGCAaCyctCGUljoaKKvtV1wEitJfRHQQ6L4aTC3zft5Zs3mj/L0Hbo2PQKwVFaqkh6Cj223lg9+CTVoRUdbSkK47VpyaO3ro4L74ptKxstoFlQLRdBWAgpXIgv0=
+	t=1723126282; cv=none; b=G0660kClDmarpWa/PFC5pVUN6N0TM8xpOwZeOTn0AYoqMTxgYj0jVmlFKfOv6dbl93eGmRF0KfYwjtfe/zKOfZMebpCfU9f4YZm8VBD8/KXWNx6T1MLh/ET1IKguO5qVRPrgF3yDq7JwubQ+nwcsjDCt+qDMOuSDgcuoNBOk6ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723126282; c=relaxed/simple;
-	bh=quFHR8pTn+F+xGctBH9cf3497p01fCYxd5i3Wn9fVPM=;
+	bh=F85JnWhsga2fKjX8ofqy8VS4HE5CVI70avGh7w8r0jU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AcpEDwlOggYg0UZQY+nm4n6jqXIiJ1mAgzCWwzSQXPFv2fLvgGcKRGyPpzXA9SCyG5bvFS8U52opdbytk7NPf0l6n3JC6NfX1qARoiGptVMRAlcBpolky/r3uwBmkmEmBq+zfuFSt0ThflLP11GmYtOdyFaaLDSoY1Ty2MUv+Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=z8CvQSGZ; arc=none smtp.client-ip=209.85.208.47
+	 In-Reply-To:To:Cc; b=A47fwieZY5mvjXD2TidXU11TqCwDd48RhKyzesfNaUTcR81NWX86q6D1NNKV2X73rdcpnMiyA806xE26/dpecesPe/YM1fQS1z6omIJlXV2sjSAAnkPKuAxOy+8EayRrZrsOrQGg8urPNVMkMTb5RMI6W2EMVSV+TP5lD01ZufU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=laPsV/JA; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="z8CvQSGZ"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5b9d48d1456so1618680a12.1
-        for <imx@lists.linux.dev>; Thu, 08 Aug 2024 07:11:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="laPsV/JA"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5a309d1a788so1021292a12.3
+        for <imx@lists.linux.dev>; Thu, 08 Aug 2024 07:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723126277; x=1723731077; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1723126279; x=1723731079; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UaLjrFsw9Zi0L/EdvO9DIKyYpEUrx6lEBXaptLR+VmU=;
-        b=z8CvQSGZAWq3+pgMyTlBZpz/omXe71HgEBtQbe8P7+2Kv9bcAOBUfiVXjDiMhxYi5N
-         BKnMD4JcDkxNyI0MII5SYK5KBQvTlKUA3BG2+Fw6w7FcwSLZyQdTs/mkkPL4nI+aaUNk
-         CyQL6PWtYov7qrcjCtRINPN+L0uxUUpfQ7B0rWFvSKJfk60IHilhf/MdN7x/9rp/Ns9R
-         BaiQcfH2jbmHOaERYkh14usnyEtyNlTmbhfbE46tgkkDDP79BoycVW7vZjSvb/JJuw8q
-         GDK//gt2XzRMursjmdG3LLT7VfU5jdaN5XyM301CDawYt5d2IpxGZo/nihzq+5yhEh/6
-         ZuUA==
+        bh=CR2/Ipvc98fbygDSdyGUwyP4a+VA03w16ijfH8oQ9sU=;
+        b=laPsV/JAPVVpJ/rxn9eZ7bSCehJbxUo8AXKuPUhqidooKJeBj7uff9JXsPOhzwTdJm
+         v9lXKCIvZqGdAaWhlHS0qgckQMYM29aCr4jEGbnegihc69rJ3zrClGEzpO4m7fpJkpff
+         bUKS+lFon2RF2Sp7Y5pJctRVZcOss2AiKoIcWsh8Chrg2faz4cBKVlxe0ct4kO6R081S
+         iqoLmdUsYGMWOelnJiOdj+mWL7cmHrRroCaVPjl9P1S7NIpVBYvEObhAH8oxa7fI7YWN
+         gOcQ81gN/HOms8O+KLMUrWpDYyPRNmHF8iPuq81RF/M3i6pT/qu87IcozrrM1zyOHm8C
+         ewVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723126277; x=1723731077;
+        d=1e100.net; s=20230601; t=1723126279; x=1723731079;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UaLjrFsw9Zi0L/EdvO9DIKyYpEUrx6lEBXaptLR+VmU=;
-        b=RDBrHfJQ8smPN+fbl2QOaKzR4Ijz7ZQQbVrpkMrsBAoX85MAauI3zEv2w+PcvaAXoJ
-         E73qgazTE2GLcjSTj4GfxLSOKLJrbxLCsL7v6Fs5UQt0lvo5g0P7nAYNIZ46dHpaKt16
-         xv/T+gOE5heZsx/+N0Tsn4dJAfx9Szvwqq1+ekS60QYR1e5vVs/+Tr/0/vqmltq0FFaI
-         quyAotoIgVN0AWEfss7UI9j//7ODTAkXzDwFE1IOXx4YVgaeH2UxRpwTEKjj9r8luISe
-         DncAMGI1zwLGpKE9n4X8otX0lBXFY9hzQPZBfUXqZMSjzX+USSF5l3uyzvCqIxtK18Tg
-         S7/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWGE5UcFo4SZurlUwT5pP76wWOTnJrW3NRfj7rRmuYM2HraXC6NNCO0IrUeB+xJeoT5pKU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzglvMyO1NkXf2hNq/EMoefqVi5O65l4MKXTkublga/8Z8EfFVP
-	yJhm9jkBOxIgQvquNVSH9lSdRkf2EOvTRc8t0UJtyGQn093KVWUdkbAIzvaioKQ=
-X-Google-Smtp-Source: AGHT+IF2Z+gOOpOJVUcuLSGq7/jhh5CJfmmh1hSytACnK5GYE20eb1XtkmCCnKm8aJbOYVVy6x+hag==
-X-Received: by 2002:a05:6402:3585:b0:5a2:bfd1:b892 with SMTP id 4fb4d7f45d1cf-5bbb3c41273mr1981407a12.11.1723126277143;
-        Thu, 08 Aug 2024 07:11:17 -0700 (PDT)
+        bh=CR2/Ipvc98fbygDSdyGUwyP4a+VA03w16ijfH8oQ9sU=;
+        b=exQafNEz0kp+WrJL/+aybfMVbv/QE9t8vQrYvLhGvYq2K9Bao8k18IxCZgtItBgnbO
+         Wkxm1t8l4TaHD+vZZVE1LwxNy1m3eQzg8mRbP1haLvRyQ9FgPfucuqCsjzNsqJiKZuON
+         LriEJD+SexbEdRuBYsE2VC3HqAF6t5oHGtRYT8MFnFsnQr+CGQOYtNOE/FcTT5Jnh6wt
+         FBVx9JvD2aIq6os2zDTo9BJ8WRA8eCCMjWFhPToFHMibXyCnIJaEUkds2Wujr6ahTrep
+         Y/JrgLLg/hblypa1wl6lfKA6zH+0SPGKmYZ7R5k1V5Jbs4uZjQw1O3vo/KCxkJ09g7Jx
+         bf1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWBP0EwVOp7+Jg90UZeGs4/h+JYQ5j4WNRptSR18cXDevhceqgca1UBSYgxNyzLFIcUil0e1tJt4adbe92vPpiFtUcT
+X-Gm-Message-State: AOJu0Yy3JcEqfXJAdfdu51TRhDlvracJcBIT2Wkq4YocoqQcEkT+Lm/0
+	MAg13Yw+a+pEXH50Y4JyyUtSDYRfuLwtqoQZ79fxSMxZnD6R/f2oZqSOyot6PHc=
+X-Google-Smtp-Source: AGHT+IGQvljBuJxnonICHpQDY/uQkKK/KV1ck0021rT8j6xJghx/FmB4/M4YPS1UIlFmnkBzuBf0oQ==
+X-Received: by 2002:a05:6402:208a:b0:5a1:6c50:a35 with SMTP id 4fb4d7f45d1cf-5bbb2411412mr1631283a12.37.1723126278581;
+        Thu, 08 Aug 2024 07:11:18 -0700 (PDT)
 Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bbb2c29f79sm671761a12.33.2024.08.08.07.11.16
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bbb2c29f79sm671761a12.33.2024.08.08.07.11.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 07:11:16 -0700 (PDT)
+        Thu, 08 Aug 2024 07:11:18 -0700 (PDT)
 From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Thu, 08 Aug 2024 15:11:15 +0100
-Subject: [PATCH v5 01/20] clk: bump stdout clock usage for earlycon
+Date: Thu, 08 Aug 2024 15:11:18 +0100
+Subject: [PATCH v5 04/20] clk: imx: imx27: drop call to
+ imx_register_uart_clocks()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240808-gs101-non-essential-clocks-2-v5-1-11cffef0634e@linaro.org>
+Message-Id: <20240808-gs101-non-essential-clocks-2-v5-4-11cffef0634e@linaro.org>
 References: <20240808-gs101-non-essential-clocks-2-v5-0-11cffef0634e@linaro.org>
 In-Reply-To: <20240808-gs101-non-essential-clocks-2-v5-0-11cffef0634e@linaro.org>
 To: Michael Turquette <mturquette@baylibre.com>, 
@@ -84,198 +85,28 @@ Cc: Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
  =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
 X-Mailer: b4 0.13.0
 
-On some platforms, earlycon depends on the bootloader setup stdout
-clocks being retained. In some cases stdout UART clocks (or their
-parents) can get disabled during loading of other drivers (e.g. i2c)
-causing earlycon to stop to work sometime into the boot, halting the
-whole system.
-
-Since there are at least two platforms where that is the case, i.MX and
-the Exynos-derivative gs101, this patch adds some logic to the clk core
-to detect these clocks if earlycon is enabled, to bump their usage
-count as part of of_clk_add_hw_provider() and of_clk_add_provider(),
-and to release them again at the end of init.
-
-This way code duplication in affected platforms can be avoided.
-
-The general idea is based on similar code in the i.MX clock driver, but
-this here is a bit more generic as in general (e.g. on gs101) clocks
-can come from various different clock units (driver instances) and
-therefore it can be necessary to run this code multiple times until all
-required stdout clocks have probed.
+The clk core now does something similar for us as part of
+of_clk_add_provider() and of_clk_add_hw_provider() and this i.MX
+specific call isn't necessary anymore.
 
 Signed-off-by: André Draszik <andre.draszik@linaro.org>
 ---
- drivers/clk/clk.c               | 129 ++++++++++++++++++++++++++++++++++++++++
- drivers/clk/samsung/clk-gs101.c |   1 +
- 2 files changed, 130 insertions(+)
+ drivers/clk/imx/clk-imx27.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 7264cf6165ce..03c5d80e833c 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4923,6 +4923,131 @@ static void clk_core_reparent_orphans(void)
- 	clk_prepare_unlock();
+diff --git a/drivers/clk/imx/clk-imx27.c b/drivers/clk/imx/clk-imx27.c
+index 99618ded0939..53018e80ca51 100644
+--- a/drivers/clk/imx/clk-imx27.c
++++ b/drivers/clk/imx/clk-imx27.c
+@@ -164,8 +164,6 @@ static void __init _mx27_clocks_init(unsigned long fref)
+ 
+ 	clk_prepare_enable(clk[IMX27_CLK_EMI_AHB_GATE]);
+ 
+-	imx_register_uart_clocks();
+-
+ 	imx_print_silicon_rev("i.MX27", mx27_revision());
  }
  
-+/**
-+ * struct of_clk_stdout_clks - holds data that is required for handling extra
-+ * references to stdout clocks during early boot.
-+ *
-+ * On some platforms, earlycon depends on the bootloader setup stdout clocks
-+ * being retained. In some cases stdout UART clocks (or their parents) can get
-+ * disabled during loading of other drivers (e.g. i2c) causing earlycon to stop
-+ * to work sometime into the boot, halting the system.
-+ *
-+ * Having logic to detect these clocks if earlycon is enabled helps with those
-+ * cases by bumping their usage count during init. The extra usage count is
-+ * later dropped at the end of init.
-+ *
-+ * @bump_refs: whether or not to add the extra stdout clock references
-+ * @lock: mutex protecting access
-+ * @have_all: whether or not we have acquired all clocks, to handle cases of
-+ *            clocks coming from different drivers / instances
-+ * @clks: clocks associated with stdout
-+ * @n_clks: number of clocks associated with stdout
-+ */
-+static struct of_clk_stdout_clks {
-+	bool bump_refs;
-+
-+	struct mutex lock;
-+	bool have_all;
-+	struct clk **clks;
-+	size_t n_clks;
-+} of_clk_stdout_clks = {
-+	.lock = __MUTEX_INITIALIZER(of_clk_stdout_clks.lock),
-+};
-+
-+static int __init of_clk_bump_stdout_clocks_param(char *str)
-+{
-+	of_clk_stdout_clks.bump_refs = true;
-+	return 0;
-+}
-+__setup("earlycon", of_clk_bump_stdout_clocks_param);
-+__setup_param("earlyprintk", of_clk_keep_stdout_clocks_earlyprintk,
-+	      of_clk_bump_stdout_clocks_param, 0);
-+
-+static void of_clk_bump_stdout_clocks(void)
-+{
-+	size_t n_clks;
-+
-+	/*
-+	 * We only need to run this code if required to do so and only ever
-+	 * before late initcalls have run. Otherwise it'd be impossible to know
-+	 * when to drop the extra clock references again.
-+	 *
-+	 * This generally means that this only works if on affected platforms
-+	 * the clock drivers have been built-in (as opposed to being modules).
-+	 */
-+	if (!of_clk_stdout_clks.bump_refs)
-+		return;
-+
-+	n_clks = of_clk_get_parent_count(of_stdout);
-+	if (!n_clks || !of_stdout)
-+		return;
-+
-+	mutex_lock(&of_clk_stdout_clks.lock);
-+
-+	/*
-+	 * We only need to keep trying if we have not succeeded previously,
-+	 * i.e. if not all required clocks were ready during previous attempts.
-+	 */
-+	if (of_clk_stdout_clks.have_all)
-+		goto out_unlock;
-+
-+	if (!of_clk_stdout_clks.clks) {
-+		of_clk_stdout_clks.n_clks = n_clks;
-+
-+		of_clk_stdout_clks.clks = kcalloc(of_clk_stdout_clks.n_clks,
-+					      sizeof(*of_clk_stdout_clks.clks),
-+					      GFP_KERNEL);
-+		if (!of_clk_stdout_clks.clks)
-+			goto out_unlock;
-+	}
-+
-+	/* assume that this time we'll be able to grab all required clocks */
-+	of_clk_stdout_clks.have_all = true;
-+	for (size_t i = 0; i < n_clks; ++i) {
-+		struct clk *clk;
-+
-+		/* we might have grabbed this clock in a previous attempt */
-+		if (of_clk_stdout_clks.clks[i])
-+			continue;
-+
-+		clk = of_clk_get(of_stdout, i);
-+		if (IS_ERR(clk)) {
-+			/* retry next time if clock has not probed yet */
-+			of_clk_stdout_clks.have_all = false;
-+			continue;
-+		}
-+
-+		if (clk_prepare_enable(clk)) {
-+			clk_put(clk);
-+			continue;
-+		}
-+		of_clk_stdout_clks.clks[i] = clk;
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&of_clk_stdout_clks.lock);
-+}
-+
-+static int __init of_clk_drop_stdout_clocks(void)
-+{
-+	for (size_t i = 0; i < of_clk_stdout_clks.n_clks; ++i) {
-+		clk_disable_unprepare(of_clk_stdout_clks.clks[i]);
-+		clk_put(of_clk_stdout_clks.clks[i]);
-+	}
-+
-+	kfree(of_clk_stdout_clks.clks);
-+
-+	/*
-+	 * Do not try to acquire stdout clocks after late initcalls, e.g.
-+	 * during further module loading, as we then wouldn't have a way to
-+	 * drop the references (and associated allocations) ever again.
-+	 */
-+	of_clk_stdout_clks.bump_refs = false;
-+
-+	return 0;
-+}
-+late_initcall_sync(of_clk_drop_stdout_clocks);
-+
- /**
-  * struct of_clk_provider - Clock provider registration structure
-  * @link: Entry in global list of clock providers
-@@ -5031,6 +5156,8 @@ int of_clk_add_provider(struct device_node *np,
- 
- 	fwnode_dev_initialized(&np->fwnode, true);
- 
-+	of_clk_bump_stdout_clocks();
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(of_clk_add_provider);
-@@ -5073,6 +5200,8 @@ int of_clk_add_hw_provider(struct device_node *np,
- 
- 	fwnode_dev_initialized(&np->fwnode, true);
- 
-+	of_clk_bump_stdout_clocks();
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(of_clk_add_hw_provider);
-diff --git a/drivers/clk/samsung/clk-gs101.c b/drivers/clk/samsung/clk-gs101.c
-index 85098c61c15e..1759eb23263b 100644
---- a/drivers/clk/samsung/clk-gs101.c
-+++ b/drivers/clk/samsung/clk-gs101.c
-@@ -9,6 +9,7 @@
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/of.h>
-+#include <linux/of_clk.h>
- #include <linux/platform_device.h>
- 
- #include <dt-bindings/clock/google,gs101.h>
 
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
