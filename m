@@ -1,35 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2B4145B26;
-	Thu,  8 Aug 2024 03:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3948B9479
+	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 04:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723087845; cv=none; b=fkyoKyjx6bEYlhBhFEduJQQTUaJuYNvWAIn7YRgcnoRK/MS0/46MY+8eB75h9UWbMngXB72RropN/FS+BJHsbg2RIzIOnNQFVrrCKdbSMRiz6v3rZ1Z1i5mYJ4yIK9bj6h0HXg09l2RD0z8AfWs3chd/YSusuEHKs5emsm5PoeA=
+	t=1723091361; cv=none; b=T3HyXeHmxoIs8gLoaf/8dF0lWSKRUWRdRSRPvnEq/LciqAoBkcZyg45RmG7MVG6eCJSY+mefP4+/OT8iAT1/2sxQVeG0WAUE0GwMfd4B42dOh0hAIO0ukWpQLIhfgATzOf6LumET3yGMkjVNa44sQV/O6x94rjEF/B+9dF4WEHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723087845; c=relaxed/simple;
-	bh=IORmMplDJEWb08I15uz80btVIKU0/cstZc4wUs5vtxE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pgVj3lP1ejvF0t+NdgNdsjetakl3H3BkngFydhd0psb38F/gTR/BPIRNgdxp/fdh42c8kbpJdRasZw481xVAaDEuSYvjJyHxCNff5ERpFMofrsVob/Y4Z8dfi2VjLYFE/kllkbFwA7iNRjEpDMGAB57fqfinbLvfT/7L0GgCd3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYSUE26L; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYSUE26L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EB0C4AF14;
-	Thu,  8 Aug 2024 03:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723087845;
-	bh=IORmMplDJEWb08I15uz80btVIKU0/cstZc4wUs5vtxE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iYSUE26LC9buY6kc4f7UXSXApPDfPODhu8WOx1IRaAPcRGV89zjUML8xwTLr5/N1A
-	 sEI3xFYuO+b6/IaZ4CTDV+6rW5IGIyGRkiT7HmelmfHz++ObWz7ICNQR+qiY79OWTB
-	 RMpgFFn5ndya4Z1an5WJuhqMqx2Y8vj5VXjtBUp9wpMl+1jZK7qsOu9SXrkDeFK/qW
-	 D0JSnqMBjRTGaRvRU+J61w7hHUAyRCPUWL8AknhPFLM+4wSp1ZREkxP+4fK/AMXhv0
-	 w/y1zdWO7ADANmnHrl1u8IW1zdWI92V3PV9A0039nVvfrfPnRilU2+zt4P4OT6GMTj
-	 gX+m4+7fpNByw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FDA3822D3B;
-	Thu,  8 Aug 2024 03:30:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1723091361; c=relaxed/simple;
+	bh=z0h5RZUv4Ugp2MrhgSqmn8OTk4rVenDC+5+77ckWmRA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=okbQMybwxV8OgnZ+nK/nbdRAL2uuSmHaMZAlv+PRiXdOJYbLxntletcx6PQYOu0MH8R8DqZsvm2B9OJR2wfl4UrMQLj5ZiDPT1K9XqMJGOytBRogOADcTkTrA292rcngIwoRwWAqYfw39c8GoxG6WweIYUDxRRx/mRixwXmDSP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAA3PfmLSbRmyYNeBA--.65294S2;
+	Thu, 08 Aug 2024 12:29:03 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: ulf.hansson@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	geert+renesas@glider.be,
+	arnd@arndb.de,
+	peng.fan@nxp.com,
+	make24@iscas.ac.cn,
+	u.kleine-koenig@pengutronix.de,
+	marex@denx.de,
+	benjamin.gaignard@collabora.com
+Cc: linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
+Date: Thu,  8 Aug 2024 12:28:58 +0800
+Message-Id: <20240808042858.2768309-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,43 +45,55 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: fec: Switch to RUNTIME/SYSTEM_SLEEP_PM_OPS()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172308784375.2759733.7700541552729739768.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Aug 2024 03:30:43 +0000
-References: <20240806021628.2524089-1-festevam@gmail.com>
-In-Reply-To: <20240806021628.2524089-1-festevam@gmail.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: kuba@kernel.org, wei.fang@nxp.com, shenwei.wang@nxp.com,
- xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, festevam@denx.de
+X-CM-TRANSID:rQCowAA3PfmLSbRmyYNeBA--.65294S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CrWrJryDGF48AFyDAF48tFb_yoW8Gr47pF
+	4DXFyYyrWIkr12yF1jgF1jva45Xa42kw17Gwn5Gas3X3y5JFyqka4fWw1v9r15AFWxXa4Y
+	ya12yr15C3WruFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20x
+	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
+	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIx
+	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
+	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
+	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRNAwsUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Hello:
+Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
+IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev 
+is either error or NULL.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+In case a power domain attached by dev_pm_domain_attach_by_name() is not
+described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
+then used, which leads to NULL pointer dereference.
 
-On Mon,  5 Aug 2024 23:16:28 -0300 you wrote:
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> Replace SET_RUNTIME_PM_OPS()/SET SYSTEM_SLEEP_PM_OPS() with their modern
-> RUNTIME_PM_OPS() and SYSTEM_SLEEP_PM_OPS() alternatives.
-> 
-> The combined usage of pm_ptr() and RUNTIME_PM_OPS/SYSTEM_SLEEP_PM_OPS()
-> allows the compiler to evaluate if the runtime suspend/resume() functions
-> are used at build time or are simply dead code.
-> 
-> [...]
+Found by code review.
 
-Here is the summary with links:
-  - [net-next] net: fec: Switch to RUNTIME/SYSTEM_SLEEP_PM_OPS()
-    https://git.kernel.org/netdev/net-next/c/de6c7b9ada33
+Cc: stable@vger.kernel.org
+Fixes: 1a1da28544fd ("soc: imx: imx8m-blk-ctrl: Defer probe if 'bus' genpd is not yet ready")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index ca942d7929c2..d46fb5387148 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -212,7 +212,7 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	bc->bus_power_dev = dev_pm_domain_attach_by_name(dev, "bus");
+-	if (IS_ERR(bc->bus_power_dev)) {
++	if (IS_ERR_OR_NULL(bc->bus_power_dev)) {
+ 		if (PTR_ERR(bc->bus_power_dev) == -ENODEV)
+ 			return dev_err_probe(dev, -EPROBE_DEFER,
+ 					     "failed to attach power domain \"bus\"\n");
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
