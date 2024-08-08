@@ -1,42 +1,33 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868E3189BAF
-	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 09:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB7F189BBE;
+	Thu,  8 Aug 2024 10:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723110582; cv=none; b=e1FPsPu6rkC+SHkkb6b2qmsnpD3pgKwFlVqAoHK3zK4LXSiW2MotHDyE7pkxEVipdzj7M9TnE0SNUoirdlz8EW9aLdHXogSxFbHqcpiLv08AgKzSDE9cCI6YZP4iS146lzBQwVm4EsBruMu9DCN7h5707oSPLf/rfGkr9fUSbpc=
+	t=1723112014; cv=none; b=TavDAhTdx/Pt5K5Ux3qm0Q62fgygyNjkoeSOayJC+DqKIjHSNbe2Z5nZX1PV8zfiAtGTgj0hWqIYbi0IRLfhgIfVynScZ37Z5vo6G13Ruvzqc3s1mSCIzyUWoTsfQIH6w23L7kkEu8XK4XDfZLXcCC3Px8/v/Il5iwQi3pdKRtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723110582; c=relaxed/simple;
-	bh=5HH0jUt+vlEiSEtkkhsfiu8TgAtJzkrWtdL9zWUfeiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hXhFMHZYJuP0rH9jou4eYBEI3QxEoIL5ZXC5NVrrduMk5Ht2sW+IhWGNH1isYlwhxvhiksb1lqkNqLUBBWNQAQfjvnjgqRrRwIFV4oSlhTNI6mdgzmMl3wzPCCDsVkkJzZQu6ih8mknmE2913dHz93X80Hu/ci/KBMPoMxOYCIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=X9L6VYOo; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1723112014; c=relaxed/simple;
+	bh=rd+oY/Z+gGFvpzSEbw3nLCjfXoqAu6PJS+M82iYChm8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cb3x6EsoWbl4jAv9LFU5N3kHcRrmFFceh71AudFdAzdfELFhpUcN6U8rg8WiyiEsXW1PuIep0huKw5bpr/hyno5inbWQrRe2fnSrV9aTQAXOGvHA/0LCs46r0c1XtaYD+XOvp0sa+QGGV/zNywqm9aCrgE+T2LEGMDf40tyJiWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2bY9T/O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="X9L6VYOo"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id ABEFCA02FA;
-	Thu,  8 Aug 2024 11:49:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=HWgcu+nMnNfMlqErSxKS
-	w+bBbNvWeyDcFJmtJSZ09OM=; b=X9L6VYOoifxEl0w25j90b5+e0aZnnGBrWMeM
-	CssyWqVmzsy139dNo7l4zUHb+lkx9FM7rt/OLX36H91SXSsW+zAV5etCo0fEJbll
-	7eF4uN3NFcRWROTNFw9LAr3wmi3NutSiDlh0l920jNrU+Lt/Tnw7Xp/x/NEH++u5
-	RMBjjC+J++u2MFVSAZt9p1UBUlRaMEwefnRMK+IKIuydDpuA7eSh6aHnDZgxz/VZ
-	QGvnv/hUV6Kxr1eBzkclom7FQHogY559IJImZmOBLGSRV/3tNS8oJMhscvItgqD8
-	vzdOLSN7mMlTdHqewmqpeSwwls/sZBwwS+x/16AfUuce6NM7Hihs55PdfkgiHoD8
-	zNAsbwQt/3HMbU6VuY1EsDFIW/tWnLR+frm/C6v0qEYp7LJ7qlKikaDCo4lfSz+y
-	mV5G1tMdK/o3a4lZa5jLqEiZySWZfyiSdkBAKADSLdKc8HgXaRO/okrBJIwPGyao
-	9NMoMsKzuC62WCUJFvCGScrkeZYfV0vB8y5zhVzt8uQhVupWcA6v6a87Dko7/l0y
-	GXDR3aTuG+0d8hFoDC84oT8H/h/I3J7cplmv5PqnGBnacFhdpQ6ztP8FiETbU3le
-	D8ujiOp/yqmRU1kVXMFIjBJ7f52yeksHRmxYnzx9chs2RSvUXHiA0Rw6YbAslv2x
-	1j0hn2g=
-Message-ID: <449a855a-e3e2-4eed-b8bd-ce64d6f66788@prolan.hu>
-Date: Thu, 8 Aug 2024 11:49:29 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2bY9T/O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128D9C32782;
+	Thu,  8 Aug 2024 10:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723112013;
+	bh=rd+oY/Z+gGFvpzSEbw3nLCjfXoqAu6PJS+M82iYChm8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c2bY9T/O/ZSQR6iGaMY2lrietT6YcB9OZbiS2XkJshSNRcnFPMANFoh6ujJ4b5+j7
+	 eLtVwdZ8gplezvKfJZgQbEASmrkTM3Fi/nv7j2FcDC23diYalpfhC2k1Mh5gaLVZfK
+	 0oB2MQyzXclc3vSwKk0SLZe91EPim8nekExu0AAP2BfEPtzCBmzO+UxWLmMOufK/rb
+	 kMR51vpKNUtMkBdQHOxsrMa1WVZKB851XMjGHaUV0xJ/afLa9IBlE9JaSUFSBh08oU
+	 BDXvZ1jNWOw+jQjQQlFZYFafH8i/qwlPA4zr/Lw30kUAp5h0YBk+HIc1UsK2IOHIQC
+	 0xnr5ANOjNYfw==
+Message-ID: <ebc46895-6d46-4c24-ac1f-9aecfd2617d6@kernel.org>
+Date: Thu, 8 Aug 2024 12:13:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,59 +35,88 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH resubmit net 1/2] net: fec: Forward-declare
- `fec_ptp_read()`
-To: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>
-CC: Jakub Kicinski <kuba@kernel.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Frank Li
-	<Frank.li@nxp.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
-References: <20240807082918.2558282-1-csokas.bence@prolan.hu>
- <1d87cbd1-846c-4a43-9dd3-2238670d650e@lunn.ch>
- <20240808094116.GG3006561@kernel.org>
+Subject: Re: [PATCH] dts: freescale: imx8mp-phyboard-pollux-rdk: Add console
+ UART bootargs
+To: Benjamin Hahn <B.Hahn@phytec.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Teresa Remmet <t.remmet@phytec.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de
+References: <20240808-add_bootargs_to_devicetree-v1-1-79f7ba50b174@phytec.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20240808094116.GG3006561@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94854617767
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240808-add_bootargs_to_devicetree-v1-1-79f7ba50b174@phytec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 8/8/24 11:41, Simon Horman wrote:
-> On Wed, Aug 07, 2024 at 03:53:17PM +0200, Andrew Lunn wrote:
->> On Wed, Aug 07, 2024 at 10:29:17AM +0200, Csókás, Bence wrote:
->>> This function is used in `fec_ptp_enable_pps()` through
->>> struct cyclecounter read(). Forward declarations make
->>> it clearer, what's happening.
->>
->> In general, forward declarations are not liked. It is better to move
->> the code to before it is used.
->>
->> Since this is a minimal fix for stable, lets allow it. But please wait
->> for net to be merged into net-next, and submit a cleanup patch which
->> does move fec_ptp_read() earlier and remove the forward declaration.
+On 08/08/2024 11:34, Benjamin Hahn wrote:
+> Pass the console UART bootargs parameter via the devicetree for booting
+> EFI binaries.
 > 
-> That makes sense.
+> Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> However, is this a fix?
-> It's not clear to me that it is.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+> index 00a240484c25..552b528fb663 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+> @@ -16,6 +16,7 @@ / {
+>  		     "phytec,imx8mp-phycore-som", "fsl,imx8mp";
+>  
+>  	chosen {
+> +		bootargs = "console=ttymxc0,115200";
 
-Well, it's not clear to me either what constitutes as a "fix" versus 
-"just a cleanup". But, whatever floats Andrew's boat...
+Sorry, but stdout is sufficient. If it is not, something else needs fixing.
 
-> And if it is a pre-requisite for patch 2/2,
-> well that doesn't seem to be a fix.
-
-It indeed is.
-
-> So in all, I'm somewhat confused.
-> And wonder if all changes can go via net-next.
-
-That's probably what will be happening.
-
-Bence
+Best regards,
+Krzysztof
 
