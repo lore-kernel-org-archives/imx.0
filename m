@@ -1,122 +1,222 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9664D18EFCA
-	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 14:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B58418E756
+	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 14:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723128117; cv=none; b=nNMl/LFcelpkzNbwSjkkvt51YqEIx15vn5ZLFBmo/8C2VzjUW2rtZPFMzNl04Fx14fJsHlKbP+o+altKBoKrgc0hm1TyrdEgIHR660Y9q64RD0gU2M+s6XspD431+hr+1mUKe7DSTwFISQ33VbB1mdAS2fPLibnxHh0bZh4xPuU=
+	t=1723128171; cv=none; b=GW5KLK/kVPfgH1xEHZBV3ygMD8t3HFZ0U/6PWQ1UAQwwfV6qazn6HGnIpC2kgWOvMFMGg+NzLCBC85pCqnno3TdRzhol8i1oUyqIYS4UOPQjRHwH5bhtLMy02Abw+mlbiVldRvTAEA4UIjb+1bg1Z3aQeThrTUnLk8s1u3i7PRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723128117; c=relaxed/simple;
-	bh=3Zm++0EiwaZDCPUMCRwmX3AigDh0NbUA1FXFLoV1300=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QQ5qJSZdw6XPnuNELW4k2USVQ9suGtiNqFIROsYeNXNrZ/s2UvHMKEwLIsZvsDv7QCX9cMKdmszkMsnrX7SXxTb6+K3Lz1EEOPgjth1pc9pbwlpU4DHzIXnsciiMB9p49zV4/8TaFTyHfgH1fqmRW6iamw3DlXhbwN92ZE7Ynns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mCA5S+l8; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1723128171; c=relaxed/simple;
+	bh=9nTuNa+ZoP53IinLlZDXlzgyFHvBbNjGNsuxv0yinBM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VEi/3cydTqRTpfepXCdCH0X1vtN4kuzBFRavuf1eb42dm+QWAV3rVMuBDrjhJAdj7yDhH+9pnDm53xQx6zRGYkP+vI34dp6vcQQo0zA+BrbXoVtceC5k6pRlk+JJolUFYihFzUdXwEWeh8vBmySpvGLVrhiX57AGp87v1l2Ga7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XsWke7Rj; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mCA5S+l8"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-428ec6c190eso7920695e9.1
-        for <imx@lists.linux.dev>; Thu, 08 Aug 2024 07:41:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XsWke7Rj"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7aabb71bb2so115276366b.2
+        for <imx@lists.linux.dev>; Thu, 08 Aug 2024 07:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723128114; x=1723732914; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3Zm++0EiwaZDCPUMCRwmX3AigDh0NbUA1FXFLoV1300=;
-        b=mCA5S+l8Hj/D/S5We6ZCb+bcepU5/uvX9k063wvED36/rYcjveGOuUsrYJufynjRdg
-         rRnQdrttVkXRY4EgKhlzIpM7ROQqomEMTbQyAqNo6uO1lNNM+bwueVEIQliq9FtmCx1a
-         mwuwcKJlshgeqhuvedwqYDcz4X4gQhL8tT9+ndbZq/7Ls8MlYA4Mp7U1UHVn7RF9NN/H
-         Pytx/5qSrK2xuckvlyqOXqutxELTuStg0wgOmGjB324d1nZk3OdxyddY2T4ouyXWCORa
-         d46LDGp0Eg20OIw5M9wRttmk+5PH78ZfVJMScYjRuF6VkgX0USwv7hJpqj38e00A1cQj
-         XH+Q==
+        d=linaro.org; s=google; t=1723128168; x=1723732968; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QqlFumWj11SFbqn7rghR1MsiiuQhB4WbP4/WopFjRvU=;
+        b=XsWke7RjWAIMbnix2OhgS/bhKRX6pWP1H1fYUPIGe6nmVEZIxZPDzpG5KToFl39LmE
+         T318jH4G25YRf6ZldQik9xhNcZTjjQ+Pkq9TcC1cefwTDk8c895LWcNZNvy9NKLE0nMt
+         FcnGUJ8SBSbmoUcLAyVElaMK0zl+tpQmm6QuV+MyPjW21SaI2/JTaksO06gY9fUH6Bq1
+         uDYlLLuA6eHED/3XNWjDpPo4tOTtoBfKzBxpNW5tn2VGzJnTZ/YJUr2vK1wYyfoCSq8o
+         2fJPQLPi/XinseZwm70IEYJPd4dxOkoAwEpaEcw5/VPs9ZHXwp3waGWDzMS4ex/x1hiR
+         pXRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723128114; x=1723732914;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3Zm++0EiwaZDCPUMCRwmX3AigDh0NbUA1FXFLoV1300=;
-        b=qWqxKeEmeMUQ66iQFctAj/MBON0yTIYgCNctUoO7hdCpRvYs9k7C7RDJbB9oYZ3NWT
-         kLyv0t3LAXBs6T9ralhcJTPIOLoJJZAheWoplfiVkRJ+n4/cR8DcQBHsBMs4Fe8cJFMa
-         vp+hQQgWViY4J0iPTwBi/18bvaqngmz0NUtWNElSTAh1f1m1KD5FFblxXJJVx93d8VGw
-         iEKVCfJ86tVoGlwWnVKqxeLkqjG00Eur/Xxgwc7uMkdhDXs6iYoeI9aoFcAZXDcXjwuy
-         cW9PzbB6aZwuTw6ZtEMZ12iHeDub7+llcPlxqznAxolg0Q5pw6uHGM7i8j3kbUcGjfWL
-         tC2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXNtLEqp2XtcVZk/io52ezv/IJjKRZWbpXQ1eoPHH2/DXl61cQtraael0t2SA7g6Wey8WUutA5Vuj0RtnIKeGN4CapN
-X-Gm-Message-State: AOJu0YySgQcLqsGRANiWJSIHKoSf3/0yqj2GrV7jwBKDYQawVD2WccUr
-	na4Z3e+u0zvThmoOl48SpDPeOEltdDlqCiMsEzrHhzk1bwOmhH7B1wOjvM9d1KQ=
-X-Google-Smtp-Source: AGHT+IFXHGeeJUFdxaEWDM0TtP4N4O/AiT5tOuX2HrCQW4T6X/PQQ9IxC6Nf6q2GswA9UY7T4LQ/ng==
-X-Received: by 2002:adf:f250:0:b0:368:57dd:3822 with SMTP id ffacd0b85a97d-36d27574952mr1574108f8f.37.1723128113815;
-        Thu, 08 Aug 2024 07:41:53 -0700 (PDT)
-Received: from draszik.lan ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d2716caadsm2103076f8f.39.2024.08.08.07.41.52
+        d=1e100.net; s=20230601; t=1723128168; x=1723732968;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QqlFumWj11SFbqn7rghR1MsiiuQhB4WbP4/WopFjRvU=;
+        b=mG7Xq1U3iw2iPraByfkj7avUniG1XOZprwLdzV7qpYEV/i9uFrE3A7LxawET6ZX/Pu
+         +hHMGPxP89XFKiaYKSwWnTX6Tfgi1k95ui1jSLDRs145Vwcylx5KgYee4EoecnWJK/oe
+         efze6GECnQg5T1IcJn4zZ8ROCdecIVrDdG9OFoINHSdV8BSTTeyfaaRMMWT5DzD6HSqi
+         lnER08yKZabq8/YZWQHqRtfsgtA18ZsSkmlKDhu+Sr0Z6UoBN94RKQnhsLsuYk7e6hCM
+         DwuWdOv6miabc1bzViw3Vqmz17dMCxKoKY0EM0FCKQsSsfrIeK7Zs9lngXOcxAJMEvYO
+         Qatw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhYE60qGrTIJqg0icHe1pMtLRAxBpN9vyOpAA7UHGzIS0tJ+3cjIMXYofpuIOUxmjwKHO1R/idoOxMouH5oNd1Juoa
+X-Gm-Message-State: AOJu0YzOWkmPtaWiWX4ezCwBEAOy+UjaGcqhVIVAZnYo/xmaLhBydFAY
+	ogvblcbLCot+KUhmmc/GlKvTWVYZ6kEzG1uGEVV3+ZDjXR/KQPpY9QHe7QrFYqkwJoz95I+vSX0
+	1VBud4A==
+X-Google-Smtp-Source: AGHT+IFR7bYGBnaMOhaFH4f94Vv7JZow/txFeQW64yeEZpKk5E2SBtyJawrOgHNhrqWB2DxlDwtasQ==
+X-Received: by 2002:a17:907:f1a6:b0:a7a:ba59:3164 with SMTP id a640c23a62f3a-a8090e9e288mr181745366b.53.1723128167728;
+        Thu, 08 Aug 2024 07:42:47 -0700 (PDT)
+Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9e80e04sm759298966b.175.2024.08.08.07.42.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 07:41:53 -0700 (PDT)
-Message-ID: <0fbc53b1c9e7b27d1363495b6fe3c8eb64efbb8e.camel@linaro.org>
-Subject: Re: [PATCH v5 01/20] clk: bump stdout clock usage for earlycon
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>,  Peter Griffin <peter.griffin@linaro.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar
- <alim.akhtar@samsung.com>, Sam Protsenko <semen.protsenko@linaro.org>,
- Tudor Ambarus <tudor.ambarus@linaro.org>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Will McVicker <willmcvicker@google.com>, kernel-team@android.com, 
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	imx@lists.linux.dev
-Date: Thu, 08 Aug 2024 15:41:52 +0100
-In-Reply-To: <20240808-gs101-non-essential-clocks-2-v5-1-11cffef0634e@linaro.org>
-References: 
-	<20240808-gs101-non-essential-clocks-2-v5-0-11cffef0634e@linaro.org>
-	 <20240808-gs101-non-essential-clocks-2-v5-1-11cffef0634e@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1-4 
+        Thu, 08 Aug 2024 07:42:47 -0700 (PDT)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Subject: [PATCH v6 00/20] clk: help OF platforms with their stdout
+ (earlycon) clocks during early boot
+Date: Thu, 08 Aug 2024 15:42:41 +0100
+Message-Id: <20240808-gs101-non-essential-clocks-2-v6-0-e91c537acedc@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGLZtGYC/4XOsU7DMBCA4VepPHPRne2kphPvgRhc+5JYDTayo
+ wio8u44ZWgRQ8Z/+fRfReEcuIjT4SoyL6GEFGt0TwfhRhsHhuBrC4lSo1YIQyEkiCkCl8JxDnY
+ CNyV3KSChs0oa7C2d2YhKfGTuw+eNf32r3ef0DvOY2d5RUojPypBs6Ki7liQQ2OgzNz7b8h0uL
+ 1OINqcm5WEzx1DmlL9ux4va5F/nSDtziwKE1ruz8ajRk3uEt7tFP2pyR9NVU4SWGT3rjv9p7V0
+ zaHa0tmpEru+5x07pv9q6rj+WKm4kqQEAAA==
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Sam Protsenko <semen.protsenko@linaro.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Will McVicker <willmcvicker@google.com>, kernel-team@android.com, 
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ imx@lists.linux.dev, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+X-Mailer: b4 0.13.0
 
-On Thu, 2024-08-08 at 15:11 +0100, Andr=C3=A9 Draszik wrote:
-> On some platforms, earlycon depends on the bootloader setup stdout
-> clocks being retained. In some cases stdout UART clocks (or their
-> parents) can get disabled during loading of other drivers (e.g. i2c)
-> causing earlycon to stop to work sometime into the boot, halting the
-> whole system.
->=20
-> Since there are at least two platforms where that is the case, i.MX and
-> the Exynos-derivative gs101, this patch adds some logic to the clk core
-> to detect these clocks if earlycon is enabled, to bump their usage
-> count as part of of_clk_add_hw_provider() and of_clk_add_provider(),
-> and to release them again at the end of init.
->=20
-> This way code duplication in affected platforms can be avoided.
->=20
-> The general idea is based on similar code in the i.MX clock driver, but
-> this here is a bit more generic as in general (e.g. on gs101) clocks
-> can come from various different clock units (driver instances) and
-> therefore it can be necessary to run this code multiple times until all
-> required stdout clocks have probed.
->=20
-> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
-> ---
-> =C2=A0drivers/clk/clk.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 129 ++++++++++++++++++++++++++++++++=
-++++++++
-> =C2=A0drivers/clk/samsung/clk-gs101.c |=C2=A0=C2=A0 1 +
+Hi,
 
-I shall send a v6 with the modification to clk-gs101.c dropped. This was le=
-ft
-by accident while moving some of the code :-(
+On at least two plaforms, i.MX and the Exynos-derivative gs101,
+earlycon depends on the bootloader setup stdout clocks being retained.
+In some cases stdout UART clocks (or their parents) can get disabled
+during loading of other drivers (e.g. i2c or UART driver init) causing
+earlycon to stop to work sometime into the boot, halting the whole
+system, see e.g. [3].
 
+Code exists in the i.MX clock drivers to deal with that by temporarily
+bumping the reference count of the relevant stdout clocks during early
+boot.
 
-Cheers,
-Andre'
+While gs101 doesn't have such code, some UART clocks had been marked
+'critical' for a different reason originally, and by accident
+worked-around the same problem. v4 of this series proposed addition of
+similar code to gs101 to be able to drop the 'critical' flag from its
+clocks, but Stephen suggested to move all this into the clk core
+instead.
 
+This series now does that:
+* instead of duplicating such code to gs101, teaches the clk core to
+  deal with stdout clocks during early boot, similar to the existing
+  support in i.MX
+  This is hooked into of_clk_add_hw_provider() and
+  of_clk_add_provider()
+* updates gs101 to remove the 'critical' flag from affected clocks, as
+  not necessary. This is essentially the last remaining patch [1] with
+  all review comments addressed, from the series [2] that was sent
+  earlier this year, see lore links below.
+* updates i.MX to remove the now-unnecessary platform specific code in
+  its clock drivers. I believe this also plugs a memory and extra clock
+  reference leak at least on imx7ulp, see below.
+
+Note 1: For the avoidance of doubt, any of the above is relevant only
+        if earlycon and OF are enabled, behaviour is based on the
+        'earlycon' kernel command line parameter.
+        As this is meant to also replace i.MX specific code, the
+        'earlyprintk' is also supported (since it was supported on
+        i.MX)
+
+Note 2: On i.MX, at least clk-imx7ulp.c calls
+        imx_register_uart_clocks() twice (once for each compatible),
+        but imx_register_uart_clocks() can not handle that and will
+        leak memory and clock references in that case.
+        The new clk core code handles multiple invocations without such
+        issues.
+
+Note 3: I am not in a position to test any of the i.MX changes and
+        would appreciate feedback. In particular with these changes
+        stdout clocks are enabled when of_clk_add_hw_provider() or
+        of_clk_add_provider() return, but:
+        * some i.MX platforms did some reparenting or frequency changes
+          in the old approach before enabling stdout clocks. I believe
+          they're all unrelated to stdout, though
+        * some i.MX platforms enabled stdout clocks before the call to
+          of_clk_add_hw_provider() or of_clk_add_provider(). Again, I
+          don't think that difference is going to be relevant.
+
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+
+[1] https://lore.kernel.org/all/20240130093812.1746512-6-andre.draszik@linaro.org/
+[2] https://lore.kernel.org/all/20240130093812.1746512-1-andre.draszik@linaro.org/
+[3] https://lore.kernel.org/all/d45de3b2bb6b48653842cf1f74e58889ed6783ae.camel@linaro.org/
+
+Changes in v6:
+- drop a stray #include from drivers/clk/samsung/clk-gs101.c
+- Link to v5: https://lore.kernel.org/r/20240808-gs101-non-essential-clocks-2-v5-0-11cffef0634e@linaro.org
+
+Changes in v5:
+- move stdout uart clock handling from gs101 into clk core (Stephen)
+- update i.MX to drop now-unnecessary code
+- update series' subject due to changed scope
+- Link to v4: https://lore.kernel.org/r/20240712-gs101-non-essential-clocks-2-v4-0-310aee0de46e@linaro.org
+
+Changes in v4:
+- new patch "clk: samsung: gs101: allow earlycon to work unconditionally"
+- update commit message for patch 2
+- Link to v3: https://lore.kernel.org/r/20240710-gs101-non-essential-clocks-2-v3-0-5dcb8d040d1c@linaro.org
+
+---
+André Draszik (20):
+      clk: bump stdout clock usage for earlycon
+      clk: samsung: gs101: don't mark non-essential (UART) clocks critical
+      clk: imx: imx25: drop call to imx_register_uart_clocks()
+      clk: imx: imx27: drop call to imx_register_uart_clocks()
+      clk: imx: imx35: drop call to imx_register_uart_clocks()
+      clk: imx: imx5: drop call to imx_register_uart_clocks()
+      clk: imx: imx6q: drop call to imx_register_uart_clocks()
+      clk: imx: imx6sl: drop call to imx_register_uart_clocks()
+      clk: imx: imx6sll: drop call to imx_register_uart_clocks()
+      clk: imx: imx6sx: drop call to imx_register_uart_clocks()
+      clk: imx: imx6ul: drop call to imx_register_uart_clocks()
+      clk: imx: imx7d: drop call to imx_register_uart_clocks()
+      clk: imx: imx7ulp: drop calls to imx_register_uart_clocks()
+      clk: imx: imx8mm: drop call to imx_register_uart_clocks()
+      clk: imx: imx8mn: drop call to imx_register_uart_clocks()
+      clk: imx: imx8mp: drop call to imx_register_uart_clocks()
+      clk: imx: imx8mq: drop call to imx_register_uart_clocks()
+      clk: imx: imx8ulp: drop call to imx_register_uart_clocks()
+      clk: imx: imx93: drop call to imx_register_uart_clocks()
+      clk: imx: drop imx_register_uart_clocks()
+
+ drivers/clk/clk.c               | 129 ++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/imx/clk-imx25.c     |   2 -
+ drivers/clk/imx/clk-imx27.c     |   2 -
+ drivers/clk/imx/clk-imx35.c     |   2 -
+ drivers/clk/imx/clk-imx5.c      |   6 --
+ drivers/clk/imx/clk-imx6q.c     |   2 -
+ drivers/clk/imx/clk-imx6sl.c    |   2 -
+ drivers/clk/imx/clk-imx6sll.c   |   2 -
+ drivers/clk/imx/clk-imx6sx.c    |   2 -
+ drivers/clk/imx/clk-imx6ul.c    |   2 -
+ drivers/clk/imx/clk-imx7d.c     |   2 -
+ drivers/clk/imx/clk-imx7ulp.c   |   4 --
+ drivers/clk/imx/clk-imx8mm.c    |   2 -
+ drivers/clk/imx/clk-imx8mn.c    |   2 -
+ drivers/clk/imx/clk-imx8mp.c    |   2 -
+ drivers/clk/imx/clk-imx8mq.c    |   2 -
+ drivers/clk/imx/clk-imx8ulp.c   |   2 -
+ drivers/clk/imx/clk-imx93.c     |   2 -
+ drivers/clk/imx/clk.c           |  72 ----------------------
+ drivers/clk/imx/clk.h           |   7 ---
+ drivers/clk/samsung/clk-gs101.c |   6 +-
+ 21 files changed, 131 insertions(+), 123 deletions(-)
+---
+base-commit: 1e391b34f6aa043c7afa40a2103163a0ef06d179
+change-id: 20240430-gs101-non-essential-clocks-2-6a3280fa1be8
+
+Best regards,
+-- 
+André Draszik <andre.draszik@linaro.org>
 
