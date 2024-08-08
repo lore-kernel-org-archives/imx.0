@@ -1,172 +1,271 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011018.outbound.protection.outlook.com [52.101.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF7733F7
-	for <imx@lists.linux.dev>; Thu,  8 Aug 2024 18:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723140524; cv=fail; b=BXaA8M9KlNZurnirvdibVWdGeptjVaQqxbF1oTk5vEfibB7rfTqV2gU+rYmO9HmAP/DrYDE9A2oEaYJyhZDTWwxywyZzzrma6r13oTMR+DE7zD2rKKoxjPyF3ciO6ioQ4v2bZVEwF5OMCWFfclctnWPxySn1n3LBbVZPylbOaJw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723140524; c=relaxed/simple;
-	bh=iicoeTZv4tCuVowuqs32aHk45LrOK9aR9LbCpd4Gb9I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SH3qtKicFwUQcIoQ3QN9aRZR86vjkrc4XOrs6BLNJtIRjj8rxKcAFChH+gvloptVTHOCbhWCG+uAyTcSNHPwmOFFQLndUcB/39cdEDrPmxLYIEIwEC3mj9keZyNpwrDOTTYt2wwcLdWZM2eBtxamlCatXQ7rG0D7C54sBXNurBM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WKK6O+gV; arc=fail smtp.client-ip=52.101.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366734A1E;
+	Thu,  8 Aug 2024 20:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723148062; cv=none; b=iQVaLf5Wdl08CgWMo7Ya9uvBvH4j5Oe0cF8m3wla4Q0q1C8Yrh5AlTRjUbySwxGHIG72Hwc1HLQgltCYWfMnDuRks+MSWoIX9e9YZkCAOJwJpeZFkpasqrkutqxZdmcU9y7fozfpE7t2Io0TFCqByArBHNAGcZNbv1FKVqtm+i8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723148062; c=relaxed/simple;
+	bh=hgURdvoV2LeV7xOJOhcOMVxZqCvVA2gvwLntm/DYCjI=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=Kwa2/6RFd47/cO6eiM0AWxHT3N9NjxmJhWpLuz0dKiscu/3x09H2NQOMRH1nm+axXIPvXD+4yy0BeGEH3YGYmbhOlFr8Ctm8WF9aIZeVKUdJaWg+lAGxAZwtYwWBvLf92J4cVfdYJklP/yKzGiPCBNAjT9egx9RTQEDbl+b0cgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d0Th6AFl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WKK6O+gV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iZiHJfMuWGPjJHNxcNokaqyPFTO3CpQWctsGNpfPexwW46i8azPp1DrCiJe1TsLcTw8n00r49c86bO5+jBmOV7uBQ0MZwN5KVFQ146hL83rohkJNFAakhtseA5hXx1z5O4TnVbOkyhBNyfSZPhMzusw1h67W/UfG2ZpgIoF5aKEnn1xfjGqMtp1IC4pIZVQBsYeteqZY/qd98Qk+TxPw5kNhnXJHLxP2boZEAQVlUgHnTdp38Lmxl1XpZ3mA7iN1UNW/cTgmh07xJKR99AcAOHV9yhNQp6pB1rKtr+BxoZe7hAp75NO+kSsrFuNpKz7ND4bNGY8HW5muIc4k07hqSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jJKuQMZ5Sqbgs1mbQeIT8OVPFdvYANWFZc/i/WJEDHU=;
- b=tr38HeOKlBiSAezZY+1zqapOYsHzzMgWosOAKwP2W9v6NGaWIaSuARwWWcTfKqdTGJH0w8/jwE2BGMX25WlXB13wI0IR1AHxRy1lKZfV5xFAqC0tc27+lR5D3vW43kz8zApmP60zxcePBfjoyn6u1Gwf3olmfA6OmejkafZEbMiOzl7aSzv4lyHSQffi04JbLDY+QrCwieJV2ApLINMookp2a3Wc2ID6yiior91Rrp1gY2uR1EM4QN1IoWPVoSTRv8EW4qrO0B1rwvsZn5nHPOnQ7pp7+zV15cx/anNhAOLWnhpUhovYx9v5IKfJtdI4ntdUhadL3+Lpv5cHvrKEdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jJKuQMZ5Sqbgs1mbQeIT8OVPFdvYANWFZc/i/WJEDHU=;
- b=WKK6O+gVkMrwxRA/nMa209oVY5G8iHsSqR2Rovdh8UsK0GrQiKgnrYFXNNmnEYm4+fF4mq82twkpk5S8ZAJ7ScxgZMGXNEPZjcV9j8u3jAH7gTAdFwp50vadgl57DDKlXBQgwLSxpwdZkhP298qvqyPA82uKSKzGyiip3WadFkeLe4Tsrj3xvBbQChuqzRWccGLzut9iSnfp/+c8Ge9IfrC/A2mb5Co/zYEg+nA07qaJbqvIuF7pv718rk21BXRUFufKopCNuwKiQtk8z6ARq8FQQGFXbh1NUCYqTTR3BHKL2HiLwzMmximgHkjkVOXR0ElTiR24KoOqU8TD1oFd+g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB9820.eurprd04.prod.outlook.com (2603:10a6:10:4c3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Thu, 8 Aug
- 2024 18:08:39 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.023; Thu, 8 Aug 2024
- 18:08:39 +0000
-Date: Thu, 8 Aug 2024 14:08:31 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Zhiqiang.Hou@nxp.com,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 3/4] PCI: mobiveil: Drop layerscape-gen4 support
-Message-ID: <ZrUJngABI8v3pN6o@lizhi-Precision-Tower-5810>
-References: <20240808-mobivel_cleanup-v1-3-f4f6ea5b16de@nxp.com>
- <20240808172644.GA151261@bhelgaas>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240808172644.GA151261@bhelgaas>
-X-ClientProxiedBy: SJ0PR03CA0101.namprd03.prod.outlook.com
- (2603:10b6:a03:333::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d0Th6AFl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712A4C32782;
+	Thu,  8 Aug 2024 20:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723148061;
+	bh=hgURdvoV2LeV7xOJOhcOMVxZqCvVA2gvwLntm/DYCjI=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=d0Th6AFlewoGY+Bylt133GKr0MOdYKL4lmngVznZKKhj4h/QFSqkP62DUK5z3DSVC
+	 NXAJ6pjnyWnuiw2MQpb5aMrVan9kkOCPXC6+WEU5II9OvN623fHkDh+T69wYt69cfa
+	 he68f5JcHB6g7i/nwV+OVZAWajuWEHlv7sHISQxf92zlU2qxjTuqIjSqxwUHn11ROI
+	 ZkvtHGlWBjAQezR4XrNFRgZ9nj+/gwhTYDfeT09sE6udYFvCQItcyLEGSnuy9Azn+Q
+	 mQZmCcf5YoMUgZuwG5n8Wh9Dz0fnksqTnJSXfnXFAwTo03Czze3jMYSlmWBms2Z2tl
+	 kKeL5FtPgQXuA==
+Message-ID: <7fc258e4208a01748ef024f286a85ca0.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB9820:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54d5092b-39d7-4d75-609b-08dcb7d52123
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jidsBCTf4c2J+TywYuD5iY32V5fm8weYbSoheCNvY3NFSxmZNCyyaabe9pxY?=
- =?us-ascii?Q?ZPxX1QEATe+XKrj2MbLIEaP4HjGf++RKL1BPRwxfV7nn9+hglFrLZgJFQp+X?=
- =?us-ascii?Q?ufJmBcZ4PFVESWgOMEbIroajq7ZLYHMznj2n/ywvYPfwT9j8z+Jjutggtjv1?=
- =?us-ascii?Q?2D7joUVCwQGhCNBEjW0QT0y9fQPUBM2oRrziwoHDfA2xMSU8cocyVLColjck?=
- =?us-ascii?Q?lM6A9IyUERHTglu/T2urirQUJfS4aGH557RizDVUTVcdz4ggxVNiV1kiPADE?=
- =?us-ascii?Q?walCAibfwQJ3qEvOASqMC/aCGNfHzJKn5RwuueDtA1EAQ7pd2MVxBwbAiV5t?=
- =?us-ascii?Q?BTi+SDBh583AjGTjODWAg//T2B8y7Z4fjceeDfmiLF1OhrYoRgDI1sYuSYBB?=
- =?us-ascii?Q?7VsM2YL7DtpAYiGrIAixdLO39roM/wNFjGOZmEaHkUxD94f/+aeheSmQyx0K?=
- =?us-ascii?Q?s+v6c3u5KjoXthUBegDA8eREu1qXneejPY5kWweMLAxhs+O0dUAFMB5j2ObR?=
- =?us-ascii?Q?GEvRjvCO3upPNEsLfksz14tEfE6EVMMtVBbqqj94CuFx8p9HzWNBi+yxGMog?=
- =?us-ascii?Q?fiajPJCemgX3IqU96J5OZw19YV1aIzhX5afTTZb83nUm9APx8smwPI8Mv123?=
- =?us-ascii?Q?h08X0NCpYE4ohmQnyC1n5FrJk1V8HVMRIz68+v2koonJcxHLkGq9kwI1y7gb?=
- =?us-ascii?Q?g0eb35j6smlkS2SkRC2UEBOD1X32/fYgujx31jQOlUbC2+m4JhK9BzwQ3DFe?=
- =?us-ascii?Q?QK9p8ImaeGkr7RQsUDK0k0T7weSMlhDcECj8g1AkUBCEYgLpnNiX1g5KTLjQ?=
- =?us-ascii?Q?s7WSWYOhm2C3+d3Gi/8NbmTaFiJy/3HkeX8BQqSBIAh40NPqA+EzWBfO3zAy?=
- =?us-ascii?Q?zpNhJOX2L/gONEz6nywKwGA5sdjTpBfWCDs+M8++f/CILQqtYQ5pndXo/ihn?=
- =?us-ascii?Q?kQjW11XyJHkjoeombz56/y3BKHNoz6TaH0uvq0FVZTRqmTGfunPnne+qR1kP?=
- =?us-ascii?Q?FF+c1YN0feZvvBwzP0WfMqjpngWWc7yAkY3Ja3LIlAZ38W7zb7HV5YMNJgXA?=
- =?us-ascii?Q?Tdw81U1JxFH9+IQEWwv75KsfQiGI7Jukl6dXSGCvVopiA1InAF72TSHFocxf?=
- =?us-ascii?Q?VZUQ28ebSJYEjhVUPoY9S2HWg6lrzayIXngW5+oV+DNnA+HI4280KmjS0cLl?=
- =?us-ascii?Q?jY33rxNgDPSG23JbBOnBHFHZ6vqXgCIJb9qu+bzQQJ/x9wdsOQZv5M9sb35m?=
- =?us-ascii?Q?vuA2Tz8iikoXhsMEcKVpE1gqfBwCzkTfuWYZMK+YxszKp+ex88im3CXK2Tfp?=
- =?us-ascii?Q?w3sII3r7Ens9sabiip48+PUxpMIOz7oDTF0h0IBYzQCMcs90/pWV7lielZ/w?=
- =?us-ascii?Q?M//HLL6YISnVsEgHctGhid8MZ//wI2K+q4p90/7A6YU2jrMWYw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fisCn5qlOQKfX4JQkRftSU47skimreYi8v3oJiVw3Q1Yb/mXoNDIjehLKope?=
- =?us-ascii?Q?JWnBG6RFH42e2iWTaQXnDaoBscac2XJ5vTHbRbfPVZ9LNyA0Re/SyfobPlGD?=
- =?us-ascii?Q?1KIjJg3GvnLnwzmipWMv/eFOqM3LoqYVBYv/OiA+Yt8Pv2a1fWkZv5KEBFL4?=
- =?us-ascii?Q?t0r16Gb1W90UdRDWMVCLluqmpGBPKMeivt3Nh0MJzNXbFieg3l5N+TYDiHHQ?=
- =?us-ascii?Q?FNTd4g1JUM4+S4b0GW/mu+ZebqTEBJybX+EnosazE+MkirxPIDmJvihJpVon?=
- =?us-ascii?Q?jASc+RkJ2229hadUK5jtEmmZi/ibB/EIqMtUvJr2B+Yl8Xl4OxtaaDaLwtqr?=
- =?us-ascii?Q?66KkdJI25eNcYaFa5xiZtpHYO4ZBUUwJ7wSujwoOGrJbeSuSednDfQ2IIwyF?=
- =?us-ascii?Q?F1yfwiiY/k0Jyk2b5Y5zP5ne2lB5mqp2J0pFGoosTzOgrgOF/mag3v47pWLC?=
- =?us-ascii?Q?4dh2nI+hOKVgxHRLGREgAgS/dHYBpiR+l6kCH9z7EZphHsKFbnTO8SfhfnBT?=
- =?us-ascii?Q?1xpqaWxIAdkCfyrB7Iu51GZUOZsIOpnY4/oG8lyEinm3WEKxq4hF1v7ElaaZ?=
- =?us-ascii?Q?7PW1fIA8o+BUSdFeeBtoTxbfifGg7EeuQ3+SeipYbBW+atFSv7xwcknsSNxT?=
- =?us-ascii?Q?ETcJxiEbOsCpVUzXq+CAv2EZP8tFj33YjGZlW0gwR4mm2S9l2VcRjYGxoWE0?=
- =?us-ascii?Q?0db+Ap6xjnCJ0mcpUmF9AS4h9pus/hEDQPY0BO6Cqwoed38FYwL6ft6albZA?=
- =?us-ascii?Q?DZJvbgHjMGn5YaT/idYKGFTr3dM+tgko8ayGqDOEr5uHg6UDP8ZVz8yekv0s?=
- =?us-ascii?Q?3+OU5cl8VwZV5S+A0ErzmFVpcs5GFBKSkAltCc3D+Mkzqdxl1jSOt0IWUEpX?=
- =?us-ascii?Q?FPnz+e3J1kzKZ1fV0Tk/sg4S5NOZncQmcgXwum0bwEYmINPwlZ3BZaRjlZon?=
- =?us-ascii?Q?kDQDA0KGc1LbXCnOlhgUN5iZbAzRNNdhQdb8O4GRlPXhz59M5rvaAlw3QH97?=
- =?us-ascii?Q?j0NoaBC3piIoA6cyejejGEzR2Ij5Bt3bkvJTQbDjZaXIUgoFmSRoHv1vdERM?=
- =?us-ascii?Q?4mKQhwFRDuqpyD+ICbMfQY347+kYSc/f8/j7yvceWaulVd7qBiwfaNYJJvkf?=
- =?us-ascii?Q?S7MB1jGYrqs1uDSmI5N8vhAA/JBSQg0kd2FMG3/SVxL1jaJ9tBA0Lw5Qb6pv?=
- =?us-ascii?Q?+cMTSP+U5Vrn0M7/i/4aFj70ZtnmiXKchwuPkAH/zNDdQo/rNMPoppcBKilw?=
- =?us-ascii?Q?N0c/3ewTbKnH1Utmk6Fiq5jYkIS9qd2pZIMRgYtl7Nl1kSMbZZ7Pe3BhDm4g?=
- =?us-ascii?Q?N2IORfwv3saZK4u7aQ8bu/qvJSF5Xg3XgEnauGFTbxJWjnQq60phffUDA6zd?=
- =?us-ascii?Q?QhV553/md54yZNA6z4zZDLutmJ0xYSlBxpw4dqEgLf5ESf7Ta+qks7Gokys/?=
- =?us-ascii?Q?59xtG8573+tht2URlXgXgi51TwQHw8oP1U+B5iFIFkWvnR1DVwIxZszwdkPd?=
- =?us-ascii?Q?tshrvQo5p55bTGKoalXOMuVp0jvnKf2bof0sDDQQYdSZFwvFYRsGuRL3dqPd?=
- =?us-ascii?Q?nsoOVx1eVNjtpfGfBPo=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54d5092b-39d7-4d75-609b-08dcb7d52123
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2024 18:08:39.3219
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q2YhKK8HsY4vlX3GoFQcCQMhF4L+YDsS9e65M2scXafiHQPo8mxQPqdiCBV60BFaotUFu3QX17onlEJ2M54ZXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9820
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240808-gs101-non-essential-clocks-2-v6-1-e91c537acedc@linaro.org>
+References: <20240808-gs101-non-essential-clocks-2-v6-0-e91c537acedc@linaro.org> <20240808-gs101-non-essential-clocks-2-v6-1-e91c537acedc@linaro.org>
+Subject: Re: [PATCH v6 01/20] clk: bump stdout clock usage for earlycon
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Will McVicker <willmcvicker@google.com>, kernel-team@android.com, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, =?utf-8?q?Andr=C3=A9?= Draszik <andre.draszik@linaro.org>
+To: Abel Vesa <abelvesa@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, =?utf-8?q?Andr=C3=A9?= Draszik <andre.draszik@linaro.org>, Chanwoo Choi <cw00.choi@samsung.com>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Peter Griffin <peter.griffin@linaro.org>, Sam Protsenko <semen.protsenko@linaro.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Tudor Ambarus <tudor.ambarus@linaro.org>
+Date: Thu, 08 Aug 2024 13:14:19 -0700
+User-Agent: alot/0.10
 
-On Thu, Aug 08, 2024 at 12:26:44PM -0500, Bjorn Helgaas wrote:
-> On Thu, Aug 08, 2024 at 12:02:16PM -0400, Frank Li wrote:
-> > Only lx2160 rev1 use mobiveil PCIe controller. Rev2 switch to designware
-> > PCIe controller. Rev2 is mass production chip and Rev1 will be not
-> > supported. So drop related code.
->
-> I'd love to drop this, but only if you're confident that no Rev 1
-> controllers are in the field with people using them.  The explanation
-> above doesn't go quite that far.  It's not enough that Mobiveil
-> doesn't want to support Rev 1.  If we know that all Rev 1 controllers
-> have been destroyed, that would be perfect and useful to include here.
+Quoting Andr=C3=A9 Draszik (2024-08-08 07:42:42)
+> On some platforms, earlycon depends on the bootloader setup stdout
+> clocks being retained. In some cases stdout UART clocks (or their
+> parents) can get disabled during loading of other drivers (e.g. i2c)
+> causing earlycon to stop to work sometime into the boot, halting the
+> whole system.
+>=20
+> Since there are at least two platforms where that is the case, i.MX and
+> the Exynos-derivative gs101, this patch adds some logic to the clk core
+> to detect these clocks if earlycon is enabled, to bump their usage
+> count as part of of_clk_add_hw_provider() and of_clk_add_provider(),
+> and to release them again at the end of init.
+>=20
+> This way code duplication in affected platforms can be avoided.
+>=20
+> The general idea is based on similar code in the i.MX clock driver, but
+> this here is a bit more generic as in general (e.g. on gs101) clocks
+> can come from various different clock units (driver instances) and
+> therefore it can be necessary to run this code multiple times until all
+> required stdout clocks have probed.
+>=20
+> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+>=20
+> ---
 
-I can't guarrantee all Rev1 have been destroyed because some may left on
-someone's drawer or lab. How about drop all document firstly,
+Thanks for doing this!
 
-and set kConfig
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 7264cf6165ce..03c5d80e833c 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -4923,6 +4923,131 @@ static void clk_core_reparent_orphans(void)
+>         clk_prepare_unlock();
+>  }
+> =20
+> +/**
+> + * struct of_clk_stdout_clks - holds data that is required for handling =
+extra
+> + * references to stdout clocks during early boot.
+> + *
+> + * On some platforms, earlycon depends on the bootloader setup stdout cl=
+ocks
+> + * being retained. In some cases stdout UART clocks (or their parents) c=
+an get
+> + * disabled during loading of other drivers (e.g. i2c) causing earlycon =
+to stop
+> + * to work sometime into the boot, halting the system.
+> + *
+> + * Having logic to detect these clocks if earlycon is enabled helps with=
+ those
+> + * cases by bumping their usage count during init. The extra usage count=
+ is
+> + * later dropped at the end of init.
+> + *
+> + * @bump_refs: whether or not to add the extra stdout clock references
+> + * @lock: mutex protecting access
+> + * @have_all: whether or not we have acquired all clocks, to handle case=
+s of
+> + *            clocks coming from different drivers / instances
+> + * @clks: clocks associated with stdout
+> + * @n_clks: number of clocks associated with stdout
+> + */
+> +static struct of_clk_stdout_clks {
+> +       bool bump_refs;
+> +
+> +       struct mutex lock;
+> +       bool have_all;
+> +       struct clk **clks;
+> +       size_t n_clks;
+> +} of_clk_stdout_clks =3D {
 
-bool "Freescale Layerscape Gen4 PCIe controller (DEPRECATE)" if COMPILE_TEST
+This can be initdata?
 
-So layerscape gen4 will not built. Sometime later, if no one complain, we
-can remove all safely.
+> +       .lock =3D __MUTEX_INITIALIZER(of_clk_stdout_clks.lock),
+> +};
+> +
+> +static int __init of_clk_bump_stdout_clocks_param(char *str)
+> +{
+> +       of_clk_stdout_clks.bump_refs =3D true;
+> +       return 0;
+> +}
+> +__setup("earlycon", of_clk_bump_stdout_clocks_param);
+> +__setup_param("earlyprintk", of_clk_keep_stdout_clocks_earlyprintk,
+> +             of_clk_bump_stdout_clocks_param, 0);
+> +
+> +static void of_clk_bump_stdout_clocks(void)
 
-Frank
+This can be __init?
 
+> +{
+> +       size_t n_clks;
+> +
+> +       /*
+> +        * We only need to run this code if required to do so and only ev=
+er
+> +        * before late initcalls have run. Otherwise it'd be impossible t=
+o know
+> +        * when to drop the extra clock references again.
+> +        *
+> +        * This generally means that this only works if on affected platf=
+orms
+> +        * the clock drivers have been built-in (as opposed to being modu=
+les).
+> +        */
+> +       if (!of_clk_stdout_clks.bump_refs)
+> +               return;
+> +
+> +       n_clks =3D of_clk_get_parent_count(of_stdout);
+> +       if (!n_clks || !of_stdout)
+> +               return;
+> +
+> +       mutex_lock(&of_clk_stdout_clks.lock);
+> +
+> +       /*
+> +        * We only need to keep trying if we have not succeeded previousl=
+y,
+> +        * i.e. if not all required clocks were ready during previous att=
+empts.
+> +        */
+> +       if (of_clk_stdout_clks.have_all)
+> +               goto out_unlock;
+> +
+> +       if (!of_clk_stdout_clks.clks) {
+> +               of_clk_stdout_clks.n_clks =3D n_clks;
+> +
+> +               of_clk_stdout_clks.clks =3D kcalloc(of_clk_stdout_clks.n_=
+clks,
+> +                                             sizeof(*of_clk_stdout_clks.=
+clks),
+> +                                             GFP_KERNEL);
+> +               if (!of_clk_stdout_clks.clks)
+> +                       goto out_unlock;
+> +       }
+> +
+> +       /* assume that this time we'll be able to grab all required clock=
+s */
+> +       of_clk_stdout_clks.have_all =3D true;
+> +       for (size_t i =3D 0; i < n_clks; ++i) {
+> +               struct clk *clk;
+> +
+> +               /* we might have grabbed this clock in a previous attempt=
+ */
+> +               if (of_clk_stdout_clks.clks[i])
+> +                       continue;
+> +
+> +               clk =3D of_clk_get(of_stdout, i);
+> +               if (IS_ERR(clk)) {
+> +                       /* retry next time if clock has not probed yet */
+> +                       of_clk_stdout_clks.have_all =3D false;
+> +                       continue;
+> +               }
+> +
+> +               if (clk_prepare_enable(clk)) {
+> +                       clk_put(clk);
+> +                       continue;
+> +               }
+> +               of_clk_stdout_clks.clks[i] =3D clk;
+> +       }
+> +
+> +out_unlock:
+> +       mutex_unlock(&of_clk_stdout_clks.lock);
+> +}
+> +
+> +static int __init of_clk_drop_stdout_clocks(void)
+> +{
+> +       for (size_t i =3D 0; i < of_clk_stdout_clks.n_clks; ++i) {
+> +               clk_disable_unprepare(of_clk_stdout_clks.clks[i]);
+> +               clk_put(of_clk_stdout_clks.clks[i]);
+> +       }
+> +
+> +       kfree(of_clk_stdout_clks.clks);
+> +
+> +       /*
+> +        * Do not try to acquire stdout clocks after late initcalls, e.g.
+> +        * during further module loading, as we then wouldn't have a way =
+to
+> +        * drop the references (and associated allocations) ever again.
+> +        */
+> +       of_clk_stdout_clks.bump_refs =3D false;
+> +
+> +       return 0;
+> +}
+> +late_initcall_sync(of_clk_drop_stdout_clocks);
+> +
+>  /**
+>   * struct of_clk_provider - Clock provider registration structure
+>   * @link: Entry in global list of clock providers
+> @@ -5031,6 +5156,8 @@ int of_clk_add_provider(struct device_node *np,
+> =20
+>         fwnode_dev_initialized(&np->fwnode, true);
+> =20
+> +       of_clk_bump_stdout_clocks();
 
->
-> Bjorn
+This can be a wrapper function that isn't marked __init but which calls
+the init function with __ref. That lets us free up as much code as
+possible. We need to set a bool in of_clk_drop_stdout_clocks() that when
+false doesn't call the __init functions that are wrapped though, i.e.
+'bump_refs'. Here's the structure:
+
+	static bool bump_stdout_clks __ro_after_init =3D true;
+
+	static int __init _of_clk_bump_stdout_clks(void)
+	{
+		...
+	}
+
+	static int __ref of_clk_bump_stdout_clks(void)
+	{
+		if (bump_stdout_clks)
+			return _of_clk_bump_stdout_clks();
+
+		return 0;
+	}
+
+	static int __init of_clk_drop_stdout_clks(void)
+	{
+		bump_stdout_clks =3D false;
+		...
+	}
+	late_initcall_sync(of_clk_drop_stdout_clks);
+
+> +
+>         return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(of_clk_add_provider);
