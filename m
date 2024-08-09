@@ -1,155 +1,166 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5401518FC86
-	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 09:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4727718F2F2
+	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 09:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723194175; cv=none; b=DIVm6xoYlHFjJKcCDzRHWbG6N+zHYq7AOOhPlBV5zcyh8hXtf44nOsXchXhQlr1p3LkYFRIdrN6A+s6jAoe9mDJVuTWU9x4A/qsQppHEymWt4HzjNOwHl3HA6VnLGnP+cPQUX2dmIOV/DR0RqSR/jRWdOAG279guiR58XK/C+OU=
+	t=1723194438; cv=none; b=uVJ1Bb9hiDYRGCFwOloxfOu4P99Au1lpmuO3CFLvXbuh+7+LQcmFFJ8AfKVlegHGaPdY1mdLv3XxqvBc/A7gt8r6qz01EjDcNwFmK0bq9Q8OJicgCs2WeP40qKXJ05oXilmmCYuFWQhVKS2rBBwnQaOjNPAMNsoFC1GEuItkFng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723194175; c=relaxed/simple;
-	bh=hUutMxc7Exclw5WuhTQlzC/S71ST0PeZg6Nw//eMU10=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=c6NPrvsHkudacckstWNlogAYJGMWObtl3jnU+c713XHSnficws1oMMpFjXsMfxpuIQMMypp0z8vb2aVhgzaCzZfmFsTH5Ol3KRWTNqglR3pqkQouT3xe+XdPcD16UXEF7AaZ4DSQoTc0Wgz7CQPwsQ3krCaP1jsWOJel3Dl/1x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=BQvzHAlZ; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1723194438; c=relaxed/simple;
+	bh=nEJVtcoMpn7xsXtIMc1Qo1u4UbOJ5jaOpWiwSsCd87A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Wfez9rFMRgc2Pv2Ns/h1Tn0boMsdeJPqywTXcmkcrhg2BxO8BGeXXNL9zaPHXnUbKIVrEKqhmbBkix4THux57tbyYllSmVspdZJQUNDy6biQyR1CL8HpbpiOM88KVIfwCijmM2tIZaiIcRaXDqgQPQDn3AY3jOWGlzcuJvZxamg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WH3fykQq; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="BQvzHAlZ"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1723194170; x=1725786170;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hUutMxc7Exclw5WuhTQlzC/S71ST0PeZg6Nw//eMU10=;
-	b=BQvzHAlZWYHq1V1GMjSicWBtQqcB2qga1v90CP5iJ/24UTyHPXVX/ZtKMc66+kLV
-	qEPzcfCnAf8+2HGQoja014OGT66AFvbcF0XNer3DUQ6peetZk4GGINH4hQP8vnmU
-	1bT79A/QMjRK2TV5SrGzs58f49z30Ii+m/mVZ2kdpTE=;
-X-AuditID: ac14000a-03e52700000021bc-46-66b5db3937b4
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id CC.80.08636.93BD5B66; Fri,  9 Aug 2024 11:02:50 +0200 (CEST)
-Received: from llp-hahn.hahn.test (172.25.0.11) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Fri, 9 Aug 2024
- 11:02:49 +0200
-From: Benjamin Hahn <B.Hahn@phytec.de>
-Date: Fri, 9 Aug 2024 11:02:31 +0200
-Subject: [PATCH v3] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
- enable TPM
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WH3fykQq"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2f1a7faa4d5so2863161fa.3
+        for <imx@lists.linux.dev>; Fri, 09 Aug 2024 02:07:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723194434; x=1723799234; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RLxn0IwV+KEsqILm3vURB532jKLGPjcTtemkHlPJtu8=;
+        b=WH3fykQqF9defUSERkUZ+NAzUInJBYbH+zqmnmnNxApOJutJaolyX6kxDjntT7+Qw1
+         v33Ls4oMUMWU5un0TX/SRYifE5pQtbsZ0IfuYaS9akhz7zh6ruNfD7z+Bh1c+5QZUx8I
+         5REwgXGRWSdFla7O1BLghwI+9TSLEgIKH5DH9RDIjO9Bn7hehBcJ0iB+Oo7JugUXPD9Q
+         osI/UPMKIUe6zXJ6pmqaRGAtWAFBRC2FHUgHmHwWtSch61qaw6ApUSLThParay+mSF15
+         K4xN09KybSU0NZWlcVlLcinjLfrXG6Yi5+Zd/SvpKrCoWBelVMYbGySvP2hXZFl6YHPz
+         roDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723194434; x=1723799234;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RLxn0IwV+KEsqILm3vURB532jKLGPjcTtemkHlPJtu8=;
+        b=LdqJll52V5vJlZzXu0FgSnPWObEFy3NO30XVYiDoLw9kGxvNdfa1otEyuC3OPQoCcl
+         oeklLJr4Q+izR22eTcZvyseUQduZ38tizaKtPBPUHGxLarvhZx4Ts2dQ7tGLzDdlJ0dB
+         1fv5SSudbDQgqXcQEBWmiSCf8G8i/lt1RcVbDa6aQYJizDLG6w9y0ZL49MrbYzp4Z9LH
+         WZbX3VLWVMvFMYs7rEXQ8+iI5xcIe4GPIVTR5HStI6XoUo3WMoMk9erR8IwfN9mYUe2J
+         zefszIAv0H2dxv8OI38EomFQPKy4DAR9M8hhqfJUBQdU5zv6SlI07OflV40KqLfpbNv1
+         z5Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCWqZEOctHZK/vLGDVi3ojvqweea7KE2jPhkvnIZQoO5V5rPncznNEuqnNP2wFBcxU+jdgMcKf4iUhywGKlM7XJIxHyN
+X-Gm-Message-State: AOJu0Yy/arGMpnGqv6rPMlOyT98QpAQ+ZlygrISqCrf0P5wDI6XXgSlI
+	4u+60iVE4VCn3kFXZZtBaVCCH4JawauyyPSi1gj9FjHP9yLj0aSI6xo7HV2QxNY=
+X-Google-Smtp-Source: AGHT+IHhnLFl3rT+x7KMYXiEdQNEfCuCtExoR2tPSUmgwgq125nOMspyp/xEWEFKq5hnf+UiwSSYHw==
+X-Received: by 2002:a2e:4612:0:b0:2f1:929b:af03 with SMTP id 38308e7fff4ca-2f1a6ce6ec3mr6769431fa.30.1723194434144;
+        Fri, 09 Aug 2024 02:07:14 -0700 (PDT)
+Received: from draszik.lan ([80.111.64.44])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c7492cesm66204715e9.20.2024.08.09.02.07.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Aug 2024 02:07:13 -0700 (PDT)
+Message-ID: <d9e2f63519f3fcbf4fe334975691d573e20c53c8.camel@linaro.org>
+Subject: Re: [PATCH v6 01/20] clk: bump stdout clock usage for earlycon
+From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>, Michael Turquette
+ <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>, Peter Griffin
+ <peter.griffin@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Chanwoo Choi
+ <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, Sam
+ Protsenko <semen.protsenko@linaro.org>, Tudor Ambarus
+ <tudor.ambarus@linaro.org>, Abel Vesa <abelvesa@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>
+Cc: Will McVicker <willmcvicker@google.com>, "kernel-team@android.com"
+ <kernel-team@android.com>, "linux-clk@vger.kernel.org"
+ <linux-clk@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-samsung-soc@vger.kernel.org"
+ <linux-samsung-soc@vger.kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>
+Date: Fri, 09 Aug 2024 10:07:12 +0100
+In-Reply-To: <d4580b33c195dcf1c3a0054b29555383d2e1606b.camel@linaro.org>
+References: 
+	<20240808-gs101-non-essential-clocks-2-v6-0-e91c537acedc@linaro.org>
+	 <20240808-gs101-non-essential-clocks-2-v6-1-e91c537acedc@linaro.org>
+	 <PAXPR04MB8459F99475C289A827987AF588BA2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	 <d4580b33c195dcf1c3a0054b29555383d2e1606b.camel@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1-4 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240809-imx8mp-tpm-v3-1-c1cd80deff16@phytec.de>
-X-B4-Tracking: v=1; b=H4sIACbbtWYC/23MTQ6DIBCG4asY1qUB/ANXvUfThZWZykIlYIjGe
- PeOrmzSzOqb5Hk3FiE4iKzJNhYgueimkUZ+y1jXt+MHuLO0mRKqEFqU3A2LHjyf/cBzi5Wo3xJ
- LlIyAD4BuOWPPF+3exXkK69lO8vj+zSTJ6UAbFKrSxpiH79cZursFdmSSutL6hyqitsiRONai7
- a503/cvjL3vZ98AAAA=
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Teresa Remmet
-	<t.remmet@phytec.de>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, Peng
- Fan <peng.fan@nxp.com>, Benjamin Hahn <B.Hahn@phytec.de>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723194169; l=1993;
- i=B.Hahn@phytec.de; s=20240126; h=from:subject:message-id;
- bh=hUutMxc7Exclw5WuhTQlzC/S71ST0PeZg6Nw//eMU10=;
- b=3blqmdmkHdaXVLvFAjvZZJTgizxxHa2X0wLB6qx0355Z27tKrCewTj/4XM+kVTPBi9qemS1bb
- gwf+qB5xLqJBSPABywWDaOPyYMkLvgjvT8F3Z6AUAwXUN1pZVXNMgi+
-X-Developer-Key: i=B.Hahn@phytec.de; a=ed25519;
- pk=r04clMulHz6S6js6elPBA+U+zVdDAqJyEyoNd8I3pSw=
-X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
- (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphkeLIzCtJLcpLzFFi42JZI8nAo2t1e2uawaooizV7zzFZzD9yjtXi
-	4VV/i5n3WtksVk3dyWLxctY9NotNj6+xWlzeNYfN4seqL6wW//fsYLf4u30Ti8WLLeIOPB47
-	Z91l99i0qpPNY/OSeo8Xm2cyemx8t4PJo/+vgcfnTXIB7FFcNimpOZllqUX6dglcGdOvrmUu
-	OM1fcb/3K1sDYxNvFyMnh4SAiURr9xkWEFtIYAmTxMbJQV2MXED2A0aJ91dXMYMk2ATUJHa9
-	ec0KYrMIqEhcvjGTDcQWFgiX+L7zNiOIzSsgKHFy5hOgQRwczAKaEut36YOEmQXkJba/ncMM
-	UWIr8fLBURaQ+RICvxklNi7fD9YrIrCDSeJxvyFIglngEKPEoq6TLBDXCUt83r2GDaJjN5PE
-	7R87WUE2SAgkSux8LQdxtazEzfNb2CDq5SWmnXvNDGGHSmz9sp1pAqPwLCT3zUK4bxaS+xYw
-	Mq9iFMrNTM5OLcrM1ivIqCxJTdZLSd3ECIoxEQauHYx9czwOMTJxMALdx8GsJMLbHL4pTYg3
-	JbGyKrUoP76oNCe1+BCjNAeLkjjv6o7gVCGB9MSS1OzU1ILUIpgsEwenVAOjlobl7Jd3Zmhz
-	3rwQ2dr6a5nO1PbIRQdeNd3aO9XhgObTB+y3l0R/Nf5xnu///mWzdmzZ+b6nyFijqlg7ed4B
-	94QjV1yc5ocxKhf86lcpiDO/cShvqq1czk8v8+3sZumXNn01SDll9scsY1luXdjSizPXv33S
-	dD5iWq7xuX09cdUbHm8wEWV9rMRSnJFoqMVcVJwIALBf8GafAgAA
 
-Add support for TPM for phyBOARD Pollux.
+On Fri, 2024-08-09 at 10:02 +0100, Andr=C3=A9 Draszik wrote:
+> Hi Peng,
+>=20
+> On Fri, 2024-08-09 at 07:16 +0000, Peng Fan wrote:
+> > > +static int __init of_clk_drop_stdout_clocks(void) {
+> > > +	for (size_t i =3D 0; i < of_clk_stdout_clks.n_clks; ++i) {
+> > > +		clk_disable_unprepare(of_clk_stdout_clks.clks[i]);
+> > > +		clk_put(of_clk_stdout_clks.clks[i]);
+> > > +	}
+> > > +
+> > > +	kfree(of_clk_stdout_clks.clks);
+> > > +
+> > > +	/*
+> > > +	 * Do not try to acquire stdout clocks after late initcalls, e.g.
+> > > +	 * during further module loading, as we then wouldn't have a
+> > > way to
+> > > +	 * drop the references (and associated allocations) ever again.
+> > > +	 */
+> > > +	of_clk_stdout_clks.bump_refs =3D false;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +late_initcall_sync(of_clk_drop_stdout_clocks);
+> >=20
+> > If the uart driver is built as module, this might break earlycon.
+> > Before uart driver loaded, clk disabled per my understanding.
+>=20
+> You're right.
+>=20
+> With this in mind, I'm not sure then if a generic solution is possible...
+>=20
+> I guess it has to be duplicated into the platforms after all and platform=
+s
+> can enable this if they opt to disallow uart as module?
+>=20
+> Any other suggestions?
+>=20
+> > > +
+> > > =C2=A0/**
+> > > =C2=A0 * struct of_clk_provider - Clock provider registration structu=
+re
+> > > =C2=A0 * @link: Entry in global list of clock providers @@ -5031,6 +5=
+156,8
+> > > @@ int of_clk_add_provider(struct device_node *np,
+> > >=20
+> > > =C2=A0	fwnode_dev_initialized(&np->fwnode, true);
+> > >=20
+> > > +	of_clk_bump_stdout_clocks();
+> > > +
+> > > =C2=A0	return ret;
+> > > =C2=A0}
+> > > =C2=A0EXPORT_SYMBOL_GPL(of_clk_add_provider);
+> > > @@ -5073,6 +5200,8 @@ int of_clk_add_hw_provider(struct
+> > > device_node *np,
+> > >=20
+> > > =C2=A0	fwnode_dev_initialized(&np->fwnode, true);
+> > >=20
+> > > +	of_clk_bump_stdout_clocks();
+> >=20
+> > If clock driver is built as module,=C2=A0 the will make the
+> > clocks will be always enabled, if my understanding is correct.
+>=20
+> until late_initcall_sync(), at which point it'll be disabled before the u=
+art
+> driver has probed, yes :-(
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
----
-Changes in v3:
-- remove status okay for tpm node
-- Link to v2: https://lore.kernel.org/r/20240807-imx8mp-tpm-v2-1-d43f1e8f70ac@phytec.de
+Sorry, ignore that. If clock driver is built as module, the code to bump
+the clocks is disabled by the time this code runs (due to setting the flag
+as part of late_initcall_sync(of_clk_drop_stdout_clocks)), in other words
+it will not bump the clocks at all in that case and behaviour is as before.
 
-Changes in v2:
-- renamed tpm node to tpm@0
-- removed num-cs
-- cleanup pinctrl
-- Link to v1: https://lore.kernel.org/r/20240805-imx8mp-tpm-v1-1-1e89f0268999@phytec.de
----
- .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 25 ++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Did I miss something?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 00a240484c25..09bd10627b11 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -103,6 +103,22 @@ reg_vcc_3v3_sw: regulator-vcc-3v3-sw {
- 	};
- };
- 
-+/* TPM */
-+&ecspi1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>;
-+	status = "okay";
-+
-+	tpm: tpm@0 {
-+		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
-+		reg = <0>;
-+		spi-max-frequency = <38000000>;
-+	};
-+};
-+
- &eqos {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_eqos>;
-@@ -300,6 +316,15 @@ &gpio4 {
- };
- 
- &iomuxc {
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO   0x80
-+			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI   0x80
-+			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK   0x80
-+			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09     0x00
-+		>;
-+	};
-+
- 	pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC			0x2
-
----
-base-commit: 17712b7ea0756799635ba159cc773082230ed028
-change-id: 20240805-imx8mp-tpm-3df607b1f5f1
-
-Best regards,
--- 
-Benjamin Hahn <B.Hahn@phytec.de>
+Cheers,
+Andre'
 
