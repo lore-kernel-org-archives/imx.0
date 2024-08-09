@@ -1,69 +1,68 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013025.outbound.protection.outlook.com [52.101.67.25])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013040.outbound.protection.outlook.com [52.101.67.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CEF3AC36
-	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 17:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A530386AFA
+	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 17:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723223516; cv=fail; b=LtTaoRF0eCZfNSVn/9xeRkFADzn275zCI+p/mb8MXnop0edLNVwToagV7rdIVXmBtWJzCNFzPHaRNaXRPrhS8dBUqHLQDqUolC7AWhLTWkL1dPubPwF9s5V+AXQMQhzVyjTjQAyCR/yBQUw0LTB472mAeoy11cmLYPnab2q+Soo=
+	t=1723225895; cv=fail; b=AXLhOg7y2cPNBSib2V9Y5lEfeZ+YsT1fP+oRkf9Cmy83yTTOOcpviyKPSl4WvXEzcumZeyyyFIZFMk51fB7zaD/6ZAWwntK8TqWHSOEUunYWD+U1ZOeZny49opgkTRsMaNQsTbUgp+AEOie5Gl2zopC06MGrmmibDsnseyjVb5A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723223516; c=relaxed/simple;
-	bh=HBSc8zqPkLQB4mkoyaPdrz4w/4Q/8CaRXUiSMG4DybU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=f4tA765wHFUsBPI8/cdBtljEkN81ap+UCaQXpObNc8EySJOGFEC7JubHlhuKQc0lMxVREDVkCSejQDrYr3YjEnwr8l3WosfsdlqtOkB2fHIDLIF4Vf+wknnLFNffw91Fnxtgf3px7KZdz53gTp8elQWbim2moteiv2uYZAJvK/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EUe8huNK; arc=fail smtp.client-ip=52.101.67.25
+	s=arc-20240116; t=1723225895; c=relaxed/simple;
+	bh=AzYNprX6QKGDqVV2TvMZHJHiZjCr34y71/xq4PFych4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=SpKqvhL3dMd5gc8/M4B8mne4/iJaaK9ZAs8kYHa8M/ZfSTBorZJS4rXXR4hXA4nIiiXe6O1JObPDDFRvKsml8i70rxJiomNDkLf9e5xJtsVwDRQHt2L3DEiPDnYeDGTPOInSuCb3vymwKxEESxBboj2+rW2ezlK/NrN+C9cOOp4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dyDuqlVm; arc=fail smtp.client-ip=52.101.67.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EUe8huNK"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dyDuqlVm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DBzOaHGNwThFN7IQMjaIiWboxrZWcLq/nz9PV6/oHgaYCYiPWP1tPrBAg85pB5PVCe8BGoHIwKQEaIOIjWJQ1rLDje4r4WqaFcNzgpVcE3GrgFq6GWY4UBJVJZb8jcgPre422vfeKAVHOODPtGbv5EKF8ssWQxbS2SXyQ30QVyZIt7nW4qlBqPBBuQ2nzsN8uNJlcqk8BXnsRgOoeYvWsjbbIPjnqhDB7PBQ51u5sMBK58ibXfoISUxv73d9A8okjPdRNQs1LDt8p8kSAxR8m7QC4+nxWiOO+o0YxBkkCbTHg4yoRF5uAS+GIAoke+UDd80TuxWAvuc6JdS6oJ5l8A==
+ b=fyL20g2RINjNIi04qwVQwq8iOZgc+LP4GK6zItj4PqoHUA8pRz68WPhLjVApE5vcwsHRcWYctaBxS37QoDjtbgYcW2DRbBk5y5Qi3XcLEwtM9pVW2Hn/4cby8n21s5OHG2wha5gKDAd7jziXKNWqMSjRwRaOhx/YfgkYrHWbhUQGUIvtv0o0owspsSCAs/3dH7ms9uD4npspIeT8dcUFWyYVsokVdOutZkyErZ7Tmk8e6O5B5jnDXc6jCyetc9I0lJfSbdw+I6Yj+0CYf3ui7fp4fLy4378tO/QcZFZyWu1CA502q6TwVJwWpjlUwIdSEQI7Xk8XdmpA4qMFB1AzNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=inX3uZ9dqtdeLtpiBCWaVSFQDJI+ma5zZO2ZxwI8Gos=;
- b=w+76icnViG4qfINblkuVqpBESORjvaaYCgbNMeZDX9IMfk6eiI2wgH/aWJkUFiZuO69PzL43jjWtN5a+uBsZgTRHoyTQh+/2kbbUq6qx6cpKz5CMNXEWMpdu8tYblMl2rMq2OQYza9HYRL+jlVxCVugQvaDeO6W+27PNu1Z2v15Q7zv1pIj5lm4slrzMq7xZ6L2bDr4WgVxhg7UT6yvMxzHR+8z1Pf4TAq7V6aGqMQQ11V++kblAKuc6wK0gXuPWvkNZ5TXXEtjO9iRstGcbJDgzVPzSXX+FflP12feRkjjqKN/VEo4lL5DIfCn+dK9samW00FzEsSIqJ2Y9VfzJtw==
+ bh=2CTVRmxbByW2YRbrohBxDwhpt7SeRR15knglV8wjIpc=;
+ b=RB/KwfJ1dmmJk6pLIL/FxaN8jjou0SY94gHw6gJzKq+zpjwqINANo+muPajdwekmbQbtnz7gOns7uDlEjl2AACKFFSCl2Nrv9D5LpYyc2M4RnLMSStz0DJ9TXVXMj8Lxkp2PotC/HeWakRPmNPYQKgnubm3sLxNoQdmH5f7FWaluK5O8oPEN8VsKjs+HwViy3QIBlmv0htNoLAoMczv58MzfxANpQRAHWp3cJDmTuEFxjQFo2r3eRu0CimMDzhYKEquhmDTEFYQwbHfHbLpiOlbV6SL3Ot+p5S4haCXZpzcfviClYmFR3+5WHbG9TxIbsP+LFvliX/lLUkBJAReggQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=inX3uZ9dqtdeLtpiBCWaVSFQDJI+ma5zZO2ZxwI8Gos=;
- b=EUe8huNKlOqKiEFqMPH68/IUxO9p0+XhRbwU/s+ILEpBV9+AuvWBbVnOA2WUoWI2U5UAa4W6AObNUgdyuTNlc2KcAa1CKqnrAgCAIwJWkvcKGqFI5B10160fbnINfNt43gEzZG42iAJeuEUDjrJMrz28VrwUSgXexHJVZG50WRrKoX1t4hsbhdcuH3WlYWfFAI0PA16PYys+T0BNwfovL2q56sAXXocvDIPOrZCsB1mAydVvb8pYMUcxW9LGM+F882YLgy8QdhQf07URvZvNRIBTbeCNi3akQlJbLyhWfQil69d49Z1lJmkNGtITbg1AGJ7b2kJpQmrNv6ihdxAfgw==
+ bh=2CTVRmxbByW2YRbrohBxDwhpt7SeRR15knglV8wjIpc=;
+ b=dyDuqlVm5zaTaDwTGEowOpeAthsoD8ZnGi5dG9Cg3Cv3/f4en0PePBg4SeOOCeBYsdSbFw8KxBRx9+u1H/CYaskM7lmAz8mDE0mdbXvSNZzQ0YfLv05VnSuOYEQpUjjsJiGf707zh6tR1qxH6eFHhtgJeafeQK9sMxjf4f0iXHQQL0jfqPeltuG5jWQx7TpS0QBa7RSk1MTfmLeb4YJGnKDdcoM3ulAF0qGM9TWYVjbI/nM7VvYd7B+HPLwWqbI3gn1M9OVWwnGsxJ9H/BOfyKF/IPrmSW4aBvzkasMMxpIuDq4DyO2+2KFlCnwQcw90RYEVefBZdf2WhTkdGqEofQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8193.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::6) with
+ by AM9PR04MB8398.eurprd04.prod.outlook.com (2603:10a6:20b:3b7::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Fri, 9 Aug
- 2024 17:11:50 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.15; Fri, 9 Aug
+ 2024 17:51:28 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.023; Fri, 9 Aug 2024
- 17:11:50 +0000
-Date: Fri, 9 Aug 2024 13:11:42 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+ 17:51:28 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string
- to fsl,ls2088a-pcie
-Message-ID: <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
-References: <20240808153120.3305203-1-Frank.Li@nxp.com>
- <20240808-frosted-voicing-883f4f728527@spud>
- <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810>
- <20240808-linoleum-evasion-ad7111a2afc4@spud>
- <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
- <20240809-freewill-compactor-4f441a4a60bb@spud>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240809-freewill-compactor-4f441a4a60bb@spud>
-X-ClientProxiedBy: SJ0PR03CA0090.namprd03.prod.outlook.com
- (2603:10b6:a03:331::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list),
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: soc: fsl: cpm_qe: convert network.txt to yaml
+Date: Fri,  9 Aug 2024 13:51:07 -0400
+Message-Id: <20240809175113.3470393-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0165.namprd03.prod.outlook.com
+ (2603:10b6:a03:338::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,133 +71,519 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8193:EE_
-X-MS-Office365-Filtering-Correlation-Id: 264189ee-e1be-438e-c000-08dcb8965bda
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8398:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56dc0c10-2122-49e6-7bd0-08dcb89be53e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|376014|7416014|366016|52116014|1800799024|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?exXsO3kqnPNcP4/8usa+5A986r7fImdjbhQwUOjnuPJiGfA/VQVRj9/yVvP3?=
- =?us-ascii?Q?R618bDK680M3sUpaOv+4PTy/kbpqwqcyQe8BOVRdZpKRn4UbPLVP7tBBscjy?=
- =?us-ascii?Q?PIpGXLQngnjITlG3c8uqhTgDS8SX7UOAXYQUnJLofZ8ydyeAYa5etbdCjLgb?=
- =?us-ascii?Q?eB1lmwh2P78I3pWnciEcAGxNnWVuaAyu80KYicGWEGXe6Sd1Nm/T3Ak9uc/R?=
- =?us-ascii?Q?TvenCui9FzJqrcjIdkhgB7nffq7wDsY8LqZqYMU3CM+TR59l6nbVl5lFIGS7?=
- =?us-ascii?Q?5ziAtFSQrQkVOCFhH70QfLGsXkztGJUz59eT3ug7RuXznKVBEeAXR/NJK23l?=
- =?us-ascii?Q?f/gE31XqAYSQYveMfFOkCbfYjKxRa8IzikuhwOOZfVuN3HwrT+FwudkzQUoK?=
- =?us-ascii?Q?8mJjhCEgKrZ2+CH2gT/0t6b4F4VThbnxIdbpoSCv0LDYOIQE+IB58ALgRUAy?=
- =?us-ascii?Q?HhSn/wTSousuW2rrz2rDJQQ/HCCceTsuD7JTwuOAPmlZZV/qJDdPKgq/aQNc?=
- =?us-ascii?Q?OZ4dAJI0G1TB36hhPDwv8RyI++wu6h3dL/WUW7p+rrQZsFdJjQLe4PQgR6AA?=
- =?us-ascii?Q?s+WtUp1/sdhPreQcFHC4Vgvbg8Vkn242/2SIHDcoexHkEgtvIfK9JTyGaAQH?=
- =?us-ascii?Q?jOMXSB0TR5ELbNz/ZiISQCxTNm4NaH0luIZHT3SydAYXJtiUREQx4u6rbTxQ?=
- =?us-ascii?Q?Za9hM/NT6u2MDEqYZ7/lxdmBxs4hu8ja62FelGpNOhUl9nghyGP06pJPAG67?=
- =?us-ascii?Q?hLU9jHRMBkpFVUrJWgCeqjAhkEjotVhzeeF4utnRQcJ853amTn1qZ1VVgRK9?=
- =?us-ascii?Q?1MZQo3deJkfpQNXVH+5xoW19NAitrVYxHp/rJPV9MQsIpZwgqx5T37YyHklG?=
- =?us-ascii?Q?1pkbr8karcRtq09j80fdyrkxLNy0kelD48kqjgpb5b7Npm9lA26f93lu1+Rc?=
- =?us-ascii?Q?ssnRFMbY708h+X52EvGNeQKRXpYC6/0ymAgw1QVWGbsVBHVHaVo68I7nWlcB?=
- =?us-ascii?Q?02QnVswGtrjkjQe5yIJR7ifwFsOg7PZ0SKiVGd3HCE44xhpf87jZxLCcZxE/?=
- =?us-ascii?Q?dxhEy3oNYhBVVxMamdCus8etXVPpXxCrby5UvILrCTv7CMG0BYfPS+cfunnv?=
- =?us-ascii?Q?YFoVvjMFWrgFMueyeHrhfyNsPWsiQ5wBz5I/3a+cYqrMc7lsHZoc5bF49A7r?=
- =?us-ascii?Q?pc/JI1Us6fJxJh+q0RIK0E4RYeUbz4oLsV9Yh5PtYEV6s1jwOJyiRZHCsqqa?=
- =?us-ascii?Q?Y6QIWzEKOgC0pr4iR7TJTsfa9HafdrA+RcO29r6oH1iK2E8yyX7jYplQUcaS?=
- =?us-ascii?Q?ylYqtgDvVNyaAnzuCrldqwHAL2GyeVliLmCvrrT5MVho0pz2JPwvodlQbTm3?=
- =?us-ascii?Q?K6ldT1U2Go9dpEvbC8f8LeaADLmOHu+qR3uzgZxGM2UNl72DBg=3D=3D?=
+	=?us-ascii?Q?dMhbCim6LMVFSvjfuq1cwNmA5UEXMEZP+IqUmgzCAVQAfDjueqr4t5xNcSpW?=
+ =?us-ascii?Q?90iOR5dGuyepMUflUy+CZyaXnto5/WvRx8+HyYRLd/dxo1WcvEAURFYfIETH?=
+ =?us-ascii?Q?LZq/ZD7Qq2SLOjITqwQe0DGLtidgvxfVTtvaKd6t91elqNiOwUkPdx7dktI2?=
+ =?us-ascii?Q?1bIPLqNVzT/PyNqVce4Ui+bpdKDKD4D3fv+RexEx+c3vTu8JYKmEhMz+OkW9?=
+ =?us-ascii?Q?6jeM/CK84dZRFLx9rBEifOg6SDorKSxAJm2BJFeN+/2TvR06tqgUzKt053vb?=
+ =?us-ascii?Q?u52PE2pGckHdbezWE1HBjD3t3lG2s9Zxy0/NdrjP+XPwoPg308aEurWOGpuf?=
+ =?us-ascii?Q?GYyGv/rh4d2Hnut3G82XjqN6/vE48HsnXrKUN7mh+1VLRv2JiD2LXpEYHeoM?=
+ =?us-ascii?Q?8C4gUO+nCkeMs58bjHp6vSFBqE2S3zU5uJEY6dHNuf5c7mnfXWNk2iqilMFw?=
+ =?us-ascii?Q?BB/kTiYVAIcnShGRDR7KkpTB2prILTV2mujzzmaZyFQYLIrOhc3yzBNQrd5F?=
+ =?us-ascii?Q?CnH8aQLzfps7rI0/pvGNZVCslOywDH4OvIruqqfNobKPIn9afUzAFmp5N8Ru?=
+ =?us-ascii?Q?+pcIU3JAaqwZxuqaXkK/4ociWjsbEuH/UPWKY3Se+gepYbAKYpw+CifQpn/z?=
+ =?us-ascii?Q?XDv+Nhq0FDSQLipLrVQ9CRUf7QlKsAibp1Da/BwCYMfzgTD7TnQfMunjfyuR?=
+ =?us-ascii?Q?GHvztIVtFLTEr4ASaq3yohoet8f9eJsPTS0a8NcBnAnKw4/AnIeEUffstLNk?=
+ =?us-ascii?Q?SuERvb9SZ7lQFzq/gc2pXLVecO1Wf/LAKO7V62i/YQnfC90VN9DdhiEdDGpL?=
+ =?us-ascii?Q?WfhdU5GGLPXlXjIgIPc6/1rYbptTEiH+Oi4TydPgrwtMxs2dkwPpez6+fVmS?=
+ =?us-ascii?Q?fYsy8zLFKlGBTgWVmaLZFGXOpeTSWIG1sCVcVQOF2GfchGV+3na5mOENHqVn?=
+ =?us-ascii?Q?B06HJdhiWQxx7d7BPf94ihLyyoCPGed6bnBYO/Qp1LP51ZpePGhP7gL2/w/4?=
+ =?us-ascii?Q?/J3cAE2ErU3XNqwEouxbdbdAJrJexj4qE3lfO1pAkfZTESntCyTds9ZipYdA?=
+ =?us-ascii?Q?NBGnsySUOeteTcYkvH5Zxa7waBSVyjzS/HD2Mor2YjARJZE00QCNZYOga15q?=
+ =?us-ascii?Q?feG3EyXMWXmpD9zV/MRN0j+3J0UqXYAFusSoE+KPswS2DlOXEhXXAMIcT4rj?=
+ =?us-ascii?Q?bsB51snazFmTAk9ZT7BwG7Ghgz6crAq560DOEDfd3tXg7XGQ5rn+/uNvyKe+?=
+ =?us-ascii?Q?1ffRjEaoOCeorwKPbtZ/p65aZbzXMXpDGPeGge3yJmjV66q94WRc3WPQMZP3?=
+ =?us-ascii?Q?+TSpLqRQTVI78zr5dwymLZGELUwqDR3UitXU4s+wK0npg9LiXzxFv8ehTMQp?=
+ =?us-ascii?Q?M4BoPmo=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(52116014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mLUCTb4TfL2sVkYQKMJwC6vfRwcAqnjjJ1Yg2q87Cfeo5WKp4rmVpRQQZCdU?=
- =?us-ascii?Q?kvKut3ALJmFNmbxV2403Ve8msgjiC7k7sIXgC/qOPFUsYUFISmuRmaeQN1eA?=
- =?us-ascii?Q?DUc/oJWwPz472+qwGOl6Dtg3L44/7cYsR4ZPWP1n50Pzeq1bdtxkkyRuEj7d?=
- =?us-ascii?Q?Qw31zlfmo5n5u0iAEguVIfKDrntvVAX3ti5nArh2nEGer5njjzciwRy6tcPc?=
- =?us-ascii?Q?pNm5TQuu8OQWHbguOaUA3WZd5jGsjNPmexDq5UnosSb1UlXFhfDMHUocnhA6?=
- =?us-ascii?Q?/o0WMi1Mx5qLdtgmpHcy9VJWaTD81/UfwRXLzjx3vWbtCgeCbWdzZEcMVwSi?=
- =?us-ascii?Q?vqCcCd5m8oQldhpGUfjdb/nXzBx124UzHk0ZoVEosNHz43IjvFanSXX2WF4/?=
- =?us-ascii?Q?ziVkx+x5pMvRVtmG0GxYQa4V64hT3+y1ilkf0EJHd76Z7kqAfsBJYErGi2Jw?=
- =?us-ascii?Q?Y8w3cZWtyvd4UA3zXIDWy6/hwqer5NxEAaz30d6QmUQkzAPyPPdikb1zGMtU?=
- =?us-ascii?Q?XeFRPuMk65y9hOkR5fQ/k707Ru1v079mUm4a3xbjL+PSgcQiBxTbd2IEAE29?=
- =?us-ascii?Q?SSrWI+qY98Mk03VsRAkUg0XWUonL3aKYqZy+M//k5Z+D0ao1f4xu0Evj5Vie?=
- =?us-ascii?Q?8FfKhgBht/ie/FIk/48UUb2m19uv1YBlVF1YaAcJvHme6Z4gJuQf/lzpujgI?=
- =?us-ascii?Q?Rh1QD6jg8z4aY89BfaINO1UyRYnMQEgFvt56fC4NBd59Nh5BLn5kJxJRr0h7?=
- =?us-ascii?Q?vQ/q4eP4JK0Uv0hECSg0o2xS43WS63gaLMNPBJKuI6t3yLonlW7F7bEwFP/S?=
- =?us-ascii?Q?AmF9Rhb3cf5BxmV/nUzR+6qQ8z0ghDOSFT2Z8IvvlSq0ou/gvC49f/lJo/uT?=
- =?us-ascii?Q?PpaVrCiIUejorj1hLWF/up1dKHgb7QQuuJh9eoTZWuRUR79VnOE1+3/ooQb7?=
- =?us-ascii?Q?abhlepOT94s1MiugqrQANLTDzLZ8kONqJVdFKPrVfo/usV17iMXa0G2jaOds?=
- =?us-ascii?Q?uGzeqWU7l3k22Z6u1Q70kRd1Znw5WB+eDRAGq/S8015hdjlBY6w25spoB/b/?=
- =?us-ascii?Q?te4A7lIo27njOPnKEySERr1Oy8QRqtkgDz+4RE1c0G9ZDnrwBy/gQrvHyWA2?=
- =?us-ascii?Q?GIPt6rtDy0uN3tPKBD4NphSyqX0YRRS5flPXGs09FiQX2xZx+4TfAXNUfmFJ?=
- =?us-ascii?Q?cGU7sXWUd0Zu2/gbvP9VaUC1b/+zg4LctTQwxpwFvuJYSjkBpuwshHsogjly?=
- =?us-ascii?Q?5zAW5U+FY+funSKKQzUkJea3WkIslmiBTB0CXYzM8Ah5UpLqODnMF0duZP7/?=
- =?us-ascii?Q?JAju7O3sVyQ2OeWQ7hvlRkas1D8lzPA7Gm+dUmb4pUT/G78KQKcWX/LA/v52?=
- =?us-ascii?Q?eNb1iA9YiEGJDyR5h4pXf4+HaZpVL3uMJDvNnhk8bRN30PbQFKD1UjzxE2hT?=
- =?us-ascii?Q?TP6EuAtdCtIQMc7vyL+8WHQb7+zVFrLL5tTd+/PJEQDVoscylZ2db0m0Vvpm?=
- =?us-ascii?Q?8LGrxnZ+ip8XVPk/8jisg480QYZ1K1g+vuquPUSA2CcNYNhDvfhVIkDW2D8l?=
- =?us-ascii?Q?cZxdYUcOWFS1P4hJTq9egQprSKHKCm9rFNWhhUIo?=
+	=?us-ascii?Q?fNg/7PLtaPxOWi9M1lf7G8NDtACYkattK2x2VNevJt/xg3qxLWvYQjoJWeYn?=
+ =?us-ascii?Q?oXxZALrGe6uKTEbv8EwPf2XWnGwloDp6Sv9PPDIM9UbXxe+iF68KVb+aWZW5?=
+ =?us-ascii?Q?OzHz0udfyHJOb0wYloiCNLtC10ZZRHUXCLrBvMBoocE65ci1wIuc/WSrpjLL?=
+ =?us-ascii?Q?78/aht/W8aF093ItDq9hB+ka6/XBEBo0ETsmprBS/5Cbhg1ToH7S381HKVY8?=
+ =?us-ascii?Q?KpaRsbTWXCzb6xv/pob+iA148Wu4lL5zuHXCWd7+gi4ZxA9+khumKwjIiouq?=
+ =?us-ascii?Q?w7OiIR2Lnrvz6prKkQQmeOfK8SDM4rJ/9NSHd3RljHEC8S1V7Ohy1Zue+Aws?=
+ =?us-ascii?Q?9EwiKtnRNfI9MxIWmYxNnjhJHjjOBn9KfOLep2IsYmuVdy4oW9m1ITpnvWbY?=
+ =?us-ascii?Q?V4wE40uo5rhImxDby6qFkxDI7goTfXcMnPlqKGNgFJtFnFMwmhplDpxtqTph?=
+ =?us-ascii?Q?k9QAkmK7SA+T3h4XYWMlAB/C6KlDYWxaQ6VLWdVZUbHLwkTN5odi/HOgVtkO?=
+ =?us-ascii?Q?4vUbs+2rP+e30nbsSPl8VUI6cmNU9VY+fqpCwHCN218ssOTU30p3HiKeH69A?=
+ =?us-ascii?Q?E5bQcpQ7Lbnfphigqy8GQmXRtdKQUMl8UyaEKvpG4Z+7vdmcIBh1yV391cu1?=
+ =?us-ascii?Q?M8V/psC+I4uESKXvMgSD5a8HwuqfxdtxL4+hfi9WuqzTQNyxB9dnHs4xQYSu?=
+ =?us-ascii?Q?gSSYJGJwdWbHH1WV5nYIitqS6HCQTbtrLaxBvoC1Ro1rDFQ9Eg90TzPZf2wN?=
+ =?us-ascii?Q?nvxgWY+JPAYjmoO/gYbLWEXv44KDSLbJCMfexmEwhfyEeOImNObaatr6zckn?=
+ =?us-ascii?Q?bjNmqp0OLxKatIrJD3XjRXaq163cuhIFlm3Tz3COzMrmt6CT9VjlC1bWFL+D?=
+ =?us-ascii?Q?94ZVPtrTvqQIGOLAjfJFDxqo1FEPHTkvQUgVGJlrTlOLj8sUl5wGg2fbT6Du?=
+ =?us-ascii?Q?nB34BgSV9hOEflqbM+brpDpvypYCEABep2fMsqxKtIYuIxUgu57pE02IB2fl?=
+ =?us-ascii?Q?Punmf4Kr1Tj9oAyKrSQvBCxKnSZzMANGDutZO32Nu1I9o7qKmN5ay72MqjMm?=
+ =?us-ascii?Q?dHbB7JOJqN1+7GIqSmEU0t2xeiFYpa2X212swK1nqy5QtwgL7+JSyUNwATLA?=
+ =?us-ascii?Q?gMsECpxljiTHDC32D/W8aGS3md1WkE+G+UzsWqRF3fhT9RIklLivx5MCCuk6?=
+ =?us-ascii?Q?WiwihidBrQ+xJ0nFRN4pkKj5y4mdaMV7MddP+y+RLqB40mtntzacP7JUmdaK?=
+ =?us-ascii?Q?gN7bZXUPJIeFGyqQ6slIpPy9dCOJRpA1iToJJ0Iq+H4WZqvYVGqCfoRvj05G?=
+ =?us-ascii?Q?iu1m3n3n5TbMd+CLbufhJ2YGy6z+lU3y46VuWnNvX0trEZIDHa4kCT/qXrSr?=
+ =?us-ascii?Q?cQV5YfW5JN0Y8z3cdt6W9OsaUdn+q0lve7w5yu6wY9htaXTXn1q+C2TGFwnL?=
+ =?us-ascii?Q?nEg6S3ROivWY+Kxwe/82vQ5nBRtPhjU4DPIhr39VYQi1wPaS2Moe7DzktLek?=
+ =?us-ascii?Q?Wsw/KV2oSzfvRhrYoSdDG+fcYyCzal+fdftN5woU9wGjws2f5+NIoN1mQTN/?=
+ =?us-ascii?Q?h+3KmQgFSHvIJxtVdYCbgcJXn7oyCRcXPh5UmUcu?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 264189ee-e1be-438e-c000-08dcb8965bda
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56dc0c10-2122-49e6-7bd0-08dcb89be53e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 17:11:50.6621
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 17:51:28.7816
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ch9LsiQ0CEsaxKrBNhQjrO4IgdSlhDFXy9VXdEpq1nUnK9CEwrgkBCYpC8yXroRRpbUSNP7wrJpRqLybFY6scw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8193
+X-MS-Exchange-CrossTenant-UserPrincipalName: aTvI6yCCdjui9xYuNenKdIfvh2V/JvE4Dyrts6p2Oqfq7qNy21CWRzB/bvkG1AQNUx0vV9bMRpSvUVzxCkhS5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8398
 
-On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
-> On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
-> > On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
-> > > On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
-> > > > On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
-> > > > > On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
-> > > > > > The mass production lx2160 rev2 use designware PCIe Controller. Old Rev1
-> > > > > > which use mobivel PCIe controller was not supported. Although uboot
-> > > > > > fixup can change compatible string fsl,lx2160a-pcie to fsl,ls2088a-pcie
-> > > > > > since 2019, it is quite confused and should correctly reflect hardware
-> > > > > > status in fsl-lx2160a.dtsi.
-> > > > >
-> > > > > This does not begin to explain why removing the soc-specific compatible,
-> > > > > and instead putting the compatible for another soc is the right fix.
-> > > > > Come up with a new compatible for this device, that perhaps falls back
-> > > > > to the ls2088a, but this change doesn't seem right to me.
-> > > >
-> > > > It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, which are
-> > > > totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pcie.
-> > > >
-> > > > Previous dtb can work just because uboot dynamtic change fsl,lx2160a-pcie
-> > > > to fsl,ls2088a-pcie when boot kernel.
-> > > >
-> > > > fsl,lx2160a-pcie should be removed because Rev1 have not mass productioned.
-> > >
-> > > Please re-read what I wrote. I said to come up with a new compatible for
-> > > this device, not fall back from the existing fsl,lx2160a-pcie to
-> > > fsl,ls2088a-pcie.
-> >
-> > According to my understand, It needn't add new compatible string if nothing
-> > difference. for example, it use fsl,vf610-i2c for all i2c without add
-> > new soc-specific fsl,lx2160-i2c.
->
-> No, you should have soc-specific compatibles regardless. Just because
-> you got away with it once, doesn't mean I'm not going to complain about
-> it here!
+Convert binding doc newwork.txt to yaml format.
 
-Rob:
-	What's current policy for this? Not only for this one. If new SOC
-appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), there
-are bunch of IPs, Do we need add fsl,imx10* for everyone, which most part
-is exactly the same as old one and bloat binding doc.
+HDLC part:
+- Convert to "fsl,ucc-hdlc.yaml".
+- Add missed reg and interrupt property.
+- Update example to pass build.
 
-	I remember that I got a feedback that required provide the
-difference during I try to add new compatible string. I am sorry, I can't
-find origial dicussion thread.
+ethernet part:
+- Convert to net/fsl,cpm-enet.yaml
+- Add 0x in example, which should be hex value
+- Add ref to ethernet-controller.yaml
 
-	Anyways, a clear guide line will help us greatly.
+mdio part:
+- Convert to net/fsl,cpm-mdio.yaml
+- Add 0x in example, which should be hex value
+- Add ref to mdio.yaml
 
-Frank
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+This one is quite old. The detail informaiton is limited.
+---
+ .../devicetree/bindings/net/fsl,cpm-enet.yaml |  59 ++++++++
+ .../devicetree/bindings/net/fsl,cpm-mdio.yaml |  55 +++++++
+ .../bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml | 140 ++++++++++++++++++
+ .../bindings/soc/fsl/cpm_qe/network.txt       | 130 ----------------
+ 4 files changed, 254 insertions(+), 130 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,cpm-enet.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,cpm-mdio.yaml
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/network.txt
 
->
-> > So far lx2160a-pcie is the same as ls2088a-pcie.
->
-
+diff --git a/Documentation/devicetree/bindings/net/fsl,cpm-enet.yaml b/Documentation/devicetree/bindings/net/fsl,cpm-enet.yaml
+new file mode 100644
+index 0000000000000..da836477e8bad
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/fsl,cpm-enet.yaml
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/fsl,cpm-enet.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Network for cpm enet
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - fsl,cpm1-scc-enet
++          - fsl,cpm2-scc-enet
++          - fsl,cpm1-fec-enet
++          - fsl,cpm2-fcc-enet
++          - fsl,qe-enet
++      - items:
++          - enum:
++              - fsl,mpc8272-fcc-enet
++          - const: fsl,cpm2-fcc-enet
++
++  reg:
++    minItems: 1
++    maxItems: 3
++
++  interrupts:
++    maxItems: 1
++
++  fsl,cpm-command:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: cpm command
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++allOf:
++  - $ref: ethernet-controller.yaml
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    ethernet@11300 {
++        compatible = "fsl,mpc8272-fcc-enet",
++                     "fsl,cpm2-fcc-enet";
++        reg = <0x11300 0x20 0x8400 0x100 0x11390 1>;
++        local-mac-address = [ 00 00 00 00 00 00 ];
++        interrupts = <20 8>;
++        interrupt-parent = <&pic>;
++        phy-handle = <&phy0>;
++        fsl,cpm-command = <0x12000300>;
++    };
++
+diff --git a/Documentation/devicetree/bindings/net/fsl,cpm-mdio.yaml b/Documentation/devicetree/bindings/net/fsl,cpm-mdio.yaml
+new file mode 100644
+index 0000000000000..b1791a3c490e2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/fsl,cpm-mdio.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/fsl,cpm-mdio.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale CPM MDIO Device
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - fsl,pq1-fec-mdio
++          - fsl,cpm2-mdio-bitbang
++      - items:
++          - const: fsl,mpc8272ads-mdio-bitbang
++          - const: fsl,mpc8272-mdio-bitbang
++          - const: fsl,cpm2-mdio-bitbang
++
++  reg:
++    maxItems: 1
++
++  fsl,mdio-pin:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: pin of port C controlling mdio data
++
++  fsl,mdc-pin:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: pin of port C controlling mdio clock
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: mdio.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mdio@10d40 {
++        compatible = "fsl,mpc8272ads-mdio-bitbang",
++                     "fsl,mpc8272-mdio-bitbang",
++                     "fsl,cpm2-mdio-bitbang";
++        reg = <0x10d40 0x14>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        fsl,mdio-pin = <12>;
++        fsl,mdc-pin = <13>;
++    };
++
+diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml
+new file mode 100644
+index 0000000000000..64ffbf75dd9d2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml
+@@ -0,0 +1,140 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: High-Level Data Link Control(HDLC)
++
++description: HDLC part in Universal communication controllers (UCCs)
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,ucc-hdlc
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  cell-index:
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  rx-clock-name:
++    $ref: /schemas/types.yaml#/definitions/string
++    oneOf:
++      - pattern: "^brg([0-9]|1[0-6])$"
++      - pattern: "^clk([0-9]|1[0-9]|2[0-4])$"
++
++  tx-clock-name:
++    $ref: /schemas/types.yaml#/definitions/string
++    oneOf:
++      - pattern: "^brg([0-9]|1[0-6])$"
++      - pattern: "^clk([0-9]|1[0-9]|2[0-4])$"
++
++  fsl,tdm-interface:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Specify that hdlc is based on tdm-interface
++
++  fsl,rx-sync-clock:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: rx-sync
++    enum:
++      - none
++      - rsync_pin
++      - brg9
++      - brg10
++      - brg11
++      - brg13
++      - brg14
++      - brg15
++
++  fsl,tx-sync-clock:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: tx-sync
++    enum:
++      - none
++      - tsync_pin
++      - brg9
++      - brg10
++      - brg11
++      - brg13
++      - brg14
++      - brg15
++
++  fsl,tdm-framer-type:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: required for tdm interface
++    enum: [e1, t1]
++
++  fsl,tdm-id:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: number of TDM ID
++
++  fsl,tx-timeslot-mask:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      required for tdm interface.
++      time slot mask for TDM operation. Indicates which time
++      slots used for transmitting and receiving.
++
++  fsl,rx-timeslot-mask:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      required for tdm interface.
++      time slot mask for TDM operation. Indicates which time
++      slots used for transmitting and receiving.
++
++  fsl,siram-entry-id:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      required for tdm interface
++      Must be 0,2,4...64. the number of TDM entry.
++
++  fsl,tdm-internal-loopback:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      optional for tdm interface
++      Internal loopback connecting on TDM layer.
++
++  fsl,hmask:
++    $ref: /schemas/types.yaml#/definitions/uint16
++    description: |
++      HDLC address recognition. Set to zero to disable
++      address filtering of packets:
++      fsl,hmask = /bits/ 16 <0x0000>;
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    communication@2000 {
++        compatible = "fsl,ucc-hdlc";
++        reg = <0x2000 0x200>;
++        rx-clock-name = "clk8";
++        tx-clock-name = "clk9";
++        fsl,rx-sync-clock = "rsync_pin";
++        fsl,tx-sync-clock = "tsync_pin";
++        fsl,tx-timeslot-mask = <0xfffffffe>;
++        fsl,rx-timeslot-mask = <0xfffffffe>;
++        fsl,tdm-framer-type = "e1";
++        fsl,tdm-id = <0>;
++        fsl,siram-entry-id = <0>;
++        fsl,tdm-interface;
++    };
++
++  - |
++    communication@2000 {
++        compatible = "fsl,ucc-hdlc";
++        reg = <0x2000 0x200>;
++        rx-clock-name = "brg1";
++        tx-clock-name = "brg1";
++    };
+diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/network.txt b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/network.txt
+deleted file mode 100644
+index 6d2dd8a31482a..0000000000000
+--- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/network.txt
++++ /dev/null
+@@ -1,130 +0,0 @@
+-* Network
+-
+-Currently defined compatibles:
+-- fsl,cpm1-scc-enet
+-- fsl,cpm2-scc-enet
+-- fsl,cpm1-fec-enet
+-- fsl,cpm2-fcc-enet (third resource is GFEMR)
+-- fsl,qe-enet
+-
+-Example:
+-
+-	ethernet@11300 {
+-		compatible = "fsl,mpc8272-fcc-enet",
+-			     "fsl,cpm2-fcc-enet";
+-		reg = <11300 20 8400 100 11390 1>;
+-		local-mac-address = [ 00 00 00 00 00 00 ];
+-		interrupts = <20 8>;
+-		interrupt-parent = <&PIC>;
+-		phy-handle = <&PHY0>;
+-		fsl,cpm-command = <12000300>;
+-	};
+-
+-* MDIO
+-
+-Currently defined compatibles:
+-fsl,pq1-fec-mdio (reg is same as first resource of FEC device)
+-fsl,cpm2-mdio-bitbang (reg is port C registers)
+-
+-Properties for fsl,cpm2-mdio-bitbang:
+-fsl,mdio-pin : pin of port C controlling mdio data
+-fsl,mdc-pin : pin of port C controlling mdio clock
+-
+-Example:
+-	mdio@10d40 {
+-		compatible = "fsl,mpc8272ads-mdio-bitbang",
+-			     "fsl,mpc8272-mdio-bitbang",
+-			     "fsl,cpm2-mdio-bitbang";
+-		reg = <10d40 14>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		fsl,mdio-pin = <12>;
+-		fsl,mdc-pin = <13>;
+-	};
+-
+-* HDLC
+-
+-Currently defined compatibles:
+-- fsl,ucc-hdlc
+-
+-Properties for fsl,ucc-hdlc:
+-- rx-clock-name
+-- tx-clock-name
+-	Usage: required
+-	Value type: <string>
+-	Definition : Must be "brg1"-"brg16" for internal clock source,
+-		     Must be "clk1"-"clk24" for external clock source.
+-
+-- fsl,tdm-interface
+-	Usage: optional
+-	Value type: <empty>
+-	Definition : Specify that hdlc is based on tdm-interface
+-
+-The property below is dependent on fsl,tdm-interface:
+-- fsl,rx-sync-clock
+-	Usage: required
+-	Value type: <string>
+-	Definition : Must be "none", "rsync_pin", "brg9-11" and "brg13-15".
+-
+-- fsl,tx-sync-clock
+-	Usage: required
+-	Value type: <string>
+-	Definition : Must be "none", "tsync_pin", "brg9-11" and "brg13-15".
+-
+-- fsl,tdm-framer-type
+-	Usage: required for tdm interface
+-	Value type: <string>
+-	Definition : "e1" or "t1".Now e1 and t1 are used, other framer types
+-		     are not supported.
+-
+-- fsl,tdm-id
+-	Usage: required for tdm interface
+-	Value type: <u32>
+-	Definition : number of TDM ID
+-
+-- fsl,tx-timeslot-mask
+-- fsl,rx-timeslot-mask
+-	Usage: required for tdm interface
+-	Value type: <u32>
+-	Definition : time slot mask for TDM operation. Indicates which time
+-		     slots used for transmitting and receiving.
+-
+-- fsl,siram-entry-id
+-	Usage: required for tdm interface
+-	Value type: <u32>
+-	Definition : Must be 0,2,4...64. the number of TDM entry.
+-
+-- fsl,tdm-internal-loopback
+-	usage: optional for tdm interface
+-	value type: <empty>
+-	Definition : Internal loopback connecting on TDM layer.
+-- fsl,hmask
+-	usage: optional
+-	Value type: <u16>
+-	Definition: HDLC address recognition. Set to zero to disable
+-		    address filtering of packets:
+-		    fsl,hmask = /bits/ 16 <0x0000>;
+-
+-Example for tdm interface:
+-
+-	ucc@2000 {
+-		compatible = "fsl,ucc-hdlc";
+-		rx-clock-name = "clk8";
+-		tx-clock-name = "clk9";
+-		fsl,rx-sync-clock = "rsync_pin";
+-		fsl,tx-sync-clock = "tsync_pin";
+-		fsl,tx-timeslot-mask = <0xfffffffe>;
+-		fsl,rx-timeslot-mask = <0xfffffffe>;
+-		fsl,tdm-framer-type = "e1";
+-		fsl,tdm-id = <0>;
+-		fsl,siram-entry-id = <0>;
+-		fsl,tdm-interface;
+-	};
+-
+-Example for hdlc without tdm interface:
+-
+-	ucc@2000 {
+-		compatible = "fsl,ucc-hdlc";
+-		rx-clock-name = "brg1";
+-		tx-clock-name = "brg1";
+-	};
+-- 
+2.34.1
 
