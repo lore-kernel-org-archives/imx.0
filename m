@@ -1,124 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702F12E7E;
-	Fri,  9 Aug 2024 07:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF57817557C
+	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 07:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723188463; cv=none; b=kN4YumXb+mdrc03R6699cQJqMQ08WHPmgXwCmXT/d4h3IXTcxa6HUgk+Rfj29wxwaSRIiy62aDkqOpnNKjkdGBAfNQcFh1xRpDvjMiOAkDzr2/Oyih33c1atLEnKEqo6OpTY6jHhmGpMYkRzs3D03Bz8uPOBRYsWi3yc7yhay7A=
+	t=1723189877; cv=none; b=D5b/fwA+3Om+Qs09hkz1olEZVrF4pAAwi6iltJSKd47Eomo0qqLIhglER/Hvgwz6UPHiTm0+Syk0lFSziYeG9rHGGp90diQ/uuLCuwWDMcPizLAi8zot3mZGTy7SHMTfuNh153dLrPabpGbYxhgDXu3irbi1sOh0MAMwEpLWogk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723188463; c=relaxed/simple;
-	bh=LNqBEfIXeXntjTkyjNJ1v5g2yx4fDI2lvRYLKppspkE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ddjnhxMhLdm2mWCOipB/HpDmGl8EQSG7HR1yisHOqFJ/4Gpjywju6AdfXMuy4d1gzMs8tucKn/qbyE4hAo3i4UxexdYA5TN2uV4LDk/grcTpGcQc8S5MXxIvX+lQ/G32YZe/01l6uFuZA4GSwOcIK4T1uD1Fb/azRm6VM8uZRpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYthOLqU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723189877; c=relaxed/simple;
+	bh=TCk5Z2tCAqFg1AiRweTnC7ps7kgmg6HBmxa0ONe3/dM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lL5SN/pUxBt9NvvILMEpFN1s0Ssun7D83NbrnQ8gY4SaACecCy01E5VRNzshlgiwP8qUs7PodjwCI7GZwcYuvgx9uHb0Lob7v2WHFeU7TGxtsZrkdoAUQsPnKFkAYkX24W0jIUEdlXDzvgKWTJ4s68UXV9KUU8E1ARxFFID8e+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=W3tx9Oqf; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=AA13aPQo reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYthOLqU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC91C32782;
-	Fri,  9 Aug 2024 07:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723188462;
-	bh=LNqBEfIXeXntjTkyjNJ1v5g2yx4fDI2lvRYLKppspkE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cYthOLqU3WMyJciv2SYJhbET+uzCCXP40vEqcMqW6ZyG5ke0Rq0P7sDilyNDurlI3
-	 D6pkzW4ZKHJDwgU1tRLKaOvBsBH9VemHfwopVUwxBBzvgfyUBAeIB9lYHob4HMzYPo
-	 2kkOZ037Qnk8xusi/TjH5h9GXQv/L2gIyTT4giGC9yCJBoKAGaujqGayj4GHG/wGFa
-	 Xv0HCVv8GDaxjM9hvZhYIyU01kqhwKDe8Y7kj5Q19BOBi3A4AeXkgaXJb+dvg2KaHN
-	 Eg16aVBk4hoN4UkVZIWkFe8ACca3cl+bnVu549hjAOqMu9AgPoaWyrUYfc0DmrQAKy
-	 fJJ7QvrK0SenA==
-Message-ID: <af36af98-2aa2-4694-a5b7-87ebf35bb6f9@kernel.org>
-Date: Fri, 9 Aug 2024 09:27:34 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="W3tx9Oqf";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="AA13aPQo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723189873; x=1754725873;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qEKb2tBDFYtPQQYes4QRP4tJM5p3ULThCqzPcDFNfNc=;
+  b=W3tx9OqfGNwxG/my+T816+PTwfZ7/Vx1tCAYHI28VNiEKltq1NDlnAOM
+   0QC51SJcHQCOYk3Z3+DFIk0hPunmlBXzMtt75fvEfqy5FkJrjU1IgLsb/
+   dpXdnIf8JInrGeB6KiSeRIAkQ/KPRLcOon3TeljR1wbdw2ShySgZeOBNf
+   Zf7KrTL8cMFN8URYZO6Hz+QuaYUx+atyAI+WkLbOYoO7iaTqSa8BRGWBE
+   sUFmx8badn9sy7v6WXyyKpg/QiFRD3kJbb3TzZaTC5CQCb5Vt+ryA3UMg
+   ZQ/msFaAdUQseOGZgZcae6YK6Pzfv0YkqlOwOCaSWtFb+gT1LS5vR5vE9
+   g==;
+X-CSE-ConnectionGUID: JwcAz+0XR/aH896pBitJDw==
+X-CSE-MsgGUID: kVdMZKR1RUmNWIVSMJj3Ag==
+X-IronPort-AV: E=Sophos;i="6.09,275,1716242400"; 
+   d="scan'208";a="38329660"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 09 Aug 2024 09:51:11 +0200
+X-CheckPoint: {66B5CA6F-0-F0206917-F54EFEED}
+X-MAIL-CPID: 27227B5B5898C08BF0A2BD19511608BD_4
+X-Control-Analysis: str=0001.0A782F1A.66B5CA6F.0103,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E6E8C163A4B;
+	Fri,  9 Aug 2024 09:51:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723189866;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=qEKb2tBDFYtPQQYes4QRP4tJM5p3ULThCqzPcDFNfNc=;
+	b=AA13aPQoadQSDdUv+s7cijsOmK61bm3M1gbgjqsMZ1SJ/kkwz2qelWR3Ov56morwxcIApY
+	F3Q3T8cakL6YGCgH2h3benXKQ95OuY7vyPe//NM/2IDJK+B/4BJDZdjaHC1j8V/o33C6Yx
+	e5LNf5Ol3x7oh+oGRPf0zO+jVnUSo8XooBtvWpaWHjz8qkWHq2s6UQJLrtFgF9Zo8bVY48
+	NPiXjXUklM5xqEhpQQ8xesdLf0RsYPK8wpNZPuG83hODi6SF6ayNMdSjoopRyCd93YJOU9
+	NFUoodsMHZbTFHBp5XMbTQJ7hHGOJqshzycYN8qA3+fPZYeXqYriYg2foLyPng==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: soc@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Dinh Nguyen <dinguyen@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Mark Jackson <mpfj@newflow.co.uk>, Tony Lindgren <tony@atomide.com>, Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, "Rob Herring (Arm)" <robh@kernel.org>
+Subject: Re: [PATCH] ARM: dts: Fix undocumented LM75 compatible nodes
+Date: Fri, 09 Aug 2024 09:51:03 +0200
+Message-ID: <22384730.EfDdHjke4D@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240808164941.1407327-1-robh@kernel.org>
+References: <20240808164941.1407327-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
- enable TPM
-To: Benjamin Hahn <B.Hahn@phytec.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Teresa Remmet <T.Remmet@phytec.de>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240807-imx8mp-tpm-v2-1-d43f1e8f70ac@phytec.de>
- <311d8a95-33bf-4549-812a-db52debc7487@kernel.org>
- <6e511f04-7f93-49ad-8cf7-336a6bac7d31@phytec.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <6e511f04-7f93-49ad-8cf7-336a6bac7d31@phytec.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 09/08/2024 09:11, Benjamin Hahn wrote:
->>> +	#address-cells = <1>;
->>> +	#size-cells = <0>;
->>> +	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
->>> +	pinctrl-names = "default";
->>> +	pinctrl-0 = <&pinctrl_ecspi1>;
->>> +	status = "okay";
->>> +
->>> +	tpm: tpm@0 {
->>> +		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
->>> +		reg = <0>;
->>> +		spi-max-frequency = <38000000>;
->>> +		status = "okay";
->> Did you disabled it anywhere?
-> 
-> No, we don't disable it anywhere at the moment.
+Am Donnerstag, 8. August 2024, 18:49:38 CEST schrieb Rob Herring (Arm):
+> "lm75" without any vendor is undocumented. It works with the Linux
+> kernel since the I2C subsystem will do matches of the compatible string
+> without a vendor prefix to the i2c_device_id and/or driver name.
+>=20
+> Mostly replace "lm75" with "national,lm75" as that's the original part
+> vendor and the compatible which matches what "lm75" matched with. In a
+> couple of cases the node name or compatible gives a clue to the actual
+> part and vendor and a more specific compatible can be used. In these
+> cases, it does change the variant the kernel picks.
+>=20
+> "nct75" is an OnSemi part which is compatible with TI TMP75C based on
+> a comparison of the OnSemi NCT75 datasheet and configuration the Linux
+> driver uses. Adding an OnSemi compatible would be an ABI change.
+>=20
+> "nxp,lm75" is most likely an NXP part. NXP makes a LM75A and LM75B.
+> Both are 11-bit resolution and 100ms sample time, so "national,lm75b" is
+> the closest match.
+>=20
+> While we're here, fix the node names to use the generic name
+> "temperature-sensor".
+>=20
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+> SoC maintainers, Please take this directly.
+> ---
+>  .../aspeed/aspeed-bmc-facebook-greatlakes.dts |  2 +-
+>  .../socfpga/socfpga_cyclone5_vining_fpga.dts  |  4 +--
+>  .../dts/marvell/armada-385-clearfog-gtr.dtsi  |  8 ++---
+>  .../boot/dts/nuvoton/nuvoton-npcm730-kudo.dts | 32 +++++++++----------
+>  .../boot/dts/nuvoton/nuvoton-npcm750-evb.dts  |  6 ++--
+>  arch/arm/boot/dts/nxp/imx/imx53-mba53.dts     |  4 +--
+>  arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi   |  4 +--
+>  .../dts/nxp/lpc/lpc4357-ea4357-devkit.dts     |  4 +--
+>  .../boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts  |  2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-nano.dts     |  2 +-
+>  .../boot/dts/xilinx/zynq-zturn-common.dtsi    |  4 +--
+>  11 files changed, 36 insertions(+), 36 deletions(-)
+>=20
+< [snip]
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts b/arch/arm/boot/dt=
+s/nxp/imx/imx53-mba53.dts
+> index 2117de872703..d155b3ec22ef 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
+> @@ -175,8 +175,8 @@ expander: pca9554@20 {
+>  		gpio-controller;
+>  	};
+> =20
+> -	sensor2: lm75@49 {
+> -		compatible =3D "lm75";
+> +	sensor2: temperature-sensor@49 {
+> +		compatible =3D "national,lm75";
 
-Then drop it...
+I checked the old schematics. This is an NXP LM75A, so 'national,lm75a'
+would be the correct compatible.
+
+>  		reg =3D <0x49>;
+>  	};
+>  };
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi b/arch/arm/boot/=
+dts/nxp/imx/imx53-tqma53.dtsi
+> index b2d7271d1d24..d01c3aee0272 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
+> @@ -254,8 +254,8 @@ pmic: mc34708@8 {
+>  		interrupts =3D <6 4>; /* PATA_DATA6, active high */
+>  	};
+> =20
+> -	sensor1: lm75@48 {
+> -		compatible =3D "lm75";
+> +	sensor1: temperature-sensor@48 {
+> +		compatible =3D "national,lm75";
+
+I checked the old schematics. This is an NXP LM75A, so 'national,lm75a'
+would be the correct compatible.
 
 Best regards,
-Krzysztof
+Alexander
+
+>  		reg =3D <0x48>;
+>  	};
+> =20
+> [snip]
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
