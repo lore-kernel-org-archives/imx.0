@@ -1,155 +1,96 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70EF192B67
-	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 12:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027271957F8;
+	Fri,  9 Aug 2024 13:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723208361; cv=none; b=eHemSkN3ag+eaewahO8JF6smTqqCAghtgUwSz5S6Ub5fmRWXF/PrYMbM3GA93fAYh/7Xsvf8MNZiAykDXgt5SFgNC0g97inOb71CSp/MGa9uKJh2XrxbzP5WJKJZkgMNaOy0L/B5uZodc8gTeFduULeq5h4oArdePvKb/B4F33U=
+	t=1723211278; cv=none; b=e1Q+djm4R3lBOxKmeTUy+RacWt1TnHbJLUntxdRGt3stIlBWH46x+TJvQlBEPlX3uePysrwK98vNZV6vuznMaqP8/un8FqoDXjE8bOKEHbIi+npTph3OpZQM+U3yivzrX1hOwvyXf8mfBJCwKB+9Giax+OQW+mb0MU8lp4l6iLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723208361; c=relaxed/simple;
-	bh=t3xQ4NA+phOzj8f59GoyqEcw/Hz328ErMc0xLBjd3Ek=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aiYsD7SplfbD32Y0WymYWBFUkkAlQGuLLnZkBYogmxWze1dl6LpN7x0zEbG5i3dFqVjMsiupO+iMVWxsXEch9y5OElFl+vM8/p1iAwMpwBrcNqAejg4F1HzY6SLBuGfTmFizxJQk30BWGlCfuxLVio3SMrVrxCmUCo/WHIqdXKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iLtW4bYb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1ED2P/xX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iLtW4bYb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1ED2P/xX; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1723211278; c=relaxed/simple;
+	bh=ykV/BPKnxnB9F4W7qwUdOquNZhcldJvw6Mpyn+nVucQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VsV9BzbSSYZDmpD/29bT/0y+MlA9xej44f/oQSSsBS7tu4RegznA2V1hyFJMjmoWTevWkKmrEKq8gm8POPsT/YpFKb+alCJlOUu356smcZlhCXD8FiG6jk5qAGnS0x3uaqqgY1kc1Ehoyh6lTICkUCqSSRrnHmKbQbM5VgqIhEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2ibozpP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iLtW4bYb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1ED2P/xX";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iLtW4bYb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1ED2P/xX"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C154321E58;
-	Fri,  9 Aug 2024 12:59:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1723208357; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vnc+WH7j7DUSFdRWJCuP1bwPsfsVy7xPQd2NtzSaUlI=;
-	b=iLtW4bYbTX9VXyhDvo7F1yQph1QOx4c4/+12asbRCuSSPdIT1ehlSy2fXQre8/QOeeB3+J
-	TuyRpHAh4Phe88pDsbb10PdRl+OtPJlUudeH3Sd5SKCw8L0SoGBNhPz5F9ZF1szz3k35MM
-	c9/pISRVJC9gUNfJkJCxMVR/CELNvik=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1723208357;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vnc+WH7j7DUSFdRWJCuP1bwPsfsVy7xPQd2NtzSaUlI=;
-	b=1ED2P/xXrJB3fn0rQ70bR2oixNj5CO7G/wl1aojmZZhxEq4J1n2tNcDYQAU0QW49t07B+n
-	0tprKaOg4IzeKpCg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iLtW4bYb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="1ED2P/xX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1723208357; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vnc+WH7j7DUSFdRWJCuP1bwPsfsVy7xPQd2NtzSaUlI=;
-	b=iLtW4bYbTX9VXyhDvo7F1yQph1QOx4c4/+12asbRCuSSPdIT1ehlSy2fXQre8/QOeeB3+J
-	TuyRpHAh4Phe88pDsbb10PdRl+OtPJlUudeH3Sd5SKCw8L0SoGBNhPz5F9ZF1szz3k35MM
-	c9/pISRVJC9gUNfJkJCxMVR/CELNvik=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1723208357;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vnc+WH7j7DUSFdRWJCuP1bwPsfsVy7xPQd2NtzSaUlI=;
-	b=1ED2P/xXrJB3fn0rQ70bR2oixNj5CO7G/wl1aojmZZhxEq4J1n2tNcDYQAU0QW49t07B+n
-	0tprKaOg4IzeKpCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E10311379A;
-	Fri,  9 Aug 2024 12:59:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1oAxMKEStmacdwAAD6G6ig
-	(envelope-from <jdelvare@suse.de>); Fri, 09 Aug 2024 12:59:13 +0000
-Date: Fri, 9 Aug 2024 14:59:11 +0200
-From: Jean Delvare <jdelvare@suse.de>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>, Elie
- Morisse <syniurge@gmail.com>, Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
- Brendan Higgins <brendan.higgins@linux.dev>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Baruch Siach <baruch@tkos.co.il>, Dong
- Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Aaro Koskinen
- <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Kevin
- Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony
- Lindgren <tony@atomide.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
- Vignesh R <vigneshr@ti.com>, Vladimir Zapolskiy <vz@mleia.com>, Krzysztof
- Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-aspeed@lists.ozlabs.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH] i2c: don't use ',' after delimiters
-Message-ID: <20240809145911.50cc327f@endymion.delvare>
-In-Reply-To: <20240730220401.3649-2-wsa+renesas@sang-engineering.com>
-References: <20240730220401.3649-2-wsa+renesas@sang-engineering.com>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-suse-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2ibozpP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE1EC4AF0B;
+	Fri,  9 Aug 2024 13:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723211277;
+	bh=ykV/BPKnxnB9F4W7qwUdOquNZhcldJvw6Mpyn+nVucQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E2ibozpPi4HXzK4sENGDQrEbyogfZPSvK1KbpM3uIIRAIs9enhfhE713rf8TgIkkV
+	 a/w4sViYCrvzvL421B2fmNf7cTQG7R8hDDo4/bd36XU6jhxg/aaVdQviL61bAyLUp0
+	 HyCNmSxVBTJkwgvBPj5Vnjgb0ZIyWHayeXdA9naHWiB3NYs2G2ZaYBmr9G9Xw+TShM
+	 0sMGeOPtbu8rU/i149hksL+mXOEeBqCjhL7cWD56xDFb95J3XQOKCa0BY+nolx08MD
+	 MkSyKR+O3SNcO14btmmglzR817vUosT9c+m6SxLmdmSDAaJoC5LuyjQ6foFw5ZGpB3
+	 kZf6KtE+ecs7g==
+Date: Fri, 9 Aug 2024 15:47:50 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, "tj@kernel.org" <tj@kernel.org>,
+	"dlemoal@kernel.org" <dlemoal@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [PATCH v4 4/6] ata: ahci_imx: Add 32bits DMA limit for i.MX8QM
+ AHCI SATA
+Message-ID: <ZrYeBu7XbqmOc0ef@x1-carbon.lan>
+References: <1721367736-30156-1-git-send-email-hongxing.zhu@nxp.com>
+ <1721367736-30156-5-git-send-email-hongxing.zhu@nxp.com>
+ <Zp/Uh/mavwo+755Q@x1-carbon.lan>
+ <AS8PR04MB867612E75A6C08983F7031528CB32@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <ZrP2lUjTAazBlUVO@x1-carbon.lan>
+ <ZrTQJSjxaQglSgmX@lizhi-Precision-Tower-5810>
+ <ZrTxJzmWJyH2P0Ba@x1-carbon.lan>
+ <AS8PR04MB86765DB41F64B3FBF3DAFCAA8CBA2@AS8PR04MB8676.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -3.01
-X-Rspamd-Queue-Id: C154321E58
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	HAS_ORG_HEADER(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,amd.com,linux.dev,kernel.crashing.org,jms.id.au,codeconstruct.com.au,tkos.co.il,nxp.com,pengutronix.de,iki.fi,kemnade.info,baylibre.com,atomide.com,ti.com,mleia.com,samsung.com,lists.ozlabs.org,lists.infradead.org,lists.linux.dev];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[renesas];
-	R_RATELIMIT(0.00)[to_ip_from(RLx5ghmqs35ey73zpnq1znwten),from(RLoz63kdxwtinegqpbiqua)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS8PR04MB86765DB41F64B3FBF3DAFCAA8CBA2@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-On Wed, 31 Jul 2024 00:01:59 +0200, Wolfram Sang wrote:
-> Delimiters are meant to be last, no need for a ',' there. Remove a
-> superfluous newline in the ali1535 driver while here.
+On Fri, Aug 09, 2024 at 08:45:12AM +0000, Hongxing Zhu wrote:
+> Hi Niklas:
+> Thank you very much.
+> I had already sent out the v5 series patch-set a few days ago.
+> https://patchwork.kernel.org/project/linux-arm-kernel/cover/1722581213-15221-1-git-send-email-hongxing.zhu@nxp.com/
 
-Thanks for the cleanup.
+Well, your V5 was not sent to libata (linux-ide) mailing list,
+and libata maintainers were not in "To:" or "Cc:".
 
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
 
--- 
-Jean Delvare
-SUSE L3 Support
+> BTW, I'm a little confused about " without the patch in $subject,".
+> Do you mean to remove the "PATCH" from Subject of each patch?
+> v5:
+> Subject: [PATCH v5 1/5] dt-bindings: ata: Add i.MX8QM AHCI compatible string
+> v6 without patch in $subject:
+> Subject: [ v6 1/5] dt-bindings: ata: Add i.MX8QM AHCI compatible string
+> If yes, I can do that and add Frank's reviewed-by tag in the v6 series.
+
+I simply meant drop patch:
+[PATCH v4 4/6] ata: ahci_imx: Add 32bits DMA limit for i.MX8QM AHCI SATA
+and send the series as a V5.
+
+But considering that you sent a V5 already (to the wrong list),
+please send a V6 to the correct list, with Reviewed-by tags from
+V5 picked up.
+
+
+Kind regards,
+Niklas
