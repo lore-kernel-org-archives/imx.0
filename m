@@ -1,93 +1,123 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D3E1957FC
-	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 14:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6184A155A25;
+	Fri,  9 Aug 2024 15:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723214964; cv=none; b=SmBBFZYAsddq1/0nqJV+A1eiwVqzAKSdqMO2uVztpwhfL5HHXgWMN5XzWR0Qd/Zo4uTLYus5fk7r1b8foQGwYEvVPptJmDNwiAgTYb4Yi+JXvTt/fPML+3GCbWxrXLQOTqteBrU06bZrTURG0DWG7AMF5evmScNQTUviRNP2l+Q=
+	t=1723216050; cv=none; b=V5lEzdzHtzjcPQTB0+fvMwBIL7QroujDoF31DRq7R7ANmIRUnBwZI805792raHVMy6DtcMsWIGxMjGgbHkGqHqg1bjJeNQO28bzwJFRKhhoJzkxdTsCxT0jHvoKnwzhvOaEHEKYj4WLI8ARV70CYhi0DuPXsaccTHQuvKUrH9Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723214964; c=relaxed/simple;
-	bh=22tE3bcxOV4XQUyxYBM8SclBMeZRi8d9Ee40iy2gYwE=;
+	s=arc-20240116; t=1723216050; c=relaxed/simple;
+	bh=jZLAqxbDw1Q7Bre45+Qasn0USRspIPfzQt7t2DwZdu0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxsI+UZ9Z8bYrWEv3bcB6bbkCNd5X4q9UpbVSqBr0+knDonN2pqVy6OukRbICwbJZ4rAyEAaS+y7KIt+OOwfSYvnYuT/p2oR6QzqvGEYNlMIdJlHvevzGu8feSwKmbcpobf7N6r56zmFIMtWEWcoSsyuDVaqQgdV45V5uhpP9tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Vld4p26j; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=ocA7+1tOOLnWG9ZHI5xBH6LKNkdl+2+mRYGG8N33F9bTilcvUDxaAJIyeaVJL+odd52QzS6v1EnNv4ny7VvcdprEw9B5LrjEHQ7VpmGuBtZzDAFvRQl/zM8k+m+hl0w6O9Lg8sXf6Fflbzfu+9ql/sCbIE7li3A3FkqIlvHYBkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+ZMHH7/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Vld4p26j"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2CD7C1F8BD;
-	Fri,  9 Aug 2024 16:49:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1723214959;
-	bh=vqTV2il+IVohltGgzCzW6B4mCGXHGDpJVmefQp88URU=; h=From:To:Subject;
-	b=Vld4p26j0w6i6/Wg3NX21IYkJ+teBsKRvXvoXaYpJv5mTvAmKOIF4tIBvUx4Z10ec
-	 N8NfuGQGrkHEuk4ajEUc7NYzOZ14RibmCjvj12eV6PjtDsublnI2cwO48jBYp10E3D
-	 NMl/Gm5Ew1cfzu+hr7FPxRz+OrzrhxWoy+TnZLDSnwyjtR9dFi7+yt6mBENywxsh4+
-	 lBQCpzo4rk7Gca84OthJp1GfoRLuWL3uqJFz/8vU3YUnur86x/UaLnyCZ1SXzj4REr
-	 +D6+d42NChiQoEQSB1TLuxUFCzQsthr0uCJpUfjv8mGnwNeef/5kL6s5ozCh9CoEoL
-	 FSI/NreBAG3gA==
-Date: Fri, 9 Aug 2024 16:49:14 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Conor Dooley <conor@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+ZMHH7/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003D0C32782;
+	Fri,  9 Aug 2024 15:07:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723216049;
+	bh=jZLAqxbDw1Q7Bre45+Qasn0USRspIPfzQt7t2DwZdu0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C+ZMHH7/Ky1jYRed3dGXymjDrDX1nSAuHkGWFTYxh5gmyk79O5BJBjfjHL5eh9nHm
+	 dMQ32ZSffgri8/8+zEESezP94mOfiLlZL7P6tb2NkAEsgnXNyQfson7LP7ySmLq5KD
+	 Kk02AvfO4JDT0409ElPGc6nmdlbWu1ppM6Q1NHbAZ2qj3JMUM5D6Ua4fjHbJOUa8q7
+	 ONmUwcTkttL9h8y1Nm9SUGhhpbcfCybvsTVJue5w5Y+eSzOch0Ai2k+KthpRELhbdA
+	 ylcPTr0dQdtTmWpnVDmMB9CjK6hiCgZZuBlJNt1gaCTNiN0yT9G2St5BOclCguuRaq
+	 ZlbCIdrE8tQeA==
+Date: Fri, 9 Aug 2024 16:07:25 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Linux Team <linux-imx@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/3] dt-bindings: net: fec: add pps channel
- property
-Message-ID: <20240809144914.GA418297@francesco-nb>
-References: <20240809094804.391441-1-francesco@dolcini.it>
- <20240809094804.391441-2-francesco@dolcini.it>
- <20240809-bunt-undercook-3bb1b5da084f@spud>
+	Conor Dooley <conor+dt@kernel.org>,
+	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string
+ to fsl,ls2088a-pcie
+Message-ID: <20240809-freewill-compactor-4f441a4a60bb@spud>
+References: <20240808153120.3305203-1-Frank.Li@nxp.com>
+ <20240808-frosted-voicing-883f4f728527@spud>
+ <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810>
+ <20240808-linoleum-evasion-ad7111a2afc4@spud>
+ <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="UqI6MOyeE0fEpu25"
+Content-Disposition: inline
+In-Reply-To: <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
+
+
+--UqI6MOyeE0fEpu25
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240809-bunt-undercook-3bb1b5da084f@spud>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 09, 2024 at 03:27:39PM +0100, Conor Dooley wrote:
-> On Fri, Aug 09, 2024 at 11:48:02AM +0200, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > 
-> > Add fsl,pps-channel property to specify to which timer instance the PPS
-> > channel is connected to.
-> 
-> In the driver patch you say "depending on the soc ... might be routed to
-> different timer instances", why is a soc-specific compatible
-> insufficient to determine which timer instance is in use?
-> I think I know what you mean, but I'm not 100%.
-> 
-> That said, the explanation in the driver patch is better than the one
-> here, so a commit message improvement is required.
+On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
+> On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
+> > On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
+> > > On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
+> > > > On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
+> > > > > The mass production lx2160 rev2 use designware PCIe Controller. O=
+ld Rev1
+> > > > > which use mobivel PCIe controller was not supported. Although ubo=
+ot
+> > > > > fixup can change compatible string fsl,lx2160a-pcie to fsl,ls2088=
+a-pcie
+> > > > > since 2019, it is quite confused and should correctly reflect har=
+dware
+> > > > > status in fsl-lx2160a.dtsi.
+> > > >
+> > > > This does not begin to explain why removing the soc-specific compat=
+ible,
+> > > > and instead putting the compatible for another soc is the right fix.
+> > > > Come up with a new compatible for this device, that perhaps falls b=
+ack
+> > > > to the ls2088a, but this change doesn't seem right to me.
+> > >
+> > > It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, whic=
+h are
+> > > totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pcie.
+> > >
+> > > Previous dtb can work just because uboot dynamtic change fsl,lx2160a-=
+pcie
+> > > to fsl,ls2088a-pcie when boot kernel.
+> > >
+> > > fsl,lx2160a-pcie should be removed because Rev1 have not mass product=
+ioned.
+> >
+> > Please re-read what I wrote. I said to come up with a new compatible for
+> > this device, not fall back from the existing fsl,lx2160a-pcie to
+> > fsl,ls2088a-pcie.
+>=20
+> According to my understand, It needn't add new compatible string if nothi=
+ng
+> difference. for example, it use fsl,vf610-i2c for all i2c without add
+> new soc-specific fsl,lx2160-i2c.
 
-This was clarified by NXP during the discussion on this series [1] and the
-commit messages were not amended to take this new information into
-account, my fault.
+No, you should have soc-specific compatibles regardless. Just because
+you got away with it once, doesn't mean I'm not going to complain about
+it here!
 
-I would propose something like this here:
+> So far lx2160a-pcie is the same as ls2088a-pcie.
 
-```
-Add fsl,pps-channel property to select where to connect the PPS
-signal. This depends on the internal SoC routing and on the board, for
-example on the i.MX8 SoC it can be connected to an external pin (using
-channel 1) or to internal eDMA as DMA request (channel 0).
-```
 
-Francesco
+--UqI6MOyeE0fEpu25
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[1] https://lore.kernel.org/all/ZrPYOWA3FESx197L@lizhi-Precision-Tower-5810/
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrYwrQAKCRB4tDGHoIJi
+0kFZAQDhZtW3Gh4EocWE0cDSarMnBHPDLutlvuYc7HAvPYLSJQD7BZstVgOrE24z
+F/qic6aIukQGRBClY+6y9FD4k33rUgw=
+=nqIL
+-----END PGP SIGNATURE-----
+
+--UqI6MOyeE0fEpu25--
