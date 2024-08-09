@@ -1,143 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA368801;
-	Fri,  9 Aug 2024 01:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D01B17BA9;
+	Fri,  9 Aug 2024 02:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723167412; cv=none; b=TVrSkdYuROcmJVujoZ7U8vjrdA7N32KZTntGTLmlDzWXOsp8Q1Jp67z0wQr5y6miV55USLWwW4oDGbY7VmxX1RvJMZ4deKeZc65uuDcyw5lmvObdLbxfmdXmOU9t4zUygTCawfh/+g8r5UBSjVXK4sY0tVKFc0NKP5bsDRFfWhs=
+	t=1723172302; cv=none; b=tDhoOXAxsltTH4ryX51KryqJxFz4XNAC4cpGYNePaajE8Zf2gQKr8wCrT6Jz8YoralplukGBt5V3AYA25btaM8KtWzCc5JVUwTZsPmTc62BTmmO2e4YdpHQnRgoUKfvTZTibn96GIamTXOdj/Hh5HR4V0M84rFnwEpgUGC6Sk1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723167412; c=relaxed/simple;
-	bh=xluVK0tHO9NNdylwkimcBkO3o8kPzPqVXhIbqDXILzQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJL6jc8/Jclj8Dbk9vofutyRozTp3Rs4EtDDfOaBC7bJavpyIufAhLfley0Me3F/hkpZxvgcEi7LfLTcdxQHTAKEw0pPT7nEsrkbjqNem5ssnaZoWMSqMgrUKgK9eObZCGrA6M8YEWTM0tJAARe5V940AOwjDhG5olsjU69DKEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgH7tSZW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723172302; c=relaxed/simple;
+	bh=bz9nhQIN68rliIlQwFtbNxyMdG7FAqda1nTylmhka+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RP9MduRjgmDhVzN+Q+VaUyWL7xiFcmAKJkjOTAVyfa6Qi6xMzbCcCIMAKoueAMnUXDCkRUS+WCmafcXS32USjpmMOcU0IV3cUu0CtC3N1Et5FWq8ubGI9IkdzjaIbrCWgiMRIxtFTj1wS237/XmKfjEkpRtL0bpyJN5keTpziiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmAVLbCS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgH7tSZW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED2EC32782;
-	Fri,  9 Aug 2024 01:36:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmAVLbCS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F99C32782;
+	Fri,  9 Aug 2024 02:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723167411;
-	bh=xluVK0tHO9NNdylwkimcBkO3o8kPzPqVXhIbqDXILzQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FgH7tSZWD2XBgI51fyuFDm9ja8Fnpj6WGe42SVK5B+2PewUTLmn0Hk+CY7ZvKmuTY
-	 u5ZzuAFGnFxDX5Cln8xO09AWl/Hd8qCOKISVf509sjkDCbwnHZKE3wglITFj3qy0AT
-	 ifVdMQbQ/YRx4MXhNKR42O6NAX3lIEU5flNdiS0pZVRG2u4EOVbUNKn+gosedrvruy
-	 Uzv9MXgq6Xxrm1uanay7P0lro3APD5myVC/Di0VesQ8H7hBaHI0Ue1waabDJex/Llt
-	 dUAEOP9uEdPG5kmMlvNaXYTXcIIj10ZhUZF8Gf8D+8OyPS3l1SXasupnMi7dTO3opr
-	 2cL8hzX/2vgJA==
-Date: Fri, 9 Aug 2024 09:36:42 +0800
-From: Peter Chen <peter.chen@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	gregkh@linuxfoundation.org, herve.codina@bootlin.com,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-usb@vger.kernel.org, jun.li@nxp.com
-Subject: Re: [PATCH v2 2/6] usb: phy: mxs: keep USBPHY2's clk always on
-Message-ID: <20240809013642.GF2673490@nchen-desktop>
-References: <20240726113207.3393247-1-xu.yang_2@nxp.com>
- <20240726113207.3393247-2-xu.yang_2@nxp.com>
+	s=k20201202; t=1723172302;
+	bh=bz9nhQIN68rliIlQwFtbNxyMdG7FAqda1nTylmhka+M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FmAVLbCSCRp8O5sabC8ZA9Fa2UUWiO/oGl54klQO5M7hAyxEj76clzs1czMZAsL1l
+	 qqEBFHFOBMF+B8i/loc6HelWxB5dmnNjz85wStJ4hKUcmoDtpdaSkkq2TOauEKnZOB
+	 dZWV3KVBpOGHjku33R+mJMhFsMw0idKGqByaujnHY5jNdvqdUCcmR/y1qIE0HrqCy2
+	 zc/37hS1nvogm0AwyyRCYb2gNwq11txgewgV8A7mvBKuQOUOub7Whw2QndAezhXmu4
+	 zuPZAcLp132TMDVXUSgL1B1nCpjj7cYENNrYw57QyKzb/KdxuC7drrS/pqcb8cxWGS
+	 7E9dI40Enn3Lg==
+Date: Thu, 8 Aug 2024 19:58:19 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+ <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, Linux Team <linux-imx@nxp.com>, Francesco
+ Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 0/4]  net: fec: add PPS channel configuration
+Message-ID: <20240808195819.74f9e594@kernel.org>
+In-Reply-To: <ZrU_QwbcgaUxBg61@gaggiata.pivistrello.it>
+References: <20240807144349.297342-1-francesco@dolcini.it>
+	<ZrU_QwbcgaUxBg61@gaggiata.pivistrello.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240726113207.3393247-2-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 24-07-26 19:32:03, Xu Yang wrote:
-> IP require keep USBPHY2's clk always on, so USBPHY2 (PLL7) power can be
-> controlled by suspend signal. USB remote wakeup needs resume signal be
-> sent out as soon as possible to match USB requirements.
+On Thu, 8 Aug 2024 23:57:23 +0200 Francesco Dolcini wrote:
+> On Wed, Aug 07, 2024 at 04:43:45PM +0200, Francesco Dolcini wrote:
+> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > 
+> > Make the FEC Ethernet PPS channel configurable from device tree.  
 > 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> I realized that I forgot the `net-next` subject patch prefix on this series,
+> let me know if I should re-send it with it added, thanks.
 
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
-> 
-> ---
-> Changes in v2:
->  - modify commit message
->  - remove hardware_control_phy2_clk
-> ---
->  drivers/usb/phy/phy-mxs-usb.c | 33 ++++++++++++++++++++++++++-------
->  1 file changed, 26 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-> index d9d29f0b37de..e172af75f602 100644
-> --- a/drivers/usb/phy/phy-mxs-usb.c
-> +++ b/drivers/usb/phy/phy-mxs-usb.c
-> @@ -150,6 +150,15 @@
->  #define MXS_PHY_TX_D_CAL_MIN			79
->  #define MXS_PHY_TX_D_CAL_MAX			119
->  
-> +/*
-> + * At imx6q/6sl/6sx, the PHY2's clock is controlled by hardware directly,
-> + * eg, according to PHY's suspend status. In these PHYs, we only need to
-> + * open the clock at the initialization and close it at its shutdown routine.
-> + * These PHYs can send resume signal without software interfere if not
-> + * gate clock.
-> + */
-> +#define MXS_PHY_HARDWARE_CONTROL_PHY2_CLK	BIT(4)
-> +
->  struct mxs_phy_data {
->  	unsigned int flags;
->  };
-> @@ -161,12 +170,14 @@ static const struct mxs_phy_data imx23_phy_data = {
->  static const struct mxs_phy_data imx6q_phy_data = {
->  	.flags = MXS_PHY_SENDING_SOF_TOO_FAST |
->  		MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
-> -		MXS_PHY_NEED_IP_FIX,
-> +		MXS_PHY_NEED_IP_FIX |
-> +		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
->  };
->  
->  static const struct mxs_phy_data imx6sl_phy_data = {
->  	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
-> -		MXS_PHY_NEED_IP_FIX,
-> +		MXS_PHY_NEED_IP_FIX |
-> +		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
->  };
->  
->  static const struct mxs_phy_data vf610_phy_data = {
-> @@ -175,7 +186,8 @@ static const struct mxs_phy_data vf610_phy_data = {
->  };
->  
->  static const struct mxs_phy_data imx6sx_phy_data = {
-> -	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS,
-> +	.flags = MXS_PHY_DISCONNECT_LINE_WITHOUT_VBUS |
-> +		MXS_PHY_HARDWARE_CONTROL_PHY2_CLK,
->  };
->  
->  static const struct mxs_phy_data imx6ul_phy_data = {
-> @@ -518,12 +530,19 @@ static int mxs_phy_suspend(struct usb_phy *x, int suspend)
->  		}
->  		writel(BM_USBPHY_CTRL_CLKGATE,
->  		       x->io_priv + HW_USBPHY_CTRL_SET);
-> -		clk_disable_unprepare(mxs_phy->clk);
-> +		if (!(mxs_phy->port_id == 1 &&
-> +			(mxs_phy->data->flags &
-> +				MXS_PHY_HARDWARE_CONTROL_PHY2_CLK)))
-> +			clk_disable_unprepare(mxs_phy->clk);
->  	} else {
->  		mxs_phy_clock_switch_delay();
-> -		ret = clk_prepare_enable(mxs_phy->clk);
-> -		if (ret)
-> -			return ret;
-> +		if (!(mxs_phy->port_id == 1 &&
-> +			(mxs_phy->data->flags &
-> +				MXS_PHY_HARDWARE_CONTROL_PHY2_CLK))) {
-> +			ret = clk_prepare_enable(mxs_phy->clk);
-> +			if (ret)
-> +				return ret;
-> +		}
->  		writel(BM_USBPHY_CTRL_CLKGATE,
->  		       x->io_priv + HW_USBPHY_CTRL_CLR);
->  		writel(0, x->io_priv + HW_USBPHY_PWD);
-> -- 
-> 2.34.1
-> 
+Hm, normally I'd say no, but we also didn't get patch 4 CCed to us.
+We use patchwork for a lot of things (including CI ingest) and if
+we don't get all the patches patchwork considers the series incomplete.
+Could you either repost and CC netdev@ on all 4 or repost just the 
+3 patches meant for netdev as a standalone series?
