@@ -1,166 +1,115 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4727718F2F2
-	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 09:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EC118F2E8;
+	Fri,  9 Aug 2024 09:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723194438; cv=none; b=uVJ1Bb9hiDYRGCFwOloxfOu4P99Au1lpmuO3CFLvXbuh+7+LQcmFFJ8AfKVlegHGaPdY1mdLv3XxqvBc/A7gt8r6qz01EjDcNwFmK0bq9Q8OJicgCs2WeP40qKXJ05oXilmmCYuFWQhVKS2rBBwnQaOjNPAMNsoFC1GEuItkFng=
+	t=1723194837; cv=none; b=ENmFcOwIAILZL34MpEjtr6gp8+mAYlgZvyYaC+ha9v2wJ18R90Zl+1U6ZJCdOILQePsL5zVRmOsAiILHwcMwcTBPAz8ALQag3Gr47d1X+lKOPteBHFE4gxsUrsnZ7we5qeTbgAFfTiqhMCZtBUes3PuiF98LDkvtPnbSG/fXakU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723194438; c=relaxed/simple;
-	bh=nEJVtcoMpn7xsXtIMc1Qo1u4UbOJ5jaOpWiwSsCd87A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Wfez9rFMRgc2Pv2Ns/h1Tn0boMsdeJPqywTXcmkcrhg2BxO8BGeXXNL9zaPHXnUbKIVrEKqhmbBkix4THux57tbyYllSmVspdZJQUNDy6biQyR1CL8HpbpiOM88KVIfwCijmM2tIZaiIcRaXDqgQPQDn3AY3jOWGlzcuJvZxamg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WH3fykQq; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1723194837; c=relaxed/simple;
+	bh=DrgvF3jdYq17Bjp4tBfE0jvpPuAdNsyX+C0M2ic2Pzg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GwzDYodI8bUAxkquHO5spiG8UT4p1LURXY04X66Je7Z/DwzCJ7cWxRE8kYSicnj/rWW0/ydxpAQHSHSttg0ncn56Q9fPtzi7pGYd6iSECD3E93Y66Nuz2ZMkL18Hi7LCIDWV8/VE8TaWFmojNWZhR6BjUCWkMS/fmDsrW6fKbJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2tEjU2O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WH3fykQq"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2f1a7faa4d5so2863161fa.3
-        for <imx@lists.linux.dev>; Fri, 09 Aug 2024 02:07:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723194434; x=1723799234; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RLxn0IwV+KEsqILm3vURB532jKLGPjcTtemkHlPJtu8=;
-        b=WH3fykQqF9defUSERkUZ+NAzUInJBYbH+zqmnmnNxApOJutJaolyX6kxDjntT7+Qw1
-         v33Ls4oMUMWU5un0TX/SRYifE5pQtbsZ0IfuYaS9akhz7zh6ruNfD7z+Bh1c+5QZUx8I
-         5REwgXGRWSdFla7O1BLghwI+9TSLEgIKH5DH9RDIjO9Bn7hehBcJ0iB+Oo7JugUXPD9Q
-         osI/UPMKIUe6zXJ6pmqaRGAtWAFBRC2FHUgHmHwWtSch61qaw6ApUSLThParay+mSF15
-         K4xN09KybSU0NZWlcVlLcinjLfrXG6Yi5+Zd/SvpKrCoWBelVMYbGySvP2hXZFl6YHPz
-         roDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723194434; x=1723799234;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RLxn0IwV+KEsqILm3vURB532jKLGPjcTtemkHlPJtu8=;
-        b=LdqJll52V5vJlZzXu0FgSnPWObEFy3NO30XVYiDoLw9kGxvNdfa1otEyuC3OPQoCcl
-         oeklLJr4Q+izR22eTcZvyseUQduZ38tizaKtPBPUHGxLarvhZx4Ts2dQ7tGLzDdlJ0dB
-         1fv5SSudbDQgqXcQEBWmiSCf8G8i/lt1RcVbDa6aQYJizDLG6w9y0ZL49MrbYzp4Z9LH
-         WZbX3VLWVMvFMYs7rEXQ8+iI5xcIe4GPIVTR5HStI6XoUo3WMoMk9erR8IwfN9mYUe2J
-         zefszIAv0H2dxv8OI38EomFQPKy4DAR9M8hhqfJUBQdU5zv6SlI07OflV40KqLfpbNv1
-         z5Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqZEOctHZK/vLGDVi3ojvqweea7KE2jPhkvnIZQoO5V5rPncznNEuqnNP2wFBcxU+jdgMcKf4iUhywGKlM7XJIxHyN
-X-Gm-Message-State: AOJu0Yy/arGMpnGqv6rPMlOyT98QpAQ+ZlygrISqCrf0P5wDI6XXgSlI
-	4u+60iVE4VCn3kFXZZtBaVCCH4JawauyyPSi1gj9FjHP9yLj0aSI6xo7HV2QxNY=
-X-Google-Smtp-Source: AGHT+IHhnLFl3rT+x7KMYXiEdQNEfCuCtExoR2tPSUmgwgq125nOMspyp/xEWEFKq5hnf+UiwSSYHw==
-X-Received: by 2002:a2e:4612:0:b0:2f1:929b:af03 with SMTP id 38308e7fff4ca-2f1a6ce6ec3mr6769431fa.30.1723194434144;
-        Fri, 09 Aug 2024 02:07:14 -0700 (PDT)
-Received: from draszik.lan ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c7492cesm66204715e9.20.2024.08.09.02.07.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Aug 2024 02:07:13 -0700 (PDT)
-Message-ID: <d9e2f63519f3fcbf4fe334975691d573e20c53c8.camel@linaro.org>
-Subject: Re: [PATCH v6 01/20] clk: bump stdout clock usage for earlycon
-From: =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>, Michael Turquette
- <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>, Peter Griffin
- <peter.griffin@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, Chanwoo Choi
- <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, Sam
- Protsenko <semen.protsenko@linaro.org>, Tudor Ambarus
- <tudor.ambarus@linaro.org>, Abel Vesa <abelvesa@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>
-Cc: Will McVicker <willmcvicker@google.com>, "kernel-team@android.com"
- <kernel-team@android.com>, "linux-clk@vger.kernel.org"
- <linux-clk@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-samsung-soc@vger.kernel.org"
- <linux-samsung-soc@vger.kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>
-Date: Fri, 09 Aug 2024 10:07:12 +0100
-In-Reply-To: <d4580b33c195dcf1c3a0054b29555383d2e1606b.camel@linaro.org>
-References: 
-	<20240808-gs101-non-essential-clocks-2-v6-0-e91c537acedc@linaro.org>
-	 <20240808-gs101-non-essential-clocks-2-v6-1-e91c537acedc@linaro.org>
-	 <PAXPR04MB8459F99475C289A827987AF588BA2@PAXPR04MB8459.eurprd04.prod.outlook.com>
-	 <d4580b33c195dcf1c3a0054b29555383d2e1606b.camel@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1-4 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2tEjU2O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B86C32782;
+	Fri,  9 Aug 2024 09:13:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723194836;
+	bh=DrgvF3jdYq17Bjp4tBfE0jvpPuAdNsyX+C0M2ic2Pzg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k2tEjU2OGo5Z432KlybmECKIhGbOMhElc8fGhQcjid4/re2DwjobCjO3H8+rCeZE+
+	 d+rjPW7tw6+DrwePLVC6kMemZDuKdJfXWO2tKSCRBi+OxYvh8t/0R5ssVkjeOIDpzE
+	 N0yxMWwf5CZJIwq4Wb4o2hywLSr5dqWLtNiQecxZzDPszdaoLvBYQ9IQq4pwhnYOyi
+	 5BiEpSj+xpDo0G5GD0gG2joq/leBMY+yipCUyOTOkCYkH4PxkthFAkrclK7Mh4dYZ6
+	 oogMXpswMrYS6KxTdvaYM/wUIOnBb2DNIQBcvsXmI8Mt+aJ5e6q5U13bF8CcNqYlX7
+	 ZjYv/tBoarKew==
+Message-ID: <2a4a994a-5a0b-4258-b012-73fd634917fa@kernel.org>
+Date: Fri, 9 Aug 2024 11:13:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] arm64: dts: freescale: imx8mp-phyboard-pollux: Add and
+ enable TPM
+To: Benjamin Hahn <B.Hahn@phytec.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Teresa Remmet <t.remmet@phytec.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Peng Fan <peng.fan@nxp.com>
+References: <20240809-imx8mp-tpm-v3-1-c1cd80deff16@phytec.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240809-imx8mp-tpm-v3-1-c1cd80deff16@phytec.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2024-08-09 at 10:02 +0100, Andr=C3=A9 Draszik wrote:
-> Hi Peng,
->=20
-> On Fri, 2024-08-09 at 07:16 +0000, Peng Fan wrote:
-> > > +static int __init of_clk_drop_stdout_clocks(void) {
-> > > +	for (size_t i =3D 0; i < of_clk_stdout_clks.n_clks; ++i) {
-> > > +		clk_disable_unprepare(of_clk_stdout_clks.clks[i]);
-> > > +		clk_put(of_clk_stdout_clks.clks[i]);
-> > > +	}
-> > > +
-> > > +	kfree(of_clk_stdout_clks.clks);
-> > > +
-> > > +	/*
-> > > +	 * Do not try to acquire stdout clocks after late initcalls, e.g.
-> > > +	 * during further module loading, as we then wouldn't have a
-> > > way to
-> > > +	 * drop the references (and associated allocations) ever again.
-> > > +	 */
-> > > +	of_clk_stdout_clks.bump_refs =3D false;
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +late_initcall_sync(of_clk_drop_stdout_clocks);
-> >=20
-> > If the uart driver is built as module, this might break earlycon.
-> > Before uart driver loaded, clk disabled per my understanding.
->=20
-> You're right.
->=20
-> With this in mind, I'm not sure then if a generic solution is possible...
->=20
-> I guess it has to be duplicated into the platforms after all and platform=
-s
-> can enable this if they opt to disallow uart as module?
->=20
-> Any other suggestions?
->=20
-> > > +
-> > > =C2=A0/**
-> > > =C2=A0 * struct of_clk_provider - Clock provider registration structu=
-re
-> > > =C2=A0 * @link: Entry in global list of clock providers @@ -5031,6 +5=
-156,8
-> > > @@ int of_clk_add_provider(struct device_node *np,
-> > >=20
-> > > =C2=A0	fwnode_dev_initialized(&np->fwnode, true);
-> > >=20
-> > > +	of_clk_bump_stdout_clocks();
-> > > +
-> > > =C2=A0	return ret;
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_GPL(of_clk_add_provider);
-> > > @@ -5073,6 +5200,8 @@ int of_clk_add_hw_provider(struct
-> > > device_node *np,
-> > >=20
-> > > =C2=A0	fwnode_dev_initialized(&np->fwnode, true);
-> > >=20
-> > > +	of_clk_bump_stdout_clocks();
-> >=20
-> > If clock driver is built as module,=C2=A0 the will make the
-> > clocks will be always enabled, if my understanding is correct.
->=20
-> until late_initcall_sync(), at which point it'll be disabled before the u=
-art
-> driver has probed, yes :-(
+On 09/08/2024 11:02, Benjamin Hahn wrote:
+> Add support for TPM for phyBOARD Pollux.
+> 
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Reviewed-by: Fabio Estevam <festevam@gmail.com>
+> Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
+> ---
+> Changes in v3:
+> - remove status okay for tpm node
+> - Link to v2: https://lore.kernel.org/r/20240807-imx8mp-tpm-v2-1-d43f1e8f70ac@phytec.de
 
-Sorry, ignore that. If clock driver is built as module, the code to bump
-the clocks is disabled by the time this code runs (due to setting the flag
-as part of late_initcall_sync(of_clk_drop_stdout_clocks)), in other words
-it will not bump the clocks at all in that case and behaviour is as before.
 
-Did I miss something?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Cheers,
-Andre'
+Best regards,
+Krzysztof
 
