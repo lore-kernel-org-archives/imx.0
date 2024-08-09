@@ -1,111 +1,73 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DE819E7F8
-	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 09:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B853B1917FA
+	for <imx@lists.linux.dev>; Fri,  9 Aug 2024 11:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723196895; cv=none; b=DC7rl06KLR+ykDdXmS7v7wHVTlEI3JvyaHJsML3/Zr18K8rEEIQjWAhSr1e8JYbgYDkeHezN4xcq7X/63pyrkEo+rmKpGg3u/ekh63eAKRzpCx5oTnoJTIuFbPaW1A4J1RDUPacr2YKzlMHSeiWVylABDHTdkwKaAgDnlNqiXao=
+	t=1723201222; cv=none; b=VuNsrQkbdC6hK7iuRLeEMkMtqG06PHG4PwKRzRdG9YiIDAJ7Uqwdj4TVQ+ra3m7jHMyR4XKgtWLZHZAtfAdMaGWqdp9RReY/oRJJw4jKg3Berfz4uRg3Bg1kZlAA442KYbQy/APZUmLj+hl46iUv7yjlomOysPepPIih/m8lL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723196895; c=relaxed/simple;
-	bh=JfrSTDupAEFNzJ0NTGgYxinFFwD+sj0VT9HNe7eYu8Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gK05QRwtsrLec8G7/gMoGZSUZZyBuuoRWCzfq8L4ZnsJ97AYdnhHtUnGPMsNVm2ZWTM13+OsUF+DWPWujDmlfdpD/qpauXbDbUIBFHRxUqQ4ZFrZYcRRLrSyoj9IroND4ECyrZGQ7x/JUFKLQBHXT5siiTmwy2dJsRFYfu8SMCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=bJiwDo2g; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="bJiwDo2g"
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id AD3E822295;
-	Fri,  9 Aug 2024 11:48:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1723196891;
-	bh=EUM89Z92ylZOhefElMUwK8siDmQ2624apyQbZLSedCM=; h=From:To:Subject;
-	b=bJiwDo2gIv83wOVzcz+S1rzJiPKEUefi0EoEDJ133lkgcwlHWlauDehQNc6TKy95q
-	 cLUjJ2y9QnLOxIbEPxno5fjQPaK3ggciUr7Oao6PtzqklcI3WOMbFH7J1oCc0LvqF9
-	 +anlp4PRUXfcBLsPjKVY/fb7Cl5tvKkSFAjM71lhTEQ8RCiCUrg9QcbjFNJM558wiC
-	 kZWpgrEJYS+CUXQaQRbnlEN/v2DUhuS6N2kwnvPO0OK52ABKOSMyZ5b0PTqC0Hevn/
-	 B6NyHD1UjjJI1f0/HwOMj//273XxrWlYIC+NKQl8FovT9qF5fPQoaivXNrsJajOMlc
-	 Hd4k8FDCFxGVA==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>,
-	Rafael Beims <rafael.beims@toradex.com>
-Subject: [PATCH net-next v3 3/3] net: fec: make PPS channel configurable
-Date: Fri,  9 Aug 2024 11:48:04 +0200
-Message-Id: <20240809094804.391441-4-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240809094804.391441-1-francesco@dolcini.it>
-References: <20240809094804.391441-1-francesco@dolcini.it>
+	s=arc-20240116; t=1723201222; c=relaxed/simple;
+	bh=0JOGpuNqXzOTD6WolQYyDA6A/dGLryHplgnyL3pJ7vg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mOtmVSBl86AuMy5cQm/szp+adxPOgqbnOIn/rtLkmUrb7S6S6DFILyLwvgUgY39H4hgJrK7fHWzTYSTglx/FbW3beAusiQ/vdokY7ZeO5jSb3VuVcD0wG0IVOqVk9EyrbU+BBSpdqDl/yXDNiJIH7gZ4ABySeAQeSjtmtABMNVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1scNLo-00030o-HG; Fri, 09 Aug 2024 13:00:04 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1scNLn-005eDV-Eu; Fri, 09 Aug 2024 13:00:03 +0200
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1scNLn-000AQ5-1B;
+	Fri, 09 Aug 2024 13:00:03 +0200
+Message-ID: <b89f0ed8ebfb4fb953db0635f7d56ac5debbbc12.camel@pengutronix.de>
+Subject: Re: [PATCH v3 07/12] drm/imx: ldb: switch to drm_panel_bridge
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Airlie
+ <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Chris Healy <cphealy@gmail.com>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Date: Fri, 09 Aug 2024 13:00:03 +0200
+In-Reply-To: <20240602-drm-imx-cleanup-v3-7-e549e2a43100@linaro.org>
+References: <20240602-drm-imx-cleanup-v3-0-e549e2a43100@linaro.org>
+	 <20240602-drm-imx-cleanup-v3-7-e549e2a43100@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On So, 2024-06-02 at 15:04 +0300, Dmitry Baryshkov wrote:
+> Defer panel handling to drm_panel_bridge, unifying codepaths for the
+> panel and bridge cases. The MFD_SYSCON symbol is moved to select to
+> prevent Kconfig symbol loops.
+>=20
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-v3: added net-next subject prefix
-v2: add Reviewed|Tested-by
----
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 25f988b9c7cf..2e05083cbf29 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -529,8 +529,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -712,12 +710,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--- 
-2.39.2
-
+regards
+Philipp
