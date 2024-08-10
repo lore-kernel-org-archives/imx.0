@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FA113E02A;
-	Sat, 10 Aug 2024 12:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0A4158520;
+	Sat, 10 Aug 2024 12:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723292497; cv=none; b=b9qLIKxagQeXhMiWwPjyk7tE4e/+nNG8lcuiA0+oAroHPz9N0YIbbkgpuslxInUtUTzqZxAOaJeW0BR6kEwO6+PjVaOdpLbroglSotfMK6BZ12k1vPK61AXEc0g1Ub67JTIiAomRarjc107u5SaVFo6QkmYZ3ztW9M0+MIIhs3c=
+	t=1723293433; cv=none; b=XKRnFMMC1uwvWKRK2sx7cxZ7BQEda4+nkF5OwO7LiuzHw4C55Cbjxk5xzXXQPwyBrEU/7DyMb6rIIZ9On3eDiQvLqsnOc1EsGyCzJb1+LGQvP6u1l+5PcCCqlFBKATZViPFg1vw5iwhRSuS3hwowCqVBo+0F/HdgbY0xQEBqviI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723292497; c=relaxed/simple;
-	bh=BUO7G27ozlxUWdCf9RP7tbhzzSrPxYy/G08Wuj3qLpU=;
+	s=arc-20240116; t=1723293433; c=relaxed/simple;
+	bh=xXGthnQb+Qw3gokaosvDgIsRr+6EIcuaKbr8TVT9Bog=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K7np6Pt0PXW2SiIr2DQfvcb8RwjmFP7UHhjF9RnH7pUmWp1hH8PQPbm0EdITVz3FGWNi5/h/7+l1kiaoGLe8Q7haDZ+6usYpae3f0S7+dQXmvLx0yCYqYZsJ3P0l/uTzUacRuLlipZ8l1OppnVSFB4nOjbIpAvoU1c4UR7a08l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCcNXD2C; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=V/OHdpbt67XCRHS3h4Ky0Y6wecTBYldVrSiMdj8VX29hYRQJW8uaEeHU8S6FllNVaU7qnRfinOu3/1Yew/u5z8gptD7gD/KISnpp8uHh6gbfjXskqHbtqjU99BW12GSTTwY6xKNQZwHUojpbw4uM0mWmTdQolZrpXKWDMxS4tOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnaiYeBb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCcNXD2C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E43C32781;
-	Sat, 10 Aug 2024 12:21:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnaiYeBb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3421CC32781;
+	Sat, 10 Aug 2024 12:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723292497;
-	bh=BUO7G27ozlxUWdCf9RP7tbhzzSrPxYy/G08Wuj3qLpU=;
+	s=k20201202; t=1723293432;
+	bh=xXGthnQb+Qw3gokaosvDgIsRr+6EIcuaKbr8TVT9Bog=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OCcNXD2CzuLrZ1X2Mc2SrEexHq31MgvQjnWU8QsftVzNaFkK3AsP9P/MSZ6usZKNW
-	 Oh+bQ1sv6Jq6Pj9hITzsbDpOrIq82BaycMfJ5tT3wbvnqZBL5O93ocR/kHo+Irl0GM
-	 Tm5pdUGT4JhO4WJvYP52GH4PTKJknNkEnmEvr76qdnmncQ0lg+BIagMTRy7xHT+dgJ
-	 jj1WVCqRew5OEgq60RWcZ0YwDyxw+eIV9g2T47BAhkXRQOGwJaxV0Lprbdy3BgOm3w
-	 sztzsXbHvzj6xt1ymDINmePmaabS/Wrq0lFi/d4TytRTzRTjPn/NgfK/ENnLeyyg5X
-	 RJU2T6ZtGnXyQ==
-Message-ID: <ac41ac85-fdf5-4aa8-953d-6b3ab3c23f37@kernel.org>
-Date: Sat, 10 Aug 2024 14:21:31 +0200
+	b=MnaiYeBbSqTuo79qSOc6F3uaHrMYEaXbE9GyhnhDkQxZPDY2rWCc6pamjFBF0WPL0
+	 gFPn/x5z8HCnD3jzEKhYCv5TTL38yYlN8m2M6ucQklWLxPxebzrdMvL64+KNismnUY
+	 EM5qVhMReVaIWfLUToqG5pvF1Rgh/DW9Mr72Gmn+ySkpm1eQs3vlP4p+kVs8HChKFC
+	 L58oHSvcLs9Hshr5zTsERJtzD6zUDPlGePDbM7j3f0Hxk39dg7AYm+tSvAdfptiCjG
+	 zXuOl8n1sXo+qTXs6Z4kkxfk5ZDwkh0MZQCtPLWMnjgKxqREHlBJQAch0aGTEyGR/u
+	 3a0RsdWpZas1Q==
+Message-ID: <a8c46d0e-e98b-4150-9a12-bcbd815e0257@kernel.org>
+Date: Sat, 10 Aug 2024 14:37:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,24 +35,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string to
- fsl,ls2088a-pcie
-To: Frank Li <Frank.li@nxp.com>, Conor Dooley <conor@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: net: convert maxim,ds26522.txt to yaml
+ format
+To: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- "moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
+ <conor+dt@kernel.org>, "open list:NETWORKING DRIVERS"
+ <netdev@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- imx@lists.linux.dev
-References: <20240808153120.3305203-1-Frank.Li@nxp.com>
- <20240808-frosted-voicing-883f4f728527@spud>
- <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810>
- <20240808-linoleum-evasion-ad7111a2afc4@spud>
- <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
- <20240809-freewill-compactor-4f441a4a60bb@spud>
- <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240809143208.3447888-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,80 +92,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
+In-Reply-To: <20240809143208.3447888-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/08/2024 19:11, Frank Li wrote:
-> On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
->> On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
->>> On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
->>>> On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
->>>>> On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
->>>>>> On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
->>>>>>> The mass production lx2160 rev2 use designware PCIe Controller. Old Rev1
->>>>>>> which use mobivel PCIe controller was not supported. Although uboot
->>>>>>> fixup can change compatible string fsl,lx2160a-pcie to fsl,ls2088a-pcie
->>>>>>> since 2019, it is quite confused and should correctly reflect hardware
->>>>>>> status in fsl-lx2160a.dtsi.
->>>>>>
->>>>>> This does not begin to explain why removing the soc-specific compatible,
->>>>>> and instead putting the compatible for another soc is the right fix.
->>>>>> Come up with a new compatible for this device, that perhaps falls back
->>>>>> to the ls2088a, but this change doesn't seem right to me.
->>>>>
->>>>> It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, which are
->>>>> totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pcie.
->>>>>
->>>>> Previous dtb can work just because uboot dynamtic change fsl,lx2160a-pcie
->>>>> to fsl,ls2088a-pcie when boot kernel.
->>>>>
->>>>> fsl,lx2160a-pcie should be removed because Rev1 have not mass productioned.
->>>>
->>>> Please re-read what I wrote. I said to come up with a new compatible for
->>>> this device, not fall back from the existing fsl,lx2160a-pcie to
->>>> fsl,ls2088a-pcie.
->>>
->>> According to my understand, It needn't add new compatible string if nothing
->>> difference. for example, it use fsl,vf610-i2c for all i2c without add
->>> new soc-specific fsl,lx2160-i2c.
->>
->> No, you should have soc-specific compatibles regardless. Just because
->> you got away with it once, doesn't mean I'm not going to complain about
->> it here!
+On 09/08/2024 16:32, Frank Li wrote:
+> Convert binding doc maxim,ds26522.txt to yaml format.
+> Additional changes
+> - Remove spi-max-frequency because ref to
+> /schemas/spi/spi-peripheral-props.yaml
+> - Add address-cells and size-cells in example
 > 
 
-Above... and here:
-https://lore.kernel.org/all/20220817202538.21493-2-leoyang.li@nxp.com/
+This could go to trivial-devices, I think. Well, fine also as is.
 
-Uh, this is so confusing. You have fsl,lx2160a device with PCIe and
-fsl,lx2160a-pcie compatible. You claim that these are wrong. Instead of
-fixing driver, you use entirely different device's compatible?
-
-Wow, that's confusing.
-
-> Rob:
-> 	What's current policy for this? Not only for this one. If new SOC
-> appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), there
-> are bunch of IPs, Do we need add fsl,imx10* for everyone, which most part
-> is exactly the same as old one and bloat binding doc.
-
-
-NXP since early days was following this approach of having specific
-compatibles, so why changing it now?
-
-In general you need specific front-compatibles, except for different
-pinout or fused values.
-
-But that's not the problem here. Earlier confusion is the problem. This
-is very weird change.
-
-> 
-> 	I remember that I got a feedback that required provide the
-> difference during I try to add new compatible string. I am sorry, I can't
-> find origial dicussion thread.
-> 
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
