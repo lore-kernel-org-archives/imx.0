@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8798B182D8;
-	Sat, 10 Aug 2024 11:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76FC146D75;
+	Sat, 10 Aug 2024 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723290392; cv=none; b=Sqgt24BPDXEIYDkC1zxa5KtTLKzVWqmCNn6olDLhuIc5C+4y1bAmh09b3uY/mBz39UDN3GeeIMe/SPybkB6naRw4pxBWeC7GLaaS4AJCh6yaihqmcZ4+Za5MN/gixgPSus5yTYIW9MLUyoxuONa9kUBTrplEDqOiEiC/HZq199c=
+	t=1723291167; cv=none; b=NLGUFdutryODzD0QVryZBJe0bsffyx5ZAILt4uOydi9lOT/7Z6nTgMiEzSKBrfY3ja2o4XVfSTBC1O2gJpcztqwDapEVWJoeUmcU0/KdwlchQYM/l9uCIjmpe7hS5jeVagjrxrbBLMMH9EXsHmtMvCtgj7lmdObCHLF2zmUa1hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723290392; c=relaxed/simple;
-	bh=5NmSsNuTLMX9BvZENK2ze5Cq1G3iakSxzbjoXslFw6Q=;
+	s=arc-20240116; t=1723291167; c=relaxed/simple;
+	bh=SnFM9Mkwg0UkMMuBuHlVIyneuob9XMDMBy8QxCiJwV0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ng/D1geODgYOplQzcI0fIfbV/XG/9CmRd7/+oNJ6joAgJdidZq6YSEeXBYKZIQllXH26uqmJupcCwUyFUOt7URDnOwkHzgoZXZVo22F+6MsI0HGQPIdCoTXUwDyk7rHHq0bd+fw/rMZJi3GNZfYxkF282GOXPOgvUTuwL3DO4MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kadH+3sI; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=n/9xk7ChW8BRhPRZkzZpNj3f1md67+Eg9jwW9HY/z0d2bLmgR1aA5ZOjhTyWaC/iWoVkMb0lY5Q4qDu5YXoSR6FNyeKo6nsAoOLbYG4R/3IVYiqRfTmg6duyTy6EPHMIKroWqQuX7ON83kLsRDSq1eNdYQe5/6gIVhrOvxN0zbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/R0Z0xy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kadH+3sI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34F4C32781;
-	Sat, 10 Aug 2024 11:46:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/R0Z0xy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71FEC32781;
+	Sat, 10 Aug 2024 11:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723290392;
-	bh=5NmSsNuTLMX9BvZENK2ze5Cq1G3iakSxzbjoXslFw6Q=;
+	s=k20201202; t=1723291165;
+	bh=SnFM9Mkwg0UkMMuBuHlVIyneuob9XMDMBy8QxCiJwV0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kadH+3sIhqhk1jgztt3hzjyOp3VwanbZj/Vpg+GOdgzwO+cRuFYK+E/FKjh1WrG0Z
-	 X6Y9vDsQaSK+g7t+AjLEnj68FnLTc7hcX/j+/DibRhCEqSEHawQqWElUAtUTKQ1DeR
-	 Qh6X9KEI3Qgt64U2R4xLGd9gmgfu4sY21pIcMT8QtA8ENwZzFC46vtCqarDAztwPaz
-	 z83TfVgcaQ539GH/VI0n/2blhNZYjuzYdZ0d8ljS5MnKHupbsmlZAdE/WkLiOdvN7z
-	 +jXvDLFcBDGRmEDvuhCeweurDsRfmIq4wzByvTShmF86djUHKKY0ZH9G65/DKsMeBh
-	 fJnYYRh0ntTCg==
-Message-ID: <01fb45b3-c77a-4dd6-9423-ba1fa5521e4e@kernel.org>
-Date: Sat, 10 Aug 2024 13:46:25 +0200
+	b=R/R0Z0xyEWktq3l9iLDZ9EYdtZL2BHId4nqRsDryo6Idp30Kh7/F3r/fV+J9hOfuT
+	 NWN3eKzMyCnWd/hZcieT2yeulP9JUxbXhmfsWggBQELNmvJ+l45CNWacYyHMRp1v/g
+	 HXaZn+BFJOifCG95nfwm0exDIGYAXHCv5xZ1c1lSj5CP2sVqoMF0HQbvB+tdOH2Bjk
+	 cbr5Q7H2jiXO6V95MlNZjBxjJQXOJDyeZbELqEPdn8PBMpqI5r0HUphzhCsGcGCtTT
+	 aNmMx5Uz/SE1rZELrNxXCmF5PtEOhThrq3inNQek1+0knv8mZHDpEEvTTSKinSAx1w
+	 4BOTTTo7yn77g==
+Message-ID: <f7d83c56-d59b-4c9b-87a1-31556b3ef5de@kernel.org>
+Date: Sat, 10 Aug 2024 13:59:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,18 +35,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: net: fsl,qoriq-mc-dpmac: add missed
- property phys
-To: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert ad7879 to
+ yaml format
+To: Frank Li <Frank.Li@nxp.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20240809200654.3503346-1-Frank.Li@nxp.com>
+References: <20240809200534.3503223-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,32 +91,97 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240809200654.3503346-1-Frank.Li@nxp.com>
+In-Reply-To: <20240809200534.3503223-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/08/2024 22:06, Frank Li wrote:
-> Add missed property phys, which indicate how connect to serdes phy.
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: fsl-mc@80c000000: dpmacs:ethernet@7: Unevaluated properties are not allowed ('phys' was unexpected)
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml b/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
-> index 6538e0ce90b28..25d657be6956f 100644
-> --- a/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
-> @@ -38,6 +38,10 @@ properties:
->  
->    managed: true
->  
-> +  phys:
-> +    description: A reference to the SerDes lane(s)
+On 09/08/2024 22:05, Frank Li wrote:
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    description: |
+> +      for SPI slave, use "adi,ad7879"
+> +      for I2C slave, use "adi,ad7879-1"
+> +    enum:
+> +      - adi,ad7879
+> +      - adi,ad7879-1
 
-This is not the same phy as phy-handle points to?
+Driver (and binding) could be fixed to use only one compatible, but
+that's another task.
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  touchscreen-max-pressure:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: maximum reported pressure
+> +
+> +  adi,resistance-plate-x:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: total resistance of X-plate (for pressure calculation)
+> +
+> +  touchscreen-swapped-x-y:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: X and Y axis are swapped (boolean)
+> +
+> +  adi,first-conversion-delay:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    minimum: 0
+> +    maximum: 15
+> +    description: |
+> +      0-12: In 128us steps (starting with 128us)
+> +      13  : 2.560ms
+> +      14  : 3.584ms
+> +      15  : 4.096ms
+> +      This property has to be a '/bits/ 8' value
+> +
+> +  adi,acquisition-time:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    enum: [0, 1, 2, 3]
+> +    description: |
+> +      0: 2us
+> +      1: 4us
+> +      2: 8us
+> +      3: 16us
+> +      This property has to be a '/bits/ 8' value
+> +
+> +  adi,median-filter-size:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    enum: [0, 1, 2, 3]
+> +    description: |
+> +      0: disabled
+> +      1: 4 measurements
+> +      2: 8 measurements
+> +      3: 16 measurements
+> +      This property has to be a '/bits/ 8' value
+> +
+> +  adi,averaging:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    enum: [0, 1, 2, 3]
+> +    description: |
+> +      0: 2 middle values (1 if median disabled)
+> +      1: 4 middle values
+> +      2: 8 middle values
+> +      3: 16 values
+> +      This property has to be a '/bits/ 8' value
+> +
+> +  adi,conversion-interval:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    description: |
+> +      0    : convert one time only
+> +      1-255: 515us + val * 35us (up to 9.440ms)
+> +      This property has to be a '/bits/ 8' value
+
+All above should have the "default: 0", based on driver behavior.
+
+
 
 Best regards,
 Krzysztof
