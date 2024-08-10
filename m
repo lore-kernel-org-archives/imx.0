@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76FC146D75;
-	Sat, 10 Aug 2024 11:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FA113E02A;
+	Sat, 10 Aug 2024 12:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723291167; cv=none; b=NLGUFdutryODzD0QVryZBJe0bsffyx5ZAILt4uOydi9lOT/7Z6nTgMiEzSKBrfY3ja2o4XVfSTBC1O2gJpcztqwDapEVWJoeUmcU0/KdwlchQYM/l9uCIjmpe7hS5jeVagjrxrbBLMMH9EXsHmtMvCtgj7lmdObCHLF2zmUa1hY=
+	t=1723292497; cv=none; b=b9qLIKxagQeXhMiWwPjyk7tE4e/+nNG8lcuiA0+oAroHPz9N0YIbbkgpuslxInUtUTzqZxAOaJeW0BR6kEwO6+PjVaOdpLbroglSotfMK6BZ12k1vPK61AXEc0g1Ub67JTIiAomRarjc107u5SaVFo6QkmYZ3ztW9M0+MIIhs3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723291167; c=relaxed/simple;
-	bh=SnFM9Mkwg0UkMMuBuHlVIyneuob9XMDMBy8QxCiJwV0=;
+	s=arc-20240116; t=1723292497; c=relaxed/simple;
+	bh=BUO7G27ozlxUWdCf9RP7tbhzzSrPxYy/G08Wuj3qLpU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n/9xk7ChW8BRhPRZkzZpNj3f1md67+Eg9jwW9HY/z0d2bLmgR1aA5ZOjhTyWaC/iWoVkMb0lY5Q4qDu5YXoSR6FNyeKo6nsAoOLbYG4R/3IVYiqRfTmg6duyTy6EPHMIKroWqQuX7ON83kLsRDSq1eNdYQe5/6gIVhrOvxN0zbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/R0Z0xy; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=K7np6Pt0PXW2SiIr2DQfvcb8RwjmFP7UHhjF9RnH7pUmWp1hH8PQPbm0EdITVz3FGWNi5/h/7+l1kiaoGLe8Q7haDZ+6usYpae3f0S7+dQXmvLx0yCYqYZsJ3P0l/uTzUacRuLlipZ8l1OppnVSFB4nOjbIpAvoU1c4UR7a08l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCcNXD2C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/R0Z0xy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71FEC32781;
-	Sat, 10 Aug 2024 11:59:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCcNXD2C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E43C32781;
+	Sat, 10 Aug 2024 12:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723291165;
-	bh=SnFM9Mkwg0UkMMuBuHlVIyneuob9XMDMBy8QxCiJwV0=;
+	s=k20201202; t=1723292497;
+	bh=BUO7G27ozlxUWdCf9RP7tbhzzSrPxYy/G08Wuj3qLpU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R/R0Z0xyEWktq3l9iLDZ9EYdtZL2BHId4nqRsDryo6Idp30Kh7/F3r/fV+J9hOfuT
-	 NWN3eKzMyCnWd/hZcieT2yeulP9JUxbXhmfsWggBQELNmvJ+l45CNWacYyHMRp1v/g
-	 HXaZn+BFJOifCG95nfwm0exDIGYAXHCv5xZ1c1lSj5CP2sVqoMF0HQbvB+tdOH2Bjk
-	 cbr5Q7H2jiXO6V95MlNZjBxjJQXOJDyeZbELqEPdn8PBMpqI5r0HUphzhCsGcGCtTT
-	 aNmMx5Uz/SE1rZELrNxXCmF5PtEOhThrq3inNQek1+0knv8mZHDpEEvTTSKinSAx1w
-	 4BOTTTo7yn77g==
-Message-ID: <f7d83c56-d59b-4c9b-87a1-31556b3ef5de@kernel.org>
-Date: Sat, 10 Aug 2024 13:59:19 +0200
+	b=OCcNXD2CzuLrZ1X2Mc2SrEexHq31MgvQjnWU8QsftVzNaFkK3AsP9P/MSZ6usZKNW
+	 Oh+bQ1sv6Jq6Pj9hITzsbDpOrIq82BaycMfJ5tT3wbvnqZBL5O93ocR/kHo+Irl0GM
+	 Tm5pdUGT4JhO4WJvYP52GH4PTKJknNkEnmEvr76qdnmncQ0lg+BIagMTRy7xHT+dgJ
+	 jj1WVCqRew5OEgq60RWcZ0YwDyxw+eIV9g2T47BAhkXRQOGwJaxV0Lprbdy3BgOm3w
+	 sztzsXbHvzj6xt1ymDINmePmaabS/Wrq0lFi/d4TytRTzRTjPn/NgfK/ENnLeyyg5X
+	 RJU2T6ZtGnXyQ==
+Message-ID: <ac41ac85-fdf5-4aa8-953d-6b3ab3c23f37@kernel.org>
+Date: Sat, 10 Aug 2024 14:21:31 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,17 +35,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert ad7879 to
- yaml format
-To: Frank Li <Frank.Li@nxp.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>,
+Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string to
+ fsl,ls2088a-pcie
+To: Frank Li <Frank.li@nxp.com>, Conor Dooley <conor@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,
+ "moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240809200534.3503223-1-Frank.Li@nxp.com>
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+References: <20240808153120.3305203-1-Frank.Li@nxp.com>
+ <20240808-frosted-voicing-883f4f728527@spud>
+ <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810>
+ <20240808-linoleum-evasion-ad7111a2afc4@spud>
+ <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
+ <20240809-freewill-compactor-4f441a4a60bb@spud>
+ <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,96 +98,79 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240809200534.3503223-1-Frank.Li@nxp.com>
+In-Reply-To: <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/08/2024 22:05, Frank Li wrote:
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    description: |
-> +      for SPI slave, use "adi,ad7879"
-> +      for I2C slave, use "adi,ad7879-1"
-> +    enum:
-> +      - adi,ad7879
-> +      - adi,ad7879-1
+On 09/08/2024 19:11, Frank Li wrote:
+> On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
+>> On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
+>>> On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
+>>>> On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
+>>>>> On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
+>>>>>> On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
+>>>>>>> The mass production lx2160 rev2 use designware PCIe Controller. Old Rev1
+>>>>>>> which use mobivel PCIe controller was not supported. Although uboot
+>>>>>>> fixup can change compatible string fsl,lx2160a-pcie to fsl,ls2088a-pcie
+>>>>>>> since 2019, it is quite confused and should correctly reflect hardware
+>>>>>>> status in fsl-lx2160a.dtsi.
+>>>>>>
+>>>>>> This does not begin to explain why removing the soc-specific compatible,
+>>>>>> and instead putting the compatible for another soc is the right fix.
+>>>>>> Come up with a new compatible for this device, that perhaps falls back
+>>>>>> to the ls2088a, but this change doesn't seem right to me.
+>>>>>
+>>>>> It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, which are
+>>>>> totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pcie.
+>>>>>
+>>>>> Previous dtb can work just because uboot dynamtic change fsl,lx2160a-pcie
+>>>>> to fsl,ls2088a-pcie when boot kernel.
+>>>>>
+>>>>> fsl,lx2160a-pcie should be removed because Rev1 have not mass productioned.
+>>>>
+>>>> Please re-read what I wrote. I said to come up with a new compatible for
+>>>> this device, not fall back from the existing fsl,lx2160a-pcie to
+>>>> fsl,ls2088a-pcie.
+>>>
+>>> According to my understand, It needn't add new compatible string if nothing
+>>> difference. for example, it use fsl,vf610-i2c for all i2c without add
+>>> new soc-specific fsl,lx2160-i2c.
+>>
+>> No, you should have soc-specific compatibles regardless. Just because
+>> you got away with it once, doesn't mean I'm not going to complain about
+>> it here!
+> 
 
-Driver (and binding) could be fixed to use only one compatible, but
-that's another task.
+Above... and here:
+https://lore.kernel.org/all/20220817202538.21493-2-leoyang.li@nxp.com/
 
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  touchscreen-max-pressure:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: maximum reported pressure
-> +
-> +  adi,resistance-plate-x:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: total resistance of X-plate (for pressure calculation)
-> +
-> +  touchscreen-swapped-x-y:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description: X and Y axis are swapped (boolean)
-> +
-> +  adi,first-conversion-delay:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    minimum: 0
-> +    maximum: 15
-> +    description: |
-> +      0-12: In 128us steps (starting with 128us)
-> +      13  : 2.560ms
-> +      14  : 3.584ms
-> +      15  : 4.096ms
-> +      This property has to be a '/bits/ 8' value
-> +
-> +  adi,acquisition-time:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2, 3]
-> +    description: |
-> +      0: 2us
-> +      1: 4us
-> +      2: 8us
-> +      3: 16us
-> +      This property has to be a '/bits/ 8' value
-> +
-> +  adi,median-filter-size:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2, 3]
-> +    description: |
-> +      0: disabled
-> +      1: 4 measurements
-> +      2: 8 measurements
-> +      3: 16 measurements
-> +      This property has to be a '/bits/ 8' value
-> +
-> +  adi,averaging:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2, 3]
-> +    description: |
-> +      0: 2 middle values (1 if median disabled)
-> +      1: 4 middle values
-> +      2: 8 middle values
-> +      3: 16 values
-> +      This property has to be a '/bits/ 8' value
-> +
-> +  adi,conversion-interval:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    description: |
-> +      0    : convert one time only
-> +      1-255: 515us + val * 35us (up to 9.440ms)
-> +      This property has to be a '/bits/ 8' value
+Uh, this is so confusing. You have fsl,lx2160a device with PCIe and
+fsl,lx2160a-pcie compatible. You claim that these are wrong. Instead of
+fixing driver, you use entirely different device's compatible?
 
-All above should have the "default: 0", based on driver behavior.
+Wow, that's confusing.
 
+> Rob:
+> 	What's current policy for this? Not only for this one. If new SOC
+> appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), there
+> are bunch of IPs, Do we need add fsl,imx10* for everyone, which most part
+> is exactly the same as old one and bloat binding doc.
+
+
+NXP since early days was following this approach of having specific
+compatibles, so why changing it now?
+
+In general you need specific front-compatibles, except for different
+pinout or fused values.
+
+But that's not the problem here. Earlier confusion is the problem. This
+is very weird change.
+
+> 
+> 	I remember that I got a feedback that required provide the
+> difference during I try to add new compatible string. I am sorry, I can't
+> find origial dicussion thread.
+> 
 
 
 Best regards,
