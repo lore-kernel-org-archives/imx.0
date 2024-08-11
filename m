@@ -1,111 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD25F4FB;
-	Sun, 11 Aug 2024 12:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80209EEBA
+	for <imx@lists.linux.dev>; Sun, 11 Aug 2024 12:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723379111; cv=none; b=SuuvRBGaV/7tcGosEuiDteeNyszOkpwQyY91YDkBSqbVZVFyPbwavOqZDITJkddWmXIivD7c0X3SDp34KSGbRicUz+7Y8q/Xj2zgpZJ9HaeH9lfwzBpgPsVqJwQoedJi7O52FZSDtHCFEqS9UoYFwk6PiKsCQ8Di3Teitu+FwA0=
+	t=1723379438; cv=none; b=CKTby5z7tCuwu7VDtHWnGmfmH0pLYvpr5APJjjGQsiNcw74ppKe9tlg1AScIRtXkdMfpahUHg7P2BgdvtWbgBjupfwtTYDykzWRucvK2SNZBFEi7wYKGmskZ/0y8XfSTiUaEksQdQYJPAKZK5G1XGzFjsYjKdISf4vzl7V7dUZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723379111; c=relaxed/simple;
-	bh=erjEHPtFXhbfMLYRyoCCFcuFatjdm1wBVOhxqyBqGAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TrKb7ETWCprNnsXhlR3jT6oYeeS8HmESU1VrpPa0peod1ly9jM3dArs94/FtcZkFGuN7GoqzzJn6wpOMYdca1zLOtw47eyVzU7Llfsb0k5OggVpba3VEa/vkEJ4Lh15o9edvnQ0CI5bfYdd5wxpjGvSTPOga5kKbCvIwjQ9UhR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOoLxf9a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723379438; c=relaxed/simple;
+	bh=bAifYTB4RwqD8R//HvQVD9qR48TBcyRj3dq5UT6jxpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lZLmk5/l6rYttOF38Z43B4mGujOfe15vPqQ3xyEIaZNc4ld7y+wcWgp0RVTAw472kCmRaplAErCS/jXT6xjuGtmp7djrmiRvF+1Fmi9WHXIoAXZbV5mQp7a4uw+ODA4LX9q/5NCCyRE0jcCYVQU8YsVt1I9BxXtavAIVoPUDbJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=jl6YcRt1; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOoLxf9a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAFBC32786;
-	Sun, 11 Aug 2024 12:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723379111;
-	bh=erjEHPtFXhbfMLYRyoCCFcuFatjdm1wBVOhxqyBqGAs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sOoLxf9aMktjZ18QmuF08IBKQdL2fxToKQbSPA9BMLDcv8faN960AsTVKjKYTyqnf
-	 Sb8sDt6/Rn/aviRMrjBrHlgHEZUdF/RfM379Mm7YCn40W1BmDH69M+DvgXfJWSPqOB
-	 fR709/DYUwrviWtxdiVxNFrEc+iRWGLD5+zw6OHHXVRPx0tfAux3Wig0sIHd09HbFM
-	 q+0dcQjC+7nEuqsFXH+402QGO0AwlvwZOYZicgdA/sreVL18M0Rh+TNnD3l6Yyca4p
-	 gHupD0SlrRHxgqjP9lUrUL393lun3zRq/epLUn2xFWb/cBRhPUUx0N25Ze0DVbD1dO
-	 2IistkdFYwdbg==
-Message-ID: <e5d5018d-842f-40ec-a33e-5b093aef4a69@kernel.org>
-Date: Sun, 11 Aug 2024 14:25:05 +0200
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="jl6YcRt1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=BnN4wx3GxIvl/QqscWZIne594Cyo0eoq/KaOBJyLsB8=;
+	b=jl6YcRt18Z2m7WfWV8RnCKuCTKQ7QubMldZRAoGXjTCLEKiVZK4OGelFHZ7qjl
+	Lw0uGc6XycinDIvYXHGRREfEJvACowd8krcphpsT64p6oafaEZdZ7GMP+DjJ0ifn
+	3H3nFSemxVCOgf8JZLYPnaTN86aVYn9bOhZ3BM7sKHqck=
+Received: from dragon (unknown [117.62.10.86])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDX35TKrrhmCYFKAg--.36296S3;
+	Sun, 11 Aug 2024 20:30:03 +0800 (CST)
+Date: Sun, 11 Aug 2024 20:30:01 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s32@nxp.com
+Subject: Re: [PATCH v2] arm64: dts: s32g: Disable usdhc write-protect
+Message-ID: <ZriuyYqhOQiA0dhe@dragon>
+References: <20240704135653.2969532-1-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: net: fsl,qoriq-mc-dpmac: add missed
- property phys
-To: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240809200654.3503346-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240809200654.3503346-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240704135653.2969532-1-ciprianmarian.costea@oss.nxp.com>
+X-CM-TRANSID:Ms8vCgDX35TKrrhmCYFKAg--.36296S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxWrWDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgM4ZWa4nhcbtAAAsk
 
-On 09/08/2024 22:06, Frank Li wrote:
-> Add missed property phys, which indicate how connect to serdes phy.
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: fsl-mc@80c000000: dpmacs:ethernet@7: Unevaluated properties are not allowed ('phys' was unexpected)
+On Thu, Jul 04, 2024 at 04:56:53PM +0300, Ciprian Costea wrote:
+> NXP S32G2/S32G3 SoC based platforms do not
+> use a pin for SD-Card write protection used by
+> the uSDHC controller.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+> Hence, adding 'disable-wp' usdhc device-tree property in order to fix
+> observed warnings on SD boot as the following:
+> "host does not support reading read-only switch, assuming write-enable"
+> 
+> Signed-off-by: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+Applied, thanks!
 
