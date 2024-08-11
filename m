@@ -1,62 +1,63 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011055.outbound.protection.outlook.com [52.101.70.55])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013058.outbound.protection.outlook.com [52.101.67.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8006A3FBAD
-	for <imx@lists.linux.dev>; Sun, 11 Aug 2024 21:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045F915853B
+	for <imx@lists.linux.dev>; Sun, 11 Aug 2024 22:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723412842; cv=fail; b=ahjWcxlSzS8LQeODZ/eY82rUB+0qQ7byJUFZs2rOzwPqLCUKpR0TfFu2SdWFJeS69T9IZsEnlZxkEZf7cIgZ9/7Gzz0EAcLQuz99G7d/niX5c38EzfmytuoexKTOH6e5ZNzlRCTdg7cc4GFYA1bJEhZbtF8yqXG/2XkH6+9ENZI=
+	t=1723413939; cv=fail; b=Cq4dgUjm2lll6cY7zL4YmaROq5/Di143Ua+3p0870ZwalfGmdFHnmDryZVBwt51YWWUJBqr57aMF4nF4bLYeOHB6FwDUvjHYLKy5nGvQUtPykSlPjuGgJwfEEDxkQeefx2x7Omgc0WVsC1+LYhWmTyIEO/e8Ds+fYd6oHWHIwaE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723412842; c=relaxed/simple;
-	bh=W0HahD58Liw+nlbz/NpbFHj4gC2SHFjCFFJNkpQxs0s=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=C+ZsXf6cxAwSw2XyvRJ3EDe9YCKWERjNaYQImMLyPTXMrltIyxUJT9LoC+wVzmGv8ZxikZEVLoWkc29eWFkNOvnnnuNQ3zJ0MeXEP8CMei+3Ew8BMIae8B81XepplbQR3lGXs0CwMhU+S3Q9w8FPsToVcjfeBokmnWOLsTPclPQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bZySg0Q0; arc=fail smtp.client-ip=52.101.70.55
+	s=arc-20240116; t=1723413939; c=relaxed/simple;
+	bh=5mBA6L8+EyxVstPksjT92kz2N+vaODBZgQHQPQ4Kvt8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=SRdyYyjR6DTxOpRfCuuXCYJhv6i8eJNvWtbgYwF9WZqHD+r9+zgE/gK34U0G3Z2Y8/e2zMZSwEmujsRfRc1+bbzXZjvfLOFsMDRts581v9VRP4yKBmQuAR16/HsJUPsAa4XLRfiVU5a6xQppn3L7gTo1EGEeJ+9X2dUdacBURrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VYgGsPIU; arc=fail smtp.client-ip=52.101.67.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bZySg0Q0"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VYgGsPIU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mZpCOaJVMFlUGgRZBW/QnJsZSs4UlcvwU6HvwIwbZqq/BlLHqmjbRkohxa8rt9HFvoFmD7Ad3Beqz8DFZwI2oCZQznmu5gQkifmn7zpIMERqilSCQwCl6926dwpiw15BA8JK4hUcgeBD5UWFO3HNPQiIE7GyNAQeJf+RB6CEYa3ZAgaW+q7TMJuMnBV0Ms0X28xXfHD/RcdQEWk5KNdFBpJ5QXXSYYq3UG8hfMkBdQkdOJLgM8o1k6HeuyUJXfKVbSu23sg7yQFp04TsblXm7giHkoQX2T5jMtIX+fTyt4qENwVnVbfV/jeDzA/mS4QzUBNuUCpS2EDQKK0kUDMl7w==
+ b=QMz7+TmG/LavdrUBUqYQwp44mi6r6a+neeBAS7MXOILRxdQ2Bund2ZT4Kl/rAltIxKDXKQYeRTCnB8rLWgkwH2UjgTgdTbUUzK9f16FfL/MTIIlbF4escBky/jda/OMvxl0tssX26aoZrsA9quHOCFYaSHZrbyDMNvxRgDfUHywiigMa+Xl4W2lQdzgyJmbMHvPqOgbJCFXAoxisBl6lV+C7y3IsEH8fIJyE1903urt+pynvBBhq3hGs7CyrY/7eq6/BMJlMV0nHFrPO2/yCheUbyVZVLz17eC04ga55nPb8QdAGvLVT08sRRe9/QSoCTEJpwbwPTXbKdigruvpUzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hran0EUDj68icBdfnjLc1XiTJ8hNj7atRHuiehfcWqQ=;
- b=WQmROUFz+anVlOdulync4Ump0dITyAkrUAR/urju9pgRVQ28A67uZqGuNZxdhK8Uuhd6Nzst53Vxy8InUBKUCYa5sj1u2ppoaSLFSKxCaXnkQcRKJg2C29C9G3olwg+35u5o/JE4q+1fD6CegUB4+c5DTav8sjSPJ+UdcTZ+fH9z1xW8UCszvsme+oKmytV7R1gaPykSfjgyJafCh+RRWbzwlc+93SPKlAffJmSS/JXPGgBv1tMSOdMTmjJ7sOq56CE5/fqdzfcV1BvPd1BKnEBYoIw2CIDcdK8dlSzppAidnIXSrNxCbvktekkPA0947UI1CTiqviqvXdSN4GUnmA==
+ bh=Z8nsPm4uW1imL13AXpTJtLCRzR9xoCnvwlhTMXGCxtM=;
+ b=Zz+C9/YXjtVHTlaBj7UaEQulGHVs3i7C5IpajWU+A+9VgkDtm69D+Ysm7QKR8dX3NTvWgcITPuHM6X3ujjoszfh7RqJtfjvDcoBg143ATwWoQZDB7acdd7Ys7gI+nGifeFLJSx7y5fLn9errSvrdcJBaAVWjtvNFhYhPWugATcfWIvHRwNOiVBT94sDf56HBgGh44TtDr3X0HSowJ+tto/Fxy6RVE7LtwR/NMsNvXu63VlndQJJIGaG3zRdRiQHIDHVoBP8oGX3fAlRi7caGOZChB2RmxoAaRS8vseCYCfmnqjDcw9Moih3VJZ9c81PDLpKWEgUUUT8vtODpSTK+Gw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hran0EUDj68icBdfnjLc1XiTJ8hNj7atRHuiehfcWqQ=;
- b=bZySg0Q0qbZUViaErFaulVR6RQ27NxdtHv6lNydzHKHOGstgScJKSmg/AevnlcaWfwigcTYiaREt/UBw9/ev9eJ+nx2fy5sQ1lTyaQ4k5KtXO41F8JrrTmirUT2tRp4Kn6bE53XOp08xrnuwbgFSD8Ht25Mqh6hgngtV1FxuWIIImidPUphv0OnG4w4Y7C6dl+QQHQZuDu+NChfA9R4odUtUbf6HXj/vh4B3cNIyHhhoRkgan9r3NGX139tmyNErJs8Lj27WkiDXrTliJwA6ZCuK/88XpsJVWeTnRTyZusZECDst4/MKhG6hEtzJNxMUZMnP6CeIWF+VdEoeKh6kzg==
+ bh=Z8nsPm4uW1imL13AXpTJtLCRzR9xoCnvwlhTMXGCxtM=;
+ b=VYgGsPIU9eXfUfR9SzGVPKoc7AJwD7uJzqNWlt2ajjMnxnjEQb985ppenT/twmy+LNsBQvPTIgK0EbVPgQojM5TjpeDpDftv8tXbOqMxxu2aEau1s5qnKwrWzSGUbKskUZDVhDeyDy8DUlc4d0ozdFyPEItXFuUHPCjvFg6Rvvux0MDpPDtcXlt3GnS3o6lxHjczlNKkPgGZoyq2NO3Drd2XS1HlzWceUKYnPL5b+xN3Bh8wAPmnywfUAUAUegsKk+dsma4oQa8yxQo1ad72r1KmyOQNY5N4T5PE+pxuBEYTjI3m/gpBW66sPoKDrnV2nEKdCak0owLY6jdjnOk4nQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB7623.eurprd04.prod.outlook.com (2603:10a6:20b:29c::15) with
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Sun, 11 Aug
- 2024 21:47:16 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7849.018; Sun, 11 Aug 2024
- 21:47:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.19; Sun, 11 Aug
+ 2024 22:05:33 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%7]) with mapi id 15.20.7849.018; Sun, 11 Aug 2024
+ 22:05:33 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+To: Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
+	linux-watchdog@vger.kernel.org (open list:WATCHDOG DEVICE DRIVERS),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: input: convert rotary-encoder to yaml
-Date: Sun, 11 Aug 2024 17:46:55 -0400
-Message-Id: <20240811214656.3773098-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: watchdog: convert ziirave-wdt.txt to yaml
+Date: Sun, 11 Aug 2024 18:05:14 -0400
+Message-Id: <20240811220515.3776756-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0140.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BY3PR03CA0004.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,249 +66,175 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7623:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3fc7f94-1324-435f-0144-08dcba4f2a93
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DU0PR04MB9496:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cc7c6d7-5c78-49bc-2bcb-08dcba51b7f1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014|921020;
+	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iupIlrqPdipwOiIAgwZ5IJqztJ87LbeqChOvSWq9nyftTTCPOaYJD32YJj/v?=
- =?us-ascii?Q?1neoqAUeg32j1Y++Fw9sku+9sUIrkZhBvNRHzxEa49SjU3UbcK4TIUQeMxJr?=
- =?us-ascii?Q?fUSpJJywYwT9OjLpmtYWAEoJ1+DtzTvWtIXj+WjLtevMrFc0cdwP7m+4oD61?=
- =?us-ascii?Q?qwzOOgNZEbdyfsl9TveqsDeGlQImGuf7e85CeXEUZao48pPq3d0vjG3dbQo9?=
- =?us-ascii?Q?+m+YFqk+Ef9Z1hNf78TVxs13Y7qTk8ougAt9BruwbAf0kYFmeoORBZnGH7yR?=
- =?us-ascii?Q?g2mwued96zVw1zMzIbgZy6PHZ1jIqrOXT4kvbbvP0qRyqi9cWN3BxNVFFvSm?=
- =?us-ascii?Q?VWIqejEd7Jnp/1G1cCi4U5uwRrEytQMnSohYyFzNb0G6hfmtnL18xpay+VJY?=
- =?us-ascii?Q?0fsPPqS38Cf3JF01qVrBglhlLqAlZ2Bx780CgFMRgZjfIkNIE7B7FBd6CWnP?=
- =?us-ascii?Q?0w1qG1tsFwliofhTlI7MSQK0UW55yQJw3smEt4Voodhf+duTp4TJm2qmm7AW?=
- =?us-ascii?Q?oYM8ljEuWMuoguev6yIwNPj9btbQ1eMDsPJ4ewb/wo+eibQQvbnnfW1Ipjn7?=
- =?us-ascii?Q?S7cbQc63AdGdQ6zUq83kSrIQVb58InyrLzTbofL8ZYtt4UwlkGq4ekuzgxat?=
- =?us-ascii?Q?2Qw74gw93ElaSOdhPxXVwf3qAW/68ZK1ZU2MmnO/xZTxeXa+ZJTzz17nQXLx?=
- =?us-ascii?Q?LD+lgyg6lHwgop/pnEo253Koh+JVKB3HdIhk1Fhyy/QsYJ/8o4CkVnnWHZFP?=
- =?us-ascii?Q?gYmsQkq1UX6S8t+vqwgUda/QcHt0JI1tpgvt8rmdrHrL+6C9yq2FxgQ1WDw+?=
- =?us-ascii?Q?Fx04wENFmDQ7+xhOP7eSf+ZtvwBgDugRU8Ruyu7hCk/sKTo6hQRtPjnbpBHt?=
- =?us-ascii?Q?2PBWL+TK6pophxI6bmdvTD5QgfaajC1TxpUO/Y5gC9b+YfHhOttjFo8eyZKW?=
- =?us-ascii?Q?XK67m4K3iLp/PI39zA7ktuMglT/H3HoR0SCUaavF6EAW6m1qK1aoXI8bGNG3?=
- =?us-ascii?Q?U4TFv1NbOy2TQzXPXP5oWj78Jl6vsIV0pkh0S1qYWICnS4BT+h6OHVwe+Kag?=
- =?us-ascii?Q?kNrT26UUG616YrLaCWsXka2onCPxDVDxfba7PMDCmVgHx9JM2h7yuUNAVnNc?=
- =?us-ascii?Q?7DAuH0UgCAhptMlzUYGCUtF+GkqI6p247TZng3rpf7RX6SMMVRrDfGJQmJhv?=
- =?us-ascii?Q?PpZndq13uKuA8teRucnjZjk2jBPpFL7IPko71J+oiJfYPGtzEU5ZZSCuJ5fC?=
- =?us-ascii?Q?btxSGomZ8OF2okifRT33dDJbVUlYKWLjh8EmkVDf42VAm1ZKq3C3yuG5hVCv?=
- =?us-ascii?Q?aT6fs9j86hy3WBndR85klsqlmr3Mw971QKrulGYC3XB/mcsf+9iwP52VAZIq?=
- =?us-ascii?Q?WUAREWM=3D?=
+	=?us-ascii?Q?5Timsn5QlgSKrUIB0qYK5vOhhOA+BCbW4FTULxTsD5h0ODrUQDeuYXNZZ7Hz?=
+ =?us-ascii?Q?EVi1zsAvk8Jm6octOdL9O4zx/8z2Ppfc3TicVZyzy8aD/t75OK++SaRDXTnr?=
+ =?us-ascii?Q?hJNPpWHPvE+q34whLEly5VngVs0ShbbPedn3zlK7MEb643xdR4NVABe5dyG7?=
+ =?us-ascii?Q?D3wJfmRenwYWdlrcDyKgPB9p980LvMd9lH8rebyY4UjXRh77uil8CMJSMVEx?=
+ =?us-ascii?Q?Rvng/gozXeIszf3uTXwg+Vp9MaCM0AavRh/aUjz6LyFINk2inmsnDEbUqvUJ?=
+ =?us-ascii?Q?s9NyvWGV8Pwie/TenUtDLOcL31t/gpClxPgaONc3QzEiJq7wwKT0bBe5eTwp?=
+ =?us-ascii?Q?usPQdOf+21jkuHk1pDGmwaZBf6xl8KI6+RzqC0l91Zng5d5Gd7H6AanHLIzx?=
+ =?us-ascii?Q?tvcqy33B6cuo1BsjrGdmDQhT/HenLgKLIL5GQ5uWqslIfUnZSsTdX/jtoD0t?=
+ =?us-ascii?Q?4eLsKzYlXACXwdK+r1X67XFh9xjV4z/0z3q3srHPs+DieMAZqN043VTYEMTw?=
+ =?us-ascii?Q?/oZY3fm0iLRdJ5yS2mHcOifSNNtPJrL6hWoLEgvrNXjADD0McBZFOqD0xZIe?=
+ =?us-ascii?Q?x27+ZgvCEhBZiTdScpd1DLTl1mKhnIFuv6aWK/kSlGSzhYDTKCtx8E9gfiDM?=
+ =?us-ascii?Q?rFVJouVDVS8rEA3bfREjUVM2m1qp+xn7klOvnn/5IlroQIUXlFW2P1I1jj7v?=
+ =?us-ascii?Q?YCgz7+zFh049z26pFtqqzCEtmKQj6jQ1KDzkrSeiZeludMeN3SFQmEVFvR0Q?=
+ =?us-ascii?Q?LIQhD2BqQB5QMaAmWw5mLbGOEMiYVFL8J0a2zaAPNe0BsLPuEMxUbxPV8MS6?=
+ =?us-ascii?Q?e3PgIyFom4opXC71rSp32mbjB0UMzPrk22cej6eMoQNdPRn1inCyQI3UwdTB?=
+ =?us-ascii?Q?61YTZp8NrgyiaTJJgXaT/95Lp/CKFoHENhJ6BIZ/eqPkN1PP0qiLbErLERkg?=
+ =?us-ascii?Q?IFPeiCBKHlt9eMT96Y/oURuQJjQ2olReUAruOtUz5JsaTWp5YHUHiVxfsfK+?=
+ =?us-ascii?Q?Pj4RNy9UPLxzzidLXZb4+S1qPSOdzPjVFmY51eY4Wc8gCNcRM15nQPH5TbWf?=
+ =?us-ascii?Q?k38EIw2fzb5K853DLlVOjP5BygBHyMOW9Tdh0x8A2W0tVMx3yxgv4ncr0uaK?=
+ =?us-ascii?Q?vshM4CxlObzUcyLTKYIWOrOCw4dt+pyBmteMeJHU04sanqAhqnlRd972810B?=
+ =?us-ascii?Q?uzyHO/wI0tMofLyrY1tiOblBoPn30OJMT360hrZ8f2pip92ddSlTL8sPSavv?=
+ =?us-ascii?Q?2eaWdlCOq2cKkrj5ddTCLnmGgNctx7y3hcAbRkbkCwkV97NLLtfB5bQ2S4VN?=
+ =?us-ascii?Q?HfK18pf5GsixxzQReR2MQb5EkYhRqInEi8V0TXqJb/12j+EizyUPKt5onGG1?=
+ =?us-ascii?Q?5M4SPSA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1ihR89l2K7LcmjbCoSokV1mJ3v2ZuhBJ3tOMISLBYyeuwaQUXYiZwqJXt+z7?=
- =?us-ascii?Q?x43EDoJLhsu/UJ0WcxIsdXHl1yLp5bE0nqQuBmmFTIOsyuGxiKqsG4KfB+V9?=
- =?us-ascii?Q?Lnm/5tzahOrKrxZzBYHwDkNtvUms8Gltn9NhLZ561tonJyIylu7ZA1Hj9FTI?=
- =?us-ascii?Q?lntG+Ay2V/6PBEM4Rb/vsXIb3I7WQtyLxTfJtR1PZQAlcHU2ppXxYhezpk1D?=
- =?us-ascii?Q?S8LSnpICmjzfrUbLrLxTzyLy2vzwB+osS/msgOcH0NDagcBcSjawzgtcGE2O?=
- =?us-ascii?Q?DFEuKuHh6B4D9v55h6hySpTODbI8H0xUmVsI+WDpUvlMijE+hbsJeblspw1U?=
- =?us-ascii?Q?x5GgLUbxeaUV7TZ2TQ5j7gCbjE0n/kdZJhX49/hnMHhVPGH1aRADE49OryiM?=
- =?us-ascii?Q?Lz8f9p9uvmMGRt+xtboXrUpOdAL6mkiz8s/jdXNyWhN6IrwCdUG8MzvVSLyO?=
- =?us-ascii?Q?W8w8of+ETeNzmXgFKoGslEZoVcE33PtF4Y6tbb/OKRJs6PD8GQs8j0bjBf/Y?=
- =?us-ascii?Q?Dgd2mPuFezu5Ffbc99ykthQZWh1wGmoO7+Ul8/CSRIwBtwscG/98sDDEFRqH?=
- =?us-ascii?Q?cEevfMHdS0cAf5nzg6mK1FO/ilw3NuHvrp+KP1mwKaKAwJ9Bf5C369weczdG?=
- =?us-ascii?Q?E58bxOlWXSwcE1lfwEXn2Q7IsweQ77bcjL02qSGoQ+v73x3cxyd9wE/0Sfuw?=
- =?us-ascii?Q?2YeIIg0cf7aJdF1prVy1pG0q8hwtk7IO2Z8miduyqD6O7TOTdcbNQkaN7MId?=
- =?us-ascii?Q?ADlHQZu8x2u5HzvmSYeMSbeN0htdeMia5pih9qWzdMk3vPrPp5mRtZQjS7hl?=
- =?us-ascii?Q?2FV09M5shrKCu0mYzdnekljd03OmSPZMkVsyNKnsO+ILeFnPd54u7Hd8mKfr?=
- =?us-ascii?Q?E5HKxyFcPhq4UTXshhAfbV8f/6lBGadOUG01C+qVrXAuPK7b2aoMRYkxE1Dj?=
- =?us-ascii?Q?N6OP32IarhR1UDH6SEhRsWv8UHTfcBfeLnPbumCnTlGi3iNfA++ifdBYqFsW?=
- =?us-ascii?Q?llcbtrHBYfgee18VrmEBthRw0DWaUYZMi/E5KuSFN4GK0E4Gxk2VokNkKNcg?=
- =?us-ascii?Q?K1J9tVmCEKIElaxmi9g2vhzv9RuPk2Emol+5WweihpapDPjFNk/VjRw6BXGD?=
- =?us-ascii?Q?PbchuFzIl9MbaBnx3wrJrr9063WZ1yX7mEgV86amWls8AwO1zBaKx5L4MfOg?=
- =?us-ascii?Q?hFQc3F2SywFuHyKqQBsA2Iv/Eqi3eFYR8xH323N+C3ngIU/ixE13haSYdb+S?=
- =?us-ascii?Q?+mcJIrEzdAogSaSfkjdmMTNQ5MAMr/rmDxCZQiqtMYCzKYuZT1Znu5Aec09C?=
- =?us-ascii?Q?JJft25nOYad9GXtrhsqW1xxSEkzDh7nDJJsbbv5Ba9z+FPSAEYZV+kNoWXSS?=
- =?us-ascii?Q?K38BRlh7ybxKdBkC0wc6jT3pvdkNV2KlL46DLevPOLhK07+x/o8ebO0OgeHb?=
- =?us-ascii?Q?E3jQr+ouC4L7rultCPRIUcO+KRoK/mfO57RT969J1IfpryCbyeI7Q9J/gUFv?=
- =?us-ascii?Q?5ATpUyObBQj1E1oqQVpZUTLwt2xjuVQ96mhIK65CGnLWO7SbXQhGpRUtQ5nE?=
- =?us-ascii?Q?1jWWBlb2edgKV2IVF86iNyUIQIApU2mU9M1xPLu5?=
+	=?us-ascii?Q?WRtwEyHyUiqLNw4O4+k93J5yQj/SoTlSCTEVXSvY/b8r3VeNJhtzAxxA2zR1?=
+ =?us-ascii?Q?puDyXgkuzzRRr2jqzzsf/PvLkPuw/VFIjb54+MVuQIwBkarcKKS4nlDgK2ML?=
+ =?us-ascii?Q?2qRuloRjrJ5TAEVoThm3VrjBFmdRieh5a2oe3VT8K6E5rap95g8HfoufgA6p?=
+ =?us-ascii?Q?YbZLIYmFZKfSS+HoQot3c/i6NXeB9tYUM/Dj4koJjjNb283pJrORO+QkvGp5?=
+ =?us-ascii?Q?zZ9PXVCZYXt87onFTYCzqB4L9wQ8WcGRfKjEXbqmWoKHRqQwkXKahxkg61kr?=
+ =?us-ascii?Q?dIJELkMlXJ2gp1TnnlGe/GKOiOOetdSOqIkIhzxDOM13EI57ipFLebjU8MuW?=
+ =?us-ascii?Q?IevPrDhLLcjW/+uyD1VAatAjPCbacUwM68WJkThQM4piICcCx+gxFwy3mwAf?=
+ =?us-ascii?Q?vIppE0qGkT24EFtFnohMEWedcFXoq1FFbFEZSAlMOxaIEmi5j75xR8OpOFWI?=
+ =?us-ascii?Q?066sAmtH+6XCjrcd0KYbytjuYQBtvayecLA/WyXTbVcFyqG5E1RzLjwNf9pi?=
+ =?us-ascii?Q?UKS2oRwZMuFEc3/lEO/d6biMQriKt0/BgZ3a8wUPmZuJtLXN+g/0NM+QdmNl?=
+ =?us-ascii?Q?dWK/vSgSA9skoz2aWXyIJFDmXaLYH8ufBsYl/KAks5CcrjORnxFffXX9xDCc?=
+ =?us-ascii?Q?5M6rwDjcOCmkhX8gehdu+NHC+R+UkL/rWhuvkEp8uOIldrVicfziqOyKZYG5?=
+ =?us-ascii?Q?KjH4Ilmn0GfYz748RYIv6w5C79lFKwx+49puqOGID7uN6f7Naua/MDgcuZ4M?=
+ =?us-ascii?Q?ezRa6ly3PXG7kQJfgN2vvu4B1whn6vQGcyLjc2ukxXmfkAt5/hgVYMGW20sD?=
+ =?us-ascii?Q?w5fJ+0A19j7mfharu5k4NHORQxxsSOg9bYI4N1YHOJe+WyHV+jvd3mvCPYZV?=
+ =?us-ascii?Q?t1qm6ISvcktsmueIt8t+cj0tImFGjbS2phUWCl/cILu+eUrPbnOLdCOFYHcC?=
+ =?us-ascii?Q?ygub+b9eUfAVJwHQ5UZIT/rF0fCrXNu2g4BaG1lX4WxJls/KoiL36/ITPHug?=
+ =?us-ascii?Q?+gY0UuJFdQvlbT4ucRbnV+BAkRjTvOYUtGv/BhbtJc7LVvIu5pACDt4BrLTN?=
+ =?us-ascii?Q?C5SlJw+1PkdXOTRz4Nj0SY5o+7bMWoLeNzrjTYFc7EVia5en6kjnJUr4Xs1J?=
+ =?us-ascii?Q?ltWGn7nPu1PuXsoWHYaXZvUE+lCZ3vyWb2+rg6h0Ir93CY/GUId2dd1SRHM2?=
+ =?us-ascii?Q?+x5gjq045Gwex8G7kenDDPM7tPu9uhQpmzEi9O0rzFe2tFg3mZULuzcnSIX1?=
+ =?us-ascii?Q?vadmpWKBsu7fWFS/VUen3AWr79GHVMqIbRanKaGyrD67eV2yiRy5UQyf4wff?=
+ =?us-ascii?Q?IZ1o6th2nD6IAqV2Ag9NHM0x0pcw7O86MqQr+KClfhk4LPhUepF6OvOsCpE1?=
+ =?us-ascii?Q?PxXo7l5NwfxyZ9NW0nniUQE1Yk0rUxt1tOmza5byyOVFc5C6hRpQ4xWQu2mp?=
+ =?us-ascii?Q?D13uxvhsNsC55oX0yrNBUBvG1rpXnGTNXQp0dYkIj2Q0KMKNYcOHmUBSwm05?=
+ =?us-ascii?Q?0yKq7Fvt+csyayhLglnUk41bdO5N5m93Fxh23dJWJfzlE3DGL4j4P99chZpd?=
+ =?us-ascii?Q?VaCpUBaAlaUEK6KDUEexCjVF9CJGUDzb/HiOqJwx?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3fc7f94-1324-435f-0144-08dcba4f2a93
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cc7c6d7-5c78-49bc-2bcb-08dcba51b7f1
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2024 21:47:16.0697
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2024 22:05:32.9425
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C9fVbaXkF2oSnVfm6/UVMOfH8RuWjwIFJ5SX5nelCWgFTe08lRIgHltAAtBigC4KBIkIFOBssRhKTDsfhnYdzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7623
+X-MS-Exchange-CrossTenant-UserPrincipalName: STLLNkyk7hFampntb2OJprReM5dsi/r8S+jjlyAkNWbztulpdOr5TuJ8gqwyxxlH+2htS0JTZK7oogpFyvhvbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9496
 
-Convert binding doc rotary-encoder.txt to yaml format.
+Convert ziirave-wdt.txt to yaml format.
 
 Additional change:
-- Only keep one example.
+- Add i2c node in example.
 
 Fix below warning:
-arch/arm64/boot/dts/freescale/imx8mn-dimonoff-gateway-evk.dtb: /rotary-encoder:
-    failed to match any schema with compatible: ['rotary-encoder']
+arch/arm64/boot/dts/freescale/imx8mq-zii-ultra-rmb3.dtb: /soc@0/bus@30800000/i2c@30a40000/watchdog@38:
+	failed to match any schema with compatible: ['zii,rave-wdt']
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../bindings/input/rotary-encoder.txt         | 50 -----------
- .../bindings/input/rotary-encoder.yaml        | 90 +++++++++++++++++++
- 2 files changed, 90 insertions(+), 50 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/input/rotary-encoder.txt
- create mode 100644 Documentation/devicetree/bindings/input/rotary-encoder.yaml
+ .../bindings/watchdog/zii,rave-wdt.yaml       | 47 +++++++++++++++++++
+ .../bindings/watchdog/ziirave-wdt.txt         | 19 --------
+ 2 files changed, 47 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml
+ delete mode 100644 Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt
 
-diff --git a/Documentation/devicetree/bindings/input/rotary-encoder.txt b/Documentation/devicetree/bindings/input/rotary-encoder.txt
-deleted file mode 100644
-index a644408b33b8f..0000000000000
---- a/Documentation/devicetree/bindings/input/rotary-encoder.txt
-+++ /dev/null
-@@ -1,50 +0,0 @@
--Rotary encoder DT bindings
--
--Required properties:
--- gpios: a spec for at least two GPIOs to be used, most significant first
--
--Optional properties:
--- linux,axis: the input subsystem axis to map to this rotary encoder.
--  Defaults to 0 (ABS_X / REL_X)
--- rotary-encoder,steps: Number of steps in a full turnaround of the
--  encoder. Only relevant for absolute axis. Defaults to 24 which is a
--  typical value for such devices.
--- rotary-encoder,relative-axis: register a relative axis rather than an
--  absolute one. Relative axis will only generate +1/-1 events on the input
--  device, hence no steps need to be passed.
--- rotary-encoder,rollover: Automatic rollover when the rotary value becomes
--  greater than the specified steps or smaller than 0. For absolute axis only.
--- rotary-encoder,steps-per-period: Number of steps (stable states) per period.
--  The values have the following meaning:
--  1: Full-period mode (default)
--  2: Half-period mode
--  4: Quarter-period mode
--- wakeup-source: Boolean, rotary encoder can wake up the system.
--- rotary-encoder,encoding: String, the method used to encode steps.
--  Supported are "gray" (the default and more common) and "binary".
--
--Deprecated properties:
--- rotary-encoder,half-period: Makes the driver work on half-period mode.
--  This property is deprecated. Instead, a 'steps-per-period ' value should
--  be used, such as "rotary-encoder,steps-per-period = <2>".
--
--See Documentation/input/devices/rotary-encoder.rst for more information.
--
--Example:
--
--		rotary@0 {
--			compatible = "rotary-encoder";
--			gpios = <&gpio 19 1>, <&gpio 20 0>; /* GPIO19 is inverted */
--			linux,axis = <0>; /* REL_X */
--			rotary-encoder,encoding = "gray";
--			rotary-encoder,relative-axis;
--		};
--
--		rotary@1 {
--			compatible = "rotary-encoder";
--			gpios = <&gpio 21 0>, <&gpio 22 0>;
--			linux,axis = <1>; /* ABS_Y */
--			rotary-encoder,steps = <24>;
--			rotary-encoder,encoding = "binary";
--			rotary-encoder,rollover;
--		};
-diff --git a/Documentation/devicetree/bindings/input/rotary-encoder.yaml b/Documentation/devicetree/bindings/input/rotary-encoder.yaml
+diff --git a/Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml b/Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml
 new file mode 100644
-index 0000000000000..e315aab7f584f
+index 0000000000000..6c0a16912d7f4
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/input/rotary-encoder.yaml
-@@ -0,0 +1,90 @@
++++ b/Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml
+@@ -0,0 +1,47 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/input/rotary-encoder.yaml#
++$id: http://devicetree.org/schemas/watchdog/zii,rave-wdt.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Rotary encoder
++title: Zodiac RAVE Watchdog Timer
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
 +
-+description:
-+  See Documentation/input/devices/rotary-encoder.rst for more information.
-+
 +properties:
 +  compatible:
-+    const: rotary-encoder
++    const: zii,rave-wdt
 +
-+  gpios:
-+    minItems: 2
++  reg:
++    maxItems: 1
++    description: i2c slave address of device, usually 0x38
 +
-+  linux,axis:
-+    default: 0
++  timeout-sec:
++    description: Watchdog timeout value in seconds.
++
++  reset-duration-ms:
 +    description:
-+      the input subsystem axis to map to this rotary encoder.
-+      Defaults to 0 (ABS_X / REL_X)
-+
-+  rotary-encoder,steps:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 24
-+    description:
-+      Number of steps in a full turnaround of the
-+      encoder. Only relevant for absolute axis. Defaults to 24 which is a
-+      typical value for such devices.
-+
-+  rotary-encoder,relative-axis:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      register a relative axis rather than an
-+      absolute one. Relative axis will only generate +1/-1 events on the input
-+      device, hence no steps need to be passed.
-+
-+  rotary-encoder,rollover:
-+    $ref: /schemas/types.yaml#/definitions/int32
-+    description:
-+      Automatic rollover when the rotary value becomes
-+      greater than the specified steps or smaller than 0. For absolute axis only.
-+
-+  rotary-encoder,steps-per-period:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 1
-+    enum: [1, 2, 4]
-+    description: |
-+      Number of steps (stable states) per period.
-+      The values have the following meaning:
-+      1: Full-period mode (default)
-+      2: Half-period mode
-+      4: Quarter-period mode
-+
-+  wakeup-source: true
-+
-+  rotary-encoder,encoding:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: the method used to encode steps.
-+    enum: [gray, binary]
-+
-+  rotary-encoder,half-period:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    deprecated: true
-+    description:
-+      Makes the driver work on half-period mode.
-+      This property is deprecated. Instead, a 'steps-per-period ' value should
-+      be used, such as "rotary-encoder,steps-per-period = <2>".
++      Duration of the pulse generated when the watchdog times
++      out. Value in milliseconds.
 +
 +required:
 +  - compatible
-+  - gpios
++  - reg
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    rotary {
-+        compatible = "rotary-encoder";
-+        gpios = <&gpio 19 1>, <&gpio 20 0>; /* GPIO19 is inverted */
-+        linux,axis = <0>; /* REL_X */
-+        rotary-encoder,encoding = "gray";
-+        rotary-encoder,relative-axis;
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        watchdog@38 {
++            compatible = "zii,rave-wdt";
++            reg = <0x38>;
++            timeout-sec = <30>;
++            reset-duration-ms = <30>;
++        };
 +    };
 +
+diff --git a/Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt b/Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt
+deleted file mode 100644
+index 3d878184ec3ff..0000000000000
+--- a/Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt
++++ /dev/null
+@@ -1,19 +0,0 @@
+-Zodiac RAVE Watchdog Timer
+-
+-Required properties:
+-- compatible: must be "zii,rave-wdt"
+-- reg: i2c slave address of device, usually 0x38
+-
+-Optional Properties:
+-- timeout-sec: Watchdog timeout value in seconds.
+-- reset-duration-ms: Duration of the pulse generated when the watchdog times
+-  out. Value in milliseconds.
+-
+-Example:
+-
+-	watchdog@38 {
+-		compatible = "zii,rave-wdt";
+-		reg = <0x38>;
+-		timeout-sec = <30>;
+-		reset-duration-ms = <30>;
+-	};
 -- 
 2.34.1
 
