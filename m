@@ -1,106 +1,130 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DB1183CA7
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 14:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E214C5A4
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 14:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723473306; cv=none; b=iap2QfeAHmBvWk4JDbJMfk6KY38JXDUQW809+6c3nsiZoB1tL07glKZIOa4KzEkh2hiUjXB0xYwenE0nnTlOvQvAFFjydsbCIxY635YIBC58n+cIWTfW98IbIVuv1BLz2DGjBliuSnKflGMNr2ER+/bS5BbJjJAZlhVufLa8Qgo=
+	t=1723473647; cv=none; b=K3LVqRRAPtqiElwKmPwbW6xtCo37Rij2rMorTpqbCheUFS3s3BMZSLuOITCXGYVTHhiUMQIvFECBjay9XyUl7h49/T9fSvbK2TXZYTOI19/QUehXnVAIIL36KaU9N1oflSWZhy+vS6byyKRZlWfiN5C7YQnXwFwbHQeMOpZdcMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723473306; c=relaxed/simple;
-	bh=xjqAuhJpA0xZWEigQoCmxwh+5iQGcDcAu0cT4Y6ew0o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R/LOvTDOwPtbTfQi6Xfh3RFPqaiT42npTPSLUq0nv1hW6otSi+ujH2JKVTEN3e62JgLHkoxvtFOa+IkaX3a/BImIJG4/xfGcJpwFtNxH9jdOJAYFyGJQUTf6xRUxCTEW8cMc44m80wP2AosKUeuhu0jchAtquJiYcq/6o4HDlAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=V0nNrHon; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EeCCcjRG reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1723473647; c=relaxed/simple;
+	bh=z7wFoacyox1RtC202GOEeJ8rhjY1r0HItGHJPGiueBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gi1ZXSlP9Xey3J/sZj6p0ljJDs2d79UEoJrthsof+dnYg9vFc7QxoqxYysjsg6dZLXNH5HYqk6lcsCd5QqH5NT4j2/05DSuLHDYOTWCBzVGG+/0Oqq6CASRhv0I1cYSczAaCptNj3gOKy2ppuxQPL4ERoyBZxHMyUT72vjWNkOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=i/KQvLGq reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="V0nNrHon";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EeCCcjRG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723473305; x=1755009305;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=E8Kth3fA3aTsIi3zi/z1NJuU2FBB7BRl6ZUueJYtQlU=;
-  b=V0nNrHonQwEtwAxZgOc1Cq5m+e0XdkqNoBL3COkZK+jUe+iVEt/yY2Hp
-   rsQXgyI2SN3ksHCadbsS3nJLzhKQI22tw6q8cT2z3EWLgQtasf0bbjDPU
-   7GZC5kLte8E018hnq3TYc/m/kVgZk/z1shJjrQfob/rxVeKM3eoM0hQQL
-   epQGB8N7jxrxM/XZfaXnKtI1+qyZkBFj4ab6veYpZwHDnj7kWQ+t2FihJ
-   NlwiFNfbVmFJ+3XS/celKF6f+WmjoF2cwUetgeG2lgVteml1Dwf8EcYsL
-   nguhORxMRvcZ8yPWKL0IW4W6X1mmZgFgVnjp58reYa4FKoSV103LfieYY
-   Q==;
-X-CSE-ConnectionGUID: midpRNUzQkKSXEAy+2ubdw==
-X-CSE-MsgGUID: PuwqICoMR3WRKO0yQCPSyA==
-X-IronPort-AV: E=Sophos;i="6.09,283,1716242400"; 
-   d="scan'208";a="38365816"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 12 Aug 2024 16:35:04 +0200
-X-CheckPoint: {66BA1D98-D-751552D8-F91D2344}
-X-MAIL-CPID: 095354DFB4E9CC4285F0E89EE3615953_4
-X-Control-Analysis: str=0001.0A782F25.66BA1D98.011C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F2247164776;
-	Mon, 12 Aug 2024 16:34:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723473300; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=E8Kth3fA3aTsIi3zi/z1NJuU2FBB7BRl6ZUueJYtQlU=;
-	b=EeCCcjRG+2Zmi/c3b7/iJzYo8reaNBemR4qCEffyvC7onJhF7uoWb+ZBOQYcFq8FlZYkUa
-	zaAsmsM5t926leadNEaWwvDLESjPkmB7A9o4mfY3qd/60SIH70CmcbOIGOIwNBORh9Pr+w
-	d/HOSMJMzzLN1DyvCTq8T1UDpC/Ytp2rnylntB0XZnGR2fB6kyPcgwStIFVWSxN3FF30Wh
-	1l9dfqcepd+zk0H62GO/D0C1N+b0o58K88KLUgEtV6aP4amaPe0lNcHS6wUWw6+a3Tp9RT
-	PCl1g/3kzwFndTSQnp+9PwNIRYXQYbRVIrJmzlt7PZS6nPYAFyb18wSgezNrxQ==
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
-Date: Mon, 12 Aug 2024 16:34:31 +0200
-Message-Id: <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
-References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="i/KQvLGq"
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
+ id 77e4510f5f42e765; Mon, 12 Aug 2024 16:40:42 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id DB1676F0D9D;
+	Mon, 12 Aug 2024 16:40:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1723473642;
+	bh=z7wFoacyox1RtC202GOEeJ8rhjY1r0HItGHJPGiueBo=;
+	h=From:Subject:Date;
+	b=i/KQvLGqVMWtv4NQsEYIPSTW33FQFFtVBUFRXyK/lY1AS+v4vsV0gQ/mXOqSWq4zF
+	 8WS2hupPJMLwyy0LVGoO898W3PSPuGW1EDfPEYcwlPAZ7tob5i7hvBRTJ4vzZzgoIK
+	 cAbnoZZl95Goqhvua6HfbGQlg6vStBerVssX1ho3jtxIkcjzofZAU+vFEBt9PmVWyX
+	 Y89tQB7zVJZ67G+PyROkSa90+NlruM2AJSzkG3ic2JSJm0Sb9eMWIXu6J3gxPVaF8y
+	 ybFDxGlYw6jEaKraIwOmBz3NIH+2tDfdMp46U81k3W4Z3nylg4/Dp/fQhphIB9OJmx
+	 krG41Cx/QLSmQ==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux PM <linux-pm@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
+Subject:
+ [PATCH v2 11/17] thermal: imx: Use the .should_bind() thermal zone callback
+Date: Mon, 12 Aug 2024 16:17:06 +0200
+Message-ID: <3273538.AJdgDx1Vlc@rjwysocki.net>
+In-Reply-To: <114901234.nniJfEyVGO@rjwysocki.net>
+References: <114901234.nniJfEyVGO@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: spam:low
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddruddttddgjeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuphgrmhfkphculdeftddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepfeduudeutdeugfelffduieegiedtueefledvjeegffdttefhhffhtefhleejgfetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucfuphgrmhfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
+X-DCC--Metrics: v370.home.net.pl 1024; Body=50 Fuz1=50 Fuz2=50
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-According to microchip,usb2514.yaml the node name shall be usb-hub.
+Make the imx_thermal driver use the .should_bind() thermal zone callback
+to provide the thermal core with the information on whether or not to
+bind the given cooling device to the given trip point in the given
+thermal zone.  If it returns 'true', the thermal core will bind the
+cooling device to the trip and the corresponding unbinding will be
+taken care of automatically by the core on the removal of the involved
+thermal zone or cooling device.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+In the imx_thermal case, it only needs to return 'true' for the passive
+trip point and it will match any cooling device passed to it, in
+analogy with the old-style imx_bind() callback function.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi
-index 60aa1e947f62..d03f7065ddfd 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi
-@@ -293,7 +293,7 @@ &usbh1 {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
+v1 -> v2: No changes
+
+This patch only depends on patch [08/17] introducing .should_bind():
+
+https://lore.kernel.org/linux-pm/2696117.X9hSmTKtgW@rjwysocki.net/
+
+---
+ drivers/thermal/imx_thermal.c |   20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
+
+Index: linux-pm/drivers/thermal/imx_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/imx_thermal.c
++++ linux-pm/drivers/thermal/imx_thermal.c
+@@ -353,24 +353,16 @@ static int imx_set_trip_temp(struct ther
+ 	return 0;
+ }
  
--	hub@1 {
-+	usb-hub@1 {
- 		compatible = "usb424,2517";
- 		reg = <1>;
- 		#address-cells = <1>;
--- 
-2.34.1
+-static int imx_bind(struct thermal_zone_device *tz,
+-		    struct thermal_cooling_device *cdev)
++static bool imx_should_bind(struct thermal_zone_device *tz,
++			    const struct thermal_trip *trip,
++			    struct thermal_cooling_device *cdev,
++			    struct cooling_spec *c)
+ {
+-	return thermal_zone_bind_cooling_device(tz, IMX_TRIP_PASSIVE, cdev,
+-						THERMAL_NO_LIMIT,
+-						THERMAL_NO_LIMIT,
+-						THERMAL_WEIGHT_DEFAULT);
+-}
+-
+-static int imx_unbind(struct thermal_zone_device *tz,
+-		      struct thermal_cooling_device *cdev)
+-{
+-	return thermal_zone_unbind_cooling_device(tz, IMX_TRIP_PASSIVE, cdev);
++	return trip->type == THERMAL_TRIP_PASSIVE;
+ }
+ 
+ static struct thermal_zone_device_ops imx_tz_ops = {
+-	.bind = imx_bind,
+-	.unbind = imx_unbind,
++	.should_bind = imx_should_bind,
+ 	.get_temp = imx_get_temp,
+ 	.change_mode = imx_change_mode,
+ 	.set_trip_temp = imx_set_trip_temp,
+
+
 
