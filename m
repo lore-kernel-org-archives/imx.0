@@ -1,72 +1,152 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECCA16DC32;
-	Mon, 12 Aug 2024 09:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E03C15099B
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 09:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723455846; cv=none; b=dEYKGdoNz9m2bIXzl6vKzE+3DlZPkHyy5pfaJg4IM8ppSP7D6nG1LBwVlwecXV47pxAws+zfU9s7afM0RqF9ntNJtg9nYI0AjuTCCZzDV4EjmZZvxqG+ud3j32jAHMJzXafryRDUEj0sBokMK5eNfjhXkPDpqKAPqHUht74g7vE=
+	t=1723456071; cv=none; b=MQJCNH9zeFDIsN4La7NyQGrYDH3jk60t5lWCs8CX41rW2Yel5ptTpS25/v2xvQrP6VzWonVseBn/M2+sCqper03HoFQmYNlFkwRKawISwBYpmwbZfR/oJcd8QhZVGX5eMeFxTvnZre/siNAO+p7HvQQrf+ZBUwAxEO2C147qcfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723455846; c=relaxed/simple;
-	bh=P8t2qzTDKtuBQhzPXUYxfC3tFEHNAV85Pec+kdaY5zE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IZT7y/zxf6C+lT7v69cGWCPAHtcQh7dNZGlGMEgPYyXWWNzj0uihBxqlHeMLNBiysSP4CRWhSoEQkfrqM33TVltGqwpcqxxZ9JHi03R0foNNsL7QY0/pFHqapltDedZyd4n91ambXd4pwOyNYruRKFJtKNnn+PGZfwJcnNDnhnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AcWQh47x; arc=none smtp.client-ip=1.95.21.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1723456071; c=relaxed/simple;
+	bh=Jso0Qq4gPsryFGuHoMXouS/YJ+wODg/I0ksIm038E7E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RGcvdpwwmb4QFEnnfIs7P3zh1xKTs7T45oo2Mb28mCMbyvnoVnsuVbxZWxFlvg2ud7QHHGLSyInZnRXHkGzi0gGe4FAnfUfwN1PEPKtEENjFMbisOYFWx8GWLC7w1kBa1Pb1zgx+k1BPPxNGa1ZIm/xxtfLgIIzDdy1X7XLhkGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=OfEGBbn/; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AcWQh47x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=8OQDzwap6QK8JuO7jTB4iPv7Bd6WkmI/d68Ki8Wr0Ik=;
-	b=AcWQh47x9pr/Dfjbz1ISPz0mIIAnCslrTImIcAZBaRUfWxpBXF8lKZSN2SPFhK
-	lF5bgxux15pii+5/yBfzpFsNKMM5GWD2N4/YPatm7gTq4KzHA6E3C/Q0Oevs/vAY
-	ESM/PzTsuS6AJ4mdooVhuVErXywKoEq2ry+h7gWpMzcKc=
-Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3f8JH2blmcEBWAg--.28001S3;
-	Mon, 12 Aug 2024 17:43:37 +0800 (CST)
-Date: Mon, 12 Aug 2024 17:43:35 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
-	Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, imx@lists.linux.dev,
-	loongarch@lists.linux.dev
-Subject: Re: [PATCH v1 1/4] arm64: dts: imx8: remove non-existent DACs
-Message-ID: <ZrnZRz4U7D8oqOMK@dragon>
-References: <20240717-anvil-ashy-544e80a1317c@spud>
- <20240717-alkalize-bouncy-83e748284bc7@spud>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="OfEGBbn/"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 12884A05B2;
+	Mon, 12 Aug 2024 11:47:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=YbiEysMCo9eVDu4Ec2WR++H5KtVmAcOg1PQowdznzbQ=; b=
+	OfEGBbn/d/VE5iD5YxJtavJpwjxihfo6irqQ0qlSRxezLD0jGY9+GCkf+WZqZtD4
+	A2dc2l3Q3uCTDA/ZeVSPPxcQyHrirZX668S8ltfl4eIOZFhB69LRuQpgkUeVtN56
+	trq6fVHIgvKhDVn/Qqwnhwb6STiT+BRqqydcmpz/8UsEeMvQmEsZg49PH27LV3Ii
+	fqEhy/RJSyacZI8yhGDtfUEPfDNkq/QetIMJgA0RI3UKiZ+Sj4YRqGWvTwPmiTdu
+	uxtB2eOQOw763m0aVfhgouSH+I2kPOkbAAGh1itFMNzOez4rB9yWzWiGrkVn9nYN
+	X5QszQ8c4EmB4d92Q0BgHWU8GGdoB7w7UBav1d0XIXWgbkbiX7qbRQl7oDyaY8Kb
+	/6a1lAASEWL7MLj95T76jR8TSFHSzc4yGdC9vBU3r7lEAfkiKAZoLr8wZREh5FUU
+	APGY3rhI87HWP/xrJ8R5RBhBwzIct0kZBbfSOllpRLc5xRHJf3iA0pLuNyTJfpux
+	oM/5ljLTD/0vHBKUlY5PCUibWiPlZzCjJnrsqTZhE80/8+62nVybPToPpZRDZdgi
+	9C4PbgMplYobdjap3dObbH058vrcbu0Nki3ES4brx+0ZKASSSjmmvi1EQW9pB2yx
+	fC2dVbBsyXWZlA4+3JkpAW6KQ3vyutCu0dmpyuv7jHk=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: Jakub Kicinski <kuba@kernel.org>, =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?=
+	<csokas.bence@prolan.hu>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Simon Horman <horms@kernel.org>, Frank Li <Frank.li@nxp.com>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "Richard
+ Cochran" <richardcochran@gmail.com>
+Subject: [PATCH v3 net-next 1/2] net: fec: Move `fec_ptp_read()` to the top of the file
+Date: Mon, 12 Aug 2024 11:47:13 +0200
+Message-ID: <20240812094713.2883476-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240717-alkalize-bouncy-83e748284bc7@spud>
-X-CM-TRANSID:Ms8vCgD3f8JH2blmcEBWAg--.28001S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI_OzUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgc5ZWa5z7Yh8gAAss
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1723456058;VERSION=7976;MC=3778506329;ID=645951;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29ACD94854617367
 
-On Wed, Jul 17, 2024 at 10:37:53AM +0100, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> Neither the imx8dxl-evk or imx8qm-mek have a Rohm DAC on them as far as
-> I can tell from online documentation, and they certainly do not have a
-> dh2228fv, as this device does not actually exist! Remove the DAC nodes
-> from the devicetrees as it is not acceptable to pretend to have a device
-> on a board in order to bind the spidev driver in Linux.
-> 
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+This function is used in `fec_ptp_enable_pps()` through
+struct cyclecounter read(). Moving the declaration makes
+it clearer, what's happening.
 
-Applied, thanks!
+Fixes: 61d5e2a251fb ("fec: Fix timer capture timing in `fec_ptp_enable_pps()`")
+Suggested-by: Frank Li <Frank.li@nxp.com>
+Link: https://lore.kernel.org/netdev/20240805144754.2384663-1-csokas.bence@prolan.hu/T/#ma6c21ad264016c24612048b1483769eaff8cdf20
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
+ drivers/net/ethernet/freescale/fec_ptp.c | 50 ++++++++++++------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index e32f6724f568..4ed790cb6be4 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -90,6 +90,30 @@
+ #define FEC_PTP_MAX_NSEC_PERIOD		4000000000ULL
+ #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
+ 
++/**
++ * fec_ptp_read - read raw cycle counter (to be used by time counter)
++ * @cc: the cyclecounter structure
++ *
++ * this function reads the cyclecounter registers and is called by the
++ * cyclecounter structure used to construct a ns counter from the
++ * arbitrary fixed point registers
++ */
++static u64 fec_ptp_read(const struct cyclecounter *cc)
++{
++	struct fec_enet_private *fep =
++		container_of(cc, struct fec_enet_private, cc);
++	u32 tempval;
++
++	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
++	tempval |= FEC_T_CTRL_CAPTURE;
++	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
++
++	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
++		udelay(1);
++
++	return readl(fep->hwp + FEC_ATIME);
++}
++
+ /**
+  * fec_ptp_enable_pps
+  * @fep: the fec_enet_private structure handle
+@@ -136,7 +160,7 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+ 		 * NSEC_PER_SEC - ts.tv_nsec. Add the remaining nanoseconds
+ 		 * to current timer would be next second.
+ 		 */
+-		tempval = fep->cc.read(&fep->cc);
++		tempval = fec_ptp_read(&fep->cc);
+ 		/* Convert the ptp local counter to 1588 timestamp */
+ 		ns = timecounter_cyc2time(&fep->tc, tempval);
+ 		ts = ns_to_timespec64(ns);
+@@ -271,30 +295,6 @@ static enum hrtimer_restart fec_ptp_pps_perout_handler(struct hrtimer *timer)
+ 	return HRTIMER_NORESTART;
+ }
+ 
+-/**
+- * fec_ptp_read - read raw cycle counter (to be used by time counter)
+- * @cc: the cyclecounter structure
+- *
+- * this function reads the cyclecounter registers and is called by the
+- * cyclecounter structure used to construct a ns counter from the
+- * arbitrary fixed point registers
+- */
+-static u64 fec_ptp_read(const struct cyclecounter *cc)
+-{
+-	struct fec_enet_private *fep =
+-		container_of(cc, struct fec_enet_private, cc);
+-	u32 tempval;
+-
+-	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
+-	tempval |= FEC_T_CTRL_CAPTURE;
+-	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
+-
+-	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
+-		udelay(1);
+-
+-	return readl(fep->hwp + FEC_ATIME);
+-}
+-
+ /**
+  * fec_ptp_start_cyclecounter - create the cycle counter from hw
+  * @ndev: network device
+-- 
+2.34.1
+
 
