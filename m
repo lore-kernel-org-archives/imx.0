@@ -1,78 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35E9EEBA;
-	Mon, 12 Aug 2024 12:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26FC53370;
+	Mon, 12 Aug 2024 12:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723465827; cv=none; b=kr33TBA93vXnPPton0i85zEddzQZj63DEZGxeVVBdAr2FfKweJQssgiMr7Zy0EOm+O+7M8hCV7p7eozAM7h5+R1DhsgVVTzNvT3oAvBJtlxcvBHqApo/HFBMQcdP1fkI5ep/DGps3wnSZLsapeDcwMk1kB1wYBosom0E/jQ4bBY=
+	t=1723467189; cv=none; b=cZyanbEb3ypjJEWu4IcdwjZJM9XxwiI/TgAJFjs8788+qCigaATAJUAHqyGhZSZvLacaULyXzEYZvHUj6npW0qNoW7Kx3BDz3hJh69fHK/napSRG3HVZZZ7RDtopB+cgmvO1tBR8d9S4xLqvFxt6i7JAgtsOUdM0fc8ISmMciIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723465827; c=relaxed/simple;
-	bh=aZC77bUCThC7AT/7z+u7TDuWH+xpFQ7I4SjrJ8HZm6c=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gY1HlO39gnEij3Dn72Fe03I/Awlijmv70xVOsihkW1ig70gku8u0Cklt//uEOETPK260CIAuL82BKY7v1f5jr2qLk7F+L0BzVKpPm9Rxc8tGDwt7+rHXt4CPkhBpY3Dbv/WVh82rFPaHk0LwgT7xQ4Hov6QpyNBJRcy2oEbQm+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hcjCkHiT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723467189; c=relaxed/simple;
+	bh=q8tFVz/lZ5nIvzB8ohe8PHJFR6cM7/UC9D+nI6PE7+g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=S0za1ba4DFJXvzaLDbPM5YrDaRrWpxJBt+IacrJc5XlHeGWIUPocqn+qzDZ1qHNKRQgftQ8UmH+VeJm+Qn5u+x3KUHOeDyjBzR5pYKSHIWd2zt5Z8a47rej4UM5m6BRIQ1/bO55BlTH6L3RRLOE8pWgT6gTFgX9EIRcVhVgIZ3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTxJlyK9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hcjCkHiT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451BBC32782;
-	Mon, 12 Aug 2024 12:30:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTxJlyK9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB116C32782;
+	Mon, 12 Aug 2024 12:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723465826;
-	bh=aZC77bUCThC7AT/7z+u7TDuWH+xpFQ7I4SjrJ8HZm6c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=hcjCkHiTyge7efh9j5xmiZXD7TdwXRiZHZgdY4Wdja/2nN7GHUHANqiizJ+pVPuMx
-	 8TcxQa+gnBH5zc6IOdoJHQE+wEwzLHN+bNElUfyysFIcqR6MEiXt7BRkPZ41B0JxiH
-	 YkbztLcR414E20axvrYt6fyZoG0XXo4L9kvMwu/UslVa6AUTl/V8Y7C5x9TD0mP53Y
-	 S+xdT5/8DTxDdrq34AF93ZbnGDNkvhdfovHUN+FpeIOjQ1kPP3WecruKvbfj1oH8Tb
-	 cWIEI2DQeXRNqh+HTUWTs6QIUtkCGPWDl5Lyf+8NswPSUitYX8pJnn2P7HHhkFQZxH
-	 NlRdQEXiXl2jg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CF4382332D;
-	Mon, 12 Aug 2024 12:30:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1723467189;
+	bh=q8tFVz/lZ5nIvzB8ohe8PHJFR6cM7/UC9D+nI6PE7+g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=lTxJlyK9zrCIZs+t+mzylWBiFgcc8gAE0DhBBvql7BmPgWiugCoKQOb/Yuu8lCptH
+	 mIhsJDoBKtW8MIZ0Wvo0YiuEcToJpBlcFMPRtpD0zQJixr/ZsYt1BoFh31j5P/m0/9
+	 FroEUPRM8nNl5BLC48VG+MI/2LxlKpy56YWCneDoqYPz0n3eit525AcIMEamDN08st
+	 IwrsglBlf+mqxxN5DNJkUNN8ejfa1te+u0CxArdG6kKPAuY5Lv5Xhg+2aMcTM35r/J
+	 TOQ5uZgWX1PKOJR2XAqxptStIoVqfSA2H2Cmbn6NKBIUIydmjjYuIH4caNV9gqMLFc
+	 5T95uqLCV/BdA==
+From: Niklas Cassel <cassel@kernel.org>
+To: tj@kernel.org, dlemoal@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+ festevam@gmail.com, Richard Zhu <hongxing.zhu@nxp.com>
+Cc: linux-ide@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, kernel@pengutronix.de
+In-Reply-To: <1723428055-27021-1-git-send-email-hongxing.zhu@nxp.com>
+References: <1723428055-27021-1-git-send-email-hongxing.zhu@nxp.com>
+Subject: Re: [PATCH v6 0/5] Refine i.MX8QM SATA based on generic PHY
+ callbacks
+Message-Id: <172346718567.916777.975536718860014441.b4-ty@kernel.org>
+Date: Mon, 12 Aug 2024 14:53:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/1] dt-bindings: net: fsl,qoriq-mc-dpmac: add missed property
- phys
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172346582526.1009420.14303851329355513128.git-patchwork-notify@kernel.org>
-Date: Mon, 12 Aug 2024 12:30:25 +0000
-References: <20240809200654.3503346-1-Frank.Li@nxp.com>
-In-Reply-To: <20240809200654.3503346-1-Frank.Li@nxp.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- ioana.ciornei@nxp.com, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Fri,  9 Aug 2024 16:06:53 -0400 you wrote:
-> Add missed property phys, which indicate how connect to serdes phy.
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-honeycomb.dtb: fsl-mc@80c000000: dpmacs:ethernet@7: Unevaluated properties are not allowed ('phys' was unexpected)
+On Mon, 12 Aug 2024 10:00:50 +0800, Richard Zhu wrote:
+> V6 main changes:
+> - Add Frank's reviewed tag.
+> - Drop 32bit DMA limit commit, since the "dma-ranges" of DT can overcome
+>   this limitation.
+> - Correct the email-lists, incorrect used in v5.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
+> V5 main changes:
+> Thanks for Niklas' kind help.
+> - Drop 32bit DMA limit commit, since the "dma-ranges" of DT can overcome
+>   this limitation.
+> 
+> [...]
 
-Here is the summary with links:
-  - [1/1] dt-bindings: net: fsl,qoriq-mc-dpmac: add missed property phys
-    https://git.kernel.org/netdev/net/c/c25504a0ba36
+Applied to libata/linux.git (for-6.12), thanks!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1/5] dt-bindings: ata: Add i.MX8QM AHCI compatible string
+      https://git.kernel.org/libata/linux/c/5ff80684
+[2/5] ata: ahci_imx: Clean up code by using i.MX8Q HSIO PHY driver
+      https://git.kernel.org/libata/linux/c/4147e9d2
+[3/5] ata: ahci_imx: AHB clock rate setting is not required on i.MX8QM AHCI SATA
+      https://git.kernel.org/libata/linux/c/3156e1b2
+[4/5] ata: ahci_imx: Enlarge RX water mark for i.MX8QM SATA
+      https://git.kernel.org/libata/linux/c/803f9fb8
+[5/5] ata: ahci_imx: Correct the email address
+      https://git.kernel.org/libata/linux/c/6773e058
 
+Kind regards,
+Niklas
 
