@@ -1,81 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26FC53370;
-	Mon, 12 Aug 2024 12:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AB617A92E
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 13:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723467189; cv=none; b=cZyanbEb3ypjJEWu4IcdwjZJM9XxwiI/TgAJFjs8788+qCigaATAJUAHqyGhZSZvLacaULyXzEYZvHUj6npW0qNoW7Kx3BDz3hJh69fHK/napSRG3HVZZZ7RDtopB+cgmvO1tBR8d9S4xLqvFxt6i7JAgtsOUdM0fc8ISmMciIU=
+	t=1723468005; cv=none; b=YYx+H3yN/0xaiRMWXyLA8gQwHMRHDlfk6z49N2OIC6/dMYiGJ6VXataE56F6GVFKvtq+Yfx6hFoLvkN6due7ZZ6jTZNGISIbjP6LGMNC/S7brnd3GqE7HUpB+kNd9dByeXLdYEN00KE90i+WwOi6gckL1pOmQ1b0nFq2j4OQom0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723467189; c=relaxed/simple;
-	bh=q8tFVz/lZ5nIvzB8ohe8PHJFR6cM7/UC9D+nI6PE7+g=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=S0za1ba4DFJXvzaLDbPM5YrDaRrWpxJBt+IacrJc5XlHeGWIUPocqn+qzDZ1qHNKRQgftQ8UmH+VeJm+Qn5u+x3KUHOeDyjBzR5pYKSHIWd2zt5Z8a47rej4UM5m6BRIQ1/bO55BlTH6L3RRLOE8pWgT6gTFgX9EIRcVhVgIZ3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTxJlyK9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723468005; c=relaxed/simple;
+	bh=4ycj7qkoaU+ecW9Ztj6eFtAdV4gPsJFk/M1APr36D5w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j/Y8/s6e6p7Z1kJOgEOoZgQs/DMXUCIhuYjDEG2VXgMh0Wxgsr2hKXyLoSoEKtDjlNE+eUoeijXhFyw/gilfjBpNaBdaiQWSGFEsIg1WewWgIky02I6In2+p6bbEdqWN36IzA4O95dMRXaMe6W0qMLtSiyLXdj4n6KmVd4mZmEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=CnNB9pcn; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=dEXbQ3q+ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTxJlyK9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB116C32782;
-	Mon, 12 Aug 2024 12:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723467189;
-	bh=q8tFVz/lZ5nIvzB8ohe8PHJFR6cM7/UC9D+nI6PE7+g=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=lTxJlyK9zrCIZs+t+mzylWBiFgcc8gAE0DhBBvql7BmPgWiugCoKQOb/Yuu8lCptH
-	 mIhsJDoBKtW8MIZ0Wvo0YiuEcToJpBlcFMPRtpD0zQJixr/ZsYt1BoFh31j5P/m0/9
-	 FroEUPRM8nNl5BLC48VG+MI/2LxlKpy56YWCneDoqYPz0n3eit525AcIMEamDN08st
-	 IwrsglBlf+mqxxN5DNJkUNN8ejfa1te+u0CxArdG6kKPAuY5Lv5Xhg+2aMcTM35r/J
-	 TOQ5uZgWX1PKOJR2XAqxptStIoVqfSA2H2Cmbn6NKBIUIydmjjYuIH4caNV9gqMLFc
-	 5T95uqLCV/BdA==
-From: Niklas Cassel <cassel@kernel.org>
-To: tj@kernel.org, dlemoal@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
- festevam@gmail.com, Richard Zhu <hongxing.zhu@nxp.com>
-Cc: linux-ide@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, kernel@pengutronix.de
-In-Reply-To: <1723428055-27021-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1723428055-27021-1-git-send-email-hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v6 0/5] Refine i.MX8QM SATA based on generic PHY
- callbacks
-Message-Id: <172346718567.916777.975536718860014441.b4-ty@kernel.org>
-Date: Mon, 12 Aug 2024 14:53:05 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="CnNB9pcn";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="dEXbQ3q+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723468002; x=1755004002;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Dva4abrryEv4enlCuMBSl0BO5YyP15MlHbz8/ylANBg=;
+  b=CnNB9pcn4+XiAYhXshqOoqTdCIapFDpZ00dHM9KhhlmgBv6KV2y2lEBJ
+   /CUDCidiTESDFZzRQL9wEOs8tCkVnStNgJwRkKgbQnNjL9PDXHIVAWiS9
+   Ezs9WqWqf/gbp+lp8WYQfG+7uBpYzGH3GEDQ41murYr7E3ghvuE/mm+9d
+   35xY0WmcvZgtkk0zvzjcfKie0w7kcj8uVvzTSi4kemoLrLUbYLFce+iwc
+   RNqC4oXHRIdt+BTClT0uCSFJwNKeuG6tqFDP0c69puK7r60jBO6ek1Qkf
+   seAwl1Vw4KvUJ8wDQZaS2xshMjCH4so1YUQWDlEOlWZNBjMLQT/THCUEy
+   Q==;
+X-CSE-ConnectionGUID: hTc5B/2MSFyLkPj5qOZy/w==
+X-CSE-MsgGUID: La8Gw4Q3SZqB9Eyznb4Ntw==
+X-IronPort-AV: E=Sophos;i="6.09,283,1716242400"; 
+   d="scan'208";a="38363820"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 12 Aug 2024 15:06:39 +0200
+X-CheckPoint: {66BA08DF-1D-CD6ACE3E-F977C2C0}
+X-MAIL-CPID: 810B3F6CEC151C3B3BE02C9F9516F1E7_1
+X-Control-Analysis: str=0001.0A782F18.66BA08DF.0163,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CB6C7161336;
+	Mon, 12 Aug 2024 15:06:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723467995; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=Dva4abrryEv4enlCuMBSl0BO5YyP15MlHbz8/ylANBg=;
+	b=dEXbQ3q+3fPnZIpHKfeCpVSfFs4shyF/nHWfSRCnq3zzN+7Gs95gUAEwxh1NNy42YQZuVP
+	Vw5RGDFugJfeJP0otcnmiuIkhwSDVT2UU1eQr1jkhGuWhwoIqWX1aHtKI/9wg8UiYA4he8
+	NEoelBENnwNjYhm1J6bZHmSmMR4dteaepjwr/4HQaWUo0vyZHEcWk+hAi7yMexjo5a9GAw
+	MTz0sGYm31Z6HGhBmEJW1PHgKEuzNLTrSOF3TeTY6ATcu+fjXoqPcq5kEaJK6DyhFIbIbA
+	RiVRUbXuZ5EzmMtd60Kx0ADMY0AHLJioTuPfaQ592/awHu4xb5unmBhSRcbPhA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/1] arm64: dts: mba8mx: Add Ethernet PHY IRQ support
+Date: Mon, 12 Aug 2024 15:06:36 +0200
+Message-Id: <20240812130636.180483-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, 12 Aug 2024 10:00:50 +0800, Richard Zhu wrote:
-> V6 main changes:
-> - Add Frank's reviewed tag.
-> - Drop 32bit DMA limit commit, since the "dma-ranges" of DT can overcome
->   this limitation.
-> - Correct the email-lists, incorrect used in v5.
-> 
-> V5 main changes:
-> Thanks for Niklas' kind help.
-> - Drop 32bit DMA limit commit, since the "dma-ranges" of DT can overcome
->   this limitation.
-> 
-> [...]
+The interrupt pin of the PHY is connected to the GPIO expander, configure
+it accordingly.
 
-Applied to libata/linux.git (for-6.12), thanks!
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Changes in v2:
+* Fix context (wrong local rebase)
 
-[1/5] dt-bindings: ata: Add i.MX8QM AHCI compatible string
-      https://git.kernel.org/libata/linux/c/5ff80684
-[2/5] ata: ahci_imx: Clean up code by using i.MX8Q HSIO PHY driver
-      https://git.kernel.org/libata/linux/c/4147e9d2
-[3/5] ata: ahci_imx: AHB clock rate setting is not required on i.MX8QM AHCI SATA
-      https://git.kernel.org/libata/linux/c/3156e1b2
-[4/5] ata: ahci_imx: Enlarge RX water mark for i.MX8QM SATA
-      https://git.kernel.org/libata/linux/c/803f9fb8
-[5/5] ata: ahci_imx: Correct the email address
-      https://git.kernel.org/libata/linux/c/6773e058
+ arch/arm64/boot/dts/freescale/mba8mx.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Kind regards,
-Niklas
+diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+index 815241526a0d3..8d898506b3bce 100644
+--- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
++++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+@@ -185,6 +185,8 @@ ethphy0: ethernet-phy@e {
+ 			reset-gpios = <&expander2 7 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <500000>;
+ 			reset-deassert-us = <500>;
++			interrupt-parent = <&expander2>;
++			interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
+ 		};
+ 	};
+ };
+-- 
+2.34.1
 
