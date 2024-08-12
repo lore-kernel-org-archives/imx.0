@@ -1,141 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0E5188CB2
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 17:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2A7184540
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 17:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723483794; cv=none; b=O/NDk5rRJUoo7nj+hnoGpuHbifJxJOoa8J/A3TSk/qFHr6PF75D5HSLwnez98nN4TTZIAOQXPc6CRb+ezFH2KyOpl5zzNt525tJEfRWYNXb/siJ6yhygC8RBGfUEh8igS6Y0rSIo5UpTOyIutOdINZeJwu3ld17OIaTbdu0s/b4=
+	t=1723484153; cv=none; b=NVhuB80j44ryiKrQfPBrsjmywopMwMoIBvldCBLuf8132mo3bfAWWOZzx89v2376QlLz8Sp+YQ1xuSjhAcJ9IQLZUMon1HA3MJywFXX4djZU+8080upnZTfPaOVoyZ4mFT9gGGsHt3qgsYlHshCijY5YkuLdywlkCFD0WhQErKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723483794; c=relaxed/simple;
-	bh=ZMRNbjL+wxtlYnhgMC1O+M2KBcMWEJ4sd49/ahmx+Wc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bKzZKgwLVfPNDPs4+SarZ3EFErOiIBtQ1PwA6bkx6GVypRsoBP7e32ssA/XbSKcJOVa9uwIYRiu0qeiTUn/QIso0GnCNFAcFlzO5aslZZ8yayVoakAOatAjR6V81gwRxXQO33R0i+D0p7Qb4r90Teb7pJvyu8vXlDvPL3g5+2lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dj4B7ErO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723484153; c=relaxed/simple;
+	bh=k0/vi7W0H2st2xtbJyB0alr4uujbiwXUAJjo8e91gEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e6VQZynfRNbdRpLnT6MAnVc+s1RRCFRcjjs5qXmq6PGpH5vuH81fGvbFmfSRsgSElm5oeBarz18KWbkhtxwejS8iwbTNSvtN108VO69HknAqcSIlkMiHGD5ox99pgGHNs5Diy6736bdc0Gz/wH/4EyJR18Mzi+RMOjCXJv654ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/RNC/5+; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dj4B7ErO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E362C32782
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 17:29:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723483793;
-	bh=ZMRNbjL+wxtlYnhgMC1O+M2KBcMWEJ4sd49/ahmx+Wc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Dj4B7ErO/CP6ZLdD536O+BA6aLuIyPIfsgR1Gi5jpzdsrUNydzLsFM1hTgeTNNJDQ
-	 QhkS9M8zyYg9YiZZA3gNI4GQtVOQdrIIGv53+egr0WRYmqm0jK3UhbbIOud2X4o5u2
-	 /X99Uwy9XH1y/9SHCn0LBaisV/HvNIdg5uRGs5d/3DbD7RRstL5qUjXSKsvsPx6Gl3
-	 T31zoIJWA7Pf8Rur3ZbcEfns6XDaaQk3veMxfRESCy39mXz1ECygNh+nSig5ZkMBEu
-	 askEcqSawLJ9NcfNiHiWLMJ7SJbzNzffPUZIK2hVBQcGG4a1ixvAyCk3BZNpb3AOxL
-	 /hma3ZiwBmT+g==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2f1a7faa4d5so36323471fa.3
-        for <imx@lists.linux.dev>; Mon, 12 Aug 2024 10:29:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUeBZ0zau/PqkBLRi5I8ul77ZmeSQp9bUWSWHaMlo4q3+wpewpqaGRrQ859OqVCGTubZqk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw5brCWMLBd0N94lic7+DfK6x1ZpzIObAqhYPrdfv8tWqyrB7K/
-	OfKAhx4mCcNiiK/s+fPvthyjjGTB4EKXGLxbY4kWEq8ctFua8VQz+UusgmvwhtVIS5CAqY6/SkM
-	xe36bQ1MEme8woADYEAkUsAj/2g==
-X-Google-Smtp-Source: AGHT+IE9wc5/vzAjDKeN2XhVueDGhex+PvvstDZfZq09zwIkHu1hg7cHE20vFxpTUw1TOpUPaqzN59nU/oMrltfDIoU=
-X-Received: by 2002:a2e:851:0:b0:2ef:307a:9988 with SMTP id
- 38308e7fff4ca-2f2b7178816mr6174081fa.35.1723483791791; Mon, 12 Aug 2024
- 10:29:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/RNC/5+"
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2642cfb2f6aso3418435fac.2
+        for <imx@lists.linux.dev>; Mon, 12 Aug 2024 10:35:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723484149; x=1724088949; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aGe9WVDpLw3EPv8WDjp8LJHxaG4nRuWgDJWrzJ3DiyM=;
+        b=Z/RNC/5+H27FTCHFTMLZp0hDf5KwCkfSCMoCkQ0X+IpJ6azhhRmTPds/CDNVzl03C3
+         MMy3XTNC1NNhdZrXnyW0P2dgrt1cgFHyEsjWo7fJcgOQLKdptH/Dw3n3jx3BkNpYBAin
+         +aV8YDDt5dZir72Ua3qg4pa82d1Z9bWdrEYRm5ruMdwzbDV23ybPOhV5f8NyiXtfZ4Ws
+         /RyFJLCQvFeSbiKhHLf/n+QNkGqxUZ7DMVGW9zCAq7sCwHngVeGztLV9nQJNNAHqCQiy
+         bG5VAce249h5v4gn3++Eqam7jIk7CB244dNSyXLpVUsie3CCI9I6L7WgsYuK7O9yRifC
+         qigQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723484149; x=1724088949;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aGe9WVDpLw3EPv8WDjp8LJHxaG4nRuWgDJWrzJ3DiyM=;
+        b=SUNy9kPqZ6yEUpNT+WD6NaZuJMEfVGFiBmcRTBGBQ7mZdLdbpzW0sck823AHOdB6Ux
+         id10xKs4sji1pL/tf93nEjjjG44GVMaqyLtra0asmX3ZjziwpdMk4PEUGosZIgI/ekGU
+         blrKwxgVLxPkjBrdzjnT7hmVZI+acx04MJdCEg1E86fcWiDlHIDvfChExCUU4MXEEf9T
+         y7azLmW4/Bn+6vx9AFytL0vMVdKrsokyu1GcYg8E7QbSUpAKCef7OwuHesxTKg47wl74
+         +/KxdDOwkDxVZ/R60+hEFOiblID5KNq+gi9/Gw28YTGjcAjl3QMDzTRa9p+f4U+HuGm8
+         Isbg==
+X-Forwarded-Encrypted: i=1; AJvYcCX91pnSUrMbUgU3geE7q9ntjaK7BIytZ96yXfedziLpCceyuW9y9M8ywPknXT5eJOHNGFfnG5cOk8640SNtiGbHO9SZ
+X-Gm-Message-State: AOJu0Yw8Lcb0j24K28bPCNuVlD9NjacM+XEgOMLf/sUSsooFTGgqfSfK
+	Ob/iqmeo+sP/1JFw4fqys2ny1YXYMzGV/vg16bjg5IzP91wAe4V7
+X-Google-Smtp-Source: AGHT+IGB+3J1W1v44bGEpVHOvf7ojdD7DKrucadL2qbcKM6lsELEjpgMQU86LpLfBQxsoGt6LxIipQ==
+X-Received: by 2002:a05:6870:f685:b0:25d:f8fa:b53e with SMTP id 586e51a60fabf-26fcb826e8dmr862394fac.34.1723484149618;
+        Mon, 12 Aug 2024 10:35:49 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:53c5:10b0:cfab:3972])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710e5a89f52sm4260689b3a.162.2024.08.12.10.35.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2024 10:35:49 -0700 (PDT)
+Date: Mon, 12 Aug 2024 10:35:46 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Joy Zou <joy.zou@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] input: keyboard: snvs_pwrkey: Enable clock when
+ accessing HP* registers
+Message-ID: <ZrpH8lXG4wkORlyA@google.com>
+References: <20240716205612.1502608-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240808153120.3305203-1-Frank.Li@nxp.com> <20240808-frosted-voicing-883f4f728527@spud>
- <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810> <20240808-linoleum-evasion-ad7111a2afc4@spud>
- <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810> <20240809-freewill-compactor-4f441a4a60bb@spud>
- <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 12 Aug 2024 11:29:38 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
-Message-ID: <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
-Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string to fsl,ls2088a-pcie
-To: Frank Li <Frank.li@nxp.com>
-Cc: Conor Dooley <conor@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716205612.1502608-1-Frank.Li@nxp.com>
 
-On Fri, Aug 9, 2024 at 11:11=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
-> > On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
-> > > On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
-> > > > On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
-> > > > > On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
-> > > > > > On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
-> > > > > > > The mass production lx2160 rev2 use designware PCIe Controlle=
-r. Old Rev1
-> > > > > > > which use mobivel PCIe controller was not supported. Although=
- uboot
-> > > > > > > fixup can change compatible string fsl,lx2160a-pcie to fsl,ls=
-2088a-pcie
-> > > > > > > since 2019, it is quite confused and should correctly reflect=
- hardware
-> > > > > > > status in fsl-lx2160a.dtsi.
-> > > > > >
-> > > > > > This does not begin to explain why removing the soc-specific co=
-mpatible,
-> > > > > > and instead putting the compatible for another soc is the right=
- fix.
-> > > > > > Come up with a new compatible for this device, that perhaps fal=
-ls back
-> > > > > > to the ls2088a, but this change doesn't seem right to me.
-> > > > >
-> > > > > It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, =
-which are
-> > > > > totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pci=
-e.
-> > > > >
-> > > > > Previous dtb can work just because uboot dynamtic change fsl,lx21=
-60a-pcie
-> > > > > to fsl,ls2088a-pcie when boot kernel.
-> > > > >
-> > > > > fsl,lx2160a-pcie should be removed because Rev1 have not mass pro=
-ductioned.
-> > > >
-> > > > Please re-read what I wrote. I said to come up with a new compatibl=
-e for
-> > > > this device, not fall back from the existing fsl,lx2160a-pcie to
-> > > > fsl,ls2088a-pcie.
-> > >
-> > > According to my understand, It needn't add new compatible string if n=
-othing
-> > > difference. for example, it use fsl,vf610-i2c for all i2c without add
-> > > new soc-specific fsl,lx2160-i2c.
-> >
-> > No, you should have soc-specific compatibles regardless. Just because
-> > you got away with it once, doesn't mean I'm not going to complain about
-> > it here!
->
-> Rob:
->         What's current policy for this? Not only for this one. If new SOC
-> appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), there
-> are bunch of IPs, Do we need add fsl,imx10* for everyone, which most part
-> is exactly the same as old one and bloat binding doc.
+Hi Frank,
 
-Yes, you do. Do you really know that something in the design hasn't
-changed? Have you compared the RTL between the versions? The only way
-to deal with quirks without changing the DT everytime is by having
-specific compatibles *upfront*.
+On Tue, Jul 16, 2024 at 04:56:09PM -0400, Frank Li wrote:
+> From: Robin Gong <yibin.gong@nxp.com>
+> 
+> SNVS requires two clock sources:
+> - LP (32k always on): All LP* registers need this clock. No management is
+> needed as it is always on.
+> - HP: All HP* registers require this clock to be enabled before accessing
+> these registers. Some platforms (e.g., i.MX6SX/i.MX6UL) do not have a
+> separate HP root clock and it is always on.
+> 
+> Add an optional "snvs-pwrkey" clock for the HP clock and enable it only
+> when accessing HP* registers.
+> 
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> - clock name snvs-pwrkey already documented at
+> Documentation/devicetree/bindings/crypto/fsl,sec-v4.0-mon.yaml
+> ---
+>  drivers/input/keyboard/snvs_pwrkey.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/input/keyboard/snvs_pwrkey.c b/drivers/input/keyboard/snvs_pwrkey.c
+> index ad8660be0127c..b352148a0cfb2 100644
+> --- a/drivers/input/keyboard/snvs_pwrkey.c
+> +++ b/drivers/input/keyboard/snvs_pwrkey.c
+> @@ -37,6 +37,7 @@ struct pwrkey_drv_data {
+>  	int keycode;
+>  	int keystate;  /* 1:pressed */
+>  	int wakeup;
+> +	struct clk *clk;
+>  	struct timer_list check_timer;
+>  	struct input_dev *input;
+>  	u8 minor_rev;
+> @@ -48,7 +49,10 @@ static void imx_imx_snvs_check_for_events(struct timer_list *t)
+>  	struct input_dev *input = pdata->input;
+>  	u32 state;
+>  
+> +	clk_prepare_enable(pdata->clk);
 
-The "bloat" is never that much because the IP really always changes.
-QCom wanted to (and did) use IP version numbers for the same reasons.
-Guess what, the IP version number changed on almost every SoC.
+We are in timer context here, "prepare" is not allowed here. Can we
+prepare the clock once and enable it as needed. Does it even need to be
+disabled? Can it be also always on?
 
-The exceptions are really if different SoCs are just different
-packaging or fusing.
+If you want enable/disable then error handling is needed.
 
+>  	regmap_read(pdata->snvs, SNVS_HPSR_REG, &state);
+> +	clk_disable_unprepare(pdata->clk);
+> +
+>  	state = state & SNVS_HPSR_BTN ? 1 : 0;
+>  
+>  	/* only report new event if status changed */
+> @@ -169,7 +173,15 @@ static int imx_snvs_pwrkey_probe(struct platform_device *pdev)
+>  	if (pdata->irq < 0)
+>  		return -EINVAL;
+>  
+> +	pdata->clk = devm_clk_get_optional(&pdev->dev, "snvs-pwrkey");
+> +	if (IS_ERR(pdata->clk))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(pdata->clk),
+> +				     "Could not get the snvs-pwrkey clock");
+> +
+> +	clk_prepare_enable(pdata->clk);
+>  	regmap_read(pdata->snvs, SNVS_HPVIDR1_REG, &vid);
+> +	clk_disable_unprepare(pdata->clk);
+> +
+>  	pdata->minor_rev = vid & 0xff;
+>  
+>  	regmap_update_bits(pdata->snvs, SNVS_LPCR_REG, SNVS_LPCR_DEP_EN, SNVS_LPCR_DEP_EN);
+> -- 
+> 2.34.1
+> 
 
-In this case, I'm inclined to say just match what u-boot creates, but
-please make that abundantly clear with a comment in the .dts file and
-explain the situation in the commit message. OTOH, just adding a new
-"fsl,lx2160a-dw-pcie" compatible with "fsl,ls2088a-pcie" fallback
-doesn't hurt, and we can just move on from creating a special case.
+Thanks.
 
-Rob
+-- 
+Dmitry
