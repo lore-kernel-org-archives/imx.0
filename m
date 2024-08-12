@@ -1,155 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB8F183CCC;
-	Mon, 12 Aug 2024 16:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E55B188018
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 16:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723481096; cv=none; b=iwivcKSaJiy5n/11d/EBZTI0D9gglP6xv43qdQXQ4ktOiwyG6jt31FzVPxvYethQuWON8NAGHXrOBCpE5GqhRhEtDC01g9MiOgMxSnj+a3KganayPYg0S6Kny6nMv2MEciaaCvVRDV+dkA9N4JyHSBK5GD/ItrJi6QRuzdXmQf0=
+	t=1723481327; cv=none; b=P/Zpnt3jSjACmUPVKiLs0dswnoqmeKuP2yxJOcskL+7ckI1igv6DKj9w+LUJ0W9ilWbwKa+5ovfnGwEQ8zu+sfZbGTPpTuDljQZf1da4z/GxKIXiCH/p6GX/bJBcf+vXLV6T9sYo4F0wZGO4c0WZDptL43jaWxQYqIU0MGaRAVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723481096; c=relaxed/simple;
-	bh=2KKDirWRCLyFGNIflIjMwFeB3i+VBV6GbkGbJa2X+XU=;
+	s=arc-20240116; t=1723481327; c=relaxed/simple;
+	bh=XlaiAMQh1V6IadrgEMbgyeLhJ3AoIR6vUvuyik168Es=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pVpkWNtO3oJMqZtkHdHlkTQf6MzE6AhmWnoGuF+KdDmzb0WaWHyuzXsceAGoiWzDhyQmcrileYXFkTImyshAb3T4Dxq/TZU6otq0foqlWzKsKvRCpZtS3wBOY5ZLbzwiwL/3YRa0nXjdwYLeVZtKzpIOtG3YqSHT3M+P0G5c4hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGn2GEoG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=keuL6UCfJK6/UcYlAkx6yBWn9xeZ5jfjmuDe3Cz/7LtEoe2Bi1/vc4k4lUYKEaloA32fzROSupqj5VKDlWd51uYBzx7FDPAiuBBSXqntqe6LZwP5C5rOd/4flzwPa/X14ltLk7lwVqeMDKHs9FfHIfMGhEJhPVVsVQnj766QlYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AROERX9k; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGn2GEoG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2668C32782;
-	Mon, 12 Aug 2024 16:44:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723481096;
-	bh=2KKDirWRCLyFGNIflIjMwFeB3i+VBV6GbkGbJa2X+XU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lGn2GEoG5+mMZA6QMhnL2IR7dBH0NUBSZi3bg+1jeuINBMa6I86ttRzuUWko8B+Ll
-	 mIBTWIBpP1GxeiRHtRa8MqbcdmJQJrJD5Y1CCfYNl5sS/6Q4EZy2lHrzjUZDbSTyhz
-	 arzrSO/R0NDL2spChAAeh9tgWu2C9E5sgzkCgKBLrBESuJ4CZ0MMKvP8pqvVpuezYV
-	 pfxrNcR45pOCKjpHlRxEIfURxNTEpKsAYNIFMgtf8RS9sGndg4q01D+j3Qex/8B2zY
-	 j7Poiq8lGTJ4kAMQmB6WAq7glpxS4JErniRdU5pGrb6CqLcT7XoFuMmm1M0YWa2fSP
-	 iAXbQTOf1PZqw==
-Date: Mon, 12 Aug 2024 17:44:50 +0100
-From: Conor Dooley <conor@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AROERX9k"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fd66cddd07so30471625ad.2
+        for <imx@lists.linux.dev>; Mon, 12 Aug 2024 09:48:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723481326; x=1724086126; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hpMVxN3h+wXRgJtl6Puat78aXyyI7hCBpes+Mit4XIQ=;
+        b=AROERX9ksJJ/Uhf6BZE6ptb5EGOwf34cnDQb2cl5uqBaXxvBe4V1PG1qVqrkzOSAjg
+         2VVeOpkmqdmZH8zIVPR5faQ7osZhrO/ed/ej0wbtc3FICsVCmNB1g10uHR2xgkeOZRa1
+         C4ujCZ6bkddkGQEHgmk5B/8EL7VPCNehLAAuw6BPAZW4WUpPrDDzRAbknrCNYc0WSee6
+         LKVlwOQgTdUAOcncAh7YlYaBk+BcKOZ10woSwbBQsqQ+Mtt9TGYu1SER0/3jXM2ycRAx
+         Z8KTxtw0cOUc8FtqtfnaI1UcIoX54zegWCQ/KO9rO1gc6KAbfgVdIIWCL4a7RwkpjqMD
+         v0ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723481326; x=1724086126;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hpMVxN3h+wXRgJtl6Puat78aXyyI7hCBpes+Mit4XIQ=;
+        b=D8IzMLu0l8KqZi2C3aEmGfEOXwH4G9/sal4Mmd9QOJGfn0kDL6oyWUI8zCt5rnRaZW
+         AONhQ2qialvw83LMjU9UuFT+R+FDb4tIkz9b1dw9lvdd4Gq13y4T/Al4xhqe9rcNz2M8
+         OKiC7eVQBLwy4q9OcoYNMRC2pl/Zw1htVzxtGI+P3a776jf6btCwVKy12emg1qfBZCJL
+         s0jc0VyZS4uOV2yvh3JxtsXPsdX8dBpZb4tA4hfdW+XHXv3JQxdKsxzBz69+izp/Eaem
+         As7iQ34fVyLNXwozBBvG97fFcdleFMmQdafpEIWX3x/uY7U2JLF7ttVCrtV2chSNcFMV
+         q0Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvMACJzpW3irFlycAYUDkuYcTWIPlc/Zph5RtRcUKvvpe7onQ8nNtJbCjCZqK2JGC7/LU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwqLVihnteDuxx/O5NLxk78pWBgT7csaYa4LO8oxBmK1I91MvU2
+	q78q3YTb0cpWsFWSmmMKvHFKzFGqXBs0DoCUcgXR2DA3+JocNFIf
+X-Google-Smtp-Source: AGHT+IHdDf7SW+xokXQj9UeB5NGIK7iiYD2rn/ORwOD8E5Ll4AimeY8xbAADkg0XqSxW4hNHVgstXQ==
+X-Received: by 2002:a17:902:e74f:b0:1f4:620b:6a27 with SMTP id d9443c01a7336-201ca120464mr12826775ad.13.1723481325443;
+        Mon, 12 Aug 2024 09:48:45 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:53c5:10b0:cfab:3972])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-200bb7eeeafsm40051455ad.26.2024.08.12.09.48.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2024 09:48:45 -0700 (PDT)
+Date: Mon, 12 Aug 2024 09:48:42 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"open list:ETHERNET PHY LIBRARY" <netdev@vger.kernel.org>,
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: net: mdio: Add negative patten match
- for child node
-Message-ID: <20240812-unmoving-viscosity-5f03dfd87f1f@spud>
-References: <20240812031114.3798487-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: input: touchscreen: convert ad7879
+ to yaml format
+Message-ID: <Zro86hWQVyaOAQKf@google.com>
+References: <20240810143840.3615450-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="kH+ai/ND89N9wHWS"
-Content-Disposition: inline
-In-Reply-To: <20240812031114.3798487-1-Frank.Li@nxp.com>
-
-
---kH+ai/ND89N9wHWS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240810143840.3615450-1-Frank.Li@nxp.com>
 
-On Sun, Aug 11, 2024 at 11:11:14PM -0400, Frank Li wrote:
-> mdio.yaml wrong parser mdio controller's address instead phy's address wh=
-en
-> mdio-mux exist.
->=20
-> For example:
-> mdio-mux-emi1@54 {
-> 	compatible =3D "mdio-mux-mmioreg", "mdio-mux";
->=20
->         mdio@20 {
-> 		reg =3D <0x20>;
-> 		       ^^^ This is mdio controller register
->=20
-> 		ethernet-phy@2 {
-> 			reg =3D <0x2>;
->                               ^^^ This phy's address
-> 		};
-> 	};
-> };
-
-I don't understand MDIO well enough to know the answer - does this
-actually solve the problem? It seems to me that the problem is that
-mdio.yaml is applied to the mdio-mux node because it matches the pattern
-"^mdio(@.*)?" that applies the binding based on node-names. If the
-properties in mdio.yaml do not apply to mdio muxes, then the binding
-should not be applied and the patch here is only treating a symptom
-rather than the actual problem.
-
-=46rom a quick check, I don't see any of the mdio-mux-mmioreg nodes using
-the properties from mdio.yaml, so should the binding be applied to them
-at all?
-
-Cheers,
-Conor.
-
-
-FWIW, adding a $ after the ? in the pattern I linked would stop the
-binding being applied to the mdio-mux nodes, but if something like that
-were done, all mdio nodes would need to be checked to ensure they match
-the new pattern...
-
-
->=20
-> Only phy's address is limited to 31 because MDIO bus defination.
->=20
-> But CHECK_DTBS report below warning:
->=20
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: mdio-mux-emi1@54:
-> 	mdio@20:reg:0:0: 32 is greater than the maximum of 31
->=20
-> The reason is that "mdio@20" match "patternProperties: '@[0-9a-f]+$'" in
-> mdio.yaml.
->=20
-> Change to '^(?!mdio@).*@[0-9a-f]+$' to avoid match parent's mdio
-> controller's address.
->=20
+On Sat, Aug 10, 2024 at 10:38:34AM -0400, Frank Li wrote:
+> Convert binding doc ad7879.txt to yaml format.
+> Additional change:
+> - Add ref to /schemas/spi/spi-peripheral-props.yaml
+> - Add #gpio-cell
+> - Remove  spi-cpol and spi-cpha in example, the place hold 'spi' can't
+> correct detect spi-controler.yaml. So these two properties can't
+> be recongnized.
+> 
+> Fix warning:
+> arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb:
+> /bus@5a000000/i2c@5a800000/touchscreen@2c: failed to match any schema with compatible: ['adi,ad7879-1']
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/net/mdio.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/mdio.yaml b/Documentat=
-ion/devicetree/bindings/net/mdio.yaml
-> index a266ade918ca7..a7def3eb4674d 100644
-> --- a/Documentation/devicetree/bindings/net/mdio.yaml
-> +++ b/Documentation/devicetree/bindings/net/mdio.yaml
-> @@ -59,7 +59,7 @@ properties:
->      type: boolean
-> =20
->  patternProperties:
-> -  '@[0-9a-f]+$':
-> +  '^(?!mdio@).*@[0-9a-f]+$':
->      type: object
-> =20
->      properties:
-> --=20
-> 2.34.1
->=20
 
---kH+ai/ND89N9wHWS
-Content-Type: application/pgp-signature; name="signature.asc"
+Applied, thank you.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZro8AgAKCRB4tDGHoIJi
-0mPgAP901yLmgljlIK02ytzDSbo3W7Tr4fIWkLT+81cA1NMr3QD+KIz3cHhvDZ3I
-JllrKy8z3fObL8klZ02PBpDvChhibQI=
-=nO2U
------END PGP SIGNATURE-----
-
---kH+ai/ND89N9wHWS--
+-- 
+Dmitry
