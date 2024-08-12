@@ -1,171 +1,212 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2042.outbound.protection.outlook.com [40.107.20.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FB5170A0D
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 23:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723504718; cv=fail; b=dN3oqgSNpRwcULX1cy9pKYNXOf74CoifPseHqzwZup2JLMN+9my9hrSkETBuewKx94ToMC4AFWcaDJcpK7Iwo+aYQCvg38ZdZz441v6/TvnRXVuLoWHeEyOhNVFkURFqC3tFqngTmxzinbjue4oQAR2ylougWez2Z93ZKg2mUtM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723504718; c=relaxed/simple;
-	bh=hPRGEHG5X4idGu7+jA+7unQ1Q0STfYLVJ5H7n5Qu3/A=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QpnZc6QJQj6GVxPN3msU7QRtSUykbWC5jLux/0uchG+mI7d7abhH40yb+gvDPkChylW9jzlygB/MH5e2gR67ZTKdSt/fa1V2v2GmIeR+CMvhs9wrZ5pvQmuIMjU5GFX4Hwh1PUw+KdZN5dg3jcXKn2/+mph5NLvR2VoM606K/uY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QOL0RhnZ; arc=fail smtp.client-ip=40.107.20.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3916813A3F2
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 23:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723505410; cv=none; b=ti7kD07+W4NEZI6sPtfgfh4cjYJvX+1dmReA2TCXGPW8g39q6PilklkiceBTW9yolaWgdxMkTuYxOUUBiEfRl7PogGDtCRPdi0TrhShl2mODG/VbBHMzy94IezlurwENz8fQed4oGulxzkGw6PM33nkuUB18SofskMCjQ0eqlzQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723505410; c=relaxed/simple;
+	bh=672B6CU1k2ro7YOC70Vs4kawqYnphUTzcq7splC5Tsw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WGALG9ezEzDCmvYhGpeBcm8yaFI6TRLiSbmJ8pWc10m0tNFY5RF1aRd7SkSEO6aGKEgw7aQoBMhmVRh66jV0AfN0MlBLXeOwRhDsGLcwB8U7bI8EofoTWoy761Ka7uga4jfkfJaTDSKZ1KoARkw1L3ej5yCidjaJolvsBXdHvQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HU3aPQjO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QOL0RhnZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pIqjjjJbxgzYW+JQGWZtQ9v4Zc154xgu6FJaWJVAH2S3rkRdcpNeyKiTrd0LfY17AOyd/igjvOUuUFvFZhu6MxlTvGSDLO3mi3f4dL6UVl1CMR7zs5FduqYxxRW0j04Bt96wgmY7uSpO7d4x1377pBt9QbVqDgWSONorsn/2/L/908v4mN1R9kSw+GQgCZOeSjhy3NBffoeOvRpDxFT+sazJ5fp+XmS/ZUC9Yx8VzKj9pEpsZIob74+/2m62smwlkEXCsc99MGPjM7mMRfCQiHl0B1DZmvFg4SDQQHVnIzAMICCugFlxuv5xMDPidzUl71fuelEj8PJ/UyutdiwJxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DSWDOKr2iMpyKnL4ZhVwTy9KqejKfyVBQzhhe7kbyeA=;
- b=jEiESVVflVTyFYOj2P6G1FGWrghceiYpWARVd9nJhWfZ+6SSVI8ZQc/EPbaVrCkOd1FjsdjeGo9wEibTpXXX2OsXAKuoGq1RfbbPwRBX4GQ5lVsCvG/aREUdAWyHj0z0uwfKGJl/m/CzVWSiCE4N8dPg69W25yG10+NX3ssndYeIBjb+BnrUdGdbkfkHjRtVU5fp6dhlKVk33BkWAmYzfyrc9uRMTMeY8tKGYfTWj6EHxMc0GNtvqQwblSxha2Bv/V7CGM9NqB3FWHbBYkuphpObWVXZLWj62Jjrw231MZOXBZIoc8YrdhxHcE2bSSDt/C3wJUac9xu3F2ZFbmNnzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DSWDOKr2iMpyKnL4ZhVwTy9KqejKfyVBQzhhe7kbyeA=;
- b=QOL0RhnZw2CFVr/ywWB8MkrX5ZFT6FnTGz44Jn+4sLVoRzccVoFXp6iatRlTu+Snu4MGTxpx7i6B/xuuDrAGHLZxE1DuD5JjOF0209IOPSWmM+TBBbsu4H4uc1dqyZCRnzT3GUzcpRYNR6gb89tOsh3h9J6IuuvLHThkJZUlXnO7uStVgY0MOSRJoQqfO7B/V90T9BA+U7QK1//9fxPxmWqI8vsXHjSAIZykPP3Khn+hJiBieeF1ARHhr6eK74X353iispjUTHCa1Ifqgq80kRpAyXXlx+u+2LlDOi3MUeM9finQs45tmr5oMfpprLO3LXIfu8qS+gnGbTPew5+9MA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM0PR04MB6852.eurprd04.prod.outlook.com (2603:10a6:208:18c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Mon, 12 Aug
- 2024 23:18:33 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7849.019; Mon, 12 Aug 2024
- 23:18:33 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:NXP PTN5150A CC LOGIC AND EXTCON DRIVER),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: extcon: ptn5150: add child node port
-Date: Mon, 12 Aug 2024 19:18:20 -0400
-Message-Id: <20240812231820.3838925-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR03CA0025.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::38) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HU3aPQjO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A9DC4AF13
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 23:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723505409;
+	bh=672B6CU1k2ro7YOC70Vs4kawqYnphUTzcq7splC5Tsw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HU3aPQjOOkicgG3OthDS69DU0GKVZDoT0KMG5fpqs/U/7VRA3pHP8whRotE4Pylr9
+	 4lwEHf/U92hfsGi1dLXQTK9BYH8syvEPGz8nRMTVYXfQVZjs7AyOlIkOA72oSOp06A
+	 Plr6z5+q0dbjeWJ8Fh/gKqKp5LjZxfFQFadUhBTGyovWFv8zifoNVT5rD1RE9jTXU8
+	 cG3Jfzzcmi0Pzik/qj87Oes9ujHrljkkizz4SvOV33qcpXMUS1tp9aYg1541C9KpEV
+	 Qk/hSH0m34vSa4YVcH76R1qjEsCZNqw3MawFaHobIXHdw/T/BQl24JuYsWYTJBaAaU
+	 /O8LMqD/i0sAw==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52f01afa11cso5992149e87.0
+        for <imx@lists.linux.dev>; Mon, 12 Aug 2024 16:30:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX2IeNblC5I5znc1EGvddWVJVG4hA46Wj2HMxsrcoJhE8i3LT/NQLpwT0VvinH9ree+Hvjl4LYlX3yTQS+ETUxWGxAU
+X-Gm-Message-State: AOJu0YymX4xrW+NSlQzFpaowi3pTXSvZ9Sr1Be1WXNXf2epjJjhRH2wB
+	9NLI/KJaoLObRy+ygBANPqWq0WVDcDDA/gWOEU7BwCY5KhOJI4UoSNg4SKH8TayM29W3iQwS0OT
+	2P+diFXZctjBxBurNKnhGFNeo8w==
+X-Google-Smtp-Source: AGHT+IGJetH4mJCREH8yIzJpuO64p9nN8xUWb99dU9DwgGP8eM/0/ohkB9aenrPWEZKtOKJgDX4cnQbwfJ5Qo7xg2fA=
+X-Received: by 2002:a05:6512:2256:b0:52c:82fa:ef7b with SMTP id
+ 2adb3069b0e04-5321368420fmr1054927e87.44.1723505407821; Mon, 12 Aug 2024
+ 16:30:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6852:EE_
-X-MS-Office365-Filtering-Correlation-Id: e607a5ff-bece-41ce-b471-08dcbb2515c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Wu4THs7kofIxEpQmBw1ca77ELYsoQA2jiUHVCP1pLqTOt+jNGjz0Tu2I4oGH?=
- =?us-ascii?Q?kOj8/Bzf6M3VDjnSo/0qNPtO8SXz5gKxSOSjArjLPSvYZpsL+zMfPsh2r64p?=
- =?us-ascii?Q?oXCg5tnUAy67QyP+PvgPiBtnO3nrzK3qzLK1e1+t/J2gvs3formPrOFYbubf?=
- =?us-ascii?Q?2/TfRXOX0cSwmxPImrPe+ceFzVVpBtkvANea96lEDOu5UGauL3BsAsRLv+p3?=
- =?us-ascii?Q?JJclM8KGjMSh04O44CAVPcJLqmSpJjD4wgkcJ6WQcPWaGMR/Nx9Edjp28Xzk?=
- =?us-ascii?Q?ZNMs2O25VgsHrtZWpDazC0WbCRGEDHiVNe9LguO+mFxyRkLeyqsdooq8+Ox/?=
- =?us-ascii?Q?P0sop5MCnNAEO09VzL8d/7SBaE4WknpvYbh3aR9ScRbGYdQhL1P7zb9dtRIH?=
- =?us-ascii?Q?s1OjXkGpdD+VOARQ+IZeLdKrV8rEq2fJc8vxf3+KS7oepFi3lrdhaDRRaQ3X?=
- =?us-ascii?Q?3ncDTGEumZvkOmWhNMW50zUeeBtCZvqT2lJsYKVLiFzs7ov5L17gm5cfUVGa?=
- =?us-ascii?Q?JQk9awWsha+qaso7hjP4jk4kJ17GMgWyZF3ka7D/bqLfLp4bHhUUWyVRdbFE?=
- =?us-ascii?Q?RuyuBLPHeIQrteONLSjj9FRmDtdUbjQiGRBM+94Ib0+hAbpz+JM/9cUjQJ40?=
- =?us-ascii?Q?N5G+W/bWFoLWArBSxiq4OPE3kl9Uz+T40bpQdId2leAsZEvJYxCF6+vHe8R6?=
- =?us-ascii?Q?gKmiCnpr9MpnVqrP+vvsjw9R04ukZt8qe+basydRVThQ2BuCImjFQMTMhqfv?=
- =?us-ascii?Q?0vGezBg1WvsqlJ4PKjvVIVae08LmdygNDFfE68T8wDuuPnsLpjSTKXpL5mvL?=
- =?us-ascii?Q?m20mBdhBiZbkF3CzyUwSzRBq1k2Vl7qv+9hHVcnV1USDgbs2gyKrmTEyMDD+?=
- =?us-ascii?Q?ZdwAio2fSo7F3E8UpJIxYdg+Nckt8dudgY0Nj2tqXYPmJcYhJ6Lc9xMhIMdy?=
- =?us-ascii?Q?ymhAVCnWQ2ZIgth91blNkXu6PsEZ2X5GtWoBTfsovYW4IkIUD+xgdTJ8V5oB?=
- =?us-ascii?Q?xXmpKb+lYiTwlNjI/ahQLXKwz58/LmfIRBiqp1/rLphylfbzSDlvr/IxLuFg?=
- =?us-ascii?Q?buJomAstBQIbuSKqyEvClTin6NUGaRm74zMmaTIwSxS/PBL81j67Sydgmh1V?=
- =?us-ascii?Q?ghPDJUMYYNk7fDqw9PIeaAmlW134W+yE2iL3J1ISdJhDvTDGfRVGDlLlggHl?=
- =?us-ascii?Q?SCDL2pq48NHLJD5nrF6CRmIwBOV5/9DZXO3YNlVISxDr/BGfMgV3P1N+mSy1?=
- =?us-ascii?Q?kq+ucABVQrz7PB/sRZrUeB8KuwlocUwfmXjEyPs1ZDsEbs7Q9vKMglPvKGmp?=
- =?us-ascii?Q?qb6AayThx9p56mR7SRIEoM2rUV5dUxjZEqTYB/BPwl73cHFWdevDwHrzKVZA?=
- =?us-ascii?Q?dhu0rA4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cIdRso1/S4CyqdUuzcR08mJAuxsAMkvjzGtLGrmHS+MqFnyTcK0ZpPc4w/2Z?=
- =?us-ascii?Q?08opXYQIsZS/7RKalYW2fma+75zcRlAlV6nHer4qVpYlMhyRF61zWpaf8v5y?=
- =?us-ascii?Q?0i+qfQj1gBOzszM7eUTb0AjYAZ9i/Fpbnq6InfhXz1zSFLQYO6+aKsQxT074?=
- =?us-ascii?Q?FZNMWWOFsg/ejm4XIlDtoLFEOwxwTESDDa8hmijj56emUycG/K1j3CBn8Caa?=
- =?us-ascii?Q?BlTS22IBfnaUWDiErLLxLVG6W3KTRa7OWRCAk6KIyVtIjWUByNlSX6jl1jck?=
- =?us-ascii?Q?CtMtUJ+gRDPgpk1ZnQ510i0rKME9w8AgLbUEHzjNKPmRynE2e9q5Ht/Q75l4?=
- =?us-ascii?Q?AyF5h89MUA5+3hupGILc3fY8ImfE4+STwGEnMO/55X+Zy9cn1UaUI7I7lsJi?=
- =?us-ascii?Q?swi+PablwD/0s54T4S96+8ZE1sckYkr/3bzZ5RoTnEh8eXqYW5fPQc4n14Gr?=
- =?us-ascii?Q?SVFHWXgX+3/bXKTb2dfCMMor9vAlh5ntApyoHLVYm/uSGDjJknQuFqwy51nd?=
- =?us-ascii?Q?BcparKuKnQhWADUXCqdJXUlSfNvUzM814qU+FCaI4E6vdwuXcQ4LUAWfoOF/?=
- =?us-ascii?Q?GE/F7NfNkk5DBjNrrLW8P8RnXWYpZA+AZtHNPrqn7B4o01M3COoaSwajyDnh?=
- =?us-ascii?Q?vKOhq2klUpaT5zyGIO9Zpeh2WVnJsN0aDDlvF5QEhdUudVh6wmwRZmOOV+NH?=
- =?us-ascii?Q?zEc8JSkCpSLNPtnYWxPttZbSASXZd1mJgEA8CZ05xO9Uk1sVoF+1Do/dvX63?=
- =?us-ascii?Q?2h0lUpn1Zxrzl+QoktnjLm4MzgQWT+IMxwFkLPvfnWmyGMtC1RBFR0/by/iA?=
- =?us-ascii?Q?Adm8MGVRphjO31NtTZy16bJszSX2ulT4N6igr3sI0QKDEcaTz+Af218vHelQ?=
- =?us-ascii?Q?XrgAPjgAtWcwRvYAEAeMPMRlE5OxMJEkxF5//Ggg5DPqIErbUtCcyvsoDWq3?=
- =?us-ascii?Q?/qyH8kzPt3I6DFBaJC2X/1aT4sxCMaEZV6/88jUGFaDDyEf0tu89XSLMChFo?=
- =?us-ascii?Q?2Dr3RVKPxyTryKP03yweyunKQoc/FYUzWrhZ/o2bQmzjpbgpJHukH91h4BFI?=
- =?us-ascii?Q?b9rKw4jHdGrcucgeoCY+5qnZcTvrA1Lx10HpiVDCB2yzeBFBNHKzV3RjaZO9?=
- =?us-ascii?Q?WrCZOY7FHBPeB53DZqQWcCwAPa4QaqyPZWoqA1z83tc7Q2TLf+FlI0qPSaf3?=
- =?us-ascii?Q?+kkjhleQ2GK8MjP8Wh3+/DhBSDfiE2Lu4jiS+LBQXVgHJepTPYRH7FRvxROT?=
- =?us-ascii?Q?mvhV4tgi1zRdA3vdRq6k9LGrEzHSDyC+5FD3JC/19p6cxDRqP2onj2cqlOFd?=
- =?us-ascii?Q?vIB4TEjbXE1B3XtHkB1zXwJJf7CjK0oNrZozBB5X9AWfpno7l14eO/hicLbf?=
- =?us-ascii?Q?qxEjaUx2MO3erIU1iP4usvbvPeCKSAYI4CAPTlCtQ+RFAwFEg48WyEy2T5OA?=
- =?us-ascii?Q?8vsV3FU84J+j2IQT6/No/LjdjtHTHBtiTgtqFpEY12t1dAWDupcUUmjOFdLz?=
- =?us-ascii?Q?CSIxi6QOfndUBt09ce7l7BLbGckUofyz/A4c6z051QRocYD5Eih6DiFajWu5?=
- =?us-ascii?Q?jDoNzEY0prRkzqlHKfAt6P78ZGkBre9TVGIoDxbH?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e607a5ff-bece-41ce-b471-08dcbb2515c1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 23:18:33.5886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mxt8bEupdAcGt9oPiNYZNCrzf6MwkHJBNN5RcW++bcYvuSLDp0DTyVr8X1jnmyCcM2TKgGvPsn0VvH2R5W6SYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6852
+References: <20240808153120.3305203-1-Frank.Li@nxp.com> <20240808-frosted-voicing-883f4f728527@spud>
+ <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810> <20240808-linoleum-evasion-ad7111a2afc4@spud>
+ <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810> <20240809-freewill-compactor-4f441a4a60bb@spud>
+ <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810> <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
+ <ZrpdlNrs/qqFGhFV@lizhi-Precision-Tower-5810>
+In-Reply-To: <ZrpdlNrs/qqFGhFV@lizhi-Precision-Tower-5810>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 12 Aug 2024 17:29:55 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ8vHeQzMQwU8LcpwEZ9ZqvtTxsMJKNhGpgAHAZpK_FnQ@mail.gmail.com>
+Message-ID: <CAL_JsqJ8vHeQzMQwU8LcpwEZ9ZqvtTxsMJKNhGpgAHAZpK_FnQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string to fsl,ls2088a-pcie
+To: Frank Li <Frank.li@nxp.com>
+Cc: Conor Dooley <conor@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add child node 'port' to allow connect to usb controller to do role-switch.
+On Mon, Aug 12, 2024 at 1:08=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Mon, Aug 12, 2024 at 11:29:38AM -0600, Rob Herring wrote:
+> > On Fri, Aug 9, 2024 at 11:11=E2=80=AFAM Frank Li <Frank.li@nxp.com> wro=
+te:
+> > >
+> > > On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
+> > > > On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
+> > > > > On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
+> > > > > > On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
+> > > > > > > On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
+> > > > > > > > On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
+> > > > > > > > > The mass production lx2160 rev2 use designware PCIe Contr=
+oller. Old Rev1
+> > > > > > > > > which use mobivel PCIe controller was not supported. Alth=
+ough uboot
+> > > > > > > > > fixup can change compatible string fsl,lx2160a-pcie to fs=
+l,ls2088a-pcie
+> > > > > > > > > since 2019, it is quite confused and should correctly ref=
+lect hardware
+> > > > > > > > > status in fsl-lx2160a.dtsi.
+> > > > > > > >
+> > > > > > > > This does not begin to explain why removing the soc-specifi=
+c compatible,
+> > > > > > > > and instead putting the compatible for another soc is the r=
+ight fix.
+> > > > > > > > Come up with a new compatible for this device, that perhaps=
+ falls back
+> > > > > > > > to the ls2088a, but this change doesn't seem right to me.
+> > > > > > >
+> > > > > > > It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exi=
+st, which are
+> > > > > > > totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a=
+-pcie.
+> > > > > > >
+> > > > > > > Previous dtb can work just because uboot dynamtic change fsl,=
+lx2160a-pcie
+> > > > > > > to fsl,ls2088a-pcie when boot kernel.
+> > > > > > >
+> > > > > > > fsl,lx2160a-pcie should be removed because Rev1 have not mass=
+ productioned.
+> > > > > >
+> > > > > > Please re-read what I wrote. I said to come up with a new compa=
+tible for
+> > > > > > this device, not fall back from the existing fsl,lx2160a-pcie t=
+o
+> > > > > > fsl,ls2088a-pcie.
+> > > > >
+> > > > > According to my understand, It needn't add new compatible string =
+if nothing
+> > > > > difference. for example, it use fsl,vf610-i2c for all i2c without=
+ add
+> > > > > new soc-specific fsl,lx2160-i2c.
+> > > >
+> > > > No, you should have soc-specific compatibles regardless. Just becau=
+se
+> > > > you got away with it once, doesn't mean I'm not going to complain a=
+bout
+> > > > it here!
+> > >
+> > > Rob:
+> > >         What's current policy for this? Not only for this one. If new=
+ SOC
+> > > appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), t=
+here
+> > > are bunch of IPs, Do we need add fsl,imx10* for everyone, which most =
+part
+> > > is exactly the same as old one and bloat binding doc.
+> >
+> > Yes, you do. Do you really know that something in the design hasn't
+> > changed? Have you compared the RTL between the versions? The only way
+> > to deal with quirks without changing the DT everytime is by having
+> > specific compatibles *upfront*.
+> >
+> > The "bloat" is never that much because the IP really always changes.
+> > QCom wanted to (and did) use IP version numbers for the same reasons.
+> > Guess what, the IP version number changed on almost every SoC.
+>
+> It is quite dependent on IP itself. Some IP (such as I2C, SPI, UART) is
+> quite mature. There are not user visual change in difference SOC. for
+> example in drivers/pci/controller/dwc/pci-layerscape.c:
+>
+> static const struct of_device_id ls_pcie_of_match[] =3D {
+>         { .compatible =3D "fsl,ls1012a-pcie", .data =3D &layerscape_drvda=
+ta },
+>         { .compatible =3D "fsl,ls1021a-pcie", .data =3D &ls1021a_drvdata =
+},
+>         { .compatible =3D "fsl,ls1028a-pcie", .data =3D &layerscape_drvda=
+ta },
+>         { .compatible =3D "fsl,ls1043a-pcie", .data =3D &ls1043a_drvdata =
+},
+>         { .compatible =3D "fsl,ls1046a-pcie", .data =3D &layerscape_drvda=
+ta },
+>         { .compatible =3D "fsl,ls2080a-pcie", .data =3D &layerscape_drvda=
+ta },
+>         { .compatible =3D "fsl,ls2085a-pcie", .data =3D &layerscape_drvda=
+ta },
+>         { .compatible =3D "fsl,ls2088a-pcie", .data =3D &layerscape_drvda=
+ta },
+>         { .compatible =3D "fsl,ls1088a-pcie", .data =3D &layerscape_drvda=
+ta },
+>
+> Only 1021 and 1043 have difference, others just copy layerscape_drvdata.
+> I met similar case in many other drivers.
 
-Fix below warning:
-arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dtb: typec@3d: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
-        from schema $id: http://devicetree.org/schemas/extcon/extcon-ptn5150.yaml
+My guess is some of these are the same die. I doubt FSL taped out 9
+different die.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+> Can we consider just add new compatible string only when visualable chang=
+e
+> happen?
 
-diff --git a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
-index d5cfa32ea52dd..28c34d78708cb 100644
---- a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
-+++ b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
-@@ -37,6 +37,11 @@ properties:
-       GPIO pin (output) used to control VBUS. If skipped, no such control
-       takes place.
- 
-+  port:
-+    $ref: /schemas/graph.yaml#/properties/port
-+    description:
-+      A port node to link the usb controller for the dual role switch.
-+
- required:
-   - compatible
-   - interrupts
--- 
-2.34.1
+Only if you know all possible errata already. So no. You asked for the
+policy and I gave it.
 
+> I am confused that some use old SOC compatible string directly, some add
+> new SOC compatible without any actual change.
+
+Because people don't like to use old SoC names with their shiny new
+SoC. Or they just don't understand how compatible works. We push back
+more on not having a fallback now, but the only thing the DT
+maintainers have to go on is the drvdata differences or lack of.
+
+
+> > The exceptions are really if different SoCs are just different
+> > packaging or fusing.
+> >
+>
+> I see.
+>
+> >
+> > In this case, I'm inclined to say just match what u-boot creates, but
+> > please make that abundantly clear with a comment in the .dts file and
+> > explain the situation in the commit message. OTOH, just adding a new
+> > "fsl,lx2160a-dw-pcie" compatible with "fsl,ls2088a-pcie" fallback
+> > doesn't hurt, and we can just move on from creating a special case.
+>
+> It is small problem.
+> In https://lore.kernel.org/all/CAOesGMhz8PYNG_bgMX-6gka77k1hJOZUv6xqJRqAT=
+aJ6mFbk6A@mail.gmail.com/
+> There are still small number user use ver1 even NXP not support Rev1.
+> According to my best knowledge, rev1 never mass producetion, only few out
+> of NXP to do evaluation.
+
+Do those users even care about new kernels? Personally, I'd drop it
+and add it back when and if there are complaints.
+
+Rob
