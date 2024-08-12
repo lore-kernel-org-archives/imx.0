@@ -1,71 +1,72 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011020.outbound.protection.outlook.com [52.101.70.20])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013030.outbound.protection.outlook.com [52.101.67.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A541189B89
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 18:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD28188CB2
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 19:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723486975; cv=fail; b=rKJ/zyG0hF/nVF1b8Mzpr9R3GUoXsaYfjL85N9pvw9CFTtK75jog8dpebYmB+z4TBXdVwa7HgA/dxXXxz74exU4VAiyR/Xa/yPDVL8AUy5EQazxuYXy+cW4NIcHem0j2nZlw8V4sHAUrTJ/rB4y0WLhqMD+aD6TZvxenGnFvNR4=
+	t=1723489698; cv=fail; b=o3/IQ7Td5kTzgP8u/98JsOXwCypVqiW3ONL2/KNgpAgcUeWh2Df8Es3rUuFACB0vWWprTnpnY+G3OHNuaHro3uXxVrQk9aAJjzY89JffJ7EgpstGCvtPtidBr1n8R4Yy80DlANhLXM6s59MeZ4JGKQI8tplR+ZiVIv1sPzQOPk8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723486975; c=relaxed/simple;
-	bh=MUeoMeK5DKSDNuaQley5wm54R/lKI8Dr91rZxgNxo1k=;
+	s=arc-20240116; t=1723489698; c=relaxed/simple;
+	bh=2Nb/IUMFz9ofStHNWATznVRZwOe0ebniQNjdErHBwDw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GFKV5zUmxYUpup0ARxeeZT+z/sfNQqncDKeabGSF8G34/8xI18YmPKd4ZZ6z0xXkwKOc6Nd5ZGLNeJkUjba4SWoC1Kzk4rWLfTSsvPX5nNRUdHJn6UWKhbXWGGNv4rjrNj38JfVg96WUwcc3xqXlU8cA2Yw/yiGJWTk4fqPou3U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hO60aXFS; arc=fail smtp.client-ip=52.101.70.20
+	 Content-Disposition:In-Reply-To:MIME-Version; b=H+qx1NAO9vDCUDgx3c2vG1KkSGXZJ7/7G8Mib8v0wFvhx22QS2ek0hRgSZrVnjBM+zFLN4Tg3JDD5a+BHJ+qsC3ypHSCG4ltLuZEpljJja5Lyo46Y81nf7uHWM72pqh0VUY6AO0rCsdY9deolBc3EIp+ZPEISBLdzWm/NrvXDeE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ykjoe5+u; arc=fail smtp.client-ip=52.101.67.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hO60aXFS"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ykjoe5+u"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fn5oYKp6Z9ZkRSgsdYatu2uuN10iAztoHGs/pNtiDZWizd7rYNR3/GjJEwginJ6ji5wVBOYnSbQ37DxSivuJ6gY7m0KFpSj9y3E6IquFlPe1gapi521wMTCQLcKfLLQ0qq1owhXRZFtRvfyG3D0IU4rQhCj9tkFE8f6Ef7VTWMnK04LNbT1IJKURBAtziRiJ+WzRPH9V5KkcXEkczcEVSuq4Uz/AvR5IluBgyXG62RL59BaroKRLGN64r578zrfuJrxVzPHr1K6XS8gAVssYjPUVhsDc7OOj53fKy31TRweWIDWchyyvicAdy0aOk9UY5Iu3Ozqkwfxvz0EMUWPQhw==
+ b=RzPdpY6cvll8G5gWJxFdm4rd9HJdM7d7FlVhpnYqlzZUcm9J5FD03oh7jukq4ziKcYxYtPB8BtI2V6XsSEtRIZ+PNZCgzYkRYrDPifNIU2TYdR7cP/+VFWn/EiTLRHfDem4BPNW7X0l1uhS49ShMyag93Bd7VZrpv6hFdQ5/R8Kn6FNIat/kXLVf73JYILv6QpOiqfV+T916O4Pq8grsYa+p9y/DY2JTmnXX+hGNNuN5JULWybU5YjEjBTmlJITQoGk8jzDB1tMZikIdAm5LXNxObi0zWmn4t7t5gMuFK4ENi/8J6iye2UUvPY+9VJTYfjZT5OYcHUK7D0SrY+2bLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=079KfLO/OlS34kNG2kVoSyR/PAsj/yWrwI9lpEFytL8=;
- b=fMnR/z8y3zs3LFOyfHc3lSlF1JoJt0jPTBC19COqlmEjftvdxA4tHia7hj9jh1jjM59bMxdHKQB48dpY/9OAF/RdfBlzrqZ78T2X5BD2iMh4tS/tOgAXVWCTtNLYkpdLeoj5tbUb2quD0K1wN8+/MB3S5RdwEkicZ5HjiYqCH9ajKP7qjEN8cN1uC2uqlGN1YsGxnSq3Ugl31Z9OxMsmF3hyZZjRvUdD0PibBFpOMvGqBVo3rkgeUDTQjk8vN864UIbpZc9qZtNF/BuQBqTRrFVyDLlLBzUw/bUIByvCwTnQqW/QGqj1TIr6UsTPCJ2l1KF6Xnm6vgswnzG78zgQEA==
+ bh=wZfJxxwS4UkNODHqpzav/F0NopQXThCw3akYPtB3Srs=;
+ b=XInV14JoPLiSZDbT3WJBiRft3aHZiaYzTDgw5cDPWkgGnEK4GHfkM51XqThdZ9GdscHr6rF4qdyUuhRHZXW+FEsPQJrIEVO1wYKtglODRZMvdH5xNS24Enf04Mg0L2dStzkfRZFGlTMQ4oR/G2SfCUC3CWjuQvtRzWnJ1b/S9v2SGUHGha8XsRSOu9scortDI8G/hqCxSQfLRsTlBP6A03Gv3SaWgb/4d67UjbMTbvi4X0Ns9BmtZX4CT718QdQMt9ls8pf/1DjBvox4JkziaI1jIRTkCV2w4ks3pXAFyza5FpDJWk2LOsHZsKZw9JQcYCI9IGH13nyCfCkQhqNkxA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=079KfLO/OlS34kNG2kVoSyR/PAsj/yWrwI9lpEFytL8=;
- b=hO60aXFSicPuYPisALEj9AKQMq8UUIBkq9mz2DSO4V0C29QtV9BmToXvhRJ45V+lWyD9JVIrpLxvzVCjeCzHhi6PPgJfPRV9314JnDylugKBclMIcrkG2D3v254CzBvc2DXCSkN3Hp5MVwarMlPQ4wwCk0n8737hTxHTt6w3ZmHJxKu+6DBLxvbns07C0E14ebe/DD7zBrbJYTr0rBugAv1fe9m5QCO1vCFYfemgaLdxS0erggNNrHnAWgaM7JFgueIZ1Zrul5/WBhwVUbkdQIlhUhfcZwz0Pr9y+Cthu9DPJBYqiBJy34qgN3PB7ru8QzeWpv4WBj/0ZJLclzxODw==
+ bh=wZfJxxwS4UkNODHqpzav/F0NopQXThCw3akYPtB3Srs=;
+ b=Ykjoe5+uJ5o4a+X3wRkCyoyHLBh1jji1W4VOIkw7PI68wJfrOeqdEZddruKCqI9atTWeIcpc2qSh9dIhW+uJK7SwB+95VsEPwLSMnMKbR4lcwO+1g/IRlBFAhl5/Rn4awwA6+5gMPUnSXBMWquz3COpg9bXzwm49FW5YNHYhZiWDMXxJLOdR5mWRvO9CV20ljTFgaLrpM8M3aRa8jQDQ5S5wue8ZpqIXE99ywa6xRU6uKHQ0V1NAlB4cxskYdKe0N38xuqQbAlPRFD1Ou7VdBQZd+HGNeAnwf29iMOJ2OAI/6JD0/V7K0oosxa7BSJrA2p7yGkgb2ZTq1YwSlNbbSw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB10969.eurprd04.prod.outlook.com (2603:10a6:150:221::13) with
+ by DB9PR04MB9773.eurprd04.prod.outlook.com (2603:10a6:10:4ed::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Mon, 12 Aug
- 2024 18:22:49 +0000
+ 2024 19:08:13 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7849.019; Mon, 12 Aug 2024
- 18:22:49 +0000
-Date: Mon, 12 Aug 2024 14:22:39 -0400
+ 19:08:13 +0000
+Date: Mon, 12 Aug 2024 15:08:04 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
+To: Rob Herring <robh@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"open list:ETHERNET PHY LIBRARY" <netdev@vger.kernel.org>,
+	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: net: mdio: Add negative patten match
- for child node
-Message-ID: <ZrpS7zJpa+YJZfjQ@lizhi-Precision-Tower-5810>
-References: <20240812031114.3798487-1-Frank.Li@nxp.com>
- <20240812-unmoving-viscosity-5f03dfd87f1f@spud>
-Content-Type: text/plain; charset=us-ascii
+Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string
+ to fsl,ls2088a-pcie
+Message-ID: <ZrpdlNrs/qqFGhFV@lizhi-Precision-Tower-5810>
+References: <20240808153120.3305203-1-Frank.Li@nxp.com>
+ <20240808-frosted-voicing-883f4f728527@spud>
+ <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810>
+ <20240808-linoleum-evasion-ad7111a2afc4@spud>
+ <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
+ <20240809-freewill-compactor-4f441a4a60bb@spud>
+ <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
+ <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240812-unmoving-viscosity-5f03dfd87f1f@spud>
-X-ClientProxiedBy: BY3PR04CA0026.namprd04.prod.outlook.com
- (2603:10b6:a03:217::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
+X-ClientProxiedBy: SJ0PR13CA0051.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::26) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,189 +75,197 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10969:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81e34aa1-7902-4cd0-0e27-08dcbafbc552
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB9773:EE_
+X-MS-Office365-Filtering-Correlation-Id: e40d3e59-c136-4c2b-cae0-08dcbb021cf7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kBEzvjcRbYOJT6jdMV+RA04AT6VfYDmlp5X3K8hdPkJL4dCBUAHyVIaNnmHI?=
- =?us-ascii?Q?K/OEkRA2e4kJR+su6DqDh7/QCUYqNVnD97krFqO7NlOFdLubXCb8tLUT/pPW?=
- =?us-ascii?Q?jUGEr1h7C8648YDnGIuM4whYwSX1FU9xwAz82YnLjbTa/AviezWVlxogW+0/?=
- =?us-ascii?Q?O6MA/q0gyNV6Mo7rX/UhZUfZjnRDigz+A7D9y/SwkkTXacbsnlMc73YCBzij?=
- =?us-ascii?Q?Bczim85mJUYrDDADw4/MjN7quvs4L4v5Mt2N3qqh9H4nnSnFXH4NNCSnbOpj?=
- =?us-ascii?Q?w7qd3REkqiFQPFX3p3ED1VNzkG9OYsCiKvStZG3Y5X57aA/bqd9r1ZhNHtbH?=
- =?us-ascii?Q?lO7ch4R7qqiJn4zGSk8KUZdMU3BUDaD6i0FESB8Qhrc9b1YY4xlZNwJznEao?=
- =?us-ascii?Q?i9+NNM2KKsyVR8zM4XHu8UXuSY7eY6YF3gB3yZOyq7JyVD1nOPk7+pfWP5Wx?=
- =?us-ascii?Q?VeoWhl6nu2FYi36SB+xStEm1zVWJe0Ctsuxi4cRM9KYH3aRgknDVVU/b1F99?=
- =?us-ascii?Q?g2aO11WSpVzf1OpKYqfa9xjiuDkmSiQzn+8UoJfNF+Fk7FJayRSw85JKKDmK?=
- =?us-ascii?Q?rP4b/HWqsPCQ4Bte9dhopb7rDesjYTcWTHntOPVLCi8rQoMeM6tzLZNPHB56?=
- =?us-ascii?Q?IZW2npW8aHF7Y7T/+LPaeNK+0aJn1bpd4PkPsBSbZTdZaQgUK4PEXmHNiw/d?=
- =?us-ascii?Q?mhKOdvcZHe+tcbUtY+1IgIM6N2pOnsU8ZICjZCP5TyQLBNlXJyy7u6NyxZJb?=
- =?us-ascii?Q?gOBOrIXPszmyCwAoQ+gCkGSeWGbJZxlhoihdNyKkkFStwqcdyvqtBRB6O9IK?=
- =?us-ascii?Q?oemEkotfTvyI2VSuj1oxlP07JQEQlvbd1QnN4joau0AoZfEYct8qxbS2vygp?=
- =?us-ascii?Q?mxAQFYW+2NOtHhieEjEu5XKkdKuHHmUvkS1O4wQNOTrNEzbyPfGGKJpsiDiL?=
- =?us-ascii?Q?hPpKvPm1ALAxOw/7uYjTQ6/H1k7IXCK6M2olG1nPfEfZGP+b3+BbQg2ZkklE?=
- =?us-ascii?Q?GRJFMn91Chuh0OYMkl188KJSf3x1od6H49VBrbUCiNnZZiQEBNtkAcOIzMOi?=
- =?us-ascii?Q?cOiY6weskwEI4adC3uyemmZ1jLRlgHZzLqp+9LLHjRBVjsAzhlD9+kXCI0Kn?=
- =?us-ascii?Q?OuW8ARxyh+401711nXggYOV53BNQanr7/eZ2xGSXMiYlvg+WvMo/YGX+rIy2?=
- =?us-ascii?Q?0ObhGx7jksJamYi8c+ldzsVwwABo5pSXmACAD9vZYxrVt5SELH+Nk64mbEbt?=
- =?us-ascii?Q?1hrEr1D7oMI2DeLoju9gVQBDZCEvp0fh9i3E8ixERdl0XKiwYadc2qCqUiWh?=
- =?us-ascii?Q?wq7AiAQNMWmxfKEYXyTs3viinAnuNVbt/nlnUtw+cfqTcnZGawdyoXHPdplK?=
- =?us-ascii?Q?Pe8ONUEyx2PhH/oR4kcaXAG9n5xa0XblSQwR2XdvjMdaAIci9Q=3D=3D?=
+	=?utf-8?B?bS9PYjQ3TnVTbVE3T2p6WUh6QWRmS1J1YzV4eWU1TnRFVXZyNkU4VnF1K1Uv?=
+ =?utf-8?B?VFQxRUZNYWkzUVE1bEoycjNCQzl1bHN6SEo4SVZTUXlMMEt5Z2doWVFJK25n?=
+ =?utf-8?B?KzZqcTQ4dTJKclhqc0VqVXJTQWM1ei8ybEgvckFwWExCcnpLZkFoS0lENUpI?=
+ =?utf-8?B?Q0pJMktFM0ZCV2hGcmhtazZKM0Y4dnE5L0JzYXdESU9HZUZnYU1SbTBFenBo?=
+ =?utf-8?B?Z2RSMlNleGZocWZYWnRwMTR3aFhxbkYrS0NGaVZCS2s4WWpUSlh3QlpQZE5D?=
+ =?utf-8?B?SkRvL0U4Qy9wK3NPZ3dzN2pVZTFBYjlxRTRSdmZDZUlnK0MyWDczeU5RbE80?=
+ =?utf-8?B?dVhlRE54RGk0NXY4OEYyQlVGdWljcUxkbDZ5RlphMGFQNG5aT0xoOUc0Skpt?=
+ =?utf-8?B?bndQL0ZHME1KbHVzSFFMQjRWYzFyTFFrcEJqbDNZRng5UlNSK3phSlJYbXgv?=
+ =?utf-8?B?U3phSlZNSHJ1c1p3djJ3akdxVTNYMDNTZ0g4cHlVM3ZPQzhDNnBuc0dNQVlN?=
+ =?utf-8?B?WlRkSnJZVTViSXJiaUQ0M3FLNUR0S0NCVWxEVHhQZ1BuTFFyVzNveThldm15?=
+ =?utf-8?B?bmxQRW9ZMDVqQTJUSEdlckk4V1MxTlgzejcrd2ZLWFU2c0x4RGVGSmZOSFBR?=
+ =?utf-8?B?YStLcFdOTkY3S01mZ0lDS1ZuTjFCWHFMbjh1SlRqWjR1Z3phS0prYVhKN0Jr?=
+ =?utf-8?B?cTMyNUIrTVpIV2g0T0I4eVJ4cEJmekZuZXdTYW9qOXJDNDFZMWdRY3VjSnVG?=
+ =?utf-8?B?RDliQkRVUW02cm5BcTcvckplOXBITUxXZENDZHBaU1BHbzBaRmIrRGd1dFZR?=
+ =?utf-8?B?Y3EwQTRGdGo0bkFCYjVLMGtBYzBndnhnNG03NE9sMHIvVnV4SXZkMVlTeURv?=
+ =?utf-8?B?cnNWbXZGSC9UVTh2VTBITDhiWGJCZlErbUNSYUM0b0E3TVdkeTc2WXdDVHlW?=
+ =?utf-8?B?Y005QXp2RHJ5SVVEMG4xZEo1cEtQdXVBZlpZZUlyVjI5alZDaGRQU2dRUStG?=
+ =?utf-8?B?M1crdGdWR3ltLzlTSFBsbWU2bnNjQk1tSHNnRXdITllRdzFFeUFSOFRjMFdr?=
+ =?utf-8?B?YWo0K2w2dStaclFCSjFOMWJxV0RHbGhQUHhrQ2lZQ25KWDFOc1pKdTMrY2F6?=
+ =?utf-8?B?bmpFN3dQSE1GT0Q0RXpRSkFiYzZpSVdXbzlKbGlHTmdUMGZXenhHSjdNcWw2?=
+ =?utf-8?B?d0lmREJtTlR3MXBoSjF6V3Y1WEJsbUwvbFVKZDQrZ2M4V1lRWXZBVnQ4VFgw?=
+ =?utf-8?B?S1lYVTBuQWluOXdQakJ0Sk91K3VvUWVjTHlpMEdydTBiOUJ3M29yaTJORlRw?=
+ =?utf-8?B?R2tuU0txVGdFcFVUdDBrY29EY0VEQlhQVDc1YThSUnh0b3NOUVRLTGV4OU1J?=
+ =?utf-8?B?STRURThtbHQ2WjZNV0dxT0xscXdLa3M2WWd3MUVpRjJldlJRT0VaajFsUmEx?=
+ =?utf-8?B?bHdHNGNrUkcyMHFUdVhicWoxbStLNUp6K25IZU0rM2QrVmw2eEs4d2NsZmhl?=
+ =?utf-8?B?cFcwdkZRaWdIb0xFNVprN3RpbDlrZENkYUl6VlF4Vmw5TzdnNDVJZTN3UTZx?=
+ =?utf-8?B?SlVkL3JLMFM0b3dFd0xPNVBHK2h6YXdxcmtUT09RUXVqWHVnd3VQOVlHMjR0?=
+ =?utf-8?B?dDk2czJ6ZExFcnlvdFhtdjIrekZxNGxoYitNczYwOGduMEdNY25DUU9Qdjl6?=
+ =?utf-8?B?YytRbXpLNjcxRk83QXY3akpnUmR2NFhVU3pWVGVwaXZZTlRDdGZ3TzhWbnll?=
+ =?utf-8?B?SFdQdUl6bEJOaUNudUQ4MXBzU0lGRm5rRS9QeVVDbTIvWFJCbzkrTXIzVnhJ?=
+ =?utf-8?Q?DPX6GHwuMJGPEZanmOzAWaj0NubIVyHvvLveA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?R5R2r2oEjisDCWl7pU7gTrZJsYCYaIC07lpE/rlVenvqPE7Waihhq86p0yrx?=
- =?us-ascii?Q?XgFNS8VqKl6aiaXGyooNFyfiGoB2NjumNlJu9NsKTUVqdgO6BF7QcxlB0MPn?=
- =?us-ascii?Q?Nu51wfDBTuzJLl/OKSsM9/rnthQRASE5tfHMicFoNmcu7du2twiDsBrT8/OT?=
- =?us-ascii?Q?dKxrIH/fVb5E2bHS3xTaO+JREabtD6Udm9TtlcRTPOZh0CaszSB8JpFWtgec?=
- =?us-ascii?Q?oPVx2kQdckNIQDQKhYDTvDM435/uTsLe/tMd3lXOKT1FxEDBbNIVfyAn1Lo+?=
- =?us-ascii?Q?GHBX8KT9VlFd5D5KUfu5dpNN1BuP+YiBFdoU3C83dNTXwoBcPUPNASqi+Ueg?=
- =?us-ascii?Q?bQk/fW0Zes8P2v6EHwny432dcnveC1KtyX+NoE9WvA2pHPdS32x4wE8l7KJU?=
- =?us-ascii?Q?Nz/wYNFEBvgxbXTWfPMmDQS4062JutOloa3WXkm0XPK8rC6kGFe4F7sCocSQ?=
- =?us-ascii?Q?pEWYSLH5Wm32gmfZBtlmxj5Dbq7Q/L2hu4AgZYkKfO228KJ9AG3S/0aaMalg?=
- =?us-ascii?Q?hxIWe0gtXwVzbd/YHNnBttIy9QuLAPE14NPvIDFSzSuCNXul2VOdzUWUnEc1?=
- =?us-ascii?Q?4CKVzGqCeQXLclny/j/6k1Hg7IIb27EAnx7uKynURWygDpaQE2g2lfxIemqi?=
- =?us-ascii?Q?f4kOx+9nrncWzFU7HKcLz2AjNI3uVpjAa5xa9uKeu6RSPgGrT831dcav2KFW?=
- =?us-ascii?Q?JKLDMZWU/aJKFDoncC5NXX0anaIylotnnpXk5u7m89uio3+VoZ+GZCUd3s9V?=
- =?us-ascii?Q?nHe8QZr124KEHJO1buW9aAhO7fZTPRbQHuWaqon9XNnLZi3SQaNoF4cPOtzJ?=
- =?us-ascii?Q?nSkOMwVNT3uKnaruNaAEWzB2iafiz2N5hOQUMIEedgi9PXB2B6mBLIZQOa3L?=
- =?us-ascii?Q?pl0ogFvaSc6fLtfNPQLmNRKvgK64YyB81npLDiB6HGvPdDhin55pgirUyQDv?=
- =?us-ascii?Q?6vYF6GYGG8WKpuqp+rHuW6gxG+b5asCvU7OUo8bsMjhYR4D4fhUOEL0Cf4dx?=
- =?us-ascii?Q?NdLA3t76cHDYoB+9ayGPBbrFMfDnQYIaK/M1K2MdZBRE1JM/bJNdMelWZAWp?=
- =?us-ascii?Q?801gx1Fq7gHlEUap58OQFdz0TjRLu3SO1YvxzcYL8y3lhI1yc/C9TrPp26L5?=
- =?us-ascii?Q?5VXikpa4u+JjrBa2kooraSfKFuQS1cgyebi4eEUIAVzz287gOiAE+Tzu+inZ?=
- =?us-ascii?Q?EwhMT5kXWrltBOGh0ER6mw0bmbxahQ82chS6T42fJM0EvsKrKXOocxemuHUs?=
- =?us-ascii?Q?CzJOgLMHX/PlqfE5le8P6amM8VvUmSxJjik5ht8IIZvWg2+HPvNff5X+kMJZ?=
- =?us-ascii?Q?9CNnNEbe0nbDwEj0kEzARrOGvOpJyJjtVaCVq2rSBK/wl8CCx+At840sfxGt?=
- =?us-ascii?Q?rj4EuUiNtkltxAnuarPBOHTrJlqAqeoSUyG8laK0nHA70Ov5ASUR30uD2/iC?=
- =?us-ascii?Q?cxKG96Of0mqjJweccKdFHSVe5eNAFzWEq5s54sfsloxxrJpwq9D5uFpqz0m7?=
- =?us-ascii?Q?9yJLfOWjucbDJEIvcqGWG/uV1v5gU8zjZFqZX2P0detW4u8J4IL3/Iunw5D0?=
- =?us-ascii?Q?gmNkStvrSh0HTJoo/K0=3D?=
+	=?utf-8?B?eGQ2OHNkZ1lZVnpreVQ2WXpTRFc3cmVxSmhCalNRTHlsSEQ5T2lzODFacXFT?=
+ =?utf-8?B?aFUyTGR3VU9kTi8xNlpmZUpYT3hEbG9zOTkvTGNncVVRVk95enEwcDZTMFVZ?=
+ =?utf-8?B?Lzc1ei9OT2hVTFUzOGxFTzdGOGRzSkZ2NjlwMXhmSDB0Y3J5S3IyaGE4NDZy?=
+ =?utf-8?B?MnJPaDNTanB3RW5IM0d1U3ZFNDdFL3dXcW8wTzdsRnZlWWVjZW51RnFzbURM?=
+ =?utf-8?B?YUh0a1o3a0ZHYkg4VW9vZGx4MGtNV0swcWYxRVVYVXdoaklubExMTEdYVUZN?=
+ =?utf-8?B?TnV5dmxMMGdwQWx5bUtCOE1DUlh5SjdoVzEzbmI3c2lGK0lkYkErdVlDbCtw?=
+ =?utf-8?B?Q3FQcjl0UXJwN3MxckRyWVZhdTd3Nkc4VytncXc4cUVzZ2ttS3JXWFpoazZO?=
+ =?utf-8?B?ajJhNjAvNExZRzhOUmdUS3pLUW53ZSt3WXI1NmZjb3VaU2wyUW5Tci9rR00w?=
+ =?utf-8?B?c3ZkUmRGVFlnVjQ0d2JXelVDWUZndnFxRHlucVdvS0hEWkwwcDBmNmlDYXRn?=
+ =?utf-8?B?bVhQdXdvMnB0NVlWQ1lqeUEwN3g2TnIyTElwRWZpK050YThQTzJBK0dVUUda?=
+ =?utf-8?B?SWVSVzRUSGF0Nk0xL0pDVmtrcFNlK0tUbEY2QTRqK0x0TkhyT2J4MXpXcFVR?=
+ =?utf-8?B?VnVQN1RKV3JYYnZ2UzdnMjBqZ2xycGlUYWdqUjdFMFZsM253dUx2SzBBeGtP?=
+ =?utf-8?B?clNDSDcydTFoV054NTlrYW9YY3QvOWRnb3dwSHJNdWtlUU8rM3c5WFVKdkpY?=
+ =?utf-8?B?YUdYalp2WmlqRTYyVVVCbFlHSmVhbnk1VXZsS29OMThpZ3MwT1ZBcmRHM3Yv?=
+ =?utf-8?B?emlOSGtpd0ExVTdtRVB4WHljZkFrQnNWdTYrOElEMm5NbFJuQzJ4MWlSRnVm?=
+ =?utf-8?B?My90a2JwTi9XalVLdDFTcXJwbllrNmdTRnVVV1oxZ0NveXZiMGRCclhnWEhL?=
+ =?utf-8?B?QmNyZ09kYldzWU9GbFloaU5SRFlYQTgvMlhoNVYybndDS1F1TXMvSUY0Nm9m?=
+ =?utf-8?B?WjVCTWZkN2dHdnM3S2JjbzM2KzBXNFU5WmpvSE1CZ21HVDNiMS9kaVlFMTk3?=
+ =?utf-8?B?clZYZXBXZlRCTHR5Zi90MTlBaGlPMm1LcFg1WFpxM2pLSjdyTVg3ZFArQVVF?=
+ =?utf-8?B?TmxOTmhlbU5STkVXYnNzME5uNXhrakpGRWEwUUdHVldvbnkzS3RPQzVuRHZY?=
+ =?utf-8?B?QjBjbjYxRE5CVEErMGRvYVJ4RHZtOGd2Q1MvSWp0RDZiMEltM1ZkTFlMQWVv?=
+ =?utf-8?B?RFVoLzd6WVllSFpCTU9xYzBkc0NueEpXTWhoWGRzYTBXTFM0aHJWNFJSclNv?=
+ =?utf-8?B?SWZLQndUYnJhZ0FFMkJrV0FtZ1YrdlAyN0IrcVJVK1k4WXY0RHN4VkRlSlIr?=
+ =?utf-8?B?UmVvM0xkWTNvR28xWTkrY1h5ZDBWM1RkWStwS3FrMFlESWt2YU94Lzl5WjdP?=
+ =?utf-8?B?eHNNNFA5eEF6UlhmemoxY2VGRGZZdithUEJTUmpvVkNJMG1MdHU0MSs4MlRF?=
+ =?utf-8?B?R1ZLWFhmQVFac2hUSFBFUGxpaEdBR2poOU11anpzYUl3UDl3Rm1ndy9KbjJ2?=
+ =?utf-8?B?TUlldlZZR05FMUp4UlUybVF1QnFUdkhYWGgvdzlJQnFZRGhMTTlabHV1TW8v?=
+ =?utf-8?B?dWJNR3IwWUZYN0NxMWcwVCtZSzM2M3RDY1cwYklrNVFiMG9ESnN5RHN0ajM4?=
+ =?utf-8?B?dlN6dFR5OUNuRDllOHVvdWJzdHJRNm5NbXI3Q0xqYUhZYmxQeGY5YWJiVlQ2?=
+ =?utf-8?B?ckkxM3FtSjZlNWg4UUhQemNVbW9mc0xPWE1oWjBFZldhVVp1K1hSSXNUelRS?=
+ =?utf-8?B?UHpOQTJrZjBOMjJnWGhXMzFWdFl0YWhJc0xkSWlkL05FbzFhNkR0bC8vQk83?=
+ =?utf-8?B?NXlhMEd0aUt6UjlHNDFQcmllTFo2R0NLeFE1bFlHTGdEbXpBVXJjMi9HbDlV?=
+ =?utf-8?B?Ui8vYXdTaUJaczFCRjMyUmoxY1FzYklhQW5wdE05WTBGYXR5T0g4NkFBaFgw?=
+ =?utf-8?B?bzZ4SzcrY0NCUGlDUlc3RGwxbzQ4c05qME5WTGo1Z2hYL015QkN1Z2hLeVB3?=
+ =?utf-8?B?RGlMT05FaklPdThxUHE0djdJeEwva3RNaVZZbDl1VGJxZWNvZEQzbHpjOFlF?=
+ =?utf-8?Q?frhk=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81e34aa1-7902-4cd0-0e27-08dcbafbc552
+X-MS-Exchange-CrossTenant-Network-Message-Id: e40d3e59-c136-4c2b-cae0-08dcbb021cf7
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 18:22:49.1143
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 19:08:13.1228
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5NC2HQEQ+gEono9Yl5F77GjrtmuzL15ee1JDd9RKou3MCSrQchAEbgZ0Z9SxMJeC2TiBx28M+r/o4wrqwh/Flg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10969
+X-MS-Exchange-CrossTenant-UserPrincipalName: WxP/diHg1Yc3onaaP61EonKPhfc67omzgx0OftFqNMs1t1z6QBp8J8CBEeLEgVjqS43rvidHP/WNpNXDPo93yg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9773
 
-On Mon, Aug 12, 2024 at 05:44:50PM +0100, Conor Dooley wrote:
-> On Sun, Aug 11, 2024 at 11:11:14PM -0400, Frank Li wrote:
-> > mdio.yaml wrong parser mdio controller's address instead phy's address when
-> > mdio-mux exist.
+On Mon, Aug 12, 2024 at 11:29:38AM -0600, Rob Herring wrote:
+> On Fri, Aug 9, 2024 at 11:11 AM Frank Li <Frank.li@nxp.com> wrote:
 > >
-> > For example:
-> > mdio-mux-emi1@54 {
-> > 	compatible = "mdio-mux-mmioreg", "mdio-mux";
+> > On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
+> > > On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
+> > > > On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
+> > > > > On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
+> > > > > > On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
+> > > > > > > On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
+> > > > > > > > The mass production lx2160 rev2 use designware PCIe Controller. Old Rev1
+> > > > > > > > which use mobivel PCIe controller was not supported. Although uboot
+> > > > > > > > fixup can change compatible string fsl,lx2160a-pcie to fsl,ls2088a-pcie
+> > > > > > > > since 2019, it is quite confused and should correctly reflect hardware
+> > > > > > > > status in fsl-lx2160a.dtsi.
+> > > > > > >
+> > > > > > > This does not begin to explain why removing the soc-specific compatible,
+> > > > > > > and instead putting the compatible for another soc is the right fix.
+> > > > > > > Come up with a new compatible for this device, that perhaps falls back
+> > > > > > > to the ls2088a, but this change doesn't seem right to me.
+> > > > > >
+> > > > > > It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, which are
+> > > > > > totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pcie.
+> > > > > >
+> > > > > > Previous dtb can work just because uboot dynamtic change fsl,lx2160a-pcie
+> > > > > > to fsl,ls2088a-pcie when boot kernel.
+> > > > > >
+> > > > > > fsl,lx2160a-pcie should be removed because Rev1 have not mass productioned.
+> > > > >
+> > > > > Please re-read what I wrote. I said to come up with a new compatible for
+> > > > > this device, not fall back from the existing fsl,lx2160a-pcie to
+> > > > > fsl,ls2088a-pcie.
+> > > >
+> > > > According to my understand, It needn't add new compatible string if nothing
+> > > > difference. for example, it use fsl,vf610-i2c for all i2c without add
+> > > > new soc-specific fsl,lx2160-i2c.
+> > >
+> > > No, you should have soc-specific compatibles regardless. Just because
+> > > you got away with it once, doesn't mean I'm not going to complain about
+> > > it here!
 > >
-> >         mdio@20 {
-> > 		reg = <0x20>;
-> > 		       ^^^ This is mdio controller register
-> >
-> > 		ethernet-phy@2 {
-> > 			reg = <0x2>;
-> >                               ^^^ This phy's address
-> > 		};
-> > 	};
-> > };
+> > Rob:
+> >         What's current policy for this? Not only for this one. If new SOC
+> > appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), there
+> > are bunch of IPs, Do we need add fsl,imx10* for everyone, which most part
+> > is exactly the same as old one and bloat binding doc.
 >
-> I don't understand MDIO well enough to know the answer - does this
-> actually solve the problem? It seems to me that the problem is that
-> mdio.yaml is applied to the mdio-mux node because it matches the pattern
-> "^mdio(@.*)?" that applies the binding based on node-names. If the
-> properties in mdio.yaml do not apply to mdio muxes, then the binding
-> should not be applied and the patch here is only treating a symptom
-> rather than the actual problem.
+> Yes, you do. Do you really know that something in the design hasn't
+> changed? Have you compared the RTL between the versions? The only way
+> to deal with quirks without changing the DT everytime is by having
+> specific compatibles *upfront*.
+>
+> The "bloat" is never that much because the IP really always changes.
+> QCom wanted to (and did) use IP version numbers for the same reasons.
+> Guess what, the IP version number changed on almost every SoC.
 
-after I change above example 0x2 to 0x22, mdio.yaml can report exceed 31.
+It is quite dependent on IP itself. Some IP (such as I2C, SPI, UART) is
+quite mature. There are not user visual change in difference SOC. for
+example in drivers/pci/controller/dwc/pci-layerscape.c:
 
-Only issue should be only when "ethernet-phy" use node name "mdio".
+static const struct of_device_id ls_pcie_of_match[] = {
+        { .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
+        { .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
+        { .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
+        { .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
+        { .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
+        { .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
+        { .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
+        { .compatible = "fsl,ls2088a-pcie", .data = &layerscape_drvdata },
+        { .compatible = "fsl,ls1088a-pcie", .data = &layerscape_drvdata },
+
+Only 1021 and 1043 have difference, others just copy layerscape_drvdata.
+I met similar case in many other drivers.
+
+Can we consider just add new compatible string only when visualable change
+happen?
+
+I am confused that some use old SOC compatible string directly, some add
+new SOC compatible without any actual change.
 
 >
-> From a quick check, I don't see any of the mdio-mux-mmioreg nodes using
-> the properties from mdio.yaml, so should the binding be applied to them
-> at all?
+> The exceptions are really if different SoCs are just different
+> packaging or fusing.
+>
 
+I see.
 
-in mdio-mux-mmioreg.yaml line 18:
-allOf:
-  - $ref: /schemas/net/mdio-mux.yaml#
+>
+> In this case, I'm inclined to say just match what u-boot creates, but
+> please make that abundantly clear with a comment in the .dts file and
+> explain the situation in the commit message. OTOH, just adding a new
+> "fsl,lx2160a-dw-pcie" compatible with "fsl,ls2088a-pcie" fallback
+> doesn't hurt, and we can just move on from creating a special case.
 
-in mdio-mux.yaml
+It is small problem.
+In https://lore.kernel.org/all/CAOesGMhz8PYNG_bgMX-6gka77k1hJOZUv6xqJRqATaJ6mFbk6A@mail.gmail.com/
+There are still small number user use ver1 even NXP not support Rev1.
+According to my best knowledge, rev1 never mass producetion, only few out
+of NXP to do evaluation.
 
-  patternProperties:
-    '^mdio@[0-9a-f]+$':  -> A
-      $ref: mdio.yaml#
-
-In mdio.yaml
-
-  properties:
-    $nodename:
-      pattern: "^mdio(@.*)?
-	        ^^^^^ mdio@20 Match condition A, it should correct.
-
-  patternProperties:
-    '@[0-9a-f]+$':
-                ^^^^ mdio@20 also match this one. but I suppose it should
-                     search mdio@20's child node, such as ethernet-phy@2,
-                     but not.
-
+I may need create rev1 overlay dtb for old chip and default use rev2.
 
 Frank
-
 >
-> Cheers,
-> Conor.
->
->
-> FWIW, adding a $ after the ? in the pattern I linked would stop the
-> binding being applied to the mdio-mux nodes, but if something like that
-> were done, all mdio nodes would need to be checked to ensure they match
-> the new pattern...
->
->
-> >
-> > Only phy's address is limited to 31 because MDIO bus defination.
-> >
-> > But CHECK_DTBS report below warning:
-> >
-> > arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: mdio-mux-emi1@54:
-> > 	mdio@20:reg:0:0: 32 is greater than the maximum of 31
-> >
-> > The reason is that "mdio@20" match "patternProperties: '@[0-9a-f]+$'" in
-> > mdio.yaml.
-> >
-> > Change to '^(?!mdio@).*@[0-9a-f]+$' to avoid match parent's mdio
-> > controller's address.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/net/mdio.yaml | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/mdio.yaml b/Documentation/devicetree/bindings/net/mdio.yaml
-> > index a266ade918ca7..a7def3eb4674d 100644
-> > --- a/Documentation/devicetree/bindings/net/mdio.yaml
-> > +++ b/Documentation/devicetree/bindings/net/mdio.yaml
-> > @@ -59,7 +59,7 @@ properties:
-> >      type: boolean
-> >
-> >  patternProperties:
-> > -  '@[0-9a-f]+$':
-> > +  '^(?!mdio@).*@[0-9a-f]+$':
-> >      type: object
-> >
-> >      properties:
-> > --
-> > 2.34.1
-> >
-
-
+> Rob
