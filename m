@@ -1,41 +1,48 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E77116DC18
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECCA16DC32;
+	Mon, 12 Aug 2024 09:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723455625; cv=none; b=tHeHxIVaRuxUV9T81+YdZu4H1qDL6HzAm0ffSyGwWFvjTvS7A3x3J+x51pqqw2uNP2k4+HBR5rSaBZjT1ANKzmFoCnsgCtX8yMDRGCsD6M3U+N+eSfvBYjpq/m84LJKbV59HKEEDuOJqd7AaTjawnaACk+YgxhjIFdX8feJ65Eg=
+	t=1723455846; cv=none; b=dEYKGdoNz9m2bIXzl6vKzE+3DlZPkHyy5pfaJg4IM8ppSP7D6nG1LBwVlwecXV47pxAws+zfU9s7afM0RqF9ntNJtg9nYI0AjuTCCZzDV4EjmZZvxqG+ud3j32jAHMJzXafryRDUEj0sBokMK5eNfjhXkPDpqKAPqHUht74g7vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723455625; c=relaxed/simple;
-	bh=mw6cplmOp2lcSdbR8MqeYBfW6dC4DuyHrpxZr9V789o=;
+	s=arc-20240116; t=1723455846; c=relaxed/simple;
+	bh=P8t2qzTDKtuBQhzPXUYxfC3tFEHNAV85Pec+kdaY5zE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5yXF+QDp4ajwToxPbi4S+rGZm0mxfctRk7HfEb7hZlJ7oaY6YJDO9pIpD+8qx4lRSomwVkcKzLTsOKhH2ry5cgCU6rPCuQMoec5kK/dk3K2A1PTO7x2DHbWxrSpwIaxsrx1/PaCpkrYeTpBAVpChqbWY0+6LdIxwsynn50ndbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AiucvR8o; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=IZT7y/zxf6C+lT7v69cGWCPAHtcQh7dNZGlGMEgPYyXWWNzj0uihBxqlHeMLNBiysSP4CRWhSoEQkfrqM33TVltGqwpcqxxZ9JHi03R0foNNsL7QY0/pFHqapltDedZyd4n91ambXd4pwOyNYruRKFJtKNnn+PGZfwJcnNDnhnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AcWQh47x; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AiucvR8o"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AcWQh47x"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=xCSPQrFRYSdwq4poKWRNvIyPJNPWv6qGyxka+0jKnPo=;
-	b=AiucvR8oj/DrADaQRaQEH2WPDsOmxBRejqJXjDzqrJ3aIoIWGZqokACkjgbX/T
-	4e7I/tUlYRKAb+JJGyJL25vx6rAYaIgAzA338rsXpFb8utQUj/LZXWnlTvicQLjE
-	tJ0oMACAjBGgWWY8unPokuRPUV9edhQ+hYo3m/6Op/vjg=
+	Content-Type; bh=8OQDzwap6QK8JuO7jTB4iPv7Bd6WkmI/d68Ki8Wr0Ik=;
+	b=AcWQh47x9pr/Dfjbz1ISPz0mIIAnCslrTImIcAZBaRUfWxpBXF8lKZSN2SPFhK
+	lF5bgxux15pii+5/yBfzpFsNKMM5GWD2N4/YPatm7gTq4KzHA6E3C/Q0Oevs/vAY
+	ESM/PzTsuS6AJ4mdooVhuVErXywKoEq2ry+h7gWpMzcKc=
 Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAX3Y5i2LlmmjZWAg--.34770S3;
-	Mon, 12 Aug 2024 17:39:48 +0800 (CST)
-Date: Mon, 12 Aug 2024 17:39:46 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3f8JH2blmcEBWAg--.28001S3;
+	Mon, 12 Aug 2024 17:43:37 +0800 (CST)
+Date: Mon, 12 Aug 2024 17:43:35 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+	Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux@ew.tq-group.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] arm64: dts: mba8mx: Add Ethernet PHY IRQ support
-Message-ID: <ZrnYYqCpTKFOGiG+@dragon>
-References: <20240717064916.1670702-1-alexander.stein@ew.tq-group.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, imx@lists.linux.dev,
+	loongarch@lists.linux.dev
+Subject: Re: [PATCH v1 1/4] arm64: dts: imx8: remove non-existent DACs
+Message-ID: <ZrnZRz4U7D8oqOMK@dragon>
+References: <20240717-anvil-ashy-544e80a1317c@spud>
+ <20240717-alkalize-bouncy-83e748284bc7@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,19 +51,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240717064916.1670702-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:Ms8vCgAX3Y5i2LlmmjZWAg--.34770S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxtxhDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgg5ZWa5z1UgEwAAsw
+In-Reply-To: <20240717-alkalize-bouncy-83e748284bc7@spud>
+X-CM-TRANSID:Ms8vCgD3f8JH2blmcEBWAg--.28001S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI_OzUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgc5ZWa5z7Yh8gAAss
 
-On Wed, Jul 17, 2024 at 08:49:15AM +0200, Alexander Stein wrote:
-> The interrupt pin of the PHY is connected to the GPIO expander, configure
-> it accordingly.
+On Wed, Jul 17, 2024 at 10:37:53AM +0100, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Neither the imx8dxl-evk or imx8qm-mek have a Rohm DAC on them as far as
+> I can tell from online documentation, and they certainly do not have a
+> dh2228fv, as this device does not actually exist! Remove the DAC nodes
+> from the devicetrees as it is not acceptable to pretend to have a device
+> on a board in order to bind the spidev driver in Linux.
+> 
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 
-It doesn't apply to imx/dt64 branch.
-
-Shawn
+Applied, thanks!
 
