@@ -1,93 +1,98 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C56517C23D
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 15:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4121416F0FE;
+	Mon, 12 Aug 2024 15:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723475598; cv=none; b=d2FOnSBUP7Z9G/5CT5T/LcGL8LFuXvhUszuqIlkpHfS8lSoZ26dKITD4CXrjMRLSoMEdwyxec+HuDmtHNS7om93fhyrQ4Sm3Q4vN5i/eSN9KoH7b4R2PCBT3CgronH7aHjwkoEbAJFJrncFqoUHi9wIIYfgRB34brrnOKG/s9JQ=
+	t=1723477871; cv=none; b=H69ZDhi6kTOZKXuquoEUDupB9kBbslIrmmP2C8rb8OkZsX/zLv8kX4YOkLMKaprDy76R3R3TWaz8yrKoPqt6RbVGo/q8ogd2qQihspxkBWyu46frQGcKKlhz+c4Oa0wW1U5T2hbcXZbrSN6Dyyd6KPxYcVYyeHGwSELlrM4L7JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723475598; c=relaxed/simple;
-	bh=vP9vVA4Ark93c0vzZVoMYZSb75FCURW94YeBDsvvGkg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n+JsqpCqj1dw1OdeBE462y9Oie3/iGyvizRdPqq3qsc0yjtW699abO2OCzzoUJ5vd/LGB4O6dCp2wAFcR6w/7tSnEeNUjFv3CnBxf6iiXbk0qK9UMpFo/+GI+wGsyJSVdNChncH8298s7V6pSAXtBLsj+/hJWoC9im+pgzu+DJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=mbpiOzog; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=aHWff47P reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1723477871; c=relaxed/simple;
+	bh=Zz2O1E2RE4zrYAOxOl8477P4o/vm8t4OyENrerlYoqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S0ZXtuBzeh/zbb+Sk+ycH9rBR5Zh6cOXDhVjnpC7POfu3uiwJWNjYR5Tip/lN5Rw++9/w96NfD82il44ocAigUXvsYhDSOVS/6CKmH9X1kUtHgMUYjWVz5ko1f6lNlWi8BLqKxyyU3M7+ltDyZIYrf6dn3wbIwAVBHqvtqgwsuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgn3P0Qt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="mbpiOzog";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="aHWff47P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723475595; x=1755011595;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=vP9vVA4Ark93c0vzZVoMYZSb75FCURW94YeBDsvvGkg=;
-  b=mbpiOzogF3t5RkMV8HVCTvaw1YOnJRHZBNrXRc/LEQlLJlKB9x77w9Re
-   S8xuWueS+g37jWQ4G5q+EKUuqbF7gCJzm2AEMIBm2941iuHkJQ4LB0CCv
-   dp9GYXG8RCDLq1Z3ZHfQWCz5+/4gyjdRsXCBApas9CyPxbNk739iHfjGg
-   i3lI+Zu3X6axx09DUchZ+vm0pHtSMogvRvTP/lsIDGD/EcK4bkt8RuiSf
-   g3zaNoaSn7v/dBSmkpVwtyZREpietp4iffkmxDcZYrHOANyQ+3WxJVmGv
-   ecMQXY7ef2dzbFOlWXGegTixmiwpNC9CyCC853cQoM28TYWIN2RHobEuG
-   Q==;
-X-CSE-ConnectionGUID: 0qGwey4/SDW6LmMG+TYZfA==
-X-CSE-MsgGUID: MxRPnuHkQWO8dhrvNHvgPQ==
-X-IronPort-AV: E=Sophos;i="6.09,283,1716242400"; 
-   d="scan'208";a="38366494"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 12 Aug 2024 17:13:13 +0200
-X-CheckPoint: {66BA2688-1A-751552D8-F91D2344}
-X-MAIL-CPID: 2547DA9B08B53E1FE9A64D7061FF06AB_4
-X-Control-Analysis: str=0001.0A782F27.66BA2689.0033,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B38E6160AD1;
-	Mon, 12 Aug 2024 17:13:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723475588;
-	h=from:reply-to:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=vP9vVA4Ark93c0vzZVoMYZSb75FCURW94YeBDsvvGkg=;
-	b=aHWff47P48jxegEaCIYVkMTGNUIEm0RngqPINrlJmn2vD8dnq0KQ493rDOBPWOuShGpukG
-	WKmaNTWLjQLVMwS3dMKFzrqs9/+PY82WwjBfsIk+hyqsEmaQ+R52/XU1ZMVgEtkgqRQ8PY
-	kXlSJomYtmejPp8sIm5odKdQrjJNsCOrR+skx54XAmT05WYdPjBvYyeZL8tTMh1Y0EuNN+
-	P/wy1dBMYml8yPWNjJnIcnmGplJDlvRgkL1ktWbx8rFwMz3PQr8krZ5OOulNH4gWyehxmC
-	+U77nYsRxxR3gS4hIXP9awXfn5cL7p+SO1j751W+DsclOWD1BS65gbqXckyUjg==
-Message-ID: <c74cab94119bd6ba6b67dc75631dae56600429e7.camel@ew.tq-group.com>
-Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
-From: "Niebel, Markus" <Markus.Niebel@ew.tq-group.com>
-Reply-To: Markus.Niebel@ew.tq-group.com
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux@ew.tq-group.com, Alexander Stein <alexander.stein@ew.tq-group.com>
-Date: Mon, 12 Aug 2024 17:13:07 +0200
-In-Reply-To: <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
-References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
-	 <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
-Organization: TQ-Systems GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgn3P0Qt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB2FC32782;
+	Mon, 12 Aug 2024 15:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723477870;
+	bh=Zz2O1E2RE4zrYAOxOl8477P4o/vm8t4OyENrerlYoqM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sgn3P0QtomjUmnOXXzcSkj1Eba5S7OjS9PQRy674tFxBM6/RAchY2voNyhbuLuJ/3
+	 ezekgwIxTREXbKghXCQInxiZ8ld5yYMK2aedrjX1bxYludVtjyGh8zSwZN8+W3k103
+	 dleWqbV3xRhc+S+LqcRVwuh7KzFoRQnuAODlU5CMhJkTk7RnAEWZQj3u9k/zoBGZXZ
+	 v8AnqOSU2ofv8gWv+Of4xCnGkGvGUGQ7mNF2JXtUobAo/d4Y4dYjs/VW7GAUS9MhLY
+	 OBdqse9wTtPtw1CqnpUGBkD+tx4xmPsjcDcgpHvIVmZiuhJNEb1Swvj1egMOXAIsiQ
+	 X84xng9vWc8hA==
+Date: Mon, 12 Aug 2024 16:51:03 +0100
+From: Simon Horman <horms@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	"open list:ETHERNET PHY LIBRARY" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: mdio: Add negative patten match
+ for child node
+Message-ID: <20240812155103.GA44433@kernel.org>
+References: <20240812031114.3798487-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240812031114.3798487-1-Frank.Li@nxp.com>
 
-On Mon, 2024-08-12 at 16:34 +0200, Markus Niebel wrote:
-> From: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
-> According to microchip,usb2514.yaml the node name shall be usb-hub.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
+On Sun, Aug 11, 2024 at 11:11:14PM -0400, Frank Li wrote:
+> mdio.yaml wrong parser mdio controller's address instead phy's address when
+> mdio-mux exist.
+> 
+> For example:
+> mdio-mux-emi1@54 {
+> 	compatible = "mdio-mux-mmioreg", "mdio-mux";
+> 
+>         mdio@20 {
+> 		reg = <0x20>;
+> 		       ^^^ This is mdio controller register
+> 
+> 		ethernet-phy@2 {
+> 			reg = <0x2>;
+>                               ^^^ This phy's address
+> 		};
+> 	};
+> };
+> 
+> Only phy's address is limited to 31 because MDIO bus defination.
 
-Sorry, i forgot my Signed-off-by. Will resend if needed
+nit: definition
 
-> ---
-Best regards,
-Markus
+Also, in subject: patten -> pattern
+
+Flagged by checkpatch.pl --codespell
+
+> But CHECK_DTBS report below warning:
+> 
+> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: mdio-mux-emi1@54:
+> 	mdio@20:reg:0:0: 32 is greater than the maximum of 31
+> 
+> The reason is that "mdio@20" match "patternProperties: '@[0-9a-f]+$'" in
+> mdio.yaml.
+> 
+> Change to '^(?!mdio@).*@[0-9a-f]+$' to avoid match parent's mdio
+> controller's address.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+...
