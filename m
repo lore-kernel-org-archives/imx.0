@@ -1,43 +1,44 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B7D2C9D
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 03:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC2813A3E8
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 03:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723433823; cv=none; b=AXKe9Cnb2eytWVrQhly03RO6d3UHX6piKNZVmvoqh6Wg+7k5iVNO3zfeHlI+2+lE0zthQGQoRxw1AVFUCX7Ycj+slEHfomE+CF7ZSGQABhQgsNUTC3axvS6UO8oFvjQk80GI0BcPDA+/i8DBtRuqUSMyMcr2JN5KLk9nDteVNc0=
+	t=1723434137; cv=none; b=JGcv0NTY6ovJr26nHTtCIrnwru6oZDPgM+8nErsG/NmLWSCCDipqPpfkUr4Mfb3n2SGfNwoahg+uG4AjvExhnc1+Zz5u63WnEcKg38SexvrV1GW4xQBuGGkCWkDlOq8sldM830yapd/bic8CgdTPP1/IeRVsVoepr9/QGDmZ3/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723433823; c=relaxed/simple;
-	bh=uXuyobOjTnWyOJ8C5OkVOf6A7H0lhKaylh2nIX33f6U=;
+	s=arc-20240116; t=1723434137; c=relaxed/simple;
+	bh=i+TgQmxGXtVH1FiZ1c2NwCGmsBqq2zwZ2PtqE7XxSVw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u7BgqroaV/86Imvobgq8bV4yZXSqFrbGQjMB5x9rnB2P7hZuLkM+92L1t/5y0NG402IzsUmEBSdCM/CUkerQhVrW2Bv1pjCEqBNuxjeyR/KvUhZNs1rO0410ifVXZIe+dZzeh75uqETePQrLnHYdA7SmhMi8IWfhOov+GfDDN7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PwOtRoJv; arc=none smtp.client-ip=1.95.21.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mmw2ajs3I71fGvly4kMdfQtjuz4pm1Sx7S8Y2zkJts5uixGJ7JcMmcMMNIHupAJgY/5cvq0JgTIYkNFqC4r26kUTQnqDGP3VcoEH021PVPZzRxKJVEjltpczUk6ayxp7sOPi79A0yfdgyhzqflmK0YnriePOhZDFtgvCcfoRUEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=K4ff77va; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PwOtRoJv"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="K4ff77va"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=9+5V5XfOCCt35FGY5jqK51yX030o8KZnQmkWpmCbG8E=;
-	b=PwOtRoJvrAsqpqvTW/akyrNUhxam7EFnZ0wcC/LHC+RMfdqN8sndUgT0VtQMHx
-	YubP5roAcFqBNZt1sLHSSIslqe93N4iDHcr/sJR4DrzNGgGbv6qoyZk56gS8i5pj
-	N/r35UYVbSEX3mfVTVKYR+hhLtrJ4yN5A13NTKHhY/dRM=
+	Content-Type; bh=LVjh+jnTWelYLC8I8rARnZucRHr83XhHl26jyAfxVzg=;
+	b=K4ff77va0PMfyyFMaM3rE+h0XyPtrl8yKq4z44XdbR8BeffMfcS/LZrkkueGPG
+	TZqns2qFHymKdwpxbSTX+h1apGWe1JsolTD+niCPu2nXUrKq7zMJJ+qvNRNZIgJg
+	AnixC+NaxAJn0lrhX/EuS1ze7Q2+6ZLhswvmq0EVFKxeo=
 Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBHTbdCg7lmvdsLAg--.59373S3;
-	Mon, 12 Aug 2024 11:36:36 +0800 (CST)
-Date: Mon, 12 Aug 2024 11:36:34 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDnLy19hLlmtzRGAg--.42936S3;
+	Mon, 12 Aug 2024 11:41:50 +0800 (CST)
+Date: Mon, 12 Aug 2024 11:41:49 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp-beacon-kit: Fix Stereo Audio on WM8962
-Message-ID: <ZrmDQgU03tf8n91p@dragon>
-References: <20240714172017.422811-1-aford173@gmail.com>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com
+Subject: Re: [PATCH v3] arm64: dts: imx93: update default value for
+ snps,clk-csr
+Message-ID: <ZrmEfXKXLoLjYjXN@dragon>
+References: <20240715131722.161135-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,22 +47,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240714172017.422811-1-aford173@gmail.com>
-X-CM-TRANSID:M88vCgBHTbdCg7lmvdsLAg--.59373S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUcb18DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxI5ZWa5gcwF+QAAsr
+In-Reply-To: <20240715131722.161135-1-shenwei.wang@nxp.com>
+X-CM-TRANSID:Mc8vCgDnLy19hLlmtzRGAg--.42936S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWruF1xuF48XFW3ZF4fKFW8Xrb_yoWfGrg_JF
+	1UJwn7CasrGF13KFnrWFyDJw1jvry8Cr15GrnrKF4Iy3sIy34Y9Fn7Zr95Wry7ZF42qw12
+	g3Wvqr4xJw43CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8pHq7UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAo5ZWa5f7US5AAAsx
 
-On Sun, Jul 14, 2024 at 12:20:17PM -0500, Adam Ford wrote:
-> The L/R clock needs to be controlled by the SAI3 instead of the
-> CODEC to properly achieve stereo sound. Doing this allows removes
-> the need for unnecessary clock manipulation to try to get the
-> CODEC's clock in sync with the SAI3 clock, since the CODEC can cope
-> with a wide variety of clock inputs.
+On Mon, Jul 15, 2024 at 08:17:22AM -0500, Shenwei Wang wrote:
+> For the i.MX93 SoC, the default clock rate for the IP of STMMAC EQOS is
+> 312.5 MHz. According to the following mapping table from the i.MX93
+> reference manual, this clock rate corresponds to a CSR value of 6.
 > 
-> Fixes: 161af16c18f3 ("arm64: dts: imx8mp-beacon-kit: Fix audio_pll2 clock")
-> Fixes: 69e2f37a6ddc ("arm64: dts: imx8mp-beacon-kit: Enable WM8962 Audio CODEC")
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+>  0000: CSR clock = 60-100 MHz; MDC clock = CSR clock/42
+>  0001: CSR clock = 100-150 MHz; MDC clock = CSR clock/62
+>  0010: CSR clock = 20-35 MHz; MDC clock = CSR clock/16
+>  0011: CSR clock = 35-60 MHz; MDC clock = CSR clock/26
+>  0100: CSR clock = 150-250 MHz; MDC clock = CSR clock/102
+>  0101: CSR clock = 250-300 MHz; MDC clock = CSR clock/124
+>  0110: CSR clock = 300-500 MHz; MDC clock = CSR clock/204
+>  0111: CSR clock = 500-800 MHz; MDC clock = CSR clock/324
+> 
+> Fixes: f2d03ba997cb ("arm64: dts: imx93: reorder device nodes")
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 
 Applied, thanks!
 
