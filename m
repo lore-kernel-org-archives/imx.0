@@ -1,111 +1,62 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F4616CD1D
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 09:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B18914D712
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 09:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723453924; cv=none; b=MUfgLCbAE5YE8ACdo0XgJj+JVvq8TLtwnBzLtaecgjsnqNSExLzWoT2AxG9GkGIEZ+3MFY0qlDPccQUqu9PBBBpN/DiREGsednaILm0zd3hkUliv2PmUM7K/Ma1gmKDVjcTl197lueWmX3wT/ue6sSA195fLohbAOQrtKhN//HY=
+	t=1723454499; cv=none; b=e7sH96T3knOodCvKPPFFCHPNjp1BhHVKpuYl2880IqgPid/Wge5ugCkfQbOpXYcNPygzBRO580SCSnQWERZCsym3SsIzBzCG2/qRreiH+jLcrH47DrUz5f82j/MOuuw+wWo4Q0hnyUlAiVLunJHuhfSChKZpht166mDTGR4cWEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723453924; c=relaxed/simple;
-	bh=iVGhNQ7r+GgMdXvKda908eL/Y5A0YBwZsNL00pSOsYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yau8I26l+5v0n7Q+Dj8VOGA8pD7pg07teke9nwShVB2ZvGwJCHz5V1D9ktkRSxIhAPcPSn4lSYHi+Vvl62s20WeQ4G1qsc6OlD9NE3Z9hj9HOkpBrb29cVx5IbUN3IWLL8jppu3iBRnPCuzG0Y4Zl1dZOnI9AkxgRGcoiVXl9h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=D+WUqsf7; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=s4hCdMiD reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1723454499; c=relaxed/simple;
+	bh=zMSKNSWh/knSs3qDexWL28UU9jSfVIYFcb2OsSO9oaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CgjmjGHLv1Sz0xB+0CYk5xK0PNX1Lo8wtehqYbSJXd5F2epHE1M5AIcHeNd5832TM8RVeM4SamLYamWomO9Vegl93/4HSpo34AvDPFSglGM7dH21zLsTzXCCct0G0pAHpzgx3+i7EUv2a3GOsuzNbXzF+0MuPA1Nx7Vb0dJ64q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lvhF6B/N; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="D+WUqsf7";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="s4hCdMiD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723453922; x=1754989922;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iVGhNQ7r+GgMdXvKda908eL/Y5A0YBwZsNL00pSOsYY=;
-  b=D+WUqsf78qQ0nPUuXA6hw6GQsuOI2WRmkEZu5XVWHnmmYjZ80dW+aOVs
-   KBGd2A2nTBXKZhbTZ2xYpdNpDL2T11+N8l10YkvXSzvTVJiR4FV6B2ISQ
-   QsQ1mK/rJ9JrhO4WoGKGpn9Xv86+kb/rGgVehfgBJTjYTpH+Ntm3r3hBX
-   2LwasiykPDuqhBBnGcoqU5TXlaf/uUjw3IjKVkr6eahAHN8yCrAPWH0kZ
-   w5RwFlhIUDImSlRq+bgEpKp4Zxd6UWqYLvUj45jIFrMvAKbAyvUP5qzpE
-   Ml5pKm/3gDlkLZFDZ2gNcnn3YSh2HJk4IVTKlUu7oIRC7rXjNAT96th8L
-   A==;
-X-CSE-ConnectionGUID: PdjH/twxTq+pzhusnqFE3w==
-X-CSE-MsgGUID: abvoOSaXTKCeZz4+6fNkHg==
-X-IronPort-AV: E=Sophos;i="6.09,282,1716242400"; 
-   d="scan'208";a="38357923"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 12 Aug 2024 11:11:53 +0200
-X-CheckPoint: {66B9D1D9-14-186E37A7-E5B59163}
-X-MAIL-CPID: 62D091DA502B8843C2B26626E6D08F41_2
-X-Control-Analysis: str=0001.0A782F1C.66B9D1D9.0176,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94E64160FD1;
-	Mon, 12 Aug 2024 11:11:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723453909;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=iVGhNQ7r+GgMdXvKda908eL/Y5A0YBwZsNL00pSOsYY=;
-	b=s4hCdMiDs717XI3VbNv9Nf+/6xFK6FMANH3wvGCvCemENUybutJh2nG75BBSmlamBOXyGY
-	l/UpvQRqa74ePjO65Prn0E5GCvm9mwu4Uyga163H9DvP/XPoJXD2FAfannSHppYIu4EtB6
-	Kebeq5n/97quOq4MqpeRzfM/7OBXQ0dr76RvrrXhghYIi51b9pKr7Xaq9jkJ9x1EzcMxfs
-	aZwRjBoOdNo0/z2cwUK9vm7nprLaMW9HJ50D0TkywgdApXcCzf/U8jb+j7t+Q9Jvt6jXhY
-	GVVzB4K4cr6ZCAQL8JT5nQoCdPSbOVshWMxRaMRIoX8zJ8XjwcuZuAOyqhicYQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs
-Date: Mon, 12 Aug 2024 11:11:51 +0200
-Message-ID: <4944000.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <PAXPR04MB8459C55F49C08A6B6A0239E988852@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20240808090326.425296-1-alexander.stein@ew.tq-group.com> <PAXPR04MB8459C55F49C08A6B6A0239E988852@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lvhF6B/N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=5zDuPwXK1w846oyge0RbaA657hY2Vn9PqOwRQHHanCA=;
+	b=lvhF6B/NzC4ryFgNgaJjTxIwFR80TCrR5jU+E9x01pWVGMzzLn9P/c5EHz0A8n
+	F4mrPwrWjP/LociJVpTaQWvEQmAlc44OVUZuWlfpwl7Jq1QkIl/b6MikC2883qgO
+	hHPTAqwamfKGhDS0TICB3KPgKcu3H9uzsy0W4Vj/ReA6E=
+Received: from dragon (unknown [117.62.10.86])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHzyAB1Llmo45JAg--.40046S3;
+	Mon, 12 Aug 2024 17:21:07 +0800 (CST)
+Date: Mon, 12 Aug 2024 17:21:05 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: Re: [PATCH] arm64: dts: imx8mp-phyboard-pollux: Disable
+ write-protect on SD card
+Message-ID: <ZrnUAb1EKZHleb3M@dragon>
+References: <20240716085114.3205582-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716085114.3205582-1-andrej.picej@norik.com>
+X-CM-TRANSID:Mc8vCgDHzyAB1Llmo45JAg--.40046S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxtxhDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQY5ZWa5zUwYPQAAso
 
-Am Montag, 12. August 2024, 10:45:54 CEST schrieb Peng Fan:
-> > Subject: [PATCH 1/1] arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs
-> >=20
-> > imx8-ss-vpu only contained imx8qxp IRQ numbers, only mu2_m0 uses
-> > the correct imx8qm IRQ number, as imx8qxp lacks this MU.
-> > Fix this by providing imx8qm IRQ numbers in the main imx8-ss-vpu.dtsi
-> > and override the IRQ numbers in SoC-specific imx8qxp-ss-vpu.dtsi,
-> > similar to reg property for VPU core devices.
-> >=20
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> > I did not include a Fixes tag as adding support for imx8qxp and imx8qm
-> > is split into several commits. It's at lease the combination of the
-> > following commits:
-> >=20
-> > 0d9968d98467d ("arm64: dts: freescale: imx8q: add imx vpu codec
-> > entries") b4efce453f0ca ("arm64: dts: imx8qm: add vpu decoder and
-> > encoder")
->=20
-> If you are using one patch to try to fix upper two commits, I think
-> it would be better to separate the patch to fix the error of
-> each upper commit and include Fixes tag.
+On Tue, Jul 16, 2024 at 10:51:14AM +0200, Andrej Picej wrote:
+> Micro SD cards can't be physically write-protected like full-sized
+> cards. Disable this feature in device-tree to get rid of the kernel
+> warning:
+> 
+> "host does not support reading read-only switch, assuming write-enable"
+> 
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 
-Commit 0d9968d98467d ("arm64: dts: freescale: imx8q: add imx vpu codec
-entries") is talking about imx8q. This is most probably i.MX8 family, while
-I confused imx8q with imx8qxp, which is i.MX8X family...
-The naming scheme is so confusing :(
-
-=46or that reason I'll just add a Fixes for 0d9968d98467d.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Applied, thanks!
 
