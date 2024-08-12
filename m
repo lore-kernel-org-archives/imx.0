@@ -1,72 +1,71 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013030.outbound.protection.outlook.com [52.101.67.30])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011037.outbound.protection.outlook.com [52.101.65.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD28188CB2
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 19:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131F72599
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 19:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723489698; cv=fail; b=o3/IQ7Td5kTzgP8u/98JsOXwCypVqiW3ONL2/KNgpAgcUeWh2Df8Es3rUuFACB0vWWprTnpnY+G3OHNuaHro3uXxVrQk9aAJjzY89JffJ7EgpstGCvtPtidBr1n8R4Yy80DlANhLXM6s59MeZ4JGKQI8tplR+ZiVIv1sPzQOPk8=
+	t=1723491411; cv=fail; b=Wz7E6SI9sk+wy+2jPcw1RvVKpjtGokBIZhCIcvWl25Xa3KihfrapJgACJzLZYwgONszNfwBfYWwhEGahugqrE+BPHKpsDwLebEVzExWx3lQM1HmWptzTs7AVvdhA/uqNh6c67lK+sC6g+x+e3fOBSTgMwPjwRgDa64ErjWFwVQY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723489698; c=relaxed/simple;
-	bh=2Nb/IUMFz9ofStHNWATznVRZwOe0ebniQNjdErHBwDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=H+qx1NAO9vDCUDgx3c2vG1KkSGXZJ7/7G8Mib8v0wFvhx22QS2ek0hRgSZrVnjBM+zFLN4Tg3JDD5a+BHJ+qsC3ypHSCG4ltLuZEpljJja5Lyo46Y81nf7uHWM72pqh0VUY6AO0rCsdY9deolBc3EIp+ZPEISBLdzWm/NrvXDeE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ykjoe5+u; arc=fail smtp.client-ip=52.101.67.30
+	s=arc-20240116; t=1723491411; c=relaxed/simple;
+	bh=f0Intsh11BFj9PRcDEWbWKPAKiQmp9eMS4X6r4QLWow=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iTtXTPX26d3ufuiprm6jZFzG3dWq1yMADahVGBBQs/sAyv9HL/s3dM1067TBHQRjjBs6Kiuwy0OzjhLfJsA3AFEyR8+MClQ+Qgk6YGKq2vTSaMUoeN7DhOvMpQTQCYltZrR4ibArbKWH0pFNWramBOiJZyVT/RStbEELVuU8uhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nBiTdP1V; arc=fail smtp.client-ip=52.101.65.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ykjoe5+u"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nBiTdP1V"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RzPdpY6cvll8G5gWJxFdm4rd9HJdM7d7FlVhpnYqlzZUcm9J5FD03oh7jukq4ziKcYxYtPB8BtI2V6XsSEtRIZ+PNZCgzYkRYrDPifNIU2TYdR7cP/+VFWn/EiTLRHfDem4BPNW7X0l1uhS49ShMyag93Bd7VZrpv6hFdQ5/R8Kn6FNIat/kXLVf73JYILv6QpOiqfV+T916O4Pq8grsYa+p9y/DY2JTmnXX+hGNNuN5JULWybU5YjEjBTmlJITQoGk8jzDB1tMZikIdAm5LXNxObi0zWmn4t7t5gMuFK4ENi/8J6iye2UUvPY+9VJTYfjZT5OYcHUK7D0SrY+2bLA==
+ b=UdUrOLd8XQpagxcpngo6pHVk+4UpvTMzFftin/39Yg5IKmfsTg3NW2uDepJWI9qfYrt7HpQphEOp6Blk75vKkhMKMYyQoFdhxumY9swdHK4ppGVEgSiZ2MOWnXQ7KyrSC5SgyKdUXDg7kE/MBt+03pTTwLlzCRBSq1JL1zplkqvEN/ocqgd+cVFF9O+AqJaJBYZuGhJ+Q6uSc4xp5ssCxNSzc8JkcQEcwO6Xi3ELKzfG6wCnjh+SpKniaWC9a9ZRWDNy0Kh6p0gv49di23JF27tzqQUjuVTQk6jRtvr9z1Rval0Z8xDAD6C8u7LC0hAPLPkZZZrXnwjuuuZqrs5+9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wZfJxxwS4UkNODHqpzav/F0NopQXThCw3akYPtB3Srs=;
- b=XInV14JoPLiSZDbT3WJBiRft3aHZiaYzTDgw5cDPWkgGnEK4GHfkM51XqThdZ9GdscHr6rF4qdyUuhRHZXW+FEsPQJrIEVO1wYKtglODRZMvdH5xNS24Enf04Mg0L2dStzkfRZFGlTMQ4oR/G2SfCUC3CWjuQvtRzWnJ1b/S9v2SGUHGha8XsRSOu9scortDI8G/hqCxSQfLRsTlBP6A03Gv3SaWgb/4d67UjbMTbvi4X0Ns9BmtZX4CT718QdQMt9ls8pf/1DjBvox4JkziaI1jIRTkCV2w4ks3pXAFyza5FpDJWk2LOsHZsKZw9JQcYCI9IGH13nyCfCkQhqNkxA==
+ bh=Au7rj0nZZAK3SaoPATblCyPZc96GE1gHN5yJ+8mhNNQ=;
+ b=iBxHDf9xAHJopXohr96H9f40gOdbiSMvesimxW/Z5VUqg5fBeUwkTjS3XaH++322JMtICje/XdU8gWyLIP73hnKI9xZ4Nr9cc7nvmybi3ZYf9bWR4j/Nwx0FMWpb6A4LzawBM1kSfInX4vFPXTAPBltSWk0mDi44ij9sQ2mEZAo8ce1BNGYy9XAsvwDETt9Uo6RPHxB1AI5wEmrYK+fXucm2EZU5xkbICd9Q9QG+j4eU4Bb3JVmfni2Pao5b1fsBqfTlj1d1vWg//MoW1TJoMmhel+DY2aWz62ez0QP4O/FYZppXn1y/x71PgViTwmkwdFurURVvDsmjApMQbjlf4g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wZfJxxwS4UkNODHqpzav/F0NopQXThCw3akYPtB3Srs=;
- b=Ykjoe5+uJ5o4a+X3wRkCyoyHLBh1jji1W4VOIkw7PI68wJfrOeqdEZddruKCqI9atTWeIcpc2qSh9dIhW+uJK7SwB+95VsEPwLSMnMKbR4lcwO+1g/IRlBFAhl5/Rn4awwA6+5gMPUnSXBMWquz3COpg9bXzwm49FW5YNHYhZiWDMXxJLOdR5mWRvO9CV20ljTFgaLrpM8M3aRa8jQDQ5S5wue8ZpqIXE99ywa6xRU6uKHQ0V1NAlB4cxskYdKe0N38xuqQbAlPRFD1Ou7VdBQZd+HGNeAnwf29iMOJ2OAI/6JD0/V7K0oosxa7BSJrA2p7yGkgb2ZTq1YwSlNbbSw==
+ bh=Au7rj0nZZAK3SaoPATblCyPZc96GE1gHN5yJ+8mhNNQ=;
+ b=nBiTdP1VxjCFTIiW7fH77f8F0t0XMO3ZHpE1ZX7E055TaH+tjSo8OZ+hju/cfccp8aUdg6JR803+Hw0WAV8k4F5qrRKrikv6SSRnzfFWJTCKCRJ4GOB76dkHFPpHyQpQuwUELo1YCDRw43POM0Lp6FNU0xfetinBnCv0Tkf/ZbWMapbK7N/dd9g6ySfRNMm5kXoJtamwPcnQ0MJlrJ+pg32MTd+13+EqBArUaFJvuH9+Ixjfwy0Vb/PjmcVJXfYRLM9ZY58IxVyyrPF0HSSmq9JrDpeFKqzk97ZKzpwDts0KQomQTm/LyCPJM5vDeujuH1dQVskZGBiGnPiJHalj1A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB9773.eurprd04.prod.outlook.com (2603:10a6:10:4ed::17) with
+ by AS5PR04MB9825.eurprd04.prod.outlook.com (2603:10a6:20b:672::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Mon, 12 Aug
- 2024 19:08:13 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Mon, 12 Aug
+ 2024 19:36:44 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7849.019; Mon, 12 Aug 2024
- 19:08:13 +0000
-Date: Mon, 12 Aug 2024 15:08:04 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ 19:36:44 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] arm64: dts: lx2160a: Change PCIe compatible string
- to fsl,ls2088a-pcie
-Message-ID: <ZrpdlNrs/qqFGhFV@lizhi-Precision-Tower-5810>
-References: <20240808153120.3305203-1-Frank.Li@nxp.com>
- <20240808-frosted-voicing-883f4f728527@spud>
- <ZrTphsdTZVsbiGo/@lizhi-Precision-Tower-5810>
- <20240808-linoleum-evasion-ad7111a2afc4@spud>
- <ZrTvB/3GGIhEOItT@lizhi-Precision-Tower-5810>
- <20240809-freewill-compactor-4f441a4a60bb@spud>
- <ZrZNzqDKUaOqzl7k@lizhi-Precision-Tower-5810>
- <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+	Liu Ying <victor.liu@nxp.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	dri-devel@lists.freedesktop.org (open list:DRM PANEL DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: display: panel-simple-lvds-dual-ports: use unevaluatedProperties
+Date: Mon, 12 Aug 2024 15:36:26 -0400
+Message-Id: <20240812193626.3826250-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqLzvEpXbTk0XjPuErz2nRaTXX1DP9WG8yshULcVv0bS-Q@mail.gmail.com>
-X-ClientProxiedBy: SJ0PR13CA0051.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::26) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR06CA0068.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::45) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,197 +74,112 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB9773:EE_
-X-MS-Office365-Filtering-Correlation-Id: e40d3e59-c136-4c2b-cae0-08dcbb021cf7
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9825:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72851918-1ad4-4575-0d30-08dcbb0618bb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
+	BCL:0;ARA:13230040|1800799024|52116014|366016|7416014|376014|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bS9PYjQ3TnVTbVE3T2p6WUh6QWRmS1J1YzV4eWU1TnRFVXZyNkU4VnF1K1Uv?=
- =?utf-8?B?VFQxRUZNYWkzUVE1bEoycjNCQzl1bHN6SEo4SVZTUXlMMEt5Z2doWVFJK25n?=
- =?utf-8?B?KzZqcTQ4dTJKclhqc0VqVXJTQWM1ei8ybEgvckFwWExCcnpLZkFoS0lENUpI?=
- =?utf-8?B?Q0pJMktFM0ZCV2hGcmhtazZKM0Y4dnE5L0JzYXdESU9HZUZnYU1SbTBFenBo?=
- =?utf-8?B?Z2RSMlNleGZocWZYWnRwMTR3aFhxbkYrS0NGaVZCS2s4WWpUSlh3QlpQZE5D?=
- =?utf-8?B?SkRvL0U4Qy9wK3NPZ3dzN2pVZTFBYjlxRTRSdmZDZUlnK0MyWDczeU5RbE80?=
- =?utf-8?B?dVhlRE54RGk0NXY4OEYyQlVGdWljcUxkbDZ5RlphMGFQNG5aT0xoOUc0Skpt?=
- =?utf-8?B?bndQL0ZHME1KbHVzSFFMQjRWYzFyTFFrcEJqbDNZRng5UlNSK3phSlJYbXgv?=
- =?utf-8?B?U3phSlZNSHJ1c1p3djJ3akdxVTNYMDNTZ0g4cHlVM3ZPQzhDNnBuc0dNQVlN?=
- =?utf-8?B?WlRkSnJZVTViSXJiaUQ0M3FLNUR0S0NCVWxEVHhQZ1BuTFFyVzNveThldm15?=
- =?utf-8?B?bmxQRW9ZMDVqQTJUSEdlckk4V1MxTlgzejcrd2ZLWFU2c0x4RGVGSmZOSFBR?=
- =?utf-8?B?YStLcFdOTkY3S01mZ0lDS1ZuTjFCWHFMbjh1SlRqWjR1Z3phS0prYVhKN0Jr?=
- =?utf-8?B?cTMyNUIrTVpIV2g0T0I4eVJ4cEJmekZuZXdTYW9qOXJDNDFZMWdRY3VjSnVG?=
- =?utf-8?B?RDliQkRVUW02cm5BcTcvckplOXBITUxXZENDZHBaU1BHbzBaRmIrRGd1dFZR?=
- =?utf-8?B?Y3EwQTRGdGo0bkFCYjVLMGtBYzBndnhnNG03NE9sMHIvVnV4SXZkMVlTeURv?=
- =?utf-8?B?cnNWbXZGSC9UVTh2VTBITDhiWGJCZlErbUNSYUM0b0E3TVdkeTc2WXdDVHlW?=
- =?utf-8?B?Y005QXp2RHJ5SVVEMG4xZEo1cEtQdXVBZlpZZUlyVjI5alZDaGRQU2dRUStG?=
- =?utf-8?B?M1crdGdWR3ltLzlTSFBsbWU2bnNjQk1tSHNnRXdITllRdzFFeUFSOFRjMFdr?=
- =?utf-8?B?YWo0K2w2dStaclFCSjFOMWJxV0RHbGhQUHhrQ2lZQ25KWDFOc1pKdTMrY2F6?=
- =?utf-8?B?bmpFN3dQSE1GT0Q0RXpRSkFiYzZpSVdXbzlKbGlHTmdUMGZXenhHSjdNcWw2?=
- =?utf-8?B?d0lmREJtTlR3MXBoSjF6V3Y1WEJsbUwvbFVKZDQrZ2M4V1lRWXZBVnQ4VFgw?=
- =?utf-8?B?S1lYVTBuQWluOXdQakJ0Sk91K3VvUWVjTHlpMEdydTBiOUJ3M29yaTJORlRw?=
- =?utf-8?B?R2tuU0txVGdFcFVUdDBrY29EY0VEQlhQVDc1YThSUnh0b3NOUVRLTGV4OU1J?=
- =?utf-8?B?STRURThtbHQ2WjZNV0dxT0xscXdLa3M2WWd3MUVpRjJldlJRT0VaajFsUmEx?=
- =?utf-8?B?bHdHNGNrUkcyMHFUdVhicWoxbStLNUp6K25IZU0rM2QrVmw2eEs4d2NsZmhl?=
- =?utf-8?B?cFcwdkZRaWdIb0xFNVprN3RpbDlrZENkYUl6VlF4Vmw5TzdnNDVJZTN3UTZx?=
- =?utf-8?B?SlVkL3JLMFM0b3dFd0xPNVBHK2h6YXdxcmtUT09RUXVqWHVnd3VQOVlHMjR0?=
- =?utf-8?B?dDk2czJ6ZExFcnlvdFhtdjIrekZxNGxoYitNczYwOGduMEdNY25DUU9Qdjl6?=
- =?utf-8?B?YytRbXpLNjcxRk83QXY3akpnUmR2NFhVU3pWVGVwaXZZTlRDdGZ3TzhWbnll?=
- =?utf-8?B?SFdQdUl6bEJOaUNudUQ4MXBzU0lGRm5rRS9QeVVDbTIvWFJCbzkrTXIzVnhJ?=
- =?utf-8?Q?DPX6GHwuMJGPEZanmOzAWaj0NubIVyHvvLveA=3D?=
+	=?us-ascii?Q?1iPoPY5G2H2XaUZCQwaJGUho+lS41Hfc/CCvW1LSBrWNEhSCTHTl9bckqcn/?=
+ =?us-ascii?Q?jhz4mP00Rx5RB47+RMNqmGVmn4RHi79FDZF8NgE2+8hr1be/smDZkd0yY/gF?=
+ =?us-ascii?Q?XqpqNEygToOA9mY9dolYIkUJiEalnb5mrd6hh/jN3SjqK9YHUmJw+crP668s?=
+ =?us-ascii?Q?lP57WkBkMGKAEM4GIXcmlI2vaybFQrr12FBEOsLOvCC9EVEQn8UYUOiQtH4B?=
+ =?us-ascii?Q?4a8KX0n3sQT0C+pVuprbubqMQso7D8vBqWGaju7CKe5XOzDgDg0EcVnTijle?=
+ =?us-ascii?Q?2JM1slNjytPQBHK9GeU+SZnxpMw74XC6Wkzaw09XUGnpF2wUy62jSD8+/lpG?=
+ =?us-ascii?Q?561f7aUMlZCGLEjGRyk8tXWi1rF4g1JfmGCdciExfxd452a0YdpVpBywkH5/?=
+ =?us-ascii?Q?hPrc4d7Tu0Pggrgx+QkOphvIIkT1S66opyg9Hpqnm4a7FUMdkauMWR4TjKF3?=
+ =?us-ascii?Q?X52EZ9M95QsWF9K8PNuqO4hymUO6qorc3JnRH03P49Lg9+byDlgnS04Jsk0r?=
+ =?us-ascii?Q?qcHPjqmYPwLHtdI713Cq8D0IYfHcusVMB2EoUjPH9W30pGJ5dV+CrLk5ZyYv?=
+ =?us-ascii?Q?Bg83GpjCvplweF+aJSVpUMLBxP+VelJEDtQ8RSchFLaAgAS9W1y3AseIrAyX?=
+ =?us-ascii?Q?QhT5pfiu2/XqcgvLPkp8boErRRw5deGczD6cEupePadCIUNoyhWwLSIGFkLc?=
+ =?us-ascii?Q?3G9nLcmLIwkQYOHNPFgeSHPGNeRbXnLwaVgZcr/TwDwk56uD8Rgr8VIa+IdQ?=
+ =?us-ascii?Q?GW3dVhcL0m9AK/EqukcBsUhV4h24HN6w1QW0IRrdJVbe3lwWCWXGcl0ASZt8?=
+ =?us-ascii?Q?b2c/w4Ben59OVGKBnkKilomJ4jRCs9zEJi91PMSF3cRNOjBk0pICJU4fjCRx?=
+ =?us-ascii?Q?IQwaErDqnrUwbo1VHH4oQ9JHSaZ5jzMXuDwTwJVuZ+OVo3B9Xsn4NFBtcT+y?=
+ =?us-ascii?Q?a2Ks70VFSbquf6uKxN49MRZZFeFgJP6tf6UlO8+aZTAnLF9oRwLD8b6IIuzk?=
+ =?us-ascii?Q?4KYP5WfYKB5pXUOtnWIbi74ZpTCSsj6q67D2UVpJAKf1xoHAMxQwuyBJMedT?=
+ =?us-ascii?Q?Z95BAcrFes9HpsLqesCoJh7iYk/t4QFD061/VyzbCMr2CQVBRZM6sHPWk+bI?=
+ =?us-ascii?Q?pa9wf5A8N0CN4YZ94uAvhduJ/U544AEzlEIll+ih4ZZVVhsaxn9tzpJsWKQL?=
+ =?us-ascii?Q?UKWZDe7osvbWSEjbILc88vxxDb9a66tltnaNMQdL2QjC1FvfxajEydK3mx6C?=
+ =?us-ascii?Q?TDVPfiCbzVH8H6gj+UcxVcAjv2mGw/yqm6cRaxy+xZGTRBxnoqHrINcCk6nV?=
+ =?us-ascii?Q?vucRTCFEjU9/VMcUJro0Pbqdbaf8GYOGHG/c8Tx4N/u+q4ukwD78Wgp5fuOq?=
+ =?us-ascii?Q?LSoGo9b6J5oKy7cB/lMZ2gR3Sd2l?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(7416014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eGQ2OHNkZ1lZVnpreVQ2WXpTRFc3cmVxSmhCalNRTHlsSEQ5T2lzODFacXFT?=
- =?utf-8?B?aFUyTGR3VU9kTi8xNlpmZUpYT3hEbG9zOTkvTGNncVVRVk95enEwcDZTMFVZ?=
- =?utf-8?B?Lzc1ei9OT2hVTFUzOGxFTzdGOGRzSkZ2NjlwMXhmSDB0Y3J5S3IyaGE4NDZy?=
- =?utf-8?B?MnJPaDNTanB3RW5IM0d1U3ZFNDdFL3dXcW8wTzdsRnZlWWVjZW51RnFzbURM?=
- =?utf-8?B?YUh0a1o3a0ZHYkg4VW9vZGx4MGtNV0swcWYxRVVYVXdoaklubExMTEdYVUZN?=
- =?utf-8?B?TnV5dmxMMGdwQWx5bUtCOE1DUlh5SjdoVzEzbmI3c2lGK0lkYkErdVlDbCtw?=
- =?utf-8?B?Q3FQcjl0UXJwN3MxckRyWVZhdTd3Nkc4VytncXc4cUVzZ2ttS3JXWFpoazZO?=
- =?utf-8?B?ajJhNjAvNExZRzhOUmdUS3pLUW53ZSt3WXI1NmZjb3VaU2wyUW5Tci9rR00w?=
- =?utf-8?B?c3ZkUmRGVFlnVjQ0d2JXelVDWUZndnFxRHlucVdvS0hEWkwwcDBmNmlDYXRn?=
- =?utf-8?B?bVhQdXdvMnB0NVlWQ1lqeUEwN3g2TnIyTElwRWZpK050YThQTzJBK0dVUUda?=
- =?utf-8?B?SWVSVzRUSGF0Nk0xL0pDVmtrcFNlK0tUbEY2QTRqK0x0TkhyT2J4MXpXcFVR?=
- =?utf-8?B?VnVQN1RKV3JYYnZ2UzdnMjBqZ2xycGlUYWdqUjdFMFZsM253dUx2SzBBeGtP?=
- =?utf-8?B?clNDSDcydTFoV054NTlrYW9YY3QvOWRnb3dwSHJNdWtlUU8rM3c5WFVKdkpY?=
- =?utf-8?B?YUdYalp2WmlqRTYyVVVCbFlHSmVhbnk1VXZsS29OMThpZ3MwT1ZBcmRHM3Yv?=
- =?utf-8?B?emlOSGtpd0ExVTdtRVB4WHljZkFrQnNWdTYrOElEMm5NbFJuQzJ4MWlSRnVm?=
- =?utf-8?B?My90a2JwTi9XalVLdDFTcXJwbllrNmdTRnVVV1oxZ0NveXZiMGRCclhnWEhL?=
- =?utf-8?B?QmNyZ09kYldzWU9GbFloaU5SRFlYQTgvMlhoNVYybndDS1F1TXMvSUY0Nm9m?=
- =?utf-8?B?WjVCTWZkN2dHdnM3S2JjbzM2KzBXNFU5WmpvSE1CZ21HVDNiMS9kaVlFMTk3?=
- =?utf-8?B?clZYZXBXZlRCTHR5Zi90MTlBaGlPMm1LcFg1WFpxM2pLSjdyTVg3ZFArQVVF?=
- =?utf-8?B?TmxOTmhlbU5STkVXYnNzME5uNXhrakpGRWEwUUdHVldvbnkzS3RPQzVuRHZY?=
- =?utf-8?B?QjBjbjYxRE5CVEErMGRvYVJ4RHZtOGd2Q1MvSWp0RDZiMEltM1ZkTFlMQWVv?=
- =?utf-8?B?RFVoLzd6WVllSFpCTU9xYzBkc0NueEpXTWhoWGRzYTBXTFM0aHJWNFJSclNv?=
- =?utf-8?B?SWZLQndUYnJhZ0FFMkJrV0FtZ1YrdlAyN0IrcVJVK1k4WXY0RHN4VkRlSlIr?=
- =?utf-8?B?UmVvM0xkWTNvR28xWTkrY1h5ZDBWM1RkWStwS3FrMFlESWt2YU94Lzl5WjdP?=
- =?utf-8?B?eHNNNFA5eEF6UlhmemoxY2VGRGZZdithUEJTUmpvVkNJMG1MdHU0MSs4MlRF?=
- =?utf-8?B?R1ZLWFhmQVFac2hUSFBFUGxpaEdBR2poOU11anpzYUl3UDl3Rm1ndy9KbjJ2?=
- =?utf-8?B?TUlldlZZR05FMUp4UlUybVF1QnFUdkhYWGgvdzlJQnFZRGhMTTlabHV1TW8v?=
- =?utf-8?B?dWJNR3IwWUZYN0NxMWcwVCtZSzM2M3RDY1cwYklrNVFiMG9ESnN5RHN0ajM4?=
- =?utf-8?B?dlN6dFR5OUNuRDllOHVvdWJzdHJRNm5NbXI3Q0xqYUhZYmxQeGY5YWJiVlQ2?=
- =?utf-8?B?ckkxM3FtSjZlNWg4UUhQemNVbW9mc0xPWE1oWjBFZldhVVp1K1hSSXNUelRS?=
- =?utf-8?B?UHpOQTJrZjBOMjJnWGhXMzFWdFl0YWhJc0xkSWlkL05FbzFhNkR0bC8vQk83?=
- =?utf-8?B?NXlhMEd0aUt6UjlHNDFQcmllTFo2R0NLeFE1bFlHTGdEbXpBVXJjMi9HbDlV?=
- =?utf-8?B?Ui8vYXdTaUJaczFCRjMyUmoxY1FzYklhQW5wdE05WTBGYXR5T0g4NkFBaFgw?=
- =?utf-8?B?bzZ4SzcrY0NCUGlDUlc3RGwxbzQ4c05qME5WTGo1Z2hYL015QkN1Z2hLeVB3?=
- =?utf-8?B?RGlMT05FaklPdThxUHE0djdJeEwva3RNaVZZbDl1VGJxZWNvZEQzbHpjOFlF?=
- =?utf-8?Q?frhk=3D?=
+	=?us-ascii?Q?72F/Nc/geXAgjV96aT7AWn9DHm98vMz3gXFL1Zh6tk1EPArVHKvJd+mfTuEv?=
+ =?us-ascii?Q?/ThCDGMzxNF7uymPtNgFfA/KpcY9rNVQQdAxlZKCZyHcxdyBj+kPSS7K4Hus?=
+ =?us-ascii?Q?WfvJs67x8Im3IQRPkpXttqA9Q3gZd8dMkZcudMePRYhopKNo6xvnoqSoisXb?=
+ =?us-ascii?Q?lfuxM0CaF1e6Arg0Ef0wZRosn9K25DTQW/BEd9Y4AKGB8bkCt+D6SM0pugXU?=
+ =?us-ascii?Q?lZFxnLbcd0X4H4xzY+OWI2ZD/oLy+GSjqRlcaemo0fZ1V5bTCzBPUWxK6hOX?=
+ =?us-ascii?Q?I7CRw8qFPkwXdCX1KHNW/F5Del7PAZ/ZNoLsP7oD+1sbMUuTkzLTeK0gD+4E?=
+ =?us-ascii?Q?TSswukhCs4b9qy0namLZZq3Axd9oy7/aFwvyoNyswhWp5Wz8Xie6++rAUJc6?=
+ =?us-ascii?Q?uRV03S3zruQyjCULEeNVdrKBibDIrdcLnqGhEdTeseoQicGgAYLIWv67g1fE?=
+ =?us-ascii?Q?tR0z0BCIaR0a6ZDoCbWSmuTQcXQ1zgRGMQ1InYe2r5uwQ4206bat90cJ8auG?=
+ =?us-ascii?Q?i5mAzZh0OZgS6uKJ7I2TDCSp8vwtYY/LjqnLyjqWmtpFS6TJU1oRymRQz04j?=
+ =?us-ascii?Q?f63Ct0pzFT8hNm905CaYBAmxVdnAWK912PPKfNdsvyU6KbA+RJ7HWnEH1iD6?=
+ =?us-ascii?Q?iZiuuZkjhAYGkg96m/Rq/6LVK60u8dURbX8bc0gT8OuAeL4FwzpJz1FuroqA?=
+ =?us-ascii?Q?HfutSD3M0+Ivu1tN8iePyAQI4d0bO8U6NSrjjaq21NIkk/dK5eI0TWBoFD0+?=
+ =?us-ascii?Q?JuldmZMXq6BzaXs7TThnQMn7YOjTRZN7pma/RNBEup83vsJIYYWzKXHEnu3l?=
+ =?us-ascii?Q?Pbc5glRaYBeAgi5kXHTEGMgquP8dZKqtLzkO6x+1Ya3wiyJHGel6veZs6yoG?=
+ =?us-ascii?Q?cw4y/0aBU9xfCqaTr2sQjYxA1/Bx4VV6Zk2+E4/KDHHwH5PsCTWeD4HOaiDA?=
+ =?us-ascii?Q?nNHf7L7oC+NA/EJKF5BYh/gwq9BER5R9HxxqyqM7LSbuF8vR5Bm53H+LXfxm?=
+ =?us-ascii?Q?n3ldMSX+GzYLsQKR7COKKM+zjRGVxYbbsHo3zIrPB2RQloMbhbHdeddGc5vG?=
+ =?us-ascii?Q?C4arJlGig8G/VuDhJVaAHfDRcExEWjaaeX52dt52XbEsTfbTYDBdFQzDZRHH?=
+ =?us-ascii?Q?5IKzjx9ykzpvDBP8D6mopGPrboI3WXXWTn+4D3K0x+yxK0kgdnBf1uS8iahP?=
+ =?us-ascii?Q?25fnWR3A3IyL9SuqLoiSJb2sPM4Clm2uVwIwXwfXBDM8F7e/RcZwByF2h2Eq?=
+ =?us-ascii?Q?+iAYKAcMwjUBJ6iR+hO8L8oJ9ZlmiInpMLIux1dof3OhdjYMe7f4Ubnxg1Bt?=
+ =?us-ascii?Q?NxWNEwALO73FLw7zaxOU2+CIkaOYvXl1vMt0Oye1i6Jo/2Hnjp13ICH1VzOf?=
+ =?us-ascii?Q?wuVW1XJToPwd+18DFzdmoGvfzrSyPaR5VvjF4e12IM7BIEPStriklqAWd5Ww?=
+ =?us-ascii?Q?vwbz8hYwEvV1OvElFM+Hr8o0Sxczg1GbWB53OAZQv0UiV7e6R950isW5CtCq?=
+ =?us-ascii?Q?xS+fib+tnHkZmRkr/Bv061k+QawTkyuP+Gps9dSS92xsXv8aF7ybuPBboP/N?=
+ =?us-ascii?Q?KTmR2fWYj4+OBCEwLic=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e40d3e59-c136-4c2b-cae0-08dcbb021cf7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72851918-1ad4-4575-0d30-08dcbb0618bb
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 19:08:13.1228
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 19:36:44.1719
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WxP/diHg1Yc3onaaP61EonKPhfc67omzgx0OftFqNMs1t1z6QBp8J8CBEeLEgVjqS43rvidHP/WNpNXDPo93yg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9773
+X-MS-Exchange-CrossTenant-UserPrincipalName: dd0TSIqRQEjWpYExYT3ZKF1wGg5jBSfn7LlUFY2ioJLZN2BEdTlTJvPMF3nkvGDlhvl/7ECak3fC1Ot2IUpFMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9825
 
-On Mon, Aug 12, 2024 at 11:29:38AM -0600, Rob Herring wrote:
-> On Fri, Aug 9, 2024 at 11:11 AM Frank Li <Frank.li@nxp.com> wrote:
-> >
-> > On Fri, Aug 09, 2024 at 04:07:25PM +0100, Conor Dooley wrote:
-> > > On Thu, Aug 08, 2024 at 12:15:03PM -0400, Frank Li wrote:
-> > > > On Thu, Aug 08, 2024 at 04:55:14PM +0100, Conor Dooley wrote:
-> > > > > On Thu, Aug 08, 2024 at 11:51:34AM -0400, Frank Li wrote:
-> > > > > > On Thu, Aug 08, 2024 at 04:34:32PM +0100, Conor Dooley wrote:
-> > > > > > > On Thu, Aug 08, 2024 at 11:31:20AM -0400, Frank Li wrote:
-> > > > > > > > The mass production lx2160 rev2 use designware PCIe Controller. Old Rev1
-> > > > > > > > which use mobivel PCIe controller was not supported. Although uboot
-> > > > > > > > fixup can change compatible string fsl,lx2160a-pcie to fsl,ls2088a-pcie
-> > > > > > > > since 2019, it is quite confused and should correctly reflect hardware
-> > > > > > > > status in fsl-lx2160a.dtsi.
-> > > > > > >
-> > > > > > > This does not begin to explain why removing the soc-specific compatible,
-> > > > > > > and instead putting the compatible for another soc is the right fix.
-> > > > > > > Come up with a new compatible for this device, that perhaps falls back
-> > > > > > > to the ls2088a, but this change doesn't seem right to me.
-> > > > > >
-> > > > > > It can't fallback to fsl,ls2088a-pcie if fsl,lx2160a-pcie exist, which are
-> > > > > > totally imcompatible between fsl,ls2088a-pcie and fsl,lx2160a-pcie.
-> > > > > >
-> > > > > > Previous dtb can work just because uboot dynamtic change fsl,lx2160a-pcie
-> > > > > > to fsl,ls2088a-pcie when boot kernel.
-> > > > > >
-> > > > > > fsl,lx2160a-pcie should be removed because Rev1 have not mass productioned.
-> > > > >
-> > > > > Please re-read what I wrote. I said to come up with a new compatible for
-> > > > > this device, not fall back from the existing fsl,lx2160a-pcie to
-> > > > > fsl,ls2088a-pcie.
-> > > >
-> > > > According to my understand, It needn't add new compatible string if nothing
-> > > > difference. for example, it use fsl,vf610-i2c for all i2c without add
-> > > > new soc-specific fsl,lx2160-i2c.
-> > >
-> > > No, you should have soc-specific compatibles regardless. Just because
-> > > you got away with it once, doesn't mean I'm not going to complain about
-> > > it here!
-> >
-> > Rob:
-> >         What's current policy for this? Not only for this one. If new SOC
-> > appear such as iMX10 (maybe many derived chip i.MX101, i.MX102...), there
-> > are bunch of IPs, Do we need add fsl,imx10* for everyone, which most part
-> > is exactly the same as old one and bloat binding doc.
->
-> Yes, you do. Do you really know that something in the design hasn't
-> changed? Have you compared the RTL between the versions? The only way
-> to deal with quirks without changing the DT everytime is by having
-> specific compatibles *upfront*.
->
-> The "bloat" is never that much because the IP really always changes.
-> QCom wanted to (and did) use IP version numbers for the same reasons.
-> Guess what, the IP version number changed on almost every SoC.
+Replace additionalProperties with unevaluatedProperties because it ref to
+panel-common.yaml.
 
-It is quite dependent on IP itself. Some IP (such as I2C, SPI, UART) is
-quite mature. There are not user visual change in difference SOC. for
-example in drivers/pci/controller/dwc/pci-layerscape.c:
+Remove properties (backlight, enable-gpios and power-supply), which defined
+in panel-common.yaml.
 
-static const struct of_device_id ls_pcie_of_match[] = {
-        { .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
-        { .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
-        { .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
-        { .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
-        { .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
-        { .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
-        { .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
-        { .compatible = "fsl,ls2088a-pcie", .data = &layerscape_drvdata },
-        { .compatible = "fsl,ls1088a-pcie", .data = &layerscape_drvdata },
+Fix below warning:
+arch/arm64/boot/dts/freescale/imx8mp-evk-mx8-dlvds-lcd1.dtb: panel-lvds: 'panel-timing' does not match any of the regexes: 'pinctrl-[0-9]+'
+        from schema $id: http://devicetree.org/schemas/display/panel/panel-simple-lvds-dual-ports.yaml#
 
-Only 1021 and 1043 have difference, others just copy layerscape_drvdata.
-I met similar case in many other drivers.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../display/panel/panel-simple-lvds-dual-ports.yaml         | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Can we consider just add new compatible string only when visualable change
-happen?
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
+index e78160d1aa24c..10ed4b57232b9 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
+@@ -84,11 +84,7 @@ properties:
+       - port@0
+       - port@1
+ 
+-  backlight: true
+-  enable-gpios: true
+-  power-supply: true
+-
+-additionalProperties: false
++unevaluatedProperties: false
+ 
+ required:
+   - compatible
+-- 
+2.34.1
 
-I am confused that some use old SOC compatible string directly, some add
-new SOC compatible without any actual change.
-
->
-> The exceptions are really if different SoCs are just different
-> packaging or fusing.
->
-
-I see.
-
->
-> In this case, I'm inclined to say just match what u-boot creates, but
-> please make that abundantly clear with a comment in the .dts file and
-> explain the situation in the commit message. OTOH, just adding a new
-> "fsl,lx2160a-dw-pcie" compatible with "fsl,ls2088a-pcie" fallback
-> doesn't hurt, and we can just move on from creating a special case.
-
-It is small problem.
-In https://lore.kernel.org/all/CAOesGMhz8PYNG_bgMX-6gka77k1hJOZUv6xqJRqATaJ6mFbk6A@mail.gmail.com/
-There are still small number user use ver1 even NXP not support Rev1.
-According to my best knowledge, rev1 never mass producetion, only few out
-of NXP to do evaluation.
-
-I may need create rev1 overlay dtb for old chip and default use rev2.
-
-Frank
->
-> Rob
