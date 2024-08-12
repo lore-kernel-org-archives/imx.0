@@ -1,42 +1,59 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222F11C3E
-	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 03:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB1C2914
+	for <imx@lists.linux.dev>; Mon, 12 Aug 2024 06:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723434682; cv=none; b=Ej0qaw9AsRzErm8kFRaRPt08zXHCF+puxb4gsFGub28EtYLwCG1UKHIb2/OxDFI3FsrEab2Y5/17EMKo/5u27UhkBnjPS92vnSkLGek+A2c0QsXgpzv0V0W+wHt6v+YXNQ69FamOuGwaALGRs8XrECzF+alO0aECWYcQB1otBrc=
+	t=1723442943; cv=none; b=Qo1qdmETzPgGurRnbfclTEDHePjxKsumPoaqB2SEro9su/05WYt0C+WKB+89/Td7IHfyLA1iWqVhGqTk6Tv/q4WTrzEhOEdvvfIJ2HKgeIQSXZDUPzEiAz0YfNi0KdjEYGQkoKxsAtt14nzHfrPvfv7CwYvRwuIJJ6jwyTgwrRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723434682; c=relaxed/simple;
-	bh=B8xHurgG8lr18MHXEAp1NYITE8Ke078kl2y9WJg9NCE=;
+	s=arc-20240116; t=1723442943; c=relaxed/simple;
+	bh=Uj+5k8L2qg4D5bdZo4Rh+cdiQo5jJChaIQwKLINhaQM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5hXdAUp4KKnlbmmGRo/a6aHG+iL3OvpQ52gxyEtE9PfN9jBRBmAoJrB/3Wvur7FH0NP10UIXCgDOYEyxjW809cO7tmXYnFfUeHBs7tLqFPzyuU1Sn3dxulcXPoUgIIK72Q4a8viNB16pwMURIyntEqvEZa9+cem61WhbkG9oRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=RKIAy6gu; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=CES1M4qlCORfCfLYTmBtHU1pjiV5sdPuYNQJebMiqGpl2mwBE7oF8snYmquncdKy+JRyCVRhg8dmQ8iScwmi1zPSqPwSyXa2BOIodRGs3+4wru5KS7R41EQedrA9W21nPCg/xG4cwJpwwfFIytnS7NlAJiI+sD9ITMbtM5fDXkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vo7f1Dwr; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="RKIAy6gu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ynZeNF1e7pZTQPu+92637zxNee3+2bYLiUpW0TeRq+c=;
-	b=RKIAy6guwk40oiUHPTdRcwtlBWKew7asgB8Q0q0L01VydWZkK+jHa5CZMoWOAv
-	JOuEaYVCk81zaT2ikppHLA14QPBZwScZ1tzwjzvHaf668qbZsZyBYMmK3LTVghRI
-	nYGeMXMpqVLFqWniX1jbMlBadLPYIeUsIaA656ek55V4M=
-Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgB3HyQWhLlmlDBGAg--.37597S3;
-	Mon, 12 Aug 2024 11:40:08 +0800 (CST)
-Date: Mon, 12 Aug 2024 11:40:06 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, linux@ew.tq-group.com,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: Re: [PATCH v2] arm64: dts: freescale: tqma9352: Fix watchdog reset
-Message-ID: <ZrmEFspwf/VApD34@dragon>
-References: <20240715093231.1786257-1-s.hauer@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vo7f1Dwr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723442942; x=1754978942;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Uj+5k8L2qg4D5bdZo4Rh+cdiQo5jJChaIQwKLINhaQM=;
+  b=Vo7f1DwrJo2I2aw2tMCiyQKHXIuxuwsiv4283Xim/p2XivySLFGTHrMu
+   /M6ySMp6y+4pnz3QSxeItPBt9StC/zEH3JGjArH1Sd20DFK0j78JEscPr
+   KRaB29FI0b5NX8YvYzDQcVH+po8ToYvNpMeN726iefYwwWud3bicvbnTu
+   Ej9GBowfl01yzTQ6+eeYBqlKsMD/By7nI2++jmD/OxkQDZJWkVOfCHWeg
+   Hr9zzxZ7eXlIXvyQLrB2w1C1pyqdwIYOS0EMJAe+ri362qxuPGcfsPJaL
+   EusMCUo7HA2xC8T4eCSKqIEZD8COCnHBB5iRDOZwicAwJiszcQP33XJtJ
+   Q==;
+X-CSE-ConnectionGUID: IfOl+oDRSduKsPsNjmyAdg==
+X-CSE-MsgGUID: aXVY5XhiT16B21aEDynKzg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11161"; a="21663080"
+X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; 
+   d="scan'208";a="21663080"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2024 23:09:01 -0700
+X-CSE-ConnectionGUID: MMFDrDUASmuxbiOmKHXpkg==
+X-CSE-MsgGUID: d4Ly3+F9QKmZZ79Zs9hsGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,282,1716274800"; 
+   d="scan'208";a="58117568"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmviesa008.fm.intel.com with SMTP; 11 Aug 2024 23:08:57 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 12 Aug 2024 09:08:56 +0300
+Date: Mon, 12 Aug 2024 09:08:56 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, rdbabiera@google.com, linux@roeck-us.net,
+	badhri@google.com, kyletso@google.com, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] Revert "usb: typec: tcpm: clear pd_event queue in
+ PORT_RESET"
+Message-ID: <Zrmm+KOGaG2GwRP/@kuha.fi.intel.com>
+References: <20240809112901.535072-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,20 +62,69 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240715093231.1786257-1-s.hauer@pengutronix.de>
-X-CM-TRANSID:Mc8vCgB3HyQWhLlmlDBGAg--.37597S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxCJmUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERs5ZWa5gW0KrgAAsB
+In-Reply-To: <20240809112901.535072-1-xu.yang_2@nxp.com>
 
-On Mon, Jul 15, 2024 at 11:32:31AM +0200, Sascha Hauer wrote:
-> On the tqma9352 the board is reset through an external PMIC, so
-> set the fsl,ext-reset-output property to enable triggering the
-> output pin on a watchdog trigger.
+On Fri, Aug 09, 2024 at 07:29:01PM +0800, Xu Yang wrote:
+> This reverts commit bf20c69cf3cf9c6445c4925dd9a8a6ca1b78bfdf.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
-> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> During tcpm_init() stage, if the VBUS is still present after
+> tcpm_reset_port(), then we assume that VBUS will off and goto safe0v
+> after a specific discharge time. Following a TCPM_VBUS_EVENT event if
+> VBUS reach to off state. TCPM_VBUS_EVENT event may be set during
+> PORT_RESET handling stage. If pd_events reset to 0 after TCPM_VBUS_EVENT
+> set, we will lost this VBUS event. Then the port state machine may stuck
+> at one state.
+> 
+> Before:
+> 
+> [    2.570172] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev1 NONE_AMS]
+> [    2.570179] state change PORT_RESET -> PORT_RESET_WAIT_OFF [delayed 100 ms]
+> [    2.570182] pending state change PORT_RESET_WAIT_OFF -> SNK_UNATTACHED @ 920 ms [rev1 NONE_AMS]
+> [    3.490213] state change PORT_RESET_WAIT_OFF -> SNK_UNATTACHED [delayed 920 ms]
+> [    3.490220] Start toggling
+> [    3.546050] CC1: 0 -> 0, CC2: 0 -> 2 [state TOGGLING, polarity 0, connected]
+> [    3.546057] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
+> 
+> After revert this patch, we can see VBUS off event and the port will goto
+> expected state.
+> 
+> [    2.441992] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev1 NONE_AMS]
+> [    2.441999] state change PORT_RESET -> PORT_RESET_WAIT_OFF [delayed 100 ms]
+> [    2.442002] pending state change PORT_RESET_WAIT_OFF -> SNK_UNATTACHED @ 920 ms [rev1 NONE_AMS]
+> [    2.442122] VBUS off
+> [    2.442125] state change PORT_RESET_WAIT_OFF -> SNK_UNATTACHED [rev1 NONE_AMS]
+> [    2.442127] VBUS VSAFE0V
+> [    2.442351] CC1: 0 -> 0, CC2: 0 -> 0 [state SNK_UNATTACHED, polarity 0, disconnected]
+> [    2.442357] Start toggling
+> [    2.491850] CC1: 0 -> 0, CC2: 0 -> 2 [state TOGGLING, polarity 0, connected]
+> [    2.491858] state change TOGGLING -> SRC_ATTACH_WAIT [rev1 NONE_AMS]
+> [    2.491863] pending state change SRC_ATTACH_WAIT -> SNK_TRY @ 200 ms [rev1 NONE_AMS]
+> [    2.691905] state change SRC_ATTACH_WAIT -> SNK_TRY [delayed 200 ms]
+> 
+> Fixes: bf20c69cf3cf ("usb: typec: tcpm: clear pd_event queue in PORT_RESET")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Applied, thanks!
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index cce39818e99a..4b02d6474259 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -5655,7 +5655,6 @@ static void run_state_machine(struct tcpm_port *port)
+>  		break;
+>  	case PORT_RESET:
+>  		tcpm_reset_port(port);
+> -		port->pd_events = 0;
+>  		if (port->self_powered)
+>  			tcpm_set_cc(port, TYPEC_CC_OPEN);
+>  		else
+> -- 
+> 2.34.1
+
+-- 
+heikki
