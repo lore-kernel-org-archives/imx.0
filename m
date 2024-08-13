@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28818733C;
-	Tue, 13 Aug 2024 10:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F1719470;
+	Tue, 13 Aug 2024 10:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723543320; cv=none; b=QWEf6bGMaCdOwUHNYCUjxSR7I3VZLGcwQd8/9iFUSX+oc2eY6Qj1xOYdI0O39SbHrPZRigwDxsVwXKmlLtA2AN1I4TiOg0rgJZumvF3dwzexaModm79+5V5HAOfY00BU7q6/VTcv/81ZupRXgj9I0bBOYdlC/JWBoy9h12ckSfA=
+	t=1723543333; cv=none; b=KBtFdwkukhZjgxvGb/zI8OrkmKwufptDe3hfZQERef7Ko8nH9JesIsviumVmTUyP7HoHlWKLBQfof8vpKmuzt9b5dyraG9dsu84LmOVejcxA5UBifBIbnyxzfZpDyOpOz3f/ApMncd4Kmpfzwqj6zmTO5HgjnIINWwkQOUiNNcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723543320; c=relaxed/simple;
-	bh=yDkqmNnNr2IDGk2Git6kZx+rffr1LLJrDuvNrx0gMMU=;
+	s=arc-20240116; t=1723543333; c=relaxed/simple;
+	bh=IU1Z4vn1Z/iiP1G5lnUOBiTmixbk/K1Wx2h8/jjbGFI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pQFHIvm5xkHzE17lH5P0K5iLhAlakFNM2yVvzGksuG0KggsF303zGbdoavNdcX0m9u9N5p5XFulkG2l7DZzYne4m7TtFp9PvWt6caf4sTkrvyfS/OZigMwfzcZ/bpcG3j/88Qimez5Ds6pqxnpanMrkwMa4yF29BkkvKWydD/P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qvqiw3+J; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=QQBFSsNAUHydf0SX/i9/HppoF51FEt8LGx9LjzPC2S95eInt5sGG6x+JlWE+9veZbjdlJjtnJS0SeSMiWxK2nt9KnpsFdXArdPnkk7qFDpnWQ8QHZlUyJVV2i2/oOL4WMpLtua/I1QYUDchy9B5ZEzRz44Cqy+jMUhVvAE5d/K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vNjUHDcR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qvqiw3+J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DC7C4AF09;
-	Tue, 13 Aug 2024 10:01:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vNjUHDcR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D898C4AF09;
+	Tue, 13 Aug 2024 10:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723543320;
-	bh=yDkqmNnNr2IDGk2Git6kZx+rffr1LLJrDuvNrx0gMMU=;
+	s=k20201202; t=1723543333;
+	bh=IU1Z4vn1Z/iiP1G5lnUOBiTmixbk/K1Wx2h8/jjbGFI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qvqiw3+JeyjIUAVfOAUhkFcSjMzEiKFhauqS/JAuAB6sQ5OS/SV0CZ4wJkATfQ0su
-	 BPRqgehvopD6WpUltD0o/tFuoEO5PqVt+Ab4giU37HEI+zt59NxDa4lZaSbsR1LcbI
-	 Rcx/6puTW9Gxo7G6O11TmfXK8UKActLCxzMFM/YF2MN+I0edTu9CYaAnlt1TzLq+cf
-	 fPeTD1g2CiCVLGNtXVTCWQJ+axbfUXMJNSHxO6hgC4lP2XQPHVgH/wk3ZobYDNp2C6
-	 +u6JbGOGoHcWTEntMIcNfL+g0Fv+jqiGIg1Bu1++b50VembYVKn1wU2bn2ti0SJQxd
-	 OOUUOlQBD400Q==
-Message-ID: <c65dfcb5-3197-4951-ab27-f72dd420d77d@kernel.org>
-Date: Tue, 13 Aug 2024 12:01:51 +0200
+	b=vNjUHDcREr66M2w7tmSrq0RvLWKpNzLNwMKWylBEzOuNT1ODIeF7sUBlsduo6txHN
+	 oW4Yw6bUTj6ySCwEQnj8pZYYElLOkWuH/TPseBMa3sZMk+i0XuCyxafHrppypNUvkO
+	 I9Vf8nKOeRTwZnn+TZK7QfUeIKnMONSF522IpdC8w3UKUqV3L+3lWmYlYmpAg2v+vR
+	 GdFEfKyS7Is/Aj2mgkJYVCV4E5n9JTMDY5xuupYG3r1ORzlxyy1/wQK/M0WJlj/PJI
+	 Tu7JQQOoCG1NtRDDyaQJmHfXjirHCjxKwdkTUJ42dje+xd/PocULV1/UD/D/LOAi8l
+	 eBblvsmS0Or0Q==
+Message-ID: <51ae6e70-5f16-4bae-8cc9-97caa1430f98@kernel.org>
+Date: Tue, 13 Aug 2024 12:02:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/17] arm64: dts: imx8mm-phygate: rename uart4_rs485_en
- to uart4-rs485-en-hog
+Subject: Re: [PATCH 04/17] arm64: dts: imx8mm-venice: rename rs485_en as
+ rs485-en-hog
 To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -49,7 +49,7 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux@ew.tq-group.com
 References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com>
- <20240813-imx_warning-v1-5-3494426aea09@nxp.com>
+ <20240813-imx_warning-v1-4-3494426aea09@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,21 +95,38 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813-imx_warning-v1-5-3494426aea09@nxp.com>
+In-Reply-To: <20240813-imx_warning-v1-4-3494426aea09@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 06:35, Frank Li wrote:
-> Rename gpio uart4_rs485_en to uart4-rs485-en-hog to fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtb:
->   gpio@30220000: 'uart4_rs485_en' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+On 13/08/2024 06:34, Frank Li wrote:
+> Rename gpio rs485_en as rs485-en-hog to fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtb:
+>   gpio@30230000: 'rs485_en' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso | 2 +-
->  arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso | 2 +-
+>  arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso | 2 +-
+>  arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtso     | 4 ++--
+>  arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtso     | 4 ++--
+>  arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.dtso | 2 +-
+>  arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtso     | 4 ++--
+>  arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtso     | 4 ++--
+>  6 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso
+> index 47d3c0c49e8a0..bb2056746f8c9 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso
+> @@ -16,7 +16,7 @@
+>  /plugin/;
+>  
+>  &gpio4 {
+> -	rs485_en {
+> +	rs485-en-hog {
 
 These are simple node renames. Squash them all, not one board by one.
+
 
 Best regards,
 Krzysztof
