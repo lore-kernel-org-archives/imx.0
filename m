@@ -1,141 +1,122 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B5A1E4A4
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 13:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F199419D076
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 14:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723554845; cv=none; b=UaRH9F76ydFh4in3dFGlUYwR1b/PkpX2r1HDUUqVS5LdTHdO9j8X+tyTPgp4yO8yiVCFOO9A3Qh9i8+5KqRI32CIuI3MwRJWzdDjqQ5yJObcV7j7hsIc2orkAtMjo8z1ceIKy6wOVIPUkYpVmn0Pbzm9R3d3ikwlgveslXHcJow=
+	t=1723559031; cv=none; b=bw6DkJ2gZ5Yw2py4Ys7PsAW9dcTzvrsxWnP3DjSDkN2Lrbs22F5Fvee5bMU5gKh99O1R9iAKo+x3ETYSyHwpiYFULnLJkaVRQ5KibGTIO+JnqdhLKYMva8tSHAAjhaugktElUHqBsVqF49Po9bOvwpr3GDROjXHHCwpO8Uh9o5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723554845; c=relaxed/simple;
-	bh=/oXN3/0Kb0PwdTxOFOWP51D2uTIisIYMWG9izl4RM4o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O/WM6SozBSi3ic4990p0a+cCZh9PHB6vIuBj4V5vm15zqDhiRgUcd6d3qeaM1RUz2N0ZcwoXNduyDY56nQjJ9xawnia5tPCo4vOFEyQOVrS3Xu9i/17UiX0mvD5AUKla8SdI16HIZCQcLHt1ngZeDYAGdGcAqdKT20jc2Ql9+NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=M4ApcpKO; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=J9mBgv2D reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1723559031; c=relaxed/simple;
+	bh=i8604XNN9W+BEGXigXZlkZvPTJNteLfB7vh/HAPFGO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=K10h1403ZKRFbcTes7VLJ7+nRLpf1eUQHV2qAJFxtjdr5i9CrcWIzv6OXhpr90WN+d8b80UywoGSH6Lwe/sQWPWSPt62F6dvpEQuDN8GU3rBieCdJLEjkGf39Y/wt/zHKHY4sLFu1s4X/ispBRUvXTiFfbvlVu7v3ODaJ1iQJJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=apjAnD12; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="M4ApcpKO";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="J9mBgv2D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723554841; x=1755090841;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=yf77RZmJBkdO5ATfOLcBYjHWMlR9pScAsVtBBg/4+eY=;
-  b=M4ApcpKOVrkDGfF4tkCILpxZcDYRy774TwCGDsQ+igfOT3JZe4aWqBic
-   3SYQc9TEbHFshNXcs8Iiq/twwmq+l2NH3Tqo21pEzRL4eiu+Ux5pHemp1
-   dPZHWIWmciuCr95X+366vpdFMjfgCSO/JNAP9P+Or+OK0N3c08Epnq7on
-   7qSzitUKyNt+pWJYtDFWJvjwOJjULdkq8PUvyO2iq/ZTFR/uOVYU1azAz
-   NtjwMY1RsoIMEH7YcDt9dy22UsPrjxgGiSwboxL+mZv0syqHaPAD4btFw
-   HC831wXn/21hNAsziUsF8KKx01s0Gvn6rvi7wZubfATzK88DsayG/fszw
-   w==;
-X-CSE-ConnectionGUID: SxBRmycOQEmEVCFOwZ+QeA==
-X-CSE-MsgGUID: o4MPJmH7RWuqqdLfwzOTqw==
-X-IronPort-AV: E=Sophos;i="6.09,285,1716242400"; 
-   d="scan'208";a="38386887"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 13 Aug 2024 15:13:59 +0200
-X-CheckPoint: {66BB5C17-14-751552D8-F91D2344}
-X-MAIL-CPID: 60DCDD33188D7A76BC97FB9DA423ABDC_4
-X-Control-Analysis: str=0001.0A782F20.66BB5C17.00B5,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 184601627D0;
-	Tue, 13 Aug 2024 15:13:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723554834;
-	h=from:reply-to:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=yf77RZmJBkdO5ATfOLcBYjHWMlR9pScAsVtBBg/4+eY=;
-	b=J9mBgv2DckWa665XI+yzUXQYMrTNE0YSwjUCU7Y92gkduPxSPVzTvO+Cuy/Q8k3QjDS2nH
-	3OSU8TbEng0Ysig1QCuqQxcCGdJ2zD/W/taTb8EErRTfUCWcHuayrl9DkNJNrM+IwD/eVX
-	orhNidgQf36FhSmFVEsQSsOZU6HtV3NBX8XUVni47xbCsENNasmzAryFL8QXU/4nwDnSm6
-	UhTD9vCe0RKpJlRy9JwpMmzMtLvuskP+CYR9SYTLiaHQmppeuS/yqTUFVHz4xx460hvSq+
-	qtIU8AIftGvyhUvA7m/pqEk7U8+q+wlR2Z4ng5mBlZ1Zug4YMLdJjF7f5wbK2w==
-Message-ID: <45cf3d23034dcc8968d1b0fd34e624799d2fb42e.camel@ew.tq-group.com>
-Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
-From: "Niebel, Markus" <Markus.Niebel@ew.tq-group.com>
-Reply-To: Markus.Niebel@ew.tq-group.com
-To: Alexander Stein <alexander.stein@ew.tq-group.com>, Rob Herring
-	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	 <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	 <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Krzysztof
-	Kozlowski <krzk@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux@ew.tq-group.com
-Date: Tue, 13 Aug 2024 15:13:53 +0200
-In-Reply-To: <2621134.Lt9SDvczpP@steina-w>
-References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
-	 <1901821.CQOukoFCf9@steina-w>
-	 <82ee2be2-366e-40b2-ac95-e755443032be@kernel.org>
-	 <2621134.Lt9SDvczpP@steina-w>
-Organization: TQ-Systems GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="apjAnD12"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=7y7FTN3y7R4e2mlON2AVKGWnnhTPLzqmdhXN9LPsCoU=;
+	b=apjAnD12xZcZxdIam9g9rpwNLF1JvGq+dBf1SbFE1zuwVdgjx8UGLO9JIIcw8y
+	222WtTkRN18VdvL5fnU/2CMr7n7yb4RPipKF/J6ABa6aMrKg+4KwFfFSbv4E6+yr
+	2xAX7LVPq+myte5Brgf5Qm9LClw28epTLAU37Y6ZUPbO0=
+Received: from dragon (unknown [117.62.10.86])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3nwhMbLtmkKAeAg--.15796S3;
+	Tue, 13 Aug 2024 22:23:10 +0800 (CST)
+Date: Tue, 13 Aug 2024 22:23:08 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org, arm@kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX fixes for 6.11
+Message-ID: <ZrtsTO1+jXhJ6GSM@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:M88vCgD3nwhMbLtmkKAeAg--.15796S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw18Xw1kXr1UAF4kKF4UJwb_yoW5Aw47pF
+	yfurW7JF4DGryrZrnrZw1vq3s09w4rJFn8WF1UWrWxKrs8Aryjqr1rCr1fWrW2vryxZw4F
+	yF18tr17twn8XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jVfO7UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBU6ZWa7PexpgQAAsq
 
-On Tue, 2024-08-13 at 13:02 +0200, Alexander Stein wrote:
-> Am Dienstag, 13. August 2024, 11:44:28 CEST schrieb Krzysztof Kozlowski:
-> > On 13/08/2024 11:27, Alexander Stein wrote:
-> > > Am Dienstag, 13. August 2024, 11:20:08 CEST schrieb Krzysztof Kozlows=
-ki:
-> > > > On 12/08/2024 16:34, Markus Niebel wrote:
-> > > > > From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > > > >=20
-> > > > > According to microchip,usb2514.yaml the node name shall be usb-hu=
-b.
-> > > >=20
-> > > > That's not true. The schema does not say anything like this. Old na=
-me is
-> > > > correct. NAK.
-> > >=20
-> > > So, is the schema incorrect? There is the dtbs_check warning:
-> > > arch/arm/boot/dts/nxp/imx/imx6q-mba6b.dtb: hub@1: $nodename:0: 'hub@1=
-' does not match '^usb(@.*)?'
-> > >         from schema $id: http://devicetree.org/schemas/usb/microchip,=
-usb2514.yaml#
-> >=20
-> > If you have a warning, shorten it and paste it so this will be obvious.
-> > If you look at several bindings, the hub is widely used name. I think
-> > the schema is not correct here - I do not see any properties from
-> > usb.yaml being used here (for usb2514). What's more, if you compare
-> > usb2514 with any other on-board HUB representations (because that's the
-> > only point why we have it in bindings, right?), none of them reference
-> > usb(-hcd)?.yaml.
-> >=20
-> > These are not USB controllers, IMO.
->=20
-> I raised that concern in [1] already, but nobody commented.
->=20
+The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
 
-Besides that, current version of device tree specification [1], section
-'2.2.2 Generic Names Recommendation' exlicitely suggests 'usb-hub' but
-not 'hub'
+  Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
 
-See
-https://github.com/devicetree-org/devicetree-specification/releases/tag/v0.=
-4
+are available in the Git repository at:
 
-> Best regards,
-> Alexander
->=20
-> [1] https://lore.kernel.org/all/3633627.mvXUDI8C0e@steina-w/
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.11
 
-Best regards,
-Markus
+for you to fetch changes up to f149be46e4c13e277e013c0fff13cb2aa7a4399c:
 
---=C2=A0
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
+  arm64: dts: imx8mm-phygate: fix typo pinctrcl-0 (2024-08-13 16:37:14 +0800)
+
+----------------------------------------------------------------
+i.MX fixes for 6.11:
+
+- One imx8mp-beacon-kit change from Adam Ford to fix the broken WM8962
+  audio support
+- One pinctrl property typo fix for imx8mm-phygate
+- One layerscape fix from Krzysztof Kozlowski to get thermal nodes
+  correct name length
+- A couple of imx93-tqma9352 fixes from Markus Niebel, one on CMA
+  alloc-ranges and the other on SD-Card cd-gpios typo
+- One change from Michal Vokáč to fix imx6dl-yapp43 LED current to match
+  the HW design
+- A couple of imx95 fixes from Peng Fan, one to correct a55 power
+  domains and the other to correct L3Cache cache-sets
+- One tqma9352 watchdog reset fix from Sascha Hauer
+- One imx93 change from Shenwei Wang to fix the default value for STMMAC
+  EQOS snps,clk-csr
+
+----------------------------------------------------------------
+Adam Ford (1):
+      arm64: dts: imx8mp-beacon-kit: Fix Stereo Audio on WM8962
+
+Frank Li (1):
+      arm64: dts: imx8mm-phygate: fix typo pinctrcl-0
+
+Krzysztof Kozlowski (1):
+      arm64: dts: layerscape: fix thermal node names length
+
+Markus Niebel (2):
+      arm64: dts: freescale: imx93-tqma9352: fix CMA alloc-ranges
+      arm64: dts: freescale: imx93-tqma9352-mba93xxla: fix typo
+
+Michal Vokáč (1):
+      ARM: dts: imx6dl-yapp43: Increase LED current to match the yapp4 HW design
+
+Peng Fan (2):
+      arm64: dts: imx95: correct a55 power-domains
+      arm64: dts: imx95: correct L3Cache cache-sets
+
+Sascha Hauer (1):
+      arm64: dts: freescale: tqma9352: Fix watchdog reset
+
+Shenwei Wang (1):
+      arm64: dts: imx93: update default value for snps,clk-csr
+
+ arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi        | 12 ++++++------
+ arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi             |  2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi             |  2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi             |  2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi             |  2 +-
+ arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi             |  8 ++++----
+ arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi             |  2 +-
+ .../dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso  |  2 +-
+ .../dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso  |  2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts        | 12 +++++-------
+ arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts |  2 +-
+ arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi          |  3 ++-
+ arch/arm64/boot/dts/freescale/imx93.dtsi                   |  2 +-
+ arch/arm64/boot/dts/freescale/imx95.dtsi                   | 14 +++++++-------
+ 14 files changed, 33 insertions(+), 34 deletions(-)
+
