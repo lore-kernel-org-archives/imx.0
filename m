@@ -1,90 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C681A254F;
-	Tue, 13 Aug 2024 19:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58D81C287;
+	Tue, 13 Aug 2024 19:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723576931; cv=none; b=V6B4Z8NxfnloqLGuZnNMPmkRM3xdPhtEc6IRi0LIwQqWlGLQkxfa+ZRrB70uK3RxomYL4Ob4+SVRtEIyLj7FM7x70S6aLmL9Bk1sdHVH33vHzhWpFCb2NqAilwj0jDheWZ4khytyKDcC/ynk61OtiKdfubfPnzA/XYPgQJy4fT0=
+	t=1723578499; cv=none; b=Y4FrlpkZW+1yar6CGpGAqsitJGbv9dLUCSewHyZEIJubxkUeU/2CNSJipCD6WqN9QHWrJ55jNynr/iMVSwmE1Hv6evZ4wYWc8MCBi3CzxLGdNqsRIMSMUgio4Tjgu9GKlvJspXq0HbmyrpTsPjvJBKlBcOMoQkl5W1Z139bZzsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723576931; c=relaxed/simple;
-	bh=lY0lhb7BmsOpLYdU0VWU9WKDBRrqBJFGFjFhgXBLCKE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=WFgCYpeJhyngSugGY5FnE95lcmVFncxVZRs2P1CRpcO6SBp2maoTnw5xmDQjVgaagkAHwzMJVmjfS2d7frOp0kKB930bsy1uXox6r4on2qkNLvkRgaGkTJhIEFZzI9TnuyVwdoSXSIAND04U2qiiRF1XCmnC8zaj7xI2ZCYaA5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjT1yhEW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723578499; c=relaxed/simple;
+	bh=9bGTubr5YdOVCwXC1TYYkAvuioa2SJyu7Quj5N+agEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=orQGz+I/g4b+3tZsFjkAUoBT1m741RDr2SsTT1ihHlI+URFKhAqjV996XzWZd2MOjcyg+A+f2/jS0M6oSiOzodgtidNt1/xitClMoeJmf556hEB08AOQXh43jvqOS5mfrf9eGBp/eYwXBpf+nqKYt3K4yIQfxdvuLpAIXh+S1iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Laq+qodc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjT1yhEW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13576C32782;
-	Tue, 13 Aug 2024 19:22:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Laq+qodc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1D2C4AF0C;
+	Tue, 13 Aug 2024 19:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723576930;
-	bh=lY0lhb7BmsOpLYdU0VWU9WKDBRrqBJFGFjFhgXBLCKE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=LjT1yhEWOHKC3GgbzCgJn8mQU4nqby5KyyHdpWeBpk9IjPPKsw9Q3yhsuqYSjcbXV
-	 g9kMh7aK2FQ5DgC+6adeOLvQhE6DK6ZT7mA0qxYEg+EM5/HCAIi/cQD9Yi/eoB6Tbj
-	 DcwcOIgTUypMsKq5HbU7rzXVrdeJlFAsH79d64xO/PNO41eQBirTyQDrN0N0TvGQGY
-	 xRxSC9ILb53lCQmfY8zdQjZ3zNqXea4uFk+FtwVTMuXIhx5Nynl2jxSlMmbyF2IFq/
-	 awD8N40SLh2BSAJuni2j2L9B0hdDDfa/Y7sAFQcaZ6VrHyK1KggEWftHE+Tl3pu+FE
-	 LgYX7zr1pSMbw==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20240813154444.3886690-1-Frank.Li@nxp.com>
-References: <20240813154444.3886690-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/1] spi: dt-bindings: convert spi-sc18is602.txt to
- yaml format
-Message-Id: <172357692761.130711.16237572865002261472.b4-ty@kernel.org>
-Date: Tue, 13 Aug 2024 20:22:07 +0100
+	s=k20201202; t=1723578499;
+	bh=9bGTubr5YdOVCwXC1TYYkAvuioa2SJyu7Quj5N+agEk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Laq+qodcciDQo5f1Nn06klCTpwZbXKfLvNbrijxLmGoFZeSznBrw+aSOG3u1lgwD3
+	 U3enzBsqOA41HDCjnkDnJdsdSgJgWMS541BTe/R5ZeT7qsw8PJJeW4tBgaOD6MCJK2
+	 mrBe+fqHiL2kiQNTbOkPC7oUgOaoPWPj13zYZWKvEEC733JCQZZuOtfdXf6XMdmflP
+	 CjUTg1HmmWx+1jjhNQ49q7AmaEvi3U7wht67VuNI+Js21Uy2cOMZ9MZW09e6zeQULK
+	 vELV9Kesb5hN0j3YQ0ITOa0MzHSyYR0eOYAV/Nn7+r7SjJPAlwHP+iBmKII7cn8ChK
+	 SYIIktM02g3OQ==
+Date: Tue, 13 Aug 2024 13:48:17 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: convert maxim,ds26522.txt to yaml
+ format
+Message-ID: <20240813194817.GA1629980-robh@kernel.org>
+References: <20240809143208.3447888-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-37811
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240809143208.3447888-1-Frank.Li@nxp.com>
 
-On Tue, 13 Aug 2024 11:44:43 -0400, Frank Li wrote:
-> Convert binding doc spi-sc18is602.txt (I2C to SPI bridge) to yaml.
-> 
-> Additional change:
-> - ref spi-controller.yaml
+On Fri, Aug 09, 2024 at 10:32:06AM -0400, Frank Li wrote:
+> Convert binding doc maxim,ds26522.txt to yaml format.
+> Additional changes
+> - Remove spi-max-frequency because ref to
+> /schemas/spi/spi-peripheral-props.yaml
+> - Add address-cells and size-cells in example
 > 
 > Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-bluebox3.dtb:
-> /soc/i2c@2000000/i2c-mux@77/i2c@7/i2c-mux@75/i2c@0/spi@28: failed to match any schema with compatible: ['nxp,sc18is602b']
+> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/spi@2100000/slic@2: failed to match any schema with compatible: ['maxim,ds26522']
 > 
-> [...]
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/net/maxim,ds26522.txt | 13 ------
+>  .../bindings/net/maxim,ds26522.yaml           | 40 +++++++++++++++++++
+>  2 files changed, 40 insertions(+), 13 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/net/maxim,ds26522.txt
+>  create mode 100644 Documentation/devicetree/bindings/net/maxim,ds26522.yaml
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[1/1] spi: dt-bindings: convert spi-sc18is602.txt to yaml format
-      commit: 1c4d834e4e81637995b079fdb64fad4c32af15c8
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+netdev didn't pick this up, so I applied, thanks.
