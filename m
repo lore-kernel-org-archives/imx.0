@@ -1,46 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58D81C287;
-	Tue, 13 Aug 2024 19:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14D81E86A;
+	Tue, 13 Aug 2024 21:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723578499; cv=none; b=Y4FrlpkZW+1yar6CGpGAqsitJGbv9dLUCSewHyZEIJubxkUeU/2CNSJipCD6WqN9QHWrJ55jNynr/iMVSwmE1Hv6evZ4wYWc8MCBi3CzxLGdNqsRIMSMUgio4Tjgu9GKlvJspXq0HbmyrpTsPjvJBKlBcOMoQkl5W1Z139bZzsQ=
+	t=1723583115; cv=none; b=OJ92xoGZ9aanaSrcHQW2ngKRQEUgljxYDODRcNQciMZ5lp2PP6r3YkXXGlin67KQf4Eor7oSbDgOjrKbaysqm//u9cGnpoOoa+rf48WS2iW4UaFwCtmJQihylq5fWPM+uQSdc8vnnoI/EUEIG24+kksDvsG4jFmrCO+F1izjWRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723578499; c=relaxed/simple;
-	bh=9bGTubr5YdOVCwXC1TYYkAvuioa2SJyu7Quj5N+agEk=;
+	s=arc-20240116; t=1723583115; c=relaxed/simple;
+	bh=NtciaEPd56tFHCb6ZhQWuehVK8h6IY4gj9IHnNOOXGc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=orQGz+I/g4b+3tZsFjkAUoBT1m741RDr2SsTT1ihHlI+URFKhAqjV996XzWZd2MOjcyg+A+f2/jS0M6oSiOzodgtidNt1/xitClMoeJmf556hEB08AOQXh43jvqOS5mfrf9eGBp/eYwXBpf+nqKYt3K4yIQfxdvuLpAIXh+S1iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Laq+qodc; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tznXhOZTflh2gysmVAO5LNDREynANQEOxP0x4fFc/ESn5H058dQ+xfiuU3s/1+2Wa+Yhr+vP1/LiOLSFWDyeMrSI46FTU1Qc2f4vp1S4SQieiQf6zpxd8ny2CMhBDVr6YkTo6aTjX3fCUYr5MMTrTtURlDnyhmIKPi2++jJWM90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irVKiXiW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Laq+qodc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1D2C4AF0C;
-	Tue, 13 Aug 2024 19:48:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irVKiXiW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16969C32782;
+	Tue, 13 Aug 2024 21:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723578499;
-	bh=9bGTubr5YdOVCwXC1TYYkAvuioa2SJyu7Quj5N+agEk=;
+	s=k20201202; t=1723583114;
+	bh=NtciaEPd56tFHCb6ZhQWuehVK8h6IY4gj9IHnNOOXGc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Laq+qodcciDQo5f1Nn06klCTpwZbXKfLvNbrijxLmGoFZeSznBrw+aSOG3u1lgwD3
-	 U3enzBsqOA41HDCjnkDnJdsdSgJgWMS541BTe/R5ZeT7qsw8PJJeW4tBgaOD6MCJK2
-	 mrBe+fqHiL2kiQNTbOkPC7oUgOaoPWPj13zYZWKvEEC733JCQZZuOtfdXf6XMdmflP
-	 CjUTg1HmmWx+1jjhNQ49q7AmaEvi3U7wht67VuNI+Js21Uy2cOMZ9MZW09e6zeQULK
-	 vELV9Kesb5hN0j3YQ0ITOa0MzHSyYR0eOYAV/Nn7+r7SjJPAlwHP+iBmKII7cn8ChK
-	 SYIIktM02g3OQ==
-Date: Tue, 13 Aug 2024 13:48:17 -0600
-From: Rob Herring <robh@kernel.org>
+	b=irVKiXiW2Oc/qn367hvFimsmiuW1S7jVtZ0cmab9jXhOjgAsvwN6xclT/r3RP4sCZ
+	 rFn3lXwf1V2Ob0FjY9A/3U5UcP6auY5ylzwkQrnKYQEnS4FU/xDIPNNXkTKL83Jv2l
+	 tj52L3S5MLqUIPKQxl3mdAbhamJ1ClPwhHig+e9z5UuwlfQ/q7NubkK29JWquFZz+m
+	 popTBNn1e3G6UqOLQnOCoyR0dCiDf7h6W0g8yljAS4tJaWiMxTZ/VJ7ZFEyt36iRDb
+	 pXtlLUgcGfoYqhuDEvEGrvgTX9fV5EG3Jnzd4qseJx7n6nXEI9UlBgQYLNNjqFHcwx
+	 gHctwLb6HAZ8w==
+Date: Tue, 13 Aug 2024 15:05:12 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: net: convert maxim,ds26522.txt to yaml
- format
-Message-ID: <20240813194817.GA1629980-robh@kernel.org>
-References: <20240809143208.3447888-1-Frank.Li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org,
+	imx@lists.linux.dev, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/1] dt-bindings: input: convert rotary-encoder to yaml
+Message-ID: <172358311160.2028662.8871129494345919782.robh@kernel.org>
+References: <20240811214656.3773098-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,24 +44,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240809143208.3447888-1-Frank.Li@nxp.com>
+In-Reply-To: <20240811214656.3773098-1-Frank.Li@nxp.com>
 
-On Fri, Aug 09, 2024 at 10:32:06AM -0400, Frank Li wrote:
-> Convert binding doc maxim,ds26522.txt to yaml format.
-> Additional changes
-> - Remove spi-max-frequency because ref to
-> /schemas/spi/spi-peripheral-props.yaml
-> - Add address-cells and size-cells in example
+
+On Sun, 11 Aug 2024 17:46:55 -0400, Frank Li wrote:
+> Convert binding doc rotary-encoder.txt to yaml format.
+> 
+> Additional change:
+> - Only keep one example.
 > 
 > Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/spi@2100000/slic@2: failed to match any schema with compatible: ['maxim,ds26522']
+> arch/arm64/boot/dts/freescale/imx8mn-dimonoff-gateway-evk.dtb: /rotary-encoder:
+>     failed to match any schema with compatible: ['rotary-encoder']
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/net/maxim,ds26522.txt | 13 ------
->  .../bindings/net/maxim,ds26522.yaml           | 40 +++++++++++++++++++
->  2 files changed, 40 insertions(+), 13 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/maxim,ds26522.txt
->  create mode 100644 Documentation/devicetree/bindings/net/maxim,ds26522.yaml
+>  .../bindings/input/rotary-encoder.txt         | 50 -----------
+>  .../bindings/input/rotary-encoder.yaml        | 90 +++++++++++++++++++
+>  2 files changed, 90 insertions(+), 50 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/input/rotary-encoder.txt
+>  create mode 100644 Documentation/devicetree/bindings/input/rotary-encoder.yaml
+> 
 
-netdev didn't pick this up, so I applied, thanks.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
