@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135766AAD;
-	Tue, 13 Aug 2024 09:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4256413C9CB;
+	Tue, 13 Aug 2024 09:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723539615; cv=none; b=hEMgqJOgLqAUnbn4IpMfPorIYruLDGxpkpLcTTvU0VFsiHDsLt5kJk5nW3ZjY24c0Kokbats5v6UOUHLFy9hW8P61zFta+uV6KDmzGbpWibAzMsX7R8ZhXg+lyTFild2vE0swonHO8BxhBP+QaqDG7drR4TEWekyG65vPJZo0lc=
+	t=1723539715; cv=none; b=qksbEjLc+aP5F8pKtqQ5R010M2od9luptmpAyohzLh1buw7jSBIfizofgBAzgNd8bhUumtuJDETD8dyiAGGyRGpjrvt2uwwhWncc8RXXqTLJOB7HGbc3ZI+i1CB0rm0wsNAgRbq2AjidSDDzVM6WQ2JbzPI8zcSj3pRoHNlUTHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723539615; c=relaxed/simple;
-	bh=WtOn/xU9mledZcK0rvLVkxRSh12wpuRWrPSfwkBcd6Q=;
+	s=arc-20240116; t=1723539715; c=relaxed/simple;
+	bh=c5TTp8+kC+6VVcE298mF7W5d+fBeQ7EQWbKSZG6Vzy8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u0N7gLTu0HaQJU7M6SiLw/6oE1T3ucvlMh5xkwr6Gv1TwA0HuEAsaoaG7CdgdVkNb57fchSp0IWgD1IEnFcSRVvG2U3bAARXUyqHyftXlYPnaMgbuKaYRCk0naRkcqomlrHItTw4BAIOAPUjpGbaAiqPUZpWStkHQfYaVmlgyjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/uIIxY9; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=TBh+WBo+qDsj9cPYOCsQpktxtF9Krbn4lgXLPwpqxqcoaIDXlvOFjQbokKGqAmS5kFxjtO9zphf2L9ncJFH+3TAoFFiREFyFBy/aJR+cN7aLQ3RnSBhU+jQuo4X1EG/63sP/HAAiHEcj76monRiLL0JbcpJu4QXlupyGbwtoLc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2YKDTn5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/uIIxY9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5DDC4AF09;
-	Tue, 13 Aug 2024 09:00:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2YKDTn5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BB0C4AF09;
+	Tue, 13 Aug 2024 09:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723539614;
-	bh=WtOn/xU9mledZcK0rvLVkxRSh12wpuRWrPSfwkBcd6Q=;
+	s=k20201202; t=1723539715;
+	bh=c5TTp8+kC+6VVcE298mF7W5d+fBeQ7EQWbKSZG6Vzy8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=b/uIIxY988diB4jOt1PwI6qChq3lVDscpQxXC9G1KC2U8YdfToriqTLTG+VLn6rcs
-	 VfxoYBmfyfOxw6kt4n2pj369tUwQyaVAaHGtxQiPfmFFNbtg5zLQBx5CsTSR8jKcax
-	 W8c7bAiSmep9gHMQZ+DYDyddDN8palruq2DDxFIqCJvKbn5IPLm4U6zY/4yfELX8JB
-	 CXy7PkQDyp2RAw/XuP2mQk3jYuGYuKrunD5/04nUt7ND9cbzvxoLBAQEO+zvLGNYb5
-	 N0JxUdY1cTgtvMf0sF1OEY0dk9p3cVJ4qTGo04rZtZkOsnuDDZaHy3LMVts/nIEvKL
-	 nmtloWOpxMj0g==
-Message-ID: <65362962-a83f-411d-8a23-f0a54cf91e29@kernel.org>
-Date: Tue, 13 Aug 2024 11:00:07 +0200
+	b=j2YKDTn5Uy/gGG7VPLp9lwcLijSbPecwqqFAdX+Jjvz6p1PwYc28pL/H2MyOD+VCB
+	 KCBOeycVgeMJTCJyxCkcNwI+RupGDQhTcmikMEhCRLXwWwwjll4OXsINq24QgVMKqT
+	 /Uzm+xweE7epXQbdQxU4Rw4gLS/H/y3IqofcKux5dCE6DwAyL9s7K5aZ3WbEU0EUN+
+	 XB7VGu7/zp2o9O6RoRAYmPE90qPbYvdf5yscL+mfO2O5a+aWBtpr+WAqeZbR687Emg
+	 dMbp2u5cbetrGf70JpwQAcKtRpw19DBsojA5SkO6FnwbBFn53s7L5fwA2vgrXNBX22
+	 /cCyKAg4xAKXw==
+Message-ID: <f6cf1ad0-a33c-4b20-ba8a-6e47ff29e635@kernel.org>
+Date: Tue, 13 Aug 2024 11:01:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,20 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] arm64: dts: tqma8xx: change copyright entry to
- current TQ Copyright style
-To: Max Merchel <Max.Merchel@ew.tq-group.com>, Shawn Guo
- <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 01/10] ARM: dts: tqma7: change licenses to use the same as
+ imx7
+To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>
-Cc: linux@ew.tq-group.com, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-References: <20240813072019.72735-1-Max.Merchel@ew.tq-group.com>
- <20240813072019.72735-8-Max.Merchel@ew.tq-group.com>
-Content-Language: en-US
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20240813071637.72528-1-Max.Merchel@ew.tq-group.com>
+ <20240813071637.72528-2-Max.Merchel@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -92,35 +92,23 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813072019.72735-8-Max.Merchel@ew.tq-group.com>
+In-Reply-To: <20240813071637.72528-2-Max.Merchel@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 09:20, Max Merchel wrote:
-> Unification of TQ-Systems copyright entries
+On 13/08/2024 09:16, Max Merchel wrote:
+> commit 241f76b24b6ea ("ARM: dts: imx: Switch to SPDX identifier")
+> change licenses of imx7s.dtsi and imx7d.dtsi to
+> "GPL-2.0-or-later OR MIT license".
+> Change licenses to use the same licenses for tqma7 device trees.
 > 
-> Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8dxp-tqma8xdp-mba8xx.dts | 2 +-
->  arch/arm64/boot/dts/freescale/imx8dxp-tqma8xdp.dtsi       | 2 +-
->  arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi         | 2 +-
->  arch/arm64/boot/dts/freescale/imx8qxp-tqma8xqp-mba8xx.dts | 2 +-
->  arch/arm64/boot/dts/freescale/imx8qxp-tqma8xqp.dtsi       | 2 +-
->  arch/arm64/boot/dts/freescale/mba8xx.dtsi                 | 2 +-
->  arch/arm64/boot/dts/freescale/tqma8xx.dtsi                | 2 +-
->  7 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxp-tqma8xdp-mba8xx.dts b/arch/arm64/boot/dts/freescale/imx8dxp-tqma8xdp-mba8xx.dts
-> index d74b5338befe..256050c5c442 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxp-tqma8xdp-mba8xx.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxp-tqma8xdp-mba8xx.dts
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * Copyright 2018-2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
-> + * Copyright (c) 2018-2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
 
-NAK, that's just a churn. There is no value in this.
+Hm? So for other files you drop the X11 license, but here you add MIT?
+That does not make much sense. I believe DTS can be licensed differently
+than DTSI. Anyway, for any relicensing you need to explicitly CC all
+copyright holders.
+
+Add them to CC: fields (all of them!!!) and wait for acks.
 
 Best regards,
 Krzysztof
