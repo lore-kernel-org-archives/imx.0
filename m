@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ADC58ABF;
-	Tue, 13 Aug 2024 09:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5527A13AA3E;
+	Tue, 13 Aug 2024 09:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723539899; cv=none; b=TxPDDWrz4vrDMP2zVZHOq2+ixCFpw22WhjdxKQnCHeYQGWmMYls7J3/djSKE62jWpeJ13R5s1jhTHSAJipSxR98bDqGZqT57JTYiT5GlVflLGu1ip8WHDQIcBFTa0JMXuRVYFL73a4U195uyhwBPDpS+dfVJ+cVwFJPNxpOcTL8=
+	t=1723539912; cv=none; b=obkP7XcAVIeBM4G5m0v6DXvnF2Cr5rlCw66B9qlOyXiG5cEPIqoyS9tBBEyhvqPJJbjSazZwM1mYnbeu/H3BQLNysXm74hoAgHg10nbmnTjfacEzJUCp+103+Vwh3LK73h93AX5s3ZNKiCoB4P7IDbrRQTN+puBh57+glgvHvrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723539899; c=relaxed/simple;
-	bh=9C4UYqHpS5ReSFXA+MZx6QMVvlui0Lq8eqQZapg+a8c=;
+	s=arc-20240116; t=1723539912; c=relaxed/simple;
+	bh=X5fYRIk3UORF4eePu/VuBllPnq01NFJR0r2+oW6NCYE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LSsKw3VBVcU30JNQxCNJIg+q7sH5O8MNvqb7d8SLG4ggQLq2kdV9qwuzefRmPisOaFkNJezcNLgseREfLFsX06SwOj/YiGRLCajCEuPr9VPu+uDbnwQUqy52iglpbIz9uJj0Ynz1jKjlkYop9+K0WQibDPwtoPQb+XIyur2hm5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PK3aUI4Z; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=KHmvj+52f36wz2P/9l6U6/xIcHaKp4vWVt5cSrtIg5O1wQWxrhFG370PiRDs63ChEr+emc2YsMwIqUQO7eoMLt5jcP1hBiN3UwIq1jaKkLNGKCo0I/4ibs1t+L1cNUvKh8Uhtcj9xPyg0/Iq8mC9tYAmAnKFH+546yzQA+wBJVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aC+H0/qA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PK3aUI4Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57E8C4AF10;
-	Tue, 13 Aug 2024 09:04:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aC+H0/qA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA78DC4AF09;
+	Tue, 13 Aug 2024 09:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723539898;
-	bh=9C4UYqHpS5ReSFXA+MZx6QMVvlui0Lq8eqQZapg+a8c=;
+	s=k20201202; t=1723539911;
+	bh=X5fYRIk3UORF4eePu/VuBllPnq01NFJR0r2+oW6NCYE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PK3aUI4Z9nFTR410IA2Jvd92mMBh+/FLEoUBeUZ9ytJhWW2zjfW5bAvUV//YDnkxm
-	 o5dKLUZfaTTW0m19mHVN2cWUdoTD0aT1S2z0xf/O/4gAHJ5/kjPX/xnp8LxGJ+lp9l
-	 yazMbmZAPtUSfBKTTLPP6JfwTdcgNXKt+DAaKerh2HH4K4G6mFfqMgmXsVAFXsJTew
-	 hvX9Un3JzXaqzxUAyM6J52BDJyvHfOGD291PWkeFQGmTJqAvuLVdTCi0nhNKuCz4nC
-	 5wYis6f0aOkL9tG12erWv35lmSg+X+qeWYW0nAsvEMvbMYpEjXzUdeF4GcDtCa3AKD
-	 z7ZmCkpAqi4Kg==
-Message-ID: <65bc140a-6c76-4a0b-8159-a7a872e3a430@kernel.org>
-Date: Tue, 13 Aug 2024 11:04:52 +0200
+	b=aC+H0/qATLIJQadmzsB+99rOvsU9wyf6WEr9Uj3tf+qRAsUa0G/cZ47lHJTx4EW1/
+	 UBu+Z9aUs3V/WMNrcbXDFWPNdi9XQlF/CRzPrzTXvPKwjSzAjlvLOWUYwc9syaXysN
+	 z6GHqQ0o0Ifg5ZJXmfw3dkv+H1FAAtFjdWHMMxbK9i4wyJCTAiEpwXgLLX0iKZjkPH
+	 qeefk9UQOAUVxHJ669jeBaJwftsTFnuhOOf0d6td9+lGlZxdtyYM/dLQgsQRwCFAjR
+	 T0wNw/a9W+8y1CgCThAsZXWLPDr6QaffGaB0nDasA0XE4IQPBT+w5GuKnRZRqINrsZ
+	 ByxN75SFm7TJA==
+Message-ID: <34e5f680-2317-4fa7-afbf-c153003558c2@kernel.org>
+Date: Tue, 13 Aug 2024 11:05:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] ARM: dts: tqmls1021: change licenses to use the
- same as ls1021a
+Subject: Re: [PATCH 10/10] ARM: dts: tqmls1021: change copyright entry to
+ current TQ Copyright style
 To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -46,7 +46,7 @@ To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20240813071637.72528-1-Max.Merchel@ew.tq-group.com>
- <20240813071637.72528-10-Max.Merchel@ew.tq-group.com>
+ <20240813071637.72528-11-Max.Merchel@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,19 +92,15 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813071637.72528-10-Max.Merchel@ew.tq-group.com>
+In-Reply-To: <20240813071637.72528-11-Max.Merchel@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 13/08/2024 09:16, Max Merchel wrote:
-> commit 784bdc6f2697c ("ARM: dts: ls1021a: change to use SPDX identifiers")
-> license of imx7sls1021a.dtsi changed to
-> "GPL-2.0-or-later OR MIT license."
+> Unification of TQ-Systems copyright entries.
+> 
 
-No, that is not true. License did not change. It was exactly the same.
-Read carefully the commit.
-
-NAK
+No, pointless churn.
 
 Best regards,
 Krzysztof
