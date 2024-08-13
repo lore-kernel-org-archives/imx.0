@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF97043165;
-	Tue, 13 Aug 2024 09:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28818733C;
+	Tue, 13 Aug 2024 10:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723543063; cv=none; b=DTsh2MJw8GCUP9pjApPVGVTYDRBDL9KmPnPSPN7LNJLVhHJzz7EayCNUwKgV5pkcYnpYIJZQ+ccJGInr4xCLMvlcc0Wb6g2b5CrB3TEdp4iBqVleYPO8dyQuBjtp2KKf1HzpUjNzkBeJ3CmO3C8XHT3zuSH0J6MNCjzQZUjr9MA=
+	t=1723543320; cv=none; b=QWEf6bGMaCdOwUHNYCUjxSR7I3VZLGcwQd8/9iFUSX+oc2eY6Qj1xOYdI0O39SbHrPZRigwDxsVwXKmlLtA2AN1I4TiOg0rgJZumvF3dwzexaModm79+5V5HAOfY00BU7q6/VTcv/81ZupRXgj9I0bBOYdlC/JWBoy9h12ckSfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723543063; c=relaxed/simple;
-	bh=/xqp+GdTXWeXVBORyz2Kpe5lyE0VK8oFbfgOCjQoTfc=;
+	s=arc-20240116; t=1723543320; c=relaxed/simple;
+	bh=yDkqmNnNr2IDGk2Git6kZx+rffr1LLJrDuvNrx0gMMU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qznTiiqRpWFjMChcqBMJ+Gq6v4GUxq/gdUEM6DFtAL4ktJvx2D1EJ/hRioPcqm68+gXE6a2vGR094dt9116GMBj/XcTOcab4f06ZE+co9hWm0SlEs0t4mhU5FN2K2c9OPcP+1LsKJ6fKg+o6CP4TR4JOOBCfczSTLxOyFkcAzsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwMpQygN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=pQFHIvm5xkHzE17lH5P0K5iLhAlakFNM2yVvzGksuG0KggsF303zGbdoavNdcX0m9u9N5p5XFulkG2l7DZzYne4m7TtFp9PvWt6caf4sTkrvyfS/OZigMwfzcZ/bpcG3j/88Qimez5Ds6pqxnpanMrkwMa4yF29BkkvKWydD/P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qvqiw3+J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwMpQygN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10A5C4AF0B;
-	Tue, 13 Aug 2024 09:57:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qvqiw3+J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DC7C4AF09;
+	Tue, 13 Aug 2024 10:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723543062;
-	bh=/xqp+GdTXWeXVBORyz2Kpe5lyE0VK8oFbfgOCjQoTfc=;
+	s=k20201202; t=1723543320;
+	bh=yDkqmNnNr2IDGk2Git6kZx+rffr1LLJrDuvNrx0gMMU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dwMpQygNH9E9qdaN57h3KouFXSSS+NEEMk3nqcxeWedi8RjUfSQbM7T7mGnATM/4R
-	 jnDAjXuhgSbif2EYKQn1OAhVAdGsDFJt0K2S1niCDspuNvOsHwoK9qgYPK6wpYKwVY
-	 pXzhghbQlFDaLhlHdC3EO1YWkwNn3XlmPt9oMVdq9dKEycZGFzpKyVNR44+Hy5BRcV
-	 bDab5GQVrJ6WMn/xPniyjlBOaKNiEWGnd3srFhDJ1hrXsGO7bdDvXkdUxC/73sxBFG
-	 0s6eP0NY3VVv5hyqIYcDrQtZnPoPimVeykIGYyHKovpZm4i6aTO+tFRAevb7+2sHIf
-	 BAfhgTdpnhQfg==
-Message-ID: <bd9a5fb6-9f28-456f-9a0e-45b42d30398f@kernel.org>
-Date: Tue, 13 Aug 2024 11:57:37 +0200
+	b=qvqiw3+JeyjIUAVfOAUhkFcSjMzEiKFhauqS/JAuAB6sQ5OS/SV0CZ4wJkATfQ0su
+	 BPRqgehvopD6WpUltD0o/tFuoEO5PqVt+Ab4giU37HEI+zt59NxDa4lZaSbsR1LcbI
+	 Rcx/6puTW9Gxo7G6O11TmfXK8UKActLCxzMFM/YF2MN+I0edTu9CYaAnlt1TzLq+cf
+	 fPeTD1g2CiCVLGNtXVTCWQJ+axbfUXMJNSHxO6hgC4lP2XQPHVgH/wk3ZobYDNp2C6
+	 +u6JbGOGoHcWTEntMIcNfL+g0Fv+jqiGIg1Bu1++b50VembYVKn1wU2bn2ti0SJQxd
+	 OOUUOlQBD400Q==
+Message-ID: <c65dfcb5-3197-4951-ab27-f72dd420d77d@kernel.org>
+Date: Tue, 13 Aug 2024 12:01:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,14 +35,21 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-binding: board: convert fsl-board.txt to yaml
+Subject: Re: [PATCH 05/17] arm64: dts: imx8mm-phygate: rename uart4_rs485_en
+ to uart4-rs485-en-hog
 To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240812200200.3828047-1-Frank.Li@nxp.com>
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux@ew.tq-group.com
+References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com>
+ <20240813-imx_warning-v1-5-3494426aea09@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -88,238 +95,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240812200200.3828047-1-Frank.Li@nxp.com>
+In-Reply-To: <20240813-imx_warning-v1-5-3494426aea09@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/08/2024 22:01, Frank Li wrote:
-> Convert binding doc fsl-board.txt to yaml format. split to 3 part
-> fsl,bcsr.yaml, fsl,fpga-qixis.yaml, fsl,fpga-qixis-i2c.yaml
-> 
-> Additional change for fsl,fpga-qixis.yaml
-> - Add childnode mdio-mux-emi*
-> - Add compatible string fsl,ls1043aqds-fpga, fsl,ls1043ardb-fpga,
-> fsl,ls1046aqds-fpga, fsl,ls1046ardb-fpga, fsl,ls208xaqds-fpga,
-> fsl,ls1043ardb-cpld, fsl,ls1046ardb-cpld, fsl,ls1088aqds-fpga,
-> fsl,ls1088ardb-fpga, fsl,ls2080aqds-fpga, fsl,ls2080ardb-fpga.
-> - Change address to 32bit in example.
-> 
-> Additional change for fsl,fpga-qixis-i2c.yaml
-> - Add mux-controller
-> - Add compatible string fsl,ls1028aqds-fpga, fsl,lx2160aqds-fpga
-> 
-> Fix below warning:
-> 
-> arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dtb: /soc/i2c@2000000/fpga@66: failed to match any schema with compatible: ['fsl,ls1028aqds-fpga', 'fsl,fpga-qixis-i2c', 'simple-mfd']
+On 13/08/2024 06:35, Frank Li wrote:
+> Rename gpio uart4_rs485_en to uart4-rs485-en-hog to fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtb:
+>   gpio@30220000: 'uart4_rs485_en' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
-It is not "dt-binding" but dt-bindings.
-
 > ---
->  .../devicetree/bindings/board/fsl,bcsr.yaml   | 38 +++++++++
->  .../bindings/board/fsl,fpga-qixis-i2c.yaml    | 50 ++++++++++++
->  .../bindings/board/fsl,fpga-qixis.yaml        | 81 +++++++++++++++++++
->  .../devicetree/bindings/board/fsl-board.txt   | 81 -------------------
->  4 files changed, 169 insertions(+), 81 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/board/fsl,bcsr.yaml
->  create mode 100644 Documentation/devicetree/bindings/board/fsl,fpga-qixis-i2c.yaml
->  create mode 100644 Documentation/devicetree/bindings/board/fsl,fpga-qixis.yaml
->  delete mode 100644 Documentation/devicetree/bindings/board/fsl-board.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/board/fsl,bcsr.yaml b/Documentation/devicetree/bindings/board/fsl,bcsr.yaml
-> new file mode 100644
-> index 0000000000000..73e33483d20c9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/board/fsl,bcsr.yaml
-> @@ -0,0 +1,38 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/board/fsl,bcsr.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Board Control and Status
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +description:
-> +  Freescale Reference Board Bindings.
+>  arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso | 2 +-
+>  arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso | 2 +-
 
-Drop
-
-> +
-> +  This document describes device tree bindings for various devices that
-> +  exist on some Freescale reference boards.
-
-Drop
-
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,mpc8360mds-bcsr
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    board@f8000000 {
-> +        compatible = "fsl,mpc8360mds-bcsr";
-> +        reg = <0xf8000000 0x8000>;
-> +    };
-> +
-> diff --git a/Documentation/devicetree/bindings/board/fsl,fpga-qixis-i2c.yaml b/Documentation/devicetree/bindings/board/fsl,fpga-qixis-i2c.yaml
-> new file mode 100644
-> index 0000000000000..cab221a1fd466
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/board/fsl,fpga-qixis-i2c.yaml
-> @@ -0,0 +1,50 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/board/fsl,fpga-qixis-i2c.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale on-board FPGA connected on I2C bus
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,bsc9132qds-fpga
-> +              - fsl,ls1028aqds-fpga
-> +              - fsl,lx2160aqds-fpga
-> +          - const: fsl,fpga-qixis-i2c
-> +          - const: simple-mfd
-> +        minItems: 2
-
-Why flexible? All are fixed - three compatibles.
-
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  mux-controller:
-> +    $ref: /schemas/mux/reg-mux.yaml
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        board-control@66 {
-> +            compatible = "fsl,bsc9132qds-fpga", "fsl,fpga-qixis-i2c";
-> +            reg = <0x66>;
-
-Make it complete.
-
-> +        };
-> +    };
-> +
-> diff --git a/Documentation/devicetree/bindings/board/fsl,fpga-qixis.yaml b/Documentation/devicetree/bindings/board/fsl,fpga-qixis.yaml
-> new file mode 100644
-> index 0000000000000..455620daa1fee
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/board/fsl,fpga-qixis.yaml
-> @@ -0,0 +1,81 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/board/fsl,fpga-qixis.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale on-board FPGA/CPLD
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - const: fsl,p1022ds-fpga
-> +          - const: fsl,fpga-ngpixis
-> +      - items:
-> +          - enum:
-> +              - fsl,ls1088aqds-fpga
-> +              - fsl,ls1088ardb-fpga
-> +              - fsl,ls2080aqds-fpga
-> +              - fsl,ls2080ardb-fpga
-> +          - const: fsl,fpga-qixis
-> +      - items:
-> +          - enum:
-> +              - fsl,ls1043aqds-fpga
-> +              - fsl,ls1043ardb-fpga
-> +              - fsl,ls1046aqds-fpga
-> +              - fsl,ls1046ardb-fpga
-> +              - fsl,ls208xaqds-fpga
-> +          - const: fsl,fpga-qixis
-> +          - const: simple-mfd
-> +      - enum:
-> +          - fsl,ls1043ardb-cpld
-> +          - fsl,ls1046ardb-cpld
-> +          - fsl,t1040rdb-cpld
-> +          - fsl,t1042rdb-cpld
-> +          - fsl,t1042rdb_pi-cpld
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 1
-> +
-> +  ranges:
-> +    maxItems: 1
-> +
-> +patternProperties:
-> +  '^mdio-mux-emi[0-9]@[a-f0-9]+$':
-
-Either suffix or unit address, not both. This does not match some of
-your DTS, at least after quick look. Probably DTS needs to be fixed.
-
-
-> +    $ref: /schemas/net/mdio-mux-mmioreg.yaml
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
+These are simple node renames. Squash them all, not one board by one.
 
 Best regards,
 Krzysztof
