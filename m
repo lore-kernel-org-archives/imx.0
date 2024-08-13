@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8645413BC3D;
-	Tue, 13 Aug 2024 08:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB6D15B7;
+	Tue, 13 Aug 2024 08:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723539311; cv=none; b=bXJeYjC+FpzAyRGPdSzlkqQaRrSBG6EbcxF4GQANkwdjEma9iMnZSCBQurRtPhLCqBhaOFptvvWzVSne+mHQ2cvEMNNfQB8sasM4QpRqtraB2KKkeu1w0bD/3DeQjRsW9iGdz9f+KJNHyADvGc29gNNVR23UBvk6JIMzyIxhZvE=
+	t=1723539480; cv=none; b=GRO9sJbHhGZImdREmj1tdIVorGbnrgbH8v3INS96y+AthrhKYeaE6AU0paXV8CXbwN/R/IQu0BolcGal8V0aJjhdtTdchVcfrLFBNi+pJMJds0P3OX4479i2nMpciwMf3AsQCkPIvyI69IaxzEs5S68C30MGQ//BjU35NofUFag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723539311; c=relaxed/simple;
-	bh=Yw7bJqmpEUC1lds08vcuoLvMd5qF4rMJqOLqHjyCN5M=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=QqQmYgcTzyUeukFDiUIm04TAdWGHQy5vQ4iun2mGz/RhZGHUwbnFWeBSmv7HSbO3VRfrAuRftwC7uHEijGuTQjq80KeVKViszfYb5+2XHZRm0T+j3EmAg0hALa2iN/gGME5/nk4JQ6pRwUiidBV6CyBqoTFjxuyszFBMtzk2inY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYVhV9dH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723539480; c=relaxed/simple;
+	bh=hFy5bSdY8DZHR/IeVfsJgaIskZ+yjNUSeemggO+SExI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NogATrvKL8pq/4v5PVy6Tj1+zHeVr6rOQWYn1YUgKFYJK9SjCeHr4PazMOpZHa1u4LQAVlx9SF6EMSAN5uh6LTyWqiX373pHjv1rJy1/dVxtJn8YtWYY9vr8cEu6W/H/TJsiEcY0pb+j8HzKvO8/O37o2W5vwzNtNVgG0XhIQJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Snd4Gu1z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYVhV9dH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB23C4AF0B;
-	Tue, 13 Aug 2024 08:55:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Snd4Gu1z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FEAC4AF09;
+	Tue, 13 Aug 2024 08:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723539311;
-	bh=Yw7bJqmpEUC1lds08vcuoLvMd5qF4rMJqOLqHjyCN5M=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=FYVhV9dHn0NUmgmLmbMOac/AMZDiOXUTbHpUNBcG7l/Fxk12QIAegrVpiY2kNkPLo
-	 PYhBdJecSuMHftuaj0cVXF91WjdqJfkOllGwUv5+Lf1qEg5lQX7JEKXaI0YT1Gd7hs
-	 zFg6F6A8J5fV2NxNCPBpyFm1BexXT4/zrY4GgFJ2mBepcK9ydhRtZv7vbdEeFfxiTM
-	 GtsViwc+TNL4KDmX5EYdyJJOac0Zf+tDFJggdASbqrcjJTty417Zr3Rf+lAUt7bU7i
-	 3UDnXBkr84+GDwKqKSYNo8SKu4sJnwtc5rfiT5ds3HNIzh3f7P7B1q1omQhWwSgxlW
-	 Y3jJ6WryreDVQ==
-Message-ID: <b1ab67c5-f465-4b0e-9104-a5b15c2fa724@kernel.org>
-Date: Tue, 13 Aug 2024 10:55:05 +0200
+	s=k20201202; t=1723539479;
+	bh=hFy5bSdY8DZHR/IeVfsJgaIskZ+yjNUSeemggO+SExI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Snd4Gu1ziqFbAGSkZOzeT2aMuF+65Sr2mXsfKnCn54HijF52Z75pWG8BE330XXVtT
+	 KEV0Gp4AEfDbIgZnK/KI0Rf3ZGEDJ7gi+4DiNrH1X2KyKREqwwxP6xpwJHg23jcv+n
+	 Btcyitsl4ax4OTLpj2V5Dbk7vG46raLABpuSJQ37H+zLhA1m1uYC7FTZ1zGuVgTyRv
+	 zPgjnoJLv1NG8Q8b5gFillM6vlEAy6tJw2u+pj5ghkl5tMB9uXu9zRJWIawby2NfdJ
+	 W7heVnYfXZEQP15c7yacUokeGYWvUY4iINY5ff6DlnRYpGcOwUpzwiZ7VG48ACaamK
+	 RVmHbfhX3j5Kg==
+Message-ID: <a22e3033-448c-4749-be29-26e72e0c59c1@kernel.org>
+Date: Tue, 13 Aug 2024 10:57:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,17 +35,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/4] arm64: dts: imx8mq: Add dbi2 and atu reg for
- i.MX8MQ PCIe EP
+Subject: Re: [PATCH 3/7] arm64: dts: tqma8mqml: change copyright entry to
+ current TQ Copyright style
+To: Max Merchel <Max.Merchel@ew.tq-group.com>, Shawn Guo
+ <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux@ew.tq-group.com, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20240813072019.72735-1-Max.Merchel@ew.tq-group.com>
+ <20240813072019.72735-4-Max.Merchel@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, l.stach@pengutronix.de
-Cc: devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- kernel@pengutronix.de, imx@lists.linux.dev
-References: <1723534943-28499-1-git-send-email-hongxing.zhu@nxp.com>
- <1723534943-28499-3-git-send-email-hongxing.zhu@nxp.com>
- <cc845521-8547-4db6-b729-c4d3f1fa6125@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -90,34 +92,44 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <cc845521-8547-4db6-b729-c4d3f1fa6125@kernel.org>
+In-Reply-To: <20240813072019.72735-4-Max.Merchel@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 10:54, Krzysztof Kozlowski wrote:
-> On 13/08/2024 09:42, Richard Zhu wrote:
->> Add dbi2 and iatu reg for i.MX8MQ PCIe EP.
->>
->> For i.MX8M PCIe EP, the dbi2 and atu addresses are pre-defined in the
->> driver. This method is not good.
->>
->> In commit b7d67c6130ee ("PCI: imx6: Add iMX95 Endpoint (EP) support"),
->> Frank suggests to fetch the dbi2 and atu from DT directly. This commit is
->> preparation to do that for i.MX8MQ PCIe EP.
->>
->> These changes wouldn't break driver function. When "dbi2" and "atu"
->> properties are present, i.MX PCIe driver would fetch the according base
->> addresses from DT directly. If only two reg properties are provided, i.MX
->> PCIe driver would fall back to the old method.
->>
->> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
->> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On 13/08/2024 09:20, Max Merchel wrote:
+> Add mailing list addresses and missing authors.
 > 
-> Stop adding fake tags. This never happened. If it happened, provide lore
-> link.
+> Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts | 4 +++-
+>  arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi       | 4 +++-
+>  2 files changed, 6 insertions(+), 2 deletions(-)
 > 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts
+> index 01b632b220dc..cae7b5ebc71b 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts
+> @@ -1,6 +1,8 @@
+>  // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+>  /*
+> - * Copyright 2020-2021 TQ-Systems GmbH
+> + * Copyright (c) 2020-2021 TQ-Systems GmbH <linux@ew.tq-group.com>,
 
-Ah, my bad, now I see it. It's fine, sorry.
+Srlsy... that's a churn without explanation. Is the email functioning at
+least? Who is there listening? Anyone providing feedback?
+
+> + * D-82229 Seefeld, Germany.
+
+Drop the address, that's not an address book and your company
+regulations do not matter.
+
+> + * Author: Alexander Stein
+
+Git tells who is the author... I am not fan of adding it post-factum.
+Actually, I am not a fan of having it in the first place - it's useless.
+It means nothing: no copyrights, no contact form.
+
+Anyway, all these changes should be squashed.
 
 Best regards,
 Krzysztof
