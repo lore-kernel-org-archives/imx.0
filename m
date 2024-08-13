@@ -1,50 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599F51DDD1;
-	Tue, 13 Aug 2024 16:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A57C1A0709;
+	Tue, 13 Aug 2024 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723564941; cv=none; b=cGqFwS3C2QixL0J8Dmv+pw2x97yMSCahO3ZJRWV6+xDwK93yBIMqLU89hwbOVNnhn4dJhLFtq1uuHRtsUdLunJE5b2nPFhDvijLkt1xn53NJUu+WJH89lkZ/WOB7SjW9u2xUPhgzCvx/MhVmabNx6fFvcXjUD6nEqwUnsLB+Bzs=
+	t=1723565397; cv=none; b=NhomI+vwml7EFGMIkIeWUhirIN6vtIlGUx89KG6oUu+cjwpwHmrneXE3RpTAnqKaas+rwgXPYwsC4FisBxmW/1MzEk6o7kDtYbcUOxR7Ln6y89FfZpYptMZjLNZXklvwTaL+YTqczY3p5CzWnFwEYomLRHAV9IuVYVp72abnw2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723564941; c=relaxed/simple;
-	bh=heU3e+lgGe2K9h8SHjoXVlse01k5eF5nF+N9YHix9k4=;
+	s=arc-20240116; t=1723565397; c=relaxed/simple;
+	bh=etiP4ivdDC0Q6QNfnYXdJZaBIBDYlEpcghlgNInR8kg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VAYRhcxv4dxgyXozgrb0Vud3uzjm3Nzx3P/s1LJowlawh3vQSnHZtBRgQoQs/NDizrDM8ev+cexnI5W5btoWSD19kYHTBnGrtKEA6d1i35UCRwrwvvk3rf8d6SNv4KXiZDz5wB14ruBTqt5PerN0iCWe6FgldufV+XHD7hOK+70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbByNzIw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZbfLDV/N5mSm4/xmOH8XSE75K/eMk0DI5Zc6BCinS6/IpNAp0mvZSSomc5xP980ROKT9Un0l97dtuak3oHJehlmvqWAbVRPGyRZi1qQVvePkG7wetb0AZT5REn/fJePlnU/W923ZW26YkFc45S9AjG/ZSveTtXnFU8q9ukXcRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArPwd28v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbByNzIw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE88BC4AF09;
-	Tue, 13 Aug 2024 16:02:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArPwd28v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA82C4AF09;
+	Tue, 13 Aug 2024 16:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723564940;
-	bh=heU3e+lgGe2K9h8SHjoXVlse01k5eF5nF+N9YHix9k4=;
+	s=k20201202; t=1723565397;
+	bh=etiP4ivdDC0Q6QNfnYXdJZaBIBDYlEpcghlgNInR8kg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pbByNzIwsEGuHe8fmU3XukBHbtOm+y+ja9Oebt7wtU4oSivdGnjxLJEGN3uLiKL5x
-	 gsKHTRVOgIXfIzKOQR2agpACdzz1Ezd+l8U1/aK5MukeZrKDvFrlqf7JpW6CEqmqwK
-	 ab8RJ3wucnU9I8CnWwFInJ6zGmO4XD7cBw2uVzrg+8lSCUKz2WqvkSzmp+Gs1thyJ4
-	 vWbmGWLspgF7wcwa6lqZpCQO+bNy7x1XUeh9MDT5dcnWzv4AgQGPQeqXXADLg4UrbT
-	 iTUQokm/9OfzdIpSpPRVjqJlukrbuNk2naHkQh8U6qgixckrU0zAhhfwr+tW6cg9gd
-	 rPM0UXGUM5+DQ==
-Date: Tue, 13 Aug 2024 17:02:15 +0100
+	b=ArPwd28vZ33Q5aiHtxp1kd590z7VgE7e1NCh9npjKMl9tZ1Sic+kVWUUSeiQaig2g
+	 n4L2Cw1+ZCch63NzRfnjL6f9QUM4o/KcRdbkBx2Rrzx9wELLZfGVyPjE/sFkE1sKMu
+	 VeLWu7d6zGdSCJmoTB7dBMK/E9OHyP0mz27gX9QmXogfztedYzIe0aderXKDJiZeD8
+	 yUKftRlZMQZS2TW5tnRFlQNyU0pR1iaNHD/+N8AwykkH69JUdgPowql0d8TtyOeff1
+	 jGfgGI6cf4obtEHPzag4FXaz3hytrpSxijNQqc+8c0Wi/Iu5q1MY3Ir36hX/GoXXu8
+	 ZdX0gfhNkhmXg==
+Date: Tue, 13 Aug 2024 17:09:52 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:WATCHDOG DEVICE DRIVERS" <linux-watchdog@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: can: convert microchip,mcp251x.txt to
+Subject: Re: [PATCH v2 1/1] dt-bindings: watchdog: convert ziirave-wdt.txt to
  yaml
-Message-ID: <20240813-distant-plastic-6534f660376c@spud>
-References: <20240812211625.3835600-1-Frank.Li@nxp.com>
+Message-ID: <20240813-trodden-paprika-b2c95d1d265d@spud>
+References: <20240812162810.3812802-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,174 +47,150 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1mgxfAj48UD1hYzJ"
+	protocol="application/pgp-signature"; boundary="AQLZFFmAfzrtOTaF"
 Content-Disposition: inline
-In-Reply-To: <20240812211625.3835600-1-Frank.Li@nxp.com>
+In-Reply-To: <20240812162810.3812802-1-Frank.Li@nxp.com>
 
 
---1mgxfAj48UD1hYzJ
+--AQLZFFmAfzrtOTaF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 12, 2024 at 05:16:24PM -0400, Frank Li wrote:
-> Convert binding doc microchip,mcp251x.txt to yaml.
+On Mon, Aug 12, 2024 at 12:28:09PM -0400, Frank Li wrote:
+> Convert ziirave-wdt.txt to yaml format.
+>=20
 > Additional change:
-> - add ref to spi-peripheral-props.yaml
+> - Add i2c node in example.
+> - Add ref to watchdog.yaml
 >=20
 > Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: /bus@5a000000/s=
-pi@5a020000/can@0:
-> 	failed to match any schema with compatible: ['microchip,mcp2515']
+> arch/arm64/boot/dts/freescale/imx8mq-zii-ultra-rmb3.dtb: /soc@0/bus@30800=
+000/i2c@30a40000/watchdog@38:
+> 	failed to match any schema with compatible: ['zii,rave-wdt']
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../bindings/net/can/microchip,mcp251x.txt    | 30 --------
->  .../bindings/net/can/microchip,mcp251x.yaml   | 70 +++++++++++++++++++
->  2 files changed, 70 insertions(+), 30 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/can/microchip,m=
-cp251x.txt
->  create mode 100644 Documentation/devicetree/bindings/net/can/microchip,m=
-cp251x.yaml
+> Change from v1 to v2
+> - add ref watchdog.yaml
+> - Remove timeout-sec
+> ---
+>  .../bindings/watchdog/zii,rave-wdt.yaml       | 47 +++++++++++++++++++
+>  .../bindings/watchdog/ziirave-wdt.txt         | 19 --------
+>  2 files changed, 47 insertions(+), 19 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/watchdog/zii,rave-w=
+dt.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/watchdog/ziirave-wd=
+t.txt
 >=20
-> diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.=
-txt b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
-> deleted file mode 100644
-> index 381f8fb3e865a..0000000000000
-> --- a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
-> +++ /dev/null
-> @@ -1,30 +0,0 @@
-> -* Microchip MCP251X stand-alone CAN controller device tree bindings
-> -
-> -Required properties:
-> - - compatible: Should be one of the following:
-> -   - "microchip,mcp2510" for MCP2510.
-> -   - "microchip,mcp2515" for MCP2515.
-> -   - "microchip,mcp25625" for MCP25625.
-> - - reg: SPI chip select.
-> - - clocks: The clock feeding the CAN controller.
-> - - interrupts: Should contain IRQ line for the CAN controller.
-> -
-> -Optional properties:
-> - - vdd-supply: Regulator that powers the CAN controller.
-> - - xceiver-supply: Regulator that powers the CAN transceiver.
-> - - gpio-controller: Indicates this device is a GPIO controller.
-> - - #gpio-cells: Should be two. The first cell is the pin number and
-> -                the second cell is used to specify the gpio polarity.
-> -
-> -Example:
-> -	can0: can@1 {
-> -		compatible =3D "microchip,mcp2515";
-> -		reg =3D <1>;
-> -		clocks =3D <&clk24m>;
-> -		interrupt-parent =3D <&gpio4>;
-> -		interrupts =3D <13 IRQ_TYPE_LEVEL_LOW>;
-> -		vdd-supply =3D <&reg5v0>;
-> -		xceiver-supply =3D <&reg5v0>;
-> -		gpio-controller;
-> -		#gpio-cells =3D <2>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.=
-yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.yaml
+> diff --git a/Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml=
+ b/Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml
 > new file mode 100644
-> index 0000000000000..789545b6c669a
+> index 0000000000000..0206d9ddf872d
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.yaml
-
-Filename matching a compatible please.
-
-> @@ -0,0 +1,70 @@
+> +++ b/Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml
+> @@ -0,0 +1,47 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/can/microchip,mcp251x.yaml#
+> +$id: http://devicetree.org/schemas/watchdog/zii,rave-wdt.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Microchip MCP251X stand-alone CAN controller
+> +title: Zodiac RAVE Watchdog Timer
 > +
 > +maintainers:
 > +  - Frank Li <Frank.Li@nxp.com>
+
+When you're converting bindings, listing yourself as the maintainer only
+really makes sense if you know/care about the hardware IMO.
+
 > +
 > +properties:
 > +  compatible:
-> +    enum:
-> +      - microchip,mcp2510
-> +      - microchip,mcp2515
-> +      - microchip,mcp25625
+> +    const: zii,rave-wdt
 > +
 > +  reg:
 > +    maxItems: 1
+> +    description: i2c slave address of device, usually 0x38
 > +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Regulator that powers the CAN controller.
-> +
-> +  xceiver-supply:
-> +    description: Regulator that powers the CAN transceiver.
-> +
-> +  gpio-controller: true
-> +
-> +  "#gpio-cells":
-> +    const: 2
+> +  reset-duration-ms:
+> +    description:
+> +      Duration of the pulse generated when the watchdog times
+> +      out. Value in milliseconds.
+              ^^^^^^^^^^^^^^^^^^^^^
+This is obvious, and could have been dropped. Keep an eye out for things
+like that while doing conversions.
+
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - clocks
-> +  - interrupts
 > +
 > +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +  - $ref: watchdog.yaml#
 > +
 > +unevaluatedProperties: false
 > +
 > +examples:
 > +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi {
+> +    i2c {
 > +        #address-cells =3D <1>;
 > +        #size-cells =3D <0>;
 > +
-> +        can0: can@1 {
-
-The label here is not used and should be dropped.
-
-Otherwise, looks good to me.
-
-Thanks,
-Conor.
-
-> +             compatible =3D "microchip,mcp2515";
-> +             reg =3D <1>;
-> +             clocks =3D <&clk24m>;
-> +             interrupt-parent =3D <&gpio4>;
-> +             interrupts =3D <13 IRQ_TYPE_LEVEL_LOW>;
-> +             vdd-supply =3D <&reg5v0>;
-> +             xceiver-supply =3D <&reg5v0>;
-> +             gpio-controller;
-> +             #gpio-cells =3D <2>;
+> +        watchdog@38 {
+> +            compatible =3D "zii,rave-wdt";
+> +            reg =3D <0x38>;
+> +            timeout-sec =3D <30>;
+> +            reset-duration-ms =3D <30>;
 > +        };
 > +    };
 > +
-> --=20
+> diff --git a/Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt b=
+/Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt
+> deleted file mode 100644
+> index 3d878184ec3ff..0000000000000
+> --- a/Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt
+> +++ /dev/null
+> @@ -1,19 +0,0 @@
+> -Zodiac RAVE Watchdog Timer
+> -
+> -Required properties:
+> -- compatible: must be "zii,rave-wdt"
+> -- reg: i2c slave address of device, usually 0x38
+> -
+> -Optional Properties:
+> -- timeout-sec: Watchdog timeout value in seconds.
+> -- reset-duration-ms: Duration of the pulse generated when the watchdog t=
+imes
+> -  out. Value in milliseconds.
+> -
+> -Example:
+> -
+> -	watchdog@38 {
+> -		compatible =3D "zii,rave-wdt";
+> -		reg =3D <0x38>;
+> -		timeout-sec =3D <30>;
+> -		reset-duration-ms =3D <30>;
+> -	};
+> --
 > 2.34.1
 >=20
+>=20
 
---1mgxfAj48UD1hYzJ
+--AQLZFFmAfzrtOTaF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZruDhwAKCRB4tDGHoIJi
-0jCJAQDK0XmyAuShyMNkF6eWhwtO6Z1aZ1Qovf/60mTCFiCWZgD+IllneA7wU7n6
-EQKqolgIHYG76wOD9T8bv7O2ePuT9Qk=
-=p2lO
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZruFUAAKCRB4tDGHoIJi
+0lUwAP4kUZkvMFonhZbuNpnrd6wekgNLyHVLIfWn2GVMJyK1VwD9E1Xo9+df9amP
+iRLPPUJ6PCLE+9TLGf6oo2YbXkcp7A0=
+=JvS/
 -----END PGP SIGNATURE-----
 
---1mgxfAj48UD1hYzJ--
+--AQLZFFmAfzrtOTaF--
