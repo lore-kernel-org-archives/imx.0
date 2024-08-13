@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B9F186E37;
-	Tue, 13 Aug 2024 10:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2FA17E44F;
+	Tue, 13 Aug 2024 10:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723543472; cv=none; b=EwzIDnULTRWi8hkcAKc3whYJtq7PYlflMmyaxi19Q81ezYF3WHW2A0QOJCtHFn14mWxj8vjC4jmYAW3VJpruKIvO2hIxfYKs44baOyrHV4cVflYfTc3lxpgI+k8pkZCbbxGKv/uVe4I6AxSZiNYmMag80UB6HTp1Ojd9hIt/OAo=
+	t=1723543503; cv=none; b=TBRE3xbVx4V3pOW9c7xt6MoKihaPSIw31+WSbzH3aHT0Dr+MleLcbx9QvSHATmYXTQF5rDcG9WDCRPEYpOAQnIiHADdk3K+LS/mBmEIzmQ0/0JBzOfb6gSjP28aShf1ryxq8ch0yGJp8TrEp1ln67tfphypjDRv9IiFXyvutdoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723543472; c=relaxed/simple;
-	bh=BFJvZqCV34liZlaQ/lqFr9WpbFn4B9FdIXmeaDKkMsg=;
+	s=arc-20240116; t=1723543503; c=relaxed/simple;
+	bh=RLM1b5OCpcYBlOO20hjl2IV3j1hiiTdOBey6lSnxJPg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UM8Ht6uDkCVB/g7ouiRyUimahzA9wmkNzcdTfkhxhp7k5BrSZefgGvJaeQJpZqUMix3MU8oOZxZWCr38Zz/KSUSYLl0pHDM1xuTR+6Ll39tfUHeah2sYTVJhD4LrbLKqhXUQ6HGH1JEVTn6z47tmj0z29+ZwDpANibiI3cxD+ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJPQCuqf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=G8XJDvgHdvkYi82jnYO/OqWHLay8EFSWnoyU7BW1tazaKnKMIgmdu0r/vRQKNdnWWOmTNiF5+cfGv62g86eLnGa8VgQuYSTfTizVGlyxczeFbnwuBFWvpIrKxCKYfMkKmv+yEukRUXhcyhR/VBfVfRI4BHblOk5vtwKe96w5Q90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hrQBqVUC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJPQCuqf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55084C4AF0B;
-	Tue, 13 Aug 2024 10:04:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hrQBqVUC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B52FC4AF09;
+	Tue, 13 Aug 2024 10:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723543472;
-	bh=BFJvZqCV34liZlaQ/lqFr9WpbFn4B9FdIXmeaDKkMsg=;
+	s=k20201202; t=1723543502;
+	bh=RLM1b5OCpcYBlOO20hjl2IV3j1hiiTdOBey6lSnxJPg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lJPQCuqfGEDXUdW1nV2JxD8StzcnF+oyEIw0L+X6E/jbSqZYxDXM3ks6N563DenmC
-	 1B14+NUUTAiBf5chHcvJ+WhGQQOMT8EQRx+PRJMZIZ7VQ7AJPFP4pdrO1yV/YgiQrP
-	 HfmOD+uZwovfAZHJImz+zwViD9V2qut5P/6h6uiqkVjR6r6dPZpglhLV81ZjtVVXcz
-	 IWUQv6JQQwNykG7KYEgxo/m9c8M2BdEsQDpug5WaseGRDUmGi3fzjdQnNV2jbFBw6W
-	 zivn02RFeeVE19Hai2K5STLzuFgUnAecW7Y7T90Ftjv+miHEMwCCXJSeTMNm+U+0dq
-	 5gZFkOD96Es1w==
-Message-ID: <afbb96e1-4bcb-4bb5-89c0-b51c4e5f8b45@kernel.org>
-Date: Tue, 13 Aug 2024 12:04:24 +0200
+	b=hrQBqVUCw5k9G0gc1RkcS1ijD1UN5t2XUl7kVKZcnFwTOcDXYQugFyPZ6YjKMQ9fp
+	 S4dw4BYr/WsAkUlC4Ua7QDf9vLrTeXPKAkicnzGhKFYI4b7d3YDi0+Y5sc1Z1hVgeS
+	 3hchdQyiv/+Vrw19Dxmgl6nOtEisj2isiDbMUdQbe9NjsKfn6EWpzCo124QMiOEvh0
+	 8nyZSKviIxjQ2+XNHY72gYdjjBmIb68q+377GGcOVZCSAaLBBS/G+Zt5/3wNCenN/5
+	 U/YYJNITdTDFbovDPb0FabdQ0Cfmy+daWt8/TLnBBxdqOP3G5P2luyyWDnkDEYyx4K
+	 fp9oJXIltkG7g==
+Message-ID: <033b66e6-f15f-4136-aaae-ba58c9814b97@kernel.org>
+Date: Tue, 13 Aug 2024 12:04:54 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,19 +37,20 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 15/17] arm64: dts: imx93-tqma9352-mba93xxla: rename hub to
  usb
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>,
  Gregor Herburger <gregor.herburger@ew.tq-group.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>
+ Frank Li <Frank.Li@nxp.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux@ew.tq-group.com
 References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com>
  <20240813-imx_warning-v1-15-3494426aea09@nxp.com>
+ <1802961.VLH7GnMWUR@steina-w> <1998267.usQuhbGJ8B@steina-w>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,23 +96,26 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813-imx_warning-v1-15-3494426aea09@nxp.com>
+In-Reply-To: <1998267.usQuhbGJ8B@steina-w>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 06:35, Frank Li wrote:
-> Rename hub to usb to fix below warning:
-> arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dtb: hub@1: $nodename:0: 'hub@1' does not match '^usb(@.*)?'
+On 13/08/2024 10:49, Alexander Stein wrote:
+> Am Dienstag, 13. August 2024, 10:40:04 CEST schrieb Alexander Stein:
+>> Am Dienstag, 13. August 2024, 06:35:10 CEST schrieb Frank Li:
+>>> Rename hub to usb to fix below warning:
+>>> arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dtb: hub@1: $nodename:0: 'hub@1' does not match '^usb(@.*)?'
+>>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>
+>> Thanks.
+>>
+>> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts | 2 +-
->  arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 2 +-
+> Still valid, but there is already https://lore.kernel.org/all/20240808123206.192906-1-festevam@gmail.com/
+> 
 
-No, synchronize your work with other TQ, so we won't have to do the same
-review.
-
-That's not really correct. See other thread.
+Fix the schema instead...
 
 Best regards,
 Krzysztof
