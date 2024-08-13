@@ -1,225 +1,155 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9451A0726
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 15:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723562166; cv=fail; b=FmJFaoHiCu8tUjP4fPZAuZzSbE/OaTmOrrbvpaEscdALQWRLjxC9VFPAsAEwIix5d06l6t36VmescSbr2zFa/I8Iyx4iOlcjDN4BJSe6kWc1QuqNeSzWviM8VkVS7dR3V/U7rmsUzqweWDQ0SDicwD7iSexm6dySyAaEpq6X4vo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723562166; c=relaxed/simple;
-	bh=DaLGN7qQFvP6oGFtxS4SP64nZLiI2N6XmjBeOGjaOcQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=aPG9soWC89UMK1991jN0Z9W0vdVck/dMuDVd23eG5s2kJ94B7BHVAwQKCPohbAviQjbVXtbsxNVYxbA2gFNDDvD+VOeGTN8sPm3xChwS/1+EnTmbkr63JgANvxs4sJGIz0GbCYYLstjcm/fhq4nE2Q3vBqxEcssQJcax2fVA6fg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=c27DUjVg; arc=fail smtp.client-ip=52.101.65.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C33F1993AD
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 15:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723562664; cv=none; b=fuR8cZFiH3GFcDucJuSeP75x4AceLj7/UJvGQTS3kqWqtZdroiAkg5YrO8Pz5N/tsYTlgPcuqowLJS8/Z3U5bia+vYCzxy1SRh8ZXU5zdOoceiyTr6WdlOc6wtaIMWqKNe9/bA412KJRtyzhZkkrRv3VuyyAs50cww2nlLsKgi8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723562664; c=relaxed/simple;
+	bh=iax8nTB5naAhcfkw0pscNQSiKlvMu5KILn0pGkHWQKA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EYlB6fdDHEXBsuvES5h5zVk+hyOHHL8wI4mjxx2rTC8QjrrJP/u525H6syheEU59kkmkQ7G1zJ5P5xNu84vzGTWsN3CgszUrv/46ulJ1Z7nKOR9SGqlfnkbvLNaEA4+642rhw6mDjucTpsOjfUxqKcSYSAq5u1fBdtbCKyqUBVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ibiLnGZC; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="c27DUjVg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PnM/YKQs+qbWLr92Ql4O/2Qh00vzLSgYqBSRDdJUWObNOd7SpPr189BsyPk7iikZzyrdrFzDHTmVqdPYzNmGMh9zjV+cFkkIywKTEH6l4ek5S8ZZbWB8hSzkQ4aTbbgWt/6dRvA173uETR/pmwmQrf9rWTFARuyJBcVWmH5fEjKYDwU8kyA2zYQ3dMZ02PSMureaJMyh0mfyR1SevWUIu5nsakI1dFg+dfo0WLGcQBmcDdXySgTiw4lI/zTSNyZAoCRvJ+RmZeXjsaJhxB0tvFj7GP1fKx4Gc87Aa/tIXrwlvYHhV8wF++0zAQ+AKxCYBrD2+mdc9ZtLBcEPLh4peg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2/SVwfWRORhLiOwxpskuAqNJQ7ey0W3ly62qeO1Waoo=;
- b=Hwh7rQ9vWMcG80LS7RxBNyoHSFnXs0Otb7EXj0/TxPI3KmYAgExmmWMaGtF5yuKRDLJh/2rzLsIcjo/jG2NNM3doVofjBDcQY3aUNPczshoaiGvx/liRSsn+LYx9a8f0R1R4outf78Aw9inWxnVNgsthn8Qw3uc6QOGbhRQxlEI3VDnjP7KqRcObnfAQGRYfrvC7uPw5ln4zpbD9Kf95MoyNiIBKua1gxubXSk4K1SmqhHjEnICQI4lNsDbqnRewuZiJ2UZsie6G66qZtoSDgneMn85Z6ByozAJ3mKOehgoW2s+R4s2E7KX4GQWsm+G+p/hgFDY9eaPHA9ogWMwvxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2/SVwfWRORhLiOwxpskuAqNJQ7ey0W3ly62qeO1Waoo=;
- b=c27DUjVg0P/IAGIIybfGOVnxaUT2PVYml5WPp0CQEnEvhiR9DpzQ9yzjS/QrR3devDxgajYH1AuOl88JtQ6JdQkAOdq3vzjX3TQbs+B+sfs3llS4Ogxsj6q4GHsT/5Hebr55UiubFp9vPsl+lefF4vr5OMAC0sbMRCmQXyOkE/BN1s/u3J5Br+aKfGszbDmvs4qnpxxGHX157i7TjkgSQJ+f9X+n5OXTDg0LbxNrabZTLrPHddO1/2NArBc6V8BfwpvMRP3AmmjPTKc4MZB545XERyvYI6Gl3ydUR3sMGDCsoTZYr1K9EKtmo3k0ckfhhTCCNuPKsjQPusB0zxMcmQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU4PR04MB10623.eurprd04.prod.outlook.com (2603:10a6:10:580::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Tue, 13 Aug
- 2024 15:16:01 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7849.019; Tue, 13 Aug 2024
- 15:15:56 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Tue, 13 Aug 2024 11:15:09 -0400
-Subject: [PATCH v2 11/11] i3c: master: svc: fix possible assignment of the
- same address to two devices
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240813-i3c_fix-v2-11-68fe4a050188@nxp.com>
-References: <20240813-i3c_fix-v2-0-68fe4a050188@nxp.com>
-In-Reply-To: <20240813-i3c_fix-v2-0-68fe4a050188@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Parshuram Thombare <pthombar@cadence.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Boris Brezillon <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Conor Culhane <conor.culhane@silvaco.com>
-Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, stable@kernel.org
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723562115; l=1988;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=DaLGN7qQFvP6oGFtxS4SP64nZLiI2N6XmjBeOGjaOcQ=;
- b=GmVe6uM9oxyEhl6ZteKP2TVSycfDEG5HUkd65JC7G2Zy73mA4c1KYOodtFIOdzdceRSsCCj9B
- cvpTEUv0I3nDC2sIgB+dEyGHHxGqyl9+wrJBOIc8D0tiD9/leFhTr4+
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR05CA0125.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ibiLnGZC"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fd70ba6a15so42663755ad.0
+        for <imx@lists.linux.dev>; Tue, 13 Aug 2024 08:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723562661; x=1724167461; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oDUamF5J+1XHT0J4TpZt9iUNA0VNngLpHfz1pQpsQFM=;
+        b=ibiLnGZCla2k0LdNqo5ge34rocHL9mipAcd55dRBM6w4GePVYaJZq3zipqtRJURao3
+         yYM0MdcKIuYbbBMfDWY+1JPa8yuGHUI593B1Zzh19mn1N/O9lwH8DD7+mqsNbQx2m5+l
+         F+gOaaazFTBjPrrOFB9/Cd4Bh/ngOjySxEJEtNtDm/i/f9LSzPmAM38QAkxPH+W56Lq7
+         5fsNxVUQeHF46xTCoNy4DiO6MzRd7v00CZe+AdLlF2BNjyV6hsxjAzXjZy9hG+GB1IfM
+         7O5uGdvTn0D9MU0F1C85ZYQ0Wxcm62zFERYrAXSHMleV3o6lemlqXUPR0IiD+kzm2wyS
+         B2dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723562661; x=1724167461;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oDUamF5J+1XHT0J4TpZt9iUNA0VNngLpHfz1pQpsQFM=;
+        b=foeK0X6q6cYVXuyrk2P+hHqJn+es+z9oO9kAWortz9I3Ik8lLV18BFf3sA0ZMo3juS
+         sxoeP3Ro3M9OhdBLdH3cvAohaqpJ9A7FDQCnTxlAAHbDsXuIJWqtexG8qiC4NHjAFcWV
+         FR4ohVSMx9IVbpNCIIWoAYEePMvWQtBX26W5Mkf//RwFOLgOGfpL1ndiZ07uVnNb1f/a
+         UJL6eA7mepsxnhoR/FKGr5ZNEgq9rRbmxhwmUVbFUnOxx/glQJUzWHoo3JSfT8uPj3oE
+         QWOepgsZ87EzVHQusZv65kOa9/fMTnxoYeZkmri/N5znHsQmuKW6pPholPKbSGBV6gp/
+         4QTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVc7km2QL6vk+/74f5j+SsMyrIaMhz5EdhnfAG7dwHzUTV7qCaQ7rV9pRlRCcuTkguORMlq2VN7NeUjoSMCzSbvKNSX
+X-Gm-Message-State: AOJu0YzWSNJGo2AoEhlzj+ejOV7sz5ugGGL1vo1EUpWqi5NISYrl/BZV
+	bAihd6Jfe0dFj8DW/pqU2hoq0UEoVBOTVlfkJaXzmqIjJJ2JvDQ6d9nU8UHL5Cg=
+X-Google-Smtp-Source: AGHT+IHAxQb7Y6nkxCHFTuV+Yo1GDZU/jfnWNM34Zxjd3gA7zK88WOcad9xQ+GrBaPPGulVSnkAg5A==
+X-Received: by 2002:a17:902:c408:b0:1fa:8f64:8afd with SMTP id d9443c01a7336-201ca127b19mr53908795ad.11.1723562661371;
+        Tue, 13 Aug 2024 08:24:21 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:d596:d55b:d99d:7ece])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201cd1ab426sm14760975ad.157.2024.08.13.08.24.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Aug 2024 08:24:20 -0700 (PDT)
+Date: Tue, 13 Aug 2024 09:24:17 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] remoteproc: Use of_property_present()
+Message-ID: <Zrt6oej7Dsj8KXrL@p14s>
+References: <20240731191312.1710417-7-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10623:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82908c0c-227a-4542-cfe7-08dcbbaad47f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?TXlnVFJhR09OdWRxUWd1MHliNTBnZ0hKV21BeXdsYjI5WGRlZVJ4Yy8rbUFE?=
- =?utf-8?B?NWQyVmttb2o3blBVZGpZQ20zMlZJVXp2UUR3dmwrdlhXWXpVTFJseFpsZkEw?=
- =?utf-8?B?eDB4WGdWTmVQeFd1alNhb01oczNCUGszSlJLNkR5cHBSbWplYU1ubHRScmZ6?=
- =?utf-8?B?Q2dhMnJNemFnQkdZK2xXQVI5SFJJbU1USVk0S2lFMkZaY2ZhMGphRmtJeDRn?=
- =?utf-8?B?cytxWjZrbHhjTEpaSDlQa1lzS0ovaHFLKy9zbGFUOWxaRGR1bysrWWZUWFc5?=
- =?utf-8?B?S01MRG4vRGVzT3lLWXJwUytCYkhUaHpxbVdDNnlpUEdTOXRBeU5IQ0p6SG9i?=
- =?utf-8?B?bUhWOWhnanZFSTN6N0daMTc4TEZ5b0R3dWgxVGhSanFIcjhJc3VSK2JXS0RE?=
- =?utf-8?B?bHhVWXU5S1pyMnJkdG5qNEVNaW5ua0xzSDhxMk14YURoVW9qM3NNVkR1UjFF?=
- =?utf-8?B?ZEt6LzBUL0NMRE5idHhtQXhKMWZZNEk2RVUwYVRxdEIxZVhJVjcra3dNVTk2?=
- =?utf-8?B?UmVqemdmZU9VOU03aDR1Rzl1TmYrcU44ZC9BeERzc0luYndBYmlkeFhudUc1?=
- =?utf-8?B?Mnh0SUJrcWZMWGJ0b05kNkNsZmtmTHhBV3o5endUMlhoYzFScjgwamIxeHl3?=
- =?utf-8?B?TXZjWWU3cFJmN2RHWGdzNmgxT1YxV0EzQ0ppQXFRNCtNcThtZlc2OWJERytm?=
- =?utf-8?B?WVpaUVBPcTh2UUQ0dCs0aU5PZEVCcGpYSTM0ZDk3dzNCZUt2blp1VGpUNlZS?=
- =?utf-8?B?eDFSeDc2azZKQm5CRklOZ1lNaDNuaGlTb1R4cFZpOEx3WTArR0hHRTVhVWJP?=
- =?utf-8?B?bDNJYW9kcnRxcFh4SFB2eHhYS3g5OGpXaDAzNWVoSW04ZFNtaUprY3p6c1kx?=
- =?utf-8?B?RlFhYlZQMW4xUWVaZWVlS3N5M1ZYc3ZyQ29VenVYSXd6RFZmTTBCb09XZHBj?=
- =?utf-8?B?NlJxdC9QaDJPY3M2L3dZaEdIekNVbkVTeXYrVWF5VEdRN2xvUW02dEJFTjd0?=
- =?utf-8?B?YTk0dEkwWFdObk96RGFmSVNyTHVSaEN5akJpL1ViUHFsNHBnVk9tamJ6Sk9s?=
- =?utf-8?B?VERGNm9vNXhNektuVEpNRFZFUDNieDVKaFUrTDhqazRUVUdZTEErNEdnM1lv?=
- =?utf-8?B?YTBVNjd4U3ZxNUtpRWJtcFdMNXd1N3lBSDIvUXBqKzJGeENFU0ZlOHUxTnZT?=
- =?utf-8?B?MExTQlBJYXVhVDN6cW1iTlJ5Q1BvN0xHc2g1YkpUSUlLbFRWVklWYmF4VVB0?=
- =?utf-8?B?THEvYXlaYi9LTnprZ09rWFVpamszRHpuRE5EdHd4UnY0b3dKazBwQnF1OUZR?=
- =?utf-8?B?bVVlNUhzUTYxZkg4b3krSWxvWDRPSElGejhHaFIwYU9hTzI1emVhVE0vUzBL?=
- =?utf-8?B?cE55VkI1cTQvMGkyRHltbXM4ME5EUzQxSXJVTHM1VXRMQWszT05LYndpMUFo?=
- =?utf-8?B?OTRzQU5tckFhU0hFeGx5aHFnMjRjdWhTbEZTaGlaWUZySk5NaExaSVBMTmhz?=
- =?utf-8?B?dlJMaUREaFU4eHZIYTZYMjBqM3lNMEUwY1RCalhSdmhtaW1OVjlkM1BidFQr?=
- =?utf-8?B?VGhMV0NHWVVjdW5MTzZ6TElrbW92UTFQVmZWVHByUUx5NENyVkFFZlB1c1Q1?=
- =?utf-8?B?bWpSd2I3UE1PZWVZWVVEcEZONGdMcURrUWtuWHNGRlJtQi9mcVlKUWMzSzM3?=
- =?utf-8?B?cC9aZENuYWYveGtQdnpMcFIzVCtvY1Y4c1NyemsxZGNpeUhKalREd1E5SzN4?=
- =?utf-8?B?TXhPQlordFNJVHUxanQ2TkdOMGxwazRvNk1xWWpXQWY1eE9TR2VWWFI4RCtS?=
- =?utf-8?B?cXRVYktUaVFrNG1RVUdKT3R5Wi93RXBaSWhickt5OHRzUnM3QzNLMVRxcktO?=
- =?utf-8?B?VkNMeGZsbmNUREZjUk54Ni9kTmMxVm5Ra1NlK3lLUStNY0E9PQ==?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?NC9vVHE2Z0VsT3hOaGRreElya3FjSUNqUVljTmFBakl3MUIyWFlqdmQyN2xu?=
- =?utf-8?B?UldjaEpra29RZFBOSmo3bHFFT1R3dGNjWmtpaWtZK3c5dkE1bnFqWWt2Y01l?=
- =?utf-8?B?MGxLZS9Qem9UTnR2M1Njcm92TWdrVjV2Si8zU0RXcmhySitGdmhzQW5kdGJJ?=
- =?utf-8?B?TjZoOTVGbG1PMDNBZkxlbW0rOU81OGp3U1I5QUpIVld2TTk3dFlyOUhjU1N2?=
- =?utf-8?B?bVB3aVpXQTlwSE5lZ0YzTEpLcXdic3VzTGs4SEJIeG5YV1RpV21IV3V3R0tr?=
- =?utf-8?B?R3VQS3lCbEVpYjEvY2ZUWFZUcEJIckdWcDdyOGU4Rkd5K2YwVVV4S0RtYVVx?=
- =?utf-8?B?akNMTldZTWpHLzkxbVdLWHFBT1J4N0NvMVVpeCt3bVlQU1lMTm15cHlLKzNC?=
- =?utf-8?B?MXp3clFZTGVIUFUrcDZLUUZqamlRWUY2Q25TbVExQURONDdRT0tRaEQzQ2gr?=
- =?utf-8?B?TEwyWGs5dW5pMW4weDNRT1hmMFMrek1ZcnpMcys4V1Jtcm9TY01UN2RxRTlJ?=
- =?utf-8?B?RHZJc0FwQk15dEM3YVNEYWtsQjFxUVV4TTZpZHNudWpRaW1IdUVMUGxZU3lB?=
- =?utf-8?B?TEVHaW5sUDVtNm1KOWRBdUd4ODFPc09hQmVIcXdXajFxelV2OEIxSzEwRk1j?=
- =?utf-8?B?VnJGV1BLRTlWT1E5RTZMcEpiRytoTnc4T1RZMmorQkl4aVdic1AxKzY4QmNW?=
- =?utf-8?B?dTdlcEcrVjV1aWJPZU1yckNXWk91TGI3NVVQTW1FVHdscWlQak1mTlRKejN5?=
- =?utf-8?B?WTYrSkJVMlRFNmsxR3ZmTy9iOVp1aUtXYmswblhHYU1vK3J0T2hqOTJHNGJ3?=
- =?utf-8?B?S3Z3NmVrakRTQmk0T1E5VjFyNnhEbmo1bVI2Y1Q1LzlGUTlUVlpwRmthNlpS?=
- =?utf-8?B?QnZhMUk5bXB3RVNjUjJkVEU2U3pEaUxCbTFiMFpDWERLZTZ0ZzIxYm9TSEVE?=
- =?utf-8?B?bHc3QTdRcmhJbEJwWjV6VzJxSGNMVGVYK1RlVzU2cFp4NGVOYXlBN25mc0I4?=
- =?utf-8?B?cldCdHNuWDR3SmFJZTVkbFpSNlc0M08rT1hDdUdpWHdYeVNXdVRyMXpDbzl3?=
- =?utf-8?B?MHpEWjJGV2lkcXgzTXh3M0ZydFA2OHlEZWFjLzhGeHV4VWUxWW03SEpBYnd4?=
- =?utf-8?B?V3hNL1Q4ZndxT1JseW15N0JjUkR2eWZoY05SKzBLOEJKeHdoVVo5L1pvL3pM?=
- =?utf-8?B?eTNrUFBzdS9tOEZBWTNyY3oyMnpkZW56UGZZUExHM2hmdlRWaDhPeUxNa1dS?=
- =?utf-8?B?R0JzOG0zWVZiOXg3SUFDMzhSMDBuMXFRWkNvRkdHMUg1em0xTHhDMm5zanIv?=
- =?utf-8?B?RDlyRmlEU2pyaldjVUwwMkVkc0E5eTdrQnRMTHMyZmRiWnVzcVVGY3lOT2h5?=
- =?utf-8?B?eUNpaU9Oc1NES1JCVlFyWGpjZGhxMFJycmFqR2xnanp4Z0txNUMxQ0p2eC8w?=
- =?utf-8?B?dEM0cStBTXZlb2V0bEpuRCt0VHVIUVpob3BRQjdZaW1TQU1nOWpXQnJod3pt?=
- =?utf-8?B?N3FhZXl0Kzc3bjBxSEhTNmdOd2RneFZWZ0hRNUFsa0EyQkJCSElYUHhHaXlK?=
- =?utf-8?B?L1V6TkdNWVQremREaXJrMER5QW9yRTBoTmVaQjZndDQwT0pEVTRBMkwydjlX?=
- =?utf-8?B?UGtuT2wrZUxFTEVCOFd4YU92T0U3WUR5ZWRrSXorNERwOFFmK2owdXBYcmtp?=
- =?utf-8?B?OThWMHlDNi85VWRESjFUNjZEaFp0NEZXclFPSm1meFczSUpLY2dpRVV1RDlW?=
- =?utf-8?B?Q0hkRlBNbWVPUmlIR1o5YjNXMFNPa2hYMG1OeGNWaEx4UWZzcCsrS09aaXNi?=
- =?utf-8?B?cnFLL1NWOVBRTjNDb3czV3VUcm5DTm10MzBPeWJ3U2h4L2dVVDBVMGk2TkVr?=
- =?utf-8?B?TnR3TEsydUtQRXMzNmx6eGQxR05vYm5OY0lFYVFXN1Y4dlF1cmtKYUVCSFVv?=
- =?utf-8?B?NFFKUytGeWhjaXZaTlJadFZ5VG1MSldDY2F5dG11TGx4R0xVUk1acTAwbEtD?=
- =?utf-8?B?WWU4d2IvRnVDTmQzZ21IdGh2UFRXUHVJRFE3K1RtQUFYdWkwYkc2MjBscVJn?=
- =?utf-8?B?dVpvZ0NPQnpqbTB4UjFCSUY1WnN3WVlWUGNiaDVmRk1FditiVkhibjExWWIw?=
- =?utf-8?Q?EgP8=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82908c0c-227a-4542-cfe7-08dcbbaad47f
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2024 15:15:56.4539
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jMWJi6sxoONkt/rwkcAjeCKoZX/VOsGfbCnfL5veBpGyM3Oz5a3LokRup3dcHTfKcn/PjcguRmXtq6wZ5Donaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10623
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240731191312.1710417-7-robh@kernel.org>
 
-svc_i3c_master_do_daa() {
-    ...
-    for (i = 0; i < dev_nb; i++) {
-        ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
-        if (ret)
-            goto rpm_out;
-    }
-}
+On Wed, Jul 31, 2024 at 01:12:45PM -0600, Rob Herring (Arm) wrote:
+> Use of_property_present() to test for property presence rather than
+> of_(find|get)_property(). This is part of a larger effort to remove
+> callers of of_find_property() and similar functions. of_find_property()
+> leaks the DT struct property and data pointers which is a problem for
+> dynamically allocated nodes which may be freed.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  drivers/remoteproc/imx_dsp_rproc.c      | 2 +-
+>  drivers/remoteproc/imx_rproc.c          | 2 +-
+>  drivers/remoteproc/xlnx_r5_remoteproc.c | 6 +++---
+>  3 files changed, 5 insertions(+), 5 deletions(-)
+>
 
-If two devices (A and B) are detected in DAA and address 0xa is assigned to
-device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-registered on the bus. The I3C stack might still consider 0xb a free
-address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-causing both devices A and B to use the same address 0xb, violating the I3C
-specification.
+I have applied this patch.
 
-The return value for i3c_master_add_i3c_dev_locked() should not be checked
-because subsequent steps will scan the entire I3C bus, independent of
-whether i3c_master_add_i3c_dev_locked() returns success.
+Thanks,
+Mathieu
 
-If device A registration fails, there is still a chance to register device
-B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-retrieving device information.
-
-Cc: stable@kernel.org
-Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/i3c/master/svc-i3c-master.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 0de95f406c95b..f47e5f4af68c9 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1041,11 +1041,8 @@ static int svc_i3c_master_do_daa(struct i3c_master_controller *m)
- 		goto rpm_out;
- 
- 	/* Register all devices who participated to the core */
--	for (i = 0; i < dev_nb; i++) {
--		ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
--		if (ret)
--			goto rpm_out;
--	}
-+	for (i = 0; i < dev_nb; i++)
-+		i3c_master_add_i3c_dev_locked(m, addrs[i]);
- 
- 	/* Configure IBI auto-rules */
- 	ret = svc_i3c_update_ibirules(master);
-
--- 
-2.34.1
-
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> index 087506e21508..376187ad5754 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -509,7 +509,7 @@ static int imx_dsp_rproc_mbox_alloc(struct imx_dsp_rproc *priv)
+>  	struct mbox_client *cl;
+>  	int ret;
+>  
+> -	if (!of_get_property(dev->of_node, "mbox-names", NULL))
+> +	if (!of_property_present(dev->of_node, "mbox-names"))
+>  		return 0;
+>  
+>  	cl = &priv->cl;
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 144c8e9a642e..8d7ecc809c67 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -807,7 +807,7 @@ static int imx_rproc_xtr_mbox_init(struct rproc *rproc)
+>  	if (priv->tx_ch && priv->rx_ch)
+>  		return 0;
+>  
+> -	if (!of_get_property(dev->of_node, "mbox-names", NULL))
+> +	if (!of_property_present(dev->of_node, "mbox-names"))
+>  		return 0;
+>  
+>  	cl = &priv->cl;
+> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> index 596f3ffb8935..2cea97c746fd 100644
+> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
+> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> @@ -1059,7 +1059,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
+>  	r5_core = cluster->r5_cores[0];
+>  
+>  	/* Maintain backward compatibility for zynqmp by using hardcode TCM address. */
+> -	if (of_find_property(r5_core->np, "reg", NULL))
+> +	if (of_property_present(r5_core->np, "reg"))
+>  		ret = zynqmp_r5_get_tcm_node_from_dt(cluster);
+>  	else if (device_is_compatible(dev, "xlnx,zynqmp-r5fss"))
+>  		ret = zynqmp_r5_get_tcm_node(cluster);
+> @@ -1086,7 +1086,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
+>  			return ret;
+>  		}
+>  
+> -		if (of_find_property(dev_of_node(dev), "xlnx,tcm-mode", NULL) ||
+> +		if (of_property_present(dev_of_node(dev), "xlnx,tcm-mode") ||
+>  		    device_is_compatible(dev, "xlnx,zynqmp-r5fss")) {
+>  			ret = zynqmp_pm_set_tcm_config(r5_core->pm_domain_id,
+>  						       tcm_mode);
+> @@ -1147,7 +1147,7 @@ static int zynqmp_r5_cluster_init(struct zynqmp_r5_cluster *cluster)
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (of_find_property(dev_node, "xlnx,tcm-mode", NULL)) {
+> +	if (of_property_present(dev_node, "xlnx,tcm-mode")) {
+>  		ret = of_property_read_u32(dev_node, "xlnx,tcm-mode", (u32 *)&tcm_mode);
+>  		if (ret)
+>  			return ret;
+> -- 
+> 2.43.0
+> 
