@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DABF1487F9;
-	Tue, 13 Aug 2024 09:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3928210E7;
+	Tue, 13 Aug 2024 09:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723540134; cv=none; b=ZR4o7HdSRyczBLPAPOZPtqjNFckjvXNuOR+ZGvxExqvJLljm1jp0xVbRKtya0HdifB0v5Oc/gYa7hkFP2/fKoZouv98g/FIYtmLCirvG72gJBs1mnyRtX7brmgtY/cgsFQA47KljD8j13+1L/r250Nz9JapZy/ug37SiSFZILck=
+	t=1723540815; cv=none; b=soW2wgs+h1yayokl7pTmD7w0EdI98mQpMAMp5+7U840fv/M46VgCJB8BQ4QF5swZz6ns1GvPBcdUIYMqvh7c8tbsl+0ActBXqRPHdrjjCr5vDr34naOt7xefaS9VQxTHI7miogtnU8zUZDaYMksKkpC2hfqgHZ65facPFrPv0Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723540134; c=relaxed/simple;
-	bh=tTf12N2sToOZT7o8BtfaUvPnYFIk5jf+p6GVTlx/nZE=;
+	s=arc-20240116; t=1723540815; c=relaxed/simple;
+	bh=kJLEtYQcepPSsS8lbEpbemeMKD2Lt0XQEH/PhphCKqY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tw77gXYJUaT9/5AUKVHF3q3oLnzNOtj+YaS4R+64mKHKvAgHPLD9c9HTfyE8Wvm+087sZ/GokqTVvaglzJW5ke1OIzoN3LFDXhiWW/cVpbpB+/Q3Bupa7AES1AR9B+kCa0F0p1abaftkVQ3CQ1VQANlShu7LHy3fZtWjYuM7Vxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYEBvutO; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=D+faRaWol3XR5Zdzn8P4WHxBorC6fzyOE8APYrPEvrSz85pZbILNCGJzf9dc9ax8hUFrIem/qDviIdC1Sfqs5Qfd/4kqabDy1K7d4AyCoOm7OeIZxMDtzbwcy3As7YJjM0W9YWuL9mGyIq17DyKUuVEKDGx25WDDZR0QF5EQV0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/gDzNkR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYEBvutO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771CBC4AF09;
-	Tue, 13 Aug 2024 09:08:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/gDzNkR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF73C4AF0B;
+	Tue, 13 Aug 2024 09:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723540134;
-	bh=tTf12N2sToOZT7o8BtfaUvPnYFIk5jf+p6GVTlx/nZE=;
+	s=k20201202; t=1723540814;
+	bh=kJLEtYQcepPSsS8lbEpbemeMKD2Lt0XQEH/PhphCKqY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TYEBvutOMZuRpqKyMZvJ5GWIfk/GtSRU602TPwFrHxjFyajT+y1rgdMvDyKo7tqm+
-	 9shItNdyi5x0NA6IHnVD/i1gc3HCocQBgyRV3vRp3Zx+vWjKdf1jANB0cJ/7rf2Z6r
-	 Tqhg2CfvucabNkZzbZeolvYWzopYtleiwZExyGvzOW7V+xVeiJPFSW7eLTbLyPeCIR
-	 VLvUJ4Nz1pu8gPDLRjves5A8H83BkT2dCguc5CCJPZ2zZNiNcyK/oOVLdITrGONRtq
-	 YQFvRvDwf4+jz9RCjPAXVBcC+RLxF5IzeqK2G8/8FZ6KYjiY0y25BYNk3O1l8ZqwsM
-	 Qn1cxBD4CjCDg==
-Message-ID: <9ab6419c-2066-4c6d-bb6a-f78d4845b2b5@kernel.org>
-Date: Tue, 13 Aug 2024 11:08:45 +0200
+	b=N/gDzNkR0qm59bhD8yXPG+OYfMlY4hKyc8Rm7PjnA4kFPP7BkGvjJGYPk5kc6HiZc
+	 7vXwIK5UJImXF/2Gw3yRt4aFPYlmTR3NtY6/hIkRtpWBuqK2+o+BL/HOHZ1ZhO90jG
+	 2TTYerzYzRZoxdEuGbNDNwDRx4CAwuIXXTyx8dcLdcNAxyePxoOLAtlAXn+6vWfKQw
+	 Mjm3+z4pU+B3teyKUdECEWrHZVzj5Q3rqTFfCcdkvGfbTB45DYaAKVvAxDiDYGpMQW
+	 B1n0gkSU3/HwA9iBV5+a1jGNB9LeiEvQgSMMYcYhTNWx3Z5LWeNJz2rAwX1IUMblt2
+	 2XU8XJaqzVmAw==
+Message-ID: <781e8fcd-3814-4537-8ecf-efab0a380fff@kernel.org>
+Date: Tue, 13 Aug 2024 11:20:08 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,24 +35,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: display: panel-simple-lvds-dual-ports:
- use unevaluatedProperties
-To: Frank Li <Frank.li@nxp.com>, Liu Ying <victor.liu@nxp.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
+To: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
- "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- imx@lists.linux.dev
-References: <20240812193626.3826250-1-Frank.Li@nxp.com>
- <143d7bcb-c3ee-4f9f-833c-6680a25681b2@nxp.com>
- <ZrrWi0HuAIDe7C0x@lizhi-Precision-Tower-5810>
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux@ew.tq-group.com, Alexander Stein <alexander.stein@ew.tq-group.com>
+References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
+ <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,28 +91,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <ZrrWi0HuAIDe7C0x@lizhi-Precision-Tower-5810>
+In-Reply-To: <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 05:44, Frank Li wrote:
-> On Tue, Aug 13, 2024 at 10:32:04AM +0800, Liu Ying wrote:
->> On 08/13/2024, Frank Li wrote:
->>> Replace additionalProperties with unevaluatedProperties because it ref to
->>> panel-common.yaml.
->>
->> This would allow all properties in panel-common.yaml, which is not expected.
->> Isn't adding 'panel-timing: true' next to 'enable-gpios: true' enough?
+On 12/08/2024 16:34, Markus Niebel wrote:
+> From: Alexander Stein <alexander.stein@ew.tq-group.com>
 > 
-> Strange, you ref to panel-common.yaml, suppose it will use all common
-> preperties.
-> 
-> Krzysztof Kozlowski:
-> 
-> Can I just add panel-timing:true for this case?
+> According to microchip,usb2514.yaml the node name shall be usb-hub.
 
-Yes, although I would claim that most of the panel-common schema also
-applies here...
+That's not true. The schema does not say anything like this. Old name is
+correct. NAK.
+
 
 Best regards,
 Krzysztof
