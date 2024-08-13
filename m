@@ -1,73 +1,70 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012019.outbound.protection.outlook.com [52.101.66.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA581A2548
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 16:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5561A2575
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 17:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723568244; cv=fail; b=QdMBm5Kk0BM+sVknWsY6hE00R3c33hSczbx8KX+K2JuGKCCjGBeAKF/qfWapbDUM4xb5sk0ezgO/qYQAUbIB6S+yRjHpNA1JH7CUeBWeFXS7vQy4m7PK7C0YWnct9Zb0T/9u3JOOdHskDKD+cpu9/+1ffmYOUPxdDcZz0NZeU4o=
+	t=1723568455; cv=fail; b=RJxThGZrp1hC7OfRCLqfHF/0hB0EtmUDPqdx6uTw4NchHK4czBmqdhzPG++7Rvbzx7lNpZnWr7ipauz9vVXcOqPFJX13gZk1ywXBHB1/mpeh3WaEZ6JiuAEfW77zd8SW5dflFHSA+81AwOPg6dCJE/E24HeXQgpwtZXbItFOXOM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723568244; c=relaxed/simple;
-	bh=KxW7Na5P4OEjhYlGdx3SkWjOuVipVGbyNM2Dj8lLcCQ=;
+	s=arc-20240116; t=1723568455; c=relaxed/simple;
+	bh=yuVZeRY+DH/ASx6dNwASAhnNPyZjTgGFha9YVPMBwkU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=m1y5zWr+Zs217y2nH/BqtC/97blCA7LCSnBt9crQDVYaNOR9vQuAiTBL9D6DY3FPbT04v+zSZ6FLp4n/ToxZD9rdE/z45RIyU1HuFgc0igaNT1Dk24B5eVGfVjU08KMyRuude9d8zHAmOM6Nhzhnb88dMxT5kuCa5O37+05qBio=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E5n+EdQ7; arc=fail smtp.client-ip=40.107.20.71
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rzAQdBHJ9g7nGw0eaVN5MXf8FQQEq4x63g2jRFXvXdn0hverb+SVyFcVdB8iOU4kT0eA1VwOQJTStTf8rpzFbNvqtZPEI8EgetSETjXoNBuedI56iO1/5JTpiwYV4kbvEsqPS/9TOGV1U0PIzvMS3SfGPIebFTBNkuAdb0RRK9I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S3Ozvc/1 reason="signature verification failed"; arc=fail smtp.client-ip=52.101.66.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E5n+EdQ7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S3Ozvc/1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J89fRP2QQrHM02DGgyZpbsVPODo0PGyklSDYhCXg9LVHTeAd5/Vqby80m4xQYa4xvE8qy4kM7jbj/PZfOx4xVZzMbgERcZCj+VyzdAABO/r15+SgQ30zdobBcXWHRHIye/olMynZC2fQF0PfzhmUN80cI5B4t1ElZfi6Nt5MsPAFaSAzy2I7i9748CMErlafrZ7kJD9zyVQg12/RUybFjT0zd3M2avlxvSrFWWUNaUSsoZxdjyBHt0TIMAvKgIA5NeF1F5u80F9c+qF5qBybA9hFoIVgHxwsMVXpkLpB7z89NEFRakyKFUiQA/B7cscb4ihPSvsVZfYipB4J2esaKQ==
+ b=eILfajVcTjKn7/ZaWzDSTWyQKgF0NTGiM2CSQVjpKSPRptxH8zB7FRtIyuqhhLpIMv+in8PYNbF+uRxglmFc8e8rtS0eIOHg9pBxfvHFDhvvj6RGMlxC/JKZIHx47duQWIZO+VFC23j3wlDmubpgWz2ZrjCr1zDlHay4ugTF/5FBtiljdZoNlkAYoNG+l13DHqavjoFEwyoUgg0c/Dxaa3olqpGqBDiqJdgGcHG5StH72mu/st5APhPjSSOyKGn/VdRy3TgrgCi7Ghlz4DHcmfUNApr2swbR1S1NvDcQwtBwnHeZ+RdKFzG42hxwMJ/86JjFoQ0z1MzlUuGQtnKs5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m0TPo/D0vDO42eZJLlH8uD46KCeaQQL1p66ZoH+/Z+c=;
- b=S7QSrN3hm3acc6LKbEpFT5JAUH0A2euepkuC69fFY902ZryV6qhWNNejY4RJK6tCP74V9dVlujYR+ClYVmSSeY3H681iog31mlXiTlmcFQ1lmxg+szy/WRqUOx3Orqv6kJEN9G4g4kPfCorw1DbqISikpQvNy7yEao/6BbRdPTMNL6SYttNtfPNQDZB8udEPGUpAK4Fg8fv1LIEYtm6j+qjKc1siMfu8XrORzeF/w+4HdMR5HZ2BbMAROsk9CobUL2JZUmVqGW1qpXfTCIGWG9B0PJ8ZvvxED7iBbq12VszGeDZFD/OK3dypPDf658ZAntjRSbjUB1KY544fiXKfBQ==
+ bh=X3zwIxgol90uauLEwBajMLWb/zcjrH6uyYZHEhKpaq4=;
+ b=EH7J1lEO/JyejmwWFPF54rbytT1Cq/sw9c3lzFmzxeN6k+unzcI5c/tUCCCdleTr3cdGmCG0UL+JXlV3FRkMt08qNat7V4tuvp41hCwWkXAKXlJnHkl+KkTj54jZu+cjoHgjHMe5E+F5ZVt7ruzQT9L6yYodeiukGm5cSav6D/PkJZ/uZehX0kkOv2nz5xgV9gcSotcxdC8eAvhMJdecq0iVhPKNzB/MLbL7exxIwwATXAgj5Q0ECeTMlxUWLaZq+r+hYk+CrgF7/COTl83DokiKWfNFWLNUnVdUI1qUJ5m5JU+Z8yjAF1SpftygpEnX4PaAy8lozPUGJxwcA42BWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m0TPo/D0vDO42eZJLlH8uD46KCeaQQL1p66ZoH+/Z+c=;
- b=E5n+EdQ7J8IScLrrP40vpAwYyyjnBZaMagsNYRRViMBZiowTpnFIXoO1ehDxEAs6bAUM7YJow5NAbCLTiEAgWtiOl/nK89OjVBogQyaI9hg1k0TQZp05Sy68WIkHdXjesJOvwl49cEhTlVyNQGYnOqZJH9fn2/LXj0zMoIchqphb3ptN+aBYSpZZrw4kan/U9aSadhiwcjRCf+KBqf11Z4XC6ZKZd0u1dHX0neRyne+c0E2jyKktbKcit8HEIOfWNSkbnQKL3XMn5Iu108cXhkRzaLKf+VO06lUB9U78ETIs70KwdrA4b9NhjXaJyymdfOS0VoqL8+aFM3Vx5ceIZw==
+ bh=X3zwIxgol90uauLEwBajMLWb/zcjrH6uyYZHEhKpaq4=;
+ b=S3Ozvc/1a7zF/HzhnolUyQTedgfnciVvN48qZ6mA4Q5Vt5DmpVTwoA9B455ADa/+XFD8Y2XDg8mWKKqhf/6XtTlr1N+g9UzNtrdxVQ9k3a3BWwpqQ++WlVsU0uOjL6A4nTfnu4Qrm7fQ4D5iRXpglHdVkZHe26K/gcirCrZ8kP2mGvJV0L9VBho+9F7LuG1nUiJA5CBH7OZSGfjdX0Au4OEDfqO8DqvJ3VNdvGQJIuB+DDNLSl0TXN4irziTZ0QhQHI82WSYqslPdxn0Xvi0HiJXBF5pbEaPV8j/tggw4WVv/n8M3XtsjTEiSPtZ31SFXvKsuR3xF/ZMpkIdFWf7lw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB8060.eurprd04.prod.outlook.com (2603:10a6:10:1e6::8) with
+ by PAXPR04MB8077.eurprd04.prod.outlook.com (2603:10a6:102:1c3::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Tue, 13 Aug
- 2024 16:57:19 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Tue, 13 Aug
+ 2024 17:00:50 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7849.019; Tue, 13 Aug 2024
- 16:57:19 +0000
-Date: Tue, 13 Aug 2024 12:57:11 -0400
+ 17:00:50 +0000
+Date: Tue, 13 Aug 2024 13:00:42 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: Mathias Nyman <mathias.nyman@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"jun.li@nxp.com" <jun.li@nxp.com>, Peter Chen <peter.chen@nxp.com>
-Subject: Re: [PATCH 3/4] usb: dwc3: core: add a core init flag for device
- mode resume
-Message-ID: <ZruQZ/Y/aqIcO0tq@lizhi-Precision-Tower-5810>
-References: <20240712-dwc-mp-v1-0-295e5c4e3ec9@nxp.com>
- <20240712-dwc-mp-v1-3-295e5c4e3ec9@nxp.com>
- <20240807011347.ucxlxmcikizreioj@synopsys.com>
- <ZrZC8AFtmR3Zn1c9@lizhi-Precision-Tower-5810>
- <20240809231844.okzwndlds3zh75rh@synopsys.com>
-Content-Type: text/plain; charset=us-ascii
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com
+Subject: Re: [PATCH 06/17] arm64: dts: layerscape: remove undocument
+ big-endian in watchdog
+Message-ID: <ZruROoTQeYWgcw1c@lizhi-Precision-Tower-5810>
+References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com>
+ <20240813-imx_warning-v1-6-3494426aea09@nxp.com>
+ <7700102.EvYhyI6sBW@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240809231844.okzwndlds3zh75rh@synopsys.com>
-X-ClientProxiedBy: SJ0PR03CA0358.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7700102.EvYhyI6sBW@steina-w>
+X-ClientProxiedBy: SJ0PR03CA0206.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,197 +73,147 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB8060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 066273ac-bebb-4d34-0433-08dcbbb8fe2d
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8077:EE_
+X-MS-Office365-Filtering-Correlation-Id: bd305ae9-a6bb-48e6-6d43-08dcbbb97c22
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?b24a3/rQidMqXNSr8oow7ZhHwu/2meZvSn76LHzSmcwwKz7/qqPx8oh1Wb1o?=
- =?us-ascii?Q?7DifEnGQIqMQgaKdA5fOsG6u0qtC8zSXr0zIeFBLQ8vT9EC+sh96LJwNwXD7?=
- =?us-ascii?Q?dUPQddHn7j88rvoLfu1y2oRZ3n5kKd7nnIixcIZg/i7kVKZOIRT6WWaQPTjB?=
- =?us-ascii?Q?oGxLzrWi8D3mr3wGgoaOih4duE0biRed78KPg7zqV28X257uh2mWLZ+Amkwa?=
- =?us-ascii?Q?waj3V7UsBg28e6k+iyQ+rDR5sohMLenadNVNbIJeG+T3ePqqDUnqJSXoQ1J0?=
- =?us-ascii?Q?nS/OaTQkYe1bDftVfKMWOOlA8u658yiwml7TaTRcYtPWTubxmT1CuHSgCY0E?=
- =?us-ascii?Q?qR59WhP1gbzbkMKJ6hVyzQ0HWqNC7A9oExKbaI3HWkQt1AU3ip7Kk7f7bydT?=
- =?us-ascii?Q?9h9NvyIXr9b1Kxi/q/N1cvYp9gpzGvDtUlEMrjZdKm8np2LaO1k1jFlWGs+3?=
- =?us-ascii?Q?JD8wWKmbaABv6fl12Y5rdqbtpyJUzIJOSALK4EjIlZigVxpTDYe1hrvg9qnE?=
- =?us-ascii?Q?Acyu3U0MBSbxcrlB8z43qX/Z1hLCTvMJ0vltZJ6+LoqmOSeWCQzvw0p6VkYB?=
- =?us-ascii?Q?8+GqHf27jF9AonUQ5Ue/7QAz2/5OBJLOqR4u8rjzuhOb4718DVeYBDw9NLIV?=
- =?us-ascii?Q?7PWGBR0klDA0BG2bZO7/CvYwFWvLbv8OMEDIQsletKx1qb+zIdCnOh3/adoR?=
- =?us-ascii?Q?5fXI/ITo2HVWQmJzha8/l1wa264UUNroSgqSvu7jGApJCHgEZdLR6cpZZryd?=
- =?us-ascii?Q?7Xjc5MfA4XfzSU1Yv/GP6DvOiQox3wNKh1lgxMvc2iRtTpMki7VaIiMyMuZt?=
- =?us-ascii?Q?RHYHFfNrEPYN439NiqzMRPxi/Ok3UmE3aBdZYT+mcSZPHfdS+4IJVHSg45qI?=
- =?us-ascii?Q?BffmkY96oFGi8MzkwXrBw4baHBuFuvtu60uClWV1d2b6TIkPcDAxjS/zujDk?=
- =?us-ascii?Q?teyMHRa0yZOibqnCmFbqBRd819NGmX7dctgi9Zl5nyXNwKh/Ue641wANklhr?=
- =?us-ascii?Q?kp6G8jKSzYh+LwCja/iWRVrdhe0YdZZWSm+stwleyrXD1/3+e9o4ZZ7eZTSm?=
- =?us-ascii?Q?xmi1tNjsayPSOOuAbpm1mhqxnYFQ+948090SPjU0O2HI+L4/rthz+AEqL0ly?=
- =?us-ascii?Q?XXreqldWXa1X426MP9Xa+K8xxSqnqkK+jNrgyEcM2/VObpd0Y1M+dwQb/cRz?=
- =?us-ascii?Q?eNhU5FoixLerxmNVa3iCljukFvXoDeNAytueLFcB/E9q1R99ohiup8EEQqis?=
- =?us-ascii?Q?Y6BxI8zp6BgP4VLJ6ARzL/T1jbQB3czayOBrHPlfUO52BBasc+Pr9GTEnPoi?=
- =?us-ascii?Q?T1oMCEZ2kE8lzUilcksl2jQjoitbmO6Jgak1QZMrarlOav+tYBqROkQJXX+t?=
- =?us-ascii?Q?CnIIw0OD5xYvVPnag5erJ0jwWl/Q6K9sjIKs/B79uLD2VzMkFw=3D=3D?=
+	=?iso-8859-1?Q?yQXYzgD/D1xi7JrzLuyr8GYkJ+/WT+bPAbwSg135KYzvM72YZP3x/ls46V?=
+ =?iso-8859-1?Q?mSffk1ei/2bWrcqiPseX8+j72Mc8BpSoI1Ee5avCvw+HqaOhlxQo4loPMl?=
+ =?iso-8859-1?Q?2GQHucMCp/IgL0QKN1MXYppqalIZuQAlDm80tb5NGSSWab4sUfYVNuzn3Z?=
+ =?iso-8859-1?Q?/0cWuj6TfraLyXkhS0wWkoD4ebsrnTgPXCCx9dD51/wtdEUWOkDH/qbtom?=
+ =?iso-8859-1?Q?co23Vrvp0JTh4agXOd5gP71/z4u+e7QtDRg1Xsb4ZiP9j3iH7e5toi/1Tp?=
+ =?iso-8859-1?Q?GBD5PfJwGkKUJ0NVh9Tvhj7oRh9xQalFW6TtiV4yZUCFtK7ThHr4m+x3mW?=
+ =?iso-8859-1?Q?VGdk20146MsGho2xh6yqtHF91TOQ3tAlb+ab9Gmh8y3mDUdKN2zUUcnIoc?=
+ =?iso-8859-1?Q?e7GYSb853dkR4bTe3fEk8bnJZumBCqOvSffeuz2GYv6POKnsam+v2c0u66?=
+ =?iso-8859-1?Q?AJan4o2ONY8hrGFDXTayj5VqkYLExe4dEnu2hsCVbm5bTZWCuPJlEupaRQ?=
+ =?iso-8859-1?Q?JrWSWDY5AaPAoRVVQ/Fxr2HTnjPsD1kWrZMEEtjN4qd2zje/ctcbxEX/cq?=
+ =?iso-8859-1?Q?LAeifuELPau3qUhpWsr5MD32r3pff0H3z9CRRUHt1cEveNz4OhAzaBxIZk?=
+ =?iso-8859-1?Q?JYA/YHt0UnxuQzX96/6ipGlgIuvQaCg9XfdN+FyEGuTzNYmqGbLo5sApCn?=
+ =?iso-8859-1?Q?9NSdKecalP/q1lrebtplscrOyAt3Wv0TUyJnl3HA1WyCs+x5tOMplTuiYI?=
+ =?iso-8859-1?Q?o2psNtyK3pRAaAaJqUkmUwrzWlD76FZy2/PV1fw8Et5Q5wTk2M02srMqPU?=
+ =?iso-8859-1?Q?XaGsOhYtio650T91o1wfy3xKd4dPBfJjohpW1Ybrv69BrL46nkC/JHaZ2J?=
+ =?iso-8859-1?Q?ksYwQjrDpPEJjO1cCusz4C8TgNirez0L6T6nD9waq716dKbsAZLn4RJibv?=
+ =?iso-8859-1?Q?hz21GHRncHw1enTnEQ1ySB3VjeDq5NTrk5RuLhgtB83nPrBi6OYeT+xZa0?=
+ =?iso-8859-1?Q?0XSFPsSBFn6H/IRqIJySCMc1VA5UIhdIcVePKtudYpgufXfhPt7Pi4O+hV?=
+ =?iso-8859-1?Q?NXG7sdgCpEkPdYEXVFCAJk4iOk7RTM0HRCIqb3Let6lBQVNx2i+RoM28k8?=
+ =?iso-8859-1?Q?mwdclZ0F6MhwiiYKcieRY9lF3I6oFxtt0P4E0p/HhkZtNyk88fdRGwehvz?=
+ =?iso-8859-1?Q?ADwhi5MFJ9FyWoORw7i03+GueWRKkZO3xbpHkkCpcUFNeoqsmuYmFqVK2p?=
+ =?iso-8859-1?Q?H2/DE8QbNK9+1OzPty7Jo0ZigoIt8eYleeW6yLq8bOo7UOUUU6pSyOKMIu?=
+ =?iso-8859-1?Q?/kjuWqnFaFj6GZnxwpKJ2hhecGaE27cXTOf2Sn3wN8tBgAnxhzkrVjqRUQ?=
+ =?iso-8859-1?Q?Z4RCRUKnf5?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Z/ejW7z+vF8KhGLHGynhpt+P2gczWDGQkoPOeyFaZSjpd2akGRYg+4CtNrOC?=
- =?us-ascii?Q?Vq7Td7FnCCinHH1nEJzZWPOxHxZ86Oiwrkh5ZRBIspqx4DRz6C+OdLZx2AXy?=
- =?us-ascii?Q?tcoqI4OpXybs9/b9+ggbddr7MZm3hSYFK68rymDyAVwK5HrvweslVOROKIoU?=
- =?us-ascii?Q?6DjnE4wmaePHjA/H6EyHl9cCwXTF4uurhQ8XR8xh/5hYQkcHDYhqRF3r96yU?=
- =?us-ascii?Q?ZKt6O6ejIUrq2urm/kLuZ4S3k0hWCRFaOwAlASI9bYsnJauVl61ZJEE6WE1D?=
- =?us-ascii?Q?Mi4uZpsKwb3weU3gcynbVRKS0Abr/nUpgrJs927fr2IzpFaevN+rQGbu2t8+?=
- =?us-ascii?Q?Vcb7Ypu6q8CzAZ05rjd9NxuddW4SwUyu16rC9Fbc22UykIsQldExmZQC3EXm?=
- =?us-ascii?Q?jMhNJHQ4DSGq2kAWRzOhV8/G1TBLyC/WcNE82xhLMQZG4VHpXIScSER7PjP2?=
- =?us-ascii?Q?K3p9+h8gaZzA/oF+TwfS4MqIhz1XyRfH9Xb0GtMuAHVt66c3jWoibfAjUECF?=
- =?us-ascii?Q?tvRbrAqZt7QWtCqGsbK4IXr7ddDgQLmixN8bMq2J5zVJfV82hbjHtnQFM+PN?=
- =?us-ascii?Q?FoDFjmWy+4hSmZtgri9eo9UmSnioZrGaBQMgdPjBFxTkCUVrN7nJWjHuPMzi?=
- =?us-ascii?Q?x9L0m1m1vNN1t+coyB3wjboxoZKMEJJh8hwaaGe/qsiScCLZ81LXZtW0fuUZ?=
- =?us-ascii?Q?D6bqURwIT7n0eWp6Q4PosfNlhfuik1GeHllkb63syDo0nXNJe0PUJ4KJkCkS?=
- =?us-ascii?Q?3ryrcJpi/0/zObvGetPAaAJYBZks8t7imOHG5w9/2cCuRF2yLXBSZYzqRzNw?=
- =?us-ascii?Q?UZGeLMMZ60Nn0+Sc3IHyZXkarNbUEXpdcw1F//bh0xDkxDEmDOvzkBIDWVUl?=
- =?us-ascii?Q?eCBm478nWClHgPgPwCP+Q5WVadPb5J9K4+xjCh9k+JZJcIf1efoTHLZX8VCG?=
- =?us-ascii?Q?rZn4kXL7O0eGOqx+JygnYmdw/5D0yg2np2TOPNqnqu8IFQzvEiTxJwVbYa17?=
- =?us-ascii?Q?eTsZURxaOb9jX5KylbATDTkWW+kjHSXV9GbliZ5w7glea9hM1CYPbVL2fRaT?=
- =?us-ascii?Q?T82B+hvT4BEmXQeDBs34MV4TOARmVNtyg+OQwL8JTYENASYNla+EXMVzBCRD?=
- =?us-ascii?Q?XTFVUg5HwkLFI1z19mJFK/QYAg8+AYZVv46sltJ43KmXA6pgFW6+p+TgKDBi?=
- =?us-ascii?Q?qRt2SLtEFZ7zJ4soAio/vzj+n6CzOZPddUyadcGR1vcisfXgmTHQejwydcPY?=
- =?us-ascii?Q?/Ug8a2Ma1eGegv9YrMWQUfpaq36d20GhmjhntWoBswpR6aJBaLKCXpoJ3CzY?=
- =?us-ascii?Q?AAAkiqqwrhCQ5wQVKlNLa4kqPMSja6t+rglB1iAgG8G/xcaN3olic5qS5dQy?=
- =?us-ascii?Q?gDnDkOQvwOKa9PBCQisb3l3Auo2DaldxlM3/y1snK2VNqtIhPLKWISXzvvMH?=
- =?us-ascii?Q?bX4hWqKvq2d8rj6kcLLzhua3CYfQzCXBlp9cBqRehI0A5e0SyBj6tl8mLrFk?=
- =?us-ascii?Q?OmjTJrdNe6Z2TsW8NPPqH6iHArknv1V46z3Q1mhTqnLMH6O9PyuWFmKaxqbA?=
- =?us-ascii?Q?ofw6I0zKYtAhisy5y2ZH8ykpgTakb5KnXFwuyljg?=
+	=?iso-8859-1?Q?/8H7Wsqv9H2i/lNO72MpmOmh8idzQ3kyDfh63X1toviZflyGVvW+cbjjHh?=
+ =?iso-8859-1?Q?o1+PZuLo9cT4aEffLALLnNREdF11nr7WsEFvPGz6oLeGRbPPduaNR4msf9?=
+ =?iso-8859-1?Q?aaKG562IZKJWWC7oYSPckKpVQB9zCyMX+Q63VNn6k7Hhbd5xle0pdn58PO?=
+ =?iso-8859-1?Q?n95w51rxe6jSkp2fremchNyh9Tpo2/U1l6G8OXjUA9v9NqGPgrU4zqi1ob?=
+ =?iso-8859-1?Q?lNLzxLyk6tTuu8rvq5A+rKylh+rikzmzzptBfMqZ08tkpqy+TLr+IUiLrG?=
+ =?iso-8859-1?Q?GrPn9SpcMXMO16BJC1j8A+fWSnGrexMpUS7rrh4rC2RsjdfU1nGztCup5G?=
+ =?iso-8859-1?Q?WAd70xhCsyFiDYvICuEjGOXHNi6kEw2RCAr4HdQ7uUwSvk/CNkGKRNGDie?=
+ =?iso-8859-1?Q?0xMEg6PtGF05l28UZIgmvqSk5ti0vxjRcFxp8/iLNUYzzJmMlOqlHyqrgo?=
+ =?iso-8859-1?Q?wsXt/7QwYYx/0RKWRsp7yOx7NLYFQMOQZwNOUfvXKKs8vMSCTalnJqdg0z?=
+ =?iso-8859-1?Q?+Bfgd5WvjdFN7hk0KbEa60Hy5NKmSWRXBYGlGIxPBZLEHpLGT5Uanw3sus?=
+ =?iso-8859-1?Q?CmtR7Y4HXU3Qt5kczPqBPZkzKnQAO4v2HXiRVxW+fWrN8gxbvU0u+yfaw4?=
+ =?iso-8859-1?Q?Hws1SXjUVG005NjQUU0ADZ0+vAmc6JwpZy8QhV3+dRCeiBIRf1C8OgJXWX?=
+ =?iso-8859-1?Q?/Dmmz6/74K/LDeTYgkBdXdDgC8wlLWf+ByYZAJ+VQ2spSoxov/0NDmASwL?=
+ =?iso-8859-1?Q?AXDtsUX1WO0LeakfbLCab5Od/lu8i9/Hj4LdA0WbmAJfx1FIAPAmnTQ/v1?=
+ =?iso-8859-1?Q?Mzn2cy8bWAsMMrmFVa7Vbnlcr+7WDnUDUZ0UcHQIP3DCiYEbRT1vdusvB9?=
+ =?iso-8859-1?Q?VzMyaxo6jorawo3AzTFzCwL4LioX1Wn7dZw417HAN9pjhFOWIucXhSOhOt?=
+ =?iso-8859-1?Q?drYSWSIn0RHgDIZhbIZajPUwoUJJG7FZmivBJUQ11q8ztrX+mSRSXTA7y1?=
+ =?iso-8859-1?Q?2zInXmKH89XVrVaIv7t1PpKt3TphQ0I4niBCevwgnrZw8POaK6HLwIOW0t?=
+ =?iso-8859-1?Q?y8JPwZOKuly8i01wOzXde3Tg32cBV7wBVYWjQE5S95siBHizFfOkwux6O5?=
+ =?iso-8859-1?Q?5zObvfhH5qQb6vuQKbgNlWl6C5SDOOklS5q7TD30fc0KYgGpN0azebJMXn?=
+ =?iso-8859-1?Q?NLps9TGWkLxFz2mJN6ocl6ryVi3yuuAgcenpRo0d/KHCAyhq11Gr6FVrQf?=
+ =?iso-8859-1?Q?B9I+js9ugXUXY+gpMRDbZMt1FWRMdHYIhvGeKxCS0iRRBnBbPNLyWWAgar?=
+ =?iso-8859-1?Q?5D5phoSJYrYdKyoMQ1hfiP/YLbecOaoiTp1D6h8U5Hvf+3LNxZo4kPjcpu?=
+ =?iso-8859-1?Q?nGf2w7JoUVA2GKlEFpZ4IrNKj6ZEkPToFRkQaJ+togmapdOTRxsf5WUdzH?=
+ =?iso-8859-1?Q?p4Ol0jXxC7w1bKj9Y/2sf3s3AZ+G1F5P6rtHbprUQYrJxaxzq+kl45M0xc?=
+ =?iso-8859-1?Q?pT1E6jn3P+0/z1QBu3YYaWyqJibJqfXxGfZNJUEuT+uprQmN57O8rbF7VM?=
+ =?iso-8859-1?Q?or4AtdugEGm2wwuwhMH4jhIEk6Zli3WxB22hi+JlNzLJg81dPrOSwGBlnN?=
+ =?iso-8859-1?Q?WyxM358/ElQ9w=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 066273ac-bebb-4d34-0433-08dcbbb8fe2d
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd305ae9-a6bb-48e6-6d43-08dcbbb97c22
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2024 16:57:19.3832
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2024 17:00:50.6794
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9EsvggJWtEQ8UVabmjz/MxcHlNAlwUyKAQoH8gKPB8wKUDZQXwC8tmowvWhW/Woq5PAzY8jp++zMM5eWy50uEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8060
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0iUECwZcEgOguETpyJ+J64IDYW05Z1XVoJ2kQUizzZDoeq5EjJSTrwj4tc/Oj0J2uSRPIhr8iUdP2TszmADQmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8077
 
-On Fri, Aug 09, 2024 at 11:18:53PM +0000, Thinh Nguyen wrote:
-> On Fri, Aug 09, 2024, Frank Li wrote:
-> > On Wed, Aug 07, 2024 at 01:13:52AM +0000, Thinh Nguyen wrote:
-> > > On Fri, Jul 12, 2024, Frank Li wrote:
-> > > > From: Li Jun <jun.li@nxp.com>
-> > > >
-> > > > The runtime resume will happen before system resume if system wakeup by
-> > > > device mode wakeup event(e.g, VBUS). Add a flag to avoid init twice.
-> > >
-> > > What's the consequence of going through the resuming sequence twice?
-> > > Will this cause any functional issue?
+On Tue, Aug 13, 2024 at 10:31:23AM +0200, Alexander Stein wrote:
+> Am Dienstag, 13. August 2024, 06:35:01 CEST schrieb Frank Li:
+> > Remove undocument property big-endian in watchdog.
+> > drivers/watchdog/imx2_wdt.c also never parser it.
 > >
-> > static int dwc3_core_init_for_resume(struct dwc3 *dwc)
-> > {
+> > Fix below wanring:
+> > arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: watchdog@2ad0000:
+> > 	Unevaluated properties are not allowed ('big-endian' was unexpected)
 > >
-> > 	...
-> >         ret = dwc3_clk_enable(dwc);
-> >         if (ret)
-> >                 goto assert_reset;
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi | 1 -
+> >  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 1 -
+> >  2 files changed, 2 deletions(-)
 > >
-> > 	...
-> > }
-> >
-> > clk will be enabled twice, the reference count in clk will be wrong because
-> > clk_disable() only once at suspend.
+> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
+> > index a3c57da63a01b..b84512bc4c881 100644
+> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
+> > @@ -430,7 +430,6 @@ wdog0: watchdog@2ad0000 {
+> >  			reg = <0x0 0x2ad0000 0x0 0x10000>;
+> >  			interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
+> >  			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL QORIQ_CLK_PLL_DIV(1)>;
+> > -			big-endian;
 >
-> Please capture these info in the commit message.
->
-> >
-> > So clk will be always ON at next suspend.
-> >
-> > Frank Li
-> >
->
-> dwc3_clk_enable() happens in probe() and dwc3_core_init_for_resume(),
-> but you're checking dwc->core_inited in dwc3_core_init(). Why?
+> RM LS1012A Rev3 10/2020 lists WDOG1 (2ad_0000) as big-endian.
 
-I have not check dwc->core_inited in dwc3_core_init(). Just set init value
-dwc->core_inited = true
-
-Do you means dwc3_core_init() as dwc3_resume_common()?
-
->
-> If the issue is only related to clk_enable(), perhaps just check that?
-
-This should be major one. Any paired operator between suspend/resume should
-have issue.
+Thank you point this. I remember I run this last month, but not sure if
+1012 platform. let me double check again.
 
 Frank
-
 >
-> (minor nit: rename core_inited to core_initialized if you plan to do
-> that)
+> >  		};
+> >
+> >  		sai1: sai@2b50000 {
+> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+> > index c0e3e8fa1e794..5837f1b15dccb 100644
+> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+> > @@ -776,7 +776,6 @@ wdog0: watchdog@2ad0000 {
+> >  			interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
+> >  			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+> >  					    QORIQ_CLK_PLL_DIV(1)>;
+> > -			big-endian;
 >
-> Thanks,
-> Thinh
+> RM LS1043A Rev6 07/2020 lists WDOG1 (2ad_0000) as big-endian.
 >
-> > > >
-> > > > Reviewed-by: Peter Chen <peter.chen@nxp.com>
-> > > > Signed-off-by: Li Jun <jun.li@nxp.com>
-> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
-> > > >  drivers/usb/dwc3/core.c | 13 +++++++++++++
-> > > >  drivers/usb/dwc3/core.h |  1 +
-> > > >  2 files changed, 14 insertions(+)
-> > > >
-> > > > diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> > > > index 734de2a8bd212..d60917fad8c52 100644
-> > > > --- a/drivers/usb/dwc3/core.c
-> > > > +++ b/drivers/usb/dwc3/core.c
-> > > > @@ -950,6 +950,8 @@ static void dwc3_core_exit(struct dwc3 *dwc)
-> > > >  	dwc3_phy_exit(dwc);
-> > > >  	dwc3_clk_disable(dwc);
-> > > >  	reset_control_assert(dwc->reset);
-> > > > +
-> > > > +	dwc->core_inited = false;
-> > > >  }
-> > > >
-> > > >  static bool dwc3_core_is_valid(struct dwc3 *dwc)
-> > > > @@ -1446,6 +1448,8 @@ static int dwc3_core_init(struct dwc3 *dwc)
-> > > >  		dwc3_writel(dwc->regs, DWC3_LLUCTL, reg);
-> > > >  	}
-> > > >
-> > > > +	dwc->core_inited = true;
-> > > > +
-> > > >  	return 0;
-> > > >
-> > > >  err_power_off_phy:
-> > > > @@ -2375,6 +2379,15 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
-> > > >
-> > > >  	switch (dwc->current_dr_role) {
-> > > >  	case DWC3_GCTL_PRTCAP_DEVICE:
-> > > > +		/*
-> > > > +		 * system resume may come after runtime resume
-> > > > +		 * e.g. rpm suspend -> pm suspend -> wakeup
-> > > > +		 * -> rpm resume -> system resume, so if already
-> > > > +		 *  runtime resumed, system resume should skip it.
-> > > > +		 */
-> > > > +		if (dwc->core_inited)
-> > > > +			break;
-> > > > +
-> > > >  		ret = dwc3_core_init_for_resume(dwc);
-> > > >  		if (ret)
-> > > >  			return ret;
-> > > > diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-> > > > index 1e561fd8b86e2..8a4bfd9a25b19 100644
-> > > > --- a/drivers/usb/dwc3/core.h
-> > > > +++ b/drivers/usb/dwc3/core.h
-> > > > @@ -1195,6 +1195,7 @@ struct dwc3 {
-> > > >  	struct clk		*utmi_clk;
-> > > >  	struct clk		*pipe_clk;
-> > > >
-> > > > +	bool			core_inited;
-> > > >  	struct reset_control	*reset;
-> > > >
-> > > >  	struct usb_phy		*usb2_phy;
-> > > >
-> > > > --
-> > > > 2.34.1
-> > > >
+> What about ls1021a? According to RM this is also big-endian.
+> regmap_get_val_endian() parses this property and regmap is used
+> by drivers/watchdog/imx2_wdt.c
+>
+> Best regards,
+> Alexander
+>
+>
+> >  		};
+> >
+> >  		edma0: dma-controller@2c00000 {
+> >
+> >
+>
+>
+> --
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+>
+>
