@@ -1,152 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571621E4A4;
-	Tue, 13 Aug 2024 16:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B548E19E838
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 16:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723565609; cv=none; b=AD0Z6/3tghtZ682jhjE1gpe0G1+pfnjwdRJrQ+0L0RfgkFKg4eaDq3VvwiY5vHOO6/u8VX3tu4TEyl1xBnA+hsYDGqry6XZeplsH97rH5Ged491qOrEyyyjbkOKfaiwz3k6ebLA6mjNorYlyzNujYZ6PA15lEdKY8QFGxkdW1Go=
+	t=1723566181; cv=none; b=Ai3H3tzdn4UduBdG+yvW9CTo8ZKIRqJ0APfGp6qI2I/g/9yhQhJDD0Dd6XlLlweHfdF7x/enkD+bCaWBs3k8kOhzNIRwiaKTd2kCLBlWnstvE7D6f0iS/bZONnKW1+gBhuxwUwzV2qBS82PKhuLG1g8JopFjV2BZvUHU8omMSYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723565609; c=relaxed/simple;
-	bh=h2BeFQK3DLcs/Jg9Vk0JShwrd1NezEHeMiQ/ep02v2A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RCDhDKGrMUlMcBlRYhIMIMndvx5BKhQXuYDuHcdJQUk2tiEHE8lgOcxQMFoVJS22EfdXxNg+7xjFynLPz1luhneVUdXp1LVYsfvqQ21EBhkTaik9810lOrSY9y2AdAdqa4Xl1k/V2TRcFVcC7BRr45mAj44GzgCPkelB1+ttlag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDv/+DQj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723566181; c=relaxed/simple;
+	bh=yQk+RTC6Dxt1y5RGBBeRO7rR22gywMkNtyR//bDgGF4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H567Ea29qGxkMN4JoFzme+1ZugBu/ykwIXAzdrL1GPApgzI43w84+iiLU/o8V9vDt9pHxc9xWLRDhkn4pTpRJ0yxaFfHEkUSC2dvHXnXAyiVTgJy3N6sY/D4oIkurzUPnyFxCgZF8waCky4vy28k/4osGYZH9bt4lLNzZ72bFLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=Oaa+0gfQ; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDv/+DQj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337CAC4AF09;
-	Tue, 13 Aug 2024 16:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723565609;
-	bh=h2BeFQK3DLcs/Jg9Vk0JShwrd1NezEHeMiQ/ep02v2A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BDv/+DQjCxjr2puq9Q7MwTV3rHZjhrL65scHfUeykCnHDoR1zos9MBfesWEW82yMF
-	 slqsHb56s4HWatg/OEJK62WR/NC/DZpAqO+MytVcTay0rbHyY++e6n/1LZWMjnEomy
-	 /c+D6xvBiWT3QJRakET4hzXMOGtxXUxJcqJwPev34fD3XJ0j8xNMmsiul2WHBqrUWe
-	 0Tki9Rv21jTW17JkZXC/ESqgqLlOrIPHPkmCt9elaC1W7yZMy6vPvr9JoMwNvJOkqn
-	 62viS4pBKu0GZgiqRu1shFB2ykNH+NGD2kB94gelVgcFJRkvVi+UTHgIxon6YaK8bx
-	 J/e4321XFIvcA==
-Message-ID: <0ef4d4ee-f8b7-4fca-b382-ebaa6b7ee050@kernel.org>
-Date: Tue, 13 Aug 2024 18:13:24 +0200
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="Oaa+0gfQ"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5a1c49632deso6264755a12.2
+        for <imx@lists.linux.dev>; Tue, 13 Aug 2024 09:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1723566178; x=1724170978; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lxyojJA3xVBWvdttvq0RoDn5RQuKbHWOiyGGcSP2iqo=;
+        b=Oaa+0gfQRK6tag1mLpsXYEJILAbc7FyvI10HM3cl6Z7ZBrV0UEvf1j9BxP0ycMIQqe
+         UY6jzhDv3Il6pGIa+wCS4jNtQbxsXknXEMgDDgzQY3wMlFfQU5pVbINjiajL50GJ3NEy
+         uHwLo5IZJk7yXDy+rA62bhXhCbRKLmM0Sz33xxuMpcMaVAKg9maUZHhXYmc6KA8s5N4D
+         5VgmPTlORdDWeLop9RVRZZtkEvQ7Rdm1FVB7Wu0HIU8G8GCTwKW8QdO/FWTH8Z9hX8nZ
+         dxCFTDkycyCMOAcYHE6qYv9w0FNzv4BzjupyY9EwStVUI2t/F02An/gbpO7kp1Kt93it
+         WdLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723566178; x=1724170978;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lxyojJA3xVBWvdttvq0RoDn5RQuKbHWOiyGGcSP2iqo=;
+        b=T3SyQflwE9fDdB6qE6R32D7XC/+YUdg4NmAV5Gq5o43oOa4qbF3+Hb1zGIQaELbYj3
+         h9sdcjgM6hzkVByMfUyJiFlilsc64yxkQrw8PlhmwvCNDcHDQimXcMDkoF2yFxYZssHo
+         VpGu7svvECblsacCjes+kQW51StOaGW2fD4tQabShXjOHBZOLX9pohoSOiOJ+V1bB8AY
+         fotAWQXdRKhOusHwFVVgv0ovM6Q3mh6nIdElmlmAHdlYU5gvU+W2ekRDK/rFkFOMUCrj
+         Wnyzm6pVJylGsovJyshJ9WlxGHj0VKatwrmu5HWVKut3irYsDMfuFnpGvOJtCFYm9PsF
+         jnEA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+H4737OMvSpgcnhqN2/sBGT7kmYHqbzc9rm7+4v1xpBaVU6cim6wASX6PeqiPP7qK3+KDXea/wfdxW36VVONY0Kbh
+X-Gm-Message-State: AOJu0YwS4oQ++Jc6oJ+n8W7ah50kqY8hHlLkoSJ8F0rSffEOX6liaXOv
+	NEVdYJVqdj5w7pj1glcQx1RyOimq5KZb4BUgsdFYT7ks8DXPNiNeJ4CJApRPe1L85DvOpYBfARP
+	lsW+2Lmo3pcp4+/invfJXZW3tTJbBVUcBUL1+cg==
+X-Google-Smtp-Source: AGHT+IGKDWGdNxQGJZweiajid/dw+zVC/Oau+vnI5Q4PQPRCzknA/C8QO3ydNGB8zLXwAPoaa6wStVIUJ/W5OifBOtQ=
+X-Received: by 2002:a17:906:c143:b0:a77:dbf0:d22 with SMTP id
+ a640c23a62f3a-a80ed2d6494mr294578266b.65.1723566177512; Tue, 13 Aug 2024
+ 09:22:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Markus Niebel <Markus.Niebel@ew.tq-group.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@ew.tq-group.com
-References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
- <1901821.CQOukoFCf9@steina-w>
- <82ee2be2-366e-40b2-ac95-e755443032be@kernel.org>
- <2621134.Lt9SDvczpP@steina-w>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <2621134.Lt9SDvczpP@steina-w>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240522215043.3747651-1-tharvey@gateworks.com> <CAL_JsqKtc_65tDMFWT0WroNPmW2R0Dd-4Jw101PnyJcPb=7tJA@mail.gmail.com>
+In-Reply-To: <CAL_JsqKtc_65tDMFWT0WroNPmW2R0Dd-4Jw101PnyJcPb=7tJA@mail.gmail.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Tue, 13 Aug 2024 09:22:44 -0700
+Message-ID: <CAJ+vNU0LBEET=y40BT4OE0zWsu6DxT-SYOrx7qD-h=HH2zENzA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13/08/2024 13:02, Alexander Stein wrote:
-> Am Dienstag, 13. August 2024, 11:44:28 CEST schrieb Krzysztof Kozlowski:
->> On 13/08/2024 11:27, Alexander Stein wrote:
->>> Am Dienstag, 13. August 2024, 11:20:08 CEST schrieb Krzysztof Kozlowski:
->>>> On 12/08/2024 16:34, Markus Niebel wrote:
->>>>> From: Alexander Stein <alexander.stein@ew.tq-group.com>
->>>>>
->>>>> According to microchip,usb2514.yaml the node name shall be usb-hub.
->>>>
->>>> That's not true. The schema does not say anything like this. Old name is
->>>> correct. NAK.
->>>
->>> So, is the schema incorrect? There is the dtbs_check warning:
->>> arch/arm/boot/dts/nxp/imx/imx6q-mba6b.dtb: hub@1: $nodename:0: 'hub@1' does not match '^usb(@.*)?'
->>>         from schema $id: http://devicetree.org/schemas/usb/microchip,usb2514.yaml#
->>
->> If you have a warning, shorten it and paste it so this will be obvious.
->> If you look at several bindings, the hub is widely used name. I think
->> the schema is not correct here - I do not see any properties from
->> usb.yaml being used here (for usb2514). What's more, if you compare
->> usb2514 with any other on-board HUB representations (because that's the
->> only point why we have it in bindings, right?), none of them reference
->> usb(-hcd)?.yaml.
->>
->> These are not USB controllers, IMO.
-> 
-> I raised that concern in [1] already, but nobody commented.
+On Fri, May 31, 2024 at 7:13=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Wed, May 22, 2024 at 4:50=E2=80=AFPM Tim Harvey <tharvey@gateworks.com=
+> wrote:
+> >
+> > The GW7905 was renamed to GW7500 before production release.
+>
+> Maybe some summary of the discussion and how this changed from one-off
+> to wider availability.
+>
+> >
+> > Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> > ---
+> >  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-With 200 new emails in my inbox every day, I bet I miss many threads...
+Hi Rob,
 
-The nodes could be named usb-hub, makes sense, but:
-1. Several bindings examples have hub, so we would need to correct all
-of them for consistency?
-
-2. For me hub is generic and obvious enough. Just like "phy", even
-though DT spec has "usb-phy".
-
-3. Renaming nodes to fix issues is very good. Renaming just to make
-things more readable is also good or because coding style asks for it.
-Renaming just because one person likes hub, other likes usb-hub, so just
-personal preference, is for me churn. Considering it sometimes breaks
-some users (it is not ABI... till it is), personal preference is poor
-reason.
-
-I think the schema should be fixed, because this is not an USB
-controller, in terms how we call things which are "USB controllers". On
-the bus it is USB device and USB hub. For USB device we have schema. For
-USB hub we don't, so it does not matter.
+What is the status of this patch? I'm not clear what tree the
+Documentation/devicetree/bindings go through.
 
 Best regards,
-Krzysztof
 
+Tim
