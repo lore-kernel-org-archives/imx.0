@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5527A13AA3E;
-	Tue, 13 Aug 2024 09:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DABF1487F9;
+	Tue, 13 Aug 2024 09:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723539912; cv=none; b=obkP7XcAVIeBM4G5m0v6DXvnF2Cr5rlCw66B9qlOyXiG5cEPIqoyS9tBBEyhvqPJJbjSazZwM1mYnbeu/H3BQLNysXm74hoAgHg10nbmnTjfacEzJUCp+103+Vwh3LK73h93AX5s3ZNKiCoB4P7IDbrRQTN+puBh57+glgvHvrk=
+	t=1723540134; cv=none; b=ZR4o7HdSRyczBLPAPOZPtqjNFckjvXNuOR+ZGvxExqvJLljm1jp0xVbRKtya0HdifB0v5Oc/gYa7hkFP2/fKoZouv98g/FIYtmLCirvG72gJBs1mnyRtX7brmgtY/cgsFQA47KljD8j13+1L/r250Nz9JapZy/ug37SiSFZILck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723539912; c=relaxed/simple;
-	bh=X5fYRIk3UORF4eePu/VuBllPnq01NFJR0r2+oW6NCYE=;
+	s=arc-20240116; t=1723540134; c=relaxed/simple;
+	bh=tTf12N2sToOZT7o8BtfaUvPnYFIk5jf+p6GVTlx/nZE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KHmvj+52f36wz2P/9l6U6/xIcHaKp4vWVt5cSrtIg5O1wQWxrhFG370PiRDs63ChEr+emc2YsMwIqUQO7eoMLt5jcP1hBiN3UwIq1jaKkLNGKCo0I/4ibs1t+L1cNUvKh8Uhtcj9xPyg0/Iq8mC9tYAmAnKFH+546yzQA+wBJVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aC+H0/qA; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=tw77gXYJUaT9/5AUKVHF3q3oLnzNOtj+YaS4R+64mKHKvAgHPLD9c9HTfyE8Wvm+087sZ/GokqTVvaglzJW5ke1OIzoN3LFDXhiWW/cVpbpB+/Q3Bupa7AES1AR9B+kCa0F0p1abaftkVQ3CQ1VQANlShu7LHy3fZtWjYuM7Vxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYEBvutO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aC+H0/qA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA78DC4AF09;
-	Tue, 13 Aug 2024 09:05:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYEBvutO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771CBC4AF09;
+	Tue, 13 Aug 2024 09:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723539911;
-	bh=X5fYRIk3UORF4eePu/VuBllPnq01NFJR0r2+oW6NCYE=;
+	s=k20201202; t=1723540134;
+	bh=tTf12N2sToOZT7o8BtfaUvPnYFIk5jf+p6GVTlx/nZE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aC+H0/qATLIJQadmzsB+99rOvsU9wyf6WEr9Uj3tf+qRAsUa0G/cZ47lHJTx4EW1/
-	 UBu+Z9aUs3V/WMNrcbXDFWPNdi9XQlF/CRzPrzTXvPKwjSzAjlvLOWUYwc9syaXysN
-	 z6GHqQ0o0Ifg5ZJXmfw3dkv+H1FAAtFjdWHMMxbK9i4wyJCTAiEpwXgLLX0iKZjkPH
-	 qeefk9UQOAUVxHJ669jeBaJwftsTFnuhOOf0d6td9+lGlZxdtyYM/dLQgsQRwCFAjR
-	 T0wNw/a9W+8y1CgCThAsZXWLPDr6QaffGaB0nDasA0XE4IQPBT+w5GuKnRZRqINrsZ
-	 ByxN75SFm7TJA==
-Message-ID: <34e5f680-2317-4fa7-afbf-c153003558c2@kernel.org>
-Date: Tue, 13 Aug 2024 11:05:05 +0200
+	b=TYEBvutOMZuRpqKyMZvJ5GWIfk/GtSRU602TPwFrHxjFyajT+y1rgdMvDyKo7tqm+
+	 9shItNdyi5x0NA6IHnVD/i1gc3HCocQBgyRV3vRp3Zx+vWjKdf1jANB0cJ/7rf2Z6r
+	 Tqhg2CfvucabNkZzbZeolvYWzopYtleiwZExyGvzOW7V+xVeiJPFSW7eLTbLyPeCIR
+	 VLvUJ4Nz1pu8gPDLRjves5A8H83BkT2dCguc5CCJPZ2zZNiNcyK/oOVLdITrGONRtq
+	 YQFvRvDwf4+jz9RCjPAXVBcC+RLxF5IzeqK2G8/8FZ6KYjiY0y25BYNk3O1l8ZqwsM
+	 Qn1cxBD4CjCDg==
+Message-ID: <9ab6419c-2066-4c6d-bb6a-f78d4845b2b5@kernel.org>
+Date: Tue, 13 Aug 2024 11:08:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,18 +35,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/10] ARM: dts: tqmls1021: change copyright entry to
- current TQ Copyright style
-To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240813071637.72528-1-Max.Merchel@ew.tq-group.com>
- <20240813071637.72528-11-Max.Merchel@ew.tq-group.com>
+Subject: Re: [PATCH 1/1] dt-bindings: display: panel-simple-lvds-dual-ports:
+ use unevaluatedProperties
+To: Frank Li <Frank.li@nxp.com>, Liu Ying <victor.liu@nxp.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+References: <20240812193626.3826250-1-Frank.Li@nxp.com>
+ <143d7bcb-c3ee-4f9f-833c-6680a25681b2@nxp.com>
+ <ZrrWi0HuAIDe7C0x@lizhi-Precision-Tower-5810>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,15 +98,28 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813071637.72528-11-Max.Merchel@ew.tq-group.com>
+In-Reply-To: <ZrrWi0HuAIDe7C0x@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 09:16, Max Merchel wrote:
-> Unification of TQ-Systems copyright entries.
+On 13/08/2024 05:44, Frank Li wrote:
+> On Tue, Aug 13, 2024 at 10:32:04AM +0800, Liu Ying wrote:
+>> On 08/13/2024, Frank Li wrote:
+>>> Replace additionalProperties with unevaluatedProperties because it ref to
+>>> panel-common.yaml.
+>>
+>> This would allow all properties in panel-common.yaml, which is not expected.
+>> Isn't adding 'panel-timing: true' next to 'enable-gpios: true' enough?
 > 
+> Strange, you ref to panel-common.yaml, suppose it will use all common
+> preperties.
+> 
+> Krzysztof Kozlowski:
+> 
+> Can I just add panel-timing:true for this case?
 
-No, pointless churn.
+Yes, although I would claim that most of the panel-common schema also
+applies here...
 
 Best regards,
 Krzysztof
