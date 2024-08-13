@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863C017E47A;
-	Tue, 13 Aug 2024 10:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B9F186E37;
+	Tue, 13 Aug 2024 10:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723543372; cv=none; b=PQM2yocma05Dy4Jf+EuNeL1Pbsd91qaohnRUIybHUF8LR+Nmsqz0AeQ6FDpUS9Zupl5ys8MlyMdRo06K7yt9YX6Xc2BJXIOa/RsZh+w+Y0eW2aAkRYFAPbyZydqP6tUJgmcfAfH3EDmkWc3W54PCQUjbbQ+jHTks3leSSWRWh0s=
+	t=1723543472; cv=none; b=EwzIDnULTRWi8hkcAKc3whYJtq7PYlflMmyaxi19Q81ezYF3WHW2A0QOJCtHFn14mWxj8vjC4jmYAW3VJpruKIvO2hIxfYKs44baOyrHV4cVflYfTc3lxpgI+k8pkZCbbxGKv/uVe4I6AxSZiNYmMag80UB6HTp1Ojd9hIt/OAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723543372; c=relaxed/simple;
-	bh=geIIrqrStzuHUWz2L3K9X9+pe17jHJrBlOvnhjq4Og0=;
+	s=arc-20240116; t=1723543472; c=relaxed/simple;
+	bh=BFJvZqCV34liZlaQ/lqFr9WpbFn4B9FdIXmeaDKkMsg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ii7vn6dW+tg/XDmYyxmQknOr3STnSQvmQ2SeWwBlcX02bzumDAVG1VWrnpTNTwvLTArGZ6QmfWU/FqNJwKH+JtG58mXBlOQz53ok7PvY4rm9TGznp92TD6THo0cbjAW0xmGZYy9+LRdb42OE9nWyPSIdi2K8pAxqmm2tFN3LMlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pbsfun8d; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=UM8Ht6uDkCVB/g7ouiRyUimahzA9wmkNzcdTfkhxhp7k5BrSZefgGvJaeQJpZqUMix3MU8oOZxZWCr38Zz/KSUSYLl0pHDM1xuTR+6Ll39tfUHeah2sYTVJhD4LrbLKqhXUQ6HGH1JEVTn6z47tmj0z29+ZwDpANibiI3cxD+ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJPQCuqf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pbsfun8d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E42C4AF0B;
-	Tue, 13 Aug 2024 10:02:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJPQCuqf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55084C4AF0B;
+	Tue, 13 Aug 2024 10:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723543372;
-	bh=geIIrqrStzuHUWz2L3K9X9+pe17jHJrBlOvnhjq4Og0=;
+	s=k20201202; t=1723543472;
+	bh=BFJvZqCV34liZlaQ/lqFr9WpbFn4B9FdIXmeaDKkMsg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Pbsfun8dib/nEBFuuCTPB9TWjPY2M6eqPzLtYBxYYXqj5iVW0XQcz9aJVTPeg/k1z
-	 k/ONrQYxfkRQoo+DmS3aneBhWYoATAQx3vArp2XudKwIO4xEKO2Y5Q7CzjQdDvtvrz
-	 NNEJ9Gx1p0o0Ej1qoliTbFsLII2zpjVqBFiX3Khq3v+kC5YAht+BwCN16fqaIavcpx
-	 XLk8rg+QjmGpXeKDq4eA1LV22iUl3GnUYI+1BP9QuRbj5ghth4OO2lOdfOknqEktsJ
-	 WDWlCvhXUgO0xlNnj8PxCp6j2CeRZPbzHuAJGkcqf5EP0S2ll2LxmFC5ucpgS7JU/H
-	 mJH8fNNMB5eKg==
-Message-ID: <21591cf8-5695-4085-a4e7-e84618503278@kernel.org>
-Date: Tue, 13 Aug 2024 12:02:43 +0200
+	b=lJPQCuqfGEDXUdW1nV2JxD8StzcnF+oyEIw0L+X6E/jbSqZYxDXM3ks6N563DenmC
+	 1B14+NUUTAiBf5chHcvJ+WhGQQOMT8EQRx+PRJMZIZ7VQ7AJPFP4pdrO1yV/YgiQrP
+	 HfmOD+uZwovfAZHJImz+zwViD9V2qut5P/6h6uiqkVjR6r6dPZpglhLV81ZjtVVXcz
+	 IWUQv6JQQwNykG7KYEgxo/m9c8M2BdEsQDpug5WaseGRDUmGi3fzjdQnNV2jbFBw6W
+	 zivn02RFeeVE19Hai2K5STLzuFgUnAecW7Y7T90Ftjv+miHEMwCCXJSeTMNm+U+0dq
+	 5gZFkOD96Es1w==
+Message-ID: <afbb96e1-4bcb-4bb5-89c0-b51c4e5f8b45@kernel.org>
+Date: Tue, 13 Aug 2024 12:04:24 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/17] arm64: dts: fsl-ls1046a-qds: rename mdio-mux-emi to
- mdio-mux-emi@54
+Subject: Re: [PATCH 15/17] arm64: dts: imx93-tqma9352-mba93xxla: rename hub to
+ usb
 To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -49,7 +49,7 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux@ew.tq-group.com
 References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com>
- <20240813-imx_warning-v1-8-3494426aea09@nxp.com>
+ <20240813-imx_warning-v1-15-3494426aea09@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,37 +95,23 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813-imx_warning-v1-8-3494426aea09@nxp.com>
+In-Reply-To: <20240813-imx_warning-v1-15-3494426aea09@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 13/08/2024 06:35, Frank Li wrote:
-> mdio-mux-emi have reg property. Rename it as mdio-mux-emi@54.
-
-That's correct name.
+> Rename hub to usb to fix below warning:
+> arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dtb: hub@1: $nodename:0: 'hub@1' does not match '^usb(@.*)?'
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-> index 25eb1d5a69381..5c504ff47f2ca 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dts
-> @@ -237,7 +237,7 @@ &fpga {
->  	#address-cells = <1>;
->  	#size-cells = <1>;
->  
-> -	mdio-mux-emi1 {
-> +	mdio-mux-emi1@54 {
+>  arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts | 2 +-
+>  arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 2 +-
 
-and that's not correct.
+No, synchronize your work with other TQ, so we won't have to do the same
+review.
 
->  		compatible = "mdio-mux-mmioreg", "mdio-mux";
->  		mdio-parent-bus = <&mdio0>;
->  		#address-cells = <1>;
-> 
+That's not really correct. See other thread.
 
 Best regards,
 Krzysztof
