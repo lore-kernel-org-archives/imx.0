@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C5C13C9CB;
-	Tue, 13 Aug 2024 09:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5DB13C691;
+	Tue, 13 Aug 2024 09:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723539804; cv=none; b=uJYjQS6YP4vfBWpM3iiNF3F4TSq/kKDELMup3fUcOdAIeQGZxGJRH8lxIXQNOuhzXlooJFVL8+WWnZLRE0IZtotZZFfVIgNhcHfrJ+OX6Ou+LX7QzcdROwRu5l3inFgGffO4Sbybwakxxk1MFxjPgSW2TrRv06+40J1AA/QoRhU=
+	t=1723539822; cv=none; b=Qw6wdZ1cztNkFsDfbUQTLkaT+GBUpnvBYOxKOROzNzaeG8kwuOUQN72GaE7Zq6tAj2NJ+SLiPjpuJIf05epDexwLHxRxSKzhSuE6bbuqsb/I4Ea3gxFco+s5BjrUM4Y4p4tWeam0D+lA1EpnexCQOCpKER7l/eClbweGn2YnN2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723539804; c=relaxed/simple;
-	bh=BYdWKLdgi7LIgusJW/w4VMelFdmdQDbkY0PPZfOHm10=;
+	s=arc-20240116; t=1723539822; c=relaxed/simple;
+	bh=H8hnNv+J4S+YPQvGe44l1KR9nKbvjwvpol+4qgAi6oY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GbdrpxnMMjz4p6ZwglQYAUew0Qx/NtVR7rt2diUO7KuDKktvp9eLXbbHkJrIseaM3yf/TJ7uyWWlMYVI2Gj6SFIS3t5bAN0aLdWX1ZgwsoHIG4pbRlrWFkLGoTLOMSbSE6HJfOYJZiarHVeMh9tH2WErSlUaxM7ydVCT8hbE/wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfY25fdm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Xqw7XVCV2mH/IDnFbVyRg70O37APYPjOKJcIQSPaRQjUj/u3M+oT+ai2v9uRcFuxQwECcGbvsKKwjKcxmHkIuRYse9r+lnwz5FSDrboHKiRJvgV7dh5KyYsTloQ84Q8XNuo2bGphOOwHR2O+pUOR3FRXwbt3ERk9Wdk5K0muzAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GcNY7uh1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfY25fdm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AEAC4AF09;
-	Tue, 13 Aug 2024 09:03:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GcNY7uh1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D0BC4AF0B;
+	Tue, 13 Aug 2024 09:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723539804;
-	bh=BYdWKLdgi7LIgusJW/w4VMelFdmdQDbkY0PPZfOHm10=;
+	s=k20201202; t=1723539821;
+	bh=H8hnNv+J4S+YPQvGe44l1KR9nKbvjwvpol+4qgAi6oY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WfY25fdm06rzdqQuylo1BQFYKfPqZIL4ThF0xJv6ki84f46DOxmwf0pk6PXj82Qg5
-	 Va2PJGQr2ph3jRQE7o37rxkCjvWa6VtPJ/YKJkcYZi2YjlyYPLGYlTJ2NpVQvFHwPv
-	 +U0ksaRhP7sLeDIREbSbLDfjWxhUoVj2RRPrWTR/yTaFq6DDp49tq2CXeTF63gMwoz
-	 XTLTEksUOpnwsz7uYjhMvwz5sYrPQRCM3I9bnpuQRAVAsgAFKEOPmyGBgVink77hzp
-	 1dUOJau8Sw4KcIHpxFtF4eNEcQDA/IeTfGDzwgK2LPDHfFW45w935Z3E2KUjTQ1cuN
-	 0hxgNfrWY95hQ==
-Message-ID: <f3a1c24a-b493-4693-a6eb-d350f4f186bc@kernel.org>
-Date: Tue, 13 Aug 2024 11:03:17 +0200
+	b=GcNY7uh1o1YLZloNKr0mZUJDzOsRs3Blh5k+B1KK5FhgsHZIdafAbbMs5MPAkmshi
+	 /FLrw+G2+cDNuyqSq7S1X2lWNZyKKAyKhy+hg3NP0A0zhZA+ej/fmazDQfMzRKJ3R9
+	 miCM8WUa97R7Qfh/8PuiDO/kgYRaToL8Vf4AF1NxjhCCWTqBhCV8VrjZcPmasDSYpI
+	 9sGbSRgfWVBZsySwuNu0UwfuPipBXXygyLSYjxE3kHDM+e8zZZt5xDvC1T7hHbXzEX
+	 yh5EhwLa1a/S5l7zYCycRzS7H7QRsLjcRhVYVNOhQcIH6n2nGFjSeXaj/FaGvf3tvZ
+	 OqUtNKw67kx6w==
+Message-ID: <1161762b-a6ce-486c-bb0d-c60c6ab400f0@kernel.org>
+Date: Tue, 13 Aug 2024 11:03:35 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] ARM: dts: tqma6: use GPL-2.0-only as used by
- included imx6 device trees
+Subject: Re: [PATCH 04/10] ARM: dts: tqma6: change copyright entry to current
+ TQ Copyright style
 To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -46,7 +46,7 @@ To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20240813071637.72528-1-Max.Merchel@ew.tq-group.com>
- <20240813071637.72528-4-Max.Merchel@ew.tq-group.com>
+ <20240813071637.72528-5-Max.Merchel@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,19 +92,49 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240813071637.72528-4-Max.Merchel@ew.tq-group.com>
+In-Reply-To: <20240813071637.72528-5-Max.Merchel@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 13/08/2024 09:16, Max Merchel wrote:
-> The included device trees imx6dl.dtsi and imx6q.dtsi are licensed under
-> "GPL-2.0-only".
-> Therefore, the licenses of the tqma6 device tree are changed to the
-> same license.
+> Replace developer-specific, personal email addresses by mailing list addresses
+> while retaining the author.
 > 
 > Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx6dl-mba6.dtsi    | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6dl-mba6a.dts    | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6dl-mba6b.dts    | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6dl-tqma6a.dtsi  | 5 ++++-
+>  arch/arm/boot/dts/nxp/imx/imx6dl-tqma6b.dtsi  | 5 ++++-
+>  arch/arm/boot/dts/nxp/imx/imx6q-mba6.dtsi     | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6q-mba6a.dts     | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6q-mba6b.dts     | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6q-tqma6a.dtsi   | 5 ++++-
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi   | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-mba6a.dtsi  | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-mba6b.dtsi  | 5 +++--
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi  | 5 ++++-
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi | 5 ++++-
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi | 5 ++++-
+>  arch/arm/boot/dts/nxp/imx/imx6qp-mba6b.dts    | 5 +++--
+>  16 files changed, 54 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-mba6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-mba6.dtsi
+> index b749b424bbd6..9f00f92957ab 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-mba6.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-mba6.dtsi
+> @@ -2,8 +2,9 @@
+>  /*
+>   * Copyright 2013 Sascha Hauer, Pengutronix
+>   *
+> - * Copyright 2013-2021 TQ-Systems GmbH
+> - * Author: Markus Niebel <Markus.Niebel@tq-group.com>
+> + * Copyright (c) 2013-2021 TQ-Systems GmbH <linux@ew.tq-group.com>,
+> + * D-82229 Seefeld, Germany.
+> + * Author: Markus Niebel
 
-You need to Cc all contributors.
+Same comments as before.
 
 Best regards,
 Krzysztof
