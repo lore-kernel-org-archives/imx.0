@@ -1,113 +1,173 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5523E16A955
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 11:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048CF199242
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 12:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723546983; cv=none; b=ttOZEYkW3ExFZWeacXbNSj0e3EBWXIz4HNZ5thNOlWSlZ3Ohb5EQdWyJQr7merSwjzFI/kgjXXafHnJanbpTSKUujq0rjP0M/u08OXZ9PBhmQPH7KkJ+XB7z/QsBR4mNgrMjsLn1mEtrZ17j+YTRqIY1b3l9HQPRVc9ThAubb8o=
+	t=1723550552; cv=none; b=PBvi7Wq0TeeBqM/+siRQ2m81trk3pRx5BnzAP57LYBKwBS12kiejHwV9ZsrWL54HBS0UX6Ljq+LghwKO44kAUSDhUv+ctkFZ1BoeTihiS7PprGV7iSXAqAigmM1hiIEkIVrNicFu5iuObBrHK2qegvnoeHZsMKF36e5Rd8LODe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723546983; c=relaxed/simple;
-	bh=PwUa5/OanIErRHAvEgE9UQwuwofhy8HwKU6/7A/LFUk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AAfjHnggEpDfF/mCW8yqRsa9j3ONmBnnxDPJsKHBCbecHfOl3vwuB7go18AGvCWPYDcNG+S41gYS9ZHFHOxVOYO0zgDNbBAs84qrfZHkTvxIAAYQjI5OrkC+noDQZzl9qqPpc29Q10XbBysq9h4Bl7k4z1/yhD5mxtxI7POF5Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=YYba8t5A; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pKGZPbvS reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1723550552; c=relaxed/simple;
+	bh=SCEjQ2f/AVQGw13+jnl/qj3hrJi2gyjF3kjKwUvF/08=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=ho8caLey7RgsUwaDX6S5qoPzKtKtvDmgED0sRbSBb8MRYgfeb+3JLBOL3eygUKzkfLf1x+nLWOtSYWmdiIU9PtzH1z7GrPUMZcrRuF6qCq8Afq0y+1CHepmbAb//+LlP9urPqj/UsCcaxKIZrRVjKF8Pr4+H6w4xzXwN6qpexWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=fl53sCSa; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="YYba8t5A";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pKGZPbvS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723546980; x=1755082980;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BX8/YcQITWwz1XEoFgy9ZmyJuYxThxbscbz2octGzAE=;
-  b=YYba8t5A03+yASvcoMRUnGJtY32FtSZxhi4STzpdEJr3FjFsqcnlT7mB
-   ib1GdQoQs9UjJeoGnswSLBQbK2X0mlzGOxYwoM/NXD3YkOiUGiVQ1stCm
-   ma9NbgmBYwWTt5l0pRGyhcTNzoqz0S1dERamxdAr6kyFURm/hWfO9fzef
-   AnWJuepAbjhYrejgFAyECpUVypPJO24gEA4fNhAepAOv8oVOtqDi7e8jV
-   z+d9mQ50oy8tFAO9t1W454ZFLCYmGa+okiKL1XAhvwotQN4awebXVh/h5
-   46BSEZaSz9BfWb4pK+bFw1zVGn8ldOdbJZ8VMd8FJWr+9Yxfko97yA1za
-   Q==;
-X-CSE-ConnectionGUID: F/Gzg1pvRoySPc4KafHwrw==
-X-CSE-MsgGUID: dgzq19lBT/62vuCWd0dEMg==
-X-IronPort-AV: E=Sophos;i="6.09,285,1716242400"; 
-   d="scan'208";a="38383452"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 13 Aug 2024 13:02:58 +0200
-X-CheckPoint: {66BB3D62-A-45EF2B36-F6E28480}
-X-MAIL-CPID: 8522DF81CEE9203FFD6B6412A29F7287_0
-X-Control-Analysis: str=0001.0A782F1B.66BB3D62.0069,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3070E164987;
-	Tue, 13 Aug 2024 13:02:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723546973;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BX8/YcQITWwz1XEoFgy9ZmyJuYxThxbscbz2octGzAE=;
-	b=pKGZPbvS8nX3DhTjo+uJRpFLzFrd/5oQ7jlkpOLLK7qGpyzGCTxMZwbfgr3maNhy+a/sDe
-	FoFv+qrZ7XjuT2+h/FUwmSoexwgbd0KNmJTtZSMpP2P1SuT2rnx39g/ksZhL+3tGqp2EQ+
-	Q/caBG8ibAJVRMVlbYsWmBBeyCykCNr7JoVvtdaYNi26fGjdpbOib0uyg9VEPvfijc+zSG
-	CEVLVlafOzKfGb46I6zD7JOdvCY+N26AhMlRucV04FCjsqIyD+F39JLRaVYYO4U9632ctZ
-	G/pF85M8j6P7JV9bpPTuVtLNAC5OFONnQBhhCZiwsjLD3INKbaLsx15hmvv85A==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Markus Niebel <Markus.Niebel@ew.tq-group.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
-Date: Tue, 13 Aug 2024 13:02:54 +0200
-Message-ID: <2621134.Lt9SDvczpP@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <82ee2be2-366e-40b2-ac95-e755443032be@kernel.org>
-References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com> <1901821.CQOukoFCf9@steina-w> <82ee2be2-366e-40b2-ac95-e755443032be@kernel.org>
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="fl53sCSa"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1723550541; x=1726142541;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=SCEjQ2f/AVQGw13+jnl/qj3hrJi2gyjF3kjKwUvF/08=;
+	b=fl53sCSaEuQ4Rv+Q5YD0VX8Xv00qj4R7GoM0gGERibVWTjy4wXgL944uLDGNzukG
+	MvWd1bFZiwxyhnvDQ0eA4bsD/bxh+e3grGvfhFwkbOWLzCMmsAmboSIGfGusAOPR
+	P/gIsqmXtdu5QvWAFJ6plLvunNnhTqoBRFLZZ2NiC98=;
+X-AuditID: ac14000a-03e52700000021bc-3e-66bb4b4c5236
+Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 7F.20.08636.C4B4BB66; Tue, 13 Aug 2024 14:02:20 +0200 (CEST)
+Received: from llp-hahn.hahn.test (172.25.0.11) by Berlix.phytec.de
+ (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Tue, 13 Aug
+ 2024 14:02:20 +0200
+From: Benjamin Hahn <B.Hahn@phytec.de>
+Date: Tue, 13 Aug 2024 14:02:14 +0200
+Subject: [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: Add support for
+ PCIe
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240813-wip-bhahn-add_pcie_support-v1-1-c1bb062b4e1f@phytec.de>
+X-B4-Tracking: v=1; b=H4sIAEVLu2YC/x3MSwqDMBAA0KvIrDvgF7VXKSUkmbGZTRwSq4J49
+ 4Yu3+ZdkDkJZ3hWFyTeJcsaC5pHBT7Y+GEUKoa2bvt6ajo8RNEFGyJaIqNe2OSv6po2dLOjcVh
+ 8T/MEJdDEi5z//PW+7x9FLPILbAAAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Teresa Remmet
+	<t.remmet@phytec.de>
+CC: <upstream@lists.phytec.de>, <devicetree@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, Benjamin Hahn <B.Hahn@phytec.de>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723550540; l=2384;
+ i=B.Hahn@phytec.de; s=20240126; h=from:subject:message-id;
+ bh=SCEjQ2f/AVQGw13+jnl/qj3hrJi2gyjF3kjKwUvF/08=;
+ b=/0dWgUE99fI6jHFjyRx/49dTec+RsfkxbJuGEClIRp2/pJ4Jzlc+L58U6EP4eHq2V2cbHOyCP
+ 3pE9XgdTSedCQDNvkUSg2ZNy/p3fFqqsdHukeRMr2esiO0lHmU6Ui3l
+X-Developer-Key: i=B.Hahn@phytec.de; a=ed25519;
+ pk=r04clMulHz6S6js6elPBA+U+zVdDAqJyEyoNd8I3pSw=
+X-ClientProxiedBy: Florix.phytec.de (172.25.0.13) To Berlix.phytec.de
+ (172.25.0.12)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupmkeLIzCtJLcpLzFFi42JZI8nAo+vjvTvNYPptE4s1e88xWcw/co7V
+	4uFVf4uZ91rZLFZN3cli8XLWPTaLTY+vsVpc3jWHzeL/nh3sFn+3b2KxeLFF3KL7nboDj8fO
+	WXfZPTat6mTz2Lyk3uPF5pmMHv3dLawe/X8NPD5vkgtgj+KySUnNySxLLdK3S+DK2PLxO3vB
+	JaGKdfPusjYw7uTvYuTkkBAwkWh4eJ+xi5GLQ0hgCZPE/L7vTBDOQ0aJPfMbWECq2ATUJHa9
+	ec0KYrMIqEp0tyxiBLGFBfwlXvc+ZQKxeQUEJU7OfAJUz8HBLKApsX6XPkiYWUBeYvvbOcwg
+	YV4BX4n7KwNAxksI7GGUWDnrNjtIjYjADiaJx/2GIAlmgYOMEn/WP2CHuE5Y4vPuNWwQ9m4m
+	iY19HiCDJAQSJXa+lgMJCwnIStw8vwWqRF5i2rnXzBB2qMSRTauZJjAKz0Jy3SyE62YhuW4B
+	I/MqRqHczOTs1KLMbL2CjMqS1GS9lNRNjKAIE2Hg2sHYN8fjECMTB+MhRgkOZiUR3kCTXWlC
+	vCmJlVWpRfnxRaU5qcWHGKU5WJTEeVd3BKcKCaQnlqRmp6YWpBbBZJk4OKUaGG2qHHak7rCU
+	lkgQnX3wtOLltr4pzX9O9qzXDtsw89r2ui2fHZr/rvg8YeLiKuNp4m3H5Fu4b35uvv7o4aeW
+	pwp72GXlKy7HcRlO+X/FY0GZXZmwR9rtiBdqr6Umxz1/cPdin8y+y6nvXOvcI+xDbSfKbs/n
+	nfvdc/qrK6vVemrNxR2Z/eYLnlZiKc5INNRiLipOBABfkb6CngIAAA==
 
-Am Dienstag, 13. August 2024, 11:44:28 CEST schrieb Krzysztof Kozlowski:
-> On 13/08/2024 11:27, Alexander Stein wrote:
-> > Am Dienstag, 13. August 2024, 11:20:08 CEST schrieb Krzysztof Kozlowski:
-> >> On 12/08/2024 16:34, Markus Niebel wrote:
-> >>> From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> >>>
-> >>> According to microchip,usb2514.yaml the node name shall be usb-hub.
-> >>
-> >> That's not true. The schema does not say anything like this. Old name =
-is
-> >> correct. NAK.
-> >=20
-> > So, is the schema incorrect? There is the dtbs_check warning:
-> > arch/arm/boot/dts/nxp/imx/imx6q-mba6b.dtb: hub@1: $nodename:0: 'hub@1' =
-does not match '^usb(@.*)?'
-> >         from schema $id: http://devicetree.org/schemas/usb/microchip,us=
-b2514.yaml#
->=20
-> If you have a warning, shorten it and paste it so this will be obvious.
-> If you look at several bindings, the hub is widely used name. I think
-> the schema is not correct here - I do not see any properties from
-> usb.yaml being used here (for usb2514). What's more, if you compare
-> usb2514 with any other on-board HUB representations (because that's the
-> only point why we have it in bindings, right?), none of them reference
-> usb(-hcd)?.yaml.
->=20
-> These are not USB controllers, IMO.
+Add support for the Mini PCIe slot.
 
-I raised that concern in [1] already, but nobody commented.
+Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
+---
+ .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 42 ++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 00a240484c25..0ecb2f62c37f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -6,6 +6,7 @@
+ 
+ /dts-v1/;
+ 
++#include <dt-bindings/phy/phy-imx8-pcie.h>
+ #include <dt-bindings/leds/leds-pca9532.h>
+ #include <dt-bindings/pwm/pwm.h>
+ #include "imx8mp-phycore-som.dtsi"
+@@ -63,6 +64,17 @@ reg_can2_stby: regulator-can2-stby {
+ 		regulator-name = "can2-stby";
+ 	};
+ 
++	reg_pcie0: regulator-pcie {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_pcie0_reg>;
++		regulator-name = "MPCIE_3V3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio1 14 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
+ 	reg_lvds1_reg_en: regulator-lvds1 {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
+@@ -195,6 +207,23 @@ &snvs_pwrkey {
+ 	status = "okay";
+ };
+ 
++&pcie_phy {
++	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
++	fsl,clkreq-unsupported;
++	clocks = <&hsio_blk_ctrl>;
++	clock-names = "ref";
++	status = "okay";
++};
++
++/* Mini PCIe */
++&pcie {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pcie0>;
++	reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
++	vpcie-supply = <&reg_pcie0>;
++	status = "okay";
++};
++
+ &pwm3 {
+ 	status = "okay";
+ 	pinctrl-names = "default";
+@@ -366,6 +395,19 @@ MX8MP_IOMUXC_SD2_WP__GPIO2_IO20		0x12
+ 		>;
+ 	};
+ 
++	pinctrl_pcie0: pcie0grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11	0x60 /* open drain, pull up */
++			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08	0x40
++		>;
++	};
++
++	pinctrl_pcie0_reg: pcie0reggrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14	0x40
++		>;
++	};
++
+ 	pinctrl_pwm3: pwm3grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SPDIF_TX__PWM3_OUT		0x12
+
+---
+base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+change-id: 20240813-wip-bhahn-add_pcie_support-b9bd75fc4d98
 
 Best regards,
-Alexander
-
-[1] https://lore.kernel.org/all/3633627.mvXUDI8C0e@steina-w/
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+-- 
+Benjamin Hahn <B.Hahn@phytec.de>
 
