@@ -1,45 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33EC1A08C2;
-	Tue, 13 Aug 2024 15:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599F51DDD1;
+	Tue, 13 Aug 2024 16:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723564684; cv=none; b=OlS/bwX7NIo9UrBhs7bGlsxQmh0ky/J8Wi2WYOndhMxGVFfjT618MOTkqRw9obgTzGZ+ONE/K0IGeYR1IhkC+wYwL0CxsrfNh2hrvQW26kctA7IPFEm3Tiv9EY6XdSbjLwKDP1bZS3Yjq0TxUE+WgauOrZYWuENe3abPF2WJuvw=
+	t=1723564941; cv=none; b=cGqFwS3C2QixL0J8Dmv+pw2x97yMSCahO3ZJRWV6+xDwK93yBIMqLU89hwbOVNnhn4dJhLFtq1uuHRtsUdLunJE5b2nPFhDvijLkt1xn53NJUu+WJH89lkZ/WOB7SjW9u2xUPhgzCvx/MhVmabNx6fFvcXjUD6nEqwUnsLB+Bzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723564684; c=relaxed/simple;
-	bh=qP371znJw8sls79s5vY7LeHFBVoyzLBn3QpPi93NjOQ=;
+	s=arc-20240116; t=1723564941; c=relaxed/simple;
+	bh=heU3e+lgGe2K9h8SHjoXVlse01k5eF5nF+N9YHix9k4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cEKFFc9ms7KgRF8niR7ezRz+QnVFFqaKZB12ZJ2QDkS91Iz3ReycP6fBG5JpPedLAzwwmtN3Tksd0m2jSC0lxarXzlAca7rEonEfrk+sIl1lIxYW3FcZJESKJneWnYTAIp9GsibUErpR1petiF6hRrUvSOqlMrzKIdefYKG8cqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rtxqIEeo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VAYRhcxv4dxgyXozgrb0Vud3uzjm3Nzx3P/s1LJowlawh3vQSnHZtBRgQoQs/NDizrDM8ev+cexnI5W5btoWSD19kYHTBnGrtKEA6d1i35UCRwrwvvk3rf8d6SNv4KXiZDz5wB14ruBTqt5PerN0iCWe6FgldufV+XHD7hOK+70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbByNzIw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rtxqIEeo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AEFC4AF0B;
-	Tue, 13 Aug 2024 15:58:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbByNzIw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE88BC4AF09;
+	Tue, 13 Aug 2024 16:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723564684;
-	bh=qP371znJw8sls79s5vY7LeHFBVoyzLBn3QpPi93NjOQ=;
+	s=k20201202; t=1723564940;
+	bh=heU3e+lgGe2K9h8SHjoXVlse01k5eF5nF+N9YHix9k4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rtxqIEeobTkLl8l/vbORUlOHq2dCm0+y9XPI2O63gnMxswMUB7O4/T8KtIIONs/H8
-	 QFRbWF9F/pq8jF/kqa1EY6XJ+BlBKGgRebbb85dn5rtD7iFIOUWIeyZJC4oveGegEg
-	 iDzRw1bcVbqA42YsSwDJcCiWgHeKxT2nWaqwas8zxEmJgobMCaVmyQhvIrlUOdTRjX
-	 ZiKLfVtoCl//UpwSi+/nkq+KZ15rkPLEQobIV5nl0DTN+M+/gYXnjwDRBEM2y7+Lt8
-	 H6elqhFJq/aIwEkBMttRPL0kLva4QFVLpieTtfxyekYg08rYmu99bDeyRLSq7bewyj
-	 c/PIPi+huT+Lw==
-Date: Tue, 13 Aug 2024 16:58:00 +0100
+	b=pbByNzIwsEGuHe8fmU3XukBHbtOm+y+ja9Oebt7wtU4oSivdGnjxLJEGN3uLiKL5x
+	 gsKHTRVOgIXfIzKOQR2agpACdzz1Ezd+l8U1/aK5MukeZrKDvFrlqf7JpW6CEqmqwK
+	 ab8RJ3wucnU9I8CnWwFInJ6zGmO4XD7cBw2uVzrg+8lSCUKz2WqvkSzmp+Gs1thyJ4
+	 vWbmGWLspgF7wcwa6lqZpCQO+bNy7x1XUeh9MDT5dcnWzv4AgQGPQeqXXADLg4UrbT
+	 iTUQokm/9OfzdIpSpPRVjqJlukrbuNk2naHkQh8U6qgixckrU0zAhhfwr+tW6cg9gd
+	 rPM0UXGUM5+DQ==
+Date: Tue, 13 Aug 2024 17:02:15 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
+	"open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert
- colibri-vf50-ts.txt to yaml
-Message-ID: <20240813-shakiness-encounter-1cca6a4c3fdf@spud>
-References: <20240812231123.3838058-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dt-bindings: can: convert microchip,mcp251x.txt to
+ yaml
+Message-ID: <20240813-distant-plastic-6534f660376c@spud>
+References: <20240812211625.3835600-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,186 +52,174 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fXLw8ZFuZxVd4QoL"
+	protocol="application/pgp-signature"; boundary="1mgxfAj48UD1hYzJ"
 Content-Disposition: inline
-In-Reply-To: <20240812231123.3838058-1-Frank.Li@nxp.com>
+In-Reply-To: <20240812211625.3835600-1-Frank.Li@nxp.com>
 
 
---fXLw8ZFuZxVd4QoL
+--1mgxfAj48UD1hYzJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 12, 2024 at 07:11:19PM -0400, Frank Li wrote:
-> Convert binding doc colibri-vf50-ts.txt to yaml.
+On Mon, Aug 12, 2024 at 05:16:24PM -0400, Frank Li wrote:
+> Convert binding doc microchip,mcp251x.txt to yaml.
 > Additional change:
-> - add ref touchscreen.yaml.
-> - remove standard pinctrl properties.
+> - add ref to spi-peripheral-props.yaml
 >=20
 > Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8qm-apalis-eval.dtb: /touchscreen:
->   failed to match any schema with compatible: ['toradex,vf50-touchscreen']
+> arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: /bus@5a000000/s=
+pi@5a020000/can@0:
+> 	failed to match any schema with compatible: ['microchip,mcp2515']
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../input/touchscreen/colibri-vf50-ts.txt     | 34 ----------
->  .../input/touchscreen/toradex,vf50.yaml       | 68 +++++++++++++++++++
->  2 files changed, 68 insertions(+), 34 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/c=
-olibri-vf50-ts.txt
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/t=
-oradex,vf50.yaml
+>  .../bindings/net/can/microchip,mcp251x.txt    | 30 --------
+>  .../bindings/net/can/microchip,mcp251x.yaml   | 70 +++++++++++++++++++
+>  2 files changed, 70 insertions(+), 30 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/net/can/microchip,m=
+cp251x.txt
+>  create mode 100644 Documentation/devicetree/bindings/net/can/microchip,m=
+cp251x.yaml
 >=20
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/colibri-=
-vf50-ts.txt b/Documentation/devicetree/bindings/input/touchscreen/colibri-v=
-f50-ts.txt
+> diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.=
+txt b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
 > deleted file mode 100644
-> index ca304357c374a..0000000000000
-> --- a/Documentation/devicetree/bindings/input/touchscreen/colibri-vf50-ts=
-=2Etxt
+> index 381f8fb3e865a..0000000000000
+> --- a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
 > +++ /dev/null
-> @@ -1,34 +0,0 @@
-> -* Toradex Colibri VF50 Touchscreen driver
+> @@ -1,30 +0,0 @@
+> -* Microchip MCP251X stand-alone CAN controller device tree bindings
 > -
-> -Required Properties:
-> -- compatible must be toradex,vf50-touchscreen
-> -- io-channels: adc channels being used by the Colibri VF50 module
-> -    IIO ADC for Y-, X-, Y+, X+ connections
-> -- xp-gpios: FET gate driver for input of X+
-> -- xm-gpios: FET gate driver for input of X-
-> -- yp-gpios: FET gate driver for input of Y+
-> -- ym-gpios: FET gate driver for input of Y-
-> -- interrupts: pen irq interrupt for touch detection, signal from X plate
-> -- pinctrl-names: "idle", "default"
-> -- pinctrl-0: pinctrl node for pen/touch detection, pinctrl must provide
-> -    pull-up resistor on X+, X-.
-> -- pinctrl-1: pinctrl node for X/Y and pressure measurement (ADC) state p=
-inmux
-> -- vf50-ts-min-pressure: pressure level at which to stop measuring X/Y va=
-lues
+> -Required properties:
+> - - compatible: Should be one of the following:
+> -   - "microchip,mcp2510" for MCP2510.
+> -   - "microchip,mcp2515" for MCP2515.
+> -   - "microchip,mcp25625" for MCP25625.
+> - - reg: SPI chip select.
+> - - clocks: The clock feeding the CAN controller.
+> - - interrupts: Should contain IRQ line for the CAN controller.
+> -
+> -Optional properties:
+> - - vdd-supply: Regulator that powers the CAN controller.
+> - - xceiver-supply: Regulator that powers the CAN transceiver.
+> - - gpio-controller: Indicates this device is a GPIO controller.
+> - - #gpio-cells: Should be two. The first cell is the pin number and
+> -                the second cell is used to specify the gpio polarity.
 > -
 > -Example:
-> -
-> -	touchctrl: vf50_touchctrl {
-> -		compatible =3D "toradex,vf50-touchscreen";
-> -		io-channels =3D <&adc1 0>,<&adc0 0>,
-> -				<&adc0 1>,<&adc1 2>;
-> -		xp-gpios =3D <&gpio0 13 GPIO_ACTIVE_LOW>;
-> -		xm-gpios =3D <&gpio2 29 GPIO_ACTIVE_HIGH>;
-> -		yp-gpios =3D <&gpio0 12 GPIO_ACTIVE_LOW>;
-> -		ym-gpios =3D <&gpio0 4 GPIO_ACTIVE_HIGH>;
-> -		interrupt-parent =3D <&gpio0>;
-> -		interrupts =3D <8 IRQ_TYPE_LEVEL_LOW>;
-> -		pinctrl-names =3D "idle","default";
-> -		pinctrl-0 =3D <&pinctrl_touchctrl_idle>, <&pinctrl_touchctrl_gpios>;
-> -		pinctrl-1 =3D <&pinctrl_touchctrl_default>, <&pinctrl_touchctrl_gpios>;
-> -		vf50-ts-min-pressure =3D <200>;
+> -	can0: can@1 {
+> -		compatible =3D "microchip,mcp2515";
+> -		reg =3D <1>;
+> -		clocks =3D <&clk24m>;
+> -		interrupt-parent =3D <&gpio4>;
+> -		interrupts =3D <13 IRQ_TYPE_LEVEL_LOW>;
+> -		vdd-supply =3D <&reg5v0>;
+> -		xceiver-supply =3D <&reg5v0>;
+> -		gpio-controller;
+> -		#gpio-cells =3D <2>;
 > -	};
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/toradex,=
-vf50.yaml b/Documentation/devicetree/bindings/input/touchscreen/toradex,vf5=
-0.yaml
+> diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.=
+yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.yaml
 > new file mode 100644
-> index 0000000000000..6ff3ad1f9edfd
+> index 0000000000000..789545b6c669a
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/toradex,vf50.ya=
-ml
-> @@ -0,0 +1,68 @@
+> +++ b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.yaml
+
+Filename matching a compatible please.
+
+> @@ -0,0 +1,70 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/input/touchscreen/toradex,vf50.yaml#
+> +$id: http://devicetree.org/schemas/can/microchip,mcp251x.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Toradex Colibri VF50 Touchscreen
+> +title: Microchip MCP251X stand-alone CAN controller
 > +
 > +maintainers:
 > +  - Frank Li <Frank.Li@nxp.com>
 > +
 > +properties:
 > +  compatible:
-> +    const: toradex,vf50-touchscreen
+> +    enum:
+> +      - microchip,mcp2510
+> +      - microchip,mcp2515
+> +      - microchip,mcp25625
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
 > +
 > +  interrupts:
 > +    maxItems: 1
 > +
-> +  io-channels:
-> +    maxItems: 4
-> +    description:
-> +      adc channels being used by the Colibri VF50 module
-> +      IIO ADC for Y-, X-, Y+, X+ connections
+> +  vdd-supply:
+> +    description: Regulator that powers the CAN controller.
 > +
-> +  xp-gpios:
-> +    description: FET gate driver for input of X+
+> +  xceiver-supply:
+> +    description: Regulator that powers the CAN transceiver.
 > +
-> +  xm-gpios:
-> +    description: FET gate driver for input of X-
+> +  gpio-controller: true
 > +
-> +  yp-gpios:
-> +    description: FET gate driver for input of Y+
-> +
-> +  ym-gpios:
-> +    description: FET gate driver for input of Y-
-> +
-> +  vf50-ts-min-pressure:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: pressure level at which to stop measuring X/Y values
-
-What are the constraints on this value?
-
+> +  "#gpio-cells":
+> +    const: 2
 > +
 > +required:
 > +  - compatible
-
-The text binding lists all of the properties as required.
-
+> +  - reg
+> +  - clocks
+> +  - interrupts
 > +
 > +allOf:
-> +  - $ref: touchscreen.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
 > +
 > +unevaluatedProperties: false
 > +
 > +examples:
 > +  - |
 > +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/gpio/gpio.h>
 > +
-> +    touchscreen {
-> +        compatible =3D "toradex,vf50-touchscreen";
-> +        interrupt-parent =3D <&gpio0>;
-> +        interrupts =3D <8 IRQ_TYPE_LEVEL_LOW>;
-> +        io-channels =3D <&adc1 0>,<&adc0 0>, <&adc0 1>,<&adc1 2>;
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        can0: can@1 {
 
-This line has inconsistent formatting.
-Otherwise, the conversion looks good.
+The label here is not used and should be dropped.
+
+Otherwise, looks good to me.
 
 Thanks,
 Conor.
 
-> +        xp-gpios =3D <&gpio0 13 GPIO_ACTIVE_LOW>;
-> +        xm-gpios =3D <&gpio2 29 GPIO_ACTIVE_HIGH>;
-> +        yp-gpios =3D <&gpio0 12 GPIO_ACTIVE_LOW>;
-> +        ym-gpios =3D <&gpio0 4 GPIO_ACTIVE_HIGH>;
-> +        pinctrl-names =3D "idle", "default";
-> +        pinctrl-0 =3D <&pinctrl_touchctrl_idle>, <&pinctrl_touchctrl_gpi=
-os>;
-> +        pinctrl-1 =3D <&pinctrl_touchctrl_default>, <&pinctrl_touchctrl_=
-gpios>;
-> +        vf50-ts-min-pressure =3D <200>;
+> +             compatible =3D "microchip,mcp2515";
+> +             reg =3D <1>;
+> +             clocks =3D <&clk24m>;
+> +             interrupt-parent =3D <&gpio4>;
+> +             interrupts =3D <13 IRQ_TYPE_LEVEL_LOW>;
+> +             vdd-supply =3D <&reg5v0>;
+> +             xceiver-supply =3D <&reg5v0>;
+> +             gpio-controller;
+> +             #gpio-cells =3D <2>;
+> +        };
 > +    };
 > +
 > --=20
 > 2.34.1
 >=20
 
---fXLw8ZFuZxVd4QoL
+--1mgxfAj48UD1hYzJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZruCiAAKCRB4tDGHoIJi
-0tqaAQD5CdxeOQqH/hmp6MhcCBakq3bmaEAd+pqX+zucPC/ifQEAkA4absn2lZbJ
-I6LFB+z+X9vnpzTUQ9AtFKzEeH4nNwU=
-=aVzJ
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZruDhwAKCRB4tDGHoIJi
+0jCJAQDK0XmyAuShyMNkF6eWhwtO6Z1aZ1Qovf/60mTCFiCWZgD+IllneA7wU7n6
+EQKqolgIHYG76wOD9T8bv7O2ePuT9Qk=
+=p2lO
 -----END PGP SIGNATURE-----
 
---fXLw8ZFuZxVd4QoL--
+--1mgxfAj48UD1hYzJ--
