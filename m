@@ -1,219 +1,125 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012019.outbound.protection.outlook.com [52.101.66.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5561A2575
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 17:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723568455; cv=fail; b=RJxThGZrp1hC7OfRCLqfHF/0hB0EtmUDPqdx6uTw4NchHK4czBmqdhzPG++7Rvbzx7lNpZnWr7ipauz9vVXcOqPFJX13gZk1ywXBHB1/mpeh3WaEZ6JiuAEfW77zd8SW5dflFHSA+81AwOPg6dCJE/E24HeXQgpwtZXbItFOXOM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723568455; c=relaxed/simple;
-	bh=yuVZeRY+DH/ASx6dNwASAhnNPyZjTgGFha9YVPMBwkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rzAQdBHJ9g7nGw0eaVN5MXf8FQQEq4x63g2jRFXvXdn0hverb+SVyFcVdB8iOU4kT0eA1VwOQJTStTf8rpzFbNvqtZPEI8EgetSETjXoNBuedI56iO1/5JTpiwYV4kbvEsqPS/9TOGV1U0PIzvMS3SfGPIebFTBNkuAdb0RRK9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S3Ozvc/1 reason="signature verification failed"; arc=fail smtp.client-ip=52.101.66.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644B026AC6
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 17:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723569057; cv=none; b=LjkHg6NpL2YstFOnmaACfbCmodymQtot3iv8OuscMf9R8IGxmz+E2tW12HZ1ZrXMK4h1gEUc1AJ76uqMHRwU0ZMqM81XOMDOEo2K+WJi4Mk7EKb6EyRDTYI8Ihipb7/8+E6raO70tcpz+4pq2YDG+DkMa43rAZVEK3mCQELPoDE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723569057; c=relaxed/simple;
+	bh=7ympOJZpNt6WSAnm/Uh1NWzgl3X3DNcEPRJW0FlCpH4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OTlfwXH9xEBCi7FiVFV1sgRAAm1zQlrQYxt71s2aMDiWkZ85WsOqCwODG4N4/DCOEfR5CP6Od2hpjrucxJEKX5vcJnbVuc5I/ViZOM8ET4lEe04dqJFiakluv2CaiEvOpFUwOkfbZzYBYu8aTPYXmD2+l7tT+EMGexm2rVJz9a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=aStxEiWg; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S3Ozvc/1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eILfajVcTjKn7/ZaWzDSTWyQKgF0NTGiM2CSQVjpKSPRptxH8zB7FRtIyuqhhLpIMv+in8PYNbF+uRxglmFc8e8rtS0eIOHg9pBxfvHFDhvvj6RGMlxC/JKZIHx47duQWIZO+VFC23j3wlDmubpgWz2ZrjCr1zDlHay4ugTF/5FBtiljdZoNlkAYoNG+l13DHqavjoFEwyoUgg0c/Dxaa3olqpGqBDiqJdgGcHG5StH72mu/st5APhPjSSOyKGn/VdRy3TgrgCi7Ghlz4DHcmfUNApr2swbR1S1NvDcQwtBwnHeZ+RdKFzG42hxwMJ/86JjFoQ0z1MzlUuGQtnKs5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X3zwIxgol90uauLEwBajMLWb/zcjrH6uyYZHEhKpaq4=;
- b=EH7J1lEO/JyejmwWFPF54rbytT1Cq/sw9c3lzFmzxeN6k+unzcI5c/tUCCCdleTr3cdGmCG0UL+JXlV3FRkMt08qNat7V4tuvp41hCwWkXAKXlJnHkl+KkTj54jZu+cjoHgjHMe5E+F5ZVt7ruzQT9L6yYodeiukGm5cSav6D/PkJZ/uZehX0kkOv2nz5xgV9gcSotcxdC8eAvhMJdecq0iVhPKNzB/MLbL7exxIwwATXAgj5Q0ECeTMlxUWLaZq+r+hYk+CrgF7/COTl83DokiKWfNFWLNUnVdUI1qUJ5m5JU+Z8yjAF1SpftygpEnX4PaAy8lozPUGJxwcA42BWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X3zwIxgol90uauLEwBajMLWb/zcjrH6uyYZHEhKpaq4=;
- b=S3Ozvc/1a7zF/HzhnolUyQTedgfnciVvN48qZ6mA4Q5Vt5DmpVTwoA9B455ADa/+XFD8Y2XDg8mWKKqhf/6XtTlr1N+g9UzNtrdxVQ9k3a3BWwpqQ++WlVsU0uOjL6A4nTfnu4Qrm7fQ4D5iRXpglHdVkZHe26K/gcirCrZ8kP2mGvJV0L9VBho+9F7LuG1nUiJA5CBH7OZSGfjdX0Au4OEDfqO8DqvJ3VNdvGQJIuB+DDNLSl0TXN4irziTZ0QhQHI82WSYqslPdxn0Xvi0HiJXBF5pbEaPV8j/tggw4WVv/n8M3XtsjTEiSPtZ31SFXvKsuR3xF/ZMpkIdFWf7lw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8077.eurprd04.prod.outlook.com (2603:10a6:102:1c3::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Tue, 13 Aug
- 2024 17:00:50 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7849.019; Tue, 13 Aug 2024
- 17:00:50 +0000
-Date: Tue, 13 Aug 2024 13:00:42 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 06/17] arm64: dts: layerscape: remove undocument
- big-endian in watchdog
-Message-ID: <ZruROoTQeYWgcw1c@lizhi-Precision-Tower-5810>
-References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com>
- <20240813-imx_warning-v1-6-3494426aea09@nxp.com>
- <7700102.EvYhyI6sBW@steina-w>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7700102.EvYhyI6sBW@steina-w>
-X-ClientProxiedBy: SJ0PR03CA0206.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="aStxEiWg"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7aada2358fso12616866b.0
+        for <imx@lists.linux.dev>; Tue, 13 Aug 2024 10:10:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1723569053; x=1724173853; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OhtBUgLnrDhhdGzlxz/BjFJWhCixCkk0gwuIiyZNKtA=;
+        b=aStxEiWgjk7xR07UkVRx5SnEWtiUcXduCKOM9My0DysW+JfRcE1ZgD/gQpSSrDTFNj
+         2ZFKYfrDnhEhgakIHnv4bn1yvywGj7JOYMok/IhmogxUyklcajxkw4vilG0+6J3XOk5R
+         leQU+1MKNBCg0+xyDbffl6kSZrXMIS9rXAGRMwu9rntc4mc317VueHMX1yx5Ae73iviD
+         OesgO8v8lvB1CRXwUATrOohYqlWF+WMIBSad9Og5MsqqZ8tF8e7oGDz0vz2HmtdCfEWc
+         X1FuSiGR18qrx56Iu6cqtdGicsRpKCP0EGZ7t8qCsTaAuMm+KczZ8ZVTzSvCd8kgrbCP
+         22Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723569053; x=1724173853;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OhtBUgLnrDhhdGzlxz/BjFJWhCixCkk0gwuIiyZNKtA=;
+        b=UokzUm1eWH21eHJN2x/ILg9hJllRj0bsmJF6u07eba9Zb5Yc35xJlN+oPro4+Nu0xh
+         1kpmm3dJotTEkBP0igKXEgmfiqfBEolgMKHe+4sU8ud7ZcJlL5UP/opL4y4ZZWCNSbrO
+         mulie5T1M60q2Q8vhQCZ6kHzyO+6SeM4UOjaa6DhZf4MbLCWgjY09noepuaWStthRABj
+         PkYSXbRINiHTOCzC5ExNFijHLgYhtp80S1NP+RaYrYcY/zlT18kQp4KQeuu6xdwWox2z
+         ryhObxWBmFdfr41J6SCevUZ1ogHH4Wc5g9QzyjGVjVFiqWxZXmq17iO+ric9Bc6hroSc
+         GdGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRHh6ZHUtysesgi74W67O15HIBhr4TT96t4CjQfSMp3tNorN9v2KbnzJ4y72HuRjZkE4CvD3eQrNq+2xBwpy5jtbzz
+X-Gm-Message-State: AOJu0Yy/14wiqsHSHALpR40TpWqBLCaX9o9jAVKnZoHbtkNlf38cFSWw
+	moUTNqhlzqzDN4vcpuNFRU/OSrJ39Nj3sLIzvjdCHOn+FE9sdhCo2bu8hs/YZKJppVBxRafSkTz
+	Uuc5Ajb74XQ30OhAwnhGum3HfGpdbt92QzaxyKg==
+X-Google-Smtp-Source: AGHT+IHfrLoNeAHUzX9iSp5yG/DmHNHyvEWlECdWd2S20k6QEuCIF2JQ1mr7dl/AjYpPPWLrA6gS9nYLsHONqns987s=
+X-Received: by 2002:a17:907:f729:b0:a7d:c352:c502 with SMTP id
+ a640c23a62f3a-a8362d64c1emr33673666b.30.1723569052201; Tue, 13 Aug 2024
+ 10:10:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8077:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd305ae9-a6bb-48e6-6d43-08dcbbb97c22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?yQXYzgD/D1xi7JrzLuyr8GYkJ+/WT+bPAbwSg135KYzvM72YZP3x/ls46V?=
- =?iso-8859-1?Q?mSffk1ei/2bWrcqiPseX8+j72Mc8BpSoI1Ee5avCvw+HqaOhlxQo4loPMl?=
- =?iso-8859-1?Q?2GQHucMCp/IgL0QKN1MXYppqalIZuQAlDm80tb5NGSSWab4sUfYVNuzn3Z?=
- =?iso-8859-1?Q?/0cWuj6TfraLyXkhS0wWkoD4ebsrnTgPXCCx9dD51/wtdEUWOkDH/qbtom?=
- =?iso-8859-1?Q?co23Vrvp0JTh4agXOd5gP71/z4u+e7QtDRg1Xsb4ZiP9j3iH7e5toi/1Tp?=
- =?iso-8859-1?Q?GBD5PfJwGkKUJ0NVh9Tvhj7oRh9xQalFW6TtiV4yZUCFtK7ThHr4m+x3mW?=
- =?iso-8859-1?Q?VGdk20146MsGho2xh6yqtHF91TOQ3tAlb+ab9Gmh8y3mDUdKN2zUUcnIoc?=
- =?iso-8859-1?Q?e7GYSb853dkR4bTe3fEk8bnJZumBCqOvSffeuz2GYv6POKnsam+v2c0u66?=
- =?iso-8859-1?Q?AJan4o2ONY8hrGFDXTayj5VqkYLExe4dEnu2hsCVbm5bTZWCuPJlEupaRQ?=
- =?iso-8859-1?Q?JrWSWDY5AaPAoRVVQ/Fxr2HTnjPsD1kWrZMEEtjN4qd2zje/ctcbxEX/cq?=
- =?iso-8859-1?Q?LAeifuELPau3qUhpWsr5MD32r3pff0H3z9CRRUHt1cEveNz4OhAzaBxIZk?=
- =?iso-8859-1?Q?JYA/YHt0UnxuQzX96/6ipGlgIuvQaCg9XfdN+FyEGuTzNYmqGbLo5sApCn?=
- =?iso-8859-1?Q?9NSdKecalP/q1lrebtplscrOyAt3Wv0TUyJnl3HA1WyCs+x5tOMplTuiYI?=
- =?iso-8859-1?Q?o2psNtyK3pRAaAaJqUkmUwrzWlD76FZy2/PV1fw8Et5Q5wTk2M02srMqPU?=
- =?iso-8859-1?Q?XaGsOhYtio650T91o1wfy3xKd4dPBfJjohpW1Ybrv69BrL46nkC/JHaZ2J?=
- =?iso-8859-1?Q?ksYwQjrDpPEJjO1cCusz4C8TgNirez0L6T6nD9waq716dKbsAZLn4RJibv?=
- =?iso-8859-1?Q?hz21GHRncHw1enTnEQ1ySB3VjeDq5NTrk5RuLhgtB83nPrBi6OYeT+xZa0?=
- =?iso-8859-1?Q?0XSFPsSBFn6H/IRqIJySCMc1VA5UIhdIcVePKtudYpgufXfhPt7Pi4O+hV?=
- =?iso-8859-1?Q?NXG7sdgCpEkPdYEXVFCAJk4iOk7RTM0HRCIqb3Let6lBQVNx2i+RoM28k8?=
- =?iso-8859-1?Q?mwdclZ0F6MhwiiYKcieRY9lF3I6oFxtt0P4E0p/HhkZtNyk88fdRGwehvz?=
- =?iso-8859-1?Q?ADwhi5MFJ9FyWoORw7i03+GueWRKkZO3xbpHkkCpcUFNeoqsmuYmFqVK2p?=
- =?iso-8859-1?Q?H2/DE8QbNK9+1OzPty7Jo0ZigoIt8eYleeW6yLq8bOo7UOUUU6pSyOKMIu?=
- =?iso-8859-1?Q?/kjuWqnFaFj6GZnxwpKJ2hhecGaE27cXTOf2Sn3wN8tBgAnxhzkrVjqRUQ?=
- =?iso-8859-1?Q?Z4RCRUKnf5?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?/8H7Wsqv9H2i/lNO72MpmOmh8idzQ3kyDfh63X1toviZflyGVvW+cbjjHh?=
- =?iso-8859-1?Q?o1+PZuLo9cT4aEffLALLnNREdF11nr7WsEFvPGz6oLeGRbPPduaNR4msf9?=
- =?iso-8859-1?Q?aaKG562IZKJWWC7oYSPckKpVQB9zCyMX+Q63VNn6k7Hhbd5xle0pdn58PO?=
- =?iso-8859-1?Q?n95w51rxe6jSkp2fremchNyh9Tpo2/U1l6G8OXjUA9v9NqGPgrU4zqi1ob?=
- =?iso-8859-1?Q?lNLzxLyk6tTuu8rvq5A+rKylh+rikzmzzptBfMqZ08tkpqy+TLr+IUiLrG?=
- =?iso-8859-1?Q?GrPn9SpcMXMO16BJC1j8A+fWSnGrexMpUS7rrh4rC2RsjdfU1nGztCup5G?=
- =?iso-8859-1?Q?WAd70xhCsyFiDYvICuEjGOXHNi6kEw2RCAr4HdQ7uUwSvk/CNkGKRNGDie?=
- =?iso-8859-1?Q?0xMEg6PtGF05l28UZIgmvqSk5ti0vxjRcFxp8/iLNUYzzJmMlOqlHyqrgo?=
- =?iso-8859-1?Q?wsXt/7QwYYx/0RKWRsp7yOx7NLYFQMOQZwNOUfvXKKs8vMSCTalnJqdg0z?=
- =?iso-8859-1?Q?+Bfgd5WvjdFN7hk0KbEa60Hy5NKmSWRXBYGlGIxPBZLEHpLGT5Uanw3sus?=
- =?iso-8859-1?Q?CmtR7Y4HXU3Qt5kczPqBPZkzKnQAO4v2HXiRVxW+fWrN8gxbvU0u+yfaw4?=
- =?iso-8859-1?Q?Hws1SXjUVG005NjQUU0ADZ0+vAmc6JwpZy8QhV3+dRCeiBIRf1C8OgJXWX?=
- =?iso-8859-1?Q?/Dmmz6/74K/LDeTYgkBdXdDgC8wlLWf+ByYZAJ+VQ2spSoxov/0NDmASwL?=
- =?iso-8859-1?Q?AXDtsUX1WO0LeakfbLCab5Od/lu8i9/Hj4LdA0WbmAJfx1FIAPAmnTQ/v1?=
- =?iso-8859-1?Q?Mzn2cy8bWAsMMrmFVa7Vbnlcr+7WDnUDUZ0UcHQIP3DCiYEbRT1vdusvB9?=
- =?iso-8859-1?Q?VzMyaxo6jorawo3AzTFzCwL4LioX1Wn7dZw417HAN9pjhFOWIucXhSOhOt?=
- =?iso-8859-1?Q?drYSWSIn0RHgDIZhbIZajPUwoUJJG7FZmivBJUQ11q8ztrX+mSRSXTA7y1?=
- =?iso-8859-1?Q?2zInXmKH89XVrVaIv7t1PpKt3TphQ0I4niBCevwgnrZw8POaK6HLwIOW0t?=
- =?iso-8859-1?Q?y8JPwZOKuly8i01wOzXde3Tg32cBV7wBVYWjQE5S95siBHizFfOkwux6O5?=
- =?iso-8859-1?Q?5zObvfhH5qQb6vuQKbgNlWl6C5SDOOklS5q7TD30fc0KYgGpN0azebJMXn?=
- =?iso-8859-1?Q?NLps9TGWkLxFz2mJN6ocl6ryVi3yuuAgcenpRo0d/KHCAyhq11Gr6FVrQf?=
- =?iso-8859-1?Q?B9I+js9ugXUXY+gpMRDbZMt1FWRMdHYIhvGeKxCS0iRRBnBbPNLyWWAgar?=
- =?iso-8859-1?Q?5D5phoSJYrYdKyoMQ1hfiP/YLbecOaoiTp1D6h8U5Hvf+3LNxZo4kPjcpu?=
- =?iso-8859-1?Q?nGf2w7JoUVA2GKlEFpZ4IrNKj6ZEkPToFRkQaJ+togmapdOTRxsf5WUdzH?=
- =?iso-8859-1?Q?p4Ol0jXxC7w1bKj9Y/2sf3s3AZ+G1F5P6rtHbprUQYrJxaxzq+kl45M0xc?=
- =?iso-8859-1?Q?pT1E6jn3P+0/z1QBu3YYaWyqJibJqfXxGfZNJUEuT+uprQmN57O8rbF7VM?=
- =?iso-8859-1?Q?or4AtdugEGm2wwuwhMH4jhIEk6Zli3WxB22hi+JlNzLJg81dPrOSwGBlnN?=
- =?iso-8859-1?Q?WyxM358/ElQ9w=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd305ae9-a6bb-48e6-6d43-08dcbbb97c22
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2024 17:00:50.6794
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0iUECwZcEgOguETpyJ+J64IDYW05Z1XVoJ2kQUizzZDoeq5EjJSTrwj4tc/Oj0J2uSRPIhr8iUdP2TszmADQmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8077
+References: <20240522215043.3747651-1-tharvey@gateworks.com>
+ <CAL_JsqKtc_65tDMFWT0WroNPmW2R0Dd-4Jw101PnyJcPb=7tJA@mail.gmail.com>
+ <CAJ+vNU0LBEET=y40BT4OE0zWsu6DxT-SYOrx7qD-h=HH2zENzA@mail.gmail.com> <4faa6881-8828-44de-92fd-6e55495cefb2@linaro.org>
+In-Reply-To: <4faa6881-8828-44de-92fd-6e55495cefb2@linaro.org>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Tue, 13 Aug 2024 10:10:40 -0700
+Message-ID: <CAJ+vNU1ff0c=wJoVTENGSV5Y3Yh_w5mTU-xoA9XgOX-x744=EQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Li Yang <leoyang.li@nxp.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 13, 2024 at 10:31:23AM +0200, Alexander Stein wrote:
-> Am Dienstag, 13. August 2024, 06:35:01 CEST schrieb Frank Li:
-> > Remove undocument property big-endian in watchdog.
-> > drivers/watchdog/imx2_wdt.c also never parser it.
-> >
-> > Fix below wanring:
-> > arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: watchdog@2ad0000:
-> > 	Unevaluated properties are not allowed ('big-endian' was unexpected)
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi | 1 -
-> >  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 1 -
-> >  2 files changed, 2 deletions(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> > index a3c57da63a01b..b84512bc4c881 100644
-> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-> > @@ -430,7 +430,6 @@ wdog0: watchdog@2ad0000 {
-> >  			reg = <0x0 0x2ad0000 0x0 0x10000>;
-> >  			interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
-> >  			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL QORIQ_CLK_PLL_DIV(1)>;
-> > -			big-endian;
+On Tue, Aug 13, 2024 at 9:34=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 >
-> RM LS1012A Rev3 10/2020 lists WDOG1 (2ad_0000) as big-endian.
-
-Thank you point this. I remember I run this last month, but not sure if
-1012 platform. let me double check again.
-
-Frank
->
-> >  		};
+> On 13/08/2024 18:22, Tim Harvey wrote:
+> > On Fri, May 31, 2024 at 7:13=E2=80=AFAM Rob Herring <robh@kernel.org> w=
+rote:
+> >>
+> >> On Wed, May 22, 2024 at 4:50=E2=80=AFPM Tim Harvey <tharvey@gateworks.=
+com> wrote:
+> >>>
+> >>> The GW7905 was renamed to GW7500 before production release.
+> >>
+> >> Maybe some summary of the discussion and how this changed from one-off
+> >> to wider availability.
+> >>
+> >>>
+> >>> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> >>> ---
+> >>>  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
+> >>>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> Reviewed-by: Rob Herring <robh@kernel.org>
 > >
-> >  		sai1: sai@2b50000 {
-> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-> > index c0e3e8fa1e794..5837f1b15dccb 100644
-> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
-> > @@ -776,7 +776,6 @@ wdog0: watchdog@2ad0000 {
-> >  			interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
-> >  			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
-> >  					    QORIQ_CLK_PLL_DIV(1)>;
-> > -			big-endian;
+> > Hi Rob,
+> >
+> > What is the status of this patch? I'm not clear what tree the
+> > Documentation/devicetree/bindings go through.
 >
-> RM LS1043A Rev6 07/2020 lists WDOG1 (2ad_0000) as big-endian.
+> Always via given subsystem. Which subsystem is here? Maintainers should
+> tell you - ARM Freescale/NXP.
 >
-> What about ls1021a? According to RM this is also big-endian.
-> regmap_get_val_endian() parses this property and regmap is used
-> by drivers/watchdog/imx2_wdt.c
+> See also:
+> https://elixir.bootlin.com/linux/v6.11-rc3/source/Documentation/devicetre=
+e/bindings/submitting-patches.rst#L79
 >
 > Best regards,
-> Alexander
+> Krzysztof
 >
->
-> >  		};
-> >
-> >  		edma0: dma-controller@2c00000 {
-> >
-> >
->
->
-> --
-> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-> Amtsgericht München, HRB 105018
-> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-> http://www.tq-group.com/
->
->
+
+Krzysztof, thanks - that makes sense.
+
+Shawn, what is the status of this series [1]
+
+Best Regards,
+
+Tim
+1 - https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=3D85=
+5146&state=3D%2A&archive=3Dboth
