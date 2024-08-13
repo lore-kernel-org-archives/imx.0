@@ -1,69 +1,134 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83C16F2EA
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 08:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65686F2EA
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 08:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723538974; cv=none; b=YOUZrDLFvAQgkFm63wjXy9WlyHgAE0x3EmCgNxzG4Ss5T/XTaoB7/pgYR8yzuQnrbE5o7Hg9Gl6KEks6RnuRo1vS7Lwu16xEh7LcVWfVEqlWSnBV6R7gBB1ezFuF08qO2uQwdw1BekIjjO+xubtMJqhaYkL20Y46vMl+srIzUcA=
+	t=1723539000; cv=none; b=KFoRNen8jNZfOyf0XW161hGciPiDgmZVadrXD4+4DVuvLcUoWQHi/FuEThn/E9shSG//01zWOS6MiMimTjQ7woSxYmwIDI6dwGdX10ejf7qarfuTf6kjWS3M7piob2crLWE1oicf4xRsaNua7fAgf7xwt5I04TO3Gms3agdVMy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723538974; c=relaxed/simple;
-	bh=fnGUMR8alWJ23yiSC9hwqHhWGxCojupW1eTuANhSJGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hGGwcNyEuj+vehz/4pOdWdymERUICDmXLFitzH0auaeEUSY39NJ/uOhBz03h5Izuf9dm/Hm8I8q2vRHQsSdhhT2gGwpSkAQc7S/F2R9HshEHS7m0zfNKdVtg/ltThbvGniqYisDeb0GK42HzYjygb8LG7MJUaCZT7XkRpXjLGm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Os8nz6D0; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1723539000; c=relaxed/simple;
+	bh=V4WrTgh7MmtFqW9PEtTPb2Mnk/On9500/pADdmBv+YI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LNW1f3Oi5j3/vrbRDKlk4UZT5oM8ggRbwwhn7mVl4W7btmVGMGOFgAlooOvzoe0Tue5g5Z/PtvJSZdrybmf7648Q6KRc6L+QjUkvOJTEghE5+cWFvxiRa5JDMSOOlVByhSjpi+0h2A+C2hk7H00VGfmtOQZfVdhhEK+1EPtLiXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=bDX0KbfK; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=PPd6yOiw reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Os8nz6D0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ubP/x6XM1hVrrXEFEEkcuv4aeS2a2HZhT4tQZk/QGN8=;
-	b=Os8nz6D06WVF/hzVZq5Y4vI7jyB4pG81Vgvw3c8mAAkM+V3dzsaY82idHq+cbu
-	IfqNbTd7x+6t7YhzWugDZEOX6o7d7srN/9PcZlKxBxfBmbBZQnESz6cACW1ULVSa
-	Uk2COdTdngPa6Vh+7UHZXQS+Sjs3Dfe6rO4CIrrM9qwZ0=
-Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgAHj78AHrtmfYIbAg--.7470S3;
-	Tue, 13 Aug 2024 16:49:06 +0800 (CST)
-Date: Tue, 13 Aug 2024 16:49:04 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/1] arm64: dts: imx93: add lpi2c1 and st lsm6dso node
-Message-ID: <ZrseAE8+YJ1PhRL3@dragon>
-References: <20240808162157.3323811-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="bDX0KbfK";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="PPd6yOiw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723538996; x=1755074996;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=cLEFcP5r+oiRTfc8TQfpRiyUkDNMA7o5nOq1zVUjk9A=;
+  b=bDX0KbfKZpBCKaBpgWcWra6bJqoigeyypvTEhDA2+cNL8GL9zsfve67O
+   egI4DUVRAjfuToi22mPD7hY2itn72Z8TLFAX8a4TH5Pi3iwmqkgD00N8i
+   qUr5XHu8XB2Czby7/j73EtoeKufkLP9vcpAZ6qLhAGL2n0AXLv/moQI/T
+   6IwwgOxTxMDdjzj7YPUf6FnzB3RLgpvcwutrfV19YifWpeguLWV4vZJuJ
+   iaJdSwdqt3jRnmRYiJ+qB3iUeWIJwyufdV/Nyd2zQnFB/n1sFdqLZxs8q
+   k+Ea56fB7qZci92HYqGB3IxWMeaii2mJxO+ccjl7sqnp4ECq+AEckyIwO
+   g==;
+X-CSE-ConnectionGUID: kTgJzGXJQgid59hRvnmnLA==
+X-CSE-MsgGUID: J0fTtBl5Steu2rBh11VQTw==
+X-IronPort-AV: E=Sophos;i="6.09,285,1716242400"; 
+   d="scan'208";a="38379655"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Aug 2024 10:49:53 +0200
+X-CheckPoint: {66BB1E31-36-751552D8-F91D2344}
+X-MAIL-CPID: C06C22A27F7258845CFA44B24CC0BFBA_4
+X-Control-Analysis: str=0001.0A782F25.66BB1E31.01A2,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BA009164491;
+	Tue, 13 Aug 2024 10:49:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723538989;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=cLEFcP5r+oiRTfc8TQfpRiyUkDNMA7o5nOq1zVUjk9A=;
+	b=PPd6yOiwCqAnrnd1hghnEGC/sKlz+5v32iN04vT6gqMP5yy5Uaf0+gBLTkajj7EKSD86bF
+	7CbhwiH/uGK21Sjo95veRNees0kAuY9dEh2Z+9r0y6bvFoxVfhjpSKra5j+yQnJTAPo4kH
+	qOO3TreiSZgA5495VHuCwwrGVO3D3b5jFEtJcjJNClLBqUG0ThRr3RM6ay354H7b6w7ZTi
+	mU83KW3Z5K01QK02RBHOP4nc2EQJD9YI/G/ZL4P1WLjr/xigGKj90lxiE5Xi8EFgXb+YuQ
+	0JvD2uaXCn0uoAXuqdZ2bJSXMipTGKtUOeGdPm1f3PSDUR45IVoMMgvqHGxBbw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Gregor Herburger <gregor.herburger@ew.tq-group.com>, Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux@ew.tq-group.com, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 15/17] arm64: dts: imx93-tqma9352-mba93xxla: rename hub to usb
+Date: Tue, 13 Aug 2024 10:49:51 +0200
+Message-ID: <1998267.usQuhbGJ8B@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <1802961.VLH7GnMWUR@steina-w>
+References: <20240813-imx_warning-v1-0-3494426aea09@nxp.com> <20240813-imx_warning-v1-15-3494426aea09@nxp.com> <1802961.VLH7GnMWUR@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240808162157.3323811-1-Frank.Li@nxp.com>
-X-CM-TRANSID:M88vCgAHj78AHrtmfYIbAg--.7470S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxsqWUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQI6ZWa7CftCUAAAsp
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Aug 08, 2024 at 12:21:57PM -0400, Frank Li wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
-> 
-> The i.MX93 11x11 EVK has a ST LSM6DSO connected to I2C, which a is 6-axis
-> IMU (inertial measurement unit = accelerometer & gyroscope). So add the
-> missing parts to the DTS file.
-> 
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
-> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Am Dienstag, 13. August 2024, 10:40:04 CEST schrieb Alexander Stein:
+> Am Dienstag, 13. August 2024, 06:35:10 CEST schrieb Frank Li:
+> > Rename hub to usb to fix below warning:
+> > arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dtb: hub@1: $nod=
+ename:0: 'hub@1' does not match '^usb(@.*)?'
+> >=20
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>=20
+> Thanks.
+>=20
+> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Applied, thanks!
+Still valid, but there is already https://lore.kernel.org/all/2024080812320=
+6.192906-1-festevam@gmail.com/
+
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts | 2 +-
+> >  arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts=
+ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
+> > index 852dd3d2eac74..325d8097bf7fc 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts
+> > @@ -533,7 +533,7 @@ &usbotg2 {
+> >  	samsung,picophy-dc-vol-level-adjust =3D <7>;
+> >  	status =3D "okay";
+> > =20
+> > -	hub_2_0: hub@1 {
+> > +	hub_2_0: usb@1 {
+> >  		compatible =3D "usb424,2517";
+> >  		reg =3D <1>;
+> >  		reset-gpios =3D <&expander1 2 GPIO_ACTIVE_LOW>;
+> > diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts=
+ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+> > index da8f19a646a98..b1fcbc12bd882 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+> > @@ -486,7 +486,7 @@ &usbotg2 {
+> >  	samsung,picophy-dc-vol-level-adjust =3D <7>;
+> >  	status =3D "okay";
+> > =20
+> > -	hub_2_0: hub@1 {
+> > +	hub_2_0: usb@1 {
+> >  		compatible =3D "usb424,2517";
+> >  		reg =3D <1>;
+> >  		reset-gpios =3D <&expander1 2 GPIO_ACTIVE_LOW>;
+> >=20
+> >=20
+>=20
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
