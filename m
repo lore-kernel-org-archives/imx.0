@@ -1,40 +1,39 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F45F17588
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 03:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15901BC39
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 03:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723519303; cv=none; b=hYGPABf28S8IhXxZbtSQ5Amk3sGXyjSkSaqEKdAz9Nzv15YKtDrhwwnI/kY2dHym2t1aHkSfWviy4isUKeendpMjA9HsvCgWKDSoI5ppOl+pHKa9mc6x+QOMLWOaXqsdcBO7KHervnEBhkfQBcaVM2s8TzPtvKF4Fu8nbT4JeBo=
+	t=1723519438; cv=none; b=Au9ELiiVsn4alBcWZEuThSQaHDTFGJRiFNox+0O/RxDpgjftD46NxzU0OpSGONV0jZzIg7ybBMcMH/VycNFqePQL+JPCgcqzJIejmBGI/Rn4JMtW7OTXiaXvsljvxlmVmWLLy4f6tUkicJj5DBWMlGUETUP1JeJ3BZWHBgxZ/wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723519303; c=relaxed/simple;
-	bh=qa8hrCIuw/DZvzNGXRkoic1AaKOPbfAItMwf5cEK41w=;
+	s=arc-20240116; t=1723519438; c=relaxed/simple;
+	bh=7lFWEAvnvATGYUjYbE+UQZZ8avjVPPXPwLKehfmOkIY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WBHIGU64qTrbwZcpfbo7SO9y9uZV4ER4x3Po2xbtNSBFe0zz33yW8+NEwzUlw3GN2UlLdjjFqr4+gYvkgN5on4dOIaCPacyjklcif0jEtUub7Dw7Vu7ZPgmuZx8wq+3RYPN7Qi8Kmi8cAsGxl5TfuHmatvUoOUXT02JxfITcreo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=I6xgm9zi; arc=none smtp.client-ip=1.95.21.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=RgLCn7o3lOEskawSw2dvaDPRaRzzU4dRPUIHlRm+vfzr3mFwV31Qy2QZAEAHSPosqaUHTd4atneOuRpG5X9RZXAFFDxwAnRsJic/6/WRT7hv2UhkQ6zCFcLBTrwd+LD4QRPqDKh629oChRcdiepNfsvn2oL7EKQyKcnziYOQqRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k4zN7Lto; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="I6xgm9zi"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k4zN7Lto"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=VaTN/iONQn/aQCaJ3eYqrbMR3KgB3UWpWae6aU/82zc=;
-	b=I6xgm9zi5IvbrWPQPSBTqd4MtKQoB417slFQ8vBF7OJpbh05yynFkUVts87S7b
-	3RrXum5xqZuDgA6Jck80HCN6wEuqFgXbAeiXviS78AvVi3Th+S7b84McmQVolUTY
-	r4JEazZSno+8L4hQ1fS27uMIjYvrNYo3VGidxiIuy5Dhw=
+	Content-Type; bh=49hsTj1rKElOl0QAjIJapCTHihP1lMG/WubSN1o3tAg=;
+	b=k4zN7LtosjlwGnW8fGuf+qdhJEoVEqZXPSwPJ8L/nf361HUBSLZ9w5I0X2Xz29
+	D7TF0uJk/6Mwf7balQAFdBbkrWQCI+9vsCyx7O4d2sIXnk0fRfh5a1/B4ZPjPx0a
+	Bb3zZGYn+CNDCqNLzx5j2WpqP/Va/mZvhKR04cIPgfYXw=
 Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCHjyAu0bpm3JtSAg--.42013S3;
-	Tue, 13 Aug 2024 11:21:20 +0800 (CST)
-Date: Tue, 13 Aug 2024 11:21:18 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAnTye00bpmE6FSAg--.42079S3;
+	Tue, 13 Aug 2024 11:23:33 +0800 (CST)
+Date: Tue, 13 Aug 2024 11:23:32 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
 	festevam@gmail.com, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, wahrenst@gmx.net,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH] arm64: dts: imx93: add cache info
-Message-ID: <ZrrRLoffDDsrP2Kw@dragon>
-References: <20240801081111.1492688-1-peng.fan@oss.nxp.com>
+	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH] arm64: dts: imx95: correct L3Cache cache-sets
+Message-ID: <ZrrRtKBYybQKyxk/@dragon>
+References: <20240805030535.3027963-1-peng.fan@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,22 +42,21 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240801081111.1492688-1-peng.fan@oss.nxp.com>
-X-CM-TRANSID:Mc8vCgCHjyAu0bpm3JtSAg--.42013S3
+In-Reply-To: <20240805030535.3027963-1-peng.fan@oss.nxp.com>
+X-CM-TRANSID:Mc8vCgAnTye00bpmE6FSAg--.42079S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsPfHUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgo6ZWa6xHErEgABsG
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI5fHUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEg46ZWa6xHU46AAAs+
 
-On Thu, Aug 01, 2024 at 04:11:11PM +0800, Peng Fan (OSS) wrote:
+On Mon, Aug 05, 2024 at 11:05:35AM +0800, Peng Fan (OSS) wrote:
 > From: Peng Fan <peng.fan@nxp.com>
 > 
-> i.MX93 features two Cortex-A55 cores with per core L1 Instruction
-> cache size 32KB, L1 data cache size 32KB, per core L2 cache 64KB, and
-> unified 256KB L3 cache.
+> The L3Cache size is 512KB.
+> Size = Cache Line Size(64) * num sets(512) * Assoc(0x10).
 > 
-> Add the cache info to remove cacheinfo warnings at boot:
-> "cacheinfo: Unable to detect cache hierarchy for CPU 0"
+> Correct the number of Cache sets.
 > 
+> Fixes: 5e3cbb8e4256 ("arm64: dts: freescale: add i.MX95 basic dtsi")
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
 Applied, thanks!
