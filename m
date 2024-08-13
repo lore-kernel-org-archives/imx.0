@@ -1,63 +1,70 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15901BC39
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 03:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50C91CD02
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 03:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723519438; cv=none; b=Au9ELiiVsn4alBcWZEuThSQaHDTFGJRiFNox+0O/RxDpgjftD46NxzU0OpSGONV0jZzIg7ybBMcMH/VycNFqePQL+JPCgcqzJIejmBGI/Rn4JMtW7OTXiaXvsljvxlmVmWLLy4f6tUkicJj5DBWMlGUETUP1JeJ3BZWHBgxZ/wo=
+	t=1723519582; cv=none; b=OjeuzQV4imU2GfDBngNia00pQPCCcRbJfgkkkSQGFXkEIosQsYdf9XLglrdwagFy/pFwiCumgt7NrhgUSpdX4TP7JInIzRoMvLCJ6nQnHr6xnBb8cLIBPLJADUU04IL7UAs8Gu7BCWZ4eVR8Rz7aOSF8eFMPNeivRC7cTiIIJO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723519438; c=relaxed/simple;
-	bh=7lFWEAvnvATGYUjYbE+UQZZ8avjVPPXPwLKehfmOkIY=;
+	s=arc-20240116; t=1723519582; c=relaxed/simple;
+	bh=8OZnmatZD9Nj9foT1hom4sw7MtYQYVDycCJi6wUTz6E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RgLCn7o3lOEskawSw2dvaDPRaRzzU4dRPUIHlRm+vfzr3mFwV31Qy2QZAEAHSPosqaUHTd4atneOuRpG5X9RZXAFFDxwAnRsJic/6/WRT7hv2UhkQ6zCFcLBTrwd+LD4QRPqDKh629oChRcdiepNfsvn2oL7EKQyKcnziYOQqRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=k4zN7Lto; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=LGMBYx6qwgcitpZlAwAFGE6r7iBKIXF0fXgBr9yo63jgyCQDBkeHYTPIIl40+9KHtVpbgOb1v18YmqA9an97aue6kuo107wqZnVDDUjTf1XE2xweqEPdhumIRcNxCPtDVYzK7HKSwt3e0/eNR4/RUNTTcFoEbbmrTWpGQ03dvvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hDqSFEll; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="k4zN7Lto"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hDqSFEll"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=49hsTj1rKElOl0QAjIJapCTHihP1lMG/WubSN1o3tAg=;
-	b=k4zN7LtosjlwGnW8fGuf+qdhJEoVEqZXPSwPJ8L/nf361HUBSLZ9w5I0X2Xz29
-	D7TF0uJk/6Mwf7balQAFdBbkrWQCI+9vsCyx7O4d2sIXnk0fRfh5a1/B4ZPjPx0a
-	Bb3zZGYn+CNDCqNLzx5j2WpqP/Va/mZvhKR04cIPgfYXw=
+	Content-Type; bh=4wTCOXPSBkKwXbRPZblUxq9M6e+9zEMhPw7rDWYENsI=;
+	b=hDqSFEllOHgtpicT6nIpgr97cQbuguVi9EwoS4B0Hao6Wd5VZMkIjbT4W7rRKl
+	TCOgom26lpbyxhMgebPMar9nt1wJyuvvf2C5q0js84GvwnLQXSubYvcU0oR/u3Dk
+	4Wci3PcNPs4MWfY2ye9U4LYK0U3BHlVx3hHkm/wELVOhQ=
 Received: from dragon (unknown [117.62.10.86])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAnTye00bpmE6FSAg--.42079S3;
-	Tue, 13 Aug 2024 11:23:33 +0800 (CST)
-Date: Tue, 13 Aug 2024 11:23:32 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnrY9C0rpmv01fAg--.38173S3;
+	Tue, 13 Aug 2024 11:25:56 +0800 (CST)
+Date: Tue, 13 Aug 2024 11:25:54 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH] arm64: dts: imx95: correct L3Cache cache-sets
-Message-ID: <ZrrRtKBYybQKyxk/@dragon>
-References: <20240805030535.3027963-1-peng.fan@oss.nxp.com>
+To: =?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp-verdin: drop limit to sdio wi-fi
+ frequency to 100 mhz
+Message-ID: <ZrrSQtvQr+etX8FO@dragon>
+References: <20240805174814.1944742-1-jpaulo.silvagoncalves@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240805030535.3027963-1-peng.fan@oss.nxp.com>
-X-CM-TRANSID:Mc8vCgAnTye00bpmE6FSAg--.42079S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI5fHUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEg46ZWa6xHU46AAAs+
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240805174814.1944742-1-jpaulo.silvagoncalves@gmail.com>
+X-CM-TRANSID:Ms8vCgDnrY9C0rpmv01fAg--.38173S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxG-eUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQA6ZWa6wcdGkAAAsa
 
-On Mon, Aug 05, 2024 at 11:05:35AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Mon, Aug 05, 2024 at 02:48:14PM -0300, João Paulo Gonçalves wrote:
+> From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 > 
-> The L3Cache size is 512KB.
-> Size = Cache Line Size(64) * num sets(512) * Assoc(0x10).
+> SDIO frequency was limited to workaround some instabilities, however it
+> turned out that the instability had nothing to do with the speed but was
+> because of an issue with the USDHC IP that was fixed in
+> commit 52e4c32baed2 ("mmc: sdhci-esdhc-imx: only enable DAT[0] and CMD line
+> auto tuning for SDIO device").
 > 
-> Correct the number of Cache sets.
-> 
-> Fixes: 5e3cbb8e4256 ("arm64: dts: freescale: add i.MX95 basic dtsi")
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
 
 Applied, thanks!
 
