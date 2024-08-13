@@ -1,109 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3928210E7;
-	Tue, 13 Aug 2024 09:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B49416BE2A
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 09:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723540815; cv=none; b=soW2wgs+h1yayokl7pTmD7w0EdI98mQpMAMp5+7U840fv/M46VgCJB8BQ4QF5swZz6ns1GvPBcdUIYMqvh7c8tbsl+0ActBXqRPHdrjjCr5vDr34naOt7xefaS9VQxTHI7miogtnU8zUZDaYMksKkpC2hfqgHZ65facPFrPv0Cw=
+	t=1723541250; cv=none; b=kE7x8VT/Kv7L61AlIX0MPjerBNTJDuesXXKL4F055XhRiIPA+k798AIzkcWJphz2lg0t+fa9lUo7+w6d4GxF0jCCwdwMxjT0TduCfgy0u2fI3hWhLsjJQCAZo0WgroYMV8UUmrt3lxGBoPXNJV8AKferiPYTAPOBM+7uB0EOsFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723540815; c=relaxed/simple;
-	bh=kJLEtYQcepPSsS8lbEpbemeMKD2Lt0XQEH/PhphCKqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D+faRaWol3XR5Zdzn8P4WHxBorC6fzyOE8APYrPEvrSz85pZbILNCGJzf9dc9ax8hUFrIem/qDviIdC1Sfqs5Qfd/4kqabDy1K7d4AyCoOm7OeIZxMDtzbwcy3As7YJjM0W9YWuL9mGyIq17DyKUuVEKDGx25WDDZR0QF5EQV0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/gDzNkR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723541250; c=relaxed/simple;
+	bh=zWKBpp1fD8CLOQCnYPuwXtK/LuxFd72qNCF9B1vaz+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bOhAOXyPVJVbAwFuHhYiE4ZJ31l7r2y6KJi0Si32E+IPLTUv/JlGRwHfjZJfgwR8xYoFi5TDwgcwiD+1lCB8fKz7yeWG2NYzTWz16zyOh/Al4HtgIJ1LkQ+oSohXNKlgyTXC9mxDAtOEjshmcaULyVzQecRfbU9WoFnpPqMnSMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=PGLHMeoQ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NsFbJuu2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/gDzNkR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF73C4AF0B;
-	Tue, 13 Aug 2024 09:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723540814;
-	bh=kJLEtYQcepPSsS8lbEpbemeMKD2Lt0XQEH/PhphCKqY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N/gDzNkR0qm59bhD8yXPG+OYfMlY4hKyc8Rm7PjnA4kFPP7BkGvjJGYPk5kc6HiZc
-	 7vXwIK5UJImXF/2Gw3yRt4aFPYlmTR3NtY6/hIkRtpWBuqK2+o+BL/HOHZ1ZhO90jG
-	 2TTYerzYzRZoxdEuGbNDNwDRx4CAwuIXXTyx8dcLdcNAxyePxoOLAtlAXn+6vWfKQw
-	 Mjm3+z4pU+B3teyKUdECEWrHZVzj5Q3rqTFfCcdkvGfbTB45DYaAKVvAxDiDYGpMQW
-	 B1n0gkSU3/HwA9iBV5+a1jGNB9LeiEvQgSMMYcYhTNWx3Z5LWeNJz2rAwX1IUMblt2
-	 2XU8XJaqzVmAw==
-Message-ID: <781e8fcd-3814-4537-8ecf-efab0a380fff@kernel.org>
-Date: Tue, 13 Aug 2024 11:20:08 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="PGLHMeoQ";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NsFbJuu2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723541247; x=1755077247;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AiPyUN9SZEn/2DxqAiamaEu3TLRdS5TFR2v5vsla9UU=;
+  b=PGLHMeoQ10MJQcT1mElVETxgQAVTLDORsc1NBaawsrQiYooQ+aDNI4Kq
+   RcTmPG+hL713RC3q5ZAvQYY3fZJPRBDYbIMQni7WTGRKQUAcihyDTjm7F
+   OfgLPnRWxPmX/djDJTMk0fBiYQ8A26GbMe7MZ8XBt5z6gG/9GmDmMMSiH
+   sJI2oHB5RO4/tTQ/IzMhsh5WqMx5Wczt/sWoHyL0r3tcQgK6Rv6eNT/sk
+   KsB28NWkZ+rjh8Fx4ZNgxaR1h+6HTzLrHE0YVgL6UKRDKVNQJS7bm+pGv
+   277zW3FauNS8ECTpVP1Y+lF34pY0WLOh41VibccApi20A5TxaFGHwR0Lc
+   g==;
+X-CSE-ConnectionGUID: vQDCJkZKR5+N7c+nnQOkNA==
+X-CSE-MsgGUID: kkpTOROmT56mQfd4Xia0zw==
+X-IronPort-AV: E=Sophos;i="6.09,285,1716242400"; 
+   d="scan'208";a="38381022"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Aug 2024 11:27:19 +0200
+X-CheckPoint: {66BB26F7-16-E9ED6009-C4B0BEC8}
+X-MAIL-CPID: 9A041D01685DFD5BA42E4A134572F148_3
+X-Control-Analysis: str=0001.0A782F29.66BB26F7.01BC,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80FAF1640C1;
+	Tue, 13 Aug 2024 11:27:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723541235;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=AiPyUN9SZEn/2DxqAiamaEu3TLRdS5TFR2v5vsla9UU=;
+	b=NsFbJuu2E39m2ROafNdDaW75fHdglVZUu9NWqrgw6Qjv31JJEG05Dx6p2Zr6KZJQs9hgtn
+	RnqKw3a6bQzLnPGxC7EgZtkRhAuMHRzr4Zc5+6zk568GrGeUGHPNR0YEiAvvJH04ihP+j7
+	6tHcRjUf7Z7DCAxL/0yNR98aPJJnfs9BqlyY7QoSaNMJzE7T6SNpknSH/FRoxud5vrK+hm
+	GvZ46pGd25g015z1MTbeKIuXwtDN/DVODPhpQrjhH+UETCDgJYYgLn+j2ql2yfovl9t6td
+	1frOL65+KWjbuhrhZDvhhUfO/nGg49Fr5sDNDb/wxSkhtQ9d/ATosFSl1YDEiQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Markus Niebel <Markus.Niebel@ew.tq-group.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
+Date: Tue, 13 Aug 2024 11:27:16 +0200
+Message-ID: <1901821.CQOukoFCf9@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <781e8fcd-3814-4537-8ecf-efab0a380fff@kernel.org>
+References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com> <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com> <781e8fcd-3814-4537-8ecf-efab0a380fff@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
-To: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@ew.tq-group.com, Alexander Stein <alexander.stein@ew.tq-group.com>
-References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com>
- <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240812143431.98323-6-Markus.Niebel@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 12/08/2024 16:34, Markus Niebel wrote:
-> From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> 
-> According to microchip,usb2514.yaml the node name shall be usb-hub.
+Am Dienstag, 13. August 2024, 11:20:08 CEST schrieb Krzysztof Kozlowski:
+> On 12/08/2024 16:34, Markus Niebel wrote:
+> > From: Alexander Stein <alexander.stein@ew.tq-group.com>
+> >=20
+> > According to microchip,usb2514.yaml the node name shall be usb-hub.
+>=20
+> That's not true. The schema does not say anything like this. Old name is
+> correct. NAK.
 
-That's not true. The schema does not say anything like this. Old name is
-correct. NAK.
-
+So, is the schema incorrect? There is the dtbs_check warning:
+arch/arm/boot/dts/nxp/imx/imx6q-mba6b.dtb: hub@1: $nodename:0: 'hub@1' does=
+ not match '^usb(@.*)?'
+        from schema $id: http://devicetree.org/schemas/usb/microchip,usb251=
+4.yaml#
 
 Best regards,
-Krzysztof
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
