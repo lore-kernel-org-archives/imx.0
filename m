@@ -1,114 +1,113 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E79118A6D6
-	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 10:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5523E16A955
+	for <imx@lists.linux.dev>; Tue, 13 Aug 2024 11:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723544783; cv=none; b=V3SUVBD2KLxw/oom6VbvdpTtP+ML1UCZQ0IYX6/hdH0bPSaXGrvieEFKFc7DWVPCWtb1kIk+W4sZ9DO/LWqtT6tINsLAiaIFzgxMajwK5mnJj1fLD99/ApoyTOOD/FeN51An3VhdGBJF0if+v5MTfRHoSpvQT3w5eozEV/nR6Yo=
+	t=1723546983; cv=none; b=ttOZEYkW3ExFZWeacXbNSj0e3EBWXIz4HNZ5thNOlWSlZ3Ohb5EQdWyJQr7merSwjzFI/kgjXXafHnJanbpTSKUujq0rjP0M/u08OXZ9PBhmQPH7KkJ+XB7z/QsBR4mNgrMjsLn1mEtrZ17j+YTRqIY1b3l9HQPRVc9ThAubb8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723544783; c=relaxed/simple;
-	bh=z0SE0DRkQDPcBo47RwO5BjzEzk1vYFugQPsVneEsATs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sV8ZANzXcU2KnKBW3XIsRXhb+KxhuJ6WBO6BmKML3vvWRYtP5qiyEnxEe+BnUSaUC7zBLmQOjohV3GJZpgxzaGuD8bqUOUJnzHzT6TfNvu1ixV8MD0fZq21C6IpL5zQ/rsT2oCQ4aDNQj2EPpGbHmaIzonhxlxM2QcIl7CepNeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gjAhLxC1; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1723546983; c=relaxed/simple;
+	bh=PwUa5/OanIErRHAvEgE9UQwuwofhy8HwKU6/7A/LFUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AAfjHnggEpDfF/mCW8yqRsa9j3ONmBnnxDPJsKHBCbecHfOl3vwuB7go18AGvCWPYDcNG+S41gYS9ZHFHOxVOYO0zgDNbBAs84qrfZHkTvxIAAYQjI5OrkC+noDQZzl9qqPpc29Q10XbBysq9h4Bl7k4z1/yhD5mxtxI7POF5Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=YYba8t5A; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pKGZPbvS reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gjAhLxC1"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a7a9a7af0d0so595095866b.3
-        for <imx@lists.linux.dev>; Tue, 13 Aug 2024 03:26:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="YYba8t5A";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pKGZPbvS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723544780; x=1724149580; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MdQQgLvLwClHzzWB9/M5yoQQbZvzDEedy+o4MY6Z6/o=;
-        b=gjAhLxC1/YrsgvZ6DvEvxpzeZG30OF0K3YgwcGilicsRsuILWSMGZ1e0BQC8zoLLft
-         OmwXDVqzc9uZKD8em1iHqKOQUhShTnCQ4xuD2zQIkXmAZMOQ6qEr+rEWzM1XF0cOPb9a
-         5ykrr0azNnRm0pdkSiimOGQO7kJ+rD8kGSs/IqLdT5Op3jlMDsgpviVmFTcKOsC/lhI2
-         rharG9S9+rcEAatX8p2pcJCF0+F8jA97CsoHA7utFhUYrd1xWTRTem9+mcJu85OJmsm+
-         /DUc2tfakeOR2AY1WRFb8YtcE7KU1uQe0tVVKPUTn+LxqLDg/iG9xDOkCR8iF1HIIWp8
-         BfvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723544780; x=1724149580;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MdQQgLvLwClHzzWB9/M5yoQQbZvzDEedy+o4MY6Z6/o=;
-        b=oHZvVdFpMGVlxzwm/dg9YKinv5gwrFuEwroyNzI4v6sI4ajSE+j0j6HXHnS27LH609
-         u9X8+1bX9wd4lhmKMMYNo5aBhI1RSM+ImHULUIRYQ8lHofns2kiWNCMIGu3GxGl965Y0
-         dB1g8X4oVSlvXzZpxCec1LcpA753KuTMoNvKCnpWa3N6MD5QLSRozJgg70CkDKcZS4Rm
-         m9bqETLRY5NzOB8lm579a/sg2GRDj7sLIYGoZs37px/qa8ei1aDTLLXz/Uuc8PIyY5Xu
-         PTsU7pgsOM+lGYckpg5O45ZdiEoIuP97o+nAUBN/NYmjfDVcWkrFMsAsaAzWBSj3hXMP
-         ghUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnYvMnMx4V6HPXtL41eUAhA4lk7Q6hHNkIMaWrHEYqp0VPinat98/vgfMtNhVjt3phLqDxNpi1KT/wLMRofYNbFAmL
-X-Gm-Message-State: AOJu0YwILJVVx9f81BqyEkuxfSjhq9+rceQvCOBxVeyNacbgrOOJW6DI
-	7f1FL2/NOIC2smsksHp8tB6fTw49PcopikdyXWMHWSpHwiOiLk5Wa5ViES9FIQf3sFC8AUlpGyJ
-	eMb6SscTdov0nS4ZlLfkeav4HTAT/r6pHjQax4w==
-X-Google-Smtp-Source: AGHT+IHx6zPYh3qSfj3N85WmIDiWhbodIIrS72DAI3Ue6S5ByNRdNzF61bpT+HPkFh24apaBN1cdRGQUtDwUFhZq0r0=
-X-Received: by 2002:a17:907:7212:b0:a77:dd1c:6273 with SMTP id
- a640c23a62f3a-a80ed1b5b03mr184722966b.12.1723544779522; Tue, 13 Aug 2024
- 03:26:19 -0700 (PDT)
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723546980; x=1755082980;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BX8/YcQITWwz1XEoFgy9ZmyJuYxThxbscbz2octGzAE=;
+  b=YYba8t5A03+yASvcoMRUnGJtY32FtSZxhi4STzpdEJr3FjFsqcnlT7mB
+   ib1GdQoQs9UjJeoGnswSLBQbK2X0mlzGOxYwoM/NXD3YkOiUGiVQ1stCm
+   ma9NbgmBYwWTt5l0pRGyhcTNzoqz0S1dERamxdAr6kyFURm/hWfO9fzef
+   AnWJuepAbjhYrejgFAyECpUVypPJO24gEA4fNhAepAOv8oVOtqDi7e8jV
+   z+d9mQ50oy8tFAO9t1W454ZFLCYmGa+okiKL1XAhvwotQN4awebXVh/h5
+   46BSEZaSz9BfWb4pK+bFw1zVGn8ldOdbJZ8VMd8FJWr+9Yxfko97yA1za
+   Q==;
+X-CSE-ConnectionGUID: F/Gzg1pvRoySPc4KafHwrw==
+X-CSE-MsgGUID: dgzq19lBT/62vuCWd0dEMg==
+X-IronPort-AV: E=Sophos;i="6.09,285,1716242400"; 
+   d="scan'208";a="38383452"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Aug 2024 13:02:58 +0200
+X-CheckPoint: {66BB3D62-A-45EF2B36-F6E28480}
+X-MAIL-CPID: 8522DF81CEE9203FFD6B6412A29F7287_0
+X-Control-Analysis: str=0001.0A782F1B.66BB3D62.0069,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3070E164987;
+	Tue, 13 Aug 2024 13:02:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723546973;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=BX8/YcQITWwz1XEoFgy9ZmyJuYxThxbscbz2octGzAE=;
+	b=pKGZPbvS8nX3DhTjo+uJRpFLzFrd/5oQ7jlkpOLLK7qGpyzGCTxMZwbfgr3maNhy+a/sDe
+	FoFv+qrZ7XjuT2+h/FUwmSoexwgbd0KNmJTtZSMpP2P1SuT2rnx39g/ksZhL+3tGqp2EQ+
+	Q/caBG8ibAJVRMVlbYsWmBBeyCykCNr7JoVvtdaYNi26fGjdpbOib0uyg9VEPvfijc+zSG
+	CEVLVlafOzKfGb46I6zD7JOdvCY+N26AhMlRucV04FCjsqIyD+F39JLRaVYYO4U9632ctZ
+	G/pF85M8j6P7JV9bpPTuVtLNAC5OFONnQBhhCZiwsjLD3INKbaLsx15hmvv85A==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Markus Niebel <Markus.Niebel@ew.tq-group.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 5/5] ARM: dts: imx6qdl: Rename USB hub node name
+Date: Tue, 13 Aug 2024 13:02:54 +0200
+Message-ID: <2621134.Lt9SDvczpP@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <82ee2be2-366e-40b2-ac95-e755443032be@kernel.org>
+References: <20240812143431.98323-1-Markus.Niebel@ew.tq-group.com> <1901821.CQOukoFCf9@steina-w> <82ee2be2-366e-40b2-ac95-e755443032be@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240808042858.2768309-1-make24@iscas.ac.cn>
-In-Reply-To: <20240808042858.2768309-1-make24@iscas.ac.cn>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 13 Aug 2024 12:25:42 +0200
-Message-ID: <CAPDyKFqZ1nkhEYEOMtYNxOqkV9npXvuQB93PepAGYSmmpDUkyA@mail.gmail.com>
-Subject: Re: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, geert+renesas@glider.be, arnd@arndb.de, peng.fan@nxp.com, 
-	u.kleine-koenig@pengutronix.de, marex@denx.de, 
-	benjamin.gaignard@collabora.com, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 8 Aug 2024 at 06:29, Ma Ke <make24@iscas.ac.cn> wrote:
->
-> Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
-> IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev
-> is either error or NULL.
->
-> In case a power domain attached by dev_pm_domain_attach_by_name() is not
-> described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
-> then used, which leads to NULL pointer dereference.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1a1da28544fd ("soc: imx: imx8m-blk-ctrl: Defer probe if 'bus' genpd is not yet ready")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> index ca942d7929c2..d46fb5387148 100644
-> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> @@ -212,7 +212,7 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
->                 return -ENOMEM;
->
->         bc->bus_power_dev = dev_pm_domain_attach_by_name(dev, "bus");
-> -       if (IS_ERR(bc->bus_power_dev)) {
-> +       if (IS_ERR_OR_NULL(bc->bus_power_dev)) {
->                 if (PTR_ERR(bc->bus_power_dev) == -ENODEV)
->                         return dev_err_probe(dev, -EPROBE_DEFER,
->                                              "failed to attach power domain \"bus\"\n");
+Am Dienstag, 13. August 2024, 11:44:28 CEST schrieb Krzysztof Kozlowski:
+> On 13/08/2024 11:27, Alexander Stein wrote:
+> > Am Dienstag, 13. August 2024, 11:20:08 CEST schrieb Krzysztof Kozlowski:
+> >> On 12/08/2024 16:34, Markus Niebel wrote:
+> >>> From: Alexander Stein <alexander.stein@ew.tq-group.com>
+> >>>
+> >>> According to microchip,usb2514.yaml the node name shall be usb-hub.
+> >>
+> >> That's not true. The schema does not say anything like this. Old name =
+is
+> >> correct. NAK.
+> >=20
+> > So, is the schema incorrect? There is the dtbs_check warning:
+> > arch/arm/boot/dts/nxp/imx/imx6q-mba6b.dtb: hub@1: $nodename:0: 'hub@1' =
+does not match '^usb(@.*)?'
+> >         from schema $id: http://devicetree.org/schemas/usb/microchip,us=
+b2514.yaml#
+>=20
+> If you have a warning, shorten it and paste it so this will be obvious.
+> If you look at several bindings, the hub is widely used name. I think
+> the schema is not correct here - I do not see any properties from
+> usb.yaml being used here (for usb2514). What's more, if you compare
+> usb2514 with any other on-board HUB representations (because that's the
+> only point why we have it in bindings, right?), none of them reference
+> usb(-hcd)?.yaml.
+>=20
+> These are not USB controllers, IMO.
 
-The corresponding else clause uses PTR_ERR(bc->bus_power_dev), would
-that trigger a splat too?
+I raised that concern in [1] already, but nobody commented.
 
-> --
-> 2.25.1
->
+Best regards,
+Alexander
 
-Kind regards
-Uffe
+[1] https://lore.kernel.org/all/3633627.mvXUDI8C0e@steina-w/
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
