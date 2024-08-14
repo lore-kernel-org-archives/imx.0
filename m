@@ -1,68 +1,67 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2066.outbound.protection.outlook.com [40.107.249.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFC21B8EBC
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 16:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9141B9B50
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 16:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723653870; cv=fail; b=kMoPPwNNnHP5iYefdZgil+80BIw5ca55YgWbqtxZk11+4qGZ8FjBxJZJOYBlnlI9t4UZVZxoE5XSYRq6HmDKtbZ4XY5T/8dymtOuDgB6k11fukk9VPc8Oav6h7geLEVDI1Ckf9X2/uQB5CBhotH/A4QCZaALdv4cKFnRMKQvhrk=
+	t=1723654061; cv=fail; b=NyjpEMzxpvTg1SlrofOPCokhajQ0JFqAXxNQA4L6wJu/aOErt0h4m22oICRVL34jowRd99VDTz0mW1XrxL4tT6NJd5aBOdtO+FD3AV+FsbdeJO8qIH4dHfii1Kkwq5QLnGBH64J+bifC2zjelecptjoS3hQZKwQLNMfuT/+x4Jk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723653870; c=relaxed/simple;
-	bh=Htx1oc9G13xwCQNiXjGvSDK9Vgs/8iwpWt4YiRlFXis=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UWjfZx9+Ye+sDCv/g76rtWjMoGMEXN9sRHrwA9YGHkn8iL4r0xh7qQHX2goSmvIDoXxYtGy8oPjgtgr9LXxsxazniPQ2PQeb6dT8PU6vBRKfp9VR/e3FGITKP/CinZ9qCSMKw4VEq1vK2wHaaBYS0KbPQ6L9fx65A80ni4/wyRI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ESdBqwhn; arc=fail smtp.client-ip=40.107.20.77
+	s=arc-20240116; t=1723654061; c=relaxed/simple;
+	bh=XryEeHjrhLYefSLFydrLheVPDGfBelZCZjTKivg2fHc=;
+	h=Date:From:To:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cp14WReG3om4Dt6oafWPMEWiXrgXRwFPEVS9IngR9osZigLHl3xZEpkxbmY0LnBN7K0rIUhnOffY0VM07pi8eW+chOP4V/kTRzjbbWV/xT6a7e5QJ4tpDswqoZM4VX0C2Ap9amuf0Yh3umolqvBGKGedxcA5qMYbNThbaKP5Qgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hpOPAdLI; arc=fail smtp.client-ip=40.107.249.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ESdBqwhn"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hpOPAdLI"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TVHy+K3Inv5jl7ECSu319t2Bye67q2QXKOfDu2MQ6bJIj15vCUfpBTKA5JiqkSNgdbQ1XHb1Ybn3BwDo/yoW3TAdOleNbn0wVp4qWCcbHG9DZuK9E/eWb+tdhTQBVTqGxhLiGdBIlcLhmu/6PrnI6eZ16nKSwo7ASokUVV3kGOaSdqb525SliBGkUmAJHS79AEiTBEgPZzpfflMTdx8ZfMeTdH3ofL+//g03sZ6qHOWzq0e+B0uUADg2DOGBmI9WEai0ORSm1EloxepH3W2cfZqTUzBODxb85wiFnMFl7YSWvteksk5EkMCiQkquiOw45jORCS/wItPr5lT9lPGdiw==
+ b=jAGmALkU/X0EJYGoc9CGbQBI9LH21mVDYM5No2GOR0eB08GmIWXhFbkVUkYrMeNZ8RMTpbV8FApO0qiqL09U2E9MG9pyER++FtL2UsY6UrzkWWoC6aErzHxxMRJ4bPKIjR/Uv14VgbF+1ve4l8tleUV7Bh38XJq45FwUywy46DQTZZiMudr03YJxwom6tuQiRWCeny/Y9Y0x430BHGerbBUstACpAzVCrg5j7fDRVcsARE2oUExysY1qM3rvNk0t0wTeJa5SzEfDSFCU9wlk7dBadLIkkp2cMOUNUbNQRk1K6pv/tsA343xrb+X1k2t9LYaVT/RLQSJY+t3xAKY1+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ckNRVgo2c36MeTqUTk+EkLlBsWgB0Uj5FS7/7axYWg=;
- b=PmZqqvUOM7HEPNuBpDTVggg/fX4ye66vy3sw0hOUCpX8z7BaJMFpI+u1SsH3tI+4RGV1mJsJtHvgOFqsXv8lvgbYvqj8E0LKmIBocRy5oQLKNY4Gf9C1+DGC+cUKwMUmqRWMza2B+9CX37RLarBBDg9OT0J3kY2TcUTASegevNMhjYf+v/VgDDJkJEBCFlvJHLNXibzo4fMaJ9SZ5VhyquA022KGg9N860SJz16KPuYXNHZkMapKONUTu9kH73zyeaekBrCT0uGnVgj4NpaPjP84xriuBlj1kGLKZe2U9frgVW0uSH8kH60y5EhLiuoW8EoNgi7WA6HW1yxt3yFisQ==
+ bh=BBV4szsV3EKaBC5CTgbe29q084F55+Q2frtgx/OtFjM=;
+ b=ga1S7EWaHJYnuTC3B7/ui+L9RHCaNdW8SQBW2HGvgGt1fDh86AhKN3v1HWJ6x4wEsT9P/TE14pSx5r0BwuJkyRQLLOP0n/1cCXZQ8XXxOeJiXDy0Rj96/wDsYdDm3JhzcjwJx1ILXGwHan1LsKCY55eXUdAivf2SXxIve6rme2+GGomJC6444Ar6q2O1wIsEgKgCaXptxt+wLcJbwXhrHB73YtM0WS7mnKcJZ7q7rvmT2v76XidTf7EqSThr+5XhWqNiwxfwpwZ1hFf+GHMEIZXdQDB4b8Sh6QHji1QUPp7cQ9QfxoZoJr3Srq06GCl8FtCxvkZBzlyF5V3aHroEpw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ckNRVgo2c36MeTqUTk+EkLlBsWgB0Uj5FS7/7axYWg=;
- b=ESdBqwhn9Sn2okNrZr2D4/C7mrRPScqb022ydfTdWQQoMWl+tAdgYzW/RPBrKMdyqhLLO7QHa3vpTPf8J3KRjGAQZiffDS4nP7ye6uFyXY/DD6A0bs9disQ2vozD6J/6HabA8fRaMU0k3N/DyfrHIwrU3PqbGAC3aw/n+3gmnC8okK2qGVnLoKShmDiWoQbbyhmZ3MPhI837ChIdRey0Ik4I+wQnPVba56k4ybYdafboyuvJBjYLdc9XM07m/oSm2PptoVp73sBr+nEN7a+D13SB3rroEMKis4NMiIT53C6CXJMDHV3cWKdtHC4Gnfx/6MhgXB3nsquzcCdWigB0WA==
+ bh=BBV4szsV3EKaBC5CTgbe29q084F55+Q2frtgx/OtFjM=;
+ b=hpOPAdLIP/W0u6ROAz/xkSBgbH1SEpZL4JDOKBC4ES+P9vDkkhdIblgXb3i39FYl3nPcmodKZuiV42GJ5jwGPdQo3Erv0I5D1/zr55d+tWMFv0McAVL3AgXDYyMFCfd3ZjM9xd1AAb2wEjQ4U0aK2/vWebnN79rtZqNd6k46CxopHpoN7MstVptLr58hfQEbn0uDx8R5yNMVmgWXzuw3W8FG98iEcvEnK6vFLLrjFmc023Gn7XvRe+aRKRX9BCWfuoIYFK890BFOipJr5aPNjxnzR7JywynUBVwVOpgY03OZnacGccsjrBCmnIIfNnpmKZvCMT7Zxssxn6PeYAlxrw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by VI0PR04MB10229.eurprd04.prod.outlook.com (2603:10a6:800:23e::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Wed, 14 Aug
- 2024 16:44:23 +0000
+ 2024 16:47:35 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.016; Wed, 14 Aug 2024
- 16:44:23 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-can@vger.kernel.org (open list:CAN NETWORK DRIVERS),
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: can: convert microchip,mcp251x.txt to yaml
-Date: Wed, 14 Aug 2024 12:44:06 -0400
-Message-Id: <20240814164407.4022211-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0064.namprd11.prod.outlook.com
- (2603:10b6:a03:80::41) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 16:47:35 +0000
+Date: Wed, 14 Aug 2024 12:47:29 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	"open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 1/2] clocksource: imx-tpm: fix return -ETIME when delta
+ exceeds INT_MAX
+Message-ID: <ZrzfoQdm7MzQlFX4@lizhi-Precision-Tower-5810>
+References: <20240725193355.1436005-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240725193355.1436005-1-Frank.Li@nxp.com>
+X-ClientProxiedBy: SN6PR08CA0015.namprd08.prod.outlook.com
+ (2603:10b6:805:66::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,189 +71,123 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10229:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4c4228e-8925-428b-b312-08dcbc805a37
+X-MS-Office365-Filtering-Correlation-Id: c00b3364-3fb5-4cd9-5f1c-08dcbc80cc9f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|921020|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	RFd9QKmJEIuiRLY1DqNgM5DIpMqvwOxFTK7h3DKO6ebtG6pxCfLSfslStGMOmj/cH+6BITecG6mYMvHml8MN5wohxrTt7o7wCD97y2jrZzdvkxHdqfU3csbvJQBJejD53ZTsoi+huNC2MvMhQLvbz5OUYgDZz6L6TzbAgUcVSdpzneRJOvRuIqcOrQC5/8vy6/95q1Ly5cCKCK4totedd2BGRmkT66Ob+9aYZsVoY98ssYF6QNlyUEU7JSdVaxy6KPvhqtB3oJKHjQfdkywtzE4pd6K1mHfBXh+jQ0fpi9ksvlW/B1mZeAAJgMhUV91XUzI9Ys385Dgq2PT4hY7Zv68MyJkKt1Vqdf6jqOS91D3gGOEsKfIbz2CXcLgvKsbSyV48hiBeKULit7WNTtlbRsJyPh2y09AQoXrzfZG9jZNEAZK4UDbRKGIFo34Hwczzn0M6y/Qw/E/7056utO2Sy4mqhfsEjmeH1m/yztfqKHlIu0PcjSnc6LG19Myq+5TthACm2d7LlpMn93Iv13MiNBj8RSXOWw7vAO5Kv5R74COpfrAnnDfio0TeM/WxU6Joo/E3YWZoMLUoQgSx1veIaS4RBiMmX0hPAKFNkAMqHh4bmZ7SCNinopDNXL0vcFjsUoH6IIAx5ds9GWxRDnfCpK8b5jx2Qa3wGCmhg8H9mMMz+kHGJ0jJjmeBAILekY8k
+	a4kicIQenqxQL289Citrynh+CxYrkfTAwCnJxiQZ+RoaYz7eIvZFCCyKXOpHvCW2orVpgkmoAqMmDy6/SysPrANYidvQ5J9t+1YmD/C5eQpJ38tBcsCRHkMm8kIenVFkujVJ/lPedw7sbkgBzTh3QqYAkA+egpAEBKvaDhT7f+gNVjLa2lZUHYDXAdzuO9FmRYe1zcgPExypNeX/niF4+J5EbHT9aWfDC+61iieVhqKoPRcvKAdj2KUWtrVpKTl5ayIfqNthd9pCgnPrnOgro8r6cpb/wgoKyOE6umIO10LLno5E2ffyG7np5xqbigRGaTvipTbOo5HdiggeaztdVTCDsIfbFCSWgz1ziTwZtMSSZYQWWzSKle8GB38A7EtITvm4JNmu+prRCC3tHpi9hMvMt7L3EnMR68ERng2KGJAkivKpTNuRiLAKpjyT1pH4iOYx733G8zC5EYcXQggAJTcZT6Ykl1LicImQd114cpMjuTZGBAFPeTgbMKAPRIms5nRFLhBhN+DGCQgdLHMvAS1eTcSPWxUTzCSVU6jNHBVW1oK9tIH8sOhTaZPrhlPt9xLOCK7rIDAw9VAKYuGvfRdTgYkXuoWArEW21DxBXPsU+5SGw0ox5agE+jifGnMPXPJEuh9JSSNh5A3rlAgNNlQFUpJuBbMWwNJ4sKCpKMSaX4ot1h3aIWzvkF/4TjIiPpga5vrSnyt7Arln0e2CcY/X0gI7qMmkEfHgU2++xDo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5mZ8oXTGL/xHr0gSDfJN4ts3mRICtEw6G1DzFK0sUVUNynT3r/dVYZOkxjsT?=
- =?us-ascii?Q?EBbZds3qpOUjpwMn49xSFIYUHkB/IA01wun0G9AAzufa93PVmp6JNWJ1UMCw?=
- =?us-ascii?Q?+kJBtBtrQphrJDj/0dA/u6eDWO4E74fPfDoLW+NTeM43O67t7/BNaEHvupr1?=
- =?us-ascii?Q?sB/W/zkF9Js43nez1keaDhXqS0vvQ/Pfja7MalSYWvX8aXqCy3WQnognf0Zo?=
- =?us-ascii?Q?mVKoro0uz5+nAGzl2oN4fblFUYNoXe1zSIupyhnAsRbZlCZaeGoxjPbEISCo?=
- =?us-ascii?Q?IfMM5syRq/K1+vJHjr6j43VuoVVpMucWpNhttrc/fK3+xLFvXWMnK+Gehaag?=
- =?us-ascii?Q?JNnibzHcEt2oHvmVhc3LCtDFeuU2Ys1B1xgE//OV1lh18jS65ywamsene8kY?=
- =?us-ascii?Q?nN3EXtOdl96xJgKWdX+z3Zzlhc6I/w7z6txxQKCEwhLRlA2SmQuALBtpRv68?=
- =?us-ascii?Q?ZfFAapH2PFxXjr7/3clCbQ3dUwBrVmrS+wJhfWNNYtBvl62TDq9tGC4SPJec?=
- =?us-ascii?Q?hFSGy1vAp6Zw+CD4t5oixW4AQ+sibVMN5DOOnCQbIOHCKXuXUUSUgB2FVi0m?=
- =?us-ascii?Q?MgfcjmGBS57GuofyLezlDKvF14wIqxojCMjHVklKVcn6jMSWwcc+/EsrU2SQ?=
- =?us-ascii?Q?/wxZJDII+Wf5/ZEGTier/6YQCFEKPCUPvJ2ZivJ4RZbgWZmHXET1cldmVFUj?=
- =?us-ascii?Q?iWCxJZbthdgRWaaG66YgwxymR7h4ieDGPXkVLZXR0zj7HZHnMnrwukcOuy0q?=
- =?us-ascii?Q?EooRJmD6YztpveeekH93NaHMEP+XRLbs08aPmZPq+OYVfOczEw+OrMHR3NYK?=
- =?us-ascii?Q?hKpNH6bMvF6GGsBCRVbrUzHhwXiWgZqH5+IKLxiPOIqt9hfXTt6ST15o6jnO?=
- =?us-ascii?Q?cAHe/ZE5btmAVmOd6oBCt4viGe7KTxTif3s9njmrU9lDWnfKjUZCEO9DnAsM?=
- =?us-ascii?Q?/ARBA09mvRRe1k/c7hLi2x6sA1b3UvX4vgrTmBhDbgHeHQ6Is2fz702wjNiT?=
- =?us-ascii?Q?ydGAIBM2FM8tF3OqhS9AygRK06dik+R1BdLHoeXS9Tn5Yra7UY94JAOuIw34?=
- =?us-ascii?Q?v4Y3pomqYkNPfyPorX954OIQUNU4J8cTYiRJeVOVKDyDq7DvQrc3YF50TTwT?=
- =?us-ascii?Q?KxEP0A5HJWzn0eytzEtOvdFtFX3Bqzi1jmPSxwEKp3UutESq2VCNatWZgOIy?=
- =?us-ascii?Q?bHHYPHQ5Y1p7V92kJ4knlMUuhCkm+exfylk241zNzIyru0mkHD708myAc5vT?=
- =?us-ascii?Q?wtQJmMfTfuHyzFsYaB7VM/UZuJq9/7ONIydduF5j9YALwHW0nUjt84DI7moV?=
- =?us-ascii?Q?crb9tr2kh4zxlEttCrwdFEv6MPjJ/SktizHcX8AhQrpOmuvfC9lKmPhfPpCC?=
- =?us-ascii?Q?xP4S8SwdRnExYbPL8Bhtenw8K3N+cMiqpU2LH5kjzpUaa5Ir+QknS24F/YDz?=
- =?us-ascii?Q?giGHc8H0vT71k6FZk4cR6cY3Mrpqd2lprTh4fcrOKrUlxr3otxk1fiCRAHif?=
- =?us-ascii?Q?AMIkZIj2DBAi90Wv9CIl9XReC8o2jWli8Qb4TaF12s0T36qHavZL5wdj4f/l?=
- =?us-ascii?Q?3Tc2z2gZoebhuyrKOVHzgc8TDvn8RH2rhQ9LHsDk?=
+	=?us-ascii?Q?5IsVYNZJwCg6JbeQ6iMtY3zSlnANuyIe4YLBlzB/4IQmqXLqGN+shlCoWYv5?=
+ =?us-ascii?Q?mon722W+bYaH6Ut0ys9g3khl8hPnVyDtbDfIGxtOxWMucIkkaLiSRIkHKjFq?=
+ =?us-ascii?Q?hecFcQay2YVjAOHv0NTCVKTf/wraihNf40vhnRLc3bMETCkJjFHpuQlONkFU?=
+ =?us-ascii?Q?3/a2jcBkxpDdSH1VA2bN5u1+7srApqOYfZo6CKPrFaqSTu35mvU8ewnHblct?=
+ =?us-ascii?Q?vfbU7D1HLHk2m05u1SOW9/op/9YmoGTuYqdU128hDuOtMTdb06EQj88xTVgv?=
+ =?us-ascii?Q?ScHoX0+ipuw+A7V0TOY+6mvH2SRxkPfOvlGLfzXIqE6xxYw0A3YIcX7TQYFl?=
+ =?us-ascii?Q?XTxG7Qd3nbPssO8h6sUOXGRNW2sQm8SItNf1FPrMt5fuIhcVqyqp1XPETRpM?=
+ =?us-ascii?Q?a0V+L249QsV0cc8TQyPPvQ404Vqs2ASfE/z7I6+4kYjw7XyrdaYyroeD3FTv?=
+ =?us-ascii?Q?mP9p3b7s6dcdQHBm2BGGOax0+Zhi0hB3mf3yCV+6v9xftH+4EsmpeyD/LJUS?=
+ =?us-ascii?Q?Sb1a/dUHDzl6DFY8tS11/mu/nx2YEAr1OyFXAI10TQegjDCCbxupIgiRi9dY?=
+ =?us-ascii?Q?SrVyTImSJNG6KHcG+oGJrLwuAf7VvgCmG0nzgz/Ofivwsuqz1ZS2n+vQ/Rtj?=
+ =?us-ascii?Q?/bUdkffvGWrl/slhR7hnjCcMJShIRmb9TYbUZDWKMFnLNalN54w/XnlPY89A?=
+ =?us-ascii?Q?qlz2JsBgb0kbbHqAei1I6zg4yiSAnmrFBE6fOLozCbhY56NKYKNR/jjn/pKF?=
+ =?us-ascii?Q?e33d2qA5X1WLzIY9EVMJf+Y4liIdHNBkznU0SBreN5XDsWEhBsf1pkVsQWvd?=
+ =?us-ascii?Q?/rq8GBvZU3QpenshVPjeW6xMAgK5xecNJEI7HZx6lcdC82uAuelNuRFTAHe1?=
+ =?us-ascii?Q?pdq9j7ceEcp8K38maDXIlmmglp5MEPOLe4tWZHSa8MKmjTSxAcj8mWzIDLVH?=
+ =?us-ascii?Q?Y8wCcO075/PvpYc6cu/jm+kUKVCGW9+daw03GLyvhufylvLBXg7LFhacfSZd?=
+ =?us-ascii?Q?wpVkBoe/GfJGTEoXINrabCxyVRZ5SQRTWRG01JTtyWi0D/7Ecao/la4ZLMKP?=
+ =?us-ascii?Q?xI5sqOmK4pjFdnsCNE8QJEUX2yE4XtEeps5es7Js3m1f2/eRKpLYAgLNefhJ?=
+ =?us-ascii?Q?Rw57Q43DSz4yLo+u5++yg9jU3Ov/W+l3DcPwyaotTebPB4mBviAjcO6Y3oxi?=
+ =?us-ascii?Q?y8/NNMHLBqcYW+T3ey99Ih3fKn3/DzKsq/G4C0FCRT8sTBnVgFaP03Fn5JFF?=
+ =?us-ascii?Q?RFlu951R8TuxV3XA1bsqF8flpMEwYWqJ23R0n+f+kAWRe52+1ZqLfckqlCUw?=
+ =?us-ascii?Q?N0Z86M+Kg1OTOGv6o6HOoUj5nEnAnEB/KE4mKAfdRNYKGH1ODC0J9PsLGgik?=
+ =?us-ascii?Q?vpX3a1ovZ0nm44nBfyKYVL6Atnx+oz+L6x57PThAmTkLFX6RR2y0SFeO/4va?=
+ =?us-ascii?Q?8TKHJnr+ZmnWqJXtyCveuHiFLHsUaurmALFkvXDdzV/NnykjJOOszaiQMIh0?=
+ =?us-ascii?Q?4lWqsPgafkpJO1pXDtrCZVKctDwmEWIT8uIBi1GRNnnIBnVqSLzxz1m2x0hr?=
+ =?us-ascii?Q?yB20SDW9V4xkab/rV7xp/vvVxcHb3kQ00ryGSxR1?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4c4228e-8925-428b-b312-08dcbc805a37
+X-MS-Exchange-CrossTenant-Network-Message-Id: c00b3364-3fb5-4cd9-5f1c-08dcbc80cc9f
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 16:44:23.6691
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 16:47:35.5718
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vRVDYbEVLVvkpaxEv1QlrkRQypG6w/8Eh9Wz8lPuEXsw6lrN+QlWmOmDcN1tD8ryPVYFEq3Da7yVZCfwQ1vHug==
+X-MS-Exchange-CrossTenant-UserPrincipalName: L34eoY669dMknZBrenuNsgz2fIroFgEKKjDaYpAKqWZbPY3zV7+0lwAVDiLFjgx4QCmTMH8M6XsbjlFw10ZD3w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10229
 
-Convert binding doc microchip,mcp251x.txt to yaml.
-Additional change:
-- add ref to spi-peripheral-props.yaml
+On Thu, Jul 25, 2024 at 03:33:54PM -0400, Frank Li wrote:
+> From: Jacky Bai <ping.bai@nxp.com>
+>
+> In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
+> is larger than INT_MAX.
+>
+> For example:
+>
+> tpm_set_next_event(delta = 0xffff_fffe)
+> {
+>         ...
+>         next = tpm_read_counter(); // assume next is 0x10
+>         next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
+>         now = tpm_read_counter();  // now is 0x10
+>         ...
+>
+>         return (int)(next - now) <= 0 ? -ETIME : 0;
+>                      ^^^^^^^^^^
+>                      0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
+>                      cast to int. So return -ETIME.
+> }
+>
+> To fix this, introduce a 'prev' variable and check if 'now - prev' is
+> larger than delta.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Reviewed-by: Ye Li <ye.li@nxp.com>
+> Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Fix below warning:
-arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: /bus@5a000000/spi@5a020000/can@0:
-	failed to match any schema with compatible: ['microchip,mcp2515']
+Ping?
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change from v1 to v2
-- Change maintainer to can's maintainer
-- remove label 'can0' in example
-- file name use microchip,mcp2510.yaml
----
- .../bindings/net/can/microchip,mcp2510.yaml   | 70 +++++++++++++++++++
- .../bindings/net/can/microchip,mcp251x.txt    | 30 --------
- 2 files changed, 70 insertions(+), 30 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
 
-diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml
-new file mode 100644
-index 0000000000000..db446dde68420
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml
-@@ -0,0 +1,70 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/can/microchip,mcp2510.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Microchip MCP251X stand-alone CAN controller
-+
-+maintainers:
-+  - Marc Kleine-Budde <mkl@pengutronix.de>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - microchip,mcp2510
-+      - microchip,mcp2515
-+      - microchip,mcp25625
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vdd-supply:
-+    description: Regulator that powers the CAN controller.
-+
-+  xceiver-supply:
-+    description: Regulator that powers the CAN transceiver.
-+
-+  gpio-controller: true
-+
-+  "#gpio-cells":
-+    const: 2
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - interrupts
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        can@1 {
-+             compatible = "microchip,mcp2515";
-+             reg = <1>;
-+             clocks = <&clk24m>;
-+             interrupt-parent = <&gpio4>;
-+             interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
-+             vdd-supply = <&reg5v0>;
-+             xceiver-supply = <&reg5v0>;
-+             gpio-controller;
-+             #gpio-cells = <2>;
-+        };
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
-deleted file mode 100644
-index 381f8fb3e865a..0000000000000
---- a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
-+++ /dev/null
-@@ -1,30 +0,0 @@
--* Microchip MCP251X stand-alone CAN controller device tree bindings
--
--Required properties:
-- - compatible: Should be one of the following:
--   - "microchip,mcp2510" for MCP2510.
--   - "microchip,mcp2515" for MCP2515.
--   - "microchip,mcp25625" for MCP25625.
-- - reg: SPI chip select.
-- - clocks: The clock feeding the CAN controller.
-- - interrupts: Should contain IRQ line for the CAN controller.
--
--Optional properties:
-- - vdd-supply: Regulator that powers the CAN controller.
-- - xceiver-supply: Regulator that powers the CAN transceiver.
-- - gpio-controller: Indicates this device is a GPIO controller.
-- - #gpio-cells: Should be two. The first cell is the pin number and
--                the second cell is used to specify the gpio polarity.
--
--Example:
--	can0: can@1 {
--		compatible = "microchip,mcp2515";
--		reg = <1>;
--		clocks = <&clk24m>;
--		interrupt-parent = <&gpio4>;
--		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
--		vdd-supply = <&reg5v0>;
--		xceiver-supply = <&reg5v0>;
--		gpio-controller;
--		#gpio-cells = <2>;
--	};
--- 
-2.34.1
-
+>  drivers/clocksource/timer-imx-tpm.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/clocksource/timer-imx-tpm.c b/drivers/clocksource/timer-imx-tpm.c
+> index bd64a8a8427f3..cd23caf1e5999 100644
+> --- a/drivers/clocksource/timer-imx-tpm.c
+> +++ b/drivers/clocksource/timer-imx-tpm.c
+> @@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(void)
+>  static int tpm_set_next_event(unsigned long delta,
+>  				struct clock_event_device *evt)
+>  {
+> -	unsigned long next, now;
+> +	unsigned long next, prev, now;
+>
+> -	next = tpm_read_counter();
+> -	next += delta;
+> +	prev = tpm_read_counter();
+> +	next = prev + delta;
+>  	writel(next, timer_base + TPM_C0V);
+>  	now = tpm_read_counter();
+>
+> @@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned long delta,
+>  	 * of writing CNT registers which may cause the min_delta event got
+>  	 * missed, so we need add a ETIME check here in case it happened.
+>  	 */
+> -	return (int)(next - now) <= 0 ? -ETIME : 0;
+> +	return (now - prev) >= delta ? -ETIME : 0;
+>  }
+>
+>  static int tpm_set_state_oneshot(struct clock_event_device *evt)
+> --
+> 2.34.1
+>
