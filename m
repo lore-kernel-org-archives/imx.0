@@ -1,194 +1,134 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048DC19FA81
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 10:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118C71A01C8
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 10:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723629764; cv=none; b=GWuUwK9uI3Waj4xRfNYMVhi644nL5l8OvMnWr4/FBegtkaoGuvVXgs1naJ/B1NxqIjbDATwlD0zo2nKNfN8knmiQxg3oxTVuus6t47HULgY8Asj+PQlkwbFUwZEu+Q8IkkMZYHW0GFq9dF3RBEyXn9UBQAisZrWEnSjuUMhvWeI=
+	t=1723631759; cv=none; b=gPd8hZZQZSaC8G0n0pgaBPPBY8T6RLhmkgd7lzLzz99K0QAz/MIYbV/qXZ4l3V2Bv9z4uSXOnLZrke9DUSoY7XsZhTMhSG5A70wnZwir2k+ohZ6ZzE8QTjNpP1wKgnZFGff1b5c9qakwIdTB5xIJrsjWfRVjLITe6e1mf3WS8Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723629764; c=relaxed/simple;
-	bh=Psc/jzJBEE/vSR0q6Y8fY6UqWBMcUESkQNgpQu40Y/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qKKdkPC1Sw57oDRtRRXuUZVkLjt2KwA5IF8M2iFnrfDmEinvtU0EBZnzBwgXtkGkvYGYxw8xHITZ9zNKQviOZXVGC3t6KNEO+SHuw/lgyv2xQUL3QrgaTIUldTazoSdFTDNPQ134ikhMJJxKIpQr5hR4MswmAlqigVBoLaC0dv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=dzBk4iJ1; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LsHZ/+hB reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1723631759; c=relaxed/simple;
+	bh=uYJNJ/Lq7xLbdSs3WCTfozAzfV0PWPsoOHzzbIoIraY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=S+gJfk4tdNoV5l7MAUsqFzMUnQUk50frwDZp1KjA2pFuJDeaToMBKQEOlNwGkrXW+Tzb66jIbm3AinVVgCgcjTUhZbPUevjBByvdrwBNCDDZQdQY5c8LpqeZWiWc/Z/gqorg8KR9Oo7+nA79/Rox5Lr0DHEg/ZQp6mobE8uk524=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LBiBfpvD; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="dzBk4iJ1";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LsHZ/+hB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LBiBfpvD"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-428fb103724so3984835e9.1
+        for <imx@lists.linux.dev>; Wed, 14 Aug 2024 03:35:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723629761; x=1755165761;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BPZGFRB2PA0ZD8ZK7tgrErfEO8CEIAAq2TrYxTVlHy4=;
-  b=dzBk4iJ1pWwY9uJ2U2bl/EVYArm5FUVmwWvBzjYaTyZXA/pY3pOGvyrj
-   INspLzHBBNaFdrRM2S198nX+FHzPmIvPIHSwFQN/SaJdGQOad1KEpmkRQ
-   5sr0KnC9umFXPK87NCTM6kLHB202JNlLgyhOA+4KEExK0VmF/XWtOVdSq
-   Zxb1cnZ1dLAOiE6k0IpS5ru32qoC0GTcbP/3mJo2fpybG18ULZpQoP97m
-   VO/7Qz7cxtkQFomWYjFi+kWtZCRR0NDMJ8dnHafT3sTxXwV1lRdU+t8fY
-   bWPaImdefNxgWy5LYRF0FAzggTloCqr9aIqMmFjuT6rQXd4jkliW3dNGr
-   A==;
-X-CSE-ConnectionGUID: q9Y498GFSn+pS8/MSYDnVQ==
-X-CSE-MsgGUID: q2l4OOwzRByh9FrgiI6jxQ==
-X-IronPort-AV: E=Sophos;i="6.09,145,1716242400"; 
-   d="scan'208";a="38404410"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 14 Aug 2024 12:02:33 +0200
-X-CheckPoint: {66BC80B9-9-E9ED6009-C4B0BEC8}
-X-MAIL-CPID: 332DE6BABCAAD2E2420EAA204B3F0B90_3
-X-Control-Analysis: str=0001.0A782F19.66BC80B9.00C6,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C55D167CFB;
-	Wed, 14 Aug 2024 12:02:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723629748;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BPZGFRB2PA0ZD8ZK7tgrErfEO8CEIAAq2TrYxTVlHy4=;
-	b=LsHZ/+hBOPdj+T7j1Crt+UhX70ljQhFNIDmyMr22Vhz/UeKeG/MzniDdnOECAMrTtYsIjS
-	Po34qjZ2p21NHVoW339yr4s7ZNtLL6lP7rv+OTfrPCkC3/2z4NuSg9YYI+3id3xA0yuU9Q
-	wMTnkPEGb63kwQShOt7kbF7v7vqO0bY1U6t/02oFm92Owt8sHn95QARWCPFHdWWn1dKvBj
-	nr9kufVwIOxuLefylAo738+08rt7tjd2DL0uXhXxB3wzbsBtujYPsEfifEWCjFnlMchThR
-	XWc7MX6jM+jmXTQm/wAklS7YO/4ve2AYmRr9mncLRMjUOHpw3RE7ZPBo4Va6Ag==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v3] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-Date: Wed, 14 Aug 2024 12:02:26 +0200
-Message-ID: <5809346.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240813234004.17807-1-laurent.pinchart@ideasonboard.com>
-References: <20240813234004.17807-1-laurent.pinchart@ideasonboard.com>
+        d=linaro.org; s=google; t=1723631755; x=1724236555; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CIfn1yXxmrN46mLAefxPsa6hzoHxpKs5WpPt2Hr+8b8=;
+        b=LBiBfpvDmdo+aCeG8Zmdln4clVTJgxPSiylv++0dtVyrwJk2eHWYSxfow1JqwQLGCt
+         43qDslNcDC8H4jbh1DuwraFLPuQUDnKJO51/KgrhEVmVlLC/TK8nrNm+/pdj7Xz8Pcb0
+         DGt/wV03rMGC3TJSrycVwRIT2PR//loJefAaIWvDo1WHOrOOo1eee/gK3o1d46ctTuGy
+         KRp6RmwAM7kcyFVgdtqAEUErYmkDNDgjE+QJpOblQytbQE8sd1CDeWVX+TNIjJ3jPapm
+         WBwmFMk7tPrsd5rCaBUkbO1fVtvvsDOxdBjfOk6DKQn5uXvnTQyUxhu9hpg3tyF8Sdd/
+         Hm2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723631755; x=1724236555;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CIfn1yXxmrN46mLAefxPsa6hzoHxpKs5WpPt2Hr+8b8=;
+        b=Ca4vDHVS1HbrGm2qjqx6JeRok4/LCwn0K8Qf8s4YHuz032y4pqrX7crc+D+X0mORed
+         jGeUYFZqxd/cepHHQeBN6RPu60IZwtvC2y0bp0BXcZsvemHy2wE9p5JK9zry+PWlVs18
+         WzkEBnkRWZTuuPe1YdMm6UXvJbUHVfAIYv+kmIeAxGY90LtTceZdBHqQGMqosVMPB+oG
+         UYZQGjdxmVkra1EkFjMEJRvLqHSge+6qVZgEYY+/U2Gh8DG7KNZ3Wiw/JUf2MFwkMuTQ
+         8mDASVQgjykZwxqTwj5mi9itZZVJ3i7YNW3I63UPTXic81wP4bz4h8Q7BbxwgxoA7aQM
+         LQ0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWtXPJfGu38qf43mtcSbKzRnr1H0s7xPYUdrcNOSBiUy4E16OH+RGubBsZry8atlZKFo+qp9fN14oj2kvS24C2yp8xT
+X-Gm-Message-State: AOJu0YwoNh64EUIZ0z5rj1vtP8zDizEzQy3vf+NIMOc9GvJN8sscPEw3
+	yf0diOz9YN6S18oPwVY3ORlUEdGDUyZOcEL5XO5AmYLZnfXYq0uLhmraA5ernxs=
+X-Google-Smtp-Source: AGHT+IFySYJCbfhEPkwCk8tbPpG+Q/vI8wWAns+br1MLGrpp6gsbqkztTS2yy1odzpfjzuGCQr1aDg==
+X-Received: by 2002:a05:600c:4ec8:b0:428:9a1:f226 with SMTP id 5b1f17b1804b1-429d625a61amr41770265e9.1.1723631755222;
+        Wed, 14 Aug 2024 03:35:55 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.215.209])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded3dd4dsm15501835e9.29.2024.08.14.03.35.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Aug 2024 03:35:54 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 00/11] usb: dwc3: various cleanups
+Date: Wed, 14 Aug 2024 12:35:36 +0200
+Message-Id: <20240814-b4-cleanup-h-of-node-put-usb-v1-0-95481b9682bc@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHiIvGYC/x3MQQqDMBAF0KvIrPtBTcC2V5EuYjKpAyUJiRFBv
+ Luhy7d5JxXOwoXe3UmZdykSQ8Pw6MiuJnwZ4ppp7EfdPweNRcP+2ISasCJ6hOgYqW6oZcFLeeO
+ 8nSanFLUiZfZy/Pv5c103BpHSf24AAAA=
+To: Patrice Chotard <patrice.chotard@foss.st.com>, 
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Michal Simek <michal.simek@amd.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-msm@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1554;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=uYJNJ/Lq7xLbdSs3WCTfozAzfV0PWPsoOHzzbIoIraY=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmvIh7j2wXb8IRSjayFQLu9kQ0RjqW1dpsXav5p
+ jogbyksGwaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZryIewAKCRDBN2bmhouD
+ 1z4JD/0ZLzy3oMfUHF+i0Jrf/I9J/ggzgTBbZIDeBh1fMIHwXI4UV3f4ZzFi4+MAeq52bwcKi/Q
+ 4ZWjuR2Drm0x2yj1lNXUZSrUA8muBeTX0u7g3TCJolxsUXZ4jhC6zo+Ss2xueXo8LUfBH6f+1Ao
+ NsP370WTlUa6fkWu02lC7JKBkB2VaCEvCwJQjVP6HRCh0lH754h3pNL74PjjsI5BFihWRyBqB6d
+ xMQUW0oNEdGfUW65/cdsR5wEzZpt+DA1bSIV+a2gkjYpsHbkNd6Knf2KGb0SfoKSjWatb3UHVFN
+ hWUzTk3vk+Z+rRKEhifVho8skSOgm/0DdWjoCxwFydVQO+jwNsr/7Q7ze/cElZrzFi3MKf3gbIV
+ 5A5vJaNmUSMsKfdKUIV3rCAVXRNiSCRl8gzqNChQYNjDUnaP2Uiy7Bxon7TrJt2JgRjjhWUbu8q
+ smr11srqf1lzIC+YFOr3q4H1lQdliToGwFCCx5SnhkYcN4MhyOC4Ks/Kqn/LvNYvvHQ2tpqs2iF
+ crEZHvh79p0ROlfgzNYFuQuuwG+q7VBz8rJxlaz0dzOru5Hoza8zCcbI3LjqORtCq6DyWq9WhJR
+ pLJHkoVqFyJmyqZtke+/BYT/wPyombZcEt/ulivdPeiB0eJIqMB7YEZpY/g9R61eiMqhNwQGfYi
+ b+SwC+Apdc39TUg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Hi Laurent,
+Hi,
 
-thanks for the patch.
+The first ST patch depends on my fix:
+https://lore.kernel.org/all/20240814093957.37940-2-krzysztof.kozlowski@linaro.org/
 
-Am Mittwoch, 14. August 2024, 01:40:04 CEST schrieb Laurent Pinchart:
-> From: Paul Elder <paul.elder@ideasonboard.com>
->=20
-> The ISP supports both CSI and parallel interfaces, where port 0
-> corresponds to the former and port 1 corresponds to the latter. Since
-> the i.MX8MP's ISPs are connected by the parallel interface to the CSI
-> receiver, set them both to port 1.
->=20
-> Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Tested-by: Adam Ford <aford173@gmail.com> # imx8mp-beacon
-> ---
-> Changes since v2:
->=20
-> - Assign clock parent and frequency in blk-ctrl
->=20
-> Changes since v1:
->=20
-> - Fix clock ordering
-> - Add #address-cells and #size-cells to ports nodes
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 51 ++++++++++++++++++++++-
->  1 file changed, 49 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index d9b5c40f6460..09f1e27ee220 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1673,6 +1673,50 @@ isi_in_1: endpoint {
->  				};
->  			};
-> =20
-> +			isp_0: isp@32e10000 {
-> +				compatible =3D "fsl,imx8mp-isp";
-> +				reg =3D <0x32e10000 0x10000>;
-> +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> +				clock-names =3D "isp", "aclk", "hclk";
-> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
-> +				status =3D "disabled";
-> +
-> +				ports {
-> +					#address-cells =3D <1>;
-> +					#size-cells =3D <0>;
-> +
-> +					port@1 {
-> +						reg =3D <1>;
-> +					};
-> +				};
-> +			};
-> +
-> +			isp_1: isp@32e20000 {
-> +				compatible =3D "fsl,imx8mp-isp";
-> +				reg =3D <0x32e20000 0x10000>;
-> +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> +				clock-names =3D "isp", "aclk", "hclk";
-> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
-> +				status =3D "disabled";
-> +
-> +				ports {
-> +					#address-cells =3D <1>;
-> +					#size-cells =3D <0>;
-> +
-> +					port@1 {
-> +						reg =3D <1>;
-> +					};
-> +				};
-> +			};
-> +
->  			dewarp: dwe@32e30000 {
->  				compatible =3D "nxp,imx8mp-dw100";
->  				reg =3D <0x32e30000 0x10000>;
-> @@ -1873,13 +1917,16 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
->  						  <&clk IMX8MP_CLK_MEDIA_APB>,
->  						  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
->  						  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
-> +						  <&clk IMX8MP_CLK_MEDIA_ISP>,
->  						  <&clk IMX8MP_VIDEO_PLL1>;
->  				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
->  							 <&clk IMX8MP_SYS_PLL1_800M>,
->  							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> -							 <&clk IMX8MP_VIDEO_PLL1_OUT>;
-> +							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> +							 <&clk IMX8MP_SYS_PLL2_500M>;
->  				assigned-clock-rates =3D <500000000>, <200000000>,
-> -						       <0>, <0>, <1039500000>;
-> +						       <0>, <0>, <0>, <500000000>,
-> +						       <1039500000>;
-
-Isn't this one '<0>' too much? <500000000> is for IMX8MP_CLK_MEDIA_ISP, rig=
-ht?
+Series makes some code simplifications and cleanups.
 
 Best regards,
-Alexander
+Krzysztof
 
->  				#power-domain-cells =3D <1>;
-> =20
->  				lvds_bridge: bridge@5c {
->=20
-> base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
->=20
+---
+Krzysztof Kozlowski (11):
+      usb: dwc3: st: use scoped device node handling to simplify error paths
+      usb: dwc3: st: simplify with dev_err_probe
+      usb: dwc3: st: simplify pdev->dev usage
+      usb: dwc3: imx8mp: simplify with devm_clk_get_enabled
+      usb: dwc3: imx8mp: simplify with dev_err_probe
+      usb: dwc3: imx8mp: use scoped device node handling to simplify error paths
+      usb: dwc3: qcom: use scoped device node handling to simplify error paths
+      usb: dwc3: qcom: simplify with devm_platform_ioremap_resource
+      usb: dwc3: rtk: use scoped device node handling to simplify error paths
+      usb: dwc3: rtk: return directly and simplify with devm_platform_ioremap_resource
+      usb: dwc3: xilinx: simplify with dev_err_probe
 
+ drivers/usb/dwc3/dwc3-imx8mp.c | 66 ++++++++++++------------------------------
+ drivers/usb/dwc3/dwc3-qcom.c   | 16 ++++------
+ drivers/usb/dwc3/dwc3-rtk.c    | 52 ++++++++++-----------------------
+ drivers/usb/dwc3/dwc3-st.c     | 38 +++++++++++-------------
+ drivers/usb/dwc3/dwc3-xilinx.c |  7 ++---
+ 5 files changed, 58 insertions(+), 121 deletions(-)
+---
+base-commit: 64b429eaf21be888cc83e9013e25897d5fb03a75
+change-id: 20240814-b4-cleanup-h-of-node-put-usb-93fadfc77d33
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
