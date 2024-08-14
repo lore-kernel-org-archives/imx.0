@@ -1,94 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D489C1BF301;
-	Wed, 14 Aug 2024 19:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F651BE25F
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 19:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723664747; cv=none; b=BltWHI1xKQ/KujaLgSZ7gmVFbErmmmayF/fXKZfm1SgYHj9x8ByLMDLZxiJH1tTVEdnTxhrk3N0sV7AHGT3D8HuBn18kxPKXs7o/kSWKilu0icJ7/qeS6NR9TLc2zVGSbV899+Jt7MbgoPFhtu2rRDpaHURhQBy2e5lieWLEXEw=
+	t=1723665583; cv=none; b=JuOI5jNqywFOM7f09XCqw6d1v1s8P5mDhzoKxWq0t+4hV0NDaUXU3FiK21tCzImlR7kPiDKKqgzSXkZo9DA5gVVGS54fDNnmMxHY0XDMZGWtO8uWAn/3X8FHtHrLKG6GiCJv/c2q/zHjsvvehbKhp9XhCM+yrpiWzdZOa8KuP/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723664747; c=relaxed/simple;
-	bh=PjoGOteprY83X7rgDhoQT5uGKeal0EWWvDRj7w9jbUw=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=C3UYWHMKKxFeAiOye8/7NGb+DXC5oCwMLZw+NtAM+xlwRW3ITqM0t0aIcvfTqkndRa+U8T6BxmI5CuXGn4DtmHiXIrBl/aM6qf2NShqTceG8VJpn78wag5YSvbt1MLp2kl1mxYmOT8mBT7kPaAFebtxueE3D3ocTlBngtOsh5ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uu14FtmD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723665583; c=relaxed/simple;
+	bh=GNV4tsHwSCmnO+Fg4jkmp7tkUCJGx/VdzsUl9ZVOIiw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qX6Ftj30EtA3akuKOb/t1+nfU1fEj1m2g48qyqE++G/rOslsz/mqKTh+3RgTQLP4+NwfCzaMorAyWGcgFpFP2GJkaDL8WBPBhh6LxLchUMqVO4+Q+3phv+cYs11xLl+1XRKlC0PQgQcFdheoqZLwMgPmhByBLOyAAjs3gKAySB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Eniqi4OJ; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uu14FtmD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B864C116B1;
-	Wed, 14 Aug 2024 19:45:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723664746;
-	bh=PjoGOteprY83X7rgDhoQT5uGKeal0EWWvDRj7w9jbUw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=Uu14FtmDwGz/ArsK7bLA2f2ehbuK0fFwyYhF6weIinIP7spPmBiXkm8j+BYOto4+v
-	 rrFvMmKKIdCwj4TtYOZ44ldPG4MWGXTgQIuyhwFsUQfL1+SMMJMprsQ6O81jlk1ltC
-	 0rrx2Wq+iA8xrg8fm6b59zazaMsOHTbIduGXrzFxWsekXQPPrJXjHXfekVcTrzBrls
-	 gv6XzOrm0pCya/T60mNYDZgssGxSa2QtwraY7nMALixjO4EhQE7rAsouzKoRX4bFaC
-	 kGpcNls2ONhBbRbeeMXHjzAzLCUESkL83VGDx2R9vBRAZk4NNK5wN8Y7QLdQL4vO3N
-	 Bb72zaeH2V5WA==
-Date: Wed, 14 Aug 2024 13:45:45 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Eniqi4OJ"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id E8AE188A11;
+	Wed, 14 Aug 2024 21:59:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1723665578;
+	bh=5Ru4zIkS1NojlSPj+uZnab0ukXQuEwASFRNgcpKvFKQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Eniqi4OJy7BC4kh1kT+xXEHb+/sFTPF4u/b1qx+xXBn8+whHsxdrfdE90VNRF/PFo
+	 HFI1gmWkJs69EufMecg7SmjdFoIM2p1Nwh8QjspIpSIqMQN2AhLhjUwL/ZrFDj2JSl
+	 yeH+B+zMXNAU/QFrWhCf9XbeEikzmnjk+0kl6+aOKKgNGC9Qig64+aFkYzs7K/z2JQ
+	 +SycMf0PaJZ8eZ6QEM0kc9hGztixvA1hCGHlQoJ5pdnh8sbpXWQj80vHIes0ZeehlZ
+	 SJoQyMWwUSEdVbqBKEj8nQqCw4yxf7ePHpx8FpB8CNVR9yYcjTiSC9yyctrsauJj30
+	 8xV+UtCzHdfyQ==
+Message-ID: <e37da9ec-c730-466f-8a36-7cb91a82fb05@denx.de>
+Date: Wed, 14 Aug 2024 21:58:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-leds@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev
-In-Reply-To: <20240814175748.4028351-1-Frank.Li@nxp.com>
-References: <20240814175748.4028351-1-Frank.Li@nxp.com>
-Message-Id: <172366474532.3823277.4154762816777506927.robh@kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: leds: convert leds-lm3692x to yaml
- format
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert ads7846.txt
+ to yaml
+To: Frank Li <Frank.Li@nxp.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, Alexander Stein
+ <alexander.stein@ew.tq-group.com>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240814185140.4033029-1-Frank.Li@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20240814185140.4033029-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+On 8/14/24 8:51 PM, Frank Li wrote:
 
-On Wed, 14 Aug 2024 13:57:47 -0400, Frank Li wrote:
-> Convert binding doc leds-lm3592x to yaml format.
-> Additional change
-> - Add ref to common.yaml for child node
-> - Add i2c node at example
-> 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dtb: /soc@0/bus@30800000/i2c@30a40000/backlight@36:
-> 	failed to match any schema with compatible: ['ti,lm36922']
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/leds/leds-lm3692x.txt |  65 ------------
->  .../devicetree/bindings/leds/ti.lm36922.yaml  | 100 ++++++++++++++++++
->  2 files changed, 100 insertions(+), 65 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/leds/leds-lm3692x.txt
->  create mode 100644 Documentation/devicetree/bindings/leds/ti.lm36922.yaml
-> 
+Hi,
 
-My bot found errors running 'make dt_binding_check' on your patch:
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml b/Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml
+> new file mode 100644
+> index 0000000000000..b8239491c747a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml
+> @@ -0,0 +1,170 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/touchscreen/ti,ads7843.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TI's SPI driven touch screen controllers.
+> +
+> +maintainers:
+> +  - Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> +  - Marek Vasut <marex@denx.de>
+> +  - Alexander Stein <alexander.stein@ew.tq-group.com>
+>
 
-yamllint warnings/errors:
+Keep the list sorted alphabetically .
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/leds/ti.lm36922.example.dtb: /example-0/i2c/led-controller@36: failed to match any schema with compatible: ['ti,lm3692x']
+  +description:
+> +  Device tree bindings for TI's ADS7843, ADS7845, ADS7846, ADS7873, TSC2046
+> +  SPI driven touch screen controllers.
+> +
+> +  The node for this driver must be a child node of a SPI controller, hence
+> +  all mandatory properties described in
 
-doc reference errors (make refcheckdocs):
+... described in ... what/where ? I think part of the sentence is 
+missing here.
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240814175748.4028351-1-Frank.Li@nxp.com
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,tsc2046
+> +      - ti,ads7843
+> +      - ti,ads7845
+> +      - ti,ads7846
+> +      - ti,ads7873
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+Keep the list sorted alphabetically.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vcc-supply:
+> +    description: A regulator node for the supply voltage.
+> +
+> +  ti,vref-delay-usecs:
+> +    $ref: /schemas/types.yaml#/definitions/uint16
+> +    description: vref supply delay in usecs, 0 for external vref (u16).
 
-pip3 install dtschema --upgrade
+Maybe the (u16) is duplicate of the $ref'd type ? Drop for all the rest 
+below too ?
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+> +  ti,vref-mv:
+> +    $ref: /schemas/types.yaml#/definitions/uint16
+> +    description:
+> +      The VREF voltage, in millivolts (u16).
+> +      Set to 0 to use internal references (ADS7846).
+> +
+> +  ti,keep-vref-on:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: set to keep vref on for differential measurements as well.
 
+Vref , because V (voltage) is written with capitals ...
+
+> +  ti,settle-delay-usec:
+> +    $ref: /schemas/types.yaml#/definitions/uint16
+> +    description:
+> +      Settling time of the analog signals; a function of Vcc and the
+
+... like Vcc here.
+
+> +      capacitance on the X/Y drivers.  If set to non-zero, two samples are
+> +      taken with settle_delay us apart, and the second one is used. ~150
+> +      uSec with 0.01uF caps (u16).
+
+[...]
+
+> +  ti,pendown-gpio-debounce:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Platform specific debounce time for the pendown-gpio (u32).
+> +
+> +  pendown-gpio:
+> +    description:
+> +      GPIO handle describing the pin the !PENIRQ line is connected to.
+
+I think the properties have to be sorted alphabetically too.
+
+[...]
+
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vcc-supply
+
+Is vcc-supply really required ?
+
+> +allOf:
+> +  - $ref: touchscreen.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi{
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        touchscreen@0 {
+> +           compatible = "ti,tsc2046";
+> +           reg = <0>;	/* CS0 */
+> +           interrupt-parent = <&gpio1>;
+> +           interrupts = <8 0>;	/* BOOT6 / GPIO 8 */
+> +           spi-max-frequency = <1000000>;
+> +           pendown-gpio = <&gpio1 8 0>;
+> +           vcc-supply = <&reg_vcc3>;
+
+Sort please .
+
+> +           ti,x-min = /bits/ 16 <0>;
+> +           ti,x-max = /bits/ 16 <8000>;
+> +           ti,y-min = /bits/ 16 <0>;
+> +           ti,y-max = /bits/ 16 <4800>;
+> +           ti,x-plate-ohms = /bits/ 16 <40>;
+> +           ti,pressure-max = /bits/ 16 <255>;
+> +
+> +           wakeup-source;
+> +       };
+> +    };
+> +
+
+Thanks !
