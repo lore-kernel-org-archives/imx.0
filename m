@@ -1,289 +1,408 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552751B3745
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 15:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF6A1B3F16;
+	Wed, 14 Aug 2024 15:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723647620; cv=none; b=JyPG8MIYQQtKpowsbMzwSNbxpxHZqEISy7nJKpolrs6JMcHq3MNsvS+AmjKwF6FxMThcxFLhF2Nxf1m3o7Y3Z2ZvgcLm2EZaWzrjwtIzelsLaf9rbb+/n0ytem9VlpRomFiCc6Z+KhabZHZpSYBP9a9ul+EtiaOy05lGPWLkinE=
+	t=1723648125; cv=none; b=S1g2V+a1yxe6hMalcVkz5ni4yWKOykV/HsMPVawb3U5TnoNP/ebaZjb0hjjmzYNeUTv1MTIrbrgvsHs2lS2XOvUNKZ4D+nglSlBEpOJRL4ZkB1IzW5DpZTplyXGSBcNHImgwBA9A4/DHCp8I4TuQF9sB5j76p/pHb8U8SZtplXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723647620; c=relaxed/simple;
-	bh=8hvipVdBkoFqioEROoZkbc9cbBFMzvKgB/VSGU3jFW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iG5MN6wdaFuJeRzV2/4vMhv0pdiZaGeFFFAZ8UUTJL7ftYQUarVYSC9+ZCzUF0dls+6GK+LLM0D+W+pmpE1gy9JOuhGddYlxKPXfb1NFdqU9dE7/U+KJE3/6zL+MHz+sx3wkyi/6GiuAvVULr7eOfuiRFSybnYdlnPLH+R30CGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ywCOHZta; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1723648125; c=relaxed/simple;
+	bh=SZvyVh2V1+4Gp3vIv3/ZLR/kKe+e0kZautaIVLfreuE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ezkWAKihM7+27FnD6goLsTtIC4/4WndiRHnEmgu9JLbizSnDg+YRBFv/NMSzPDFWu9uOCKngaI5Bnc7DHLHj4omy3K5ArS/+G9wUtWPYrhaQvo0/DVL3mUzTqHO9E0+OXMIU+qFekkZgmbxzd3JzVTkNaRli5rl3i8YtMIqqbH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNjUEmDn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ywCOHZta"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1fc587361b6so57294505ad.2
-        for <imx@lists.linux.dev>; Wed, 14 Aug 2024 08:00:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723647618; x=1724252418; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dbHCr0op/VQjYjFoPEioKUUX066cfRvLBk10sukcDPI=;
-        b=ywCOHZtaesHIbjHMSDjv/QeucGL+GOsz81PzfStr4hwXUlx+WAWMylEJGsoEhmkhyJ
-         Mm2l0iEBq6BPs5f2mni+dm/C1IXbLakNM+39OA7Fim9VIygUVzdtBRC6EfWXCcSCeESo
-         pXvocyE51wzkZeDELiaodpjpzLn8zENDvc3G4NjeBI49ZkOIoacCREmgC3ObyHGvcbVj
-         pTGchByMuZ+895cYjIc80rs0VYsTBcZosryE5E5d3gEuolbY5fBNgumy3OlXBf/WbGcg
-         AvUb8Eeb/ZUjfKnn0Mddtr2a8rlno6oh8kqqleEa8w6/hakTl9dv/uaeZnXtQbSAnfcb
-         oNzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723647618; x=1724252418;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dbHCr0op/VQjYjFoPEioKUUX066cfRvLBk10sukcDPI=;
-        b=GIzyh5NoVe7y6RTWwzwcCtkx6cRITPOvrzRU3rvojM0mOKJ/SHM3bVXaqvWTMQcni0
-         8OrzZMmmPBejz52oATE8x/WIFk0crPPSEvoa4RwlHibr5iSjEVdzusf3/kA2PODCccFc
-         3kBIIH6v7kfZiMOe1cxhLiQzY1EiJ98YPE08kbyep5HIYFIG3qqSOS1fe5hrP+7LBlWp
-         zJGwzdLKcvgaYVAL6wiBRrsQoCbqTZ2FwykOotfCclQJksa3JZt/wgwsJiX9TkLiXRlL
-         lktNq310dz92E19WqsYeb5p+LrKHmihPPDiTlffsaiO+XWg5g0cwDYTpaM1q51HLmuqm
-         VzAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXiGJKlVJ94x2205tvbVerBW9kJI5V/JX81mRd5XecFdlvdLPwnPog0ZkSySio0inZPA10=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxx65Tt49rH+qUafMSISxs2XVz21pWRNHmKNa3bX3tBaVpa51EQ
-	OKSOP5ODZKvvQXPlbldRxCxZUOS//8CMLf747yGx3WQreEslIJ99C9TxaWpfn14=
-X-Google-Smtp-Source: AGHT+IFjkZdeCy3ttB1+N6PonqSVgzwx6/8vpCT2DGG5nYAfJZdLDmhJ/GAb7wGMXw/qa14hbL8Qqg==
-X-Received: by 2002:a17:902:ec90:b0:1fd:93d2:fba4 with SMTP id d9443c01a7336-201d64a5bd9mr37801815ad.48.1723647617183;
-        Wed, 14 Aug 2024 08:00:17 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:58b0:43ab:ed9f:f0e3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201cd1cbad6sm30554035ad.250.2024.08.14.08.00.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 08:00:16 -0700 (PDT)
-Date: Wed, 14 Aug 2024 09:00:13 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Marek Vasut <marex@denx.de>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] remoteproc: imx_rproc: handle system off for
- i.MX7ULP
-Message-ID: <ZrzGfS/7vv90F5C1@p14s>
-References: <20240719-imx_rproc-v2-0-cd8549aa3f1f@nxp.com>
- <20240719-imx_rproc-v2-2-cd8549aa3f1f@nxp.com>
- <Zqe23DlboRPSXiQO@p14s>
- <DB9PR04MB84615384294C38EEA5B95F0088B02@DB9PR04MB8461.eurprd04.prod.outlook.com>
- <ZquK5CNtRJTTtlkD@p14s>
- <DB9PR04MB846152D0289467468CE0077588B32@DB9PR04MB8461.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNjUEmDn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A0EC4AF09;
+	Wed, 14 Aug 2024 15:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723648124;
+	bh=SZvyVh2V1+4Gp3vIv3/ZLR/kKe+e0kZautaIVLfreuE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YNjUEmDn1mSsXlW/vGysPxmLdl/k49FLh++MxjVDBMS8pojXhJV6U27kXmg8FPgZ1
+	 iOBGUVuHmn3TJzxH2AHnAiKHRc7EcjVBE8jT1uBwJfu0L+chrwolPAfiyhrl3bVoPE
+	 XQ8+yXPc3NTuCx3tCZmjE+5Prh+36faaWO4S1xM6iWs4sFugqPbcifmhW79l1ltWh/
+	 X2M7NyA+sUrNrRA8MStAPuI8nhEMPDXPsctEnhLDWiuuYBN2VXCDSVtWF1xr+x45HY
+	 8yMMXbC11feG52qEjwb3nTNJHqHpFeEfFkZufoWWba6KSjbMWnrCCOoS7Invj+6DTs
+	 tgitiDVb8VddA==
+Message-ID: <aac5ccf6-1b11-4ae8-857e-b344e0752212@kernel.org>
+Date: Wed, 14 Aug 2024 17:08:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DB9PR04MB846152D0289467468CE0077588B32@DB9PR04MB8461.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
+ Support
+To: Tarang Raval <tarang.raval@siliconsignals.io>, shawnguo@kernel.org,
+ krzk+dt@kernel.org, festevam@gmail.com
+Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240814144957.93183-1-tarang.raval@siliconsignals.io>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240814144957.93183-1-tarang.raval@siliconsignals.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 02, 2024 at 04:59:45AM +0000, Peng Fan wrote:
-> > Subject: Re: [PATCH v2 2/2] remoteproc: imx_rproc: handle system off
-> > for i.MX7ULP
-> > 
-> > On Tue, Jul 30, 2024 at 08:06:22AM +0000, Peng Fan wrote:
-> > > > Subject: Re: [PATCH v2 2/2] remoteproc: imx_rproc: handle system
-> > off
-> > > > for i.MX7ULP
-> > > >
-> > > > On Fri, Jul 19, 2024 at 04:49:04PM +0800, Peng Fan (OSS) wrote:
-> > > > > From: Peng Fan <peng.fan@nxp.com>
-> > > > >
-> > > > > The i.MX7ULP Cortex-A7 is under control of Cortex-M4. The
-> > > > i.MX7ULP
-> > > > > Linux poweroff and restart rely on rpmsg driver to send a message
-> > > > > to
-> > > > > Cortex-M4 firmware. Then Cortex-A7 could poweroff or restart by
-> > > > > Cortex-M4 to configure the i.MX7ULP power controller properly.
-> > > > >
-> > > > > However the reboot and restart kernel common code use atomic
-> > > > notifier,
-> > > > > so with blocking tx mailbox will trigger kernel dump, because of
-> > > > > blocking mailbox will use wait_for_completion_timeout. In such
-> > > > > case, linux no need to wait for completion.
-> > > > >
-> > > > > Current patch is to use non-blocking tx mailbox channel when
-> > > > > system
-> > > > is
-> > > > > going to poweroff or restart.
-> > > > >
-> > > > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > > > ---
-> > > > >  drivers/remoteproc/imx_rproc.c | 36
-> > > > > ++++++++++++++++++++++++++++++++++++
-> > > > >  1 file changed, 36 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/remoteproc/imx_rproc.c
-> > > > > b/drivers/remoteproc/imx_rproc.c index
-> > > > 01cf1dfb2e87..e1abf110abc9
-> > > > > 100644
-> > > > > --- a/drivers/remoteproc/imx_rproc.c
-> > > > > +++ b/drivers/remoteproc/imx_rproc.c
-> > > > > @@ -18,6 +18,7 @@
-> > > > >  #include <linux/of_reserved_mem.h>  #include
-> > > > > <linux/platform_device.h>  #include <linux/pm_domain.h>
-> > > > > +#include <linux/reboot.h>
-> > > > >  #include <linux/regmap.h>
-> > > > >  #include <linux/remoteproc.h>
-> > > > >  #include <linux/workqueue.h>
-> > > > > @@ -114,6 +115,7 @@ struct imx_rproc {
-> > > > >  	u32				entry;		/* cpu start
-> > > > address */
-> > > > >  	u32				core_index;
-> > > > >  	struct dev_pm_domain_list	*pd_list;
-> > > > > +	struct sys_off_data		data;
-> > > >
-> > > > What is this for?  I don't see it used in this patch.
-> > >
-> > > Oh, it was added when I was developing this feature, but in the end
-> > > this seems not needed.
-> > >
-> > > >
-> > > > >  };
-> > > > >
-> > > > >  static const struct imx_rproc_att imx_rproc_att_imx93[] = { @@
-> > > > > -1050,6 +1052,22 @@ static int imx_rproc_clk_enable(struct
-> > > > imx_rproc *priv)
-> > > > >  	return 0;
-> > > > >  }
-> > > > >
-> > > > > +static int imx_rproc_sys_off_handler(struct sys_off_data *data) {
-> > > > > +	struct rproc *rproc = data->cb_data;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	imx_rproc_free_mbox(rproc);
-> > > > > +
-> > > > > +	ret = imx_rproc_xtr_mbox_init(rproc, false);
-> > > > > +	if (ret) {
-> > > > > +		dev_err(&rproc->dev, "Failed to request non-blocking
-> > > > mbox\n");
-> > > > > +		return NOTIFY_BAD;
-> > > > > +	}
-> > > > > +
-> > > > > +	return NOTIFY_DONE;
-> > > > > +}
-> > > > > +
-> > > > >  static int imx_rproc_probe(struct platform_device *pdev)  {
-> > > > >  	struct device *dev = &pdev->dev; @@ -1104,6 +1122,24 @@
-> > static
-> > > > > int imx_rproc_probe(struct
-> > > > platform_device *pdev)
-> > > > >  	if (rproc->state != RPROC_DETACHED)
-> > > > >  		rproc->auto_boot = of_property_read_bool(np,
-> > > > "fsl,auto-boot");
-> > > > >
-> > > > > +	if (of_device_is_compatible(dev->of_node, "fsl,imx7ulp-cm4"))
-> > > > {
-> > > > > +		ret = devm_register_sys_off_handler(dev,
-> > > > SYS_OFF_MODE_POWER_OFF_PREPARE,
-> > > > > +
-> > > > SYS_OFF_PRIO_DEFAULT,
-> > > > > +
-> > > > imx_rproc_sys_off_handler, rproc);
-> > > >
-> > > > Why does the mailbox needs to be set up again when the system is
-> > > > going down...
-> > >
-> > > As wrote in commit message:
-> > > "i.MX7ULP Linux poweroff and restart rely on rpmsg driver to send a
-> > > message," so need to set up mailbox in non-blocking way to send a
-> > > message to M4 side.
-> > >
-> > > >
-> > > > > +		if (ret) {
-> > > > > +			dev_err(dev, "register power off handler
-> > > > failure\n");
-> > > > > +			goto err_put_clk;
-> > > > > +		}
-> > > > > +
-> > > > > +		ret = devm_register_sys_off_handler(dev,
-> > > > SYS_OFF_MODE_RESTART_PREPARE,
-> > > > > +
-> > > > SYS_OFF_PRIO_DEFAULT,
-> > > > > +
-> > > > imx_rproc_sys_off_handler, rproc);
-> > > >
-> > > > ... and why does it need to be free'd when the system is going up?
-> > >
-> > >
-> > > Sorry, I not get your point. The free is in imx_rproc_sys_off_handler.
-> > > During system booting, the mailbox is not freed.
-> > 
-> > Why is the same operation done at both startup and shutdown - that is
-> > not clear.
+On 14/08/2024 16:49, Tarang Raval wrote:
+> This adds the following peripherals support for the Emtop i.MX8M Mini Baseboard
+> 	* Wi-Fi
+> 	* Audio
+> 	* SD card
+> 	* RTC
+> 	* CAN bus
+> 	* USB OTG
 > 
-> The below commit shows request/free done in startup and shutdown.
-> Hope this explains what you ask.
+> Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+> ---
+>  .../dts/freescale/imx8mm-emtop-baseboard.dts  | 347 ++++++++++++++++++
+>  .../boot/dts/freescale/imx8mm-emtop-som.dtsi  |   1 +
+>  2 files changed, 348 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
+> index 7d2cb74c64ee..5ce8f21a0b1b 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
+> @@ -11,6 +11,129 @@ / {
+>  	model = "Emtop Embedded Solutions i.MX8M Mini Baseboard V1";
+>  	compatible = "ees,imx8mm-emtop-baseboard", "ees,imx8mm-emtop-som",
+>  		"fsl,imx8mm";
+> +
+> +	extcon_usb: extcon_usb1otg {
 
-Unfortunately it doesn't.  I just spent another hour trying to understand why
-the same operations are carried out for both shutdown and restart without
-success.  I am out of time for this patch and have to move on to other patchset
-waiting to be reviewed.  I suggest you ask Daniel to help clarify the changelog
-and comments in the code and submit another revision.
+Does not look like this follows DTS coding style.
 
-Thanks,
-Mathieu
+Also, use generic node name - see other boards.
 
-> 
-> commit 99b142cf7191b08adcd23f700ea0a3d7dffdd0c1
-> Author: Peng Fan <peng.fan@nxp.com>
-> Date:   Fri Oct 21 12:15:25 2022 +0800
-> 
->     remoteproc: imx_rproc: Request mbox channel later
->     
->     It is possible that when remote processor crash, the communication
->     channel will be broken with garbage value in mailbox, such as
->     when Linux is issuing a message through mailbox, remote processor
->     crashes, we need free & rebuild the mailbox channels to make sure
->     no garbage value in mailbox channels.
->     
->     So move the request/free to start/stop for managing remote procesosr in
->     Linux, move to attach/detach for remote processor is out of control of
->     Linux.
->     
->     Previous, we just request mbox when attach for CM4 boot early before
->     Linux, but if mbox defer probe, remoteproc core will do resource cleanup
->     and corrupt resource table for later probe.
->     
->     So move request mbox ealier and still keep mbox request when attach
->     for self recovery case, but keep a check when request/free mbox.
-> 
-> > 
-> > I am currently away from the office, returning on August 12th.  As such
-> > I will not be following up on this thread until then.
-> 
-> sure. Thanks for letting me know.
-> 
-> Thanks,
-> Peng.
-> 
-> > 
-> > >
-> > > Thanks,
-> > > Peng.
-> > >
-> > > >
-> > > > > +		if (ret) {
-> > > > > +			dev_err(dev, "register restart handler
-> > > > failure\n");
-> > > > > +			goto err_put_clk;
-> > > > > +		}
-> > > > > +	}
-> > > > > +
-> > > > >  	ret = rproc_add(rproc);
-> > > > >  	if (ret) {
-> > > > >  		dev_err(dev, "rproc_add failed\n");
-> > > > >
-> > > > > --
-> > > > > 2.37.1
-> > > > >
-> > > > >
+> +	        compatible = "linux,extcon-usb-gpio";
+> +	        pinctrl-names = "default";
+> +	        pinctrl-0 = <&pinctrl_extcon_usb>;
+> +	        id-gpio = <&gpio1 10 GPIO_ACTIVE_HIGH>;
+> +	        enable-gpio = <&gpio1 12 GPIO_ACTIVE_LOW>;
+> +	};
+> +
+> +	modem_reset: modem-reset {
+> +	        compatible = "gpio-reset";
+> +	        reset-gpios = <&gpio2 6 GPIO_ACTIVE_LOW>;
+> +	        reset-delay-us = <2000>;
+> +	        reset-post-delay-ms = <40>;
+> +	        #reset-cells = <0>;
+> +	};
+> +
+> +	leds {
+> +		compatible = "gpio-leds";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_gpio_led>;
+> +
+> +		beep {
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+
+> +		        label = "beep";
+> +		        gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
+> +		        default-state = "off";
+> +		};
+> +
+> +		canbus_reset {
+
+Really, no underscores...
+
+> +			label = "canbus_reset";
+> +			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
+> +			default-state = "on";
+> +		};
+> +	};
+> +
+> +	osc_can: clock-osc-can {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <16000000>;
+> +		clock-output-names = "osc-can";
+> +	};
+> +
+> +	regulators {
+> +		compatible = "simple-bus";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+
+This is not a bus. No.
+
+> +
+> +		reg_audio: regulator-audio-vdd {
+> +		        compatible = "regulator-fixed";
+> +		        regulator-name = "wm8904_supply";
+> +		        regulator-min-microvolt = <1800000>;
+> +		        regulator-max-microvolt = <1800000>;
+> +		        regulator-always-on;
+> +		};
+> +
+> +		reg_wifi_vmmc: regulator@1 {
+
+Heh? @1? What sort of bus is it?
+
+> +			compatible = "regulator-fixed";
+> +			regulator-name = "vmmc";
+> +			regulator-min-microvolt = <3300000>;
+> +			regulator-max-microvolt = <3300000>;
+> +			gpio = <&gpio2 10 GPIO_ACTIVE_HIGH>;
+> +			off-on-delay = <20000>;
+> +			startup-delay-us = <100>;
+> +		        enable-active-high;
+> +		};
+> +	};
+> +
+> +	sound-wm8904 {
+> +	        compatible = "simple-audio-card";
+> +	        simple-audio-card,bitclock-master = <&dailink_master>;
+> +	        simple-audio-card,format = "i2s";
+> +	        simple-audio-card,frame-master = <&dailink_master>;
+> +	        simple-audio-card,name = "wm8904-audio";
+> +	        simple-audio-card,mclk-fs = <256>;
+> +	        simple-audio-card,routing =
+> +			"Headphone Jack", "HPOUTL",
+> +			"Headphone Jack", "HPOUTR",
+> +			"IN2L", "Line In Jack",
+> +			"IN2R", "Line In Jack",
+> +			"Headphone Jack", "MICBIAS",
+> +			"IN1L", "Headphone Jack";
+> +
+> +	        simple-audio-card,widgets =
+> +	                "Microphone","Headphone Jack",
+> +	                "Headphone", "Headphone Jack",
+> +	                "Line", "Line In Jack";
+> +
+> +	        dailink_master: simple-audio-card,codec {
+> +	                sound-dai = <&wm8904>;
+> +	        };
+> +
+> +	        simple-audio-card,cpu {
+> +	                sound-dai = <&sai3>;
+> +	        };
+> +	};
+> +
+> +	sound-spdif {
+> +	        compatible = "fsl,imx-audio-spdif";
+> +	        model = "imx-spdif";
+> +	        spdif-controller = <&spdif1>;
+> +	        spdif-out;
+> +	        spdif-in;
+> +	};
+> +
+
+Drop blank line.
+
+> +};
+> +
+> +/* CAN BUS */
+> +&ecspi2 {
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&pinctrl_ecspi2>;
+> +        status = "okay";
+> +
+> +        canbus: mcp2515@0 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +                compatible = "microchip,mcp2515";
+> +                pinctrl-names = "default";
+> +                pinctrl-0 = <&pinctrl_canbus>;
+> +                reg = <0>;
+> +                clocks = <&osc_can>;
+> +                interrupt-parent = <&gpio1>;
+> +                interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
+> +                spi-max-frequency = <10000000>;
+> +                status = "okay";
+
+Drop.
+
+> +        };
+>  };
+>  
+>  &fec1 {
+> @@ -40,7 +163,130 @@ vddio: vddio-regulator {
+>  	};
+>  };
+>  
+> +&i2c3 {
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_i2c3>;
+> +	status = "okay";
+> +
+> +	rx8025: rtc@32 {
+> +		compatible = "rx8025";
+> +		reg = <0x32>;
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +	};
+> +
+> +	wm8904: wm8904@1a {
+> +		compatible = "wlf,wm8904";
+> +		reg = <0x1a>;
+> +		#sound-dai-cells = <0>;
+> +		clocks = <&clk IMX8MM_CLK_SAI3_ROOT>;
+> +		clock-names = "mclk";
+> +		DCVDD-supply = <&reg_audio>;
+> +		DBVDD-supply = <&reg_audio>;
+> +		AVDD-supply = <&reg_audio>;
+> +		CPVDD-supply = <&reg_audio>;
+> +		MICVDD-supply = <&reg_audio>;
+> +		status = "okay";
+
+Where is it disabled?
+
+> +	};
+> +};
+> +
+> +/* AUDIO */
+> +&sai3 {
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&pinctrl_sai3>;
+> +        assigned-clocks = <&clk IMX8MM_CLK_SAI3>;
+> +        assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+> +        assigned-clock-rates = <24576000>;
+> +        status = "okay";
+> +};
+> +
+> +&spdif1 {
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&pinctrl_spdif1>;
+> +        assigned-clocks = <&clk IMX8MM_CLK_SPDIF1>;
+> +        assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+> +        assigned-clock-rates = <24576000>;
+> +        clocks = <&clk IMX8MM_CLK_AUDIO_AHB>, <&clk IMX8MM_CLK_24M>,
+> +                <&clk IMX8MM_CLK_SPDIF1>, <&clk IMX8MM_CLK_DUMMY>,
+> +                <&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_CLK_DUMMY>,
+> +                <&clk IMX8MM_CLK_AUDIO_AHB>, <&clk IMX8MM_CLK_DUMMY>,
+> +                <&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_CLK_DUMMY>,
+> +                <&clk IMX8MM_AUDIO_PLL1_OUT>, <&clk IMX8MM_AUDIO_PLL2_OUT>;
+> +        clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3",
+> +                "rxtx4", "rxtx5", "rxtx6", "rxtx7", "spba", "pll8k", "pll11k";
+> +        status = "okay";
+> +};
+> +
+> +/* Wifi */
+> +&usdhc1 {
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
+> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
+> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
+> +	bus-width = <4>;
+> +	vmmc-supply = <&reg_wifi_vmmc>;
+> +	pm-ignore-notify;
+> +	cap-power-off-card;
+> +	keep-power-in-suspend;
+> +	non-removable;
+> +	status = "okay";
+> +
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	brcmf: brcmf@1 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+> +		compatible = "brcm,bcm4329-fmac";
+> +		reg = <1>;
+> +		interrupt-parent = <&gpio2>;
+> +		interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
+> +		interrupt-names = "host-wake";
+> +	};
+> +};
+> +
+> +/* SD-card */
+> +&usdhc2 {
+> +        pinctrl-names = "default";      /* "state_100mhz", "state_200mhz"; */
+> +        pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +        pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+> +        pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+> +        cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+> +        bus-width = <4>;
+> +        status = "okay";
+> +};
+> +
+> +/* USBOTG */
+> +&usbotg1 {
+
+Ordering looks odd. 'b' is before 'd'.
+
+
+> +	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
+
+Do not upstream your code from vendor kernel directly. You *MUST* clean
+it up from all downstream junk.
+
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+
+
+
+Best regards,
+Krzysztof
+
