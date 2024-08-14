@@ -1,126 +1,123 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229CE1B1504
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 10:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49EFAD5A
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 10:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723631781; cv=none; b=Ne6qn/lWtsUPkXAAMqlNFre1i6lmVtz9wwRlAzp86l4tZQ1FWWHuRQH3qFGhJZp27Ixpr+ccMLQ6pLnIco7nNtgpEnNqiyh2OsXCrR49MejC1kLWZGmHhxVrzospUK92Kt1ahqob/0YiR2O7AUdv1z0KvRKscrdOki50jGyffGw=
+	t=1723633155; cv=none; b=otNjNymt2MF3wZ1oEWDs2VJlRTa48BgDFpq+7B3rrCh/8L8UJB1XO5GQi/1kUpJ1HW37Eq3o9EXw4W0jTDFqXAuLtbSOR6W+e3y4De7AyyC25RvtFRaxHuf2w21nupxd67VI2LSIlNbtDAPFv7vJKbwbb7a5zqiNppcOQ3tIRew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723631781; c=relaxed/simple;
-	bh=ol6ZTXC6dPx1NNnToQYOXH4GwET4WoJKZEvGBAAyChA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NzEoVbmKIv6hmqH9TjHi9MIPC/i3hScYu2GN3ZcRp+xKkCdFT70HzP5JZ0REsxjqVCoSmIdBy2XUsTZF6rj4Anq/zleq7GZmZzfUKYDZO3xJfMRi+x4XHAtnEonFDwEXjLuINW9r6TbPxjegadc6Cj2wxTQzSTgYfLP6Lgf3qy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kzwzW+gu; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kzwzW+gu"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4280b3a7efaso47832355e9.0
-        for <imx@lists.linux.dev>; Wed, 14 Aug 2024 03:36:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723631777; x=1724236577; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SCsVD5Gw0XMLJtG9b25d0pMLRHt/Ggpq8ks2EPhWn3E=;
-        b=kzwzW+gu5By7hZutfthovk5oYbfB9C58ELH86LokzWXRpSH1HOyAJ35TAkCle5ym/1
-         ozBpX9vuRjqEY+GtX7OwYigzm35ysNKRsY153Jxc42CWRP+5CsKt5aWqV1tKDC4g/U83
-         5o0/gRtBpG0G+9eSh+zon57qtZsNTihImqjGA6X8H4xZnHizEU+XjOuB3peTkDk0L5Au
-         T11vLRpdjRJcXEp47X9+45/Qsfke11bzGnlv5uPLpxnsT+908QQTJxi/qGmHiqlOG9G8
-         8ozr1a2n5tFwvW8JIGBMa0SzmHu95bJunLPkBRtjHk7giGXwzImNPSPxHcl8BbvA/s6n
-         8XcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723631777; x=1724236577;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SCsVD5Gw0XMLJtG9b25d0pMLRHt/Ggpq8ks2EPhWn3E=;
-        b=GmyBMiafb0lSB1MC+zNQICiryUuIDGzgeYat+6cA0oljGqv6n7DjE3ZuJHn3RxHhXn
-         17pnzPVIF6ruZZRBw65jwNXbZtv0TreLoktHbCEZkJfdqCyIUmLlF6NAXaWWC9ZLxfRf
-         nSw43TPT4ffpBVAUjHLUpK7inz4YbfOdPGB4pSUk/pmoSFBUTz1EriH11nmrCmNHIIUV
-         TBMOtCAeoc91hxg3SpGSEKW5BZnLN8vRQ4UsRE9uum8NViiL0N6Cl5FB5QfD4n+Vv57S
-         MSt2YYPTC9KFhV6Mdw62I7zmMahPrAMpG4idjuLoecn81L+PRjoyhI7NInR4ga6qamSa
-         0ekA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQAy/BQFnNKu1YLknBc6nRfiKb+0lzQxFqbmz+gCJfc4C2Cw1EPkKlEUDwAs+aW2WxxPw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywp2N+DftqlPVUZR1kIDx0N/YGEDKRZ//Vz4a65X1hxhjXtRjmw
-	q17+oN4NRYhMwn8esgRwmcCYkuAgRIlFOlzWjqbz4nx2pKFKA5SZ/qN2iyjJ35k=
-X-Google-Smtp-Source: AGHT+IGcxmywyTO2gvy35KOCttJ+ZJhhBQ2L4GtnK9UfIj5G8nLkgiKFU1tAu9Ts0iBIJ00/ObFPsA==
-X-Received: by 2002:a05:600c:1c93:b0:428:f1b4:3473 with SMTP id 5b1f17b1804b1-429dd25f517mr15394135e9.26.1723631777491;
-        Wed, 14 Aug 2024 03:36:17 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.215.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded3dd4dsm15501835e9.29.2024.08.14.03.36.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 03:36:16 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 14 Aug 2024 12:35:47 +0200
-Subject: [PATCH 11/11] usb: dwc3: xilinx: simplify with dev_err_probe
+	s=arc-20240116; t=1723633155; c=relaxed/simple;
+	bh=FDGJ3XkEIaTOpwp5kPnPZXSAuVrkVe3XypLywdy1494=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BoxkTLFrFrDAbj2jEhc2e66nGMQbElWxmVLHyNJBk12Shnk4pciIxqDj1ygQBDmi0h6ed8X9IlkV5lyf3DyGjlCTuXxbtr8gI9bfxaaz8ZjBDBo+dMe4pKCBnjJn6kazHN6Snc1+meUNMG/d/qFohd6PSqu9CPpj7+exDCnm7uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1seBiM-0007qt-4B; Wed, 14 Aug 2024 12:58:50 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1seBiJ-000LFZ-HT; Wed, 14 Aug 2024 12:58:47 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1seBiJ-002Wsl-1H;
+	Wed, 14 Aug 2024 12:58:47 +0200
+Date: Wed, 14 Aug 2024 12:58:47 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Ma Ke <make24@iscas.ac.cn>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Peng Fan <peng.fan@nxp.com>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Marek Vasut <marex@denx.de>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	imx@lists.linux.dev, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
+Message-ID: <20240814105847.tise4jzneszdxetb@pengutronix.de>
+References: <20240808042858.2768309-1-make24@iscas.ac.cn>
+ <20240808061245.szz5lq6hx2qwi2ja@pengutronix.de>
+ <1b04b8b3-44ca-427f-a5c9-d765ec30ec33@app.fastmail.com>
+ <CAPDyKFqd=haDWB3tATZ_E1BMpCReNh=hLa5qPGATc3h1NUx09A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240814-b4-cleanup-h-of-node-put-usb-v1-11-95481b9682bc@linaro.org>
-References: <20240814-b4-cleanup-h-of-node-put-usb-v1-0-95481b9682bc@linaro.org>
-In-Reply-To: <20240814-b4-cleanup-h-of-node-put-usb-v1-0-95481b9682bc@linaro.org>
-To: Patrice Chotard <patrice.chotard@foss.st.com>, 
- Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Michal Simek <michal.simek@amd.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=890;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=ol6ZTXC6dPx1NNnToQYOXH4GwET4WoJKZEvGBAAyChA=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmvIiI0pC7cGWUcMPtTN5Rj4I9ue4DwVHlIBTOR
- FZKTmMNbuyJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZryIiAAKCRDBN2bmhouD
- 1/31D/4lelP2Ou1IyK4wZSB1Osrpv5THjLFKzvWenV3V5pHokmwuau5AJypaMbC2qkYkpr/mo1g
- WN0nuAtUFwUL57BPiqPpDYXrg9FDydmfDejUCaamjp+u6b6rJNrdNrP77XKpl27yBUP6koL22tH
- a6tGDDWdza5ocxOQu1Dkd44EM7uKDO6m9V7sUfhg1u8fZCL6wVLh/ZkYVSlSWB0/JEG4xOpDPvS
- mz5OYP4ExBLwy1UHPMjxsoWG6fo66yASdJ7oQJeBwrhLwxDiId88883oH7rgXiF7hlQJ/LDe5zp
- CrtGSn+DMV2F+41SmyuXRZgscfeVqGyxFMHVmSd5QqVFxNQVKkzBS6RKCPZNmQjSK7g2Mr65lFL
- jZMlm95cOlybp4FnequD5MWQr0616bw2DTxDKOTnJ9jVRQhM49dfkKoivW1YSxhXVzXXnjiIXGN
- v9Rz+OTnO/57SoVX5fOhI7z+C5FyYSyJA0mjZ5RqPVV3bjp5m/7SjWSzwckXidcwpGWswyahE1q
- tfLywc0KMgHHQLePAVq6LyQ98L48G+hcIo5X3KY0HeAeOnOTm8F4imWVj5ffkZ6FJzKu0V2Gi+l
- wwwYkgm/+wqTvNYRpLWfoUetlqZqSO8w0wLbAEUV5j/BFk6XqTnLhXiw6E0VI9viRD6fSFhT2Qr
- KEl4SJzQy/0HuFQ==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFqd=haDWB3tATZ_E1BMpCReNh=hLa5qPGATc3h1NUx09A@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Use dev_err_probe() to make the error paths a bit simpler.
+On 24-08-13, Ulf Hansson wrote:
+> On Thu, 8 Aug 2024 at 08:53, Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > On Thu, Aug 8, 2024, at 08:12, Marco Felsch wrote:
+> > >
+> > > On 24-08-08, Ma Ke wrote:
+> > >> Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
+> > >> IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev
+> > >> is either error or NULL.
+> > >>
+> > >> In case a power domain attached by dev_pm_domain_attach_by_name() is not
+> > >> described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
+> > >> then used, which leads to NULL pointer dereference.
+> > >
+> > > Argh.. there are other users of this API getting this wrong too. This
+> > > make me wonder why dev_pm_domain_attach_by_name() return NULL instead of
+> > > the error code returned by of_property_match_string().
+> > >
+> > > IMHO to fix once and for all users we should fix the return code of
+> > > dev_pm_domain_attach_by_name().
+> >
+> > Agreed, in general any use of IS_ERR_OR_NULL() indicates that there
+> > is a bad API that should be fixed instead, and this is probably the
+> > case for genpd_dev_pm_attach_by_id().
+> >
+> > One common use that is widely accepted is returning NULL when
+> > a subsystem is completely disabled. In this case an IS_ERR()
+> > check returns false on a NULL pointer and the returned structure
+> > should be opaque so callers are unable to dereference that
+> > NULL pointer.
+> >
+> > genpd_dev_pm_attach_by_{id,name}() is documented to also return
+> > a NULL pointer when no PM domain is needed, but they return
+> > a normal 'struct device' that can easily be used in an unsafe
+> > way after checking for IS_ERR().
+> >
+> > Fortunately it seems that there are only a few callers at the
+> > moment, so coming up with a safer interface is still possible.
+> 
+> I am not sure it's worth the effort, but I may be wrong.
+> 
+> It's been a bit tricky to keep the interfaces above consistent with
+> the legacy interface (dev_pm_domain_attach()). Moreover, we need a way
+> to allow a PM domain to be optional. By returning NULL (or 0), we are
+> telling the consumer that there is no PM domain described that we can
+> attach the device to.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/usb/dwc3/dwc3-xilinx.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+Other subsystems like GPIO, regulator have a ..._optional API for this,
+could this be an option?
 
-diff --git a/drivers/usb/dwc3/dwc3-xilinx.c b/drivers/usb/dwc3/dwc3-xilinx.c
-index b7613a106da6..eb535733ce91 100644
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -285,11 +285,8 @@ static int dwc3_xlnx_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	regs = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(regs)) {
--		ret = PTR_ERR(regs);
--		dev_err_probe(dev, ret, "failed to map registers\n");
--		return ret;
--	}
-+	if (IS_ERR(regs))
-+		return dev_err_probe(dev, PTR_ERR(regs), "failed to map registers\n");
- 
- 	match = of_match_node(dwc3_xlnx_of_match, pdev->dev.of_node);
- 
+Regards,
+  Marco
 
--- 
-2.43.0
-
+> 
+> Kind regards
+> Uffe
+> 
