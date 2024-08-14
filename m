@@ -1,389 +1,207 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011071.outbound.protection.outlook.com [52.101.70.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E1F29406
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 06:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723616970; cv=none; b=rM34Vnwrph1ZhTmi9/KqNfU7kG6Xru4kUMV6ga0AnTvJB+CF5IGnNBuoaHpNkhUPvX95yrf5JrVdqN3NofNcsO4PuFtv+7b/A9CoCY+SoAr7fkuSD6n5D28BwdSn3P9dqRY4ZmqW774pj2D9bpe22oopD9NvR92nYkEze9FV0KU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723616970; c=relaxed/simple;
-	bh=6Y5wNcHqv4RijldZVaSZP0YFJszQo0vY0Cs1Y9QYHek=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nk5yhES33SWCYjLHSH5mLPRCHlMl30rqZGH/8/JVNRQjLkeND7hiXFy1AG4dOFzRgxm13H/cYi6c24boXUYwbcLbdr6N4fuNQUsgI4p+xb3fR2AhI80pA7TF9U26BD9ZRx3S0h9mE1/VLWv2EObIh/RzT2KWOZPJGv9XSNciwC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=coIRbJ99; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300C974BF8
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 07:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723619527; cv=fail; b=IV5JR4UnsHHH7XaRnZULvOuP9pgbor5PyQXO+diLDQdkoVXbnXExrBd3eomRMYhEHY9gzZp4fk7tvK71J+XOzmEe5vz4SzYO5OAEQbWiscFF2wGieIrBe7EF3K9sgkdsj0yUr+++96MRmnpwQhd9vZFS532ml/GDStF2PHEYTeY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723619527; c=relaxed/simple;
+	bh=4QOqJJLnfv8ouX7O/4zErPM5tqef4eMaufc1YBSNqYo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=k7GfZOFaAEp1j0TtNcwU5+R99CWJBYIuzCwZH4N+V888QrEfGvsdEhi6i8z+B67RIcPuQUJSUERSUHBExHRpHsLaxGrugwWuE9RVKD1x5gxeCoiQX0Y236MjlstJ439NddbfJgGx2R3rNRmJoHy/PUsGJiVTukiVfQkvZkhsZRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=g0NCJj0D; arc=fail smtp.client-ip=52.101.70.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="coIRbJ99"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7c1324be8easo417888a12.1
-        for <imx@lists.linux.dev>; Tue, 13 Aug 2024 23:29:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723616968; x=1724221768; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X0/dPyc7sqRwp8j2DHrktfgc1+crSbA+gSKSi8WXN5w=;
-        b=coIRbJ99w6Th4dsqvKmX/AaiZcLFQFfYiukiXxG14/2VBClS1zNjlEIBffICq3jG6m
-         p0myejHT/JEHJqO3TUE7UQJ4gEDJbQmXgFObgJFgi79Ru84cvqdLk5t2wrwwX2a//LLR
-         mWUMQshpFVVjTPUJawYv1V63dXBVTqDkrKWJv+g3WHX6ZyelXT3AfcuIsu7zWbKFi8dp
-         0fyvGBhv95jowC/Je7a5W/nxBNn2544MyxKhaCg+BTQoYyMbmVUq+6W3XQ3LFsyG1aVC
-         RduZ1HRhWclYs5V/PZjzE/6OMkJ9K4s4/DFVAzDrRX8PoRo9smZGeL96sxZKpWZR9MPU
-         U2YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723616968; x=1724221768;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X0/dPyc7sqRwp8j2DHrktfgc1+crSbA+gSKSi8WXN5w=;
-        b=B5womVABZfZP7XWvN69sOowJRwb+b9s5wCp1k25LIStSovyKCa6oPowSEKs4Cbbm2X
-         kRAUM3V9djtTm9v55e7/JeXZgeujvj+UbT4iP0uGn+xqoNf2yOqhBg9knDA9m77iQ+sF
-         8rmhokzxRNAxwnJ8WRJSMzZVAzJHrWk7zgnCO6b7Bx6qd+Lpdp3G9E3JbyQgGIGpS3WH
-         VkNR7Vtoe07n0KQAl2A3qeser6LchV0sl2QCXRyZEpN6jJMyZD78IiJaJw+9R8vjfkQh
-         +61ODUNFrREgb/XGrInTkWZtnVdk+58TfPlpD9/zaGRivKP/xzYOr55K14ALYTA0EMXJ
-         sdVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXe+HMKKPkPt86bRDc2150gpbOsY+ZzBDdHSton4P0Ae3OTMllyGVgjvbCcc5o/9pVoC/8JXDX4CO5hRA5fHCI2p2/H
-X-Gm-Message-State: AOJu0YwxesJbumKsTGLZN7lxzkAMtE13LhytAfCSpSHHWbu3nxpUcbKn
-	QiogVn5SInlkurdFvYSXy6wy7SYQvPGRN5Nni37goRi4BljWuWvoNIL32j6PX+KrFJU6vxdZ4oX
-	Hvv9AlKvf2Q08HDGB7zvwvJi5UFM=
-X-Google-Smtp-Source: AGHT+IH8YV5sqo0iLIATUabyi+O4Fg2UxmsvGUjo0gdEMIfbv6RLSgKxxKUQLel+TVa0we7sJu+A4Uc5a3VqX+LH7R0=
-X-Received: by 2002:a17:90a:c297:b0:2d3:ad05:7240 with SMTP id
- 98e67ed59e1d1-2d3ad0573b6mr1696839a91.22.1723616967652; Tue, 13 Aug 2024
- 23:29:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="g0NCJj0D"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O55aplCX5byoso7qpazbbviUJ5r/PSBMIQ46ORiOTkoQql8s+cZesnmnx4H/lPUlgc9QgIlzcbEulPEUQvMufEcYYtw+GIzJirJScItJLzNxoo32tKDvjS7Y0lFDR9T7YcpeFphNo0jDPmF6zDPJnoNLxWXKTes8YMJmvn51gW7DOd64Duh7aNQT0PrI6S5z+o40ABRjxuWT53jiA0grJ9f1dvIFbJMY2IyugiIGFSLXmKY8alZHnmQmKKkeq/Nl5/eszErYA/e9s3XRUvVaB7a7eWEZhHWnDAIMfCdKSBF7TVw+xWeCf3DBwnzEuiUdueU3dfTleE+2Dde1CbfLQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SR2RixZUeby84KFgLIrwXIFkeLDNWTjJWOrqFT6buqQ=;
+ b=o4faniuN1mvna9ylOtzAyFdgfmvEd8JzICm9tbu04RQD5ZaQnn+RqjIRBuWcsvJlXMEQ0jROzqor9S1alzIeOX7o/hdJDhqY3XWD/wyjMtVZhwfF2OR/AtjVBC5N+XMwBlcAxRPUuAmRuDM+V4QOY7T0tc0L+2avlPDPAvMGiRIPI0zrio5AfW/9na9L+AU1/JCDErRqzyGVAEVsums8sxa0Eo/y1PM8hzf5fptasePLj8dDEdwRIhycWNA1hFL0KokKp+A0IiV4OD9Pyc12rADnUEp6Q0a1G/AJoWwZcLjJ9NOQ3Lyp29fFtMwSGrcrTa9l8QPDU9geYeptqZKhUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SR2RixZUeby84KFgLIrwXIFkeLDNWTjJWOrqFT6buqQ=;
+ b=g0NCJj0Dxm3rGg0g6byBr09VTdouY3npK8MMVsMtCtMNeAiKruPpQ67RjXmesgSmFQOkoJt8RKBupQ/s2j4UDESQwwLllotKBF9sOhMyhrw04DOz7/AxjcWM2W2cHjIW0NQW7stYfTyrz7eAh1w4+LU6u7KGYqiOzyS89ZzeGBhrL2umn2+gJrXMeuSRvG5fElQms9Jd/yqRHw+f9WYIVeRXtWdEd8GYgqWP8qc54RJU8OIFjRRpBSlmyq2XD0R6tqMGMqxSBzXPfYvxos4rbZ9uA+KHktpQDfDAtpH7j63yrBiKsqdMA8VA9rHaqe9S1ndn00GoekKW4FM1vSgy4Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.16; Wed, 14 Aug
+ 2024 07:12:01 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7875.016; Wed, 14 Aug 2024
+ 07:12:01 +0000
+Message-ID: <22c7155f-0f94-44e4-be06-d3f2b9001894@nxp.com>
+Date: Wed, 14 Aug 2024 15:12:30 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] dt-bindings: display:
+ panel-simple-lvds-dual-ports: add panel-timing: true
+To: Frank Li <Frank.Li@nxp.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
+ "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240813145021.3864787-1-Frank.Li@nxp.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20240813145021.3864787-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR04CA0155.apcprd04.prod.outlook.com (2603:1096:4::17)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240325151339.19041-1-laurent.pinchart@ideasonboard.com>
- <4879631.GXAFRqVoOG@steina-w> <20240325204924.GY18799@pendragon.ideasonboard.com>
- <2929432.e9J7NaK4W3@steina-w> <CAHCN7xLFjJUZQZwPbj5xyxnprwAV3TOvd_6A6sBwOPK+V6uQPA@mail.gmail.com>
- <20240813222204.GA21831@pendragon.ideasonboard.com>
-In-Reply-To: <20240813222204.GA21831@pendragon.ideasonboard.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Wed, 14 Aug 2024 01:29:16 -0500
-Message-ID: <CAHCN7xL4+EqtbH-Pg6+wTYmjbE-7W=YSE0Pyp-mKDzQrJ9PV1A@mail.gmail.com>
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Elder <paul.elder@ideasonboard.com>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
-	linux-media@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB9080:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26468005-ec93-4955-783f-08dcbc30649a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V1lOZTFDNVE5elZpWVoza1NjQ3FGYUZwNzdiRE1VbHZmdDB0VzNKWDVCUllF?=
+ =?utf-8?B?Z3phb3hCS2hEUW1qYTRHQzJuRFZoUm1MTHY5MmhobGk3TUdBbFQ1RjNLYTVq?=
+ =?utf-8?B?Q1lGRXhxc2thdFVET0hkbm5SL2VPOFBmSmFNVDhIZVZsUzBQakRDbjNaUjVz?=
+ =?utf-8?B?dm9EZkF1Q042Y2ZJZ1RvSUdBTE9ZbmxrdkpESTh2MG90WjZRb0RmNWpYd3px?=
+ =?utf-8?B?RURjY3pWZHQxVUdoTFZpb2FPc2tsRUVobGx4aktrUUVrczNzZlNaT3ZseHlp?=
+ =?utf-8?B?YlFXRkVzSnJpa0ZYUU12Z3BJdUs5eUdPaEFoaXdHb3pTZmpiNjRjSy9QaUU1?=
+ =?utf-8?B?dWRBUUs3M3RtU0I2V2JsVU93YkNFeXBjaHJDbTgvQVVmOSt0K3RvdmJoUUtP?=
+ =?utf-8?B?Smtmd0U0UmtveE91dVV6Um5uNnBORXBTbjZ3OFJLSERLYjZtWmhieE1LOEFr?=
+ =?utf-8?B?K3hLdDIxdVpHU1c3NGp1Y25OMVRTU1o1N01POTYwVEVsWU1oUWYvSjVhalNy?=
+ =?utf-8?B?NnpmS1pHL1Y3cTRyWFQ1MHVidlVxbUFZcy9GNWFhVytoYldoaVdjbnpCbm9y?=
+ =?utf-8?B?eUhPZnBsenRoMi82a0E5MmIyTXNsRFF1OFVONGlDa0EzeUFVdVZLSWhldTZq?=
+ =?utf-8?B?R2lDQzJrTllOK3psRWRHTVg3Q1lPOUc3SHFMT2MzU2gvczZpaWd5NndrU1Nz?=
+ =?utf-8?B?Wlk3YmVzNTh5SEZaN0RjUWtGZ2YzNWtLOHdhczN0S3o4RWt3UVpPWnlyLzZv?=
+ =?utf-8?B?THorM1FLZytjb2VxY2UzdlU4T3Uwd00xTlQyV2VvOFhvUTJEU1l2aXVvRjFn?=
+ =?utf-8?B?QURhNWEwL1lOVGZyVUpQYmNrZ3ZKWmZHNzNBR3BXdUZpY0VuZHV3dzdzQkIz?=
+ =?utf-8?B?ckRsdzQ5aDJDR1lYOEJ3bkw4TVZXZ0wwKzdWbE9PWTErVEN0TGZhMU52dk1K?=
+ =?utf-8?B?bXF2Y2lza0ZMeHZiaEgxazVLVVYwaDFhZ2hLOEYxOEp1Q242WXRYQU9BWVVU?=
+ =?utf-8?B?cjFZOHc5QjFYb25oclhydmk4NUdiaGtscy80cTRXQnk3bFY3bUNWdzJGemFL?=
+ =?utf-8?B?a3FmTUVoanMvQlhMTGEzVHJWOXAxSXpYWWRwZFlCcWEzbWNSSDBnZnpOZ0pr?=
+ =?utf-8?B?STYvdXFNTDhYd0d6YVF0azhTcmczaWErdmkvckpmOWEvaDJLSTVsUmEvRlJS?=
+ =?utf-8?B?emk4Ukxmc3BFdnVacEdoR3BBcDAvRWh6OGtPNmRXRThIaEVCQkROV1ZvSzVQ?=
+ =?utf-8?B?TFRKK1ZNWnJtaGVlK0VVWEwzRGVoZU5ldFhBdnVUbVFzcm5SVW82K0Y0d0ZG?=
+ =?utf-8?B?T2pWTkVteTZ5QmVsOEZEVVdnMzlYS2ZXbUF2OWt5SkFlTW1YV3UxT0FycmNt?=
+ =?utf-8?B?YWhOSEhzTG9vRmFEb1V5eTNwaUxzZ1ZSZkJvb0VERVBpMFMwUTcyYTFLbEdX?=
+ =?utf-8?B?VVRpd016L3FiSXV5NGprV1NBVEZ5S010eWxZRlRISDYxL3YwdzNRV3FhU0pj?=
+ =?utf-8?B?M3dqUWdacDAyLzlaUjQ3aVcvQytCRDFCV2pCcFZydFBBWnprY3lKTlRvRnlH?=
+ =?utf-8?B?bytkOGMvY3A3L3QzZHNHWVBhU2orcXNRaDEwSmUwVFhEb1J3L0tmM3lyWVlS?=
+ =?utf-8?B?MndlMit6dk9IV0FnNjZvSDJuL1BLcUdWNUR3eWdLRWRPM0tVeEU0aXVnM2Vx?=
+ =?utf-8?B?SHgvS0VRakFNWTg1dzRmVjVzUFNKWFBqam0zM3dDUWlzVng3bnJFR1l4Q0NZ?=
+ =?utf-8?B?a0t6dk13UjI5bXo4Mm9yT2JaUjJQVGpZa1FJbWtnMzFRVFFtdlUwd2k1T0V1?=
+ =?utf-8?B?eDlLZHg2cEZISHVhYXVuQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QmtveWlDZllUR0dvSnloM2QvT0NRNkZXRTVUYk93UnVjMG5xVTBwY003OEtU?=
+ =?utf-8?B?dmZuNXZCVWw5WEY1dnFvb25uOFVLbWkydHJBeHl6V3BSd0p4Q3pPTHZqOEVo?=
+ =?utf-8?B?clBhVlJmZGJSQW54Yk9SY09sQkVxSUtPUkJQWGwyR01ZSW8yV1EybitLZjNY?=
+ =?utf-8?B?aXlabGJlTTVoWjlWTXZIcSt1WXJNL3dtK1o2Z1JteW5mMzNBVWlRUGVKTnlt?=
+ =?utf-8?B?b3lsSHc2RjFoUlp4ZzZGa2dMYVgxeGxnaFJzbFJlSEczZ0VOcFF0S3N2cjNj?=
+ =?utf-8?B?ZlFtcUdiWHFrVWJZZmFZRjBKdUdvZTU3TjNXZzI1a2FpQVV2aUFkd0JtMllD?=
+ =?utf-8?B?RXBVY3c4V0h3Z3ZhSmJpUDBsc2FjQzhCRzRVUVJ3UlJxN0UrYlNvdWczWThK?=
+ =?utf-8?B?WG9ZZlpxNDlJR3pONk1PbTl4SU93YjVkRkxFMHA4aG1aNGdWR05BREZwWC84?=
+ =?utf-8?B?MndTaVMwTjVVQXVTZUxXZmVDemc1QWErZ1NiOEFmbGIwNkgzeXl5S3M5UTlk?=
+ =?utf-8?B?UWwvSE1QZzNoNDhmYXp2N01scGlUamdCdVpnSDBBbm9YTFhsSlJSdWphOGZT?=
+ =?utf-8?B?R1VXWUxlWGtsdlBQcmxrRjIvL0VyVzhXMXRnVzRqaHhjbm94a0RjcFJHYkgz?=
+ =?utf-8?B?a2xlL1J1ZysxYVpzNTkwTENTb1hybzZCcUI5UnZLeDBQdDQwQmxkWEJidVRm?=
+ =?utf-8?B?d2RrVXF4R1I5aE9SNCtwVFloU1VVT3VkczhMMkdZMnRyT09keEFiUVJSMmNE?=
+ =?utf-8?B?bHZTbXRVYmV4MEdyMVRydzEvTHg2NkRPVVhaeTRzdW1HNDZ3V2lBZW84cXNM?=
+ =?utf-8?B?dmlzcEYzbDFGRzk3TktFSGtzbnZ1MzdaRHRSanI3ZHpINHQzaHdpTkVWUUZY?=
+ =?utf-8?B?Z3ZHWkJEMXliZk9IRjJOWlVZblBHSitleTJ4MnlXZmlkTUxtWVBXT3kwRmRI?=
+ =?utf-8?B?VitxeHdTZzZWTy9zYTZDVVRpbExqd0d5VE1OeW1qMUNMMUZlYnl1ejREMUJ2?=
+ =?utf-8?B?M0lta0N6NGdNTUdpRmFBZTRRekg2MVZRdHQrRGZQeXpvZmMvWnlrRUNtTzdG?=
+ =?utf-8?B?NzFzc0g0T0llSEZNTzdPbEV4ZWdXMEhnSmlJSnp6S3MzWnpRWVl1enFaMTJK?=
+ =?utf-8?B?dlRMR2p1L3ZFb1orYW85T053MHhXL3J2L0d3M0N5VU96VWFzbGR0OFRvWHJ3?=
+ =?utf-8?B?dmNvRDFRT0tQNW9pVU5aZ0RrM2FuVkdwaG1NOE5SN3pVTnVPZ3RhTEFkRTVH?=
+ =?utf-8?B?V2dnKysyQkJpUWVQS3psUkppdzRuZk1ZaFpOVVl5RlpsVEI2YkxUUGpCY3Y5?=
+ =?utf-8?B?MnFuRldScndNTUJKWGNySkVvNi9HYjdqT2tlaXV0Z2FaL2ZYQmduZHFRdlFo?=
+ =?utf-8?B?OEEzUXRydWs0Y3VRUUNFWlJmY0Era2lha2F0QkkzUmxIOGxoaVlkaUtxaWxl?=
+ =?utf-8?B?bURDV3FtWmlXYWVtKzR2Y2FFamxBTDJTY05lTmVYUml2cXRkWVhWMGJHSjBn?=
+ =?utf-8?B?dWd6TldjTS9VZnFRTEZtSGY1bnE4eWtCNWdMUy9vWUozMnhFRitZd2FIZWky?=
+ =?utf-8?B?eXVtSEt2S1JpbGxFSmJINjBaK3VBbGZmNkNya3ozK0YwV0tKN2YrbkhwMnJt?=
+ =?utf-8?B?eVU4a0pUSUtCSGlReTNadWUrQWV0ZVhnckRwa1B5akszM1VqamduUFY0Z2VF?=
+ =?utf-8?B?ZEt2QXV0NDNmMXVwQzBLeE9Ndm84OFFCMGRLOHBBRThCSzB6TlR5ZFlpT0F4?=
+ =?utf-8?B?WnFwVHFOZUtjNXovM0cyNjQ4NUhhdXh4eHFORWdwczVPZkYwREFpOUppekdl?=
+ =?utf-8?B?d0ZJanhVNG5tKzJDTUt6TGRpOVhRSjVjT1kyS3pIM1pqYzBuZnlzZDFzVjdZ?=
+ =?utf-8?B?Y2UrditIRkxGaStMelJId1pNM1JVVndVdGNsRjA1ZzFvRTNQU2J5WjJNcVdn?=
+ =?utf-8?B?SGZ1dWs0ZFViVFQwSGpSMzBXN2p0T1FmcktxeHJnMHUzVDBKYkRtSTV4WVg2?=
+ =?utf-8?B?VGRLcXNpWk1uc25kY0VpVk1nZXFMd29NbXJpY0dGYURPeGtVUWtNbitBdERl?=
+ =?utf-8?B?UTZCQUFYQXFzZ1ErY08rK1o5cHEzRmxDZGkxN2Vtc28xS1l1Zmg5ZFA2MCtL?=
+ =?utf-8?Q?E4/PTfjCMm/5ECFZUJx5q6OSY?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26468005-ec93-4955-783f-08dcbc30649a
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 07:12:01.5383
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: s2VVOSUhIE2koc5YPZ43ANB2CJskXp9HEfJ4ONvFLunaoJBeUBIhkRa1J79CNLXTH4gWYrr4CvZD+V5dcdInkA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9080
 
-On Tue, Aug 13, 2024 at 5:22=E2=80=AFPM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> On Sun, Jun 09, 2024 at 03:21:19PM -0500, Adam Ford wrote:
-> > On Tue, Mar 26, 2024 at 2:14=E2=80=AFAM Alexander Stein wrote:
-> > > Am Montag, 25. M=C3=A4rz 2024, 21:49:24 CET schrieb Laurent Pinchart:
-> > > > On Mon, Mar 25, 2024 at 04:52:21PM +0100, Alexander Stein wrote:
-> > > > > Am Montag, 25. M=C3=A4rz 2024, 16:13:39 CET schrieb Laurent Pinch=
-art:
-> > > > > > From: Paul Elder <paul.elder@ideasonboard.com>
-> > > > > >
-> > > > > > The ISP supports both CSI and parallel interfaces, where port 0
-> > > > > > corresponds to the former and port 1 corresponds to the latter.=
- Since
-> > > > > > the i.MX8MP's ISPs are connected by the parallel interface to t=
-he CSI
-> > > > > > receiver, set them both to port 1.
-> > > > > >
-> > > > > > Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-> > > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.=
-com>
-> > > > > > ---
-> > > > > > Changes since v1:
-> > > > > >
-> > > > > > - Fix clock ordering
-> > > > > > - Add #address-cells and #size-cells to ports nodes
-> > > > > > ---
-> > > > > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 50 +++++++++++++++=
-++++++++
-> > > > > >  1 file changed, 50 insertions(+)
-> > > > > >
-> > > > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/a=
-rm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > > index bfc5c81a5bd4..1d2670b91b53 100644
-> > > > > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > > @@ -1616,6 +1616,56 @@ isi_in_1: endpoint {
-> > > > > >                           };
-> > > > > >                   };
-> > > > > >
-> > > > > > +                 isp_0: isp@32e10000 {
-> > > > > > +                         compatible =3D "fsl,imx8mp-isp";
-> > > > > > +                         reg =3D <0x32e10000 0x10000>;
-> > > > > > +                         interrupts =3D <GIC_SPI 74 IRQ_TYPE_L=
-EVEL_HIGH>;
-> > > > > > +                         clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP=
-_ROOT>,
-> > > > > > +                                  <&clk IMX8MP_CLK_MEDIA_AXI_R=
-OOT>,
-> > > > > > +                                  <&clk IMX8MP_CLK_MEDIA_APB_R=
-OOT>;
-> > > > > > +                         clock-names =3D "isp", "aclk", "hclk"=
-;
-> > > > > > +                         assigned-clocks =3D <&clk IMX8MP_CLK_=
-MEDIA_ISP>;
-> > > > > > +                         assigned-clock-parents =3D <&clk IMX8=
-MP_SYS_PLL2_500M>;
-> > > > > > +                         assigned-clock-rates =3D <500000000>;
-> > > > > > +                         power-domains =3D <&media_blk_ctrl IM=
-X8MP_MEDIABLK_PD_ISP>;
-> > > > > > +                         fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
-> > > > > > +                         status =3D "disabled";
-> > > > > > +
-> > > > > > +                         ports {
-> > > > > > +                                 #address-cells =3D <1>;
-> > > > > > +                                 #size-cells =3D <0>;
-> > > > > > +
-> > > > > > +                                 port@1 {
-> > > > > > +                                         reg =3D <1>;
-> > > > > > +                                 };
-> > > > > > +                         };
-> > > > > > +                 };
-> > > > > > +
-> > > > > > +                 isp_1: isp@32e20000 {
-> > > > > > +                         compatible =3D "fsl,imx8mp-isp";
-> > > > > > +                         reg =3D <0x32e20000 0x10000>;
-> > > > > > +                         interrupts =3D <GIC_SPI 75 IRQ_TYPE_L=
-EVEL_HIGH>;
-> > > > > > +                         clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP=
-_ROOT>,
-> > > > > > +                                  <&clk IMX8MP_CLK_MEDIA_AXI_R=
-OOT>,
-> > > > > > +                                  <&clk IMX8MP_CLK_MEDIA_APB_R=
-OOT>;
-> > > > > > +                         clock-names =3D "isp", "aclk", "hclk"=
-;
-> > > > > > +                         assigned-clocks =3D <&clk IMX8MP_CLK_=
-MEDIA_ISP>;
-> > > > > > +                         assigned-clock-parents =3D <&clk IMX8=
-MP_SYS_PLL2_500M>;
-> > > > > > +                         assigned-clock-rates =3D <500000000>;
-> > > > > > +                         power-domains =3D <&media_blk_ctrl IM=
-X8MP_MEDIABLK_PD_ISP>;
-> > > > > > +                         fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
-> > > > > > +                         status =3D "disabled";
-> > > > > > +
-> > > > > > +                         ports {
-> > > > > > +                                 #address-cells =3D <1>;
-> > > > > > +                                 #size-cells =3D <0>;
-> > > > > > +
-> > > > > > +                                 port@1 {
-> > > > > > +                                         reg =3D <1>;
-> > > > > > +                                 };
-> > > > > > +                         };
-> > > > > > +                 };
-> > > > > > +
-> > > > >
-> > > > > The patch itself is okay. But you might not be able to
-> > > > > configure the parent of IMX8MP_CLK_MEDIA_ISP if dewarp is enabled=
- before.
-> > > > > This is due to IMX8MP_CLK_MEDIA_ISP_ROOT being enabled in 'pgc_is=
-pdwp'
-> > > > > power domain. Reparenting is not possible anymore in this case.
-> > > >
-> > > > Good point.
-> > > >
-> > > > > Something like
-> > > > > ---8<---
-> > > > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > > @@ -1837,11 +1837,13 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
-> > > > >                                                   <&clk IMX8MP_CL=
-K_MEDIA_APB>,
-> > > > >                                                   <&clk IMX8MP_CL=
-K_MEDIA_DISP1_PIX>,
-> > > > >                                                   <&clk IMX8MP_CL=
-K_MEDIA_DISP2_PIX>,
-> > > > > +                                                 <&clk IMX8MP_CL=
-K_MEDIA_ISP>,
-> > > > >                                                   <&clk IMX8MP_VI=
-DEO_PLL1>;
-> > > > >                                 assigned-clock-parents =3D <&clk =
-IMX8MP_SYS_PLL2_1000M>,
-> > > > >                                                          <&clk IM=
-X8MP_SYS_PLL1_800M>,
-> > > > >                                                          <&clk IM=
-X8MP_VIDEO_PLL1_OUT>,
-> > > > > -                                                        <&clk IM=
-X8MP_VIDEO_PLL1_OUT>;
-> > > > > +                                                        <&clk IM=
-X8MP_VIDEO_PLL1_OUT>,
-> > > > > +                                                        <&clk IM=
-X8MP_SYS_PLL2_500M>;
-> > > > >                                 assigned-clock-rates =3D <5000000=
-00>, <200000000>,
-> > > > >                                                        <0>, <0>, =
-<1039500000>;
-> > > >
-> >
-> > According to the i.MX8MP Data sheet, the nominal speed for
-> > MEDIA_ISP_CLOCL_ROOT is 400MHZ with 500MHz being allowed in overdrive
-> > mode.
-> >
-> > I think this clock rate should drop to  the nominal value of 400MHz
-> > and those boards who support overdrive can increase it to 500MHz to
-> > avoid stiability issues and/or running out of spec.  I created an
-> > imx8mm and imx8mn-overdrive.dtsi file.  If there is interest, I can do
-> > the same for the 8MP as well.
->
-> I've experimented with this, and lowered the ISP clock to 400MHz by
-> selecting IMX8MP_SYS_PLL1_400M as the parent. I couldn't capture images
-> anymore :-S
->
-> The camera sensor I'm using outputs a 74.25 Mpix/s pixel rate, which is
-> way below the maximum in either normal or overdrive mode. The reference
-> manual states, regarding the CSI-2 receivers,
->
-> - When one ISP is used, MIPI CSI interface 1 supports:
->   - Pixel clock up to 400MHz at nominal voltage and 500MHz at overdrive
->     voltage
-> - When two ISPs are used, both MIPI CSI interfaces supports:
->   - Pixel clock up to 266MHz at nominal and overdrive voltage
->
-> The datasheets for both the CEC and IEC variants give slightly
-> different information:
->
-> - For single Camera, MIPI CSI 1 can support up to 400/500 MHz pixel
->   clock in the Nominal/Overdrive mode.
-> - For single Camera, MIPI CSI 2 can support up to 277 MHz pixel clock.
-> - For dual Camera, both MIPI CSI can support up to 266 MHz pixel clock.
->
-> The also list the maximum clock frequencies as
->
-> - MEDIA_ISP_CLK_ROOT: nominal 400 MHz, overdrive 500 MHz
-> - MEDIA_CAM1_PIX_CLK_ROOT: nominal 400 MHz, overdrive 500 MHz
-> - MEDIA_CAM2_PIX_CLK_ROOT: nominal 277 MHz, overdrive 277 MHz
->
-> (On a side note, the revision history indicates the revision 2.1 of the
-> datasheet changed MEDIA_CAM2_PIX_CLK_ROOT from 266/266 MHz to 277/277
-> MHz, but the 277 MHz frequency has been listed since revision 0.)
->
-> The MIPI CSI-2 RX (MIPI_CSI) receives data for the camera sensor at the
-> CSI-2 link frequency rate. It reclocks the data stream using an internal
-> FIFO, with an output pixel rate selected by the
-> IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT (for the first CSI-2 receiver) or
-> IMX8MP_CLK_MEDIA_CAM2_PIX_ROOT (for the second CSI-2 receiver). Those
-> clocks support the following parents, with the following frequencies on
-> my system:
->
-> - 24M_REF_CLK           24 MHz
-> - SYSTEM_PLL1_CLK       800 MHz
-> - SYSTEM_PLL1_DIV3      266 MHz
-> - SYSTEM_PLL2_CLK       1000 MHz
-> - SYSTEM_PLL2_DIV4      250 MHz
-> - SYSTEM_PLL3_CLK       600 MHz
-> - AUDIO_PLL2_CLK        361.2672 MHz
-> - VIDEO_PLL_CLK         400 MHz
->
-> This makes it easy to configure the CAM PIX ROOT clock to 266 MHz or 400
-> MHz easily. Achieving 277 MHz or 500 MHz would I assume require
-> modifying some of the PLL configurations. I'm not sure how the clock
-> tree was designed to be configured for overdrive mode.
->
-> imx8mp.dtsi configures the CAM1_PIX and CAM2_PIX clocks with
->
->         assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_CAM1_PIX>;
->         assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>;
->         assigned-clock-rates =3D <266000000>;
->
-> and
->
->         assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_CAM1_PIX>;
->         assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>;
->         assigned-clock-rates =3D <266000000>;
->
-> This is misleading as it selects the SYSTEM_PLL2_DIV4 parent, with a
-> clock frequency of 250 MHz. I'll send a patch to set the assigned clock
-> rate to 250 MHz to avoid misunderstandings, we can in parallel decide if
-> the parent should be set to SYSTEM_PLL1_DIV3 instead.
->
-> As the CSI-2 transmits, as far as I can tell, one pixel per clock cycle
-> to the ISP for raw sensors, this is well within the hardware limits.
->
-> The clock domains of the ISP are briefly described in the reference
-> manual as follows:
->
-> - Core Clock (clk) - Core clock is the main clock domain used by the ISP
->   modules and is the biggest clock domain in the ISP.
-> - Sensor Clock (sclk) - The sensor clock domain is selected from the
->   sensor interface and is the data input clock.
-> - AHB Clock (hclk) - The AHB Clock is the AHB Interface clock.
-> - AXI Clock (m_hclk) - The AXI Clock is the AXI Interface clock.
->
-> Additionally, the reference manual states that
->
->     The communication between the different domains in ISP occurs mostly
->     by way of asynchronous FIFOs. All clocks are asynchronous to each
->     other. There is no communication between AHB and AXI clock domains.
->
-> The sensor clock (sclk) is the clock received by the ISP, which is the
-> MIPI_CSI output clock (MEDIA_CAM[12]_PIX_CLK_ROOT). This clock isn't
-> listed in the ISP DT node, as it isn't controlled directly by the ISP.
-> It isn't clear where the transition to the core clock (clk) happens, I
-> would assume quite early in the ISP pipeline. That clock is the
-> MEDIA_ISP_CLOCK_ROOT, which that patch configures to 500 MHz. My
-> assumption is that the core clock frequency needs to be at least as high
-> as the sensor clock, but as configuring the ISP clock to 400 MHz breaks
-> image capture, there's something I'm missing.
->
-> As the 500 MHz ISP clock frequency is exactly twice the sensor clock
-> frequency in my setup, I wondered if there could be a x2 relationship
-> between those two clocks. I have tried to increase the CAM1_PIX clock to
-> 266 MHz, and the ISP then operates correctly with a 500 MHz ISP clock.
-> There must thus be something else.
->
-> I'm not sure how to move forward. There's no further information I could
-> find in the datasheet or reference manual that would hint how to operate
-> with a 400 MHz ISP clock frequency. We may require help from someone at
-> NXP. In the meantime, could we merge this patch with a 500 MHz ISP
-> clock frequency (setup in the blk-ctrl@32ec0000 node instead of the isp
-> nodes) ?
+On 08/13/2024, Frank Li wrote:
+> Add property panel-timing: true to allow use 'panel-timing', which defined
+> in panel-common.yaml.
+> 
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mp-evk-mx8-dlvds-lcd1.dtb: panel-lvds: 'panel-timing' does not match any of the regexes: 'pinctrl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/display/panel/panel-simple-lvds-dual-ports.yaml#
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - add panel-timing instead of change to unevaluatedProperties
+> ---
+>  .../bindings/display/panel/panel-simple-lvds-dual-ports.yaml     | 1 +
+>  1 file changed, 1 insertion(+)
 
-Thank you for your detailed analysis.  If the ISP doesn't work at
-400MHz, it doesn't make sense to me to clock it at 400MHz.  Maybe NXP
-can clarify this.  If 500MHz is the only operating point, I have no
-objection, but I think having a comment in the device tree node where
-the clock is set to 500MHz as what it is this way might be in order so
-someone in the future doesn't go in a arbitrarily set it to 400MHz
-based on a document without doing some testing.
+You may add:
+Suggested-by: Liu Ying <victor.liu@nxp.com>
 
-adam
->
-> > I haven't gone through all the clocks to determine if/what clocks are
-> > being overdriven.
-> >
-> > > > With an assigned clock rate here too then ?
-> > >
-> > > You are right. This posted diff is what I was using for a while now t=
-hough.
-> > > Apparently the clock frequency was still correct.
-> > >
-> > > > >                                 #power-domain-cells =3D <1>;
-> > > > > ---8<---
-> > > > > is needed.
-> > > >
-> > > > Sascha, are you OK with this approach ?
-> >
-> > This patch appears to have gone stale.  Is there any way we can push
-> > this forward?
-> >
-> > > > > >                   dewarp: dwe@32e30000 {
-> > > > > >                           compatible =3D "nxp,imx8mp-dw100";
-> > > > > >                           reg =3D <0x32e30000 0x10000>;
-> > > > > >
-> > > > > > base-commit: 4cece764965020c22cff7665b18a012006359095
->
-> --
-> Regards,
->
-> Laurent Pinchart
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
+> index e78160d1aa24c..1f3222d532787 100644
+> --- a/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml
+> @@ -87,6 +87,7 @@ properties:
+>    backlight: true
+>    enable-gpios: true
+>    power-supply: true
+> +  panel-timing: true
+
+Nit: As I mentioned in v1 comment, this can be put next to
+'enable-gpios: true' to sort the referenced properties
+alphabetically, like panel-dpi.yaml does.
+
+>  
+>  additionalProperties: false
+>  
+
+-- 
+Regards,
+Liu Ying
+
