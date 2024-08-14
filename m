@@ -1,111 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2BA394
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 11:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888E1B0111
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 12:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723636123; cv=none; b=eDfKsNrjTp3/4uhHoVARUSL1rleY9p5fSiLh5M7rbDxVioEpi1YKgCtOcb0fot1S/N0bnUmTQE1MoOe2FmknSAAHiatROVHo/fz6uB5fRH8nXHpT50YqFnk77mU/8SHUOmkr1cYbr++yrBBeRJR7VyiL0MRKRtYnkCfzWPrss4A=
+	t=1723638464; cv=none; b=oK+IyQDjlZPf+NRQ9fBQZfyZgbz+ndrqS5B6cFWvaLsZkm5XsLg3dRFels0xJZZjWW3shPWmwu6HbwQTyig5GWk4ugvgbNlQBVl5vl7ZAYdYypjkMe6EHCyxvzby9wR78dlP+lxaAb+wPnfwrP3/XoUP1+fy6mQpVm7vJjCWN1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723636123; c=relaxed/simple;
-	bh=6FEMLFRfGz73a6svfVUCeWfP48AbYS8/EIZFDx5OC8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jKosbyE6X9LBV1O4zq3hPQEmaFSDZHqoQMSgOPb0EVyGW0sB/VgChdPasdf2kFc3GvAaLSVZ2hVM0R1g9+l9cG6rSFimQ2kB8bsA1iWx7VpJa1c37CuGVTKYNtcknXhvLy8nfbrYhbm5Ju7qNhfRGUtwdJKEsj78wjCe5sOejXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHHaAECK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723638464; c=relaxed/simple;
+	bh=MCOk87ltZF6H24V4o3EuaT8TEO85EAEEdjQr/69xPv0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ElpIJbpVAyjbWgXMAqJ8rqgBrcjmALF1Bbx3qTHtpTJhsYimqSr4WqfcmplKUj1gHIcMFI5wbBgCNh6inFEJUpeSOyRpeVXvENfzdjKiPJOZc2Z/3wDiKWOWlMtOUtFvZfeQnMsx7fFRorfnqA1MiyVuHpNrfC+NcL7G7rz4bwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=az0AJBAW; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHHaAECK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6BFC32786;
-	Wed, 14 Aug 2024 11:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723636122;
-	bh=6FEMLFRfGz73a6svfVUCeWfP48AbYS8/EIZFDx5OC8c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YHHaAECKPHu1U3HkLOmFJxe+9TGtTteF29ssivq99KFge0x+nJzt1IuUcLHH2yZpF
-	 51C9mTEjX5BSLTmuHk2O0/0zJCSZuTDqpx/+Xe0m77pipPpB0++kPoVnIZ5Ewbx3Dt
-	 JqqKeCzZSbdXqSlADEIaFNRIp0w9/pK91UdrRJLM=
-Date: Wed, 14 Aug 2024 13:48:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: laurent.pinchart@ideasonboard.com, dan.scally@ideasonboard.com,
-	m.grzeschik@pengutronix.de, jun.li@nxp.com, imx@lists.linux.dev
-Subject: Re: [PATCH] usb: gadget: uvc: queue pump work in uvcg_video_enable()
-Message-ID: <2024081427-habitat-action-ebf6@gregkh>
-References: <20240814112246.2608882-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="az0AJBAW"
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e05e4c3228bso6334068276.0
+        for <imx@lists.linux.dev>; Wed, 14 Aug 2024 05:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723638462; x=1724243262; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9qLRZtDKTr0jSAm7vgxxCmZiYCAFJZ6KbzLPsYTR78E=;
+        b=az0AJBAWusBrjcMyV2FHTAfTpdwocCGlQqwbeRTzVxIBij8KQ1tGA5z6P+MTeoJHNn
+         II7OeKfSZTFUjSGvrfMbZ5JwT7qZ+DoEu+UrGe74Bn2lCPvP55S05yo3LzZZYiMa9myE
+         kdZIKmBDYVtP5iumPqLyeYp6o+Luz4wNBTlhsd8AJ+XDVJP0FL5lF5yTF8sBkGHGdsEB
+         An3zlWGZ/MdjA8llQUeKoi2qyXMMhI8ZOHpoWiDRBwxgkmWSviRBYJz+ahD8XIiypl+K
+         RUc+HuoHw/vFAc3m5m4k0taTXbRStzcXEawCaYz94hJuwW8zxZMmigYh8BBjR1KGShoD
+         Lg7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723638462; x=1724243262;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9qLRZtDKTr0jSAm7vgxxCmZiYCAFJZ6KbzLPsYTR78E=;
+        b=aFFnVYshP6eettbdG5ybhnicuq+tn+AtP9tv30uuZKm/HpFuQYKc5orkjxgNDiwfmL
+         n/TIvJnt+hP1Ds4VzRxlGOyyNVBdHEJTezOnDVRtSk/3cqoUAEQMahnNmTOCsM8CxA22
+         fprrREtfT7d7gq5mkM3ksom3s73GcGU0xXIreIFj6n3hpAGWLn2dCJMdXOsL/+55ehRC
+         1tjAWYa87vxXB8PPcPdUzUJEi+OmjbPk0xQmKJUSE0L0zYDwsPfBbz7tnFJM9iBrfJc5
+         XRB+GPuszLV3+gY0QZG4rNyW6GBGcxgm/whVhCcLv6+lyz+75NfAEWkOmEfIw0CiiUrU
+         a4CA==
+X-Forwarded-Encrypted: i=1; AJvYcCUy32k9q2QG3CYRttc5CdRc2CoegMf1/Qnm4z8hVG4f1BaUrLuIXS5NY09qPUJwIcxCGIO9c+BUgUHCKYY8haPOewJx
+X-Gm-Message-State: AOJu0YzAs8tmHjvjF/lhsnimv0CaTrfKFCa8nVhIoIMfBT7gEto/l9g3
+	5uHcdXq3AE1e5FTEy2FrqtH8W1OeuV5cPaQjILo7JlYT6cRRi09OgvbTCz6GewwV6V4t/bFDvnS
+	UI6AD20UEUAt9rhyeiH9ZJoQz1cXXro66RilF1Q==
+X-Google-Smtp-Source: AGHT+IGZNeDFwFKcA5hs1O9iOJjIbT4kC9fliekBbf25Kpj2PSN73rKcDwW575WyFIjWIU4Us23LFsHtHqbVvg9DljI=
+X-Received: by 2002:a05:6902:2e0d:b0:e08:8d4e:ccc1 with SMTP id
+ 3f1490d57ef6-e1155bdce60mr2569783276.54.1723638461945; Wed, 14 Aug 2024
+ 05:27:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240814112246.2608882-1-xu.yang_2@nxp.com>
+References: <20240813085748.2144637-1-peng.fan@oss.nxp.com>
+In-Reply-To: <20240813085748.2144637-1-peng.fan@oss.nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 14 Aug 2024 14:27:06 +0200
+Message-ID: <CAPDyKFo_R3=MK9pRzzG2mV4s3HZKGuoZ1kxoNVLwGAqFirupNw@mail.gmail.com>
+Subject: Re: [PATCH] pmdomain: imx: wait SSAR when i.MX93 power domain on
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 14, 2024 at 07:22:46PM +0800, Xu Yang wrote:
-> Since commit "6acba0345b68 usb:gadget:uvc Do not use worker thread to pump
-> isoc usb requests", pump work could only be queued in uvc_video_complete()
-> and uvc_v4l2_qbuf(). If VIDIOC_QBUF is executed before VIDIOC_STREAMON,
-> we can only depend on uvc_video_complete() to queue pump work. However,
-> this requires some free requests in req_ready list. If req_ready list is
-> empty all the time, pump work will never be queued and video datas will
-> never be pumped to usb controller. Actually, this situation could happen
-> when run uvc-gadget with static image:
-> 
-> $ ./uvc-gadget -i 1080p.jpg uvc.0
-> 
-> When capture image from this device, the user app will always block there.
-> 
-> The issue is uvc driver has queued video buffer before streamon, but the
-> req_ready list is empty all the time after streamon. This will queue pump
-> work in uvcg_video_enable() to fill some request to req_ready list so the
-> uvc device could work properly.
-> 
-> Fixes: 6acba0345b68 ("usb:gadget:uvc Do not use worker thread to pump isoc usb requests")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+On Tue, 13 Aug 2024 at 10:49, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
+>
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> With "quite" set in bootargs, there is power domain failure:
+> "imx93_power_domain 44462400.power-domain: pd_off timeout: name:
+>  44462400.power-domain, stat: 4"
+>
+> The current power on opertation takes ISO state as power on finished
+> flag, but it is wrong. Before powering on operation really finishes,
+> powering off comes and powering off will never finish because the last
+> powering on still not finishes, so the following powering off actually
+> not trigger hardware state machine to run. SSAR is the last step when
+> powering on a domain, so need to wait SSAR done when powering on.
+>
+> Since EdgeLock Enclave(ELE) handshake is involved in the flow, enlarge
+> the waiting time to 10ms for both on and off to avoid timeout.
+>
+> Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+
+Should we add a stable and a fixes tag for this too?
+
+Kind regards
+Uffe
+
 > ---
->  drivers/usb/gadget/function/uvc_video.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-> index d41f5f31dadd..a9edd60fbbf7 100644
-> --- a/drivers/usb/gadget/function/uvc_video.c
-> +++ b/drivers/usb/gadget/function/uvc_video.c
-> @@ -753,6 +753,7 @@ int uvcg_video_enable(struct uvc_video *video)
->  	video->req_int_count = 0;
->  
->  	uvc_video_ep_queue_initial_requests(video);
-> +	queue_work(video->async_wq, &video->pump);
->  
->  	return ret;
->  }
-> -- 
-> 2.34.1
-> 
-
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- Your patch was sent privately to Greg.  Kernel development is done in
-  public, please always cc: a public mailing list with a patch
-  submission.  Using the tool, scripts/get_maintainer.pl on the patch
-  will tell you what mailing list to cc.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+>
+> V1:
+>  Downstream R-b tag kept
+>
+>  drivers/pmdomain/imx/imx93-pd.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pmdomain/imx/imx93-pd.c b/drivers/pmdomain/imx/imx93-pd.c
+> index 1e94b499c19b..d750a7dc58d2 100644
+> --- a/drivers/pmdomain/imx/imx93-pd.c
+> +++ b/drivers/pmdomain/imx/imx93-pd.c
+> @@ -20,6 +20,7 @@
+>  #define FUNC_STAT_PSW_STAT_MASK                BIT(0)
+>  #define FUNC_STAT_RST_STAT_MASK                BIT(2)
+>  #define FUNC_STAT_ISO_STAT_MASK                BIT(4)
+> +#define FUNC_STAT_SSAR_STAT_MASK       BIT(8)
+>
+>  struct imx93_power_domain {
+>         struct generic_pm_domain genpd;
+> @@ -50,7 +51,7 @@ static int imx93_pd_on(struct generic_pm_domain *genpd)
+>         writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
+>
+>         ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
+> -                                !(val & FUNC_STAT_ISO_STAT_MASK), 1, 10000);
+> +                                !(val & FUNC_STAT_SSAR_STAT_MASK), 1, 10000);
+>         if (ret) {
+>                 dev_err(domain->dev, "pd_on timeout: name: %s, stat: %x\n", genpd->name, val);
+>                 return ret;
+> @@ -72,7 +73,7 @@ static int imx93_pd_off(struct generic_pm_domain *genpd)
+>         writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
+>
+>         ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
+> -                                val & FUNC_STAT_PSW_STAT_MASK, 1, 1000);
+> +                                val & FUNC_STAT_PSW_STAT_MASK, 1, 10000);
+>         if (ret) {
+>                 dev_err(domain->dev, "pd_off timeout: name: %s, stat: %x\n", genpd->name, val);
+>                 return ret;
+> --
+> 2.37.1
+>
