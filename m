@@ -1,136 +1,76 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C821AED4C
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 11:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189A0394;
+	Wed, 14 Aug 2024 11:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723635166; cv=none; b=JULvgzTnxNrkmFKVrFAWRA3KRX/b9t8yRRkrrKUpyTPoZ5kL1ne4frVEDQXecUZ8zxU+hFi0ZwT601ZN0bE+d43bQT2JXyZJU7MEz9c0+M6vZXeYS42ykseFs3oHrQ0OTYoOA1Ir9CVcLumz12S1EywP/aErYMzVO63L4RSoXIQ=
+	t=1723636047; cv=none; b=cuSVSVE3MGfRDiHcgj6uV6eZBBASZYjsyBABxVw2eU0Q1KLny3VuMLw+36fXIOJ9eiVHkrxfsEefi8PSZZvDpKmr58ztSP+uunvRROkmfIWFM/BqWAi2A8QgP6zNOQS8bOra/CwuJ3dFru4vTOTBqcDaZVsL2KJewQ9YFRNiUk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723635166; c=relaxed/simple;
-	bh=Q6INoOsKAoKQ6mKNN8/pzE1KcZaYtIJB5EmRTEmk8yE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gXksOk7UR7MeD7VvHKFFAH2UA0JIGgCWRT9H2rD/6GMFWPKNy+sGAK4OVSHpqYd4jdV9IkQDHd5yBvkkocbdyEKgf+VLjSSZ2t/JKjOknKqiWGvhsCAm3/lV7V/ITUeXLHY9Y1x0JszroabwS84esfpKc3Jg31MmE5CKUilPEr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oKFZ7FUP; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1723636047; c=relaxed/simple;
+	bh=SlbaO7cGhC489C08ilwx/k5CfKjHGqCg8gh/JnSnH44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MlHJI1GaTrRVtTQ61AgMkdy9LlpA+VU7rkZHiuYVJBF+rtSKZhanBO3gG8gUgBf4TfYc1Z5/UhkZk6qkmbQXZrVd575f1kr/4ksDEiPLt2K5o1b6YB2udRiIJ5gDFQxETmK9BWsjfapbmcOxTvtjlDp7SRByz+N/x6+gWND/t2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+XoyeEI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oKFZ7FUP"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e1157e88bc9so734002276.1
-        for <imx@lists.linux.dev>; Wed, 14 Aug 2024 04:32:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723635163; x=1724239963; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6INoOsKAoKQ6mKNN8/pzE1KcZaYtIJB5EmRTEmk8yE=;
-        b=oKFZ7FUPfvDIgtcK1P9XwXcoRCT9v7x06XvoCwUU1wpleHRGM2X6WxXp1yPMeybUvA
-         A1iU2ubn8xCqcrKQrI78iSnMwl6xd/sGwmQ9aAE+0jAxO592DcIHBgn8bTekaJSuSxgC
-         vujOzLirscrW/XvIvR6IeQW86F9ot5z8oADTI5JvstMTYLY6y8RkQK8/8SZBL0Qjk5Ze
-         8p16tTwG/bJOF6qUl6+CoztGBGdgwCwXaioiWJuzSZAg/RO3RmKWCNf9a/gEkQ9wHrAo
-         AZZz9DjK9Zf8OZTCfcpSl6ojNMsCDynXY3GpoxhG3mrgh8sAgGqyVR17hSF82NApwclI
-         c/Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723635163; x=1724239963;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q6INoOsKAoKQ6mKNN8/pzE1KcZaYtIJB5EmRTEmk8yE=;
-        b=B3O7jlc9KFKLfAky9mrgt+wTTx/3mvMt+ihu/go8SwCaEi8YmMEjqZl5yu02OsIlcT
-         +ou6yFlC/og/l+YQlb8OfR6nXbYhCxq8P4/3bsoUecKMMSFu6YZZ1VBwftNtoMntOGxZ
-         D0r06VYT45qqNAL/seDBbKDWATuppusDy3EuBiGs1h94h+c5OJvkuK4KyGiRh8ICXqIV
-         LOyBSu98emt4t96k8h7/VxVU4Wx2ALHoo/I1S/n+t9UwGPmYcazN0FhE6JClz1zuybje
-         d/27+/HTaVIW/rayr6EIxNhZJcFlF83iJpTVjmRwlp1IcUyI1F0u1aYLr7WTerj49BAQ
-         IMDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNWfX0009G6uWMP0zNl8feYmBycge3yq/6RPR/d3iOjt28Y/D4gnhxzsJ0nmqoDMaCnKhfn7j1QeUtukIovH4aSmFW
-X-Gm-Message-State: AOJu0YymhNwtRhj82zrrJ+iaD+sV2kzvjvG0Q6TaC1pR+7pwFCoEkrxd
-	vMMsBJSO76c3YQglQJigB0bAG7jHWziCWrnnvv+ou1Xl9IBN5tujvXoLQ0n4zHfkCDjqf/oXUKh
-	Qfnx9r+KgKVmxGijnGiPfmf/O28JO5OCxOjSfqg==
-X-Google-Smtp-Source: AGHT+IEVYMlVLZl1GJHYSgxm7olBwvP5eRzOw4TjS/5Exafj4XCBFHcDqZGPBvS0sv3Vrq+Nr2AT7fwfqo9yleqL0TM=
-X-Received: by 2002:a25:bcc4:0:b0:e11:5f3c:1324 with SMTP id
- 3f1490d57ef6-e115f3c18c5mr963371276.57.1723635163293; Wed, 14 Aug 2024
- 04:32:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+XoyeEI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F8DC32786;
+	Wed, 14 Aug 2024 11:47:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723636046;
+	bh=SlbaO7cGhC489C08ilwx/k5CfKjHGqCg8gh/JnSnH44=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B+XoyeEI8zkO+RyL01fQRQxnbOsF5ajFV+XUGehT6s6JRqVyUoC6coqrbIiTuVCFw
+	 BM/ikCQg+kvNvBS4zanlq+KP0Z+vWii2imQQ4FV/WBN6FTCeeP4U7+Hme8JtWWdDg9
+	 ng+TWPnbOM0FeMkT6wDrGoJRMcf24n3WGoSpqx28=
+Date: Wed, 14 Aug 2024 13:47:23 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: laurent.pinchart@ideasonboard.com, dan.scally@ideasonboard.com,
+	m.grzeschik@pengutronix.de, jun.li@nxp.com, imx@lists.linux.dev,
+	linux-usb@vger.kernel.org
+Subject: Re: [RESEND] usb: gadget: uvc: queue pump work in uvcg_video_enable()
+Message-ID: <2024081405-sample-duckbill-ffec@gregkh>
+References: <20240814112537.2608949-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240808042858.2768309-1-make24@iscas.ac.cn> <20240808061245.szz5lq6hx2qwi2ja@pengutronix.de>
- <1b04b8b3-44ca-427f-a5c9-d765ec30ec33@app.fastmail.com> <CAPDyKFqd=haDWB3tATZ_E1BMpCReNh=hLa5qPGATc3h1NUx09A@mail.gmail.com>
- <20240814105847.tise4jzneszdxetb@pengutronix.de>
-In-Reply-To: <20240814105847.tise4jzneszdxetb@pengutronix.de>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 14 Aug 2024 13:32:07 +0200
-Message-ID: <CAPDyKFpcyP5t447twkKeRkyPQ-D3ucdOPLQ_kS4X7TJv2mR=4Q@mail.gmail.com>
-Subject: Re: [PATCH] soc: imx: imx8m-blk-ctrl: Fix NULL pointer dereference
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Arnd Bergmann <arnd@arndb.de>, Ma Ke <make24@iscas.ac.cn>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Peng Fan <peng.fan@nxp.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Marek Vasut <marex@denx.de>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, imx@lists.linux.dev, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240814112537.2608949-1-xu.yang_2@nxp.com>
 
-On Wed, 14 Aug 2024 at 12:58, Marco Felsch <m.felsch@pengutronix.de> wrote:
->
-> On 24-08-13, Ulf Hansson wrote:
-> > On Thu, 8 Aug 2024 at 08:53, Arnd Bergmann <arnd@arndb.de> wrote:
-> > >
-> > > On Thu, Aug 8, 2024, at 08:12, Marco Felsch wrote:
-> > > >
-> > > > On 24-08-08, Ma Ke wrote:
-> > > >> Check bc->bus_power_dev = dev_pm_domain_attach_by_name() return value using
-> > > >> IS_ERR_OR_NULL() instead of plain IS_ERR(), and fail if bc->bus_power_dev
-> > > >> is either error or NULL.
-> > > >>
-> > > >> In case a power domain attached by dev_pm_domain_attach_by_name() is not
-> > > >> described in DT, dev_pm_domain_attach_by_name() returns NULL, which is
-> > > >> then used, which leads to NULL pointer dereference.
-> > > >
-> > > > Argh.. there are other users of this API getting this wrong too. This
-> > > > make me wonder why dev_pm_domain_attach_by_name() return NULL instead of
-> > > > the error code returned by of_property_match_string().
-> > > >
-> > > > IMHO to fix once and for all users we should fix the return code of
-> > > > dev_pm_domain_attach_by_name().
-> > >
-> > > Agreed, in general any use of IS_ERR_OR_NULL() indicates that there
-> > > is a bad API that should be fixed instead, and this is probably the
-> > > case for genpd_dev_pm_attach_by_id().
-> > >
-> > > One common use that is widely accepted is returning NULL when
-> > > a subsystem is completely disabled. In this case an IS_ERR()
-> > > check returns false on a NULL pointer and the returned structure
-> > > should be opaque so callers are unable to dereference that
-> > > NULL pointer.
-> > >
-> > > genpd_dev_pm_attach_by_{id,name}() is documented to also return
-> > > a NULL pointer when no PM domain is needed, but they return
-> > > a normal 'struct device' that can easily be used in an unsafe
-> > > way after checking for IS_ERR().
-> > >
-> > > Fortunately it seems that there are only a few callers at the
-> > > moment, so coming up with a safer interface is still possible.
-> >
-> > I am not sure it's worth the effort, but I may be wrong.
-> >
-> > It's been a bit tricky to keep the interfaces above consistent with
-> > the legacy interface (dev_pm_domain_attach()). Moreover, we need a way
-> > to allow a PM domain to be optional. By returning NULL (or 0), we are
-> > telling the consumer that there is no PM domain described that we can
-> > attach the device to.
->
-> Other subsystems like GPIO, regulator have a ..._optional API for this,
-> could this be an option?
+On Wed, Aug 14, 2024 at 07:25:37PM +0800, Xu Yang wrote:
+> Since commit "6acba0345b68 usb:gadget:uvc Do not use worker thread to pump
+> isoc usb requests", pump work could only be queued in uvc_video_complete()
+> and uvc_v4l2_qbuf(). If VIDIOC_QBUF is executed before VIDIOC_STREAMON,
+> we can only depend on uvc_video_complete() to queue pump work. However,
+> this requires some free requests in req_ready list. If req_ready list is
+> empty all the time, pump work will never be queued and video datas will
+> never be pumped to usb controller. Actually, this situation could happen
+> when run uvc-gadget with static image:
+> 
+> $ ./uvc-gadget -i 1080p.jpg uvc.0
+> 
+> When capture image from this device, the user app will always block there.
+> 
+> The issue is uvc driver has queued video buffer before streamon, but the
+> req_ready list is empty all the time after streamon. This will queue pump
+> work in uvcg_video_enable() to fill some request to req_ready list so the
+> uvc device could work properly.
+> 
+> Fixes: 6acba0345b68 ("usb:gadget:uvc Do not use worker thread to pump isoc usb requests")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/usb/gadget/function/uvc_video.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-If we were in a position of re-implementing the interfaces from
-scratch, then probably yes. At this point, I am not so sure the curns
-to have it are worth the benefit.
+Why is this a RESEND?  What happened to the first one to require this?
 
-Keep in mind that the legacy dev_pm_domain_attach() is already
-optional and it's used by common bus level code.
+thanks,
 
-Kind regards
-Uffe
+greg k-h
+
