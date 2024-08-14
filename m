@@ -1,67 +1,69 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2066.outbound.protection.outlook.com [40.107.249.66])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011028.outbound.protection.outlook.com [52.101.65.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9141B9B50
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 16:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2C433D8
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 17:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723654061; cv=fail; b=NyjpEMzxpvTg1SlrofOPCokhajQ0JFqAXxNQA4L6wJu/aOErt0h4m22oICRVL34jowRd99VDTz0mW1XrxL4tT6NJd5aBOdtO+FD3AV+FsbdeJO8qIH4dHfii1Kkwq5QLnGBH64J+bifC2zjelecptjoS3hQZKwQLNMfuT/+x4Jk=
+	t=1723655025; cv=fail; b=EfuhuAShQa3XLFSUO5yefVBwqwVsT08Be71aI1hW2c5o4xC4RUS+dq80AQlgYvzRBRaZne5GUqeMFiVA6ZC2QufVDsVL+aQG3/pJCDWMekzNZuROXzxWs06rIjkz2XIYv6O/Io47WFDb22pX2cBup5ICX6g3uXu4T29yRLOMJ3Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723654061; c=relaxed/simple;
-	bh=XryEeHjrhLYefSLFydrLheVPDGfBelZCZjTKivg2fHc=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cp14WReG3om4Dt6oafWPMEWiXrgXRwFPEVS9IngR9osZigLHl3xZEpkxbmY0LnBN7K0rIUhnOffY0VM07pi8eW+chOP4V/kTRzjbbWV/xT6a7e5QJ4tpDswqoZM4VX0C2Ap9amuf0Yh3umolqvBGKGedxcA5qMYbNThbaKP5Qgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hpOPAdLI; arc=fail smtp.client-ip=40.107.249.66
+	s=arc-20240116; t=1723655025; c=relaxed/simple;
+	bh=dyW2hMmqtsYd77p43Yx1kHx+1IOHvMbDqvnUzA5Gy2U=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XNGabjPa+rRecaiEIVXnWMyWKkq39pW6kB5OMJvdZUbkKD2F1vMHImxRB6RfuX77hE2qMSOxUKNaZZXpmbCNSUKJ5rDSoMtfA1bK76Ko9IkCpoUEaCO/3msP5hh9IkvNmphSvkyA/38/rI4L+jgHAzNeWmrUdM74caWH3e1relI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kBp76mJ0; arc=fail smtp.client-ip=52.101.65.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hpOPAdLI"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kBp76mJ0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jAGmALkU/X0EJYGoc9CGbQBI9LH21mVDYM5No2GOR0eB08GmIWXhFbkVUkYrMeNZ8RMTpbV8FApO0qiqL09U2E9MG9pyER++FtL2UsY6UrzkWWoC6aErzHxxMRJ4bPKIjR/Uv14VgbF+1ve4l8tleUV7Bh38XJq45FwUywy46DQTZZiMudr03YJxwom6tuQiRWCeny/Y9Y0x430BHGerbBUstACpAzVCrg5j7fDRVcsARE2oUExysY1qM3rvNk0t0wTeJa5SzEfDSFCU9wlk7dBadLIkkp2cMOUNUbNQRk1K6pv/tsA343xrb+X1k2t9LYaVT/RLQSJY+t3xAKY1+g==
+ b=KRlgsQ2a7c5G4JrPdvqs4EfcieJ2se6GZUBEqxy+ypb9zAEwGcki2KExgCSYzNuV4KRf4MyQ9nj5h8nfJeC6kuBWHLxEbsgBNmIwKWC6HbpOdhdnMQ6Gnpah1FRBYf0prpHHCOYafl4nMpEQzqUEJ2uhWr2YxO8DtSBHYMp+uP25DcNQUD7vMdg1bm5M3XMzjZ5+2ZSMOwXmZ0Zoz7f2ywLoaIcFscjop6rHa/6rAVy7tJg4yMt10YsmyhI8cm8bz5fA4wQ1KBEvdyAwHdi75NqKo81EaAKPGkepaSUd+m7HZYyS5VHUBkvEZXQ7vqGRswy+KV2/DeaEzlXRDyHDSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BBV4szsV3EKaBC5CTgbe29q084F55+Q2frtgx/OtFjM=;
- b=ga1S7EWaHJYnuTC3B7/ui+L9RHCaNdW8SQBW2HGvgGt1fDh86AhKN3v1HWJ6x4wEsT9P/TE14pSx5r0BwuJkyRQLLOP0n/1cCXZQ8XXxOeJiXDy0Rj96/wDsYdDm3JhzcjwJx1ILXGwHan1LsKCY55eXUdAivf2SXxIve6rme2+GGomJC6444Ar6q2O1wIsEgKgCaXptxt+wLcJbwXhrHB73YtM0WS7mnKcJZ7q7rvmT2v76XidTf7EqSThr+5XhWqNiwxfwpwZ1hFf+GHMEIZXdQDB4b8Sh6QHji1QUPp7cQ9QfxoZoJr3Srq06GCl8FtCxvkZBzlyF5V3aHroEpw==
+ bh=XQSBEq0HtSaDSgPJjhgUlwaubJZxkxwz48Q8pwkvoWA=;
+ b=k1VnfmVYRlXi2+qKkvejTdQJaYZcahjkuj1UTpFYHzXYbLRTGtak0DxY0FY1LYt5VXiSUj/2+mkjHmaCewOA2yFWc0Tu/A9qwP9nbxloAHAVejGhnpBhMXLnGo3HUCy1WlUTkNIK0yI/lBdMuyc3KzNuv3iiHPhrygP4IWvkNkZfxb0G9262umhjiPp9HzL5GK7ecxSHQ5+SGRzVQCgx/jfT7mI+8F8OpF47YGca3rpLaYKfjwrhbUw9V9YtbkjvPexecHNUuNUMhb9pgYurQpMEmdT6oaK5EtnyFSyhmPDMVysh9UfHL26bn9KIxK9fjvT9saO9RMrqN0NIHJcT7g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BBV4szsV3EKaBC5CTgbe29q084F55+Q2frtgx/OtFjM=;
- b=hpOPAdLIP/W0u6ROAz/xkSBgbH1SEpZL4JDOKBC4ES+P9vDkkhdIblgXb3i39FYl3nPcmodKZuiV42GJ5jwGPdQo3Erv0I5D1/zr55d+tWMFv0McAVL3AgXDYyMFCfd3ZjM9xd1AAb2wEjQ4U0aK2/vWebnN79rtZqNd6k46CxopHpoN7MstVptLr58hfQEbn0uDx8R5yNMVmgWXzuw3W8FG98iEcvEnK6vFLLrjFmc023Gn7XvRe+aRKRX9BCWfuoIYFK890BFOipJr5aPNjxnzR7JywynUBVwVOpgY03OZnacGccsjrBCmnIIfNnpmKZvCMT7Zxssxn6PeYAlxrw==
+ bh=XQSBEq0HtSaDSgPJjhgUlwaubJZxkxwz48Q8pwkvoWA=;
+ b=kBp76mJ0amrtIdjxzpMrw9bF0TSux3tPUCjzm6z/iF2r5akXNsOn+ZXHe+4BJg3wxNRpAOCx5ISH1baCqKdJd8kX1do/wE2oAmUx1mRO50V7K2hJuZuV5ED6N5xG4+Zdsa7BbWF5WKuQzbwTh7hKrG1nsWSQj4h7Hi68RXEhVIabwY3izeVzH2SoF+GpmB59UtTJkPUyeJM2m7RhFC4iLhqoMFj2be4Ur9n/vPiLWrmrw8vgeDqI+sbFcTrWywJ2gYiYNw3gKnH3MXTIBKHmroTu5V2LNYSZYa6EhCI/phxcFfSx4ILWoHrGQcEbLJf0eVfOxJohomEBGsIDSK9hBA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10229.eurprd04.prod.outlook.com (2603:10a6:800:23e::11) with
+ by AS8PR04MB8404.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Wed, 14 Aug
- 2024 16:47:35 +0000
+ 2024 17:03:41 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.016; Wed, 14 Aug 2024
- 16:47:35 +0000
-Date: Wed, 14 Aug 2024 12:47:29 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	"open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 1/2] clocksource: imx-tpm: fix return -ETIME when delta
- exceeds INT_MAX
-Message-ID: <ZrzfoQdm7MzQlFX4@lizhi-Precision-Tower-5810>
-References: <20240725193355.1436005-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725193355.1436005-1-Frank.Li@nxp.com>
-X-ClientProxiedBy: SN6PR08CA0015.namprd08.prod.outlook.com
- (2603:10b6:805:66::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 17:03:41 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	netdev@vger.kernel.org (open list:ETHERNET PHY LIBRARY),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 1/1] dt-bindings: net: mdio: change nodename match pattern
+Date: Wed, 14 Aug 2024 13:03:21 -0400
+Message-Id: <20240814170322.4023572-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0099.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,124 +72,160 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10229:EE_
-X-MS-Office365-Filtering-Correlation-Id: c00b3364-3fb5-4cd9-5f1c-08dcbc80cc9f
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8404:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9771853d-7de0-428f-c619-08dcbc830c0b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|921020|38350700014;
+	BCL:0;ARA:13230040|376014|366016|7416014|52116014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	a4kicIQenqxQL289Citrynh+CxYrkfTAwCnJxiQZ+RoaYz7eIvZFCCyKXOpHvCW2orVpgkmoAqMmDy6/SysPrANYidvQ5J9t+1YmD/C5eQpJ38tBcsCRHkMm8kIenVFkujVJ/lPedw7sbkgBzTh3QqYAkA+egpAEBKvaDhT7f+gNVjLa2lZUHYDXAdzuO9FmRYe1zcgPExypNeX/niF4+J5EbHT9aWfDC+61iieVhqKoPRcvKAdj2KUWtrVpKTl5ayIfqNthd9pCgnPrnOgro8r6cpb/wgoKyOE6umIO10LLno5E2ffyG7np5xqbigRGaTvipTbOo5HdiggeaztdVTCDsIfbFCSWgz1ziTwZtMSSZYQWWzSKle8GB38A7EtITvm4JNmu+prRCC3tHpi9hMvMt7L3EnMR68ERng2KGJAkivKpTNuRiLAKpjyT1pH4iOYx733G8zC5EYcXQggAJTcZT6Ykl1LicImQd114cpMjuTZGBAFPeTgbMKAPRIms5nRFLhBhN+DGCQgdLHMvAS1eTcSPWxUTzCSVU6jNHBVW1oK9tIH8sOhTaZPrhlPt9xLOCK7rIDAw9VAKYuGvfRdTgYkXuoWArEW21DxBXPsU+5SGw0ox5agE+jifGnMPXPJEuh9JSSNh5A3rlAgNNlQFUpJuBbMWwNJ4sKCpKMSaX4ot1h3aIWzvkF/4TjIiPpga5vrSnyt7Arln0e2CcY/X0gI7qMmkEfHgU2++xDo=
+	=?us-ascii?Q?qKyqzmAVP3stRLi4EB5pYDd4g9MeiK17K3VqOwrwY3ENRF08BCH7W+T3ll1G?=
+ =?us-ascii?Q?F28EjTo56MziX6SCHprmjPJJehCWPqo0hoT+eFMYXgAV982IGv9V1woLIivT?=
+ =?us-ascii?Q?3ExYhRo2ZzSuIqdRF24n75pUP8a8l5/LD4F2kTmtPc5cqSclUVa5Hn94JTu0?=
+ =?us-ascii?Q?LNJRO/d4L2e8qVa04hp9vzliK5syoVdGKnHodQleIrGFxa8HJPzWXmmjUpk3?=
+ =?us-ascii?Q?ynOw9OuMcIpTul69hf/qBMsWKSWj2dYjeqUjuTrIp0NDSRjfOBmmuk79VRdT?=
+ =?us-ascii?Q?5BvvxQnUwUjjSnyAdC935pi9hRUlgOOhQ91OLa1kImqfwbu9+9WYQySE+40A?=
+ =?us-ascii?Q?4MtpfedT1jDflu5AIMMKDXOR/3OtfkN97QfLHXabtJjDtyM7V3P/4H7Kz8Ox?=
+ =?us-ascii?Q?ubG9E+D/jeTh/5CU921VQnahkzwua/+6evL/Ij6vOMsqc+rwimfWTgruxonf?=
+ =?us-ascii?Q?VVVTBhUfgwVVvCNajPj4HIWxew9NgFcGnJz+3/EU5RrP+ieB1fLmCwUCiHBr?=
+ =?us-ascii?Q?IBrxKL6ekG3B08pd+IaXIv+5R1mFdWu1TxGrNnKvjYFMNmlAIXhDJ2jW0zwI?=
+ =?us-ascii?Q?EqKwAMLbxXhurSR86R7CmS6YkfkQCax1wIzrVGHC/Stbyee2wcGpqAxwJ88V?=
+ =?us-ascii?Q?UDmF6dsP+plPaCkNKCHNy4iIUyI8jvZHHmcTtYIUz15PerKuUX03VF0iTjrk?=
+ =?us-ascii?Q?9H6F9KDiy66NqlitVXrB5gMo4x8WqeYvAHXsgv7CCIufkidyWEmaPMZW2CP4?=
+ =?us-ascii?Q?UrFkA4m40/2VRu2QFEPM1c2JrR69kj8shi3L/mpyWgpir69pO7TRfITBiIrW?=
+ =?us-ascii?Q?RC1NbJ7X8UEZISnK8s4aaQqQNWZtg8V3aukjtWGX8+cMjVgsd55VMniqzcHt?=
+ =?us-ascii?Q?7f4bzhC7ovcT7nLqpDRrn02LZneAWjjUcPkq7GtfIXIrRD5n6InhasJpzac3?=
+ =?us-ascii?Q?4/dg993cvQj4/TT6Hbd1/yIoPSB4ijrEhdKhZwODPSj94322tMhKgendlhgP?=
+ =?us-ascii?Q?G+SUCueoZVEj7n+Evasmy0MbmPhgyMYb3TBHkQiAbCeRP4p+qETD0pVLLmu1?=
+ =?us-ascii?Q?/vJbrzLVbznsgKuuLjU+ZvjAVcMoyDeXmbD1Q/HsNxzvhRxij/RtUtx8VkFZ?=
+ =?us-ascii?Q?MYE4ZcPI0iMVTvZF/JzW/ma56VVkO/viHhJANWacIsK5xJdYKjV0MCrt9K7i?=
+ =?us-ascii?Q?fWg7ad9otK4RJE9ai4zWOWxqvfrgGmqogiscQaTqTuOHbesXMKnkq61dMpxw?=
+ =?us-ascii?Q?SdomMHOXizjmlPLL2dldxcWw3SEdnOuZ3I5Fa+yIefnkdDOPbvlSIxKfWucv?=
+ =?us-ascii?Q?Hci5kD8M8M8l/+LlSXVI0oxJ3M8BJxJw5AGOtbvBhucPU084015YbahOwTGk?=
+ =?us-ascii?Q?r6j4yR8=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5IsVYNZJwCg6JbeQ6iMtY3zSlnANuyIe4YLBlzB/4IQmqXLqGN+shlCoWYv5?=
- =?us-ascii?Q?mon722W+bYaH6Ut0ys9g3khl8hPnVyDtbDfIGxtOxWMucIkkaLiSRIkHKjFq?=
- =?us-ascii?Q?hecFcQay2YVjAOHv0NTCVKTf/wraihNf40vhnRLc3bMETCkJjFHpuQlONkFU?=
- =?us-ascii?Q?3/a2jcBkxpDdSH1VA2bN5u1+7srApqOYfZo6CKPrFaqSTu35mvU8ewnHblct?=
- =?us-ascii?Q?vfbU7D1HLHk2m05u1SOW9/op/9YmoGTuYqdU128hDuOtMTdb06EQj88xTVgv?=
- =?us-ascii?Q?ScHoX0+ipuw+A7V0TOY+6mvH2SRxkPfOvlGLfzXIqE6xxYw0A3YIcX7TQYFl?=
- =?us-ascii?Q?XTxG7Qd3nbPssO8h6sUOXGRNW2sQm8SItNf1FPrMt5fuIhcVqyqp1XPETRpM?=
- =?us-ascii?Q?a0V+L249QsV0cc8TQyPPvQ404Vqs2ASfE/z7I6+4kYjw7XyrdaYyroeD3FTv?=
- =?us-ascii?Q?mP9p3b7s6dcdQHBm2BGGOax0+Zhi0hB3mf3yCV+6v9xftH+4EsmpeyD/LJUS?=
- =?us-ascii?Q?Sb1a/dUHDzl6DFY8tS11/mu/nx2YEAr1OyFXAI10TQegjDCCbxupIgiRi9dY?=
- =?us-ascii?Q?SrVyTImSJNG6KHcG+oGJrLwuAf7VvgCmG0nzgz/Ofivwsuqz1ZS2n+vQ/Rtj?=
- =?us-ascii?Q?/bUdkffvGWrl/slhR7hnjCcMJShIRmb9TYbUZDWKMFnLNalN54w/XnlPY89A?=
- =?us-ascii?Q?qlz2JsBgb0kbbHqAei1I6zg4yiSAnmrFBE6fOLozCbhY56NKYKNR/jjn/pKF?=
- =?us-ascii?Q?e33d2qA5X1WLzIY9EVMJf+Y4liIdHNBkznU0SBreN5XDsWEhBsf1pkVsQWvd?=
- =?us-ascii?Q?/rq8GBvZU3QpenshVPjeW6xMAgK5xecNJEI7HZx6lcdC82uAuelNuRFTAHe1?=
- =?us-ascii?Q?pdq9j7ceEcp8K38maDXIlmmglp5MEPOLe4tWZHSa8MKmjTSxAcj8mWzIDLVH?=
- =?us-ascii?Q?Y8wCcO075/PvpYc6cu/jm+kUKVCGW9+daw03GLyvhufylvLBXg7LFhacfSZd?=
- =?us-ascii?Q?wpVkBoe/GfJGTEoXINrabCxyVRZ5SQRTWRG01JTtyWi0D/7Ecao/la4ZLMKP?=
- =?us-ascii?Q?xI5sqOmK4pjFdnsCNE8QJEUX2yE4XtEeps5es7Js3m1f2/eRKpLYAgLNefhJ?=
- =?us-ascii?Q?Rw57Q43DSz4yLo+u5++yg9jU3Ov/W+l3DcPwyaotTebPB4mBviAjcO6Y3oxi?=
- =?us-ascii?Q?y8/NNMHLBqcYW+T3ey99Ih3fKn3/DzKsq/G4C0FCRT8sTBnVgFaP03Fn5JFF?=
- =?us-ascii?Q?RFlu951R8TuxV3XA1bsqF8flpMEwYWqJ23R0n+f+kAWRe52+1ZqLfckqlCUw?=
- =?us-ascii?Q?N0Z86M+Kg1OTOGv6o6HOoUj5nEnAnEB/KE4mKAfdRNYKGH1ODC0J9PsLGgik?=
- =?us-ascii?Q?vpX3a1ovZ0nm44nBfyKYVL6Atnx+oz+L6x57PThAmTkLFX6RR2y0SFeO/4va?=
- =?us-ascii?Q?8TKHJnr+ZmnWqJXtyCveuHiFLHsUaurmALFkvXDdzV/NnykjJOOszaiQMIh0?=
- =?us-ascii?Q?4lWqsPgafkpJO1pXDtrCZVKctDwmEWIT8uIBi1GRNnnIBnVqSLzxz1m2x0hr?=
- =?us-ascii?Q?yB20SDW9V4xkab/rV7xp/vvVxcHb3kQ00ryGSxR1?=
+	=?us-ascii?Q?DnF8ZyBTY+skrv2tl8ymvuFotAp09uI1aySO7/wUw34WbwBqRk/MsP6khw5b?=
+ =?us-ascii?Q?1YCiAQwIO9H3W//jV/xpQySFtL0xBPbxA7jpq0hHGO0vgM/f65wCtfyGqIab?=
+ =?us-ascii?Q?w3cTZ2OPgkgnNVEDCGFww5GXyoqYhIGlxVt4sKQNesy3qTzxBpRcNvCPsrtG?=
+ =?us-ascii?Q?/3xgCjcUKBNOWIaOi1io2+oAlWxMrc20uthBthKi/fNutBZ/mZfObCfvoOMB?=
+ =?us-ascii?Q?jzTAzOgw9lB+bYTqftqHoLD7EJ37aWN1FcKnqlybyUIElirUGra8Go/wR6/2?=
+ =?us-ascii?Q?mlA3FalbT5gMEpInq1rWvbwohSZypjFogjsc/dzTx3rNv7dY3yX7x0tSn3EP?=
+ =?us-ascii?Q?NjvdJ/nT4rQjyKzoXJegIRIV6zjCv9xs69CKxcngw0fZY2NGzpxEomyctvcf?=
+ =?us-ascii?Q?CyDyzm3C7vqRQYBhgO1m5irwXy9JRQ+1fVxDsx2tGAKdQB5vEfIqDOm4afYW?=
+ =?us-ascii?Q?Lk6lMx7dvjVU/ruPtyrYaf2RfUNLPCNKJ9vCZ+fMSe+9KGBG3GWgv/uowmbC?=
+ =?us-ascii?Q?ZMXnKD4tNv11XFF5sVuGxqXj4uICkbaAE4g27OlqdKZQ1Yxy0k+HeQie+qUq?=
+ =?us-ascii?Q?XZSwi6HMf+nL2tVSxK+rZbDORmYzN/X9iaUhkl0lnlnXmSLTR4O168MRj14G?=
+ =?us-ascii?Q?CjHMZk4i0WHMFfhw8w9928YwpYeALw/CwEC1dIyIwilJm42jQvaFjN5u3IS1?=
+ =?us-ascii?Q?dswKSr2EZaPkN5sfzbDj/KvrCtcd/35zhUy0lpq+XbQ14oWNkHEyj4JMa7l+?=
+ =?us-ascii?Q?G3eskq8A4NrqUqE+vjLiemVY/WxaQxCPPJBRCrQnht4bfIfqWEByAjYq1gaz?=
+ =?us-ascii?Q?tqiMYt/5T+jw2RhNflJ0Qg+uOob6jsusZly7XPcm6H6mN1S6M5I1Ie3cUcoA?=
+ =?us-ascii?Q?S7tUyLkJ2hSr9r1nqUNMr3ozrdktIUpV2fd6eao89dgGMdK6bYiXI94QBnq9?=
+ =?us-ascii?Q?I57YpvQ3o4Q609YCYSOR0WnF1ebnhUYSAtgHp9a70occJJiSfjNACl7GoYT3?=
+ =?us-ascii?Q?tlOD/EFxyK6ImlqX9XFTa1sYfYsRI/MQpJt5j6YnzZaiStRpUYW0vvKA3Xi0?=
+ =?us-ascii?Q?n7oQolgBMwLlb+qWceaFz06Vk4fgWmKw/+OOyTEFa8uuQNguB4WFYQk2N2nW?=
+ =?us-ascii?Q?mjJ2FG4MBaieVSvshcJ15B8371IUUJmvgkJvaXBpl3Hlloa8EJeidhaU2N3h?=
+ =?us-ascii?Q?LVvEv4mZWE4A71Mpk1dwlxzZqU73S9zLE25+XsHi3ClRAxj6qlW5nEgbnajR?=
+ =?us-ascii?Q?3NVeEBkDE3iN0dZY0SNR5+19JnGKlr4eeu7EesC9PTKTUgD+WEbGKZC8MDC2?=
+ =?us-ascii?Q?9b+ArZOBmamT2SgnWQgWh/3kZDW4kdj5ClwjyuKEGaBMbtqFjsQOrkkouObS?=
+ =?us-ascii?Q?AacIxoamN1auM6xm/7I/zDQRoMMY1Z+rHTufITWy922ICrGvOYFxSFS2Dnzq?=
+ =?us-ascii?Q?ge0wIccqBbQ644DEhJgwfnypxqaJ75HlZLGVNfQh5Gur/3LCt1FnGSYGnI1a?=
+ =?us-ascii?Q?FLS7bLV0LDLhaZZri9rhFCqW2veOCl6nHXctdr4Uvd2dOFBg4ZAZMUtmVvBG?=
+ =?us-ascii?Q?PBK1seYusd+BJn9Ukj4=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c00b3364-3fb5-4cd9-5f1c-08dcbc80cc9f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9771853d-7de0-428f-c619-08dcbc830c0b
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 16:47:35.5718
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 17:03:41.0473
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L34eoY669dMknZBrenuNsgz2fIroFgEKKjDaYpAKqWZbPY3zV7+0lwAVDiLFjgx4QCmTMH8M6XsbjlFw10ZD3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10229
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7qUB8chymBcKQZ/p6ZKMAxYBt6zmiXQwtws4MTe7xvd24z42yQi21GHlqm9X1rmpJ1s9UwCtANErR4eAgC7kVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8404
 
-On Thu, Jul 25, 2024 at 03:33:54PM -0400, Frank Li wrote:
-> From: Jacky Bai <ping.bai@nxp.com>
->
-> In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
-> is larger than INT_MAX.
->
-> For example:
->
-> tpm_set_next_event(delta = 0xffff_fffe)
-> {
->         ...
->         next = tpm_read_counter(); // assume next is 0x10
->         next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
->         now = tpm_read_counter();  // now is 0x10
->         ...
->
->         return (int)(next - now) <= 0 ? -ETIME : 0;
->                      ^^^^^^^^^^
->                      0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
->                      cast to int. So return -ETIME.
-> }
->
-> To fix this, introduce a 'prev' variable and check if 'now - prev' is
-> larger than delta.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Reviewed-by: Ye Li <ye.li@nxp.com>
-> Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+Change mdio.yaml nodename match pattern to
+	'^mdio(-(bus|external))?(@.+|-([0-9]+))$'
 
-Ping?
+Fix mdio.yaml wrong parser mdio controller's address instead phy's address
+when mdio-mux exist.
 
+For example:
+mdio-mux-emi1@54 {
+	compatible = "mdio-mux-mmioreg", "mdio-mux";
 
->  drivers/clocksource/timer-imx-tpm.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/clocksource/timer-imx-tpm.c b/drivers/clocksource/timer-imx-tpm.c
-> index bd64a8a8427f3..cd23caf1e5999 100644
-> --- a/drivers/clocksource/timer-imx-tpm.c
-> +++ b/drivers/clocksource/timer-imx-tpm.c
-> @@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(void)
->  static int tpm_set_next_event(unsigned long delta,
->  				struct clock_event_device *evt)
->  {
-> -	unsigned long next, now;
-> +	unsigned long next, prev, now;
->
-> -	next = tpm_read_counter();
-> -	next += delta;
-> +	prev = tpm_read_counter();
-> +	next = prev + delta;
->  	writel(next, timer_base + TPM_C0V);
->  	now = tpm_read_counter();
->
-> @@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned long delta,
->  	 * of writing CNT registers which may cause the min_delta event got
->  	 * missed, so we need add a ETIME check here in case it happened.
->  	 */
-> -	return (int)(next - now) <= 0 ? -ETIME : 0;
-> +	return (now - prev) >= delta ? -ETIME : 0;
->  }
->
->  static int tpm_set_state_oneshot(struct clock_event_device *evt)
-> --
-> 2.34.1
->
+        mdio@20 {
+		reg = <0x20>;
+		       ^^^ This is mdio controller register
+
+		ethernet-phy@2 {
+			reg = <0x2>;
+                              ^^^ This phy's address
+		};
+	};
+};
+
+Only phy's address is limited to 31 because MDIO bus definition.
+
+But CHECK_DTBS report below warning:
+
+arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: mdio-mux-emi1@54:
+	mdio@20:reg:0:0: 32 is greater than the maximum of 31
+
+The reason is that "mdio-mux-emi1@54" match "nodename: '^mdio(@.*)?'" in
+mdio.yaml.
+
+Change to '^mdio(-(bus|external))?(@.+|-([0-9]+))$' to avoid wrong match
+mdio mux controller's node.
+
+Also change node name mdio to mdio-0 in example of mdio-gpio.yaml to avoid
+warning.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v2 to v3
+- update mdio-gpio.yaml node name mdio to mdio-0 to fix dt_binding_check
+error foud by rob's bot.
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/mdio-gpio.example.dtb: mdio: $nodename:0: 'mdio' does not match '^mdio(-(bus|external))?(@.+|-([0-9]+))$'
+	from schema $id: http://devicetree.org/schemas/net/mdio-gpio.yaml#
+
+Change from v1 to v2
+- use rob's suggest to fix node name pattern.
+---
+ Documentation/devicetree/bindings/net/mdio-gpio.yaml | 2 +-
+ Documentation/devicetree/bindings/net/mdio.yaml      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/mdio-gpio.yaml b/Documentation/devicetree/bindings/net/mdio-gpio.yaml
+index eb4171a1940e4..3be4f94638e61 100644
+--- a/Documentation/devicetree/bindings/net/mdio-gpio.yaml
++++ b/Documentation/devicetree/bindings/net/mdio-gpio.yaml
+@@ -44,7 +44,7 @@ examples:
+         mdio-gpio0 = &mdio0;
+     };
+ 
+-    mdio0: mdio {
++    mdio0: mdio-0 {
+       compatible = "virtual,mdio-gpio";
+       #address-cells = <1>;
+       #size-cells = <0>;
+diff --git a/Documentation/devicetree/bindings/net/mdio.yaml b/Documentation/devicetree/bindings/net/mdio.yaml
+index a266ade918ca7..2ed787e4fbbf2 100644
+--- a/Documentation/devicetree/bindings/net/mdio.yaml
++++ b/Documentation/devicetree/bindings/net/mdio.yaml
+@@ -19,7 +19,7 @@ description:
+ 
+ properties:
+   $nodename:
+-    pattern: "^mdio(@.*)?"
++    pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))$'
+ 
+   "#address-cells":
+     const: 1
+-- 
+2.34.1
+
