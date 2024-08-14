@@ -1,48 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828077346D;
-	Wed, 14 Aug 2024 21:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BF1144D1A
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 23:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723672143; cv=none; b=fL2od705Vu+BtTmwBKDrf82hhxu/2Kf01zrf1tgCjOCETG6N/ceu+mCv8p5YMFksrU5ePgC8i4ZqW8jqy/4YdeDSwJAOS3bNv548/r42q2xJ3N4n9OjroZBpNWE5/2N8bczd6IDPamiCV3sYHRPqk5lI64rINVfzzg8NTENxqD4=
+	t=1723676960; cv=none; b=mygOY6u7YNmNMdm53JD8h2JBpeyoPlyQD+OyoWODC2FqFKoqUoMbLmcv23wwgk9CKc3i8+BVmWZGM9Gx8MovZQZVjYyvNAoXYTfwBESgLe5t+O1VRqWdfmJeSX56Do2yYZSyaE0LCRJ130m9SoJkEDDtM7I0DD5f4jmtPSlR/ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723672143; c=relaxed/simple;
-	bh=qUGZc78pzcRRgjxPHtI30pcwqdtIA4voVWxMwOfXCLo=;
+	s=arc-20240116; t=1723676960; c=relaxed/simple;
+	bh=H7nxzJ3p6l88rfM0aMfG4qGoGLko9bbr610DQl34zwE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+MeaQ0g1fpj4iXOHu4Xv5Bsf4rbqwU/XcZijieN/9W1P0nJi08KgUJs8SA5Sx41F3pQKb+MeoyrHYnNuIahQH9dx2viLlIPyJGgZf2UjqaPexlnxD1VRwjFskMrqCBmB1CrECCWmPL6wIgwj2zGdBj9e7Ldq7cJRmdz9LdDJsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lAK3439c; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=TNjXs8uiTFPA4RGf0XOGmwNN9T4lzwAyC2mg+EqzyuAiwwPQZnvScb3AzETaKO6NUBFsN05hTIWiMhukAr8wsqbP8rHc+3ULPJNci7KismSy06Dk5zjFxnCu/PPpy/6MENnqluG+zJHbo5Vvh840M4NgytNrKKZ+0pJbtt27zAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RPpvOwDx; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lAK3439c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3498C116B1;
-	Wed, 14 Aug 2024 21:49:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723672143;
-	bh=qUGZc78pzcRRgjxPHtI30pcwqdtIA4voVWxMwOfXCLo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lAK3439cax+vjGyan4WGa2XyIzrJfZ0dyv+7H6Q8tOeQeiHXOEFw+sS4YX3jhgrsM
-	 4J/CQ9RSdVH8nq+eThIix9rWo8UdiJZ0Gx9d8J58YRSDG8G03PyEnJYIJxGAjl0RGr
-	 ctSUtR7BdTfnPHbeVD3t6Tb3mFLjbXrQ2L5fF6vFa/wDgd2Vo5ytawhWDCk8KF5q/y
-	 jKQ/sRISmKa7HXXjfQvBcl7mriaPcPOPBBkXnCJpCTtpmlLQthfF23kkMrlec6DM4f
-	 Jr1MwPzTBDVKy8CxU1yRaSuxyBJ3OoHmVsepyDdMjOd6hH+03e6hmBB+8H+Ypt58xn
-	 e13ChSIQ8tfSQ==
-Date: Wed, 14 Aug 2024 15:49:02 -0600
-From: Rob Herring <robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RPpvOwDx"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B9457240004;
+	Wed, 14 Aug 2024 23:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1723676948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zcxP5EsgtxCZMUGLLhH3WKQwDy1VPGiAYJ745P2bBuE=;
+	b=RPpvOwDx42C6sY67jHhI6CO1krXDCwlaQyGIj1tzG8lZc5IJ8/ZZytMJRCtkAmXPiMAICz
+	phSimiANRz8kHSw6geq0AXd2bRhoBv87ayWGzaPv3lv7f2fg+RVBgyxN41KIMihy6uLqHT
+	AMyGbNnbTatHtkQ67/P2aHmm/hCz762tCiLIl1MSIzD4OUvm+25jmkkhPQ5Ione2vwB+I9
+	fXri6cFyXgzRWWU+JrQNlLcBWt0cicu0VIDAkE2v3ocKkvU4ArOWz7hSerPlESBgncmOKY
+	d141gwpw3/bGtM6NhsqWlxNPM2D+hGgxfnAE//tOUWobO4XSoi9c4/m8dkMNKA==
+Date: Thu, 15 Aug 2024 01:09:07 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Marek Vasut <marex@denx.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert ads7846.txt
- to yaml
-Message-ID: <20240814214902.GA4101180-robh@kernel.org>
-References: <20240814185140.4033029-1-Frank.Li@nxp.com>
- <20240814211345.GA4028598-robh@kernel.org>
+Cc: arnd@arndb.de, bbrezillon@kernel.org, boris.brezillon@collabora.com,
+	conor.culhane@silvaco.com, gregkh@linuxfoundation.org,
+	imx@lists.linux.dev, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, miquel.raynal@bootlin.com,
+	pthombar@cadence.com, stable@kernel.org
+Subject: Re: [PATCH 1/1] MAINTAINERS: I3C: Add Frank Li as nxp I3C controller
+ driver maintainer
+Message-ID: <20240814230855a6d6b54c@mail.local>
+References: <20240814210915.4046554-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,29 +49,59 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814211345.GA4028598-robh@kernel.org>
+In-Reply-To: <20240814210915.4046554-1-Frank.Li@nxp.com>
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-On Wed, Aug 14, 2024 at 03:13:45PM -0600, Rob Herring wrote:
-> On Wed, Aug 14, 2024 at 02:51:35PM -0400, Frank Li wrote:
-> > Convert binding doc ads7846.txt to yaml format.
-> > Additional change:
-> > - add ref to touchscreen.yaml and spi-peripheral-props.yaml.
-> > - use common node name touchscreen.
-> > 
-> > Fix below warning: arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dtb: touchscreen@0:
-> > 	ti,x-min: b'\x00}' is not of type 'object', 'array', 'boolean', 'null'
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > There are warning:
-> > Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml: properties:ti,x-plate-ohms: '$ref' should not be valid under {'const': '$ref'}
-> > 	hint: Standard unit suffix properties don't need a type $ref
-> > 
-> > I don't know how to fix it. ti,x-plate-ohms is 16bit, but default it is
-> > uint32
+On 14/08/2024 17:09:15-0400, Frank Li wrote:
+> Add Frank Li as NXP i3c controller driver as maintainer and add mail list
+> imx@lists.linux.dev for it.
 > 
-> It's going to have to be a special case in dtschema. I'll work on a fix.
+> Add Frank Li as I3C subsystem reviewer.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Recently, I submit many i3c related patches and become familiar with i3c
+> protocol. So add me as svc-i3c-master.c maintainer.
+> 
+> I reviewed other i3c patches. So add me as i3c subsystem reviewer.
+> ---
+>  MAINTAINERS | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2b96899a78890..92da600c3f189 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10701,6 +10701,13 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/i3c/cdns,i3c-master.yaml
+>  F:	drivers/i3c/master/i3c-master-cdns.c
+>  
+> +I3C DRIVER FOR NXP I3C IP
+> +M:	Frank Li <Frank.Li@nxp.com>
+> +L:	imx@lists.linux.dev
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
+> +F:	drivers/i3c/master/svc-i3c-master.c
 
-Should be fixed now in dtschema main branch.
+I guess you should rather add yourself to the existing entry
 
-Rob
+> +
+>  I3C DRIVER FOR SYNOPSYS DESIGNWARE
+>  S:	Orphan
+>  F:	Documentation/devicetree/bindings/i3c/snps,dw-i3c-master.yaml
+> @@ -10708,6 +10715,7 @@ F:	drivers/i3c/master/dw*
+>  
+>  I3C SUBSYSTEM
+>  M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
+> +R:	Frank Li <Frank.Li@nxp.com>
+>  L:	linux-i3c@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  C:	irc://chat.freenode.net/linux-i3c
+> -- 
+> 2.34.1
+> 
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
