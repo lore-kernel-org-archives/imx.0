@@ -1,63 +1,68 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2066.outbound.protection.outlook.com [40.107.20.66])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC07F1B5811
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 16:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFC21B8EBC
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 16:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723653000; cv=fail; b=fHYl4ef0RJGlLD0pBhG7+JmW40R5w4OU1XtbFzp/+TWqVALtSVfOIfbeKycsd4seJi7OFTzhX02YzskOaJT/bBscfMCtzx2RjN6oo1ddhXUKC8PexXN3YJJU9Fg2ANk6TGlG+g/hJSqiPHUXpjGuTr7ppEBXWeb6A0MgRJ30DvU=
+	t=1723653870; cv=fail; b=kMoPPwNNnHP5iYefdZgil+80BIw5ca55YgWbqtxZk11+4qGZ8FjBxJZJOYBlnlI9t4UZVZxoE5XSYRq6HmDKtbZ4XY5T/8dymtOuDgB6k11fukk9VPc8Oav6h7geLEVDI1Ckf9X2/uQB5CBhotH/A4QCZaALdv4cKFnRMKQvhrk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723653000; c=relaxed/simple;
-	bh=D77HdHorRMGtr2lOZACJqO0Fg7eU3Zbg5ZLZtrwapTk=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rozalzktUxPGcLZ9rKt/RuWnd7+cUnv6Uu8ffLW4kWWp8MnkxjLUZu7WX3OnAf9JsGVNMtWHe9s/kkoZqMhIfv4iR5kFjBeKdGYu9l57eApoax0OYtRchmvyKi648blQq088lBYGw/sMSPyeR9HQtdpYd3R4fNlxYS/PbVmSPfk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EyqHZOa0; arc=fail smtp.client-ip=40.107.20.66
+	s=arc-20240116; t=1723653870; c=relaxed/simple;
+	bh=Htx1oc9G13xwCQNiXjGvSDK9Vgs/8iwpWt4YiRlFXis=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UWjfZx9+Ye+sDCv/g76rtWjMoGMEXN9sRHrwA9YGHkn8iL4r0xh7qQHX2goSmvIDoXxYtGy8oPjgtgr9LXxsxazniPQ2PQeb6dT8PU6vBRKfp9VR/e3FGITKP/CinZ9qCSMKw4VEq1vK2wHaaBYS0KbPQ6L9fx65A80ni4/wyRI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ESdBqwhn; arc=fail smtp.client-ip=40.107.20.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EyqHZOa0"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ESdBqwhn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GetAFQOfkaQGdDyLlvbo0Igy6BzVBLblvt0+55z0/a5uwmYZKA6Ue0V/G+OQFPXKe1aif6WcckV46R1jBmISWZYFL+hBm0uuoOga+iCOORDZGdSlSszf1l9YB+HSLTnUMvXHIIQn0Syx+A+yHCDZyj7VdhkxS8bldnIti7Elinr1VgiO9CCSrwL/pfne76x02Zr80FKDkH6Mrw16L4eIeTupfBoDhrNgGnsPFxjhpRLW9gGo5LNIxkgLVDtVZkoLT8P+nwqQpoDHyzijFbEkzISV6jcb7g9F6sdYlxq5eQvVqkBELr/g+iLOmhL005cKCVfnmeZq3/v7wGZnh6vurw==
+ b=TVHy+K3Inv5jl7ECSu319t2Bye67q2QXKOfDu2MQ6bJIj15vCUfpBTKA5JiqkSNgdbQ1XHb1Ybn3BwDo/yoW3TAdOleNbn0wVp4qWCcbHG9DZuK9E/eWb+tdhTQBVTqGxhLiGdBIlcLhmu/6PrnI6eZ16nKSwo7ASokUVV3kGOaSdqb525SliBGkUmAJHS79AEiTBEgPZzpfflMTdx8ZfMeTdH3ofL+//g03sZ6qHOWzq0e+B0uUADg2DOGBmI9WEai0ORSm1EloxepH3W2cfZqTUzBODxb85wiFnMFl7YSWvteksk5EkMCiQkquiOw45jORCS/wItPr5lT9lPGdiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H+svNqFpRLn6j7VyTLsyb2YgFQ5TN8rzUoiSzv7vKyM=;
- b=R8HCksYolbw9/1TsRUGxH/BdzXE4mpwds1XhO2l4BIyeyIbLcVRnxZHGMLziEaAmHnfseE0Fa1DjIVP9QnC1imYjpWs2dUiTj0UM0lPMbgF6rFZEvcyNU0Gt0oZ6tJQZ7KsKLMxDSiYdIxbUev1I5pKuox6pxjfTTLY/A7gnbz7InWt8IWsjifx0UmyyQGCW+QDqYMMUyZxpoXkcuVcHVbDGhghEsLEUlc5xizMWmhDEHKZfio7ktdM3b3WeRXyc4n11AL/ixUJiGnTdcvjaE4sQnJK318GYM5IPUbfx5HKq788KMgkAMgXntLazjuzMQVAFHd4CSkDZyKny49a2gw==
+ bh=6ckNRVgo2c36MeTqUTk+EkLlBsWgB0Uj5FS7/7axYWg=;
+ b=PmZqqvUOM7HEPNuBpDTVggg/fX4ye66vy3sw0hOUCpX8z7BaJMFpI+u1SsH3tI+4RGV1mJsJtHvgOFqsXv8lvgbYvqj8E0LKmIBocRy5oQLKNY4Gf9C1+DGC+cUKwMUmqRWMza2B+9CX37RLarBBDg9OT0J3kY2TcUTASegevNMhjYf+v/VgDDJkJEBCFlvJHLNXibzo4fMaJ9SZ5VhyquA022KGg9N860SJz16KPuYXNHZkMapKONUTu9kH73zyeaekBrCT0uGnVgj4NpaPjP84xriuBlj1kGLKZe2U9frgVW0uSH8kH60y5EhLiuoW8EoNgi7WA6HW1yxt3yFisQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H+svNqFpRLn6j7VyTLsyb2YgFQ5TN8rzUoiSzv7vKyM=;
- b=EyqHZOa05eKqc0DbANE6HMiJ+6dWB7RRjfKDoxugnhvfUkTr6m5KY+b4JocHDZ3WelxyVyzjTRBXWjyK1FRShOjC1NBIx7P+KMuy3jjuWEe+1gbnQsy4xcAaCbk22gM9kPf9stzNwwqmJAnOdrU1RvEpIbNyelZ45j1QlS90mCYgHaF4BWBjh1FiNkHIJlu9DWvLSeKFyFJzaX2IInXaWQJZVE6Sw1X6uvyJoEYfyFAYjTD0MD+A+9NHvx13VGhbVkf2OqmlLuRsNAQC+nh7wiPcVArmtPs3JwBQSYXSgyIjvw0+ppGyOWYu8d5UbX9DKIgssLM3UrFE3VWIWuqPxw==
+ bh=6ckNRVgo2c36MeTqUTk+EkLlBsWgB0Uj5FS7/7axYWg=;
+ b=ESdBqwhn9Sn2okNrZr2D4/C7mrRPScqb022ydfTdWQQoMWl+tAdgYzW/RPBrKMdyqhLLO7QHa3vpTPf8J3KRjGAQZiffDS4nP7ye6uFyXY/DD6A0bs9disQ2vozD6J/6HabA8fRaMU0k3N/DyfrHIwrU3PqbGAC3aw/n+3gmnC8okK2qGVnLoKShmDiWoQbbyhmZ3MPhI837ChIdRey0Ik4I+wQnPVba56k4ybYdafboyuvJBjYLdc9XM07m/oSm2PptoVp73sBr+nEN7a+D13SB3rroEMKis4NMiIT53C6CXJMDHV3cWKdtHC4Gnfx/6MhgXB3nsquzcCdWigB0WA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8530.eurprd04.prod.outlook.com (2603:10a6:20b:421::6) with
+ by VI0PR04MB10229.eurprd04.prod.outlook.com (2603:10a6:800:23e::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Wed, 14 Aug
- 2024 16:29:55 +0000
+ 2024 16:44:23 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.016; Wed, 14 Aug 2024
- 16:29:55 +0000
+ 16:44:23 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Sanchayan Maity <maitysanchayan@gmail.com>,
-	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
+	linux-can@vger.kernel.org (open list:CAN NETWORK DRIVERS),
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: input: touchscreen: convert colibri-vf50-ts.txt to yaml
-Date: Wed, 14 Aug 2024 12:29:35 -0400
-Message-Id: <20240814162940.4020520-1-Frank.Li@nxp.com>
+Subject: [PATCH v2 1/1] dt-bindings: can: convert microchip,mcp251x.txt to yaml
+Date: Wed, 14 Aug 2024 12:44:06 -0400
+Message-Id: <20240814164407.4022211-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BYAPR11CA0070.namprd11.prod.outlook.com
- (2603:10b6:a03:80::47) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR11CA0064.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::41) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -66,205 +71,190 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8530:EE_
-X-MS-Office365-Filtering-Correlation-Id: e7505c40-be1f-4694-29d3-08dcbc7e54af
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10229:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4c4228e-8925-428b-b312-08dcbc805a37
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|921020|38350700014;
+	BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	wUVOuLFY+s1Lqu/vd5N7PgO8in4/PUZ+qMB7UFlbjzbKxzTOvSD9nRqU2GUAlfXTq5aqux+mvmHSZ5fH+5fQWx27gzlYMCt2jE65S/Bv8jTeEp3u8SqTDwtrt8H47fRnR0QLaz4pV7iXCfOg+18yTHY5wTKPECIfeidu7bz0L7IxeP25lQFO0c4odulRW3wqoVaDiwI7QMU/GcYbHuGfQBjPZUwVe0K8R7Wm3DodGe85fCY5p1JnSADqIBA2pq03pNodcl11hNFG9X2/5BQTbTSxD6QE2//OpkFUxwOgdSbtx833oMnVk9sa2po7Y5zLMDEW/SHm8oo002dk5aPHwMDkUllEiPsX/zveGW7vlTcrlN4S4HH5HPH7I1mJR/ao+CshJbXqC2dypSrMm2jmrRODi5knciWEIfVT4Dr8bdjbCLneKiTnfdUXjTnnkpXIXTNE0lYksEFe5i10wn8xdYWt//MsB6kNkWlxYSvC4lUHyTv1i+IPUY/sAMAoUUT+noSfizRzEZAd+cI7LLCUH3Jewl80sqAgflY6rFGp1B54sAc45AFlUqmuaVN5o2vcDziNJc3hJDGt+/kZimaQRQGJ/5faWpxYN/ow7i11Bo+Yw+qREFpclTQaHWkdU9qZoyoG7JSsjYDIPhSTkK2PcjoBBrtiidCG4Zt8P8bRlNZyyj4K7aYx+tEpeUk/RG2p
+	RFd9QKmJEIuiRLY1DqNgM5DIpMqvwOxFTK7h3DKO6ebtG6pxCfLSfslStGMOmj/cH+6BITecG6mYMvHml8MN5wohxrTt7o7wCD97y2jrZzdvkxHdqfU3csbvJQBJejD53ZTsoi+huNC2MvMhQLvbz5OUYgDZz6L6TzbAgUcVSdpzneRJOvRuIqcOrQC5/8vy6/95q1Ly5cCKCK4totedd2BGRmkT66Ob+9aYZsVoY98ssYF6QNlyUEU7JSdVaxy6KPvhqtB3oJKHjQfdkywtzE4pd6K1mHfBXh+jQ0fpi9ksvlW/B1mZeAAJgMhUV91XUzI9Ys385Dgq2PT4hY7Zv68MyJkKt1Vqdf6jqOS91D3gGOEsKfIbz2CXcLgvKsbSyV48hiBeKULit7WNTtlbRsJyPh2y09AQoXrzfZG9jZNEAZK4UDbRKGIFo34Hwczzn0M6y/Qw/E/7056utO2Sy4mqhfsEjmeH1m/yztfqKHlIu0PcjSnc6LG19Myq+5TthACm2d7LlpMn93Iv13MiNBj8RSXOWw7vAO5Kv5R74COpfrAnnDfio0TeM/WxU6Joo/E3YWZoMLUoQgSx1veIaS4RBiMmX0hPAKFNkAMqHh4bmZ7SCNinopDNXL0vcFjsUoH6IIAx5ds9GWxRDnfCpK8b5jx2Qa3wGCmhg8H9mMMz+kHGJ0jJjmeBAILekY8k
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3hl03hluUJSP7ebO2w5AQLTFrnZljic1n7LrzbvVCW1tl7CQLC97BZOQF9UP?=
- =?us-ascii?Q?ordqzP7gjv4OH8BD9G1jp7191D3w5IXsfy3XgiRxFaxyWmwWJL9XCvSbv58Y?=
- =?us-ascii?Q?JxxXVpKy/t9yC4s6wFeVZdZGnefxaB8A3Umx6eJ1oJayPHcaZLGGBr74sl7q?=
- =?us-ascii?Q?mTbyRbHt2eamvMw5fa82r7XwOIpLrI5FvIkmGg6/n+VXhseDVLFQUXsyxHwZ?=
- =?us-ascii?Q?O8csllyfpgTuCZ4ZYxp3Ipkw0NCeqAPE5iazF1YNJUIbv5t/NkqxgfsPVDkx?=
- =?us-ascii?Q?wy5bWwPPTI2VYhfaas8dt/wFBfrWuLtY4MW9n3+rSLDfKPMZXihqNcyu3PTa?=
- =?us-ascii?Q?Js8Qn3Uz3le8sRrd7KT419A/qg8f5Ip1LAbGuwGmSODkL69iqpHGy+ep90Z9?=
- =?us-ascii?Q?Y1OrRWqc/FeKXDsrsE1LYNjQgR9HdDiXwTVPsOfRFwJI+W+fkuIbP0v1vuHp?=
- =?us-ascii?Q?5TrJ7vNFfF5G9li2sAZghamgYIdo6YqhLx4cjP8xwRJJ1lbbpd2w71jc6Crc?=
- =?us-ascii?Q?N8O5A7XvBdIb3F5w2S0baBIV3llXCIi9c/khsDfkv84Hg43PToIkKF9XC4AE?=
- =?us-ascii?Q?3ONostvFZ0coa96kLuudq+3hRi2nAsJt4BP60uirWR+nV2+EaVoqE94CqbOS?=
- =?us-ascii?Q?cQXV7P17t3H4wdta/REsf22vnYQMeB/C4Hn8ycLunc0a28Qxf1OzYoLH6Oi8?=
- =?us-ascii?Q?8AAr2h3IvHqzm4BgaAs0mTAgmsada666ScZJEzfXLpUizcRaYfhfBeuq1d4S?=
- =?us-ascii?Q?b1MhKXF/iv0D1Zf5QzAdE+PnT5VzZUJTunYsnogGACXiHF3K1XWRpjD+HoxL?=
- =?us-ascii?Q?zgBogs36PyoBb0jXY+iMMZamuYADZONo171AOsOXNj7SM8IkxugEEkbgoC5K?=
- =?us-ascii?Q?vusKHf5/tMVnb/KWRV/rbxVPo3mfYdiD3CQTamRJqjYO6bmbYCaRDLM+juPJ?=
- =?us-ascii?Q?hY+EBEepjrZAkWh6nd53nhIjMW8NYKekzeVWMdtuu9hTeC0QW+tx+k9il3Js?=
- =?us-ascii?Q?Ijz0/LcGygSqBaVJ8T/TDNmYjkGCUmY5soiWGHI1BLthFi0eFBJazemDWB7Z?=
- =?us-ascii?Q?KPvRKchNmsQlnH8oVTmSv+l/mADY5+SxskGjnkESKJ10r4sY3+tvYXF0HKQc?=
- =?us-ascii?Q?+r6B815e1S95bOe1jeyaZKVSEFx4FeHpjHCqvcsDCzf4/uh+nixJxRZyz6Xr?=
- =?us-ascii?Q?ID/dCfnRsIYZItEgMKDB6hLyDPHc7lEgERb3w0OPU9JQ+iKXw+NmUkipGW3O?=
- =?us-ascii?Q?TDUskx64NBa5jqhjbUbhMnMEM/No3VETu7d/5csV5my9H2vVnHpKz41nVjov?=
- =?us-ascii?Q?u0zDg9GdWUxk5DN0bhAv9yLRgDvvLwfcoQbhIV9cUe4P6JvH5vAjfrhx/etN?=
- =?us-ascii?Q?Lp7PSHcbRDtGExAS3NEs0Hc58I73FkB7J2m+E6Iro4gLRpYsuYnYTSPa5nF6?=
- =?us-ascii?Q?JdDpmacQFT3u4DBwoZLE0Xnm8Nlp+t6aCWJtYImkS1tOJ80Cvl1VPKlO274S?=
- =?us-ascii?Q?BGSaQqT3ZCT2W/SwyN0yecG61Sv8gYzinaRaajlRvW11FIx8dkFeW6biGpfH?=
- =?us-ascii?Q?AIPG9LBDGc/VChqZMCUnMQcgxR93N5R/JXOYUkmn?=
+	=?us-ascii?Q?5mZ8oXTGL/xHr0gSDfJN4ts3mRICtEw6G1DzFK0sUVUNynT3r/dVYZOkxjsT?=
+ =?us-ascii?Q?EBbZds3qpOUjpwMn49xSFIYUHkB/IA01wun0G9AAzufa93PVmp6JNWJ1UMCw?=
+ =?us-ascii?Q?+kJBtBtrQphrJDj/0dA/u6eDWO4E74fPfDoLW+NTeM43O67t7/BNaEHvupr1?=
+ =?us-ascii?Q?sB/W/zkF9Js43nez1keaDhXqS0vvQ/Pfja7MalSYWvX8aXqCy3WQnognf0Zo?=
+ =?us-ascii?Q?mVKoro0uz5+nAGzl2oN4fblFUYNoXe1zSIupyhnAsRbZlCZaeGoxjPbEISCo?=
+ =?us-ascii?Q?IfMM5syRq/K1+vJHjr6j43VuoVVpMucWpNhttrc/fK3+xLFvXWMnK+Gehaag?=
+ =?us-ascii?Q?JNnibzHcEt2oHvmVhc3LCtDFeuU2Ys1B1xgE//OV1lh18jS65ywamsene8kY?=
+ =?us-ascii?Q?nN3EXtOdl96xJgKWdX+z3Zzlhc6I/w7z6txxQKCEwhLRlA2SmQuALBtpRv68?=
+ =?us-ascii?Q?ZfFAapH2PFxXjr7/3clCbQ3dUwBrVmrS+wJhfWNNYtBvl62TDq9tGC4SPJec?=
+ =?us-ascii?Q?hFSGy1vAp6Zw+CD4t5oixW4AQ+sibVMN5DOOnCQbIOHCKXuXUUSUgB2FVi0m?=
+ =?us-ascii?Q?MgfcjmGBS57GuofyLezlDKvF14wIqxojCMjHVklKVcn6jMSWwcc+/EsrU2SQ?=
+ =?us-ascii?Q?/wxZJDII+Wf5/ZEGTier/6YQCFEKPCUPvJ2ZivJ4RZbgWZmHXET1cldmVFUj?=
+ =?us-ascii?Q?iWCxJZbthdgRWaaG66YgwxymR7h4ieDGPXkVLZXR0zj7HZHnMnrwukcOuy0q?=
+ =?us-ascii?Q?EooRJmD6YztpveeekH93NaHMEP+XRLbs08aPmZPq+OYVfOczEw+OrMHR3NYK?=
+ =?us-ascii?Q?hKpNH6bMvF6GGsBCRVbrUzHhwXiWgZqH5+IKLxiPOIqt9hfXTt6ST15o6jnO?=
+ =?us-ascii?Q?cAHe/ZE5btmAVmOd6oBCt4viGe7KTxTif3s9njmrU9lDWnfKjUZCEO9DnAsM?=
+ =?us-ascii?Q?/ARBA09mvRRe1k/c7hLi2x6sA1b3UvX4vgrTmBhDbgHeHQ6Is2fz702wjNiT?=
+ =?us-ascii?Q?ydGAIBM2FM8tF3OqhS9AygRK06dik+R1BdLHoeXS9Tn5Yra7UY94JAOuIw34?=
+ =?us-ascii?Q?v4Y3pomqYkNPfyPorX954OIQUNU4J8cTYiRJeVOVKDyDq7DvQrc3YF50TTwT?=
+ =?us-ascii?Q?KxEP0A5HJWzn0eytzEtOvdFtFX3Bqzi1jmPSxwEKp3UutESq2VCNatWZgOIy?=
+ =?us-ascii?Q?bHHYPHQ5Y1p7V92kJ4knlMUuhCkm+exfylk241zNzIyru0mkHD708myAc5vT?=
+ =?us-ascii?Q?wtQJmMfTfuHyzFsYaB7VM/UZuJq9/7ONIydduF5j9YALwHW0nUjt84DI7moV?=
+ =?us-ascii?Q?crb9tr2kh4zxlEttCrwdFEv6MPjJ/SktizHcX8AhQrpOmuvfC9lKmPhfPpCC?=
+ =?us-ascii?Q?xP4S8SwdRnExYbPL8Bhtenw8K3N+cMiqpU2LH5kjzpUaa5Ir+QknS24F/YDz?=
+ =?us-ascii?Q?giGHc8H0vT71k6FZk4cR6cY3Mrpqd2lprTh4fcrOKrUlxr3otxk1fiCRAHif?=
+ =?us-ascii?Q?AMIkZIj2DBAi90Wv9CIl9XReC8o2jWli8Qb4TaF12s0T36qHavZL5wdj4f/l?=
+ =?us-ascii?Q?3Tc2z2gZoebhuyrKOVHzgc8TDvn8RH2rhQ9LHsDk?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7505c40-be1f-4694-29d3-08dcbc7e54af
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4c4228e-8925-428b-b312-08dcbc805a37
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 16:29:55.3520
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 16:44:23.6691
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PStltvvzIdjoPF9xmuQDyxrBk4/iiyXO5TLtpLOWAZQW+NluuOZ4Y6FfiGzfwpSd+cCGTIICTesqm/cvwH7QOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8530
+X-MS-Exchange-CrossTenant-UserPrincipalName: vRVDYbEVLVvkpaxEv1QlrkRQypG6w/8Eh9Wz8lPuEXsw6lrN+QlWmOmDcN1tD8ryPVYFEq3Da7yVZCfwQ1vHug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10229
 
-Convert binding doc colibri-vf50-ts.txt to yaml.
+Convert binding doc microchip,mcp251x.txt to yaml.
 Additional change:
-- add ref touchscreen.yaml.
-- remove standard pinctrl properties.
+- add ref to spi-peripheral-props.yaml
 
 Fix below warning:
-arch/arm64/boot/dts/freescale/imx8qm-apalis-eval.dtb: /touchscreen:
-  failed to match any schema with compatible: ['toradex,vf50-touchscreen']
+arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: /bus@5a000000/spi@5a020000/can@0:
+	failed to match any schema with compatible: ['microchip,mcp2515']
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Change from v1 to v2
-- fix missed required properties
-- use original submitter and input maintainer
-- add value limitted vf50-ts-min-pressure, just provide rough range, which
-not mention in original doc
-- fix style problem in example
+change from v1 to v2
+- Change maintainer to can's maintainer
+- remove label 'can0' in example
+- file name use microchip,mcp2510.yaml
 ---
- .../input/touchscreen/colibri-vf50-ts.txt     | 34 --------
- .../input/touchscreen/toradex,vf50.yaml       | 78 +++++++++++++++++++
- 2 files changed, 78 insertions(+), 34 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/colibri-vf50-ts.txt
- create mode 100644 Documentation/devicetree/bindings/input/touchscreen/toradex,vf50.yaml
+ .../bindings/net/can/microchip,mcp2510.yaml   | 70 +++++++++++++++++++
+ .../bindings/net/can/microchip,mcp251x.txt    | 30 --------
+ 2 files changed, 70 insertions(+), 30 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/colibri-vf50-ts.txt b/Documentation/devicetree/bindings/input/touchscreen/colibri-vf50-ts.txt
-deleted file mode 100644
-index ca304357c374a..0000000000000
---- a/Documentation/devicetree/bindings/input/touchscreen/colibri-vf50-ts.txt
-+++ /dev/null
-@@ -1,34 +0,0 @@
--* Toradex Colibri VF50 Touchscreen driver
--
--Required Properties:
--- compatible must be toradex,vf50-touchscreen
--- io-channels: adc channels being used by the Colibri VF50 module
--    IIO ADC for Y-, X-, Y+, X+ connections
--- xp-gpios: FET gate driver for input of X+
--- xm-gpios: FET gate driver for input of X-
--- yp-gpios: FET gate driver for input of Y+
--- ym-gpios: FET gate driver for input of Y-
--- interrupts: pen irq interrupt for touch detection, signal from X plate
--- pinctrl-names: "idle", "default"
--- pinctrl-0: pinctrl node for pen/touch detection, pinctrl must provide
--    pull-up resistor on X+, X-.
--- pinctrl-1: pinctrl node for X/Y and pressure measurement (ADC) state pinmux
--- vf50-ts-min-pressure: pressure level at which to stop measuring X/Y values
--
--Example:
--
--	touchctrl: vf50_touchctrl {
--		compatible = "toradex,vf50-touchscreen";
--		io-channels = <&adc1 0>,<&adc0 0>,
--				<&adc0 1>,<&adc1 2>;
--		xp-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
--		xm-gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;
--		yp-gpios = <&gpio0 12 GPIO_ACTIVE_LOW>;
--		ym-gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
--		interrupt-parent = <&gpio0>;
--		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
--		pinctrl-names = "idle","default";
--		pinctrl-0 = <&pinctrl_touchctrl_idle>, <&pinctrl_touchctrl_gpios>;
--		pinctrl-1 = <&pinctrl_touchctrl_default>, <&pinctrl_touchctrl_gpios>;
--		vf50-ts-min-pressure = <200>;
--	};
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/toradex,vf50.yaml b/Documentation/devicetree/bindings/input/touchscreen/toradex,vf50.yaml
+diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml
 new file mode 100644
-index 0000000000000..cdf6c073dcb8c
+index 0000000000000..db446dde68420
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/input/touchscreen/toradex,vf50.yaml
-@@ -0,0 +1,78 @@
++++ b/Documentation/devicetree/bindings/net/can/microchip,mcp2510.yaml
+@@ -0,0 +1,70 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/input/touchscreen/toradex,vf50.yaml#
++$id: http://devicetree.org/schemas/can/microchip,mcp2510.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Toradex Colibri VF50 Touchscreen
++title: Microchip MCP251X stand-alone CAN controller
 +
 +maintainers:
-+  - Dmitry Torokhov <dmitry.torokhov@gmail.com>
-+  - Sanchayan Maity <maitysanchayan@gmail.com>
++  - Marc Kleine-Budde <mkl@pengutronix.de>
 +
 +properties:
 +  compatible:
-+    const: toradex,vf50-touchscreen
++    enum:
++      - microchip,mcp2510
++      - microchip,mcp2515
++      - microchip,mcp25625
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
 +
 +  interrupts:
 +    maxItems: 1
 +
-+  io-channels:
-+    maxItems: 4
-+    description:
-+      adc channels being used by the Colibri VF50 module
-+      IIO ADC for Y-, X-, Y+, X+ connections
++  vdd-supply:
++    description: Regulator that powers the CAN controller.
 +
-+  xp-gpios:
-+    description: FET gate driver for input of X+
++  xceiver-supply:
++    description: Regulator that powers the CAN transceiver.
 +
-+  xm-gpios:
-+    description: FET gate driver for input of X-
++  gpio-controller: true
 +
-+  yp-gpios:
-+    description: FET gate driver for input of Y+
-+
-+  ym-gpios:
-+    description: FET gate driver for input of Y-
-+
-+  vf50-ts-min-pressure:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 50
-+    maximum: 2000
-+    description: pressure level at which to stop measuring X/Y values
++  "#gpio-cells":
++    const: 2
 +
 +required:
 +  - compatible
-+  - io-channels
-+  - xp-gpios
-+  - xm-gpios
-+  - yp-gpios
-+  - ym-gpios
++  - reg
++  - clocks
 +  - interrupts
-+  - vf50-ts-min-pressure
 +
 +allOf:
-+  - $ref: touchscreen.yaml#
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
 +
 +unevaluatedProperties: false
 +
 +examples:
 +  - |
 +    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/gpio/gpio.h>
 +
-+    touchscreen {
-+        compatible = "toradex,vf50-touchscreen";
-+        interrupt-parent = <&gpio0>;
-+        interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
-+        io-channels = <&adc1 0>, <&adc0 0>, <&adc0 1>, <&adc1 2>;
-+        xp-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
-+        xm-gpios = <&gpio2 29 GPIO_ACTIVE_HIGH>;
-+        yp-gpios = <&gpio0 12 GPIO_ACTIVE_LOW>;
-+        ym-gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
-+        pinctrl-names = "idle", "default";
-+        pinctrl-0 = <&pinctrl_touchctrl_idle>, <&pinctrl_touchctrl_gpios>;
-+        pinctrl-1 = <&pinctrl_touchctrl_default>, <&pinctrl_touchctrl_gpios>;
-+        vf50-ts-min-pressure = <200>;
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        can@1 {
++             compatible = "microchip,mcp2515";
++             reg = <1>;
++             clocks = <&clk24m>;
++             interrupt-parent = <&gpio4>;
++             interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
++             vdd-supply = <&reg5v0>;
++             xceiver-supply = <&reg5v0>;
++             gpio-controller;
++             #gpio-cells = <2>;
++        };
 +    };
 +
+diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt b/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
+deleted file mode 100644
+index 381f8fb3e865a..0000000000000
+--- a/Documentation/devicetree/bindings/net/can/microchip,mcp251x.txt
++++ /dev/null
+@@ -1,30 +0,0 @@
+-* Microchip MCP251X stand-alone CAN controller device tree bindings
+-
+-Required properties:
+- - compatible: Should be one of the following:
+-   - "microchip,mcp2510" for MCP2510.
+-   - "microchip,mcp2515" for MCP2515.
+-   - "microchip,mcp25625" for MCP25625.
+- - reg: SPI chip select.
+- - clocks: The clock feeding the CAN controller.
+- - interrupts: Should contain IRQ line for the CAN controller.
+-
+-Optional properties:
+- - vdd-supply: Regulator that powers the CAN controller.
+- - xceiver-supply: Regulator that powers the CAN transceiver.
+- - gpio-controller: Indicates this device is a GPIO controller.
+- - #gpio-cells: Should be two. The first cell is the pin number and
+-                the second cell is used to specify the gpio polarity.
+-
+-Example:
+-	can0: can@1 {
+-		compatible = "microchip,mcp2515";
+-		reg = <1>;
+-		clocks = <&clk24m>;
+-		interrupt-parent = <&gpio4>;
+-		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
+-		vdd-supply = <&reg5v0>;
+-		xceiver-supply = <&reg5v0>;
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-	};
 -- 
 2.34.1
 
