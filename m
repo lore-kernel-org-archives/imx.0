@@ -1,99 +1,194 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA46D149E1D
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 09:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048DC19FA81
+	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 10:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723627648; cv=none; b=MrAeHcn9q/N4DcCo9Wt2mqifauwC3WeeTvS0P6wSCEHdAZIwE/SXmXoxnxgVKXrzafZbb6gS/eLeNz/fSgHIk4cV1RoWcYZnEbKw+9dprRC4C27gUiHJDC3CY5RY9o1naEpp3ZdTC+6NsfF3+ZJaTW3kBntzsJOJQ4Y3Sp0BkMY=
+	t=1723629764; cv=none; b=GWuUwK9uI3Waj4xRfNYMVhi644nL5l8OvMnWr4/FBegtkaoGuvVXgs1naJ/B1NxqIjbDATwlD0zo2nKNfN8knmiQxg3oxTVuus6t47HULgY8Asj+PQlkwbFUwZEu+Q8IkkMZYHW0GFq9dF3RBEyXn9UBQAisZrWEnSjuUMhvWeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723627648; c=relaxed/simple;
-	bh=V4xR8HJBOjRNzq85JAVbW/MSGd6Vjw3RnTNYP4qg0zs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ajNNTpyoeyau36olHvUmJ3RfjN2YAyP3GKg0byJlUlG6N0EtqBO5fZS0FspOVlIH19nsvtn1d9s7+er+pjW9gdkX/f/xYtnFGmNhefgaS4ImuuvnLvfAvnb5LT7RIQ+gb9I6VvIXr9gffVa90WJfqBl+e/I32jxaeD2HwhEL1zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=eBFhzp/h; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1723629764; c=relaxed/simple;
+	bh=Psc/jzJBEE/vSR0q6Y8fY6UqWBMcUESkQNgpQu40Y/U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qKKdkPC1Sw57oDRtRRXuUZVkLjt2KwA5IF8M2iFnrfDmEinvtU0EBZnzBwgXtkGkvYGYxw8xHITZ9zNKQviOZXVGC3t6KNEO+SHuw/lgyv2xQUL3QrgaTIUldTazoSdFTDNPQ134ikhMJJxKIpQr5hR4MswmAlqigVBoLaC0dv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=dzBk4iJ1; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LsHZ/+hB reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="eBFhzp/h"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1723627639; x=1726219639;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=V4xR8HJBOjRNzq85JAVbW/MSGd6Vjw3RnTNYP4qg0zs=;
-	b=eBFhzp/huzQIIR7FDW/Bw6e3g9WMr9BnXlvvsn0wpiMjtZyd+iNP8+d2gIAzoUSn
-	f5oyo/pG1KLg/L/a/cd+EnWizer3gXRBvnJRQRgepPxcxjmy6EH9olTheONuCmUA
-	p5LyblyqyDz6WfPNDf/EH0msqYT5OcF5a3f7ZCvVmnI=;
-X-AuditID: ac14000a-03e52700000021bc-db-66bc787607ac
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 17.64.08636.6787CB66; Wed, 14 Aug 2024 11:27:19 +0200 (CEST)
-Received: from lws-moog.phytec.de (172.25.0.11) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 14 Aug
- 2024 11:27:18 +0200
-From: Yannic Moog <y.moog@phytec.de>
-Date: Wed, 14 Aug 2024 11:26:38 +0200
-Subject: [PATCH 3/3] arm64: dts: imx8mm-phygate-tauri-l: add rtc
- aux-voltage-chargeable
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="dzBk4iJ1";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LsHZ/+hB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723629761; x=1755165761;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BPZGFRB2PA0ZD8ZK7tgrErfEO8CEIAAq2TrYxTVlHy4=;
+  b=dzBk4iJ1pWwY9uJ2U2bl/EVYArm5FUVmwWvBzjYaTyZXA/pY3pOGvyrj
+   INspLzHBBNaFdrRM2S198nX+FHzPmIvPIHSwFQN/SaJdGQOad1KEpmkRQ
+   5sr0KnC9umFXPK87NCTM6kLHB202JNlLgyhOA+4KEExK0VmF/XWtOVdSq
+   Zxb1cnZ1dLAOiE6k0IpS5ru32qoC0GTcbP/3mJo2fpybG18ULZpQoP97m
+   VO/7Qz7cxtkQFomWYjFi+kWtZCRR0NDMJ8dnHafT3sTxXwV1lRdU+t8fY
+   bWPaImdefNxgWy5LYRF0FAzggTloCqr9aIqMmFjuT6rQXd4jkliW3dNGr
+   A==;
+X-CSE-ConnectionGUID: q9Y498GFSn+pS8/MSYDnVQ==
+X-CSE-MsgGUID: q2l4OOwzRByh9FrgiI6jxQ==
+X-IronPort-AV: E=Sophos;i="6.09,145,1716242400"; 
+   d="scan'208";a="38404410"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 14 Aug 2024 12:02:33 +0200
+X-CheckPoint: {66BC80B9-9-E9ED6009-C4B0BEC8}
+X-MAIL-CPID: 332DE6BABCAAD2E2420EAA204B3F0B90_3
+X-Control-Analysis: str=0001.0A782F19.66BC80B9.00C6,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C55D167CFB;
+	Wed, 14 Aug 2024 12:02:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723629748;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=BPZGFRB2PA0ZD8ZK7tgrErfEO8CEIAAq2TrYxTVlHy4=;
+	b=LsHZ/+hBOPdj+T7j1Crt+UhX70ljQhFNIDmyMr22Vhz/UeKeG/MzniDdnOECAMrTtYsIjS
+	Po34qjZ2p21NHVoW339yr4s7ZNtLL6lP7rv+OTfrPCkC3/2z4NuSg9YYI+3id3xA0yuU9Q
+	wMTnkPEGb63kwQShOt7kbF7v7vqO0bY1U6t/02oFm92Owt8sHn95QARWCPFHdWWn1dKvBj
+	nr9kufVwIOxuLefylAo738+08rt7tjd2DL0uXhXxB3wzbsBtujYPsEfifEWCjFnlMchThR
+	XWc7MX6jM+jmXTQm/wAklS7YO/4ve2AYmRr9mncLRMjUOHpw3RE7ZPBo4Va6Ag==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH v3] arm64: dts: imx8mp: Add DT nodes for the two ISPs
+Date: Wed, 14 Aug 2024 12:02:26 +0200
+Message-ID: <5809346.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240813234004.17807-1-laurent.pinchart@ideasonboard.com>
+References: <20240813234004.17807-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240814-b4-phytec_imx8m_rtc_updates-v1-3-10f1afc1b3ad@phytec.de>
-References: <20240814-b4-phytec_imx8m_rtc_updates-v1-0-10f1afc1b3ad@phytec.de>
-In-Reply-To: <20240814-b4-phytec_imx8m_rtc_updates-v1-0-10f1afc1b3ad@phytec.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<upstream@lists.phytec.de>, Yannic Moog <y.moog@phytec.de>
-X-Mailer: b4 0.14.1
-X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
- (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRmVeSWpSXmKPExsWyRpKBR7e8Yk+awb9sizV7zzFZzD9yjtXi
-	4VV/i5n3WtksVk3dyWLxctY9NotNj6+xWlzeNYfN4v+eHewWf7dvYrF4sUXcovudugOPx85Z
-	d9k9Nq3qZPPYvKTe48XmmYwe/d0trB79fw08Pm+SC2CP4rJJSc3JLEst0rdL4Mp4t2oze8FJ
-	1or5n9+xNzA+Zeli5OSQEDCROL1lHlMXIxeHkMASJonnVzYzQjgPGSWm9vYyglSxCahIPH5x
-	j7WLkYODRUBVYvosc5CwsECkxM+3fcwgNq+AoMTJmU9YQEqYBTQl1u/SBwkzC8hLbH87B6rE
-	T+LqowvMICVCQPbn+UIgYU4Bf4m/XXfZQbaKCExikjh67QQjRO9+Rom5t5Ig7hSW+Lx7DRuI
-	LSQgK/HifC87RFxeYtq518wQdqjE1i/bmSYwCs1CctEshItmIbloASPzKkah3Mzk7NSizGy9
-	gozKktRkvZTUTYygKBJh4NrB2DfH4xAjEwfjIUYJDmYlEd5Ak11pQrwpiZVVqUX58UWlOanF
-	hxilOViUxHlXdwSnCgmkJ5akZqemFqQWwWSZODilGhhb3hxyfiz9t2YO9yTz/9dvtIuVvdxc
-	9ZmZ98O643GM/s4B320Vt6Y/d9QUv8t15Wqj+z4Jtq1COv9iudM5+H6l2c995t+ul9BV0Xs5
-	vJp7TXynw9a3qQ+/ixzW/XDtPXtmd2J6adxC6+5nbzM2hPT+FDyxMXVfoC7DjXz1zh6zJ7Y3
-	U+q5dZVYijMSDbWYi4oTAfE1xziQAgAA
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-phygate-tauri-l has a chargable capacitor populated, rtc supports
-charging it. Add property indicating this.
+Hi Laurent,
 
-Signed-off-by: Yannic Moog <y.moog@phytec.de>
----
- arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts | 1 +
- 1 file changed, 1 insertion(+)
+thanks for the patch.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-index ba6ce3c7f477..c3835b2d860a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l.dts
-@@ -215,6 +215,7 @@ &pwm4 {
- 
- /* RTC */
- &rv3028 {
-+	aux-voltage-chargeable = <1>;
- 	trickle-resistor-ohms = <3000>;
- };
- 
+Am Mittwoch, 14. August 2024, 01:40:04 CEST schrieb Laurent Pinchart:
+> From: Paul Elder <paul.elder@ideasonboard.com>
+>=20
+> The ISP supports both CSI and parallel interfaces, where port 0
+> corresponds to the former and port 1 corresponds to the latter. Since
+> the i.MX8MP's ISPs are connected by the parallel interface to the CSI
+> receiver, set them both to port 1.
+>=20
+> Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Tested-by: Adam Ford <aford173@gmail.com> # imx8mp-beacon
+> ---
+> Changes since v2:
+>=20
+> - Assign clock parent and frequency in blk-ctrl
+>=20
+> Changes since v1:
+>=20
+> - Fix clock ordering
+> - Add #address-cells and #size-cells to ports nodes
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 51 ++++++++++++++++++++++-
+>  1 file changed, 49 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index d9b5c40f6460..09f1e27ee220 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1673,6 +1673,50 @@ isi_in_1: endpoint {
+>  				};
+>  			};
+> =20
+> +			isp_0: isp@32e10000 {
+> +				compatible =3D "fsl,imx8mp-isp";
+> +				reg =3D <0x32e10000 0x10000>;
+> +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> +				clock-names =3D "isp", "aclk", "hclk";
+> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
+> +				status =3D "disabled";
+> +
+> +				ports {
+> +					#address-cells =3D <1>;
+> +					#size-cells =3D <0>;
+> +
+> +					port@1 {
+> +						reg =3D <1>;
+> +					};
+> +				};
+> +			};
+> +
+> +			isp_1: isp@32e20000 {
+> +				compatible =3D "fsl,imx8mp-isp";
+> +				reg =3D <0x32e20000 0x10000>;
+> +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> +				clock-names =3D "isp", "aclk", "hclk";
+> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
+> +				status =3D "disabled";
+> +
+> +				ports {
+> +					#address-cells =3D <1>;
+> +					#size-cells =3D <0>;
+> +
+> +					port@1 {
+> +						reg =3D <1>;
+> +					};
+> +				};
+> +			};
+> +
+>  			dewarp: dwe@32e30000 {
+>  				compatible =3D "nxp,imx8mp-dw100";
+>  				reg =3D <0x32e30000 0x10000>;
+> @@ -1873,13 +1917,16 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
+>  						  <&clk IMX8MP_CLK_MEDIA_APB>,
+>  						  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
+>  						  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+> +						  <&clk IMX8MP_CLK_MEDIA_ISP>,
+>  						  <&clk IMX8MP_VIDEO_PLL1>;
+>  				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
+>  							 <&clk IMX8MP_SYS_PLL1_800M>,
+>  							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> -							 <&clk IMX8MP_VIDEO_PLL1_OUT>;
+> +							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> +							 <&clk IMX8MP_SYS_PLL2_500M>;
+>  				assigned-clock-rates =3D <500000000>, <200000000>,
+> -						       <0>, <0>, <1039500000>;
+> +						       <0>, <0>, <0>, <500000000>,
+> +						       <1039500000>;
 
--- 
-2.34.1
+Isn't this one '<0>' too much? <500000000> is for IMX8MP_CLK_MEDIA_ISP, rig=
+ht?
+
+Best regards,
+Alexander
+
+>  				#power-domain-cells =3D <1>;
+> =20
+>  				lvds_bridge: bridge@5c {
+>=20
+> base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
