@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF6A1B3F16;
-	Wed, 14 Aug 2024 15:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B25D1B0137;
+	Wed, 14 Aug 2024 15:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723648125; cv=none; b=S1g2V+a1yxe6hMalcVkz5ni4yWKOykV/HsMPVawb3U5TnoNP/ebaZjb0hjjmzYNeUTv1MTIrbrgvsHs2lS2XOvUNKZ4D+nglSlBEpOJRL4ZkB1IzW5DpZTplyXGSBcNHImgwBA9A4/DHCp8I4TuQF9sB5j76p/pHb8U8SZtplXE=
+	t=1723648144; cv=none; b=G5Vx7V7/WYltpR8rLjbB/riqloK/NAs5vmn0hneh3b9IgZqrTpvfXjGwpKwxsYUgimB/cjqkCAEh2ndkZmE/J5I4h/R8Q6+/nigvppDhRcqdkKDXsRVodvzg/e8AlCepAQ3UWbGm3pqvZASX08gbaubyZdo83Nb4THxDpK35Vh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723648125; c=relaxed/simple;
-	bh=SZvyVh2V1+4Gp3vIv3/ZLR/kKe+e0kZautaIVLfreuE=;
+	s=arc-20240116; t=1723648144; c=relaxed/simple;
+	bh=yuzvoYW5hMVJmuA2M/owyb7n3Qwxoo6XkixkOfYXVOE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ezkWAKihM7+27FnD6goLsTtIC4/4WndiRHnEmgu9JLbizSnDg+YRBFv/NMSzPDFWu9uOCKngaI5Bnc7DHLHj4omy3K5ArS/+G9wUtWPYrhaQvo0/DVL3mUzTqHO9E0+OXMIU+qFekkZgmbxzd3JzVTkNaRli5rl3i8YtMIqqbH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNjUEmDn; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=ObVHwHRdgRvaQx8397P51DpwaTxYnKUDNMVHJI3QlIBV1AlsQkjA1+SjyIlYNOjISp3es24AqsNq3Nk4GxBEjFkXuU7UYNewBVW78ZEsIwzJAeV69j28DDU5ItUngiqCPPHgQBfOOQqrILU6iX4GXUYfjk0NRhBStrvTaX6WfiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDslpopL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNjUEmDn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A0EC4AF09;
-	Wed, 14 Aug 2024 15:08:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDslpopL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13338C116B1;
+	Wed, 14 Aug 2024 15:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723648124;
-	bh=SZvyVh2V1+4Gp3vIv3/ZLR/kKe+e0kZautaIVLfreuE=;
+	s=k20201202; t=1723648143;
+	bh=yuzvoYW5hMVJmuA2M/owyb7n3Qwxoo6XkixkOfYXVOE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YNjUEmDn1mSsXlW/vGysPxmLdl/k49FLh++MxjVDBMS8pojXhJV6U27kXmg8FPgZ1
-	 iOBGUVuHmn3TJzxH2AHnAiKHRc7EcjVBE8jT1uBwJfu0L+chrwolPAfiyhrl3bVoPE
-	 XQ8+yXPc3NTuCx3tCZmjE+5Prh+36faaWO4S1xM6iWs4sFugqPbcifmhW79l1ltWh/
-	 X2M7NyA+sUrNrRA8MStAPuI8nhEMPDXPsctEnhLDWiuuYBN2VXCDSVtWF1xr+x45HY
-	 8yMMXbC11feG52qEjwb3nTNJHqHpFeEfFkZufoWWba6KSjbMWnrCCOoS7Invj+6DTs
-	 tgitiDVb8VddA==
-Message-ID: <aac5ccf6-1b11-4ae8-857e-b344e0752212@kernel.org>
-Date: Wed, 14 Aug 2024 17:08:38 +0200
+	b=PDslpopLHnk22LqpQ9SbfGge2Lp9Bwvy2eq4Ti+5K+T8JL2916+qpTWeE4/fJbPu1
+	 OveKtCOpEJ95eSn+Bm9Yfo6czfGXMFZEtkzcN1KIi0FY0xWgrHBOXKmPdsSMa9CcIV
+	 o3jtNY6aOqMyfaI2boNA9kXopQ9109lir/Yajl2K5telaUeD+nMVC/bU19+C+XNRN8
+	 JQAZAWEtEpGFv6OnH0Xu6UcgakQwwVYSfLcu5rrucJohAD4sPiOm4WAEI+iEP7a24r
+	 IeTASfORlfqKHxiSSAWUVnJOQNOKeOHrQP2UQgrgjlhc4292XKc7GVGMpPeLNnNTlE
+	 iIXe//0wZ2HSg==
+Message-ID: <117dd6f3-8829-4000-a05b-6cb421ca7de6@kernel.org>
+Date: Wed, 14 Aug 2024 17:08:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -96,6 +96,16 @@ Content-Transfer-Encoding: 7bit
 
 On 14/08/2024 16:49, Tarang Raval wrote:
 > This adds the following peripherals support for the Emtop i.MX8M Mini Baseboard
+
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
+
+Please do not use "This commit/patch/change", but imperative mood. See
+longer explanation here:
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+
+
 > 	* Wi-Fi
 > 	* Audio
 > 	* SD card
@@ -109,297 +119,6 @@ On 14/08/2024 16:49, Tarang Raval wrote:
 >  .../boot/dts/freescale/imx8mm-emtop-som.dtsi  |   1 +
 >  2 files changed, 348 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
-> index 7d2cb74c64ee..5ce8f21a0b1b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
-> @@ -11,6 +11,129 @@ / {
->  	model = "Emtop Embedded Solutions i.MX8M Mini Baseboard V1";
->  	compatible = "ees,imx8mm-emtop-baseboard", "ees,imx8mm-emtop-som",
->  		"fsl,imx8mm";
-> +
-> +	extcon_usb: extcon_usb1otg {
-
-Does not look like this follows DTS coding style.
-
-Also, use generic node name - see other boards.
-
-> +	        compatible = "linux,extcon-usb-gpio";
-> +	        pinctrl-names = "default";
-> +	        pinctrl-0 = <&pinctrl_extcon_usb>;
-> +	        id-gpio = <&gpio1 10 GPIO_ACTIVE_HIGH>;
-> +	        enable-gpio = <&gpio1 12 GPIO_ACTIVE_LOW>;
-> +	};
-> +
-> +	modem_reset: modem-reset {
-> +	        compatible = "gpio-reset";
-> +	        reset-gpios = <&gpio2 6 GPIO_ACTIVE_LOW>;
-> +	        reset-delay-us = <2000>;
-> +	        reset-post-delay-ms = <40>;
-> +	        #reset-cells = <0>;
-> +	};
-> +
-> +	leds {
-> +		compatible = "gpio-leds";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_gpio_led>;
-> +
-> +		beep {
-
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
-
-> +		        label = "beep";
-> +		        gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-> +		        default-state = "off";
-> +		};
-> +
-> +		canbus_reset {
-
-Really, no underscores...
-
-> +			label = "canbus_reset";
-> +			gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
-> +			default-state = "on";
-> +		};
-> +	};
-> +
-> +	osc_can: clock-osc-can {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <16000000>;
-> +		clock-output-names = "osc-can";
-> +	};
-> +
-> +	regulators {
-> +		compatible = "simple-bus";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-
-This is not a bus. No.
-
-> +
-> +		reg_audio: regulator-audio-vdd {
-> +		        compatible = "regulator-fixed";
-> +		        regulator-name = "wm8904_supply";
-> +		        regulator-min-microvolt = <1800000>;
-> +		        regulator-max-microvolt = <1800000>;
-> +		        regulator-always-on;
-> +		};
-> +
-> +		reg_wifi_vmmc: regulator@1 {
-
-Heh? @1? What sort of bus is it?
-
-> +			compatible = "regulator-fixed";
-> +			regulator-name = "vmmc";
-> +			regulator-min-microvolt = <3300000>;
-> +			regulator-max-microvolt = <3300000>;
-> +			gpio = <&gpio2 10 GPIO_ACTIVE_HIGH>;
-> +			off-on-delay = <20000>;
-> +			startup-delay-us = <100>;
-> +		        enable-active-high;
-> +		};
-> +	};
-> +
-> +	sound-wm8904 {
-> +	        compatible = "simple-audio-card";
-> +	        simple-audio-card,bitclock-master = <&dailink_master>;
-> +	        simple-audio-card,format = "i2s";
-> +	        simple-audio-card,frame-master = <&dailink_master>;
-> +	        simple-audio-card,name = "wm8904-audio";
-> +	        simple-audio-card,mclk-fs = <256>;
-> +	        simple-audio-card,routing =
-> +			"Headphone Jack", "HPOUTL",
-> +			"Headphone Jack", "HPOUTR",
-> +			"IN2L", "Line In Jack",
-> +			"IN2R", "Line In Jack",
-> +			"Headphone Jack", "MICBIAS",
-> +			"IN1L", "Headphone Jack";
-> +
-> +	        simple-audio-card,widgets =
-> +	                "Microphone","Headphone Jack",
-> +	                "Headphone", "Headphone Jack",
-> +	                "Line", "Line In Jack";
-> +
-> +	        dailink_master: simple-audio-card,codec {
-> +	                sound-dai = <&wm8904>;
-> +	        };
-> +
-> +	        simple-audio-card,cpu {
-> +	                sound-dai = <&sai3>;
-> +	        };
-> +	};
-> +
-> +	sound-spdif {
-> +	        compatible = "fsl,imx-audio-spdif";
-> +	        model = "imx-spdif";
-> +	        spdif-controller = <&spdif1>;
-> +	        spdif-out;
-> +	        spdif-in;
-> +	};
-> +
-
-Drop blank line.
-
-> +};
-> +
-> +/* CAN BUS */
-> +&ecspi2 {
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_ecspi2>;
-> +        status = "okay";
-> +
-> +        canbus: mcp2515@0 {
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-
-> +                compatible = "microchip,mcp2515";
-> +                pinctrl-names = "default";
-> +                pinctrl-0 = <&pinctrl_canbus>;
-> +                reg = <0>;
-> +                clocks = <&osc_can>;
-> +                interrupt-parent = <&gpio1>;
-> +                interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
-> +                spi-max-frequency = <10000000>;
-> +                status = "okay";
-
-Drop.
-
-> +        };
->  };
->  
->  &fec1 {
-> @@ -40,7 +163,130 @@ vddio: vddio-regulator {
->  	};
->  };
->  
-> +&i2c3 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_i2c3>;
-> +	status = "okay";
-> +
-> +	rx8025: rtc@32 {
-> +		compatible = "rx8025";
-> +		reg = <0x32>;
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-
-> +	};
-> +
-> +	wm8904: wm8904@1a {
-> +		compatible = "wlf,wm8904";
-> +		reg = <0x1a>;
-> +		#sound-dai-cells = <0>;
-> +		clocks = <&clk IMX8MM_CLK_SAI3_ROOT>;
-> +		clock-names = "mclk";
-> +		DCVDD-supply = <&reg_audio>;
-> +		DBVDD-supply = <&reg_audio>;
-> +		AVDD-supply = <&reg_audio>;
-> +		CPVDD-supply = <&reg_audio>;
-> +		MICVDD-supply = <&reg_audio>;
-> +		status = "okay";
-
-Where is it disabled?
-
-> +	};
-> +};
-> +
-> +/* AUDIO */
-> +&sai3 {
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_sai3>;
-> +        assigned-clocks = <&clk IMX8MM_CLK_SAI3>;
-> +        assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-> +        assigned-clock-rates = <24576000>;
-> +        status = "okay";
-> +};
-> +
-> +&spdif1 {
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&pinctrl_spdif1>;
-> +        assigned-clocks = <&clk IMX8MM_CLK_SPDIF1>;
-> +        assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-> +        assigned-clock-rates = <24576000>;
-> +        clocks = <&clk IMX8MM_CLK_AUDIO_AHB>, <&clk IMX8MM_CLK_24M>,
-> +                <&clk IMX8MM_CLK_SPDIF1>, <&clk IMX8MM_CLK_DUMMY>,
-> +                <&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_CLK_DUMMY>,
-> +                <&clk IMX8MM_CLK_AUDIO_AHB>, <&clk IMX8MM_CLK_DUMMY>,
-> +                <&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_CLK_DUMMY>,
-> +                <&clk IMX8MM_AUDIO_PLL1_OUT>, <&clk IMX8MM_AUDIO_PLL2_OUT>;
-> +        clock-names = "core", "rxtx0", "rxtx1", "rxtx2", "rxtx3",
-> +                "rxtx4", "rxtx5", "rxtx6", "rxtx7", "spba", "pll8k", "pll11k";
-> +        status = "okay";
-> +};
-> +
-> +/* Wifi */
-> +&usdhc1 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_usdhc1_gpio>;
-> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_usdhc1_gpio>;
-> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_usdhc1_gpio>;
-> +	bus-width = <4>;
-> +	vmmc-supply = <&reg_wifi_vmmc>;
-> +	pm-ignore-notify;
-> +	cap-power-off-card;
-> +	keep-power-in-suspend;
-> +	non-removable;
-> +	status = "okay";
-> +
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	brcmf: brcmf@1 {
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +		compatible = "brcm,bcm4329-fmac";
-> +		reg = <1>;
-> +		interrupt-parent = <&gpio2>;
-> +		interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
-> +		interrupt-names = "host-wake";
-> +	};
-> +};
-> +
-> +/* SD-card */
-> +&usdhc2 {
-> +        pinctrl-names = "default";      /* "state_100mhz", "state_200mhz"; */
-> +        pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-> +        pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-> +        pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-> +        cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-> +        bus-width = <4>;
-> +        status = "okay";
-> +};
-> +
-> +/* USBOTG */
-> +&usbotg1 {
-
-Ordering looks odd. 'b' is before 'd'.
-
-
-> +	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-
-Do not upstream your code from vendor kernel directly. You *MUST* clean
-it up from all downstream junk.
-
-
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
 
 
 
