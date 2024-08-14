@@ -1,43 +1,44 @@
 Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A376148311
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F319D148FE3
 	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 09:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723627607; cv=none; b=Tbm9OQNBqwMnXu99qLSRigNV6aolslTazw80ksIX5ijc+oVemKQoSKA02yrd4ZyzSOLJUXE1/4m4p9mUPXYwoRPTLy5rwTmedj3K8mDb9ZLLVKIaCY8MImEhMR0hS3lLEDRhqJ1nF4hT3DTEdiBbHADFd3GG+jrbV7+E6MA85U0=
+	t=1723627607; cv=none; b=RlFvvVgC+LeUF9W0eKhBfjWz506FH4jiX2AKxfvtGs5yBTGR69MEGJ2josaOahTC5MmxyBSKJ6TXrzGI5ig+dDF3Okavq4hlMxk0p3NRXIPd8AUwli2ShsD3QFgAEFct4yESoiLDDKK3QQjdRiZzOezistWAujzSIFNgq5UQ7Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723627607; c=relaxed/simple;
-	bh=du3T0NbhpWxdJIqDk4B2apIvrigUhtDvY/L1kMGtLvs=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=gcREaHEe8YO+nVgR1YIefpQv95JTXksJKORo7Sks3A+pr9I4OxY3zjO2bbCRtJO2ovcHXOkkTbcdq+grBbLIVQOL1tzvP6uPWPjRZ3GpcjqvHgMKNfxXwYhFwkPAqHa5bLjK2KWme5K74wBFoFuIxKKgrryWhV3h6yD4tDCorC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=fh5R4q0u; arc=none smtp.client-ip=91.26.50.163
+	bh=LDfee/0hzCfU3XzMAT277mwZLvQvqiV+j8Fggew9fb4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=PggUNZ97vErAH1odnrZd0sDdq4P4loH3Uqt5QdUvYdOzQKRsgyKvpAThAPkWBm96kJGAaCx4t4dRKsZZZ67d/sy5dU0TucWDqoCYiHsE7klMgGN9aThKA+L3exRt9S9y2vheENHvHe3vJ6WuKwuEFlDyv/9jc25RtCuK/m+Q3wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=K4UXvkwY; arc=none smtp.client-ip=91.26.50.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="fh5R4q0u"
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="K4UXvkwY"
 DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
 	q=dns/txt; i=@phytec.de; t=1723627599; x=1726219599;
 	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=du3T0NbhpWxdJIqDk4B2apIvrigUhtDvY/L1kMGtLvs=;
-	b=fh5R4q0uyt+w6TdzwgKolme9mObFOmP621bggGUSsJ1EZ2y0kPbnZV613ADm0EnV
-	93JkXOsybQ27sV/CQfbMuUgx7vsq/2Cz5/nCZ8eILCL8OIPPIASWD51xIRmaM9JT
-	IkazQCahnzbiV0miIJIsNMDGwTLN/CwrM4mAsaCWXUU=;
-X-AuditID: ac14000a-03e52700000021bc-b8-66bc784f7bdd
+	bh=LDfee/0hzCfU3XzMAT277mwZLvQvqiV+j8Fggew9fb4=;
+	b=K4UXvkwY0iiC4HB3jjaLB/1NHHDW9VI4pRP/Gip/r/+O7nRozFA3F06YHU0Zh7Bb
+	asgimrW1eEQm5p8w2Rdeiy+baDnupigmTMJmD7raQhUYYyx32hP2pNZq0xF8Y9PK
+	bXKAeeJgZ6qOClFaY5vHeBujsiWk7rMKI9boOBDlGQ4=;
+X-AuditID: ac14000a-03251700000021bc-bc-66bc784f4966
 Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
 	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id B5.54.08636.F487CB66; Wed, 14 Aug 2024 11:26:39 +0200 (CEST)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 38.54.08636.F487CB66; Wed, 14 Aug 2024 11:26:39 +0200 (CEST)
 Received: from augenblix2.phytec.de (172.25.0.11) by Berlix.phytec.de
  (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 14 Aug
- 2024 11:26:38 +0200
+ 2024 11:26:39 +0200
 From: Teresa Remmet <t.remmet@phytec.de>
-Subject: [PATCH 0/6] arm64: dts phyBOARD-Pollux: Update regulator nodes
-Date: Wed, 14 Aug 2024 11:26:07 +0200
-Message-ID: <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-0-e2500950c632@phytec.de>
+Date: Wed, 14 Aug 2024 11:26:10 +0200
+Subject: [PATCH 3/6] arm64: dts: imx8mp-phyboard-pollux: Add SD-Card vqmmc
+ supply
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,9 +47,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC94vGYC/x3NQQ7CIBBG4as0s3YSKBipVzHG0PJrZ0ElgFrT9
- O4Sl9/mvY0KsqDQudso4y1FnkuDPnQ0zX55gCU0U696q5w2PFr+SOLKGTGicpq/FRMH8FiSxNV
- FNmbob69UaoaPPBh3hA8nq5Wmlk0Zd1n/y8t1339Q88ENggAAAA==
+Message-ID: <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-3-e2500950c632@phytec.de>
+References: <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-0-e2500950c632@phytec.de>
+In-Reply-To: <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-0-e2500950c632@phytec.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
  Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
@@ -60,42 +61,39 @@ CC: Yannic Moog <y.moog@phytec.de>, Benjamin Hahn <b.hahn@phytec.de>,
 X-Mailer: b4 0.14.1
 X-ClientProxiedBy: Florix.phytec.de (172.25.0.13) To Berlix.phytec.de
  (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMLMWRmVeSWpSXmKPExsWyRpKBR9e/Yk+awYZJIhZr9p5jsph/5Byr
-	xcOr/hYz77WyWayaupPF4uWse2wWmx5fY7W4vGsOm8X/PTvYLf5u38Ri8WKLuEX3O3UHHo+d
-	s+6ye2xa1cnmsXlJvceLzTMZPfq7W1g9+v8aeHzeJBfAHsVlk5Kak1mWWqRvl8CVsXRvB2vB
-	D/aKux8mMDYwnmXrYuTkkBAwkdg/9SkLiC0ksIRJ4tCski5GLiD7MaNE49sbrCAJNgENiacr
-	TjN1MXJwCAu4S/xutQMJswioStyf28YCEuYVSJY4sCAOJMwrIChxcuYTsDCzgKbE+l36IGFm
-	AXmJ7W/nMINMlxC4wChx/v8cRhBHRGASk8TRayfAHGaBPiaJzmnn2SGOE5b4vHsNG8Rx8hK7
-	Lp1khIjLS0w795oZwg6VOLJpNdMERsFZSJbPQlg+C8nyBYzMqxiFcjOTs1OLMrP1CjIqS1KT
-	9VJSNzGCIkaEgWsHY98cj0OMTByMhxglOJiVRHgDTXalCfGmJFZWpRblxxeV5qQWH2KU5mBR
-	Eudd3RGcKiSQnliSmp2aWpBaBJNl4uCUamBc1f7nw94Vly5f+Wp5vf/4ZInfPR5ntjYwq/ic
-	vRkhNW+mSkTL3Dthl8Im13/e+Mctgfnvj5eNOsr/p1Q5/Ds0WWqj/46AoydmrV9fyBhuNn/K
-	tUXXsrhU5WvY/Zkbg/X9s0xFk06fqjv4VfPO4/xvP88dmR+/vVtiesabTf/flkVvr06pWz8t
-	R4mlOCPRUIu5qDgRAALzY0aGAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPLMWRmVeSWpSXmKPExsWyRpKBR9e/Yk+aQfMiRYs1e88xWcw/co7V
+	4uFVf4uZ91rZLFZN3cli8XLWPTaLTY+vsVpc3jWHzeL/nh3sFn+3b2KxeLFF3KL7nboDj8fO
+	WXfZPTat6mTz2Lyk3uPF5pmMHv3dLawe/X8NPD5vkgtgj+KySUnNySxLLdK3S+DKWHbNteAd
+	a8XESVeYGxhbWbsYOTgkBEwkJs6s7mLk4hASWMIk8e1LBzuE85hR4uP5wyxdjJwcbAIaEk9X
+	nGYCsVkEVCXubesEs4UFgiV2vZ/CDGLzCghKnJz5hAVkKLOApsT6XfogYWYBeYntb+dAlSRL
+	HJn6jxHEFgKyp0+7C2ZzCqRIXL95DmyviMAkJomj104wgjjMAn1MEp3TzrODVEkICEt83r2G
+	DaJbXmLXpZOMEHF5iWnnXjND2KESRzatZprAKDQLyU2zEG6aheSmBYzMqxiFcjOTs1OLMrP1
+	CjIqS1KT9VJSNzGCIkmEgWsHY98cj0OMTByMhxglOJiVRHgDTXalCfGmJFZWpRblxxeV5qQW
+	H2KU5mBREudd3RGcKiSQnliSmp2aWpBaBJNl4uCUamAMd249EHMioWrGiSc3Pxszi7es236v
+	7hTbo29zZhkd4YixXhd48HtMi5xzzsfn3gc3Twxe/l286c9BIfHA7+pJ0ucOa/9VPHk+bfsS
+	mXVHOZu27axu4zdmvniZi8HqYHxq9xfbK0sEoh8dDloQsXpi8prF28OUW4NmM/E2/mlYsORL
+	WXv/A0FWJZbijERDLeai4kQAg0sUnJICAAA=
 
-Add some fixed regulators based on the phyCORE-i.MX8MP and
-phyBOARD-Pollux-i.MX8MP schematics. Reference existing or new ones
-to the correct nodes.
+Add SD-Card property for the bus IO power from the PMIC.
 
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
-Teresa Remmet (1):
-      arm64: dts: imx8mp-phyboard-pollux: Add SD-Card vqmmc supply
+ arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-Yashwanth Varakala (5):
-      arm64: dts: imx8mp-phycore: Add VDD_IO regulator
-      arm64: dts: imx8mp-phycore: Assign regulator to EEPROM node
-      arm64: dts: imx8mp-phyboard-pollux: Assign regulator to EEPROM node
-      arm64: dts: imx8mp-phyboard-pollux: Add VCC_5V_SW regulator
-      arm64: dts: imx8mp-phyboard-pollux: Add usb3_phy1 regulator reference
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 3427936f9045..341baa167191 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -285,6 +285,7 @@ &usdhc2 {
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+ 	disable-wp;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&ldo5>;
+ 	bus-width = <4>;
+ 	status = "okay";
+ };
 
- arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts | 12 ++++++++++++
- arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi        | 10 ++++++++++
- 2 files changed, 22 insertions(+)
----
-base-commit: 1d43464566cd7dc2f3f078e2ef46b55a5bab6c70
-change-id: 20240813-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-9385ead74101
-
-Best regards,
 -- 
-Teresa Remmet <t.remmet@phytec.de>
+2.25.1
 
