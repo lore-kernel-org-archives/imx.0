@@ -1,85 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF934C62E
-	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 21:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3C078C9C;
+	Thu, 15 Aug 2024 21:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723756566; cv=none; b=K5H+pYubMvsZfyWh1OcS+qqLVax/xrvEI2xASYIglbQ4xQFyVXk9s47UhiSzypmATEPe8KmUtBFNA6enzshlVRxvrRmd+kg173nnQ+ZA75CCVTl5PQGPlGVThgcfbXre46kMUS6jqbTzLve0S6B7c/HnQTRu3n3W9RWLYAuVtEk=
+	t=1723756842; cv=none; b=JFLh9M1zUtewYSLt+78wmlxd5vzQTirLEaHTBIPkFNbQR4IzEm5wj8oVWyutNbkzrPJdmwcYDETheSC4PPxRu4rQ3IeR7KJoMzflQJrZkxl4Bwwusdh9cLuiS2wRfimMMnkEm4TwJeNE61oy1m/NRnsoHQUzDx4gG8Uo/bREtRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723756566; c=relaxed/simple;
-	bh=fVvBMj0UULUZnkQupCpjBG+u2rUcVi7Aqx85RV1nSBU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XTeLo2LqEvyNFaHgd69UIV0dgUk7vgt31DAgwwz1LqbHwpYBKY54/9bcoy/8mcvjIQmxhm9sGIB9nSgnz2bwUjLLjMc1ZhcaHendyl5TcX5Tri5rfE6E1waYvhpyUt2PKOwfqEN8h0Z57WqWYAA8qv0KgKLvevAMKuRwmTqF1xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4Ny6AK6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723756842; c=relaxed/simple;
+	bh=Vy7cKa47Wg/jS0t0tdtyRvzFajGY1CewpFgGa15/um0=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=IPLu37oGae0SKjQWciauwkE7+XUo3cd/QmPnYgHPG65NiCAuMfFBHbedSOPyaF7y8v6WnEK1VyfWuqTkxnR6SMrxEFgLyKS7DZz8mvScatykTnrmMz6x0CJqcufEwu2rlzgrkuAFY2sVVZaauH1gQ1NnUVIk6Mip+XZdFGLh/Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7x5KGay; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4Ny6AK6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672E3C32786
-	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 21:16:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7x5KGay"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EE9C32786;
+	Thu, 15 Aug 2024 21:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723756566;
-	bh=fVvBMj0UULUZnkQupCpjBG+u2rUcVi7Aqx85RV1nSBU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p4Ny6AK6aivo+N0XnPm6uyDgqCJNjYmqDhT+pvKNNKmOKGrHrtexokGziPmJddHUB
-	 GFm0RLOhf2JbzY4lmVPeC7Fb9J1Rp+invGOcSQkNiuzm5E/VXEUI8yX5p1w1tjvq/s
-	 tmrNpELaV2XXsBXs5aUMXqrCz7OaKqm8vn+3XlGKju8SAQZo2iGqij4F/xatZehzZ3
-	 Z9+qgJZ/YoqyVZ7ceI66GG+K6hQvvxYvhSpR4O9U1CzNCbAahxqXMKPORTL/4M1wt+
-	 a9bXFnShPk2QOtZ3pO5ul1powEcEGk8qeA0zvj4W0cT0oh/Jlwa1wk/LYoZ7r7lZI+
-	 i9W2Wu5HaM2sA==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52efd530a4eso2188663e87.0
-        for <imx@lists.linux.dev>; Thu, 15 Aug 2024 14:16:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVQJtj7eIIGSLxj1D2qqPhM9Oxopf2kXBp8HoBW8UyGJG5KX5CZlM2Juq3wYrfCg2A9pV50q/YDzatsZGz7mS/j8GfF
-X-Gm-Message-State: AOJu0YzFDKg2XZWpHl+VMpchk5jWgTSgOqTdiyFHFJafruJpWDVJvLDe
-	KIbxjywBmPQ6Oqu5kcuQPjWDt7Is9KzucxETc4Jb6tb8KgnyrQFbvfO3Mgq6xO2zJJzouqnanDN
-	knashV0Oe2ay7BvhfK8cQh1hQjw==
-X-Google-Smtp-Source: AGHT+IG75J1dLWeE929MrvP/646DHbWXKwwu5k/xY6k1Vbtyh/V0SOpjl2x8t5yUzLueSCvTeDVosBwOzZizLZLnKGg=
-X-Received: by 2002:a05:6512:4019:b0:530:ad9f:8757 with SMTP id
- 2adb3069b0e04-5331c6e3865mr414811e87.45.1723756564740; Thu, 15 Aug 2024
- 14:16:04 -0700 (PDT)
+	s=k20201202; t=1723756841;
+	bh=Vy7cKa47Wg/jS0t0tdtyRvzFajGY1CewpFgGa15/um0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=s7x5KGayWEX6CoYrPwAAPcJK1gvR3zpO6JWbmcljU9KdH8tDfOXOdeKSPf/nkntFh
+	 ykt5FspK+dVqxbJEs34O1mJeZqFmdm5ZNpCvO1w8LnbIPaCR+mN9pJ37lqtLM7AS5A
+	 NzZSWWjdaynUNrumTg5BZf8KJnnUWw9IoUhezeX4x2S/z+D3CmDJUb/ft4r3wpiIBc
+	 MOTq1zeZuNMkLIi/26rfnBONFIn7JiAODw5s7V4SOUZgBnf8R2Odjdac6U109TThxT
+	 kdH1ZdKXh3dyF8w/MhsAmFG95H4IcE/QHTupKUqDFY04Ts/yfhhYQVtordoTq3y1xb
+	 a7hK493UZcFyg==
+Date: Thu, 15 Aug 2024 15:20:40 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240808-mobivel_cleanup-v1-0-f4f6ea5b16de@nxp.com>
- <20240808-mobivel_cleanup-v1-4-f4f6ea5b16de@nxp.com> <20240815155343.GC2562@thinkpad>
-In-Reply-To: <20240815155343.GC2562@thinkpad>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 15 Aug 2024 15:15:52 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+rnUB2pDjf6qFF7ThtSD-C8MMZUrhJmTYKfts34Zhr-A@mail.gmail.com>
-Message-ID: <CAL_Jsq+rnUB2pDjf6qFF7ThtSD-C8MMZUrhJmTYKfts34Zhr-A@mail.gmail.com>
-Subject: Re: [PATCH 4/4] MAINTAINERS: drop NXP LAYERSCAPE GEN4 CONTROLLER
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Zhiqiang.Hou@nxp.com, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Chanwoo Choi <cw00.choi@samsung.com>, 
+ MyungJoo Ham <myungjoo.ham@samsung.com>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20240815203244.96963-1-Frank.Li@nxp.com>
+References: <20240815203244.96963-1-Frank.Li@nxp.com>
+Message-Id: <172375684086.3112792.4682184578952851158.robh@kernel.org>
+Subject: Re: [PATCH v2 1/1] dt-bindings: extcon: ptn5150: add child node
+ port
 
-On Thu, Aug 15, 2024 at 9:53=E2=80=AFAM Manivannan Sadhasivam
-<manivannan.sadhasivam@linaro.org> wrote:
->
-> On Thu, Aug 08, 2024 at 12:02:17PM -0400, Frank Li wrote:
-> > LX2160 Rev1 use mobivel PCIe controller, but Rev2 switch to designware
-> > PCIe controller. Rev2 is mass production chip. Rev1 will not be maintai=
-ned
-> > so drop maintainer information for that.
-> >
->
-> Instead of suddenly removing the code and breaking users, you can just ma=
-rk the
-> driver as 'Obsolete' in MAINTAINERS. Then after some point of time, we co=
-uld
-> hopefully remove.
 
-Is anyone really going to pay attention to that? It doesn't sound like
-there's anyone to really care, and it is the company that made the h/w
-asking to remove it. The only thing people use pre-production h/w for
-once there's production h/w is as a dust collector.
+On Thu, 15 Aug 2024 16:32:44 -0400, Frank Li wrote:
+> Add child node 'port' to allow connect to usb controller to do role-switch.
+> Add example for id pin of ptn5150 have not connect to main chip's usb id
+> pin.
+> 
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dtb: typec@3d: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/extcon/extcon-ptn5150.yaml
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - add example for id pin have not connect to main chip's id example.
+> - commit 095b96b2b fix "port" warning, but add new warning "connector" is
+> not exist. And follow commit revert this change.
+> 690085d866f08 Revert "arm64: dts: imx8mn-var-som-symphony: Describe the USB-C connector
+> - I have not board in hand to debug why "connector" is not work.
+> ---
+>  .../bindings/extcon/extcon-ptn5150.yaml       | 46 +++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
 
-If anyone complains, it's simple enough to revert these patches.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Rob
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/extcon/extcon-ptn5150.example.dtb: usb@32e40000: interrupts: [[4294967295, 0], [40, 4]] is too long
+	from schema $id: http://devicetree.org/schemas/usb/chipidea,usb2-imx.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240815203244.96963-1-Frank.Li@nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
