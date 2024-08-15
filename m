@@ -1,130 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E9014EC51
-	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 21:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC761547DC
+	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 22:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723757480; cv=none; b=EGhhiRN+6dXaVcULd4YjAItLIyzdCIGMKC/x0OuU954EXissBxwazWbv9+SpKeYd081rMZFrjUDsHYMQXdXO8T1zOlW4YlhEek0YNRwjQ+YBDoxe6M+ZWA1MCGfl76At9pZpEBgthQCNKfyq1ygDaepSe0efm5loQnDbwJWU2/Q=
+	t=1723760581; cv=none; b=b5oCreyFEMznQqwL7iO19npRysQtFM4CKxyACEZiN3RJhI56W2U2dfCJ6BYPLRYxywNMF/TVnPbjHUksTHNDyRCYv5IDxhn8DR2El5iiHN4SLVDRgalg9Yuok9qoMlAi6h8m2I9XvTQiX02OY0PzEg9NiU3Xe1a1C2aRunvioBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723757480; c=relaxed/simple;
-	bh=y29BbustoMLewPRt81MfznS0rO4+SLRhzWeXcBj4WPY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r1AhBaKxDz1W82nbIGoZAs/bXkMLBchoaKsHBPA1Zosx658MpSHEez/JoPHKaVuEGnKa6RGu8iW/oLupXfESMVBoCksUQc9ucF/9yYJRmEy+tq8OxqL1wb/kepX+8kwwDU4Ro9EK3kvBWw+2ESDQSfsW7q59TtvQjB/Az83Ih88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nd+2e0yb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723760581; c=relaxed/simple;
+	bh=PFdmgapN2g4RD/uxMXT/UTOpJWmDAeo1UG+kQusjXy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p3qjmydHklsHtYxzizkc4igrWO0kAnM//Qoks2afiGO7nJ0lvkuTu1iiGdX88UhyiaDi4GtifkMMyNv9kizVzeAteqFRujiTr9H9PrGMvzxYkxlEbeytbjRCLeRwqG1lERNQP42eRt30ABMw4OjE2XdpXspGPU3XNCdm/Ttdbpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=sj3xJan1; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nd+2e0yb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F95C4AF11
-	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 21:31:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723757480;
-	bh=y29BbustoMLewPRt81MfznS0rO4+SLRhzWeXcBj4WPY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Nd+2e0ybFtUiqfOGY2DfQV4kzaFOa78aY++ncoQ3Nun01UCeGviI5lhlNMlg+Ka1R
-	 zz2TRUEzfnrqoSHlvII8zMlDVqIm+rd/5SioXwZflr7JkoFf1tD+18OF8FBsG/tuBY
-	 OqalULd4pH23F6Udp/SwbfQNpNup5SOuAxOsEWQnREBx0J/4UjI8G44U6YoFSCZD0d
-	 5e1QhQE62oRfhojuJaCWXO25Vwmkwj9160NRqp91zrmc2UinkKsSmD+lgnVrrkCB5Z
-	 6RKGxcruhm7kv1WGVN0vPDD6+RxulPBp0SqCQkHjlZIdQXjqhyx5Jq9MhbqyIxn3sA
-	 WrJqSOa8LCsPQ==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ef23d04541so17100201fa.2
-        for <imx@lists.linux.dev>; Thu, 15 Aug 2024 14:31:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXWH6CzhRuQCUch0bt6LfZhRxUkVK1bcL3wqABn92a+VyFyJdnoyYObRoi5aMfH89d+REHbCLcTZCd6j9DeNDHXu35S
-X-Gm-Message-State: AOJu0Yzm/phrJkB0sCbOcvAQXHRsux+9MbeEMyFDjbqgd3UmwYTPD2Tl
-	M9O6BHJs1hBrryjNAktwpci+Xoiref0eveMXdLULK4FyN7gwHJyIJkGpWEKam2GjnJsqgQlCfYq
-	6KX0OMRU7JOcHDO/vlrid54J+OQ==
-X-Google-Smtp-Source: AGHT+IHbw2Ci3GPt62XAxOLHUDxkesDk1wSg5AJZLEzVnTay9yA/b2u5/hxZzBon0Bt7Z/aLUXeTAngSTpB7Kb7GzVE=
-X-Received: by 2002:a2e:f01:0:b0:2ef:286e:ca68 with SMTP id
- 38308e7fff4ca-2f3be5975dcmr5993031fa.23.1723757478269; Thu, 15 Aug 2024
- 14:31:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="sj3xJan1"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 28277471;
+	Fri, 16 Aug 2024 00:21:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1723760519;
+	bh=PFdmgapN2g4RD/uxMXT/UTOpJWmDAeo1UG+kQusjXy8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sj3xJan18IFKXKGtebAcqFtGBeVlg1aLm04hUn2YFXbO6FVPvWb19sJAEdsYcOpYp
+	 nCkVhOYap6lEUOWIN2h2B3YxO82xlOTCXA/XgvKLrf29WNNHRwsJ1GrZTKbziVvwsd
+	 doj/JjoCmZ+y6CiDQrRdtLz4b5EOi363wcxhW9bc=
+Date: Fri, 16 Aug 2024 01:22:30 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Marek Vasut <marex@denx.de>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mp: Clarify csis clock frequency
+Message-ID: <20240815222230.GB23911@pendragon.ideasonboard.com>
+References: <20240813234010.17852-1-laurent.pinchart@ideasonboard.com>
+ <3314370.44csPzL39Z@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240814185140.4033029-1-Frank.Li@nxp.com> <20240814211345.GA4028598-robh@kernel.org>
- <20240814214902.GA4101180-robh@kernel.org> <Zr1hZbAq/jrwyNQq@lizhi-Precision-Tower-5810>
- <CAL_JsqJs+aFpOLwWHi32pwAy2Q8N7qK43TuTmEJQn-BqXKwyAw@mail.gmail.com>
- <Zr4eLg+CUQuJHc45@lizhi-Precision-Tower-5810> <Zr5lKNy08nbtjz9n@lizhi-Precision-Tower-5810>
-In-Reply-To: <Zr5lKNy08nbtjz9n@lizhi-Precision-Tower-5810>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 15 Aug 2024 15:31:05 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL1DkNDM2Xpj=9KVA+ws0DbsEVYNAfrVPoKED7dC0YFVA@mail.gmail.com>
-Message-ID: <CAL_JsqL1DkNDM2Xpj=9KVA+ws0DbsEVYNAfrVPoKED7dC0YFVA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert ads7846.txt
- to yaml
-To: Frank Li <Frank.li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
-	Marek Vasut <marex@denx.de>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3314370.44csPzL39Z@steina-w>
 
-On Thu, Aug 15, 2024 at 2:29=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Thu, Aug 15, 2024 at 11:26:38AM -0400, Frank Li wrote:
-> > On Thu, Aug 15, 2024 at 09:17:48AM -0600, Rob Herring wrote:
-> > > On Wed, Aug 14, 2024 at 8:01=E2=80=AFPM Frank Li <Frank.li@nxp.com> w=
-rote:
-> > > >
-> > > > On Wed, Aug 14, 2024 at 03:49:02PM -0600, Rob Herring wrote:
-> > > > > On Wed, Aug 14, 2024 at 03:13:45PM -0600, Rob Herring wrote:
-> > > > > > On Wed, Aug 14, 2024 at 02:51:35PM -0400, Frank Li wrote:
-> > > > > > > Convert binding doc ads7846.txt to yaml format.
-> > > > > > > Additional change:
-> > > > > > > - add ref to touchscreen.yaml and spi-peripheral-props.yaml.
-> > > > > > > - use common node name touchscreen.
-> > > > > > >
-> > > > > > > Fix below warning: arch/arm64/boot/dts/freescale/imx8mm-var-s=
-om-symphony.dtb: touchscreen@0:
-> > > > > > >   ti,x-min: b'\x00}' is not of type 'object', 'array', 'boole=
-an', 'null'
-> > > > > > >
-> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > ---
-> > > > > > > There are warning:
-> > > > > > > Documentation/devicetree/bindings/input/touchscreen/ti,ads784=
-3.yaml: properties:ti,x-plate-ohms: '$ref' should not be valid under {'cons=
-t': '$ref'}
-> > > > > > >   hint: Standard unit suffix properties don't need a type $re=
-f
-> > > > > > >
-> > > > > > > I don't know how to fix it. ti,x-plate-ohms is 16bit, but def=
-ault it is
-> > > > > > > uint32
-> > > > > >
-> > > > > > It's going to have to be a special case in dtschema. I'll work =
-on a fix.
-> > > > >
-> > > > > Should be fixed now in dtschema main branch.
-> > > >
-> > > > Strange, dt_binding_check can pass. but
-> > > >
-> > > >  make ARCH=3Darm64 CROSS_COMPILE=3Daarch64-linux-gnu- -j8 CHECK_DTB=
-S=3Dy imx8mm-var-som-symphony.dtb
-> > > >   UPD     include/config/kernel.release
-> > > >   DTC [C] arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dtb
-> > > > arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dtb: touchscr=
-een@0: ti,x-plate-ohms: 180 is not of type 'array'
-> > > >         from schema $id: http://devicetree.org/schemas/property-uni=
-ts.yaml#
-> > > >
-> > > > anything wrong?
-> > >
-> > > Now fixed.
-> >
-> > Yes, thanks.
->
-> A new error in dt_binding_check
->
-> Documentation/devicetree/bindings/input/touchscreen/ti,tsc2005.yaml: ti,x=
--plate-ohms: missing type definition
+On Thu, Aug 15, 2024 at 02:12:09PM +0200, Alexander Stein wrote:
+> Am Mittwoch, 14. August 2024, 01:40:10 CEST schrieb Laurent Pinchart:
+> > The DT nodes for the MIPI CSI-2 receivers (MIPI_CSI) configure the
+> > CAM1_PIX and CAM2_PIX clocks to 266 MHz through the assigned-clock-rates
+> > property, and report that frequency in the clock-frequency property. The
+> > i.MX8MP reference manual and datasheet list 266 MHz as a nominal
+> > frequency when using both CSI-2 receivers, so all looks normal.
+> > 
+> > In reality, the clock is actually set to 250 MHz, as the selected
+> > parent, IMX8MP_SYS_PLL2_1000M, has a 1/4 output that is selected as the
+> > closest frequency to 266 MHz. This doesn't break operation of the
+> > device, but is clearly misleading.
+> > 
+> > Clarify the clock configuration by selecting the IMX8MP_SYS_PLL2_250M
+> > parent, dropping the redundant assigned-clock-rates, and setting
+> > clock-frequency to 250 MHz. This doesn't cause any functional change.
+> > 
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 10 ++++------
+> >  1 file changed, 4 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > index 603dfe80216f..d9b5c40f6460 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -1687,7 +1687,7 @@ mipi_csi_0: csi@32e40000 {
+> >  				compatible = "fsl,imx8mp-mipi-csi2", "fsl,imx8mm-mipi-csi2";
+> >  				reg = <0x32e40000 0x10000>;
+> >  				interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
+> > -				clock-frequency = <266000000>;
+> > +				clock-frequency = <250000000>;
+> 
+> This doesn't seem to be necessary, no? I can't be read from
+> IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT. But oh well, that's what we have right now.
 
-That one is intermittent and can be ignored for now. It depends on the
-order the schema get processed. 'mac-mode' is another one that shows
-up sometimes.
+I don't like the clock frequency property much, but as it's there, I
+decided to update it. Removing the property, if desired, belongs to a
+separate patch.
 
-Rob
+> Despite that:
+> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+Shawn, could you please pick this up for v6.12 ?
+
+> >  				clocks = <&clk IMX8MP_CLK_MEDIA_APB_ROOT>,
+> >  					 <&clk IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT>,
+> >  					 <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF_ROOT>,
+> > @@ -1695,9 +1695,8 @@ mipi_csi_0: csi@32e40000 {
+> >  				clock-names = "pclk", "wrap", "phy", "axi";
+> >  				assigned-clocks = <&clk IMX8MP_CLK_MEDIA_CAM1_PIX>,
+> >  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
+> > -				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+> > +				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_250M>,
+> >  							 <&clk IMX8MP_CLK_24M>;
+> > -				assigned-clock-rates = <266000000>;
+> >  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
+> >  				status = "disabled";
+> >  
+> > @@ -1723,7 +1722,7 @@ mipi_csi_1: csi@32e50000 {
+> >  				compatible = "fsl,imx8mp-mipi-csi2", "fsl,imx8mm-mipi-csi2";
+> >  				reg = <0x32e50000 0x10000>;
+> >  				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
+> > -				clock-frequency = <266000000>;
+> > +				clock-frequency = <250000000>;
+> >  				clocks = <&clk IMX8MP_CLK_MEDIA_APB_ROOT>,
+> >  					 <&clk IMX8MP_CLK_MEDIA_CAM2_PIX_ROOT>,
+> >  					 <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF_ROOT>,
+> > @@ -1731,9 +1730,8 @@ mipi_csi_1: csi@32e50000 {
+> >  				clock-names = "pclk", "wrap", "phy", "axi";
+> >  				assigned-clocks = <&clk IMX8MP_CLK_MEDIA_CAM2_PIX>,
+> >  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
+> > -				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+> > +				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_250M>,
+> >  							 <&clk IMX8MP_CLK_24M>;
+> > -				assigned-clock-rates = <266000000>;
+> >  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_2>;
+> >  				status = "disabled";
+> >  
+> > 
+> > base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+
+-- 
+Regards,
+
+Laurent Pinchart
