@@ -1,70 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB63D17838C;
-	Thu, 15 Aug 2024 06:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A187DA82
+	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 11:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723704185; cv=none; b=FM6Wlhiw9TPcBkQI7/asoUA6tHhgN1J8Ndig/xm/bP3+aS7ghjBrrlUBu6zEwFczjkRCPgc9/qwebPnCs3xFVu6g6A05WitA349c9Q0G9r663u9syxXdKwkVhUKuEPbvZfpCfAA76tg9mkmNKvc7AEgqZnYzk6REcyaF7kHKTTQ=
+	t=1723721123; cv=none; b=NuCG8lBXGLQ3GMXXgcRvy3eQdyN1tmDU+y7hwZsvoHgFNWKTSWmzrdnZt/JsOFdIZReh/KWMDniyGfJw6SUiCKJ2tJMxj9C194Xlm5se/9hyFNEM5cXK1A/+9RER/F5Z+i2eJ6yiIsNt1u3BPa5a0uQ/lBqzxDeMNA7IwftVy0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723704185; c=relaxed/simple;
-	bh=De6ufLUUbAcupdgUSV2L57kA0XgGwsFzk69O/adjvrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kCndmjZBS3/blZjQ4R/5SmmK7GO8mAj9SsQXABHJsjsqWwIWnmtaoBBQVwJK8h0sy2UR/C4MsfOALOl/jDCeX8Mw8Pj+XtovOKspt+xHsP9wRFajn+WlX6lzZ915R90c1TtPoBdta1m8nsHerW45i56Wav+uZot6yvOrpjqBQR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q1uHLVhP; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1723721123; c=relaxed/simple;
+	bh=9r69U4+Vlyv0XEbqFBAdBfxH7OVJ2VXkioo1Q5babH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=r5S0GzOiwmDAP3pgW6EksDL62hRyboiiCvVF5CYrAGWSOZxyxX6EwXNkPtZ7UycWCWRA5pCk1MNW60nLO2ueH3Hz0NrbX2eBR0s6KxvgjF25QWkmmsykYj/SYIA/doxPjBj8znLjP8BMZ2YpWjBbT3CcU7+PuFi0k452b1XIhzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kSv0oru4; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q1uHLVhP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723704184; x=1755240184;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=De6ufLUUbAcupdgUSV2L57kA0XgGwsFzk69O/adjvrQ=;
-  b=Q1uHLVhPWn/YBvXLU604c9e+GxnwnL/mRkZJOqCJOaZtQ+V94hbaICCv
-   ZlcHQAWL0j6PVEDDzjJ0yxs5m02oRVSihZjJzNsbnM9iRdIq2LiJa03Sg
-   XO8B2BTWNarN8XtblPRHyeMaJnf7HqyLPBav2zJ6INRJwJvwBcuUUz0Ry
-   7noFGHn2oZMhSZTskQ5paSV8aROP3cVPcn7TVSN4OV3MjnVDHyafddKVh
-   +1cNTKQte21RZQnIWADKR5vGldDC770xAbcG7qY5m+F+XyKXAvSjUsJGF
-   XwtW8m4O1SYPEnG16QfGmCXPX0TrncoLLj05O96g+ugN2vIFUP0w/qqLc
-   w==;
-X-CSE-ConnectionGUID: AnC3Bv6fRQSocJfstKNduQ==
-X-CSE-MsgGUID: nu6UqAdrS4eXQkYy/GXozw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="33101026"
-X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
-   d="scan'208";a="33101026"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 23:43:03 -0700
-X-CSE-ConnectionGUID: WUsSQfdwTbGQsXf9amGWqA==
-X-CSE-MsgGUID: G9zCeTYJR2S7IrwdMu/TUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
-   d="scan'208";a="64101664"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 14 Aug 2024 23:42:59 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1seUCH-0003Hg-1t;
-	Thu, 15 Aug 2024 06:42:57 +0000
-Date: Thu, 15 Aug 2024 14:42:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Marek Vasut <marex@denx.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert ads7846.txt
- to yaml
-Message-ID: <202408151407.QolOybOy-lkp@intel.com>
-References: <20240814185140.4033029-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kSv0oru4"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a7a8caef11fso110881266b.0
+        for <imx@lists.linux.dev>; Thu, 15 Aug 2024 04:25:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723721121; x=1724325921; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qswmFLJc+rRJnvMK5o1RhUuE0PL9fCewlpe2LTSF+JQ=;
+        b=kSv0oru4wr9s3xlZrlXNHKz2D6gFECVCaZ9JiH6gwK1VnKcjXXB1tfB4mt4PBFtew/
+         sCWEaESM3gz80C2EXtcV85Aqf54AmtvA3qc6CCEyVaPP7sPHwged7G3zdvFfHvNar1Yb
+         /tnRpoKoEIB1JqONI2wBKSqBYaJUqwiLwGqIvF9tLojNQLOGgp8Z3w3wha9bostPYtOs
+         RflFXsYwZu6moYw9gYas76/OQcvZwbRpli9+vJazzWSbpy150LaWI4mBnZv7MokyaTVN
+         Prv8bzuT2IeUhlqMakjnK4LwM2x1wIjcbw+pNbTafjclt7JU394YWehc2Vm4EzQ6467+
+         uT4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723721121; x=1724325921;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qswmFLJc+rRJnvMK5o1RhUuE0PL9fCewlpe2LTSF+JQ=;
+        b=AX32RW7dZZ95w7P58eSis4+R8GgKHQQv402Kk5b51jn5MyfRZoKZZESrgM8RgD/YZH
+         5WA8og7TiFFemd1HVAGnQyk914GFxBjeKhd4/velAfij9x0u7xDRFedliBx0+kx47l0p
+         bwFOLypGW3v23J3M2N69PUMzqWEXcV2Mkm08Fwu6EbvNGmxXNcnbJ89hI73/YwXUvTOm
+         jNYtLHHgh/U3spXGVPLpogTEH+dLcKnylypI6vrYooFNNXZdXFwDYju5oU4SUQu1JF+Z
+         6Bo6CD00PsJrZNyMwJ2BcAYo7a14HJzC1/wN9u3Ut7RXnMV7tR2nqvNqJfjgwRRaFrTx
+         C5ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzBowcWoyxHefd1Mkr/CzlKG7OyoC8JpUwo3Vr2DSKE7Z6YMQVhrTZVzHILIg+VKut/rT6eKeCccqciFulYx3g7ngF
+X-Gm-Message-State: AOJu0YyWawJbP9uTfF+iqUBlLpwq//tl95qqkByupC7wFHEgyWcvmEsC
+	tQTEMYHzf7T6+lp9kuZNee+VYbfNJm31AAL2SxOpHfuL1XkqQhPApLByFk4sfSs=
+X-Google-Smtp-Source: AGHT+IE04IYzhOFDEe/StHeMv+I9KreAuEIMLJabn0MgWVsiJJeJsCqyh9XE5pP5z25EACFGgtwnLA==
+X-Received: by 2002:a17:907:f1d4:b0:a77:e1fb:7de9 with SMTP id a640c23a62f3a-a8366c0f0e2mr501782366b.5.1723721120636;
+        Thu, 15 Aug 2024 04:25:20 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a838396ce0asm85941166b.206.2024.08.15.04.25.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 04:25:20 -0700 (PDT)
+Date: Thu, 15 Aug 2024 14:25:08 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	linux-ide@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH] ata: ahci_imx: Fix error code in probe()
+Message-ID: <cbcbdfc2-ddc7-4684-8ad4-018227823546@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,41 +71,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814185140.4033029-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email haha only kidding
 
-Hi Frank,
+Return a negative error code if devm_clk_get() fails.  Don't return
+success.
 
-kernel test robot noticed the following build warnings:
+Fixes: 3156e1b2c071 ("ata: ahci_imx: AHB clock rate setting is not required on i.MX8QM AHCI SATA")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/ata/ahci_imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-[auto build test WARNING on dtor-input/next]
-[also build test WARNING on dtor-input/for-linus robh/for-next krzk-dt/for-next linus/master v6.11-rc3 next-20240815]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-input-touchscreen-convert-ads7846-txt-to-yaml/20240815-025322
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-patch link:    https://lore.kernel.org/r/20240814185140.4033029-1-Frank.Li%40nxp.com
-patch subject: [PATCH 1/1] dt-bindings: input: touchscreen: convert ads7846.txt to yaml
-reproduce: (https://download.01.org/0day-ci/archive/20240815/202408151407.QolOybOy-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408151407.QolOybOy-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt_link<../../networking/netlink_spec/rt_link>`
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
-   Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
->> Warning: Documentation/devicetree/bindings/power/wakeup-source.txt references a file that doesn't exist: Documentation/devicetree/bindings/input/touchscreen/ads7846.txt
-   Warning: Documentation/devicetree/bindings/power/wakeup-source.txt references a file that doesn't exist: Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
-   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
-
+diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
+index 65f98e8fdf07..6f955e9105e8 100644
+--- a/drivers/ata/ahci_imx.c
++++ b/drivers/ata/ahci_imx.c
+@@ -963,6 +963,7 @@ static int imx_ahci_probe(struct platform_device *pdev)
+ 		imxpriv->ahb_clk = devm_clk_get(dev, "ahb");
+ 		if (IS_ERR(imxpriv->ahb_clk)) {
+ 			dev_err(dev, "Failed to get ahb clock\n");
++			ret = PTR_ERR(imxpriv->ahb_clk);
+ 			goto disable_sata;
+ 		}
+ 		reg_val = clk_get_rate(imxpriv->ahb_clk) / 1000;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
