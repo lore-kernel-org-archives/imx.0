@@ -1,162 +1,190 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2053.outbound.protection.outlook.com [40.107.20.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2333919F471
-	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 12:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723723941; cv=none; b=g0JTr3GPg0RaRO9kj8U1UCAV6jAh+WkHzucuk8DNjxLrwUWQZiEB2VtZs7o2dxtUXha4AKKIhNLXQN6qTdIYd7wX0IiVRWjs1jT3ygjUTGT64nV9QAXo+nRIfJsD9AIfycbhnH3KTkmRPttRWE8MkIK/ECORmVbFSNqb+5dn9ho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723723941; c=relaxed/simple;
-	bh=ZKq/ZXvi7kfEOZMDZTfLeYMFPIRJfWJBYIKMbg2p9k8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gGvdCmvOfZgjnXLYFdho9ZTVHaEpshg8NskqAWIp3xrKyxWny01xaauJPo3Eux2b/WUIDHa8TWJdRsEdTIC3qzM6lpprG9NY/gR/JUpecZSRqjkuVXe6r5cq76LPq2ehhlaTRDhFt7WC75AsL2XgIMHXY9+/D5DmWq2RkJVqenM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=YKEEVooE; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=I6oa638F reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70901A01DA
+	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 14:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723731392; cv=fail; b=m9lLvOHAG3j+0Kvv99oOQFqlJ/0TUI/JIELfNvLG4YemYNHw6DPXsfe1kUSOtUfVQKYg8xGEuIMgBQkn7rRTpDg902+lvzCTTV5cPAknm6j/aJkFxExv1E4T/Ud2g6YiDGEYjB6r8KJ5HQmcUiIQAFt7JN8kXhYI/yfij99HPW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723731392; c=relaxed/simple;
+	bh=0ZnMhUGun82DLzKKIcY9J9Jx1tXUyRU+ffaQHSOezIc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=s/oIE2rcQKVmyuYGWSD23Ut3EkOu5UiDQdvI1E8tEtN+dPLSc/tqMRVWg2P1lvy9NGvcn/nAam86IDBSHJWllfc2WMI0O95//DoRkLpOxCbebCGUmwt+NtK3RC5vMSjz3/APaosGUIsGf3StNeiCMCQhGDZz2e/1QFgQrueeEnE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=i28GErxe; arc=fail smtp.client-ip=40.107.20.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="YKEEVooE";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="I6oa638F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1723723937; x=1755259937;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=z9D+2rypUggQXyQCCNb9SWDH40qqIYWmodLE4T9gK9Y=;
-  b=YKEEVooENsQxufn6vS6LslqHKmrw3pAW9l6fldrfhLSe4qEw9lJhBP4V
-   KjNxX/3cy+YZ5rDyJW1jPcQcOX+r7URnP48wRt0P+6aBuMxLwDMBvTp2I
-   Mz8vw52miW+pVm89/mvJ7C3uuRSX3IvTozwfrNm82useZg70i2EwbN6t4
-   BHvZVKlBJOlUucb5p/lWH2ZE0zCRwVfSWXxEmSkNBNJ08VEAeAmkFj3Fa
-   ItXrxmugquXXcpI/oe3vgBcZ/JqRcg0KEJ6fczOlx+AyhBMu76xLTXdcs
-   FryscatazqQTfeaL4427dR3A0UeIPmzez3/LWf19EKYy6mEkF1r9X2Cve
-   Q==;
-X-CSE-ConnectionGUID: /lPyrB3ESIedpFesxTG8YA==
-X-CSE-MsgGUID: tjUkXX/ITvW6iPnoog42Ww==
-X-IronPort-AV: E=Sophos;i="6.10,148,1719871200"; 
-   d="scan'208";a="38423965"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 15 Aug 2024 14:12:15 +0200
-X-CheckPoint: {66BDF09F-4-2C7A84BB-EFCBC4CF}
-X-MAIL-CPID: 416F4E9E68642B27621A8D6ADD9E109C_2
-X-Control-Analysis: str=0001.0A782F26.66BDF09F.0081,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BBB6D168034;
-	Thu, 15 Aug 2024 14:12:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1723723930;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=z9D+2rypUggQXyQCCNb9SWDH40qqIYWmodLE4T9gK9Y=;
-	b=I6oa638FK62CURZIXyyt7XWbCsYoPducWxYdtmzzu2LyXzXfpVSeH3Sg1c2hwf9bWYbpNJ
-	dy4bf9eGTZiZ11/P+bmnCJsA3pbbHXVt4IlUEYBjGLm2rWHcwYMxpXFlGqB8hb6yhukPcC
-	PvMAHj00KZnuch5iVi/uUCF7Q2XGHDk8k0Ob90cieh34z3JYrRuGGtMkSjK0eZmQImXL4z
-	K8P9bCUgE4108UJGza2atpMMUzi/2fPcPOqswYo3M72n0OqhfKpePzfknUbEFc+2IF5lsT
-	kyJE+EorV3D7H0I+PKWh8sSRNUne2xqWNywQbWFx3UMWbnOBE0jlBY8Oya8RKw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Paul Elder <paul.elder@ideasonboard.com>, Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp: Clarify csis clock frequency
-Date: Thu, 15 Aug 2024 14:12:09 +0200
-Message-ID: <3314370.44csPzL39Z@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240813234010.17852-1-laurent.pinchart@ideasonboard.com>
-References: <20240813234010.17852-1-laurent.pinchart@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="i28GErxe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fLrnAlvVFq7ZkfgNgQGu/f51pnuOWLf/hI4HSi8o4Ygp0vM+e9OVZbkcZE12EpUOUQLUi3GKPJrZoAEozkSV7dSIyqtlm2ywRwLY1yTUtdlZhFCOKh9sUxyXvtyPZsOcEbnAkL07uReNrEjsXVyAEUmGyKgMN9lUSNqyhXXkp7IBuW0mBXULv7qA9kesy8OI7xzzfJRJGasI9REnRfQECaHvzKZE7XvgN+qwWsZlOKR4pZFSTJDnCqV0wcmzUiD6fIRXGACpY75DzR27QxAJiqt7FMtF99xdG2ZQsVMKYQ3txn/7Kp+MDg96TFhEjtzHhsQojrPPKoe3x5VEftKGmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MRegxn+lTlIZMNuD8wzZsDjmYD2Hudd9AP2cHvyhDKk=;
+ b=DjALlWO3NjHHZhbtPC82y77Mjr3zG9nndJXo9vG7wvfMdttg0s8OCCMevM1R/LGB2oeHieKQW7R2UA98GoTaW73E8hxWQv1QMOwrNkCCzIqk/9i8MWHLD1YaxU4aaQn4JgBqiYBelPaWfQPxps9Ze9tiR6fzs4zS57pq+Tvd8X5qor2RQgMnKmFPvuLjnwwJLJxermBB8usSQyl19jcZxAg5yw6grBrDiCPCgjuoQVisLkaD+aR4hC4TOhy5XDz6PaLfrNGA3h5g/tpX/EsEIOlNx50SVoQMc0lXIDaN3VKUeS26G1GJrpJ/Dijm49RspJSZh4RU2v1vWdY33vsaRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MRegxn+lTlIZMNuD8wzZsDjmYD2Hudd9AP2cHvyhDKk=;
+ b=i28GErxe0zK97VtP7H1YdUPF5D4+dR80r4DxaeRvpBYLq5WVzab5yL5uebHbhTs74QPI+Rwr8V0h3iElmoyeo3n1sFA69m3VFV8SVA+UU4qYNWZKntNFtWHG9ICOYBvNHLotkyOIglak4jtuP+JwcL0ANxvY0MFrloVMx1nsMzxk6syw3D5vTBAdcvcFOMKAhYscsNhZjgC+na8p2Zx0PsL5g1TgXL3UoiCWHxCiX7KxLvkCul301HUln/naE+F+PTdbRhu38C+fjVWkL5Y8mhifilVqdbk+RN2aeFBuQlp0id9ANaMJif+89Q1N7xph57p5SWHjdqAlTKDlcdtfOA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB9644.eurprd04.prod.outlook.com (2603:10a6:102:242::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.17; Thu, 15 Aug
+ 2024 14:16:26 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.016; Thu, 15 Aug 2024
+ 14:16:26 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: alexandre.belloni@bootlin.com
+Cc: Frank.Li@nxp.com,
+	arnd@arndb.de,
+	bbrezillon@kernel.org,
+	boris.brezillon@collabora.com,
+	conor.culhane@silvaco.com,
+	gregkh@linuxfoundation.org,
+	imx@lists.linux.dev,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	pthombar@cadence.com
+Subject: [PATCH v2 1/1] MAINTAINERS: I3C: Add Frank Li as nxp I3C controller driver maintainer
+Date: Thu, 15 Aug 2024 10:16:09 -0400
+Message-Id: <20240815141609.4089406-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR17CA0007.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9644:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ecede5c-8a4a-40fb-3883-08dcbd34d93f
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?WRd4jHE1wNNB/jx8XXxj2XiAYmSNoH5zjsnGnZyNzfhf1erZ2wQ+fXYDdM34?=
+ =?us-ascii?Q?/OUIfeYjbMRcnkrYB0LzmgqNG+KxZFqN2LoHoQuxpqpxP4dceLRoiiRk0sqM?=
+ =?us-ascii?Q?BD/iPjGSgZxTMTBJACNhXEKn+4OIcSlCXs8an9LgnA1wW8ZlSaMtKVcJmcOk?=
+ =?us-ascii?Q?LqkH8V5ZlyjNqgWBPIgNIEUsPBTDi0ltEkLNJdbDrwLsE1BSgBsKeKA13rTC?=
+ =?us-ascii?Q?m2XRWj7KU6rGzXThPcqYxvtcw01htMMQZdbFqpgdYyCNokkdO+fvtgloQ//j?=
+ =?us-ascii?Q?V+687agzt6KLNc+dni+18k9pmzLeRJylAYXjHG9eV9i2YTKmNSlDwcmJeMGv?=
+ =?us-ascii?Q?gMFmV3p4mRRzS0XDry0yAq2CKbGQ3ms17h3c0c02lMcDB2oxBZKbl1rp2boN?=
+ =?us-ascii?Q?jxLwU9INrwaWe7Ygx8LBua5J+lH4KpBVoOR8B3RmtlGeVtkYbHZepx1In2/P?=
+ =?us-ascii?Q?YjubygMX6bT0nOdryTEJf7SKC5hhFLqgP52NP54QaqlqYvZJxpRWQj6nUAc2?=
+ =?us-ascii?Q?mH7A8GN85nMGT2hCa7CFcEA+y8K+rsQoMEJvU4KslqY/GksR44pvYS118b03?=
+ =?us-ascii?Q?5vJZjD760SNBfkkkK/1SMaG7ZNnY7bKwu2J93miyKnNKyoeC7BqCyMeqFEoP?=
+ =?us-ascii?Q?OG3jQuVtdcSNhE5fMl9reThAjPuvrlkK+gK7UXE6ipPaFYnppbgkJSYnAWce?=
+ =?us-ascii?Q?yPdhkqoriUipfL0scDeR5Fgvugt6q/BGp/cVnW+H126n364XOJnpiBklXvZz?=
+ =?us-ascii?Q?T3Ir8O9kdBF72d+47UWgV50awNEiCuN5eqGe/u31E2jYXS/d7H1IDHN+MGZG?=
+ =?us-ascii?Q?I/uy/xy4VJO/JfyzHEXXHG5e44+g/8gK/l0xq2HUjpJwdOJkgT8QPOtt0kGL?=
+ =?us-ascii?Q?zF0MWz6ju4sNw7y6FklaJRsydJteFCJ0Wi9DM7J2A9Eu9LwH9Oqx7CfPoSL0?=
+ =?us-ascii?Q?X+7kKgDDoYtYtCR41xnnDJ+3e18IUtmwsXIMkh0ROLzQJv6QzzSfbKD+HNGF?=
+ =?us-ascii?Q?Pf7UDsA862CCSFXqsRC9wmxJQodI3NapFcQ30/97vaAcrC1kCmpZUh5HVkai?=
+ =?us-ascii?Q?koGkIkiaGzR5Ry4gGvP3Ddb+kvYcu/S1bNx65OStMMQtpKQ7W5huRfZHSO8U?=
+ =?us-ascii?Q?uGHtHYTRne6sIQPPriGYU2iVi3rEhD1rxPtsE5HPzbt7CQNvsMnrkRFBGdc3?=
+ =?us-ascii?Q?i1bmm0MzS/v/8HQKv5k92VLgCIZG3AJQkJ5NqRKJxMLYzCANZ9rGLauDuDH8?=
+ =?us-ascii?Q?HCpy3r464+e2LDyvleR4nOj7GwX5QVN64VeVBZsHJCp3FJKAt9TDLPxmZ4cf?=
+ =?us-ascii?Q?mQL640p+MtU1dWyiBZR3XEv8nYlOr61gsglKZixyqNsKb93DwTd+0AhyHAsl?=
+ =?us-ascii?Q?QGTsRwc4HSYN7RSVkoccogcVSdHiqRgXQQTvh64th58ED+NLkQ=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?JxdsVFDHnAkanxO327cQ6FIMlAbAgliiVPPaes8pMZMF/1vqBGr1ZPlmrnur?=
+ =?us-ascii?Q?JGiphxrBzD2ilbUSWXkJYS6TmOdwMGb8+iXTR/V4p7VX/p+FvuaAqgKTVwLc?=
+ =?us-ascii?Q?oqIsubHynMh4A09nYr08JYHeRtqUW4cf16hNvIIYQCFhbUYiOYmG/npEHg7z?=
+ =?us-ascii?Q?sWabScd3GUnpq+hEjlze+KqXmMtDpAQDxCJlgU/e2WkM3Jbj/6odWHoDZf26?=
+ =?us-ascii?Q?V4uVjyU+BX3VGqrnrsrczM7UNXSUjFqEY9rQrzmEVot3K0kMucn0avGK9qH5?=
+ =?us-ascii?Q?IOMnIdrGusZSgWh/LgQAlRJxJADCNaTAakguKs2VEmFtF7A1+5otfqQLuHUi?=
+ =?us-ascii?Q?96An3QrtTrxCyD3yQcBA8DkEgJd2A0W6mhGsZfclk/qANw+cgFHUGbfbpgDq?=
+ =?us-ascii?Q?qdzRFJH7SWI4cqmssxbFiMHZjBs9jktfbphWSW+1E2vZDUIzBza2H34mxOmU?=
+ =?us-ascii?Q?OTBFSjYXyJieTUZprKfeMathGpbcCh2h5/DfTYs34qP4yRxGJbwwBPS4SuOk?=
+ =?us-ascii?Q?dqIO3D/NBFSrLJFjPLAulcw4ypA1DVL7UqFaNlkp9LTSJ7S1wyeJ9oPogvK9?=
+ =?us-ascii?Q?jVWagMuURwB03nyQ56Nn7P6WIz6WOjDQB6bFzQu9LDM5BV675op5SS5vvIES?=
+ =?us-ascii?Q?7s71HECfj72u2zhhSpRwG3MSP3fQOFfWW9eG+NJ7tzMDj9FqHY7PCiWRDir9?=
+ =?us-ascii?Q?8oppROe/1crhQqyk+OwLr3kLDBmuHqR7DWLGG8+iOuKmHg87zGiyMHpD9dmL?=
+ =?us-ascii?Q?0AfxFCV03yXMJcgs6h9LSEKPcOMdYUK++8MUZtB/EFbM7UQ2GFrt3zO7YJfH?=
+ =?us-ascii?Q?GEJdWSde0BmWXtIGdEtgMdB+QkYhG4+Jdeuqw4tnybh2uk8aCWSJ5xIGNfkh?=
+ =?us-ascii?Q?VzvsGd4xgGCbpt2egql0OWNfimIbuZIZGEfQtADY6SxgXqowFuevHPZRxogt?=
+ =?us-ascii?Q?RkfTrHoMRx8KulgXTCpknRz+viqZXEhn7YaVslDNnKL74nInhkB9ZDdVABb6?=
+ =?us-ascii?Q?Qo+bGmwKx8HJDe5fCKuwQM855DQO9FvEHomS3xvz4VjzSzqVlNzX2zWi9Oxf?=
+ =?us-ascii?Q?/YwyZlNn+zPf+oQL7kFYx/p4cThOEyi2FJ8+vnhlZLlW/zogUK9AJCSasHt7?=
+ =?us-ascii?Q?ggW64XS/PzC7bcWdcmp3xqo8c5QIpMJtc/MgXWolvyjsvIAphJXD2Blfze/l?=
+ =?us-ascii?Q?RQ+F70Z7MmI3Q6TZSgnmtgVIAF42hoqYTkTmhRC+esVPPVbYr80lTOvLiyvy?=
+ =?us-ascii?Q?ZSyfr50BoKcbxOvJgPkuKT+G/RLl09o6gH67Bwudgux8Iv50MILD39i2mb84?=
+ =?us-ascii?Q?lGGEcbOti+i9WTNvntfHOZCI5CAOKabDXjqMmIsfhq9q62SfQxZlFez6XnOJ?=
+ =?us-ascii?Q?LpxD71ufgcJsfAbSZY1m6VFcdIrPmDrDixvCeK/uws75jBCPwFaeHSkM61t/?=
+ =?us-ascii?Q?t18Vvwtd40l8mdVGMEGpYwXgdMGL8wJWrYQ/QRZx8mfad6dnai9t3/RCSqi4?=
+ =?us-ascii?Q?Pmiup95z/Hq/1ZNOSriETb23SjRJT4NGlK9UD6vH5qilMFXsnj79A4LPwj4/?=
+ =?us-ascii?Q?GAAVjcGAiSXaGxIW6IV9p6LjH/ocM+ICOFOXv1ge?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ecede5c-8a4a-40fb-3883-08dcbd34d93f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2024 14:16:26.3540
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WjJ5lB7EBbtVVu4PV7LgMi5KCtlnj5HuKlv2wV3uUGdMgUSjWUqZ4gq8KtjWIIP3aj9vJvilxTHhYZ2f8u28Uw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9644
 
-Hi Laurent,
+Add Frank Li as NXP i3c controller driver as maintainer and add mail list
+imx@lists.linux.dev for it.
 
-thanks for the patch.
+Add Frank Li as I3C subsystem reviewer.
 
-Am Mittwoch, 14. August 2024, 01:40:10 CEST schrieb Laurent Pinchart:
-> The DT nodes for the MIPI CSI-2 receivers (MIPI_CSI) configure the
-> CAM1_PIX and CAM2_PIX clocks to 266 MHz through the assigned-clock-rates
-> property, and report that frequency in the clock-frequency property. The
-> i.MX8MP reference manual and datasheet list 266 MHz as a nominal
-> frequency when using both CSI-2 receivers, so all looks normal.
->=20
-> In reality, the clock is actually set to 250 MHz, as the selected
-> parent, IMX8MP_SYS_PLL2_1000M, has a 1/4 output that is selected as the
-> closest frequency to 266 MHz. This doesn't break operation of the
-> device, but is clearly misleading.
->=20
-> Clarify the clock configuration by selecting the IMX8MP_SYS_PLL2_250M
-> parent, dropping the redundant assigned-clock-rates, and setting
-> clock-frequency to 250 MHz. This doesn't cause any functional change.
->=20
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index 603dfe80216f..d9b5c40f6460 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1687,7 +1687,7 @@ mipi_csi_0: csi@32e40000 {
->  				compatible =3D "fsl,imx8mp-mipi-csi2", "fsl,imx8mm-mipi-csi2";
->  				reg =3D <0x32e40000 0x10000>;
->  				interrupts =3D <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
-> -				clock-frequency =3D <266000000>;
-> +				clock-frequency =3D <250000000>;
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+- Added to exist item
 
-This doesn't seem to be necessary, no? I can't be read from
-IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT. But oh well, that's what we have right now.
+Recently, I submit many i3c related patches and become familiar with i3c
+protocol. So add me as svc-i3c-master.c maintainer.
 
-Despite that:
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+I reviewed other i3c patches. So add me as i3c subsystem reviewer.
+---
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
 
->  				clocks =3D <&clk IMX8MP_CLK_MEDIA_APB_ROOT>,
->  					 <&clk IMX8MP_CLK_MEDIA_CAM1_PIX_ROOT>,
->  					 <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF_ROOT>,
-> @@ -1695,9 +1695,8 @@ mipi_csi_0: csi@32e40000 {
->  				clock-names =3D "pclk", "wrap", "phy", "axi";
->  				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_CAM1_PIX>,
->  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
-> -				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
-> +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_250M>,
->  							 <&clk IMX8MP_CLK_24M>;
-> -				assigned-clock-rates =3D <266000000>;
->  				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
->  				status =3D "disabled";
-> =20
-> @@ -1723,7 +1722,7 @@ mipi_csi_1: csi@32e50000 {
->  				compatible =3D "fsl,imx8mp-mipi-csi2", "fsl,imx8mm-mipi-csi2";
->  				reg =3D <0x32e50000 0x10000>;
->  				interrupts =3D <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-> -				clock-frequency =3D <266000000>;
-> +				clock-frequency =3D <250000000>;
->  				clocks =3D <&clk IMX8MP_CLK_MEDIA_APB_ROOT>,
->  					 <&clk IMX8MP_CLK_MEDIA_CAM2_PIX_ROOT>,
->  					 <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF_ROOT>,
-> @@ -1731,9 +1730,8 @@ mipi_csi_1: csi@32e50000 {
->  				clock-names =3D "pclk", "wrap", "phy", "axi";
->  				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_CAM2_PIX>,
->  						  <&clk IMX8MP_CLK_MEDIA_MIPI_PHY1_REF>;
-> -				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
-> +				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_250M>,
->  							 <&clk IMX8MP_CLK_24M>;
-> -				assigned-clock-rates =3D <266000000>;
->  				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_2>;
->  				status =3D "disabled";
-> =20
->=20
-> base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2b96899a78890..077e37eb018ce 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10708,6 +10708,7 @@ F:	drivers/i3c/master/dw*
+ 
+ I3C SUBSYSTEM
+ M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
++R:	Frank Li <Frank.Li@nxp.com>
+ L:	linux-i3c@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+ C:	irc://chat.freenode.net/linux-i3c
+@@ -20961,8 +20962,10 @@ F:	drivers/video/fbdev/sm712*
+ 
+ SILVACO I3C DUAL-ROLE MASTER
+ M:	Miquel Raynal <miquel.raynal@bootlin.com>
++M:	Frank Li <Frank.Li@nxp.com>
+ M:	Conor Culhane <conor.culhane@silvaco.com>
+ L:	linux-i3c@lists.infradead.org (moderated for non-subscribers)
++L:	imx@lists.linux.dev
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
+ F:	drivers/i3c/master/svc-i3c-master.c
+-- 
+2.34.1
 
