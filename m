@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6371AED38;
-	Thu, 15 Aug 2024 15:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522C71AD3F7;
+	Thu, 15 Aug 2024 15:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723735722; cv=none; b=POtA9ldKEamq6lLbW9pFw8klAnTeGdlnV8GZv9lGvVkyQcUtHI6ZaHzDT63ce8981LOTppXbC5RvVfTJi7tHytgGb3CpYro5tfp6yAs2Hw05RuIgvf1Gbr9UEwn0PGGQ99eM5PHJa2BsFsEvl8atpjPwX/y69dQj9RNSn6eLKmU=
+	t=1723736498; cv=none; b=KjGI5tF38vYDbRMA/ErMCcmFjsSovUtowePlI1wCOgiAZcVjaVxX7Z5JVB2Gokr5irfoYY6DUDFpqn0URhMf/TcVlqJEFn+oCyDBVrU6sF8Vz5LpFh/1SqWZm62zyROZ7Zp8varKH/iULl1NgsdqHIHxPcaflO4DGxk4qh86pZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723735722; c=relaxed/simple;
-	bh=aU7GONG7+wdh9Cvq+jMv1PVglb/zFWUeoCL51NGnd9g=;
+	s=arc-20240116; t=1723736498; c=relaxed/simple;
+	bh=IYrPvjIPCrdK+O+khvX9GO/S0HHhbYIZlD2G7HwxwsQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLGVgu6mx3m40Gok1no32YyU18fA1Zd+Y384LqXTxnHpDjS+KAtC/ORawGt4vShbCH6chLoYeZPqU4bC/6Ti84qCwH66wyhGsrjWT5uFLjlTSvBr4oyF9hcTF5GzYdTJHMi9fCqKDmV4s3L3CTclD7saY5LQIVSK+vw7fTH+pmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XmckYDFb; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJAZAM6aBN9+UAWMGEh7P606aEfGoM6MYfOKzUxevTwQMHi8Xu75ZR1PXgvm/ILZveJshoNL7tnWjHSFWPnGy4K9faFfsgkjlWIPtx4WQIPCFo5AknOZsvIA7ckrOyPHI83MgfkbcZK3bsIl3AzG3u6/4IPomZCATTM0+hG8pOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoX/suEq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XmckYDFb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43D8C32786;
-	Thu, 15 Aug 2024 15:28:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoX/suEq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9565DC4AF09;
+	Thu, 15 Aug 2024 15:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723735722;
-	bh=aU7GONG7+wdh9Cvq+jMv1PVglb/zFWUeoCL51NGnd9g=;
+	s=k20201202; t=1723736497;
+	bh=IYrPvjIPCrdK+O+khvX9GO/S0HHhbYIZlD2G7HwxwsQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XmckYDFbKyRbsHxnQj8xCA1kuO7Q4d0vNyo22LbnsGtLRjE1eMv/zsscUQyYUa/Xz
-	 5+VcPgerJJM7ziE+az3MChN30JEzEBgOXdX9Z0gIhLNI1XjUMtexrkbVpGv797lyDA
-	 LTUluYs/tZLTx0eq2IH4zIxebMtqJD2R6wuN6uQzyZwx55xqMG8nEwpAQoO76YAzaj
-	 e4ZMC9uKcJygiiqXTkACsw54dribRz9NtPbQXdxSmmqnGbUfYO8J9eeN5/bj/sWV4U
-	 bi8nDMpdjbdnw4rXfZhmXwq+vzGAfyJt5bfcbgmkmZvIqXrOcUj73D7nIlUC7Ad2KH
-	 IMLuv6zJnBeKQ==
-Date: Thu, 15 Aug 2024 09:28:41 -0600
-From: Rob Herring <robh@kernel.org>
+	b=UoX/suEqbFCc9eipy4uawl816ieuugHDnZOH1Dy0CJALZwXYXjqlDAARjT4/Ck1BW
+	 ipbp9vep6vC08m/Deegkfa/yeLqN2kXtlLPnA8TIioC1DqNE0TSFpQfSDg5kXS49Dt
+	 RNc3TiiPTzk8PvxlfkmhuMkS256BvDL/xoiU05eWQX+sEq21GxZdKnLoiTvPEMslWY
+	 l9MdQe8mN4uzyklODWBBQq4BRVlgjLYqimm6dX7IXAkSki/SM+xRfVykwkktln0iwQ
+	 Im3xvPG5lEFMYUqOZdNel1W+iJI6ttaC623yUMbei6WMTtUSPqvCyhvuCYC4T1gsFm
+	 +IAguXMYrhsew==
+Date: Thu, 15 Aug 2024 09:41:36 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+Cc: Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"open list:ETHERNET PHY LIBRARY" <netdev@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: net: mdio: change nodename match
- pattern
-Message-ID: <20240815152841.GA1903517-robh@kernel.org>
-References: <20240814170322.4023572-1-Frank.Li@nxp.com>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: soc: fsl: cpm_qe: convert network.txt
+ to yaml
+Message-ID: <172373649432.1956601.11486565362846539757.robh@kernel.org>
+References: <20240812165041.3815525-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,97 +50,41 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814170322.4023572-1-Frank.Li@nxp.com>
+In-Reply-To: <20240812165041.3815525-1-Frank.Li@nxp.com>
 
-On Wed, Aug 14, 2024 at 01:03:21PM -0400, Frank Li wrote:
-> Change mdio.yaml nodename match pattern to
-> 	'^mdio(-(bus|external))?(@.+|-([0-9]+))$'
+
+On Mon, 12 Aug 2024 12:50:35 -0400, Frank Li wrote:
+> Convert binding doc newwork.txt to yaml format.
 > 
-> Fix mdio.yaml wrong parser mdio controller's address instead phy's address
-> when mdio-mux exist.
+> HDLC part:
+> - Convert to "fsl,ucc-hdlc.yaml".
+> - Add missed reg and interrupt property.
+> - Update example to pass build.
 > 
-> For example:
-> mdio-mux-emi1@54 {
-> 	compatible = "mdio-mux-mmioreg", "mdio-mux";
+> ethernet part:
+> - Convert to net/fsl,cpm-enet.yaml
+> - Add 0x in example, which should be hex value
+> - Add ref to ethernet-controller.yaml
 > 
->         mdio@20 {
-> 		reg = <0x20>;
-> 		       ^^^ This is mdio controller register
-> 
-> 		ethernet-phy@2 {
-> 			reg = <0x2>;
->                               ^^^ This phy's address
-> 		};
-> 	};
-> };
-> 
-> Only phy's address is limited to 31 because MDIO bus definition.
-> 
-> But CHECK_DTBS report below warning:
-> 
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: mdio-mux-emi1@54:
-> 	mdio@20:reg:0:0: 32 is greater than the maximum of 31
-> 
-> The reason is that "mdio-mux-emi1@54" match "nodename: '^mdio(@.*)?'" in
-> mdio.yaml.
-> 
-> Change to '^mdio(-(bus|external))?(@.+|-([0-9]+))$' to avoid wrong match
-> mdio mux controller's node.
-> 
-> Also change node name mdio to mdio-0 in example of mdio-gpio.yaml to avoid
-> warning.
+> mdio part:
+> - Convert to net/fsl,cpm-mdio.yaml
+> - Add 0x in example, which should be hex value
+> - Add ref to mdio.yaml
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Change from v2 to v3
-> - update mdio-gpio.yaml node name mdio to mdio-0 to fix dt_binding_check
-> error foud by rob's bot.
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/mdio-gpio.example.dtb: mdio: $nodename:0: 'mdio' does not match '^mdio(-(bus|external))?(@.+|-([0-9]+))$'
-> 	from schema $id: http://devicetree.org/schemas/net/mdio-gpio.yaml#
-> 
-> Change from v1 to v2
-> - use rob's suggest to fix node name pattern.
+> This one is quite old. The detail informaiton is limited.
 > ---
->  Documentation/devicetree/bindings/net/mdio-gpio.yaml | 2 +-
->  Documentation/devicetree/bindings/net/mdio.yaml      | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  .../devicetree/bindings/net/fsl,cpm-enet.yaml |  59 ++++++++
+>  .../devicetree/bindings/net/fsl,cpm-mdio.yaml |  55 +++++++
+>  .../bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml | 140 ++++++++++++++++++
+>  .../bindings/soc/fsl/cpm_qe/network.txt       | 130 ----------------
+>  4 files changed, 254 insertions(+), 130 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/fsl,cpm-enet.yaml
+>  create mode 100644 Documentation/devicetree/bindings/net/fsl,cpm-mdio.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,ucc-hdlc.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/network.txt
 > 
-> diff --git a/Documentation/devicetree/bindings/net/mdio-gpio.yaml b/Documentation/devicetree/bindings/net/mdio-gpio.yaml
-> index eb4171a1940e4..3be4f94638e61 100644
-> --- a/Documentation/devicetree/bindings/net/mdio-gpio.yaml
-> +++ b/Documentation/devicetree/bindings/net/mdio-gpio.yaml
-> @@ -44,7 +44,7 @@ examples:
->          mdio-gpio0 = &mdio0;
->      };
->  
-> -    mdio0: mdio {
 
-Just 'mdio' should be accepted. There's a lot of those.
+Applied, thanks!
 
-> +    mdio0: mdio-0 {
->        compatible = "virtual,mdio-gpio";
->        #address-cells = <1>;
->        #size-cells = <0>;
-> diff --git a/Documentation/devicetree/bindings/net/mdio.yaml b/Documentation/devicetree/bindings/net/mdio.yaml
-> index a266ade918ca7..2ed787e4fbbf2 100644
-> --- a/Documentation/devicetree/bindings/net/mdio.yaml
-> +++ b/Documentation/devicetree/bindings/net/mdio.yaml
-> @@ -19,7 +19,7 @@ description:
->  
->  properties:
->    $nodename:
-> -    pattern: "^mdio(@.*)?"
-> +    pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))$'
-
-Needs a '?' on the end:
-
-'^mdio(-(bus|external))?(@.+|-([0-9]+))?$'
-
->  
->    "#address-cells":
->      const: 1
-> -- 
-> 2.34.1
-> 
