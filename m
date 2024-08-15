@@ -1,109 +1,250 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963C97DA8F;
-	Thu, 15 Aug 2024 12:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F071714AC
+	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 12:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723723223; cv=none; b=jUy8KlsaD0gfjmfzpgHlNtprVaBn/kptAOCXosUVGdgJwwPyNBbUkhp2/GTs2VqiSLXUuFEWda021VyoGUSZSurG169BVPG+lGoEeIfsG9ULQUIcvGCpTdB7cAHiNwS5wNazPgq3cdwQTPJA7bEHeAbu/5EDvAzn1QQhQO+ZzJg=
+	t=1723723552; cv=none; b=P+AwNONSkGnkgdYOWNjO9OXOukANcS90YNbN+vndW6mEYzGYXNotLq0jaAFpCKiOJiEFUXnFF9geOJEQBK0sqQZ4vMwJTmqOChM8iY+N9o8Z1F+Gbi9MLQz8Mc+acImh9sjUPfhM0rEv/M7XSvQJpSCdVYPjhG7rc4wWB223+1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723723223; c=relaxed/simple;
-	bh=+fvBVhqwVxnnLELp45LxE5B3Ly84i4Yh9U1qnszQeKk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JKHmhJYSCWkoXQvSrcv0FV6jfmUw4a8HwQIBn9epIluK0Z2KBVYOaEQG9RrdZxG59KOkqeNENlHxD58KtlbaS2mXUban3GfeEiZ+hCRXw2IhUwIgmwQejxVMfe7pyC75PpWpsjkP5ZnSz24fHF5oO82qMOeSp4GqikL1r3KduWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PX5pWGM+; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1723723552; c=relaxed/simple;
+	bh=ckRq0TLO0i5Upq8xeQfXzcsTcs6KI/clF0rL95AkbYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QmXPinBWJ7ugrOzcCkzXPrqoEQE9EtNNp6VzHRCDReJZfALEAgQ3NklNmQR3EKtzV44gBTmsmncuqbnEtRfGE3wAtd8jnUY9avUPSCLdV0dn2DeF2l3vy/pxhT+N/8BA5pqSkLxYMMzk5lw5N3gDv0zhW4G0GnWIKW/lZhOItoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=JYFrX8HI; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=YtmPj9UG reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PX5pWGM+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723723221; x=1755259221;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+fvBVhqwVxnnLELp45LxE5B3Ly84i4Yh9U1qnszQeKk=;
-  b=PX5pWGM+QFn9O/v7OFVKnW+8uyv78fdf71FV1fIM/G9Kh2vNRyiHcvNt
-   LLy0GSuiUwZrKU8VxBnv5hWHqwfLHQhgbc725aA8WoydBNncW3Dep/Imq
-   qDnxjhExJ4kIGGWnEsTY9lVhgECK8r18hSFvzMYFUld19D2R9KS976DgF
-   QvEQx2/v7F1StHJf1xn5OdxUIWi9bVVvzkf+nURt7zISkZdixGaM1BzQt
-   aOaSFvJme2BqItI3b9+83Q9WTnCJWdyttpGFeLbCAvbdP6s9oR5XgyPha
-   xFJzT0MYQaJ5koey/M79UA/FEZ5whXEaJL55TrpcYTAFP6ewh6XRVwDYb
-   A==;
-X-CSE-ConnectionGUID: PZn6DNhRSkmCE9q6ooZADg==
-X-CSE-MsgGUID: 2ky1kezWSaqJXnoFecbvuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="22135677"
-X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
-   d="scan'208";a="22135677"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2024 05:00:18 -0700
-X-CSE-ConnectionGUID: 9pGFL3JARHqhgTEDSbWx6Q==
-X-CSE-MsgGUID: FzBAoAyVSieqIx8P4Ogn+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
-   d="scan'208";a="58960860"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 15 Aug 2024 05:00:15 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1seZ9J-0003Xg-15;
-	Thu, 15 Aug 2024 12:00:13 +0000
-Date: Thu, 15 Aug 2024 20:00:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>, Sebastian Reichel <sre@kernel.org>,
-	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"moderated list:TEXAS INSTRUMENTS AUDIO (ASoC/HDA) DRIVERS" <alsa-devel@alsa-project.org>
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] ASoC: dt-bindings: Convert tpa6130a2.txt to yaml
-Message-ID: <202408151906.gY9zpl8b-lkp@intel.com>
-References: <20240814175129.4027097-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="JYFrX8HI";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="YtmPj9UG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1723723548; x=1755259548;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rpbg9sWZr+ct+0Kk2dlFNhgnP7os4HT3fguvZNyOGa4=;
+  b=JYFrX8HI8B9bK8bt1XX0Bj/jArVFrWJ01DWKaQCPJiR3ULSpwDICYkXG
+   mTlIrYUltTz8P4Zweh6LuXtDCLSLG07fBJEli0uKV3a2JeF3+hiSrEhzC
+   LhlyQlpU+5qNxynKOqEYB4e9jVuYp3IGIXHJJ2ZIIAmcI5Tiu83v0rdJs
+   URFuowbMshYDBJJ8UPobxJ+KNUgbsB0setd+IopNC9gzqhELepQqLimBl
+   CAMqnDk1p3i9b+XppkJP2GU6bLem+OYqJBySbtomYA+9K7lmrmcX+hVDA
+   vp+KO2A7Dpztcgu8DKGT8t7Zp5hpFOVdsKdrDN4l/1rM8knNRuTMlFpW1
+   Q==;
+X-CSE-ConnectionGUID: zgvx9BNzR5uo/wo0vaCS0A==
+X-CSE-MsgGUID: j8EwgRkETb+qjhqlYwM++g==
+X-IronPort-AV: E=Sophos;i="6.10,148,1719871200"; 
+   d="scan'208";a="38423877"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 15 Aug 2024 14:05:45 +0200
+X-CheckPoint: {66BDEF19-8-78509F09-E532FC2E}
+X-MAIL-CPID: 53426003EF02D311BE2F5EF2B27E137B_1
+X-Control-Analysis: str=0001.0A782F1A.66BDEF19.010F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CDB0A167BBC;
+	Thu, 15 Aug 2024 14:05:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1723723541;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=rpbg9sWZr+ct+0Kk2dlFNhgnP7os4HT3fguvZNyOGa4=;
+	b=YtmPj9UGUz4vEfUy/K3H1ZUXmHmkonosyvwz5S6itYvjCSS8KW7/5psOZ1Xahr2XfZMw33
+	5PIittL9R6ftPh6NiwX096JRuDyWZ3qivtNwmETjRVLFUGzS9fV8E2HHnmZuDAIMKKerCa
+	1s9Smt6Y7/P2xwxq+DF83SKQSzGrW+L7ksw60tgvxhTrcrmceppfW1wLA8WlaFkbfgiDc0
+	SIrcpT74haPFMnvCNkjpsU0WFi3E3sJh2L1QYDVv695+zuC80wfS5EiiQjf7F8/NPz1YKc
+	P3H9ASaUeMbtskUcVngrq5ozQNINsCuilHR56HT9J8WU7Hm18wRJz1vQbWS3LQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH v4] arm64: dts: imx8mp: Add DT nodes for the two ISPs
+Date: Thu, 15 Aug 2024 14:05:39 +0200
+Message-ID: <13578505.uLZWGnKmhe@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com>
+References: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240814175129.4027097-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+Hi Laurent,
 
-kernel test robot noticed the following build warnings:
+thanks for the updated patch.
 
-[auto build test WARNING on broonie-sound/for-next]
-[also build test WARNING on robh/for-next linus/master v6.11-rc3 next-20240815]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Am Mittwoch, 14. August 2024, 18:14:51 CEST schrieb Laurent Pinchart:
+> From: Paul Elder <paul.elder@ideasonboard.com>
+>=20
+> The ISP supports both CSI and parallel interfaces, where port 0
+> corresponds to the former and port 1 corresponds to the latter. Since
+> the i.MX8MP's ISPs are connected by the parallel interface to the CSI
+> receiver, set them both to port 1.
+>=20
+> Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+> Changes since v3:
+>=20
+> - Add comment regarding the IMX8MP_CLK_MEDIA_ISP clock rate
+> - Fix assigned-clock-rates
+> - Dropping Tested-by as the clock configuration has changed
+>=20
+> Changes since v2:
+>=20
+> - Assign clock parent and frequency in blk-ctrl
+>=20
+> Changes since v1:
+>=20
+> - Fix clock ordering
+> - Add #address-cells and #size-cells to ports nodes
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 57 ++++++++++++++++++++++-
+>  1 file changed, 55 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index d9b5c40f6460..f3531cfb0d79 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1673,6 +1673,50 @@ isi_in_1: endpoint {
+>  				};
+>  			};
+> =20
+> +			isp_0: isp@32e10000 {
+> +				compatible =3D "fsl,imx8mp-isp";
+> +				reg =3D <0x32e10000 0x10000>;
+> +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> +				clock-names =3D "isp", "aclk", "hclk";
+> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
+> +				status =3D "disabled";
+> +
+> +				ports {
+> +					#address-cells =3D <1>;
+> +					#size-cells =3D <0>;
+> +
+> +					port@1 {
+> +						reg =3D <1>;
+> +					};
+> +				};
+> +			};
+> +
+> +			isp_1: isp@32e20000 {
+> +				compatible =3D "fsl,imx8mp-isp";
+> +				reg =3D <0x32e20000 0x10000>;
+> +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> +				clock-names =3D "isp", "aclk", "hclk";
+> +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
+> +				status =3D "disabled";
+> +
+> +				ports {
+> +					#address-cells =3D <1>;
+> +					#size-cells =3D <0>;
+> +
+> +					port@1 {
+> +						reg =3D <1>;
+> +					};
+> +				};
+> +			};
+> +
+>  			dewarp: dwe@32e30000 {
+>  				compatible =3D "nxp,imx8mp-dw100";
+>  				reg =3D <0x32e30000 0x10000>;
+> @@ -1869,17 +1913,26 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
+>  				clock-names =3D "apb", "axi", "cam1", "cam2",
+>  					      "disp1", "disp2", "isp", "phy";
+> =20
+> +				/*
+> +				 * The ISP maximum frequency is 400MHz in normal mode
+> +				 * and 500MHz in overdrive mode. The 400MHz operating
+> +				 * point hasn't been successfully tested yet, so set
+> +				 * IMX8MP_CLK_MEDIA_ISP to 500MHz for the time being.
+> +				 */
+>  				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_AXI>,
+>  						  <&clk IMX8MP_CLK_MEDIA_APB>,
+>  						  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
+>  						  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+> +						  <&clk IMX8MP_CLK_MEDIA_ISP>,
+>  						  <&clk IMX8MP_VIDEO_PLL1>;
+>  				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
+>  							 <&clk IMX8MP_SYS_PLL1_800M>,
+>  							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> -							 <&clk IMX8MP_VIDEO_PLL1_OUT>;
+> +							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> +							 <&clk IMX8MP_SYS_PLL2_500M>;
+>  				assigned-clock-rates =3D <500000000>, <200000000>,
+> -						       <0>, <0>, <1039500000>;
+> +						       <0>, <0>, <500000000>,
+> +						       <1039500000>;
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/ASoC-dt-bindings-Convert-tpa6130a2-txt-to-yaml/20240815-021426
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-patch link:    https://lore.kernel.org/r/20240814175129.4027097-1-Frank.Li%40nxp.com
-patch subject: [PATCH 1/1] ASoC: dt-bindings: Convert tpa6130a2.txt to yaml
-reproduce: (https://download.01.org/0day-ci/archive/20240815/202408151906.gY9zpl8b-lkp@intel.com/reproduce)
+Unfortunately for some reason this reparenting doesn't work (on my platform=
+).
+'media_isp' is still below IMX8MP_CLK_24M.
+$ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
+    mipi_dsi_esc_rx                  0       0        0        24000000    =
+0          0     50000      N      deviceless                      no_conne=
+ction_id        =20
+    media_isp                        0       0        0        24000000    =
+0          0     50000      N      deviceless                      no_conne=
+ction_id        =20
+       media_isp_root_clk            0       0        0        24000000    =
+0          0     50000      N         32e10000.isp                    isp
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408151906.gY9zpl8b-lkp@intel.com/
+I have to add this diff for isp_0 (and isp_1 if you use it):
+=2D-- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1683,6 +1683,9 @@ isp_0: isp@32e10000 {
+                                clock-names =3D "isp", "aclk", "hclk";
+                                power-domains =3D <&media_blk_ctrl IMX8MP_M=
+EDIABLK_PD_ISP>;
+                                fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
++                               assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_=
+ISP>;
++                               assigned-clock-parents =3D <&clk IMX8MP_SYS=
+_PLL2_500M>;
++                               assigned-clock-rates =3D <500000000>;
+                                status =3D "disabled";
+=20
+                                ports {
 
-All warnings (new ones prefixed by >>):
+Now clock is setup properly:
+$ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
+                sys_pll2_500m        3       3        0        500000000   =
+0          0     50000      Y                  deviceless                  =
+    no_connection_id        =20
+                   media_isp         0       0        0        500000000   =
+0          0     50000      N                     deviceless               =
+       no_connection_id        =20
+                      media_isp_root_clk 0       0        0        50000000=
+0   0          0     50000      N                        32e10000.isp      =
+              isp
 
-   Warning: Documentation/userspace-api/netlink/index.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: Documentation/userspace-api/netlink/specs.rst references a file that doesn't exist: Documentation/networking/netlink_spec/index.rst
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/reserved-memory/qcom
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/display/exynos/
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/sound/tpa6130a2.txt
-   Using alabaster theme
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Alexander
+
+>  				#power-domain-cells =3D <1>;
+> =20
+>  				lvds_bridge: bridge@5c {
+>=20
+> base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+> prerequisite-patch-id: ad2bbccf3b0f27415fb14851cec52c431ccb354f
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
