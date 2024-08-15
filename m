@@ -1,270 +1,201 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011015.outbound.protection.outlook.com [52.101.70.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054BB4CB2B
-	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 18:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723745955; cv=none; b=OS2OKEqF7vdNx4x6AbHAW4fa3zGuTbkgknPzx/uT9MfEpU8cwDYQh8zyMZhOe8502N/BT31yEKM6A+Uu2uEtTgwxBaxZlWesS4YoxKHD0EwGEbFjn9d8YflvOlPJ44/yArrNsg5TzyG8wSShu51ZFgfH6gJo+cDXWCvWVnb6rvc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723745955; c=relaxed/simple;
-	bh=qTGWnus/xajntiXwLNkQjMMlbBirJmOcpWKDV/rMMbM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kOALi239a1QULOep8JcGaVrOGyE02In7XtQLBPJKWGiVotpk91QQ56OU+fc9fJz+VT6i90N4QxERjDQiEmVfbrjhP5HXgKvcmhy4HheIYgxrg+fHoSLYz8v1W7cjpkJHAt6/SRAKRBqJzWReXtNOkZ53Y57IcptBQ2quB+I1wdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZNJD8JTA; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D72754BD4
+	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 18:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723746285; cv=fail; b=JeyHTthnJ5weAlyuAEIO3fLu5HULdGyTeYChkrOQffe9l3/V/SqE092f6fDCD7JJUZW8REnZxURDZKt/U5Rd44hWKlhXDljR7jGxTAUi9Lh8wJL9HkVNzDl/F30RGZ64ZAWF/Y7/7OUz9Q8dF0vMCRmtGEmMIM5hI4ciZLwUhKw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723746285; c=relaxed/simple;
+	bh=0YM7JTEQ5yzNdQEcx092cVzaF8x29DOoGoWJ1Fr1GQg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ffcn+Mgvt8pN+hWUo4fQPeaGtt6B+RtY7LBH+ooS6kmwp7cET2zOMKuoYy5Q+sz17wlT7C8IFGGNlI70A5OBG21J+bbjB79aUoSMw9rDi3h+PSqeDdERfBv831V2I3vC/TmCHwO2d9gg/xiuPqu3VOPgu3RErMFz1fqe/YRWbmo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=e94eP1Rk; arc=fail smtp.client-ip=52.101.70.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZNJD8JTA"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-201f44ad998so4898835ad.0
-        for <imx@lists.linux.dev>; Thu, 15 Aug 2024 11:19:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1723745953; x=1724350753; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=obzmhQk8Xy3e9sDQPYIq1Np9pZwsRDfrPqw0CyAFY8k=;
-        b=ZNJD8JTAZULYxP75dWPkd454VeJ5di1vpTsqsePc0Zs+IF2GKm7T5Txe3L4wj1A6nj
-         /GkFLi6YRkdqs7Jlbo3BE/zRZIJboA1oKjTKgnKjqX0ETEUgfUDhZfyq27rDhLrn7eil
-         W/VUr2A0/rcXwK7/YmZPGLdikTdlNQbcsEHh8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723745953; x=1724350753;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=obzmhQk8Xy3e9sDQPYIq1Np9pZwsRDfrPqw0CyAFY8k=;
-        b=gWLUtweHxmFnrKDpiRWuIybYQYXVn2OcagtxAO+nz7iacYtXu2OU9k38oLllQ9JfYO
-         IRsB3Y+MXZg2PWoylm6MUyyVoLrRsjucndKSUMCvxE95voAhzeZ9JDSz8HlsAr6/JPdb
-         QNAhKEoaZRKmsubHVB4uF2v61f9Zw5gBGOjL0UdCl9AHoMOlbmmQOj2MEUrOAOyD1wLc
-         Wmm+RX6R8IGtOdKZWKrWwqrxBWrdk6CYJEiUNCM9HXBlQ8H7T2Ht3A9Cr6NxseapSiEL
-         J/tlT+ZNcwJgAgp7Xq5UlhEz7tGucgDe8f4Ai9GqcVI/PfrhsdmU7D96SFR4dhgZnjeb
-         MAqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvalOgKr4pjj82X0bx9nVMV2Y/hmiTfJqKc51VVWpLxCJ5TwUb2kyLWLhI8OSryx3A7SqhkrSUSKqMdUHY61j1AuZl
-X-Gm-Message-State: AOJu0YwQyr//Cb7oFjm3BSBvJ+2e3YyBQ6BPFzLfeO74GVxNOr4NLHx7
-	0HHUL1+udaJ5LP3oKdmjg5ylc/g7xJ3tjfaK/Y5OU3vgCVjPUDpbrii3+FF5QQ==
-X-Google-Smtp-Source: AGHT+IHCeenSQW5v809RWxm5k6tr6zFciMM4rFQNhw44zAMjp7OcNEYeeVpImhSYQ7cFYyL7U2umfg==
-X-Received: by 2002:a17:903:35c4:b0:201:eb46:1be5 with SMTP id d9443c01a7336-20206162588mr1821665ad.3.1723745953087;
-        Thu, 15 Aug 2024 11:19:13 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:5afb:2a2e:f5be:2aed])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-201f0375725sm12853415ad.132.2024.08.15.11.19.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Aug 2024 11:19:12 -0700 (PDT)
-Date: Thu, 15 Aug 2024 11:19:10 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:NETWORKING DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v1 1/1] dt-bindings: net: wireless: convert
- marvel-8xxx.txt to yaml format
-Message-ID: <Zr5GnhNm0lSQNBwa@google.com>
-References: <20240812194441.3826789-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="e94eP1Rk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jdimTbL+3W6qAFnQhdNyJjWVKu1yts2TMh97RU41XuXjrZZXsWM3OG/vKIqkm4VGQJpg/wx9yaeAWSw6VOJLHFKcRkTtu+zP/C+VqhJCyRI9baO8Cbw5XPAx7X1NJrMKRT8+murxYQploeRG3j2pVlxH36u4Cb+7Yh1Le+M/cJT4LNPco28cS6OppeygecG5Tj6249ybTqVnC2LMqW3vBJmWqd9+0IQl1K245C4rCVkj3I5Bnb5wnSFcSo/Qf138DoU1275ETP79uVsa35mGSeBzUEOVMN8zNlpY4CF8RaAPyYV9aa/TrbAY7OE7Mq1+hv7ADNZPzRR8yDuhq6PyFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0NtYljWgIO+S6vIQTcC/GZM0+4tz0ue+1wyu7vMmLv0=;
+ b=Un4m/3aa5XbON28/hM59tn16SLXdW8b1CMV1w2+oUzd8uUKm8RqsWQBkFhtljnTHIL065DfZg3wBdTgkIlD02tXjU33QvTAgiDv6fZe4sHp2Y0nI7gHVB2BzAX1jd6yxRsB7kMH3qBQ8yheBUbcINMpcyxQsVMnH9XE1BNRms6byP5eEPUy+vpuZ7C/bPztTImGbuvVmIjrYZmLjnv4zQF7xCjHqxoMGo64XX021zDAQcDt8kMKPFkB/+Ml/IRirRpOrJB0iMvLtI9ZJloZmoY1CxNu85xsyyECC9B+ikB/Fyx6ipZ9xL0T3huBVVWfw1dhYa6ZiXp3v5XGYoBKHmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0NtYljWgIO+S6vIQTcC/GZM0+4tz0ue+1wyu7vMmLv0=;
+ b=e94eP1RkacR9SYOUxkFdF4Ah+WzDU6/1foYLGVFqyv9/sHF/2VqASsK2eN4x78+vei+TPGmr8uABQTrZLwmO74JKmb5G7AE7vC7F5H9OAhQFThaDMi/KQ9uL3yL+EledGuc/wkynHVsv0WMKQuzXTecbJ91KpeW+icHusgOBxBj3xdKGdX2iDvnPGz/7rml/g/Mv+T0S6Kmhg2gX6ODCbT4pwplDGEIHyTxJ4XzACxJPDPmPcSkuINO3Dq0ex2b1MdC5+LzDRJSH83Z/e5NcvVvjyzgtGNo2i3n73DT6jMGgVeX/lyUH7QlSMU/A3tlo5FRgGh8Ewx5SafjJnu5HDw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS1PR04MB9584.eurprd04.prod.outlook.com (2603:10a6:20b:473::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.18; Thu, 15 Aug
+ 2024 18:24:39 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.016; Thu, 15 Aug 2024
+ 18:24:39 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: manivannan.sadhasivam@linaro.org
+Cc: Frank.Li@nxp.com,
+	Zhiqiang.Hou@nxp.com,
+	bhelgaas@google.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	krzk+dt@kernel.org,
+	kw@linux.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lpieralisi@kernel.org,
+	robh@kernel.org
+Subject: [PATCH v2 1/1] PCI: mobivel: Mark layerscape gen4 support as Obsolete
+Date: Thu, 15 Aug 2024 14:24:20 -0400
+Message-Id: <20240815182420.58821-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0193.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240812194441.3826789-1-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS1PR04MB9584:EE_
+X-MS-Office365-Filtering-Correlation-Id: a8d4b773-21aa-425a-66f3-08dcbd578665
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CKSt81mOa1PCLa0B8EJv64dfNg17l5ZDwW7TIikFbpRpmhgP19CgC03b24P2?=
+ =?us-ascii?Q?PxnqedeG9g93PZPRFlCf3pU9unswdGyJICyy4Oc0BLSVheLmTj6+C2fJn5vH?=
+ =?us-ascii?Q?hkFua2M5pGuzTjZp6sUj1hK/varsGZipVPL0Gwbelr6oXXW34t8q08F6zoKM?=
+ =?us-ascii?Q?aKfPO81LsBhIAsdooPhd1DbmeVWnxuC0Xj+1GT1CQ4SRFs+TCHHH7b8bsWNE?=
+ =?us-ascii?Q?I2FIpseM9x4nC/UMfD4bv81Rx883lzZjsV37qXlbX84H4UX/ygNYP1vumJtR?=
+ =?us-ascii?Q?qO59OzNO/tyxp010rXypIiZKABon7NfWbjql/ji/sTPvvNgAjjtNvmZ5cq9o?=
+ =?us-ascii?Q?JhRUyFVnLqb6olAPvoSVvuYiloNRaGg41lscfUjDXBuO98WEK7dw8v8aKfux?=
+ =?us-ascii?Q?6uivCpIQycJbge2df+UMcdj13a1F2OP/MPQdEYSdqggaESjqp5mdTEjJE2FG?=
+ =?us-ascii?Q?+lnmWyE+EQVA1BWyFso8NoPHtcj112mAp1cZBCfTGbLVLMSKhZ/XGH7M941d?=
+ =?us-ascii?Q?wLOMjjL5Aad9yLAyRsRa1OcW/ZbriNGmJjPqIuBnJE11Lh6Q/KP+82Iz6WRA?=
+ =?us-ascii?Q?eZCHyAFucg6SO1IIg3jHEy5aWb8bC0coE+QlhsVUuIhvcCJ7WLMhZmBycbvF?=
+ =?us-ascii?Q?1Nt18Bey6dpOdi3N6xx6g5Mw4zYxSW7rC19gFFsc/G+5gsa4AY/9WbvJYTDD?=
+ =?us-ascii?Q?N4lDchIhgPIgC8vHutEvFrQHYAHDOYx1CsYa9tFRBMY1zRffLPVsgULEW0WY?=
+ =?us-ascii?Q?tFqssDLAc7Ru8QQ1GEsfCCtb1m7sHiasYuhpj1KUxdiNXOi/vMkhJLiHnnlT?=
+ =?us-ascii?Q?EbztPFzAeHpJFoBojg8aEycCMCI4bH13jN/rVAmV6aIi3AbaXCrqQNzpjxUp?=
+ =?us-ascii?Q?pVvsGqseG2rREcRPyAomLN6sVOluUoWq7ZXZaVou54GH7I4c+jUMXI9kNN5C?=
+ =?us-ascii?Q?unnRlPpSm/u1HIb9WsdQOAI640tvxg2LpJwUElgFzxvPyWbdXm6D7mmCinYp?=
+ =?us-ascii?Q?Bqv4OONwSTzRb16KdDQeEdKgL1vTC1OF+Jg3ag1aDs/S79z2jyd6a8XI3Ak2?=
+ =?us-ascii?Q?vh+Z7yytxo6bDpc5sLiJO+Lx5nFdXBnkIUNV/CcILudCipxqhaLn+8qxbUtd?=
+ =?us-ascii?Q?+oAU7wxj0ZBtbjf5ajf59sriMse7xndYm42QQsJy3iJ19bRRK6nOsNku/NDi?=
+ =?us-ascii?Q?+ugNLm6DoRcQMxhduerZt3ZDsvT7EN8Yh6Yvn85qqF2a4Y4jWkculI8aEqFB?=
+ =?us-ascii?Q?ntIQB2MZgKaDGu/SDgEnlm4+yjXp9aRwfkh7/uqjegKM1rnazZWqmJ41p85Y?=
+ =?us-ascii?Q?tpuxpsCkIkQ0GTCRTsobgDZ9+f2rqeXGqVrdwSLaT6V1k55J5OlvtsVeUmT5?=
+ =?us-ascii?Q?xEkuY6NuKv3fJWrzJRs6UK4R8m+Ij1fbn0UNYDOyEVoAapHuTQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?150R4y0ZlcheV9NjFbfngVWL8YqHatC4z56RAHZRw2/kDBU1ZasEfbAojg4i?=
+ =?us-ascii?Q?v7RtYjrzx1tG5Zio5euAdJyzC1Hhd6Pr1s5u7UrVkvbuZAZG7Ky97CcycWEB?=
+ =?us-ascii?Q?DcsGtS4G0P454H+0A9yMUtE6bWSVUXZs/artbU/QyfkUeRjMXUJyasWAWlA+?=
+ =?us-ascii?Q?UgzZe4qlOBRmvBecLOiUOXSPN+oCKzZTHZkTeHrQT9e9vtXIuFtWtz9rnw4t?=
+ =?us-ascii?Q?L/lpp0OET5Y4xUT76RSPbUX1elUs7OtcMUcxNPbUW1n/OUpHmuYVOSAP9p2F?=
+ =?us-ascii?Q?7O/SPjMFlbcmWbrf452Hdfz1cvGEWQ89Y1O/aLS9NDKLJxCgM9Au+sA7FuSD?=
+ =?us-ascii?Q?xBXzgDOg/p3+8lr1jCFhAEU9612sCYKCN+/zRSNyM7/VcZ4XdYD2ADrW0UMZ?=
+ =?us-ascii?Q?bb6W09hrO+/e2lrBizN5OT6FWOpFr+82avU+X6xUGFNR7oThTQO1UOvSzH4C?=
+ =?us-ascii?Q?UTgfzs0FA3OZGjZo/MsKg5OWCApLHzTx8KUWcGzRoV3vTBGy7L5JJ7WHXzGk?=
+ =?us-ascii?Q?FwJbZtTay5W7RtEeFMnMSKmUcPDINH+JGwxjDQaCHXAxX83B2oJox0G68arE?=
+ =?us-ascii?Q?3mtN7fPK49YRcTG36U7p88a3uQtG6o8p5pvc3jcuES98V4hpkqNQ8ld3dVgj?=
+ =?us-ascii?Q?FhaQqBrd8Emv7idmdBg7zfqkho8XYno8TA00p8zAQQRYltGnahOkLZXUOgcz?=
+ =?us-ascii?Q?L69N+QfsTQLoLxLeRIVDwnQhvAxfHKXmlqNYw/kEbyrUA/DYf2d8CwyzR3l9?=
+ =?us-ascii?Q?fjdvu82ZqFe4ZbizEO45BKtf0of1ENkLaeOgGhSX5U1zb3k1qqxq3Iy0Cmsl?=
+ =?us-ascii?Q?GaHDZ2Z2R9puITKb3EHJa6zazmLi0+/wG5Q6rCrdTOFVNqSuiK1epyJJL6F/?=
+ =?us-ascii?Q?o8hB975hDzglPJDJk+XLO5xW8gk5yfLRS+f3stsujmCqfzvGRJKLtonwGGCA?=
+ =?us-ascii?Q?oi84Ak/LognIRV04Hl5qyMjaeAj3L46EYhycc78ub7sa7+0LQ78GVcvelyeD?=
+ =?us-ascii?Q?uIdCHOAeWPWN9NwBVD3qZW+IFbjTBPMtQBXeuekI6NKEvtLrMT7upV5IRpQQ?=
+ =?us-ascii?Q?4njriO9dcafdFelRK3WHRT7UCnD9uhpgjMk1Gb10VmEa0fXlD7Cry0Tw2nbg?=
+ =?us-ascii?Q?uaf75nbw3GhguFCLapy7HELiUnZq6MT5lUHHCmIcMp46vjDPxgvBWOAu/mkV?=
+ =?us-ascii?Q?Qa7H8Nzp0A5sbGnwPAzSORum+Equa0VQJ4J4Deh68MwHk+toXyjieumC+c8D?=
+ =?us-ascii?Q?EprsG2lRY8cxkKD9SL1qk1cF5CJCxvslbJyzccSCXAcCKv/bUoKAqm+mRhzq?=
+ =?us-ascii?Q?pYa4gs00gKH9IrMQFSQHEF99cSELEZQLUtOQHoLASCBhZpD6hP8hmOWyybO0?=
+ =?us-ascii?Q?ODzsRcOwd+0ITyOaylnPY9rPa+neeHQRwQQ0I8Cp+pQZcgc9IzxZkDzn6puw?=
+ =?us-ascii?Q?fwOrDsJQd/rUeP1t9cV93Bn+yrwbSDGrc+B1xxLNW+WHFtUKVxaDQLC/EWRo?=
+ =?us-ascii?Q?gM6n7gPkBD6+bjtEbMEZB/B3Y6k+s7RLkivEsPuTJzU5G2BVHu6t1f44dBBS?=
+ =?us-ascii?Q?Rp+JxZ1oU9DW9bd5B70=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8d4b773-21aa-425a-66f3-08dcbd578665
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2024 18:24:39.6077
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 404erZ64dZfB29MLPz3JI3JY12AJRT94nFVlfGXslQkvY7tMfrPyejbezJaWhszJhIsETOpB2lhF2EYA8raltw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9584
 
-Hi Frank,
+Only lx2160 rev1 use mobiveil PCIe controller. Rev2 switch to designware
+PCIe controller. Rev2 is mass production chip and Rev1 will be not
+supported. So mark it as Obsolete at MAINTAINERS and add depericated
+information in Kconfig. Only allow COMPILE_TEST can choose it to make
+impact more visible.
 
-On Mon, Aug 12, 2024 at 03:44:40PM -0400, Frank Li wrote:
-> Convert binding doc marvel-8xxx.txt to yaml format.
-> Additional change:
-> - Remove marvell,caldata_00_txpwrlimit_2g_cfg_set in example.
-> - Remove mmc related property in example.
-> 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: /soc@0/bus@30800000/mmc@30b40000/wifi@1:
-> failed to match any schema with compatible: ['marvell,sd8997']
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change v1 to v2
+- make as Obsolete and deprecated instead of delete these directly. If no
+one complain for some time, then clean up related code.
 
-Can you make sure to run through `make dtbs_check` and handle any new
-issues? For one, I think you might want to include 'wakeup-source'?
+v1: https://lore.kernel.org/imx/20240808-mobivel_cleanup-v1-0-f4f6ea5b16de@nxp.com/T/#t
+---
+ MAINTAINERS                             | 2 +-
+ drivers/pci/controller/mobiveil/Kconfig | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-arch/arm64/boot/dts/rockchip/rk3399-gru-kevin.dtb: wifi@0,0: 'wakeup-source' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/net/wireless/marvell,8xxx.yaml#
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 42decde383206..c97ca861abae9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17497,7 +17497,7 @@ PCI DRIVER FOR NXP LAYERSCAPE GEN4 CONTROLLER
+ M:	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+ L:	linux-pci@vger.kernel.org
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+-S:	Maintained
++S:	Obsolete
+ F:	Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
+ F:	drivers/pci/controller/mobiveil/pcie-layerscape-gen4.c
+ 
+diff --git a/drivers/pci/controller/mobiveil/Kconfig b/drivers/pci/controller/mobiveil/Kconfig
+index 58ce034f701ab..8f95fc831c3fe 100644
+--- a/drivers/pci/controller/mobiveil/Kconfig
++++ b/drivers/pci/controller/mobiveil/Kconfig
+@@ -12,13 +12,14 @@ config PCIE_MOBIVEIL_HOST
+ 	select PCIE_MOBIVEIL
+ 
+ config PCIE_LAYERSCAPE_GEN4
+-	bool "Freescale Layerscape Gen4 PCIe controller"
++	bool "Freescale Layerscape Gen4 PCIe controller (Deprecated)" if COMPILE_TEST
+ 	depends on ARCH_LAYERSCAPE || COMPILE_TEST
+ 	depends on PCI_MSI
+ 	select PCIE_MOBIVEIL_HOST
+ 	help
+ 	  Say Y here if you want PCIe Gen4 controller support on
+-	  Layerscape SoCs.
++	  Layerscape SoCs. It is only used at lx2160a rev1 chip, which is
++	  not mass production. lx2160a rev2 switch to designware version.
+ 
+ config PCIE_MOBIVEIL_PLAT
+ 	bool "Mobiveil AXI PCIe controller"
+-- 
+2.34.1
 
-
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/net/wireless/marvell,8xxx.yaml   | 96 +++++++++++++++++++
->  .../bindings/net/wireless/marvell-8xxx.txt    | 70 --------------
->  2 files changed, 96 insertions(+), 70 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/marvell,8xxx.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,8xxx.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,8xxx.yaml
-> new file mode 100644
-> index 0000000000000..7b4927cdb7a01
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/marvell,8xxx.yaml
-> @@ -0,0 +1,96 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/marvell,8xxx.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Marvell 8787/8897/8978/8997 (sd8787/sd8897/sd8978/sd8997/pcie8997) SDIO/PCIE devices
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-
-I wouldn't mind adding:
-
-  - Brian Norris <briannorris@chromium.org>
-
-> +
-> +description:
-> +  This node provides properties for controlling the Marvell SDIO/PCIE wireless device.
-
-Since we're essentially rewriting this doc, might as well tweak a few
-things:
-Please replace "controlling" with "describing". These bindings are for
-hardware description, not for software control (even though they seem
-like it sometimes and can be abused for that).
-
-> +  The node is expected to be specified as a child node to the SDIO/PCIE controller that
-> +  connects the device to the system.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - marvell,sd8787
-> +      - marvell,sd8897
-> +      - marvell,sd8978
-> +      - marvell,sd8997
-> +      - nxp,iw416
-> +      - pci11ab,2b42
-> +      - pci1b4b,2b42
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  marvell,caldata-txpwrlimit-2g:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: calibration data
-
-Capitalize the first letter ("Calibration"). Same on all your
-descriptions.
-
-And maybe expand a little on what this means? Same on the other caldata
-properties.
-
-For example, "Calibration data for the 2GHz band."
-
-> +    maxItems: 566
-
-Non-critical question: are these numbers actually correct? The only
-instance I see in the upstream tree is
-arch/arm/boot/dts/rockchip/rk3288-veyron-jerry.dts, with 526 items. Yes,
-that still fits in this "max", but I just wonder whether this is an
-actually-correct specification, or an off-by-40 specification. Or, maybe
-the structure varies a lot by chip or firmware, and this max just isn't
-very meaningful.
-
-Like I said, it's non-critical, so maybe we leave it as-is, if it
-doesn't matter much.
-
-> +  marvell,caldata-txpwrlimit-5g-sub0:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: calibration data
-
-Possibly, "Calibration data for sub-band 0 in the 5GHz band."? And even
-better if you can describe what sub-band 0 is (e.g., 5.xxx MHz - 5.yyy
-MHz). But I'm not familiar.
-
-> +    maxItems: 502
-> +
-> +  marvell,caldata-txpwrlimit-5g-sub1:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: calibration data
-> +    maxItems: 688
-> +
-> +  marvell,caldata-txpwrlimit-5g-sub2:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: calibration data
-> +    maxItems: 750
-> +
-> +  marvell,caldata-txpwrlimit-5g-sub3:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: calibration data
-> +    maxItems: 502
-> +
-> +  marvell,wakeup-pin:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      a wakeup pin number of wifi chip which will be configured
-> +      to firmware. Firmware will wakeup the host using this pin
-> +      during suspend/resume.
-
-Optional: this could use a bit of a rewrite to describe the hardware
-instead of the software. For example, "Provides the pin number for the
-wakeup pin from the device's point of view. The wakeup pin is used for
-the device to wake the host system from sleep. This property is only
-necessary if the wakeup pin is wired in a non-standard way, such that
-the default pin assignments are invalid."
-
-> +
-> +  vmmc-supply:
-> +    description: a phandle of a regulator, supplying VCC to the card
-
-I believe this vmmc-supply property is actually misplaced. I don't see
-any in-tree users, and OTOH all in-tree users specify this in the parent
-(e.g., the MMC controller), where it's already properly documented.
-
-> +  mmc-pwrseq:
-> +    description:
-> +      phandle to the MMC power sequence node. See "mmc-pwrseq-*"
-> +      for documentation of MMC power sequence bindings.
-
-Similarly, I think this is misplaced. See its introduction here,
-commit e3fffc1f0b47 ("devicetree: document new marvell-8xxx and
-pwrseq-sd8787 options"), but the controller docs
-(Documentation/devicetree/bindings/mmc/mmc-controller.yaml) specify
-these properties for the controller, not the endpoint/card. And
-Documentation/devicetree/bindings/mmc/mmc-pwrseq-sd8787.yaml is vague,
-but in practice, again, I think everyone uses this only in the
-controller.
-
-I'd consider dropping this and vmmc-supply, unless `make dtbs_check`
-complains.
-
-Brian
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    mmc {
-> +         #address-cells = <1>;
-> +         #size-cells = <0>;
-> +
-> +         wifi@1 {
-> +             compatible = "marvell,sd8897";
-> +             reg = <1>;
-> +             interrupt-parent = <&pio>;
-> +             interrupts = <38 IRQ_TYPE_LEVEL_LOW>;
-> +             marvell,wakeup-pin = <3>;
-> +        };
-> +    };
-> +
