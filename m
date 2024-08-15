@@ -1,107 +1,106 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BF1144D1A
-	for <imx@lists.linux.dev>; Wed, 14 Aug 2024 23:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C645680
+	for <imx@lists.linux.dev>; Thu, 15 Aug 2024 01:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723676960; cv=none; b=mygOY6u7YNmNMdm53JD8h2JBpeyoPlyQD+OyoWODC2FqFKoqUoMbLmcv23wwgk9CKc3i8+BVmWZGM9Gx8MovZQZVjYyvNAoXYTfwBESgLe5t+O1VRqWdfmJeSX56Do2yYZSyaE0LCRJ130m9SoJkEDDtM7I0DD5f4jmtPSlR/ok=
+	t=1723684273; cv=none; b=AWEdvn7OStwiwIbZ3K2E2RLCpoc5vKAwrzY1S7b76P6rJ4SxRrMnpnkiQUcDsEqgNAF5u98pRUiyIgMBGR5kAaKCj4lZ0PhV0U316xzk6ku1majbruUU+lsWMo1HKeCk1TBj3qzQ//eo/udf76CqaHsf67dWKipKD2WNbK4lhVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723676960; c=relaxed/simple;
-	bh=H7nxzJ3p6l88rfM0aMfG4qGoGLko9bbr610DQl34zwE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TNjXs8uiTFPA4RGf0XOGmwNN9T4lzwAyC2mg+EqzyuAiwwPQZnvScb3AzETaKO6NUBFsN05hTIWiMhukAr8wsqbP8rHc+3ULPJNci7KismSy06Dk5zjFxnCu/PPpy/6MENnqluG+zJHbo5Vvh840M4NgytNrKKZ+0pJbtt27zAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RPpvOwDx; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1723684273; c=relaxed/simple;
+	bh=dcecRVPjLIngGI1RLxMq5/GH4z1JjDZM6eoc+0xvyc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nIl8MfceaasKMDaG5M/5uGfXwMCEsu3CNfXc6WQHUuKIHuZu6ozg4rW14210e+hiAy6zv9uaAtip9GrsKdXFMJ4xsFs+HKn6FPgOPKljHT9wpmAcfJ4ikl26JSznjwhd29RiR/ukIbPo2xQ9eyQdQqZ6Q7G85ryeIeEN/QiaBdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=G6NBdMSE; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RPpvOwDx"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B9457240004;
-	Wed, 14 Aug 2024 23:09:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1723676948;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zcxP5EsgtxCZMUGLLhH3WKQwDy1VPGiAYJ745P2bBuE=;
-	b=RPpvOwDx42C6sY67jHhI6CO1krXDCwlaQyGIj1tzG8lZc5IJ8/ZZytMJRCtkAmXPiMAICz
-	phSimiANRz8kHSw6geq0AXd2bRhoBv87ayWGzaPv3lv7f2fg+RVBgyxN41KIMihy6uLqHT
-	AMyGbNnbTatHtkQ67/P2aHmm/hCz762tCiLIl1MSIzD4OUvm+25jmkkhPQ5Ione2vwB+I9
-	fXri6cFyXgzRWWU+JrQNlLcBWt0cicu0VIDAkE2v3ocKkvU4ArOWz7hSerPlESBgncmOKY
-	d141gwpw3/bGtM6NhsqWlxNPM2D+hGgxfnAE//tOUWobO4XSoi9c4/m8dkMNKA==
-Date: Thu, 15 Aug 2024 01:09:07 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: arnd@arndb.de, bbrezillon@kernel.org, boris.brezillon@collabora.com,
-	conor.culhane@silvaco.com, gregkh@linuxfoundation.org,
-	imx@lists.linux.dev, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, miquel.raynal@bootlin.com,
-	pthombar@cadence.com, stable@kernel.org
-Subject: Re: [PATCH 1/1] MAINTAINERS: I3C: Add Frank Li as nxp I3C controller
- driver maintainer
-Message-ID: <20240814230855a6d6b54c@mail.local>
-References: <20240814210915.4046554-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="G6NBdMSE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1723684270;
+	bh=dqMqyY5BdvgE4KGngVIuwXBI5jdKPLu5bwHVc7uCeV8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=G6NBdMSEWv7wZh13H6FyFH6cv7wpTfSuvXCPo4Q/s8zrZKxA17GL8kvPT7nYTerE/
+	 JOWpkg3b/vGBQbKwKHZInFWr107imDQa+8hxZyNL4f+LjrkeoKwSKx0SBoH9AGfR7U
+	 mPoK14C9czlUN5uQBFcOVEebmM/wDTOxk21jo7uSacPNBemyGtScWuwK9bs/3Jchi5
+	 khOEFycDvu/2k0YIvPCroYl8rKlMY/ZJE9AQm0Tp8FApkJb+MO6l0BysC17Gx5BtKz
+	 7dAigZZMEDqCs7G+HX7GoZPNK/xYD9tGrInx9APyS/kB+1IMDj9ezg9AG4b+3CIejp
+	 XbZcX6blvYXXw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WknBP4Swvz4wp0;
+	Thu, 15 Aug 2024 11:11:08 +1000 (AEST)
+Date: Thu, 15 Aug 2024 11:11:07 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ imx@lists.linux.dev, Eric Dumazet <edumazet@google.com>, Rob Herring
+ <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "open
+ list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, "open list:OPEN FIRMWARE
+ AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list
+ <linux-kernel@vger.kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH v3 1/1] dt-bindings: net: fsl,qoriq-mc-dpmac: using
+ unevaluatedProperties: manual merge
+Message-ID: <20240815111107.15bfbf93@canb.auug.org.au>
+In-Reply-To: <6b5897e7-1bed-4eb3-8574-093db5dea159@kernel.org>
+References: <20240811184049.3759195-1-Frank.Li@nxp.com>
+	<6b5897e7-1bed-4eb3-8574-093db5dea159@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240814210915.4046554-1-Frank.Li@nxp.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Type: multipart/signed; boundary="Sig_/aPD.HFt93=D=+W9o/EKyCJQ";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-On 14/08/2024 17:09:15-0400, Frank Li wrote:
-> Add Frank Li as NXP i3c controller driver as maintainer and add mail list
-> imx@lists.linux.dev for it.
-> 
-> Add Frank Li as I3C subsystem reviewer.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Recently, I submit many i3c related patches and become familiar with i3c
-> protocol. So add me as svc-i3c-master.c maintainer.
-> 
-> I reviewed other i3c patches. So add me as i3c subsystem reviewer.
-> ---
->  MAINTAINERS | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2b96899a78890..92da600c3f189 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10701,6 +10701,13 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/i3c/cdns,i3c-master.yaml
->  F:	drivers/i3c/master/i3c-master-cdns.c
->  
-> +I3C DRIVER FOR NXP I3C IP
-> +M:	Frank Li <Frank.Li@nxp.com>
-> +L:	imx@lists.linux.dev
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-> +F:	drivers/i3c/master/svc-i3c-master.c
+--Sig_/aPD.HFt93=D=+W9o/EKyCJQ
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I guess you should rather add yourself to the existing entry
+Hi Matthieu,
 
-> +
->  I3C DRIVER FOR SYNOPSYS DESIGNWARE
->  S:	Orphan
->  F:	Documentation/devicetree/bindings/i3c/snps,dw-i3c-master.yaml
-> @@ -10708,6 +10715,7 @@ F:	drivers/i3c/master/dw*
->  
->  I3C SUBSYSTEM
->  M:	Alexandre Belloni <alexandre.belloni@bootlin.com>
-> +R:	Frank Li <Frank.Li@nxp.com>
->  L:	linux-i3c@lists.infradead.org (moderated for non-subscribers)
->  S:	Maintained
->  C:	irc://chat.freenode.net/linux-i3c
-> -- 
-> 2.34.1
-> 
+On Wed, 14 Aug 2024 11:06:10 +0200 Matthieu Baerts <matttbe@kernel.org> wro=
+te:
+>
+> FYI, we got a small conflict when merging 'net' in 'net-next' in the
+> MPTCP tree due to this patch applied in 'net':
+>=20
+>   c25504a0ba36 ("dt-bindings: net: fsl,qoriq-mc-dpmac: add missed
+> property phys")
+>=20
+> and this one from 'net-next':
+>=20
+>   be034ee6c33d ("dt-bindings: net: fsl,qoriq-mc-dpmac: using
+> unevaluatedProperties")
+>
+> Regarding this conflict, a merge of the two modifications has been
+> taken: adding 'phys', and removing 'managed'
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thanks for the heads up.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/aPD.HFt93=D=+W9o/EKyCJQ
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAma9VasACgkQAVBC80lX
+0Gwvkgf9HtOzYV8LuzEXP88ithcFW7/+sTYyD80bPKv6k5CXgAjVPTV2N+/SZSwr
+ABrsyj6W0YBb8EAZm3C3NxBJbPNkxQ6o/d6DfK0Y3WeEd9dGaJNU3NrQ5o92vhCp
+Jx819A0fCBeIwi6SmI8hbSIXZ0aHuN+2QzjqIZtlKVdWl/87osqwHVuPlVkRTy79
+CIlfrpYQ7Ecpwt1fUUJTjqqOdTzXPRG2OuZzHU+pZoVxI3M1SjdfSXn/BUjL+wJ6
+OGI+lML6E+0T3q/R4QT+VDxyTw+CkYShLSTQ2jfPsjBLFOAcH5RyHnDYlOs7pfGe
+y/4R8xUKD/S6ZeNNP7Ttb6Y7zNM25Q==
+=zKyj
+-----END PGP SIGNATURE-----
+
+--Sig_/aPD.HFt93=D=+W9o/EKyCJQ--
