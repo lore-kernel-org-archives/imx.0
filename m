@@ -1,41 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CCF81AD7;
-	Fri, 16 Aug 2024 21:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CDB136E21;
+	Fri, 16 Aug 2024 21:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723843674; cv=none; b=CAa4ubY/XRsKervXbp6EL0qBDpeMjT/lsPzKYoU2twi6x8fX/jmFODxL+5sQbwM6vfIKOOuCO85/suiB+RZYIbgUcafMlCsJNy+V9r/5AaW2soN/YAw1cd8TYBx1s/b76ddku6q//omdnMBqq3jdXN2tmjw7dVu+5yN2ffBOT58=
+	t=1723844125; cv=none; b=tAriICp03eg7osrrzFf6OB0b7K13dWjhZy829IP2XukOG8Tv9o2eKz8xsrtWOp0FID6vUjqY0JbsBFxOSyWBQDhIj4XUQs0dy1r1MxxtpkHpUtU99ki8xpOEvMDQCUadv208+QurY3KMeZL55V9MiWpgJ/oXmWx8F8ZvWpoNnOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723843674; c=relaxed/simple;
-	bh=dIxN9KEXuTIHRmzuZuqIU1jbaEnvfmetlSXMxrcGzSw=;
+	s=arc-20240116; t=1723844125; c=relaxed/simple;
+	bh=E5pRy/NZev7CQ+5MeoeycTawER7eb3a9BUaFoSbrWzQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iN7qEDXTaGu5+sMcmJhfV8a99yXeWtj6RW1RORenraJNEhwmS2rVufTTXuKnqVPvf271O1x1HyEFWpNQ0CtkfcROyBDatO/Dt5M+V+AOR7KudMvxZITxenJ9E8KkLkjwwmtzPKfAl+605k6LWCUkqqrqz7miP4Ri9JGjiNjIz3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gj04kprW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XVkd42v4lo9hU68Z12XTT+vWnHtZFf1hnUiy5eGa59a0mBGZxWDbU+NsLSmNnA/LlAXd6fVDozxC7c48cgJTnaqniJH3sQjr8AI8EFkl47m1D4AK7A9Q3w2+nXFyKH4oBIXwcDHkJbKOjAjQYEbgnA//D3bQAdtiTadSZZyWKps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cU+b8xGw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gj04kprW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7504EC32782;
-	Fri, 16 Aug 2024 21:27:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cU+b8xGw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457D4C32782;
+	Fri, 16 Aug 2024 21:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723843672;
-	bh=dIxN9KEXuTIHRmzuZuqIU1jbaEnvfmetlSXMxrcGzSw=;
+	s=k20201202; t=1723844123;
+	bh=E5pRy/NZev7CQ+5MeoeycTawER7eb3a9BUaFoSbrWzQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gj04kprWR+dy5f3f8+UkrFLu6HEQ/yhxGKy4H74kpN4XY0z2/zR/3/0FyCouv9uFp
-	 5FrzJAmGy4nKeAU+UUKIVx+nmhu3wxdbYt++wsQMK6HXS5aUkOkQJtqtR2t/bEkebj
-	 9PIKZSGlWz3C+BNOCPx5NK+kjJjTIpvqwZJfVUPpy8K0BTUJVBPjopWqrxDcYepZ9s
-	 lxsm+Vjf6flcHCqprrESI2iJlrOEU0oeJf6IKd0BkvECDh7glfNjdalJ9bvZlKzBUF
-	 HbOpCfQAK44Xq9Xy1tn1oTYv30eVJkifF2Gj18aURKNcchyTfCLNA6sfm35Ody6BMJ
-	 SX63MpjKbGMag==
-Date: Fri, 16 Aug 2024 15:27:51 -0600
+	b=cU+b8xGwPB2wjrNZN58g5rTTZ0K8gy2cVElnvOdNBJS+eRW2cTS6lty9cFaxEA1GE
+	 nvwA8ZyQBoB9dS/JEHAfNUt28/UrQsNEIS2kzi3Al7cI1Ioji8cazLDcD+iPAYZWnO
+	 6h2rmgQwXmGs/xssJ8nxyDCA/zRx1SVbFTtP6WXIDgjH8trJzxo+3p26PbZ5jjF5db
+	 r5P3sixRrT+GaLUTRd2uX+eNfMF9bMLPOh/F/kKCPJ3PKicBeQajp9fkZtNS0CsYOE
+	 LcaAZFcJXdh6W8bSCeUip+QLDhD9hqjKMG4y9TBsEelvDyR/V2v0oXSoSXe66tO1Yf
+	 56BQ2GZJ3jCdA==
+Date: Fri, 16 Aug 2024 15:35:22 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v2 1/1] dt-bindings: board: convert fsl-board.txt to yaml
-Message-ID: <172384367013.2245734.13242997250124317932.robh@kernel.org>
-References: <20240813163638.3889778-1-Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Conor Dooley <conor+dt@kernel.org>,
+	alsa-devel@alsa-project.org, Kevin Lu <kevin-lu@ti.com>,
+	linux-sound@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>, Baojun Xu <baojun.xu@ti.com>
+Subject: Re: [PATCH 1/1] ASoC: dt-bindings: convert tlv320aic31xx.txt to yaml
+Message-ID: <172384412184.2291163.5262701563861623648.robh@kernel.org>
+References: <20240814174422.4026100-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,52 +47,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240813163638.3889778-1-Frank.Li@nxp.com>
+In-Reply-To: <20240814174422.4026100-1-Frank.Li@nxp.com>
 
 
-On Tue, 13 Aug 2024 12:36:29 -0400, Frank Li wrote:
-> Convert binding doc fsl-board.txt to yaml format. split to 3 part
-> fsl,bcsr.yaml, fsl,fpga-qixis.yaml, fsl,fpga-qixis-i2c.yaml
-> 
-> Additional change for fsl,fpga-qixis.yaml
-> - Add childnode mdio-mux-emi*
-> - Add compatible string fsl,ls1043aqds-fpga, fsl,ls1043ardb-fpga,
-> fsl,ls1046aqds-fpga, fsl,ls1046ardb-fpga, fsl,ls208xaqds-fpga,
-> fsl,ls1043ardb-cpld, fsl,ls1046ardb-cpld, fsl,ls1088aqds-fpga,
-> fsl,ls1088ardb-fpga, fsl,ls2080aqds-fpga, fsl,ls2080ardb-fpga.
-> - Change address to 32bit in example.
-> 
-> Additional change for fsl,fpga-qixis-i2c.yaml
-> - Add mux-controller
-> - Add compatible string fsl,ls1028aqds-fpga, fsl,lx2160aqds-fpga
+On Wed, 14 Aug 2024 13:44:20 -0400, Frank Li wrote:
+> Convert binding doc tlv320aic31xx.txt to yaml format.
+> Additional change:
+> - add i2c node in example.
+> - replace MICBIAS_OFF with MICBIAS_2_0v in example because MICBIAS_OFF have
+> been defined in header file.
+> - add ref to dai-common.yaml.
+> - add #sound-dai-cells.
 > 
 > Fix below warning:
-> 
-> arch/arm64/boot/dts/freescale/fsl-ls1028a-qds.dtb: /soc/i2c@2000000/fpga@66: failed to match any schema with compatible: ['fsl,ls1028aqds-fpga', 'fsl,fpga-qixis-i2c', 'simple-mfd']
+> arch/arm64/boot/dts/freescale/imx8mq-zii-ultra-rmb3.dtb: /soc@0/bus@30800000/i2c@30a30000/codec@18:
+> 	failed to match any schema with compatible: ['ti,tlv320dac3100']
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Change from v1 to v2
-> - drop description in fsl,bcsr.yaml
-> - bsc9132qds is too old, their dts have not simple-mfd.
-> - split qixis-i2c compatible to two group, one with simple-mfd and the
-> other one without simple-mfd.
-> - Add new full example for ls1028
-> - Remove [0-9], keep @ for mdio-mux-emi. Dts need be update to avoid
-> warning
-> - fix typo dt-binding in subject
-> ---
->  .../devicetree/bindings/board/fsl,bcsr.yaml   | 32 ++++++++
->  .../bindings/board/fsl,fpga-qixis-i2c.yaml    | 70 ++++++++++++++++
->  .../bindings/board/fsl,fpga-qixis.yaml        | 81 +++++++++++++++++++
->  .../devicetree/bindings/board/fsl-board.txt   | 81 -------------------
->  .../boot/dts/freescale/fsl-ls1043a-qds.dts    |  2 +-
->  5 files changed, 184 insertions(+), 82 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/board/fsl,bcsr.yaml
->  create mode 100644 Documentation/devicetree/bindings/board/fsl,fpga-qixis-i2c.yaml
->  create mode 100644 Documentation/devicetree/bindings/board/fsl,fpga-qixis.yaml
->  delete mode 100644 Documentation/devicetree/bindings/board/fsl-board.txt
+>  .../bindings/sound/ti,tlv320dac3100.yaml      | 127 ++++++++++++++++++
+>  .../bindings/sound/tlv320aic31xx.txt          |  77 -----------
+>  2 files changed, 127 insertions(+), 77 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/sound/ti,tlv320dac3100.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/tlv320aic31xx.txt
 > 
 
-Applied, thanks!
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
