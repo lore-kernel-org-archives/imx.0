@@ -1,69 +1,68 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010020.outbound.protection.outlook.com [52.101.69.20])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012067.outbound.protection.outlook.com [52.101.66.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673481BF33D
-	for <imx@lists.linux.dev>; Fri, 16 Aug 2024 17:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1C11BF33E
+	for <imx@lists.linux.dev>; Fri, 16 Aug 2024 17:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723828204; cv=fail; b=hVyr/9/O2ENjV6Yr/AEn7XBbr2e3lGMYAsjSeKQu7BneK+/Dr5b0SGOMjBY1eEnlLQsZjgFOc/6QjR6i8GPKo07XOeZrXQhrXfGR9Bbb2AdxdUJXqU8mIZUV2EuVKB+WsoXF6SRBJggLUIjKq6km3UuCQFlk3ZidSq5Y9DMpwUk=
+	t=1723828345; cv=fail; b=aXnH9+AgWMx051lEESk548XAa9PGxTS21L6zAojg44KT5r2prP0b+o6+Ay6+Qv1W4uvsIgeLcEYhLFPgiFEBEcp8Fxqc6I8uffTWaJg/2oq8UfbcmHdY91fz71MauqXyo1fIpSHmY2WaKqkOG7cya0nnyXAzRGWF9TUQgF2KKqw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723828204; c=relaxed/simple;
-	bh=DU8Oy2ZtWvQ/Qgfjm58D0wNMvERRN9IQt+T/SDvwG/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rvmd+6s3WmbS8PekFceLYa42aLqBzPaFpOe6J+2rbtNyd7HuQ1WDoBvrB1TT7UOZ8ZkcuB//jhVrdydmwM0WpzMEkO7beSxJ2x4YvUncGhRxI/uR2bUXB63oa3XNiXrKlrMC0LLhHkqud7R7vliBH270tKxHdHseuqtQ+kQKFn0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YXjxqAL3; arc=fail smtp.client-ip=52.101.69.20
+	s=arc-20240116; t=1723828345; c=relaxed/simple;
+	bh=uhJYSLys4mR80kjZd0WY8J4jBOBfbIBbpvXfFyGUnhM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=F+xpYwSTTBOmkxQY5cyDXM1btWfqrVeeFYNpMVGL5VkvuCCsVj+n8ml8B6Tns6awKSYSshZYC1JemRRRMADVupMUNV/7CQVN7+96/K+o0aZ/eUm9R8hXY4NDzr2q8X9/yPj2EMyLspMv9GaQAnUfzDC65V7vG6JFS9W6MtuwQ4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dQll53yD; arc=fail smtp.client-ip=52.101.66.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YXjxqAL3"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dQll53yD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tJepSxzZ9GMQfrb9OkiAoOzYptWa+jjfD0zewZi36F9uXq1D8YXZLyH5LdnzZwU5Koh7XA0GrgWx7EsFF+qaOCsa+r1sNjEOUU0+4CnLEWYqvtA4VvZAogXsEIQxTGazlrqhkjlv2kfs2/JQjyGN+7dDf69NNc13+gzoEthfYlNTDSKjD2IBEPa4wDVwEOiwrfu3NIvWXqdI6I+Y12j6H5uRwRv44EaPIEneLpL3LVfZZJPLzZzNRaYxm5qgbxAFgoi3aEZe1oqv8PKmlUk3cfa7IaMzwEELq3Vi/09zbuwJUGZrnswQ13VchxGK0jUNSNPEUruZUCwXyhG1uk6yCA==
+ b=NYdmr/Ya329UTSiqZRKmka9DNWJeP8HBBr4NcrqZR4yI/ydC3JohfUjFbiXLQHd5vZZiLe/1yweJBXPEgMt71tuQZOZgE/PMyUH9kRj+mPpRJUL9Kb0ag4s+u6Yn012j8hRGeja7OUVE6Wc9+5uGoVLwTgCcWw9rz5P6A8X/cdmKZC4+IuWYzcjGS/d0BVIovczDkCf6sa4RXV/2Ak6uM59dov72V+pavK++fdC+O+L4sf90xdWYbZkfTpcRItPDwoXmTNGbqdrS7ClDSiL+xcekWijMxwkLEpXcQDgJsbEgwGuTQwh1rjBElda3Nr+d94iamB+rd/StoM9Ky3ZQXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DU8Oy2ZtWvQ/Qgfjm58D0wNMvERRN9IQt+T/SDvwG/c=;
- b=wi7UlhIHnyZ1u8ZlU4dI9lUbwgkhneU0k/hDx446T8dO8tc5E3OQGRAk5PV0Tqf3bj82Hj0zUjgkzPPn/JTmJpy/caBcsNRbmKrMJsdV8eA3JRh0ol0qcUM+W6I+bc4yHwr+uVCropfsRXWmJ9VSYbksElYGS2BA308FvtPxcBUuzWK3l71DOu57RwoK8VYZy01WdEWibglNFv44RfibgMwZABiptfRjexSmJncSfKDZMORFLtNnsclfOnXbxrJVBU+0FvhtAFTZ0YW2eqAtO3Ffy9BG1yrSBa5Sgk2iLdeI/GaqlywByK1gWFo6Y+R+Zq/UaADnqKqN6BJhLMSk3w==
+ bh=NxWESkxZHLgtZnpErSHmaCawdocuBYJPdYdbNS/6yDc=;
+ b=PFZIz2N/cfcw/qqN5giLq3DRTn5rn6Cj0hCqVn6yncx3kGbiVZSkw4Vio9bX76HhwiqL1f27ZVH64ab1KZoNJF6QondDmRj2Oc0d2QqNZjoz3tRriEflfPEUlBET2W/8zMkZttZSmi8zJBRUNH3DoOQbo0vhTdEEunDqhwj4UZIgc8oGVXl0asy89MEUKjZXICaIVYFeFI/0EBXxVCDr66BtXIymTXWfqGYoiUeXifMYagxDufHnW1LnLmmx16mDkjCWppcOxD5kqFvZAuGCZsmHfYHVMMxgMgQMONxTHWtwGNJqMpG2mWn2qR0ogGKlwsfbE75NrYtZ+gYeLFUEbg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DU8Oy2ZtWvQ/Qgfjm58D0wNMvERRN9IQt+T/SDvwG/c=;
- b=YXjxqAL31DbRADIuLV1fUEeSL9I22llRg2kr35FOI/RNM+bb+PGMeNDtQmV275YGL0oWQFGEUR/Ue4V3KWm5pXV5Zo8XbbcajDurdjyt0lEi1C0SsBvr3TSiQYkuY2ubmwJnbtK0Ma8B1Qzf84CxRiDEwuLrdqJW64NcvNP7JERpQv96s447M+8fFJUsHEcGMYxAcuJtNEHn8mHkktRHLOlpuBUMCAaINgX03ayP7x8VMoQNV7YpLmv7KcA2ZGXzKyho5ujA0bkzBdtUmmKWZ1nw/j0UPPiGoVQbEop7/HC+29LhFFf+0UhXx6gluExGm4PZEudGvSh9RVOACCzvpw==
+ bh=NxWESkxZHLgtZnpErSHmaCawdocuBYJPdYdbNS/6yDc=;
+ b=dQll53yDhGahBy768JbAOEP8y1s7zE8teJU7qa9pE+Fuie2I79fKFOEJYp+qwbcZOw/7fYi95cbdPpP9EFflMG6KjKAspfzb3tAVERyW0pY8NqpyG7Z4Oo/EqhitlR+ae63fiNwefGXo/hbRszOwvzJ/B5Q5KJkUGojoJRzvZ0s0Hzrr9fJvQbfNU4x0Egow6QRttBxpDILZ48XcmEO0YZQtgBvo5Rdj3kjMyEjQI8An4zyxyDvOe2aUgD4Z7676lZec2ngLPtksP4g+n56zwcuWjNhq8OkyrNYYD8QLuz1bo7drlRGTT2X3tiM0YJfwMdMN3PW0MtfRjxqJgufufg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB9724.eurprd04.prod.outlook.com (2603:10a6:10:4c2::17) with
+ by AS8PR04MB8328.eurprd04.prod.outlook.com (2603:10a6:20b:3fc::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.18; Fri, 16 Aug
- 2024 17:09:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.19; Fri, 16 Aug
+ 2024 17:12:20 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.016; Fri, 16 Aug 2024
- 17:09:59 +0000
-Date: Fri, 16 Aug 2024 13:09:50 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+ 17:12:20 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Kalle Valo <kvalo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Zhiqiang.Hou@nxp.com,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 4/4] MAINTAINERS: drop NXP LAYERSCAPE GEN4 CONTROLLER
-Message-ID: <Zr+H3gHZ/B7zTKBW@lizhi-Precision-Tower-5810>
-References: <20240808-mobivel_cleanup-v1-0-f4f6ea5b16de@nxp.com>
- <20240808-mobivel_cleanup-v1-4-f4f6ea5b16de@nxp.com>
- <20240815155343.GC2562@thinkpad>
- <CAL_Jsq+rnUB2pDjf6qFF7ThtSD-C8MMZUrhJmTYKfts34Zhr-A@mail.gmail.com>
- <20240816054231.GG2331@thinkpad>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+	Conor Dooley <conor+dt@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v2 1/1] dt-bindings: net: wireless: convert marvel-8xxx.txt to yaml format
+Date: Fri, 16 Aug 2024 13:12:01 -0400
+Message-Id: <20240816171203.143486-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240816054231.GG2331@thinkpad>
-X-ClientProxiedBy: SJ0PR03CA0164.namprd03.prod.outlook.com
- (2603:10b6:a03:338::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0090.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,152 +71,281 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB9724:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff76d8d5-e1ee-4747-b5af-08dcbe164240
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: a088b53b-a0b9-4d77-3c0a-08dcbe169667
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|7416014|366016|1800799024|52116014|376014|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z0FJTVd4V3ViZlc5MnpYRHpYSnUyUHVDN0pVdVVodHpyK3AzNkJmbGJjaVNP?=
- =?utf-8?B?SUtIQTdweGhsN1o0UllsdXhIL0lkaGJEQUtQU1NkWitDSkorSFRRWkh2UXhN?=
- =?utf-8?B?Wm1INGZ2SWg0WjE4ZlJHWXdYRmcxaGlHVjEreW9wbVc1dzhtY0l0UnQ0dmJM?=
- =?utf-8?B?QWh3VjFKQ3R2Y0FLUFJFTFVlVm9DRnVoWktqTlY5SDJxNEFuUi9aN25JbFFN?=
- =?utf-8?B?WGl6NWtITG92QlJTL1ZoaGh5VCt1RFBnZlBEaC9WY3JneFp2ZUp6YmJOK1Uy?=
- =?utf-8?B?OVJVaUhjZ2ZtUUZYTmxqRy9iNUZvRTZ0OUlCOStQYkdlS2FuTUlNZUFhZWdY?=
- =?utf-8?B?VWo1Wjc1a0pObWQyN3BONmxqOE10bTk0NEl6SWhORkJ2d0NPMDR1cDdCSks2?=
- =?utf-8?B?ZjVVMjJneXV4VWpuT0liR0FOekI1Y25QOEFMbTN5SDcvSXR6ckpYRnZ4WkMw?=
- =?utf-8?B?VDZrUjhJY1hBd25TR1J2RlB4V2lwdU5lRDZFN3ZvcUJaVTZka3dqUDd6L0k3?=
- =?utf-8?B?RXN0UWkwOXMwOHg4TVdKR09QQk5PN3g2YlhyZENnYWlkQVVGRkVmMW94VzRO?=
- =?utf-8?B?SUxXWnZEajVKSGpwdE1LdzNYNlBsN09QOFcxSis2UkF1N2l6eVJUTW4vWkJh?=
- =?utf-8?B?WWhhMXU2ejA3M1NVb1pwWjMxMzVYcHpsZzJtVUNwTFdTSXdsbzhEdjkybCtt?=
- =?utf-8?B?Z2RhSU5KVk9BNjBoMXFWRktJSUR0cGJJUy9nS09OVW5FcE00QUt1d3EvU0dw?=
- =?utf-8?B?czY0b3VMUUtiNVFMSWNoSEtoUWZYbVZuL1NLS21IODBFMXNHNVhpL0FUMGpw?=
- =?utf-8?B?Rmx3Ylk2VDJOUW1wVjhPNFQySi8rNXRwWGd6clA0MWxzbHkvSmlYaWY4MjFU?=
- =?utf-8?B?L093TUY3L3l2dHdpYjYydTlsay9GVk13Z29TY0hhWDJWWXQwRlZEeGFTSnhT?=
- =?utf-8?B?SERydnhHenRmQkh1RWE0Sm94VGZTSytKTXBlcDlNVElJc3lheHo4eWRIQnZB?=
- =?utf-8?B?ckQxdFExOEdWVHhUSUpFRWUzUGMvYytvS2lLZ3o4d3hLVGxlUDBQTUZTVXRI?=
- =?utf-8?B?RTRzcGdOcVQyYTVEVnl5QVllT3FYU1EyVmF1YmlMaklPaFR3bWJHUTl0YnRT?=
- =?utf-8?B?UnREb0pZREU3NWdYbVFjWDlTVGhzZm1Gc1dvcFBzSEpYN0RxL2w3TU9aTmc5?=
- =?utf-8?B?aHE5VFRldG1IYlpJMEE1bHl6QXd3RHk4Y2s5NC9FMlU2dkNaa1U5UG9oZ0NR?=
- =?utf-8?B?MWc2ek5UQnpNWDh6eW9WZGVlTC9DQmdJYVVzL1JsYnhQWStyMVR5dVRVYXhY?=
- =?utf-8?B?SkRleXU0VzVGTjZTL3J3ajNJRGh6TmxjQmR5cm5BeVFtWUlPWGZkd3UrMXpw?=
- =?utf-8?B?aEtoQ1FDcTVGQXMyc1dtMWRYY1g4NG5qMnl4endUbyttOW9HTExNTXpRNTl4?=
- =?utf-8?B?aHdSQ0RBcmtJUmhwRys5TFBzL1Q3emdKMHJFME5LaStOSjZKc2dxaVpuNUlL?=
- =?utf-8?B?R3EyTUxHUmNsclBYOXpHZlBkM3lPS1J2WTgxYTFSM1FpaUhFNVBiSWhBdm5W?=
- =?utf-8?B?SzVmSHN6RWZKcWFpdXdSaGR6MkgwTE5EYjNrVzRZZzNxZU5ZREhOeVduZ09w?=
- =?utf-8?B?SU5Ib0R6NkhkUFZjb1ZnZ29kdWp2dWtkQ1NGc2hpYnE4WDNOWDlxcFhtcGI4?=
- =?utf-8?B?Q1RyV1N0bi9FY203Mk1RRWdzWTZHQVMveWN5NUJ3L2wwZjZmUlMrZllwTEdC?=
- =?utf-8?B?bk5SRndEelYwclJzT0RxOVQrME05WGFaN24rVXRFTHBlUVZSMVpWSWs0V1Nu?=
- =?utf-8?Q?CigdTbF5EMhy0XSxLPtKBVP9jNDelJS5rJpPQ=3D?=
+	=?us-ascii?Q?KYKa92q/dZoJOY0G3gPcQDgOWt9GbCbRHoNsMk3O5IQ37wGfwQULE/KsPXXV?=
+ =?us-ascii?Q?hCulJRayocFKethUghAIf+OuU+r9rTN9FdY4HS/c8C7RqQb/vdJONx+WpIjF?=
+ =?us-ascii?Q?dGMJfOYgx7f0xf7CP5yT57QHlqD2jwLYiKW+IrrFNDrgi2ENMe/ygEyBdk57?=
+ =?us-ascii?Q?v+aOljxIjD/nwjaUeIktBriPaVfCeMkbT6lh+gL4JjOTrH4ZZD10TNj6f154?=
+ =?us-ascii?Q?qw/6vaSZCICEYJjCIRKX3oElkssTqAkCD8GWRoV+16xYxUswtRuJNA46egAa?=
+ =?us-ascii?Q?Ve3S5KSY7j5Rp9O+U9Gyhg/MWh/oPZEVHoaLZidtmWJKop00MzKyIujlVZna?=
+ =?us-ascii?Q?fdjjZPS8omOATYvYMqirGI7pR/yhYCtIuH2vDUwNdl8Qlxja55mLnxlvNy7S?=
+ =?us-ascii?Q?npVD9DKbjniBGiOAbzFx0PJQyCT4ckg+HuYfy99mepxU3lX4PQHjXVHoxpxP?=
+ =?us-ascii?Q?bhKU8u5ZnAXiZaNJOOVDt7plr8LzNrVMJ/cw8kdMuhAhQPRpKWAlmhdsKzNF?=
+ =?us-ascii?Q?UNhPoDjs0d6zuoZ5HvZRgSDcCRc2JV6jJl7GnNnHZ5O0LKdH2KHF1U1hq0eg?=
+ =?us-ascii?Q?91zmoJlJstc/P1ZE45ZdPuPdGwRMJY13OMMc7mHJ1OXNC27vKBjN4ELkcl+M?=
+ =?us-ascii?Q?AqmXbS6KB3+f6v/YDe3vfhFfWLUMIQcTqkWky9ZF7qPKQwItiLhdlOXt68Y7?=
+ =?us-ascii?Q?dw0V53OLj9C+wTzzsCOGwMVCGjxhlCNse3veWYAORg5/IKIGZtXhEHF2d/Qb?=
+ =?us-ascii?Q?UZmHBJHgXE+/liMFITwXNFe4K+autzMNCpMv8frfdi7VsJwavUoZFfZJ6Ejj?=
+ =?us-ascii?Q?mhdc5eVD42LaTUOmnkZg23oRcHuITxodkXGIUgZoXGyW3KqE655O3gsXQWrL?=
+ =?us-ascii?Q?lf2E5efYAr3UBZ9O9bKDFCc3qUcSOt99IV8q/aFXbnrb8eO49ylZPubevfac?=
+ =?us-ascii?Q?K2JIVqsKEOe0f5G3p/ezOy084FmUuA+X3q5MkrdoBG9tG+oVPRcD/Yh9BSMz?=
+ =?us-ascii?Q?zQXA+j1hsLLKEmW9SMEe9JMEi9PDYqm5AOuOi4h0/dCyofFcv7zyI19yKW8k?=
+ =?us-ascii?Q?DYJyO9HYuPrkc3vX6Tglwys+2rhsbnJUCUYBakr6PSymn4H97W5LWbieKn/l?=
+ =?us-ascii?Q?P44hJC7AbQFPkZZBhpOPK4WYO49OGIJPaaNlU98DvQh4RKOsJ8DxSkCX+NXS?=
+ =?us-ascii?Q?F/4AOtSGv2ZzDmNlSKiOJVD2+eNKKNS6iKn8zoBQrNSTWSFL06LQrU78kGtv?=
+ =?us-ascii?Q?LSgSLWIM40CJD4/i2y2ij0EWqYT8RiYubv/VDq/YfVCSlYKmWOuqSSo++6d6?=
+ =?us-ascii?Q?8+7BvYeDiQrCuinbwnVCK8bPjzzl83fiWEuFcLHB7qj60+GxSJ7gzNyPdTtY?=
+ =?us-ascii?Q?Z7v4reE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(52116014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c09SWVJZdkxZejBVWnl2akRUNGdWZ2JQYXZsZ0x3Y1UyUy9JTStvcjNNb2N4?=
- =?utf-8?B?VE12NVNna2tRbUZLR2xvWGtJZlc0cGdIWnYzYkhDSFVJK2pvSG44cTlKRG5K?=
- =?utf-8?B?cTlzVXlydDZIU0pGcHZVeThPSU5abTloNEYzS0NBdXdwdDVMd1RDWXZCQlhO?=
- =?utf-8?B?L2JwUnFGU3YvTUIzTTBXbUhXVnVnamNRL3QwSXNGMnFQM2VKL1NJUG5SdFNF?=
- =?utf-8?B?UnNlQzRoKzBHYWN0MWVvL21wa3B1Y011RUlycTNsbHJ2QTl4L3htenlpWnJ0?=
- =?utf-8?B?K2FlQVdDbU01QWF5RmVvZk02bTlKSjVZZGMzZ1J4NzNaT1oxOVR0b2IvUWl2?=
- =?utf-8?B?bURQZ2lCRTQ2Rm8xM2pUcDdUdEdLVVdjbUJ2QTdoWWVtdmEwS3dIaEZhWGtC?=
- =?utf-8?B?N09sVkNpdU9WTnhXMVlJNHhKQ2NpdVBsdTJqdUs0Z0RQRnYya3N4TVdVa2VR?=
- =?utf-8?B?MHJHc1RqUzFCRzlwMVFER0VrUjRuMGlpNmYwb0tmRDZJZk41RFMxeVJyYWJT?=
- =?utf-8?B?b21Gclc3aEVQN05uYWVFQTJra3RYR2dpMmJML1Z6cWlPYStFUEgzcDRxaFZt?=
- =?utf-8?B?TU04NE9FVjhXbVJzLzYycHdYS3dPeWo3NUFZZ2ZPR0tHUjREU0ZBWjVybFp6?=
- =?utf-8?B?NXRlaXVHMktwMGYySjQvQjk1bEN3clRZc3RPVDBFNEU2d1J5blB0NGdnb09G?=
- =?utf-8?B?b1lSclFocnR5T1VmNm05TUZiRW9PQlZZL1VmR3hkaC85aFJkcnBKWkNBUEpL?=
- =?utf-8?B?NFhoalRrNEtYaVBpRlZHZ20weVpmY3NVTko2NUt4Yi9tSGh4SVArTi9jT2Rj?=
- =?utf-8?B?ZHBNSWZWWHJFd0lsNHQ0YWVsejdjL2hvSWRPTGRlc2ZuaGthN0xJeVYzNFMz?=
- =?utf-8?B?S1lPbFNkWVM2S0o3dXZadVRubVB2QnFpS09VWnFScjNHeEsyOENEUGplYlQ0?=
- =?utf-8?B?SmJzZHRIaGxaRUd2QkZLbkdBNThTWGRjN2xsYlFQeG04eDhJeXlQQXFtZlY3?=
- =?utf-8?B?dVNGTmJ5TW9BKy9yQVo4M2RLUEw2TGZUclJFaFgrQW4vMnlkTjdMQmJiQ0xi?=
- =?utf-8?B?VVdVQS9QZWxJY040cDJrclJTMmwwdVVRQlBJTEdYU25RbXlxQTdBQ2czNWNp?=
- =?utf-8?B?bWN5bzlRTnMzam0zenRUSkRnOEljdHhnV1dZNWsrdmJ0M2kvdFVKcVZWd1pN?=
- =?utf-8?B?TjZWTDZ1c0lWRndFUWdnL2U4NnpOcVZjQUJLaGYyMU1Md2hPbGFxVGFMQjBC?=
- =?utf-8?B?cXlkSit5alJHbmJLQlo1cVhFZGpGWFlsM3lpNk45ZDM5NzZQbzFRajRnQUk0?=
- =?utf-8?B?VXpBdW1yZGROUkE2Wm9BY0FIQXB6ZHYwcW1OeisrZnZ2MTNnRFErSzdRU3Qz?=
- =?utf-8?B?amI4WDcrOEVsVS80UThTZ205ckZES24rSHphL096WDBOTDNreXB3a0lPM0pU?=
- =?utf-8?B?ZERVVmVObWhFWnRtS0NQVm1YNW12VWZqU0JxeU9tUzgyMDkvUGhxQVBubDNO?=
- =?utf-8?B?SG5QUjFIVkxuM0hpV3RoVTZTR01yUFpQbm50VWM4NW9ESzN3M0dWTDlvSlNF?=
- =?utf-8?B?bTNXMFJvY3NjUmE5dUtMRDVHL0JyY3pVdC9vb1VBUXdSa093OEQ3VnFtMGJY?=
- =?utf-8?B?YnRLMWlrVFluZm5GRGNqbEQ3cFZPSEhGV2pob2NEMzg1RlZ6TE9pMkNCaW9j?=
- =?utf-8?B?b0orZ1I0bDJoanRsZ0FuTEhXRkhWUzZYa3g1aDZndWlEVVRTeE82OS9ZZE1p?=
- =?utf-8?B?US9TT2cvZFJGdU1xWDJMK0VYZ0tTZmtNZjBRMHFETnV0L2ZlOFRyTHhSTXRr?=
- =?utf-8?B?L1FKMHM5WW1LSU9uNDYzT1dQdkZqU0FINnZ4TFZxSXBMZGJOMmg5SzlMd1pt?=
- =?utf-8?B?bElJS2ZuNUdyQlVORVZVMGlGb1NNUTdUWmV1eTc2OUo3eHlsVzR6UitSU2Zm?=
- =?utf-8?B?SXVFeW1LVGR5amRDKy8yWlk0T2RFcG1WSCswbWpvTDEyZUZyYkxhSlE4WTZJ?=
- =?utf-8?B?U0EyTXU5RzdmNE9ialhDSVEwaUgwQmpHZS9pSU9pYTRtam1DOE80a1JhNkdk?=
- =?utf-8?B?VmNSTHhGODBpSk9qTkpkTkxGNkpZZUNFMURiQWJ1RjRrb3hxdW9jL2N3RG1Y?=
- =?utf-8?Q?ALygtG1+AvOf4mLB9e4hSHzek?=
+	=?us-ascii?Q?quvPAM+wJfME3LB3X+z4OuX07tT+xIdW70uALdecd/3RY+4PFZtkilmwDWk8?=
+ =?us-ascii?Q?SGuLUwQpuNn63OmNSgv7E4bao1cYfrRfnvTE7bLsSAVqSf4/th9eQnN05MMP?=
+ =?us-ascii?Q?DnTUuhEsKuibCuEwppWJyDS/395/4VMhTU4UHbwNS2A1lbsDWWFX5iU7a1VQ?=
+ =?us-ascii?Q?BEO072pYockBoBhYEOe/ouasL7amc+aqrCecmspr3FeU+9RhrznicWjMqQA7?=
+ =?us-ascii?Q?UbpkM7IM5KliVRGS+66CMlU1N6rTpGfg2hHZOx4VgjU6gZiGfWKZU8wKaF6A?=
+ =?us-ascii?Q?O2zC4S2Lf4K7NA4HUSkUwh2jGi+yWmjfMhIzHUrmga4SMhCO9LKDQQwdxRlY?=
+ =?us-ascii?Q?Cv6eG+5kurmBQyJY7lg7khVtmo3P6rD/Cw005Y41qwyYyZWMq1KcoPWw2N78?=
+ =?us-ascii?Q?/1qNm5jD2XVg/tPC4FC5X1Fv8Z0cKPZpUvmnN9d45yskpjR0Y0/ePySAYlNX?=
+ =?us-ascii?Q?j8sXuZs1l6ikySyiEXFpmGSK5cCTRHw+F5f7/0DGwDfa5vfa+0N53w07UCIv?=
+ =?us-ascii?Q?ys5zUFYSA6Qmf+Ozytw4846bLZMFRJfB8E/sPNFfHPy2sa5ICEd+A+s/jbpa?=
+ =?us-ascii?Q?zudE7RSJzywnfcinqYo7RApSZaziN8XVzIfcYTmDa9/I+XIAKmVnTu/Amwws?=
+ =?us-ascii?Q?Rv0LfOsA7YU9RqvMJ4tzsc3Uxr6hZeB8AZyYRf4wW2YFKAdVzrqdpDW2Gyh8?=
+ =?us-ascii?Q?vQryg/KIjxCEVvpZVmAuA9KJ2w4/puvUM6yC68KdiUuukPOiP/qp2TvxFz6k?=
+ =?us-ascii?Q?tDQjMSkQ4bo+/TYGDLZyHkX6qAeWNmUklPXY3PNU2a9E7dunbpHlyIt98mTS?=
+ =?us-ascii?Q?LnsbGAu+vmY20WWg5gn++ajsn7irtDbqqMoy85p1lRKaqNJuiTBcwejJaFGl?=
+ =?us-ascii?Q?h/j+XV6moAdhW/HB/HbQIdy0ndEFfsJGfWk2KWrWC8Tm+JVKY0ondNVMjoID?=
+ =?us-ascii?Q?2NariL1A4FURrjRta8ASpvNDdrzww4cpLOpXYXoOweLOqoOSDImj6hDbPTTC?=
+ =?us-ascii?Q?e5fJ3X19BXbBGMpO+m9eOAhsnm4nmajorix0IEuzCbyh7UxWkTy6rl652DbM?=
+ =?us-ascii?Q?dfDeFVKANgf8tA917cphEcCvO8yXuq3Su8+cDfWRgwAJ5OPcbSJGo2M5I9sY?=
+ =?us-ascii?Q?UlF7bCeHgZqlaroBem0l/Ax+Jf0FFs+XKAdphnI7je5E224RfiyzCum8UbGV?=
+ =?us-ascii?Q?gpJCydiqV612VgJzNQnrG9tHdNas8CoiIAgHX/wJxRFjwoQ6yLLgOxmk8HA0?=
+ =?us-ascii?Q?fwx4SRAlQA7fUgu54gscsuATt+ExaGqrjfI+h18upF55/mMcL0HXvFmwLLB4?=
+ =?us-ascii?Q?22Dzni4Z4PgEZD2olSNfkdN10SpKEFESRpm9X+n0CIINRRj3eYo/38OoULvQ?=
+ =?us-ascii?Q?ED1beWCOTBRL/v063qlMULp8uBhpRpWQ+kZWVYaqgrtoRVLq2UKky7DheaS0?=
+ =?us-ascii?Q?8/s46+LzI2EFTDupYVGxwbkWGeRvvc/6FN6cQuknGPWqclHYI5r3aj5jqHI7?=
+ =?us-ascii?Q?zEfGyGNFrvSnJp5ialxFI4/mreuFCjakTrHYdmnOHsT8qXiO1mirOb2wtMI1?=
+ =?us-ascii?Q?6X1oLq+ENk2dvXbhlnI=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff76d8d5-e1ee-4747-b5af-08dcbe164240
+X-MS-Exchange-CrossTenant-Network-Message-Id: a088b53b-a0b9-4d77-3c0a-08dcbe169667
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2024 17:09:59.1018
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2024 17:12:20.7167
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iuIcJLwQpV/AzORok4UGzlNUMTu5NTJ0VI9V1aItswKiI0DNlqnQL2Bmc+aVUxQ5NFYpmAkIP7OOEqbWBu3CVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9724
+X-MS-Exchange-CrossTenant-UserPrincipalName: ldJfIY5nnZsF7JinkYiYA3dh6MA8EuFAtnncunlRtxzDQZnxrrUGySIJ8zQ0hxDXleASnFCkCz3aS3QdvxlFlw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8328
 
-On Fri, Aug 16, 2024 at 11:12:31AM +0530, Manivannan Sadhasivam wrote:
-> On Thu, Aug 15, 2024 at 03:15:52PM -0600, Rob Herring wrote:
-> > On Thu, Aug 15, 2024 at 9:53 AM Manivannan Sadhasivam
-> > <manivannan.sadhasivam@linaro.org> wrote:
-> > >
-> > > On Thu, Aug 08, 2024 at 12:02:17PM -0400, Frank Li wrote:
-> > > > LX2160 Rev1 use mobivel PCIe controller, but Rev2 switch to designware
-> > > > PCIe controller. Rev2 is mass production chip. Rev1 will not be maintained
-> > > > so drop maintainer information for that.
-> > > >
-> > >
-> > > Instead of suddenly removing the code and breaking users, you can just mark the
-> > > driver as 'Obsolete' in MAINTAINERS. Then after some point of time, we could
-> > > hopefully remove.
-> >
-> > Is anyone really going to pay attention to that? It doesn't sound like
-> > there's anyone to really care, and it is the company that made the h/w
-> > asking to remove it. The only thing people use pre-production h/w for
-> > once there's production h/w is as a dust collector.
-> >
-> > If anyone complains, it's simple enough to revert these patches.
-> >
->
-> My comment was based on the fact that Bjorn was not comfortable in removing the
-> driver [1] unless no Rev1 boards are not in use and Frank said that he was not
-> sure about that [2].
->
-> But I think if Frank can atleast guarantee that the chip never made into mass
-> production or shared with customers, then we can remove the driver IMO. But that
-> is up to the discretion of Bjorn.
->
+Convert binding doc marvel-8xxx.txt to yaml format.
+Additional change:
+- Remove marvell,caldata_00_txpwrlimit_2g_cfg_set in example.
+- Remove mmc related property in example.
+- Add wakeup-source property.
+- Remove vmmc-supply and mmc-pwrseq.
 
-I think Bjoin's request is impossible task. Generally chip company send
-out some evaluted sample to parter, which use these sample to built up
-some small quantity production. Chip company have not responsibility to
-call back this samples. There are always some reasons to drop mobivel and
-switch designware, it may be caused by some IP issues which can't match
-mass production's requirememnt. Such informaiton already removed from
-nxp.com. Only Rev2 left.
+Fix below warning:
+arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: /soc@0/bus@30800000/mmc@30b40000/wifi@1:
+failed to match any schema with compatible: ['marvell,sd8997']
 
-Leave such dead code in pci tree actually no harm for me, and clean up need
-extra efforts.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+- Add Brian Norris <briannorris@chromium.org as maintainer
+- Remove vmmc-supply and mmc-pwrseq
+- Add wakeup-source
+- rename to marvell,sd8787.yaml by using one compatible string, suggestted
+by conor dooley at other binding doc convert review
+---
+ .../bindings/net/wireless/marvell,sd8787.yaml | 93 +++++++++++++++++++
+ .../bindings/net/wireless/marvell-8xxx.txt    | 70 --------------
+ 2 files changed, 93 insertions(+), 70 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
 
-I send out v2, which don't build gen4 driver default. It may a feasibility
-way to do clean up. If no one complain for a while, it should be dead.
+diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+new file mode 100644
+index 0000000000000..c6647672b7b1e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+@@ -0,0 +1,93 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/marvell,sd8787.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Marvell 8787/8897/8978/8997 (sd8787/sd8897/sd8978/sd8997/pcie8997) SDIO/PCIE devices
++
++maintainers:
++  - Brian Norris <briannorris@chromium.org>
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  This node provides properties for describing the Marvell SDIO/PCIE wireless device.
++  The node is expected to be specified as a child node to the SDIO/PCIE controller that
++  connects the device to the system.
++
++properties:
++  compatible:
++    enum:
++      - marvell,sd8787
++      - marvell,sd8897
++      - marvell,sd8978
++      - marvell,sd8997
++      - nxp,iw416
++      - pci11ab,2b42
++      - pci1b4b,2b42
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  wakeup-source: true
++
++  marvell,caldata-txpwrlimit-2g:
++    $ref: /schemas/types.yaml#/definitions/uint8-array
++    description: Calibration data for the 2GHz band.
++    maxItems: 566
++
++  marvell,caldata-txpwrlimit-5g-sub0:
++    $ref: /schemas/types.yaml#/definitions/uint8-array
++    description: Calibration data for sub-band 0 in the 5GHz band..
++    maxItems: 502
++
++  marvell,caldata-txpwrlimit-5g-sub1:
++    $ref: /schemas/types.yaml#/definitions/uint8-array
++    description: Calibration data for sub-band 1 in the 5GHz band..
++    maxItems: 688
++
++  marvell,caldata-txpwrlimit-5g-sub2:
++    $ref: /schemas/types.yaml#/definitions/uint8-array
++    description: Calibration data for sub-band 2 in the 5GHz band..
++    maxItems: 750
++
++  marvell,caldata-txpwrlimit-5g-sub3:
++    $ref: /schemas/types.yaml#/definitions/uint8-array
++    description: Calibration data for sub-band 3 in the 5GHz band.
++    maxItems: 502
++
++  marvell,wakeup-pin:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Provides the pin number for the wakeup pin from the device's point of
++      view. The wakeup pin is used for the device to wake the host system
++      from sleep. This property is only necessary if the wakeup pin is
++      wired in a non-standard way, such that the default pin assignments
++      are invalid.
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    mmc {
++         #address-cells = <1>;
++         #size-cells = <0>;
++
++         wifi@1 {
++             compatible = "marvell,sd8897";
++             reg = <1>;
++             interrupt-parent = <&pio>;
++             interrupts = <38 IRQ_TYPE_LEVEL_LOW>;
++             marvell,wakeup-pin = <3>;
++        };
++    };
++
+diff --git a/Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt b/Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
+deleted file mode 100644
+index cdc303caf5f45..0000000000000
+--- a/Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
++++ /dev/null
+@@ -1,70 +0,0 @@
+-Marvell 8787/8897/8978/8997 (sd8787/sd8897/sd8978/sd8997/pcie8997) SDIO/PCIE devices
+-------
+-
+-This node provides properties for controlling the Marvell SDIO/PCIE wireless device.
+-The node is expected to be specified as a child node to the SDIO/PCIE controller that
+-connects the device to the system.
+-
+-Required properties:
+-
+-  - compatible : should be one of the following:
+-	* "marvell,sd8787"
+-	* "marvell,sd8897"
+-	* "marvell,sd8978"
+-	* "marvell,sd8997"
+-	* "nxp,iw416"
+-	* "pci11ab,2b42"
+-	* "pci1b4b,2b42"
+-
+-Optional properties:
+-
+-  - marvell,caldata* : A series of properties with marvell,caldata prefix,
+-		      represent calibration data downloaded to the device during
+-		      initialization. This is an array of unsigned 8-bit values.
+-		      the properties should follow below property name and
+-		      corresponding array length:
+-	"marvell,caldata-txpwrlimit-2g" (length = 566).
+-	"marvell,caldata-txpwrlimit-5g-sub0" (length = 502).
+-	"marvell,caldata-txpwrlimit-5g-sub1" (length = 688).
+-	"marvell,caldata-txpwrlimit-5g-sub2" (length = 750).
+-	"marvell,caldata-txpwrlimit-5g-sub3" (length = 502).
+-  - marvell,wakeup-pin : a wakeup pin number of wifi chip which will be configured
+-		      to firmware. Firmware will wakeup the host using this pin
+-		      during suspend/resume.
+-  - interrupts : interrupt pin number to the cpu. driver will request an irq based on
+-		 this interrupt number. during system suspend, the irq will be enabled
+-		 so that the wifi chip can wakeup host platform under certain condition.
+-		 during system resume, the irq will be disabled to make sure
+-		 unnecessary interrupt is not received.
+-  - vmmc-supply: a phandle of a regulator, supplying VCC to the card
+-  - mmc-pwrseq:  phandle to the MMC power sequence node. See "mmc-pwrseq-*"
+-		 for documentation of MMC power sequence bindings.
+-
+-Example:
+-
+-Tx power limit calibration data is configured in below example.
+-The calibration data is an array of unsigned values, the length
+-can vary between hw versions.
+-IRQ pin 38 is used as system wakeup source interrupt. wakeup pin 3 is configured
+-so that firmware can wakeup host using this device side pin.
+-
+-&mmc3 {
+-	vmmc-supply = <&wlan_en_reg>;
+-	mmc-pwrseq = <&wifi_pwrseq>;
+-	bus-width = <4>;
+-	cap-power-off-card;
+-	keep-power-in-suspend;
+-
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	mwifiex: wifi@1 {
+-		compatible = "marvell,sd8897";
+-		reg = <1>;
+-		interrupt-parent = <&pio>;
+-		interrupts = <38 IRQ_TYPE_LEVEL_LOW>;
+-
+-		marvell,caldata_00_txpwrlimit_2g_cfg_set = /bits/ 8 <
+-	0x01 0x00 0x06 0x00 0x08 0x02 0x89 0x01>;
+-		marvell,wakeup-pin = <3>;
+-	};
+-};
+-- 
+2.34.1
 
-https://lore.kernel.org/imx/20240815182420.58821-1-Frank.Li@nxp.com/T/#u
-
-Frank
-
-> - Mani
->
-> [1] https://lore.kernel.org/linux-pci/20240808172644.GA151261@bhelgaas/
-> [2] https://lore.kernel.org/linux-pci/ZrUJngABI8v3pN6o@lizhi-Precision-Tower-5810/
->
-> - Mani
->
-> --
-> மணிவண்ணன் சதாசிவம்
