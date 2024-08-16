@@ -1,82 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAFE13DB92;
-	Fri, 16 Aug 2024 22:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9111127E37;
+	Fri, 16 Aug 2024 22:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723845770; cv=none; b=GjVnwelgGvv1uxwrLOhiJ478oVe9A08RfQzYJoT+vwiLvegDfW09AjpZ7Hy/nFlq7jQrRBq0uMxhfvvADVP+7v1KxwXQOIxMUCp6XcPAaF1jLGWpkOYFGr8VieYwtKyAJyHmomiRr2FGQAoDxgXD5FTT/yq8vc1QclnzwPwKe/U=
+	t=1723845857; cv=none; b=T93BwjuYnqel+fH45/O3leLFe02EkkWaFWR0QBbYplcES3t/YLCLymtdM+v9485LjSLEaZeOezpr4MUACCk13Ldn7D4AQlzL4z8b4SVt2K/OjQEiw5I2Amh4/5W4IXNvDA4io6EYF2xtARB9U7e/7bSsMQ6W+JOTJmgQLR2hbwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723845770; c=relaxed/simple;
-	bh=C7weTXHP5DZBvZKNrnFze/Hiwgy5qiIv6X3bg5485vU=;
+	s=arc-20240116; t=1723845857; c=relaxed/simple;
+	bh=r4GtqUj6kBdjANlbyOr+H1EYTQ7FL4x488m+b6yI/2w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vBwzwt3J3zOvlqdnk1ajbifVgnx/BvD4p1B2kPDBy29MW3sidwv5fisGHTaXU/j1dNdUhFuc4QQ5dWerqw9d/TuW7nL/qT2vQyN4CUktXMxZ9D68SFdHFANLACysuIIS6qUyAO++o2KDr206dipb2MvokQlaxLiq9gFrADrBlvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlgB+i/w; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=LGnrDMSyrOrGCsKWlpBZsb58vb15E2gOdlO/xu816OXHLxCkIjPjNnEROTkX1jJ5vYPPoBiNB4wEOwHKRH6SLxGxOvwcKQrgYtWvCWe2bbPhMekK5s8Je+Tm3cTvq++E0891es+gx1rbg5N9MLhZZGiDQLS3h3uq7Epsxab/SDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iH/cg8XL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlgB+i/w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDECFC32782;
-	Fri, 16 Aug 2024 22:02:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iH/cg8XL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0562BC32782;
+	Fri, 16 Aug 2024 22:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723845770;
-	bh=C7weTXHP5DZBvZKNrnFze/Hiwgy5qiIv6X3bg5485vU=;
+	s=k20201202; t=1723845856;
+	bh=r4GtqUj6kBdjANlbyOr+H1EYTQ7FL4x488m+b6yI/2w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rlgB+i/wdBxZDnIfAhM6wRJNvY7OgDrPc38z3dxY38q1grTJ8qJ15hpB5yxwbPRu2
-	 7tufqgtCoAjyOzZBJuYJCbtHykjrv4kug4OATK8qDplZ6T2xdO7JvqQ2Jb1VCtatqs
-	 tHYBcGhPpj5OQVnc3jOpCcdJ4eig5tZkhTQ6AKnCpD62H23JuiIMMS63kIzHQf8uoL
-	 hu8Yq7fL3cOZbmQ8yo0+1JZQZSmgnpw7hEDhyTsZ4Mddd6oW9NhGTFret8LeOU0exp
-	 YV9w/R4SMA1h8xl+xavo5eDbC6QgZHi3ERfbmPpS8aRnEctqQ+RfFZkVEbwI5eX9gr
-	 RHRQd+G1qCOFA==
-Date: Fri, 16 Aug 2024 16:02:49 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	David Airlie <airlied@gmail.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	b=iH/cg8XLoPBi0umTni6czQKlR9x3Xk0F8Jz4FXvs/N8SMu4nX1eTe3HcU+JF5rpyP
+	 EIAFIl0ChvwuAwhMIKnFTKaen/XxSrbZwmTN/jhNw+r3leeFaXDdFIn6BHeq6/VWEy
+	 HZAep2fek+GYfcQ+KSoRHQGg18HniLBTQmtPey9SbSvaOzTd2zny/2H0vR+O4y6PAA
+	 UaC+oLLHZAsXAlRFgQVzDpdjxmMVqana3FZXlwS0ZG6DakO7etVYHdO4wmr8XVtkFA
+	 xh8SYL1OzGDomZ/RzCMAU/ezkifh2r/rFVKLNujrLUAWdQSl3UrV+GSUmM8oMCLwCR
+	 z3hRYd/ZnFuCQ==
+Date: Fri, 16 Aug 2024 23:04:11 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Liu Ying <victor.liu@nxp.com>,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: display:
- panel-simple-lvds-dual-ports: add panel-timing: true
-Message-ID: <172384576729.2335127.2343168496385011708.robh@kernel.org>
-References: <20240814191656.4035551-1-Frank.Li@nxp.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: hwmon/regulator: Convert ltc2978.txt to
+ yaml
+Message-ID: <eb247611-f034-48af-9ee2-d9e68bc30d85@sirena.org.uk>
+References: <20240814181727.4030958-1-Frank.Li@nxp.com>
+ <20240816215555.GA2302157-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fJWPX8QIRrCKJsjj"
+Content-Disposition: inline
+In-Reply-To: <20240816215555.GA2302157-robh@kernel.org>
+X-Cookie: Are we running light with overbyte?
+
+
+--fJWPX8QIRrCKJsjj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814191656.4035551-1-Frank.Li@nxp.com>
 
+On Fri, Aug 16, 2024 at 03:55:55PM -0600, Rob Herring wrote:
+> On Wed, Aug 14, 2024 at 02:17:26PM -0400, Frank Li wrote:
 
-On Wed, 14 Aug 2024 15:16:56 -0400, Frank Li wrote:
-> Add property panel-timing: true to allow use 'panel-timing', which defined
-> in panel-common.yaml.
-> 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mp-evk-mx8-dlvds-lcd1.dtb: panel-lvds: 'panel-timing' does not match any of the regexes: 'pinctrl-[0-9]+'
->         from schema $id: http://devicetree.org/schemas/display/panel/panel-simple-lvds-dual-ports.yaml#
-> 
-> Suggested-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change from v2 to v3
-> - move it after enable-gpios: true' to sort the referenced properties
-> alphabetically
-> 
-> Change from v1 to v2
-> - add panel-timing instead of change to unevaluatedProperties
-> ---
->  .../bindings/display/panel/panel-simple-lvds-dual-ports.yaml     | 1 +
->  1 file changed, 1 insertion(+)
-> 
+> >  delete mode 100644 Documentation/devicetree/bindings/hwmon/ltc2978.txt
+> >  create mode 100644 Documentation/devicetree/bindings/regulator/lltc,ltc2972.yaml
 
-Applied, thanks!
+> I'm on the fence whether to move this...
 
+I don't really have feelings either way, I'm perfectly happy to move it.
+
+--fJWPX8QIRrCKJsjj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma/zNoACgkQJNaLcl1U
+h9AObwf+LcMBNpccR4GUSCMZRhOCTwpyv1F05eZmjnJ7PIobeRGh1RPwSu9gkEhc
+8t4obp7grz/n8UJwdWv54u9IeU0j7HoFyGUrWOKqUSeOj4Ak2UPQdL1Z7awjUsyY
+8yASx7OJEbDXOPfOkhhWpNdEwL6jr4n0jZTKY7Lqe8bbyR4BN6+ju05HTdAWQcJm
+oVux/WS1QZHMiJO/ZepQ8V8T+o8G+C7weCVrCRoi4Q1OM9GtbhfxTFAiDKCHJ9zh
+PAcx0Zwjbv9H44ldy9DctMB88ivHreS4qutbZryszKPh1mUxK33/Mnn5fmUaOgis
+AHdZyoRmo3MJJXuIvoMVOXVx+lLfpA==
+=roy+
+-----END PGP SIGNATURE-----
+
+--fJWPX8QIRrCKJsjj--
