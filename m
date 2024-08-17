@@ -1,178 +1,218 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644DE101C5
-	for <imx@lists.linux.dev>; Sat, 17 Aug 2024 03:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A48BA50
+	for <imx@lists.linux.dev>; Sat, 17 Aug 2024 18:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723865685; cv=none; b=oFT1DA4Dd/ZeSuERxHXQOv7rELFpemF9pTJd/OX+BHWbTNFAcvNxhqgKjmmVrZl1o3udvQ/LqfoU+AM9ZliWaCe6P0riwiSNCzn5z7odjNiloE4o6HHfSKEnFJ1RYtHmO6iis0fK7IFeDIwiVvOUwLxDzmJ6quW8mWkXG6WDvDI=
+	t=1723919182; cv=none; b=r+uvux0jYE+V7KcG++4q3iEmoOa/VrEaq09UjVSsll9RwRaBGw0nAiLaeqdYqttx641fzIodI1aNDY8xeWmVUC0nHSnWvLCjwsqUBwjFqUhWL1mXCFVWz+1YV0e3TLkB1OOgCGriM6Wpjg9oRBuh690AXIO/govSrkyi2SIMS4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723865685; c=relaxed/simple;
-	bh=rH+vGccZOxE3ViU68RmvIkrc+o5g48WSyrGQ4Wtd/a4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s/MXf1Ysd6dPFOkOakZ4V6HkpvmWqL11bzksKpbmwSCcVnspsnKdGKdYNU84eYYi9DoJCFhm78Ni1K6uCfgMzxWILkcO9bHqx8HQz72OumWV7S34Ps2XCctuR9grd3WnQen9r6PuqNJ62JckFao07ETGSM2l3/sDcdiOC5rjM3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UPmhCjeZ; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723919182; c=relaxed/simple;
+	bh=2lM1Fdl0Fhnxz66GrhRJ5x6xf8UpXYyNmF9e4vege68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T+E038bmRcSkOmS3j6vvkNaiY/sBisAXgbQkKvXhzesCGs74Z3sEMlAgybPH20B7ambU5IEkpiYADwfSKtUAjF9sDxfXD1VyjIEpVqOnrh68busSjbWCQ/Mv+0cMOe1x8KgfMPksRdLcpVyHHfvM0HM/7qwEPXKF6Yh4vn6kM3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=rjJM0k8o; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UPmhCjeZ"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20202df1c2fso11427315ad.1
-        for <imx@lists.linux.dev>; Fri, 16 Aug 2024 20:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723865683; x=1724470483; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=7rLOe0f8iaGryjTw++WbOV8+bU3eLgQz8fTHjSJRoIk=;
-        b=UPmhCjeZVoceJ2O+ggbxFCrmdr7pzAjiSv6Ye8dXnyEBwQJuFVIfljPK56ZhE9IOVn
-         s0GiXYRQ21+2Prm3VchBNDllGR3JAnYXkc/jnut9AlvnfHl0J7xxYu6pdRyInXshILtj
-         ND+Lqx1UJAnASzra0PRDcCn8Iy/AVRvkqz+a/a+29f8RwjdKSopcw2VZODnAe2r01KpL
-         2sA7vsQOgP688o2f4unfnfhjUJxgs60C63Zo0Oxa26cLaBv2ELuOBramVNyGY+4PS6pK
-         M3/iClmwbxR+4G8uumShHbRFJGIGQd6DPeEVyGKmOJ2a3o6LDZyzqn80tWEOEDQ6wwW6
-         pDqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723865683; x=1724470483;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7rLOe0f8iaGryjTw++WbOV8+bU3eLgQz8fTHjSJRoIk=;
-        b=u67NXQFyx4/y25yD1EvMy4tJJ97A0M7M83Yk6VUTdEjWl1rqJeHvg2Gj2bDejjt/55
-         cpTYqsW69dy/x/1eZebPcZVJzpByUnSfRyOnyqA4siZmPGt1pJbwPZ/DyRFn8BxyE8DN
-         oQG0MzHUKI/GXaVi3DDl0gcW9HByEALLNR2EUzcUH+JkQmrivOcho8SZqww79f6HEARR
-         0f+cymhdArkqdIqo6OYRFrFFbKB8KW84fYR0hVvgIHbMJpE2NyBY7hCi3g/rN97U1qIH
-         sEtNDy/gXH5ZLkxi9FK3w5m1elUr9ZR0W1zUx9TeQ6ardkunemS/ZJk1Re+be1AsQc6y
-         81hQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtRoIzPNwW00EyPMNWvPk9x8e6qDo4oi7cAmX3BqT9lzrdhYh7r/xnDtxSq9fVe5qNrJveRdhX/c7Kk18naXf3RCeQ
-X-Gm-Message-State: AOJu0YyVELypg/s7Z3e4B6sSZMndlkokU4VlLCqD6clO8HM3Rn0UF7Bb
-	QhVExGf29zzXfwNHom+m+dHw7/CC3FJGoApfF/Lx+Zvf9RFaeNJb
-X-Google-Smtp-Source: AGHT+IGtPw6FtTJSwCAUSUCEjgqQtsYbJHAs4AT6qjJzR9g/9V1wCcsa+wmXg10vaWbryY/Ay+zR7Q==
-X-Received: by 2002:a17:902:e74e:b0:1fe:d72d:13e1 with SMTP id d9443c01a7336-202062c33d3mr77321155ad.30.1723865682456;
-        Fri, 16 Aug 2024 20:34:42 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f039e06bsm31933955ad.241.2024.08.16.20.34.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Aug 2024 20:34:41 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <05f75fda-d61f-45c7-9b21-85cbbae754a3@roeck-us.net>
-Date: Fri, 16 Aug 2024 20:34:39 -0700
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="rjJM0k8o"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 01B013D5;
+	Sat, 17 Aug 2024 20:25:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1723919113;
+	bh=2lM1Fdl0Fhnxz66GrhRJ5x6xf8UpXYyNmF9e4vege68=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rjJM0k8oxAgxNIWL0lKr1kxsAiWp79TCYCvhH2RUtZoOhiwm7MWH6b9HQxaBR0f7l
+	 zodELw7gVIACnWwbAKM09AD90lIm+TDufyQXOjwYsoO17Q7EfwNCwIjnQaz0bHXmlX
+	 XHY0WnKP+aCI6ucegWq2KIKVuTri7rMh3eOsBe1c=
+Date: Sat, 17 Aug 2024 21:25:46 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH v4] arm64: dts: imx8mp: Add DT nodes for the two ISPs
+Message-ID: <20240817182546.GC29320@pendragon.ideasonboard.com>
+References: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com>
+ <13578505.uLZWGnKmhe@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: hwmon/regulator: Convert ltc2978.txt to
- yaml
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Jean Delvare <jdelvare@suse.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>,
- "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- imx@lists.linux.dev
-References: <20240814181727.4030958-1-Frank.Li@nxp.com>
- <20240816215555.GA2302157-robh@kernel.org>
- <71d341e0-d988-41a9-bf61-c691537749fc@roeck-us.net>
- <ZsAEj1k9liVfZgjp@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <ZsAEj1k9liVfZgjp@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <13578505.uLZWGnKmhe@steina-w>
 
-On 8/16/24 19:01, Frank Li wrote:
-> On Fri, Aug 16, 2024 at 05:03:16PM -0700, Guenter Roeck wrote:
->> On 8/16/24 14:55, Rob Herring wrote:
->>> On Wed, Aug 14, 2024 at 02:17:26PM -0400, Frank Li wrote:
->>>> Convert binding doc ltc2978.txt to yaml format.
->>>> Additional change:
->>>> - add i2c node.
->>>> - basic it is regulator according to example, move it under regulator.
->>>>
->>>> Fix below warning:
->>>> arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-cx.dtb: /soc/i2c@2000000/i2c-mux@77/i2c@2/regulator@5c:
->>>> 	failed to match any schema with compatible: ['lltc,ltc3882']
->>>>
->>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>> ---
->>>>    .../devicetree/bindings/hwmon/ltc2978.txt     | 62 ------------
->>>>    .../bindings/regulator/lltc,ltc2972.yaml      | 94 +++++++++++++++++++
->>>>    2 files changed, 94 insertions(+), 62 deletions(-)
->>>>    delete mode 100644 Documentation/devicetree/bindings/hwmon/ltc2978.txt
->>>>    create mode 100644 Documentation/devicetree/bindings/regulator/lltc,ltc2972.yaml
->>>
->>> I'm on the fence whether to move this...
->>>
->>
->> I don't really understand the rationale behind the move nor the rationale behind
->> the rename, but then I don't really care or mind as long as no one claims that
->> the _driver_ should be moved because the devicetree bindings moved.
-> 
-> Conor suggest use one of compatible string as file name.
-> 
-> I just help convert it. I am not familar with this chip at all.
-> 
-> According to original docuemnt, most talk about regular instead of hwmon.
-> 
-> If you want to keep it under hwmon, I am fine.
-> 
+Hi Alexander,
 
-Do whatever you want; I won't object. After all, it will be one less file
-in the scope of my responsibilities.
+On Thu, Aug 15, 2024 at 02:05:39PM +0200, Alexander Stein wrote:
+> Am Mittwoch, 14. August 2024, 18:14:51 CEST schrieb Laurent Pinchart:
+> > From: Paul Elder <paul.elder@ideasonboard.com>
+> > 
+> > The ISP supports both CSI and parallel interfaces, where port 0
+> > corresponds to the former and port 1 corresponds to the latter. Since
+> > the i.MX8MP's ISPs are connected by the parallel interface to the CSI
+> > receiver, set them both to port 1.
+> > 
+> > Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> > Changes since v3:
+> > 
+> > - Add comment regarding the IMX8MP_CLK_MEDIA_ISP clock rate
+> > - Fix assigned-clock-rates
+> > - Dropping Tested-by as the clock configuration has changed
+> > 
+> > Changes since v2:
+> > 
+> > - Assign clock parent and frequency in blk-ctrl
+> > 
+> > Changes since v1:
+> > 
+> > - Fix clock ordering
+> > - Add #address-cells and #size-cells to ports nodes
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 57 ++++++++++++++++++++++-
+> >  1 file changed, 55 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > index d9b5c40f6460..f3531cfb0d79 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -1673,6 +1673,50 @@ isi_in_1: endpoint {
+> >  				};
+> >  			};
+> >  
+> > +			isp_0: isp@32e10000 {
+> > +				compatible = "fsl,imx8mp-isp";
+> > +				reg = <0x32e10000 0x10000>;
+> > +				interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
+> > +				clocks = <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> > +				clock-names = "isp", "aclk", "hclk";
+> > +				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> > +				fsl,blk-ctrl = <&media_blk_ctrl 0>;
+> > +				status = "disabled";
+> > +
+> > +				ports {
+> > +					#address-cells = <1>;
+> > +					#size-cells = <0>;
+> > +
+> > +					port@1 {
+> > +						reg = <1>;
+> > +					};
+> > +				};
+> > +			};
+> > +
+> > +			isp_1: isp@32e20000 {
+> > +				compatible = "fsl,imx8mp-isp";
+> > +				reg = <0x32e20000 0x10000>;
+> > +				interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
+> > +				clocks = <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
+> > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
+> > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+> > +				clock-names = "isp", "aclk", "hclk";
+> > +				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+> > +				fsl,blk-ctrl = <&media_blk_ctrl 1>;
+> > +				status = "disabled";
+> > +
+> > +				ports {
+> > +					#address-cells = <1>;
+> > +					#size-cells = <0>;
+> > +
+> > +					port@1 {
+> > +						reg = <1>;
+> > +					};
+> > +				};
+> > +			};
+> > +
+> >  			dewarp: dwe@32e30000 {
+> >  				compatible = "nxp,imx8mp-dw100";
+> >  				reg = <0x32e30000 0x10000>;
+> > @@ -1869,17 +1913,26 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
+> >  				clock-names = "apb", "axi", "cam1", "cam2",
+> >  					      "disp1", "disp2", "isp", "phy";
+> >  
+> > +				/*
+> > +				 * The ISP maximum frequency is 400MHz in normal mode
+> > +				 * and 500MHz in overdrive mode. The 400MHz operating
+> > +				 * point hasn't been successfully tested yet, so set
+> > +				 * IMX8MP_CLK_MEDIA_ISP to 500MHz for the time being.
+> > +				 */
+> >  				assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
+> >  						  <&clk IMX8MP_CLK_MEDIA_APB>,
+> >  						  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
+> >  						  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
+> > +						  <&clk IMX8MP_CLK_MEDIA_ISP>,
+> >  						  <&clk IMX8MP_VIDEO_PLL1>;
+> >  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+> >  							 <&clk IMX8MP_SYS_PLL1_800M>,
+> >  							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> > -							 <&clk IMX8MP_VIDEO_PLL1_OUT>;
+> > +							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
+> > +							 <&clk IMX8MP_SYS_PLL2_500M>;
+> >  				assigned-clock-rates = <500000000>, <200000000>,
+> > -						       <0>, <0>, <1039500000>;
+> > +						       <0>, <0>, <500000000>,
+> > +						       <1039500000>;
+> 
+> Unfortunately for some reason this reparenting doesn't work (on my platform).
+> 'media_isp' is still below IMX8MP_CLK_24M.
+> $ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
+>     mipi_dsi_esc_rx                  0       0        0        24000000    0          0     50000      N      deviceless                      no_connection_id         
+>     media_isp                        0       0        0        24000000    0          0     50000      N      deviceless                      no_connection_id         
+>        media_isp_root_clk            0       0        0        24000000    0          0     50000      N         32e10000.isp                    isp
 
-I would kindly suggest, though, that it might not be the best idea to list
-a hardware monitoring maintainer as maintainer of devicetree property
-definitions associated with the regulator subsystem. You might at least
-want to make sure that Jean is ok with being listed as maintainer of
-this file.
+Hmmm... I get
 
-Thanks,
-Guenter
+                sys_pll2_500m        3       3        0        500000000   0          0     50000      Y                  deviceless                      no_connection_id
+                   media_isp         0       0        0        500000000   0          0     50000      N                     deviceless                      no_connection_id
+                      media_isp_root_clk 0       0        0        500000000   0          0     50000      N                        32e10000.isp                    isp
 
+> I have to add this diff for isp_0 (and isp_1 if you use it):
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1683,6 +1683,9 @@ isp_0: isp@32e10000 {
+>                                 clock-names = "isp", "aclk", "hclk";
+>                                 power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
+>                                 fsl,blk-ctrl = <&media_blk_ctrl 0>;
+> +                               assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
+> +                               assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_500M>;
+> +                               assigned-clock-rates = <500000000>;
+>                                 status = "disabled";
+>  
+>                                 ports {
+> 
+> Now clock is setup properly:
+> $ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
+>                 sys_pll2_500m        3       3        0        500000000   0          0     50000      Y                  deviceless                      no_connection_id         
+>                    media_isp         0       0        0        500000000   0          0     50000      N                     deviceless                      no_connection_id         
+>                       media_isp_root_clk 0       0        0        500000000   0          0     50000      N                        32e10000.isp                    isp
+
+I'm not sure why that's the case, I don't have assigned-clock*
+properties in the ISP nodes in my device tree and things still work
+properly. Would you be able to investigate ?
+
+> >  				#power-domain-cells = <1>;
+> >  
+> >  				lvds_bridge: bridge@5c {
+> > 
+> > base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+> > prerequisite-patch-id: ad2bbccf3b0f27415fb14851cec52c431ccb354f
+
+-- 
+Regards,
+
+Laurent Pinchart
