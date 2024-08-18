@@ -1,218 +1,79 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A48BA50
-	for <imx@lists.linux.dev>; Sat, 17 Aug 2024 18:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AED441760;
+	Sun, 18 Aug 2024 14:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723919182; cv=none; b=r+uvux0jYE+V7KcG++4q3iEmoOa/VrEaq09UjVSsll9RwRaBGw0nAiLaeqdYqttx641fzIodI1aNDY8xeWmVUC0nHSnWvLCjwsqUBwjFqUhWL1mXCFVWz+1YV0e3TLkB1OOgCGriM6Wpjg9oRBuh690AXIO/govSrkyi2SIMS4I=
+	t=1723991044; cv=none; b=HE2PU27/u0RDOx9JcpcPBi1nnFA/f29F37IxWlPEMrYoivEDfpCEVm9LCTCQilkk3SP0UZJfPX7RomJAhZVIO6tNGn8U7zvpqC9gquYxmyVWMzyozHZHkH88fqF8eyQ7WecGnr1e+nEHn5ICTBy1PgZXgRkax6ChKG9cGnR65NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723919182; c=relaxed/simple;
-	bh=2lM1Fdl0Fhnxz66GrhRJ5x6xf8UpXYyNmF9e4vege68=;
+	s=arc-20240116; t=1723991044; c=relaxed/simple;
+	bh=p3xChge9ucTtWR9EXLrqY/hgcj62+4knZXEk2TA3eQY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T+E038bmRcSkOmS3j6vvkNaiY/sBisAXgbQkKvXhzesCGs74Z3sEMlAgybPH20B7ambU5IEkpiYADwfSKtUAjF9sDxfXD1VyjIEpVqOnrh68busSjbWCQ/Mv+0cMOe1x8KgfMPksRdLcpVyHHfvM0HM/7qwEPXKF6Yh4vn6kM3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=rjJM0k8o; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=pCZafa06Ay+QhdB4lPyReuSTHA/BvkTvrKye+2oRPkdflvrSSJooEvum4olZfRK6gzyIbLCvGEMUzAaEItOFSuW/HHl0tSJ34cBb1NOv/NqfmSO/b8uedBv3oJ/k24BLGt+4c+4Rnb9bBdrzBPSDAPxwuIGmqXMvQBvRcR6MNFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xq7IggzJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="rjJM0k8o"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 01B013D5;
-	Sat, 17 Aug 2024 20:25:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1723919113;
-	bh=2lM1Fdl0Fhnxz66GrhRJ5x6xf8UpXYyNmF9e4vege68=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xq7IggzJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE5CC32786;
+	Sun, 18 Aug 2024 14:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723991044;
+	bh=p3xChge9ucTtWR9EXLrqY/hgcj62+4knZXEk2TA3eQY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rjJM0k8oxAgxNIWL0lKr1kxsAiWp79TCYCvhH2RUtZoOhiwm7MWH6b9HQxaBR0f7l
-	 zodELw7gVIACnWwbAKM09AD90lIm+TDufyQXOjwYsoO17Q7EfwNCwIjnQaz0bHXmlX
-	 XHY0WnKP+aCI6ucegWq2KIKVuTri7rMh3eOsBe1c=
-Date: Sat, 17 Aug 2024 21:25:46 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v4] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-Message-ID: <20240817182546.GC29320@pendragon.ideasonboard.com>
-References: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com>
- <13578505.uLZWGnKmhe@steina-w>
+	b=Xq7IggzJZvSFhjmkhMAzVG4GSJYhuSulvTLRuDNrGl34WSAtAJG7Csa/WXtnTTOSq
+	 j12xW3EkfpjsteJm+igFb/YjxL6dWJA3/b3E7Y67Hat14V+YPKBGzYoHo1QaAtsbiZ
+	 ip6IIQwmlEYULQmKEPJipIET54djlSTzVySuYQlXP6c7VGwSvfyoo23x40ZNcAckJz
+	 pClhBJfTM2CMxEH13Xm2lALBccoY/NdzbJOgXnxL3/36o63I6B2sHXZJE+aw77prR/
+	 CMe/dKyvV6ZgGENkEvp+/3bKUtLvY1Cjd+WL9wctN44T7OiKf/NVzQ+9H4eOlWU4st
+	 zoqNPLiDa/Hqw==
+Date: Sun, 18 Aug 2024 08:24:02 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: aisheng.dong@nxp.com, linux-kernel@vger.kernel.org, krzk+dt@kernel.org,
+	kishon@kernel.org, daniel@ffwll.ch,
+	maarten.lankhorst@linux.intel.com, p.zabel@pengutronix.de,
+	tzimmermann@suse.de, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev, festevam@gmail.com,
+	airlied@gmail.com, francesco@dolcini.it, kernel@pengutronix.de,
+	conor+dt@kernel.org, s.hauer@pengutronix.de, agx@sigxcpu.org,
+	shawnguo@kernel.org, frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, tglx@linutronix.de,
+	dri-devel@lists.freedesktop.org, vkoul@kernel.org,
+	mripard@kernel.org
+Subject: Re: [PATCH v3 08/19] dt-bindings: display: imx: Add i.MX8qxp Display
+ Controller
+Message-ID: <172399104139.23572.10090663935384596561.robh@kernel.org>
+References: <20240724092950.752536-1-victor.liu@nxp.com>
+ <20240724092950.752536-9-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <13578505.uLZWGnKmhe@steina-w>
+In-Reply-To: <20240724092950.752536-9-victor.liu@nxp.com>
 
-Hi Alexander,
 
-On Thu, Aug 15, 2024 at 02:05:39PM +0200, Alexander Stein wrote:
-> Am Mittwoch, 14. August 2024, 18:14:51 CEST schrieb Laurent Pinchart:
-> > From: Paul Elder <paul.elder@ideasonboard.com>
-> > 
-> > The ISP supports both CSI and parallel interfaces, where port 0
-> > corresponds to the former and port 1 corresponds to the latter. Since
-> > the i.MX8MP's ISPs are connected by the parallel interface to the CSI
-> > receiver, set them both to port 1.
-> > 
-> > Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> > Changes since v3:
-> > 
-> > - Add comment regarding the IMX8MP_CLK_MEDIA_ISP clock rate
-> > - Fix assigned-clock-rates
-> > - Dropping Tested-by as the clock configuration has changed
-> > 
-> > Changes since v2:
-> > 
-> > - Assign clock parent and frequency in blk-ctrl
-> > 
-> > Changes since v1:
-> > 
-> > - Fix clock ordering
-> > - Add #address-cells and #size-cells to ports nodes
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 57 ++++++++++++++++++++++-
-> >  1 file changed, 55 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > index d9b5c40f6460..f3531cfb0d79 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -1673,6 +1673,50 @@ isi_in_1: endpoint {
-> >  				};
-> >  			};
-> >  
-> > +			isp_0: isp@32e10000 {
-> > +				compatible = "fsl,imx8mp-isp";
-> > +				reg = <0x32e10000 0x10000>;
-> > +				interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> > +				clocks = <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> > +				clock-names = "isp", "aclk", "hclk";
-> > +				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> > +				fsl,blk-ctrl = <&media_blk_ctrl 0>;
-> > +				status = "disabled";
-> > +
-> > +				ports {
-> > +					#address-cells = <1>;
-> > +					#size-cells = <0>;
-> > +
-> > +					port@1 {
-> > +						reg = <1>;
-> > +					};
-> > +				};
-> > +			};
-> > +
-> > +			isp_1: isp@32e20000 {
-> > +				compatible = "fsl,imx8mp-isp";
-> > +				reg = <0x32e20000 0x10000>;
-> > +				interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
-> > +				clocks = <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> > +				clock-names = "isp", "aclk", "hclk";
-> > +				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> > +				fsl,blk-ctrl = <&media_blk_ctrl 1>;
-> > +				status = "disabled";
-> > +
-> > +				ports {
-> > +					#address-cells = <1>;
-> > +					#size-cells = <0>;
-> > +
-> > +					port@1 {
-> > +						reg = <1>;
-> > +					};
-> > +				};
-> > +			};
-> > +
-> >  			dewarp: dwe@32e30000 {
-> >  				compatible = "nxp,imx8mp-dw100";
-> >  				reg = <0x32e30000 0x10000>;
-> > @@ -1869,17 +1913,26 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
-> >  				clock-names = "apb", "axi", "cam1", "cam2",
-> >  					      "disp1", "disp2", "isp", "phy";
-> >  
-> > +				/*
-> > +				 * The ISP maximum frequency is 400MHz in normal mode
-> > +				 * and 500MHz in overdrive mode. The 400MHz operating
-> > +				 * point hasn't been successfully tested yet, so set
-> > +				 * IMX8MP_CLK_MEDIA_ISP to 500MHz for the time being.
-> > +				 */
-> >  				assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
-> >  						  <&clk IMX8MP_CLK_MEDIA_APB>,
-> >  						  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
-> >  						  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
-> > +						  <&clk IMX8MP_CLK_MEDIA_ISP>,
-> >  						  <&clk IMX8MP_VIDEO_PLL1>;
-> >  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
-> >  							 <&clk IMX8MP_SYS_PLL1_800M>,
-> >  							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> > -							 <&clk IMX8MP_VIDEO_PLL1_OUT>;
-> > +							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> > +							 <&clk IMX8MP_SYS_PLL2_500M>;
-> >  				assigned-clock-rates = <500000000>, <200000000>,
-> > -						       <0>, <0>, <1039500000>;
-> > +						       <0>, <0>, <500000000>,
-> > +						       <1039500000>;
+On Wed, 24 Jul 2024 17:29:39 +0800, Liu Ying wrote:
+> i.MX8qxp Display Controller(DC) is comprised of three main components that
+> include a blit engine for 2D graphics accelerations, display controller for
+> display output processing, as well as a command sequencer.
 > 
-> Unfortunately for some reason this reparenting doesn't work (on my platform).
-> 'media_isp' is still below IMX8MP_CLK_24M.
-> $ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
->     mipi_dsi_esc_rx                  0       0        0        24000000    0          0     50000      N      deviceless                      no_connection_id         
->     media_isp                        0       0        0        24000000    0          0     50000      N      deviceless                      no_connection_id         
->        media_isp_root_clk            0       0        0        24000000    0          0     50000      N         32e10000.isp                    isp
-
-Hmmm... I get
-
-                sys_pll2_500m        3       3        0        500000000   0          0     50000      Y                  deviceless                      no_connection_id
-                   media_isp         0       0        0        500000000   0          0     50000      N                     deviceless                      no_connection_id
-                      media_isp_root_clk 0       0        0        500000000   0          0     50000      N                        32e10000.isp                    isp
-
-> I have to add this diff for isp_0 (and isp_1 if you use it):
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -1683,6 +1683,9 @@ isp_0: isp@32e10000 {
->                                 clock-names = "isp", "aclk", "hclk";
->                                 power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
->                                 fsl,blk-ctrl = <&media_blk_ctrl 0>;
-> +                               assigned-clocks = <&clk IMX8MP_CLK_MEDIA_ISP>;
-> +                               assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_500M>;
-> +                               assigned-clock-rates = <500000000>;
->                                 status = "disabled";
->  
->                                 ports {
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> v3:
+> * No change.
 > 
-> Now clock is setup properly:
-> $ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
->                 sys_pll2_500m        3       3        0        500000000   0          0     50000      Y                  deviceless                      no_connection_id         
->                    media_isp         0       0        0        500000000   0          0     50000      N                     deviceless                      no_connection_id         
->                       media_isp_root_clk 0       0        0        500000000   0          0     50000      N                        32e10000.isp                    isp
+> v2:
+> * Drop fsl,dc-*-id DT properties from example. (Krzysztof)
+> * Use generic pmu pattern property. (Krzysztof)
+> 
+>  .../bindings/display/imx/fsl,imx8qxp-dc.yaml  | 236 ++++++++++++++++++
+>  1 file changed, 236 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc.yaml
+> 
 
-I'm not sure why that's the case, I don't have assigned-clock*
-properties in the ISP nodes in my device tree and things still work
-properly. Would you be able to investigate ?
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-> >  				#power-domain-cells = <1>;
-> >  
-> >  				lvds_bridge: bridge@5c {
-> > 
-> > base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
-> > prerequisite-patch-id: ad2bbccf3b0f27415fb14851cec52c431ccb354f
-
--- 
-Regards,
-
-Laurent Pinchart
