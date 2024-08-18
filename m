@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD34E23AD;
-	Sun, 18 Aug 2024 15:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D0333CFC;
+	Sun, 18 Aug 2024 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723995189; cv=none; b=pFGjfDTkpTMJ/pRwKeBHSlyChvqL5NCWgJCTUHeBPlVGlYysv8bkxcI2ob+r2crEhWEH1aqxbhfw60+aCcJFWMZh8pKzebKrJCJONExTs6B6LLY10dAiJk1WmacSmB8SzVbaHb6YOA93HqQrhZ0uR3XsDWr5fGFY1cuK7W4IjoA=
+	t=1723995556; cv=none; b=tyS6QU6L4Hj/rudW87fjmq6O9b40mLcvLWaVFD8DQeDDBOakJ/zdc/p2JKrtY1v4JKForKlftx2/iaZT1TGzML4FFBFxs33pVwha58b6ZT1hBSJj4ji95TiPN0kfgqg/iwMGhRKATO4YmR65cyPEj9ZFxArJ+2VIp4ydrFL+53Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723995189; c=relaxed/simple;
-	bh=TOAEYS6Urfn9oRugVSVFnfJ659g4VYI2XF9dzx/BbH4=;
+	s=arc-20240116; t=1723995556; c=relaxed/simple;
+	bh=puy82X73of98/57pg6dp3PYkdE1fTuT9RzejeNrtwA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iHPTtrYZD5QHZFi42Zfn9SOCjXuyGZCoqjUOXd5+i6xYRl12uUI9l1qO1R1HhyxMVkWZSyXWb2a/5LZREGVauLEtvds5/W48/eLKSa66FYODgjgjr61m4LTVzoki8T0g6ZUkeqrcCZRj7JB6v9LOX7cm0Hi169nSff3JZ/85Jg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YF3J7OXY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GHgd9SM4nz3Pjg8yq5+tLjSvDPna1EAaFHLWCVD3Ki4NLHT0bzMyIPI5tyRKhWx4TGl35pYwj/l8Lx5GUyrMLb2d7HcCH+f+3kWjTalEpWa24VlFZkuR5cLdtDtYfU+T+AbxAuY2PzSSPUfLTobsZzkThzMGJ/+3C2xHHrrTcdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJx/Mv7C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YF3J7OXY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D3CC32786;
-	Sun, 18 Aug 2024 15:33:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJx/Mv7C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4CFC32786;
+	Sun, 18 Aug 2024 15:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723995188;
-	bh=TOAEYS6Urfn9oRugVSVFnfJ659g4VYI2XF9dzx/BbH4=;
+	s=k20201202; t=1723995556;
+	bh=puy82X73of98/57pg6dp3PYkdE1fTuT9RzejeNrtwA4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YF3J7OXYea15wr/GdAFC7TwcTVstP47SI9ZhiuD5OTKGpnCqWgJLVZEtoHK2Ttepb
-	 EcsJqDY5qL3kLwttZMtlAV0s8imAuOqy4PwAXV4CanHAvKb8tEqCdi01ui3vQ4wsKe
-	 SuueTSfj96DVm4Epi1nvs0X9uTwxeNX2dSYf5w1ah4xsVz5uKa7s6vEojtdfF3GpkH
-	 zATJM5WzgUTPu3QMs6H4m/JInYY3F7+JRpiGE6OPTMX1nE8rO72uE+ZcAV+/U7ImXH
-	 JdYGZwcowtAc8RLKw3SYAi/L4FQ9F+30sCUgw75pLpu75bpnnzFqy9NQ4rG2T832bq
-	 8O1qd5AZ+mKxw==
-Date: Sun, 18 Aug 2024 09:33:06 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
+	b=EJx/Mv7Ce1BwZMOEm9xojqqHPEHjjJtpUgPClvMzjKxINTr2vuqPbZvH7GZc06tGK
+	 ed2rvS4F/cw5H4qwHdAn9Um8OZBYmtlRKimU/4g/v0ntT+NLbo4wQ6VOfFOL/suvo2
+	 qvdleHU0q7BSO6Ga5wgnY4qdxyhE9HDylG26tuvEvTogfwBTZPN2or9vXvBjYDho9n
+	 o2sLO5tD6JhJ9NOAGBVrTKZbuovm0Q8PYa3hZG4pZAuRkbdkKF3+KiwHhzAhpJ2PjP
+	 T4Mpk07+H1MevV6zLvrmv0y8T3XpzA3hhJZ6xhenDFzlToUkAGKYsTczrJI5Tw2A87
+	 8+/0b4cchvD6w==
+Date: Sun, 18 Aug 2024 09:39:14 -0600
+From: Rob Herring <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
-	Yangbo Lu <yangbo.lu@nxp.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] dt-binding: ptp: fsl,ptp: add pci1957,ee02
- compatible string for fsl,enetc-ptp
-Message-ID: <172399517578.119603.6812036696536583229.robh@kernel.org>
-References: <20240814204619.4045222-1-Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <mwalle@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	"open list:MEMORY CONTROLLER DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-binding: memory-controllers: fsl,ifc: add
+ compatible string fsl,ifc-nand
+Message-ID: <20240818153914.GA120816-robh@kernel.org>
+References: <20240814212958.4047882-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,21 +47,65 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814204619.4045222-1-Frank.Li@nxp.com>
+In-Reply-To: <20240814212958.4047882-1-Frank.Li@nxp.com>
 
-
-On Wed, 14 Aug 2024 16:46:18 -0400, Frank Li wrote:
-> fsl,enetc-ptp is embedded pcie device. Add compatible string pci1957,ee02.
+On Wed, Aug 14, 2024 at 05:29:57PM -0400, Frank Li wrote:
+> ifc can connect nor, nand and fpag. Add child node "nand@" under fsl,ifc
+> and compatible string "fsl,ifc-nand" when ifc connect to nand flash.
 > 
-> Fix warning:
-> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-kbox-a-230-ls.dtb: ethernet@0,4:
-> 	compatible:0: 'pci1957,ee02' is not one of ['fsl,etsec-ptp', 'fsl,fman-ptp-timer', 'fsl,dpaa2-ptp', 'fsl,enetc-ptp']
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/memory-controller@1530000/nand@1,0:
+> 	failed to match any schema with compatible: ['fsl,ifc-nand']
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/ptp/fsl,ptp.yaml      | 22 ++++++++++++++-----
->  1 file changed, 17 insertions(+), 5 deletions(-)
+> Change from v1 to v2
+> - add address-cells and size-cells
+> ---
+>  .../memory-controllers/fsl/fsl,ifc.yaml       | 21 +++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml b/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
+> index d1c3421bee107..c12bb7f51db62 100644
+> --- a/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
+> +++ b/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
+> @@ -58,6 +58,27 @@ properties:
+>        access window as configured.
+>  
+>  patternProperties:
+> +  "^nand@[a-f0-9]+(,[a-f0-9]+)+$":
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        const: fsl,ifc-nand
+> +
+> +      reg:
+> +        maxItems: 1
+> +
+> +      "#address-cells":
+> +        const: 1
+> +
+> +      "#size-cells":
+> +        const: 1
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+These only apply to child nodes, but you've disabled any child nodes.
 
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +
+> +    additionalProperties: false
+
+You could minimally make this 'type: object' instead of false.
+
+Or does this follow the nand controller and chip bindings? May not being 
+older binding.
+
+> +
+>    "^.*@[a-f0-9]+(,[a-f0-9]+)+$":
+>      type: object
+>      description: |
+> -- 
+> 2.34.1
+> 
