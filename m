@@ -1,93 +1,167 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAD1145341
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 17:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC7017BB13
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 17:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724088115; cv=none; b=MWuehcPEtUwceSNC9aCpUEbKHGShC+pJ8MzguW875WziP1600nygMAtQHD3CDQO35/IUBSVkR0sTLv5yUeHLB/pMpHPv5fmDMh+KGKVTj5qbSZsD0+/KaizoPvYn8QM2j9vNL4xT59oYx/teGFi/BtX/2Zi/h+UF9SSaHgp/Arw=
+	t=1724088250; cv=none; b=KKm15AvcVGJonFfs49u6RIANfuZIa4RD8aPkekNCMrdYVzQ7tL2wmjaIsBu31kejk6b0VmsGXPerjSfwnVvrEcAy/Axvx+mbhgm/EONAk+wGDaoqesKkihUkCwIAeT6nlgeJM8kopdC44QB5SVoiyAS0MM/4D4fAHhPvwz6h7VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724088115; c=relaxed/simple;
-	bh=Nmz0iBI3HX19F5MOevl1YOsm9XNiw/iRArvFfhyVwAM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EPFb+HPm3o0Yr+lIkWSSSNVpsjE7zyn2GIEfPbn3r+U0UNDN0ahzhz28PLQuxDRCYGd7FV/Vn36uzpoZOHq+EgRy3rZCDt+1hDkK6O6vT40CxFn+e6xg8bi9JnK9uBSAyGS6xb9CPx8s7ZlI17v80/4tlQiLFNY0c8Tsj++H2Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DNkS3HWQ; arc=none smtp.client-ip=209.85.216.45
+	s=arc-20240116; t=1724088250; c=relaxed/simple;
+	bh=h5Ik+4GPsKEsUFyv/+ngVFo1vuM4D3ux3Z41/ZHTSlI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rlvISNw1CUIgRkLCxjOS9jk91OC6faeZJO7Hq1hhW+vuTuGe+pmeLh4zs0tEx1WHOKpMrJUPe7RzaL1xqYtTLCrOq03SoxiUPB/mquIxonLnVWMiw+f7KTxIT88A3TsLOpIL2DJurVGY3GK3NCm7tqGIW2FJjTmedl2VBiHAKxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HryeAPqM; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DNkS3HWQ"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2d3b595c18dso3403988a91.0
-        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 10:21:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HryeAPqM"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2f3abc11aebso5080081fa.2
+        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 10:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724088114; x=1724692914; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e1292ZXxDguRchN8qDs9u/NGX4Ml2NR0U7feEMuOmvA=;
-        b=DNkS3HWQQWRZGY/9nuDXhDUYsxb2/HgxxC38EkeNQZ1xCOnnlhtjbkPhX5TxXb2hPS
-         My3g5unQOsX1rK1uMlh1Yn8MyEMOUkVzQB9UnFdYWjq+dzzBPI8MbgHIO8DVNJH0pjDD
-         +MysShE3cQoV+KockCUku5fwn3SXWCfQUmp3EvpCulie9twSE9bdzMM8w5wwB86hgn6f
-         +YBioTU1Nr3F7G3OYDkpUVEUfBamAy7HY4viWYvGhfzIzKrrJJPSMHdNau09jEsqOIU4
-         pfAyNLj2ehxEfsTGbry8M/qR5q7VE2FIGMgLMXXddomEJFXqYSSvYKv+Gn9Z0unBWAYV
-         cofw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724088114; x=1724692914;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1724088247; x=1724693047; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e1292ZXxDguRchN8qDs9u/NGX4Ml2NR0U7feEMuOmvA=;
-        b=tjh2/E6BckLOa8YU9a2jlSbkYlE4hfhLvKtOvw/dnNEG6xtg5Az/MA8Bw7xg41vyJf
-         cey1qAjjPg1is6cxYirVpOMb7dHzuLS+VoarYWBYDtqyROVUgvLl5lS2TJHtakh4/kiT
-         Alia9wLjzrieBB662FqMiZ1+zU90my444//fqYlekNtRpdyqmW6Q2vfABeSw7KDvvDii
-         wplFBfHz71K8rCgGwJ8vmAdLZmBNagieW+NBWOBd/KAGiXJfCxkv9hvm7UcHfqxzLVXv
-         E4mhZPZBfGmkd5M+pZBIQok4bX/BhaPg47n1JbJS6o2WIkAVXT72wfl/xvhJJtE42LcO
-         EsBw==
-X-Forwarded-Encrypted: i=1; AJvYcCVyq89y+ra9xcMSEjHKLwN01C8VvAkwDxiNhmN9qMNwiE610HoMHVXMBK2tUIE44lWKACMIwAzaJH7/snggmyc1SBdS
-X-Gm-Message-State: AOJu0YwERJn0+kuKhA1Up3yi2aqWsq/DK9ViuWykU2X0DPIDn9FCYW12
-	foJvPNwSGNsadSdEpDZm+oYTwTu1n3KmyijrS/XrOI/4j77Vl0Yx
-X-Google-Smtp-Source: AGHT+IG1htEHXjCns67hpgxu3BGBDINNnCgB/XsfDFWkdFkrwwpy5jEpxxq0m0ZCRkDCu0CzR1ryGA==
-X-Received: by 2002:a17:90b:80a:b0:2cb:5dbb:d394 with SMTP id 98e67ed59e1d1-2d4731ec386mr503184a91.4.1724088113566;
-        Mon, 19 Aug 2024 10:21:53 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:f80c:1483:bced:7f88])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d3e2f61fd9sm7602754a91.16.2024.08.19.10.21.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 10:21:53 -0700 (PDT)
-Date: Mon, 19 Aug 2024 10:21:50 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sanchayan Maity <maitysanchayan@gmail.com>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: input: touchscreen: convert
- colibri-vf50-ts.txt to yaml
-Message-ID: <ZsN_LmeVJw8tyfMm@google.com>
-References: <20240819142434.311760-1-Frank.Li@nxp.com>
+        bh=tA3DbE0eIgB/krXWiVQLA/SM1DVu9kNL0tSxYAoSxNc=;
+        b=HryeAPqMmObu+LqXq27OtllR5W2Y8OY2C0SIYDAGz2hKIJ746+N7lDC27/Yfw7XCbc
+         GCFYJs54Es5Q7gm0XwgQrbXpS5aFSVhADmQ1YtXkS7Foe5TGdWIMiOWaMr4+qZa4+PGy
+         nXhVzp5xl0+u75cSKULwJDMaJQXz5N4e+mdLcxNW2B3sfyC5FBuvIuhGw3WlB1UsPR+2
+         iH4F5O0b/eGmSZnYz8OatLAKsK9R/S9gWxSGYJ+z4jSlB2Jd6YVWzijTfNXpHFw72KlZ
+         X0fc8xPzOzxpWY6SwByS04OhGdhtr3yXp15GpyUg8o893k35SaHIfDpn9Ejt+T9EcfBi
+         xdkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724088247; x=1724693047;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tA3DbE0eIgB/krXWiVQLA/SM1DVu9kNL0tSxYAoSxNc=;
+        b=FVnyzDqRNeYrMIiNY6y9NTa9SA/mGOD+tpp5yGeeFYr/e+EZm8qvrTxbGb60+x1tk+
+         W2vv3n6p9XsGaUzcCa00YLO5AU8G6tujU7e7zDk1ctWnEA2gpgUjZJ6lOnCPGfqI0B9H
+         VgYBHq2j3r49narJQsAUIzTH00Wvvz0LFZJv1InpsOSMB28LWPVT2EBhYkWA3ScR29Sh
+         nCxvgTw2tT8ePafRNKQMLZFgLqSCzPbUlaeZ7RGxMDRiAPLKZ2u73DEpZB+sMdgVV0DO
+         dGXb0IOSzoF8hQ5JkNse8dHYp2SFVfoK+ur1wnpw6fmsIPPvlij4DOlnG0zvb0JxDCRt
+         CS0w==
+X-Forwarded-Encrypted: i=1; AJvYcCX8hOjoojVSuGdwNzQ37E8Qs4cyd14pCuTUEHpg4jF3DmsNvlwOwWc0YvXzKBIfwzUq/lCDS+sVmV3DWUxVDI47uadt
+X-Gm-Message-State: AOJu0YyVd4oCRXGUIftV8uZON5MiSPW9ihS9hSh/3PA4HKyYhuKe6W3z
+	PPvrbrL99fYavKXyXCnXfQYkLUIVzFlewwwdAr/HmDSCCKZLfAgyIOA48eR5Epid/amMdqh3KXf
+	tcAyF0XwUwMutnvBrbMu4YTN3GEk=
+X-Google-Smtp-Source: AGHT+IGr/XQMgMzcp6jgW0glG/inQWx5ioDh8iHJ7/a0zz1Ff0cyAn5p6R1jdxyTyikNRSSeG19EhIpsXqgXc0tDdN8=
+X-Received: by 2002:a05:651c:198e:b0:2ef:17df:62f9 with SMTP id
+ 38308e7fff4ca-2f3be608217mr49111421fa.7.1724088246308; Mon, 19 Aug 2024
+ 10:24:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240819142434.311760-1-Frank.Li@nxp.com>
+References: <20240819-imx_warning-v2-0-4c428bd11160@nxp.com> <20240819-imx_warning-v2-12-4c428bd11160@nxp.com>
+In-Reply-To: <20240819-imx_warning-v2-12-4c428bd11160@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 19 Aug 2024 14:23:55 -0300
+Message-ID: <CAOMZO5C_uvmuf-+QGH4E2X=Jei81a--N5wC83V-URPkXj-q7hw@mail.gmail.com>
+Subject: Re: [PATCH v2 12/12] arm64: dts: imx8mm-beacon-kit: add DVDD-supply
+ and DOVDD-supply
+To: Frank Li <Frank.Li@nxp.com>, Adam Ford <aford173@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 10:24:29AM -0400, Frank Li wrote:
-> Convert binding doc colibri-vf50-ts.txt to yaml.
-> Additional change:
-> - add ref touchscreen.yaml.
-> - remove standard pinctrl properties.
-> 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8qm-apalis-eval.dtb: /touchscreen:
->   failed to match any schema with compatible: ['toradex,vf50-touchscreen']
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Adding Adam.
+
+On Mon, Aug 19, 2024 at 2:03=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> According to binding doc, DVDD-supply and DOVDD-supply is required
+> properties. Add these to fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mm-beacon-kit.dtb: camera@10: 'DVDD-sup=
+ply' is a required proper
+>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Applied, thank you.
-
--- 
-Dmitry
+> ---
+>  .../boot/dts/freescale/imx8mm-beacon-baseboard.dtsi      | 16 ++++++++++=
+++++++
+>  .../boot/dts/freescale/imx8mn-beacon-baseboard.dtsi      | 16 ++++++++++=
+++++++
+>  2 files changed, 32 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-baseboard.dtsi b=
+/arch/arm64/boot/dts/freescale/imx8mm-beacon-baseboard.dtsi
+> index 6086dae2e5fbe..ea1d5b9c6bae0 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-baseboard.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-baseboard.dtsi
+> @@ -56,6 +56,20 @@ pcie0_refclk_gated:  pcie0-refclk-gated {
+>                 enable-gpios =3D <&pca6416_1 2 GPIO_ACTIVE_LOW>;
+>         };
+>
+> +       reg_1v5: regulator-1v5 {
+> +               compatible =3D "regulator-fixed";
+> +               regulator-name =3D "1V5";
+> +               regulator-min-microvolt =3D <1500000>;
+> +               regulator-max-microvolt =3D <1500000>;
+> +       };
+> +
+> +       reg_1v8: regulator-1v8 {
+> +               compatible =3D "regulator-fixed";
+> +               regulator-name =3D "1V8";
+> +               regulator-min-microvolt =3D <1800000>;
+> +               regulator-max-microvolt =3D <1800000>;
+> +       };
+> +
+>         reg_audio: regulator-audio {
+>                 compatible =3D "regulator-fixed";
+>                 regulator-name =3D "3v3_aud";
+> @@ -187,6 +201,8 @@ camera@10 {
+>                 assigned-clock-parents =3D <&clk IMX8MM_CLK_24M>;
+>                 assigned-clock-rates =3D <24000000>;
+>                 AVDD-supply =3D <&reg_camera>;  /* 2.8v */
+> +               DVDD-supply =3D <&reg_1v5>;
+> +               DOVDD-supply =3D <&reg_1v8>;
+>                 powerdown-gpios =3D <&gpio1 7 GPIO_ACTIVE_HIGH>;
+>                 reset-gpios =3D <&gpio1 6 GPIO_ACTIVE_LOW>;
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi b=
+/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi
+> index 20018ee2c803e..77d14ea459e57 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi
+> @@ -40,6 +40,20 @@ led-3 {
+>                 };
+>         };
+>
+> +       reg_1v5: regulator-1v5 {
+> +               compatible =3D "regulator-fixed";
+> +               regulator-name =3D "1V5";
+> +               regulator-min-microvolt =3D <1500000>;
+> +               regulator-max-microvolt =3D <1500000>;
+> +       };
+> +
+> +       reg_1v8: regulator-1v8 {
+> +               compatible =3D "regulator-fixed";
+> +               regulator-name =3D "1V8";
+> +               regulator-min-microvolt =3D <1800000>;
+> +               regulator-max-microvolt =3D <1800000>;
+> +       };
+> +
+>         reg_audio: regulator-audio {
+>                 compatible =3D "regulator-fixed";
+>                 regulator-name =3D "3v3_aud";
+> @@ -158,6 +172,8 @@ camera@10 {
+>                 assigned-clock-parents =3D <&clk IMX8MN_CLK_24M>;
+>                 assigned-clock-rates =3D <24000000>;
+>                 AVDD-supply =3D <&reg_camera>;  /* 2.8v */
+> +               DVDD-supply =3D <&reg_1v5>;
+> +               DOVDD-supply =3D <&reg_1v8>;
+>                 powerdown-gpios =3D <&gpio1 7 GPIO_ACTIVE_HIGH>;
+>                 reset-gpios =3D <&gpio1 6 GPIO_ACTIVE_LOW>;
+>
+>
+> --
+> 2.34.1
+>
