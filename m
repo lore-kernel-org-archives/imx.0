@@ -1,66 +1,68 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010042.outbound.protection.outlook.com [52.101.69.42])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2084.outbound.protection.outlook.com [40.107.21.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1801CAAF
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 18:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB86B16BE23
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 18:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724090758; cv=fail; b=rfylgpryGUuB9LYeVMREyq3IQRLkhUayGiC3+cRPEWiCf6y9mHCZ9sfCZ1EBp8lPIBxKZBXgQ/bP+4/RiUzF+JJrEPMFRpVOiUKAhICNbJBnmJVw5Slz35nKQuMkcFYYv9/0ZTSypwhZOLd2Gho6SKJyg99KVDPjAwOvwHme/LE=
+	t=1724092995; cv=fail; b=isblooo7c7yaa9w1+B5ez6UoE6QW2Cr1lN7AN5rKkMnMpOVfUByIsCYs4s1u6Tr0Ni77en2rM1Q3QErCcMHa4OJIgQneWjY9LQQ7zuVdMXuBPgTiZUM7k78putORILIJq8FKsuvDgzOYgPfQkf1V+0kAu6wZropSPafrI9oyRgw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724090758; c=relaxed/simple;
-	bh=4FC0YVWp6/KvLcZ2kDQDDmpYoiYFXJm70PuuiG5JuFg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Goex2HMV3hnzCkBso/zmkC0+nVDC+vtEEtwqP/9PCAMZp+lWDOy/Fic2rH1KnaRJQyl1JiLizZ3HvMgiW9gFB5DqoV6XlLxiYV1u3Lrv4lUiEXxblKSaVLAJ9fByGqvgLmKO+7s7ISxaWR9yQtQJ/qyQz9Kn7imAv5E1veihn/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YNY4+Y+U; arc=fail smtp.client-ip=52.101.69.42
+	s=arc-20240116; t=1724092995; c=relaxed/simple;
+	bh=KwmOMx3HCHfB9XL4UYr+WPUBF1CvV9ZrVisMDQMQ1fE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FwokSzCGFw2Q+E6Sm0iJSvJ8bD9uYk235LsRnDy4wRFEJVNb+QuHMCBQy5fBWVjjwN7QNkjCywC/GNtzRAyDT4GlJkfS7IxtMcIYSJZkQXBD5IwYgTsSbiFcDdbzrQP8v/I2mNZqpMrDGkxWdRBOzYp6vqu88xQnbhe/T6FK1+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=i6IGcnXc; arc=fail smtp.client-ip=40.107.21.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YNY4+Y+U"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="i6IGcnXc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GaMU8wQkbqKodF9sPi6nLiJzEDBnwGeRi1pxLUoLDTSTJujiV+S8tzrMKbH2cVHBNq38V1YSCWD6A4Nln3syxc/crEwp2Q6q0KUnAi5TQLyHKZZUlcLZhj5GpRLAjQ/pFPta2ZwlZNnA5btdQLg+GJ7XsWFfscQSxS7k7siby6EMiFNaEYLrrrQkWQcDjQxh++jnKAKkjvsuoAbi8TKQv8buQnk28EC/exmATupUWBQapYm9G09/XJejvo5Wcxb3BqWflEE8i7V1Q9Fnw7iHakfrBGigEUp+j+s+fKGR/XLYQCfCb5TPQifV2U1aM/xSTeL1TcRDAkPSRfuBjHlr7w==
+ b=E20C1g2egnttD+wLofLPcpoGtXHDWRMDoilNM/L3LCrRXM8e0rkCWKcZX8wwUoLWGgBbGoqR7rBKzVL5T/A3S6XL72nJYKo9V6v0C+DaeZ91CSkSis16DqPDwvt58+0hu+Z4gYy/49uK5X8OvCkEMs84tSHEYT9fZu56sGpsUwcwg5qVLRZ3zPN1YWXq6fcv94Fs/Jdp0ftc5pGJnM/vK7Eeq4RaRCLgMckULUg5swei3+F8E5mfSUA7tPo1jWTjTmDJkViOP3ALvvBHM12aMyN3ZhS10Pj2CthMLDGrtq5ib5MS/jT3j3L6xxFcx4IIN2vfHt7IoGeiwsKE+p7ycA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HJLEPo3qwdfiPEm9unek9kdSEl87u2kT552cED0SK0I=;
- b=fqTTpA/ssCGoabI76k2f3GYWVynYKiXv+YqMFzUG2joL8sZUti+msaikp4mHYQ7fcKN8dZw3VTZQc5oqoWIDgSsnfbcdLVVpwAadNpPNjNjFZ0Y934PguZOPlZzEN5UVt8BNWeqg1TUO83yztmX+YO/2FXah5e51Q4/WqLrov4b3UqlAm1NbKEkvocL6AxHjZztZvfsTWbsT4X/TYAYAxoPp3MTZYUf1nvucbiy5g+UQ2bWM36/PQCHcYWURVhiY2bUInb4IOpVZ21CLWwkDuohGdV4S46Azcl1vklpn9nsgX30U6w1sPt0OBCQgefrMhQnwr1/Wo3Tv/xLdFHEzYg==
+ bh=sSlpzzUSvkDMxHaHBqPEGIsQM2+e9QykGAP2BRNcz9w=;
+ b=mUJNa4N/INldOwKDPbgDyn5uShBcaTIsbMcGHrq8F4BZtJxzKk4KZsGXsCEv5OKSlkYivv8af9HtclcqHGKrQVYruI9u959nwKzz3ycZZZziKbwKajLF7e3XbMpAmfOKZnGaFX6GLKIdOVdfYk5dPge9U2TVdY+ffaBoQvJXhd38lczfetQnoFX0xICwLMOYNbvaD0nUoTG3K9I1M7K3n0ZeDCucd5UuuHQO4WT64mcSdEPDWadV9ht/xat/GOoltbudzmu7LyxiK6jcmbNyb8uBj8P/eQElmpiX+HAZhKcqnhcAi/RSk7iruqzvubt0I2pJtvBVqx4/X7C4UtFzVg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HJLEPo3qwdfiPEm9unek9kdSEl87u2kT552cED0SK0I=;
- b=YNY4+Y+U0wuO3mAa9mHTFCPCy/Fywd+rUz6z+JKdSaOuAYKxxVVZJKdE6zlWj8Jv6uN4jvsx/YwusNrHx8lwki2ZSobUYTpw0UL4tUmNBjFsGgWudaZoCLAjuFxg7XUKMnjeYq1ars/ih2YoKSrTIXiTPPRtdF13wqGoTGZYoqmiJXul/9jP12zgTO/guXI9xpTqY7N2VsoUqigKggj1NLKLcGVetU8BZsjC8eozvV1bSZnpbvGfppjy1+Gysa5FQk+VvEqSknAXihuuajTtSQvpEKhj92TufaU3I5CYRAKqLj602x/KIbT6H5BHHG2K+xL/YmEzQdN3URoiXdvCOA==
+ bh=sSlpzzUSvkDMxHaHBqPEGIsQM2+e9QykGAP2BRNcz9w=;
+ b=i6IGcnXcw0vhnrhSCt+RXcXDYVKYs0JdIhoAIWQluGgNpfyv2I2ws7kDEPmKAlT2erK762s/ubXcBLZxvoZ1PGSXpyLn+Q3SfdYPGEuWWG5mrJJuh9gRsezFIc+zFBNIgS2FOe7caKr+XxcdakeN+84kxUZB2o12CZVTmq6HIxieMDMCKWuNSneCN5skvLflv4V6sHYGAIs1CoxH+9AQzxG+xgsgjZgxmNGN/k6z9K7OZIJLOUarDM9uTgveVhmZyGdOKzg4DL6ir0wmtsBryBUysh/U9F07Z/gqCRv3UCXG8CSczizxLi2+ced8lmOteZpYKOkFSntsAwlIJYXZZA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10290.eurprd04.prod.outlook.com (2603:10a6:800:244::6) with
+ by AS8PR04MB8801.eurprd04.prod.outlook.com (2603:10a6:20b:42c::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Mon, 19 Aug
- 2024 18:05:51 +0000
+ 2024 18:43:09 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.019; Mon, 19 Aug 2024
- 18:05:51 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Hasemeyer <markhas@chromium.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Marek Vasut <marex@denx.de>,
-	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v4 1/1] dt-bindings: input: touchscreen: convert ads7846.txt to yaml
-Date: Mon, 19 Aug 2024 14:05:29 -0400
-Message-Id: <20240819180535.368902-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
+ 18:43:08 +0000
+Date: Mon, 19 Aug 2024 14:43:00 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	"open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 1/2] clocksource: imx-tpm: fix return -ETIME when delta
+ exceeds INT_MAX
+Message-ID: <ZsOSNC/5BvTQAiAe@lizhi-Precision-Tower-5810>
+References: <20240725193355.1436005-1-Frank.Li@nxp.com>
+ <b88b6200-b92a-4cf3-946a-3c38cff886ec@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0174.namprd03.prod.outlook.com
- (2603:10b6:a03:338::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <b88b6200-b92a-4cf3-946a-3c38cff886ec@linaro.org>
+X-ClientProxiedBy: SJ0PR05CA0091.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,436 +71,179 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10290:EE_
-X-MS-Office365-Filtering-Correlation-Id: af784fb8-ad5a-4670-5724-08dcc0798fc6
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8801:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d25384c-df24-4227-a8cd-08dcc07ec538
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|921020|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?o0ZRioIajN7hpTctJGD+j0njmaMtC/VRVCYFfkZPpiThn4I3iIfd9u9kF/Qh?=
- =?us-ascii?Q?GIbOI21vETOa9viBUwPCnHCKzfhf9YB819rm8OdJRsxFccn/moGzhCz2cArM?=
- =?us-ascii?Q?ds7gZ4uAdVdElhFtGonESM0euEfoSkd9PJke2hHb/3/0lNDFzetOzxqnxERM?=
- =?us-ascii?Q?VJZRThFwSRNYFsKIksjHPRynisVcTxYdCfRZlwXg+7o4sO926cFQwAb1qJZQ?=
- =?us-ascii?Q?bgRL9UKl1UpfCNu5Evi6YcH0i07k74+uQVh4R2tGPog886VYzEqiGL6TIYjG?=
- =?us-ascii?Q?MO4Jdq5fC5wohfVO9P2w/F2pSSAI2yNwkpz8ibWIfx0ADz3f92RMSPVEuKfK?=
- =?us-ascii?Q?h7dQqFCixeRGobk0vvfQABOM/BfXR1cEQ/cAUIyUhv+4BtzZAzJy1lT2bMkd?=
- =?us-ascii?Q?cNpXNZ5y1mUqA0EM//9BNZ2gaIvtPium2p+iv58QgN+IzweJQ8WI9QQcwnU7?=
- =?us-ascii?Q?z27rAg99vuPqCJlmWgFK1Kr4EWA+R/gBzelU2dal7OozP6grUOw8FVpPnFSs?=
- =?us-ascii?Q?SEUCBaFbLZqZpMEZXooz0fjL3CDyoTk7QDbGJ4cdf6VmHZ/TN4rD965vpsfw?=
- =?us-ascii?Q?vYkem4LzpLpJJ0KcKuvFb000hB3DCD1AHVEDkiteLjHkNIYuDJPhAMfgcAK+?=
- =?us-ascii?Q?dGTOAdCmDvFT/hGv5SpRIbbWw+NiEK6WmO2eHYtskbc7/HBb7h6GusCEG4Am?=
- =?us-ascii?Q?Jn3fjnz2FZszFccHknQuIyeVR38w+GVtOOdm9F5Tje5evO+dXj018l+tMm2C?=
- =?us-ascii?Q?kO40ZsyPgu3HXM7ajL3EDbt2CWTVaf2+49wq5Ar2kNXfQaxeygNMnSyz5+GY?=
- =?us-ascii?Q?RizSOYvGCHlpMPUV8Qavgv2jsUVG/i6JV9OtwnuOGMajKcOjOQUMO594Df8X?=
- =?us-ascii?Q?xb11um+QuxgQrgSfshXgiBIwoQGn/dKFTlmByhVABiq28JBnCi8karVf1mkD?=
- =?us-ascii?Q?BgqfQSQfcb5yfqwM1/kPLjgZlrNMjUSf1dJgmw2qPHvfc6H1vi2SiVuZ6/bu?=
- =?us-ascii?Q?hDrie7esbO1Wkn9ap0C4U6bpHauD1mF5OEcFt76MUC8jJlcW9VOB+IHVEizM?=
- =?us-ascii?Q?pidBoMkhboa5ni8fmtDPgriOR6eniNQSrDCNGbue0FaXHXhNSzAH+/CyNhQd?=
- =?us-ascii?Q?umQrqeC74y6sERWn6rNmMYtT2/gi/hh74Ms1MY+I/1IhAiQw//D1lU8Die+p?=
- =?us-ascii?Q?gepgPUAuKv3Be+aL2X+OPTmsWGrLVfSqXhAFtLPU2fyig+dSCfi70p1Z7LKe?=
- =?us-ascii?Q?o8Sk9q30HAj3lwRtskJOLGfsfkSEcme2lGkgy1cI49wixhs/77QCv85sUM+8?=
- =?us-ascii?Q?hajj3X2Kk+J5MK8glyKsF8WFl2lVzAWgqhvF9e0zFQ9Xc8iOhYCxVCCAIs7r?=
- =?us-ascii?Q?MD0/c8E=3D?=
+	=?utf-8?B?MkhvMEFrOTBJMTdMbDlpYkVJYS9jZ2ZLTHlnV2dMTmVnRUl0V3lURTdhYjVC?=
+ =?utf-8?B?SkpSMnlJbFNYVGR1Qzd1b3pRbzMydjVISTdheHArdTc3cVZZOHkrb0pCTVRn?=
+ =?utf-8?B?UXI4TUZpQ3kyVjh4RHhKY3YxWW5abU5VczdQYTBZd3dac2RBUEo5QWlFNVV6?=
+ =?utf-8?B?TE9xazNPZXhMcjI5V1l2YWFreXJQWm5VMm1EMzYxMHlPU1NBNEVSenM5d1U3?=
+ =?utf-8?B?RkRnYWt0N1pqUnR4c29kbGhMTGRrbTFaSG83U0VMUzNZaGhrT0VENi9RclZl?=
+ =?utf-8?B?QzdPRHNITGx6VldHWWxBdjk4ajhXQnRXSHB5b0hNL3NqeStNNUVaVHBLZUZZ?=
+ =?utf-8?B?eGwwVVNlVEV5SXk5eXFXNnE1NlNMRTl2Q0pONGIvRkNVNUFFTHVZMlZFTTJn?=
+ =?utf-8?B?ejBDMWNsSWoyTkJCOVcxOWE2eE41bm9DTFJtRURVTHl6OXFTdU5HQnAxZFU0?=
+ =?utf-8?B?aG1HYWRHdXBncUx0OUhybTdlM0UzTFlPaDlPWWtDVkhyRFFpbTYzUGRIK1B0?=
+ =?utf-8?B?WUNoaDdETkh0a1BEbkQ4Q2UwWDhwdDk4TndvaTZUMm5YZkRmTmZuSDkvSmxl?=
+ =?utf-8?B?c1c2OWtjbFVlRHB2N0NSWHZxdU00UXlmaU5GZ05HdG1IR094Q2dyWkZGeUgr?=
+ =?utf-8?B?bExDSnJRUFE5YU5iTTNNQ04yblN0TzlOcHd6V1Zlbzd4Y0dBcXlENmNraUlN?=
+ =?utf-8?B?MnJxVFRjczZVenlyUkRlbGNXVlVZTnRpV2dmbjJzWkVvY0h0aFh3RWRwbGdX?=
+ =?utf-8?B?cEx2TEZ4WFArV2k3SUZnL05KRUUxUjd0aFBHeHA4c291c1c4YXhnVk4zTUxV?=
+ =?utf-8?B?VjBjeXU0dzFGMGN4czZQd2R2aE9YT2ZDYjhBNXlvNjEyV04wWnRUczliM2xO?=
+ =?utf-8?B?MlM3R3IyQlFlcjE5RUkzTmFKMEJxVy80bW5odGxRMjA1SDJoaDdkY0dGZ2VM?=
+ =?utf-8?B?YXdUdWE4czhGTWtUSldvSkJlL04wT1UxMHBWS2V2ZWdyUGIwbVdOZVVJN1Vv?=
+ =?utf-8?B?Z2FjK0x6TmozUnJIcFhDM2ZSRkM3a005emVyQWV2Yjl1UUVVb0NaSkw2N25C?=
+ =?utf-8?B?cTQ0TFVNNDNkZ09hWHpkQVJKUXBDQmRuRnJlNElnQlUySDMxQ2s4RWRYYUQx?=
+ =?utf-8?B?SVRYNHRzc2VxNFZnUldQdFlZWCt6cmVhZ1cyZTlYTUlOajhsMUREZEh1cWw2?=
+ =?utf-8?B?aWp1WEV1bnNaVU9YVDJxb2RaQkZaK0V1c1JCREsvRFhqd0pVaG1lV2hwY0VE?=
+ =?utf-8?B?d04vNjMzK2dObUxJVjF2ZzBuR3REbUZ2Q2FlK3RDK0cwL1R5NERlUDlnd2x3?=
+ =?utf-8?B?bTFFbFFPMm8rWTVZVUhYeVNjSVJVRVBYd0g2NUFtT3NrTDJTdkVabGtnS0Vy?=
+ =?utf-8?B?azZONktYYllFTDR3Y1F1cmo5WXp5eUo4S2RucHVkSmRVRWZPNFdkMldiRzE2?=
+ =?utf-8?B?eHNUb2lkV2c2c0s4Ym02RElYTHJ0R09rOVhYQkJLR2M3V1ptb01WSHRwK1BQ?=
+ =?utf-8?B?MUJEVC9SejRtS0xWbkF5dmV1clBQdWc1blpxVVoyREtuZkErcXJQcGpFZHFy?=
+ =?utf-8?B?SzlaYlhGRVdkblFZRGxmZHNYaUN5clJoNGhUWEVmUGczMHBLSnhHQmU3enVu?=
+ =?utf-8?B?eHFVb1gvdUt3ajlWdmVCYXdFVWRveno2dEJvNjkwV2VFODNoUnIyd1E1a0VG?=
+ =?utf-8?B?WWt1Ylo1VDc5dmtxMUdPT203eFZYRDdaSWdRTkR3aXA1ekdJV2w1UExLWXdH?=
+ =?utf-8?B?RTZkcmNtc1o1d3dFMkpYamtwMzJGSEsyMDJmNk1ZeE1HMDkvWTJ4Wi9VcHpM?=
+ =?utf-8?Q?MkbaP32b1Wi8BVUT5dJTRHRpkKXevJqxgxQGk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+O6eiMtP5pUoXykFd85X1gNaJBa7RdI78iLofn3jF21LMx5k59p17lioJri4?=
- =?us-ascii?Q?rkhlfmD6L5qGvIh8sF6dmFwHioBgb8qX88ZShvDr1jt8NvO82uMXMz0D0fun?=
- =?us-ascii?Q?uky/XUvlq1roaG8Y52g+db8byW+FXOcY9/PuHqCL57xhTzv2gSagb9Jp7fCm?=
- =?us-ascii?Q?/yMmAWY9U56XonKMlkWU8VdXtLnVF2clX+AiqaosUcA5TXAyFtFA3KFhECrd?=
- =?us-ascii?Q?PVwLXZhaYUyzAbhN0JyG5BNJnUyTyjTbmjBu4WVI2IpkiPntc3v7w00IcIQ9?=
- =?us-ascii?Q?SsOGi2BpSdjMarWW99zESSThA+CfNkHAeZQiXNAqMYRJWG3GZdwjNjL7fOL3?=
- =?us-ascii?Q?h0zTlIaZ9V7H78AilmhuJgFkYq0eZMxZmMucPpSDPuL4w4VDJ+53kzyUazxQ?=
- =?us-ascii?Q?a9kvrlxQ8oVN3rOnaQG3KmUFqCaVLpNl6KSoLzbfaTtzOheeMVtlinj7GAav?=
- =?us-ascii?Q?Yv4L28NcJKwtkYPzqx4MTagdM7rOmCSr1bGSvMVAcBA4iz9Xt9KTo++tJKuN?=
- =?us-ascii?Q?qXnWGFAwa1rvoxvFEQbKYo3czILx6UwWkXHDHhFGbADawL5Y1IjFGIC3pLFa?=
- =?us-ascii?Q?6tzanZCUqPy9cAVlmjg7f+uLgVKYlBCXGthRSIcofZqtqZReZqm76Np4ecwn?=
- =?us-ascii?Q?mGwNcmH3IaUb2smXPbYvRKprNJZaOwcbVQetVf6a1ajhOwMtfbPTADxGGLKy?=
- =?us-ascii?Q?vSuKknJWewGQ1fzV/vIS1boZg9rdtsVT+XSa1wi0caxmNCQMl7NPJJ8V5Ms4?=
- =?us-ascii?Q?O3ijUmNYQ6nJ6Lpugw7bekeF/1to1vIb7EYWgA0ZHYr1IfRz/m58MWPDNvkB?=
- =?us-ascii?Q?bdHIpUTwtsu2qDplys3litGH/JALJk3lv1Ksl2y8uZrT1nKArRk0iEcDBC66?=
- =?us-ascii?Q?cz6vj3x2mDmxukbxd35fBGGntAGqeUNnmlQxiK7++mCqdgPXZY5qSJcwvvGF?=
- =?us-ascii?Q?OQWHjoYoVeLkaY13d3NgSyXLeGMHQbr0BOUplhZjKpDU1TuIs0w3bbGfIlVG?=
- =?us-ascii?Q?/gZmE3/mRTLvQx4nYafknlrfd/DM24LFZ0PBGfrxEJffocoz6KlT+4xl4u7I?=
- =?us-ascii?Q?gNDxITCs0u9ikqDrhDu6TQOZxczQVBxcE2owps232jgkhVi11H33R55LDTZh?=
- =?us-ascii?Q?YHcwdk4w5A5kTkGy7hTdWiw+8n8QNYOo9r0VH/U9egHg1vFcrv4ZMZCkzMT1?=
- =?us-ascii?Q?Ym2ygCqK368AWSYVgBYYQVN9lrhe8FfszoEWAhXinlaklGeRnq7xZsvCvciL?=
- =?us-ascii?Q?A+aOQVVr26/80MUailbpf+WLBb5Bi+z1DWH8yOxVZeOWGwSU9K81BbieVbU7?=
- =?us-ascii?Q?rCH8Vd+v0HeAnanVQ6xW4VZEQvH75+RrEMpUV/3O+mfEjqpQVZnaxNuylhhE?=
- =?us-ascii?Q?iMg9QW+OElshpT+xvj41r8zVTimQ5cHOk+iUaGc8AhukA7DVvgB01IvHf92H?=
- =?us-ascii?Q?XdjxttH86XkDOOV+z4onOgTWptjKl4Lo1O/L96KnLZxumxhSGNuOAyXLPmHp?=
- =?us-ascii?Q?RrL83HZmAQIZTLX+jCsAX0VTY5TVGZmjZzkPRuQxBH+CJXW7fjWcf3OZLpoj?=
- =?us-ascii?Q?mPlDaCng+CRo1N6vf6pZ3dESM8t7DvytxG4MW6uM?=
+	=?utf-8?B?cUFRTVM4OE13YWpEb1dVa2djOVZwcFBka3Q2SENEMGJNdjlZbExicEU3OVJS?=
+ =?utf-8?B?N1g1cTJPdjN6cnlsTEFDakdjYm44OHl2eXRlK01JYzJXN1RBOWRDSXFjcGVE?=
+ =?utf-8?B?MGFJeDdCY1ZUd05xVktHYmZJaEhweTVzSjAzN1p5V29mRlJESHBwWUVGT3o2?=
+ =?utf-8?B?MUo2YXAvY2NnSW4ybkM5Z3FRRnJya05tSnMrTTN4N1dsd25ENjdJd3RrVThF?=
+ =?utf-8?B?WGhSblV0WWkzZ3pyTGcwVXdSS0NlNXhHZWNQRHljZFdvODgxSFpjUlhZTmpn?=
+ =?utf-8?B?b2Nad3hFak5NRFJmS3YxVk1wbnRValFMR0ZucVo0VWY3d2tpeU53SE1KSi95?=
+ =?utf-8?B?YWZpMjNyVTlCczBycXRxTzY0blpPWGIxWUlxQllEZ3NCcDBtbkdGZXdVOXp2?=
+ =?utf-8?B?bkJkYjdkZFFJN0N4aWtTQVNEWGcwM3RGK09RbXNQVFlWT1RvcGNjbHM2QzFK?=
+ =?utf-8?B?K1hiZ1RXUlluZUt5bk5HblBXdzVScEgzOHNYcE5SWi9KVnhPUVExQXBYNXBX?=
+ =?utf-8?B?YXlTdkdwYTlpeUlPSXZ0OG5JMmJRKzRwY3JuRlZ1Uy8xRmU0d1BpbG0vYXV4?=
+ =?utf-8?B?OWJtNWY2YTJxZWc0QndySzllaWVQVWsza04xWDIrV0FEOS9sTkd0RjZtelFj?=
+ =?utf-8?B?bWtuWDdqNUp2YkNoSWxzYWpHUWVGS29ueUhhK2JIU3JIVmxZTGpVQnRNTE10?=
+ =?utf-8?B?ZHNrY3Fjb2tGNWE4ODZxMWY3MXFpQWpnbmVocTdNdDZQQ0FqVUU2ZHFrL3dR?=
+ =?utf-8?B?NDR4Z3VkN01hb28vTG0yNXJsTUJabHptV242ekoyU1FzS1BPOCtJOFpmU2ZX?=
+ =?utf-8?B?RlAyK21WMWVJamZ0VzVBem1ESXhRK0RNcGxzdzV1ck1CemZRQmJwbmFtVTlp?=
+ =?utf-8?B?RVRrY2lMQWtFU0xXNG5LVzN0Q1UyUHdaVS8xNXJPZ3M1OEJQNGk1K3VOaVZv?=
+ =?utf-8?B?MURudVhuL05DTkVFL21QaEFVbVROTmxVR21uay9VRE9zT3BJL2IzU3ppUkN1?=
+ =?utf-8?B?RGQrVGJGSnhxUFd0RjQ3TFNna1gzc0tyakxwc0tJQzA3VHMybHdPZmhPbWhT?=
+ =?utf-8?B?WHZYcWZrZGNIMHp0K0RRM3FKNFJ3UDVhS2t6ZmxTOWtmSi8xRFcvcWhFeGps?=
+ =?utf-8?B?bkJhaDdHdnBuc295M0J0UkkvQnFCck15ZVVscjY1UUZYMTgvVVBXOEkydEYr?=
+ =?utf-8?B?bEJFL3FVMXlUS25FaFpJbVFBYmg1dkx6RTZ6eloya0hjTE9ybUVHaFJDKzAr?=
+ =?utf-8?B?TEIzMVFoTlNvR0xlTE95bVRSZ0lJTWIxTHYyR2lkK0VnODBqMnpGd1JvVFVR?=
+ =?utf-8?B?OFBvOHRPZURPMnRQL0hac2NiK1BhVDFNNVhHU0hGeEt1SW1VcFFQMnp5UFN1?=
+ =?utf-8?B?bENha1NCanpZUGdjM29sM1g5V3g3Z0I5UjNwVWcrdXZOWE5NRFRNQ2F6R3Nr?=
+ =?utf-8?B?eVNvQVNkRjJRSzcxVDFsR1p0Tm1ZRFYvSkRLaWNIL1FBTjl6aGJYbnczUzgr?=
+ =?utf-8?B?S2FhSEdmTy9iM1daZjNsQ1RucDZTakJBOTc4Tzl0SjY3Wk9ibVhUbGo0QU9r?=
+ =?utf-8?B?K1hJOVRsRFBzUUFzSm1OeDZMb1BHZHdheTFTSkhnM21wZ1ZBU2p0UmFFTlNo?=
+ =?utf-8?B?WEFSRG5SMTRvQzhUclBXUWNmeG54Uk1iNUt2cjBOVnFNNnNYMStQK0phcS9j?=
+ =?utf-8?B?RHlHM2ZoMDlHSklJdUw1MzBWeDdQbHZsak5IVm5tRVJoYys2a3ZKdmI2VzhN?=
+ =?utf-8?B?bGlYZHZGUmdOWSt2Zm41aURhWldCdW9QeTJMYW1KbUFXVFdUSUJVbHVtbis4?=
+ =?utf-8?B?ZWx1UXliTHp2Ym83SjJmODJGcTQvRHB3djJic3htOE9LdU5YZzh2K2x4S3ZV?=
+ =?utf-8?B?eDVZMzNlN0JJMWM3WVdlMWVENCtVU3pVaTlCanVjOEVGU3hBcFliWVRJK3Vu?=
+ =?utf-8?B?Ylo1b2liOExXNHZqK3FmVzlvM09MR0dBUS9ZKzJYSUxJZkpwbVBSa1pxaVB3?=
+ =?utf-8?B?UEJkNVpUblhDRlc5ZkxBYXlWTEF3NDdvMlJBWXF4RW5YWHhMRlNLU0dBUWda?=
+ =?utf-8?B?eTFkeHZ2dHh0a3NCTjlBWVlSN0t0eEpPMndjRXFPa0tXVERVSG16eFRIMDdo?=
+ =?utf-8?Q?vpBdWk5zto1NGkK3lAMLQyM73?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af784fb8-ad5a-4670-5724-08dcc0798fc6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d25384c-df24-4227-a8cd-08dcc07ec538
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2024 18:05:51.8305
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2024 18:43:08.8237
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W0NbQc25OKDlFbk0yhrXn0H2W7g4hJztc54XIWa0DqjQlHU0u2TbFTXm6XZvXLszPwwj6VO0OBvzAXbZ2cgd1w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10290
+X-MS-Exchange-CrossTenant-UserPrincipalName: BYPPIhSEyd+3cw5Re90LAWIncWpvC9dvGRvyN2q7xDzTW8Bf+ezkuY4EhBkRpo9Tba1fJprWNthTV7xu8/SyLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8801
 
-Convert binding doc ads7846.txt to yaml format.
-Additional change:
-- add ref to touchscreen.yaml and spi-peripheral-props.yaml.
-- use common node name touchscreen.
-- sort ti properties alphabetically.
-- sort common properties alphabetically.
-- sort compatible string alphabetically.
-- remove vcc-supply from required list.
-- deprecated ti,x-min, ti,y,min
+On Mon, Aug 19, 2024 at 03:21:36PM +0200, Daniel Lezcano wrote:
+> On 25/07/2024 21:33, Frank Li wrote:
+> > From: Jacky Bai <ping.bai@nxp.com>
+> >
+> > In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
+> > is larger than INT_MAX.
+>
+> Is it something you observed or from your understanding of the code ?
 
-Fix below warning: arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dtb: touchscreen@0:
-	ti,x-min: b'\x00}' is not of type 'object', 'array', 'boolean', 'null'
+System use this timer to wakeup from lower idle, which core and local timer
+turn off. -ETIME may prevent system enter lower idle, or failure wakeup
+from lower idle utill counter run overflow. I am not sure how to trigger
+this problem.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v3 to v4
-- new line for all descrptions
-- add . after sentense.
+Assume run at 24Mhz, 1/24us * 0x8000_0000 is around 89s. Problem trigger
+only next event bigger 89s, which relative quite big number.
 
-Change from v2 to v3
-- Remove u16(u32) in descriptions
-- deprecated ti,x-min and ti, y-min
+Anyways, the original code is wrong, it claim max delta is 32bit.
 
-Change from v1 to v2
-- sort properties, by 3 group:
-  1. General (compatible, reg, interrupt)
-  2. Common properties
-  3. ti properties
-- sort maintainers name alphabetically.
-- uint16 have to be kept because default is uint32
-- remove vcc-supply from required list
-- remove unfinished sentence "all mandatory properties described in"
-because it refer to /schemas/spi/spi-peripheral-props.yaml#
-- fix make refcheckdoc error
----
- .../bindings/input/touchscreen/ads7846.txt    | 107 ----------
- .../input/touchscreen/ti,ads7843.yaml         | 182 ++++++++++++++++++
- .../bindings/power/wakeup-source.txt          |   2 +-
- 3 files changed, 183 insertions(+), 108 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ads7846.txt
- create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml
+Jack bai: any additonal supplement for this?
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/ads7846.txt b/Documentation/devicetree/bindings/input/touchscreen/ads7846.txt
-deleted file mode 100644
-index 399c87782935c..0000000000000
---- a/Documentation/devicetree/bindings/input/touchscreen/ads7846.txt
-+++ /dev/null
-@@ -1,107 +0,0 @@
--Device tree bindings for TI's ADS7843, ADS7845, ADS7846, ADS7873, TSC2046
--SPI driven touch screen controllers.
--
--The node for this driver must be a child node of a SPI controller, hence
--all mandatory properties described in
--
--	Documentation/devicetree/bindings/spi/spi-bus.txt
--
--must be specified.
--
--Additional required properties:
--
--	compatible		Must be one of the following, depending on the
--				model:
--					"ti,tsc2046"
--					"ti,ads7843"
--					"ti,ads7845"
--					"ti,ads7846"
--					"ti,ads7873"
--
--	interrupts		An interrupt node describing the IRQ line the chip's
--				!PENIRQ pin is connected to.
--	vcc-supply		A regulator node for the supply voltage.
--
--
--Optional properties:
--
--	ti,vref-delay-usecs		vref supply delay in usecs, 0 for
--					external vref (u16).
--	ti,vref-mv			The VREF voltage, in millivolts (u16).
--					Set to 0 to use internal references
--					(ADS7846).
--	ti,keep-vref-on			set to keep vref on for differential
--					measurements as well
--	ti,settle-delay-usec		Settling time of the analog signals;
--					a function of Vcc and the capacitance
--					on the X/Y drivers.  If set to non-zero,
--					two samples are taken with settle_delay
--					us apart, and the second one is used.
--					~150 uSec with 0.01uF caps (u16).
--	ti,penirq-recheck-delay-usecs	If set to non-zero, after samples are
--					taken this delay is applied and penirq
--					is rechecked, to help avoid false
--					events.  This value is affected by the
--					material used to build the touch layer
--					(u16).
--	ti,x-plate-ohms			Resistance of the X-plate,
--					in Ohms (u16).
--	ti,y-plate-ohms			Resistance of the Y-plate,
--					in Ohms (u16).
--	ti,x-min			Minimum value on the X axis (u16).
--	ti,y-min			Minimum value on the Y axis (u16).
--	ti,debounce-tol			Tolerance used for filtering (u16).
--	ti,debounce-rep			Additional consecutive good readings
--					required after the first two (u16).
--	ti,pendown-gpio-debounce	Platform specific debounce time for the
--					pendown-gpio (u32).
--	pendown-gpio			GPIO handle describing the pin the !PENIRQ
--					line is connected to.
--	ti,hsync-gpios			GPIO line to poll for hsync
--	wakeup-source			use any event on touchscreen as wakeup event.
--					(Legacy property support: "linux,wakeup")
--	touchscreen-size-x		General touchscreen binding, see [1].
--	touchscreen-size-y		General touchscreen binding, see [1].
--	touchscreen-max-pressure	General touchscreen binding, see [1].
--	touchscreen-min-pressure	General touchscreen binding, see [1].
--	touchscreen-average-samples	General touchscreen binding, see [1].
--	touchscreen-inverted-x		General touchscreen binding, see [1].
--	touchscreen-inverted-y		General touchscreen binding, see [1].
--	touchscreen-swapped-x-y		General touchscreen binding, see [1].
--
--[1] All general touchscreen properties are described in
--    Documentation/devicetree/bindings/input/touchscreen/touchscreen.txt.
--
--Deprecated properties:
--
--	ti,swap-xy			swap x and y axis
--	ti,x-max			Maximum value on the X axis (u16).
--	ti,y-max			Maximum value on the Y axis (u16).
--	ti,pressure-min			Minimum reported pressure value
--					(threshold) - u16.
--	ti,pressure-max			Maximum reported pressure value (u16).
--	ti,debounce-max			Max number of additional readings per
--					sample (u16).
--
--Example for a TSC2046 chip connected to an McSPI controller of an OMAP SoC::
--
--	spi_controller {
--		tsc2046@0 {
--			reg = <0>;	/* CS0 */
--			compatible = "ti,tsc2046";
--			interrupt-parent = <&gpio1>;
--			interrupts = <8 0>;	/* BOOT6 / GPIO 8 */
--			spi-max-frequency = <1000000>;
--			pendown-gpio = <&gpio1 8 0>;
--			vcc-supply = <&reg_vcc3>;
--
--			ti,x-min = /bits/ 16 <0>;
--			ti,x-max = /bits/ 16 <8000>;
--			ti,y-min = /bits/ 16 <0>;
--			ti,y-max = /bits/ 16 <4800>;
--			ti,x-plate-ohms = /bits/ 16 <40>;
--			ti,pressure-max = /bits/ 16 <255>;
--
--			wakeup-source;
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml b/Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml
-new file mode 100644
-index 0000000000000..86e881403f9dd
---- /dev/null
-+++ b/Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml
-@@ -0,0 +1,182 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/input/touchscreen/ti,ads7843.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: TI's SPI driven touch screen controllers.
-+
-+maintainers:
-+  - Alexander Stein <alexander.stein@ew.tq-group.com>
-+  - Dmitry Torokhov <dmitry.torokhov@gmail.com>
-+  - Marek Vasut <marex@denx.de>
-+
-+description:
-+  Device tree bindings for TI's ADS7843, ADS7845, ADS7846, ADS7873, TSC2046
-+  SPI driven touch screen controllers.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,ads7843
-+      - ti,ads7845
-+      - ti,ads7846
-+      - ti,ads7873
-+      - ti,tsc2046
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  pendown-gpio:
-+    description:
-+      GPIO handle describing the pin the !PENIRQ line is connected to.
-+
-+  vcc-supply:
-+    description:
-+      A regulator node for the supply voltage.
-+
-+  wakeup-source: true
-+
-+  ti,debounce-max:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Max number of additional readings per sample.
-+
-+  ti,debounce-rep:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Additional consecutive good readings required after the first two.
-+
-+  ti,debounce-tol:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Tolerance used for filtering.
-+
-+  ti,hsync-gpios:
-+    description:
-+      GPIO line to poll for hsync.
-+
-+  ti,keep-vref-on:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      set to keep Vref on for differential measurements as well.
-+
-+  ti,pendown-gpio-debounce:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Platform specific debounce time for the pendown-gpio.
-+
-+  ti,penirq-recheck-delay-usecs:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      If set to non-zero, after samples are taken this delay is applied and
-+      penirq is rechecked, to help avoid false events.  This value is
-+      affected by the material used to build the touch layer.
-+
-+  ti,pressure-max:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Maximum reported pressure value.
-+
-+  ti,pressure-min:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Minimum reported pressure value (threshold).
-+
-+  ti,settle-delay-usec:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Settling time of the analog signals; a function of Vcc and the
-+      capacitance on the X/Y drivers.  If set to non-zero, two samples are
-+      taken with settle_delay us apart, and the second one is used. ~150
-+      uSec with 0.01uF caps.
-+
-+  ti,swap-xy:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      swap x and y axis.
-+
-+  ti,vref-delay-usecs:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Vref supply delay in usecs, 0 for external Vref.
-+
-+  ti,vref-mv:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      The VREF voltage, in millivolts.
-+      Set to 0 to use internal references (ADS7846).
-+
-+  ti,x-plate-ohms:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Resistance of the X-plate, in Ohms.
-+
-+  ti,x-max:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Maximum value on the X axis.
-+
-+  ti,x-min:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Minimum value on the X axis.
-+
-+  ti,y-plate-ohms:
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Resistance of the Y-plate, in Ohms.
-+
-+  ti,y-max:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Maximum value on the Y axis.
-+
-+  ti,y-min:
-+    deprecated: true
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    description:
-+      Minimum value on the Y axis.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: touchscreen.yaml#
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi{
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        touchscreen@0 {
-+           compatible = "ti,tsc2046";
-+           reg = <0>;	/* CS0 */
-+           interrupt-parent = <&gpio1>;
-+           interrupts = <8 0>;	/* BOOT6 / GPIO 8 */
-+           pendown-gpio = <&gpio1 8 0>;
-+           spi-max-frequency = <1000000>;
-+           vcc-supply = <&reg_vcc3>;
-+           wakeup-source;
-+
-+           ti,pressure-max = /bits/ 16 <255>;
-+           ti,x-max = /bits/ 16 <8000>;
-+           ti,x-min = /bits/ 16 <0>;
-+           ti,x-plate-ohms = /bits/ 16 <40>;
-+           ti,y-max = /bits/ 16 <4800>;
-+           ti,y-min = /bits/ 16 <0>;
-+       };
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/power/wakeup-source.txt b/Documentation/devicetree/bindings/power/wakeup-source.txt
-index a6c8978964aa1..9a4f8310eb67d 100644
---- a/Documentation/devicetree/bindings/power/wakeup-source.txt
-+++ b/Documentation/devicetree/bindings/power/wakeup-source.txt
-@@ -25,7 +25,7 @@ List of legacy properties and respective binding document
- 2. "has-tpo"			Documentation/devicetree/bindings/rtc/rtc-opal.txt
- 3. "linux,wakeup"		Documentation/devicetree/bindings/input/gpio-matrix-keypad.txt
- 				Documentation/devicetree/bindings/mfd/tc3589x.txt
--				Documentation/devicetree/bindings/input/touchscreen/ads7846.txt
-+				Documentation/devicetree/bindings/input/touchscreen/ti,ads7843.yaml
- 4. "linux,keypad-wakeup"	Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
- 5. "linux,input-wakeup"		Documentation/devicetree/bindings/input/samsung,s3c6410-keypad.yaml
- 6. "nvidia,wakeup-source"	Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt
--- 
-2.34.1
+Frank
 
+>
+> > For example:
+> >
+> > tpm_set_next_event(delta = 0xffff_fffe)
+> > {
+> >          ...
+> >          next = tpm_read_counter(); // assume next is 0x10
+> >          next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
+> >          now = tpm_read_counter();  // now is 0x10
+> >          ...
+> >
+> >          return (int)(next - now) <= 0 ? -ETIME : 0;
+> >                       ^^^^^^^^^^
+> >                       0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
+> >                       cast to int. So return -ETIME.
+> > }
+> >
+> > To fix this, introduce a 'prev' variable and check if 'now - prev' is
+> > larger than delta.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+> > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> > Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> > Reviewed-by: Ye Li <ye.li@nxp.com>
+> > Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >   drivers/clocksource/timer-imx-tpm.c | 8 ++++----
+> >   1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/clocksource/timer-imx-tpm.c b/drivers/clocksource/timer-imx-tpm.c
+> > index bd64a8a8427f3..cd23caf1e5999 100644
+> > --- a/drivers/clocksource/timer-imx-tpm.c
+> > +++ b/drivers/clocksource/timer-imx-tpm.c
+> > @@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(void)
+> >   static int tpm_set_next_event(unsigned long delta,
+> >   				struct clock_event_device *evt)
+> >   {
+> > -	unsigned long next, now;
+> > +	unsigned long next, prev, now;
+> > -	next = tpm_read_counter();
+> > -	next += delta;
+> > +	prev = tpm_read_counter();
+> > +	next = prev + delta;
+> >   	writel(next, timer_base + TPM_C0V);
+> >   	now = tpm_read_counter();
+> > @@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned long delta,
+> >   	 * of writing CNT registers which may cause the min_delta event got
+> >   	 * missed, so we need add a ETIME check here in case it happened.
+> >   	 */
+> > -	return (int)(next - now) <= 0 ? -ETIME : 0;
+> > +	return (now - prev) >= delta ? -ETIME : 0;
+> >   }
+> >   static int tpm_set_state_oneshot(struct clock_event_device *evt)
+>
+>
+> --
+> <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+>
+> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+> <http://twitter.com/#!/linaroorg> Twitter |
+> <http://www.linaro.org/linaro-blog/> Blog
