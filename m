@@ -1,149 +1,153 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837C2165EEF
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 11:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482E8166F34
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 11:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724067309; cv=none; b=o4PozpjZwfh4AFiGcaqRqhZHsh5+EpLry7eRlpRH1ykDlAfn2Cdt6wC8rjua8o3KbxPAKBKvKo5+R01P3NVoi6SudSoA0ezpmyoxCvfsqXOeaiaKqhYh8W3bPQ2BwVFDLWd8z6Ra4+oIZbbLp92Smnqh2UHocxSAHb9X41ziwS0=
+	t=1724067821; cv=none; b=Wjzr0m/43rFY7lOtRHYs9w/sGZC+qC0KZK4F8TJkI6WZmZ8uEFP7RI3BL7ff69ZAgdWlPRFNM+IejRpveJt2u/2uv6SoFFi6ZFPYFdWuEQ2wNAgnLJaMLWYILoeXVGwh+WIBOKCZToSLtEI2NbidYzW5vaJw0VwtPv3DDk4MLLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724067309; c=relaxed/simple;
-	bh=FZ88kgAbDiM+8rWx3JLKtnx3vWamNJnTiO6nxHD3QN4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tovxhe/Mw4W8iIND+jAfKSOHoJGYa29XdjgGkSxPv794Cj/x2TZqLEqJxF1pvpbPYzx2g5KsmUJ9mYrUshQ/xfSHxwJjIg/KExJwiSNFV45xTAeQW1n0hqz/4ow+qmeqc5M2vQiOSiDDu6pfk24O+3QnLL4vGPc+ITEKMBjWA84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=jH3evXTk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DhE9D1D8 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1724067821; c=relaxed/simple;
+	bh=ZRnKHej5GGCo7GDzgFRFP9GZMsIsKF0Y8yAgNCG2Ef4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Iz4c8dhh7JVwkYnzzbwgtNMxUORnAjnz45iCInAQ4xehoq+qv+8CylqgYK7A6FRuEH0cT4pT/ivNiFXGmDw7qgBwWuoFLHGCtzw342bnOSfQfgB3G2qiIHclYgGlbY8BaKyhUqtXlNCAfE8HpnXoWsQoyBd+0n95CNGdmEDq9Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=AaMIVeoU; arc=none smtp.client-ip=208.88.110.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="jH3evXTk";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DhE9D1D8"
+	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="AaMIVeoU"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 41B869C5BDF;
+	Mon, 19 Aug 2024 07:43:31 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id l0-j1zBEH9ZD; Mon, 19 Aug 2024 07:43:30 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 4D1A09C5F74;
+	Mon, 19 Aug 2024 07:43:30 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 4D1A09C5F74
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724067306; x=1755603306;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=N15B/fpX6Wf+7yRZPzvZUR8uMg/qc8/OqC4E1tAFR00=;
-  b=jH3evXTkh6XeTT73g/uR7bBUExFSeNNJADgSF+yXjZFTPxvNHl/od6is
-   X68wZEgzrmrnVKQljIPGWOZ88FIMhmEWAOoD1K6pfuoJNe+bbw4GWD2UL
-   b0bt5ytEmBzV2rMkVAVOK7qYL+jVF6akeHpgeruy/tbqYFaQniUKV1xui
-   ZsdZ2gxD1437xbHVyWT+1OuSTjvfMOngI/+X71T4jfe8HZgP9rrTo/sow
-   hh9pqOT4msQ1AI0DGQ+dq8SrKqAczXmZGp/qlmBoTJI9NjgVpG3nOrsFU
-   /w7h2SP6Yy7+jkycr8y7IRTCirXH6nVCZ/dc9uy0lJ1j/gZnVAmbc0JhA
-   w==;
-X-CSE-ConnectionGUID: faJc6t2ST8evPLTvnb7ZnA==
-X-CSE-MsgGUID: 8BZy0lFMQPuHx7v62NpeGA==
-X-IronPort-AV: E=Sophos;i="6.10,159,1719871200"; 
-   d="scan'208";a="38466299"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Aug 2024 13:35:04 +0200
-X-CheckPoint: {66C32DE8-B-E9ED6009-C4B0BEC8}
-X-MAIL-CPID: 436127ADD3E6AA614B224FC9CA86742D_3
-X-Control-Analysis: str=0001.0A782F26.66C32DE8.00EC,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F37216141D;
-	Mon, 19 Aug 2024 13:34:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724067299;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=N15B/fpX6Wf+7yRZPzvZUR8uMg/qc8/OqC4E1tAFR00=;
-	b=DhE9D1D86sGzuRlnxoWc/CkbXtKJg/quYOSybQDXoNb+1ImLjY3dRftM/jvjKQf/sDbPDn
-	upnezyp4nwym3XJqZ+Wz1N+cm+1jGSJDUffMG1ZcO3csVno9mWsNc0nK3VO731x8IZSJ3r
-	Ehw6juC4OqHuurHQHzx5/ZCgGpE2/aGKpLX0TNyuzMjhA6Hk+IYCt8mTNXlFOF6IJijX/4
-	JbUkZ122zTgx/v4oaSpoEi1kh0MdyfcDIPFSFydoaESNvigoSbZKdjE3KYjd6lK/RY/xip
-	uTbJUMrFDYZrb05ssp14HWlXuPvefUi8AefGAeiXM4TCjfqVTl40VFirND5Qcw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 06/14] arm64: dts: freescale: imx93-tqma9352-mba93xxla: improve pad configuration
-Date: Mon, 19 Aug 2024 13:34:58 +0200
-Message-ID: <2197430.irdbgypaU6@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <PAXPR04MB84593B8DF03B5CFA7CA2D29F88B22@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20240724125901.1391698-1-alexander.stein@ew.tq-group.com> <20240724125901.1391698-7-alexander.stein@ew.tq-group.com> <PAXPR04MB84593B8DF03B5CFA7CA2D29F88B22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1724067810; bh=g3AsLUqBfKMisCl4I03Q1DAj0/8iriOUEYeW7RNSf2s=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=AaMIVeoUp0XGvy58oS1QXH6phQNWz5ic5K/PnB2LvOWK38amBy7c5YOWrudkWD0Vp
+	 o4RmMP9VB8zhaet1baBcMCZUWWGHuBnA+M6SZDaP61Bp+yNSalbzTgvVPUV4LN1PQz
+	 92OLI92ya8VTtQA1BtmYKMyxy+AzdNKjXsxi8XldIYouc91GD+WFFtf5a6uxySlY50
+	 vv5ntTjj6Z8w3hFYFimazNvrJEd52F1UpVF2e2BPIx6iEvyvQrZaAwVyuEKVbVEMTm
+	 e9cmcUFdt5RoVKhg6s+8b2NJCjQLLQg3JTAUXTNse/Qgb0DWgXWQ/qd5p64rZ65VOR
+	 WSPSc2oOYP2Yg==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id G2C6bNsOuPV7; Mon, 19 Aug 2024 07:43:30 -0400 (EDT)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id E8A2E9C5BDF;
+	Mon, 19 Aug 2024 07:43:29 -0400 (EDT)
+Date: Mon, 19 Aug 2024 07:43:29 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Shawn Guo <shawnguo2@yeah.net>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, 
+	shengjiu wang <shengjiu.wang@gmail.com>, 
+	Xiubo Lee <Xiubo.Lee@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-sound <linux-sound@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, imx <imx@lists.linux.dev>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	alsa-devel <alsa-devel@alsa-project.org>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
+Message-ID: <905560330.155045.1724067809890.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <Zq+QrxKFb3U1IEv/@dragon>
+References: <20240627083104.123357-1-elinor.montmasson@savoirfairelinux.com> <20240627083104.123357-7-elinor.montmasson@savoirfairelinux.com> <Zq+QrxKFb3U1IEv/@dragon>
+Subject: Re: [PATCH v6 6/7] arm64: dts: imx8m: update spdif sound card node
+ properties
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: arm64: dts: imx8m: update spdif sound card node properties
+Thread-Index: LseD1k2NMHpDg9FbVlB5JHSqjmcCfQ==
 
-Hi Peng,
+> From: "Shawn Guo" <shawnguo2@yeah.net>
+> Sent: Sunday, 4 August, 2024 16:31:11
+> On Thu, Jun 27, 2024 at 10:31:03AM +0200, Elinor Montmasson wrote:
+>> The merge of imx-spdif driver into fsl-asoc-card brought
+>> new DT properties that can be used with the "fsl,imx-audio-spdif"
+>> compatible:
+>> * The "spdif-controller" property from imx-spdif is named "audio-cpu"
+>>   in fsl-asoc-card.
+>> * fsl-asoc-card uses codecs explicitly declared in DT
+>>   with "audio-codec".
+>>   With an S/PDIF, codec drivers spdif_transmitter and
+>>   spdif_receiver should be used.
+>>   Driver imx-spdif used instead the dummy codec and a pair of
+>>   boolean properties, "spdif-in" and "spdif-out".
+>> 
+>> While backward compatibility is kept to support properties
+>> "spdif-controller", "spdif-in" and "spdif-out", using new properties has
+>> several benefits:
+>> * "audio-cpu" and "audio-codec" are more generic names reflecting
+>>   that the fsl-asoc-card driver supports multiple hardware.
+>>   They are properties already used by devices using the
+>>   fsl-asoc-card driver.
+>>   They are also similar to properties of simple-card: "cpu" and "codec".
+>> * "spdif-in" and "spdif-out" imply the use of the dummy codec in the
+>>   driver. However, there are already two codec drivers for the S/PDIF,
+>>   spdif_transmitter and spdif_receiver.
+>>   It is better to declare S/PDIF Tx and Rx devices in a DT, and then
+>>   reference them with "audio-codec" than using the dummy codec.
+>> 
+>> For those reasons, this commit updates in-tree DTs to use the new
+>> properties:
+>> * Rename "spdif-controller" property to "audio-cpu".
+>> * Declare S/PDIF transmitter and/or receiver devices, and use them with
+>>   the "audio-codec" property instead of "spdif-out" and/or "spdif-in".
+>> 
+>> These modifications were tested only on an imx8mn-evk board.
+>> 
+>> Note that out-of-tree and old DTs are still supported.
+>> 
+>> Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+>> ---
+>>  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 15 +++++++++---
+>>  arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi | 15 +++++++++---
+>>  arch/arm64/boot/dts/freescale/imx8mq-evk.dts  | 24 +++++++++++++++----
+>>  3 files changed, 43 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+>> b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+>> index 90d1901df2b1..348855a41852 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+>> @@ -180,12 +180,21 @@ cpu {
+>>  		};
+>>  	};
+>>  
+>> +	spdif_out: spdif-out {
+>> +		#sound-dai-cells = <0>;
+>> +		compatible = "linux,spdif-dit";
+> 
+> It's recommended that the property list begins with 'compatible'.  Could
+> you flip them?
+> 
 
-thanks for the review.
+Yes I'll will do this quickly, thank you.
 
-Am Donnerstag, 1. August 2024, 05:04:49 CEST schrieb Peng Fan:
-> > Subject: [PATCH 06/14] arm64: dts: freescale: imx93-tqma9352-
-> > mba93xxla: improve pad configuration
-> >=20
-> > From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> >=20
-> > - disable PU/PD if already done with external resistors
-> > - do not configure Schmitt Trigger for outputs
-> > - do not configure DSE / FSEL for inputs
-> > - add missing pad groups
-> > - assign muxed GPIO pads for X1 to gpio2 node
-> >=20
-> > Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  .../freescale/imx93-tqma9352-mba93xxla.dts    | 237 ++++++++++++----
-> > --
-> >  1 file changed, 164 insertions(+), 73 deletions(-)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-
-> > mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-
-> > mba93xxla.dts
-> > index e2ee9f5a042c..c663b6585c3a 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-> > @@ -222,6 +222,11 @@ rtc-irq-hog {
-> >  	};
-> >  };
-> >=20
-> > +&gpio2 {
-> > +	pinctrl-names =3D "default";
-> > +	pinctrl-0 =3D <&pinctrl_gpio2>;
->=20
-> I am not sure this is correct,  what are this used for?
-
-This is for general GPIOs usable from userspace. I'll add a new patch for
-adding gpio-line-names, so it should be clear.
-
-> And this is new, not pad improvement.
-
-Okay, I'll separate the changes from adding new/missing ones.
-
-> I would prefer the other improvement part merged
-> with patch 2.=20
-
-Patch 2 already got merged, but despite that this patch is for the mainboard
-while patch is addressing the module only.
-
-> > +};
-> > +
-> >  &gpio3 {
-> >  	ethphy-eqos-irq-hog {
-> >  		gpio-hog;
-> > @@ -509,25 +514,39 @@ &usdhc2 {
-> >  };
-> >=20
-> >  &iomuxc {
-> > +	pinctrl_afe: afegrp {
->=20
-> no users?
-
-There is no driver yet, but the pinctrl settings can still be created
-meanwhile.
-
-Thanks and best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Regards,
+Elinor Montmasson
