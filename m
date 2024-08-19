@@ -1,55 +1,55 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A3516C69C
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB97516C6BC
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 12:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724069052; cv=none; b=RsVOEPUDoN4GDPlZkJYAIWJnvdoE6e9ptrEzXyIq2M2IavD3B6X+hQOEP2kMGTbvYK+RmT+tp7pSDecY6wKioiAyOXqmtvHG4EHLi6VTmHjic2AhnwuAXE4VHwe4cneI7DP8Ft6ISe1+4glq6Xq8Mp+jU4zYb5QpOs+fPKc4a5c=
+	t=1724069059; cv=none; b=ok0mD71ae4VndB5Aw/kn4HiUAgh1JnLEges9ZOLubtGXzVkdjybfxyi0zu+EClZfFh5ZxOAuk+pvzQHjVRZeb/o3FlyCCeoh8EtbhsCNj4JipyW2lN4nANsLKWTTrClvpjdPkHn/4/qj0unUst4zIzG2yLrQME5Ig6nmtfBea+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724069052; c=relaxed/simple;
-	bh=/NJtnATzw+QAXdLAyomfDPF56FCcypv7gXFOTV5iT2s=;
+	s=arc-20240116; t=1724069059; c=relaxed/simple;
+	bh=9PSaogeoVfOBnj7iS+YU6TwZaWMkIcLNdvsT0664psQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hPaQODz17itdXCNHzTNGG24IVwVyw/g57K3spv2NrgK14GlPeH1be9MX7GrX/LXPgSGDTlwMuiCtJLnhshw+Th4T6e+hMiNiqMqOQHFEyymgEf37P86fUA9VTbN42ZGzjasCs1WBs0ZYZFxxvR8dfrhnt9rw1Ocvj+IwCRuQdiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=n6GlwG78; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=fwNsBQEB reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=VJ97xn1rckZJ91E4EPaXsGcRrcLaigC3X1dDRquwkGfyVCvTmyV6kbBmg3DLuu3Icc817tRpEzM7HD8AOhMIGCSiTF1WjnvGZNmPwc86elVVeysIHWVMPOL4Aifd4OEHYjikrittsiMxH5Udlz9GDt+H92LI2Cs+EHYwUVm9nKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=FBmALhjl; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=a2nTI0Q9 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="n6GlwG78";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="fwNsBQEB"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="FBmALhjl";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="a2nTI0Q9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724069050; x=1755605050;
+  t=1724069056; x=1755605056;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CUhDDd4L0Nhb449dRHFlHrsNDXqMMLHgE27Tqum9MVs=;
-  b=n6GlwG78TN6OmYnxJpm3YtNzTgnXHPFBGTwFfF17yRvF46CShH8kAozO
-   3EKMj4NMWQMuDMJFSN8XWonCCTZgAVwQIcynV9KtEqBn/Kr5CxXaeGHlS
-   jHUN++6PKyaq9T07QaYmoxQR/DTrdxnANh+2KiQDSUSK/wB8fMOj81m8l
-   K20PJbuEcCeZ5m6hJCBXqtFRfllAcm2WJER8Kt0Rwg2+iElP4bbx3hqVn
-   Jgpd+vgUS5FbstRqhg9jWhxCy/PmxpkLhtlHLcOoCxXN71Ss6ufquYqgI
-   ELMcbdmPBJtqGe5q55VlojC1CtRtOKTDxwM60CDq8+vOkMUUcuzXnHG8Y
-   Q==;
-X-CSE-ConnectionGUID: qHKk8luzRe6kLkr5VtF0eQ==
-X-CSE-MsgGUID: QsDYxp4hS0CygMkoEBjZ+Q==
+  bh=z97hQDsCIiQeQvgBzT5C9odaYU+8ggDam9XAQVeIJCw=;
+  b=FBmALhjlreWJRjkCwmJjIPNhH0TCCBHO88ZTeLVENUle0VFvAoZEZciF
+   57VN17sZ8gfS51nWpLing0HmtezBjJP3ZBJRJXh+xXc2X6ipbtZQprTNd
+   lqGPniQ0F9fx0UbKWyTUuBtjoMYS+yeRaMkRxm7/VFvkyLTAJzPy9Sqjt
+   0KD5jgOkWm4DTu+jXPQMUCYcv4QllpAd9mDB1WqhS+sxwnp7aG8tXUwqQ
+   Qkihve/uJW7AgmOQqml/78qii2pvdszR3FhiQ/jWf/3hvZl/gX3lHLUxU
+   0UeIHkMnhqQgnGUPN+7J9FESZKfSOJC/Wpo+Vuqt4LXbuXs6ArxmJDQuA
+   g==;
+X-CSE-ConnectionGUID: 9ixCO2EhRZ+n7673WklqQQ==
+X-CSE-MsgGUID: zEq4CvzKSJKrzeoJY5K7iw==
 X-IronPort-AV: E=Sophos;i="6.10,159,1719871200"; 
-   d="scan'208";a="38467123"
+   d="scan'208";a="38467131"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Aug 2024 14:04:09 +0200
-X-CheckPoint: {66C334B9-20-FF00FE11-F2A862FD}
-X-MAIL-CPID: D4B7E3D9CAD9360846CFC0F2BA1424EA_5
-X-Control-Analysis: str=0001.0A782F29.66C334BA.0018,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96FFF166BA2;
-	Mon, 19 Aug 2024 14:04:04 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 19 Aug 2024 14:04:15 +0200
+X-CheckPoint: {66C334BF-A-78509F09-E532FC2E}
+X-MAIL-CPID: 57AE9C9B6F318BAE57BCC71B4C2A33DB_1
+X-Control-Analysis: str=0001.0A782F1F.66C334BF.0092,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45FC8167DA6;
+	Mon, 19 Aug 2024 14:04:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724069045; h=from:subject:date:message-id:to:cc:mime-version:
+	s=dkim; t=1724069051; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=CUhDDd4L0Nhb449dRHFlHrsNDXqMMLHgE27Tqum9MVs=;
-	b=fwNsBQEBq286wXJSmKL31AjfZoYmzEbjKxD54Z+VV8bCzuoh4eDaBvySB7jCNpARxK5y2k
-	ufSVKgDK3KticjiCViSoraQw+K5p+z8R9yAtGuSbtwP3Db525z8XMlYhzYIsYtomPBMuyv
-	on9aV3J3dCW91SR2w1OmWySMw3Fz+AqzCZ4G7X6W95+KvqofrL0HdRUStuXbfgT3Wg9uZV
-	vpuKw4biIKFbSkDLZrEWv1C/fhT7PlxUNZ2zfpoMuCEY3o3XDJjElRPB7inbL3Nng6FPaH
-	NSjdVqGc8mAspZwgQkHyoe8EtC3bsow2XYQVnYuo/pJySY2BOcWm+CFa3rduOg==
+	bh=z97hQDsCIiQeQvgBzT5C9odaYU+8ggDam9XAQVeIJCw=;
+	b=a2nTI0Q9mm6M85yY5iW8SiNCQfL0/JYcIJhvovE669dRiAZx2fkSSEjSsACrXyqZA1m+5X
+	lo7aLl1gmAnYRyf9ilaM4dfuCFYQ6jih+0EkkQtKgpeSS6h3oQ8REjn1AqDlebCFOCUHR2
+	R9IyRdh95/qzhG8XDsMBXeQFWlGb1/yCIWRsim12VfP0ixlZZBFA1ShBLe0IpjqzD6nOj/
+	67D0THtmuv6CIb7FG+XKgg6kT7VTfF7Jpol5GL4ljDOyrc/WYFUEHThsdDbN2ov4ek7bCb
+	Z+H1EvlZctci1ZjJU8KU9MRspI32OxOPHBqsrqwxtC7KzzYkQ9EGqwDDnzMq7w==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -64,10 +64,10 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Subject: [PATCH v2 06/14] arm64: dts: freescale: imx93-tqma9352-mba93xxla: add missing pad configurations
-Date: Mon, 19 Aug 2024 14:03:20 +0200
-Message-Id: <20240819120328.229622-7-alexander.stein@ew.tq-group.com>
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v2 07/14] arm64: dts: freescale: imx93-tqma9352-mba93xxla: Add ethernet aliases
+Date: Mon, 19 Aug 2024 14:03:21 +0200
+Message-Id: <20240819120328.229622-8-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240819120328.229622-1-alexander.stein@ew.tq-group.com>
 References: <20240819120328.229622-1-alexander.stein@ew.tq-group.com>
@@ -80,95 +80,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-- add missing (and currently unused) pad groups
-- assign muxed GPIO pads for X1 to gpio2 node
+They are used by systemd to rename network interfaces to predictable
+interface names, e.g. end0 & end1.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 ---
- .../freescale/imx93-tqma9352-mba93xxla.dts    | 48 +++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-index 9e4fd1eabcfb8..b3db7175cdd43 100644
+index b3db7175cdd43..643d006fbf8fd 100644
 --- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
 +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-@@ -222,6 +222,11 @@ rtc-irq-hog {
+@@ -26,6 +26,8 @@ chosen {
+ 
+ 	aliases {
+ 		eeprom0 = &eeprom0;
++		ethernet0 = &fec;
++		ethernet1 = &eqos;
+ 		rtc0 = &pcf85063;
+ 		rtc1 = &bbnsm_rtc;
  	};
- };
- 
-+&gpio2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio2>;
-+};
-+
- &gpio3 {
- 	ethphy-eqos-irq-hog {
- 		gpio-hog;
-@@ -524,6 +529,19 @@ &usdhc2 {
- };
- 
- &iomuxc {
-+	pinctrl_afe: afegrp {
-+		fsl,pins = <
-+			/* FSEL_2 | DSE X4 */
-+			MX93_PAD_GPIO_IO07__GPIO2_IO07			0x011e
-+			/* PD | FSEL_2 | DSE X4 */
-+			MX93_PAD_GPIO_IO08__GPIO2_IO08			0x051e
-+			/* HYS | PD */
-+			MX93_PAD_GPIO_IO09__GPIO2_IO09			0x1400
-+			/* HYS */
-+			MX93_PAD_GPIO_IO24__GPIO2_IO24			0x1000
-+		>;
-+	};
-+
- 	pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_2 | DSE X4 */
-@@ -606,6 +624,28 @@ MX93_PAD_GPIO_IO25__CAN2_TX			0x039e
- 		>;
- 	};
- 
-+	pinctrl_gpio2: gpio2grp {
-+		fsl,pins = <
-+			/* HYS | PD | FSEL_2 | DSE X4 */
-+			MX93_PAD_GPIO_IO16__GPIO2_IO16			0x151e
-+			MX93_PAD_GPIO_IO17__GPIO2_IO17			0x151e
-+			MX93_PAD_GPIO_IO18__GPIO2_IO18			0x151e
-+			MX93_PAD_GPIO_IO19__GPIO2_IO19			0x151e
-+			MX93_PAD_GPIO_IO20__GPIO2_IO20			0x151e
-+			MX93_PAD_GPIO_IO21__GPIO2_IO21			0x151e
-+			MX93_PAD_GPIO_IO26__GPIO2_IO26			0x151e
-+		>;
-+	};
-+
-+	pinctrl_jtag: jtaggrp {
-+		fsl,pins = <
-+			MX93_PAD_DAP_TCLK_SWCLK__JTAG_MUX_TCK		0x051e
-+			MX93_PAD_DAP_TDI__JTAG_MUX_TDI			0x1200
-+			MX93_PAD_DAP_TDO_TRACESWO__JTAG_MUX_TDO		0x031e
-+			MX93_PAD_DAP_TMS_SWDIO__JTAG_MUX_TMS		0x1200
-+		>;
-+	};
-+
- 	pinctrl_lpi2c3: lpi2c3grp {
- 		fsl,pins = <
- 			/* SION | HYS | OD | FSEL_3 | DSE X4 */
-@@ -639,6 +679,14 @@ MX93_PAD_GPIO_IO00__GPIO2_IO00			0x011e
- 		>;
- 	};
- 
-+	pinctrl_mipi_csi: mipicsigrp {
-+		fsl,pins = <
-+			MX93_PAD_CCM_CLKO3__CCMSRCGPCMIX_CLKO3		0x051e /* MCLK */
-+			MX93_PAD_GPIO_IO10__GPIO2_IO10			0x051e /* TRIGGER */
-+			MX93_PAD_GPIO_IO11__GPIO2_IO11			0x1400 /* SYNC */
-+		>;
-+	};
-+
- 	pinctrl_pcf85063: pcf85063grp {
- 		fsl,pins = <
- 			/* HYS | FSEL_0 | No DSE */
 -- 
 2.34.1
 
