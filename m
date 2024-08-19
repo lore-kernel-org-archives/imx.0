@@ -1,114 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C65145341;
-	Mon, 19 Aug 2024 19:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F2F1DB435
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 21:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724097458; cv=none; b=ZfTykfWMmCMPEvBSKDtHppn5bQ5WBQf0n/fNjN1IRFqrS26RGJKGb10qBU8iKvjdBAJTCXWfWhrHLWRs9xEi607Gzw1PrHEE4OdxL7vlGaiJR/SAUYWwoMvFTaw62FabzCsN8B9nzCpNYdBD3rRVViJMbk1tfATOxL6udf4fCMI=
+	t=1724103425; cv=none; b=Akgg4ccSV/NwUf/roj8m00NrTh841po8PpkZIBupltY1+RyTnP6b3P+wWgLV+Iy4up2UeuwG8+SuKNtUQJkjWwI9xdMqLZfj2smSDLK7OlbcJkN7W4/xxaLdA+2x3BMbE7q03ErqS7S6Lq40ZQnnYYF4Dowsuget+NJ+YVEuBTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724097458; c=relaxed/simple;
-	bh=o9c1U16L6BWRdGUxdeRkdSFg3xGErH8DzHZesBXqXVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eWJGEGDCZSmXD5eYfBaxFz5KBpGx+C5Zo4pEkj3fEf3dsbB8yHwN0qDQtJckP99eKgkW87NPJfumtM2f+gxHfGaco/tDGtEuM2tEJTqtG+ExF0jEgEBkZa697fvRXH3tiEecse3md/PkafFKlFztLXpEa6yKZKdsVx6NoPEDItI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIiuMDV2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724103425; c=relaxed/simple;
+	bh=ZhlxgUWZA7Mzdd4SO9mRlaORtWiZzjROZug9lz/RMtY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBoJek4ynpOt8ebLcDbHvxZA7hgq3XpXc57v/WUd3DYvhQNVUCWtleG5hwUfV5idTHsuY6l9dIy63YozqVHSgdO+jSLAoKBHm56o9Hpgp0+DpGC+GD5fjTXl9c/Ph5kpIx7Ea7pszTMDyE9v64Xb96b74gdHj38hOb5S0xPpFXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QAJz6upX; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIiuMDV2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C568EC4AF0E;
-	Mon, 19 Aug 2024 19:57:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724097457;
-	bh=o9c1U16L6BWRdGUxdeRkdSFg3xGErH8DzHZesBXqXVw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XIiuMDV2/Wa6u4uiogOuu97J/FOfeafsxtcmdaeHEbabivSOBAziHDmxxvCFUwfvm
-	 xxgcE9YZo4oA/d/NVlUPlRjH7iWV6mMtrrZrTPNMqqk+LP4p/DoRRFZBV/I3fQI6Fu
-	 +BIJCiSY2g0rsB2glia4pLvLh5Z0mXUuYG1vg69F3Zc9iXvnDZ20TT4n1fl3rTv06h
-	 ogXXWM3tXiYldVhQZ8/Aij/poe98QZ5nR075nIsu+tf18656BLw8TZ71uheGGBZWXB
-	 XIreMmoM4vTexAZsZoDainkHmeeEPJxO7BqdSr3DtB2cQwn3pv+06y8LOcjCd2sDYJ
-	 AJKrzy4hx0Ehg==
-Message-ID: <739ddc2f-2758-4e34-af94-55a15e63b8ad@kernel.org>
-Date: Mon, 19 Aug 2024 21:57:32 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QAJz6upX"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20230059241so12139185ad.3
+        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 14:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724103423; x=1724708223; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KbFmVdZVt1jZ2w7ablB15iTS/AnL4wG1tnrAxNIbA+0=;
+        b=QAJz6upXJd60tRGgWmdLIAHUHwe8/MAQUXWsCG16vG2NmB4smPTsMCEiY0qjDstRXR
+         PJlokCqrbgeWLZZfWlZpGJuivyVeNTFMRB9sH48CZQ1OLAVTRUszPkwu7IsHRYv7YxDl
+         FhBGsueCKWTQPScOuht6GZbpkZ96xROwtiwHQfM2kGUOs7Thp1/bUJnAC4LkQZ6uu6mT
+         td7lDBbASQvtTm9WAGhWG0b19Bza+pG4YEAP4NcAKzNt+xuldd8dLQzMTLwh9GqZFgxs
+         q9ZDnMJviB3iWMivpK5zD8mylTZuGg6ZO4IEl6PzL0S0qHDCiNwYUTP0MPvRV2+Fsc64
+         PaPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724103423; x=1724708223;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KbFmVdZVt1jZ2w7ablB15iTS/AnL4wG1tnrAxNIbA+0=;
+        b=SNsE2kvrE158oGzJJ26bdqqF8BmvaJe8gOvnx1vcBAuIB6EOp4F0IA9CibtC+ATuu6
+         DQKuHXOF/13s7ol5sVXXsP4Txq8bmuWAzQWl4LWz7i1agvpFw3eyDxibFcM9Asc4F6CX
+         N23DV40HgyLCqyXj+sByiTyvpIPBSXW42wZ6M+neUNEXDZ71MzaDqNuSu3ebB15JKORp
+         vH5Y+ftWO+IB/Fi7m9PwQGmUV5P9uJumVDGNE833bEVlwkdCPIzhJpZbRCUz9+NlvPQ0
+         GpRU5TeN0AdFslXozAyVu8L05LLiG1ejrlGp687Xyiw10EYb4upDoasbxO51A81Ccxpc
+         rpFw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9xCKUqG9Vu6bc169dtbQrEWa/hMibvR2H02uqg9yR3NA2AmFxWaTII6BymotSY9h02Pww+3hxcMVjWlYMK8OgIxhd
+X-Gm-Message-State: AOJu0Yzelgpc9wIvobKk0Zpln51/FxqPX6imPcCRw6XGVrxlsqBFbrwi
+	I854Dwc9h2kqZVB6TgbRC4jzYZbqmOy1GrDufrF8SwX+B4Y1L5zV
+X-Google-Smtp-Source: AGHT+IHItFcJqz4vPegw9f19DaR5lvqG3jsvTuiwi2TkotQDaaEWjcFXJm6BiUuo7uswJ0PWg5G0RA==
+X-Received: by 2002:a17:902:d10b:b0:1fb:6d12:2c1c with SMTP id d9443c01a7336-20203e9b06emr88206325ad.19.1724103423231;
+        Mon, 19 Aug 2024 14:37:03 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f031eb50sm66377835ad.119.2024.08.19.14.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 14:37:02 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Mon, 19 Aug 2024 14:37:00 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: hwmon/regulator: Convert ltc2978.txt
+ to yaml
+Message-ID: <e63f6e5b-09a8-400f-8425-8dac4284fc9d@roeck-us.net>
+References: <20240819190652.373222-1-Frank.Li@nxp.com>
+ <bea0d3be-6b2a-41a7-8644-44b17d3a26dc@sirena.org.uk>
+ <ZsOfeimD94+mh5gt@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-binding: memory-controllers: fsl,ifc: add
- compatible string fsl,ifc-nand
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <mwalle@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>,
- "open list:MEMORY CONTROLLER DRIVERS" <linux-kernel@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240814212958.4047882-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240814212958.4047882-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZsOfeimD94+mh5gt@lizhi-Precision-Tower-5810>
 
-On 14/08/2024 23:29, Frank Li wrote:
-> ifc can connect nor, nand and fpag. Add child node "nand@" under fsl,ifc
-> and compatible string "fsl,ifc-nand" when ifc connect to nand flash.
+On Mon, Aug 19, 2024 at 03:39:38PM -0400, Frank Li wrote:
+> On Mon, Aug 19, 2024 at 08:11:46PM +0100, Mark Brown wrote:
+> > On Mon, Aug 19, 2024 at 03:06:51PM -0400, Frank Li wrote:
+> >
+> > > change from v1 to v2
+> > > - maintainer change to Mark Brown <broonie@kernel.org> (regulator maintainer)
+> >
+> > I also shouldn't be the maintainer for this specific binding, it should
+> > be someone with knowledge of the devices.  This is a requirement imposed
+> > by the DT people, I'd be happy to just not list a specific maintainer.
 > 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/memory-controller@1530000/nand@1,0:
-> 	failed to match any schema with compatible: ['fsl,ifc-nand']
+> I remember 'maintainer' is required property for yaml.
+> Look like Guenter Roeck contribute many code for this driver.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change from v1 to v2
-> - add address-cells and size-cells
 
-... and since you are resending, subject prefix is dt-bindings.
+Yes, but I do not maintain code or documentation outside the hardware
+monitoring or watchdog subsystems. You want this file attached to the
+regulator subsystem, so you'll have to find a maintainer from that
+subsystem or sign up to maintain it yourself.
 
-Best regards,
-Krzysztof
-
+Guenter
