@@ -1,176 +1,142 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E24158540
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 23:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C9F1E3CB7
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 23:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724109507; cv=none; b=YWbSSIIqQaOqfTm0sCcsMoQDJblGCpt0SE5dehtzB8dQi7sGndNdlI6aPxKjAmSYceqN75Eoii6AQcLIJEQr2gPqj6ASWwP5nYKQSHGLtNlk7fYXDCa0IGsKY05LjCa6myp7c3NQJ0+SV2b0VJEw3vIjcHTGR4iUs9PuIyuqgLI=
+	t=1724111990; cv=none; b=V+m/qsXbrf4tyZiPWSPSs8VI5gjz30HLt6teuy2dkKuW8/YDgqlwWZ3BZ1VGLidB5LgQmBbO9f+r/r1xB5KoCgEBXe4xBs7HsMOlt3ck2Fqxd08s7ZADDti5fqegqAaQ8R1S3XW1o2JqKsz4JiYqlonHXe1nBE1lMfZpXOcSUDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724109507; c=relaxed/simple;
-	bh=nDkB+Ww4MYVoZoirlDdkfzPsZQSkzci2SQlq2oXxB/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ahJgWxebWa/vrVbIiW8dbXhe2ZS4edU70qGJpDxUnAN0ClXkXoiTbCyclYgBwChJqZbloRG7GjNxwE6N4yOCOGET8nVWKEXaf02kzhfpyvDBSkEJLmGfKAAHywND5nEo3/MdExDih4BxAa2K8nsq65uJ6faJzbjcFVxu1HC2nI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eR9rmUtt; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724111990; c=relaxed/simple;
+	bh=bYGkLaGQIKKpIurG7KT++3ABazri0PYOu/DJ7PB8sgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TD+uB2Xkqdyv8F++hyWSbMzFtYf79bX6Woj1GlgdzRpYLuHFEbX0/gvSxM0Nzrt4lkr2DBXYdT40EF9HlVnIOo1vfuh2oY5cl6kROKtdiNe0PEh8PmkeRgNbF0ywAEWyC/Mk4FUsV9FFdvnDtF0CBi6H8+V5+YptS29yvdvIuRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IvpNz685; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eR9rmUtt"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6bf6606363fso28628706d6.3
-        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 16:18:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IvpNz685"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2d3c05dc63eso3603847a91.0
+        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 16:59:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724109504; x=1724714304; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZiFnHmrt0EWkf3S/OpgimW69Fg3R9RUUTwktkVeZhYQ=;
-        b=eR9rmUtterEGn0dxfdh+v+w3wBoBpEEKSBpScXBVpQMDXJOHLTPC+1PyG0gkcaps+Z
-         UJigfJTME0aTFsyeIzZ7NvuorcanQp3PHevH3+SJQhMYBhfgJyTQoYkNHeNuf7pw2MKl
-         0Wz42+I9+NT5daalmldSSCEI27rTlnpIrm+t9QgQhKKig66WnF0P3RnmviyckAN6UUer
-         jyKMOX/BRHaDgFJp82C5qT+epx8FFDjGrkQVQUXO0RVJG0EfgpP91FcHYxlIckt9HkuK
-         it7iyUP4L2XzJvuF27BFUFIhO7umsx5TvIKXs3mHFqJ9PeUrsZ0pamsLNT8kvlT2UfPf
-         P6DQ==
+        d=chromium.org; s=google; t=1724111987; x=1724716787; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WjABo7s3VKOBABg1ESnYjtcKOR4+Ado7alcRhqBh7E8=;
+        b=IvpNz6856Aj04v83MI9dcnUXaiu9SdhxjzWqEN4XlPWIfGZLOipFSzgSU8KwkCyaiT
+         L6TbK0WQhAUjnnNwCC/cH+QvgEiUEie5MsquOVfKEfXwMX+HKuaT1UnixVe/KjB7zWy5
+         W+Pa+93gi48QA+M7zzPjYCQPPWr0CYNTNAasA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724109504; x=1724714304;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZiFnHmrt0EWkf3S/OpgimW69Fg3R9RUUTwktkVeZhYQ=;
-        b=Y3jsmy5Wj+KzDtvdsCULt1dFC16UDUp8QqRe+RWPhwWq/cXhk15oaRtEhwbwsJh3I6
-         vrdhmtSNpSw+78mDk+rPjELtJ7wipINjgCiHr5GhHWWNB608HPUj4kZ3pIEaRAL7m7OE
-         ap106prsbuMCBayC0aIFmcM6UjSQDZakaYBWwl+rMUuGSi1Mk2VPn17bAz0Z0L96S8LL
-         KL+HDCpqaG37UZ6M8kL0kg2JvD4aQYfSHx8T5Qt/A+W5yOGGrNT2VU8T9yo23CEGsNF3
-         3SOCahn0Actp4X4xwXYPEjoYnASuWpAvjrXMaQ53j6r3j+qHpS3z+3ewD9fz+3GEovPv
-         vflw==
-X-Forwarded-Encrypted: i=1; AJvYcCVozl1gwNMuvyC4MRJ3HUzqeDbvHb1D0q50UgvHqkmtxnIHCkPEn3hyFfHnYH70c5MQKvM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxsNwTgLOVuyqh0zJ0JlIQ44NOCiqAYjyGHJ/bHQqhIhuNStFMk
-	r3rbJ+jyYyEY+i+1iajdcbKZ2b3QZn+Z7fAyu3YbN8ML5kJmWy0+
-X-Google-Smtp-Source: AGHT+IHywoFpr673NReZLMMHP5xFVSycDI4yD/ui5qJSteVY+UBAFV3a3GqYKs/VWSTsB49RwMrAiw==
-X-Received: by 2002:a05:6214:3c9c:b0:6b7:a6eb:c343 with SMTP id 6a1803df08f44-6bf7ce9648fmr134090106d6.51.1724109503783;
-        Mon, 19 Aug 2024 16:18:23 -0700 (PDT)
-Received: from aford-System-Version.lan ([2601:447:d002:5be:ea5e:cd26:a652:264d])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fef0267sm47063786d6.113.2024.08.19.16.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 16:18:23 -0700 (PDT)
-From: Adam Ford <aford173@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com,
-	Adam Ford <aford173@gmail.com>,
+        d=1e100.net; s=20230601; t=1724111987; x=1724716787;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WjABo7s3VKOBABg1ESnYjtcKOR4+Ado7alcRhqBh7E8=;
+        b=NFZcvJY6Lpi/qldtNi0QISv5xIn1GRRe6YHMiAj2eznTlmcBRbJHafcOuhcUeB3V6b
+         if0GCRv6sObujXMG5VhV8OuuAs4sIDQOa9YrlgZoBv0827ZYTW4pr/u4d9g3zIGMaIyc
+         yu/snJ2TR/mMlq7UjqdYDMQwHeDzoF20YM6dDU+t67QO/bSB83p+lb2Wh1PuhYOYASxt
+         ys13EiGMiydjmsEge8JrZSvBafct8Ufw8ZAqqqqnLeWt2alEKJ5iJ/BO9AL5qYpWLjEq
+         Ud+o0r2Iomoji2iJGmj9FT86KK/PDCkiq08oMOn2XW/9TKQxMHjjliod1jkYd9lscSik
+         mNwg==
+X-Forwarded-Encrypted: i=1; AJvYcCV8WW7VABB8MhfakeLcLu5O+B10d53H1c8D9IQOPvrf9QFw5odbuAFJexrTFYy1DMoeCtA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YylmwIBik1qVEsnl4GxZBw7P51jiS9yyJ9ar2HBYIOVtwly03+1
+	UhRYx0Z0OLM9LoLk8g+jgdFMh1zLebrBLNs6Fi1o3VtGB4Kvn65YigR9jKzZPA==
+X-Google-Smtp-Source: AGHT+IFSEcFmKUg3XiTqxX1M+k4JhQXhtjsl3FmnrLps51L58VtAENMFX3m5ZUuTFgjG76CV4pxDyA==
+X-Received: by 2002:a17:90a:4d82:b0:2d1:bf48:e767 with SMTP id 98e67ed59e1d1-2d5c0ea8a13mr723064a91.29.1724111987241;
+        Mon, 19 Aug 2024 16:59:47 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:917:3d68:a539:4ba4])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2d3c8839392sm9451229a91.56.2024.08.19.16.59.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 16:59:46 -0700 (PDT)
+Date: Mon, 19 Aug 2024 16:59:44 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V2] arm64: dts: imx8mp-beacon: Enable DW HDMI Bridge
-Date: Mon, 19 Aug 2024 18:18:14 -0500
-Message-ID: <20240819231814.120053-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	"open list:NETWORKING DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: wireless: convert
+ marvel-8xxx.txt to yaml format
+Message-ID: <ZsPccHaCMRgbNk4L@google.com>
+References: <20240816171203.143486-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240816171203.143486-1-Frank.Li@nxp.com>
 
-There is a second HDMI connector on the baseboard which is routed
-to the DW HDMI bridge through the PVI to the LCDIF3 and requires the
-HDMI PHY to be enabled too.
+Hi Frank,
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
----
-V2:  Fix Missing reg on hdmi_tx port@1 node.
+On Fri, Aug 16, 2024 at 01:12:01PM -0400, Frank Li wrote:
+> Convert binding doc marvel-8xxx.txt to yaml format.
+> Additional change:
+> - Remove marvell,caldata_00_txpwrlimit_2g_cfg_set in example.
+> - Remove mmc related property in example.
+> - Add wakeup-source property.
+> - Remove vmmc-supply and mmc-pwrseq.
+> 
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: /soc@0/bus@30800000/mmc@30b40000/wifi@1:
+> failed to match any schema with compatible: ['marvell,sd8997']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - Add Brian Norris <briannorris@chromium.org as maintainer
+> - Remove vmmc-supply and mmc-pwrseq
+> - Add wakeup-source
+> - rename to marvell,sd8787.yaml by using one compatible string, suggestted
+> by conor dooley at other binding doc convert review
+> ---
+>  .../bindings/net/wireless/marvell,sd8787.yaml | 93 +++++++++++++++++++
+>  .../bindings/net/wireless/marvell-8xxx.txt    | 70 --------------
+>  2 files changed, 93 insertions(+), 70 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> new file mode 100644
+> index 0000000000000..c6647672b7b1e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> @@ -0,0 +1,93 @@
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-index cc9b81d46188..31c33acb560c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dts
-@@ -105,6 +105,17 @@ hdmi_con: endpoint {
- 		};
- 	};
- 
-+	hdmi-connector {
-+		compatible = "hdmi-connector";
-+		type = "a";
-+
-+		port {
-+			hdmi_connector: endpoint {
-+				remote-endpoint = <&hdmi_to_connector>;
-+			};
-+		};
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 		pinctrl-names = "default";
-@@ -282,6 +293,26 @@ usb-mux-hog {
- 	};
- };
- 
-+&hdmi_tx {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hdmi>;
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			reg = <1>;
-+
-+			hdmi_to_connector:endpoint {
-+				remote-endpoint = <&hdmi_connector>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
- &i2c2 {
- 	clock-frequency = <384000>;
- 	pinctrl-names = "default";
-@@ -344,6 +375,10 @@ pcieclk: clock-generator@68 {
- 	};
- };
- 
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
- &i2c3 {
- 	/* Connected to USB Hub */
- 	usb-typec@52 {
-@@ -464,6 +499,10 @@ &lcdif1 {
- 	status = "okay";
- };
- 
-+&lcdif3 {
-+	status = "okay";
-+};
-+
- &micfil {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pdm>;
-@@ -646,6 +685,15 @@ MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19	0x140
- 		>;
- 	};
- 
-+	pinctrl_hdmi: hdmigrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x400001c2
-+			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x400001c2
-+			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010
-+			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x40000010
-+		>;
-+	};
-+
- 	pinctrl_i2c2: i2c2grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL	0x400001c2
--- 
-2.43.0
+> +  marvell,caldata-txpwrlimit-5g-sub0:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description: Calibration data for sub-band 0 in the 5GHz band..
 
+You have an extra period in this line.
+
+> +  marvell,caldata-txpwrlimit-5g-sub1:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description: Calibration data for sub-band 1 in the 5GHz band..
+
+Same.
+
+> +    maxItems: 688
+> +
+> +  marvell,caldata-txpwrlimit-5g-sub2:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description: Calibration data for sub-band 2 in the 5GHz band..
+
+Same.
+
+Otherwise, this looks good to me, so feel free to carry my:
+
+Acked-by: Brian Norris <briannorris@chromium.org>
+
+(Sometimes Kalle will make trivial fixes like this when applying. I'm
+not sure if that means you should send v3 anyway, or see if he'll apply
+this on his own soon enough.)
+
+Brian
