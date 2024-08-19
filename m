@@ -1,109 +1,78 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CD715B54F
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 08:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEEB14BF8A;
+	Mon, 19 Aug 2024 08:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724057013; cv=none; b=lPOKQBqgm02a4xtIGEZ0FTvPhdk+e4iTtsV2poxdttGBPNr6BXnbf+jyhm65N8xoKh7qAy0+a9oG+AAsXyKHbArjlXw2wfCuD2hJe+FNKIaoxN0TyTSONTnNHExPtVUn9aY9UqubFvVAW3ra4FoLlCBOetfE057pVfwl5RAxyH4=
+	t=1724057425; cv=none; b=FyTNy0PuRwtP+dOePmzqrd8Chk7WRjsT20WVE8TxYFx0680ZWAMbmfsxEXkzv1zZDsYaiVuAb3bvvvp7XkJf5u072LdFi2HKh/uzNMcRyYP7udMd2JjSHZz4eA/isEO91vp6N2ux1WWyFkH+hpmYwBh+dgPB+VvWhWNpW+by5bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724057013; c=relaxed/simple;
-	bh=K3LOxVsi2JTaVAbOF1S0jfFxhM0eM9gdbjcCnbEgaTw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YImHDN9S6/wMdNNOkn82avY2482lt4KnQeWlmJDTCm/EuzY6+ntGBHA54W1lbI4Sk1tkydXFbpIcSn/VXHoXgXhg0MAMVRRj85BHzF00O1vHjzxi8lXRsewqoPobw51+DgXiVJnu8khuKWgA6+8hxH1JXVc2qtXQmdtkCqkfVb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=sTU4HU5o; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1724057425; c=relaxed/simple;
+	bh=OCRaPalAGsDxHnsThodnFYpon6u+zr5gMnTg0RBz0iU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=N37omILYWh9g6+pnV86ILH4Xsh1SZRXeohrOqto67YqSA6TvOb7e7NP/gDAWaX7O5iLkFLgL4+50K/1S2Y3Rs45fmghpM4AW/XBiGgg9/c+5V2/Q5k/KvCS9inyQrFalG1ZY1+gmvnpGHFQxXVwcYHAMPrnWKldSyJ27fcWoRn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PF4C8kI0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="sTU4HU5o"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1724057010; x=1726649010;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=K3LOxVsi2JTaVAbOF1S0jfFxhM0eM9gdbjcCnbEgaTw=;
-	b=sTU4HU5oAatwAyRIztmNUz1ikjw2SmScuHIzrk2Xujn97YzDlRn9HmPUgAesZKic
-	YMOO8CBXa4oXJvadTRWyyeGdor3nzNGM3oy6VXbkrrIzr2cGEHUk02G2FJ6hIpmD
-	Jc+1nBKE5sWtyiX3U58w8cqgpe69QkBVafCg+iT73b0=;
-X-AuditID: ac14000a-03251700000021bc-b3-66c305b27500
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 8F.37.08636.2B503C66; Mon, 19 Aug 2024 10:43:30 +0200 (CEST)
-Received: from Berlix.phytec.de (172.25.0.12) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Mon, 19 Aug
- 2024 10:43:30 +0200
-Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
- berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
- Mon, 19 Aug 2024 10:43:30 +0200
-From: Yannic Moog <Y.Moog@phytec.de>
-To: "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"robh@kernel.org" <robh@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, Teresa Remmet
-	<T.Remmet@phytec.de>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, Benjamin Hahn <B.Hahn@phytec.de>, "Yashwanth
- Varakala" <Y.Varakala@phytec.de>, PHYTEC Upstream <upstream@lists.phytec.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 6/6] arm64: dts: imx8mp-phyboard-pollux: Add usb3_phy1
- regulator reference
-Thread-Topic: [PATCH 6/6] arm64: dts: imx8mp-phyboard-pollux: Add usb3_phy1
- regulator reference
-Thread-Index: AQHa7iwRevnQ+H5vB0ynpV1fiXCTz7IuKduA
-Date: Mon, 19 Aug 2024 08:43:30 +0000
-Message-ID: <06fc6f28714b08319226178152e1c900b170d3d2.camel@phytec.de>
-References: <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-0-e2500950c632@phytec.de>
-	 <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-6-e2500950c632@phytec.de>
-In-Reply-To: <20240814-b4-wip-t-remmet-phytec-de-bspimx8m-3392_upstream-v1-6-e2500950c632@phytec.de>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PF4C8kI0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AABC32782;
+	Mon, 19 Aug 2024 08:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724057425;
+	bh=OCRaPalAGsDxHnsThodnFYpon6u+zr5gMnTg0RBz0iU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=PF4C8kI0co60PfDbF+RsNfA1uS7Y4OTN9qiSz/Cuv/mVcrnF5rc5aM5kcgXti4IAr
+	 oPZ91DiecIhisuFsQ3dItPlsTC8LqBbMLDwZ52iLSCb8JJLyA9iZMadmmIaazvOSsF
+	 hErhKQk7hnWuBNEDaB9xluI+D6IsdsiYus4b8nYdt3H8hdGuVB68qXxDlOYbVg3Pm1
+	 6hy2fBNtb0a1kXaa8k3jIvGDu7yPNLGCl7qDMgxQ7VVVEErHalSXE1ZZYy7ZxxxFqY
+	 hsT+AKbkpyu7xwLxvivZCsP+q3t/h4m0aEGzrghOqxGDA2NX0mnqVwCzIlVExBRsB1
+	 C+rOmk/yzok4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD733823097;
+	Mon, 19 Aug 2024 08:50:25 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <F7CF9AF4A265D047A18DF27D3C5881BB@phytec.de>
-Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrKIsWRmVeSWpSXmKPExsWyRpKBR3cT6+E0g5unxCzW7D3HZDH/yDlW
-	i4dX/S1m3mtls1g1dSeLxctZ99gsNj2+xmpxedccNov/e3awW/zdvonF4sUWcYvud+oOPB47
-	Z91l99i0qpPNY/OSeo8Xm2cyevR3t7B69P818Pi8SS6APYrLJiU1J7MstUjfLoEro3fiJaaC
-	SdwVF39/ZW5gfMPVxcjBISFgItHz07iLkYtDSGAJk8S8ydNZuxg5gZz7jBI/TrlCJDYwSpz8
-	toARJMEmoCJxcsYlRpCEiMBLJonFU7+DOcwCf5kknv76DlYlLJAgsfb+WjYQW0QgUWLC8ofM
-	ELaRRNOTbrAaFgFViXkrN7CD2LwCbhLzdn5jh1i3j1Hib+sLJpAEp0CKROvNo2A3MQrISmzY
-	cB5sELOAuMSmZ9/B4hICAhJL9kDEJQREJV4+/gcVl5c4cWsaE8ifzAKaEut36UO0Wkj8fzGL
-	HcJWlJjS/RDqBkGJkzOfsExgFJ+FZMMshO5ZSLpnIemehaR7ASPrKkah3Mzk7NSizGy9gozK
-	ktRkvZTUTYygqBdh4NrB2DfH4xAjEwfjIUYJDmYlEd7ulwfThHhTEiurUovy44tKc1KLDzFK
-	c7AoifOu7ghOFRJITyxJzU5NLUgtgskycXBKNTAKOSUVC7B/1Yy9wn3r7lzh7Y+2VHOsS1jV
-	wC5rtv39pRRmtbc664T8/v241+nuJPoqQHbN8wkKrm939m//n5p6zv7UmfOZ0dKTZeZPPG7C
-	5nXpe7a9/9Ivuy78veQykY+BJSH2w9vbU1L0OKdauP5XWycZ9zYvl+HvJbllFtn7O256Wm3g
-	EK9TYinOSDTUYi4qTgQAQQyrpOgCAAA=
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/1] dt-binding: ptp: fsl,ptp: add pci1957,ee02 compatible
+ string for fsl,enetc-ptp
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172405742451.466743.15434541397168706407.git-patchwork-notify@kernel.org>
+Date: Mon, 19 Aug 2024 08:50:24 +0000
+References: <20240814204619.4045222-1-Frank.Li@nxp.com>
+In-Reply-To: <20240814204619.4045222-1-Frank.Li@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: yangbo.lu@nxp.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, richardcochran@gmail.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-T24gV2VkLCAyMDI0LTA4LTE0IGF0IDExOjI2ICswMjAwLCBUZXJlc2EgUmVtbWV0IHdyb3RlOg0K
-PiBGcm9tOiBZYXNod2FudGggVmFyYWthbGEgPHkudmFyYWthbGFAcGh5dGVjLmRlPg0KPiANCj4g
-QWRkIFZDQ181Vl9TVyByZWd1bGF0b3IgcmVmZXJlbmNlIHRvIHRoZSB1c2IxIHBoeSBub2RlIHRv
-IHJlZmxlY3QgdGhlDQo+IHNjaGVtYXRpYy4gVGhpcyBhbHNvIHNpbGVuY2VzIHRoZSBmYWxsYmFj
-ayBkdW1teSByZWd1bGF0b3Igd2FybmluZy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFlhc2h3YW50
-aCBWYXJha2FsYSA8eS52YXJha2FsYUBwaHl0ZWMuZGU+DQo+IFNpZ25lZC1vZmYtYnk6IFRlcmVz
-YSBSZW1tZXQgPHQucmVtbWV0QHBoeXRlYy5kZT4NClJldmlld2VkLWJ5OiBZYW5uaWMgTW9vZyA8
-eS5tb29nQHBoeXRlYy5kZT4NCg0KPiAtLS0NCj4gwqBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVz
-Y2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9sbHV4LXJkay5kdHMgfCAxICsNCj4gwqAxIGZpbGUgY2hh
-bmdlZCwgMSBpbnNlcnRpb24oKykNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3Qv
-ZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9sbHV4LXJkay5kdHMNCj4gYi9hcmNoL2Fy
-bTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9sbHV4LXJkay5kdHMNCj4g
-aW5kZXggNjJmMTgxOWJjMWE0Li42ZTgxODcwZTE3N2MgMTAwNjQ0DQo+IC0tLSBhL2FyY2gvYXJt
-NjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0cw0KPiAr
-KysgYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9sbHV4
-LXJkay5kdHMNCj4gQEAgLTI2MCw2ICsyNjAsNyBAQCAmdXNiX2R3YzNfMCB7DQo+IMKgDQo+IMKg
-LyogVVNCMiA0LXBvcnQgVVNCMy4wIEhVQiAqLw0KPiDCoCZ1c2IzX3BoeTEgew0KPiArCXZidXMt
-c3VwcGx5ID0gPCZyZWdfdmNjXzV2X3N3PjsNCj4gwqAJc3RhdHVzID0gIm9rYXkiOw0KPiDCoH07
-DQo+IMKgDQo+IA0KDQo=
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Wed, 14 Aug 2024 16:46:18 -0400 you wrote:
+> fsl,enetc-ptp is embedded pcie device. Add compatible string pci1957,ee02.
+> 
+> Fix warning:
+> arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-kbox-a-230-ls.dtb: ethernet@0,4:
+> 	compatible:0: 'pci1957,ee02' is not one of ['fsl,etsec-ptp', 'fsl,fman-ptp-timer', 'fsl,dpaa2-ptp', 'fsl,enetc-ptp']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [1/1] dt-binding: ptp: fsl,ptp: add pci1957,ee02 compatible string for fsl,enetc-ptp
+    https://git.kernel.org/netdev/net-next/c/1bf8e07c382b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
