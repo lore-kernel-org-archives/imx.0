@@ -1,110 +1,149 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71211607B0
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 11:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837C2165EEF
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 11:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724065784; cv=none; b=CKM1C+sQcgbL1nT6OqdnjRUmh2qBG/EIpjWMIMumfAT5JeURd5yhzIpdbsFJ3iXQ/vwsEyLZlyknImV3Bg7eLdC+8d6AN+OQHQAt2JNtAJlZ63j8DAHayTNcph6gT2JR81eb+ekWTRKuoeFViGHHzR8v2kudm5vF3we3D61Ul48=
+	t=1724067309; cv=none; b=o4PozpjZwfh4AFiGcaqRqhZHsh5+EpLry7eRlpRH1ykDlAfn2Cdt6wC8rjua8o3KbxPAKBKvKo5+R01P3NVoi6SudSoA0ezpmyoxCvfsqXOeaiaKqhYh8W3bPQ2BwVFDLWd8z6Ra4+oIZbbLp92Smnqh2UHocxSAHb9X41ziwS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724065784; c=relaxed/simple;
-	bh=JYclb++11GGwaFgysyk6lclOhvMATGuF1XxXmAbUVtY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IrcZYUXy6VxmeDW7tPjYtOdgih3SulDvaHkB3xWXMxnawqAwnXXZwjhReHnLWQNpN2wrzix1TWLGgqx0GSX6mI6QcQa13W5XaMrWQ0axlJR+3uiHa/AaUdwtFt5F9ApphCUwLhQHzNTvuTD6wfPNcQhsyYkU8Aw19Mb3F9WXI/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=PhfnTC5t; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1724067309; c=relaxed/simple;
+	bh=FZ88kgAbDiM+8rWx3JLKtnx3vWamNJnTiO6nxHD3QN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tovxhe/Mw4W8iIND+jAfKSOHoJGYa29XdjgGkSxPv794Cj/x2TZqLEqJxF1pvpbPYzx2g5KsmUJ9mYrUshQ/xfSHxwJjIg/KExJwiSNFV45xTAeQW1n0hqz/4ow+qmeqc5M2vQiOSiDDu6pfk24O+3QnLL4vGPc+ITEKMBjWA84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=jH3evXTk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DhE9D1D8 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="PhfnTC5t"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1724065780; x=1726657780;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JYclb++11GGwaFgysyk6lclOhvMATGuF1XxXmAbUVtY=;
-	b=PhfnTC5t+N649ZIeXesUMa8LUcc/ysXIHb1hR6uz2QOypaBE6rdHb9hxNxvP+hK7
-	GKAMr//GVKo7vwJKyp24HZRGjR+wakRhBRbpeMFQZmQ7aMZlfkHWw/Xedls+w4q2
-	28WHSkZaBVSggO7fXSJ+aeaN52zhl8TiOaoy4rMru68=;
-X-AuditID: ac14000a-03e52700000021bc-75-66c327f4daf2
-Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 79.48.08636.4F723C66; Mon, 19 Aug 2024 13:09:40 +0200 (CEST)
-Received: from Berlix.phytec.de (172.25.0.12) by Florix.phytec.de
- (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Mon, 19 Aug
- 2024 13:09:40 +0200
-Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
- berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
- Mon, 19 Aug 2024 13:09:40 +0200
-From: Teresa Remmet <T.Remmet@phytec.de>
-To: Yannic Moog <Y.Moog@phytec.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "robh@kernel.org"
-	<robh@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>
-CC: PHYTEC Upstream <upstream@lists.phytec.de>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [Upstream] [PATCH 3/3] arm64: dts: imx8mm-phygate-tauri-l: add
- rtc aux-voltage-chargeable
-Thread-Topic: [Upstream] [PATCH 3/3] arm64: dts: imx8mm-phygate-tauri-l: add
- rtc aux-voltage-chargeable
-Thread-Index: AQHa7iwq47yBAzB/NkevrL/ryHqTg7IuUrIA
-Date: Mon, 19 Aug 2024 11:09:40 +0000
-Message-ID: <22a46f85debf6ba52f14f6f89023a4eca9e595e8.camel@phytec.de>
-References: <20240814-b4-phytec_imx8m_rtc_updates-v1-0-10f1afc1b3ad@phytec.de>
-	 <20240814-b4-phytec_imx8m_rtc_updates-v1-3-10f1afc1b3ad@phytec.de>
-In-Reply-To: <20240814-b4-phytec_imx8m_rtc_updates-v1-3-10f1afc1b3ad@phytec.de>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C4803DBC4E99094E897A0682EBC88414@phytec.de>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="jH3evXTk";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DhE9D1D8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1724067306; x=1755603306;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=N15B/fpX6Wf+7yRZPzvZUR8uMg/qc8/OqC4E1tAFR00=;
+  b=jH3evXTkh6XeTT73g/uR7bBUExFSeNNJADgSF+yXjZFTPxvNHl/od6is
+   X68wZEgzrmrnVKQljIPGWOZ88FIMhmEWAOoD1K6pfuoJNe+bbw4GWD2UL
+   b0bt5ytEmBzV2rMkVAVOK7qYL+jVF6akeHpgeruy/tbqYFaQniUKV1xui
+   ZsdZ2gxD1437xbHVyWT+1OuSTjvfMOngI/+X71T4jfe8HZgP9rrTo/sow
+   hh9pqOT4msQ1AI0DGQ+dq8SrKqAczXmZGp/qlmBoTJI9NjgVpG3nOrsFU
+   /w7h2SP6Yy7+jkycr8y7IRTCirXH6nVCZ/dc9uy0lJ1j/gZnVAmbc0JhA
+   w==;
+X-CSE-ConnectionGUID: faJc6t2ST8evPLTvnb7ZnA==
+X-CSE-MsgGUID: 8BZy0lFMQPuHx7v62NpeGA==
+X-IronPort-AV: E=Sophos;i="6.10,159,1719871200"; 
+   d="scan'208";a="38466299"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 19 Aug 2024 13:35:04 +0200
+X-CheckPoint: {66C32DE8-B-E9ED6009-C4B0BEC8}
+X-MAIL-CPID: 436127ADD3E6AA614B224FC9CA86742D_3
+X-Control-Analysis: str=0001.0A782F26.66C32DE8.00EC,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F37216141D;
+	Mon, 19 Aug 2024 13:34:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1724067299;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=N15B/fpX6Wf+7yRZPzvZUR8uMg/qc8/OqC4E1tAFR00=;
+	b=DhE9D1D86sGzuRlnxoWc/CkbXtKJg/quYOSybQDXoNb+1ImLjY3dRftM/jvjKQf/sDbPDn
+	upnezyp4nwym3XJqZ+Wz1N+cm+1jGSJDUffMG1ZcO3csVno9mWsNc0nK3VO731x8IZSJ3r
+	Ehw6juC4OqHuurHQHzx5/ZCgGpE2/aGKpLX0TNyuzMjhA6Hk+IYCt8mTNXlFOF6IJijX/4
+	JbUkZ122zTgx/v4oaSpoEi1kh0MdyfcDIPFSFydoaESNvigoSbZKdjE3KYjd6lK/RY/xip
+	uTbJUMrFDYZrb05ssp14HWlXuPvefUi8AefGAeiXM4TCjfqVTl40VFirND5Qcw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 06/14] arm64: dts: freescale: imx93-tqma9352-mba93xxla: improve pad configuration
+Date: Mon, 19 Aug 2024 13:34:58 +0200
+Message-ID: <2197430.irdbgypaU6@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <PAXPR04MB84593B8DF03B5CFA7CA2D29F88B22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20240724125901.1391698-1-alexander.stein@ew.tq-group.com> <20240724125901.1391698-7-alexander.stein@ew.tq-group.com> <PAXPR04MB84593B8DF03B5CFA7CA2D29F88B22@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrOIsWRmVeSWpSXmKPExsWyRpKBV/eL+uE0g//7TCzW7D3HZDH/yDlW
-	i4dX/S1m3mtls1g1dSeLxctZ99gsNj2+xmpxedccNov/e3awW/zdvonF4sUWcYvud+oOPB47
-	Z91l99i0qpPNY/OSeo8Xm2cyevR3t7B69P818Pi8SS6APYrLJiU1J7MstUjfLoErY8KhfawF
-	23gqJi3cwtbA2MPTxcjJISFgIjH9w0rWLkYuDiGBJUwSs1/sZodw7jNKzN29ihHC2cAo0d19
-	nB2khU1AQ+LliW4mkISIwFMmif9tjWAtzAJrmCR+z77JBlIlLJAh8XjJOSYQW0QgU+Jc5wMW
-	CNtIYtHf04wgNouAqsTG4zfA6nkF3CQWP7nHArFuCqNEb+dVsAZOAX+JI4f3gdmMArISGzac
-	ZwaxmQXEJTY9+84K8YWAxJI9EHEJAVGJl4//QcXlJU7cmgZ0BAdQvabE+l36EK0WEvvn72eH
-	sBUlpnQ/ZIe4QVDi5MwnLBMYxWch2TALoXsWku5ZSLpnIelewMi6ilEoNzM5O7UoM1uvIKOy
-	JDVZLyV1EyMo8kUYuHYw9s3xOMTIxMF4iFGCg1lJhLf75cE0Id6UxMqq1KL8+KLSnNTiQ4zS
-	HCxK4ryrO4JThQTSE0tSs1NTC1KLYLJMHJxSDYwiIal6SktfnoyP+/BNVmt1evKSdXt2fvPT
-	TM9+cLbkYHr6s+cGl1mD5nt7HwpIy/C86e344o2v5YWa42kZEcH8mSKP3jA/llJ4qZbelFzQ
-	lLSE5d1OD5n4a6+vWh3c83HHLOUU7XcvFDVepry8c4/nyL3mZH9z3aXnT1Ssvfe4SaAyKO/j
-	1x9KLMUZiYZazEXFiQBa2iXE6gIAAA==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-QW0gTWl0dHdvY2gsIGRlbSAxNC4wOC4yMDI0IHVtIDExOjI2ICswMjAwIHNjaHJpZWIgWWFubmlj
-IE1vb2c6DQo+IHBoeWdhdGUtdGF1cmktbCBoYXMgYSBjaGFyZ2FibGUgY2FwYWNpdG9yIHBvcHVs
-YXRlZCwgcnRjIHN1cHBvcnRzDQo+IGNoYXJnaW5nIGl0LiBBZGQgcHJvcGVydHkgaW5kaWNhdGlu
-ZyB0aGlzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogWWFubmljIE1vb2cgPHkubW9vZ0BwaHl0ZWMu
-ZGU+DQoNClJldmlld2VkLWJ5OiBUZXJlc2EgUmVtbWV0IDx0LnJlbW1ldEBwaHl0ZWMuZGU+DQoN
-Cj4gLS0tDQo+IMKgYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLXBoeWdhdGUt
-dGF1cmktbC5kdHMgfCAxICsNCj4gwqAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykNCj4g
-DQo+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0tcGh5
-Z2F0ZS10YXVyaS1sLmR0cw0KPiBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDht
-bS1waHlnYXRlLXRhdXJpLWwuZHRzDQo+IGluZGV4IGJhNmNlM2M3ZjQ3Ny4uYzM4MzViMmQ4NjBh
-IDEwMDY0NA0KPiAtLS0gYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bW0tcGh5
-Z2F0ZS10YXVyaS1sLmR0cw0KPiArKysgYi9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9p
-bXg4bW0tcGh5Z2F0ZS10YXVyaS1sLmR0cw0KPiBAQCAtMjE1LDYgKzIxNSw3IEBAICZwd200IHsN
-Cj4gwqANCj4gwqAvKiBSVEMgKi8NCj4gwqAmcnYzMDI4IHsNCj4gK8KgwqDCoMKgwqDCoMKgYXV4
-LXZvbHRhZ2UtY2hhcmdlYWJsZSA9IDwxPjsNCj4gwqDCoMKgwqDCoMKgwqDCoHRyaWNrbGUtcmVz
-aXN0b3Itb2htcyA9IDwzMDAwPjsNCj4gwqB9Ow0KPiDCoA0KPiANCg0KLS0gDQpQSFlURUMgTWVz
-c3RlY2huaWsgR21iSCB8IEJhcmNlbG9uYS1BbGxlZSAxIHwgNTUxMjkgTWFpbnosIEdlcm1hbnkN
-Cg0KR2VzY2jDpGZ0c2bDvGhyZXI6IERpcGwuLUluZy4gTWljaGFlbCBNaXRlemtpLCBEaXBsLi1J
-bmcuIEJvZG8gSHViZXIsDQpEaXBsLi1JbmcuIChGSCkgTWFya3VzIExpY2tlcyB8IEhhbmRlbHNy
-ZWdpc3RlciBNYWlueiBIUkIgNDY1NiB8DQpGaW5hbnphbXQgTWFpbnogfCBTdC5Oci4gMjY2NTAw
-NjA4LCBERSAxNDkwNTk4NTUNCg==
+Hi Peng,
+
+thanks for the review.
+
+Am Donnerstag, 1. August 2024, 05:04:49 CEST schrieb Peng Fan:
+> > Subject: [PATCH 06/14] arm64: dts: freescale: imx93-tqma9352-
+> > mba93xxla: improve pad configuration
+> >=20
+> > From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> >=20
+> > - disable PU/PD if already done with external resistors
+> > - do not configure Schmitt Trigger for outputs
+> > - do not configure DSE / FSEL for inputs
+> > - add missing pad groups
+> > - assign muxed GPIO pads for X1 to gpio2 node
+> >=20
+> > Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > ---
+> >  .../freescale/imx93-tqma9352-mba93xxla.dts    | 237 ++++++++++++----
+> > --
+> >  1 file changed, 164 insertions(+), 73 deletions(-)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-
+> > mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-
+> > mba93xxla.dts
+> > index e2ee9f5a042c..c663b6585c3a 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
+> > @@ -222,6 +222,11 @@ rtc-irq-hog {
+> >  	};
+> >  };
+> >=20
+> > +&gpio2 {
+> > +	pinctrl-names =3D "default";
+> > +	pinctrl-0 =3D <&pinctrl_gpio2>;
+>=20
+> I am not sure this is correct,  what are this used for?
+
+This is for general GPIOs usable from userspace. I'll add a new patch for
+adding gpio-line-names, so it should be clear.
+
+> And this is new, not pad improvement.
+
+Okay, I'll separate the changes from adding new/missing ones.
+
+> I would prefer the other improvement part merged
+> with patch 2.=20
+
+Patch 2 already got merged, but despite that this patch is for the mainboard
+while patch is addressing the module only.
+
+> > +};
+> > +
+> >  &gpio3 {
+> >  	ethphy-eqos-irq-hog {
+> >  		gpio-hog;
+> > @@ -509,25 +514,39 @@ &usdhc2 {
+> >  };
+> >=20
+> >  &iomuxc {
+> > +	pinctrl_afe: afegrp {
+>=20
+> no users?
+
+There is no driver yet, but the pinctrl settings can still be created
+meanwhile.
+
+Thanks and best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
