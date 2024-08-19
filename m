@@ -1,118 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F1816BE27
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 13:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4029016C680
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 13:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724073471; cv=none; b=SVEtgnvGAvSMOZvGayCttwZ0bGmR+GhrZP6G/zyVOLS06B7qviTZLEY7SOiEmbmTTGmNuvj3bEChjj6752a3Abk6CBHH6rNp3LMEmrQ5e4lr2XJ3QpmNIKlLS1KEBnUexipAEWMiqLp2iZyibQsY7LmaljodGClTnNEQ/K7Ntus=
+	t=1724073702; cv=none; b=WOcs0rsffuMsj2OIPb2A3qhrMTK/8T9bpFsiMK77JI0QTV1GlC4CesY+iW2WBk3S0nuaP9/Ra6mCw0IRQuLqB7b2PORVim6cmapvmMApyTE1Z398nI49Ph53YpM6AYMIVqrAYaq0C52SKf+Ojcm0i62mXbPPYCRwQipYw4jNMRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724073471; c=relaxed/simple;
-	bh=UQAYwkqw+ZSscmiH0qVHI872RkVEDdU6mkFaQXZDXkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pq2/V4wZM375F+3GPd1m3hLW0bPmKeuLYSt4NfkEvq/8rFuWhBuSaBu5L2lgTMhzZ2od+ahZxLfDnm/bL2yAHhiKLIS4h3KtHGyvRaAzNWrCRMgOlGbag040Qk5Ky4IIRnCLzCi6IeWmB2l+mCVDL1/lLrxW7HhE6d/exbVxSyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9tMgXwJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724073702; c=relaxed/simple;
+	bh=j0Iwlg5j4dadwelZ87XP4p9m3m2RHVP7vOYFCf9iK3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=pERTlX0gGbVkjo4UeGegiwjx2VjQuSvURGQ21gGCbAdCbQQBzEPKV9ZwginLUCg+NRzbj1jwwlBjRgi2pIfUGgCWQc3MrHeEisGCsq5w2c31b1g69si43HWGIG9DkxCYyx7jGNZgoNvIdY2ud+BL09eTpEP85pl8kf4RriCfRaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QqFV2Xzc; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9tMgXwJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E3CC4AF14
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 13:17:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724073470;
-	bh=UQAYwkqw+ZSscmiH0qVHI872RkVEDdU6mkFaQXZDXkA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=U9tMgXwJecbZ3kE/S5t4FUlJPz7GoswWFkpiHctvR5uXMRGv5d3h5F7ccbmxrL2d3
-	 JkL/FGCAgsvl1eYUOZLdGq+pdlGYJnxBokYd/bBmFLjUdVr5EpqCRzaaA66eTRPDHs
-	 k5HLddX6+v8VivMAE+jEwMmSYWSFMF7FrD98bYHZN6ObKH6HPmzp6aSCBVAx1Xaakx
-	 kO2+cBFY96aElsVAFNQE4WlIY9S1pMXdC8gLp/vuEwoNXXkpkh9F/19ayFgGcPu3PT
-	 0htkbP+lSML0ny6v+eVInt/e4ofcV/tSX1BJl3gwSCz3K5jxzJ4XCZPffmHsq3CGeL
-	 JXbRYrJBP6XJQ==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f3e2f5163dso3648141fa.2
-        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 06:17:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUeKHEqh7aFI4Dqi5yAsh10ASqdubqUlzYOaT3UW6+1Y8ce79Sb8tqK6EXouROXEO3M4SsnRKB1+RAyhwdp2MJhzoKN
-X-Gm-Message-State: AOJu0YzveT+43MnXxaHb/TWXoiKHir4Dq32xlrTtgV6WuUR+4DbXqEX0
-	S+lLnyDnmLGOHn7ewWWLwk5F9rbjyNga5ygAQm1La9pIlfglAIDdMTcUaUC9nY+Lo6v7jrc+Fa6
-	YweEqJ9VuJ/iUmXnIPVdobLWfJQ==
-X-Google-Smtp-Source: AGHT+IHuIFkL9XOaIB8bCeAFn6MvxFkX+S3qQcSPxtnMNhMyho9IAi27eupSQYFXdkwCgC2TGR/yMUIEvZwdU822D2I=
-X-Received: by 2002:a05:6512:1594:b0:530:bbe7:4db3 with SMTP id
- 2adb3069b0e04-5332e074eb7mr4285456e87.39.1724073468957; Mon, 19 Aug 2024
- 06:17:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QqFV2Xzc"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-428ec6c190eso36268085e9.1
+        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 06:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724073698; x=1724678498; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q8W0rWQ9WRd8jkw4uMXP1Owfz1hG5dsk4pMOhNyblTc=;
+        b=QqFV2XzcU3VSrgAEOMossB0nA3dAJHuSGKVorN6t9JR6fL5YCdL1mRe4tph7UeeM4H
+         TsHbIbqY8yPfoJMt0OsAOwnnts9nc1lnPuQBQT7dfbSMwBbmKgvEGwsSbdJLzev/UVlg
+         33S/13PQ/yZ60x4QS+l71fwbJ7jFqzQCWknsSR7z0JOnSYk3rh0YvWKxeFXFagl8HuyJ
+         Gi0ZqiFuFNvZW6W9zW8ZXzx+PrkXhEvrwJFbFqZgJx71pWTdIW2nZWMssOpFQHK+ztZG
+         WTBA0wqstuwYY52v1CmMDA7XlUN427NIQ6dG3rXsx1Xco6UTH5dzTPCmtqiHeyhSoZFP
+         bwpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724073698; x=1724678498;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q8W0rWQ9WRd8jkw4uMXP1Owfz1hG5dsk4pMOhNyblTc=;
+        b=nRbM8Mdn5VOrB3Bxtzuv5LzQRoZ8k+4vVA86VYm7l+h8d1UJ/x6f6uAGEKIUaFW47W
+         SO0Nud0dlilR+vKaq9lV0fp+dMSLXBfKVaMwt/9k5WxkT6QsjG2EJ1apaOHdPXR2kYK6
+         RLX2WChLsiHix96qswmUVVPvKbPD8tU7VqdAIK07Af/SUQDI2zoDpELTDEPhreGLE8mF
+         7rWnqNK1/vsrv+1Tjue4i27sup6JZhHEoYyB8nKO39qChvWzVg8RvCghN1tv1LNQdVb0
+         kE4l380T9WO/YumJQTWfdKXkA5qL7mRRQw2cSaj4Tpwlsd6h0dcAnjUHj1Y0B/NyNkg0
+         N/+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXREujNwktLGqTrvwlnc5W+GQmXup9C1CrRbsPgew07C+a+W0tB+0nPF9PGZoB+/mX51TEAGCXHtrAlB/nWW0Rsx7yy
+X-Gm-Message-State: AOJu0Ywv9VGUYeJjhHZEtpT88pn4RZVqMjBptZz/kM66NQ03Td/DwATS
+	XHyu7tLnfSnX2ogDTCFPmY69x+0uh6ynk4wGTSxHFbP2g9XGVopwxmGHEC893+g=
+X-Google-Smtp-Source: AGHT+IG1Ebty4eoa3hakMU7RnYW00yXWrugH5vrGNipfdhauCeQQwc6vY+Y5/aPSe/glQvDuDFNt8g==
+X-Received: by 2002:a05:600c:4707:b0:426:5cee:4abc with SMTP id 5b1f17b1804b1-42aa82492b1mr58241405e9.20.1724073697922;
+        Mon, 19 Aug 2024 06:21:37 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37189839f9dsm10601679f8f.20.2024.08.19.06.21.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 06:21:37 -0700 (PDT)
+Message-ID: <b88b6200-b92a-4cf3-946a-3c38cff886ec@linaro.org>
+Date: Mon, 19 Aug 2024 15:21:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240522215043.3747651-1-tharvey@gateworks.com>
- <CAL_JsqKtc_65tDMFWT0WroNPmW2R0Dd-4Jw101PnyJcPb=7tJA@mail.gmail.com>
- <CAJ+vNU0LBEET=y40BT4OE0zWsu6DxT-SYOrx7qD-h=HH2zENzA@mail.gmail.com>
- <4faa6881-8828-44de-92fd-6e55495cefb2@linaro.org> <CAJ+vNU1ff0c=wJoVTENGSV5Y3Yh_w5mTU-xoA9XgOX-x744=EQ@mail.gmail.com>
-In-Reply-To: <CAJ+vNU1ff0c=wJoVTENGSV5Y3Yh_w5mTU-xoA9XgOX-x744=EQ@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 19 Aug 2024 07:17:36 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLAjNp5p7oiN4X-NjP5C3H7z06g=w4t7jrp4Tb6yyuvTw@mail.gmail.com>
-Message-ID: <CAL_JsqLAjNp5p7oiN4X-NjP5C3H7z06g=w4t7jrp4Tb6yyuvTw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Li Yang <leoyang.li@nxp.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] clocksource: imx-tpm: fix return -ETIME when delta
+ exceeds INT_MAX
+To: Frank Li <Frank.Li@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ "open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
+References: <20240725193355.1436005-1-Frank.Li@nxp.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20240725193355.1436005-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 13, 2024 at 11:10=E2=80=AFAM Tim Harvey <tharvey@gateworks.com>=
- wrote:
->
-> On Tue, Aug 13, 2024 at 9:34=E2=80=AFAM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> >
-> > On 13/08/2024 18:22, Tim Harvey wrote:
-> > > On Fri, May 31, 2024 at 7:13=E2=80=AFAM Rob Herring <robh@kernel.org>=
- wrote:
-> > >>
-> > >> On Wed, May 22, 2024 at 4:50=E2=80=AFPM Tim Harvey <tharvey@gatework=
-s.com> wrote:
-> > >>>
-> > >>> The GW7905 was renamed to GW7500 before production release.
-> > >>
-> > >> Maybe some summary of the discussion and how this changed from one-o=
-ff
-> > >> to wider availability.
-> > >>
-> > >>>
-> > >>> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-> > >>> ---
-> > >>>  Documentation/devicetree/bindings/arm/fsl.yaml | 4 ++--
-> > >>>  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >>
-> > >> Reviewed-by: Rob Herring <robh@kernel.org>
-> > >
-> > > Hi Rob,
-> > >
-> > > What is the status of this patch? I'm not clear what tree the
-> > > Documentation/devicetree/bindings go through.
-> >
-> > Always via given subsystem. Which subsystem is here? Maintainers should
-> > tell you - ARM Freescale/NXP.
-> >
-> > See also:
-> > https://elixir.bootlin.com/linux/v6.11-rc3/source/Documentation/devicet=
-ree/bindings/submitting-patches.rst#L79
-> >
-> > Best regards,
-> > Krzysztof
-> >
->
-> Krzysztof, thanks - that makes sense.
->
-> Shawn, what is the status of this series [1]
+On 25/07/2024 21:33, Frank Li wrote:
+> From: Jacky Bai <ping.bai@nxp.com>
+> 
+> In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
+> is larger than INT_MAX.
 
-No maintainer is going to look at 3 month old patches and may or may
-not see some reply on it. Generally, if there's any discussion on a
-patch, I assume a new version will be the result and move on. So
-resend your patch.
+Is it something you observed or from your understanding of the code ?
 
-Rob
+> For example:
+> 
+> tpm_set_next_event(delta = 0xffff_fffe)
+> {
+>          ...
+>          next = tpm_read_counter(); // assume next is 0x10
+>          next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
+>          now = tpm_read_counter();  // now is 0x10
+>          ...
+> 
+>          return (int)(next - now) <= 0 ? -ETIME : 0;
+>                       ^^^^^^^^^^
+>                       0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
+>                       cast to int. So return -ETIME.
+> }
+> 
+> To fix this, introduce a 'prev' variable and check if 'now - prev' is
+> larger than delta.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Reviewed-by: Ye Li <ye.li@nxp.com>
+> Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>   drivers/clocksource/timer-imx-tpm.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clocksource/timer-imx-tpm.c b/drivers/clocksource/timer-imx-tpm.c
+> index bd64a8a8427f3..cd23caf1e5999 100644
+> --- a/drivers/clocksource/timer-imx-tpm.c
+> +++ b/drivers/clocksource/timer-imx-tpm.c
+> @@ -83,10 +83,10 @@ static u64 notrace tpm_read_sched_clock(void)
+>   static int tpm_set_next_event(unsigned long delta,
+>   				struct clock_event_device *evt)
+>   {
+> -	unsigned long next, now;
+> +	unsigned long next, prev, now;
+>   
+> -	next = tpm_read_counter();
+> -	next += delta;
+> +	prev = tpm_read_counter();
+> +	next = prev + delta;
+>   	writel(next, timer_base + TPM_C0V);
+>   	now = tpm_read_counter();
+>   
+> @@ -96,7 +96,7 @@ static int tpm_set_next_event(unsigned long delta,
+>   	 * of writing CNT registers which may cause the min_delta event got
+>   	 * missed, so we need add a ETIME check here in case it happened.
+>   	 */
+> -	return (int)(next - now) <= 0 ? -ETIME : 0;
+> +	return (now - prev) >= delta ? -ETIME : 0;
+>   }
+>   
+>   static int tpm_set_state_oneshot(struct clock_event_device *evt)
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
