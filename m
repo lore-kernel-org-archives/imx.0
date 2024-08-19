@@ -1,65 +1,65 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FC1C125
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 09:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B0D15CD60
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 09:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724060608; cv=none; b=Y04D0RO3HvQGlCGSt5BmFDeEDeco+WpjNKhcT4cmzIfk0iwMnUrgWpBLWgTfi4n0ZeefAO5rPwJwfRRRrdXATbsjwl+XMyFaK1oMvvTchJNSWm6SuGCcuQm1wyKuH59OPB9Tv8ud978lVn8nsv+ma5mlbRkbE5TdwZpQ0ELZxQ4=
+	t=1724060645; cv=none; b=M/44SaL75FIevJrayOT3HyVy/BxdfUVzLnL+PccTl+YM9iSdMXxOJOtTNv9u/08gveWl0BQaNhikutN3g1pUWHGXN+enOViEu05KnlBCOYPTjv+lsLaFZgtyd2pOoCtuJ2HoEtjXcQr/X6YTZ1ecNixr5vwoMslCNtTeKyt6q5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724060608; c=relaxed/simple;
-	bh=NuALwXLlNACH10f9q7aUKSvhkhlZvwj/eQ08rQrF0nM=;
+	s=arc-20240116; t=1724060645; c=relaxed/simple;
+	bh=ebTkuDAjz17jOERcCI/zrYU1jNCdYClPr2oOK7LJOTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NM/aaG19T31WOZARPOXV6fzAOyAqMiadFbmmuljS1+ZJ0LqQunXRRsDt0UZgIgVXDO06fBBXJUTN5MWvDBpyvTwWkkTAAT22cvseQoH4xk7Rds9WTM2eMCG627UwcKkMugUavaaZypwQ/V8A9HHq/n/csCu/lfyJIR0AUjjIjJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=fGbJn7g2; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mM/hx4w/ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=HSfw7/MZwqF5vdLf5xRzvYAu+e8dnL3Zy81gYbRuipMXqUM0DUTlcvwYKNNkfDbWwjrCaAPEQqOqt39E1Tty+pXbs2ol3iXTr4Ji0JXUHEDJrm6KfjqNThmdvHdap02FerigU9j40ecOh+2SBGJdejLgcmE5ONNsEyhfW9Kkh0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZN0R16/K; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=JkyTqpWh reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="fGbJn7g2";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mM/hx4w/"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZN0R16/K";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="JkyTqpWh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724060603; x=1755596603;
+  t=1724060642; x=1755596642;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=U1TkSphNSMxHD50Xsko/faoS7VqgPaYacMBOlxn4LoU=;
-  b=fGbJn7g2BIbrdEMuoGpKSLxnbJ//XgfIJ5+RS23PhY8IbiyFPnklTgh+
-   0K5zI7z7V1c9U7jIZxkqI4SfpFwFCEosrQallniJv5XlOXS99Yxc1rgy+
-   s3z5PaDN7DdQVYq6jY7AMJ8j3im69snTaI154/dYBocpWVSlux8P0jA1Z
-   /c2dMM3vvNkWRY8eYvvWQCfCOuRqjt3BqLIgRN9yko4csPzLfun7SPaO2
-   bjcN6m6LXlz52bSKBw9c0nLDA8xhGn5dWswVpPVnySsg7YGtALeklg2j0
-   QsAIS5HDMbhblfq/E3arXs9h7XObd6xK992jnRmuouJ7gsv4UmoEJf9C5
-   g==;
-X-CSE-ConnectionGUID: tvWOwWTcQnqMHmoHS8qSww==
-X-CSE-MsgGUID: Ln+xExcaRKqzaCI87k2+NA==
+  bh=ngGTJT88bhTDzobjsAMP4AG2gDq4amUpHxaFrPSBc4k=;
+  b=ZN0R16/KVPpcW0I+NFGr7rDXJ/+ki4ntubM5NFIHflGoM24LrQdQKyaV
+   eMm+V30dxTBNwu6MvuCEc6fy8uxPJWpgy15A0B6TPgX9KQ0JijWwz+pIm
+   AsrI4dS6fTozIKDxL69lRV68NPPSQKerYEAXGntZGGb77iNGlsvwKv44k
+   v1C7VcymnioPPAiYNVQcL6wFLnhuuo6Yd7OYreEz1baiOmGgCqXKxhJWj
+   h8H3S/cIA4HxoB8DUDYQjcEoy95gwiRHa2qfMjylyZOKH78j32w4umPpu
+   H1bJ9nP/mKfhW+s2yMaPwZCDbZAFz6rBCKZmuC+/jBQzis5hMoT4VB7/y
+   A==;
+X-CSE-ConnectionGUID: yCgMkliYQv6PzqBi7yuoUA==
+X-CSE-MsgGUID: gxuYcJWEQbyRcMpE/DEJ4A==
 X-IronPort-AV: E=Sophos;i="6.10,158,1719871200"; 
-   d="scan'208";a="38463626"
+   d="scan'208";a="38463688"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Aug 2024 11:42:11 +0200
-X-CheckPoint: {66C31373-34-45EF2B36-F6E28480}
-X-MAIL-CPID: 79A054C457F1C023EE635B3C6EFBB172_0
-X-Control-Analysis: str=0001.0A782F21.66C31373.0156,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27474166864;
-	Mon, 19 Aug 2024 11:42:04 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 19 Aug 2024 11:44:00 +0200
+X-CheckPoint: {66C313E0-17-78509F09-E532FC2E}
+X-MAIL-CPID: 528803B12FE86B34AF661D7848C520CB_1
+X-Control-Analysis: str=0001.0A782F16.66C313E0.0162,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1956C166864;
+	Mon, 19 Aug 2024 11:43:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724060527;
+	s=dkim; t=1724060635;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=U1TkSphNSMxHD50Xsko/faoS7VqgPaYacMBOlxn4LoU=;
-	b=mM/hx4w/Ss+K1azF1RpUUSF1uJGn+6ihKSN2MiJVwRB2/zvHpOpkKqY0Luhzoo2nIYo9Ry
-	ogm0bc6CwOUuRWwG23V4cOfbPDPzI758uzJbDuaIF2OTcWFS2YFwbk2bfEnACFwOGvsM+2
-	YmvEwoFTM4SgYDKumtqOaMgaGBL4MtHgIpt6aJyb7xhnC9/OtFYPSOwsTKvULt1a3LT47u
-	sdP/r6H4BckcH+WwHoXi63RptMMJnGnO3wpPKe4NNaePveP3Z6Ff2bMbnjXbZSxA8utqQi
-	P/f/4P3K6bHQmDrTv1vvmVU/zw3DLaduVvmKkIQppLmXjm9ZKHsIXB3xAlWHxQ==
+	bh=ngGTJT88bhTDzobjsAMP4AG2gDq4amUpHxaFrPSBc4k=;
+	b=JkyTqpWhXT9Lb8O2XYwT6AQvDQde8ZTKDVNPhZlmm3ttRrRCKEOSK9EPy7VCHHBTD7YhTI
+	aNy5zmKjh3iimOvA84m0X9FKXFKJJaTUErjzBahlHQB8B5AT/bMjOaLxjF/bIYUwRoe8fZ
+	oRCbB3LUd4vMV5jHlyfLh3/uBqXw2XEf90sDqkAKhKICWghjKA8RKKmKchzIGl9rx6S6zx
+	9uMJgtNhtk4j08YtANi84BxFboafG4oqwMIIC+BIS2CUlrfOTHGnSP2bg8pyZWCjpWbDo8
+	a/EpyFNDE5Snhyo6NKMWlKdWI2NR85ugo5boIRQBYvQKo4n0EgEC1/G8MMomsA==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Paul Elder <paul.elder@ideasonboard.com>, Adam Ford <aford173@gmail.com>, Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH v4] arm64: dts: imx8mp: Add DT nodes for the two ISPs
-Date: Mon, 19 Aug 2024 11:42:04 +0200
-Message-ID: <6077383.lOV4Wx5bFT@steina-w>
+To: soc@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Dinh Nguyen <dinguyen@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, Mark Jackson <mpfj@newflow.co.uk>, Tony Lindgren <tony@atomide.com>, Michal Simek <michal.simek@amd.com>, "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Kevin Hilman <khilman@baylibre.com>, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, imx@lists.linux.dev, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2] ARM: dts: Fix undocumented LM75 compatible nodes
+Date: Mon, 19 Aug 2024 11:43:51 +0200
+Message-ID: <4592015.LvFx2qVVIh@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20240817182546.GC29320@pendragon.ideasonboard.com>
-References: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com> <13578505.uLZWGnKmhe@steina-w> <20240817182546.GC29320@pendragon.ideasonboard.com>
+In-Reply-To: <20240816164717.1585629-1-robh@kernel.org>
+References: <20240816164717.1585629-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,188 +70,326 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Laurent,
+Hi Rob,
 
-Am Samstag, 17. August 2024, 20:25:46 CEST schrieb Laurent Pinchart:
-> Hi Alexander,
->=20
-> On Thu, Aug 15, 2024 at 02:05:39PM +0200, Alexander Stein wrote:
-> > Am Mittwoch, 14. August 2024, 18:14:51 CEST schrieb Laurent Pinchart:
-> > > From: Paul Elder <paul.elder@ideasonboard.com>
-> > >=20
-> > > The ISP supports both CSI and parallel interfaces, where port 0
-> > > corresponds to the former and port 1 corresponds to the latter. Since
-> > > the i.MX8MP's ISPs are connected by the parallel interface to the CSI
-> > > receiver, set them both to port 1.
-> > >=20
-> > > Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > ---
-> > > Changes since v3:
-> > >=20
-> > > - Add comment regarding the IMX8MP_CLK_MEDIA_ISP clock rate
-> > > - Fix assigned-clock-rates
-> > > - Dropping Tested-by as the clock configuration has changed
-> > >=20
-> > > Changes since v2:
-> > >=20
-> > > - Assign clock parent and frequency in blk-ctrl
-> > >=20
-> > > Changes since v1:
-> > >=20
-> > > - Fix clock ordering
-> > > - Add #address-cells and #size-cells to ports nodes
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 57 +++++++++++++++++++++=
-+-
-> > >  1 file changed, 55 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
-oot/dts/freescale/imx8mp.dtsi
-> > > index d9b5c40f6460..f3531cfb0d79 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > @@ -1673,6 +1673,50 @@ isi_in_1: endpoint {
-> > >  				};
-> > >  			};
-> > > =20
-> > > +			isp_0: isp@32e10000 {
-> > > +				compatible =3D "fsl,imx8mp-isp";
-> > > +				reg =3D <0x32e10000 0x10000>;
-> > > +				interrupts =3D <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> > > +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> > > +				clock-names =3D "isp", "aclk", "hclk";
-> > > +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> > > +				fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
-> > > +				status =3D "disabled";
-> > > +
-> > > +				ports {
-> > > +					#address-cells =3D <1>;
-> > > +					#size-cells =3D <0>;
-> > > +
-> > > +					port@1 {
-> > > +						reg =3D <1>;
-> > > +					};
-> > > +				};
-> > > +			};
-> > > +
-> > > +			isp_1: isp@32e20000 {
-> > > +				compatible =3D "fsl,imx8mp-isp";
-> > > +				reg =3D <0x32e20000 0x10000>;
-> > > +				interrupts =3D <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
-> > > +				clocks =3D <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_AXI_ROOT>,
-> > > +					 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
-> > > +				clock-names =3D "isp", "aclk", "hclk";
-> > > +				power-domains =3D <&media_blk_ctrl IMX8MP_MEDIABLK_PD_ISP>;
-> > > +				fsl,blk-ctrl =3D <&media_blk_ctrl 1>;
-> > > +				status =3D "disabled";
-> > > +
-> > > +				ports {
-> > > +					#address-cells =3D <1>;
-> > > +					#size-cells =3D <0>;
-> > > +
-> > > +					port@1 {
-> > > +						reg =3D <1>;
-> > > +					};
-> > > +				};
-> > > +			};
-> > > +
-> > >  			dewarp: dwe@32e30000 {
-> > >  				compatible =3D "nxp,imx8mp-dw100";
-> > >  				reg =3D <0x32e30000 0x10000>;
-> > > @@ -1869,17 +1913,26 @@ media_blk_ctrl: blk-ctrl@32ec0000 {
-> > >  				clock-names =3D "apb", "axi", "cam1", "cam2",
-> > >  					      "disp1", "disp2", "isp", "phy";
-> > > =20
-> > > +				/*
-> > > +				 * The ISP maximum frequency is 400MHz in normal mode
-> > > +				 * and 500MHz in overdrive mode. The 400MHz operating
-> > > +				 * point hasn't been successfully tested yet, so set
-> > > +				 * IMX8MP_CLK_MEDIA_ISP to 500MHz for the time being.
-> > > +				 */
-> > >  				assigned-clocks =3D <&clk IMX8MP_CLK_MEDIA_AXI>,
-> > >  						  <&clk IMX8MP_CLK_MEDIA_APB>,
-> > >  						  <&clk IMX8MP_CLK_MEDIA_DISP1_PIX>,
-> > >  						  <&clk IMX8MP_CLK_MEDIA_DISP2_PIX>,
-> > > +						  <&clk IMX8MP_CLK_MEDIA_ISP>,
-> > >  						  <&clk IMX8MP_VIDEO_PLL1>;
-> > >  				assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL2_1000M>,
-> > >  							 <&clk IMX8MP_SYS_PLL1_800M>,
-> > >  							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> > > -							 <&clk IMX8MP_VIDEO_PLL1_OUT>;
-> > > +							 <&clk IMX8MP_VIDEO_PLL1_OUT>,
-> > > +							 <&clk IMX8MP_SYS_PLL2_500M>;
-> > >  				assigned-clock-rates =3D <500000000>, <200000000>,
-> > > -						       <0>, <0>, <1039500000>;
-> > > +						       <0>, <0>, <500000000>,
-> > > +						       <1039500000>;
-> >=20
-> > Unfortunately for some reason this reparenting doesn't work (on my plat=
-form).
-> > 'media_isp' is still below IMX8MP_CLK_24M.
-> > $ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
-> >     mipi_dsi_esc_rx                  0       0        0        24000000=
-    0          0     50000      N      deviceless                      no_c=
-onnection_id        =20
-> >     media_isp                        0       0        0        24000000=
-    0          0     50000      N      deviceless                      no_c=
-onnection_id        =20
-> >        media_isp_root_clk            0       0        0        24000000=
-    0          0     50000      N         32e10000.isp                    i=
-sp
->=20
-> Hmmm... I get
->=20
->                 sys_pll2_500m        3       3        0        500000000 =
-  0          0     50000      Y                  deviceless                =
-      no_connection_id
->                    media_isp         0       0        0        500000000 =
-  0          0     50000      N                     deviceless             =
-         no_connection_id
->                       media_isp_root_clk 0       0        0        500000=
-000   0          0     50000      N                        32e10000.isp    =
-                isp
->=20
-> > I have to add this diff for isp_0 (and isp_1 if you use it):
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -1683,6 +1683,9 @@ isp_0: isp@32e10000 {
-> >                                 clock-names =3D "isp", "aclk", "hclk";
-> >                                 power-domains =3D <&media_blk_ctrl IMX8=
-MP_MEDIABLK_PD_ISP>;
-> >                                 fsl,blk-ctrl =3D <&media_blk_ctrl 0>;
-> > +                               assigned-clocks =3D <&clk IMX8MP_CLK_ME=
-DIA_ISP>;
-> > +                               assigned-clock-parents =3D <&clk IMX8MP=
-_SYS_PLL2_500M>;
-> > +                               assigned-clock-rates =3D <500000000>;
-> >                                 status =3D "disabled";
-> > =20
-> >                                 ports {
-> >=20
-> > Now clock is setup properly:
-> > $ grep -B1 media_isp /sys/kernel/debug/clk/clk_summary
-> >                 sys_pll2_500m        3       3        0        50000000=
-0   0          0     50000      Y                  deviceless              =
-        no_connection_id        =20
-> >                    media_isp         0       0        0        50000000=
-0   0          0     50000      N                     deviceless           =
-           no_connection_id        =20
-> >                       media_isp_root_clk 0       0        0        5000=
-00000   0          0     50000      N                        32e10000.isp  =
-                  isp
->=20
-> I'm not sure why that's the case, I don't have assigned-clock*
-> properties in the ISP nodes in my device tree and things still work
-> properly. Would you be able to investigate ?
+thanks for the update.
 
-I had a local board-specific overwrite in place for node 'media_blk_ctrl'
-I forgot about... So this patch does what it is supposed to do:
+Am Freitag, 16. August 2024, 18:47:14 CEST schrieb Rob Herring (Arm):
+> "lm75" without any vendor is undocumented. It works with the Linux
+> kernel since the I2C subsystem will do matches of the compatible string
+> without a vendor prefix to the i2c_device_id and/or driver name.
+>=20
+> Mostly replace "lm75" with "national,lm75" as that's the original part
+> vendor and the compatible which matches what "lm75" matched with. In a
+> couple of cases the node name or compatible gives a clue to the actual
+> part and vendor and a more specific compatible can be used. In these
+> cases, it does change the variant the kernel picks.
+>=20
+> "nct75" is an OnSemi part which is compatible with TI TMP75C based on
+> a comparison of the OnSemi NCT75 datasheet and configuration the Linux
+> driver uses. Adding an OnSemi compatible would be an ABI change.
+>=20
+> "nxp,lm75" is most likely an NXP part. Alexander Stein says the i.MX53
+> boards are a NXP LM75A as well. NXP makes a LM75A and LM75B. Both are
+> 11-bit resolution and 100ms sample time. The "national,lm75a" is
+> 9-bit, so "national,lm75b" is the closest match for both NXP variants.
+>=20
+> While we're here, fix the node names to use the generic name
+> "temperature-sensor".
+>=20
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reviewed-by: Kevin Hilman <khilman@baylibre.com> # am335x-nano.dts
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com> # imx53-mba5=
+3.dts, imx53-tqma53.dtsi
+
+> ---
+> SoC maintainers, Please take this directly for v6.12.
+>=20
+> v2:
+>  - Also use "national,lm75b" on i.MX53 boards.
+> ---
+>  .../aspeed/aspeed-bmc-facebook-greatlakes.dts |  2 +-
+>  .../socfpga/socfpga_cyclone5_vining_fpga.dts  |  4 +--
+>  .../dts/marvell/armada-385-clearfog-gtr.dtsi  |  8 ++---
+>  .../boot/dts/nuvoton/nuvoton-npcm730-kudo.dts | 32 +++++++++----------
+>  .../boot/dts/nuvoton/nuvoton-npcm750-evb.dts  |  6 ++--
+>  arch/arm/boot/dts/nxp/imx/imx53-mba53.dts     |  4 +--
+>  arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi   |  4 +--
+>  .../dts/nxp/lpc/lpc4357-ea4357-devkit.dts     |  4 +--
+>  .../boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts  |  2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-nano.dts     |  2 +-
+>  .../boot/dts/xilinx/zynq-zturn-common.dtsi    |  4 +--
+>  11 files changed, 36 insertions(+), 36 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-greatlakes.dts =
+b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-greatlakes.dts
+> index 998598c15fd0..49914a4a179f 100644
+> --- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-greatlakes.dts
+> +++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-greatlakes.dts
+> @@ -201,7 +201,7 @@ eeprom@54 {
+>  &i2c12 {
+>  	status =3D "okay";
+>  	temperature-sensor@4f {
+> -		compatible =3D "lm75";
+> +		compatible =3D "national,lm75";
+>  		reg =3D <0x4f>;
+>  	};
+>  };
+> diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_vining_fpga=
+=2Edts b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_vining_fpga.dts
+> index 65f390bf8975..84f39dec3c42 100644
+> --- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_vining_fpga.dts
+> +++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_vining_fpga.dts
+> @@ -130,8 +130,8 @@ gpio: pca9557@1f {
+>  		#gpio-cells =3D <2>;
+>  	};
+> =20
+> -	temp: lm75@48 {
+> -		compatible =3D "lm75";
+> +	temp: temperature-sensor@48 {
+> +		compatible =3D "national,lm75";
+>  		reg =3D <0x48>;
+>  	};
+> =20
+> diff --git a/arch/arm/boot/dts/marvell/armada-385-clearfog-gtr.dtsi b/arc=
+h/arm/boot/dts/marvell/armada-385-clearfog-gtr.dtsi
+> index f3a3cb6ac311..8208c6a9627a 100644
+> --- a/arch/arm/boot/dts/marvell/armada-385-clearfog-gtr.dtsi
+> +++ b/arch/arm/boot/dts/marvell/armada-385-clearfog-gtr.dtsi
+> @@ -423,14 +423,14 @@ &i2c0 {
+>  	status =3D "okay";
+> =20
+>  	/* U26 temperature sensor placed near SoC */
+> -	temp1: nct75@4c {
+> -		compatible =3D "lm75";
+> +	temp1: temperature-sensor@4c {
+> +		compatible =3D "ti,tmp75c";
+>  		reg =3D <0x4c>;
+>  	};
+> =20
+>  	/* U27 temperature sensor placed near RTC battery */
+> -	temp2: nct75@4d {
+> -		compatible =3D "lm75";
+> +	temp2: temperature-sensor@4d {
+> +		compatible =3D "ti,tmp75c";
+>  		reg =3D <0x4d>;
+>  	};
+> =20
+> diff --git a/arch/arm/boot/dts/nuvoton/nuvoton-npcm730-kudo.dts b/arch/ar=
+m/boot/dts/nuvoton/nuvoton-npcm730-kudo.dts
+> index 1f07ba382910..886a87dfcd0d 100644
+> --- a/arch/arm/boot/dts/nuvoton/nuvoton-npcm730-kudo.dts
+> +++ b/arch/arm/boot/dts/nuvoton/nuvoton-npcm730-kudo.dts
+> @@ -531,8 +531,8 @@ i2c@4 {
+>  			reg =3D <4>;
+> =20
+>  			// INLET1_T
+> -			lm75@5c {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@5c {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x5c>;
+>  			};
+>  		};
+> @@ -543,8 +543,8 @@ i2c@5 {
+>  			reg =3D <5>;
+> =20
+>  			// OUTLET1_T
+> -			lm75@5c {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@5c {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x5c>;
+>  			};
+>  		};
+> @@ -555,8 +555,8 @@ i2c@6 {
+>  			reg =3D <6>;
+> =20
+>  			// OUTLET2_T
+> -			lm75@5c {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@5c {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x5c>;
+>  			};
+>  		};
+> @@ -567,8 +567,8 @@ i2c@7 {
+>  			reg =3D <7>;
+> =20
+>  			// OUTLET3_T
+> -			lm75@5c {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@5c {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x5c>;
+>  			};
+>  		};
+> @@ -697,8 +697,8 @@ i2c@3 {
+>  			reg =3D <3>;
+> =20
+>  			// M2_ZONE_T
+> -			lm75@28 {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@28 {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x28>;
+>  			};
+>  		};
+> @@ -709,8 +709,8 @@ i2c@4 {
+>  			reg =3D <4>;
+> =20
+>  			// BATT_ZONE_T
+> -			lm75@29 {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@29 {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x29>;
+>  			};
+>  		};
+> @@ -721,8 +721,8 @@ i2c@5 {
+>  			reg =3D <5>;
+> =20
+>  			// NBM1_ZONE_T
+> -			lm75@28 {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@28 {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x28>;
+>  			};
+>  		};
+> @@ -732,8 +732,8 @@ i2c@6 {
+>  			reg =3D <6>;
+> =20
+>  			// NBM2_ZONE_T
+> -			lm75@29 {
+> -				compatible =3D "ti,lm75";
+> +			temperature-sensor@29 {
+> +				compatible =3D "national,lm75";
+>  				reg =3D <0x29>;
+>  			};
+>  		};
+> diff --git a/arch/arm/boot/dts/nuvoton/nuvoton-npcm750-evb.dts b/arch/arm=
+/boot/dts/nuvoton/nuvoton-npcm750-evb.dts
+> index f53d45fa1de8..bcdcb30c7bf6 100644
+> --- a/arch/arm/boot/dts/nuvoton/nuvoton-npcm750-evb.dts
+> +++ b/arch/arm/boot/dts/nuvoton/nuvoton-npcm750-evb.dts
+> @@ -198,7 +198,7 @@ &i2c0 {
+>  	clock-frequency =3D <100000>;
+>  	status =3D "okay";
+>  	lm75@48 {
+> -		compatible =3D "lm75";
+> +		compatible =3D "national,lm75";
+>  		reg =3D <0x48>;
+>  		status =3D "okay";
+>  	};
+> @@ -208,8 +208,8 @@ lm75@48 {
+>  &i2c1 {
+>  	clock-frequency =3D <100000>;
+>  	status =3D "okay";
+> -	lm75@48 {
+> -		compatible =3D "lm75";
+> +	temperature-sensor@48 {
+> +		compatible =3D "national,lm75";
+>  		reg =3D <0x48>;
+>  		status =3D "okay";
+>  	};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts b/arch/arm/boot/dt=
+s/nxp/imx/imx53-mba53.dts
+> index 2117de872703..0d336cbdb451 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx53-mba53.dts
+> @@ -175,8 +175,8 @@ expander: pca9554@20 {
+>  		gpio-controller;
+>  	};
+> =20
+> -	sensor2: lm75@49 {
+> -		compatible =3D "lm75";
+> +	sensor2: temperature-sensor@49 {
+> +		compatible =3D "national,lm75b";
+>  		reg =3D <0x49>;
+>  	};
+>  };
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi b/arch/arm/boot/=
+dts/nxp/imx/imx53-tqma53.dtsi
+> index b2d7271d1d24..c34ee84bd716 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx53-tqma53.dtsi
+> @@ -254,8 +254,8 @@ pmic: mc34708@8 {
+>  		interrupts =3D <6 4>; /* PATA_DATA6, active high */
+>  	};
+> =20
+> -	sensor1: lm75@48 {
+> -		compatible =3D "lm75";
+> +	sensor1: temperature-sensor@48 {
+> +		compatible =3D "national,lm75b";
+>  		reg =3D <0x48>;
+>  	};
+> =20
+> diff --git a/arch/arm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts b/arch/a=
+rm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts
+> index 224f80a4a31d..4aefbc01dfc0 100644
+> --- a/arch/arm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts
+> +++ b/arch/arm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts
+> @@ -482,8 +482,8 @@ mma7455@1d {
+>  		reg =3D <0x1d>;
+>  	};
+> =20
+> -	lm75@48 {
+> -		compatible =3D "nxp,lm75";
+> +	temperature-sensor@48 {
+> +		compatible =3D "national,lm75b";
+>  		reg =3D <0x48>;
+>  	};
+> =20
+> diff --git a/arch/arm/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts b/arch/arm=
+/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts
+> index 1f84654df50c..846afb8ccbf1 100644
+> --- a/arch/arm/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts
+> +++ b/arch/arm/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts
+> @@ -511,7 +511,7 @@ &i2c1 {
+>  	clock-frequency =3D <400000>;
+> =20
+>  	sensor@49 {
+> -		compatible =3D "lm75";
+> +		compatible =3D "national,lm75";
+>  		reg =3D <0x49>;
+>  	};
+> =20
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-nano.dts b/arch/arm/boot/dt=
+s/ti/omap/am335x-nano.dts
+> index 26b5510cb3d1..56929059f5af 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-nano.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-nano.dts
+> @@ -231,7 +231,7 @@ tps: tps@24 {
+>  	};
+> =20
+>  	temperature-sensor@48 {
+> -		compatible =3D "lm75";
+> +		compatible =3D "national,lm75";
+>  		reg =3D <0x48>;
+>  	};
+> =20
+> diff --git a/arch/arm/boot/dts/xilinx/zynq-zturn-common.dtsi b/arch/arm/b=
+oot/dts/xilinx/zynq-zturn-common.dtsi
+> index dfb1fbafe3aa..33b02e05ce82 100644
+> --- a/arch/arm/boot/dts/xilinx/zynq-zturn-common.dtsi
+> +++ b/arch/arm/boot/dts/xilinx/zynq-zturn-common.dtsi
+> @@ -97,9 +97,9 @@ &i2c0 {
+>  	status =3D "okay";
+>  	clock-frequency =3D <400000>;
+> =20
+> -	stlm75@49 {
+> +	temperature-sensor@49 {
+>  		status =3D "okay";
+> -		compatible =3D "lm75";
+> +		compatible =3D "st,stlm75";
+>  		reg =3D <0x49>;
+>  	};
+> =20
+>=20
+
 
 =2D-=20
 TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
