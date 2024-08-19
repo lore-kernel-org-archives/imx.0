@@ -1,55 +1,57 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F84015B971
-	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 09:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712A215D5CA
+	for <imx@lists.linux.dev>; Mon, 19 Aug 2024 09:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724058273; cv=none; b=bYnmpRT+ThmGlKB9vArVOxfwAIY8VcaCcF9vwI8gqsoweHgFHMMyiSzLbEofgs2cCi/RRcx/CtfY9PLN60PjiLQ2d5UuIgRdjh353RHZlZRRKChHKnkm6hQelzP4yo/Wc1BvYaKN9UBAFrNzz8A8iLN0jDdsauWv4aZEMvwMkjs=
+	t=1724058277; cv=none; b=c2fG0ok8dcE0Bfa4LCj3f0ZLA5OARduSsrW1g3Vc4GcNSMLJ2dAIjCDiN/tt9oScJfjDgl3j2kBKG5S4IXyA9knMyls/xaSohBBbeABlSbOizqS41+mtJNlZB5gaG1rJl3cnw4MgEm6Fi2vnL8j+BRaSdQtZryvO/40cnM3yE3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724058273; c=relaxed/simple;
-	bh=9KeAJ85mARaA164U631pYrL0Sb6s2xqY74y27QZM7sA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CMi5mBgVDUvRVHknNgWDFXb44ojCtjcCrH+IOCL1UnzFu9rhV82CRlQOVqFeMGR+z/LlpXgLb/OGi3u12wETBqAh67dUTRSbkSeWUxOuh8Hpr1lmInOkMHzYfWTvL+CGT3TDE2UlSk9rMLNg1SwKZ9ZLZdSXGOx2xOVr9nsC3KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQSbYuPu; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1724058277; c=relaxed/simple;
+	bh=PBWJwpQrTmQMhxS1evGm66Kvqii7McCIh/AU7DcqbUI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dR0Zf8KPFJPsXI51eiH7Regv2eGoZamlQwKoEHmlYGbs0gtoBwm7QNm1MJqk3zOMvWMOPbiyA1nnBrJrtE/e1OuZHFYLvpgUtabg+jO13U5QT0VtihHnY8GC/5yIcm9NJkVWRfccU/iUt9bgebnWSCWcu15/aUTR4doh7nN5fkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHqejUBT; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQSbYuPu"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-371a92d8c90so1040926f8f.3
-        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 02:04:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHqejUBT"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3719f0758c6so1340179f8f.1
+        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 02:04:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724058270; x=1724663070; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYk/Np4BRVvjkNNwkVfXEx5Cn133dtofexIhTAAA2fo=;
-        b=aQSbYuPuTVi0VkSY7EqtLS5qQ1acgObw+JenPb1Qt7OsEgjM4UJHw9iFlS2DCQflZ4
-         6ercoqH9SvhPt737NvjsneM09RqrGL1g0/O7gvbMUScf4fmVXtPCg0znMoHssBIm2iZU
-         7HiNfFSfQ0rSq6gjfhaaQP5wh62tU+af+L6t+NRkDE05sofWeFCRqVE14xFUXS5ZPGWE
-         Vj8O6Y6Ds+7IeXunp3jfbypDLJHgKfiptre3xJdcz98Fxnup+yNpJBJWrAoJGpqqGor0
-         xij1ZL61nZnpG0yW6LBjZGfv/5hSBTTFHLnkTJTSnF7hq4arKzzAo27iO3n33JMgZzf9
-         s9gg==
+        d=gmail.com; s=20230601; t=1724058274; x=1724663074; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m1WZmnJzwRNoGQ6pe2EZwbvZJ2ojrMh6cxbYC/hMf9M=;
+        b=KHqejUBT3iBbUaseY9vGpsHnqJ+SlDl+q2sI7L9n6wK+Fb1ZENSK7uWrS83OtR2kEp
+         /uAtz2s89ADJB056piqtokTi8EiAdwNfZi+8XuR/hJlXJcFnQShD8CedAAwZJ2TwzYjo
+         1hWS4BAr8KgAGziTq2qw8aeW78MdkxIQIjyw7aB5vJbxdkFkn1pZdh/NC+daXx/Qwu1L
+         eYXa1GrsfRZTdi4mbhK4qslLNFspGPjCZYLjT2HWv+jwQWH2uUVawmnfUruoLVvK5dg4
+         mzthMhyOy+mW8/8GHRMgNqLsuX2VxVMSyPoZKnMTNtUtE4SzR7jfmyAcMroEE2SS9Wkw
+         nqrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724058270; x=1724663070;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CYk/Np4BRVvjkNNwkVfXEx5Cn133dtofexIhTAAA2fo=;
-        b=CFBtptnZpfOQm2zvMIgYeJ+YaZMNvi0TauWhV7NwYs5EaplHLyb3uaxpns+gIU2a4R
-         zuAtWfK1UoJ4EBVTM4mSS6+5RTOM7o68rxgByveZjIauXhUeDtBv4+Jg1+jqZakajlZa
-         92pLk5CfWlBjIJIAiKI4AfY7p7Je9XrznkVSnWDNoyJvck9C+Ll0Mlmlk3hE/4gJoeEj
-         iySHsY+aSNhiDbBm8j+suKukdb2m8MGwpiiDDDhRawBm+GxwQMj+1UnukDsXZgjoOU6c
-         ITq6PFiXh/TTECBP6yKuP/Wglm8kpIjsQKJ9EUvlivgzLpemBChIqfXn2Fq+Av15JdhL
-         XlBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXznEU6nryTdJcNL5Zqg/RuN7CxKmBjoajRYcWiBkgnvVERtrm0XDADbBAvK6+bF+CR1Ybsvrs7K+d3aX8zxVgl5gON
-X-Gm-Message-State: AOJu0YztZJ1dn3uz9ReGUehOqtT+PdW3rwgsUWFdkgD/C4Neh4/VVigw
-	PysJgJZXXDUM8/3LRlLj+tZ6UXmJ6DqGKwQzHhekhTSViZ+crEU7
-X-Google-Smtp-Source: AGHT+IEbU1HgO/yej+WfZeaZhOMIw5v7VLZzInmznYjHixqxo9k1PPUaTG3RO3a5m4gtSHIAvWU/XQ==
-X-Received: by 2002:a5d:5e0f:0:b0:367:4d9d:56a5 with SMTP id ffacd0b85a97d-371983d5ea0mr4843461f8f.44.1724058269951;
-        Mon, 19 Aug 2024 02:04:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724058274; x=1724663074;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m1WZmnJzwRNoGQ6pe2EZwbvZJ2ojrMh6cxbYC/hMf9M=;
+        b=FemngNiF3nWa5QsHWGSev4znwphwEq09o6wavpzAXpTu0rBzDVawzyaUT9xBnUaHwS
+         L9g2hqogBL2zRl+0kO7dp6a54cxXXW0i+KdaBi9ddrndFd+8sSwmZ2GotlBN3VRWwPoL
+         dHgXzlO2uaQFaU9WP4Wuv4RG3bfeWr2IS8HjdCAu5FzZISdd6csQMD19/KCcUskhJ/ZK
+         0VxP2o7Hrd+cqF1dacF1N4tpxoY8hWWALfDgTPYbq/nF0sVuaCXWYqjYPiHcWvytVc4D
+         MNaW9ZiI8AjI7WWxSKC/CaTmXzlLhjADsSLPjYf/vHN3VzfkatscO4ycZ/irjdbOGDv7
+         C+AA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdyRMWvPb0wIDzd6R417wjJiCXf0j5kj6oHRBYg3jizHb5TQMigjM/H/aFxQtfBG0larI30SaD34MQshnZ/wgtbKyU
+X-Gm-Message-State: AOJu0YzJ5DGQMNVXPFZOa20WDxuVckZGhhihLOTGSxyo0PA59hxYlc2U
+	UiFdxxxH/o5cCKfaVop4cOInqS+YWgZVYRi1Aqn8I5JdF3O1dLlh
+X-Google-Smtp-Source: AGHT+IHE05TuCyt00A6s9cE1mKfpK9EVIx9TkS3oCHaFi1BhoF8/ztPZ5xgaGZQyiwuRYNARtev9jw==
+X-Received: by 2002:a05:6000:1a89:b0:371:8d08:6309 with SMTP id ffacd0b85a97d-371a7477af5mr5590541f8f.55.1724058273566;
+        Mon, 19 Aug 2024 02:04:33 -0700 (PDT)
 Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:a64c:8731:e4fb:38f1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded19627sm154672095e9.5.2024.08.19.02.04.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded19627sm154672095e9.5.2024.08.19.02.04.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 02:04:29 -0700 (PDT)
+        Mon, 19 Aug 2024 02:04:33 -0700 (PDT)
 From: Stefan Eichenberger <eichest@gmail.com>
 To: hongxing.zhu@nxp.com,
 	l.stach@pengutronix.de,
@@ -65,11 +67,14 @@ To: hongxing.zhu@nxp.com,
 Cc: linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 0/3] PCI: imx6: reset link after suspend/resume
-Date: Mon, 19 Aug 2024 11:03:16 +0200
-Message-ID: <20240819090428.17349-1-eichest@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH v1 1/3] PCI: imx6: Add a function to deassert the reset gpio
+Date: Mon, 19 Aug 2024 11:03:17 +0200
+Message-ID: <20240819090428.17349-2-eichest@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240819090428.17349-1-eichest@gmail.com>
+References: <20240819090428.17349-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,32 +83,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On the i.MX6Quad (not QuadPlus), the PCIe link does not work after a
-suspend/resume cycle. Worse, the PCIe memory mapped I/O isn't accessible
-at all, so the system freezes when a PCIe driver tries to access its I/O
-space. The only way to get resume working again is to reset the PCIe
-link, similar to what is done on devices that support suspend/resume.
-Through trial and error, we found that something about the PCIe
-reference clock does not work as expected after a resume. We could not
-figure out if it is disabled (even though the registers still say it is
-enabled), or if it is somehow unstable or has some hiccups. With the
-workaround introduced in this patch series, we were able to fully resume
-a Compex WLE900VX (ath10k) miniPCIe Wifi module and an Intel AX200 M.2
-Wifi module. If there is a better way or other ideas on how to fix this
-problem, please let us know. We are aware that resetting the link should
-not be necessary, but we could not find a better solution. More
-interestingly, even the SoCs that support suspend/resume according to
-the i.MX erratas seem to reset the link on resume in
-imx6_pcie_host_init, so we hope this might be a valid workaround.
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Stefan Eichenberger (3):
-  PCI: imx6: Add a function to deassert the reset gpio
-  PCI: imx6: move the wait for clock stabilization to enable ref clk
-  PCI: imx6: reset link on resume
+To avoid code duplication, move the code to disable the reset GPIO to a
+separate function.
 
- drivers/pci/controller/dwc/pci-imx6.c | 69 +++++++++++++++++++++++----
- 1 file changed, 59 insertions(+), 10 deletions(-)
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 964d67756eb2b..fda704d82431f 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -722,6 +722,17 @@ static void imx6_pcie_assert_core_reset(struct imx6_pcie *imx6_pcie)
+ 	gpiod_set_value_cansleep(imx6_pcie->reset_gpiod, 1);
+ }
+ 
++static void imx6_pcie_deassert_reset_gpio(struct imx6_pcie *imx6_pcie)
++{
++	/* Some boards don't have PCIe reset GPIO. */
++	if (imx6_pcie->reset_gpiod) {
++		msleep(100);
++		gpiod_set_value_cansleep(imx6_pcie->reset_gpiod, 0);
++		/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
++		msleep(100);
++	}
++}
++
+ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ {
+ 	struct dw_pcie *pci = imx6_pcie->pci;
+@@ -766,13 +777,7 @@ static int imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 		break;
+ 	}
+ 
+-	/* Some boards don't have PCIe reset GPIO. */
+-	if (imx6_pcie->reset_gpiod) {
+-		msleep(100);
+-		gpiod_set_value_cansleep(imx6_pcie->reset_gpiod, 0);
+-		/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
+-		msleep(100);
+-	}
++	imx6_pcie_deassert_reset_gpio(imx6_pcie);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
