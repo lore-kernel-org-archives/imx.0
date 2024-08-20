@@ -1,55 +1,55 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A753118E035
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 23:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D880845BEC
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 23:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724195934; cv=none; b=tkm6BdTha4zOkUZcpDs63Rn50mKx/au6Fhs1mnKWUmlSkS9varUcgyfFHe41Sv61bVgIlJI2JTFxXei5KFfxj0zn9Cf14StbHWdDapGlPHUunD2ok9yWR8Y3UMq29ex4qQu8yz78cVmd7yI4SLGIUr5eFxfNkyuKVKv2Veh9Bq8=
+	t=1724198208; cv=none; b=gv3KS723xCXInHC+8FNbsO+9fvLkTPz4eLLKI7obl1P3ydYtPAB74+50K+MKoCc68tQmTlsghayWHQOBEGlAoqRUAqEKIhUF1Ss4DHaREW5dTcz4n1SP5GB92+4/XZgRlCipZpx0se2rAOZl7GYRjYqdyZFYkacKY8387bs+J9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724195934; c=relaxed/simple;
-	bh=d60nT1u03Qy3Q7s2fv6T2XrNNU7KG4m5JFfp1UY20n0=;
+	s=arc-20240116; t=1724198208; c=relaxed/simple;
+	bh=xz4OC+9BQHEFLvYvlpWiMwlUUwfX25q4QeHkD63nSQ0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E6Z15A1+UlQ7IxudvizLGeKz9K/Z4SfuONCBsGVqRSQUyYdLHAgILssV+rQ8U5dF99h0DdgBl2s92V6tJoIBqB7Rfw8L+UUCGHw3ZH4pL+GhCsKguv5YaqjSsw0NXUHjTQojvNHk2XLKB2fCWOCEr27xwpRPtqqRCFNUdj6re2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CI98CNAw; arc=none smtp.client-ip=209.85.167.43
+	 To:Cc:Content-Type; b=Rv8xATSRVEgdsEbdvl6OgXNxBpICheOj2ULao/nUHiop2PmwTpQTprcKy6t2dJmowpgNo0rJTlCARxPunhOyj8kXZ42OyxyPMqXXzLg1b0pFwMsG0zFFkzes6ZDoA+zaJQk46CWjUeixPc/25WxwSOg7YzhsaedWKUjcpso/C6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ch+qeYzQ; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CI98CNAw"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52f00ad303aso7773234e87.2
-        for <imx@lists.linux.dev>; Tue, 20 Aug 2024 16:18:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ch+qeYzQ"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2f3ce5bc6adso38561751fa.1
+        for <imx@lists.linux.dev>; Tue, 20 Aug 2024 16:56:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724195931; x=1724800731; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724198205; x=1724803005; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JF6wfgyRdYKFN8d5+8XVfRoeXiJGMMUTPZXUm54bPBc=;
-        b=CI98CNAwxzTM61mV8+sKpccbQKFp8XpiiL6cj42PTiSGgmbc4FDU5Fdx+vtr9QYRZ9
-         6B2wSnu2U00HUPYj4ghq/ofj2BD87H3DXPlupeCk9N82ZAU2RqvPYk1i/l48CAPlmVX1
-         hMz1U6eaAmtkNXXFpzreGoiStGk1Gh9geK2Xk1HR9TIra44sdRDjzxt8iXUdbmLfvnw2
-         gNJ+3Pdzd5vF5BBINY6kgsYKhmQyl5XiWdpUxaC++RJ8cLbUm4SyZORwiuRqDEM5Y0zD
-         dQ+jXIOP0Z3j7Xf+kv3gAlJQOHsZLXDpjQN1EIQDU3WrXwDBAmP6+Dn/haG/2wSgKeW3
-         m0cA==
+        bh=xz4OC+9BQHEFLvYvlpWiMwlUUwfX25q4QeHkD63nSQ0=;
+        b=ch+qeYzQDBzUvZZ9Y0PFNZGnUAKlExautmRWgFVFE1iPAEnsuHvE6dkDCpKCk+ILNW
+         3vvFIxyWwGI29WY4wFHe2tTvb+g5LJRRH7uYgC/zZfvaeKEcvqWlv4veA2lvqRCTB62s
+         3xTwHfz7/HQNfWYMqqOX+Ln53A9kuHHCspptjhO2NG5O+iBw0zm6FNjCtzXSFVjohXhI
+         /ny6CrkrL9kHxWSeIYXAdwxk9jshZ3EMwxfVlJXxoooOf4ovW+2xfVI0BGMjfaO0NJvO
+         uJvefHqcYxJ+ZNFwf7WpJa9dctoztba5AOMTuBJ1UCs7mSSZc+J6OzMNNyxpFz7ZE6zV
+         jndg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724195931; x=1724800731;
+        d=1e100.net; s=20230601; t=1724198205; x=1724803005;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JF6wfgyRdYKFN8d5+8XVfRoeXiJGMMUTPZXUm54bPBc=;
-        b=eVHpE5gtq5UsCPAqnjYJU8U7/ux/RrCZnQZZAJqq5Gi8CwNaDJ3cmwdHkU+y11fosN
-         gaxGkqbT6hbLMsF6Ayj9zWcxjiXeLyYrq5l8UclhMSjfS+t9nlTIw68GBm77SL9mj6JG
-         bOnHVeCoVfRGhC/sdyPQvKN0VoAW0lrve+aq3WCaO60ot3yq67vl8JESAOYhkGbEq0UN
-         ocT3FYz5u22VN2fFegDkqCLN6ZeF0eU2UoNVesmrCtl07RTjQVWJck+JboCswpgjurQb
-         mgB+kp8xemAOL2P2+MEw81GY1Wf4Xo0bxUUp8jPA6D1zpiBrJH8LZRh1c2B3d9DTqYkQ
-         5uGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUov/t7eaMFjFynDFfPnc9rZCXCjM6QNWuUyXleSppZuUmnQjbvTXQ7TYHZ78u3CY8VhcE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSZuMllJcj4nD5to5jlsCX7REXwUew1me1WKpbETWgstXXTpQn
-	anZHoK5XqrOHscRN2wSlXpNx3mNezKQXtcY/u6bZlQiJZLudseAbw7q4N9AMyWMNc5RAgCiMXWH
-	qHyKMd6Q1um0D2oWZM/RamyNhHXY=
-X-Google-Smtp-Source: AGHT+IE1Ov1daYK0RsGFoMEB0RO19ht78k22yFLni1S5zEZjKgYuK2roDvpFAcrUbgGVXqiTfaLBjGwsK78HhqStM+U=
-X-Received: by 2002:a05:6512:3a94:b0:52c:e084:bb1e with SMTP id
- 2adb3069b0e04-533485565cfmr211475e87.13.1724195930268; Tue, 20 Aug 2024
- 16:18:50 -0700 (PDT)
+        bh=xz4OC+9BQHEFLvYvlpWiMwlUUwfX25q4QeHkD63nSQ0=;
+        b=p5g1Tj+mCsU5Nt6GyEmY05ab8DIwh9UKHOhKRGOHAC7XEXfmFg3ReR1erQuESXMoYi
+         jDBsO3EjLEYfzMwgDlRrGBFzyB9kSbsNnt2NXREikQgdzysN2neoSj27YDDQB8+rfub8
+         jZa7T7XMvPgOYjAAJRsygp1FZUbWOWc/nBsVWUt/qKni2Og1MwMiDc9tGsORYpu3q4Go
+         ykTm8hG2wtpB16JITCWXdLmjjoj5g9WeLtB9Wn7mvT3r57ofsbvtL4XuMsEI+ZCHXasv
+         r2/F8qN9JLz9cDRxRZXQK4LHu7/tx74wkEkDwOiaQsS3GRyzxMMLLopeg9qzL0WLtUr0
+         cneA==
+X-Forwarded-Encrypted: i=1; AJvYcCXn1/NP9Dzki+XcmdTpgTsly29WceYvwU1HZ9jIn4nVgq6cb+puHewTVPZRXSc2iUofc08=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2xQC1axu75f5FwnXteFP50sphUsoz8s1MLN0szvrg/LQV9qt9
+	u3WuJdYKOIMCkpYxuD2onD2hQsDXu1aRSP2t/dmxomPtL5hBrA44cnRD2+JtQPWbyI888qQP/JD
+	7GJaSVzYZpQCfG6ntuYx5oFp1PoY=
+X-Google-Smtp-Source: AGHT+IG0TkElo7se4gr+uSbTT3YfP5VNfjT6kygZN6wVGQaSiqMPf8kKqtvmXN/0qZMCQJUHf8oKkk8LFRt/ZIu+Ha0=
+X-Received: by 2002:a2e:9515:0:b0:2f1:929b:aef6 with SMTP id
+ 38308e7fff4ca-2f3f8b3ccddmr2899941fa.36.1724198204654; Tue, 20 Aug 2024
+ 16:56:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,13 +58,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
  <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
- <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch> <ZsUXEkc5A5IBLpJv@shell.armlinux.org.uk>
-In-Reply-To: <ZsUXEkc5A5IBLpJv@shell.armlinux.org.uk>
+ <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch> <CAHp75Vd3uUge7QFb4eOZb_nGNDu-GFDTZMyS9aZSm-D4LkT97A@mail.gmail.com>
+In-Reply-To: <CAHp75Vd3uUge7QFb4eOZb_nGNDu-GFDTZMyS9aZSm-D4LkT97A@mail.gmail.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 20 Aug 2024 20:18:38 -0300
-Message-ID: <CAOMZO5CymmmUUhBrYwyCJ54sj=55wAVMqWpuYRbJOhoaroCUXA@mail.gmail.com>
+Date: Tue, 20 Aug 2024 20:56:33 -0300
+Message-ID: <CAOMZO5B2p8JCGON7C5CzyFzsed0Es0wFrq9XKY8mvSeHiVV7Gg@mail.gmail.com>
 Subject: Re: pca953x: Probing too early
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc: Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linus.walleij@linaro.org>, 
 	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
 	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
@@ -74,30 +74,22 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linus.walleij@linaro.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Russell,
+Hi Andy,
 
-On Tue, Aug 20, 2024 at 7:22=E2=80=AFPM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
+On Tue, Aug 20, 2024 at 7:07=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 
-> This is where:
+> I bet on __i2c_smbus_xfer(). Which comes from
+> https://elixir.bootlin.com/linux/v6.11-rc4/source/drivers/i2c/busses/i2c-=
+imx.c#L549.
+
+Yes, this is correct.
+
+> Very easy to check is to add at the top of i2c-imx.c the following
 >
->         ret =3D regmap_bulk_write(chip->regmap, regaddr, value, NBANK(chi=
-p));
->         if (ret < 0) {
->                 dev_err(&chip->client->dev, "failed writing register\n");
+> #undef EAGAIN
+> #define EAGAIN __LINE__
+>
+> and search for the respective line in suspicious files.
 
-Yes, correct. This is where -EAGAIN is coming from:
-
-[    1.745657] pca953x 2-0020: supply vcc not found, using dummy regulator
-[    1.752502] pca953x 2-0020: using no AI
-[    1.756579] pca953x 2-0020: **** failed writing register: -11
-[    1.762510] pca953x: probe of 2-0020 failed with error -11
-[    1.768298] i2c i2c-2: IMX I2C adapter registered
-
-The pca953x driver tries to write to the i2c-2 bus before i2c-2 is register=
-ed.
-
-This is the point I don't understand: how can the pca953x driver get
-probed before its I2C bus parent?
-
-Thanks
+That's an useful hint, thanks.
