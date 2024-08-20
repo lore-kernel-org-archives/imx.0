@@ -1,36 +1,36 @@
 Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487501C3F2B
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 17:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1D31C5791
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 17:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724174370; cv=none; b=ciYY42d8L+ASXZyMWVXDxDpeLgW99TTk6WgrzzkNqC0GNmhfltE8IAn4ppp01tML/SyKwAtgsfh0HbjFGmo3ASQODnpW0OaYG421KVmtlfPGSWBHlBD/ZZhxIndVlYqkeMNd99QY9D8QcNmcZeJoOoLCWFKZA4UryJrDCPp2aNc=
+	t=1724174373; cv=none; b=Xn2Xv4rRkVVaEVsTiugf/hGxaFBrlxnRnUE10hkuFFxRXch8zeEAa9gnhfXEKp7F1q9+AFq8dTiENE43TnUGIzsynSMzaYSQOhZjr0bntjJzN81vdBjSIL1AhVh75aPfnqYQDpPjO1+RJlYaoBGxZ+Jw0NVYtJhMK8Tl4AYh1Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724174370; c=relaxed/simple;
-	bh=GkHo9Tromo+pUehKvOxhHRY39SHY2zUI1k6gURUv1XQ=;
+	s=arc-20240116; t=1724174373; c=relaxed/simple;
+	bh=RPF2mQ37nvJ3f8062+c/Prugaw2ureejisesb3lQUkE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QprbyPZLeyQOqdwZYUv/F2CZienoQHOSs+wFIGrNkurhubU+bUAv4p5p6xFOebA6/WieO7BkcbIgPBbLXaIoMgLgMNJQSR0U6JB1ookh14CCYbgbIxp/YoD+QrLa4eOdpDZKyzfcxeC5O19P3d/bKbZk1JWRo3tczTwdOd/s5cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=ZZAs9/cP; arc=none smtp.client-ip=91.26.50.163
+	 MIME-Version:Content-Type; b=fsBGX92p43sVKsfeycUMFCdKhT2Fg+ZKpJippuIbD5smX5INZGJklEE9G6ehIvYKw4Mu01w7ziaengVCcQGM6dBTcAF+uvdHw9XmEcXRyGrMFM/EqZzfyIqQZIHFUTz5DZye0IV1OwahcYU80lnPZoyNutDOTWdyTD8duEYZuEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=nPzowpGQ; arc=none smtp.client-ip=91.26.50.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="ZZAs9/cP"
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="nPzowpGQ"
 DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
 	q=dns/txt; i=@phytec.de; t=1724174356; x=1726766356;
 	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GkHo9Tromo+pUehKvOxhHRY39SHY2zUI1k6gURUv1XQ=;
-	b=ZZAs9/cPF322ebHbeHf3LcDd52JWrADVSB6K6S4Mdje7vESq0nmUiUpPIMgmB4NV
-	5skxG/Xeg8D2xLWmlYxQTDvWOlnkd1NEucXnIk3fr6Il/JiamXhCwU1nNE4t6RGP
-	SY+t2o7ZfapPTqCMWLK9TqX+xi6tOFEFLyvOv6zwcjw=;
-X-AuditID: ac14000a-03e52700000021bc-17-66c4d014331a
+	bh=RPF2mQ37nvJ3f8062+c/Prugaw2ureejisesb3lQUkE=;
+	b=nPzowpGQTzm8rtQhaRrU4Uy0ZGAllmLTWuBVtft82YnQ+OCNsVe7TzVGYsFW1qwo
+	yUJdqNQm7qIJt6tzEyIb8fpxNBHk+GP3skQ/j+2f5+RCzJWBrkWU9/Ajqll9d4ZQ
+	mo7u7Y0vAhdvlgWKuVe3dxmq7lTVAaotJJNX584RqFk=;
+X-AuditID: ac14000a-03251700000021bc-18-66c4d014acc3
 Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
 	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 01.70.08636.410D4C66; Tue, 20 Aug 2024 19:19:16 +0200 (CEST)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id D1.70.08636.410D4C66; Tue, 20 Aug 2024 19:19:16 +0200 (CEST)
 Received: from llp-varakala.phytec.de (172.25.0.11) by Florix.phytec.de
  (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Tue, 20 Aug
@@ -42,9 +42,9 @@ To: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
 CC: <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<upstream@lists.phytec.de>, <y.varakala@phytec.de>
-Subject: [PATCH v2 2/3] arm64: boot: dts: freescale: Add no-spiflash overlay
-Date: Tue, 20 Aug 2024 19:18:47 +0200
-Message-ID: <20240820171848.177926-3-y.varakala@phytec.de>
+Subject: [PATCH v2 3/3] arm64: dts: Add phyBOARD-Pollux dtso for rpmsg
+Date: Tue, 20 Aug 2024 19:18:48 +0200
+Message-ID: <20240820171848.177926-4-y.varakala@phytec.de>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240820171848.177926-1-y.varakala@phytec.de>
 References: <20240820171848.177926-1-y.varakala@phytec.de>
@@ -58,69 +58,111 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: Florix.phytec.de (172.25.0.13) To Florix.phytec.de
  (172.25.0.13)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpkkeLIzCtJLcpLzFFi42JZI8nAqyty4UiawfJWVos1e88xWcw/co7V
-	4uFVf4uZ91rZLFZN3cli8XLWPTaLTY+vsVpc3jWHzeL/nh3sFn+3b2KxeLFF3KL7nboDj8fO
-	WXfZPTat6mTz2Lyk3uPF5pmMHv3dLawe/X8NPD5vkgtgj+KySUnNySxLLdK3S+DK6Dt5iqng
-	sUDFr/vtLA2Mz/i6GDk5JARMJO7e+87WxcjFISSwhEni0+JHUM5TRolfjT+YQarYBPQlVqxb
-	xAqSEBFYxijx7XQ3C4jDLLCdUeLExHdMXYwcHMICPhLnO01AGlgEVCV6HkxlBbF5Bawkzjdd
-	Y4VYJy+x/+BZZpByTgFriVU/M0DCQkAl+1fvYIQoF5Q4OfMJC4jNDFTevHU2M4QtIXHwxQtm
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpikeLIzCtJLcpLzFFi42JZI8nAqyty4UiawYVHfBZr9p5jsph/5Byr
+	xcOr/hYz77WyWayaupPF4uWse2wWmx5fY7W4vGsOm8X/PTvYLf5u38Ri8WKLuEX3O3UHHo+d
+	s+6ye2xa1cnmsXlJvceLzTMZPfq7W1g9+v8aeHzeJBfAHsVlk5Kak1mWWqRvl8CV0d31gbVg
+	hWTF/DWdTA2M+0W7GDk5JARMJP7c2cnUxcjFISSwhEmiu7OZHcJ5yijxq/EHM0gVm4C+xIp1
+	i1hBEiICyxglvp3uZgFxmAW2M0qcmPiOCaRKWMBN4vyuHewgNouAqsSc+1/BbF4BK4lN838y
+	QeyTl9h/8CzQVA4OTgFriVU/M0DCQkAl+1fvYIQoF5Q4OfMJC4jNDFTevHU2M4QtIXHwxQtm
 	iHpFifcPO9hhRk4795oZwg6VmL/mO/sERqFZSEbNQjJqFpJRCxiZVzEK5WYmZ6cWZWbrFWRU
-	lqQm66WkbmIERZMIA9cOxr45HocYmTgYDzFKcDArifB2vzyYJsSbklhZlVqUH19UmpNafIhR
-	moNFSZx3dUdwqpBAemJJanZqakFqEUyWiYNTqoFxbd2aYKdd3YVHbG+udLy9ft/y/Y8TU+pv
-	JqnV8HKGaj9a2dW4TnHxVDOTnDP/LH+uXRbalvadrf+UhmDeK9XZmw+nKVWH/Z2o68MUeq/7
-	e2rJNfZz8r+iOiOZLrZI3Etf9riau+7EorL6Kam/Vs36krHAUaO2ov3AROH5Irc9+Nj2pb5a
-	8pNNiaU4I9FQi7moOBEAkfbLsJQCAAA=
+	lqQm66WkbmIExZMIA9cOxr45HocYmTgYDzFKcDArifB2vzyYJsSbklhZlVqUH19UmpNafIhR
+	moNFSZx3dUdwqpBAemJJanZqakFqEUyWiYNTqoHRwmXZprcXnm6/3lLg/0Lwd4bnx6pyL92S
+	mVn/X1xT3FNruCrejePFtzVaWQxHzUI7+K7F1gU9m7i71Pl1PotEl/nTwtigR9JS7f4iqfPz
+	axa2VfI/NjStq2GwUnom/LpAWcqzztsk9tCiXwL5DxPWftv0XWX/S9bZFnN+7l1w+626y3XF
+	MmMlluKMREMt5qLiRAAuPywalQIAAA==
 
-Add devicetree overlay to disable SPI NOR if the module does
-not supports or not equipped with SPI NOR flash.
+Adds a devicetree containing reserved memory regions used for intercore
+communication between A53 and M7 cores.
 
 Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
 ---
 Changes in v2:
-- Updated license
-- Updated with TAB space in devicetree property
+- Updated license.
+- Updated devicetree properties.
+- Replaced imx8mp-cm7 with core-m7 node name.
+- Updated reserved-memory node unit addresses in ascending order.
 
- arch/arm64/boot/dts/freescale/Makefile           |  2 ++
- .../freescale/imx8mp-phycore-no-spiflash.dtso    | 16 ++++++++++++++++
- 2 files changed, 18 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-no-spiflash.dtso
+ arch/arm64/boot/dts/freescale/Makefile        |  2 +
+ .../dts/freescale/imx8mp-phycore-rpmsg.dtso   | 55 +++++++++++++++++++
+ 2 files changed, 57 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
 
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 8f41db93c3d9..dedea4b5c319 100644
+index dedea4b5c319..80cc87d50301 100644
 --- a/arch/arm64/boot/dts/freescale/Makefile
 +++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -176,8 +176,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-navqp.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
+@@ -177,9 +177,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
  imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
  imx8mp-phyboard-pollux-rdk-no-rtc-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-rtc.dtbo
-+imx8mp-phyboard-pollux-rdk-no-spiflash-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-spiflash.dtbo
+ imx8mp-phyboard-pollux-rdk-no-spiflash-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-spiflash.dtbo
++imx8mp-phyboard-pollux-rdk-rpmsg-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-rpmsg.dtbo
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-rtc.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-spiflash.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-spiflash.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-rpmsg.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-no-spiflash.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phycore-no-spiflash.dtso
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
 new file mode 100644
-index 000000000000..2ad1312113f0
+index 000000000000..f9fba558dcb0
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-no-spiflash.dtso
-@@ -0,0 +1,16 @@
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
+@@ -0,0 +1,55 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/*
 + * Copyright (C) 2024 PHYTEC Messtechnik GmbH
-+ * Author: Cem Tenruh <c.tenruh@phytec.de>
++ * Author: Dominik Haller <d.haller@phytec.de>
++ * 	   Cem Tenruh <c.tenruh@phytec.de>
 + */
 +
 +/dts-v1/;
 +/plugin/;
 +
-+&flexspi {
-+	status = "disabled";
-+};
++#include <dt-bindings/clock/imx8mp-clock.h>
 +
-+&som_flash {
-+	status = "disabled";
++&{/} {
++	core-m7 {
++		compatible = "fsl,imx8mn-cm7";
++		clocks = <&clk IMX8MP_CLK_M7_DIV>;
++		mboxes = <&mu 0 1>,
++			<&mu 1 1>,
++			<&mu 3 1>;
++		mbox-names = "tx", "rx", "rxdb";
++		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
++	};
++
++	reserved-memory {
++		ranges;
++		#address-cells = <2>;
++		#size-cells = <2>;
++
++		vdev0vring0: vdev0vring0@55000000 {
++			no-map;
++			reg = <0 0x55000000 0 0x8000>;
++		};
++
++		vdev0vring1: vdev0vring1@55008000 {
++			no-map;
++			reg = <0 0x55008000 0 0x8000>;
++		};
++
++		rsc_table: rsc-table@550ff000 {
++			no-map;
++			reg = <0 0x550ff000 0 0x1000>;
++		};
++
++		vdevbuffer: vdevbuffer@55400000 {
++			compatible = "shared-dma-pool";
++			no-map;
++			reg = <0 0x55400000 0 0x100000>;
++		};
++
++		m7_reserved: m7@80000000 {
++			no-map;
++			reg = <0 0x80000000 0 0x1000000>;
++		};
++	};
 +};
 -- 
 2.34.1
