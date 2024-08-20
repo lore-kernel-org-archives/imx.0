@@ -1,169 +1,220 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2041.outbound.protection.outlook.com [40.107.249.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1D31C5791
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 17:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724174373; cv=none; b=Xn2Xv4rRkVVaEVsTiugf/hGxaFBrlxnRnUE10hkuFFxRXch8zeEAa9gnhfXEKp7F1q9+AFq8dTiENE43TnUGIzsynSMzaYSQOhZjr0bntjJzN81vdBjSIL1AhVh75aPfnqYQDpPjO1+RJlYaoBGxZ+Jw0NVYtJhMK8Tl4AYh1Nk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724174373; c=relaxed/simple;
-	bh=RPF2mQ37nvJ3f8062+c/Prugaw2ureejisesb3lQUkE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fsBGX92p43sVKsfeycUMFCdKhT2Fg+ZKpJippuIbD5smX5INZGJklEE9G6ehIvYKw4Mu01w7ziaengVCcQGM6dBTcAF+uvdHw9XmEcXRyGrMFM/EqZzfyIqQZIHFUTz5DZye0IV1OwahcYU80lnPZoyNutDOTWdyTD8duEYZuEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=nPzowpGQ; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418A42F5E
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 18:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724177498; cv=fail; b=f21O4j1gvWTSiPIQFYtTGfUMg2IRZpgBCRUjjQHEs3wHXIDnDM8abkSz9h3ODBkaqzcUwWuCT8YtyPIAPwmJRpnRs3ouAX/9YeZfhuh1sYQzPGX6cmldvdvMfaowKHOQtNrQpcCuFdxb6kQiMW/OaEC5qRTocEUCAN/whTl73eU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724177498; c=relaxed/simple;
+	bh=JK6j9890H5mF+MJpfratEe8G9PLez6ZCYKaFiEWMktk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Q8lYNzxp5Y99o4Ei+W9l7ONAGTTpbEghxwsjEbehiCIenp3hYD7wGQjFgwAGgdvE0QoFMCjaS6+JQjZ0uk4krAuujSgI2cIq48btk55a2WhZyOVhpzlzuTgo6miaHny1bzlx7C/AU8DG9oxIGoybBmHCCTnHi/K1D06VVqwISVg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gs2VAzjJ; arc=fail smtp.client-ip=40.107.249.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="nPzowpGQ"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1724174356; x=1726766356;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=RPF2mQ37nvJ3f8062+c/Prugaw2ureejisesb3lQUkE=;
-	b=nPzowpGQTzm8rtQhaRrU4Uy0ZGAllmLTWuBVtft82YnQ+OCNsVe7TzVGYsFW1qwo
-	yUJdqNQm7qIJt6tzEyIb8fpxNBHk+GP3skQ/j+2f5+RCzJWBrkWU9/Ajqll9d4ZQ
-	mo7u7Y0vAhdvlgWKuVe3dxmq7lTVAaotJJNX584RqFk=;
-X-AuditID: ac14000a-03251700000021bc-18-66c4d014acc3
-Received: from florix.phytec.de (Unknown_Domain [172.25.0.13])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id D1.70.08636.410D4C66; Tue, 20 Aug 2024 19:19:16 +0200 (CEST)
-Received: from llp-varakala.phytec.de (172.25.0.11) by Florix.phytec.de
- (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Tue, 20 Aug
- 2024 19:19:15 +0200
-From: Yashwanth Varakala <y.varakala@phytec.de>
-To: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-	<festevam@gmail.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>
-CC: <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<upstream@lists.phytec.de>, <y.varakala@phytec.de>
-Subject: [PATCH v2 3/3] arm64: dts: Add phyBOARD-Pollux dtso for rpmsg
-Date: Tue, 20 Aug 2024 19:18:48 +0200
-Message-ID: <20240820171848.177926-4-y.varakala@phytec.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240820171848.177926-1-y.varakala@phytec.de>
-References: <20240820171848.177926-1-y.varakala@phytec.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gs2VAzjJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aMxUaHdwgbj6XlRjfQU7QtJo36OXPMdz3N7vqIBjbtHHcBx0qSD5s/Md7QxCJy3nQBQ8K/SMPUm3AgfoDELdpyhZNj9VNRewf6KvPucgHb4ezFts5f+mbU65FOSZod6tzkqh2aZlp7ExYdIoa84ZycbSxh4TcFNlMz5li/QtGICXmOKLHgqgakzM6hcv88COEdv6HDey06ka/fuaNK98ME6W9EyymsobHnlIi63n4Ox/nZXkcr/GxZsvOQbnxXyI/zOXYXt1Nf2Y8uOTKaudSC/g5I8utJnnolz1T/prWW/br8TFbmXU0mPuMAQnCdTXC4Ravll6VkoU1iNdTOs++w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OeHeS+45fKHXjJb1yX4w7T5er3Nq2rUYRw7xbSXd+dk=;
+ b=Fd0rxNHzBh4nfKRRTkZ/FZ/cGt4bM14FzwRF0mWYH9XEmYmcvXM31Md+Rtw/rXuz310g1aKQnXFduzbX8eZj93kovFsqISo76bN7Yl5BW3mXLsbW+UuCqpEuoXw6foXUrZJR1M5eqFavTi9wgCNl7MbkzCO68rqwzUAk6LA8Ugil4mM2y2246Cy4iVaQR3GGzwJrGkz1vEuD/d47O2pxtNwKM9lmZVUoEvJoPHN/DIm7NP3Ml1YMGYvu1O2AjX+7J55ZUm0XUACQaVLiXevMU8xRvNtexc3WFCYAg/0MdPwYNYrFi6L3x1g7xHSCG+1OG+ylFdfe99yF9oTv9bV9tA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OeHeS+45fKHXjJb1yX4w7T5er3Nq2rUYRw7xbSXd+dk=;
+ b=gs2VAzjJf4EjL4oVNyFHqVDv0nlpKOaOWpUuNTE6y7PQIjF6IKpTcbj/md76whJBzLmjWMlngpPhhNJ2M21KD2fSKLcbg0K2+qWwaeuQsYm0x3cjq90W0ZgJp+mWoT0FhOArtujnPFlhrDsfD0uBiQm/7vnGc2RW6Gk++gvcdoe2MnIPZTaXo4p72gV2gfuGwKzBCOX/sdChTcb7zUVkPHulxFK6ZoYmUQv/N0V74nAZip8jABt2Y94yPQN/jnyxzONQ7QxfQD1Vx63JZYpZ0ctI5HteSZ5S9vVkoukQT+sbfZceGTdVsBYTkKyMwPTqjoi+IKgFTEPobavi0WFrxA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM0PR04MB7059.eurprd04.prod.outlook.com (2603:10a6:208:192::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.25; Tue, 20 Aug
+ 2024 18:11:33 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.019; Tue, 20 Aug 2024
+ 18:11:33 +0000
+Date: Tue, 20 Aug 2024 14:11:26 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <mwalle@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	"open list:MEMORY CONTROLLER DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-binding: memory-controllers: fsl,ifc: add
+ compatible string fsl,ifc-nand
+Message-ID: <ZsTcTt3Fu9ttcoYw@lizhi-Precision-Tower-5810>
+References: <20240814212958.4047882-1-Frank.Li@nxp.com>
+ <20240818153914.GA120816-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240818153914.GA120816-robh@kernel.org>
+X-ClientProxiedBy: SJ0PR13CA0085.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::30) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Florix.phytec.de (172.25.0.13) To Florix.phytec.de
- (172.25.0.13)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpikeLIzCtJLcpLzFFi42JZI8nAqyty4UiawYVHfBZr9p5jsph/5Byr
-	xcOr/hYz77WyWayaupPF4uWse2wWmx5fY7W4vGsOm8X/PTvYLf5u38Ri8WKLuEX3O3UHHo+d
-	s+6ye2xa1cnmsXlJvceLzTMZPfq7W1g9+v8aeHzeJBfAHsVlk5Kak1mWWqRvl8CV0d31gbVg
-	hWTF/DWdTA2M+0W7GDk5JARMJP7c2cnUxcjFISSwhEmiu7OZHcJ5yijxq/EHM0gVm4C+xIp1
-	i1hBEiICyxglvp3uZgFxmAW2M0qcmPiOCaRKWMBN4vyuHewgNouAqsSc+1/BbF4BK4lN838y
-	QeyTl9h/8CzQVA4OTgFriVU/M0DCQkAl+1fvYIQoF5Q4OfMJC4jNDFTevHU2M4QtIXHwxQtm
-	iHpFifcPO9hhRk4795oZwg6VmL/mO/sERqFZSEbNQjJqFpJRCxiZVzEK5WYmZ6cWZWbrFWRU
-	lqQm66WkbmIExZMIA9cOxr45HocYmTgYDzFKcDArifB2vzyYJsSbklhZlVqUH19UmpNafIhR
-	moNFSZx3dUdwqpBAemJJanZqakFqEUyWiYNTqoHRwmXZprcXnm6/3lLg/0Lwd4bnx6pyL92S
-	mVn/X1xT3FNruCrejePFtzVaWQxHzUI7+K7F1gU9m7i71Pl1PotEl/nTwtigR9JS7f4iqfPz
-	axa2VfI/NjStq2GwUnom/LpAWcqzztsk9tCiXwL5DxPWftv0XWX/S9bZFnN+7l1w+626y3XF
-	MmMlluKMREMt5qLiRAAuPywalQIAAA==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB7059:EE_
+X-MS-Office365-Filtering-Correlation-Id: c349eb68-fabe-4b37-ccb9-08dcc1438602
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Uu2E6svknJvXvhzqt+ZGfR+w2H5Db2C/Ld7whrLTK7zXRyV4a285I1ZFA1CH?=
+ =?us-ascii?Q?/b2f+pNu5HUFR6WhjLouAIU1yChmmbBFJJGJDrm0pzKcW+ZGflK3Y4w8lCy2?=
+ =?us-ascii?Q?hKrxfoL+b2SsCiJvUVgBR89L3VmGrYXgAdMnQAuESeaBO/DjqfUvBlvYizZY?=
+ =?us-ascii?Q?76sxhOY1ussWwPFv8Wr3bJzaShvtwbhf3uRRefZYFxNSqH2FwnX7uD8ddJgY?=
+ =?us-ascii?Q?Uxd0y9CCQ8DEC4vDoFzeL/XcuZQONO6F8gGBtVu8srswWr9Hndm0xif7D8kl?=
+ =?us-ascii?Q?y8VGi94vzwVdPPm48m52AhWVuhsmkRUVnzz6/VMys4OHPYZMO+j2xSTknYyt?=
+ =?us-ascii?Q?NCpl2DS/D6WtFxr3268P4SPKGw5agS/D4ZSMxjitfnBO2Qua3ypMEKx62Fsg?=
+ =?us-ascii?Q?cQv+UgWSaEm3rxCCq9Ay5A/JbA8WeIvXmoASQBd/4yLBi5kYxiHjs8+smB7n?=
+ =?us-ascii?Q?UAeUTkuWKzjWUkkO4hiPMcvrMQQPDOmEWFQjG/66oX5HfPbLxnQbyFpkkAMq?=
+ =?us-ascii?Q?rUGn76wgQ3yYEat20kf8VHpgR3I3Ungk6qspw41dQapOgRcijpXR5DT2ZNC+?=
+ =?us-ascii?Q?8vLAwRJWcl1ITyhQnw/mFbe0Trki/As979Duhvf6CLigoxQlhPDo0x7rMz+E?=
+ =?us-ascii?Q?Vp3Bgk0PRVlOaeJ19/zt+AzQnDknmzZShx7RovLlpgwDIGtw3eGdCBajDvrW?=
+ =?us-ascii?Q?9Af9Q5ulnz52DSRBirF09NkZ+0aDyMthr0NYoWzdcjzpB5RAY68YJGqEVnTP?=
+ =?us-ascii?Q?C676sCK2S2ImH5Bm9KmmFGeqDIybpXp+BqPSAVRdKWBzneg8DhuciajogZ8s?=
+ =?us-ascii?Q?bhFClx/R/kl1LHI7AZM3+8AbT0pkUd7dgWt3qx2LS6z/JZbncLkdGEN43EMc?=
+ =?us-ascii?Q?i8Djo6ljhk4VZj3EB2nrYaf4YDN+6kb27OT02wvfbJAumpztyw8dFge7wyWK?=
+ =?us-ascii?Q?4PNyOEhJFIlSVaZRr3ENKeK+h9GpmnywMupLstUN/1fpTImG+5BiAroWd4cX?=
+ =?us-ascii?Q?QQsUCXmcT5Xbg9KZ2mEWinCKkLcruPzzl0eS3aOujZk9IAS1hwGadMVX9zV1?=
+ =?us-ascii?Q?08peObaRJaJQu6MkNTxX4Xrl0kKGGGdF8qlZOHDTBUn8OuXnEVe8/qabiVJv?=
+ =?us-ascii?Q?uB32yZhW2+xsTZC40CBcEOwnYv+k84oSMDrtE/V83wbbhzl16P7psiRh7gTX?=
+ =?us-ascii?Q?fL3bYxi3gQZFewNKmAW6M8BRteH/Xj5Bp4kBH7eoGqbk0cJG/6vb8ILqZa32?=
+ =?us-ascii?Q?wDbjagB4BMBQa+XHHDa3GTG9dSc6vFJAcKq/oGO3N7ZKQcAw+skpGKHakepO?=
+ =?us-ascii?Q?0kmtMgOO41pHHbubOjgTPbG4pkyK9XDmmpIa4u1qAkLInzLGGJyhfIKWc41h?=
+ =?us-ascii?Q?2j6ADlwkHYLCSyzvSyRJl5t4UgorbCi4t17bsoKl6Cz4a4WvTA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gOi6/Qy+XT71EH3JRdds3xdbgEm4uP/UNbZA3g/g7GGR5YueJ7N/qA+vxg8j?=
+ =?us-ascii?Q?+GBhlZPYiH/Mv04UQQsCmGSbHAJAsagRE5TH21DUQxUqS1hWzOW7ZrqZp3e7?=
+ =?us-ascii?Q?AtBSotv/5Clra8ht4H6vNUJQuP8sZbqHgQZhIdoTObAbGT5iQwqF3F3BQoXB?=
+ =?us-ascii?Q?du67jwfOsiRpzkP25oES1NertPsjcw0DabK4MjHVKfaIYcOxUEd/UvREIPM9?=
+ =?us-ascii?Q?W3kWaAZO0FoOfh5/wzGQs5e93HRKmNSQ/4AUg+JRgmfzIr7HRsvjaicz1E9n?=
+ =?us-ascii?Q?0VVwRCWwK1luFRMZn73ZDMLvBTRNg45B4ojGBVt1g9hZROTvYRQL0wSYIKP+?=
+ =?us-ascii?Q?WrDFl/fxY5rNJWPa6u363h+4Gx6EsvUNYWDt6g7dy74bvwI/KFzixDRD7r7Y?=
+ =?us-ascii?Q?8Nrn3dDUShCab0xzrUtwwRfXxucZycy3JTYxOSOYkqRXjuLU6FhzFcStQ8T9?=
+ =?us-ascii?Q?7/FZCzk+dhy+ICMJaWy9rhF++kzteT6bNlFiB5HDiykBwBpAYPDmA7u9hct1?=
+ =?us-ascii?Q?1lJi2XsGxAJCp2mnntEWdgKK3HIDdi9rZ3j87yRERbv9NfTuKqgy4PvciqL3?=
+ =?us-ascii?Q?jYuxcmBQHm+fgvb4tY+wPnzD5CkArB2xZa3f/7SA6TT6r9GH1jNtVL9fsTYb?=
+ =?us-ascii?Q?L6GdWg1WClQZjTfGMLwW189NK98z3lNqGB5dRPEwJ6MzSU+qus+NVjhjccq/?=
+ =?us-ascii?Q?BkuCK3udvoPrBmaDLG9+1XTFJobp1WSo50/I2HNmgh5ZpAtMlb+ADnhqcyWq?=
+ =?us-ascii?Q?hET+6+DvLUlobJ7EtPGosNFLS2Pqln7I5ByKvgYHuAAxgWgeGVbh8EPFMJHd?=
+ =?us-ascii?Q?b32pv0TzBj4D8wVYhxb0ATl5rUw0s2Q0jjIHMlq1wgiFc0tAeacjxIinuyAQ?=
+ =?us-ascii?Q?/rmt7DPBLc3KqNJIIBR5i63upift7e9sOoodRiFJ3gIkHit0BlUSDq0ZlZgX?=
+ =?us-ascii?Q?D9EVdlvEfEsncULBmrgAxj3Wte0mIw9lxGFeGiplOu1u2o3V4sfseFQUtNzb?=
+ =?us-ascii?Q?c203tdllCes5G3vTPxk8q2yK8XhU/+ZGYQPktFgMpC3ezW1ibsb+Xk0dmUDd?=
+ =?us-ascii?Q?HqYC8hAG45f8dHd6hDSYlbkwBAdnvtGc128oJJ0H6cXI0x7jsv0HBPzt+Tjl?=
+ =?us-ascii?Q?UsOCtMp/vfpy4LUQEDwRaEf8vnGC2UGjZ6QZp3k/PBqDUAIEQU9caRBQEL67?=
+ =?us-ascii?Q?PFRx9kwZ/WGAfcZh7orb1yco2i3V+9TIPmUiwk+LHLB6+BRX2Z4ItjROvyUE?=
+ =?us-ascii?Q?HpdvFjYWx5konbxsxB73zXSAZjJuJawl6gstnn4hcI1ho70F76HcPeqRXaaZ?=
+ =?us-ascii?Q?9DweCKEUVmYbtKyU8h8KG30ywv0Trk16XBFIP858FaOT1JCCs/HnMtd4GxKX?=
+ =?us-ascii?Q?MCsDDiooE0jOQ3x4NHqndbfI8LQ7y/9EsRLy8UWzyWjrLupRNs/F0265q+GE?=
+ =?us-ascii?Q?Qf8A9YfDcw4Py0boZPF7Cflw+cn6DAMtZPxw4valOcVxq/u3gUy9qeZEydet?=
+ =?us-ascii?Q?50x6OTJh8exc5N+RvFRk+bjW+jnPXt2Ue8GGwpzsN9GB+ineLTXOq0kx6SSS?=
+ =?us-ascii?Q?lYAKJGiVUSAaKx5VbY4=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c349eb68-fabe-4b37-ccb9-08dcc1438602
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 18:11:33.6393
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GoLYOkFnCORRaI2QUydwfDlgGHd/wlPupS8ryYwxFRTINc1tbpNdrnQD1/xUKx5jW0oAF5D4z5kUDocuNQw6nA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7059
 
-Adds a devicetree containing reserved memory regions used for intercore
-communication between A53 and M7 cores.
+On Sun, Aug 18, 2024 at 09:39:14AM -0600, Rob Herring wrote:
+> On Wed, Aug 14, 2024 at 05:29:57PM -0400, Frank Li wrote:
+> > ifc can connect nor, nand and fpag. Add child node "nand@" under fsl,ifc
+> > and compatible string "fsl,ifc-nand" when ifc connect to nand flash.
+> >
+> > Fix below warning:
+> > arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/memory-controller@1530000/nand@1,0:
+> > 	failed to match any schema with compatible: ['fsl,ifc-nand']
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Change from v1 to v2
+> > - add address-cells and size-cells
+> > ---
+> >  .../memory-controllers/fsl/fsl,ifc.yaml       | 21 +++++++++++++++++++
+> >  1 file changed, 21 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml b/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
+> > index d1c3421bee107..c12bb7f51db62 100644
+> > --- a/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
+> > +++ b/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
+> > @@ -58,6 +58,27 @@ properties:
+> >        access window as configured.
+> >
+> >  patternProperties:
+> > +  "^nand@[a-f0-9]+(,[a-f0-9]+)+$":
+> > +    type: object
+> > +    properties:
+> > +      compatible:
+> > +        const: fsl,ifc-nand
+> > +
+> > +      reg:
+> > +        maxItems: 1
+> > +
+> > +      "#address-cells":
+> > +        const: 1
+> > +
+> > +      "#size-cells":
+> > +        const: 1
+>
+> These only apply to child nodes, but you've disabled any child nodes.
 
-Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
----
-Changes in v2:
-- Updated license.
-- Updated devicetree properties.
-- Replaced imx8mp-cm7 with core-m7 node name.
-- Updated reserved-memory node unit addresses in ascending order.
+I will add mtd partition for it.
 
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- .../dts/freescale/imx8mp-phycore-rpmsg.dtso   | 55 +++++++++++++++++++
- 2 files changed, 57 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
+>
+> > +
+> > +    required:
+> > +      - compatible
+> > +      - reg
+> > +
+> > +    additionalProperties: false
+>
+> You could minimally make this 'type: object' instead of false.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index dedea4b5c319..80cc87d50301 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -177,9 +177,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
- imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
- imx8mp-phyboard-pollux-rdk-no-rtc-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-rtc.dtbo
- imx8mp-phyboard-pollux-rdk-no-spiflash-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-spiflash.dtbo
-+imx8mp-phyboard-pollux-rdk-rpmsg-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-rpmsg.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-rtc.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-spiflash.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-rpmsg.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
-new file mode 100644
-index 000000000000..f9fba558dcb0
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso
-@@ -0,0 +1,55 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright (C) 2024 PHYTEC Messtechnik GmbH
-+ * Author: Dominik Haller <d.haller@phytec.de>
-+ * 	   Cem Tenruh <c.tenruh@phytec.de>
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/clock/imx8mp-clock.h>
-+
-+&{/} {
-+	core-m7 {
-+		compatible = "fsl,imx8mn-cm7";
-+		clocks = <&clk IMX8MP_CLK_M7_DIV>;
-+		mboxes = <&mu 0 1>,
-+			<&mu 1 1>,
-+			<&mu 3 1>;
-+		mbox-names = "tx", "rx", "rxdb";
-+		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
-+	};
-+
-+	reserved-memory {
-+		ranges;
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		vdev0vring0: vdev0vring0@55000000 {
-+			no-map;
-+			reg = <0 0x55000000 0 0x8000>;
-+		};
-+
-+		vdev0vring1: vdev0vring1@55008000 {
-+			no-map;
-+			reg = <0 0x55008000 0 0x8000>;
-+		};
-+
-+		rsc_table: rsc-table@550ff000 {
-+			no-map;
-+			reg = <0 0x550ff000 0 0x1000>;
-+		};
-+
-+		vdevbuffer: vdevbuffer@55400000 {
-+			compatible = "shared-dma-pool";
-+			no-map;
-+			reg = <0 0x55400000 0 0x100000>;
-+		};
-+
-+		m7_reserved: m7@80000000 {
-+			no-map;
-+			reg = <0 0x80000000 0 0x1000000>;
-+		};
-+	};
-+};
--- 
-2.34.1
+Sorry, I have not understood your means. I already set nand@*** as object.
 
+nand@[a-f0-9]+(,[a-f0-9]+)+$":
+  type: object
+
+>
+> Or does this follow the nand controller and chip bindings? May not being
+> older binding.
+
+I check if-nand driver, which have not parse other nand controller's
+property yet.
+
+
+Frank
+>
+> > +
+> >    "^.*@[a-f0-9]+(,[a-f0-9]+)+$":
+> >      type: object
+> >      description: |
+> > --
+> > 2.34.1
+> >
