@@ -1,206 +1,244 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010019.outbound.protection.outlook.com [52.101.69.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B9516B391
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 07:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724137516; cv=none; b=BV1M10iYOdmkY0FMYHu1K11fQMsQ88fTrJEnnTDHAZ8L4zB93ubsWWU99gzrhfaJLhgvGnQIFZu6P+VJhkf4Q7mQeGUZXQUfDBgGileuZ2YjEweaEaVD8b6hK+fY2qf3otiU/W+JMubhRt9cNHrL8dL8q1BI0zoLAXbfDy2Rz8o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724137516; c=relaxed/simple;
-	bh=GsHRckNHt4lJ18tJSAvBaZnn5/7CpkZCR8qpOQghqmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zn/8UuxzdVIV/L1BJO3gIXGWOENkveA1q/p1avwhwitbQD03RkztsN6pRTzcMOCicAIbawZUHInWS90HbQGh93+VUYAVUGIBy9soEhg6MCPfCm7jX/vYcbbyKWnIaVD1dqHhJ/sXbFoDjx/+mPc5YzR+5+2KzKM7qJTu6RigQD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S2IFRIX5; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B94816B753
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 07:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724137591; cv=fail; b=WbepBwfQKa6Ad7bjeJWm3OISFGjugzghT0e6jJXsMI8IOcg43KnWMbqjWcmOj2ZRufVyCwxYq3UqyyvqeNrFsnDR3pXT03rxRN8Mzxeg1iQgepXtbWjOpf1uYWj1D5OgbQjRcQejMz+XDaWkbAztt+lce2wREesIFkharnXYGMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724137591; c=relaxed/simple;
+	bh=vL+d5rThX/3FDpurpyNARGk28B0HdwTuZ5nRkawfq/I=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hF4Q5+pHo+b0RXYncH+XgVH9p/jCFobbU9vCeeOxclktxTClCuimDTjFCnYPEjbSYknp59Yt6yB3bdOkvIlW7kXOdn/oB/3hlkFNzSNwt6lug602AcfDfVUKCOrslaUob2FFllrS9PdmMYfb/yZ/bngfst9V+h1qqgFPV2Xqwy8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NifO7c68; arc=fail smtp.client-ip=52.101.69.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S2IFRIX5"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5bf068aebe5so1620718a12.0
-        for <imx@lists.linux.dev>; Tue, 20 Aug 2024 00:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724137513; x=1724742313; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LsF6Nk9oBlSWv0G1oFX6tHfAMXIERFk3AxXMBDi43S4=;
-        b=S2IFRIX56mg05aD0dqbIJVwrgALFcx6TkSXvD/vcsQWMfJnBI11rymN0Rv+1hIppd4
-         VXdgSdVo1jruKju+McWRUSQ0KxLPrTYlPC3OcQQ3dgGYEqHgoAnwEbqHujty3nU1+RG2
-         Sirz3SRSHjIBs2kWaAF7DYEMp0rdDPQcD0E8DIYYco65M1VJ6N4zydOHruURTPDDwxVK
-         /djmVkFYFoRqdwQB6WCKztFF1g/c4MpPHLW8ge59fyWoFWxkzECeXm/VF40JBRQXsiT/
-         /zpcB0WsBuH0N0Fgo9dVCpmXJzKZnvhnI3h0MZTIoyfxKlQ7LEyS1dSM41WIR9QSqdaX
-         CC7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724137513; x=1724742313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LsF6Nk9oBlSWv0G1oFX6tHfAMXIERFk3AxXMBDi43S4=;
-        b=PCcK7bYDkF/lXt6761Wf6DBFjnSWW55iS1TopR0JFHk7Y185dEIqWtSL6Gwrs0TV/z
-         6bxhTOlDrRy/HHZlBOlefti+bXNzFwDs0GjoGoe0TrSAJRHXKU/OVtPyPGRiMQz8apmm
-         eOdvcyfZIF/+I52lb5sJwfKBlEl+aHsG2HfHlRhr4g1SWs+6HhWUseGDpfUgxP9BvTnx
-         087djBizWl0chS3DDYsXWpKLBnggpw3GHNdExJsn9Ta16L91O+VM9u2T9r9fl8S9v1KR
-         nXTLfQUj3qP3uEvD+YvEWnNnLdm5uDFiB1Mim1AFLUti6VOk46+6hlanOpShsMl4cXLR
-         zfYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXdeo1SlN6bWLLHRbmyHmw7wD5WOgfphvG5eYM3J5V2mkOPUOI3hFP31hAp1Cs2+oi4kXjmR0XoA87qSIwCrpzcDnkk
-X-Gm-Message-State: AOJu0YyV3Yy5sIPXCnS4nT9vLRbe5El+qL7Y4n9ZhksOphPepfTsYEAU
-	TWhh7CA7DvRepW4fLD/L5d5XHsS0S4u4QxK7UF0zIhhHSQYNO8Zi
-X-Google-Smtp-Source: AGHT+IGIdq3GdLoqQGTFyWn1TS/t53HJCAInq/O8v+Afgq7IVNwWy6BOOUHntTjFl6AEvA9/pKq7NQ==
-X-Received: by 2002:a17:907:e221:b0:a71:ddb8:9394 with SMTP id a640c23a62f3a-a8392957bd8mr965538566b.40.1724137512903;
-        Tue, 20 Aug 2024 00:05:12 -0700 (PDT)
-Received: from eichest-laptop ([77.109.188.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838c7444sm725745566b.6.2024.08.20.00.05.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 00:05:12 -0700 (PDT)
-Date: Tue, 20 Aug 2024 09:05:10 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, francesco.dolcini@toradex.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v1 3/3] PCI: imx6: reset link on resume
-Message-ID: <ZsRAJrWTxKCol7-g@eichest-laptop>
-References: <20240819090428.17349-1-eichest@gmail.com>
- <20240819090428.17349-4-eichest@gmail.com>
- <ZsNZMdhhpGqXdJ+w@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NifO7c68"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=udTaejV5lm+o4YHQohrXzr6CgNXjXkew1FLwVVMkuaBI7+LrV5HAxI+kcYtnxlvy3AN4UIrQvDWmnWHY3jl4p7fXBYdzz/Mdk2FLKc1KX8+2vL2ISF5u5IoTjKTRTOjzj9i+Jitvg0295XYle2RFsCyvLtMba6I3ssTk8cwo10CP92a2+oLAl0MJZPk/A6g051uTSaow3rE0cqM5V3+sklsjnIWlnlGabIM6juCVPGlVx8mvvzCm3JgQtQWTk+IWVSw/MIIoEuZ8HOedISXZJWOz0s+3z3ESyLDoUxOxDNEBDzwRky5BHmPrv9s/8iYBr5i/5aodgI3kySVi3vf1Yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IM9fS+3eFH+Y0ftoEjqZdif/Vns9AsqSwe7eskJHtfI=;
+ b=VgncMX/YUS9hi1x6fz264gm4uZwEpZoIInsgW1qDZrmuatu0InGdUqJVu4fsS1c7+gIfIK1GJNxgTIEoVyGl0G6sKtI+zk6K/mysqxuFacex0Y1/eF8q16ESrGtAWlcapsG464EWDZo4CvwEIry8IffvoPj1vPE5+fAurvv7KD4gozEFi3Tj9NG/aG27EYmG/pZ3neYBR5vdGPpMRtOk9vdHvItHdTUNtI6bCduhuqungtQWlYZ295cpFHu0h5qVf83SbeCGJ7J0T56ihd7Dyj7Ow5Q5s2VIJ5+QkzBWSAjiOVgiKJ/I0f2VXqYRpmy5OmIaMUyyHb1Rm84FHQsNbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IM9fS+3eFH+Y0ftoEjqZdif/Vns9AsqSwe7eskJHtfI=;
+ b=NifO7c68ZOkShMbzME1pMoN2xqbEXqmUbkxdXkS+t+Q5TvI8dwujXUih2jck4tV24Gxc6W39FyoW055KJXDTqDNoCvuanrkRFRnTos/W5Wnvur7CSGzo/uF/Wy800iUoBd1646WHQm8R3cUcUVZaCFQRbMtnDVnP1TIMTzckB+UqITAzeAzf6c5gEZ+IzO0+r/T+J4JF3t+Xs3b3CjSwFVl2Ne9Mtm3v0e6yoilJbOomW2nEgkynM5f1b61ssD4FfFYbgXHrLELGkWFIXSlOd7ihVpwgxAfOWXl3v01jGHe+J0pTK9TYUf+VEQqYZgLjxFHmXE0uaEcVENk0Pq5yAw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB5005.eurprd04.prod.outlook.com (2603:10a6:803:57::30)
+ by AS8PR04MB7621.eurprd04.prod.outlook.com (2603:10a6:20b:299::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.19; Tue, 20 Aug
+ 2024 07:06:26 +0000
+Received: from VI1PR04MB5005.eurprd04.prod.outlook.com
+ ([fe80::3a57:67cf:6ee0:5ddb]) by VI1PR04MB5005.eurprd04.prod.outlook.com
+ ([fe80::3a57:67cf:6ee0:5ddb%4]) with mapi id 15.20.7875.019; Tue, 20 Aug 2024
+ 07:06:25 +0000
+From: carlos.song@nxp.com
+To: broonie@kernel.org
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH] spi: spi-fsl-lpspi: limit PRESCALE bit in TCR register
+Date: Tue, 20 Aug 2024 15:06:58 +0800
+Message-Id: <20240820070658.672127-1-carlos.song@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0010.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::17) To VI1PR04MB5005.eurprd04.prod.outlook.com
+ (2603:10a6:803:57::30)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZsNZMdhhpGqXdJ+w@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB5005:EE_|AS8PR04MB7621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42f1fe91-d91a-4e55-3465-08dcc0e69adb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fz1ChvTq5WQymET13qCo7CLWT55SzkPFFN5Mw7sPKfLiNWM6N64oY6Ph8D9G?=
+ =?us-ascii?Q?TTvPyPAcEqtUoaNayYlWiVIoLYQJYMo4dpDRBQBZMAMItxKE6RlbHS6YjZ3a?=
+ =?us-ascii?Q?hSI1RbIITwINcX3HF8Il61o7RIzligKY4vC9Vpdw/A7HOjNYaXeXoUngrW3C?=
+ =?us-ascii?Q?Q7i4edZkF98tcAzMGv64iXXnNn+HVxVAvVgMgvV3nhXa7wpkxaQZNgfRKR3x?=
+ =?us-ascii?Q?wgMo+jW5xUAQHzohqVDzuyXFWG1jOz4sc3fszQftcpbV40J3FW9apYPEJWcs?=
+ =?us-ascii?Q?q0GU/PX6gQ8kJDw8cTQPzDb9hOeNZKNJK2xOvYovh+49SLBL6kYrAFSi817Z?=
+ =?us-ascii?Q?bl/w6po1Dp5rXOmERocoJrCYS/vVNanzAv7ODK0fx4FULOwW5iPaFcdfV+Dj?=
+ =?us-ascii?Q?wczxZudapkmTsa3POXkCJQbH/wD7P/mJutiG/nlGm/RszILU60HKXBWTMkPy?=
+ =?us-ascii?Q?n15MIv7B4/k/OvcfDP1ujMhFtbYwVvqkmP0MPHUkon9wA/nOCSM8UIy1y4A/?=
+ =?us-ascii?Q?kOO8BN1DTB8PCXjLyXNDsKxTUOwRUbcf3TJtVZhEnqdMP6atEuwi6ko5VEsT?=
+ =?us-ascii?Q?Wt49b/Ago+yWkZvfiagkQG+atkg5UamJf0FKAWArtyvyIYTpnxKnvfw1lR+Z?=
+ =?us-ascii?Q?hxx798u2G00J9qa9E4fXDuZwonCdjicJBWDdwYPhMwDMR8jD3j2ZKYP4tKpo?=
+ =?us-ascii?Q?y6x+IswlLJ8MZGqy7AgobhPus46JUFrtS7jKl9xI/AJZNdqSejdZ0xNmu+5f?=
+ =?us-ascii?Q?6rWcoADwf/Cux0s/8hSVrfcfIr+zG+Kt8Vmd4zz4ICgdPiIQGietDx7eTKLO?=
+ =?us-ascii?Q?c0bwrdLLiRkCkysvuZnR3C3QJtG+dwuab0LF75NIMpL5VLFwkeh3x+QTlmJN?=
+ =?us-ascii?Q?qfDk0SJFuSLMnOX2ZC3naLLdAtiMVLPPCuLqAYtZRAoa42B/7vMEFFgJIiUv?=
+ =?us-ascii?Q?ETyRaosJEiGkxwTkWw6M07od5phq3RbFrRm67UoSyu89nTr6WBRrDm5zhYO2?=
+ =?us-ascii?Q?GvYjcNLo53PWWJe+KpCsTELh2eiG9Sudalm62rUrQCtUeng8MQLMn4oZbb9C?=
+ =?us-ascii?Q?Q9WJ8m16+OGTUQnE0/rYEpgrTkNEpWozU+l+89Y5KzRzhz6cEkStlqVD9UIs?=
+ =?us-ascii?Q?2TY4UhfRtaUo9QSvKK3pjohFqqHCDQ9FwTjCqGp4DErMu+lXYNMOTY2ogvJv?=
+ =?us-ascii?Q?HexHdrzvuXD4jQwp5N16owJ7CE0lr3k3C0KPLandjV6GCM8IWgrNfMOLCvGy?=
+ =?us-ascii?Q?swwBVa7i3PaJnNDVcI9OKO2k+qpBiTBaqtj3gSYEA/k42NZ/xUlxaamSNE/I?=
+ =?us-ascii?Q?xLtgReX7DkpHaDikNLtMC8xRECqxFX62T6rydALbrP1prHcnyDT7E+V7TepY?=
+ =?us-ascii?Q?sMwUa7l9j+lA7kh1jTfD/7CpFUSBLaBia/NEyxjNzxQFL7UKzQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5005.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WhYnwCqjMMlaHbqjjplBFWlZh/65nna3thZ5Q4moF9/zMWo/Pse0QKyzKWB7?=
+ =?us-ascii?Q?4N3KnSc1Zb5cLO6nFF0FShNRtrDN7TqwR3MkyLfoASuzTjCDuQYdkkfcPJM+?=
+ =?us-ascii?Q?W0pOQiosrY9+kML20i4KFMME9hXTKS3Fm5S0MGmQDZzCyxdETBJNOXjqRYxU?=
+ =?us-ascii?Q?JUNKQiQkssZKqhw0hpODlxlZaT6phJULgwRyUm/eWC5AgZRHlZuxC+BIbaw7?=
+ =?us-ascii?Q?znWJlbz1n5GJA6PAzmJJlbK+TE0I77OqRPMwYv6BSpfU1vXIAbjQgqfxRVkB?=
+ =?us-ascii?Q?n4ytqj5bH/E1LAp42NGOTy4Rn5z23N2XytHvseUxiROh5rOyootC8PmODW84?=
+ =?us-ascii?Q?Ge+nPfGB/HpNj2qcbKhlboPCeZKj5GLTf0BvGNaEV+dEL8s3Tu9VG92UYtMH?=
+ =?us-ascii?Q?dPVu38rhqfrCzP5mxG6z90lRWwen3lHWOexJdQyggkHUOvVxQNFARkYsuhkP?=
+ =?us-ascii?Q?yVlcF2TfM5NYp1EFcRPTbDsfd32IdzOc03BzY+v1lesoHXA5GLpq6bVzwLSn?=
+ =?us-ascii?Q?GhPglColR7JmhIVFPIYFlyaZjCUybpy3WSC6OcmAvWJLtDntwCc8oM/IF9qS?=
+ =?us-ascii?Q?oBdx++Xb3BjqPu2+xl63Qxmoo8RIvdCWqUd5MbqFUnBF4zhWBnPoGwsFjZmy?=
+ =?us-ascii?Q?IZOtZaD90UJB+5TKbVJeaVzCcR2JJYkvfuFtPQNuikNoWZ6q6bcZ8iMGM0Lk?=
+ =?us-ascii?Q?a5Sd1hdMW/C6u+urNiIQuRgrao17u0gOn11WPowOGHLC8Fp0sVk/EhFp6NZk?=
+ =?us-ascii?Q?Td43BUAu2xMTFIJfWpAJWU8RheRmyOcJPEWYm4i5CWavvhr5ntlnnFxG3bE8?=
+ =?us-ascii?Q?eZghXp7fwFnHxhhe4g2y3Ax2dvWWH0kBfvm496CRv7GHVgOXt0UkTmVTLmC+?=
+ =?us-ascii?Q?VRNSSnQC4qE48tHkcfkQUERLFkYNNF8HWEV8zLY0WjDGfreJ0CbWEeyqKseZ?=
+ =?us-ascii?Q?C6rkDTfOj0svl9mszPHye5/+u5YVZqH0t9P3+6ODum/XExOb/XVkC+7VyD44?=
+ =?us-ascii?Q?d52LiylQLc4WUuEVsY9UjQLdANp53ZfZsy2cWGjBiwUURCzMHFxuGRtJh3fa?=
+ =?us-ascii?Q?9k8O/OYYm+TE3KBr0Nj03Ed0+yLN4LxwqjpQSsrwEAnjF4U1G4sLS7hhpHZr?=
+ =?us-ascii?Q?RGqfBjBd9lq7YGd1nRld4oD/ZYf2X8lLJL2D1Hj/I26SkU9kVLuCVzvQe00P?=
+ =?us-ascii?Q?ufeS8STk9/8GG4DDtqd7ZCds1tgyRGAGzte+8WB77F0OPL7GisuYjPCMpg5n?=
+ =?us-ascii?Q?jTbpJDqkNUgJwjDb5Xbu34FH0WV/bD4MomKO8uvif/fUUmwnEGbFHnyVDY7J?=
+ =?us-ascii?Q?HzhdSfljzfDHtW21E/fkpf1dmOSs6s1PiiRL+dStexglUCuOc8xTyKZ1pQlO?=
+ =?us-ascii?Q?bTGu8svOS4rdm81vORDXGNET0kFnS+sk8bjrCodTQQ85lGvq12dJ+2A/9NE7?=
+ =?us-ascii?Q?9Bwxrr/yLOcP0KZ5fBOVwp8r4HUgWSZeM+J726D8/+SEhyEc4WX/g/cSuJec?=
+ =?us-ascii?Q?2uRFEsG3WTEIHMjnUDYpE0cE5jaPrEK7xpsakWAiDY1d+VRzdKEWpiV8B2Er?=
+ =?us-ascii?Q?9Ck0l2x8l8if8EaR7PAzzDi1dEYs7vAd3G1luhRv?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42f1fe91-d91a-4e55-3465-08dcc0e69adb
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5005.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 07:06:25.5322
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ji93yhnAddITOVkR/kskLsUhgoV99KqiFv3CvTlFYShijVR88bTxKS2lWxwXWDBy2kJL+uECapKXXB+39s5Nkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7621
 
-On Mon, Aug 19, 2024 at 10:39:45AM -0400, Frank Li wrote:
-> On Mon, Aug 19, 2024 at 11:03:19AM +0200, Stefan Eichenberger wrote:
-> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> >
-> > According to the https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf errata,
-> 
-> Can you show errata number here?
-> 
+From: Carlos Song <carlos.song@nxp.com>
 
-I will include it in the next version of the patch. If I understand it
-correct it is ERR005723.
+Referring to the errata ERR051608 of I.MX93, LPSPI TCR[PRESCALE]
+can only be configured to be 0 or 1, other values are not valid
+and will cause LPSPI to not work.
 
-> > the i.MX6Q PCIe controller does not support suspend/resume. So suspend
-> > and resume was omitted. However, this does not seem to work because it
-> > looks like the PCIe link is still expecting a reset. If we do not reset
-> > the link, we end up with a frozen system after resume. The last message
-> > we see is:
-> > ath10k_pci 0000:01:00.0: Unable to change power state from D3hot to D0,
-> > device inaccessible
-> >
-> > Besides resetting the link, we also need to enable msi again, otherwise
-> > DMA access will not work and we can still end up with a frozen system.
-> > With these changes we can suspend and resume the system properly with a
-> > PCIe device attached. This was tested with a Compex WLE900VX miniPCIe
-> > Wifi module.
-> >
-> > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > ---
-> >  drivers/pci/controller/dwc/pci-imx6.c | 45 ++++++++++++++++++++++++++-
-> >  1 file changed, 44 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > index f17561791e35a..751243f4c519e 100644
-> > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > @@ -1213,14 +1213,57 @@ static int imx6_pcie_suspend_noirq(struct device *dev)
-> >  	return 0;
-> >  }
-> >
-> > +static int imx6_pcie_reset_link(struct imx6_pcie *imx6_pcie)
-> > +{
-> > +	int ret;
-> > +
-> > +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> > +			   IMX6Q_GPR1_PCIE_TEST_PD, 1 << 18);
-> > +	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR1,
-> > +			   IMX6Q_GPR1_PCIE_REF_CLK_EN, 0 << 16);
-> > +
-> > +	/* Reset the PCIe device */
-> > +	gpiod_set_value_cansleep(imx6_pcie->reset_gpiod, 1);
-> > +
-> > +	ret = imx6_pcie_enable_ref_clk(imx6_pcie);
-> > +	if (ret) {
-> > +		dev_err(imx6_pcie->pci->dev, "unable to enable pcie ref clock\n");
-> > +		return ret;
-> > +	}
-> > +
-> > +	imx6_pcie_deassert_reset_gpio(imx6_pcie);
-> 
-> In my patch https://lore.kernel.org/linux-pci/Zr4XG6r+HnbIlu8S@lizhi-Precision-Tower-5810/T/#mc5f38934b6cef95eca90f1a6a63b3193e45179de
-> 
-> imx6qp_pcie_core_reset() and imx6q_pcie_core_reset() is not symatic for
-> assert/desert() to match origin code. I plan fix it after above patch
-> merged.
-> 
-> Does it work if make above code symatic?
-> 
+Add the prescale limitation for LPSPI in I.MX93. Other platforms
+are not affected.
 
-I will give it a try with your patches applied and let you know.
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-> > +
-> > +	/*
-> > +	 * Setup the root complex again and enable msi. Without this PCIe will
-> > +	 * not work in msi mode and drivers will crash if they try to access
-> > +	 * the device memory area
-> > +	 */
-> > +	dw_pcie_setup_rc(&imx6_pcie->pci->pp);
-> > +	if (pci_msi_enabled()) {
-> > +		u32 val;
-> > +		u8 offset = dw_pcie_find_capability(imx6_pcie->pci, PCI_CAP_ID_MSI);
-> > +
-> > +		val = dw_pcie_readw_dbi(imx6_pcie->pci, offset + PCI_MSI_FLAGS);
-> > +		val |= PCI_MSI_FLAGS_ENABLE;
-> > +		dw_pcie_writew_dbi(imx6_pcie->pci, offset + PCI_MSI_FLAGS, val);
-> > +	}
-> 
-> there are already have imx6_pcie_msi_save_restore(imx6_pcie, true); in
-> suspend/resume, why need addtional one here?
-> 
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index be261ac09df8..350c5d91d869 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -82,6 +82,10 @@
+ #define TCR_RXMSK	BIT(19)
+ #define TCR_TXMSK	BIT(18)
+ 
++struct fsl_lpspi_devtype_data {
++	u8 prescale_max;
++};
++
+ struct lpspi_config {
+ 	u8 bpw;
+ 	u8 chip_select;
+@@ -119,10 +123,25 @@ struct fsl_lpspi_data {
+ 	bool usedma;
+ 	struct completion dma_rx_completion;
+ 	struct completion dma_tx_completion;
++
++	const struct fsl_lpspi_devtype_data *devtype_data;
++};
++
++/*
++ * ERR051608 fixed or not:
++ * https://www.nxp.com/docs/en/errata/i.MX93_1P87f.pdf
++ */
++static struct fsl_lpspi_devtype_data imx93_lpspi_devtype_data = {
++	.prescale_max = 1,
++};
++
++static struct fsl_lpspi_devtype_data imx7ulp_lpspi_devtype_data = {
++	.prescale_max = 8,
+ };
+ 
+ static const struct of_device_id fsl_lpspi_dt_ids[] = {
+-	{ .compatible = "fsl,imx7ulp-spi", },
++	{ .compatible = "fsl,imx7ulp-spi", .data = &imx7ulp_lpspi_devtype_data,},
++	{ .compatible = "fsl,imx93-spi", .data = &imx93_lpspi_devtype_data,},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_lpspi_dt_ids);
+@@ -297,9 +316,11 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+ 	unsigned int perclk_rate, scldiv, div;
++	u8 prescale_max;
+ 	u8 prescale;
+ 
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
++	prescale_max = fsl_lpspi->devtype_data->prescale_max;
+ 
+ 	if (!config.speed_hz) {
+ 		dev_err(fsl_lpspi->dev,
+@@ -315,7 +336,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ 	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
+ 
+-	for (prescale = 0; prescale < 8; prescale++) {
++	for (prescale = 0; prescale < prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+@@ -822,6 +843,7 @@ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ static int fsl_lpspi_probe(struct platform_device *pdev)
+ {
++	const struct fsl_lpspi_devtype_data *devtype_data;
+ 	struct fsl_lpspi_data *fsl_lpspi;
+ 	struct spi_controller *controller;
+ 	struct resource *res;
+@@ -830,6 +852,10 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	u32 temp;
+ 	bool is_target;
+ 
++	devtype_data = of_device_get_match_data(&pdev->dev);
++	if (!devtype_data)
++		return -ENODEV;
++
+ 	is_target = of_property_read_bool((&pdev->dev)->of_node, "spi-slave");
+ 	if (is_target)
+ 		controller = devm_spi_alloc_target(&pdev->dev,
+@@ -848,6 +874,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	fsl_lpspi->is_target = is_target;
+ 	fsl_lpspi->is_only_cs1 = of_property_read_bool((&pdev->dev)->of_node,
+ 						"fsl,spi-only-use-cs1-sel");
++	fsl_lpspi->devtype_data = devtype_data;
+ 
+ 	init_completion(&fsl_lpspi->xfer_done);
+ 
+-- 
+2.34.1
 
-I took the part from the probe function and added it here. I will see if
-I can rework that part.
-
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int imx6_pcie_resume_noirq(struct device *dev)
-> >  {
-> >  	int ret;
-> >  	struct imx6_pcie *imx6_pcie = dev_get_drvdata(dev);
-> >  	struct dw_pcie_rp *pp = &imx6_pcie->pci->pp;
-> >
-> > +	/*
-> > +	 * Even though the i.MX6Q does not support suspend/resume, we need to
-> > +	 * reset the link after resume or the memory mapped PCIe I/O space will
-> > +	 * be inaccessible. This will cause the system to freeze.
-> > +	 */
-> >  	if (!(imx6_pcie->drvdata->flags & IMX6_PCIE_FLAG_SUPPORTS_SUSPEND))
-> > -		return 0;
-> > +		return imx6_pcie_reset_link(imx6_pcie);
-> 
-> If reset everything, I supposed we can add IMX6_PCIE_FLAG_SUPPORTS_SUSPEND
-> at driver data.
-> 
-
-This didn't work for the current version. It seems we do too much in the
-suspend function and therefore it is still not working. However, maybe
-it is really better to just add the flag and try to make suspend/resume
-work by using the function pointers you introduced. I will have a look
-at it, thanks.
-
-> >
-> >  	ret = imx6_pcie_host_init(pp);
-> >  	if (ret)
-> > --
-> > 2.43.0
-> >
