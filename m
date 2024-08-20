@@ -1,142 +1,93 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D4314B96B
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 20:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33C814B96B;
+	Tue, 20 Aug 2024 20:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724186630; cv=none; b=e3vdOhUYjcKJLXL6ymWu30budRnEsGE0atTQvSfBsZYrGtUJMvWuZ2l7tqtXn+ukvDG+/1ISVb/CxgTohrQUvO9WTBybwB3w6CvG5hpxPGWJfe8duV6W/5DE8zhahxCyBt9hGn1IETXopTg1B4h5bjE3Y3ZgADKiG6MuSxooBaI=
+	t=1724186681; cv=none; b=pBRUb/6VHeatGAPdXxX/Wr9ZVF4hWj7Bre9Jxf+sWvlYvcRE2+bbD1BJd7GxAQtBXGnB+e0KIOeESnOW5lxTSSfpGXRQ4iB07kZEHLh6FN61kjr8o/sSNnOJHhzkLmUjaKIaJRxzeGv/a2d6fTl+tq8tR9G+zrAY+AWD98P3eAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724186630; c=relaxed/simple;
-	bh=xHfODCvjIomWKvRJewemD/GWRqIPw46713cNyM5d/xU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Idd/JNyTqAyCxLzYqd8BMUqiwQxT7bw0G+RPHYnCMjR2KE9TMXNJ1/5Uwx8F1KUyyLbQsXsnF8tSe9ORpYeBYMoN4h5jRcmr1yR5GwOX+/xPYf4iOTaEnBpCkYYvnBZIoS6iJ7CLJjDbiLMufGzCiLTVbR0kcKfzRnKfdX3Gk/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H10aH7ws; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724186681; c=relaxed/simple;
+	bh=cypaa9U8Ky8ybogEmIi/zzlIjSwLEDGvGkrxvKYEfjg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Zj6nweswEfMySZcow5delD26QvA1GK203Hx2k/ChAMtxXBfttX/VEaXXTsS6HhWFtSZwcDSa3tUgAO6ClRODg35JlCWzJaLd4o9x8YH0psNrbAZ32aSyPaP1KZZ4KT+cL6PIkni4KCE+1tXPeCqy+WBtisubUnwYaIurT+Ljpbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMQj1q5t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H10aH7ws"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a7aa4bf4d1eso793479066b.0
-        for <imx@lists.linux.dev>; Tue, 20 Aug 2024 13:43:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724186627; x=1724791427; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PWIfJWd1ZGj12rM78grkuzaaBYP2MwLZdKZAHIOJgtI=;
-        b=H10aH7wsgvoipREEhX4IEnTISiF7wC9/hTe8dh+d4ZotzgUeNNg18ZMv+D5/Ibar/t
-         KLKBcoYZxfWNyJXxNel/JGd7N5oE+9+dJduLvzGHeKpk/F+21kHRJFQxvq1xR34GoopN
-         /cfdrFAPk2KOBkvbpAXJiz09E8s/MBRtgJ71NGx2rGZhcR/7gdsIdEcrDbNEiDwknK9a
-         vuOF56qhB7aLLwlkDhrf5ECvOLLnW610Y7QKQ39IkpTqrHJGIbwDtpVOCoImLP3zINlM
-         5F2pgxNb1e5rp5cibNjC31FH9/rUGPN05K7PfBskzc4RGWRuZoyocwLNu+N22evJbE3p
-         cgKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724186627; x=1724791427;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PWIfJWd1ZGj12rM78grkuzaaBYP2MwLZdKZAHIOJgtI=;
-        b=el0pSXin1soRqsUIn5mlc2kx/yQOOvCYlBPeLvtniUpuyFsLUggvBgu2sDK5NFmDmS
-         DIRGHUc29G/BThiBZ2isjIrcEJW4iJ3xOC5moNHGy/peZm3S7tOmuSWPFiPIRQ50MTKR
-         8JU5NWHozR9dW+JkijdEaMiuJdNaMkfiX5MYZxF7p4aEyZwkDbdloEj7LL9XInqKaPwB
-         uFYtFNYDoh+74mR0zWtbioYxIh5ukiJXTvERywZWuCWoBmoc2oIkdjTs8wdCqABNsv34
-         sDm9q5ktR1yVKF5sDqAVwx/MYwT3KuGG9VaHGeF8GtHb1tTOSAHldRfUTLdP/P6s6v6Y
-         2PYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVD1nH2EUv+BZcBoky2X3LJ6aokowcuqKoSdPoSr7NMKbIcXvfdfW/0JdpFcbts09j6SU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyhiGQ818PSEt0SUf8yS7sHrXw5o6mkvr6GytiWrAh4nQjnAEul
-	Vkl/DRZt7LzZrHvsRGm2zLpZ9xVeTcwvQJF4s4RFpfgjX39FYAaO9ozPPtj6GWlUdUs8ifLo7NQ
-	7cKh3y4CrcA4Sv3kV5FNluLB/XGw=
-X-Google-Smtp-Source: AGHT+IGKmBFNaEkcmhZ8YrD4EIPSLBbxT8Mfphie51yJuPOU/MbjddiyRHp6dTacol6ihmyMquhDCEQ7QMM60RXHmFE=
-X-Received: by 2002:a17:907:847:b0:a7a:ab1a:2d71 with SMTP id
- a640c23a62f3a-a866f8a54f8mr15491166b.59.1724186626921; Tue, 20 Aug 2024
- 13:43:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMQj1q5t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85687C4AF09;
+	Tue, 20 Aug 2024 20:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724186681;
+	bh=cypaa9U8Ky8ybogEmIi/zzlIjSwLEDGvGkrxvKYEfjg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=lMQj1q5txFXPh4sph+vowVK2ND8OMURIeFJv+tWiimwdI5aEpo6U4eZE/rTy7FeOK
+	 Q7EI0JxzZnysR/03ISROGcQUXtj3lhJUqX8ntLxS9QOCwRPZ1fOyrMQu1oraAugJhW
+	 14PJ9o/3WO5j8PIpGp4S17N4vsojsZLTV3eA3AwlvuCM8U4K2SURDfXJd6yFLaqPoY
+	 uWdgt2ubIz5hVe4hBLOloaSYZB+ODEas8h3IR5g3T51ujva8m8e5oVgwYeDH6FYPAM
+	 9EIfg7PISmQ6cJd8oNIjksxdA6q/SwPgbgYQFKI02bSWJJE6u/mjrkd6xUZ1H8WMkn
+	 ciXKLT2OpbFMw==
+From: Mark Brown <broonie@kernel.org>
+To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
+ Baojun Xu <baojun.xu@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+ alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20240820184604.499017-1-Frank.Li@nxp.com>
+References: <20240820184604.499017-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] ASoC: dt-bindings: Convert tpa6130a2.txt to
+ yaml
+Message-Id: <172418667827.929388.15440064155822460838.b4-ty@kernel.org>
+Date: Tue, 20 Aug 2024 21:44:38 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
-In-Reply-To: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 20 Aug 2024 23:43:10 +0300
-Message-ID: <CAHp75VeDa1xvK1=mOwMaxvuFQo1B9g2ENUZQtmOdDfNV6zv-Yw@mail.gmail.com>
-Subject: Re: pca953x: Probing too early
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Shevchenko <andy@kernel.org>, "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-On Tue, Aug 20, 2024 at 11:05=E2=80=AFPM Fabio Estevam <festevam@gmail.com>=
- wrote:
->
-> Hi,
->
-> I am seeing an issue with the PCA935X driver in 6.6.41 and
-> 6.11.0-rc4-next-20240820.
->
-> The pca953x is getting probed before its I2C parent (i2c-2):
->
-> [    1.872917] pca953x 2-0020: supply vcc not found, using dummy regulato=
-r
-> [    1.889195] pca953x 2-0020: using no AI
-> [    1.893260] pca953x 2-0020: failed writing register
-> [    1.898258] pca953x 2-0020: probe with driver pca953x failed with erro=
-r -11
-> [    1.905575] i2c i2c-2: IMX I2C adapter registered
->
-> This problem is seen on a custom imx8mp board.
-> I am not able to reproduce it on an imx8mm-evk.
->
-> If I select the pca953x as a module or insert a delay inside its
-> probe() function, it probes successfully.
->
-> The drivers/gpio/gpio-pca953x.c has the following comments:
->
-> /* register after i2c postcore initcall and before
->  * subsys initcalls that may rely on these GPIOs
->  */
-> subsys_initcall(pca953x_init);
->
-> but it seems this is not happening.
->
-> I have also tried to register it like this:
->
-> --- a/drivers/gpio/gpio-pca953x.c
-> +++ b/drivers/gpio/gpio-pca953x.c
-> @@ -1369,21 +1369,7 @@ static struct i2c_driver pca953x_driver =3D {
->         .remove         =3D pca953x_remove,
->         .id_table       =3D pca953x_id,
->  };
-> -
-> -static int __init pca953x_init(void)
-> -{
-> -       return i2c_add_driver(&pca953x_driver);
-> -}
-> -/* register after i2c postcore initcall and before
-> - * subsys initcalls that may rely on these GPIOs
-> - */
-> -subsys_initcall(pca953x_init);
-> -
-> -static void __exit pca953x_exit(void)
-> -{
-> -       i2c_del_driver(&pca953x_driver);
-> -}
-> -module_exit(pca953x_exit);
-> +module_i2c_driver(pca953x_driver);
-> )
->
-> but this did not help either.
->
-> Does anyone have any suggestions on how to fix this problem when the
-> pca953x driver is built-in?
+On Tue, 20 Aug 2024 14:46:03 -0400, Frank Li wrote:
+> Convert binding doc tpa6130a2.txt to yaml format.
+> Additional change:
+>   - add ref to dai-common.yaml
+>   - add i2c node in example
+> 
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mq-zii-ultra-rmb3.dtb: /soc@0/bus@30800000/i2c@30a20000/amp@60:
+> 	failed to match any schema with compatible: ['ti,tpa6130a2']
+> 
+> [...]
 
-So, it should return deferred probe when adapter is not available?
-At least this is how we solve such an issue in ACPI case. I believe
-you are talking DT here?
+Applied to
 
---=20
-With Best Regards,
-Andy Shevchenko
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: dt-bindings: Convert tpa6130a2.txt to yaml
+      commit: aaf55d12fb51d7aa64abe51e27acac1d3d1853ec
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
