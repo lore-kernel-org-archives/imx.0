@@ -1,36 +1,37 @@
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE8541C79
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 04:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB8814B967
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 04:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724127556; cv=none; b=PK1OPyd8K0y4GhLhe7b6p+lbCKeFGMai1MC1qbRsjXlLS034VHNezNyTSiMtiX3Lxq5milrMD6vZH678+vrVud28aOi+l3zUc8LgTpIKoS++0bPzNqyE6Yg4RP1N482Lsyyl3BVRiMs8YkPMmtFmlqHVDbyGNyWcCPJj1jxnd1U=
+	t=1724128706; cv=none; b=K8+4Zj+STFri7rb///zSpXUAsHuvC4gVz9NU63eruSjW74aR5rVZbhkspveeGJgTLyjbMxfLfRAIYOM7hFdC6T4K1LXFeS2UyzG7DpEx6/+xnYafbL90K0PFh76rRxnbvMXk0BluTJj0Ophku1VoCylVyhWZbCoDjMIllEKDKaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724127556; c=relaxed/simple;
+	s=arc-20240116; t=1724128706; c=relaxed/simple;
 	bh=sh9LGBRjcIzsBHmnEb17Y4QMpv16xq1odAtJBr8Dvgg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fw0aaEibzmEf9HLWg/IqvtN+RhXgh1lmqjF7TDip/pqVJuFnDXFrf354JJrXsU/KnaNeEJ460yBBgE+kQPadsjgIjTyz5jLJUb2XuJvUGfrtqtFtZaYYQRCuZgKD+P5wJCJxStZ2Fs7zD1+ngEkpJSlwqX9KNtONQdsqmoonH/s=
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lDSakc2UorMt5bw8WJW9rq6Ps5hpZbm4wAszdpL/duROI5sTL2c9RogDim4R1UHT9ssG1TalDW0Fk2bNCqrGWm1uFj82q9Dk8FXGYVLHNBcRcFy5KEnHXHHYblNLTEHBfZvfsLFk76XK5w/ne8OR/ym3+fDhHD+ixi7mKJrRMwg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id DE8661A20C3;
-	Tue, 20 Aug 2024 06:19:06 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F336B1A20EF;
+	Tue, 20 Aug 2024 06:38:22 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A62BE1A20BC;
-	Tue, 20 Aug 2024 06:19:06 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BA0BA1A2113;
+	Tue, 20 Aug 2024 06:38:22 +0200 (CEST)
 Received: from lsv031045.swis.in-blr01.nxp.com (lsv031045.swis.in-blr01.nxp.com [10.12.176.65])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id ABC8A1802200;
-	Tue, 20 Aug 2024 12:19:05 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id C2029183DC24;
+	Tue, 20 Aug 2024 12:38:21 +0800 (+08)
 From: nxf24178 <ravindra.yashvant.shinde@nxp.com>
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	linux-i3c@lists.infradead.org (moderated list:I3C SUBSYSTEM),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev,
+	Frank.Li@nxp.com,
 	nxf24178 <ravindra.yashvant.shinde@nxp.com>
-Subject: [PATCH] i3c: master: Remove i3c_dev_disable_ibi_locked(olddev) on  device hotjoin
-Date: Tue, 20 Aug 2024 09:48:42 +0530
-Message-ID: <20240820041842.3291130-1-ravindra.yashvant.shinde@nxp.com>
+Subject: [PATCH] i3c: master: Avoid sending DISEC command with old device address.
+Date: Tue, 20 Aug 2024 10:08:17 +0530
+Message-ID: <20240820043818.3352614-1-ravindra.yashvant.shinde@nxp.com>
 X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
