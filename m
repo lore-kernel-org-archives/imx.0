@@ -1,83 +1,52 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B8F19478;
-	Tue, 20 Aug 2024 21:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90F7165F1F;
+	Tue, 20 Aug 2024 22:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724189355; cv=none; b=gIMLAbADN/iPsdomdyAehVuoTbMvYLuThCcPK/ZhaZ+5Q7MiSixnqyt+eCg+4bz/QYqqj57b33mWpKy5sIF+5JrqH6D5Qpy1LAcXWv0Cp9aqqC9aQIzjp1y7qb9hNoyN2sRfyqpFv8rMwM3NQZks6EJitO7FBmggstE0UC8iYC8=
+	t=1724191646; cv=none; b=tShGlWSt1SyPKMevjjWlztx7FhE6Wo2Q0GPzRtWYsYjQdQbdLBqSrpiThtdGFDBnX62+/Hhb4b/pN2bFpYzAwVXKjZMmkcpd2hfwRNOzmuEgGe8+4/ITgpVSNoDPIMx7gWhHosegGTbK8YH52t9x/PPSp6Z3i0YkToa3ZsUTbKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724189355; c=relaxed/simple;
-	bh=/ND5HlIXDzhNU0i4uxc9ZZuJ7bTMfqtlIQ4tksw85gI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tsj1NfA3YL7UqCkMRvlPzF7+DQaD3cw6WTHjkDZDKbrkYf+GNWbzt4VlSduABwDeml9UGsKIkeen6UVsrb9gN3glyRcF0lqPgQabU0hyasevn4/8uyAC38QQAqKBGOuf8Op6QJ5agW5bqMyEperge6QwuKp26U/qript2IVKCLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mL5pfbYS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1724191646; c=relaxed/simple;
+	bh=gTCfUazAJbz+mImit/XNqwQ9XUVQJSY7H1UanfSeIhE=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=nNIhExxAWO2B7PiS2pb1IUfFh0zYA4beNEryy34wCqnVGuWmDz4uZsL+XrvpOG9nm5HDfMbV6lnh6Uy0RAJ6Jk3aKTiJiCe0KPyrBz/VmxaMrjoJZRYTpMcVz/QW2u/rgNJ489Q9uWrV7Y2XJwZnhTXHo+on7vdZWjXxL0TgmUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqbs5rfp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mL5pfbYS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=uXZe5ZpvqsnjNAiqfNP6a+1wsnP0Z0a4ng1nFJIDlYM=; b=mL
-	5pfbYSayQXnt+PHLQFJdD0Ouju/vf4w57GqFzxxoVIkw4uy/VMEplrk4+9lpF56NC++R88Et12h53
-	Jb/tiKLV6df5RPV1YjUgo0fZHrDA5KEkjsHTilzO6BNhPEAb7uWi8fse14kI/7EAYuInAJJMJi3ad
-	n5FQPV/B9EP8+Fs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sgWPb-005GFx-H3; Tue, 20 Aug 2024 23:29:07 +0200
-Date: Tue, 20 Aug 2024 23:29:07 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>,
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	Oleksij Rempel <o.rempel@pengutronix.de>, andi.shyti@kernel.org,
-	linux-i2c <linux-i2c@vger.kernel.org>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: pca953x: Probing too early
-Message-ID: <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch>
-References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
- <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqbs5rfp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8495C4AF12;
+	Tue, 20 Aug 2024 22:07:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724191645;
+	bh=gTCfUazAJbz+mImit/XNqwQ9XUVQJSY7H1UanfSeIhE=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=cqbs5rfpF9GosR2zhGsHx/iMlNYQWn+8YrNpk7H1zYS0SVkhY55nUAZDFAu95B+Cj
+	 ilxtwwqd2AGODFB7Kxcyxlk8tyyfDsYdOL+TiDR9ccJzx6hhYIKl1iuh+0AUtHTpSi
+	 W+9CYiyc+vbAeodh1/d8ZLliW4aOHOfiIUD17ItajQEGFx6zimblkHfz8DeNwSfE8o
+	 sALnZ2FT8xr8q/RaMFtBSuUHsEF1aGa6mu6vuV1apq3GB9el6gVOXK8FeWb+d3Ad7n
+	 m5cH87SmzqscvG7ufFKeq8UslO8ANLRcZWhWQLmAoTKynL5TvK8jF7JluEFT0TINgX
+	 lTEgnPdojQafQ==
+Message-ID: <1d4c39e109bcf288d5900670e024a315.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240820025902.2355565-1-liyuesong@vivo.com>
+References: <20240820025902.2355565-1-liyuesong@vivo.com>
+Subject: Re: [PATCH v1] clk:clk-imx8-acm:fix wrong pointer check in clk_imx_acm_attach_pm_domains()
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: peng.fan@nxp.com, kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com, linux-clk@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, opensource.kernel@vivo.com, Yuesong Li <liyuesong@vivo.com>
+To: Yuesong Li <liyuesong@vivo.com>, abelvesa@kernel.org, mturquette@baylibre.com, s.hauer@pengutronix.de, shawnguo@kernel.org
+Date: Tue, 20 Aug 2024 15:07:22 -0700
+User-Agent: alot/0.10
 
-On Tue, Aug 20, 2024 at 05:47:27PM -0300, Fabio Estevam wrote:
-> Adding the i2c-folks on Cc.
-> 
-> On Tue, Aug 20, 2024 at 5:02 PM Fabio Estevam <festevam@gmail.com> wrote:
-> >
-> > Hi,
-> >
-> > I am seeing an issue with the PCA935X driver in 6.6.41 and
-> > 6.11.0-rc4-next-20240820.
-> >
-> > The pca953x is getting probed before its I2C parent (i2c-2):
-> >
-> > [    1.872917] pca953x 2-0020: supply vcc not found, using dummy regulator
-> > [    1.889195] pca953x 2-0020: using no AI
-> > [    1.893260] pca953x 2-0020: failed writing register
-> > [    1.898258] pca953x 2-0020: probe with driver pca953x failed with error -11
+Quoting Yuesong Li (2024-08-19 19:59:02)
+> device_link_add() returns NULL pointer not PTR_ERR() when it fails,so
+> replace the IS_ERR() check with NULL pointer check.
 
--11 is EAGAIN, which is a bit odd. Given your description, i would of
-expected ENODEV. My guess is, it needs another resource, a GPIO,
-regulator, or interrupt controller. That resources might not of probed
-yet. If that is true, you want the pca953x_probe() to return
--EPROBE_DEFER. The driver core will then try the probe again sometime
-later, hopefully when all the needed resources are available.
-
-Track down where the EAGAIN is coming from.
-
-      Andrew
+Can you document that fact by adding a "Return:" line to the kernel-doc
+for device_link_add() in another patch?
