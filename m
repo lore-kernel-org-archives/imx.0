@@ -1,136 +1,173 @@
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2074.outbound.protection.outlook.com [40.107.215.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CDD335C0
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 01:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724117665; cv=none; b=fpX99q2G8c3zY3eMQXL7h+6e03kD6G84rDknRMPNhavq/+N6UsIMBm6T7XgSNs4vFiPFeJ8lkye+RMK6PldC7ezXXxyI4kuWwxXksWk8J/HdHX+FGm9TFFISs7OfJ/e9byutKHaL0UvZ1ca6xoV60Gj2BZIDXh7CEPn9J1+TtV8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724117665; c=relaxed/simple;
-	bh=o6qPa8f3sP1mC+rT2qdvoPFSMYzpk0OUGYh5ItWMEms=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aVG0YieN3yY6d0ENs4J0MZlA8F33/SYpwEMa0JRwXUEGAriiliOR/n7HBxRLHpVJ5pMMLJq6ztYKCPQwKRynMwzRtU6cLS1DyPwTohju8Buh8rrvo8ihXIf8KkE5kEmX5xWFMvWqWGoHvICr+0Ecp1anY0RWxhkXwthWjMBYLvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=REaoVrzL; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F124B3D3B3
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 02:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724122777; cv=fail; b=L4dJXws214hFg7ytvmXasFg1XTzo+H09NpFv30V9XFWGCM8Pzgg4o3MH5gZkm9FbxIYUJOuXvF+aNj5kg/AH8QVh8ZEjy/EeffdniYZSpZv05AlI1Q5gDQetW70XIh93SqrJH+Ft1VCpp4UhD/NX2aUa8F0M7IdEcSPsHXbF+ok=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724122777; c=relaxed/simple;
+	bh=IBOoBaVNx9AKYPKA86p9a+Wl++9+ND1ueObtTsMBoUY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=U6FHq1LX2+AaJYD4XeEe/GSgqWsQ2PmheqrucG2RB9iWj9NrSavH5lnb04vyKWCh5ohL5ezoD+FhlZHloox00qwuhf/LeStBHdmzuit0BHxv/8LyXljiFowuzGaru92hQiDzu4BgQspBoa4sRjKX24vO5vBiQpK8HljdqP4xRWU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=KMhOoO/1; arc=fail smtp.client-ip=40.107.215.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="REaoVrzL"
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-39d25267dacso2023665ab.3
-        for <imx@lists.linux.dev>; Mon, 19 Aug 2024 18:34:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724117663; x=1724722463; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zz0yf1/Y0q98UkeCNc6m4P8pN/IvsoVhD8EtrTurEF8=;
-        b=REaoVrzLu66UgMJshZFK+9/QMAl7blM0wqOV/2rR13MAtxRSjuw6sfRAznJq1e6Bww
-         HObITTRK+s7vCdJHMwjgT3UQnmt3KEsfIjCE4L8EOvvcdWL23yHGpHiwB1wEe4ZApNUj
-         LWnmyZUi8hnAiqAPkpQ20o5/lvInxLXKJsC8eaqtDGmj1R14wNHBqQM7RJt5OmtAPco6
-         dZmmXLN6M4+IBXUZjnotEfBoC2x+UC1X4SRYHp90fqwR6qfe31g+RFLgHH09FHd/Nn1a
-         0z4Z3jV72eZbdvpCmfSCfzr1BJ2Drj1yYVX68LzFLSkF+HvZl9Du3k+ltoON8fi8XT5n
-         SsIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724117663; x=1724722463;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zz0yf1/Y0q98UkeCNc6m4P8pN/IvsoVhD8EtrTurEF8=;
-        b=H9RJiVroU4zEtNE8VSApFTlO+lV0IdixF5uhPv/sBVOxXXnXuX/fikpB+xT1hKVmCG
-         L6xTwAM5w9XaeeSRbsbDBBwI9ch4DpEt306KyxwGQaNYcC6lEI4uZPk2HoT+qUOIa/zH
-         jPt3f6S0gv7WlLdKYETjM6m2Eu4A3uGJ/S6i9JCy8vYumA5vnJOax3a94XlNsxTW9/TU
-         hkMuYLyBqsxmHusz1KUkO8haYxaCv7+hZUmafBR/pGTGfyeKr/MR/q9cw3njjl1KBh5A
-         R2e6H24EEU+eLbvpEcGD7H2tWFEIzP+pNAP60v5mW/BkrrYrGhs7UjoG9HWSsTwz1AB1
-         GOFA==
-X-Forwarded-Encrypted: i=1; AJvYcCW28Yz1GxL2ubmiOCjnfo+n624A3D/N2o0VOqadncYKf2PgGJkzG3GYO34loJAzOw1X+2M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwmkHfTD1RLP97yNqTptq58T+g4n61pjIADwZ59m2L6MQX5jEjh
-	6uftRbUo4GwLn3Zw9pnqbhWr2Ncn15kB5JhvFTiidYzNoh7W6Fzj/feWEhZx+1KVr5V/w9oCZab
-	2ZKvyOXP2ZaqlnpPqBm6PRPTZ9jM=
-X-Google-Smtp-Source: AGHT+IH2AsFaMWdba8AOgcnp+2GFW/3VG5Vj4/V/h1JYgxxD5JHekYstIjqy6bOiXsUFWjTCM1F2jVROifOBG4WowQo=
-X-Received: by 2002:a05:6e02:1d0e:b0:39a:f126:9d86 with SMTP id
- e9e14a558f8ab-39d27963062mr82986245ab.0.1724117662736; Mon, 19 Aug 2024
- 18:34:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="KMhOoO/1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ksoNfIGQ+iORrBWGgOd5GjA42apEJxhuQnTSBob2PmULngH5X6gqvvQsv8obJNAchj+z/HbSjO+Fd4U92D/AT7XI9ILuIVzbCXO7QsPruBDZN/804ouxfgECKuByUB8FfOY0jcdC5kmTaL14FOpErfGNOvwdegTrlTFN3Kp45aLyypjga4Q5Ryp0gKC6sqxhLBFewkzXk/aSi0M3RCM4jHx+y2II1dzhoqNRS8R3JliXsfkTa90F6DHvddlBf0s7mrmWlG9ouXeEuDFkCj99rFRheCIxkTvzT2GibFUaaE0AUiKT1bRBuljcdL997zX2rkKbmxVJEALTVMsrIeVBcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7IhBHtjhViEJCXGGxvgJMrhPHotzBLw8UYtdsZzBkN4=;
+ b=RESGObqVcI3n+gmsXorKRHPYQ9TBQzfZXBmSLHpWnprFwXdE8roKoGPN8MlhqId0jFdh4SdnqAj2P/0w9RQ5bYlpTtz/jg2XPEr951lPWGs+Xze0jjknGix1DpJlnqZjfu98wnKxRgm+6ZdvVVMJnoqNwqVN2iNs9WQ+tnCxLioe6H/yFSgWf6awV7g8aXmUgkEBadVCpWPVonqkDsU3Axg8bJC6x1X3ILsAolOogtHjJbuylaegLZggO/FGN3qiy7R+RLmGWTmXcRemvi4aACTXkhspPz+fDCnZM+aVHy4872p1vg+XK8uOXwrn+JQ4xqtaRTuYGcR2fsWll1SviQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7IhBHtjhViEJCXGGxvgJMrhPHotzBLw8UYtdsZzBkN4=;
+ b=KMhOoO/1eYjq7bsZcWZIGDhiOUBTs0NpTkGa9HVwJQRgSgc8uA8OdX9ZOWOOWi2Gt+Pr3fX4d2/7Wb16Kh06kj9a9sJxbgGJtWoEJxb6D+5RacJN6zZ5O98oUuQDmCv42syacyOb0osUaKMSCaYilnDanmvIpei99ey6zWqcJ1rlvZ0IBKaHG++qWz9YxBj5RfSE0G9jYtYqbLhFnAQ2NdQIGnL3+k4XPT6tCEyGEUE9GR+ik00KNxnCEy8lIJ6w13gFqLs66YvShnSafoNaZtCEB8Y0zra2pA0RYf4If/pRswEHhOSbaw4D+UG8eNtG1hroRlsOFC9u9Jfr4/lQMg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from TYZPR06MB5709.apcprd06.prod.outlook.com (2603:1096:400:283::14)
+ by SEYPR06MB5858.apcprd06.prod.outlook.com (2603:1096:101:c1::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Tue, 20 Aug
+ 2024 02:59:29 +0000
+Received: from TYZPR06MB5709.apcprd06.prod.outlook.com
+ ([fe80::bc46:cc92:c2b6:cd1a]) by TYZPR06MB5709.apcprd06.prod.outlook.com
+ ([fe80::bc46:cc92:c2b6:cd1a%7]) with mapi id 15.20.7849.021; Tue, 20 Aug 2024
+ 02:59:29 +0000
+From: Yuesong Li <liyuesong@vivo.com>
+To: abelvesa@kernel.org,
+	mturquette@baylibre.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	sboyd@kernel.org
+Cc: peng.fan@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	shengjiu.wang@nxp.com,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	opensource.kernel@vivo.com,
+	Yuesong Li <liyuesong@vivo.com>
+Subject: [PATCH v1] clk:clk-imx8-acm:fix wrong pointer check in clk_imx_acm_attach_pm_domains()
+Date: Tue, 20 Aug 2024 10:59:02 +0800
+Message-Id: <20240820025902.2355565-1-liyuesong@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCPR01CA0188.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b0::20) To TYZPR06MB5709.apcprd06.prod.outlook.com
+ (2603:1096:400:283::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com> <20240819-i3c_fix-v3-1-7d69f7b0a05e@nxp.com>
-In-Reply-To: <20240819-i3c_fix-v3-1-7d69f7b0a05e@nxp.com>
-From: Stanley Chu <stanley.chuys@gmail.com>
-Date: Tue, 20 Aug 2024 09:34:11 +0800
-Message-ID: <CAPwEoQOXme+GofEhpXaBBmsyGJP-QQtLMJG45PTdNsSqFn391w@mail.gmail.com>
-Subject: Re: [PATCH v3 01/11] i3c: master: Remove i3c_dev_disable_ibi_locked(olddev)
- on device hotjoin
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon <bbrezillon@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Conor Culhane <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYZPR06MB5709:EE_|SEYPR06MB5858:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36a6034f-1b03-4b96-66df-08dcc0c41b81
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qomo7WYBbQJw1fSYGQFOrylWMeRMj3SQhf7oO83EM++sP23criWnwA4pGKjf?=
+ =?us-ascii?Q?PLpJESxnmRZfo3szFrkToFS2jQzDqQGkTavZobPow1NZiUPrK/D4UIjq4oEk?=
+ =?us-ascii?Q?ermNTk058nY6yx2hBf6H7hS4wF0AdX3DqJBT7mTuZJk1MADB2CmFAuzJlayA?=
+ =?us-ascii?Q?T5TXnZt0dE2l5hnWh/Lvr1OTJNTtglDLME/KmrXccFljmrfWswZ1YBGFPVYT?=
+ =?us-ascii?Q?t1YS7MJ301Z0NWkE1KCUB+tCuNWOjQHiAjRHhYMJg6mrfmLbcENunV4wtyVT?=
+ =?us-ascii?Q?KttoL4P8XJx3wzHY0sOUGncJhW9URcqPQU0CgFPrOrM/NznY6q1aWMatIS2M?=
+ =?us-ascii?Q?ZbygmZiicC6zkgn6xqMn+XNw+GI9zhM1BXbdl8mYwvTl/KerOXIjJ+tvMLZ1?=
+ =?us-ascii?Q?lwfq8WEMM78d/BYZ/XYLqISm9dcoltuZgEpm7FMLAQJor8MER9PyyLdvdoQy?=
+ =?us-ascii?Q?b5Ss0LCABn+TLR7z9+Bs54pTyZOoi3xCy9klWpF+CZdTZb4nGt/VrfkDb/wV?=
+ =?us-ascii?Q?0mXZGIBMxOOCaqF6pOmgAbTXFezf0MS/h5cEy/8woBfxroTmWGqY7PsTcFOW?=
+ =?us-ascii?Q?/x5HWm3RDOXFqAKC+bgGv0w+rZhRbaNK+hZfikYbdeJPcIPLqXdQ0CRyKCSl?=
+ =?us-ascii?Q?IpAlVTnLSYoOgJC3tjtUMlDwqfgtcENlCs5nQo6RP9rRngR2fYqsaChySqzw?=
+ =?us-ascii?Q?zDNry6K7N8xk9aH30/Z0TO9dM5YPCysiWZO+zPtvx5oNHGaw93DuZLKsQkyy?=
+ =?us-ascii?Q?JioDGHavdB7tKAZlCVLdAL5VDPplC52eS9J1GaO/DdK5YfGIpENeQOLlq/No?=
+ =?us-ascii?Q?kylTCn6UkxOqcxLbGuBIadAWoMpwsECyxSmSx4fP2Ptlc36+2GzbLosObXSu?=
+ =?us-ascii?Q?L30dSV+hF9V7KaeLgKqgwdyp3EacRUYltX78HfXS6rRxoGXSDrxauDbTAdW3?=
+ =?us-ascii?Q?7MNO7Zx+na6f15uySZmrjk1pitU0sP3AafKk/Bgge2DgwqecfCkPodveIN8s?=
+ =?us-ascii?Q?0bsZSOIu0g596i7Iw+4hWByf03kjIpf1iwHd/4dIyUNgsxEGDgQEfc5KYdZW?=
+ =?us-ascii?Q?lfsRlg0VMim+dqrhnRQczyfmbIIEhsxWN40olX8UfkuRu98l6IaHEF14/Dm0?=
+ =?us-ascii?Q?6qXJ9y+ieJHbBqeagxkv7s0rEMFxpT+yjsPEVDiVHjnGAFAxneeW4SHe4oS7?=
+ =?us-ascii?Q?DhvyYH83+O/8QHmGnKMrXxKgg6JV6ZY5XIh4Kd3bVxt10heUCL4EPh60ItDC?=
+ =?us-ascii?Q?795g4k88Lub4L2KyhNFHnf3K1xgff4hjQH8kip9s1J2MtEEmQR/nAtC9GuHg?=
+ =?us-ascii?Q?ukyMvmgiaMgKJ152VoiMaDbWXwSAaKBq6kaoW0S0pdl0lWgrASjy5KQ2LGAm?=
+ =?us-ascii?Q?xnG322aoBxtWpS8jAsf5rwL/1MJpheN1sZI5lB6r3rsL2Nqkiw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR06MB5709.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?b64ZQM9tKEPlyr/F/iD5NmugMAGq7x3EQXHNCsfr975WsOMb7/Pdj5dXmQpV?=
+ =?us-ascii?Q?QXN1HuDCmVLDVvwjXv6HHJre53ZdGx5OMkAUsMpAOzbCG4Z4u6HFtDWhYoUu?=
+ =?us-ascii?Q?jzTNk+go/FJYWO7bz4bpLWjbi7xe/L0krHammQZRVN6wsKCHJ+skgQwJi8PN?=
+ =?us-ascii?Q?j3I/gznppr8S1g6wgHcMmUnAxhwuDFQZyRnbx0hqHrqvwj3vTpsLbbOkMaIe?=
+ =?us-ascii?Q?ocOVYFkVOHlc4kB3KpvBQ74RtBJ1rgpyWOjJHb0T7sISW4BPO6KxTstXiQA1?=
+ =?us-ascii?Q?1ujS1PDV8RKYmyx0FJfHw3PYPYXJG9coI2OG4T7cKC7EQB85tkPl5wizyD+4?=
+ =?us-ascii?Q?WWudjoPB74hOklLdqe5KWMwS6rUSlfOZEAczVgkF8WRyTWQZQgc+sRikfOF1?=
+ =?us-ascii?Q?q7ijuSmqgGGCU2SMROoZrTrIxTTkxHBWXR662NO+ruWW5Fqii/+3677JPpfT?=
+ =?us-ascii?Q?0Ez476Jm3SGmhGiiGKPG9PUMf76TkVquxZLc7y4CqgU9NpRAaMnWzV2SyHFR?=
+ =?us-ascii?Q?LwUpkEpa/KAwbNjtLcn+z/5cp04hUFDBC8BvO1r+fdsoq8I5tf78xnHg1Wtg?=
+ =?us-ascii?Q?2B92gUpOypWYlAhfuHlrqBhcb07Pg0qFuiQ8h4XfW9s8bqYv0P+ynv2AzF+a?=
+ =?us-ascii?Q?xGyDfQc9E1ccV7/beu+qtsDkDK2/UwxPaqrD/T5YoICtx0bXOoqINeI7b7vq?=
+ =?us-ascii?Q?MdIWkIb44furOs00Kn45e9hgCKD9+Chd0o9oxLBxUBD9DrWmCSdyE6q1r/la?=
+ =?us-ascii?Q?GwsAAm4bUSRGZi/Bpo2DgEEvaB1VxOawPlr0FYoD9l6mE5oNAVwuNQuWOS57?=
+ =?us-ascii?Q?ONVTYB+jSXN/7P+Wssy8Q1tGi1g/sm+8z3RQYidSKtadoNzK0HiblxE7n4ky?=
+ =?us-ascii?Q?hdCnMZH9d3tOmoxHYwqnNYwVdsomNIHhaauOBGRcu3XLSPsPhLMS/7Jgs1Mz?=
+ =?us-ascii?Q?ItnxnfhuzSnxC7Y9tuGpysqKgkrwxvBPuJxMbHTNT/kyNDANL02ZmWsj9spz?=
+ =?us-ascii?Q?b1N9hM9WwqrMaBugLFJdsOZBGvDMhlr3tmni91FbpvG9Kf7xRvXVqDiJuTwA?=
+ =?us-ascii?Q?r1Pq4LuPdnMn0cDI/PZa5tNqWsuB5yswKGvUnuoFF0OZYJQCo6OOFs46VRn2?=
+ =?us-ascii?Q?2Sozv3s94sAI6m5cK36E9czdNnTr+ytdld+SLm8KiJSG7gSN1OgwXAM7kiDP?=
+ =?us-ascii?Q?P1g6RPdF9HjbodxNz7Cy5rDlwK4CfX97vuGAgeHR4Pa40vpCxeEvQpDCj4Wn?=
+ =?us-ascii?Q?k2ODq9gzDkuUK+jcrSYYC7WW9L05qRiQi6dncSqHB+OiJuFoJC5TPIOXsB6t?=
+ =?us-ascii?Q?qvvScsUfgz3EeFnkj1Y7ex+Nn/M8oyqnYHE9uPPAWd4WhdFvKqNe0j5UTYQf?=
+ =?us-ascii?Q?SgxZiwWcmn8xe45GxSPIlQcKdbnJ/2A8XfpdsEP2ZPbxqFAgQKY1fDh2wDFB?=
+ =?us-ascii?Q?rFOePyOwEXlZnloSjR1FLCZAKBKE7NLSWwtSQy4terEiPIVASCL/hMWz1yNj?=
+ =?us-ascii?Q?xjtCcB3l076YcQbbAgpJ+/+TIxyLPYAO1xVNKPiBjdhw68qZNKGtU91VhdxE?=
+ =?us-ascii?Q?MJVj7tz5bLnvaeE6EjE+9ge/oueq4zoFfkAI+rOe?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36a6034f-1b03-4b96-66df-08dcc0c41b81
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR06MB5709.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 02:59:28.9321
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qYkAQAvY0IVkXlX7ZpN/WJnwQ7eieX7fv/A2GPlKPBK7CWcBM0Jqo1zF9lfZ4cxcf92Sb1MkoJVGO59sgDAHcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB5858
 
-On Tue, Aug 20, 2024 at 12:02=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
->
-> When a new device hotjoins, a new dynamic address is assigned.
-> i3c_master_add_i3c_dev_locked() identifies that the device was previously
-> attached to the bus and locates the olddev.
->
-> i3c_master_add_i3c_dev_locked()
-> {
->     ...
->     olddev =3D i3c_master_search_i3c_dev_duplicate(newdev);
->     ...
->     if (olddev) {
->         ...
->         i3c_dev_disable_ibi_locked(olddev);
->         ^^^^^^
->         The olddev should not receive any commands on the i3c bus as it
->         does not exist and has been assigned a new address. This will
->         result in NACK or timeout. So remove it.
->     }
-> }
->
-> Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys en=
-try")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/i3c/master.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> index 7028f03c2c42e..852b32178b722 100644
-> --- a/drivers/i3c/master.c
-> +++ b/drivers/i3c/master.c
-> @@ -2039,10 +2039,8 @@ int i3c_master_add_i3c_dev_locked(struct i3c_maste=
-r_controller *master,
->                         ibireq.max_payload_len =3D olddev->ibi->max_paylo=
-ad_len;
->                         ibireq.num_slots =3D olddev->ibi->num_slots;
->
-> -                       if (olddev->ibi->enabled) {
-> +                       if (olddev->ibi->enabled)
->                                 enable_ibi =3D true;
-> -                               i3c_dev_disable_ibi_locked(olddev);
-> -                       }
->
->                         i3c_dev_free_ibi_locked(olddev);
+device_link_add() returns NULL pointer not PTR_ERR() when it fails,so
+replace the IS_ERR() check with NULL pointer check.
 
-i3c_dev_free_ibi_locked will still encounter WARN_ON(dev->ibi->enabled).
+Fixes: d3a0946d7ac9 ("clk: imx: imx8: add audio clock mux driver")
+Signed-off-by: Yuesong Li <liyuesong@vivo.com>
+---
+ drivers/clk/imx/clk-imx8-acm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Stanley
+diff --git a/drivers/clk/imx/clk-imx8-acm.c b/drivers/clk/imx/clk-imx8-acm.c
+index 1bdb480cc96c..ed8cad8d6a57 100644
+--- a/drivers/clk/imx/clk-imx8-acm.c
++++ b/drivers/clk/imx/clk-imx8-acm.c
+@@ -289,7 +289,7 @@ static int clk_imx_acm_attach_pm_domains(struct device *dev,
+ 							 DL_FLAG_STATELESS |
+ 							 DL_FLAG_PM_RUNTIME |
+ 							 DL_FLAG_RPM_ACTIVE);
+-		if (IS_ERR(dev_pm->pd_dev_link[i])) {
++		if (!dev_pm->pd_dev_link[i]) {
+ 			dev_pm_domain_detach(dev_pm->pd_dev[i], false);
+ 			ret = PTR_ERR(dev_pm->pd_dev_link[i]);
+ 			goto detach_pm;
+-- 
+2.34.1
 
->                 }
->
-> --
-> 2.34.1
->
->
-> --
-> linux-i3c mailing list
-> linux-i3c@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-i3c
