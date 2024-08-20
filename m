@@ -1,120 +1,88 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E180EAD5
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 03:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE8541C79
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 04:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724124672; cv=none; b=r24AnO2zfYuoz+xfYZ/yMhXAhuaE7/R8+1ai4+gB1fsf46bFV4VMDxwmtWQOVUGHDLOueltWcMV8wMvxqjrnOJUFO3so6tgBsZIAa9647aKikDZEttfZ4ki9ptuvqJSejzcmwjQhi2xUrBrTit0gqQWGHvS54N+4uAfa5/WL3bM=
+	t=1724127556; cv=none; b=PK1OPyd8K0y4GhLhe7b6p+lbCKeFGMai1MC1qbRsjXlLS034VHNezNyTSiMtiX3Lxq5milrMD6vZH678+vrVud28aOi+l3zUc8LgTpIKoS++0bPzNqyE6Yg4RP1N482Lsyyl3BVRiMs8YkPMmtFmlqHVDbyGNyWcCPJj1jxnd1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724124672; c=relaxed/simple;
-	bh=o2y4NtQw6PkMCLcvj2u3PAmkBMrJLxt98FGyYIjlE1Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AZZfVMa6Jv3PC552YsNxyzdPwfVoSvG9i2SLgJ0XZxfJgKb5aLMejtuzxeEkUkY//XqKOevKRDHEy6e9W4SUPRTrrW9eh5Ly3h9Ln2O2N7/nS0tfjtpV4+OHhZ0Zr+/zhO8xzThz3OhhTw7b9XZSYp4h1Cwo0DSyMrX6ZOgLLDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=wb9gJB8E; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="wb9gJB8E"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 857AC88D3C;
-	Tue, 20 Aug 2024 05:31:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724124662;
-	bh=RD4icbSIhX45rwxUUXSTQSGNIkWDW0xKEjDV/wBBn0w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=wb9gJB8EVjoeuiBshusKsHO/UqSyI6NkyHahtgV7GUIs6IYl46dUPN6+VFs3Yrs3o
-	 WmAeTrSQbUSrJiq0QiYUoyh7hRv/3O9IZil2yQXh5TmSElUEsaJ/hFQgeuYZZvSTB4
-	 Q+/k/vD9Cc4eX2h/IcDdjabs5X9JCEaDMWDdn/YcseocgPdG2emZq11gH0STAU8y7a
-	 jRuDwEvMe3DRGV7TtjblRJhLohuzPljuGy22K+EBdcVcujTJr/u+SeSScZ25/dxOub
-	 47fS/lj/dGI6MNGSxuY2i0mg665xu4ZBEDier2H6xhcaUHUaReGK+ZdbIRYf20Yw6c
-	 pRnJImsc6wU1w==
-Message-ID: <cd8b6c1e-f7d7-4db2-b178-7391e3111237@denx.de>
-Date: Tue, 20 Aug 2024 05:30:04 +0200
+	s=arc-20240116; t=1724127556; c=relaxed/simple;
+	bh=sh9LGBRjcIzsBHmnEb17Y4QMpv16xq1odAtJBr8Dvgg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fw0aaEibzmEf9HLWg/IqvtN+RhXgh1lmqjF7TDip/pqVJuFnDXFrf354JJrXsU/KnaNeEJ460yBBgE+kQPadsjgIjTyz5jLJUb2XuJvUGfrtqtFtZaYYQRCuZgKD+P5wJCJxStZ2Fs7zD1+ngEkpJSlwqX9KNtONQdsqmoonH/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id DE8661A20C3;
+	Tue, 20 Aug 2024 06:19:06 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A62BE1A20BC;
+	Tue, 20 Aug 2024 06:19:06 +0200 (CEST)
+Received: from lsv031045.swis.in-blr01.nxp.com (lsv031045.swis.in-blr01.nxp.com [10.12.176.65])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id ABC8A1802200;
+	Tue, 20 Aug 2024 12:19:05 +0800 (+08)
+From: nxf24178 <ravindra.yashvant.shinde@nxp.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-i3c@lists.infradead.org (moderated list:I3C SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev,
+	nxf24178 <ravindra.yashvant.shinde@nxp.com>
+Subject: [PATCH] i3c: master: Remove i3c_dev_disable_ibi_locked(olddev) on  device hotjoin
+Date: Tue, 20 Aug 2024 09:48:42 +0530
+Message-ID: <20240820041842.3291130-1-ravindra.yashvant.shinde@nxp.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/1] dt-bindings: input: touchscreen: convert
- ads7846.txt to yaml
-To: Frank Li <Frank.Li@nxp.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Mark Hasemeyer <markhas@chromium.org>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20240819180535.368902-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20240819180535.368902-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On 8/19/24 8:05 PM, Frank Li wrote:
+When a new device hotjoins, a new dynamic address is assigned.
+i3c_master_add_i3c_dev_locked() identifies that the device was previously
+attached to the bus and locates the olddev.
 
-[...]
+i3c_master_add_i3c_dev_locked()
+{
+    ...
+    olddev = i3c_master_search_i3c_dev_duplicate(newdev);
+    ...
+    if (olddev) {
+        enable_ibi = true;
+        ...
+    }
+    i3c_dev_free_ibi_locked(olddev);
+    ^^^^^^^^
+    This function internally calls i3c_dev_disable_ibi_locked(addr)
+    function causing to send DISEC command with old Address.
 
-> +  ti,keep-vref-on:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      set to keep Vref on for differential measurements as well.
+    The olddev should not receive any commands on the i3c bus as it
+    does not exist and has been assigned a new address. This will
+    result in NACK or timeout. So, update the olddev->ibi->enabled
+    flag to false to avoid DISEC with OldAddr.
+    ...
+}
 
-Please start sentence with uppercase letter.
+Signed-off-by: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>
+---
+ drivers/i3c/master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> +  ti,pendown-gpio-debounce:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Platform specific debounce time for the pendown-gpio.
-> +
-> +  ti,penirq-recheck-delay-usecs:
-> +    $ref: /schemas/types.yaml#/definitions/uint16
-> +    description:
-> +      If set to non-zero, after samples are taken this delay is applied and
-> +      penirq is rechecked, to help avoid false events.  This value is
-> +      affected by the material used to build the touch layer.
-> +
-> +  ti,pressure-max:
-> +    deprecated: true
-> +    $ref: /schemas/types.yaml#/definitions/uint16
-> +    description:
-> +      Maximum reported pressure value.
-> +
-> +  ti,pressure-min:
-> +    deprecated: true
-> +    $ref: /schemas/types.yaml#/definitions/uint16
-> +    description:
-> +      Minimum reported pressure value (threshold).
-> +
-> +  ti,settle-delay-usec:
-> +    $ref: /schemas/types.yaml#/definitions/uint16
-> +    description:
-> +      Settling time of the analog signals; a function of Vcc and the
-> +      capacitance on the X/Y drivers.  If set to non-zero, two samples are
-> +      taken with settle_delay us apart, and the second one is used. ~150
-> +      uSec with 0.01uF caps.
-> +
-> +  ti,swap-xy:
-> +    deprecated: true
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      swap x and y axis.
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 7028f03c2c42..07ccb2c00074 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2042,6 +2042,7 @@ int i3c_master_add_i3c_dev_locked(struct i3c_master_controller *master,
+ 			if (olddev->ibi->enabled) {
+ 				enable_ibi = true;
+ 				i3c_dev_disable_ibi_locked(olddev);
++				olddev->ibi->enabled = false;
+ 			}
+ 
+ 			i3c_dev_free_ibi_locked(olddev);
+-- 
+2.46.0
 
-DTTO
-
-With those two fixed:
-
-Reviewed-by: Marek Vasut <marex@denx.de>
-
-Thanks !
