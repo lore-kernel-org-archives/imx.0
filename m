@@ -1,129 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CF418A95B;
-	Tue, 20 Aug 2024 09:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162B818E04E
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 11:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724145477; cv=none; b=Z1hXmkUEBU7DfhpGeoVEuO78JKQ7zADxo7wkEFjtJa/lTxAIbIAo3JXWa2RNDNhenCk0mecj4kby++/RSFXSlfOrkCpVz/cHrgMNaSMHlqjrvUZ7LqyL5DRzVV7s6pAv+hY/TydDX3+YXSn1uswLnCnplDOwiAVnztHVuusQpKg=
+	t=1724153338; cv=none; b=ZWD4ORB/a5MvQqoZ4EHh/YsncxTDyttEqu8JdJ0UkAPCYE+x834TRNY+6MYTMOmqn7q9tljH7hsUFj6369w+UJrs6m5bzAokjeqpCGh+8jveqRvOWlJ7wy29yce7emxoUSsgBirT+A8c+9SSA2GcePWuzeunSowh6d1OfCuauuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724145477; c=relaxed/simple;
-	bh=D1PblbAhDtG6zJFqDLsx5Mo/b+pVrfHqprGLRoQp7jQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=gOdfveig0k7YcrEDez6Gu3h3jH1pd/zUS3UY06GC4GA9KnvG0LYK4meEx+qYvNs7SzDOFB5fSogP1fdY3EQQ8XbqJIPnCCFLlWunAaQVDXcDFj3e8editQc0uUqYKdfAwdVFtugnUi+mct7TEbN11YgKEe0E7sxg62xol5t5J5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIOPiq+V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724153338; c=relaxed/simple;
+	bh=Fw7i15Uk4ElEBQ9NuybuwhJgflJQP2cop0S91tX02HA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=RFlUWkVpjBLi3fyKNhZ0I43S8V7eLO7sJX/RJSytBFIzo2PkVUfsRZt+PEIDo0+tfL8di2ffxNikRhFmtvxPWwtzEIvSj2Dh5wLswzVaHKSoZ6Jatayen93KotPGoJ5pX95sWaFU+pGOsNxsWwhRrSeE0FyPina/mCR9psymH9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=g5cctYVO; arc=none smtp.client-ip=208.88.110.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIOPiq+V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C558FC4AF0B;
-	Tue, 20 Aug 2024 09:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724145476;
-	bh=D1PblbAhDtG6zJFqDLsx5Mo/b+pVrfHqprGLRoQp7jQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=MIOPiq+VjVknGOfFscs8z9icMzZJT62JmZJS9BR75KMj4V2ds5+4ObHiuwPzMBTAB
-	 NVK58WTPXrQ0/hyiK9+Lwq+JbDGW3mHkSvDN8pC4Jr9sZG7kC3uvk4Y7WX4u2TpPZO
-	 DPzRGpj6ndUeBuBdeYmA4kdTJraf4PD5SN0BXqn8xqsnOonJppt3m6C4CgsKkcGaN2
-	 ECVxXu9440DPvn3XJsJo0HOBRX2sZEDA8TOGfQ3VJeEGRs8emp26jOc3Rl++5q5K9z
-	 /oFLSXGf/n0eSjLYacul4N4+JaNti5sPIgMdsyoTDlpo2wyZDcuzk02EjTm1nZ8o42
-	 Hmz436P9x5kaQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Frank Li <Frank.Li@nxp.com>,  "David S. Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,
-  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
- <conor+dt@kernel.org>,  "open list:NETWORKING DRIVERS (WIRELESS)"
- <linux-wireless@vger.kernel.org>,  "open list:NETWORKING DRIVERS"
- <netdev@vger.kernel.org>,  "open list:OPEN FIRMWARE AND FLATTENED DEVICE
- TREE BINDINGS" <devicetree@vger.kernel.org>,  open list
- <linux-kernel@vger.kernel.org>,  imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: net: wireless: convert
- marvel-8xxx.txt to yaml format
-References: <20240816171203.143486-1-Frank.Li@nxp.com>
-	<ZsPccHaCMRgbNk4L@google.com>
-Date: Tue, 20 Aug 2024 12:17:51 +0300
-In-Reply-To: <ZsPccHaCMRgbNk4L@google.com> (Brian Norris's message of "Mon, 19
-	Aug 2024 16:59:44 -0700")
-Message-ID: <87seuzwo1s.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="g5cctYVO"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id A86A79C5CFF;
+	Tue, 20 Aug 2024 07:28:53 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id 6PHx-AwEQUI8; Tue, 20 Aug 2024 07:28:52 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id CF51C9C5DD8;
+	Tue, 20 Aug 2024 07:28:52 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com CF51C9C5DD8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1724153332; bh=chr/7XC5IjmPlgTwemPr9SDOEWskwMTyTM/nHv8aNvk=;
+	h=From:To:Date:Message-Id:MIME-Version;
+	b=g5cctYVOfrqptNDneEYQlJujj7Gz6GqBAHT7J5wAn80v50MbpoksH5XWnWDsu+afT
+	 pli2mHT4I89B/6yrHLLE0J/NZs8427JkL7mWctXwLxH3NpiAeJj1ROwBorF0Ag4fhB
+	 vM++QpdYn/qtlfntDMKH1VOpFRtXryD/maErta9EqJACQY2oriq5KRcSgqlbOQkfaV
+	 YXdfsQHEK4F3bzLJ5Jyb1/QlYyZAMTe6Q9XT0Fe2NgwHsHzsQWIZEgpOgyehCnR+eC
+	 y3OvaA9OQH+UNMZCORrRs1N/2khPItFs8345mueKXg/PDcAcXqeaEoXmoGQI+gUd6e
+	 AtG00B0sFcWNw==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 6LOSUcPF8PDX; Tue, 20 Aug 2024 07:28:52 -0400 (EDT)
+Received: from gerard.rennes.sfl (80-15-101-118.ftth.fr.orangecustomers.net [80.15.101.118])
+	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id AE2359C5CFF;
+	Tue, 20 Aug 2024 07:28:50 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Mark Brown <broonie@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Subject: [PATCH v7 0/2] ASoC: fsl-asoc-card: add S/PDIF controller support
+Date: Tue, 20 Aug 2024 13:28:25 +0200
+Message-Id: <20240820112827.126380-1-elinor.montmasson@savoirfairelinux.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=quoted-printable
+Content-Transfer-Encoding: quoted-printable
 
-Brian Norris <briannorris@chromium.org> writes:
+Hello,
 
-> Hi Frank,
->
-> On Fri, Aug 16, 2024 at 01:12:01PM -0400, Frank Li wrote:
->> Convert binding doc marvel-8xxx.txt to yaml format.
->> Additional change:
->> - Remove marvell,caldata_00_txpwrlimit_2g_cfg_set in example.
->> - Remove mmc related property in example.
->> - Add wakeup-source property.
->> - Remove vmmc-supply and mmc-pwrseq.
->> 
->> Fix below warning:
->> arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: /soc@0/bus@30800000/mmc@30b40000/wifi@1:
->> failed to match any schema with compatible: ['marvell,sd8997']
->> 
->> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->> ---
->> Change from v1 to v2
->> - Add Brian Norris <briannorris@chromium.org as maintainer
->> - Remove vmmc-supply and mmc-pwrseq
->> - Add wakeup-source
->> - rename to marvell,sd8787.yaml by using one compatible string, suggestted
->> by conor dooley at other binding doc convert review
->> ---
->>  .../bindings/net/wireless/marvell,sd8787.yaml | 93 +++++++++++++++++++
->>  .../bindings/net/wireless/marvell-8xxx.txt    | 70 --------------
->>  2 files changed, 93 insertions(+), 70 deletions(-)
->>  create mode 100644 Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
->>  delete mode 100644 Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
->> 
->> diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
->> new file mode 100644
->> index 0000000000000..c6647672b7b1e
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
->> @@ -0,0 +1,93 @@
->
->> +  marvell,caldata-txpwrlimit-5g-sub0:
->> +    $ref: /schemas/types.yaml#/definitions/uint8-array
->> +    description: Calibration data for sub-band 0 in the 5GHz band..
->
-> You have an extra period in this line.
->
->> +  marvell,caldata-txpwrlimit-5g-sub1:
->> +    $ref: /schemas/types.yaml#/definitions/uint8-array
->> +    description: Calibration data for sub-band 1 in the 5GHz band..
->
-> Same.
->
->> +    maxItems: 688
->> +
->> +  marvell,caldata-txpwrlimit-5g-sub2:
->> +    $ref: /schemas/types.yaml#/definitions/uint8-array
->> +    description: Calibration data for sub-band 2 in the 5GHz band..
->
-> Same.
->
-> Otherwise, this looks good to me, so feel free to carry my:
->
-> Acked-by: Brian Norris <briannorris@chromium.org>
->
-> (Sometimes Kalle will make trivial fixes like this when applying. I'm
-> not sure if that means you should send v3 anyway, or see if he'll apply
-> this on his own soon enough.)
+This is the v7 of the series of patches aiming to make the machine
+driver=C2=A0'fsl-asoc-card'=C2=A0compatible with S/PDIF controllers on imx =
+boards.
 
-For wireless-next patches I can easily edit commit messages but not the
-actual patch, so please send v3.
+The core of the contribution was merged with v6 of the series.
+v7 fixes the order of properties for new nodes in device-trees
+so that `compatible` is first in the list as recommended.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+These two patches update all in-tree device-trees to use the new
+'fsl-asoc-card' properties.
+Note that as the old properties are still supported by `fsl-asoc-card`:
+- previous versions of in-tree device-trees are still supported.
+- out-of-tree device-trees are still supported.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+This series of patches was successfully built for arm64 and x86 on top
+of the latest=C2=A0"for-next" branch of the ASoC git tree on the 19th of
+August 2024.
+These modifications have also been tested on an i.MX8MN evaluation board
+with a linux kernel RT v6.1.26-rt8.
+
+Best regards,
+Elinor Montmasson
+
+
+Changelog:
+v6 -> v7:
+- Changed the order of properties in new device-tree spdif-in/out nodes,
+  so that `compatible` is first.
+- v6 patch series at:
+https://lore.kernel.org/all/20240627083104.123357-1-elinor.montmasson@savoi=
+rfairelinux.com/
+
+v5 -> v6:
+- Remove applied patch "ASoC: fsl-asoc-card: set priv->pdev before using
+  it".
+- Add backward compatibility with `imx-spdif` DT properties.
+- Squash removal of `imx-spdif.yaml` into patch updating
+  `fsl-asoc-card.yaml`.
+- `fsl-asoc-card.yaml`: fix indentation, document use of compatible
+  "fsl,imx-audio-spdif" only with "fsl,imx-sabreauto-spdif" or
+  "fsl,imx6sx-sdb-spdif".
+- Explain better in commit messages why there are new DT properties that
+  can be used with "fsl,imx-audio-spdif" and what are the benefits to
+  use them.
+- v5 patch series at:
+https://lore.kernel.org/all/20240620132511.4291-1-elinor.montmasson@savoirf=
+airelinux.com/
+
+v4 -> v5:
+- Focus the contribution to bringing S/PDIF / ASRC support.
+- Instead of creating a new compatible for the S/PDIF `fsl-asoc-card`
+  support, merge the driver `imx-spdif` into `fsl-asoc-card`, and keep
+  the compatible. It preserves the base S/PDIF audio card support
+  but also extends it with the possibility to use an ASRC.
+  It also reduces code and driver duplication.
+- Following driver merge, adapt device trees using "fsl,imx-audio-spdif"
+  compatible.=20
+- Use more `for_each_codecs` macros in `fsl-asoc-card` when adding
+  multi-codec support.
+- Remove patches about new device-tree bindings that were not relevant
+  for an S/PDIF specific support.
+- Improve DT schema changes.
+- Move `priv->pdev` assignment earlier in "fsl_asoc_card_probe()" to fix
+  a NULL pointer dereference in "fsl_asoc_card_audmux_init()".
+- v4 patch series at:
+https://lore.kernel.org/all/20240515135411.343333-1-elinor.montmasson@savoi=
+rfairelinux.com/
+
+v3 -> v4:
+- Use the standard TDM bidings, as defined in "tdm-slot.txt", for the
+  new optional DT bindings setting the TDM slots number and width.
+- Use the clock DT bindings to optionally specify the CPU DAI system
+  clock frequency, instead of a dedicated new binding.
+- Rename the new DT binding "cpu-sysclk-dir-out" to
+  "cpu-system-clock-direction-out" to better follow the style of the
+  simple-card driver.
+- Merge TX an RX bindings for CPU DAI system-clock, to better follow the
+  style of the simple-card driver, and also as there was no use case in
+  fsl-asoc-card where TX and RX settings had to be different.
+- Add the documentation for the new bindings in the new DT schema
+  bindings documentation. Also add an example with the generic codec.
+- v3 patch series at:
+https://lore.kernel.org/alsa-devel/20231218124058.2047167-1-elinor.montmass=
+on@savoirfairelinux.com/
+
+v2 -> v3:
+- When the bitmaster or framemaster are retrieved from the device tree,
+  the driver will now compare them with the two codecs possibly given in
+device tree, and not just the first codec.
+- Improve driver modifications to use multiple codecs for better
+  integration of future multi-codec use cases:
+    * Use `for_each_codec` macros when possible.
+    * `fsl_asoc_card_priv` struct now has 2 `codec_priv` as the driver
+    * can currently retrieve 2 codec phandles from the device tree.
+- Fix subject of patch 10/10 to follow the style of the subsystem
+- v2 patch series at:
+https://lore.kernel.org/alsa-devel/20231027144734.3654829-1-elinor.montmass=
+on@savoirfairelinux.com/
+
+v1 -> v2:
+- Replace use of the dummy codec by the pair of codecs spdif_receiver /
+  spdif_transmitter.
+- Adapt how dai links codecs are used to take into account the
+  possibility for multiple codecs per link.
+- Change compatible name.
+- Adapt driver to be able to register two codecs given in the device
+  tree.
+- v1 patch series at:
+https://lore.kernel.org/alsa-devel/20230901144550.520072-1-elinor.montmasso=
+n@savoirfairelinux.com/
+
+
+Elinor Montmasson (2):
+  arm64: dts: imx8m: update spdif sound card node properties
+  ARM: dts: imx6: update spdif sound card node properties
+
+ arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts    | 15 +++++++++---
+ arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts    | 15 +++++++++---
+ arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts   |  9 +++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 15 +++++++++---
+ .../arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi |  9 +++++--
+ .../arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi | 15 +++++++++---
+ .../arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi |  9 +++++--
+ .../dts/nxp/imx/imx6qdl-hummingboard.dtsi     |  9 +++++--
+ .../boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi   |  9 +++++--
+ .../boot/dts/nxp/imx/imx6qdl-wandboard.dtsi   |  9 +++++--
+ .../arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts |  9 +++++--
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |  9 +++++--
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 15 +++++++++---
+ arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi | 15 +++++++++---
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  | 24 +++++++++++++++----
+ 15 files changed, 147 insertions(+), 39 deletions(-)
+
+--=20
+2.34.1
+
