@@ -1,64 +1,68 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013012.outbound.protection.outlook.com [52.101.67.12])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013024.outbound.protection.outlook.com [52.101.67.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126E81494B4
-	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 18:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06651130499
+	for <imx@lists.linux.dev>; Tue, 20 Aug 2024 18:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724178966; cv=fail; b=oxEYbOpd8AR88KrjCi08yJ1TzO9rHw+E12iHedOynrtJCxvE+WZulSxUVwAGX4dr9qhmjQ9sPIFDh6pXvMNKO12o6wDhgoAN4Qd/j3GTpXPbnfM8rgk3/EuzR5DFpDqF1G/ac4ocMNa8srStZ4LW6FGxsXB/ofZYs3+dwFsgm1E=
+	t=1724179589; cv=fail; b=KKJMgxuYALt6Nw7ep8fqJIyqHGyitwMv6hI6+l0Js476T+Rk8ZA82Dc8OPIlesOJAKE/682Dj2D+LM3mlPtGte1LpkSrake4oFhdN/0ZDFjyPR4FoSkidkFScCNF499aNq9DLXaxARrD0YcGNbx0tASYjdNAdjHr7YNqh6FbQRk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724178966; c=relaxed/simple;
-	bh=VIoTaj0CIz6FTuXJerOboN7LhEAHycUF2+FALh6odsY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RszYQIBEu5ZVmPKzs/jdP/bX7SpqQyiyxWGUfBDNk2Dhw5Eiox75XnlIaK97H9du3LQn9cjnA2T92QBbR5il8uwDgbfINYjKlHS5ej6fQYw4rxiD/jvFstDPM77zD/2GpdIH+R9TBkcBt+hUrk8w0XKKClvs4Co+AwaqaA7z+O4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fT9iczDi; arc=fail smtp.client-ip=52.101.67.12
+	s=arc-20240116; t=1724179589; c=relaxed/simple;
+	bh=GwoECC5qJvEWTyZZhz/XH56GIum37wu7VOK1nkF8dsA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hyfmej1m6l9pkeBTSawK/C/jq8I9/PZwHZ1c0ylT2+HK3G3WDvIXeDCC2cqPKMQJdf+UKeBf8vhhJlSgTIvgpNLuMsTIG3Du022yidghS3GHhLGhS3LG9r4QwF9fzzKsXU1b4XMBMhbBO/EQzXg4pYlsnjazBikzY3XUo7JvQkM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WId+URHa; arc=fail smtp.client-ip=52.101.67.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fT9iczDi"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WId+URHa"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HsdstoWSQHZ2jpgjOz+QEcbrHZdE5ufwlXjIEIoKD1BJdI2y8quO3CMKk070wHJghqOjCwSVtDjwSc9NnbxMQ5AhVKdePvazb7TT6CI0gFoJ1orTYQqb7v1XAKMeClHzQFYOOuT4wQsOfkrE/FUFX4fcgCC6djr4uXghVcYkrT/muMcgoua+M1jKcVoHxqO5sHu7ZrKO5SkMBzORI6ZsuGEU1sSyFzU8TZXF/YRTtq2bV/n8M1AeaAYgBq6BT/cFbLFMQzb1AryNj36g61A5rt5dvVmXiqDIOI+38g5RahkqKg1yJuoT0VyRmWv+so9nZ8UpWeO+6GQsG7aY+A/cJg==
+ b=lc/3+66IAgb0Liye/AvY3s30abaKlhTaZ7VBvGj1X672XjPbNortqwJtlCs7UuTPa4q4T6/E4K2bAzQHWFjniRNHiIABGNsKpX+osHE9j/8PLDUYmHc1utyvba2zq9xWKney/MI7QvRxMnxgJ38h9bSEO25x1kx5YjKHnI0Ar3c115HOszHkuuuiuizuQo77YePsW3hiB3EE6JwY2Badhi6MnNZRx7EEYXXub/Js8XqIhw8C1zSfIYBckpgCN/LT98gONNDy5SIl/bugxQ0N7foN6QCwtop4yuu9vnkKgmHT2B1hFd1BPrFc7mw1jfSMxcHjS8aQkOyz+szRI0UCZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9LK7rQNbPykyxBG24SQDavzwQWjZyaB+adJRWA2plW4=;
- b=mvmzZ4602HwaVPigTrkrQuvAZoNPJBNBcz+EpKl7mJ4bYDbMmT0ezLDPcqTRHQv9suuA3FQuGZOAxDTcK0NXMHCmLenEIbSXI0olJ0u33RWv+CbI8R7Khcxz098sACUsuiO0sntOP/Aq+QKpmcXNZiUI67STL3Frchfc8FOe1/RcTUQeM+CF6SWNDQ+dFv2AS4hpBHKvaN9F3ErhYCiOFDgQXwqZ3Rj+3BaLLyHqYS7O4v98SIb8jn4F+sI89NP6bN3+chXvUgGMofLKhAr+arrr+O3kJIzexgVnitLe/sbOGmXDmE6ZLEBGp+jH+AAz7sk2JyLDKbPv6MiGQQFIDQ==
+ bh=8baORaWDi2nobfRgi0e7MPQuVxpfNLTCo8tOqdZg03o=;
+ b=k2c1RFZa69E/tUtWnYL60VAvPG+97HTJuYBrvlhu1TLZzRnKSeX02AeS1Exu3l0Ov+qO1dPF4FRaYINxXfIsK29pQgxhiJb0K7nZEhBD/ArwegLTClGcJ49o1DBqIP+YIypOC2Famm10cBZ/JDtrtqQ1wucFf6gWz8nOrNrvVFvb2j7HyscZzcuQ1YaQLE4cDUIdCj5xT71x3MqVkn3hAsPJbfR+esG+epZesf4BNvO5XGkhU5q63lHpeyymabpteLyQhiX+eypCDy0RmdXqvSpwN4VF53QbNu2WnQu+f/0fF+Q+OzIDB1SaqnSs6rkF2NxmNWBc76XCEhyzvHWAQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9LK7rQNbPykyxBG24SQDavzwQWjZyaB+adJRWA2plW4=;
- b=fT9iczDi/+w++W7WL/sm6nWESV2cqOCjqqu9N5B5uHVkdJqb0YR3NhfIEkP9lA0M0QkYbcQDSvjq7u27+8vCDQw5c5E1RMTlzr7rD6alkW5A1f/cel6amOxNsmtBracJXHPY7dBkB4yNAnBoDbbYf+zBlTE4uyDIVtnEamudDDBFEZCymeqCzFIgAaitjhKmtr3z2vMhPIvcGF3Vkay4CpYbpZZ5MWvCFF8Kluc+KmiBCot09baqlnOHPZtLC2w2RKAgEZ+BLg87PG5v3O2Uuz568TU2LQGuZUZFxOh7GEJys4To1ou4VOy8HTBeHM1RzifB3oTplG0X+YezbnnTmQ==
+ bh=8baORaWDi2nobfRgi0e7MPQuVxpfNLTCo8tOqdZg03o=;
+ b=WId+URHa81Lt5/83406Ulv4iGuB6+PkijiS/E6XdmDWUOk50sBELBWhOSE521cT6k0Fz7HFqb0LQEOkn896f+MT+CpIv+vSIRNkbbHE9ns6hYbl8+BrNY0lYZUFV+IlPn4mCuNBdqFeVMeieuQDk//Di/nezW63FJxmlCZv/iXC0g9zDpgBYm3pZYN9f6qCwkV2Q9CBaHIlvQ1mby0OBAUXXc48Payy3Y/LeRc6LGUVQUHoI7FxFsJgpAje6o7S7iaYAMD/heetoewFvAahR2kH+3kogq4ixy/C+yeSGus3nB3AwiaDjo87TDjFd4H2NhfRwpOfwTUJoUBjgkaLJcQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI2PR04MB10713.eurprd04.prod.outlook.com (2603:10a6:800:275::20) with
+ by GVXPR04MB10045.eurprd04.prod.outlook.com (2603:10a6:150:11a::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Tue, 20 Aug
- 2024 18:36:00 +0000
+ 2024 18:46:21 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.7875.019; Tue, 20 Aug 2024
- 18:36:00 +0000
+ 18:46:21 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>,
+To: Shenghao Ding <shenghao-ding@ti.com>,
+	Kevin Lu <kevin-lu@ti.com>,
+	Baojun Xu <baojun.xu@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Dan Murphy <dmurphy@ti.com>,
-	linux-leds@vger.kernel.org (open list:LED SUBSYSTEM),
+	Sebastian Reichel <sre@kernel.org>,
+	alsa-devel@alsa-project.org (moderated list:TEXAS INSTRUMENTS AUDIO (ASoC/HDA) DRIVERS),
+	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: leds: convert leds-lm3692x to yaml format
-Date: Tue, 20 Aug 2024 14:35:43 -0400
-Message-Id: <20240820183544.496419-1-Frank.Li@nxp.com>
+Subject: [PATCH v2 1/1] ASoC: dt-bindings: Convert tpa6130a2.txt to yaml
+Date: Tue, 20 Aug 2024 14:46:03 -0400
+Message-Id: <20240820184604.499017-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0095.namprd03.prod.outlook.com
- (2603:10b6:a03:333::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR11CA0092.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,278 +71,214 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10713:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50f51671-a8b5-46aa-8359-08dcc146f025
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10045:EE_
+X-MS-Office365-Filtering-Correlation-Id: a126eeaf-0d79-438d-aa0c-08dcc148623f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|7416014|52116014|376014|1800799024|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8ftSRZoKOSbTBZ6Cl+LMeH+oCaYdeqr7kBFmehZ/57CayKb3vrva9w98aD0s?=
- =?us-ascii?Q?3GUQuDOlbJL9Hmd+zIyJGx3aDhBHpAUlWoved5XT7xZ0LUqJB/KFR0znqusQ?=
- =?us-ascii?Q?GKGVHaD49emD4st5ECceYlNYGJahp7jSyb4ShmZWkaCrKq6uGA4BVMKd9Pz2?=
- =?us-ascii?Q?YjV9NXCSEV2uN9xHYH8hZL5J1MgHaN7X+Mb3gvQ2ZXlORjfsjbuhmJji4LdU?=
- =?us-ascii?Q?B9wKOtq+D3tqkphF9UWaFAF+/vBEi+NiMWUpYoTLXY6lA/Gcn8VmgzoQiGL7?=
- =?us-ascii?Q?Ck86wge0YcxBsHcWOYj9DYBOTT9Df52VYFph5gx52TJInZfLMudbptK8eKqM?=
- =?us-ascii?Q?yNf+jf/Bg1jD3eNB3AMGHMTKX84EeiGUsfk2Dj66JVJSJJx1cP62q+ggKgdz?=
- =?us-ascii?Q?V6FnLWpdnq92RRQLfys96KxNz+TR8t71c1JwXiG2UHQ58gpYfyXVxsYHGgJJ?=
- =?us-ascii?Q?zXwRCex4/xaTRpU8qQCy7eGIZA3KsAVftIY9dEFGMCT+giSFlbrf043bl0+Z?=
- =?us-ascii?Q?Fq7OgBmbl0K1rDgLxI21VGwQOuDe++yJGum3F5iMJOs3wOo8z9K99sD+GrA5?=
- =?us-ascii?Q?jezCbAz/VuocE5fPtI1wsLtjdPJ4CIDe4XoVNC7WwPfaCxQiKEAxJOb+XyWg?=
- =?us-ascii?Q?Uqf0JtaCQo/yg+Eml4l05F9GAssIIMaocn/CUbh6SdYxTTs/RKUPw1YBAFp5?=
- =?us-ascii?Q?gMeqpVKGWMBqytxEE/cECQ04X2hDqcw2csEbUCGHast7y+DMVfaV+FGNREKT?=
- =?us-ascii?Q?5kdl6REN2a3nLRFqzEa3eU4hSSBUIkkTYkMOqFQ/1ogKbSfRgRns/qVpM5yz?=
- =?us-ascii?Q?cD+mbN5YCuoKHNJppIFyMebWwNaPdnOamXZx+eax1iP8sd6jeJ7izvmj04NQ?=
- =?us-ascii?Q?WZUgbJMjC4gh4LOYjXpUGU1RhxaxgJogZSbcG0q2bH9Wz9hsd+TA6v7E0zo4?=
- =?us-ascii?Q?2hM3KeC4lkJ3sCDdF8w+2osJCI9u1Uvr1PZv1i1fcJD+6AVPdIhQTYdzvyF4?=
- =?us-ascii?Q?WVKDGWoZha9GNLN3VRg/t+ce9fr7j2JvzGfU21VULmLahzfteQWLTQbQ+LmZ?=
- =?us-ascii?Q?ohCRkkQwuI9So+5uKJBUGRjFRITf+WNXL5pYBpgIruBl1CbRFDSyZh8fZAOc?=
- =?us-ascii?Q?SC9wlQxjQL0EwVyh0hCmgvjzGMJUI7UIuzMrtKJnuOITFgH10qEmCdrSBPha?=
- =?us-ascii?Q?EK/1L1vZ+FVUSSbxKauUDQv3KdKZRwo0/fdlt0kN+btILcStacq3erMqmt0+?=
- =?us-ascii?Q?LcTEIc8Bu3K4eF10G9O1tAtC5CIFrVr0rOYbYgkvJQ8mQVLPigQaqJz7457j?=
- =?us-ascii?Q?AfG8MNbA+QQ/Pe4SeDaLm/yJa5RTsilsg9pP3JMriwRnJwgktDUzU8Y5ZG+C?=
- =?us-ascii?Q?R0eOSOA=3D?=
+	=?us-ascii?Q?CidGbt40IRrPGlfW4dLiDmUuZjUPt7dpFfpvv0Rzrsc9A1yk7TQR9+5npiEP?=
+ =?us-ascii?Q?O4qMTDSuxtmjSeFPKcXiN95cchuY91IBWY5DwxG9yTZeqDWHe5NxImk5zg1Z?=
+ =?us-ascii?Q?SrTpeFjk+h/4wBWruBJ0JCKQMMf0yUypSsv0fcJbTGNkT43K7t+J7+va8wUk?=
+ =?us-ascii?Q?MKdjrJ9HwY4eWmxZyzMgd52rSbfl00A1s5+hMh9u7nPEmza9VyTMZEUQpvRO?=
+ =?us-ascii?Q?MC4XVXzS1eFtAIqphQBoyUCYHtMW2ZmD37MNBFpmQM24ZBtSu3NJQCc4xhcp?=
+ =?us-ascii?Q?JVpC/feSuht6a7ayI/PVCoO1Yg7KASsSZ4UVwghS8ks/rlMiL/UmCYrJWrLO?=
+ =?us-ascii?Q?8HJV8m87Fr0IluSHtzpmguvVYQmgxY9GXaDMn9/TxbLs1dD1Mh54E6JsdoPl?=
+ =?us-ascii?Q?XvyXSSjDAn4RLLdlcdZKf3UZe1H3j8iOnSGwMOtfTacain9hDV+TeufNzVTB?=
+ =?us-ascii?Q?OALNPbYqb8/8K8+W7PT2GPEPo0CxpZVrShryRJxwPzmoe/4ZMeX1FGwlfGD4?=
+ =?us-ascii?Q?0kVriifAGcnJA1NlTGf37JlrGToeEnEZAGFCo/W6Ziuie8bfADyewaK0I5L0?=
+ =?us-ascii?Q?VcJ9lQ+lx5I85sbHSGVYZraiQNuM76jhY/DtOK6dOCg6XC0i0MPXF/tJOv0Q?=
+ =?us-ascii?Q?J9QaBH4wr3kkjve0g4KwXwd25p5g853YvV4jjmTUZbkQvsyMFL/xCXcHUsVu?=
+ =?us-ascii?Q?J1a0BXticgihZQ2aBl7RJfpz8cpbFJFmzjxiYBbAEdDW5GdvGKIb3dgfDbrt?=
+ =?us-ascii?Q?VmR/3JezdQc3WddUAb5pp4Ht79qG+OnbU04sIJ6RNO+Htth7kJ+7q572oeGZ?=
+ =?us-ascii?Q?eHcJTVYRHKvpwFIR5gA9oIE0dxqK2fdJhFqLGwrZXSIIhYodbKKzST/0s23d?=
+ =?us-ascii?Q?fA6hC7t+9f4SAitA2YZcaD8DQ1jQjf7VZkvurp138WU4h1yLbg704pVa/V1Y?=
+ =?us-ascii?Q?q+mhOqKODjq/qZEGNbA6t/BHNe3V0hD5hNTkMzEmxbMN4t+uQtzgg2eZrbxU?=
+ =?us-ascii?Q?6UlIt9Nj4BjH96MeKKLZtNT1HLYm8WEv39YZiy8zhRsaJeZ/ZUgqioPIFzGp?=
+ =?us-ascii?Q?mwp8vkwnUSCMt7Q+X8VR3W7VgxUas+BtPPwO7SSMrX8NXVMw0E1tgG01gnT3?=
+ =?us-ascii?Q?JA81yD1O0eydS5o1HP0wXclUhE4kJ+mtJdDN9QEmrZtj2tY+y9gujjhLRTa9?=
+ =?us-ascii?Q?GrywqRqTi2RWE1UJ1KtkwFZ5r+rX8yicFM/DbS5jXmE/fi8PoWAdj1JQRTvI?=
+ =?us-ascii?Q?cFlX5y+/9CObDEE46WMe3d/e7SGnyqCRHUoMlb4pMe/sxIGJB6ehAY733Y71?=
+ =?us-ascii?Q?ZI8Cb5VjDa2dCvijnoQTFuE7QGw2IHW3U4vsmhY7PaEdAZR0zhRLU7+TPMvW?=
+ =?us-ascii?Q?3ukciCs=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(376014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZWvT/mzQvyG42B6G1Lk3sWGLYA1I8LpZjm3jvxn/se4OHnLfh5ogZtuZ9w17?=
- =?us-ascii?Q?1KObIKj3eIbmmT94aYmcHXLKkgyJE4UsuppVOWQhDNOuaO1BE4S9iqz2jepJ?=
- =?us-ascii?Q?vxkAifxc1M/UXcaf/tRyr2MYgL4kyAyXbLCbTKQS6g0RxJyPQUq5bMNnjPN3?=
- =?us-ascii?Q?xYVevTSQrRdzdaUhOLuy4doVCrYUxSh3gUKtcc/c+nz9ELdng1MTOgeDJYv3?=
- =?us-ascii?Q?+FtgYobkguxkyL19h+ghVW1bMkbg2IXZMoPV4LFh3Ivs8U9qEqkIL1QcQ8fF?=
- =?us-ascii?Q?sh5YJWvaNoh8khBFGHvVnXEAOdc2BQTGib538N4IcvGhoWtsAEjcQcg12hMA?=
- =?us-ascii?Q?OqKC0yPCz2dbD9y86PC/B8jiHb4u87VZ0vvOCqSQLIqN0/zCujIHCcQOlSJQ?=
- =?us-ascii?Q?V+DdhkZRysKmgdcASJ1DAUpj1yLieISyDdSMUaYh+Jf2zphRqlsY9o8/BaOx?=
- =?us-ascii?Q?RT3wC4D+S0zLZOphx2R9kluIq6jjmZfQmXMmcKyaX8HV02/vsZfRCRx2lPpZ?=
- =?us-ascii?Q?3hLW55Y+kwyDl1BmolOsF9b/VWoD6BQbX4Uoj8/+x/m5DPCzw2DQWadhFhOx?=
- =?us-ascii?Q?mbVnzkocGFiQUpUp+vWlcbuCjmphPtcn8JcXQGMDJp+IYUvST0+nzTETkofD?=
- =?us-ascii?Q?kaWPDA6QMbVYObYgqtwVhSvKDGkVpDoQIm9Yi55KmjPBuH8TaxRDQ9l6gY+X?=
- =?us-ascii?Q?iLl+riUG/8smtJiVgUuX6eoCvtd80khQc+q80YaBnE87/ebuwRZgXJl4uF5m?=
- =?us-ascii?Q?badxP42QaW5fosvCsh3LVtfWV+9bXi1xlxuunvkCNVJTsT7YsZ6sTHbhh9v9?=
- =?us-ascii?Q?8+XUsHstxp1FJ7BUoNLSwNJVMAZ8GQ4cIffLmPuTx/Trl/Hgftxf5k5kZMES?=
- =?us-ascii?Q?0Samxkk3ECaiWuEdIiLn1QXWItUIGy6OnNW26+XjRtCAl4SUkBY+hO33PByP?=
- =?us-ascii?Q?u8fckZX3geolBKxJ02KcYIC/nTXyAKHD3YuBdK2ycjdxeXYWW4f1pGC+/Gab?=
- =?us-ascii?Q?9QzKAVREO3g73x0N/Wh5WysRkknSvNfOC2NSC0r2sqL4O0QEFSBLOrI2kguU?=
- =?us-ascii?Q?R03oM3+UKlIjVf551QAkKWwWxl/lFWbBW6jT4X3OnFk8ygdWEwe5KXggNE6k?=
- =?us-ascii?Q?dX2jZMZ6gvGqRe/HPwNKij/7ufd58l1HUu4ejN8F0ur1c7jE2mTv1gfkm5Qh?=
- =?us-ascii?Q?twAxoG/Rm5XLvrBgOkByWsWU25G0tfyr2Bban/V5uTAx9yglRChYm3oq8V5o?=
- =?us-ascii?Q?rBazOaXb0t4/+oMYMdgRrH/vFEuSgA+226ysGoAiMbFChSftMbGuSuwuFSKI?=
- =?us-ascii?Q?td+9npRwT2cX1sqi/QGIEwFcWNLCdK8d/FnO7lDRkAGQZI+5sIBDSqbC2QI4?=
- =?us-ascii?Q?6XppI1Yv8JuzSOVqQtCluVBbyb7itNvE4QWu0T+jCsg6jUIJcabpPOlnkqe6?=
- =?us-ascii?Q?SeLHGb9UZ9dseJAGGo3pKZ8nzJ2qmU+/YPBachnRWjnw5EmdoBqur0S5vUkG?=
- =?us-ascii?Q?Q7J1Gx5cMsS2x6KPEPVYIcAhZaMK1sEPcPxX5jDiJfEzC7i+OC9MIYGUkoau?=
- =?us-ascii?Q?VPQ6OIWhEJ+9+STHmYvis+XY/nWuGyxVMuwgaWDa?=
+	=?us-ascii?Q?EHTy1Dj7E6V1gEKdbeJWp9jWhjYVw/1O7UV3IvrFtGcQwEi6aJTBci/xSLYo?=
+ =?us-ascii?Q?v9UJociEzhuSBnNWcYe64TzCEECt0Igs+QrK5oQD0C4uGeql4QXtyfJz/jp7?=
+ =?us-ascii?Q?4WMy14dtdiXur3pPNp6IjJ0VANRVWK39flUAz18k+NdaFJtqMEcZgM42Fgcw?=
+ =?us-ascii?Q?LVYQ0U1ba9EimIkS67zO28PTnMXqOHInWXwnmI89yWAMKgr2/wl/z4+lg/Y4?=
+ =?us-ascii?Q?TWF5dM2GRrWBZqv+ZVnn9O8oB3L1WYy1Pv7ERFyaTJBkLY0+FTlYvrTN9efA?=
+ =?us-ascii?Q?V85PFvX4cVpRFteJZUtnmJzZaXba+Lt7Vo2E6FV+90adYxeiDJMp1CEyr8Y3?=
+ =?us-ascii?Q?C6oNh4B/yDhIGZyK7mdQ0zGz0TL6DT7mlNre3lnFiiv62Uwb0Nq16RxPvjVx?=
+ =?us-ascii?Q?w8Zgy5pkSjw6atJOgsCY+/IXdo8vBzIFjq0Z3FZOJ2GqpUgJ+B+/Naudp7Iu?=
+ =?us-ascii?Q?I/z2d0yIUw64k0k8FvxmwZnQKojS/SxEVHOXJ3sYX6vuzomBdwirAzXLfweI?=
+ =?us-ascii?Q?IJCCMpeuoaGnKrNNuAnIx8g4k4uRzBCjbu5bzdO5yg5H3FDRNIwPOPwqvN2Z?=
+ =?us-ascii?Q?Mkot4Z4MzxOWP/KHD41/9jIxNlokMJAbg45SovkTPwk3esgHzZYv0SrEX8Ij?=
+ =?us-ascii?Q?zadyqy4a3q5YMPkkESWDvahulolJHrueSMYSLXSd2LHGOGTvoa0kXSh/ye9P?=
+ =?us-ascii?Q?U0ZVEV4l4eZQiNPyxcdoP7C6qF+DF4o7V9EWuUjtO6KyrSXDWkKgN1+JUaAQ?=
+ =?us-ascii?Q?56Dl+s9IhDKx7J178IZHVF2oD/WjS19OPwyq+3IrNWqjyNCopscvyM2+J5R5?=
+ =?us-ascii?Q?ai4Zo47LR5uXNd1TU4R3ImKK8l7wCGfWkgh/DgFbG23hszA0pOWsbxQslZwv?=
+ =?us-ascii?Q?rjxr9CjUCTgaJy6thWMRnO8h+/PyhZL5J2QRoDsu2q49kxjEd/QrCOxqsknW?=
+ =?us-ascii?Q?K7Gu6fxZNKDVOAU53mTckpHSJPVaADZrsYnPnmmb21qtW4ZncbRbBS02UvgG?=
+ =?us-ascii?Q?1yNv/n0S3wEBFcKiUSLdR1k9RiGzs2GjghnbfrJsaNeNLVtKxQUt974GYMpy?=
+ =?us-ascii?Q?1YcPtlwg32kymyuxIfO6GcbbyQG1mqzcRcY52JgHJ+hhVpncgMDLFQyEmBPA?=
+ =?us-ascii?Q?5pYqCrYDk3ngjd8QiE406CMVsFMkOWLAOZaZ6sJ8+cLlg0cYZ/H0HzjsMnVZ?=
+ =?us-ascii?Q?vu/0ojLhvTVdBm2zAWLbm5sspC7Wj97EPpiy69i4uz+BW/pgJO85dq01c4J7?=
+ =?us-ascii?Q?pZTlh8rfSr+AvHstg7nUAV7N65NmG7Ny5rPsos6MOHckvRoiotP5K4RXVhY3?=
+ =?us-ascii?Q?+2iuyNVQ6hSJnTReYoFAsTmOHp4QGU2l/lj0EeyUIQsZOX0EoJLSUogk9q3i?=
+ =?us-ascii?Q?yuq5MqaEwbXIe6W/5Q/BCzs80AZ9P2+39HFaWaOu39ACQazUYPCLQlojAPfP?=
+ =?us-ascii?Q?B+WIEtoRS/ydZI2gJ7ns7Cffo2VZWmzJmzjaWfjVApDaHe6nTbLrJvKEiWUM?=
+ =?us-ascii?Q?AF6ic+XtbO7LrbSJaWsE8EPjy2vHe58fu2hFBAy0Frwnwc0mhUZoFC4WdTnr?=
+ =?us-ascii?Q?kB2QCFX28T8GG2wBFXEtRn8T/hJA4T8jWMsQxQ4Y?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50f51671-a8b5-46aa-8359-08dcc146f025
+X-MS-Exchange-CrossTenant-Network-Message-Id: a126eeaf-0d79-438d-aa0c-08dcc148623f
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 18:36:00.1751
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 18:46:21.1777
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P6iC7MAmRSXQRs+z4U7K6vIjIWl2GrlkwK4+YiBmSJBgliQ5Mqy0ktVPFphsaifFUpqpthD/btkcFB/0B8MgCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10713
+X-MS-Exchange-CrossTenant-UserPrincipalName: vznKQhekkvrPEeTqe2S61eoXw4q9EBC/TKAtCWakVuOH3OuaiSyfJlwpu8kJicrvnKV931JprbOVkm+i699vDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10045
 
-Convert binding doc leds-lm3592x to yaml format.
-Additional change
-- Add ref to common.yaml for child node
-- Add i2c node at example
+Convert binding doc tpa6130a2.txt to yaml format.
+Additional change:
+  - add ref to dai-common.yaml
+  - add i2c node in example
 
 Fix below warning:
-arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dtb: /soc@0/bus@30800000/i2c@30a40000/backlight@36:
-	failed to match any schema with compatible: ['ti,lm36922']
+arch/arm64/boot/dts/freescale/imx8mq-zii-ultra-rmb3.dtb: /soc@0/bus@30800000/i2c@30a20000/amp@60:
+	failed to match any schema with compatible: ['ti,tpa6130a2']
 
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
 Change from v1 to v2
-- fix dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/leds/ti.lm36922.example.dtb: /example-0/i2c/led-controller@36: failed to match any schema with compatible: ['ti,lm3692x']
+- fix MAINTAINERS
 ---
- .../devicetree/bindings/leds/leds-lm3692x.txt |  65 ------------
- .../devicetree/bindings/leds/ti.lm36922.yaml  | 100 ++++++++++++++++++
- 2 files changed, 100 insertions(+), 65 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/leds/leds-lm3692x.txt
- create mode 100644 Documentation/devicetree/bindings/leds/ti.lm36922.yaml
+ .../bindings/sound/ti,tpa6130a2.yaml          | 55 +++++++++++++++++++
+ .../devicetree/bindings/sound/tpa6130a2.txt   | 27 ---------
+ MAINTAINERS                                   |  2 +-
+ 3 files changed, 56 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
+ delete mode 100644 Documentation/devicetree/bindings/sound/tpa6130a2.txt
 
-diff --git a/Documentation/devicetree/bindings/leds/leds-lm3692x.txt b/Documentation/devicetree/bindings/leds/leds-lm3692x.txt
-deleted file mode 100644
-index b1103d961d6ca..0000000000000
---- a/Documentation/devicetree/bindings/leds/leds-lm3692x.txt
-+++ /dev/null
-@@ -1,65 +0,0 @@
--* Texas Instruments - LM3692x Highly Efficient White LED Driver
--
--The LM3692x is an ultra-compact, highly efficient,
--white-LED driver designed for LCD display backlighting.
--
--The main difference between the LM36922 and LM36923 is the number of
--LED strings it supports.  The LM36922 supports two strings while the LM36923
--supports three strings.
--
--Required properties:
--	- compatible:
--		"ti,lm36922"
--		"ti,lm36923"
--	- reg :  I2C slave address
--	- #address-cells : 1
--	- #size-cells : 0
--
--Optional properties:
--	- enable-gpios : gpio pin to enable/disable the device.
--	- vled-supply : LED supply
--	- ti,ovp-microvolt: Overvoltage protection in
--	    micro-volt, can be 17000000, 21000000, 25000000 or
--	    29000000. If ti,ovp-microvolt is not specified it
--	    defaults to 29000000.
--
--Required child properties:
--	- reg : 0 - Will enable all LED sync paths
--		1 - Will enable the LED1 sync
--		2 - Will enable the LED2 sync
--		3 - Will enable the LED3 sync (LM36923 only)
--
--Optional child properties:
--	- function : see Documentation/devicetree/bindings/leds/common.txt
--	- color : see Documentation/devicetree/bindings/leds/common.txt
--	- label : see Documentation/devicetree/bindings/leds/common.txt (deprecated)
--	- linux,default-trigger :
--	   see Documentation/devicetree/bindings/leds/common.txt
--	- led-max-microamp :
--	   see Documentation/devicetree/bindings/leds/common.txt
--
--Example:
--
--#include <dt-bindings/leds/common.h>
--
--led-controller@36 {
--	compatible = "ti,lm3692x";
--	reg = <0x36>;
--	#address-cells = <1>;
--	#size-cells = <0>;
--
--	enable-gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
--	vled-supply = <&vbatt>;
--	ti,ovp-microvolt = <29000000>;
--
--	led@0 {
--		reg = <0>;
--		function = LED_FUNCTION_BACKLIGHT;
--		color = <LED_COLOR_ID_WHITE>;
--		linux,default-trigger = "backlight";
--		led-max-microamp = <20000>;
--	};
--}
--
--For more product information please see the link below:
--https://www.ti.com/lit/ds/snvsa29/snvsa29.pdf
-diff --git a/Documentation/devicetree/bindings/leds/ti.lm36922.yaml b/Documentation/devicetree/bindings/leds/ti.lm36922.yaml
+diff --git a/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml b/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
 new file mode 100644
-index 0000000000000..ac98547b78bd2
+index 0000000000000..a42bf9bde6940
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/leds/ti.lm36922.yaml
-@@ -0,0 +1,100 @@
++++ b/Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
+@@ -0,0 +1,55 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/leds/ti.lm36922.yaml#
++$id: http://devicetree.org/schemas/sound/ti,tpa6130a2.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Texas Instruments - LM3692x Highly Efficient White LED Driver
++title: Texas Instruments - tpa6130a2 Codec module
 +
 +maintainers:
-+  - Dan Murphy <dmurphy@ti.com>
++  - Sebastian Reichel <sre@kernel.org>
 +
-+description: |
-+  The LM3692x is an ultra-compact, highly efficient,
-+  white-LED driver designed for LCD display backlighting.
-+
-+  The main difference between the LM36922 and LM36923 is the number of
-+  LED strings it supports. The LM36922 supports two strings while the LM36923
-+  supports three strings.
-+
-+  For more product information please see the link below:
-+  https://www.ti.com/lit/ds/snvsa29/snvsa29.pdf
++description:
++  Stereo, analog input headphone amplifier
 +
 +properties:
 +  compatible:
 +    enum:
-+      - ti,lm36922
-+      - ti,lm36923
++      - ti,tpa6130a2
++      - ti,tpa6140a2
 +
 +  reg:
 +    maxItems: 1
 +
-+  "#address-cells":
-+    const: 1
++  Vdd-supply:
++    description: power supply regulator
 +
-+  "#size-cells":
-+    const: 0
-+
-+  enable-gpios:
-+    description: gpio pin to enable/disable the device.
-+
-+  vled-supply:
-+    description: LED supply
-+
-+  ti,ovp-microvolt:
-+    description: Overvoltage protection.
-+    default: 29000000
-+    enum: [17000000, 21000000, 25000000, 29000000]
-+
-+patternProperties:
-+  '^led@[0-9a-f]+$':
-+    type: object
-+    $ref: common.yaml
-+    properties:
-+      reg:
-+        enum: [0, 1, 2, 3]
-+        description: |
-+          0 - Will enable all LED sync paths
-+          1 - Will enable the LED1 sync
-+          2 - Will enable the LED2 sync
-+          3 - Will enable the LED3 sync (LM36923 only)
-+
-+    unevaluatedProperties: false
++  power-gpio:
++    description: gpio pin to power the device
 +
 +required:
 +  - compatible
 +  - reg
-+  - "#address-cells"
-+  - "#size-cells"
++  - Vdd-supply
 +
-+additionalProperties: false
++allOf:
++  - $ref: dai-common.yaml#
++
++unevaluatedProperties: false
 +
 +examples:
 +  - |
 +    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/leds/common.h>
 +
 +    i2c {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        led-controller@36 {
-+            compatible = "ti,lm36922";
-+            reg = <0x36>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            enable-gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
-+            vled-supply = <&vbatt>;
-+            ti,ovp-microvolt = <29000000>;
-+
-+            led@0 {
-+                reg = <0>;
-+                function = LED_FUNCTION_BACKLIGHT;
-+                color = <LED_COLOR_ID_WHITE>;
-+                linux,default-trigger = "backlight";
-+                led-max-microamp = <20000>;
-+            };
-+        };
++        amplifier@60 {
++            compatible = "ti,tpa6130a2";
++            reg = <0x60>;
++            Vdd-supply = <&vmmc2>;
++            power-gpio = <&gpio4 2 GPIO_ACTIVE_HIGH>;
++       };
 +    };
 +
+diff --git a/Documentation/devicetree/bindings/sound/tpa6130a2.txt b/Documentation/devicetree/bindings/sound/tpa6130a2.txt
+deleted file mode 100644
+index 6dfa740e4b2d8..0000000000000
+--- a/Documentation/devicetree/bindings/sound/tpa6130a2.txt
++++ /dev/null
+@@ -1,27 +0,0 @@
+-Texas Instruments - tpa6130a2 Codec module
+-
+-The tpa6130a2 serial control bus communicates through I2C protocols
+-
+-Required properties:
+-
+-- compatible - "string" - One of:
+-    "ti,tpa6130a2" - TPA6130A2
+-    "ti,tpa6140a2" - TPA6140A2
+-
+-
+-- reg - <int> -  I2C slave address
+-
+-- Vdd-supply - <phandle> - power supply regulator
+-
+-Optional properties:
+-
+-- power-gpio - gpio pin to power the device
+-
+-Example:
+-
+-tpa6130a2: tpa6130a2@60 {
+-	compatible = "ti,tpa6130a2";
+-	reg = <0x60>;
+-	Vdd-supply = <&vmmc2>;
+-	power-gpio = <&gpio4 2 GPIO_ACTIVE_HIGH>;
+-};
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 118d9cf64e9cb..4ced49519930b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -22713,12 +22713,12 @@ F:	Documentation/devicetree/bindings/sound/tas2552.txt
+ F:	Documentation/devicetree/bindings/sound/ti,tas2562.yaml
+ F:	Documentation/devicetree/bindings/sound/ti,tas2770.yaml
+ F:	Documentation/devicetree/bindings/sound/ti,tas27xx.yaml
++F:	Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
+ F:	Documentation/devicetree/bindings/sound/ti,pcm1681.yaml
+ F:	Documentation/devicetree/bindings/sound/ti,pcm3168a.yaml
+ F:	Documentation/devicetree/bindings/sound/ti,tlv320*.yaml
+ F:	Documentation/devicetree/bindings/sound/ti,tlv320adcx140.yaml
+ F:	Documentation/devicetree/bindings/sound/tlv320aic31xx.txt
+-F:	Documentation/devicetree/bindings/sound/tpa6130a2.txt
+ F:	include/sound/tas2*.h
+ F:	include/sound/tlv320*.h
+ F:	include/sound/tpa6130a2-plat.h
 -- 
 2.34.1
 
