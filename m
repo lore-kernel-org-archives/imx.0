@@ -1,145 +1,185 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253811C7B8D
-	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 15:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA3C149C42
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 16:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724254866; cv=none; b=en3O8kiVdpKu42Pzvu+5FKVcMhZLefiaYvFQ2JDJS5T3dzb9AxdK1VU3KzJZZ9+V/6f4H7Ee4cjSdAnrNYjX0JG2ibLYsPY3Po8hkYUyXmXV8RPxQNJMQAJAsNWXBNdFOt7un+pLo+vKtIqWxkYjADt/f+HvRswGnHYQB9nxlmY=
+	t=1724256436; cv=none; b=mDvxuy6gvlTeQCbNJ0+01VgTdmq6IWga2A3XBzxlGrsvHyw7uOBG/dOG6W9V1zlMJt/kTVvPWaQu+PscojCKG9OKy7jvgdXqcx6NJh2Je0KUdLsjgJiqF18yNlnQt8krLw1V1DAxz37l0El5On/uaDo8gWS5Q7C8DuV6Q5FnmWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724254866; c=relaxed/simple;
-	bh=vzRjhS7+octK36jnSe580srSV99gX3ihUMa3REwO3yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iiwY0E25Qa6g560yW7fYfyiRNo2okTyFx8q5C4bisTtHmGe2ARKzPx+UNOt9BFK5hgipUGqni5j4JJoJJzs+x7V1rmiA+wAMFh/iIaeK6uBWeoK5kwehe7tWzggXuF1hziKQE9J0hh3hKQWxbfzKDphoFSzGUSK3d3LAqu7+43A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/h7kvUG; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724256436; c=relaxed/simple;
+	bh=3XF0N1B2T/pWRahCgRMNnjH+o+PGKXAQ6wQbBvt3NgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XWxDX8Y/UpmFP/QzkP08ITYrN8M0wQPennWyJ81rMHi7vtcZD+E1rGsO/fthtILnIo2rwpdz4BZZPxYp5peyYGkiHnZBOPmg1D6I3B3VJ8dg4BEenJgnuxfvQrQM6AfMtB4PHlfGFvA6+359+WYW5LbfbxThA4z7U6MNG3GjOqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GcpjF4ao; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/h7kvUG"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-428163f7635so59899865e9.2
-        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 08:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724254863; x=1724859663; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gnCSiun9t/RJbFPil7xi9PoRJLxM8vFSfSVVmmvO+8g=;
-        b=W/h7kvUGyk7fN727w9Qy+fNaCLem3CGj644quDo5rwfe3V5C9dskZe8DUZMZ5jFwJ5
-         8Y6Ac8Hhg+OaKPPsLjQmBqxOLKXAQdkrUsIO+YQg+LWoWMAZNxDsfS+E5FGesu/xcTWs
-         uMKgJAEHOIHkTQruB8FuHLEka1ZOGHNfaz/JdM5vNC44qZLywbg0nME/P5NR2cr8gWbs
-         iJwC5J6jV2WFn0hLV5ykk4pedfe8WJNCFuhF111eTFC2BXWv5+QitqgJF7g4FCB3l/nz
-         jYRCU/OuoPtSd8C2C4IAwdnr9L+suKq1etRjcRKsG98pVeFD26Jvblni1Bzo4FCkupwR
-         tDfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724254863; x=1724859663;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gnCSiun9t/RJbFPil7xi9PoRJLxM8vFSfSVVmmvO+8g=;
-        b=QBw8pWJ43KsIW9G9RcunEImbHdEXLwR0GoQPzeV+98+WYx/pqWS5yQXQPxIZsLGuM0
-         KYYbibU5dNhvBYOPGsAKEfZKTxPtbVzp9Ox74SV8qejP4nzFpFAeY8w3lnPZVQ6NGVe0
-         07DcR3LAac1+weob7Liyy8pZfSfRPG69UtgEa1PiosWY5XR3fOAsfMZVSiIKWlL3G1Tt
-         RkzMdoScjzj+Jpl6SQ0GkLUo4iytE2RVg3izq/lj0zwxjsQJTjtKQTI0eco10M1m6JSL
-         Me+fb3BTdwvPSpyz9AtLaFSqqHfvpcG2zzhTVrfHwnq7aK9vtYVpq3Pq/CNr0wLEQEdU
-         lgOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVtPuMRduAhKQboekjUSjwT4zlnP0wMnFJ7rHCPzhVQfS0yNvnEbj9kdkcYVAnXBTfvYR0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzlljUZuivl6RGRvsrz1MJj248pvJZdLUFwdOMSS2XD3244i3v/
-	0WkBRZ4DnV/7/WPo2SjtX7NSt9dNvgsj8FZE6g5G5F+f7qI0ODjD
-X-Google-Smtp-Source: AGHT+IEhSjD1LCYAF1BY6Yws5oSCUl4XcCH6YisKu0nEYXjpoTyvoA5zAhxtl6MA01Q3OJCdSh2Z5A==
-X-Received: by 2002:a5d:650b:0:b0:371:9362:c286 with SMTP id ffacd0b85a97d-372fd577056mr1685838f8f.4.1724254862883;
-        Wed, 21 Aug 2024 08:41:02 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:ce3a:abb4:426f:fe4a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-371a937a5f4sm11682371f8f.51.2024.08.21.08.41.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 08:41:02 -0700 (PDT)
-Date: Wed, 21 Aug 2024 17:41:00 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, francesco.dolcini@toradex.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] PCI: imx6: reset link after suspend/resume
-Message-ID: <ZsYKjFXHDVr8tz9K@eichest-laptop>
-References: <20240819090428.17349-1-eichest@gmail.com>
- <ZsNXDq/kidZdyhvD@lizhi-Precision-Tower-5810>
- <ZsQ9OWdCS5o96VN2@eichest-laptop>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GcpjF4ao"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A2B491C0003;
+	Wed, 21 Aug 2024 16:07:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724256431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ipppIHAkC8/bs1pXjcH7GbKoIPUWZRYTJEl71STi7I=;
+	b=GcpjF4aoXMVSFvFw1OOdjBS0qlqNXzreKykK8lyXpxK4jxyKj3LFfd3aFd9C8YaHn2G4Ml
+	pVdhaokC5uSbExAZQ5pOnQPfspp0f83WqFTQIF8G/Ihe4sUYECvxWfwGc6tyN9u/8UKVhN
+	adNSQNjN/drIn6RQ8kPUgYTh7v03yE7IWUVeiM1l/y9CUFc7/2AgJta6POryHplMzN9ese
+	FfULQxWq7HinZsWMKJ5s3g82Kpyq029hHv4rZP1bIJR04mgx2f2UB40bt3zHTNUdnrAgtS
+	VtJR817rYOJhdPWX6xf9DYyynD4gsoz0QuX9/ZBc0U6/iEjg2tLwg8t52Wxbrg==
+Date: Wed, 21 Aug 2024 18:07:09 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: carlos.song@nxp.com
+Cc: alexandre.belloni@bootlin.com, frank.li@nxp.com,
+ conor.culhane@silvaco.com, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-imx@nxp.com
+Subject: Re: [PATCH v2 1/2] i3c: master: support to adjust first broadcast
+ address speed
+Message-ID: <20240821180709.1626dd64@xps-13>
+In-Reply-To: <20240807061306.3143528-1-carlos.song@nxp.com>
+References: <20240807061306.3143528-1-carlos.song@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZsQ9OWdCS5o96VN2@eichest-laptop>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi Frank,
+Hi carlos.song@nxp.com,
 
-On Tue, Aug 20, 2024 at 08:52:41AM +0200, Stefan Eichenberger wrote:
-> On Mon, Aug 19, 2024 at 10:30:38AM -0400, Frank Li wrote:
-> > On Mon, Aug 19, 2024 at 11:03:16AM +0200, Stefan Eichenberger wrote:
-> > > On the i.MX6Quad (not QuadPlus), the PCIe link does not work after a
-> > > suspend/resume cycle. Worse, the PCIe memory mapped I/O isn't accessible
-> > > at all, so the system freezes when a PCIe driver tries to access its I/O
-> > > space. The only way to get resume working again is to reset the PCIe
-> > > link, similar to what is done on devices that support suspend/resume.
-> > > Through trial and error, we found that something about the PCIe
-> > > reference clock does not work as expected after a resume. We could not
-> > > figure out if it is disabled (even though the registers still say it is
-> > > enabled), or if it is somehow unstable or has some hiccups. With the
-> > > workaround introduced in this patch series, we were able to fully resume
-> > > a Compex WLE900VX (ath10k) miniPCIe Wifi module and an Intel AX200 M.2
-> > > Wifi module. If there is a better way or other ideas on how to fix this
-> > > problem, please let us know. We are aware that resetting the link should
-> > > not be necessary, but we could not find a better solution. More
-> > > interestingly, even the SoCs that support suspend/resume according to
-> > > the i.MX erratas seem to reset the link on resume in
-> > > imx6_pcie_host_init, so we hope this might be a valid workaround.
-> > >
-> > > Stefan Eichenberger (3):
-> > >   PCI: imx6: Add a function to deassert the reset gpio
-> > >   PCI: imx6: move the wait for clock stabilization to enable ref clk
-> > >   PCI: imx6: reset link on resume
-> > 
-> > Thanks you for your patch, but it may have conflict with
-> > https://lore.kernel.org/linux-pci/Zr4XG6r+HnbIlu8S@lizhi-Precision-Tower-5810/T/#t
-> > 
-> 
-> Thanks a lot for the hint. I will have a look at the series and see if I
-> can adapt my changes including your suggestions.
+carlos.song@nxp.com wrote on Wed,  7 Aug 2024 14:13:05 +0800:
 
-I did some more tests with your series applied. Everything works as
-expected on an i.MX8M Plus. However, the i.MX6Quad PCIe link still does
-not work after a resume. I could trace the issues back to the following
-functions, besides that we could use the same suspend/resume function as
-for the other i.MX SoCs.
+> From: Carlos Song <carlos.song@nxp.com>
+>=20
+> According to I3C spec 6.2 Timing Specification, the Open Drain High Period
+> of SCL Clock timing for first broadcast address should be adjusted to 200=
+ns
+> at least. I3C device working as i2c device will see the broadcast to close
+> its Spike Filter then change to work at I3C mode. After that I3C open dra=
+in
+> SCL high level should be adjusted back.
+>=20
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> - Fix set_speed description from Frank's comment
+> ---
+>  drivers/i3c/master.c       | 12 ++++++++++++
+>  include/linux/i3c/master.h | 18 ++++++++++++++++++
+>  2 files changed, 30 insertions(+)
+>=20
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index 7028f03c2c42..6f3eb710a75d 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -1868,6 +1868,12 @@ static int i3c_master_bus_init(struct i3c_master_c=
+ontroller *master)
+>  		goto err_bus_cleanup;
+>  	}
+> =20
+> +	if (master->ops->set_speed) {
+> +		ret =3D master->ops->set_speed(master, I3C_OPEN_DRAIN_SLOW_SPEED);
+> +		if (ret)
+> +			goto err_bus_cleanup;
+> +	}
+> +
+>  	/*
+>  	 * Reset all dynamic address that may have been assigned before
+>  	 * (assigned by the bootloader for example).
+> @@ -1876,6 +1882,12 @@ static int i3c_master_bus_init(struct i3c_master_c=
+ontroller *master)
+>  	if (ret && ret !=3D I3C_ERROR_M2)
+>  		goto err_bus_cleanup;
+> =20
+> +	if (master->ops->set_speed) {
+> +		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
+> +		if (ret)
+> +			goto err_bus_cleanup;
+> +	}
+> +
+>  	/* Disable all slave events before starting DAA. */
+>  	ret =3D i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
+>  				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
+> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> index 074f632868d9..b8daf09a9a4a 100644
+> --- a/include/linux/i3c/master.h
+> +++ b/include/linux/i3c/master.h
+> @@ -277,6 +277,20 @@ enum i3c_bus_mode {
+>  	I3C_BUS_MODE_MIXED_SLOW,
+>  };
+> =20
+> +/**
+> + * enum i3c_open_drain_speed - I3C open drain speed
+> + * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open drain speed for First Broadcast=
+ Address.
 
-In suspend the follwoing function is causing issues:
-imx_pcie_stop_link(imx_pcie->pci);
+A few minor style comments:
 
-In resume the following functions are causing issues:
-imx_pcie->drvdata->init_phy(imx_pcie); // in imx_pcie_host_init
-imx_pcie_start_link(imx_pcie->pci);
+open-drain
 
-I think the second one makes sense because I could not stop the link I
-should not start it again. But why is also the init_phy function
-failing? Are they required to setup the link? 
+...for sending the first broadcast address.
 
-The messages I get when the system resumes are:
-[   50.176212] Enabling non-boot CPUs ...
-[   50.194446] CPU1 is up
-[   50.198087] CPU2 is up
-[   50.201746] CPU3 is up
-[   50.563710] imx6q-pcie 1ffc000.pcie: Read DBI address failed
+> + *				First Broadcast Address in this speed is visible to all I2C/I3C
 
-After the last message the system hangs. It seems this happens because
-the PCIe I/O mem is not accessible anymore.
+The first broadcast address at this speed will be visible to all=20
 
-Do you have an idea what could cause imx_pcie_stop_link to break the
-link on resume? Without calling them the link is working fine after
-resuming and the drivers can access the PCIe I/O mem.
+> + *				devices on the I3C bus. I3C device working as a I2C device will
+
+... I3C devices working in I2C mode will
+
+> + *				turn off its 50ns Spike Filter to change to work in I3C mode.
+
+					their     spike filter when
+					switching into I3C mode.
+
+> + * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open drain speed configured acco=
+rding to
+
+open-drain
+
+> + *				I3C bus mode.
+
+I'm sorry, can you rephrase "configured according to I3C bus mode" ?
+
+> + */
+> +enum i3c_open_drain_speed {
+> +	I3C_OPEN_DRAIN_SLOW_SPEED,
+> +	I3C_OPEN_DRAIN_NORMAL_SPEED,
+> +};
+> +
+>  /**
+>   * enum i3c_addr_slot_status - I3C address slot status
+>   * @I3C_ADDR_SLOT_FREE: address is free
+> @@ -436,6 +450,9 @@ struct i3c_bus {
+>   *		      NULL.
+>   * @enable_hotjoin: enable hot join event detect.
+>   * @disable_hotjoin: disable hot join event detect.
+> + * @set_speed: adjust I3C bus speed, which is generally used for reducin=
+g the speed
+> + *		for first broardcast address.
+> + *
+>   */
+>  struct i3c_master_controller_ops {
+>  	int (*bus_init)(struct i3c_master_controller *master);
+> @@ -464,6 +481,7 @@ struct i3c_master_controller_ops {
+>  				 struct i3c_ibi_slot *slot);
+>  	int (*enable_hotjoin)(struct i3c_master_controller *master);
+>  	int (*disable_hotjoin)(struct i3c_master_controller *master);
+> +	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_dr=
+ain_speed speed);
+>  };
+> =20
+>  /**
+
+Otherwise lgtm.
 
 Thanks,
-Stefan
+Miqu=C3=A8l
