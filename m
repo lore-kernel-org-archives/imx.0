@@ -1,140 +1,94 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2051CF2BA
-	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 08:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5A81AF4D3
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 10:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724229181; cv=none; b=FS+7iBEH6KrSse/YCMOt/nBwCMYXEbiVPfkD7eSRyIOaXgIcjV1nmtGMhAy4O4/Fxem4WeAW3s9KxZ1AlCRdVWg3EftoDDrKSxw/VgdOx+4Rnu/9KvKGUSdjkACHxb0gPX6hb84KuTpkPJMf/pjTxbKye6LS+YW29CYjoe835Lc=
+	t=1724237716; cv=none; b=Ik6Ej14gd0Nem78rUH+uN5bEyZs9Cj3HM65WMG4HK+WQ1/ZKSi5HJIt1VAEvE/z3oNt1+l2H/n/hxRHsugVT39oN0mIDj6evxLWydfwbuqr5m/xDJCyy4Rk59txw7gPEMNtKqZxEF0tWoV7QfwjUcEQpjKvvQMWbPws+NnU+KQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724229181; c=relaxed/simple;
-	bh=NV+tOA1UOz/iTe4bNktGSFNe352KUkNmwar1CDbpCSg=;
+	s=arc-20240116; t=1724237716; c=relaxed/simple;
+	bh=LdumwN1jo/n/KBtkjPSwNc2sSNEbK5/h0uSru882m18=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ktEKzJunJsS6NTzT699DhHWcert0ptaVbnDgBSl8//qth+x6iRNiPE1rND/aS4A9n83TYCgfZixGh8+7d7eJzyYaH4psgIV3ZscPklEgCWf2gQC9Ab4w3If+cwDrAIg5qs38q8AgkHlC2hjzdkSWId9MBGOgsfmLOq1WzKQgLi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TiNLPBzl; arc=none smtp.client-ip=209.85.208.44
+	 To:Cc:Content-Type; b=MSnWoSDih5Fb3fXDCrSghV3l1euGpv/6s9AzXwnZDTql6FKRM9qsqPat3lSMdArV3vSAvjJetsxmsRoAgtwvfA0b0VrVrgdQz6rSVOnPw1c8IVQy0MT8uUL9o1JXr9NMyNjgtjsugm49xDmuYYNEkowYSOf0Qhiu7hQZENUW1pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=esOi2FQn; arc=none smtp.client-ip=209.85.219.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TiNLPBzl"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5bb85e90ad5so4885820a12.3
-        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 01:32:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="esOi2FQn"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e1654a42cb8so1798578276.1
+        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 03:55:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724229178; x=1724833978; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TiK+7G6dPv+jiLpJYq4uvWBTS2IB+9YYcX0z6+IsEsU=;
-        b=TiNLPBzlNK6pHe08zigl9hRvSaL5w7/iq+VY4OE3UBOAiyG+Ufx7By37NjEn55zPoY
-         rMKSVCJcDzLmWCnIo7N7fdDVQvAQbVJzg062qMCkmGWqFIxDRnPolfgHFr2U5OtgBVxU
-         itmI+sW+fuDOULXREVnw6Ea7DVSY1eo0DpwvlyVoLbbSAIdi1D9BxThdBG3rRuLp2lYy
-         KXPGAeJJt7VKXVCKUVMazWQloIQ59Q38ABV3ePNlWeiwBEoUqVO3bBM0aUnFg9ZzuKr4
-         dzc2RO5BueyqMjE8VIvf+vU/REmWHvuwMgECIADpUg0q6LJUP23HWr2I8oSQaYb84Q6l
-         L3cw==
+        d=gmail.com; s=20230601; t=1724237714; x=1724842514; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LdumwN1jo/n/KBtkjPSwNc2sSNEbK5/h0uSru882m18=;
+        b=esOi2FQn4uvD7xbowE3j8xWqHs5K/UEWm5N4IoCvXbehcZL1oaGXUtp/cUF2XoLaDn
+         EZO+iWAoWYklsSA1HtqPhpyS573jfgGS1+DlaGDz+H5jUwWjW7ngxfMxJC8mhZUZbOuY
+         oraqITjdYXP+Bacp1hr91aQTt7QczuyGOvLCmTpImmwS5PT8t4PrTLQF3hFwyzIFORdM
+         /gM/yUapAP05LlruWil+67okbU+8avVEriH0tuuR0AZ9Y7cfCCHZpg5/HvfYZ4nt+ojd
+         uTBt1NIZOg4JmwruJmdrVK4Ev39wU9ForyMFmbvrgmRahjYA6UKecB8EEVZ8LOhC0XJ4
+         aDsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724229178; x=1724833978;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TiK+7G6dPv+jiLpJYq4uvWBTS2IB+9YYcX0z6+IsEsU=;
-        b=bNkm1s+cNQvJlWpGesie3ttuh7kXKh+FR6cTJDdT/KeTmyfzLsAF/mAGhrgpXRJwdR
-         MiRFu5pP7zOeAGt8EmLyALkdjNUiyXe1S6TjFzodM3daQkKdG5v3AJojGVlsxLo2/eBc
-         lt/k41ESROdn/st7zp+HEhxubkElRN52y+kJ985C/SiMgdKiKAQVFfWu3T9GHOwNKk/c
-         aSO7fnpgr9QIlYJP8xYXrRZ6E9pSB8RCimqDA2fBAxyFJk6SzC3wuJ8kyIVu/65kNw0/
-         EIRULkjFS/eAfyV9vMExgDxigrLCIQVmB9/QF5DhEqDCvKKD7jYohGbKEmXkUBjExBGO
-         SOKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnF0DM7pvNAOU3kuhs27TZD4xZchCdb19Okyytrlq2sWyhVx9YDMNSe9N2vGYSMVScXLA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzAxciRIQe0afPXEMxnF5S7Yp8enlUhaZ38s7ICvrsUb8ylionO
-	++WxfcgLS4kMA5ZK+bXEd6WHTI9UBKddtBWgOLjMRZ4nvjA46oQw6l3/skgyNChMeeeO9jEQ8px
-	HEgIesa4ER59LJyLSA943eSy4Zrg=
-X-Google-Smtp-Source: AGHT+IEpcPNclRlC8I8790mt0FWDo7p4bR9P71fXfJsWTMYcIsLtsjdEOLM3CNSH63KzkDld3TlrqtCK7Lo2s633mdQ=
-X-Received: by 2002:a05:6402:190c:b0:5be:c73e:26e1 with SMTP id
- 4fb4d7f45d1cf-5bf1f1666e6mr899972a12.22.1724229177227; Wed, 21 Aug 2024
- 01:32:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724237714; x=1724842514;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LdumwN1jo/n/KBtkjPSwNc2sSNEbK5/h0uSru882m18=;
+        b=m2Edn+MqScK3cRRknVs8BcjEamUjgGM0Mv1RdEniZMHzB5LxFGfwMgRgCEHkHTGG1X
+         ufY0aey3lSXiF5QmncZiX7CrFO2zaH7XpZbuPOh9eTTJF4TNtzksV9QR/xgDBtU7grmv
+         UnyO5O7E8xjKe/T9B8sNhtTHJUMnMrtXlN4Y1uZS5vIkGs70/T3FH0rroizK1t0tCPja
+         2ulGAWFc3lsaLNVztw7mzvg6f/J94lOY86Qpti44sMLrPDAHAsopZFfmarAqwlHt5+q7
+         NJeRaMIVHJwyt63wRsm5PmK51rjWJGi67i3DF+WwbgZa6vp00n2wngtRLZ6HHo0/5NNh
+         HxBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaAV2bq2fP4OjVcoKkJW1sQqKSVNZ2wobxitxuu6BSoyDzZdeQ3+apdIXVhJDah5Q0ztE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyaa4vI23V2wW5JPwbyeLOBrzPILOUb+4/rRgw8WLdS/LpU+pE4
+	LwIRS3W1HG3PR8PulRrml6s6mTIj9er6v5SvyRIft9r6VMh+JgcKLb3+iQAkB/L6hPPHWXay8Tl
+	qsozAtTxDPpbsRgOGxlNy+CAPUTs=
+X-Google-Smtp-Source: AGHT+IH3vI6LbwOUVb+46FaZR6BIKjdGiYb4a97FSAhxpbogC94O6y5okZKDM4QDYpM3D9grOhSHMFn22LgX3CznpNc=
+X-Received: by 2002:a05:6902:18d3:b0:e0e:af13:b773 with SMTP id
+ 3f1490d57ef6-e166547b8cemr2745174276.23.1724237713710; Wed, 21 Aug 2024
+ 03:55:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240719-imx_rproc-v2-0-cd8549aa3f1f@nxp.com> <20240719-imx_rproc-v2-2-cd8549aa3f1f@nxp.com>
- <Zqe23DlboRPSXiQO@p14s>
-In-Reply-To: <Zqe23DlboRPSXiQO@p14s>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 21 Aug 2024 11:33:47 +0300
-Message-ID: <CAEnQRZC4Oqyks+ok0vdoFxW1v1s5hfbM8EtdP8nUqxTXRZsRLA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] remoteproc: imx_rproc: handle system off for i.MX7ULP
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
-	Marek Vasut <marex@denx.de>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>
+References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
+ <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
+ <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch> <ZsUXEkc5A5IBLpJv@shell.armlinux.org.uk>
+ <CAOMZO5CymmmUUhBrYwyCJ54sj=55wAVMqWpuYRbJOhoaroCUXA@mail.gmail.com>
+ <CAOMZO5DUmw=PZ_v32Y_xkbOTkQiR-9BPmNH7992YSV0m3Yhbfw@mail.gmail.com> <ZsWDicqAjmkHgaPD@pengutronix.de>
+In-Reply-To: <ZsWDicqAjmkHgaPD@pengutronix.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 21 Aug 2024 07:55:01 -0300
+Message-ID: <CAOMZO5AzHT79v4BnfoHqSt+S0F7hk9xYMZQPQOtXswqK4O4ygg@mail.gmail.com>
+Subject: Re: pca953x: Probing too early
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Andy Shevchenko <andy@kernel.org>, "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, andi.shyti@kernel.org, 
+	linux-i2c <linux-i2c@vger.kernel.org>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Mathieu,
+Hi Oleksij,
 
-I've talked to Peng and if my understanding is correct I think the patch is OK.
-Maybe we can split the patch in two:
-* first, adding the power off callback with explanations.
-* second, adding the restart callback with explanations.
+On Wed, Aug 21, 2024 at 3:05=E2=80=AFAM Oleksij Rempel <o.rempel@pengutroni=
+x.de> wrote:
 
-And also add a more detailed explanation.
+> Do you have a multi master i2c bus? If not, can you please test
+> following patch:
+> https://lore.kernel.org/all/20240715151824.90033-2-eichest@gmail.com/
 
-Power off and restart are totally different operations and are not complementary
-as I thought in the beginning. There are not like suspend/resume for example.
+Yes, this fixes the problem, thanks!
 
-> >  static int imx_rproc_probe(struct platform_device *pdev)
-> >  {
-> >       struct device *dev = &pdev->dev;
-> > @@ -1104,6 +1122,24 @@ static int imx_rproc_probe(struct platform_device *pdev)
-> >       if (rproc->state != RPROC_DETACHED)
-> >               rproc->auto_boot = of_property_read_bool(np, "fsl,auto-boot");
-> >
-> > +     if (of_device_is_compatible(dev->of_node, "fsl,imx7ulp-cm4")) {
-> > +             ret = devm_register_sys_off_handler(dev, SYS_OFF_MODE_POWER_OFF_PREPARE,
-> > +                                                 SYS_OFF_PRIO_DEFAULT,
-> > +                                                 imx_rproc_sys_off_handler, rproc);
->
-> Why does the mailbox needs to be set up again when the system is going down...
+I will reply in that thread with my Tested-by.
 
-Scenario: We call Linux *shutdown -P * command to power off the machine.
+Thanks everyone for the help.
 
-At this point mailbox TX operation is configured as *blocking*. Power
-off is done via
-an atomic notifier call which doesn't allow blocking. If we do so we
-will endup in a kernel crash.
-
-So, at this moment we setup again the mailboxes configuring them with
-*non-blocking* option.
-
->
-> > +             if (ret) {
-> > +                     dev_err(dev, "register power off handler failure\n");
-> > +                     goto err_put_clk;
-> > +             }
-> > +
-> > +             ret = devm_register_sys_off_handler(dev, SYS_OFF_MODE_RESTART_PREPARE,
-> > +                                                 SYS_OFF_PRIO_DEFAULT,
-> > +                                                 imx_rproc_sys_off_handler, rproc);
->
-> ... and why does it need to be free'd when the system is going up?
-
-System is not going up here. System is running and we do a reboot.
-
-Scenario: We call Linux *shutdown -r* command to reboot the machine.
-
-Similarly, mailboxes are already set and configured as *blocking*. We
-cannot use the mailboxes
-as they are because reboot is done via an atomic notifier which if we
-call a blocking function it will endup in crash.
-
-So, we need to free the existing mailbox and create new ones with the
-*non-blocking* options.
-
-I think this is really fair to me. The one thing, I admit we must work
-on, create a better commit message.
-
-What do you say? Does this work for you?
-
-Thanks a lot for your help!
+Cheers
