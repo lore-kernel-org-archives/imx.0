@@ -1,127 +1,116 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77ED168487
-	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 06:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B163816DC26
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 06:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724220307; cv=none; b=b9EM/hgjDpH1NoXr99gHBU+6t73QjKLXtGl0LCwIAVKqgG8gVoz4dQk8baCTobrrFzcPZhQz/y1Lyg8XaZTJyhUlWWt04Kz1In6UPHtEC99y0qQm2EMnIMT0kdZJ+EB1MMpZyzPMOft4K3vvs/9/DtuwCdKFswpOpRWMJMy6CAE=
+	t=1724221945; cv=none; b=DtoHw8nmZo8l/Mi5qCa5GXPrkIFlgkIy2uyuVUVMWhSWR69Qi2UEkMUlBt0vOjxsc3Oe23kBlC9jZSylRU/9F2TXmgtSG4llnixL4gCj+qGz7S9HOGxRCTz844+r+spY/EoZz7k6GTFK6a12HC9FXvyJBoT9Oo6QMjBpAAiohyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724220307; c=relaxed/simple;
-	bh=Lmr1ZW511aiy6LUvUqcwSnykjVwhBOGbFCjnf6g4mxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ju2ebHfWIodLHQ8EqrHfnt+4WOUalpH68VhSEbL1QxNLmlsFPik+AfU2agcEFphdbWldXJjDdsOUnAUFQO/FhIHVUxwxJdRjAcpSSttH2EEmpCOGNd0UWNw4mTecQOsjIg00j2Jyd/Wd0LXX1CcF+Jz7ovK11MhAXk5sEUMcV7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sgeSp-00030i-Ri; Wed, 21 Aug 2024 08:04:59 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sgeSo-001wYp-1J; Wed, 21 Aug 2024 08:04:58 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sgeSn-00FOha-30;
-	Wed, 21 Aug 2024 08:04:57 +0200
-Date: Wed, 21 Aug 2024 08:04:57 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>,
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	andi.shyti@kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: pca953x: Probing too early
-Message-ID: <ZsWDicqAjmkHgaPD@pengutronix.de>
-References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
- <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
- <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch>
- <ZsUXEkc5A5IBLpJv@shell.armlinux.org.uk>
- <CAOMZO5CymmmUUhBrYwyCJ54sj=55wAVMqWpuYRbJOhoaroCUXA@mail.gmail.com>
- <CAOMZO5DUmw=PZ_v32Y_xkbOTkQiR-9BPmNH7992YSV0m3Yhbfw@mail.gmail.com>
+	s=arc-20240116; t=1724221945; c=relaxed/simple;
+	bh=ubO7FYYGu3Hp/dnVJdRu7ROouFe6eV53mIzjSwW6CZQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MP8FzdeCr70Jxi+k1ChF2JQ888Aa9fYtgPeIWEIOqWWshz6W+ftOf2gCmKU9Jyd1BraJcCx61sOsturgyCD2vxKGPXIEFPNTyacUicj2USdiFTTQVaqcGQ5/ZhknNG2kopQT2ZtxGQBVHr+YUfqyFzcInKHuVBxGcl1pdqToK/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=QqVosuxT; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=nTnSnz19 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="QqVosuxT";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="nTnSnz19"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1724221942; x=1755757942;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4/ehOcDT1TfhJyhpORScIzM0CaaeNczPyVM302So5TI=;
+  b=QqVosuxTRq0JlyBlkX11oahtC9j29rdIEkWh6C1ShxKhEtWrkCcP8BE1
+   TyjrUjLtWYUtcANbUUHp5qPS/r+sxbK6W9hsaH3ATeBn8l4E/Rx9uJtUo
+   ObMzWko4x7a3j7V/SyLdJkkP9J0f4vIh3xU6ndD1w7jaa5ZFWIktYqk8Q
+   8BaAzz+YoS1nkp1PY4sN79Gv1BKMxIZFoAo6d1FscWG9zTBSl+SYp2x42
+   ZjKxN3LPdX2DC0SMWh47zmg0SGoXQRBI9xEhipckvU7wdnrna+nnkSwJU
+   NYFMD2whxwjb7qXjO2+4IdNQtKdViZlzcCWZE99+d3EPJrwxtS6DQ26an
+   g==;
+X-CSE-ConnectionGUID: jYq/U/DzQz2tnwO4WwI6Wg==
+X-CSE-MsgGUID: jcd+9XZYSe2xgqKmArv8Vg==
+X-IronPort-AV: E=Sophos;i="6.10,164,1719871200"; 
+   d="scan'208";a="38503970"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 21 Aug 2024 08:32:13 +0200
+X-CheckPoint: {66C589ED-18-6568578B-E2E34638}
+X-MAIL-CPID: 771695C08205E4FCECCC211BFF4AE35B_3
+X-Control-Analysis: str=0001.0A782F19.66C589ED.011B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7D24D163E9E;
+	Wed, 21 Aug 2024 08:32:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1724221929;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4/ehOcDT1TfhJyhpORScIzM0CaaeNczPyVM302So5TI=;
+	b=nTnSnz19vLHbPEireDaDtlEzHdquqGghDGI4f7KavXjgRwzWigHRfHs0UhRtnsAr30ydjU
+	ogrR4qrzuRTHj93/05xMfXWzWzxshs7TscrIm2DtjAtnUKMD2EqoMWhROxgL2a3Yi6cF0w
+	SKCmJPMfQo5udUNXn0Hhap0CDKnzpVDQT8INnpUyBK3uXAg/9c0ZkMU7MtorhA4QeLwffn
+	EUib8jLUG3Uc026ST8cHS+EFMtomVs9DFZyAUofvOOH/aADtNmRleIQFeWE0zu1Ao534Q1
+	UDr+psuNUDE1Vc+1rNmvq8qsZq7AnhBJhjJFPLl62gpK10mXvXP+c/BxSLGjBg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: Re: [PATCH 1/3] arm64: dts: freescale: imx93-11x11-evk: enable fsl, ext-reset-output for wdog3
+Date: Wed, 21 Aug 2024 08:32:06 +0200
+Message-ID: <2954135.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240820-imx93-wdog-v1-1-5dafda0d4319@nxp.com>
+References: <20240820-imx93-wdog-v1-0-5dafda0d4319@nxp.com> <20240820-imx93-wdog-v1-1-5dafda0d4319@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5DUmw=PZ_v32Y_xkbOTkQiR-9BPmNH7992YSV0m3Yhbfw@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Fabio,
+Hi,
 
-On Tue, Aug 20, 2024 at 09:50:04PM -0300, Fabio Estevam wrote:
-> On Tue, Aug 20, 2024 at 8:18 PM Fabio Estevam <festevam@gmail.com> wrote:
-> 
-> > The pca953x driver tries to write to the i2c-2 bus before i2c-2 is registered.
-> >
-> > This is the point I don't understand: how can the pca953x driver get
-> > probed before its I2C bus parent?
-> 
-> Disconsider what I wrote above.
-> 
-> I'm trying to recover from the arbitration lost like this:
-> 
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -491,6 +491,8 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct
-> *i2c_imx, int for_busy, bool a
->                 /* check for arbitration lost */
->                 if (temp & I2SR_IAL) {
->                         i2c_imx_clear_irq(i2c_imx, I2SR_IAL);
-> +                       pr_err("******* Arbitration lost\n");
-> +                       i2c_recover_bus(&i2c_imx->adapter);
->                         return -EAGAIN;
->                 }
-> 
-> @@ -1487,6 +1489,7 @@ static int i2c_imx_probe(struct platform_device *pdev)
->         i2c_imx->adapter.nr             = pdev->id;
->         i2c_imx->adapter.dev.of_node    = pdev->dev.of_node;
->         i2c_imx->base                   = base;
-> +       i2c_imx->adapter.retries        = 5;
->         ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev));
-> 
-> but still get pca953x probe failure:
-> 
-> [    1.756761] pca953x 2-0020: supply vcc not found, using dummy regulator
-> [    1.766564] pca953x 2-0020: using no AI
-> [    1.775333] ******* Arbitration lost
-> [    1.783811] ******* Arbitration lost
-> [    1.793701] ******* Arbitration lost
-> [    1.797455] ******* Arbitration lost
-> [    1.801209] ******* Arbitration lost
-> [    1.804964] ******* Arbitration lost
-> [    1.808562] pca953x 2-0020: failed writing register
-> [    1.813602] pca953x: probe of 2-0020 failed with error -11
-> [    1.819222] i2c i2c-2: IMX I2C adapter registered
+Am Dienstag, 20. August 2024, 17:02:39 CEST schrieb Peng Fan (OSS):
+> From: Peng Fan <peng.fan@nxp.com>
+>=20
+> The WDOG_B is connected to external PMIC, so set "fsl,ext-reset-output"
+> to enable triggering PMIC reset.
+>=20
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm=
+64/boot/dts/freescale/imx93-11x11-evk.dts
+> index 60eb64761392..fb93ae654a2b 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+> @@ -485,6 +485,7 @@ &usdhc2 {
+>  };
+> =20
+>  &wdog3 {
+> +	fsl,ext-reset-output;
 
-Do you have a multi master i2c bus? If not, can you please test
-following patch:
-https://lore.kernel.org/all/20240715151824.90033-2-eichest@gmail.com/
+The MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY pinctrl is missing, no?
+Same for the other boards.
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+Alexander
+
+>  	status =3D "okay";
+>  };
+> =20
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
