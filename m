@@ -1,147 +1,147 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9BA13D53E
-	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 15:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CBB1494CC
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 15:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724253810; cv=none; b=jIbjs2bZb0uYWf1v6aRhV1b2nmE3PpsDuQBR456vqEvNPTU3aYJn7iOeI0hQEEAVqMSolKq409cxBciSzM/WQkK504C+5i7dM4gHR5ghU8PL8n1y5IpWBhGr5GMl61xaIXE5pwg+OErPAGqDzl3ZXF8H8ao9zIgWi5QKOwP4HCE=
+	t=1724253831; cv=none; b=plC7Zd4LjBBIhmbULxjoLUB1fDdE4HCc3iaV5xn7DP2l6CQTrO1YPJ1bmegnYiE/f5fiCadh/Ph4tVlNrQB+iAclu1Uwas/nH6XnyflIzk5f5QUu07taREHbt++x4Ggbk/8cQ/0Di60XTolN1lF6FzbqkQhQTX7vsUeIyPXA6J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724253810; c=relaxed/simple;
-	bh=/ls9kAQ3NNeEjTNKhldR/IHMKF6SMXPYY3qSznxb/f8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rB1OqGyLgIEySPAcJwxxcrr/1vpNY09rlnVu35LJl+BT6lVsDV60jaEyrwmRunvrD9UvIhuMY2f8hGoe8W0OG6xLILYWB9lVnrlL2sk+2Edk7KhZEC7ecORcjWMUa4p73rCOTLt22UQSfby7ey0P2sQRP6kHzTZQX+09rxXjLzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EhBIrQnZ; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724253831; c=relaxed/simple;
+	bh=NeVAotCcimmW80B66VrXJtlM9z2OoTRQx+4rygElhc0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HDKEZvbeF/8rO7Y3oTB3Ln7iarYa7GjaNT95ANZEapEY1bbNrjJ9v07zyv2VQ5WfsD89m2aqGIju4V6GI99Skc8E5zVoUbmirG6TFsX7PKArS364/N3lVzR9fIP84fxGz2rOY29QJrpBDBgxVSbrgT15Cr5ZfaL1ZaC4/RukOxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=Kgyhgy62; arc=none smtp.client-ip=91.26.50.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EhBIrQnZ"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42ab99fb45dso20577975e9.1
-        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 08:23:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724253807; x=1724858607; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=on58eBktu8//MnphFE6QbfO4BlqhK86yb9Y44C2uYzo=;
-        b=EhBIrQnZGNyFYoY/RbcCiiW+sgdm1YkcIGV1SNENFbHgDOc2vMeX9jHa5sscBRZc63
-         E1hzR7qjuSOb+rQZeoqgIjqLEw/cPvxIaCuglbIeyC40rBPXRCgNvcXced/FThylb07x
-         CvZkm2ikvV8Pgh4Nz9om3ktflyp8mIqeZDESom8VZNC/95kEYO4T4rtu2a9GG0gndaYd
-         X1ivhsDXbuCXRCa2pzCVkr0OyJCaocGY34UpdXw8/2zhwJGrsersrDLZ9fUyol5AOfNo
-         KY5U2hHu3bhOrf3Zgt8FutBGwkVHM0P/3hRrXuDk2Ucc1/Svq+izGAK2cMZ86Rk/e0Hp
-         PaCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724253807; x=1724858607;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=on58eBktu8//MnphFE6QbfO4BlqhK86yb9Y44C2uYzo=;
-        b=Vnfw7Vjn9dGc86W5xhXvhOsT9c4AnL4p88jHSeCQyNqhicWRfvYkS1RUElj4bkwy7t
-         FJonADzrIeagcqj1v2aSkbAY1QrbUKh2bTOh/Muy9d5Ybmhi3kVNxzbSfoKUC+fIeV/B
-         ao3E7PIBRhYeZTSw/H0StVCAelhrjcPmdMxfiwrfJiGweLRbybVccJMRUQ0XBRe56J6o
-         ODRM/M0zyAtPP+WLrga7l9yaz9Qbon+RBm9h4xgA2LyU6oPBN/+llnuoT3fpyD5aqv+E
-         tZfOOicUDmEoO3oiEfwkEUyKPNEjt4zZUXFaFxnbiWntgMNaiHwYHQCfEmtL10RX7buv
-         5PnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUk+GlUSwWCXw08i+Mi59qjN+RN2D3wcChH3b8cytm8UTGY5XOPAZLY+5Atjwi3K/y+TDk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxgs4uD53LFVogzHTuJ1bgv/DsVv/OdcnySUnTL0V3noqDj6V6i
-	Dmsez3oqh9EosXTd3UMkm7O59mR/DlZzJzUFnjobgiSNWWPxxYB8
-X-Google-Smtp-Source: AGHT+IG1ZzxG35cV4xa41v9iY/LRo3Z2DG4I6ZnhNmHSYUOwELUQafq8+lrzs83TZ5LK5Kr+B1jzwg==
-X-Received: by 2002:a05:600c:4444:b0:428:f0a:3f92 with SMTP id 5b1f17b1804b1-42abd2265f5mr24916965e9.21.1724253806602;
-        Wed, 21 Aug 2024 08:23:26 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:ce3a:abb4:426f:fe4a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abef9f5b9sm29583395e9.29.2024.08.21.08.23.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 08:23:26 -0700 (PDT)
-Date: Wed, 21 Aug 2024 17:23:24 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>, kernel@pengutronix.de,
-	andi.shyti@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	Frank.Li@nxp.com, francesco.dolcini@toradex.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2 1/4] i2c: imx: only poll for bus busy in multi master
- mode
-Message-ID: <ZsYGbN36jwxyMAvE@eichest-laptop>
-References: <20240819072052.8722-1-eichest@gmail.com>
- <20240819072052.8722-2-eichest@gmail.com>
- <CAOMZO5CYUNESmBdZBMSMwNraQbqvvsF5fn8i+nHr=MB_T_AG7w@mail.gmail.com>
- <ZsX8KzkQw0wJUCbc@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="Kgyhgy62"
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1724253820; x=1726845820;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NeVAotCcimmW80B66VrXJtlM9z2OoTRQx+4rygElhc0=;
+	b=Kgyhgy62YGO8HPMWx8yE5UFrAdgq1FoNPxwappiXc8bOovsURah2DM0Xn3+4xhiQ
+	aIVSsRFthG0gXW7p3mIDD/XhPrIQWTms11jK137o0JT09BMiug3RLqSIkgR97+MQ
+	NcJo6Ida/SZCCxKZPtzUbUJ3auOuZf6bt+svVPx8obM=;
+X-AuditID: ac14000a-03e52700000021bc-59-66c6067ba6b5
+Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
+	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 38.96.08636.C7606C66; Wed, 21 Aug 2024 17:23:40 +0200 (CEST)
+Received: from Berlix.phytec.de (172.25.0.12) by Berlix.phytec.de
+ (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 21 Aug
+ 2024 17:23:39 +0200
+Received: from Berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4]) by
+ berlix.phytec.de ([fe80::197e:d26b:2ca:c7b4%4]) with mapi id 15.01.2507.006;
+ Wed, 21 Aug 2024 17:23:39 +0200
+From: Benjamin Hahn <B.Hahn@phytec.de>
+To: Yannic Moog <Y.Moog@phytec.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "robh@kernel.org"
+	<robh@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, Teresa Remmet <T.Remmet@phytec.de>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, PHYTEC Upstream
+	<upstream@lists.phytec.de>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+Subject: Re: [Upstream] [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: Add
+ support for PCIe
+Thread-Topic: [Upstream] [PATCH] arm64: dts: imx8mp-phyboard-pollux-rdk: Add
+ support for PCIe
+Thread-Index: AQHa7XimbOKZy6rq40+YdGI18WNCLLIvwBYAgAH/o4A=
+Date: Wed, 21 Aug 2024 15:23:39 +0000
+Message-ID: <88eff780-b029-459f-9ac4-2b9779f47929@phytec.de>
+References: <20240813-wip-bhahn-add_pcie_support-v1-1-c1bb062b4e1f@phytec.de>
+ <134471bf20329ab3def09f0a56a6dfc88e1a395a.camel@phytec.de>
+In-Reply-To: <134471bf20329ab3def09f0a56a6dfc88e1a395a.camel@phytec.de>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3F73A5715FB521478BC050A8F5AA3F74@phytec.de>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZsX8KzkQw0wJUCbc@pengutronix.de>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrMIsWRmVeSWpSXmKPExsWyRpKBR7eG7ViawaQOJos1e88xWcw/co7V
+	4uFVf4uZ91rZLFZN3cli8XLWPTaLTY+vsVpc3jWHzeL/nh3sFn+3b2KxeLFF3KL7nboDj8fO
+	WXfZPTat6mTz2Lyk3uPF5pmMHv3dLawe/X8NPD5vkgtgj+KySUnNySxLLdK3S+DK2L9sG2vB
+	E6WKX5+TGhg/KHYxcnJICJhI7Du4m72LkYtDSGAJk8Sue2/YIJz7jBILnjYxQjgbGCWaG9aw
+	gbSwCahJ7HrzmhUkISLQySxx4fcsZhCHWWANk8Tti2uAMhwcwgJxEnNWKYCYIgLxEl++cYL0
+	ighYSay+/4gZxGYRUJX48ukGC0gJr4CNxIlWZ4hdXYwSKx/2gO3iFHCX6NizkBHEZhSQldiw
+	4TxYL7OAuMSmZ99ZIV4QkFiyByIuISAq8fLxP6i4vMSJW9OYQOYzC2hKrN+lD9FqIbHtwjqo
+	MYoSU7ofsoPYvAKCEidnPmGZwCg+C8mGWQjds5B0z0LSPQtJ9wJG1lWMQrmZydmpRZnZegUZ
+	lSWpyXopqZsYQREvwsC1g7FvjschRiYOxkOMEhzMSiK8SfeOpgnxpiRWVqUW5ccXleakFh9i
+	lOZgURLnXd0RnCokkJ5YkpqdmlqQWgSTZeLglGpgXPef+66iqalkxJWYu/UX9TaqfvSJXPfc
+	tHPSTbbAD3uKL/6fGa7Z4+U6W5Rnk0Lou1VFk/8IMOVa5355su/i9EcfchY63Pm7V/4ze9/s
+	I+vfd/6tFkuYkNgz/dt8HmG5+uuhvi6WD+/HPf8sWJqQuenZnr2cCyUiQi7vcdiXOXn3jZUx
+	e09+na3EUpyRaKjFXFScCAA7gUqp5gIAAA==
 
-Hi Fabio, Oleksij,
-
-On Wed, Aug 21, 2024 at 04:39:39PM +0200, Oleksij Rempel wrote:
-> Hi Fabio, Stefan,
-> 
-> On Wed, Aug 21, 2024 at 08:01:20AM -0300, Fabio Estevam wrote:
-> > Hi Stefan,
-> > 
-> > On Mon, Aug 19, 2024 at 4:20 AM Stefan Eichenberger <eichest@gmail.com> wrote:
-> > >
-> > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > >
-> > > According to the i.MX8M Mini reference manual chapter "16.1.4.2
-> > > Generation of Start" it is only necessary to poll for bus busy and
-> > > arbitration lost in multi master mode. This helps to avoid rescheduling
-> > > while the i2c bus is busy and avoids SMBus devices to timeout.
-> > >
-> > > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > 
-> > This fixes a pca953x probe error on an imx8mp board running linux-stable 6.6:
-> > 
-> > [    1.893260] pca953x 2-0020: failed writing register
-> > [    1.898258] pca953x 2-0020: probe with driver pca953x failed with error -11
-> > 
-> > Could you please add a Fixes tag and Cc stable so that this can reach
-> > the stable kernels?
-> > 
-> > Tested-by: Fabio Estevam <festevam@denx.de>
-
-Thanks a lot for testing. Are the other patches required as well or did
-only introducing the master mode flag solve the issue?
-
-> > 
-> > Thanks a lot,
-> 
-> It looks like with this patch, the I2SR_IAL interrupt is not cleared.
-> I would expect some kind of interrupt storm. Can you confirm it?
-
-This is a good question. i2c_imx_trx_complete was never called in the
-interrupt handler. So that would mean the storm would already be there
-before just for a shorter time. We only clear the IFF flag in the isr.
-
-> This causes a processor interrupt request (if the interrupt enable is
-> asserted [IIEN = 1]). The interrupt is set when one of the following
-> occurs:
-> - One byte transfer is completed (the interrupt is set at the falling
->   edge of the ninth clock).
-> - An address is received that matches its own specific address in
->   Slave Receive mode.
-> - Arbitration is lost.
-
-Unfortunately, I don't have a device that uses multi master mode and we
-would only see it on such a device. However, also from the reference
-manual:
-
-> IAL must be cleared by software by writing a "0" to it at the start of
-> the interrupt service routine
-
-So most likely it was wrong the whole the time we just didn't see it
-before, could that be? I think a fix would be relatively easy we have to
-clear it at the beginning of the isr but after we read the status. I
-could add this to the series if you agree.
-
-Regards,
-Stefan
+SGkgWWFubmljLA0KDQpPbiAyMC4wOC4yNCAxMDo1MiwgWWFubmljIE1vb2cgd3JvdGU6DQo+IEhl
+bGxvIEJlbmphbWluLA0KPg0KPiBPbiBUdWUsIDIwMjQtMDgtMTMgYXQgMTQ6MDIgKzAyMDAsIEJl
+bmphbWluIEhhaG4gd3JvdGU6DQo+PiBBZGQgc3VwcG9ydCBmb3IgdGhlIE1pbmkgUENJZSBzbG90
+Lg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IEJlbmphbWluIEhhaG4gPEIuSGFobkBwaHl0ZWMuZGU+
+DQo+PiAtLS0NCj4+ICDCoC4uLi9kdHMvZnJlZXNjYWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgt
+cmRrLmR0c8KgwqAgfCA0MiArKysrKysrKysrKysrKysrKysrKysrDQo+PiAgwqAxIGZpbGUgY2hh
+bmdlZCwgNDIgaW5zZXJ0aW9ucygrKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jv
+b3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtcGh5Ym9hcmQtcG9sbHV4LXJkay5kdHMNCj4+IGIvYXJj
+aC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBoeWJvYXJkLXBvbGx1eC1yZGsuZHRz
+DQo+PiBpbmRleCAwMGEyNDA0ODRjMjUuLjBlY2IyZjYyYzM3ZiAxMDA2NDQNCj4+IC0tLSBhL2Fy
+Y2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtcC1waHlib2FyZC1wb2xsdXgtcmRrLmR0
+cw0KPj4gKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLXBoeWJvYXJk
+LXBvbGx1eC1yZGsuZHRzDQo+PiBAQCAtNiw2ICs2LDcgQEANCj4+ICAgDQo+PiAgwqAvZHRzLXYx
+LzsNCj4+ICAgDQo+PiArI2luY2x1ZGUgPGR0LWJpbmRpbmdzL3BoeS9waHktaW14OC1wY2llLmg+
+DQo+PiAgwqAjaW5jbHVkZSA8ZHQtYmluZGluZ3MvbGVkcy9sZWRzLXBjYTk1MzIuaD4NCj4+ICDC
+oCNpbmNsdWRlIDxkdC1iaW5kaW5ncy9wd20vcHdtLmg+DQo+PiAgwqAjaW5jbHVkZSAiaW14OG1w
+LXBoeWNvcmUtc29tLmR0c2kiDQo+PiBAQCAtNjMsNiArNjQsMTcgQEAgcmVnX2NhbjJfc3RieTog
+cmVndWxhdG9yLWNhbjItc3RieSB7DQo+PiAgwqAJCXJlZ3VsYXRvci1uYW1lID0gImNhbjItc3Ri
+eSI7DQo+PiAgwqAJfTsNCj4+ICAgDQo+PiArCXJlZ19wY2llMDogcmVndWxhdG9yLXBjaWUgew0K
+Pj4gKwkJY29tcGF0aWJsZSA9ICJyZWd1bGF0b3ItZml4ZWQiOw0KPj4gKwkJcGluY3RybC1uYW1l
+cyA9ICJkZWZhdWx0IjsNCj4+ICsJCXBpbmN0cmwtMCA9IDwmcGluY3RybF9wY2llMF9yZWc+Ow0K
+Pj4gKwkJcmVndWxhdG9yLW5hbWUgPSAiTVBDSUVfM1YzIjsNCj4+ICsJCXJlZ3VsYXRvci1taW4t
+bWljcm92b2x0ID0gPDMzMDAwMDA+Ow0KPj4gKwkJcmVndWxhdG9yLW1heC1taWNyb3ZvbHQgPSA8
+MzMwMDAwMD47DQo+PiArCQlncGlvID0gPCZncGlvMSAxNCBHUElPX0FDVElWRV9ISUdIPjsNCj4+
+ICsJCWVuYWJsZS1hY3RpdmUtaGlnaDsNCj4+ICsJfTsNCj4+ICsNCj4gcGNpZSB1c2VzIHRoZSBy
+ZWdfdmNjXzN2M19zdy4gRHJvcCB0aGlzIG5vZGUgYW5kIHVzZSB0aGUgYXBwcm9wcmlhdGUgcmVn
+dWxhdG9yIGluc3RlYWQuDQpvaw0KPg0KPj4gIMKgCXJlZ19sdmRzMV9yZWdfZW46IHJlZ3VsYXRv
+ci1sdmRzMSB7DQo+PiAgwqAJCWNvbXBhdGlibGUgPSAicmVndWxhdG9yLWZpeGVkIjsNCj4+ICDC
+oAkJZW5hYmxlLWFjdGl2ZS1oaWdoOw0KPj4gQEAgLTE5NSw2ICsyMDcsMjMgQEAgJnNudnNfcHdy
+a2V5IHsNCj4+ICDCoAlzdGF0dXMgPSAib2theSI7DQo+PiAgwqB9Ow0KPj4gICANCj4+ICsmcGNp
+ZV9waHkgew0KPj4gKwlmc2wscmVmY2xrLXBhZC1tb2RlID0gPElNWDhfUENJRV9SRUZDTEtfUEFE
+X09VVFBVVD47DQo+PiArCWZzbCxjbGtyZXEtdW5zdXBwb3J0ZWQ7DQo+IFdoeSBkbyB5b3UgaGF2
+ZSB0aGlzIGFzIHVuc3VwcG9ydGVkPyBXZSBoYXZlIGEgR1BJTyBjb25uZWN0ZWQgdG8gQ0xLUkVR
+Lg0KSXQgbG9va3MgbGlrZSB0aGUgcGNpZSBkcml2ZXIgZG9lcyBub3Qgc3VwcG9ydCB1c2luZyBh
+IEdQSU8gZm9yIGNsa3JlcS4gDQpTbyBpdCBkb2VzIG5vdCB3b3JrIGZvciB1cy4NCj4NCj4+ICsJ
+Y2xvY2tzID0gPCZoc2lvX2Jsa19jdHJsPjsNCj4+ICsJY2xvY2stbmFtZXMgPSAicmVmIjsNCj4+
+ICsJc3RhdHVzID0gIm9rYXkiOw0KPj4gK307DQo+PiArDQo+PiArLyogTWluaSBQQ0llICovDQo+
+PiArJnBjaWUgew0KPj4gKwlwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOw0KPj4gKwlwaW5jdHJs
+LTAgPSA8JnBpbmN0cmxfcGNpZTA+Ow0KPj4gKwlyZXNldC1ncGlvID0gPCZncGlvMSA4IEdQSU9f
+QUNUSVZFX0xPVz47DQo+PiArCXZwY2llLXN1cHBseSA9IDwmcmVnX3BjaWUwPjsNCj4+ICsJc3Rh
+dHVzID0gIm9rYXkiOw0KPj4gK307DQo+PiArDQo+PiAgwqAmcHdtMyB7DQo+PiAgwqAJc3RhdHVz
+ID0gIm9rYXkiOw0KPj4gIMKgCXBpbmN0cmwtbmFtZXMgPSAiZGVmYXVsdCI7DQo+PiBAQCAtMzY2
+LDYgKzM5NSwxOSBAQCBNWDhNUF9JT01VWENfU0QyX1dQX19HUElPMl9JTzIwCQkweDEyDQo+PiAg
+wqAJCT47DQo+PiAgwqAJfTsNCj4+ICAgDQo+PiArCXBpbmN0cmxfcGNpZTA6IHBjaWUwZ3JwIHsN
+Cj4+ICsJCWZzbCxwaW5zID0gPA0KPj4gKwkJCU1YOE1QX0lPTVVYQ19HUElPMV9JTzExX19HUElP
+MV9JTzExCTB4NjAgLyogb3BlbiBkcmFpbiwgcHVsbCB1cCAqLw0KPj4gKwkJCU1YOE1QX0lPTVVY
+Q19HUElPMV9JTzA4X19HUElPMV9JTzA4CTB4NDANCj4gQ2FuIHlvdSBwbGVhc2UgcmVvcmRlciBu
+dW1lcmljYWxseSBhc2NlbmRpbmc/DQo+IFlvdSBhcmUgbWlzc2luZyBHUElPMSAxMCB1c2VkIGZv
+ciBXQUtFIy4NCg0Kb2sNCg0KQmVuamFtaW4NCg0KPg0KPj4gKwkJPjsNCj4+ICsJfTsNCj4+ICsN
+Cj4+ICsJcGluY3RybF9wY2llMF9yZWc6IHBjaWUwcmVnZ3JwIHsNCj4+ICsJCWZzbCxwaW5zID0g
+PA0KPj4gKwkJCU1YOE1QX0lPTVVYQ19HUElPMV9JTzE0X19HUElPMV9JTzE0CTB4NDANCj4gVGhp
+cyBncGlvIG11eGluZyBzaG91bGQgYmUgaW4gdGhlIHBjaWUwZ3JwLg0KPg0KPiBZYW5uaWMNCj4N
+Cj4+ICsJCT47DQo+PiArCX07DQo+PiArDQo+PiAgwqAJcGluY3RybF9wd20zOiBwd20zZ3JwIHsN
+Cj4+ICDCoAkJZnNsLHBpbnMgPSA8DQo+PiAgwqAJCQlNWDhNUF9JT01VWENfU1BESUZfVFhfX1BX
+TTNfT1VUCQkweDEyDQo+Pg0KPj4gLS0tDQo+PiBiYXNlLWNvbW1pdDogN2M2MjZjZTRiYWUxYWMx
+NGY2MDA3NmQwMGVhZmU3MWFmMzA0NTBiYQ0KPj4gY2hhbmdlLWlkOiAyMDI0MDgxMy13aXAtYmhh
+aG4tYWRkX3BjaWVfc3VwcG9ydC1iOWJkNzVmYzRkOTgNCj4+DQo+PiBCZXN0IHJlZ2FyZHMsDQoN
+Cg0K
