@@ -1,157 +1,145 @@
-Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029D014F9C5
-	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 15:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.26.50.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253811C7B8D
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 15:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724253835; cv=none; b=S5r4pSviKZYF04q3VFTGXHeg5OC6BS0IH1b5KWOr0959D85sQAh+te+Yz3JA522tQsN8BLsoTFQQ1vhik6WErk75ylzApe+QiNo6uj5WNzZcrzOt0Jfi37VOqKKXUppCqelfqU1TFVpTcpXS0eas4xMBfxvasrjOp++q9/v1iWc=
+	t=1724254866; cv=none; b=en3O8kiVdpKu42Pzvu+5FKVcMhZLefiaYvFQ2JDJS5T3dzb9AxdK1VU3KzJZZ9+V/6f4H7Ee4cjSdAnrNYjX0JG2ibLYsPY3Po8hkYUyXmXV8RPxQNJMQAJAsNWXBNdFOt7un+pLo+vKtIqWxkYjADt/f+HvRswGnHYQB9nxlmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724253835; c=relaxed/simple;
-	bh=lePPs/tbAtIOFouvZh9RmUIK3TsKRHNzE0VDc7ZAlf8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Y4KWDI32/TjE8tIGgTMlPiUjx6CgBCDuneP4eAwk9bBhP5s65/HpFVakgeDCNjghULx5WK4TM9ViSKRFDjQzMaqFHoCLgNFBSOARu1yyZxhPhQzsITzx7aj0qnU8SpMDZWi2Cu88jXIP2/ESJ6p+GGdAqx8FAsfFmWuaAHxGWyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b=r18FPPLc; arc=none smtp.client-ip=91.26.50.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1724254866; c=relaxed/simple;
+	bh=vzRjhS7+octK36jnSe580srSV99gX3ihUMa3REwO3yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iiwY0E25Qa6g560yW7fYfyiRNo2okTyFx8q5C4bisTtHmGe2ARKzPx+UNOt9BFK5hgipUGqni5j4JJoJJzs+x7V1rmiA+wAMFh/iIaeK6uBWeoK5kwehe7tWzggXuF1hziKQE9J0hh3hKQWxbfzKDphoFSzGUSK3d3LAqu7+43A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/h7kvUG; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=phytec.de header.i=@phytec.de header.b="r18FPPLc"
-DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
-	q=dns/txt; i=@phytec.de; t=1724253832; x=1726845832;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lePPs/tbAtIOFouvZh9RmUIK3TsKRHNzE0VDc7ZAlf8=;
-	b=r18FPPLctrKH/OtSR+5oA4EotaGy5+ImmsBud/zN9d2wwBG2TLALIDhwMy3LAceT
-	tpd+lL0b/r3/Cq5tTQCxaglzyTHELCq4Xkb1+k1ng+f4wIyaJvb1lEvrGHIbEs6t
-	5GRyZ149j+ubviBS77g5ioR1HIwQhqlKwfU/oz5SLW8=;
-X-AuditID: ac14000a-03251700000021bc-5e-66c606887179
-Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
-	(using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 6A.96.08636.88606C66; Wed, 21 Aug 2024 17:23:52 +0200 (CEST)
-Received: from llp-hahn.phytec.de (172.25.0.11) by Berlix.phytec.de
- (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Wed, 21 Aug
- 2024 17:23:52 +0200
-From: Benjamin Hahn <B.Hahn@phytec.de>
-Date: Wed, 21 Aug 2024 17:23:45 +0200
-Subject: [PATCH v2] arm64: dts: imx8mp-phyboard-pollux-rdk: Add support for
- PCIe
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/h7kvUG"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-428163f7635so59899865e9.2
+        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 08:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724254863; x=1724859663; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gnCSiun9t/RJbFPil7xi9PoRJLxM8vFSfSVVmmvO+8g=;
+        b=W/h7kvUGyk7fN727w9Qy+fNaCLem3CGj644quDo5rwfe3V5C9dskZe8DUZMZ5jFwJ5
+         8Y6Ac8Hhg+OaKPPsLjQmBqxOLKXAQdkrUsIO+YQg+LWoWMAZNxDsfS+E5FGesu/xcTWs
+         uMKgJAEHOIHkTQruB8FuHLEka1ZOGHNfaz/JdM5vNC44qZLywbg0nME/P5NR2cr8gWbs
+         iJwC5J6jV2WFn0hLV5ykk4pedfe8WJNCFuhF111eTFC2BXWv5+QitqgJF7g4FCB3l/nz
+         jYRCU/OuoPtSd8C2C4IAwdnr9L+suKq1etRjcRKsG98pVeFD26Jvblni1Bzo4FCkupwR
+         tDfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724254863; x=1724859663;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gnCSiun9t/RJbFPil7xi9PoRJLxM8vFSfSVVmmvO+8g=;
+        b=QBw8pWJ43KsIW9G9RcunEImbHdEXLwR0GoQPzeV+98+WYx/pqWS5yQXQPxIZsLGuM0
+         KYYbibU5dNhvBYOPGsAKEfZKTxPtbVzp9Ox74SV8qejP4nzFpFAeY8w3lnPZVQ6NGVe0
+         07DcR3LAac1+weob7Liyy8pZfSfRPG69UtgEa1PiosWY5XR3fOAsfMZVSiIKWlL3G1Tt
+         RkzMdoScjzj+Jpl6SQ0GkLUo4iytE2RVg3izq/lj0zwxjsQJTjtKQTI0eco10M1m6JSL
+         Me+fb3BTdwvPSpyz9AtLaFSqqHfvpcG2zzhTVrfHwnq7aK9vtYVpq3Pq/CNr0wLEQEdU
+         lgOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVtPuMRduAhKQboekjUSjwT4zlnP0wMnFJ7rHCPzhVQfS0yNvnEbj9kdkcYVAnXBTfvYR0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzlljUZuivl6RGRvsrz1MJj248pvJZdLUFwdOMSS2XD3244i3v/
+	0WkBRZ4DnV/7/WPo2SjtX7NSt9dNvgsj8FZE6g5G5F+f7qI0ODjD
+X-Google-Smtp-Source: AGHT+IEhSjD1LCYAF1BY6Yws5oSCUl4XcCH6YisKu0nEYXjpoTyvoA5zAhxtl6MA01Q3OJCdSh2Z5A==
+X-Received: by 2002:a5d:650b:0:b0:371:9362:c286 with SMTP id ffacd0b85a97d-372fd577056mr1685838f8f.4.1724254862883;
+        Wed, 21 Aug 2024 08:41:02 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72:0:ce3a:abb4:426f:fe4a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-371a937a5f4sm11682371f8f.51.2024.08.21.08.41.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2024 08:41:02 -0700 (PDT)
+Date: Wed, 21 Aug 2024 17:41:00 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kw@linux.com, robh@kernel.org, bhelgaas@google.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/3] PCI: imx6: reset link after suspend/resume
+Message-ID: <ZsYKjFXHDVr8tz9K@eichest-laptop>
+References: <20240819090428.17349-1-eichest@gmail.com>
+ <ZsNXDq/kidZdyhvD@lizhi-Precision-Tower-5810>
+ <ZsQ9OWdCS5o96VN2@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240821-wip-bhahn-add_pcie_support-v2-1-9c92d8488ab2@phytec.de>
-X-B4-Tracking: v=1; b=H4sIAIAGxmYC/43NTQ6CMBCG4auQWTuGVlRw5T0MIf2Z2tlA01aUE
- O5u5QQun2/xfiskikwJbtUKkWZOPI0F8lCB8Wp8ErItBlnLpm7FCd8cUHvlR1TWDsEwDekVwhQ
- z6k7b69mZxnYtlECI5Pizxx99seeUp7jsX7P4rX9lZ4ECjdC6vkjdkHD34JdM5mgJ+m3bvlap4
- LrEAAAA
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Teresa Remmet
-	<t.remmet@phytec.de>
-CC: <upstream@lists.phytec.de>, <devicetree@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, Benjamin Hahn <B.Hahn@phytec.de>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724253832; l=2075;
- i=B.Hahn@phytec.de; s=20240126; h=from:subject:message-id;
- bh=lePPs/tbAtIOFouvZh9RmUIK3TsKRHNzE0VDc7ZAlf8=;
- b=ej2uK8eU11SgY25SZ2OkDSoIo7033bcBd4k+CrULFBIf/k5KWxUY/murMPIE5B/Mgg3dFQR8N
- l5UuNUTteULDW2462qGGQurNqOixL6GsZuntH6BiDLqskQmA0gLQRqX
-X-Developer-Key: i=B.Hahn@phytec.de; a=ed25519;
- pk=r04clMulHz6S6js6elPBA+U+zVdDAqJyEyoNd8I3pSw=
-X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
- (172.25.0.12)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphkeLIzCtJLcpLzFFi42JZI8nAo9vBdizN4MBLFYs1e88xWcw/co7V
-	4uFVf4uZ91rZLFZN3cli8XLWPTaLTY+vsVpc3jWHzeL/nh3sFn+3b2KxeLFF3KL7nboDj8fO
-	WXfZPTat6mTz2Lyk3uPF5pmMHv3dLawe/X8NPD5vkgtgj+KySUnNySxLLdK3S+DK+NVwg7Fg
-	rkDF9ZX7mRoYT/J2MXJySAiYSJz884y1i5GLQ0hgCZPEr4cb2SCch4wSB8/cYwOpYhNQk9j1
-	5jVQFQcHi4CqxJQnyiBhYYEgib4v11lAbF4BQYmTM5+wgJQwC2hKrN+lDxJmFpCX2P52DjNE
-	ia/Ehb5OdpDxEgLvGSWW393HBJIQEdjBJPG43xAkwSxwkFHiz/oH7BDXCUt83r2GDaJjN5PE
-	l9mnmEE2SAgkSux8LQdSIyQgK3Hz/BY2iHp5iWnnXjND2KESW79sZ5rAKDwLyX2zEO6bheS+
-	BYzMqxiFcjOTs1OLMrP1CjIqS1KT9VJSNzGCYkyEgWsHY98cj0OMTByMhxglOJiVRHiT7h1N
-	E+JNSaysSi3Kjy8qzUktPsQozcGiJM67uiM4VUggPbEkNTs1tSC1CCbLxMEp1cBo+lzv/vHA
-	W54c4q93anG6BN8TOVBw+OCRq/vmaWb3vw1YrJv+rEO8RcWd4eDCY5yZxg+FFtxrYVI4vynn
-	EHucy664M6v6+607Kmbyy5VFTQtffkvE7mLQGhETwyU2L4z1OIo3mwhF8y2TcOfoeMip/DtU
-	nXe5Cc8PhYn/stWumMvyRbVZr1RiKc5INNRiLipOBAAIljXVnwIAAA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZsQ9OWdCS5o96VN2@eichest-laptop>
 
-Add support for the Mini PCIe slot.
+Hi Frank,
 
-Signed-off-by: Benjamin Hahn <B.Hahn@phytec.de>
----
-Changes in v2:
-- change pcie regulator to reg_vcc_3v3_sw
-- add wake gpio to pcie pinctrl and order the gpios
-- Link to v1: https://lore.kernel.org/r/20240813-wip-bhahn-add_pcie_support-v1-1-c1bb062b4e1f@phytec.de
----
- .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   | 27 ++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+On Tue, Aug 20, 2024 at 08:52:41AM +0200, Stefan Eichenberger wrote:
+> On Mon, Aug 19, 2024 at 10:30:38AM -0400, Frank Li wrote:
+> > On Mon, Aug 19, 2024 at 11:03:16AM +0200, Stefan Eichenberger wrote:
+> > > On the i.MX6Quad (not QuadPlus), the PCIe link does not work after a
+> > > suspend/resume cycle. Worse, the PCIe memory mapped I/O isn't accessible
+> > > at all, so the system freezes when a PCIe driver tries to access its I/O
+> > > space. The only way to get resume working again is to reset the PCIe
+> > > link, similar to what is done on devices that support suspend/resume.
+> > > Through trial and error, we found that something about the PCIe
+> > > reference clock does not work as expected after a resume. We could not
+> > > figure out if it is disabled (even though the registers still say it is
+> > > enabled), or if it is somehow unstable or has some hiccups. With the
+> > > workaround introduced in this patch series, we were able to fully resume
+> > > a Compex WLE900VX (ath10k) miniPCIe Wifi module and an Intel AX200 M.2
+> > > Wifi module. If there is a better way or other ideas on how to fix this
+> > > problem, please let us know. We are aware that resetting the link should
+> > > not be necessary, but we could not find a better solution. More
+> > > interestingly, even the SoCs that support suspend/resume according to
+> > > the i.MX erratas seem to reset the link on resume in
+> > > imx6_pcie_host_init, so we hope this might be a valid workaround.
+> > >
+> > > Stefan Eichenberger (3):
+> > >   PCI: imx6: Add a function to deassert the reset gpio
+> > >   PCI: imx6: move the wait for clock stabilization to enable ref clk
+> > >   PCI: imx6: reset link on resume
+> > 
+> > Thanks you for your patch, but it may have conflict with
+> > https://lore.kernel.org/linux-pci/Zr4XG6r+HnbIlu8S@lizhi-Precision-Tower-5810/T/#t
+> > 
+> 
+> Thanks a lot for the hint. I will have a look at the series and see if I
+> can adapt my changes including your suggestions.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-index 00a240484c25..b50b04dca2b2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
-@@ -6,6 +6,7 @@
- 
- /dts-v1/;
- 
-+#include <dt-bindings/phy/phy-imx8-pcie.h>
- #include <dt-bindings/leds/leds-pca9532.h>
- #include <dt-bindings/pwm/pwm.h>
- #include "imx8mp-phycore-som.dtsi"
-@@ -195,6 +196,23 @@ &snvs_pwrkey {
- 	status = "okay";
- };
- 
-+&pcie_phy {
-+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
-+	fsl,clkreq-unsupported;
-+	clocks = <&hsio_blk_ctrl>;
-+	clock-names = "ref";
-+	status = "okay";
-+};
-+
-+/* Mini PCIe */
-+&pcie {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcie0>;
-+	reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+	vpcie-supply = <&reg_vcc_3v3_sw>;
-+	status = "okay";
-+};
-+
- &pwm3 {
- 	status = "okay";
- 	pinctrl-names = "default";
-@@ -366,6 +384,15 @@ MX8MP_IOMUXC_SD2_WP__GPIO2_IO20		0x12
- 		>;
- 	};
- 
-+	pinctrl_pcie0: pcie0grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08     0x40
-+			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10     0x60
-+			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11	0x60 /* open drain, pull up */
-+			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14     0x40
-+		>;
-+	};
-+
- 	pinctrl_pwm3: pwm3grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SPDIF_TX__PWM3_OUT		0x12
+I did some more tests with your series applied. Everything works as
+expected on an i.MX8M Plus. However, the i.MX6Quad PCIe link still does
+not work after a resume. I could trace the issues back to the following
+functions, besides that we could use the same suspend/resume function as
+for the other i.MX SoCs.
 
----
-base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
-change-id: 20240813-wip-bhahn-add_pcie_support-b9bd75fc4d98
+In suspend the follwoing function is causing issues:
+imx_pcie_stop_link(imx_pcie->pci);
 
-Best regards,
--- 
-Benjamin Hahn <B.Hahn@phytec.de>
+In resume the following functions are causing issues:
+imx_pcie->drvdata->init_phy(imx_pcie); // in imx_pcie_host_init
+imx_pcie_start_link(imx_pcie->pci);
 
+I think the second one makes sense because I could not stop the link I
+should not start it again. But why is also the init_phy function
+failing? Are they required to setup the link? 
+
+The messages I get when the system resumes are:
+[   50.176212] Enabling non-boot CPUs ...
+[   50.194446] CPU1 is up
+[   50.198087] CPU2 is up
+[   50.201746] CPU3 is up
+[   50.563710] imx6q-pcie 1ffc000.pcie: Read DBI address failed
+
+After the last message the system hangs. It seems this happens because
+the PCIe I/O mem is not accessible anymore.
+
+Do you have an idea what could cause imx_pcie_stop_link to break the
+link on resume? Without calling them the link is working fine after
+resuming and the drivers can access the PCIe I/O mem.
+
+Thanks,
+Stefan
