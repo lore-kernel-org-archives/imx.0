@@ -1,113 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657F18035;
-	Wed, 21 Aug 2024 00:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC922599
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 00:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724200528; cv=none; b=bV8N2VOw/bDVcCnOQ3NlNmkXLUyfe3vz5IC15XDh9/yKL0u3bNgvoF61M6iOP2nNcAZ7F+RO2eo8hNPgsHyPCkmViQiCdr3WSilPRNo5cbaUuCAuQ8uRXHeDvtyhjMtTTx8lyzhzXH/Mbckgya68n+TCwv6JnFMpo8oyUxENk5o=
+	t=1724201419; cv=none; b=ezaRJmM1RWC0YNlBMPHWGqwgWr2MVhi22Kp4k6s1nB93HrexBl7Hl/g70pT9wkQZtLJ3+it4VL+gMx0Ox26grofZowXAYlFtyrtEF4KnfQPe8Pai5QJ1pCughTFl+p9J+fdjjfjgEottq5/N1dSShrwTzEwIyecLyuDF0lKiagg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724200528; c=relaxed/simple;
-	bh=72l7jIlEa0320LNF1TSC+FnXUPhcQrDJuCQkr3p6/1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MbMm6svHUiF6AJ0HEdFXz5UdHE/0uvUJIgve/JjsPhwS5h1TjgeGs2cLJpXDmYsskHjE65iOEDpICZo5MJFQdS/ltFF8W70ZPaN8SrV3/BjzjyjHAnkxuge5+WOGw/FkFlJUbHq3mczsZ+D+/Yv50xMY3AFG7X8hB7ssGuCaYtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/jcTUmA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724201419; c=relaxed/simple;
+	bh=msnacrG5UMQf3gDfya9KnhEJ/6a9EztOkkXB5ytvD6I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T26zRyjsE2kR9ZsOZnNA6SQMpak5cxiKYV5qAlEgzojIE4MMm9CShmqbXUgGjl8t9GR7V28Qbm1eOFdwBH+NuCwKdihEQdnbl5ovNi1Ty+JTUKX41wefgIzaEQ5V8Y+EigZzgLFouc3q0g0+wYCEOY6yEzrSIsq1NpeHi3fOsig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bvBX7sXE; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/jcTUmA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70D1C4AF0E;
-	Wed, 21 Aug 2024 00:35:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724200527;
-	bh=72l7jIlEa0320LNF1TSC+FnXUPhcQrDJuCQkr3p6/1c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i/jcTUmAgFm3sxsXOXZKpN7EhFM1gJ6bIkKyiXI4L6eY9DimnTKB+IBy0Xf6DOXjW
-	 gtK/hLVsP+ZStPVNH9Cq8WJi280pelNE7QrG9BpHZsxTd90Iy2ZkzeV3jqyjxA2DQx
-	 QNzA9xXGd9hAvYJILz3EkkXSz8F67/p4UuLWvdxtInMdhcjbujkkpYAwphVNJ0QKBU
-	 cJKprBY1mnoM7ZjViIx7W7ScJO1238rI0nA7a/fBlHV29SwQvYDJb5mT9NHAkRC7Sx
-	 Na3hG4QxzEZ2nepMQmXOoHn1kpG4MpRod9ASJncWGElEmmNKozPksxIktXvLZ8UQGe
-	 BPfK8aeJehqzA==
-Date: Tue, 20 Aug 2024 19:35:25 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Yunfei Dong <yunfei.dong@mediatek.com>,
-	Todor Tomov <todor.too@gmail.com>,
-	Viktor Prutyanov <viktor.prutyanov@phystech.edu>,
-	Philipp Zabel <p.zabel@pengutronix.de>, imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Robert Foss <rfoss@kernel.org>, devicetree@vger.kernel.org,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	linux-kernel@vger.kernel.org,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Del Regno <angelogioacchino.delregno@somainline.org>,
-	linux-amlogic@lists.infradead.org,
-	Samuel Holland <samuel@sholland.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Shijie Qin <shijie.qin@nxp.com>,
-	Emil Velikov <emil.velikov@collabora.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>, linux-rockchip@lists.infradead.org,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-sunxi@lists.linux.dev, Zhou Peng <eagle.zhou@nxp.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-	Ming Qian <ming.qian@nxp.com>, Heiko Stuebner <heiko@sntech.de>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH] media: dt-bindings: trivial white-space and example
- cleanup
-Message-ID: <172420052496.2349176.18144624759283335223.robh@kernel.org>
-References: <20240820073658.19045-1-krzysztof.kozlowski@linaro.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bvBX7sXE"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-533463f6b16so882181e87.1
+        for <imx@lists.linux.dev>; Tue, 20 Aug 2024 17:50:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724201416; x=1724806216; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GoSSvwv5odqYZjwPeP5RG58rSx4Vvocb8gC0RlFGkyY=;
+        b=bvBX7sXEhdcMW13CKoJD90v0yQJ0DIfVY3gQ6G0DQefywSXpMLkGJ0tDZOOAAyumva
+         dLlI8KnPGEYx2IR1O7WxhyVte5cG19C6LfxB/psN9jYgkqa1HDgnTlf2T93C03a4D0oN
+         /yKsJzpLaT62vi6JjsP2Y4xiv+fqaWG3IXs6jJXIzsx4/1wZxC0h3Q6QGz6Hh9XlSnwi
+         prNV1OansMUYkWdTUXvzxx3sWQQDs+lTSqcGS5f7MVANQ7kODHKietYwx+9wQGmmGDFE
+         WVkSyAEb7B1j0C2qKuso4hCF9hxk9budZBPuXDDA3c5j0urQOBujd1fw4HLZLLFNNY5k
+         8pzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724201416; x=1724806216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GoSSvwv5odqYZjwPeP5RG58rSx4Vvocb8gC0RlFGkyY=;
+        b=L3mic1fh3wJqS30L+ldzx8fS1kVSpGBD1X4eFMZnojdOGTJvMER+I/uspSl0BrRPrW
+         Xu1X7GjDRCAnvnCSx40K1QMQ1BsxiaKfB7ewSI6DftOpKTXpcsyV7FD3m8JS8486z8Qq
+         GIuuaL19dah6+O6x/CAl0HKuSZkEYgJgNH/KND6Zq8PhngYrbzIbpf8obPQYJ4xY2CRz
+         8kolt+Fw95wY0D8aUkG6WqUs85c/bdSaaXdwjPvnu2s7HhYMJxEhLwEx3mVM9hy1ugG7
+         nd2AsXGyH9i0tLhx1LwhYLs+Xf+vpWuNfZ5hw3JuVxfhBAc2JEhJCkkDQYSzBMneSISG
+         0FCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWi2y39CvqyBKLj/zEEyiWvYqEJVDNdttV/GbVsIkHC9cfHjZeYlIiRl5LMA1b+tv7GUq0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywt4mtT4W+TrKUq//nxTbE8LOg8fAj9Q3/uKteV4nl+HywXzkC4
+	mr/8h+JMWVTf3C4Y/WnOppjkRdHTJBq91R0pkc6rO0jJxd03iFXOZZLey90cvgCyHN0dv8iVkgx
+	zQmE5OUaxjm0cKzNzpNrAEgMxaOY=
+X-Google-Smtp-Source: AGHT+IGL5tlotafgQN+H2oUJsy7bZc97bFjxi9+qWaGa49KFqvRVw45iOBGC5pZO03tsbf3cUpFaLShwN4gYw0QAdfs=
+X-Received: by 2002:ac2:4e09:0:b0:530:e1f1:8dc9 with SMTP id
+ 2adb3069b0e04-53348590f43mr242435e87.46.1724201416012; Tue, 20 Aug 2024
+ 17:50:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240820073658.19045-1-krzysztof.kozlowski@linaro.org>
+References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
+ <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
+ <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch> <ZsUXEkc5A5IBLpJv@shell.armlinux.org.uk>
+ <CAOMZO5CymmmUUhBrYwyCJ54sj=55wAVMqWpuYRbJOhoaroCUXA@mail.gmail.com>
+In-Reply-To: <CAOMZO5CymmmUUhBrYwyCJ54sj=55wAVMqWpuYRbJOhoaroCUXA@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 20 Aug 2024 21:50:04 -0300
+Message-ID: <CAOMZO5DUmw=PZ_v32Y_xkbOTkQiR-9BPmNH7992YSV0m3Yhbfw@mail.gmail.com>
+Subject: Re: pca953x: Probing too early
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, Oleksij Rempel <o.rempel@pengutronix.de>, andi.shyti@kernel.org, 
+	linux-i2c <linux-i2c@vger.kernel.org>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Aug 20, 2024 at 8:18=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
+wrote:
 
-On Tue, 20 Aug 2024 09:36:58 +0200, Krzysztof Kozlowski wrote:
-> Minor cleanups without funcitonal impact:
->  - There should not be an empty blank line after SPDX tag,
->  - Convention is to indent DTS examples in coding style with 2- or
->    4-space indentation (4 is preferred),
->  - Drop unused labels in DTS examples.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  .../media/allwinner,sun50i-h6-vpu-g2.yaml     |  1 -
->  .../bindings/media/amlogic,meson-ir-tx.yaml   |  1 -
->  .../bindings/media/amphion,vpu.yaml           |  1 -
->  .../bindings/media/fsl,imx6ull-pxp.yaml       |  1 -
->  .../media/mediatek,vcodec-decoder.yaml        |  1 -
->  .../media/mediatek,vcodec-encoder.yaml        |  1 -
->  .../media/mediatek,vcodec-subdev-decoder.yaml |  1 -
->  .../media/microchip,sama5d4-vdec.yaml         | 17 ++++----
->  .../bindings/media/nxp,imx8mq-vpu.yaml        | 41 +++++++++----------
->  .../bindings/media/qcom,msm8916-camss.yaml    |  1 -
->  .../bindings/media/qcom,msm8996-camss.yaml    |  1 -
->  .../bindings/media/qcom,sdm660-camss.yaml     |  1 -
->  .../bindings/media/qcom,sdm845-camss.yaml     |  1 -
->  .../bindings/media/qcom,sm8250-camss.yaml     |  1 -
->  .../bindings/media/rockchip,rk3568-vepu.yaml  |  1 -
->  .../bindings/media/rockchip-vpu.yaml          | 29 +++++++------
->  16 files changed, 42 insertions(+), 58 deletions(-)
-> 
+> The pca953x driver tries to write to the i2c-2 bus before i2c-2 is regist=
+ered.
+>
+> This is the point I don't understand: how can the pca953x driver get
+> probed before its I2C bus parent?
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Disconsider what I wrote above.
 
+I'm trying to recover from the arbitration lost like this:
+
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -491,6 +491,8 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct
+*i2c_imx, int for_busy, bool a
+                /* check for arbitration lost */
+                if (temp & I2SR_IAL) {
+                        i2c_imx_clear_irq(i2c_imx, I2SR_IAL);
++                       pr_err("******* Arbitration lost\n");
++                       i2c_recover_bus(&i2c_imx->adapter);
+                        return -EAGAIN;
+                }
+
+@@ -1487,6 +1489,7 @@ static int i2c_imx_probe(struct platform_device *pdev=
+)
+        i2c_imx->adapter.nr             =3D pdev->id;
+        i2c_imx->adapter.dev.of_node    =3D pdev->dev.of_node;
+        i2c_imx->base                   =3D base;
++       i2c_imx->adapter.retries        =3D 5;
+        ACPI_COMPANION_SET(&i2c_imx->adapter.dev, ACPI_COMPANION(&pdev->dev=
+));
+
+but still get pca953x probe failure:
+
+[    1.756761] pca953x 2-0020: supply vcc not found, using dummy regulator
+[    1.766564] pca953x 2-0020: using no AI
+[    1.775333] ******* Arbitration lost
+[    1.783811] ******* Arbitration lost
+[    1.793701] ******* Arbitration lost
+[    1.797455] ******* Arbitration lost
+[    1.801209] ******* Arbitration lost
+[    1.804964] ******* Arbitration lost
+[    1.808562] pca953x 2-0020: failed writing register
+[    1.813602] pca953x: probe of 2-0020 failed with error -11
+[    1.819222] i2c i2c-2: IMX I2C adapter registered
