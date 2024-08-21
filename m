@@ -1,94 +1,103 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5A81AF4D3
-	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 10:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D486D1C32F3
+	for <imx@lists.linux.dev>; Wed, 21 Aug 2024 11:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724237716; cv=none; b=Ik6Ej14gd0Nem78rUH+uN5bEyZs9Cj3HM65WMG4HK+WQ1/ZKSi5HJIt1VAEvE/z3oNt1+l2H/n/hxRHsugVT39oN0mIDj6evxLWydfwbuqr5m/xDJCyy4Rk59txw7gPEMNtKqZxEF0tWoV7QfwjUcEQpjKvvQMWbPws+NnU+KQg=
+	t=1724238097; cv=none; b=NG1HVbQZOF3nQMAHysUz1fInwQhjfUATATrp2QawtOom3/B1R+rMdBBlYKbBEWDcChLSzffkquw3UFLqIx+WUVRVyta8K0B1uvUT8sR4lgwPMQm+aq6bQGz8ZGGbmjelSX0zW+vejmFeJjR4+zRYn47th212FNM3ZhMFYDc9F/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724237716; c=relaxed/simple;
-	bh=LdumwN1jo/n/KBtkjPSwNc2sSNEbK5/h0uSru882m18=;
+	s=arc-20240116; t=1724238097; c=relaxed/simple;
+	bh=1ATWO0C6NeF9kO9VsONSRBSudFtrKwUszSwK/I+7QXM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MSnWoSDih5Fb3fXDCrSghV3l1euGpv/6s9AzXwnZDTql6FKRM9qsqPat3lSMdArV3vSAvjJetsxmsRoAgtwvfA0b0VrVrgdQz6rSVOnPw1c8IVQy0MT8uUL9o1JXr9NMyNjgtjsugm49xDmuYYNEkowYSOf0Qhiu7hQZENUW1pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=esOi2FQn; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=egskFr/kL1MgaWZBxxt0ajg8y7gyxfhhy+MZ94n7ylZx/CjG+bDP9GY5pDFVMB71q6BxXlLGM7AwmRTdiAW/lCt3oJOPjWdiSU5OCIR4LeJ/AnlY98wkF1vXzpm7AlPAkQ7jBxJ7bPsH88WHHUTgnD4POVjvv4oIQjMOm7OuANE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ng9T58ES; arc=none smtp.client-ip=209.85.219.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="esOi2FQn"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e1654a42cb8so1798578276.1
-        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 03:55:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ng9T58ES"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e165825ebfdso1604508276.0
+        for <imx@lists.linux.dev>; Wed, 21 Aug 2024 04:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724237714; x=1724842514; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724238095; x=1724842895; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LdumwN1jo/n/KBtkjPSwNc2sSNEbK5/h0uSru882m18=;
-        b=esOi2FQn4uvD7xbowE3j8xWqHs5K/UEWm5N4IoCvXbehcZL1oaGXUtp/cUF2XoLaDn
-         EZO+iWAoWYklsSA1HtqPhpyS573jfgGS1+DlaGDz+H5jUwWjW7ngxfMxJC8mhZUZbOuY
-         oraqITjdYXP+Bacp1hr91aQTt7QczuyGOvLCmTpImmwS5PT8t4PrTLQF3hFwyzIFORdM
-         /gM/yUapAP05LlruWil+67okbU+8avVEriH0tuuR0AZ9Y7cfCCHZpg5/HvfYZ4nt+ojd
-         uTBt1NIZOg4JmwruJmdrVK4Ev39wU9ForyMFmbvrgmRahjYA6UKecB8EEVZ8LOhC0XJ4
-         aDsA==
+        bh=XBwBSeUXzRzs+yYCt0wfdPJMoqP3GApebhtlrFr3gjQ=;
+        b=Ng9T58ESwFB3nQk+1RYC1WECh+uKJv7YmMwItPidu5DXjtwzyY0Qsx0eyqIgPUF4xi
+         uSw4Of4JJOcpK5qhvYhHzJhVGmW99e6rLdNXojpPzysIbFwU5if9bKDUgxE3t7UE1efW
+         4ErooyOBYHHhgIrID7U8eBroT4wmioprqL6ejxyETRX+Q5VUQWmEEtgly25TWjmymHXV
+         b3Y9UISOtmkhtWokS67E5eVd+Fto0/JI9l3HHaoLxUP3EP2DMs0f/52X1J+bARuBvCOL
+         r7Ezl/KhQnYWXwLjxggzHdM4BPJXk8Xmx75VBW6fQCp3929+w9EvdafdU2FTAPfwAh4k
+         EfyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724237714; x=1724842514;
+        d=1e100.net; s=20230601; t=1724238095; x=1724842895;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LdumwN1jo/n/KBtkjPSwNc2sSNEbK5/h0uSru882m18=;
-        b=m2Edn+MqScK3cRRknVs8BcjEamUjgGM0Mv1RdEniZMHzB5LxFGfwMgRgCEHkHTGG1X
-         ufY0aey3lSXiF5QmncZiX7CrFO2zaH7XpZbuPOh9eTTJF4TNtzksV9QR/xgDBtU7grmv
-         UnyO5O7E8xjKe/T9B8sNhtTHJUMnMrtXlN4Y1uZS5vIkGs70/T3FH0rroizK1t0tCPja
-         2ulGAWFc3lsaLNVztw7mzvg6f/J94lOY86Qpti44sMLrPDAHAsopZFfmarAqwlHt5+q7
-         NJeRaMIVHJwyt63wRsm5PmK51rjWJGi67i3DF+WwbgZa6vp00n2wngtRLZ6HHo0/5NNh
-         HxBg==
-X-Forwarded-Encrypted: i=1; AJvYcCWaAV2bq2fP4OjVcoKkJW1sQqKSVNZ2wobxitxuu6BSoyDzZdeQ3+apdIXVhJDah5Q0ztE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyaa4vI23V2wW5JPwbyeLOBrzPILOUb+4/rRgw8WLdS/LpU+pE4
-	LwIRS3W1HG3PR8PulRrml6s6mTIj9er6v5SvyRIft9r6VMh+JgcKLb3+iQAkB/L6hPPHWXay8Tl
-	qsozAtTxDPpbsRgOGxlNy+CAPUTs=
-X-Google-Smtp-Source: AGHT+IH3vI6LbwOUVb+46FaZR6BIKjdGiYb4a97FSAhxpbogC94O6y5okZKDM4QDYpM3D9grOhSHMFn22LgX3CznpNc=
-X-Received: by 2002:a05:6902:18d3:b0:e0e:af13:b773 with SMTP id
- 3f1490d57ef6-e166547b8cemr2745174276.23.1724237713710; Wed, 21 Aug 2024
- 03:55:13 -0700 (PDT)
+        bh=XBwBSeUXzRzs+yYCt0wfdPJMoqP3GApebhtlrFr3gjQ=;
+        b=gbBlSSNXGV20r0l/Onm6opgzQlCWL821SjYfR1RYVKE+5iC7LAhz26U+2OiWnZ7GK4
+         FpVJMegonysQr8EUW2Ovm8Bau1dTwS7Ew2jlsvBWKYfKgdreYMy1p7VsQJplyGf4PEdL
+         TVpM/KSbqUYH4katTnquJwHaSm8mIujPUtO398b8EUQlWHUSus0cj0Qg27sq+n2ysj4a
+         aP/lhM0uO6XmsEPKeaQ1BfBjIvmXURSPhHBQOGlhxw4uTJUtlbh8SVwqBhSf3nBRdK94
+         LUtjiavij+DyC6gsGmJJ1k4if7h9VCePm3UkzhrOl3HANSgji9xmPMw2fIT992SfpSLS
+         JVUw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3NFSqyJz9rjlTMsKQ1XI5fRZqB380/DRx5C8Nd/YpceLGL8Mg/dogAtBaSCqHT/O4LCM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YybFN1AX9yzzUjvHm/hpTNLA6LYdFodDzsTSekh7ZYIjDXvrwo+
+	lXBPFP0gHE5vhG9eG0Rhv7JAcldCbWLrAso+7vuHFd1JA+cL/dddwoBOl0fxL8Kg/IjsODWNFSU
+	efbwNWJ6u0kurq9+LXdm9Qhl7jiI=
+X-Google-Smtp-Source: AGHT+IFflDUPyRh/p1DW4PuCPtZ+YVQiKrj5ChifUTm7Rq3hEzBgJXAAr6Hid38Rs13o9exyvhRkgp1DGzTf+pLUgng=
+X-Received: by 2002:a05:690c:6d0e:b0:6b4:3caa:e842 with SMTP id
+ 00721157ae682-6c09d8dc019mr27805677b3.18.1724238094553; Wed, 21 Aug 2024
+ 04:01:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAOMZO5DvGF5OW6fGQocZcFf+6103OhOyUCRdWGLBKbewWOOLHw@mail.gmail.com>
- <CAOMZO5DiSvAG225poAoj9hHKioq9XSg_Y7kJ8PG66HEVo-SjMA@mail.gmail.com>
- <d3c5d73f-a756-4f35-97f1-9301529cce34@lunn.ch> <ZsUXEkc5A5IBLpJv@shell.armlinux.org.uk>
- <CAOMZO5CymmmUUhBrYwyCJ54sj=55wAVMqWpuYRbJOhoaroCUXA@mail.gmail.com>
- <CAOMZO5DUmw=PZ_v32Y_xkbOTkQiR-9BPmNH7992YSV0m3Yhbfw@mail.gmail.com> <ZsWDicqAjmkHgaPD@pengutronix.de>
-In-Reply-To: <ZsWDicqAjmkHgaPD@pengutronix.de>
+References: <20240819072052.8722-1-eichest@gmail.com> <20240819072052.8722-2-eichest@gmail.com>
+In-Reply-To: <20240819072052.8722-2-eichest@gmail.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 21 Aug 2024 07:55:01 -0300
-Message-ID: <CAOMZO5AzHT79v4BnfoHqSt+S0F7hk9xYMZQPQOtXswqK4O4ygg@mail.gmail.com>
-Subject: Re: pca953x: Probing too early
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Shevchenko <andy@kernel.org>, "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, andi.shyti@kernel.org, 
-	linux-i2c <linux-i2c@vger.kernel.org>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>
+Date: Wed, 21 Aug 2024 08:01:20 -0300
+Message-ID: <CAOMZO5CYUNESmBdZBMSMwNraQbqvvsF5fn8i+nHr=MB_T_AG7w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] i2c: imx: only poll for bus busy in multi master mode
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, Frank.Li@nxp.com, 
+	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Oleksij,
+Hi Stefan,
 
-On Wed, Aug 21, 2024 at 3:05=E2=80=AFAM Oleksij Rempel <o.rempel@pengutroni=
-x.de> wrote:
+On Mon, Aug 19, 2024 at 4:20=E2=80=AFAM Stefan Eichenberger <eichest@gmail.=
+com> wrote:
+>
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+>
+> According to the i.MX8M Mini reference manual chapter "16.1.4.2
+> Generation of Start" it is only necessary to poll for bus busy and
+> arbitration lost in multi master mode. This helps to avoid rescheduling
+> while the i2c bus is busy and avoids SMBus devices to timeout.
+>
+> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> Do you have a multi master i2c bus? If not, can you please test
-> following patch:
-> https://lore.kernel.org/all/20240715151824.90033-2-eichest@gmail.com/
+This fixes a pca953x probe error on an imx8mp board running linux-stable 6.=
+6:
 
-Yes, this fixes the problem, thanks!
+[    1.893260] pca953x 2-0020: failed writing register
+[    1.898258] pca953x 2-0020: probe with driver pca953x failed with error =
+-11
 
-I will reply in that thread with my Tested-by.
+Could you please add a Fixes tag and Cc stable so that this can reach
+the stable kernels?
 
-Thanks everyone for the help.
+Tested-by: Fabio Estevam <festevam@denx.de>
 
-Cheers
+Thanks a lot,
+
+Fabio Estevam
