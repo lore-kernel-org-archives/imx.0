@@ -1,75 +1,102 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091F714E2F6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF43213C9CA
 	for <imx@lists.linux.dev>; Thu, 22 Aug 2024 07:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724310241; cv=none; b=MwC2ZCLCdjZZOVsfLDF3mWSCLTVvxcFWcG7DY+o4ZbrOjWOtSCi49lXfsHepPZdj0KW02OgdAW+I8y704Qa2JN6VTHF+TIqdwbFoa3rdzBTML3i2+NS8eegSu65Qzw6b4pmdrCUwH/ioeVM8DHJNWgZpcentxo35jjcLELHgZbg=
+	t=1724310242; cv=none; b=r7A3Idxe/wKtxwJQ+fKGZl8pT4nYUwUOF3wVTBhZPHSDLRa6i0n2FKuA4pRVeish6m8CRGx5WP/ZlUJ21N1gp0kD2dnl45rHIekBbCMH8gLs6n6DA8WBzrPYHd1g3rZpOx8WZvL82p5TkmNnb5VelqNgNz/vOZAkGrwkp8PKxDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724310241; c=relaxed/simple;
-	bh=0OUiYBTYz4oLdID1hp1Q3hqIxxyDAqx40ZxJ4IV9yfA=;
+	s=arc-20240116; t=1724310242; c=relaxed/simple;
+	bh=nCCjJe0NO298qZPYGd28WFSkU7iQ94z0usdgpghLI1c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tGKhVnzTJBQYKIk1bxNQP6DY8GVgEQ3KR/zqoIIn4nYz5C/l1NPGrHoVS8RP8p208ojtkHwoAP41czqdwg4cBuGNMUHgH8Xxxhs07BDSCCXtZd2TX93WaZ6HQRwxD2QX6kaYO9oHjCi66K9QL96FIIUcYydGylMP5qP1F9FOimc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=g7iVLMynGyu5LTd7SIQSMdRZzcAMQIVjQTs8Ka1pQ6HBw4/uZdmtgG2OkZn96pEXpLuhP/WOg79DqGGGtLMBSUppMRVgAQkT5NdNRWHvJRdJo8TSeA9ySLppcWbFoWCPhLI1lD6FaZkhRDXl8Dvgcu9bDl8ljdvVM/JwfWdbLbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCCChbqC; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4280ca0791bso3005135e9.1
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCCChbqC"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a868b8bb0feso69091666b.0
         for <imx@lists.linux.dev>; Thu, 22 Aug 2024 00:03:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724310238; x=1724915038; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ykeo+6OejcW3LfPIwBroCbu3h8SlZxm1Q6n/Z4Ckav4=;
+        b=TCCChbqC1Lylrgl+O14TCYpxhNrxLLaMhCOSzgZDwMkN7G6LnKfnVvKOqEpqkgTTop
+         fimgkUHuW7xzd0O4k2Xw3jX5VWtDY743WLUacqKySC8iH2v4PbfOb9LrBJ5htr/Em6ZI
+         nN+qHKH6O6kxS4nJfnUTmFH1rXPJVDMyE4fb1cOTbBXm7f78bAKMwvgNMXAJAhbf0QYU
+         jB3q4Iwtx+8VBCdTn6v3g8FDX91Dk1Im6DjECTl//oyM+U/SzknealJoS6AfxCS60/dh
+         nCFai9b/b8zoDJawPlZvl8E4WFQak7e8P4vbNDTlcEf2hO5l1FdVbhTBnc64gov0BiUF
+         ISjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1724310238; x=1724915038;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4Khx5nzpT3raBy31D8+7UGnIXzDyOjDeoWckOKCUba4=;
-        b=DoXRzCQuNDtQeCAu41GkkPRkcppSBc9/BDEs3U6otjqpnjIfMkAh0rgYfqBlCoD6Ko
-         6CcxQXc+uXpI781ZwyP8bBI24LK/XVMV3l0FN+9eEuOITEyFbYsGu9hQxIUHZwJISHQJ
-         e1q2lotwvS1sv+IRMuUrhWAsLZPU2KjzPtpk2zXaVPz1qIj2uZZd9+MO9ZWJJ+MQjIxI
-         BDb/3ne8GIQ6ceBW2/IAswx5u+2n/VdDOMEXq9eo59Br2TDEutY8yVeb9WypjMlvFozI
-         D8lVD7heAd3G45N9X1G+NX6iQX2Z+scdqE96Kz1bpA98ZMSn8WqoVXFygi9iPmd+zFO3
-         SVfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWG4A6QpEz/nKEKWtF4ANPcXxdS+VswJhSB1quB+O8J2Tw/tC/pYqhEEvUqeBvggsQhWKI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwakIzRy9RvmeAlP+XlaisR4mV4xR/0JmKYR7WqB5XWP3LIKJCp
-	elJ3fkOZwIgDzT/49VBH0JlY0bOubenZd4967hBbzwtwInWkBU9PS3IgnQ==
-X-Google-Smtp-Source: AGHT+IEXXiHDWi5aTgV0Or64b+LypSubUzhwenYosJv1sTe/V8fBea7ezUv8rGMBVQcOqUpIkp4nAw==
-X-Received: by 2002:a05:600c:358f:b0:427:9922:4526 with SMTP id 5b1f17b1804b1-42abd11218fmr28255955e9.7.1724310237850;
+        bh=ykeo+6OejcW3LfPIwBroCbu3h8SlZxm1Q6n/Z4Ckav4=;
+        b=p22A4uOkDQiYP7p5GZP+ewv836cSLB0DQ6byYY5MOjodJuTQdMshGUzfnRLu+C9WkI
+         2VZ+SsRnp0REXkqR34nctEQQgReV9hZxAzyc/d6X/ojnPZ4EI3VMhGH0mYy/+gfLARUE
+         vkw4dfT5755GAwHxltdPjGq40ScUxnKkDYedDd4/rtBwLYuMyNjsX+QbImPvoOjO7VsD
+         za4eV+QPbzmj45P0PgrqfDuKdZafoVgYU3LClFWvDyIenCPuQyBdIuYhRJABUe7blRCD
+         iYdosvN+z1Yr0tTMv9/58OuwMrNrkQ3RZScp/WfahcjrkMAYAwaZTX0gUSjyahoZao+E
+         KArw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGBsgCdRYk9fSHBly8NBWmMBSZ5Pv93XESroJF28aJO8jeMOgk/ZGNrHhywxeIVs/EZg4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyjnhnY09PArQdG/vPN9PlhB6S0i2A/F9lsSTNH1mmepD9JqV9V
+	o4n7zYdMl46YSSIB9MC/6+Nyhul6psFPqlQytQJlRuSFP/BtpD9M
+X-Google-Smtp-Source: AGHT+IGSsNf36l7LH2UrwwyDGt/7XMjWeoEqpb8pclMdRI6cqXUAmy7bZ4Hd98389PIbKXU7Hl9JnQ==
+X-Received: by 2002:a17:907:968e:b0:a6f:4fc8:266b with SMTP id a640c23a62f3a-a866f135cccmr290948966b.3.1724310237810;
         Thu, 22 Aug 2024 00:03:57 -0700 (PDT)
-Received: from krzk-bin ([178.197.222.82])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-42ac5162505sm13749665e9.28.2024.08.22.00.03.55
+Received: from eichest-laptop ([2a02:168:af72:0:daa9:644d:3c2:44bb])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f436ccdsm72186166b.104.2024.08.22.00.03.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 22 Aug 2024 00:03:57 -0700 (PDT)
-Date: Thu, 22 Aug 2024 09:03:52 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, 
-	"open list:NXP PTN5150A CC LOGIC AND EXTCON DRIVER" <linux-kernel@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v4 1/1] dt-bindings: extcon: ptn5150: add child node port
-Message-ID: <dbgv5ovohwlfoamgt2zm6ynorzxh63355m2vtxvnpt2gsa2xcp@ou5tvz2ajd7g>
-References: <20240820143911.444048-1-Frank.Li@nxp.com>
+Date: Thu, 22 Aug 2024 09:03:55 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com, Frank.Li@nxp.com,
+	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v2 1/4] i2c: imx: only poll for bus busy in multi master
+ mode
+Message-ID: <Zsbi2xcxBGE7o9uE@eichest-laptop>
+References: <20240819072052.8722-1-eichest@gmail.com>
+ <20240819072052.8722-2-eichest@gmail.com>
+ <zudo7zjlxqfxipsi2x7e4kyhckvkjreovrdmsfxp3m6clbbgzv@ina4j4qxu24r>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240820143911.444048-1-Frank.Li@nxp.com>
+In-Reply-To: <zudo7zjlxqfxipsi2x7e4kyhckvkjreovrdmsfxp3m6clbbgzv@ina4j4qxu24r>
 
-On Tue, Aug 20, 2024 at 10:39:11AM -0400, Frank Li wrote:
-> Add child node 'port' to allow connect to usb controller to do role-switch
-> if id pin of ptn5150 have not connected to chip's usb ID function pin.
+Hi Andi,
+
+On Thu, Aug 22, 2024 at 12:21:30AM +0200, Andi Shyti wrote:
+> Hi Stefan,
 > 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dtb: typec@3d: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
->         from schema $id: http://devicetree.org/schemas/extcon/extcon-ptn5150.yaml
+> > @@ -1468,6 +1473,8 @@ static int i2c_imx_probe(struct platform_device *pdev)
+> >  		goto rpm_disable;
+> >  	}
+> >  
+> > +	i2c_imx->multi_master = of_property_read_bool(pdev->dev.of_node, "multi-master");
+> > +
 > 
+> you might also want to add the multi-master boolean property in
+> the binding.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+We discussed this internally and weren't sure when it was required
+because e.g. i2c-rcar and i2c-tegra don't have it documented in their
+bindings. Is it still required if it is part of the dt-schema?
+https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/i2c/i2c-controller.yaml
 
-Best regards,
-Krzysztof
+If so, I will add it in the next version.
 
+Thanks,
+Stefan
