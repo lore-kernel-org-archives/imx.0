@@ -1,160 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBF861FF6;
-	Thu, 22 Aug 2024 09:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D616F8E5
+	for <imx@lists.linux.dev>; Thu, 22 Aug 2024 10:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724317241; cv=none; b=jdUPujbqOCDsfsKSQBZx2MbGpJQVGF03lnatC7z5YZwjKfwHYBSu1P3uswRb9CuZCKYf83AIygttW9cN00J2faye/wVmQD/JHtPhfPhRL5yCeqBc3UFxmLE3C0ynRR/7TDqZPrdqbsEvkYz0Q/S28fARAdHq9QTVwVOB6/E90lw=
+	t=1724321094; cv=none; b=sDF1iZ70KesRoWxXn9R1SgzSp+aYk1bWmUm2Xznlz9DcS96362jha5AqHdBHQbdJSuLx+sggTUYgb7kOAkh1z5Fx9EkyBXGOHevUSwPaCJc6Dl8+yrauXvQys5QGiOPVdozHUrurDG5XseS8JqwFnMW0rj4yeFi0giMK3IlCF+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724317241; c=relaxed/simple;
-	bh=GWLUBE7cQHSG/eY1VEpuAMoT5uWLS0k3m7oJjzp1A9k=;
+	s=arc-20240116; t=1724321094; c=relaxed/simple;
+	bh=xQBwgLkBPFDSFjRuS4TJAEFmCZoN+w3PJZufqSqm4Rg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UbT7aspNwx6Mr2IxVui5pZVAX2TytTUjqae1Lmw4SDZVWtiHWNmNWbESQ7kn8QEVotZOifgICp5Y3R37nDnXG3tYsiVTKOnEtCKViwZ2aBTHA/VFB5l3b5ArlsodqxoL9Ue/RcuWgCN1K4TluoNny0hxzI2JgPP7SiDxV+tcc9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0VNALkv; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0VNALkv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F2EC4AF0B;
-	Thu, 22 Aug 2024 09:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724317240;
-	bh=GWLUBE7cQHSG/eY1VEpuAMoT5uWLS0k3m7oJjzp1A9k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a0VNALkvxkdfhLcw4Ji4byy9za/tks/m0xlCisPwfG6JMPbm5MlN6ojqtKdDMowBa
-	 LhDO8HFZH4GvzzkJ6uM0LUjAUTsEpZDlIYSos//ea7cIXvdMOcYZCOSy/KpaMzSSyP
-	 EL/UTMa/tCv/a+jKh+hCFrajzGPku/bk1UzxIJ29RD/3d0iPBSUCu8750Tyq5MJPvp
-	 uRjAKvdzbkQ1NwE65pOytWo2iDNK+uwDgtuuelANKGGJmVRNvTgH27IGj81lbaFTxQ
-	 S7XxEvbHSD+e/Ndi8hpqLkXVM7C4ABjlrlSTwuXpZ4YgDfe44z36Ezfc2X7iCHFTB8
-	 IFNd9WeAGN9CQ==
-Date: Thu, 22 Aug 2024 10:00:36 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Dan Murphy <dmurphy@ti.com>,
-	"open list:LED SUBSYSTEM" <linux-leds@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: leds: convert leds-lm3692x to yaml
- format
-Message-ID: <20240822-reacquire-unseemly-bc651d79993c@spud>
-References: <20240821222001.591111-1-Frank.Li@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dXO0ddjPsoSbGKVI+8r6GLcxEuOaPR+PrZSnjBZmn1V9eEFlxAWYHDpSj5SDSIrLk0sQRd38h/ePW/dVkcJ8GvjzcGBKUTVvllynB+7BU5ye5ONz2Nge004Lp3TA7CfD9j63Qtjb3uT8ecINwQT/leSUrrPRlchTmifblsPjuwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sh4gP-0001Zq-3h; Thu, 22 Aug 2024 12:04:45 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sh4gN-002DnD-P8; Thu, 22 Aug 2024 12:04:43 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sh4gN-00HLZP-27;
+	Thu, 22 Aug 2024 12:04:43 +0200
+Date: Thu, 22 Aug 2024 12:04:43 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>, kernel@pengutronix.de,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	Frank.Li@nxp.com, francesco.dolcini@toradex.com,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v2 1/4] i2c: imx: only poll for bus busy in multi master
+ mode
+Message-ID: <ZscNO2PKNlK3ru_7@pengutronix.de>
+References: <20240819072052.8722-1-eichest@gmail.com>
+ <20240819072052.8722-2-eichest@gmail.com>
+ <zudo7zjlxqfxipsi2x7e4kyhckvkjreovrdmsfxp3m6clbbgzv@ina4j4qxu24r>
+ <Zsbi2xcxBGE7o9uE@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="QHKNtdAdc2HUeO8C"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240821222001.591111-1-Frank.Li@nxp.com>
+In-Reply-To: <Zsbi2xcxBGE7o9uE@eichest-laptop>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
+On Thu, Aug 22, 2024 at 09:03:55AM +0200, Stefan Eichenberger wrote:
+> Hi Andi,
+> 
+> On Thu, Aug 22, 2024 at 12:21:30AM +0200, Andi Shyti wrote:
+> > Hi Stefan,
+> > 
+> > > @@ -1468,6 +1473,8 @@ static int i2c_imx_probe(struct platform_device *pdev)
+> > >  		goto rpm_disable;
+> > >  	}
+> > >  
+> > > +	i2c_imx->multi_master = of_property_read_bool(pdev->dev.of_node, "multi-master");
+> > > +
+> > 
+> > you might also want to add the multi-master boolean property in
+> > the binding.
+> 
+> We discussed this internally and weren't sure when it was required
+> because e.g. i2c-rcar and i2c-tegra don't have it documented in their
+> bindings. Is it still required if it is part of the dt-schema?
+> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/i2c/i2c-controller.yaml
 
---QHKNtdAdc2HUeO8C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The i2c-imx.yaml has "unevaluatedProperties: false", which fill discard
+every thing not in this yaml
 
-On Wed, Aug 21, 2024 at 06:20:00PM -0400, Frank Li wrote:
-> diff --git a/Documentation/devicetree/bindings/leds/ti.lm36922.yaml b/Documentation/devicetree/bindings/leds/ti.lm36922.yaml
-> new file mode 100644
-> index 0000000000000..8ffbc6b785a3e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/leds/ti.lm36922.yaml
-> @@ -0,0 +1,110 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/leds/ti.lm36922.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments - LM3692x Highly Efficient White LED Driver
-> +
-> +maintainers:
-> +  - Dan Murphy <dmurphy@ti.com>
-> +
-> +description: |
-> +  The LM3692x is an ultra-compact, highly efficient,
-> +  white-LED driver designed for LCD display backlighting.
-> +
-> +  The main difference between the LM36922 and LM36923 is the number of
-> +  LED strings it supports. The LM36922 supports two strings while the LM36923
-> +  supports three strings.
-> +
-> +  For more product information please see the link below:
-> +  https://www.ti.com/lit/ds/snvsa29/snvsa29.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,lm36922
-> +      - ti,lm36923
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  enable-gpios:
-> +    description: gpio pin to enable/disable the device.
-> +
-> +  vled-supply:
-> +    description: LED supply
-> +
-> +  ti,ovp-microvolt:
-> +    description: Overvoltage protection.
-> +    default: 29000000
-> +    enum: [17000000, 21000000, 25000000, 29000000]
-> +
-> +patternProperties:
-> +  '^led@[0-3]$':
-> +    type: object
-> +    $ref: common.yaml
-> +    properties:
-> +      reg:
-> +        enum: [0, 1, 2, 3]
-> +        description: |
-> +          0 - Will enable all LED sync paths
-> +          1 - Will enable the LED1 sync
-> +          2 - Will enable the LED2 sync
-> +          3 - Will enable the LED3 sync (LM36923 only)
-> +
-> +    unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: ti,lm36922
-> +    then:
-> +      properties:
-> +        led@3: false
+> If so, I will add it in the next version.
 
-Provided that you tested my psuedo code
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Yes, please.
 
-
---QHKNtdAdc2HUeO8C
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZsb+NAAKCRB4tDGHoIJi
-0nw/APoDOrNBnKRN5f3Npw5UsDO9VPRjkkeksmdgPoMM83G2IwEAikLhs/D400Mo
-rSfYd0rIIeiwThzfe/QNse31qmejVwI=
-=3fMo
------END PGP SIGNATURE-----
-
---QHKNtdAdc2HUeO8C--
+Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
