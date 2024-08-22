@@ -1,82 +1,160 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A9E1537BF
-	for <imx@lists.linux.dev>; Thu, 22 Aug 2024 07:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBF861FF6;
+	Thu, 22 Aug 2024 09:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724312785; cv=none; b=POrEqQHJ9PqEZCISZSxZ95e4U5PFPnQs8DbQSPfScguiWqExMEkTwMfF2W0dSrtwHuhLvXAWQsbF2tQeeJYa8t4Q4vBL1gEqOmGqqcYB2OUp1Jy/ubLpDo9BymcFhCtS2G3/EG+LNBt/SLyG4D0Ji71xOCSICzg5p1945XwvkLw=
+	t=1724317241; cv=none; b=jdUPujbqOCDsfsKSQBZx2MbGpJQVGF03lnatC7z5YZwjKfwHYBSu1P3uswRb9CuZCKYf83AIygttW9cN00J2faye/wVmQD/JHtPhfPhRL5yCeqBc3UFxmLE3C0ynRR/7TDqZPrdqbsEvkYz0Q/S28fARAdHq9QTVwVOB6/E90lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724312785; c=relaxed/simple;
-	bh=nN3jLh8XyxWWB0ocLImFJTJ/AWPcQeHYqEP2C0YoZDM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ekEE2XU3KmjteaklNjrM7RhkAPpkxagUBRI7vfh5J0uQG5t59hIsImRNsiRHjd5mR4AS93tPKg3Fu/FfjCGdQV5GAbxl73FwtgTUbYgedFNJN/I5w0mEPUmCO12Kpapv/Su2BohqkzGxBug7ixmKE08SbYPRn3w86QGjJi3uAjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aoRjYNIz; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1724317241; c=relaxed/simple;
+	bh=GWLUBE7cQHSG/eY1VEpuAMoT5uWLS0k3m7oJjzp1A9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UbT7aspNwx6Mr2IxVui5pZVAX2TytTUjqae1Lmw4SDZVWtiHWNmNWbESQ7kn8QEVotZOifgICp5Y3R37nDnXG3tYsiVTKOnEtCKViwZ2aBTHA/VFB5l3b5ArlsodqxoL9Ue/RcuWgCN1K4TluoNny0hxzI2JgPP7SiDxV+tcc9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0VNALkv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aoRjYNIz"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DC12420008;
-	Thu, 22 Aug 2024 07:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724312781;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OppYEcUmoLJEMht1bqkFMeGjddAvbTCwXLdsBIw5K6c=;
-	b=aoRjYNIz04a8qgzn4QZQC/PlPmlK5q5YnIHvPW5/fg6hgt9BDMfyANCTjDv5eT0d+wc3OD
-	4eVy/GObaMdKEXk4wSV0gpdNRscpPMwQRwq/REtN4CD00djpFtmpTo27oUD+oOQ0YjJCpS
-	ubFxdv7xwKbOcKiOrgx6LxkvS/NZBBJYIzrUpbHzoKdOvZ/2+mx6PySvaRME+1k+Jde5bB
-	d9EOrN1iCFFJ3sZAa/Mxj2QgcxRM9X/I5oYkpTWrPG2n6E/Gy0gp46V0xaaZQnVH1DSzGV
-	SXqfi/iyOTqFjswQmxtY1PXGAerCOhSld6tpxQulNORslGjg9eKc3YDGI8MeVQ==
-Date: Thu, 22 Aug 2024 09:46:19 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>, Frank
- Li <frank.li@nxp.com>, "conor.culhane@silvaco.com"
- <conor.culhane@silvaco.com>, "linux-i3c@lists.infradead.org"
- <linux-i3c@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>, dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v2 1/2] i3c: master: support to adjust first
- broadcast address speed
-Message-ID: <20240822094619.08f1a374@xps-13>
-In-Reply-To: <VI1PR04MB500513D0A8E03D49EA2558ECE88F2@VI1PR04MB5005.eurprd04.prod.outlook.com>
-References: <20240807061306.3143528-1-carlos.song@nxp.com>
-	<20240821180709.1626dd64@xps-13>
-	<VI1PR04MB500513D0A8E03D49EA2558ECE88F2@VI1PR04MB5005.eurprd04.prod.outlook.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0VNALkv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F2EC4AF0B;
+	Thu, 22 Aug 2024 09:00:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724317240;
+	bh=GWLUBE7cQHSG/eY1VEpuAMoT5uWLS0k3m7oJjzp1A9k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a0VNALkvxkdfhLcw4Ji4byy9za/tks/m0xlCisPwfG6JMPbm5MlN6ojqtKdDMowBa
+	 LhDO8HFZH4GvzzkJ6uM0LUjAUTsEpZDlIYSos//ea7cIXvdMOcYZCOSy/KpaMzSSyP
+	 EL/UTMa/tCv/a+jKh+hCFrajzGPku/bk1UzxIJ29RD/3d0iPBSUCu8750Tyq5MJPvp
+	 uRjAKvdzbkQ1NwE65pOytWo2iDNK+uwDgtuuelANKGGJmVRNvTgH27IGj81lbaFTxQ
+	 S7XxEvbHSD+e/Ndi8hpqLkXVM7C4ABjlrlSTwuXpZ4YgDfe44z36Ezfc2X7iCHFTB8
+	 IFNd9WeAGN9CQ==
+Date: Thu, 22 Aug 2024 10:00:36 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Dan Murphy <dmurphy@ti.com>,
+	"open list:LED SUBSYSTEM" <linux-leds@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/1] dt-bindings: leds: convert leds-lm3692x to yaml
+ format
+Message-ID: <20240822-reacquire-unseemly-bc651d79993c@spud>
+References: <20240821222001.591111-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="QHKNtdAdc2HUeO8C"
+Content-Disposition: inline
+In-Reply-To: <20240821222001.591111-1-Frank.Li@nxp.com>
 
-Hi Carlos,
 
-> > I'm sorry, can you rephrase "configured according to I3C bus mode" ?
-> >  =20
->=20
-> Hi! Thank you for your ack! I will change above to:
->=20
-> /**
->  * enum i3c_open_drain_speed - I3C open-drain speed
->  * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
->  *				broadcast address. The first broadcast address at this speed
->  *				will be visible to all devices on the I3C bus. I3C devices
->  *				working in I2C mode will turn off their spike filter when		 =20
->  *				switching into I3C mode.
->  * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in I3C bus mode.
->  */
->=20
-> Is this acceptable?
+--QHKNtdAdc2HUeO8C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Sounds much clearer to me, thanks!
+On Wed, Aug 21, 2024 at 06:20:00PM -0400, Frank Li wrote:
+> diff --git a/Documentation/devicetree/bindings/leds/ti.lm36922.yaml b/Documentation/devicetree/bindings/leds/ti.lm36922.yaml
+> new file mode 100644
+> index 0000000000000..8ffbc6b785a3e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/leds/ti.lm36922.yaml
+> @@ -0,0 +1,110 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/leds/ti.lm36922.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments - LM3692x Highly Efficient White LED Driver
+> +
+> +maintainers:
+> +  - Dan Murphy <dmurphy@ti.com>
+> +
+> +description: |
+> +  The LM3692x is an ultra-compact, highly efficient,
+> +  white-LED driver designed for LCD display backlighting.
+> +
+> +  The main difference between the LM36922 and LM36923 is the number of
+> +  LED strings it supports. The LM36922 supports two strings while the LM36923
+> +  supports three strings.
+> +
+> +  For more product information please see the link below:
+> +  https://www.ti.com/lit/ds/snvsa29/snvsa29.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,lm36922
+> +      - ti,lm36923
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  enable-gpios:
+> +    description: gpio pin to enable/disable the device.
+> +
+> +  vled-supply:
+> +    description: LED supply
+> +
+> +  ti,ovp-microvolt:
+> +    description: Overvoltage protection.
+> +    default: 29000000
+> +    enum: [17000000, 21000000, 25000000, 29000000]
+> +
+> +patternProperties:
+> +  '^led@[0-3]$':
+> +    type: object
+> +    $ref: common.yaml
+> +    properties:
+> +      reg:
+> +        enum: [0, 1, 2, 3]
+> +        description: |
+> +          0 - Will enable all LED sync paths
+> +          1 - Will enable the LED1 sync
+> +          2 - Will enable the LED2 sync
+> +          3 - Will enable the LED3 sync (LM36923 only)
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,lm36922
+> +    then:
+> +      properties:
+> +        led@3: false
 
-Miqu=C3=A8l
+Provided that you tested my psuedo code
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+
+--QHKNtdAdc2HUeO8C
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZsb+NAAKCRB4tDGHoIJi
+0nw/APoDOrNBnKRN5f3Npw5UsDO9VPRjkkeksmdgPoMM83G2IwEAikLhs/D400Mo
+rSfYd0rIIeiwThzfe/QNse31qmejVwI=
+=3fMo
+-----END PGP SIGNATURE-----
+
+--QHKNtdAdc2HUeO8C--
