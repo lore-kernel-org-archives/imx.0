@@ -1,71 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06861CB136;
-	Thu, 22 Aug 2024 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADE71CB329;
+	Thu, 22 Aug 2024 14:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724334975; cv=none; b=WCu7E1hZG07Oi5vzLCdIQdIHUhdmT1kTsFtigJr6vBM6dl4y1xODliTmHWChxD5JWj2iQQ6MMXk50MPjgUC7UDhayOnmWJds/qCYrJYUf97riXjOWsiWk9jKUv6xujicQXjU7HpJgAATtix8WMRhSaWExbvjBScSOVFvHC3fgwY=
+	t=1724337303; cv=none; b=ALjfE92JdSoxBR2o+nj9ZuxZTW0ZFR779Y1XM8jELnvgjfvSOQzKu7R3lZWe3OGzKK8o+oz1H7qI5dHdp6J8jf8WtKlB5QdEIjc6doCGECDIgc8uCIrhwyu6jtm9Egn7LJJbpCbCSg5rnmyHcaRAsLVzHFQm+uFz1DQ3N/F6lWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724334975; c=relaxed/simple;
-	bh=83y5mAvMFwb/52T/dC15P2ISdACxMzr45hpeGSISWD8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MkHjyEvfhtcZgA8JJiuJD9l+muc5E3Tw+Xc839zNAwmQW8rvc4EZKmWN3gOOFv0skgnd0G9K63XnDgeLGcv641lZwAp3hREVON+V4yy+DD09scseTqEf925xo69klCEh8xi3mvKup9EF2rv1wVwZmLw1gaixM1PtcirjR3TGdhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ipZpBq3t; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724337303; c=relaxed/simple;
+	bh=BB77FZ0jb2DyQbAaAZkUTDrQr9nXdQKIJ+deD88VVV4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tKU+YC7uU5vr9r+pmq4O8AYVgs2ztCr4zdXx/z+rqAFBhzC0+5nou4+MJphb1HU2ekhx1gHtZHmaxDC5zfpG8aOi7eKtbesRhqwD00U3B0BKlH+/lsQcJJTym9LzB+aoUzUNS2rZnFgkGqADBYNejAQLU9kjwivOxPlkAMHJIl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZdXxCsM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ipZpBq3t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61420C32782;
-	Thu, 22 Aug 2024 13:56:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZdXxCsM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0975CC4AF09;
+	Thu, 22 Aug 2024 14:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724334974;
-	bh=83y5mAvMFwb/52T/dC15P2ISdACxMzr45hpeGSISWD8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ipZpBq3tm2GQv9RGU3hlSvWehe61/Q77a7ysRbHQN5spD04G3ghAj1boBChAgppr7
-	 JvfbzIje+j7tPsQyZ0SUGuPww2IjGFp2MSlhw5PMtYdhY5KrOmDfj3R0+YKBs+d1NC
-	 1EnuvPbEfU1dmlJFkAxRP+QP4vXpltAcUQ2HXEY7cWcq0zqBRaUcZxRKVog8wcNOVo
-	 saeo1bs4dQMuJ3pdI/Kg5VigfYuKoPDK0P5USfy1K+ELmrrG+4uLCblE2K0mBdezb9
-	 powIMiXoDHV+TBtG4LcgEMyhIzRFP9J+tquRJV8i5ytMdDfCTXJzED9oKmcWttDUNd
-	 rn4cu2TND8P+A==
-From: Lee Jones <lee@kernel.org>
-To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Dan Murphy <dmurphy@ti.com>, 
- linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20240821222001.591111-1-Frank.Li@nxp.com>
-References: <20240821222001.591111-1-Frank.Li@nxp.com>
-Subject: Re: (subset) [PATCH v3 1/1] dt-bindings: leds: convert
- leds-lm3692x to yaml format
-Message-Id: <172433497215.1336217.1502532437864116817.b4-ty@kernel.org>
-Date: Thu, 22 Aug 2024 14:56:12 +0100
+	s=k20201202; t=1724337302;
+	bh=BB77FZ0jb2DyQbAaAZkUTDrQr9nXdQKIJ+deD88VVV4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sZdXxCsMAykjXKhauU+G46Xd1aqlLBGX/DbTAUDH+Xb2NlUaCdPaW8CX7kaBUqw8f
+	 qMRn7c6gzUdnyBGwzLM52hbFEoN8fKmCq3kkMbLzeAUEIjDJgb4bTWR/g/KJ/+jU1f
+	 FrS9BKB+hyQs56dK5I2XlQiqNCElCyNJ1gHnQYYUtoIdk7IZGUOGlUgopJ+TIdm5yl
+	 uMGC11Xo+h5mwxAgNMJDATQ9pGGbrpEeVcKEPnsuqgd/aMS3GqEoo7SAqgqxd5oRU1
+	 gvzvIAN4QGsl761s97e/Uq9QkpyLNt5s2iNHA2OFwFLzEvLRJyLAeXTZqV7vSUb8IH
+	 kJCZIcftOKuEw==
+Message-ID: <7620f6b3-347e-418d-b90b-487afa2ec32d@kernel.org>
+Date: Thu, 22 Aug 2024 23:34:58 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/1] dt-bindings: extcon: ptn5150: add child node port
+To: Frank Li <Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>, Chanwoo Choi
+ <cw00.choi@samsung.com>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:NXP PTN5150A CC LOGIC AND EXTCON DRIVER"
+ <linux-kernel@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20240820143911.444048-1-Frank.Li@nxp.com>
+From: Chanwoo Choi <chanwoo@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20240820143911.444048-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
 
-On Wed, 21 Aug 2024 18:20:00 -0400, Frank Li wrote:
-> Convert binding doc leds-lm3592x to yaml format.
-> Additional change:
-> - Add ref to common.yaml for child node.
-> - Add i2c node at example.
+24. 8. 20. 23:39에 Frank Li 이(가) 쓴 글:
+> Add child node 'port' to allow connect to usb controller to do role-switch
+> if id pin of ptn5150 have not connected to chip's usb ID function pin.
 > 
 > Fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dtb: /soc@0/bus@30800000/i2c@30a40000/backlight@36:
-> 	failed to match any schema with compatible: ['ti,lm36922']
+> arch/arm64/boot/dts/freescale/imx8mn-var-som-symphony.dtb: typec@3d: 'port' does not match any of the regexes: 'pinctrl-[0-9]+'
+>         from schema $id: http://devicetree.org/schemas/extcon/extcon-ptn5150.yaml
 > 
-> [...]
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v3 to v4
+> - remove extra empty line
+> - fix Indentation in example
+> Change from v2 to v3
+> - only add port to existed example.
+> Change from v1 to v2
+> - add example for id pin have not connect to main chip's id example.
+> - commit 095b96b2b fix "port" warning, but add new warning "connector" is
+> not exist. And follow commit revert this change.
+> 690085d866f08 Revert "arm64: dts: imx8mn-var-som-symphony: Describe the USB-C connector
+> - I have not board in hand to debug why "connector" is not work.
+> ---
+>  .../devicetree/bindings/extcon/extcon-ptn5150.yaml    | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> index d5cfa32ea52dd..072b3c0c5fd03 100644
+> --- a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> +++ b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> @@ -37,6 +37,11 @@ properties:
+>        GPIO pin (output) used to control VBUS. If skipped, no such control
+>        takes place.
+>  
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    description:
+> +      A port node to link the usb controller for the dual role switch.
+> +
+>  required:
+>    - compatible
+>    - interrupts
+> @@ -58,5 +63,11 @@ examples:
+>              interrupt-parent = <&msmgpio>;
+>              interrupts = <78 IRQ_TYPE_LEVEL_HIGH>;
+>              vbus-gpios = <&msmgpio 148 GPIO_ACTIVE_HIGH>;
+> +
+> +            port {
+> +                endpoint {
+> +                    remote-endpoint = <&usb1_drd_sw>;
+> +                };
+> +            };
+>          };
+>      };
 
-Applied, thanks!
+Applied it. Thanks.
 
-[1/1] dt-bindings: leds: convert leds-lm3692x to yaml format
-      commit: e5ae4083d32d9ba196c7452814bed5e5aa0731ec
+-- 
+Best Regards,
+Samsung Electronics
+Chanwoo Choi
 
---
-Lee Jones [李琼斯]
 
