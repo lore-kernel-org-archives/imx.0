@@ -1,184 +1,276 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012044.outbound.protection.outlook.com [52.101.66.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E9A3B192
-	for <imx@lists.linux.dev>; Thu, 22 Aug 2024 06:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724308043; cv=none; b=JQz1I8OPo+fwDyLSWzbW3i6X7Nvs9SeadQZwHUBUSGS6as0p3eSAQ2G5+oWo73We1r3YXXryKcdc6nlMa/58hQ3Ijleh/mvzlpue5mWp/7mU8F4s0CuuuLM7WQeN9TJ4ilM3ZK7aiw6VXM3StnzPlv0qhrIlpaHhLct/LmUrZxU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724308043; c=relaxed/simple;
-	bh=uBGm6Ifs3K8nuFiyt/nYEi6Qqazl+LydZKWkjeJKr6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MNXHB8H7qHCO0TR6DshdfweaLfHJf/50VZl5inm/TQsCh5lm6BEzP8Nx5+oa1wtltLfIBPZiVtcLK4szv1dQXO5HEq37YpMJTJ3XZFdvqTeurAKbcdx9aaalq9o/DMCMNhpySSALf2FFpaqxxxERq8OvH5H0AxIYwuLzIrWSuhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=F/MJAXZq; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Eb9fOXSN reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EBD41A94
+	for <imx@lists.linux.dev>; Thu, 22 Aug 2024 06:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724308636; cv=fail; b=JZ7NLdu/dfwIM/r1eZDzBYsCbZem+N9kcr1GtJKJvIknIhoPHjj5BHtvPUWcnP+YvnJDBOOBuPuHAc1fR94URFgfOO6z0egB0QQ39/NJfe9CmjIvC3cm2S6+BJb2wSWJRbY4z1IwQ0Dkt8Kk7EVfIkt4MrXq97p6RxGcgJ9FjSc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724308636; c=relaxed/simple;
+	bh=Z/I482sWcvJqFiEvoMmszY+w9+n4QEikYYFfJn1OF94=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UYjqJSt79rMVeGFB3zVESHMYhlH/hfiqC5PXJDIxPFJhjE/OyA57sgcBHjXv0C89P7eIPgARYv453fXcFcvV0t0Ri3k0fJYCeTHDp+rgO9SQjVEXoO8oxyc3nY+pXBo33KiBeSXi2dk9wBJxgV/z/DqGi+DLygV/Q/ybCUerJ1Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QKldowH6; arc=fail smtp.client-ip=52.101.66.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="F/MJAXZq";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Eb9fOXSN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724308041; x=1755844041;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=n6zBJYAkFgr5Yz2Do7fXkQfBwV+eNYvaHOT+eyBCSpc=;
-  b=F/MJAXZq38fXqkztaUOEHWCAvIIh0b7TBComGsoU8TuuXSB6Z4s++T80
-   9RLmm5VIclW3pDUeJCWajarlPmG/rpphkWEi0xkqLwT+llszm6+bY2BwW
-   WSe36w2kz9LRw7bihGoTQy6LkwisND29OJh22Dz24p4LPzhooG3z+TLoo
-   /ZorbBVAQChRt+kiN2mziVDJETiOuRdUaUUaYbKOTXXsbA+fWCzCC2yC2
-   FSuKzLvPZ8JD5yVEKXUNbLA3sie9JPUYUXMozWHihzG7h8a/zJq7rA4tu
-   21ktdbbmNt1u5eL7FKFc5fWKmjxBREdTUikszStcVch66nNHVDcTzwR+f
-   A==;
-X-CSE-ConnectionGUID: xoPlkXWMSjGw9VYVeR7bQg==
-X-CSE-MsgGUID: KN3ap6lHQmugQP2BguzbSA==
-X-IronPort-AV: E=Sophos;i="6.10,166,1719871200"; 
-   d="scan'208";a="38527705"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 22 Aug 2024 08:27:18 +0200
-X-CheckPoint: {66C6DA46-1D-C661815F-E221238E}
-X-MAIL-CPID: C27AF2356205DD104C960F97E82F03C1_1
-X-Control-Analysis: str=0001.0A782F1B.66C6DA46.010A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 262A01673D1;
-	Thu, 22 Aug 2024 08:27:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724308034;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=n6zBJYAkFgr5Yz2Do7fXkQfBwV+eNYvaHOT+eyBCSpc=;
-	b=Eb9fOXSN5WjUFIoc3VatLS+OQ4KUe9AI0XS4PSc/rJylWj5Cl5S6oBmr8Ka0RyQkiXWB1j
-	DvIzEnqv9Hakh+sO77QRihJmVEVlxvq8mxd6Y8pklQoSCMuUEmP3oWFkHoSsB+2b/cUPug
-	kHD9jyHxNF8foLyrqhNM6svQKJEdEuKMV/5T7E2PobA4sab5iT/8Gd9MvasK66B2V9G9tR
-	o9njWcQHkeCDN3YRNeIdrRunRiRj60AhH5vrRwZiNGwpCqxKwT7vdegNHtitCmUZcKVKpI
-	AfEcUokvqIwDmCnNBEU0DW3/9qq3u7fpROZ0SqN7CRx4uMRgL5JW8Dzd8StskQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, Liu Ying <victor.liu@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QKldowH6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W81OD+b1icit2goDf6CbV98opo3mCFPVfoAYHgpbjsAJ3Q2qMM/01CrP9IlZajiyxq33wE8Iv8cy1nl8V1a0gvq00E2Xiv77HNoK4aefdSTHSOCQf9YNoqtThyh7t+59+tzxIx91VAHYF3YYoEikr8goAPkuK+O0ZagZPSrTw8+cQAnYNXfxepQrt0rzmaoIE0c2G7Phsh/wixHQb6o0hVpr7zXcAiSx3Rr2+FDS1+S4955v4wIFfu4vX3CL/5S7ziMGdV2xj1aKZw1DquCMgPd4Ep12Kd+yGESe33ystXUTdY06PwuklHZ87XeX7ynVtubmdsdckzE8BvPp6eutNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wQA8bTsm7LiGBXA9+WzhFLBQdsoR0ToDhz+0w2uMy90=;
+ b=KdLsivLL50W/zGm7Lv03rvDYR2JQ83HDw/H6Rq3PNmokIBbNU21EfjSZQR/2yjRA/groz6qHQB4I3T+AcLc4Ct2sQhIN8wHu57qlnaWFa3LoyC552tGCnQ7vHrUq9pP6UnjAd65a8859DYIYwaVxN8T7Z7vG6PQJRtDqSbiAt3oIc8OWeyGDJDsjqImieEFpvXcME2baqV2v+8IdCVWxWLr6R25+phabCV4cFOP6tHJm33MoWAzWP4fEHbp+o4v9V3osKwiKkWvW3AXPJ3vDnK/YuMevceCRozEqibjjiiDdD3Adna4AU0WvoIaFonrhPaiDeSnryvAxmR8kFnLVQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wQA8bTsm7LiGBXA9+WzhFLBQdsoR0ToDhz+0w2uMy90=;
+ b=QKldowH6vBb5TqD9AEhbK+35em3x/HjpxjuRg6hPpplpJP7r9ITfPHnefQHl87AvDGmzouUnNF5/YFsOEMGYXSIo2Q11/5sJuZyLxQIF0QeveC+TSK3pnP68xaYUy+yfFhA+qwNm0XLY0OEE5gZtm42LlIB+/aQ6KMpMLTuVyF+oM+gI3wOVQv2zJmBcBk0J7xfxs6Vj7dU1B+Ovb/IcrXxsjwrrbdDIdUtN3f+EBot26R6ZcO2WrqhbCzDqH21sfyjsE3rSjCjNh0Or9aGJ04OUzuPhE5lI2R7aRdWpSmWN7bm34trvU6V4nG3atmkjL2QI6MKC0aCZnnx/6YIqiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI1PR04MB7085.eurprd04.prod.outlook.com (2603:10a6:800:122::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.18; Thu, 22 Aug
+ 2024 06:37:11 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%2]) with mapi id 15.20.7897.014; Thu, 22 Aug 2024
+ 06:37:11 +0000
+Message-ID: <c3b73039-86b7-4456-b059-4467abf3e287@nxp.com>
+Date: Thu, 22 Aug 2024 14:37:40 +0800
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] arm64: dts: imx8mp-evk: Add native HDMI output
-Date: Thu, 22 Aug 2024 08:27:12 +0200
-Message-ID: <3830047.kQq0lBPeGt@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240822033318.753724-1-victor.liu@nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com
 References: <20240822033318.753724-1-victor.liu@nxp.com>
+ <3830047.kQq0lBPeGt@steina-w>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <3830047.kQq0lBPeGt@steina-w>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG3P274CA0015.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::27)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI1PR04MB7085:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9575a7d9-5c76-4307-454c-08dcc274da67
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N050M0hhOXZUMDBMVHJSYnBPV09XU3ZIRVZTdlkzWWUvOVJGaDk2YnE3U3NM?=
+ =?utf-8?B?enhabHFxRFhWVjRJaWM4U0hYbWdIbFlkYVF0Vy82M0ZIVW5DQW9EZHVOU1VT?=
+ =?utf-8?B?aUdIRncwNCtpcFhaeHJWc2xwOU5RTHIyYmJ0Skh6MUNPUEV1Y1pxMUVQbXIr?=
+ =?utf-8?B?UnhDZTNqd0NXNFVuYXZLTDZmcWtBSGpYWWtuZlVxcm5heFhsZEtTU3VzRll3?=
+ =?utf-8?B?NHJPUEpVSnJKRmJKVkR0U0l6djU1b2g3OWNsaXJpR1lQMmRVM041RE5sWS9F?=
+ =?utf-8?B?QkE0eWlwWlowUk5BazYwTlB1WG05cHJ0WHhsakFpazd0K3hyVjF5bnlNNXNS?=
+ =?utf-8?B?RXpkcHNJVUppaUFoVHo0WW1xYkFNR1RCMENGZ05SWWhCNUJLaUtxYjFOVmtH?=
+ =?utf-8?B?cXdPSHZLT0U0d00vN1lMVjJTbXdjOEp5eVZRWkRkdVF4NjlabVZYdHhCNWtI?=
+ =?utf-8?B?b3VqZENpRDRnK0dkRHl6ZEdOczR5aldDMGxvSVdxNkJYZWM5d1RWWWNHYmlj?=
+ =?utf-8?B?VDdnd3BpRmdoRE1OUnRSNTRETkxMZDV5cUFpZElNTUs2L3dteEtkbEZUMjBM?=
+ =?utf-8?B?K21kUm1Kak9DUFkyeDFrcVlnVUwwQy9LdFNyeHdocVhRU3IzWWgyK01GdzdC?=
+ =?utf-8?B?eHVQU1FxUU5NN0QvSXVpckgvNXBVN2MwZ2N4eURGUGJoT05WRGZEVThKaFMr?=
+ =?utf-8?B?WlVlVjIrN21jeDBxSXhpYVUwVFR3ZE4rNW5DbEpXdmRjek1RZnRrUTUySFlZ?=
+ =?utf-8?B?VEYzYkFUL2VOY2JPZDkrbEsyTys1U1pPVnRIUTVBZXRjdDZwaStjR0NLdUN4?=
+ =?utf-8?B?VWVFejlKV2o2MnpBVDlLb1p4cDlzWGdUdm1GNDB5NGRKcy9aZWhReVZkLzBn?=
+ =?utf-8?B?NXVjVjJIVHF2eHIvTS9vWXBmWGVraWVtVjJTQ29BT3NLVXgyVDhlb1Y4L0lK?=
+ =?utf-8?B?Q3dmUHY1aE1yNnRGYWdTYzNEYmJoSHFKNFAwbUsza3dRQ2pGNzEyLzdEUzl4?=
+ =?utf-8?B?VWlQQjhWcno4cUdjRmE1Rk1jWXlKYWNPdTJ1MVdOWlRPUmZsZmlCcmt3UlVv?=
+ =?utf-8?B?WmVubG5udHlraU96RnpJWmNPTGdML1FoUkJMZmpyNklBUEtZY0YrdFdWTXhM?=
+ =?utf-8?B?N0hsMm5yRlk5c1YvV0RpQ296VGNUVGRGTFIrbmZibi9mVnNGb2hMSVAxRXF3?=
+ =?utf-8?B?Ri9HTDJSbGE4V0g0VDEwUEU5RVZVcjR0ZWdlWHhlbjVTd0lsdmZBaFliY2lL?=
+ =?utf-8?B?djBQemRJVEZDaVRjSHEyZ2J5RnYxTVRVeEtIZjZCZHFZVFlLVjdFcnBZdUl5?=
+ =?utf-8?B?d2dkRUN4V2FaQXdLSThTbEo2a2h1U2Q2MDVkOFVDb1dBcTROYTY0bHBRZWZ0?=
+ =?utf-8?B?REdEalB0SDIyNmFWTmtLSE9rNWlmdU81VWJ1S3MyMjhUQmMwRnh5TGFVQ0xZ?=
+ =?utf-8?B?YytSdFJZaUFDdlQ0VVNUZFJkYXlxMERtNWo2OXg3UUZEc2xUVktObDJxaG91?=
+ =?utf-8?B?bWFZZHBKUWJmTFZkRGYvZ3h1N2JITGcxTVcyVjlRTjBERFM2NVVrYVVDUjMz?=
+ =?utf-8?B?QlZtclpuWFRqUERWZzAxYStSSUlwR2thR1FTUFhna1IyVzljNmpUZ2tXY29Z?=
+ =?utf-8?B?eUJrNU1CYUMzNlkxUndJUHFpazlFK3UxT21YSVlKMDJLSmJUTHZrMzNKNmh3?=
+ =?utf-8?B?TTkzUGZUYkhUUjR4MFlFZFVGNjJGME80ZU9ENHlpclYrRkVoZy9tVnA1S01M?=
+ =?utf-8?B?VzErbFN0U0tNSTJONU9FdU1iaEU3R3hSSEphKzdwWldUQ3V6NGhSaXh2cGg4?=
+ =?utf-8?B?Skx5WkpOTjlhY0JwSFpFdz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RHNadnBIQW5IK3o2eVY1bE1MalhBM2NSNmNlb2Z0SmU0dTd6SGlCclRxNEVD?=
+ =?utf-8?B?YnJGYVJsUUxhbVFUR3lmRVFMMDZBZWVlS1hPV0o5VmxLcW93Uk5kSUEzUVhN?=
+ =?utf-8?B?eWM5TjdqWjdBTml5bWl3K2ZCL0xma2hMR0hWWEtsc21SL2E5LzM2V1h0ekdz?=
+ =?utf-8?B?Q3hwSkNMQnRwcys4MHFDUjVSRmZEUlFLbTNrczlGcjNoMUx1QlQ4dTFscmVV?=
+ =?utf-8?B?UDZDY1ZUL1pKNCsvU1RxMFdMdXdMRVJwUU90RmJtZlJaOEZ5UW53Vkg2cTRU?=
+ =?utf-8?B?bW82UFdDZ2pYRGhTSFlZS29SZ0Y3eVhRZmNMQzRTdTd0QXJMUmM5cEZ6UGtU?=
+ =?utf-8?B?OFZ1ZTRPNDc0b0VBckNSbnRiczFQYnNsWWZ1ejRGL0ljaGxvRWNXZ2VPNTQx?=
+ =?utf-8?B?QWowcEVtMlZ6Z05PNk1ISW5FUGxBeEdRWXVraTFqYzVKczl5TW9naFU4U3Uw?=
+ =?utf-8?B?S3Y0bmNJcU1QQk45ZjBPSEJUdjR1TG82bFpqMXptMU0rV01xcEw4d3YxaHhG?=
+ =?utf-8?B?VCtZT0hKZ0liZmFiMU5wbUxrQWt6d1pmbEwwa0ZBOU9RTlpFR29pQVo3N1dB?=
+ =?utf-8?B?UldGaVFRREpiRTJBS1JLN09oajNXV203ZjNIM085RFhvd3phcGdQWGJJT2JP?=
+ =?utf-8?B?cFAwek8yZm1kWDdLdWE2bkZxUllGMzM5azB3U3JtQUpWVUF2RUNueUxodWFw?=
+ =?utf-8?B?U2wzTjNwTVA1cHdWWkhSUkltUitHdTBoQlkvck9uOUNCVUxvODQ0ZTlZZDkz?=
+ =?utf-8?B?Yy8rakx1SHk5TXVNVm9HaDZFK2ZJNXQrcG1qaU8xNmtGeU51dzAza2ZWN2xq?=
+ =?utf-8?B?Rmp0NVU5U243c1BMUTBKaEQ5ejRnZjY3ZzUzOG9WUENMSzVHR2lmaG81cGkw?=
+ =?utf-8?B?ZE5yYnN2S0VNMnM3ZnpyakZCOWdYWFoxUENQQ3l3RGxUTUVlSWZOTXRRYTM1?=
+ =?utf-8?B?NUgrbVhmK2NVV3ljdUxSM1M1V1dMcGU2Qy8vOGRYMkhUSE91NEsrSjZ4dVg3?=
+ =?utf-8?B?MmE2aWVjaUw3VWs2Wmo5UlNiRFZQNmJnY0c3VjJCcjZmdWdkNmkwL3RpNzhu?=
+ =?utf-8?B?dFpuVkl2OTExMmxpbXQyY1U3elZGeXQvVS9aNVU4RmhyVEtBaGFYRGtIbU1H?=
+ =?utf-8?B?OUxTUXRnY21QWEpGYWNaVEVkZlBUQW81SWZkZVJUZHRWV2VjTHU5UGc4Q3do?=
+ =?utf-8?B?RG12c2YzY24vakkwUUNWV2JhcDB6REh2Y01vRnZXMjg4WWkwTHlEUHFmWTJJ?=
+ =?utf-8?B?dExmOGRXWW5rYjR1OVkrV3FNcmNuL2JHVnlSeFhvTDc3bzZNeDM5RWxHTnV5?=
+ =?utf-8?B?Q04vZ3d5ejIxUXIwUStlWmFsWDRTdUNNRnpveHJ4Y0hUSENQWEVxbUxaUjlm?=
+ =?utf-8?B?T0ZoeWU2bzFjVjBLenowTE9OU2FOcXZLUDZyUWhsdFQrWEF5THBUYWZZd0RL?=
+ =?utf-8?B?UGlyaGNXYTJaMHdxSmlCWUtkcFdHYTAyM3ptWDNaQjdXU0RNNEVITDU1M3I3?=
+ =?utf-8?B?OFhCMkxKSUVXeWxHYzlNTVBOMkhmWVdybkJkb1d3am5TSnc1dDRxOEc0M0VL?=
+ =?utf-8?B?ZXZFWWxMbG1HeHAxeE5Ld1hDVG55NVR2MDZrTDZGOUpvY05NU1BiQUZaUGF5?=
+ =?utf-8?B?dVZlQVpzbVBLcVVXYUdUQnFCNzV0STJhYVFGSW5wMUZxUjNhTlVieGdmS3pw?=
+ =?utf-8?B?SjNCVFB3c3NqM09mVlBNUUpCNDREUlJ0bWhjMTZLN1BEUmJ0MlQrYkJOdlVH?=
+ =?utf-8?B?QytncXFkbngzd3Z3dHRzZ0VMRG1NaFNNOW9CQXJMUzZmcG1DL3AvOUdpakJW?=
+ =?utf-8?B?cjFaU3R0L0l6bUp1QlZoSTZDRHVDV2xUN2lPa3hwblVPNERoU012KzJBeWw4?=
+ =?utf-8?B?TGZQT1pvS21lZlpKYTRpUXZ5SkNNU0ZZNE9zQUlDMVlkWXJNSkFzVTlsOHcr?=
+ =?utf-8?B?L0xhKzZoc0M0UFBSSmlnRUxWUmRycThoMENmcWtpVnB5dVJrN0lkdW1xeTM2?=
+ =?utf-8?B?RUNMZ2pLTjJWeXdaYXdwemszNFk5MmVFT3h4UzdSR0ZqbkZQaTUyS0lNeWxM?=
+ =?utf-8?B?cEd3N2FWMXZMMi8zRU1NWVF4dUVhQVdSQkw0Ym14Vk1YM2FvR2U4bXNLQXd2?=
+ =?utf-8?Q?C2w71Jx9erVHztKP94Lv9rEY5?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9575a7d9-5c76-4307-454c-08dcc274da67
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2024 06:37:11.6939
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uott/hMii6TyM/dTOFJVgQPi6J7WvCB0ubJip/SNu0PaVmBmwVuJLXof2aDmPZkWBri8NCMCIzMVvPTbPxyzSg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7085
+
+On 08/22/2024, Alexander Stein wrote:
+> Hi,
 
 Hi,
 
-Am Donnerstag, 22. August 2024, 05:33:18 CEST schrieb Liu Ying:
-> J17 on i.MX8mp EVK base board is a HDMI type A connector.
-> It connects with i.MX8mp HDMI PHY.  Add support for it.
->=20
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 46 ++++++++++++++++++++
->  1 file changed, 46 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/bo=
-ot/dts/freescale/imx8mp-evk.dts
-> index 938347704136..f118fe8ab5ac 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> @@ -56,6 +56,18 @@ memory@40000000 {
->  		      <0x1 0x00000000 0 0xc0000000>;
->  	};
-> =20
-> +	native-hdmi-connector {
+> 
+> Am Donnerstag, 22. August 2024, 05:33:18 CEST schrieb Liu Ying:
+>> J17 on i.MX8mp EVK base board is a HDMI type A connector.
+>> It connects with i.MX8mp HDMI PHY.  Add support for it.
+>>
+>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>> ---
+>>  arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 46 ++++++++++++++++++++
+>>  1 file changed, 46 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+>> index 938347704136..f118fe8ab5ac 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+>> @@ -56,6 +56,18 @@ memory@40000000 {
+>>  		      <0x1 0x00000000 0 0xc0000000>;
+>>  	};
+>>  
+>> +	native-hdmi-connector {
+> 
+> Is there a non-nativ HDMI connector? If not this is somewhat misleading.
 
-Is there a non-nativ HDMI connector? If not this is somewhat misleading.
+Yes, there is a 'hdmi-connector' node in this file.
+It is for ADV7535 MIPI DSI to HDMI bridge.
 
-> +		compatible =3D "hdmi-connector";
-> +		label =3D "HDMI OUT";
-> +		type =3D "a";
-> +
-> +		port {
-> +			hdmi_out: endpoint {
+> 
+>> +		compatible = "hdmi-connector";
+>> +		label = "HDMI OUT";
+>> +		type = "a";
+>> +
+>> +		port {
+>> +			hdmi_out: endpoint {
+> 
+> That's an input port of the HDMI connector. It should be called hdmi_in or similar.
+> Right now it's connecting 'hdmi_out' and 'hdmi_tx_out' which looks confusing.
 
-That's an input port of the HDMI connector. It should be called hdmi_in or =
-similar.
-Right now it's connecting 'hdmi_out' and 'hdmi_tx_out' which looks confusin=
-g.
+I'll use hdmi_in in next version.  Thanks.
 
-Best regards,
-Alexander
+> 
+> Best regards,
+> Alexander
+> 
+>> +				remote-endpoint = <&hdmi_tx_out>;
+>> +			};
+>> +		};
+>> +	};
+>> +
+>>  	pcie0_refclk: pcie0-refclk {
+>>  		compatible = "fixed-clock";
+>>  		#clock-cells = <0>;
+>> @@ -408,6 +420,28 @@ &flexcan2 {
+>>  	status = "disabled";/* can2 pin conflict with pdm */
+>>  };
+>>  
+>> +&hdmi_pvi {
+>> +	status = "okay";
+>> +};
+>> +
+>> +&hdmi_tx {
+>> +	pinctrl-names = "default";
+>> +	pinctrl-0 = <&pinctrl_hdmi>;
+>> +	status = "okay";
+>> +
+>> +	ports {
+>> +		port@1 {
+>> +			hdmi_tx_out: endpoint {
+>> +				remote-endpoint = <&hdmi_out>;
+>> +			};
+>> +		};
+>> +	};
+>> +};
+>> +
+>> +&hdmi_tx_phy {
+>> +	status = "okay";
+>> +};
+>> +
+>>  &i2c1 {
+>>  	clock-frequency = <400000>;
+>>  	pinctrl-names = "default";
+>> @@ -604,6 +638,10 @@ &lcdif1 {
+>>  	status = "okay";
+>>  };
+>>  
+>> +&lcdif3 {
+>> +	status = "okay";
+>> +};
+>> +
+>>  &micfil {
+>>  	#sound-dai-cells = <0>;
+>>  	pinctrl-names = "default";
+>> @@ -858,6 +896,14 @@ MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16	0x140
+>>  		>;
+>>  	};
+>>  
+>> +	pinctrl_hdmi: hdmigrp {
+>> +		fsl,pins = <
+>> +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
+>> +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
+>> +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
+>> +		>;
+>> +	};
+>> +
+>>  	pinctrl_hog: hoggrp {
+>>  		fsl,pins = <
+>>  			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010
+>>
+> 
+> 
 
-> +				remote-endpoint =3D <&hdmi_tx_out>;
-> +			};
-> +		};
-> +	};
-> +
->  	pcie0_refclk: pcie0-refclk {
->  		compatible =3D "fixed-clock";
->  		#clock-cells =3D <0>;
-> @@ -408,6 +420,28 @@ &flexcan2 {
->  	status =3D "disabled";/* can2 pin conflict with pdm */
->  };
-> =20
-> +&hdmi_pvi {
-> +	status =3D "okay";
-> +};
-> +
-> +&hdmi_tx {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_hdmi>;
-> +	status =3D "okay";
-> +
-> +	ports {
-> +		port@1 {
-> +			hdmi_tx_out: endpoint {
-> +				remote-endpoint =3D <&hdmi_out>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&hdmi_tx_phy {
-> +	status =3D "okay";
-> +};
-> +
->  &i2c1 {
->  	clock-frequency =3D <400000>;
->  	pinctrl-names =3D "default";
-> @@ -604,6 +638,10 @@ &lcdif1 {
->  	status =3D "okay";
->  };
-> =20
-> +&lcdif3 {
-> +	status =3D "okay";
-> +};
-> +
->  &micfil {
->  	#sound-dai-cells =3D <0>;
->  	pinctrl-names =3D "default";
-> @@ -858,6 +896,14 @@ MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16	0x140
->  		>;
->  	};
-> =20
-> +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins =3D <
-> +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
-> +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
-> +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
-> +		>;
-> +	};
-> +
->  	pinctrl_hog: hoggrp {
->  		fsl,pins =3D <
->  			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+-- 
+Regards,
+Liu Ying
 
