@@ -1,131 +1,136 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9FE189539
-	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 16:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546F5134A0;
+	Fri, 23 Aug 2024 16:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724430262; cv=none; b=Y9eA6CjHWORj4om6XOh8c64pA6a++Y9Zhd39xmS9DpIacgVz66XxdoB91R9pnEl9RYXpW2A2uDisXxpGG9ajFLmP1RWOUR1g/Sv1HcLVal3uP84JcoaDJJcLuqEx3+tdsTxf4LeMJjug2DSRtHD6pBDu7+BuWVtpY4UXZZCjxSU=
+	t=1724430339; cv=none; b=RCxikXk1Lh1cPMacAs1EPCXoAv5LuiapNrQAm0s0VuU0V49xJMoIWcKFsf1aC41lhr7ArKglV1qNZesVCswE6mH5BlnR8kOrifNSeIA4gkb2ckP+xKkOfgIGS+FHVIH6XqQxL9oxIS/f2sPCCGAOXXZTevnOY/RHgqSscX8RWI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724430262; c=relaxed/simple;
-	bh=2AZcW0AMjruhAKqn0fjALEg1RIVZrHtZALPiKh483iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oCAlNU0BDvN6l/1f0LocQVVKUY/KUpMWR6Vr4x2cyNeaodYkN+ew9lKKaN82rIxtXH4rMG+CmY9FOCN59PFBt9w5oEzi2OunbCVDntjB2dJW3xaS/hMWYE1VH6Dv/S/2MoimTmKf9Od1FzpmqJ+HPgMPorp7EfKPAIVy9TQNqjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jdyx02Pv; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1724430339; c=relaxed/simple;
+	bh=3XMbUYBDHmzNIbQnFO5jFhgJPAAWpbvUV37uWE91XYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QEHFTFhi/IzQIcu+mjVhUbOAx2quy7QIorhicO1D1K4JEt7aHyBfxsbvQMcX7fMQMceKJQBNc3QfH+0f0Jwlyqbiv/tfLjgEYkXDLbn8uI4UeoAwNRxiZZGOhGXgpLWaqZnABCy2LB2WBQ/egdi0a0tNkUvIBuG8PTZmiZq6CjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TEdeqrfc; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jdyx02Pv"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 677DB1BF209;
-	Fri, 23 Aug 2024 16:24:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724430258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h1vZPt/dBcDYDQ0mp2GaU66eD+tAIsEG5O9GhWlpdXI=;
-	b=jdyx02Pv1cUl9X6jJRVEPrHP+O4CHcA+e2qnqfSUDKpTiM1pcOtu+gRdMjDT7Lc5KeNTy5
-	QdJckxIcKreRCrjJ5uWLDyqD1iPWX6fvCUNcxiJkRRDPmxnQRdlrPmL8pkK1FnVabNmYWb
-	K2mg3j2Cc+1S7jebKgxgnCY+ddyDW5ymhEr8YnOcGsbEwDNNBpDqzuAbLnHs3P28qh/8fh
-	O4ovRNC1Z7Whx2saeY2D1/l+VCzMHswrKRcnMFQ1NBX3TiKs5hZAGBQPSkNM6o71Di5h0A
-	30cydmV27n76AYxneoVqS9yPWyS5NQQeJdb6SRSOTTdHrqxyeCOJPTCXOSvkeg==
-Date: Fri, 23 Aug 2024 18:24:16 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
- <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon
- <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
- <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, stable@kernel.org
-Subject: Re: [PATCH v3 11/11] i3c: master: svc: fix possible assignment of
- the same address to two devices
-Message-ID: <20240823182416.33744666@xps-13>
-In-Reply-To: <20240819-i3c_fix-v3-11-7d69f7b0a05e@nxp.com>
-References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
-	<20240819-i3c_fix-v3-11-7d69f7b0a05e@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TEdeqrfc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724430337; x=1755966337;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3XMbUYBDHmzNIbQnFO5jFhgJPAAWpbvUV37uWE91XYY=;
+  b=TEdeqrfcbxLx99L9+0cq0VBP1FYsYkQCqyGgpEXXB7NgjLpHZmGEZM1o
+   NQx9TreuB4uzCjjmgwPmZd4TZ4zYq1JJJPbtCS5UWIAgG4VmaQp80lwTX
+   UDzzfk3z7DoOLXf17bp1gbFtAz7ALyzMi4oenXbDOjNewuDt53YSbDZ/5
+   4UFEQqQ+4RWJSm+o6hc4Rl+j1HvjrGFwfdj7wqu2RbK/LNo/o3iTeK4jz
+   ZMGCGPBnYcSyUWhURFT+PZt683e2Pv2B48DjJsthobbO70wbeYaEPWx2Y
+   rBIcRHHhvf0+OXYffMtR54DlUuEWXdoL821XPp1c553YjUVva109/sXfB
+   Q==;
+X-CSE-ConnectionGUID: peee/RV4SmmxUX1nwnXZlw==
+X-CSE-MsgGUID: wfCQ1SSRS/GvDfhHQD3GOw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="22504156"
+X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; 
+   d="scan'208";a="22504156"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 09:25:35 -0700
+X-CSE-ConnectionGUID: TyAhmqenSA+fGrOHJsVz6g==
+X-CSE-MsgGUID: lexLTyUnSgSoAmUAGKiMPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; 
+   d="scan'208";a="61694525"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 09:25:24 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1shX5I-00000000r8v-11Le;
+	Fri, 23 Aug 2024 19:24:20 +0300
+Date: Fri, 23 Aug 2024 19:24:19 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Russell King <linux@armlinux.org.uk>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 0/9] AT24 EEPROM MTD Support
+Message-ID: <Zsi3s9XithGEROwX@smile.fi.intel.com>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Frank,
+On Mon, Jul 01, 2024 at 03:53:39PM +0200, Marco Felsch wrote:
+> This series adds the intial support to handle EEPROMs via the MTD layer
+> as well. This allow the user-space to have separate paritions since
+> EEPROMs can become quite large nowadays.
+> 
+> With this patchset applied EEPROMs can be accessed via:
+>   - legacy 'eeprom' device
+>   - nvmem device
+>   - mtd device(s)
+> 
+> The patchset targets only the AT24 (I2C) EEPROMs since I have no access
+> to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
+> 
+> Note: I'm not familiar with Kconfig symbol migration so I don't know if
+> the last patch is required at the moment. Please be notified that the
+> list of recipients is quite large due to the defconfig changes.
 
-Frank.Li@nxp.com wrote on Mon, 19 Aug 2024 12:02:05 -0400:
+FWIW, I think that MTD is *not* the place for EEPROMs.
 
-> svc_i3c_master_do_daa() {
->     ...
->     for (i =3D 0; i < dev_nb; i++) {
->         ret =3D i3c_master_add_i3c_dev_locked(m, addrs[i]);
->         if (ret)
->             goto rpm_out;
->     }
-> }
->=20
-> If two devices (A and B) are detected in DAA and address 0xa is assigned =
-to
-> device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-> for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-> registered on the bus. The I3C stack might still consider 0xb a free
-> address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device =
-A,
-> causing both devices A and B to use the same address 0xb, violating the I=
-3C
-> specification.
->=20
-> The return value for i3c_master_add_i3c_dev_locked() should not be checked
-> because subsequent steps will scan the entire I3C bus, independent of
-> whether i3c_master_add_i3c_dev_locked() returns success.
->=20
-> If device A registration fails, there is still a chance to register device
-> B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-> retrieving device information.
->=20
-> Cc: stable@kernel.org
-> Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys en=
-try")
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/i3c/master/svc-i3c-master.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc=
--i3c-master.c
-> index 2010495906eb3..003565fddc261 100644
-> --- a/drivers/i3c/master/svc-i3c-master.c
-> +++ b/drivers/i3c/master/svc-i3c-master.c
-> @@ -1042,11 +1042,8 @@ static int svc_i3c_master_do_daa(struct i3c_master=
-_controller *m)
->  		goto rpm_out;
-> =20
->  	/* Register all devices who participated to the core */
-> -	for (i =3D 0; i < dev_nb; i++) {
-> -		ret =3D i3c_master_add_i3c_dev_locked(m, addrs[i]);
-> -		if (ret)
-> -			goto rpm_out;
-> -	}
-> +	for (i =3D 0; i < dev_nb; i++)
-> +		i3c_master_add_i3c_dev_locked(m, addrs[i]);
+Yeah, we have the driver spread over the kernel for EEPROMs (mostly due to
+historical reasons and absence an umbrella subsystem for them), but it's not
+the reason to hack them into something which is not quite suitable.
 
-Makes sense, but please explain why don't check the return value in a
-comment (your commit log is good).
+If NVMEM needs to be updated and may cover these cases after all (and do not
+forget about *small* size EEPROMs that most likely appear on the devices with
+limited amount of resources!) in a reasonable size and performance, why not?
 
-> =20
->  	/* Configure IBI auto-rules */
->  	ret =3D svc_i3c_update_ibirules(master);
->=20
+-- 
+With Best Regards,
+Andy Shevchenko
 
-With the comment added,
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-Thanks,
-Miqu=C3=A8l
