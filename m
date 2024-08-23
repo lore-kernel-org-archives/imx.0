@@ -1,211 +1,158 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F42A186608
-	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 12:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C821885A7
+	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 13:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724417509; cv=none; b=L+As7pkfdOdjXJpEgMG/QhbPWHdFN3dvAWZ/qn9DpM4eKs365x9qk+du7sfSYQ/lgmThkJE+rmfu41sRHEwhBGzJPDkSLwfskhSUn7QOgYGR6PDfHr0e/h4ZdVQgb6/N3Zi5Tci/XhmHx5lbDz46TD4STXJ/VL9nEY79Lu6wx9o=
+	t=1724420627; cv=none; b=CbN6defCyVEvnKMfyM/PHK4BJVac9wct2hpe/nj7wUJED2EW59pcofQevxQUN0ch1P68SrQ5l69QH/+eHpCi8KGAJGfuaUHJyTnjXrqVa/p3kPIFzytIjFthAeS9flNympW3Z+MCo5ACv4A8hxVLY9xSryWxeOq7KSEGthxOk7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724417509; c=relaxed/simple;
-	bh=RaCHoWfcvN19DBMmkgIRc0NGUjytTpFgVMcU13mcxgo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jmh/opzzE++/nj2LUlFEzbjkCYOIreSL3jjGf/0bSboMqx4LCRk+fnJFiywwyNwQpV2JU1PKgYqKFsYaUkib5Kqx6mflcbBjOi9YyCZQasuJMzL/iId9wbyPEfcQRbDRJgV+h0KnVD2MReshHS9PzJDHpOr17AyeiR0iLTBeS+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k5WpYSRo; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1724420627; c=relaxed/simple;
+	bh=ba1vCLOtZm/skZMHl+kh9JAeamdeHMIUzI4d2QX8+kM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qelw+MJ3M3OLvL0gaJ/B/9ho0GvtViR1rrwD3KMllEHnPcyq15EDC4FEkarhGG5vb2P0xGWD1DehHWt+qJ7IMPHGahg9TRnhXxjqLCX9rRvsoy8jG4nzGZMmfyyNOF4Eh2NTgcLOLkMHoX4P1UCAY0tJ7UVweaa8w7QIO7hqgfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezXh6bzl; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k5WpYSRo"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a86a07b2b2aso4693266b.1
-        for <imx@lists.linux.dev>; Fri, 23 Aug 2024 05:51:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezXh6bzl"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5a10835487fso3243532a12.1
+        for <imx@lists.linux.dev>; Fri, 23 Aug 2024 06:43:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724417505; x=1725022305; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/rp37AUE8o1pDdOTGLdrCW8KtmisO6ANjwH8PgBb0ls=;
-        b=k5WpYSRoEc18CunQrOsncFBOw7wuEHBf5IxFLlFWXaz3awuGC5H8fWrcz3N3/DVgSN
-         5levasLXYIlSxPRBNkiR4rleLCB9wFPg8vaaW/8HAmY69Zld7Jn12e3C0RmKqBQzTnld
-         L15vyB2UVQTKNf2FP7f2qZj5NOQmOd7b2e7l89NpA3GM/ONpdlgDZO0XMMvUuy+XIAvu
-         yjs5TU4Yqy31qBzIItDHIYlBbkL2AxquiVlm4uMNrNIXv0eo2w+1OFKmtXq8QSJJ5CYZ
-         qa174lhcYQialkwPQKPRoHb6PxE3oMPxh1D5th4E/WYJ56VkNo7rMXbJIeZ1co26aglh
-         r3qw==
+        d=gmail.com; s=20230601; t=1724420624; x=1725025424; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ume1kDbmwm/gc9DUAKqcuXKYCh92rtcN1bT0exEyFMM=;
+        b=ezXh6bzlbx6nY+OWk4awmEnxQnndKvJZsv2r53SeNEp86XtqrOOsRoE9VBil6Sp2tn
+         P1t/RbpBDLiMfeNz+AC7T40zRmYbEE1xFsSWJeoWAhR+pvGluWpKJ8QgJcqB69Kf0JUO
+         PwGnLgODbnGZ7VQct8neThvUJFDZw8lPSGY9ondUquTEw/Lyu1Pe8UnkD9D8yoLDLDK7
+         qp1tHT4YDv7Wv/elhYk9zdH9rJJbXSIiynhcuKiyXMdOfglb0SUPEiNdhv0WtxI9eN6D
+         RfLo6n3Ji6sFhxy5QsT4X1T2GZTh3e0bMwp3lNMnqMPHssayIvndNjgY6mKZJJkEDlPp
+         vu+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724417505; x=1725022305;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/rp37AUE8o1pDdOTGLdrCW8KtmisO6ANjwH8PgBb0ls=;
-        b=YpNMyiF9r9181pykGSYGnwPSulVP/tBE/LDgy221w9UkSIbuoIRIrrconz5JS/7RjG
-         Szt14m4EF283F/kvtQagCqXIpk4lGEvWi1moDOk9Jjr7U50bsPq1b0XHGx1cdNDNudSo
-         sIMRbstJOmhoMJqRxADqrJoz9fF9PwKrUvb9FFflzVWdBw0J9mJNTOKYM666I6+7R+2i
-         I1PfBQymJTee7KpMjkmcQMM0Hr+gPSzRMTAhLOUhhnjQesaqXgIrDizUIx6K4scQzx4B
-         YG7/WeKJXpPsEGtdXKLzJKJepcRNUMiRZlljumRK6MhWogwuOT/b8puvzubcoMdVdGow
-         wmrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdwArmLVKIKfE2nZ1OZVqbVOXdiLJGmWE/H6dZHhokT8XQXT5ITA3/1xrdtrSUpqGRTrM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyNyLL9aUy/5pgPfbhfsJpXyoApGUHcFPSZEGDNOZJr5PDM7zKG
-	Ec/RzrNnU+MhhEzxXRAhwunkYH8pr2pNvfeu5B9Ydsfkqhb8NyoaQL07kycG7lc=
-X-Google-Smtp-Source: AGHT+IE1+3Q98ogeUT94jLgiJMspBnSs1Bmg9/MGG8bMaWFikVo5szbklH8yaPLEJlsyUwI0svusGA==
-X-Received: by 2002:a17:906:c355:b0:a86:a694:aaff with SMTP id a640c23a62f3a-a86a694abe2mr75972666b.1.1724417504852;
-        Fri, 23 Aug 2024 05:51:44 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f4f384bsm255931666b.192.2024.08.23.05.51.43
+        d=1e100.net; s=20230601; t=1724420624; x=1725025424;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ume1kDbmwm/gc9DUAKqcuXKYCh92rtcN1bT0exEyFMM=;
+        b=HiVNb1bxAqiEowAih6WWSq2xvx2Y4U3ECKPCiQor+UecSfCEV6HdgylWflL7/7w5DI
+         b2lwNTwKpO4ruJ7LnmspNCyumemrdiHsLEoAHyjrub5zAqseDR8HnvLv9iXSexQCJlri
+         BRT+YhwYHnI8CgVQCcv0U7N5MHnL399kvyMgUnwW6sgMqGkYQFNDAcNrhFx5S82k5Tsr
+         4xAPnyMz2jaPWf3KEbcxQEJaJ7AKHwVWjIrK2hYWGUusvZdUGO0BOGYV/8qbQG5t8/VP
+         rvSVuWo2luCrMEpjM6dg8WC9iTVCXzQt3gWe93rVZwUWtqLDDD+RgW5599S1dzzuY4eK
+         Cusw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnoEOZx4rxVMdnVsnYLyH6R0Whjks5/fP1ciRZqHJLwZc+FCyA44XmtOlH4HDqgkINUSo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXJhyV8+tFtj+G7YKQ8U3OQMZHoR0IQjChmRniMgnHQP2UCDMC
+	AcoCICOUk3MX/OHjgmV2RdVnMPOGHg0kU5Tw9bv6MAwYLTzqjojqvU7eKcGd
+X-Google-Smtp-Source: AGHT+IHkv19M7e8G9uSEo4T7jKRhNlTTjiPTlWEKNa6PzU2aS6HcQNrZT7CqJ7oV33O7LbaaAkrHSg==
+X-Received: by 2002:a05:6402:3489:b0:5be:facd:aa51 with SMTP id 4fb4d7f45d1cf-5c0891ab86emr1553255a12.31.1724420623614;
+        Fri, 23 Aug 2024 06:43:43 -0700 (PDT)
+Received: from eichest-laptop ([2a02:168:af72:0:48ba:80d8:cf77:1f49])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c04a3cb0bdsm2103844a12.37.2024.08.23.06.43.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2024 05:51:44 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 23 Aug 2024 14:51:14 +0200
-Subject: [PATCH 10/10] pmdomain: renesas: rcar-sysc: Use scoped device node
- handling to simplify error paths
+        Fri, 23 Aug 2024 06:43:42 -0700 (PDT)
+Date: Fri, 23 Aug 2024 15:43:41 +0200
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, Frank.Li@nxp.com,
+	francesco.dolcini@toradex.com, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v2 1/4] i2c: imx: only poll for bus busy in multi master
+ mode
+Message-ID: <ZsiSDUYmxPKnNdHD@eichest-laptop>
+References: <20240819072052.8722-1-eichest@gmail.com>
+ <20240819072052.8722-2-eichest@gmail.com>
+ <CAOMZO5CYUNESmBdZBMSMwNraQbqvvsF5fn8i+nHr=MB_T_AG7w@mail.gmail.com>
+ <CAOMZO5CeT+LvQ__3GUf6teL3=8pZe5qxmFffYJX-h3E27UXwtQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240823-cleanup-h-guard-pm-domain-v1-10-8320722eaf39@linaro.org>
-References: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org>
-In-Reply-To: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Heiko Stuebner <heiko@sntech.de>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>
-Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3056;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=RaCHoWfcvN19DBMmkgIRc0NGUjytTpFgVMcU13mcxgo=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmyIXNR2zayhDCmXFhzQ1RKmq8aC4JQfASOX82l
- qQyhlx44UOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZsiFzQAKCRDBN2bmhouD
- 1xL8D/9RUFSYlgRZQEabYs+Zlod9oIJejL78n+4Ll7xzEa+aucx3mi/5XlXocpJxNV+gOzHmnL5
- pTAKjf9vr2rrSCFpdxWqcebEDpOfdp3FhZVpBNUc1h/OP5bjr184cjhi7i9TuCDo/iVdB0pUXdN
- M76MCTdDAD/bgYmwRgVMQpXF1J769uZTGjSJmi58B0VRQhOhJgjmrSLchp8/NAEnWPwerPXMCkm
- eB714yX5DLHHI+JfhnayFx/N2/E534xyEO1HvsBvfioJrdNphfVPfe4xI/qOHupvYmd5t+/9Ghd
- in1T0ooZnRBOqqF/8HZO+fb5oZPBETF2hHD6X7fMDmFhHDfW6lReeoDHG+ru1B6TG9NLvU0x98u
- wrOOoAXHWLuo2AT/cJjkItEh9Q4T0t0HZ4GscFMohXEJ+GKyoOgFKiAgIBfVgaeJ9bfTpT6teuW
- zljMa7caswrosPMTvLgRiWDI6NIuUAP1HdpDhMSMerJwDdR3mM18CodSRTqDknlhCH8Tff/UyzE
- YQqB1Shvtr1g7dD8+6Ajdjhu72i65o1lOBEcq/i6nT6QV3efKKqIzTcF1WoXBmdjq5ZQQyxC71v
- yN682xplaXESoBHsCxOVmTmEK5SdClLG2XTLvLhB2ErFuaqOK91wtibYaqRUCEPcNvHLuNxW/fR
- 7csJsV6ahkbU4zA==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOMZO5CeT+LvQ__3GUf6teL3=8pZe5qxmFffYJX-h3E27UXwtQ@mail.gmail.com>
 
-Obtain the device node reference with scoped/cleanup.h to reduce error
-handling and make the code a bit simpler.
+Hi Fabio,
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/pmdomain/renesas/rcar-sysc.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+On Thu, Aug 22, 2024 at 08:07:44AM -0300, Fabio Estevam wrote:
+> Hi Stefan and Oleksij,
+> 
+> On Wed, Aug 21, 2024 at 8:01 AM Fabio Estevam <festevam@gmail.com> wrote:
+> 
+> > This fixes a pca953x probe error on an imx8mp board running linux-stable 6.6:
+> >
+> > [    1.893260] pca953x 2-0020: failed writing register
+> > [    1.898258] pca953x 2-0020: probe with driver pca953x failed with error -11
+> >
+> > Could you please add a Fixes tag and Cc stable so that this can reach
+> > the stable kernels?
+> >
+> > Tested-by: Fabio Estevam <festevam@denx.de>
+> 
+> I am sorry, but I have to withdraw my Tested-by tag.
+> 
+> For debugging purposes, I kept 'fw_devlink=off' in the kernel command
+> line and that's what made it work.
+> 
+> Removing 'fw_devlink=off' I still get the probe failure, even with all
+> the series from Stefan applied:
+> 
+> [    1.849097] pca953x 2-0020: supply vcc not found, using dummy regulator
+> [    1.855857] pca953x 2-0020: using no AI
+> [    1.859965] i2c i2c-2: <i2c_imx_write> write failed with -6
+> [    1.865578] pca953x 2-0020: failed writing register: -6
+> 
+> In my case, I can get the pca953x driver to probe successfully in one
+> of the following cases:
+> 
+> 1. Select pca953x as a module instead of built-in
+> 
+> or
+> 
+> 2. Pass 'fw_devlink=off' in the kernel command line
+> 
+> or
+> 
+> 3.  Register the i2c-imx driver as module_platform_driver():
+> 
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1586,17 +1586,7 @@ static struct platform_driver i2c_imx_driver = {
+>         .id_table = imx_i2c_devtype,
+>  };
+> 
+> -static int __init i2c_adap_imx_init(void)
+> -{
+> -       return platform_driver_register(&i2c_imx_driver);
+> -}
+> -subsys_initcall(i2c_adap_imx_init);
+> -
+> -static void __exit i2c_adap_imx_exit(void)
+> -{
+> -       platform_driver_unregister(&i2c_imx_driver);
+> -}
+> -module_exit(i2c_adap_imx_exit);
+> +module_platform_driver(i2c_imx_driver);
+> 
+> or
+> 
+> 4. Use the NXP vendor kernel imx_6.1.22_2.0.0 kernel
+> 
+> Stefan, do you get the arbitration errors if you try methods 2 or 3 above?
 
-diff --git a/drivers/pmdomain/renesas/rcar-sysc.c b/drivers/pmdomain/renesas/rcar-sysc.c
-index b99326917330..da169eed638c 100644
---- a/drivers/pmdomain/renesas/rcar-sysc.c
-+++ b/drivers/pmdomain/renesas/rcar-sysc.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2015-2017 Glider bvba
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/clk/renesas.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-@@ -348,12 +349,12 @@ static int __init rcar_sysc_pd_init(void)
- 	const struct rcar_sysc_info *info;
- 	const struct of_device_id *match;
- 	struct rcar_pm_domains *domains;
--	struct device_node *np;
- 	void __iomem *base;
- 	unsigned int i;
- 	int error;
- 
--	np = of_find_matching_node_and_match(NULL, rcar_sysc_matches, &match);
-+	struct device_node *np __free(device_node) =
-+		of_find_matching_node_and_match(NULL, rcar_sysc_matches, &match);
- 	if (!np)
- 		return -ENODEV;
- 
-@@ -362,7 +363,7 @@ static int __init rcar_sysc_pd_init(void)
- 	if (info->init) {
- 		error = info->init();
- 		if (error)
--			goto out_put;
-+			return error;
- 	}
- 
- 	has_cpg_mstp = of_find_compatible_node(NULL, NULL,
-@@ -371,8 +372,7 @@ static int __init rcar_sysc_pd_init(void)
- 	base = of_iomap(np, 0);
- 	if (!base) {
- 		pr_warn("%pOF: Cannot map regs\n", np);
--		error = -ENOMEM;
--		goto out_put;
-+		return -ENOMEM;
- 	}
- 
- 	rcar_sysc_base = base;
-@@ -382,10 +382,8 @@ static int __init rcar_sysc_pd_init(void)
- 	rcar_sysc_extmask_val = info->extmask_val;
- 
- 	domains = kzalloc(sizeof(*domains), GFP_KERNEL);
--	if (!domains) {
--		error = -ENOMEM;
--		goto out_put;
--	}
-+	if (!domains)
-+		return -ENOMEM;
- 
- 	domains->onecell_data.domains = domains->domains;
- 	domains->onecell_data.num_domains = ARRAY_SIZE(domains->domains);
-@@ -403,10 +401,8 @@ static int __init rcar_sysc_pd_init(void)
- 
- 		n = strlen(area->name) + 1;
- 		pd = kzalloc(sizeof(*pd) + n, GFP_KERNEL);
--		if (!pd) {
--			error = -ENOMEM;
--			goto out_put;
--		}
-+		if (!pd)
-+			return -ENOMEM;
- 
- 		memcpy(pd->name, area->name, n);
- 		pd->genpd.name = pd->name;
-@@ -417,7 +413,7 @@ static int __init rcar_sysc_pd_init(void)
- 
- 		error = rcar_sysc_pd_setup(pd);
- 		if (error)
--			goto out_put;
-+			return error;
- 
- 		domains->domains[area->isr_bit] = &pd->genpd;
- 
-@@ -429,7 +425,7 @@ static int __init rcar_sysc_pd_init(void)
- 		if (error) {
- 			pr_warn("Failed to add PM subdomain %s to parent %u\n",
- 				area->name, area->parent);
--			goto out_put;
-+			return error;
- 		}
- 	}
- 
-@@ -437,8 +433,6 @@ static int __init rcar_sysc_pd_init(void)
- 	if (!error)
- 		fwnode_dev_initialized(of_fwnode_handle(np), true);
- 
--out_put:
--	of_node_put(np);
- 	return error;
- }
- early_initcall(rcar_sysc_pd_init);
+I have tried method 3 an it did not work for me. I still have the same
+issue as before that sometimes the timeout occurs and the ads1015 will
+not ack anymore. So the patch series is still the only way I found so
+far to get rid of the problem. I also checked the datasheet of a pca953x
+device (PCAL6416A) and it doesn't seem to have a timeout mechanism.
+Therefore, I don't think we are affected by the same issue.
 
--- 
-2.43.0
-
+Regards,
+Stefan
