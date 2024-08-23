@@ -1,36 +1,36 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ACB189509
-	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 15:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF22C185E7B
+	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 16:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724428507; cv=none; b=S8n5XJgY7vS7ZGwtZ77nvYPcKuBHALu8L6pJ6xl92AeGsUNucC3guT3pIyxzGNXLXkyAvydk+BQpoY7p1zQk+rqnsZ2y82JEUC5WHANJWZQKzGjgPn6HvmETx6DK01hfjZOioOInpGPnTnCwPED+RDqUbdK4rZ3QAK00NasrWXQ=
+	t=1724429078; cv=none; b=BWUSrckkGlLT3SIS5H0D3JErPpWqUdTVL9emLHn4PPGC8jhhBAYzQGu2k7dhJXRQicmzM56lpAzHmv6MLhy193z09AkbUb8YO/bc2CNARjqtJ9YGRN5I22sfc7bOUBzPwTu2z3RBrNsnSxnGLiFV/4DR9FQYA9bDni3yTE+9H5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724428507; c=relaxed/simple;
-	bh=eEz/6ePZ1I0F5z1Apuw2JYhplnq/t4tSEJ8r8Pg89tQ=;
+	s=arc-20240116; t=1724429078; c=relaxed/simple;
+	bh=177xgDYdFO5QHTNUZBJcTtp1IMBMsPqEb0gndm8UzoI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MFTGHbzDsSCFvJtOzc2o/ms2R1GrB1dDxQ0rZDscboF40GLUssRN/cr/vza7vfcg105/5hirrIPWoofmDOjjS+ZMSFtQbz7EQGDgscgTWak7Vg4VFk9LevVrY4Ukpq4zPRPZ+p+HMVaIxTU+Zl2XAPpNenKiZk63famzzHxsHIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HOUepx49; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version:Content-Type; b=MDj/GP/e0+XrrzPjZcM8XM1qvxV0/B7ck6M3NDwCa1Vc2RutZk0ZrgPL95SuOvDuAuR5DcnF06+UK18/jTUCtT41yf3XDkIjCOf11V/4j/U9uWrTG79rIEXsBE4yZYOe8yM/Z2crFQRGr0+J88jrL+R0TTVq16tbDGk6AAjuVgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aoEsic4m; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HOUepx49"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 36BA31BF206;
-	Fri, 23 Aug 2024 15:55:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aoEsic4m"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A7F221C0007;
+	Fri, 23 Aug 2024 16:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724428503;
+	t=1724429068;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eEz/6ePZ1I0F5z1Apuw2JYhplnq/t4tSEJ8r8Pg89tQ=;
-	b=HOUepx49jzYoEeJeaYxdSRDvVYk7Zzht9GAHiqD/PYjeUVFT6BcPgyApLNRDcs49+kgWiF
-	29EpFGsz2lay3DrnFGDBMhkPeBqysdzLLVhy1cqzNPRERT0kjfht5NGNK6nT4GmMhv7EXj
-	sGm8EtGh42qvicnkqPNF2GBgPOKyPvBcdh+uqdr9sHcArb45C+Jz+M1wijKRaePLRQzmWA
-	KHWlxIPXnMTFxzjGLU1PtwhZZepfVlV4UNqnIO06Nw7stMxJR5Uard0HdMZEgd2FwaDYGu
-	se+vqMOW5AoI2qYBH37Odu2EPNkcZshqkWd/0sj11fJCPqJ58jJJYv45pfy76w==
-Date: Fri, 23 Aug 2024 17:55:02 +0200
+	bh=mF0jJ+XEsMsD5uzCbms/Umdhg76zuMSa2D9a98I2W8I=;
+	b=aoEsic4mvBwrZmCLdfeoItEW+UzVqev1VH0kORDjuuE7d2xIYkApkVl+hKqE/GTz6WZ7an
+	LEjcRon50pIKvTdEchNepMY5SWGZANXT9Fj/NJWIkvzc34TrmCNF4nVzCjySYovpgHaYbw
+	kLWg5pzHSkQV7egl3zX7VSzhr375K3FCM03Vn50AMgOrNmi1h6fi6fDvOBaU4DgbAwTm7q
+	P7Bkse6b3/gQ53y66UGiZDZrpRZPC262rsN8Vh4oiUslPXNPRY7IX+4+RVansh4rBNC3t5
+	D7FH9CPEfS5uyTh5nAZQL276rNEEVxZxZb6F0VPGw1gfgfWMCDkOHfofsQPVGQ==
+Date: Fri, 23 Aug 2024 18:04:26 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
@@ -39,12 +39,12 @@ Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
  <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
  <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 02/11] i3c: master: Replace hard code 2 with macro
- I3C_ADDR_SLOT_BITS
-Message-ID: <20240823175502.3d518a69@xps-13>
-In-Reply-To: <20240819-i3c_fix-v3-2-7d69f7b0a05e@nxp.com>
+Subject: Re: [PATCH v3 03/11] i3c: master: Extend address status bit to 4
+ and add I3C_ADDR_SLOT_EXT_INIT
+Message-ID: <20240823180426.056ac093@xps-13>
+In-Reply-To: <20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
 References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
-	<20240819-i3c_fix-v3-2-7d69f7b0a05e@nxp.com>
+	<20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -59,15 +59,94 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hi Frank,
 
-Frank.Li@nxp.com wrote on Mon, 19 Aug 2024 12:01:56 -0400:
 
-> Replace the hardcoded value 2, which indicates 2 bits for I3C address
-> status, with the predefined macro I3C_ADDR_SLOT_BITS.
+>  static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+>  {
+>  	enum i3c_addr_slot_status status;
+> @@ -388,6 +405,14 @@ static int i3c_bus_get_free_addr(struct i3c_bus *bus=
+, u8 start_addr)
+>  	enum i3c_addr_slot_status status;
+>  	u8 addr;
+> =20
+> +	/* try find an address, which have not pre-allocated by assigned-addres=
+s */
 
-I'm fine with the idea but I don't understand the macro name. You're
-talking about status bits and yet the macro is named addr_slot?
+	Try	to find			has   been
 
-> Improve maintainability and extensibility of the code.
+pre-allocated?
+
+> +	for (addr =3D start_addr; addr < I3C_MAX_ADDR; addr++) {
+> +		status =3D i3c_bus_get_addr_slot_status_ext(bus, addr);
+> +		if (status =3D=3D I3C_ADDR_SLOT_FREE)
+> +			return addr;
+> +	}
+> +
+> +	/* use pre-allocoated by assigned-address because such device was remov=
+ed at bus*/
+
+	  Use      allocated=20
+
+pre-allocated or assigned?
+
+I guess the logic should be:
+- try the assigned-address
+- look for a free slot
+- look for an already in use slot that must concern a disconnected
+  device
+
+But the comments are not precise enough IMHO. Can you rephrase them?
+
+>  	for (addr =3D start_addr; addr < I3C_MAX_ADDR; addr++) {
+>  		status =3D i3c_bus_get_addr_slot_status(bus, addr);
+>  		if (status =3D=3D I3C_ADDR_SLOT_FREE)
+> @@ -1906,9 +1931,9 @@ static int i3c_master_bus_init(struct i3c_master_co=
+ntroller *master)
+>  			goto err_rstdaa;
+>  		}
+> =20
+> -		i3c_bus_set_addr_slot_status(&master->bus,
+> -					     i3cboardinfo->init_dyn_addr,
+> -					     I3C_ADDR_SLOT_I3C_DEV);
+> +		i3c_bus_set_addr_slot_status_ext(&master->bus,
+> +						 i3cboardinfo->init_dyn_addr,
+> +						 I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_INIT);
+> =20
+>  		/*
+>  		 * Only try to create/attach devices that have a static
+> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> index 4601b6957f799..c923b76bbc321 100644
+> --- a/include/linux/i3c/master.h
+> +++ b/include/linux/i3c/master.h
+> @@ -284,6 +284,8 @@ enum i3c_bus_mode {
+>   * @I3C_ADDR_SLOT_I2C_DEV: address is assigned to an I2C device
+>   * @I3C_ADDR_SLOT_I3C_DEV: address is assigned to an I3C device
+>   * @I3C_ADDR_SLOT_STATUS_MASK: address slot mask
+> + * @I3C_ADDR_SLOT_EXT_INIT: the bit mask display of addresses is preferr=
+ed by some devices,
+
+I'm sorry, but I don't understand what "bit mask display of addresses"
+means.
+
+> + *			    such as the "assigned-address" in device tree source (dts).
+>   *
+>   * On an I3C bus, addresses are assigned dynamically, and we need to kno=
+w which
+>   * addresses are free to use and which ones are already assigned.
+> @@ -297,9 +299,11 @@ enum i3c_addr_slot_status {
+>  	I3C_ADDR_SLOT_I2C_DEV,
+>  	I3C_ADDR_SLOT_I3C_DEV,
+>  	I3C_ADDR_SLOT_STATUS_MASK =3D 3,
+> +	I3C_ADDR_SLOT_EXT_STATUS_MASK =3D 7,
+> +	I3C_ADDR_SLOT_EXT_INIT =3D BIT(2),
+>  };
+> =20
+> -#define I3C_ADDR_SLOT_BITS 2
+> +#define I3C_ADDR_SLOT_BITS 4
+> =20
+>  /**
+>   * struct i3c_bus - I3C bus object
+>=20
+
 
 Thanks,
 Miqu=C3=A8l
