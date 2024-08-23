@@ -1,68 +1,68 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B6A1411E9
-	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 08:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FF7142E70
+	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 08:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724400641; cv=none; b=CXLMEbwogA2pvV3rZPGdhTIIfAOaqp/Qt5ys9/3pZSVGmXFhD+i9WR3pmkWCn8mYO6UoP2I35wdnMKRLm9R9wbTTvPink8MuJF+q/ULXyid3eFEBfsIXWw++14yXZiKswOnJrqgkS56uNV7Axn84k5WLHhlra/EYK9JnlDYvNkA=
+	t=1724400695; cv=none; b=VC7oAThITqbl4ISQkakiBOAIvhKj4QldD7Wq2o41UQ3FKvREYnUwN73C+8qFdT6JvA+aesEMCsz96t/iuZv2EATlqlQsibZiAnlasqQRJEZewzq7XBFWN9O9f9fzTri2pUlqrN/vpRjIIp8iR1QTLIAUA7Me2H+NG2nyWSgYar4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724400641; c=relaxed/simple;
-	bh=cs2QYizPtyqt7HMTt9QPD4aL4X+QFKO9Zb9ikILmneg=;
+	s=arc-20240116; t=1724400695; c=relaxed/simple;
+	bh=VhHPy1791sBAtIkxnc0cQsBzjzb0bd38en4YIw5aT9o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c14slERVYU3Arft4qpqmi93RbEi6jvRie4aXBlhTrM/g8/3D0BnHXtpUPRx1ayc7mVm0IH0pvV2m7rQ4qSV+RO/8gfzqK5+Luj26r/v28qU2qU8YNpZ/1w1J+PFY6JfzX1Zx/sdj0xzyyfaXofQPxiTkQqf5B6efud9Dbp0MqOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YE8F5N2t; arc=none smtp.client-ip=209.85.208.46
+	 To:Cc:Content-Type; b=SZ3II2fTrPDQNr4BOxphzEqvt7WlfUpDxeFvILwjctMcmpfOCtStfMnRSDK6USY6d6Bxtvh1XhUU1n6BOrTMgpM100g8cg8Q54WwPkeWCvez1u3mFmZJOsnAzJkPQnaPSRqWBgj6iU5b3ZllH7yeyyXLI9HogkHn8InndUDZ/bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CObsXOWJ; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YE8F5N2t"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5bed68129a7so2297036a12.2
-        for <imx@lists.linux.dev>; Fri, 23 Aug 2024 01:10:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CObsXOWJ"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5becfd14353so1991789a12.1
+        for <imx@lists.linux.dev>; Fri, 23 Aug 2024 01:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724400638; x=1725005438; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724400692; x=1725005492; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cs2QYizPtyqt7HMTt9QPD4aL4X+QFKO9Zb9ikILmneg=;
-        b=YE8F5N2tW6Xx/9ILNsHPDvpspeBVWMqe1e/+oh8F1A+DtWIWevohDILii0Q22QHOR7
-         Lp/9zoncuShSxGo1Zu66LYIhJbCeHSTkoNahJX7/dDRDV/EPpUP6HKon3bYb2Jqnxz/q
-         amT45lFELhVFe5pmva3HSAkXw68O8AIo3IGXxtCa3qVz9JCuqiHF2tWKXJUmPNIEf+5B
-         xX+6///AvF56D6CNiZLG4ud8pY/bM8fwzBbfJmM3uWSXMQWniw1G4XN2giDGWeM0rzBU
-         eKBp8l8JMRnv1WazSJHvdLLhPNA6wMhjdxX+mxASlLJj95H/jwvLsfJ02/lta3U5m6IP
-         +jxg==
+        bh=VhHPy1791sBAtIkxnc0cQsBzjzb0bd38en4YIw5aT9o=;
+        b=CObsXOWJkNz8zosXFykzaerDrOCyMyn9u0cxWbbZCwHi6z4z+1daiT34ec6Cc8dCTm
+         Y1pcXd6CCIxwFy/mJJ66xwnJGmTp451k+ccLmPGNQE7FzapQiPORb0O9o4Y9E1sN94it
+         lCzEecaiANwmV7EZNNEp8w9STnRwgK3aCetUlSvO70gggfPRT/4Yvi1rh6rnNWX5EW7A
+         z8qMM/XIEIIRQ42RoCaIRonzDT+gNO+sQSl+ukf8yWT1xaoLF1xLn226X2LQlFEjb1uB
+         ErwWvMxWyUFmVTJRv6c1qMO/YCzwLm9qh3ti+BzM+kb1AuxAhqn8nanJo/7TvLeU713G
+         kPzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724400638; x=1725005438;
+        d=1e100.net; s=20230601; t=1724400692; x=1725005492;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cs2QYizPtyqt7HMTt9QPD4aL4X+QFKO9Zb9ikILmneg=;
-        b=AWSfIvZq1zx58BC9sMTVhQMhiADrOOuUPa6dEZRk/1QLXYsALKjE39rAMj1z6noQ3y
-         rar3jPjnTAtpgf/7gqS7MXmeHEI6Zf9dO+6fMICu1COcQ5U1H8DaTFnVcFGQfI01Em5J
-         l75XNLKwJ4nXtKwXyZhsqrbW9Kzsp9lOofH03PpwT0l6aMp02Dz3+eKAFTXlvtTYyArJ
-         zhOzrm6LL2kwzPw8kOE4ohDEOM5hZSyaFb26P6H3+qOaoBbNnx8YI7nZvjWtL1RwYrL4
-         VAYMzv/7LijEGx3CAfQupC+yhRAnBYjRD/Kz5W72m4qYxXWffBWpw/OFAC9QB/CLyyX+
-         CAag==
-X-Forwarded-Encrypted: i=1; AJvYcCXPbrPtOsLnWAvxquarQHO/yslWkMQ4Xq1NfH376c57UrNLDX3ZR62zmNgZXEJLjXQSiUI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzsAvYCEir1+T88QJ3hTx0G4nSku6ABF+EPM/Fe3vx+o6hzJZsN
-	jlfWnLfMd++uBStqFRJxEK4s/B20mQ2krsx8yJrVRu+NOrdEoN3m6QS3qHHHcyktOGDH8ju8aWD
-	ZtJqwLo/CgbSsxxB7YvBs79h4+oU=
-X-Google-Smtp-Source: AGHT+IG3ViC3jHroGnJCgE2MvepgrkcPC/GRg0n/+FheZOu30c6Msim4Mb2TCl9/8TIYixC3D5issGRzFrLe8DsEk6U=
-X-Received: by 2002:a05:6402:1e8d:b0:5be:fe84:cc4f with SMTP id
- 4fb4d7f45d1cf-5c0891a16bemr662259a12.29.1724400637640; Fri, 23 Aug 2024
- 01:10:37 -0700 (PDT)
+        bh=VhHPy1791sBAtIkxnc0cQsBzjzb0bd38en4YIw5aT9o=;
+        b=F/NGHOp/N1TLLl4kvzIzO7OnZGMNlKlWp9xIfxBiYKHjPd+T1Xo/lk/imsX2gX0Wbu
+         f3J0f0OHUiVBaY7msC4HAj+vnebKKoAtLs6MQSnmO5opyWs+He+d2smUJOPWW3Gh8p4i
+         wkmsL27I4yYvvM24XXLJpoFmAf5MvVVHDJoD61cF845cWEpKpzQGuc1yQsoKT+tmkNOo
+         878zot98QnyeQB7YprcZzf/ySsSKmV2FXwKxaEHR2dkuSdX70c9b6NFMvzITjJQFGICg
+         A+T1gYBhmSJqutcI0zxgzkBvWhvcU/69XSWwfD2G/foAsK8gtSjJQxOmx6kKESsRq9W0
+         sNQw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4X1AnyhSWsh0KmCk/p5ZA+m53yJrEYOD1NutzQOkQF8vdzbzttm8vtaYEHV104C3/cR4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQ55HtOCSRS0qBG+0O8nIKAuW28hbXO69GC1l8bUxl9k7KLCQx
+	+X3CSlxVlthFjFM5A9IXScWRHwxjpMZmGuXM6Nv8zwKkl+OoUDz/q08ntjNPExRAW9IUpq8KbL4
+	UoX1UOnR1mZZ/x5D7WcByqnhwCp0=
+X-Google-Smtp-Source: AGHT+IHFfyUv0ZEnCDnC4iFFwHVQ8zCLg2njN2QqtDJKhkZx735DkXAfXdqtX62YUB5hiMm9blrR4h2+RXFEYRQA6SQ=
+X-Received: by 2002:a05:6402:2110:b0:5bb:9ae0:4a48 with SMTP id
+ 4fb4d7f45d1cf-5c089158dabmr854262a12.5.1724400691451; Fri, 23 Aug 2024
+ 01:11:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240822-imx_rproc-v3-0-6d943723945d@nxp.com> <20240822-imx_rproc-v3-1-6d943723945d@nxp.com>
-In-Reply-To: <20240822-imx_rproc-v3-1-6d943723945d@nxp.com>
+References: <20240822-imx_rproc-v3-0-6d943723945d@nxp.com> <20240822-imx_rproc-v3-2-6d943723945d@nxp.com>
+In-Reply-To: <20240822-imx_rproc-v3-2-6d943723945d@nxp.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 23 Aug 2024 11:11:26 +0300
-Message-ID: <CAEnQRZC7xECmHm072uENwUiGJYspBwpc4_xORcDUdRPYadgtgw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] remoteproc: imx_rproc: Allow setting of the
- mailbox transmit mode
+Date: Fri, 23 Aug 2024 11:12:20 +0300
+Message-ID: <CAEnQRZD8sEAZ94W3qawxgb=31C-XGGg29L9WRKmdzqjYkxT6uQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] remoteproc: imx_rproc: Add support for poweroff
+ and reboot
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -79,14 +79,29 @@ m> wrote:
 >
 > From: Peng Fan <peng.fan@nxp.com>
 >
-> Current mailbox is blocking by default, but there are cases where we don'=
-t
-> need to wait for a response.
+> On some NXP platforms (e.g i.MX7ULP) the poweroff and reboot operations
+> are done via a separate remote core.
 >
-> Linux just needs to send data to the remote processor, so let's
-> allow tx_block mode to be set (true/false) depending on usecase.
+> Typically Linux needs to send a message to the remote core and requests
+> for poweroff or reboot.
 >
-> No functional changes.
+> By default the communication between Linux core and the remote core is
+> is done via a blocking mailbox mechanism but Linux doesn't allow blocking
+> operations in the system off (reboot, power off) handlers.
+>
+> So, we need to make sure the mailbox message send operations do not block
+> for this specific operations. Fortunately, Linux allows us to register
+> handlers that are called in preparation of the system off operations.
+>
+> Thus, before carrying the power off or reboot preparations, just destroy
+> the existing mailboxes and create them as non-blocking.
+>
+> Note that power off and restart are totally different operations and are
+> not complementary.
+>
+> We introduce a new flag in the imx remoteproc per device data which tells
+> us when a device needs this special setup. For now, only imx7ulp needs it=
+.
 >
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
