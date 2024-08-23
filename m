@@ -1,145 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1207B1CEADD
-	for <imx@lists.linux.dev>; Thu, 22 Aug 2024 17:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CCE17C;
+	Fri, 23 Aug 2024 00:05:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724348615; cv=none; b=LaPoJwOMXrjKxhGVFZGv5JtjtYwmMno8q9/0sPZncfsU8s0WTDhtL9kfnM3ATf9HoDbzcUoelS0FsybghQRANMwDjxD3MMZWQfgOq96snVd1cD2WgJegPEqYYr3F/LVXFhv/hVeXCEa7YiO8HGqQjPScjYOL8HLrYpNtP+z0u9A=
+	t=1724371525; cv=none; b=guYrpq3M4NRo896Rb185yG2j2TjnUWwbq2nP5sj04XRKnvhRdSFpRZ9VtTsnEIHOf/UI698UTilSVzKVv3JJarKhzoEsxL7mK3V3tTenton915MYyX4EPb+U1QsHrGypNsQte8NZB56qgLUJviR2wEGAa78j6kPahIzxCMeKhNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724348615; c=relaxed/simple;
-	bh=cInaH5YhWjMHXB+Tiq+aUkG/UqKzahFJ+y1X1Oh0Rj8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DQeLl2UEkz449YdDvJIzLy1Wi0L0MZkIFV1/k18b6FmH+ZVbIhAYW0noVkikIa+qIlZlsbrh0uky7PUuIVBFpWl9L3Kr43c0Z+zg3T+IpK3D5iFIS4mIslwY41QQtOWh8NNQ5e5wE2qVU4aKW+auskpBlCosRbhj702ZRmo53Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QhLESs4V; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1724371525; c=relaxed/simple;
+	bh=vXoCjmpAz9/mZBkhiiu2lMYzNQWeQcsKbtbhcAOPHo8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HgfThaedAoaxazPN/Jb6fI5h9lCPSsHPzhewvRc8tuexPolYvGA/+Una13TSi/z9H9LyQrvGpLtCL3Ajd+lZW1s+plkZ3qgdOO+u9OCmz1159WDE6UQsZ+Yi744Nq4azLdl1VVy+daLhUsS4QzFdliwT/dFAZzhBaHV26zmlNvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4c9ax7g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QhLESs4V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724348614; x=1755884614;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cInaH5YhWjMHXB+Tiq+aUkG/UqKzahFJ+y1X1Oh0Rj8=;
-  b=QhLESs4VxNpG6t7Vu/1e3GqL9uM4HF8cY++9sfYoQT1iQCbnQC8ZKe8W
-   uFVusoweuyJ1ekO+hHqWcjYxiFq9wZQfiUtLq3bjjz2NVcUFmo6qFkvg4
-   VFgcVJAbG4JccR+zO5WTDXP60twTF7I3A0sNdwTLSgp7+soRJYo7OUt9Q
-   n3hgZH586h8eS6LZ9DyG8jBEAS+wlvCG0xtrjTczEliwADKI64yyCOvNO
-   BRt73eQoE1dsXIuE18E9F+5HgwQwoVDWV0BZ3G9tT4qI6BhgaxNqefySH
-   Yt4GbPtTZQo7d8e3nS+dn309/eF1ihBB6NOlD3txyXKCGBtnTLKNjlITB
-   g==;
-X-CSE-ConnectionGUID: 7YNc0YOQRt2ljNUCF6IFSg==
-X-CSE-MsgGUID: PY+jxR5jTgGzpjimgTwZ3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="22955424"
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; 
-   d="scan'208";a="22955424"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 10:43:33 -0700
-X-CSE-ConnectionGUID: xddZFUq+STWsls54hLqKCA==
-X-CSE-MsgGUID: p9mUht6HSpSCc/xMX6OHSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; 
-   d="scan'208";a="65862403"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.121])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 10:43:29 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 5/6] drm/ipuv3/parallel: convert to struct drm_edid
-Date: Thu, 22 Aug 2024 20:42:51 +0300
-Message-Id: <a1698044d556072e79041d69b8702099fd17bd90.1724348429.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1724348429.git.jani.nikula@intel.com>
-References: <cover.1724348429.git.jani.nikula@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4c9ax7g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A13C32782;
+	Fri, 23 Aug 2024 00:05:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724371525;
+	bh=vXoCjmpAz9/mZBkhiiu2lMYzNQWeQcsKbtbhcAOPHo8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=U4c9ax7gbfsZ32xF6t+gKLL2KoHjCG/821DDfaIgRjZwMulBwgZA8Y0KKNDMpXF9C
+	 geOvQ1B299lvQZhXa9uYBdh+oqK24i9+3wj1XMpIneqYZDbuPraCJ94S5Fp7MzEsxK
+	 Xm8uT5vaf2UF8zUIUxDLzJKKRIu01KdS9WbmGmGADXy3UkNsZDd77uLGwOznh9O40G
+	 9XvNoVAOvwb3SeGa6t4/Bxi7xxrF3fEz7mIWcx4tPTT3MVQJgZo8YNnMH3VJXiY5Zy
+	 gs9zOJ/YrKtnMUONls47P6OGEVYvPpXuyHXHOKGNfFo5uUa6fa4wfrDcjvuupKTOmU
+	 0aoY4Js4pYdFQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 22 Aug 2024 17:05:17 -0700
+Subject: [PATCH] ARM: imx: Annotate imx7d_enet_init() as __init
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240822-imx7d-mark-imx7d_enet_init-as-init-v1-1-8dfadee3bed4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADzSx2YC/yWNSwqAMAwFryJZG+hHsHgVESk2apBWaUUE6d0tu
+ po3mzcPJIpMCbrqgUgXJ95DEVlXMK02LITsioMSqhFGKWR/tw69jds/Rwp0jhz4RJvwo9BOTNq
+ QltJAOToizXx/kX7I+QXqg7YSdAAAAA==
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1431; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=vXoCjmpAz9/mZBkhiiu2lMYzNQWeQcsKbtbhcAOPHo8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDGnHL7lsVpRbXGxxtEnqkrBgxYdJy9UXLb60imni45N/D
+ xp77t2t1FHKwiDGxSArpshS/Vj1uKHhnLOMN05NgpnDygQyhIGLUwAmIjOB4X+B1aG1uxdNPS9k
+ przRSzzXpI/v/u3ly//JfT93lOmG/vM7DP8DFmbPqIvv9CsJ4D+YtqHb6vm02EX5+qJ/D9b8/Gt
+ uzsANAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Prefer the struct drm_edid based functions for storing the EDID and
-updating the connector.
+After a recent LLVM change [1] that deduces __cold on functions that
+only call cold code (such as __init functions), there is a section
+mismatch warning from imx7d_enet_init(), which got moved to
+.text.unlikely. as a result of that optimization:
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+  WARNING: modpost: vmlinux: section mismatch in reference: imx7d_enet_init+0x20 (section: .text.unlikely.) -> imx7d_enet_clk_sel (section: .init.text)
 
+Drop the inline keyword (which does not guarantee inlining) and replace
+it with __init, as imx7d_enet_init() is only called from __init code,
+which clears up the warning.
+
+Link: https://github.com/llvm/llvm-project/commit/6b11573b8c5e3d36beee099dbe7347c2a007bf53 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+ arch/arm/mach-imx/mach-imx7d.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
- drivers/gpu/drm/imx/ipuv3/parallel-display.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-index 55dedd73f528..91d7808a2d8d 100644
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -34,7 +34,7 @@ struct imx_parallel_display_encoder {
- 
- struct imx_parallel_display {
- 	struct device *dev;
--	void *edid;
-+	const struct drm_edid *drm_edid;
- 	u32 bus_format;
- 	u32 bus_flags;
- 	struct drm_display_mode mode;
-@@ -62,9 +62,9 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
- 	if (num_modes > 0)
- 		return num_modes;
- 
--	if (imxpd->edid) {
--		drm_connector_update_edid_property(connector, imxpd->edid);
--		num_modes = drm_add_edid_modes(connector, imxpd->edid);
-+	if (imxpd->drm_edid) {
-+		drm_edid_connector_update(connector, imxpd->drm_edid);
-+		num_modes = drm_edid_connector_add_modes(connector);
+diff --git a/arch/arm/mach-imx/mach-imx7d.c b/arch/arm/mach-imx/mach-imx7d.c
+index 9587885fb1ac..87632ae0201c 100644
+--- a/arch/arm/mach-imx/mach-imx7d.c
++++ b/arch/arm/mach-imx/mach-imx7d.c
+@@ -48,7 +48,7 @@ static void __init imx7d_enet_clk_sel(void)
  	}
- 
- 	if (np) {
-@@ -331,7 +331,7 @@ static int imx_pd_probe(struct platform_device *pdev)
- 
- 	edidp = of_get_property(np, "edid", &edid_len);
- 	if (edidp)
--		imxpd->edid = devm_kmemdup(dev, edidp, edid_len, GFP_KERNEL);
-+		imxpd->drm_edid = drm_edid_alloc(edidp, edid_len);
- 
- 	ret = of_property_read_string(np, "interface-pix-fmt", &fmt);
- 	if (!ret) {
-@@ -355,7 +355,11 @@ static int imx_pd_probe(struct platform_device *pdev)
- 
- static void imx_pd_remove(struct platform_device *pdev)
- {
-+	struct imx_parallel_display *imxpd = platform_get_drvdata(pdev);
-+
- 	component_del(&pdev->dev, &imx_pd_ops);
-+
-+	drm_edid_free(imxpd->drm_edid);
  }
  
- static const struct of_device_id imx_pd_dt_ids[] = {
+-static inline void imx7d_enet_init(void)
++static void __init imx7d_enet_init(void)
+ {
+ 	imx7d_enet_phy_init();
+ 	imx7d_enet_clk_sel();
+
+---
+base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
+change-id: 20240822-imx7d-mark-imx7d_enet_init-as-init-03d0c38e3118
+
+Best regards,
 -- 
-2.39.2
+Nathan Chancellor <nathan@kernel.org>
 
