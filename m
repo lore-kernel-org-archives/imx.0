@@ -1,100 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4624618BBA2
-	for <imx@lists.linux.dev>; Fri, 23 Aug 2024 19:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13138C148;
+	Sat, 24 Aug 2024 07:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724439736; cv=none; b=uXp2/yBPnn7AEnkJqzlPvwlX3UPeT7ItHoUYrKTBcqpXdNEDYsC4283oVed0e9vRtTqjB253gjuB8dTkr1AJvIdOgAEevUqIXGskvOptR5YR8ONrywd4scmRN84SKoev3Ib8FrJHi0h1eQP1+8+PNoBz7xHTKayCslXnQhn5j3k=
+	t=1724485682; cv=none; b=UqaVD2K0BfvNv8awfr7ZcKj8hXW5DIhmCDLlZXJkiJoA2NCdNJ1rKBGxrYedtIWCJXY931VQNI68q6G2tU+ELHJcgp4RJ4gldhry2NWpSvIrGBbaNokN8ePF+6LMGaSFQiFXz8hXClB0hVB+b3+e2SiR3WvpYb4HYnuXqT7wiGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724439736; c=relaxed/simple;
-	bh=j4zCDtKYby5NAJbcfNgbzO3yEpthFCNJDa/eQ0M3KCc=;
+	s=arc-20240116; t=1724485682; c=relaxed/simple;
+	bh=bi5zAncYS8UWKYQnurkoZLZOn+W5GvScVd7D3PVw7/w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WHf3YQ4Dn/JW+qG2J4CrJgdC5mE8O56FILfAkW+8QotdCPxBEN7FZVN8ga5F7qSZMLct1vOi06mwOy3SoXq0iqlCwxe2BA1Kqkm2wQmJCD/Z34Pshpo6KnsSskWZ5YcpJgpdKou811qAtqggBSzqnkNel+hmLRMYfurDBvjnmfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OKAIug6A; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=dM1Wo4m+qipVkFItMFXh5iJW0WkwnNGlz8eIfJTP/FoaxlQkSocYXpK4JD140GA0XNCP9LbKoZ4jhlDRthSHclpFrh8FsTBjpTMNDNY8EWOttSAI+SRIuhtPZn/pIrIfc6cc8KqB6cBTkrXG20glCIiKqKqyM2hxkZYgNuC9J6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6EpGkmE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OKAIug6A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724439735; x=1755975735;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=j4zCDtKYby5NAJbcfNgbzO3yEpthFCNJDa/eQ0M3KCc=;
-  b=OKAIug6ABdWo2xeMC75T+uOgcPtoTrST82Cs/a6aIHwhxysBU0aHFoSN
-   iEmYRWpmIi/6BaHKqxn0UDMH6fZ7/YYuM9kFI+JimEr3E3pQE3gNh2eJu
-   /lTGH5X4Dyw/T+JWxIFWfXiWNYHvxvW7RpXXLaJ2K/cRmEn52AJ6XNA6d
-   y8euw3dxOT8LpsvPwMjTj3KD+aNZWl+UmB+9Z7O02YSfiZYkDf6Nvuy1O
-   c0TXCKlaMS6BFVGoI2VZozOgsEc4btwoqh6bKRFjVnxtvAdOucv5hDiOl
-   ofzbrPiVMmiDt10AWYG0lz9y8t2g9szA8v9Z7AZA+d4dgt4MsDpSr3yrY
-   Q==;
-X-CSE-ConnectionGUID: y5VwX531SFCQtUST8IypQg==
-X-CSE-MsgGUID: 1L5bkRy9TouY5HEmMPsQfA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="40441412"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="40441412"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:02:15 -0700
-X-CSE-ConnectionGUID: gCubvebRS1u/V2B/X1gWxw==
-X-CSE-MsgGUID: T9G8co4HSR2vF216h5lvpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="62047980"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 23 Aug 2024 12:02:12 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 0F505209; Fri, 23 Aug 2024 22:02:11 +0300 (EEST)
-Date: Fri, 23 Aug 2024 22:02:10 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: linus.walleij@linaro.org, aisheng.dong@nxp.com, ping.bai@nxp.com,
-	linux-gpio@vger.kernel.org, peng.fan@nxp.com, imx@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>
-Subject: Re: [PATCH v3] pinctrl: imx: Switch to LATE_SYSTEM_SLEEP_PM_OPS()
-Message-ID: <ZsjcshzPkRXv5mBR@black.fi.intel.com>
-References: <20240808162750.244092-1-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6EpGkmE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABBBC32781;
+	Sat, 24 Aug 2024 07:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724485681;
+	bh=bi5zAncYS8UWKYQnurkoZLZOn+W5GvScVd7D3PVw7/w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J6EpGkmECO5vLXyRoj7UUjUAOAkD1ITMAPhG5neV6WZhkNcH3OWhSF+byPJUNpnzM
+	 pcmCqSjhobBDWCN3FIWa3fpUT+2XyozSQRmsxwWUl+CcmB0CkhHBGS3H3V0lkK8aYQ
+	 SP9LwASI9uHfFC51oi1z5aUUNSRwDnCy4oFjhy5HQs4j0vU9t/LaDROTKrZBjJHQD8
+	 FYdD66hgXXj3rIGaZrYZz0IrcGanIEHcS7Tdd94zwAml/hw/EOdBuB9VpKRhVBZc6r
+	 T6pymXXzj6K8puSGy40ZPYzpjLvsmuaUOXgQbnhpZ0Wkm3H3OES4xMwoXHAqaXggk/
+	 8BFneAaGrvr6w==
+Date: Sat, 24 Aug 2024 09:47:54 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: nvmem: sfp: add ref to
+ nvmem-deprecated-cells.yaml
+Message-ID: <up4ejmazlgzfzuuhn5gnrlslqvd5xttgk7irdrzjqfvqcti7vg@v5ct3l4zaiq6>
+References: <20240821195419.581889-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240808162750.244092-1-festevam@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20240821195419.581889-1-Frank.Li@nxp.com>
 
-On Thu, Aug 08, 2024 at 01:27:50PM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
+On Wed, Aug 21, 2024 at 03:54:19PM -0400, Frank Li wrote:
+> Add ref nvmem-deprecated-cells.yaml to support old style binding.
 > 
-> Replace SET_LATE_SYSTEM_SLEEP_PM_OPS() with its modern
-> LATE_SYSTEM_SLEEP_PM_OPS() alternative.
+> Fix below CHECK_DTBS warning.
+> efuse@1e80000: Unevaluated properties are not allowed ('unique-id@1c' was unexpected)
 > 
-> The combined usage of pm_sleep_ptr() and LATE_SYSTEM_SLEEP_PM_OPS() allows
-> the compiler to evaluate if the runtime suspend/resume() functions
-> are used at build time or are simply dead code.
-> 
-> This allows removing the __maybe_unused notation from the runtime
-> suspend/resume() functions.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change from v1 to v2
+> - ref to nvmem-deprecated-cells.yaml
+> v1: https://lore.kernel.org/imx/20240621165637.2283864-1-Frank.Li@nxp.com/
 
-...
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
->  const struct dev_pm_ops imx_pinctrl_pm_ops = {
-> -	SET_LATE_SYSTEM_SLEEP_PM_OPS(imx_pinctrl_suspend,
-> -					imx_pinctrl_resume)
-> +	LATE_SYSTEM_SLEEP_PM_OPS(imx_pinctrl_suspend, imx_pinctrl_resume)
->  };
->  EXPORT_SYMBOL_GPL(imx_pinctrl_pm_ops);
-
-Can go even further
-
-	EXPORT_GPL_DEV_PM_OPS(...) = {
-		LATE_SYSTEM_SLEEP_PM_OPS(...)
-	};
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 
