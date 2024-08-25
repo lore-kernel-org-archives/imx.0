@@ -1,57 +1,57 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2660D77104
-	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B6978C90
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724563010; cv=none; b=pZqly4Wndm6JkS3ghf+ytLnVyacFdxAyXxZUxLg3Z9AQm6xeig+2MPGH7/oLywR1s7hvWOIwS66oaceUMSuLJDLrl+vRF347qRvktsI3eAKekulBAqAYx6GksldpS9VXqZ7ZYHQXPHhZsQB1YHUQNOPuar+B1XbfcM99w2YRziY=
+	t=1724563011; cv=none; b=MhBTEly3q0tu7U1XD7h7VVe8RJz2rCygQPiNhZPBjCfqLT1OhVznB6eikOVwIGH8J4eOaRxXjBE1Q0zSLzV4eyyvOTkDUThieRpG5vQPi459liqaxU0HDtdlaoAXFWQqq09vsbRZ+LzLA8wPtAeY8dRKpMt9bTkfXTdt0JCOUAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724563010; c=relaxed/simple;
-	bh=HRlUPdt8MUpsxTDaTLTMeZFznZxtpdiNcTlI0W/hXq4=;
+	s=arc-20240116; t=1724563011; c=relaxed/simple;
+	bh=sqiJcekYlNvrERH/iNSK4e0C6d+JRc5y3DgjnZym+KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJPA4w022Tsi7nuHSQWhp7KvamV4W15kzw2Dq7AAb3FTnS2OcEARfceNJnizfWsr5jxYOR5nvqmGlR5CRYJKshDWDZbmGuEsIzE5sNCpI3GaeScfHcv2D5zJGpynjF9oGu4mKsXqCP/YBYMaq9FTOTeQ6iC35hVgYcYkaUKNqLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCo12S+V; arc=none smtp.client-ip=209.85.210.48
+	 MIME-Version; b=tAvyH5fXI+f/ZJd8wsAUlXAEnUiDk/GMKdefTsY3dj/19Zu43BqwGX8axi42gKhp+aiRnJLWeboVyV0W6KV8k7NLJavxh28jLM/WFFx+wb1xMfk2wpCXghafsMYcdceucJvP/bv9W3Vyj53fY9VRAt/AX1sJeEx8eqDyiRH8+EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1/tCatQ; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCo12S+V"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7093997dffdso1856189a34.2
-        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1/tCatQ"
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2703e8d3f7bso2219421fac.2
+        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724563008; x=1725167808; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724563009; x=1725167809; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1eSvY1Wrp9wBfC4UTCsKK6UuziOLVmjJl+zbNYuZ+vM=;
-        b=WCo12S+VatCAKAAZ4qUuP+i2vH2ZCpRa1AAC300klNEvSQLSrHIUj07QrS9X7O31mP
-         Kqjb9SzfB2ozxljsXv8vQL1FJvA/vjzHeZ6e7YHJIwhGRCA5uZYtyw6hb1u5LzSxgOQP
-         8C8XqZQ0CAVkECOxSYFpQc5UeMjDe2fDbM9IMBitJLQYRSsywXwJ4SO1/ZiOwutsVK+l
-         aSMWJxL2kyLNFLP1zMidY/TekLyrproPdrjftkca4GDzF7soR3+rd3TkTH7b+KQAZeVL
-         vY/DaX0CBrVCGEneHiAwot8bpxcSLWnZSp9LbXYvJ+to/CTAvYydZVyW7ssWvyHH0i5p
-         xkCg==
+        bh=+36NNSRmVK5FdylQPpVTYi2UVBcAisEyHgKp3fnH560=;
+        b=T1/tCatQ0bFfakGNi+k7WHkuCQBi7aW1mabVu32bEdmDWMY5YUklzppiNVwVptjk+d
+         XjOva2mHGJN14xmISWXdeklGkmRHEsCCMPUlTM7X+/2X/5a4CcxQhnwnloqDMoh6OOxy
+         yQ8RD/IGvMiOvKd7Ft6swbMBfEv39Yo8mVabGp003aOTbxbdjR/UfILK0+/FnLlxAGen
+         Km3MTh82ZmzTqd6WBZtpKi+QZ7b6rIz4qNUj6h0vkHZ6rXceWsfNjSlLVTp9B1vee/cz
+         GZvUl1cacOFhocj2hbSICTjUkeab3pZnqX66attrPpxOgHKiYEvWh9tfNKUc7L8Q+1Hr
+         l7Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724563008; x=1725167808;
+        d=1e100.net; s=20230601; t=1724563009; x=1725167809;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1eSvY1Wrp9wBfC4UTCsKK6UuziOLVmjJl+zbNYuZ+vM=;
-        b=h0ZPQd+ZKbBjhloCFq5N+DZC2CpTf2vyOEZgMOi9Dx7Z30VGK7f/qHc2oQaUCSgdE2
-         RA9TPStoXsHY4RlDHgU4eOMl37AUdd2gL8WXpSCkKrph5yrHYrlqyphnNTofl6PrR0PE
-         N1MUp59A2rq0Z4dr8VAhXRUDma1cPBZKIfr7zSVhxJYM+JYk1rTFW/oUk4E4lLzkeYAr
-         XmpK/Jj7Dxh7GNPzLabiTodwbX17vlL5sOsabboemx6UkS1MfPLPhSGyx9O0R/vRn+a7
-         JWsXYV/BkwRYTnhzFca6zJUXznPMtErGwvvA4eT+VdBkzttsmmQpIVTpTJU4s3nSsitI
-         +LMA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/4x9s6GF7Ch5vL3rAt8G+QTykRvKsT9rASapKS92th/FnUmhWbjrpFTnut3dEENUK9CQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzRnwAJbvormWuZGNGd/jbE2adlWgcUM/IdEpnFv21aA/AFnAq8
-	/hPTkGzOm5RYMBBiNujcSII8z5AOM8cl+qEnwbvGuRD8gQ7ktvv2
-X-Google-Smtp-Source: AGHT+IFPvL2EwU0HTmfQ3cZEpHTEWkZdGY6KDfx96n7lf7JVGqj+9oNVagIFdpcxgTMQQpdCDsaEdQ==
-X-Received: by 2002:a05:6808:302a:b0:3d9:2aa5:4077 with SMTP id 5614622812f47-3de2a8735e4mr7831127b6e.5.1724563007948;
-        Sat, 24 Aug 2024 22:16:47 -0700 (PDT)
+        bh=+36NNSRmVK5FdylQPpVTYi2UVBcAisEyHgKp3fnH560=;
+        b=M+QQtyLDQWw1r41covlz70OuOCWLZ2Qm4ij+Aizwqye3ArX3yecUpHAmSJb1HTsX0j
+         vU1ypqU8KmQyhlfoSYarBOVfyx+mxNfTO76UvaVOc5CNGcPncnBeAUA/dgzq8VWcy7kD
+         jVBOuNuAGm27XcrohshONTzw5aFJAWiRp5pN7UiT4pnbyMvUKkFTeOJ3uuhUWOxABNcv
+         Q8jxXVM2AgFAuQsUrSPYASm8sFujOiXeuWfGRTQBC/mlwxjo0vMXeCfj6lSj8PmVxkTT
+         uOJ2gCT0Ci3U2hU3wcLn2b4SpVteUt0/iNCTECGv7OYoGWvy3W/9JnyibLdIrtwp/SVP
+         rQgg==
+X-Forwarded-Encrypted: i=1; AJvYcCW5zVgrxCgr/VJttOvhyIGd4eotjk3NR5zQyOkmCkRZsVaMOa9xuVklAklly/j11XhcwWM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9UYAt6PfwHUbUY4bnnXd52TWZnB6XbfJANLkOUq/OHiJdgIUX
+	sqHojExPgwzvjfxH/AA9PaVM96/bRmQZOE0Q/Gw4qAZHOuMdYpuXLPnh1w==
+X-Google-Smtp-Source: AGHT+IH50jfqsAxngsJyrNPRIognUKjg0ENHDCRW+P0AHBitO/WlT6UscLBhxwYmGb+kHjshcMLPag==
+X-Received: by 2002:a05:6870:2010:b0:270:1fc6:18 with SMTP id 586e51a60fabf-273e64458d2mr7894304fac.3.1724563009229;
+        Sat, 24 Aug 2024 22:16:49 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2620:15c:9d:2:66dc:ce07:b7cc:51ea])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.46
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 22:16:47 -0700 (PDT)
+        Sat, 24 Aug 2024 22:16:48 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: linux-input@vger.kernel.org
 Cc: Michael Hennerich <michael.hennerich@analog.com>,
@@ -67,9 +67,9 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-tegra@vger.kernel.org
-Subject: [PATCH 07/17] Input: ipaq-micro-keys - use guard notation when acquiring mutex and spinlock
-Date: Sat, 24 Aug 2024 22:16:11 -0700
-Message-ID: <20240825051627.2848495-8-dmitry.torokhov@gmail.com>
+Subject: [PATCH 08/17] Input: iqs62x-keys - use cleanup facility for fwnodes
+Date: Sat, 24 Aug 2024 22:16:12 -0700
+Message-ID: <20240825051627.2848495-9-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
 In-Reply-To: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
 References: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
@@ -81,57 +81,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This makes the code more compact and error handling more robust
-by ensuring that locks are released in all code paths when control
-leaves critical section.
+Use __free(fwnode_handle) cleanup facility to ensure that references
+to acquired fwnodes are dropped at appropriate times automatically.
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/input/keyboard/ipaq-micro-keys.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/input/keyboard/iqs62x-keys.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/input/keyboard/ipaq-micro-keys.c b/drivers/input/keyboard/ipaq-micro-keys.c
-index 1d71dd79ffd2..58631bf7ce55 100644
---- a/drivers/input/keyboard/ipaq-micro-keys.c
-+++ b/drivers/input/keyboard/ipaq-micro-keys.c
-@@ -54,18 +54,18 @@ static void micro_key_receive(void *data, int len, unsigned char *msg)
- 
- static void micro_key_start(struct ipaq_micro_keys *keys)
+diff --git a/drivers/input/keyboard/iqs62x-keys.c b/drivers/input/keyboard/iqs62x-keys.c
+index 688d61244b5f..1315b0f0862f 100644
+--- a/drivers/input/keyboard/iqs62x-keys.c
++++ b/drivers/input/keyboard/iqs62x-keys.c
+@@ -45,7 +45,6 @@ struct iqs62x_keys_private {
+ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
+ 				  struct iqs62x_keys_private *iqs62x_keys)
  {
--	spin_lock(&keys->micro->lock);
-+	guard(spinlock)(&keys->micro->lock);
-+
- 	keys->micro->key = micro_key_receive;
- 	keys->micro->key_data = keys;
--	spin_unlock(&keys->micro->lock);
- }
+-	struct fwnode_handle *child;
+ 	unsigned int val;
+ 	int ret, i;
  
- static void micro_key_stop(struct ipaq_micro_keys *keys)
- {
--	spin_lock(&keys->micro->lock);
-+	guard(spinlock)(&keys->micro->lock);
-+
- 	keys->micro->key = NULL;
- 	keys->micro->key_data = NULL;
--	spin_unlock(&keys->micro->lock);
- }
+@@ -68,7 +67,8 @@ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
+ 	}
  
- static int micro_key_open(struct input_dev *input)
-@@ -141,13 +141,11 @@ static int micro_key_resume(struct device *dev)
- 	struct ipaq_micro_keys *keys = dev_get_drvdata(dev);
- 	struct input_dev *input = keys->input;
- 
--	mutex_lock(&input->mutex);
-+	guard(mutex)(&input->mutex);
- 
- 	if (input_device_enabled(input))
- 		micro_key_start(keys);
- 
--	mutex_unlock(&input->mutex);
+ 	for (i = 0; i < ARRAY_SIZE(iqs62x_keys->switches); i++) {
+-		child = device_get_named_child_node(&pdev->dev,
++		struct fwnode_handle *child __free(fwnode_handle) =
++			device_get_named_child_node(&pdev->dev,
+ 						    iqs62x_switch_names[i]);
+ 		if (!child)
+ 			continue;
+@@ -77,7 +77,6 @@ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Failed to read switch code: %d\n",
+ 				ret);
+-			fwnode_handle_put(child);
+ 			return ret;
+ 		}
+ 		iqs62x_keys->switches[i].code = val;
+@@ -91,8 +90,6 @@ static int iqs62x_keys_parse_prop(struct platform_device *pdev,
+ 			iqs62x_keys->switches[i].flag = (i == IQS62X_SW_HALL_N ?
+ 							 IQS62X_EVENT_HALL_N_T :
+ 							 IQS62X_EVENT_HALL_S_T);
 -
- 	return 0;
- }
+-		fwnode_handle_put(child);
+ 	}
  
+ 	return 0;
 -- 
 2.46.0.295.g3b9ea8a38a-goog
 
