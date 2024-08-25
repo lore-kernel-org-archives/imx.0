@@ -1,68 +1,71 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EEE6F2F0
-	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 08:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F241E520
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 12:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724575793; cv=none; b=IcfYfIfpA7hEcmEv09sGMJnE/xMvjB13VXydVgBtZih08JWML2phmHyvcPA/dLVsTo6GBMqmlbUlcQZRHcZC8m/bvfGtnfZPKWngchRiszH8jmki912LJjKiOf+R6pqgr3kNCXeRJRCwNoi+OB6WprLnvvN9cu9jb45ebNQv1wU=
+	t=1724589394; cv=none; b=lwQi4SVY8EHBsQYeImF5gu4RYV1yrP1sIGm1qs0+hg/7GaBMB2GUWou8vuaTcvA/v/VL29mbZB+349Yvmvs2zBtx++CqTTDPgxOGbT8meObBKfJPfUCh8O0hDXhwi7y9vWQdwkPBq9DPl2dZnaGJ0TZE7n1eLwLR61r8N00CjK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724575793; c=relaxed/simple;
-	bh=jFbZBwvOwRIn52AfzwHiXcl99jHNvWYflv+t7ict3Pc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m9t/uMPNvSoNmAoru6GL4bWvCMOx8P/6F3OJT3Pwgs3gxOBE8Ge64ZHYmtQrt4/v39J40VzuZ9QJWfY07EeUP7YHm6LSIZTSotXqEcx8Npu7r8PbTGXMbKl0FY8Wns8AXPAxYGOUcokdUd3UjXpaVfRLgMZeujzzJPFU7U1VEqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KYfcKZoj; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1724589394; c=relaxed/simple;
+	bh=6AXodfhsBb1FFNtIxaDf38XHEgg7CfFzYFaOmts+BKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FlL4C2xYiujMwXvrakdJvKGdSoi7D28EFFablK47z0nvKjsiRX2P4ffZlbbIZvgri9OOndvZgD3VGcuMzP5yIeZT2GLrlaowf+8RhMg+Z4l8cfoSpWvctKVSYcP24YJJ6tDX2Qscw2ji95CUQZro5l1bbN7HCgrnFS+iOYcagPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=fAYH13yp; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KYfcKZoj"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4281da2cdaeso5163785e9.2
-        for <imx@lists.linux.dev>; Sun, 25 Aug 2024 01:49:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="fAYH13yp"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5bed83488b6so4026006a12.2
+        for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724575790; x=1725180590; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1724589391; x=1725194191; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFcadNGvy7x7r92tr7jHWl9lbifMfuT6t7Vxj8SP/Jk=;
-        b=KYfcKZojWWpBg5jh1XxRTRlyAUvBhtmA0+qUYYv6BBfGuTaGbUhv3NTCErMQj9Dfns
-         O39V7WO03DpS3IBMhRXLkfFxAZyMjzEIubscv5qmbJHw8mQpX0oP9R7I8Ds4U5B8KOpZ
-         XCLkVLiAwUAVRCqa8ShBZaJZc+6uLUrzi/cJuwMvYpBPrYoBbaUpFe4saU+wOkK3MMue
-         vNZMzjvhB63KmAZd4iwqD2BWd8HQbAl31Z8rm8rZKAZy76WZUh2d8E22FT1I4fym9e0P
-         fAi+xrm/dCz052wS0ToE0Y8yF4YBI1oTMfy1VRIJnK8JbFDn1IeRclKXhSszjvPPdVKd
-         Tlsg==
+        bh=1CeKLJiREErcfFDmVmFht0rfeHvolojmCG1SEp0D9eA=;
+        b=fAYH13ypgmXdT+UOJogsCkyqdHXnl1+RO4nErlrm2CJXLxZ4J4WIcu8T4wVdlGlJgr
+         8yYz/QJC9HhBsbHJXhAGV40o2tvpy4yyxl3H8MEAGwWc5MKtapB66fmi0TELMVOtaVZR
+         hrnmuEA2EByIDCz7RNwihgvuwGP1Z2bn3fVMY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724575790; x=1725180590;
+        d=1e100.net; s=20230601; t=1724589391; x=1725194191;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EFcadNGvy7x7r92tr7jHWl9lbifMfuT6t7Vxj8SP/Jk=;
-        b=IB7KR/7+hX+jD8IIvFsSglb/NR7Ij2yax/TgztfoC+bgYuO+SuzcLE+XYB+frlKXII
-         pTWax2wdIATSe3wgr0ccgOyJ7zyyTDWxcJXzUSWn60/nAVAvUR8pQksQVk3zmYFrl7ld
-         lqVl8C7rw/gcorY9JU6j73AlYUEoaUd8SCyVAV0Yfmf7mBJ8i3A6UxX1ef/R6JlutWY8
-         Fw99xKyb5S32ysX9VBkLt/WfJKc/gt2XqysmSpEO5CteSneH33ObXZhmGjRUP3WxbVw/
-         +C4/dldZtGwIGKkPKG5awzYVYmNbBlZtfp42ceH0fwhLDpwR4iOdWTTAJPua5xiXhmjz
-         u+gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUR6X7feDGpRfOUMDC2bUHxvx1VFHPk0LCB2zh+wrAMj5WV+9YwxhksHeAISJniFslZjfo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxEOijUqJXpeyfn+Jz2ShL56uZKSgMrQtA0jyTXd6cvb8IOGiz
-	wZl6j4rbhi55emyz9eeKhCXaXOkPg08av0Fbvr3/PtHM+HxBNfsSY0eilFbRU3U=
-X-Google-Smtp-Source: AGHT+IFqH0eWasXxHm3lqwZoRqKEelIfT6oDSORS7GZS6+5bcKfRtIe6ivTGxioz5piGW5U07J9kWg==
-X-Received: by 2002:a5d:59a9:0:b0:36b:36aa:a14e with SMTP id ffacd0b85a97d-373118d1d2fmr3033528f8f.8.1724575789527;
-        Sun, 25 Aug 2024 01:49:49 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730826b10bsm8108269f8f.114.2024.08.25.01.49.47
+        bh=1CeKLJiREErcfFDmVmFht0rfeHvolojmCG1SEp0D9eA=;
+        b=CMCMxTSpkLCF3++Pg3kH//UyBJrfoRhW7Znl3a6Cbz+t5L0W36/svgF3Yh5JgaoN22
+         33Fw+B4+dJmlFLwkWp02SM+msdah1LZvhTaKPBfMO+dOVFM+g6dR3kGilNKFbc0QekfY
+         Fgu1Z81tOtw8ofG+mlT6gz9pGPR/naGqXeTahpLyiAXunFS8h+60Nax3E05BY0t/IWlW
+         5LnrU/mpDU9t0zG0uTR9TbNpKF68XEXP/5TK97xm5ugyQoMO9zFJy4NeleuUW3oWddPO
+         D/NOmydvJFYToiqxVQSb0vwhmWmxYZg4cXae8ALMm0dGETugXVceTtqDaB0wsBa6IzOY
+         uZpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZZcFNqHKLZ6LbM/5qTpyMCKj3+cmiABeOkGSeHdwzzuJ2HFt3DKPwErZW/IdvXLFsNyI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzhhA4NgQeNivzTdfZ2NCzWUiJzYz2NmDxAnzaOJnyKibZaMjFy
+	GRmGCHFypDiB0gNCSauTCUYo6uc2nDG8j0MPVX2hzzYxGjk8SSS0uVOVHRmYhvA=
+X-Google-Smtp-Source: AGHT+IFHSFH/DUCkWWR0GBh4a/QABa5dvYX0l+xr818EafuCdl7Z/HffbouhFE5+OopSoVp6HJHHKA==
+X-Received: by 2002:a05:6402:d0a:b0:5a2:8bef:c370 with SMTP id 4fb4d7f45d1cf-5c08916403amr5020278a12.15.1724589390746;
+        Sun, 25 Aug 2024 05:36:30 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-25-99-149.retail.telecomitalia.it. [79.25.99.149])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c04a3e89ebsm4350404a12.43.2024.08.25.05.36.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Aug 2024 01:49:48 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sun, 25 Aug 2024 05:36:30 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] imx: MAINTAINERS: correct TQ Systems DTS patterns
-Date: Sun, 25 Aug 2024 10:49:46 +0200
-Message-ID: <20240825084946.20457-1-krzysztof.kozlowski@linaro.org>
+	linux-pm@vger.kernel.org
+Subject: [PATCH 1/3] pmdomain: imx93-pd: replace dev_err() with dev_err_probe()
+Date: Sun, 25 Aug 2024 14:36:14 +0200
+Message-ID: <20240825123626.3877812-1-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,37 +75,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix file patterns for TQ systems DTS after re-organizing the ARM DTS
-structure to fix get_maintainers.pl self-tests like:
+This way, the code becomes more compact, and dev_err_probe() is used in
+every error path of the probe() function.
 
-  ./MAINTAINERS:23329: warning: no file matches	F:	arch/arm/boot/dts/imx*mba*.dts*
-
-Fixes: 724ba6751532 ("ARM: dts: Move .dts files to vendor sub-directories")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 ---
 
-Shawn, can you grab it directly?
----
- MAINTAINERS | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pmdomain/imx/imx93-pd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a7cb909ffa1d..6574b4910f8a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23326,9 +23326,8 @@ TQ SYSTEMS BOARD & DRIVER SUPPORT
- L:	linux@ew.tq-group.com
- S:	Supported
- W:	https://www.tq-group.com/en/products/tq-embedded/
--F:	arch/arm/boot/dts/imx*mba*.dts*
--F:	arch/arm/boot/dts/imx*tqma*.dts*
--F:	arch/arm/boot/dts/mba*.dtsi
-+F:	arch/arm/boot/dts/nxp/imx/*mba*.dts*
-+F:	arch/arm/boot/dts/nxp/imx/*tqma*.dts*
- F:	arch/arm64/boot/dts/freescale/fsl-*tqml*.dts*
- F:	arch/arm64/boot/dts/freescale/imx*mba*.dts*
- F:	arch/arm64/boot/dts/freescale/imx*tqma*.dts*
+diff --git a/drivers/pmdomain/imx/imx93-pd.c b/drivers/pmdomain/imx/imx93-pd.c
+index d750a7dc58d2..afc482ec563f 100644
+--- a/drivers/pmdomain/imx/imx93-pd.c
++++ b/drivers/pmdomain/imx/imx93-pd.c
+@@ -126,9 +126,9 @@ static int imx93_pd_probe(struct platform_device *pdev)
+ 	if (!domain->init_off) {
+ 		ret = clk_bulk_prepare_enable(domain->num_clks, domain->clks);
+ 		if (ret) {
+-			dev_err(domain->dev, "failed to enable clocks for domain: %s\n",
+-				domain->genpd.name);
+-			return ret;
++			return dev_err_probe(domain->dev, ret,
++					     "failed to enable clocks for domain: %s\n",
++					     domain->genpd.name);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
