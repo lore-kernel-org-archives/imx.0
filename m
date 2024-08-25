@@ -1,57 +1,57 @@
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D7355898
-	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947D03612D
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724563008; cv=none; b=DS8YU/a8PERLy4h/puc1FK1efVT6knlL3J8z/Imh+LSQ+NFFcGQ8kjO8VcKYkzrtEve3DNqSi7+GfkCTzkQlAzS8Li0PM4YgLFPGnMt66Ohxg4MrNA9QiFoVeTmqZ7S+pt4CTOowow5Gc2iE3kSMClbZzPIolmsekeeo5QHgO8Y=
+	t=1724563009; cv=none; b=gBuyHqQbn8gdWQbw2tkwzV1WWmXzuhFOtj9Ym+K1kym8KFZlMh0ko5AlZ8pr0JTQGMeqyuJ8pQKZ9dTu3Ly2FGOqEvWQzPOqQsfFB+Ltn58k3DJdZez7jBWV2Da256cRGSifsBJbaNkdc4In19XbpQJ3/DQ1QDGrH/6kVU/DUMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724563008; c=relaxed/simple;
-	bh=qDiIvliRjSEpEOJTrSaZM7tuLe4Z9lw1T0mNPAza15E=;
+	s=arc-20240116; t=1724563009; c=relaxed/simple;
+	bh=wJ0YIbK2Bowe6CEQFFxfyG1unJtNoBYloVGSQaRk9V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEU5AoKGmLkDQ5xVrPRKjcy1pQftHZwWscIzef9AVWj2n40k19C20Bx07DPZKDyjDSahnwksza4nxoRZG4+oUaPvVQuav0EXblkGF9/eZVWZDP9mgZryHzlVKy8ObcMSlLPTQCmoaS1ZGBJKFLiRsML/3gotkCj4DL4HN8NatHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bUGhttsU; arc=none smtp.client-ip=209.85.160.54
+	 MIME-Version; b=fN9l42fb8IAFUwO8nyg7PynEf3KPrYwOxmdy4lz/UNRwIYnhzN6lUYx+jcELzaLtQnkYHvRVu5D1abt2rxkdeTT+w0z9ymQgNN3rJIQc4nwWBbG+USOUAtmlBnd2iYwRfWjOEjgbx39jfACrGYBNpg4AGpi9EajP+63LBV5CT4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+L0emBM; arc=none smtp.client-ip=209.85.166.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bUGhttsU"
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-273cf9bbb3eso2293238fac.1
-        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+L0emBM"
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-39d311d8091so14036825ab.3
+        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724563005; x=1725167805; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724563007; x=1725167807; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+IClYBjpK7iTXWqXO0hqSivHGfHTegcYSer/+UixwhE=;
-        b=bUGhttsU81Do7xFTVjOjpO1oUKhze/oqqxIlZ1dtOFcdUuCoyNUbkszsmNgg7oSYCA
-         mrwRTBWJyYEeYE9c9COruoyohnEYtbuXHaGzQBpeKFNzCYI5klTP1mSbVMsP0H9VdQcB
-         O38CSDFYGktzAZAh25DF96uZyzKb6ni2o1UWq6DctUumEGErklsDg1xDY/4e3SkT8Iir
-         Lx7ft1abPYP+RQCnHF3mZC3pAb8xpCy6sYNMlsM+m7KJ/ykMNxY3PwvoScp/OyuRsEPc
-         Kyf+Dqee8WdnsKYBky8yNqK3SPBd3g9F+FuBoOSgF74Xh0OFg8tDFcJs/lipB1TqGKwt
-         UyMA==
+        bh=MF5E3W/jIicHOW4h7MeNLzhN752Za5ehXWfMuqIr3TQ=;
+        b=G+L0emBM5f20bvdqLObyCe837vA4bhlQ1mX5OcAFWOcMP2tM6vyYOsT9+lfRm9Jsgv
+         tTYiG7MANtaIlyz1P251WhXv/7Apt+lHFC7Y8Lku0dEHFA/CzY2Z45YW6NKwYTOOefkG
+         JNwfAFCh4LvOzbIF73vYik8IwD9bpaijQH0sDfbeoZsAryzXmtcC1MpPSn+uSIUgw29r
+         7HzctQ/v1qxWlDfQtAqGsELdcfOPAZl3m584/PPu7IZ+lek52wpb2VCt41joebvbxTcF
+         YvbYqc4Eb3+Kx8sWNdAkJ4DGjlcvLfDIalA1GafhRcOV2IOEfACPwqpueGf72QnvtOQy
+         IEoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724563005; x=1725167805;
+        d=1e100.net; s=20230601; t=1724563007; x=1725167807;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+IClYBjpK7iTXWqXO0hqSivHGfHTegcYSer/+UixwhE=;
-        b=a6wPzEzEAztxBFWwJvgeUzQ0/2AXAYenYg/fg9OyU8ssDcR0dd2IpSGxLqijoHsFUs
-         uCSA19suv0SozKqIG764ZStTrEXxwdo3rgIR+CmlQCjRbmv9xNsBjWiZKVGBv0lXyx3l
-         ZRCXdhrwWPCQp2zrS960CzfgJH4Wq4Ias0VbQkWfq1YIWRnmf3tj2ta/ytiZBrXZ1D7W
-         lpIyCkxrcc5Z/6xS+BwAkhyukfboGhCddDXg8eDZQYpQ/Sfl82KGPP4/cGzTKVI6KTtx
-         4cqddIQO5tWjmOUgldje3+d9R0ZdMp64ijRW4WiofaZhnJmnBhEGNnRxhQAbOUcH+ULd
-         TIig==
-X-Forwarded-Encrypted: i=1; AJvYcCWQkR2Q98eJ1bfJvPJxtsOieUHvrrXNi8dXZM25Pk57VhWUVSgMj5Xzsfrq/VznbDgkyvU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwkasemLUxHqMTTjAjUU3Sj/wlAa+Wk3/ZgV/IXlUYVqkY+bNhk
-	X3Nc/NdcGMb57AlQq8bBK4QefmM2BIThgz3K5F9iVO0pd009xGbK
-X-Google-Smtp-Source: AGHT+IEotK5Z46zRG2q3RwlYVnZUsrGo/WBEX9X+Oub64iSKDadCyz4xjkfGuQRwO8QaHq4D1a66ZA==
-X-Received: by 2002:a05:6870:a91a:b0:270:46be:9534 with SMTP id 586e51a60fabf-273e64f5c77mr7810387fac.24.1724563005413;
-        Sat, 24 Aug 2024 22:16:45 -0700 (PDT)
+        bh=MF5E3W/jIicHOW4h7MeNLzhN752Za5ehXWfMuqIr3TQ=;
+        b=xSN6IgxgFet6vr7qvDwTuLUJB7bMYyew+R6zo6rLns9edGeF6nCbn8AURQVfG8Ktkb
+         1nE5HG9whvTrucTyLwXOx7XYJmbcRSHAkPeTo59VLm+74RviVQmL0TQzZlG3vTni/BDN
+         wH9muzZ/pstgZ1r/Em7vBwkVgq6vWa3wuCdfWtGkASfkTlKd05rUaKNSth0XTcX29Iuk
+         XtsM25VUDyeVxZrWEkJt3mpxBIRjoVMZwRIunEOnqgubUfBnyWy14STYOOYmKKRklMz1
+         C6jI14a0aySyB8stFDexepRH/z9HntZ1M5UP13uA1FBLbNxRXN0x9K1eex6H1MQBR0TD
+         Jw/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXyCvfzbhrFkbmQ4Bha6I6H9FhlgDQY6bJ1Wc3VcKkxYT6fK34YN9rC375KMM6En4h84rM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yws899Nkj7YWmTskSORHFasxOTUm71P1FYEeo4AFuHwPmLS2N+m
+	nLRsFdQ1Y0B2q7ac4j8qiTjXWXHy65jHc+JKXS3bnpSIsjnc1dhE
+X-Google-Smtp-Source: AGHT+IHXAs6GceADDzLZ7I3Pij++Fm3NQFnIWhk4AJZxUkQIX9t9GW0NO9mJDGotB52VqJS/4yMQyA==
+X-Received: by 2002:a05:6e02:5a3:b0:39d:300f:e8ff with SMTP id e9e14a558f8ab-39e3c975b22mr65481975ab.6.1724563006637;
+        Sat, 24 Aug 2024 22:16:46 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2620:15c:9d:2:66dc:ce07:b7cc:51ea])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.44
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 22:16:45 -0700 (PDT)
+        Sat, 24 Aug 2024 22:16:46 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: linux-input@vger.kernel.org
 Cc: Michael Hennerich <michael.hennerich@analog.com>,
@@ -67,9 +67,9 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-tegra@vger.kernel.org
-Subject: [PATCH 05/17] Input: gpio-keys - switch to using cleanup functions
-Date: Sat, 24 Aug 2024 22:16:09 -0700
-Message-ID: <20240825051627.2848495-6-dmitry.torokhov@gmail.com>
+Subject: [PATCH 06/17] Input: imx_keypad - use guard notation when acquiring mutex
+Date: Sat, 24 Aug 2024 22:16:10 -0700
+Message-ID: <20240825051627.2848495-7-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
 In-Reply-To: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
 References: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
@@ -81,139 +81,68 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Start using __free() and guard() primitives to simplify the code
-and error handling. This makes the code more compact and error
-handling more robust by ensuring that locks are released in all
-code paths when control leaves critical section and all allocated
-memory is freed.
+This makes the code more compact and error handling more robust
+by ensuring that mutexes are released in all code paths when control
+leaves critical section.
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/input/keyboard/gpio_keys.c | 44 ++++++++++++------------------
- 1 file changed, 17 insertions(+), 27 deletions(-)
+ drivers/input/keyboard/imx_keypad.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index 9fb0bdcfbf9e..380fe8dab3b0 100644
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -245,23 +245,20 @@ static ssize_t gpio_keys_attr_store_helper(struct gpio_keys_drvdata *ddata,
- {
- 	int n_events = get_n_events_by_type(type);
- 	const unsigned long *bitmap = get_bm_events_by_type(ddata->input, type);
--	unsigned long *bits;
- 	ssize_t error;
- 	int i;
+diff --git a/drivers/input/keyboard/imx_keypad.c b/drivers/input/keyboard/imx_keypad.c
+index e15a93619e82..b92268ddfd84 100644
+--- a/drivers/input/keyboard/imx_keypad.c
++++ b/drivers/input/keyboard/imx_keypad.c
+@@ -521,13 +521,11 @@ static int __maybe_unused imx_kbd_noirq_suspend(struct device *dev)
+ 	struct input_dev *input_dev = kbd->input_dev;
+ 	unsigned short reg_val = readw(kbd->mmio_base + KPSR);
  
--	bits = bitmap_alloc(n_events, GFP_KERNEL);
-+	unsigned long *bits __free(bitmap) = bitmap_alloc(n_events, GFP_KERNEL);
- 	if (!bits)
- 		return -ENOMEM;
- 
- 	error = bitmap_parselist(buf, bits, n_events);
- 	if (error)
--		goto out;
-+		return error;
- 
- 	/* First validate */
--	if (!bitmap_subset(bits, bitmap, n_events)) {
--		error = -EINVAL;
--		goto out;
--	}
-+	if (!bitmap_subset(bits, bitmap, n_events))
-+		return -EINVAL;
- 
- 	for (i = 0; i < ddata->pdata->nbuttons; i++) {
- 		struct gpio_button_data *bdata = &ddata->data[i];
-@@ -271,12 +268,11 @@ static ssize_t gpio_keys_attr_store_helper(struct gpio_keys_drvdata *ddata,
- 
- 		if (test_bit(*bdata->code, bits) &&
- 		    !bdata->button->can_disable) {
--			error = -EINVAL;
--			goto out;
-+			return -EINVAL;
- 		}
- 	}
- 
--	mutex_lock(&ddata->disable_lock);
-+	guard(mutex)(&ddata->disable_lock);
- 
- 	for (i = 0; i < ddata->pdata->nbuttons; i++) {
- 		struct gpio_button_data *bdata = &ddata->data[i];
-@@ -290,11 +286,7 @@ static ssize_t gpio_keys_attr_store_helper(struct gpio_keys_drvdata *ddata,
- 			gpio_keys_enable_button(bdata);
- 	}
- 
--	mutex_unlock(&ddata->disable_lock);
+-	/* imx kbd can wake up system even clock is disabled */
+-	mutex_lock(&input_dev->mutex);
 -
--out:
--	bitmap_free(bits);
--	return error;
+-	if (input_device_enabled(input_dev))
+-		clk_disable_unprepare(kbd->clk);
+-
+-	mutex_unlock(&input_dev->mutex);
++	scoped_guard(mutex, &input_dev->mutex) {
++		/* imx kbd can wake up system even clock is disabled */
++		if (input_device_enabled(input_dev))
++			clk_disable_unprepare(kbd->clk);
++	}
+ 
+ 	if (device_may_wakeup(&pdev->dev)) {
+ 		if (reg_val & KBD_STAT_KPKD)
+@@ -547,23 +545,20 @@ static int __maybe_unused imx_kbd_noirq_resume(struct device *dev)
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct imx_keypad *kbd = platform_get_drvdata(pdev);
+ 	struct input_dev *input_dev = kbd->input_dev;
+-	int ret = 0;
++	int error;
+ 
+ 	if (device_may_wakeup(&pdev->dev))
+ 		disable_irq_wake(kbd->irq);
+ 
+-	mutex_lock(&input_dev->mutex);
++	guard(mutex)(&input_dev->mutex);
+ 
+ 	if (input_device_enabled(input_dev)) {
+-		ret = clk_prepare_enable(kbd->clk);
+-		if (ret)
+-			goto err_clk;
++		error = clk_prepare_enable(kbd->clk);
++		if (error)
++			return error;
+ 	}
+ 
+-err_clk:
+-	mutex_unlock(&input_dev->mutex);
+-
+-	return ret;
 +	return 0;
  }
  
- #define ATTR_SHOW_FN(name, type, only_disabled)				\
-@@ -470,11 +462,10 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
- {
- 	struct gpio_button_data *bdata = dev_id;
- 	struct input_dev *input = bdata->input;
--	unsigned long flags;
- 
- 	BUG_ON(irq != bdata->irq);
- 
--	spin_lock_irqsave(&bdata->lock, flags);
-+	guard(spinlock_irqsave)(&bdata->lock);
- 
- 	if (!bdata->key_pressed) {
- 		if (bdata->button->wakeup)
-@@ -497,7 +488,6 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
- 			      ms_to_ktime(bdata->release_delay),
- 			      HRTIMER_MODE_REL_HARD);
- out:
--	spin_unlock_irqrestore(&bdata->lock, flags);
- 	return IRQ_HANDLED;
- }
- 
-@@ -1062,10 +1052,10 @@ static int gpio_keys_suspend(struct device *dev)
- 		if (error)
- 			return error;
- 	} else {
--		mutex_lock(&input->mutex);
-+		guard(mutex)(&input->mutex);
-+
- 		if (input_device_enabled(input))
- 			gpio_keys_close(input);
--		mutex_unlock(&input->mutex);
- 	}
- 
- 	return 0;
-@@ -1075,20 +1065,20 @@ static int gpio_keys_resume(struct device *dev)
- {
- 	struct gpio_keys_drvdata *ddata = dev_get_drvdata(dev);
- 	struct input_dev *input = ddata->input;
--	int error = 0;
-+	int error;
- 
- 	if (device_may_wakeup(dev)) {
- 		gpio_keys_disable_wakeup(ddata);
- 	} else {
--		mutex_lock(&input->mutex);
--		if (input_device_enabled(input))
-+		guard(mutex)(&input->mutex);
-+
-+		if (input_device_enabled(input)) {
- 			error = gpio_keys_open(input);
--		mutex_unlock(&input->mutex);
-+			if (error)
-+				return error;
-+		}
- 	}
- 
--	if (error)
--		return error;
--
- 	gpio_keys_report_state(ddata);
- 	return 0;
- }
+ static const struct dev_pm_ops imx_kbd_pm_ops = {
 -- 
 2.46.0.295.g3b9ea8a38a-goog
 
