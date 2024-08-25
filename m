@@ -1,117 +1,113 @@
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8202F71B52;
-	Sun, 25 Aug 2024 14:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B3E320C
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 14:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724595723; cv=none; b=emUVbFe6ab1uKR/c3fwJZWwF0zXz8BrFBNtRhCc76HYIE/GMy16KZNdGTFcbDQkGGmxTFvdkNH0dY2HIw5iCvT1gvcgvsFkK/fXJbzYedd4tMxfX94to/vMBWRqprfDt520gk6Irc4gCKUfCfguHlhRw5htBFHYwSOdT0QBOZgI=
+	t=1724596474; cv=none; b=YKOuY9YY9/3LAtSYmIlfoKVZMAVe6t0y+VSM/6DHZRaHlj1GFYI+9aNqg3shAzoCqCpIUCH+Rm4nmfhO/gTiGLmtijOWleoCVY3satI6uyMu1j1aoGUezqK5jsIMp6K/WoD3aeG7WpjWbZcgw8sJJw90udw4sOTiv/W0tUfXSrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724595723; c=relaxed/simple;
-	bh=e0iw2xtI/mwAKMKY497OI/t8+LpcSAu36z+VbR1UVqU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gUuRpfKEZNcPZPiJSJ6X/Xh6mpwD5jkIxRq922ZaaAIbOax2TIV1738pDhbtWEUOWTwtS4N7UWqbWSvGXvufvmut9aSAOQpLQ/XLeHmM6S1VZQ16JvSfVcyQr36YVeyD4YUpIxYwsfKlhly+il18/38HAK1hWp2/Kf+amsFO558=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1siE7P-0065s5-2E;
-	Sun, 25 Aug 2024 14:21:23 +0000
-Received: from ben by deadeye with local (Exim 4.98)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1siE7N-0000000BWXb-3VLT;
-	Sun, 25 Aug 2024 16:21:21 +0200
-Message-ID: <d94d995e476a5c014e1ce4d75d36f8667acd3316.camel@decadent.org.uk>
-Subject: Re: [PATCH v2] perf python: include "util/sample.h"
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>, Xu Yang <xu.yang_2@nxp.com>
-Cc: peterz@infradead.org, mingo@redhat.com, namhyung@kernel.org, 
- mark.rutland@arm.com, alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-  irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com, 
- linux-perf-users@vger.kernel.org, imx@lists.linux.dev
-Date: Sun, 25 Aug 2024 16:21:11 +0200
-In-Reply-To: <ZsOEifE05otnUtdV@x1>
-References: <20240819023403.201324-1-xu.yang_2@nxp.com>
-	 <ZsOEifE05otnUtdV@x1>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-tqde9DlczuBkfLqrZ6nk"
-User-Agent: Evolution 3.52.3-1 
+	s=arc-20240116; t=1724596474; c=relaxed/simple;
+	bh=Y4w5OHB5AAqQgw5YqBA+ey3TPocL/Uh/eEew5lcaGaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OVOa5XKiTnm5AZiJqngnd9Nq7lCI2vIBn6WsD7ib1T8LXfx/46EXPgJgnrhSUnrjbuNtvQCUYYN8GD0L09y5o1fPj2YnwbjAaI6RdydFpqSBMkqnInMic5vB4B8K1Uq7UjFtb5Xj79px7Om+U6A1pyjYU76nkceIPaR1mbFSxys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=OhfBkzFz; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="OhfBkzFz"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8695cc91c8so362554266b.3
+        for <imx@lists.linux.dev>; Sun, 25 Aug 2024 07:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1724596471; x=1725201271; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KJCtcmIB3UdIrkYLcVzOIpEPiO2wmd+dCBPvqHnV2K4=;
+        b=OhfBkzFztOriGoxQX5oS4IPbDudjn70OfpbpWIgGCiFw5gEnjn8/l0u9PYLNg9wbPq
+         NObonAVYfhoB3xWmLd8lKSaThAzA8vfSEUGOdsLdidzMbq4Vd2XWS6zeQOG9oI5TtxtT
+         mr2gq5TgdMv3NLOX5Iw/Ijn3Ezh6P88GfmVK8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724596471; x=1725201271;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KJCtcmIB3UdIrkYLcVzOIpEPiO2wmd+dCBPvqHnV2K4=;
+        b=h5fVVNMrUZ0m0qWY6emAiK+5ungsA5O2hfq1hyZ75Ffqgtie+kgAqW1XsN6h6oM14e
+         bRaQc+b/MsfLH12X5HByGHIatyxX1N6LeoPTvd6qnaiPIn5nXPQxD7keo9wVomgl6Iom
+         e1U0UZEtXPu1pU7rXxpLTPPYDaCpYR+AYLazMrvTTu1BuaJbZj+rr40SMoXLpE4vP3Ic
+         1Cg0aIqKG/p1EkbHorTphEn1oLckccsxvJ+EkN2V+7pJgh6JfZ3kpTZv5DvrfWVGOKI6
+         QrKYgrnTJZoFAqDwD5940VGGgX9utG+w6BFnHidLwaJO+w+S7FeWqCtcMnN6Ud0tG1DQ
+         WW4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVkRx40+PNqwGtFZWweTIIRiLqDsiPyJ9mebdIvRl+aKhGi0akKW7qbDMg/nHy+Jgm5AgQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx0aALyCqUz1fm2522PHwwJwFY7DHU7mu2xnyGFeZMn1HlyQcXU
+	9iCVkjDNE62jORhC1/ORRsJERadzb70F94z3G/wo9L087xZSJd0qqYbkvzP3wIY=
+X-Google-Smtp-Source: AGHT+IFrPkCDWSQxHr3mcynt8lDSRSWlq9K1FdNFRP5DdDzP7xtG+zdnJc3gqlxqDwJcYjVr7uYgTg==
+X-Received: by 2002:a17:907:7f12:b0:a86:8524:2558 with SMTP id a640c23a62f3a-a86a518a3a6mr468976166b.12.1724596471075;
+        Sun, 25 Aug 2024 07:34:31 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-25-99-149.retail.telecomitalia.it. [79.25.99.149])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f4862b6sm550625566b.170.2024.08.25.07.34.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Aug 2024 07:34:30 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH v2 1/3] pmdomain: imx93-pd: replace dev_err() with dev_err_probe()
+Date: Sun, 25 Aug 2024 16:34:00 +0200
+Message-ID: <20240825143428.556439-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 
+This way, the code becomes more compact, and dev_err_probe() is used in
+every error path of the probe() function.
 
---=-tqde9DlczuBkfLqrZ6nk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-On Mon, 2024-08-19 at 14:44 -0300, Arnaldo Carvalho de Melo wrote:
-> On Mon, Aug 19, 2024 at 10:34:03AM +0800, Xu Yang wrote:
-> > The 32-bit arm build system will complain:
-> >=20
-> > tools/perf/util/python.c:75:28: error: field =E2=80=98sample=E2=80=99 h=
-as incomplete type
-> >    75 |         struct perf_sample sample;
-> >=20
-> > However, arm64 build system doesn't complain this.
-> >=20
-> > The root cause is arm64 define "HAVE_KVM_STAT_SUPPORT :=3D 1" in
-> > tools/perf/arch/arm64/Makefile, but arm arch doesn't define this.
-> > This will lead to kvm-stat.h include other header files on arm64 build
-> > system, especially "util/sample.h" for util/python.c.
-> >=20
-> > This will try to directly include "util/sample.h" for "util/python.c" t=
-o
-> > avoid such build issue on arm platform.
-> >=20
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> >=20
-> > ---
-> > Changes in v2:
-> >  - include "util/sample.h" in "util/python.c"
->=20
-> Thanks, applied to perf-tools-next,
-[...]
+---
 
-This is a regression in 6.11, so the fix should go into the current
-release cycle, not the next one.
+Changes in v2:
+- Drop the extra { } to be even more compact.
 
-Ben.
+ drivers/pmdomain/imx/imx93-pd.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---=20
-Ben Hutchings
-Any smoothly functioning technology is indistinguishable
-from a rigged demo.
+diff --git a/drivers/pmdomain/imx/imx93-pd.c b/drivers/pmdomain/imx/imx93-pd.c
+index d750a7dc58d2..44daecbe5cc3 100644
+--- a/drivers/pmdomain/imx/imx93-pd.c
++++ b/drivers/pmdomain/imx/imx93-pd.c
+@@ -125,11 +125,10 @@ static int imx93_pd_probe(struct platform_device *pdev)
+ 	/* Just to sync the status of hardware */
+ 	if (!domain->init_off) {
+ 		ret = clk_bulk_prepare_enable(domain->num_clks, domain->clks);
+-		if (ret) {
+-			dev_err(domain->dev, "failed to enable clocks for domain: %s\n",
+-				domain->genpd.name);
+-			return ret;
+-		}
++		if (ret)
++			return dev_err_probe(domain->dev, ret,
++					     "failed to enable clocks for domain: %s\n",
++					     domain->genpd.name);
+ 	}
+ 
+ 	ret = pm_genpd_init(&domain->genpd, NULL, domain->init_off);
+-- 
+2.43.0
 
-
---=-tqde9DlczuBkfLqrZ6nk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmbLPdgACgkQ57/I7JWG
-EQlU6w/+KyrwrhLL0DMERUAWsHkM+7KOLfh/ecFrTfLJm5EuR8du2urGI3g0QQ9+
-8Qi84ZWvTr2yFK4HKL+RxPSVDXzs+Q3132CeAgwOIKrWDYPcBwQ9XMqAuCg58Kku
-6bUAO7sgN5J0bVgCrGvgGl+tdcyb2/xCRkrahcIkDrTrm4rYNksVKWYDFXJ0cUAX
-m5zBuHtq/+uwzhBjOUehHBpTxt4vwKWIatLpN5REJlYtglpUe9LHzckNy68gjh7B
-Jho3lUmzZDVr8GVg3khB6nAR4ZMKmfFJE+IV0xaYV/OStAqLKYdZDC4Yj6AAEhJO
-Rrme0Oy8xV3ou4mDjEO9J1gf/1QfZh90tJMHkt2mt6AIKk1n/t1yW6aPO1+B9nN9
-/smS61vNAS4vE63gMQFnNLX+OybQ1Dh8X85r1VjD9TgfBzE8LpXqoFN65bjGWNa+
-9hiP9BMh7b/YjFHpixMZMVjuyc3nXmqUCoGZKDJSIwMvn/LF46DrdyXADhY1jZvo
-yKPDyqoOMY5Riw+Bx8rYbO5FUsNycaJJcmtF+zD9k0xup+F+5XuzrVFqC5EMq032
-ZGPAAR0qntQSjIM8UBy6Ndl1ncOUrCy/qLryAhKnw2d8LzTH9RF1pDKbryfNoF+Q
-yAd7gJL1ApNcwNJeIYqtTOfk6u30OAZ2BpIWXJ81TWBdCaoQb5Q=
-=3VSg
------END PGP SIGNATURE-----
-
---=-tqde9DlczuBkfLqrZ6nk--
