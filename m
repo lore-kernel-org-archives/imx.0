@@ -1,57 +1,57 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093798286A
-	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4006883CC7
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724563015; cv=none; b=dJvzV9lkmxtvso+qJYHibHzWXnPKHXHF8+udUT6hls7QAHPC/wTb8A0t/Ish0t7mRMNz3t8KdbwhBfmtbs5Qx4Kg3O5Xc+mAX4SaMLtsZiO1/lO/fKyIdc9QXOgt8uXpTQmJsF0pNeSKSvUyZnQ/T8jIJ3iMYRmMLWKdz9bIFSg=
+	t=1724563016; cv=none; b=mAuZI5cUNCJhoK7V+1B3srHE+L1RYU51GbOcUzRMc0uLXipf70jquDATphKqKgUiY8+M3e/zLDiiLClUz3xCJnQVOssWp21DORDxmsxKMyUVG8giBT+oUderLsKYgGpzRnD+19W/d1VE+sklaH94QQdDKceAXqaulqjoDADfFPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724563015; c=relaxed/simple;
-	bh=t69M2XHLck0t1pHwwBsDi+zgTTfrFl42KdqvyDwMG1U=;
+	s=arc-20240116; t=1724563016; c=relaxed/simple;
+	bh=2WGS4zDij+Ixhpcdfhz854o1PCDNzbO0tvum2hvSOgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpjsb4qk9vK/TvMilJf+fPAD3ILrzI7wO4aKGew8RxYpq5h3p9VcCavz6wYW4R6A3ZF5cJdUByUSq2PJLk0vTZ+eEWwNQi6Qk1qw43SaRQ4QSLHTJL/INejJ7M/aakpmqyafq7wZpWVXdUkGCaBrTxHUJNZhEO4n2NL/NZd/Et4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QituT2Qi; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=XJPhMTLx/wUJPz5AxsCvR3JBnUBVDKKtvqkanHCUlt/uvPpa3ZfcTwZGXb0YjG7d4myTKnSiotWIBcafsodBk44UrOv6tdvk5dQapQpDilgS6Vqvd/JO3zxG7x/6X+mShiHRUIT6kTtz2pE6X2oeFeNdyeHD6djnl1/LFFr6S6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9fdC1+y; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QituT2Qi"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7143165f23fso2467550b3a.1
-        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9fdC1+y"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7142e002aceso2659939b3a.2
+        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724563013; x=1725167813; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724563014; x=1725167814; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j9zYR0W/Xjhx97slmPTim4xkiDUhOUV5BM1jCImN77U=;
-        b=QituT2Qie9PSLS3iJdN34uq8MmFlvL18ommsdMDNfSrkfm2V3GcNp6Zg8xetVBvrBl
-         bbZvi3ktRRaenqotmu5OiAyJS0NDyEisFHZELibBm2e4+EYHTmDheKZu18P4RbKdrsOl
-         CpBVGBusRN2mTsWoWEG85GvnOja8uT94kSgl4qM2CukDNdE2J1iyEgGdt0xPrYwxu/fa
-         eGPKN2iKFRxIxhfA3z/PWNSN9sLDAa+tLn+/7WIsqWf6TNNA4SM7OHQZQd//6MueRZPi
-         tRiPotTzgCwDsqt9kTltBaCUCS8fPf5i2hxNKUeKG5ZaEj4XP5VYrRvEW/QT6dmlx6iW
-         NjJw==
+        bh=TgrHzPeIHjCQToVGMM9JpdcPooP9HE7kqNjFtcQ3CT4=;
+        b=m9fdC1+yabwzQmAZlgH2wwXDBCTNtkVwFR8gzVZ8i24wDKCpDGSE7h3EDZ3gFjWmaP
+         VlWW903NbZDnEZTpqbGejghQLGh25PaDIB3M4Aba8ki2ov0ZPG+p9yxmpWJ/C4KhLJbQ
+         0kiBVXpNfINfoQwoSYwzV+1LlwYSJ0qm/EOxq5Jg3te/X3m8uUdZvR/7w0jOLRNtiKA2
+         4JUlAEoN4h9nsP6iWZvPNOqzMG2FW1lbV7nf2sVDLWz1ZPrZiDkT3opNeD+TJ4kicAzB
+         oM1SlPJFfTdL19TvVc1MPtJrDendELemTbQ3RMxft2iPRJe3W+0920lXt8z51mcgiSL1
+         +T4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724563013; x=1725167813;
+        d=1e100.net; s=20230601; t=1724563014; x=1725167814;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j9zYR0W/Xjhx97slmPTim4xkiDUhOUV5BM1jCImN77U=;
-        b=QVVkt0u4hq++QxbLf9NjCvLdyQaAjLKkJCMdftRGFEt2jjWaLVrwQjCZB126dH+4v1
-         Dy7Ggy1rOLJqcy2Co4/C0EVL9bYEFykCAQFQdTf08YJodNAZXZzVYySx0mka1kI7ICrs
-         4yC/wbdtc5FiZtqVqYQbZLCaCKYwhrZLLppClChnY5ghc73E9ogQtXbJXTRbQwOREDJt
-         gXq38NtrtWnJMKUPZmsgaFX4WZP4CVFtO15pOS5mVNiC6J5c4Vq0lFVFeI2G+eXgG8GM
-         ZQaMTbzxdqadrpdiRpM2LnRgFqep14ULq5DAlaJhy/1dv+5hjXgrPFRzr0lyrnwDbV4S
-         9pfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3avV+WOJ2dKMZe9K4139vDhLuiw2eyGMWAwMEMPM5LopfsoL25tSi6EdBeNR6P0emUAU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWOiLa3xHK7yoEGor0b7qJZAI2rnMsznbThsw9kAJwNAHN8NFQ
-	BpwLwuAwwzVt2Vo9Y1BEIFfhnPRAdvIy5lN5qoEHXVgb88+UR3yG
-X-Google-Smtp-Source: AGHT+IHcuT4NA41j3BiOlgdyA7A3m2CkwtxDOGLO51Pqdelg8y5qs9HsGoezNmvzuRmb2+38RG5t8A==
-X-Received: by 2002:a05:6a00:18a1:b0:70e:8e3a:10ee with SMTP id d2e1a72fcca58-7144587e2dbmr7640487b3a.21.1724563013105;
-        Sat, 24 Aug 2024 22:16:53 -0700 (PDT)
+        bh=TgrHzPeIHjCQToVGMM9JpdcPooP9HE7kqNjFtcQ3CT4=;
+        b=TOjWlcRiEf52AF78P3iW7MlaG4sHNTD2ldbGInRYrMG0QcU7bQIJb38Wa8FJ76Hgpv
+         I6GedLUoZ/Y+ZWQUWu01ZHNmSBJZjsVgNXXpXxz+/yDS+Yj2a5aZt3JnEP/DlnlaDRtr
+         LAbsxk7VqzZlhU9WjFRbLUyVP/7Y1LaMj/Oaps08JXD3lPYWj1B6WdDbJKTlfjT3H5pi
+         kaUVTRMPVKi0b4ekn4m1GmRvloNpMXxgWCJ7vkjJbY9llbqpPyC8xzIDgPz+np+pYEWW
+         gRJNpS/j5xccfU+L7581/FntQJzXV98DMsj0JuuHm9lGJv0T3kR3JtCz5javQkIml/Tz
+         M20A==
+X-Forwarded-Encrypted: i=1; AJvYcCXAliuuu6d3FwYj3C2F6ZD1CzvvhHwHQ/7rnvPf88LAX/lzBHLyldtpfjnTy10FhhZyOu4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyICJr1Z0r8VxtBYArW1HJGlsEmFWs1GttNoHIaJ88Vsz4C+mIp
+	LCiC4GjLrngGw8yNa86FGJOn9HzsN5CuAX6x6mn4G0eL3S22VA5q
+X-Google-Smtp-Source: AGHT+IG9GzB5hV+R3jUFqV7C8FiDWaB5skbl01e83Rq6Yxznn6igCC+xVD3kT7dOcBsXXHvExd8ddg==
+X-Received: by 2002:aa7:8895:0:b0:70d:1fbe:b96f with SMTP id d2e1a72fcca58-71445893b63mr6876250b3a.21.1724563014434;
+        Sat, 24 Aug 2024 22:16:54 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2620:15c:9d:2:66dc:ce07:b7cc:51ea])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.51
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 22:16:52 -0700 (PDT)
+        Sat, 24 Aug 2024 22:16:54 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: linux-input@vger.kernel.org
 Cc: Michael Hennerich <michael.hennerich@analog.com>,
@@ -67,9 +67,9 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-tegra@vger.kernel.org
-Subject: [PATCH 11/17] Input: matrix_keypad - use guard notation when acquiring spinlock
-Date: Sat, 24 Aug 2024 22:16:15 -0700
-Message-ID: <20240825051627.2848495-12-dmitry.torokhov@gmail.com>
+Subject: [PATCH 12/17] Input: omap4-keypad - use guard notation when acquiring mutex
+Date: Sat, 24 Aug 2024 22:16:16 -0700
+Message-ID: <20240825051627.2848495-13-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
 In-Reply-To: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
 References: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
@@ -82,63 +82,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 This makes the code more compact and error handling more robust
-by ensuring that locks are released in all code paths when control
+by ensuring that mutexes are released in all code paths when control
 leaves critical section.
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/input/keyboard/matrix_keypad.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/input/keyboard/omap4-keypad.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/input/keyboard/matrix_keypad.c b/drivers/input/keyboard/matrix_keypad.c
-index 7a56f3d3aacd..bd763d704306 100644
---- a/drivers/input/keyboard/matrix_keypad.c
-+++ b/drivers/input/keyboard/matrix_keypad.c
-@@ -158,18 +158,17 @@ static void matrix_keypad_scan(struct work_struct *work)
- 	activate_all_cols(pdata, true);
+diff --git a/drivers/input/keyboard/omap4-keypad.c b/drivers/input/keyboard/omap4-keypad.c
+index 040b340995d8..935c2b27b81c 100644
+--- a/drivers/input/keyboard/omap4-keypad.c
++++ b/drivers/input/keyboard/omap4-keypad.c
+@@ -144,7 +144,7 @@ static void omap4_keypad_scan_keys(struct omap4_keypad *keypad_data, u64 keys)
+ {
+ 	u64 changed;
  
- 	/* Enable IRQs again */
--	spin_lock_irq(&keypad->lock);
--	keypad->scan_pending = false;
--	enable_row_irqs(keypad);
--	spin_unlock_irq(&keypad->lock);
-+	scoped_guard(spinlock_irq, &keypad->lock) {
-+		keypad->scan_pending = false;
-+		enable_row_irqs(keypad);
-+	}
+-	mutex_lock(&keypad_data->lock);
++	guard(mutex)(&keypad_data->lock);
+ 
+ 	changed = keys ^ keypad_data->keys;
+ 
+@@ -158,8 +158,6 @@ static void omap4_keypad_scan_keys(struct omap4_keypad *keypad_data, u64 keys)
+ 	omap4_keypad_report_keys(keypad_data, changed & keys, true);
+ 
+ 	keypad_data->keys = keys;
+-
+-	mutex_unlock(&keypad_data->lock);
  }
  
- static irqreturn_t matrix_keypad_interrupt(int irq, void *id)
- {
- 	struct matrix_keypad *keypad = id;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&keypad->lock, flags);
-+	guard(spinlock_irqsave)(&keypad->lock);
- 
- 	/*
- 	 * See if another IRQ beaten us to it and scheduled the
-@@ -185,7 +184,6 @@ static irqreturn_t matrix_keypad_interrupt(int irq, void *id)
- 		msecs_to_jiffies(keypad->pdata->debounce_ms));
- 
- out:
--	spin_unlock_irqrestore(&keypad->lock, flags);
- 	return IRQ_HANDLED;
- }
- 
-@@ -209,9 +207,9 @@ static void matrix_keypad_stop(struct input_dev *dev)
- {
- 	struct matrix_keypad *keypad = input_get_drvdata(dev);
- 
--	spin_lock_irq(&keypad->lock);
--	keypad->stopped = true;
--	spin_unlock_irq(&keypad->lock);
-+	scoped_guard(spinlock_irq, &keypad->lock) {
-+		keypad->stopped = true;
-+	}
- 
- 	flush_delayed_work(&keypad->work);
- 	/*
+ /* Interrupt handlers */
 -- 
 2.46.0.295.g3b9ea8a38a-goog
 
