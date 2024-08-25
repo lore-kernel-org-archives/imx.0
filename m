@@ -1,57 +1,57 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4006883CC7
-	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709F484E14
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 05:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724563016; cv=none; b=mAuZI5cUNCJhoK7V+1B3srHE+L1RYU51GbOcUzRMc0uLXipf70jquDATphKqKgUiY8+M3e/zLDiiLClUz3xCJnQVOssWp21DORDxmsxKMyUVG8giBT+oUderLsKYgGpzRnD+19W/d1VE+sklaH94QQdDKceAXqaulqjoDADfFPE=
+	t=1724563017; cv=none; b=hTHGY2lckHtgYmesWqMDmHw/7R37uCXXEOdhRgIDPITk9/y4b7IJrPJeprb7FyCLtfkGu0zkpkz/0V7jfB6ua9KDJJ1AR7BL1xBsGSYXTj1DQyMZzlpwAjBe+7LBDwYuxjHyTtKn3va4FmX8rAYnRcR+0xhAoMEzHNxMf/t/RJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724563016; c=relaxed/simple;
-	bh=2WGS4zDij+Ixhpcdfhz854o1PCDNzbO0tvum2hvSOgo=;
+	s=arc-20240116; t=1724563017; c=relaxed/simple;
+	bh=8u/RKtoqbxN7uxSrDW1oudpA5Vw4YPRdgvHxBWSbWZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJPhMTLx/wUJPz5AxsCvR3JBnUBVDKKtvqkanHCUlt/uvPpa3ZfcTwZGXb0YjG7d4myTKnSiotWIBcafsodBk44UrOv6tdvk5dQapQpDilgS6Vqvd/JO3zxG7x/6X+mShiHRUIT6kTtz2pE6X2oeFeNdyeHD6djnl1/LFFr6S6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9fdC1+y; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=DSx9wkJKh9NwhMqn1Oi/ipj4k+6m04dfuAmcxN/sKvOIPsKSWYb4RsJvEVIlbpRoRZU+sL6NBOkgNnE9/PkKGnq118coirU6kn8ay9DXx1IA5JPwUQDRkiCkFLvngrGQbpwdbQWlryORKsf2q6/0m8tM6fA1njB8v+GA06Llii8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gMGM2/7J; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9fdC1+y"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7142e002aceso2659939b3a.2
-        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gMGM2/7J"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-714186ce2f2so2558537b3a.0
+        for <imx@lists.linux.dev>; Sat, 24 Aug 2024 22:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724563014; x=1725167814; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724563016; x=1725167816; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TgrHzPeIHjCQToVGMM9JpdcPooP9HE7kqNjFtcQ3CT4=;
-        b=m9fdC1+yabwzQmAZlgH2wwXDBCTNtkVwFR8gzVZ8i24wDKCpDGSE7h3EDZ3gFjWmaP
-         VlWW903NbZDnEZTpqbGejghQLGh25PaDIB3M4Aba8ki2ov0ZPG+p9yxmpWJ/C4KhLJbQ
-         0kiBVXpNfINfoQwoSYwzV+1LlwYSJ0qm/EOxq5Jg3te/X3m8uUdZvR/7w0jOLRNtiKA2
-         4JUlAEoN4h9nsP6iWZvPNOqzMG2FW1lbV7nf2sVDLWz1ZPrZiDkT3opNeD+TJ4kicAzB
-         oM1SlPJFfTdL19TvVc1MPtJrDendELemTbQ3RMxft2iPRJe3W+0920lXt8z51mcgiSL1
-         +T4w==
+        bh=pqe1CPNPyPwWJltZY/tNpoPncj2b2bW7ofGMYanWSqo=;
+        b=gMGM2/7JILTjV0+cBhgA9snNKDY3ufsmNPkeQN3Iiaq3xd+H01tmPADmi09aIzBzKH
+         ekQpKgU5gRMFw2Ri8gAuCM1LMPg/z25dAV/3WyVHTXG9g89d/bxGQf0IcQXL8qyOTZEx
+         qZLs3dTgBb+HjD0VDy4Uz2ZLIidodrtXolGZKlkXaBOOMBWDNTKfWyIOgoN8XQ72W/6V
+         lE39L4NsiSISbIIiemb0g8o1BOXfh6H1ryw+1uhJroreAt8PwvrAoNSBbTgV1Q3BMasa
+         kOrZKnm1Z6PQFxrvF3nb3q7gzH5KvrStiQsahCXQMCiZs2pR2i0mDtsUqwQ/oO9A4YPz
+         zD1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724563014; x=1725167814;
+        d=1e100.net; s=20230601; t=1724563016; x=1725167816;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TgrHzPeIHjCQToVGMM9JpdcPooP9HE7kqNjFtcQ3CT4=;
-        b=TOjWlcRiEf52AF78P3iW7MlaG4sHNTD2ldbGInRYrMG0QcU7bQIJb38Wa8FJ76Hgpv
-         I6GedLUoZ/Y+ZWQUWu01ZHNmSBJZjsVgNXXpXxz+/yDS+Yj2a5aZt3JnEP/DlnlaDRtr
-         LAbsxk7VqzZlhU9WjFRbLUyVP/7Y1LaMj/Oaps08JXD3lPYWj1B6WdDbJKTlfjT3H5pi
-         kaUVTRMPVKi0b4ekn4m1GmRvloNpMXxgWCJ7vkjJbY9llbqpPyC8xzIDgPz+np+pYEWW
-         gRJNpS/j5xccfU+L7581/FntQJzXV98DMsj0JuuHm9lGJv0T3kR3JtCz5javQkIml/Tz
-         M20A==
-X-Forwarded-Encrypted: i=1; AJvYcCXAliuuu6d3FwYj3C2F6ZD1CzvvhHwHQ/7rnvPf88LAX/lzBHLyldtpfjnTy10FhhZyOu4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyICJr1Z0r8VxtBYArW1HJGlsEmFWs1GttNoHIaJ88Vsz4C+mIp
-	LCiC4GjLrngGw8yNa86FGJOn9HzsN5CuAX6x6mn4G0eL3S22VA5q
-X-Google-Smtp-Source: AGHT+IG9GzB5hV+R3jUFqV7C8FiDWaB5skbl01e83Rq6Yxznn6igCC+xVD3kT7dOcBsXXHvExd8ddg==
-X-Received: by 2002:aa7:8895:0:b0:70d:1fbe:b96f with SMTP id d2e1a72fcca58-71445893b63mr6876250b3a.21.1724563014434;
-        Sat, 24 Aug 2024 22:16:54 -0700 (PDT)
+        bh=pqe1CPNPyPwWJltZY/tNpoPncj2b2bW7ofGMYanWSqo=;
+        b=jYhoSzfTmw96Ub90mrwoM/8WdfvE9uX1YsyG/kQWCgi1QfaryexQT8eN0/qOGEwBFi
+         rBq0Kta3bQr8JIq6MDnkLRyCkBbeqbEuMvNpuRi9K80Em1bRSLQfxRxywLDRcw46SuKW
+         xNVwhlu2Abdivcw4b/pAdGwc4P9xWZZg9T2afW//XiMzhV8IJ5O8QONQFZJD+MdGX1rM
+         8KcUzXOkKR1DXxEZfEqud1qRTM7Ib8bKNpDqkgNMe/sLS9NYQNisLdEKTXUWVo8Hs/pD
+         F/8/mIJ0bD/yzkx7wvufnZVi2EhZSniJYVwIB1Ebil1vKeAvnwjzXPhzemu6aN2pCAoK
+         KPqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVIqbSOh7A7pgaqVbrpmFju535UwLPjQX9LjUCrax1ayAly8McaukHuJXYmoQgeZbF8jpE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzUuL+DWdkCSQMtkAHGmyniU3YZNbvb79uXFsF/sDY/qb0p1E1B
+	QFohHzIsqlkk2utxy1RJx3T2mLucYgy7+GDdwcWJwkE6Q9800W9ZZ6yIZg==
+X-Google-Smtp-Source: AGHT+IE9hfgPOc8K99rlo2yxdGDK0Km4IWYmEWtHARTyEvzXLFTX1fk3uYEqzkP6IiseW8pPeV5XNQ==
+X-Received: by 2002:a05:6a00:228e:b0:714:2cea:1473 with SMTP id d2e1a72fcca58-71445883e36mr6910331b3a.23.1724563015700;
+        Sat, 24 Aug 2024 22:16:55 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2620:15c:9d:2:66dc:ce07:b7cc:51ea])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.53
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ad55a94sm5622442a12.57.2024.08.24.22.16.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 22:16:54 -0700 (PDT)
+        Sat, 24 Aug 2024 22:16:55 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: linux-input@vger.kernel.org
 Cc: Michael Hennerich <michael.hennerich@analog.com>,
@@ -67,9 +67,9 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-tegra@vger.kernel.org
-Subject: [PATCH 12/17] Input: omap4-keypad - use guard notation when acquiring mutex
-Date: Sat, 24 Aug 2024 22:16:16 -0700
-Message-ID: <20240825051627.2848495-13-dmitry.torokhov@gmail.com>
+Subject: [PATCH 13/17] Input: pmic8xxx-keypad - use guard notation when acquiring mutex
+Date: Sat, 24 Aug 2024 22:16:17 -0700
+Message-ID: <20240825051627.2848495-14-dmitry.torokhov@gmail.com>
 X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
 In-Reply-To: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
 References: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
@@ -87,31 +87,41 @@ leaves critical section.
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/input/keyboard/omap4-keypad.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/input/keyboard/pmic8xxx-keypad.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/input/keyboard/omap4-keypad.c b/drivers/input/keyboard/omap4-keypad.c
-index 040b340995d8..935c2b27b81c 100644
---- a/drivers/input/keyboard/omap4-keypad.c
-+++ b/drivers/input/keyboard/omap4-keypad.c
-@@ -144,7 +144,7 @@ static void omap4_keypad_scan_keys(struct omap4_keypad *keypad_data, u64 keys)
- {
- 	u64 changed;
+diff --git a/drivers/input/keyboard/pmic8xxx-keypad.c b/drivers/input/keyboard/pmic8xxx-keypad.c
+index 26a005f9ace3..35d1aa2a22a5 100644
+--- a/drivers/input/keyboard/pmic8xxx-keypad.c
++++ b/drivers/input/keyboard/pmic8xxx-keypad.c
+@@ -630,12 +630,10 @@ static int pmic8xxx_kp_suspend(struct device *dev)
+ 	if (device_may_wakeup(dev)) {
+ 		enable_irq_wake(kp->key_sense_irq);
+ 	} else {
+-		mutex_lock(&input_dev->mutex);
++		guard(mutex)(&input_dev->mutex);
  
--	mutex_lock(&keypad_data->lock);
-+	guard(mutex)(&keypad_data->lock);
- 
- 	changed = keys ^ keypad_data->keys;
- 
-@@ -158,8 +158,6 @@ static void omap4_keypad_scan_keys(struct omap4_keypad *keypad_data, u64 keys)
- 	omap4_keypad_report_keys(keypad_data, changed & keys, true);
- 
- 	keypad_data->keys = keys;
+ 		if (input_device_enabled(input_dev))
+ 			pmic8xxx_kp_disable(kp);
 -
--	mutex_unlock(&keypad_data->lock);
- }
+-		mutex_unlock(&input_dev->mutex);
+ 	}
  
- /* Interrupt handlers */
+ 	return 0;
+@@ -650,12 +648,10 @@ static int pmic8xxx_kp_resume(struct device *dev)
+ 	if (device_may_wakeup(dev)) {
+ 		disable_irq_wake(kp->key_sense_irq);
+ 	} else {
+-		mutex_lock(&input_dev->mutex);
++		guard(mutex)(&input_dev->mutex);
+ 
+ 		if (input_device_enabled(input_dev))
+ 			pmic8xxx_kp_enable(kp);
+-
+-		mutex_unlock(&input_dev->mutex);
+ 	}
+ 
+ 	return 0;
 -- 
 2.46.0.295.g3b9ea8a38a-goog
 
