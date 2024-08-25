@@ -1,152 +1,164 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4166E1EA80
-	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 18:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35F94778C
+	for <imx@lists.linux.dev>; Sun, 25 Aug 2024 23:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724611649; cv=none; b=VeKWRuDrLJCjLygtpFESVqDNdKw+Wd4vOMtIEthlEVx0LZByhkAeO8hB9Egb5fqakTa175tzibU/s67En1XTnPyDj+1mXbOtFv6M0fVq/eZaFNG2XgYy4mqshjxV7jVq07K3jUIV9QR2hzE0sG3VZNwSUz4TB2OWeNv1AYOIwWU=
+	t=1724626989; cv=none; b=icXlMO/F5vElJBzPemP32bfscUgKOe+3A1ya+MU/gHe9Rll+FULLTTSwyfFhqgk50DKCIGm9vUo2XuXGy0omQnCDuh76DIoeftDVJYsvyHwNcDXeJvCCcRWEFvwxF6wv9MtZ7xuNj0kb2bKxob+6G1EE6ifhbbUfHwP2N4qGjwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724611649; c=relaxed/simple;
-	bh=O/7y1BOiwtlj5xGNQ0xs73F0TB1wZAvE87D1/HoMSp4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Brk7F1x5n+DS+kIELi4WUjJu4PyJJHuD6ixzs+IKSywFgDSnFDV7EPOYPIjaInl20UWAvA/2gbRysNJisUEvXjQw4Vn+K9xR2Ylky41gq7ZaxHe6kVxeEedbxtlWl8K67iVA6Gi24T14mXMMbE22xCliO/2qWKiUiCI5N6GKTxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1siIGg-0006m5-RD; Sun, 25 Aug 2024 20:47:14 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1siIGf-0030Xc-EV; Sun, 25 Aug 2024 20:47:13 +0200
-Received: from pengutronix.de (unknown [IPv6:2a0a:edc0:0:701:6bf1:9aed:c5c2:5c56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 9FB09325443;
-	Fri, 23 Aug 2024 12:36:48 +0000 (UTC)
-Date: Fri, 23 Aug 2024 14:36:47 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: shawnguo@kernel.org, krzk+dt@kernel.org, festevam@gmail.com, 
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
- Support
-Message-ID: <20240823-demonic-jolly-chital-fb4d61-mkl@pengutronix.de>
-References: <20240823120158.19294-1-tarang.raval@siliconsignals.io>
+	s=arc-20240116; t=1724626989; c=relaxed/simple;
+	bh=0hyqfZXyzsVQguBaCCyrtVOvKwHyyW5Je/1xW+LrwJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qtFkhSqiS36djwxTezuwsKNGwItkjMUg7xb5A3CIyuKgt6x3rQsrssdAdpupNsw9Lv9X4/JDGBelbNgswoh+GAz/FSEbyI7QEarYu/Mp7Coqt2+2DnKC6Dz458CTZy3+GZaHxL0bTDQinF6k4uMSRFytI7kHEs4C+VEBGZe2Qds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AFpYMe21; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AFpYMe21"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2d3b36f5366so2501310a91.0
+        for <imx@lists.linux.dev>; Sun, 25 Aug 2024 16:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724626987; x=1725231787; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=9xLSTg0lgGIAXGxaiAuzz/wbWnPchBb+YdXnSFs36xY=;
+        b=AFpYMe211gFWDKbbaxCaIbGKg/IqYz5oJOFf7BWrtdwR0lHSO0MfMlPvvXQ958LUYa
+         J1uY664utQ4f/mWolmp5pustf5v77EWySwvrUsRES6kltWa1edtFPom26EJ9M7jtry3G
+         tCVUWZ9mQrALOzMpDR1mkOw2kzhmD1XQclpm8Qfiu8jHxX1LcoORJ2b6t8OtC54zYt3g
+         dSlhTGrFdzLgwWbnhbrGftZ/w0Zm30aQF/ZEOjAMdaJ/Tii+AOJHPfH67nzbsFJqLJ3g
+         fAobqsySzHrT+lB+IkFDFQQZQPPNTWHrY+vtY9IBFYlG3vWmpDXZHQcpOMHPQlsabZgg
+         Q1Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724626987; x=1725231787;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9xLSTg0lgGIAXGxaiAuzz/wbWnPchBb+YdXnSFs36xY=;
+        b=l/kPtqm4/SE3xNU24Y4wiKXead4PYy9zZAonBy783Ja77ed7zM9IQZc0Flr/FStV3r
+         C3s3VPllZbTbY064RPfOj5EFwYZNDy7aLGa1s54BCj76IG4W65Wkseu0HhyZGT2D0dWg
+         IyBMVAvzkWRqQPgaKXDBhnGNY9S0rp2jX7plWPPfaBOaOor443QgGFonOdxebEUO/2Z2
+         GQbhEX3IsTynTqFHH2MEkCMcQpf5/oD7xMIDT/RJslM9MRgCZg5fp4DYdogB9h0W4ogs
+         aH/lrNzlZK2JZJ2zgVt0JlXKhXFhQTE2tvgAy1zFBbEZfxv7Q5DY3S+hLxDCEAsnycZg
+         WDDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUp4Io1jg5pXSZZuuyiGkQJIL65vs8Aao2WNRl7c6Ly2Adn5MNs/HxTR/gUov/OjOO61Cc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNcctUptlKEL6SLNOoQtDttAY3pNQabJ631Pq9sFkTwvKjVXs8
+	dEDncjq006RveIUEqiVAZhHAf/XleYJm5wMmMyGLpICAShx1S3nJ
+X-Google-Smtp-Source: AGHT+IEETF/dvyyyD4yaTj4pECOy8bhNc33aAWnWLpRwp1FUK/qRdfrGuddO+SecpClJ/n2sHiyyaw==
+X-Received: by 2002:a17:90a:1b81:b0:2c8:87e:c2d9 with SMTP id 98e67ed59e1d1-2d646d6f98dmr7273455a91.39.1724626986870;
+        Sun, 25 Aug 2024 16:03:06 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d5ebbe29bcsm10651379a91.55.2024.08.25.16.03.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Aug 2024 16:03:06 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <22f0484c-52da-4845-9c6a-8041d424d775@roeck-us.net>
+Date: Sun, 25 Aug 2024 16:03:04 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iesc4bfsdftuxohg"
-Content-Disposition: inline
-In-Reply-To: <20240823120158.19294-1-tarang.raval@siliconsignals.io>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] dt-bindings: hwmon/regulator: Convert ltc2978.txt
+ to yaml
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+References: <20240819190652.373222-1-Frank.Li@nxp.com>
+ <bea0d3be-6b2a-41a7-8644-44b17d3a26dc@sirena.org.uk>
+ <ZsOfeimD94+mh5gt@lizhi-Precision-Tower-5810>
+ <e63f6e5b-09a8-400f-8425-8dac4284fc9d@roeck-us.net>
+ <ZsO86HQKxmV/xFV9@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <ZsO86HQKxmV/xFV9@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 8/19/24 14:45, Frank Li wrote:
+> On Mon, Aug 19, 2024 at 02:37:00PM -0700, Guenter Roeck wrote:
+>> On Mon, Aug 19, 2024 at 03:39:38PM -0400, Frank Li wrote:
+>>> On Mon, Aug 19, 2024 at 08:11:46PM +0100, Mark Brown wrote:
+>>>> On Mon, Aug 19, 2024 at 03:06:51PM -0400, Frank Li wrote:
+>>>>
+>>>>> change from v1 to v2
+>>>>> - maintainer change to Mark Brown <broonie@kernel.org> (regulator maintainer)
+>>>>
+>>>> I also shouldn't be the maintainer for this specific binding, it should
+>>>> be someone with knowledge of the devices.  This is a requirement imposed
+>>>> by the DT people, I'd be happy to just not list a specific maintainer.
+>>>
+>>> I remember 'maintainer' is required property for yaml.
+>>> Look like Guenter Roeck contribute many code for this driver.
+>>>
+>>
+>> Yes, but I do not maintain code or documentation outside the hardware
+>> monitoring or watchdog subsystems. You want this file attached to the
+>> regulator subsystem, so you'll have to find a maintainer from that
+>> subsystem or sign up to maintain it yourself.
+> 
+> How about just leave in origial place? I think you are more familar than
+> me about this controller!
+> 
 
---iesc4bfsdftuxohg
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I really do not want to be involved in this discussion any further.
+You insisted in moving the file, so you should be willing to bear
+the consequences (meaning: add yourself as maintainer), or at least
+find someone who does. Please keep in mind that the maintainer will have
+to coordinate future patch series if changes to both the devicetree
+property descriptions and to the driver are needed.
 
-On 23.08.2024 17:31:57, Tarang Raval wrote:
-> Add following peripherals support for the Emtop i.MX8M Mini Baseboard
->=20
-> 	* Wi-Fi
-> 	* Audio
-> 	* SD card
-> 	* RTC
-> 	* CAN bus
-> 	* USB OTG
->=20
-> Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
-> ---
->=20
-> Changes in v2:
->=20
-> 1. Updated the node name and pinctrl name.
-> 2. Removed the 'regulators' container.
-> 3. Removed a stray blank line.
-> 4. Removed non-existent properties.
-> 5. Removed unused node and pinctrl:
->    -modem-reset
->    -pinctrl_uart1
-> 6. Defined the CAN transceiver reset GPIO separately.
->=20
-> Change in v3:
->=20
-> 1. Removed 'can-connector'.
-> 2. Use USB connector instead of extcon_usb.
-> 3. Changed id-gpio to id-gpios.
-> 4. Use Level trigger IRQ in the CAN node.
-> 5. Corrected the compatible property of RTC.
-> 6. Added blank lines to separate the pinctrl groups.
-> ---
->  .../dts/freescale/imx8mm-emtop-baseboard.dts  | 326 ++++++++++++++++++
->  1 file changed, 326 insertions(+)
+Guenter
 
-[...]
-
-> +/* CAN BUS */
-> +&ecspi2 {
-> +        pinctrl-names =3D "default";
-> +        pinctrl-0 =3D <&pinctrl_ecspi2>;
-> +        status =3D "okay";
-> +
-> +        can: can@0 {
-> +                compatible =3D "microchip,mcp2515";
-> +                reg =3D <0>;
-> +                pinctrl-names =3D "default";
-> +                pinctrl-0 =3D <&pinctrl_canbus>;
-> +                clocks =3D <&osc_can>;
-> +                interrupt-parent =3D <&gpio1>;
-> +                interrupts =3D <14 IRQ_TYPE_LEVEL_HIGH>;
-
-Have you actually tested this?
-Previously there was: "interrupts =3D <14 IRQ_TYPE_EDGE_FALLING>;",
-meaning the IRQ triggers on the edge "1 -> 0". It doesn't look correct,
-if you say now there is an IRQ at level "1".
-
-> +                spi-max-frequency =3D <10000000>;
-> +        };
->  };
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---iesc4bfsdftuxohg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbIglwACgkQKDiiPnot
-vG/OWQf9FkXLvVKzVzNOGUcIOCbSF3IxVHcLdinwDSB1sOMSkfUTUacmR58NC+hx
-/c/M3Z3+ZwbOseCs5Aup1RYQ74DylZdWDXfsnpShDxm9/hCDoLluc1ELqt6WrBEU
-siBzXms2l4n1NIklW3pSMfR+sJR5+UnavvLogsFy7LgggjIOFEYIwl3hatwtHA/o
-nOT67UXKcQpqDQ6qGKZxDTCh1NX+VyAQm69QWGH30m7DXM0oJCO0hn12PXBOEd6E
-Caq7RrLw1zMCVu1vGcbfLGdXI0t9YINfFlbhCC4scenGhD97fMQr/Jgxj8/6O/a0
-ehd+08pK+pIHfXBPmgdKx3XdQ/cN1w==
-=1Lb5
------END PGP SIGNATURE-----
-
---iesc4bfsdftuxohg--
