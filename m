@@ -1,36 +1,36 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026D513AA2E
-	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 08:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C02143ABD
+	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 08:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724659484; cv=none; b=SC+opAb66TIgddfiSeYWpykDUtIkXHrgdVBphdI7pGS7we6h41zaS0fikLm38EnAZFYcd4GPdkQZIGeO/uY4myUg3P6qOkxJzXx3e1nqEBEXDYkiLPWj77HyT3KNmEtT2+0+SnJcSbhnTF790ds3C58EOpNJZDQI3woWxmwN0R8=
+	t=1724659551; cv=none; b=bZkISI5ssK1d15tU4q8MANZxsaQY5hfyS9jj9VvFx68GDVfQ5S+7dloTNAoh+TlMI5quNOiX53VXwKAEwHY2sEKL6st6wlGIqEhHXbPhccrnvtVCVruSkPg6oHez21J2kD0i+xakx8vPhUuVl0C3r96j1xK2FqNcE7pyS9x+ZtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724659484; c=relaxed/simple;
-	bh=46/82Wsk3sgrgWzUVwUCOaY65rUnHUrv96xeBczoVlw=;
+	s=arc-20240116; t=1724659551; c=relaxed/simple;
+	bh=CUfynww9JqKqKGzCXlxZMuLsQyJsqzi9oRVn77PikaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R4yasKI/NMDJcmamXMWWA50ajWkZ1s+NCNkYXP94UOJi3jazJYgCMZ3eIr5TGvsV7/XNC1K/79efKQHBGJcAYoOEcWa99WyoSSoWF1WxSM+j+sGAQJ85aSQ/Pihcv72V8RYrCSdJ3PP+C3AhXb5lI8ymiyIXhwWjWEkrWy6L4kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SM85GEVR; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version:Content-Type; b=NEX9ZnyNrEFIiq1USqI15r5JDPQVXQD+ztgjzXUfGlcEuhQGXqTrkxSkfGFH7547tqOLngN2NhyOXGNmLZ1P0cVS34Jkpbj9R1bhZuWx6yzeukF2t70w8grUrkdwqztIvEV7FmcdKI0XNG5K4UaAIw+yiOSeuJkDEuHdBDpujXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bYohC2yK; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SM85GEVR"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DDB761BF208;
-	Mon, 26 Aug 2024 08:04:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bYohC2yK"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D470C0005;
+	Mon, 26 Aug 2024 08:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724659473;
+	t=1724659542;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AurFTrtp1smemYu9ihwDCUynli024FroYMUeOrMc90U=;
-	b=SM85GEVRE3CtJNqzA1PYrBvQFq3wwh6N2Djf+FTXTBT/C299Z5LEfKgxidDsfaRoi3ZbxM
-	QF4FfEDxijHbpHpD5UT342S3ARjQUenytbBBxN5NA1M2qpDSMz+Un+o58P77LJtdhC9fVq
-	kGGXfrZWj1kiyWLt+xHfdJaPr3nczJ15gpgKQKet17E18D3h1zVBwzLZUQP8eQro/T6PKV
-	kwNdp8Qn3+PQqi9/I4FccDRy2y6r8FWs+HnFqOrpvgr77ts0mjGrUYgjnDodJvGQy+Bvc1
-	pC8nXq77cgdxg+18XS8H9yxN3GKabdTMwOxgNkSl8GEB75lYZU15TTP4FHno8w==
-Date: Mon, 26 Aug 2024 10:04:30 +0200
+	bh=CUfynww9JqKqKGzCXlxZMuLsQyJsqzi9oRVn77PikaQ=;
+	b=bYohC2yKZ1VYQb5LTct07W1+fzs/2zjlzCi6uIJoDBmsBf/MISkSxNzErDxwEExxo9wotR
+	LnLrP4smxQxp4r3i2QtIPswcdXKr1LoymeddrDX6ui8kIk48yZBeis4FHxJVZKLu26ksqA
+	7DCPB/FW7QmlyKZcMNfsdY32D8GZyplRcd350vOoP8Wd9PSRF3Amn7CLogypaYUptT51qI
+	ovFrvEZCSETg2GD0TN5xZaIWmm4oRCuXuF1LFSC2epjxTMZgg/Ms/UZmBES86jSCV7J25L
+	cT5mlCdsxN/UATefV8KbNnZULfACCWACRSq7MPhNhBbUaj+GAS41McFI8CVMeg==
+Date: Mon, 26 Aug 2024 10:05:39 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Frank Li <Frank.li@nxp.com>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
@@ -39,14 +39,14 @@ Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
  <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
  <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 03/11] i3c: master: Extend address status bit to 4
- and add I3C_ADDR_SLOT_EXT_INIT
-Message-ID: <20240826100430.33194702@xps-13>
-In-Reply-To: <ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v3 02/11] i3c: master: Replace hard code 2 with macro
+ I3C_ADDR_SLOT_BITS
+Message-ID: <20240826100539.7f93f8b9@xps-13>
+In-Reply-To: <ZsjNi4RQ+GKxZpUH@lizhi-Precision-Tower-5810>
 References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
-	<20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
-	<20240823180426.056ac093@xps-13>
-	<ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
+	<20240819-i3c_fix-v3-2-7d69f7b0a05e@nxp.com>
+	<20240823175502.3d518a69@xps-13>
+	<ZsjNi4RQ+GKxZpUH@lizhi-Precision-Tower-5810>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -61,75 +61,27 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hi Frank,
 
-Frank.li@nxp.com wrote on Fri, 23 Aug 2024 13:55:15 -0400:
+Frank.li@nxp.com wrote on Fri, 23 Aug 2024 13:57:31 -0400:
 
-> On Fri, Aug 23, 2024 at 06:04:26PM +0200, Miquel Raynal wrote:
+> On Fri, Aug 23, 2024 at 05:55:02PM +0200, Miquel Raynal wrote:
 > > Hi Frank,
 > >
+> > Frank.Li@nxp.com wrote on Mon, 19 Aug 2024 12:01:56 -0400:
 > > =20
-> > >  static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
-> > >  {
-> > >  	enum i3c_addr_slot_status status;
-> > > @@ -388,6 +405,14 @@ static int i3c_bus_get_free_addr(struct i3c_bus =
-*bus, u8 start_addr)
-> > >  	enum i3c_addr_slot_status status;
-> > >  	u8 addr;
-> > >
-> > > +	/* try find an address, which have not pre-allocated by assigned-ad=
-dress */ =20
+> > > Replace the hardcoded value 2, which indicates 2 bits for I3C address
+> > > status, with the predefined macro I3C_ADDR_SLOT_BITS. =20
 > >
-> > 	Try	to find			has   been
-> >
-> > pre-allocated?
+> > I'm fine with the idea but I don't understand the macro name. You're
+> > talking about status bits and yet the macro is named addr_slot?
 > > =20
-> > > +	for (addr =3D start_addr; addr < I3C_MAX_ADDR; addr++) {
-> > > +		status =3D i3c_bus_get_addr_slot_status_ext(bus, addr);
-> > > +		if (status =3D=3D I3C_ADDR_SLOT_FREE)
-> > > +			return addr;
-> > > +	}
-> > > +
-> > > +	/* use pre-allocoated by assigned-address because such device was r=
-emoved at bus*/ =20
-> >
-> > 	  Use      allocated
-> >
-> > pre-allocated or assigned?
-> >
-> > I guess the logic should be:
-> > - try the assigned-address
-> > - look for a free slot
-> > - look for an already in use slot that must concern a disconnected
-> >   device
-> >
-> > But the comments are not precise enough IMHO. Can you rephrase them? =20
 >=20
-> How about:
+> How about I3C_ADDR_SLOT_STATUS_BITS ?
 >=20
-> Follow the steps below to obtain the I3C dynamic address:
->=20
-> 1. Retrieve the assigned-address from the device tree (DT).
+> > > Improve maintainability and extensibility of the code. =20
 
-I guess here you mean that you try to pick that address, unless if
-already in use on the bus, right?
-
-> 2. Look for an available slot address.
-
-"available address slot"?
-
-> 3. Look for an address that is pre-reserved by another device with
-> assigned-address in DT, but where the device is currently offline.
-
-I don't think this part is precise enough. You don't look for addresses
-"pre-reserved" but rather more for busy address slots, which might no
-longer be in-use because the device is currently offline. The fact that
-the slot might have been pre-reserved in the DT is a detail that may,
-in some cases, not be true. And as far as I understand your changes,
-you're not checking the DT addresses but rather more the addresses that
-have been allocated live (which is anyway better, because i3c might
-very well be used on a !OF platform).
-
-Once we settle on a description, maybe this can be part of the kdoc for
-the main function searching for the best dynamic address?
+I'm a bit flaky on this concept, but let's try that. Perhaps with all
+the changes requested (esp. rephrasing) it might become clearer in next
+version.
 
 Thanks,
 Miqu=C3=A8l
