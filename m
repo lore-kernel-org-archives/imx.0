@@ -1,32 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3918A13A899
-	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 21:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1F0146A71
+	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 21:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724709583; cv=none; b=GsLngQGO/0EbFxfQ5fm3lKda0rEAFXiuDtd7P77uGJUH134DBFujv0Vi74HdvqeQi9FU9FwqIXdJKFx90c7HGukmZDpjag6USTwuMbkU1TOUpharlzEv4dUlw9c8DytG3amrF7xm/sNEzFWbKjQtCt6Vt2ItR+g76SMBP+okOrI=
+	t=1724709583; cv=none; b=k3ckseRCcjvoQXvpHLoa2PkJ7ENJToFSRUyF45QVqF9H4kj9xVfzPY7GukPzvv9eY5X8BJCLR94xttiUSw0+DRuMuHet42d97kYwcgeday3cC837u+cDR4Vv7YBkB9tzvd2py1oGqZMX25QnqIwGYJF75nz+iFax4N7u4njqaSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724709583; c=relaxed/simple;
-	bh=HvGserTtMgsQajo5CC1fnzNXSoyTYXSJddXaLuF3wrA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=X3uetpBMUG8XsB9p+/3evhzaua9faxb/BNpuAQbMIcnRG6U1Dz1acbmHkeGy1mIsyugwxjfMFQc/7KCfolneuXrq8scoSEGm3aiG1+A5eSrNPSzsaPyibfAVsFcAS1Yekksb2mxBHcDRd7xVOAvFSGmbOftHGkbbxYWxoqXcGN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=aXNh8g5K; arc=none smtp.client-ip=217.194.8.81
+	bh=bq9KVThxKqHGOBuaKcQ0Cgb93X/S/IAwRwAB8DDuSro=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rzZSNOMtpv6jSGTiG/3Hei/XGXr5e6CKUQK0a1GDXTMRWPStruLj/6AR0hJHDGh2pGwfbuT9mMtpEJ2LDzAOJAOhaaUZoax0DkNUdhOeVpV9FabiZPvAp63dqRc3kDppOUM5PgULpjYQ2J3+p5uhLe1yrAuFMmEJ+a0QDWPYbAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WrTuoD5L; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="aXNh8g5K"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WrTuoD5L"
 Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 356EC212A9;
-	Mon, 26 Aug 2024 23:59:36 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 7518E25062;
+	Mon, 26 Aug 2024 23:59:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1724709576;
-	bh=EYmF5/QhDbJjKfovz5yydsOAjH3w80TXNx4jPy/QEqc=; h=From:To:Subject;
-	b=aXNh8g5KLKMKNmMTzFBhlu50Gyx2XlrLb8PgnboMQUuir6Ako4QZni+kaPkaS/ajg
-	 DfKEPbWjNzDB7XPxbf8zQCTpX+JJuxzvO5Qw0SGx5J9nsWcloG73rQAdAcheGeKktA
-	 A7n1AXsvKOB5CEnot5zdzEXD+hi41FVJsLI0BELkNnmS7qw5Z2SYSn6vVJIzLFbewn
-	 OXFhMj4u+Fa4lYBdA44HWIs0HMyUJbmqjQaA9Nkeod/X0HQrXENUUyM+UuTs+EBrpm
-	 rBmreqMpDfqzGBF6+IrKa8qBl+6aXk/qFClpTaQKIW/f7sA3ZBR4HQIKtqqxPQ5vsJ
-	 VWkXsRkYXOHvw==
+	s=default; t=1724709577;
+	bh=3nXxX6+gvRVf+zAc6fUvb5njG3ZQWFMWH1kakJJtpEk=; h=From:To:Subject;
+	b=WrTuoD5LvdBi20dB/av00NgYgQ2xjqmMrMsN9A6F6l6VSHwevObQgFhGv3u9fSFyB
+	 wh1AjYSaGbKss9rkCA3e77mXFEG6Wc9abTf3E0czFQ/YeFeYJGFZjv1vLSqSi7Zr3V
+	 6Xps7LGUw1rrzK8vFSp8dHgUgrs2TR/bj6q7SJDfH/IWPspok2hF0eqs81xEcXRlzN
+	 P2JNLWXDASbB9P5DBOD0GYaUQWWfgNJATuQ1QtiLmZC3ImG7uJx4BjOy8rd7Ml17Jy
+	 Py+ZRfCusrmFzK2UQiNRc2ZvgRI6o/00VYxLlSVayck1MemTQ1Vu24oroEjgpPw5x4
+	 wPlUmlsTkLvnQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -35,15 +36,18 @@ To: Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+Cc: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 00/10] arm64: dts: colibri-imx8x: Various improvements and additions
-Date: Mon, 26 Aug 2024 23:59:12 +0200
-Message-Id: <20240826215922.13225-1-francesco@dolcini.it>
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v1 02/10] arm64: dts: colibri-imx8x: Add analog inputs
+Date: Mon, 26 Aug 2024 23:59:14 +0200
+Message-Id: <20240826215922.13225-3-francesco@dolcini.it>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240826215922.13225-1-francesco@dolcini.it>
+References: <20240826215922.13225-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,43 +57,100 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 
-This series improves Toradex Colibri iMX8X support adding:
- - working ethernet
- - correct PMIC thermal zones
- - USB support
- - analogue audio
- - ADC
- - PWM
- - VPU
+Add adc nodes for analog inputs support for all Colibri-iMX8X carrier
+boards.
 
+Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ .../boot/dts/freescale/imx8x-colibri-aster.dtsi    |  5 +++++
+ .../boot/dts/freescale/imx8x-colibri-eval-v3.dtsi  |  5 +++++
+ .../boot/dts/freescale/imx8x-colibri-iris.dtsi     |  5 +++++
+ arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi   | 14 +++++++++++++-
+ 4 files changed, 28 insertions(+), 1 deletion(-)
 
-Emanuele Ghidoli (1):
-  arm64: dts: colibri-imx8x: Add usb support
-
-Francesco Dolcini (3):
-  arm64: dts: colibri-imx8x: Add fxl6408 gpio expander
-  arm64: dts: colibri-imx8x: Add PMIC thermal zone
-  arm64: dts: colibri-imx8x: Add USB3803 HUB
-
-João Paulo Gonçalves (5):
-  arm64: dts: colibri-imx8x: Add analog inputs
-  arm64: dts: colibri-imx8x: Add sound card
-  arm64: dts: colibri-imx8x: Add vpu support
-  arm64: dts: colibri-imx8x: Add adma_pwm
-  arm64: dts: colibri-imx8x: Cleanup comments
-
-Philippe Schenker (1):
-  arm64: dts: colibri-imx8x: Add 50mhz clock for eth
-
- .../boot/dts/freescale/imx8dx-colibri.dtsi    |  11 +
- .../dts/freescale/imx8x-colibri-aster.dtsi    |  36 +++
- .../dts/freescale/imx8x-colibri-eval-v3.dtsi  |  36 +++
- .../dts/freescale/imx8x-colibri-iris.dtsi     |  36 +++
- .../boot/dts/freescale/imx8x-colibri.dtsi     | 212 +++++++++++++++++-
- 5 files changed, 322 insertions(+), 9 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi
+index c02dfdd75b60..503aa5a90503 100644
+--- a/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi
+@@ -3,6 +3,11 @@
+  * Copyright 2018-2021 Toradex
+  */
+ 
++/* Colibri Analogue Inputs */
++&adc0 {
++	status = "okay";
++};
++
+ &colibri_gpio_keys {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi
+index 91de84772e1c..a2b2a0865666 100644
+--- a/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi
+@@ -19,6 +19,11 @@ clk16m: clock-16mhz {
+ 	};
+ };
+ 
++/* Colibri Analogue Inputs */
++&adc0 {
++	status = "okay";
++};
++
+ &colibri_gpio_keys {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi
+index a6b013cc6929..6d9d54d4e549 100644
+--- a/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi
+@@ -17,6 +17,11 @@ reg_3v3: regulator-3v3 {
+ 	};
+ };
+ 
++/* Colibri Analogue Inputs */
++&adc0 {
++	status = "okay";
++};
++
+ &colibri_gpio_keys {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+index 1199e311d6f9..c7f0dfe7b162 100644
+--- a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+@@ -38,6 +38,13 @@ reg_module_3v3: regulator-module-3v3 {
+ 		regulator-max-microvolt = <3300000>;
+ 	};
+ 
++	reg_module_vref_1v8: regulator-module-vref-1v8 {
++		compatible = "regulator-fixed";
++		regulator-max-microvolt = <1800000>;
++		regulator-min-microvolt = <1800000>;
++		regulator-name = "vref-1v8";
++	};
++
+ 	reg_usbh_vbus: regulator-usbh-vbus {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -50,7 +57,12 @@ reg_usbh_vbus: regulator-usbh-vbus {
+ 	};
+ };
+ 
+-/* TODO Analogue Inputs */
++/* Colibri Analogue Inputs */
++&adc0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_adc0>;
++	vref-supply = <&reg_module_vref_1v8>;
++};
+ 
+ /* TODO Cooling maps for DX */
+ 
 -- 
 2.39.2
 
