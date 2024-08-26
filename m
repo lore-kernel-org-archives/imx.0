@@ -1,52 +1,45 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C02143ABD
-	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 08:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A175F12E1EE
+	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 08:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724659551; cv=none; b=bZkISI5ssK1d15tU4q8MANZxsaQY5hfyS9jj9VvFx68GDVfQ5S+7dloTNAoh+TlMI5quNOiX53VXwKAEwHY2sEKL6st6wlGIqEhHXbPhccrnvtVCVruSkPg6oHez21J2kD0i+xakx8vPhUuVl0C3r96j1xK2FqNcE7pyS9x+ZtA=
+	t=1724660017; cv=none; b=UIFxnWPWaxpa1TG4Bc3I90PkNrdC0qI+J4utmqggnQntLoiVgvdjRIDXAVYMt0a3JGjjg3OaMccpjsGAxZHxOhKkLbUrMRq+s5UGpmYptEICHWIj24p3dImuqe+4eGp9aSfXa5TVKLtyoRJ/EU/XEnBtP9zEQ7en/NAXvXAH4R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724659551; c=relaxed/simple;
-	bh=CUfynww9JqKqKGzCXlxZMuLsQyJsqzi9oRVn77PikaQ=;
+	s=arc-20240116; t=1724660017; c=relaxed/simple;
+	bh=Qp/00LpdFt9fyZ9y8QshjY+ptg9wzwMtAYA98L2na+o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NEX9ZnyNrEFIiq1USqI15r5JDPQVXQD+ztgjzXUfGlcEuhQGXqTrkxSkfGFH7547tqOLngN2NhyOXGNmLZ1P0cVS34Jkpbj9R1bhZuWx6yzeukF2t70w8grUrkdwqztIvEV7FmcdKI0XNG5K4UaAIw+yiOSeuJkDEuHdBDpujXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bYohC2yK; arc=none smtp.client-ip=217.70.183.198
+	 MIME-Version:Content-Type; b=XXs4XCHAjQOJdnJJl8zUsSAyPnj3UU+m9F4tfOgfeV8E1yDG+YtRxI/umn4zwwaZTwjby2j+rgQDpMe2La+YAzFIbjOSe5cjQ9sAlChm0kl5JGpuTY7Jt4L57WsbqpzH+/u9/pgfpaljN7pUu9vTKVhVtS9KqRJGyy2WefQRPJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LrSIsxdl; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bYohC2yK"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D470C0005;
-	Mon, 26 Aug 2024 08:05:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LrSIsxdl"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3D35D20007;
+	Mon, 26 Aug 2024 08:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724659542;
+	t=1724660007;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CUfynww9JqKqKGzCXlxZMuLsQyJsqzi9oRVn77PikaQ=;
-	b=bYohC2yKZ1VYQb5LTct07W1+fzs/2zjlzCi6uIJoDBmsBf/MISkSxNzErDxwEExxo9wotR
-	LnLrP4smxQxp4r3i2QtIPswcdXKr1LoymeddrDX6ui8kIk48yZBeis4FHxJVZKLu26ksqA
-	7DCPB/FW7QmlyKZcMNfsdY32D8GZyplRcd350vOoP8Wd9PSRF3Amn7CLogypaYUptT51qI
-	ovFrvEZCSETg2GD0TN5xZaIWmm4oRCuXuF1LFSC2epjxTMZgg/Ms/UZmBES86jSCV7J25L
-	cT5mlCdsxN/UATefV8KbNnZULfACCWACRSq7MPhNhBbUaj+GAS41McFI8CVMeg==
-Date: Mon, 26 Aug 2024 10:05:39 +0200
+	bh=Qp/00LpdFt9fyZ9y8QshjY+ptg9wzwMtAYA98L2na+o=;
+	b=LrSIsxdlmUt5Cou9Feh8QCcpu4xZ0fj6zVtQ2So7NSmWHulQyMiQPZs67HToG1ptjSlVRf
+	HGZPAGVF2OZOOdGJ6BXW6X8oOScS/y38En16izvGbzQMHpVdeO9CDkdYMq3x7waYSg0F0t
+	nFwf48cMzmjz1EdvjMOJnE3at65uHFXltVc329sYuKBtUng1mhGkgJ3l/Le/i4YnJMmjIf
+	vn4rIxT8rGOjWv6o4MtnRaaxG4QtA08OMHSTrlq4MPpTBiOH9tzKZc1qZxK8WP1RSYHOrz
+	D8x0HP9JxckoBRAu53ANliqxTAUFC8Tumti1BDG4AdLT+qN9LCn02dnuXUCF2g==
+Date: Mon, 26 Aug 2024 10:13:23 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
- <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon
- <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
- <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 02/11] i3c: master: Replace hard code 2 with macro
- I3C_ADDR_SLOT_BITS
-Message-ID: <20240826100539.7f93f8b9@xps-13>
-In-Reply-To: <ZsjNi4RQ+GKxZpUH@lizhi-Precision-Tower-5810>
-References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
-	<20240819-i3c_fix-v3-2-7d69f7b0a05e@nxp.com>
-	<20240823175502.3d518a69@xps-13>
-	<ZsjNi4RQ+GKxZpUH@lizhi-Precision-Tower-5810>
+To: carlos.song@nxp.com
+Cc: alexandre.belloni@bootlin.com, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-imx@nxp.com
+Subject: Re: [PATCH v3] i3c: master: support to adjust first broadcast
+ address speed
+Message-ID: <20240826101323.746b617c@xps-13>
+In-Reply-To: <20240826050957.1881563-1-carlos.song@nxp.com>
+References: <20240826050957.1881563-1-carlos.song@nxp.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -59,29 +52,26 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi Frank,
+Hi Carlos,
 
-Frank.li@nxp.com wrote on Fri, 23 Aug 2024 13:57:31 -0400:
+carlos.song@nxp.com wrote on Mon, 26 Aug 2024 13:09:57 +0800:
 
-> On Fri, Aug 23, 2024 at 05:55:02PM +0200, Miquel Raynal wrote:
-> > Hi Frank,
-> >
-> > Frank.Li@nxp.com wrote on Mon, 19 Aug 2024 12:01:56 -0400:
-> > =20
-> > > Replace the hardcoded value 2, which indicates 2 bits for I3C address
-> > > status, with the predefined macro I3C_ADDR_SLOT_BITS. =20
-> >
-> > I'm fine with the idea but I don't understand the macro name. You're
-> > talking about status bits and yet the macro is named addr_slot?
-> > =20
+> From: Carlos Song <carlos.song@nxp.com>
 >=20
-> How about I3C_ADDR_SLOT_STATUS_BITS ?
+> According to I3C spec 6.2 Timing Specification, the Open Drain High Period
+> of SCL Clock timing for first broadcast address should be adjusted to 200=
+ns
+> at least. I3C device working as i2c device will see the broadcast to close
+> its Spike Filter then change to work at I3C mode. After that I3C open dra=
+in
+> SCL high level should be adjusted back.
 >=20
-> > > Improve maintainability and extensibility of the code. =20
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-I'm a bit flaky on this concept, but let's try that. Perhaps with all
-the changes requested (esp. rephrasing) it might become clearer in next
-version.
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Frank, did you test it with eg. the Silvaco master?
 
 Thanks,
 Miqu=C3=A8l
