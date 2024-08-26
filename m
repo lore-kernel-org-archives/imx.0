@@ -1,144 +1,118 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9FD143757
-	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 22:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2690219D094
+	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 22:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724710743; cv=none; b=VOqFxg8ucZKYXMEhfpfBDeD/ITv2MNjO+/ygual1cDqRizuyfwOn+GEeJzds2ccjOvLQhTcvMd9erZWV/AZW1fYtsnwF3Vh/qT/JEFOVhi/uTf+uRarkw755hH5FM7vPVpr54AGRbCEFCYrgPIokQQRje7bzA4xb0eSEAgesqpY=
+	t=1724711290; cv=none; b=UT8W/ffbpnG0OCF2O0/mF/mi6PaHKjF99CCtZQEWpzeT6tYB7pAntCV08bX+hszWH6eHs2GsufI2XL0Z9IO1oHvbSrnnadAR4pwTxHsGX0PdCuzCQdmn02pa4qJJrrz0pW0iwz+q0rvpuN19KFAQFvfAG1icuaw9d9q21CKwBws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724710743; c=relaxed/simple;
-	bh=oiR1Fld9b770SKJdNvZawoU6zRfAeEpH73HRGqhu4Wg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HRvdsl2K8wBdQ192OapCGEacdDv6FYn7gvlTnL7Mr7H/yEPv+r2m3+VMPqR4LBc7UnFrjOz51ijku7lnzEM3wXU2jbsCHVgwnW4PuZtwU+BJejtEp/TgqK6LLaYL7EDFtES/+g+r6Sbp47AAWsrn0fX/8Sa88+d+TRKbZNbp+Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=h4367pYa; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1724711290; c=relaxed/simple;
+	bh=xdiURQBnexqTHdHtZQZrJk+9VQJz+AyCfG2A5WB6oh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h/zr7FbIVIsoChYXG8ahzfqsjZWECaI9Qm+r35ctkTBI8pBMTMtv3ALqPaGmMxE26+Huu5tLple+x1KJl/s8GLhYtuUJpT8LA6bHFIjCASCRki+wRPfIyLcCUaR/Yi/NzpwZMRZpcvzpqfNOi9/WD3LVBBV25Suqu02ZXQZQfxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TUGAKwSK; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="h4367pYa"
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 7432A20AB8;
-	Tue, 27 Aug 2024 00:18:59 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TUGAKwSK"
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 40B3020AB8;
+	Tue, 27 Aug 2024 00:28:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1724710740;
-	bh=OLHcXUX5ld590VkhJksYhwouQQmCELfT4laFDokDThE=; h=From:To:Subject;
-	b=h4367pYaDAO4MkkzKCXNmtiUU/ikzMSrhoUNea31fJiU4zwVYDWI5K0i2q4HNzsn/
-	 /SX4ptYYPt6NsVO1k799X8Cz+1zf7krTsRp+c3Oc+7edzU/0WIfucuym0SnuRrhZ96
-	 FPSiKTstBipJm55EJYvyLsyHmtF0+mWHak5547qjFM7E2BBH6cMj2bQOWoB84NZ0Wm
-	 uU+XUB8snzY3JJDDNqtVXLSig2oIrLpIR2zNqUVuBDhq01bA7DFTS6Gxc+xKSB3PbP
-	 6B2/rTFdm3nNYoZy9ygPvQyLC/14JQ6LQ08uLPTGtrDLgTB+uUV9AhXRwx1waGwNsz
-	 Ctjb+1THiqFGw==
+	s=default; t=1724711287;
+	bh=xUm9tBZ+haGiL/pcLT1XqSLOUSAW+7lu0+BByLpTz38=;
+	h=Received:From:To:Subject;
+	b=TUGAKwSKAWozeXzQWLAP7/QHSN5U98LhQ2pCIjlIfNAK330tts/gBuSXGmtb+ZGhJ
+	 rI8To4a/Lsv1ej5kjzqY/2wwG1sCUbkSD8GKZ6qmNV86GQYuFTsCU/32NWQc/qt7JB
+	 0WdR5OXi7My1DUC5XH4XLmLtOppT29kzELAZNK9GCYha9byoWU1mVXB12fUx7OCIfP
+	 qnL1cwMfCh9CngeJpCtY+hnrc/bJREzhl78lkY4orM+L/q2WJwkV705utP89tL5JXN
+	 kVQ2MCalvDD+Kntri8SOu799SQNmtzsI0ItC1rVU+Jy6SEGb7BWon0/5RSMZxOaDK7
+	 M11JEAh4gjU1w==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id D627C7F9A5; Tue, 27 Aug 2024 00:28:06 +0200 (CEST)
+Date: Tue, 27 Aug 2024 00:28:06 +0200
 From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
+To: Frank Li <Frank.li@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v1 5/5] arm64: dts: imx8-apalis: Add usb4 host support
-Date: Tue, 27 Aug 2024 00:18:55 +0200
-Message-Id: <20240826221855.16061-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240826221541.15669-1-francesco@dolcini.it>
-References: <20240826221541.15669-1-francesco@dolcini.it>
+Subject: Re: [PATCH v1 01/10] arm64: dts: colibri-imx8x: Add usb support
+Message-ID: <Zs0BdnJM536YQd-B@gaggiata.pivistrello.it>
+References: <20240826215922.13225-1-francesco@dolcini.it>
+ <20240826215922.13225-2-francesco@dolcini.it>
+ <Zsz+YjOyGoReEqUm@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zsz+YjOyGoReEqUm@lizhi-Precision-Tower-5810>
 
-From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Mon, Aug 26, 2024 at 06:14:58PM -0400, Frank Li wrote:
+> On Mon, Aug 26, 2024 at 11:59:13PM +0200, Francesco Dolcini wrote:
+> > From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> >
+> > Add USB HOST and OTG support to Colibri-iMX8X carrier boards.
+> >
+> > Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > ---
+> >  .../dts/freescale/imx8x-colibri-aster.dtsi    | 26 +++++++++++++
+> >  .../dts/freescale/imx8x-colibri-eval-v3.dtsi  | 26 +++++++++++++
+> >  .../dts/freescale/imx8x-colibri-iris.dtsi     | 26 +++++++++++++
+> >  .../boot/dts/freescale/imx8x-colibri.dtsi     | 37 +++++++++++++++++--
+> >  4 files changed, 111 insertions(+), 4 deletions(-)
 
-Add USB4 HOST to Apalis-iMX8QM SOM and its carrier boards.
+...
 
-Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi |  5 ++++-
- .../boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi  |  5 ++++-
- .../boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi  |  5 ++++-
- arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 13 ++++++++++++-
- 4 files changed, 24 insertions(+), 4 deletions(-)
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+> > index 49d105eb4769..1199e311d6f9 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
+> > @@ -23,12 +23,31 @@ key-wakeup {
+> >  		};
+> >  	};
+> >
+> > +	extcon_usbc_det: usbc-det {
+> > +		compatible = "linux,extcon-usb-gpio";
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&pinctrl_usbc_det>;
+> > +		id-gpio = <&lsio_gpio5 9 GPIO_ACTIVE_HIGH>;
+> 
+> Not sure if I missed something, CHECK_DTBS report below warning.
+> 
+> arch/arm64/boot/dts/freescale/imx8qxp-colibri-iris.dtb: usbc-det: 'id-gpio' does not match any of the regexes: 'pinctrl-[0-9]+'
+> 	from schema $id: http://devicetree.org/schemas/extcon/linux,extcon-usb-gpio.yaml
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-index 5f24356ad4e2..dc127298715b 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-@@ -135,4 +135,7 @@ &usbotg1 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis USBH4 SuperSpeed */
-+/* Apalis USBH4 SuperSpeed */
-+&usbotg3_cdns3 {
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-index 4ec2227750f4..d4a1ad528f65 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-@@ -222,7 +222,10 @@ &usbotg1 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis USBH4 SuperSpeed */
-+/* Apalis USBH4 SuperSpeed */
-+&usbotg3_cdns3 {
-+	status = "okay";
-+};
- 
- /* Apalis MMC1 */
- &usdhc2 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-index 606d9328ac99..5e132c83e1b2 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-@@ -271,7 +271,10 @@ &usbotg1 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis USBH4 SuperSpeed */
-+/* Apalis USBH4 SuperSpeed */
-+&usbotg3_cdns3 {
-+	status = "okay";
-+};
- 
- /* Apalis MMC1 */
- &usdhc2 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index 0f334c268a99..0523bd0e8cd2 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -807,7 +807,18 @@ &spdif0 {
- 
- /* TODO: Apalis USBH2, Apalis USBH3 and on-module Wi-Fi via on-module HSIC Hub */
- 
--/* TODO: Apalis USBH4 */
-+/* Apalis USBH4 */
-+&usb3_phy {
-+	status = "okay";
-+};
-+
-+&usbotg3 {
-+	status = "okay";
-+};
-+
-+&usbotg3_cdns3 {
-+	dr_mode = "host";
-+};
- 
- /* Apalis USBO1 */
- &usbphy1 {
--- 
-2.39.2
+This should be `id-gpios`. The binding for "linux,extcon-usb-gpio" was recently
+added, and this was not tested on the latest next (my fault), but on shawn imx branch and
+the old txt doc documented just `id-gpio`.
+
+We'll fix it. And thanks for catching it.
+
+
+> > +	reg_usbh_vbus: regulator-usbh-vbus {
+> > +		compatible = "regulator-fixed";
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&pinctrl_usbh1_reg>;
+> > +		gpio = <&lsio_gpio4 3 GPIO_ACTIVE_LOW>;
+> > +		regulator-always-on;
+> 
+> Needn't regulator-always-on, because reg_usbh_vbus referece by other node.
+
+Is this an issue? we expect this regulator to be always on, therefore this is
+described this way in the DT.
+
+Francesco
 
