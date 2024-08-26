@@ -1,87 +1,162 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12C085654
-	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 08:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376132CCC2;
+	Mon, 26 Aug 2024 10:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724662110; cv=none; b=GOd7rvYke7bFSQjShX999y+MT5T1kd+WRWrxdOhPUqoQFeTJwSI2taPjZ4lvpQZPqSta1xrGBtcj5+GB6ymt7t3PzSIzjauf5kA02sBDHNJ+JN/OMudCxzT710G8s4Hsgo0P4SftM+HtRWz6//UE2F59ZoL0LN/+eWRU0k/qlaM=
+	t=1724668395; cv=none; b=hlaYreF6Y5TLcz18q63MO4oSGaQtvkPwHCL/FRYUe11I/OFkfDYRB8TcAqc4Do/CADlRu1I+kOX53Z1pMy7YGIzotZO3yT3h4I18sZx0Cd89RBul2lGJo/nGzU3n0yrfIVHPKXI0LSOjLwOFeU3oyh9P3duDBSJywqwhtCwPM4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724662110; c=relaxed/simple;
-	bh=2hnjvVAoZ7bwbquiwr7BPEkR48jyp3TjmuaLIQPgQ/o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=myIiqY7Nk+TY1QvP3kIVE4cKw1DZhUGAoRWV48lE3NAIAXx8uAVqwoO+OF1Bvfr4prFudsD+CbXzRyq2KLeWXW2bqulQJnvZ7Q7yUNUD8RGyOSOuid32J7+o2RtZfwdSFN87FbduVPqJOon5JshLCWIJ3/4tNVCxjhzawZyV/hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZnshOdjU; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1724668395; c=relaxed/simple;
+	bh=8gNhFuofD5zWGUNIriljHUVsJipVG7nNNSIviq4tVXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tz4YcyloLxMDGNG9RpSryhM5vJwC8smvTbXhw+YNcBqM5ANKwR/ObU1F15Vdtuih++AdS5RcXWeyrObCqU9dPIThWMAqFA9OAuLe9QZK6/WrLAfWy0wP4lZhpakCfyTM/o8nGc5A4RF+aiQqro6gNSe6g6qR0zYmWqpHRkk07j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OyHu+hNH; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZnshOdjU"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-533461323cdso4545380e87.2
-        for <imx@lists.linux.dev>; Mon, 26 Aug 2024 01:48:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724662107; x=1725266907; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2hnjvVAoZ7bwbquiwr7BPEkR48jyp3TjmuaLIQPgQ/o=;
-        b=ZnshOdjUBE2/l//CjPlAGyvNfk85b53cAhFrcdvMa/Mz255Fqq86QCwWeOFJHnGUTQ
-         XZGMk6zW7r6fl1gGh9cVfDk6gx97KLNlX/sY9KuSMibk5Ok2RvpwmyHxQDE4HHVLxigJ
-         JwrNvOeLsSwDtLecoTuMZDsS3VCVLJuT4XsVospw0C3zh9Z8OmtggCER4ulx0qlbih0t
-         yJDpURk1oOCU43S+qahhubqlNCsnufqxD3+BrE4NOfhiEwec6nfdsHv102/2U4oMC6MT
-         QO2zIR7eORZve9wgtPczv86WNB07QGHArr2/x6PQsT5oHUNrPX9dbixoFToata5/XKR3
-         B1kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724662107; x=1725266907;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2hnjvVAoZ7bwbquiwr7BPEkR48jyp3TjmuaLIQPgQ/o=;
-        b=pMEjtb3wqwc1DGeeiws2bn7wbVc7ZwVdpaYGHSY9bh9Q5nrdQGc93f2HiKayFoYShs
-         hKLF+oRUdzWx7JFtIwmpV3LeBS2QyiC5N6b/swb+X/uHahJZ1lglCGGdFMvZ8G4tyjR1
-         cw5FFb3jb2gT7mozU4TSmRz0iijcdCoti+8k4E94B2ptixkU7koomHvAOrxllB+O7DWA
-         r37Yl8eNi/7Abh0wY8oVGsmnAGvxkbpNOrg39w5nyNSIQnoVEUO905m3PqkefQYbAqtt
-         +gWGZW7UsEhg50FMRdsYD4xjUwwgmLRowWDRfKbabBrbMcYRv+iOWI+/M8FPtf94eeki
-         lDMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmIo5jiQJxbEuYROkMKSIe2VB7IK5qQ3aaGn0+7QNQ2FQx0s8JcSMrudu2fo4OLyhsul4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWMsWewhyTuNPuaeqBgXYx+JIf0S4tg4QvPpm29BHBnR/k5JHG
-	Q2ZHrxH9ugsieqa0NV1ISgLfLjE1yxfKCjZ0IDJ/AAXZjomSwf8qo9XV1YsOxKJHsxDsASuopfS
-	wVV+PSPb2CF2hewd9WF8g1KoszVNGc/QL0yps5g==
-X-Google-Smtp-Source: AGHT+IFZerPWDOgr4c1WuohxSQ3+JvT1ubVNndAVMth/RrtYH7UChyTMrjQo7sPYZVdcATBDZ05y/rcKJPj98SHVq10=
-X-Received: by 2002:a05:6512:3088:b0:52c:9e82:a971 with SMTP id
- 2adb3069b0e04-5343882d1ccmr6349398e87.7.1724662106426; Mon, 26 Aug 2024
- 01:48:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OyHu+hNH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724668394; x=1756204394;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8gNhFuofD5zWGUNIriljHUVsJipVG7nNNSIviq4tVXY=;
+  b=OyHu+hNHw9+5OV1xZjLPFfAb6+6Yd0xZhsMKR/kFf61vletunwMrq98F
+   Fiepbfs94mc2Py9gV38ovWk3X1i+uW+ic68WfHp+mYPkuN8aI/zFalgkD
+   MGfzj02wiSEF+IPgOm9VrJjc6a3KMLaQLun1yUVCwpqvwEchpSOwNOOxR
+   MyBz8TTB/5Y93fmDc8Ca4nsBOntQFoMEp6d+1om1iqZoQFlwK39PR//nv
+   g81MlQka/NbyDgueFQ9Jz4do+zMpVLG1nRAciKXXWmBtKbt7zhjOzTKPV
+   IbExW+j+n/BcNrny3fDVjKb77kYkw2TXv0HMzHJFFsk/ykFMEiB5lHhY/
+   Q==;
+X-CSE-ConnectionGUID: SRO2l5zLSXuSwmrsN3xXvw==
+X-CSE-MsgGUID: HFJLkSLqTOGBw4PhP0RCzA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="13208696"
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
+   d="scan'208";a="13208696"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 03:33:13 -0700
+X-CSE-ConnectionGUID: i7pAAaNJSrSUyr5xtjco/A==
+X-CSE-MsgGUID: cTuMYcAhT2+25aitr3/fAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
+   d="scan'208";a="62517541"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 03:33:01 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1siX1d-00000001pi8-1NQC;
+	Mon, 26 Aug 2024 13:32:41 +0300
+Date: Mon, 26 Aug 2024 13:32:26 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Russell King <linux@armlinux.org.uk>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 0/9] AT24 EEPROM MTD Support
+Message-ID: <ZsxZuvY9MLyjog-y@smile.fi.intel.com>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+ <Zsi3s9XithGEROwX@smile.fi.intel.com>
+ <20240826075110.u3cxc6dootou72eq@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240823105421.50017-1-shenlichuan@vivo.com>
-In-Reply-To: <20240823105421.50017-1-shenlichuan@vivo.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 26 Aug 2024 10:48:15 +0200
-Message-ID: <CACRpkdb+kfRZE-tJWpxsmYFCzLhnJvCjVtmwrBCAFHbaXVFHXw@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: freescale: imx-scmi: Use kmemdup_array
- instead of kmemdup for multiple allocation
-To: Shen Lichuan <shenlichuan@vivo.com>
-Cc: aisheng.dong@nxp.com, festevam@gmail.com, shawnguo@kernel.org, 
-	ping.bai@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	opensource.kerenl@vivo.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240826075110.u3cxc6dootou72eq@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Aug 23, 2024 at 12:55=E2=80=AFPM Shen Lichuan <shenlichuan@vivo.com=
-> wrote:
+On Mon, Aug 26, 2024 at 09:51:10AM +0200, Marco Felsch wrote:
+> On 24-08-23, Andy Shevchenko wrote:
+> > On Mon, Jul 01, 2024 at 03:53:39PM +0200, Marco Felsch wrote:
+> > > This series adds the intial support to handle EEPROMs via the MTD layer
+> > > as well. This allow the user-space to have separate paritions since
+> > > EEPROMs can become quite large nowadays.
+> > > 
+> > > With this patchset applied EEPROMs can be accessed via:
+> > >   - legacy 'eeprom' device
+> > >   - nvmem device
+> > >   - mtd device(s)
+> > > 
+> > > The patchset targets only the AT24 (I2C) EEPROMs since I have no access
+> > > to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
+> > > 
+> > > Note: I'm not familiar with Kconfig symbol migration so I don't know if
+> > > the last patch is required at the moment. Please be notified that the
+> > > list of recipients is quite large due to the defconfig changes.
+> > 
+> > FWIW, I think that MTD is *not* the place for EEPROMs.
+> > 
+> > Yeah, we have the driver spread over the kernel for EEPROMs (mostly due to
+> > historical reasons and absence an umbrella subsystem for them), but it's not
+> > the reason to hack them into something which is not quite suitable.
+> 
+> Thank you for you input. There are two things to mention:
+>  1st) I send a RFC patch and asked for feedback and all I got was: looks
+>       okay, please send a proper patch [1] which I did.
 
-> Let the kmemdup_array() take care about multiplication
-> and possible overflows.
->
-> Signed-off-by: Shen Lichuan <shenlichuan@vivo.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+I was on a long vacation, I haven't had time or even wishes to look at the
+patches or patch series. Sorry for that.
 
-Patch applied.
+Second point, RFC means "request for comments", here is mine. It's up to the
+maintainers and you on how to proceed it.
 
-Yours,
-Linus Walleij
+>  2nd) I don't see the hacky part in this patchset.
+
+I haven't talked about patchset, I have talked about architectural / design
+point of view. I read the discussion and to me it seems like it solves the
+issue with a quite big hammer. If you can prove that on embedded systems with
+limited resources it is not a problem, just mention that in the cover letter.
+
+> Anyway the customer doesn't need the nvmem-partitions anymore and
+> therefore this patchset can be seen as obsolote.
+> 
+> [1] https://lore.kernel.org/lkml/20231201144441.imk7rrjnv2dugo7p@pengutronix.de/T/#m1e0e5778448971b50a883f62bd95622f6422b9a2
+> 
+> > If NVMEM needs to be updated and may cover these cases after all (and do not
+> > forget about *small* size EEPROMs that most likely appear on the devices with
+> > limited amount of resources!) in a reasonable size and performance, why not?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
