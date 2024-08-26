@@ -1,139 +1,135 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360D013A87E
-	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 07:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026D513AA2E
+	for <imx@lists.linux.dev>; Mon, 26 Aug 2024 08:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724658819; cv=none; b=Ny2SXhs1e/ZzLuSelBC9XCdyCmXzCxmMhvsI8lygvLkT9pRZoN2+ckd7s7B++0LRqeUyEnBy91tCwD1WMc5VQzm8qIY+paXtzluKWIXXVo3p5T5hdlwzFJDNjz2+dnSs1sndAhWMWAMNCghHBuArAt+r1u9i6VXWsEwNwyWL1MA=
+	t=1724659484; cv=none; b=SC+opAb66TIgddfiSeYWpykDUtIkXHrgdVBphdI7pGS7we6h41zaS0fikLm38EnAZFYcd4GPdkQZIGeO/uY4myUg3P6qOkxJzXx3e1nqEBEXDYkiLPWj77HyT3KNmEtT2+0+SnJcSbhnTF790ds3C58EOpNJZDQI3woWxmwN0R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724658819; c=relaxed/simple;
-	bh=Pzeast/KuQTsUx/8UNRiLKWBfOfCRK1vLZpSERoh2pU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VlumhlnzO6lgyi0UMcmSWEWScoY/H+QnQ9WhZwTlYzMHY2pFrmvuP8voYT6LJUeZ2jQSnO/65CaMWQgLelLZQA+zvwX1OM9qZauiOuPXPR1o3CpbRt5kx6wfEVGJsCbI9E4finQjeLUHFdPrsg8gVbk2mGWZFT1AdSwQdvgZyWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1siUVR-0006mO-Jk; Mon, 26 Aug 2024 09:51:17 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1siUVK-0038Ph-Cg; Mon, 26 Aug 2024 09:51:10 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1siUVK-006xmZ-0b;
-	Mon, 26 Aug 2024 09:51:10 +0200
-Date: Mon, 26 Aug 2024 09:51:10 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Russell King <linux@armlinux.org.uk>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>, Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org,
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev
-Subject: Re: [PATCH 0/9] AT24 EEPROM MTD Support
-Message-ID: <20240826075110.u3cxc6dootou72eq@pengutronix.de>
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
- <Zsi3s9XithGEROwX@smile.fi.intel.com>
+	s=arc-20240116; t=1724659484; c=relaxed/simple;
+	bh=46/82Wsk3sgrgWzUVwUCOaY65rUnHUrv96xeBczoVlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R4yasKI/NMDJcmamXMWWA50ajWkZ1s+NCNkYXP94UOJi3jazJYgCMZ3eIr5TGvsV7/XNC1K/79efKQHBGJcAYoOEcWa99WyoSSoWF1WxSM+j+sGAQJ85aSQ/Pihcv72V8RYrCSdJ3PP+C3AhXb5lI8ymiyIXhwWjWEkrWy6L4kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SM85GEVR; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SM85GEVR"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DDB761BF208;
+	Mon, 26 Aug 2024 08:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724659473;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AurFTrtp1smemYu9ihwDCUynli024FroYMUeOrMc90U=;
+	b=SM85GEVRE3CtJNqzA1PYrBvQFq3wwh6N2Djf+FTXTBT/C299Z5LEfKgxidDsfaRoi3ZbxM
+	QF4FfEDxijHbpHpD5UT342S3ARjQUenytbBBxN5NA1M2qpDSMz+Un+o58P77LJtdhC9fVq
+	kGGXfrZWj1kiyWLt+xHfdJaPr3nczJ15gpgKQKet17E18D3h1zVBwzLZUQP8eQro/T6PKV
+	kwNdp8Qn3+PQqi9/I4FccDRy2y6r8FWs+HnFqOrpvgr77ts0mjGrUYgjnDodJvGQy+Bvc1
+	pC8nXq77cgdxg+18XS8H9yxN3GKabdTMwOxgNkSl8GEB75lYZU15TTP4FHno8w==
+Date: Mon, 26 Aug 2024 10:04:30 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
+ <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon
+ <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
+ <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 03/11] i3c: master: Extend address status bit to 4
+ and add I3C_ADDR_SLOT_EXT_INIT
+Message-ID: <20240826100430.33194702@xps-13>
+In-Reply-To: <ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
+References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
+	<20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
+	<20240823180426.056ac093@xps-13>
+	<ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zsi3s9XithGEROwX@smile.fi.intel.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi Andy,
+Hi Frank,
 
-On 24-08-23, Andy Shevchenko wrote:
-> On Mon, Jul 01, 2024 at 03:53:39PM +0200, Marco Felsch wrote:
-> > This series adds the intial support to handle EEPROMs via the MTD layer
-> > as well. This allow the user-space to have separate paritions since
-> > EEPROMs can become quite large nowadays.
-> > 
-> > With this patchset applied EEPROMs can be accessed via:
-> >   - legacy 'eeprom' device
-> >   - nvmem device
-> >   - mtd device(s)
-> > 
-> > The patchset targets only the AT24 (I2C) EEPROMs since I have no access
-> > to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
-> > 
-> > Note: I'm not familiar with Kconfig symbol migration so I don't know if
-> > the last patch is required at the moment. Please be notified that the
-> > list of recipients is quite large due to the defconfig changes.
-> 
-> FWIW, I think that MTD is *not* the place for EEPROMs.
-> 
-> Yeah, we have the driver spread over the kernel for EEPROMs (mostly due to
-> historical reasons and absence an umbrella subsystem for them), but it's not
-> the reason to hack them into something which is not quite suitable.
+Frank.li@nxp.com wrote on Fri, 23 Aug 2024 13:55:15 -0400:
 
-Thank you for you input. There are two things to mention:
- 1st) I send a RFC patch and asked for feedback and all I got was: looks
-      okay, please send a proper patch [1] which I did.
- 2nd) I don't see the hacky part in this patchset.
+> On Fri, Aug 23, 2024 at 06:04:26PM +0200, Miquel Raynal wrote:
+> > Hi Frank,
+> >
+> > =20
+> > >  static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+> > >  {
+> > >  	enum i3c_addr_slot_status status;
+> > > @@ -388,6 +405,14 @@ static int i3c_bus_get_free_addr(struct i3c_bus =
+*bus, u8 start_addr)
+> > >  	enum i3c_addr_slot_status status;
+> > >  	u8 addr;
+> > >
+> > > +	/* try find an address, which have not pre-allocated by assigned-ad=
+dress */ =20
+> >
+> > 	Try	to find			has   been
+> >
+> > pre-allocated?
+> > =20
+> > > +	for (addr =3D start_addr; addr < I3C_MAX_ADDR; addr++) {
+> > > +		status =3D i3c_bus_get_addr_slot_status_ext(bus, addr);
+> > > +		if (status =3D=3D I3C_ADDR_SLOT_FREE)
+> > > +			return addr;
+> > > +	}
+> > > +
+> > > +	/* use pre-allocoated by assigned-address because such device was r=
+emoved at bus*/ =20
+> >
+> > 	  Use      allocated
+> >
+> > pre-allocated or assigned?
+> >
+> > I guess the logic should be:
+> > - try the assigned-address
+> > - look for a free slot
+> > - look for an already in use slot that must concern a disconnected
+> >   device
+> >
+> > But the comments are not precise enough IMHO. Can you rephrase them? =20
+>=20
+> How about:
+>=20
+> Follow the steps below to obtain the I3C dynamic address:
+>=20
+> 1. Retrieve the assigned-address from the device tree (DT).
 
-Anyway the customer doesn't need the nvmem-partitions anymore and
-therefore this patchset can be seen as obsolote.
+I guess here you mean that you try to pick that address, unless if
+already in use on the bus, right?
 
-Regards,
-  Marco
+> 2. Look for an available slot address.
 
-[1] https://lore.kernel.org/lkml/20231201144441.imk7rrjnv2dugo7p@pengutronix.de/T/#m1e0e5778448971b50a883f62bd95622f6422b9a2
+"available address slot"?
 
-> 
-> If NVMEM needs to be updated and may cover these cases after all (and do not
-> forget about *small* size EEPROMs that most likely appear on the devices with
-> limited amount of resources!) in a reasonable size and performance, why not?
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
-> 
+> 3. Look for an address that is pre-reserved by another device with
+> assigned-address in DT, but where the device is currently offline.
+
+I don't think this part is precise enough. You don't look for addresses
+"pre-reserved" but rather more for busy address slots, which might no
+longer be in-use because the device is currently offline. The fact that
+the slot might have been pre-reserved in the DT is a detail that may,
+in some cases, not be true. And as far as I understand your changes,
+you're not checking the DT addresses but rather more the addresses that
+have been allocated live (which is anyway better, because i3c might
+very well be used on a !OF platform).
+
+Once we settle on a description, maybe this can be part of the kdoc for
+the main function searching for the best dynamic address?
+
+Thanks,
+Miqu=C3=A8l
