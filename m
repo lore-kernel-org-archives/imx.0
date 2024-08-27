@@ -1,217 +1,85 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26C61B5300
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 12:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0CB1BF7E1;
+	Tue, 27 Aug 2024 12:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761574; cv=none; b=dMDO7Xm9VcvCUgipCdS6Ws5jLXvCoEwdglMMsKBAAKE5y7j7tR+9iHKwCjySNPsT/52pCtlXMzh77aCK6SxPlhK3RTtyAKJCHaYuHJ/h295Dlu8ZQj/xLeQpDtYsoQqfegF6YwoE2lIzlqUKoCWc9mYqfjQ7ItJ05xkNcD+eMDs=
+	t=1724761901; cv=none; b=eqHNADVgnylQLOLJEohCxhlpy5Ok4kKTblXtrmubwuVfZzFQTGjPajL3a/I56J0zmaqdROk3ZHcvnMSIQrlrUGa7RAxzU0EEI84QxK5Um9GVfJGool67n1x2yHoSaxw8XGENkRr/aPNcDlf/a2OWH0uTJmZaz4DJgv/CvCX9D1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761574; c=relaxed/simple;
-	bh=90csS7TzFomY9kk2SlVaXzWefeCJC2GYS7YDcIm7oD8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HqQlgbG6qIMqcmIadVcCl1fN5XnBBoGNbMldC60ZyZBbqasad8dvYcYWgEyTa01XeRl9AZkN03m0D8FLWevIZzwPA/n8fWckLo6xrImm5vVkNww/1iR6KO3qmrpMo+/QfKMOrwsPWnokXipAPf6qiyKV3dlaZPuAJSOXQDnWkJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=WwUROeAJ; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1724761901; c=relaxed/simple;
+	bh=j0hRm/gJPQ7F3cgnMEppt5zV1tBSEPSVWQy7ZCwmuUg=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=p5UF9GIKXwyafyCXkMs8GhRPNs9LwZUOPK3C+RzgeI9Jns4S/zYsULkpuwfLvTPtbbozjxbLMhQJiB+c4NTW6gI/42uJ60bBVpDVnsQBR1eDzkuS+meiC15auhwdYpmjMlrj+En1FoPjIsCa98hGbLN3vtOGPvlpB2B4EIPdWpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7KBBR3u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="WwUROeAJ"
-Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: lukma@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 4889B8882C;
-	Tue, 27 Aug 2024 14:26:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724761570;
-	bh=3LM+F6Jdtc9cR249fkM14T/K09xqnRGCL1nraIQ28HE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WwUROeAJMcqJW+p2pZ1SOeMdOiebljbf5K79F6jEX4jKk0vqjwLD2xtImfsd/0NBW
-	 /+RbNQsjZNaV0SKZLYZL+lXGEw3pw5on67bpgeTWvGTnfZh6Xlt5mMGMq5akpmGeEj
-	 jniB2rFKZSmt/AcN0zESunAnRUaQ+xyGanFVCz/LFPtNJc6uxSuXx8ATyBnBOvyR2t
-	 77KPbm/ZUuGz2xKspb2xavFedeuEXWygWO3Br4PYod87FHgAXjdReyEg+xQ2w16iE9
-	 cqh9lIJdkPQHR9vkHkXEqr7BguwIPlMSehCjk4tpE6eJb6V16ItY11pqds57gM0u8S
-	 XJaVikG5ly7Yg==
-Date: Tue, 27 Aug 2024 14:26:08 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dts: nxp: mxs: Update device tree description for LWE
- imx28 based devices
-Message-ID: <20240827142608.36961a3d@wsk>
-In-Reply-To: <737edb34-688d-4800-bb50-2374ac94ac75@kernel.org>
-References: <20240827084255.2120864-1-lukma@denx.de>
-	<737edb34-688d-4800-bb50-2374ac94ac75@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7KBBR3u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A916C61049;
+	Tue, 27 Aug 2024 12:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724761901;
+	bh=j0hRm/gJPQ7F3cgnMEppt5zV1tBSEPSVWQy7ZCwmuUg=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=H7KBBR3uIDi3SAjo8FLifPkHuvIpyMWU1/k6O6t/fQVF/Q3hqO9+0bT9phS2Xed+N
+	 JB2BbhBXXIlibRuB6WP+jOO/xp1EcDLN6smCPbRD5VVOxQtdCE2KyxQau2+NbbFv4R
+	 raOnTL36JHZDDno04zIJess+KDInyebKT32+PkvvJ3wpc/R3cU4AiRA7b14NHLSC8S
+	 sZMeYq8LOT78PuEOypSG+H2jdhKIE27CtqrRQSM7lJLqNaB910F1e8in5gMXGd/xvP
+	 bxMvDBqibYSMipDC30C/UruHd4A/Q5b3NvvEf4CjrIzKUWr0ffI22IfVP18YwYPsaU
+	 3wm1psz7WQugg==
+Date: Tue, 27 Aug 2024 07:31:39 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/IW_JTQw4WwK+ijFjBb0rCcO";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+ imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-arm-kernel@lists.infradead.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>
+In-Reply-To: <20240826205334.975272-1-Frank.Li@nxp.com>
+References: <20240826205334.975272-1-Frank.Li@nxp.com>
+Message-Id: <172476183829.3553281.6314012832354346473.robh@kernel.org>
+Subject: Re: [PATCH 1/3] arm64: dts: imx93-11x11-evk: add io-expander
+ adi,adp5585-00
 
---Sig_/IW_JTQw4WwK+ijFjBb0rCcO
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof,
+On Mon, 26 Aug 2024 16:53:32 -0400, Frank Li wrote:
+> Add io-expander adi,adp5585 under lpi2c2 and lpi2c3.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx93-11x11-evk.dts     | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
 
-> On 27/08/2024 10:42, Lukasz Majewski wrote:
-> > The description for imx28 based devices needs to be updated after
-> > some further development. =20
->=20
-> Everything is an update, please be specific in commit subject and
-> message.
 
-Ok.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
->=20
-> >=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > ---
-> >  arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi | 38
-> > +++++++++--------------- 1 file changed, 14 insertions(+), 24
-> > deletions(-)
-> >=20
-> > diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
-> > b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi index
-> > 69fcb0dde940..6fa1f3e25b08 100644 ---
-> > a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi +++
-> > b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi @@ -55,23 +55,6 @@ &i2c0
-> > { status =3D "okay";
-> >  };
-> > =20
-> > -&saif0 {
-> > -	pinctrl-names =3D "default";
-> > -	pinctrl-0 =3D <&saif0_pins_a>;
-> > -	#sound-dai-cells =3D <0>;
-> > -	assigned-clocks =3D <&clks 53>;
-> > -	assigned-clock-rates =3D <12000000>;
-> > -	status =3D "okay";
-> > -};
-> > -
-> > -&saif1 {
-> > -	pinctrl-names =3D "default";
-> > -	pinctrl-0 =3D <&saif1_pins_a>;
-> > -	fsl,saif-master =3D <&saif0>;
-> > -	#sound-dai-cells =3D <0>;
-> > -	status =3D "okay";
-> > -};
-> > -
-> >  &spi3_pins_a {
-> >  	fsl,pinmux-ids =3D <
-> >  		MX28_PAD_AUART2_RX__SSP3_D4
-> > @@ -109,7 +92,7 @@ &ssp3 {
-> > =20
-> >  	flash@0 {
-> >  		compatible =3D "jedec,spi-nor";
-> > -		spi-max-frequency =3D <40000000>;
-> > +		spi-max-frequency =3D <20000000>;
-> >  		reg =3D <0>;
-> > =20
-> >  		partitions {
-> > @@ -133,14 +116,21 @@ partition@90000 {
-> >  				reg =3D <0x90000 0x10000>;
-> >  			};
-> > =20
-> > -			partition@100000 {
-> > -				label =3D "kernel";
-> > -				reg =3D <0x100000 0x400000>;
-> > +			partition@3 { =20
->=20
-> This does not look right. It is neither explained in commit msg, nor
-> matching reg.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-The SPI-NOR memory layout has evolved during time lifetime of the
-device - for example special partitions to keep track of booted devices
-for A/B booting scheme was added.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
->=20
-> It does not look like you tested the DTS against bindings. Please run
-> `make dtbs_check W=3D1` (see
-> Documentation/devicetree/bindings/writing-schema.rst or
-> https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sou=
-rces-with-the-devicetree-schema/
-> for instructions).
+  pip3 install dtschema --upgrade
 
-Could you be more specific here?
 
-For example:
-CROSS_COMPILE=3D"*-gcc" ARCH=3Darm make -j4 dtbs_check W=3D1
+New warnings running 'make CHECK_DTBS=y freescale/imx93-11x11-evk.dtb' for 20240826205334.975272-1-Frank.Li@nxp.com:
 
-Show:
-arch/arm/boot/dts/nxp/mxs/imx28-xea.dtb:
-/apb@80000000/apbx@80040000/saif@80042000: failed to match any schema
-with compatible: ['fsl,imx28-saif']
-
-Where the 'saif' sound driver is already supported:
-git grep -n "fsl,imx28-saif"
-Documentation/devicetree/bindings/sound/mxs-saif.txt:27: compatible =3D "fs=
-l,imx28-saif";
-Documentation/devicetree/bindings/sound/mxs-saif.txt:35: compatible =3D "fs=
-l,imx28-saif";
-arch/arm/boot/dts/nxp/mxs/imx28.dtsi:1110: compatible =3D "fsl,imx28-saif";
-arch/arm/boot/dts/nxp/mxs/imx28.dtsi:1127: compatible =3D "fsl,imx28-saif";
-
-Changes from this patch do not touch the generic imx28.{dtsi} code at
-all.
-
-I would assume, that the portion of my patch shall not bring any new,
-extra warnings/errors?
-
->=20
-> > +				label =3D "rescue";
-> > +				reg =3D <0xA0000 0xF40000>; =20
->=20
-> Lowercase hex
-
-Ok.
-
->=20
-> > +			};
-> > + =20
->=20
-> Best regards,
-> Krzysztof
->=20
+arch/arm64/boot/dts/freescale/imx93-11x11-evk.dtb: pinctrl@443c0000: 'sai3grpsleep' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx9-pinctrl.yaml#
 
 
 
 
-Best regards,
 
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/IW_JTQw4WwK+ijFjBb0rCcO
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmbNxeAACgkQAR8vZIA0
-zr2Psgf/W6iVmFrnEXvDNjZMnWZoSyJF2CXY1W6zqHPxD2xiA+wAThMyJM3ULs3t
-Scj9xt0+k+bRpQbHrsy/FI2x5rQWS23V0FYrIqSOOIZX/+hu34EdUnIU1uf/FMTE
-VVdSuKfqSnKDUUuuok7SNRMinPaiUNtpp/5lJ8J+VZDZUUrXrnpKa1jfTAl77wCJ
-WkRYrhOfT1ylML2g+Az7yEv/KjYomdSZbkDvuVBI9VeR8FTdarPD7lxO3aFusJwC
-WdbmkpPk5TBnWAxWzNfLydV3fv8zIa8JgpP7zcILsQsLoPtIjJ743rM7HnMhkeMj
-bvdUFJA1WnlMRmk4pHQgBKZWCEwBzw==
-=au73
------END PGP SIGNATURE-----
-
---Sig_/IW_JTQw4WwK+ijFjBb0rCcO--
