@@ -1,46 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122BB1C6F4F;
-	Tue, 27 Aug 2024 16:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ACB64A;
+	Tue, 27 Aug 2024 16:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724774413; cv=none; b=g+n8uKcb/I8Ci8LnFUA0ULdhfEOE/I7ydAHqOEMN2252sIWF9yXgQs/Q3dVweLUTJcJRQM3q0eTW6luym/7yg/2qpkYHG6kTC988dtQ2nooYZts06zhVnLqEhhZmFnkJ0PkCYGbGMerywWPJeCShBkMMXTqJD+5oXg4ZYZO57RQ=
+	t=1724774875; cv=none; b=qOWkriVTAvf7+d5ZgLOyiFSmBctVQWBKpPignr0CwmXrkJtAxmzNOyJx5sQNPyBxegUz4TCfJP/6IHOFlerU7nwMfO/+PvyzprPz/ls34IchHYC5emddRq6AkllipheHipOiP/11fhOYzJE9sby5JS04cP8f3VC5VxaXM8GxT+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724774413; c=relaxed/simple;
-	bh=glt23gL14OT29ySgLa2OLHvgpFuLQ4dVuwOcWfQCHhg=;
+	s=arc-20240116; t=1724774875; c=relaxed/simple;
+	bh=PxD+IcsDEZ9xXG7fmj5qGES4cWSVJLZ0Q/GZsBMb8Ic=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aMHziV2/MeTsgiDK5Bv18BGsvJiUSWITFi7ZOeNnJjdbk2s8AV5HKCozfE1pi1fCD76Iba8p67lPbMAGxECBertbgQFWRKuGMVX4nTjSDp/H3rJVszhbuyMN8wS8df6g7NEHEAKgyFUIEvzuBiZ/uk9P2iadL4chxgLWiQBwE9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBjnBdjn; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lg+XZ7CWu/KKR3KvU8bBtQL7g9XmcnSVe7bQ6rSlN2VnVX4rQZNTEu7XHXBNt2tVoIyoM6+xKtqq4fl3NNaqMysdmDZoTPvCiZlxhjfLKeZ1JkILkfSqYb6WsNrnJVGAbGKEiZpDtg/AHdpeVsW1PkMwjIJIqWwJB33UowbG5/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7WsD/Rb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBjnBdjn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FFFC4FE0A;
-	Tue, 27 Aug 2024 16:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7WsD/Rb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8686EC6106A;
+	Tue, 27 Aug 2024 16:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724774412;
-	bh=glt23gL14OT29ySgLa2OLHvgpFuLQ4dVuwOcWfQCHhg=;
+	s=k20201202; t=1724774874;
+	bh=PxD+IcsDEZ9xXG7fmj5qGES4cWSVJLZ0Q/GZsBMb8Ic=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lBjnBdjn1AI/zAlDKPGgTVd+arH3lcdjpMzuPQjwabOLKdcIjEdWwTYDjZUeXCQ1H
-	 3zHCw/ZhXiZIzgxXqckqYfAfqafahvLlH4yuuopHc/hk9BtE+AZ4e+Djz7W9P4RQww
-	 7nFYf/Ikbpq/PgSp+Tz9lmz9tCvkqIQ6Kp795AZMOubilOuctNdMruyg8D5S44a8mk
-	 QBGqJuSBpr06F/2AtwFoniaBdUwHu/lVR+qhnRaSpuvubLHshFlvOkmgw5ngUkFGw7
-	 BzPecD7pqJIKFz9lhM6VrBd4HPPCzy+3YmJwyi/hylLaVC+6vrjyMXH+6uS/0fv5kk
-	 u1fZnwkjtm/Dw==
-Date: Tue, 27 Aug 2024 11:00:10 -0500
-From: Rob Herring <robh@kernel.org>
+	b=k7WsD/RbALGPv6gLXwXXbC8he9X0lrMd/w3TFcnsyxQcCQ31W7LjADm481hdqgWII
+	 R26SDKINFMZX+QcVj4H1xgLRXVhWvzzilQpebxBA+4n1r+cy0eTgXefjb7CCbecxBk
+	 x/bF5E/WfAu6tjQ8BC4H5Uwj6X9EDTLvquTf4jQ4rI07vQpKh4xe/qcmXfUialyoiF
+	 rWnB7tE+bqQGjv0g1E9AZwC8/wn0wzbeKs4OZ7OE9gq3MCBh9xAPVowhXqNQStIN+3
+	 nWTEOMbsStiqiTrKEzCaT1eQQNNjk+z4qfO2rz1KztP76W09lMqeW5q7sKsdR/QE6i
+	 V3u+xbPWwTgOg==
+Date: Tue, 27 Aug 2024 11:07:52 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, devicetree@vger.kernel.org,
+	Olof Johansson <olof@lixom.net>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: hwmon/regulator: Convert ltc2978.txt
- to yaml
-Message-ID: <20240827160010.GA3965737-robh@kernel.org>
-References: <20240826163626.961586-1-Frank.Li@nxp.com>
+	Bjorn Helgaas <bhelgaas@google.com>, imx@lists.linux.dev,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	linux-pci@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: PCI: layerscape-pci: Replace
+ fsl,lx2160a-pcie with fsl,lx2160ar2-pcie
+Message-ID: <172477487189.4026008.12479335354124304319.robh@kernel.org>
+References: <20240826-2160r2-v1-0-106340d538d6@nxp.com>
+ <20240826-2160r2-v1-1-106340d538d6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,34 +51,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240826163626.961586-1-Frank.Li@nxp.com>
+In-Reply-To: <20240826-2160r2-v1-1-106340d538d6@nxp.com>
 
-On Mon, Aug 26, 2024 at 12:36:25PM -0400, Frank Li wrote:
-> Convert binding doc ltc2978.txt to yaml format.
-> Additional change:
-> - add i2c node.
-> - basic it is regulator according to example, move it under regulator.
+
+On Mon, 26 Aug 2024 17:38:32 -0400, Frank Li wrote:
+> fsl,lx2160a-pcie compatible is used for mobivel according to
+> Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt
 > 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-cx.dtb: /soc/i2c@2000000/i2c-mux@77/i2c@2/regulator@5c:
-> 	failed to match any schema with compatible: ['lltc,ltc3882']
+> fsl,layerscape-pcie.yaml is used for designware PCIe controller binding. So
+> change it to fsl,lx2160ar2-pcie and allow fall back to fsl,ls2088a-pcie.
 > 
+> Sort compatible string.
+> 
+> Fixes: 24cd7ecb3886 ("dt-bindings: PCI: layerscape-pci: Convert to YAML format")
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Change from v2 to v3
-> - put my name into maintainers.
-> change from v1 to v2
-> - maintainer change to Mark Brown <broonie@kernel.org> (regulator maintainer)
-> - update title to (from ltc2978 data sheet).
-> octal, digital power-supply monitor, supervisor, sequencer, and margin controller.
-> ---
->  .../devicetree/bindings/hwmon/ltc2978.txt     | 62 ------------
->  .../bindings/regulator/lltc,ltc2972.yaml      | 94 +++++++++++++++++++
->  2 files changed, 94 insertions(+), 62 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/hwmon/ltc2978.txt
->  create mode 100644 Documentation/devicetree/bindings/regulator/lltc,ltc2972.yaml
+>  .../bindings/pci/fsl,layerscape-pcie.yaml          | 26 ++++++++++++----------
+>  1 file changed, 14 insertions(+), 12 deletions(-)
+> 
 
-Based on the discussion, I think it is easier if we just leave this 
-under hwmon.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Rob
