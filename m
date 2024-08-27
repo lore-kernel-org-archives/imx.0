@@ -1,175 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957221946B8;
-	Tue, 27 Aug 2024 09:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A99F13C9A9
+	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 09:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724749243; cv=none; b=W6XYhku4uLnuUO6RVrDp7vypTVRtoekFwT61Zp+5mj1WajfrVtf55b9MLA1r7Gp0OZB2R7VpWwQ9NxchbDYxpu709/LY5DPd5vS7OGiA2j0vfBHZV3NnRmmm3svfzl0Q4Iz/uLXmQEB3MoQiXKOH2CYDZydkPzYdvdqmi2UVgsY=
+	t=1724749694; cv=none; b=oNXI4m84TVSA7otqDfIgsQolZwTkWbJy7h13CghHBzp5Im+pa5cObPCAH3cgX0fjLJJEIE9Phr97FKBR1gQN2YZdp4686oqD0qHeonsMCMV8LTFoEYGzp+116hhSm0uYnnXPnZQWp2rLOlKWYY4RyaFf7n1/UHsRyCPLNdwFPto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724749243; c=relaxed/simple;
-	bh=AEcuwlJtGCkKrbiEX6+IN0+L3Xu+OVNM8HVvUWcOQtU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fTDR0X8kAIFZ7v/MFl8Kq/0txjgyAGsQGP7PNsFk+cG5VtqF0x4yjOkAq4HZUiM3r2gRL6Mvb1XZhltHV3kkLah6p+C5In5Bh4ry0VIalOfbqYHk1Lu+7ru+Ur8k5XxeM4+1NgEIbsy3bSsg9FDuTNF/G3PwXYh2XeVJTYfuZvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+fC9L8Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724749694; c=relaxed/simple;
+	bh=Igzhsr6xLKn34LLaq/367aBaun9102nWNVaY1z4JR44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jsMknwh/9z4evWz72Ul0JisWEU/ffgQF5D/90eFkciB8cUQk5mQkGp7IkRC3B2GmmbXLG08h7POQMjlhJTFPzKtSRmoUOX7mx4lOqO04/JDLiuOIYOBvabVXfWelf8V6k0LRMNTcWGNPfdO6Vxh9oxQa+y5KgXRVZtFg/xtYeLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rlde/GkT; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+fC9L8Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E32C8B7AF;
-	Tue, 27 Aug 2024 09:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724749243;
-	bh=AEcuwlJtGCkKrbiEX6+IN0+L3Xu+OVNM8HVvUWcOQtU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=b+fC9L8Y0EMc0FkTnF3mcSyITji41+WVWi+blTqXieN++x7oxKNdUMSiMA0BdKf8H
-	 HZtgskyYeFZFgySbJNLkMnfPFrAziAWA4LprXLEiIhrNF12EHCBVPSHD9b2BSTEfNz
-	 gYlSli1LlXPeczkaZobrQ1XPTVRs30DHtCWX9u/VAqKiS03iJaeXnE99J77XgJmllm
-	 uJqyTomK1VsqzcgGDYGJuXOXY00ZWGYK6l0TJEBRsr53IcNzvYKzegyteRltq9pGNR
-	 sXZASdAbsM+taPZuqgf5A79nTxsOorM9nDL+RzelkvXliCO7UT1yi2/SHfEsXaisVt
-	 REc6giFhiqLqw==
-Message-ID: <737edb34-688d-4800-bb50-2374ac94ac75@kernel.org>
-Date: Tue, 27 Aug 2024 11:00:35 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rlde/GkT"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-371b098e699so4170009f8f.2
+        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 02:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724749691; x=1725354491; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x46mMvsDoL/gz4AXX+6m6jvlKSmgpq2B+loqNQXPG3M=;
+        b=Rlde/GkTzVWtdw90/AuR5lhETZjenfaGzcU9r7b6Pv6kAXxssvp9e9jE7jYLi5HQ+z
+         E+BCO0b45yUJko8XFCZHDJSpZAK33WK7wluatmGDkMp46QrnOUzn0RzdXY3x882QQNuG
+         EotarBchru4oLp9sgDgyhcc6GFZI9/NqvhpakeTU2sgOuh/NypGu1Nl3L3PA9v9NcKUt
+         mh5zOmQ9fPWj1VwFA0t4s9VddpTY2VZvSz95i5STjECr/zipNh8j0OB4DPg6Ocrvoe0v
+         scCzcB/DNwhi7XdCn1c4TNbv2I6HRybL4GJ3OWxZrvPvCU5ycGGR5W/HI11lmMXXX9/D
+         9Y9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724749691; x=1725354491;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x46mMvsDoL/gz4AXX+6m6jvlKSmgpq2B+loqNQXPG3M=;
+        b=YrbVuvE0U5m86I8ifk4wTWrt4TlGoBlRdZjaLKFgTGB69QOthYp+3F4y+mUO7cN+vg
+         2Q3fgaHJvtB2cCsm2H5Ap+kPOElNS5ulLXCjrPkg55q6AddZqNhKT+Q31WMtFGo4cY+V
+         PqRwcLFR0bmwfZ4Ueb2v3iaVyjnyv3/x0yst4khErfI8Fa0Co8JnpmjSAHd0/4w5yf3J
+         bzyhZe8UeeUTKtxfByTVei2I/1z2XY2LGkaPPphnP03JEFYe8wIp6Gn8fC0thWYrzOwP
+         zvPMdXsT7CL7aebajUY1WnWZZuTkGl3iwCeTgFXJNJEoFVMBeg7NXg8WfQIS+wfAE6pE
+         noEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEKWH9tdTFYp3wScY5JaN5w9AYfi9HXUt9u9orL05HbHY0TDqtAdJJlyhR1On2SkR9Ts8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz4xvZs/iksbQVO0GVS5DxVqGsH6LUQ8GOqy+PMUF3a1puIsi8Z
+	tEkg2wFAmXEu6wuadCG0EOla1Uq3DjT/zO5I2ozW+BHLSCEW1vZq
+X-Google-Smtp-Source: AGHT+IFQLCNAPykfuZm35J5ShDF+paRGaZLn8ZiQyvmSeiQXC8xkPQFOp7wT6LPmO7u85DICVqVpfQ==
+X-Received: by 2002:adf:f841:0:b0:371:7d3c:51bd with SMTP id ffacd0b85a97d-37311855c11mr9692614f8f.14.1724749690260;
+        Tue, 27 Aug 2024 02:08:10 -0700 (PDT)
+Received: from orome (p200300e41f29d300f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f29:d300:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-373081ff63esm12541788f8f.87.2024.08.27.02.08.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Aug 2024 02:08:09 -0700 (PDT)
+Date: Tue, 27 Aug 2024 11:08:07 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: linux-input@vger.kernel.org, 
+	Michael Hennerich <michael.hennerich@analog.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Laxman Dewangan <ldewangan@nvidia.com>, Hans de Goede <hdegoede@redhat.com>, 
+	Tony Lindgren <tony@atomide.com>, Jeff LaBundy <jeff@labundy.com>, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH 17/17] Input: tegra-kbc - use guard notation when
+ acquiring mutex and spinlock
+Message-ID: <m6mttlalfyekhmfmwtw7gk2j5hw7y27xowxjyn5cicdslkw4dh@4jmjzkr5cytd>
+References: <20240825051627.2848495-1-dmitry.torokhov@gmail.com>
+ <20240825051627.2848495-18-dmitry.torokhov@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dts: nxp: mxs: Update device tree description for LWE
- imx28 based devices
-To: Lukasz Majewski <lukma@denx.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240827084255.2120864-1-lukma@denx.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240827084255.2120864-1-lukma@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ab5cxs7alq7a5ikj"
+Content-Disposition: inline
+In-Reply-To: <20240825051627.2848495-18-dmitry.torokhov@gmail.com>
 
-On 27/08/2024 10:42, Lukasz Majewski wrote:
-> The description for imx28 based devices needs to be updated after some
-> further development.
 
-Everything is an update, please be specific in commit subject and message.
+--ab5cxs7alq7a5ikj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+On Sat, Aug 24, 2024 at 10:16:21PM GMT, Dmitry Torokhov wrote:
+> This makes the code more compact and error handling more robust
+> by ensuring that locks are released in all code paths when control
+> leaves critical section.
+>=20
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 > ---
->  arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi | 38 +++++++++---------------
->  1 file changed, 14 insertions(+), 24 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
-> index 69fcb0dde940..6fa1f3e25b08 100644
-> --- a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
-> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
-> @@ -55,23 +55,6 @@ &i2c0 {
->  	status = "okay";
->  };
->  
-> -&saif0 {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&saif0_pins_a>;
-> -	#sound-dai-cells = <0>;
-> -	assigned-clocks = <&clks 53>;
-> -	assigned-clock-rates = <12000000>;
-> -	status = "okay";
-> -};
-> -
-> -&saif1 {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&saif1_pins_a>;
-> -	fsl,saif-master = <&saif0>;
-> -	#sound-dai-cells = <0>;
-> -	status = "okay";
-> -};
-> -
->  &spi3_pins_a {
->  	fsl,pinmux-ids = <
->  		MX28_PAD_AUART2_RX__SSP3_D4
-> @@ -109,7 +92,7 @@ &ssp3 {
->  
->  	flash@0 {
->  		compatible = "jedec,spi-nor";
-> -		spi-max-frequency = <40000000>;
-> +		spi-max-frequency = <20000000>;
->  		reg = <0>;
->  
->  		partitions {
-> @@ -133,14 +116,21 @@ partition@90000 {
->  				reg = <0x90000 0x10000>;
->  			};
->  
-> -			partition@100000 {
-> -				label = "kernel";
-> -				reg = <0x100000 0x400000>;
-> +			partition@3 {
+>  drivers/input/keyboard/tegra-kbc.c | 45 +++++++++++++-----------------
+>  1 file changed, 19 insertions(+), 26 deletions(-)
 
-This does not look right. It is neither explained in commit msg, nor
-matching reg.
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
+--ab5cxs7alq7a5ikj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +				label = "rescue";
-> +				reg = <0xA0000 0xF40000>;
+-----BEGIN PGP SIGNATURE-----
 
-Lowercase hex
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmbNl3cACgkQ3SOs138+
+s6GX8RAAvqQ3qxdxgNEhzuoYU64kJDEhIbp45yyHPFYXnYAHVaCqfba9MDJxBrj1
+PZjvM+kVrv7tGKfpffDPUOj3CGZP3fUwjtzD7igPP1HGSfhFYJZZms9SktzpomaR
+A7O7v7uyrG2ViHe9NtGZFy5HcrwUhvrIShGqo2E4LJknvYrRzSjZRHWETX6batXa
+ndo3ajfjFi1YjBCkB+ivqgBZcE6o9S1HkPOTXpAUKwssUk9H3rLQ9Lmaxn2YsDhl
+gWhW2dW8UTjbB4AQJk8rC/HMtZdgJYJ7QKi2BgCFf+vjisF/tIi1kxco8rByx4No
+HxPzqwKB813BInvUkUObGYIRujQR3nvmJQWrAhAezwsmiV5I02DuNA1EpoAip+FR
+mhmVBSuvoSIZot03tyXA8Rqx89LZKKMwBat9+tkd3J+PsYLD9BPjzF1Gpjz6bz6f
+nDqAZSQSBtQzYC/dYS+66sB4sDQdLsGZvUcWfWTiDU9qH41yoBb4QzhAd6+gNNeY
+4C4Fr92yFJ+Ebd+81fdsFARzScGzszaRhuNzqyh8tDJ6welm1tREUnLWDDGP/F2p
+ZAni38hyI51vkD0/WfoaZ4ZuZiI4F095fOE2rhOqEtX95VH7gxydbWVYbn9SnBOm
+V24G2i/lfKeADWY2fFpUCvD3PP3HCQ6z4r90TSr1oBQCteLYhMA=
+=g+bv
+-----END PGP SIGNATURE-----
 
-> +			};
-> +
-
-Best regards,
-Krzysztof
-
+--ab5cxs7alq7a5ikj--
