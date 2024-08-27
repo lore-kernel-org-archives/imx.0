@@ -1,60 +1,60 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5D813BAE4
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 09:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A3619AA46
+	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 09:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724751415; cv=none; b=MfZkE6vWqKGr5ne8JQVe9Qtw4EjeZeUgEg9HuGQwVZjRsFWSmu07E652l8BKbolygxqzXpdbdmO+wwbwjMBeMPzYcMWFCdMEmHVgKZafvTiroLvp9Sd4BSNf7eoJLXONfmwqdlXR8RIFlBCLUCitorcSUuX5O2Ch1lPVqKyq4bI=
+	t=1724751577; cv=none; b=E3hd9g4c+7eM4xsvsk+EW/6ExmebLgywtutnrFAi/5MyjAsasFJDYLRBvXSLwG3zKT8TWSzKsR157VEXV4Anzz28I8uRB+OjTOIkt1IDfU4znFnHDwQU1W7jlrfRLMXdsRAQ0RwWS+upxcqyhRMLKLltJ1J5yBU6NqzhGjjI6E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724751415; c=relaxed/simple;
-	bh=X9O+EYBPhG0oPp9gn2NEJ2N9MNjQHqi4I2lEEvzDuPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bI2+4tz37DpRGLng5H7r/2WMD0unyV2RxsxPReT/ZzvF2EFUwbA7Fek9s0ZoRpArr5aIxG+YRDewDZjEhpIdvrv39bUKlTvpvfcEsoDlJCtrAcjz3Fphl2j5CYqkDVFgxTfM8RwbdNHbXGeQ01qOdu+CQjIDdWSxCtWRad99yq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NZ9iujHq; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1724751577; c=relaxed/simple;
+	bh=pd7vAXEynb0hQPnIaxUHQTA8QqnRpztQOlW6pMiXuWw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=fz+qN2LR9u6lacMxKEJkbb+JwUNnICZiEpzqvbwQLiInTiUNMjp4KL/PKzRJ4hMrqYl0pRaMM6H+c6A304OJbKKfwmnJVaBcUcLdK5mEZTk9caD+Bd+RB62ydDupHrbQf7U/LoTewvoTQEZdo8Z9B4/Hl4S5GH2W0xroCM7wdpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yAgA3nbf; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NZ9iujHq"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4280ac10b7cso3375325e9.3
-        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 02:36:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yAgA3nbf"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4280ef642fbso6687445e9.1
+        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 02:39:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724751412; x=1725356212; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1724751573; x=1725356373; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
+         :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=M4PoEhpT/1Y6hj7d27Ubo4PU4N3vsMKBCO+obqQicug=;
-        b=NZ9iujHq4kF4KVx8KKApH96iVvVNDbdFlhL13qMNPK+LSXokoU8LDnlcoWrzZGxgwX
-         hDNKBnPo+vIj0wr9YPvKTBznBnOunkaI6J7nxti/N7clT5LRK+RkA6V8+ianI3VZR0MU
-         9eaYYwTxCAika6qruUym/CRmNMgonBkEU1mO1v7cRgdehBqgbN/C3BXaF0iHCmR2wZ40
-         V04DXMytVX1IhS1Xm8ymviiyV0Wm/NUTPc6uCFPrvuFPzdPozA55u3SOtPZIeFxXQhdc
-         r3CUgZQEfTS2cV4YlvoTN9qlY6HqOzOO3PiGz3NeJKgdSBjj8FRaKg8w2Y0C9RHSI4JF
-         VJ6g==
+        bh=9NA1hPLphJFkg55aBOeaWrnCS8TwQLe/FT77xsFVr/g=;
+        b=yAgA3nbf6eRab6HMrLU1PI6P2qjtmV701KYLpL9ARSG86/eBSm0CtgHnUiswZC3sqi
+         dKZ46V+ex6oeH77aERR02ggPJxEhYsh/bOmwhZdwDEbIh+Yek4jWe9n3/yLHW8DKQCxa
+         uBgQnLXq1bsY4EoIAOnM+npdsLw8rdaZBA/yNCPy/RHMjn7zLswSnzxje40C7+TcHb+y
+         pYAknDVp78YdqIfHxShb1/oilAGvlBHpcOgLZMDHUdwMgROmXMBZ8Xeiu0KdJUr3ugv4
+         w7pOyehTFizNqO1c5KYp1MNpYpOzni7r60IaH7u+52vrSZlCZcCwMI3ENCIvbTn9UjNB
+         9nCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724751412; x=1725356212;
+        d=1e100.net; s=20230601; t=1724751573; x=1725356373;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
+         :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=M4PoEhpT/1Y6hj7d27Ubo4PU4N3vsMKBCO+obqQicug=;
-        b=NzrKtzUq7/SVhkZjG75T+KpZIRBwGecIjTFYIAnZrTFi0UnlUJcFPFLugsVPOZdmji
-         2UeAtJaRljfnPLeIJQqOymZ/s1/FD1AsJWu0ZMtOb1hcCJMbrKAaIYqSoQmx5RwPQ1e6
-         5JVZ20vBezZtjv1Fjq7n/3G2JgyB8a1skj8X/B44pcnD4MwCV1ihjhIWLxe1oIBPDc6k
-         /TGnFYGQinf6eh4w8HonznBgWde6wtiqSjBo3wQ2J/4F1fX9co8esO4Tt/4qXUSIlqYv
-         J9q+i06Os1pTKkB090/ct8HiKJf7htrY3N4FWDbgt7mlko7v62efhBTa3a4FMDZM6k5q
-         nBBw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTdTMJyiecvqb1W7ob4hYTNioOeCEbT1PBLDKLWJcXKz2+VRR3bj6Dc/Nkc0pUvvsRgWE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxuLxcBN2AVdKvWJw3i7KYcMjIpL4Y2kLLycjcRsnRJbchIilEt
-	DPBd2N9k3uKtrP+OZMXTZ2lKke5EjLzzl57yJBFMObZuD4S4ACaZiK2SbarGd18=
-X-Google-Smtp-Source: AGHT+IHhU4n7XJX4hzth7pnaIq3GZK+7CE/UqwPlLuVNRXMquJGOS+sHoUFb4pe+02lyEzmmhouFzw==
-X-Received: by 2002:a05:600c:3c99:b0:426:668f:5ed7 with SMTP id 5b1f17b1804b1-42acc8dd868mr58502275e9.2.1724751412223;
-        Tue, 27 Aug 2024 02:36:52 -0700 (PDT)
+        bh=9NA1hPLphJFkg55aBOeaWrnCS8TwQLe/FT77xsFVr/g=;
+        b=NdgZqTjDY/J75WxsyzUvr/3IrGITz5AnsmKAz9u9tWWy0v1Y5qT75XbmC0zvewxFQ9
+         kn+c9zBepSgvAWtL6LD1KDT/+jxB/qso67s9pG+ANb514vCoo3a8u8Iwxrbb98WX0fJA
+         ORjnYAsCNaM+alkVrxLzigrInvupyMvnm2tnKIKoJZk2IKOfFOf0qEl4WjYIzqesYVFV
+         4MWBIACSv9mKxGg8UNUSII8DEyB1XaBq24CSu+nduX6cxf/L1Rg1Zc6JXWk35vrAoL/Y
+         rMLHAxSmEaIJ1svzfbiMbTv58yO9Y0XYmzlqc6QN3fYcu4ViL1bcdyjf1DpUwk6L6Uad
+         Bd4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXDwxvd/K+XrA4vHykxupZWtRKtRXHA0QZ1yViU9Y8ul0MARjhwKJRpNphpsGafWiE1XP8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzAipMiIgwV5cea8ZbSC5KO2Z2HgXFZYQtfP+c+7yEoP+RyOZ9X
+	CDJDHQPQV3gpyn7374kF7S51MoO/UqgW3RDwJcPi9eSf1fqwdI0ip3fOSsd0P8Q=
+X-Google-Smtp-Source: AGHT+IEucEoPnsJ4jJ6ZUZu1I9QHe7Vec7KyXnEjRKdsR+FfHN00nz2DTyVEWDOUtU6KNSpcb2mu9A==
+X-Received: by 2002:a05:600c:3ca3:b0:426:6358:7c5d with SMTP id 5b1f17b1804b1-42acca0c1c8mr54322945e9.4.1724751572652;
+        Tue, 27 Aug 2024 02:39:32 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abee86d5esm211917745e9.15.2024.08.27.02.36.50
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ac514e269sm182322605e9.2.2024.08.27.02.39.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Aug 2024 02:36:51 -0700 (PDT)
-Message-ID: <c9f11ee1-382b-4742-b558-c2b0801d8669@linaro.org>
-Date: Tue, 27 Aug 2024 11:36:50 +0200
+        Tue, 27 Aug 2024 02:39:32 -0700 (PDT)
+Message-ID: <58f5d332-2f2a-4607-9662-e71fd23b1316@linaro.org>
+Date: Tue, 27 Aug 2024 11:39:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,22 +62,24 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] usb: dwc3: various cleanups
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: Patrice Chotard <patrice.chotard@foss.st.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Subject: Re: [PATCH 09/10] pmdomain: renesas: rcar-gen4-sysc: Use scoped
+ device node handling to simplify error paths
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Heiko Stuebner <heiko@sntech.de>,
  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Michal Simek <michal.simek@amd.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>
-References: <20240814-b4-cleanup-h-of-node-put-usb-v1-0-95481b9682bc@linaro.org>
- <20240827015935.bzv6nevcd7ec2uu2@synopsys.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, linux-pm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+References: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org>
+ <20240823-cleanup-h-guard-pm-domain-v1-9-8320722eaf39@linaro.org>
+ <CAMuHMdV0R0+u1eCiUOHhL5w-wzge9KhgyumJSd28oF9kQmnx_Q@mail.gmail.com>
+ <a48f1a0b-0e20-4782-bf6b-c430da9ae391@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -123,72 +125,102 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240827015935.bzv6nevcd7ec2uu2@synopsys.com>
+In-Reply-To: <a48f1a0b-0e20-4782-bf6b-c430da9ae391@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 27/08/2024 03:59, Thinh Nguyen wrote:
-> Hi Krzysztof,
+On 27/08/2024 11:33, Krzysztof Kozlowski wrote:
+> On 27/08/2024 09:48, Geert Uytterhoeven wrote:
+>> Hi Krzysztof,
+>>
+>> On Fri, Aug 23, 2024 at 2:51 PM Krzysztof Kozlowski
+>> <krzysztof.kozlowski@linaro.org> wrote:
+>>> Obtain the device node reference with scoped/cleanup.h to reduce error
+>>> handling and make the code a bit simpler.
+>>>
+>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>
+>> Thanks for your patch!
+>>
+>>> --- a/drivers/pmdomain/renesas/rcar-gen4-sysc.c
+>>> +++ b/drivers/pmdomain/renesas/rcar-gen4-sysc.c
+>>> @@ -303,12 +304,12 @@ static int __init rcar_gen4_sysc_pd_init(void)
+>>>         const struct rcar_gen4_sysc_info *info;
+>>>         const struct of_device_id *match;
+>>>         struct rcar_gen4_pm_domains *domains;
+>>> -       struct device_node *np;
+>>>         void __iomem *base;
+>>>         unsigned int i;
+>>>         int error;
+>>>
+>>> -       np = of_find_matching_node_and_match(NULL, rcar_gen4_sysc_matches, &match);
+>>> +       struct device_node *np __free(device_node) =
+>>> +               of_find_matching_node_and_match(NULL, rcar_gen4_sysc_matches, &match);
+>>
+>> This breaks the declarations/blank-line/code structure, so please move
+>> this up.
 > 
-> On Wed, Aug 14, 2024, Krzysztof Kozlowski wrote:
->> Hi,
->>
->> The first ST patch depends on my fix:
->> https://urldefense.com/v3/__https://lore.kernel.org/all/20240814093957.37940-2-krzysztof.kozlowski@linaro.org/__;!!A4F2R9G_pg!eFzt54pYSEl8wrvrH7yQSwFRzbojnRSyelnYjxlY8RZaU6oZCVeui2f-DHQ0bk8Fdy6gvJoSWLeAPz2w_3F9ownOFLGUoyHd$ 
->>
->> Series makes some code simplifications and cleanups.
->>
->> Best regards,
->> Krzysztof
->>
->> ---
->> Krzysztof Kozlowski (11):
->>       usb: dwc3: st: use scoped device node handling to simplify error paths
->>       usb: dwc3: st: simplify with dev_err_probe
->>       usb: dwc3: st: simplify pdev->dev usage
->>       usb: dwc3: imx8mp: simplify with devm_clk_get_enabled
->>       usb: dwc3: imx8mp: simplify with dev_err_probe
->>       usb: dwc3: imx8mp: use scoped device node handling to simplify error paths
->>       usb: dwc3: qcom: use scoped device node handling to simplify error paths
->>       usb: dwc3: qcom: simplify with devm_platform_ioremap_resource
->>       usb: dwc3: rtk: use scoped device node handling to simplify error paths
->>       usb: dwc3: rtk: return directly and simplify with devm_platform_ioremap_resource
->>       usb: dwc3: xilinx: simplify with dev_err_probe
->>
->>  drivers/usb/dwc3/dwc3-imx8mp.c | 66 ++++++++++++------------------------------
->>  drivers/usb/dwc3/dwc3-qcom.c   | 16 ++++------
->>  drivers/usb/dwc3/dwc3-rtk.c    | 52 ++++++++++-----------------------
->>  drivers/usb/dwc3/dwc3-st.c     | 38 +++++++++++-------------
->>  drivers/usb/dwc3/dwc3-xilinx.c |  7 ++---
->>  5 files changed, 58 insertions(+), 121 deletions(-)
->> ---
->> base-commit: 64b429eaf21be888cc83e9013e25897d5fb03a75
->> change-id: 20240814-b4-cleanup-h-of-node-put-usb-93fadfc77d33
->>
->> Best regards,
->> -- 
->> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>
+> What do you mean "declaration structure"? That's the way how variables
+> with constructors are expected to be declared - within the code.
+
+Continuing thoughts, so you prefer:
+
+	struct rcar_gen4_pm_domains *domains;
+	void __iomem *base;
+	struct device_node *np __free(device_node) =
+		of_find_matching_node_and_match(NULL, rcar_gen4_sysc_matches, &match);
+
+(assuming I will put it at the end of declarations).
+
+Are you sure this is more readable? It's really long line so it
+obfuscates a bit the declarations. The point of the scoped assignment is that
+you declare it at point of need/first use.
+
 > 
-> Thanks for the cleanup!
+>>
+>> If you insist on keeping assignment to and validation of np together,
+>> the line should be split in declaration and assignment.
 > 
-> I wish the mixed declarations in between statements for some of the
-> scoped device node handling can be changed. Bugs me a little with how
-> I'm used to parse the old standard with my eyes, but it's not a big
-> issue.
-
-Maybe this will be helpful:
-
-
-https://lore.kernel.org/all/CAHk-=wicfvWPuRVDG5R1mZSxD8Xg=-0nLOiHay2T_UJ0yDX42g@mail.gmail.com/
-
-https://lore.kernel.org/all/CAHk-=wgRHiV5VSxtfXA4S6aLUmcQYEuB67u3BJPJPtuESs1JyA@mail.gmail.com/
-
-https://lore.kernel.org/all/CAHk-=whvOGL3aNhtps0YksGtzvaob_bvZpbaTcVEqGwNMxB6xg@mail.gmail.com/
-
-and finally it will reach documentation (although it focuses on
-unwinding process to be specific - "When the unwind order ..."):
-https://lore.kernel.org/all/171175585714.2192972.12661675876300167762.stgit@dwillia2-xfh.jf.intel.com/
+> No, that would be inconsistent with cleanup/constructor coding style.
+> Maybe this is something new, so let me bring previous discussions:
+> 
+> https://lore.kernel.org/all/CAHk-=wicfvWPuRVDG5R1mZSxD8Xg=-0nLOiHay2T_UJ0yDX42g@mail.gmail.com/
+> 
+> https://lore.kernel.org/all/CAHk-=wgRHiV5VSxtfXA4S6aLUmcQYEuB67u3BJPJPtuESs1JyA@mail.gmail.com/
+> 
+> https://lore.kernel.org/all/CAHk-=whvOGL3aNhtps0YksGtzvaob_bvZpbaTcVEqGwNMxB6xg@mail.gmail.com/
+> 
+> and finally it will reach documentation (although it focuses on
+> unwinding process to be specific - "When the unwind order ..."):
+> https://lore.kernel.org/all/171175585714.2192972.12661675876300167762.stgit@dwillia2-xfh.jf.intel.com/
+> 
+>>
+>>>         if (!np)
+>>>                 return -ENODEV;
+>>>
+>>
+>>> @@ -369,14 +365,12 @@ static int __init rcar_gen4_sysc_pd_init(void)
+>>>                 if (error) {
+>>>                         pr_warn("Failed to add PM subdomain %s to parent %u\n",
+>>>                                 area->name, area->parent);
+>>> -                       goto out_put;
+>>> +                       return error;
+>>>                 }
+>>>         }
+>>>
+>>>         error = of_genpd_add_provider_onecell(np, &domains->onecell_data);
+>>>
+>>> -out_put:
+>>> -       of_node_put(np);
+>>>         return error;
+>>
+>> return of_genpd_add_provider_onecell(...);
+> 
+> Ack.
+> 
+> Best regards,
+> Krzysztof
+> 
 
 Best regards,
 Krzysztof
