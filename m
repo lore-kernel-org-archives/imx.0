@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CDA1B3F2B;
-	Tue, 27 Aug 2024 13:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048731A00EE;
+	Tue, 27 Aug 2024 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724765232; cv=none; b=KJ9U6x1qKKbhj0mwxTge72FpYv24TAsdikqaLZeFHwTqsW/uf4DLMKJ/LfPgfz831ad5qS54fZnyGQ+Dw2TeTdhZrTpFfqOwLtSGjObm9w5fwTTjWxOSa1UnaWbisaQYJiY0+sjHFk2LKPvEvIiy9pe+ms4K8hgTvWXTwLW0sUw=
+	t=1724765448; cv=none; b=dFAAhTWh7r59TgtKHrmYun3IYd4VthwPiCO5DODki8bcVQQVmhMDWIpH2i/HwSaf5NVznT5u07/n0t8SSLnucVCXB4mIgTusmjCbS4FIeA9/MuavyMww9xdo/B9509Sr91w4wAXXMTKuC5tXcSYQXpoGwd6oDyuYIhgikWCisEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724765232; c=relaxed/simple;
-	bh=nRdGdS6hWvFDZzHGgbtnTb6lo+eqxyXF++zxvD9b+2w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rsY0RbV6g4DGtjWNS8NRp8m98HQjK0AmYYJhxh55tEHkTmxx21OwvHeC1P5xll3h9kVnQhCJUu4ZBg4MFo5mtLp7ZbPh2LeL19cAuQPMWVAGb1fRn3G2CwkGiFmuGjjh7o9qasMxcv9/8SuSddGD+YZunq/AbqOowAEfl1m7rA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rE4uSJHE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724765448; c=relaxed/simple;
+	bh=390QqcF3SpdLaQpbC85cCIRasw2oCFxfPbOG8OLEgt0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NC5MVA9mZWM/ILACOLtGuq+Dbvah6fUm9XZnk3i+wh+aL4CkYIT0XwsSMlqo0XOq1rTYkId+xTgSznNpJrlGftd4TjUgfbUmTcqiLfcIofXiAjum5GW2yEbfJ8I+NmP37YmHjv4q7JzhFUNKscvOqXUsFUeb2gHmjIyxtrjyrTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnGc7ba2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rE4uSJHE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F30BC4DDF3;
-	Tue, 27 Aug 2024 13:27:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnGc7ba2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C21C61042;
+	Tue, 27 Aug 2024 13:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724765232;
-	bh=nRdGdS6hWvFDZzHGgbtnTb6lo+eqxyXF++zxvD9b+2w=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=rE4uSJHEkN+t9OSr0FXlRZVkgB72sBO+5zZpfyI51bYr24Y33v4B2WG1jEvl4b+yv
-	 C22PAXebLZ1Jy04gsd0GKN+e6sT9yXBsHLGE80Usbxc1AXQ55XLaWbtxCHJXlbp3+v
-	 oot/cn2fTD3UTzTk9lrrK4Rx5TxQ8xlfb1wFINe4RUhMIzH++WtRCNpiO9UJfJ9XOu
-	 o9qr8U3H653MCy8NLNPn/57W2xtvGk0Ms7QfGEY4Ht6WYK3Lcg4p1cjITmbXT3hAH9
-	 6dN7oGKE10Ub7uHS6YumfUR+33K/hciU967MjjC5w9vOCkVhp1Rk4B3k/UIT5Tq5d9
-	 PUVfEKwTDmzZQ==
-Message-ID: <86b80645-a11b-4875-a02e-e0b0c86a4f9d@kernel.org>
-Date: Tue, 27 Aug 2024 15:27:07 +0200
+	s=k20201202; t=1724765446;
+	bh=390QqcF3SpdLaQpbC85cCIRasw2oCFxfPbOG8OLEgt0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gnGc7ba2c3Ym8w3Zc4xSxEB4O8luozVNMKLKLeJs9tUO4Y/A7jSBKqA0e3a4SdNIS
+	 DkUCHfSmPtmwYs7NiGkxp03VVoCALZtxj5mTgJBJpbOJmuzvjgC+nBgVMka5H7Nvfx
+	 HyHycTyPG0aL2NxINDe1xNQcbMGvu3ZTjxWoPJAXqbTAq8LkZ9gsZZUvF3fua0A4Us
+	 XqsSez6Z2qAYy8kbCvwwDO7B4FTVv5rGHyjqeJZLESDcescl5pCOSb8H9mUxguOA4t
+	 ZI1jDaeGvJf3aehVR7Rz6THKjc02oP5JDxDJYo2Bt+4ruUCIEnMibriHVadEMLJueZ
+	 TACdPrRJxkWmA==
+Message-ID: <943e70f2-7d5f-44b4-a746-ca3e26678879@kernel.org>
+Date: Tue, 27 Aug 2024 15:30:40 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,22 +35,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: imx93-11x11-evk: Enable sound-wm8962
- sound card
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20240826205334.975272-1-Frank.Li@nxp.com>
- <20240826205334.975272-3-Frank.Li@nxp.com>
+Subject: Re: [PATCH 2/2] arm64: defconfig: Enable ADP5585 GPIO and PWM drivers
+To: Liu Ying <victor.liu@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+ quic_bjorande@quicinc.com, geert+renesas@glider.be,
+ dmitry.baryshkov@linaro.org, neil.armstrong@linaro.org, arnd@arndb.de,
+ nfraprado@collabora.com
+References: <20240827064717.2383292-1-victor.liu@nxp.com>
+ <20240827064717.2383292-3-victor.liu@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -96,42 +92,25 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240826205334.975272-3-Frank.Li@nxp.com>
+In-Reply-To: <20240827064717.2383292-3-victor.liu@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 26/08/2024 22:53, Frank Li wrote:
-> From: Chancel Liu <chancel.liu@nxp.com>
+On 27/08/2024 08:47, Liu Ying wrote:
+> ADP5585 is found on i.MX93 11x11 EVK base board as a GPIO expander
+> and a PWM controller.  Build ADP5585 GPIO and PWM drivers as modules.
+> While at it, build ADP5585 MFD driver as a module because the GPIO
+> and PWM drivers depend on it.
 > 
-> Add wm8962 sound card which connects to sai3.
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> ---
+> This patch is based on next-20240826.
+> 
+>  arch/arm64/configs/defconfig | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
 
-...
-
-> +
->  &usbotg1 {
->  	dr_mode = "otg";
->  	hnp-disable;
-> @@ -758,6 +816,26 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
->  		>;
->  	};
->  
-> +	pinctrl_sai3: sai3grp {
-> +		fsl,pins = <
-> +			MX93_PAD_GPIO_IO26__SAI3_TX_SYNC                0x31e
-> +			MX93_PAD_GPIO_IO16__SAI3_TX_BCLK                0x31e
-> +			MX93_PAD_GPIO_IO17__SAI3_MCLK           0x31e
-> +			MX93_PAD_GPIO_IO19__SAI3_TX_DATA00              0x31e
-> +			MX93_PAD_GPIO_IO20__SAI3_RX_DATA00              0x31e
-> +		>;
-> +	};
-> +
-> +	pinctrl_sai3_sleep: sai3grpsleep {
-
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
