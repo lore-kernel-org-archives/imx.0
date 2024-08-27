@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0CB1BF7E1;
-	Tue, 27 Aug 2024 12:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FBF1C0DC1;
+	Tue, 27 Aug 2024 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761901; cv=none; b=eqHNADVgnylQLOLJEohCxhlpy5Ok4kKTblXtrmubwuVfZzFQTGjPajL3a/I56J0zmaqdROk3ZHcvnMSIQrlrUGa7RAxzU0EEI84QxK5Um9GVfJGool67n1x2yHoSaxw8XGENkRr/aPNcDlf/a2OWH0uTJmZaz4DJgv/CvCX9D1I=
+	t=1724761905; cv=none; b=iY62kYqfLVNWWe1SW4zaoeqp9IfiSEx6Si/R4juMTAs9oyu+aue1QE1T4ugHHsH49FAhry9ePzYFj/HV7lYwkFkYbdGxo53M55N6YSQgVC6ksIefldxevU5lcyKUMraq4XxGTUy7vugO4E1DQtQme7A4Ro9xp360WltQxxJFNAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761901; c=relaxed/simple;
-	bh=j0hRm/gJPQ7F3cgnMEppt5zV1tBSEPSVWQy7ZCwmuUg=;
+	s=arc-20240116; t=1724761905; c=relaxed/simple;
+	bh=QwZ9hyqHjmnVtoFMR5NhGSiqDvaaD2fnq6yLs9HobqM=;
 	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=p5UF9GIKXwyafyCXkMs8GhRPNs9LwZUOPK3C+RzgeI9Jns4S/zYsULkpuwfLvTPtbbozjxbLMhQJiB+c4NTW6gI/42uJ60bBVpDVnsQBR1eDzkuS+meiC15auhwdYpmjMlrj+En1FoPjIsCa98hGbLN3vtOGPvlpB2B4EIPdWpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7KBBR3u; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id:Subject; b=izuzDJ62m/4aogzgOlilb3m2kbYZC3Hn7uu0aMdWBuqZASb0SNg4A0ysMyf2AOkyj2GfUNY+c2fgQstxk9filM0cn4FmmeeO9cjOV+mTIIqoST/+B0OO10dCelLUxyP8qb1r6yIhGq5/wspjk2dDqLcQHBosCt+VaTKcFnQy90Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7+Z18bE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7KBBR3u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A916C61049;
-	Tue, 27 Aug 2024 12:31:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7+Z18bE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC06FC61050;
+	Tue, 27 Aug 2024 12:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724761901;
-	bh=j0hRm/gJPQ7F3cgnMEppt5zV1tBSEPSVWQy7ZCwmuUg=;
+	s=k20201202; t=1724761905;
+	bh=QwZ9hyqHjmnVtoFMR5NhGSiqDvaaD2fnq6yLs9HobqM=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=H7KBBR3uIDi3SAjo8FLifPkHuvIpyMWU1/k6O6t/fQVF/Q3hqO9+0bT9phS2Xed+N
-	 JB2BbhBXXIlibRuB6WP+jOO/xp1EcDLN6smCPbRD5VVOxQtdCE2KyxQau2+NbbFv4R
-	 raOnTL36JHZDDno04zIJess+KDInyebKT32+PkvvJ3wpc/R3cU4AiRA7b14NHLSC8S
-	 sZMeYq8LOT78PuEOypSG+H2jdhKIE27CtqrRQSM7lJLqNaB910F1e8in5gMXGd/xvP
-	 bxMvDBqibYSMipDC30C/UruHd4A/Q5b3NvvEf4CjrIzKUWr0ffI22IfVP18YwYPsaU
-	 3wm1psz7WQugg==
-Date: Tue, 27 Aug 2024 07:31:39 -0500
+	b=k7+Z18bExU1tPqXtk2zDlwID1vHuzCFTEBlveWrUDFthD/wsEmBzgdyc5gsBL9XFg
+	 II/saCqySNAwtpA5jyaK/kTMdey5UGemndfnzrcrVZysCuBNmNAir7v6bDrQ7Xb2ue
+	 euuKQS7E+sCGkhjPUMJb3y/B77Q4oMSo2FKYpUs/kocqyNa2G5OT/0VjcGxcqC5RYW
+	 XxErVZr2BK3uS3zK3X0r416n5wAoZmevCKbeB72GVxs3+w6tl1XjWoz72kzThtEtmq
+	 QWjsukuGNsii3SzlRQxO+4oEzU8C255d2rnAmxk+V9n4PCy3gqjg5hTx52+0L6gFjd
+	 xbTRPCIDcJQxQ==
+Date: Tue, 27 Aug 2024 07:31:43 -0500
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -36,27 +36,37 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
- imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>
-In-Reply-To: <20240826205334.975272-1-Frank.Li@nxp.com>
-References: <20240826205334.975272-1-Frank.Li@nxp.com>
-Message-Id: <172476183829.3553281.6314012832354346473.robh@kernel.org>
-Subject: Re: [PATCH 1/3] arm64: dts: imx93-11x11-evk: add io-expander
- adi,adp5585-00
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Chester Lin <chester62515@gmail.com>, 
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ Matthias Brugger <mbrugger@suse.com>, imx@lists.linux.dev, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+In-Reply-To: <20240827084815.1931169-1-ciprianmarian.costea@oss.nxp.com>
+References: <20240827084815.1931169-1-ciprianmarian.costea@oss.nxp.com>
+Message-Id: <172476183961.3553344.11483964192483268443.robh@kernel.org>
+Subject: Re: [PATCH] arm64: dts: s32g: Add S32G2/S32G3 uSDHC pinmux
 
 
-On Mon, 26 Aug 2024 16:53:32 -0400, Frank Li wrote:
-> Add io-expander adi,adp5585 under lpi2c2 and lpi2c3.
+On Tue, 27 Aug 2024 11:48:15 +0300, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Adding 100mhz & 200mhz pinmux support for uSDHC helps to support
+> higher speed modes for SD (SDR50, DDR50, SDR104) and
+> eMMC (such as HS200, HS400/HS400ES).
+> 
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > ---
->  .../boot/dts/freescale/imx93-11x11-evk.dts     | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi      | 153 ++++++++++++++++++
+>  .../arm64/boot/dts/freescale/s32g274a-evb.dts |   4 +
+>  .../boot/dts/freescale/s32g274a-rdb2.dts      |   4 +
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi      | 153 ++++++++++++++++++
+>  .../boot/dts/freescale/s32g399a-rdb3.dts      |   4 +
+>  5 files changed, 318 insertions(+)
 > 
 
 
@@ -74,10 +84,14 @@ make sure dt-schema is up to date:
   pip3 install dtschema --upgrade
 
 
-New warnings running 'make CHECK_DTBS=y freescale/imx93-11x11-evk.dtb' for 20240826205334.975272-1-Frank.Li@nxp.com:
+New warnings running 'make CHECK_DTBS=y freescale/s32g274a-evb.dtb freescale/s32g274a-rdb2.dtb freescale/s32g399a-rdb3.dtb' for 20240827084815.1931169-1-ciprianmarian.costea@oss.nxp.com:
 
-arch/arm64/boot/dts/freescale/imx93-11x11-evk.dtb: pinctrl@443c0000: 'sai3grpsleep' does not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx9-pinctrl.yaml#
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: pinctrl@4009c240: 'usdhc0-100mhzgrp', 'usdhc0-200mhzgrp', 'usdhc0grp' do not match any of the regexes: '-pins$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: pinctrl@4009c240: 'usdhc0-100mhzgrp', 'usdhc0-200mhzgrp', 'usdhc0grp' do not match any of the regexes: '-pins$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: pinctrl@4009c240: 'usdhc0-100mhzgrp', 'usdhc0-200mhzgrp', 'usdhc0grp' do not match any of the regexes: '-pins$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
 
 
 
