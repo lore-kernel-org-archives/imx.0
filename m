@@ -1,84 +1,217 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D95C1A08B2
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 12:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26C61B5300
+	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 12:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724760650; cv=none; b=X/rKqDsaFE1EObwFsC3T9Urdx0X5Po1U5i+mAkf4HXlGsneZHykaZSFFPB0F18MqBfoTIHEhSHy4bdzvvnl7d74vD/g14h4jKS4OBh1leHrTQK4WRx6kdaO+HImlpeQrk9UdIPXSvTSZ56mu7f3nRqSd2a34Lq4PO2zkLVkeJbI=
+	t=1724761574; cv=none; b=dMDO7Xm9VcvCUgipCdS6Ws5jLXvCoEwdglMMsKBAAKE5y7j7tR+9iHKwCjySNPsT/52pCtlXMzh77aCK6SxPlhK3RTtyAKJCHaYuHJ/h295Dlu8ZQj/xLeQpDtYsoQqfegF6YwoE2lIzlqUKoCWc9mYqfjQ7ItJ05xkNcD+eMDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724760650; c=relaxed/simple;
-	bh=AQQY0+eCtpauFdwfMB/DPq7vz6WsH8SVHCLuIW7R2r4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LzVl6oZsX65kC30Ev8a2OWRH306G3nM3eYV+YBJboGsQsU4EH57DQmHlKMlaT4Zu9FOb+dIRCBmMl5bDn4Qcw/3ciItQ8W9ggbeM/maNDRW5DKsOuaAOtAMz92+ebJhMU1jGXv8wszk4jVAlyflu3FeOLR3DMWaYcDnTHHHZzt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=al1dqXLO; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724761574; c=relaxed/simple;
+	bh=90csS7TzFomY9kk2SlVaXzWefeCJC2GYS7YDcIm7oD8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HqQlgbG6qIMqcmIadVcCl1fN5XnBBoGNbMldC60ZyZBbqasad8dvYcYWgEyTa01XeRl9AZkN03m0D8FLWevIZzwPA/n8fWckLo6xrImm5vVkNww/1iR6KO3qmrpMo+/QfKMOrwsPWnokXipAPf6qiyKV3dlaZPuAJSOXQDnWkJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=WwUROeAJ; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="al1dqXLO"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5334c4cc17fso7486016e87.2
-        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 05:10:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724760646; x=1725365446; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ocWvo9DzoExmIHq9UIiaFosa4hw3n9psCH8ZfRs9xow=;
-        b=al1dqXLOkotNUMbAfzNuq82RNkDWEzre+1hIrQMjquCCBPhx821UZUGVH98rkJ23Xp
-         IJ08MuKwz1RLLTAmHKxKrAyUuiNhZ5wPVvkG1SgqALlUVNlcGUGC2UgmblDSRRc7H6c2
-         JtAD1Vcb+OXW3T+7h9pzq5RGbS0CysfBO1UuEYZi5SalBnSciWIzlz5nnC0wfVfrGFj1
-         hwvUnHfpCTg/0QbAfOYHe84UhaokYRoYFfZTcz8jXxQIMEgAgpaXWuQpaELV6gGTWQfR
-         7X8emYhsoAv5DVVevGXvRf/SG45WcndvqTwArmaiGBletqlR9A1JoPOVUa7m1ILlAk6n
-         nxuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724760646; x=1725365446;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ocWvo9DzoExmIHq9UIiaFosa4hw3n9psCH8ZfRs9xow=;
-        b=J6xqavx6RHAf9CeN9ysXPxU0NWqo8LB5zI0khyg3gzHPRtv2SVr+FFhJ8CYJJtUUkx
-         ByRMkEVwudDnSV1PzBLGjjX+QJKLozUtjL2MupY+3nIGpwKt7eT3bn+X4aVyZQorP8IB
-         Qo1+CXDon17pTodupG0hoALQWNSpDOV7YZ3dXpIZe8l2YcAnytnsD+A675c/hi8wI6BV
-         +nYAQ45bxCluxcjWYvfFmRBHvyvGjomUXJ8H0BR1lKZV2ThPL018tEI/hQVb5PV+XIk3
-         ypVU4XY2JIe3qHd1nDqtFoRx9m9tk3ysggoXaUn/S+VmyERbI1EyV4llPRVgmcUzKkqy
-         pYcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVL7QiFAe//V6C0hB6gNmyDInCT82bHeSwxjXoeuzbV0dPnol0YRTfgYLCARwkWeFwXTJI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyq2pIOAIpm7lwROrB91fB7sFAudPmsgJbXnVFq6ykTZefbHZKL
-	/eQW9SwwPVCM850eTkF2u75K4TMxyRDrg+XSRVjNtHYb7I3NNzpc07hftGCev+xQbnIa1mmsDTo
-	Ng4btnykjQ0EQcOLeKZBxFlQxnu4=
-X-Google-Smtp-Source: AGHT+IEh5psS72JM5hvNRaxVWHrg402o8pnzLlLRh3KcneC/lRx90ichG0VNgnlvvr66dtMljeyh19iUph+sTp2ULkA=
-X-Received: by 2002:a05:6512:6d2:b0:530:b871:eb9a with SMTP id
- 2adb3069b0e04-5344e4faf07mr1737573e87.47.1724760646028; Tue, 27 Aug 2024
- 05:10:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="WwUROeAJ"
+Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 4889B8882C;
+	Tue, 27 Aug 2024 14:26:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1724761570;
+	bh=3LM+F6Jdtc9cR249fkM14T/K09xqnRGCL1nraIQ28HE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WwUROeAJMcqJW+p2pZ1SOeMdOiebljbf5K79F6jEX4jKk0vqjwLD2xtImfsd/0NBW
+	 /+RbNQsjZNaV0SKZLYZL+lXGEw3pw5on67bpgeTWvGTnfZh6Xlt5mMGMq5akpmGeEj
+	 jniB2rFKZSmt/AcN0zESunAnRUaQ+xyGanFVCz/LFPtNJc6uxSuXx8ATyBnBOvyR2t
+	 77KPbm/ZUuGz2xKspb2xavFedeuEXWygWO3Br4PYod87FHgAXjdReyEg+xQ2w16iE9
+	 cqh9lIJdkPQHR9vkHkXEqr7BguwIPlMSehCjk4tpE6eJb6V16ItY11pqds57gM0u8S
+	 XJaVikG5ly7Yg==
+Date: Tue, 27 Aug 2024 14:26:08 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dts: nxp: mxs: Update device tree description for LWE
+ imx28 based devices
+Message-ID: <20240827142608.36961a3d@wsk>
+In-Reply-To: <737edb34-688d-4800-bb50-2374ac94ac75@kernel.org>
+References: <20240827084255.2120864-1-lukma@denx.de>
+	<737edb34-688d-4800-bb50-2374ac94ac75@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240823120158.19294-1-tarang.raval@siliconsignals.io>
- <20240823-demonic-jolly-chital-fb4d61-mkl@pengutronix.de> <PN3P287MB1829E68257FC17F8ADA725028B942@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-In-Reply-To: <PN3P287MB1829E68257FC17F8ADA725028B942@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 27 Aug 2024 09:10:34 -0300
-Message-ID: <CAOMZO5BUrJBo5+bEyBA3i7q9Kb0HXgRwu8J-kV9JbDMFcx-WGg@mail.gmail.com>
-Subject: Re: [PATCH v3] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals Support
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_/IW_JTQw4WwK+ijFjBb0rCcO";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+
+--Sig_/IW_JTQw4WwK+ijFjBb0rCcO
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-Hi Tarang,
+Hi Krzysztof,
 
-On Tue, Aug 27, 2024 at 8:16=E2=80=AFAM Tarang Raval
-<tarang.raval@siliconsignals.io> wrote:
+> On 27/08/2024 10:42, Lukasz Majewski wrote:
+> > The description for imx28 based devices needs to be updated after
+> > some further development. =20
+>=20
+> Everything is an update, please be specific in commit subject and
+> message.
 
-> [    8.639860] fec 30be0000.ethernet eth0: Unable to connect to phy
-> [    8.708452] fec 30be0000.ethernet eth0: Unable to connect to phy
+Ok.
 
-What about this network issue?
+>=20
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > ---
+> >  arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi | 38
+> > +++++++++--------------- 1 file changed, 14 insertions(+), 24
+> > deletions(-)
+> >=20
+> > diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
+> > b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi index
+> > 69fcb0dde940..6fa1f3e25b08 100644 ---
+> > a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi +++
+> > b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi @@ -55,23 +55,6 @@ &i2c0
+> > { status =3D "okay";
+> >  };
+> > =20
+> > -&saif0 {
+> > -	pinctrl-names =3D "default";
+> > -	pinctrl-0 =3D <&saif0_pins_a>;
+> > -	#sound-dai-cells =3D <0>;
+> > -	assigned-clocks =3D <&clks 53>;
+> > -	assigned-clock-rates =3D <12000000>;
+> > -	status =3D "okay";
+> > -};
+> > -
+> > -&saif1 {
+> > -	pinctrl-names =3D "default";
+> > -	pinctrl-0 =3D <&saif1_pins_a>;
+> > -	fsl,saif-master =3D <&saif0>;
+> > -	#sound-dai-cells =3D <0>;
+> > -	status =3D "okay";
+> > -};
+> > -
+> >  &spi3_pins_a {
+> >  	fsl,pinmux-ids =3D <
+> >  		MX28_PAD_AUART2_RX__SSP3_D4
+> > @@ -109,7 +92,7 @@ &ssp3 {
+> > =20
+> >  	flash@0 {
+> >  		compatible =3D "jedec,spi-nor";
+> > -		spi-max-frequency =3D <40000000>;
+> > +		spi-max-frequency =3D <20000000>;
+> >  		reg =3D <0>;
+> > =20
+> >  		partitions {
+> > @@ -133,14 +116,21 @@ partition@90000 {
+> >  				reg =3D <0x90000 0x10000>;
+> >  			};
+> > =20
+> > -			partition@100000 {
+> > -				label =3D "kernel";
+> > -				reg =3D <0x100000 0x400000>;
+> > +			partition@3 { =20
+>=20
+> This does not look right. It is neither explained in commit msg, nor
+> matching reg.
+
+The SPI-NOR memory layout has evolved during time lifetime of the
+device - for example special partitions to keep track of booted devices
+for A/B booting scheme was added.
+
+>=20
+> It does not look like you tested the DTS against bindings. Please run
+> `make dtbs_check W=3D1` (see
+> Documentation/devicetree/bindings/writing-schema.rst or
+> https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sou=
+rces-with-the-devicetree-schema/
+> for instructions).
+
+Could you be more specific here?
+
+For example:
+CROSS_COMPILE=3D"*-gcc" ARCH=3Darm make -j4 dtbs_check W=3D1
+
+Show:
+arch/arm/boot/dts/nxp/mxs/imx28-xea.dtb:
+/apb@80000000/apbx@80040000/saif@80042000: failed to match any schema
+with compatible: ['fsl,imx28-saif']
+
+Where the 'saif' sound driver is already supported:
+git grep -n "fsl,imx28-saif"
+Documentation/devicetree/bindings/sound/mxs-saif.txt:27: compatible =3D "fs=
+l,imx28-saif";
+Documentation/devicetree/bindings/sound/mxs-saif.txt:35: compatible =3D "fs=
+l,imx28-saif";
+arch/arm/boot/dts/nxp/mxs/imx28.dtsi:1110: compatible =3D "fsl,imx28-saif";
+arch/arm/boot/dts/nxp/mxs/imx28.dtsi:1127: compatible =3D "fsl,imx28-saif";
+
+Changes from this patch do not touch the generic imx28.{dtsi} code at
+all.
+
+I would assume, that the portion of my patch shall not bring any new,
+extra warnings/errors?
+
+>=20
+> > +				label =3D "rescue";
+> > +				reg =3D <0xA0000 0xF40000>; =20
+>=20
+> Lowercase hex
+
+Ok.
+
+>=20
+> > +			};
+> > + =20
+>=20
+> Best regards,
+> Krzysztof
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/IW_JTQw4WwK+ijFjBb0rCcO
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmbNxeAACgkQAR8vZIA0
+zr2Psgf/W6iVmFrnEXvDNjZMnWZoSyJF2CXY1W6zqHPxD2xiA+wAThMyJM3ULs3t
+Scj9xt0+k+bRpQbHrsy/FI2x5rQWS23V0FYrIqSOOIZX/+hu34EdUnIU1uf/FMTE
+VVdSuKfqSnKDUUuuok7SNRMinPaiUNtpp/5lJ8J+VZDZUUrXrnpKa1jfTAl77wCJ
+WkRYrhOfT1ylML2g+Az7yEv/KjYomdSZbkDvuVBI9VeR8FTdarPD7lxO3aFusJwC
+WdbmkpPk5TBnWAxWzNfLydV3fv8zIa8JgpP7zcILsQsLoPtIjJ743rM7HnMhkeMj
+bvdUFJA1WnlMRmk4pHQgBKZWCEwBzw==
+=au73
+-----END PGP SIGNATURE-----
+
+--Sig_/IW_JTQw4WwK+ijFjBb0rCcO--
