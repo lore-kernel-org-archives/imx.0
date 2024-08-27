@@ -1,558 +1,175 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2046.outbound.protection.outlook.com [40.107.22.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494ED1991A5
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 08:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724748506; cv=fail; b=TWEys7gqI1CE6GwS1LploAGwGN8nV0wss1yDjySzpkjBTw2LS0RuHhiwu5j4WkZfR992aR6KAYEEtnZqnJ0QKyxIGl7ixB9sLdDauuis6IXpOM2V/dLz3L8m7+K2ZemMuU3/RewRWw8dpjaEPijQBhuxeIqK9p+3iRnAGlkhj9U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724748506; c=relaxed/simple;
-	bh=k/CZEQCZeuOz8W/R1Mcj5DsTtSkXAvg/SK3LTSiLHcM=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hJ80PLjzyeHjcaot17QPGaOsI+h6SnMW/c+K9PoWGeKMwF1imyfnCRfosN1yQbKW0ron8iriaksJQJ+Ot5PkeKjT5FxopR0t3ZasGnEJ6DOvrwkGrfiuLd85rMDilikh4Dh/eUIgk+B4dl400nN3eSEioqrqREwMilCsXCvqyMA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=cPSRAULn; arc=fail smtp.client-ip=40.107.22.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957221946B8;
+	Tue, 27 Aug 2024 09:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724749243; cv=none; b=W6XYhku4uLnuUO6RVrDp7vypTVRtoekFwT61Zp+5mj1WajfrVtf55b9MLA1r7Gp0OZB2R7VpWwQ9NxchbDYxpu709/LY5DPd5vS7OGiA2j0vfBHZV3NnRmmm3svfzl0Q4Iz/uLXmQEB3MoQiXKOH2CYDZydkPzYdvdqmi2UVgsY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724749243; c=relaxed/simple;
+	bh=AEcuwlJtGCkKrbiEX6+IN0+L3Xu+OVNM8HVvUWcOQtU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fTDR0X8kAIFZ7v/MFl8Kq/0txjgyAGsQGP7PNsFk+cG5VtqF0x4yjOkAq4HZUiM3r2gRL6Mvb1XZhltHV3kkLah6p+C5In5Bh4ry0VIalOfbqYHk1Lu+7ru+Ur8k5XxeM4+1NgEIbsy3bSsg9FDuTNF/G3PwXYh2XeVJTYfuZvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+fC9L8Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="cPSRAULn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M35gduQU6CryEGbNRrL2Z+d5Qhmf2geaPf6Dn/gXZPFafTYfsTaLvXKu+QNnW6fycYRQi3mUPdIZmnNtTJ5N7N4YtqmP23G7UCyVi/Y5oMxnlfaHSOJjvlfe0EX1i+kaavy5z1MzZBdpB9qvbnK5waPOaErPZykjhT1+rY31kjae0BvZIgInzrGYJir71V1zXswXeB85lpD70zOMqWWjXRAzVWYgz3fuxcC5YWlWjPTQByspgwaRC9OdwIEE3U7hyN95QKbVHmHZL56eRnmWhS28C2Drd9oyaklXG+RAjCW2slG/tqJ2GPMhN5J4d1ZWjGXR4zab1hm6y57VNW5ZIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bBywNm9rCx8O1nhpFZBty3IRaL/1NgDpLT3TMOPaOVk=;
- b=lIq8XvWigL+Jo/P10L2qulbeupPPwAATds6gti/OEK1Hmp/ZiwdqABAtSFGystugpaD1F0NZ7fjNfi0jD3vGW+Brc7acfG4UatVd4KODzVc759LLF9TO5P330HQ4bqYN6jbTWhYzwCR76287SSEInT0rPeUuzRLgfeYjMatkyzASRVtMn8tD0AQedTu5HjQOq6KxFn0AJvJ+FxtMbrrpoEnR3UdXjGyrbw922ijoKzsqzTyU5Yobe7oZEt/PCCUBMhVqbVC4uaHeQ1woW0pP1f0BHBptPl3eCJ1ySHxdtG8Q2yEXobFKuoIxAn/Cnqkh2FXMNRpLzc2gqBk1KPMvzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bBywNm9rCx8O1nhpFZBty3IRaL/1NgDpLT3TMOPaOVk=;
- b=cPSRAULnh0/RsXl21UJjQJWp02avr9YUxGf5vuE7YZNnw0etGIAIS+3fIrkHD+F04AMptHmfPJVHxq0OAufpiGah3Zb+xaJdBdvz6ABtRnoGRqHzMmAYX9xghZ6BJ5jbXaFjGF1j8nAWbyf7WZjmWZNf/yAH6Z+h35zwd9NEjhhzrlLqbzniZ/UV51EGwhQ/XHw5nnElTaCVHVv+4pPuneYkrtQUH6yy75J1kVhY0zal8GYnmp7MZ4p2oPyH47tjDivLhdDNoAiXF2+irn6yChK99plNKEJz9c15sTDAXrWE+dsgYIhWdskEo8kpb/kfMUSW58C4JDZCDfIgJ+ozAw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AM0PR04MB6948.eurprd04.prod.outlook.com (2603:10a6:208:187::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25; Tue, 27 Aug
- 2024 08:48:20 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%7]) with mapi id 15.20.7897.021; Tue, 27 Aug 2024
- 08:48:20 +0000
-From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Subject: [PATCH] arm64: dts: s32g: Add S32G2/S32G3 uSDHC pinmux
-Date: Tue, 27 Aug 2024 11:48:15 +0300
-Message-ID: <20240827084815.1931169-1-ciprianmarian.costea@oss.nxp.com>
-X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P192CA0052.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:658::6) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+fC9L8Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E32C8B7AF;
+	Tue, 27 Aug 2024 09:00:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724749243;
+	bh=AEcuwlJtGCkKrbiEX6+IN0+L3Xu+OVNM8HVvUWcOQtU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=b+fC9L8Y0EMc0FkTnF3mcSyITji41+WVWi+blTqXieN++x7oxKNdUMSiMA0BdKf8H
+	 HZtgskyYeFZFgySbJNLkMnfPFrAziAWA4LprXLEiIhrNF12EHCBVPSHD9b2BSTEfNz
+	 gYlSli1LlXPeczkaZobrQ1XPTVRs30DHtCWX9u/VAqKiS03iJaeXnE99J77XgJmllm
+	 uJqyTomK1VsqzcgGDYGJuXOXY00ZWGYK6l0TJEBRsr53IcNzvYKzegyteRltq9pGNR
+	 sXZASdAbsM+taPZuqgf5A79nTxsOorM9nDL+RzelkvXliCO7UT1yi2/SHfEsXaisVt
+	 REc6giFhiqLqw==
+Message-ID: <737edb34-688d-4800-bb50-2374ac94ac75@kernel.org>
+Date: Tue, 27 Aug 2024 11:00:35 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AM0PR04MB6948:EE_
-X-MS-Office365-Filtering-Correlation-Id: deb35a01-8cfb-4d45-b9aa-08dcc675008b
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RWl1YzBpRWdzVHBUbDlkUldOc3pHbnVMT01TSk9wMCs4ekxKOHBZbDNXdFlI?=
- =?utf-8?B?dFozL01Xb2V6RXNwNEZ1KzdxRzVGdWxsZHVhUWpNbGg3NkEydXh3dnJjN0o5?=
- =?utf-8?B?WTBJM1BPRmVYbGoxc2JSQ1FrcFhHcHovWVdBV2lrV0VOVmVmbCsyU0h0OTIw?=
- =?utf-8?B?UzVQUE80UVI5RURITCtrRGdZSEl2aXVsbFRiN3JsYWJKS0VGT0pGZzVlMUQv?=
- =?utf-8?B?VXg0SEs3KzZLY1ozbUVyKzVQUzZNajVPNCtqMHB4ZFpPM1ZJdHJaZ0VaYldD?=
- =?utf-8?B?VGVzQ081Ujh2MEh5VnNaeFhRSXIxWTkzYWpzT1hZSVVKZlpFdk5nK25kcFp1?=
- =?utf-8?B?bERTeDVSTWFDdGZoYTdBWEp2cVdLd21MU1J2cTJ0TU5RWWZiZjBXazU1NU51?=
- =?utf-8?B?ZHc3UVQxcm85SU1DS21ZczdabXNmcENVMy91ZVphMzdTYUZaNUwyK2xJQkhj?=
- =?utf-8?B?RzJlQlVXb2FwbURYcmlzcTNKU0c1RmdZZFhpY0ZCNnVBamtwR3JRcWFFYWtn?=
- =?utf-8?B?NDl6a1VMK3p1NGlqWW5JanZVMGRaWEpUSFhPdHNzSFpCMlNQR0lBZDhuSkQ4?=
- =?utf-8?B?Vi9yMzJNMlJJcndmNXlqWjJtSms5REh5YW1NSHFLTm5Cd1g0VHRrV2lUdDJW?=
- =?utf-8?B?S2dKdjQzNndOVlhtYUhvNlhqWjNHUmU4ZXpNWW9xVElqbFl2SXFPd3UvcVZG?=
- =?utf-8?B?THZ2RWpJYzRaRkNRaTZKZUppVWVLWUZBdm5zb2ZFTkZ2b1V4Ti9HYVZCVXFh?=
- =?utf-8?B?WElNbUNQYVNRc1dHYmZ6K3ZKUFJHekVOK1AwNGhFQVJWaVpsaDRYZFFVODJu?=
- =?utf-8?B?RVdaSGs2U2lnRVlCZHk3dEZ3YUloenpsT24wZEpVQTVWUy82K3QxMS95aFhV?=
- =?utf-8?B?YUhLVEViczhjZTZmKy9qeG5qYWRBOGtIQWZyRDhiSXk5RjFFWGFiQlJMKy9k?=
- =?utf-8?B?VlNTVTREVm1XUFdpVG1ERGE5ZkFQMFU5QlcvWWJlOTAyRjl4SXREWmpiT2VU?=
- =?utf-8?B?M1dtVElLWGp5OG1ZeUM0aE5sbGE1VUpIcHVqRUFsMmVSK1hJS3pLc1J4U04y?=
- =?utf-8?B?aytGQXRsMmpTVGtUTkdLazVJSnE1akoyTkpXZGZNWCsrWllEREcyYXFRczNa?=
- =?utf-8?B?Z1c4RGYxaWJpVCtXYm9OZ0lWekM5M08rSzY2TnlicEFLeVlkN244YTU5Mk5w?=
- =?utf-8?B?NVFxelBqWGtldks4M0xwUjZ3RUlra2xjQ0Q2SVBjYlQ5aU9BS3R0RGVlUENy?=
- =?utf-8?B?ZC8rd0Q2bkxadWhnNER5MGdHaTBXZWxRR1VHeEM5cllnaWdzcE1YUXM0K1lQ?=
- =?utf-8?B?VmhkUjBYeXFHYzhjU0lpRXZYZzhCd3dha2J6UVBteENLL3owZjlrZ3lsL0Jz?=
- =?utf-8?B?MmRrRmFjTUsySTlyaW9uSkhNczF3RHZVR1FTOFdNUGYyUnpLV2M5VE9nM2dS?=
- =?utf-8?B?N2JDeDZHeC91ejNaalcrcjFVUGZiK0xlTmVFaW9OOGhTUm9sMFpheWhweU9x?=
- =?utf-8?B?dkxxVkdCdTZIR1NnQlFWTzFyVDlKT0gvaFVBSEJ5bU1yVGI3SklRNVRRTVdi?=
- =?utf-8?B?eDFpZnE5K3dBdXhCZU9RMllYOHgyL1AxQ3k3ZDlZRi9MYXRjTWd2Vit0YTRu?=
- =?utf-8?B?N3JUdlFzWWtLYkJpaFhoSEdrQ3pWNFZuYlZVZCtnWWEzNXZnallHenJhajZK?=
- =?utf-8?B?NDl5V3J4cFl3YmoxTERaanBHMDFjWXZVaVZRMEUwTFVRR1JCMnVOclFBYVpv?=
- =?utf-8?B?TWNLdmw4NEJBOThGWVJrNkk0TlRFanY1Uy9BNy9FdlZIeXhHNmNXZm1ydnNq?=
- =?utf-8?B?MkI1ZjRRVHJUR01LS1EyUT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUNwMDhjUFpvaDE2RHpuclI1ZnZaaWFadi9PbUg4eC9XL3o3c0hVSjhVRWM4?=
- =?utf-8?B?Z0x1UXFKMVBzRzkwUjBxSFErRnlxREZFTUdZNVVxSEZES0NFa0FUM1daWito?=
- =?utf-8?B?ZTlEZEEvQzJxRHJWb3MxYUJmY0N3TUJXb2hoeGJQVnJKbGFWbldqS2N3Nnpn?=
- =?utf-8?B?UjFydndJZldhZ2NzZjVsV1l6WlA1b0hyaCtpc0lrQ2VOME1IS3YrYjVwRXBv?=
- =?utf-8?B?OWRMdnlCTzUvVUdjcnVnakJlQkdLQlIrVXVwZkNPS3pTK2ZmdVlTRStnejhX?=
- =?utf-8?B?eDF6SmRPTGhkY2tUSzNLNnpXYnE3VksraHpkTU15MmpWVzkvQTd5V211TEZr?=
- =?utf-8?B?YXJSRjU4Q1Z6bDBIMzYxT1FMYVB4SS9FU1FwYWhFR29pazNwR1ZZek1nVXdQ?=
- =?utf-8?B?Yi83aHA5TFJxT29VeWNpN2Z3MVlJeVhPdHl0bUhwSFNJWCtVTFBXbXU2UDR6?=
- =?utf-8?B?WUljQWR5T2RsTmFDc0dLREJDZEdqaWE2eFd5YlRDS2xkbExaUmUwWURObmRq?=
- =?utf-8?B?T0RKSlBXclFMOGw5dnE0TENzTWZ4VlppOUkvVkwrSVVkck8rd3RlQ3MrNUFq?=
- =?utf-8?B?ekxwMzNEeEZldTllQnduOEJFSFlJRkdINHRjOHI5YlhqT205aTM2Sk1PWDRI?=
- =?utf-8?B?dVhVekFjSXlwZFN4ZVkrYytqK3oxR2ZHSE9makNmcGpSMFFCY0tQQTdYaGg0?=
- =?utf-8?B?L1J2Mi9wd3JUN2k1OVdaOExScW5LZGFxdFI3bzBjZCs0ZG9heWV1VGRHSmxS?=
- =?utf-8?B?YUJHWGNURHR6aVdieTZMcWJKcWptUXpCVTd2TGNKSkw4ZUZOUjRHK2luSkxC?=
- =?utf-8?B?OVdIS2trZlFJQVRBY2hnVTdtQU1pR2V6bFNDUW9uc0xDWUVpL05XcVMveVpZ?=
- =?utf-8?B?dHc1ZE5zdFFSaGtpV3JtR3hhTVI3UnVRd2F3NWZFNmUvbnF1TVFMVWJGYWh6?=
- =?utf-8?B?WWI1Nlg0bnNoVktPa3B3NENONjlPMzBqR0hMY3dUeUxhbUZCc1hFSXNEejNo?=
- =?utf-8?B?R2xoTXU1KzdEUHVHTDVnVlVzY1VuQWFjYzJjc2d4cXBzaVR3dHE2VkJGZW9l?=
- =?utf-8?B?cjBYT2FqS3BXWCtaQUtPdGlHSlFkTWdqUnFMbEVha0FnUzF0ZkZNcEV2T1Fu?=
- =?utf-8?B?ZHdTbnFoanVONjRqQjFlZ2xSeWtGU0gwWHpJbERuakl3L1JSanRjYTZjZytn?=
- =?utf-8?B?NkNTMEdVSnJML0xaVEVrSm9XeWFSWERPRW9uQ2hwbGFqOGFDNHVFb0J4Mnhl?=
- =?utf-8?B?NEdWdmpZdllRa1FpRkw4UUJFVnNTSE5wM25oZGVIUXl4WHVxMjAwUWl3bDdS?=
- =?utf-8?B?cmMrV2hQUURmTWJaMXEwSkxNcEtFNngwOGVaakN6VW9iSSszY0JQbWluODJM?=
- =?utf-8?B?dDl3VHlzTWlUNy9FdmxWOFFaWDNiaFVaOVJVNXh0Z0ZMNnRac0l1RGZ2bDFD?=
- =?utf-8?B?QVl0UXVLL2hXc2NQd0IvbUgva2UvOXVmM1ZsNVZTN2M5SU5rUjN3RndPMEtU?=
- =?utf-8?B?ZmlnVDVnYTVyczA0UzNvRmhGNmEwdUg5NXlXNXFMdStXN1FkbGliZGxiS3dN?=
- =?utf-8?B?bXlyODdBYTNGT1IzdXRUT2xpa2cxYmpvNFVJSTExVi9ITVQ4T21HdHk1YUYr?=
- =?utf-8?B?SnVBMzlRKzl2OEtGWGcrQkVzdVFSSVcyZFhOcUFDS2JpTU82bHRlSGk4S3pi?=
- =?utf-8?B?SWxVNG44VjJUeXZpZ2NuSHdLVmh6ekhGWTl0MzhUQ3JXcHo2NVZWTWwwelp1?=
- =?utf-8?B?T1FGZ25CVnh6azhhWnM3Y0F1aDdEeWJIa0pkbXYzcHpNK0JIYkd4am5lWmxz?=
- =?utf-8?B?Z1c2bzZxL0xodFlkZHVxYmhmb3RJVU85ZS80VTZJZXc0c2xOWVI2MS9kWTdK?=
- =?utf-8?B?ZVZ4NDBybFZISk9Nd3NpSkV4WXhLckV6elNKaVMyam9PM2lNL1dSd0xPYVE4?=
- =?utf-8?B?eUNZdk1YdU4zaVUyajV3NzlML0s2bWtxbFpsVzdkTGsreWlQOHpVSWlScWJQ?=
- =?utf-8?B?aUI5U1NNZ2JOV2lTT0I3a2tNVU5ZMEoxUk9QT00raXlIcjE1U2pNMzZqenAy?=
- =?utf-8?B?QnJBQ2ZhZlI4R016S0xWRnJYTU5VRWhyd0NHVExIa0twc1ByRUVWTjlkOXpq?=
- =?utf-8?B?eW9xWFJ6aUpZZGc3NlFobGpNeEhqQXNCWmRRSGRpcG1wcEZqMTlCNlJWVUdw?=
- =?utf-8?B?SEE9PQ==?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: deb35a01-8cfb-4d45-b9aa-08dcc675008b
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 08:48:20.4442
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bqvi+v4W++6xmZmxfLBO0R0ejNmHpSvCTPZj8ZB+cjXqMK6OmzN/KYCF3SBYd3A3OP7wjunNDv2TJ+MhpkkYKsmJbRghH8W2IiW0nam3rTQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6948
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dts: nxp: mxs: Update device tree description for LWE
+ imx28 based devices
+To: Lukasz Majewski <lukma@denx.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240827084255.2120864-1-lukma@denx.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240827084255.2120864-1-lukma@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On 27/08/2024 10:42, Lukasz Majewski wrote:
+> The description for imx28 based devices needs to be updated after some
+> further development.
 
-Adding 100mhz & 200mhz pinmux support for uSDHC helps to support
-higher speed modes for SD (SDR50, DDR50, SDR104) and
-eMMC (such as HS200, HS400/HS400ES).
+Everything is an update, please be specific in commit subject and message.
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
----
- arch/arm64/boot/dts/freescale/s32g2.dtsi      | 153 ++++++++++++++++++
- .../arm64/boot/dts/freescale/s32g274a-evb.dts |   4 +
- .../boot/dts/freescale/s32g274a-rdb2.dts      |   4 +
- arch/arm64/boot/dts/freescale/s32g3.dtsi      | 153 ++++++++++++++++++
- .../boot/dts/freescale/s32g399a-rdb3.dts      |   4 +
- 5 files changed, 318 insertions(+)
+> 
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> ---
+>  arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi | 38 +++++++++---------------
+>  1 file changed, 14 insertions(+), 24 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
+> index 69fcb0dde940..6fa1f3e25b08 100644
+> --- a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
+> @@ -55,23 +55,6 @@ &i2c0 {
+>  	status = "okay";
+>  };
+>  
+> -&saif0 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&saif0_pins_a>;
+> -	#sound-dai-cells = <0>;
+> -	assigned-clocks = <&clks 53>;
+> -	assigned-clock-rates = <12000000>;
+> -	status = "okay";
+> -};
+> -
+> -&saif1 {
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&saif1_pins_a>;
+> -	fsl,saif-master = <&saif0>;
+> -	#sound-dai-cells = <0>;
+> -	status = "okay";
+> -};
+> -
+>  &spi3_pins_a {
+>  	fsl,pinmux-ids = <
+>  		MX28_PAD_AUART2_RX__SSP3_D4
+> @@ -109,7 +92,7 @@ &ssp3 {
+>  
+>  	flash@0 {
+>  		compatible = "jedec,spi-nor";
+> -		spi-max-frequency = <40000000>;
+> +		spi-max-frequency = <20000000>;
+>  		reg = <0>;
+>  
+>  		partitions {
+> @@ -133,14 +116,21 @@ partition@90000 {
+>  				reg = <0x90000 0x10000>;
+>  			};
+>  
+> -			partition@100000 {
+> -				label = "kernel";
+> -				reg = <0x100000 0x400000>;
+> +			partition@3 {
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index fa054bfe7d5c..303be64399b5 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -162,6 +162,159 @@ jtag-grp4 {
- 					slew-rate = <166>;
- 				};
- 			};
-+
-+			pinctrl_usdhc0: usdhc0grp {
-+				usdhc0-grp0 {
-+					pinmux = <0x2e1>,
-+						 <0x381>;
-+					output-enable;
-+					bias-pull-down;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp1 {
-+					pinmux = <0x2f1>,
-+						 <0x301>,
-+						 <0x311>,
-+						 <0x321>,
-+						 <0x331>,
-+						 <0x341>,
-+						 <0x351>,
-+						 <0x361>,
-+						 <0x371>;
-+					output-enable;
-+					input-enable;
-+					bias-pull-up;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp2 {
-+					pinmux = <0x391>;
-+					output-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp3 {
-+					pinmux = <0x3a0>;
-+					input-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp4 {
-+					pinmux = <0x2032>,
-+						 <0x2042>,
-+						 <0x2052>,
-+						 <0x2062>,
-+						 <0x2072>,
-+						 <0x2082>,
-+						 <0x2092>,
-+						 <0x20a2>,
-+						 <0x20b2>,
-+						 <0x20c2>;
-+				};
-+			};
-+
-+			pinctrl_usdhc0_100mhz: usdhc0-100mhzgrp {
-+				usdhc0-100mhz-grp0 {
-+					pinmux = <0x2e1>,
-+						 <0x381>;
-+					output-enable;
-+					bias-pull-down;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp1 {
-+					pinmux = <0x2f1>,
-+						 <0x301>,
-+						 <0x311>,
-+						 <0x321>,
-+						 <0x331>,
-+						 <0x341>,
-+						 <0x351>,
-+						 <0x361>,
-+						 <0x371>;
-+					output-enable;
-+					input-enable;
-+					bias-pull-up;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp2 {
-+					pinmux = <0x391>;
-+					output-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp3 {
-+					pinmux = <0x3a0>;
-+					input-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp4 {
-+					pinmux = <0x2032>,
-+						 <0x2042>,
-+						 <0x2052>,
-+						 <0x2062>,
-+						 <0x2072>,
-+						 <0x2082>,
-+						 <0x2092>,
-+						 <0x20a2>,
-+						 <0x20b2>,
-+						 <0x20c2>;
-+				};
-+			};
-+
-+			pinctrl_usdhc0_200mhz: usdhc0-200mhzgrp {
-+				usdhc0-200mhz-grp0 {
-+					pinmux = <0x2e1>,
-+						 <0x381>;
-+					output-enable;
-+					bias-pull-down;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp1 {
-+					pinmux = <0x2f1>,
-+						 <0x301>,
-+						 <0x311>,
-+						 <0x321>,
-+						 <0x331>,
-+						 <0x341>,
-+						 <0x351>,
-+						 <0x361>,
-+						 <0x371>;
-+					output-enable;
-+					input-enable;
-+					bias-pull-up;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp2 {
-+					pinmux = <0x391>;
-+					output-enable;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp3 {
-+					pinmux = <0x3a0>;
-+					input-enable;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp4 {
-+					pinmux = <0x2032>,
-+						 <0x2042>,
-+						 <0x2052>,
-+						 <0x2062>,
-+						 <0x2072>,
-+						 <0x2082>,
-+						 <0x2092>,
-+						 <0x20a2>,
-+						 <0x20b2>,
-+						 <0x20c2>;
-+				};
-+			};
- 		};
- 
- 		uart0: serial@401c8000 {
-diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-index dbe498798bd9..7ab917f547ef 100644
---- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-+++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-@@ -34,6 +34,10 @@ &uart0 {
- };
- 
- &usdhc0 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc0>;
-+	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
- 	disable-wp;
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-index ab1e5caaeae7..8739f63771bc 100644
---- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-+++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-@@ -40,6 +40,10 @@ &uart1 {
- };
- 
- &usdhc0 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc0>;
-+	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
- 	disable-wp;
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index b4226a9143c8..0d6f077b1eb9 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -219,6 +219,159 @@ jtag-grp4 {
- 					slew-rate = <166>;
- 				};
- 			};
-+
-+			pinctrl_usdhc0: usdhc0grp {
-+				usdhc0-grp0 {
-+					pinmux = <0x2e1>,
-+						 <0x381>;
-+					output-enable;
-+					bias-pull-down;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp1 {
-+					pinmux = <0x2f1>,
-+						 <0x301>,
-+						 <0x311>,
-+						 <0x321>,
-+						 <0x331>,
-+						 <0x341>,
-+						 <0x351>,
-+						 <0x361>,
-+						 <0x371>;
-+					output-enable;
-+					input-enable;
-+					bias-pull-up;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp2 {
-+					pinmux = <0x391>;
-+					output-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp3 {
-+					pinmux = <0x3a0>;
-+					input-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-grp4 {
-+					pinmux = <0x2032>,
-+						 <0x2042>,
-+						 <0x2052>,
-+						 <0x2062>,
-+						 <0x2072>,
-+						 <0x2082>,
-+						 <0x2092>,
-+						 <0x20a2>,
-+						 <0x20b2>,
-+						 <0x20c2>;
-+				};
-+			};
-+
-+			pinctrl_usdhc0_100mhz: usdhc0-100mhzgrp {
-+				usdhc0-100mhz-grp0 {
-+					pinmux = <0x2e1>,
-+						 <0x381>;
-+					output-enable;
-+					bias-pull-down;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp1 {
-+					pinmux = <0x2f1>,
-+						 <0x301>,
-+						 <0x311>,
-+						 <0x321>,
-+						 <0x331>,
-+						 <0x341>,
-+						 <0x351>,
-+						 <0x361>,
-+						 <0x371>;
-+					output-enable;
-+					input-enable;
-+					bias-pull-up;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp2 {
-+					pinmux = <0x391>;
-+					output-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp3 {
-+					pinmux = <0x3a0>;
-+					input-enable;
-+					slew-rate = <150>;
-+				};
-+
-+				usdhc0-100mhz-grp4 {
-+					pinmux = <0x2032>,
-+						 <0x2042>,
-+						 <0x2052>,
-+						 <0x2062>,
-+						 <0x2072>,
-+						 <0x2082>,
-+						 <0x2092>,
-+						 <0x20a2>,
-+						 <0x20b2>,
-+						 <0x20c2>;
-+				};
-+			};
-+
-+			pinctrl_usdhc0_200mhz: usdhc0-200mhzgrp {
-+				usdhc0-200mhz-grp0 {
-+					pinmux = <0x2e1>,
-+						 <0x381>;
-+					output-enable;
-+					bias-pull-down;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp1 {
-+					pinmux = <0x2f1>,
-+						 <0x301>,
-+						 <0x311>,
-+						 <0x321>,
-+						 <0x331>,
-+						 <0x341>,
-+						 <0x351>,
-+						 <0x361>,
-+						 <0x371>;
-+					output-enable;
-+					input-enable;
-+					bias-pull-up;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp2 {
-+					pinmux = <0x391>;
-+					output-enable;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp3 {
-+					pinmux = <0x3a0>;
-+					input-enable;
-+					slew-rate = <208>;
-+				};
-+
-+				usdhc0-200mhz-grp4 {
-+					pinmux = <0x2032>,
-+						 <0x2042>,
-+						 <0x2052>,
-+						 <0x2062>,
-+						 <0x2072>,
-+						 <0x2082>,
-+						 <0x2092>,
-+						 <0x20a2>,
-+						 <0x20b2>,
-+						 <0x20c2>;
-+				};
-+			};
- 		};
- 
- 		uart0: serial@401c8000 {
-diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-index 176e5af191c8..828e353455b5 100644
---- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-+++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-@@ -40,6 +40,10 @@ &uart1 {
- };
- 
- &usdhc0 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc0>;
-+	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
- 	bus-width = <8>;
- 	disable-wp;
- 	status = "okay";
--- 
-2.45.2
+This does not look right. It is neither explained in commit msg, nor
+matching reg.
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+
+> +				label = "rescue";
+> +				reg = <0xA0000 0xF40000>;
+
+Lowercase hex
+
+> +			};
+> +
+
+Best regards,
+Krzysztof
 
