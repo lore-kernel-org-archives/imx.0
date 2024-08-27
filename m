@@ -1,64 +1,64 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0413D18654
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 07:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196E3433D8
+	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 07:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724744904; cv=none; b=GyhMH+nq5ugFO/wdKdrqOjuvRjd+PDlntss4e1GG8N/iCRtozUbRw0mFuWjZuB9fbOOMx0ZkKlXRfoncSYbpRAD/7guLvr4LlUYR5b6PSo7erqRdCpm+fPnmJ3fvZF7ObuyzG16qXx4Ry94aKOrbsitnT39Cejm1Nfoln2qETM4=
+	t=1724745339; cv=none; b=BLXGm3GaAauo+akNtZF+yYQPLxbXtVaLqbHW15RBfAlQ1GwlOIsJd/CDzLgQNa0ReoXMnRASSIyv2QkBMrGSRKtDA9SirnEPPSut3IchCZJKHz81ksDNlVs4R6VuF1Bux0TEuZNcgJc7uhZCPds51YZayB7/9mhny4LBRhIMKTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724744904; c=relaxed/simple;
-	bh=NxA9s7sQqwLGwuxcChr5dnPp7Nj2BlckKRYtzA+FACE=;
+	s=arc-20240116; t=1724745339; c=relaxed/simple;
+	bh=hB7ZwdMBPkDMj4TZ0j8Pz1hCtIfwUxbSGIFo0L0U7yQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nVYh/EGBkvo5FOtPTKvX4va7jYiCrSbixBzbgWtd05DWEot52+QDdw14F9c9cCxroxd7rzKb4ait/v9YJDW0Ype/CrZfvnpf/YRPDYisydWNbMUa2kC6jlUIH4ZFvn0pabGb/fzZNyp0bEc1P2DfHA7Kk5wABoqlt8h1dhUatDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.175
+	 To:Cc:Content-Type; b=oAOAsr0noVaQeAMypzrBDzgRf3mb3PsN8s4SLd+UfO1KD2LwTIRk0tG7X4KybTry9NHkmRVwVeZ7BC8ua6DzAXjODZh0OLGSXyrt8gEJE334dz3P1IC01pI5Yk3qT1oLohI/P9VskZkbCyDu6/tPQOSCMhmtFqJdXsu+98e/AZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6c32daf0797so51797287b3.0
-        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 00:48:22 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e13e11b23faso5173333276.3
+        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 00:55:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724744901; x=1725349701;
+        d=1e100.net; s=20230601; t=1724745336; x=1725350136;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lyFU1QyCNa7lptSAN0cFkDNgjLOOwPVrcUvkymW1zfc=;
-        b=QzPrtq6YMJnPn5vyr1QhPGvqzF9QPdPNlXytlzfx1an0Bf0arFfGJ9vdaRE4g8JdFt
-         p0+IETrF06Bs1JCt7FjiVNl7rDbwjH4e2nYnX2I06Hqs0cSsK5jbPvf0X39GL+Alw89k
-         CD8zAcT6ZpXln4l9+4HF+74KPp4+p6FZPWuSC8UjK+CoXGIiQvPbUgm/pNrl8GGZiWbo
-         lQunATIfOTwGH3cAR4WDysQSbWyNseVZihmXDOh3iJF2A7pT++UcTFxzh0t4l2nEW4U/
-         251eOPz89iU7qiW/sIkEFVvr5D7q+7dhb5k4KSYOpuE53YY/Vo/JDec/kY8hWpeJcMuE
-         c/qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNx1Sy0lYzcO0Dul1XT3vWk53BZRn6jPbMCuwpvK3qKHzCIDaIDpG5YEuBjxeD5CD5HFc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxKTEk8RopUCxE2Jvc9lPZEBAxySe/pYm16mq+/9olBjU3mKGwh
-	tARSS5/qMYxxA/5nAiTbWd/tOHKg8VkbzoEz5NKPqnjaySJt2dq4F2sfxnYF
-X-Google-Smtp-Source: AGHT+IFFUIBUiwiYvbwulGNJMb/VaPJDkcQpT69CJsGoOxxIyMFH9NIGgcqOxnf7JldS6FRytYPHag==
-X-Received: by 2002:a05:690c:f16:b0:61b:1f0e:10 with SMTP id 00721157ae682-6cfb94145c7mr20547657b3.4.1724744901545;
-        Tue, 27 Aug 2024 00:48:21 -0700 (PDT)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6c39a7525bdsm18429607b3.31.2024.08.27.00.48.21
+        bh=P4JN30GN77x4NUy5z6yHPloDIcCANz9yHy+MUlnyZj4=;
+        b=RpZaqnONJhyA5+qsG59wM4cdMiFRoFqq9wYwEztIszOqZTIMAkZSK04qd0DFql45AT
+         UlP59s6ViQkkniQnaA1lfW0+UzmiOdNqGXVlIylwnZNHYfiHfZIzf5TkI7DRema8Icyj
+         7NE42gDgul6KmMGMZmEAclF5LZdN2uOBTDuyTlm6BwpiIr74e3bQLMQQEtcfeTTv17UG
+         NRqYsBJtlrxSL+YGA1UcUA5SfQLg7n8M4asY21HqUpj7J51jTdNRj2auGAPIPHOiPucC
+         pB63GU9DJb5j1CaHQe7vmTybdhahgKB5IHCKK3a32NI1jh3FmdUkqRMAmCrdmuASHccC
+         Bkhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUINbxocNyfmNZ/hjYhaCtMS8gLJ/auLAVRQupqUelmKDDjtcDmL1CuSWcwNEC/lHntp6s=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz0Ce6pCUlboVdEZroKBWSPSQfKpr2tgMYXrMOP5xHgoD7QfgH8
+	mkujIL9fbHUDDs/ebMRgn+Q1Rt8A3LlE+uTsdQi6RVWdt5mZrJR4SHOtS9Ij
+X-Google-Smtp-Source: AGHT+IG7beQDy07Oa4BGxB6XRIirUhgls+8tXW0zwrRhPRrJvXdR95eix8a8Eh1av4k4lQtdqjPZaQ==
+X-Received: by 2002:a05:6902:a90:b0:e13:e11c:1d5 with SMTP id 3f1490d57ef6-e17a866e2d8mr13233869276.57.1724745336436;
+        Tue, 27 Aug 2024 00:55:36 -0700 (PDT)
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com. [209.85.128.181])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6c39a75667asm18368827b3.54.2024.08.27.00.55.35
         for <imx@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Aug 2024 00:48:21 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6c49c9018ebso45221757b3.3
-        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 00:48:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXPC0Vhi7+m/08vmOD1nXh1GfL0edT7XrhBLNyu0AeqOsh/VjdU1cjabOcy+IbsEz5jyg8=@lists.linux.dev
-X-Received: by 2002:a05:690c:dc3:b0:62f:b04c:2442 with SMTP id
- 00721157ae682-6cfb9415ebdmr25153437b3.7.1724744901130; Tue, 27 Aug 2024
- 00:48:21 -0700 (PDT)
+        Tue, 27 Aug 2024 00:55:35 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6b44dd520ceso50114307b3.0
+        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 00:55:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUj4FMCHtIsuIL+VWsSzyC9qPGyP4dQyibGaX9xsGhMuIUvhFUc8AQ/BzqtkqmifUxijvQ=@lists.linux.dev
+X-Received: by 2002:a05:690c:d8c:b0:643:aef1:fb9d with SMTP id
+ 00721157ae682-6c624229802mr164962817b3.4.1724745335406; Tue, 27 Aug 2024
+ 00:55:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org> <20240823-cleanup-h-guard-pm-domain-v1-9-8320722eaf39@linaro.org>
-In-Reply-To: <20240823-cleanup-h-guard-pm-domain-v1-9-8320722eaf39@linaro.org>
+References: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org> <20240823-cleanup-h-guard-pm-domain-v1-10-8320722eaf39@linaro.org>
+In-Reply-To: <20240823-cleanup-h-guard-pm-domain-v1-10-8320722eaf39@linaro.org>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 27 Aug 2024 09:48:09 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV0R0+u1eCiUOHhL5w-wzge9KhgyumJSd28oF9kQmnx_Q@mail.gmail.com>
-Message-ID: <CAMuHMdV0R0+u1eCiUOHhL5w-wzge9KhgyumJSd28oF9kQmnx_Q@mail.gmail.com>
-Subject: Re: [PATCH 09/10] pmdomain: renesas: rcar-gen4-sysc: Use scoped
- device node handling to simplify error paths
+Date: Tue, 27 Aug 2024 09:55:23 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXCPJz=bNZppMExGdhCdzuTVOV-EcvnkZfBYCGnT7A7ZA@mail.gmail.com>
+Message-ID: <CAMuHMdXCPJz=bNZppMExGdhCdzuTVOV-EcvnkZfBYCGnT7A7ZA@mail.gmail.com>
+Subject: Re: [PATCH 10/10] pmdomain: renesas: rcar-sysc: Use scoped device
+ node handling to simplify error paths
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>, Heiko Stuebner <heiko@sntech.de>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -83,54 +83,28 @@ On Fri, Aug 23, 2024 at 2:51=E2=80=AFPM Krzysztof Kozlowski
 
 Thanks for your patch!
 
-> --- a/drivers/pmdomain/renesas/rcar-gen4-sysc.c
-> +++ b/drivers/pmdomain/renesas/rcar-gen4-sysc.c
-> @@ -303,12 +304,12 @@ static int __init rcar_gen4_sysc_pd_init(void)
->         const struct rcar_gen4_sysc_info *info;
+> --- a/drivers/pmdomain/renesas/rcar-sysc.c
+> +++ b/drivers/pmdomain/renesas/rcar-sysc.c
+> @@ -348,12 +349,12 @@ static int __init rcar_sysc_pd_init(void)
+>         const struct rcar_sysc_info *info;
 >         const struct of_device_id *match;
->         struct rcar_gen4_pm_domains *domains;
+>         struct rcar_pm_domains *domains;
 > -       struct device_node *np;
 >         void __iomem *base;
 >         unsigned int i;
 >         int error;
 >
-> -       np =3D of_find_matching_node_and_match(NULL, rcar_gen4_sysc_match=
-es, &match);
+> -       np =3D of_find_matching_node_and_match(NULL, rcar_sysc_matches, &=
+match);
 > +       struct device_node *np __free(device_node) =3D
-> +               of_find_matching_node_and_match(NULL, rcar_gen4_sysc_matc=
-hes, &match);
+> +               of_find_matching_node_and_match(NULL, rcar_sysc_matches, =
+&match);
 
-This breaks the declarations/blank-line/code structure, so please move
-this up.
-
-If you insist on keeping assignment to and validation of np together,
-the line should be split in declaration and assignment.
+Same comment as on [PATCH 9/10].
 
 >         if (!np)
 >                 return -ENODEV;
 >
-
-> @@ -369,14 +365,12 @@ static int __init rcar_gen4_sysc_pd_init(void)
->                 if (error) {
->                         pr_warn("Failed to add PM subdomain %s to parent =
-%u\n",
->                                 area->name, area->parent);
-> -                       goto out_put;
-> +                       return error;
->                 }
->         }
->
->         error =3D of_genpd_add_provider_onecell(np, &domains->onecell_dat=
-a);
->
-> -out_put:
-> -       of_node_put(np);
->         return error;
-
-return of_genpd_add_provider_onecell(...);
-
->  }
->  early_initcall(rcar_gen4_sysc_pd_init);
 
 Gr{oetje,eeting}s,
 
