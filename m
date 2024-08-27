@@ -1,37 +1,36 @@
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1E01C6890
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 15:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF37417C96
+	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 15:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771657; cv=none; b=bnsEOOlnAhWuRcumZxkyR2DI70papvda87gaEMly/JcerbvS/h/inr8wevRMmw1ZSeutXpiKEOcgYIDILYE0C9/fgBWZ+LHYXZTXoQijxXhfUFLaFIxNCbCMtnXU0SHTjgVVZFpvT21Y3yW7JpH827fAEMLIlKtLpKQ+RrRHP0M=
+	t=1724771791; cv=none; b=p43U0hatFrCR6tkbAzmBzr+TXOyRpHTmhOTQ+mjuumu7QVfc/kHXVYikSq38NB6m8hbG9nKUSFvpvYWYzXibcvSfRZbKwHBX8uRS5UPY5rRp/FuIUlpi6g3j0vu9EQ8lGP7/6bhxDTvV5SLeY3ZODloXbk/vphGECgk4oQnR/3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771657; c=relaxed/simple;
-	bh=95SlD4dn+/5CsHJRj4HNVqOYvAFGvFfl2S0kRyvBYOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U03aTD+kDT7NQO9udv4rRE6i5S6CW3hfW4nh9/sZdc8tV8aEf5cEZE5Xez2+zPTyJSTKya8flizKvLRBjJbdeB+UiYmeZG+q54R6DLlnGM8V6L9MXHF3O6OZ+o1K1/dagEHV2DMBX25GovbF7W1Pmp7WsRCQRjDB7ur+CVt0bb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EFnWGKfO; arc=none smtp.client-ip=85.214.62.61
+	s=arc-20240116; t=1724771791; c=relaxed/simple;
+	bh=5Ojzie+qyKcty2bJRnrtVYfM7dmjj93SCwHh+NFBz80=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ByouGOJXJS7fASM5m6YBlCQd4IpI8hyEevjUzitJMvwRKWbGcPLvNdKk5svGFFWE9PzNBvzOKchdxOGnPYqlUIqEA31a9AapbUTBEa0UDT3f5/X4Z+Ghsqsp/KeKwT293BTB2wBt7vGEoWi4pc1TOnYa+KrZiVJ7bwcwURgEg6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Y5K8yEP8; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EFnWGKfO"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Y5K8yEP8"
 Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
 	(Authenticated sender: lukma@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 448ED8895E;
-	Tue, 27 Aug 2024 17:14:14 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id B298087FA7;
+	Tue, 27 Aug 2024 17:16:27 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724771654;
-	bh=DkzZT4L9MeLYi2VtqgyxVPPWOOVKWL4TWD4Qxs6VKcQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EFnWGKfO3J7kOoBGKrJbZklzIa2KSN63qQi5+XCgqgzzVknUcKMcLREfybC7ECKyO
-	 QCvPvwjASKgGYLfC8UIseiYf0A3C0i97mQ/AG7IrKh1T6wvYpJ1wldVUA+JeOoxd08
-	 05Pn+k2WQ+2vJNjG9H+hS/LL/1adwa4Ia31NoPjmQhuyBzcC/vHjpgplLsecENbFwv
-	 0MAY8tFi39pKzSUYb3dJXH30GMeWgDzdi4fBfFQpYfqgUwGKmTsnqys0v5zwazkPys
-	 htLbFvG8e8BRt0AOe/+lefPwi76p3jAVX2+0S4/+5t0wYXARyTDVVJfMvas8rI8oJH
-	 NNawgoBkJcNow==
+	s=phobos-20191101; t=1724771788;
+	bh=XrbQYJ32a8CnFchpdahZdNHDXwIROgDJ5nvQGsFAb2g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y5K8yEP8AzbISORBJmAmrl4F48EJ71Aq3Ccf9E41o+ip4wyTBWdLpFTBq/qgC5GPb
+	 +2utTLwipBUh1lnFm07w5AURjJlHAE/ok+HUh4mnUCqaybvnZsQ5rK9bHyFToxqbVc
+	 utft2puKKRH5mJjNqyMupzfq6uy260K1CUG7UjGPoRnsP4lGXEyEDlq9s7Rg/jEnMj
+	 rsMbxMwSuUVE7EM1QGQmpCQtzpbQiyTa7zsE5vx5lU9gIitXT2FcTt3/FPDktwqbEN
+	 2b7Cg27hO8TWEG94pFDwukqpUGttKC/KFo8qaEWpxBH9T+aRwSQU/2F0+hfDBFAa0v
+	 hj6FudUwbNXuQ==
 From: Lukasz Majewski <lukma@denx.de>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -44,13 +43,12 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Marek Vasut <marex@denx.de>,
 	Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH] arm: dts: mxs: Fix dt-schema warning for pinctrl compatible (imx28)
-Date: Tue, 27 Aug 2024 17:14:02 +0200
-Message-Id: <20240827151402.2255708-2-lukma@denx.de>
+Subject: [PATCH] spi: dt-bindings: mxs-spi.yaml: Add clock property to mxs spi controller
+Date: Tue, 27 Aug 2024 17:16:16 +0200
+Message-Id: <20240827151616.2256401-1-lukma@denx.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240827151402.2255708-1-lukma@denx.de>
-References: <20240827151402.2255708-1-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,29 +59,36 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
 
-This change fixes following error:
-pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
-
-as the "simple-bus" is not required.
+The controller can have 'clocks' property to assign correct clock
+during configuration.
 
 Signed-off-by: Lukasz Majewski <lukma@denx.de>
 ---
- arch/arm/boot/dts/nxp/mxs/imx28.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/spi/mxs-spi.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
-index 9655403b7f90..73ca903b8723 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
-@@ -160,7 +160,7 @@ ssp3: spi@80016000 {
- 			pinctrl: pinctrl@80018000 {
- 				#address-cells = <1>;
- 				#size-cells = <0>;
--				compatible = "fsl,imx28-pinctrl", "simple-bus";
-+				compatible = "fsl,imx28-pinctrl";
- 				reg = <0x80018000 0x2000>;
+diff --git a/Documentation/devicetree/bindings/spi/mxs-spi.yaml b/Documentation/devicetree/bindings/spi/mxs-spi.yaml
+index e2512166c1cd..4790d7b37efc 100644
+--- a/Documentation/devicetree/bindings/spi/mxs-spi.yaml
++++ b/Documentation/devicetree/bindings/spi/mxs-spi.yaml
+@@ -34,6 +34,9 @@ properties:
+     description: input clock frequency to the SPI block in Hz.
+     default: 160000000
  
- 				gpio0: gpio@0 {
++  clocks:
++    maxItems: 1
++
+ required:
+   - compatible
+   - reg
+@@ -51,6 +54,7 @@ examples:
+         compatible = "fsl,imx28-spi";
+         reg = <0x80010000 0x2000>;
+         interrupts = <96>;
++        clocks = <&clks 46>;
+         dmas = <&dma_apbh 0>;
+         dma-names = "rx-tx";
+     };
 -- 
 2.39.2
 
