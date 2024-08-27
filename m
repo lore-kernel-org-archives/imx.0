@@ -1,102 +1,184 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3201F19E80F
-	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 10:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25519D89D
+	for <imx@lists.linux.dev>; Tue, 27 Aug 2024 10:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724753991; cv=none; b=YdL5vU6MrMLEQ/F3FDMiFlxvrS8Awy2tmRSe32UBehQXdc5wXHO0wRjropJCIp13WBG5/kXKhZVLTOG/+MJXqtVbpXIDYHFi8QN+/PJOB8IDrkFTaVRPjfL7xknZysBMP7atEsqkhkX1ZxxQsD6ShXbr3JYMyprG9CfL6sA2rl4=
+	t=1724754628; cv=none; b=T5FEWyfmHKgTImXPD890ovEiLtKzsd7lbkoE3f8Df+d4Pz5gREWRD9GfXz6rQ/F0uG37QnPFyZGdTn72XJ66bWI07aysGVgIIjdB7Ybj/LJ/Hj5KYnPlxoQQa50j8HQmPVezfonnRhYLzt5VMQihTnW90yGJ31ItW2hBcjXUQFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724753991; c=relaxed/simple;
-	bh=sK07lsSFE+joTxGjfjUxjVBL45qEzvwR3njHZpcid4w=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K64PAUvNskOWOYhCAx/C2DN0tgOEccH8vRJuxWLSlQCA+85M1RO6kwxCj7sCAOb+jzATgDYyli4hqmiXSOZt5U1fU+vDC+a0GKrFgoe118bBWMf0uXLlkBJDDx1I2bKzzrGWpK4+HZAeVUMbAte2z/iYsEIKtbqWFOt9LFc6GaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=H+JLuay5; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=N+LTt4NS reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1724754628; c=relaxed/simple;
+	bh=nT80rdayA5UHtA0WJnFTe/3oVId9QXu7cD5rdeRsvsU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j8UtHEOZVy3BXar8GA4pxZqmf1z0L4QqVcIElq5zRChNehOw6pvg8tVGEAEejRxT1JVnC6JVzSwiJwjzVNBt3S4ol3/8spWqrGSsuh+/puQVAwZ7FFiSWXPAn0tfuIL7mPRgJht3i7OFCyIwRHJ4yWokVp7VNe4umZLk5lr8ero=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QAP5TXkc; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="H+JLuay5";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="N+LTt4NS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QAP5TXkc"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4280ac10b7cso3449875e9.3
+        for <imx@lists.linux.dev>; Tue, 27 Aug 2024 03:30:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724753988; x=1756289988;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=sK07lsSFE+joTxGjfjUxjVBL45qEzvwR3njHZpcid4w=;
-  b=H+JLuay5CO3R0p+g9nV8B2GFWdMZs8tvGALHLO1AdOjUajHtuxAvb0mT
-   1dP3nlQ0LOcvAr2tFspraP87rYDreyMqmXx9tDiir9SpnLDcTuL3l5woG
-   yDBAfYGjMO/mRTMukj1iRuL2VyVyNyycgf7KJC6mMqTcq3TPA+ovNo2KQ
-   MaDkx7mCI0GsjImX2mKVjYdRln82Jv8baOj5bN2sh8ofYYrdKZoPSDyLv
-   BE8r//yFSNACaXyOBIF6Ao453R0j4SISB+qkcH7rCsSH7jvfarGO87AqH
-   oTOKGyujhgL759DUNhBB2cW6d1XvziP0yTv+IOsnxtu+BFCZRcmDphP+h
-   A==;
-X-CSE-ConnectionGUID: jAaQfSicRt6iEjmCMN9BRg==
-X-CSE-MsgGUID: mFTZQZw8TmqdYetBsj8TFw==
-X-IronPort-AV: E=Sophos;i="6.10,180,1719871200"; 
-   d="scan'208";a="38608163"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 27 Aug 2024 12:19:45 +0200
-X-CheckPoint: {66CDA841-3-AFDE3C8E-D8665302}
-X-MAIL-CPID: 19D5DE844FDF028A42682B9DDEF1DD6E_4
-X-Control-Analysis: str=0001.0A782F1C.66CDA841.0037,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6CDA816137E;
-	Tue, 27 Aug 2024 12:19:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724753980; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=sK07lsSFE+joTxGjfjUxjVBL45qEzvwR3njHZpcid4w=;
-	b=N+LTt4NSfebstkSn8ZH9nH0PBJvZdiDr4ROF0YMVrBLnn5CtpCltt0ARBcSMfaL3F00oE2
-	2G5rEBZXsJEeXW84vYsu+4nDfY1qo3IrcVDq3xtUfS+wsQMAtkdAQazFzlJ1sFENdSVmyA
-	btVUfWuhg5QiLqlfFFLTF4MEOPEGfdsbjWMeyKdKcvf2Ku9Sfz1v4dXkv/qQvoI+XdLB3+
-	zXK18Mg9R79YzDFwKWQrBpCXpNUEAK+P4Q32+dU78CxbmKyCyYMUXqlsE4QLEXlyK4EUSd
-	bal4xcg9vCAQclLyGl14fA4ZkSZe04nypCIPvHMRiWkrTjPtu08gHw08OMItxQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: gregor.herburger@ew.tq-group.com, imx@lists.linux.dev, Frank Li <Frank.li@nxp.com>
-Subject: Re: About fsl-lx2160a-tqmlx2160a
-Date: Tue, 27 Aug 2024 12:19:40 +0200
-Message-ID: <4596109.LvFx2qVVIh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <Zsz7OMOUpiC1vi9l@lizhi-Precision-Tower-5810>
-References: <Zsz7OMOUpiC1vi9l@lizhi-Precision-Tower-5810>
+        d=linaro.org; s=google; t=1724754625; x=1725359425; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=W3VBFYpmaqRCs+Se9LeU7unsLD0EFFfpK+JC6xNu3vw=;
+        b=QAP5TXkcyujtETLGibF1/FHXlBxb4ce1nR3F6NuKZ5+gvgeOBRv8xa6Q6oZi7AtKMq
+         /JdIIFTAoVLwZIR49fItCs3cYdvoa9GEwazOhHSm+i+9aOauosLZyTk4zrNFQvE2bgkM
+         OcYtN5yxqqx25KsuasVzGuLuaNjuRR80gdXsC/onVAAw9ZBNr7KghP9140x+n7U18NZ6
+         yz1VN3+7YzioJ78OAZQ2/2M54HDNu3JM09QdDYZIS0zznQwrSC+it2dSHfa/XJdJ++A7
+         3tOaQzEAodsyIigu0CUSXKvC2FohGjMBDhOodi517dbgyieRA342Q01CwM/wEgB+V8OK
+         HAiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724754625; x=1725359425;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W3VBFYpmaqRCs+Se9LeU7unsLD0EFFfpK+JC6xNu3vw=;
+        b=Pr9v5P7et1boOUeP/3jJ4T3Ou/KNVbHOxiS/IyuHFGr22/qdLOvbNacZXw5hndxBWG
+         MXSz/NHO0UXpfy+OQeRMasvgE5gEasxiCiwJjeVCWHzF6OOAhiNIRD57QxSvQpfYfj3o
+         +osPY7BsDY2l8t1OX16AtZowcVdsKn7FDpr8cnOIUkVsHEqI198/JKXN4fwmkcRIU2aI
+         ewJ7gXsmBmL3OXXnT0RgYt/XbDwXf1BBFd8CrkJeQ/Su7KxO3GRJKgKV3i3OPcr95nwN
+         QCcCznfTlgPFRfZfdVKQ6tiSoYDJVkfeweKHUZZh8dQt0kfoqh7QhEvcv41zGez8aXyU
+         Yrgg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4lBGYWSd7eWx45P83dMpt5/ejKNnGg5MiVDfATd+0+1GDfBWwF3EX8mpgXtomaUIDayc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9uxiUwkXHVzuFqwWDxpFxC6ym4HMIsf0iV4/QcQ7y/r88jFLc
+	FkXugBqRbRsYyXGZPGzHCDTqzh5+5E+u1/vIFgQeJNbskL7ZHa4Zr/ItULaymNo=
+X-Google-Smtp-Source: AGHT+IE1vEOGOGSPbk8DqUrG92QCcaEHUw1sMQDEkeJAs2xvcYkh9LNNcDwEqw3hyc/tlUYAgEF6sg==
+X-Received: by 2002:a5d:6c6f:0:b0:368:4e31:7735 with SMTP id ffacd0b85a97d-3731191ea94mr5120606f8f.9.1724754625456;
+        Tue, 27 Aug 2024 03:30:25 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.82])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730810fb76sm12879587f8f.8.2024.08.27.03.30.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Aug 2024 03:30:24 -0700 (PDT)
+Message-ID: <6f2c976c-2757-43c5-805f-e67724328b65@linaro.org>
+Date: Tue, 27 Aug 2024 12:30:22 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] pmdomain: rockchip: Simplify locking with guard()
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Heiko Stuebner <heiko@sntech.de>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, linux-pm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+References: <20240823-cleanup-h-guard-pm-domain-v1-0-8320722eaf39@linaro.org>
+ <20240823-cleanup-h-guard-pm-domain-v1-2-8320722eaf39@linaro.org>
+ <20240827105927.00007ac7@Huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240827105927.00007ac7@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Frank,
+On 27/08/2024 11:59, Jonathan Cameron wrote:
+> On Fri, 23 Aug 2024 14:51:06 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+>> Simplify error handling (smaller error handling) over locks with
+>> guard().
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Musing inline.
+> 
+> LGTM
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> 
+>> ---
+>>  drivers/pmdomain/rockchip/pm-domains.c | 5 +----
+>>  1 file changed, 1 insertion(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
+>> index 5679ad336a11..538dde58d924 100644
+>> --- a/drivers/pmdomain/rockchip/pm-domains.c
+>> +++ b/drivers/pmdomain/rockchip/pm-domains.c
+>> @@ -910,7 +910,7 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
+>>  	 * Prevent any rockchip_pmu_block() from racing with the remainder of
+>>  	 * setup (clocks, register initialization).
+>>  	 */
+>> -	mutex_lock(&dmc_pmu_mutex);
+>> +	guard(mutex)(&dmc_pmu_mutex);
+>>  
+>>  	for_each_available_child_of_node_scoped(np, node) {
+>>  		error = rockchip_pm_add_one_domain(pmu, node);
+>> @@ -943,13 +943,10 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
+>>  	if (!WARN_ON_ONCE(dmc_pmu))
+>>  		dmc_pmu = pmu;
+>>  
+>> -	mutex_unlock(&dmc_pmu_mutex);
+>> -
+>>  	return 0;
+>>  
+>>  err_out:
+>>  	rockchip_pm_domain_cleanup(pmu);
+> 
+> I wonder.  Could you use a devm_add_action_or_reset for this and allow early
+> returns throughout?
+> 
+> Would need to take the lock again perhaps and I haven't checked if there
+> is any issue in dropping and retaking the mutex however.
+> The block logic is non obvious so I couldn't quickly figure this out.
 
-Am Dienstag, 27. August 2024, 00:01:28 CEST schrieb Frank Li:
-> In https://lore.kernel.org/imx/20240826-2160r2-v1-2-106340d538d6@nxp.com/=
-#R
->=20
-> I try correct lx2160 pci for Rev2 chip. I saw fsl-lx2160a-tqmlx2160a.dtsi
-> added at 2023, I supposed you use lx2160 Rev2 chips because Rev1 chip only
-> was sent out for evaulation at very beginning phase.
->=20
-> Can you help confirm you use rev2 chip?
-
-I checked the used revisions on the board revisions I could find. Here is a
-list of parts being used:
-
-PLX2160PC72229B
-PLX2160PC72229B
- LX2160XE72029B
- LX2160XC72232B
-
-According to RM Rev3 part numbering nomenclature these all should be Rev 2.0
-(trailing B for revision).
+I will take a look, but as you already pointed out it is a bit further
+from trivial functionally-equivalent cleanup. I might mess with the locks.
 
 Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+Krzysztof
 
