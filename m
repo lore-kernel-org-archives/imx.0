@@ -1,345 +1,173 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294001DA32
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 02:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724813872; cv=none; b=FRUXzN2TJcYbbES+kRmYAQbQNd+iOjinoKj/do5i1GdyF9NB0/3dtUvpLJtG2bOW8zYH5RzYB6eOM7ouWymG/TuVjumtLKVIq28yKcfAi8HDFUz+NmlEZNI0UVkhinIIUX6EcwT7fM4UiRespHJLTg/56tSFts46TWmxaqvum6g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724813872; c=relaxed/simple;
-	bh=nPx9YdlBIXgdWgdLoqa6K+eXmsLh6srBh7jUSB+X/qA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r8zLv5mkrqTqEzK6xDni4IW4HChiwUXbGcdq4kEYXQbNYkk5/a73+lS6rJlhEdOmwtmDGK7i7Sc9NAJeJBlu5aK/60T0Kk0ZVztyOyR0RsHz3tsP/4FAf5nUXb4hfqD7JVuxjjlput6pu2WqrIhKUSJ6cyEcJu02xiPFeHpwSAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qVyFASO7; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013013.outbound.protection.outlook.com [52.101.67.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE78BFC
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 03:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724814224; cv=fail; b=U7S3lG0JNO6EP/TOSpq/vR6PAcQjnc1fN1HpraMFDjYhyCOxLAvmGemogt7OJamPUZALuErygNhwMmsxu6D8zPUFSVkPmn76t/ju5RFlRGAZS+6lAxLxnB7j1Y0KMrCXttjax0hoaRA8YEJ76KvU40CLw7w6/Qoi4staw5y4388=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724814224; c=relaxed/simple;
+	bh=oGnS98lPhxczB6mDNEqYznk5hD/tpVTboa3OaF6wPM4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Yy6W1sAKYZwle2GywGDP0a5eLtl9wSwUUOYNgROVT8kmSoDsCZn+quaJGG41yRjGVJ8jTjAiDR0WQfoSwOx2bX7xlDD3BVfK1dFAPW9CoTcyWIZQ+U6t/aeFXKUilwOIwMmo7/jnHhHYdWszJQeZHlS3u9v6m5CUy27BmHtnwA0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DsDFvKJU; arc=fail smtp.client-ip=52.101.67.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qVyFASO7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=X1RX62/7f1Qoxwc2/x4KHc50bgg8EmJbNwkklLIgkt4=;
-	b=qVyFASO7G80lZkeZVrGd41ENKbt2Z8BCrHvBlROAkAxI8JCTetNz0zL5oyJlCN
-	O7sJrpJ4p2gFYuk1AJTJTr7JvZXe2PLJ8dkhVi2tb74M6SjfcMRNbY1WaQjtFqWS
-	vt5en2UiyWDjPakgpOGasDY9VCOy8LUwdgSqDAvfd/p7I=
-Received: from dragon (unknown [114.216.210.89])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDn31nqkc5mtEIOAA--.25376S3;
-	Wed, 28 Aug 2024 10:56:44 +0800 (CST)
-Date: Wed, 28 Aug 2024 10:56:42 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frieder Schrempf <frieder@fris.de>
-Cc: Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 4/4] arm64: dts: imx8mm-kontron: Add DL (Display-Line)
- overlay with LVDS support
-Message-ID: <Zs6R6pqpFybPDa31@dragon>
-References: <20240806133352.440922-1-frieder@fris.de>
- <20240806133352.440922-5-frieder@fris.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DsDFvKJU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BR5Ybcdnbxf/jHlmS1z/qLFkAwk10v6ofNiPaqWsq9ptfW+jkVA60LxFDIxJLsCRcusl2baBVIXJSCfos7aLnVDi1aGQmpAIYQAJSq+N2Pa6czbF+KMSQ37X1nIgvg7UAP8iDT/GLx3lPKUWrTHg3hxUzywh4fTycCmJTvvO2IDMrn+RzTrma68s2Rf/ZVyYPmLht1A4bcYB4ElJBLHXQ+LfWk76G1jXG9BGB0h3pPOCXCRdti9pvTMHLWBJnxvuQ+V1H0en51b/w0tB54hbfKR2ciOcDpRxUpFkGuiqGBDzDaHpaYqLWFN7XGShzAPDTLMWMeL2tUNSQ4yhgFDquQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wv29+WwzOerN4PtyS4OgAEeHrN9UH0oW88kxAAmhyPM=;
+ b=JFYuH2mDoQ3arWn9RpK938qRzMp2YnFQyC75akFlwQ3NCZthI3UtlCImYq3Jh5KRNj6oD+Hg3RYzB/vsk6yoPqEnQ40JHmf0j/b1QfkiIGlFJDGKQdllTIdRCEPO3utzYpAQl0cdLpJ7Zpjow7u6Hz+Q7p1L+Z/LdFJ+y9vbVQDBksFjwen4ulB39ZQlnX1i8I/A7k+KnHCFWcvBuSCb348VyEiKaTrJrox/5PIrpO3Gwbxadb+Y6jGEZ9p1QNCnxE0L79m8w5pPYx8awpAue855efS1P0KIGAsN2XKGMYh4qPaxTOqNQMgkWcpR84M3A/Wf1pzADSNCB14cBQsxYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wv29+WwzOerN4PtyS4OgAEeHrN9UH0oW88kxAAmhyPM=;
+ b=DsDFvKJUCGhD7MA1O4QEwCs2aULqohwH5ID96SfFmdVMYUWSEbTkiLgrkgn78YysGM4VhNC83iG5y2jznwV/6AoqfISgHG3cCHnHYL7lUWEKnQl734BCixgHPMGNr11wqh8IiBSW+ObMyN3KSL8wgZHnhaTd5YxLjfWklzUZr5HcLwLfiAF7UW5tik8AXPWP5/7hmytpwzswa2Ck4b05baja/QeAxTsoADDMJ9Fwnj1iIUtFEQQf7S/xfj9j/fNdsPms5nJPSxbFejTn4jbEQNJiNrH0HHPaq8rINMeONvCovYiw+g24eVK7pGqimL7XAd0gNRYtmJ46laD65Gj9dg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
+ by AM8PR04MB7761.eurprd04.prod.outlook.com (2603:10a6:20b:248::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25; Wed, 28 Aug
+ 2024 03:03:32 +0000
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::4fa3:7420:14ed:5334%4]) with mapi id 15.20.7897.021; Wed, 28 Aug 2024
+ 03:03:32 +0000
+From: haibo.chen@nxp.com
+To: laurent.pinchart@ideasonboard.com,
+	lee@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: linux-gpio@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2] dt-bindings: mfd: adp5585: Add parsing of hogs
+Date: Wed, 28 Aug 2024 11:04:05 +0800
+Message-Id: <20240828030405.2851611-1-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0014.APCP153.PROD.OUTLOOK.COM (2603:1096::24) To
+ DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240806133352.440922-5-frieder@fris.de>
-X-CM-TRANSID:Mc8vCgDn31nqkc5mtEIOAA--.25376S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW3XF4rJr13GF1fuFWfuFyrtFb_yoWxuw48pF
-	9xGws3Wr1IqrnrAas0vF1kGrn8Aw4kKw4v9w1DuFy0yrZxu3sxAFy5Krs8ursF9F4UXw4F
-	vF1rZrW29wn0q3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jkYFAUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEh9JZWbOiJUoRwAAs7
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|AM8PR04MB7761:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44368176-7b32-4c9b-6962-08dcc70dffb6
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?WQgfAOf/j9lu8DHBA8tdEftGjKiDkbTj3nGEGGZEUw8t7NeV/vqDzmfAvIej?=
+ =?us-ascii?Q?apTy6aE/3vGYuP5eCbs3FHJR1ghK1tMPXlIslL+oQxaLi79tMaHCQWp2aHJS?=
+ =?us-ascii?Q?IyoDsZNa3giqDtuvMboMFTHh93HQyzHJtFGVbQzdw8mY5O+SBuXR6x75X5Ot?=
+ =?us-ascii?Q?Zc8L5786abfOX6qlxDYpEtRAqFOZwtIfn4bkrKOP/JKur62S8wh9RJ3vlHbZ?=
+ =?us-ascii?Q?1ZVzw2iwkoNFqNKa07TiWqNmcrPE73hiCFtRiOQihwU4ggjJo89VgpjjjZNr?=
+ =?us-ascii?Q?u7JLQ5qBqKNTFtvi1YznTo4W5wFkId1pqxZ7lZce6x+4ncTIvPFbUSU1HS7m?=
+ =?us-ascii?Q?brdiq6+nNhktlKrTV0YcnRFZgBdYxZ3GAx71QRrlhhGS0q9LUwKZQcxi/Z2t?=
+ =?us-ascii?Q?DQGmidPI0oO4z8/RwbU1+ydKos3OdXwqF98sg4lFxFDJsJgjD3iZecLs4N7x?=
+ =?us-ascii?Q?QnMvBRdkvab0HLWjVL2bPJayqcsS8Hrdawsir8DSZJtUEtRczrDDmrpuGoiy?=
+ =?us-ascii?Q?LspDkdz2OxvkLTRRwdFcxQrby5aTzpwzDpYSvGoGIX72uFtR9AHgboDH3MAw?=
+ =?us-ascii?Q?K8BAAR2E+KRsS2DVYftywq/Vyk1dppmyxHeQmMLxJQO6HfYIrWY3oqLEOTIF?=
+ =?us-ascii?Q?iKaNc375WLadZBIOjKMc9g3q8E9DsO0o6b9CiHT4hEeI9NWT1Swqt/Uv4cpI?=
+ =?us-ascii?Q?7mMVUvSgq4qhU50tuto1Q0Xfz7JYcRnNJLc/JDCSTIaUGCaf0t9Yuf97DuJ2?=
+ =?us-ascii?Q?Z9UFYzghxS5rQSwlsuiTCscQEHF7qTFuYFws57BhM9e4vsNIfXsq8Ze9ZTkq?=
+ =?us-ascii?Q?VTtjy7+OJWQEcfyOTwwySrm5v4KzakLQREjMLEPofk9W/TAVpiq2Z/gmAoT4?=
+ =?us-ascii?Q?ck846hT3pKLB+NsOmJpbW7Qh15LNw6RWRlwSyqaVLRA7J5yHU7avTH7Cklgf?=
+ =?us-ascii?Q?kU95rJUDJdpOPPeJjOGXLI2RE3oR/DdvsV5gDxk24AH7rRxPpkyuB7k3iCDG?=
+ =?us-ascii?Q?2UbG4TWDoXFzF+Yimbq6QXTkEqeAuScW+AbYGhbIYnUG6vPLKjD9tSGNlS4V?=
+ =?us-ascii?Q?RGbbmkF6setMB9oIAKzyXXoI0hCCIlLcwcIxJ4vHurj6qgiqTM4KAUTLlS1c?=
+ =?us-ascii?Q?FAeemqFvnACvL6onx3i95vGykhFFurz9NImDZdqKJEKR/8WghFRu/kfVLNXF?=
+ =?us-ascii?Q?vqreNlc2NDcV0WrP8uYfu8YnQsTcEqanOLD8CsVBfRhCZtdewn1k0hVM1OrY?=
+ =?us-ascii?Q?+GFPZa9xHKsSB2vMiWD0/n6AFYkE6nQmjnza/4dSNRrbtCodxoM7tofpClDK?=
+ =?us-ascii?Q?uwWrlR/r+18shViWAGv+HUKjSofi37NR40fV8oPT9UsliK5wltGW9mEpmrYd?=
+ =?us-ascii?Q?JGmc852cG4TROOCk/JRQmxxOyLQ1CrAEy/TPGygFv8ayz2WqcA=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?H0kgvCdm7Nzdr5bm6M2o7KTtsWBjkeuQTYVb94jJut+v26nB19GzE82P7yJv?=
+ =?us-ascii?Q?40rp/3nTl3LKEmP6IyaPTOxs8wYrIN7ghIkU8mLn/yBdTHCI9crpDYY+KM+V?=
+ =?us-ascii?Q?+hF/v6LaovMqWbi1pRH4gTppi5BI9KI6n3/LBe0hn5YQI8dvOoL/TFbymm20?=
+ =?us-ascii?Q?GoHZN/IsKLzvOxwBrmBztUv0uOhtHQQ+nKGOS6i5qdBFGoVKyWbUZ9NFJOcH?=
+ =?us-ascii?Q?NHZuklOh45RAMMjgGc0nQRy/p9KLsbNQR7a+++UpebXfrVMhmEahoCLG3rxD?=
+ =?us-ascii?Q?nuY0KhI5eJQldJEFyxkpIsFtv1jN6JxcQopYLDvQXBE6X4G0teI+K1fp9fHr?=
+ =?us-ascii?Q?NcvBKYIS6yyI1e6aEHey1/2NaXAXgkNuY/G4rl8TbTu7Asj1VGjJIYjPR0Ih?=
+ =?us-ascii?Q?rqvr0+A8AsNZxlZVwoNcSvbN1IUIG5y5a+3ugHZXQlVb5dI9kO3oV3TQSaZY?=
+ =?us-ascii?Q?8Gl5fy3iKei8xobPBtRgCGnIWtEUgjGHyt4HAfviCOpGOoOtpNtar18qr8Q8?=
+ =?us-ascii?Q?+/Yl3ofcg7eTBJ7+uajazTdET1Nd+x6szSGw0aONeW3eFN0C94o2dOSerNBS?=
+ =?us-ascii?Q?B+s8jpV3iX6B21YILztdt69aHlA/P4a8dPb74mwZYT0tOiPFjp6MIi1KamUC?=
+ =?us-ascii?Q?vE3xl2NiDvYEwpudbfuapNGR4t+yI1tSQ/zd8pzS5cH1nsJHQgD3axnh/sdE?=
+ =?us-ascii?Q?EcLZKhMy/Tv/HAEUqirek0Vc0y85kPTcw6qqDnfQwCtXJ+x8vq3ExEUQ0cFP?=
+ =?us-ascii?Q?d5bkWxd5qrWt5+Fn/nFUFtEgFZLw//fFb4BydJuaAw5Ieh4EW6bN7eaujesB?=
+ =?us-ascii?Q?KXFLZk5OLisN0MNcAdrAyjyu4CrkMiI8FlLjG5YxqY7KEqH9Dkx6Bwy1GXK3?=
+ =?us-ascii?Q?8qzyqGFpGI1CYF4K9qBU/efNsZEeOW4XUbiVwGM24EHig0kTbqjvS4BNMbUh?=
+ =?us-ascii?Q?w+d/r5pkSF8Ts4gXXn8y86xoSV3W7nTvaWXnumzMKJ1N+K3+Gu4QGEb6tid5?=
+ =?us-ascii?Q?Po32QpZuL7wZgsiIWTTi/cv+m1Krv9lHP1JpRiay4dARfu1MlkC8eaWrju2R?=
+ =?us-ascii?Q?O9sNaJe0Ex/6M9bBrgBaBDBK0NSi3YPgrb2+vsr9aMKzFp9a/HwT4YO5uMWr?=
+ =?us-ascii?Q?BBDW2ij7XjkCqGbb9gIgZztZp33ZhE6vRBwztZ83FRxbI1flJNN3m4UGT38s?=
+ =?us-ascii?Q?zML0Es2+FGTNzn2OKdaht4qIh34wuKmuUT6dEtMfeej3aACLRZJhXRuL6Hsw?=
+ =?us-ascii?Q?eox2oxnTaMkVzMr8/Ey5ckjocMjn9o0BE6VZFfsZI+OnZxi+dDz8h/+a3bJG?=
+ =?us-ascii?Q?umxlptIENzXSR+2sZG58Bc36qq9TTai7n4DMDEyXuZkt5jPDBqbbOk14zIkh?=
+ =?us-ascii?Q?zaJH60yTMDo8muH7ODSuUPIinPtj3ABwiWhT6Xhv/mIOIk1QZeXIMhTSFZh+?=
+ =?us-ascii?Q?O15cEGoKSzdY+/EzQ1mCo8OZE6regWCHnzJjWZ/lsxv94KR2+dyz07rzDo0G?=
+ =?us-ascii?Q?E4OAL9aVqQebI0v48gBGrKMMDtW+5Oynu/lMY0uxRZbI+nSssyiyC6sGWZ7W?=
+ =?us-ascii?Q?Scz9Fm48O55QXWmrJEixtkh7BoFFb2JrR/no1s4Q?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44368176-7b32-4c9b-6962-08dcc70dffb6
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2024 03:03:32.1961
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3AvcWZlSwkRoGzupTIFv8L1tYli90oM7rRuZztkxllZD3YlLnCNjmFlNsScD7ejxou4CPJTW0VkwxkCHHmb2Dw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7761
 
-On Tue, Aug 06, 2024 at 03:33:02PM +0200, Frieder Schrempf wrote:
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
-> 
-> The Kontron Electronics DL i.MX8MM consists of the BL i.MX8MM board
-> and a 7" LVDS panel. Provide an overlay that enables the panel.
-> 
-> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-> ---
-> Note: This currently throws the following warnings:
-> 
-> Warning (graph_port): /fragment@3: graph port node name should be 'port'
-> Warning (graph_endpoint): /fragment@3/__overlay__: graph endpoint node name should be 'endpoint'
-> Warning (graph_endpoint): /fragment@3/__overlay__: graph connection to node '/fragment@7/__overlay__/ports/port@0/endpoint' is not bidirectional
-> 
-> There is the following commit in DTC that relaxes these checks and
-> will eventually resolve these warnings:
-> 
-> 84b056a89d ("checks: relax graph checks for overlays")
-> 
-> https://git.kernel.org/pub/scm/utils/dtc/dtc.git/commit/?id=84b056a89d3c5b6cf6c5eeeafd4c4b14d6333aa9
-> ---
->  arch/arm64/boot/dts/freescale/Makefile        |   4 +
->  .../boot/dts/freescale/imx8mm-kontron-dl.dtso | 210 ++++++++++++++++++
->  2 files changed, 214 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index f04c22b7de72e..d8af069139920 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -244,6 +244,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
->  
-> +imx8mm-kontron-dl-dtbs			:= imx8mm-kontron-bl.dtb imx8mm-kontron-dl.dtbo
-> +
-> +dtb-$(CONFIG_ARCH_MXC) += imx8mm-kontron-dl.dtb
-> +
->  imx8mm-venice-gw72xx-0x-imx219-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-imx219.dtbo
->  imx8mm-venice-gw72xx-0x-rpidsi-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rpidsi.dtbo
->  imx8mm-venice-gw72xx-0x-rs232-rts-dtbs	:= imx8mm-venice-gw72xx-0x.dtb imx8mm-venice-gw72xx-0x-rs232-rts.dtbo
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
-> new file mode 100644
-> index 0000000000000..b2d593d700e2d
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
-> @@ -0,0 +1,210 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2023 Kontron Electronics GmbH
+From: Haibo Chen <haibo.chen@nxp.com>
 
-2024?
+Allow parsing GPIO controller children nodes with GPIO hogs.
 
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include "imx8mm-pinfunc.h"
-> +
-> +&{/} {
-> +	compatible = "kontron,imx8mm-bl", "kontron,imx8mm-sl", "fsl,imx8mm";
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ Documentation/devicetree/bindings/mfd/adi,adp5585.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Not sure we need compatible in overlay.
-
-> +
-> +	backlight: backlight {
-> +		compatible = "pwm-backlight";
-> +		pwms = <&pwm1 0 50000 0>;
-> +		brightness-levels = <0 100>;
-> +		num-interpolated-steps = <100>;
-> +		default-brightness-level = <100>;
-> +	};
-> +
-> +	panel {
-> +		compatible = "jenson,bl-jt60050-01a", "panel-lvds";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_panel>;
-> +		backlight = <&backlight>;
-> +		data-mapping = "vesa-24";
-> +		enable-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
-> +		height-mm = <86>;
-> +		width-mm = <154>;
-> +
-> +		panel-timing {
-> +			clock-frequency = <51200000>;
-> +			hactive = <1024>;
-> +			vactive = <600>;
-> +			hsync-len = <1>;
-> +			hfront-porch = <160>;
-> +			hback-porch = <160>;
-> +			vsync-len = <1>;
-> +			vfront-porch = <12>;
-> +			vback-porch = <23>;
-> +		};
-> +
-> +		port {
-> +			panel_out_bridge: endpoint {
-> +				remote-endpoint = <&bridge_out_panel>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&dsi_mux_sel_hdmi {
-> +	status = "disabled";
-> +};
-> +
-> +&dsi_mux_sel_lvds {
-> +	status = "okay";
-> +};
-> +
-> +&dsi_out_bridge {
-> +	remote-endpoint = <&bridge_in_dsi_lvds>;
-> +};
-> +
-> +&gpio3 {
-> +	panel-rst-hog {
-> +		gpio-hog;
-> +		gpios = <20 GPIO_ACTIVE_HIGH>;
-> +		output-high;
-> +		line-name = "panel-reset";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_panel_rst>;
-
-Are you sure the pinctrl in the gpio-hog node works?  Grouping these
-pins as pinctrl_gpio3 in parent node (like you did in patch #3) might be
-a good idea.
-
-> +	};
-> +
-> +	panel-stby-hog {
-> +		gpio-hog;
-> +		gpios = <21 GPIO_ACTIVE_HIGH>;
-> +		output-high;
-> +		line-name = "panel-standby";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_panel_stby>;
-> +	};
-> +
-> +	panel-hinv-hog {
-> +		gpio-hog;
-> +		gpios = <24 GPIO_ACTIVE_HIGH>;
-> +		output-high;
-> +		line-name = "panel-horizontal-invert";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_panel_hinv>;
-> +	};
-> +
-> +	panel-vinv-hog {
-> +		gpio-hog;
-> +		gpios = <25 GPIO_ACTIVE_HIGH>;
-> +		output-low;
-> +		line-name = "panel-vertical-invert";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_panel_vinv>;
-> +	};
-> +};
-> +
-> +&hdmi {
-> +	status = "disabled";
-> +};
-> +
-> +&i2c2 {
-> +	clock-frequency = <400000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_i2c2>;
-> +	status = "okay";
-> +
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-
-Can we move these two into property list above which ends with 'status'?
-
-> +
-> +	gt911@5d {
-
-Can we use a generic name for the device node?
-
-Shawn
-
-> +		compatible = "goodix,gt928";
-> +		reg = <0x5d>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_touch>;
-> +		interrupt-parent = <&gpio3>;
-> +		interrupts = <22 8>;
-> +		reset-gpios = <&gpio3 23 0>;
-> +		irq-gpios = <&gpio3 22 0>;
-> +	};
-> +};
-> +
-> +&lvds {
-> +	status = "okay";
-> +
-> +	ports {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		port@0 {
-> +			reg = <0>;
-> +
-> +			bridge_in_dsi_lvds: endpoint {
-> +				remote-endpoint = <&dsi_out_bridge>;
-> +				data-lanes = <1 2>;
-> +			};
-> +		};
-> +
-> +		port@2 {
-> +			reg = <2>;
-> +
-> +			bridge_out_panel: endpoint {
-> +				remote-endpoint = <&panel_out_bridge>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&pwm1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_pwm1>;
-> +	status = "okay";
-> +};
-> +
-> +&iomuxc {
-> +	pinctrl_i2c2: i2c2grp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL			0x40000083
-> +			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA			0x40000083
-> +		>;
-> +	};
-> +
-> +	pinctrl_panel: panelgrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SAI5_RXFS_GPIO3_IO19		0x19
-> +		>;
-> +	};
-> +
-> +	pinctrl_panel_hinv: panelhinvgrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SAI5_RXD3_GPIO3_IO24		0x19
-> +		>;
-> +	};
-> +
-> +	pinctrl_panel_rst: panelrstgrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20		0x19
-> +		>;
-> +	};
-> +
-> +	pinctrl_panel_stby: panelstbygrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21		0x19
-> +		>;
-> +	};
-> +
-> +	pinctrl_panel_vinv: panelvinvgrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25		0x19
-> +		>;
-> +	};
-> +
-> +	pinctrl_pwm1: pwm1grp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SPDIF_EXT_CLK_PWM1_OUT		0x6
-> +		>;
-> +	};
-> +
-> +	pinctrl_touch: touchgrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22		0x19
-> +			MX8MM_IOMUXC_SAI5_RXD2_GPIO3_IO23		0x19
-> +		>;
-> +	};
-> +};
-> -- 
-> 2.45.2
-> 
+diff --git a/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml b/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+index f9c069f8534b..ee2272f754a3 100644
+--- a/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
++++ b/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+@@ -42,6 +42,13 @@ properties:
+   "#pwm-cells":
+     const: 3
+ 
++patternProperties:
++  "-hog(-[0-9]+)?$":
++    type: object
++
++    required:
++      - gpio-hog
++
+ required:
+   - compatible
+   - reg
+-- 
+2.34.1
 
