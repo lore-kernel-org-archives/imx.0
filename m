@@ -1,127 +1,122 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4F715921B
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 07:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F3F1598E9
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 07:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724831393; cv=none; b=fEwnYk34+zKFpnRbiKSDWDUR6jmcTUY/Tj9en1q7rpknPnE6NeZvdmZHJ49SD3jy73gXy6tdJjleJjfII91wFImh2B9u4af9Y53vJsWQfoGQjkLH0gVg+IJfAv7jKGFWOkFOqaNsIg4iuq+bJMjkE+joyag5md44D9UaaoQbL+0=
+	t=1724831817; cv=none; b=FkGsyXJhtBe/6j0KiLMbH244MbmUKd90bBMTBz0etgYAeW1S3QwvFiyaEyqNUSxteaMqdkJp8mLCIs3mhPDVV+QsVv0C9/ND8ueJ4b4h3nuflvfAJapnD47N8HmE3Cf2QGWSLvr2FPt/gmKcOjaXdicz71B0yc+/UN0hCJ2y2Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724831393; c=relaxed/simple;
-	bh=Rv3qTmRUBeZwN6rhOjdvXGQsaHueyAzsFZN+jNQkhK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tt8AATP5NRa/jjEDBtDnblibc70ZpMoqTr+8a5GxmTMn5XuMMddJmeLolkvipVMMw/RPCJR6HAqmzmgmDR4l03CV6y6dwVTnYRyDDk6WUxSGx5cFlsKx7qtx7O++lWYuO0enTb9o2u1mxvHpG4l2I5xB8X/XQzRhue1H214GIJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=BDKwDsyF; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MkpGsK4/ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1724831817; c=relaxed/simple;
+	bh=o1/M+3PhzxTC2Qyi5wfEU2L4YbYB8ba3gjqhV8GQ+II=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U925wh4HJe1SmkvkJenFBeORfnw8s8OfRNL8XuwNlD0rscTUwHeoAPHHxaYWL4xUReVAcCKR9Tu5GZbWo/NGVed01URHORRCs/XmJnRqeLJJUEchyxhvH2Zu3JMd3j0kPQjjRkiUwStkvg7xd+2uFO1jsX4pUUAEQ5ZTA+LA8So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=fail smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=YvrfdGUq; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="BDKwDsyF";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MkpGsK4/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724831390; x=1756367390;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=o/dgLyC7mY4Z5ZSkBhiWo3QczPmuWbYX1lDKIXDvn6s=;
-  b=BDKwDsyF86XfrvCdQgHpT1q4DnvmudxmaLbiMIIf2AsF0IVviPthOb5F
-   QBQkSjlx2s7lSBQ7Q0T8VvjD9mny92N3iBVclvAiFaxTYQvXXaphT2i5l
-   FgOOrCujtdRVpFrXZEMvTZvU/if4HZfc69FfhiU8rHddEwdwC+s34YPj1
-   OPJoyfG2RaM3GK7XyjCimz3Qzc+DA1a819XTBjQ5NZkvA95zdwh3e3pbk
-   EmF5rAsfvM9kH5359ov+YZ68SDyCol6FpNAxI6fZcZG47U76u6FB7M7Tu
-   rc1eU+/ML6adBwqfaCbMY0gdPeRFzL7g/zx3/llhdJMGur4MkyICg2/br
-   A==;
-X-CSE-ConnectionGUID: zcQljSgiTC+xTllxrQPQSA==
-X-CSE-MsgGUID: XI7VxYhET8OWizceL+T+/A==
-X-IronPort-AV: E=Sophos;i="6.10,182,1719871200"; 
-   d="scan'208";a="38627529"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 28 Aug 2024 09:49:42 +0200
-X-CheckPoint: {66CED695-2A-22BB8E18-F5F6D0B4}
-X-MAIL-CPID: D2B6D901E25C8B78085EF8CCF03AB4BC_5
-X-Control-Analysis: str=0001.0A782F1E.66CED696.0072,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9FBD169E7B;
-	Wed, 28 Aug 2024 09:49:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724831377;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=o/dgLyC7mY4Z5ZSkBhiWo3QczPmuWbYX1lDKIXDvn6s=;
-	b=MkpGsK4/qgFIErJorzcI/O8lEPRTQVC3e6Ue7BmxnYHfPebKZb+yaofpHJbL7fAHBb4dyq
-	kSNdEBq9H2t3vC7pht715ON3uDnkFFUbB9O/hoPJW4k+Jw5YVBHQurjVTBMlLBznpOcSTV
-	pAVk9sN9+GTOIuaOf6NZv3lum82HI0BpfUu7MzgIDLd6zWfKh29t/4orUWynbZrUYhbC0M
-	rRt7F5MnSX7rQi1NhcK77cdVilHdJbv+u1uZbsRMuYjt3GA/tQF6vJhqvMpoJgWDPwf/DB
-	9euwkZVjWzzbIlr59LVopmH4aUGzh84i8wp0cVv3MtFKZS/USAb3KkiWr9oJbA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] ARM: dts: imx6qdl: Add reserved memory area for CMA memory
-Date: Wed, 28 Aug 2024 09:49:36 +0200
-Message-ID: <10526262.nUPlyArG6x@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240827142458.265558-1-alexander.stein@ew.tq-group.com>
-References: <20240827142458.265558-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="YvrfdGUq"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 39EFDBFB0B;
+	Wed, 28 Aug 2024 09:48:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
+	t=1724831308; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=Sk/iSLcWW34am2lJOyTQ6p5QG/I58ELhkbjR/9vSduk=;
+	b=YvrfdGUqoG4TzSdQg8ZLh0JBKEYm6E1giJ2JsfZgxSqv8fABfEYoiZLjhW/+uMUXz3S+N+
+	1v5O13rt7wvMMYaq9ozDvngd1pXSruN2C1UhHAZG37az6rYZHqapTwKF1wPPRm/6VrEqyd
+	IpCPdfcE1GNXDew711fXv7ZN0JQjvzC5yI5BKkTp+YR/Jy5RjapErNFPuPipV9QlzcTPY+
+	YRJGbDtv9nLhSzFSYM5mHYfWxOtYAN0xhVto4hTuscSsznenOYOKF9/vNLjjUSmYv9ToZq
+	zNlfYy6QedCo0Z+8mXqeM7BZIMZ3n3WJkpG0+o7C9hRBuf4Jr9+9vOKnO8HoeQ==
+From: Frieder Schrempf <frieder@fris.de>
+To: Conor Dooley <conor+dt@kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH v2 0/4] arm64: dts: imx8mm-kontron: Add HDMI and LVDS display support
+Date: Wed, 28 Aug 2024 09:46:52 +0200
+Message-ID: <20240828074753.25401-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Am Dienstag, 27. August 2024, 16:24:58 CEST schrieb Alexander Stein:
-> Default CMA size is too small for HDMI output and VPU usage. Increase the
-> default size by providing a CMA memory area.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
-> Smallest RAM variant has 512MiB.
->=20
->  arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->=20
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi b/arch/arm/boot/=
-dts/nxp/imx/imx6qdl-mba6.dtsi
-> index d03f7065ddfd7..8ba3ec27bee07 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi
-> @@ -106,6 +106,20 @@ reg_vcc3v3_audio: regulator-vcc3v3-audio {
->  		vin-supply =3D <&reg_mba6_3p3v>;
->  	};
-> =20
-> +	reserved-memory {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <1>;
-> +		ranges;
-> +
-> +		linux,cma {
-> +			compatible =3D "shared-dma-pool";
-> +			reusable;
-> +			size =3D <0x14000000>;
-> +			alloc-ranges =3D <0x10000000 0x20000000>;
-> +			linux,cma-default;
-> +		};
-> +	};
-> +
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Please do not merge yet.
-I just noticed that this breaks mmap'ed fbdev usage. It only works when CMA
-area is in HighMem.
+This add support for the display bridges (DSI->LVDS and DSI->HDMI)
+on the BL i.MX8MM and the 7" LVDS panel in a separate overlay.
 
-Best regards,
-Alexander
+Only one of the interfaces (HDMI or LVDS) is supported at the same
+time. Enabling the LVDS overlay will disable the HDMI interface.
 
->  	sound {
->  		compatible =3D "fsl,imx-audio-tlv320aic32x4";
->  		pinctrl-names =3D "default";
->=20
+* Patch 1 and 2: Add the necessary binding changes
+* Patch 3: Extend the BL devicetree
+* Patch 4: Add the LVDS panel overlay
 
+Changes for v2:
+* Patch 1: Add link to commit message
+* Patch 2: Add Conors A-b tag
+* Patch 3: Remove blank lines from hdmi node
+* Patch 3: Fix order of lvds and hdmi nodes within i2c
+* Patch 3: Remove the unneeded deletion of samsung,pll-clock-frequency
+* Patch 3: Use the existing MIPI DSI output port from imx8mm.dtsi
+* Patch 4: Update copyright year
+* Patch 4: Use exisitng MIPI DSI output port from imx8mm.dtsi
+* Patch 4: Fix pinctrl for GPIO hogs
+* Patch 4: Fix property order in i2c2 node
+* Patch 4: Use generic node name for touchscreen
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Frieder Schrempf (4):
+  dt-bindings: vendor-prefixes: Add Jenson Display
+  dt-bindings: display: panel-lvds: Add compatible for Jenson
+    BL-JT60050-01A
+  arm64: dts: imx8mm-kontron: Add support for display bridges on BL
+    i.MX8MM
+  arm64: dts: imx8mm-kontron: Add DL (Display-Line) overlay with LVDS
+    support
 
+ .../bindings/display/panel/panel-lvds.yaml    |   2 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ arch/arm64/boot/dts/freescale/Makefile        |   4 +
+ .../boot/dts/freescale/imx8mm-kontron-bl.dts  | 131 ++++++++++++
+ .../boot/dts/freescale/imx8mm-kontron-dl.dtso | 189 ++++++++++++++++++
+ 5 files changed, 328 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-kontron-dl.dtso
+
+-- 
+2.46.0
 
