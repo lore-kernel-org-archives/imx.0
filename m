@@ -1,246 +1,107 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAB416A95E
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 09:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB2F166312
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 09:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724837775; cv=none; b=Vt+awuUvtd5MNV9J7028zVRLj53CZ6r2hfIfaMNPTOrpEQJzjbpW2FEEEnovKvAbE/pmmrUkx4szHkLWXGvqTy7VSuPhBZZpQ2tNsRMULXHcHeCOG2IlR7NVRtXqKXaivPQqOMHrnSHml0t+V/kpbNzU6ol+GAdIgkEsmqkFpJ0=
+	t=1724838489; cv=none; b=i10besulr39P0HbedILaQ1I3Zfql7gHmtvOQkF80/D8bb4vBiJ+V46vKJfeVLAPFXClew7ike1Yp0GmG7pd647dopgjJTWxa3fS49ZOa0Uw5SJ32+og21xn+1cXuzvSCX8uL8grt1S1bQB1GG3RUCRNFMGZA/DgGw1BgXUCjQ2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724837775; c=relaxed/simple;
-	bh=bfnqlyzaJpLrEgkQnghSy/QuUGq8pRc27uQrIneNjNU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MGq8ZNK93vtQw5V99EyigP6cGBHI89MOhZDlZaBkoWKa0C//Cjc6pInj3jJJgxYrPys8yvj4awez8y89AHkwZS8nG7YFU7m33UTOdT1vy2j3e3Tg5whgDMYu64HSZKNebelVRB7X6ErFhSnBjjD0nBfSDIZKgCWoRgjtwvMTyB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hecMZk5d; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hecMZk5d"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4280692835dso9228295e9.1
-        for <imx@lists.linux.dev>; Wed, 28 Aug 2024 02:36:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724837772; x=1725442572; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Oqpgi+Ioc4Hh1q2eVNsUH6IqcMRcphlNfWp1+WCdT64=;
-        b=hecMZk5dKfcs5fQ9pM9ZKQD2cxx1PMaBguPkp2ULG+7Rzm+uqmJrpn0w9srICV0RPw
-         eZwMuMLCb09Hyk8YfhiWJgLsRfTorlUf87OXo8wOHWvZS5MHH0beEijOTM37N1CIoMSb
-         ixJxmUN8YuYwWb97s0xmmmBFzq3dIu6cd5vI0BAXj3EmW6g95dZJCrakTJZ6O5FxBeH1
-         K1eDwMZTqkJhK14ydAfaTbGsGAFthwGGJAx4woDTKr6JeJSJHv+3jsgoC6kPN1mQk01f
-         ygijPH9roEEVJgFKPZIq9b3zWFjFllVsPoKB1XK4DATcrdjoft0AUpHSOcWoVUpdQgOS
-         e5Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724837772; x=1725442572;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Oqpgi+Ioc4Hh1q2eVNsUH6IqcMRcphlNfWp1+WCdT64=;
-        b=HTNr0YayosuGy+fNz1Q6AGDpbLd0OTZkZzQ8s4QcGBXJDNPNEU500j0y+Vll7ThQDr
-         rr3b2by81vhxHg33T467nAvUVBaR9wKNZitSP9c3TiFW5u/JIR93JDkAhtQrmeWbyx17
-         KLjGehIO0ZMY1NNMeaIZNshAb1gvamRASl5YqCpN6eyL4BopoXP6rTWUGeje2sxkVo2b
-         4ISgNW8cFTE8ng9JGljlyL7dHxeFoohr8eI61PYu41HqgeAuYJEP5EayASiflrMakc1Z
-         FoAcR7oD03AUaZTOnT6ubFc0m3weaMlShwrERBZYkpO/IN8kkCEUEOjJIZo8wwJWhksR
-         Z/FA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzO7MwjKgNuGvp1ks/SdunR8LXb51Fyer6H+3Iuwvb53Tr5n1Ebu98QIdvKDSMHHNrfnU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw5NT8jRTfmjejZEjKhSo1xetDSY1gT1A+o6hIgggEhCeW7/SQp
-	MnXeJ7ER4+qmDwLLXyEnC6ay5sKRh4WhKqOeyopsYg5pJlhc4vK743sSUFzTWRo=
-X-Google-Smtp-Source: AGHT+IETpe3b9BGv0n0aM0dnAJ8cS5Q7YY6k14fOQPDFxFj2whk1YkEA+f5mnYL+L6tMMK9TqVfI6w==
-X-Received: by 2002:a5d:5889:0:b0:35f:1edb:4695 with SMTP id ffacd0b85a97d-373118b65acmr5912438f8f.6.1724837771829;
-        Wed, 28 Aug 2024 02:36:11 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba63d7d3esm15270825e9.37.2024.08.28.02.36.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 02:36:11 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 28 Aug 2024 11:35:59 +0200
-Subject: [PATCH 3/3] dt-bindings: gpio: simplify GPIO hog nodes schema
+	s=arc-20240116; t=1724838489; c=relaxed/simple;
+	bh=8q/gYqjocLmPeNq35vGug9tVt5L5rHQ7RsGfDd7nid8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TT+aepyP1YoFxHnBAeKOTNGb0msVbSd/MZPduXXuZ24SftRd5KFSFTeo1MaGFUNdlYv7xgHjfHtyN1Ip3S7l+QJVI/5Saf1ZuiAiKKmMPycEfUFZsArrRUvEpqu31n284l/AoaqwG31hiM6RxeWJTZHTrwyVIqguCAbVUwtAgVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E4CBDA7;
+	Wed, 28 Aug 2024 02:48:27 -0700 (PDT)
+Received: from bogus (e107155-lin.cambridge.arm.com [10.1.198.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6E543F73B;
+	Wed, 28 Aug 2024 02:47:59 -0700 (PDT)
+Date: Wed, 28 Aug 2024 10:47:57 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	"cristian.marussi@arm.com" <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH] firmware: arm_scmi: imx: add MODULE_LICENSE/DESCRIPTION
+Message-ID: <Zs7yTYSb1OeV2dc1@bogus>
+References: <20240828014746.1713728-1-peng.fan@oss.nxp.com>
+ <PAXPR04MB84595AD3A570948EA8593ED488952@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240828-dt-bindings-gpio-hog-v1-3-63b83e47d804@linaro.org>
-References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
-In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
- Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Maxime Ripard <mripard@kernel.org>, 
- Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- linux-arm-msm@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
- Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4308;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=bfnqlyzaJpLrEgkQnghSy/QuUGq8pRc27uQrIneNjNU=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmzu+CXWk9x7tyzNeDQFogtsG8zjaPPskp0BUXE
- 4KwHhVpHwmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZs7vggAKCRDBN2bmhouD
- 11QrEACVIpIu/QhFsBa1s0ikl/l3NZcISpoVtaGfa7CO039p5WWJDGiQvU2XGHmZRqeZrfdigxy
- hORUEVKrYlwVYTYH41liiu5wW9SsB2Ezbh3mkN/zMeb4/Grug6Jv9K2V3JPGfK1+lXI7Q0INRo2
- X5Vnl5ze9n2TtBSd1RFrBBdIMiCUaNvtRGzBDVpNJPazhXLfV1yH4t/wZefomqpGP53ErB5WQBU
- OuFczEFjRPTYG9+9ZKxT5olkt9sLD1qybpcl7hujY4zObNsH3d+BdWZFF3lOyg5V8L3d17wRrqQ
- gNNMqd+BMeDirtt9VAHL/DKwG7BQOASFkKAmb8m7c6GWCNVqMzQQUoB3HVjUmJLTHBZqXqHn/+t
- iuv0CFwwMLUryCG22Bf6q3jhJ0pyoPhxhuvDcHuELlFc+B/To1bJS1vkLwQtgyxw1ijQrrANd1Z
- Hu0BNtzAGLh3VQIt1dehi98Jvi17K7XWJ4dP/bpbX0OQB0b6KyyVJta6jRZXjucgf9m3S0en5ZD
- Qj4V+q+fnifnY779vEX4TDaz4LHU1gNY7fszLKPq/9NNmlGyAVLLWITalO01t3fzxwjoeiI6PRj
- yqteXxBVHnDUnmQGqodOcQ1Hp2SLEWkTQwhKHgi5ppgZo37EwX+VVc1gDJ9bTIwWuSFv1h0runq
- zyPoznFYDtvUFmg==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB84595AD3A570948EA8593ED488952@PAXPR04MB8459.eurprd04.prod.outlook.com>
 
-The core schema in dtschema already strictly defines contents of nodes
-with "gpio-hog" property (with additionalProperties: false), thus the
-only thing device schema should do is: define "type: object" and
-required "gpio-hog".  Make the code a bit simpler by removing redundant
-parts.
+On Wed, Aug 28, 2024 at 05:17:27AM +0000, Peng Fan wrote:
+> > Subject: [PATCH] firmware: arm_scmi: imx: add
+> > MODULE_LICENSE/DESCRIPTION
+> >
+> > From: Peng Fan <peng.fan@nxp.com>
+> >
+> > Add missing MODULE_LICENSE and MODULE_DESCRIPTION
+> >
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >
+> > Hi Sudeep,
+> >  My bad for not build this as module. If you need me fix the previous
+> > patchset,  please let me know.
+> > Thanks,
+> > Peng.
+> >
+> >  drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c  | 3 +++
+> > drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c | 3 +++
+> >  2 files changed, 6 insertions(+)
+> >
+> > diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
+> > b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
+> > index 0df7ca135c34..ad8734d2aeab 100644
+> > --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
+> > +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
+> > @@ -377,3 +377,6 @@ static const struct scmi_protocol
+> > scmi_imx_bbm = {
+> >  	.sub_vendor_id = "IMX",
+> >  };
+> >  module_scmi_protocol(scmi_imx_bbm);
+> > +
+> > +MODULE_DESCRIPTION("i.MX SCMI BBM driver");
+> > MODULE_LICENSE("GPL");
+> > diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> > b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> > index 9ee2d204d607..1d339cfa6ecf 100644
+> > --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> > +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> > @@ -313,3 +313,6 @@ static const struct scmi_protocol
+> > scmi_imx_misc = {
+> >  	.sub_vendor_id = "IMX",
+> >  };
+> >  module_scmi_protocol(scmi_imx_misc);
+> > +
+> > +MODULE_DESCRIPTION("i.MX SCMI BBM driver");
+>
+> Just find this Typo. BBM->MISC.
+>
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../devicetree/bindings/gpio/fairchild,74hc595.yaml          | 11 -----------
- Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml     | 11 -----------
- Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml     | 11 -----------
- .../devicetree/bindings/gpio/microchip,mpfs-gpio.yaml        | 12 ------------
- .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml    | 11 -----------
- 5 files changed, 56 deletions(-)
+I was about to ask the same. Please take time needed to push out any
+patch, no point in rushing and churning unnecessarily like this.
 
-diff --git a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
-index c0ad70e66f76..e8bc9f018edb 100644
---- a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
-+++ b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
-@@ -36,19 +36,8 @@ properties:
- patternProperties:
-   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-     type: object
--
--    properties:
--      gpio-hog: true
--      gpios: true
--      output-high: true
--      output-low: true
--      line-name: true
--
-     required:
-       - gpio-hog
--      - gpios
--
--    additionalProperties: false
- 
- required:
-   - compatible
-diff --git a/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
-index e1fc8bb6d379..6b06609c649e 100644
---- a/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
-+++ b/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
-@@ -85,19 +85,8 @@ properties:
- patternProperties:
-   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-     type: object
--    properties:
--      gpio-hog: true
--      gpios: true
--      input: true
--      output-high: true
--      output-low: true
--      line-name: true
--
-     required:
-       - gpio-hog
--      - gpios
--
--    additionalProperties: false
- 
- required:
-   - compatible
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml b/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
-index 51e8390d6b32..7b1eb08fa055 100644
---- a/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
-+++ b/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
-@@ -107,19 +107,8 @@ properties:
- patternProperties:
-   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-     type: object
--    properties:
--      gpio-hog: true
--      gpios: true
--      input: true
--      output-high: true
--      output-low: true
--      line-name: true
--
-     required:
-       - gpio-hog
--      - gpios
--
--    additionalProperties: false
- 
- required:
-   - compatible
-diff --git a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
-index d61569b3f15b..d78da7dd2a56 100644
---- a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
-+++ b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
-@@ -49,20 +49,8 @@ properties:
- patternProperties:
-   "^.+-hog(-[0-9]+)?$":
-     type: object
--
--    additionalProperties: false
--
--    properties:
--      gpio-hog: true
--      gpios: true
--      input: true
--      output-high: true
--      output-low: true
--      line-name: true
--
-     required:
-       - gpio-hog
--      - gpios
- 
- allOf:
-   - if:
-diff --git a/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml b/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml
-index 228fa27ffdc3..36f5a0610471 100644
---- a/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml
-+++ b/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml
-@@ -55,19 +55,8 @@ properties:
- patternProperties:
-   "^.+-hog(-[0-9]+)?$":
-     type: object
--    properties:
--      gpio-hog: true
--      gpios: true
--      input: true
--      output-high: true
--      output-low: true
--      line-name: true
--
-     required:
-       - gpio-hog
--      - gpios
--
--    additionalProperties: false
- 
- required:
-   - compatible
+Anyways, I did hit the issue last night and fixed it locally but
+didn't push out as it was late for today's next. Please check if
+https://git.kernel.org/sudeep.holla/c/for-next/scmi/updates
+looks OK.
 
--- 
-2.43.0
-
+--
+Regards,
+Sudeep
