@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355781A3BDD;
-	Wed, 28 Aug 2024 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C681A4F19;
+	Wed, 28 Aug 2024 16:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724862604; cv=none; b=ZdxYtt0rz328P0mk79L/QiZ9T1QFWL/C+P0Ox08xBZZOVSgt/vJNffyRn4qAyi3/DBmQbYTfiGTX8XIYPMxpw55zkN7F/0oMY3tNYbY9zL8H1YdEkLGp9uSOk8MYHh06cucpdScnlqad706Pq6KZi0IoO9UiIWX/thBFTVXlk7g=
+	t=1724862614; cv=none; b=EmkMWin6BHtbx/CPYo4zLMnlw1bd+KKCkeOB+WSy0T/Z45gdIFdHbq9bMekMng6oK76ulht6ux/nGZ7XYsM+690d2YqXoWNWv7zg/qgkOfUGYrQtLpVTcWWG2aug0QgD1uzIjyzk938RYM/Ob8fkCM662uuE6ABCSR5sl8CIY6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724862604; c=relaxed/simple;
-	bh=j4jLeDpIzPZKbskW68/+PpTVh0tjaeer4IOaG6DDChY=;
+	s=arc-20240116; t=1724862614; c=relaxed/simple;
+	bh=EIyUsxVuPHc/tqcz0RsaQ8+ITlHog5y4TAfKd9yah2s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=NZQ6L1p7uMu+Evrd+ll+lvp9i3fvi/Y3v0kzc5Nd1WokmLFslUexdOaRU7t/Crvo2dXh5K78T9WjckpEdP0++iO20bEwOS3J5LAJHwqMXDeZzIw76vJgKWVBs98KEfD+3AcUo9HElYZZGk+nY8vXZVlGqzRrE+/3eOtPOFAWbXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZkPS99P; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=lDCucVlxlNddk7PFe/pt+tSoUyn8PnIfb8c5A3hT14SyYdu0uTy8ZHs7YTJidWzX8yIm0TQeqz8BCQJ+vzpHhx9nH6ss6HeEXNtwUO9W6HGdrS3Lg7PNeqXZeYJnVDzDQ9kIjgyg85Pg1A818foO+9oEolfd6/aj5xRjSjZQalM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvgpUUY+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZkPS99P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50236C4FEA7;
-	Wed, 28 Aug 2024 16:29:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvgpUUY+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9C7C4FEAD;
+	Wed, 28 Aug 2024 16:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724862603;
-	bh=j4jLeDpIzPZKbskW68/+PpTVh0tjaeer4IOaG6DDChY=;
+	s=k20201202; t=1724862614;
+	bh=EIyUsxVuPHc/tqcz0RsaQ8+ITlHog5y4TAfKd9yah2s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=oZkPS99PMjSQDlmejYO5DOcf0J3MZYC6EnN2Zr6EL6r2frkfw+sOqhNkQxVgAz9pg
-	 qn0oMddBruo3l7QFyqNFw3zET4JnpwOuAoVc3lf0QRdSisREGea6eSAbEPr78wfqku
-	 tUF1pHngBz7YASQgcya4e+3DZGy5g8czchAMrwZX90O3khwNU4jTA7M/e9Mx4uS9Xh
-	 pMAksliy4Q3mCZVMEZJxuq3Yf4Vo+atWiwCMzVfZG57a4GIci6M8lddceEAkH7IUiO
-	 iv3MFi7T9DwTwyVMYhr7dotfhQjE6lPKxdnwvgwxfJEkF3NPoqIuldShLB9GEqa6/x
-	 aIQxdccnE40Ww==
+	b=DvgpUUY+kYyFG1F8v+X3525YnuA0c4vSYiwiq7vpmtkvnZ4ysuCzYA2rp7hB5qhKw
+	 jhQwAuncRZerJ8XdHI3LnWcUEWL6T3ritlIS9lP43+gZtJRAajLBfuTrpt1l0NjdGT
+	 vKFv4L2AFial1S9wKaZwU7pWe8B/WcpMpd9lndcpadRMySaU97DFIiBJ1NfY6ottQE
+	 F0uJ51F7F9/F/X28GIOaxBxtsYAdEx8gTMhyGhYobww1gWCCL9rMxsxsqRMjDHDcfJ
+	 sIxyr6EOkX+sXhcuozZN8z/QgpMCvFbxQDf3EjPOfRwzRX3IRHcZnFS/xSbxgzwlfS
+	 6Nx7vMXjealRg==
 From: Mark Brown <broonie@kernel.org>
 To: =?utf-8?q?Amadeusz_S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>, 
  Alexandre Belloni <alexandre.belloni@bootlin.com>, 
@@ -57,11 +57,11 @@ To: =?utf-8?q?Amadeusz_S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.co
  Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Cc: alsa-devel@alsa-project.org, imx@lists.linux.dev, 
  linux-doc@vger.kernel.org, linux-sound@vger.kernel.org
-In-Reply-To: <87r0ctwzr4.wl-kuninori.morimoto.gx@renesas.com>
-References: <87r0ctwzr4.wl-kuninori.morimoto.gx@renesas.com>
-Subject: Re: [PATCH v6 0/4] ASoC: grace time for DPCM cleanup
-Message-Id: <172486259605.92851.6497771216257265041.b4-ty@kernel.org>
-Date: Wed, 28 Aug 2024 17:29:56 +0100
+In-Reply-To: <87cymvlmki.wl-kuninori.morimoto.gx@renesas.com>
+References: <87cymvlmki.wl-kuninori.morimoto.gx@renesas.com>
+Subject: Re: [PATCH v7 0/4] ASoC: grace time for DPCM cleanup
+Message-Id: <172486260397.92851.15087271444395174116.b4-ty@kernel.org>
+Date: Wed, 28 Aug 2024 17:30:03 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,10 +72,10 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-37811
 
-On Wed, 19 Jun 2024 00:19:11 +0000, Kuninori Morimoto wrote:
+On Tue, 30 Jul 2024 01:01:49 +0000, Kuninori Morimoto wrote:
 > Cc each ASoC driver maintainer
 > 
-> This is resend of v6 of DPCM cleanup
+> This is v7 of DPCM cleanup
 > 
 > As we discussed in [1], we don't need to use dpcm_playback/capture flag,
 > so we remove it. But we have been using it for 10 years, some driver might
