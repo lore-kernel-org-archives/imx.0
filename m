@@ -1,61 +1,60 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E05E167D8C
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 09:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAB416A95E
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 09:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724837773; cv=none; b=aTTaF47CdBJJ457HiILEK1gOIzVADcSmIu+ey/TQxK2JSfvNR0oaRJZ/yeKBORH5xE8GXAMnNdAVINqzxUCJbPpQ60ZT97LclaikzlleDMq9hc4tJ0UWcOzRCEmG7oazAmGfZDukZSDVhWHXSKyJ8/424v+IO3OtPQ9K5/hnUf8=
+	t=1724837775; cv=none; b=Vt+awuUvtd5MNV9J7028zVRLj53CZ6r2hfIfaMNPTOrpEQJzjbpW2FEEEnovKvAbE/pmmrUkx4szHkLWXGvqTy7VSuPhBZZpQ2tNsRMULXHcHeCOG2IlR7NVRtXqKXaivPQqOMHrnSHml0t+V/kpbNzU6ol+GAdIgkEsmqkFpJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724837773; c=relaxed/simple;
-	bh=zQ/EAttBpW9Q8AXfVWlgDx0v3eHjsl+TU739HvihRfs=;
+	s=arc-20240116; t=1724837775; c=relaxed/simple;
+	bh=bfnqlyzaJpLrEgkQnghSy/QuUGq8pRc27uQrIneNjNU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZcgME4870BDEtdnWB7O3lXyrp8emNlznM2+DCWuFQ7gAFTxf1gOJMC1RRTEUuWxpWI07M5dRERRnkuDNcGTTCj5zDL55maCRWQYsEnG99YXZ52sM5I5IjOANLr5jujuaG42myZpc8IuRZpt+NR8ANFu5a+30jOTmxmWhlPDF6v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nvBiMRBn; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:To:Cc; b=MGq8ZNK93vtQw5V99EyigP6cGBHI89MOhZDlZaBkoWKa0C//Cjc6pInj3jJJgxYrPys8yvj4awez8y89AHkwZS8nG7YFU7m33UTOdT1vy2j3e3Tg5whgDMYu64HSZKNebelVRB7X6ErFhSnBjjD0nBfSDIZKgCWoRgjtwvMTyB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hecMZk5d; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nvBiMRBn"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-428098e2b3bso7260155e9.3
-        for <imx@lists.linux.dev>; Wed, 28 Aug 2024 02:36:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hecMZk5d"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4280692835dso9228295e9.1
+        for <imx@lists.linux.dev>; Wed, 28 Aug 2024 02:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724837770; x=1725442570; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1724837772; x=1725442572; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wZNNRrHbOALIGghuHu53Hlhnl0hetnh0rIsXkn0hdN0=;
-        b=nvBiMRBnQK9+JgJ/y/UsyEfnrT354gSR/ZvklZLlpGlimH/4nhzbUwjqj/I8k1/Q7/
-         aADqg2CbTUme+T5uZicugYxcuHSnv+SODucrcDkhsW1vd+n38mBpsxhgbZuD8MaY+/tt
-         +U/GrT8EZlfP1WBX/fWulLU9+mbOhmn/CbmxqoYdyrpJqjaMHypkFAfaUrr/qP8LDzvQ
-         0dVHu4eF/6Mp8RvPnONETRpPUjGldD27TEvgIfulhotuTzNSgyG/5yjbCgxa02IPwf9Q
-         +bDqn/Fg+KlKKgOzWoDQz9u7xQ+xl9do029viVOSNaT6fUCalIELH84nQ2vbT5XvQIW2
-         HvsQ==
+        bh=Oqpgi+Ioc4Hh1q2eVNsUH6IqcMRcphlNfWp1+WCdT64=;
+        b=hecMZk5dKfcs5fQ9pM9ZKQD2cxx1PMaBguPkp2ULG+7Rzm+uqmJrpn0w9srICV0RPw
+         eZwMuMLCb09Hyk8YfhiWJgLsRfTorlUf87OXo8wOHWvZS5MHH0beEijOTM37N1CIoMSb
+         ixJxmUN8YuYwWb97s0xmmmBFzq3dIu6cd5vI0BAXj3EmW6g95dZJCrakTJZ6O5FxBeH1
+         K1eDwMZTqkJhK14ydAfaTbGsGAFthwGGJAx4woDTKr6JeJSJHv+3jsgoC6kPN1mQk01f
+         ygijPH9roEEVJgFKPZIq9b3zWFjFllVsPoKB1XK4DATcrdjoft0AUpHSOcWoVUpdQgOS
+         e5Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724837770; x=1725442570;
+        d=1e100.net; s=20230601; t=1724837772; x=1725442572;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wZNNRrHbOALIGghuHu53Hlhnl0hetnh0rIsXkn0hdN0=;
-        b=m68s/3rM7vDtnZeewcd2jR33/SA+npzXcsUrKJB9FYQL6O4D79Vuzwpl1Vpsz9ss7+
-         tNxFwpKS6I7ezGydQ+NIXMsCKu3uYRG1v9fOXGOYUZ0QsCW7YKV7q3kjnKhm7NQPRbf3
-         SzxHEwLab+IFLZXpdCtaIyG6GFXrLjMFM3cwO3FOXJvVYH/j9+tknD/caQuuxHd3pgHG
-         HWmgjpqLC9N/70o6VwfQF7LAAVejMXdtNYBMULyv6pb1LXRXOgK0qNbl5JoXoZQiOEzV
-         XVM4R1ysmXoqWtGICcTojqaEkAPT7we/6DdyIomnoS0hUvxH46ztA4xqkwq7/u7zOJnF
-         8HQg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+1REl3+F1wztxbCyAvDbEWoGBogPOttOG7qODKvS6xpYuXkzl7m6OATTJ5/9tFecEvEQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyvRpmhxSZk1TFsfhZCjmUb3BSkGYOZxQvHX5PYMioH8xueQKyX
-	nIn54iaeMWdZelCK+1zvYQniDSTZtK1ImhBLYcRxqx53MU9UZt1gIR9ClZDOzQs=
-X-Google-Smtp-Source: AGHT+IG9/vDsNXLZCy2PLta7RRyHss2Tb1u9MzhedawWhzPd5nwASvDx/bFEslbEbjrUTV0SqLsSJg==
-X-Received: by 2002:a05:600c:5105:b0:428:18d9:4654 with SMTP id 5b1f17b1804b1-42acca311f8mr70381685e9.6.1724837769651;
-        Wed, 28 Aug 2024 02:36:09 -0700 (PDT)
+        bh=Oqpgi+Ioc4Hh1q2eVNsUH6IqcMRcphlNfWp1+WCdT64=;
+        b=HTNr0YayosuGy+fNz1Q6AGDpbLd0OTZkZzQ8s4QcGBXJDNPNEU500j0y+Vll7ThQDr
+         rr3b2by81vhxHg33T467nAvUVBaR9wKNZitSP9c3TiFW5u/JIR93JDkAhtQrmeWbyx17
+         KLjGehIO0ZMY1NNMeaIZNshAb1gvamRASl5YqCpN6eyL4BopoXP6rTWUGeje2sxkVo2b
+         4ISgNW8cFTE8ng9JGljlyL7dHxeFoohr8eI61PYu41HqgeAuYJEP5EayASiflrMakc1Z
+         FoAcR7oD03AUaZTOnT6ubFc0m3weaMlShwrERBZYkpO/IN8kkCEUEOjJIZo8wwJWhksR
+         Z/FA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzO7MwjKgNuGvp1ks/SdunR8LXb51Fyer6H+3Iuwvb53Tr5n1Ebu98QIdvKDSMHHNrfnU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw5NT8jRTfmjejZEjKhSo1xetDSY1gT1A+o6hIgggEhCeW7/SQp
+	MnXeJ7ER4+qmDwLLXyEnC6ay5sKRh4WhKqOeyopsYg5pJlhc4vK743sSUFzTWRo=
+X-Google-Smtp-Source: AGHT+IETpe3b9BGv0n0aM0dnAJ8cS5Q7YY6k14fOQPDFxFj2whk1YkEA+f5mnYL+L6tMMK9TqVfI6w==
+X-Received: by 2002:a5d:5889:0:b0:35f:1edb:4695 with SMTP id ffacd0b85a97d-373118b65acmr5912438f8f.6.1724837771829;
+        Wed, 28 Aug 2024 02:36:11 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba63d7d3esm15270825e9.37.2024.08.28.02.36.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba63d7d3esm15270825e9.37.2024.08.28.02.36.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 02:36:09 -0700 (PDT)
+        Wed, 28 Aug 2024 02:36:11 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 28 Aug 2024 11:35:58 +0200
-Subject: [PATCH 2/3] dt-bindings: pinctrl: qcom: add missing type to GPIO
- hogs
+Date: Wed, 28 Aug 2024 11:35:59 +0200
+Subject: [PATCH 3/3] dt-bindings: gpio: simplify GPIO hog nodes schema
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +63,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240828-dt-bindings-gpio-hog-v1-2-63b83e47d804@linaro.org>
+Message-Id: <20240828-dt-bindings-gpio-hog-v1-3-63b83e47d804@linaro.org>
 References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
 In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -87,70 +86,160 @@ Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
  Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1932;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4308;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=zQ/EAttBpW9Q8AXfVWlgDx0v3eHjsl+TU739HvihRfs=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmzu+C4RJJ1RBPM7LK8KIDj+kQS2rURjG6cPz4n
- Yv6DIWe9IiJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZs7vggAKCRDBN2bmhouD
- 10KyD/9tsd39XLXpxYG0Lh6I05zljRsfz0oC9ri81+o5RR3kYd9IjLAbtMSNauoFquWI80pWYNi
- LEZAngibtD7JGqFe1ScTwmsECnMjAPN5XRteP9tc4603vRhDHj2SxRFFi2Zi9nq7+GdatJBlJfD
- IsekUWVWvctDrFHH0rg9HVteN1DYUrLEgc+EheM2qYgI2U7QQElkKI1/l2HpWeYdLJN4CL6fioJ
- sWlIFFZf9jTaIlqe+TO8ebW5Lh7ATlXy+rO5K+ZMC2KS7zRUrQJfg2WrWTXZ8T3LdKDaCqkl1gj
- wPXclOFxIW+tA6gd2tI/SQh6smy9p7vpzmXp4pWxVwM3zBPwRf2k1HB/nKvXGehJISf/H2QAVNo
- 2nrMN6i3P6PAUi4tvKaR1CMeLhs/8KDfFhNmuhGOJLByoo5HAfqUW7C/hHLBcp14Jk5yqxuiLvB
- K76O4HnJTdFnRvyRpjqjHlTV4p0D/mYhGP5JG7Vgsk3j5HDKbu4wtTj4PudviDb5sspANnDP6qI
- d4L1uj86Q8weETPK8GwTG7RZERJSQPa6OiV6XX3fx7PV86IYZ9fLHUjK4CNU7vJVyt+07DbbAW1
- o7HOH/UVl4OQdq/L31kY12RnfU8hwZnRd74ocoy002eM61JwmFXA5Lt9d4B0cfPhuGCElomKrOc
- tqjIFpovb0Tqe+w==
+ bh=bfnqlyzaJpLrEgkQnghSy/QuUGq8pRc27uQrIneNjNU=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmzu+CXWk9x7tyzNeDQFogtsG8zjaPPskp0BUXE
+ 4KwHhVpHwmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZs7vggAKCRDBN2bmhouD
+ 11QrEACVIpIu/QhFsBa1s0ikl/l3NZcISpoVtaGfa7CO039p5WWJDGiQvU2XGHmZRqeZrfdigxy
+ hORUEVKrYlwVYTYH41liiu5wW9SsB2Ezbh3mkN/zMeb4/Grug6Jv9K2V3JPGfK1+lXI7Q0INRo2
+ X5Vnl5ze9n2TtBSd1RFrBBdIMiCUaNvtRGzBDVpNJPazhXLfV1yH4t/wZefomqpGP53ErB5WQBU
+ OuFczEFjRPTYG9+9ZKxT5olkt9sLD1qybpcl7hujY4zObNsH3d+BdWZFF3lOyg5V8L3d17wRrqQ
+ gNNMqd+BMeDirtt9VAHL/DKwG7BQOASFkKAmb8m7c6GWCNVqMzQQUoB3HVjUmJLTHBZqXqHn/+t
+ iuv0CFwwMLUryCG22Bf6q3jhJ0pyoPhxhuvDcHuELlFc+B/To1bJS1vkLwQtgyxw1ijQrrANd1Z
+ Hu0BNtzAGLh3VQIt1dehi98Jvi17K7XWJ4dP/bpbX0OQB0b6KyyVJta6jRZXjucgf9m3S0en5ZD
+ Qj4V+q+fnifnY779vEX4TDaz4LHU1gNY7fszLKPq/9NNmlGyAVLLWITalO01t3fzxwjoeiI6PRj
+ yqteXxBVHnDUnmQGqodOcQ1Hp2SLEWkTQwhKHgi5ppgZo37EwX+VVc1gDJ9bTIwWuSFv1h0runq
+ zyPoznFYDtvUFmg==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-GPIO hog nodes should define type, otherwise "dummy-hog" boolean
-properties would be allowed.
+The core schema in dtschema already strictly defines contents of nodes
+with "gpio-hog" property (with additionalProperties: false), thus the
+only thing device schema should do is: define "type: object" and
+required "gpio-hog".  Make the code a bit simpler by removing redundant
+parts.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/pinctrl/qcom,ipq4019-pinctrl.yaml | 1 +
- Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml       | 1 +
- Documentation/devicetree/bindings/pinctrl/qcom,sdm845-pinctrl.yaml  | 1 +
- 3 files changed, 3 insertions(+)
+ .../devicetree/bindings/gpio/fairchild,74hc595.yaml          | 11 -----------
+ Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml     | 11 -----------
+ Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml     | 11 -----------
+ .../devicetree/bindings/gpio/microchip,mpfs-gpio.yaml        | 12 ------------
+ .../devicetree/bindings/gpio/socionext,uniphier-gpio.yaml    | 11 -----------
+ 5 files changed, 56 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,ipq4019-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,ipq4019-pinctrl.yaml
-index ebf74e48ec5b..cc5de9f77680 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,ipq4019-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,ipq4019-pinctrl.yaml
-@@ -37,6 +37,7 @@ patternProperties:
-         additionalProperties: false
- 
-   "-hog(-[0-9]+)?$":
-+    type: object
+diff --git a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
+index c0ad70e66f76..e8bc9f018edb 100644
+--- a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
++++ b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
+@@ -36,19 +36,8 @@ properties:
+ patternProperties:
+   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+     type: object
+-
+-    properties:
+-      gpio-hog: true
+-      gpios: true
+-      output-high: true
+-      output-low: true
+-      line-name: true
+-
      required:
        - gpio-hog
+-      - gpios
+-
+-    additionalProperties: false
  
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-index 2784d32fdde2..c1b799167d81 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-@@ -425,6 +425,7 @@ patternProperties:
-         additionalProperties: false
- 
-   "-hog(-[0-9]+)?$":
-+    type: object
+ required:
+   - compatible
+diff --git a/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml b/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
+index e1fc8bb6d379..6b06609c649e 100644
+--- a/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml
+@@ -85,19 +85,8 @@ properties:
+ patternProperties:
+   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+     type: object
+-    properties:
+-      gpio-hog: true
+-      gpios: true
+-      input: true
+-      output-high: true
+-      output-low: true
+-      line-name: true
+-
      required:
        - gpio-hog
+-      - gpios
+-
+-    additionalProperties: false
  
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,sdm845-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,sdm845-pinctrl.yaml
-index dfe5616b9b85..0f331844608c 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,sdm845-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,sdm845-pinctrl.yaml
-@@ -43,6 +43,7 @@ patternProperties:
-         additionalProperties: false
- 
-   "-hog(-[0-9]+)?$":
-+    type: object
+ required:
+   - compatible
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml b/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
+index 51e8390d6b32..7b1eb08fa055 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
++++ b/Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
+@@ -107,19 +107,8 @@ properties:
+ patternProperties:
+   "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+     type: object
+-    properties:
+-      gpio-hog: true
+-      gpios: true
+-      input: true
+-      output-high: true
+-      output-low: true
+-      line-name: true
+-
      required:
        - gpio-hog
+-      - gpios
+-
+-    additionalProperties: false
  
+ required:
+   - compatible
+diff --git a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
+index d61569b3f15b..d78da7dd2a56 100644
+--- a/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/microchip,mpfs-gpio.yaml
+@@ -49,20 +49,8 @@ properties:
+ patternProperties:
+   "^.+-hog(-[0-9]+)?$":
+     type: object
+-
+-    additionalProperties: false
+-
+-    properties:
+-      gpio-hog: true
+-      gpios: true
+-      input: true
+-      output-high: true
+-      output-low: true
+-      line-name: true
+-
+     required:
+       - gpio-hog
+-      - gpios
+ 
+ allOf:
+   - if:
+diff --git a/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml b/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml
+index 228fa27ffdc3..36f5a0610471 100644
+--- a/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/socionext,uniphier-gpio.yaml
+@@ -55,19 +55,8 @@ properties:
+ patternProperties:
+   "^.+-hog(-[0-9]+)?$":
+     type: object
+-    properties:
+-      gpio-hog: true
+-      gpios: true
+-      input: true
+-      output-high: true
+-      output-low: true
+-      line-name: true
+-
+     required:
+       - gpio-hog
+-      - gpios
+-
+-    additionalProperties: false
+ 
+ required:
+   - compatible
 
 -- 
 2.43.0
