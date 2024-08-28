@@ -1,48 +1,59 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810C2185628
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 13:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A1B186E4B;
+	Wed, 28 Aug 2024 13:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724850726; cv=none; b=R05baZ6982c++DtflQb9VEQWzx7pBZHhLio+qn8dxZ7vcRXkYoNlhdbs7bgasQygFlXuGIG4Ikfiw3NuZErbfz0q5M2+u+enJQZFnK1LL3x94NglRrgDR+RSYBrrGXnOk74V3dq+cYUOs3dQ+4wQGxlaMM63NTyyhrQSc7tX7qE=
+	t=1724852517; cv=none; b=nJ2+LXAKPVJ7bL7Qb1N6cEDcXbOkId/CpCpAAXW9TM31gol+1sw1hrm/7bz7y4LWrByIR19uIHNLnOE48B/aHrnTeuHaiWQZp06CJQ4dpY+ZiH6nC9JB/ml7S2zV6Alk+H6Gxv6B6/sj6x7mAWj8Z1MHnX6gca6bzw7dcqoM1jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724850726; c=relaxed/simple;
-	bh=dRZBUm35FKx7TMrI0AnGvC4/W2Ci8s9JAs1kf2GC3/w=;
+	s=arc-20240116; t=1724852517; c=relaxed/simple;
+	bh=a2swbrR98wISn+eYtffCdkI+7ImxeBOzuWP7GOb5gpY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ssb1QN0eW0bDZkjtbelPbHULZEiMz7pCjH7fF0lhMrCZZNZP5EEF+kSuyEKP1uQ3f7IJ7CmvEzkJOsgacP/2MuljS87J79dRwtK97nHMviPt0tjDx02AiWUIwnF5VQjI04kATuWmN9BwoRdNEM9X2U49psMV0HCX/qn8JDx0VGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WRY7RmRO; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=FKsohlI1a3uR5hVNkWkh/Xg2CBy4xNoyJ7zv+J5dvPe4QFElqYClqH4d5HhqT/vzZk3xTyo/Uq3+O4cdn8IpIX0KQRn3LNYnpsa+bkH420IliOSxfCqTrPpW/fbXFGzJTR0Cco0tBfudk0w45yXC+70mj6OjvauXHoOYYdbR2X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ufak4esb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WRY7RmRO"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 00C5A2135B;
-	Wed, 28 Aug 2024 15:11:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1724850716;
-	bh=OA3RlbQPp35zHlhXrGz11KOGNwwXkfIeHSoFUZrWFZI=; h=From:To:Subject;
-	b=WRY7RmROe/6Y8pe37PVm1Xqiv7e6/ZJY3TpNgxRCaB/fCv4MwOmvtA7VAQnDnGTMk
-	 r3cvw8jJhplp3LQEBd0ZuRPhw2Mmj4Yro0Wis56InpI9RTJ1meDlQCy+HM8JHePxlh
-	 NVj5Gf7v8kKTPzENH1jwLJK/F/aMHDqZjFPM/SxI7VzjDZ9vI26c2jopNXIuTdmBU8
-	 4HxRPqFiHNDew64YGnz2k/hAekH2rSlIblnI2kdaG3QAxxr2xxNpvDNss8rz1syQab
-	 OEuED07N3eZMbhuje+/0yUuNyjJv0vXXX/CvDRGRPAN0yLO0F3hviVbn1fzXMbcqpM
-	 80QO7YyBZYjPQ==
-Date: Wed, 28 Aug 2024 15:11:51 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Shawn Guo <shawnguo@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ufak4esb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A50CC581BF;
+	Wed, 28 Aug 2024 13:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724852516;
+	bh=a2swbrR98wISn+eYtffCdkI+7ImxeBOzuWP7GOb5gpY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ufak4esb9vRxDU4GXWxGafmlJTaaq4y+jEUzLh7YVE4uiQMPQ83Ft6+XewFe94s4D
+	 FNSQ6lEyET56QVve7F3q7ILt31ZxLKe/stiwlh1KArGfGN1zrJBxVz3Lb4UAYpXXbH
+	 Xa1fAc4sQdH7f2f+Ia1OCsm3lDcOVwDwdd2qnY1z7dxxkPnXF0uCJxN75Wsa/lDK3Z
+	 AwW/zPEUD4tQB7wVyZJYppBwcu0FJ4zD8yyJijlAQjkxBO2aztydzi3duvsjQ990CJ
+	 31Fp721OMzvYoe8BbXyNS/QwrRMlSJQfFszL9R7HyGkyWXl8LMbBeV6tW5+NmhyeKX
+	 1DPFCurUvPooA==
+Date: Wed, 28 Aug 2024 08:41:55 -0500
+From: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 00/10] arm64: dts: colibri-imx8x: Various improvements
- and additions
-Message-ID: <20240828131151.GA35119@francesco-nb>
-References: <20240826215922.13225-1-francesco@dolcini.it>
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 0/3] dt-bindings: gpio/pinctrl: add missing type to GPIO
+ hogs
+Message-ID: <20240828134155.GA3656223-robh@kernel.org>
+References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,27 +62,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240826215922.13225-1-francesco@dolcini.it>
+In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
 
-Hello Shawn,
+On Wed, Aug 28, 2024 at 11:35:56AM +0200, Krzysztof Kozlowski wrote:
+> Merging
+> =======
+> Patches are independent and can go via different trees.
+> 
+> Description
+> ===========
+> DTS like:
+> 
+>     device {
+>         compatible = "fcs,fxl6408";
+>         dummy-hog;
+>     };
+> 
+> should fail, but unfortunately it does not if "type: object" is missing.
+> Add missing type, so this will properly trigger warning:
+> 
+>     dummy-hog: True is not of type 'object'
+> 
+> Best regards,
+> Krzysztof
+> 
+> ---
+> Krzysztof Kozlowski (3):
+>       dt-bindings: gpio: fcs,fxl6408: add missing type to GPIO hogs
+>       dt-bindings: pinctrl: qcom: add missing type to GPIO hogs
+>       dt-bindings: gpio: simplify GPIO hog nodes schema
 
-On Mon, Aug 26, 2024 at 11:59:12PM +0200, Francesco Dolcini wrote:
-> This series improves Toradex Colibri iMX8X support adding:
->  - working ethernet
->  - correct PMIC thermal zones
->  - USB support
->  - analogue audio
->  - ADC
->  - PWM
->  - VPU
-
-there is one small fix to be done on this series (id-gpio vs id-gpios)
-on patch 1, if you feel like this is the only blocker for this to be
-merged I'll send a v2 soon, otherwise I'll wait for more feedback.
-
-I'd love this to be merge for v6.12, but I do not want to spam the
-mailing list and people if there are more changes required.
-
-Thanks,
-Francesco
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
