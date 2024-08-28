@@ -1,180 +1,132 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3610813D24E
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 15:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7465413D889
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 15:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724858982; cv=none; b=VUaI08t+MxXPSl4XG408KJQLY9cmknzmOW4Rjg68TPegvtQsn23rd4hZ/4lwIq321WB1/KUwepDvAK34PXz/YO5kQ5KQyfSyfMTEbx9GaAFN1f0iyX9YMfAbGnrvIGeVxgtTmQxQBT53zON/CoVgbKdBwHOGq4c2bBtftJE8kLc=
+	t=1724859220; cv=none; b=ZSLmoqfQn5sKZe4VGIrc4jZ1rENp7i7ZB71AUlcX0UzAcvBhOGsJ/A7fCM4xklvlcnO3B8KZM+oWdUecT9jkvSy/yUtBfSjgZ9Zsk4SMu0ZfnnAkQICGBT6Lpm1FD9nh7pKzlO1tCscLMJ6PF8glhu99DVuhn3ctsOhTL0PfFIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724858982; c=relaxed/simple;
-	bh=5cbjBcThZcBg9rHN6TpOjC/XRkGMHqeHROVpYa+prTE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FjcDpmFSrkCyjj/lX3It6SiNnufDtXupwUI0y5DVfHUZdSsVZaOanCD9GPFwPaQetw5BjSsX6Qmu7VyxHb03uFPrtBYfxHvZ2RENguDsN2O99SPfllRJ+K81cHF9qHNI/iBH5JO2+mHjcwd1MOcCbATF8ESZ8Cn1yTbzBzLeQqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=htoKbGml; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724859220; c=relaxed/simple;
+	bh=o56S8pLMGrt4CkvaoCu9w5pHDJBsrZKUDQNBoIaCEpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UUtYlPlFVAV0IihH1sKpquKm/dYYpcRXwbtfJJyHJzwFnmXNZ+SmrqV/TAwzb6ihvgbYsm/aHr1sIycjMWtIT9min/cqNMJM1yYUJuxfUPytsgflgXvyn88AXexV2XTao6Xo8mT/nAKGcv52+vWK94CCqO2xhbNmDKa6XDqE9OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=AcwAc6jm; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="htoKbGml"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-202376301e6so54348875ad.0
-        for <imx@lists.linux.dev>; Wed, 28 Aug 2024 08:29:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724858980; x=1725463780; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIIgBKe3HOzPgBtIf9LqPaFCWB7vokHU2+MyCpmiQ88=;
-        b=htoKbGmlE6M2notafn6tQzUcBFaBxNDDEYrCcpDJ4DUcyH6TAjU8DZilB1cthVln2r
-         8BXOMTLHao7xPsANiXzXpE8+tLGaTrlEimt+idLHkB8flny1enw3WlDHEgKBeXXJkpI+
-         oZSGlWjARRq2J2DKkbR/dvef29h5WUQ35J/ct7dO5/oygnY+oJhrdd40/xaO8oe8+rwV
-         1rggdyxKdRediYW7KZDh6OqE49WOgeb19JVaOqzDLDqu9dor3uEV+G3QrZUNnLLBOQXs
-         mrC9xQc3SZ90U0XYFTdjPfHM9Ui03Rr6ea3HOPO7K5w1gnl9DtKj+1PiGyrO9QU/ZWx8
-         Mm5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724858980; x=1725463780;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AIIgBKe3HOzPgBtIf9LqPaFCWB7vokHU2+MyCpmiQ88=;
-        b=oNnbg/06JIj2xyvxHyh38isbsxKQEiXRn76JvLzRckYmGMrwXM3txOk34Rm6NvofWG
-         aswaTUJaQVfw/GhB/BYP8IZVfCioVU5r7PTSVlUXZ1kCI6SJ9vyfdrshrEDXcTZfOZoS
-         j56bkVtrFRJm11JQ2k7ijVoml/sa5Arpsl9WsY+yA9GdkmnXj6B5Z9qAcZq2puQ2hwkR
-         0/CZm4dNuOy/03+OATMBLLEmBvRYYxzWIRXdhbQXw/7+ej5cbzJ6SMmHj4xgiOQNULLu
-         zMzxqUu3fClWEYv+qy6yDa/WeCjqi1eEbncGcklGGIWZvn0YpCqhYbCHxxR9sVE+K8RS
-         uzhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUip/ocsnzlC6Jbq/MQ4vMc4mglcLA1TOkgtco3CT4quHchtSZkRUjBUYcMMH0fFOiqA94=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyA1X3Wj60jmVh/EF4EL6Gtm28uKcgsdQ2FrtkNs7FafdKj3+Tj
-	408JEkhyx5P8mPmPuiHCn/PEBIVw+SQkavwQ1AlPUEcn4ctIexTf
-X-Google-Smtp-Source: AGHT+IGtGJ+aStwmAclRmhN3/rogj6yt1islGZkrpUh2ipd/IalwfWXHheU48RqzcVbHW7tlAtoL2g==
-X-Received: by 2002:a17:902:e745:b0:201:f568:b8fd with SMTP id d9443c01a7336-2039e50c509mr153168515ad.42.1724858980380;
-        Wed, 28 Aug 2024 08:29:40 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385ae7b1bsm99680735ad.262.2024.08.28.08.29.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Aug 2024 08:29:39 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <ba517016-eb43-4e61-ba04-69a0e4ce8ab1@roeck-us.net>
-Date: Wed, 28 Aug 2024 08:29:38 -0700
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="AcwAc6jm"
+Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 16BD1885A0;
+	Wed, 28 Aug 2024 17:33:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1724859216;
+	bh=pgIBv8xSZ60paxL7JPQGAQxBEmzFpSxLivN1lCW3iI8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AcwAc6jmYoBxdS+F2EIASSPI4YXEVA+nBDE8Fq7ED18W6DpV9S8Kc9sjopHI4bHaC
+	 NVnsVhNF/tAWTTfsnquliEt2Sp95HVMwt+UDEPmCyGZCK2i6c/rkVdzl2dYxNNm34T
+	 21V3J4Q7K4hIkEOWF/vfdh1+12JZbi/6M6eMmoypEI0MMQrwlwHZ9T6JZShu6TnuB6
+	 7W5/h3Lhg0PAeCgu9YiaKIHxpCZqTMHo1a/PihjqgqxRcXjrS0oMerZ9j7p0Yfvkkq
+	 dpM6hjmW3SCcYDU/eqN7favAySmpkdMRWkkD8+qdCryE38Gamfm25m1JuqepZ3UOxy
+	 cUAEZI8aFT3Eg==
+Date: Wed, 28 Aug 2024 17:33:34 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm: dts: mxs: Remove not used "fsl,imx2[38]-icoll'
+ compatibles
+Message-ID: <20240828173334.21dcdeb2@wsk>
+In-Reply-To: <f4b7e56f-50d1-486b-9866-ee1f82262b53@kernel.org>
+References: <20240828093518.2628817-1-lukma@denx.de>
+	<f4b7e56f-50d1-486b-9866-ee1f82262b53@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] watchdog: imx_sc_wdt: detect if already running
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>,
- linux-watchdog@vger.kernel.org
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
-References: <20240828060212.108608-1-alexander.sverdlin@siemens.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240828060212.108608-1-alexander.sverdlin@siemens.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/LKKBY4fh8LtwIHI2=HgFYHN";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 8/27/24 23:02, A. Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> Firmware (SC) WDT can be already enabled in U-Boot. Detect this case and
-> make CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED functional by setting
-> WDOG_HW_RUNNING.
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+--Sig_/LKKBY4fh8LtwIHI2=HgFYHN
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Hi Krzysztof,
 
-Guenter
+> On 28/08/2024 11:35, Lukasz Majewski wrote:
+> > The 'fsl,imx23-icoll' and 'fsl,imx28-icoll' are not used at any
+> > place in the Linux kernel - instead for imx2[38] the 'fsl,icoll' is
+> > used.
+> >=20
+> > Hence, it is possible to remove them. =20
+>=20
+> Preference is to have SoC-specific compatibles in the front, so
+> instead of dropping it, these should be documented as bindings.
+>=20
+> imx23 and imx28 are quite old platforms, so I think no one really
+> cared about dtbs_check and their bindings. If the platform is being
+> actively used (as judging by your contributions) then some bigger
+> cleanup could be useful. Also, drop your email somewhere in the files
+> or maintainer entry, so we will know whom to ping when asking for
+> platform removal.\
 
-> ---
->   drivers/watchdog/imx_sc_wdt.c | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
-> 
-> diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
-> index e51fe1b78518..e6d567b11795 100644
-> --- a/drivers/watchdog/imx_sc_wdt.c
-> +++ b/drivers/watchdog/imx_sc_wdt.c
-> @@ -56,6 +56,25 @@ static int imx_sc_wdt_ping(struct watchdog_device *wdog)
->   	return 0;
->   }
->   
-> +static bool imx_sc_wdt_is_running(void)
-> +{
-> +	struct arm_smccc_res res;
-> +
-> +	arm_smccc_smc(IMX_SIP_TIMER, IMX_SIP_TIMER_START_WDOG,
-> +		      0, 0, 0, 0, 0, 0, &res);
-> +
-> +	/* Already enabled (SC_TIMER_ERR_BUSY)? */
-> +	if (res.a0 == SC_TIMER_ERR_BUSY)
-> +		return true;
-> +
-> +	/* Undo only if that was us who has (successfully) enabled the WDT */
-> +	if (!res.a0)
-> +		arm_smccc_smc(IMX_SIP_TIMER, IMX_SIP_TIMER_STOP_WDOG,
-> +			      0, 0, 0, 0, 0, 0, &res);
-> +
-> +	return false;
-> +}
-> +
->   static int imx_sc_wdt_start(struct watchdog_device *wdog)
->   {
->   	struct arm_smccc_res res;
-> @@ -183,6 +202,9 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
->   	if (ret)
->   		return ret;
->   
-> +	if (imx_sc_wdt_is_running())
-> +		set_bit(WDOG_HW_RUNNING, &wdog->status);
-> +
->   	watchdog_stop_on_reboot(wdog);
->   	watchdog_stop_on_unregister(wdog);
->   
+>=20
+> But if there is no product on imx23/28, then I am afraid it might be
+> wasted effort - isn't it planned for deprecation/removal by Arnd?
+>=20
 
+I cannot say about imx23, but for sure imx287 will stay with us for
+many, many years.
+
+imx287 (arm9) is still in active production, for extended life time
+devices...
+
+It is just pervasive in the industry.
+
+> Best regards,
+> Krzysztof
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/LKKBY4fh8LtwIHI2=HgFYHN
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmbPQ04ACgkQAR8vZIA0
+zr14qAgAxSvE4qlOjSzUXqF7+zIEVZTP4mBonJa6mWpx46jie3dTr1gKZhB7qOFg
+UTiWKH3cleVbqMngkfGQnyjhixhfLJrKNJNrY46Wk9c9o8Nt/U/qcWjrR0EzOCAf
+kTBqwu8u1pgMONsUqWp1sMFW1BcaC4E4xR8MMjZ4msaMZKRnsE9ddGgvhteg1nuv
+1TzABHV7FFxemuamdrwXMAVjpvMhHdLdWxlkxfeIX8Xykmasj13hK3EIuuWXdxML
+zUrGOni1V0tIrCQna6gvuNBazlUhrib9O5TdX1kUmo2kbNIa/aCq4n5XHo5NHoKv
+DRh8axbd8BWOjYbkk90srtYXMQioLg==
+=s7nd
+-----END PGP SIGNATURE-----
+
+--Sig_/LKKBY4fh8LtwIHI2=HgFYHN--
