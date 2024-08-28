@@ -1,109 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD2036130;
-	Wed, 28 Aug 2024 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D891A3BC3
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724860423; cv=none; b=lwlY+/Cskz0Fz0zfyEAJ9/3EsbW6T6wuAL0gUDwtuZA0+PmJc341xSCzpgyRcHCB5OzqXYWl2lmYlqZcyQUsG9OkPB2/LFKqlN1KFVMOSMqmEYvswhVAUd6kFgnCV3kGiErno0aV5rp7qke0MirK2LvKqthHJpQbxfIJXBn2BQg=
+	t=1724861519; cv=none; b=lkmVnnfp8+ogTzx0gzNIwO4tUp7Wnu2CqDQ95OemqsAnRQo9WRL82c5xjnqFDA7it/sbNXRxOZbiE8v7/dkSjgYDEXqM58nMH4gYe1QfkAmjG1CfCrYl6R18MMvN5u89JbbmXmOqpNbLchhDmFZUNbQctwI3jiw3tSvfLErQTl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724860423; c=relaxed/simple;
-	bh=FceCKpvwCfYxeVjhu7dja8rLnOmk8oo7I++7LCS81Os=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bpGreNAnheUVzblTwTNOyv5uwyvqbPL2VAmXW4zBXu+EpSZs2b5AFSEAkVwqREq+wB7gy3GbiD8G3ta9Q/fQRhVmbKfEEmr3/8AjsxlpHOpnjWGDqd8ZGYrK0w/d4G5BiwaixQ45sE8PWRrx1oyKIEn1WW4eCI7fsYb3+glj6lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSHlBo+l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724861519; c=relaxed/simple;
+	bh=diZD2GWbBKESSetbD2TM0fA8pWIvhxDQ8Hfp1eGP4Ws=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=moKbBvVdv7H0LmLEZdn0xwJNzZNX+Yw5EGQRVqg2qopmm8V/2VNbMswF/cptbolnL8NcDzRcAEcM0Bx7YkIKvvDr+CL9ulzwdrJ7gyy2FLm8AunmmEbKOIakWFWmOiv3cyFhuVQ0O5FowNTaMe8s16Y9iswnWbtP2OHTTeLjRGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYrKY2mq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSHlBo+l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BEEC4CEC4;
-	Wed, 28 Aug 2024 15:53:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYrKY2mq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66E4C4DE06
+	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 16:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724860423;
-	bh=FceCKpvwCfYxeVjhu7dja8rLnOmk8oo7I++7LCS81Os=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YSHlBo+lH7EtoI6uF+gIKcgjd9oBGCAmJJm51PU7R5og/9T8YIhusI+lD6Hjb8iLY
-	 hAtNShc4mk69/Qc56HZoyml4uqh0lO47YpsTrZ4etaMElT9d+jlndSc/aHWkasKc+D
-	 FV2ucl0nT3Q6yVPGQh/I/y+0jmwJksKsfxZ+7OROHiB2iWyYav4i3Ds10emSgnx5ol
-	 A7CWs3QoFl6kfXs6Ti6gV2IJRdAb8w/tX1vfgZjkT9i/46Exm4qV1f563eSGQh4Wxh
-	 1M5e+xKvpzP8ShQEOfg7M/f91GjOc52bGt4cB3H6My1e9dFCLU9wGhhvvhPlbPsy+i
-	 19ckAowLYmw5w==
-Date: Wed, 28 Aug 2024 16:53:36 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Masahiro Yamada <yamada.masahiro@socionext.com>,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 3/3] dt-bindings: gpio: simplify GPIO hog nodes schema
-Message-ID: <20240828-goofiness-haven-6d22011353e4@spud>
-References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
- <20240828-dt-bindings-gpio-hog-v1-3-63b83e47d804@linaro.org>
+	s=k20201202; t=1724861518;
+	bh=diZD2GWbBKESSetbD2TM0fA8pWIvhxDQ8Hfp1eGP4Ws=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RYrKY2mqqGpMmaXk4vg4l+5MHlujuCTohPUPMgR6oQqzR5d/L71Du8jhXoyScRa0p
+	 An1A3QJUg6hkCEiIDEVVL59Zs+TcnVoXwsof3tE7w3fL9+1Em6imUvTxTPBq1mkWOY
+	 hdOUF+Bobxr+VKxo17m9hRH4tiaYIbXY+fcrf9yDmQFoIZMTu1eVJxXEe/pFj3euEa
+	 O+ZjcHXJFeBXCp35mmSlSSKs8hAC8aGj+F0kEilw2TiU8Nv5N7IWMWULkMocnBneG7
+	 SLxzOloj0VZLd/BuyhXfxLDDGzTbl2j3N1vCY9k22U2bTXUixOaJpO87AW8H8cHcKT
+	 b3BC0qT5IeZ+Q==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-533488ffaebso8416831e87.0
+        for <imx@lists.linux.dev>; Wed, 28 Aug 2024 09:11:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX0LOCIXcSNj2KTAJZwstLj+0WxPXhFN8VpkBjzBNu2jjQX73iK89XrjWKMe96Ybzw5J4U=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/9YRHoilxT5bdccqDGbZuDhMsxDntRqorhYpArd0izLt/HuqG
+	9OEoqEtKUv3SWWydCixJ6EhIr+qJ20RLiWG2m7xXBaya/ratKfMbRasZVoWW38u81L+tIlKq3YR
+	iBdMa7qGZUkWGGycrZZVpHDiRVg==
+X-Google-Smtp-Source: AGHT+IGz4YxtRtAMkux7jozATIO5b1zf3zLkQWdu6nc1eiZcWtvHWH+xq0dm9Fxvf9Ays6zepA/PrCTmUfQYxLVfxWw=
+X-Received: by 2002:a05:6512:308c:b0:530:b76c:65df with SMTP id
+ 2adb3069b0e04-5343878430bmr12959840e87.35.1724861516055; Wed, 28 Aug 2024
+ 09:11:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OayRlMiikjtxs/jT"
-Content-Disposition: inline
-In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-3-63b83e47d804@linaro.org>
-
-
---OayRlMiikjtxs/jT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240828112139.2665814-1-lukma@denx.de> <172484936571.3462707.10762753590627002293.robh@kernel.org>
+ <20240828160553.53e164c3@wsk>
+In-Reply-To: <20240828160553.53e164c3@wsk>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 28 Aug 2024 11:11:42 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJ4+=L4hOYWKUBRTHpSMfMNaNvEy0xcjX=fZ4r4KP8x3Q@mail.gmail.com>
+Message-ID: <CAL_JsqJ4+=L4hOYWKUBRTHpSMfMNaNvEy0xcjX=fZ4r4KP8x3Q@mail.gmail.com>
+Subject: Re: [PATCH] dts: nxp: mxs: Add descriptions for imx287 based
+ btt3-[012] devices
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, 
+	Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 28, 2024 at 11:35:59AM +0200, Krzysztof Kozlowski wrote:
-> The core schema in dtschema already strictly defines contents of nodes
-> with "gpio-hog" property (with additionalProperties: false), thus the
-> only thing device schema should do is: define "type: object" and
-> required "gpio-hog".  Make the code a bit simpler by removing redundant
-> parts.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  .../devicetree/bindings/gpio/fairchild,74hc595.yaml          | 11 ------=
------
->  Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml     | 11 ------=
------
->  Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml     | 11 ------=
------
->  .../devicetree/bindings/gpio/microchip,mpfs-gpio.yaml        | 12 ------=
-------
+On Wed, Aug 28, 2024 at 9:12=E2=80=AFAM Lukasz Majewski <lukma@denx.de> wro=
+te:
+>
+> Hi Rob,
+>
+> > On Wed, 28 Aug 2024 13:21:39 +0200, Lukasz Majewski wrote:
+> > > The btt3 device' HW revisions from 0 to 2 use imx287 SoC and are to
+> > > some extend similar to already upstreamed XEA devices, hence are
+> > > using common imx28-lwe.dtsi file.
+> > >
+> > > New, btt3.dtsi has been added to embrace common DTS properties for
+> > > different HW revisions for this device.
+> > >
+> > > As a result - changes introduced in btt3-[012].dts are minimal.
+> > >
+> > > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > > ---
+> > >  arch/arm/boot/dts/nxp/mxs/Makefile   |   3 +
+> > >  arch/arm/boot/dts/nxp/mxs/btt3-0.dts |  12 +
+> > >  arch/arm/boot/dts/nxp/mxs/btt3-1.dts |   8 +
+> > >  arch/arm/boot/dts/nxp/mxs/btt3-2.dts |  12 +
+> > >  arch/arm/boot/dts/nxp/mxs/btt3.dtsi  | 320
+> > > +++++++++++++++++++++++++++ 5 files changed, 355 insertions(+)
+> > >  create mode 100644 arch/arm/boot/dts/nxp/mxs/btt3-0.dts
+> > >  create mode 100644 arch/arm/boot/dts/nxp/mxs/btt3-1.dts
+> > >  create mode 100644 arch/arm/boot/dts/nxp/mxs/btt3-2.dts
+> > >  create mode 100644 arch/arm/boot/dts/nxp/mxs/btt3.dtsi
+> > >
+> >
+> >
+> > My bot found new DTB warnings on the .dts files added or changed in
+> > this series.
+> >
+> > Some warnings may be from an existing SoC .dtsi. Or perhaps the
+> > warnings are fixed by another series. Ultimately, it is up to the
+> > platform maintainer whether these warnings are acceptable or not. No
+> > need to reply unless the platform maintainer has comments.
+> >
+>
+> There a few things to clarify after:
+> CROSS_COMPILE=3D"arm-none-linux-gnueabihf-"
+> ARCH=3Darm make -j4 CHECK_DTBS=3Dy nxp/mxs/btt3-0.dtb
+>
+> 1. mxs-spi.yaml vs mxs-mmc.yaml -> both refer to the same set of HW - as
+> those IP blocks can work as both mmc and SPI.
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Sounds like there should be 1 binding then.
 
+>
+> 2. For the sound codec:
+>  codec@1a: compatible: ['wlf,wm8940', 'wlf,wm8974'] is too long
+>
+> This is a bit problematic as well - as WM8974 doesn't have ANY ID
+> register, so it needs to be probed manually and decided which module
+> with sound codec needs to be inserted. The WM8940 is the pin compatible
+> replacement.
 
-Cheers,
-Conor.
+So if the OS has 2 drivers for these 2 devices, which one does it
+pick? The answer for Linux is it is undefined. The expectation is if
+there are multiple options, the firmware figures out which one is
+present and adjusts the DT.
 
---OayRlMiikjtxs/jT
-Content-Type: application/pgp-signature; name="signature.asc"
+> 3. The simple-bus.yaml seems to be missing in the Linux kernel tree -
+> problem is that imx28 has 'apbx' bus.
 
------BEGIN PGP SIGNATURE-----
+simple-bus.yaml lives in dtschema repo.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZs9H/wAKCRB4tDGHoIJi
-0r7DAQDw7o8LeA1EG/uppquSI4wvHkpnTbF9vLKnFD2DK5QubgEApnVKe+GiJvsk
-xuyCPYk1pqnyzWfnNVW7zYqynGfKLQ8=
-=DkUp
------END PGP SIGNATURE-----
+Node names should be generic, not named for the implementation/type.
+The binding is fairly flexible in allowing ".*-bus".
 
---OayRlMiikjtxs/jT--
+> 4. The fsl,lcdif.yaml doesn't allow the situation when one specify by
+> hand (in DTS) display parameters (as different ones can be used by the
+> manufacturing site).
+
+Shrug. At the end of the day, the binding and dts have to match. One
+(or both) has to be adjusted.
+
+Rob
