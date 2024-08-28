@@ -1,120 +1,121 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F4B189BAA;
-	Wed, 28 Aug 2024 16:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705FD44C68;
+	Wed, 28 Aug 2024 16:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724861737; cv=none; b=RN8urGk+OBbRD39Wul1Q8bopk38NQ58qDmjNIO89bJkRThXc4JEjM97DHlRB519uQdlCfNBpCd+xNe15TA9vr8jz7fppqko31mF3bp4q/F58RMMEntU0TKSZjMElpJ9Y58JdLCu7CAjPIjNvilUk7fuUU1QM8PO+DicQ33ANfwk=
+	t=1724862596; cv=none; b=bQVjbP+xB/R8UPiR4EcjlIG3wT108tBRU+8optk7CAHGMXTEVSDXtp0jVKcL13Aef0LXicTkKqDSB5AJuJbLu6Z+xIBGkAWN0ymX89kuZ0+2xRbQLGVjhdzBcE5Mz0IGx8w67BEQ8FrVuSWpA0dy3JO2YDu0wv8eBAu2ZjM6CqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724861737; c=relaxed/simple;
-	bh=LzrJBLUUzTBNBVpZCHtV3gHE+eUDErEkmHx8rmE8QjI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aNI4HsrU4YKs2bdYGJmyE5Sn6vQIoAa/nC0EIBzG3YiHz5ofwyrNHRVOmQOCUEObh/xMvXBdRqik3VQrnRgi1a+O7GkkYoqZ6yQGfhBsLh511DED4pvBQWWgoAlDOCBzdLOuCYVXun4zR86ivrcdbu+fnNP7/qfWwQa+FHcQo5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=pfT29mLg; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1724862596; c=relaxed/simple;
+	bh=heMEFFxgFnO2TTBcSgnerIm3y6uCUk6NyKGxrB/IYn8=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JCpCOD9yaJmal2fRTnMjAx4eAdUE3ww8XtGIE6D/gck/WN/HFpZTqffwj1o711KnbafrT0/DvwgyCFxyv/RpKvMniMTNYPzI1psNn2EHzWMUPSiWQsVnnetcybf8LeQFFMTSp6KHkKS5lgOVKKJBs6WAn/Grjc4bhR966fdTyY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfsBCMZ6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="pfT29mLg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1724861718; x=1725466518; i=wahrenst@gmx.net;
-	bh=LzrJBLUUzTBNBVpZCHtV3gHE+eUDErEkmHx8rmE8QjI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=pfT29mLgxw8xgPiRRRrU7is3xEfs6SizIrDzdICv7MFEMp7z9ayce00Sx3+tY8MY
-	 YPRW4qzN1wtKfet64nQucfWNu6EYeqNjfxi2v0eCmJ48RM23zKXWA5adJlpi646kM
-	 9B4MJbWQLoufJd197yaoucjqAzYI6xy8w3fbf/OWLznQKZ7IqqVHQOgvCD5eAvo7X
-	 wJwao6J03rNXcPEkUI2cT/ppHT/XitLgRXDpstal9jlG1tl5MEXCr3TeAeaPm1xsw
-	 p7JcY84p6U4lgcHvS+aeGbe/11Ek/F+MH3kHp2Jod2TbTKAbgyZgKbXBvlLLEG8QG
-	 rRhjgYYnoKwtVr/bHA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MGz1f-1svlnK3wQN-00FnQi; Wed, 28
- Aug 2024 18:15:18 +0200
-Message-ID: <db357e68-ddae-40be-8945-15734d3ec832@gmx.net>
-Date: Wed, 28 Aug 2024 18:15:17 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfsBCMZ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9E0C4FEA2;
+	Wed, 28 Aug 2024 16:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724862595;
+	bh=heMEFFxgFnO2TTBcSgnerIm3y6uCUk6NyKGxrB/IYn8=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=kfsBCMZ6iC/51f34BX86sfPqUAEINT3MLKTcwsVdo/V1cRz/kJoinjaAyUkx8k0j1
+	 jXgmNC+QBBdTZNU+XXMqCN8PNH90d7/4ZdItm08Yviv89qFo5Qiq8VU3TzamWijLLU
+	 OEAaIPEgQmqLpD1GYVWycegLbMGW2mw7nhVocRUx2D9pLbPbKiKI92hVC+TCrtzlIr
+	 hA5QtGdwuDDT0/1OhksgAVfrV5xLRk5Nmq8SD19FKkIWtBk8sYJ5nlHqRX3D5PeKT4
+	 2zlGNf1D9tDEjvNtRYZhUhw4S7W8zFFp7UF2EAih0dWVwYNVH6YbS2N5T0UqrhqfX1
+	 fAgSoM+Xr5Zlg==
+From: Mark Brown <broonie@kernel.org>
+To: =?utf-8?q?Amadeusz_S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Banajit Goswami <bgoswami@quicinc.com>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, Brent Lu <brent.lu@intel.com>, 
+ Cezary Rojewski <cezary.rojewski@intel.com>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, Hans de Goede <hdegoede@redhat.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Jiawei Wang <me@jwang.link>, Jonathan Corbet <corbet@lwn.net>, 
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
+ Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Maso Huang <maso.huang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, 
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Takashi Iwai <tiwai@suse.com>, 
+ Vinod Koul <vkoul@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-doc@vger.kernel.org, 
+ linux-sound@vger.kernel.org, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87bk4oqerx.wl-kuninori.morimoto.gx@renesas.com>
+References: <87bk4oqerx.wl-kuninori.morimoto.gx@renesas.com>
+Subject: Re: [PATCH v5 0/4] ASoC: grace time for DPCM cleanup
+Message-Id: <172486258823.92851.2758535753129650442.b4-ty@kernel.org>
+Date: Wed, 28 Aug 2024 17:29:48 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm: dts: mxs: Remove not used "fsl,imx2[38]-icoll'
- compatibles
-To: Lukasz Majewski <lukma@denx.de>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240828093518.2628817-1-lukma@denx.de>
- <f4b7e56f-50d1-486b-9866-ee1f82262b53@kernel.org>
- <20240828173334.21dcdeb2@wsk>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20240828173334.21dcdeb2@wsk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:2w+TjR4P91/lQ2e+lRY5nxJl6S/iUgwk+Cx6KmW/yHOSWfZhy2O
- D10QuLjotSbW4WIkh2p6hpF5HWcBqCbS09ioIdWClLAm7Vsqn9ugEMkln+sZU2gKJ9mjeED
- aUcropP+B0nOUkhHQKz9smB7IiBtD6u4D4l0wnZahupgwX7+UXknfYK9359emjRcjmmA+id
- q2dr/gqi0uu8kOj2S456A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:h1THvmECcQs=;c6idsHm4HAT/RIJfPx4FiiJ+7Qt
- 7h0BYDcYpr4smBo9rZ95G2RTWjtQE21vOIJ7PJlT8UC78urh/krmw64AhBV2K0wKjhfuC2QHc
- W0iixfmSJ+9s4NI7sTCh27ijkGYGPuplowgCYvvEk69hChjGFhj6E9mT1PQMRVxr7FdMpC0IQ
- 7qVN+g7W26s+a98FapxNNFzGgDieV0xdTPnkKEa1fxrXBZ+j1fU+Sf9DNFoQ/rMkAPME34jez
- dtZmObrY5NZ5xnr4IcIUPok4fggx/O3itgjew/tg3utOr8EP/0tSDc1bLBiqJNJJ/FLFWhWc/
- 58SSuq7Qk6Y9MldxzGFuGIcG1tOeyzIhDYeN8ouoqZJUdzMDW2o4A02y+ZXTX3qu7uR1YBG7i
- zLe11w8ZAnqgnllWO3OpYGi6L9MJsOUNoRj89cRc+FyIbK7N/b2rm3/x3GLBPkiIb8GN5AxDt
- yILMrxK3TdDjp2GXSYN1Wi+4MBXKkg8N/y8L7WmKx6wlvR3Cz73FSB3W853mLhZ4at2eDL8Af
- FAQ2CVTnmy8vTo+TfS2FDFsYO7rzfMzJZL4OnAwFrKiEa64kspZioVv3uf6l8y2iVSTzw8j3e
- 8gaV/EBsuDGpahiTLaWpZU4DJYAAMOI7dBujsI7u5HU+BXvQlxKwmGflV3jIiQ11d4ofxvhz9
- WxxyNTvl8OvIdJWLvCs2BMAGDG0D4ksxb/wrKrYJw1gdv/rWJ07wxIuryHWuLjJi5q1L13WyI
- A10LLIrxTWXPlagdjSezePBAt1ngPntjVu53OENfqP+mYeJi45Cpy9o3Ov7H7yuG+khFl2+MR
- PR4sNIf/grJCaJ62wc8XSy+g==
+X-Mailer: b4 0.15-dev-37811
 
-Hi Lukasz,
+On Thu, 30 May 2024 01:17:39 +0000, Kuninori Morimoto wrote:
+> Cc each ASoC driver maintainer
+> 
+> This is v5 of DPCM cleanup
+> 
+> As we discussed in [1], we don't need to use dpcm_playback/capture flag,
+> so we remove it. But we have been using it for 10 years, some driver might
+> get damage. The most likely case is that the device/driver can use both
+> playback/capture, but have only one flag, and not using xxx_only flag.
+> [1/3] patch indicates warning in such case.
+> 
+> [...]
 
-thanks for taking care of MXS DT issues.
+Applied to
 
-Am 28.08.24 um 17:33 schrieb Lukasz Majewski:
-> Hi Krzysztof,
->
->> On 28/08/2024 11:35, Lukasz Majewski wrote:
->>> The 'fsl,imx23-icoll' and 'fsl,imx28-icoll' are not used at any
->>> place in the Linux kernel - instead for imx2[38] the 'fsl,icoll' is
->>> used.
->>>
->>> Hence, it is possible to remove them.
->> Preference is to have SoC-specific compatibles in the front, so
->> instead of dropping it, these should be documented as bindings.
-+1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-We cannot conclude that nobody is using these compatibles.
->>
->> imx23 and imx28 are quite old platforms, so I think no one really
->> cared about dtbs_check and their bindings. If the platform is being
->> actively used (as judging by your contributions) then some bigger
->> cleanup could be useful. Also, drop your email somewhere in the files
->> or maintainer entry, so we will know whom to ping when asking for
->> platform removal.\
->> But if there is no product on imx23/28, then I am afraid it might be
->> wasted effort - isn't it planned for deprecation/removal by Arnd?
->>
-> I cannot say about imx23, but for sure imx287 will stay with us for
-> many, many years.
->
-> imx287 (arm9) is still in active production, for extended life time
-> devices...
->
-> It is just pervasive in the industry.
-I can confirm this.
+Thanks!
 
-Best regards
+[1/4] ASoC: soc-pcm: Indicate warning if dpcm_playback/capture were used for availability limition
+      commit: fd69dfe6789f4ed46d1fdb52e223cff83946d997
+[2/4] ASoC: remove snd_soc_dai_link_set_capabilities()
+      commit: 12806510481497a01d01edd64d7bb53a4d9ec28d
+[3/4] ASoC: amlogic: do not use dpcm_playback/capture flags
+      commit: 46fb727a28d8c7195f915150a669d927d463069b
+[4/4] ASoC: Intel: sof_sdw: use playback/capture_only flags
+      commit: 61e1f74f739546415570ccc1ac14e1b26afe4705
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
