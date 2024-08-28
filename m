@@ -1,106 +1,75 @@
-Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A41F145A18
-	for <imx@lists.linux.dev>; Wed, 28 Aug 2024 06:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD2E14F12F;
+	Wed, 28 Aug 2024 06:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724824961; cv=none; b=B3TWk/PxF0BxagKS9LBU9tUf1MGC6P76qLFCm9gYA4iS+LxPlFsVvEyQM6q6AdyZVcET6TUnYEsbSvHRq706bqKr5IHEbwSvtEU+iEb/PCGpkJfTpMBQmXgRe1ByAJL2LI3ue3ec0ecT8BU0jLDXY32TOJRCpE0Prl8InP8YiHo=
+	t=1724825226; cv=none; b=UDKyssYvfLRx6j2Dd940nH8KA6ODKx8oBDLwm7YM8JcpBZ590MuDIir6g+HF7LN/H05bH/fj9gFikvIBgiHxkEkw9Xv5x4b9fCdJnIup812UmUTfv0aGDka2HRE5JVgJLKqTVB8mWfKFSrsGO4kiJAnS0/BMcZZI88wmn/cnFjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724824961; c=relaxed/simple;
-	bh=FvBT3h1Xa8I2Y3mCMfwRtWfJWu+GpEK7IXsGp0OigKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P3Hk/sLjy1VTD3W5O/B/oyCBfFRBquqFzs5fx8bQaCXzSNSRidfsCl1nU81O9G7cOl+g6UZcfuzj+nNEn3s49URcmwF6yzXCsxvdmjPt3htyVP239bcsD/IglyLOTd41MxFV/roaqlp6nnjL9oj0oGPPuDCQFYm+sEcLzdaddGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=CHBvSDxj; arc=none smtp.client-ip=185.136.65.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1724825226; c=relaxed/simple;
+	bh=ToM86BOW2G76tm5IRZWQ9pOJ3jMo74NW5cB5i3zKHcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qEnZNj1v5TG4PZeiEUfz1MkXDuENGvJ86JcsMIWaTXkTwMZqOh+zpXVsHT5mNGWkN7mCxmzOTXNwabpBFBcPTv/PyZZN+JGLOqSxkJRQUHVyTaVsHkSXp1vnssRbWGAHVm3Zdu+cySWbp5ardKyqCOiu5H5pcZ5LVjjfNAH65Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdWvGxD8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="CHBvSDxj"
-Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 202408280602274a4b6b1eb62a29af81
-        for <imx@lists.linux.dev>;
-        Wed, 28 Aug 2024 08:02:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=2HKrDtu25MK5ywPsuytQgOjM2ceet9Kd7IxyYEl3hmk=;
- b=CHBvSDxjonVaQWBf9JzK+TeK++ZAg/8WjX2CF2Pta/hfND1wuTXWqncwFgaovYhN2k3tk5
- sTrolHgFkyYW/F1JNgiTukhO6nAovc8f/xG/Z9B2miYhyNQpuZEaDYFF8uUXrJC2cmzJWuDe
- SeCTqWUFGsZgRqdWkhuYhvRaIhp0cy+FtZVXZRkx2ZmJVg1+gkdEvZw/pAO4Y5t6aChWOdT9
- aoBgVmhRUKgtOoch6Nz103HeZRji4SPnWudR5uE+/1zUUZkgFXiyHas8Ud9r7Q8Vd0wCzxuf
- dcs3DNxRWrQ4ROgdgGTRvGnTAaHNnUW1IVF4g2vAZ4YPWCOQsEAIpsTg==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: linux-watchdog@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdWvGxD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30260C4AF13;
+	Wed, 28 Aug 2024 06:07:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724825226;
+	bh=ToM86BOW2G76tm5IRZWQ9pOJ3jMo74NW5cB5i3zKHcU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rdWvGxD8qnXWkOkb2D2xNskRt2utApMAFzKAk+IpFKB4PXbFPXts+FJArv1dAc9Rk
+	 mHFY4E+ZCM2isq0IFR+NlHB/bGiswYBAw5yoyieyKOYQbYIVpj0sl4XcFPqqgtIGIE
+	 6O6X2HSdzK4r7Ai6wnUok4GetMf8vBSg0ehtyBgqcCbis7P0b0LqBMPyUl4pjEqeUl
+	 JgnHszGQ3kDQLLFX7SOqFNA6NJN2NINYAODlYYZfArjwNIes977z87gtmRjL8SJytS
+	 ONoCMMYqPUEquX8iwpjQ4zAKa4lq1EhQRxez0SSn+VJJCWO2g7o6cFGNgI3yaZbX+7
+	 VG6ummL7bz1bQ==
+Date: Wed, 28 Aug 2024 08:07:01 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: haibo.chen@nxp.com
+Cc: laurent.pinchart@ideasonboard.com, lee@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, linux-gpio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	imx@lists.linux.dev
-Subject: [PATCH] watchdog: imx_sc_wdt: detect if already running
-Date: Wed, 28 Aug 2024 08:02:10 +0200
-Message-ID: <20240828060212.108608-1-alexander.sverdlin@siemens.com>
+Subject: Re: [PATCH v2] dt-bindings: mfd: adp5585: Add parsing of hogs
+Message-ID: <m65v3odvubmcoafe3gzhcsyu63iggamoadzdufo7h2lcffyfvo@vqzi73apacws>
+References: <20240828030405.2851611-1-haibo.chen@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240828030405.2851611-1-haibo.chen@nxp.com>
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+On Wed, Aug 28, 2024 at 11:04:05AM +0800, haibo.chen@nxp.com wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
+> 
+> Allow parsing GPIO controller children nodes with GPIO hogs.
+> 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/mfd/adi,adp5585.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml b/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+> index f9c069f8534b..ee2272f754a3 100644
+> --- a/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/adi,adp5585.yaml
+> @@ -42,6 +42,13 @@ properties:
+>    "#pwm-cells":
+>      const: 3
+>  
+> +patternProperties:
+> +  "-hog(-[0-9]+)?$":
+> +    type: object
 
-Firmware (SC) WDT can be already enabled in U-Boot. Detect this case and
-make CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED functional by setting
-WDOG_HW_RUNNING.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- drivers/watchdog/imx_sc_wdt.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
-index e51fe1b78518..e6d567b11795 100644
---- a/drivers/watchdog/imx_sc_wdt.c
-+++ b/drivers/watchdog/imx_sc_wdt.c
-@@ -56,6 +56,25 @@ static int imx_sc_wdt_ping(struct watchdog_device *wdog)
- 	return 0;
- }
- 
-+static bool imx_sc_wdt_is_running(void)
-+{
-+	struct arm_smccc_res res;
-+
-+	arm_smccc_smc(IMX_SIP_TIMER, IMX_SIP_TIMER_START_WDOG,
-+		      0, 0, 0, 0, 0, 0, &res);
-+
-+	/* Already enabled (SC_TIMER_ERR_BUSY)? */
-+	if (res.a0 == SC_TIMER_ERR_BUSY)
-+		return true;
-+
-+	/* Undo only if that was us who has (successfully) enabled the WDT */
-+	if (!res.a0)
-+		arm_smccc_smc(IMX_SIP_TIMER, IMX_SIP_TIMER_STOP_WDOG,
-+			      0, 0, 0, 0, 0, 0, &res);
-+
-+	return false;
-+}
-+
- static int imx_sc_wdt_start(struct watchdog_device *wdog)
- {
- 	struct arm_smccc_res res;
-@@ -183,6 +202,9 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	if (imx_sc_wdt_is_running())
-+		set_bit(WDOG_HW_RUNNING, &wdog->status);
-+
- 	watchdog_stop_on_reboot(wdog);
- 	watchdog_stop_on_unregister(wdog);
- 
--- 
-2.46.0
+Best regards,
+Krzysztof
 
