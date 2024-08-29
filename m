@@ -1,124 +1,230 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CE5190485;
-	Thu, 29 Aug 2024 10:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C27C18F2E8
+	for <imx@lists.linux.dev>; Thu, 29 Aug 2024 10:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724926592; cv=none; b=QRclQo5FKtJSQBu/LNbouAnHpMweIHywzPOIYVeRAcECMGdbDakGRU7VENUEtaoMRiyXATcaQG3vwmhVxF7vRf8sxtDdH3zFV6TW/4Se318SkhHfUTgk5QWnDWdQ9bHKIqA/F+x3r6MQIkxe18hoNJaBb4nU3IMavc+yooUkIl8=
+	t=1724927207; cv=none; b=s51RJbDRJPG4rZ/k8tIQqmJRWs3HExv/e1+vAI0DrUGLDTN3WRpwkBmuYJTdWiKgOBcVWG5OMOZdOk+u0TJE04WvDtU2JQNpN0uMqXnOTmZHQAoAvhgzA4C6JVvDlyKgjdkkgqkZ0SrllqOIyZjpuvlDVR+TVVwOUQxb8FPn8Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724926592; c=relaxed/simple;
-	bh=/LU6fryYn2sVSl/rTPdmvhFTh+vk4wxWRyKtICXy3mk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mb2rjI5OOmnVFTzlDvYlXDvZTjkifqMWZXRIPaiPW4p8v42faHJcf3a25QeNTtXkiw1M+SwBQXYn6U8V1o5Ea3siOVVc5rmApxpzo7ktPHC34DusUbXoC0EYhcS5Qg9xIzAL+HtzgcQ7Nxngu4uuqLIWNLHpXG7JPWJSh7NW5WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=CFScTE9Q; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1724927207; c=relaxed/simple;
+	bh=XqwKKVwXVCVwYDxJa99igQyUTTFSAF8ushvNwAihGgM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CPft3lgc7fYt9DN5aNyuFkZzOC6JJmxixeJPNZZW/5U4zkzPyCE1tLAejCJ1pNkEWqpMiWvwhcAGe3pwEYLx1HD6+2RxD32R4AIkzlB1dUpuU8/glXDP+YqMVOuxI5VJM1wW5S2y+jaldLOtI7ZFHjhbtLT572lY8+MIUmZ1/q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=hb27Kn4d; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="CFScTE9Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1724926574; x=1725531374; i=wahrenst@gmx.net;
-	bh=H+7yYy6PjlWDok5bWZPfuzjYnyw163BFGochPgRoawE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=CFScTE9Q/bwa9rkMNxUwVgPo4bmEfKTOyqORUtCaCQa+lDNScrTq1wkTiJMvYNil
-	 zQLJDp+WePijIjOnqhEAngS0ZS9E1F/GIj5PjFXQ27ilCY8jFmEdCjh/l4ab812up
-	 lz9Cm68oG28qi4kCIlfi585tLGzM8QBsQn8Zaw/NU2pbrsNZefG8YKlydgxXZNHp2
-	 m3zNy4baAdyFg3HNuUFkzXiOysR59nX5XHucwidWg/6RjGZ+voUr6ZWfZbug8AvHl
-	 3eGH+9SmGw2tajVdp8XeJ9ifa38sSSHjabuS6gnEW6Yuo6wunk4NIcA9NdXQmSVL7
-	 C4SmADy+bwwOp+1Bow==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mv2xU-1rst5S1wG0-00tofn; Thu, 29
- Aug 2024 12:16:14 +0200
-Message-ID: <fce999af-3613-4704-81a8-048159288b59@gmx.net>
-Date: Thu, 29 Aug 2024 12:16:13 +0200
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hb27Kn4d"
+Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 0D4FA88A99;
+	Thu, 29 Aug 2024 12:26:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1724927203;
+	bh=wJQPagtdUNlpPJvsfeaRTfYdfhIfa8rXrCNWOietuUw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hb27Kn4dpKKFb0kWrFejnQDmo3fZHro//k8aKdCLNkno+KAhU41jRpAWQhyMVI6Xz
+	 5T5N+BmG3nyzZjFZWWOCbZ9bsuXhwiIMl7e9sGlEAyCzFgbpO0YXr52YaOOLmcgKkc
+	 lQCv75QGo8JrfpShbjLceRIPhTnDwJaOy2Iji3tIoQREZPW3mc/lKdL2r4M01/mG9N
+	 z/oHEYJUm6BtgZJfrHAvjsahCiovUpfIa/EVyG4oIP/pHgSIi6ZrTpTO5GZPj8Vuia
+	 1pNpEr3o7kIk0r+mx9kM4BJswWvjEX6B+LeCin7bTMVc9fTe1sK0CvnjahacjE6zNr
+	 sCr2G6EmpGGBg==
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-sound@vger.kernel.org
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [PATCH v4] ASoC: dt-bindings: Convert mxs-saif.txt to fsl,imx28-saif.yaml (imx28 saif)
+Date: Thu, 29 Aug 2024 12:26:25 +0200
+Message-Id: <20240829102625.3128645-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] i2c: imx-lpi2c: improve i2c driver probe priority
-To: carlos.song@nxp.com, aisheng.dong@nxp.com, andi.shyti@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com
-Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240829093722.2714921-1-carlos.song@nxp.com>
- <20240829093722.2714921-4-carlos.song@nxp.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20240829093722.2714921-4-carlos.song@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SRnNv4qabiDdwcVkDlCU2V8o6ns6tVenwj4ys2jeomh9FZF5x0T
- ei1sPoIylr0SxOMpGM3etirdEIMZ4BhM8MxW/EmkvbqHLzfga5cBaJvIgIEF5MYFFnfYSbJ
- twN5P9qvqyINQxRsweJ7r3mWH2BhFG57jyENImO88XZSI284Ubqfix7Ceag5zfC4eJ2iL9d
- U7/taYniSg/luTvhqttpw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:gFLkRigh9WI=;lOYWjUXUOCsaf3gLRTYolEcp7vj
- uM59YuGB9kBH3IJ2PmChVm9L3YhYurzzk2u1/8kRNYsyNi2vA8/mE3VN9aRB0tw7Hh6Fl8G6O
- GHDI45V+TVtuoi1sFqlsdRGC42iWyQKHJXfvHVtjQ8i3c1IumVZic6oqI80DHxYfisbOtiVxC
- kRFobdwGiz2N/2BsED4rbSbrdU8tRFrd7/VBB0UQL2pXaruRAoWRbGt6QJXF7r0nA6h70FMwR
- cNhlZF1t9US7KN6yUZW0PyTVMs/oFcN2wOtSpC1Y1dpZb+uKeXHZKz3656PbwF8J/UKeb44Xx
- bPEQSwCrCKswavi+kOGLJAhQnxtMmfV11JXYd0HPdHt+twD//uhnh2q8moDZ8AjkiU2TXNr3A
- AeBxqGlGFoBhjF4eesV/ZUw+FRoMGQUFzNDwZ/XM+HVKtB9uGKB4KqM9TjZD9f2yzBKmzoYLb
- TkDeJTdouyi16G964WIUTsMbORX5+QtplfP+QhHtT25iEAuLHhvqcxruH2H85BiXJ+cBQnrp0
- bGsNqtYNHEU/YXFeTvtZEnjZSikON49+CzySG9lusQ5yPIDDi2+Cdi1F2ZFkfXrSl9ARxOa9n
- 6Gw+mJGySXKcUTnzH/R6ZexqohvjHhOoj7aApqATjgjfR3UZ8RabJokmCjxN171Lun3aNWEol
- cj7Rnf+zz4dzOFjWXazpcZLpy4IIVjG44wiC1ejkbc6KQ03kR6qUz61s3Gid66Py4asj9SaJL
- wE3yDOX6wE4LEbwvinN8Zbj4pEb0aRSA7wfXxYmXZgYpHuKZphvNxf47jYUmT0ab6GzN1jfWh
- W6TT/NXMDmJKGUaVXEhGocyQ==
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Hi Carlos,
+The 'fsl,imx28-saif' compatible has already the mxs-saif.txt description.
+This patch converts (and removes it) this file to fsl,imx28-saif.yaml.
 
-Am 29.08.24 um 11:37 schrieb carlos.song@nxp.com:
-> From: Carlos Song <carlos.song@nxp.com>
->
-> Some i2c devices such as PMICs need i2c bus available early.
-> Use subsys_initcall to improve i2c driver probe priority.
-thanks for providing this patch.
+Changes for the mxs-saif.txt:
+- Adds 'clocks', '#clock-cells' and '#sound-dai-cells' properties
+- Provide device description
 
-Please try to be more specific, which devices/platform has been effected
-by this issue. It would be nice to provide to kind of
-link/reference/discussion.
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
-Best regards
->
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->   drivers/i2c/busses/i2c-imx-lpi2c.c | 12 +++++++++++-
->   1 file changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c=
--imx-lpi2c.c
-> index 0159ade235ef..210d505db76d 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> @@ -1487,7 +1487,17 @@ static struct platform_driver lpi2c_imx_driver =
-=3D {
->   	},
->   };
->
-> -module_platform_driver(lpi2c_imx_driver);
-> +static int __init lpi2c_imx_init(void)
-> +{
-> +	return platform_driver_register(&lpi2c_imx_driver);
-> +}
-> +subsys_initcall(lpi2c_imx_init);
-> +
-> +static void __exit lpi2c_imx_exit(void)
-> +{
-> +	platform_driver_unregister(&lpi2c_imx_driver);
-> +}
-> +module_exit(lpi2c_imx_exit);
->
->   MODULE_AUTHOR("Gao Pan <pandy.gao@nxp.com>");
->   MODULE_DESCRIPTION("I2C adapter driver for LPI2C bus");
+---
+Changes for v4:
+- Change file name to match compatible (fsl,imx28-saif.yaml)
+- Remove 'saif0' and 'saif1' labels as those are not needed in the
+  example node
+
+Changes for v3:
+- Add #clock-cells property
+
+Changes for v2:
+- Remove mxs-saif.txt
+- Add description with information about extensions required for this
+  device's current DTS description
+---
+ .../bindings/sound/fsl,imx28-saif.yaml        | 82 +++++++++++++++++++
+ .../devicetree/bindings/sound/mxs-saif.txt    | 41 ----------
+ 2 files changed, 82 insertions(+), 41 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml
+ delete mode 100644 Documentation/devicetree/bindings/sound/mxs-saif.txt
+
+diff --git a/Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml b/Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml
+new file mode 100644
+index 000000000000..b2c73a9b7a55
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml
+@@ -0,0 +1,82 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/fsl,imx28-saif.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale MXS Serial Audio Interface (SAIF)
++
++maintainers:
++  - Lukasz Majewski <lukma@denx.de>
++
++allOf:
++  - $ref: dai-common.yaml#
++
++description:
++  The SAIF is based on I2S module that is used to communicate with audio codecs,
++  but only with half-duplex manner (i.e. it can either transmit or receive PCM
++  audio).
++
++properties:
++  compatible:
++    const: fsl,imx28-saif
++
++  reg:
++    maxItems: 1
++
++  "#sound-dai-cells":
++    const: 0
++
++  interrupts:
++    maxItems: 1
++
++  dmas:
++    maxItems: 1
++
++  dma-names:
++    const: rx-tx
++
++  "#clock-cells":
++    description: Configure the I2S device as MCLK clock provider.
++    const: 0
++
++  clocks:
++    maxItems: 1
++
++  fsl,saif-master:
++    description: Indicate that saif is a slave and its phandle points to master
++    $ref: /schemas/types.yaml#/definitions/phandle
++
++required:
++  - compatible
++  - reg
++  - "#sound-dai-cells"
++  - interrupts
++  - dmas
++  - dma-names
++  - clocks
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    saif@80042000 {
++        compatible = "fsl,imx28-saif";
++        reg = <0x80042000 2000>;
++        #sound-dai-cells = <0>;
++        interrupts = <59>;
++        dmas = <&dma_apbx 4>;
++        dma-names = "rx-tx";
++        #clock-cells = <0>;
++        clocks = <&clks 53>;
++    };
++    saif@80046000 {
++        compatible = "fsl,imx28-saif";
++        reg = <0x80046000 2000>;
++        #sound-dai-cells = <0>;
++        interrupts = <58>;
++        dmas = <&dma_apbx 5>;
++        dma-names = "rx-tx";
++        clocks = <&clks 53>;
++        fsl,saif-master = <&saif0>;
++    };
+diff --git a/Documentation/devicetree/bindings/sound/mxs-saif.txt b/Documentation/devicetree/bindings/sound/mxs-saif.txt
+deleted file mode 100644
+index 7ba07a118e37..000000000000
+--- a/Documentation/devicetree/bindings/sound/mxs-saif.txt
++++ /dev/null
+@@ -1,41 +0,0 @@
+-* Freescale MXS Serial Audio Interface (SAIF)
+-
+-Required properties:
+-- compatible: Should be "fsl,<chip>-saif"
+-- reg: Should contain registers location and length
+-- interrupts: Should contain ERROR interrupt number
+-- dmas: DMA specifier, consisting of a phandle to DMA controller node
+-  and SAIF DMA channel ID.
+-  Refer to dma.txt and fsl-mxs-dma.txt for details.
+-- dma-names: Must be "rx-tx".
+-
+-Optional properties:
+-- fsl,saif-master: phandle to the master SAIF.  It's only required for
+-  the slave SAIF.
+-
+-Note: Each SAIF controller should have an alias correctly numbered
+-in "aliases" node.
+-
+-Example:
+-
+-aliases {
+-	saif0 = &saif0;
+-	saif1 = &saif1;
+-};
+-
+-saif0: saif@80042000 {
+-	compatible = "fsl,imx28-saif";
+-	reg = <0x80042000 2000>;
+-	interrupts = <59>;
+-	dmas = <&dma_apbx 4>;
+-	dma-names = "rx-tx";
+-};
+-
+-saif1: saif@80046000 {
+-	compatible = "fsl,imx28-saif";
+-	reg = <0x80046000 2000>;
+-	interrupts = <58>;
+-	dmas = <&dma_apbx 5>;
+-	dma-names = "rx-tx";
+-	fsl,saif-master = <&saif0>;
+-};
+-- 
+2.39.2
 
