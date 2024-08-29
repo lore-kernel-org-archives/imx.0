@@ -1,65 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6411547E4;
-	Thu, 29 Aug 2024 06:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5BC166F17
+	for <imx@lists.linux.dev>; Thu, 29 Aug 2024 06:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724912670; cv=none; b=nxbhNn/4y3nQxy676xKalmjUiwwW10i2BHAKCst4axoPGxuQPai2xBJCvZLHh3+VsSC0sPtzQIRFcMfUobwlkI/GcKbw1JyFQ33uSn028sQJvYvfq1pox9+KtoULD6TEbORNn4buT+nT/6EHtL55f8w0kJPF2mS2rBr7aVcq6rI=
+	t=1724914216; cv=none; b=ZUpH4SxjRHnasIxOTuKhiRYF9CQBmcV0HRkQLtimm8eHiA0PlBiWfDM5zm33hgBKZ2Cq0F5RzhNBROUtc43BPjQLl+ulmfaTzV43hd9Y4fylNpqOefd/zuCG75o8QSUfHvC8fjNi64+ZQTlAjlD5Vf4GnrleZJteFnr0nZ8RUG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724912670; c=relaxed/simple;
-	bh=ulAcHw74Q+tiKNpuxivzK4jpkzIcYckUBh6qezE7LUA=;
+	s=arc-20240116; t=1724914216; c=relaxed/simple;
+	bh=C774xcfWLXiYC7HVHXCktC5RtuHU3NRdVERX0aWozKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QDT0dev0XONdFy2VVhfQd24hxi22Pw+LTY+e3ScToszxQvMqYY9CGiiVR56qJQBDKpqyk9MwEE1x89Q/Fbd26A/RJid8l4+hbHQi/RgD33Q5fQ8qmK0M0ihdc0S/Fb3PePdWFG27YF8WZ4BRtYHoDVnltzoKjcPZ2vKgkPUQK1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJx0XCpo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pswdIK0vwlnMeuTokY4YY0ZJdlT9Qd7qFhEEn7OpmOwIWMpMzcpu5WNdYgv/xyRpG6PLM2X4A3cGOBqj/F4wUphuOrVxHFh/701d7QaDLF6Fgr3TqNK/z2+8BtqMVcdlWORbrafIDVjXrsyKQMeL64+4D7zb2EhmpXeOrL4RI8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aRv491XT; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJx0XCpo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667ABC4CEC1;
-	Thu, 29 Aug 2024 06:24:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724912670;
-	bh=ulAcHw74Q+tiKNpuxivzK4jpkzIcYckUBh6qezE7LUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XJx0XCpofs9ieyBEV/PfMjMgFiSOBsH8YQBG4XDcCXWX8U625TazmJFw51z00Jxcu
-	 BfTQZVh7yCtTYWo5pPTeWsc46L7i+Otg8CSBr0F9OCAAS7AThnsPl5VHMR2ioHplQ6
-	 Qd6g946RwV+7fbFg9JAibhuU0zP4tx771s0LFoYPH7x4nzazEs90gi8l76wVBS8pU+
-	 L2UW0gWQMs9QY3KNlt+TYPjWFJr+vxiI0CCgusq/ZxcGz7vRptZALzbFN/33pNzumO
-	 Vj/blE6KnyvnOoU2YpC5Z190W27NklrRsJYGee6gP4W3CcJWvZvDsPF+M/QDDZObJD
-	 w2OOEyntncPhw==
-Date: Thu, 29 Aug 2024 08:24:26 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: misc: fsl,qoriq-mc: remove ref for
- msi-parent
-Message-ID: <kasyt62uhb7cijyrmbs7zelwgjtted6p4ynsy2s47e2ycniicb@szosg55aejjh>
-References: <20240828163417.1130252-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aRv491XT"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2f4f8742138so3396051fa.0
+        for <imx@lists.linux.dev>; Wed, 28 Aug 2024 23:50:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724914212; x=1725519012; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iTbYTU+eEXbesQ1w5uX4PXo79wYQYLg5UgyyuYRsTM8=;
+        b=aRv491XT4hUwEIVdBdjh9NK7g8wdE3vwm0iEldrwCUwYaclwVb4WjIzewhhFPUWnUe
+         0n7AOqaoKHm7+6Uzen0JMagJ/5V6tzQc72WvvplGO6z9GMjZbQZD+MZtT3o/0+/MQpbF
+         Ut+Aebv6Z2zgbHHC41KNDiJwPQpydZ1aHMcnT/5HGtaBOqloZMGAyY5Q23+vgvT/VV3u
+         tu3ILlnr472NGHZLFKi7yq2CaPC4MXSHkP6dkW1MSptFufjSso+AKtFotJYafQFBG++d
+         TcKXCgIw+EdH08tMGOU8W77dogfNykbFJ8YgXF9gcMuWT05yZlE5vskygiwZLwMFzDcx
+         WDTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724914212; x=1725519012;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iTbYTU+eEXbesQ1w5uX4PXo79wYQYLg5UgyyuYRsTM8=;
+        b=KzS1PzjDp31K9X+sD2UX24oeoGvZET+xXo62LTik1ZlVAZywP1hkPCLVvi5dF7hTj5
+         tcYjA1UgkT9Cqzrd0c/Ppsusr3Btssh29nSuRHXofo7bebE7PIyIvstUAIYCnOMoNdF5
+         H3TtI4jH5l6yvZwEDz+JkjqIudk6/HWVeHGL0NbCiEUg9PlDmQi1JFloxW3xjUgcEgDj
+         MFeotquN9WEAl/mcPoDG6bAwYnDEizUdDtMKvMRAhvnga8pYpAWt6H8y8qSsRbj7aqr3
+         w/+rdvBFCJGvFrrIzodWI/RAB8qYo3ezzfOwXNs1GfDy1O9xQH/qLSEU0Z9kYXwmrSml
+         mDNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWLAjDpFdG9h0aVHDvqTmR5Jgm0HIejthWlTsGIVucrWe7/MqUEQ8eJPqQXXSs5ylCRQJQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTQTEZYclivRGpLwz0MCZxNGtSOYLJom2Dv6SGUk+UL6ib2mfR
+	SsBHjtmLNlSAq2iOJwEg+TgJlZqJ0Kafwvx1w0e8xN3G09hGcndgzhXdV83Y5Q4=
+X-Google-Smtp-Source: AGHT+IFD1KFQKXHD2NsxEWGSGcXcBDNM5IA3aCJrru/ZgnQkD8KFd2PJDDxrXBnQQUmUPXuRwBUgtw==
+X-Received: by 2002:a05:651c:2226:b0:2f5:2e2:eafb with SMTP id 38308e7fff4ca-2f6105b5e21mr15165451fa.7.1724914211870;
+        Wed, 28 Aug 2024 23:50:11 -0700 (PDT)
+Received: from linaro.org ([82.79.186.176])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c226c6a3f5sm317407a12.2.2024.08.28.23.50.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2024 23:50:11 -0700 (PDT)
+Date: Thu, 29 Aug 2024 09:50:09 +0300
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "mturquette@baylibre.com" <mturquette@baylibre.com>,
+	"sboyd@kernel.org" <sboyd@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"abelvesa@kernel.org" <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 RESEND 1/4] dt-bindings: clock: add i.MX95 NETCMIX
+ block control
+Message-ID: <ZtAaIRQqC15QPoMQ@linaro.org>
+References: <20240729012756.3686758-1-wei.fang@nxp.com>
+ <20240729012756.3686758-2-wei.fang@nxp.com>
+ <Zs7jvCHO+ifC3VaT@linaro.org>
+ <PAXPR04MB8510AE921AD67C110F135BB988952@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240828163417.1130252-1-Frank.Li@nxp.com>
+In-Reply-To: <PAXPR04MB8510AE921AD67C110F135BB988952@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Wed, Aug 28, 2024 at 12:34:13PM -0400, Frank Li wrote:
-> msi-parent is standard property. Needn't ref to phandle. Add maxItems: 1
-> for it.
+On 24-08-28 09:31:08, Wei Fang wrote:
+> > On 24-07-29 09:27:53, Wei Fang wrote:
+> > > Add 'nxp,imx95-netcmix-blk-ctrl' compatible string for i.MX95 platform.
+> > >
+> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> > > ---
+> > >  Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> > b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> > > index 2dffc02dcd8b..b0072bae12d9 100644
+> > > --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> > > +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> > > @@ -17,6 +17,7 @@ properties:
+> > >            - nxp,imx95-display-csr
+> > >            - nxp,imx95-camera-csr
+> > >            - nxp,imx95-vpu-csr
+> > > +          - nxp,imx95-netcmix-blk-ctrl
+> > 
+> > Move this above vpu-csr, please.
+> > 
+> > Also, for some reason, this patchset doesn't apply cleanly.
+> > 
+> > Please respin.
+> > 
 > 
-> Fix below warning:
->   arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dtb: fsl-mc@80c000000: msi-parent:0: [16, 0] is too long
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change from v1 to v2
-> - add maxItems: 1 for msi-parent
+> Okay, let me update my local tree. I use the linux-next tree as the code
+> Base, is this tree okay?
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+Sure.
