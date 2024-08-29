@@ -1,117 +1,74 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A12188CD6
-	for <imx@lists.linux.dev>; Thu, 29 Aug 2024 10:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923291AE866;
+	Thu, 29 Aug 2024 13:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724928935; cv=none; b=JRmJ7kUkvnV0bOG5JqMJSx+C4geKbuFMRnjJq+fAHugG+ScNgQkme0ZdO3Hoy8LO/X8d0nAVk1bx0qgUjnq5xvDyeSnkdXICbUxOu/sLm7U3eHlkbmHWKDXlPYKn88wIALNIujdH3C1BUrzjp2Cle4JhgAZXqn8/nlI3b+rf9xE=
+	t=1724938083; cv=none; b=ZYHeBRPFZ8wks2kQSd7jIGLnB+AOaRz59Ls+IypGFOMR2isuFkiJ0aqMCANnGglLsDA95dt8MTHRZkVJTxja7xPsFHokXkcv6nfbpb/69GZhtffcAFkD08Q4Mmh3ECbaaHlBMLhN5QLKoSi86JUCgfLMynvQWcdWeUZDZJAmU4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724928935; c=relaxed/simple;
-	bh=ejYdjNgSbAx5OYv2qyLkgoU1l5jP4SBPh/grlWEaEW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QfJoSCTN5deRchovDXuHjom0yHnIYKGe71vHhINEXGhbRxvKvO6sAfxJsFm2PpHMWs6wB2IsbGVCdvnoItfKvSCbkJTcE4V1li/OKU/gFgzebO4pUzjRD++ovZmdHJh9/9Fd2KnanYVIOlv1JvaDHpvV54kh4RjCUS/ajMHh1aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=M1+y2VC/; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=o5cjZqEF reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1724938083; c=relaxed/simple;
+	bh=BCz8KQT3nNiku5vwtOuMR0szTCOE3r+CGyVRcDkjTcg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gZ3GXNNF99S5OYq28wBDJkP/lF64zo/HmrJw0lAGCP1osbAX50j/r22Bt2PL3Zaudg77AYPol/bTAKg9OKsA9PVkEa8EZEWoxd/LHA+SptDGmRPyMab+RFN7TJQM+/aEaMJJb2QsyxBYk70HJcBw06Pe/LTlwHj4rCqLMVyyr/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlrpPLFY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="M1+y2VC/";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="o5cjZqEF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1724928931; x=1756464931;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=oWzcDmjgkJcSg2wpZdI3SiGft3f6OnhQjayTMf0HJ38=;
-  b=M1+y2VC/ISCzWT2fFq0+nUZ23kS5i/gnU0hGHWxHbhGYx33M+zrR3CTT
-   t4tfw3+NxMbvY4uO5rwjEd6xbhxbvz2lexJljJoBaJ6oxs/bMB9sHEHsP
-   Un3UUCkioUDo4WyJe6NfLe33SyaG5KlRaTTXBqOkZTRxlpqplApo4vRYh
-   cht23Tse9T+QljvK3Iiw6ZD8wo9CLU6vzwt6rg2HVVDpCyhObiVlzxfHk
-   FsoBbmfqjjtzolgjdqZo2FIBzvBAcgKjv8CL3Deeg7ycW+N2vV0JcmScm
-   4aD7AJ5IaSbzRDgjO6cfIKcpqCa1WaNv9txtulZs4XC2RqBE2XVnDUJ1C
-   w==;
-X-CSE-ConnectionGUID: IxpUcI0TR6CUshZtug8O9w==
-X-CSE-MsgGUID: 1JdaoTtdS2Geeh9lZqbFog==
-X-IronPort-AV: E=Sophos;i="6.10,185,1719871200"; 
-   d="scan'208";a="38657106"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 29 Aug 2024 12:55:23 +0200
-X-CheckPoint: {66D0539A-E-22BB8E18-F5F6D0B4}
-X-MAIL-CPID: 0FF3B4A887F5D6DA561B29681486B5BB_5
-X-Control-Analysis: str=0001.0A782F1D.66D0539A.00DA,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 02E45165A3E;
-	Thu, 29 Aug 2024 12:55:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1724928918;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=oWzcDmjgkJcSg2wpZdI3SiGft3f6OnhQjayTMf0HJ38=;
-	b=o5cjZqEFPmxCCUoClAnK46MIX62MOzhLPNdveJPyKyS6+3pAUL4sTVLt09QJKZZcTw5qjb
-	Qc0Ol2HPwKTFgnwvAF6D2sSEgmba7IF9QS4QmHV7dDIuDJuUZ0BWHsva35bTD4tTnQoZuq
-	MFWtDUNhEVWXBkZYqHAHSVMxTtw7yLlgm0m9Ew5+1rQ89nZ5pnWpxngesbtN5Ezm9oUNEM
-	hCQmVTYiliiI+Z5z77dn1Jdkcv8K+Yh2aTvBOG1TKZQoBYaBC6PzplDaDnvr81XfbMiv62
-	ZdpNRDGYTNwo9PTnA1WnHMv/H5PXpoeXys5jmWsUyzkJRvCawXrZICRruKIYrw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: aisheng.dong@nxp.com, andi.shyti@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-arm-kernel@lists.infradead.org
-Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, carlos.song@nxp.com
-Subject: Re: [PATCH 5/5] i2c: imx-lpi2c: increase PM timeout to avoid operate clk frequently
-Date: Thu, 29 Aug 2024 12:55:16 +0200
-Message-ID: <4375906.ejJDZkT8p0@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20240829093722.2714921-5-carlos.song@nxp.com>
-References: <20240829093722.2714921-1-carlos.song@nxp.com> <20240829093722.2714921-5-carlos.song@nxp.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlrpPLFY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFEFC4CEC1;
+	Thu, 29 Aug 2024 13:28:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724938082;
+	bh=BCz8KQT3nNiku5vwtOuMR0szTCOE3r+CGyVRcDkjTcg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LlrpPLFYXygagotx7+N3+XIHWOWL2VFPduet7kczz/2iJ9fThHKNWsTVHHAuNy7cV
+	 KsMx6E0k8j89Oski9nKCEFc50wozYAaGfbSdoDeDqyTK9X/z1Nf/DVTm8H1M69L7D5
+	 auX3BearRXImb8/wNcQhR7sBCjf3iBV37huQSWx0=
+Date: Thu, 29 Aug 2024 09:28:01 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Abel Vesa <abel.vesa@linaro.org>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
+	abelvesa@kernel.org, peng.fan@nxp.com, Wei Fang <wei.fang@nxp.com>, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [Patch v3 0/4] add NETCMIX block control support on i.MX95
+Message-ID: <20240829-ambrosial-smart-wombat-fb571e@lemur>
+References: <20240829011849.364987-1-wei.fang@nxp.com>
+ <172491778768.2521946.17064463983702008243.b4-ty@linaro.org>
+ <ZtAo+B0XOE558+93@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZtAo+B0XOE558+93@linaro.org>
 
-Hi,
+On Thu, Aug 29, 2024 at 10:53:28AM GMT, Abel Vesa wrote:
+> > [1/4] dt-bindings: clock: add i.MX95 NETCMIX block control
+> >       commit: 4b78b54762dbfc2f22f28655fa3cf6f5d50de197
+> > [2/4] dt-bindings: clock: add RMII clock selection
+> >       commit: b4f62001ccd3fa953769ccbd313c9a7a4f5f8f3d
+> > [3/4] clk: imx95: enable the clock of NETCMIX block control
+> >       commit: 42dc425fa8b5be982bcc2025d5bf30be8b26da86
+> > [4/4] arm64: dts: imx95: Add NETCMIX block control support
+> >       (no commit info)
+> 
+> For some reason, b4 ty thinks it's OK to mention this 4th patch as
+> applied, while it is obviously not.
+> 
+> I only applied the first 3 patches.
 
-Am Donnerstag, 29. August 2024, 11:37:22 CEST schrieb carlos.song@nxp.com:
-> From: Clark Wang <xiaoning.wang@nxp.com>
->=20
-> Switching the clock frequently will affect the data transmission
-> efficiency, and prolong the timeout to reduce autosuspend times for
-> lpi2c.
+Sorry for the confusion.
 
-Efficiency as in throughput or total time per transfer? Do you have any
-numbers?
+It's because you did "b4 am" on the entire series. We couldn't find the
+matching commit for 4/4, but this often happens because maintainers tweak the
+title or the patch contents, so we can't always assume that the patch wasn't
+applied just because we can't find the exact match.
 
-Best regards,
-Alexander
+If you know you're going to apply a subset, it's best to run "b4 am -P 1-3" so
+that b4 knows for a fact that you only intended to apply a subset.
 
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> ---
->  drivers/i2c/busses/i2c-imx-lpi2c.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-=
-imx-lpi2c.c
-> index 210d505db76d..cc5e5d96aacd 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> @@ -129,7 +129,7 @@
->  #define I2C_CLK_RATIO	2
->  #define CHUNK_DATA	256
-> =20
-> -#define I2C_PM_TIMEOUT		10 /* ms */
-> +#define I2C_PM_TIMEOUT		1000 /* ms */
->  #define I2C_DMA_THRESHOLD	8 /* bytes */
-> =20
->  enum lpi2c_imx_mode {
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+-K
