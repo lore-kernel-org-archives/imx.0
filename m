@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B4B1B86DE;
-	Thu, 29 Aug 2024 17:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538881B86F0;
+	Thu, 29 Aug 2024 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724952640; cv=none; b=ZKm2C9FGldcgTk0HnpaSDRLQAlA8q2W/1T/PRrHmx9mybAFum7OCvhvT+NiPZ01OP+3bmRAMQZFIa7ZoSqPvz5Qs3C/Jim2YYi62SbTv1nGGIBLAVKWbHKIV+FLbUmO8+eQTlPd46sNPgw/3g00WrP7QEXtyDRba2n5ihVF1g2Y=
+	t=1724952645; cv=none; b=JNqVpCPb/vp+nC5Pvyfp6QutaaqMP+nFrZhjKAdEvU5GVla6zEtSmvkyhB6efMDt9kKrq3pEAuYpTbidd7bGkKK1JdD5Esdbd2EwhLjyR8WK5+zb3hpTfwrLbaZqbF0+UH1jdxTglTHX2pHi4d1YgA6X2ux5v0rm0GPABrFpVvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724952640; c=relaxed/simple;
-	bh=OZ6ZkvhiFdrcvmITgoIKKLUN0utr6ARrpziiC4LO1+4=;
+	s=arc-20240116; t=1724952645; c=relaxed/simple;
+	bh=1NqKTp67p+4uOv1kjD9wwNV3Q/Vhr9+DdWiRxFEMj/I=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GMQdpRnvEmSKUYhC+R1+7sA2ncg4SZhQ80ag3XO1nX8iOP0Dwe+z2QfvSSCLmpW5Z83rhTsC1ztM0bDXwAEfMEONAvixe5R+4Ahw3uK1mNhp1xlE/949DSntCMbm9cvCraZjNc3rC0mZtII/ijl2v/V9dLFMA81+Q7rBpa5gj/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLy5r1Dy; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=O+w/bPKcSPBnAop4xHie3ORDpevXl9cPhe+A/Skcp5QNnzfrhRpcJ62ux9xsLeMPjGceVrqlnl1mDzc1sLGfVa2bA686ai6PJ34TNtOFwVRdXE/tNirdDIUtA/b+uq0vV5S/Gxn6durYCSACnhsJ6SUbMKOk611UOL007zxMMu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eL4RcIP+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLy5r1Dy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC33C4CEC1;
-	Thu, 29 Aug 2024 17:30:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eL4RcIP+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8C5C4CEC5;
+	Thu, 29 Aug 2024 17:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724952640;
-	bh=OZ6ZkvhiFdrcvmITgoIKKLUN0utr6ARrpziiC4LO1+4=;
+	s=k20201202; t=1724952644;
+	bh=1NqKTp67p+4uOv1kjD9wwNV3Q/Vhr9+DdWiRxFEMj/I=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=iLy5r1Dyi/wWUTVj2xTwV1RLdo9FjPeL0pD6gTcNALdEhM/PeGF0HJj7k5ejwa3ZP
-	 18ukKymePaBay04qHQjU0sYJyZveJ6zR813AETz7pkdtnSWMsHp8FkrulxNCo3f7RN
-	 tivtj2kSy/jrSeulvZMm20wicmP2wZFPcJj5E1DdIpp1ybNbzNvzyNvTaoslCxhOgS
-	 x32TKOeRpQRlxbTdr4/Gzz6OpRLDNn9vlKNkfMx7nANzsQr/V6nrIHO033KIX2AENG
-	 Vi8UbO2g5EuDUMyileYHo7A9u30ZLBbyDlnebSLuIKQC7pIIEgjvaaf6Bpw7vFhr4N
-	 oS+V07QtB+Arg==
+	b=eL4RcIP+lkEjmZ+plfp2GzAbCaEP0rIQ+ZEdQ7FHOFe/d53fPOZ/fjh8nTbF5NxyL
+	 hmSu8OrOJvnU7G3ATtjfbdS8BLvXKkPG5GmFKvD0tX1CbPDO3pQ7ivOSLVAf32sP4Z
+	 rX08sA6jTn7j88WlXCxgIHoJVl5l8pqafmJ0OAPRvr5Ljn+I/avWTizLMTW71JLQgg
+	 BI/WbAafV7Z49S6p9wdvlRN9VWE2uIFFWijTScB0UZMrfp8bhx0n3dWIGUUx5EccPt
+	 h63eGlqvlHcbrB+MdH0cI+hygJd7EkoDri0uBK7By74pjaS3pP5ILUqFSOuXTXHXNJ
+	 eOvhJDh8EuPDQ==
 From: Vinod Koul <vkoul@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
+To: Frank.Li@nxp.com, Joy Zou <joy.zou@nxp.com>
 Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
- Fabio Estevam <festevam@denx.de>
-In-Reply-To: <20240806021744.2524233-1-festevam@gmail.com>
-References: <20240806021744.2524233-1-festevam@gmail.com>
-Subject: Re: [PATCH v2] dmaengine: imx-dma: Remove i.MX21 support
-Message-Id: <172495263883.385951.11153953167705825429.b4-ty@kernel.org>
-Date: Thu, 29 Aug 2024 23:00:38 +0530
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240701070232.2519179-1-joy.zou@nxp.com>
+References: <20240701070232.2519179-1-joy.zou@nxp.com>
+Subject: Re: [PATCH v2 0/2] add edma src ID check at request channel
+Message-Id: <172495264308.385951.16211392531581038291.b4-ty@kernel.org>
+Date: Thu, 29 Aug 2024 23:00:43 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,18 +46,25 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Mon, 05 Aug 2024 23:17:44 -0300, Fabio Estevam wrote:
-> i.MX21 support has been removed since commit 4b563a066611 ("ARM: imx:
-> Remove imx21 support").
+On Mon, 01 Jul 2024 15:02:30 +0800, Joy Zou wrote:
+> For the details, please check the patch commit log.
 > 
-> Remove the i.MX21 support inside the imx-dma driver.
+> Changes in v2:
+> 1. modify the dev_err() log description.
+> 2. add review tag.
 > 
+> Joy Zou (2):
+>   dmaengine: fsl-edma: change to guard(mutex) within fsl_edma3_xlate()
+>   dmaengine: fsl-edma: add edma src ID check at request channel
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] dmaengine: imx-dma: Remove i.MX21 support
-      commit: 39dc2a4929f7be748b37a5070f41afe7bcb60706
+[1/2] dmaengine: fsl-edma: change to guard(mutex) within fsl_edma3_xlate()
+      commit: 90d21f6e57a898ef02810404dd3866acaf707ebf
+[2/2] dmaengine: fsl-edma: add edma src ID check at request channel
+      commit: 9542961494bf747a73413f925f8ea9ac410a4aec
 
 Best regards,
 -- 
