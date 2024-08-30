@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0977356440
-	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 07:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D2416CD04
+	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 08:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725003442; cv=none; b=UTAsjx4z0gqimaIpqXX71z+c9dxT9ckvuF6r2vnCCtuEkk4SguDfZBNsCzAKTVIf2WF7tLczdl9QKSYF38pyyA57OXF/R8eNmJ9uaZNYW4qBuEa6I7uHe867H1tevpL3s7h1cJFtPgJI7u9vSPLSO4soUm0WmjCGyMgnsEwMOnE=
+	t=1725005646; cv=none; b=ET8b7NkkN8R3aMAHzcpce4qmwxGz6bkRvwyZIf+9evYTNlCnoYd644Uiowy8jR8A+eRxPrlZdL2CpRja5dX9kuGyBUMITGdKfkFGEQZUW8mr/EKc4CqmZlLKB0SgMdfPRlLHruMx+sgtlxf/nSQ7Df9/5LHDW1Wh7/4XmQyAYvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725003442; c=relaxed/simple;
-	bh=EBqHwxvdQVyhbuiFBoLIU4AmBPq9DuPoCbMZM/JAWHM=;
+	s=arc-20240116; t=1725005646; c=relaxed/simple;
+	bh=gs8m6XzA7rsiitgMax02+6Zf3kJfaVZMXfkZt6ROd0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F18DMVmIk2KXAkwlZZ+S+QkIyKmoAgCdfQ2+8k04BD6519OEEnmt1E8e8WEkFh2tIP5lu4Tk6SHBdquXqPEVQjLQv+aC4NQs1OiIq32movessMaM1yoLAjIkAETSnA2K+rBreCeiIe7tReZSfTOnc0IdZq5i7huLwlGE/56uKPE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=jlzv1AJH+o32ICisEB2caZWdv7+JS0/Vo+3sq/o6Tbn36cdtITKiaq9l1IBmveZAVnv2WAjirDMWBPXwmQdhg3t1QRuyHX2XayPr6YV3dsP0D1qwjDWa9ZY/cbooxLWgIeSFKqFzklKjCVtIwa/22ncIaHr0rwqGeJybB05OhaI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sjwC3-0000Kx-Ay; Fri, 30 Aug 2024 09:37:15 +0200
+	id 1sjwlZ-0007vV-UZ; Fri, 30 Aug 2024 10:13:57 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sjwC2-0046DZ-9c; Fri, 30 Aug 2024 09:37:14 +0200
+	id 1sjwlY-0046c9-UI; Fri, 30 Aug 2024 10:13:56 +0200
 Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sjwC2-00EQsl-0Z;
-	Fri, 30 Aug 2024 09:37:14 +0200
-Date: Fri, 30 Aug 2024 09:37:14 +0200
+	id 1sjwlY-00ERNa-2d;
+	Fri, 30 Aug 2024 10:13:56 +0200
+Date: Fri, 30 Aug 2024 10:13:56 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Stefan Eichenberger <eichest@gmail.com>
 Cc: kernel@pengutronix.de, andi.shyti@kernel.org, shawnguo@kernel.org,
@@ -37,10 +37,10 @@ Cc: kernel@pengutronix.de, andi.shyti@kernel.org, shawnguo@kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2 3/4] i2c: imx: use readb_relaxed and writeb_relaxed
-Message-ID: <ZtF2qj2cIjULy-RY@pengutronix.de>
+Subject: Re: [PATCH v2 4/4] i2c: imx: prevent rescheduling in non dma mode
+Message-ID: <ZtF_RJaG9lj_Mvtb@pengutronix.de>
 References: <20240819072052.8722-1-eichest@gmail.com>
- <20240819072052.8722-4-eichest@gmail.com>
+ <20240819072052.8722-5-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,7 +49,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240819072052.8722-4-eichest@gmail.com>
+In-Reply-To: <20240819072052.8722-5-eichest@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -59,13 +59,34 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Aug 19, 2024 at 09:19:09AM +0200, Stefan Eichenberger wrote:
+On Mon, Aug 19, 2024 at 09:19:10AM +0200, Stefan Eichenberger wrote:
 > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > 
-> Use the relaxed version of readb and writeb to reduce overhead. It is
-> safe to use the relaxed version because we either do not rely on dma
-> completion, or we use a dma callback to ensure that the dma transfer is
-> complete before we continue.
+> We are experiencing a problem with the i.MX I2C controller when
+> communicating with SMBus devices. We are seeing devices time-out because
+> the time between sending/receiving two bytes is too long, and the SMBus
+> device returns to the idle state. This happens because the i.MX I2C
+> controller sends and receives byte by byte. When a byte is sent or
+> received, we get an interrupt and can send or receive the next byte.
+> 
+> The current implementation sends a byte and then waits for an event
+> generated by the interrupt subroutine. After the event is received, the
+> next byte is sent and we wait again. This waiting allows the scheduler
+> to reschedule other tasks, with the disadvantage that we may not send
+> the next byte for a long time because the send task is not immediately
+> scheduled. For example, if the rescheduling takes more than 25ms, this
+> can cause SMBus devices to timeout and communication to fail.
+> 
+> This patch changes the behavior so that we do not reschedule the
+> send/receive task, but instead send or receive the next byte in the
+> interrupt subroutine. This prevents rescheduling and drastically reduces
+> the time between sending/receiving bytes. The cost in the interrupt
+> subroutine is relatively small, we check what state we are in and then
+> send/receive the next byte. Before we had to call wake_up, which is even
+> less expensive. However, we also had to do some scheduling, which
+> increased the overall cost compared to the new solution. The wake_up
+> function to wake up the send/receive task is now only called when an
+> error occurs or when the transfer is complete.
 > 
 > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
