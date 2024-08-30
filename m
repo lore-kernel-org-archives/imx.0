@@ -1,76 +1,154 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E937018FDA9
-	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 10:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596FF18E35B
+	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 10:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725013156; cv=none; b=heFEpUDmqjLFicQft83GryHbC83tRVUvIMG95wTgDp4DLNZpVWZInq8Xe3+FBosYtrwYNG8oFMnGelQmbSjae6wjssxuVI0bNRjsM/hSIykZD7gUk1lulLEPG4ZJMMVim/2brmr0cyhBKY650hpzKERg5/9yCcqr9OxqcjtSQFE=
+	t=1725013682; cv=none; b=oMCVVAh6BmMk1xjUi8Ec8LA/5QCqzA+02EJzwgsfsFYsS5ZxN32k7vVEa2K2Un1AudIwBfelaxAizMJ/rW0rF5BEULm1gPUkj+9SkxmUsbHjnsneVkZBMbVJ5aEOXFKV8Zqfjd6jy7L0Y8Rrdb2XsE/fWzHQpEkC0Mqen4DU4ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725013156; c=relaxed/simple;
-	bh=vzleYBf8VBpQAaH+oPojEUNbBndhfbTL2F8q37iES2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eTN+nX+BQyNjQR7lqohs04yCyBBh372FzMzzxCHqQgW+qT9jzZAAUmsP335oThffD8PUVHa823sYRpBh3RawVY5oElDshitOZ057qZ9OfakmQm5vK7s1YUZQVFJ4rQpo/WDq9H9CpkyzZzTQS9VDNsjVEgqGmL4MBJYKG9U9Q+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC2EF1063;
-	Fri, 30 Aug 2024 03:19:40 -0700 (PDT)
-Received: from bogus (e107155-lin.cambridge.arm.com [10.1.198.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B5FC3F762;
-	Fri, 30 Aug 2024 03:19:12 -0700 (PDT)
-Date: Fri, 30 Aug 2024 11:19:09 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-rtc@vger.kernel.org,
-	linux-input@vger.kernel.org
-Subject: Re: [PATCH v8 6/7] rtc: support i.MX95 BBM RTC
-Message-ID: <ZtGcnTYlGlZ8eC-6@bogus>
-References: <20240823-imx95-bbm-misc-v2-v8-0-e600ed9e9271@nxp.com>
- <20240823-imx95-bbm-misc-v2-v8-6-e600ed9e9271@nxp.com>
- <Zs2rz1FT1UsKQBj6@bogus>
- <20240830091246fce62c34@mail.local>
+	s=arc-20240116; t=1725013682; c=relaxed/simple;
+	bh=pMI90KbqudBvHNSXSKjN0yDaohkTey7HoNjDb2rpmqE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d0ExZkqcVLDzp0E8B5WAKAtO9/nrRDu+9j0WyUwFsaSdp/sZLR0Mx9ibWv+wKH2pCMMlyqvA2jHrvibbnix/jzRB0GZG3quw/iNsv85kZnGgAAAkWTg6G1SF7IhTcMFiHraMrA0nIJQ6vx2Pqs1xj5i8nKQFo7AoKwslhIiIrdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VfNGaWj0; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VfNGaWj0"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e1651f48c31so1768942276.0
+        for <imx@lists.linux.dev>; Fri, 30 Aug 2024 03:28:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725013679; x=1725618479; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RaANdRMqGTHrITO34e72PLfanbHHgulA2aOEsmQ72uE=;
+        b=VfNGaWj0VaqaHoI/WmUxPX8cEhI8Tqo16lOzj3i97L2nJkYeuF4I0zeTro9VS5OTsU
+         BCLVCB/8vccRLJyWT18gMc3PZQbLNshTjkVdykKWFpyXJR7iz36A7yrNGlo1plgwL7vo
+         vo7hy27PBHaiZrWk9pXIjjRDxz5ihza5acupwQmxMeu+DmA476CGrfpWpZnBwDOhrrO/
+         pDccUEcLMRyjefr9t999LcGjOL9drUzkGuQBVII4mcI8KdF5XpzzeOcXnS2m5eE0HjeM
+         E6KV1lx865z4EvBrkpvxQifhVqeJX4LC2mwrSLcoihL8dQva+DnPftpf/r8TLntoo4P7
+         sb5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725013679; x=1725618479;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RaANdRMqGTHrITO34e72PLfanbHHgulA2aOEsmQ72uE=;
+        b=din3WZKv06mpj3uzRykDoCHRvERIxCUZIEjoO4WCH5RI1npo72GNDEJ7e2ScRvK1kw
+         7/G+QsARI3209fEeYnJUplglcjL8rV0RJQNwxb/pMdvKcjERDoxp5pLMVE/bwBjzclV4
+         ZBfFVqElsUGBtbb0Uwf0Mhorfs6870dD9qth1xR5hey8kncGV2+3b0fM+5M7ytn6qGYZ
+         7wq1C3AUQk83vYdHSdQ+voIhch4hz3bWfcnzM9iZLQpGbdny7TXAGEHWtpYJGQxtoLFk
+         UmOwE2D8rODZ+4Mfejyrt+ktaaasy89t4Q3Yrl91Jtcc0gU7OP+JoQoNbL3CUp4sQlIY
+         naIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKWGqfVxwa2S9Lv9q7WLmZxTazoL9ZNHhhC7YqP34glvnaQnaRa1DcWIVT7RrosjgaBr4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/GZF396lsof78DwkTkIfoufCsVti4kyz33cT9g/NMRiMVv7YG
+	IAHZ2KRpE0L7jusn3uDh0Rq37MgrmiccNg0QVNdhw5UXL6X4kiccuHKriNvsipY5d0mPCwfzF4i
+	prBKFYSOJ6ulJHX9JUpGPxBzOJRO/wjmzyMrskA==
+X-Google-Smtp-Source: AGHT+IHD0Ca1b20qhfzhusSSGfDPMwq7sv7n4QQ2HQLit3WnJLdBel3AT0b+UM+MqPCx/P4KLADReUQAYSd3jSFYE1k=
+X-Received: by 2002:a05:6902:2b09:b0:e0e:877b:2792 with SMTP id
+ 3f1490d57ef6-e1a7a0091d2mr1858033276.17.1725013679204; Fri, 30 Aug 2024
+ 03:27:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240830091246fce62c34@mail.local>
+References: <CAPDyKFrN9L+u_X7Ur+j--i-tewd31EXzwCojOP+Sxuyxpk4Phg@mail.gmail.com>
+ <20240830024750.2908738-1-xirui.zhang@vivo.com>
+In-Reply-To: <20240830024750.2908738-1-xirui.zhang@vivo.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 30 Aug 2024 12:27:23 +0200
+Message-ID: <CAPDyKFrBSOwzn--m321VhRKM-J-9x9BkoPw7+TBWcOE5LpS4HQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] mmc: convert to devm_clk_get_enabled() API
+To: zhangxirui <xirui.zhang@vivo.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: adrian.hunter@intel.com, bastien.curutchet@bootlin.com, festevam@gmail.com, 
+	imx@lists.linux.dev, jh80.chung@samsung.com, kernel@pengutronix.de, 
+	linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, michal.simek@amd.com, 
+	nico@fluxnic.net, orito.takao@socionext.com, rric@kernel.org, 
+	s.hauer@pengutronix.de, shawnguo@kernel.org, sugaya.taichi@socionext.com, 
+	u.kleine-koenig@pengutronix.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 30, 2024 at 11:12:46AM +0200, Alexandre Belloni wrote:
-> On 27/08/2024 11:34:55+0100, Sudeep Holla wrote:
-> > Hi Alexandre,
-> > 
-> > On Fri, Aug 23, 2024 at 05:05:22PM +0800, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > > 
-> > > The BBM module provides RTC feature. To i.MX95, this module is managed by
-> > > System Manager and exported System Control Management Interface(SCMI).
-> > > Linux could use i.MX SCMI BBM Extension protocol to use RTC feature.
-> > > 
-> > > This driver is to use SCMI interface to get/set RTC.
++ Stephen
+
+On Fri, 30 Aug 2024 at 04:32, zhangxirui <xirui.zhang@vivo.com> wrote:
+>
+> On Wed, 28 Aug 2024 at 17:11, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>
+> > On Tue, 27 Aug 2024 at 09:34, zhangxirui <xirui.zhang@vivo.com> wrote:
 > > >
-> > 
-> > Are you fine if I take this along with dependent SCMI changes via SoC tree ?
-> 
-> Sure, please do.
-> 
+> > > This series use devm_clk_get_enabled() to simplify code
+> > > and avoids the calls to clk_disable_unprepare()
+> >
+> > I agree that it simplifies code - but it also changes the behaviour,
+> > in which order clocks are getting unprepared/disabled during the
+> > ->remove() phase. In other words, this needs to be thoroughly tested
+> > and not just considered as a trivial cleanup series.
+> >
+> > For example, if there is a PM domain attached to the mmc host device,
+> > is it really okay to allow powering-off the PM domain before the
+> > clocks are being gated? This could potentially happen if we apply the
+> > $subject series.
+>
+> Thanks for the reply, are you saying that merging the above patch will
+> lead to the following issue?
+>
+> before=EF=BC=9A
+> bus_remove -> driver_remove -> clk unprepare
+>            -> dev_pm_domain_detach
+>            -> device_unbind_cleanup
+> after=EF=BC=9A
+> bus_remove -> driver_remove (delete clk unprepare)
+>            -> dev_pm_domain_detach
+>            -> device_unbind_cleanup (devm_clk_get_enbaled ->relase(clk un=
+prepare))
 
-Thanks!
+Correct!
 
--- 
-Regards,
-Sudeep
+>
+> But I think this issue is not only specific to the MMC host, it will also
+> occur with other devices, if there is a PM domain attachded an use devm_c=
+lk_get_enbaled API.
+
+Right. Which kind of questions whether the API is really that useful,
+from a cleanup point of view.
+
+>
+> So, can we solve this problem by swap device_ubind_cleanup and dev_pm_dom=
+ain_detach ?
+> clk unprepare -> power off not power off -> clk unprepare
+
+That may work, I don't know.
+
+Another option is simply to avoid using devm_clk_get_enabled(), unless
+you know that the HW can cope with the potentially changed behaviour.
+
+I have looped in Stephen to allow him to provide us his thoughts
+around this too.
+
+>
+> bus_remove -> driver_remove
+>            -> device_unbind_cleanup
+>            -> dev_pm_domain_detach
+>
+> Thanks.
+>
+> > >
+> > > zhangxirui (9):
+> > >   mmc: cavium-thunderx: Use devm_clk_get_enabled() helpers
+> > >   mmc: davinci_mmc: Use devm_clk_get_enabled() helpers
+> > >   mmc: dw_mmc-hi3798cv200: Use devm_clk_get_enabled() helpers
+> > >   mmc: mvsdio: Use devm_clk_get_enabled() helpers
+> > >   mmc: mxcmmc: Use devm_clk_get_enabled() helpers
+> > >   mmc: mxs-mmc: Use devm_clk_get_enabled() helpers
+> > >   mmc: sdhci: milbeaut: Use devm_clk_get_enabled() helpers
+> > >   mmc: sdhci-of-arasan: Use devm_clk_get_enabled() helpers
+> > >   mmc: sdhci_f_sdh30: Use devm_clk_get_enabled() helpers
+
+Kind regards
+Uffe
