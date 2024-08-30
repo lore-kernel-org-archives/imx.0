@@ -1,63 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5B114D294;
-	Fri, 30 Aug 2024 08:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D482914D294
+	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 08:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725006263; cv=none; b=nWd53U+60B7f7jWzJ/4klD/x0eMsyTIC9Gb4SaT1ytITKLtyY9mjRJrumXmglPrLBQACHYY7EIvO7wVHo9ue2ZVlj6NryMAJc2yk0KxKYYNeJCtSbfr/1uTnwL8RhmZWYewuTum8m/7q06OLs4sBCFwNX87WUNeoCyOmTd3q1G4=
+	t=1725006491; cv=none; b=o65BVKgA7L3sa6qmxGVMfmHZmXDKowWBlnrk2+Zl9+AtA6pmOjltffhFLt3tc+N7WqqtykBrpGopsc8jNQa6utTKGBtxmLquEQx2rXRL64lJeiAR5gWVVCgkZWZ+6QGqE4AIW8Q9+vSq7AEqp0V+79jnLcHszUIVuvhmA7jA+Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725006263; c=relaxed/simple;
-	bh=2tR2hRQ1rYChuVlupkc+56arNudu9Oi8Rf0EuNIq87E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Pwk1JvZEGnoPU28ZS5F+v5jTaADlrJXvbQtSc4Wm3KNVE+JZQeJFMLmbCPxM7nwq68n03zkuCyxawbdl0RXPIjyIEI0gCoMoF0IkGDQpTflTDpPE9I1sqEiYJJ9sxOLp41CyNNUtie+s76ZoC3nbycLobeztznIwMyl5TTg2zp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QjnDETLW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725006491; c=relaxed/simple;
+	bh=1CayOtffUqgYgyBF6mx88/fzOGczsfgglMDZaVTevPM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ft56rjPgy/ZNfAnZ6GLlb4sMnTKdHphH6PKCe4XFKs6aaMoT1ZMgbivtIM6OVqOcQgecLpXU+c2Ir1emRO4hAQTqtXK2srwWTK6aT3jRFkUDinFYROTr4zYjdz2uBDCQkqreCpAybxatTSNwADFqYKLfDJD/83APwIKLT4W91KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GFyz2gkn; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QjnDETLW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9697EC4CEC2;
-	Fri, 30 Aug 2024 08:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725006262;
-	bh=2tR2hRQ1rYChuVlupkc+56arNudu9Oi8Rf0EuNIq87E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=QjnDETLWpLZXqCOaY0PTfKYzUTjf0S/WCjJ+24pvcV2pOXSaOMQqYXTjRiVpXRjUd
-	 dflF9AcXoJrXxBVRs2ojyVuvHr7efs27Hd2AGWkncR6zW8+GbjtK+mV1upJf6O0KEd
-	 IaDl4O32tmXGz5zMIdRI6dncE3w1N0l5aTbnrS1uM8OAXVx6VG3qT0G21fbW1ra1bw
-	 kSw5DCFqIC62VyG2QBxsCEaV0lXCxFpGht/bqSZtBBgoEaZ+HvkdUt3UrIKMDeHe+3
-	 lMDMLdAF8boF6t4F/daeaN0jJSckP72nzJbZjUCq1DkyWKxxZjUqD6ecKtS0evGstV
-	 DKFY50zVLaKhA==
-From: Lee Jones <lee@kernel.org>
-To: laurent.pinchart@ideasonboard.com, lee@kernel.org, robh@kernel.org, 
- krzk+dt@kernel.org, conor+dt@kernel.org, haibo.chen@nxp.com
-Cc: linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev
-In-Reply-To: <20240828030405.2851611-1-haibo.chen@nxp.com>
-References: <20240828030405.2851611-1-haibo.chen@nxp.com>
-Subject: Re: (subset) [PATCH v2] dt-bindings: mfd: adp5585: Add parsing of
- hogs
-Message-Id: <172500626034.92906.922008422255613833.b4-ty@kernel.org>
-Date: Fri, 30 Aug 2024 09:24:20 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GFyz2gkn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725006490; x=1756542490;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1CayOtffUqgYgyBF6mx88/fzOGczsfgglMDZaVTevPM=;
+  b=GFyz2gkngDScidu5e9yu0Up8xYfln6iWTBgkyfdIIFutITCBOxWxZ4Gt
+   KQK4r5T8s1rGzKAuBQ1dTZcXOfJESu+41W60ip6uu+G0eI8NTg1LLBlP2
+   4Z5C2DaK0jRiqdohfd6iVvUgN8ax1Diyp44wHU//DIjrdo7hd6FYo74/N
+   mgCKxUmQGvSK3cXd1PbSJh0WXa2eZbqdSHcTr7VJFj9Hy5gWaKqTbvtDJ
+   pnsyTSNVk3A8Xp1O9h2jtdJ+Ml6FeSEEoL1BB2p7HIsp01tBXKuTCpe7q
+   Hudn3LwqWoINndbQ4IKtr7GfdSrbbNs1xnvllkr9vEVUMkebyzCHMlfmM
+   A==;
+X-CSE-ConnectionGUID: tPbT4ILcSx62nk4Fh8BEnA==
+X-CSE-MsgGUID: nCrg2A6HTDeMtMYq0sdQbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="26534881"
+X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
+   d="scan'208";a="26534881"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 01:28:09 -0700
+X-CSE-ConnectionGUID: Ar3Gh/53QMWdDJtMHvk19A==
+X-CSE-MsgGUID: j5jrXK30QUK1L1DDaznfgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
+   d="scan'208";a="94662490"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 01:28:05 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 97A6611F843;
+	Fri, 30 Aug 2024 11:28:01 +0300 (EEST)
+Date: Fri, 30 Aug 2024 08:28:01 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Umang Jain <umang.jain@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Paul J. Murphy" <paul.j.murphy@intel.com>,
+	Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+	Martina Krasteva <martinax.krasteva@intel.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] media: imx335: Fix reset-gpio handling
+Message-ID: <ZtGCkQtGYndCK1Aw@kekkonen.localdomain>
+References: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
 
-On Wed, 28 Aug 2024 11:04:05 +0800, haibo.chen@nxp.com wrote:
-> Allow parsing GPIO controller children nodes with GPIO hogs.
+On Fri, Aug 30, 2024 at 11:41:50AM +0530, Umang Jain wrote:
+> These couple of patches intends to fix the reset-gpio handling
+> for imx335 driver.
 > 
+> Patch 1/2 mentions reset-gpio polarity in DT binding example.
 > 
+> Patch 2/2 fixes the logical value of reset-gpio during
+> power-on/power-off sequence.
+> 
+> --
+> Changes in v4:
+> - rework 2/2 commit message
+> - Explain conclusions for 2/2 patch, in the '---' section.
 
-Applied, thanks!
+Thanks, Umang!
 
-[1/1] dt-bindings: mfd: adp5585: Add parsing of hogs
-      commit: c9530dd31470c071b364801c90466a5c15942c25
+I've applied these in my tree.
 
---
-Lee Jones [李琼斯]
-
+-- 
+Sakari Ailus
