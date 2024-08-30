@@ -1,172 +1,116 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013051.outbound.protection.outlook.com [52.101.67.51])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724C471742
-	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 03:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724987730; cv=fail; b=BKvSkiX2MVY7MdIV9UvEBnc1MTJUwogfAL/AftaO8uNqy/yK4Np1FCdmGDyPOoRAquRd0JofrIoQp0w/y173Swsfm2JoMD+2KlGbGSGF+99tzQKPOyO5uJSovZ1FncUjvVegDJB3Lkehteq865FdkAJvrMEg44f5ODwy0sg9pWI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724987730; c=relaxed/simple;
-	bh=kuYJoFtqiI9o2pY5tHyaEQxKkSQMaDomHZXXX4ZezdU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=IJm31/hetQfJOW5+1PqJGriDxIZs/C7ewxpxjttgZNJt4F4QzAAymoQoZpBWythmjA5SqFsZbNfA4XggBmCFip9zqZAWKmn4UIJvGBaq58rDvovs4VuSqCZjaSP9gvL0cfShJBGv4BIK22CV/R4lxPQKHQ5L7FE2/VU3iflSrA0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E4xFr4YG; arc=fail smtp.client-ip=52.101.67.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E129D53389
+	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 06:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724998331; cv=none; b=G+QDjj94uoTIuOupsvJyFr/UuXaqKBqMocBt08ECyLbteiIlAmf4x3kviRzTewJ2xzI/GseicCNK7Rl/Og2PcEJHdbRgLyYQQbdz8lL5MIw07dDs5RMYz3NY2MtTfbdboaLKt+AHc6a6W94A0y0Vtb7nUxLM6Qn5pYmxjfccRnw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724998331; c=relaxed/simple;
+	bh=LSNxO6sFebrhQiVeGhHLcgjRgxU3KR/BCfC7qN5Q08I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SOBeiQhK2gLEnDAndUv6TLLRzjtwzPfanNjEPNHZMHepraCbRFyfbaZ+WV4Dbvo4SjVO3PBVSsbxLuPLl5skzDd1GLkyNgkWYwTtn2baOYwu4TNV+/gBAhuyyvwST36NgtQJy/2j/3UuSTNhFnWMt1ijAUSRNCX6lA24rwQp/Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GaaKR42r; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E4xFr4YG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s0CKzw8fX+iqni1mY+VUYuQbPLmXlI9E/rL7781Fhd6gLuH2+7kDE9+NWC3p3it6VaJOH2h0CR/vc01XkkI3rNEaf4yZSTeJ1r+lOQrK25kxEN1ipLeva5lAIQihzwfCTsAG95rfepzLzdAPHVzqYPpqWZ7biLz0OytXzyq/NI4Ww72lWMTLNFd5wSwTW4/e52hn6Ev9HQUKTetbl9EJpqCuleHqa0nGtq9yyuAaCw6/mKWs+QajZsNCf1WRWaYQg+ydQ6lJl/H9sEiiYRcr7pNioJS2rdmtq2JcF2z43PiacaBNlpQzUB4tbLXqJi5uSD8VtcKBREIVw2+t0I3BuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t+N0CTPK795UBaMyeJwOh9ukZA03cAWmDc1XEiZsGcg=;
- b=nkvZ2gApMx56elGSk4IOudByLnptdMu2QJtyQu9A3ISnlYoALs1kUnLiD+3eunZEh0ruBDCCnr+piQU4KkFIzGzq166V1T03Ia6rkLKe/QuwZ78XAUxJCBBSwcvsWiF++DNVIYnUNaHm8li66WFPrvrVRuHbz2UpXdnETSwzfRcwxmBzFNOALg2vLLsIOp0keA3LDpOioxUCJkTP8Nht0kTLzDXM3kcjvCOVUmAigYfr875nPT27namo0n33lPA1piuQYRrZaaFiBvt+LO0xLmDq5H0jsUS8toT0V4OMqmNhfpiLYcBE66nBNI2mL0cnFDnGStQskBKycShYuSq3Hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t+N0CTPK795UBaMyeJwOh9ukZA03cAWmDc1XEiZsGcg=;
- b=E4xFr4YGIN5yoIcTO+Wt8rYaMmZVIE+C5XW9ofI0pwzTCGdXR/hCKkQ33xhCy4mGipMUdXPMCEkqfdNC2zjZuB2x4hGSSRrXdddQWLY6OpOM2TX9jCIBU38En1+dgqKrzAiMswwVZE5qxECz2BzsbMxR2U6iZp/PGBkRG0WvsnlPqws57d7w+z8FPRCeYyXm0RoEJK+aHVvZaAEFB2uuIVr7HZUmVNhHaz6iJN1h2kKT+We/nr5QZWAaSOrhc0WhAitnAIT9PieEa4bbyRMS+0Rf5hZl/qdDXfM93hrMNkUNfOOXOFkUvuF0SCAxxfOzb8g8dWxhDf6FIpQteP2reg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
- by GVXPR04MB10612.eurprd04.prod.outlook.com (2603:10a6:150:225::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.20; Fri, 30 Aug
- 2024 03:15:22 +0000
-Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
- ([fe80::261e:eaf4:f429:5e1c]) by AS4PR04MB9386.eurprd04.prod.outlook.com
- ([fe80::261e:eaf4:f429:5e1c%3]) with mapi id 15.20.7897.027; Fri, 30 Aug 2024
- 03:15:22 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: ye.li@nxp.com,
-	ping.bai@nxp.com,
-	peng.fan@nxp.com,
-	shawnguo@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] arm64: dts: ls1088ardb: add new RTC PCF2131 support
-Date: Fri, 30 Aug 2024 11:22:56 +0800
-Message-Id: <20240830032256.3701116-1-joy.zou@nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR06CA0252.apcprd06.prod.outlook.com
- (2603:1096:4:ac::36) To AS4PR04MB9386.eurprd04.prod.outlook.com
- (2603:10a6:20b:4e9::8)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GaaKR42r"
+Received: from [192.168.29.25] (unknown [IPv6:2405:201:2015:f873:55f8:639e:8e9f:12ec])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6CF40229;
+	Fri, 30 Aug 2024 08:10:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1724998258;
+	bh=LSNxO6sFebrhQiVeGhHLcgjRgxU3KR/BCfC7qN5Q08I=;
+	h=From:Subject:Date:To:Cc:From;
+	b=GaaKR42rgLf2d1olXsyWhoIrkCGJ3DZjMNO7y21HdEXrzZFomF5orEaLxSADCmZVU
+	 5HrQzKev/j5hXk7rPuM9MRTZxObbvRAGCpjwJ46VaP3jQkn9sJ4F/qVRwRJhUUL22K
+	 KfWbUvQUJ62NyO6a1Dws6WyzV1uIxbvSRd8nIC7E=
+From: Umang Jain <umang.jain@ideasonboard.com>
+Subject: [PATCH v4 0/2] media: imx335: Fix reset-gpio handling
+Date: Fri, 30 Aug 2024 11:41:50 +0530
+Message-Id: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|GVXPR04MB10612:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80c2f59c-9548-472d-d250-08dcc8a1fbf8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WhiEEvlkackgqzEE1HP/EFguY1zuLgD8XGlJJhXImm7fW+XSQ5Cu8u17zg3r?=
- =?us-ascii?Q?tjrEpSC8SQlgFuBeGitixfczUMDFM1FB65fNOInOd09zn4rRfGRNzaqjI5iu?=
- =?us-ascii?Q?nVLOizEwfgvSGxBTvXPopifdzy9OCbehqfwRga9i/+EneadDCE+XGuSj1lAe?=
- =?us-ascii?Q?RR2nyHhC9dDI8f6E4iYD5Oo7SlUnVC7JUTSEUMZQu7uGn4qCSJiiSpBIhfQX?=
- =?us-ascii?Q?975UDWExIb04tWCsAWHlIQOebVkuh7oiFiNt4B8a3K0jA5hrziJSF2ZVDohw?=
- =?us-ascii?Q?hRxSBdremnhyO9cq6LqY1YffQCRwcA8tJT4goDwalPKeUxvRYX+qGBDczNzF?=
- =?us-ascii?Q?JSKaCUjpR/QuAZvOYktW31CUmGMLWv5IKo3AtPB41NExnFhFRC7x+AVtEPy4?=
- =?us-ascii?Q?81d/I2k4N6hAaMXtdVk+bHhYfoSpquyTBU/O35CO7Ksz4mLUMaPspb6p7UIe?=
- =?us-ascii?Q?H7R6MTG2wulyLn30kWxnB3VOxjJ670LDiWefhM7bf288rR9hFmlhpndGz7lq?=
- =?us-ascii?Q?ScGoV8R3p01LcrwAjQv0rxCqbjmRafA/gQrXPM8l2LTQThfQibOguZqkQGhB?=
- =?us-ascii?Q?IawqE54oJMh9mT9yUlTPm62RCj8ITdCPShcLNSBhbYW1QX/vJ2WJ62NIr3/g?=
- =?us-ascii?Q?vkae6vL0TpIEgqY0ySnM/HMXs2j6XXhLJUfkn5kx8orISHRAwWn4GVSJ65fg?=
- =?us-ascii?Q?nyHwremh2hYu5MuKL3IJdPXPIatRJUGAM8JpKV4DkDuQU+XMqQJEndLoJA83?=
- =?us-ascii?Q?ncscfPIAjUbssZ+iFdLqYJgE5L5d7sEBstrDGXxMwt7KulrXPEkyoxfxJGIs?=
- =?us-ascii?Q?5g1DUmOsazgk869ZSrE+I4Uw2m266ON0mB5D/hKa34Amdn0tRZtmiWUy9Rx3?=
- =?us-ascii?Q?L6HarKR9xHYQs0Ret5p8ERipZ4B0aOOlyd17l+9b3iDwfsy0HrjMFbF+AqWY?=
- =?us-ascii?Q?lp2UgIFOALNC3iCnCwyuZZAmyq2bs0H3JhtU7JqmDxATfvMNlUUCTZD1C/aB?=
- =?us-ascii?Q?OrW0XiWE632WkPwFRgebQw3ISy/cjN7QgHUkFMfUL8JxHCX9lSuvKHUUluXC?=
- =?us-ascii?Q?bb3R4NUvhnlBcmcqA9TTjco74/KVQ3PLiYbVaR4Bfn6UIW+PSkdTPQGH8a6b?=
- =?us-ascii?Q?Z7QaGEbwYEJ3w6k56e7GJzG2eiaih/ChjLRM5htyRShsKBaC1k7FHDR/PA8f?=
- =?us-ascii?Q?gWO8SiYOfzegh0NJ0oBNVaveNPC7NVwty8dSwkERiOCOsIrHXZydw2kZRrJa?=
- =?us-ascii?Q?o2mbeTx24on/m/a7GJ7h6B2PHEctuMDsavh0PXnjeT1z9MjNDlvj2e4EJ2Nx?=
- =?us-ascii?Q?l8+XhFmoI9T6NJa+WfRoi5lCvvhshWZjZ1WNhvNietYQz039hqAmAcIb1cYj?=
- =?us-ascii?Q?VPD1JlkbzRtnvHSW+cSelPahZedlKouaEpPVjBphaQtja+plmQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wFitrlkL8eKE9TUrsS16jnIU+OCMTYBTiUrmhU3yDI+IhYPpxNNAahVKsXrC?=
- =?us-ascii?Q?Yrjx54xUuQStJlnmxEVikbKFP1hLP+uYDPUNeCxv0QBDfOoETyfMBjicz56A?=
- =?us-ascii?Q?yDdj7MpqjrSAGz9usEyBpOkALm1r6eQGzowkdWJU+wWDdAcs5VGFynQshm/t?=
- =?us-ascii?Q?i5ZyrVQJFfIVn9FjfPOrwL8AMqr8bNQyQxYIJelxBB/sXO87RSH9eBwTTq7g?=
- =?us-ascii?Q?MEm33dRqV3v39NjukHwOtZUO5BCShjUHOcQ+xaTKsVomWTK3BwQ6SRPpH4y1?=
- =?us-ascii?Q?43SvhZXb1H3X58dRtWeVHFbw3WbPjE241NhT60IyQolX6RZlyJ5lWbZlNqxB?=
- =?us-ascii?Q?QIyDFdyd75Q46kqPXxDgjOXogRKdKSShIPMqhdYkGYak8XHRA8unbeO/uoem?=
- =?us-ascii?Q?V695NNavikfua7bsO2Pj7rJChTmC0B03Gm0MEYerdZ1ls5aXhcYtbCW7bqfK?=
- =?us-ascii?Q?E8CPmuyCibLz5pG2JJ3uJpHdJOobd3vxLm5d69/ty/hJdPr6s8PXmfp9DZX/?=
- =?us-ascii?Q?Hx8dqyOiLMw3fXgaom3Fdqsj8m6iqjMcD1IEUcaD7rVleM/JXJqTYRpgt4NA?=
- =?us-ascii?Q?aUcByshDDsWhHDIwS7f5eJ3QmyGFDcmxq8oROwlgtAl8Llp/NR4eeZfqkRDg?=
- =?us-ascii?Q?1jGqXnmY8j2unFuZSNkn0dGHYEH4Be4uOtVOJCPCAxxU/8ggjf5MmrJ4Ybow?=
- =?us-ascii?Q?8zM84wkOx5rtlfB3SMEY4Nf6p5vkYEWLiRZlgs6jbigbCycaBmfILVo64QW9?=
- =?us-ascii?Q?hK3Tprd+19j/Whb48vwLiFaeLx8DdSaEKL0R42M0PpjhFBnB8lS9S8NZo6Dk?=
- =?us-ascii?Q?oucCsro4d7N6D2WkXxnZGey8E+PLWqp7DoXiWa82aq+RfUUNyDRhRRdYcUnc?=
- =?us-ascii?Q?f0CH1ZzXeJAEcob+CQtpKCKCNmqqRSYpcwR6OmFZZBRO6Oq08Rjk82isBPzG?=
- =?us-ascii?Q?DH9B66e/QDos54x85MvSo64IUTYkIyAu+KX9NfqNo0JPoLa8uqjwnSrE5Y+7?=
- =?us-ascii?Q?c6UOXZGrhj1PxY0JKH2aLDE0ycyvF7HHVLLfI6MM7tJittidnkIFU+SIc5IV?=
- =?us-ascii?Q?wf3FdyoHJuUla8hSjszKOq6bNXQtRnJN2mC0POYDfuA9uWh73i2r912ArWUm?=
- =?us-ascii?Q?1fDGteooILwKp1GfXzLrZg+xtty76Y6dz/FCX9T3bfzZzWRin04wTjGjZr2m?=
- =?us-ascii?Q?JOEwkDCLZu/2ziruaU80gszuInjzfAC8Mz5LdIrbuVIwHoQXMYSlaWhc64dD?=
- =?us-ascii?Q?lAxu9qWKzlFsvu/o974l9FJLL5Y6TZanm8F0mDrBaLS4fN94uy6bcnKX8lgv?=
- =?us-ascii?Q?tbKNxtI0OB5o9JPy1O7pkU9bADFrguYoq2f7eTaNlCiWEKKtN3wStiEFL8+A?=
- =?us-ascii?Q?Izf119BDxFKuSbyyCVzMU8T7ErC3qqhMCve6j02NDTJQhp2x/yZyqiFCI/T/?=
- =?us-ascii?Q?nipZoIXJuFiASiqbSFTveNpn1gwmA3pQPyZh4UI4YuC2t01B7riHhWybMQKX?=
- =?us-ascii?Q?lvr5hCSRkvD5H7RV0xwQTfhCL0+DGFab4ZPq1l3kbhFE9aSBFU0Q0lGM3RNF?=
- =?us-ascii?Q?xnt1uH/t/2HeC4zwZ6Ttz8jjyTGl3ZR+70iKM/3o?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80c2f59c-9548-472d-d250-08dcc8a1fbf8
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2024 03:15:22.5599
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gbNlFTfmVV+vVJLN7UFBs2ISrT0JEHNCU82o27RdYN1LzwfUH175XJO0dALQNYk4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10612
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKZi0WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyTHQUlJIzE
+ vPSU3UzU4B8JSMDIxMDC2MD3czcCmNjU92ytJzMAl3zNNMUkySTFAODtFQloJaCotS0zAqwcdG
+ xtbUA5YvHAV4AAAA=
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ "Paul J. Murphy" <paul.j.murphy@intel.com>, 
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Martina Krasteva <martinax.krasteva@intel.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Umang Jain <umang.jain@ideasonboard.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724998323; l=1475;
+ i=umang.jain@ideasonboard.com; s=20240731; h=from:subject:message-id;
+ bh=LSNxO6sFebrhQiVeGhHLcgjRgxU3KR/BCfC7qN5Q08I=;
+ b=9vlxnyuGZ/VzIRIJKJ/rr/w8RNFAHS7Pjh3PKKSi5XXtvYXkHOp4NJBSthjHbb7ENuqATsM4v
+ EzieYwWZJXCCpeThAgn71733n5+CuoG42Mi4ywTU4SANAox3kEzfbel
+X-Developer-Key: i=umang.jain@ideasonboard.com; a=ed25519;
+ pk=7pvnIBNsDpFUMiph0Vlhrr01+rAn5fSIn/QtDeLeXL0=
 
-The ls1088ardb new board use RTC PCF2131, so add new RTC node.
+These couple of patches intends to fix the reset-gpio handling
+for imx335 driver.
 
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
+Patch 1/2 mentions reset-gpio polarity in DT binding example.
+
+Patch 2/2 fixes the logical value of reset-gpio during
+power-on/power-off sequence.
+
+--
+Changes in v4:
+- rework 2/2 commit message
+- Explain conclusions for 2/2 patch, in the '---' section.
+
+Changes in v3:
+- Rework 1/2 commit message
+- Fix gpio include in DT example in 1/2
+- Remove not-so-informative XCLR comment in 2/2
+
+Changes in v2:
+- Also include reset-gpio polarity, mention in DT binding
+- Add Fixes tag in 2/2
+- Set the reset line to high during init time in 2/2
+
+Link to v2:
+https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
+
+Link to v1:
+https://lore.kernel.org/linux-media/tyo5etjwsfznuk6vzwqmcphbu4pz4lskrg3fjieojq5qc3mg6s@6jbwavmapwmf/T/#m189ccfa77ddceda6c3b29be3306f1a27ed0934d6
+
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
 ---
- arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts | 7 +++++++
- 1 file changed, 7 insertions(+)
+Umang Jain (2):
+      dt-bindings: media: imx335: Add reset-gpios to the DT example
+      media: imx335: Fix reset-gpio handling
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
-index ee8e932628d1..2df16bfb901c 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a-rdb.dts
-@@ -170,6 +170,13 @@ rtc@51 {
- 				/* IRQ_RTC_B -> IRQ0_B(CPLD) -> IRQ00(CPU), active low */
- 				interrupts-extended = <&extirq 0 IRQ_TYPE_LEVEL_LOW>;
- 			};
-+
-+			rtc@53 {
-+				compatible = "nxp,pcf2131";
-+				reg = <0x53>;
-+				/* IRQ_RTC_B -> IRQ0_B(CPLD) -> IRQ00(CPU), active low */
-+				interrupts-extended = <&extirq 0 IRQ_TYPE_LEVEL_LOW>;
-+			};
- 		};
- 	};
- };
+ Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 4 ++++
+ drivers/media/i2c/imx335.c                                   | 9 ++++-----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+---
+base-commit: 393556c9f56ced8d9776c32ce99f34913cfd904e
+change-id: 20240830-imx335-vflip-7f5d4b4d00fe
+
+Best regards,
 -- 
-2.37.1
+Umang Jain <umang.jain@ideasonboard.com>
 
