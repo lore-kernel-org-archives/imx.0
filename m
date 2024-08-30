@@ -1,232 +1,136 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F94214D2A4
-	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 09:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EEE16F0E7
+	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 09:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725008490; cv=none; b=bpDgyAbGI3nl6fx8gH/ejPPo4Y2O8SxnS4VJlmsXqh7ZxSEB+c7LecX5zUJ9iF4HfUntLw57k8VBsm/IV2SY3dGZ4s8x35KC0w4eVARQRFUy2hcfemS0TFqiaIgriUeuYSQZgG6P1LWJTWqnuq4q0VB5mgKOwoQvab3b9bRplW4=
+	t=1725008842; cv=none; b=lBCXs1FLpQZVpr+15KPk6Cf+POP7KpecRYG/zmsQcf47gSRHHj4hFtXq1P1yEcdseexEWW0S+NHCdMMX7dFTzHtz1RB/huQGjJFH1sdDer5gXA+Gphnv7K3vXEFPLfYWhaoF3uuDOiP3GrW/ZfyGrY14BdyxcO6eBwQ+9r0DciY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725008490; c=relaxed/simple;
-	bh=aQcccC/pwXrZ5BASCm+J8C0zEShLh8Jf8cfyHqH0B70=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YeG+I+f2OKkm/kKg9XsIWk5brfi7fF6lCdK1dLRYfNxUOzG9LCIRWJcD1yqTad8uScqUnd99Do/S5Ys3MknvoexTLQRH/Vws+c8fhlujh+P1bw3H8vhtAz7pU3m07urq3eEqfYhwybqFd+ujOrolR5NrWuOx1tcy7IjX50dhu3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=kF58sBm6; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1725008842; c=relaxed/simple;
+	bh=axg+WoXprUIi60W8u8lts9DfH6O5NAncZwMUJK4oO58=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oVilp8kHAtK5QbhCwO596JJZ6okllx+VD5lfBzYrcpMICfMvH1HvSS9KXL+Dx3LYFt+k3mNnVdQQZIHMoNk/iOHeTS7jFZRN0T6yiZqKzve/dhd/hMTLGiH2WeGdajwjvFS0oU8yuTdDMeuabA1BxqN+Xihz7A2RLYSFPz335zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ON5OVN/w; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GhjbWqWL reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="kF58sBm6"
-Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: lukma@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 1B3F688D74;
-	Fri, 30 Aug 2024 11:01:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1725008486;
-	bh=2tjNE1MMuJ9pQoQqSYZdXnlM2vXm9UQ78avNU8WXADE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kF58sBm6nZBKgANBt2Uw0Ov2n6bj2GklWmGx2HALoHqiy9x+GssBQRIshlYfJ6ykB
-	 gDkkDQ240BxLOWfy04RdVFEXnhqNAOl9AD4966pbQ+cWUU4j7Ucga4R4xARG75LLZg
-	 NRtK0jbNdgmU8aIYjiqRB58QsD1pwAL03RlzSyprLG/DjjikaTee1ddVzL+FOuBlJS
-	 Uo/a0EJdwaM2pPq9hrJzz8nwDKZuXw66U6/f34GAlQj5oIx4IgJJm2BpaSD5d+DdpF
-	 KDNBD0qtSBtaf9FN8bPhdgDMJIjJmbJ+CYmmyngTOsjjYAVgD6rHjonzb8JEwlz8az
-	 i8pzl7BwdlY8A==
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lukasz Majewski <lukma@denx.de>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v5] ASoC: dt-bindings: Convert mxs-saif.txt to fsl,imx28-saif.yaml (imx28 saif)
-Date: Fri, 30 Aug 2024 11:01:11 +0200
-Message-Id: <20240830090111.3591648-1-lukma@denx.de>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ON5OVN/w";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GhjbWqWL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1725008839; x=1756544839;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=axg+WoXprUIi60W8u8lts9DfH6O5NAncZwMUJK4oO58=;
+  b=ON5OVN/wsa0nowl1jFl9bGGtS7gX8fPCQGsGA835NWBhLTywQT1BP6Un
+   GR/6IQNFOmvrWkdQm99MeZ84IdjTJ1PDKOsuIrskn0htqtChWJyI2sDjl
+   H6dbgg65+SMxSbQlytkIy5cXP/k+Of7N8V5WpISYM7fZ0OiIn2HLG0p/G
+   dwLttRyjj54S5zgtPFGSwnUAFtG33o2DgaEcxWsc+BhWQbOlrayHGq3SZ
+   ZvBtjPJ9ak2WiosNEhSbcOWCNjwCFSG/NMFTemnOLfDUQskYOx+vBh+qs
+   z+i0PWGddzMK7UgLi1v9bxZk/6nCk9wlZRzEWNtizb/Am6oKnKavlvwQH
+   Q==;
+X-CSE-ConnectionGUID: NF7mQx7gRoeP0LQbitk/rQ==
+X-CSE-MsgGUID: FZ2UxEd8Tzq75rd5vMItXQ==
+X-IronPort-AV: E=Sophos;i="6.10,188,1719871200"; 
+   d="scan'208";a="38677653"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 Aug 2024 11:07:16 +0200
+X-CheckPoint: {66D18BC4-1E-5FF8EC80-F6CEE9F8}
+X-MAIL-CPID: C4AF2A606FCF8B04840683A0211A1F71_0
+X-Control-Analysis: str=0001.0A782F20.66D18BC4.0132,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 67146165E1C;
+	Fri, 30 Aug 2024 11:07:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1725008832;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=axg+WoXprUIi60W8u8lts9DfH6O5NAncZwMUJK4oO58=;
+	b=GhjbWqWL2Anvq1LkFOHCXvD3RaRweQdf5tpTlVxUYwbxRSIlLvbZxZ7ZB5RZe3+snOR+5N
+	FFvg/Rti+3v2wb7zuRCiisgw8aoJX+U5+LxtQDGugj07slX8Kajtcqnwux1bfPsoaormrj
+	vOGbCYrky2fHvAQF2K7iJzlNn+JS8ZdGDrnK1byVAv9uw4jA+MsYaVkIBrS8us5BHi0UNV
+	HBh2Bk0foxHpRy6okVs28Pi21tk6eh5kylPeh3FyFrYdwQ5vKzYLs9wta8OqJyZfcBaFYa
+	tWVgDQZgiH4Aej7E7N8bJcNyWHHGio+A5ZxpOfvYJffZBbeTqy0epjPqNY547w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Aisheng Dong <aisheng.dong@nxp.com>, "andi.shyti@kernel.org" <andi.shyti@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Carlos Song <carlos.song@nxp.com>
+Cc: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 5/5] i2c: imx-lpi2c: increase PM timeout to avoid operate clk frequently
+Date: Fri, 30 Aug 2024 11:07:10 +0200
+Message-ID: <3775392.MHq7AAxBmi@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <DB7PR04MB500383BFE3957B1E422270AEE8972@DB7PR04MB5003.eurprd04.prod.outlook.com>
+References: <20240829093722.2714921-1-carlos.song@nxp.com> <4375906.ejJDZkT8p0@steina-w> <DB7PR04MB500383BFE3957B1E422270AEE8972@DB7PR04MB5003.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-The 'fsl,imx28-saif' compatible has already the mxs-saif.txt description.
-This patch converts (and removes it) this file to fsl,imx28-saif.yaml.
+Hi,
 
-Changes for the mxs-saif.txt:
-- Adds 'clocks', '#clock-cells' and '#sound-dai-cells' properties
-- Provide device description
+Am Freitag, 30. August 2024, 10:53:16 CEST schrieb Carlos Song:
+> > -----Original Message-----
+> > From: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > Sent: Thursday, August 29, 2024 6:55 PM
+> > To: Aisheng Dong <aisheng.dong@nxp.com>; andi.shyti@kernel.org;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; linux-arm-kernel@lists.infradead.org
+> > Cc: linux-i2c@vger.kernel.org; imx@lists.linux.dev;
+> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; Car=
+los Song
+> > <carlos.song@nxp.com>
+> > Subject: [EXT] Re: [PATCH 5/5] i2c: imx-lpi2c: increase PM timeout to a=
+void
+> > operate clk frequently
+> >
+> > Caution: This is an external email. Please take care when clicking link=
+s or
+> > opening attachments. When in doubt, report the message using the 'Repor=
+t this
+> > email' button
+> >
+> >
+> > Hi,
+> >
+> > Am Donnerstag, 29. August 2024, 11:37:22 CEST schrieb carlos.song@nxp.c=
+om:
+> > > From: Clark Wang <xiaoning.wang@nxp.com>
+> > >
+> > > Switching the clock frequently will affect the data transmission
+> > > efficiency, and prolong the timeout to reduce autosuspend times for
+> > > lpi2c.
+> >
+> > Efficiency as in throughput or total time per transfer? Do you have any=
+ numbers?
+> >
+>=20
+> Hi, Thank your for your quick ack!
+>=20
+> Apologies for the unclear explanation. The efficiency I'm referring to is=
+n't just for I2C. For platforms with SC firmware
+> like the 8X series, every i2c transfer to enable or disable the clock not=
+ifies the SC firmware to perform a clock operation.
+> So if the autosuspend time is short, i2c may enable and disable clock fre=
+quently, it will occupy resources of the SC firmware.
+>=20
+> Therefore, we add this patch to minimize the excessive sc firmware resour=
+ce waste caused by frequent I2C clock enable/disable operations.
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Thanks for the explanation. So this delay only occurs on systems using an S=
+C (imx8qm/qxp) or SM (imx95), right?
+Is there a chance to detect this kind of clock provider and make this timeo=
+ut configurable?
 
----
-Changes for v5:
-- Keep 'saif0' label
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Changes for v4:
-- Change file name to match compatible (fsl,imx28-saif.yaml)
-- Remove 'saif0' and 'saif1' labels as those are not needed in the
-  example node
-
-Changes for v3:
-- Add #clock-cells property
-
-Changes for v2:
-- Remove mxs-saif.txt
-- Add description with information about extensions required for this
-  device's current DTS description
----
- .../bindings/sound/fsl,imx28-saif.yaml        | 82 +++++++++++++++++++
- .../devicetree/bindings/sound/mxs-saif.txt    | 41 ----------
- 2 files changed, 82 insertions(+), 41 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml
- delete mode 100644 Documentation/devicetree/bindings/sound/mxs-saif.txt
-
-diff --git a/Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml b/Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml
-new file mode 100644
-index 000000000000..4f55288e11e2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,imx28-saif.yaml
-@@ -0,0 +1,82 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,imx28-saif.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale MXS Serial Audio Interface (SAIF)
-+
-+maintainers:
-+  - Lukasz Majewski <lukma@denx.de>
-+
-+allOf:
-+  - $ref: dai-common.yaml#
-+
-+description:
-+  The SAIF is based on I2S module that is used to communicate with audio codecs,
-+  but only with half-duplex manner (i.e. it can either transmit or receive PCM
-+  audio).
-+
-+properties:
-+  compatible:
-+    const: fsl,imx28-saif
-+
-+  reg:
-+    maxItems: 1
-+
-+  "#sound-dai-cells":
-+    const: 0
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  dmas:
-+    maxItems: 1
-+
-+  dma-names:
-+    const: rx-tx
-+
-+  "#clock-cells":
-+    description: Configure the I2S device as MCLK clock provider.
-+    const: 0
-+
-+  clocks:
-+    maxItems: 1
-+
-+  fsl,saif-master:
-+    description: Indicate that saif is a slave and its phandle points to master
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+
-+required:
-+  - compatible
-+  - reg
-+  - "#sound-dai-cells"
-+  - interrupts
-+  - dmas
-+  - dma-names
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    saif0: saif@80042000 {
-+        compatible = "fsl,imx28-saif";
-+        reg = <0x80042000 2000>;
-+        #sound-dai-cells = <0>;
-+        interrupts = <59>;
-+        dmas = <&dma_apbx 4>;
-+        dma-names = "rx-tx";
-+        #clock-cells = <0>;
-+        clocks = <&clks 53>;
-+    };
-+    saif@80046000 {
-+        compatible = "fsl,imx28-saif";
-+        reg = <0x80046000 2000>;
-+        #sound-dai-cells = <0>;
-+        interrupts = <58>;
-+        dmas = <&dma_apbx 5>;
-+        dma-names = "rx-tx";
-+        clocks = <&clks 53>;
-+        fsl,saif-master = <&saif0>;
-+    };
-diff --git a/Documentation/devicetree/bindings/sound/mxs-saif.txt b/Documentation/devicetree/bindings/sound/mxs-saif.txt
-deleted file mode 100644
-index 7ba07a118e37..000000000000
---- a/Documentation/devicetree/bindings/sound/mxs-saif.txt
-+++ /dev/null
-@@ -1,41 +0,0 @@
--* Freescale MXS Serial Audio Interface (SAIF)
--
--Required properties:
--- compatible: Should be "fsl,<chip>-saif"
--- reg: Should contain registers location and length
--- interrupts: Should contain ERROR interrupt number
--- dmas: DMA specifier, consisting of a phandle to DMA controller node
--  and SAIF DMA channel ID.
--  Refer to dma.txt and fsl-mxs-dma.txt for details.
--- dma-names: Must be "rx-tx".
--
--Optional properties:
--- fsl,saif-master: phandle to the master SAIF.  It's only required for
--  the slave SAIF.
--
--Note: Each SAIF controller should have an alias correctly numbered
--in "aliases" node.
--
--Example:
--
--aliases {
--	saif0 = &saif0;
--	saif1 = &saif1;
--};
--
--saif0: saif@80042000 {
--	compatible = "fsl,imx28-saif";
--	reg = <0x80042000 2000>;
--	interrupts = <59>;
--	dmas = <&dma_apbx 4>;
--	dma-names = "rx-tx";
--};
--
--saif1: saif@80046000 {
--	compatible = "fsl,imx28-saif";
--	reg = <0x80046000 2000>;
--	interrupts = <58>;
--	dmas = <&dma_apbx 5>;
--	dma-names = "rx-tx";
--	fsl,saif-master = <&saif0>;
--};
--- 
-2.39.2
 
