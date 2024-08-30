@@ -1,154 +1,66 @@
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596FF18E35B
-	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 10:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F7D18EFED;
+	Fri, 30 Aug 2024 10:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725013682; cv=none; b=oMCVVAh6BmMk1xjUi8Ec8LA/5QCqzA+02EJzwgsfsFYsS5ZxN32k7vVEa2K2Un1AudIwBfelaxAizMJ/rW0rF5BEULm1gPUkj+9SkxmUsbHjnsneVkZBMbVJ5aEOXFKV8Zqfjd6jy7L0Y8Rrdb2XsE/fWzHQpEkC0Mqen4DU4ao=
+	t=1725014360; cv=none; b=ESN6RQSWJ9W7w+I9aAh/ppprT2kKPrRT2UfnVp+hD3TaB4Zse8ZYJM6gcQWy5OU9YiF6GZP/+9LdmeVlDn5KaMnW+F1J8tggl5Uwb+SQ5HrRS7kZgyoKethpjW3evGt9hnaT+bwsfcu8D5n17ArFn/M6R4DY/hSTR1hv3du5wBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725013682; c=relaxed/simple;
-	bh=pMI90KbqudBvHNSXSKjN0yDaohkTey7HoNjDb2rpmqE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d0ExZkqcVLDzp0E8B5WAKAtO9/nrRDu+9j0WyUwFsaSdp/sZLR0Mx9ibWv+wKH2pCMMlyqvA2jHrvibbnix/jzRB0GZG3quw/iNsv85kZnGgAAAkWTg6G1SF7IhTcMFiHraMrA0nIJQ6vx2Pqs1xj5i8nKQFo7AoKwslhIiIrdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VfNGaWj0; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VfNGaWj0"
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e1651f48c31so1768942276.0
-        for <imx@lists.linux.dev>; Fri, 30 Aug 2024 03:28:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725013679; x=1725618479; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RaANdRMqGTHrITO34e72PLfanbHHgulA2aOEsmQ72uE=;
-        b=VfNGaWj0VaqaHoI/WmUxPX8cEhI8Tqo16lOzj3i97L2nJkYeuF4I0zeTro9VS5OTsU
-         BCLVCB/8vccRLJyWT18gMc3PZQbLNshTjkVdykKWFpyXJR7iz36A7yrNGlo1plgwL7vo
-         vo7hy27PBHaiZrWk9pXIjjRDxz5ihza5acupwQmxMeu+DmA476CGrfpWpZnBwDOhrrO/
-         pDccUEcLMRyjefr9t999LcGjOL9drUzkGuQBVII4mcI8KdF5XpzzeOcXnS2m5eE0HjeM
-         E6KV1lx865z4EvBrkpvxQifhVqeJX4LC2mwrSLcoihL8dQva+DnPftpf/r8TLntoo4P7
-         sb5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725013679; x=1725618479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RaANdRMqGTHrITO34e72PLfanbHHgulA2aOEsmQ72uE=;
-        b=din3WZKv06mpj3uzRykDoCHRvERIxCUZIEjoO4WCH5RI1npo72GNDEJ7e2ScRvK1kw
-         7/G+QsARI3209fEeYnJUplglcjL8rV0RJQNwxb/pMdvKcjERDoxp5pLMVE/bwBjzclV4
-         ZBfFVqElsUGBtbb0Uwf0Mhorfs6870dD9qth1xR5hey8kncGV2+3b0fM+5M7ytn6qGYZ
-         7wq1C3AUQk83vYdHSdQ+voIhch4hz3bWfcnzM9iZLQpGbdny7TXAGEHWtpYJGQxtoLFk
-         UmOwE2D8rODZ+4Mfejyrt+ktaaasy89t4Q3Yrl91Jtcc0gU7OP+JoQoNbL3CUp4sQlIY
-         naIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKWGqfVxwa2S9Lv9q7WLmZxTazoL9ZNHhhC7YqP34glvnaQnaRa1DcWIVT7RrosjgaBr4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/GZF396lsof78DwkTkIfoufCsVti4kyz33cT9g/NMRiMVv7YG
-	IAHZ2KRpE0L7jusn3uDh0Rq37MgrmiccNg0QVNdhw5UXL6X4kiccuHKriNvsipY5d0mPCwfzF4i
-	prBKFYSOJ6ulJHX9JUpGPxBzOJRO/wjmzyMrskA==
-X-Google-Smtp-Source: AGHT+IHD0Ca1b20qhfzhusSSGfDPMwq7sv7n4QQ2HQLit3WnJLdBel3AT0b+UM+MqPCx/P4KLADReUQAYSd3jSFYE1k=
-X-Received: by 2002:a05:6902:2b09:b0:e0e:877b:2792 with SMTP id
- 3f1490d57ef6-e1a7a0091d2mr1858033276.17.1725013679204; Fri, 30 Aug 2024
- 03:27:59 -0700 (PDT)
+	s=arc-20240116; t=1725014360; c=relaxed/simple;
+	bh=gvppTPOwKOdCSZvyPTB3N1VjeQmkQ/MKSgKPsBNp3wY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ViwPZiIEnOhdRLeIn37ovQfc99c2LVnDoGNOgyMpK3Zni0kxJNxngecUqvppyO+NYI/tHiiXQ9nVfe6NoGV8mc7S0JhSAVl1/doMVue1MGYmXrn9WntzpA37389aKs3GzMCb0wRWIc4u+u/PHc8RtzzNTXkEWaqdMapO8meH00Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1sjytb-008Uqh-2P;
+	Fri, 30 Aug 2024 18:39:09 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2024 18:39:08 +0800
+Date: Fri, 30 Aug 2024 18:39:08 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-crypto@vger.kernel.org,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: crypto: fsl,sec-v4.0: add second
+ register space for rtic
+Message-ID: <ZtGhTM4cHz2VWCdD@gondor.apana.org.au>
+References: <20240821192135.578126-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAPDyKFrN9L+u_X7Ur+j--i-tewd31EXzwCojOP+Sxuyxpk4Phg@mail.gmail.com>
- <20240830024750.2908738-1-xirui.zhang@vivo.com>
-In-Reply-To: <20240830024750.2908738-1-xirui.zhang@vivo.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 30 Aug 2024 12:27:23 +0200
-Message-ID: <CAPDyKFrBSOwzn--m321VhRKM-J-9x9BkoPw7+TBWcOE5LpS4HQ@mail.gmail.com>
-Subject: Re: [PATCH 0/9] mmc: convert to devm_clk_get_enabled() API
-To: zhangxirui <xirui.zhang@vivo.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: adrian.hunter@intel.com, bastien.curutchet@bootlin.com, festevam@gmail.com, 
-	imx@lists.linux.dev, jh80.chung@samsung.com, kernel@pengutronix.de, 
-	linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, michal.simek@amd.com, 
-	nico@fluxnic.net, orito.takao@socionext.com, rric@kernel.org, 
-	s.hauer@pengutronix.de, shawnguo@kernel.org, sugaya.taichi@socionext.com, 
-	u.kleine-koenig@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240821192135.578126-1-Frank.Li@nxp.com>
 
-+ Stephen
+On Wed, Aug 21, 2024 at 03:20:48PM -0400, Frank Li wrote:
+> Add two description for register space of rtic. There are two register
+> space, one is for control and status, the other optional space is
+> recoverable error indication register space.
+> 
+> Fix below CHECK_DTBS error:
+> arch/arm64/boot/dts/freescale/fsl-ls1012a-frdm.dtb: crypto@1700000: rtic@60000:reg: [[393216, 256], [396800, 24]] is too long
+>         from schema $id: http://devicetree.org/schemas/crypto/fsl,sec-v4.0.yaml#
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
-On Fri, 30 Aug 2024 at 04:32, zhangxirui <xirui.zhang@vivo.com> wrote:
->
-> On Wed, 28 Aug 2024 at 17:11, Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> > On Tue, 27 Aug 2024 at 09:34, zhangxirui <xirui.zhang@vivo.com> wrote:
-> > >
-> > > This series use devm_clk_get_enabled() to simplify code
-> > > and avoids the calls to clk_disable_unprepare()
-> >
-> > I agree that it simplifies code - but it also changes the behaviour,
-> > in which order clocks are getting unprepared/disabled during the
-> > ->remove() phase. In other words, this needs to be thoroughly tested
-> > and not just considered as a trivial cleanup series.
-> >
-> > For example, if there is a PM domain attached to the mmc host device,
-> > is it really okay to allow powering-off the PM domain before the
-> > clocks are being gated? This could potentially happen if we apply the
-> > $subject series.
->
-> Thanks for the reply, are you saying that merging the above patch will
-> lead to the following issue?
->
-> before=EF=BC=9A
-> bus_remove -> driver_remove -> clk unprepare
->            -> dev_pm_domain_detach
->            -> device_unbind_cleanup
-> after=EF=BC=9A
-> bus_remove -> driver_remove (delete clk unprepare)
->            -> dev_pm_domain_detach
->            -> device_unbind_cleanup (devm_clk_get_enbaled ->relase(clk un=
-prepare))
-
-Correct!
-
->
-> But I think this issue is not only specific to the MMC host, it will also
-> occur with other devices, if there is a PM domain attachded an use devm_c=
-lk_get_enbaled API.
-
-Right. Which kind of questions whether the API is really that useful,
-from a cleanup point of view.
-
->
-> So, can we solve this problem by swap device_ubind_cleanup and dev_pm_dom=
-ain_detach ?
-> clk unprepare -> power off not power off -> clk unprepare
-
-That may work, I don't know.
-
-Another option is simply to avoid using devm_clk_get_enabled(), unless
-you know that the HW can cope with the potentially changed behaviour.
-
-I have looped in Stephen to allow him to provide us his thoughts
-around this too.
-
->
-> bus_remove -> driver_remove
->            -> device_unbind_cleanup
->            -> dev_pm_domain_detach
->
-> Thanks.
->
-> > >
-> > > zhangxirui (9):
-> > >   mmc: cavium-thunderx: Use devm_clk_get_enabled() helpers
-> > >   mmc: davinci_mmc: Use devm_clk_get_enabled() helpers
-> > >   mmc: dw_mmc-hi3798cv200: Use devm_clk_get_enabled() helpers
-> > >   mmc: mvsdio: Use devm_clk_get_enabled() helpers
-> > >   mmc: mxcmmc: Use devm_clk_get_enabled() helpers
-> > >   mmc: mxs-mmc: Use devm_clk_get_enabled() helpers
-> > >   mmc: sdhci: milbeaut: Use devm_clk_get_enabled() helpers
-> > >   mmc: sdhci-of-arasan: Use devm_clk_get_enabled() helpers
-> > >   mmc: sdhci_f_sdh30: Use devm_clk_get_enabled() helpers
-
-Kind regards
-Uffe
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
