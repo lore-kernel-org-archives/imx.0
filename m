@@ -1,42 +1,47 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D2ADDBB
-	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D00101C8
+	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 13:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725110628; cv=none; b=psXlRUxT9fcrh6dQiSpOOejXNITXnmC+NmqIth0EcZCoXKPAdHHjSj+VFHmegIh+QWj00w2A2tJEozmWjpBPOuQ6YO5YsHCcDg55F8K6qAi2SEj6QEJXV4lmYw4TYsrjGlkoyIJaifcRUrr+Ed2s5Saa4HdeBluHj+ZC3VmxDTc=
+	t=1725110878; cv=none; b=HB5ZO77Rmh4cHuiSWue29ko0P0ETSfvSZ7te0wDL706oQ27XPxA/mArcYyBeWqzuWExCMSiUFkgUYf6zFb1FN4g4mJ41NzmJdYCNGwZx2eBL9USbkFZyeB2k2ajgBjBPlEoHMV6pKQNMQ198CMJMnO1Shm7dD6Sne9DTlPrGPLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725110628; c=relaxed/simple;
-	bh=YrlKkmeXnl9yn9by35cmlHWOsibdj1GiUV2S7E+D34A=;
+	s=arc-20240116; t=1725110878; c=relaxed/simple;
+	bh=5q0ek88M+T6JZH8g+NZGmnjowcQExSxi4Q1g79p6TBU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FBkuIBRV4Y/dFJC5hsebAejrkxHHVcmbN8DUgsyNPV8QBkHCUQO7tjpkvJCg2FWJPMYUcvqrQ7+pD8YDJhLl+hHVX7Y8OOGAf2ikVY2Q3FXNUs7mLQQ2tgB4DhXYuBwMjty5afsBc8NRt2mKy5WQhGJJtg3Qm7OyFwiE0g5QlH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gH/fZMfA; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8dzHc4Snci+Z9rg5NS8r4Q8dpHHG2phCFacfOQjxzZOmJeU6VLMNf3MDGUE90JOrTrX7OLnxDpWTZx2JK4IHKA+Atr9i3WtRDvE3jM138M+xkNwbHVvhJ6wEbw0fvL3L34kdHtmUDiM/ho++zJ2l8a1WMzpNrCGl01I11BqCKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=aDjM/wn/; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gH/fZMfA"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="aDjM/wn/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=AKh6GeJUGJqgVmvjczY15ttYojz0WLz6kYGq1JRrolI=;
-	b=gH/fZMfA2IIkiSos0uwF6FUiWxZqQsHZH2yO4+82PXwuOF6EavAdJs/VAh6a/r
-	V1VRwrr3JD3ojvM6p7Kh7u5il2nZTJcXCTR7cJn/vJpnsPLWdS0Sk/6C/4F0eAEQ
-	uiFnHCm06WxkC86kJvV1kgcORtUm1ibb7UlaWWzL2IrwI=
+	Content-Type; bh=C3VeFlTothnBfPCiZFyi21ZpxR9C9WPeO95qW/uOlv8=;
+	b=aDjM/wn/xpCGVUkdZaC1rWeB1pHboDz8Gxc/Ec+VYAxF7ZYyRe2cx315zMnk7v
+	jLaxmz7XdePHO6gspDrJdbzPESAu5wjoG4LWv00JGfGQpcJaQG2mHI/1TrG1Yfl0
+	0s1YN3Junb6p5ccl19HVWz1HBw5y1p1jgCb5vCT/5aMas=
 Received: from dragon (unknown [114.216.210.89])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBXPjNLGdNmEq06AA--.15266S3;
-	Sat, 31 Aug 2024 21:23:25 +0800 (CST)
-Date: Sat, 31 Aug 2024 21:23:23 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgC3P082GtNm7cA7AA--.11280S3;
+	Sat, 31 Aug 2024 21:27:20 +0800 (CST)
+Date: Sat, 31 Aug 2024 21:27:18 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Yannic Moog <y.moog@phytec.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Adam Ford <aford173@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
+	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-Subject: Re: [PATCH 0/3] arm64: dts: add aux-voltage-chargeable to Phytec
- imx8m boards
-Message-ID: <ZtMZSxj5jqCiNeIZ@dragon>
-References: <20240814-b4-phytec_imx8m_rtc_updates-v1-0-10f1afc1b3ad@phytec.de>
+	devicetree@vger.kernel.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH v4] arm64: dts: imx8mp: Add DT nodes for the two ISPs
+Message-ID: <ZtMaNn4W/ZG8gqCS@dragon>
+References: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,23 +50,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240814-b4-phytec_imx8m_rtc_updates-v1-0-10f1afc1b3ad@phytec.de>
-X-CM-TRANSID:Mc8vCgBXPjNLGdNmEq06AA--.15266S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4AR6UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgVMZWbS-GY3CgABss
+In-Reply-To: <20240814161451.32119-1-laurent.pinchart@ideasonboard.com>
+X-CM-TRANSID:Ms8vCgC3P082GtNm7cA7AA--.11280S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUTF1vUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBtMZWbS+PA-ywAAs+
 
-On Wed, Aug 14, 2024 at 11:26:35AM +0200, Yannic Moog wrote:
-> All Phytec imx8m boards have a chargeable capacitor that the populated
-> rtc is able to charge. Add rtc property to all (phytec imx8m) boards
-> setting the aux-voltage-chargeable property appropriately. The patches
-> cause no functional change.
+On Wed, Aug 14, 2024 at 07:14:51PM +0300, Laurent Pinchart wrote:
+> From: Paul Elder <paul.elder@ideasonboard.com>
 > 
-> ---
-> Yannic Moog (3):
->       arm64: dts: imx8mp-phyboard-pollux: add rtc aux-voltage-chargeable
->       arm64: dts: imx8mm-phyboard-polis: add rtc aux-voltage-chargeable
->       arm64: dts: imx8mm-phygate-tauri-l: add rtc aux-voltage-chargeable
+> The ISP supports both CSI and parallel interfaces, where port 0
+> corresponds to the former and port 1 corresponds to the latter. Since
+> the i.MX8MP's ISPs are connected by the parallel interface to the CSI
+> receiver, set them both to port 1.
+> 
+> Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
 Applied, thanks!
 
