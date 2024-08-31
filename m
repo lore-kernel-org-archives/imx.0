@@ -1,157 +1,117 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3939B17B50B
-	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 10:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFE9170A10
+	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 10:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725099097; cv=none; b=fkEhLA9yC8qd/lTCci5GDLEfiKC94XWstZJ79d5jMtnJBU2VM4UkJBG/svue98+rsgufv6wNqyFzj1bV6Vh2eNGAad7fH/2yWyjHlB8NBh4ezGTczsU9UX6ystbxGlKkI9AsVS59rkYOa1cdml4g08Ua3KuQAawvqIlX2QmLOLY=
+	t=1725099373; cv=none; b=uAxOV7GFF9IL/aJ+wAWYi04F8Jo0aMsUktl4cDEDKh/+Cna2O/lX9ci+3fNG9J3rGffm7ZFCcyaQHGaoL9D7aZ4++lF7I4865ezQSm5dryX67KF//9PvzfejYeC6xmwMRjg6H1QskifJtw37ciVeYO9F3//30zk5vQfCjszyqVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725099097; c=relaxed/simple;
-	bh=6A/KZXl0SOszbMPxJ54MyjSi/j4NMy3w33LDYgwEuUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7HMqeQdG6FFdIQ+B8k2ncQRO8Z5G51hEmxYM2YcHIMvsJphK9xzRgz/vvrgHAUD4vlzCxFuFb6QE8y95/IRMZxl2oH61JIjr4Arxy2BhHUsaY27b4A+OWiKMgjFxkrua+nUKXDFc2w9asMLTnJXDDcEjaxce0auKp0kAAwBE/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TCoLokZK; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1725099373; c=relaxed/simple;
+	bh=7PxAHyswZLjCEcDDdIaCvCLTaRGZ61BCN7GeRk75FeI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NemTxmpYKX4OJc/r0CGJ1Cz0dPFJRXqiiR5uSha8JPqEssJKFRKGm+mO/zLq3y4qUk1Hi4DYDiRjxPKvDWGDfUAOWLesLCdug6PEi0xm+hKaV8s3iBMyef9IvqnrNlIB/rAAlcPirEr01uVPZ8fBJ2JGjnXy7obJ4DBYKdO52gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=QIaBe+2Z; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TCoLokZK"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c243ef5237so90293a12.3
-        for <imx@lists.linux.dev>; Sat, 31 Aug 2024 03:11:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="QIaBe+2Z"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8684c31c60so302653566b.3
+        for <imx@lists.linux.dev>; Sat, 31 Aug 2024 03:16:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725099094; x=1725703894; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=amarulasolutions.com; s=google; t=1725099369; x=1725704169; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HAA/88jUmPoX8j9EzkHuwxEf+0bfdEcorfVyfMeqjt0=;
-        b=TCoLokZK59d4yMIQVymD66nRJuf/84pTIgnr5DJzO5AijHl9V+4JvnLZiErtc95YOv
-         3QKoNyu1WDPt6T4TOimxU8w4NHG55zvfcB6Q8hCyze2a0ybMDxvL0+XJL1CMqHjKmkLg
-         0LhK85/qfo97bcFljzX9K1ES5eGPtJeQpzJ0q1ocme6vmBZVcqmNlKVW4nDf8ESClACf
-         uOrf0ct70qiasCxe8Fk//QZn9BcfiAHEAAxp+h7atNKB2ZXT7uqCKuwPuI9h6Duv+VXz
-         5tsgTyxIfHlubrOBj2WMk8N1zxY/+X8zIGTlhZ3Pkgw5czhBBIyBZyt3ndRNaGkjyKm7
-         eRug==
+        bh=xEegHeLswHgSFD60AbReMGvZ27oxPCuhcc/xuWI/93U=;
+        b=QIaBe+2ZBg3CGf6XBlsLYZtLPXV5kxcWr6FqlS/fv2nTd3tLIc7i4q+hrnkAxLmeSs
+         Op2Q7YYqLwsi95dqerHcbcTmzo1JapTRwPR0zewmxsliiQIRJCIAsvmstqG2Fd+LGnFv
+         ZGTbEXTwwhkD+7RD6Cb1glZMw6I+SDaCNa0v0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725099094; x=1725703894;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725099369; x=1725704169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HAA/88jUmPoX8j9EzkHuwxEf+0bfdEcorfVyfMeqjt0=;
-        b=Z43CBg9UPUU8EhKpg3B4kE/uT9DS9znSyyTQMNI5jTz5dWBzapmQxcc0DdE3YO8Njz
-         PJMg/BmChkzJ35JlMCKRfdm+u5FL8077mYX/68Pv7JLumzHhKv4Wq3rnJAsnCe858V9G
-         1KSiEs1Nr39fmF58RVHWTyPnY7MYMYDwGcVvpLNCVf9uu7saCZWU4gYk8HtZ3khyrg4g
-         IY8OtKVn9+i8MXpR6eScwermhpw8ephMbGgpOjIMP8I9CQdX/4gErINybiffpsWcJJ83
-         xDeLt2C2sLMNNsaQ95I9WO3CekQwhJ8s0suzUPh6gUUGYOed+P09ZH+LCZzuNE2exe3s
-         cjAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJR+bW4bhu9urMyyN2M6ceENeHlwhG5KVPl9VCgNt08JHqwbVu08kLByIThOSsLAlY6PU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzxB029nonR0dq/alMu9xVYTRyyOFuwKC5gXkE06gKglWQIZs98
-	Q0+D+VAt2Ch+3PKfzx2NTmm2vYcb4HuayYkj+jaJaupJBYZ6hLG9MPFqvuUUX9I=
-X-Google-Smtp-Source: AGHT+IFlB45dEul3ujIqmq8Dxo7h/2KpPUUyuM2NL5Hz0hrjeccIA1n0Q+AYQl2uee/M95VUlejx1g==
-X-Received: by 2002:a17:907:7f06:b0:a83:70d0:7a1e with SMTP id a640c23a62f3a-a89a37f673dmr133763166b.9.1725099094557;
-        Sat, 31 Aug 2024 03:11:34 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8988feae4dsm311707266b.31.2024.08.31.03.11.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Aug 2024 03:11:33 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Matteo Lisi <matteo.lisi@engicam.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] ARM: dts: imx6ull-seeed-npi: fix fsl,pins property in tscgrp pinctrl
-Date: Sat, 31 Aug 2024 12:11:29 +0200
-Message-ID: <20240831101129.15640-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
-References: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+        bh=xEegHeLswHgSFD60AbReMGvZ27oxPCuhcc/xuWI/93U=;
+        b=ETEzxW3GfYlyt1k5FcrC6oeJ2E8Lpa5lckwgAx/S9XiBbFDBpEWOzk/AhstCECzdpd
+         ePqsVzKyMNJkZIjoMn7xgpFtsguQxkZxmkEZo6DR0rN+SgE7y9P4bX7n6e+VjYxOKikd
+         X64hLzeMRCEN2Eo75qp97ggZPoFzXsHUvrs4/l9feCSwH5ZP0ur0MGkDYpYFdQBk2jMx
+         BgRUhLjMqs2MzsOBwRqsrli8FPjujUuzVHYS7bFYAd/XE9pcPOg7Db/2h8gXZsJ5WPWM
+         D40Uhd0qah6XBqEU4l5rd/c8Bp8qG+tUwCQ3Fp1u6IR+Yobhp6pSYHQEvsPP3nE8Gfbg
+         Q4yA==
+X-Forwarded-Encrypted: i=1; AJvYcCVETMk+qD6FmS5ZZ7vTVW9RAsby6JgLCM8GYOTc/wLpQEu6WymlgCov1zSlkaGP/P/JIjo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+RF14CqucjCDyiDat52tNbU7SKVelosQfXrqpbzGwzIUo5Omj
+	bdE+7eRqW5eHDyOMI59e04vBysdKVHC+xqNfku2CqpilgctKOhB+Oy33gsD5c2iEmKx6Odl9Osu
+	4jUy/dVKEawOJe/LFQ5cQQ3AqpX+sVyWzOt4Xwg==
+X-Google-Smtp-Source: AGHT+IEljKe8Ivg1opymQ8s5TmiI5igE90nWvac0fE5HAogxs6IEzVOg+qUSFUw6dqnweZ0GuJo22CElxQCvmh+Yss4=
+X-Received: by 2002:a17:906:d542:b0:a86:af10:6a47 with SMTP id
+ a640c23a62f3a-a897fad60e1mr629129166b.60.1725099368529; Sat, 31 Aug 2024
+ 03:16:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Sat, 31 Aug 2024 12:15:56 +0200
+Message-ID: <CAOf5uwk+40-qQdVYcqkEOKUdmn1UZcL2BCG_Pdd_8rphc94JWw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: dts: imx6ul-geam: fix fsl,pins property in
+ tscgrp pinctrl
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Matteo Lisi <matteo.lisi@engicam.com>, 
+	Jagan Teki <jagan@amarulasolutions.com>, Parthiban Nallathambi <parthiban@linumiz.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
-configuration was not applied.  Fixes dtbs_check warnings:
+HI
 
-  imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pins' is a required property
-  imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
+On Sat, Aug 31, 2024 at 12:11=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+> configuration was not applied.  Fixes dtbs_check warnings:
+>
+>   imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required prop=
+erty
+>   imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any =
+of the regexes: 'pinctrl-[0-9]+'
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL =
+initial support")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts b/arch/arm/boot/dt=
+s/nxp/imx/imx6ul-geam.dts
+> index cdbb8c435cd6..601d89b904cd 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+> @@ -365,7 +365,7 @@ MX6UL_PAD_ENET1_RX_ER__PWM8_OUT   0x110b0
+>         };
+>
+>         pinctrl_tsc: tscgrp {
+> -               fsl,pin =3D <
+> +               fsl,pins =3D <
+>                         MX6UL_PAD_GPIO1_IO01__GPIO1_IO01        0xb0
+>                         MX6UL_PAD_GPIO1_IO02__GPIO1_IO02        0xb0
+>                         MX6UL_PAD_GPIO1_IO03__GPIO1_IO03        0xb0
+> --
+> 2.43.0
+>
 
-Cc: <stable@vger.kernel.org>
-Fixes: e3b5697195c8 ("ARM: dts: imx6ull: add seeed studio NPi dev board")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi     | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Reviewed-by: Michael Trimarchi <michael@amarulasolutions.com>
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
-index 6bb12e0bbc7e..50654dbf62e0 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
-@@ -339,14 +339,14 @@ MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x120b0
- 	};
- 
- 	pinctrl_uart1: uart1grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
- 		>;
- 	};
- 
- 	pinctrl_uart2: uart2grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
- 			MX6UL_PAD_UART2_CTS_B__UART2_DCE_CTS	0x1b0b1
-@@ -355,7 +355,7 @@ MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
- 	};
- 
- 	pinctrl_uart3: uart3grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
- 			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
-@@ -364,21 +364,21 @@ MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
- 	};
- 
- 	pinctrl_uart4: uart4grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
- 		>;
- 	};
- 
- 	pinctrl_uart5: uart5grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART5_TX_DATA__UART5_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART5_RX_DATA__UART5_DCE_RX	0x1b0b1
- 		>;
- 	};
- 
- 	pinctrl_usb_otg1_id: usbotg1idgrp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
- 		>;
- 	};
--- 
-2.43.0
-
+Thank you
+Michael
