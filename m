@@ -1,489 +1,171 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2097.outbound.protection.outlook.com [40.107.239.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE20317DFEC
-	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 10:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725100119; cv=none; b=qqjjuUGRSDvTN3XCARIgJSKtFvx57VVC+l3EDF0EEP4I6JMxehJuUI7zZEWrD7aNlSU+fL70Z3T8J/hD6jZ00ReLr6ihTVJRQQD3yqS39Brb8RpYrJx1P8T3ZIDzIm4SyjMvTGtlOM2Ig6gkaVZrC/NZz9nP2CmnuJVeBbulvVY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725100119; c=relaxed/simple;
-	bh=+XgOIAGc54NmeGJRFJTeDnLlTkRP9TEIQ/DEMZFkmh8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Xvx3qCtIDcFBdryNHOp+5qhh9xoZXte6+t9qrxIWk2RRsqsbktYbvQZrqoOuEWwDPcBxPKRDMp4m6hWTnG4if2xAYQUIxFyO3o0rgl2Opz2qQ2GWQUsCAapUsNS0+caAwOs6B0X6zwW/O15gQCi4QBl0TlmUfos+/an4QVkz5sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F+KvQzN3; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F+KvQzN3"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42bb9a23ea7so2843935e9.1
-        for <imx@lists.linux.dev>; Sat, 31 Aug 2024 03:28:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725100116; x=1725704916; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8PQ7TU+TRCd05plV/lsYBMtHZnloycwGHJL8+Z4Y7Do=;
-        b=F+KvQzN3nZlnoPmBUtLLvGPNHCXE9ti4f+LIZpiLhtv5swq9jrlbLkPyW5XVEcJkAj
-         dHha8fkp7Ztzi/1w4XBScg7Q9PmsoUDLG1CyikUnFVHozoyLY9CQAbU8Jo5H8B/evH5J
-         LwqHjS4D5042zoSOs4qCpoQBBsVTZ1mAuIXkX5nRE+jSoADOb7aw9IKvmZtNl6896TlO
-         u80NrAUjPA3ydJDqewkc+eN6oYGExFv73CwdgoaKkOXU+Ajrh9N6alc+eO4vXZxA6QbS
-         LI65LbOHKCvWxCp5n74kale8K/8B/QdzZLkL9ohB7sZDN1OnzX/YLPmMwv1IqcTuqZhc
-         QJfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725100116; x=1725704916;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8PQ7TU+TRCd05plV/lsYBMtHZnloycwGHJL8+Z4Y7Do=;
-        b=kIcGKPRkpdvDQH+cDQJ92cJW9Jt0EGdkbJV0IdhT6iePPMc5gjXe7Tbv3bE1soTNCx
-         39QlBkgKk6yQhcEdFJoU0HfF0OuwjUUKQh2c0l5u9HrkK/U0Lsyp2HDQphnYOBhXJMe/
-         J+FmZP0vC542gZPdEvW7OZD3+ZOTNWDOnkbHKQnboQ0nhoFh/Bt0zloGfnMBT0uVp3xH
-         YNlRqVokyPvXj80eAjOL2tG36JAcoV2DJ40OR3lEfNp4yHKTYzG3rhGu5lI4NGW12rxS
-         odwUD/h3RVu/tvHz7IaRWeHqgUdiMN91VEhuZCEMpudnyE1f2QhL2Uv0lUyGUdUOjXOy
-         fjdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVbMZDpjLlGCEmErtbS9GOQK8YnaupydcUGKPXlY5WQQebvAhHRKl9bxnMTWsuV5DIAvD0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWL2mv8JXhQvPXvz8ik6NnKww6w1ahPCTfd0YMRKaSSi/gjzJv
-	ccO+aaRs8n29mngdyeNDDezZxthu/WrkA67gFlDUqLMIqe1tyHvmEfEZ8DX5FJI=
-X-Google-Smtp-Source: AGHT+IFKG2NsgPvdlzeiPUcFqypd8reEl1V1Xgj5bvXeck4f8KJqk/iLdd6LnHVh5p4piLLapaNPdA==
-X-Received: by 2002:a05:600c:4fd6:b0:425:6dfa:c005 with SMTP id 5b1f17b1804b1-42bbb204f9dmr20014055e9.2.1725100115992;
-        Sat, 31 Aug 2024 03:28:35 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba63aba23sm104502155e9.21.2024.08.31.03.28.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Aug 2024 03:28:35 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Sat, 31 Aug 2024 12:28:21 +0200
-Subject: [PATCH 4/4] ARM: dts: imx6qdl: align pin config nodes with
- bindings
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D716317C224
+	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 11:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.239.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725102544; cv=fail; b=k2dcTaqkdfUpDWVBIERaRuL4TL/5rIV6iT4mKBbg1Xdpy68fWb8aWjr0MZqKUWudSvT5gPw/aJLSPn/QPnp8RcPecsN+2snu34NoL6qbWxtbl+FoR7RA61TiurFL987CBWMrHCeCHZw2xxF49LcWGEYc3giWM/JagBYvxKFlHaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725102544; c=relaxed/simple;
+	bh=kK9dyAJ49gYAiYd6nUtlG3QL0iQxirHfcRO4B1c1+ns=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UpUIFMP0wMSMqlX3X7mcLj1Cby+rT9XedgWf0rx4ydOOGfj+KMQRe8U1pdDJWsfg8w6hX/I0iHx7cllVkkeDDNd8JZkhcCr5W1wxKxAtfBj59lp/uC/F8JIZllv+OWEKNyopcOp80V0K8rcOhVdMQHFQcfJ3RKirGrL6+jG+l44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.239.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oi3VhqmuJtIrh9USkLlW+mOyNhOBoLQKkibxr7O6WY5hpZG5e7xmjD1o/AW0+dSpz3JaFvtgsnl61Ij4u5RwQQBEPv3hOQwyuyuwlr1sqz++AH/9bBvmMZIZk3wShuJiO+t3ww+MeBvCHOdzsulh1rzl8DNUXgXBoRs2ja4Gb7Zb1bNc1Z83vhzTr/t/Z5yPypJaDxCHeo3SDaex0N27rub63iJ4rwdH/FkjeSORWthrh1rR1G6iW2AJVZ3kU1dmEFsrMFVY0ols72b+QlVg4ZQFa8sbf5mesCjf48UAbO0+yaBUNBZtlO0aP347hlo9JONrdtn+ukR7TTmeRA2yUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZoN+BLvRP/bTbiXdM8huGUIKPjulN1zEav4QN1asfbc=;
+ b=GQFEbDJXYHnqoRgyafn0vOxOxp2y7jXzgvastsOxgOa3PZb9JBOwcmRb5vL4WCPgtBXsxp/Eb7OPF26OHVg9J0D5Hqp0kwpRcwPIhhAc3hrbwadBlKyyNRKnEZBFARjxZoSeU8rzo9jT7PT7hq1aHGv/68nUqfokry500+luNsScdY0q7/adeYy1BWpLjriVOi/K4q4fdigDuOpa9nMCIJC6Aa8jtiVNzib/U7n0vXV+wWF/gIm3nZBeOhZl0oqwv3yaa+kwZqmfmp0xFHsGldnrECMEvHREaV5g4H3FWnkgG6IeaAdbr46Z5ZVahypDmlC367pMYqBpoSAcQ9w1sQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
+ header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siliconsignals.io;
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
+ by PN2P287MB1765.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1b1::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.21; Sat, 31 Aug
+ 2024 11:08:59 +0000
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f%5]) with mapi id 15.20.7918.019; Sat, 31 Aug 2024
+ 11:08:59 +0000
+From: Tarang Raval <tarang.raval@siliconsignals.io>
+To: shawnguo@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	festevam@gmail.com
+Cc: Tarang Raval <tarang.raval@siliconsignals.io>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Yannic Moog <y.moog@phytec.de>,
+	Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/2] Add support for Variscite Symphony board and VAR-SOM-MX8MP SoM 
+Date: Sat, 31 Aug 2024 16:37:38 +0530
+Message-Id: <20240831110743.14280-1-tarang.raval@siliconsignals.io>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BM1PR01CA0148.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:68::18) To PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:199::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240831-dts-nxp-imx6-pinctrl-v1-4-f5811032bd40@linaro.org>
-References: <20240831-dts-nxp-imx6-pinctrl-v1-0-f5811032bd40@linaro.org>
-In-Reply-To: <20240831-dts-nxp-imx6-pinctrl-v1-0-f5811032bd40@linaro.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14467;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=+XgOIAGc54NmeGJRFJTeDnLlTkRP9TEIQ/DEMZFkmh8=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBm0vBKr2xI/6eYbX0GjX2qHad67+HXJeKVsp37A
- LX0DcQ35A+JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZtLwSgAKCRDBN2bmhouD
- 12ARD/0bS69oz/IFaINlbW5zhDmDnaGGQ6qS91FIx4vBDu9+waApbVmykB0U0hJIEz0R2ct7KIL
- icGy2NOB8ksP3v1b3AqZ348odUPj2370kYy90f6kL2cckVdYM+u9rcmVMaauS9IXgqvmsZIsOeC
- I0ImqItYCD7A+PpXdOKjsW+ZhLzEAuxfQrGPd+21L3A/RfuTKePp0Ef//F7EKXSBWd+3bBD4k54
- pkiBSAsWLzqQgffVIM80wBZ+PkMjFDIP1YKRC7GIlI4oF3Za0j7yuX2aPrG0BmQbLdCkTaUz3i+
- e1+9B0JCRloDkQwarKhIzA/+BRU6bn3blA+QoQLo6MlDxRVx7S0z509vcN9ICxte4FuqUdCS1H4
- 2Cla6OKtQCtjstDrRlN5WUPtoZew43VbBjW6nXVsp4yVe89CrY6Koi4LRa0LvwnK9JvHzH235EQ
- 33uS06RkuN3pYUpJi2wv9BQtnH46SaqTgbJ329STi/Ij8RKZVWuuiQxD8bOquofLbZ46Cv4dkCh
- E/s3KLKSWf00Xkt7zjP45ExuV8NwSq2Fp1LpZjIEg8ESrnMoggiFP4NAzqQq/aH6wACXpQP46K7
- 6XrRqhhgoYHVTUXKthjh9H6sXfby76L60lhX4vfAWO+owQQuSnkvDzEGwa9nrg9eI6S+FvOdsrt
- n4UMuEclc7au4Vw==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PN3P287MB1829:EE_|PN2P287MB1765:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fe54af3-0c0b-4c22-5b9d-08dcc9ad4ff0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WolT4y9knVfPuwPDdrTi9xSFsVGZc1xhJ/7XEEFzVLTWi/JRkELgQbpYK1Qr?=
+ =?us-ascii?Q?2SjSjvOANBBHbnTRwvEKlvAzWMldlyrUKFOvDu8msQRLoCvNQvZ8gSU6RPrF?=
+ =?us-ascii?Q?BmNdT5jbySjipWXzCSnUxBYBBPc5xww0XeVdMWJ/Yy44x6lWk630immX8rXT?=
+ =?us-ascii?Q?gSCqFt4mnW0XoUQsyIhg5P+Fkalou2onqXKwtd2tQ3WiPyteALFoiWi3RJY6?=
+ =?us-ascii?Q?/pIHm1XhXpkMxL5wZUaNeMNyZzDjxtk3aCZSxeSpcfrA5SnUkkmTbVrktt5K?=
+ =?us-ascii?Q?K5s/fO39vXAhiB3jCQ1NlNFrvfOJhme5r/UOiiIeoCaFcIxj/y+Qjt3Fuhhw?=
+ =?us-ascii?Q?Y0/AVbYDI7L4bs4AoSoUC+JHUFZq9EDmIcSb/FpcclCGW0f5eXaMOqKaN0kI?=
+ =?us-ascii?Q?VCeaShtd6/soWnDTaozRpETM2LmaodQWmNQGVlIG7jkHP6JZHUC9s+zExrXP?=
+ =?us-ascii?Q?aBGHn8YffpvuFZX7akJxcz1orfVIHzgTnN8Yh97Wn5nJMAXMhpYxH6f2NyC+?=
+ =?us-ascii?Q?JVvQOcd8bqlvbAsHFyrQ8G/pTNzIFPVhpYmY7IdSMMUeZsoH5J3x4pUJCrtH?=
+ =?us-ascii?Q?iyWbn+hXmeoFcrQt6CTw5DfSBF1N7Uy4IdCDlWT4Dhu7umkC+b3GwSeS19vv?=
+ =?us-ascii?Q?s9y4FF8MxiN32CJpxn5/gwFh7H47NkP+igGB9o0AOSJSg/5v9FeZscSoJbIO?=
+ =?us-ascii?Q?CD1bjsRhUF+vfh8dTpt4UDNLoRRiC4bfrGh4tKMs/1svIsQTbVCer5Lw08WR?=
+ =?us-ascii?Q?lbtCK11O2UEt4XCt35876b98qjnny7zfHzkB3CsinceSaCwC8wAcvRQApdK3?=
+ =?us-ascii?Q?Ul3fMXHx9l7RtELyVduEQptb1W10usxA2p8hIzTbj8yUfr8/NGw77R0Q4nQN?=
+ =?us-ascii?Q?Wrg3U5ZaSoLawwyHSy5h01c3MXBGc3u/FS2rLJRZDY9s8Snketz27NV1W6gs?=
+ =?us-ascii?Q?fPU+fJ/Lsc9KoFc1BvQpG2uhH7Oo6VshNyeNsW49OVGe2FhI3ftbl7PKRNrN?=
+ =?us-ascii?Q?UBK/Ajizic+3VN3VHb2KA4ABWBPmUJphSbnykXglqy2Krxy+xn9tNeF9bP4n?=
+ =?us-ascii?Q?MUWo7ec3lf7h5ZYoIJajD6pdSHFjTNGBFf0Z0u2OIP5S7T3HentDunHT2IE0?=
+ =?us-ascii?Q?ulpOCNMf+SPhWz2Fb35yuQBWJ9n1TAYgd0iobfsR4SCiBH6osBvMTz1guixr?=
+ =?us-ascii?Q?aeK68MdtpF1d1CRmwsfSC7I2BjyFwbCNF1gStxtUEKEmvNCtvOUvjFww6qo+?=
+ =?us-ascii?Q?Ri3Ge2jkP2BIAXs77aEqPnludSHjNcQIWvMLqhc9WwR20Y2LHK8I5MCnSLW4?=
+ =?us-ascii?Q?+U16YqrvJj1nm3YEAQgq8DINA3AP4CzYFwM8KOfGDJ6CQuz7eBM9CMGCODAk?=
+ =?us-ascii?Q?v6kgrVNkWyRowbcEt6HMfQ1lp93zn6CVEM54SXYWlKggMo56ew=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vOtL3uPxhrAFmT+H/bBKp5WhC2Q6RxRb/rOUag6ldCRSAYqGw0oYtqqpBt/R?=
+ =?us-ascii?Q?Jfm27TsM+EcUXbyNrGRJevM1QkEXXsRgAIE+iONQ/dj+T7FkaeyIkkzdkoeW?=
+ =?us-ascii?Q?IBct9zpaVVh1nMYGqVt0Hx/cLJ9JjXjc5QYNn525218/q2WVQaincV+C884B?=
+ =?us-ascii?Q?h58M2eZG0puiOS6KNAwRhBOC37nRRlaqfT9YZUI5P+ZZREIfr6YGWpsjkRGC?=
+ =?us-ascii?Q?+rZoUmozUtID7msjAt9XnwL0FVeeNuxvGe+fjLJnVBxTl1hZ2MWrLwCm5LQ6?=
+ =?us-ascii?Q?i2aOVcd5FIoGP+RxLeI0ZCOAHdmDgkfA6gvDgwsPzR/gZE6t2gnQHjds4CpG?=
+ =?us-ascii?Q?VSLTZzvdqxSoOD3dy2ly49qqiDX3caR0rBfhNbKVqe9hJq9lykJimuUmooAm?=
+ =?us-ascii?Q?iSNcceljmx8Ze+8gXUY2wL2+ODNNYh5KdeTF9SQSXxIADJ/6oidZ1Ac1sB2V?=
+ =?us-ascii?Q?tEvp4z0EYfxBLMZ3uzko4byCQ/6L7+58tZHg4O00lZhmzp8rzI087wMEwx7F?=
+ =?us-ascii?Q?CXWD/MPduqFVMbQWJ+uRkcSWFGtptle2WGAY+ClQZLXBsjtWaiH8yzX+54Dr?=
+ =?us-ascii?Q?SbNdNEVsl1WncUgy338OtFSPwT1eOkaDLBj9V0mhonPLHpZoRc+ysG1Soofi?=
+ =?us-ascii?Q?fQ82YBDiqRTkeYI1Hat7OVRY7iGAkQ11MHoTeNpXo54/rJ6wyah9NlAjrw90?=
+ =?us-ascii?Q?st9NbnkGWtTsOUp8xSFLxgg78m3XRUrwVAtg7D/aHS2XunKm/BjZ6r0Ot3Fo?=
+ =?us-ascii?Q?oYsKUAsfnMTpNFyOyxgBM1aXx0DzxxYTA+X9ixS5y+91nLY8JmF03lFOety2?=
+ =?us-ascii?Q?HKH0pO4doiqSuf+WowqYXNSzjP6t/IHvGujKC23NUWv+xn7Rpm/TLYxwBQA/?=
+ =?us-ascii?Q?I0OoF55byR2I73+0s4AeKsgrxIhIJAN5fMluH5cwF4zGi6XhvA2zHbhko00Y?=
+ =?us-ascii?Q?Da4JpCQ5WQ/F9ifms5CcwHiF1oT6RyX5Vh+eIH4dDw2qLmWqt8H96EthnEgK?=
+ =?us-ascii?Q?UmHPpD2lCiG4Zh3HofBeLVRskkJzF7HEgUbpCaU4Fo0By7hpfxpFyzfl6G2C?=
+ =?us-ascii?Q?Lex0bAOH5yq/LGUeR5A/lacb5peRu/RmpIUAtEDOFZr1s3LP437xYyLD4+4d?=
+ =?us-ascii?Q?kyXyOA0OXmREHqHNTTLkvpAdyt8SbO7ItlT7whBpB0g/TS44uV7h7mwpYAyO?=
+ =?us-ascii?Q?3ylRRfRCwfcDu08mA2Gnhegu6edTHiML8/MFdASWrIsZ9Qe4bK2bgrgfner9?=
+ =?us-ascii?Q?hgUXiv2xiiEfm2JpkVyRGMVWqN/47C/igyM32u8mmViC2uBRgS1Tmkxl5A8y?=
+ =?us-ascii?Q?WwUK/F8nMCPwA5+lrcMG828uANGkqfKhdy04fgAIPj7BZvwSFYOXbP26dssP?=
+ =?us-ascii?Q?4iYIdh18/U7PxP/X6kgyNYmqxZI9u/+MgykhsXnv6WGiICV/G5/Y5ezPS+1H?=
+ =?us-ascii?Q?mvNaf5SotjAH0x8Bn5W5NZ8NZXwiyRJLMNS4OCPuRSyx4izPdA6jD0g17yvq?=
+ =?us-ascii?Q?NZeh61ARYv1dR5l9gcGgydHTtv2jKPIyGG7JuzqH980qnGKr3pk5TURI0ltw?=
+ =?us-ascii?Q?C3FIMSyQUevCcOS1YB9BhMcIoSm5lm6EvD37T+ewMe0l0DKDLBhuxSyItXw2?=
+ =?us-ascii?Q?sYGR+87yJ1ZoQsuLM/PF2mE=3D?=
+X-OriginatorOrg: siliconsignals.io
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fe54af3-0c0b-4c22-5b9d-08dcc9ad4ff0
+X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2024 11:08:58.9217
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hCzrfapM/lgBHJ3WoDDoOMFwlXrTiXX8U1mzvQ1WiWUazzaQWmMV1+tdWKtyU4/C5+orjJhV2f1HKBa1k4fViYiedK2ZyIZOkxbkpbCmR1k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB1765
 
-Bindings for other NXP pin controllers expect pin configuration nodes in
-pinctrl to match certain naming, so adjust these as well, even though
-their bindings are not yet in dtschema format.
+Add initial support for Variscite Symphony evaluation kit with
+VAR-SOM-MX8MP System on Module.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi |  2 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi        | 10 +++++-----
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi     |  8 ++++----
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi     |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi           |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi      |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi       |  4 ++--
- 15 files changed, 34 insertions(+), 34 deletions(-)
+Tarang Raval (2):
+  arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and
+    VAR-SOM-MX8MP SoM
+  dt-bindings: arm: fsl: Add Variscite Symphony board and VAR-SOM-MX8MP
+    SoM
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi
-index 758eaf9d93d2..f7fac86f0a6b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi
-@@ -506,7 +506,7 @@ MX6QDL_PAD_EIM_A22__GPIO2_IO16		0x1b0b0 /* PCIe reset */
- 		>;
- 	};
- 
--	pinctrl_gpmi_nand: gpmi-nand {
-+	pinctrl_gpmi_nand: gpminandgrp {
- 		fsl,pins = <
- 			MX6QDL_PAD_NANDF_CLE__NAND_CLE     0xb0b1
- 			MX6QDL_PAD_NANDF_ALE__NAND_ALE     0xb0b1
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
-index 082a2e3a391f..b57f4073f881 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
-@@ -761,7 +761,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x170b9
-@@ -774,7 +774,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
-index 8ec442038ea0..090c0057d117 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
-@@ -750,7 +750,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -763,7 +763,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
-index 9df9f79affae..0ed6d25024a2 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
-@@ -833,7 +833,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -846,7 +846,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-index 7f16c602cc07..c6e231de674a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-@@ -704,7 +704,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -717,7 +717,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-index 7693f92195d5..d0f648938cae 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-@@ -896,7 +896,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -909,7 +909,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-index 9d0836df0fed..71911df881cc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-@@ -680,7 +680,7 @@ MX6QDL_PAD_KEY_COL4__GPIO4_IO14		0x1b0b0 /* OC */
- 		>;
- 	};
- 
--	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x4001b0b0 /* EMMY_EN */
- 			MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x4001b0b0 /* EMMY_CFG1# */
-@@ -710,7 +710,7 @@ MX6QDL_PAD_KEY_ROW1__SD2_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc2_100mhz: usdhc2grp100mhz {
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170b9
- 			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100b9
-@@ -723,7 +723,7 @@ MX6QDL_PAD_KEY_ROW1__SD2_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc2_200mhz: usdhc2grp200mhz {
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170f9
- 			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100f9
-@@ -752,7 +752,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -768,7 +768,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-index f4cb9e1d34a9..716c324a7458 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-@@ -817,7 +817,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -833,7 +833,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi
-index 424dc7fcd533..453dee4d9227 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi
-@@ -629,7 +629,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x170b9
-@@ -642,7 +642,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi
-index 49ea25c71967..add700bc11cc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi
-@@ -569,7 +569,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -582,7 +582,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi
-index d339957cc097..dff184a119f3 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi
-@@ -397,7 +397,7 @@ MX6QDL_PAD_GPIO_4__GPIO1_IO04  0x1f059	/* PWR */
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp_100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD    0x170B1
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK    0x100B1
-@@ -408,7 +408,7 @@ MX6QDL_PAD_SD3_DAT3__SD3_DATA3 0x170B1
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp_200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD    0x170F9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK    0x100F9
-@@ -434,7 +434,7 @@ MX6QDL_PAD_SD4_DAT7__SD4_DATA7 0x17070
- 		>;
- 	};
- 
--	pinctrl_usdhc4_100mhz: usdhc4grp_100mhz {
-+	pinctrl_usdhc4_100mhz: usdhc4-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD4_CMD__SD4_CMD    0x170B1
- 			MX6QDL_PAD_SD4_CLK__SD4_CLK    0x100B1
-@@ -449,7 +449,7 @@ MX6QDL_PAD_SD4_DAT7__SD4_DATA7 0x170B1
- 		>;
- 	};
- 
--	pinctrl_usdhc4_200mhz: usdhc4grp_200mhz {
-+	pinctrl_usdhc4_200mhz: usdhc4-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD4_CMD__SD4_CMD    0x170F9
- 			MX6QDL_PAD_SD4_CLK__SD4_CLK    0x100F9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-index 0a3deaf92eea..99386421a48d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-@@ -690,7 +690,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
- 			>;
- 		};
- 
--		pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+		pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 			fsl,pins = <
- 				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -705,7 +705,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
- 			>;
- 		};
- 
--		pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+		pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 			fsl,pins = <
- 				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
-index e2fe337f7d9e..5a194f4c0cb9 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
-@@ -373,7 +373,7 @@ MX6QDL_PAD_KEY_COL1__AUD5_TXFS		0x130b0 /* SSI1_FS */
- 		>;
- 	};
- 
--	pinctrl_disp0_1: disp0grp-1 {
-+	pinctrl_disp0_1: disp0-1-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK 0x10
- 			MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15       0x10
-@@ -406,7 +406,7 @@ MX6QDL_PAD_DISP0_DAT23__IPU1_DISP0_DATA23  0x10
- 		>;
- 	};
- 
--	pinctrl_disp0_2: disp0grp-2 {
-+	pinctrl_disp0_2: disp0-2-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK 0x10
- 			MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15       0x10
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi
-index 200559d7158d..d8283eade43e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi
-@@ -346,7 +346,7 @@ MX6QDL_PAD_SD3_RST__GPIO7_IO08  0x17071
- 		>;
- 	};
- 
--	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD1_CMD__SD1_CMD	0x170B9
- 			MX6QDL_PAD_SD1_CLK__SD1_CLK	0x100B9
-@@ -357,7 +357,7 @@ MX6QDL_PAD_SD1_DAT3__SD1_DATA3	0x170B9
- 		>;
- 	};
- 
--	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD1_CMD__SD1_CMD	0x170F9
- 			MX6QDL_PAD_SD1_CLK__SD1_CLK	0x100F9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-index a1ea33c4eeb7..79d80632ee45 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-@@ -436,7 +436,7 @@ MX6QDL_PAD_SD3_RST__GPIO7_IO08  0x13059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhzgrp {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grpgrp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD	0x170B9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK	0x100B9
-@@ -451,7 +451,7 @@ MX6QDL_PAD_SD3_RST__GPIO7_IO08  0x130B9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhzgrp {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grpgrp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD	0x170F9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK	0x100F9
+ .../devicetree/bindings/arm/fsl.yaml          |   7 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8mp-var-som-symphony.dts |  11 +
+ .../boot/dts/freescale/imx8mp-var-som.dtsi    | 361 ++++++++++++++++++
+ 4 files changed, 380 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
 
 -- 
-2.43.0
+2.34.1
 
