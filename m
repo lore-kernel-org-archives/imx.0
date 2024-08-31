@@ -1,95 +1,111 @@
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176E21C1AAC
-	for <imx@lists.linux.dev>; Fri, 30 Aug 2024 22:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9867B14EC64
+	for <imx@lists.linux.dev>; Sat, 31 Aug 2024 10:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725057159; cv=none; b=o0j4lx/Cs2k7Yigg4aLW1GW0lIq6IG5VCGGRxO7c3oiMjbXzUwFv60NRh3cEiaKzHpza3iU0Pg0jatDXmVLsqQlYJUDmfY7dnGW4/CjfOSl13PPLUdgfeohoKRlohXQeXPE+gnxob8OsekRDODetO2Spdzk0qGwjt3Vp689mQ8k=
+	t=1725099096; cv=none; b=HT7euaczgL8GbGYmO+WzjxW/ia2PQUP+IgsW5B8rEKxLTm7I0mhzCH+/PRK0amx43gKEJu+eDgvKljLpbR4hPldi7LE90ioYsDYCdCWo/nQ58dgCas79LAEWMvFMPPgHHF/dEKO+6MBmONAoC3WgjdxdXePuaAeJIgfWz/g+Fj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725057159; c=relaxed/simple;
-	bh=O4BVzo4/O12zJnAXRC6H/18YaBmS+B36iZcOSvO8Wdk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lhxDuU6eTTkY5UdOkzHP2GL5CKK9FJrKWNTmpePl5iPNecgEWBtGmg0jrBRNkP3KzSWYbvUKoJ7NZOOPm4rHMKfCtu6S3E4/VsPZ+lrKb5HKx94QENSTD8JUfPhL4ORtquVp60jhiA2szOKYaeUBzPcjewFiq1/uxYeDGd6euHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wcwaaMnk; arc=none smtp.client-ip=209.85.219.181
+	s=arc-20240116; t=1725099096; c=relaxed/simple;
+	bh=eK9lwHTGrE9nYN6gnIQ8mYnUNzrrnjm32O0cFnJTIKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=upGW3cYJpwibdo5g9kwduEygXWQFV2MlAY40427KhY7KP75GQPggMpJ/hr4Lx4BDCyZCIuCQ3a6zGwHb2VtB5GrgYmfE5gzug7XzieSQ3na+PgLpu/dAHVo/v30nSzAhU8gpquqHHdOO9eA18c+WqLq5q2SK8ag2je8hfLCrL2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PV7meZdO; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wcwaaMnk"
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e03caab48a2so1944641276.1
-        for <imx@lists.linux.dev>; Fri, 30 Aug 2024 15:32:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PV7meZdO"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5befecad20eso426669a12.2
+        for <imx@lists.linux.dev>; Sat, 31 Aug 2024 03:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725057157; x=1725661957; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O4BVzo4/O12zJnAXRC6H/18YaBmS+B36iZcOSvO8Wdk=;
-        b=wcwaaMnkIyq2F5eBPwctNhnlGbwlTT7eRz4ewLscjrdpiFo0hNanT8GytlcX5aYS4u
-         /tbCPvjsKmxNO+o+E+gf6WmO4gqGRI1JqV5GWp61NxWZDxcCshDSOVSK20L7EBa8BiJB
-         Sjjbg7cMXq5SVxmpzgVfXJcuRnKvnc2F0p+2TObOEFcsSOu80KdYiomJ7uh5dG1dBBwg
-         e+AjMDFM+LUDW48lXLDOmUo0tUlXHrPzYjgBjCAB0VL4vvkaAD3WY8RdvEAmAUJKTUkO
-         fvOCJHIVy6agdq/omJ2VvLL/+RiRo5aCzNtHKODUImnb1AD23NJJc3HmdTtR1pRXAMnP
-         hMEQ==
+        d=linaro.org; s=google; t=1725099093; x=1725703893; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HB1tlgukKY1KvsXWQTxeELXSE2pe2uY+begkTD0612E=;
+        b=PV7meZdOifzhTmVAeoMgvESYuvuLAeoHhKWJVdKB3rbFO6peAMnbvfLZCC0bm6ABfo
+         Q5SLGC6Qks2tca34oI/pxpHFrkdtlQwPGd2eUv6X4trRPSudu1uMS58LEOMqQa9vgVMz
+         JXazj2lFlK4WuMHGMoBuGe8GfbAzYxSAUNWyb0S3tx0szPEm5zAVpfCmBPty452yRdSH
+         1DobPzehjdCOnU3n4djTSExPw8OTJTWpqDTKIQ3t3K185+1b85T2eZDCuPkxG0U53AF2
+         FsbqUJ2D/Nza/THne0K5Ak0fk0QwtZQa5PI3DJcl6yI4DXGxvEgZr5CNzr6U2EAxTT4e
+         Nv9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725057157; x=1725661957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O4BVzo4/O12zJnAXRC6H/18YaBmS+B36iZcOSvO8Wdk=;
-        b=G5FG5e4nWc4yu14R1F2NnbDBToRE3F/XBPHhRaIdFSZg1VEL1YV90QjzNfypvOTb3X
-         XXQiOS7u/rDDX8BR5UgTHUrLtXgFrW0po6xIuiosJi/rErBKzwMnDz65Fvxx1OJpItUL
-         jgqd1F0+qsbAsDek9OuiP+4TZlLN/yoson9BLiXboTAbxLlBUeAg+j84P3mFlvfSBQeF
-         Wr1dphHbiR04I+5SU10xsjzwojlhbZr1xQX+1/9ZJ586vMkJGiRH3jcRAXIK66i5xguQ
-         jlshtaQ6iH/4tGlvxet1+BZrAJfSeexZ5pMFvOkkykAbt2NkycdeeHkD+eP9+nhCeLZa
-         ko8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVT2Y2nVzDx6d6FEFwVL4SCalb6Jpaknx/vkEJ6/4I++AVFuIsxsJWSLMWnONZZCrnyEec=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzwoYC6yh15InvGU2hhIj1772pe2mkvVwupYu0ImwJQpmWYPcou
-	dfCCAI+NftEb+DF0m6TDMctd6FBiBfMlcokGiGzI4IPXLAnVxgyR47GeAR1Jn/UnNXBgdlpnq9g
-	Q/n3fVs3bSZXHyas5IK6PPKnzcAndR6h/ug9SGg==
-X-Google-Smtp-Source: AGHT+IGY8O84DiR2Aaig1136Hn1BZ4NVKNmKGEF29tIOvuMMt+pTTKh5RAqmh/aYiy5yQpsPuZ+gYm0rdnzyEcUt/SA=
-X-Received: by 2002:a25:8391:0:b0:e16:7070:97e6 with SMTP id
- 3f1490d57ef6-e1a5c648a4fmr6700554276.9.1725057156927; Fri, 30 Aug 2024
- 15:32:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725099093; x=1725703893;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HB1tlgukKY1KvsXWQTxeELXSE2pe2uY+begkTD0612E=;
+        b=tlxLtJgxPUiaqQYX7H3qMAhWs1T4jNFEGOv7tzcVW8HIe4be/TQfipDrZuurQuCd3E
+         gnPe/8TcjXTVH1ahVBqD4AsVgERjrKqSEv9mrWdyri24kIYPA0DIbb3tgJHX5K8cyRO4
+         H8pxC+MCgfaCQoXj67aD17cMUhSUC8o+ZHVclN7vLCgY9czMecGHGBZI73T8hjBI5ZNp
+         tw+L4JXEO5dMUlW8VSJD/jARGG0h19tnbI3cUTd02Ze1MYVWpcPKo6MMk24Cdx88yerx
+         ROD4KXdwW0DrCIpmhIr/VOjFpTNC861fj42TRmrDNumnpF4j9duJpL0xegCwC48N1VGc
+         YiFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKkhDYj1PMccv7ZdQXOR0vGXekU90KKWRuJxnLexdjRxT+q1sVgHXcTf2OjSyB9JV8xFs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YymWislccAS8dd4jdbr+BvSQ4Q+Afq3ArtAKlEX613LBRct4W5j
+	ULGzczVuapp1/dIbkoSQtgbF2VyNCcHlaaMDmzYASJ47+7zKOsq1Nbb5Ed8peA8=
+X-Google-Smtp-Source: AGHT+IFwVGnm/EKQ8MW41lLfc+/EkRKkHINcUVfO3ryyMSVQwViKKq7XhFYFirZ0oz/oMNb/3Yf2CQ==
+X-Received: by 2002:a17:907:3f87:b0:a80:ed7a:c114 with SMTP id a640c23a62f3a-a89a2ff7874mr144197666b.0.1725099092826;
+        Sat, 31 Aug 2024 03:11:32 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.222.82])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8988feae4dsm311707266b.31.2024.08.31.03.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Aug 2024 03:11:32 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp pinctrl
+Date: Sat, 31 Aug 2024 12:11:28 +0200
+Message-ID: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org> <20240828-dt-bindings-gpio-hog-v1-2-63b83e47d804@linaro.org>
-In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-2-63b83e47d804@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sat, 31 Aug 2024 00:32:25 +0200
-Message-ID: <CACRpkdZzF5yJQnnDsjU8cTr9Fpe7wZZXoW3K-wFYuAq2vv8XxA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] dt-bindings: pinctrl: qcom: add missing type to GPIO hogs
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Daire McNamara <daire.mcnamara@microchip.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Maxime Ripard <mripard@kernel.org>, Masahiro Yamada <yamada.masahiro@socionext.com>, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 28, 2024 at 11:36=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+configuration was not applied.  Fixes dtbs_check warnings:
 
-> GPIO hog nodes should define type, otherwise "dummy-hog" boolean
-> properties would be allowed.
->
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required property
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: <stable@vger.kernel.org>
+Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL initial support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I suppose it's best of Bartosz applies this to the GPIO tree with
-the rest of the series?
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+index cdbb8c435cd6..601d89b904cd 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+@@ -365,7 +365,7 @@ MX6UL_PAD_ENET1_RX_ER__PWM8_OUT   0x110b0
+ 	};
+ 
+ 	pinctrl_tsc: tscgrp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
+ 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
+ 			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
+-- 
+2.43.0
 
-Yours,
-Linus Walleij
