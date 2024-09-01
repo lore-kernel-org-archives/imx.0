@@ -1,45 +1,40 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7701859
-	for <imx@lists.linux.dev>; Sun,  1 Sep 2024 01:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071532C6BD
+	for <imx@lists.linux.dev>; Sun,  1 Sep 2024 07:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725153444; cv=none; b=Kr7b/y4QWt5TAa1/pWpwLXK7oB55nZMbI0/C1ZZJs6xB+FpkZxvPuxqE2g+3f8z7Ce9gag/EnSZS6jUJEYP4gDItEfxJGv6ebEaCMB3XfKunci2gKZ5yvygyPssTh3nkFjT/ceekQhmp4+UGuddmDwVfv6rZVa8L8gelUfy971E=
+	t=1725175834; cv=none; b=eiqGryb9ulxAKvLAxk/vpET/tCE0OVXIpyIDiNBCXk8udv0oX7GoCopHl4kSaqMM42f2NUp5AcL99+Ve9tTSJAPP+ETQY0AbEQkKBm/ikRSS60dXUGTYWtfLbiaFLpR2OlK+jlyorbc1GhxCc9C7BOAiya6RnslwAxh7ahfTCe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725153444; c=relaxed/simple;
-	bh=7/pXSxW79joSiseYS8HmEM3FxeRV8+V7Nez80v4KWYs=;
+	s=arc-20240116; t=1725175834; c=relaxed/simple;
+	bh=dfGeXFMOq6f00IZpOQZm8N5Bvm7vAxBrOwA5Vq8b3xE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QrALuFJlGxxtmNMULrghAzpnR2m0cNx2arfKSjmPKncV0sQu5m2unLq6LyNSGX3sk7d1H1lPafY7rzIXo+8K2KsjShjXcPpTrOa5lL0YuGbRJMOgLz/4qchSx80iDbKvCclLmB0jbVfEbyMV7eLPPM5rKhawLwrUQ5PoJGZZ+Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nVqYlVrc; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=WR7GLPFztqPgSn6C0BihlyzDzeAZPsnR3jv0ryN6QxsvwXeK2iDCSceqgti8EKaJNnqHpmPKC5gJ6UTaL6atgcZPt0LWll//hOnj5ygQpdiJrNtkTTa8mfZ5y6HS4LoHgrLUN9Gdl/yplpjERZ35q/a+/z7jjWk632x3Y5g3Acg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gnvR+cAG; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nVqYlVrc"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gnvR+cAG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=Lzfe1+irGYJwXkhyIj4LhNfAhozYETplmmOeOoVgFxE=;
-	b=nVqYlVrcgfW1Vyjm0RUub9Am6eCshi/K4kyNaTeUIBMttlL4ag85ujqZIXykR4
-	ZjZ7MCU7NEcHKypFckWEtPyNJRHYZMqp/R4RCG0vejh/nABJ7BJKJXZ17wfH9KI9
-	P4V08ZvQ3Wde2xUvGamoeJe8V4589iNqu6vDbZXGHaTh8=
+	Content-Type; bh=pMInww7cugqnnQuFre6/o9W0dpqCLo2tn4lGGIQUctU=;
+	b=gnvR+cAGDxeHajIsy6dlFtqNBj4IbIo78MXAltpJMcHmI1z72OVOh5kTjrqCcI
+	/yXS+282eUEifveONnd5G2nPlGCE+btKdUfdDzzUiR7VgVpgHM4sFAy4ZB85XjXF
+	JUL/SYHjuy3JTErHP2K5lmGDilF31iTSumQDkeqSVq++Y=
 Received: from dragon (unknown [114.216.210.89])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXPzxzwNNmSFFBAA--.17452S3;
-	Sun, 01 Sep 2024 09:16:37 +0800 (CST)
-Date: Sun, 1 Sep 2024 09:16:35 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3P10DGNRmrAJDAA--.30458S3;
+	Sun, 01 Sep 2024 15:30:13 +0800 (CST)
+Date: Sun, 1 Sep 2024 15:30:11 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH v7 0/2] ASoC: fsl-asoc-card: add S/PDIF controller support
-Message-ID: <ZtPAc1iyGOKJtnNw@dragon>
-References: <20240820112827.126380-1-elinor.montmasson@savoirfairelinux.com>
+To: Yashwanth Varakala <y.varakala@phytec.de>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v2 3/3] arm64: dts: Add phyBOARD-Pollux dtso for rpmsg
+Message-ID: <ZtQYA1GA9CH3noBw@dragon>
+References: <20240820171848.177926-1-y.varakala@phytec.de>
+ <20240820171848.177926-4-y.varakala@phytec.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,16 +43,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240820112827.126380-1-elinor.montmasson@savoirfairelinux.com>
-X-CM-TRANSID:Ms8vCgDXPzxzwNNmSFFBAA--.17452S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVTKZDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAg9NZWbTjjJY3QAAsp
+In-Reply-To: <20240820171848.177926-4-y.varakala@phytec.de>
+X-CM-TRANSID:Mc8vCgD3P10DGNRmrAJDAA--.30458S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr1kZF1DAFyUAw4xKF4kJFb_yoWfKwb_GF
+	4Iqr17JFZ5Aa17Wa45Ww4fWrZFka4UKryfXry7t395CF97Za4SkF4DJw4fJr13CF1rKrs0
+	ka90vasIkw1YkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0zc_DUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAtNZWbUC2IbOAAAsf
 
-On Tue, Aug 20, 2024 at 01:28:25PM +0200, Elinor Montmasson wrote:
-> Elinor Montmasson (2):
->   arm64: dts: imx8m: update spdif sound card node properties
->   ARM: dts: imx6: update spdif sound card node properties
+On Tue, Aug 20, 2024 at 07:18:48PM +0200, Yashwanth Varakala wrote:
+> Adds a devicetree containing reserved memory regions used for intercore
+> communication between A53 and M7 cores.
+> 
+> Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
 
-Applied both, thanks!
+I'm getting these warnings.
+
+arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso:25.3-10: Warning (ranges_format): /fragment@0/__overlay__/reserved-memory:ranges: empty "ranges" property but its #size-cells (2) differs from /fragment@0/__overlay__ (1)
+arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso:24.18-54.4: Warning (avoid_default_addr_size): /fragment@0/__overlay__/reserved-memory: Relying on default #address-cells value
+arch/arm64/boot/dts/freescale/imx8mp-phycore-rpmsg.dtso:24.18-54.4: Warning (avoid_default_addr_size): /fragment@0/__overlay__/reserved-memory: Relying on default #size-cells value
+
+Shawn
 
