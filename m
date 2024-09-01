@@ -1,33 +1,52 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A9E1448E3;
-	Sun,  1 Sep 2024 10:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7FB15FA74
+	for <imx@lists.linux.dev>; Sun,  1 Sep 2024 10:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725186423; cv=none; b=EiTel6SKXJOcL08BGxO7gMXNK+i2ZxBMAvQh26i1ju/DMjltxHI5YNv3QyETwMYb7LHxtNfc/OiutBLYuu4z6fJJPV0JwrnIAld2PC94Y8ebhEp+4t39wmmmKBS6JsOFTZvOH+eXzfblqHVgyqJIV2muLADPz40+R+b9aFgp1cY=
+	t=1725187790; cv=none; b=m8IcjJ5Q/xQGmutwCrCS6Rp/PJ4OpD1An1VTQmYkC9nakG+UqeSFWqwOfcgBZmu912UZ1hYZexT9Pt79SOTRgCcsBE2E9lAeqg42Gu8HuXuXNAjWLSs9hlYyZnzXvWasS/sRq8zQcnCsGn1256EquZlSu3dbpn9yBuRPyZuQ84I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725186423; c=relaxed/simple;
-	bh=J8NsIZc4fWtfVb8jxcYgwofFkO1BZ09EtRsFD+tYgh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lnFaw9WxqktTJAYm9ztLX/Qc0y5BAlgw7YEKd+7ypetYapZnkRZZSpvTwIbKrVvZTkMPH9FkX2MC2h4cxk43yz+jdLQBB7VtozIgJHh2XL3VFuxqOABSVATYFisBU5rquqPy+CMsZKVGpF7xThwtH/I5dQ2Ix3kQ8x9MpsnJZxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIe/YD/n; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725187790; c=relaxed/simple;
+	bh=1SoUrcuwAezmoBbfSHXp5udejjTS9HsVQxmLO8RhqpI=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=in3vKtcNj4Rzh+7k8yIjQZyrjkehm7S6cusnYmNyLs7GjgwAMUIbtQTf7+PQXev2zgg46AOfMWk3RVQhotc7fKTYFckoEHmJEGlVy+D9qiu+4TOnY1aDbLPbCvLhdsEzBe2MS8j4uE7RaMFwFImAf+JCyw7/8sXuJNu3pVxw2PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com; spf=pass smtp.mailfrom=linumiz.com; dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b=jib5dOBm; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linumiz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIe/YD/n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A625EC4CEC3;
-	Sun,  1 Sep 2024 10:26:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725186422;
-	bh=J8NsIZc4fWtfVb8jxcYgwofFkO1BZ09EtRsFD+tYgh4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eIe/YD/nNAZRkTS8mMUKUdT1aVNZJDFKT/GPIW44+mVO+jLtwF+erlBU4GRL4li8C
-	 VfIMHdVrQzxWSXknCJY+6eGKiqTk3RGyXuXdFAInJD7KuuPXcfVJq+VV74Uq0FJE8/
-	 8KZ79R9kylhy3smDQ5pcjl50DIgZX1YuLLrSuNZnL3494nlZSOgqqP1v8tjBLnf2G7
-	 kKOX3D/T+jZ49g2rsfBO3m6e9xGGIWxEk7EXKsws4zra0BPNBPFQ0N7evlnXWpJ2Us
-	 y0zmRiToj+3v0WaR3a656GyD7LLgkwphg+W/DMYtu8dZZvm1EPqPBg5jRZCps2flTo
-	 cx34Xu3rmkaSg==
-Message-ID: <084bc911-a51c-4257-b5bb-25bed445f3b9@kernel.org>
-Date: Sun, 1 Sep 2024 12:26:55 +0200
+	dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b="jib5dOBm"
+Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
+	by cmsmtp with ESMTPS
+	id kch2sZI9lg2lzki9OsL6DO; Sun, 01 Sep 2024 10:49:42 +0000
+Received: from md-in-79.webhostbox.net ([43.225.55.182])
+	by cmsmtp with ESMTPS
+	id ki9IsKyvfks1Pki9JsCzM0; Sun, 01 Sep 2024 10:49:38 +0000
+X-Authority-Analysis: v=2.4 cv=Ud+aS7SN c=1 sm=1 tr=0 ts=66d446c2
+ a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=kofhyyBXuK/oEhdxNjf66Q==:17
+ a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=-pn6D5nKLtMA:10 a=VwQbUJbxAAAA:8
+ a=KKAkSRfTAAAA:8 a=vU9dKmh3AAAA:8 a=DNHG93h_ET7fCttHZXgA:9 a=QEXdDO2ut3YA:10
+ a=cvBusfyB2V15izCimMoJ:22 a=rsP06fVo5MYu2ilr0aT5:22 a=ZCPYImcxYIQFgLOT52_G:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:To:Subject:Cc:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ywGVdaOBlZPdTax7+8AIJtGdavEx9jH0B5JlhRclrvs=; b=jib5dOBmkXongdaFb6+eNDbK5o
+	jnSqgEzoUpxAB90W3aZjQLVvK28NhDRgji4ZP7rtMiWm1IApK1PVth707D1xd3aNWPSHTxB1M3Zri
+	DE5Zwjl0w+NQ/NnEk0cu96YZ4VzU5JuFIdFi+c1NlkdCsAEUzdzd0UeNGoZneMClDdL0oI2F9YnbJ
+	BS7nUBreTbw26dZ6sWt9dONlE6TUBPxUCb8QMas3OiM06uE1rQiA2qnJIYtAegC6aRnEynuMfcOKZ
+	QoE1mk7vIb2krjM2jVhY8U6o4FhTkl/WxVbeH4J0sF2d3d4qf2X7zZBtg0PboJSMMNa1oziJt1wsR
+	TC/a0KJg==;
+Received: from [122.165.245.213] (port=54982 helo=[192.168.1.5])
+	by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <parthiban@linumiz.com>)
+	id 1ski9D-003WMg-0I;
+	Sun, 01 Sep 2024 16:19:31 +0530
+Message-ID: <ae9c8916-27b4-4296-b827-92336a158294@linumiz.com>
+Date: Sun, 1 Sep 2024 16:19:26 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,99 +54,122 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: arm: fsl: Add Variscite Symphony board
- and VAR-SOM-MX8MP SoM
-To: Tarang Raval <tarang.raval@siliconsignals.io>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "robh@kernel.org"
- <robh@kernel.org>, "festevam@gmail.com" <festevam@gmail.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Gregor Herburger <gregor.herburger@ew.tq-group.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Hiago De Franco <hiago.franco@toradex.com>,
- Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- Mathieu Othacehe <m.othacehe@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Parthiban Nallathambi <parthiban@linumiz.com>, Yannic Moog
- <y.moog@phytec.de>, Josua Mayer <josua@solid-run.com>,
- Li Yang <leoyang.li@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240831110743.14280-1-tarang.raval@siliconsignals.io>
- <20240831110743.14280-3-tarang.raval@siliconsignals.io>
- <3b28a1e7-586d-452b-bb00-4473d82976b6@kernel.org>
- <PN3P287MB182994A2AA56868084D70CC28B902@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: parthiban@linumiz.com, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] ARM: dts: imx6ull-seeed-npi: fix fsl,pins property in
+ tscgrp pinctrl
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Michael Trimarchi <michael@amarulasolutions.com>,
+ Matteo Lisi <matteo.lisi@engicam.com>,
+ Jagan Teki <jagan@amarulasolutions.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+ <20240831101129.15640-2-krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <PN3P287MB182994A2AA56868084D70CC28B902@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+From: Parthiban <parthiban@linumiz.com>
+Organization: Linumiz
+In-Reply-To: <20240831101129.15640-2-krzysztof.kozlowski@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - linumiz.com
+X-BWhitelist: no
+X-Source-IP: 122.165.245.213
+X-Source-L: No
+X-Exim-ID: 1ski9D-003WMg-0I
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.1.5]) [122.165.245.213]:54982
+X-Source-Auth: parthiban@linumiz.com
+X-Email-Count: 4
+X-Org: HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMxGN884jn1GEYCySEaTs9agF8P1iIYUb2pe0mg8UbYYVW40r0dvFzSgRn17QldplprYut7mikzbNleL3ckv7eQ3Y9JaGYimZg1Ovp9t7MOEC7NqEBnT
+ g/t1m+IGddG4T+IzutTZgshItUyb5w8RV1NbgiPD4wE6xYJhYIFKjfLZjf3phuVIp0WmgC6PcNZ/av8MXi5XP5SyZFJ/TkI6nbM=
 
-On 31/08/2024 15:51, Tarang Raval wrote:
-> Hi ,
+Thanks.
+
+On 8/31/24 3:41 PM, Krzysztof Kozlowski wrote:
+> The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+> configuration was not applied.  Fixes dtbs_check warnings:
 > 
->>>                 - toradex,verdin-imx8mp-wifi  # Verdin iMX8M Plus Wi-Fi / BT Modules
->>> +              - variscite,var-som-mx8mp   # i.MX8MP Variscite VAR-SOM-MX8M Plus module
->>
->> That's not correct. You cannot use this SoM alone.
+>   imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pins' is a required property
+>   imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 > 
-> I took the reference from var-som-imx8mm, where they use "variscite,var-som-mx8mm" in a similar manner. However, if you still believe it's incorrect, I will change it.
+> Cc: <stable@vger.kernel.org>
+> Fixes: e3b5697195c8 ("ARM: dts: imx6ull: add seeed studio NPi dev board")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I posted that patch, but I don't think it was correct.
+Reviewed-by: Parthiban Nallathambi <parthiban@linumiz.com>
 
+Thanks,
+Parthiban
+> ---
+>  .../dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi     | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> One more thing: should I change "VAR-SOM-MX8M Plus" to "VAR-SOM-MX8MP" in the DTSI model name and in the YAML file as well, or keep it as it is?
-
-No clue, these comments are basically repeating compatible name so not
-much helpful anyway.
-
-Best regards,
-Krzysztof
-
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
+> index 6bb12e0bbc7e..50654dbf62e0 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
+> @@ -339,14 +339,14 @@ MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x120b0
+>  	};
+>  
+>  	pinctrl_uart1: uart1grp {
+> -		fsl,pin = <
+> +		fsl,pins = <
+>  			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
+>  			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
+>  		>;
+>  	};
+>  
+>  	pinctrl_uart2: uart2grp {
+> -		fsl,pin = <
+> +		fsl,pins = <
+>  			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
+>  			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
+>  			MX6UL_PAD_UART2_CTS_B__UART2_DCE_CTS	0x1b0b1
+> @@ -355,7 +355,7 @@ MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
+>  	};
+>  
+>  	pinctrl_uart3: uart3grp {
+> -		fsl,pin = <
+> +		fsl,pins = <
+>  			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
+>  			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
+>  			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
+> @@ -364,21 +364,21 @@ MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
+>  	};
+>  
+>  	pinctrl_uart4: uart4grp {
+> -		fsl,pin = <
+> +		fsl,pins = <
+>  			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
+>  			MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
+>  		>;
+>  	};
+>  
+>  	pinctrl_uart5: uart5grp {
+> -		fsl,pin = <
+> +		fsl,pins = <
+>  			MX6UL_PAD_UART5_TX_DATA__UART5_DCE_TX	0x1b0b1
+>  			MX6UL_PAD_UART5_RX_DATA__UART5_DCE_RX	0x1b0b1
+>  		>;
+>  	};
+>  
+>  	pinctrl_usb_otg1_id: usbotg1idgrp {
+> -		fsl,pin = <
+> +		fsl,pins = <
+>  			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
+>  		>;
+>  	};
