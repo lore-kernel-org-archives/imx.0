@@ -1,181 +1,133 @@
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2099.outbound.protection.outlook.com [40.107.239.99])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FCD2101AD
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 13:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.239.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725284771; cv=fail; b=kv1SPCSBOaUSqV2bOf8LsVwdo3rDogf8n9YAWZj1tecY0PIVczk3I32hgraPduwS434oph3gZqpTfvq0/KgYzwNt6eJ1qTZkMjSmffJup8yjSJm0M/rrHt1MeTmx7525GoIqwQBJSWHbIbH/Hdlte39uAUn1Qb3OfmyqQcYkuko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725284771; c=relaxed/simple;
-	bh=ERD8adc3ZKqnRFq6i/9CaUcQk+z+K5/3oQxVnkwqoTs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XEXknVXxU2PALjXpYAxuSkHfuF1R8T2BKtpoFE8smPjMPxzrySGJf3TUQEA/SQcD23M4iVkrG/pxHv5UOfFaCEoUSL7Sj7EK3pxHSAuXib1LXebOQD+SVGhLSoXrJfgYqZVbfdcALE4hNem4jFxeoJhj2zvmljFEp5lGb/L5p6s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.239.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BN0zBigx+V3rOP27nkVqainFMaASCqhE9k/EI4Ry+M2BXEk0xh9PjFYxNm6esDExcmN9cDMpCWgBty725pfok8qGb1+94jJYypd3XQaijEFGmfO71Jk9btnKq1vcQoO/JeqmU7r5lb+pt5ZSgVvwq5gYO5Rul8voUSAKce/Mb5Cj7VbwGqlrDAwj85lGBVgpx0jRmFWrNtT8wsEJs/PlXo7ExM1ZBLZMM7oijZ2qQgWpnPXILBq2sqGahX+XH75vDAIHeFx0HX/EEILigE30INducBGfU4b3/vKGv2HG2Z76FQK5NbubC5w6WKd4GqjvPZcCojKhgqYqANlmayEUbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VRPTwGUK+Mi3hPEOS3uswCRq4T1ixzdqudHBDjKk174=;
- b=msGiZ40e1l9Nz73oDx/c7/cq9r2hU2H62V248pZsniN8H+4heZl0YP78mOBrgcKkxalBRe8g8BLi9M3Fe6dVFL2pugVQWW/9+5Xt/xbwhnYnLPbqgp+07LVdBm8ugk4MKXh8sPrhigbWZMcNWkPZkQUJ5GVIQaMlcVjhF3QkgcC/qsWl8PY4L8+4TLBf6RldRJoAwr72yo1sK9vsOMODi/rBS0yLySFnO63W7h9o1Jq5PafFOtq32IlP1m7hKIVI0MRdyhbR9wl+62ro1qh5PV3kMweJ5g5YZRVBHJsJb3pytVmsUZE8seK9iUAJ3Zb7s4mqHG5hJxR0d7hycLUhhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
- by PN2P287MB0775.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:133::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.24; Mon, 2 Sep
- 2024 13:46:05 +0000
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f%5]) with mapi id 15.20.7918.024; Mon, 2 Sep 2024
- 13:46:05 +0000
-From: Tarang Raval <tarang.raval@siliconsignals.io>
-To: shawnguo@kernel.org,
-	krzk+dt@kernel.org,
-	robh@kernel.org,
-	festevam@gmail.com
-Cc: Tarang Raval <tarang.raval@siliconsignals.io>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Mathieu Othacehe <m.othacehe@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Yannic Moog <y.moog@phytec.de>,
-	Li Yang <leoyang.li@nxp.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 2/2] dt-bindings: arm: fsl: Add Variscite Symphony board and VAR-SOM-MX8MP SoM
-Date: Mon,  2 Sep 2024 19:15:08 +0530
-Message-Id: <20240902134512.16717-3-tarang.raval@siliconsignals.io>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240902134512.16717-1-tarang.raval@siliconsignals.io>
-References: <20240902134512.16717-1-tarang.raval@siliconsignals.io>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PN2PR01CA0249.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:21a::9) To PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:199::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FA919F10B
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 14:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725286381; cv=none; b=XXx6VlwuewUkh0Uywo3S9w5O3ge8r1ce8hbMvw1y85P/BHiXfTXhaSBkvUgZGjOPsNFwhHstzxJn+9BbceVXI1tREqr9nr6KFknho/LSuo887nhj+l9WYQWxo8F4sYhQ0yC1194CD3jg7V55fk8G5yZxe0m1MTVN7WhpcoQh6FQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725286381; c=relaxed/simple;
+	bh=cpZ4PauVNGJbbui1qSdGNxfiCpqK77JPhmc8S9jtHHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N3Rn8SMbXm5X8iDx5c8/E+60Ox516qV/7SwRWwkDFmWrenvhAPLtO5FppDoPjH13CC1SfR/ZkOF1t3gj/PWnJsyJIY2cT1exTbHkdNPxcot800n6F+bD7gz1DLTKlwV4lhWG1Bu8I0W84pLs76D6xghkI+FPSanV6KTVK60joLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=k2/ET4i0; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="k2/ET4i0"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 360B81BF207;
+	Mon,  2 Sep 2024 14:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1725286372;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wvLaVZYHS2Z2KXkZwLboI7ehC7Fzmd1852PHzQQaI5o=;
+	b=k2/ET4i0A3B6iDQpwx+ds6uQQh84yuzBHXQjFRDKYqOMgPeR8E+RM6xy2LUV/UxhugbY6P
+	Qah1Lk3GBQ/v5BitRFMhim/F0qcod+paiqnb7E/eIXLDeUdWaKgcC+ncD/WWnGK7Cjg49X
+	KDwO7XuAfwVjYUGjpk+5aHqOdt2LXoS+EcF5D9xjcFEFsFqppGvY0/9ncMHmG7Z1LzSpdT
+	XoUnwG5AWDEbJjkL614YuIoedZT+XoksJhrfkc/TpXbAWMYJMok0LdkbiZ1sA/YUys5wHG
+	dlMSwEvZ8rqHKLdR2c8M0/Fx//zvlswCzJgfIuiYXvdwabJ1JRW48irwkviG9Q==
+Date: Mon, 2 Sep 2024 16:12:50 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
+ <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon
+ <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
+ <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v3 03/11] i3c: master: Extend address status bit to 4
+ and add I3C_ADDR_SLOT_EXT_INIT
+Message-ID: <20240902161250.26846654@xps-13>
+In-Reply-To: <ZszPrBeoPehGsocC@lizhi-Precision-Tower-5810>
+References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
+	<20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
+	<20240823180426.056ac093@xps-13>
+	<ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
+	<20240826100430.33194702@xps-13>
+	<Zsylya9TN4mVFL79@lizhi-Precision-Tower-5810>
+	<20240826184924.53b48861@xps-13>
+	<ZszPrBeoPehGsocC@lizhi-Precision-Tower-5810>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PN3P287MB1829:EE_|PN2P287MB0775:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c266d38-6532-443e-4bed-08dccb559768
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XxwKON7nL8FwcEiyeRZG1ePVjfGhxe4dcIsHUSNP/ZHnQSfMIiVVzQc2puM3?=
- =?us-ascii?Q?W+HpFztlXJd8WqdILsbbZ5JwVUiKH/BQEJYF5SJurLwT8uaBEwOIbVMdrziU?=
- =?us-ascii?Q?x2GD9OWALYptTP1t//dRnkpMbCDhT+RWMYnvd+K9FNl6lfAGTcX2GS4JXtcL?=
- =?us-ascii?Q?0zRAy0NOD/dGGXtsJ6HwH7oQb31IMYPyVPFYpYfvzabi1sLSzFSqUGxAhXyF?=
- =?us-ascii?Q?Jrm6bXj3nuihswCejt/R1TwFX2ZbpRdULltNKQwNVTqQLL7IyinKSNpJD0MQ?=
- =?us-ascii?Q?NOjpda5dyEz5WD2p6VZRwhgZPrfUgRV78FG2Yr7MUwqUx6CqZhPNJzpEGn2z?=
- =?us-ascii?Q?9UJWoG02g2XxK6h0dSuJLfRTRK5pFUIhmfnfmJoajJJKYc1zke7CWauFRk1p?=
- =?us-ascii?Q?DxbOWT/eRC0a6WS+tDStCTK7GqJorIW9FzV9zNfnc80bgqbUm1A2WZdB9sRW?=
- =?us-ascii?Q?WuR030j5cPqWOqnHbxImZFsCfeN67UBDeobUlZ5J44pj5ilSz1aqlrL1Gobj?=
- =?us-ascii?Q?72EAHyEL3BTW/L4Wu8uIBaL+caSY8bmguhERlxlUppB1QqVC5Lmou8nUtqWL?=
- =?us-ascii?Q?bPvijKahxizGOcfxReN+DAvLPc7yRBejB5rEoycEu9BaY+8G0IFXFAblK62b?=
- =?us-ascii?Q?uTz7SP2P5eS3MMPZbHbqFXg1BwFfL9ZMIP+PFYw9G54Eu1JqMwHTNizMimUJ?=
- =?us-ascii?Q?gxEJM+AzfUGuS8aPoIuw+5oqCE/gIG+dJ+QsH4fV5nrFf5U9SsWn2u8HQizq?=
- =?us-ascii?Q?y+UBNdBenpRQdMwzHChk2g9PCkCeMVAWJ4xPiLH9p5I2I7VR9MSgWmUx6mus?=
- =?us-ascii?Q?HdUpD0uDAxq8FK84LAZ1iLO0gQRxj2fvmaoYYXKc0EdOvnXB+oDsTSdat/P5?=
- =?us-ascii?Q?1DqBCNJCQknbJ+UpFdHNvDMDg7CwEBMua4IQ+G7yHvm24jsJ3AFSpT9Cgm9l?=
- =?us-ascii?Q?mDnyDA0StN+W/9nz54DzX2VKudrxova2Vv3r1+y4ryG3DY+pvamF5imHn6Ww?=
- =?us-ascii?Q?PnExX6mv55Nw8sY5i5QWjWsmi+OhyTv5rRcoiutj/SHSfWO6DZr2FlSTESCK?=
- =?us-ascii?Q?92XIeivNWBf0JBoQeItNyS6c+hoITo6YUmF+KP8zpWAjMGKU89fGh0aCz/d7?=
- =?us-ascii?Q?7q8FQ0np9jFe8hVGl91fTujokpKKRR744zSJEAj3OHAht5adfrOh+mzZM7kV?=
- =?us-ascii?Q?pBlDG5L9XwO0CBJVZof4ieFS0K7p8G8j9MrFZM8kSDCNTVlPxftuLNrDefUx?=
- =?us-ascii?Q?aYzEPNHttmjhbbMwOVjavuXAU6QDEHpOZ0ubAODmjhqKu8DGjAbBLDCQOi5q?=
- =?us-ascii?Q?1MJu8MXVIz1sYJN9fUIoUOJy5WTxywWQOUwdRjLQTjVuM5pYpLcWBz9Bo+sy?=
- =?us-ascii?Q?vIdxho2LVnUatmGKWYmESgwt92opgoFm/7MUoHW3Uy4RKUGliQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5VZgBD4Kh6+4+a2IRT+kk03sWTCDzx40rFpcARihkkGsBnnHTyK9+mVxXHhx?=
- =?us-ascii?Q?tFwd4l92Jz12qVrOsDQKmRJCub6XNZGPq+/X6A00vQGccuP5SrKTKCCOcPTe?=
- =?us-ascii?Q?lBgnvsmtTQ1qikGjg4cMV5Rt7HkL/RpdiWHK3VKECVtnh0HtuMpR9TUqCtdT?=
- =?us-ascii?Q?tHIUvot72oxZebsFfBblPb8VOw0N1CRr0ijcvNXSHPFEvHf5xzxmRF6iC2bo?=
- =?us-ascii?Q?jQFSXDHl94u8nnzyNq932Dp2SpjwEvOKU8NgNFX8ZC9dnWsO8z568Y1JsKdk?=
- =?us-ascii?Q?z3TjyRLmMPIz6IsY1u9jJMQPL+fgMaaTUzdWuRhauoRwN0k1PLxGpKK77QJW?=
- =?us-ascii?Q?6YhmSx3md8FaDNs4TyZvZYQR1+m12N4y1AKXeHBnyoYYhBwspn3eGdbEDI4v?=
- =?us-ascii?Q?LhGtlYP1JgBduCquC5nPQomz8P+W5NJ1KAX+VPI/Due42PgpQkaTdjf0M7XJ?=
- =?us-ascii?Q?S0/hwnReVxm+sYSYaJysHC2gEOtW2ki7PKz5NChu7tNA7qP0XR6NatLJQx4b?=
- =?us-ascii?Q?0sBjhxCz253iBAx5p3PNO55P3h95x8fwpvOq/5He/rjlP3wxfL7s7YriQVSn?=
- =?us-ascii?Q?Tk/LVOGSCZqxXc3SRgC2sp/GRysiioibpyEN66uSLnoApJA22jMA4ZISwnV7?=
- =?us-ascii?Q?TM0qpQXgaFYdvCYdqPEfaq+xulVUOU/BQdh2/l1iEqAb2duW775k2ff5PK6N?=
- =?us-ascii?Q?QFJIP8TvOuv0YN2AEDPywoZlIEU31k96X4bG41xOdafmRzAIVwwIcsbTU3/g?=
- =?us-ascii?Q?pxQgo8rtktGejNC1Jjdo1F8GgfRf5kxQelHmptQEsNaxLJJC66B5VQaFZY5r?=
- =?us-ascii?Q?jyp6p1RzJ/k3pHDjnUJQ/TGzZ2zR+MTSiDztcvpHIrDpTLGAsACQ4aMW7Glt?=
- =?us-ascii?Q?xF3jv6Z56AjbgIKH2vPnISaYqssG4Vrma9C5YDyXrLROXUCvTz52IjjG5t5F?=
- =?us-ascii?Q?0p2AxxfvjyPiruJyvEDOcsdYXgcUvtKRH5hbOcMXI62f1pgD9o3hiXhynk/i?=
- =?us-ascii?Q?6qN6hiKVJgcv4nOfuqUbnf1mJfSHuBDC9tDyBma0icUMraNNCEx/UuqWekRq?=
- =?us-ascii?Q?byKPnLBJyXTrB0nW/qNKg8NgqGuuDwZbuufHOHsoMIKiN5kr+xKzPHpQjkUc?=
- =?us-ascii?Q?CBGd7B0duYj1YGOt7trY7GJEd/MM1lPsB3P3V1RrSlfO8vMRpmWY8wzhh5S4?=
- =?us-ascii?Q?nOVWM64WIJdXhTu5Xk7j/Orv/di2vwE2Z1njjWNoREsfulvRIiI3q2cWYV7/?=
- =?us-ascii?Q?RLm0L071ixSALT4ixO5H8k3rsavOqVYa+sKE2vXRDUX/ysg5SiJWZOo3ZvLj?=
- =?us-ascii?Q?nCfJw9zMHx6yd9AZlKBkeLTTPHrGDxayVLHYbZjgZuvujAk5OZ5fvRlHEZHu?=
- =?us-ascii?Q?oAtu35YdbqdW3JRg4/Q4UVygSC6pJPvk1L/4GxSohMXx3PCdTVGYXUKJBd8u?=
- =?us-ascii?Q?WpmTmSQ45NcUpzpqd0fu1AQKh5T2/rADtEkn0J1/okrRdCfvnXcyoxXMLfdO?=
- =?us-ascii?Q?B449+24D2g4c9q/OdAzlyLHpIsHe/Jz21T28/ukfcFTIqV5NNDVnscCDnf2P?=
- =?us-ascii?Q?1jtJBN3BepPT9jKnaMFWFbKPJXvdLFuVayrQAXZKHt1WlA4Na6t+3plKFQ4z?=
- =?us-ascii?Q?4aoanOLN4LV71wd/DgdzrMI=3D?=
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c266d38-6532-443e-4bed-08dccb559768
-X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2024 13:46:05.3321
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iK7Fwy04cU+IaN+mFW1pRno6lloVsPoYw4oDmIgJ1eKAeuBmJbF3OTfY6OItUmyh7jw8SOYxBJ++WMI/O314ZxHQ+pqyNYAWN3ZhTJLZT7Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB0775
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Adds support for the Variscite VAR-SOM-MX8MP System on Module and
-the Variscite Symphony Evaluation Kit.
+Hi Frank,
+ =20
+> > > switch to this address if it is free.
+> > >  *
+> > > In step 1, i3c_bus_get_free_addr() is called. To optimize for step 2b=
+, this
+> > > function should return an address that is not pre-reserved by any tar=
+get
+> > > device with an assigned address in the device tree (DT). =20
+> >
+> > This does not make sense, if you want to optimize for 2b, why not
+> > selecting the assigned-address property in the first place if it's
+> > available? =20
+>=20
+> This is my first idea. But I gived up this way.
+>=20
+> Select an assigned-address here will involve a big change in i3c framewor=
+k.
+> There are no PID information in i3c_master_get_free_addr().
+>=20
+> In DAA flow:
+> - SVC is get PID first, the get_free_addr(). This case, we can use PID to
+> get dt assigned address.(if change/add API)
+> - But HCI, it is difference, hci_cmd_v2_daa(), get_free_addr() firstly th=
+en
+> send out DAA command. So no PID information when call get_free_addr().
+>=20
+> To cover both case, return a *real* free address here is simplest solutio=
+n.
 
-Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
----
- Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+But this is a limitation of the HCI driver? So why not addressing this
+in the HCI driver instead? It would greatly simplify the core logic
+which becomes complex for wrong reasons.
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 6d185d09cb6a..b28e5c7a5463 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1149,6 +1149,12 @@ properties:
-           - const: tq,imx8mp-tqma8mpql       # TQ-Systems GmbH i.MX8MP TQMa8MPQL SOM
-           - const: fsl,imx8mp
- 
-+      - description: Variscite VAR-SOM-MX8M Plus based boards
-+        items:
-+          - const: variscite,var-som-mx8mp-symphony
-+          - const: variscite,var-som-mx8mp
-+          - const: fsl,imx8mp
-+
-       - description: i.MX8MQ based Boards
-         items:
-           - enum:
--- 
-2.34.1
+> >  Also, I don't understand why you would care to specifically
+> > *not* return an address that might be the default one for another
+> > device in the first place. =20
+>=20
+> If devices A (want adddress 0xA), device B (want address 0xB), if both
+> device send hot join at the same time. device B's PID less than device A,
+>=20
+> Device B will be found firstly, call get_free_addr(), 0xA will be return
+> if no this patch.
+>=20
+> Device A, call try_get_freeaddr() to get 0xB.
+>=20
+> So Devcie B will be assign to 0xA, and Device A will be assign to address=
+ 0xB.
+>=20
+> After do_daa command, framework will add device B and device A into i3c b=
+us.
+>=20
+> When framework try to add device B to i3c bus, framework will try switch
+> device B's address to 0xB from 0xA, but it will be fail because 0xB alrea=
+dy
+> assigned to device A.
 
+Well, okay, but that's exactly the situation that will happen if these
+devices are not described in your DT. I guess it's expected that a
+device not described in your DT can be connected, thanks to the
+hot-join feature. In this case you cannot know what is this device
+preferred address and you might end-up in the exact same situation.
+
+May I question the need for preferred addresses at all? Is this even
+part of the spec? What is the use-case?
+
+Thanks,
+Miqu=C3=A8l
