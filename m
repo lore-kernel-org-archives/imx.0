@@ -1,42 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071D516C695;
-	Mon,  2 Sep 2024 07:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAB915573F;
+	Mon,  2 Sep 2024 07:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725261070; cv=none; b=R0QufIykNwATZsD33gwniOwz3NQmE6/lZ5tRYiZSJhKGZF6iwK27Uoo+yUHrYhqA5YnIuAVOoLPiOW/Boj6SoRd9CbFtqp87ZcfzNr0exyNon5AMcrWIW8MnLtjaSoY8B9c7TL+LWdxFRKHlVc8WXEbxm+8pQ2rsF74kQowM9QU=
+	t=1725261244; cv=none; b=Kp9NXMr6qWdJqrRhMew7PCpYyscLpOh4vUmBB0dhz+9n/XnpujkJ10S9buhxTFCP0KTXUXemDnPa5PW9zhx5i5lj08OxUq4h3p3k+U+5BWESq0uree4aqwrlSxn6qUEaY71aKYvWaxMlqmUrOm0crXYSoleARVM9U78gToibcwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725261070; c=relaxed/simple;
-	bh=qMkQznHAdfXGd0UEsfT+EpORLG4corUXuRreY7UWUbI=;
+	s=arc-20240116; t=1725261244; c=relaxed/simple;
+	bh=O3qnO4tVE96dExdElJgrtwb4RNjNBLk/w49FLco314M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YFu9+1vOaK7Gf1zEAdErDttK6BAa87odykqGADPsTEy5dlibp6JKosnKL7oAlFs5XeZ2Ns4BDeYTGX8SLSExajBfQ40Mi2SueM6aNxpLIxmfCHPkvtLx2ZyJeJ5ax8PDz9PF3tEO28oBV7wbGJzMcwwp8GO2u+UFu3pD4x159n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdV0graF; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=EyFYs03YY8+6DeBHqhLGZi2GTtfvDY0MkiSFPQgzIyVKS4FvD9h2/nv/Xoi7khwgxfp7AH1HHqt6LYSZqTIrkWPAFwBvogPmQCEWqlOCK6BnGrYorTISA39BorYvjuVByhRaEbP4CUKhqusPAT00aZZTYKf1BOnT7D2HVlElxks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMQzWI68; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdV0graF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD694C4CEC2;
-	Mon,  2 Sep 2024 07:11:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMQzWI68"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B162C4CEC4;
+	Mon,  2 Sep 2024 07:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725261069;
-	bh=qMkQznHAdfXGd0UEsfT+EpORLG4corUXuRreY7UWUbI=;
+	s=k20201202; t=1725261244;
+	bh=O3qnO4tVE96dExdElJgrtwb4RNjNBLk/w49FLco314M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kdV0graFY5X+YvbbHv4MxHlxyUQPvejYrFL/0FWiixN1GMMxpnDO7Euz/7mByVL1L
-	 /QgW12NtzMtIxN09Hm0HoJSGwxZ50D57vMaCZIa3QtW6n47R7gR0sOCqghdbSwFFnA
-	 mF+3bpnS22386CMGzK9hpD2JKvhh4oY2QauDkab0wG5OCQALXz0cHa0kraUnlFzRln
-	 ybOPOIfVZkLxytZ/PlsiWDWFZXlGCZb3LX5Q9Ax4AVAPmizC5tqrD4/6TGgpKQwHHl
-	 416edA7HKHKFIM0Dra5/oryULlHxer1mxhWwXzCp7mACluyPB/8AM1hDSpc7lrjY7M
-	 Q7zxLwk567hXA==
-Date: Mon, 2 Sep 2024 09:11:05 +0200
+	b=cMQzWI68iVxcoQd0OdaF9PXjcNlkC8twkvXk9oFvQ8vQWQVdmZniY3iL5tMiOSjV7
+	 x3933fz6aApN6lW2g5arQrbPeNqoZGkA23llNxCyVcNmAlFaDaZuAb+HAOckNTQsqH
+	 KKzlQfLSMdYgeLbIGq24X27AjRDUNy+6ZqEFY8zPfrgb2VK0NFeHgDLEQVPa45M3qS
+	 0eS9gijm/EScufrUkg+SHpqzFLGT8ShccjMtUVEuRzGnNgvTdzlKqRDPAbXnWh+gEJ
+	 vy4ILa/LKKsH76n2CHq3IOug+5q6osjVkvMwiChvauylnHCIw4XwMadOwyNa0qIFjR
+	 6htPZ7v3XKxGg==
+Date: Mon, 2 Sep 2024 09:14:00 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Walle <mwalle@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	"open list:MEMORY CONTROLLER DRIVERS" <linux-kernel@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: memory-controllers: fsl,ifc: add
- compatible string fsl,ifc-nand
-Message-ID: <l2xjrs7txycf3uhhhyzypfzoem2fr4fsvbyg3bt4ktfpbzxz47@loiytha55oml>
-References: <20240830191144.1375849-1-Frank.Li@nxp.com>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: Conor Dooley <conor+dt@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Gregor Herburger <gregor.herburger@ew.tq-group.com>, 
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>, Hiago De Franco <hiago.franco@toradex.com>, 
+	Mathieu Othacehe <m.othacehe@gmail.com>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Josua Mayer <josua@solid-run.com>, Yannic Moog <y.moog@phytec.de>, Li Yang <leoyang.li@nxp.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v2 2/2] dt-bindings: arm: fsl: Add Variscite Symphony
+ board and VAR-SOM-MX8MP SoM
+Message-ID: <taacgew4rjjh6q53pog4jv2waamso7ytor5a2womrm3txowjo3@t3yimdusgc6g>
+References: <20240902065606.8072-1-tarang.raval@siliconsignals.io>
+ <20240902065606.8072-3-tarang.raval@siliconsignals.io>
+ <f3f65c33-335f-4769-958c-9b75fa7083dd@kernel.org>
+ <PN3P287MB18293C640A4A027E6292758C8B922@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,65 +53,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240830191144.1375849-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <PN3P287MB18293C640A4A027E6292758C8B922@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 
-On Fri, Aug 30, 2024 at 03:11:43PM -0400, Frank Li wrote:
-> ifc can connect nor, nand and fpag. Add child node "nand@" under fsl,ifc
-> and compatible string "fsl,ifc-nand" when ifc connect to nand flash.
-> 
-> Fix below warning:
-> arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/memory-controller@1530000/nand@1,0:
-> 	failed to match any schema with compatible: ['fsl,ifc-nand']
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change from v2 to v3
-> - add partition child node for nand
-> - Only partition property is used at ppc
-> Change from v1 to v2
-> - add address-cells and size-cells
-> ---
->  .../memory-controllers/fsl/fsl,ifc.yaml       | 26 +++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml b/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
-> index d1c3421bee107..5a11224da8914 100644
-> --- a/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
-> +++ b/Documentation/devicetree/bindings/memory-controllers/fsl/fsl,ifc.yaml
-> @@ -58,6 +58,32 @@ properties:
->        access window as configured.
->  
->  patternProperties:
-> +  "^nand@[a-f0-9]+(,[a-f0-9]+)+$":
-> +    type: object
-> +    properties:
-> +      compatible:
-> +        const: fsl,ifc-nand
-> +
-> +      reg:
-> +        maxItems: 1
-> +
-> +      "#address-cells":
-> +        const: 1
-> +
-> +      "#size-cells":
-> +        const: 1
-> +
-> +    patternProperties:
-> +      "^partition@[0-9a-f]+":
-> +        $ref: /schemas/mtd/partitions/partition.yaml#
-> +        deprecated: true
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
->    "^.*@[a-f0-9]+(,[a-f0-9]+)+$":
+On Mon, Sep 02, 2024 at 07:07:02AM +0000, Tarang Raval wrote:
+> Hi,
+>=20
+> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 - toradex,verdin-imx8mp-wifi=C2=A0 # Verdin iMX8M Plu=
+s Wi-Fi / BT Modules
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 - variscite,var-som-mx8mp-symphony # i.MX8MP=C2=A0Variscite VAR-S=
+OM-MX8M-PLUS Symphony evaluation board
+> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - co=
+nst: fsl,imx8mp
+> >
+> ><form letter>
+> >This is a friendly reminder during the review process.
+> >
+> > It seems my or other reviewer's previous comments were not fully
+> addressed. Maybe the feedback got lost between the quotes, maybe you
+> just forgot to apply it. Please go back to the previous discussion and
+> either implement all requested changes or keep discussing them.
+>=20
+> as per your comment, I did update the board name to "variscite,var-som-mx=
+8mp-symphony" instead of "variscite,var-som-mx8mp."
 
-This pattern is for NAND already. I don't understand why you are
-duplicating it. If this part does not work, fix it.
+??? No, there is no difference. You did not test your patches either.
+
+When I wrote "This is not correct", it means you should drop it.
+Incorrect compatibles should not be added.
 
 Best regards,
 Krzysztof
