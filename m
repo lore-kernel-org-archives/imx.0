@@ -1,131 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06ED15382C;
-	Mon,  2 Sep 2024 07:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3DD14900E
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 07:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725263253; cv=none; b=IKErSNQXwwxhaG+BO0lKbwtSW/E+JcNM5aUfWqtdwC5gBGHPa4hveO40rl7Y42suWO/keasJHSWpyhKLtsgk6kelxoVykxc2pw+y0BvU4omDYO7zAPZR8J+o3VgyiHzmZcL7U5y9MDsCkho1IWHFCfZQHYqB4JPXGNbSJWnVa4w=
+	t=1725263549; cv=none; b=n8Nv2EQoJNMVU7sRQynRvSyIiPfiy4uGuADVZ3I70K2vnH7V9tVYKkVHbc74F+mBOYDET6pnCpriHrrsBt1YL4r3UI7+rGqbyt69JaYp1yFG5HU15ETP3jM5544bNpJE4RY392Xoqdq06aGX/DZ675spw3rVy4/ah4C6HfE2FoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725263253; c=relaxed/simple;
-	bh=zaQa0W/lWAq86PBVE9eO9YvaPbLNrwo61FWQzJWC3rA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a/fn1/uM1rbAas4feL+0x7THg6TEjv74aZhZAF+djsQuXPJMERFbQOC2CQ4W2eBkAumBA033ic910Mw9fPTmpJMXuo4lS5TYl3E84d2zxlvuiuNMoirhg4syLoPke5wC6TRdvHiQwZYGB35GcIL2f9vRY1r5c59bg85hbrgOOvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSmLLnbI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725263549; c=relaxed/simple;
+	bh=3nAkcyovcR5wQ+ZHWPzbOoAXDGnZb9kF/DhMrsUvhkY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o3mLQngkaPxq1qi0wpu1P/uiRe/Awy51ha9h9icdLK6lkRunilaW9+k4ODWzQ4D0vJrMaNC9RfeKcsMf/vhYaHjEu7FZcWWnmPGTxQCb7Z1G0SF/u69Ft/bAMp0Nvqv0Wypp/uDX++NFQdoPfAN0JmMQ/BsSqPT+nu1VxKRT8rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JdJ3kC4k; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSmLLnbI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F47C4CEC2;
-	Mon,  2 Sep 2024 07:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725263252;
-	bh=zaQa0W/lWAq86PBVE9eO9YvaPbLNrwo61FWQzJWC3rA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YSmLLnbIdYQcZ4DR8W1/q7dGjXRjnum5BPPpt71BxsM+a5G1sI9U3PWlmHZKziBAz
-	 G3q8mfdtXzeEeYLzR3NJP5QQahw064FFCS6CUzFW+8IgpZiHTbgIS/KzN59ck2XJ0W
-	 QLhsuQM/8PoYyMoCcwnGRLuNcIlsruK4Edi/ftO0u+acUcQKJgLj7EJJOVETfc441C
-	 /DUnpr53WZIMn8AGkI1NOyiz31cYSrVfGHXYdDsapvVv4Q8SYvAJb/PPWB4LULT5g9
-	 /YyCGtHUAFJJ+Jvg/aHBs0sPaXbhjYExgePbek0G2rxkSuKlOChEUze8KXV4s3oGqY
-	 tPF9UgE0D1ZxA==
-Message-ID: <e294c334-8d02-4f56-b4ba-e63d94a70a12@kernel.org>
-Date: Mon, 2 Sep 2024 09:47:23 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JdJ3kC4k"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42bbbe94b88so3883905e9.3
+        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 00:52:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725263545; x=1725868345; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XGwfN0CeifX9HzgQ4u8AIzU8rGDPcSifb8zJ05Qy9/Y=;
+        b=JdJ3kC4kVSZKg87Nzo10E3Fimp4xx7xr7m3r5JONmq2/UdUOpJRCaw2JrBoEUCuucd
+         z8wRDiAr55u3cDOn/7Lt3jrFuwyk7oArCs8B9zYElsz17JOsUUTQKhXuyEvWklBtQJI4
+         13oC+KPINxsRB91lZvkf+QHspB5pn4mA+h/E1DMRjONBQGWnaW93yBtI343lbZoCV5FK
+         OY7WB0hx1zrl3CdTiUYCFKfWUO7kQHx1tDf/UJTPYMiLywgMi10FkJpoJ7fFhLuXgVD1
+         0VW2cOaiCtuc/Iu8UUu1Vk1ufXY68advfa/0JSLVVXzkUR52isp9FExRhHuh9JRXoSn/
+         HTEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725263545; x=1725868345;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XGwfN0CeifX9HzgQ4u8AIzU8rGDPcSifb8zJ05Qy9/Y=;
+        b=AI3yAvA0jkXNa5gp7aNsYUJy1F5u2LlDACLUKtZ/KPLbJmB2uhdz5wXJOI4JMniJLL
+         vLFS0i5o9CGkEBo3UBMsxBwTgBxYiFGGmbJj14mxWHuw96LgE4AN9kfmsr4+PluMzT3h
+         yCgfuH6gvAY3WWlFDYH/F9+SZv56F29cfamKwHvA3GLsADY3ZQz7cBjZfe6OLnOtPdpx
+         2CZYVWt1dciqpKh4aDcb+WdJNClWw45UvCQ2pREk5rQFE7nbVVXtAD0xUZhkQ95F5vr/
+         xCS/jMetALwqsLmj0k174clELI4Mx8Ip2hbZ7M+UChurabXX/DS/L74gig89lnoTtTXv
+         +p1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXxDdcdeJHDNJ1b2PjjiIIV2G4amkFjw319JpaPhQjoYSKm9eAHbT09Iuaa79YPNUofWh0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMLQsNK+QdV35WCKgvBX5IVBA1VEzw4FHQfhYa2UnDZ0OaK4vv
+	a5RbHYjbHjn7cm3FRl1ZBMeO2zSc6upyES0Rwojq9eJ0+nMSUOppMOO46I36Qs4=
+X-Google-Smtp-Source: AGHT+IH08wIcIro8Jehvl/Hi929ZBc8qRS7+U/oFTc3nEePg/wnCtxc7gBUpCSptuXI5+Y+n2+ZYgA==
+X-Received: by 2002:a5d:588e:0:b0:374:d088:476f with SMTP id ffacd0b85a97d-374d0884b17mr191134f8f.5.1725263544757;
+        Mon, 02 Sep 2024 00:52:24 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.222.82])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba641db12sm164768265e9.35.2024.09.02.00.52.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 00:52:24 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] arm64: dts: imx8mm-var-som: drop unused top-level compatible
+Date: Mon,  2 Sep 2024 09:52:19 +0200
+Message-ID: <20240902075220.27971-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] dt-bindings: arm: fsl: Add Variscite Symphony
- board and VAR-SOM-MX8MP SoM
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: Conor Dooley <conor+dt@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Gregor Herburger <gregor.herburger@ew.tq-group.com>,
- Joao Paulo Goncalves <joao.goncalves@toradex.com>,
- Hiago De Franco <hiago.franco@toradex.com>,
- Mathieu Othacehe <m.othacehe@gmail.com>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Josua Mayer <josua@solid-run.com>, Yannic Moog <y.moog@phytec.de>,
- Li Yang <leoyang.li@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240902065606.8072-1-tarang.raval@siliconsignals.io>
- <20240902065606.8072-3-tarang.raval@siliconsignals.io>
- <f3f65c33-335f-4769-958c-9b75fa7083dd@kernel.org>
- <PN3P287MB18293C640A4A027E6292758C8B922@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <taacgew4rjjh6q53pog4jv2waamso7ytor5a2womrm3txowjo3@t3yimdusgc6g>
- <PN3P287MB182944940AB38804B65D58888B922@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <PN3P287MB182944940AB38804B65D58888B922@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 02/09/2024 09:23, Tarang Raval wrote:
-> Hi,
-> 
->>> as per your comment, I did update the board name to "variscite,var-som-mx8mp-symphony" instead of "variscite,var-som-mx8mp."
->>
->> ??? No, there is no difference. You did not test your patches either.
-> 
-> I did test my patches using "dt_binding_check" and "CHECK_DTBS," and there were no warnings or errors.
+The Variscite VAR-SOM-MX8MM System-on-Module cannot be used alone
+without motherboard, so drop the top-level compatible field to avoid any
+false impression that such usage is possible.
 
-Ah, you are right, I missed what actually changed.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-> 
->> When I wrote "This is not correct", it means you should drop it.
->> Incorrect compatibles should not be added.
-> 
-> Sure I will Drop it.
-
-I guess I wasn't precise. Please drop that one diff hunk.
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+index d7830df5b6f9..cdfacbc35db5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+@@ -8,7 +8,6 @@
+ 
+ / {
+ 	model = "Variscite VAR-SOM-MX8MM module";
+-	compatible = "variscite,var-som-mx8mm", "fsl,imx8mm";
+ 
+ 	chosen {
+ 		stdout-path = &uart4;
+-- 
+2.43.0
 
