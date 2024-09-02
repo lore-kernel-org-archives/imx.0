@@ -1,76 +1,66 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2041.outbound.protection.outlook.com [40.107.22.41])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2048.outbound.protection.outlook.com [40.107.20.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958D419CC02
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 18:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D141A3AB5
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 19:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725301265; cv=fail; b=nFQeazKyyvm8i4PodrN0Nju8k2R4nsx8aGmztTriKyN+RbOQIpW67MOJxCci+dY1uOMGwyHp5wPu6ikXkUmwBdk12JqkJ8SprQQ2/OEjl0wrfNJz7qj8XUEZdcfFt8783iVu+4uZN+bBa90Bouqo1I5CtABqL37E9P0Z4e1/LLA=
+	t=1725305437; cv=fail; b=Bpeu/mhuzkvZPdxXmjtXwRea9WAiuT0ap80c37efFxsEsT5GSsZYW5ZgKdknXFuCbs10LbNszgG3p5C2lWsewqtoN060Q+2rkfj7gOvJ0KM1oC0z/1NnCGT+IsFEnV0CkXaemm3drtXD7A3jHqZsLBYa4wkLaFfg0BqIH7gpLGw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725301265; c=relaxed/simple;
-	bh=YjRMwilWfpcWAO2l3q65GlP0VdroPsmrIdb3OHBxsd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dXhtAhwdBYA4AtndYxBDGWlLd/RQzn1gf9WqKST9I97p1Q/YgXa7WZCZoiyJe08FnqxIuxP5dJSixm0yYYji3/acz3nbNQ/tcqriapf00XcVQmlRvHlD7HY85CdQl4FubL9yV+le1mLIS376LgCs+b7H31JaDi8oglK16ljKNgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Tt9ufGKj reason="signature verification failed"; arc=fail smtp.client-ip=40.107.22.41
+	s=arc-20240116; t=1725305437; c=relaxed/simple;
+	bh=4Dd5CEHfnvGXHDPjX0plxBHpSzU+2mIOZdsFVTeq6ao=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QtG4hkZCwno52oKGemfHVvQ5yhKY5795+Wz+q39uCUYzQQNF4Ds1ogxoficJ0rwq0hCcQviTMA2vuMs80qu5RNCrFVkdTmnv8OpEUpiszPZRrCLiFfckhzkLMrW+yTvTVr+Gp1T8bztRFKvkMVodXS47TVbO65YoOJ+y5ZhyPzU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=D5d2SAbC; arc=fail smtp.client-ip=40.107.20.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Tt9ufGKj"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="D5d2SAbC"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GjRTL+XC0LbnE1NrFsxcLGirczyMzkSgySaVqQEeFzRViQYU/ftf6JCPpgFm1vZCJLzXNp8qYNDBpSnVMKQDdDbzxyiYwsZ9TlwZRKzzYiJp73NLyUvxCTvDKqK29MJBSvqmgvCDp4jYs6c+Hh04sDQV4ox/vAWmRQjq/Z4+zZW+PjSDV+HxbEbLZnVVN8aDb+rqiR6YzG0DXo8DMnmLeA8Yws/JH5w+KFUPs2/oUv8Dp/YkCk9LhlNYyzehSc+Iy+m3UvIJ47rbcB/Ors3kXAKA18RlN8BvkPLNLuoe7hmj0zu4+uzLqKP0qNMkotujcds2T3MZA7chZ4VHH3EShg==
+ b=Xz98wUTK1rljk9NqSlPs6ph9CrVamqcd7EXFrr8CK/1qQNjCqM5ioDyRMlyWqave11FMvAGcCdA2322vfNjJ2+Mlnu13wFiW8qfWtwn1jfqF3xCptoh6aBRYeZrVeEsDULBGQXFYIMMcU026DlRelfIG1Xj03Sl7TR8nPcVngGSDRawbvsLSuMUzxifU7JSp1OSxsPomuwR5NTXFWXVgQweaiHotDLw2egM3yytSTi6ycVSNnEy2vUL1WDG8SYu6OFgDNlA1J0Wa+0ahUizRuYIdGdIfNxzRJbSUDy1k1oPSyWboZacUBf4/WDUZ22HwN+hlRg4zvFjlpHtFRKPruQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ubve0RSP5GjdDLG7Lml9kD1ZL3N9PacIiinSuVaKaV4=;
- b=s1AtlCW10WNJFV5+oQs1O0Xi47MGZoZUaZYeokDXWhhtrtdTsA1GbiyoXJSiON8f0tFGRYtK6zPF45HoGwCzUybt3m2tlUncYnKvneutvUWd1t4a1624AWZOxjeeqlkrMCh18lAE1HdaFOZI4wLlzxRLIR0HLaX0u6+dpgnAM75y+T0CXQuv2+Nltvh1Q/voMxLi9OGEQnJMS7PP2a8xuOmZr+6K3GwrxRlgVgHFKteWHw/M5I1/UHulgU1t66gAXi++Aqh+IL26ypok0hiephMYmL0VWRa2R9T0cJz+ph2Eo7YhoCGzztb7wdL9tJ7UQHr2jtLwNYmshnALEDhkiA==
+ bh=qwiY0Lxpc1eV9uulU5h7qu4Gqm6ZAklFq87JmeLXU/s=;
+ b=p+KnByGyrJl7SFCckUKL49ls63ylHXM6vTA1EHPreJWoRUZGZFF0EUm7XXB88yaXtUgwiHENqEu5+NI7z1Wsi8rohRhlFzxUUQWg+7wTlnhvTuye3fa+3R/5TGfw+Xx0Hv/8GUgM4V9G4q0rgV1hl01VMow3PEWWpU00UPhqAogoH8AMo3F5yX5w7y20XHOL6y51g95Y8wG0ZVSqiQeee7991/Os+HUItFDfHe/Nqywny/IBq0wmvC98Tc/jVZezsbAZhWZl14PjwpFMtIUhADn/AAWJL68u9oE5IDOUto7/XyUrAexvGkG8LQCioSFLzIXXAm/V1a6DmT1yasdnig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ubve0RSP5GjdDLG7Lml9kD1ZL3N9PacIiinSuVaKaV4=;
- b=Tt9ufGKjiI6Kk3sHkFqWMmUch/8FhYk6dMKeGRItR2owkzP8Kbyoi1dT/QSXItCQTYy/6pNzkQMXatf0uRB0DS53dak/9dW8Vi4y706lN4SpTqsyccBRJOoAsrs/5uicCB/cJFh3mY7ICuMQFovPlztnAQZzaq2CcPOnfv8E+JuCyl7VNAWf/IETupLRCoA4YTBy5lYgvbJ7PHho8FINzMPDHYZ6SxBVJAXFtDkmLFC4xFrIFJc1loECIs9X+Ro65uAN43C0WIhA1ZNH25tOOlhUf13v92j6pUr28WSgzryaS9MToK6gL2hl4/BMTdLpHaWaLQR1nLK1pEzdfLXk/Q==
+ bh=qwiY0Lxpc1eV9uulU5h7qu4Gqm6ZAklFq87JmeLXU/s=;
+ b=D5d2SAbC/+Q8Br7SdtoKOsQdy4ASLxjkOBTBdSJrnPZfwJXHiaejQ7TGwoumXMJQ/DvKnALJK1LtZPUwrP/mQGrZf/ipWc/l/7nj/JZBRM4KDfsTlVGgJqFwBG5YA5xLRtKUsok73k7C3HJ5ACwomPoxue+xeeC5Yr5k4/Z+dSZguT7MZ+ehXu3E96Xr8qe0WHUEQ8y/rCduJrUWqjneo8M9bNn4R8nOoqah4C86vsn4TzI4cMFG3D7y26ThLyhbhEaw7VRUIyqhsC2dXiz4zNY2VbR9alPUSU75ewervD4TvTg5n8ezp4GmTfAoqW5mgm5Wb8el96sFkM2A7GuOog==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS5PR04MB9731.eurprd04.prod.outlook.com (2603:10a6:20b:654::10) with
+ by PA1PR04MB10444.eurprd04.prod.outlook.com (2603:10a6:102:448::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.24; Mon, 2 Sep
- 2024 18:21:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.23; Mon, 2 Sep
+ 2024 19:30:31 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7918.020; Mon, 2 Sep 2024
- 18:20:59 +0000
-Date: Mon, 2 Sep 2024 14:20:51 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Parshuram Thombare <pthombar@cadence.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Conor Culhane <conor.culhane@silvaco.com>,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v3 03/11] i3c: master: Extend address status bit to 4 and
- add I3C_ADDR_SLOT_EXT_INIT
-Message-ID: <ZtYCA9cYywmUaJSQ@lizhi-Precision-Tower-5810>
-References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
- <20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
- <20240823180426.056ac093@xps-13>
- <ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
- <20240826100430.33194702@xps-13>
- <Zsylya9TN4mVFL79@lizhi-Precision-Tower-5810>
- <20240826184924.53b48861@xps-13>
- <ZszPrBeoPehGsocC@lizhi-Precision-Tower-5810>
- <20240902161250.26846654@xps-13>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ 19:30:31 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 1/1] arm64: dts: imx: rename gpio hog as <gpio name>-hog
+Date: Mon,  2 Sep 2024 15:30:12 -0400
+Message-Id: <20240902193013.1456513-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240902161250.26846654@xps-13>
-X-ClientProxiedBy: BYAPR04CA0019.namprd04.prod.outlook.com
- (2603:10b6:a03:40::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR06CA0061.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::38) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -79,156 +69,259 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9731:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a38ef4f-4bfa-4fe8-6dfb-08dccb7bfed2
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10444:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7b607fa-0ba0-4664-d335-08dccb85b52c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
- =?iso-8859-1?Q?gAt3FtDyLOHY/pNeSM+kTiNkhz0DbItwQLw4ZXrYibpO1bdsV2ZaUPkgr4?=
- =?iso-8859-1?Q?VOE9g0VErWsZqiU1otPK2WYSlfQ0lQNu44frHUxqE7QMYYr7DJs3B5jPXL?=
- =?iso-8859-1?Q?NgqrUKMnawjNDKuPR6IGjAcyLjim3O2FlCngm4sUV/iNVplHv4tadsFjg2?=
- =?iso-8859-1?Q?+Anp2BEK4ZwdDKQwK87qDfW/SSygUo9vknvZgNNqpKwBCgb+1dFSk8i8v2?=
- =?iso-8859-1?Q?OO8dXja6SI14JGvRZO9P5WOhC5CauSdWEXYOtWDBtpsmDWir5wYyLLcDl1?=
- =?iso-8859-1?Q?V/+xb0QhzoGIkBOe0sTX1W7LytfuKEMveuor3j14gSSAK2kuJdgxfrKAk2?=
- =?iso-8859-1?Q?Xxb8/AGl3NQZKHDK/FXAUaWAH+mIL2DXj/U0fbCG1kqnwyt0MXmmPWN8tH?=
- =?iso-8859-1?Q?fRaI5cpQDv2ZF+We1JTAjGN2MUj34RFFgvnWcOTrHX6ZapB7/G5WtZgEkj?=
- =?iso-8859-1?Q?OUsBelQP2jE1fc7zTUpn/Kl3mBM7rGjqPokoVwhnPgDqlot/S6n8MjAvWx?=
- =?iso-8859-1?Q?OM6qK1jsxrwlHZCEwR5I9NCinaZnX53aaAjFhrCvMdUS5dvCd45wpTm+aL?=
- =?iso-8859-1?Q?IXAluWniwiR1ldGB89U8l+o2fpG07xsF3ZrVLcUKTzgbO/vGMk0rZo7fYs?=
- =?iso-8859-1?Q?3+M6YiZOI/hy8iKoQGEOGuwI3NIhU2AiXIekBVxEbBkF7NwT40vf87RGlV?=
- =?iso-8859-1?Q?SwaoCqXqgWPEJ7l/0m0DKB7goinEQ6aWE+y2jYrbKINEQQWUClH0pmD14r?=
- =?iso-8859-1?Q?7tzoFNNf/nhGuiY7WLlH++7e6/Hkfmt6Rd0UVxyv92RDyc3/1QAbH3af/g?=
- =?iso-8859-1?Q?k6OfHP9hVldJPU3Li/1zTNzV+2+EP0zG5WzkXaXB9Hl3tuTBScTDytRxv6?=
- =?iso-8859-1?Q?yWJECkqRp1FvJkKDE5tdTG1/P4w8rlp9d41pOpA2YYpoqF1xeYFu2pCyTo?=
- =?iso-8859-1?Q?RvzNrgiQayWiLzZOKqE0n0oUeBcuPIWDP65cJB0iwcugLPBsNZmS/zUaBU?=
- =?iso-8859-1?Q?8cfFMjB9EDWhhiN/g8TKGjOZhTV66Bq5dHOllNHe2J0B0HD+5/FfTjN99n?=
- =?iso-8859-1?Q?LZDrL2Q6WBvyuNUmDtDpV3W+BtEkGN+2BlkKsJm7sGIqv3kbFDHGGKUQFw?=
- =?iso-8859-1?Q?uhne6QlJcjiRSXvkkhvl5wKa5GY5OQ5GuS638aoL4+Hxx+jIZJy0tBkr3P?=
- =?iso-8859-1?Q?QV7bF350ICEcWn/TMktxa2lGdRvkmiaFLU2dnnwk0r70chluLYtYK1CtQn?=
- =?iso-8859-1?Q?eDoLXIB09+sibEMTwZ6bl/tcAyYmybWdnp2c5gXQQ27i7aGMIQSdFM5wIe?=
- =?iso-8859-1?Q?ewa3zNml8n/gjuaP17hGdQZRDv+vNIEpxwqrCBJmmW99jGFcRvvfexsL+F?=
- =?iso-8859-1?Q?KPQDwotG+BVQGwabj5dhXQdvg2odDMc00ISPTMaUDeLg6qCxrVcC6zzfzC?=
- =?iso-8859-1?Q?0ActzqtjrvJvXxT7mrJnXPayb9QCRfkxSoa/qw=3D=3D?=
+	=?us-ascii?Q?nDDhqc17VgfJgaKK+CUdzWUj7ubcvQ1cM6svo70VDM1MmQ5D78c0XZlidp0s?=
+ =?us-ascii?Q?qNGZloShWfdEgouI8kWVcX9YHgRwI5+cJru7AmbSM7Asq8h8CJ5UTuP6OVdj?=
+ =?us-ascii?Q?AkS7ky5db719OT2ZUUFTo/M8WzjV9G1LKrFrgm/RCiAzAe7gff8YeTcNoGJz?=
+ =?us-ascii?Q?UUvN0GGcBXxHGhMFrieU/tIjFzzu8x8hxWADlBZFhR/gLfJK6DFxnzQta44l?=
+ =?us-ascii?Q?jTpX17i6g6X+jRF0Xn0VKXYsSZhHq5EHPWtGaStynWy1ehBRdr5+OXSkMVvm?=
+ =?us-ascii?Q?J8x/ingjF1XRRAQgWGlmKhg1Npcl35OqtFcXtHLQoIoXOqy9gqTFGbMv59Ap?=
+ =?us-ascii?Q?qJrru6ydT62kT5DWVoJBXOCHNzlKTFTrxzUODH+ep6ui3G7KRrqaSqVthFR/?=
+ =?us-ascii?Q?T910FLE0YL0cG4UKFdXG1BGHe+nL51ul9MDf0wwFVhzDLtr1TG8otN5GUmXa?=
+ =?us-ascii?Q?LYex0xVkga0dfaRtkdivfTAB5MwpOjKgcdjdfgKQx1aMG0MlBlhGF1Lqkchw?=
+ =?us-ascii?Q?qHfQaQB+6RmKOr/H5y47oP5Gu1JZfXYO8lELRWAjxDFyLN8AR9NVvPSBNQmA?=
+ =?us-ascii?Q?x+law+7d5IW+MZ2zR8/1SubDas7N4heBuncNCAQr+MI/FdIHygA6SMPLXIfs?=
+ =?us-ascii?Q?E02dWRYeFcwAsYCDhmp1tKcBLZ1rjl+JTu8C5b2p8XEY5vig9psFD6D3IULM?=
+ =?us-ascii?Q?WVVvRO6vlFKdcVsCUulokZwYYdeg3UWR/ooSDLo4X4LknWn/MRsQrlTx+ot/?=
+ =?us-ascii?Q?9EOTinuCYDSzU5R7X+A6st0PIrTKiBD0FqetAkeJP0dzW8/p9gYCYFnP07qX?=
+ =?us-ascii?Q?38KzNzj2SidMDtejwQHG8+U5qlHO9WNIQ5IPNaEiRFTJDLeV1iaUqiyP42Nd?=
+ =?us-ascii?Q?ygWxO0thm9Uj81dp1I9Xpl0/cI/0CB51/AEgy+c0PJoQUBCI/aHSiFuOD/GD?=
+ =?us-ascii?Q?uReSxoqvfo0mDuLhW9jJGbe62p4FIwms0l1DidekXq+Ei7Tqo2YDPaoWOSAb?=
+ =?us-ascii?Q?SzzFrQhyiHY0Udf8ZACgsmvSgwbsYR4A+9HCEd30PGSpskYG9LDfWyDx6TQe?=
+ =?us-ascii?Q?+StoiMNg7prXRHhJwZuZExW+odPOxhZrma6wH9PLQwH9Vj103tuPqYBn5vHc?=
+ =?us-ascii?Q?D0Ni9OtYpkj3NqzDRJYMPicQuWq8Oo/CaWJo81yOQXpd7Tv1Uv6EUUxas7Cx?=
+ =?us-ascii?Q?vNlMTlPkxFOulKpG7G8L/7+Ar+oPFczMrgi+EtLQqHdojn1gnIuq/JE27645?=
+ =?us-ascii?Q?QFJxolAMt7rBfi+IO5675X3tBIllHvAz4e58TgiMk99TM/jigvCe1rJSRDEo?=
+ =?us-ascii?Q?E7UW/4VKOV1VU8Bv7wRMxx+79/3GV1pY0ruKuMpyppnDVEZfeF+xKxLMOZfF?=
+ =?us-ascii?Q?4+WvnXWHk/fsyxPBAmqcAqro+pzIfc2fq6dzscXLkZCjnq7m92re1nWQAdOr?=
+ =?us-ascii?Q?eKUwww7YJf8=3D?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?iso-8859-1?Q?Ewrxm3zGLJBAVpKM58frqa8VGOX+hDgcApTVu519KG1hWHhLDoNGwm0GN9?=
- =?iso-8859-1?Q?F0vGOw04C9aPCSfo4GOp6QP7BMrpi6STwOWPjCcfRYRYUyxZD8W0GVmK8H?=
- =?iso-8859-1?Q?Bweyalr28OOc3cGADXarhBDINSC52r8uS3mWGvo2QF66O1iYQ/XShJLdCa?=
- =?iso-8859-1?Q?McyTkknfOfZpMFIjSwLQam8cq7j9vtfPEnE3raIFsMXt/eBBPCJUehvuRu?=
- =?iso-8859-1?Q?lyuKP5wYlHi42J3Sy+IufdgvszgeEVcSbOSzURBdLFhuQKA2/e8Tofu8T5?=
- =?iso-8859-1?Q?OffOe8FBCZwr5bLFaSRIo81nh9xHJoOm5tdp/nZsIFgzli4W8RuNUcQrvB?=
- =?iso-8859-1?Q?xAx9EVutt/Vb/d3+HOiZ4/kNUBljx3EbkDrzMlXWr+1cGVdns/nlhu9IJM?=
- =?iso-8859-1?Q?UNn3poSw9NjtpCfHl1u83RY3vBt5R5zBDxMb6EneXmBmyAwKn8M2IQ6wC/?=
- =?iso-8859-1?Q?eTDRH+FAQaGaxAQcrXlPvjmQVnPe9nyo0PHaN2+mrNMgwq812bkhHDC5kv?=
- =?iso-8859-1?Q?9XeWN9KG6mGu2hU911CM71wtJZvR8eW6lbSsoKv8rhpjJU8Aq5Z3OsX/FR?=
- =?iso-8859-1?Q?PdaxlyJ5O84b0iyx20imTaVUxRc15nopiLlNASXj9eMHm1LeotYR/64yas?=
- =?iso-8859-1?Q?fmR3Ij3ag1ZDPSnNMNwndRQI0iAcWL7GR1DovK5e03n2CusSRTF9nLygw/?=
- =?iso-8859-1?Q?iY7Losk3EEwcte8hKjJr1gcC8+X4CuHewb77pGjfEFkiVeSdWsNVsxyNim?=
- =?iso-8859-1?Q?TtRLUGz/Dy1hltE0ps6F4dxAoKNils+Bcok0gWMSB/ncXJWEOemoPy4iDy?=
- =?iso-8859-1?Q?M7PaoObexqONHWuIPdzGBt2yCpiuzc0njJ2z9p+ivTXUp2gnzQtmjtqFbj?=
- =?iso-8859-1?Q?T5jX8UHXfDZQ6l+8Sot3NHaxE0d1rws4dp53kyq+NsQblQPe4UZVs0M/bg?=
- =?iso-8859-1?Q?lOTHHybF70cK+mtdVnhY8Ih/gd/SyGhjpFKIX23E+xO3dHqNs/ZlJV6Xif?=
- =?iso-8859-1?Q?1kBX6u68h3mXYZNzrnKcIg1lbU4Zz0ZOtLZSrCoYzj5mqqAj7wAK2bWRnJ?=
- =?iso-8859-1?Q?YliMoMsVuQEGBALzKEMZEN1xIfeMw/xTCxL8E/tXA7F9XyXzVA8gdfYo/2?=
- =?iso-8859-1?Q?4iJl1Q/vGRBxjlh3c/VlmXB8ZO0kFVijUPam1KadU7FYseiwdgdMtdJToD?=
- =?iso-8859-1?Q?Q61zLh3KgGCZ94dX0vFHX3QRTjso5zMv7RhLqbwtfPbg5EgEC270zdua5r?=
- =?iso-8859-1?Q?rcXFkcLYDPyu+51s/gqgYykgRcd98W9azoU6hVn5YvHeJlDNxOV+G4qIsZ?=
- =?iso-8859-1?Q?9xpZc+qL+W43149tS2IDgbr0bmyIdDXv6t73zJQRoYYuIzcsbAlTD9E98P?=
- =?iso-8859-1?Q?VSXMEWVp9RxZl63rn/ZLijXtLEtpx1JdBHX+0TjkBrz8Ue76wkiN58NOCA?=
- =?iso-8859-1?Q?12nNn2MVBCFc7xrCARcRT7M8mVSBC4NzlenPbul9rer/70u16aDTaF+lHr?=
- =?iso-8859-1?Q?AKeD+DiUcRH6w4DrFDb56SiPhri4x7SojEDPFFYlSlJnoqwXaAmJRJQHNp?=
- =?iso-8859-1?Q?KBpSD7b6x8UKshHjCpiNCOi+y/o9gQLlxLHzV7DGkSlTQcYDMKzCmJ2Mlg?=
- =?iso-8859-1?Q?FL/kbNqg43AOsmimh2rc9GC6bGus3DIlp0?=
+	=?us-ascii?Q?M2wZOF4y6GxgOTHbAJ4HqKGZMYjtNzIAbzuIHR0G36GNQCfZcyoWZGUg0/XP?=
+ =?us-ascii?Q?XlafvQToLCpIsds2ZPQcoou4JXkF0ino9olo90jGzFBy2HhYeTAnp9k7YW4L?=
+ =?us-ascii?Q?j/TYwnBDaWKjpUVS7IqUfrjGB0rnC4oviehSyoMSNjhUMmW5SJLq5Uh9ZvlJ?=
+ =?us-ascii?Q?xBAKHAbH+gUqBYDyUqviEeORHgyuLXwv8jt8E3CG4bxZ3Z70WUTm/HZa2n4k?=
+ =?us-ascii?Q?iOrxmbUzPhDcV7RaPIJBL1vPMkTM7WgEsx7M9vUmgJZA2YSbN2WpQOEs6n8g?=
+ =?us-ascii?Q?idpArYnixCByTrAv3rC3bKyU+w6wb3IPUc9oiqpY99o9xiyJe8hC4id1lfT+?=
+ =?us-ascii?Q?67XvDlSUJS1n+XmSpT3tqs9FJtC4I4dKp7M+r40hrqs9r+NcecsXoimTFLNk?=
+ =?us-ascii?Q?zQn0gM6DqLUd023m0UEbwaLubNZ7perFXEEqvzA351IaI13HYE6VNtHeunNv?=
+ =?us-ascii?Q?/9SWgNfSTPLnV348SflySpmiLKYER51MGjGUIwf7EiZwRkQN2PW7AFMvkOA9?=
+ =?us-ascii?Q?5LuurVfH+sF9cZFWaI/FKF7pnFfLGzJkV7PTcpHt+RjEaZvDgktn/5NZwirU?=
+ =?us-ascii?Q?o5lcaLSn3rfa7/CF0AfC8K55hf7Pf0RmVY+b2OS9MWaVBV2APneBcqiJvaQt?=
+ =?us-ascii?Q?YC6np1nUEfSE7WBsZewBTIRWufiqP+cPLdDbnnlZbMqEBiQOMMrjTzrRGYEM?=
+ =?us-ascii?Q?/1wloaD2r/hwOw1vQcVFYjUJvb4nHsXd+yimdSKBG4Fax5LbmgBeelFaVxqx?=
+ =?us-ascii?Q?zNf6dKg4RBN+AOPgmmGUilLfLR68BJgIrhqUWjwEc2pSjZPneqefyZV72s8i?=
+ =?us-ascii?Q?VNmWHhPXscTpmVJRJvwYnpL/aFYpzzCtDIixnwVtoXYX9qO5fNBPo+LUFFqD?=
+ =?us-ascii?Q?d1HJ7120qlWp3x8/IipWXIg1VCcPHfC4Sz0KAIyqyj3qtJ6Pl7+Fo2kfUA6r?=
+ =?us-ascii?Q?rFBL1Aqhsd6yIqmIuYqwqc9JFMP3NPyKNeWS7GrB2/uJci18Ubr/yNAvVPrM?=
+ =?us-ascii?Q?rdbZ1jd7kg17rh1heWSfoaR+fSNMbC7dRYUZ6z+aFQ0KocgkVcFB8/ATvvOi?=
+ =?us-ascii?Q?qH4abHj0DOfRuRmHIhM8ZXAhKuxhhQ71D9XybMGDtQmMoIHli3pZwWma8v+J?=
+ =?us-ascii?Q?8GlON5zpluUDrGlNWowesAUDfZjl9NxcQ/alMG/8qvWMVyXebheAhiqxp8ud?=
+ =?us-ascii?Q?k8ddPKz9bZe3C0bQuFnaAEJ/HL+IE2SXEHewDu/kYGG1If7zqB43i/q4FQNx?=
+ =?us-ascii?Q?/r1WVvSoTkXW9RKZbUkBZD+XWWvQA89v4zTDOCNpfvyMCdScMJQm363K64nE?=
+ =?us-ascii?Q?9VnN/UG/y/DTBnwLhNnXlRTKca3SOFeDgc3r8QFgzkqe8EamcGeGOgCqMogx?=
+ =?us-ascii?Q?wUHq35KZh1sndp78DV/TpQ3Rhn/YQ99G9hahbY+VIKbA5P1Th+5SYtuLypSl?=
+ =?us-ascii?Q?FL5EQ4wjdlg3fAAc8xHxyT/m6NeHl54nU6jSBAOk9KFGFG9Zk7Mh9Ygx/JpP?=
+ =?us-ascii?Q?ouic9aEyYfLpLtaBYkH6nfNXtUuTBNRAJ7/yHv2jwP0yaEQ5W/OC3JLGu1P9?=
+ =?us-ascii?Q?BzrHuB/8P6iqVIBAf1g5gUNlVMUWIDhLCgQdxDQC?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a38ef4f-4bfa-4fe8-6dfb-08dccb7bfed2
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7b607fa-0ba0-4664-d335-08dccb85b52c
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2024 18:20:59.7920
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2024 19:30:31.2761
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oiPMNmwkQ31Ya0UsKdv0fqrxTx9eDa/AaMiCK+eZFiRiJXIqoyt++GVWnBRYxnM4iZpwXv1TLjGp35UbmYwoJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9731
+X-MS-Exchange-CrossTenant-UserPrincipalName: h/Wj1G5Wp/qIIVJItammP2mx+kPYS7hKAfdfYvCYyJpSnT632P5MsdysHGtHfW9zWPqW8CQTKtdKoDdj4EN2ZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10444
 
-On Mon, Sep 02, 2024 at 04:12:50PM +0200, Miquel Raynal wrote:
-> Hi Frank,
->
-> > > > switch to this address if it is free.
-> > > >  *
-> > > > In step 1, i3c_bus_get_free_addr() is called. To optimize for step 2b, this
-> > > > function should return an address that is not pre-reserved by any target
-> > > > device with an assigned address in the device tree (DT).
-> > >
-> > > This does not make sense, if you want to optimize for 2b, why not
-> > > selecting the assigned-address property in the first place if it's
-> > > available?
-> >
-> > This is my first idea. But I gived up this way.
-> >
-> > Select an assigned-address here will involve a big change in i3c framework.
-> > There are no PID information in i3c_master_get_free_addr().
-> >
-> > In DAA flow:
-> > - SVC is get PID first, the get_free_addr(). This case, we can use PID to
-> > get dt assigned address.(if change/add API)
-> > - But HCI, it is difference, hci_cmd_v2_daa(), get_free_addr() firstly then
-> > send out DAA command. So no PID information when call get_free_addr().
-> >
-> > To cover both case, return a *real* free address here is simplest solution.
->
-> But this is a limitation of the HCI driver? So why not addressing this
-> in the HCI driver instead? It would greatly simplify the core logic
-> which becomes complex for wrong reasons.
+Rename admin_led_lower to admin-led-lower-hog.
+Rename gpio rs485_en as rs485-en-hog.
+Rename gpio uart4_rs485_en to uart4-rs485-en-hog.
 
-It is reasonable requirement to reduce stall SCL time. After get PID, SCL
-have to stall low to wait for software get dynamtic address, I3C spec allow
-relative long time for this, but still better if hardware can send out PID
-and dynamatic address together withoug stall SCL low. Pre-alloc adddress is
-good method if consider this.
+Fix below warning:
+arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dtb: gpio@76:
+  'admin_led_lower' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtb:
+  gpio@30230000: 'rs485_en' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
+arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtb:
+  gpio@30220000: 'uart4_rs485_en' does not match any of the regexes: '^(hog-[0-9]+|.+-hog(-[0-9]+)?)$', 'pinctrl-[0-9]+'
 
->
-> > >  Also, I don't understand why you would care to specifically
-> > > *not* return an address that might be the default one for another
-> > > device in the first place.
-> >
-> > If devices A (want adddress 0xA), device B (want address 0xB), if both
-> > device send hot join at the same time. device B's PID less than device A,
-> >
-> > Device B will be found firstly, call get_free_addr(), 0xA will be return
-> > if no this patch.
-> >
-> > Device A, call try_get_freeaddr() to get 0xB.
-> >
-> > So Devcie B will be assign to 0xA, and Device A will be assign to address 0xB.
-> >
-> > After do_daa command, framework will add device B and device A into i3c bus.
-> >
-> > When framework try to add device B to i3c bus, framework will try switch
-> > device B's address to 0xB from 0xA, but it will be fail because 0xB already
-> > assigned to device A.
->
-> Well, okay, but that's exactly the situation that will happen if these
-> devices are not described in your DT. I guess it's expected that a
-> device not described in your DT can be connected, thanks to the
-> hot-join feature. In this case you cannot know what is this device
-> preferred address and you might end-up in the exact same situation.
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change from v2 to v3
+-rebase to guoshawn/imx/dt64
+---
+ arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dts           | 2 +-
+ .../dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso     | 2 +-
+ .../dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso     | 2 +-
+ .../boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso | 2 +-
+ .../boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtso     | 4 ++--
+ .../boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtso     | 4 ++--
+ .../boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.dtso | 2 +-
+ .../boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtso     | 4 ++--
+ .../boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtso     | 4 ++--
+ 9 files changed, 13 insertions(+), 13 deletions(-)
 
-If not descript in DT, it means that any dynmatic address can be assigned.
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dts b/arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dts
+index bea9e8bcafc47..bc0d89427fbe5 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a-ten64.dts
+@@ -220,7 +220,7 @@ sfpgpio: gpio@76 {
+ 		#gpio-cells = <2>;
+ 		gpio-controller;
+ 
+-		admin_led_lower {
++		admin-led-lower-hog {
+ 			gpio-hog;
+ 			gpios = <13 GPIO_ACTIVE_HIGH>;
+ 			output-low;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso
+index 9dd0703423635..4de22d2044d69 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs232.dtso
+@@ -18,7 +18,7 @@ &gpio3 {
+ 	pinctrl-names = "default";
+ 	pinctrcl-0 = <&pinctrl_gpio3_hog>;
+ 
+-	uart4_rs485_en {
++	uart4-rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <20 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso
+index 045cd8082781c..e259d8d5d9e39 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phygate-tauri-l-rs232-rs485.dtso
+@@ -19,7 +19,7 @@ &gpio3 {
+ 	pinctrl-names = "default";
+ 	pinctrcl-0 = <&pinctrl_gpio3_hog>;
+ 
+-	uart4_rs485_en {
++	uart4-rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <20 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso
+index 47d3c0c49e8a0..bb2056746f8c9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.dtso
+@@ -16,7 +16,7 @@
+ /plugin/;
+ 
+ &gpio4 {
+-	rs485_en {
++	rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <0 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtso
+index 7fcd8c851159a..45ac8bdce8699 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtso
+@@ -19,14 +19,14 @@
+ /plugin/;
+ 
+ &gpio4 {
+-	rs485_en {
++	rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <0 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "rs485_en";
+ 	};
+ 
+-	rs485_hd {
++	rs485-hd-hog {
+ 		gpio-hog;
+ 		gpios = <2 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtso
+index b19e38fc27bae..30aa620d7004d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtso
+@@ -19,14 +19,14 @@
+ /plugin/;
+ 
+ &gpio4 {
+-	rs485_en {
++	rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <0 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "rs485_en";
+ 	};
+ 
+-	rs485_hd {
++	rs485-hd-hog {
+ 		gpio-hog;
+ 		gpios = <2 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.dtso
+index 1f8ea20dfafcb..9bee7159a67b5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.dtso
+@@ -20,7 +20,7 @@
+ };
+ 
+ &gpio4 {
+-	rs485_en {
++	rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <0 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtso
+index 3e6404340d529..e98f50bcec57f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtso
+@@ -23,14 +23,14 @@
+ };
+ 
+ &gpio4 {
+-	rs485_en {
++	rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <0 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "rs485_en";
+ 	};
+ 
+-	rs485_hd {
++	rs485-hd-hog {
+ 		gpio-hog;
+ 		gpios = <2 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtso b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtso
+index 2c71ab9854cb3..e875ff4637bd5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtso
+@@ -23,14 +23,14 @@
+ };
+ 
+ &gpio4 {
+-	rs485_en {
++	rs485-en-hog {
+ 		gpio-hog;
+ 		gpios = <0 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "rs485_en";
+ 	};
+ 
+-	rs485_hd {
++	rs485-hd-hog {
+ 		gpio-hog;
+ 		gpios = <2 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+-- 
+2.34.1
 
->
-> May I question the need for preferred addresses at all? Is this even
-> part of the spec? What is the use-case?
-
-It is implements detail. I3C spec said lower dynamtic address have high IBI
-priority. Spec just said assign lower dynamtic address if want to higher
-IBI prioerity. Using DT assign-address just is one implement method.
-
->
-> Thanks,
-> Miquèl
