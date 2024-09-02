@@ -1,495 +1,114 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62B41D47A8
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 11:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC01D4603
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 11:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725277259; cv=none; b=BPB8T5L4qH8DeocEjQhCV6LjYHnn3ZjrlUTmYtv71P8EbxMAkORzIJIORhMylOVu0GDDilY9XPrKEEbv86HzQK8yz/TIJrZjoYSCP2K85GTDAdT+8/ZmTkciRpKIqF2olMVhwT+mBrNzz9TFslzVK82r2zAVIg1O+TRcyIgiAnE=
+	t=1725277636; cv=none; b=qRmezKQfji9midvlfPY+aRmhbdxqbhiOF/msOtMVe2WhtG4NG4s18DSkj5E2T13PuX+9ymJyULrOb7CZHI/19bhoXtcXWlBy+WS37eQtzc+wYcPagdKm/Txo1Xr/R/CsD4wO3SV8uXXydTf3NAs/qxkjIyBuKJlCPYqB4aQitB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725277259; c=relaxed/simple;
-	bh=J138BfmIUP+DsGFhuQ6tmQ+KFExTDC0caq5a6QTQpR0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U5H3k0H0Q012bqUSLNgANG8C/o0x0NigTtQUlAsmK60QBuHs1dNF+sMescK+rGe5YTIwe/w5vafIF3CoRv6LDKEfD62RPI2eSyTQBPXd+cnrKcXg/Axq2SeFn5FFkUN484P1UeLWkGyXz8F5oK7l4Fy+OilQOFkMPoXH61dyeIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eSEZJ5oh; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1725277636; c=relaxed/simple;
+	bh=o74jyQkYgHGz+wE0fizxVIw+o+orn4Ck0OdTUp5RnLk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ReAh+qr9jTa2s8Bg0FE4r9+ohqvwzXnLAb2R5a5GMwnoTrpgVw5Wh6luUPZx8FUarELLcEfRGG85LTI8taWbYMVDp4SSf1crv8nbkb5UDxl9j5oryS/XSNNQt+vxkG/KytVs/4qIeTmFAKDb4fGvxOtzgrhPGFADlrZ5lx3C2YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=jwrSW1MW; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eSEZJ5oh"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42bb9a23ea7so5106395e9.1
-        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 04:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725277255; x=1725882055; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=stq3m356GXIwneY5TQElVnJK65z1Q8tunPXavfni1Po=;
-        b=eSEZJ5oh/SeLGAUSui9Hl88ksSGPUk8OiBVqz/dV0LazAmVibpKmvB8oFTOgG562Dd
-         gLauGEE0+UAybfkAog2SMXLTQBA0Otp8B7Z4qZ66B2Zkl3aNY0+nuOGa9OvWI/1Mva1n
-         d57yc5RQOVhwpr4Ulxvyft3C74ZUYBgNxbS5lvoH86QYabTDH0W7c1TkrOcsCjv7xWIQ
-         m0o8b3SSMCrl9ahevN3wmTkx1r93nQvsid1/XWc8btYJGyB4b7FhKTYQ+005yO9bTZep
-         yQJDvfKxlhxC0cMLYlE6koT3DEcqFBcjf+8BEbk5FRFRe0XrnMc63CkFXlRm9InveuCV
-         VigA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725277255; x=1725882055;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=stq3m356GXIwneY5TQElVnJK65z1Q8tunPXavfni1Po=;
-        b=g441WFk/geLyMxNyb2oyEHFz7o6FWk5RuTBptTOpgHMStxKjdHley85AQDAaDbOHVi
-         l5h6xT4Fhj3LaPUy1v2y6qmMGp5LV+Mfe3Y2QePUqGmkhCueBZ68N/MNudi7VozMC/Oq
-         CRbiVRz+8RcWCI4ytUHldrD0cuqFVfUH45+lNuSRCxaJVOzz0zPV/SFBVJWlcbeJwN6w
-         PtZ2v2+AgYSy3lN0w9SiqqvdIQvTMEAQ0m4iyv2dhWC+1bY/tDRhD7MT9R4SlR1S3mMf
-         eyl2AXrTuOVR4gNJJsUmjRNl4b/8dzsHOqrpOpwUmqbM8iKJBPJTON0IXLuuWLXsnVeD
-         1yUw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5tlF782E/IoYYJplaHPycYCZuQEiMu6BHdoR9CMz2ys5WdzYbs9c7Q/0pctRiEvU2LOA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPam/xDGydt8ETqYM9grNPWr97W1RRc/AoFMbdzhz0vZzn23Ku
-	RL3Kl9z3zH62hviN0+WIqBgQi1dsIvvY9+0tpTxAGxRn25mTTGivLfaknoLgGhwpbk48YvqF9+Z
-	Op/Q=
-X-Google-Smtp-Source: AGHT+IFhutwBdu7DG5yHj/lPmaMVpJV3yHqZN+By2ShndFLRElgTROe/iXqSPia5mIOemiWhGr5eaA==
-X-Received: by 2002:a05:600c:1554:b0:42b:ac7f:4bd5 with SMTP id 5b1f17b1804b1-42bbb4461efmr40674775e9.5.1725277255348;
-        Mon, 02 Sep 2024 04:40:55 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba642594dsm171515245e9.47.2024.09.02.04.40.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 04:40:54 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Mon, 02 Sep 2024 13:40:40 +0200
-Subject: [PATCH v2 4/4] ARM: dts: imx6qdl: align pin config nodes with
- bindings
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="jwrSW1MW"
+Received: from localhost.localdomain (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id B8541889AE;
+	Mon,  2 Sep 2024 13:47:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1725277627;
+	bh=KrkwA9IVTYMSXqFC8s7yAeoY9Nwrqpd0bO5czAQyqLU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jwrSW1MWMezP2NBj7HYR2AlanK3b3h6J44MAzL97Q5ZpbGqgrhzAIv+HD1J/aRtE0
+	 Xx+wJ5boEGqglzXFQlO50nWR8OOku30kAshPzVXuWTmgaRYoav108hRCoIDOt71NAa
+	 PBLaMroJNHphx8cwYpQGNb9vMzSKpSQpnrXlMXDzNDDbX6ffSxaz7YDascNMgsVG5z
+	 A8pqwdJtmwl7Rjgiv76C2t6t8e3lbngjhzYl0rW8R3YLR6vgppefnslUVCl9SxxKD8
+	 kdfA0UCf+yzn1z6g8hlbk2JDWIPPxKmRJBdxmBjdO/JFy/wVwuV4cQS3ekoF/V67BP
+	 aHiF+NVVoqZuw==
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [PATCH v3] ARM: dts: imx28-lwe: Fix partitions definitions
+Date: Mon,  2 Sep 2024 13:46:50 +0200
+Message-Id: <20240902114652.893272-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240902-dts-nxp-imx6-pinctrl-v2-4-ab8196baa07a@linaro.org>
-References: <20240902-dts-nxp-imx6-pinctrl-v2-0-ab8196baa07a@linaro.org>
-In-Reply-To: <20240902-dts-nxp-imx6-pinctrl-v2-0-ab8196baa07a@linaro.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14512;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=J138BfmIUP+DsGFhuQ6tmQ+KFExTDC0caq5a6QTQpR0=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBm1aQ+fymCywwFL3wN/cf70wfLbB0eadcwSbeDF
- Lr4h2ovNQuJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZtWkPgAKCRDBN2bmhouD
- 109kD/9rN2yGkjvzwmHjIv75/RpNrtrn0zgGkKBHK87+DMWHWlZHVgsP9fuMqblZ3MhNYq2x2Tb
- V+Ue1Dg4O2pJPt+RyChRSmHuxlXwkQEZwwwxjfAgdLjiVnLJbRgTWMDhKrgUYRPYfIngUAN+qNA
- jAPdPhwUOgU0Mc7I7++mEc8kN47bO2tIYldzwAoq0o+zYoN9wKfUdzORZsokbDY31TOxBzv5pHq
- qTqoeNlFtNk7bxD3g23A1NI+wDuEEDoxp6utS5RkPNNdCCOWRlfPNBPnGc2a4KIWhS8DB7ho1YM
- VMI2gy4oaIU1HFohvm60H/cKxLUhYAETR35L18d5B35W+eMZsCa//UayBjV2lmqCeCEkMIAUNGn
- 1H8fPyQCvV0M3gVxxi3IKXzydYJD2p/J7bNUWVd580efzjvZkekIr0CHTHB14F6G+Bx63H8C+F2
- QTljRn/SQZSOdpcpV6nXqjofomkudkhxn3Jk4PmKU7/zwB+vqh6zVoFPRBnR9LfJMVubBsoOsdp
- WfHhECruhkFsdJZBAL4CWySFhYR8+3PpB6vWDnTIvU6F5BvHDBWHW991S9k8vvwXEzrZ9jxI1ay
- 3Ip6P/leqxp/13t1ulTOzSExgRN6c7F9Umq7C8S48PMmhJ3VZG2Xe93P3/Yn2jEKMZBAdlBt4or
- lBJYNm/jipYDBSQ==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Bindings for other NXP pin controllers expect pin configuration nodes in
-pinctrl to match certain naming, so adjust these as well, even though
-their bindings are not yet in dtschema format.
+The SPI-NOR memory layout has evolved during time lifetime of the
+device - for example special partitions to keep track of booted devices
+for A/B booting scheme were added.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
 ---
+Changes for v3:
+- Split patches
+- Modify the subject prefix
 
-Changes in v2:
-1. Fix "grpgrp" -> "grp"
+Changes for v2:
+- Add more descriptive commit message
+- Replace e.g. partition@4 with partition@fe0000
+- Use lower case letters for HEX offsets descriptions
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi |  2 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi        | 10 +++++-----
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi        |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi     |  8 ++++----
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi     |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi           |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi      |  4 ++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi       |  4 ++--
- 15 files changed, 34 insertions(+), 34 deletions(-)
+ arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi
-index 758eaf9d93d2..f7fac86f0a6b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-aristainetos2.dtsi
-@@ -506,7 +506,7 @@ MX6QDL_PAD_EIM_A22__GPIO2_IO16		0x1b0b0 /* PCIe reset */
- 		>;
- 	};
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
+index 69fcb0dde940..a954fef8bd8e 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
++++ b/arch/arm/boot/dts/nxp/mxs/imx28-lwe.dtsi
+@@ -133,14 +133,21 @@ partition@90000 {
+ 				reg = <0x90000 0x10000>;
+ 			};
  
--	pinctrl_gpmi_nand: gpmi-nand {
-+	pinctrl_gpmi_nand: gpminandgrp {
- 		fsl,pins = <
- 			MX6QDL_PAD_NANDF_CLE__NAND_CLE     0xb0b1
- 			MX6QDL_PAD_NANDF_ALE__NAND_ALE     0xb0b1
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
-index 082a2e3a391f..b57f4073f881 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw52xx.dtsi
-@@ -761,7 +761,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
+-			partition@100000 {
+-				label = "kernel";
+-				reg = <0x100000 0x400000>;
++			partition@a0000 {
++				label = "rescue";
++				reg = <0xa0000 0xf40000>;
+ 			};
  
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x170b9
-@@ -774,7 +774,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
-index 8ec442038ea0..090c0057d117 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw53xx.dtsi
-@@ -750,7 +750,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -763,7 +763,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
-index 9df9f79affae..0ed6d25024a2 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw54xx.dtsi
-@@ -833,7 +833,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -846,7 +846,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-index 7f16c602cc07..c6e231de674a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-@@ -704,7 +704,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -717,7 +717,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-index 7693f92195d5..d0f648938cae 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-@@ -896,7 +896,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -909,7 +909,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-index 9d0836df0fed..71911df881cc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-@@ -680,7 +680,7 @@ MX6QDL_PAD_KEY_COL4__GPIO4_IO14		0x1b0b0 /* OC */
- 		>;
- 	};
- 
--	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x4001b0b0 /* EMMY_EN */
- 			MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x4001b0b0 /* EMMY_CFG1# */
-@@ -710,7 +710,7 @@ MX6QDL_PAD_KEY_ROW1__SD2_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc2_100mhz: usdhc2grp100mhz {
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170b9
- 			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100b9
-@@ -723,7 +723,7 @@ MX6QDL_PAD_KEY_ROW1__SD2_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc2_200mhz: usdhc2grp200mhz {
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD2_CMD__SD2_CMD		0x170f9
- 			MX6QDL_PAD_SD2_CLK__SD2_CLK		0x100f9
-@@ -752,7 +752,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -768,7 +768,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-index f4cb9e1d34a9..716c324a7458 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-@@ -817,7 +817,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -833,7 +833,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi
-index 424dc7fcd533..453dee4d9227 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5910.dtsi
-@@ -629,7 +629,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x170b9
-@@ -642,7 +642,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi
-index 49ea25c71967..add700bc11cc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5912.dtsi
-@@ -569,7 +569,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x17059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -582,7 +582,7 @@ MX6QDL_PAD_NANDF_CS1__SD3_VSELECT	0x170b9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi
-index d339957cc097..dff184a119f3 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-icore-rqs.dtsi
-@@ -397,7 +397,7 @@ MX6QDL_PAD_GPIO_4__GPIO1_IO04  0x1f059	/* PWR */
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp_100mhz {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD    0x170B1
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK    0x100B1
-@@ -408,7 +408,7 @@ MX6QDL_PAD_SD3_DAT3__SD3_DATA3 0x170B1
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp_200mhz {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD    0x170F9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK    0x100F9
-@@ -434,7 +434,7 @@ MX6QDL_PAD_SD4_DAT7__SD4_DATA7 0x17070
- 		>;
- 	};
- 
--	pinctrl_usdhc4_100mhz: usdhc4grp_100mhz {
-+	pinctrl_usdhc4_100mhz: usdhc4-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD4_CMD__SD4_CMD    0x170B1
- 			MX6QDL_PAD_SD4_CLK__SD4_CLK    0x100B1
-@@ -449,7 +449,7 @@ MX6QDL_PAD_SD4_DAT7__SD4_DATA7 0x170B1
- 		>;
- 	};
- 
--	pinctrl_usdhc4_200mhz: usdhc4grp_200mhz {
-+	pinctrl_usdhc4_200mhz: usdhc4-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD4_CMD__SD4_CMD    0x170F9
- 			MX6QDL_PAD_SD4_CLK__SD4_CLK    0x100F9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-index 0a3deaf92eea..99386421a48d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-@@ -690,7 +690,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
- 			>;
+-			partition@500000 {
+-				label = "swupdate";
+-				reg = <0x500000 0x800000>;
++			partition@fe0000 {
++				/* 1st sector for SPL boot img source data */
++				label = "spl-boot-data1";
++				reg = <0xfe0000 0x10000>;
++			};
++
++			partition@ff0000 {
++				/* 2nd sector for SPL boot img source data */
++				label = "spl-boot-data2";
++				reg = <0xff0000 0x10000>;
+ 			};
  		};
- 
--		pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
-+		pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 			fsl,pins = <
- 				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
- 				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100b9
-@@ -705,7 +705,7 @@ MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x170b9
- 			>;
- 		};
- 
--		pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
-+		pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 			fsl,pins = <
- 				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
- 				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
-index e2fe337f7d9e..5a194f4c0cb9 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi
-@@ -373,7 +373,7 @@ MX6QDL_PAD_KEY_COL1__AUD5_TXFS		0x130b0 /* SSI1_FS */
- 		>;
  	};
- 
--	pinctrl_disp0_1: disp0grp-1 {
-+	pinctrl_disp0_1: disp0-1-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK 0x10
- 			MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15       0x10
-@@ -406,7 +406,7 @@ MX6QDL_PAD_DISP0_DAT23__IPU1_DISP0_DATA23  0x10
- 		>;
- 	};
- 
--	pinctrl_disp0_2: disp0grp-2 {
-+	pinctrl_disp0_2: disp0-2-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK 0x10
- 			MX6QDL_PAD_DI0_PIN15__IPU1_DI0_PIN15       0x10
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi
-index 200559d7158d..d8283eade43e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-dart.dtsi
-@@ -346,7 +346,7 @@ MX6QDL_PAD_SD3_RST__GPIO7_IO08  0x17071
- 		>;
- 	};
- 
--	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD1_CMD__SD1_CMD	0x170B9
- 			MX6QDL_PAD_SD1_CLK__SD1_CLK	0x100B9
-@@ -357,7 +357,7 @@ MX6QDL_PAD_SD1_DAT3__SD1_DATA3	0x170B9
- 		>;
- 	};
- 
--	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD1_CMD__SD1_CMD	0x170F9
- 			MX6QDL_PAD_SD1_CLK__SD1_CLK	0x100F9
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-index a1ea33c4eeb7..59833e8d11d8 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-@@ -436,7 +436,7 @@ MX6QDL_PAD_SD3_RST__GPIO7_IO08  0x13059
- 		>;
- 	};
- 
--	pinctrl_usdhc3_100mhz: usdhc3grp100mhzgrp {
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD	0x170B9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK	0x100B9
-@@ -451,7 +451,7 @@ MX6QDL_PAD_SD3_RST__GPIO7_IO08  0x130B9
- 		>;
- 	};
- 
--	pinctrl_usdhc3_200mhz: usdhc3grp200mhzgrp {
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
- 		fsl,pins = <
- 			MX6QDL_PAD_SD3_CMD__SD3_CMD	0x170F9
- 			MX6QDL_PAD_SD3_CLK__SD3_CLK	0x100F9
-
 -- 
-2.43.0
+2.39.2
 
