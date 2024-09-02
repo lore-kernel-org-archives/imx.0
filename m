@@ -1,123 +1,114 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB8C1C2DCE
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 09:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621017A5B4
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 09:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725269393; cv=none; b=Tu7w0HfTANGzwtMx7mvoMk8u5S51Anm+S1LCPBgmesa593HB0bX2aMmR4GPN38Ir5XkNABXaTkrnbXVg6D7nhuP1WmYCAGYgTWXFQj2z4ryoqx6e+JfZ8T9qBuvj85xBCc+uNR4WtSaj8Em174bnaRR9jasAyyxkW4g1tpYekQk=
+	t=1725270518; cv=none; b=XBTJ2JE9p39GItrbxnnJ4+IG/XzaJtgcXVT3MKfT5ZseEWUv3IiI05e0d6NFLikiBApzrrBETmNA4Ek5AndM41HhFJqbZEraUe1wplrtAI6vwrdadZ7jhZMhR5ABu30X8QpmYYYuKGfaWb7cm6068Wbv7OkgDBCeMQb5Db/y+Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725269393; c=relaxed/simple;
-	bh=tkU6Up04ywW/1rRD39iCyC9XOTeC8+OqS8BWB+CpvwM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=j+lYlsERE4AH+QUxndy8YAJyM+DYMHPy95N63Vqr8r6LtubaDVmcFDPzLQ3v4D0hPDKfqj6x9CQTxyaTv3+jhqbW4y5+a6nORUvFEpQwFTBp49IV6L8YXegM6KoF5RpxQeA5xSmBAyYcAOavmWgLomUxSSUm7y29u4COf1AfNMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BZicoRql; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1725270518; c=relaxed/simple;
+	bh=QBtZb9KD65n3yGJNh39xwVrcqogeAGovn0MZaaZxugo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lEtT765oCU63wj0YU8bB/KT5BVE9sIW86mJqCZWc4j90VQVxtKt3Iu3eoPTe/YGNDwvy5n8MVly9zHPtm+XsrjdXQzSjriT2OSgWyK+DDKyTLf4KBcUtjVx/Gg5LIoTUVHnuuZUAosoHKqDd9HyKBdVVnjJATHS2OXl50+V6e4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=uKqIcLjg; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BZicoRql"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a86e9db75b9so426662966b.1
-        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 02:29:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="uKqIcLjg"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso44709855e9.1
+        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 02:48:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725269390; x=1725874190; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EPsLVJHNf9AL2cGNm+/rVQrKrbYuFpSLncZ9xh4T+lU=;
-        b=BZicoRqlIOOM0AFvOnArTDXIeQgl/57etLFN//buw1+5HWql5aj7cANHFCBxm8TpsY
-         UwI/70G0J+IAx/FyS6vQMnkE5RWeYmemzspf7R7uDkd8+bAB+ZNYYvCjvdc8/cgCv9n5
-         JXBjncyDQ/HLqizG14VMaVVdfNbpjMv0mHPNwaONlmbKkVYHuef+IcGLmI8QvFJ4uEQm
-         +ffFecBfLIWsNBgXIooonS9DvmKtx5NJQEi5B8VL4K3SO3tmA55dBrURKv8g8m09lc09
-         1l8NSv/IGcsvbor5JO4yUpHXFFme3MWAWlaVjO4vcZdRsPSmtretvzrS9fD1NXtevg3c
-         q9HA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1725270515; x=1725875315; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KbxcEkt76T9GZt/fg4Jcw8wx9AJnOQd77mqSZSN+ck4=;
+        b=uKqIcLjgyV0GtAZo1qTvugHUS8eFI8vhSz4qBvHuHS3IC4K8111/cBQ3/mKyx0WcBI
+         O81BE+FtRtJpBLjzHWqR1iTgE6oKM163Sc7xdcId3+45SpiBOqY77RfFQqRUuwdmBL61
+         1jBW+pXEB7A8Lp2BE69K/ZeAtdUZuFtaxt5MdtRIH+r8DZ6cCzOvm+MF0n7fIydcWJG0
+         F/Qs1NvM4wW9HpF3l0Ob0PKYcwPSNT3oZIW1WIG1dQ/78gC913F9zs7kYz7aIEHdcQTs
+         7n85Cija9cEtcieXnV5jK0LshSL/351Tcis3nQQ4MttIlXOt/09p2/SJgKGFxp424GEL
+         RtWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725269390; x=1725874190;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EPsLVJHNf9AL2cGNm+/rVQrKrbYuFpSLncZ9xh4T+lU=;
-        b=xHW3DTik4MV6qP0gVIrC01zewxNADWB99eGik7qMCZ3NvAXowD23C+6i24zXZ7hjRn
-         d7rwHzyouOVUdsCpM+DEO1m6yhuOwueeoSwJVL0kgLQ+rnSgkUfJY4YOfSEdNMoA283C
-         OZ5k8W6grFcacuK6hV6fTSRL6YQp4LdLm2OcvBPnZ0ANi41iflpkQFDdVnlq+qrGzSm2
-         pdCFNylepmzyKXNs7ih1UqHUGTOKUzYZhpHHmJaI0QLo7/aYrS+qUKy18YW8cMbg0LHn
-         UpPNUYRJmmn9YbCEtuXTXGP5gLr/cNIQI9sZAMOmjJyAgfIoPIjvKzxQpDjulDbQ+TzS
-         KHgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBCZI8u7vaU+P2zMUIE60f06a3msV3iAwfediHZnY21LlcTZdSXYW0ogH/eL+7XpUH1ls=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwY/AqtNzgtsZ8MJXssseul8PSBmXqCrnCCPquDf3v5BZLJM1Bv
-	LS52TgwnLwY5hAwavmR2kshflH3gJIEZybA6b/ZvjhBOxvQBjf/YC556BSXFCXk=
-X-Google-Smtp-Source: AGHT+IHyxYPGT71yvNGl55/joi025MgwKVNHS5yHfr4kLEH+kbbmq1SIbL5dyYz9GztD9lJk9RVwnw==
-X-Received: by 2002:a17:907:6d14:b0:a80:f358:5d55 with SMTP id a640c23a62f3a-a897f91fae3mr1073287766b.33.1725269389610;
-        Mon, 02 Sep 2024 02:29:49 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a8988feb61fsm543434766b.10.2024.09.02.02.29.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Sep 2024 02:29:49 -0700 (PDT)
-Message-ID: <66b8c478-44c4-46b2-a029-bbf847429e2b@linaro.org>
-Date: Mon, 2 Sep 2024 11:29:48 +0200
+        d=1e100.net; s=20230601; t=1725270515; x=1725875315;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KbxcEkt76T9GZt/fg4Jcw8wx9AJnOQd77mqSZSN+ck4=;
+        b=QifkandqY+0iCGDZzEGaBh83jkKWLAWB7Prj3DB+61T1cBBZDo2Ax/X5FCo2nwhNXB
+         p0sKg9Iav+HRmG+rkiPjMBoY31nwnKqXTu7/i+Hql+mrOeYkMedIgU0Am9htECYVJe17
+         nYTc0JQtBYGbb+2p/ry+FrdHkvQUirdHTYgmy/E5pVSDx9fWv6t2414S578CErMUG7b4
+         DinWXaFjpx2mmShIPUTuVHK54RHPXteDpmVpgqBhWHmfTw9MdeBRRiCsIANcNUffmT3D
+         GKxi7guG5v2Wc8GsEz3m85AnysZIPhv/Z6JjyExkOnb/nJM0jAZeKXwX3zP6gADUJBZf
+         yidQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwu02xECTZ3X3gBvVdsbOyywtjiKTD43LkWCzKhGXifY1dNqGQoMRzBScz4doCw6d2YyQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyUGceyZ+4btbm6n86EQ6nBFwloNo+mjSY8eWfBbRXiapf2yfw0
+	XRkhxZ0WCf4o2GqoDa07kDGTFqHTJQ0Ukre8Fkz3XZskL+W8Bao7NYPd+Vm73zc=
+X-Google-Smtp-Source: AGHT+IF7hvbwuW4A6Gp8/WmsXKfPAcTMn7Cze0fDD5ugsq9mnAbtwMteHUBdg1kKX+fyaVbQTLE9JQ==
+X-Received: by 2002:a05:600c:4505:b0:426:5c81:2538 with SMTP id 5b1f17b1804b1-42bb01b92e0mr100921455e9.14.1725270514148;
+        Mon, 02 Sep 2024 02:48:34 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:b496:9e67:73c9:9f5a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bba7f9f94sm67701665e9.0.2024.09.02.02.48.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 02:48:33 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: gpio: fcs,fxl6408: add missing type to GPIO hogs
+Date: Mon,  2 Sep 2024 11:48:32 +0200
+Message-ID: <172527050971.21449.969240784108554117.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-1-63b83e47d804@linaro.org>
+References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org> <20240828-dt-bindings-gpio-hog-v1-1-63b83e47d804@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] clocksource: imx-tpm: fix return -ETIME when delta
- exceeds INT_MAX
-To: Frank Li <Frank.Li@nxp.com>, Thomas Gleixner <tglx@linutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- "open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
-References: <20240725193355.1436005-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20240725193355.1436005-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On 25/07/2024 21:33, Frank Li wrote:
-> From: Jacky Bai <ping.bai@nxp.com>
-> 
-> In tpm_set_next_event(delta), return -ETIME by wrong cast to int when delta
-> is larger than INT_MAX.
-> 
-> For example:
-> 
-> tpm_set_next_event(delta = 0xffff_fffe)
-> {
->          ...
->          next = tpm_read_counter(); // assume next is 0x10
->          next += delta; // next will 0xffff_fffe + 0x10 = 0x1_0000_000e
->          now = tpm_read_counter();  // now is 0x10
->          ...
-> 
->          return (int)(next - now) <= 0 ? -ETIME : 0;
->                       ^^^^^^^^^^
->                       0x1_0000_000e - 0x10 = 0xffff_fffe, which is -2 when
->                       cast to int. So return -ETIME.
-> }
-> 
-> To fix this, introduce a 'prev' variable and check if 'now - prev' is
-> larger than delta.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Reviewed-by: Ye Li <ye.li@nxp.com>
-> Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-
-Applied, thanks
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
 
+On Wed, 28 Aug 2024 11:35:57 +0200, Krzysztof Kozlowski wrote:
+> GPIO hog nodes should define type, otherwise "dummy-hog" boolean
+> properties would be allowed.
+> 
+> 
+
+Applied, thanks!
+
+[1/3] dt-bindings: gpio: fcs,fxl6408: add missing type to GPIO hogs
+      commit: 6a9f2c1b1cbbcd49a1ccf18771e68f7cf52709ee
+
+Best regards,
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
