@@ -1,59 +1,60 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB1A13B284
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 10:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E88613F454
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 10:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725272396; cv=none; b=hNQe5c+NA12mOSP1h5RG7pGNN7vZ6j+kGdHzFyaAyJTA3ikv0ZbyTEOyooHSzzq3f60K5/uAnS4QkjB6gKVNjL1W8vuQrha4mc2o8PYj4fsh8KO4+CFH2WNT1/HzfY6NS2mByYZe285O06spG/z6Suhl5VzPrAfHDrMLVePmV9c=
+	t=1725272433; cv=none; b=ePJkYzk+Odkb0jkMWwFUc2tpnA1RvrFsGaSagDtC7Hdcms2rxTMocDHNnTBlycje3Jj+onGHca0N9ecY8wmJHljJIXzrAb7uXZoi0KUxxGWOVwZ0qzc7BPOZI1XUUKlSNTJ5VI09NEXH0oknKyA75hjzb2oyD8SXi1gacYGqUSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725272396; c=relaxed/simple;
-	bh=M5Dk1DR76FCutQXB41Y8ZbzvG44gAJn5FSu1u6qiuS0=;
+	s=arc-20240116; t=1725272433; c=relaxed/simple;
+	bh=m2+SbPzms8UxM+xJL/ev64HbjIgPl7KAqZRsS7pn7eY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Rq2RXo4uWzqWpf2MDfaYp9uDqb4K2EKSrDSYn6gDXzG8SI74IcajPw8cn6RxJJXcJEaiYJL3zJv9Lcje7aM04v4mEW/cByY3eCd9EL0iRQuO4WqWmnzsGcEjFejIAyt3x3/RydRZ4J6NnufkFt8j8DDCSm66py9VOaA7xVazWLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dG3XpQYc; arc=none smtp.client-ip=209.85.128.49
+	 In-Reply-To:Content-Type; b=r8scw+005vCBBzEwocJrczikDI44BWRfxPDWC3crzzYCQIdT0K1FXCztuMvBD63X57AGo288lDxyV4J3ZNVdlOQJ50eI6WvWnoDK2n3Z4jXYuSXhG7/YflwXbUAMcfB+N+sigxScXk6ypsEdMXOp5JMaZ4AGgSFDbr9NWejcnDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lKNe0rAG; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dG3XpQYc"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42c7bc972a5so2295145e9.0
-        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 03:19:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lKNe0rAG"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42c7bc972a5so2295975e9.0
+        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 03:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725272393; x=1725877193; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yB0m1PaaQZ5aM1VaopXlx4ZLr5GQtRTo/OSTIwNnsfo=;
-        b=dG3XpQYc9w4tvzT1lHo4O7uLKunvwo2mogcpuK0l78JGAIQVjqFolhpm/j68ptMHk8
-         NfBzQcGncNWicosq1w4hFoE8uTwT3FNzGSYPRGRC8dGaQ0B/H2459+GReDUwBxHWS6EF
-         NkDvLqgEMa2i4wL5cdsp9J6NQE8axZ4GxrC9ifmpsI1t26gvgMimGQcoU9yRAfB6AM66
-         sb54Mqk/f86Tvfx6L1aKigKwmByX63cw/14XZ2rwilAwhN5qkJESKA0Hjl+HSsEhxipH
-         GdbiHRq/vmnFe/H33cVM6+gnSwIKko7efKJZqT+FApZt7myv9iYupQsOuDj9csB+tf3/
-         //ig==
+        d=linaro.org; s=google; t=1725272430; x=1725877230; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=vRSKkhAdeleXt0LAg5y5qL40UQ/77V2R6wYH8YoUM0s=;
+        b=lKNe0rAGxrtKDH6t0UqmAGw2Z5QjHFYIGCLO+yz0f0WhM2NTEmikM3a81ONA9pS8V/
+         X+v94QpGMV6hxdmjbx3nNxLaQpNjKN94bJ1VU8NUnL+/A91Rd/Lnc+FFij+ffchIljH5
+         mf/Te7Nmca6jpx7FLOAov7Q4zvPpCAhUlbkx0s51UMM0mjiLH1Yx0/aVRNmAue6JO7lc
+         4hdk0KF0pnHOgIyqUxPcJF+lOgtECsrIyY/rQciEllpra7VKxFXupwj/EXAarrEUebJz
+         bdCWooC+SaZFhhDHsTPO3QN+jH4elFngHBddflrSMMLDaWSZ+oKgtYtSi/D9GGfuYlSq
+         z1vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725272393; x=1725877193;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yB0m1PaaQZ5aM1VaopXlx4ZLr5GQtRTo/OSTIwNnsfo=;
-        b=ceMrvSv3dzxoPdsZ/f8Ub9dE3I66m6Za3hhC4taY62FOnjNg9XbFjS68rH4xpWpRUZ
-         JkWG/8ymw2Yv+Sf9TUQPuH8g+wCgL2kxsDsGImULI30VtfbK+VjUGWRWrdU4plPSSMXq
-         FrP6cJfLJakLhdrwREccY21s7f9Z1/5jmcUoqzBUyuaqrQPBvg7jGgitt62Agoe+B80+
-         9FPvi45KsluJk6E3AwmFxfCE+kZo5W3fi3oImn+L65njvttHMEWNYEzMpG21M+ys6alY
-         v5+xuFj75paQyDE9uW0mx2AE+a8CYsLhIRuBmQBQ5T05JVwF7oANMILWFkuOrRMFCG3M
-         6NUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXG2r8dnaGgf8W0AGtUlxBJW3nP9X+kdwNFAbk/tb0WwQZjFq+2W2YrV4rM4+t6Qy/tPaA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywp4sd7IuzdDp8fw1jffSHWMLgnpcRiiyAiQ6DMthdZawbQiozc
-	HeSc8CJGD9meVQYCfqbYeBYIqVDHwiIALBVZ72cEHC2VgO69QXE88R89LwPNo2M=
-X-Google-Smtp-Source: AGHT+IGghnVNFM35t4xUZUUsLVLz8sb17LpnDS62KKdW6kZiRcsgHzzg6aJ9AUskGiV9JDyUlEWMMQ==
-X-Received: by 2002:a05:6000:2a5:b0:364:8215:7142 with SMTP id ffacd0b85a97d-374a953f858mr3766027f8f.1.1725272392716;
-        Mon, 02 Sep 2024 03:19:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725272430; x=1725877230;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vRSKkhAdeleXt0LAg5y5qL40UQ/77V2R6wYH8YoUM0s=;
+        b=ZxgTa9bG/nNbzT5dkPmykcN+08da1Vh+0atQa/++NHekLRtfz5ShZCQNRV1ZNvH2tX
+         GiqZC8dcefAm9lLSULEZYwG6+ufMDeoRjfwxJmSI8YberxZDcDsJ34ZMaxzuuwGOPfYg
+         v3GyGQEIHVeDu76m8j20wVyjAyzhAnSmP1qXkkjS1cA0iV/PjWdL1L7yZlN/oalJdj5h
+         wrDVitfgE1xpQRBGv7dHf43AR3Ze1UpxiIQkkMBRtkGa+K5sVGluQVS7daLrhlerISS3
+         Zx9IOx6pqxC3A91wM5MCLa8tfMl65xKjHxz/o0LIR4rTnK3QtT4/CnDyknlLtaMsXUvB
+         RBYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKvD/9NjGqgpaKPOvmS9vodtfnX3yzQqggQ/IDKowWglxah7O0tDwMvY8ynosBAaigLFU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXC0m+FuG9oh2pDpd6Ld0l5IO9tVoz8LVDh0LilwtZU69wZi0n
+	7jeH0NXZ8pQcWP5HN+GZlE3XDMNKnVtVknMQRXmJ41fCb2v9S6gSs7KhtCDA1Lo=
+X-Google-Smtp-Source: AGHT+IGjtdOTho2XQUieF5n90G9IGbxC8GYlG09ryb+5aH9rGBOQeeQHSZh6Pjs3rtK+CDlStyH+jQ==
+X-Received: by 2002:a05:600c:46c9:b0:424:ac9f:5c61 with SMTP id 5b1f17b1804b1-42bbb43423dmr38592725e9.3.1725272430441;
+        Mon, 02 Sep 2024 03:20:30 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749ee4a55fsm10997734f8f.10.2024.09.02.03.19.50
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df100csm132306735e9.20.2024.09.02.03.20.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Sep 2024 03:19:51 -0700 (PDT)
-Message-ID: <7fbc4549-79e0-4fb0-9468-41a0babae95a@linaro.org>
-Date: Mon, 2 Sep 2024 12:19:50 +0200
+        Mon, 02 Sep 2024 03:20:29 -0700 (PDT)
+Message-ID: <91ca3ddc-c33f-45ca-b55a-0e0d4a8835a4@linaro.org>
+Date: Mon, 2 Sep 2024 12:20:27 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,8 +62,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: imx8mm-var-som: drop unused top-level
- compatible
+Subject: Re: [PATCH 2/2] dt-bindings: arm: fsl: drop usage of VAR-SOM-MX8MM
+ SoM compatible alone
 To: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -74,9 +75,10 @@ To: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
  "imx@lists.linux.dev" <imx@lists.linux.dev>,
  "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 References: <20240902075220.27971-1-krzysztof.kozlowski@linaro.org>
- <PAXPR04MB8459FB36872E71E1605DDC2088922@PAXPR04MB8459.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ <20240902075220.27971-2-krzysztof.kozlowski@linaro.org>
+ <PAXPR04MB84596E0C1F9ED62F6A5B5FCE88922@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -121,44 +123,43 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <PAXPR04MB8459FB36872E71E1605DDC2088922@PAXPR04MB8459.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB84596E0C1F9ED62F6A5B5FCE88922@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/09/2024 12:13, Peng Fan wrote:
->> Subject: [PATCH 1/2] arm64: dts: imx8mm-var-som: drop unused top-
->> level compatible
+On 02/09/2024 12:15, Peng Fan wrote:
+>> Subject: [PATCH 2/2] dt-bindings: arm: fsl: drop usage of VAR-SOM-
+>> MX8MM SoM compatible alone
 >>
 >> The Variscite VAR-SOM-MX8MM System-on-Module cannot be used
->> alone without motherboard, so drop the top-level compatible field to
->> avoid any false impression that such usage is possible.
+>> alone without motherboard, so drop the usage of its compatible alone.
 >>
 >> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 >> ---
->>  arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi | 1 -
+>>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 -
 >>  1 file changed, 1 deletion(-)
 >>
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
->> b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
->> index d7830df5b6f9..cdfacbc35db5 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
->> @@ -8,7 +8,6 @@
->>
->>  / {
->>  	model = "Variscite VAR-SOM-MX8MM module";
->> -	compatible = "variscite,var-som-mx8mm", "fsl,imx8mm";
->>
->>  	chosen {
->>  		stdout-path = &uart4;
->> --
->> 2.43.0
+>> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml
+>> b/Documentation/devicetree/bindings/arm/fsl.yaml
+>> index 1abdeb804468..e5f982fa750b 100644
+>> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+>> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+>> @@ -953,7 +953,6 @@ properties:
+>>                - toradex,verdin-imx8mm     # Verdin iMX8M Mini Modules
+>>                - toradex,verdin-imx8mm-nonwifi  # Verdin iMX8M Mini
+>> Modules without Wi-Fi / BT
+>>                - toradex,verdin-imx8mm-wifi  # Verdin iMX8M Mini Wi-Fi /
+>> BT Modules
+>> -              - variscite,var-som-mx8mm   # i.MX8MM Variscite VAR-SOM-
+>> MX8MM module
+>>                - prt,prt8mm                # i.MX8MM Protonic PRT8MM Board
+>>            - const: fsl,imx8mm
 >>
 > 
-> Should the " variscite,var-som-mx8mm " also removed from
-> imx8mm-var-som-symphony.dts?
+> Line 1072
+> "const: variscite,var-som-mx8mm" should this one also need removed?
 
-No, why?
+Of course not! How is this related to patch description?
 
 Best regards,
 Krzysztof
