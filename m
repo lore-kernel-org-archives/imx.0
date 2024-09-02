@@ -1,60 +1,33 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E88613F454
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 10:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8460613B284;
+	Mon,  2 Sep 2024 10:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725272433; cv=none; b=ePJkYzk+Odkb0jkMWwFUc2tpnA1RvrFsGaSagDtC7Hdcms2rxTMocDHNnTBlycje3Jj+onGHca0N9ecY8wmJHljJIXzrAb7uXZoi0KUxxGWOVwZ0qzc7BPOZI1XUUKlSNTJ5VI09NEXH0oknKyA75hjzb2oyD8SXi1gacYGqUSY=
+	t=1725272627; cv=none; b=lPSzHiiMBfW2E6Tgj6LySNYZop31G+mCEMTQfbt7SMNJ/1Cb/vIv/z366SxcRqM5UNwYsfet8hQ8n1VrcRM3k23UyBFWRqTzuu+h4UUUBpcmbP9qZm43cMqp6mRGjslwCo8T+MeRO2jXNOunhlJoAKYdRG75ekC9bd5y333nXrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725272433; c=relaxed/simple;
-	bh=m2+SbPzms8UxM+xJL/ev64HbjIgPl7KAqZRsS7pn7eY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=r8scw+005vCBBzEwocJrczikDI44BWRfxPDWC3crzzYCQIdT0K1FXCztuMvBD63X57AGo288lDxyV4J3ZNVdlOQJ50eI6WvWnoDK2n3Z4jXYuSXhG7/YflwXbUAMcfB+N+sigxScXk6ypsEdMXOp5JMaZ4AGgSFDbr9NWejcnDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lKNe0rAG; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1725272627; c=relaxed/simple;
+	bh=/u+9K+ptqlNUgaOr9PnP6hGso2k3fqUjim1MVpwqlEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZhM1lOxqPj8+vy0QokDe0Nqp4FRSDHirMPYlwdcLJ8g9iV6DjqNYIJezvo5rTdxd3aetP7iVvBR87RDojyAiM5d7SyzWuKdukK/oQgKsva5HvVRBQBjhuWgx9orZFHb7uVfhKxEb1cImUgu8p3XmmuRjHrs0irvKL0HrHx5ve1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xyw5Ir7T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lKNe0rAG"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42c7bc972a5so2295975e9.0
-        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 03:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725272430; x=1725877230; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=vRSKkhAdeleXt0LAg5y5qL40UQ/77V2R6wYH8YoUM0s=;
-        b=lKNe0rAGxrtKDH6t0UqmAGw2Z5QjHFYIGCLO+yz0f0WhM2NTEmikM3a81ONA9pS8V/
-         X+v94QpGMV6hxdmjbx3nNxLaQpNjKN94bJ1VU8NUnL+/A91Rd/Lnc+FFij+ffchIljH5
-         mf/Te7Nmca6jpx7FLOAov7Q4zvPpCAhUlbkx0s51UMM0mjiLH1Yx0/aVRNmAue6JO7lc
-         4hdk0KF0pnHOgIyqUxPcJF+lOgtECsrIyY/rQciEllpra7VKxFXupwj/EXAarrEUebJz
-         bdCWooC+SaZFhhDHsTPO3QN+jH4elFngHBddflrSMMLDaWSZ+oKgtYtSi/D9GGfuYlSq
-         z1vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725272430; x=1725877230;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vRSKkhAdeleXt0LAg5y5qL40UQ/77V2R6wYH8YoUM0s=;
-        b=ZxgTa9bG/nNbzT5dkPmykcN+08da1Vh+0atQa/++NHekLRtfz5ShZCQNRV1ZNvH2tX
-         GiqZC8dcefAm9lLSULEZYwG6+ufMDeoRjfwxJmSI8YberxZDcDsJ34ZMaxzuuwGOPfYg
-         v3GyGQEIHVeDu76m8j20wVyjAyzhAnSmP1qXkkjS1cA0iV/PjWdL1L7yZlN/oalJdj5h
-         wrDVitfgE1xpQRBGv7dHf43AR3Ze1UpxiIQkkMBRtkGa+K5sVGluQVS7daLrhlerISS3
-         Zx9IOx6pqxC3A91wM5MCLa8tfMl65xKjHxz/o0LIR4rTnK3QtT4/CnDyknlLtaMsXUvB
-         RBYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKvD/9NjGqgpaKPOvmS9vodtfnX3yzQqggQ/IDKowWglxah7O0tDwMvY8ynosBAaigLFU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXC0m+FuG9oh2pDpd6Ld0l5IO9tVoz8LVDh0LilwtZU69wZi0n
-	7jeH0NXZ8pQcWP5HN+GZlE3XDMNKnVtVknMQRXmJ41fCb2v9S6gSs7KhtCDA1Lo=
-X-Google-Smtp-Source: AGHT+IGjtdOTho2XQUieF5n90G9IGbxC8GYlG09ryb+5aH9rGBOQeeQHSZh6Pjs3rtK+CDlStyH+jQ==
-X-Received: by 2002:a05:600c:46c9:b0:424:ac9f:5c61 with SMTP id 5b1f17b1804b1-42bbb43423dmr38592725e9.3.1725272430441;
-        Mon, 02 Sep 2024 03:20:30 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df100csm132306735e9.20.2024.09.02.03.20.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Sep 2024 03:20:29 -0700 (PDT)
-Message-ID: <91ca3ddc-c33f-45ca-b55a-0e0d4a8835a4@linaro.org>
-Date: Mon, 2 Sep 2024 12:20:27 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xyw5Ir7T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6422CC4CEC2;
+	Mon,  2 Sep 2024 10:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725272627;
+	bh=/u+9K+ptqlNUgaOr9PnP6hGso2k3fqUjim1MVpwqlEI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xyw5Ir7TqGuN2vifQwMg/B33e8+ZKzshlLrVuuLVrQ2oKw4IeQQiUh67IxcBr5yo3
+	 KWdhQ5xc9c3AMQUxAxuwjSUGMjM2w37jEYRzdJtyq25xHFTX8QWrpdAAGZ7eNYtZm6
+	 hGXPzRfr29AocZKj7GDk3jdipvxbRPJGtPf+zHyg5vhNiMiaOEn/F/Q8aMjcmJGqln
+	 3KQWC268JFDExeKumLOlHjJUKTV8tqCYVByYvYw7li8wlaGN3XoM1Zzl7E2AYV69i3
+	 AAue1EvW9YFRYy1bj4UFej2jtCd2ew8Lq0YxALrlPXSl8RXvBDC+d4nq3i4eMwpxOD
+	 FGccwb1BQdShQ==
+Message-ID: <678698b1-55d2-41d5-912d-ef93d0214f88@kernel.org>
+Date: Mon, 2 Sep 2024 12:23:39 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,24 +35,22 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: arm: fsl: drop usage of VAR-SOM-MX8MM
- SoM compatible alone
-To: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 7/7] arm64: dts: freescale: imx95-19x19-evk: add
+ lpi2c[5,6] and sub-nodes
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240902075220.27971-1-krzysztof.kozlowski@linaro.org>
- <20240902075220.27971-2-krzysztof.kozlowski@linaro.org>
- <PAXPR04MB84596E0C1F9ED62F6A5B5FCE88922@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Peng Fan <peng.fan@nxp.com>
+References: <20240902-imx95-dts-new-v1-0-a1f798f4f746@nxp.com>
+ <20240902-imx95-dts-new-v1-7-a1f798f4f746@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
  JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
@@ -89,77 +60,112 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
  vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
  Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <PAXPR04MB84596E0C1F9ED62F6A5B5FCE88922@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ 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 fv0=
+In-Reply-To: <20240902-imx95-dts-new-v1-7-a1f798f4f746@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/09/2024 12:15, Peng Fan wrote:
->> Subject: [PATCH 2/2] dt-bindings: arm: fsl: drop usage of VAR-SOM-
->> MX8MM SoM compatible alone
->>
->> The Variscite VAR-SOM-MX8MM System-on-Module cannot be used
->> alone without motherboard, so drop the usage of its compatible alone.
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> ---
->>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml
->> b/Documentation/devicetree/bindings/arm/fsl.yaml
->> index 1abdeb804468..e5f982fa750b 100644
->> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
->> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
->> @@ -953,7 +953,6 @@ properties:
->>                - toradex,verdin-imx8mm     # Verdin iMX8M Mini Modules
->>                - toradex,verdin-imx8mm-nonwifi  # Verdin iMX8M Mini
->> Modules without Wi-Fi / BT
->>                - toradex,verdin-imx8mm-wifi  # Verdin iMX8M Mini Wi-Fi /
->> BT Modules
->> -              - variscite,var-som-mx8mm   # i.MX8MM Variscite VAR-SOM-
->> MX8MM module
->>                - prt,prt8mm                # i.MX8MM Protonic PRT8MM Board
->>            - const: fsl,imx8mm
->>
+On 02/09/2024 12:19, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Line 1072
-> "const: variscite,var-som-mx8mm" should this one also need removed?
+> Add LPI2C[5,6] and the gpio expander subnodes.
+> Since we are at here, also add the alias for all lpi2c and gpio nodes.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts | 69 +++++++++++++++++++++++
+>  1 file changed, 69 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> index 5101cd171e09..64e9caf3089e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
+> @@ -22,6 +22,19 @@ / {
+>  	compatible = "fsl,imx95-19x19-evk", "fsl,imx95";
+>  
+>  	aliases {
+> +		gpio0 = &gpio1;
+> +		gpio1 = &gpio2;
+> +		gpio2 = &gpio3;
+> +		gpio3 = &gpio4;
+> +		gpio4 = &gpio5;
+> +		i2c0 = &lpi2c1;
+> +		i2c1 = &lpi2c2;
+> +		i2c2 = &lpi2c3;
+> +		i2c3 = &lpi2c4;
+> +		i2c4 = &lpi2c5;
+> +		i2c5 = &lpi2c6;
+> +		i2c6 = &lpi2c7;
+> +		i2c7 = &lpi2c8;
+>  		mmc0 = &usdhc1;
+>  		mmc1 = &usdhc2;
+>  		serial0 = &lpuart1;
+> @@ -241,6 +254,42 @@ i2c4_gpio_expander_21: gpio@21 {
+>  	};
+>  };
+>  
+> +&lpi2c5 {
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_lpi2c5>;
+> +	status = "okay";
+> +
+> +	i2c5_pcal6408: i2c5-gpio@21 {
 
-Of course not! How is this related to patch description?
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +		compatible = "nxp,pcal6408";
+> +		reg = <0x21>;
+> +		gpio-controller;
+> +		#gpio-cells = <2>;
+> +		vcc-supply = <&reg_3p3v>;
+> +	};
+> +};
+> +
+> +&lpi2c6 {
+> +	clock-frequency = <100000>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_lpi2c6>;
+> +	status = "okay";
+> +
+> +	i2c6_pcal6416: i2c6-gpio@21 {
+
+Same here
 
 Best regards,
 Krzysztof
