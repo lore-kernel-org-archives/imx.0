@@ -1,69 +1,41 @@
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02C417E8EA
-	for <imx@lists.linux.dev>; Sun,  1 Sep 2024 17:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7BD10F1
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 00:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725213331; cv=none; b=Emha7hzM8LgFjTj75mptr62+bp0DjmrLeRzl2U9aHJptAIQegAm0uQ/DJ/FmO5Pr0UEG01mXQYdSwEQ4aMzrwd/spWzqoXm1LFUEjVBvUQMjlqpZLoBCMSyvfsVAy++jaeS4F+mDYe2Hspa/WLDk3fRtI2sXri5qa0EFeJT2dFc=
+	t=1725236338; cv=none; b=agZdJ784DrjGpfLKMMJZB1uU2NBe/ZyXzyc6ovM1PosPG9O6YjYM/6SCE8Oo0QbgFio2SRyAzSz2ibintRUFXSWBFlDKsvvYX274m0dFBWPLqzhQ0lxjmqaybFOfDEvyA4bi1GRjaFy+ggxVxu+vPb3hDeSZRHkXTaTeKwmcptc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725213331; c=relaxed/simple;
-	bh=IM/chwYrXihDE8FLF8hiPYl6Hkd/A04mZYL++PJG0ug=;
+	s=arc-20240116; t=1725236338; c=relaxed/simple;
+	bh=bFgpBxr1ExJykb6/n4hB331i4X0O/IM7z8IVLW1zbYg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sNZDARET1Ujf1Razb8DDI9o1w0C57U2qpuSXMech/XQuGkunkNjpMM1Xeezx+1HBzBdmIayX9Xx6V/86FBIFp2cFSMjBp6D2lgMSnXRhKJFYAUkM8oIFTmdZZFqpfPSKJZHxWh9Y2kcdjfLxtNIxvg87B2uUhzx9bnatppEdSe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.166.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-39f539a83e0so3149015ab.2
-        for <imx@lists.linux.dev>; Sun, 01 Sep 2024 10:55:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725213329; x=1725818129;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TPCSj8FBVReSaeYCO2iGVjW5XuPs23A+QCwQAzU/9t8=;
-        b=azu3yZksnacaK92/EVRfcTlRYQlWkCRJ0DiCQq6KCxTqK20dWTVjSV//nhWe7j9oYb
-         5njD/AOvh+MxCz7t8wzx3XT5Kn+cnpu0PdDM6oeFHOZ5DLHqAkPbTs+dJoDMMyXHVD0W
-         hSlnfiho8+PyZI3JV8Vw88Bmo1KeX0MWPMsjKZspWwcaZFqELDbdAW/c7l07XqCdo49K
-         ShVn/+mcuAk3a0woH5kFxwokbpucOHW5F7NeeHm5IvAQ/2nbl5BP0dNd/9XR0r+bLa3T
-         Ble4fRYJ8rTniFQDe3CXxOXHr5YDDnfSE+We2Yt9BCmm/ieApQqY2a/2YWLBrf0BqhIh
-         XmCg==
-X-Forwarded-Encrypted: i=1; AJvYcCU10BWmdCVmt9/v5mV60r2JzrO4VIWe+xQIjHy4OhHlOWWN+0nzuL5m4gRQ1adFuW2gCkc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBYvGzXZhSpqmogJxg/M3B7eW7uMakCFJL98/ymNYCizHFg6cF
-	+EwLkt8HZ3mUYlz6aNqbRAH6WOjGOUE9nQ3L07GP933BfLdtEplh
-X-Google-Smtp-Source: AGHT+IHBzBuDzpmGhMq1SRqwPuQgXk2zIrVcNlSo1Z3AcvkCcvK8Npof8O6DWfAfKPf7z5UlPibP3A==
-X-Received: by 2002:a05:6e02:1c23:b0:39b:25dc:7bd6 with SMTP id e9e14a558f8ab-39f49a1fc8cmr69803675ab.4.1725213328575;
-        Sun, 01 Sep 2024 10:55:28 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e74388dsm5295193a12.3.2024.09.01.10.55.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Sep 2024 10:55:27 -0700 (PDT)
-Date: Mon, 2 Sep 2024 02:55:26 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=qMewoRk88LaQAjGWYnYoeZwrOJ8X2OZyoXTCYvMeO/q84PXYp5Aqc+IihtdKG7kSDlmt4nWQ7FcQL1ZWBcFv5bex4KxIBlf/xWKux75LTne44JBpX1S/BWN3kyak3e5CfpVHTkTvGjlI5FQG14vdnc5+I5gguWGQYwdWaflrclc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=R5tbjC/D; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="R5tbjC/D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=XjAje4pitOXQaB8BQX8fWema7W0MNFErHvfxJctjepI=;
+	b=R5tbjC/D4Fviq8IsJdQLkVwZ8FIQiqWXwpJo4Y2bTvZh4VZB46D5/KGjatbmEi
+	RMjL/CJUBYIkC0H5XBYp/B8shqrGEOe105p5ZK1jTRKZsyYVmt5YrbgX6TzSOs6e
+	nFAMxrnz2GMTpqXfv9HUVBjs+MDf7bEiwZRC6tvibR5cA=
+Received: from dragon (unknown [114.216.210.89])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3P11EBNVmN+lKAA--.41028S3;
+	Mon, 02 Sep 2024 08:18:14 +0800 (CST)
+Date: Mon, 2 Sep 2024 08:18:12 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	devicetree@vger.kernel.org, Jason Liu <jason.hui.liu@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v8 00/11] PCI: imx6: Fix\rename\clean up and add lut
- information for imx95
-Message-ID: <20240901175526.GM235729@rocinante>
-References: <20240729-pci2_upstream-v8-0-b68ee5ef2b4d@nxp.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] TQMa6x / MBa6x DT improvements
+Message-ID: <ZtUERBLeWx2j0BR7@dragon>
+References: <20240828121959.1268463-1-Markus.Niebel@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,51 +44,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240729-pci2_upstream-v8-0-b68ee5ef2b4d@nxp.com>
+In-Reply-To: <20240828121959.1268463-1-Markus.Niebel@ew.tq-group.com>
+X-CM-TRANSID:Mc8vCgD3P11EBNVmN+lKAA--.41028S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrAFyxJFyrJF48Zr4fuFW8Crg_yoWxGFc_uw
+	s8Wa9rAa15GFs7ua13JFn0gFyDKw1Utw43K3s8GF4aqayfXw1Yga93Kry3Wa43CFWSkF1q
+	kr15Z342gFWxCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8P5r3UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERROZWbU5TQ3HwAAsl
 
-Hello,
-
-> Fixed 8mp EP mode problem.
+On Wed, Aug 28, 2024 at 02:19:55PM +0200, Markus Niebel wrote:
+> Hello,
 > 
-> imx6 actaully for all imx chips (imx6*, imx7*, imx8*, imx9*). To avoid
-> confuse, rename all imx6_* to imx_*, IMX6_* to IMX_*. pci-imx6.c to
-> pci-imx.c to avoid confuse.
+> this is the 2nd version of the series
 > 
-> Using callback to reduce switch case for core reset and refclk.
+> Changes in v2:
+> * use uppercase for ARM in subject lines
+> * drop "ARM: dts: imx6qdl: Rename USB hub node name" due to
+>   open discussions
+> * no changes in remaining patch content
+> 
+> Best regards,
+> Markus
+> 
+> Markus Niebel (4):
+>   ARM: dts: imx6qdl-tqma6: move i2c3 pinmux to imx6qdl-tqma6b
+>   ARM: dts: imx6qdl-tqma6: improve compatible for LM75 temp sensor
+>   ARM: dts: imx6qdl-mba6: improve compatible for LM75 temp sensor
+>   ARM: dts: imx6qdl-mba6b: remove doubled entry for I2C1 pinmux
 
-Applied to controller/imx6, thank you!
+Applied all, thanks!
 
-[01/11] PCI: imx6: Fix establish link failure in EP mode for iMX8MM and iMX8MP
-        https://git.kernel.org/pci/pci/c/c9d04436880c
-
-[02/11] PCI: imx6: Fix i.MX8MP PCIe EP's occasional failure to trigger MSI
-        https://git.kernel.org/pci/pci/c/f82e7aa14378
-
-[03/11] PCI: imx6: Fix missing call to phy_power_off() in error handling
-        https://git.kernel.org/pci/pci/c/3268637c4f74
-
-[04/11] PCI: imx6: Rename imx6_* with imx_*
-        https://git.kernel.org/pci/pci/c/09bec00b3591
-
-[05/11] PCI: imx6: Introduce SoC specific callbacks for controlling REFCLK
-        https://git.kernel.org/pci/pci/c/8bc6b9ccba59
-
-[06/11] PCI: imx6: Simplify switch-case logic by involve core_reset callback
-        https://git.kernel.org/pci/pci/c/79049b791bbc
-
-[07/11] PCI: imx6: Improve comment for workaround ERR010728
-        https://git.kernel.org/pci/pci/c/ea7eddfc0c9d
-
-[08/11] PCI: imx6: Consolidate redundant if-checks
-        https://git.kernel.org/pci/pci/c/dce6ed132a2f
-
-[09/11] dt-bindings: PCI: imx6q-pcie: Add i.MX8Q PCIe compatible string
-        https://git.kernel.org/pci/pci/c/99807815121a
-
-[10/11] PCI: imx6: Call common PHY API to set mode, speed, and submode
-        https://git.kernel.org/pci/pci/c/b7e35e029881
-
-[11/11] PCI: imx6: Add i.MX8Q PCIe Root Complex (RC) support
-        https://git.kernel.org/pci/pci/c/3474e6ceabdc
-
-	Krzysztof
