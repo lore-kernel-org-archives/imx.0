@@ -1,41 +1,42 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7BD10F1
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 00:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1D51362
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 00:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725236338; cv=none; b=agZdJ784DrjGpfLKMMJZB1uU2NBe/ZyXzyc6ovM1PosPG9O6YjYM/6SCE8Oo0QbgFio2SRyAzSz2ibintRUFXSWBFlDKsvvYX274m0dFBWPLqzhQ0lxjmqaybFOfDEvyA4bi1GRjaFy+ggxVxu+vPb3hDeSZRHkXTaTeKwmcptc=
+	t=1725236773; cv=none; b=gcbxkLVH8GyxDRq91zNvdVQ0ONKsXyWeeu8V4DEQ/ChFhUV5R4G2v3Rz4equxZIUp8bGNeBKJYQHScymnXrTgDYCSr1vMeZyduJM0uoStFAs7pzDzXI04Ro4AxDCIZtej4BsXCcoe/mwTSWkApnQzaQlYAeYQmrpjc6ago+m1As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725236338; c=relaxed/simple;
-	bh=bFgpBxr1ExJykb6/n4hB331i4X0O/IM7z8IVLW1zbYg=;
+	s=arc-20240116; t=1725236773; c=relaxed/simple;
+	bh=pS8/Qr3RpxndFHxuK2+iHhalkaF8EeghXZM+l9d3ESc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qMewoRk88LaQAjGWYnYoeZwrOJ8X2OZyoXTCYvMeO/q84PXYp5Aqc+IihtdKG7kSDlmt4nWQ7FcQL1ZWBcFv5bex4KxIBlf/xWKux75LTne44JBpX1S/BWN3kyak3e5CfpVHTkTvGjlI5FQG14vdnc5+I5gguWGQYwdWaflrclc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=R5tbjC/D; arc=none smtp.client-ip=220.197.32.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=DU712mO1to0NrNAXeTnerE0Wyi+lcVmotFX3RSoqymXIus7lXw7vlyoVegyJZQI9xGdnReLMNVMvPTzqHkBrZhHdKmRWywVAAK4vw0NiP71RhAKV3RqepplDRz2FdazO5L1KXPGyw2f+iJI+ibsznqFD0QuL+0nd8mtl1spJ+/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nAItCEWE; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="R5tbjC/D"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nAItCEWE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=XjAje4pitOXQaB8BQX8fWema7W0MNFErHvfxJctjepI=;
-	b=R5tbjC/D4Fviq8IsJdQLkVwZ8FIQiqWXwpJo4Y2bTvZh4VZB46D5/KGjatbmEi
-	RMjL/CJUBYIkC0H5XBYp/B8shqrGEOe105p5ZK1jTRKZsyYVmt5YrbgX6TzSOs6e
-	nFAMxrnz2GMTpqXfv9HUVBjs+MDf7bEiwZRC6tvibR5cA=
+	Content-Type; bh=j7CC6uEOY/IkNRJQl71zuS1FGHgn1rQnYM6TNUwIKJ0=;
+	b=nAItCEWElPxGkCnhWR+y2GxIT1dEEJKL4Ig3bNaOrvowyItqBr8p0H+Vftj5NF
+	nz072W5casp2l7TzTVHj069kk/ygDQSkGJNB8b8YUwKDyGGWFqQ6quQR0qN5m+dX
+	8/J2cgDO8ADXnRHuTQGaYG3zmn10cNRZCJvVbKYeYW40k=
 Received: from dragon (unknown [114.216.210.89])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3P11EBNVmN+lKAA--.41028S3;
-	Mon, 02 Sep 2024 08:18:14 +0800 (CST)
-Date: Mon, 2 Sep 2024 08:18:12 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3v16mBdVmI_lKAA--.41356S3;
+	Mon, 02 Sep 2024 08:24:08 +0800 (CST)
+Date: Mon, 2 Sep 2024 08:24:06 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Tim Harvey <tharvey@gateworks.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] TQMa6x / MBa6x DT improvements
-Message-ID: <ZtUERBLeWx2j0BR7@dragon>
-References: <20240828121959.1268463-1-Markus.Niebel@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2 v2] dt-bindings: arm: fsl: rename gw7905 to gw75xx
+Message-ID: <ZtUFpu2kWFBoluIo@dragon>
+References: <20240828173651.4053753-1-tharvey@gateworks.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,33 +45,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240828121959.1268463-1-Markus.Niebel@ew.tq-group.com>
-X-CM-TRANSID:Mc8vCgD3P11EBNVmN+lKAA--.41028S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrAFyxJFyrJF48Zr4fuFW8Crg_yoWxGFc_uw
-	s8Wa9rAa15GFs7ua13JFn0gFyDKw1Utw43K3s8GF4aqayfXw1Yga93Kry3Wa43CFWSkF1q
-	kr15Z342gFWxCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8P5r3UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERROZWbU5TQ3HwAAsl
+In-Reply-To: <20240828173651.4053753-1-tharvey@gateworks.com>
+X-CM-TRANSID:Mc8vCgD3v16mBdVmI_lKAA--.41356S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrWFyfAw4rZF1kGFy7Aw45trb_yoWxWrb_CF
+	nFkFWDJ3y5Jw4xGw1aqFn5ArWIka4jgrWDWr45Xay7tr95Aw47GFWvyw1Dt34jyF47WF13
+	uwn7JrW09ryS9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8BBT5UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAJOZWbU4VY-2AAAsP
 
-On Wed, Aug 28, 2024 at 02:19:55PM +0200, Markus Niebel wrote:
-> Hello,
+On Wed, Aug 28, 2024 at 10:36:50AM -0700, Tim Harvey wrote:
+> The GW7905 was renamed to GW7500 before production release.
 > 
-> this is the 2nd version of the series
+> While we typically do not change compatibles, the GW7905 was never
+> released before its product name was changed to a GW7500.
 > 
-> Changes in v2:
-> * use uppercase for ARM in subject lines
-> * drop "ARM: dts: imx6qdl: Rename USB hub node name" due to
->   open discussions
-> * no changes in remaining patch content
+> The use the the 'xx' wildcard is to denote the fact that this
+> device-tree can support range of board models from GW7500 to GW7599 as
+> has been done historically with the Gateworks baseboards to support
+> various build customizatoins based on the same PCB.
 > 
-> Best regards,
-> Markus
-> 
-> Markus Niebel (4):
->   ARM: dts: imx6qdl-tqma6: move i2c3 pinmux to imx6qdl-tqma6b
->   ARM: dts: imx6qdl-tqma6: improve compatible for LM75 temp sensor
->   ARM: dts: imx6qdl-mba6: improve compatible for LM75 temp sensor
->   ARM: dts: imx6qdl-mba6b: remove doubled entry for I2C1 pinmux
+> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Applied all, thanks!
+Applied both, thanks!
 
