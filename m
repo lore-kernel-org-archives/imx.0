@@ -1,133 +1,275 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from mx08-0061a602.pphosted.com (mx08-0061a602.pphosted.com [205.220.185.213])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FA919F10B
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 14:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725286381; cv=none; b=XXx6VlwuewUkh0Uywo3S9w5O3ge8r1ce8hbMvw1y85P/BHiXfTXhaSBkvUgZGjOPsNFwhHstzxJn+9BbceVXI1tREqr9nr6KFknho/LSuo887nhj+l9WYQWxo8F4sYhQ0yC1194CD3jg7V55fk8G5yZxe0m1MTVN7WhpcoQh6FQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725286381; c=relaxed/simple;
-	bh=cpZ4PauVNGJbbui1qSdGNxfiCpqK77JPhmc8S9jtHHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3Rn8SMbXm5X8iDx5c8/E+60Ox516qV/7SwRWwkDFmWrenvhAPLtO5FppDoPjH13CC1SfR/ZkOF1t3gj/PWnJsyJIY2cT1exTbHkdNPxcot800n6F+bD7gz1DLTKlwV4lhWG1Bu8I0W84pLs76D6xghkI+FPSanV6KTVK60joLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=k2/ET4i0; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC3A21C176
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 14:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.185.213
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725286723; cv=fail; b=LrHlVbO/XPZhB1pqVa/nQMKQyi9YregR3H/w3q/oY3uOSOM57R3fnPohrUcAyCFj9YneGRjFR9GdzXa1wgU6leR5zR+V+Q3POqqL+EchhYMJ2JTNuho/f3rXfqx2OCGzLlolevlMmxkwk+ZvYN2GxqyWJlV295XcWesZ4Y/GQ5w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725286723; c=relaxed/simple;
+	bh=0B76Yp+Ijs01pe597P27eGSu5sbqD1x32Ns5GSA5RUc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=skOCu7gqv0gWs3p3HJnWDJKG1ARb2d2wRb/oPlNTiyKjlIIMrZylw0326sqNHGlC3qJmSB7hDws/EYeulfStnkjyv2FSm0Yhp2mGeBoDNkrjIGIs7FQs/03V2CQE9hDSSVNtIn8wq579hxAubl0T751QdDU857WLVNmqgNE1eRU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ttcontrol.com; spf=pass smtp.mailfrom=ttcontrol.com; dkim=pass (2048-bit key) header.d=ttcontrol.com header.i=@ttcontrol.com header.b=BnBo/MCD; arc=fail smtp.client-ip=205.220.185.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ttcontrol.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ttcontrol.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="k2/ET4i0"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 360B81BF207;
-	Mon,  2 Sep 2024 14:12:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1725286372;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wvLaVZYHS2Z2KXkZwLboI7ehC7Fzmd1852PHzQQaI5o=;
-	b=k2/ET4i0A3B6iDQpwx+ds6uQQh84yuzBHXQjFRDKYqOMgPeR8E+RM6xy2LUV/UxhugbY6P
-	Qah1Lk3GBQ/v5BitRFMhim/F0qcod+paiqnb7E/eIXLDeUdWaKgcC+ncD/WWnGK7Cjg49X
-	KDwO7XuAfwVjYUGjpk+5aHqOdt2LXoS+EcF5D9xjcFEFsFqppGvY0/9ncMHmG7Z1LzSpdT
-	XoUnwG5AWDEbJjkL614YuIoedZT+XoksJhrfkc/TpXbAWMYJMok0LdkbiZ1sA/YUys5wHG
-	dlMSwEvZ8rqHKLdR2c8M0/Fx//zvlswCzJgfIuiYXvdwabJ1JRW48irwkviG9Q==
-Date: Mon, 2 Sep 2024 16:12:50 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Boris Brezillon
- <boris.brezillon@collabora.com>, Parshuram Thombare <pthombar@cadence.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boris Brezillon
- <bbrezillon@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Conor Culhane
- <conor.culhane@silvaco.com>, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v3 03/11] i3c: master: Extend address status bit to 4
- and add I3C_ADDR_SLOT_EXT_INIT
-Message-ID: <20240902161250.26846654@xps-13>
-In-Reply-To: <ZszPrBeoPehGsocC@lizhi-Precision-Tower-5810>
-References: <20240819-i3c_fix-v3-0-7d69f7b0a05e@nxp.com>
-	<20240819-i3c_fix-v3-3-7d69f7b0a05e@nxp.com>
-	<20240823180426.056ac093@xps-13>
-	<ZsjNA9JV0UKONV32@lizhi-Precision-Tower-5810>
-	<20240826100430.33194702@xps-13>
-	<Zsylya9TN4mVFL79@lizhi-Precision-Tower-5810>
-	<20240826184924.53b48861@xps-13>
-	<ZszPrBeoPehGsocC@lizhi-Precision-Tower-5810>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ttcontrol.com header.i=@ttcontrol.com header.b="BnBo/MCD"
+Received: from pps.filterd (m0278994.ppops.net [127.0.0.1])
+	by mx07-0061a602.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 482DWkAH016046;
+	Mon, 2 Sep 2024 14:18:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ttcontrol.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	s2021; bh=eBbwr8sUp6TVZt2DGhYafTV/Eo+QUMDygu3bpu04Rt4=; b=BnBo/M
+	CDGbH/k1VP26c5r6T2Atrosumz0cQtVQjlp0Y37MJfK5NuDQIJ5fBonMwwrgog8g
+	B4paqPgiM6lF9Xsw2HgJTnh5XXiDY+UARpRLF3woZk/y1kgXjTdjv38GmTg4Mfq/
+	yvhqdwHjU/KD2QrH+xgMeutNCdxvzfYQKOmwKr1jeyDzasgR/rzg+GyrTZnkf2g8
+	i6Du/L1ARvFQEOZEONqa7d9DZ/wVKEP4el9w+0hdlbu7gLaBpmRED1OeYqU6cc7x
+	N6Gu1foRQR5oSI+3M1jfU+pMUlo3Pr0TtOixSU0dV67/kAFQKYsyrLDEQgfd9G9q
+	F2zl6i/N1/RBayag==
+Received: from db3pr0202cu003.outbound.protection.outlook.com (mail-northeuropeazlp17011022.outbound.protection.outlook.com [40.93.64.22])
+	by mx07-0061a602.pphosted.com (PPS) with ESMTPS id 41brd0252v-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Sep 2024 14:18:13 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P8e/pKU+Si4J4zFuIW0stKZfhmPk2Re3C7UX7mNnHBU+gYGRLVY1Gwk1sKnCmHsui+9Nh78fDYaeziUgH8mN6Zdl56uAmM5O6lWf9cTk8oeKeWMg2bUTNHu4oU/X7gLHRrtJTQr1pl7YGeQ/PVke4UtfAaeJvt+RVcHWlrjOBz0QlhG3ZGh84S+zOeM5EPhkIZxuCgYyv+ol73NHeM5t8Xsf/QKMkyM6AJY5MDHA110pff6bfXgh5+tenggAPNNAK+fvGEoOvdeD1O1k3yf0HlSVqCuwfuQD4O/44I54c82tH/ZHUgPzLuQX+Wx6JpMV1KdjCrsSaUJP9Oik+8lrSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eBbwr8sUp6TVZt2DGhYafTV/Eo+QUMDygu3bpu04Rt4=;
+ b=W5AbG/vpKyyENJGGYBN3HV/IFuko0tLIZT1oYXmdZfrgMB5zHHsyBEEuLtZVCDt0lLkaoRIExHl7qPuYh8400r3tZzVkWrWMeLP2xfEA1jgACtwPkv0v/BOBUAynmE7DGUpF5x2aaPIjpgq+yklfwjN/7QLSvXse+y5y3+zFnpRt2vPz6epWchyekzXpGc1AAq61qnwf7PyvAPEO6Nhye+MPwXn+u4QYKB98ujoz9+dljTW294igOjhMXYNIH+1je9mYrcGgeizii3TmyJu+RZlzuv378Rz8rIJgn6zc6QMxDy6UYIjTegNJssK0fVFjQ7OsCimzk2eTmycMONzeRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ttcontrol.com; dmarc=pass action=none
+ header.from=ttcontrol.com; dkim=pass header.d=ttcontrol.com; arc=none
+Received: from DU0PR01MB9382.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:32d::6) by AM7PR01MB6675.eurprd01.prod.exchangelabs.com
+ (2603:10a6:20b:1a7::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Mon, 2 Sep
+ 2024 14:18:10 +0000
+Received: from DU0PR01MB9382.eurprd01.prod.exchangelabs.com
+ ([fe80::c41d:dc9b:3f97:1ae1]) by DU0PR01MB9382.eurprd01.prod.exchangelabs.com
+ ([fe80::c41d:dc9b:3f97:1ae1%7]) with mapi id 15.20.7918.024; Mon, 2 Sep 2024
+ 14:18:10 +0000
+From: Diogo Manuel Pais Silva <diogo.pais@ttcontrol.com>
+To: Abel Vesa <abel.vesa@linaro.org>
+CC: Peng Fan <peng.fan@nxp.com>, "abelvesa@kernel.org" <abelvesa@kernel.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "kernel@pengutronix.de"
+	<kernel@pengutronix.de>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "sboyd@kernel.org"
+	<sboyd@kernel.org>,
+        "mturquette@baylibre.com" <mturquette@baylibre.com>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "imx@lists.linux.dev"
+	<imx@lists.linux.dev>,
+        "EMC: linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v3] clk: imx8qxp: Defer instead of failing probe
+Thread-Topic: [PATCH v3] clk: imx8qxp: Defer instead of failing probe
+Thread-Index: AQHa/ULwBX4QDqA/8Ua7zDhzNMik3g==
+Date: Mon, 2 Sep 2024 14:18:10 +0000
+Message-ID:
+ <DU0PR01MB9382A2BBCCD8C786121975B89D922@DU0PR01MB9382.eurprd01.prod.exchangelabs.com>
+References:
+ <DU0PR01MB93828B0E6808E33C608BC0E29DD32@DU0PR01MB9382.eurprd01.prod.exchangelabs.com>
+ <AM6PR04MB5941651E3920794104B3D24F88D32@AM6PR04MB5941.eurprd04.prod.outlook.com>
+ <DU0PR01MB9382F1AC496F22A20C074BDE9DDC2@DU0PR01MB9382.eurprd01.prod.exchangelabs.com>
+ <Zs7gXhohOyQ/abOf@linaro.org>
+In-Reply-To: <Zs7gXhohOyQ/abOf@linaro.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_6d12e765-bdb3-4a42-8d1e-507ff5c9fe67_Enabled=True;MSIP_Label_6d12e765-bdb3-4a42-8d1e-507ff5c9fe67_SiteId=5638dc0c-ffa2-418f-8078-70f739ff781f;MSIP_Label_6d12e765-bdb3-4a42-8d1e-507ff5c9fe67_SetDate=2024-09-02T14:18:09.837Z;MSIP_Label_6d12e765-bdb3-4a42-8d1e-507ff5c9fe67_Name=TTControl
+ -
+ Public;MSIP_Label_6d12e765-bdb3-4a42-8d1e-507ff5c9fe67_ContentBits=0;MSIP_Label_6d12e765-bdb3-4a42-8d1e-507ff5c9fe67_Method=Privileged;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR01MB9382:EE_|AM7PR01MB6675:EE_
+x-ms-office365-filtering-correlation-id: da2f63ff-360f-429d-ed97-08dccb5a12b3
+x-ld-processed: 5638dc0c-ffa2-418f-8078-70f739ff781f,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?s0wNOuSlY3ezp8zlsVF++0JMGw3l3Mq3Her3PWqqfFrScs3Zm9tivlS39c?=
+ =?iso-8859-1?Q?cmUHPSvOMHpKeUzctlmKoWO11MbN596lBHb1inA9dKggdJojpkpAwMOxmF?=
+ =?iso-8859-1?Q?QUYd0byz6qbH80deT844UI3DLJZcZvQEiqwSKLdPR52IYJLY+sqKFzq0cy?=
+ =?iso-8859-1?Q?lA9K6JsNBCRImlPSu6hyQYWqa83m+unyBMiyqcX6ELBU254miPZxtMdJ8a?=
+ =?iso-8859-1?Q?R1fE88Oz2fmrKpHHvq+4qFH5+/zzBANUZKVV7M6qWicAgO0UlNlLw3ovRR?=
+ =?iso-8859-1?Q?5GxgfucDb3hj/5Jlgr0RqXxWet1j2BgcynvHnKkVjeOgoI3s1gIhoS8iOT?=
+ =?iso-8859-1?Q?Rkvpvy5yMklgM4doJlMd+N+4rQ7Ru93+GhUJcIdpm7U/KbgyGO5SweCko3?=
+ =?iso-8859-1?Q?T+peGNEmUcN0nFBZf0oxM0/YDDudJp8anKwWPjnn9k4IJeEiVDEPhFspMI?=
+ =?iso-8859-1?Q?djOx2mzyVeYaashynre0YVyElINC7U8NOhE8qoHQYHBQrdsQombyLnbcxc?=
+ =?iso-8859-1?Q?Zg0/nzGZ+O96iPRjc7MI+uSmJeICAj9Jd4Ka3x4DV8V/Qi+iWzde1PsLrg?=
+ =?iso-8859-1?Q?+8r6W9fLRdq0NsF9OwaGx/s9DkKEOGO9sA7R41TBP3yvopNUtw0KAVb8/l?=
+ =?iso-8859-1?Q?kc/VUQuBrM7bStd9Gz3Si8GXwY1mtLCq933PiVxm3cpCAeiQ5AWE+J1l0S?=
+ =?iso-8859-1?Q?nezCgNmCeKJDIEZzrLWmjDHuuHJvL92hlapGYiHjZRZ8vfP1AtDWYNXzFM?=
+ =?iso-8859-1?Q?L+x7tZuG0Ra3o+1Ti0KYkpA5xvP3ER4e/CtbqZlDbNntoctIIDeiwQdKn/?=
+ =?iso-8859-1?Q?JTwLA/6v5o4yyFH387PiWEwAPcZruS4fWI+fKiBu6N7DxtlXqnXXaWuPet?=
+ =?iso-8859-1?Q?QgAgsdPmq4DeeZBXH0zTd8/m+UWhMPFbw59gKWFQ+XxwSsZf3jX8rtiftF?=
+ =?iso-8859-1?Q?/gKX2c32mffLqWrMl8A0exIXk1+XiJB6YZ+BU9Nvxv8yhfjvzzLuSMhSqO?=
+ =?iso-8859-1?Q?w3lDdrZasC0Px09tYBLPZiVzeWx+o/qLN0k0xDxTX3Rf2wjKOBcnVBMD4b?=
+ =?iso-8859-1?Q?BRxUFmnKKesvLjxKw9RALJ/V6D2jjmJxN3Dg/Csb34ymwks8JzfJehLJV/?=
+ =?iso-8859-1?Q?WRv4sJL5VujJ19+4hdPNMeie6HFjxgNsKzUZUGk5u/1s9Vt3RX/Yo5Lpfd?=
+ =?iso-8859-1?Q?rDT8+rfrChMs/6gjRYW7PQZ/fRRTWiVR2Vr+wucxngXp/Tlzje6CyTevoM?=
+ =?iso-8859-1?Q?mosAaUSL1ZN+lZ6zG304+gbvvJFBy1bKQOPBsjSpaS8hb0yA5oNJlwnry2?=
+ =?iso-8859-1?Q?JIHL1n+GcAMNWUfptz7HQjGyJ6VX+3D0qyo7iNejVbeUVxCEe/+HRUEjdP?=
+ =?iso-8859-1?Q?Azd2ayl0fUvX5jDAGWDtMzVMCOV1+c7YzZFXLTMTU7VdrTlnAtWIP0F0ba?=
+ =?iso-8859-1?Q?CS3vCMOwFF0XOcimhg1EgW1hpSfdtY2ZyDqN1w=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR01MB9382.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?ye8jV0BCoTK22Xd8J/mkE8zA8qWBi8CB143BP27pAZjOg2QqelpR4wLES9?=
+ =?iso-8859-1?Q?3AQSjErQ/qqT81yIcPW6DmdMhPVblSaKvPmyA3TRkeCcLTYB+afls0tvMU?=
+ =?iso-8859-1?Q?OSGE3AwEpfGELdsdmZfyz0JT4b4MUzKNn+dB2AaQ89nydbPvdmn2fU1LSV?=
+ =?iso-8859-1?Q?1ocbmo0Uqk7xvS76/MI1WBLa/9wj1ga56HOom9spR4PCsMEarbuiN95v7N?=
+ =?iso-8859-1?Q?kMCb41B1NJwgaAvRGhP/cwN7jILPJLGV+KYK2EQjuGF2QYNRfDhrXxlWEy?=
+ =?iso-8859-1?Q?yL/Wb/c6li2/yy+jfuv+KPAod55ygBysAm7FNCh+CJjIa9sQ8a8FNY3o8e?=
+ =?iso-8859-1?Q?8nXf6IPbkgsrbXCocg3A6Fh8U+Iip6ifLrZ7iAkuvQR9Y7m9oiT8z2bm8S?=
+ =?iso-8859-1?Q?2rB37cT9HXH9hH42HLP2vh9pFN+hZB3a8FswkFBBZ8rIQX3IUqiiZIK2w8?=
+ =?iso-8859-1?Q?hGuO52FPF15H4fgkE/nF7CyomLi71SrbhYpgnnF3NOlkKXnWCpxvsaaVeY?=
+ =?iso-8859-1?Q?SC1uuuZJ8luvMs0+pw/So0daMi5J1++Ey32hXTIhkJkpjVwrUIuqeu7Yyy?=
+ =?iso-8859-1?Q?yfaCqiqda7FUYCGXKFmq6CyhygIxujoPjntiR7cTI5+HT7vnZOfXPIRmtA?=
+ =?iso-8859-1?Q?IXXAEY0680ZkcmFxzEfAjemTpZMA6N4tDDC8AZ/uyYESVOW2KhHfiX4acv?=
+ =?iso-8859-1?Q?Vuq6s5upSkT4Rv7J/T/caZ9sqOC94j0y+t4c84+pxJE0CHluRBti8HAlle?=
+ =?iso-8859-1?Q?Hj3jW9PjHCzSash4xw4tpz9IuA6aKG4wkWjayeu9njbP355G7tQm3bBco8?=
+ =?iso-8859-1?Q?a6eG5fxKwmGYWeMhGLuFmLxBWXiCh5Hm7heeQm6DLfka+BH96pcua6QFvJ?=
+ =?iso-8859-1?Q?1/oHncVKeGwGxaDQoq0u4sw5hjhG8xXUK9wGXuutKBPf1q1+9uUOfACfDo?=
+ =?iso-8859-1?Q?OERQ/5OFQjWngLTPV8eVOeBscG5I8ehYFdahNK/Cgz2D8fvJKaDmyf9B2q?=
+ =?iso-8859-1?Q?Glv8HC1ra2y0IUbvnep2KULOVKhyvSH9her8uE42BQD70gMWTuA6Nf0pBY?=
+ =?iso-8859-1?Q?dTm+u45NHThxUs1B+lA0SJ78QTQkkNT82abUMmygmPksIpGWi1RSQfxpx+?=
+ =?iso-8859-1?Q?fyGeEi/v+3P+ly6oof1Q3K+hi0l8Slvz/9SBs6vl+OuRtkw11i7JGM6Nv9?=
+ =?iso-8859-1?Q?DGfCYPrzpvnt1QykqG03N5b0uUhXopGMnTcORgWbs+b9zGmHIRHuoUJqgY?=
+ =?iso-8859-1?Q?WxrtF/UVHYbGyNoWTwK65kxlzQavJx3nLEVeKFhm6S1M7iMJGoC3L6iTJ8?=
+ =?iso-8859-1?Q?tI6UjWLQZQjalbuytDM4biJhocXqJskDqxuzNMoCtX8vIQZxx2S9CMT1VO?=
+ =?iso-8859-1?Q?VmQ03gI6+nUB6KPJBq2+i36/QHNtA2BBNdzM1Jb7qmnUN1keMbntYjULQS?=
+ =?iso-8859-1?Q?rmDgpciPdlebgajctZB2bY90dl94eCrUeZEwrWPQ7z9ZMGy19/G9apB6T/?=
+ =?iso-8859-1?Q?cB/Wh2bkcph4I/Hakk4DfRRlBKSvnj00fi/54uyq1ROR0Th3uBV3lTbgxd?=
+ =?iso-8859-1?Q?Bnl4dyY5AO41fjlhqm/5Bqo8fUg93lTbaF2fTZiPxOgMKh518x8u+Cp/2b?=
+ =?iso-8859-1?Q?Kg4iCNADNSHCm16rRmmk3IRaGxWNdT6z+Y?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+X-OriginatorOrg: ttcontrol.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR01MB9382.eurprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: da2f63ff-360f-429d-ed97-08dccb5a12b3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2024 14:18:10.1004
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5638dc0c-ffa2-418f-8078-70f739ff781f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cSH9XGCPg8co14RXQz3+j6QbVYd7jL6AW9YaMq90zaIyBqkvwBYKvPbcTcj6iqGaDvweyqg1mCa72V7GvzKE0VD+dBdL+bg8DM2JF0Bdwys=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR01MB6675
+X-Authority-Analysis: v=2.4 cv=C4i7yhP+ c=1 sm=1 tr=0 ts=66d5c925 cx=c_pps a=thxcoxaKSrYYC4Q79zeVCQ==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=EaEq8P2WXUwA:10 a=9E89HhfwiosA:10 a=EZQmGfNXMHUA:10 a=nxb4IF0AAAAA:8
+ a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=IpJZQVW2AAAA:8 a=pGLkceISAAAA:8 a=rsmfmBjOAAAA:8 a=gwMhcH0e1l1swrN3wTsA:9 a=wPNLvfGTeEIA:10 a=muotpCzfy8uUhEcWaHt4:22 a=cvBusfyB2V15izCimMoJ:22 a=1CNFftbPRP8L7MoqJWF3:22 a=IawgGOuG5U0WyFbmm1f5:22
+ a=5SoQ0aNoiOvKt2feW1sf:22
+X-Proofpoint-ORIG-GUID: PFHpBhMnNeD1ssGO8qq8bFEvvozN4oyJ
+X-Proofpoint-GUID: PFHpBhMnNeD1ssGO8qq8bFEvvozN4oyJ
 
-Hi Frank,
- =20
-> > > switch to this address if it is free.
-> > >  *
-> > > In step 1, i3c_bus_get_free_addr() is called. To optimize for step 2b=
-, this
-> > > function should return an address that is not pre-reserved by any tar=
-get
-> > > device with an assigned address in the device tree (DT). =20
-> >
-> > This does not make sense, if you want to optimize for 2b, why not
-> > selecting the assigned-address property in the first place if it's
-> > available? =20
->=20
-> This is my first idea. But I gived up this way.
->=20
-> Select an assigned-address here will involve a big change in i3c framewor=
-k.
-> There are no PID information in i3c_master_get_free_addr().
->=20
-> In DAA flow:
-> - SVC is get PID first, the get_free_addr(). This case, we can use PID to
-> get dt assigned address.(if change/add API)
-> - But HCI, it is difference, hci_cmd_v2_daa(), get_free_addr() firstly th=
-en
-> send out DAA command. So no PID information when call get_free_addr().
->=20
-> To cover both case, return a *real* free address here is simplest solutio=
-n.
+When of_clk_parent_fill is ran without all the parent clocks having been
+probed then the probe function will return -EINVAL, making it so that
+the probe isn't attempted again. As fw_devlink is on by default this
+does not usually happen, but if fw_devlink is disabled then it is very
+possible that the parent clock will be probed after the lpcg first
+attempt.
 
-But this is a limitation of the HCI driver? So why not addressing this
-in the HCI driver instead? It would greatly simplify the core logic
-which becomes complex for wrong reasons.
+Signed-off-by: Diogo Silva <diogo.pais@ttcontrol.com>
+---
+v2: change from dev_warn to dev_err_probe
+v3: refresh patch
+---
+ drivers/clk/imx/clk-imx8qxp-lpcg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> >  Also, I don't understand why you would care to specifically
-> > *not* return an address that might be the default one for another
-> > device in the first place. =20
->=20
-> If devices A (want adddress 0xA), device B (want address 0xB), if both
-> device send hot join at the same time. device B's PID less than device A,
->=20
-> Device B will be found firstly, call get_free_addr(), 0xA will be return
-> if no this patch.
->=20
-> Device A, call try_get_freeaddr() to get 0xB.
->=20
-> So Devcie B will be assign to 0xA, and Device A will be assign to address=
- 0xB.
->=20
-> After do_daa command, framework will add device B and device A into i3c b=
-us.
->=20
-> When framework try to add device B to i3c bus, framework will try switch
-> device B's address to 0xB from 0xA, but it will be fail because 0xB alrea=
-dy
-> assigned to device A.
+diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx8q=
+xp-lpcg.c
+index d0ccaa040225..cae8f6060fe8 100644
+--- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
++++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+@@ -225,8 +225,8 @@ static int imx_lpcg_parse_clks_from_dt(struct platform_=
+device *pdev,
 
-Well, okay, but that's exactly the situation that will happen if these
-devices are not described in your DT. I guess it's expected that a
-device not described in your DT can be connected, thanks to the
-hot-join feature. In this case you cannot know what is this device
-preferred address and you might end-up in the exact same situation.
+        ret =3D of_clk_parent_fill(np, parent_names, count);
+        if (ret !=3D count) {
+-               dev_err(&pdev->dev, "failed to get clock parent names\n");
+-               return count;
++               return dev_err_probe(&pdev->dev, -EPROBE_DEFER,
++                                    "failed to get all clock parent names\=
+n");
+        }
 
-May I question the need for preferred addresses at all? Is this even
-part of the spec? What is the use-case?
+        ret =3D of_property_read_string_array(np, "clock-output-names",
+--
+2.34.1
+________________________________________
+From: Abel Vesa <abel.vesa@linaro.org>
+Sent: Wednesday, August 28, 2024 10:31 AM
+To: Diogo Manuel Pais Silva
+Cc: Peng Fan; abelvesa@kernel.org; linux-clk@vger.kernel.org; shawnguo@kern=
+el.org; kernel@pengutronix.de; s.hauer@pengutronix.de; linux-arm-kernel@lis=
+ts.infradead.org; sboyd@kernel.org; mturquette@baylibre.com; festevam@gmail=
+.com; imx@lists.linux.dev; EMC: linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] clk: imx8qxp: Defer instead of failing probe
 
-Thanks,
-Miqu=C3=A8l
+On 24-07-02 08:10:44, Diogo Manuel Pais Silva wrote:
+> When of_clk_parent_fill is ran without all the parent clocks having been =
+probed then the probe function will return -EINVAL, making it so that the p=
+robe isn't attempted again. As fw_devlink is on by default this does not us=
+ually happen, but if fw_devlink is disabled then it is very possible that t=
+he parent clock will be probed after the lpcg first attempt.
+>
+> Signed-off-by: Diogo Silva <diogo.pais@ttcontrol.com>
+
+This patch doesn't apply cleanly.
+
+Please respin.
+
+Thanks!
+
+> ---
+> v2: change from dev_warn to dev_err_probe
+> ---
+>  drivers/clk/imx/clk-imx8qxp-lpcg.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx=
+8qxp-lpcg.c
+> index d0ccaa040225..7bd9b745edbe 100644
+> --- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> +++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> @@ -225,8 +225,8 @@ static int imx_lpcg_parse_clks_from_dt(struct platfor=
+m_device *pdev,
+>
+>       ret =3D of_clk_parent_fill(np, parent_names, count);
+>       if (ret !=3D count) {
+> -             dev_err(&pdev->dev, "failed to get clock parent names\n");
+> -             return count;
+> +             return dev_err_probe(&pdev->dev, -EPROBE_DEFER,
+> +                             "failed to get all clock parent names\n");
+>       }
+>
+>       ret =3D of_property_read_string_array(np, "clock-output-names",
+> --
+> 2.34.1
+CONFIDENTIALITY: The contents of this e-mail are confidential and intended =
+only for the above addressee(s). If you are not the intended recipient, or =
+the person responsible for delivering it to the intended recipient, copying=
+ or delivering it to anyone else or using it in any unauthorized manner is =
+prohibited and may be unlawful. If you receive this e-mail by mistake, plea=
+se notify the sender and the systems administrator at straymail@tttech.com =
+immediately.
