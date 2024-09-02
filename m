@@ -1,57 +1,57 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621017A5B4
-	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 09:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E312187329
+	for <imx@lists.linux.dev>; Mon,  2 Sep 2024 09:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725270518; cv=none; b=XBTJ2JE9p39GItrbxnnJ4+IG/XzaJtgcXVT3MKfT5ZseEWUv3IiI05e0d6NFLikiBApzrrBETmNA4Ek5AndM41HhFJqbZEraUe1wplrtAI6vwrdadZ7jhZMhR5ABu30X8QpmYYYuKGfaWb7cm6068Wbv7OkgDBCeMQb5Db/y+Xo=
+	t=1725270567; cv=none; b=Jf02mifr/QwZelhs0qqApE+KPrnl5JnSNXQLAe3dMa9QU0VccwPVv9v+4qaFwug2ekc6lv88dtz/w2pxDmuaHGCkyasNJHpg6bncpyLz2usJJoYJ5Fd6JJSAMySeFsNyN2s1B2VVHUBsVHhrcOPXmevISsoEQ5ogQWQ+VRigDto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725270518; c=relaxed/simple;
-	bh=QBtZb9KD65n3yGJNh39xwVrcqogeAGovn0MZaaZxugo=;
+	s=arc-20240116; t=1725270567; c=relaxed/simple;
+	bh=5pbRVwtopQ6d3wAPmWATKqqvjPzTOivIPDWsPsi2O8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lEtT765oCU63wj0YU8bB/KT5BVE9sIW86mJqCZWc4j90VQVxtKt3Iu3eoPTe/YGNDwvy5n8MVly9zHPtm+XsrjdXQzSjriT2OSgWyK+DDKyTLf4KBcUtjVx/Gg5LIoTUVHnuuZUAosoHKqDd9HyKBdVVnjJATHS2OXl50+V6e4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=uKqIcLjg; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version:Content-Type; b=YQP7/1ckUo6jPXlQ9Drof3kmwYt5rDbUpBGpkYclvixNv5liYdK8d2gV4QUA3LWSgy5uuQNBwrEpEcMhNw8+efQfObOCYcQ0IW0H0ZZSum3DPC6js3cOCXeF0XngT3Ovd4ggMeoryNvbzy2FY6ToXpHdyLS5hRhkvOkHRpELSwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ArZKTGQS; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="uKqIcLjg"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso44709855e9.1
-        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 02:48:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ArZKTGQS"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso44717675e9.1
+        for <imx@lists.linux.dev>; Mon, 02 Sep 2024 02:49:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1725270515; x=1725875315; darn=lists.linux.dev;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1725270564; x=1725875364; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KbxcEkt76T9GZt/fg4Jcw8wx9AJnOQd77mqSZSN+ck4=;
-        b=uKqIcLjgyV0GtAZo1qTvugHUS8eFI8vhSz4qBvHuHS3IC4K8111/cBQ3/mKyx0WcBI
-         O81BE+FtRtJpBLjzHWqR1iTgE6oKM163Sc7xdcId3+45SpiBOqY77RfFQqRUuwdmBL61
-         1jBW+pXEB7A8Lp2BE69K/ZeAtdUZuFtaxt5MdtRIH+r8DZ6cCzOvm+MF0n7fIydcWJG0
-         F/Qs1NvM4wW9HpF3l0Ob0PKYcwPSNT3oZIW1WIG1dQ/78gC913F9zs7kYz7aIEHdcQTs
-         7n85Cija9cEtcieXnV5jK0LshSL/351Tcis3nQQ4MttIlXOt/09p2/SJgKGFxp424GEL
-         RtWg==
+        bh=oZJOnRKxxutEChlIW+5PAtmNmotUPz7eaFOc9n7zpMA=;
+        b=ArZKTGQSPN6qmlPpxoCcGCnFVaqWgHzrFFJeAkghtNRnQlC/2zGUyiWSv8754F2IZb
+         j3tsuNBLe1egyTch9D9h2f6L/Z9ZiYZl559SmEQyz5RskcUf6AyqtdaISWiLEsZuccja
+         uv6u4z6xR6UeUMM0x80skWyYQFj/yUP/WaoC73oNJV2+AqfwQOZVfX6b2Inuequ3+z8m
+         4sy0/Go0AbE7INjXnj2NTtr3NOpjKFbZjl8VzmEL5+qoa+mL82y8Sr74HggfYsJsiQL0
+         4ZaXXoVgAU93G7EqbWf4i9VLePVTSFumEYIw1D1PlzDhEOA9ZEFVeOic1KkPluEY4gN7
+         SJCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725270515; x=1725875315;
+        d=1e100.net; s=20230601; t=1725270564; x=1725875364;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KbxcEkt76T9GZt/fg4Jcw8wx9AJnOQd77mqSZSN+ck4=;
-        b=QifkandqY+0iCGDZzEGaBh83jkKWLAWB7Prj3DB+61T1cBBZDo2Ax/X5FCo2nwhNXB
-         p0sKg9Iav+HRmG+rkiPjMBoY31nwnKqXTu7/i+Hql+mrOeYkMedIgU0Am9htECYVJe17
-         nYTc0JQtBYGbb+2p/ry+FrdHkvQUirdHTYgmy/E5pVSDx9fWv6t2414S578CErMUG7b4
-         DinWXaFjpx2mmShIPUTuVHK54RHPXteDpmVpgqBhWHmfTw9MdeBRRiCsIANcNUffmT3D
-         GKxi7guG5v2Wc8GsEz3m85AnysZIPhv/Z6JjyExkOnb/nJM0jAZeKXwX3zP6gADUJBZf
-         yidQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwu02xECTZ3X3gBvVdsbOyywtjiKTD43LkWCzKhGXifY1dNqGQoMRzBScz4doCw6d2YyQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyUGceyZ+4btbm6n86EQ6nBFwloNo+mjSY8eWfBbRXiapf2yfw0
-	XRkhxZ0WCf4o2GqoDa07kDGTFqHTJQ0Ukre8Fkz3XZskL+W8Bao7NYPd+Vm73zc=
-X-Google-Smtp-Source: AGHT+IF7hvbwuW4A6Gp8/WmsXKfPAcTMn7Cze0fDD5ugsq9mnAbtwMteHUBdg1kKX+fyaVbQTLE9JQ==
-X-Received: by 2002:a05:600c:4505:b0:426:5c81:2538 with SMTP id 5b1f17b1804b1-42bb01b92e0mr100921455e9.14.1725270514148;
-        Mon, 02 Sep 2024 02:48:34 -0700 (PDT)
+        bh=oZJOnRKxxutEChlIW+5PAtmNmotUPz7eaFOc9n7zpMA=;
+        b=ZHhMSkI1Z/gAeCYTjeIuigicxTPHkLanOEt3fz0UC9hXhw0ASK/wMcj90e/oL4iL7Y
+         X2f25kbz/UNnz6Ed0ggu6WJ+pM/gmyYl1dZFWztBgkIfxNH3b0WtNoRONkSDFN02Tr7i
+         Pi0Aok2q7JQ4AVPb0WLgmt34cJpDgRBe+hnNVmpVNZCZEdH8vu3Lh/8N2nOM4TqR0neJ
+         VlB6bm0HXUgEihorpO4MRl28kik654vLs76DfMjyDwkN/BEcceYa8L7HmVyq72rA3v4K
+         rZEKre2x9u+4HPxB8gpS+QyZ/bZWDo5UWtTZBpv/a4et9x5usE72okgeKoa44Ck/VkLp
+         ePgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsZ41klTUDktU/nL5M9nE6rK+SEh/qlg/WaJkw8TU4OJ4/JcdbZbsk/cUtKEmwXz7GGJI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzqHl5GlF+8sx+GxtYbylhNPaDJkw+Ry7Exg+kkqUsp/WXNPjpe
+	OMmi0Er5Z0U1ygpaYt/9FbZ1ZkHuYgne3HKlIgHgWlA3QS1reA+6+Y6X1lWjPNQ=
+X-Google-Smtp-Source: AGHT+IFPE9DrSMLqeufhX66yLGT0OKavBe2zcsQBz4ANdf9tEN6d/UmYFJCTb/y4f/xkAno+0UHlVA==
+X-Received: by 2002:a05:600c:1548:b0:426:59d3:8cae with SMTP id 5b1f17b1804b1-42bb01b9302mr119554325e9.13.1725270563591;
+        Mon, 02 Sep 2024 02:49:23 -0700 (PDT)
 Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:b496:9e67:73c9:9f5a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bba7f9f94sm67701665e9.0.2024.09.02.02.48.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df795asm131691865e9.21.2024.09.02.02.49.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 02:48:33 -0700 (PDT)
+        Mon, 02 Sep 2024 02:49:23 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
 To: Linus Walleij <linus.walleij@linaro.org>,
 	Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -80,12 +80,12 @@ Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 1/3] dt-bindings: gpio: fcs,fxl6408: add missing type to GPIO hogs
-Date: Mon,  2 Sep 2024 11:48:32 +0200
-Message-ID: <172527050971.21449.969240784108554117.b4-ty@linaro.org>
+Subject: Re: [PATCH 3/3] dt-bindings: gpio: simplify GPIO hog nodes schema
+Date: Mon,  2 Sep 2024 11:49:21 +0200
+Message-ID: <172527055993.21602.6768562114748623429.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-1-63b83e47d804@linaro.org>
-References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org> <20240828-dt-bindings-gpio-hog-v1-1-63b83e47d804@linaro.org>
+In-Reply-To: <20240828-dt-bindings-gpio-hog-v1-3-63b83e47d804@linaro.org>
+References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org> <20240828-dt-bindings-gpio-hog-v1-3-63b83e47d804@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -98,16 +98,20 @@ Content-Transfer-Encoding: 8bit
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
 
-On Wed, 28 Aug 2024 11:35:57 +0200, Krzysztof Kozlowski wrote:
-> GPIO hog nodes should define type, otherwise "dummy-hog" boolean
-> properties would be allowed.
+On Wed, 28 Aug 2024 11:35:59 +0200, Krzysztof Kozlowski wrote:
+> The core schema in dtschema already strictly defines contents of nodes
+> with "gpio-hog" property (with additionalProperties: false), thus the
+> only thing device schema should do is: define "type: object" and
+> required "gpio-hog".  Make the code a bit simpler by removing redundant
+> parts.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/3] dt-bindings: gpio: fcs,fxl6408: add missing type to GPIO hogs
-      commit: 6a9f2c1b1cbbcd49a1ccf18771e68f7cf52709ee
+[3/3] dt-bindings: gpio: simplify GPIO hog nodes schema
+      commit: 98db29d1b4b7b1fe9b54d11e66a396fc37a73c57
 
 Best regards,
 -- 
