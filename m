@@ -1,73 +1,71 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A25C205E13
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 08:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9711D417C
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 08:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725352103; cv=none; b=JLxn2A+zpzt3U95TxmDhdd81o/qMtFY84/AM7jlNMsS9hsmh1MXEuzTLqHVOjo1jz1w2L6huw5TCs7mnKdUdlEc1XyVI9OGWfQOQBbMQ7RM0tvqBipo41VLqSU/eyGgmqUadTUcWIcREkDjBuwao9jZe87IzuwcBuhFkn1xGowA=
+	t=1725352762; cv=none; b=pH3gM0zpMzH54Q/RWhH/DT/dvhgVCYFzmc+6bK6stv4buswKGoUIMa30fGi8MjnNSaswdZqjrBdp4+SKg67h4zzzxStu/wXp7JCtXxAjhONyIGuxcagjTFYaIwK4InK8Df42p1bVrv8QAHLvb9IgaA3e9XTaUWyr8+5Xa/jdVdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725352103; c=relaxed/simple;
-	bh=8oFiYCS5Ioy2hxq4sF3xkTJ/UPpmhNLp2U2xYW3Ieio=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=uH+aYEStL30qdJ+UWzqG3X7U2hbloKWAsoDYpTRGhRhluBxV3FQdYPSICXsON89ByiD7ovm3g00ekr4yMrolKeJf4Sa+g6NQkrVdbhIG+d1ooldjOzIoauuQ0psbuhnP7JmtG27OVJbK7NOJtq/vrwjf0fpYRi8tANG1c3R4Lz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 94CCA203174;
-	Tue,  3 Sep 2024 10:21:11 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 571C4201D69;
-	Tue,  3 Sep 2024 10:21:11 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 9AE821834898;
-	Tue,  3 Sep 2024 16:21:09 +0800 (+08)
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v1 1/2] dt-bindings: clock: nxp,imx95-blk-ctl: Add compatible string for i.MX95 HSIO BLK CTRL
-Date: Tue,  3 Sep 2024 15:59:56 +0800
-Message-Id: <1725350397-19527-2-git-send-email-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1725350397-19527-1-git-send-email-hongxing.zhu@nxp.com>
-References: <1725350397-19527-1-git-send-email-hongxing.zhu@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1725352762; c=relaxed/simple;
+	bh=mrBrZeX3pZ9wRZJbHHpcB1Uzkac+lynRVTT+L9xIkqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kE8TbSYKAKaB4S/DQylK1spym8OFrjZWrZY+zKCgkGv8mX8/QnNkzS8U5G4cO1/I2CreBP8InF2Zqdv+pq82PBRpqnK8mv1RW6kmwgoSaVDUWWu98cbiC5pvPajmzqq416yu4ySpu0HjvxPfTNi7YmSeFiSeie6o7eLriHirhcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=NeA4af1n; arc=none smtp.client-ip=1.95.21.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="NeA4af1n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=klQLUQYC0Iq8lFRsov9BQeOh3b0gq2reax6p5YSo9Vk=;
+	b=NeA4af1n22V1F9gf2uVQenRVUtjTYVj0yOrWD0nIRujqxhaUKCogrZFgpyK3gF
+	i4MxonZMIbVWr9BOJLEiPPFYiCwflyi2cJ4iOxUqIxYYb2C6OsICWl2COdlxYQqq
+	fgBLcaSNE02VpjY5g9I3+asjcd93vAIg/W9NwtY+IBlUM=
+Received: from dragon (unknown [114.216.210.89])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3XzwGy9ZmaWpdAA--.52316S3;
+	Tue, 03 Sep 2024 16:38:32 +0800 (CST)
+Date: Tue, 3 Sep 2024 16:38:30 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: shawnguo@kernel.org, krzk+dt@kernel.org, robh@kernel.org,
+	festevam@gmail.com, Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Mathieu Othacehe <m.othacehe@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Yannic Moog <y.moog@phytec.de>, Josua Mayer <josua@solid-run.com>,
+	Li Yang <leoyang.li@nxp.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 0/2] Add support for Variscite Symphony board and
+ VAR-SOM-MX8MP SoM
+Message-ID: <ZtbLBt/RhGim78uH@dragon>
+References: <20240902134512.16717-1-tarang.raval@siliconsignals.io>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240902134512.16717-1-tarang.raval@siliconsignals.io>
+X-CM-TRANSID:Ms8vCgD3XzwGy9ZmaWpdAA--.52316S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU-4SoDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQNPZWbWyfkEBAAAs4
 
-Add compatible string "nxp,imx95-hsio-blk-ctl" for iMX95.
+On Mon, Sep 02, 2024 at 07:15:06PM +0530, Tarang Raval wrote:
+> Tarang Raval (2):
+>   arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and
+>     VAR-SOM-MX8MP SoM
+>   dt-bindings: arm: fsl: Add Variscite Symphony board and VAR-SOM-MX8MP
+>     SoM
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
----
- Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-index 2dffc02dcd8b..638241f6749f 100644
---- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-+++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-@@ -17,6 +17,7 @@ properties:
-           - nxp,imx95-display-csr
-           - nxp,imx95-camera-csr
-           - nxp,imx95-vpu-csr
-+          - nxp,imx95-hsio-blk-ctl
-       - const: syscon
- 
-   reg:
--- 
-2.37.1
+Applied both, thanks!
 
