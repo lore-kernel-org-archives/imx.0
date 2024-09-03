@@ -1,146 +1,108 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B0A1AD240
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAA919F439
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725354775; cv=none; b=ULeO/WJRMKPkzqz/tu2T3h47IjB+Wqg23HFrsZykohHM/Tqc95ZvIVTAGtuR3ajfzWCW+eMfYiWWaSMpfW+rMJD0tAx3v2XFz/mk/pDlXVtORihSGzRmaMaCvKbkzU2ThF3nvgnoYFJLN2zLN6FWmaIUJS3nDIgpKccc+wyeMrY=
+	t=1725355010; cv=none; b=b4ECHPrjXp2ujZAlrNLgfElECaLZP4CyxbNtojvMd3d8AlPPf1sf3u/XbU2X7TDQ41FKJ4dADqjYI1DOjkz5s6G4ZhJlfMfNxJMvDhTJa52N5CGD36iuu01UTeikEQu8lAei8sdekrbL/rDuzApfoKSkbLKFZAS4CClwE7SM7tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725354775; c=relaxed/simple;
-	bh=6JBBplIDsA2HJb4B4/pBx6RbbKhR6nm1mI9apDqN9t0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ldXbPwY74vCPEbjXxGNXOdIq3Fs7hs4zp0rf9fxFxuHWKdv75ENntnFvPkJQjnihZOBbzlAmViWEIIxlKJGLsoL+QmToFdpvqDiwg9mbw3W/xmgAAd/D/GcPVBMm46r3AGsKmThWJpXBb3KQADod1bYy6MX/VVxwFIesKHXtRwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=ZBcNMMMM; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1725355010; c=relaxed/simple;
+	bh=HWjGQ4YHroQwD/57wggdSbHx9qHopndgiBjBXsMUmLI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DNhiygDEQ93cuXAP2ak8AEUrPEY2//X4EMrExzElo1PXuW3KOkujDJ0OJAB1ivtCSp+UAwKzm9zuKoTUQ7X4pQBcBB5eB4z3r7SOwy2ug2qgidPyr/KXEG7fqAvK6vPeeOAgEtfWBDYDM16efrh2ZpXbKwzTlxlWpbdPJXp0wu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IER7INjC; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="ZBcNMMMM"
-Received: from francesco-nb.corp.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id 48AFA22A41;
-	Tue,  3 Sep 2024 11:12:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1725354765;
-	bh=x/Dc4MQ75tXldUcMe+uDn+5jK81jvSQu/e9iblTqqOE=; h=From:To:Subject;
-	b=ZBcNMMMM9DGx4CkLJvKDOx0/Y1GgTN5K396FH3a2ngka2xMWw+3hGhprC4pYK/63W
-	 JiRizBBGNxwss2JtOuyKLOm97bDGMpg6obM5Is1e3sRk5A3p9x5jQrdNoRe9z+s+0V
-	 m36EA/oXW/amkqbPyg7noF+3hFEwpWABcTv/8c/yYl9nIstqdhAZk4kJkr3mEifM5d
-	 rhtgyP5PFdA03W0H/CIFmrepy+R1AfyJE0GsVT7YudgGBOM5YQ1K9CY6ZHZHcFGwLy
-	 dXXzEOz2sl5F2X0IllfgvOO8g2Bt+hTlSwOOeXRqGgUwWF0U5FtbFrkD87VI1lCqCa
-	 9Vku0Seo6NhNQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2 5/5] arm64: dts: imx8-apalis: Add usb4 host support
-Date: Tue,  3 Sep 2024 11:12:31 +0200
-Message-Id: <20240903091231.20035-6-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240903091231.20035-1-francesco@dolcini.it>
-References: <20240903091231.20035-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IER7INjC"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2f5064816edso58196101fa.3
+        for <imx@lists.linux.dev>; Tue, 03 Sep 2024 02:16:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725355007; x=1725959807; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HWjGQ4YHroQwD/57wggdSbHx9qHopndgiBjBXsMUmLI=;
+        b=IER7INjCgwlMj61enGOjEjBAMuQW6skBbgiB+ZmJziVhsIrdRvetI/kAN0vLfb1TCP
+         enCaRknAxu9r7nfbP5smgAkMUo9IUKRK69GDY1z5VLv++PZ42k69QFB8Y7P/9TVZvpbe
+         LB/A+2zr9zw/AdfFWKIUwU1EAiCyvq/zPOVslhKFWtQ3ZCZYUFdR8G85UIuNV1e29QwU
+         GHyChSVvhR5WZSuDRCzvhBFxM7kupbc/Jthu+mgElLLz86RiVy+eNi9pHHc4d/jC6vOY
+         rFayEJL4Rzt6HU4iT2hlCkFDiPCEOTS0ZF40KLBuS5gUAYvhHT+BKq7oU8RZiL/U367l
+         dZbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725355007; x=1725959807;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HWjGQ4YHroQwD/57wggdSbHx9qHopndgiBjBXsMUmLI=;
+        b=bmv15T0ZqmX2asT2kStiesrCf7ajJfynjL0y0yjv3JVOIDoss9CMQfp+PHco8g7akT
+         u7CRJqVErdHYK56uZI03iwQ4bRqjlaahOQT+jYd3400fQaqcCa+Uqeg4z3whrHYW1RI0
+         msLgT0Dk6lVbu9xeGJEEJ8GUrOeXtbsDtGUH1MzT6fEG+sQkBz88mdVMORgbFmDkwZlf
+         NQvNT/Qc5x3/HRno6kbYd3HUtxxid7Hjk0GgGDjby3zE6X8sQhB42rDkQqEMxWRaohsv
+         +1ZQLOPAva8NcVWespCOEW2eaJfqPlExdjFezt5TdEGeJZ60bUTbtlpErsf9ZTzUPr84
+         mW6w==
+X-Forwarded-Encrypted: i=1; AJvYcCU3oOR1hNxqcjO/gDyPluOXvwl9xkpdD0Bbvz5RYa75IGriFQOQ0aTZdv4XPrtxDFxQAQ8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGGwiAJeInhVSeK8a0Zvtj0wNkN0uwYirN3qTBvrpvfjes9l/A
+	zDYO8Nl+HMv0UqBMvPedbElJUwLSNI3muwTay/uhpvdIp0yApk6lXEf8gbAkSJICTKYudhQFjA+
+	wpMwAycJyDdsdze5uE+Ux3xKV4UpzShFxm2AztA==
+X-Google-Smtp-Source: AGHT+IF5iXmXm3uBNGtfu2k2W3mUA/wL6HSlGri8eJbZA0MDiPWsO5xxdT1fn59W0sd0nud+XYxGXlKqBmQA/C+s9Vc=
+X-Received: by 2002:a2e:a9a1:0:b0:2f3:d008:a54e with SMTP id
+ 38308e7fff4ca-2f6104f2859mr113545281fa.36.1725355005999; Tue, 03 Sep 2024
+ 02:16:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
+ <20240828-dt-bindings-gpio-hog-v1-2-63b83e47d804@linaro.org>
+ <CACRpkdZzF5yJQnnDsjU8cTr9Fpe7wZZXoW3K-wFYuAq2vv8XxA@mail.gmail.com>
+ <CAMRc=Mcv9nfiG7N-ttS_A=Ay-5Wv2mYpT+41G1u8G4GrMQAuEA@mail.gmail.com>
+ <CAMRc=Md9+pmiDSzjhNXBOzZeBLCemvxCzFMAyfFH_Qi329jG9Q@mail.gmail.com> <884facf9-09dd-4454-9f39-67335b4e8c5f@linaro.org>
+In-Reply-To: <884facf9-09dd-4454-9f39-67335b4e8c5f@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 3 Sep 2024 11:16:34 +0200
+Message-ID: <CACRpkdZosOeBhEo460Wr3r9gF+xg1wJGdhvX0xf2_PWLZ2hkYg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] dt-bindings: pinctrl: qcom: add missing type to GPIO hogs
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Maxime Ripard <mripard@kernel.org>, Masahiro Yamada <yamada.masahiro@socionext.com>, 
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Mon, Sep 2, 2024 at 12:02=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 
-Add USB4 HOST to Apalis-iMX8QM SOM and its carrier boards.
+> >>> I suppose it's best of Bartosz applies this to the GPIO tree with
+> >>> the rest of the series?
+> >>>
+> >>> Yours,
+> >>> Linus Walleij
+> >>
+> >> Ah, I picked up the GPIO changes separately. No problem, I'll pick
+> >> this one up as well.
+> >>
+> >> Bart
+> >
+> > Nope, I cannot, this doesn't apply to the GPIO tree.
+>
+> Hm, probably there is something in pinctrl tree.
+>
+> @Linus, can you grab pinctrl bits?
 
-Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-v2: no changes
----
- arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi |  5 ++++-
- .../boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi  |  5 ++++-
- .../boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi  |  5 ++++-
- arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 13 ++++++++++++-
- 4 files changed, 24 insertions(+), 4 deletions(-)
+OK I applied this patch 2/3 to the pinctrl tree!
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-index 5f24356ad4e2..dc127298715b 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-@@ -135,4 +135,7 @@ &usbotg1 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis USBH4 SuperSpeed */
-+/* Apalis USBH4 SuperSpeed */
-+&usbotg3_cdns3 {
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-index 4ec2227750f4..d4a1ad528f65 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-@@ -222,7 +222,10 @@ &usbotg1 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis USBH4 SuperSpeed */
-+/* Apalis USBH4 SuperSpeed */
-+&usbotg3_cdns3 {
-+	status = "okay";
-+};
- 
- /* Apalis MMC1 */
- &usdhc2 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-index 606d9328ac99..5e132c83e1b2 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-@@ -271,7 +271,10 @@ &usbotg1 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis USBH4 SuperSpeed */
-+/* Apalis USBH4 SuperSpeed */
-+&usbotg3_cdns3 {
-+	status = "okay";
-+};
- 
- /* Apalis MMC1 */
- &usdhc2 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index 91fd631b7ebd..a3fc945aea16 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -807,7 +807,18 @@ &spdif0 {
- 
- /* TODO: Apalis USBH2, Apalis USBH3 and on-module Wi-Fi via on-module HSIC Hub */
- 
--/* TODO: Apalis USBH4 */
-+/* Apalis USBH4 */
-+&usb3_phy {
-+	status = "okay";
-+};
-+
-+&usbotg3 {
-+	status = "okay";
-+};
-+
-+&usbotg3_cdns3 {
-+	dr_mode = "host";
-+};
- 
- /* Apalis USBO1 */
- &usbphy1 {
--- 
-2.39.2
-
+Yours,
+Linus Walleij
