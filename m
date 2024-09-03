@@ -1,102 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FA3B647;
-	Tue,  3 Sep 2024 21:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB9E1EC011;
+	Tue,  3 Sep 2024 21:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725397229; cv=none; b=KCjUFggbT5oW+1BIzZdWDEI1rGHMWtvdrZm93aPIeMP0Olh0G0GHd1wM4DNh2VYvt8rc1/v3CoCFf5j1osRLBhW9Y6FB3ZlH/fp4TDA8Kh0mvXKxPvhWx5VdB9YDyu9HsYev/pSgCqp9jkOcaHwRfNCXhilQGcUR/O31CXjVywg=
+	t=1725397762; cv=none; b=Acro83MF5fRt/IIefJ0NQXFT44PpVAjV9SFTanpRLUmhyXD7QvZOIXpc0IVU7rraMtPRUKuUJ4+Nfv6dkYfqHIauGRSLtnGJ9/aHqBcvxE9AdDBi0HXGgkuUxfqIHTl2AqQkEBu4aRmDmAVuloqJoqYIpV9z0/yGL64pryPyg+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725397229; c=relaxed/simple;
-	bh=jv+1kf8g+dnHYkhxQbSszP1qpuXLncf8k9I1jM1n2QQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oag73Bz2RQp626ff6xPyxrTK1KT8mGL1ZNra5S7XSP5NTlc74UlM2iSVc6f6GppIWkeBstmTmWH0/9JkytydAUoJsxo+ZuXpGWbvROTqmyAgZzVLGZq5/68dxa5eD0p8weNe289a9VyB4PDd4NgAsabRcpg/ubToehljILV+v10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AB5R4DrZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725397762; c=relaxed/simple;
+	bh=zMYA+LcGsMb9VFlyyQ4rB4esNt0Wsi3Z7wJ735oK+TQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=RUU/rXfiqoLn5vuFQXuaIxlnKK6jIrbbSN6Ld5kH8tSR+M8hsQiSd0uBQHNDZcBWwGLdNr5IxJAYYKfhEHlYlWn7WYsjMimj/N29WBjGv0OopnCB2YWXiAeWNoqKwptRZJBTzyLnf+r3RQlu8Pj2JQP05uJkqMHAYQZqT0qHJLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIs57Wl9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AB5R4DrZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC929C4CEC4;
-	Tue,  3 Sep 2024 21:00:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIs57Wl9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592A7C4CEC4;
+	Tue,  3 Sep 2024 21:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725397229;
-	bh=jv+1kf8g+dnHYkhxQbSszP1qpuXLncf8k9I1jM1n2QQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AB5R4DrZQ/aI2cRbASR71eUQcs1cE6UTHXVX1DpFAHErRrEkoqaqjmlUllD2+Nu9w
-	 xFVKIluKEsEaXIctdA/rxApJZkG8oOIqALZBu5MuuGxQ2iIef+nK5/OfOqkT5j5y+v
-	 K7AxGx52m57lMrnULyvSZHwno66gxuWU8/gZXgw0zT7d28+Imqjmhi4Rup9e8390GD
-	 HWkx98A1SESPE1rwo8TQKE5JxBRmc9Iyx6gUelKYQo6pvhp112dv6/7Tx2F3Wn+2L/
-	 K2yuWDaHER2Ak+3JmpNTo6cRSDD80KReQrV+iRAyDHjtCmcMJMM8cJUvNLI37rlhcW
-	 V5/U9HkcntSbg==
-Date: Tue, 3 Sep 2024 23:00:25 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, francesco.dolcini@toradex.com, 
-	Frank.Li@nxp.com, linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v3 4/4] i2c: imx: prevent rescheduling in non dma mode
-Message-ID: <pva2d5fc76ykjlzyxivrau4qnt6cu6qqlgmuvq3ykzlaqvsqio@xuultvre2f4d>
-References: <20240902074330.6349-1-eichest@gmail.com>
- <20240902074330.6349-5-eichest@gmail.com>
+	s=k20201202; t=1725397761;
+	bh=zMYA+LcGsMb9VFlyyQ4rB4esNt0Wsi3Z7wJ735oK+TQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=qIs57Wl9jXFEqhkEJPkefxf7DNEpJ/KpO+Vz3giW1hy7mMsLHGeVdOQkkjx/+NmmV
+	 negBj0xkg1WEhOt0XYT1iCrGGzGIJjYOxxCttFb3gTJdQXofcN90AjhNG7CpX04DtM
+	 KZRTymWXV6TvKAfXJsYwF/8MLR3SFgpQ3A2G9pGoe7h5HvQZUN1YNvmHVLrMQz1Z4l
+	 2ikCqhcsHbDY86LeQwgeqBYLxKygEr8a9LXBVjf8UWZukvXPDMYqHdu01RuCB2vuiW
+	 BGoMAVReWhiBiAHDqtZ3Qws9SVbgQPKBWbRxUKIcOCWb8KeuNEhpfNWrdR44PJ3vnL
+	 nsP/xhzYHVYBw==
+Date: Tue, 3 Sep 2024 16:09:19 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v8 11/11] PCI: imx6: Add i.MX8Q PCIe root complex (RC)
+ support
+Message-ID: <20240903210919.GA277611@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240902074330.6349-5-eichest@gmail.com>
+In-Reply-To: <ZtdzIxr3YnDAW5VY@lizhi-Precision-Tower-5810>
 
-Hi Stefan,
-
-One final ask...
-
-On Mon, Sep 02, 2024 at 09:42:04AM GMT, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On Tue, Sep 03, 2024 at 04:35:47PM -0400, Frank Li wrote:
+> On Mon, Sep 02, 2024 at 08:49:27PM -0500, Bjorn Helgaas wrote:
+> > On Mon, Jul 29, 2024 at 04:18:18PM -0400, Frank Li wrote:
+> > > From: Richard Zhu <hongxing.zhu@nxp.com>
+> > >
+> > > Implement i.MX8Q (i.MX8QM, i.MX8QXP, and i.MX8DXL) PCIe RC support. While
+> > > the controller resembles that of iMX8MP, the PHY differs significantly.
+> > > Notably, there's a distinction between PCI bus addresses and CPU addresses.
+> >
+> > This bus/CPU address distinction is unrelated to the PHY despite the
+> > fact that this phrasing suggests they might be related.
 > 
-> We are experiencing a problem with the i.MX I2C controller when
-> communicating with SMBus devices. We are seeing devices time-out because
-> the time between sending/receiving two bytes is too long, and the SMBus
-> device returns to the idle state. This happens because the i.MX I2C
-> controller sends and receives byte by byte. When a byte is sent or
-> received, we get an interrupt and can send or receive the next byte.
-> 
-> The current implementation sends a byte and then waits for an event
-> generated by the interrupt subroutine. After the event is received, the
-> next byte is sent and we wait again. This waiting allows the scheduler
-> to reschedule other tasks, with the disadvantage that we may not send
-> the next byte for a long time because the send task is not immediately
-> scheduled. For example, if the rescheduling takes more than 25ms, this
-> can cause SMBus devices to timeout and communication to fail.
-> 
-> This patch changes the behavior so that we do not reschedule the
-> send/receive task, but instead send or receive the next byte in the
-> interrupt subroutine. This prevents rescheduling and drastically reduces
-> the time between sending/receiving bytes. The cost in the interrupt
-> subroutine is relatively small, we check what state we are in and then
-> send/receive the next byte. Before we had to call wake_up, which is even
-> less expensive. However, we also had to do some scheduling, which
-> increased the overall cost compared to the new solution. The wake_up
-> function to wake up the send/receive task is now only called when an
-> error occurs or when the transfer is complete.
-> 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> This just list two indepentent differences.
 
-The code is fine and looks good to me. The commit log is also
-very descriptive. However, there isn’t a single line of comment
-in the code.
+Yes.  But using "Notably" here connects them by suggesting that the
+address space translation is a major part of what came before.  Weird
+subtlety of English usage, I guess.
 
-If someone else encounters this code without understanding your
-specific context, they might find it too complex and attempt to
-simplify it or revert to the previous implementation.
-
-Please add comments to describe the state machine you
-implemented, the reasoning behind it (as you explained in the
-commit log), and make it understandable for those who haven’t
-reviewed your patches.
-
-Thanks,
-Andi
+Krzysztof, if you have a chance, just s/Notably/Also/ here.
