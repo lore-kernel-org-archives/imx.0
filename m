@@ -1,69 +1,56 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED9018BB8C
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 16:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF4617A90F
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 16:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725380797; cv=none; b=e7s0O/vMcc78vD3ngrL6T+0tC7bt3tQwY6wC4QBvOK2Uukp5Tl97BguwHbaoGa4DjAq5j8IHSzR2ZrupQQPTivj0f51h/9se8EZhNZmXyiCYDJc4iFTEJC5yR8IwQrK9EFnKzK6NFM8B7lQFos74CmfMBreravSIBYAWZAc6ZTI=
+	t=1725382663; cv=none; b=jxoJFPknfq5KGiXYuhmH8u+R8D0IjojNCM7BK/OPYaVVUgQ+CQQdC2eIyi47aN7zBYhHiGMtCwhFxewZbIJkzE4lnNB0mX8TeUJhAZar8Wrj1BhnxJfpMMNLuD1ueM+IQ+3+AR9fy3v8Bc3vjFMFy0VZFn/ws4QtnQt75ajteNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725380797; c=relaxed/simple;
-	bh=UOv3nGBodylOb27x6wUuPaSgFW/EFvgkUlcBYJybAeI=;
+	s=arc-20240116; t=1725382663; c=relaxed/simple;
+	bh=Kp4Ltf2L/vJqCknBSuRSkxLSWkJH/qnHIhhNntGIG68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ivoq98UZf9yhbvJdtYahIcUd5oP5kE1sECXWuLOZJSzwvwKpznD4vSUaowP3d8B/+a0IY+6FI3dU3dPmhy4kUC/jcAUaWds6bjsFtcqKVxkdVUtmJlZxj+6n4Q9Eu8/5QfTkj0kec8Etvzi+LRPGAgDiF10IRViyYNcCfn9Hzqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pZpfkHMb; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pZpfkHMb"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f3f07ac2dcso62319831fa.2
-        for <imx@lists.linux.dev>; Tue, 03 Sep 2024 09:26:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725380792; x=1725985592; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UOv3nGBodylOb27x6wUuPaSgFW/EFvgkUlcBYJybAeI=;
-        b=pZpfkHMb6dsxP8dfpCkXt++Z4kNvlfaOfane/3ZsBTwOt6hqzvxDBvjy6UjuYuF+Wa
-         Iz0F+TxMxmzv/xDjo+3wNKRuIx5uum/nc5ledYNeZp2vGd5+Zi67fM2qEgLWPZEmzAV2
-         QAkrMe9Gixb3S5YH5iQNf5B/3UwNdlTDXkce+LxW4bojpMTHg9PVnckeo9rzkEYHfAWp
-         fs+pIh3AZDV554dApGt+vaEhgBvro+c/8tQdxafVwql1OIzN7KuKWPSyKROtMbcYW7jq
-         LCUk14Tw2TxhWlDkmS59RP73mTdfxU8Tqx4+FSpoHeLJyZZROyRzEr802B6Om52qwuFD
-         ohRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725380792; x=1725985592;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UOv3nGBodylOb27x6wUuPaSgFW/EFvgkUlcBYJybAeI=;
-        b=sXVEAtNKSYeEvWB17m2xWSz89L47730j/JqTHkzYGbrxQEDzOZ6A6b/3sZAXCCcWoG
-         297Vuvp6kFWErEGIldO9Xtm1O24xm0G938iB+sXnWyJiCLU93XbUPgh/nz4XpXN6G9pU
-         uG4tEyD9KJj8eIM0bKJOtNXTwAhltPz0rucI4DfFFTW5x3rQJNVg27oavWT+E5voFUWU
-         izIH7ZQ/VtF1kgKqnYhhmOBA//885/+p6x9v+09HvtbdzXga61sCEIMn8/JfgywoaWEZ
-         zn6CF0TMrb8TASsUUfdzTLvwLdJ7pCCUVFfH3nLx2A1EFONU/LSvwgtWTcJqphreTOjb
-         wLQA==
-X-Forwarded-Encrypted: i=1; AJvYcCV9QFWSwJz3b7oJyzSgV8tbx4dleJCxy1VOciExJBE9cs+r+WtQFqmFZluzxGhhrTqCpUg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyRJMHe1GoOPteA0J1AToBtQlEb4Ary0l2jtE7azzAPdp6S1Rz9
-	ivtPLHb+jAuS7F2E+DF79X9AvcpuLz5E1QD6xa90IJMKJWSaYAwi8N5kFVR0eHY=
-X-Google-Smtp-Source: AGHT+IFCPzPWsIsRmfp2poLwXGcq+zOJurAsgdC/lf6de+f8XfxHhQkaO8lDI8J140bhx3OvbcsO8A==
-X-Received: by 2002:a2e:a586:0:b0:2f1:929b:af03 with SMTP id 38308e7fff4ca-2f6104f2590mr118378621fa.30.1725380791999;
-        Tue, 03 Sep 2024 09:26:31 -0700 (PDT)
-Received: from localhost (p5dc68f76.dip0.t-ipconnect.de. [93.198.143.118])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c24733a74bsm4511685a12.86.2024.09.03.09.26.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 09:26:31 -0700 (PDT)
-Date: Tue, 3 Sep 2024 18:26:30 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Arnd Bergmann <arnd@arndb.de>, Fabio Estevam <festevam@gmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Peng Fan <peng.fan@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] pmdomain: imx93-pd: replace dev_err() with
- dev_err_probe()
-Message-ID: <zdxpskhxcxujlk7tjch7p5opsflwchkq7b5m6ctjrsxm2tpnkm@wbnp6l7hkfuf>
-References: <20240825143428.556439-1-dario.binacchi@amarulasolutions.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gQUXF3fK7dvNTycgcTsKxUtFFiP9+Am9slBs2Hh9TbpE4Xt3b/CnDYHjdHMJxjriL+ESMCKrRXvuU97CJpPJ5FM/7L+EGCsmmE1zSPGRmKQObJOhNQRmQDlHfzYY2/wfZWP8z6DxD3k/rRo8RywxRWczr6ehB74gFEoqKA8sOqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1slWqG-0002YO-GD; Tue, 03 Sep 2024 18:57:20 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1slWqE-005F6V-CF; Tue, 03 Sep 2024 18:57:18 +0200
+Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id EA7E03317CB;
+	Tue, 03 Sep 2024 16:57:17 +0000 (UTC)
+Date: Tue, 3 Sep 2024 18:57:17 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: =?utf-8?B?Q3PDs2vDoXM=?= Bence <csokas.bence@prolan.hu>, 
+	imx@lists.linux.dev, Eric Dumazet <edumazet@google.com>, 
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Linux Team <linux-imx@nxp.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Wei Fang <wei.fang@nxp.com>, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH net-next v3 0/3] net: fec: add PPS channel configuration
+Message-ID: <20240903-keen-feathered-nyala-1f91cd-mkl@pengutronix.de>
+References: <20240809094804.391441-1-francesco@dolcini.it>
+ <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
+ <20240903160700.GB20205@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,47 +58,57 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="u6lwchy2mevlhl22"
+	protocol="application/pgp-signature"; boundary="d3n7e7dyaggm5ums"
 Content-Disposition: inline
-In-Reply-To: <20240825143428.556439-1-dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20240903160700.GB20205@francesco-nb>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
---u6lwchy2mevlhl22
-Content-Type: text/plain; charset=iso-8859-1
+--d3n7e7dyaggm5ums
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-On Sun, Aug 25, 2024 at 04:34:00PM +0200, Dario Binacchi wrote:
-> This way, the code becomes more compact, and dev_err_probe() is used in
-> every error path of the probe() function.
+On 03.09.2024 18:07:00, Francesco Dolcini wrote:
+> On Tue, Sep 03, 2024 at 04:10:28PM +0200, Cs=C3=B3k=C3=A1s Bence wrote:
+> > What's the status of this? Also, please Cc: me in further
+> > conversations/revisions as well.
 >=20
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> I am going to send a v4 in the next few days to address the comments
+> on the dt-bindings change and apart of that I hope is good to go.
 
-Another improvement worth mentioning is that the new output mentions the
-error code returned by clk_bulk_prepare_enable(). If you respin this
-series you might want to consider adding that to the commit log. Even
-without that added:
+Have you read Richard's feedback on this?
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+| https://lore.kernel.org/all/YvLJJkV2GRJWl7tA@hoboy.vegasvil.org
 
-Best regards
-Uwe
+There seems to be a standard interface for what you're trying to do,
+right?
 
---u6lwchy2mevlhl22
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--d3n7e7dyaggm5ums
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmbXOLMACgkQj4D7WH0S
-/k4MTwf8CKDh6NgmbHBsY9tSR6bBFLp6nyZQQ27Ac4ud4PT+VOlbzn8OqxthvyB1
-Zsx0kL2Dgw63ODu3M5WaDWzeUgMdfcTEs9GMm7xdA7oGwlnGp/mRfVaUaxXBxve1
-xtbuBzWP3fcJD5eUojO/CU2gu2V0N+s5E2X12sXbxqdY3BnScEvayCcKG949DM9r
-05rUBLycEh3aSEF4eDUkkUGR6qsGo0KmCh540xHH+NVZ1Zo3GBX68eIiynGvAmAE
-WDEHTNrBz0exPXIUTeYpKLNMpgjaaR6WcZMIVlMDu4EK8WEvW3YUnEbDEUmVADNL
-E+u6u/HzJYmeRrVIOXsczn1ow78WqQ==
-=1sbS
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbXP+oACgkQKDiiPnot
+vG/vKQf/a72N78iIWxzkOUlx3s8T+bzkiDPclPHM1guLq8EsSRbMyCMujcaqdMxL
+hGNyiqnyNI5zFNhK7lVWJ+tShy/cLQgdCkAaEBIhBmQIT7M2N9zfG/4rHX8vX4MF
+D3XZSZzQC+pHiZgnUbm5SESmjz5GmumZUmBDJkVfaqjLMROR2HiAQy5f/bbE5OLp
+kU5cBBXQnhJf8+lWMEWikAhjfyt1p6Cgb7ZFsK41rGrjK+/cble0O1q7gBKsEicT
+eR5HabwoUHnKWJ7z9EB0YoLVEq/yBN+56uPZFYPxr5k+0pfX0jopOMkPlNjdlN7g
+KlNrBoCEeQ+CI35ecgDOQK9aqgK/Hg==
+=3c+f
 -----END PGP SIGNATURE-----
 
---u6lwchy2mevlhl22--
+--d3n7e7dyaggm5ums--
