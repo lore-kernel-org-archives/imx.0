@@ -1,32 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6291A1C7669
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A64819F43B
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725354771; cv=none; b=PIgJQ9mTvNQYCD9xbtp/qDubM9TMXYrQIa5iWDWHrGfmRrE90QqjVrK1FAT4KjLQsGYbxIC4iMG1OPQn+pmlwmzAGpf3xJHwNZV+iTpFwoDRGwVLqAM3N6KwJKXg8zVyytOb4Vq5onnWF8+CSB0jAGcXF0YrcOdatCeIfZ1c7zA=
+	t=1725354772; cv=none; b=In0Ql/8LCIbWyAMp0J7h1uoqbAKmpcuxVLJsyQ3yG0CtnSUzYLIFxQSSo3fDV9ZS3KbU8B86OyGXGCK+VCUId5ZICeRJHEDDQLGwsooY+2lACtfG6TaZO07IknOHBtQyyfVko75V8gdQTF7OTgslmgqzw+HJ1E2EF+3sULvu2dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725354771; c=relaxed/simple;
-	bh=vGwP0yWHIRZQh5ybTnwESUm3/xJyNJD/bJzGLmfxUp4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hBl20a8ZqKFhvEnWUapQrpAwLNB5MgipvlXhxUEQVlz7lF9n6Y/oBIeIQzZugtfcV6QIVc/XUeZc//0//nx1GdL/nNxMWFDmMdKCvJG8a8CwCEBcFnK7mvobSOaTR+c0VUG/WKj06m9j0CaCkYsjtMRHDh7XqocoDSnDizvMmjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=UJh5feOF; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1725354772; c=relaxed/simple;
+	bh=DTyOOLobd/qKf1bdjtAvL1jz9VeMDe3J9jwHjqeSG10=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=r/jHDGSjAP+D1v19kGwjQMY3guX/b8lvytS0sKmnfvvKsCAQR2JQknlqQCWRzvofNBsKvkGQheBYW2KeJVmnyjxlQDzUdpWrTqbqjLplg8ylBHF2z0Hc64ocYXf8II9KOXoC072G4Su4Xg3cJhKHWz9Mpa9xxO+zWOjdo8L/4IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=LJLSax9Z; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="UJh5feOF"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="LJLSax9Z"
 Received: from francesco-nb.corp.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id D6922211FF;
-	Tue,  3 Sep 2024 11:12:41 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 847F922A39;
+	Tue,  3 Sep 2024 11:12:42 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1725354762;
-	bh=TKa+NUiDEXY9sgVcRsX2pMmhkw/pTOpi2QU6kSg6znk=; h=From:To:Subject;
-	b=UJh5feOFXFMi6N7GarscxJQKZlYPWQVrKoueVMUAX2RfO76XFDAX+MimsB5b0sdCP
-	 o5OplpWzQrJ9lMTq+xkcG8ZwTASz+b4wH5VGRrW1huM8Ar9z7myE0eAN8193mb1Oe+
-	 5Brg1pxGhboBePn6vywoAX9e2/qUE8/eZEySWRmV+jqjXRZnrOAI1TTtdgoOqa+GLE
-	 AdBoY+WsFpz7Rw9OLY6wP8HCAZp8hst9LVNedqwonWhsse8KEUMwbA8KuYMMkFRMs0
-	 DXSBXNSLdbf04DOdLyvTtFoXGt6SzGpLKK1XDKXlhudnb9LuAoEKKrhWXra20FylOe
-	 Xn33quKQJ9Ulw==
+	s=default; t=1725354763;
+	bh=4IAA5pozI9ILYkiY09FMGfATfDyNogcWu3oVJJXEUNE=; h=From:To:Subject;
+	b=LJLSax9Z6UAVI3aux3PhDbJ2y2ZHkussnboVaEh+Mw14W/c7rhkEqK/OHkIAx/lU2
+	 FALYncdafJmcCA4oSPlkpQEfc9t0L/TEjs6Hj4GkO7TGTQiKw2ChtdX+jKJnCXWJeu
+	 3N8k02E8c37VfTJrPqRJG6SGO4/uWU3PbYlARmfLhw0inaRwFN0GyLWQaQnhQCYT8I
+	 zFPOmkeXlUr3d85D9ZPhOk5PulbecDLbQPyr8b5N1H09doSQBA5gV5VVS+WsMEqH2K
+	 Ncb1WY06hoh9AG5S333RISP34GC43Y/OavNENdm0AN0nQr0WEbwxYfVf0RX5qsBgMb
+	 8bUSinCSFMFHg==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -35,58 +36,60 @@ To: Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+Cc: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] arm64: dts: imx8-apalis: Various improvements and additions
-Date: Tue,  3 Sep 2024 11:12:26 +0200
-Message-Id: <20240903091231.20035-1-francesco@dolcini.it>
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v2 1/5] arm: dts: imx8qm: Remove adma pwm
+Date: Tue,  3 Sep 2024 11:12:27 +0200
+Message-Id: <20240903091231.20035-2-francesco@dolcini.it>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240903091231.20035-1-francesco@dolcini.it>
+References: <20240903091231.20035-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
 
-This series improves Toradex Apalis iMX8Q support adding:
- - correct thermal zones
- - analogue audio
- - USB Host (Apalis USBH4 interface)
+There is no adma pwm on iMX8QM, so remove it from the DT. When enabled,
+this cause warnings on resource partition ownership check by U-Boot
+that receives messages from SCU firmware saying that these resources are
+not owned:
 
-In addition to these it also removes the adma_pwm from the i.MX8QM SoC dtsi, as
-this IP is not available on this specific SoC.
+Booting using the fdt blob at 0x9d400000
+Loading Device Tree to 00000000fd622000, end 00000000fd66efff ... OK
+Disable pwm@5a190000 rsrc 188 not owned
+Disable clock-controller@5a590000 rsrc 188 not owned
 
-v2:
- - Keep I2C nodes sorted by address
+Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+v2: no changes
+---
+ arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-v1: https://lore.kernel.org/all/20240826221541.15669-1-francesco@dolcini.it/
-
-Andrejs Cainikovs (2):
-  arm: dts: imx8qm: Remove adma pwm
-  arm64: dts: imx8-apalis: Set thermal thresholds
-
-Hiago De Franco (1):
-  arm64: dts: imx8-apalis: Add nau8822 audio-codec to apalis eval v1.2
-
-João Paulo Gonçalves (2):
-  arm64: dts: imx8-apalis: Add audio support
-  arm64: dts: imx8-apalis: Add usb4 host support
-
- .../dts/freescale/imx8-apalis-eval-v1.2.dtsi  |  69 +++++++++
- .../boot/dts/freescale/imx8-apalis-eval.dtsi  |  31 +++-
- .../dts/freescale/imx8-apalis-ixora-v1.1.dtsi |  31 +++-
- .../dts/freescale/imx8-apalis-ixora-v1.2.dtsi |  31 +++-
- .../boot/dts/freescale/imx8-apalis-v1.1.dtsi  | 135 ++++++++++++++++--
- .../boot/dts/freescale/imx8qm-ss-dma.dtsi     |   3 +
- 6 files changed, 273 insertions(+), 27 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+index aa9f28c4431d..d4856b8590e0 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+@@ -4,6 +4,9 @@
+  *	Dong Aisheng <aisheng.dong@nxp.com>
+  */
+ 
++/delete-node/ &adma_pwm;
++/delete-node/ &adma_pwm_lpcg;
++
+ &dma_subsys {
+ 	uart4_lpcg: clock-controller@5a4a0000 {
+ 		compatible = "fsl,imx8qxp-lpcg";
 -- 
 2.39.2
 
