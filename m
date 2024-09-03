@@ -1,114 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9DB205E15;
-	Tue,  3 Sep 2024 08:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A0F45003
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 08:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725351536; cv=none; b=JVhlpVKEqH5ZxtJDTxeSffrV4ggNKoSNvUynSC3xffMrqx3zBsjvy5lRKj+ejTAOTgc+YUFV+nNYnKCCaUHufZXAq5BX99BWUbvE3H4fPf0ve2jEaAIGewCmp8tQ/+KWL0Yn4g2F8zN10oFG9jliu/QSu2vUCWPEKjwx6x69ENM=
+	t=1725352029; cv=none; b=ZGRmcC7ibwAYrKKdCpf5JE3Y6qGQ5dHRzwJs3KbJqmmYJfwogVlaWjhEryS5WpUMLTUgXs9Vhql3Ftv4oFLj7uiJuLqjsTGPGfi33VxORTu2yi/2c1IPSv15/e8flzkOzaTBFbYyb4ZKkUyaKkL+sKiyizzKo3UbLFrVSQw7LLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725351536; c=relaxed/simple;
-	bh=g7ymmQH2esDD1HmWV3+1wWNSYvcNjH8kYis73gaYP5I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KrlI8np6Hr3MBFctJE1YDoqe4s1V+swHOGmNXqpmXxvp1m3TmQDnHOYpZFHP9zic30sgq0mOLzS0ELq+ptKjtUQ9EPBk2jv5PC9QZgKksaMs6PPeuZW3aizWWkgOzTUtb6d2eAz7AtfIRM57zXOeTQHltGzt84IdLYjUuKW2Kp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olU2tuWX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olU2tuWX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA55C4CEC4;
-	Tue,  3 Sep 2024 08:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725351535;
-	bh=g7ymmQH2esDD1HmWV3+1wWNSYvcNjH8kYis73gaYP5I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olU2tuWXIpJl+vvUtyzzy74giwBPEJKRv8ViT1WDop+wVwLYcWCzt7Fu1FzdP6aOQ
-	 omZ2kda/DoqTHYh3BkIvuTszwSh13Y9pVP4iFGHuElNuBYCZ8Vz6ReM5BwFxRINaD0
-	 iQYhbM7oWAy2epdsGIzsk2p8ejaUfgj+rLveyEhczMqXf8oEfXlZcAUcHKEtTVa7Mj
-	 7s1O+Bgz3RyrHOYTi2tc5gAPrI9OHgf4jYH859LrRxIeVK2YmYyLP60IwNE/VmSLvy
-	 B6zB3xZ8LTxG5NxuO3KX4cOo45+Q1C3iSPJW0YEaPc51JXE6yIaGfAnbACwSfrOjjx
-	 yiZn+bVCzwblw==
-From: Maxime Ripard <mripard@kernel.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-	Edmund Dea <edmund.j.dea@intel.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Rob Clark <robdclark@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sandy Huang <hjc@rock-chips.com>,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Jyri Sarha <jyri.sarha@iki.fi>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
+	s=arc-20240116; t=1725352029; c=relaxed/simple;
+	bh=B/hCxLhjub2nypBSSZVrDGszhKTLf905h/PokcOroWA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qrNKTRc6Q12MKxy5GYIh2z6hlsmL+0ky/BQ/cWsp0QFAI7jq0pZhg4eMUdR0Hmqq4gWXZXB4QbcB1lD7Npr+6TC7eSZ2gcpeorhVpaDGkAe6VUKds66cvBEizWfCIEXGIXcY8eybp/8ScAk/Y1kvD2UR8PvBr2/PmE6LiDtFtYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B910F1A31B0;
+	Tue,  3 Sep 2024 10:21:12 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7F8E71A0387;
+	Tue,  3 Sep 2024 10:21:12 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id D1A3D180031E;
+	Tue,  3 Sep 2024 16:21:10 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: abelvesa@kernel.org,
+	peng.fan@nxp.com,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] drm: fix two issues related to HDMI Connector implementation
-Date: Tue,  3 Sep 2024 10:18:50 +0200
-Message-ID: <172535151881.1826612.11747911526055879779.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240903-drm-bridge-connector-fix-hdmi-reset-v5-0-daebde6d9857@linaro.org>
-References: <20240903-drm-bridge-connector-fix-hdmi-reset-v5-0-daebde6d9857@linaro.org>
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	Richard Zhu <hongxing.zhu@nxp.com>
+Subject: [PATCH v1 2/2] clk: imx95-blk-ctl: Add one clock gate for HSIO block
+Date: Tue,  3 Sep 2024 15:59:57 +0800
+Message-Id: <1725350397-19527-3-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1725350397-19527-1-git-send-email-hongxing.zhu@nxp.com>
+References: <1725350397-19527-1-git-send-email-hongxing.zhu@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-On Tue, 03 Sep 2024 05:01:55 +0300, Dmitry Baryshkov wrote:
-> Running IGT tests on Qualcomm Dragonboard820c uncovered two issues with
-> the HDMI Connector implementation and with its integration into the
-> drm_bridge_connector. Fix those issues.
-> 
-> Note, I'm not fully satisfied with the drm_bridge_connector move. Maybe
-> it's better to add drm_bridge_funcs::connector_reset() and call it from
-> __drm_atomic_helper_connector_reset().
-> 
-> [...]
+CREF_EN (Bit6) of LFAST_IO_REG control i.MX95 PCIe REF clock out
+enable/disable.
 
-Applied to misc/kernel.git (drm-misc-fixes).
+Add compatible string "fsl,imx95-hsio-blk-ctl" to support PCIe REF clock
+out gate.
 
-Thanks!
-Maxime
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+---
+ drivers/clk/imx/clk-imx95-blk-ctl.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+index 74f595f9e5e3..2c4b01038ebb 100644
+--- a/drivers/clk/imx/clk-imx95-blk-ctl.c
++++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+@@ -248,6 +248,25 @@ static const struct imx95_blk_ctl_dev_data dispmix_csr_dev_data = {
+ 	.clk_reg_offset = 0,
+ };
+ 
++static const struct imx95_blk_ctl_clk_dev_data hsio_blk_ctl_clk_dev_data[] = {
++	[0] = {
++		.name = "hsio_blk_ctl_clk",
++		.parent_names = (const char *[]){ "hsio_pll", },
++		.num_parents = 1,
++		.reg = 0,
++		.bit_idx = 6,
++		.bit_width = 1,
++		.type = CLK_GATE,
++		.flags = CLK_SET_RATE_PARENT,
++	}
++};
++
++static const struct imx95_blk_ctl_dev_data hsio_blk_ctl_dev_data = {
++	.num_clks = 1,
++	.clk_dev_data = hsio_blk_ctl_clk_dev_data,
++	.clk_reg_offset = 0,
++};
++
+ static int imx95_bc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -419,6 +438,7 @@ static const struct of_device_id imx95_bc_of_match[] = {
+ 	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
+ 	{ .compatible = "nxp,imx95-display-csr", .data = &dispmix_csr_dev_data },
+ 	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
++	{ .compatible = "nxp,imx95-hsio-blk-ctl", .data = &hsio_blk_ctl_dev_data },
+ 	{ /* Sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, imx95_bc_of_match);
+-- 
+2.37.1
+
