@@ -1,119 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D953B1CA6B5;
-	Tue,  3 Sep 2024 13:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD552E859
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 14:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725369150; cv=none; b=A3wj7zikJ/n1xgPO6WSOo4FPL6pBUzwsM8LCcPZ0mwp9sLd/WrlJfI7e7eLrCjtj6CfPLVr/IbCnCLh1gVs8T1zT0m3Sr+wG09SXRgjLZCuNYtnt1dPMAQPUoMA2YVwcJS4oQ829Ue2uMo49wGYSLATAqq/0Ky/xs3UUUpI4smk=
+	t=1725373006; cv=none; b=hj7qQFAzVM0td+lImWQYfJVyGcWzQ+Th6iAvFyQpbGWr+RxHggJueRRtWYUgBnhdcHSKboGOuqdc94JHNHHrxNTEVLOfI1ZfiBFjTH15hIlK+/FwmgHz70M/k76m2l2lkXLy+jIQg0Zw7R+yxpKk2O2tXFr/mu4nlI9KXI5yXEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725369150; c=relaxed/simple;
-	bh=cEUEgUfK2VJKwSdXTwN56m3l5tttmANwIWAPrH3n0F8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r3LXeQG0G8QnbfoD1wt6uWLEHjvO5j3dKWDWlD/ptvEXhw0KqcXg4AXZLmDBsJ9hnZOJI43oOyCTeUGPPxPiyGiK20xTJ8DYrghA58lu9IVjYuOhFecVtPxjvOT7G1ViAyn7mnMD5dQh/OSLYmmbZ0cg7vjZHanSQivhjoZcDPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=R5kT24XS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1725373006; c=relaxed/simple;
+	bh=Wj0/CkZjNtPEN9TmeojDd8DReHMeuuUivOijpUh8fG4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LdWFDPMyi/gJX3MNOYGsdiEHQkxXjZU2Rd2x0lCDR7kmdEOS/SNUho791YUeyBLU2cNd1sZcOCzh1U8HPE2i1yvZhOjKmGCgRPTPfRgHppRVGfP33IQrhLe+UluD068A/xjI+7TV1XrZPdS/Y/MY2vvSp5/4DcZmnoLqZAWttW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=oqiv1463; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="R5kT24XS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=iuEYWyd+FkBmHpEwRM4wRGxRSybUGjHcHitebzsyO4Y=; b=R5kT24XS1hNQLKAnN8rrJQxjJy
-	2uus18smDr03HNh29fOC7YfQp/VduL8+SvxY8BzMcCxuu4sMw8piNjpUGdi5+BsfLHApa1Nwm/On9
-	ujW2y4jJui+KsWTmw+PF3rhw/PR/eUM/otRlTFEqRpBLP3F/wOwG5DFrChlLb0IVXSLg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1slTKS-006QdE-2o; Tue, 03 Sep 2024 15:12:16 +0200
-Date: Tue, 3 Sep 2024 15:12:16 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "davem@davemloft.net" <davem@davemloft.net>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH net] dt-bindings: net: tja11xx: fix the broken binding
-Message-ID: <bc68a8c5-b3d7-4b87-a192-ba825bfafb50@lunn.ch>
-References: <20240902063352.400251-1-wei.fang@nxp.com>
- <8bd356c9-1cf4-4e79-81ba-582c270982e8@lunn.ch>
- <PAXPR04MB85100D0AEC1F73214B2087CB88932@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="oqiv1463"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id E0F2CA0A26;
+	Tue,  3 Sep 2024 16:10:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=c1isXRtW6S6Xq9eW9dV/
+	yijfSpFZrqCLG5+XN8gwzGU=; b=oqiv1463LDdbv77UwTn6xSZTQh6huAHS2iRw
+	rTcE2sEvKhjno1i29wSCO122UWI1ZjqEMSwhMuJm4g2r70AW+gqB8iIMLH57DF+k
+	JvDLIvOsf23hIMiO/VfleCa5ntxyMSebaYRF1vHae7RJtxen7ATYkhhrix/pHR8W
+	FF2TaH/12t/lWrFDrexd3x/K0LAjCD7hA1SCBOPfVUe1p309XUbF1fQLpWKBwSO4
+	2SnB2aFiykblvFjQFBGW57TEFQ92Gw0rGbQmseJVkYjgAoM7Bh/l51f7d+A8lT33
+	hRNk0gQAw5aHY9Be7M/yrb2ahkxkbeeK3dUEqmBo+kC6l05Mj9E5HtRVTiPd1ZoK
+	TUq9OqBQBNo06aHME0e6PiNziaafjjeX9cAP0cAXYNxLpE8jt2UUoWPkmzfrn1w5
+	GSOOBdFTkXNmjNrIgY8/sToF+cUjuPmyYFVn3/SYVTaZxO/Snmix6mUYR314Wxyd
+	MdLT/3mDD9w7eXof8znKdHRDYd+IMKfrzxWtArsRniaVBfLHq7h4lAYaXmEYziWn
+	0ZG7zenfoVbJN0brIDzYdiVhIqG34Pw2NHWR5joeYAg3iER+iN0D/urSnnG77VAE
+	Wixmr/ykL/tnUuFiMF7k1ZWlmee5e0gUsOK/iZgZw6dQh2osL6jiLKplPdJgEk2K
+	wUMzJRo=
+Message-ID: <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
+Date: Tue, 3 Sep 2024 16:10:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB85100D0AEC1F73214B2087CB88932@PAXPR04MB8510.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/3] net: fec: add PPS channel configuration
+To: Francesco Dolcini <francesco@dolcini.it>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Rob
+ Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Richard Cochran
+	<richardcochran@gmail.com>, Linux Team <linux-imx@nxp.com>
+CC: Francesco Dolcini <francesco.dolcini@toradex.com>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+References: <20240809094804.391441-1-francesco@dolcini.it>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20240809094804.391441-1-francesco@dolcini.it>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94854627567
 
-On Tue, Sep 03, 2024 at 02:17:04AM +0000, Wei Fang wrote:
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - ethernet-phy-id0180.dc40
-> > > +      - ethernet-phy-id0180.dd00
-> > > +      - ethernet-phy-id0180.dc80
-> > > +      - ethernet-phy-id001b.b010
-> > > +      - ethernet-phy-id001b.b031
-> > 
-> > This shows the issues with using a compatible. The driver has:
-> > 
-> > #define PHY_ID_TJA_1120                 0x001BB031
-> > 
-> >                 PHY_ID_MATCH_MODEL(PHY_ID_TJA_1120),
-> > 
-> > which means the lowest nibble is ignored. The driver will quite happy also probe
-> > for hardware using 001b.b030, 001b.b032, 001b.b033, ... 001b.b03f
-> > 
-> > Given you are inside NXP, do any of these exist? Was 001b.b030 too broken it
-> > never left the QA lab? Are there any hardware issues which might result in a
-> > new silicon stepping?
+Hi!
+I already proposed this 2 years ago. I was just about to resubmit it and 
+found this series.
+
+Link: 
+https://lore.kernel.org/netdev/20220803112449.37309-1-csokas.bence@prolan.hu/
+
+What's the status of this? Also, please Cc: me in further 
+conversations/revisions as well.
+
+Reviewed-by: "Csókás, Bence" <csokas.bence@prolan.hu>
+
+Thanks,
+Bence
+
+On 8/9/24 11:48, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > 
-> Yes, some of the revisions do exist, but the driver should be compatible with
-> these different revisions.
+> Make the FEC Ethernet PPS channel configurable from device tree.
 > 
-> For 001b.b030, I don't think it is broken, based on the latest data sheet of
-> TJA1120 (Rev 0.6 26 January 2023), the PHY ID is 001b.b030. I don't know
-> why it is defined as 001b.b031 in the driver, it may be a typo.
-
-More likely, the board Radu Pirea has does have a device with this ID.
-
-> > 
-> > Does ethernet-phy-id0180.dc41 exist? etc.
-> I think other TJA PHYs should also have different revisions.
+> v3 to just add the missing "net-next" subject prefix, sorry about the spam, it
+> seems like friday morning plus the mid of august heat wave is badly affecting
+> myself ...
 > 
-> Because the driver ignores the lowest nibble of the PHY ID, I think it is fine to
-> define the lowest nibble of the PHY ID in these compatible strings as 0, and
-> there is no need to list all revisions. And I don't know which revisions exist,
-> because I haven't found or have no permission to download some PHY data
-> sheets. I think what I can do is to modify "ethernet-phy-id001b.b031" to
-> "ethernet-phy-id001b.b030".
-
-You have to be careful here. Stating a compatible forces the PHY
-ID. So if the compatible is "ethernet-phy-id001b.b031", but the board
-actually has a "ethernet-phy-id001b.b030". phydev->phy_id is going to
-be set to 0x001bb031. Any behaviour in the driver which look at that
-revision nibble is then going to be wrong.
-
-Maybe, now, today, that does not matter, because the driver never
-looks at the revision. But it does mean developers might put the wrong
-compatible in DT. And then when you do need to add code looking at the
-revision, it does not always work, because there are some boards with
-the wrong compatible in DT.
-
-Listing all possible compatibles suggests to developers they need to
-be careful and use the correct value. Or add a comment in the DT
-bindings that not using a compatible is probably safer.
-
-	Andrew
+> v2: https://lore.kernel.org/all/20240809091844.387824-1-francesco@dolcini.it/
+> v1: https://lore.kernel.org/all/20240807144349.297342-1-francesco@dolcini.it/
+> 
+> Francesco Dolcini (3):
+>    dt-bindings: net: fec: add pps channel property
+>    net: fec: refactor PPS channel configuration
+>    net: fec: make PPS channel configurable
+> 
+>   Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
+>   drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
+>   2 files changed, 13 insertions(+), 5 deletions(-)
+> 
 
