@@ -1,108 +1,74 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAA919F439
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1711C767C
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725355010; cv=none; b=b4ECHPrjXp2ujZAlrNLgfElECaLZP4CyxbNtojvMd3d8AlPPf1sf3u/XbU2X7TDQ41FKJ4dADqjYI1DOjkz5s6G4ZhJlfMfNxJMvDhTJa52N5CGD36iuu01UTeikEQu8lAei8sdekrbL/rDuzApfoKSkbLKFZAS4CClwE7SM7tc=
+	t=1725355010; cv=none; b=TCVygv+yAmCcU6h1ZtOCCjdr3T9xqelcSKf5+C7ZG1pmNmyw6KVlYc0m7QWgORfbJh1YYTfJOpR9RI3O85uNslR2jlpKJmInP2OVe8Eqa5Uqt1Q5a4WZ1E+dvdMRwsfCddI7QLbKv5HBFuzQ9KydZyd1A7+nvhp74QBdZyNQoFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725355010; c=relaxed/simple;
-	bh=HWjGQ4YHroQwD/57wggdSbHx9qHopndgiBjBXsMUmLI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DNhiygDEQ93cuXAP2ak8AEUrPEY2//X4EMrExzElo1PXuW3KOkujDJ0OJAB1ivtCSp+UAwKzm9zuKoTUQ7X4pQBcBB5eB4z3r7SOwy2ug2qgidPyr/KXEG7fqAvK6vPeeOAgEtfWBDYDM16efrh2ZpXbKwzTlxlWpbdPJXp0wu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IER7INjC; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	bh=wq41NyGesv5AiC3lz0mAa+Qwn/W/Aee7WAkCJ0rGTuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tzfygoqsz98yq9t5YIFPPel8hQjY/ZTJSmR/App0iM8R8pV8lhKSkr0KTMRrFR63+JI/0jajHUgb0zuv6HJ5lqSYAPcvMef3SgfW/lSacSV4RNfC5G5/kXdicz0lGxJADZKdLaVoriwMrDhhByO8L5IuI3p0nJTUxnVdN2x0KyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=CfUET6Si; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IER7INjC"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2f5064816edso58196101fa.3
-        for <imx@lists.linux.dev>; Tue, 03 Sep 2024 02:16:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725355007; x=1725959807; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HWjGQ4YHroQwD/57wggdSbHx9qHopndgiBjBXsMUmLI=;
-        b=IER7INjCgwlMj61enGOjEjBAMuQW6skBbgiB+ZmJziVhsIrdRvetI/kAN0vLfb1TCP
-         enCaRknAxu9r7nfbP5smgAkMUo9IUKRK69GDY1z5VLv++PZ42k69QFB8Y7P/9TVZvpbe
-         LB/A+2zr9zw/AdfFWKIUwU1EAiCyvq/zPOVslhKFWtQ3ZCZYUFdR8G85UIuNV1e29QwU
-         GHyChSVvhR5WZSuDRCzvhBFxM7kupbc/Jthu+mgElLLz86RiVy+eNi9pHHc4d/jC6vOY
-         rFayEJL4Rzt6HU4iT2hlCkFDiPCEOTS0ZF40KLBuS5gUAYvhHT+BKq7oU8RZiL/U367l
-         dZbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725355007; x=1725959807;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HWjGQ4YHroQwD/57wggdSbHx9qHopndgiBjBXsMUmLI=;
-        b=bmv15T0ZqmX2asT2kStiesrCf7ajJfynjL0y0yjv3JVOIDoss9CMQfp+PHco8g7akT
-         u7CRJqVErdHYK56uZI03iwQ4bRqjlaahOQT+jYd3400fQaqcCa+Uqeg4z3whrHYW1RI0
-         msLgT0Dk6lVbu9xeGJEEJ8GUrOeXtbsDtGUH1MzT6fEG+sQkBz88mdVMORgbFmDkwZlf
-         NQvNT/Qc5x3/HRno6kbYd3HUtxxid7Hjk0GgGDjby3zE6X8sQhB42rDkQqEMxWRaohsv
-         +1ZQLOPAva8NcVWespCOEW2eaJfqPlExdjFezt5TdEGeJZ60bUTbtlpErsf9ZTzUPr84
-         mW6w==
-X-Forwarded-Encrypted: i=1; AJvYcCU3oOR1hNxqcjO/gDyPluOXvwl9xkpdD0Bbvz5RYa75IGriFQOQ0aTZdv4XPrtxDFxQAQ8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzGGwiAJeInhVSeK8a0Zvtj0wNkN0uwYirN3qTBvrpvfjes9l/A
-	zDYO8Nl+HMv0UqBMvPedbElJUwLSNI3muwTay/uhpvdIp0yApk6lXEf8gbAkSJICTKYudhQFjA+
-	wpMwAycJyDdsdze5uE+Ux3xKV4UpzShFxm2AztA==
-X-Google-Smtp-Source: AGHT+IF5iXmXm3uBNGtfu2k2W3mUA/wL6HSlGri8eJbZA0MDiPWsO5xxdT1fn59W0sd0nud+XYxGXlKqBmQA/C+s9Vc=
-X-Received: by 2002:a2e:a9a1:0:b0:2f3:d008:a54e with SMTP id
- 38308e7fff4ca-2f6104f2859mr113545281fa.36.1725355005999; Tue, 03 Sep 2024
- 02:16:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="CfUET6Si"
+Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id 64CFF22A41;
+	Tue,  3 Sep 2024 11:16:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1725355007;
+	bh=V1pTTV07r2NfNzXvB7UF/0OyUgDKTfKdvuu61Td5x2c=; h=From:To:Subject;
+	b=CfUET6Sijl4iBdpA33iyK3zf+5ljUrPiYBHVhHvSTayEB7HzHdkcRIcJW2jHr2xI9
+	 Paozik73jl7zkvBSErv3gP6zvvEJ6tCJ7D/6jROw2qhRkWcgNXmOtYaT71CRbnb9lb
+	 e8o1yj23QyRTpwdy/LpleZaoiSokRgmeF9hXBddIkPtcGHRA4c8hX9t2Ilf9W5NUNP
+	 Lzm2FMX117ijzxybmb7C7ccrXpY6gN4xaxoyIXeFxogqrmfOsDNtnZ2GrGhww2Nysb
+	 0kKNxh3SiZ6vYCpFWv72QDsbiLNxC7cGDLDoNBXOae3bJdq+wXl2A8WbP2A0ayMKIs
+	 RgLU2ZwdwWNeA==
+Date: Tue, 3 Sep 2024 11:16:43 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/5] arm64: dts: imx8-apalis: Various improvements and
+ additions
+Message-ID: <20240903091643.GA20172@francesco-nb>
+References: <20240826221541.15669-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240828-dt-bindings-gpio-hog-v1-0-63b83e47d804@linaro.org>
- <20240828-dt-bindings-gpio-hog-v1-2-63b83e47d804@linaro.org>
- <CACRpkdZzF5yJQnnDsjU8cTr9Fpe7wZZXoW3K-wFYuAq2vv8XxA@mail.gmail.com>
- <CAMRc=Mcv9nfiG7N-ttS_A=Ay-5Wv2mYpT+41G1u8G4GrMQAuEA@mail.gmail.com>
- <CAMRc=Md9+pmiDSzjhNXBOzZeBLCemvxCzFMAyfFH_Qi329jG9Q@mail.gmail.com> <884facf9-09dd-4454-9f39-67335b4e8c5f@linaro.org>
-In-Reply-To: <884facf9-09dd-4454-9f39-67335b4e8c5f@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 3 Sep 2024 11:16:34 +0200
-Message-ID: <CACRpkdZosOeBhEo460Wr3r9gF+xg1wJGdhvX0xf2_PWLZ2hkYg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] dt-bindings: pinctrl: qcom: add missing type to GPIO hogs
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Daire McNamara <daire.mcnamara@microchip.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Maxime Ripard <mripard@kernel.org>, Masahiro Yamada <yamada.masahiro@socionext.com>, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240826221541.15669-1-francesco@dolcini.it>
 
-On Mon, Sep 2, 2024 at 12:02=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+Hello Shawn,
 
-> >>> I suppose it's best of Bartosz applies this to the GPIO tree with
-> >>> the rest of the series?
-> >>>
-> >>> Yours,
-> >>> Linus Walleij
-> >>
-> >> Ah, I picked up the GPIO changes separately. No problem, I'll pick
-> >> this one up as well.
-> >>
-> >> Bart
-> >
-> > Nope, I cannot, this doesn't apply to the GPIO tree.
->
-> Hm, probably there is something in pinctrl tree.
->
-> @Linus, can you grab pinctrl bits?
+On Tue, Aug 27, 2024 at 12:15:36AM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> This series improves Toradex Apalis iMX8Q support adding:
+>  - correct thermal zones
+>  - analogue audio
+>  - USB Host (Apalis USBH4 interface)
+> 
+> In addition to these it also removes the adma_pwm from the i.MX8QM SoC dtsi, as
+> this IP is not available on this specific SoC.
+> 
 
-OK I applied this patch 2/3 to the pinctrl tree!
+FYI, I just sent a v2 of this series to correctly sort the I2C nodes,
+this is the same change you requested a few days ago on colibri-imx8x.
 
-Yours,
-Linus Walleij
+Francesco
+
