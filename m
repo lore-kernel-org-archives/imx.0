@@ -1,97 +1,119 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17F81CA68B
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 13:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D953B1CA6B5;
+	Tue,  3 Sep 2024 13:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725368521; cv=none; b=ujZn227hZtYcEg32VY3Wo21A2p2OVFZkDLMSzjSinCOjKqab2H2TkNA8lSUZiLrx2scr6lmLJunXJVSj3s19Myw1Qy4IprLD4a24whhEgLKaz1MYdrqaXGxRe4BSlufrn27OeQqZ5FtPBodXPa8z+lY5jCBRAcICNfLNkpErrkM=
+	t=1725369150; cv=none; b=A3wj7zikJ/n1xgPO6WSOo4FPL6pBUzwsM8LCcPZ0mwp9sLd/WrlJfI7e7eLrCjtj6CfPLVr/IbCnCLh1gVs8T1zT0m3Sr+wG09SXRgjLZCuNYtnt1dPMAQPUoMA2YVwcJS4oQ829Ue2uMo49wGYSLATAqq/0Ky/xs3UUUpI4smk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725368521; c=relaxed/simple;
-	bh=51XZL1zpa9+ZugG0MuTKWPjrQIyg9Ca1YCU0ZCUyuio=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qfJ0/gnVFR/LIDquQTqAmww3GLzzD8O3W72IA7c8PTwqUGzcQbSR67ijHMBlLMus9lLUDWcgILsc/atL1y5+RjKSpFGmdM8RSN3tG6D+3Fyyq3NHyhHdqWsfAuYE04BGWuBz+Js9BTZdM0r9+iEmYuAEdVOMfCDU8jw9yElhCp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ioN/rYLV; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725369150; c=relaxed/simple;
+	bh=cEUEgUfK2VJKwSdXTwN56m3l5tttmANwIWAPrH3n0F8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r3LXeQG0G8QnbfoD1wt6uWLEHjvO5j3dKWDWlD/ptvEXhw0KqcXg4AXZLmDBsJ9hnZOJI43oOyCTeUGPPxPiyGiK20xTJ8DYrghA58lu9IVjYuOhFecVtPxjvOT7G1ViAyn7mnMD5dQh/OSLYmmbZ0cg7vjZHanSQivhjoZcDPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=R5kT24XS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ioN/rYLV"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5353cd18c20so6370271e87.0
-        for <imx@lists.linux.dev>; Tue, 03 Sep 2024 06:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725368518; x=1725973318; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VNCoDBWiaDkhcsMePwXkrH4rh6xCaLi3QD6d60u1M0k=;
-        b=ioN/rYLVc96uT4RFxqvlM5VxRHFQfq2JTt0pZzU7sXdn5CizYa5A11BsgPzZog1kvA
-         jWHtri/PtN9n60ayohonVaN7nW6maRP0WM1kCDYFkqRR5uA+E3uaUDH9Hn53t1SjepY8
-         7OK80C58VOUHaE/QyJlpOswqWUxm0mybJWtBZ0LEnxlDKOp6pEwV5U4/1SqP6AnGyC9p
-         1ndZR4iWvQcCLlAw2ChgBdGRk0Ig1s2wxRiPLbjMXdd4ZnTU/zZPZS9+qyJqW/oVprhC
-         cZgTkqcxBL9x33aGcQGS2qhZudDuylFl9Rz3EWOhe8gGwjMa4f7r7humFj0ZCLHmEllD
-         CpHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725368518; x=1725973318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VNCoDBWiaDkhcsMePwXkrH4rh6xCaLi3QD6d60u1M0k=;
-        b=wX5FxEqYUl8/bVvwvCJR+DCKwVbu/ZUfQFpiKHq218nynYEXjyO4RjYHATFGQlWB8n
-         qpUWwPlNc0ikqyA3Na9SQPbRzpn7m2Agt98EbIBsWk6D0U5lrhGJ1tX58j5bZXC2202g
-         LhKpMNsoBgJKlTdIL+MkSVsDUEmrqZljp4wT9p5IKkOOO+e7aRIyOrjwE/A7x0g2s8Bm
-         T0bEnSXFHHY0loVgoP6aEDCYqTjDeIcyRswfZEgldkTQAFcZNtG2Ep1hRU0vX41kNJyx
-         k+ZbwMzFtagnIJdaOXta9aFDHOUf2lQko699HSd/ngDTr1iSqchtc8om1Ds2P5wZVmVR
-         LV5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVkmWDDMsW1Y4Ek1BdHyzCY0g/8dn5598XRp0vGwAwV3dI4Yq3du4Wjef1mEV+n+UpQa+8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxbTMAeTSGCd1QCNM1bCBvItAk8IvfhA6e+VeczWt720xpnaEuc
-	VT17HvgXq+IrJX77sI2F2Ovunbm1KbTklKowXJKebaTyarjaQCuhgZTYHYJ/nD5jmQQ/Tl1JbfM
-	B7hZUr38o0NIrzVISNTDYMqX712c=
-X-Google-Smtp-Source: AGHT+IH46cK4NeXPdEqmfU2Trxz2EWki+TuWP1ltUeNhM80T1XWTNZT5fdoKzGW1CXcqoGBpxBr6zBmSxc/j10SM9BU=
-X-Received: by 2002:a05:6512:1047:b0:52c:c5c4:43d2 with SMTP id
- 2adb3069b0e04-53546b910a0mr9807468e87.47.1725368517402; Tue, 03 Sep 2024
- 06:01:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="R5kT24XS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=iuEYWyd+FkBmHpEwRM4wRGxRSybUGjHcHitebzsyO4Y=; b=R5kT24XS1hNQLKAnN8rrJQxjJy
+	2uus18smDr03HNh29fOC7YfQp/VduL8+SvxY8BzMcCxuu4sMw8piNjpUGdi5+BsfLHApa1Nwm/On9
+	ujW2y4jJui+KsWTmw+PF3rhw/PR/eUM/otRlTFEqRpBLP3F/wOwG5DFrChlLb0IVXSLg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1slTKS-006QdE-2o; Tue, 03 Sep 2024 15:12:16 +0200
+Date: Tue, 3 Sep 2024 15:12:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "davem@davemloft.net" <davem@davemloft.net>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH net] dt-bindings: net: tja11xx: fix the broken binding
+Message-ID: <bc68a8c5-b3d7-4b87-a192-ba825bfafb50@lunn.ch>
+References: <20240902063352.400251-1-wei.fang@nxp.com>
+ <8bd356c9-1cf4-4e79-81ba-582c270982e8@lunn.ch>
+ <PAXPR04MB85100D0AEC1F73214B2087CB88932@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1725350397-19527-1-git-send-email-hongxing.zhu@nxp.com> <1725350397-19527-2-git-send-email-hongxing.zhu@nxp.com>
-In-Reply-To: <1725350397-19527-2-git-send-email-hongxing.zhu@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 3 Sep 2024 10:01:46 -0300
-Message-ID: <CAOMZO5DsUdus8b6F+vz_g7+tZum9e5WPmFCg8zts7qDU6DToTQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] dt-bindings: clock: nxp,imx95-blk-ctl: Add
- compatible string for i.MX95 HSIO BLK CTRL
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
-	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, imx@lists.linux.dev, kernel@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB85100D0AEC1F73214B2087CB88932@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-Hi Richard,
+On Tue, Sep 03, 2024 at 02:17:04AM +0000, Wei Fang wrote:
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - ethernet-phy-id0180.dc40
+> > > +      - ethernet-phy-id0180.dd00
+> > > +      - ethernet-phy-id0180.dc80
+> > > +      - ethernet-phy-id001b.b010
+> > > +      - ethernet-phy-id001b.b031
+> > 
+> > This shows the issues with using a compatible. The driver has:
+> > 
+> > #define PHY_ID_TJA_1120                 0x001BB031
+> > 
+> >                 PHY_ID_MATCH_MODEL(PHY_ID_TJA_1120),
+> > 
+> > which means the lowest nibble is ignored. The driver will quite happy also probe
+> > for hardware using 001b.b030, 001b.b032, 001b.b033, ... 001b.b03f
+> > 
+> > Given you are inside NXP, do any of these exist? Was 001b.b030 too broken it
+> > never left the QA lab? Are there any hardware issues which might result in a
+> > new silicon stepping?
+> 
+> Yes, some of the revisions do exist, but the driver should be compatible with
+> these different revisions.
+> 
+> For 001b.b030, I don't think it is broken, based on the latest data sheet of
+> TJA1120 (Rev 0.6 26 January 2023), the PHY ID is 001b.b030. I don't know
+> why it is defined as 001b.b031 in the driver, it may be a typo.
 
-On Tue, Sep 3, 2024 at 5:21=E2=80=AFAM Richard Zhu <hongxing.zhu@nxp.com> w=
-rote:
->
-> Add compatible string "nxp,imx95-hsio-blk-ctl" for iMX95.
->
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.ya=
-ml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> index 2dffc02dcd8b..638241f6749f 100644
-> --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> @@ -17,6 +17,7 @@ properties:
->            - nxp,imx95-display-csr
->            - nxp,imx95-camera-csr
->            - nxp,imx95-vpu-csr
-> +          - nxp,imx95-hsio-blk-ctl
+More likely, the board Radu Pirea has does have a device with this ID.
 
-Please keep the entries in alphabetical order.
+> > 
+> > Does ethernet-phy-id0180.dc41 exist? etc.
+> I think other TJA PHYs should also have different revisions.
+> 
+> Because the driver ignores the lowest nibble of the PHY ID, I think it is fine to
+> define the lowest nibble of the PHY ID in these compatible strings as 0, and
+> there is no need to list all revisions. And I don't know which revisions exist,
+> because I haven't found or have no permission to download some PHY data
+> sheets. I think what I can do is to modify "ethernet-phy-id001b.b031" to
+> "ethernet-phy-id001b.b030".
+
+You have to be careful here. Stating a compatible forces the PHY
+ID. So if the compatible is "ethernet-phy-id001b.b031", but the board
+actually has a "ethernet-phy-id001b.b030". phydev->phy_id is going to
+be set to 0x001bb031. Any behaviour in the driver which look at that
+revision nibble is then going to be wrong.
+
+Maybe, now, today, that does not matter, because the driver never
+looks at the revision. But it does mean developers might put the wrong
+compatible in DT. And then when you do need to add code looking at the
+revision, it does not always work, because there are some boards with
+the wrong compatible in DT.
+
+Listing all possible compatibles suggests to developers they need to
+be careful and use the correct value. Or add a comment in the DT
+bindings that not using a compatible is probably safer.
+
+	Andrew
+
