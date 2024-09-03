@@ -1,41 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007DA1A4E66;
-	Tue,  3 Sep 2024 05:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E131CDA2C
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 06:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725340720; cv=none; b=sJGH/CcbdWKz83eFoGx7/TVcQJKv2nO4/iIXKqP1DVMCrxmTF9+Agvi6VMOD6hUK4pKrHl+1wi0KFYaLg2RUnhu5c3GdiK++BtQCSgmk/0sBMMca+yfr3eiYc9edQzAqyn8qgO+CFFDgRZPRRjjQ4nPYb7OR0D3MXZZxTcRbcVU=
+	t=1725346049; cv=none; b=aNTzzHlN2gYWu0cbUitFftSdC9MCXT0S36N3y3xLZFaLDsh9UOBPdKbi7xoL3KhGVjxahFzVV7VHdMQgmqJSszQuOzLInjOSVSFAejl8e6u80XgYMsf+7V/BG/FlEYFZ/tQOwdxiliRwzxdQIbY4CHujyz9ov4mM4774YRqSbGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725340720; c=relaxed/simple;
-	bh=4bXI3Y8VgVB+Lkxuh2fA0DFR+CCa5qj8nePbkreELfo=;
+	s=arc-20240116; t=1725346049; c=relaxed/simple;
+	bh=MNpxCUNof5M5OF+r/1sAHGfjON6O/npSbVwGOoIMr/I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EgJlpyMRirK6bAV1BzPblX6yT9LD04/oQKVNBAt4y616tv5i/2kkQoid+pf0hzawmUkKxAW6hS2Z50w40qAR/t+hVrI2yIOZFzS2G85VXu+xkEupD5jkQitR4pnB3w1x36dCWrt7aP9K2JheBzFj266jA41Z3U0DAy84F943AAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzHn2DmN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=R0zb8fJJrhgfMuUIup+p6H3wn+6z3PSbC94RBd6gFmw68jkRkMiV64adwbLVPDbz7lLIE06p12X8veegcwPn4F+m/PK4SCVHpEAx3EsQvQ8Vx1+L+tflGtvQoSgrU6Cz8aXUinhtPDVrTwAMRio++O4J6IrgoK0ckg7DhHafqXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=izGazYsV; arc=none smtp.client-ip=1.95.21.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzHn2DmN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CF9C4CEC5;
-	Tue,  3 Sep 2024 05:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725340719;
-	bh=4bXI3Y8VgVB+Lkxuh2fA0DFR+CCa5qj8nePbkreELfo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JzHn2DmNQ6IBXWBJpx/ch9sp5m81g75P1sV5za2Wvos4a6t41IZjSkMGrrnb6RdZZ
-	 BvPUMF1psE5woM+DTarNamh0vgYzJo5usn5p1oN3uHGPVpjKKvXCJXeRXB16l0b0FT
-	 iOcBNb7rTEXka1XtaIKvIhukBn+3PAlw3oI9qoiQxffg0/TK/OqiaFU+nJ6IoJOZ3M
-	 lYiofQu89Kryk8Xugz9jNPp4JwTXYwCW6IcYRUS0pfpP5f+K+WpXj0ce7MiFQbBRIy
-	 89CsReNJH4xZQZUducx2Zm1W4o4YhRZXiRF/O2Ay5GfH5aKvmBieMgwVAIaOh/uypw
-	 udiZhsGmZZ1uA==
-Date: Tue, 3 Sep 2024 10:48:35 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Liao Yuanhong <liaoyuanhong@vivo.com>, dmaengine@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 0/7] dmaengine:Use devm_clk_get_enabled() helpers
-Message-ID: <ZtacKzsoK1UWEE+O@vaman>
-References: <20240830094118.15458-1-liaoyuanhong@vivo.com>
- <6829a2e4-f7e0-4f34-8702-e00b005e9e0c@kernel.org>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="izGazYsV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=fid2FlpZKhUlL5gBAJoutriQF8ObGTeMG+l1QLgPOnM=;
+	b=izGazYsV236soT6tSbCC12ScfhAbGaxIbhthJ76jVdOPkw2WMZAmi1cMO+8tqx
+	Ru55Z0kWkGnP0Ra1XKc0bqM8RZ8KP3Qon4Z6mUc6adCOOGHY9SOGniwLdMHbW3WE
+	pQrD2OoWknL+s4/a1Phv+fPpYenvg4/Zf6P7wBxYK3qUY=
+Received: from dragon (unknown [114.216.210.89])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnTzzfsNZm+0pcAA--.50682S3;
+	Tue, 03 Sep 2024 14:46:57 +0800 (CST)
+Date: Tue, 3 Sep 2024 14:46:55 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: shawnguo@kernel.org, krzk+dt@kernel.org, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
+ Support
+Message-ID: <Ztaw3xDa6yY1tWu1@dragon>
+References: <20240902054456.5828-1-tarang.raval@siliconsignals.io>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,38 +45,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6829a2e4-f7e0-4f34-8702-e00b005e9e0c@kernel.org>
+In-Reply-To: <20240902054456.5828-1-tarang.raval@siliconsignals.io>
+X-CM-TRANSID:Ms8vCgDnTzzfsNZm+0pcAA--.50682S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIxpnUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERBPZWbWfDOlLwAAse
 
-On 30-08-24, 20:11, Krzysztof Kozlowski wrote:
-> On 30/08/2024 11:41, Liao Yuanhong wrote:
-> > The devm_clk_get_enabled() helpers:
-> >     - call devm_clk_get()
-> >     - call clk_prepare_enable() and register what is needed in order to
-> >      call clk_disable_unprepare() when needed, as a managed resource.
-> > 
-> > This simplifies the code and avoids the calls to clk_disable_unprepare().
-> > ---
-> > v2:remove inappropriate modifications, configure COMPILE_TEST for easy
-> > testing, add devm_clk_getprepaed() for imx sdma device.
-> > ---
-> > 
+On Mon, Sep 02, 2024 at 11:14:55AM +0530, Tarang Raval wrote:
+> Add following peripherals support for the Emtop i.MX8M Mini Baseboard
 > 
-> Vinod,
+>         * Wi-Fi
+>         * Audio
+>         * SD card
+>         * RTC
+>         * CAN bus
+>         * USB OTG
 > 
-> Since ~2 weeks there is tremendous amount of trivial patches coming from
-> vivo.com. I identified at least 6 buggy, where the contributor did not
-> understand the code. Not sure about intention, but I advise extra
-> carefulness
-> when dealing with these "trivial" improvements.
+> Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
 
-Agree, these are introducing bugs as well..
+I'm getting this:
 
-Vivo folks, please channel your energies into fixing some real problems,
-contributing support for your vivo phones including DT, drivers and
-running mainline on them...
+  arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts:111.20-120.11: ERROR (phandle_references): /soc@0/bus@30800000/spba-bus@30800000/spi@30830000/can@0: Reference to non-existent node or label "pinctrl_canbus"
 
-That would be better use of your and our time :-)
+Shawn
 
-BR
--- 
-~Vinod
