@@ -1,83 +1,81 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9658680B
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 02:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007DA1A4E66;
+	Tue,  3 Sep 2024 05:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725331163; cv=none; b=aWSpmupGZjOYFWHsj8Uwh2fN2p0SRsDPLCXtzajufNaATUYmxnCJbpKzY9uIGKdk/Hyt01zFuulKiA54CzEa903pivyX9PsN3VDrEO/FxhprrB30v9uBKAQwRNcXIt5aVJAYHAOwjqMU/RUMWTufydm97MV8zrBMYaUF94DHDOc=
+	t=1725340720; cv=none; b=sJGH/CcbdWKz83eFoGx7/TVcQJKv2nO4/iIXKqP1DVMCrxmTF9+Agvi6VMOD6hUK4pKrHl+1wi0KFYaLg2RUnhu5c3GdiK++BtQCSgmk/0sBMMca+yfr3eiYc9edQzAqyn8qgO+CFFDgRZPRRjjQ4nPYb7OR0D3MXZZxTcRbcVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725331163; c=relaxed/simple;
-	bh=9msTVneaFggEOnc0HgRFAawmBb/KlQYldhtAtEmevK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bz9tq/h21t6cUmPUXD/flS5Bvag1Nbxe6Fl9ZVJqWm0Mc/zT5tqfJwN0LZwa0gIO4hF+F9zSq2vl6CjHS50s+faIy5Vndys71xMaNyQeKpKqhRmS0EoN/54omp7Y6Os6oN9XUmccPJ2UmFlTnB11VByd8LiZcP6C/9oTSkIHL6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-01 (Coremail) with SMTP id qwCowABH+ajRdtZm+a60AA--.35457S2;
-	Tue, 03 Sep 2024 10:39:14 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: jirislaby@kernel.org,
-	gregkh@linuxfoundation.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] mxser: convert comma to semicolon
-Date: Tue,  3 Sep 2024 10:37:54 +0800
-Message-Id: <20240903023754.493568-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1725340720; c=relaxed/simple;
+	bh=4bXI3Y8VgVB+Lkxuh2fA0DFR+CCa5qj8nePbkreELfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EgJlpyMRirK6bAV1BzPblX6yT9LD04/oQKVNBAt4y616tv5i/2kkQoid+pf0hzawmUkKxAW6hS2Z50w40qAR/t+hVrI2yIOZFzS2G85VXu+xkEupD5jkQitR4pnB3w1x36dCWrt7aP9K2JheBzFj266jA41Z3U0DAy84F943AAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzHn2DmN; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzHn2DmN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CF9C4CEC5;
+	Tue,  3 Sep 2024 05:18:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725340719;
+	bh=4bXI3Y8VgVB+Lkxuh2fA0DFR+CCa5qj8nePbkreELfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JzHn2DmNQ6IBXWBJpx/ch9sp5m81g75P1sV5za2Wvos4a6t41IZjSkMGrrnb6RdZZ
+	 BvPUMF1psE5woM+DTarNamh0vgYzJo5usn5p1oN3uHGPVpjKKvXCJXeRXB16l0b0FT
+	 iOcBNb7rTEXka1XtaIKvIhukBn+3PAlw3oI9qoiQxffg0/TK/OqiaFU+nJ6IoJOZ3M
+	 lYiofQu89Kryk8Xugz9jNPp4JwTXYwCW6IcYRUS0pfpP5f+K+WpXj0ce7MiFQbBRIy
+	 89CsReNJH4xZQZUducx2Zm1W4o4YhRZXiRF/O2Ay5GfH5aKvmBieMgwVAIaOh/uypw
+	 udiZhsGmZZ1uA==
+Date: Tue, 3 Sep 2024 10:48:35 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Liao Yuanhong <liaoyuanhong@vivo.com>, dmaengine@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 0/7] dmaengine:Use devm_clk_get_enabled() helpers
+Message-ID: <ZtacKzsoK1UWEE+O@vaman>
+References: <20240830094118.15458-1-liaoyuanhong@vivo.com>
+ <6829a2e4-f7e0-4f34-8702-e00b005e9e0c@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABH+ajRdtZm+a60AA--.35457S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw4UZF15Zr47GrykKF4xtFb_yoWxuFg_C3
-	4kGws2vF10kr1v9wn8J34rurySv34ruF4kX3Wv9FZ0kay7Aws5WrWkXrsrJr98urySkF9x
-	Jr4DCryxXF47WjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbfkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUovtCDUUUU
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6829a2e4-f7e0-4f34-8702-e00b005e9e0c@kernel.org>
 
-Replace a comma between expression statements by a semicolon.
+On 30-08-24, 20:11, Krzysztof Kozlowski wrote:
+> On 30/08/2024 11:41, Liao Yuanhong wrote:
+> > The devm_clk_get_enabled() helpers:
+> >     - call devm_clk_get()
+> >     - call clk_prepare_enable() and register what is needed in order to
+> >      call clk_disable_unprepare() when needed, as a managed resource.
+> > 
+> > This simplifies the code and avoids the calls to clk_disable_unprepare().
+> > ---
+> > v2:remove inappropriate modifications, configure COMPILE_TEST for easy
+> > testing, add devm_clk_getprepaed() for imx sdma device.
+> > ---
+> > 
+> 
+> Vinod,
+> 
+> Since ~2 weeks there is tremendous amount of trivial patches coming from
+> vivo.com. I identified at least 6 buggy, where the contributor did not
+> understand the code. Not sure about intention, but I advise extra
+> carefulness
+> when dealing with these "trivial" improvements.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/tty/mxser.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Agree, these are introducing bugs as well..
 
-diff --git a/drivers/tty/mxser.c b/drivers/tty/mxser.c
-index 6cfef88a18e3..4d45eca4929a 100644
---- a/drivers/tty/mxser.c
-+++ b/drivers/tty/mxser.c
-@@ -983,7 +983,7 @@ static int mxser_get_serial_info(struct tty_struct *tty,
- 	ss->baud_base = MXSER_BAUD_BASE;
- 	ss->close_delay = close_delay;
- 	ss->closing_wait = closing_wait;
--	ss->custom_divisor = MXSER_CUSTOM_DIVISOR,
-+	ss->custom_divisor = MXSER_CUSTOM_DIVISOR;
- 	mutex_unlock(&port->mutex);
- 	return 0;
- }
+Vivo folks, please channel your energies into fixing some real problems,
+contributing support for your vivo phones including DT, drivers and
+running mainline on them...
+
+That would be better use of your and our time :-)
+
+BR
 -- 
-2.25.1
-
+~Vinod
