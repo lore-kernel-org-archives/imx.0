@@ -1,114 +1,85 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF4617A90F
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 16:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2641C14;
+	Tue,  3 Sep 2024 17:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725382663; cv=none; b=jxoJFPknfq5KGiXYuhmH8u+R8D0IjojNCM7BK/OPYaVVUgQ+CQQdC2eIyi47aN7zBYhHiGMtCwhFxewZbIJkzE4lnNB0mX8TeUJhAZar8Wrj1BhnxJfpMMNLuD1ueM+IQ+3+AR9fy3v8Bc3vjFMFy0VZFn/ws4QtnQt75ajteNQ=
+	t=1725383625; cv=none; b=dD4x8X1dkM/Jjoxxa7HBcRGDx+jcgY+APTO+Omwo8TYGq0C9d6jG76Ycg0H66f14uAItgfAJw+nCav0UNlbW23DNXSP6J4KPrJMSAmdB2IUmWPMv8/nV2PAJUp4vNsmapmbbpQm7Z1k4qh8yPQyZrIkazOk79WbkQ9uH133ocIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725382663; c=relaxed/simple;
-	bh=Kp4Ltf2L/vJqCknBSuRSkxLSWkJH/qnHIhhNntGIG68=;
+	s=arc-20240116; t=1725383625; c=relaxed/simple;
+	bh=NtlTnC0QsS/egsQ9FKZqT+K+AlktbHnzwk5mJ3lRnlY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gQUXF3fK7dvNTycgcTsKxUtFFiP9+Am9slBs2Hh9TbpE4Xt3b/CnDYHjdHMJxjriL+ESMCKrRXvuU97CJpPJ5FM/7L+EGCsmmE1zSPGRmKQObJOhNQRmQDlHfzYY2/wfZWP8z6DxD3k/rRo8RywxRWczr6ehB74gFEoqKA8sOqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1slWqG-0002YO-GD; Tue, 03 Sep 2024 18:57:20 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1slWqE-005F6V-CF; Tue, 03 Sep 2024 18:57:18 +0200
-Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id EA7E03317CB;
-	Tue, 03 Sep 2024 16:57:17 +0000 (UTC)
-Date: Tue, 3 Sep 2024 18:57:17 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: =?utf-8?B?Q3PDs2vDoXM=?= Bence <csokas.bence@prolan.hu>, 
-	imx@lists.linux.dev, Eric Dumazet <edumazet@google.com>, 
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Linux Team <linux-imx@nxp.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Wei Fang <wei.fang@nxp.com>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH net-next v3 0/3] net: fec: add PPS channel configuration
-Message-ID: <20240903-keen-feathered-nyala-1f91cd-mkl@pengutronix.de>
-References: <20240809094804.391441-1-francesco@dolcini.it>
- <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
- <20240903160700.GB20205@francesco-nb>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFLjyjLnCVqsyH3u/IdxQIgUzphK1xp8/cXyEUDAxjqLtZd6+ZwNtjODDPWXlEKhjwNLC5siY0p6Bpngi+GXQ6RvRejILd4B1QO7Es0kF88iIoVszaHIqUMn46AIFdE0QQs7g1+iL5Vw8BCe8PyE83t9MZsw+BPgRr4W8oUPq+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6AW/4mM; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6AW/4mM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633FCC4CEC4;
+	Tue,  3 Sep 2024 17:13:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725383624;
+	bh=NtlTnC0QsS/egsQ9FKZqT+K+AlktbHnzwk5mJ3lRnlY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B6AW/4mMK5gJj/eTBROlH+M5L9Dyk9/na7fnfdJn204eMRGkzJXp16VwGauWZEqgC
+	 MB7MbJ8D0cjwiPRPomg8iOiXUVTkdCQe8UPHUMpTYCHAPi7MWVGVilSWlH9kVRu0Ke
+	 rP6C58tcOuh2IOwe7YJH4FRqiAsDEHWkJc+rTITpvRPqocIBUV3oU87azGUAN81Z1g
+	 7gfvjW9CpKj6TuO7FkrZBiK2/fXURJYm2tf/CA0gCPKWvIXATngETeCYJ6LRpLYPfr
+	 c4VBE3kf3d7sbAzf7GK+DZE1/qq5AA4d5S/PcejYRrdTK4Z1pX9aMybk2k/AlT2R6P
+	 lJriuJDGne+bA==
+Date: Tue, 3 Sep 2024 12:13:43 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	Van Sebroeck <wim@iguana.be>, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Martyn Welch <martyn.welch@collabora.co.uk>, imx@lists.linux.dev,
+	linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] dt-bindings: watchdog: convert ziirave-wdt.txt to
+ yaml
+Message-ID: <172538362087.1746034.1985438397803851680.robh@kernel.org>
+References: <20240814161250.4017427-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="d3n7e7dyaggm5ums"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240903160700.GB20205@francesco-nb>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20240814161250.4017427-1-Frank.Li@nxp.com>
 
 
---d3n7e7dyaggm5ums
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, 14 Aug 2024 12:12:48 -0400, Frank Li wrote:
+> Convert ziirave-wdt.txt to yaml format.
+> 
+> Additional change:
+> - Add i2c node in example.
+> - Add ref to watchdog.yaml
+> 
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mq-zii-ultra-rmb3.dtb: /soc@0/bus@30800000/i2c@30a40000/watchdog@38:
+> 	failed to match any schema with compatible: ['zii,rave-wdt']
+> 
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v2 to v3
+> - using original driver submitter and wdt maintainer as maintainter
+> - add conor dooley review tag
+> - remove value in milliseconds
+> 
+> Change from v1 to v2
+> - add ref watchdog.yaml
+> - Remove timeout-sec
+> ---
+>  .../bindings/watchdog/zii,rave-wdt.yaml       | 49 +++++++++++++++++++
+>  .../bindings/watchdog/ziirave-wdt.txt         | 19 -------
+>  2 files changed, 49 insertions(+), 19 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/watchdog/zii,rave-wdt.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/watchdog/ziirave-wdt.txt
+> 
 
-On 03.09.2024 18:07:00, Francesco Dolcini wrote:
-> On Tue, Sep 03, 2024 at 04:10:28PM +0200, Cs=C3=B3k=C3=A1s Bence wrote:
-> > What's the status of this? Also, please Cc: me in further
-> > conversations/revisions as well.
->=20
-> I am going to send a v4 in the next few days to address the comments
-> on the dt-bindings change and apart of that I hope is good to go.
+Applied, thanks!
 
-Have you read Richard's feedback on this?
-
-| https://lore.kernel.org/all/YvLJJkV2GRJWl7tA@hoboy.vegasvil.org
-
-There seems to be a standard interface for what you're trying to do,
-right?
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---d3n7e7dyaggm5ums
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbXP+oACgkQKDiiPnot
-vG/vKQf/a72N78iIWxzkOUlx3s8T+bzkiDPclPHM1guLq8EsSRbMyCMujcaqdMxL
-hGNyiqnyNI5zFNhK7lVWJ+tShy/cLQgdCkAaEBIhBmQIT7M2N9zfG/4rHX8vX4MF
-D3XZSZzQC+pHiZgnUbm5SESmjz5GmumZUmBDJkVfaqjLMROR2HiAQy5f/bbE5OLp
-kU5cBBXQnhJf8+lWMEWikAhjfyt1p6Cgb7ZFsK41rGrjK+/cble0O1q7gBKsEicT
-eR5HabwoUHnKWJ7z9EB0YoLVEq/yBN+56uPZFYPxr5k+0pfX0jopOMkPlNjdlN7g
-KlNrBoCEeQ+CI35ecgDOQK9aqgK/Hg==
-=3c+f
------END PGP SIGNATURE-----
-
---d3n7e7dyaggm5ums--
