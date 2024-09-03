@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6361E188007;
-	Mon,  2 Sep 2024 22:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F341CCED9;
+	Tue,  3 Sep 2024 01:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725317963; cv=none; b=h/W8Ntka/fBAAfJt8ytGaklDTQ39Zx2EspmT1JMaYA6/U/tCv8yzH+6wEwTlwYyDo32y7Wc+w93visXNZ9g3XexbhVagoIyP+e5AmsMNx8+zpYTBf9d6nanwbAzO4fzuTCHv+KSHvuiSZQeetHlwEHPNv2fR4Z78S0813mB0Fmc=
+	t=1725328170; cv=none; b=Mp27Ce4jJcdla1f4fpC+eHy2jIaoCCnWU1dEayWHer0WVjNORf6aDPBEGynkrfY2khEyvwGWMTQzYiK1RKlqPYKOV6F8kRq096vbA8AWRMG2C5eZoQkEm20Erzz7G5f3V3faauAVjWFSzBz6GJo+NhpZH4MKea30lqO6tllJdxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725317963; c=relaxed/simple;
-	bh=Km/6KlnmQOWJjXq++Cne0pmAvoAL3JA6Ik/pIQ5aMsc=;
+	s=arc-20240116; t=1725328170; c=relaxed/simple;
+	bh=MYd+BDZHjT4A49/uPMG3JKdeSg29HklOPqAeNtZYWOQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KlHIw9IZzez4JYiYkLf5oX2eX25TcNAnmyOWnqhru2nKeN3SVPWYNLCuj5rcjULfcLAms8SqGM1u8AfAszOq1XCaxY2snEvT5edRtMLF8tXumXsCJ9lQRUofA2P6luL0OHRa6rMM+ud7Tn/p1hQPjCyQxY8nKiEL8OJjHaH+Auc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AIErJMG7; arc=none smtp.client-ip=10.30.226.201
+	 Content-Disposition:In-Reply-To; b=OmLRmpl3g80+up3s6JN655JLehkFlbeO4yhab40wvF4Z7nGLnIC/Ity0k5z1QMFqcYf69cDJpTJD4cxMcsuTQx6P5DUb3IgJvmjz0TbXgP7BdHbtvxs+dMglbjtZkemh7CiYhrpds0db60tovpd6DQBfxlHlziU3gYtSTa0omaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+QeXC2X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AIErJMG7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C12C4CEC2;
-	Mon,  2 Sep 2024 22:59:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+QeXC2X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF07C4CEC2;
+	Tue,  3 Sep 2024 01:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725317963;
-	bh=Km/6KlnmQOWJjXq++Cne0pmAvoAL3JA6Ik/pIQ5aMsc=;
+	s=k20201202; t=1725328169;
+	bh=MYd+BDZHjT4A49/uPMG3JKdeSg29HklOPqAeNtZYWOQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=AIErJMG7cKzgaRygrtjzs5mL/pC6veeZwCogVHvV/WBtBT/cKLnuDR62hPgSMcBe8
-	 /yuQvKlu7eI5fNCDD4J/dgkzx3ooEmujnp/daGOhR5v+4eVZtVVrMG6e2PG0iFSRZF
-	 NIrYhg19ylgXYLM2wQvCc4o/jRlPuA9dEeuQ9jUM3iaLWlUG5Nz2p9/Gke8q0PWRiS
-	 gkFDR8G5EB7ytWVL5yqqdSrm6GfhVY2FI1lTb/B4Wd7W2cvFQPmCDCXe7szd35TzKm
-	 tlnvY4CVN8T/3+7HoZ8o1Y5GcnDRVLLdtp21+GlcY5VliDWak3j8Yi1r0hUiRotEtK
-	 IByHh8ZKne3NQ==
-Date: Mon, 2 Sep 2024 17:59:21 -0500
+	b=U+QeXC2X1xudw533PDy63Jd71UFCyOegTYWfMWdJdl3xMIYgieBBJ57QEvO6Nuiju
+	 ziBP/E56LLdhirSIbhjy6x8sI34F8nBb45hV5jKNdTLAXJbkMwucnaexUitgrIYxxx
+	 eTtBCzAXlxQ2SUJPDMXoKkV79upiyjETusnKFJJMF/oa5meQdZusy5ltBUMmusM8d1
+	 ymNSYkz94NenKd1w/Ilg0MKS5kNr+lt5tLnXLPvVCc29bzwaY1pZtvgAxvsZytlsAT
+	 m/Ng3cEBcXjRjxAROcOECAXlXd2LxDMc/Fmtw48XMcjld5OPjdSWg1GgKdwiiCnokn
+	 o+iSZYY52Z6CQ==
+Date: Mon, 2 Sep 2024 20:49:27 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: Richard Zhu <hongxing.zhu@nxp.com>,
 	Lucas Stach <l.stach@pengutronix.de>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
@@ -48,9 +48,9 @@ Cc: Richard Zhu <hongxing.zhu@nxp.com>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH v8 01/11] PCI: imx6: Fix establish link failure in EP
- mode for iMX8MM and iMX8MP
-Message-ID: <20240902225921.GA232316@bhelgaas>
+Subject: Re: [PATCH v8 11/11] PCI: imx6: Add i.MX8Q PCIe root complex (RC)
+ support
+Message-ID: <20240903014927.GA230795@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,23 +59,45 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZtZBeL6LqpIKseXc@lizhi-Precision-Tower-5810>
+In-Reply-To: <20240729-pci2_upstream-v8-11-b68ee5ef2b4d@nxp.com>
 
-On Mon, Sep 02, 2024 at 06:51:36PM -0400, Frank Li wrote:
-> On Mon, Sep 02, 2024 at 04:12:40PM -0500, Bjorn Helgaas wrote:
-> > On Mon, Jul 29, 2024 at 04:18:08PM -0400, Frank Li wrote:
-> > > From: Richard Zhu <hongxing.zhu@nxp.com>
-> >
-> > Maybe "iMX8MP" in this subject should be "i.MX8MP" as in the subject
-> > of the next patch?
-> >
-> > And if so, maybe it should be "i.MX8MM" here, too?
+On Mon, Jul 29, 2024 at 04:18:18PM -0400, Frank Li wrote:
+> From: Richard Zhu <hongxing.zhu@nxp.com>
 > 
-> i.MX8MP and i.MX8MM is more formal. Many other place in kernel tree also
-> use iMX8MP and iMX8MM.
-> 
-> Do you need me repost it?
+> Implement i.MX8Q (i.MX8QM, i.MX8QXP, and i.MX8DXL) PCIe RC support. While
+> the controller resembles that of iMX8MP, the PHY differs significantly.
+> Notably, there's a distinction between PCI bus addresses and CPU addresses.
 
-No, no point it that, we can tidy that easily.
+This bus/CPU address distinction is unrelated to the PHY despite the
+fact that this phrasing suggests they might be related.
 
-Same for the stable tag, we can add that.
+> Introduce IMX_PCIE_FLAG_CPU_ADDR_FIXUP in drvdata::flags to indicate driver
+> need the cpu_addr_fixup() callback to facilitate CPU address to PCI bus
+> address conversion according to "ranges" property.
+
+I actually don't understand why the .cpu_addr_fixup() callback exists
+at all.  I guess this is my lack of understanding here, but on the
+ACPI side, if CPU addresses and PCI bus addresses are different, ACPI
+tells us how to convert them.  It seems like it should be analogous
+for DT.
+
+> +static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
+> +{
+> +	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
+> +	struct dw_pcie_rp *pp = &pcie->pp;
+> +	struct resource_entry *entry;
+> +	unsigned int offset;
+> +
+> +	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
+> +		return cpu_addr;
+> +
+> +	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
+> +	offset = entry->offset;
+
+I would have assumed that if the DT is correct, "offset" will be zero
+for platforms where PCI bus addresses are identical to CPU addresses,
+so we could (and *should*) do this for all platforms, not just IMX8Q.
+But I must be missing something?
+
+> +	return (cpu_addr - offset);
+> +}
