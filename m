@@ -1,107 +1,122 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD552E859
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 14:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DD413E025;
+	Tue,  3 Sep 2024 14:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725373006; cv=none; b=hj7qQFAzVM0td+lImWQYfJVyGcWzQ+Th6iAvFyQpbGWr+RxHggJueRRtWYUgBnhdcHSKboGOuqdc94JHNHHrxNTEVLOfI1ZfiBFjTH15hIlK+/FwmgHz70M/k76m2l2lkXLy+jIQg0Zw7R+yxpKk2O2tXFr/mu4nlI9KXI5yXEk=
+	t=1725373606; cv=none; b=S6Ds2DBa190ItMekRd6JTTU6/05yg6OUu8SoMtqcBifyhVTpfmyzMTPlHwJIxa0bAhdtvLaZ37Agh6jbVDwKWfE85NXtkD4HcdQIzhxO6Su7aAJAc3TKZanvfh2/1mIdUGslPtdefPbmAV29RTbS4bOSuQlBVVUyOeRJBwZab0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725373006; c=relaxed/simple;
-	bh=Wj0/CkZjNtPEN9TmeojDd8DReHMeuuUivOijpUh8fG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=LdWFDPMyi/gJX3MNOYGsdiEHQkxXjZU2Rd2x0lCDR7kmdEOS/SNUho791YUeyBLU2cNd1sZcOCzh1U8HPE2i1yvZhOjKmGCgRPTPfRgHppRVGfP33IQrhLe+UluD068A/xjI+7TV1XrZPdS/Y/MY2vvSp5/4DcZmnoLqZAWttW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=oqiv1463; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1725373606; c=relaxed/simple;
+	bh=hmFoSGTvmdZFU/qqfZd3fm3KxnXqO+nlF2DC3CWhBJ0=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=obniWb49KS/P6U5JIivjMsgOG/N/u5PUe8DyZabjFx12yNamQqoDtm+XS1SkLTmFJGv+E6NP1BSKmXp1a/M7sS9GCcOKYoTQlRXHBkUDgyZYI2Bg/GqqmUEG0HQNt182zLJy3HB62VpjmAfsYVB8+J9Neddg+MQ1RL0Ksi8+Xzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7DBTHRE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="oqiv1463"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id E0F2CA0A26;
-	Tue,  3 Sep 2024 16:10:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=c1isXRtW6S6Xq9eW9dV/
-	yijfSpFZrqCLG5+XN8gwzGU=; b=oqiv1463LDdbv77UwTn6xSZTQh6huAHS2iRw
-	rTcE2sEvKhjno1i29wSCO122UWI1ZjqEMSwhMuJm4g2r70AW+gqB8iIMLH57DF+k
-	JvDLIvOsf23hIMiO/VfleCa5ntxyMSebaYRF1vHae7RJtxen7ATYkhhrix/pHR8W
-	FF2TaH/12t/lWrFDrexd3x/K0LAjCD7hA1SCBOPfVUe1p309XUbF1fQLpWKBwSO4
-	2SnB2aFiykblvFjQFBGW57TEFQ92Gw0rGbQmseJVkYjgAoM7Bh/l51f7d+A8lT33
-	hRNk0gQAw5aHY9Be7M/yrb2ahkxkbeeK3dUEqmBo+kC6l05Mj9E5HtRVTiPd1ZoK
-	TUq9OqBQBNo06aHME0e6PiNziaafjjeX9cAP0cAXYNxLpE8jt2UUoWPkmzfrn1w5
-	GSOOBdFTkXNmjNrIgY8/sToF+cUjuPmyYFVn3/SYVTaZxO/Snmix6mUYR314Wxyd
-	MdLT/3mDD9w7eXof8znKdHRDYd+IMKfrzxWtArsRniaVBfLHq7h4lAYaXmEYziWn
-	0ZG7zenfoVbJN0brIDzYdiVhIqG34Pw2NHWR5joeYAg3iER+iN0D/urSnnG77VAE
-	Wixmr/ykL/tnUuFiMF7k1ZWlmee5e0gUsOK/iZgZw6dQh2osL6jiLKplPdJgEk2K
-	wUMzJRo=
-Message-ID: <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
-Date: Tue, 3 Sep 2024 16:10:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7DBTHRE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966EFC4CEC7;
+	Tue,  3 Sep 2024 14:26:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725373605;
+	bh=hmFoSGTvmdZFU/qqfZd3fm3KxnXqO+nlF2DC3CWhBJ0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=J7DBTHRE/sxChmS/y2I+pn79el/kL5ZxGR7BqdriNzqHutAlinRliHZjSrI2WMdaK
+	 DPPbkMv+rlaCYttAAGuqGkBlvCat/OF1rCX29Lcp6LEHreZQwRlFJFt5oGgkpoMEvx
+	 XR/UCOxNuHyQwLfBmwG8TWc9k8rX43xhWPyRrSziQXqpO+ILXAR/0n4ypgkwGdKvHF
+	 YjfmpBt9fHpEot5H/cr4oZCJm2IYUZT3L+2yN43kz5qRprMin292AzIyIZC0E1yhPJ
+	 5WbzHbRUEpgMXJvotdbuWsHobPwKX2ecYfeCkAY8Iuojyizzj1dkjtBSFM2b2l5s2K
+	 Va0QO95Lt9HUw==
+Date: Tue, 03 Sep 2024 09:26:44 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 0/3] net: fec: add PPS channel configuration
-To: Francesco Dolcini <francesco@dolcini.it>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Richard Cochran
-	<richardcochran@gmail.com>, Linux Team <linux-imx@nxp.com>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-References: <20240809094804.391441-1-francesco@dolcini.it>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20240809094804.391441-1-francesco@dolcini.it>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94854627567
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, shawnguo@kernel.org, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+In-Reply-To: <20240903091720.443091-1-tarang.raval@siliconsignals.io>
+References: <20240903091720.443091-1-tarang.raval@siliconsignals.io>
+Message-Id: <172537334994.875077.18308965320836312656.robh@kernel.org>
+Subject: Re: [PATCH v5] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
+ Support
 
-Hi!
-I already proposed this 2 years ago. I was just about to resubmit it and 
-found this series.
 
-Link: 
-https://lore.kernel.org/netdev/20220803112449.37309-1-csokas.bence@prolan.hu/
+On Tue, 03 Sep 2024 14:47:20 +0530, Tarang Raval wrote:
+> Add following peripherals support for the Emtop i.MX8M Mini Baseboard
+> 
+>         * Wi-Fi
+>         * Audio
+>         * SD card
+>         * RTC
+>         * CAN bus
+>         * USB OTG
+> 
+> Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+> ---
+> 
+> Changes in v2:
+> 
+> 1. Updated the node name and pinctrl name.
+> 2. Removed the 'regulators' container.
+> 3. Removed a stray blank line.
+> 4. Removed non-existent properties.
+> 5. Removed unused node and pinctrl:
+>    -modem-reset
+>    -pinctrl_uart1
+> 6. Defined the CAN transceiver reset GPIO separately.
+> 
+> Change in v3:
+> 
+> 1. Removed 'can-connector'.
+> 2. Use USB connector instead of extcon_usb.
+> 3. Changed id-gpio to id-gpios.
+> 4. Use Level trigger IRQ in the CAN node.
+> 5. Corrected the compatible property of RTC.
+> 6. Added blank lines to separate the pinctrl groups.
+> 
+> Changes in v4:
+> 
+> 1. Sorted I2C device nodes by slave address.
+> 2. Moved properties above the "status" property in the Wi-Fi node.
+> 
+> Change in v5:
+> 
+> 1. I mistakenly removed <pinctrl-canbus>; it has now been re-added.
+> 2. Added Author name
+> ---
+>  .../dts/freescale/imx8mm-emtop-baseboard.dts  | 335 ++++++++++++++++++
+>  1 file changed, 335 insertions(+)
+> 
 
-What's the status of this? Also, please Cc: me in further 
-conversations/revisions as well.
 
-Reviewed-by: "Csókás, Bence" <csokas.bence@prolan.hu>
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Thanks,
-Bence
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-On 8/9/24 11:48, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Make the FEC Ethernet PPS channel configurable from device tree.
-> 
-> v3 to just add the missing "net-next" subject prefix, sorry about the spam, it
-> seems like friday morning plus the mid of august heat wave is badly affecting
-> myself ...
-> 
-> v2: https://lore.kernel.org/all/20240809091844.387824-1-francesco@dolcini.it/
-> v1: https://lore.kernel.org/all/20240807144349.297342-1-francesco@dolcini.it/
-> 
-> Francesco Dolcini (3):
->    dt-bindings: net: fec: add pps channel property
->    net: fec: refactor PPS channel configuration
->    net: fec: make PPS channel configurable
-> 
->   Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
->   drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
->   2 files changed, 13 insertions(+), 5 deletions(-)
-> 
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y freescale/imx8mm-emtop-baseboard.dtb' for 20240903091720.443091-1-tarang.raval@siliconsignals.io:
+
+arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dtb: /soc@0/bus@30800000/spba-bus@30800000/spi@30830000/can@0: failed to match any schema with compatible: ['microchip,mcp2515']
+
+
+
+
 
