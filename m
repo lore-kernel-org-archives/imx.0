@@ -1,93 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2F31D5CFE
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 19:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E21B1422A2;
+	Tue,  3 Sep 2024 19:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725391215; cv=none; b=Xaw84fVFK/whUiNzXiKSms8UGdoQdVtXx5l0B4yLwOi27rxBTSwjy5NfSGti6T8VtIj8SDq5bjMNJas2k34uo2YrtPHllIdiO6LMIt4X3aj05HATKaef38/zDvFvQ66d1JR3BkKpqZ+YJUd2EDAMIp+BZ5r6W52DWVC3NjqFIC0=
+	t=1725392262; cv=none; b=RqcECA3KyT2M2vDBOnXH2RrvQSyxUyiX1vwS2xFibtzLiU++qSZl8teLFBeugF6ISGob2xbXsFj9iQAbIRduV6Hf7HIz3hQG5derrUtJt7+LDen/yh+W/J3YKKm5sorIw0x1lTdcdR2GTdqK89o7H99FMhdb4fBmyRtfns6LBUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725391215; c=relaxed/simple;
-	bh=cksDKNStvbeJj1FMPzP7UiyIQGPWWsWLf5dZK9KEdcE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E2ipvAErgX5dK9AibM2T7rzE2JCFYZLNUwj3NwA+4s7ApJgubt0MIbPL/j3T5GT+XygYe4/k/MguIYxsNo4dkFk+AIp4ERV860402qLCBuUy5jbLMQq9g0FXnXndq0WYUBgCiM/sUR25i6AGFnNQmEk5vyNBy2i4jvzog0GiStk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5OKd1kO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725392262; c=relaxed/simple;
+	bh=SIJNjyq5dxaon4/zdpaiOfQn11sjOiaAf/Z1TfCGKVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MrcYdI2nhFFd0ByJjg6eVELzkR3jI7ES+BOiqOA0Q+THRRlkov1gPNkCNPjDCT4Kag6LMk1tlFtM9M8UA/WTeTRqWeew02kx0iCTKqi+u3MZqjX1A8Odtz+oqYUwatScTHIdxN7G/OfN7D7YyzQqeX0uov6DSNCZttcY0t/ldIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOlAiJpa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5OKd1kO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C653C4CEC4
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 19:20:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOlAiJpa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB56BC4CEC4;
+	Tue,  3 Sep 2024 19:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725391215;
-	bh=cksDKNStvbeJj1FMPzP7UiyIQGPWWsWLf5dZK9KEdcE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h5OKd1kOKUVYqMyM9ufBEZpP3rpnKVpwcQoF+HgLtJ9zGoD7aR7/wWNzHkSQd1p5z
-	 YEFTbL8EkLOeq7o2St8BAt8LWpu4ncsJY1ByMtofL8TJKgbyla5LRH2n6U0YYdzZbx
-	 8INxFdHyEVLoYPAqUIyci0QXkcLZZ7ioNt0n5WQSMw8DeIAXRPHbrf4Uap1Z5xsUCZ
-	 wzrbDjgEwMgAE47rEXlhiuW49YLmNt/kHpUSjbKRqhreY4HBR61w3pKgPYNdv5ExWg
-	 ZajYyNWVCVjqgmV2e/e7qd/evuyYchJlQq+9EHLSjWpuY9twrQ6y0NBivNFFzAwsVS
-	 OYYsVQdU1ccNw==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2f406034874so69364281fa.1
-        for <imx@lists.linux.dev>; Tue, 03 Sep 2024 12:20:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU3hJyLaTgE8gYhm9xoLLjCCjO8O2sHSfUB2enrufJhcW7OErm/4KQFVvZN08TP4MN0G/w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YynkDYXdtH42PTqpoP57L+h/XUs2poXn9s8EDvzYQ5ieYzOOBgT
-	L5vGrdpuzWAxNoagA9zlQtlpCAp3v0Sy2dlslkj5C2CoNymHa7SlOiybs51XLjJMf3l8QxMYW5m
-	KC8UynxYv/J5RaBaFWCw8fyUcNA==
-X-Google-Smtp-Source: AGHT+IHbJzfMD5ZbkBqZR1C5OTEDd2QkeDzZePElEq+3ELKFCi8thSJ3vRUZZzicZL0UEZ5fgm7rBi1VrffsCg8vqRA=
-X-Received: by 2002:a05:651c:221a:b0:2f0:1f06:2b43 with SMTP id
- 38308e7fff4ca-2f64d570aeemr13729221fa.41.1725391213513; Tue, 03 Sep 2024
- 12:20:13 -0700 (PDT)
+	s=k20201202; t=1725392262;
+	bh=SIJNjyq5dxaon4/zdpaiOfQn11sjOiaAf/Z1TfCGKVQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=BOlAiJpaGGK7mXIy7BGmiCpR7kTGpTjWCBfEbhPm7x5fiFWyCEE3W6/99cBdQ3Ndy
+	 r/bBfZ0U+zak0u1tlasJqbve5qyYsUSDPuk2MLDoMGY0Jb5xIgftAH3Yl3nrD7+sSQ
+	 uDYm92IUQBMeVd4jtzNM4Gr5Ezx6lpE07ed2BYkCer8eVXminTil3eB6AFb4prspmg
+	 SLY0QJNaLtGFZU7zxEx9jaxmlB1ymTPQJAE0hwB0ETjZqkIX+5ocSIaAleYwgKghIG
+	 pyN/MMaobCtErRaJJNjSjqFkYasFZU2Izr1o9KFRd6bA5SZ/eS6tO0uTJUVa0aLu6R
+	 74ymjaDa9J5BQ==
+Date: Tue, 3 Sep 2024 14:37:39 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v8 04/11] PCI: imx6: Rename imx6_* with imx_*
+Message-ID: <20240903193739.GA230579@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240731191312.1710417-11-robh@kernel.org>
-In-Reply-To: <20240731191312.1710417-11-robh@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 3 Sep 2024 14:20:01 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLgPmnVjrGOcV+Qbp5ExWK25qVbShawJK96LPNE=RqNig@mail.gmail.com>
-Message-ID: <CAL_JsqLgPmnVjrGOcV+Qbp5ExWK25qVbShawJK96LPNE=RqNig@mail.gmail.com>
-Subject: Re: [PATCH] devfreq: imx-bus: Use of_property_present()
-To: MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240729-pci2_upstream-v8-4-b68ee5ef2b4d@nxp.com>
 
-On Wed, Jul 31, 2024 at 2:13=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
- wrote:
->
-> Use of_property_present() to test for property presence rather than
-> of_get_property(). This is part of a larger effort to remove callers
-> of of_get_property() and similar functions. of_get_property() leaks
-> the DT property data pointer which is a problem for dynamically
-> allocated nodes which may be freed.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  drivers/devfreq/imx-bus.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Jul 29, 2024 at 04:18:11PM -0400, Frank Li wrote:
+> Since this driver has evolved to support other i.MX SoCs such as i.MX7/8/9,
+> let's rename the 'imx6' prefix to 'imx' to avoid confusion. But the driver
+> name is left unchanged to avoid breaking userspace scripts
 
-Ping!
+s/let's//
 
+It's not a proposal, it's what the patch *does*.
+
+s/But the driver name is left unchanged/Leave the driver name unchanged/
+
+s/scripts/scripts./ (add period)
+
+> -#define IMX6_PCIE_FLAG_IMX6_PHY			BIT(0)
+> -#define IMX6_PCIE_FLAG_IMX6_SPEED_CHANGE	BIT(1)
+> -#define IMX6_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
+> -#define IMX6_PCIE_FLAG_HAS_PHYDRV			BIT(3)
+> -#define IMX6_PCIE_FLAG_HAS_APP_RESET		BIT(4)
+> -#define IMX6_PCIE_FLAG_HAS_PHY_RESET		BIT(5)
+> -#define IMX6_PCIE_FLAG_HAS_SERDES		BIT(6)
+> -#define IMX6_PCIE_FLAG_SUPPORT_64BIT		BIT(7)
+> +#define IMX_PCIE_FLAG_IMX_PHY			BIT(0)
+> +#define IMX_PCIE_FLAG_IMX_SPEED_CHANGE	BIT(1)
+> +#define IMX_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
+> +#define IMX_PCIE_FLAG_HAS_PHYDRV			BIT(3)
+
+Good opportunity to fix the whitespace errors while renaming these.
+IMX_PCIE_FLAG_IMX_SPEED_CHANGE and IMX_PCIE_FLAG_HAS_PHYDRV end up
+with the wrong indentation.
+
+> -#define imx6_check_flag(pci, val)     (pci->drvdata->flags & val)
+> +#define imx_check_flag(pci, val)     (pci->drvdata->flags & val)
 >
-> diff --git a/drivers/devfreq/imx-bus.c b/drivers/devfreq/imx-bus.c
-> index 86850b7dea09..49798f542d68 100644
-> --- a/drivers/devfreq/imx-bus.c
-> +++ b/drivers/devfreq/imx-bus.c
-> @@ -59,7 +59,7 @@ static int imx_bus_init_icc(struct device *dev)
->         struct imx_bus *priv =3D dev_get_drvdata(dev);
->         const char *icc_driver_name;
->
-> -       if (!of_get_property(dev->of_node, "#interconnect-cells", NULL))
-> +       if (!of_property_present(dev->of_node, "#interconnect-cells"))
->                 return 0;
->         if (!IS_ENABLED(CONFIG_INTERCONNECT_IMX)) {
->                 dev_warn(dev, "imx interconnect drivers disabled\n");
-> --
-> 2.43.0
->
+> -#define IMX6_PCIE_MAX_CLKS       6
+> +#define IMX_PCIE_MAX_CLKS       6
+
+Could also make these look nicer.
+
+We can touch these up, no need to repost.
