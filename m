@@ -1,33 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0951A2656
-	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516991A3AA0
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 09:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725354773; cv=none; b=kaudAFTfiXWbmqEpOCj3fBXcRZMoskRPW6hD7xBKBGq9HsSW37QlTcewy94WiikyM7pR45VpY0Oy71DSzMQwGorgVR6rMmT2OUucFGE8ncKFrD6c7vkEuv3+S5Szy+r+xaA7arHL+bFUooSzrEK51uXx2ExIIqJZXsFc8J0vTU4=
+	t=1725354773; cv=none; b=fHN8p3VCpEIWmZEWI6fDVYFVad3um9EF/vM6I94Q/5BS0TCM+g4rUECavHAuZZDfCfXRcZ0bDgNo6ljA2xMMdgLWLPj1ZSxpv/F7pgNnxyQjAQNTtaLzY5L22R0lyinjwe7iV0CilbFiyIXoLYVOmi9mcz0gTjI7KnpPPoFrxl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1725354773; c=relaxed/simple;
-	bh=gSDhxL3U7kr/v7J19khXJJ9lHpBydvwxXsSy52o9uZ4=;
+	bh=9XvQ/6OqAiaBOwkGflHFGODOmFJ6/8mF088q1hFj1OI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T4pGeUKtwDEcMaKYvDCOlP0PFMXBLf1IzWeBUqnSLqzr1cpa7ACjZ360gTL2jPQF7ZcHbYcIfoy+7oHlRIxMELhlxrdYptuNAjtiApjvgd00zTXygj+hQYCqXrXsGRKzMeXWn25Y83wsSlO5pYD9SOIM/HP2t65MUYFve5Gq6SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=CJq0/nIz; arc=none smtp.client-ip=217.194.8.81
+	 MIME-Version; b=n6wq1/g6eO9NemfzEwqkTzsRSIbHDVjack1q7OFyOPKb1HvSQmOKCeO/4UgVyeVs+5j6NUlZq9zuTKOuxCNJgjoZmxSITqJ0fV7ubaSJjd7ZqOVnj0pHoloAZ8NYmYgbfujDnC9E4DdaSVt9NNreSIMvmzQAJMcX1dhVmUgJb2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=NEou14+1; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="CJq0/nIz"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="NEou14+1"
 Received: from francesco-nb.corp.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id 3D63E22A3D;
-	Tue,  3 Sep 2024 11:12:43 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 8F69422A40;
+	Tue,  3 Sep 2024 11:12:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1725354763;
-	bh=GCUCXBgEluNs9qtFpdzYjJ/FhmFocJXBjDxNqILE4js=; h=From:To:Subject;
-	b=CJq0/nIzfuHy139Td3xg8WILHbrV/JWAHxWJ2li9XdkJVJZiFXb60O841cCnTrJK2
-	 Zp9UJ4vE2dqkn2IxB8s/zC9WwbkEbdcAO33niWISo+HsTIhbfW8LTxQNz8NsQyYvrj
-	 u1aXlJ3ET12P5pHzhE0bwl/7lXs/JAzC7og58Vvs+crPjMpD1S3pDEkNNeurelP3Ys
-	 SfHU6swdgLc/jo75+1PGAOUxMiI0YDA2266D8fsEHDXKK6eZViKrGrSBUiZ6uc1pxQ
-	 /7TEK7TSJTSddcGfuXwvkhGGlwjhtZwAY9ZGGOrHEFnOJGUuOW8GlWXLhmiWlv7eud
-	 jFJ+JWmNWP2DQ==
+	s=default; t=1725354765;
+	bh=1uJRT9w6VzFZ43zEIq8MJXYGvGTADZRg7pm2/OMaHvY=; h=From:To:Subject;
+	b=NEou14+1AVnFtYn8HyoB8jVDAYsnOLhQtcFTT3NAtLDCbHqmr2HzIKvyPIClinkYb
+	 vscA/o5FsTfUh6hMnNIxfrLXhAyq3St9Shr434pnWeOig94WvbpK8VUKj6uTYsCJcU
+	 vY36MlqTDp3UTKgguTdV7n6lFB4ySPP6GDPOoXn46ganP9bXROHQXb+8Iiv6lxZ6LM
+	 J8NA2tVfXQH2iB/v7f4Mlz6deC+Z0kj4y0egz31BeRSj8wYy0WqhxA2RndvjwciUaV
+	 68rQvEJK3tL/y95idlmjW2vRlTQyVtZ+S7E0qOYXfyFafI4vdSyAiDxEmoC8KcKev/
+	 rArVtjJ67sKcg==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -36,15 +36,15 @@ To: Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+Cc: Hiago De Franco <hiago.franco@toradex.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2 2/5] arm64: dts: imx8-apalis: Set thermal thresholds
-Date: Tue,  3 Sep 2024 11:12:28 +0200
-Message-Id: <20240903091231.20035-3-francesco@dolcini.it>
+Subject: [PATCH v2 4/5] arm64: dts: imx8-apalis: Add nau8822 audio-codec to apalis eval v1.2
+Date: Tue,  3 Sep 2024 11:12:30 +0200
+Message-Id: <20240903091231.20035-5-francesco@dolcini.it>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240903091231.20035-1-francesco@dolcini.it>
 References: <20240903091231.20035-1-francesco@dolcini.it>
@@ -56,78 +56,125 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+From: Hiago De Franco <hiago.franco@toradex.com>
 
-Set critical/alert thermal thresholds for all relevant SOC
-temperature trips to the IT value (max T_junction 105 degree
-Celsius) in accordance with the IT grade of the SOM.
+Add support for audio-codec NAU88C22 present on the Apalis Evaluation
+Board v1.2 carrier board.
 
-Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
 v2: no changes
 ---
- .../boot/dts/freescale/imx8-apalis-v1.1.dtsi  | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ .../dts/freescale/imx8-apalis-eval-v1.2.dtsi  | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index 160153853b68..e53683e49e03 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -239,6 +239,30 @@ &adc1 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-eval-v1.2.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-eval-v1.2.dtsi
+index f5c6a0164f36..5862b24fb764 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-apalis-eval-v1.2.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-apalis-eval-v1.2.dtsi
+@@ -51,6 +51,40 @@ reg_can2: regulator-can2 {
+ 		regulator-name = "5V_SW_CAN2";
+ 		startup-delay-us = <10000>;
+ 	};
++
++	sound-carrier {
++		compatible = "simple-audio-card";
++		simple-audio-card,bitclock-master = <&codec_dai>;
++		simple-audio-card,format = "i2s";
++		simple-audio-card,frame-master = <&codec_dai>;
++		simple-audio-card,name = "apalis-nau8822";
++		simple-audio-card,routing =
++			"Headphones", "LHP",
++			"Headphones", "RHP",
++			"Speaker", "LSPK",
++			"Speaker", "RSPK",
++			"Line Out", "AUXOUT1",
++			"Line Out", "AUXOUT2",
++			"LAUX", "Line In",
++			"RAUX", "Line In",
++			"LMICP", "Mic In",
++			"RMICP", "Mic In";
++		simple-audio-card,widgets =
++			"Headphones", "Headphones",
++			"Line Out", "Line Out",
++			"Speaker", "Speaker",
++			"Microphone", "Mic In",
++			"Line", "Line In";
++
++		codec_dai: simple-audio-card,codec {
++			sound-dai = <&nau8822_1a>;
++			system-clock-frequency = <12288000>;
++		};
++
++		simple-audio-card,cpu {
++			sound-dai = <&sai0>;
++		};
++	};
+ };
  
- /* TODO: Asynchronous Sample Rate Converter (ASRC) */
+ /* Apalis CAN1 */
+@@ -69,6 +103,13 @@ &flexcan2 {
+ &i2c2 {
+ 	status = "okay";
  
-+&cpu_alert0 {
-+	temperature = <95000>;
-+};
++	/* Audio Codec */
++	nau8822_1a: audio-codec@1a {
++		compatible = "nuvoton,nau8822";
++		reg = <0x1a>;
++		#sound-dai-cells = <0>;
++	};
 +
-+&cpu_alert1 {
-+	temperature = <95000>;
-+};
-+
-+&cpu_crit0 {
-+	temperature = <105000>;
-+};
-+
-+&cpu_crit1 {
-+	temperature = <105000>;
-+};
-+
-+&drc_alert0 {
-+	temperature = <95000>;
-+};
-+
-+&drc_crit0 {
-+	temperature = <105000>;
-+};
-+
- /* Apalis ETH1 */
- &fec1 {
- 	pinctrl-names = "default", "sleep";
-@@ -285,6 +309,22 @@ &flexcan3 {
+ 	/* Power/Current Measurement Sensor */
+ 	hwmon@40 {
+ 		compatible = "ti,ina219";
+@@ -87,6 +128,18 @@ eeprom@57 {
+ 	};
+ };
  
- /* TODO: Apalis HDMI1 */
++&sai0 {
++	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
++			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
++			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
++			  <&sai0_lpcg IMX_LPCG_CLK_0>;
++	assigned-clock-rates = <786432000>, <49152000>, <12288000>, <49152000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_sai0>;
++	#sound-dai-cells = <0>;
++	status = "okay";
++};
++
+ /* Apalis MMC1 */
+ &usdhc2 {
+ 	pinctrl-0 = <&pinctrl_usdhc2_4bit>, <&pinctrl_mmc1_cd>;
+@@ -105,6 +158,15 @@ &usdhc3 {
+ };
  
-+&gpu_alert0 {
-+	temperature = <95000>;
-+};
+ &iomuxc {
++	pinctrl-0 = <&pinctrl_cam1_gpios>,
++		    <&pinctrl_esai0_gpios>, <&pinctrl_fec2_gpios>,
++		    <&pinctrl_gpio3>, <&pinctrl_gpio4>, <&pinctrl_gpio_keys>,
++		    <&pinctrl_gpio_usbh_oc_n>, <&pinctrl_lpuart1ctrl>,
++		    <&pinctrl_lvds0_i2c0_gpio>, <&pinctrl_lvds1_i2c0_gpios>,
++		    <&pinctrl_mipi_dsi_0_1_en>, <&pinctrl_mipi_dsi1_gpios>,
++		    <&pinctrl_mlb_gpios>, <&pinctrl_qspi1a_gpios>,
++		    <&pinctrl_sata1_act>, <&pinctrl_sim0_gpios>,
++		    <&pinctrl_usdhc1_gpios>;
+ 
+ 	pinctrl_enable_3v3_mmc: enable3v3mmcgrp {
+ 		fsl,pins = <IMX8QM_USDHC1_DATA4_LSIO_GPIO5_IO19	0x00000021>; /* MXM3_148 */
+@@ -121,4 +183,11 @@ pinctrl_enable_can1_power: enablecan1powergrp {
+ 	pinctrl_enable_can2_power: enablecan2powergrp {
+ 		fsl,pins = <IMX8QM_USDHC1_DATA6_LSIO_GPIO5_IO21	0x00000021>; /* MXM3_156 */
+ 	};
 +
-+&gpu_alert1 {
-+	temperature = <95000>;
-+};
-+
-+&gpu_crit0 {
-+	temperature = <105000>;
-+};
-+
-+&gpu_crit1 {
-+	temperature = <105000>;
-+};
-+
- /* On-module I2C */
- &i2c1 {
- 	pinctrl-names = "default";
++	pinctrl_sai0: sai0grp {
++		fsl,pins = <IMX8QM_SAI1_RXC_AUD_SAI0_TXD	0xc600006c>, /* MXM3_196 */
++			   <IMX8QM_SPI0_CS1_AUD_SAI0_TXC	0xc600004c>, /* MXM3_200 */
++			   <IMX8QM_SAI1_RXFS_AUD_SAI0_RXD	0xc600004c>, /* MXM3_202 */
++			   <IMX8QM_SPI2_CS1_AUD_SAI0_TXFS	0xc600004c>; /* MXM3_204 */
++	};
+ };
 -- 
 2.39.2
 
