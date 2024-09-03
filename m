@@ -1,67 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEA6183CB7;
-	Tue,  3 Sep 2024 15:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2D6405C9
+	for <imx@lists.linux.dev>; Tue,  3 Sep 2024 16:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725376489; cv=none; b=oC9ZZG7SpPxv0Y0WNCGFL388SijwGeGOHQXcgxJixLEE0hfNgOI3NCyoNIGSZDHCySPCkQ6WTYfEXZKPI/XfpjGjpnDVqw+MW0I9Y/u09PyJdNarIxehjKrAgGHxBGIUFVBy74gLXobtCMVxFS4yX3ic8Fq0Kw34bSqFhjYVHvw=
+	t=1725379630; cv=none; b=GF9tPPqzoObvUaMfek/bdUDZubzJw/mUzC/ThDPtWo8OikXiVAoAMI9L1fs5tW0F8cFTWHTaUnfyEqUNFEzUHTSopPgiwBljF/xizIrqPrJ5Pefl5z2kxOBLb5NQhWCiTHXSJflWqAIom4a+DYYfWTuMMAJzQMT6zkYaVwXIZfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725376489; c=relaxed/simple;
-	bh=uFgFEPAxbDvAfL++QT4kan7FKDz65W7ggNlfblXXvK4=;
+	s=arc-20240116; t=1725379630; c=relaxed/simple;
+	bh=ZK/1w6Ap/OIkmGOTQs+JfOp4gTkKRiP9LPHx30+PPyE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DHJpGE6D/1LQUBMChcoqLtsa4YClx/Rvl9wSCS5NU2X6zMDeB/M/JQ47gVHygb+NITHDhxPF/P/jzCaYJwErZ46JGProfgbd5msBRLGxZ4pTg1oz29B71ZMnl0URKUhuTK6hfFblCSIti0E/hgpJJ/wz5+c0tN8wFW6ejW1Rb/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXgbbrA0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=WFE3BRmLcEq+P3hHgigEVT0W9Rr+85HXKVIsE4j8VpwPAa0BxAB1ytvCJ2uWmZZV/bBMmNYA6gObJ+EjJ556ac3YV2WH/DQFLiYj+EKV9wOK0FUgDri033Y+ol5qSF0BU6JHqmdJYE0Yz/VtP7mDJAJ5qBLGqQSGpE+7pDjdXdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Q4ecfTA2; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXgbbrA0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306A5C4CEC4;
-	Tue,  3 Sep 2024 15:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725376489;
-	bh=uFgFEPAxbDvAfL++QT4kan7FKDz65W7ggNlfblXXvK4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DXgbbrA0g8JX+FdhM81jkje0NNXBh2FpV6IeNyA1N2bVUP8BlBOUHFt8HYRj/3x5Q
-	 Heo8LdhTjpkgx97H3K66i3HA2c2a4ibUX0zoAuKRp6WScpT/zqjXKB+zvvs0AYWUDs
-	 BYvYVCvMDRKXpGsobVteXGKKb4H0nQXmb4GwC8Qhz8baV+wGrBInpnmKqRg3Z87Bae
-	 xWc+ne6nakz0fc5dEjav6sMwf52gzH27z8ga7c6TbzUp+E5GSQD4j4jR685Ie/5yMP
-	 wJ4g7hychRHKv8+yK0f8YTgD8YrnnTUgM2B612BxB8IbwCgbQM+ZCsipSsYnmdEeWG
-	 yDN3HBGAAHS6A==
-Date: Tue, 3 Sep 2024 10:14:48 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Q4ecfTA2"
+Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id 0E3BC1F92C;
+	Tue,  3 Sep 2024 18:07:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1725379623;
+	bh=ZK/1w6Ap/OIkmGOTQs+JfOp4gTkKRiP9LPHx30+PPyE=; h=From:To:Subject;
+	b=Q4ecfTA2JU91IHhHBvgMxs6J0idLbj/P8pl/0ig/63RIjK4KRcOcoWCI/HQopswfh
+	 TQL8S5r5wJvo/eR4Rq7he2kHt4qmizNEhWwjF9EFD+/r8egSTfTXCRGx2g25rrJXhF
+	 zTcTexme7k5u/UyOZriYfHfg7389XliTLMONjUc5AipczA6kYqO12/s7qKvxmkrF4H
+	 NI368XqJTQ9x7zncW4JJ4p/VsYfYWk9jOlWofTMLHVdPe1dkQYGGazVjT0sv0tWD0t
+	 uAStGIMNqv02noxLa3A46gp8IlKxjlJxOL1JKWpQLZED8qdQnXjY0XXisUpeSFs/mO
+	 W/LUGOqWw23mA==
+Date: Tue, 3 Sep 2024 18:07:00 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] dt-bindings: arm: fsl: drop usage of VAR-SOM-MX8MM
- SoM compatible alone
-Message-ID: <172537648767.1030355.3315694462211303884.robh@kernel.org>
-References: <20240902075220.27971-1-krzysztof.kozlowski@linaro.org>
- <20240902075220.27971-2-krzysztof.kozlowski@linaro.org>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Linux Team <linux-imx@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v3 0/3] net: fec: add PPS channel configuration
+Message-ID: <20240903160700.GB20205@francesco-nb>
+References: <20240809094804.391441-1-francesco@dolcini.it>
+ <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240902075220.27971-2-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
+
+Hello,
+
+On Tue, Sep 03, 2024 at 04:10:28PM +0200, Csókás Bence wrote:
+> What's the status of this? Also, please Cc: me in further
+> conversations/revisions as well.
+
+I am going to send a v4 in the next few days to address the comments
+on the dt-bindings change and apart of that I hope is good to go.
+
+Francesco
 
 
-On Mon, 02 Sep 2024 09:52:20 +0200, Krzysztof Kozlowski wrote:
-> The Variscite VAR-SOM-MX8MM System-on-Module cannot be used alone
-> without motherboard, so drop the usage of its compatible alone.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 1 -
->  1 file changed, 1 deletion(-)
-> 
-
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
