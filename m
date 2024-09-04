@@ -1,51 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693B17CA1D;
-	Wed,  4 Sep 2024 09:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257A155C96;
+	Wed,  4 Sep 2024 09:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725441227; cv=none; b=Fc7ahzhL8Qx1ItML8SMLm3ERjxjzWCVmlg7D3ZJSXvi3I/8cuEhdU76Zh/SGyFaJGBE83vr5wErIa5Y93bclnWNTYGUhWPdCwB9OubALwKC8e5FCadFPkWScn2DvZltx1jCoHIWAWdooGAC7KNKpc8osLYkNykmaKpSHtnFDrzU=
+	t=1725441662; cv=none; b=Di+PeZV9geO+TQM0qIrNvZ+1JTk6tYIdseIOD3+T1E04FaX1j7n/8qKSl0LNwrym1i16JtxzoAQVNjlsINOPPNG1+WXUU11p8ArtHke0q0ycsJWwh4Z/Q1nNCDj4Vgr79+DLyOdf+Q+w+QFFt6zjI+VA8nHZQo7Ow5dcqt3Y1Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725441227; c=relaxed/simple;
-	bh=MYuWrpI57eWvfXTVBG8wRa47ghh9A7+OUqw8WpXjn6A=;
+	s=arc-20240116; t=1725441662; c=relaxed/simple;
+	bh=D9nne4Oe1Iwf2TF66qCK6hwEQPc1r+DNeysXLALsbcg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YctHRh+Z6INha66g4nzWYkvFhYVFcqsutAVh8HqeShzYiy6FXquNDdLm8FbvZ4scp5I6EWVPlgHuRTZw3n08raHsrAzbE8cTarljnAvUW52XiGYzXNXzOYy6Bo8h48s9p65PlAN4S7bfFNxhz+2R7nD2Scf/2PHOB6B+OROR/k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkz5c7K+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=DmggatvsqAWKVcJYZR1BMIl9oECscmlx7Mavlmjmu8VxoQqG4dpagKR5bzkJDK/99PM9WbfpN9XIXxph5UrJZtGaUQG7yVpVBhlVdFZRUlpXLkICSOPTd8tqWp+JvGygNikPj4ltWgRz+/tjYLTeoXkeeYNN6MXEtxic6FGKCgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZvMmWZT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkz5c7K+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96995C4CEC2;
-	Wed,  4 Sep 2024 09:13:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725441226;
-	bh=MYuWrpI57eWvfXTVBG8wRa47ghh9A7+OUqw8WpXjn6A=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZvMmWZT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9509EC4CEC2;
+	Wed,  4 Sep 2024 09:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725441661;
+	bh=D9nne4Oe1Iwf2TF66qCK6hwEQPc1r+DNeysXLALsbcg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vkz5c7K+nsAveINoqWfTiRoZyWlaiQyw8mqLVTLmxHeNyFQDjUCkPTLJQMPfgpNQS
-	 UVTVXVcogfE0b6d/0WW2hHw9P5WYjXq9gu9zL7t5INH0FNKivXfXljctqXG8FA1gRv
-	 HnwpwcqmqNNA8DF6AULzvEH9dBkmdgIIUaLjQ6Kc=
-Date: Wed, 4 Sep 2024 11:13:43 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Paul Pu <hui.pu@gehealthcare.com>, p.zabel@pengutronix.de,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	b=BZvMmWZTb7fUvgrSCtMiRHkDCm05V6XbyXPz4au0uc+/IITApcUwEj8QjKz+RcccP
+	 vpnux0SLunyt7ESN53X3X6q6XUCbZufrsjT2cKnYAGjgkEeaGf+SdK4C0OLKNW9hUs
+	 xdBYsL3RDAW8M0cjzOvf8UAqT5njNwZRxYJYJIiH/FHtyzQHJKC5MwIqrx3VCDBpvM
+	 2IRT8VaT8DQCfJblqzdsF8PBv43BaUFrPzs9ADAdxZ7IKb8mcLmu5zcyof5OS5r8b9
+	 40WX1evHBgMssqUnM3Rd62YWyJsYfwXCqaTXS81bonKSIsx9pg6NGK7VgVj/AB4JQg
+	 q5577JcpIQD6g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1slmCU-000000000wl-0bOz;
+	Wed, 04 Sep 2024 11:21:18 +0200
+Date: Wed, 4 Sep 2024 11:21:18 +0200
+From: Johan Hovold <johan@kernel.org>
+To: manivannan.sadhasivam@linaro.org
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>, HuanWang@gehealthcare.com,
-	taowang@gehealthcare.com, sebastian.reichel@collabora.com,
-	ian.ray@gehealthcare.com, stable@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drm/imx/ipuv3: ipuv3-plane: Round up plane width for
- IPUV3_CHANNEL_MEM_DC_SYNC
-Message-ID: <2024090442-handrail-backwash-1493@gregkh>
-References: <20240904024315.120-1-hui.pu@gehealthcare.com>
- <20240904075417.53-1-hui.pu@gehealthcare.com>
- <918336db-3c3e-4b5e-a9c8-096c9290f9d1@nxp.com>
+	Jingoo Han <jingoohan1@gmail.com>,
+	Chuanhua Lei <lchuanhua@maxlinear.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	abel.vesa@linaro.org, johan+linaro@kernel.org,
+	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
+Subject: Re: [PATCH v6 1/4] PCI: dwc: Rename 'dw_pcie::link_gen' to
+ 'dw_pcie::max_link_speed'
+Message-ID: <ZtgmjnNkcAkE_Y15@hovoldconsulting.com>
+References: <20240904-pci-qcom-gen4-stability-v6-0-ec39f7ae3f62@linaro.org>
+ <20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,19 +64,21 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <918336db-3c3e-4b5e-a9c8-096c9290f9d1@nxp.com>
+In-Reply-To: <20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62@linaro.org>
 
-On Wed, Sep 04, 2024 at 04:48:51PM +0800, Liu Ying wrote:
-> On 09/04/2024, Paul Pu wrote:
-> > Cc: stable@vger.kernel.org # 5.15+
+On Wed, Sep 04, 2024 at 12:41:57PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > 
-> Why 5.15+ ?
+> 'link_gen' field is now holding the maximum supported link speed set either
+> by the controller driver or by DT through 'max-link-speed' property.
+> 
+> But the name 'link_gen' sounds like the negotiated link speed of the PCIe
+> link. So let's rename it to 'max_link_speed' to make it clear that it holds
+> the maximum supported link speed of the controller.
+> 
+> NOTE: For the sake of clarity, I've used 'max_link_speed' instead of
+> 'max_link_gen'. Also the link speed and link generation values map 1:1.
+> 
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Because the commit referenced in Fixes: was backported there.
-
-If you want to be picky, just drop the "# 5.15+" and our tools will rely
-on the Fixes: tag and everyone will be happy.
-
-thanks,
-
-greg k-h
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
