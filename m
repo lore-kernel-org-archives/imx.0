@@ -1,136 +1,113 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EDC1CCB43
-	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 11:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A7B1CF7CB
+	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 11:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725450095; cv=none; b=E1l0cKPESclKnf2cG2z4jIYXYxlSNuViDbmNM7y2Y99LXcn2TCTBisDxensSgUbjZOdy6W5awuTLniVWYSx7VdvzyYTQ1ApHeIVZNzjNYqgN+0WVnz3f/O8LzdwrumUlUFeCLjUjOHpNGp1WhYbG6e420ye8Up8v+RXb2u0I62s=
+	t=1725450546; cv=none; b=RFxWJwrMrroPTzLP/j0YuM/upwGvby//F+bf3dhLnWhrbb3TtMAtSTdzOu/TqpcjYAXVgSOjbVF6rU8ECzLCMuM67yXJqsTu4649gib2R4nS92PTYsVhZS/6ijfBFffhmpLZJl12FYDSqdgJKgnuwWV2pA0vuWxADEFuIs5GeMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725450095; c=relaxed/simple;
-	bh=9vDBZHymsDpAYwBeaEhUA5DEpd0UAPjqaad8mMrUNfk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ssdCmT46UAIt+nmVK2HmvvjTYf4DwPHmwyPeTjF4RTTb1S5vq92R5N6YzOmIYhQfc6xTMFo9tObIil63c3jnrLmYZNLZ4RC8ftkYnBrHKU2/ObyQwiDJMWxa9l1SQ8Nm5q6NYt0CimW4qmJVT5y823R9SNP1JbBsHVwQHLwZRkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aJG6kaZQ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qJkqOIJn reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	s=arc-20240116; t=1725450546; c=relaxed/simple;
+	bh=2gOlhhRV2C/00MxCV/AqhWoEpYeVgT9ATkmcgljMQMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tmZnFF1TdYAI84vFcj6j2BfyAG2avA2qfxmH2adOJd493BjuMxojjqAipOw1kIKbAEcRceh3Gr0a0v+VgqRdZ+V/zG/5BrwmdSocRiYsUrEkqVkbgDzLAElLknO3nhNIOcfzFj284zs3yKeJCaIJ9kbnRdYma1+uWFJi7c+HcVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=QhU2CU5O; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=RW47dMR4 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aJG6kaZQ";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qJkqOIJn"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="QhU2CU5O";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="RW47dMR4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1725450091; x=1756986091;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=50GjDQI+pSoabi61OIfDuJqzJLB8xHBCP1mouzolrew=;
-  b=aJG6kaZQF+tVvA1spowVyGNd1BirXq5chHB3CtblONSM7uA8q2GX/j/j
-   wrzy0Zfihf+O8wfCNyCrp+c1fY9jYzfVpmzGplsh+wuTEhDsdYcUR8GW5
-   NskJRWf0ReeFi6od53GtJaP6OleO5imFKT15tfXfPqsb9wJykbPOmdBxe
-   TxCbUoG7Dj39BK9atrBbOtobsiro5glr9X9cOuhcSeuGJ/uiZ/LqBhWs5
-   8CAzwEEfphEIXymtvuzw17/K76Uwnd0bzDsf97kbTzIGm/hvcM3VRU+u6
-   RxosZgTmREB4E8CouGSisV7iowS/JB3bBqob6zJEL2PUKpbZhIAZBYXnw
-   A==;
-X-CSE-ConnectionGUID: JQjU9ZnQQjqTOhRyZOcAYA==
-X-CSE-MsgGUID: LIQJAjhURkKkdd2QoQWWzA==
+  t=1725450544; x=1756986544;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PzRpGWmOUix4GzvJgR42aKUg/d33bVXixR5pEp0iclU=;
+  b=QhU2CU5OtGuQN2c7kb3WXmDF2xY/Ea+D5MTozwqAlvXBKXzfQGNrdQCG
+   NEn6nFYtpWk7BQLU8oPrdNxVuX+z3G3rwarHeEQyEeBjmQYyAX4IjJoNi
+   +t286k7i+vuhsTGJbju+2mHhFg8Lj/7/3PwBqzGpsQ0v+VQWOIfOof4dS
+   qp5mBC39aVbgvyynHIK9zbtRC/xd/aQAM3OGkEoRibfLbAvkjy+2T3xy0
+   bBiu/qebM10wHr0MWyyZ8NtWxqDakiRMwUNQLDZjYzjH8ZTHlWeC4fDeN
+   Y4O94VNhb+fya78pTUq27Cs00iWY4Y5dy+B5IM4ZzZ0IvS0CUkBHNxMkQ
+   Q==;
+X-CSE-ConnectionGUID: 9/WIsxHeSR2jvPm7H/3/kg==
+X-CSE-MsgGUID: sap4pEGZRByHLhM8G9AR7g==
 X-IronPort-AV: E=Sophos;i="6.10,201,1719871200"; 
-   d="scan'208";a="38761777"
+   d="scan'208";a="38761957"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Sep 2024 13:41:29 +0200
-X-CheckPoint: {66D84768-2C-5FF8EC80-F6CEE9F8}
-X-MAIL-CPID: BC999EBFB5F1F2B338A0722EB8ED215C_0
-X-Control-Analysis: str=0001.0A782F23.66D84769.0046,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB3A916A860;
-	Wed,  4 Sep 2024 13:41:07 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 04 Sep 2024 13:49:01 +0200
+X-CheckPoint: {66D8492D-2E-5FF8EC80-F6CEE9F8}
+X-MAIL-CPID: FAD731A5A9D3F1B35E470B14FF3F3207_0
+X-Control-Analysis: str=0001.0A782F24.66D8492D.0165,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CEE15168F91;
+	Wed,  4 Sep 2024 13:48:55 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1725450084; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=50GjDQI+pSoabi61OIfDuJqzJLB8xHBCP1mouzolrew=;
-	b=qJkqOIJn1syPvvXoeTk5pIGXjxI8FyJNctdZYYV/jQ29aVA3HT0JaGNwHsIja+rEJ10JYv
-	nFGZYNXoTXWEVzT82JQLvOSx+5QlP+oM6iN076CJtkyT3YLjYsW1l44S/RJ8o6g/bRmuQQ
-	SkorVNapiTfjUr6TbmtJ1MRWJ1/BiyfgEVmi3FT1GUxMrZSlSIn33JzHY3VWfDCecvyh58
-	74coOcbysdWYtqlrZ0KjWgL6NVRyaM+rrFT/ndu70aTr4Iut6+yzi6lUEsUbKPHRSeTjl9
-	pPV3p52Dpd66++fmq3o+bED9+VcOoDu2ac928qkb7OFQHtLAUzPjumekCZIzGQ==
+	s=dkim; t=1725450537;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=PzRpGWmOUix4GzvJgR42aKUg/d33bVXixR5pEp0iclU=;
+	b=RW47dMR4CCCZ6YbXSUgNtokRaSoNQb0UAB6xzuEfd3TxrUPNps1B3PI+dbYayXq2QwRRtZ
+	32roHomfmXWZcoKFDZ0Dh06NvEEdbCMaDIyEMrMPfamxMRQ40I3aDbZFLBWktgP2jE1Jqo
+	QrE3u+AgGmXZi+atF+wisomNM9mgCOYBtU9WaaRtwse75qkHni+WkTyABW8SOQi2Ve7JqD
+	8iQTkUW+1COaBFyTnlpFxthng6s7mngHuGlrLHctW338i8jp7vYNViPHJ6uTfn/6EREZ+X
+	iHeUtCKunTlMyOVC7Mi0DOLeu60AwPZuSnvU8wxeIdtLgAQIBU38A7+KGxLBew==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shijie Qin <shijie.qin@nxp.com>,
-	Ming Qian <ming.qian@nxp.com>,
-	Zhou Peng <eagle.zhou@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/1] arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs
-Date: Wed,  4 Sep 2024 13:41:03 +0200
-Message-Id: <20240904114104.1841269-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] thermal/drivers/imx_sc_thermal: Use dev_err_probe
+Date: Wed, 04 Sep 2024 13:48:55 +0200
+Message-ID: <8423953.T7Z3S40VBb@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240717085517.3333385-1-alexander.stein@ew.tq-group.com>
+References: <20240717085517.3333385-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 X-Last-TLS-Session-Version: TLSv1.3
 
-imx8-ss-vpu only contained imx8qxp IRQ numbers, only mu2_m0 uses the
-correct imx8qm IRQ number, as imx8qxp lacks this MU.
-Fix this by providing imx8qm IRQ numbers in the main imx8-ss-vpu.dtsi
-and override the IRQ numbers in SoC-specific imx8qxp-ss-vpu.dtsi, similar
-to reg property for VPU core devices.
+Hi,
 
-Fixes: 0d9968d98467d ("arm64: dts: freescale: imx8q: add imx vpu codec entries")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi    | 4 ++--
- arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi | 8 ++++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+Am Mittwoch, 17. Juli 2024, 10:55:16 CEST schrieb Alexander Stein:
+> This adds the error code to the error message and also stores that
+> message in case of probe deferral.
+>=20
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  drivers/thermal/imx_sc_thermal.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/thermal/imx_sc_thermal.c b/drivers/thermal/imx_sc_th=
+ermal.c
+> index 7224f8d21db97..88558ce588807 100644
+> --- a/drivers/thermal/imx_sc_thermal.c
+> +++ b/drivers/thermal/imx_sc_thermal.c
+> @@ -111,8 +111,7 @@ static int imx_sc_thermal_probe(struct platform_devic=
+e *pdev)
+>  			if (ret =3D=3D -ENODEV)
+>  				continue;
+> =20
+> -			dev_err(&pdev->dev, "failed to register thermal zone\n");
+> -			return ret;
+> +			return dev_err_probe(&pdev->dev, ret, "failed to register thermal zon=
+e\n");
+>  		}
+> =20
+>  		devm_thermal_add_hwmon_sysfs(&pdev->dev, sensor->tzd);
+>=20
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
-index c6540768bdb92..87211c18d65a9 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
-@@ -15,7 +15,7 @@ vpu: vpu@2c000000 {
- 	mu_m0: mailbox@2d000000 {
- 		compatible = "fsl,imx6sx-mu";
- 		reg = <0x2d000000 0x20000>;
--		interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <GIC_SPI 472 IRQ_TYPE_LEVEL_HIGH>;
- 		#mbox-cells = <2>;
- 		power-domains = <&pd IMX_SC_R_VPU_MU_0>;
- 		status = "disabled";
-@@ -24,7 +24,7 @@ mu_m0: mailbox@2d000000 {
- 	mu1_m0: mailbox@2d020000 {
- 		compatible = "fsl,imx6sx-mu";
- 		reg = <0x2d020000 0x20000>;
--		interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <GIC_SPI 473 IRQ_TYPE_LEVEL_HIGH>;
- 		#mbox-cells = <2>;
- 		power-domains = <&pd IMX_SC_R_VPU_MU_1>;
- 		status = "disabled";
-diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
-index 7894a3ab26d6b..f81937b5fb720 100644
---- a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
-@@ -5,6 +5,14 @@
-  * Author: Alexander Stein
-  */
- 
-+&mu_m0 {
-+	interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
-+};
-+
-+&mu1_m0 {
-+	interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
-+};
-+
- &vpu_core0 {
- 	reg = <0x2d040000 0x10000>;
- };
--- 
-2.34.1
+Ping! Any feedback?
+
+Thanks,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
