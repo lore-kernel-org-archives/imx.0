@@ -1,83 +1,103 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8B9194C82
-	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 09:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774421CCEE3
+	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 09:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725442754; cv=none; b=nalkyj/P4itgSXV+zCQDhLaKmqp10UTmzEzCRE7tQUFjoP+F74Qiw1Ce+QLMnoIBvTFhJApiWnJHumH+xgBiCqsK7otrmggSmDG962ZbFl5s9ZwV17KrK/Zp5qM44h2R/Syae6bI/55kCgvCkjyvsmDcoZoZ4wDjSeoNzGhqs/c=
+	t=1725443243; cv=none; b=X6fsmqdEBOZl8+ywSKJkepiO+KOEOLrHzxRZUjwiuoDiEiPGZrvmZvg9LqPQLHMl3KcRiL84/lOSK6An74s52VSSfFDacYSroSO/dU4RD+ms9BqTucLROLY4MtjSSO7yi60zentbyi3fEbeqMR+VdtRkZNfX7RwTP/V3S8gj0tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725442754; c=relaxed/simple;
-	bh=rTVxIyVb8WfSghHtgLOe2WXhLRycWpFL1ijDTqgz3u0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fd9s9kwzj/gdQPngmY5lrds+3eYbur8mFCDT6WQY303IClAysJix7f7dJB06SMjg3NyCdj9q0pUhApds9DPb05eI3qUhcF67SaYH5R7syiFxd2s9nn98BzZz9goneguNPxyOR0VZ05XyHwyr80j/6oZQz8E7of1q2ijm2qf/Isk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=O9yWe7Pr; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1725443243; c=relaxed/simple;
+	bh=NJJlypCq1LVHV4kyZNF2O/nW1CPY7AkFuVbyQeuM/+E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eGClNfK6+kx/bsuQdxFQoopAraoUxy/P2Pwb4zRLqHZBiUHs+ftSSeCSwK3wKBFLIdMC5gE1lE1OZEuWEBuQ0p5T/pFZePz5zzu7muXav8rLKMijVdFsTujrfkc0JPAWp46GPaBSQEeZZckLoxvvVlFitxUmCp1/dX1b794QhqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=i3uf3rRD; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="O9yWe7Pr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=EnnEk75hp1TcAJ6eMliXkp7tOpk4Gr347oVEU3a46cg=;
-	b=O9yWe7PrV/9DEvqgVPdjqF0DQhtUWsjbGlqg2bKlF4Jih95Sg/9I1X7t4/rvUW
-	Nl2tCJUsBGI1Yq48iHPMVZWT/m8dl6G7OuZiV8U/J4Bo+WZrK5wR41ZCYcM8k3qH
-	tZUR/HLK9rBc/dGKfYQ5V/0RZdbjseC9hxz4DK263GRQ8=
-Received: from dragon (unknown [114.216.210.89])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXv02ZKthmMfVqAA--.4252S3;
-	Wed, 04 Sep 2024 17:38:35 +0800 (CST)
-Date: Wed, 4 Sep 2024 17:38:32 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, l.stach@pengutronix.de,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, imx@lists.linux.dev
-Subject: Re: [PATCH v5 0/4] Add dbi2 and atu for i.MX8M PCIe EP
-Message-ID: <ZtgqmCbkD1ruZr4U@dragon>
-References: <1723534943-28499-1-git-send-email-hongxing.zhu@nxp.com>
- <ZtMUbpBJscWlgkhW@dragon>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="i3uf3rRD"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id EA863A06B4;
+	Wed,  4 Sep 2024 11:47:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=RkK3vo5zWN5RQH6TthlM
+	e0arEoVY5UTrRohbXOD6Lbs=; b=i3uf3rRDs7r/xLGMYq/RAl4dWIIQbgaYWzzb
+	Lq+OsXwnk3Rk8xmaLi3dsm/B8tOB62DBPMUeHD2hE96NQfA+kejLqr637cIOCjwU
+	FFy6/7Pctfy0DSaJqG25rsvvHINPar+gsAAWjuMaJBYOgXEWDWhfyv8TTod0R+lr
+	EdPlUrE/hGxqx4NpsKEd7KfjKgzx5pPVNGW6U/STjq86dLsClIeMcOusq6gSNw7z
+	/DdfjuwbaUwSHNfzY52KD3jenDpGw7cfKPrwviXQFgEPEKabtPjqDVzZYAPmZRMr
+	y3g2XiifDfzSEL7vWcdHl3ENytLL5myMQURGvVYmV12Y37dgWrZKYTYAeEL88IQa
+	BHXi0X8f2J/2UP2lHekgJx1rRS+93818OB2rNGNQ5PihCiv1XUmAcleypVnJfT/d
+	4hillteqVdEcSd2u0+5iA6pVGfgkIcuYGYEQKLTQMQpvcBJGI8es0k63pLEenYZV
+	ygZY5HhvV1HPX48yUAKodmSuVnvIcLeaZDlQqBfI6nFwG7YsSAeIpNEIthyxvd+V
+	ZQMFi60n0J4hazbWL18VUF9JelcnSj42ACFmO9qcbn0gQPPEAW7EcagH1Ci/k15O
+	kCfA4lM/gXsldW+3Uocf/gBHfvE2DMNCKxAvUJpozoEJLFVqExuUexNTtZ3Bzj/p
+	5C1bnOE=
+Message-ID: <c39614d2-2bac-4b05-8e50-3cefbfd8ed0c@prolan.hu>
+Date: Wed, 4 Sep 2024 11:47:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZtMUbpBJscWlgkhW@dragon>
-X-CM-TRANSID:Ms8vCgDXv02ZKthmMfVqAA--.4252S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Gw1DXw48ZrW8XF48GF18Grg_yoWfurXEga
-	yUAa4DGw45Aw10y3Wakr4Fk3y7AryUCFW5Zr9Yq3saqr47XF95GF97tr1rGw4UtanxtF4q
-	vF9rXa4UJw47ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0zT5JUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEh9QZWbXxVi74wABsN
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/3] net: fec: add PPS channel configuration
+To: Marc Kleine-Budde <mkl@pengutronix.de>, Francesco Dolcini
+	<francesco@dolcini.it>
+CC: <imx@lists.linux.dev>, Eric Dumazet <edumazet@google.com>, Fabio Estevam
+	<festevam@gmail.com>, Rob Herring <robh@kernel.org>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Linux Team
+	<linux-imx@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Richard
+ Cochran" <richardcochran@gmail.com>, Wei Fang <wei.fang@nxp.com>, "Francesco
+ Dolcini" <francesco.dolcini@toradex.com>,
+	<linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
+References: <20240809094804.391441-1-francesco@dolcini.it>
+ <311a8d91-8fa8-4f46-8950-74d5fcfa7d15@prolan.hu>
+ <20240903160700.GB20205@francesco-nb>
+ <20240903-keen-feathered-nyala-1f91cd-mkl@pengutronix.de>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20240903-keen-feathered-nyala-1f91cd-mkl@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94854627461
 
-On Sat, Aug 31, 2024 at 09:02:38PM +0800, Shawn Guo wrote:
-> On Tue, Aug 13, 2024 at 03:42:19PM +0800, Richard Zhu wrote:
-> > v5 changes:
-> > - Correct subject prefix.
-> > 
-> > v4 changes:
-> > - Add Frank's reviewed tag, and re-format the commit message.
-> > 
-> > v3 changes:
-> > - Refine the commit descriptions.
-> > 
-> > v2 changes:
-> > Thanks for Conor's comments.
-> > - Place the new added properties at the end.
-> > 
-> > Ideally, dbi2 and atu base addresses should be fetched from DT.
-> > Add dbi2 and atu base addresses for i.MX8M PCIe EP here.
-> > 
-> > [PATCH v5 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and "atu"
-> > [PATCH v5 2/4] arm64: dts: imx8mq: Add dbi2 and atu reg for i.MX8MQ
-> > [PATCH v5 3/4] arm64: dts: imx8mp: Add dbi2 and atu reg for i.MX8MP
-> > [PATCH v5 4/4] arm64: dts: imx8mm: Add dbi2 and atu reg for i.MX8MM
+Hi!
+
+On 9/3/24 18:57, Marc Kleine-Budde wrote:
+> On 03.09.2024 18:07:00, Francesco Dolcini wrote:
+>> On Tue, Sep 03, 2024 at 04:10:28PM +0200, Csókás Bence wrote:
+>>> What's the status of this? Also, please Cc: me in further
+>>> conversations/revisions as well.
+>>
+>> I am going to send a v4 in the next few days to address the comments
+>> on the dt-bindings change and apart of that I hope is good to go.
 > 
-> Applied 3 DTS patches, thanks!
+> Have you read Richard's feedback on this?
+> 
+> | https://lore.kernel.org/all/YvLJJkV2GRJWl7tA@hoboy.vegasvil.org
+> 
+> There seems to be a standard interface for what you're trying to do,
+> right?
 
-I have to take them out from my branch for now.  Ping me when bindings
-change gets applied.
+Yes, he was opposing the sysfs knobs I added, which is not in this patch 
+series. Back then, I got moved to another project so I didn't have the 
+time to address it. But once this series is merged, we can work on 
+run-time output switching using the API.
 
-Shawn
+> regards,
+> Marc
+
+Bence
 
