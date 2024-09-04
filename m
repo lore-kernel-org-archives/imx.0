@@ -1,123 +1,136 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385E01D0150
-	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 11:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EDC1CCB43
+	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 11:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725448857; cv=none; b=DikR7NrJ34g2pJudHSMiPB6qYaqEyVIPx7fiySsPoo3SuI4gllN57RpG/Ko2l6oLM8HanDvRoLTA1asq+0E12+YLLElyTktY7DbxbWQJ68hKSBmqkbSYVTjXC39VGg1zfG0xWsLveP3vMQPL/zJ9D868bxFsYAsbXaw3K9ccz14=
+	t=1725450095; cv=none; b=E1l0cKPESclKnf2cG2z4jIYXYxlSNuViDbmNM7y2Y99LXcn2TCTBisDxensSgUbjZOdy6W5awuTLniVWYSx7VdvzyYTQ1ApHeIVZNzjNYqgN+0WVnz3f/O8LzdwrumUlUFeCLjUjOHpNGp1WhYbG6e420ye8Up8v+RXb2u0I62s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725448857; c=relaxed/simple;
-	bh=TftL3iSBmRYXaP1isB4MihdnO9S9c/Serawns1g+mEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=abUBaQyh68L488AYVGhQYofKiTxGxZabgKObQ7I+QkacabgXVKkIYabEn8gmEjaX2tG16yyD4H6SZvY92ON2ZsfKq1a7SmPBycHwveNU0FWFrZ/wkf7ZWMm/c/BxcwCc4QUMDIVs9UQLlxVwtM39DsGgTm4lrfeFhVlCoySdTcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1slo41-00024s-Dq; Wed, 04 Sep 2024 13:20:41 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1slo40-005RJT-Un; Wed, 04 Sep 2024 13:20:40 +0200
-Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 79257332619;
-	Wed, 04 Sep 2024 11:20:40 +0000 (UTC)
-Date: Wed, 4 Sep 2024 13:20:39 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: haibo.chen@nxp.com
-Cc: han.xu@nxp.com, yogeshgaur.83@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, devicetree@vger.kernel.org, singh.kuldeep87k@gmail.com, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
-	kernel@pengutronix.de, hs@denx.de, festevam@gmail.com, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/6] spi: nxp-fspi: remove the imx8mp compatible string
-Message-ID: <20240904-free-chowchow-of-endeavor-9c3f8b-mkl@pengutronix.de>
-References: <20240904111727.1834935-1-haibo.chen@nxp.com>
- <20240904111727.1834935-3-haibo.chen@nxp.com>
+	s=arc-20240116; t=1725450095; c=relaxed/simple;
+	bh=9vDBZHymsDpAYwBeaEhUA5DEpd0UAPjqaad8mMrUNfk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ssdCmT46UAIt+nmVK2HmvvjTYf4DwPHmwyPeTjF4RTTb1S5vq92R5N6YzOmIYhQfc6xTMFo9tObIil63c3jnrLmYZNLZ4RC8ftkYnBrHKU2/ObyQwiDJMWxa9l1SQ8Nm5q6NYt0CimW4qmJVT5y823R9SNP1JbBsHVwQHLwZRkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aJG6kaZQ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qJkqOIJn reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aJG6kaZQ";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qJkqOIJn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1725450091; x=1756986091;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=50GjDQI+pSoabi61OIfDuJqzJLB8xHBCP1mouzolrew=;
+  b=aJG6kaZQF+tVvA1spowVyGNd1BirXq5chHB3CtblONSM7uA8q2GX/j/j
+   wrzy0Zfihf+O8wfCNyCrp+c1fY9jYzfVpmzGplsh+wuTEhDsdYcUR8GW5
+   NskJRWf0ReeFi6od53GtJaP6OleO5imFKT15tfXfPqsb9wJykbPOmdBxe
+   TxCbUoG7Dj39BK9atrBbOtobsiro5glr9X9cOuhcSeuGJ/uiZ/LqBhWs5
+   8CAzwEEfphEIXymtvuzw17/K76Uwnd0bzDsf97kbTzIGm/hvcM3VRU+u6
+   RxosZgTmREB4E8CouGSisV7iowS/JB3bBqob6zJEL2PUKpbZhIAZBYXnw
+   A==;
+X-CSE-ConnectionGUID: JQjU9ZnQQjqTOhRyZOcAYA==
+X-CSE-MsgGUID: LIQJAjhURkKkdd2QoQWWzA==
+X-IronPort-AV: E=Sophos;i="6.10,201,1719871200"; 
+   d="scan'208";a="38761777"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 04 Sep 2024 13:41:29 +0200
+X-CheckPoint: {66D84768-2C-5FF8EC80-F6CEE9F8}
+X-MAIL-CPID: BC999EBFB5F1F2B338A0722EB8ED215C_0
+X-Control-Analysis: str=0001.0A782F23.66D84769.0046,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB3A916A860;
+	Wed,  4 Sep 2024 13:41:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1725450084; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=50GjDQI+pSoabi61OIfDuJqzJLB8xHBCP1mouzolrew=;
+	b=qJkqOIJn1syPvvXoeTk5pIGXjxI8FyJNctdZYYV/jQ29aVA3HT0JaGNwHsIja+rEJ10JYv
+	nFGZYNXoTXWEVzT82JQLvOSx+5QlP+oM6iN076CJtkyT3YLjYsW1l44S/RJ8o6g/bRmuQQ
+	SkorVNapiTfjUr6TbmtJ1MRWJ1/BiyfgEVmi3FT1GUxMrZSlSIn33JzHY3VWfDCecvyh58
+	74coOcbysdWYtqlrZ0KjWgL6NVRyaM+rrFT/ndu70aTr4Iut6+yzi6lUEsUbKPHRSeTjl9
+	pPV3p52Dpd66++fmq3o+bED9+VcOoDu2ac928qkb7OFQHtLAUzPjumekCZIzGQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shijie Qin <shijie.qin@nxp.com>,
+	Ming Qian <ming.qian@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/1] arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs
+Date: Wed,  4 Sep 2024 13:41:03 +0200
+Message-Id: <20240904114104.1841269-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fqyfxuqjctwfsa3a"
-Content-Disposition: inline
-In-Reply-To: <20240904111727.1834935-3-haibo.chen@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+imx8-ss-vpu only contained imx8qxp IRQ numbers, only mu2_m0 uses the
+correct imx8qm IRQ number, as imx8qxp lacks this MU.
+Fix this by providing imx8qm IRQ numbers in the main imx8-ss-vpu.dtsi
+and override the IRQ numbers in SoC-specific imx8qxp-ss-vpu.dtsi, similar
+to reg property for VPU core devices.
 
---fqyfxuqjctwfsa3a
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 0d9968d98467d ("arm64: dts: freescale: imx8q: add imx vpu codec entries")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi    | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi | 8 ++++++++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-On 04.09.2024 19:17:23, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
->=20
-> According to imx8mp RM, the fspi is compatible with the fspi on
-> imx8mm. So remove this redundant imx8mp compatible string here.
->=20
-> Fixes: 0467a97367d4 ("spi: fspi: enable fspi driver for on imx8mp")
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  drivers/spi/spi-nxp-fspi.c | 1 -
->  1 file changed, 1 deletion(-)
->=20
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index fd1816befcd8..da110188bfed 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-> @@ -1286,7 +1286,6 @@ static int nxp_fspi_resume(struct device *dev)
->  static const struct of_device_id nxp_fspi_dt_ids[] =3D {
->  	{ .compatible =3D "nxp,lx2160a-fspi", .data =3D (void *)&lx2160a_data, =
-},
->  	{ .compatible =3D "nxp,imx8mm-fspi", .data =3D (void *)&imx8mm_data, },
-> -	{ .compatible =3D "nxp,imx8mp-fspi", .data =3D (void *)&imx8mm_data, },
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
+index c6540768bdb92..87211c18d65a9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
+@@ -15,7 +15,7 @@ vpu: vpu@2c000000 {
+ 	mu_m0: mailbox@2d000000 {
+ 		compatible = "fsl,imx6sx-mu";
+ 		reg = <0x2d000000 0x20000>;
+-		interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <GIC_SPI 472 IRQ_TYPE_LEVEL_HIGH>;
+ 		#mbox-cells = <2>;
+ 		power-domains = <&pd IMX_SC_R_VPU_MU_0>;
+ 		status = "disabled";
+@@ -24,7 +24,7 @@ mu_m0: mailbox@2d000000 {
+ 	mu1_m0: mailbox@2d020000 {
+ 		compatible = "fsl,imx6sx-mu";
+ 		reg = <0x2d020000 0x20000>;
+-		interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <GIC_SPI 473 IRQ_TYPE_LEVEL_HIGH>;
+ 		#mbox-cells = <2>;
+ 		power-domains = <&pd IMX_SC_R_VPU_MU_1>;
+ 		status = "disabled";
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+index 7894a3ab26d6b..f81937b5fb720 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+@@ -5,6 +5,14 @@
+  * Author: Alexander Stein
+  */
+ 
++&mu_m0 {
++	interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
++};
++
++&mu1_m0 {
++	interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
++};
++
+ &vpu_core0 {
+ 	reg = <0x2d040000 0x10000>;
+ };
+-- 
+2.34.1
 
-I think this breaks old DT with new driver, doesn't it?
-
->  	{ .compatible =3D "nxp,imx8qxp-fspi", .data =3D (void *)&imx8qxp_data, =
-},
->  	{ .compatible =3D "nxp,imx8dxl-fspi", .data =3D (void *)&imx8dxl_data, =
-},
->  	{ /* sentinel */ }
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---fqyfxuqjctwfsa3a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbYQoQACgkQKDiiPnot
-vG/lkwf/U0AwRwCtRAjI/wFFBk3Pwcp0wSfCBNraW/3ZQ6e5J07JIhVh6lUbLcdO
-SpJcVczbyhIrtVbLp3qczodFMNVN0SplPUrTlQs9pvRDdLTIhDEoDzmjalJFG+rZ
-nXfTWgTF58UQdv2ya6k/xrs/SyislM6bGGdyWAX/+tyURXAJe2tt+cjTPCfgpEEW
-PSTviaGoGKlFkwi3OKQ0UYtxBIJE0wV2r2YMQOzXaaqVqZ0K9Hh6bDo0tpRo//O7
-srlfOyH9LsQaN3TnVxzoRSA7z5RqDvetWU2rBto6JdjS0nbI5otGgbOtmLGlhCAJ
-v2hxFKgdk6Gkx7moLTLvXuDWXbIXxQ==
-=Ejr1
------END PGP SIGNATURE-----
-
---fqyfxuqjctwfsa3a--
