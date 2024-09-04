@@ -1,230 +1,183 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2083.outbound.protection.outlook.com [40.107.21.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635A010A12
-	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 15:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725464982; cv=fail; b=ryGZbE1CdaieKhXShCASVdqBUWoJFIhgUgRj2BvfLes82vzzgtmAP1QqWexZAsG8BVVc9XAsBLXRwztqc9Ie7jQvSATotQkFX3DgakhhbIFVc1u10MYkwfcH/BiA+PbNXHyIkUN3SI/vHhehVBFiaNizjP5EywYqfnejIRMhsgo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725464982; c=relaxed/simple;
-	bh=nEj/K1ERPksvYT9CUWSWEh7L//sN6UL3ybiMuxZKiIg=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=qF77c6nBCO4MgO4aaGXfk/U2bzm27OxVph9v0CIjjtZqGbO6uFcTHz+AI9iTp1j4t1/mclAInWbm1/rIDP3+YnMZO9i7dHyn6gAd9PainmVRkLhszeb+wR2O30P9OTrE5HU3ZA2It/HKrKFNjVH1dAI3kUDXvsuKxtlQKx6eTVk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T7DAbsvy; arc=fail smtp.client-ip=40.107.21.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C33C2EB1D
+	for <imx@lists.linux.dev>; Wed,  4 Sep 2024 15:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725464998; cv=none; b=qt/kK3sCxQ+Yphy4qoUvvb6FJWzxwdjcvgScX6lKkDHUKIUwXLS+CLe2lqdqTVIg5UoNucRoHRNhpRusIC2bOa6Z43dav1gXoVuhfBXPDYHaWGcBc4Wjz7+84+HeueyAsN4TdOD7DaIDHS03PBIaprgfCovGeTAenkDjwMogEKU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725464998; c=relaxed/simple;
+	bh=CTpZT61cw+v7Isz+5KEp0TwRe2k81PyY8Q9DOwJbOnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZGqbePMnpMZBi+M86Gs+wD3ah86aqikwe58jv3r9Y52QqqUp5C+KFGtDcGrciW7vCd8CuFSDLFtJR02DSr5RRs8MhAbY4Gc/2AGcLpbn4vicwpj1GcmDhLOB5Ff7SWOL52DnmZtM2JHPcxdbo7l/56YbNGHGhBsIitDC+PC3z/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TnXrj9va; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T7DAbsvy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uvhK3ssGnsZMijlsRa4ol250h+GZicJAWObiHIpR96slQuS0GvCOZXjKoVOPM+C4Q6/Y4iORgsx4h5a1D2xx8C1xI2g949MQIuDq/xg/7aG4pspB9Zh7l5hww9yKmrZ4i+n/z34sel0WzK97L9zrFr559PvTrCzXoLst2kEeMA9646Wld/v+e39JgwuwYx4QBPd2YmTLDTiCOoI97myZmjIuiPrU/4BfkFMCwg0dwcL1k+kzJ0tTktN0ftQlrIyFsoZ6NzZlYo6HRydYGCRyJ6mDb7ODo6JAYBaA7D3myGtNqpKRuLKbAm7fQqIXuawFoDdtvRc8ndGvwuds/g1bZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tgm4R5uH4tZ7nv2R+bN4sepTZE/cef+kW8N7+irfSno=;
- b=nVdzU9A+CAU6duPfd61IiMrfJBYd7VNYirrUjVvay9bjrd8HfS0YnTbIEm65eOQBom0fOUDdaF6YQt9wRYu4g9l8r4OPWoyTLhEQ9J5tzT9Y5afUlI7xrMG5vXC6YVkz4MGTZoKIGEOrxWJDEPYiKyJRcBuxgqo8crxkBVfNp+fYGvRg05dfz+OGNUIw2axqXTDlQkPvlLth+sGrxljeIURTUJs+GLC/00w5iUMck4jqy8fCDLFDwBAsyfmNAPEoXtPcO6RKMpK3Gmi4mmhNuM8xmE+rk4t2ZTC0ogqwJcCliRfjuatbw5MGO1CKuqSNQTzagTVMzcKE9W/k3q4Q4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tgm4R5uH4tZ7nv2R+bN4sepTZE/cef+kW8N7+irfSno=;
- b=T7DAbsvyGsEcAuwpjvuuH0D6Y7OVPQwSY2omZKs04sLbXmU/OUoZcWmaNuyDyRg/ZikpJxYEswXQ4yKzw60zD+0d0knnGJ+m4Vt+eBL320fd6z8u4efNhVEj9Gv9oxVDZMQASVIpFtJOl/y0YkzhW5jirlyYFCQjUTa3MaQ9EXu0nmOfVJmSBJ1GNvec3khJaItILj7snQ1ujmGPGgQhfIYN+5u/qeM93aLzthXfr20gfZa/OoZbGzBdctonOhWMSIC0lQMR1FFGry0WJQRUsTjR3olqXy/LgceNs7c3NUHCZ9+G6PJbZxtAxKgCx7XbLBMV2aQws0z8qISOHQmJnQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB9859.eurprd04.prod.outlook.com (2603:10a6:800:1d9::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Wed, 4 Sep
- 2024 15:49:36 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7918.024; Wed, 4 Sep 2024
- 15:49:36 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 04 Sep 2024 11:49:04 -0400
-Subject: [PATCH v3 3/3] usb: dwc3: imx8mp: disable SS_CON and U3 wakeup for
- system sleep
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240904-dwc-mp-v3-3-319947736ec0@nxp.com>
-References: <20240904-dwc-mp-v3-0-319947736ec0@nxp.com>
-In-Reply-To: <20240904-dwc-mp-v3-0-319947736ec0@nxp.com>
-To: Mathias Nyman <mathias.nyman@intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
- Frank Li <Frank.Li@nxp.com>, Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725464962; l=2128;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=5+IVkwBerM0rBDtlaz9W/KvOLIbVp8/vpBPWsSyKKOE=;
- b=99aFnmraoka2Wx+kQOgzshmrwvTcSyOaEC51xOBGH78f7+UGsCOoFgI7JKTeLsYUq6D536/DM
- J0w3y/00tzUACoEsb1pjOutjaz1ym7NwX6sXIEA1Y0l9JMNBpPsu/bh
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR05CA0008.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TnXrj9va"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2068acc8a4fso26092735ad.1
+        for <imx@lists.linux.dev>; Wed, 04 Sep 2024 08:49:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725464996; x=1726069796; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aUspjdaZipuOhA4NRY0RJgeHGMKwRMzsWto8djn5vLI=;
+        b=TnXrj9va66sdHd4+U/HilBQqk9QLM4g32V+7voHbNLee0+7+/Bl7ciNaBSYuDxVf97
+         KT4vhFakzqZ3uqcUzVtMApvRGmceEEcNKL96GRS5skmrdmmXl/+104kCnsT5AEM8mQnm
+         3ZRlYVn0krw66MYezRMzM4phLqYAo+AiaEQeej3Ex2PEyIy8TLp9b25a5T141nNzIsoi
+         zn506OGmRXb2PoEmreoWQOBRfIUS9hgPRMnF3GCdsGATVwE/qTWxnlhRlv0+mHYYufTh
+         i5956Zui7/mAS5V5A6cBirlLuuqy6B3Tx4vwMTNKkicxTZ1RXI2zODkeo9e5JlNJfQ7v
+         ov7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725464996; x=1726069796;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aUspjdaZipuOhA4NRY0RJgeHGMKwRMzsWto8djn5vLI=;
+        b=VguzvPp7PnMsIIUinp31C8Pc4NLHiIzP3iMHxuMmME5znuOA3DAWLtG75/C/rvpDsV
+         zi0tmP478WsYUvKjgELUgcGZVlXqphSpIizF8sPVGKBO+FsosgoId4GKoeb2hWgTUFNN
+         IsLhTcITH192f3rrxXYCkgwTy+o5dRwIbTtebySCJo06sHXb5b52xOXficmvXT7zuLUY
+         jMYfSSsl3j3ZR8lL7hyKtWAoDjcSsTj7I3K0pBvVtiuF+LluTPkC85X+zA8sibImBBeE
+         haGZbMd0OyQ3vCOozULIeYJmTHs/FY0ZyV1ss2tgFuIxS80068kXpnkZgWmqYnCjf0V8
+         2Gaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRSq6iM9op5n6V1Oq78DmMUKXECderEs+PaqJkN1oGGKaGwJibUT0eyPk6QueBHX/+/iM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/lqQyNADtwE8G3L7CKv4fx0J3RoRlqZ0MuJ0RjsDltPOAt3Df
+	DCq/vVfymjY+a9SQsDR5LexUg+z0ia1bsMJ4LkDD7j+SKvh7HdsNOMnptSxQZA==
+X-Google-Smtp-Source: AGHT+IGaIqW5Fd7iC7eWGx3Bkr4KIAhnl/c5JAG+0dmpw/6XA8lzo2zqW5pfYpjv80IFZFIFhT9/Sw==
+X-Received: by 2002:a17:902:cec6:b0:206:9caf:1e00 with SMTP id d9443c01a7336-2069caf211cmr72629265ad.25.1725464996370;
+        Wed, 04 Sep 2024 08:49:56 -0700 (PDT)
+Received: from thinkpad ([120.60.128.165])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206ae950571sm15158925ad.82.2024.09.04.08.49.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 08:49:56 -0700 (PDT)
+Date: Wed, 4 Sep 2024 21:19:44 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Chuanhua Lei <lchuanhua@maxlinear.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	abel.vesa@linaro.org, johan+linaro@kernel.org,
+	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
+Subject: Re: [PATCH v6 2/4] PCI: dwc: Always cache the maximum link speed
+ value in dw_pcie::max_link_speed
+Message-ID: <20240904154944.w4bujfmhy5uhzkld@thinkpad>
+References: <20240904-pci-qcom-gen4-stability-v6-0-ec39f7ae3f62@linaro.org>
+ <20240904-pci-qcom-gen4-stability-v6-2-ec39f7ae3f62@linaro.org>
+ <ZtgooHdex5gXh0tP@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9859:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef20a551-ee3f-4d52-a244-08dcccf92d8c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?djg1dmhpU1pKWDRnRysxRERDd2x2elMxazI4WlpweUd5WG54MmJ6WVhVLzYz?=
- =?utf-8?B?eHpqM0ZPSzB3Z1IrK0wvZGs2ZTR5ZDhSZGpnbmFrb0lDTWFLZmQvQStUR3VY?=
- =?utf-8?B?bzdyQjJyK1dvREdsWVpIWE1FRFE1cGpCZWJiMldnMHliSTB4Nnl3MmpXaHg1?=
- =?utf-8?B?UDQ0K0lncURYQlQ2elJ1ZHdXQnlQUHBnUHZUMFBhM2ZxTXE1eCtqVVNQSWxo?=
- =?utf-8?B?dHlGMmM4YTR1UWVDUUVLYzBwUkkzQm9JME1JTUNkVGNwWkJmTGcrRkM4M1lK?=
- =?utf-8?B?Q0xNaDFwMEU4UWMzVFNjeVMveFFYa09JUEVaTEVVMFJSRExaQXpRSE9jTEtK?=
- =?utf-8?B?OFA4bW03T1NlQmpXUjBPZFVoMEptV1k2dnBxelRwUjh5amdLOStqZFNjQVJh?=
- =?utf-8?B?YU1CRzJwK29hRTlaWG8wb0hwSU1JMmxhamUrb29HMnJNcWpVWCtMdlhmUWgz?=
- =?utf-8?B?aDhLUWcvNjQ0SDY1dWcwOHFaaGw1MU8wRE9ZdVR1Y3dtY25SZ3dzVXNUMmFW?=
- =?utf-8?B?SFB4WXZkcU11cWlnZ2plUGJ2MzhWQVE3VkFFYXF5SHNIeHE4b2R6VlM1cUpo?=
- =?utf-8?B?VGRhNHRmWHlOWUZ1b0pBYVRYMSs0cFZNMzc2c2FzVDFrYmFBbVdSVXpqSnNz?=
- =?utf-8?B?cTdqZ2tsZXRsZUo5THU0RmNPMmREUzV0QVpsdDM4MnY3dFVFN0RURVVUN2ts?=
- =?utf-8?B?aHRrS3VBa0ZZdXpMZHNBbTFaMmdGRlBON3F0MXYzSjVmVHh0QmoyVTdMMVd1?=
- =?utf-8?B?MUJweG1hZVFPSUZIdGlYczlrTDYwcDJSRElKWnlHUGh6aFBtTmJVMU1EOG9S?=
- =?utf-8?B?elVxaVIyQVVFcXhjelByNnE4YTE0N243eDNKQVVTUkE5NVdpcVNrVDlyZUcv?=
- =?utf-8?B?bTAwendEMFhobCtEMndWZktKdVN5QytVVDlybUp5eU5KQUJpRG9MdG5KaVpK?=
- =?utf-8?B?QUVRVHhWeW1lWWxNMDNmejFrdjFxMFErVkhHV2tPa2p1TFpiNm5GNldVR1NR?=
- =?utf-8?B?UlN0ZkNzNDhrWGJIZkE3ci9mSFEzcmF4WTRpNXdnRXJiY2FqWXI3THpuTi90?=
- =?utf-8?B?elpUYkhHcFBuaWxDaG9xcnU2MzVuckJHUjd3KytSU3VZVWRxajVqQnA0OXNK?=
- =?utf-8?B?SmNrRDRTNHBnbi9lTW11a2wyb3M3bG92M2YwSjNaQVNZbG1WTzNiQ05oUUpI?=
- =?utf-8?B?S3QrNzArdnpxd0hoZGhidHp0YTd3QnlrWDY0TjlXTDhkd3hVVmFBcm04VWpJ?=
- =?utf-8?B?K25MNXhFSnZRZHBXU0dQMnFBL1h0UTlZcGRRai9HSG90YW51MVlCdGtraTN6?=
- =?utf-8?B?eTAvcmlNTXRlN25oYkkvMG12UHdmNUlabFU5YUwyeXpNV0E4MkpaOStwUkFz?=
- =?utf-8?B?aEtNeGlDS1duTG9zUk1US2VsTWlxdHdxZVMwY2pVWldvcTFidndnZFZ0Z0V0?=
- =?utf-8?B?MHowaVFFSTlJbmlmZzlBek8yN2hLSWNiUk5LR0hKUG1SY1BJWDI4Vm1CazU0?=
- =?utf-8?B?eE9WOWRNSmJIemVmc1daWS95Skc1akIrT2g1L0U5aTdXb2ZSdTZ4bWdnZkph?=
- =?utf-8?B?TnpiWnBMb2FmcllhQ3ltV2R6WWg0ZkdtUUJqNTluNzhJeU9DbHZiMjJmNXEw?=
- =?utf-8?B?VkFtaGlpTXpaZElvb0VNd2QyZmZHWHdHdkRlcXhnc0sxeUhGT1ZtdHJKcExP?=
- =?utf-8?B?a1loYlQ2eldCeDRMMVBhODExZWM4VTBlVjdRaDRnZ2tkRDNxYlUzV2ZVOWFy?=
- =?utf-8?B?cmFJSXc5c05ndHlDRVA5eUFDQnZpVXlzdGdEaFgxTWxzRUZnUk5uTlpaMVlC?=
- =?utf-8?B?WVZpOFRWTk9YMVRUL3h6QmdVaWVjVlRCMm1BYUxvOGZJaTZXTVgxaFExVFp1?=
- =?utf-8?B?aXkvU21zWlFqcGtYQ09FTEloM2RGanBOd2xNY3p2NTgrYlE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RmJobllHekRKNHVXT0RBNEJHaERhTmRFb3NpTmFsWUZzekVQaUxtMDNvYzJo?=
- =?utf-8?B?WHdCeXNkNnhOa0xnTXVkZjNyVm1oL2VHV3Ivc2E5d2NNVm1iQXMzSmZleVFu?=
- =?utf-8?B?Z3JPblRUR096UjVWL21QbzBHN0dJeWpjV0pEbldLbnZKL2RNWDBYc2FocWpp?=
- =?utf-8?B?dldZWGFYUE9VVnJYQkh4cytvdEtOcE50RDJuRHlnb1Y0VG1qdjBHYUFyVVc5?=
- =?utf-8?B?dDVmME9zTjIrSnB2ckVuNWVpVkk2SGJ1all5UkNzNXkrY3FLNWVIRWQzaTJT?=
- =?utf-8?B?ekVjSzFCUFN2QVEwWnZ6a052RHBxK0grSVAwMkVxVW5qV1FuRnNlT01yeWZo?=
- =?utf-8?B?bjVBR2VFdG9FRWhNWHBMckVkM1oycVFBMXRwS2lPOUlXWDNqM3lsSDU2TUF5?=
- =?utf-8?B?R2dFbWNrakQvSXpaM0xpMDMyQ2lscGtWQ2ZNL1dhY0JVSVBCRWo4dElMVGNT?=
- =?utf-8?B?dkpyaThCTzhhanVuc1lGTHlWK3VQT211cEFJa1RoSXNKaGN2N3d0K0E3S3lr?=
- =?utf-8?B?NlNVWFRaOE50UVJ0d0FpbzhHdWxWeGNOVjk2Ry9jZktBbGFDT3AxeEhZYUNa?=
- =?utf-8?B?Y2dRVWcva04rUEtOUmRiRnNsNDZUWDZlQTFSNFlGSTdTS2RWWXFNT2xUanlM?=
- =?utf-8?B?RXF4L1hvMGNnckl3MHpWSUl0S2lMQXZwUmxGTkU3cDZyQzVucWJLS2FqZVl4?=
- =?utf-8?B?U1dReEpEQzA3ZGtsTzFUTjhDRDhYSXR0SndyNmpVNmxaUUIyM3VuQ0ttbWxH?=
- =?utf-8?B?cVFmV0ZSaFBMbVVyQjVHeGNZbjAwOFl6ZXc0MTZ5OWdSNGhDeW9hcGI2WlZz?=
- =?utf-8?B?cUhrQUxZdUhuemYrOUJoY1UxRjBPRHNFc0Z0YVFmbGJKRkYwL2RNaWhlK3A4?=
- =?utf-8?B?Y1VOZmwyaGIwd3V0U1hjWk5HNGMvWExEcnVxWStQUlpYZDFOYVVSZkNZWUZE?=
- =?utf-8?B?Wm5HYXJaaEphQWpPODVPekZkQjl3VURUR3NDWktUemQ5V2RUOWI1NElkTk4v?=
- =?utf-8?B?THgxa3RCK3ZIQUlxTGdvRW1CRk96aU1LWTlyQ1ZOVnNXc3hsb1NXNUtmSDRr?=
- =?utf-8?B?NjQxanYxVndZN0h1Tm5xYXovR04wMkNlSWR3VE55ak84Njh2cWZRVllYakk0?=
- =?utf-8?B?ODE3SVVVRjFGSGJ2TUkwWkcrZE5yNzRhUitQQ0E5dWxmbFNCejlVelZORGgz?=
- =?utf-8?B?YWtmRzlHYzN2SjQ5Zklxam94YWoxTkRzSHNWUDh2anFIdDk2ZmlQSENsZlAz?=
- =?utf-8?B?SjhjcUpsY0Y4T2JCSHV6dzM5WlpkV08xMFZ6TUNzVEthYTYwR2Znd0FGVDVY?=
- =?utf-8?B?TkI5QkcxNGdPZm93TDJHM3d5RUZycUZVcUc0dDVSSEtid2d2b3ZQNGdPUXZM?=
- =?utf-8?B?N3ExbXNJZ0pGY1EzbWV6SkRJZjRHbmc0dGlYZG9zSXZCNW02YTlaU1Vuamhm?=
- =?utf-8?B?ZTlyMWRURWVMYXVoYXc1SkFuUDBJVkpYQ2xMclRtbHVsek9sZ2xrbjE0MWNJ?=
- =?utf-8?B?UnhTL0V0eW8zTUlVMWRPd0lPdExLWlJwb0NBSk9yelN6TTVzczJoZk1yL3JE?=
- =?utf-8?B?SUwybFFEUnNtdXpYTlNYU1pGcHMvdHFtemZDSnVDbkZsdzdMVWpWZ2dhOUhi?=
- =?utf-8?B?VC91Wm84ZFhRRjVGM2JCbW1ieGh1WnpjSHFaUW9uOStLSGJpTWJLU2hXUDh4?=
- =?utf-8?B?Y3NBb3gzWTN1SVEwQ1RvZUFwcCtQWmVQRFBxSTJ4RTZpZ0NTRy9DclI4ZEFj?=
- =?utf-8?B?cVhyZStCQ1d3YXFJUVZqSW05S0tRK1RJM1o1TEwxVFBNajZNTnpuemFmdE05?=
- =?utf-8?B?dWIxbUpWSm91UUJ5Z25Fd2N6VWRPYWdicG5yRFpxMy9Ec1VQSndZbDRtMWNl?=
- =?utf-8?B?R090RXg1Qk83MUdjcFZhVW1QSjcxNTZCMHAyVitibjI5VUR6ZjZlK20yOW94?=
- =?utf-8?B?VGZvdi81TGQwZklWSE0wSWRvL1NlTHdzNW1WblJIblVBbzZLSGlWemdqZEU4?=
- =?utf-8?B?SzlrM1ZWdWE5b2pWeHRIUFM1OUFydFUvVkxxcC8rZ3d5YmxPanNMWllwMGZX?=
- =?utf-8?B?ckhEY1A0aGdpbjFQWWFnbDhhVW9LUC9obC9vUXBFRW1Oa0I4OGx3cXQ4dDZv?=
- =?utf-8?Q?nQuWSmSMqKigeFHJ2hx87OZI8?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef20a551-ee3f-4d52-a244-08dcccf92d8c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2024 15:49:36.3740
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yvZBRkWRbeyB6SEgcK3aezGvL7RzRM82pHLfhdAoxI1P9HQ2g3Pn2ovVzUYwI8d6vccoV84v3Tktef3XuQhUhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9859
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZtgooHdex5gXh0tP@hovoldconsulting.com>
 
-From: Li Jun <jun.li@nxp.com>
+On Wed, Sep 04, 2024 at 11:30:08AM +0200, Johan Hovold wrote:
+> On Wed, Sep 04, 2024 at 12:41:58PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > 
+> > Currently, dw_pcie::max_link_speed has a valid value only if the controller
+> > driver restricts the maximum link speed in the driver or if the platform
+> > does so in the devicetree using the 'max-link-speed' property.
+> > 
+> > But having the maximum supported link speed of the platform would be
+> > helpful for the vendor drivers to configure any link specific settings.
+> > So in the case of non-valid value in dw_pcie::max_link_speed, just cache
+> > the hardware default value from Link Capability register.
+> > 
+> > While at it, let's also remove the 'max_link_speed' argument to the
+> > dw_pcie_link_set_max_speed() function since the value can be retrieved
+> > within the function.
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-designware.c | 18 ++++++++++++++----
+> >  1 file changed, 14 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> > index 86c49ba097c6..0704853daa85 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> > @@ -687,16 +687,27 @@ void dw_pcie_upconfig_setup(struct dw_pcie *pci)
+> >  }
+> >  EXPORT_SYMBOL_GPL(dw_pcie_upconfig_setup);
+> >  
+> > -static void dw_pcie_link_set_max_speed(struct dw_pcie *pci, u32 max_link_speed)
+> > +static void dw_pcie_link_set_max_speed(struct dw_pcie *pci)
+> >  {
+> >  	u32 cap, ctrl2, link_speed;
+> >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+> >  
+> >  	cap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
+> > +
+> > +	/*
+> > +	 * Even if the platform doesn't want to limit the maximum link speed,
+> > +	 * just cache the hardware default value so that the vendor drivers can
+> > +	 * use it to do any link specific configuration.
+> > +	 */
+> > +	if (pci->max_link_speed < 0) {
+> 
+> This should be 
+> 
+> 	if (pci->max_link_speed < 1) {
+> 
 
-SS_CON and U3 wakeup need 'ref_clk' on. iMX8MP turn off it while system
-sleep, So disable these wakeup source and only enable DP/DM wakeup source
-for host mode.
+Well I was trying to catch the error value here because if neither driver nor
+platform limits the max link speed, this would have -EINVAL (returned by
+of_pci_get_max_link_speed()).
 
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/usb/dwc3/dwc3-imx8mp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+But logically it makes sense to use 'pci->max_link_speed < 1' since anything
+below value 1 is an invalid value.
 
-diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8mp.c
-index bd6953246f42e..02159cd820a10 100644
---- a/drivers/usb/dwc3/dwc3-imx8mp.c
-+++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-@@ -96,7 +96,8 @@ static void imx8mp_configure_glue(struct dwc3_imx8mp *dwc3_imx)
- 	writel(value, dwc3_imx->glue_base + USB_CTRL1);
- }
- 
--static void dwc3_imx8mp_wakeup_enable(struct dwc3_imx8mp *dwc3_imx)
-+static void dwc3_imx8mp_wakeup_enable(struct dwc3_imx8mp *dwc3_imx,
-+				      pm_message_t msg)
- {
- 	struct dwc3	*dwc3 = platform_get_drvdata(dwc3_imx->dwc3);
- 	u32		val;
-@@ -106,12 +107,14 @@ static void dwc3_imx8mp_wakeup_enable(struct dwc3_imx8mp *dwc3_imx)
- 
- 	val = readl(dwc3_imx->hsio_blk_base + USB_WAKEUP_CTRL);
- 
--	if ((dwc3->current_dr_role == DWC3_GCTL_PRTCAP_HOST) && dwc3->xhci)
--		val |= USB_WAKEUP_EN | USB_WAKEUP_SS_CONN |
--		       USB_WAKEUP_U3_EN | USB_WAKEUP_DPDM_EN;
--	else if (dwc3->current_dr_role == DWC3_GCTL_PRTCAP_DEVICE)
-+	if ((dwc3->current_dr_role == DWC3_GCTL_PRTCAP_HOST) && dwc3->xhci) {
-+		val |= USB_WAKEUP_EN | USB_WAKEUP_DPDM_EN;
-+		if (PMSG_IS_AUTO(msg))
-+			val |= USB_WAKEUP_SS_CONN | USB_WAKEUP_U3_EN;
-+	} else {
- 		val |= USB_WAKEUP_EN | USB_WAKEUP_VBUS_EN |
- 		       USB_WAKEUP_VBUS_SRC_SESS_VAL;
-+	}
- 
- 	writel(val, dwc3_imx->hsio_blk_base + USB_WAKEUP_CTRL);
- }
-@@ -307,7 +310,7 @@ static int dwc3_imx8mp_suspend(struct dwc3_imx8mp *dwc3_imx, pm_message_t msg)
- 
- 	/* Wakeup enable */
- 	if (PMSG_IS_AUTO(msg) || device_may_wakeup(dwc3_imx->dev))
--		dwc3_imx8mp_wakeup_enable(dwc3_imx);
-+		dwc3_imx8mp_wakeup_enable(dwc3_imx, msg);
- 
- 	dwc3_imx->pm_suspended = true;
- 
+Will change it.
+
+- Mani
+
+> but the patch works as-is because of the default case in the switch
+> below which falls back to PCI_EXP_LNKCAP_SLS.
+> 
+> > +		pci->max_link_speed = FIELD_GET(PCI_EXP_LNKCAP_SLS, cap);
+> > +		return;
+> > +	}
+> > +
+> >  	ctrl2 = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCTL2);
+> >  	ctrl2 &= ~PCI_EXP_LNKCTL2_TLS;
+> >  
+> > -	switch (pcie_link_speed[max_link_speed]) {
+> > +	switch (pcie_link_speed[pci->max_link_speed]) {
+> >  	case PCIE_SPEED_2_5GT:
+> >  		link_speed = PCI_EXP_LNKCTL2_TLS_2_5GT;
+> >  		break;
+> 
+> > @@ -1058,8 +1069,7 @@ void dw_pcie_setup(struct dw_pcie *pci)
+> >  {
+> >  	u32 val;
+> >  
+> > -	if (pci->max_link_speed > 0)
+> > -		dw_pcie_link_set_max_speed(pci, pci->max_link_speed);
+> > +	dw_pcie_link_set_max_speed(pci);
+> 
+> With the above fixed:
+> 
+> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
