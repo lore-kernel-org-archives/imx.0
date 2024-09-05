@@ -1,188 +1,256 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9028288C
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 18:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CA4188A15
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 19:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725562616; cv=none; b=nxKjq5VPv6JTTwgNUjYmH2/Red5MH+dI+KMFQ+PLiIuRQJ5dU6akDdem7p5p9/gnLJhBdW0E7Pj3sHlBoTB5OSVyrxD5JTJ6DZchW5TL/90sKhkGrrDSecUEatr61YhMi2o1JyZwEXmaw3ATiTCp9in2/owSvIhL1BCYUTl4DFw=
+	t=1725563395; cv=none; b=lYnnKLD2NCwTSQw0X961dJh6FDOEuRcYEx1fQOWx6ffOasIogOZtMtaOlFOg6xgbHOJ+wmfwofsvh4hOktZIc/phsrfuvK9gnt8HZNEJeSSGuPtFn3AUNZnHTdma3A+4BHvSo6FTFw6TWZ1jtU47iQvvV4dp1h0ZC24KXuQY7MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725562616; c=relaxed/simple;
-	bh=5Kl2tZr706GSf18Hbk3w3yTELR9WRKf0WWMV0a8g2Vg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NPVVgyFRNsbdyVWptpwZbhiYqlka+qD3nhUeB56H6Gd7i5yUt5aTtNvMYG/FehyRdHSLwYG15zJC6ViXBhnpZZ/pRgJAnHD84fCWA8+jNv8QQ6h6TS1pylU4jDzir2K+J8pJy3SxmaaiAIfN7neVFs+MH80MmMtLW5zycJpEG28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=aRa3ZyFI; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+	s=arc-20240116; t=1725563395; c=relaxed/simple;
+	bh=GrkSvGc83gmOa+ZfzM3uLj86ulug8IfnV8jKz9sInjI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pEpBcaFmyyeWa4TJ1D72gn0fcTpVOI5WgeP+L7Bov7vDAT5NT36M0U0bnvleRhOApCm5Zl9+Kt17bguyhEblMu9U8YThA1U0hWvrVIFNb2WMARqwXXZcGwoV8VgU+kk71Xt7EhK4xgCXyK67eu+mGH1z4WxqzQ9D//TWcdLxgiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=uQYq59Y/; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="aRa3ZyFI"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5c245c62362so1522686a12.0
-        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 11:56:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1725562613; x=1726167413; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7AimnlZvO4vX1o0LABlUFzAbcpYQGtu+zhlXenwh5uE=;
-        b=aRa3ZyFI8AbWBQeHTTyxP1XxmY0jeC7qWPfDDH/g3k0BSIUB/ZDM/00YURDzYr6UUn
-         YECPWUssGITogwqGf7AAgQU6Zru+1o6DgMjUUZPJ6vIycTE9PszSuDDIasWWvpLxOSlq
-         MwI8qU/mmt0hqagVu/AGMYHUJTsxe824JA30w57wfrqa9p0LxVQT0hFKfPUfaqCrky2L
-         7puPjTqWCG4DxYQNaiHcTS23ChIi9UTX8cYYO5nbri+TO81/GuuExEq2Y89+HvaI5LbT
-         B/l8TuW00qt9s7Pj0IfCd/2i4wj45DmDQ69Y7rRzjkLvIgXO2HC63bHwZwC8h/zzUD1o
-         bKHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725562613; x=1726167413;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7AimnlZvO4vX1o0LABlUFzAbcpYQGtu+zhlXenwh5uE=;
-        b=AHFsoVDfZ5NsQIrLC4KF2A72LsRW8kqpuepd1vxYqlrVjqlE8vJHusQ7/YC0JO/AV8
-         PuccAE9s6guEfZBGgnX39eh6WEysji+y9R+zcZTXxKNi9ANgtc6Zf8QGt6hwktfOGn/p
-         ukDxSws8atPPVNL1LkOSTMlgWVyjQ4EwYYcAtURJ/Ir/sCS8jkDaFExmAVVNlSWgSMj3
-         ZRrp5v0plcjDA/0Psdq6Fl7xXB4sv5dOjAgQB7lvtq0tiHJmunzwgxIvzbxEzcdcC7W9
-         DaFgvJaQGbT1oQT7C84kdEel0cXQTopp92xOip3+nM/bpF9vmN7Y91Oth0/a/hDKPUyz
-         1HfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWqkkrnspfN+RixjUfxJNWsE9Js5gZi4gHuoqR70qXz0FT4gGRwjGz7Oa+OZFJpvyPElk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOFdDT/VyZG3GpkoVB+iBsxgU72p7qTKdF9rlXISCWBAvexkRp
-	1zWunkrLIxcRjOje5oBCJS91iMhuw5GgJJNVCOBETxzqtFlBWgzVBz7v0dpL2PaP4BY5G/Len8l
-	L/Q6wpOvbZjOJ/hYOa93skCANM7LbfVDfZAv8zw==
-X-Google-Smtp-Source: AGHT+IGdoYNXI+zkFvkIv/Pf0iKRQ0TdFYopTZLghqtcSzK7K7EJ5wlRtOTdvPGPRBWz6UTGgTXgE416ziaIjjvKK9Y=
-X-Received: by 2002:a17:907:2da5:b0:a86:9cff:6798 with SMTP id
- a640c23a62f3a-a8a32ed4b43mr754624966b.30.1725562612865; Thu, 05 Sep 2024
- 11:56:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="uQYq59Y/"
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 2EE4C88BD6;
+	Thu,  5 Sep 2024 21:09:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1725563391;
+	bh=edm4F86Hk2qklkmhJHHSmSvMydQmT4S2HIAG+u+hZ1s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uQYq59Y/ONuJJUHV1/P7Mc42bMIsefHvm8V+NrdSYjgwJWVo0UabBeixP/G+jRKGZ
+	 jugMbbFBeE8rNqnflqv5UyOMVkbB7SShhhfoSJCgsMb9hQJpICAn8t379Gkd9xM/TG
+	 H84ct/bz/lV7Y/xPA8qoOa67FRLLR1Fj5ZXLRlevCcYBMbshmdVQoY3iX8a5kzE3OG
+	 xIPFmMDBudiKoOrM6sDUqJyPOfWuuyoxEAPkH1THz5TmJm83L4UrCMLfwZodsixPBA
+	 qZBq1dJDFt4Fqzrlr5ZjXVJ2oraPjH2adULbz8VXGOwGTwQeSF5qh4Q+qTVgQqrkT9
+	 78qUQt7AoePYQ==
+Message-ID: <1a5114c5-92d1-4f5a-9ad6-616475f3ba56@denx.de>
+Date: Thu, 5 Sep 2024 21:01:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240807-fsl_dts_warning-v2-0-89e08c38831a@nxp.com> <20240807-fsl_dts_warning-v2-3-89e08c38831a@nxp.com>
-In-Reply-To: <20240807-fsl_dts_warning-v2-3-89e08c38831a@nxp.com>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Thu, 5 Sep 2024 11:56:41 -0700
-Message-ID: <CAJ+vNU3ZsJG-eoqf3JcHTyDwjp4uOW1XiEhnOfWZ1FJ-q1Y9Hw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] arm64: dts: imx8mm-venice-gw7901: add
- #address(size)-cells for gsc@20
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] pwm: imx27: workaround of the pwm output bug when
+ decrease the duty cycle
+To: Frank Li <Frank.li@nxp.com>
+Cc: Fabio Estevam <festevam@gmail.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Philipp Zabel <p.zabel@pengutronix.de>, linux-pwm@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ pratikmanvar09@gmail.com, francesco@dolcini.it,
+ Clark Wang <xiaoning.wang@nxp.com>, Jun Li <jun.li@nxp.com>
+References: <20240715-pwm-v2-0-ff3eece83cbb@nxp.com>
+ <20240715-pwm-v2-3-ff3eece83cbb@nxp.com>
+ <CAOMZO5DNmHfHWbLoPj9P=_+JiLLQ4tiDd_90+UX+_psN2o+Knw@mail.gmail.com>
+ <ac922fd5-9438-4f73-9a3d-08cceb1d7409@denx.de>
+ <Ztn+SiBUp0BC5lzy@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <Ztn+SiBUp0BC5lzy@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Wed, Aug 7, 2024 at 7:54=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Add #address-cells and #size-cells for gsc@20 to fix below warning:
-> arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb: gsc@20: '#address=
--cells' is a required propert
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts b/arc=
-h/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-> index 136cb30df03a6..35ae0faa815bc 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-> @@ -364,6 +364,8 @@ gsc: gsc@20 {
->                 interrupts =3D <16 IRQ_TYPE_EDGE_FALLING>;
->                 interrupt-controller;
->                 #interrupt-cells =3D <1>;
-> +               #address-cells =3D <1>;
-> +               #size-cells =3D <0>;
->
->                 adc {
->                         compatible =3D "gw,gsc-adc";
->
-> --
-> 2.34.1
->
->
+On 9/5/24 8:54 PM, Frank Li wrote:
+> On Thu, Sep 05, 2024 at 08:26:34PM +0200, Marek Vasut wrote:
+>> On 9/5/24 7:12 PM, Fabio Estevam wrote:
+>>> Adding Marek.
+>>>
+>>> On Mon, Jul 15, 2024 at 5:30 PM Frank Li <Frank.Li@nxp.com> wrote:
+>>>>
+>>>> From: Clark Wang <xiaoning.wang@nxp.com>
+>>>>
+>>>> Implement workaround for ERR051198
+>>>> (https://www.nxp.com/docs/en/errata/IMX8MN_0N14Y.pdf)
+>>>>
+>>>> PWM output may not function correctly if the FIFO is empty when a new SAR
+>>>> value is programmed
+>>>>
+>>>> Description:
+>>>>     When the PWM FIFO is empty, a new value programmed to the PWM Sample
+>>>>     register (PWM_PWMSAR) will be directly applied even if the current timer
+>>>>     period has not expired. If the new SAMPLE value programmed in the
+>>>>     PWM_PWMSAR register is less than the previous value, and the PWM counter
+>>>>     register (PWM_PWMCNR) that contains the current COUNT value is greater
+>>>>     than the new programmed SAMPLE value, the current period will not flip
+>>>>     the level. This may result in an output pulse with a duty cycle of 100%.
+>>>>
+>>>> Workaround:
+>>>>     Program the current SAMPLE value in the PWM_PWMSAR register before
+>>>>     updating the new duty cycle to the SAMPLE value in the PWM_PWMSAR
+>>>>     register. This will ensure that the new SAMPLE value is modified during
+>>>>     a non-empty FIFO, and can be successfully updated after the period
+>>>>     expires.
+>>
+>> Frank, could you submit this patch separately ? The 1/3 and 2/3 are
+>> unrelated as far as I can tell ?
+>>
+>>>> ---
+>>>> Change from v1 to v2
+>>>> - address comments in https://lore.kernel.org/linux-pwm/20211221095053.uz4qbnhdqziftymw@pengutronix.de/
+>>>>     About disable/enable pwm instead of disable/enable irq:
+>>>>     Some pmw periphal may sensitive to period. Disable/enable pwm will
+>>>> increase period, althouhg it is okay for most case, such as LED backlight
+>>>> or FAN speed. But some device such servo may require strict period.
+>>>>
+>>>> - address comments in https://lore.kernel.org/linux-pwm/d72d1ae5-0378-4bac-8b77-0bb69f55accd@gmx.net/
+>>>>     Using official errata number
+>>>>     fix typo 'filp'
+>>>>     add {} for else
+>>>>
+>>>> I supposed fixed all previous issues, let me know if I missed one.
+>>>> ---
+>>>>    drivers/pwm/pwm-imx27.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++-
+>>>>    1 file changed, 51 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+>>>> index 253afe94c4776..e12eaaebe3499 100644
+>>>> --- a/drivers/pwm/pwm-imx27.c
+>>>> +++ b/drivers/pwm/pwm-imx27.c
+>>>> @@ -27,6 +27,7 @@
+>>>>    #define MX3_PWMSR                      0x04    /* PWM Status Register */
+>>>>    #define MX3_PWMSAR                     0x0C    /* PWM Sample Register */
+>>>>    #define MX3_PWMPR                      0x10    /* PWM Period Register */
+>>>> +#define MX3_PWMCNR                     0x14    /* PWM Counter Register */
+>>>>
+>>>>    #define MX3_PWMCR_FWM                  GENMASK(27, 26)
+>>>>    #define MX3_PWMCR_STOPEN               BIT(25)
+>>>> @@ -232,8 +233,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>>>>    {
+>>>>           unsigned long period_cycles, duty_cycles, prescale;
+>>>>           struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+>>>> +       void __iomem *reg_sar = imx->mmio_base + MX3_PWMSAR;
+>>>>           unsigned long long c;
+>>>>           unsigned long long clkrate;
+>>>> +       unsigned long flags;
+>>>> +       int val;
+>>>>           int ret;
+>>>>           u32 cr;
+>>>>
+>>>> @@ -274,7 +278,53 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+>>>>                   pwm_imx27_sw_reset(chip);
+>>>>           }
+>>>>
+>>>> -       writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+>>>> +       /*
+>>>> +        * This is a limited workaround. When the SAR FIFO is empty, the new
+>>>> +        * write value will be directly applied to SAR even the current period
+>>>> +        * is not over.
+>>>> +        *
+>>>> +        * If the new SAR value is less than the old one, and the counter is
+>>>> +        * greater than the new SAR value, the current period will not filp
+>>>> +        * the level. This will result in a pulse with a duty cycle of 100%.
+>>>> +        * So, writing the current value of the SAR to SAR here before updating
+>>>> +        * the new SAR value can avoid this issue.
+>>>> +        *
+>>>> +        * Add a spin lock and turn off the interrupt to ensure that the
+>>>> +        * real-time performance can be guaranteed as much as possible when
+>>>> +        * operating the following operations.
+>>>> +        *
+>>>> +        * 1. Add a threshold of 1.5us. If the time T between the read current
+>>>> +        * count value CNR and the end of the cycle is less than 1.5us, wait
+>>>> +        * for T to be longer than 1.5us before updating the SAR register.
+>>>> +        * This is to avoid the situation that when the first SAR is written,
+>>>> +        * the current cycle just ends and the SAR FIFO that just be written
+>>>> +        * is emptied again.
+>>>> +        *
+>>>> +        * 2. Use __raw_writel() to minimize the interval between two writes to
+>>>> +        * the SAR register to increase the fastest pwm frequency supported.
+>>>> +        *
+>>>> +        * When the PWM period is longer than 2us(or <500KHz), this workaround
+>>>> +        * can solve this problem.
+>>>> +        */
+>>>> +       val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+>>>> +       if (duty_cycles < imx->duty_cycle && val < MX3_PWMSR_FIFOAV_2WORDS) {
+>>>> +               c = clkrate * 1500;
+>>>> +               do_div(c, NSEC_PER_SEC);
+>>>> +
+>>>> +               local_irq_save(flags);
+>>>> +               if (state->period >= 2000)
+>>>> +                       readl_poll_timeout_atomic(imx->mmio_base + MX3_PWMCNR, val,
+>>>> +                                                 period_cycles - val >= c, 0, 10);
+>>>> +
+>>>> +               val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+>>>> +               if (!val)
+>>>> +                       writel_relaxed(imx->duty_cycle, reg_sar);
+>>>> +               writel_relaxed(duty_cycles, reg_sar);
+>>>> +               local_irq_restore(flags);
+>>>> +       } else {
+>>>> +               writel_relaxed(duty_cycles, reg_sar);
+>>>> +       }
+>>
+>> Why so complicated ? Can't this be simplified to this ?
+>>
+>> const u32 sar[3] = { old_sar, old_sar, new_sar };
+>>
+>> val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base +
+>> MX3_PWMSR));
+>>
+>> switch (val) {
+>> case MX3_PWMSR_FIFOAV_EMPTY:
+>> case MX3_PWMSR_FIFOAV_1WORD:
+>>    writesl(duty_cycles, sar, 3);
+>>    break;
+>> case MX3_PWMSR_FIFOAV_2WORDS:
+>>    writesl(duty_cycles, sar + 1, 2);
+>>    break;
+>> default: // 3 words in FIFO
+>>    writel(new_sar, duty_cycles);
+>> }
+>>
+>> The MX3_PWMSR_FIFOAV_EMPTY/MX3_PWMSR_FIFOAV_1WORD case will effectively
+>> trigger three consecutive 'str' instructions:
+>>
+>> 1: str PWMSAR, old_sar
+>> 2: str PWMSAR, old_sar
+>> 3: str PWMSAR, new_sar
+>>
+>> If the PWM cycle ends before 1:, then PWM will reload old value, then pick
+>> old value from 1:, 2: and then new value from 3: -- the FIFO will never be
+>> empty.
+>>
+>> If the PWM cycle ends after 1:, then PWM will pick up old value from 1:
+>> which is now in FIFO, 2: and then new value from 3: -- the FIFO will never
+>> be empty.
+>>
+>> The MX3_PWMSR_FIFOAV_2WORDS and default: case is there to prevent FIFO
+>> overflow which may lock up the PWM. In case of MX3_PWMSR_FIFOAV_2WORDS there
+>> are two words in the FIFO, write two more, old SAR value and new SAR value.
+>> In case of default, there must be at least one free slot in the PWM FIFO
+>> because pwm_imx27_wait_fifo_slot() which polled the FIFO for free slot
+>> above, so there is no danger of FIFO being empty or FIFO overflow.
+>>
+>> Maybe this can still be isolated to "if (duty_cycles < imx->duty_cycle)" .
+>>
+>> What do you think ?
+> 
+> Reasonable. Let me test it.
+Thank you.
 
-Hi Frank,
+I have MX8MN locally, so if you need RB/TB for V3, let me know.
 
-I just noticed this patch (along with a few others to
-imx8m*venice*dts* which undoes what was done in commit 3343ab4cc698
-"arm64: dts: freescale: imx8m*-venice-*: fix gw,gsc dt-schema
-warnings" which my commit message states: Fix the dt-schema warnings
-due to #address-cells/#size-cells being unnecessary when there are no
-children with reg cells.
+Will I be able to reproduce it on another iMX too? Like MX8MP or MX8MM 
+(they are a bit easier to work with for me) ?
 
-With your patch applied I now see warnings again:
-$ touch arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make dtbs W=3D1
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx-0x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx-0x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts:361.14-467.4:
-Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-"ranges", "dma-ranges" or child "reg" property
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dtb
-arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts:311.14-418.4:
-Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-"ranges", "dma-ranges" or child "reg" property
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dtb
-arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts:277.14-364.4:
-Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-"ranges", "dma-ranges" or child "reg" property
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dtb
-arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts:330.14-411.4:
-Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-"ranges", "dma-ranges" or child "reg" property
-  DTC     arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dtb
-arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts:309.14-416.4:
-Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-"ranges", "dma-ranges" or child "reg" property
-arch/arm64/boot/dts/freescale/imx8mn.dtsi:1128.11-1138.7: Warning
-(graph_child_address): /soc@0/bus@32c00000/isi@32e20000/ports: grap
-h node has single child node 'port@0', #address-cells/#size-cells are
-not necessary
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx-2x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx-2x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx-2x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx-2x.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-imx219.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-imx219.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rpidsi.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rpidsi.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.d=
-tbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs232-rts.d=
-tb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs422.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x-rs485.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-imx219.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-imx219.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rpidsi.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rpidsi.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.d=
-tbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs232-rts.d=
-tb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs422.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x-rs485.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-imx219.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-imx219.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-rpidsi.dtbo
-  DTOVL   arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx-rpidsi.dtb
-
-Is this some case of dueling dt-schema checks for dtb checks?
-
-Best Regards,
-
-Tim
+Could you include "how to reproduce" in the commit message ? Something 
+easy like:
+- Write this and that sysfs attribute file with old value
+- Write this and that sysfs attribute file with new value
+- Observe this on a scope
