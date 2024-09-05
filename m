@@ -1,74 +1,76 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011037.outbound.protection.outlook.com [52.101.65.37])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2062.outbound.protection.outlook.com [40.107.249.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A266C1A42AB
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 20:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247D919FA68
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 20:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725566808; cv=fail; b=UvhwjlZbaFMGSiOboUGLLutMGQsyy71XzBgUEVwEUKRk+4QG+OtqKFL9T2wcGqIr2UjJMkas7ofLA5nkuV8Uyv41Jn7WdZY0t7etf04IGCdxJ8miNtBCAueLO24mh07XvK9Sz/nczo6LxZ04EgJ8dsThCJveKzxZZK8BAfv47WI=
+	t=1725568691; cv=fail; b=qdbpYG2j1T+yxBr0ehZamPKxAeyQNtTOfLYUVRFkwhfiuRtxCjXiO6omjzag/yyJMGpcpVYMR1ytrRzasdkW5SWlIQ8X4icO1RD78hUnTlI/9DDD3mURnWtv+S7F9YwInIL7VrymAAY/H4q9n+SL2+5prK9scJ3Op4dAuDbPw5M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725566808; c=relaxed/simple;
-	bh=6I2paEON9fWdTpUTAomoPNrvduXxYTmjf5EOsVJ+SvM=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=DJ6KAvGQNWIsbnEPQPxTpv6WYDqWCcAfok/xrLzcCCObi8CxmshGe9TEDXU+uwPHV48Pnl5c48rgku5FiyRnhnjZLKqp55YZxZSFwTCZLuBH+9ic769gh7UIEbL9Bt2Dq6beCqoYC94gN3GIDdyxADjTUqgb1D6DT0c9/90trZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C8HGo+jT; arc=fail smtp.client-ip=52.101.65.37
+	s=arc-20240116; t=1725568691; c=relaxed/simple;
+	bh=4ZLRWnAJiXyCoaLyEe/QksJaboNv3njh7RFUdMQ/drc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kxoJwHlPYCQFvepw2CjtddNmGlkZYMXl3uJsQf6Z1o9ByZBuzhfe+6Ti4cyjYn15FotZqQ9/cDaaKizjRfyf40PGNeoMDcpro99OM6jvgkgvLIvSr2CRXVGpWNaK7a/NBHc0LrLJGWtWK5Q1By7JTdZteBijeg7zJCa3TkwNxbg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SKJnpz9s; arc=fail smtp.client-ip=40.107.249.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C8HGo+jT"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SKJnpz9s"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CfTCmHu7F6lBUKKZWYTI+26UWRgl1iM2RRpsOIqoh7iJoBX6mBrqjFbkphJJo0GVbhzYrivYkfD+uvqR20vlpoY74LMcUudUD0euPiVW0YodNWK9H+xkQTnhUzNGesMaO1ID1mSTDXkFj0CLEGfOiQtMFH/Cy2FLq9wZ4uNDlMAtDY3zgf2Th00ShoTNSBcXoj+hucdVP44lBp3G4GOxRBlDwcK+QoQhQrJH60W/aYLnO7tf09aZjAAeGFwIQOJhChm1Y9oATq7chkbHHyX/dtQr1ebAFA3SFg744sazpnoAeqB+lhE4O0aGZ4bF/cMWsRuD3UY+Tn1Epy3CWbLz4A==
+ b=Sn7u00BjRmlZg6ZpXPd26PZV/q1Uy/EB40McFq+BIw1ZiYeCp3NrpB3RE+ES//IWAK8yrjxa+vS+v3YlepS4llCaMmxxKyqQIoOttRUmQwxK08hNmWprtmCAgbpi2xUBPf+fqemTQ9dpP/W5dIELnAyNaD3786j+9lM2A8tSziWnYZmXv8F2SmBE/qUmQpDu4F8q7aVY68erLsAu3cPy3IIcXUTbhPrCa3IQ58vz9mnLC9x+Uuzvdtr9+WHYwl9A0JRy8DudlA1JQbR1PQPv17EdKZetQ4jr4r3CspsgiY37cQBqw+vVaZCtQYeGL9q29jWTaC7NRJ0yaIgzxQzkGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O/PzFrWtGF9hTyrICETmWUx3fh3QeBCjPfvhvO5Lh9g=;
- b=S/RV2z3aM/jgkUyyWbERwEE5BoiT4nY1TLvUZvbqPUl3DdDVPsp9qIJ0cqdMbMBYM56eoZaiOGOqpVvg/acbktoFpCHmDUW8BlE6vTeuqr6ITgvtTxFZRP9vpnJZfhnR0bxy3VOARRdgLfRxPuMT7+c3MJR6nhyU3dReu52u885doSUQL0L7bdl1IDbXUsAt/dRw3ooN/zYXCkc3NvCkWE2Ag0SvPkzgj5mpmZje4LWlWuDiTeDRUrOchQ55DsIW+0Bsc7wtg3BEawu2h3AGOXuDbEabVfJ8SszRREEmai5NTfUNFZdtrm6cZ2N591RsNBdQs+fefHcmBFEIFptSsg==
+ bh=mLV2udfqcSxDR9mOMM+zzZuPSwaniW2gN/NhmJ47RdE=;
+ b=WizTLpVm1Be9kYXpMRpV/j2GmwOXjcqiglwd9EH9GY4K9ll7NqJXP/W2qMKMgDnwlTgsESQi63zTrRdWqpWdam1GfMuse3uA7CE9/ALquowTiry4C+oF8WtL3IPaXT3Khi0JgWeA4aWwGubJ/Vx1Uf1iQ8Mcn5Z/2e16r4wbzjSjkiQDp1U72rMmYVc9eVA7tCTDRT9oxBSzYlNrb/yngEIh92E2HBbHdhpUfEMON6z9qaiN9KzOcoJRf1D16FVPxVLUR+DDOjmY9KCzWMLvu9t19Cz9HeNdKGxBDvETLyFRlHdcnIVWUO8NG9AfEwI7ycnmuyzz+piK5AT6AacZDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O/PzFrWtGF9hTyrICETmWUx3fh3QeBCjPfvhvO5Lh9g=;
- b=C8HGo+jT5rvyu/yQ7PrnMq00Fe04CSnzUqTGiGrrrbdXI29+64evGtUdk8tZjHv/FG3AjT2nHB6vJ3wOCVoGoy8jmt+e6l/9qDGKBlEcedTMVBZamlIFjUEHVDhPlSaK+bo3apfNaUc3jPLgdJc1x6hUkwvKbdG1NRnVgjEHeVW/CTGM2DO1riODbpKMsD3jsR/WZdZ1xDILYy+uP528EwoSb8XUni2gF0+GSnKh3YL9J8zIhkxZl/Di9XsGBWxMBh1BduW8bWGADEVMrpHPlvHWYHgIYb6gB7PVf5JtgeWxhu/lLMIWf+7V7AvUClf1N7d/O1qI2mxCQJx4vd2OTw==
+ bh=mLV2udfqcSxDR9mOMM+zzZuPSwaniW2gN/NhmJ47RdE=;
+ b=SKJnpz9sWd2vMZRpZQgAx0IPY8kShkhwb5EPBUAwyoNH+mXk4OiUM3G+FM+/pALDGVIsyKtQnNi9GZYagjR/qt+vLX7NXhcp9Pm27xP4czdHW8y34JbguEhD92PH/MVJF+aTyJcuhpTVMnE1WrAHLX27UuKTdr/d8JazQcOZzYsO9MPP+AXIdp400pEPy7fTzm6g17aO8tcoxRps5bgXy4NF6UHs9E7fGU7CW7tKcTyoh/qAjuCKyZi4ILa71McTzzDzqOXAaXJUqqzFewBa/DILGdZbKgEZyCBtN34vFWArZUWC/AtoqXLDrkovA7ReQ6x/Dexlk9O+Aw29Cjx81w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8423.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::20) with
+ by AS8PR04MB8152.eurprd04.prod.outlook.com (2603:10a6:20b:3fb::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.28; Thu, 5 Sep
- 2024 20:06:44 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.17; Thu, 5 Sep
+ 2024 20:38:05 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7918.024; Thu, 5 Sep 2024
- 20:06:44 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Thu, 05 Sep 2024 16:06:21 -0400
-Subject: [PATCH v4 3/3] usb: dwc3: imx8mp: disable SS_CON and U3 wakeup for
- system sleep
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240905-dwc-mp-v4-3-aedaeacf0556@nxp.com>
-References: <20240905-dwc-mp-v4-0-aedaeacf0556@nxp.com>
-In-Reply-To: <20240905-dwc-mp-v4-0-aedaeacf0556@nxp.com>
-To: Mathias Nyman <mathias.nyman@intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, jun.li@nxp.com, 
- Frank Li <Frank.Li@nxp.com>, Xu Yang <xu.yang_2@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725566789; l=2128;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=Hs4mq3jmjFdySao7yPW+t4juTxFDV5Z8B1pHbqTlbAg=;
- b=3satTEOeuofPWVgLaIqoanfIZ1EW/2VQkW/Fp+in5oHDN3mr2/pwWbMz5apHpIqf/SH/HDbCI
- gBZ5x6HhtkMCf1ABNNFrDk8lDRaDY5tGtM6a1IFPJ7BAkqDBKF7RdAN
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR05CA0105.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 20:38:05 +0000
+Date: Thu, 5 Sep 2024 16:37:55 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marek Vasut <marex@denx.de>
+Cc: Fabio Estevam <festevam@gmail.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pwm@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	pratikmanvar09@gmail.com, francesco@dolcini.it,
+	Clark Wang <xiaoning.wang@nxp.com>, Jun Li <jun.li@nxp.com>
+Subject: Re: [PATCH v2 3/3] pwm: imx27: workaround of the pwm output bug when
+ decrease the duty cycle
+Message-ID: <ZtoWowx1Vja3yjXc@lizhi-Precision-Tower-5810>
+References: <20240715-pwm-v2-0-ff3eece83cbb@nxp.com>
+ <20240715-pwm-v2-3-ff3eece83cbb@nxp.com>
+ <CAOMZO5DNmHfHWbLoPj9P=_+JiLLQ4tiDd_90+UX+_psN2o+Knw@mail.gmail.com>
+ <ac922fd5-9438-4f73-9a3d-08cceb1d7409@denx.de>
+ <Ztn+SiBUp0BC5lzy@lizhi-Precision-Tower-5810>
+ <1a5114c5-92d1-4f5a-9ad6-616475f3ba56@denx.de>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1a5114c5-92d1-4f5a-9ad6-616475f3ba56@denx.de>
+X-ClientProxiedBy: BYAPR07CA0096.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::37) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -77,154 +79,291 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8423:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dd2ac5a-06ce-4654-080a-08dccde64383
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8152:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98524f69-3d65-4c5e-9ac3-08dccdeaa49f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|7416014|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|366016|7416014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dzVBUHk5TXFlejhHb2lBZmRrWEx6bTllTFhXcCsvcFVpdldia1RGblhmclNB?=
- =?utf-8?B?cTZ6N0xrYzRKMWYyL0ZNK2ptRzhkNERGbnBUeGlRV3hQb1l5SWNDN3FabGM4?=
- =?utf-8?B?ak5sRWxjeHJoVHZnMGVMQXJQaVZua2hHTE1GNFhxMldKSy9aYW8zV3NJTDVz?=
- =?utf-8?B?NUhDSjh0MzdsSmtPbG44MWVjNTJWdWNld3hZd1lSeCtlc25MQnJXQ2VRR2N0?=
- =?utf-8?B?TU9IZWhvd2VydFhhZEozYUZqdFNvSE1CZXU5bW1KdVRyWFF4SXlobDdBa3Jk?=
- =?utf-8?B?VVpTdXNaZGwrNVVEWUdXQXFGam93anJmSG9NeTk0V3hGa2p4akFkTFBPNzdL?=
- =?utf-8?B?S0cxNjgxR21Za2htSGxqTkQvSzl3WkxNSzN3Q0t1K29laFM0VHNQbVFOZ2Fj?=
- =?utf-8?B?T1Q0cHRVZU9Id0NMRmtVMFN3dUNrcVdtVjczUC96U1BldEVGVS82T3hyZHor?=
- =?utf-8?B?dnp4OUpabnRqeURLRGRuQ2FYMk11ME9DT2wrUk1vSEVYS2RqamhQVDB5eVlM?=
- =?utf-8?B?UnFzWHZaOVV4Z2ppaU9TdE85VDBUSW8xMlRNR0YrZnRKZjhwMWI2ZVUyYytN?=
- =?utf-8?B?UzZVQXplWEJPNzJocklaeW44VENHUU1vd05tbjVMd0lCU3FFc28rOFFVSHZk?=
- =?utf-8?B?bitCdkh2eXFjRFY1eUtUMGJJaktNUkZXek4ycmdVTWJSeEdkZGZlQ0Q4SHB0?=
- =?utf-8?B?Y3M1eURjTEpIcGFYSFlpMVphbjZwazVidURIYTk5OVpYRkhSQTNrNlQrR0Nx?=
- =?utf-8?B?dXpIQUNIVGk3NjNESmdLdGNXcmdoaCsrTXRoalo3TGEyMjBKUjRURkpTZGNO?=
- =?utf-8?B?Mi9KMkREeG5UcmVibWpXa2F2MHdwdEVKMU1uanhOZkMzaFhVcURRdzZLWldj?=
- =?utf-8?B?WVd2VXNkS1pyK241NXp0UHdSczFvdWVwTndUSDVIYmRHY2YydlRGakcrMS9Z?=
- =?utf-8?B?VHE3S1VsSW5qeTRKRFFHeEx5NFJtMElSeE1jU2hyczVpZUxwSUNad1pkbHp0?=
- =?utf-8?B?dHE5SjZVTkdWNm0veHEwNWhic0JvMnNIUkRaNWZ4NlExdVBpVG02RTc1S2pl?=
- =?utf-8?B?cVFPd293ZDZiYVFZUERBRGU4UUFmdHNWQXg1QjBMaFlmbDB3OFNPUWVsVHdL?=
- =?utf-8?B?aytxaFY3MmxKY0ZVT0xoakZiU2Z1cGM4S1ZXc0l4RGI1OFB0Sy9NWEJ0SVRu?=
- =?utf-8?B?QnpkOGJoZXBKUHdTblhpc0pGSG03U3RTbWR1NzN5SFFVeWg3SkpoZnU0ZDBj?=
- =?utf-8?B?eWl5WVRMSU9rS2k0N1c0YWhjWXN6V0ZqK2s4ejVFSU5KSk8vK1R2dVRvWGNJ?=
- =?utf-8?B?eFBpZnNuWkdudTVVMkFuVkxJMkZSaTRUaXY0TDdQNmhlWGRiRm9zVDFLdEZ0?=
- =?utf-8?B?cCs5c2l3MWxrUWNTYUJlalFjcGdZcEI0VXpmaTJaNVVUZlh2ZitqYUd2U0JH?=
- =?utf-8?B?TFJ3eFpsL2FXWXFRZWd5R0lsL1JzY3ZnQWRpaFN6UDVvUkxkV3dSbUJtazU2?=
- =?utf-8?B?Mi9pcS9RcGxqTE13Unp3ZGNOYXZNelptajgvL1JLL1ExWDQ2KzBYZ25jUU4x?=
- =?utf-8?B?eFJwYTc0WExPa1RpdUd5L2x6T0F1UlpHSXRsb3daK1prNWFpdWdSWW5rTDgz?=
- =?utf-8?B?emtWTEttSjREc010bDdHMmc4RWFwZWtLa2xyWFd2amtiME80dkdVY2hXemM5?=
- =?utf-8?B?T3hkdkhrUGdneXJEa293cGxzVW5OOXZxUTNzVU0rcnlGZGdDc2Z3Zi9aL0Y4?=
- =?utf-8?B?aGRQcEZDNUJQV2pIdVR5Zzc3dVB0aGRmbXFlaFFvN1NJbkZhTWFmNTU3VEov?=
- =?utf-8?B?QlVHTXdxNzBkYnJkbDZZaU9KWk8wNVV4K2ZyUkliWHVxdXBTWTlna3lpRzQy?=
- =?utf-8?B?cktDWE1LTlBWcCtnL0ZJNjNaYWNHa1lLaGtwblF0dmpabVE9PQ==?=
+	=?utf-8?B?Slh1VVVuM2F1eVRLNnVldFhtV2MwN2NPOFkwb3pQNWgxbnZZYVpHZU9TdEVo?=
+ =?utf-8?B?SFFHVXhqMEdiMmxlZ25YV3FIUmxKNlZCM0xIR09IOEtRdXFNbHNLNGh5NElO?=
+ =?utf-8?B?UlVGMS8wUTR2TktVUFhBRTI3K2ZnT3J4aStQWDJPNUE0a0FHTFY0NzlmRktU?=
+ =?utf-8?B?anVsV1hEMERkZ1B0WEVPY3VVY2lkdFR6YVRlY0l6YzVrTEZXUTZacTlQRXUz?=
+ =?utf-8?B?ZXB1cXhpZjZsTUEyQkNpN3RSZnhQNlZQWkJGVmg1MHhhRUpjUkc4c0lsSlht?=
+ =?utf-8?B?MkdFOURmcEFUdVNmSTZtakVoSDdZZ013WGlIRnlJY1ZRdUYyYmlxMFNRdFNP?=
+ =?utf-8?B?Q0wxUDgyMkxyT3RUckc2Q0lPb2pqOUV6dzUvcXJBUmU1aXd3STRmTVFVVU9N?=
+ =?utf-8?B?dFNqLzE2a1ByZWJvT0ZCYWdZaDZOcGh6NlNCU2VVVnM2WXZsY2pTQ1pFNDFC?=
+ =?utf-8?B?TjNUVkhDQ0NleGNQSW9OdnVsNU1qeG9Md04yWVJ3SjJQUFR3VzhtaC9rSk1r?=
+ =?utf-8?B?Y2ZFWGx0TFNPK2ZidXJGbXMvMnJ3M1ZiS3pZU3JVNkhvYWdxUkpjeFJobnR3?=
+ =?utf-8?B?NkxKajJCcEgvRVVKL002MnRUYzVZdFhaZ096UlVEVmY1RXpoVlZlU3ovaGdj?=
+ =?utf-8?B?NHREcE9VR0x0aGhTU09BaTNSaGJFRytxZWQwZC9ZeFlCMStvaUZXSFZ3Wnlt?=
+ =?utf-8?B?b2tVbndrdW55cmJqQkQ2cFNGRDlwUUgrMTZLQ1ltOE1Oc21ESVFta1hpN1hX?=
+ =?utf-8?B?aUxEUGQ2TmRzRGVXNzZDREg5L0dienk4RkJJY0FqTmRlYWU5cU02MHE2cm5Y?=
+ =?utf-8?B?cStTWnZmdGJUbEZKWDFBSFkxN1NrWjVReDdNWDhZbGdxbENqQ21Vc3piSlJG?=
+ =?utf-8?B?T1kyVCtLT2oxQ2JTRWNFdlNpZWZuZlVXMVlmd2QyRXAyb0lMb2Q0MjJ1b3hx?=
+ =?utf-8?B?UkxCT3k1MHowVGZEWXRyQ01MaE1PZk93Wm1hSlAvMWJmSHNMYlBZVEgyS3p6?=
+ =?utf-8?B?MEJ0OVVFRXh0S1lJM2ZJTEZkTzNUSDZvS2h3TExEWmxndmYzcWU1aXN2cmhI?=
+ =?utf-8?B?NFhGcCtNR0xCb3ZITkdSQTZXZThRenlpd0xHUkhEdlBRUCtNM1p2OWl6bWhT?=
+ =?utf-8?B?YVJmby9pMXZBUzNRQkFtOHJPY1FLY09ia1JSMkNZQnNhUjBRMjhmZ1FYRTlH?=
+ =?utf-8?B?QmhyWWZPMVFybzhocEtLREErOXJVYkF3aVM5MEFUaURrOWVtSTVJY0JVYVVG?=
+ =?utf-8?B?dkJub0VmUHJUMDZRQW1wanF2dzBub3FacHQ4eWFDb0cwRVkyL0RVbjdmOTRS?=
+ =?utf-8?B?VjBjaE1XbklIMUhBN2c1Y1YxaXphRWNMVnF2eW9TaWpZQytISEtBTzNmMzBI?=
+ =?utf-8?B?MXZKWWxlSzYvMHZYRlJxd1lLVlJzOGRjRTlZb1c2MDNsc3NiVC9sN1RQRjls?=
+ =?utf-8?B?ZG1yNFBhSnErVXFoeE0yanVaY2IvN01QZzF0OGtnOW9icitlTGh4Y3c1Qkdy?=
+ =?utf-8?B?Tk1HZ25jcU1lOVdyVjRjRjUybXhUVWVuMkYxc0lmK2VTZXdkVFU2YTZ5STB2?=
+ =?utf-8?B?dGp6c3JGN2NhMC9JblpmQUxYSStWZDVsZkJOb1IrdHd4Z1VQT1owaGpId0Jr?=
+ =?utf-8?B?M0tZLzUrYTFGMVZ4R0twakRKWHRXM3Jna0l6aWRYNk1TcU5tS2FOUjN1ZnBi?=
+ =?utf-8?B?dDBDcmJtWHhhSFlGczRiZjVmcnpYWlFSdkpLdmI4bWNIeEtNQ3N1SEhJYnFj?=
+ =?utf-8?B?NTFzaCtnNEswY0VmMVpzcFBvbGN6YUJQOUhiS1N3blJURy8rejRVZldZSHc3?=
+ =?utf-8?B?V3ErSjVrbmV5ZE9aL0pZNzU0cjFveUhqWlZsME1QcU9CdnlGQmRIVzd0SWlQ?=
+ =?utf-8?B?ZHVmSmhtdElTK0thRmFzUWlmZXNreVlrelB3NVd2dHUwWXc9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(7416014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bnlTZzBVV0orajhmVHZaRXhDejJMZ2p2NUhQRUhHNHc1eGViWUN6M1V2dGZS?=
- =?utf-8?B?dkxzWk1wKzdhcUo0VXlrWVczWnNSZ05lSWJIdEEzMXNHY09qcllCSlMwVng0?=
- =?utf-8?B?Uk5TdVJPQUsremJrRnZUMVhHR2w0Sml4TXFvSVNPK3U1T1dlSThoY3l1ZVpN?=
- =?utf-8?B?cXBicGU4N1ZCOFRZVzZLMWp1MU9kaXBoZFZ2TE10RmhpZWJ3czFyMFlWQW1G?=
- =?utf-8?B?bHh1bktZK3FXVzRXY0hBVGYyMXd0cUVrUk1GL2FBaGdnUnlVdmY0VlZaYWU4?=
- =?utf-8?B?MENMQ25rMzFMV2E4NWlJLzdYclB0RmVjUlJocHZOY2ZzME5TY3hBTzhGcHUx?=
- =?utf-8?B?dDRydWZwTHB4SVZqM3JYUEpNYUFCRDMxcEZJdWdFbnF1ZmwyZkdWNkt3a3Yw?=
- =?utf-8?B?eW5hMVF0TjBHVGptVElnNVNMRkVlYTVnaGtaY3MvYit0UDhFdHMwazlLQlYw?=
- =?utf-8?B?dHJiS3g3VVNPditlYzREYWU5WjFxVnpWRlhNVGp6c0FSdWlmWVdmY0ZQS3lQ?=
- =?utf-8?B?Vi80TzF6cU9aSU9ob2NwclRTek5LM1JNL2l0TWVrcVZTVURZZVlmNS9ZTTZ3?=
- =?utf-8?B?LzFUWWVEQWFkUFNYQlpOU1ErQWVBTUlIZW1aaDZqcm1Pajl3QVZtYjdrUFpH?=
- =?utf-8?B?S0Zoc3pJMnhEWmZ6WE1xcWRjM216dXhHM0U3dlR6NVhFWjgrYXV1cGJGMWdG?=
- =?utf-8?B?SFFxOVBnelZzbU1zd3hKdXRUM1ZHUnNJWHdXcklqK2tNdnM2NGE3YysrZ3BE?=
- =?utf-8?B?M3FmUWFaSzcrKzNMQkdHN0FMZmhhbjlPTGIzaGN1elI1QXFtTWtkaWF0TmlU?=
- =?utf-8?B?eEdHcGxzcE5hMGVXbXZNSkJTRlg4c1QxZGJSYTlja3FHcHZxL2trT0xyd1di?=
- =?utf-8?B?NEduZnpoU0FhbldkODRQT0g0LzNRcExWcXVmby9DQnVXVW81RjAzMlgvVldw?=
- =?utf-8?B?cVo5RGt2SGNQNm1ERkw2RjdzTGlnV1dYRGhFUlBNSGxFbFV4d0dXaDVWbGZY?=
- =?utf-8?B?bHdLQVBsRzlhdlBBTXgzNTJtUGNyOGQxdGdBN0Ixc3A5dmhocTNaYlBUVmRq?=
- =?utf-8?B?Rk50R3dONzVSL2hzY2VXcXBtL3RBTGl4ejNzZjVGSUJ0TUxjUVpoMHg1SHJv?=
- =?utf-8?B?MlpZWTllSEZZQWJlQUxTeEtBd2k4RDZqUlIxWWJpYWRiWVY3U2VKanpjcEQ5?=
- =?utf-8?B?WFdCdmhUMTUyZWpyM1lGS2pmeTRFU3NjRHdJeDRzdEpzdEFJZWYxZitnc2hj?=
- =?utf-8?B?bTUwMkZkTHVrbjVUNEl2WEhTQzhtTk9tWnc2OHpqUzBpeGJlcVBMVmZtLzFH?=
- =?utf-8?B?aUJZdjlRU0k3Rlk5UkhCbmlmbWQyTE5OSm5PUjNreG96Z2RKVWFmYWVNakNh?=
- =?utf-8?B?MDhkelBIbi8yRE9YSFF0Ujl4ZDI1T3oyclljTkxRL1AzT25zNXlhMmZrZGd1?=
- =?utf-8?B?eE9IMjVCS1Z0RHlYOXk0djlsdVRqNlV0M2FiaVhNOExlaW45ZUxKbmFyaHRl?=
- =?utf-8?B?a2JlNzhDdTRIMUhidURUcVdkZE52bFRKcUtNcjVZT2tuWmsvTlQ4anpkaWY4?=
- =?utf-8?B?QlJ5ZGUxa252UkZTWThwbEpOUzJINGl6TDJFU1VZTzErV0xrUDJnL2JYZDNa?=
- =?utf-8?B?d3paUW1MbFhIVWhDUkdSSDVUYWlOaHdYSzVxSEtOdnB1MkMrV0oyOHR2UXpi?=
- =?utf-8?B?NkErQnpXM3V5ZDRmMzJDSXAxajF2MldwL1Q0MXJSaWJRZTV1blgyRnp0ZERj?=
- =?utf-8?B?ZXZaLzdYUGRFUHFRbG9CQVNOUng2ZUthaisvUzFaVmRKaHdMSUUzeTR0OUpW?=
- =?utf-8?B?Zy9QTUJ0UlowVTRCeENaSS9sbUtCdDhXNndwb1ZMZFN4YitGREVJMURXTjN0?=
- =?utf-8?B?V2FSem5Pbk16NkN5WTIrVVdiRjVCbjdZazZ3NXBZVnM1SzJkY01OTjRiMkN2?=
- =?utf-8?B?d3V0bGdPZDdMVVNVUlJjSFRGTkdxdFk1a1Z0TDZUQjc0aGR1UXdBUDFFY3R5?=
- =?utf-8?B?bjQrMk10VFFWN3VyL0ZDWjE0eHc3eS9URUVPNi93UlNCVWNqWDVzeHUrM25p?=
- =?utf-8?B?cHIvaEk0eE1qYjJNVG9XNDdaNWp5RnhRUkxoTGhJMEdTajNpNUttUlhpMXNZ?=
- =?utf-8?Q?YkLM1Wdnu55MANmObjfpgnpOO?=
+	=?utf-8?B?TVJxQWlsalREZnhDVndtUUtzUXFhcVJBN044UHlnZjdzcGJTZmIwNDVMVDJp?=
+ =?utf-8?B?ajZxeHRMNTFPVjhzeEozbSt2d1M2dmFaVElLM2J3d2FrZUpuUnYxekRxTllv?=
+ =?utf-8?B?QzlDVHZWNVRJMjVJaTgyclJ0aFEwUHpPZWJUYzNwSTZsVU1aQy9LaSthSXRl?=
+ =?utf-8?B?MFBhQzQwWDdvYW1TWWdpcmlVNzREVWFmWEJxSEZyQjE4TFJIaFJlZXp2azBn?=
+ =?utf-8?B?L25FY0J3eFgrcDJlc0lqeG9VME1FcEhIcTBYdVBSQ3BGWEZZdVpuc1N2RUtS?=
+ =?utf-8?B?Uks3dGVnaHFJTUxaTkxFa2swUXA0SmFiNmYxYmFXdlRZa2dQdkQvSXZMenNB?=
+ =?utf-8?B?ZUgyb3oxMmJ5STd6MEtJODlsaVFhZFVmZ01PcGN5eWROZkJJbkpXekM4SzFM?=
+ =?utf-8?B?U2owbjM5UXNZNE5LamtGUDIvOHB0VUdQWmdEWjZsSXJsYWZFeEQ1aW5BMXAz?=
+ =?utf-8?B?UkxMdWVuSG56Vlc2Q09pQmlEdHdRZzRvTThSYlIvRnM0UmJ3dWt0VVhNT2o5?=
+ =?utf-8?B?aTkxQ2t6aWV5RW5jb2tkVEtKUE1zL1lhUFU0elB0ZmJjWGFSU0ljYlA2bzFW?=
+ =?utf-8?B?RTJsdlluUHkrN2RmckNucCtPR2Q4WG1tSXlzMDFKQnUrdVNBQVFnTElXQk5X?=
+ =?utf-8?B?M1FmRDhueit4L2ZOTWY4VFdWcElqeVpBNWVHamt3L2luZ09zdzdXSHQybzM0?=
+ =?utf-8?B?clowTVpDNDRISjhVWWpZUy8wMkUwM0NvMkxSNXhUN3lUS1BlRm1wUm45dUhN?=
+ =?utf-8?B?VmN4VUtMZEpXNnllb2cwVU5EZUU1b3BQeW42TDI3L1pIYmIxcGRtS2tubzQz?=
+ =?utf-8?B?ZWlOTEhSRkZYa2ozb3NXQ3NZWjBFUVRqaXlPN3hmRjRnOUFXeDFGaWYxYno3?=
+ =?utf-8?B?azBYUENwVzZlcHNLeGpOVFBOcjBsd3g1ZFpqeUF6UDk0bnk4Z0hhNjlEYmhy?=
+ =?utf-8?B?elIwMkVFTTdPTm53NWlxT2E0dU0rRFh1cnhlWU5JS2F5aElVS3Z0Z0h3V0tv?=
+ =?utf-8?B?cE8rYU1QZHFPSzZ4cjMxeVhXdkJUdzhYNDR0V0JzT2Jja01yd1ZhY0M4aThE?=
+ =?utf-8?B?YTdMbndYRW95TUVJeGRnRVBjRk53UEZLKzErMmUyYVdPTXc5cGtqanY2dnBJ?=
+ =?utf-8?B?akw5aFFxMVZOc2hKK05HdWRlYVpZVHU1ZUJNSzRrQk5HMi9nUE1ieE16Nnpu?=
+ =?utf-8?B?a09OekVXTy9pZ3h6UDU4blhCa3MvREo4bFI0RkF6WE05OVNUY05oK3dlNWRp?=
+ =?utf-8?B?Rzl1Nm0xWTF0aDBkWlg2S3lJWW9qQXVlTTJMZTNhaFdMeUxPaDlvQVhGQWdY?=
+ =?utf-8?B?UkVwcGxYbmxXMVNJWWw5SHB3cW1zN0grbXhtczlCNDMyOXlIQ3ppK2JuYm5N?=
+ =?utf-8?B?SW1RdUVJb09nM3dVcndsLzg1SFMzMm5RYlo4bHpVVVZHdDg2Z3BzSkE1c2Jl?=
+ =?utf-8?B?SFJMT2tMb3V5VVNSRXFuN3ZwMVI2UTYzOUNqSWpIajV6K1VjTDdxUnQvdlRz?=
+ =?utf-8?B?enZaWmdVRDlyc0JjY1IwaGVDSjZraENrZHcwbFdQRmtJWlgxdFk2Tkp4OGhJ?=
+ =?utf-8?B?ZHNtZ04yS0NwVG1yOXZzcWVMa21QRExNM2pZVCtoWFpWY0xyNTZ0OW9NNEV1?=
+ =?utf-8?B?TE0ybjh2c2JFTXh0VVpYUlpPSnUvOUE4TFcyTWtqTWg4eE81VFQybXhETjFx?=
+ =?utf-8?B?MFh1a3liaUNwSDl3SUpreEN4Yi84amdrcXZaZ3JiWEx1eEhxWnlHUU9wZUZw?=
+ =?utf-8?B?M0F5QWYzd21VWXV3STFuRTAyK3dxTlRsVCtBQnhHWG1hVGJsdC9PK3ZiVGVK?=
+ =?utf-8?B?Y1hnd0F6dURzVTg5S2dBcHFQUXJnaEdRbTFvL3IvOGJDYy8vemdlalhxZzJw?=
+ =?utf-8?B?R2MvNTJsOFJjM0U3ekgvUGJSQkdRZENZM0U2M2tNNVVyRmNMVXNhT0cvRE1n?=
+ =?utf-8?B?S2UzL0Q0UWJ5aGVRYmtIcVZhZlF6ZkxzZUd5K1RTTzROM1VQdG10WEtRM24y?=
+ =?utf-8?B?aXZhSzZnNUtDeXYvK0xDcXBzZEpMVVFVQTVGcnd4Lzl2TGJUWU5TY2VlTE41?=
+ =?utf-8?B?YnFSZzU4V3RJcDRHeXg5UXVndDdLQ2xlSW5QKzJRNWwwSXN3SEp5Ly84Qkkz?=
+ =?utf-8?Q?jV1WdGP1FHh19Ao4HqDCjmGIM?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dd2ac5a-06ce-4654-080a-08dccde64383
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98524f69-3d65-4c5e-9ac3-08dccdeaa49f
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2024 20:06:43.9623
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2024 20:38:05.0302
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HyW2ljZA47VOGNP2HxE8HAAwYnR8RD0aQ/gBbpjxwcL0wmh9+36AlGBryZNPyvc0n7EvW4VDms9NoNZlbOL1Xg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8423
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZFU7y2J7coYR7NKMhy53KUUlEawlKUk6CaRNchEsPFvz9RhH8C0xMMIZVRsm3xmWa9bS5zEH0T8VV9BzM/jbSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8152
 
-From: Li Jun <jun.li@nxp.com>
+On Thu, Sep 05, 2024 at 09:01:06PM +0200, Marek Vasut wrote:
+> On 9/5/24 8:54 PM, Frank Li wrote:
+> > On Thu, Sep 05, 2024 at 08:26:34PM +0200, Marek Vasut wrote:
+> > > On 9/5/24 7:12 PM, Fabio Estevam wrote:
+> > > > Adding Marek.
+> > > >
+> > > > On Mon, Jul 15, 2024 at 5:30 PM Frank Li <Frank.Li@nxp.com> wrote:
+> > > > >
+> > > > > From: Clark Wang <xiaoning.wang@nxp.com>
+> > > > >
+> > > > > Implement workaround for ERR051198
+> > > > > (https://www.nxp.com/docs/en/errata/IMX8MN_0N14Y.pdf)
+> > > > >
+> > > > > PWM output may not function correctly if the FIFO is empty when a new SAR
+> > > > > value is programmed
+> > > > >
+> > > > > Description:
+> > > > >     When the PWM FIFO is empty, a new value programmed to the PWM Sample
+> > > > >     register (PWM_PWMSAR) will be directly applied even if the current timer
+> > > > >     period has not expired. If the new SAMPLE value programmed in the
+> > > > >     PWM_PWMSAR register is less than the previous value, and the PWM counter
+> > > > >     register (PWM_PWMCNR) that contains the current COUNT value is greater
+> > > > >     than the new programmed SAMPLE value, the current period will not flip
+> > > > >     the level. This may result in an output pulse with a duty cycle of 100%.
+> > > > >
+> > > > > Workaround:
+> > > > >     Program the current SAMPLE value in the PWM_PWMSAR register before
+> > > > >     updating the new duty cycle to the SAMPLE value in the PWM_PWMSAR
+> > > > >     register. This will ensure that the new SAMPLE value is modified during
+> > > > >     a non-empty FIFO, and can be successfully updated after the period
+> > > > >     expires.
+> > >
+> > > Frank, could you submit this patch separately ? The 1/3 and 2/3 are
+> > > unrelated as far as I can tell ?
+> > >
+> > > > > ---
+> > > > > Change from v1 to v2
+> > > > > - address comments in https://lore.kernel.org/linux-pwm/20211221095053.uz4qbnhdqziftymw@pengutronix.de/
+> > > > >     About disable/enable pwm instead of disable/enable irq:
+> > > > >     Some pmw periphal may sensitive to period. Disable/enable pwm will
+> > > > > increase period, althouhg it is okay for most case, such as LED backlight
+> > > > > or FAN speed. But some device such servo may require strict period.
+> > > > >
+> > > > > - address comments in https://lore.kernel.org/linux-pwm/d72d1ae5-0378-4bac-8b77-0bb69f55accd@gmx.net/
+> > > > >     Using official errata number
+> > > > >     fix typo 'filp'
+> > > > >     add {} for else
+> > > > >
+> > > > > I supposed fixed all previous issues, let me know if I missed one.
+> > > > > ---
+> > > > >    drivers/pwm/pwm-imx27.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++-
+> > > > >    1 file changed, 51 insertions(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+> > > > > index 253afe94c4776..e12eaaebe3499 100644
+> > > > > --- a/drivers/pwm/pwm-imx27.c
+> > > > > +++ b/drivers/pwm/pwm-imx27.c
+> > > > > @@ -27,6 +27,7 @@
+> > > > >    #define MX3_PWMSR                      0x04    /* PWM Status Register */
+> > > > >    #define MX3_PWMSAR                     0x0C    /* PWM Sample Register */
+> > > > >    #define MX3_PWMPR                      0x10    /* PWM Period Register */
+> > > > > +#define MX3_PWMCNR                     0x14    /* PWM Counter Register */
+> > > > >
+> > > > >    #define MX3_PWMCR_FWM                  GENMASK(27, 26)
+> > > > >    #define MX3_PWMCR_STOPEN               BIT(25)
+> > > > > @@ -232,8 +233,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> > > > >    {
+> > > > >           unsigned long period_cycles, duty_cycles, prescale;
+> > > > >           struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
+> > > > > +       void __iomem *reg_sar = imx->mmio_base + MX3_PWMSAR;
+> > > > >           unsigned long long c;
+> > > > >           unsigned long long clkrate;
+> > > > > +       unsigned long flags;
+> > > > > +       int val;
+> > > > >           int ret;
+> > > > >           u32 cr;
+> > > > >
+> > > > > @@ -274,7 +278,53 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+> > > > >                   pwm_imx27_sw_reset(chip);
+> > > > >           }
+> > > > >
+> > > > > -       writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+> > > > > +       /*
+> > > > > +        * This is a limited workaround. When the SAR FIFO is empty, the new
+> > > > > +        * write value will be directly applied to SAR even the current period
+> > > > > +        * is not over.
+> > > > > +        *
+> > > > > +        * If the new SAR value is less than the old one, and the counter is
+> > > > > +        * greater than the new SAR value, the current period will not filp
+> > > > > +        * the level. This will result in a pulse with a duty cycle of 100%.
+> > > > > +        * So, writing the current value of the SAR to SAR here before updating
+> > > > > +        * the new SAR value can avoid this issue.
+> > > > > +        *
+> > > > > +        * Add a spin lock and turn off the interrupt to ensure that the
+> > > > > +        * real-time performance can be guaranteed as much as possible when
+> > > > > +        * operating the following operations.
+> > > > > +        *
+> > > > > +        * 1. Add a threshold of 1.5us. If the time T between the read current
+> > > > > +        * count value CNR and the end of the cycle is less than 1.5us, wait
+> > > > > +        * for T to be longer than 1.5us before updating the SAR register.
+> > > > > +        * This is to avoid the situation that when the first SAR is written,
+> > > > > +        * the current cycle just ends and the SAR FIFO that just be written
+> > > > > +        * is emptied again.
+> > > > > +        *
+> > > > > +        * 2. Use __raw_writel() to minimize the interval between two writes to
+> > > > > +        * the SAR register to increase the fastest pwm frequency supported.
+> > > > > +        *
+> > > > > +        * When the PWM period is longer than 2us(or <500KHz), this workaround
+> > > > > +        * can solve this problem.
+> > > > > +        */
+> > > > > +       val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+> > > > > +       if (duty_cycles < imx->duty_cycle && val < MX3_PWMSR_FIFOAV_2WORDS) {
+> > > > > +               c = clkrate * 1500;
+> > > > > +               do_div(c, NSEC_PER_SEC);
+> > > > > +
+> > > > > +               local_irq_save(flags);
+> > > > > +               if (state->period >= 2000)
+> > > > > +                       readl_poll_timeout_atomic(imx->mmio_base + MX3_PWMCNR, val,
+> > > > > +                                                 period_cycles - val >= c, 0, 10);
+> > > > > +
+> > > > > +               val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
+> > > > > +               if (!val)
+> > > > > +                       writel_relaxed(imx->duty_cycle, reg_sar);
+> > > > > +               writel_relaxed(duty_cycles, reg_sar);
+> > > > > +               local_irq_restore(flags);
+> > > > > +       } else {
+> > > > > +               writel_relaxed(duty_cycles, reg_sar);
+> > > > > +       }
+> > >
+> > > Why so complicated ? Can't this be simplified to this ?
+> > >
+> > > const u32 sar[3] = { old_sar, old_sar, new_sar };
+> > >
+> > > val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base +
+> > > MX3_PWMSR));
+> > >
+> > > switch (val) {
+> > > case MX3_PWMSR_FIFOAV_EMPTY:
+> > > case MX3_PWMSR_FIFOAV_1WORD:
+> > >    writesl(duty_cycles, sar, 3);
+> > >    break;
+> > > case MX3_PWMSR_FIFOAV_2WORDS:
+> > >    writesl(duty_cycles, sar + 1, 2);
+> > >    break;
+> > > default: // 3 words in FIFO
+> > >    writel(new_sar, duty_cycles);
+> > > }
+> > >
+> > > The MX3_PWMSR_FIFOAV_EMPTY/MX3_PWMSR_FIFOAV_1WORD case will effectively
+> > > trigger three consecutive 'str' instructions:
+> > >
+> > > 1: str PWMSAR, old_sar
+> > > 2: str PWMSAR, old_sar
+> > > 3: str PWMSAR, new_sar
+> > >
+> > > If the PWM cycle ends before 1:, then PWM will reload old value, then pick
+> > > old value from 1:, 2: and then new value from 3: -- the FIFO will never be
+> > > empty.
+> > >
+> > > If the PWM cycle ends after 1:, then PWM will pick up old value from 1:
+> > > which is now in FIFO, 2: and then new value from 3: -- the FIFO will never
+> > > be empty.
+> > >
+> > > The MX3_PWMSR_FIFOAV_2WORDS and default: case is there to prevent FIFO
+> > > overflow which may lock up the PWM. In case of MX3_PWMSR_FIFOAV_2WORDS there
+> > > are two words in the FIFO, write two more, old SAR value and new SAR value.
+> > > In case of default, there must be at least one free slot in the PWM FIFO
+> > > because pwm_imx27_wait_fifo_slot() which polled the FIFO for free slot
+> > > above, so there is no danger of FIFO being empty or FIFO overflow.
+> > >
+> > > Maybe this can still be isolated to "if (duty_cycles < imx->duty_cycle)" .
+> > >
+> > > What do you think ?
+> >
+> > Reasonable. Let me test it.
+> Thank you.
+>
+> I have MX8MN locally, so if you need RB/TB for V3, let me know.
+>
+> Will I be able to reproduce it on another iMX too? Like MX8MP or MX8MM (they
+> are a bit easier to work with for me) ?
+>
+> Could you include "how to reproduce" in the commit message ? Something easy
+> like:
+> - Write this and that sysfs attribute file with old value
+> - Write this and that sysfs attribute file with new value
+> - Observe this on a scope
 
-SS_CON and U3 wakeup need 'ref_clk' on. iMX8MP turn off it while system
-sleep, So disable these wakeup source and only enable DP/DM wakeup source
-for host mode.
+I will add it at next version. But I found a problem of your method,
+especially when period is quite long, for example 2s. Assume  FIFO is empty.
+[old, old, new] will be written to FIFO, new value will takes 2s-6s to make
+new value effect.
 
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/usb/dwc3/dwc3-imx8mp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+The currect method, most time, the new value will effect at next period.
 
-diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8mp.c
-index f62f6f960e501..4c0aef5792ce2 100644
---- a/drivers/usb/dwc3/dwc3-imx8mp.c
-+++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-@@ -97,7 +97,8 @@ static void imx8mp_configure_glue(struct dwc3_imx8mp *dwc3_imx)
- 	writel(value, dwc3_imx->glue_base + USB_CTRL1);
- }
- 
--static void dwc3_imx8mp_wakeup_enable(struct dwc3_imx8mp *dwc3_imx)
-+static void dwc3_imx8mp_wakeup_enable(struct dwc3_imx8mp *dwc3_imx,
-+				      pm_message_t msg)
- {
- 	struct dwc3	*dwc3 = platform_get_drvdata(dwc3_imx->dwc3);
- 	u32		val;
-@@ -107,12 +108,14 @@ static void dwc3_imx8mp_wakeup_enable(struct dwc3_imx8mp *dwc3_imx)
- 
- 	val = readl(dwc3_imx->hsio_blk_base + USB_WAKEUP_CTRL);
- 
--	if ((dwc3->current_dr_role == DWC3_GCTL_PRTCAP_HOST) && dwc3->xhci)
--		val |= USB_WAKEUP_EN | USB_WAKEUP_SS_CONN |
--		       USB_WAKEUP_U3_EN | USB_WAKEUP_DPDM_EN;
--	else if (dwc3->current_dr_role == DWC3_GCTL_PRTCAP_DEVICE)
-+	if ((dwc3->current_dr_role == DWC3_GCTL_PRTCAP_HOST) && dwc3->xhci) {
-+		val |= USB_WAKEUP_EN | USB_WAKEUP_DPDM_EN;
-+		if (PMSG_IS_AUTO(msg))
-+			val |= USB_WAKEUP_SS_CONN | USB_WAKEUP_U3_EN;
-+	} else {
- 		val |= USB_WAKEUP_EN | USB_WAKEUP_VBUS_EN |
- 		       USB_WAKEUP_VBUS_SRC_SESS_VAL;
-+	}
- 
- 	writel(val, dwc3_imx->hsio_blk_base + USB_WAKEUP_CTRL);
- }
-@@ -284,7 +287,7 @@ static int dwc3_imx8mp_suspend(struct dwc3_imx8mp *dwc3_imx, pm_message_t msg)
- 
- 	/* Wakeup enable */
- 	if (PMSG_IS_AUTO(msg) || device_may_wakeup(dwc3_imx->dev))
--		dwc3_imx8mp_wakeup_enable(dwc3_imx);
-+		dwc3_imx8mp_wakeup_enable(dwc3_imx, msg);
- 
- 	dwc3_imx->pm_suspended = true;
- 
-
--- 
-2.34.1
+Frank
 
