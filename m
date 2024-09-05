@@ -1,79 +1,76 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0FF158D66;
-	Thu,  5 Sep 2024 18:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6D91C2E;
+	Thu,  5 Sep 2024 18:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725561156; cv=none; b=PqSDWbctqwVdzcPfReAGwuO/9RnNd3KV9WczawRHSUhbVz5crVfF+ODC7UTs38USUKMXOj9heP0m+KIaePoqeCK2BlM3MxO/G+KuX9u3tafsX1Tgu5HIHpqX6MWXhydLflUII9pZ2qu65YsU6YXECE0lyPO8/+dSUHHyhLrP4mM=
+	t=1725561356; cv=none; b=PMgQAu/QztR62TQj57FMPfoqMOASDpgnPGeQvyDrRd2ojqLjRuR2EpDofOryOUSM2PKIiwT5gn79jbcFil26vjNdiIRi5t3lkJsH4sUedepmFcKKMuIkZ6PXUvet6g0ijZiVNmTxxwcIm9J8ujJqm6UuXFVw7rkYek7k2i49gQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725561156; c=relaxed/simple;
-	bh=GTVDmWxvB819jdsoUGb5a3UvxVpzRPws0zKvOkvRCdc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=prteanag7UmGr+AFSw52TnJZTKBhopEYsQnijluoGwK/LBa2w1LDWjTEW3m12UTESiv+TR/Z9fg7XzZ+aiOFDowVTW5xII9+0zCgZLdrT7J+QPkw3Huo6ILwioSW7QvYquQIISBovODfS6ipxpAddUSmWvGF7CZn30mDy8skOOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1smHHS-00DGm7-D4;
-	Thu, 05 Sep 2024 18:32:30 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH] arm64: dts: imx8mp-venice-gw74xx: add M2SKT_GPIO10 gpio configuration
-Date: Thu,  5 Sep 2024 11:32:28 -0700
-Message-Id: <20240905183228.517422-1-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1725561356; c=relaxed/simple;
+	bh=9+6JobrVEwIavAn3NGahdy36dtq2BeTyTirWMDBGnn4=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=pwsMMrgndLk6Qe1G0O9OAMQpnZlXCIgPIIDEU2Wa0LFPKSlolCwbb8v25WI5PUXp92GzoKUyzmvLcJa3zg2QHbFj/SuWz3mYNFwlzGJgQqg/WyLIiJADmwge2BCey3yJoCS2nueGAyrvIGy4UIBoP46cRs+RR04dX8aaH3mPOBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0khjj1h; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0khjj1h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26869C4CEC3;
+	Thu,  5 Sep 2024 18:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725561356;
+	bh=9+6JobrVEwIavAn3NGahdy36dtq2BeTyTirWMDBGnn4=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=a0khjj1h60pfADjGb3JE0RdMlDTMCoBUirk7J8QwefOdR+D7v4y3Q/sAUf5JWnWgM
+	 +Sv9zwKzY61yJ+SS2fFH45ipNI7mjjxS8Ft5J6wCVAEawhUlLqDYukG5ubdaFVZoWK
+	 NDq683OEQJYkV3XvNM0Gs2aPUxWF7HQ8pucizx9XA0f5etZ6q4VThoErz5OdeG81eI
+	 PtvdJepXT4Y/PmhjpR3Jv1UZKXN1m3U0unzFFEAZNPolvxI+U0mSagw7LmhHPgXkLJ
+	 aqxdTaLDuJBqq/+l8EqNCc7i9cM9BsHWik2geOkHhcV2hUHkFq0DNyIjbcYxRWovS9
+	 pqLZMrtPyNKqw==
+Message-ID: <0e1436511cadbe5eb6e0b567d61f0cea.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <DU0PR01MB9382A24116486931F28843BA9D9C2@DU0PR01MB9382.eurprd01.prod.exchangelabs.com>
+References: <DU0PR01MB93828B0E6808E33C608BC0E29DD32@DU0PR01MB9382.eurprd01.prod.exchangelabs.com> <AM6PR04MB5941651E3920794104B3D24F88D32@AM6PR04MB5941.eurprd04.prod.outlook.com> <DU0PR01MB9382F1AC496F22A20C074BDE9DDC2@DU0PR01MB9382.eurprd01.prod.exchangelabs.com> <Zs7gXhohOyQ/abOf@linaro.org> <DU0PR01MB9382A2BBCCD8C786121975B89D922@DU0PR01MB9382.eurprd01.prod.exchangelabs.com> <PAXPR04MB84591356511162E61E074221889C2@PAXPR04MB8459.eurprd04.prod.outlook.com> <DU0PR01MB9382A24116486931F28843BA9D9C2@DU0PR01MB9382.eurprd01.prod.exchangelabs.com>
+Subject: Re: [PATCH v4] clk: imx8qxp: Defer instead of failing probe
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: abelvesa@kernel.org <abelvesa@kernel.org>, linux-clk@vger.kernel.org <linux-clk@vger.kernel.org>, shawnguo@kernel.org <shawnguo@kernel.org>, kernel@pengutronix.de <kernel@pengutronix.de>, s.hauer@pengutronix.de <s.hauer@pengutronix.de>, linux-arm-kernel@lists.infradead.org <linux-arm-kernel@lists.infradead.org>, mturquette@baylibre.com <mturquette@baylibre.com>, festevam@gmail.com <festevam@gmail.com>, imx@lists.linux.dev <imx@lists.linux.dev>, EMC: linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>;
+To: Abel Vesa <abel.vesa@linaro.org>, Diogo Manuel Pais Silva <diogo.pais@ttcontrol.com>, Peng Fan <peng.fan@nxp.com>
+Date: Thu, 05 Sep 2024 11:35:54 -0700
+User-Agent: alot/0.10
 
-The GW74xx D revision has added a M2SKT_GPIO10 GPIO which routes to the
-GPIO10 pin of the M.2 socket for compatibility with certain devices.
+Quoting Diogo Manuel Pais Silva (2024-09-03 23:50:02)
+> When of_clk_parent_fill is ran without all the parent clocks having been
+> probed then the probe function will return -EINVAL, making it so that
+> the probe isn't attempted again. As fw_devlink is on by default this
+> does not usually happen, but if fw_devlink is disabled then it is very
+> possible that the parent clock will be probed after the lpcg first
+> attempt.
+>=20
+> Signed-off-by: Diogo Silva <diogo.pais@ttcontrol.com>
+> ---
 
-Add the iomux and a line name for this.
+Please stop sending as replies to previous patches.
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/clk/imx/clk-imx8qxp-lpcg.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/clk/imx/clk-imx8qxp-lpcg.c b/drivers/clk/imx/clk-imx=
+8qxp-lpcg.c
+> index d0ccaa040225..1c3e1a7df8ca 100644
+> --- a/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> +++ b/drivers/clk/imx/clk-imx8qxp-lpcg.c
+> @@ -225,8 +225,8 @@ static int imx_lpcg_parse_clks_from_dt(struct platfor=
+m_device *pdev,
+>=20
+>         ret =3D of_clk_parent_fill(np, parent_names, count);
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-index d765b7972841..9885948952b4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-@@ -299,7 +299,7 @@ &gpio2 {
- &gpio3 {
- 	gpio-line-names =
- 		"", "", "", "", "", "", "m2_rst", "",
--		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "m2_gpio10", "",
- 		"", "", "", "", "", "", "", "",
- 		"", "", "", "", "", "", "", "";
- };
-@@ -816,6 +816,7 @@ MX8MP_IOMUXC_SD2_CLK__GPIO2_IO13	0x40000150 /* PCIE1_WDIS# */
- 			MX8MP_IOMUXC_SD2_CMD__GPIO2_IO14	0x40000150 /* PCIE3_WDIS# */
- 			MX8MP_IOMUXC_SD2_DATA3__GPIO2_IO18	0x40000150 /* PCIE2_WDIS# */
- 			MX8MP_IOMUXC_NAND_DATA00__GPIO3_IO06	0x40000040 /* M2SKT_RST# */
-+			MX8MP_IOMUXC_NAND_DQS__GPIO3_IO14	0x40000040 /* M2SKT_GPIO10 */
- 			MX8MP_IOMUXC_SAI3_TXD__GPIO5_IO01	0x40000104 /* UART_TERM */
- 			MX8MP_IOMUXC_SAI3_TXFS__GPIO4_IO31	0x40000104 /* UART_RS485 */
- 			MX8MP_IOMUXC_SAI3_TXC__GPIO5_IO00	0x40000104 /* UART_HALF */
--- 
-2.25.1
-
+It would be better to move to struct clk_parent_data here and use the
+.index member if possible. That would allow the clks to be registered
+without their parent(s) being registered. It lets the core take care of
+finding the parents.
