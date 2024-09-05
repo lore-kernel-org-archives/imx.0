@@ -1,65 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A0E18F2C3;
-	Thu,  5 Sep 2024 06:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EE84400;
+	Thu,  5 Sep 2024 06:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725518694; cv=none; b=VowoiB8IFYNabacDw09mOpMuKeAsr6FtmrAwbZDdT+PVFYSPlxGaG/IwzSU/52CnqAIBJEd88pvqbUpJ9ncHZ+OdHTD52TYbSJCSbQgxjxVuzX94NI5QlTEkQKrhEpMKhy1VH8LCMP9MIFsDCb3P2BGPUPGhwmmFny0N/tqJtbs=
+	t=1725518722; cv=none; b=GHHM7LMR6mm4VSoVMnI/WWCeFTXU6xxykgOrIsvE9HqTWbfNH/rJ06rhWbn0sVjutyEOkt7TgpnbYdW6JhG0+l1L7pmckgi4XElSN0pNl6+tSE0+COd26adGHDCUyEHGvnM44XxahQ6b5/qFw3/m5pMS8bi9Q4AooCN6NjpmsRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725518694; c=relaxed/simple;
-	bh=WmzPeAppOYGxw2pBZvSCYqbt+9JNVBVF+BuOfIdFGkc=;
+	s=arc-20240116; t=1725518722; c=relaxed/simple;
+	bh=pwkWnjC+Q1NqaXK6JlAyfabTkTo0JS4rxXogOThDdac=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AUfX6PU9+307rFEKjzX1v4gSVqB4CQn6lkZATouwN5LMGRYhBjbh8nh4E0XwDOIRipsqeg7O+PyIhAJMfubLCR8oAia13nRJbT0jxlMc9Q6RGAwv0j1jQTvJc6y8yQWohpgcH1B9BOPklEiXCFp4WVGK1s8fN/+KiWVeq+Jo5RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MB4oAB5b; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bnsuKXVpvjyKf7f2NtDKpTE6aIBdksCWFKtPC976S6z5TyHiDWagPzbs5unze0DN4IX6IXp04zVhz5oOec9jBObJI7FDuc42YPRUvuVK9MR0ZszpxoV9kBnJ83ZGoAV/v9W9zRezYQLu0AcCid44VuZ9rxOsAoVeQi0MUxl0a+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLAgHg4r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MB4oAB5b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA010C4CEC4;
-	Thu,  5 Sep 2024 06:44:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLAgHg4r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B1EC4CEC4;
+	Thu,  5 Sep 2024 06:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725518694;
-	bh=WmzPeAppOYGxw2pBZvSCYqbt+9JNVBVF+BuOfIdFGkc=;
+	s=k20201202; t=1725518721;
+	bh=pwkWnjC+Q1NqaXK6JlAyfabTkTo0JS4rxXogOThDdac=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MB4oAB5bspDlg/3ddcsF3JbDbp2dSDH9wHLkExf3zfRms5OFlvh1uzCycCC/IaQwo
-	 ghaOJGqPxG1tXm/zKfbSK/RPg/Fnf6uULoaAmIo5FBy2dsmE08vTeRnZmubl73Quww
-	 qCKtoWqIkb5WkAUKAQj4WBskD6C/Dgk/nVIl21h7wn0zzy6rOTGCYNxWdG7jUqcsiz
-	 rV6Nvxr+QoZflZmQ2A9Z0r08h2uHbh7LpCzGAQ8RekbGMwVPgHkviWTCxW63WGjnf4
-	 abKnlYRtinZgm+tb6Vw6r3DG6CmbJAFo10ZIPvb3eklVVQH+uNX9ePxHjWdqaSqEQx
-	 1WqH9DAzI1ijA==
-Date: Thu, 5 Sep 2024 08:44:50 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	kernel@pengutronix.de
-Subject: Re: [PATCH v2 2/3] dt-bindings: clock: nxp,imx95-blk-ctl: Add
- compatible string for i.MX95 HSIO BLK CTRL
-Message-ID: <e24uioplsxa4iu5m2ecn7apkpkmz3lukfyypngmsmp27ikxnbc@4cwxk2hoeo2r>
-References: <1725503468-22105-1-git-send-email-hongxing.zhu@nxp.com>
- <1725503468-22105-3-git-send-email-hongxing.zhu@nxp.com>
+	b=QLAgHg4raavHGx9ezW/P9yna3hyJgw6SY+qG+4eCnu+2qT3zUt0b0fPsaJX0WAkRr
+	 b9cDKSCmOjvrTllVynwEXb3enBl+fSuzgT8hcBIruZ1ep0mGnWnVs4eifKMzJLsXgD
+	 35jjwGbavg8yMkh4NuEm3LKrA4x/PiKW9Ths/TrPgN0knM+hXgOmtuzIsjGCLGx80j
+	 z/MZF/3Spt7uR/u6V7jXGZQ69+qZxu9fqwCjKpnn8ybA6s1e5TAsV2Q3+PArjZM+Vb
+	 AOHDiGufvBkKqM3fG7dHqhwMeJTdNSxlKnbaolpRKwMhvrtoM2mQb+ukgwSk+Zdewl
+	 ds5+/dbcHItmw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sm6FO-000000001Hc-2EOT;
+	Thu, 05 Sep 2024 08:45:38 +0200
+Date: Thu, 5 Sep 2024 08:45:38 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Chuanhua Lei <lchuanhua@maxlinear.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	abel.vesa@linaro.org, johan+linaro@kernel.org,
+	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
+Subject: Re: [PATCH v6 2/4] PCI: dwc: Always cache the maximum link speed
+ value in dw_pcie::max_link_speed
+Message-ID: <ZtlTkjIky3X2fBQc@hovoldconsulting.com>
+References: <20240904-pci-qcom-gen4-stability-v6-0-ec39f7ae3f62@linaro.org>
+ <20240904-pci-qcom-gen4-stability-v6-2-ec39f7ae3f62@linaro.org>
+ <ZtgooHdex5gXh0tP@hovoldconsulting.com>
+ <20240904154944.w4bujfmhy5uhzkld@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1725503468-22105-3-git-send-email-hongxing.zhu@nxp.com>
+In-Reply-To: <20240904154944.w4bujfmhy5uhzkld@thinkpad>
 
-On Thu, Sep 05, 2024 at 10:31:07AM +0800, Richard Zhu wrote:
-> Add compatible string "nxp,imx95-hsio-blk-ctl" for i.MX95.
+On Wed, Sep 04, 2024 at 09:19:44PM +0530, Manivannan Sadhasivam wrote:
+> On Wed, Sep 04, 2024 at 11:30:08AM +0200, Johan Hovold wrote:
+> > On Wed, Sep 04, 2024 at 12:41:58PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+> > > +	/*
+> > > +	 * Even if the platform doesn't want to limit the maximum link speed,
+> > > +	 * just cache the hardware default value so that the vendor drivers can
+> > > +	 * use it to do any link specific configuration.
+> > > +	 */
+> > > +	if (pci->max_link_speed < 0) {
+> > 
+> > This should be 
+> > 
+> > 	if (pci->max_link_speed < 1) {
+> > 
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
+> Well I was trying to catch the error value here because if neither driver nor
+> platform limits the max link speed, this would have -EINVAL (returned by
+> of_pci_get_max_link_speed()).
 
-This one here is so trivial, you can squash both patches.
+Indeed, I thought I'd traced it do be zero here, but I must have made a
+mistake. The old code did check for 0 before calling this function,
+though (e.g. in case max_link_speed was never initialised as intended).
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> But logically it makes sense to use 'pci->max_link_speed < 1' since anything
+> below value 1 is an invalid value.
+> 
+> Will change it.
 
-Best regards,
-Krzysztof
+Sounds good.
 
+> > > @@ -1058,8 +1069,7 @@ void dw_pcie_setup(struct dw_pcie *pci)
+> > >  {
+> > >  	u32 val;
+> > >  
+> > > -	if (pci->max_link_speed > 0)
+> > > -		dw_pcie_link_set_max_speed(pci, pci->max_link_speed);
+> > > +	dw_pcie_link_set_max_speed(pci);
+
+Johan
