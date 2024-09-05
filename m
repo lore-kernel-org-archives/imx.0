@@ -1,148 +1,67 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B33B1A0702
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 17:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5750D1C2E;
+	Thu,  5 Sep 2024 18:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725557699; cv=none; b=ogM6It1ovcs1MU6+lEmnEqfqok2fxsAKn0xA0F6/R2mO2i2wvdWQ4g7tpLJ1bpTpORC9wmY1C3CLM5rU6GnqPQUVTGBPaPxyKzxmg5M9gr79drtWUFW8tRzVPRfgWVMFJwSBDy0ZUSsqMZdxQezPSqXMY1mKQsFmStH3W7dGk9E=
+	t=1725560740; cv=none; b=O58ykUXnd7oXH6+U5T3IGE56AjFsnQLDWnAKfZlfep7RK3lNJtnhtID/B+sUS8f1bKYsdLqmgfFI2mYP2jFdRA8/MkhJJPpGeGqX8fUshzP8rs8e7gmtRZBvrd5wpIl64CGkdiJIA+CyGNamHvIvU27CTBH7nIK21mk2qHhLozE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725557699; c=relaxed/simple;
-	bh=MI2LRc6AktxdTOVKQGnfpzkt/G3bqZJj+90kchL1ybM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zqm+z4MiTlM+ZA4BExb20RdgIacuryofQ7VYG4fxCx/INkNk1heoY7a6aAREYHCrYhGnnyf7/O1Deglq5Ys2lySIqlmBIJU8ckmRZ9/U0zRgUKI6kImE3r/PtsXZdPrhGmK1h00nr4+rvGDc1Q7pzZcSfE6YweojzJtjX3H4MjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S68v/8wv; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1725560740; c=relaxed/simple;
+	bh=upDPrIzD3Q5267hh2eQQIgGASxYMEBmzc1rIw5hZSb0=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=QKRmWoMxBaweszCqLql5PeIxFa7JSrSu8wpU7qn5pySbRY2ZNGLQZgn+Fu67XLplpds6JUOO9qYGE4Yeadd9kT8BOm4EGcvLg2PnjwM3dyEw5EMNH+m4mUZunMOguGlvvBJsKDk3l7qLFEk+5pxcTR08CULi0f0LaDYTrKHdNDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=astDoqXp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S68v/8wv"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2021c08b95cso18151315ad.0
-        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 10:34:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725557697; x=1726162497; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eIgzal7ITyKn4Uu6UhwVaplHaAv3wUp9Qsoun/N+n+c=;
-        b=S68v/8wveTVrYO0DEz6S+WNLXZO1fogoeb/kx+SEZUQb+S/1PQBKnjnm7DTdkePENV
-         DsTX3oGzPQDX0oxBOchli6Dj9P5qq4Bvdw7iwRtSLPyxgdrgXHkkwLv2FS3+TtgHynFm
-         h8z4bNpBWWJnPN5HU5xDZ3lSXrwbs4qQmi7046ueZYphWVxtAaBPe3qcgFkIBBbiMtaI
-         m5GBekWqU6LdTUQrcSYgQeXp0HqV5bsjfxuWesgJ9skI/ZyUgmrgDAZhrylTsPrOss7c
-         ao8FvEYhRzorsD4HXfvApjBT9j1CHENTRw8piEEpBZDw/1sSZTwQ6iXzKSCJyC/2AfzB
-         SpmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725557697; x=1726162497;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eIgzal7ITyKn4Uu6UhwVaplHaAv3wUp9Qsoun/N+n+c=;
-        b=HTHVvN2j4aKt9Rw1FyTeVrtBEyPwvzzm3saivLup3aJSlyG4gIK60tmikTxd8/Lhr6
-         SnArU57chXEfaRVKEEP3LcO1ZiUjc7W0yRkeTel0wWCjAiSCgpKix+WPFAx17Z8ltWQR
-         5xbUo7w3UtfWS9CD2GIYk7d6/MO9VvRer/Mq0xcOiWTuyihbTOmXcWOEmH5AJh5uQ5XR
-         JSNc+UY5VmpnZ3Lm+/VxOsiS5Tgy41tBX2SPt8oOPpJqfGxhfuzPACEFJ/DZFCH/zsZQ
-         KRNuuXsW5xt5y8SZy7y6sWzbJu+hEpv53BA2uIJWMop4Elz1yNgpU0y1Jecb5SC6SjDE
-         3Wkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTdYbzDQHjSPH91Ex+UzkDladoOd5RBDOEX7+K8mrRrzlfW9kBxlIgPIIrYeUUi4vZxTM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyfcX1oj6TD8fOT2UjUe1l9tB0f8tqfPb5R5fBMzCvW1IPxIMlD
-	f3PjRP3EZ0myAhATKS2AUaEokFZOp4TQjXC9/JnGscDgb5lk0ucoB/+Y6sA+8Fk6gKCkFL3YEbk
-	=
-X-Google-Smtp-Source: AGHT+IElFJh9mBN0d10CvX+yxAjA8cHTDsSZBmgENNb/EtffZEORF9F48GUK1FqLfVaqnR4xQfoX8Q==
-X-Received: by 2002:a17:902:ea0a:b0:205:3475:63be with SMTP id d9443c01a7336-206eeb8c61amr497735ad.25.1725557696776;
-        Thu, 05 Sep 2024 10:34:56 -0700 (PDT)
-Received: from thinkpad ([120.60.52.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206aea69770sm30809955ad.277.2024.09.05.10.34.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 10:34:56 -0700 (PDT)
-Date: Thu, 5 Sep 2024 23:04:37 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Chuanhua Lei <lchuanhua@maxlinear.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	abel.vesa@linaro.org, johan+linaro@kernel.org,
-	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
-Subject: Re: [PATCH v6 3/4] PCI: qcom: Add equalization settings for 16.0 GT/s
-Message-ID: <20240905173437.hm3hegv5zolaj7gj@thinkpad>
-References: <20240904-pci-qcom-gen4-stability-v6-0-ec39f7ae3f62@linaro.org>
- <20240904-pci-qcom-gen4-stability-v6-3-ec39f7ae3f62@linaro.org>
- <ZtgqvXGgp2sWNg5O@hovoldconsulting.com>
- <20240905152742.4llkcjvvu3klmo6j@thinkpad>
- <Ztnb-GauC_8D8N-i@hovoldconsulting.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="astDoqXp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53A7C4CEC3;
+	Thu,  5 Sep 2024 18:25:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725560739;
+	bh=upDPrIzD3Q5267hh2eQQIgGASxYMEBmzc1rIw5hZSb0=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=astDoqXpHIPiyWN56wTlr1R9sZpmWC+kzNkQY+C60WJJsX6nmAy43OXYgDnib6AEn
+	 AhnewzaLfxc5YRKXiGFzpb4ZAmi1UuChBDsoVaoljMNd050hsx6OdoF5t5n/YNw40i
+	 X+uJM6AItzS7AmqX9pPzoTpDqhUALLPcN71MV2TtLbBi2ITCiK/qehQzkr3Em+NgK9
+	 2ckZKdrQPtjKOD1+eQi7TynpKZQ/RWiLwrdA2rd63r7Goj3X604LiFadDbX2beLgls
+	 dGoC9UhKENadf4xweR+PW7/GWcrOLIQ9xVCzZp1hCaK2+mvj+RC20fZLSsev4PTubt
+	 UhOTSSm0c9scg==
+Message-ID: <a8400f018cc94177b6a91634fd977248.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Ztnb-GauC_8D8N-i@hovoldconsulting.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240904095710.2813541-1-abel.vesa@linaro.org>
+References: <20240904095710.2813541-1-abel.vesa@linaro.org>
+Subject: Re: [GIT PULL] clk: imx: Updates for v6.12
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>, linux-clk@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Abel Vesa <abel.vesa@linaro.org>, Mike Turquette <mturquette@baylibre.com>
+Date: Thu, 05 Sep 2024 11:25:37 -0700
+User-Agent: alot/0.10
 
-On Thu, Sep 05, 2024 at 06:27:36PM +0200, Johan Hovold wrote:
-> On Thu, Sep 05, 2024 at 08:57:42PM +0530, Manivannan Sadhasivam wrote:
-> > On Wed, Sep 04, 2024 at 11:39:09AM +0200, Johan Hovold wrote:
-> 
-> > > > diff --git a/drivers/pci/controller/dwc/pcie-qcom-common.h b/drivers/pci/controller/dwc/pcie-qcom-common.h
-> > > > new file mode 100644
-> > > > index 000000000000..259e04b7bdf9
-> > > > --- /dev/null
-> > > > +++ b/drivers/pci/controller/dwc/pcie-qcom-common.h
-> > > > @@ -0,0 +1,8 @@
-> > > > +/* SPDX-License-Identifier: GPL-2.0 */
-> > > > +/*
-> > > > + * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-> > > > + */
-> > > > +
-> > > > +#include "pcie-designware.h"
-> > > 
-> > > You only need a forward declaration:
-> > > 
-> > > 	struct dw_pcie;
-> > > 
-> > > > +
-> > > > +void qcom_pcie_common_set_16gt_eq_settings(struct dw_pcie *pci);
-> > > 
-> > > Compile guard still missing.
-> 
-> Sorry, I meant to say *include* guard here.
->
+Quoting Abel Vesa (2024-09-04 02:57:10)
+> The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f01=
+7b:
+>=20
+>   Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
+>=20
+> are available in the Git repository at:
+>=20
+>   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/=
+clk-imx-6.12
+>=20
+> for you to fetch changes up to 32c055ef563c3a4a73a477839f591b1b170bde8e:
+>=20
+>   clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL (2024-09-04 =
+12:39:38 +0300)
+>=20
+> ----------------------------------------------------------------
 
-Okay. I got confused initially.
-  
-> > Perhaps we can just get rid of the Kconfig entry and build it by default for
-> > both RC and EP drivers? I don't see a value in building it as a separate module.
-> > And we may also move more common code in the future.
-> 
-> It is already built by default for both drivers. I'm not sure what
-> you're suggesting here.
-> 
-
-Right now it is selected by both drivers using a Kconfig symbol. But I'm
-thinking of building it by default as below:
-
--obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o
--obj-$(CONFIG_PCIE_QCOM_EP) += pcie-qcom-ep.o
-+obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o pcie-qcom-common.o
-+obj-$(CONFIG_PCIE_QCOM_EP) += pcie-qcom-ep.o pcie-qcom-common.o
-
-A separate Kconfig symbol is not really needed here as this file contains common
-code required by both the drivers.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks. Pulled into clk-next. I also found the v6.11 PR for clk-imx in my
+repo for some reason :( Sorry about that! I've merged that into clk-next
+as well now so the next merge window will get two cycles worth.
