@@ -1,240 +1,125 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E5F1803D
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 18:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3339A8821;
+	Thu,  5 Sep 2024 18:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725560943; cv=none; b=XXxvAfYuZRDamIxHV/phTiJXY+dXakw5xqffPIcuKfcbr8vMLVI0kFj2SmyhGWhc0XB4siF3BtORH5vfBpxdY0qmdhQZh73rHwvK9IOTKoj77c3oshpRfBqavzrugRXchh+NkZNaXVQrT7EUnD3+EN/ml2RifKv1PEAP+6S6tXw=
+	t=1725561081; cv=none; b=hXEgoiWHMuEY/aQEly3KKjbmwfihPVVLl5zdy1ArOOFOoKNBkQu7VVNdd66jZBd+ICYrCD1MbrHlYfoPFe1cFGXuCpEqGNf9laRsC81pVa8chvWIRxZ9HC+tlDrwbWuaS5O2Pa/gWWdwRAqZSj0vnnM/AFZg1drEkwr2mrguvXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725560943; c=relaxed/simple;
-	bh=RzH7YeQcOe3cwiGwu/SoGWjxyZNxZtjC5k/biggfzXk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qlP7eyr5REPkrdk0Oj8cHDpN2WBBlCIVeraT5wiqYP/WVrEn7lLfk911dp29t0C30p7XaK8mp1zgg2VXMN0iokk506fIhNszKNCdcZtBGICPhxNPAUaLO9mqee0sl3dk1IS4NxVRR+ixeHj0P10BvjAw2NmR++GRt+BuZskRIbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Bf6L3a3f; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Bf6L3a3f"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 143EB88CC1;
-	Thu,  5 Sep 2024 20:28:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1725560934;
-	bh=mnlOn+20C49szsiIT5w0NLtAJkZUlNBplzPPTN3aoqo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Bf6L3a3fxGvrFbeBlQVDD22e37MRnlF57PgHKTw++RlIWFVbUCPjOxI2XrCYjhwoZ
-	 aZLInovRZc3+5yj+OTid82sNwCuFlCzMF2Rizvg7PSj54C/c6QfGKS+vHNVFgusyJI
-	 PBjZlU81KAPhyRZtBW688tJ2mRhyNOsXx1MpGao8FRLLgq+JoOMZJrcvl5j/bXW7mB
-	 iY5scM0OWpc0pM2qX3nFqFMber/T7i+5b3SEUyXal9E+h8zoqlmAL72W9wqScYPSrn
-	 A1YZs5glMXfF2ozlz0AG8IlONkyLO9bn9AtBvprNiVlfJRpbpwfOcYC+ohL/MgcNe2
-	 bbbwz514h8l0w==
-Message-ID: <ac922fd5-9438-4f73-9a3d-08cceb1d7409@denx.de>
-Date: Thu, 5 Sep 2024 20:26:34 +0200
+	s=arc-20240116; t=1725561081; c=relaxed/simple;
+	bh=UuDB4ZmpHTuRa2ayUVzcn+2Sq5Jgmg+cZqaYQjpS2eY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y1e9ojk+JS+8dKbbqDUyJeTSn9q/du4nB5b5H5XlouFyOfsUG84A6rKHF14SasxOUxBCd+A2g1D4BDK7xEHT7UGgbvDhCXqRSIVqopDwbowM8/K0mdfVI6d3T9CaEOYUDOlP5rA+mNeuzAwDkkM0xZQ9Uyb9SqQyolRO21E4Qvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1smHGD-00DDvR-DN;
+	Thu, 05 Sep 2024 18:31:13 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH] arm64: dts: imx8m*-venice-gw75xx: add Accelerometer device
+Date: Thu,  5 Sep 2024 11:31:07 -0700
+Message-Id: <20240905183107.517244-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] pwm: imx27: workaround of the pwm output bug when
- decrease the duty cycle
-To: Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, linux-pwm@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- pratikmanvar09@gmail.com, francesco@dolcini.it,
- Clark Wang <xiaoning.wang@nxp.com>, Jun Li <jun.li@nxp.com>
-References: <20240715-pwm-v2-0-ff3eece83cbb@nxp.com>
- <20240715-pwm-v2-3-ff3eece83cbb@nxp.com>
- <CAOMZO5DNmHfHWbLoPj9P=_+JiLLQ4tiDd_90+UX+_psN2o+Knw@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <CAOMZO5DNmHfHWbLoPj9P=_+JiLLQ4tiDd_90+UX+_psN2o+Knw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 9/5/24 7:12 PM, Fabio Estevam wrote:
-> Adding Marek.
-> 
-> On Mon, Jul 15, 2024 at 5:30 PM Frank Li <Frank.Li@nxp.com> wrote:
->>
->> From: Clark Wang <xiaoning.wang@nxp.com>
->>
->> Implement workaround for ERR051198
->> (https://www.nxp.com/docs/en/errata/IMX8MN_0N14Y.pdf)
->>
->> PWM output may not function correctly if the FIFO is empty when a new SAR
->> value is programmed
->>
->> Description:
->>    When the PWM FIFO is empty, a new value programmed to the PWM Sample
->>    register (PWM_PWMSAR) will be directly applied even if the current timer
->>    period has not expired. If the new SAMPLE value programmed in the
->>    PWM_PWMSAR register is less than the previous value, and the PWM counter
->>    register (PWM_PWMCNR) that contains the current COUNT value is greater
->>    than the new programmed SAMPLE value, the current period will not flip
->>    the level. This may result in an output pulse with a duty cycle of 100%.
->>
->> Workaround:
->>    Program the current SAMPLE value in the PWM_PWMSAR register before
->>    updating the new duty cycle to the SAMPLE value in the PWM_PWMSAR
->>    register. This will ensure that the new SAMPLE value is modified during
->>    a non-empty FIFO, and can be successfully updated after the period
->>    expires.
+The GW79xx has a LIS2DE12TR 3-axis accelerometer on the I2C bus with an
+interrupt pin. Add it to the device-tree.
 
-Frank, could you submit this patch separately ? The 1/3 and 2/3 are 
-unrelated as far as I can tell ?
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+---
+ .../boot/dts/freescale/imx8mm-venice-gw75xx.dtsi | 16 ++++++++++++++++
+ .../boot/dts/freescale/imx8mp-venice-gw75xx.dtsi | 16 ++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
->> ---
->> Change from v1 to v2
->> - address comments in https://lore.kernel.org/linux-pwm/20211221095053.uz4qbnhdqziftymw@pengutronix.de/
->>    About disable/enable pwm instead of disable/enable irq:
->>    Some pmw periphal may sensitive to period. Disable/enable pwm will
->> increase period, althouhg it is okay for most case, such as LED backlight
->> or FAN speed. But some device such servo may require strict period.
->>
->> - address comments in https://lore.kernel.org/linux-pwm/d72d1ae5-0378-4bac-8b77-0bb69f55accd@gmx.net/
->>    Using official errata number
->>    fix typo 'filp'
->>    add {} for else
->>
->> I supposed fixed all previous issues, let me know if I missed one.
->> ---
->>   drivers/pwm/pwm-imx27.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 51 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
->> index 253afe94c4776..e12eaaebe3499 100644
->> --- a/drivers/pwm/pwm-imx27.c
->> +++ b/drivers/pwm/pwm-imx27.c
->> @@ -27,6 +27,7 @@
->>   #define MX3_PWMSR                      0x04    /* PWM Status Register */
->>   #define MX3_PWMSAR                     0x0C    /* PWM Sample Register */
->>   #define MX3_PWMPR                      0x10    /* PWM Period Register */
->> +#define MX3_PWMCNR                     0x14    /* PWM Counter Register */
->>
->>   #define MX3_PWMCR_FWM                  GENMASK(27, 26)
->>   #define MX3_PWMCR_STOPEN               BIT(25)
->> @@ -232,8 +233,11 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->>   {
->>          unsigned long period_cycles, duty_cycles, prescale;
->>          struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
->> +       void __iomem *reg_sar = imx->mmio_base + MX3_PWMSAR;
->>          unsigned long long c;
->>          unsigned long long clkrate;
->> +       unsigned long flags;
->> +       int val;
->>          int ret;
->>          u32 cr;
->>
->> @@ -274,7 +278,53 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->>                  pwm_imx27_sw_reset(chip);
->>          }
->>
->> -       writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
->> +       /*
->> +        * This is a limited workaround. When the SAR FIFO is empty, the new
->> +        * write value will be directly applied to SAR even the current period
->> +        * is not over.
->> +        *
->> +        * If the new SAR value is less than the old one, and the counter is
->> +        * greater than the new SAR value, the current period will not filp
->> +        * the level. This will result in a pulse with a duty cycle of 100%.
->> +        * So, writing the current value of the SAR to SAR here before updating
->> +        * the new SAR value can avoid this issue.
->> +        *
->> +        * Add a spin lock and turn off the interrupt to ensure that the
->> +        * real-time performance can be guaranteed as much as possible when
->> +        * operating the following operations.
->> +        *
->> +        * 1. Add a threshold of 1.5us. If the time T between the read current
->> +        * count value CNR and the end of the cycle is less than 1.5us, wait
->> +        * for T to be longer than 1.5us before updating the SAR register.
->> +        * This is to avoid the situation that when the first SAR is written,
->> +        * the current cycle just ends and the SAR FIFO that just be written
->> +        * is emptied again.
->> +        *
->> +        * 2. Use __raw_writel() to minimize the interval between two writes to
->> +        * the SAR register to increase the fastest pwm frequency supported.
->> +        *
->> +        * When the PWM period is longer than 2us(or <500KHz), this workaround
->> +        * can solve this problem.
->> +        */
->> +       val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
->> +       if (duty_cycles < imx->duty_cycle && val < MX3_PWMSR_FIFOAV_2WORDS) {
->> +               c = clkrate * 1500;
->> +               do_div(c, NSEC_PER_SEC);
->> +
->> +               local_irq_save(flags);
->> +               if (state->period >= 2000)
->> +                       readl_poll_timeout_atomic(imx->mmio_base + MX3_PWMCNR, val,
->> +                                                 period_cycles - val >= c, 0, 10);
->> +
->> +               val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
->> +               if (!val)
->> +                       writel_relaxed(imx->duty_cycle, reg_sar);
->> +               writel_relaxed(duty_cycles, reg_sar);
->> +               local_irq_restore(flags);
->> +       } else {
->> +               writel_relaxed(duty_cycles, reg_sar);
->> +       }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+index 5eb92005195c..417c19774b17 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+@@ -116,6 +116,16 @@ &i2c2 {
+ 	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
+ 
++	accelerometer@19 {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_accel>;
++		compatible = "st,lis2de12";
++		reg = <0x19>;
++		st,drdy-int-pin = <1>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++	};
++
+ 	eeprom@52 {
+ 		compatible = "atmel,24c32";
+ 		reg = <0x52>;
+@@ -198,6 +208,12 @@ MX8MM_IOMUXC_SPDIF_RX_GPIO5_IO4		0x40000040 /* GPIOC */
+ 		>;
+ 	};
+ 
++	pinctrl_accel: accelgrp {
++		fsl,pins = <
++			MX8MM_IOMUXC_ECSPI1_MISO_GPIO5_IO8	0x159
++		>;
++	};
++
+ 	pinctrl_gpio_leds: gpioledgrp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SAI1_RXFS_GPIO4_IO0	0x6	/* LEDG */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
+index 0d40cb0f05f6..797d1168f4f2 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
+@@ -104,6 +104,16 @@ &i2c2 {
+ 	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
+ 
++	accelerometer@19 {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_accel>;
++		compatible = "st,lis2de12";
++		reg = <0x19>;
++		st,drdy-int-pin = <1>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++	};
++
+ 	eeprom@52 {
+ 		compatible = "atmel,24c32";
+ 		reg = <0x52>;
+@@ -204,6 +214,12 @@ MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28	0x40000106 /* PCI_WDIS# */
+ 		>;
+ 	};
+ 
++	pinctrl_accel: accelgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI1_MISO__GPIO5_IO08	0x159
++		>;
++	};
++
+ 	pinctrl_gpio_leds: gpioledgrp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22	0x6	/* LEDG */
+-- 
+2.25.1
 
-Why so complicated ? Can't this be simplified to this ?
-
-const u32 sar[3] = { old_sar, old_sar, new_sar };
-
-val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + 
-MX3_PWMSR));
-
-switch (val) {
-case MX3_PWMSR_FIFOAV_EMPTY:
-case MX3_PWMSR_FIFOAV_1WORD:
-   writesl(duty_cycles, sar, 3);
-   break;
-case MX3_PWMSR_FIFOAV_2WORDS:
-   writesl(duty_cycles, sar + 1, 2);
-   break;
-default: // 3 words in FIFO
-   writel(new_sar, duty_cycles);
-}
-
-The MX3_PWMSR_FIFOAV_EMPTY/MX3_PWMSR_FIFOAV_1WORD case will effectively 
-trigger three consecutive 'str' instructions:
-
-1: str PWMSAR, old_sar
-2: str PWMSAR, old_sar
-3: str PWMSAR, new_sar
-
-If the PWM cycle ends before 1:, then PWM will reload old value, then 
-pick old value from 1:, 2: and then new value from 3: -- the FIFO will 
-never be empty.
-
-If the PWM cycle ends after 1:, then PWM will pick up old value from 1: 
-which is now in FIFO, 2: and then new value from 3: -- the FIFO will 
-never be empty.
-
-The MX3_PWMSR_FIFOAV_2WORDS and default: case is there to prevent FIFO 
-overflow which may lock up the PWM. In case of MX3_PWMSR_FIFOAV_2WORDS 
-there are two words in the FIFO, write two more, old SAR value and new 
-SAR value. In case of default, there must be at least one free slot in 
-the PWM FIFO because pwm_imx27_wait_fifo_slot() which polled the FIFO 
-for free slot above, so there is no danger of FIFO being empty or FIFO 
-overflow.
-
-Maybe this can still be isolated to "if (duty_cycles < imx->duty_cycle)" .
-
-What do you think ?
-
->>          writel(period_cycles, imx->mmio_base + MX3_PWMPR);
