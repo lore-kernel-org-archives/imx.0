@@ -1,181 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D42619DF75;
-	Thu,  5 Sep 2024 16:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A1147F69
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 16:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725552744; cv=none; b=L2wJ8+JunKlcnXIAAOizcl+4X0sjA4I/WOrlK7fkgoy8H9Fuz42tbVI0HAhJLgBvPReHDd3Oeo7fyrq43sFhVN4mNh10JvbpXCrwXc+O6TXDxBvjcjLDoUS2TioSecHRx2idEgn8X3mlJb7auiJA4+kkOId7gdj77GyQCCvgW+0=
+	t=1725552999; cv=none; b=BSAjFfqW/NA7+bCG0e2FOTunTMPGMovpm1/swIA+ykhFPmrk7kMidvvsJDmXv2SIf5QaaIFZJi3NgSAEJNihBK/ae3ZCc5RQSuK9vHQe5cs0ESYtrKK2J7S2t3JcJHXLdHS3AR47T19FTBRInsN0SQfORDG8xi4u3ENHsbq7xz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725552744; c=relaxed/simple;
-	bh=K6RDaEN/MDPa23PcxNXoVHYubllWBbLL+J/L8CXUdyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y03LzhaNgTPgvBr7Uz28ynL/hSYrPl+lX7kI2XWsSJKRKqQcC7XUINvD4PLgmUGjw/dYQ6qtyRlJM5COrcd55qsJFaqD4NRqaUJQDAblGW5P5p9SCtaHhj8g6I6g7flcAkKpWKJozOM0RhzNguxF9kBCCVPvIR0ULPlwaLogAtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eJ097K09; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1725552999; c=relaxed/simple;
+	bh=XbT1YCH8SqWz/eTmMsIAXlLpeVmIpBn9oe+hrkLvpv4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PBMmzu9MZB0LLPZusYrkUmGdUOGv8etIZfqVAE1Z/pUGMCNRr4u+KdRZB64XAMGiu8yQpRPqDioUp0aIuT8sF9mKm4zdFYZ6DaX1BjYa7BG++Oyrzg+wo3MMe9YxIJphiA623npDOHlNEp2uVsiqrLrRc0EF0uenqHjDWHla+3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LqtLiyUq; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eJ097K09"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725552742; x=1757088742;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K6RDaEN/MDPa23PcxNXoVHYubllWBbLL+J/L8CXUdyw=;
-  b=eJ097K09u9/rVfO9mTBPPs1l7RZAmuZLAYosZNwWqWrEGe6M8XGJrfqq
-   md/MQkxQk1o3mpU9ZkqhBX5Gbig4T9vHor0NJ5L2ykIztSZfJrltg0GG0
-   K37x7T2lQsVXt5bBf+ZBV75Phyti9+XbONEEUpi+fld+NLeLmEwTzfzg5
-   aCkv7/AvRShfrFdOH8j0glxA7I/Ma4NZQll2GGzWrtyQ18NGTwwTsrRvg
-   kWoJGcgsDWe5uyxSzoSuOBA8b+xWwM9ji/orlToks6RNeQU4Mg8KafP4p
-   wJMIz7lG3yMHFEi7WNQS5wCROSiY9LQoYfL0e7cVuULzoZ/A1omIfPZJr
-   Q==;
-X-CSE-ConnectionGUID: xxU0MVe0SjGeXZ4XztuBlA==
-X-CSE-MsgGUID: AUXys/FyRN2t7K9Bd50MDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="24473875"
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
-   d="scan'208";a="24473875"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 09:12:21 -0700
-X-CSE-ConnectionGUID: 1358xW9WSSGJaEZg2P8u+A==
-X-CSE-MsgGUID: kJluJaoxTASmBFneGyt5dA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; 
-   d="scan'208";a="65326967"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 05 Sep 2024 09:12:16 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1smF5h-000A6J-2M;
-	Thu, 05 Sep 2024 16:12:13 +0000
-Date: Fri, 6 Sep 2024 00:11:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Chuanhua Lei <lchuanhua@maxlinear.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	abel.vesa@linaro.org, johan+linaro@kernel.org,
-	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v6 1/4] PCI: dwc: Rename 'dw_pcie::link_gen' to
- 'dw_pcie::max_link_speed'
-Message-ID: <202409060041.zY2BEBq7-lkp@intel.com>
-References: <20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62@linaro.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LqtLiyUq"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e17c1881a52so1624797276.0
+        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 09:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725552995; x=1726157795; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PjXtA67NkTqAhDw+xk2sd8wVjIX4v9yriXRxfqRD17k=;
+        b=LqtLiyUqxj+cQBvH58zeB9AXonop1amH5LBxAitmI5zokiojJKQNKSncDzcgL/HX7a
+         FB2KvrozujKzqHEm7kgojNXN7HmiOF1iMfX62uiikCBe68Qbt9fgdIyiUU5FA56Y4tiJ
+         8cPdZHpD4xx8YqukZ01a9yay4n/3+XOLibk5+bup3WZhNfq901HH+uK+lRdcLuEPsTVd
+         fcJrHAh7Fb0h8igaYV+zVka+DYV6tnLQdoMwWbRAoCn5DXF067Xw5rDQX4Lj9HBgROQ0
+         6l/fiW9wOijoucucTY9o6zTKbwjOE8ED6bW8OzTeVoKW6zg0KBWonzqJVqC8KngnwwxM
+         7jwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725552995; x=1726157795;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PjXtA67NkTqAhDw+xk2sd8wVjIX4v9yriXRxfqRD17k=;
+        b=IakJ5f4ZSUxcUvAqduv+qBoYnYhVrHGVLG/sLVouoTVyaLWHOenmfjXAoGiHbF9yIs
+         aV3NZoR0mprqaQtxOmSS+oyj9cb5ZwVQM+sB9MeLC3OVcP0olwx+pyQaw+Y5kQRONHfj
+         KZdXYbwx3lx8n2dwxpT6TFXusb+lkvkNLxHVCkbG36/0MuQ6ccGal6CZNfJC6RDK9tJ+
+         n1UqjYYceszfO5s2ftz6/7kCPSsyc1VNP0HPkgAy0Pni4QMRcfpXfIOnyHKlm+etO10H
+         ZNgugNObG9FKLX9ZTjB8fbqJXEzj6COsMJYoxFDK8xk1kGkyXxsj/2XcUzUznUuieTPL
+         65zA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9quxTgMEy3H2haxCREwprswrx2L9EITRvZ5cyZ9yPQ+EkJrVhBxoucqumcjGyhWLNGSQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxRDfecMvJbc8usD4hJk9Pyzuq4jIjomY2LShvf15a4cXydk5Gm
+	glsQHXcY6Jomxsc9K3F+WohPhDEYjWV0DP2+oHB1gZ2rGT7txvScFx9Uj085G49Fi2MwqFYfsDk
+	vld003NAqwJMwvPMX4N/ANKfvF2eXxlA721Sy8Q==
+X-Google-Smtp-Source: AGHT+IHF4JIHvjV5ZU5Sri1yZmo/2IQpX2mnsVMjFO6aJcUWOMDD1IaSX23mBNNsT/EI52Q3fe8hXyMFeVoPQnvlm3E=
+X-Received: by 2002:a05:690c:fc2:b0:666:f7f:a05b with SMTP id
+ 00721157ae682-6db2583e3cemr61709927b3.0.1725552995374; Thu, 05 Sep 2024
+ 09:16:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62@linaro.org>
+References: <20240823095319.3917639-1-peng.fan@oss.nxp.com>
+In-Reply-To: <20240823095319.3917639-1-peng.fan@oss.nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 5 Sep 2024 18:15:58 +0200
+Message-ID: <CAPDyKFpYgZwNvVnpS0fjmhcEq+yiBizxDTw9nJEyQF287miFJA@mail.gmail.com>
+Subject: Re: [PATCH] pmdomain: imx: imx93-blk-ctrl: fix power up domain fail
+ during early noriq resume
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, victor.liu@nxp.com, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Manivannan,
+On Fri, 23 Aug 2024 at 11:44, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
+>
+> From: Dong Aisheng <aisheng.dong@nxp.com>
+>
+> After disabling PXP and having no displays connected, we met the following
+> suspend/resume hang issue on MX93 EVK board.
+>
+>  Enabling non-boot CPUs ...
+>  Detected VIPT I-cache on CPU1
+>  GICv3: CPU1: found redistributor 100 region 0:0x0000000048060000
+>  CPU1: Booted secondary processor 0x0000000100 [0x412fd050]
+>  CPU1 is up
+>  imx93-blk-ctrl 4ac10000.system-controller: failed to power up domain: -13
+>  imx93-blk-ctrl 4ac10000.system-controller: failed to power up domain: -13
+>  imx93-blk-ctrl 4ac10000.system-controller: failed to power up domain: -13
+> ...
+>
+> The issue was introduced since the commit c24efa673278
+> ("PM: runtime: Capture device status before disabling runtime PM")
+> which will also check the power.last_status must be RPM_ACTIVE before
+> pm_runtime_get_sync() can return 1 (means already active) even pm_runtime
+> is disabled during no_irq resume stage.
+>
+> However, the pm_runtime_set_active() we called ahead of
+> pm_runtime_get_sync() will not update power.last_status which probably like
+> a upstream kernel issue. But that's another issue which may worth an
+> extra fix.
 
-kernel test robot noticed the following build errors:
+I think this is confusing, I don't see any calls to
+pm_runtime_set_active() anywhere? Are you referring to some old code?
 
-[auto build test ERROR on 47ac09b91befbb6a235ab620c32af719f8208399]
+>
+> This patch refers to the solution in the exist similar imx8m blkctrl
+> driver[1] that it will power up upstream domains during blkctl suspend
+> first in order to make sure the power.last_status to be RPM_ACTIVE. Then we
+> can support calling pm_runtime_get_sync in noirq resume stage.
+>
+> After fixing, no need extra calling of pm_runtime_set_active() ahead.
+>
+> 1. drivers/pmdomain/imx/imx8m-blk-ctrl.c
+>
+> Fixes: e9aa77d413c9 ("soc: imx: add i.MX93 media blk ctrl driver")
+> Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/pmdomain/imx/imx93-blk-ctrl.c | 29 +++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+>
+> diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+> index 904ffa55b8f4..34ac7b722b90 100644
+> --- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+> @@ -424,6 +424,34 @@ static const struct imx93_blk_ctrl_data imx93_media_blk_ctl_dev_data = {
+>         .reg_access_table = &imx93_media_blk_ctl_access_table,
+>  };
+>
+> +static int imx93_blk_ctrl_suspend(struct device *dev)
+> +{
+> +       struct imx93_blk_ctrl *bc = dev_get_drvdata(dev);
+> +
+> +       /*
+> +        * This may look strange, but is done so the generic PM_SLEEP code
+> +        * can power down our domains and more importantly power them up again
+> +        * after resume, without tripping over our usage of runtime PM to
+> +        * control the upstream GPC domains. Things happen in the right order
+> +        * in the system suspend/resume paths due to the device parent/child
+> +        * hierarchy.
+> +        */
+> +       return pm_runtime_resume_and_get(bc->dev);
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Manivannan-Sadhasivam-via-B4-Relay/PCI-dwc-Rename-dw_pcie-link_gen-to-dw_pcie-max_link_speed/20240904-151354
-base:   47ac09b91befbb6a235ab620c32af719f8208399
-patch link:    https://lore.kernel.org/r/20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62%40linaro.org
-patch subject: [PATCH v6 1/4] PCI: dwc: Rename 'dw_pcie::link_gen' to 'dw_pcie::max_link_speed'
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240906/202409060041.zY2BEBq7-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240906/202409060041.zY2BEBq7-lkp@intel.com/reproduce)
+The reason why we *don't* use a regular parent/child setup of the PM
+domains (genpds) to control power-on/off, is because there seems to be
+a specific sequence that needs to be followed. So, instead we are
+using runtime PM to control the power for the parent PM domain.  See
+the comment in imx93_blk_ctrl_probe().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409060041.zY2BEBq7-lkp@intel.com/
+I have to admit, it all looks strange to me and seems also very fragile.
 
-All errors (new ones prefixed by >>):
+That said, why doesn't the sequence matter any longer during system
+suspend/resume. Or maybe the sequence doesn't really matter after all?
 
->> drivers/pci/controller/dwc/pcie-spear13xx.c:236:8: error: no member named 'link_gen' in 'struct dw_pcie'
-     236 |                 pci->link_gen = 1;
-         |                 ~~~  ^
-   1 error generated.
+> +}
+> +
+> +static int imx93_blk_ctrl_resume(struct device *dev)
+> +{
+> +       struct imx93_blk_ctrl *bc = dev_get_drvdata(dev);
+> +
+> +       pm_runtime_put(bc->dev);
+> +
+> +       return 0;
+> +}
+> +
+> +static const struct dev_pm_ops imx93_blk_ctrl_pm_ops = {
+> +       SYSTEM_SLEEP_PM_OPS(imx93_blk_ctrl_suspend, imx93_blk_ctrl_resume)
+> +};
+> +
+>  static const struct of_device_id imx93_blk_ctrl_of_match[] = {
+>         {
+>                 .compatible = "fsl,imx93-media-blk-ctrl",
+> @@ -439,6 +467,7 @@ static struct platform_driver imx93_blk_ctrl_driver = {
+>         .remove_new = imx93_blk_ctrl_remove,
+>         .driver = {
+>                 .name = "imx93-blk-ctrl",
+> +               .pm = pm_sleep_ptr(&imx93_blk_ctrl_pm_ops),
+>                 .of_match_table = imx93_blk_ctrl_of_match,
+>         },
+>  };
+> --
+> 2.37.1
+>
 
-
-vim +236 drivers/pci/controller/dwc/pcie-spear13xx.c
-
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  190  
-a43f32d6472730 drivers/pci/host/pcie-spear13xx.c           Matwey V. Kornilov     2015-02-19  191  static int spear13xx_pcie_probe(struct platform_device *pdev)
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  192  {
-6a43a425a074af drivers/pci/host/pcie-spear13xx.c           Bjorn Helgaas          2016-10-06  193  	struct device *dev = &pdev->dev;
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  194  	struct dw_pcie *pci;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  195  	struct spear13xx_pcie *spear13xx_pcie;
-6a43a425a074af drivers/pci/host/pcie-spear13xx.c           Bjorn Helgaas          2016-10-06  196  	struct device_node *np = dev->of_node;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  197  	int ret;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  198  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  199  	spear13xx_pcie = devm_kzalloc(dev, sizeof(*spear13xx_pcie), GFP_KERNEL);
-20f9ece101d879 drivers/pci/host/pcie-spear13xx.c           Jingoo Han             2014-11-12  200  	if (!spear13xx_pcie)
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  201  		return -ENOMEM;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  202  
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  203  	pci = devm_kzalloc(dev, sizeof(*pci), GFP_KERNEL);
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  204  	if (!pci)
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  205  		return -ENOMEM;
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  206  
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  207  	pci->dev = dev;
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  208  	pci->ops = &dw_pcie_ops;
-442ec4c04d1235 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  209  
-c0464062bfea9c drivers/pci/dwc/pcie-spear13xx.c            Guenter Roeck          2017-02-25  210  	spear13xx_pcie->pci = pci;
-c0464062bfea9c drivers/pci/dwc/pcie-spear13xx.c            Guenter Roeck          2017-02-25  211  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  212  	spear13xx_pcie->phy = devm_phy_get(dev, "pcie-phy");
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  213  	if (IS_ERR(spear13xx_pcie->phy)) {
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  214  		ret = PTR_ERR(spear13xx_pcie->phy);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  215  		if (ret == -EPROBE_DEFER)
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  216  			dev_info(dev, "probe deferred\n");
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  217  		else
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  218  			dev_err(dev, "couldn't get pcie-phy\n");
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  219  		return ret;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  220  	}
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  221  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  222  	phy_init(spear13xx_pcie->phy);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  223  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  224  	spear13xx_pcie->clk = devm_clk_get(dev, NULL);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  225  	if (IS_ERR(spear13xx_pcie->clk)) {
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  226  		dev_err(dev, "couldn't get clk for pcie\n");
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  227  		return PTR_ERR(spear13xx_pcie->clk);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  228  	}
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  229  	ret = clk_prepare_enable(spear13xx_pcie->clk);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  230  	if (ret) {
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  231  		dev_err(dev, "couldn't enable clk for pcie\n");
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  232  		return ret;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  233  	}
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  234  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  235  	if (of_property_read_bool(np, "st,pcie-is-gen1"))
-39bc5006501cc3 drivers/pci/controller/dwc/pcie-spear13xx.c Rob Herring            2020-08-20 @236  		pci->link_gen = 1;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  237  
-9bcf0a6fdc5062 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  238  	platform_set_drvdata(pdev, spear13xx_pcie);
-9bcf0a6fdc5062 drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  239  
-ffe82fa66afb19 drivers/pci/host/pcie-spear13xx.c           Bjorn Helgaas          2016-10-06  240  	ret = spear13xx_add_pcie_port(spear13xx_pcie, pdev);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  241  	if (ret < 0)
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  242  		goto fail_clk;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  243  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  244  	return 0;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  245  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  246  fail_clk:
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  247  	clk_disable_unprepare(spear13xx_pcie->clk);
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  248  
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  249  	return ret;
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  250  }
-51b66a6ce12570 drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  251  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kind regards
+Uffe
