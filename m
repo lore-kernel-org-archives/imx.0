@@ -1,201 +1,110 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2072.outbound.protection.outlook.com [40.107.21.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0124413D53F
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 03:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725507263; cv=fail; b=ZOAedN2c1Hv7Y+30w7vCss6RHWfsZjpa6xlWVLJmGn8iC2VFHdr4mQnqFCj22cLe7IaMnxhnimwg76sx9REfxi+hmpdvxbmDAgc41j+jQAdGW3LFd83hkCdZG3KbzTQasAZXIVtwfNtB9tcccVxQUxweXhI0mRqnqKicPTejXVU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725507263; c=relaxed/simple;
-	bh=0bsM33vfh2buIeVUXxjI591tdFaZyNeLVbu2U0m+jAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fK+N96xa93wiUMXfGC+7f1aAYDt3DVKrLXm+nYtQG0tPsmUBi2i01PMKVpqBoVYWfzRZ22Ebs18QNnrXn16Vt7CvRSeHajRAD0HJGxOHV4mQA9WLGAk22kbb6SKwkmavu0lWPOKz8SCB04VCusn+NJb34wiaIEug9c7mEIgmaYE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XGTB9TQh; arc=fail smtp.client-ip=40.107.21.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEB479F5
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 05:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725515048; cv=none; b=psweKJbuy77yNRuHXsIPrA/w1EkvPyrKMAdEBhxfB6Hp1UrbhPW8zpgmeV3UqmyJUEwtMr19q023i5qviExpSjKlArYLv5y8NKbRw4gz/fYU5giLm5eBE903aBD3lzZLUomKEckMEmHmagVmjw05bPQhldCswvNgknzQuMPVUfU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725515048; c=relaxed/simple;
+	bh=CdJAp/tUMWFGhcz1c0UPGBcC4IuszSHGI5lDno6dzRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TNDmhX+WjQUM3j7JW16v83cBmIebRo/c15S5XGBc5Wl0e8IQC+V5qD7VB5cO0Bl2mySC3d5YTRKA49fixHHGyplOH7Ku9zKm+U1JayQL1HoFsdpkOpaiy5vGg10+nZ2TFw/+Mnne4NBI8wbnGgQ6VFMX90Wklk5wrNsuf8AhGx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vgzud/is; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XGTB9TQh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=on4G4PS1mldAmCx9oEaywLS+VRor/GYqtareUaHukbpnpX3fV4RcncKi3kNiRFMsj0nQ0wgKTwRyxX77jVfYikP1KwVfNXkTWwgOk8gnmyQcwhZ8zQVehRPAhbw5YTcBZVLPS/YTT5r9U8MRD2UI0cTdwV4UL6E2NQgH375G7kq2T5ytmNjWJ7XDOdwWvEiIuAkMWrfKh2zAtVte66a1ODD18kh4OzmXkBwr9g45BCedCJbElD9vhLcdRqsmO/9vcea6SY4Gvlv7G4NEkpfPW7+ovF3uzDFyFcOnam0/YThdVUrMGClk0KKKwLLg+CYBXci/vSLwrD1lW0Z7HUCF5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5OcpQZ+TD8u9hMFJ8Fidjayk/UB8p0EVsJo4Mv/pdsM=;
- b=HWSj30kuEgea5JP+ki2p0vUPdKqBthgiaVBe+RPouoGpHkkB1jtV4AjdzAYGuuOIlhQMoIYvU4mwTCsWimhjpGV4wGDfyUH3OpRCqmMqt7O2tSIVxlMvSm7c4q4a9c269nD+jK6GiYmz3dLTIYFoBb3qGhenXpJb/zQ7ybllAfWxFaTPogHnUDjxEgRZLtj8MlvzM/Vxl+s3Rm2SxbuET33NFWXzGEf10vuk9yr89XBvg6oE/f+Jp4qWiIclaOz9sGTc8kHSFaqO0BG2LFKr0mQlTJ+uHP8J7Ng4JaBQuhEPrw2dpgCcnmgJ/KJMjwmfrnMDyChzRZ83UPfdXoSTAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5OcpQZ+TD8u9hMFJ8Fidjayk/UB8p0EVsJo4Mv/pdsM=;
- b=XGTB9TQh4uRRyWVEOmIb/0FiwgYKOAihzKw09Hla5OYV+++V3IG23E3cMZCoXtc1Y1x/IakU14+NhRtOpf2cTeuuOKDDRUhP48WIw57qg0xakjEg9Olfgv3Pk/iHEquq2DcQSpoFYShNgPOxCowPRyCwwLRgKog38BIl0CfcLlo35Jq/20HnNm2+pdNnLqxfmRD3yw2nnwRU3vgQt6HiRc3JgR9oFJBNosqpVGi3rf8rzmyhEXO1JwxbVu08NKeLA+vqXKlmilPRa/taq5fg0osG3pysYuKT9zXcspKWW7dF0wAhmQgdE3tf0t08St22e3W4ASLMUMifkhkPMECiWg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10175.eurprd04.prod.outlook.com (2603:10a6:800:242::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Thu, 5 Sep
- 2024 03:34:17 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7918.024; Thu, 5 Sep 2024
- 03:34:17 +0000
-Date: Wed, 4 Sep 2024 23:34:08 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
-	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	kernel@pengutronix.de
-Subject: Re: [PATCH v2 3/3] clk: imx95-blk-ctl: Add one clock gate for HSIO
- block
-Message-ID: <ZtkmsMP5y4KdIOXA@lizhi-Precision-Tower-5810>
-References: <1725503468-22105-1-git-send-email-hongxing.zhu@nxp.com>
- <1725503468-22105-4-git-send-email-hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1725503468-22105-4-git-send-email-hongxing.zhu@nxp.com>
-X-ClientProxiedBy: BY3PR04CA0030.namprd04.prod.outlook.com
- (2603:10b6:a03:217::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vgzud/is"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2d8abac30ddso301451a91.0
+        for <imx@lists.linux.dev>; Wed, 04 Sep 2024 22:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725515047; x=1726119847; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZbsO7GDIIJTt0xgKGCjBgrCED+h3LnKu0qaWwuQvabM=;
+        b=Vgzud/isyr3LDScUHklSTwpx1jLRAoJUhai//MLYDNnoX+NLBvzk+cF2zNtbUjpsGV
+         XM+BWCa8w8MdBLw181UtGltsq1pu9gDUJGQT/8xY0gco4gCuoXrvXcki+ufsegbwxZlB
+         4laWXvG4bhO/+iptRUQVnBJ1Qix/GO1y8SwEcP1VSIi+X2+Rk7r9GKKgRk9/BiacfjZh
+         vLk+OVqLpcJaxo3w0TzhLm8i6yt0E2eYUo+4uruRXW+IYVOY46X6XoqigD+QQHbL/zMY
+         uMpp2ralaeaO/OyBied5sdlrzTzyvGUda6aToa/l7U7ddnGhuzm8aCVUR4gWBskI6uei
+         FESw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725515047; x=1726119847;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZbsO7GDIIJTt0xgKGCjBgrCED+h3LnKu0qaWwuQvabM=;
+        b=dkhxFuVhLKxEOUSGF3qcRliUzxQZH0NnmP7pldQhrN8Lv7CT1DgqS8MGT8vLCtCKTZ
+         3/Gl+OLCvZPVGSQF56VcrT9YY7pdTHinkqQKUYyG8wCk+JiDkVLtwiFuGjvK/THekgfw
+         rkTgAYgRSTsmg4ZAIR6XMxToTZgFykJ76+7qeOAbUawsENVBTkVlEJnc8AX4ByiK6fTy
+         4KkP3ypyyshVNZSENoWwvC3cWIZti0nxAK+PrGwn/BYIHHaljS3q9vMG58PFm8All87k
+         aYlFoy9aPUB+NV3vqJwrvStRZhrxn2v+qjJtb5Xeejx5GxNMMF6c4CY1eb7HmJ8ID5gk
+         48cg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhCOsT7yghc6c2rSAgv8qAEFKQYZ2SX8hQ/WqPvH5+FvsLLam5oVhJRSre+uIPcMraK2Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzUE48/wBVcvuNtUB/qGXofwBaHqFe7sdUiTTNt4/sp0oFm0sKM
+	fu3xdvGHJrM0joi8jTZib97Py/Aao8ztnDxDA1fvk3st57+KA7nR
+X-Google-Smtp-Source: AGHT+IFREtDh3v/rJbVgKE66ieWm7HhiQ791rRKVF2ym8Umg9iu1Hx/8lKh3w16vChXjPVOd1srCbg==
+X-Received: by 2002:a17:90b:3e84:b0:2da:5156:1241 with SMTP id 98e67ed59e1d1-2da62fddceamr8295212a91.16.1725515046445;
+        Wed, 04 Sep 2024 22:44:06 -0700 (PDT)
+Received: from fedora.. ([106.219.166.153])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2da63ac4ea8sm4930614a91.21.2024.09.04.22.44.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 22:44:06 -0700 (PDT)
+From: Riyan Dhiman <riyandhiman14@gmail.com>
+To: hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	bhelgaas@google.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Riyan Dhiman <riyandhiman14@gmail.com>
+Subject: [PATCH next] PCI: imx6: Add error handling in imx_pcie_cpu_addr_fixup()
+Date: Thu,  5 Sep 2024 11:12:55 +0530
+Message-ID: <20240905054255.126676-1-riyandhiman14@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10175:EE_
-X-MS-Office365-Filtering-Correlation-Id: a70dfa7b-4e15-4498-206d-08dccd5b9efe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gYv/empCHiw8TlT8fOidlTB7QIZ5hO2rV/mez/GsCJncL1bVjumDjrmxz+Vl?=
- =?us-ascii?Q?DARcpJp4KFtS2Emw+UYo/iPtmdzfa5ZgWm85KbJV3mMvHiZd6wtqHzTPXU/j?=
- =?us-ascii?Q?QCNw2dPxcvO1kHEq8IFW/UzBnMIU7vX1YWU8KWHlu7PP1N57c2afwLVB75Oy?=
- =?us-ascii?Q?2jlbExG96dm++e2/PovS3n5LdxhaNprZgBdtWtYjf7768IUmFi4AQKxuKab7?=
- =?us-ascii?Q?DLNeb8iOnCfhJouAxVv74mgUply36kYZ8ELKqFQqndw/qFeiUUe7TnbHspEQ?=
- =?us-ascii?Q?91jEi40qCxfH/FZKAwV+YZsGO4cbUFkoNDsYaKhQvtmAL12utyvk8e009nnt?=
- =?us-ascii?Q?ykg6CozD5XlGFKSebRyouLagZtj+50WNEC7n5KcfIeuoWrjtLTUBRetCNhXM?=
- =?us-ascii?Q?/GVesFZHZKCGBWX7U2KZFhlKC0Ee21+IyWwsucIyZWhNJp/dthjXg8gUXzdN?=
- =?us-ascii?Q?iBFW35JTBW8PByf4iM+N2qBa9stOsCiJkb6YoUYDs7sEIgxVIKGXOlEKpNIb?=
- =?us-ascii?Q?I7dN+IdEr2d83+JHS1vtiBKkhUF1T6g5Bjf7gEWuuFGk2YiVD5mmwD6DebKm?=
- =?us-ascii?Q?Vi+4F/9QuRnfZhh5YWS4pZ9943WLcQblbU24RcGdMcGPh7un9NFEvJI35tCG?=
- =?us-ascii?Q?3GC75Pg3QW7XMJTw3bToOr7cKKXA75ziNw6ttqlFPZayITSAos0iUzYvE3Di?=
- =?us-ascii?Q?QRLvYECTkuv5wEhB4HDfKmqEzVzTm3CC8QMbDvfL142UfzrL96nc82FkCZSy?=
- =?us-ascii?Q?RKF7cNJMPmmwStrrkA54rNNroVSq6MYgQ8382f2Rd6IkPGsCSilczfYDe9aN?=
- =?us-ascii?Q?pLGdD7masgg4HDtZqZuppKzruSrDKydXh3Tq/YqPdIpVKLt5adfL4uvKZDjG?=
- =?us-ascii?Q?QeUOMXJlruRJK1qOro09HAVekPWxdyNIHhPkDkeVgMh1QB6tQjZqVWi2LFKz?=
- =?us-ascii?Q?04fqd4fhcAMaJokz7h1WXVmiK7T60xLbK/1OC+iMsuEaFDl8l6QtEHZcSuZR?=
- =?us-ascii?Q?v28P2vvSbG8kKgexRzwz1UYDikXFR9euugdvU1cAR1QrNFJ+CG39cQh//qQ2?=
- =?us-ascii?Q?VOXIaX3IE0DFx5nlRI3J/0PLGDglHP4U4DVoL5CuMfBCiD2QJqdGgPbVU55r?=
- =?us-ascii?Q?zpZ0QSrdfq0AOuVOoQOyaTwyzt27dRlJB4s4owg4H7noI9O0QEOOqjGY0Za4?=
- =?us-ascii?Q?d0Ly7MW5Zjgkf27Rlp+K+g4FBVsYuzMvr9JfZfKDlzyFiq92/vV4nXszy15t?=
- =?us-ascii?Q?tJUcEv2A4JLvir4k/pwUAPWM+K4NCUH9/ay5GbnGYgYSSqv/OMyyful+c9v9?=
- =?us-ascii?Q?9N7UKGQczNijkbkBLbk+tOGNzeuGTgN/BAyd/pO6wfX7J0RGHaW/5p1KXVnE?=
- =?us-ascii?Q?77tfSetSBqpkmjHNg0wyK6njwzebSicnT/8vDw3xOAMeu2Q20w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d/OTqvFUtxiA0yO6ZS6MjcRjtK/K+f4BqxHuaC4twf8Iyg7mZTyEzSHiYDbG?=
- =?us-ascii?Q?5ToEUo/qnyOvyCtZ2hu2wxamOqmbsKARhitp6jLxFmogpNdJVvqUZ1M3ZgiN?=
- =?us-ascii?Q?ogeumoSBjrdoUmvyoNWF0MIVpAvv6YV3PhLw0CLjndsNJPpHRUkQwhUHWZUv?=
- =?us-ascii?Q?U5Osr6HJ2vsngqn5y9hoqbOYg664bTDASlPbuGIF/mfUuBvqS+MPvXouuUWw?=
- =?us-ascii?Q?lTL4kjMLts9rw1sn5JsMZDv8usLeQtrfMJzUbDWRVkwPzr2f2GEzApA7YDwe?=
- =?us-ascii?Q?XpBQWpjr4oSsWyXjgZ0F7iG7VT/uVw5cbY+0jZPX2stY7oP+3qBi15C1DcRD?=
- =?us-ascii?Q?kbuads+syWsJJ964Sk0mRnZnnEdy3IfP2FTbXkyEjU3z4VEeqAdZJclzeOd/?=
- =?us-ascii?Q?sh7vyrnIkjyIU48oUpZNEV3sPsoS0soxd7ywhHgTo4la5w3Q3JhdGJpASrEB?=
- =?us-ascii?Q?blRb/pz5d8olqpMHxL6CgMqIWmWMKKs1wYisgBJijtr/ZrA8ClZi6oRUpCxE?=
- =?us-ascii?Q?pYDCkNweXY93i6RfXG1dz2cd1XKB+5OVc3E/J605Jvjbf9zlHRxUYgdU7ugy?=
- =?us-ascii?Q?tos5ky7QtlD7FPimafAZL+VcZyYftRB6Pd/JlE55hsDEVeZ2MeJsh5Y/ZhiN?=
- =?us-ascii?Q?6Q1tS2lzOUMhGHEW5Op2k8yPs6wqYyOKkxDbWyP+oi14ctPkthGVsPKmxHBi?=
- =?us-ascii?Q?bCv7aW+7QV5bszkpr/rJhJKML7YM6YRW1FeXJUIkOhx9ODWT6VTKixK7LTzh?=
- =?us-ascii?Q?EZeJtSAmGEkBRkbV9+sVBUVZBYX95BH3Jy3qwOezaDIytbtMt5b1FmSNbEP1?=
- =?us-ascii?Q?l1BTCjifUFuN8OZLObB9/kShA8Xrf0O5tW9oPJuTZPQTejej0AA1FDvVjqAt?=
- =?us-ascii?Q?s6psaci+u7CWbBh8M+EihQBUSEvqlJKZrJCrXekU24co7fnmeQ7H2qTVCAUC?=
- =?us-ascii?Q?oO88ClIHIjoUfyqsIbw5QLXE+sv0bBgfuekDSgakM0BP2kFPjPAC1f9NDVPC?=
- =?us-ascii?Q?UdlrfeQ34OlkG2KgsPflgHHqjyUbMe/nYkX5lMdT8g4lRS9F8xeGq/FRAysn?=
- =?us-ascii?Q?h6aJ8EkMdkWLV/MtxSri8mvEaRSYYXBYZgjZX4ImUHUmztpCj2D7JziDzJts?=
- =?us-ascii?Q?3p01u3ONFJavHlPuQVNvg+pnI61Qnge15OfGU065fN0/1sRHBiN644v1QsyN?=
- =?us-ascii?Q?8pSlO+teuMKOBnPr1OyyoidejAEX6jNDbQWASS5wXB2BdYFzom9ps+3E4ABm?=
- =?us-ascii?Q?OFe2LC+dknCv5plltJEF7cPQzIfkoFAKcopdJ1c73/xDcIuKzx61hSDnaGC7?=
- =?us-ascii?Q?D060p6Ed37BQ3kVNjR3IMCf8IMNWqwrJDiyy/jlWvncdYu4/iBTUsdu/xZ63?=
- =?us-ascii?Q?A1Sm4u91iR+b9J2d+ccX+p4f/KG8Gq42qnPTPvhe24zeYMEEcPc0DBreFjZK?=
- =?us-ascii?Q?+Hia3ymZoAXG2rfRmOi/QAkguUYLfxBgof2FrdHDtY284l0k58reLy/on4UO?=
- =?us-ascii?Q?7IR92C8WI6FnYLut36Fm7AFGIANKZxxbb2KBcpJKsHrhKwUmv0/Ft6lIWjaY?=
- =?us-ascii?Q?79F1iPxidtod5Op+5aG6hRzR2u2Zbygorpk7ZgVl?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a70dfa7b-4e15-4498-206d-08dccd5b9efe
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2024 03:34:17.4456
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W4IvQPwl3QYySYCWVZL/1Fti/Te6zXeOEDHD2l0LAk7z8ic4r6oElGPS/3KnfTBaNACW6AfCKiJPGsis/fVMEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10175
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 05, 2024 at 10:31:08AM +0800, Richard Zhu wrote:
-> CREF_EN (Bit6) of LFAST_IO_REG control i.MX95 PCIe REF clock out
-> enable/disable.
->
-> Add compatible string "fsl,imx95-hsio-blk-ctl" to support PCIe REF clock
-> out gate.
->
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
+Added error handling to the imx_pcie_cpu_addr_fixup function for cases
+where the memory window retrieval fails. The initial implementation did
+not have error handling, and the function simply returned cpu_addr without
+checking for failure conditions.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+I have added -0ULL as a error return code but what should be the ideal return
+code for error handling in this function, given the u64 return type? Common
+approaches include returning ~0ULL or another invalid address value, but
+clarification on best practices would be appreciated.
 
->  drivers/clk/imx/clk-imx95-blk-ctl.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-> index 74f595f9e5e3..596dfb2f3b75 100644
-> --- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-> +++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-> @@ -248,6 +248,25 @@ static const struct imx95_blk_ctl_dev_data dispmix_csr_dev_data = {
->  	.clk_reg_offset = 0,
->  };
->
-> +static const struct imx95_blk_ctl_clk_dev_data hsio_blk_ctl_clk_dev_data[] = {
-> +	[0] = {
-> +		.name = "hsio_blk_ctl_clk",
-> +		.parent_names = (const char *[]){ "hsio_pll", },
-> +		.num_parents = 1,
-> +		.reg = 0,
-> +		.bit_idx = 6,
-> +		.bit_width = 1,
-> +		.type = CLK_GATE,
-> +		.flags = CLK_SET_RATE_PARENT,
-> +	}
-> +};
-> +
-> +static const struct imx95_blk_ctl_dev_data hsio_blk_ctl_dev_data = {
-> +	.num_clks = 1,
-> +	.clk_dev_data = hsio_blk_ctl_clk_dev_data,
-> +	.clk_reg_offset = 0,
-> +};
-> +
->  static int imx95_bc_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> @@ -418,6 +437,7 @@ static const struct of_device_id imx95_bc_of_match[] = {
->  	{ .compatible = "nxp,imx95-display-master-csr", },
->  	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
->  	{ .compatible = "nxp,imx95-display-csr", .data = &dispmix_csr_dev_data },
-> +	{ .compatible = "nxp,imx95-hsio-blk-ctl", .data = &hsio_blk_ctl_dev_data },
->  	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
->  	{ /* Sentinel */ },
->  };
-> --
-> 2.37.1
->
+Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+---
+Compile tested only. I am new to the PCI subsystem and not sure how to test these 
+modules. Do I need dedicated hardware, or is there another way to test these changes?
+
+ drivers/pci/controller/dwc/pci-imx6.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 0dbc333adcff..6af39852d2c2 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1023,6 +1023,10 @@ static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
+ 		return cpu_addr;
+ 
+ 	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
++	if(!entry) {
++		dev_err(pcie->dev, "Unable to get memory window.");
++		return -0ULL;
++	}
+ 	offset = entry->offset;
+ 
+ 	return (cpu_addr - offset);
+-- 
+2.46.0
+
