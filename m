@@ -1,93 +1,177 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FB78F54;
-	Thu,  5 Sep 2024 22:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CE414B95F;
+	Thu,  5 Sep 2024 22:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725573695; cv=none; b=D5m+JLB9OCIohM8w7OeEFl46GigW5ZDm9YvooTiWOs4MrGrqeWkAll7JpLew/1sorcs+Z6RuEpsQ6gBnT4MYaTgFAAwjIZ+Bvq5ubaMRti1feEB1skZymdKdtqtBjGR8NDCCUiDCdPwJjKgtgOlo01eYJ2fFP9GsX9r3TYo/+oo=
+	t=1725574201; cv=none; b=sGnigD4OBdBSTtvXYX/W+SUZMnIBvFl3CGhwwwZjgzgP/R5S+ne5hB/omGEafbO/mumWiLe8r3yYEH5VYnFhpDP1KEAYEnb1/C8VFmDVgN7y7a8IGwAmgxLIt9TKsT0tUQBa7bbY46gdlm6cSO4/hwHtXw6OLtDf2kt+AMkR0/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725573695; c=relaxed/simple;
-	bh=QxP9xLVnfuFVTjV9XRab4YxdfdPc6qkRtPiT/xMI+FY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=urOXbV/sm1lticeFeYTNm6p4NDIqDcikkZX2s8JYFc90Vi7dJ6G/2PAF4Q6MNMtjN2LeZxhjvDaMAMCkEPGNE3Twrr8u7WJ1/miDlGUWiBWSE/ZtBfWNmgHsk4XZXvHfnj3B9wyWVzF6qFcUmt2YOzeFKsVW+sk5IddCidQVb1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXIoT1dy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725574201; c=relaxed/simple;
+	bh=vHaiXF8jFJgRzwoyRWonjyeyJm3/gmc7FeB29SMdR7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KxW3Ue4k3NPrktcH54l8sSIswWldoAoYw3CuXp4jKt6B5CcaFimU5Ir+avjQonZrxkLbgWFXhATGrfopXyLvF0SQIzgwYpMPXPBiWYmjuUvS+BswAKOsen3e+0eNKO6djm0hXxDE1mxgEeN1cnZTnAmbrv0DpoC0OYU/48H9io8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhW8F7vN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXIoT1dy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7040DC4CEC7;
-	Thu,  5 Sep 2024 22:01:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhW8F7vN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27C0C4CEC3;
+	Thu,  5 Sep 2024 22:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725573695;
-	bh=QxP9xLVnfuFVTjV9XRab4YxdfdPc6qkRtPiT/xMI+FY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=aXIoT1dyI9HJi1d0DX5egqlzi4fS7LTmqGrjzKaHcJhjTTLrTr3k523VW/HXW1tvI
-	 ydHZzVN0LFmfOzI2zI5WUUVkk93XN9rM0ILBc8qvkv/fpyBNs1zU2lu4HbOBqUrYSH
-	 OtDvYJyrKViBrFqO1l/8x1WhQFTdHCiSObJM0PjWocsmSgd5/K7yTwdca8mlPEDnC6
-	 gsLLv4DUHHag1XEZgCcLet47dBgHAfbAlus544AsH+tZaoT5DMUWnhAwGI/ud3Gm1U
-	 thski4437nIcvXuh638vsnd1b5nIZjrXSg0udbyrLBiav1pYZ+DwCr/e9vCoFKv/Kh
-	 Y3kqTwyNiuKnA==
-From: Mark Brown <broonie@kernel.org>
-To: han.xu@nxp.com, yogeshgaur.83@gmail.com, robh@kernel.org, 
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
- s.hauer@pengutronix.de, haibo.chen@nxp.com
-Cc: kernel@pengutronix.de, festevam@gmail.com, singh.kuldeep87k@gmail.com, 
- hs@denx.de, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, peng.fan@nxp.com, stable@kernel.org
-In-Reply-To: <20240905094338.1986871-1-haibo.chen@nxp.com>
-References: <20240905094338.1986871-1-haibo.chen@nxp.com>
-Subject: Re: (subset) [PATCH v3 0/4] fix the flexspi error on imx8ulp
-Message-Id: <172557369118.138179.1237587939116968087.b4-ty@kernel.org>
-Date: Thu, 05 Sep 2024 23:01:31 +0100
+	s=k20201202; t=1725574200;
+	bh=vHaiXF8jFJgRzwoyRWonjyeyJm3/gmc7FeB29SMdR7Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AhW8F7vNyvRDrKI/dAIAIoBP1jOvx4sViDSPJogt8bsc/Ji/rY1ABi+nFaLXcXO1G
+	 sIntLcRMsSDqj6iBxEKBLhy7wWqcZj26TDBIH+z9iMAQ+dtzh5IGngCN84bYJeiHI5
+	 hlqIRbEjLOWYYDMhxwuHXskEk8EBq6v4WjzfGkZlzeLY5JPNE4tJxaNCRpRGzSa1hC
+	 VP9GrGlavPYAyO/MY4TAPACnsSNLI6r43igZ8BR/MEdjEghXPpCNEBESwxZr/c1Ot5
+	 i5vpO9vpJ0RO9ZbXjFq+C3Cn3sYb8/57qqi28yC8zRNGH9OAS3CyxL47e3K96l9QDZ
+	 GAvesbmXO1hoA==
+Date: Fri, 6 Sep 2024 00:09:56 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: carlos.song@nxp.com
+Cc: aisheng.dong@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2] i2c: imx-lpi2c: add target mode support
+Message-ID: <qcoguhxtkwn2aowtccfybutn6xgzrqvhdob4tzericerpfntfh@q6f5upgegba7>
+References: <20240829105444.2885653-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240829105444.2885653-1-carlos.song@nxp.com>
 
-On Thu, 05 Sep 2024 17:43:34 +0800, haibo.chen@nxp.com wrote:
-> The flexspi on imx8ulp only has 16 LUTs, different with others
-> which has 32 LUTs. So currently flexspi driver will write the
-> wrong register when fill LUT.
+Hi Carlos,
+
+Looks good, just few little comments.
+
+On Thu, Aug 29, 2024 at 06:54:44PM GMT, carlos.song@nxp.com wrote:
+> From: Carlos Song <carlos.song@nxp.com>
 > 
-> This patch set add a new compatible string for imx8ulp to
-> distinguish the LUT number.
-> 
-> [...]
+> Add target mode support for LPI2C.
 
-Applied to
+Can you please be a bit more descriptive? What is this mode
+doing, how it works, what are you adding, etc. etc. etc.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> ---
+> Change for V2:
+> - remove unused variable ‘lpi2c_imx’ in lpi2c_suspend_noirq.
 
-Thanks!
+this was part of a 5 patches series. Is that series superseded?
 
-[1/4] dt-bindings: spi: nxp-fspi: add imx8ulp support
-      commit: 12736adc43b7cd5cb83f274f8f37b0f89d107c97
-[2/4] spi: fspi: involve lut_num for struct nxp_fspi_devtype_data
-      commit: 190b7e2efb1ed8435fc7431d9c7a2447d05d5066
-[3/4] spi: fspi: add support for imx8ulp
-      commit: 9228956a620553d7fd17f703a37a26c91e4d92ab
+(please, next time when you send a series with more than one
+patch, include a cover letter).
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+...
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> +#define SCR_SEN		BIT(0)
+> +#define SCR_RST		BIT(1)
+> +#define SCR_FILTEN	BIT(4)
+> +#define SCR_RTF		BIT(8)
+> +#define SCR_RRF		BIT(9)
+> +#define SCFGR1_RXSTALL	BIT(1)
+> +#define SCFGR1_TXDSTALL	BIT(2)
+> +#define SCFGR2_FILTSDA_SHIFT	24
+> +#define SCFGR2_FILTSCL_SHIFT	16
+> +#define SCFGR2_CLKHOLD(x)	(x)
+> +#define SCFGR2_FILTSDA(x)	((x) << SCFGR2_FILTSDA_SHIFT)
+> +#define SCFGR2_FILTSCL(x)	((x) << SCFGR2_FILTSCL_SHIFT)
+> +#define SSR_TDF		BIT(0)
+> +#define SSR_RDF		BIT(1)
+> +#define SSR_AVF		BIT(2)
+> +#define SSR_TAF		BIT(3)
+> +#define SSR_RSF		BIT(8)
+> +#define SSR_SDF		BIT(9)
+> +#define SSR_BEF		BIT(10)
+> +#define SSR_FEF		BIT(11)
+> +#define SSR_SBF		BIT(24)
+> +#define SSR_BBF		BIT(25)
+> +#define SSR_CLEAR_BITS	(SSR_RSF | SSR_SDF | SSR_BEF | SSR_FEF)
+> +#define SIER_TDIE	BIT(0)
+> +#define SIER_RDIE	BIT(1)
+> +#define SIER_AVIE	BIT(2)
+> +#define SIER_TAIE	BIT(3)
+> +#define SIER_RSIE	BIT(8)
+> +#define SIER_SDIE	BIT(9)
+> +#define SIER_BEIE	BIT(10)
+> +#define SIER_FEIE	BIT(11)
+> +#define SIER_AM0F	BIT(12)
+> +#define SASR_READ_REQ	0x1
+> +#define SLAVE_INT_FLAG	(SIER_TDIE | SIER_RDIE | SIER_AVIE | \
+> +						SIER_SDIE | SIER_BEIE)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+I'm not happy about the alignment here, can we have the columns
+well aligned, please?
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> +
+>  #define I2C_CLK_RATIO	2
+>  #define CHUNK_DATA	256
+
+...
+
+> +	if (sier_filter & SSR_SDF) {
+> +		/* STOP */
+> +		i2c_slave_event(lpi2c_imx->target, I2C_SLAVE_STOP, &value);
+> +	}
+
+nit: no need for brackets here.
+
+...
+
+> +static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id)
+> +{
+> +	struct lpi2c_imx_struct *lpi2c_imx = dev_id;
+> +	u32 ssr, sier_filter;
+> +	unsigned int scr;
+
+why is ssr unsigned int and not u32?
+
+Can we define ssr, sier_filter and scr in the innermost section?
+i.e. inside the "if () { ... }"
+
+> +
+> +	if (lpi2c_imx->target) {
+> +		scr = readl(lpi2c_imx->base + LPI2C_SCR);
+> +		ssr = readl(lpi2c_imx->base + LPI2C_SSR);
+> +		sier_filter = ssr & readl(lpi2c_imx->base + LPI2C_SIER);
+> +		if ((scr & SCR_SEN) && sier_filter)
+> +			return lpi2c_imx_target_isr(lpi2c_imx, ssr, sier_filter);
+> +		else
+> +			return lpi2c_imx_master_isr(lpi2c_imx);
+> +	} else {
+> +		return lpi2c_imx_master_isr(lpi2c_imx);
+> +	}
+
+this can be simplified a bit:
+
+	if (...) {
+		scr = ...
+		ssr = ...
+		sier_filter = ...
+
+		/* a nice comment */
+		if (...)
+			return lpi2c_imx_target_isr(...)
+	}
+
+	return lpi2c_imx_master_isr(lpi2c_imx);
+
+Not a binding comment. Your choice.
+
+> +}
+> +
+> +static void lpi2c_imx_target_init(struct lpi2c_imx_struct *lpi2c_imx)
+> +{
+> +	int temp;
+
+u32?
 
 Thanks,
-Mark
-
+Andi
