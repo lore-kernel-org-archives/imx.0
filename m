@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020CE4C8E;
-	Thu,  5 Sep 2024 06:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A0E18F2C3;
+	Thu,  5 Sep 2024 06:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725518617; cv=none; b=cfIg3yAF1K2ksUIkaQi0NbSvKnXW7KC6PleO0TvQ74Xt+S5Y7gnOwe44dn51SzqaymRddRn0FHDBULg/L5pSA4DWSRmgu+KPwxN6Bxs9rYL24UidN67IVcVO+Rh4LwTi3d34PlQT/X3OTvnFm9pb/kKxkkC2yES/ulMGl1K1NRo=
+	t=1725518694; cv=none; b=VowoiB8IFYNabacDw09mOpMuKeAsr6FtmrAwbZDdT+PVFYSPlxGaG/IwzSU/52CnqAIBJEd88pvqbUpJ9ncHZ+OdHTD52TYbSJCSbQgxjxVuzX94NI5QlTEkQKrhEpMKhy1VH8LCMP9MIFsDCb3P2BGPUPGhwmmFny0N/tqJtbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725518617; c=relaxed/simple;
-	bh=ZP9qkq3X6bx8KcZVPnpDkhxe1BRBqd2XkWPEnqT2Jpk=;
+	s=arc-20240116; t=1725518694; c=relaxed/simple;
+	bh=WmzPeAppOYGxw2pBZvSCYqbt+9JNVBVF+BuOfIdFGkc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GC3BCyyUE1rD4Y7zOogZA3MBly9Q3aHqJQ2yKIEfkF0MeMbb21p7pbqXJTnV7J9UjE4SNCozgqxqG8sxj7dP+5Wyxghl6sd1EPEOXD9uSuWNcYvuuWCyfHeK6cmLjxWR2xhziMCHM4YcPs4/KjCO8wdTMcS8bXb9GxItrYdRO/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DpQ05TOp; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AUfX6PU9+307rFEKjzX1v4gSVqB4CQn6lkZATouwN5LMGRYhBjbh8nh4E0XwDOIRipsqeg7O+PyIhAJMfubLCR8oAia13nRJbT0jxlMc9Q6RGAwv0j1jQTvJc6y8yQWohpgcH1B9BOPklEiXCFp4WVGK1s8fN/+KiWVeq+Jo5RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MB4oAB5b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DpQ05TOp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FC9C4CEC5;
-	Thu,  5 Sep 2024 06:43:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MB4oAB5b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA010C4CEC4;
+	Thu,  5 Sep 2024 06:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725518616;
-	bh=ZP9qkq3X6bx8KcZVPnpDkhxe1BRBqd2XkWPEnqT2Jpk=;
+	s=k20201202; t=1725518694;
+	bh=WmzPeAppOYGxw2pBZvSCYqbt+9JNVBVF+BuOfIdFGkc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DpQ05TOpDUQxkf9MHz0+88deQpQH9WgXn1CKXwZxgybOYlXKEZgek6CA/1UQzepEq
-	 zz3O8VVtCOZz2p1s4UmfEDZHpkHmuUqN0T1o2Tc7ZaonfCCB2qk0S4Sr4zb6ov5XI4
-	 mI756tBadT84iR6ic0F9ZNyV+yHCn/BFl9I46p7G0c9/unZos+ZthftSuTsuQEulrZ
-	 tMSvyBriTG+NQ3I3hSoHef8ADKh6zyuPZW9CPLhliQQwdZ0YKIMxouRxquI2NExkOa
-	 dk5eZrAFlUMRQSjO558yCaMIJdjBg1LZoupvezwQuEyyOKuOaEaO2JOE14kAo9Qbvv
-	 dqwxwr+yROGMw==
-Date: Thu, 5 Sep 2024 08:43:32 +0200
+	b=MB4oAB5bspDlg/3ddcsF3JbDbp2dSDH9wHLkExf3zfRms5OFlvh1uzCycCC/IaQwo
+	 ghaOJGqPxG1tXm/zKfbSK/RPg/Fnf6uULoaAmIo5FBy2dsmE08vTeRnZmubl73Quww
+	 qCKtoWqIkb5WkAUKAQj4WBskD6C/Dgk/nVIl21h7wn0zzy6rOTGCYNxWdG7jUqcsiz
+	 rV6Nvxr+QoZflZmQ2A9Z0r08h2uHbh7LpCzGAQ8RekbGMwVPgHkviWTCxW63WGjnf4
+	 abKnlYRtinZgm+tb6Vw6r3DG6CmbJAFo10ZIPvb3eklVVQH+uNX9ePxHjWdqaSqEQx
+	 1WqH9DAzI1ijA==
+Date: Thu, 5 Sep 2024 08:44:50 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: haibo.chen@nxp.com
-Cc: han.xu@nxp.com, yogeshgaur.83@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	singh.kuldeep87k@gmail.com, hs@denx.de, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: spi: nxp-fspi: add imx8ulp support
-Message-ID: <kgm2ytcwxs2dpszljpmuoyjpuf36tjyccpr4stp2dw5miygvl6@3qckkqdgxrmu>
-References: <20240905012617.1864997-1-haibo.chen@nxp.com>
- <20240905012617.1864997-2-haibo.chen@nxp.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	kernel@pengutronix.de
+Subject: Re: [PATCH v2 2/3] dt-bindings: clock: nxp,imx95-blk-ctl: Add
+ compatible string for i.MX95 HSIO BLK CTRL
+Message-ID: <e24uioplsxa4iu5m2ecn7apkpkmz3lukfyypngmsmp27ikxnbc@4cwxk2hoeo2r>
+References: <1725503468-22105-1-git-send-email-hongxing.zhu@nxp.com>
+ <1725503468-22105-3-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,18 +48,15 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240905012617.1864997-2-haibo.chen@nxp.com>
+In-Reply-To: <1725503468-22105-3-git-send-email-hongxing.zhu@nxp.com>
 
-On Thu, Sep 05, 2024 at 09:26:15AM +0800, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
+On Thu, Sep 05, 2024 at 10:31:07AM +0800, Richard Zhu wrote:
+> Add compatible string "nxp,imx95-hsio-blk-ctl" for i.MX95.
 > 
-> The flexspi on imx8ulp only has 16 number of LUTs, it is different
-> with flexspi on other imx SoC which has 32 number of LUTs.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->  Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml | 1 +
->  1 file changed, 1 insertion(+)
+
+This one here is so trivial, you can squash both patches.
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
