@@ -1,89 +1,114 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A33519413B
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 11:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AB6198A1B;
+	Thu,  5 Sep 2024 11:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725534211; cv=none; b=r0q04IkQ06wSk9CyL6GN6DCNlJP8cQWYZIBGvMxwQHI485cr9dVfzDRwhfZ5T80S7iSsLaB2C+zYr61mQjUfpiRfuexaHvS7fNNAnIT1YNASoOXEPqSXrQEyxOxqyw5eklBZNPvN8sMr/UMV51IIWF/d0aIDLpYj67X670ksG54=
+	t=1725534964; cv=none; b=AJByOjhOS4kDThrZqERAjUzopK305U0L1Ky+ZKFSBDjcjcFoSZGvpmkd2BQgdoOmeX06mUYDprc/oq7uKoDyQiZyY4v+vs0SvpyL4Y8qFqCR/JPXQaKxQvO3O624d6PuS05jsyeYX8CUBVxiTBrVZ8NZfYzAmO6UfM064o+0uDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725534211; c=relaxed/simple;
-	bh=eB+G/KoE/Sp6MpHzEecDtVY6ChnBLrt8Xtxuq7v/pO4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MijBL5JnZBmC5qbW6Rq2kFnSiMuJnDcYEXCTvpGcXiss+MH7iqgyFhAo7Hzg18oR5bNevsIwGpQtyLpxScSxNhXyfb1KkDhZvLc/emmMTZBRoqqppWqxSt12o4BjmavKOQEoNpmObauc7bQ/7xL55LCsMTst7RxlaNnNFsC9FRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meVsky0l; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725534964; c=relaxed/simple;
+	bh=NL9XNIXdO1hkue8NzahL9w1Jjviiv66bMRJSvs5IEm4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aiCb8765TQ5lt5jD3lCllAXYWhfUjXRMs1eK7KGXPA3UyKlvOJ6yeJoCziDefYQI27Po4hySa4Bs814LYzJe41UnuySVQOzvlfHJAz2FUpSVwP5sae9VgkmrbTCCnihE+TpbU5C54XzHEtP/+o7G6N3L1edq2G8pKKgtT1iyOBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=NWslCKoE; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meVsky0l"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2f3f163e379so11654861fa.3
-        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 04:03:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725534207; x=1726139007; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eB+G/KoE/Sp6MpHzEecDtVY6ChnBLrt8Xtxuq7v/pO4=;
-        b=meVsky0l5Shti6qR45FXKvL6gbFenx2XNnCzCbCMjZGRo9aWMuMQh2LbN6WytuLNZ1
-         2/4IA7TT2vbE8ZHse1ZPrZDrXUV+ZTgnLe/PvSZhErh/Kmv30zFVF8EFtC+8eErJ7bf1
-         RUtgitZZvFhHIdVFTQ9gBKKvnnJyPnQ0iztbi2IZOHue6o9Weo9LF/7kYxqpJEmHcPYD
-         3ddV3snPsyC01QZ2u1RVmVb0hMR2U4Fn0QtvVCnDoiLXz9UtGp53WFHnnXNpdbd25NoV
-         RLVhZb6p9bL+G3wqIW7goHgwIuJ7WTf7/Yr3CKveRY4tYmuKh41qcY+Z+GfVhZxMouFX
-         tpzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725534207; x=1726139007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eB+G/KoE/Sp6MpHzEecDtVY6ChnBLrt8Xtxuq7v/pO4=;
-        b=CX7E2vwjnQYf98Ml/rNuDCbzybaVad3bw4R+lOCSR/8nVG2AKYM4vc0PgGk+SP4kVU
-         3xzSx9FLkOmuwXUf/nuwpIpONKIOdVrEFYfx/6rtnwJDxLapZkjK37EW7Fb1Om+AKRC4
-         t0Hz1Rc+43TY1FKiuYI2Il7QQRvB1xdprLz+Q8zdUvrnaTtTCqIF2RAQdxLBVo7Z2R2A
-         xU4ipTbkXC5K1Eg6W7vPIoC4VxYQKU7Ae7fMttJ0ZD6bpVYRMve0MqI4eWR1xkztA6xk
-         WocYk+G1f1OR77eSsvS/X4sLHQEANq7usYdX9dYRb04v+SuSUgdWdsbkzm3gKvB6kUPm
-         +PnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVITgFy/K2pK4NLsXmZhNscth9RbQWMI1/dVcP7Gc42pvdPqG1/dV4rD9Cn4Lv3jP159mc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx+x9v0HLHHbVwJ1CvOG8Zg29HuSQNGo/WHApFp8B5j2q5+PDge
-	0msW1Fi17wOFEgf6saPxy9pvlxOF2+bsaDEa/9zY4z9P7sT8gFfMQONYBscDmeZ5dLxEs2pcNH5
-	3KvwzUbEMqzRzqiDR9YNxhLsnvPY=
-X-Google-Smtp-Source: AGHT+IEo/Ic/zOOjpJ9Dbjxi9FzyL8PqTsusjxm1xuxv5CE5PWatVWBpMl3LeV1nTLsxjlpv+UhzrdzBcj0VL5Zxhyc=
-X-Received: by 2002:a2e:a987:0:b0:2ef:226e:e150 with SMTP id
- 38308e7fff4ca-2f6108930d5mr227063151fa.32.1725534207061; Thu, 05 Sep 2024
- 04:03:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="NWslCKoE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1725534951; x=1726139751; i=wahrenst@gmx.net;
+	bh=VWWAvKB8CPx/ZFejNGIcT1uB5OUCheGQG/l4ozGwpeQ=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=NWslCKoEiOh0l016owuNtsK/tP24RLJLrf9p6M+zfUJlKsYrsqD54K8PdpXbFv5N
+	 LPLubCDkwYv6AKKBwhIZwNUp5rWSI/6FjBPvMn/9gFWMKNEywGFJwDBmrlUoOlKet
+	 bgymKOETWmDTMtBGs9Fz/hJu1pjpFXwFhZRjfDIqbJX1oJ1hrGmoFotjG+UbIEW22
+	 vk3V3zB7BTIZDux2YNjzPPRVD57KuQow0/QqlkFOzKfR1/3zcuG+cdap+KEZNMr00
+	 46DMcAP9KznUhIRtc5r6fbv1zM/eOhPvSqNeQJfD3b/wUjIoMeGkVRgvqwV7Ukk6I
+	 XglhNduj7fn1T1qS7A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtwZ4-1ruDMp1Tky-0117GP; Thu, 05
+ Sep 2024 13:15:51 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Mark Brown <broonie@kernel.org>,
+	Carlos Song <carlos.song@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-spi@vger.kernel.org,
+	"imx @ lists . linux . dev" <imx@lists.linux.dev>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH] spi: spi-fsl-lpspi: Fix off-by-one in prescale max
+Date: Thu,  5 Sep 2024 13:15:37 +0200
+Message-Id: <20240905111537.90389-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240905062043.190604-1-zaq14760@gmail.com>
-In-Reply-To: <20240905062043.190604-1-zaq14760@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 5 Sep 2024 08:03:15 -0300
-Message-ID: <CAOMZO5ANhMf4vcotkcuh9+4VZrX+o+WXKJGTyppccdt2aJd4tA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] drivers: tty: imx: fix flags of rs485 not work properly
-To: LiangCheng Wang <zaq14760@gmail.com>
-Cc: shawnguo@kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8DMTw6lzm9Da3SPnbEqR+Wrn8812KjVHdwRX6dr817A1DsKsgs7
+ upUo0NIKcnW78PYvV9mozVXaKgJUs+habOreyi0sBQIrwSCwXsRN3Dhf86tW79xC/tAEKur
+ LJbbGYGcEPg/L4tNQBF1E3d1bgLG50BJE1TiTXXX6Lgt+VO+4YFxw2QIiVguYdWWT0p9wd/
+ zkj06kwkAPCjYzP4dadxg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:I46yaLl5NEM=;tz32IesboqiI0ABGFHE7y6Vjhh1
+ IGPbXMu0wmelu/MzAMq2fVudPPNkjFjYdmH6O7o+1DmDSRwM9eAgU+1TnD6gDD/gVxvEoGY3I
+ vcxx/25H5vDEpauLwx200tVp1pNh3/UKz04EZNf7qOzzkBnja8q0mRN6Ty3vkmEqGaZFTNVE2
+ PGlQp5Ew92Ddo7tsF4voiJS3ts4mo015LaerCaJmw26p2BEGpEqQ3S+6BY9qTM9kvhvO5tCyT
+ 2IC+VEbdSvJYpGx183PdGK8WHq5idR+SN8VYEUj0aObSnrN4iU3sBSx7d4PLSBg2tAFsxuZOT
+ 7VYQ4Ak0uEpw542zn6mHpFv5sKbTq3wmy/RxFXJVKcJB8RjRQuzafqVnP+AmZQ3GjYRjyyRUQ
+ sqWvXRPy2lhjJTLQ1E+EDGvvacyrBxwTz1u8DqqpVsT1rYwmVE0h/in0mm1YIieFHJ2Oxbymu
+ CWLk+uw6H4/bnhem3Kcwd8SIYxjOfUIETqGXii6WEMo6bYE4Oiv9a9ECRDP3vLv4ENvKzkZvV
+ n0f1Cls17y1LiYXXArJ2KB82/w0UJvZupdLmlifxAyJgSsihB4aTTbyaZ3n50Qj/6TUE5bKhz
+ RL1CFJoHg9Ua5Bu8fbAoFZEY03gdeqhWl3LCokp4fvGUKBmsB40D+v01rZxk7cT6v0h4IcXKt
+ yhnCM4Sj8bO32v57oeHZyTfhaThhnbNu0drgWJmxSLjeViqWoYk2zThnr2ULvU2ulumBRhJdT
+ GSymrz2Fox0pO+qMf57xl8xvKaKPYxhjEATX5PzXyEx+zbd1CTJlqQ3zE29UlC07196dv0S00
+ K8vEOA/maloalMJvNm+0uFwg==
 
-Hi LiangCheng,
+The commit 783bf5d09f86 ("spi: spi-fsl-lpspi: limit PRESCALE bit in
+TCR register") doesn't implement the prescaler maximum as intended.
+The maximum allowed value for i.MX93 should be 1 and for i.MX7ULP
+it should be 7. So this needs also a adjustment of the comparison
+in the scldiv calculation.
 
-On Thu, Sep 5, 2024 at 3:20=E2=80=AFAM LiangCheng Wang <zaq14760@gmail.com>=
- wrote:
->
-> The rs485.flags are lost in functions such as imx_uart_stop_tx(),
-> causing the function of RS485 to be invalid when using the
-> serial port as the RS485 port. Use a variable to store the state to
-> avoid this issue.
->
-> Signed-off-by: LiangCheng Wang <zaq14760@gmail.com>
+Fixes: 783bf5d09f86 ("spi: spi-fsl-lpspi: limit PRESCALE bit in TCR regist=
+er")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks for the patch.
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 350c5d91d869..8ecb426be45c 100644
+=2D-- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -136,7 +136,7 @@ static struct fsl_lpspi_devtype_data imx93_lpspi_devty=
+pe_data =3D {
+ };
 
-This is a serial driver patch, but the serial driver maintainer is not on C=
-c.
+ static struct fsl_lpspi_devtype_data imx7ulp_lpspi_devtype_data =3D {
+-	.prescale_max =3D 8,
++	.prescale_max =3D 7,
+ };
 
-Please run ./scripts/get_maintainer.pl -f drivers/tty/serial/imx.c
+ static const struct of_device_id fsl_lpspi_dt_ids[] =3D {
+@@ -336,7 +336,7 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data=
+ *fsl_lpspi)
 
-to get the correct list of people and mailing lists.
+ 	div =3D DIV_ROUND_UP(perclk_rate, config.speed_hz);
+
+-	for (prescale =3D 0; prescale < prescale_max; prescale++) {
++	for (prescale =3D 0; prescale <=3D prescale_max; prescale++) {
+ 		scldiv =3D div / (1 << prescale) - 2;
+ 		if (scldiv < 256) {
+ 			fsl_lpspi->config.prescale =3D prescale;
+=2D-
+2.34.1
+
