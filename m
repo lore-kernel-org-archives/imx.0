@@ -1,140 +1,173 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2071.outbound.protection.outlook.com [40.107.22.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9CA19CCE2
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 15:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725550079; cv=none; b=FTc1FPLv3z98XOt8ztPq1Xme4qXHwQoKT1NUtdo3HtEl/LQ7tbgxf2l+zwgfQhez61vNx2a8o+9vt9kAmbcrvDuYFGAZUADpvSqUYppYUKs/7JsL6qNRXwP7egx55na7c11r8kzYQY8g+aOwO6M4nLFbQbjMa3o4Q76db/5fa44=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725550079; c=relaxed/simple;
-	bh=R/mNN8wdhNHSKdTLojDau3fxt+9CA9tFV0gY3K1DreQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cJ8FWSPCBNlRHsvca1WJ5JCkWtAylNwUNjfKSPs0QKqkIWra/o7A8vcUqRx6B+EPavwQnodc1HBt2/4Dgqee9dDi7CZlN/vfZQaTgHCRmI9kBgKRJ8AX7uaGBPpb79EOkB2gmZKuX034aQYYTZWZYesdswuBMf72aRT0y5F2D08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bx4Ln6po; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B461E19DF44
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 15:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725550913; cv=fail; b=SwE/C2Xqwsk3/c62k85HoseKZhTgFe0liU+A+Ao/WXUq0CsSX8M7vyCxXBoS6E80A0schVvnNjgFlj//flwBYZPReB1P9iVj96QCIjY54Z1US+DMjUxrpNo4EEacfCtlBYFe1TWi2Nc6kF3kS6hki2qUC16XiJDXRK9rWmVXhiE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725550913; c=relaxed/simple;
+	bh=IOhUuCc8isQ2wT34Quv3guIQ7aZ241rcLJx+7jxJWsU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=SATMY83oodhjaH5u8u1q43z4CTnJNs6L2QZmv3CT5RTSBSTqn9SbMQMbpfH0uvrBomtYM9YnR/Ek0iVW55VgosT2IJBp8SomE6xl3brBEUPWFjwni/CE+SyecMylUyobTlccBfltN1dVuHthuddUK5MhZc7pXC/0dAlUEd8WPvA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W+RVo1X3; arc=fail smtp.client-ip=40.107.22.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bx4Ln6po"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7178df70f28so800934b3a.2
-        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 08:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725550077; x=1726154877; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oglj13jT8NZDdkH940RV6GyfjKTBkDr1yKpmIVrAzrY=;
-        b=bx4Ln6pogTEIZCvjn9WmDeEyF+4tOjh7cJWNyVOWfc2fDdRfDj9QeMcwVRVNbbaNWU
-         t7htQGztNuFpyVparot99fhoBeV1VThzV14vjzt/IFK0Slmdfx3eCQHLSGe7QqWHIocF
-         YuVuW6gyfunL/9AuprPs2G/SSMvogDWCm9yb/hpqkQEUty+bXT8Fo0owZ1FeBopl8GkB
-         pOYFoQH1HfV8UrV0jmCksgqH4BIkqzKVXxvxfU+Wlqjh4kcLdk834th66XOXT2H/uqvX
-         6a8dhitnmJ0wB4i1oZW+BjLHvkDjKmGOFgs2LXYXHuzo6wDmmXeot0ccWx8j6ou8rPyU
-         HqDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725550077; x=1726154877;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oglj13jT8NZDdkH940RV6GyfjKTBkDr1yKpmIVrAzrY=;
-        b=uWsREX5Ocs5TJ3cW/3jd9ASBHtyQ2Lx7GMjR3a/jkQDKZB4STZsXtAyLzJpaH9QMuw
-         25yG+az45zdZqkd5TA0MLitHbTqv9jQJTKvQ+Dw662k44X7Q+tfDnNnyOZiUTevcSf8l
-         DJOLaUfXBhCLUTD4TysXOJm9O+gFm/FnB6hZwY6QOu0R8wkcATiCFnwQNHXrOS2tX3IY
-         Q3A2ApJVEXn/nh/kpgyYeaEkT9KSjh0EScBSOGkfx8PMG3ZGKJ1lSLtAiIm4lahEAORL
-         girQsslTzQ/y814Yw/4qwMR/kECVOozK8nTxkHa+et+/2eWSE8SVhq0RX19Cmtq1gRrV
-         FSSA==
-X-Forwarded-Encrypted: i=1; AJvYcCXz4jO9RK25RTErrxsMdf1kchTZXBb1GLAqTIQGwFqCgh57o0JkhGcTKDok55sJVZJqy3I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxIiyiv4zFBxHpckou/mn/mHPi2mNWulfwHjYtv8sNabOrKkf7N
-	OJaWGpB7du0brL5pQ/KFjuhO2Zs8uBvh8vog4BxmeTbnXVlrjo5UVRrrYUpWTg==
-X-Google-Smtp-Source: AGHT+IFlXu8G84DVRp5SNbsxFjbfXP/Dw/Xcx3dm3n7P1qn/jaVoagoGhBzzqVVH6hqorkyr3amAiw==
-X-Received: by 2002:a05:6a00:4f88:b0:70d:3777:da8b with SMTP id d2e1a72fcca58-717458a9cfamr16603380b3a.25.1725550076860;
-        Thu, 05 Sep 2024 08:27:56 -0700 (PDT)
-Received: from thinkpad ([120.60.52.248])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7178c66839dsm1508852b3a.15.2024.09.05.08.27.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 08:27:56 -0700 (PDT)
-Date: Thu, 5 Sep 2024 20:57:42 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Chuanhua Lei <lchuanhua@maxlinear.com>,
-	Marek Vasut <marek.vasut+renesas@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	abel.vesa@linaro.org, johan+linaro@kernel.org,
-	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
-Subject: Re: [PATCH v6 3/4] PCI: qcom: Add equalization settings for 16.0 GT/s
-Message-ID: <20240905152742.4llkcjvvu3klmo6j@thinkpad>
-References: <20240904-pci-qcom-gen4-stability-v6-0-ec39f7ae3f62@linaro.org>
- <20240904-pci-qcom-gen4-stability-v6-3-ec39f7ae3f62@linaro.org>
- <ZtgqvXGgp2sWNg5O@hovoldconsulting.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W+RVo1X3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GKTrV0nY1aIN0gdvaARggNljaq8dLaaWD64eX24vQc3dIHOqX9fUisozGzTIsESangddeUS3tv/S/ZUpZucgRSDwTF2yg/oa0hXvv0uiVyzwRk118Gy+QYbMA62hnHdVU9HFMXhSFmIylBnGUUuj6fP0O+hIwpV3NrdMXSLvJUR6fgSqNjB5srQ2JLs8DsYyb2mhLPNKRexFClae1a9koFDN8MHK30SCULKLYPnsHpz045CF0Ojm8lmZ5E5kxgiTShiPM840saZAdLx/GXYB5sRDmPIXoire9TpNM8YfHrHFml+9Hp07dTS3PW1nOTOhiVw/WZp9OFOolhSUkrFO7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8KL9/f7Sq4UXl4UGphd2vc93lZqYyI6VAzhuWLB8O/c=;
+ b=nF6P+OLIUXaVuuer4Ab/EZCapp2ZYH9vV36v2iK6PqTmOCAKgBJeMocktzccqreS4IIE3ZOVYtWYPKDnn+NKVXUgxcjQksYrPFS7NeUiKZAJN1pi8o9IzYX3Lul7nDzQnVR5dXs4nuTQW34l/xbjVuOI3n7wbafDbP/H6QQ4ZVO/10JRNaEYPh+WqMIfF63dKjYq4JrXLL+9fILi0D2sk7DlZyv/j92wcH2vhe6XnZNYbJbup9BSuZ3P/nzy/1bfyLiNLl68NN3wrbCn15TfQq1/4eR2DjTTYjxhR+TY0mMyisj5FFTvSte/LaCiXxzFmbHLGGvlCy/u0r2bEJ2EcA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8KL9/f7Sq4UXl4UGphd2vc93lZqYyI6VAzhuWLB8O/c=;
+ b=W+RVo1X3BnaVI3soiu46wkROFqqh+/IN2UdSL1jFoaXKVhrLC7wafltvzq9qzGYIcNc+I/XlsGKzaAdpxLhWu0d/ohz5yXGhWJhZFQ9pEqGBY6MWRPgJk7Hg25Q3aGV0ZTtn6CA1jSGjME9DZ8hX/Z19BVz+Ecc5xT5R9Sx3iJwx/ZG7m9fIFqb4jVZhLy4ktvKRKrzCAs0ik9EbMxyhNvCE8F/hPUrldVuPlaYl1zEjrui7ORimNG4LbnpFEHzISp/YDWoFNPrvACU+nnm02Vqa5onbkZJThBlrkR9zDTnbSqIx7ViNx3rhNyIDdmpS7sTtIFGqoqR/99U5Cjw3ig==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8521.eurprd04.prod.outlook.com (2603:10a6:20b:430::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Thu, 5 Sep
+ 2024 15:41:42 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7918.024; Thu, 5 Sep 2024
+ 15:41:42 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: wahrenst@gmx.net,
+	broonie@kernel.org
+Cc: carlos.song@nxp.com,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-spi@vger.kernel.org,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] MAINTAINERS: SPI: Add freescale lpspi maintainer information
+Date: Thu,  5 Sep 2024 11:41:24 -0400
+Message-Id: <20240905154124.1901311-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0050.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZtgqvXGgp2sWNg5O@hovoldconsulting.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8521:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b48abd5-2b4b-4b2d-faec-08dccdc13d1b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?MpDfBWfEuYODSnq2UFNbq/YTR9wuDKeCBFr9RPARQv4vd+PsRGsBlKVZNjuR?=
+ =?us-ascii?Q?EUFq8z/iDrYC87kdsl29AKPTXPHrYIPT6BrrwmPycFnxAxUBVzQcyy9L6GF5?=
+ =?us-ascii?Q?DtBXe32r+xzBnOnkkYQTwhwWoP06+eiFsxZjDAuRJwWpyWc9EejdXQZcaMnf?=
+ =?us-ascii?Q?BtfuFP0vlMkPxIKdnz02dKEcuCpjhnwe82Qn3L1j5gEtnpVPv5QKqJt5ooHF?=
+ =?us-ascii?Q?gmHfpkdiFWK6FuboCz9Er2RP0N0PfULRyodHZTZ9fNx9WzwDsJ9CYFZEnq5C?=
+ =?us-ascii?Q?zEXmF9R2TaKy4Gxi598+4D8L5hp8LXBEm/b7C8kpmEk6orf/Hb1/+sxkV5SM?=
+ =?us-ascii?Q?YgFUEZj5AbJnW1w39Kdc/sMbbb1Ab76a+aXIufT83OZEAESh9It1/FR0E4w8?=
+ =?us-ascii?Q?Hy4G/THM2U3IZqqVX9Z7g1/5nI57T17BQeaku2U4MivE+OsOsbfvbI6GVc8M?=
+ =?us-ascii?Q?Q99QqZg8gIvS5CL5QnNyJmi0xp4L8xEIprBbreKN5Ubw9jcpFnhwGfq+bHvt?=
+ =?us-ascii?Q?lv7rCIAuUwxBQjTddf8Yt0WslkgLfQUSYa0P72XKXo8WAL+T7GX5T0jiuMBm?=
+ =?us-ascii?Q?PJJ6XKwvA6E0HzXQkqfBLwzOtqSlfSM5E2HspYcL2peIIMe82DK3I+o5xZGG?=
+ =?us-ascii?Q?5CYUJL54ZDv9fV15PxTm/fJTzK8BHtezS3vW+FxRqJmYjXbMMFltYLHtCQKr?=
+ =?us-ascii?Q?KT8PPoRYHzMlP7nmF+zrs3WruKl0b+XdPloEX45ehTInkreOxP+aZb5rn7pu?=
+ =?us-ascii?Q?qYzQ22QxRsYuNFArxsecGV0yqFmOZoVSA7y2bkDPHhpD4fJYx3fEK63LiM4L?=
+ =?us-ascii?Q?0cbUmW9sjISXplhvP8/qjgBY5X6zTbSf9M9t+VEPHa14ZhW6qdruGh2ziaHV?=
+ =?us-ascii?Q?h+ye/EXG5XicT3Ikz6y7G7OOvU6AYlc7nddOpsJxGiHP93ME1V5c9ipzdzgH?=
+ =?us-ascii?Q?HrB0UWvx7mRMQcmDjGxyPI8R46XTRD9Vt4FMEDBt+aGWNS6mqKeXBB+xG2+0?=
+ =?us-ascii?Q?NxZiCWIhQRq67y5KwKSwrBgpBeI8B6MR+/vBxRH+B8n/nGC1G0WwhSO083Kg?=
+ =?us-ascii?Q?fGwJvQm40JUXD+Gxr0QD695S7rl74XNgO/Iwh5g9JQlihU8JgzBT+9rA2oN6?=
+ =?us-ascii?Q?3k6dxBZ4u8O9QBGWYrCGddJt/kyBnaUgqzw5cNRjWXoKKOTC4jjWo5l7WtFD?=
+ =?us-ascii?Q?feyHLTV1N2YE73/Xfpa2obgiDpM3HXZVb8VPj4pMIvRODUAzZJzghiqvVJpg?=
+ =?us-ascii?Q?nc7ciDk6D6WKWD7Z0iwz0zJyl+NLFywT316NnfwIrQCjHPJ4ifDyXo9K8+qO?=
+ =?us-ascii?Q?nTlx/Z8WXlW5pNkSAdvLxgSZpnoe8RoUo4r7yQIEqNlVH4NwKDrH8/ZuBENW?=
+ =?us-ascii?Q?rbLdWbHxKIxZT0pSLsxPJ/fmNFzOuakfqJvQHT6EYBmtcFBiCg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HE37Z7b1v42VNHWF4rnD7RGsJ01LFny4lzi4W8+xYJe9enSr+dlVf0jevc1Q?=
+ =?us-ascii?Q?lktjsr9SDd9F7tCAkqmBu3xge7MOScEpp4C7JPpvYLYQGj6sa8sPchccTTfK?=
+ =?us-ascii?Q?u/T4WuyQ7n2vWwK8pauhIqiq5IAhloxvuHiVfjcroACNGQP2hWRHl+5GPyrK?=
+ =?us-ascii?Q?ocxsc3HEIjOuauc+zOgXX6X1e1W0XbouSdAbCLz2unTEbEO44wXBckXHLGQB?=
+ =?us-ascii?Q?DxDc71n65PI2kb5hpXkX5/ibqI22kKzEJk9vrqhs+nmYJmFFNP6cL6hvsOeo?=
+ =?us-ascii?Q?lzDaG2azK0CmWZCwPYAo3pAnUX70I67i4Fm3vVfp/cXibyjKPmgECvdWM4q3?=
+ =?us-ascii?Q?XjHBaTDciExtDKnyaoW9fjg5JyXQC9UqtstfLOjN8vNpzELxAkjHeTnP4MeN?=
+ =?us-ascii?Q?bArOqgwjKhvqdmlndAgLwxlbhn6dKJgRaBEMoDwvM9RR/aNhjPEJhRCacVrW?=
+ =?us-ascii?Q?IX1M8pbpKz/ZEFQ1mp/cvYVapGSstBFZP3j//GI0xXG2djKXgQsbiOlpBddD?=
+ =?us-ascii?Q?Ip9vyEG1nPggacQpGJmXmtVCtYbmec1ALSz0WPkiDuyfBG8awFQWEf6ixNHR?=
+ =?us-ascii?Q?3JCadL93WLkbdStqzz8kwZx7nSGbFf0wCw+d1WBgsxnJwWKrYe8VGs16uv+F?=
+ =?us-ascii?Q?v479ALueQ+gFdIs6rnW1hH3J5zAiGPoZHnNdLhJIDuAqWjApNny2zVLHClKL?=
+ =?us-ascii?Q?hwjJ/WDm7a1H4j9mnqu69uwVXobipuSMD/qXE8eD4wUJ2ccn9D4wwof/g1v8?=
+ =?us-ascii?Q?0JiyYzVyZ58MFoS+lnUwEjN7g4tz+AjvSkqc2F/XPq/YvxVRvRKhUp5fF2w7?=
+ =?us-ascii?Q?vmjoM6jLK4TgfeSh7qMIJCkZcQYJexQ6cBYTquU9TSxpgQdRGDsdPaKIgjKl?=
+ =?us-ascii?Q?B/RRpm6LX24p7fPPq/t9wzBnmuIlI8sRtKbeE5YOQAqjp3WbMI5lwy1lQTzQ?=
+ =?us-ascii?Q?pUFJUaMd+40kbfTVepQ8vBygf82BOUQvrsrY69GrgpEQ5/05i11T0CKd/WiY?=
+ =?us-ascii?Q?1qdMdns3A4msQfE20GFOLrLrvmAS1ih/vQtSUW49JQgfHQK1H/n63yPgUF80?=
+ =?us-ascii?Q?egQTmvISHbvavfv5R+zb7PwjvJDepvXxWsoyTBpLzF//F9nzJ4tDUg1rWIIv?=
+ =?us-ascii?Q?nXYJPFgvBGUvQWSJ53M78XGt6FfYyPVF+PFuJnqxrfaoRjZWIY62lCDFtWFP?=
+ =?us-ascii?Q?bYtEARSahwGpDNFAqU18txC0JDa33mxSbymFDAHqe+NhVtSgUZaTZmqoxzL0?=
+ =?us-ascii?Q?WCA/VkAYjHZ5v/bce8/y3J+lvTUNGqe86AH4zXFIgxRNBrtQKjKhMdGMCsey?=
+ =?us-ascii?Q?w4sDqqttGhMoY/bOdei2CubCI3oXxJNuS3D8czwBHqkuMZP88An81hHFKWbe?=
+ =?us-ascii?Q?uQJfW+zr17gsmNVPK8dU8vUHpDNmAe6m6GX5km6vA2lt7RgGyqrQqkMKeinl?=
+ =?us-ascii?Q?iqCoH5RMlwA2CCbx9HaR+aoZ1FUXUNInmeOQAwEvsaMjFPJ930u/peczSLvD?=
+ =?us-ascii?Q?jf4U0V64M8SGD0qxZq+Q3w6phszDr89Fy+HjHyug9jb+34LHuWJHa879NuvD?=
+ =?us-ascii?Q?mhRzCc1IOG2ooSPHLTbEDxT4ZvyXzgwWOSs5XIYt?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b48abd5-2b4b-4b2d-faec-08dccdc13d1b
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2024 15:41:42.0260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TXCEgRjF9ryKZXhIjyFTy4YkUN1cs9qbfZizqUOLJKnuyFA0EmHxM9LaS0jZZqeJHDJ4cQ04lFqV77h0Jx19dg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8521
 
-On Wed, Sep 04, 2024 at 11:39:09AM +0200, Johan Hovold wrote:
-> On Wed, Sep 04, 2024 at 12:41:59PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
-> > 
-> > During high data transmission rates such as 16.0 GT/s, there is an
-> > increased risk of signal loss due to poor channel quality and interference.
-> > This can impact receiver's ability to capture signals accurately. Hence,
-> > signal compensation is achieved through appropriate lane equalization
-> > settings at both transmitter and receiver. This will result in increased
-> > PCIe signal strength.
-> > 
-> > Signed-off-by: Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
-> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > [mani: dropped the code refactoring and minor changes]
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Add imx@lists.linux.dev and NXP maintainer information for lpspi driver
+(drivers/spi/spi-fsl-lpspi.c).
 
-[...]
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> > diff --git a/drivers/pci/controller/dwc/pcie-qcom-common.h b/drivers/pci/controller/dwc/pcie-qcom-common.h
-> > new file mode 100644
-> > index 000000000000..259e04b7bdf9
-> > --- /dev/null
-> > +++ b/drivers/pci/controller/dwc/pcie-qcom-common.h
-> > @@ -0,0 +1,8 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-> > + */
-> > +
-> > +#include "pcie-designware.h"
-> 
-> You only need a forward declaration:
-> 
-> 	struct dw_pcie;
-> 
-> > +
-> > +void qcom_pcie_common_set_16gt_eq_settings(struct dw_pcie *pci);
-> 
-> Compile guard still missing.
-> 
-
-Perhaps we can just get rid of the Kconfig entry and build it by default for
-both RC and EP drivers? I don't see a value in building it as a separate module.
-And we may also move more common code in the future.
-
-- Mani
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 87c128de792b4..59eb18b0261fd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9042,6 +9042,14 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
+ F:	drivers/i2c/busses/i2c-imx-lpi2c.c
+ 
++FREESCALE IMX LPSPI DRIVER
++M:	Frank Li <Frank.Li@nxp.com>
++L:	linux-spi@vger.kernel.org
++L:	imx@lists.linux.dev
++S:	Maintained
++F:	Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
++F:	drivers/spi/spi-fsl-lpspi.c
++
+ FREESCALE MPC I2C DRIVER
+ M:	Chris Packham <chris.packham@alliedtelesis.co.nz>
+ L:	linux-i2c@vger.kernel.org
 -- 
-மணிவண்ணன் சதாசிவம்
+2.34.1
+
