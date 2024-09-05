@@ -1,27 +1,27 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E2F194139
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 09:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4451BE4A
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 09:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725526822; cv=none; b=n2Lznw+kaVk3f32ttzZiJCkW45MT+PRoFut7mRW+Iick+8W10wTinKKNcU42zAXzCf/fTuZRKm8BfPNP6vfQW6wFUuTHvT9Yx8ENrhag2KLO/n7xXrOm+zhcO4RyUWMhm1Nl4is+1jzkgJq9jRKR9NzZBmy+QQicpQrzOeNnICo=
+	t=1725526823; cv=none; b=Oib5IQfxxplO6/KQFdG/HRmQZAPs73jDdegymfqh1VeGvAvOWKVa1FksP6tQRgW4AAi++NND+SwYoGQrYqULDmrOIlcnJE4c0G/bCJsIsHWZ9nsGxjuhLzD/3WPMEAaG/eQWObN1be1oRrbBcnVi8p9Hw6byktjSTBk28MYs0Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725526822; c=relaxed/simple;
-	bh=E1K8UhBsCJCs8Ojb3UyXrdSCVQ5PYwg25G95bkNNnjI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=SVj11Ij3z/81cdnYLmfWx90TRIDf9QgnBarN0CwoVhTEhapkKpR0iWO9UT4goAbw3p8DEB6cF6m23U9E0Azw5XGQeQftCd791D1nMacBzyl5A4sszDlqZVioUUy1+WZauTQJju4LKp/d+QigpXQVq4C0NFyr1tIOy9oiGuQWLSI=
+	s=arc-20240116; t=1725526823; c=relaxed/simple;
+	bh=/hIAToi92n76m3A6x33gRsk+l4AYO6+7aTuIBYt2Ka8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qy9jsOnWL8ZoAH254QFGkodJX/zRhx4lOXZ1+6CfQQz/WnEHEFW8JLpLCvziqqMvO8H2PLLrJRGfaMbrpGKudnCFCtqfktGGm9gPSjhDOa842AnH3QfjXkPpsRNKNP2vFUcdYxDCigHhj8ClvJdSe+GsI1ZpOr1/1yp9iOUUhTA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AE1FF200D70;
-	Thu,  5 Sep 2024 11:00:18 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3677E202348;
+	Thu,  5 Sep 2024 11:00:20 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 73E3F202342;
-	Thu,  5 Sep 2024 11:00:18 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id F142B200D7E;
+	Thu,  5 Sep 2024 11:00:19 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BBE7D1834890;
-	Thu,  5 Sep 2024 17:00:16 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 56DEA183AC0A;
+	Thu,  5 Sep 2024 17:00:18 +0800 (+08)
 From: Richard Zhu <hongxing.zhu@nxp.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -40,9 +40,9 @@ Cc: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	kernel@pengutronix.de,
 	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v4 1/2] dt-bindings: clock: nxp,imx95-blk-ctl: Add compatible string for i.MX95 HSIO BLK CTRL
-Date: Thu,  5 Sep 2024 16:38:54 +0800
-Message-Id: <1725525535-22924-2-git-send-email-hongxing.zhu@nxp.com>
+Subject: [PATCH v4 2/2] clk: imx95-blk-ctl: Add one clock gate for HSIO block
+Date: Thu,  5 Sep 2024 16:38:55 +0800
+Message-Id: <1725525535-22924-3-git-send-email-hongxing.zhu@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1725525535-22924-1-git-send-email-hongxing.zhu@nxp.com>
 References: <1725525535-22924-1-git-send-email-hongxing.zhu@nxp.com>
@@ -53,32 +53,57 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-Sort compatible entries by alphabetical order.
-Then, add compatible string "nxp,imx95-hsio-blk-ctl" for i.MX95.
+CREF_EN (Bit6) of LFAST_IO_REG control i.MX95 PCIe REF clock out
+enable/disable.
+
+Add compatible string "nxp,imx95-hsio-blk-ctl" to support PCIe REF clock
+out gate.
 
 Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 ---
- .../devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml         | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imx95-blk-ctl.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-index 2dffc02dcd8b..244fe7b95fd6 100644
---- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-+++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-@@ -13,9 +13,10 @@ properties:
-   compatible:
-     items:
-       - enum:
--          - nxp,imx95-lvds-csr
--          - nxp,imx95-display-csr
-           - nxp,imx95-camera-csr
-+          - nxp,imx95-display-csr
-+          - nxp,imx95-hsio-blk-ctl
-+          - nxp,imx95-lvds-csr
-           - nxp,imx95-vpu-csr
-       - const: syscon
+diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+index 74f595f9e5e3..596dfb2f3b75 100644
+--- a/drivers/clk/imx/clk-imx95-blk-ctl.c
++++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+@@ -248,6 +248,25 @@ static const struct imx95_blk_ctl_dev_data dispmix_csr_dev_data = {
+ 	.clk_reg_offset = 0,
+ };
  
++static const struct imx95_blk_ctl_clk_dev_data hsio_blk_ctl_clk_dev_data[] = {
++	[0] = {
++		.name = "hsio_blk_ctl_clk",
++		.parent_names = (const char *[]){ "hsio_pll", },
++		.num_parents = 1,
++		.reg = 0,
++		.bit_idx = 6,
++		.bit_width = 1,
++		.type = CLK_GATE,
++		.flags = CLK_SET_RATE_PARENT,
++	}
++};
++
++static const struct imx95_blk_ctl_dev_data hsio_blk_ctl_dev_data = {
++	.num_clks = 1,
++	.clk_dev_data = hsio_blk_ctl_clk_dev_data,
++	.clk_reg_offset = 0,
++};
++
+ static int imx95_bc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -418,6 +437,7 @@ static const struct of_device_id imx95_bc_of_match[] = {
+ 	{ .compatible = "nxp,imx95-display-master-csr", },
+ 	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
+ 	{ .compatible = "nxp,imx95-display-csr", .data = &dispmix_csr_dev_data },
++	{ .compatible = "nxp,imx95-hsio-blk-ctl", .data = &hsio_blk_ctl_dev_data },
+ 	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
+ 	{ /* Sentinel */ },
+ };
 -- 
 2.37.1
 
