@@ -1,156 +1,89 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE66154BFF
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 09:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A33519413B
+	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 11:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725530139; cv=none; b=BITdVa8ZDf7+xKaJILR0jlukRabyDI7Z7k4r84/B5+NDN5yN3thuYORQEN6CHWz21pmAKAZAfulZBXJ60R+f+/nOgiMnbpEVAzFHTORUcgkmYfe3XaS7/tgj3j8D1Yg0tIY/AMN1G+qgHGzYEf4qx5LKwBQa1hripZzvSFJm9kM=
+	t=1725534211; cv=none; b=r0q04IkQ06wSk9CyL6GN6DCNlJP8cQWYZIBGvMxwQHI485cr9dVfzDRwhfZ5T80S7iSsLaB2C+zYr61mQjUfpiRfuexaHvS7fNNAnIT1YNASoOXEPqSXrQEyxOxqyw5eklBZNPvN8sMr/UMV51IIWF/d0aIDLpYj67X670ksG54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725530139; c=relaxed/simple;
-	bh=XipgE3i98EJ89Zlgm1rDcLeQ2Fuhol925Krp35yo9Vk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VPghSXhpJOtu5ozDvxkOw/6dpyUIQVy3MF3xXcFWcQ/dXlLBi0RdWPQCkXudvB1WF2Tn2Q/81An+ihugF1hoRgecIt5MBWj3c6iNxbVraZ5I7+e4WnONPGfuXxTtV93tO92urUzGrOWX4alnT8UVDrq15aGc9QPECtqZBc/f/G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Nwwwea0W; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1725534211; c=relaxed/simple;
+	bh=eB+G/KoE/Sp6MpHzEecDtVY6ChnBLrt8Xtxuq7v/pO4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MijBL5JnZBmC5qbW6Rq2kFnSiMuJnDcYEXCTvpGcXiss+MH7iqgyFhAo7Hzg18oR5bNevsIwGpQtyLpxScSxNhXyfb1KkDhZvLc/emmMTZBRoqqppWqxSt12o4BjmavKOQEoNpmObauc7bQ/7xL55LCsMTst7RxlaNnNFsC9FRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meVsky0l; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Nwwwea0W"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 485972us021530;
-	Thu, 5 Sep 2024 09:55:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	eBMqXnOczsEWfeTQoQ51IDQfRhAhgM15JSl0gQxMj6A=; b=Nwwwea0W9WbcRxVF
-	2PmCAg0NDpYKxGvQygueg5nVyCwyc4MNbkgfjj9shpK30dun19947UnfHiDuC6S4
-	PHWiy3brVswKKHLeEDMfv+DeMbCNN+TrB3mN0nqY47wpZJXgJjlU6Y+NfGTyLF6i
-	o9MXLMAchYv2Atf+LnKLQzQfu8/oV57DUhdTMiaAL6jkqCqAGPWE8K48RTv0/Ehp
-	DP1dhmVuxEw+0FN1C9byjJbloNK4haOPGd9nNiNolT+FmQ+hMZERDo7IYcZzheNK
-	hWDA+kE6zBOYy0MzhsmpjoedmYMHr5yFzZelBTtPIptXbRUvf3Ewtw4prk5oSpRl
-	SYOUTQ==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41f6rngm2x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 09:55:32 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4859tENU025863
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 5 Sep 2024 09:55:14 GMT
-Received: from [10.217.219.207] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Sep 2024
- 02:55:11 -0700
-Message-ID: <3da836dc-d79c-41b9-aa44-06a94b812bbf@quicinc.com>
-Date: Thu, 5 Sep 2024 15:25:09 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meVsky0l"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2f3f163e379so11654861fa.3
+        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 04:03:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725534207; x=1726139007; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eB+G/KoE/Sp6MpHzEecDtVY6ChnBLrt8Xtxuq7v/pO4=;
+        b=meVsky0l5Shti6qR45FXKvL6gbFenx2XNnCzCbCMjZGRo9aWMuMQh2LbN6WytuLNZ1
+         2/4IA7TT2vbE8ZHse1ZPrZDrXUV+ZTgnLe/PvSZhErh/Kmv30zFVF8EFtC+8eErJ7bf1
+         RUtgitZZvFhHIdVFTQ9gBKKvnnJyPnQ0iztbi2IZOHue6o9Weo9LF/7kYxqpJEmHcPYD
+         3ddV3snPsyC01QZ2u1RVmVb0hMR2U4Fn0QtvVCnDoiLXz9UtGp53WFHnnXNpdbd25NoV
+         RLVhZb6p9bL+G3wqIW7goHgwIuJ7WTf7/Yr3CKveRY4tYmuKh41qcY+Z+GfVhZxMouFX
+         tpzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725534207; x=1726139007;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eB+G/KoE/Sp6MpHzEecDtVY6ChnBLrt8Xtxuq7v/pO4=;
+        b=CX7E2vwjnQYf98Ml/rNuDCbzybaVad3bw4R+lOCSR/8nVG2AKYM4vc0PgGk+SP4kVU
+         3xzSx9FLkOmuwXUf/nuwpIpONKIOdVrEFYfx/6rtnwJDxLapZkjK37EW7Fb1Om+AKRC4
+         t0Hz1Rc+43TY1FKiuYI2Il7QQRvB1xdprLz+Q8zdUvrnaTtTCqIF2RAQdxLBVo7Z2R2A
+         xU4ipTbkXC5K1Eg6W7vPIoC4VxYQKU7Ae7fMttJ0ZD6bpVYRMve0MqI4eWR1xkztA6xk
+         WocYk+G1f1OR77eSsvS/X4sLHQEANq7usYdX9dYRb04v+SuSUgdWdsbkzm3gKvB6kUPm
+         +PnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVITgFy/K2pK4NLsXmZhNscth9RbQWMI1/dVcP7Gc42pvdPqG1/dV4rD9Cn4Lv3jP159mc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+x9v0HLHHbVwJ1CvOG8Zg29HuSQNGo/WHApFp8B5j2q5+PDge
+	0msW1Fi17wOFEgf6saPxy9pvlxOF2+bsaDEa/9zY4z9P7sT8gFfMQONYBscDmeZ5dLxEs2pcNH5
+	3KvwzUbEMqzRzqiDR9YNxhLsnvPY=
+X-Google-Smtp-Source: AGHT+IEo/Ic/zOOjpJ9Dbjxi9FzyL8PqTsusjxm1xuxv5CE5PWatVWBpMl3LeV1nTLsxjlpv+UhzrdzBcj0VL5Zxhyc=
+X-Received: by 2002:a2e:a987:0:b0:2ef:226e:e150 with SMTP id
+ 38308e7fff4ca-2f6108930d5mr227063151fa.32.1725534207061; Thu, 05 Sep 2024
+ 04:03:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] i3c: master: Avoid sending DISEC command with old
- device address.
-To: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>,
-        Alexandre
- Belloni <alexandre.belloni@bootlin.com>,
-        "moderated list:I3C SUBSYSTEM"
-	<linux-i3c@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>
-CC: <imx@lists.linux.dev>, <Frank.Li@nxp.com>
-References: <20240820151917.3904956-1-ravindra.yashvant.shinde@nxp.com>
-Content-Language: en-US
-From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-In-Reply-To: <20240820151917.3904956-1-ravindra.yashvant.shinde@nxp.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: --tq_WtyveLVUmGPAkj8J0FB7csNXAuG
-X-Proofpoint-ORIG-GUID: --tq_WtyveLVUmGPAkj8J0FB7csNXAuG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-05_05,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- bulkscore=0 impostorscore=0 mlxscore=0 clxscore=1011 phishscore=0
- mlxlogscore=999 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2409050073
+References: <20240905062043.190604-1-zaq14760@gmail.com>
+In-Reply-To: <20240905062043.190604-1-zaq14760@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 5 Sep 2024 08:03:15 -0300
+Message-ID: <CAOMZO5ANhMf4vcotkcuh9+4VZrX+o+WXKJGTyppccdt2aJd4tA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] drivers: tty: imx: fix flags of rs485 not work properly
+To: LiangCheng Wang <zaq14760@gmail.com>
+Cc: shawnguo@kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ravindra,
+Hi LiangCheng,
 
+On Thu, Sep 5, 2024 at 3:20=E2=80=AFAM LiangCheng Wang <zaq14760@gmail.com>=
+ wrote:
+>
+> The rs485.flags are lost in functions such as imx_uart_stop_tx(),
+> causing the function of RS485 to be invalid when using the
+> serial port as the RS485 port. Use a variable to store the state to
+> avoid this issue.
+>
+> Signed-off-by: LiangCheng Wang <zaq14760@gmail.com>
 
-On 8/20/2024 8:49 PM, Ravindra Yashvant Shinde wrote:
-> When a new device hotjoins, a new dynamic address is assigned.
-> i3c_master_add_i3c_dev_locked() identifies that the device was previously
-> attached to the bus and locates the olddev.
-> 
-After  2-3 reads i could understand what exactly you are trying.
-Could you please keep the complete commit log here ?
+Thanks for the patch.
 
-"
-The olddev should not receive any commands on the i3c bus as it
-does not exist and has been assigned a new address. This will
-result in NACK or timeout. So, update the olddev->ibi->enabled
-flag to false to avoid DISEC with OldAddr.
-"
+This is a serial driver patch, but the serial driver maintainer is not on C=
+c.
 
-Make a complete story here, you don't need function to be added here 
-since description should make it clear to understand.
+Please run ./scripts/get_maintainer.pl -f drivers/tty/serial/imx.c
 
-> i3c_master_add_i3c_dev_locked()
-> {
->      ...
->      olddev = i3c_master_search_i3c_dev_duplicate(newdev);
->      ...
->      if (olddev) {
->          enable_ibi = true;
->          ...
->      }
->      i3c_dev_free_ibi_locked(olddev);
->      ^^^^^^^^
->      This function internally calls i3c_dev_disable_ibi_locked(addr)
->      function causing to send DISEC command with old Address.
-> 
->      The olddev should not receive any commands on the i3c bus as it
->      does not exist and has been assigned a new address. This will
-Isn't this the same device who raised HOTJOIN and seeking a new dynamic 
-address ? you intend to have no communication with older device address 
-right ?
->      result in NACK or timeout. So, update the olddev->ibi->enabled
->      flag to false to avoid DISEC with OldAddr.
->      ...
-> }
-> 
-> Signed-off-by: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>
-> ---
-> change from v1 to v2
-> - Fixed the author name.
-> - Unconditional set to the false & added some comments.
-> ---
->   drivers/i3c/master.c | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> index 7028f03c2c42..0dd8d1c28d58 100644
-> --- a/drivers/i3c/master.c
-> +++ b/drivers/i3c/master.c
-> @@ -2043,7 +2043,14 @@ int i3c_master_add_i3c_dev_locked(struct i3c_master_controller *master,
->   				enable_ibi = true;
->   				i3c_dev_disable_ibi_locked(olddev);
->   			}
-> -
-> +			/*
-> +			 * The olddev should not receive any commands on the
-> +			 * i3c bus as it does not exist and has been assigned
-> +			 * a new address. This will result in NACK or timeout.
-> +			 * So, update the olddev->ibi->enabled flag to false
-> +			 * to avoid DISEC with OldAddr.
-> +			 */
-> +			olddev->ibi->enabled = false;
->   			i3c_dev_free_ibi_locked(olddev);
->   		}
->   		mutex_unlock(&olddev->ibi_lock);
+to get the correct list of people and mailing lists.
