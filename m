@@ -1,182 +1,181 @@
-Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01on2136.outbound.protection.outlook.com [40.107.239.136])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FFA1898E4
-	for <imx@lists.linux.dev>; Thu,  5 Sep 2024 08:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.239.136
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725525229; cv=fail; b=RopwWCDAN4DBA2kIg0hMWL+MfwhnB/HeduzNducTrN8yasYyhWYJu7Gl/LeVvpdNe7ZyVtfT+fCyYvuEQyiPiBi+Jfw6i1Ahd3X2+/GDD+f9diXHgA0fkEUeMKsi5lk3bsZuWz+xpH63QvrOXOEQ6IsDG/za+EaLKgixQDvwTAU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725525229; c=relaxed/simple;
-	bh=CY38kD11gdlbsbb9RXh9m1WuW5ReoQj1TqZCp+m2vx4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=B9aroIiTzSOTbEzmEkZziReVmnlILuyvnycBjip4pJNHznpC5GC/w11AaToCutNTBTVYWpW4ZBSkG5Tk7xMkQus3JSKkEC4iBPDMqHZDwFa5U1ld09Jj987MEj6Ee8Ean4tA7Yi40oYFjUrtmtHg6VHRAPcrBx6C2gfBO01CGJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rSF7A+iH9eH3QwxU+vXLb2ny8DeDNVmDMnw4wa+leKJ6+E9wk/0u2aPwlEm+S0u8SQ3dYZ5s2QvkhotiRDVoIJRzF1L4n1aEhOD0IL2BgTl6wP8NWQjNaIp4ynSSnttFKq3ZFwILqRai0oEHBayI/2cZdefurQfkcTk+5BjSYzocQvuGqjb2lz05dbDl0/YqNW6UvOYdEPxZhZauLYsi8K2lFnQ7/ibatHuzuVrAl08sk/loutJEgBTc1o3rfmEiquKSNdLfqv9FeGf6acbxFuXVmkT0f8Y41t9RgZ0w3sYSKkFgE+vNrJsa++BVXZ0MiE3zzW4/7sVKvhQsnMZf0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CY38kD11gdlbsbb9RXh9m1WuW5ReoQj1TqZCp+m2vx4=;
- b=LgRj3PyzZJ+nuJjdOqNybo5u1uIr1jVM3DVjFDwH2cjyEtmYmH1t67fm4YawghrWbXADwm9DS4WdKCWeP4CL0AWfQ1wHD0TzZLLI0pvOGhK2i0qIsmP4KS0gf2ubaWUvnrbbGQnudxYRgyd041Az59Vt0MOdbRMrNh9cVI3ZYVykZP/6OQND5JoIJnwp6+mCKRIDawkPrZjx1Omuj5vcfSOGA0VOVPJx2gyRi0Cib6UnNMzmuN+t35Os7GHpeJOiXwUgUoBpBMp2UoQ4LBCSoQmRxKle5KzDGwZAiHmsl6TOGs0efKe1qTC8BcoBBPqgohPPMy9aMb9I8thgRtO6zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
- by MA0P287MB0620.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:11c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.28; Thu, 5 Sep
- 2024 08:33:42 +0000
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f%5]) with mapi id 15.20.7918.024; Thu, 5 Sep 2024
- 08:33:42 +0000
-From: Tarang Raval <tarang.raval@siliconsignals.io>
-To: "Rob Herring (Arm)" <robh@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, Sascha
- Hauer <s.hauer@pengutronix.de>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
- Support
-Thread-Topic: [PATCH v5] arm64: dts: imx8mm-emtop-baseboard: Add Peripherals
- Support
-Thread-Index: AQHa/eIwzwcEDJ69bUWxWwoatqaLUrJGHtUAgAAAfYCAAADKAIACvZHt
-Date: Thu, 5 Sep 2024 08:33:41 +0000
-Message-ID:
- <PN3P287MB18295916174A4CC5121A90828B9D2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-References: <20240903091720.443091-1-tarang.raval@siliconsignals.io>
- <172537334994.875077.18308965320836312656.robh@kernel.org>
- <CAOMZO5BNYopFt=_o5qrK7piwxYwF4E10DzCKPW4oh0k4Yj0hUQ@mail.gmail.com>
- <20240903-amazing-shaggy-ant-6751f7-mkl@pengutronix.de>
-In-Reply-To: <20240903-amazing-shaggy-ant-6751f7-mkl@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN3P287MB1829:EE_|MA0P287MB0620:EE_
-x-ms-office365-filtering-correlation-id: 95f4e17b-4b46-4589-dd9e-08dccd8572d1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?bVRXUWdCdS9nYmNHN2ZvWEJUWWd1VU5mWlQ5U1RBVEF3Z2NRemtlUFJHcWlk?=
- =?utf-8?B?NE04WkhYRU1MckZNS1g5emd5Y3VjTUFnWGxhTnRrTksxZGUzOW1GMCtCUWkv?=
- =?utf-8?B?Kzlkb2JJWFB5TUMxejlsc2VIZk9DNWxPTitDVUNsR0F5MHQzZ3d3ZmhTYlM5?=
- =?utf-8?B?clpiRUd2U0Y3enMvRGFkNFJpOXBvOWJhbDUwQm5IN3RGYjFNT3N0KzZJY1Np?=
- =?utf-8?B?Y3Z5VWduZTJLQmNjY1hwVlg0cW5teUF1S2doNnczR0Vyc1Y3ZzJTU2cyWlVY?=
- =?utf-8?B?VDFURUlVWVh3anVEd1VvQmdFUWFMSTl1a2Q5VnNoZ3ZWcWRMMmdhci9pZmd2?=
- =?utf-8?B?SDNIcWVaM3pEMVh5VFR3amc4M09hT2FSbWRpeHVEVUNnYktVdEYvRXVTU0NZ?=
- =?utf-8?B?cjdGVTRWNEtrajhoNFgwSUw3NUlSUUVydkZ1aHhhMDBkVTRKbHY5NVp5Z3k5?=
- =?utf-8?B?T3RvUXhVcC9zcGlvcksxMEI1WklIMGN3SG93OWtoaWF5MnE4SHF1SFRXczBq?=
- =?utf-8?B?bzhYam1zNnZtMU1VRS8zU2wwR0lmbmFkYk9lZW43eEdremFaWE5NVnVhQlJH?=
- =?utf-8?B?dm54QmMzSUM3ZUV4M2RqWVJxRkFremRxeFhmZEZGbzRvclRaa2g0WHMyM3Rz?=
- =?utf-8?B?TzlMV0FjYmlraVRRUUZZZWVpT1pja1NGWWVBSjQ3NmtOUzlLL0JZKytsSUd4?=
- =?utf-8?B?UER2ZWVNN3FSVUJERW9qcDVZa2tTSEUyeVNqcHE4Y1pHK1FRV2xhb1ZLOWh3?=
- =?utf-8?B?d2FqZ0xlcjZUMTJTSWFrYXJ3bzk5d1V1dGpWd2ZkbU9mNlhBS2tFV3EzTTFj?=
- =?utf-8?B?dURub0pDamN0QWZEZEJXVWdsaHdVRCtob05NaUNyZmJlaUtiV2lmb0F6bU8v?=
- =?utf-8?B?SlErVzdxdSsvdkFKOUhsdlNUK1hRaDRNRHM5K1ozY0ZmMEl5c1pmcVl3NWh2?=
- =?utf-8?B?eVprdCtwR2ttR250ZnRaUWlxY1YreG5SUmdXeDYxU0FYL0FJUFpMOEVoc1pl?=
- =?utf-8?B?WlJiUStETUVEMnA3QVY0Q1ZOekhNajdud2NaRXBMYmRuNlV5aXJPZ3AxUVZP?=
- =?utf-8?B?b3RGa2xMd3NWVTFzQ1N3VTVVdDM3UHdHNlNjSjBORk5LZVVmVWpXSUxpV3Fm?=
- =?utf-8?B?RHphS05JVE5oSFQ3ODdyaU1SaWlNVFNqRTBwaEtiQy9UUUhhdmJzRkkweXZZ?=
- =?utf-8?B?WDhZakg0bWMyNmIxbjU0U1pNMlZaM3kzTG5LeFB4dnVSOWNkNFZ3YlFqOTVU?=
- =?utf-8?B?WHR0bEc5ODBSL0ZSeTFOT0NXN1VpWjlBdXFFTytLU0paQU9rejdPY3RLeENV?=
- =?utf-8?B?REc5Z2J0bEZKQ01hVkQ2NUsvOU5ER0tWRWV0NUhjdXNOR1p0ZG84eVBDQkd1?=
- =?utf-8?B?RkhyR1lGOElOdzNIalQxUU9RSVRTWDh2TlI0M2VRM1ovbEwyVnhWZDhNL3dJ?=
- =?utf-8?B?MVFLbmxWQ3UveTcrN2VOZCtsSEd2Wmh4Qi85VTdsakl4S2Rra0lPZUYzazQy?=
- =?utf-8?B?ZHRIWThuYnpEQUNmUTY5UFlUOVlxV2ZSYm1QQmZENE5veFdVSXMyYStzK0tP?=
- =?utf-8?B?eXRKdS8yUmhtSW5DL2JTWGNnY1FDOWlZWjZoNys0QnFLNnFIcGpoamplaHBu?=
- =?utf-8?B?R1RtamxOdnJ3ZStCU1hFQndXb2IySmUwb1NCMnIzcTFvb3ZSTDE2ZjdmWnVm?=
- =?utf-8?B?VndVQ1RHN1dPZnJPUW5Icy9aSUw4WEdvNlFMdjhQT2Y0aHRnNFlMWVlBclBR?=
- =?utf-8?B?N0N6T0FXam5yN2pLTUIrN3MvYk9BdTJ4MUlMa1ZRQnVoOUZ6WW82MVdUZFND?=
- =?utf-8?B?Ui8zbGVJSDZPSmZXbEFMNGdFRUZjQW8zTXN2S1ovZzhwdmM1WEFYWkF0blcv?=
- =?utf-8?B?S3ZDWTJpMnBPNUNhbGxTTXNGSHlCa2pjREVMY0hXdFlXUXc9PQ==?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?YXNoTkFnY29Qc0pUNFdOdjBuZFJUdE8vOUFMbjUySE84ZitWSVVqTENHU3h4?=
- =?utf-8?B?cUxnRm8zdHlqdStxdzdMNDlFZU00SnY1ZkJVRUFjVGR6cEJ2YW5YOHA0VE9L?=
- =?utf-8?B?ekpPVGVMR3ExRWRtSFZRb0E5Y1VTQ3dSaTVUMW9qM3BJcG1sTHhqN0RYbEtz?=
- =?utf-8?B?VEJFUVF4ZFEwYlNWUEt1T0NrQ0NaZGtDQzNnWWFwaS9OOWZFSDlnRE5QWTZt?=
- =?utf-8?B?S1RZaWpMNVB6SWxBWGRZcE9aOFFxQm5LSlk5REQvR29admNwYnoxeEwremRS?=
- =?utf-8?B?WWtwajBhWmNaQ0grQnMwNm5DUlhIUVBWaHZPQlNKRGQ2QzM2WFBBWWdVRzU2?=
- =?utf-8?B?a3Iwc1NId0VGVld0dUFhT05zcEVhdDM2QTRTTzdxak1rK2RtdHpab1JMVW9i?=
- =?utf-8?B?MEZZcEhGL2hKdGZpanVNQ2FtZWd3TFE2eXdBVkVlZ1I1dW9QZ3JvM2psam50?=
- =?utf-8?B?QWNwUk5aZFcwcG5tRXpzK3Awb1BaNWlNUk92MjRpN2d4WmlsSEVtMkRWU29R?=
- =?utf-8?B?bm9LbjhNWjNtd0ZVc0dkSURvd3p0c00zWSsxSWxtZWE1K2dYQzlUaW5kakJn?=
- =?utf-8?B?REdFUCtYM3JWTWJXVEh1U1NKdkNpQjZWUU1JdUpaTTlPMXV0ZHk0UzlMSDhu?=
- =?utf-8?B?cGdSaTdsT0VGTEtYV0VMTDdhbHN0WFBVSmdrWE1yaFNsQVhQK21kZXZNS01s?=
- =?utf-8?B?Yy9jWlZOaVc0cW1oLzZYclBtZDJOYlhWYnVoZjZTcWRwNWlYcmpML0NmcVFn?=
- =?utf-8?B?WUtMbVhtSmNPeXp0TS9GNi9nNktJc1pYd3NLb0JHK21LbzVyV3diaGNkcXZk?=
- =?utf-8?B?NnluSkhVeCtCdWV5RGk4czBxMXpCL2gwTUthUU9YYTFNNGtiSGVSdjlMNklt?=
- =?utf-8?B?c210OW8vYmZhVWFCalBDaENNY3YvWmVpeDZoM1g1Rkt3cmpsbWZES1UrN1NT?=
- =?utf-8?B?TFNJN3o0YzFmQ0RVUWptVDJFUnp6MjNkdzZ3a1lVSTRsRHA1b3RBZXlpMzdi?=
- =?utf-8?B?ZHVMMkJKek5zbjNLcXFoSUtjT24ybzMyZWlQbVl1R0gzeE52MUVpekNBU1pk?=
- =?utf-8?B?TGl2ZExjS09FMW5oeHdjVDY0ZG5TWU1wOG5FZnpMUlY2NTcyWmNFSzNUM1BD?=
- =?utf-8?B?OTFuMlRjdVNBcnU5RTdMZUllK1A3LzJEWWkzUzdxY2hkL2djYWpNeWNHT3BN?=
- =?utf-8?B?UTJwcmZIN1cxRy9sNFpIQnlRV29qNFRyalpiOHo4RU9HekVGWndXczZnOVo3?=
- =?utf-8?B?a21lekppc2txeFB2R0R5aEFoVFZlU0pSQWxXZHdUM3JKckRFMWhmdVdZbVBM?=
- =?utf-8?B?bkpZTHc1Q0psV0tXRXY5MDFPVkQ5MjljTnYyRm5jZ1JqRmJKSGI0UHdjSGVv?=
- =?utf-8?B?S1pyUXo1T2NoUWtZZWhGYjNTNmphR0NzQXZNSTIwank4UGRoaHBjR1dKWnhZ?=
- =?utf-8?B?R2xlcHhkMllRcDZTRVVRZEdBRlhsNVd6SVhwMlFVeDZrQ0VBNEQ4RFJoM2lO?=
- =?utf-8?B?aXB2VXhteGZSa3JKMlpoRTFMbmp3VnM3K1R0cE91MUtFWVVnMEh0QXk1NFZo?=
- =?utf-8?B?RnM2QVZpZEt6Y1JCWWc5YlVUZWd6VzZVN2kyNzlRUnRITjl2ZU16U1p4SlZJ?=
- =?utf-8?B?LzVsS0ZHejQ3VUVwZUNvbkxwZk5udk5ZR2xqcWpwcFZoc1FjL3NLY051bkZN?=
- =?utf-8?B?bW1ZRW9lamY1UlI5OThIcjE2T0ZvSjlValhGb3Fyc3ZJanRzNit3N2tBdTB4?=
- =?utf-8?B?ZTdkdk1ycjFzdHZaQWdSZS9jVmpRUlF2SVN5SU1wQUdjWjBQYVYyL3F6alZF?=
- =?utf-8?B?K25MREM5bFIwYWYyYkRINTBXZTNCd1pTdTVJNEd2cTNtY1RVRnc0OUxmNVdq?=
- =?utf-8?B?K2g5MTJxa2RCa213NU5Oa3hHNElNenVYTjZlRWo2ZXdDd0RzdTdmNGFFNUxj?=
- =?utf-8?B?dEVBNkRNQnprTHlBU0V6UmtTdGtVeU53V0Fzck1qZWl3SU1MVFB2L0o4MW1O?=
- =?utf-8?B?dWQ4bTZ3ZGJEV1gvbnBBYUdvVWtpVER5eXRuOEE3L2VMQ2hUTWUzYUlldkoz?=
- =?utf-8?B?Yjl2VlNtRlhuNlMyWnM3cVFjaWUxMjYyMVJzeE5TQUhWWnJ6V2QvNmo5Qm5a?=
- =?utf-8?B?V3RkSnpFcHZuWmw2UE4yWU93NVJibXpaVFJMcW1nNitLM1N0RXMxNGtWMW5Y?=
- =?utf-8?B?d3c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7B6194AD5;
+	Thu,  5 Sep 2024 08:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725525445; cv=none; b=YxLgkVFBXJJQUg6UnTPbb/HLWvg++v9xHW/k6jbiiLk1bXh4/kv3eOQWgOCuCEAAHABF6ea5uRhcM78h5NtRRWtWiF6VzWBJJeEq6e8Y2it760lLizivS/yiUeNohoZE11MCaKpKtEwG8HzUCJ+XyB7AhARil1tIV8PwutDUfGg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725525445; c=relaxed/simple;
+	bh=F5C21PIoGFyLC+pKtL4lE/ToVZLQW4ZouSefyGjoU2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CscUONv8nYCExKbZdZI5r/qOSJGg13s2QoO55s3tlSJ5N2yByDlYPztI+/v2vRjSfoNKCBY+xNz8GmfhjGaLDi6NHWC5rvIhieoZbzch6VLOmBWif6VjkXynBiTr/rQIDrhIR5apAxd/RzIppTwVV4ePjIly89c9RoIu1OzRsw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mM0OkJT8; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mM0OkJT8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725525443; x=1757061443;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=F5C21PIoGFyLC+pKtL4lE/ToVZLQW4ZouSefyGjoU2c=;
+  b=mM0OkJT8M0oXYojXepuF+lgikrUZETDi4Q5x5aiOhTXhvplTqlAVPh7D
+   bINmi9eKGRcpWqIEQ83HGCqmtLHTshU4yBtQcW92omVpB1wnmMvp6Ao0o
+   PZo+V4ZZuvV9PLVQ/UPC/FXF5pys902vNJgSmGU6O+xvrF3mkNIy8+0hY
+   oow39nk5hxKo/+fEs2hhB/jJwWiWMxEMO4jt3mF9iDVH7tPRmHPHKLdvg
+   Tx4z6ENSV6wWF/IoMRFozkGL9TYQU9TChj2Y6SFwoV7QHeo5xveTDvnve
+   TIneQZl33jLGEozCKlq8ljOZ+kN0IY8ps3AOuthjy9KpMl9fu1iCdRn1y
+   A==;
+X-CSE-ConnectionGUID: ktYmkulESOGcQGxHVvUP6g==
+X-CSE-MsgGUID: SHNkFUEjRsuvqvh8SoYtRg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="28114419"
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; 
+   d="scan'208";a="28114419"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 01:37:23 -0700
+X-CSE-ConnectionGUID: pCSgSKXsTdecISYNnEkeTw==
+X-CSE-MsgGUID: 2PD3EamKQQWA/nMxb+0W+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; 
+   d="scan'208";a="65392071"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 05 Sep 2024 01:37:17 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sm7zO-00097V-0g;
+	Thu, 05 Sep 2024 08:37:14 +0000
+Date: Thu, 5 Sep 2024 16:36:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Chuanhua Lei <lchuanhua@maxlinear.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, abel.vesa@linaro.org,
+	johan+linaro@kernel.org,
+	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v6 1/4] PCI: dwc: Rename 'dw_pcie::link_gen' to
+ 'dw_pcie::max_link_speed'
+Message-ID: <202409051650.UA8WoHFz-lkp@intel.com>
+References: <20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95f4e17b-4b46-4589-dd9e-08dccd8572d1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2024 08:33:42.0013
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5NirGesTvzPoQGu9MptShUVGCK3h3Z84k2J7MkH5h+36b6LH9YVMKTeGdZ2Mrj27KmD43mcieBBZU+HmNrI3A6aKAtYJs1eaBp5FokzBxvY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB0620
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62@linaro.org>
 
-SGksCgo+T24gMDMuMDkuMjAyNCAxMToyODoyOSwgRmFiaW8gRXN0ZXZhbSB3cm90ZToKPj4gT24g
-VHVlLCBTZXAgMywgMjAyNCBhdCAxMToyNuKAr0FNIFJvYiBIZXJyaW5nIChBcm0pIDxyb2JoQGtl
-cm5lbC5vcmc+IHdyb3RlOgo+Pgo+PiA+IE5ldyB3YXJuaW5ncyBydW5uaW5nICdtYWtlIENIRUNL
-X0RUQlM9eSBmcmVlc2NhbGUvaW14OG1tLWVtdG9wLWJhc2Vib2FyZC5kdGInIGZvciAyMDI0MDkw
-MzA5MTcyMC40NDMwOTEtMS0+dGFyYW5nLnJhdmFsQHNpbGljb25zaWduYWxzLmlvOgo+PiA+Cj4+
-ID4gYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLWVtdG9wLWJhc2Vib2FyZC5k
-dGI6IC9zb2NAMC9idXNAMzA4MDAwMDAvc3BiYS0+YnVzQDMwODAwMDAwL3NwaUAzMDgzMDAwMC9j
-YW5AMDogZmFpbGVkIHRvIG1hdGNoIGFueSBzY2hlbWEgd2l0aCBjb21wYXRpYmxlOiBbJ21pY3Jv
-Y2hpcCxtY3AyNTE1J10KPj4KPj4gVGhlcmUgaXMgYSBwYXRjaCBmcm9tIEZyYW5rIHRvIGFkZHJl
-c3MgdGhpcyBjb21wYXRpYmxlOgo+Pgo+PiBodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzIw
-MjQwODE0MTY0NDA3LjQwMjIyMTEtMS1GcmFuay5MaUBueHAuY29tL1QvCj4KPkl0J3MgaW4gbmV0
-LW5leHQgKGZvciB2Ni4xMikgd2l0aCAwOTMyODYwMGMyZjkgKCJkdC1iaW5kaW5nczogY2FuOgo+
-Y29udmVydCBtaWNyb2NoaXAsbWNwMjUxeC50eHQgdG8geWFtbCIpLgoKU2hvdWxkIEkgcmVtb3Zl
-IHRoZSBub2RlIGZyb20gbXkgRFRTIGZpbGUgdW50aWwgdGhlIFlBTUwgc2NoZW1hIHBhdGNoIGlz
-IGFwcGxpZWQsIG9yIGlzIHRoZXJlIGFuIGFsdGVybmF0aXZlIGFwcHJvYWNoIHlvdSB3b3VsZCBy
-ZWNvbW1lbmQgPwoKQmVzdCByZWdhcmRzLApUYXJhbmcK
+Hi Manivannan,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 47ac09b91befbb6a235ab620c32af719f8208399]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Manivannan-Sadhasivam-via-B4-Relay/PCI-dwc-Rename-dw_pcie-link_gen-to-dw_pcie-max_link_speed/20240904-151354
+base:   47ac09b91befbb6a235ab620c32af719f8208399
+patch link:    https://lore.kernel.org/r/20240904-pci-qcom-gen4-stability-v6-1-ec39f7ae3f62%40linaro.org
+patch subject: [PATCH v6 1/4] PCI: dwc: Rename 'dw_pcie::link_gen' to 'dw_pcie::max_link_speed'
+config: arc-allmodconfig (https://download.01.org/0day-ci/archive/20240905/202409051650.UA8WoHFz-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240905/202409051650.UA8WoHFz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409051650.UA8WoHFz-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/pci/controller/dwc/pcie-spear13xx.c: In function 'spear13xx_pcie_probe':
+>> drivers/pci/controller/dwc/pcie-spear13xx.c:236:20: error: 'struct dw_pcie' has no member named 'link_gen'
+     236 |                 pci->link_gen = 1;
+         |                    ^~
+
+
+vim +236 drivers/pci/controller/dwc/pcie-spear13xx.c
+
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  190  
+a43f32d64727302 drivers/pci/host/pcie-spear13xx.c           Matwey V. Kornilov     2015-02-19  191  static int spear13xx_pcie_probe(struct platform_device *pdev)
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  192  {
+6a43a425a074afc drivers/pci/host/pcie-spear13xx.c           Bjorn Helgaas          2016-10-06  193  	struct device *dev = &pdev->dev;
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  194  	struct dw_pcie *pci;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  195  	struct spear13xx_pcie *spear13xx_pcie;
+6a43a425a074afc drivers/pci/host/pcie-spear13xx.c           Bjorn Helgaas          2016-10-06  196  	struct device_node *np = dev->of_node;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  197  	int ret;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  198  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  199  	spear13xx_pcie = devm_kzalloc(dev, sizeof(*spear13xx_pcie), GFP_KERNEL);
+20f9ece101d8793 drivers/pci/host/pcie-spear13xx.c           Jingoo Han             2014-11-12  200  	if (!spear13xx_pcie)
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  201  		return -ENOMEM;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  202  
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  203  	pci = devm_kzalloc(dev, sizeof(*pci), GFP_KERNEL);
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  204  	if (!pci)
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  205  		return -ENOMEM;
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  206  
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  207  	pci->dev = dev;
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  208  	pci->ops = &dw_pcie_ops;
+442ec4c04d1235f drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  209  
+c0464062bfea9cd drivers/pci/dwc/pcie-spear13xx.c            Guenter Roeck          2017-02-25  210  	spear13xx_pcie->pci = pci;
+c0464062bfea9cd drivers/pci/dwc/pcie-spear13xx.c            Guenter Roeck          2017-02-25  211  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  212  	spear13xx_pcie->phy = devm_phy_get(dev, "pcie-phy");
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  213  	if (IS_ERR(spear13xx_pcie->phy)) {
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  214  		ret = PTR_ERR(spear13xx_pcie->phy);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  215  		if (ret == -EPROBE_DEFER)
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  216  			dev_info(dev, "probe deferred\n");
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  217  		else
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  218  			dev_err(dev, "couldn't get pcie-phy\n");
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  219  		return ret;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  220  	}
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  221  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  222  	phy_init(spear13xx_pcie->phy);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  223  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  224  	spear13xx_pcie->clk = devm_clk_get(dev, NULL);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  225  	if (IS_ERR(spear13xx_pcie->clk)) {
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  226  		dev_err(dev, "couldn't get clk for pcie\n");
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  227  		return PTR_ERR(spear13xx_pcie->clk);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  228  	}
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  229  	ret = clk_prepare_enable(spear13xx_pcie->clk);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  230  	if (ret) {
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  231  		dev_err(dev, "couldn't enable clk for pcie\n");
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  232  		return ret;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  233  	}
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  234  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  235  	if (of_property_read_bool(np, "st,pcie-is-gen1"))
+39bc5006501cc31 drivers/pci/controller/dwc/pcie-spear13xx.c Rob Herring            2020-08-20 @236  		pci->link_gen = 1;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  237  
+9bcf0a6fdc5062e drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  238  	platform_set_drvdata(pdev, spear13xx_pcie);
+9bcf0a6fdc5062e drivers/pci/dwc/pcie-spear13xx.c            Kishon Vijay Abraham I 2017-02-15  239  
+ffe82fa66afb19c drivers/pci/host/pcie-spear13xx.c           Bjorn Helgaas          2016-10-06  240  	ret = spear13xx_add_pcie_port(spear13xx_pcie, pdev);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  241  	if (ret < 0)
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  242  		goto fail_clk;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  243  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  244  	return 0;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  245  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  246  fail_clk:
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  247  	clk_disable_unprepare(spear13xx_pcie->clk);
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  248  
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  249  	return ret;
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  250  }
+51b66a6ce12570e drivers/pci/host/pcie-spear13xx.c           Pratyush Anand         2014-02-11  251  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
