@@ -1,197 +1,85 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6007712B176
-	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 06:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8F67FBD1
+	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 06:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725602628; cv=none; b=CqmOcp4qmMGQkHyHgmNjlcyYDReQlRYpRm06R3Jza826ovkI/HXeAeRRNq8HZeUvI8PBA5m/rPzzMwupjqPv6IL7a/rpYe/Cb+JpWjM/KENu3nsmQQgruBzgxhC06teB60303UXLbhqwu8X1k1AFBP2bfUP2UXZFDKl3ChOgTmc=
+	t=1725604274; cv=none; b=Ql0oi46S309WpNJrHOVUpqx2e5Jy2CzH+W1qTF6IS/2wZhvSumsebzXcD7GQeu9S3ZQVe64/knwCyR5eT1KAQMiizOeXB6xVKahfxiiNmBaQCWC3jRIYgPEZZ4A+AU6jc1LodkHzvpcZ5qz0sxl1TOSVa2LgHbiQcB3f7sHp38k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725602628; c=relaxed/simple;
-	bh=hR0j4UoqUwDNt65/rn30mx6uWp+ch3LmkhRvE+GJI+U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IEOkN2xaXWU0Q+ShTBEzDKxzdZoP8HZHlE7E0pO91ZCPD1qZVLSRpnSTVokncX0C0OyDZkD+VqVPgh/CMDCWyrh9z14J97CqYi9UPSrNdWXBWfr5j1R1CFbl36BuiHTSIrFmD/rihK0G3qtNa1ocoGg7Xd0HfUzIH5fwPfOz5uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nZFI6S1e; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lzC0D+eB; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nZFI6S1e; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lzC0D+eB; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nZFI6S1e";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lzC0D+eB";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nZFI6S1e";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lzC0D+eB"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 685751F893;
-	Fri,  6 Sep 2024 06:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1725602624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EuAKXNWGXAvYBag+UKFUj5/vO6KSi0h81RlNCNME7jw=;
-	b=nZFI6S1eMsmrHT/4yK4wF0h93LrzfAtm9O3U8SLHz1P+8i0+BC3AqljFuWsYPnUpjcwCOt
-	entl1QaER10Z2pvmNPivdqdC3vgajp4Pb0bqq1pfr8QXc7XnWLrbeDvcCXGr/nQveMl14t
-	YsthS2v2WDT6vwd6QM6gCfjKp9TIzLs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1725602624;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EuAKXNWGXAvYBag+UKFUj5/vO6KSi0h81RlNCNME7jw=;
-	b=lzC0D+eB7aqVoqOtPMu/jEtwVbekokNe+hDSxdCcP9Cpztc8LQoqzjMrwO1v2UsUUwYbZ9
-	djotmZTCn3AHT7AQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1725602624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EuAKXNWGXAvYBag+UKFUj5/vO6KSi0h81RlNCNME7jw=;
-	b=nZFI6S1eMsmrHT/4yK4wF0h93LrzfAtm9O3U8SLHz1P+8i0+BC3AqljFuWsYPnUpjcwCOt
-	entl1QaER10Z2pvmNPivdqdC3vgajp4Pb0bqq1pfr8QXc7XnWLrbeDvcCXGr/nQveMl14t
-	YsthS2v2WDT6vwd6QM6gCfjKp9TIzLs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1725602624;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EuAKXNWGXAvYBag+UKFUj5/vO6KSi0h81RlNCNME7jw=;
-	b=lzC0D+eB7aqVoqOtPMu/jEtwVbekokNe+hDSxdCcP9Cpztc8LQoqzjMrwO1v2UsUUwYbZ9
-	djotmZTCn3AHT7AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2F8CF136A8;
-	Fri,  6 Sep 2024 06:03:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id abTtCUCb2mZyHAAAD6G6ig
-	(envelope-from <jslaby@suse.cz>); Fri, 06 Sep 2024 06:03:44 +0000
-Message-ID: <7a31001d-da37-4deb-a366-084a4027bcd2@suse.cz>
-Date: Fri, 6 Sep 2024 08:03:43 +0200
+	s=arc-20240116; t=1725604274; c=relaxed/simple;
+	bh=EAEXrS3ujlWSIv1zD3lw1caH9nctH2DdMNjEoPs+GTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QF6sFWNCZcSvjblfA4ehezy/hGxMS+mHGus3+FRsqt+iPwtgzH/f4GGDvnQVYGYQBmZhj2I7/kwB7XkHKdbXhpF6nBTdSjv3ViwDG+uvSwfTg4cQ6yTXlPYnXwwC1auUGx3VjaAm37FIibgkgh3OldAZ6Fe/64DX5LLSVDukwE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-206bd1c6ccdso16089985ad.3
+        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 23:31:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725604273; x=1726209073;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uUlqUwaLIWNbsVjRhWvuXLWwMr5ykeNKJnP9nNXvjaA=;
+        b=PFhvJQj0UixnSDw5mBbGcL9oEmdTD4/k/RSxjssDGxMm+DNZPie2Y26l6kkY2T0lbA
+         EjHmis7IzCBnLiXaOWkhC5l5DbdoT+OnQv3mTNREp/EUIxslpukcvyu5GuuikhjJouox
+         Oq0W86uIFlAZHX6QFEU+8nNU27JFJLft8gMn2sM/9uzzft7f/moNkkaP95SEGSyikohP
+         J5TJnmtziERbGUEWZL0zTwf41QUxXCPHgcJGb09811VuNT56iwYj/k7/+3joOQ+G/rhJ
+         te557zDrxn6ra80/z/C1mam2AQSmB165/C+RTMigHsMTk10hEbWl4xg1+H8MQQ1PVOho
+         TmMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqZOFEpjdNtkYXawXcXIdm5BYxe7ldCm9bHu/8hV8JsGDjqvW7Qvsf0uEUgmMQV8Cs6gc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YykNA6vwv6joOTQxn0OpNSaBru7j4k7b3sXWVPI4JhfTBTADepd
+	HKd92IZyRIN2jf7G1h/VPEpms7ZPUDG4s1g48tqY2mv3pukjoGIW
+X-Google-Smtp-Source: AGHT+IFDFoOk1bH5c4RXh8ffMzQ0h3Mv865nSfiJ+AC1ztLE71RolJQdzxnMQJba93jTnE+ady0DAw==
+X-Received: by 2002:a17:902:e80e:b0:206:d6ac:854f with SMTP id d9443c01a7336-206f049d45amr15829625ad.3.1725604272744;
+        Thu, 05 Sep 2024 23:31:12 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206aea38c31sm37371035ad.151.2024.09.05.23.31.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 23:31:12 -0700 (PDT)
+Date: Fri, 6 Sep 2024 15:31:10 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, l.stach@pengutronix.de,
+	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, imx@lists.linux.dev
+Subject: Re: [PATCH v5 1/4] dt-bindings: imx6q-pcie: Add reg-name "dbi2" and
+ "atu" for i.MX8M PCIe Endpoint
+Message-ID: <20240906063110.GA679795@rocinante>
+References: <1723534943-28499-1-git-send-email-hongxing.zhu@nxp.com>
+ <1723534943-28499-2-git-send-email-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] drivers: tty: imx: fix flags of rs485 not work
- properly
-To: shawnguo@kernel.org, LiangCheng Wang <zaq14760@gmail.com>
-Cc: s.hauer@pengutronix.de, gregkh@linuxfoundation.org,
- kernel@pengutronix.de, festevam@gmail.com, u.kleine-koenig@pengutronix.de,
- cniedermaier@dh-electronics.com, l.sanfilippo@kunbus.com,
- linux@rasmusvillemoes.dk, stefan.eichenberger@toradex.com,
- tglx@linutronix.de, rickaran@axis.com, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20240906021905.197891-1-zaq14760@gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jslaby@suse.cz>
-Autocrypt: addr=jslaby@suse.cz; keydata=
- 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
-In-Reply-To: <20240906021905.197891-1-zaq14760@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[pengutronix.de,linuxfoundation.org,gmail.com,dh-electronics.com,kunbus.com,rasmusvillemoes.dk,toradex.com,linutronix.de,axis.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1723534943-28499-2-git-send-email-hongxing.zhu@nxp.com>
 
-It seems gmail refuses to send this to zaq14760@gmail.com (the author).
+Hello,
 
-On 06. 09. 24, 4:19, LiangCheng Wang wrote:
-> The rs485.flags are lost in functions such as imx_uart_stop_tx(),
-> causing the function of RS485 to be invalid when using the
-> serial port as the RS485 port. Use a variable to store the state to
-> avoid this issue.
+> Add reg-name: "dbi2", "atu" for i.MX8M PCIe Endpoint.
+> 
+> For i.MX8M PCIe EP, the dbi2 and atu addresses are pre-defined in the
+> driver. This method is not good.
+> 
+> In commit b7d67c6130ee ("PCI: imx6: Add iMX95 Endpoint (EP) support"),
+> Frank suggests to fetch the dbi2 and atu from DT directly. This commit is
+> preparation to do that for i.MX8M PCIe EP.
+> 
+> These changes wouldn't break driver function. When "dbi2" and "atu"
+> properties are present, i.MX PCIe driver would fetch the according base
+> addresses from DT directly. If only two reg properties are provided, i.MX
+> PCIe driver would fall back to the old method.
 
-AFAICT, this feels rather wrong. Any rs485 experts around?
+Applied to dt-bindings, thank you!
 
-At minimum, how are the flags "lost" and why this does not matter to 
-other drivers?
+[1/1] dt-bindings: PCI: imx6q-pcie: Add reg-name "dbi2" and "atu" for i.MX8M PCIe Endpoint
+      https://git.kernel.org/pci/pci/c/2f309c988b7c
 
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -209,7 +209,7 @@ struct imx_port {
->   	const struct imx_uart_data *devdata;
->   
->   	struct mctrl_gpios *gpios;
-> -
-> +	int flags;
-
-Definitely not int for flags.
-
-thanks,
--- 
-js
-suse labs
-
+	Krzysztof
