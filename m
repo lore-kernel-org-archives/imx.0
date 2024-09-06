@@ -1,96 +1,234 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D533EEB3
-	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 01:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9042F1E49E
+	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 02:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725587178; cv=none; b=m9LiomH4lH5bjfwNrJzW+CqQN/RkbecM0XKTfxfCmfSbY4pVnXl+IZJMzHzVhvkrTD/CuTWtZvuwNLMrF7Vesj/zVWICWF+vM9ybR7IkbndV0Zg48UasVAUOuzCBZlET/a7vpncnIjHJiUwRaSrxm/zBybj71st6sTMZzoymXwU=
+	t=1725589165; cv=none; b=rLIxjlve9nPiQOUcmxf7b6Js1/F1bPN9OT2l1cufMP9KUIJdKHuBMiM8mgYGHYOV5inIpyZrPoRwSwxaaWmRzzmwkV2me1izfdRnwLuEh37ydE1eA9mEszZ1E+t++7W0HJatXtsHgHoOdYPsvq/mr3nHX6v1S7Ryyjmvzg2T2tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725587178; c=relaxed/simple;
-	bh=U52adYQlvuMR7+RUlygia/EjbR8uM8aQF8WKlzEJLT0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=DRW1p9IvnxpHksk6LLlVHNhskU31hPxuK6zQLsf7Mx25FkoUcsEvydKJZ7WMupDe/GkLywo7qAaWm2SeaKVTGFr7pgCYT3rJ8PbBOJAZusLXqVeDiigfryRe3uJC60RT5ZddWhbrGm01TWM4hPKqN5b9Jq2JRkTQL5d6PPutcOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZmjIp5z; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1725589165; c=relaxed/simple;
+	bh=JhvGWELi5wvqSTr0Gd910OxL4OoPljviiUYpMFLt5og=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B9ebE75NmRfTqUueWvlnCACkgscRaiBgJPY0FZwxi5+oSLU39PIRPLWnJmDu+R2L+TpwfKhRc4PScUADuOn4IPzxpRH599vJjP0JfS9JNcWACBsa6nKFcKyET1SKhx9jwwo7b4HLp/EwFQx+U3hd06+TS6zuAoIHdt4Yg+bHnMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HGFTtj1p; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZmjIp5z"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-718d79fb6f7so169024b3a.3
-        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 18:46:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HGFTtj1p"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2d8b68bddeaso1126157a91.1
+        for <imx@lists.linux.dev>; Thu, 05 Sep 2024 19:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725587176; x=1726191976; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UwnV3rN27k13ClzZkPYxKb2bde4aYZdPIxzu2F5jqrY=;
-        b=ZZmjIp5z2HNocd7l7zg5S/TOrAz9fbG8H65ZooatUYHTCIHKRFo+FdrmsdYFvvfg8r
-         HhBp6zNQS/fIMLLw3nLRxzfEf4vV0Qf0n2xTnyXtyxCW54T7FRLbTfyoKtp2bu0BSgFg
-         291oAussthwtdn9y2SgnjJxWpnM4nHlp87AkWCOhGf1Ow60fNcgBfGQrlRllO0v7MQ/X
-         d6HXn6VrAaRu5eNP7MCWH0mjdYiP+oDO8Lq3LjKeoDKUC+uVbDrge3j2jb7g5IXt5niR
-         bj0dA1XSAUVCZ8mVhfUKBIPepTBw4jrwT/ff5Ix/pG5zPb8/GLdq4AhYBFET01XIUagg
-         zevw==
+        d=gmail.com; s=20230601; t=1725589162; x=1726193962; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dIW9b0DbiNOfgETQSZVCY5M0dVLOvu9t5blHuaZ3mxw=;
+        b=HGFTtj1pGDrFIHhO85v7/xeUiUITZBoVuzJMGN4uQHNYem5IXPvqQMoDtFiQ9myxQF
+         U2xKpKJ55ozTV5OcOwyZNZEfW7C6bC83qQG/6dtaXi85us7x/T0YlVg3RqsUSNVXTRm4
+         ATOjrNXyeKL9cVL+XTnhmuSgwVVVbA3nzj940rxrvJdpCdmjfCQQzQUoaMdq5G2qHeOI
+         JwJdLtuiSdMXOIeM/bzcq+QyXwDR5T9tOtz2vARCwJ+599oDxo3oH5eoS9wEocHaNtwP
+         mn6hOcKCdtePfFrbvQwpFQRWO1FLaABLY3cFMP2Emc2duU52AyOVObDoGvsWcM1wKnKi
+         R6rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725587176; x=1726191976;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UwnV3rN27k13ClzZkPYxKb2bde4aYZdPIxzu2F5jqrY=;
-        b=O+xMhmwxpCQjBL+/SdXaLlFRy9J2Ztwq0G0Rl+BVmtrDteF3vcGuHNp/THfB4KSBLM
-         zajXrQph/F6Mc7HpDkP3L+Eg4UJJIQRGaKn/17WxSAXbdp1Szjf5JR00iVlhXYNYOU6l
-         tXqQcd262JId2SyIbGMhICxxgyegimPo6b28TJdfjc8okVC1wnNUTEvAJMKd3RXChCVF
-         kSbg9oswkjlYjF7sInrgDa6Jp7AgHxgYHMCGER7mSuQVV3ikXQUCJA5lJVaNxmy2TbGe
-         Lxk2jSstTTxKIug7spNA+R8KUXjMRKw6xAm67+ZoLgsv6NVRazmSqQ6DKfurDqDoG5hk
-         ongQ==
-X-Gm-Message-State: AOJu0YxnR80LHAp88tcg/KALNxKOZgdDA1A8BRBvLlJ//V76i30tQvhN
-	oUM3qD4C0axxWKbhDPmlu2/CQmoW2N4tbXoYeXQooznqZduln3qhxgcCmRnNuWEu409bj5oHP4p
-	CAPq1Ta+l+RaUMT1Ijnkl2d/7Bv2pIr8o
-X-Google-Smtp-Source: AGHT+IEhczTHvvDjVeg6Pvbvn7UtOLZBLuPzW6GomhWkIzl2gBVFJydJN91+AvoJ8LIJzWan+AkZyr71ZFB4mf7Tiyo=
-X-Received: by 2002:a05:6a20:e617:b0:1bd:288f:e8b4 with SMTP id
- adf61e73a8af0-1cce0fea606mr26332456637.7.1725587176167; Thu, 05 Sep 2024
- 18:46:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725589162; x=1726193962;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dIW9b0DbiNOfgETQSZVCY5M0dVLOvu9t5blHuaZ3mxw=;
+        b=rw2EmWbYqX0ilZN4JIAlfHKt5+8B/lx8Xjz+UOLPn0w56UjUH5qllgnBHPWq24cZjG
+         v7TiRlnaXF925m4vxuLdgc7I6ADj0rVNTUK7emuILPkG1Sa2eylk5l/Z/mhjuKMVLUEF
+         bS6+SWhmm9AvJXp3YfAqIKWZbN8f9+gzKyix3quRwXrBN2suKQXAeuxacIwCW8gxyCIu
+         pdPIQFtxa9kfNNYGkgnxIlL9gxqDQkIGb4rWQpY2/smDEuLTOdD96vMZVvNrGw8wwSVw
+         U2ss4e0QuEs3BSL5sDGjLjWRo/Sd6lUGUJiEmhg955DHlh+SLh8slpzT1tOawiJb3bBC
+         vtIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUTcODKiLGrOW5VJdITQ5447irr+V3ab5kNFOS9GgSjTgtYYK8Qxx5Z7t9wMw9tv+oqWlc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3K+YVwL/0AHyxF/fqpVeFEfMq7Gp24yiDCS9CUe3m+X2XWltD
+	IFCz1zvy9gAw4PBVQ85tQ0BvCmlTI2du1ThwGUWFU3CxN5jhMP62
+X-Google-Smtp-Source: AGHT+IF11BObZmFZ8H/MLIMIJdM/xn6Tn01KO3MpE/ePD6LblTS2fnwlypbI8IaypHv+HDhos0FGkg==
+X-Received: by 2002:a17:90b:394d:b0:2d8:8920:771c with SMTP id 98e67ed59e1d1-2dad50c2cc2mr1490538a91.32.1725589161700;
+        Thu, 05 Sep 2024 19:19:21 -0700 (PDT)
+Received: from lcwang-Precision-3630-Tower.. (211-23-39-77.hinet-ip.hinet.net. [211.23.39.77])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dadc0e3141sm265184a91.54.2024.09.05.19.19.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 19:19:21 -0700 (PDT)
+From: LiangCheng Wang <zaq14760@gmail.com>
+To: shawnguo@kernel.org
+Cc: s.hauer@pengutronix.de,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	u.kleine-koenig@pengutronix.de,
+	cniedermaier@dh-electronics.com,
+	l.sanfilippo@kunbus.com,
+	linux@rasmusvillemoes.dk,
+	stefan.eichenberger@toradex.com,
+	tglx@linutronix.de,
+	rickaran@axis.com,
+	zaq14760@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/1] drivers: tty: imx: fix flags of rs485 not work properly
+Date: Fri,  6 Sep 2024 10:19:05 +0800
+Message-Id: <20240906021905.197891-1-zaq14760@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Adam Ford <aford173@gmail.com>
-Date: Thu, 5 Sep 2024 20:46:05 -0500
-Message-ID: <CAHCN7xLL4hrTK1OqsqUa78cdp9ZcG0sC+cO5QKC3x_Y9-QVzSA@mail.gmail.com>
-Subject: i.MX8MP IMX-LCDIF Underrun Question(s)
-To: imx@lists.linux.dev, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	dri-devel <dri-devel@lists.freedesktop.org>, 
-	arm-soc <linux-arm-kernel@lists.infradead.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Schrempf Frieder <frieder.schrempf@kontron.de>, 
-	Dominique MARTINET <dominique.martinet@atmark-techno.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-I have been testing various settings on the HDMI out of the i.MX8MP.
+The rs485.flags are lost in functions such as imx_uart_stop_tx(),
+causing the function of RS485 to be invalid when using the
+serial port as the RS485 port. Use a variable to store the state to
+avoid this issue.
 
-I noticed that sometimes my monitor would not sync, but sometimes it
-would on the same resolution/refresh rate.  Frieder noted the LCDIF
-was sometimes underflowing, so read up on it a little bit.
+Signed-off-by: LiangCheng Wang <zaq14760@gmail.com>
+---
+ drivers/tty/serial/imx.c | 35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
-In the comments of the LCDIF driver, it's noted:
-    Set FIFO Panic watermarks, low 1/3, high 2/3 .
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 67d4a72eda77..346bbd21536b 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -209,7 +209,7 @@ struct imx_port {
+ 	const struct imx_uart_data *devdata;
+ 
+ 	struct mctrl_gpios *gpios;
+-
++	int flags;
+ 	/* counter to stop 0xff flood */
+ 	int idle_counter;
+ 
+@@ -434,7 +434,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
+ 	imx_uart_writel(sport, ucr4, UCR4);
+ 
+ 	/* in rs485 mode disable transmitter */
+-	if (port->rs485.flags & SER_RS485_ENABLED) {
++	if (sport->flags & SER_RS485_ENABLED) {
+ 		if (sport->tx_state == SEND) {
+ 			sport->tx_state = WAIT_AFTER_SEND;
+ 
+@@ -454,7 +454,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
+ 			hrtimer_try_to_cancel(&sport->trigger_start_tx);
+ 
+ 			ucr2 = imx_uart_readl(sport, UCR2);
+-			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
++			if (sport->flags & SER_RS485_RTS_AFTER_SEND)
+ 				imx_uart_rts_active(sport, &ucr2);
+ 			else
+ 				imx_uart_rts_inactive(sport, &ucr2);
+@@ -490,8 +490,8 @@ static void imx_uart_stop_rx_with_loopback_ctrl(struct uart_port *port, bool loo
+ 	imx_uart_writel(sport, ucr4, UCR4);
+ 
+ 	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
+-	if (port->rs485.flags & SER_RS485_ENABLED &&
+-	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
++	if (sport->flags & SER_RS485_ENABLED &&
++	    sport->flags & SER_RS485_RTS_ON_SEND &&
+ 	    sport->have_rtscts && !sport->have_rtsgpio && loopback) {
+ 		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
+ 		uts |= UTS_LOOP;
+@@ -604,7 +604,7 @@ static void imx_uart_dma_tx_callback(void *data)
+ 	if (!kfifo_is_empty(&tport->xmit_fifo) &&
+ 			!uart_tx_stopped(&sport->port))
+ 		imx_uart_dma_tx(sport);
+-	else if (sport->port.rs485.flags & SER_RS485_ENABLED) {
++	else if (sport->flags & SER_RS485_ENABLED) {
+ 		u32 ucr4 = imx_uart_readl(sport, UCR4);
+ 		ucr4 |= UCR4_TCEN;
+ 		imx_uart_writel(sport, ucr4, UCR4);
+@@ -681,10 +681,10 @@ static void imx_uart_start_tx(struct uart_port *port)
+ 	 * imx_uart_stop_tx(), but tx_state is still SEND.
+ 	 */
+ 
+-	if (port->rs485.flags & SER_RS485_ENABLED) {
++	if (sport->flags & SER_RS485_ENABLED) {
+ 		if (sport->tx_state == OFF) {
+ 			u32 ucr2 = imx_uart_readl(sport, UCR2);
+-			if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
++			if (sport->flags & SER_RS485_RTS_ON_SEND)
+ 				imx_uart_rts_active(sport, &ucr2);
+ 			else
+ 				imx_uart_rts_inactive(sport, &ucr2);
+@@ -695,7 +695,7 @@ static void imx_uart_start_tx(struct uart_port *port)
+ 			 * with loopback enabled because that will make our
+ 			 * transmitted data being just looped to RX.
+ 			 */
+-			if (!(port->rs485.flags & SER_RS485_RX_DURING_TX) &&
++			if (!(sport->flags & SER_RS485_RX_DURING_TX) &&
+ 			    !port->rs485_rx_during_tx_gpio)
+ 				imx_uart_stop_rx_with_loopback_ctrl(port, false);
+ 
+@@ -1078,7 +1078,7 @@ static void imx_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
+ 	struct imx_port *sport = to_imx_port(port);
+ 	u32 ucr3, uts;
+ 
+-	if (!(port->rs485.flags & SER_RS485_ENABLED)) {
++	if (!(sport->flags & SER_RS485_ENABLED)) {
+ 		u32 ucr2;
+ 
+ 		/*
+@@ -1604,8 +1604,8 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 	ucr1 &= ~(UCR1_TRDYEN | UCR1_RRDYEN | UCR1_RTSDEN | UCR1_RXDMAEN |
+ 		  UCR1_ATDMAEN | UCR1_SNDBRK);
+ 	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
+-	if (port->rs485.flags & SER_RS485_ENABLED &&
+-	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
++	if (sport->flags & SER_RS485_ENABLED &&
++	    sport->flags & SER_RS485_RTS_ON_SEND &&
+ 	    sport->have_rtscts && !sport->have_rtsgpio) {
+ 		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
+ 		uts |= UTS_LOOP;
+@@ -1643,7 +1643,7 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 	 * those cases, we have to wait for the hrtimer to fire and
+ 	 * complete the transition to OFF.
+ 	 */
+-	loops = port->rs485.flags & SER_RS485_ENABLED ?
++	loops = sport->flags & SER_RS485_ENABLED ?
+ 		port->rs485.delay_rts_after_send : 0;
+ 	while (sport->tx_state != OFF && loops--) {
+ 		uart_port_unlock_irqrestore(&sport->port, flags);
+@@ -1659,9 +1659,9 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 		 * signal is inactive in order not to block other
+ 		 * devices.
+ 		 */
+-		if (port->rs485.flags & SER_RS485_ENABLED) {
++		if (sport->flags & SER_RS485_ENABLED) {
+ 			ucr2 = imx_uart_readl(sport, UCR2);
+-			if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
++			if (sport->flags & SER_RS485_RTS_AFTER_SEND)
+ 				imx_uart_rts_active(sport, &ucr2);
+ 			else
+ 				imx_uart_rts_inactive(sport, &ucr2);
+@@ -1749,13 +1749,13 @@ imx_uart_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	if (!sport->have_rtscts)
+ 		termios->c_cflag &= ~CRTSCTS;
+ 
+-	if (port->rs485.flags & SER_RS485_ENABLED) {
++	if (sport->flags & SER_RS485_ENABLED) {
+ 		/*
+ 		 * RTS is mandatory for rs485 operation, so keep
+ 		 * it under manual control and keep transmitter
+ 		 * disabled.
+ 		 */
+-		if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
++		if (sport->flags & SER_RS485_RTS_AFTER_SEND)
+ 			imx_uart_rts_active(sport, &ucr2);
+ 		else
+ 			imx_uart_rts_inactive(sport, &ucr2);
+@@ -2394,6 +2394,7 @@ static int imx_uart_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = uart_get_rs485_mode(&sport->port);
++	sport->flags = sport->port.rs485.flags;
+ 	if (ret)
+ 		goto err_clk;
+ 
+-- 
+2.34.1
 
-However, in the downstream kernels, NXP changes the threshold to 1/2
-and 3/4 on the LCDIF that drives the HDMI, while leaving the other
-LCDIF interfaces at the default.
-
-When I increased the threshold to 1/2 and 3/4, it appeared that
-several resolutions that my monitor was struggling to sync started
-working, and it appeared to sync faster.  I don't have an HDMI
-analyzer, so I cannot verify much beyond knowing if my monitor can or
-cannot sync.
-
-Could the threshold and underrun cause this monitor intermittent
-issue, or would this be something else?
-
-Does it make sense to have a flag or device tree option to override
-the default thresholds to change the panic level?
-
-adam
