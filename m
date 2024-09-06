@@ -1,60 +1,60 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627A91D0DC6
-	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 15:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D2A1D3652
+	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 15:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725638016; cv=none; b=FOz3Fz/GcV98mNcK8kSVyogrZtwvzKnYiPNnnPNIFa5HHFPNzz6eEEErjF0xTWGf0w83iy4J4l5ENPi3vFnQT7UkTPIKezQb4nGKpIKPfkX+zl98QE6+VJdgz7OUIx6NZUkePoE/VdddP5UkPYUMi5pjToHYRyWpuuZot8Zleng=
+	t=1725638038; cv=none; b=iv958VC0NVPqlfoDgDPL0rDApqUgaNGdc8Y65hbJPJNbs2cbonQAh5jrRwhDc6GKE3PAvPe/1CvuQOMbp7oD5Y5W/ZJ9GkCmPA/icY5eX0tOjhTtCZgnBBv7p0j14siIEyRE1suOwDQavIzTY9ur5rIfGndmWU4/jse2eACHyPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725638016; c=relaxed/simple;
-	bh=WAWEBcr+J5ycmnAjjxWFN7gCy3KcxkcCtECCiUEjoO8=;
+	s=arc-20240116; t=1725638038; c=relaxed/simple;
+	bh=o0MznKshQJgBs5nWI2XoOX4AsBYGuttamKL1DUIopyY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HDrKEMLSOBhmZW4zP6YjIRcn1g1cJTBe2Y+Oif1ssc1fEjlKZS20AyxDWrD5BvQtx8r/XSrEmpfbe1HkDDfIhLkpCjyeoehzahW569pD7EBa+xBrFNMzXUvyRMp1Snu+PNIFLQp0e1xZ9oI3/YlbnzhsmSEd4mDeQoI2LFEBZlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dGQ90Yqk; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:Content-Type; b=gX6RrAG0ca+Yt3c8sonXb1tJEli5ktLO/MpzkJ2am+juDYgvJo1ZFOOwiq/dLH0aRk/NOt1HkcMgs48/FlCpY5ci50bF52D2Z6IPm/y98YUcIMe2d7puRJjxqiCUKG+aom9KRAhIeDdBB8Jewk3t+kANYMcUHO5D8yWTJmEnVIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ceCcHvxX; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dGQ90Yqk"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-374c4d4f219so1302444f8f.1
-        for <imx@lists.linux.dev>; Fri, 06 Sep 2024 08:53:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ceCcHvxX"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3787f30d892so1238978f8f.0
+        for <imx@lists.linux.dev>; Fri, 06 Sep 2024 08:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1725638011; x=1726242811; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1725638034; x=1726242834; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=DI8o5gu7OR5hgYkJNn+/W5hw7ApVbZjOLKlmqFfKJmE=;
-        b=dGQ90YqkJGtgniEfGpcHq8jxqYjIP0pDcQzGp7f1fjaXtofLSt5scCl+oWtgyl/LCi
-         4diE6G3uWe75X2MPXXcQL6RN/R/zWVWHX4aFKVcYud6JPhHRpXtj7CXld56U4B3bDqYh
-         AXMMgadVwTaXGyRB3js3wdbX8J9fHNBWlk0Ylhf88GpLeek0ysFqvGw6Fzkx7+50YMps
-         +HoifcODLgeZ2FVMTF7hHohhYxJFLroPAp8WMYN1r0OeQZiRf4/76NaCW9PFjjDe4oJv
-         xzkUQyv1aeRnbA8VbA/G8+ia/zUl0b/R+QzTu/eYDJfOb99rwqMSAOQHlB8rsQsUUQ4k
-         rsxw==
+        bh=NC6Cf1A5zM/7S1X0dCOTWrmEp/YKRHomNRr1wAJwj6w=;
+        b=ceCcHvxXOZg5A0MN2Q3qN38WEOUbOVd4BaluQfRHEbbFkYkMfZ7wQRB85sVpeNME3Q
+         gYbysicARUitPKMKnG6Z4WxCvmrzwSHPHUl/8AbWkwmtWarH3RYGOLiPiEb74bEFKsBW
+         G2tBx7NfKaSuj5Eu29eeG86BwDVQ8NUIS1UF6XxfmcsDZKtqFMMUTqNy9c1DcV+WDxvj
+         mezVDqxmx77pSeEOy3BIEl9vAZ5hPHRt1xiC1DrWL7ncJo3TQSfpjLp/472FrQDQiRL8
+         W1MyBPkMqzhQoAbbFh+4gM5q/X4dtYv0dxrpq0/r1ZKgxavBBRc9e97PsdcgP7UdmN1l
+         ze8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725638011; x=1726242811;
+        d=1e100.net; s=20230601; t=1725638034; x=1726242834;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DI8o5gu7OR5hgYkJNn+/W5hw7ApVbZjOLKlmqFfKJmE=;
-        b=vpR3oy6brbuuukvr5sy/g3YJYWnqAKhKCqqZ8O7raqvry3IzE0KR4nqExicTOKYKGj
-         zsIgBWNGyND8bhcc+RO3aPRW2AcHrjN/L8jyBwOTkRHhm+U3CxxlZCAVky29S7O3Dryf
-         eEevFGydEp8tZr2t7m4jvgELuZeRh7bZho2+bQfQnh0kv1NCiDmkdbxUu5cIUbX0acq0
-         cC6MmzrXmst9KPjRN1hgbrIsytaQtmfZsHks0+v1EhZnDSQLT7c2gw0T0e0b8qrMx+BT
-         +Hv+24tq+HB7wbjgTH3R/royI8MeCQHu9V6eCuBMAvWBxaWfR/mPEFQQ1IIb6xW8FaoS
-         ZNKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFqHshHwc5KlntfZcMtyAVTr7v9jUs+UwfMNGYqgHcEgzqxoNIhMPEWcTH8LrC3TbjQzg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxfdY6gdKzFG2CngaL74sqlJCLl2h272JRc9u+GAeKGkJjyUCkN
-	SQ5kmJZ+038bLQUdVLWgnV5b6VNOU83dLyApU3nqvoW1eZ7aCKHafW+chRc5eGw=
-X-Google-Smtp-Source: AGHT+IFhlE6ZrY41rmkc+9XGmW+fZeuwq4JG6dHsE1M5Fq87WTjwrS/Nh6wLsDQBUZUkcgmyZ7UGWg==
-X-Received: by 2002:a5d:5192:0:b0:374:c9f0:752d with SMTP id ffacd0b85a97d-378896a5ca3mr1851961f8f.47.1725638010354;
-        Fri, 06 Sep 2024 08:53:30 -0700 (PDT)
+        bh=NC6Cf1A5zM/7S1X0dCOTWrmEp/YKRHomNRr1wAJwj6w=;
+        b=tM3bLe3HoPWUPrYdbRku6XdAseehScEzvXPYcBGVExuHj323SZyM1Em7xUkKWnfWUP
+         h2dYU22Cu43oz12YqHyT3CthIcFpQiYt63H+FBknZp/f6pq9aeINjdZ7JWaufEC97j5Y
+         hGTw2bTTyTgxzzhoj77hlVqgvoIkLlfGHFOhsRORGJIJYPNVOLJ8fxTGcVLMCCjC7Awu
+         qFTrZNWznGrHkx95U8ZIznvnAOWhSuXpGhsufTmxX1oEU0TYVaC/4SzHXV48MdzKOOFs
+         HpKNx4O+MHMKv6c+ZwnCkq0wHtz9itxCHNwpNrZHnNZq90zdROGhA+EmqHLq2jq/HpUu
+         kzzA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqjbxjvyMxXhWbr3OlqYbrtD2Hd14seOYYnRglUfS33pgnu5+S9mAglTWx3WaHOHA7nTY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwqCTUxJjzzuUZvwQEC66PbT4jFF4yjzUeSL3ww8S9PGutzGa3o
+	jNcAGSLjiQrXin9U/lO1en8g9xg4ngbBLz75TWKsx/PITQ8cnlPWjgoWDKFNX5M=
+X-Google-Smtp-Source: AGHT+IHaSnady74DJ1oEcQaHcxLA4uOPiZb6C4vhozW1nZbyNOH4GbF0OP/WL2CRSWsgv9G05aJ9MA==
+X-Received: by 2002:a5d:4388:0:b0:368:334d:aad4 with SMTP id ffacd0b85a97d-378895b7bdbmr2264093f8f.4.1725638033585;
+        Fri, 06 Sep 2024 08:53:53 -0700 (PDT)
 Received: from [192.168.0.20] ([148.56.230.39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ca05cfb47sm24222555e9.22.2024.09.06.08.53.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ca06005bbsm24296915e9.30.2024.09.06.08.53.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2024 08:53:30 -0700 (PDT)
-Message-ID: <276a7f04-6761-40c2-8f37-799175f9b11b@suse.com>
-Date: Fri, 6 Sep 2024 17:53:28 +0200
+        Fri, 06 Sep 2024 08:53:53 -0700 (PDT)
+Message-ID: <e295e004-891d-4865-b1c4-3cef93976245@suse.com>
+Date: Fri, 6 Sep 2024 17:53:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,7 +62,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] arm64: dts: s32g: Add S32G2/S32G3 uSDHC pinmux
+Subject: Re: [PATCH v2 2/2] arm64: dts: s32g2: Disable support for SD/eMMC UHS
+ mode
 To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
  Chester Lin <chester62515@gmail.com>,
  Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
@@ -72,9 +73,9 @@ To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
  linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- NXP S32 Linux Team <s32@nxp.com>, Radu Pirea <radu-nicolae.pirea@nxp.com>
+ NXP S32 Linux Team <s32@nxp.com>
 References: <20240830113347.4048370-1-ciprianmarian.costea@oss.nxp.com>
- <20240830113347.4048370-2-ciprianmarian.costea@oss.nxp.com>
+ <20240830113347.4048370-3-ciprianmarian.costea@oss.nxp.com>
 Content-Language: en-US, ca-ES, es-ES
 From: Matthias Brugger <mbrugger@suse.com>
 Autocrypt: addr=mbrugger@suse.com; keydata=
@@ -120,7 +121,7 @@ Autocrypt: addr=mbrugger@suse.com; keydata=
  LV6nybxdRG/jp8ZQdQQixPA9azZDzuTu+NjKtzIA5qtfZfmm8xC+kAwAMZ/ZnfCsKwN0bbnD
  YfO3B5Q131ASmu0kbwY03Mw4PhxDzZNrt4a89Y95dq5YkMtVH2Me1ZP063cFCCYCkvEAK/C8
  PVrr2NoUqi/bxI8fFQJD1jVj8K0=
-In-Reply-To: <20240830113347.4048370-2-ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20240830113347.4048370-3-ciprianmarian.costea@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -129,393 +130,45 @@ Content-Transfer-Encoding: 7bit
 On 30/08/2024 13:33, Ciprian Costea wrote:
 > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > 
-> Adding 100mhz & 200mhz pinmux support for uSDHC helps to enable
-> higher speed modes for SD (SDR50, DDR50, SDR104) and
-> eMMC (such as HS200, HS400/HS400ES).
+> Disable SD/eMMC UHS modes for NXP boards which do not set VCCQ voltage
+> supply to 1.8V by default, such as S32G274A-EVB and S32G274A-RDB2.
 > 
-> Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
 > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
 Reviewed-by: Matthias Brugger <mbrugger@suse.com>
 
 > ---
->   arch/arm64/boot/dts/freescale/s32g2.dtsi      | 153 ++++++++++++++++++
->   .../arm64/boot/dts/freescale/s32g274a-evb.dts |   4 +
->   .../boot/dts/freescale/s32g274a-rdb2.dts      |   4 +
->   arch/arm64/boot/dts/freescale/s32g3.dtsi      | 153 ++++++++++++++++++
->   .../boot/dts/freescale/s32g399a-rdb3.dts      |   4 +
->   5 files changed, 318 insertions(+)
+>   arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 1 +
+>   arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 9 +++++++++
+>   2 files changed, 10 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> index fa054bfe7d5c..7be430b78c83 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -162,6 +162,159 @@ jtag-grp4 {
->   					slew-rate = <166>;
->   				};
->   			};
-> +
-> +			pinctrl_usdhc0: usdhc0grp-pins {
-> +				usdhc0-grp0 {
-> +					pinmux = <0x2e1>,
-> +						 <0x381>;
-> +					output-enable;
-> +					bias-pull-down;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp1 {
-> +					pinmux = <0x2f1>,
-> +						 <0x301>,
-> +						 <0x311>,
-> +						 <0x321>,
-> +						 <0x331>,
-> +						 <0x341>,
-> +						 <0x351>,
-> +						 <0x361>,
-> +						 <0x371>;
-> +					output-enable;
-> +					input-enable;
-> +					bias-pull-up;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp2 {
-> +					pinmux = <0x391>;
-> +					output-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp3 {
-> +					pinmux = <0x3a0>;
-> +					input-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp4 {
-> +					pinmux = <0x2032>,
-> +						 <0x2042>,
-> +						 <0x2052>,
-> +						 <0x2062>,
-> +						 <0x2072>,
-> +						 <0x2082>,
-> +						 <0x2092>,
-> +						 <0x20a2>,
-> +						 <0x20b2>,
-> +						 <0x20c2>;
-> +				};
-> +			};
-> +
-> +			pinctrl_usdhc0_100mhz: usdhc0-100mhzgrp-pins {
-> +				usdhc0-100mhz-grp0 {
-> +					pinmux = <0x2e1>,
-> +						 <0x381>;
-> +					output-enable;
-> +					bias-pull-down;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp1 {
-> +					pinmux = <0x2f1>,
-> +						 <0x301>,
-> +						 <0x311>,
-> +						 <0x321>,
-> +						 <0x331>,
-> +						 <0x341>,
-> +						 <0x351>,
-> +						 <0x361>,
-> +						 <0x371>;
-> +					output-enable;
-> +					input-enable;
-> +					bias-pull-up;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp2 {
-> +					pinmux = <0x391>;
-> +					output-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp3 {
-> +					pinmux = <0x3a0>;
-> +					input-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp4 {
-> +					pinmux = <0x2032>,
-> +						 <0x2042>,
-> +						 <0x2052>,
-> +						 <0x2062>,
-> +						 <0x2072>,
-> +						 <0x2082>,
-> +						 <0x2092>,
-> +						 <0x20a2>,
-> +						 <0x20b2>,
-> +						 <0x20c2>;
-> +				};
-> +			};
-> +
-> +			pinctrl_usdhc0_200mhz: usdhc0-200mhzgrp-pins {
-> +				usdhc0-200mhz-grp0 {
-> +					pinmux = <0x2e1>,
-> +						 <0x381>;
-> +					output-enable;
-> +					bias-pull-down;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp1 {
-> +					pinmux = <0x2f1>,
-> +						 <0x301>,
-> +						 <0x311>,
-> +						 <0x321>,
-> +						 <0x331>,
-> +						 <0x341>,
-> +						 <0x351>,
-> +						 <0x361>,
-> +						 <0x371>;
-> +					output-enable;
-> +					input-enable;
-> +					bias-pull-up;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp2 {
-> +					pinmux = <0x391>;
-> +					output-enable;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp3 {
-> +					pinmux = <0x3a0>;
-> +					input-enable;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp4 {
-> +					pinmux = <0x2032>,
-> +						 <0x2042>,
-> +						 <0x2052>,
-> +						 <0x2062>,
-> +						 <0x2072>,
-> +						 <0x2082>,
-> +						 <0x2092>,
-> +						 <0x20a2>,
-> +						 <0x20b2>,
-> +						 <0x20c2>;
-> +				};
-> +			};
->   		};
->   
->   		uart0: serial@401c8000 {
 > diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> index dbe498798bd9..7ab917f547ef 100644
+> index 7ab917f547ef..b9a119eea2b7 100644
 > --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
 > +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> @@ -34,6 +34,10 @@ &uart0 {
->   };
->   
->   &usdhc0 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 = <&pinctrl_usdhc0>;
-> +	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
-> +	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
+> @@ -39,5 +39,6 @@ &usdhc0 {
+>   	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
+>   	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
 >   	disable-wp;
+> +	no-1-8-v;
 >   	status = "okay";
 >   };
 > diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> index ab1e5caaeae7..8739f63771bc 100644
+> index 8739f63771bc..aaa61a8ad0da 100644
 > --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
 > +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> @@ -40,6 +40,10 @@ &uart1 {
->   };
->   
->   &usdhc0 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 = <&pinctrl_usdhc0>;
-> +	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
-> +	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
+> @@ -45,5 +45,14 @@ &usdhc0 {
+>   	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
+>   	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
 >   	disable-wp;
+> +	/* Remove no-1-8-v to enable higher speed modes for SD card.
+> +	 * However, this is not enough to enable HS400 or HS200 modes for eMMC.
+> +	 * In this case, the position of the resistor R797 must be changed
+> +	 * from A to B before removing the property.
+> +	 * If the property is removed without changing the resistor position,
+> +	 * HS*00 may be enabled, but the interface might be unstable because of
+> +	 * the wrong VCCQ voltage applied to the eMMC.
+> +	 */
+> +	no-1-8-v;
 >   	status = "okay";
 >   };
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> index b4226a9143c8..6c572ffe37ca 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -219,6 +219,159 @@ jtag-grp4 {
->   					slew-rate = <166>;
->   				};
->   			};
-> +
-> +			pinctrl_usdhc0: usdhc0grp-pins {
-> +				usdhc0-grp0 {
-> +					pinmux = <0x2e1>,
-> +						 <0x381>;
-> +					output-enable;
-> +					bias-pull-down;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp1 {
-> +					pinmux = <0x2f1>,
-> +						 <0x301>,
-> +						 <0x311>,
-> +						 <0x321>,
-> +						 <0x331>,
-> +						 <0x341>,
-> +						 <0x351>,
-> +						 <0x361>,
-> +						 <0x371>;
-> +					output-enable;
-> +					input-enable;
-> +					bias-pull-up;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp2 {
-> +					pinmux = <0x391>;
-> +					output-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp3 {
-> +					pinmux = <0x3a0>;
-> +					input-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-grp4 {
-> +					pinmux = <0x2032>,
-> +						 <0x2042>,
-> +						 <0x2052>,
-> +						 <0x2062>,
-> +						 <0x2072>,
-> +						 <0x2082>,
-> +						 <0x2092>,
-> +						 <0x20a2>,
-> +						 <0x20b2>,
-> +						 <0x20c2>;
-> +				};
-> +			};
-> +
-> +			pinctrl_usdhc0_100mhz: usdhc0-100mhzgrp-pins {
-> +				usdhc0-100mhz-grp0 {
-> +					pinmux = <0x2e1>,
-> +						 <0x381>;
-> +					output-enable;
-> +					bias-pull-down;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp1 {
-> +					pinmux = <0x2f1>,
-> +						 <0x301>,
-> +						 <0x311>,
-> +						 <0x321>,
-> +						 <0x331>,
-> +						 <0x341>,
-> +						 <0x351>,
-> +						 <0x361>,
-> +						 <0x371>;
-> +					output-enable;
-> +					input-enable;
-> +					bias-pull-up;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp2 {
-> +					pinmux = <0x391>;
-> +					output-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp3 {
-> +					pinmux = <0x3a0>;
-> +					input-enable;
-> +					slew-rate = <150>;
-> +				};
-> +
-> +				usdhc0-100mhz-grp4 {
-> +					pinmux = <0x2032>,
-> +						 <0x2042>,
-> +						 <0x2052>,
-> +						 <0x2062>,
-> +						 <0x2072>,
-> +						 <0x2082>,
-> +						 <0x2092>,
-> +						 <0x20a2>,
-> +						 <0x20b2>,
-> +						 <0x20c2>;
-> +				};
-> +			};
-> +
-> +			pinctrl_usdhc0_200mhz: usdhc0-200mhzgrp-pins {
-> +				usdhc0-200mhz-grp0 {
-> +					pinmux = <0x2e1>,
-> +						 <0x381>;
-> +					output-enable;
-> +					bias-pull-down;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp1 {
-> +					pinmux = <0x2f1>,
-> +						 <0x301>,
-> +						 <0x311>,
-> +						 <0x321>,
-> +						 <0x331>,
-> +						 <0x341>,
-> +						 <0x351>,
-> +						 <0x361>,
-> +						 <0x371>;
-> +					output-enable;
-> +					input-enable;
-> +					bias-pull-up;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp2 {
-> +					pinmux = <0x391>;
-> +					output-enable;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp3 {
-> +					pinmux = <0x3a0>;
-> +					input-enable;
-> +					slew-rate = <208>;
-> +				};
-> +
-> +				usdhc0-200mhz-grp4 {
-> +					pinmux = <0x2032>,
-> +						 <0x2042>,
-> +						 <0x2052>,
-> +						 <0x2062>,
-> +						 <0x2072>,
-> +						 <0x2082>,
-> +						 <0x2092>,
-> +						 <0x20a2>,
-> +						 <0x20b2>,
-> +						 <0x20c2>;
-> +				};
-> +			};
->   		};
->   
->   		uart0: serial@401c8000 {
-> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> index 176e5af191c8..828e353455b5 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> @@ -40,6 +40,10 @@ &uart1 {
->   };
->   
->   &usdhc0 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 = <&pinctrl_usdhc0>;
-> +	pinctrl-1 = <&pinctrl_usdhc0_100mhz>;
-> +	pinctrl-2 = <&pinctrl_usdhc0_200mhz>;
->   	bus-width = <8>;
->   	disable-wp;
->   	status = "okay";
