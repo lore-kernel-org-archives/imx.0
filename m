@@ -1,82 +1,124 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6DF1922FD
-	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 11:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809411C8FC7;
+	Fri,  6 Sep 2024 12:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725623217; cv=none; b=sNU4xk9o/NQTADNWJVHsQuQglVNb8PD9M2ZC0BxwloKkRS0F2ujndV2Yd4brSMPnM7Mh9OwmTZP7rmD1PdY31LFWBD5ULUmiWlPlzo/Sf1gWeOr0AzXYcgZeg2Ce7CyClA66nkdXgyHvsvaZ9c8uEdz9kCek/2VgwITbdwXqzbo=
+	t=1725624408; cv=none; b=S2xtwMaH2B1RlV0wQZDJ9so7wFEI33k38fKClA/S97YYurpSPYOamWB6sd0EmS/Zar775W/8af9CC7Z8FCOyrJuB8ZuJa4HJEAizHWjzChIqm1zIA8Sevd3HU3r2gdH1NcTdhKxNF5BbTXQrPeg+l9QbYKuOWKOQajJ2Ji2JMOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725623217; c=relaxed/simple;
-	bh=+1NIRiUVMBo8EjMzhxcpr/IDwbogu1+HnG9cOWveE5o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z9JR5W7MvUs8NRInRIAVBd+B0tbTGs3/e0wSa37pgN8cwgsmGo3nTpNVGv99Ri0C6oNFHvM9KTRjTLPy0jWugtKHyxjuiL8DpZE8hqtjkM479rMjAuvaWVmp7Ehybsiu6FT+sEwCacOwdIqBgXHG3lK8A9vi1HXO6+l5kxiqNcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1smXQL-00027c-8B; Fri, 06 Sep 2024 13:46:45 +0200
-Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1smXQK-005w12-69; Fri, 06 Sep 2024 13:46:44 +0200
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1smXQK-00076I-0J;
-	Fri, 06 Sep 2024 13:46:44 +0200
-Message-ID: <c4e1da1d2f005e22f74eb2461382fd4666dedd4f.camel@pengutronix.de>
-Subject: Re: [PATCH 1/1] drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Alexander Stein
-	 <alexander.stein@ew.tq-group.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- dri-devel@lists.freedesktop.org,  imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org
-Date: Fri, 06 Sep 2024 13:46:43 +0200
-In-Reply-To: <CAA8EJpoz7jtjN-Dxq-6SHNiZCz2xsFFf5j4HOoFiLAq=OnHn6Q@mail.gmail.com>
-References: <20240906063857.2223442-1-alexander.stein@ew.tq-group.com>
-	 <CAA8EJpoz7jtjN-Dxq-6SHNiZCz2xsFFf5j4HOoFiLAq=OnHn6Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1725624408; c=relaxed/simple;
+	bh=tD4tsZt9ld3Gft6zrgTvMfi2YHAaykUrGQ+Py1+ed+0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gaQYXQnkijAdWkTzMWnUcbYU2OxULYrgR6xKyyXeSjQNJx3A0wOtpirjOzx9X6JIsQKwUJXWPX5OzsyXX34bdFJgVMbcJ9Kv8LhBSjKJVAi5J/gsK8HyYT0KU6We0kFZtbW7pZHtewXEUfD08BwRxrt36OZ5kF2QehKYED7MlU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6DAVZKw; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6DAVZKw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37CDC4CEC4;
+	Fri,  6 Sep 2024 12:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725624408;
+	bh=tD4tsZt9ld3Gft6zrgTvMfi2YHAaykUrGQ+Py1+ed+0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V6DAVZKwauEcOsWYLzycyTUk1E7WyhZ7AP+5cpRkgn64ynaAjrGhR/B+s9sTaUA7W
+	 YjnZEY+WWH3pbuhOQ5/HjFtXLpZBWMcsLggUzkV8yh6gzB/ZwRaLWY+idqRrM3bl/u
+	 xbOnsXswrqZW6h8ejL7hWCpc4KosPKpHVmk9Em+C22cg9adnR5zxPk4rLqKumDXLUb
+	 QFk7f0bLjKt7xhu77C9oPUYFiDEswY9xx4u1qF1t+CJrT6Z48cwbKvwkVZKp3j+aeh
+	 kl5cMoe6RGMx4xH2vvkYCjR8iQ+olIFQ5Aj5IAiv+SykXokx4gro/8LwrhDkiaqpGD
+	 eVegVyTlRSGrA==
+Date: Fri, 6 Sep 2024 14:06:44 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Adam Ford <aford173@gmail.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, dri-devel <dri-devel@lists.freedesktop.org>, 
+	arm-soc <linux-arm-kernel@lists.infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Schrempf Frieder <frieder.schrempf@kontron.de>, Dominique MARTINET <dominique.martinet@atmark-techno.com>, 
+	"robh@kernel.org" <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Subject: Re: i.MX8MP IMX-LCDIF Underrun Question(s)
+Message-ID: <20240906-fiery-polar-otter-5fc83f@houat>
+References: <CAHCN7xLL4hrTK1OqsqUa78cdp9ZcG0sC+cO5QKC3x_Y9-QVzSA@mail.gmail.com>
+ <PAXPR04MB84592996FD8101BC0CF9E366889E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="kgmq37ughxbfbzck"
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB84592996FD8101BC0CF9E366889E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
 
-On Fr, 2024-09-06 at 14:35 +0300, Dmitry Baryshkov wrote:
-> On Fri, 6 Sept 2024 at 09:39, Alexander Stein
-> <alexander.stein@ew.tq-group.com> wrote:
+
+--kgmq37ughxbfbzck
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Sep 06, 2024 at 08:03:38AM GMT, Peng Fan wrote:
+> > Subject: i.MX8MP IMX-LCDIF Underrun Question(s)
 > >=20
-> > When drm/bridge-connector was moved to DRM_DISPLAY_HELPER not all
-> > users were updated. Add missing Kconfig selections.
+> > I have been testing various settings on the HDMI out of the i.MX8MP.
 > >=20
-> > Fixes: 9da7ec9b19d8 ("drm/bridge-connector: move to DRM_DISPLAY_HELPER =
-module")
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  drivers/gpu/drm/imx/ipuv3/Kconfig | 2 ++
-> >  1 file changed, 2 insertions(+)
+> > I noticed that sometimes my monitor would not sync, but sometimes it
+> > would on the same resolution/refresh rate.  Frieder noted the LCDIF
+> > was sometimes underflowing, so read up on it a little bit.
+> >=20
+> > In the comments of the LCDIF driver, it's noted:
+> >     Set FIFO Panic watermarks, low 1/3, high 2/3 .
+> >=20
+> > However, in the downstream kernels, NXP changes the threshold to
+> > 1/2 and 3/4 on the LCDIF that drives the HDMI, while leaving the other
+> > LCDIF interfaces at the default.
+> >=20
+> > When I increased the threshold to 1/2 and 3/4, it appeared that several
+> > resolutions that my monitor was struggling to sync started working,
+> > and it appeared to sync faster.  I don't have an HDMI analyzer, so I
+> > cannot verify much beyond knowing if my monitor can or cannot sync.
 >=20
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> You mean the two?
+>         thres-low  =3D <1 2>;             /* (FIFO * 1 / 2) */           =
+                            =20
+>         thres-high =3D <3 4>;             /* (FIFO * 3 / 4) */
+> >=20
+> > Could the threshold and underrun cause this monitor intermittent issue,
+> > or would this be something else?
 >=20
-> I'll update it to drm-misc-next if nobody objects within a few hours
+> The threshold could cause display flicker if the value could not satisfy
+> the bandwidth.
+>=20
+> >=20
+> > Does it make sense to have a flag or device tree option to override the
+> > default thresholds to change the panic level?
+>=20
+> I think it would be good to have a property as above.
+>=20
+> + DT maintainer to comment.
 
-drm-misc-fixes? drm-misc-next doesn't contain 9da7ec9b19d8 yet.
+Why do you think it's something that should be tuned as a
+per-platform/board basis?
 
-regards
-Philipp
+If it's something that needs to be adjusted based on the resolution,
+then it should always be done in the driver, and that has nothing to do
+in the DT.
+
+Maxime
+
+--kgmq37ughxbfbzck
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZtrwTQAKCRAnX84Zoj2+
+dnzLAX4rhFRO43e3DD4r6oFOZJyV23z7kMCa7UfEGx6/wR3e/M078YeCcLAGflcJ
+9mVa7GQBfRNe758fFWPYVXaC04cNwEziGFzaRP+8PMXwpDYsYfFsgbMtbgDbq63+
+RFmXQY/SyA==
+=1WaJ
+-----END PGP SIGNATURE-----
+
+--kgmq37ughxbfbzck--
