@@ -1,88 +1,93 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E31CB325
-	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 11:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F39015852B
+	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 11:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725620499; cv=none; b=XpGgtXMN/I5yVI+OBc0gXifR2W8RLpYEUX4VC22bG3pZXYP6iL17DYL2Pxe4DIXanSrrBbcMQnyXVpPxzQq/xm9wAse77MX7PHVtZuJz7jg2/IfmfMf1wzD4Cng6q17rSFWcTo1vqFqRDzLd5kyh85gGpb4+F6J49rsRQ3yDoMY=
+	t=1725622535; cv=none; b=Vip827+1xl1Z1QHNB/SoVtMAqum2+4EP+5YCfpEakeyKCaVIGGZGaDca0zrAJnFypGxMFwgoZSQnoXAzlgKKr1iwoIFWhhA2SHKDrrCU3k+xvmC22iqxZ7uIuN5hXRhmh1QzPio19C1GY5JwWV1ZGA08krNlfCmgK1fNByF47Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725620499; c=relaxed/simple;
-	bh=k5+XVlhfp7J1OR8MASmqERqRjjzauNiOy6HXf1rlDzY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qy4GVoLn3q8Avlo3KzDoG6XOhr768cSoqyaP6tP7tpvj7ZK85cog5c6pZ5QbwzCGJdjqlqhRfvGFcvR1YbzW0vuz9HWD9Np4zrh4EW8ghXrN1bYeuyYcH0Iqqr4Rs+THtxobwQ0UlSbBZle8uaVku3gmtyK07qV/iH8HKldbX9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1smWib-0007vq-40; Fri, 06 Sep 2024 13:01:33 +0200
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Fri, 06 Sep 2024 13:01:31 +0200
-Subject: [PATCH] drm/imx: parallel-display: select DRM_IMX_LEGACY_BRIDGE
+	s=arc-20240116; t=1725622535; c=relaxed/simple;
+	bh=XF2QmJ5s7PXjzUAPDJ5DuMHsT4jZHu5RgH0eb39TqRo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gVPLqcTkdaHsmcIm5PrvhZilsoLKO6YrWqL7Dw0NZimQgQ0ghkwgOG84jFZRny4vCacfThHFgGq0L+O5LtxkAQgO+fM0DD/NFDdUkiNpK7QwLu8GE5mlF02MfbHSsirwir8MNUc/xA2vKK8m/uz/Op7D4YX1O5KSVv6ge1q+NPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZcZ6kJKp; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZcZ6kJKp"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dff1ccdc17bso2060407276.0
+        for <imx@lists.linux.dev>; Fri, 06 Sep 2024 04:35:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725622532; x=1726227332; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=G4MGtjs5dofMDa08crIubVUGiyT33xxJyNXECaSO5qU=;
+        b=ZcZ6kJKpEOI9ZZh4eIyqohz6flarzSqS2dzAVUKelqlhLbyBUZCoxXOb7ego1g1vgF
+         I2Bz4ZT4GwbNxYa6o2unEWTEx54ve9E3UuJSkA/MUzKGDG3aapguuf60KXI6f2648xqh
+         lR6z2bPEKr2WaCc2YjDC1BD5b3ZrgYmT6wvWaCeKMk/9keSUoQglPieH0vfQnf4rhoBH
+         mTYvehhrFVDaVLFoDXXuNY7enaZL/05nLeECMnJbyMBUNP6ra0PGPtpk6b9+2w4hTQ21
+         LELz48124sVUn/5yCvqeoviYYsCqhrfnkAaof74oUJiPXpYSuNo7i+XRGDYHSu4bDBHE
+         Z6Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725622532; x=1726227332;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G4MGtjs5dofMDa08crIubVUGiyT33xxJyNXECaSO5qU=;
+        b=lCSymg6xitojPv04SAoAHi7UYuwmgUM1mx7hRsum06YuCyGfJjuekP8joLJoJh6QpZ
+         CLXqC3TfSV+rmz2TPxSB9eHCZ/TQvxVpnTU0TSkzvvbOYmejGecpxUtJXItmScRrt94A
+         ETBSgD3Ov7N2VOy1VmmbM7Cv/XwTJce9E6ifS9wbxIPtklSfexN9wzpiRfh4iI/xX14h
+         jtgVM8lMU5Ffo/CPUvCZaQOau2FhuWGAjVPTCbYn+vqWYcKMblQPi7hRyvmIFFJ7gRmh
+         2ATTAn+xXc5rMAtdc5DlxfbwHx9xTCh00W/U/bP5I547HRtZjlVN3hy4/tkWB4PZ6+sq
+         EbSw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/GlBBBaUlnCYAy8XTRmTrgnSPOcj4fipQb5QlgUt2qohiP+eB8ETqUVnDnBlESGIhX7Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGKKoW/5dqHjfw0cxFc2rMV1u1lrgpTSIt9Ysx2LtUCKEkDvsT
+	+1wyZPrsI3y1vsrrcz8+IlV1v255ynn5yQUINgAA1o4w0reVm8+vCfbSKPRBiyxqhkcqkVuor8N
+	bsGmWRKIaA3I0yhZbwQJSZQ5ZKFhyMBEyQlKMDQ==
+X-Google-Smtp-Source: AGHT+IG+ElisUJ0/Qq7f/WCMCZfQCBvKZ4j5xc1ADihAYSJbTXA18QR6nGPwP+SLc7FS1BLGz6TzDS6rI43soiiWSOM=
+X-Received: by 2002:a05:690c:6f03:b0:6ae:528f:be36 with SMTP id
+ 00721157ae682-6db44dbab24mr29072817b3.12.1725622532290; Fri, 06 Sep 2024
+ 04:35:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240906-imx-parallel-display-select-legacy-bridge-v1-1-ebb17457e936@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAArh2mYC/x2NQQrCQAxFr1KyNjBWLepVxEWaSWsg1iEj0lJ69
- wY3D97i/b9CFVepcG9WcPlp1c8Ucjw0wC+aRkHN4dCm9pxuqUN9z1jIyUwMs9ZitGAVE/6iyUi
- 8YO+aI7wMLN2Jr8EMsVdcBp3/X4/ntu0sELyIewAAAA==
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel test robot <lkp@intel.com>, Philipp Zabel <p.zabel@pengutronix.de>
-X-Mailer: b4 0.15-dev-13183
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20240906063857.2223442-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20240906063857.2223442-1-alexander.stein@ew.tq-group.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 6 Sep 2024 14:35:21 +0300
+Message-ID: <CAA8EJpoz7jtjN-Dxq-6SHNiZCz2xsFFf5j4HOoFiLAq=OnHn6Q@mail.gmail.com>
+Subject: Re: [PATCH 1/1] drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add the missing select DRM_IMX_LEGACY_BRIDGE to fix kernels builds that
-have the i.MX parallel-display driver enabled, but the LVDS display
-bridge driver disabled.
+On Fri, 6 Sept 2024 at 09:39, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> When drm/bridge-connector was moved to DRM_DISPLAY_HELPER not all
+> users were updated. Add missing Kconfig selections.
+>
+> Fixes: 9da7ec9b19d8 ("drm/bridge-connector: move to DRM_DISPLAY_HELPER module")
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  drivers/gpu/drm/imx/ipuv3/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Fixes build errors like:
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-  ld: vmlinux.o: in function `imx_pd_probe':
-  parallel-display.c:(.text+0x3129db): undefined reference to `devm_imx_drm_legacy_bridge'
+I'll update it to drm-misc-next if nobody objects within a few hours
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202409060118.z8BxMg7Z-lkp@intel.com/
-Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
----
- drivers/gpu/drm/imx/ipuv3/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
-index 5a40c878ebb0..4897fbd77f3f 100644
---- a/drivers/gpu/drm/imx/ipuv3/Kconfig
-+++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
-@@ -14,6 +14,7 @@ config DRM_IMX_PARALLEL_DISPLAY
- 	depends on DRM_IMX
- 	select DRM_BRIDGE
- 	select DRM_PANEL_BRIDGE
-+	select DRM_IMX_LEGACY_BRIDGE
- 	select VIDEOMODE_HELPERS
- 
- config DRM_IMX_TVE
-
----
-base-commit: 8a8a31205e62b57f1fb844d790d682286121f729
-change-id: 20240906-imx-parallel-display-select-legacy-bridge-5fce63c8ce6d
-
-Best regards,
 -- 
-Philipp Zabel <p.zabel@pengutronix.de>
-
+With best wishes
+Dmitry
