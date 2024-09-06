@@ -1,112 +1,101 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095C8A48
-	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 06:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8346F3EA71;
+	Fri,  6 Sep 2024 06:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725604754; cv=none; b=j2/ilVZvPq9hYcJNR3S29T6ekZyWsN175f/ikVMsu3OqOR5S4kOnMMjcaVGW3cctneVomHcINY537T9GFgQFqR0mxu+rLCRPxcMEWQXO/X7EEI2uBmwA/n/J56uBMl7RFXMD6pYmEQfjEaZDyPheND+XOewgFE7QEJWTcA7CXjQ=
+	t=1725605325; cv=none; b=syZh5iWg916vIkdKs9NGX6Sg/m3nuIlPTU+rVE5DC5cqh5Khb3TfXUVBQehGIn/fgkfuP7Af/N60sHoRlOAgpA7G6iPPKlczVbNX7yTtBYdx74vsAWM5ixvBXvEUoOsjLyFwRzOFwdkWHWnhg1xrdOrfIwL+uB4nrEGGmMvXjGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725604754; c=relaxed/simple;
-	bh=6vXIq99GQlRDetMoVUgmyQWx9Ak+P9LIIxDKXth4am4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=obz83dTu4EaqkLQVoH3EkxmK188qwLbgue6rE6l9sjoEx+suImpjqo97x4zSQDh9fays7k45ATm0NfwxjYFWVfdsKvr9BsIzjR9RYuGtL7nrag08IScjMRYe2YOGrrnXhYRrPoYrgb8VhTpotN2Semj9S8doQkxQVYB+jL4Wqg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=SKC29Hq5; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=CiC6itrb reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1725605325; c=relaxed/simple;
+	bh=nGb8XxbR7FTLc/dIcFXasGyv/0FcYxflx3mwiODWW0c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EWVy31iUps0rLH4PDLLYpNKtm7jpP6D0XZ/iFTG67s9ZW9a0wGLRHPkcivrSeVXtpOMLv/nbhrQWIDp7r4AeePuIoPZ9DsY4kgN2gcj4jAcbJfUF6DjehKevjysOF47xmIbJ1C/ztg88Bmqm7PbAq631UZ7xbc4anSoAHgOuKj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOIczusQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="SKC29Hq5";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="CiC6itrb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1725604750; x=1757140750;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Dg5SF6JXmaXxF0NLRP6GCKnQQLT8CWaXwLRzR4UmnOs=;
-  b=SKC29Hq5SLNOUuTdPJNVTZVo7sNQPfgOa8dg1SgPeXzcnt9f5G1js0n+
-   0Dmeru3Y0jrdbXT4mHGRJhTBcVQf3p3CyB4lQRtOjm5JJ2gnpn4E23qoi
-   WshystuQ2dWXZWU1ulEwcPD7lyNJ51gwF9Cc3pqtE11stlaLEUKSqjarp
-   VCDwT29EOoeKgKRH3d2Kc+wztz7hCmMmeFd6vm4EM+MfAYVrbmcXNofsT
-   cnXF2MAcbj0IyVMCW26WVyI/qe0fJbVJs1drqKfhhyYxTnni5WsxDJHLQ
-   KoGS1kjIoGW3WtoyM3e37sES57A76072zyFzsNy9ne2ZxLBlLuDP6rms0
-   w==;
-X-CSE-ConnectionGUID: DjVR2wjrShqRlWD7KLf6wg==
-X-CSE-MsgGUID: 0LO+PlrWTIiSpA4VuyZAyA==
-X-IronPort-AV: E=Sophos;i="6.10,207,1719871200"; 
-   d="scan'208";a="38800714"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 06 Sep 2024 08:39:07 +0200
-X-CheckPoint: {66DAA38B-1F-22BB8E18-F5F6D0B4}
-X-MAIL-CPID: 492BF267EFA1B926E3FE21B06D48DD7E_5
-X-Control-Analysis: str=0001.0A782F18.66DAA38B.011E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4DA84162421;
-	Fri,  6 Sep 2024 08:38:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1725604743; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=Dg5SF6JXmaXxF0NLRP6GCKnQQLT8CWaXwLRzR4UmnOs=;
-	b=CiC6itrbelTRi6ewhMP9FNHhuWFQHP6QFd2pZykZYifC5qDOEtEzZ0uZbARHpGUk/O8zX+
-	/Wx/DcrShWriDkaJXsGSmW8GcSHt/XWBV+aJ6V5T21hg/ldTo/gbqqyLnFamC+XEKVQbRZ
-	NYVarCfDsY6S2cOkuAXsE3PgnGsdNCr17GE82ZIaaL5bj9K5FYcJO/7/o4sI9AhlWlsrz7
-	x70qZRwg2TU/9SVbAiW++JIrm/Q++r4s4XxSIsyKVg5k/hsew+9WVcmhNcxcwJ24xkypn3
-	gSW+gO3gNjL9dZyhYkfCvmDepk3EK4PFF0CZpq6cNkxkkktJeoXh5okMnmjGzA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOIczusQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D76C4CEC4;
+	Fri,  6 Sep 2024 06:48:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725605325;
+	bh=nGb8XxbR7FTLc/dIcFXasGyv/0FcYxflx3mwiODWW0c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AOIczusQjztFmfGBOGL8PH/zIGGSMEuyk0eGnLJwDxbhKs3NtjKDUtyi7s9Dbw+GI
+	 Mb5BTIF50Nu8L7y6Lfzsd1RoqTP5zG5jS6J1I3Q/zyXZ3SrIIOsFt+HbBhvYFyARVB
+	 u518shT9HZk1jzZq0270PBjkrb2jnN/rikfE3sQEyf2l0girKC1NnyZN47AZauzdzG
+	 IRo2YzVITl1tCYYwMnOYPnepCcBo3sia1aVd6u4vwF24Ipcnus5ZR69FL6zBOSUDjg
+	 G0Pcv2+6Swf32EIlEldguVu3F5gtO2VrPfrs/rRZRn4giUfIA2IyY4Yc+p+4VB0gQk
+	 vHpQC9Tysfhow==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1smSmF-000000004Ee-3z23;
+	Fri, 06 Sep 2024 08:49:04 +0200
+Date: Fri, 6 Sep 2024 08:49:03 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency
-Date: Fri,  6 Sep 2024 08:38:56 +0200
-Message-Id: <20240906063857.2223442-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
+	Jingoo Han <jingoohan1@gmail.com>,
+	Chuanhua Lei <lchuanhua@maxlinear.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	abel.vesa@linaro.org, johan+linaro@kernel.org,
+	Shashank Babu Chinta Venkata <quic_schintav@quicinc.com>
+Subject: Re: [PATCH v6 3/4] PCI: qcom: Add equalization settings for 16.0 GT/s
+Message-ID: <Ztql31KXrBQ1I5JV@hovoldconsulting.com>
+References: <20240904-pci-qcom-gen4-stability-v6-0-ec39f7ae3f62@linaro.org>
+ <20240904-pci-qcom-gen4-stability-v6-3-ec39f7ae3f62@linaro.org>
+ <ZtgqvXGgp2sWNg5O@hovoldconsulting.com>
+ <20240905152742.4llkcjvvu3klmo6j@thinkpad>
+ <Ztnb-GauC_8D8N-i@hovoldconsulting.com>
+ <20240905173437.hm3hegv5zolaj7gj@thinkpad>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240905173437.hm3hegv5zolaj7gj@thinkpad>
 
-When drm/bridge-connector was moved to DRM_DISPLAY_HELPER not all
-users were updated. Add missing Kconfig selections.
-
-Fixes: 9da7ec9b19d8 ("drm/bridge-connector: move to DRM_DISPLAY_HELPER module")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- drivers/gpu/drm/imx/ipuv3/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
-index 5a40c878ebb05..990e216c51cc8 100644
---- a/drivers/gpu/drm/imx/ipuv3/Kconfig
-+++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
-@@ -13,6 +13,7 @@ config DRM_IMX_PARALLEL_DISPLAY
- 	tristate "Support for parallel displays"
- 	depends on DRM_IMX
- 	select DRM_BRIDGE
-+	select DRM_BRIDGE_CONNECTOR
- 	select DRM_PANEL_BRIDGE
- 	select VIDEOMODE_HELPERS
+On Thu, Sep 05, 2024 at 11:04:37PM +0530, Manivannan Sadhasivam wrote:
+> On Thu, Sep 05, 2024 at 06:27:36PM +0200, Johan Hovold wrote:
+> > On Thu, Sep 05, 2024 at 08:57:42PM +0530, Manivannan Sadhasivam wrote:
  
-@@ -31,6 +32,7 @@ config DRM_IMX_LDB
- 	depends on COMMON_CLK
- 	select MFD_SYSCON
- 	select DRM_BRIDGE
-+	select DRM_BRIDGE_CONNECTOR
- 	select DRM_PANEL_BRIDGE
- 	select DRM_IMX_LEGACY_BRIDGE
- 	help
--- 
-2.34.1
+> > > Perhaps we can just get rid of the Kconfig entry and build it by default for
+> > > both RC and EP drivers? I don't see a value in building it as a separate module.
+> > > And we may also move more common code in the future.
+> > 
+> > It is already built by default for both drivers. I'm not sure what
+> > you're suggesting here.
+> 
+> Right now it is selected by both drivers using a Kconfig symbol. But I'm
+> thinking of building it by default as below:
+> 
+> -obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o
+> -obj-$(CONFIG_PCIE_QCOM_EP) += pcie-qcom-ep.o
+> +obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o pcie-qcom-common.o
+> +obj-$(CONFIG_PCIE_QCOM_EP) += pcie-qcom-ep.o pcie-qcom-common.o
+> 
+> A separate Kconfig symbol is not really needed here as this file contains common
+> code required by both the drivers.
 
+But the separate Kconfig symbol will only be enabled via either PCI
+driver's option (e.g. can't be enabled on its own).
+
+I'm also not sure if the above works if you build one driver as a module
+and the other into the kernel (yes, I still intend to resubmit my patch
+for making the rc driver modular).
+
+Johan
