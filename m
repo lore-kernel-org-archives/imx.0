@@ -1,96 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA05112EBDB;
-	Fri,  6 Sep 2024 07:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920A914D282
+	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 08:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725609104; cv=none; b=SB1KFUg39NtZU/74Qlk9d4C6z873d5nx5H7x4RFIoIpSl8M/TLZ7/Yd/qDitu2Gt7J9R1d0QbmM1Ufzjcn34El+uJ/HTOJU6Miur9VNUn0ib+JJOLMuwFFpFsNS6CCbkYB4nfiqvTtQTZFXixH/bczQTXwVxvjb8MANgf68/v4c=
+	t=1725609774; cv=none; b=r2lzaWSpARYdEdQfTT3t27UPPhAjhDNISDAKdWPrD5wwOBej6SxgyLbNICH1Je5V8P6WsBc9Kk3ZMVZOpiKjHdiI8XP0vxi4fbmB9DsmtezmqsYkE7TQlucVODoPeglB3+KdLaohTDYtXLp2Uq/90x1Cy0Wk2eaLfV/GBKf6gAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725609104; c=relaxed/simple;
-	bh=4Q6QBPQx0Q3Hsvug/TgTFRvcIUp3b3WiTX1Mnyr8qBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZqVZUmuJRlzFXbX02mvZu/m3jqSjTCGkSufbg/58r7zjgtISo9hOK8O865ngNzQYAnafVJtsxKnAJnmb8tfFmUGYkwccHhYjneaRlVO/5WgMd9HcQtPevjm7g0zaNJfcYKW2EVpTxVMBjCpOCq5aYb1dofcDM7yFGJ8uQagvnSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ji6a+zWi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725609774; c=relaxed/simple;
+	bh=hMQ2rZUoH4pL5g+yJLRKY11177LFzP7nzO3oVgan77g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SU2AFwU3z+p6CEbkS/ZwAJo3YNemp3qvAaLAnTg0ayBObaKEMIOIavZbMWOk0HGm6t7cVIIZRQ2MhuZqcRt5otuXPuJfDkEo4mtugE/9f4VOZIwd0uadFEywnk0WQ8CQAOKbe2AOxYBQ1J3AVlo1TmCuMEEu5MGS9Gws4K3acSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Vdvk5ahi; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ji6a+zWi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C84C4CEC4;
-	Fri,  6 Sep 2024 07:51:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725609104;
-	bh=4Q6QBPQx0Q3Hsvug/TgTFRvcIUp3b3WiTX1Mnyr8qBE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ji6a+zWiL9JTLas91YgLsCxxIqj2cN/GecYl72V+r40HHNcJsHL/xeioVwrSOt1LY
-	 A6mNFmNqSxCdXE1oiGpqPjYunpCg89upZAH77wad3kbLV3JAJwwgtah53asWHRHg6O
-	 JJL78UGtHDMTTGjI2RMOkTjL4JWDC3sKDNGSr7/hXEBVXlYL2gLZOdLhu5a2Q1Xl5k
-	 f7aY3an9ijVUpBhNNhkSrCa1sBIw6uljUM23wxX0hC+3E8wicnDMph1UpI6AMpAaRu
-	 tvcWeFjGYaArmuR/K9Gr1/4WTSnsdD2GPva9Clkb+FOiOeMdKYBRPsL8mtFox9HuyH
-	 NACu5UrNSJZkA==
-Date: Fri, 6 Sep 2024 09:51:41 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Adam Ford <aford173@gmail.com>
-Cc: Dominique Martinet <dominique.martinet@atmark-techno.com>, 
-	Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Frieder Schrempf <frieder.schrempf@kontron.de>, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/bridge: imx8mp-hdmi-tx: allow 0.5% margin with
- selected clock
-Message-ID: <20240906-strange-spiffy-nautilus-330add@houat>
-References: <20240904083103.1257480-1-dominique.martinet@atmark-techno.com>
- <CAHCN7xLmZYZcHyPh3gy20vFKP7aTDKvWu+a_mbG6LN2gdEifTA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Vdvk5ahi"
+Received: from wsk (85-222-111-42.dynamic.chello.pl [85.222.111.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: lukma@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 3309888549;
+	Fri,  6 Sep 2024 10:02:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1725609770;
+	bh=HhQjnhCG/7IDjpcKBy9KrDyZxezrF88mmfPxvNNf6c0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Vdvk5ahihlmrAP6Usa5c4g7OvU6AhHXYHK48SeLA4nc8TWYB3yXqrJ1QiSIxKjCHt
+	 6+z410bbZIEx9e7Saux9owHbJA+vjErQW9ncC73ksMnWiTqjdC8BSRKm3nmtbNUsGO
+	 gQXu1+cydXSqtsAPxnGgwYc/UNArRoY64QmZGZGtEMVZiIe6J080NmbpdBHRYVzb2p
+	 6rXAlSGVBc5E+YH50Cfy9QUifBAXHqz4JLeMSlEkhfYBYCNUvikVnX/tU3VQGhx6GY
+	 bnR/XFE9/zhKdosl8Na8UgvDH+ZWUGO3ZjZs2HTvkO9ETaUEBZHJcZEOgwAnSowlpa
+	 xYuclL1OK+Ouw==
+Date: Fri, 6 Sep 2024 10:02:48 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] dts: nxp: mxs: Add descriptions for imx287 based
+ btt3-[012] devices
+Message-ID: <20240906100248.39156474@wsk>
+In-Reply-To: <CAOMZO5D3y1_-_TX_a7zuYPxdRKGHGN7JFwWMNe_dtS6i0Rx2jw@mail.gmail.com>
+References: <20240830085441.3589713-1-lukma@denx.de>
+	<20240905143645.7946fb0e@wsk>
+	<CAOMZO5D3y1_-_TX_a7zuYPxdRKGHGN7JFwWMNe_dtS6i0Rx2jw@mail.gmail.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="ejxvdrh7pzfeccnj"
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xLmZYZcHyPh3gy20vFKP7aTDKvWu+a_mbG6LN2gdEifTA@mail.gmail.com>
+Content-Type: multipart/signed; boundary="Sig_/E+e3HCdzUs.pG4iQ6Zg+oc9";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-
---ejxvdrh7pzfeccnj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+--Sig_/E+e3HCdzUs.pG4iQ6Zg+oc9
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 05, 2024 at 08:23:51PM GMT, Adam Ford wrote:
-> On Wed, Sep 4, 2024 at 3:31=E2=80=AFAM Dominique Martinet
-> <dominique.martinet@atmark-techno.com> wrote:
-> >
-> > This allows the hdmi driver to pick e.g. 64.8MHz instead of 65Mhz when =
-we
-> > cannot output the exact frequency, enabling the imx8mp HDMI output to
-> > support more modes
-> >
-> I went from 19 options on Modetest with my AOC 4K monitor to 31.  Of
-> those 31, three did not appear to sync, but not all the frequencies in
-> the LUT sync for me either, so I have no objection to moving forward
-> with this, but I wonder if we should have a note in there about why we
-> have a 5% tolerance.
+Hi Fabio,
 
-Yeah, I agree, it's something you want a comment for.
+> Hi Lukasz,
+>=20
+> On Thu, Sep 5, 2024 at 9:36=E2=80=AFAM Lukasz Majewski <lukma@denx.de> wr=
+ote:
+>=20
+> > Fabio, do you have more comments for this patch set? =20
+>=20
+> The new boards compatible strings must be documented in
+> Documentation/devicetree/bindings/arm/fsl.yaml.
+> Otherwise, many warnings as shown as per Rob's bot email.
 
-Maxime
+As most of those bindings are "legacy" (and already upstreamed) now - it
+could take some time...
 
---ejxvdrh7pzfeccnj
-Content-Type: application/pgp-signature; name="signature.asc"
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/E+e3HCdzUs.pG4iQ6Zg+oc9
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZtq0iAAKCRAnX84Zoj2+
-dkeCAXwPeLKzxqgBG+rta8SfG1sXvEd6pNwz9VSiFA47y7aJ9OD7j+7lQJW5Hp9A
-f8lglUYBgKqiDZpM9XRPFEvccSnysACDM8/y9q+NAxU4Y9HqgSK9gBnnPQl+OJqX
-ls8XD7B2aw==
-=SnQ0
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmbatykACgkQAR8vZIA0
+zr2sJwgAxEbXlWP9vJaGuKklGU2sYpirhlz13XfQsZOya+4WAu7WdeHZX3jllac0
+Rdtmyst9bEPLOiOqdMlZ+9x9eBbnsJ86R1UGj3jpyR/+v+bMZ10nzpTOaxjTbsDY
+z8swK/2ZSRyBFM92+kwrmKeNNPy9bxP7bxmnQfDi2ZPpaKHlEAnOXOVqg0GPzrw/
+sEvzg6HhQQIkJErAUUkBnCvWucSCjGLgtzXrkkEQczsRgb3aNehzDL0b+NHKLVMD
+l8bJvaZdU8mC1hRBI/W3zO8LngIYjrv0VIUrXjxYn6C4Oxpqmk+ldkpWy4h3DAu9
+O9CGyzuib3bcntIAcFVLt1ZObxXy7Q==
+=gmxg
 -----END PGP SIGNATURE-----
 
---ejxvdrh7pzfeccnj--
+--Sig_/E+e3HCdzUs.pG4iQ6Zg+oc9--
