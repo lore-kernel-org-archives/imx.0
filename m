@@ -1,28 +1,29 @@
 Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AF51474CE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41C93C463
 	for <imx@lists.linux.dev>; Fri,  6 Sep 2024 08:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725610492; cv=none; b=EUGKcY/wtnO+E/5BV5j2ndP+Ln/RRzYMUkBsT+nDKx2mOem66UTk7k9cEFWlXjxjHaizoF1iw4H1MOvRUB6sQ4qAzZjLsmw51PmM+1n+4e6r9dP3y0v9uMDox5B00ISxjgvOHBlLEpe0YWnIuxGVyTGjLfx89lgesfPlBzl+23Q=
+	t=1725610493; cv=none; b=btQ3Mwm8ET4C4qL5X99Xr9aycVTO6ThHJeO5nQ7AngiQVzOVknU9GltPcZOPeNzSscAG09S+84QR2ZYMbEn3PXSoZ0ZrsHnEFDFw/KcJa8Lp2C+MRP5J0LELNdpymFNBdGnt8HdCeC4qfSExGcRd1AlKi91clgMvR5aoC6bCKJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725610492; c=relaxed/simple;
-	bh=Po6TAV+1S7sZ7uUKdRyt7P3lKgnQe0ynVUMTE7iGkEY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MVDV2Ht1knwZmgvIkxsCiiMOX99xENZofBMz3tPmGDSdu8qdSv3y4x/gqrs7N9qGHBL9pqIzANp7fP8EEL1khUdvV0xjl0QsqpSkBxM0bEAWw+QU1H9b2XfloTjP5Ld7hexTW5zVbYgHuhMYqGBHq41aJGR5Oe9agYI15YI2P+g=
+	s=arc-20240116; t=1725610493; c=relaxed/simple;
+	bh=7xqe5Gr7gKNhtbOi4IUUabnUAJrk+xYWSpSgfXz4Hy4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=azyEwMbK5+rd7OGFTjjhOnpiRrqavX6JHP5qO/V14QF6C3rva+mV9U/jKfYxbapsjYKpAJIG4n8yoFu28+n6n2GHW2C7ULJ66Qmzs1DVDbO9bBAl1aTwHsKz3SY29ixl/phE53ZjykEzidEbe46G8A3Qkam0ZedVmsLzCgIxC2M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X0TRJ3BH9z20nRx;
-	Fri,  6 Sep 2024 16:09:48 +0800 (CST)
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X0TRK2wz5z20nb0;
+	Fri,  6 Sep 2024 16:09:49 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 922161A0188;
-	Fri,  6 Sep 2024 16:14:47 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 89B471A0188;
+	Fri,  6 Sep 2024 16:14:48 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Sep
- 2024 16:14:46 +0800
+ 2024 16:14:47 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <laurentiu.palcu@oss.nxp.com>, <l.stach@pengutronix.de>,
 	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
@@ -37,10 +38,12 @@ To: <laurentiu.palcu@oss.nxp.com>, <l.stach@pengutronix.de>,
 	<linux-arm-kernel@lists.infradead.org>, <freedreno@lists.freedesktop.org>,
 	<linux-tegra@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH 0/5] drm: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Fri, 6 Sep 2024 16:23:20 +0800
-Message-ID: <20240906082325.2677621-1-ruanjinjie@huawei.com>
+Subject: [PATCH 1/5] drm/atomic: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Fri, 6 Sep 2024 16:23:21 +0800
+Message-ID: <20240906082325.2677621-2-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240906082325.2677621-1-ruanjinjie@huawei.com>
+References: <20240906082325.2677621-1-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,28 +55,38 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemh500013.china.huawei.com (7.202.181.146)
 
-As commit cbe16f35bee6 ("genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()")
-said, reqeust_irq() and then disable_irq() is unsafe. In the small time gap
-between request_irq() and disable_irq(), interrupts can still come.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-IRQF_NO_AUTOEN flag can be used by drivers to request_irq(). It prevents
-the automatic enabling of the requested interrupt in the same
-safe way. With that the usage can be simplified and corrected.
+Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ drivers/gpu/drm/imx/dcss/dcss-crtc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Jinjie Ruan (5):
-  drm/atomic: Use IRQF_NO_AUTOEN flag in request_irq()
-  drm/imx/dcss: Use IRQF_NO_AUTOEN flag in request_irq()
-  drm/imx/ipuv3: Use IRQF_NO_AUTOEN flag in request_irq()
-  drm/tegra: dpaux: Use IRQF_NO_AUTOEN flag in request_irq()
-  drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
-
- drivers/gpu/drm/imx/dcss/dcss-crtc.c   | 6 ++----
- drivers/gpu/drm/imx/dcss/dcss-dtg.c    | 4 +---
- drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c | 6 ++----
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c  | 4 +---
- drivers/gpu/drm/tegra/dpaux.c          | 4 +---
- 5 files changed, 7 insertions(+), 17 deletions(-)
-
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+index 31267c00782f..af91e45b5d13 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+@@ -206,15 +206,13 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct drm_device *drm)
+ 	if (crtc->irq < 0)
+ 		return crtc->irq;
+ 
+-	ret = request_irq(crtc->irq, dcss_crtc_irq_handler,
+-			  0, "dcss_drm", crtc);
++	ret = request_irq(crtc->irq, dcss_crtc_irq_handler, IRQF_NO_AUTOEN,
++			  "dcss_drm", crtc);
+ 	if (ret) {
+ 		dev_err(dcss->dev, "irq request failed with %d.\n", ret);
+ 		return ret;
+ 	}
+ 
+-	disable_irq(crtc->irq);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.34.1
 
