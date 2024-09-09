@@ -1,205 +1,132 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618DE16D9AA
-	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 17:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395E520B04;
+	Mon,  9 Sep 2024 17:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725901852; cv=none; b=e4E7GdPQ6vHBvE0/vx4/RVbdCnVq0isJp+GcDc86loTdJRdua+dFSeAyc2VAZ6e7LXEfJvVgv/ws6cWPuVTaa9jVO0ZnHZ4wesWI8X0c5iyhNIYkzUudnZaIWo3PpT779b98F6PaM1NFKvo3mJMA0i30K4mtmtSe/+mmlxoM7Vo=
+	t=1725903860; cv=none; b=K91pgl8j3yojmRT2/4IW8kn73/fEWA18hjtv2/98cmKpnDgOkBt3DdPJWNHwptdVhlzwoxSNE2gCt3r6jp2QNe6S5kq4zyzChxL3O1sHeAmrCe4OHUNtJ6kKpNZBCoB89grAJpAV2A5nVXM3J0rx2MoTZE+CkiC6n1JGHrb0gkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725901852; c=relaxed/simple;
-	bh=dRfrIZS6Njo27yDGcp/CX4lUhpe+PQOLnAbXzE3pqCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wsv3TdKXr1yaoJDIDc/BRBtHBvzl8pIUWlqmSYw6kxRz551M58kabxOMoHkn/xVaubteRuKJ3F2hzSlHxnEOEDLq6NrkOBHMYFmjUeHtW4neOYHR0SK6PmOPh/nbSfLsWUURyCYoYcG8V5qRtAOdsSg73KkuPqiG25/6HYUcL+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=mgj+NZl7; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+	s=arc-20240116; t=1725903860; c=relaxed/simple;
+	bh=NLsIy3jEfG4mEvJQhkNjt+eFEgFvsyD+f+COYEf5vWw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c5D0r3HU9I2cNj2JYsXx/5uSj2X+lf0bbceAJtJb2u2cVAKjt08y62+Tq2OSVIxgZVAnv3euC7LNsH3AlfSiY+pqvKUqzlg5xTnPCgs2hN4IevY4SECPkFtuuWrQZ+Zc5HAtN7/1IRYlaDBFkqM9mk37puRnPIOeN4RlhSRHp3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nkt4zzUo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="mgj+NZl7"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a8d4093722bso307999166b.0
-        for <imx@lists.linux.dev>; Mon, 09 Sep 2024 10:10:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1725901848; x=1726506648; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4OukvZRcUZByAUfm38hAhCqj1SLJokR0fI3NcQUB9xg=;
-        b=mgj+NZl7yZowFGW+TB1d+qVTHoLWRMnwVkUyNJHgM5dScj1CWWgCpM+2DwKkuqdyqc
-         k89qYDrScrjnfulF674sZD0VwIusPSbuaAwp9yRt28zrnOZrBFXQqmECMO/MkqAmpU46
-         6c5hKcu55n4whvjX/BRJURo0IK5pjU7YyYy0kI02p6OWRBe7Dn8zNAWVy3VANxr2gcWY
-         KcUrIr4gtRpiRnLyjyjb587a2kUoYpuiuNYDhd9S2ubBAe+waoq0+E7jJ7SDS4YV9vJH
-         wiT+QOFV+6hBS9bby7ASwUDGT4gGCyvULPv0PfJGxYqr+Y2CK00qfnAnC8+5nhZ3YD6s
-         cADA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725901848; x=1726506648;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4OukvZRcUZByAUfm38hAhCqj1SLJokR0fI3NcQUB9xg=;
-        b=GT0ccXk/L8Kb6o9lOK7h5oqg+3v6H59xwcefd6fWDHv+rIr00gNatBdip5JSdX13aO
-         dlTLv6dxJnk1V+dHu4DSLYKgwGu1hzJCNPVpr6Ob/ElqjK2rsMeZiA9N01xbB6xaaOwX
-         dZBhOqBt3slq+7yStnrEzHoPh6m6KdGxpHF19rz14ZAFA/gk6POTVbY6mhQdptFnP5Pz
-         IR4+A7pYRo8+GBN9zYtEXCFJoQaPwR9SzMVMOkwu/bLFWHQGkGZqZ4f8iD3mIeTjlCYt
-         +LOjEOUjdsrxdpeSzvo0C3Oori7rG76jkzMuJx3wsqkgrYNSFpGkhfEp+SVc/Ld18Fgf
-         S9yA==
-X-Forwarded-Encrypted: i=1; AJvYcCX37oQm26aYlbXQrlNItZCJNfv6FPC5BqJBjZJrXrrvLoGm8auuXDYSamd4VAXfiuHKalQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCW2VTs+7cRiAskWFyngdWprK/h20mVGip6YcyNi53SzweF0G7
-	3rjp7Bgj3/FsXKyEWKEW6xLVfSijuxIyfQuIl/6lnlM2knCpoVpiJoaz5NF5QACzpAGAu+svg9F
-	xGRG/ar8YfqhFuHT2HfIf9j92b80e7F0NV4gi4g==
-X-Google-Smtp-Source: AGHT+IF/4AsAIyAQZgiHx9WUmw49BwTwtOVNEZFc4QOFGTSEQ/1CBo+iochu5lAkAw4d00gWIi2brAodC5mIGAHH+l8=
-X-Received: by 2002:a17:907:724c:b0:a8a:8127:4af with SMTP id
- a640c23a62f3a-a8d1c4d739amr1019260566b.39.1725901846987; Mon, 09 Sep 2024
- 10:10:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nkt4zzUo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6707C4CEC5;
+	Mon,  9 Sep 2024 17:44:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725903859;
+	bh=NLsIy3jEfG4mEvJQhkNjt+eFEgFvsyD+f+COYEf5vWw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Nkt4zzUot2WuUoHdZHH4eAOQp9ThZaRZzI5m5XFwcIm42vLcm3yUkIMiRSkT1f0zV
+	 iMkUKRNcErppSpUJW9ouiY9YBMnMQptU357JPJ6pGTTYqRw0jhtLVyvmx2BaWgJ4Ni
+	 TSY2txIoyZWtiIMVFl/4rrrA2s3sr+ZUA5ZpMbK5Bjve9AEzw/Oe64HV1Tf+klBi7e
+	 7Na2zBIxKszm3tBnwk5sV8XxBgHuZWAbQOKjLeC+BW+7uwTQoIu81+HbpMeVz2as5w
+	 FhPfBHV9O3kfxDruIfhJoQBSnLVHw/IH42aSDm9LZGOLMx5lhdu2u7/dVwmsUHo97d
+	 /XHtThK36PrkQ==
+Message-ID: <c856ab91-2011-470e-84da-1ba08569844d@kernel.org>
+Date: Mon, 9 Sep 2024 19:44:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240807-fsl_dts_warning-v2-0-89e08c38831a@nxp.com>
- <20240807-fsl_dts_warning-v2-3-89e08c38831a@nxp.com> <CAJ+vNU3ZsJG-eoqf3JcHTyDwjp4uOW1XiEhnOfWZ1FJ-q1Y9Hw@mail.gmail.com>
- <ZtoDviZZQ0/pVGZs@lizhi-Precision-Tower-5810>
-In-Reply-To: <ZtoDviZZQ0/pVGZs@lizhi-Precision-Tower-5810>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Mon, 9 Sep 2024 10:10:35 -0700
-Message-ID: <CAJ+vNU2gabeVrKvDe_e7R4yuNp2Gn94QQTLYptfPRWmy=+hRdQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] arm64: dts: imx8mm-venice-gw7901: add
- #address(size)-cells for gsc@20
-To: Frank Li <Frank.li@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ARM: dts: imx6qdl-apalis: Update audio card name
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Hiago De Franco <hiagofranco@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Hiago De Franco <hiago.franco@toradex.com>
+References: <20240909114902.82380-1-hiagofranco@gmail.com>
+ <20240909114902.82380-2-hiagofranco@gmail.com>
+ <25873dfa-fe70-4ef6-b840-795faaec1f07@kernel.org>
+ <20240909125419.GA33114@francesco-nb>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240909125419.GA33114@francesco-nb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 5, 2024 at 12:17=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Thu, Sep 05, 2024 at 11:56:41AM -0700, Tim Harvey wrote:
-> > On Wed, Aug 7, 2024 at 7:54=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrot=
-e:
-> > >
-> > > Add #address-cells and #size-cells for gsc@20 to fix below warning:
-> > > arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb: gsc@20: '#add=
-ress-cells' is a required propert
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts b=
-/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-> > > index 136cb30df03a6..35ae0faa815bc 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
-> > > @@ -364,6 +364,8 @@ gsc: gsc@20 {
-> > >                 interrupts =3D <16 IRQ_TYPE_EDGE_FALLING>;
-> > >                 interrupt-controller;
-> > >                 #interrupt-cells =3D <1>;
-> > > +               #address-cells =3D <1>;
-> > > +               #size-cells =3D <0>;
-> > >
-> > >                 adc {
-> > >                         compatible =3D "gw,gsc-adc";
-> > >
-> > > --
-> > > 2.34.1
-> > >
-> > >
-> >
-> > Hi Frank,
-> >
-> > I just noticed this patch (along with a few others to
-> > imx8m*venice*dts* which undoes what was done in commit 3343ab4cc698
-> > "arm64: dts: freescale: imx8m*-venice-*: fix gw,gsc dt-schema
-> > warnings" which my commit message states: Fix the dt-schema warnings
-> > due to #address-cells/#size-cells being unnecessary when there are no
-> > children with reg cells.
-> >
-> > With your patch applied I now see warnings again:
-> > $ touch arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make dtbs W=
-=3D1
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx-0x.dtb
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw72xx-0x.dtb
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw73xx-0x.dtb
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx-0x.dtb
-> >   DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-> > arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts:361.14-467.4:
-> > Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-> > 0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-> > "ranges", "dma-ranges" or child "reg" property
->
-> make ARCH=3Darm64 CROSS_COMPILE=3Daarch64-linux-gnu- -j8 CHECK_DTBS=3Dy f=
-reescale/imx8mm-venice-gw7901.dtb
-> No warning report at my side.
->
-> Did you update your dt schema?
->
-> pip3 install git+https://github.com/devicetree-org/dt-schema.git@main
->
+On 09/09/2024 14:54, Francesco Dolcini wrote:
+> Hello Krzysztof,
+> thanks for the review/feedback.
+> 
+> On Mon, Sep 09, 2024 at 02:09:11PM +0200, Krzysztof Kozlowski wrote:
+>> On 09/09/2024 13:49, Hiago De Franco wrote:
+>>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+>>> index edf55760a5c1..1c72da417011 100644
+>>> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+>>> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+>>> @@ -191,7 +191,7 @@ sound {
+>>>  			"MIC_IN", "Mic Jack",
+>>>  			"Mic Jack", "Mic Bias",
+>>>  			"Headphone Jack", "HP_OUT";
+>>> -		model = "imx6q-apalis-sgtl5000";
+>>> +		model = "apalis-imx6";
+>>
+>> Doesn't this break all the users? E.g. ALSA UCM and whatever
+>> user-space-parsing stuff you have?
+> 
+> I am not sure about "all" users, but for sure it's a breaking change.
+> There is no ALSA UCM for this board (and also not for the other twos in
+> this series), we just worked on it and we thought that if we want to do
+> such a change the moment is now.
+> 
+> What should we do?
 
-Frank,
+For me is enough to explain in commit msg such expected (or lack of it)
+impact.
 
-Yes, I've updated my dt-schema with the above command.
+Best regards,
+Krzysztof
 
-So with your patch a make CHECK_DTBS=3Dy produces no warnings but a make W=
-=3D1 does:
-$ touch arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make
-ARCH=3Darm64 CROSS_COMPILE=3Daar
-ch64-linux-gnu- -j8 CHECK_DTBS=3Dy freescale/imx8mm-venice-gw7901.dtb
-  SYNC    include/config/auto.conf.cmd
-  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-/usr/src/venice/linux-next/Documentation/devicetree/bindings/input/touchscr=
-een/ti,tsc2005.yaml:
-ti,x-plate-ohms: missing type definit
-ion
-  DTC_CHK arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-$ touch arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make
-ARCH=3Darm64 CROSS_COMPILE=3Daarch64-linux-gnu- -j8 W=3D1
-freescale/imx8mm-venice-gw7901.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts:361.14-467.4:
-Warning (avoid_unnecessary_addr_size): /soc@0/bus@30800000/i2c@3
-0a20000/gsc@20: unnecessary #address-cells/#size-cells without
-"ranges", "dma-ranges" or child "reg" property
-
-reverting your patch flips this around:
-$ git revert c59339ec2661
-$ touch arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make
-ARCH=3Darm64 CROSS_COMPILE=3Daarch64-linux-gnu- -j8 W=3D1
-freescale/imx8mm-venice-gw7901.dtb
-  UPD     include/config/kernel.release
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-tharvey@tharvey:/usr/src/venice/linux-next$ touch
-arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make ARCH=3Darm64
-CROSS_COMPILE=3Daarch64-linux-gnu- -j8 CHECK_DTBS=3Dy
-freescale/imx8mm-venice-gw7901.dtb
-  DTC_CHK arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-/usr/src/venice/linux-next/arch/arm64/boot/dts/freescale/imx8mm-venice-gw79=
-01.dtb:
-gsc@20: '#address-cells' is a required property
-        from schema $id: http://devicetree.org/schemas/mfd/gateworks-gsc.ya=
-ml#
-/usr/src/venice/linux-next/arch/arm64/boot/dts/freescale/imx8mm-venice-gw79=
-01.dtb:
-gsc@20: '#size-cells' is a required property
-        from schema $id: http://devicetree.org/schemas/mfd/gateworks-gsc.ya=
-ml#
-tharvey@tharvey:/usr/src/venice/linux-next$ touch
-arch/arm64/boot/dts/freescale/imx8m*venice*.dts*; make ARCH=3Darm64
-CROSS_COMPILE=3Daarch64-linux-gnu- -j8 W=3D1
-freescale/imx8mm-venice-gw7901.dtb
-  DTC     arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dtb
-
-Maybe the dt experts can tell us what the difference is with
-CHECK_DTBS=3Dy vs W=3D1 and which patch is correct between
-c59339ec2661 arm64: dts: imx8mm-venice-gw7901: add
-#address(size)-cells for gsc@20
-3343ab4cc698 arm64: dts: freescale: imx8m*-venice-*: fix gw,gsc
-dt-schema warnings
-
-Best Regards,
-
-Tim
