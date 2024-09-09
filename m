@@ -1,277 +1,248 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013037.outbound.protection.outlook.com [52.101.67.37])
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16C818C357
-	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 21:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725919116; cv=fail; b=YeaFg4fO6zunTSP95q7zUor2dcQ2dpzoURkYheGT8iAEkDO3UyGLVQskSd3+qBPC84ePz+TFKNgnFfexuR8Mz/L1rG/glo3mudN4EJelIzQk3SaGgrPSuSJ8Nt7jybLcDkF169+0C1pKwB56BAv46q/ZxAvqF496PY+tZw0Isco=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725919116; c=relaxed/simple;
-	bh=cRGaf/UdFobYxrGAbAJtwfu7uo6kTIIj90MCiuIXxDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pqxNWGC3nF6lUmcMx/MJhfYJzyvx3cyA8vh/izcyPLYoWhHhnsSKuBivIvpYYaUPDvY8H7OkTqTVjfa6mU8KL0uZbdoNPCZ5EwnCHnhdPo/LVFcjxngbff/zRbNPOX+SqtCp4VtvF6ZuEe1NDWfYScOCmBCKWHBRTrViMbrS1D4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QEs+mXSA; arc=fail smtp.client-ip=52.101.67.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QEs+mXSA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n3AkUNJDp4FjIB5U8Kev21ByW+J+49XZz01934byfwhLKUx3YFwUpPhVmxHNOSEJXq70DNjmCDl3CrD6yKt/N0TwWxilWdIKMG3JrPbfDtJrYoIe9Chj24Vg2feO8QanW+89D3vCcQbgVp0bWRmHBxfXTZ21PZTfc3OY6q1vv7LCeAwwgPhPqI8Ixjm8iQTZCrPI5WRyMKnGhRKOqcmYS4CNf3Bheasse6hc/dqAO/up19kT7PJxTd12gRxtaRoy1xHE2GeHmqdPHC8cTkYA2s0G6c47GMOixuF+DOjlJGEDk3n10ZHTjnavVUOHA9b/k/7MfTBFyfAkGKJEAAmjdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ox4WMw1fpJTQH667XAUssEOq3V6C7gVJTK+nHljYY3A=;
- b=Z/bTUGzj46Y2u1nuJpVz8uNeahsPtcEgQLZ5pQ+hWztON+HRh8y0VdFE0NIBM+Cozoxw3OAZelSkwjSaCDJsE2yR7mX/mlgpza10d3yI2S/SPkpL71+8bQcgS9M46FZD/unvDMv6LTho27zTCKBBj0A+/vQ32H2r8mo4j8vjdSTXnvSSLUH2rHnDyvKnBAE4e4twznzF+yngYS2tyenENfGzC7fNbc0rVpj7X9Z2R+7MX/IghalfZALJNu9LLTma6rYLQXu4wWAfksiNPeaxALvJXRIKB3idrw/F5obXcyV8cJSf/GwfzlO4YD0ohqMhiVnfoC0B7+YLmCOyoNLZqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ox4WMw1fpJTQH667XAUssEOq3V6C7gVJTK+nHljYY3A=;
- b=QEs+mXSAYAmYjTnPOZqSWGVRHqk4dux8bbcp9lit4YAYJVPneS8PfWDUUR4MrQKnqzNveHM60LyVUDexhvZHBW7GjoEmIMqRnjD/8Z2iO/dMjLIM3qnToPmcF1SQxg+/c6pYQqzIwvkMImMvxx951XMN8j4+Rvr8Eh5VdHQxcuVjRx2okVoy+TOH/9wzzX36Hgv7M3Fj7IabK0elXwEJnv5DdAiFAHqeJzM/WEavlTO+Wkm1zH5Ats20OSPD0Cag3O5GwnvUOXDt6sycdG7WnWiHAXTCh//l/CZVYrzFpaWqDPhqohCuiFU0/wyGT8rv1nfXLNriK/f/cFlcvGqQUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PR3PR04MB7258.eurprd04.prod.outlook.com (2603:10a6:102:80::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Mon, 9 Sep
- 2024 21:58:28 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%4]) with mapi id 15.20.7939.022; Mon, 9 Sep 2024
- 21:58:28 +0000
-Date: Mon, 9 Sep 2024 17:58:21 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Carlos Song <carlos.song@nxp.com>, miquel.raynal@bootlin.com,
-	conor.culhane@silvaco.com, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH V4 1/2] i3c: master: support to adjust first broadcast
- address speed
-Message-ID: <Zt9vfXwEMaKbqfco@lizhi-Precision-Tower-5810>
-References: <20240905074557.3810026-1-carlos.song@nxp.com>
- <Zt9TcLqi34EDlI6b@lizhi-Precision-Tower-5810>
- <202409092103290fd1d226@mail.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202409092103290fd1d226@mail.local>
-X-ClientProxiedBy: BYAPR05CA0063.namprd05.prod.outlook.com
- (2603:10b6:a03:74::40) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B8E54278;
+	Mon,  9 Sep 2024 22:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725920111; cv=none; b=gVgKT+ypT2aAUTkLj4o58ezuLG1T56u4EiBlgB9xpaHy+nLGJ5r8ihmoOiuDg6kPWmE1cjPhDPt7lmo6fi2JolZ9gJ5maByd7NXvFw3cCEu25UJXxqkstFriZg1Pax725kytJ/45uEnOqI5CrV9xUdUriFmUN7LSLKCmA8cIfng=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725920111; c=relaxed/simple;
+	bh=4YpFMu5mLQq5ecwsKN0zbUgFUfNc0iBFf+YCWyCTUYg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ISHZpqgCdjP5bZmVkUmJCebvXDefhuKleERfT4K3cVMfjscKQsd0hADGhffFsIr9uZPVeRy2HtDCpf7AWNxJ47k4XEu42XCmBDlL2RlADQmsnX/Dj67CnBWuyGlht67OQiBc2PBgLDLnYntH2kOMpF71pQkLdXovYf5P5OZQ+no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1snmf1-00FFIg-Mf;
+	Mon, 09 Sep 2024 22:15:03 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH] arm64: dts: imx8mm-venice-*: add RTC aliases
+Date: Mon,  9 Sep 2024 15:15:01 -0700
+Message-Id: <20240909221501.806515-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PR3PR04MB7258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90b36d85-2305-4858-b19b-08dcd11a8955
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3rjfwXaM8Mo9OCzvWPFvg0hj97TfnF87JoLVIZTe9kToxyYqSpkv9FK7Q0t8?=
- =?us-ascii?Q?Q7j6K0xyNoSg50hnb9GqiXVHqxbTAv7sxU+D3SUopdCOFYDlBNQOpWQ6m8o0?=
- =?us-ascii?Q?CqmEQiJMMEgiA+ZmJiqeEwi8xJdMb/1DJYXzwlsnvzJ4HgHMDU//8SPO9z04?=
- =?us-ascii?Q?qe2KR+7UjoSCeSr9h2MoQx9IdfPzP/R2fOiGThTULjBEFHv1RMqjOF26UvDd?=
- =?us-ascii?Q?k7Vj4eW82yWOz2AT3CTt29MtnZFQgYV3HzCCPtcrLF8CzIl4NwPxqALm+vge?=
- =?us-ascii?Q?bM/C48MPLjQwdVW5UCUgqz7CQw9fS3LpGiqOSvt1MVFUpNgK+C83X0i+cpX0?=
- =?us-ascii?Q?yn/Q64dalBGOilmfFGsKa+oCOi7LW4X4G4V0xvmFH6k1d+hJ8KgvN1GjACTz?=
- =?us-ascii?Q?uOLEUhOHAKkvzPKFQFyTuQ+dMM3UStRtb7qrnEJl81xzdSszXZaQodZT1bqm?=
- =?us-ascii?Q?bxNzuzQ0Gtc4QVbm5RYwjeupmomUo9pFZb7jpCHbl1TJCVe2SUUj0MLvOnAb?=
- =?us-ascii?Q?mLMpsutp50liaSbjdg18zomnI9vNPvFACoEdbZjAjjq8+mmnMmQWYN0Wi3qZ?=
- =?us-ascii?Q?ozIugc/y0TEAM3S/GXibQAE2JRYRhNUlpbRdMBNbIkJmCjKOLTU+EXq5RLId?=
- =?us-ascii?Q?aI+ag/RdbjwBlXPCja5fpzQ16IuIuWRibRltdzQjUvjoIx6AYQmEYiauKU9j?=
- =?us-ascii?Q?f0pCE/LRLyUNOyhWH/aQZwNIVxgGmd3hR76iVcw8PUN8d+ymFOwAl/qz2ApN?=
- =?us-ascii?Q?gpznIxi65X78eh50s+p7cBxPVrqMe+6lWNeohtuU+thlRuGVx/FHYh4+tSr4?=
- =?us-ascii?Q?wrp3+Fnu8VttkfpliWo8cbZjVzkon1PgRMZsTfS8U3GeX4PSP4jR6hDjQiZd?=
- =?us-ascii?Q?KZlOaOeq+/Q3nzkigk6zA6/Btngmkx5HhuRbHBAdnWMnjX7mrVJ45ABaHrCC?=
- =?us-ascii?Q?Kiu1zcapmuTd1gzLf8/Og50izCVtHObnnnvQUT10/yeSmhY+4aecKyHvc2sT?=
- =?us-ascii?Q?X6bB2eu5ptFX3wKMEx59DgwrTFDKt0fZDdk7jyBRoDp5VLYIHWqZ6R9iVV24?=
- =?us-ascii?Q?dvSGgj922xJNmsg9JegdPs5UVVLryK9gqFq/STcyuKuPfg6oMsGdX6uDTp8V?=
- =?us-ascii?Q?PQiCm/d0nOyi589nM9+5iznKESA5h7iuDVVzMp28/Y1OxYe0R2NOvnpN6lQq?=
- =?us-ascii?Q?mrE/8OhXLI0LUqP2o/VASn8YH5NgTW7YfwZEmXodPOqjCNGx/xokfRUmppMN?=
- =?us-ascii?Q?KC1x6Ox7nPmCkH6fmuhruDeWgTk1sn8SDsmVivCSbvKf/VW7Y5Ow3CMX0Rhq?=
- =?us-ascii?Q?rc0YGPgk8OrHkLIcwc5W6AINLE0q+VEqqBW9bCyDIeYW5A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+HO+EpnB6UDDSDoykm3OalACRwncuzeCHPpVsJxhPuLT0n+EYPFFDO39SaOj?=
- =?us-ascii?Q?WfCnphZHJqroQ9woQrIkLapibnXBrpTdOHsRD5w/vviwlEcX4xTKASiWs9XZ?=
- =?us-ascii?Q?6RWuzFJiuVNrhX6/sDi43QLjGgXLG+803zlemCd/LC+xC7Vo//5+Ech0b8Et?=
- =?us-ascii?Q?KIOqn3GO3nOs+yxiApzoWs1jGPb0BXsaCAfpAtE0x2T4wOzEY+vQVnN6Op2W?=
- =?us-ascii?Q?uitu6l+j7SiOKljZIG89dtKOURtlmVY4H3Kl0SNYf+o7hAWxGwXTzHA5RpII?=
- =?us-ascii?Q?T/MqwSS3gwbS3KSbe8BruLGeXmo7aFZ6t/Jj6dCrmzDTk7HguAxU8FEfafDp?=
- =?us-ascii?Q?IYA20Hvj8n7gq54Iu1ZOElFtaeUrSzRIXh3QEvha4pf7inxaF8+hlOEyQ0GW?=
- =?us-ascii?Q?K8Si/XBXZeCtFubBDiBEPclYQQ7ld9Lbu/H5ORn1VchVUntZMa0uc9SRke9F?=
- =?us-ascii?Q?orO2exkG+DkeXa2a7oSgAAOcHkmXj6/Q3PwCNRNKaExVBkX5ho3MyeHxU+VS?=
- =?us-ascii?Q?3UkxAVz50+JXdJxHx5pAy2KN3xRZ2bqcowUQbNEhlvLUcGSNB8gQNktCYfSp?=
- =?us-ascii?Q?TuGyUS96Iic101OkiCTA5oMikRmREZhWSMW+OMnpmMecuE+1RgreICG7JpD1?=
- =?us-ascii?Q?FumamiNYV4tU1I9e3iQn9uQOOlRXAla7F+xwi3qOWnbeJlfzI3dnobTgRhZG?=
- =?us-ascii?Q?ZGOSIpxgm32BFADB2foUR4vJq8D/Wszzg2JBBwkMg7nDAb7FbjBXr/wV+abL?=
- =?us-ascii?Q?yi4P8Tmbzt0AUpSW6uTl4hGpd8HHHgha3JCHytkjWsOdKFR5evXB1jNal+Eo?=
- =?us-ascii?Q?iixJ/ui5QquFvg9H8zkL7oWauLUQGXfrxvwZ9p8R9JzBoZCSA9vjqHEL4WRS?=
- =?us-ascii?Q?nrXjU3gTqtaeVAWIA5rf7alM0EZ3A2BSmhc2goX92Cy20miGVeN1pl1CmZ1U?=
- =?us-ascii?Q?EDgaR9m68Q9WN83BE/VGQEalBrVy0Bjx9tTkYNdYaPHTjHmC0+KG2caYfvEx?=
- =?us-ascii?Q?9S5EeLDyj/uVUkk1OzhrUIEyq7Pc56rzcN1mu3fp9xWPV+bPYcRt6mM25NWd?=
- =?us-ascii?Q?sFsz2ww/a1vnmVKm7JbBApbRsuwAR4B/AKhvMpq2zJfCMOZIpZi61mUsnmQM?=
- =?us-ascii?Q?plX79vwbJI+h3NsOytETgRdZAG3CTY+Q1mXvN5BGF3RBdJWBo/kaix2Eaqta?=
- =?us-ascii?Q?tw8/N3jyxs0C0aNwkyFqIitKe0ukEn2ne7ZxbZVBJyiz4xUucumLNWSJUom5?=
- =?us-ascii?Q?j0ilqnhAPUfxfXR8L5zox49hwsSgnYOFR6c5XViDiY2qgEAHqgKknPFsZ3Tr?=
- =?us-ascii?Q?nss8m4k6RsW1KhtnnfyiKjTF1AecdBy+aoVZ/fVEPBrbHGQ9CFAQeDertr0P?=
- =?us-ascii?Q?5+WPin77u7U4ASLwQaS/Qh7zLe8dK7qV/n3DTn69Q3QyKyJO7GZCaOoOhBmx?=
- =?us-ascii?Q?7SgTut7sRFhd7DTnX3AlARDkI8CSnGaVS/dId3Qg6VR2SZKhpxwd2V8VSqg0?=
- =?us-ascii?Q?j2EuJfb+aSOYEMcnZvh5f3UA88pgqQtG81MMfwmlzars/h4kCtGRZwzKujj4?=
- =?us-ascii?Q?2mn+i+mAf+NdLTmsIKfghU10EHS0XVfvFp793Ljw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90b36d85-2305-4858-b19b-08dcd11a8955
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2024 21:58:28.4374
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aAqtRXQ+zk1UDnov/TtxqoVUgDTdGV+0jtCs10N9km7gMZm9ZLkFra4SZVZynafFh7DyWwfscKFdHJZekNg+ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7258
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 09, 2024 at 11:03:29PM +0200, Alexandre Belloni wrote:
-> On 09/09/2024 15:58:40-0400, Frank Li wrote:
-> > On Thu, Sep 05, 2024 at 03:45:56PM +0800, Carlos Song wrote:
-> > > According to I3C spec 6.2 Timing Specification, the Open Drain High Period
-> > > of SCL Clock timing for first broadcast address should be adjusted to 200ns
-> > > at least. I3C device working as i2c device will see the broadcast to close
-> > > its Spike Filter then change to work at I3C mode. After that I3C open drain
-> > > SCL high level should be adjusted back.
-> > >
-> > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > > Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> >
-> > Alexandre Belloni:
-> >
-> > 	I have not seen these in patch work
-> > 	https://patchwork.kernel.org/project/linux-i3c/list/
-> >
-> > 	Any thing wrong. These two patches is critial for some boards.
-> > Could you please take care it?
->
-> They didn't make it to the list, please subscribe and resend. Also, it
-> is very very difficult to keep track of all the patches you sent s I'm
-> not sure what actually needs to be applied and what has been dropped r
-> superseded.
+Add aliases for the RTCs on the Gateworks Venice boards and on the imx8m
+SoC. This ensures that the primary RTC is always the one on-board
+provided by the Gateworks System Controller (GSC) which is battery
+backed as opposed to the one in the IMX8M.
 
-Sorry for that. Only one big patches set (about hotjoin fix) and update
-maintaner are directly sent from me.
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi | 7 ++++++-
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts  | 4 +++-
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts  | 4 +++-
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts  | 4 +++-
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts  | 7 ++++++-
+ arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts  | 4 +++-
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi | 4 +++-
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts  | 4 +++-
+ 8 files changed, 30 insertions(+), 8 deletions(-)
 
-There are 3 patches from carlos.
-one patch already in patchwork
-https://patchwork.kernel.org/project/linux-i3c/patch/20240719080233.842771-1-carlos.song@nxp.com/
-the other two patches is what's talking about in this email.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
+index 36803b038cd5..5a3b1142ddf4 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
+@@ -9,6 +9,11 @@
+ #include <dt-bindings/net/ti-dp83867.h>
+ 
+ / {
++	aliases {
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
++	};
++
+ 	memory@40000000 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x40000000 0 0x80000000>;
+@@ -292,7 +297,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
+index 35ae0faa815b..d8b67e12f7d7 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
+@@ -22,6 +22,8 @@ aliases {
+ 		ethernet2 = &lan2;
+ 		ethernet3 = &lan3;
+ 		ethernet4 = &lan4;
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
+ 		usb0 = &usbotg1;
+ 		usb1 = &usbotg2;
+ 	};
+@@ -497,7 +499,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
+index c11260c26d0b..46d1ee0a4ee8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts
+@@ -19,6 +19,8 @@ / {
+ 
+ 	aliases {
+ 		ethernet1 = &eth1;
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
+ 		usb0 = &usbotg1;
+ 		usb1 = &usbotg2;
+ 	};
+@@ -564,7 +566,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts
+index db1737bf637d..c0aadff4e25b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7903.dts
+@@ -18,6 +18,8 @@ / {
+ 
+ 	aliases {
+ 		ethernet0 = &fec1;
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
+ 		usb0 = &usbotg1;
+ 	};
+ 
+@@ -394,7 +396,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
+index 05489a31e7fd..86a610de84fe 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
+@@ -16,6 +16,11 @@ / {
+ 	model = "Gateworks Venice GW7904 i.MX8MM board";
+ 	compatible = "gateworks,imx8mm-gw7904", "fsl,imx8mm";
+ 
++	aliases {
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
++	};
++
+ 	chosen {
+ 		stdout-path = &uart2;
+ 	};
+@@ -438,7 +443,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts b/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts
+index 0b1fa04f1d67..30c286b34aa5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts
+@@ -17,6 +17,8 @@ / {
+ 	compatible = "gw,imx8mn-gw7902", "fsl,imx8mn";
+ 
+ 	aliases {
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
+ 		usb0 = &usbotg1;
+ 	};
+ 
+@@ -562,7 +564,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index f0211a96855b..d34701409e88 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+@@ -11,6 +11,8 @@
+ / {
+ 	aliases {
+ 		ethernet0 = &eqos;
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
+ 	};
+ 
+ 	memory@40000000 {
+@@ -280,7 +282,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+index 8a04b66a4afc..9a515f25e218 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+@@ -25,6 +25,8 @@ aliases {
+ 		ethernet4 = &lan3;
+ 		ethernet5 = &lan4;
+ 		ethernet6 = &lan5;
++		rtc0 = &gsc_rtc;
++		rtc1 = &snvs_rtc;
+ 	};
+ 
+ 	chosen {
+@@ -481,7 +483,7 @@ eeprom@53 {
+ 		pagesize = <16>;
+ 	};
+ 
+-	rtc@68 {
++	gsc_rtc: rtc@68 {
+ 		compatible = "dallas,ds1672";
+ 		reg = <0x68>;
+ 	};
+-- 
+2.25.1
 
-Anther one from Ravindra can be dropped.
-
-I am not sure how I can help this because there are difference contributor.
-
-Frank
-
->
-> >
-> > best regards
-> > Frank Li
-> >
-> > > ---
-> > > Change for V4:
-> > > - No change. Send this patch with svc-i3c-master.c fix patch.
-> > > Change for V3:
-> > > - Modify comments from Miquel's suggestion
-> > > Chnage for V2:
-> > > - Fix set_speed description from Frank's comment
-> > > ---
-> > >  drivers/i3c/master.c       | 12 ++++++++++++
-> > >  include/linux/i3c/master.h | 16 ++++++++++++++++
-> > >  2 files changed, 28 insertions(+)
-> > >
-> > > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> > > index 7028f03c2c42..6f3eb710a75d 100644
-> > > --- a/drivers/i3c/master.c
-> > > +++ b/drivers/i3c/master.c
-> > > @@ -1868,6 +1868,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
-> > >  		goto err_bus_cleanup;
-> > >  	}
-> > >
-> > > +	if (master->ops->set_speed) {
-> > > +		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_SLOW_SPEED);
-> > > +		if (ret)
-> > > +			goto err_bus_cleanup;
-> > > +	}
-> > > +
-> > >  	/*
-> > >  	 * Reset all dynamic address that may have been assigned before
-> > >  	 * (assigned by the bootloader for example).
-> > > @@ -1876,6 +1882,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
-> > >  	if (ret && ret != I3C_ERROR_M2)
-> > >  		goto err_bus_cleanup;
-> > >
-> > > +	if (master->ops->set_speed) {
-> > > +		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
-> > > +		if (ret)
-> > > +			goto err_bus_cleanup;
-> > > +	}
-> > > +
-> > >  	/* Disable all slave events before starting DAA. */
-> > >  	ret = i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
-> > >  				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
-> > > diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-> > > index 074f632868d9..2a1ed05d5782 100644
-> > > --- a/include/linux/i3c/master.h
-> > > +++ b/include/linux/i3c/master.h
-> > > @@ -277,6 +277,20 @@ enum i3c_bus_mode {
-> > >  	I3C_BUS_MODE_MIXED_SLOW,
-> > >  };
-> > >
-> > > +/**
-> > > + * enum i3c_open_drain_speed - I3C open-drain speed
-> > > + * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
-> > > + *				broadcast address. The first broadcast address at this speed
-> > > + *				will be visible to all devices on the I3C bus. I3C devices
-> > > + *				working in I2C mode will turn off their spike filter when
-> > > + *				switching into I3C mode.
-> > > + * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in I3C bus mode.
-> > > + */
-> > > +enum i3c_open_drain_speed {
-> > > +	I3C_OPEN_DRAIN_SLOW_SPEED,
-> > > +	I3C_OPEN_DRAIN_NORMAL_SPEED,
-> > > +};
-> > > +
-> > >  /**
-> > >   * enum i3c_addr_slot_status - I3C address slot status
-> > >   * @I3C_ADDR_SLOT_FREE: address is free
-> > > @@ -436,6 +450,7 @@ struct i3c_bus {
-> > >   *		      NULL.
-> > >   * @enable_hotjoin: enable hot join event detect.
-> > >   * @disable_hotjoin: disable hot join event detect.
-> > > + * @set_speed: adjust I3C open drain mode timing.
-> > >   */
-> > >  struct i3c_master_controller_ops {
-> > >  	int (*bus_init)(struct i3c_master_controller *master);
-> > > @@ -464,6 +479,7 @@ struct i3c_master_controller_ops {
-> > >  				 struct i3c_ibi_slot *slot);
-> > >  	int (*enable_hotjoin)(struct i3c_master_controller *master);
-> > >  	int (*disable_hotjoin)(struct i3c_master_controller *master);
-> > > +	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_drain_speed speed);
-> > >  };
-> > >
-> > >  /**
-> > > --
-> > > 2.34.1
-> > >
->
-> --
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
