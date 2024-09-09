@@ -1,51 +1,44 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22681B9B25
-	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 12:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B3B1531E0;
+	Mon,  9 Sep 2024 13:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725886476; cv=none; b=uU+zt531yZGz0RM9qC3Hg59DPlHgO/PL/qtESn4du4YC4ltX0aBmQZETAoM8iv9k0nfAvrRKPz1+JTOSY5cuH+qV4ioRXDXhjTG1zY3W52Lyj+L+a9q8VlITNIRBzhdgNWSTkmGio2lMdWF2X1wTszj1i+BwHcYpw8IsKQ/a2Xw=
+	t=1725886968; cv=none; b=Cs6et+Zx+rnl7ssxxZwu5Y3B4pP2qDpDsPrO86zProzuORkxvKlZCfjHdiQN8UdguHrckefq2xYjkvt/EeCAs0sYWOczLRJtY3E5wu/vB0gDF10jQdJRwxZ0QJQZR/oKNHWOF/6rDqNERE3J7do4+hwgXZiA7fjPaMOoqUgSizk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725886476; c=relaxed/simple;
-	bh=9w0sSJFSbDZblgKV2bqF1IwJcU9aE1btO0FgCad6Mc4=;
+	s=arc-20240116; t=1725886968; c=relaxed/simple;
+	bh=U1fBvcEDyYes0x/y/3PvNgCb6D7pIlY+q6adWlCP03M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfqkIIufv8J2KpcyPBa0PLF4T/uvcqsmQ1eVcN7Hnz4yAexYgcH/l1PmDgUHUmnJ3Q5ZzbLwW/2DdjZXWJsa9zOMO5g8zCrcKEoKz9H43/7B/4Jknz8MQsmD9PzItuterTLH7GJ+gVceQMInV8HYdxejk8pGumjdofHWdfPDwQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=eACSEQnT; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=EGYosD1ZuVfZ+Z76FRuiS53FAqG9dwy5aV3WYltnPzks7hCdTbIVyNFrc+apIYhRbpuhBbjhjFAZH+BfOMl7U76Xm4COwGLP+Xf2TCVIcGYAqOgIuhmwavnzGfz1J8hCMocZQDrF94QbZK/L4VJDRCsM8xKfJftH9CF13Z2fCH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=liqnPCl/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="eACSEQnT"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 213641FCD1;
-	Mon,  9 Sep 2024 14:54:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1725886464;
-	bh=N+n+sNoWLrte5yaPsNU7QlZO/lCcS8hz3s32YZuFi0U=; h=From:To:Subject;
-	b=eACSEQnTt45lSSQdZN0JawLzeNSnTQkZKSICFVuzeO6IvA9l4wuG12yQlgINGcKyS
-	 2VavSq7wIprqvAsg46uvSbdRHliwhik0WYPhXCPPHz9TYOPK4fak+JU0C2AtoaBfL/
-	 kcQsJMm4u9PQ4CHtGLpThdg8vw4CXAN2oemXuMfqn1/Z+jB3xBE/aaacwx/990zUz1
-	 7ViGthwWIbjE9cQkA9ZA3rPQXOKEktSria73wfaNDTZNN8uImKhRWwqaz8n+cmlCVG
-	 C6M1YDsJ6AkRxTdqXsBTb7pwkw7zE0wdd4a/aus7ieP92Zh52aA9xb2wJF1jbBPVIL
-	 9ywlFJHZAjNnQ==
-Date: Mon, 9 Sep 2024 14:54:19 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Hiago De Franco <hiagofranco@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>
-Subject: Re: [PATCH 1/3] ARM: dts: imx6qdl-apalis: Update audio card name
-Message-ID: <20240909125419.GA33114@francesco-nb>
-References: <20240909114902.82380-1-hiagofranco@gmail.com>
- <20240909114902.82380-2-hiagofranco@gmail.com>
- <25873dfa-fe70-4ef6-b840-795faaec1f07@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="liqnPCl/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32476C4CEC5;
+	Mon,  9 Sep 2024 13:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725886967;
+	bh=U1fBvcEDyYes0x/y/3PvNgCb6D7pIlY+q6adWlCP03M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=liqnPCl/Mehmu6EMYCO8T26EoGWzex4mpcd5mYoCnR28EeOxbiZuKKFxUnl3Yzvsi
+	 k87ioVjvz6dwtXrN9W5JBUJDuyR+Mb3dzL9B+2BFBjKLp01ilA59ttTxRIZ4GNnkyY
+	 tJHca4VjW0VFnDvnxpXXmfhn8kSHPqm++y3BldlSdVNO3ENCJkctdb/x18WGv0wpRn
+	 dWQsgDELuWoLSDeJU1lyzK8wxeYcDps17lXAGiMAHdTbIw48ORqteaV1bNS2GzQtrQ
+	 p06xlNLU3qsrp61z9+IwS/ALmHyv+d5/jvjUd/HToVrRa0eW2MjB330SuZCUcSGOYx
+	 2p16Cla8frMwg==
+Date: Mon, 9 Sep 2024 15:02:44 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: Aisheng Dong <aisheng.dong@nxp.com>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V2] i2c: imx-lpi2c: add target mode support
+Message-ID: <mparghzphduh5ajf5czdf7nxqtvki2uqqcnuetbxwu6x7zt5eu@e5fi5ziifmxd>
+References: <20240829105444.2885653-1-carlos.song@nxp.com>
+ <qcoguhxtkwn2aowtccfybutn6xgzrqvhdob4tzericerpfntfh@q6f5upgegba7>
+ <AM6PR04MB499944C16813C1A88A3840F3E8992@AM6PR04MB4999.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,35 +47,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <25873dfa-fe70-4ef6-b840-795faaec1f07@kernel.org>
+In-Reply-To: <AM6PR04MB499944C16813C1A88A3840F3E8992@AM6PR04MB4999.eurprd04.prod.outlook.com>
 
-Hello Krzysztof,
-thanks for the review/feedback.
+Hi Carlos,
 
-On Mon, Sep 09, 2024 at 02:09:11PM +0200, Krzysztof Kozlowski wrote:
-> On 09/09/2024 13:49, Hiago De Franco wrote:
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> > index edf55760a5c1..1c72da417011 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> > @@ -191,7 +191,7 @@ sound {
-> >  			"MIC_IN", "Mic Jack",
-> >  			"Mic Jack", "Mic Bias",
-> >  			"Headphone Jack", "HP_OUT";
-> > -		model = "imx6q-apalis-sgtl5000";
-> > +		model = "apalis-imx6";
+> > (please, next time when you send a series with more than one patch, include a
+> > cover letter).
+> > 
 > 
-> Doesn't this break all the users? E.g. ALSA UCM and whatever
-> user-space-parsing stuff you have?
+> Yes. I will do this in the future. Thank you.
+> 
+> One thing bother me, for other patches in this series, I plan to separate this series patches
+> and send them out in different series(maybe it looks like I dropped this patches series, later I will use other series).
+> So for this patch, can you accept that I only send this V3 patch fix without other patches?(Later other patches will send out
+> in other series separately, one patches series for fixing one issue).
 
-I am not sure about "all" users, but for sure it's a breaking change.
-There is no ALSA UCM for this board (and also not for the other twos in
-this series), we just worked on it and we thought that if we want to do
-such a change the moment is now.
+fine with me.
 
-What should we do?
+Thanks,
+Andi
 
-Francesco
-
-
-
+PS I have other patches from you to review, I will provide an
+answer tonight... sorry for being late.
