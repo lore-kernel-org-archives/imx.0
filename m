@@ -1,131 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070C172BCE;
-	Mon,  9 Sep 2024 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB3A1B12EA;
+	Mon,  9 Sep 2024 12:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725883759; cv=none; b=Q1DBsVn/akZBb0rioj/RJ56cR/BO/1yYa4ghM1L5jjw9S3UO+7YoCppe2CT39JnucmftQU6N/Wj3KFWlWpvs4/Zhwiz5fCPEoXvMaOiOXpllcZRjBJF2Y4aN9tpS6D6ddVRewh3YCpjm+EHHssF0uHEGqBPUIiBL5LYhZjYATXk=
+	t=1725884143; cv=none; b=A8YvSqeXrIWz5lqI6w0xWw8i1eHIojeAdY/ye0hbPP2JMX1xm1Zigp8+BLGjPfn6z0twJ5jNetifKSKFPFQ0+O/Gvwy4oVY2D5xdcpsQfMkXRVMRA7r5GfNEiB9s9y4hTRJHQ21krMWEuo5A5aqqfQOecrh4uVWGvceTjPPqA1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725883759; c=relaxed/simple;
-	bh=35r31MC1hoPfgkzZj32kgu2btsUDLWvPk4HhgkKwsFk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sHbbLzlfJ2TSBQMerxBoCIZ9qh7uXJJ7ZQOE7WYZAGoZWTSv3JUGiVKMt4/siguOepwP85+EPD/FzKTiU+c8gz/UIC51YSPcfiDcZW+/LIimAlcBcrimCyY9sR7Ffu39RzWhJ/epGB4IkW2PVPphYGBL/wxCxV9OWc+oVpM0HfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4IJVq8h; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725884143; c=relaxed/simple;
+	bh=jfjwC544K9+38QlPz5Fz7wUWjUqbHym4ZQ7aRqAqaeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ezhctgwUjyeLtmckCGkEMTJf9J76007CcajWOExAPM/GvEdIlUBIcL2mqrpSQof6AxeB8dCfpO3YxIuN+4X7Zmy6/ScFPeIXM+w7/Og4wftVQMp1+YH5Mpac0uNeaKLq+TfOxA+wKCJ95Cg12SKkH5/MDRg9TzcfSXwhQnWFMFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rR3cZOrf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4IJVq8h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B49EC4CEC5;
-	Mon,  9 Sep 2024 12:09:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rR3cZOrf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D318C4CEC5;
+	Mon,  9 Sep 2024 12:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725883759;
-	bh=35r31MC1hoPfgkzZj32kgu2btsUDLWvPk4HhgkKwsFk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n4IJVq8hFbgNniXADh5xYEX/UKTDVVS8xY7y2YdFJFd5zaINN8kqG8IzoTgIAh04K
-	 xOgDVSiE+Cve+Ux1Xag6XbGGyx/A3mDov/7CuQVbdTm0wgMxv4VwaZiNPTjFe5MeIs
-	 lfzTg3YCBfqfspvOIZeayYfGJk0PugfiCM4qfNxZ4EdhgQqcJaZrrzA0KKugPF0cvD
-	 qa35yesnb9KLuRRxFuXfhRo1AIVUDT2Ncpn2Qa20ye9A5y2rx00MpMz8zVbwIlmVqQ
-	 jz3lChwkEj4+zivPBUjaSracH1n40oaxb4vv+qdlAyv7O5Vx4sZmpl4TVMpOrypaTl
-	 qkDsJIVhNErnQ==
-Message-ID: <25873dfa-fe70-4ef6-b840-795faaec1f07@kernel.org>
-Date: Mon, 9 Sep 2024 14:09:11 +0200
+	s=k20201202; t=1725884143;
+	bh=jfjwC544K9+38QlPz5Fz7wUWjUqbHym4ZQ7aRqAqaeI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rR3cZOrfQbeDe8cLA5X42UOWQWqixyujNKYSg7tsR/UfM+8dxiG8W1ekrys1693K/
+	 ooqMmLyL0hdslR9HjFDfV4+FVWER/pqWOEzsc8xLtyiMTIFKHxPXoVLt1TYDjkfQBx
+	 k91shGy9yvkQ5N3DkQWCg13yZE8Y+Ltl4r087ydrtmpV4S/v82GIfuGHtPymH2OJhT
+	 BgIpx/RGCXNKHchVw0VXEH+a2GCJ0irXzHlhyKgyHRzva3KbkCxPf3hHrFLuyEquuB
+	 FwoZX/fv9L1loxsghi+or10pe5HMgcaI+DI9rKRZMFQu2RQ7uATjOxU2Zpq10xmxPY
+	 xWBRQXfWF1vDw==
+Date: Mon, 9 Sep 2024 14:15:38 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Shen Lichuan <shenlichuan@vivo.com>
+Cc: o.rempel@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
+Subject: Re: [PATCH v1] i2c: imx: Convert comma to semicolon
+Message-ID: <zuqhbscchztqrus5w4hyl5b7d52gj7zkety77ytaapevac3rd6@q5nw24et4vs4>
+References: <20240909075257.34168-1-shenlichuan@vivo.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ARM: dts: imx6qdl-apalis: Update audio card name
-To: Hiago De Franco <hiagofranco@gmail.com>, Shawn Guo <shawnguo@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Hiago De Franco <hiago.franco@toradex.com>
-References: <20240909114902.82380-1-hiagofranco@gmail.com>
- <20240909114902.82380-2-hiagofranco@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240909114902.82380-2-hiagofranco@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240909075257.34168-1-shenlichuan@vivo.com>
 
-On 09/09/2024 13:49, Hiago De Franco wrote:
-> From: Hiago De Franco <hiago.franco@toradex.com>
-> 
-> Update the audio card name for Apalis iMX6 to match its specific SoM
-> name, making it less than 15 characters to fix the following warning
-> 
-> fsl-asoc-card sound: ASoC: driver name too long
-> 'imx6q-apalis-sgtl5000' -> 'imx6q-apalis-sg'
-> 
-> making it compliant with the ALSA configuration specification [1].
-> 
-> [1] Documentation/sound/alsa-configuration.rst
-> 
-> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> index edf55760a5c1..1c72da417011 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-> @@ -191,7 +191,7 @@ sound {
->  			"MIC_IN", "Mic Jack",
->  			"Mic Jack", "Mic Bias",
->  			"Headphone Jack", "HP_OUT";
-> -		model = "imx6q-apalis-sgtl5000";
-> +		model = "apalis-imx6";
+Hi Shen,
 
-Doesn't this break all the users? E.g. ALSA UCM and whatever
-user-space-parsing stuff you have?
+> @@ -687,7 +687,7 @@ static void i2c_imx_stop(struct imx_i2c_struct *i2c_imx, bool atomic)
+>  		i2c_imx_bus_busy(i2c_imx, 0, atomic);
+>  
+>  	/* Disable I2C controller */
+> -	temp = i2c_imx->hwdata->i2cr_ien_opcode ^ I2CR_IEN,
+> +	temp = i2c_imx->hwdata->i2cr_ien_opcode ^ I2CR_IEN;
 
-Best regards,
-Krzysztof
+yeah... pretty ugly!
 
+Thanks for the cleanup, merged to i2c/i2c-host.
+
+Andi
