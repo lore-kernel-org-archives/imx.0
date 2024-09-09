@@ -1,173 +1,69 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35281189BB6
-	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 21:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D9189F2F;
+	Mon,  9 Sep 2024 21:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725915815; cv=none; b=qT2oxlA3Wq3+0Zo6CD67m6yN4YGi0YWW00OHmFBOZhcICfxFVK+uTCqKvmyLvQMMMyBCG+bvl9EX0eIWp1p8tBrGT9RdsjTRtqValhCk6qNBDpUJzZa0r4YgW5n6ikGLd35evRkI3sVQNHkJsHeBWR9k77PC2hDmFXQfvSWKU0U=
+	t=1725916858; cv=none; b=MtYCqa5W2nnK1KozcwOZrOKCToRKwe4swXTmOWHabx7R8+xn8uEwIq5jaLBMe5hAObHxGyqrqI6fGKtOJctcPHa7Vp95eWE1jmLc/wOwSfvTHNoc5gjvySc4OlvUjjEAjFDcGWiaL8PLZd+wwetpLFH0cj4w40XoutcIq3e0meI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725915815; c=relaxed/simple;
-	bh=OGwFIBfkQZPm7Mn2DYOWykrTRecZ7Tp+roVH+JLWTbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B3zo+VXoBp3ziPtGSpOyvArcS84d2B3t/sXqEWMrqD3WdNvwxMqQZsSW2BN7hQmGo2q3UM//DXVYhO2xrFCYS1bYqrpscKiyIGDyBX7f6HO6iCuQPUq+q6xCWFECWxRmV65dYSL91C3CTIH5Sj0DoM/uIPljaSRPDrGiuE5dJl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YoLGblid; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1725916858; c=relaxed/simple;
+	bh=tK0vooX06fNMJDsOaDbjgFNdPUmm25HgOZttNw444Wc=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=dNQ4Na63UWlfDf3BQomFp0i6v+lp/o4IiGcPi6qV735FWJV7oHLUkdjqx7UH5eymp1gOwG8obzysAGXxPRU4ZYx/n5T2Fe7xttPFDwynuE0ldXSUoTnRJmNJ6CworiL97bvZ5hUEbjmFEiPTJYolZrxVDBEH76HYa8RzNw3XBFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKV7PFNo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YoLGblid"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 380EA1BF208;
-	Mon,  9 Sep 2024 21:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1725915810;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C94iueCtkgJZqwdOpqmnG2jA8jBtTJ3vB4jL9HoEEOY=;
-	b=YoLGblidTwXhZDm/vQcmx5P989eRq14+XupMbGnNV9Nm4xUQQEFGszO9XU4U4HRIaFAiwF
-	Xyg1V/uhxk0WyPddL8awBSeyTJf9HnUn47Rts9TSnrHRsY3isBJZkqU3tpAR6jbpaG06uM
-	rnHX2QqvrHi/50RLmzh7VSLcIIooxi9Xw2J5+Bn6rTDACmOBUbTUyCbyCM3FX762duKD2U
-	286Y6Vx4z03mM3wcyS5wreWH3uv/Sas+PskIrDv2OrchsGiu506SeMJVF1+hUGu9Brcq40
-	34nD8SXvBupMX7k09h7YNDwPmv/3kP5OOwumhZxKRKWfuai8g0Vf4ZGR+gzP8w==
-Date: Mon, 9 Sep 2024 23:03:29 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Carlos Song <carlos.song@nxp.com>, miquel.raynal@bootlin.com,
-	conor.culhane@silvaco.com, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH V4 1/2] i3c: master: support to adjust first broadcast
- address speed
-Message-ID: <202409092103290fd1d226@mail.local>
-References: <20240905074557.3810026-1-carlos.song@nxp.com>
- <Zt9TcLqi34EDlI6b@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKV7PFNo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A2BC4CEC5;
+	Mon,  9 Sep 2024 21:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725916857;
+	bh=tK0vooX06fNMJDsOaDbjgFNdPUmm25HgOZttNw444Wc=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=FKV7PFNoHKTi30ShjIpCoZkwRE9t9Bfen1obWZlTvE/7kBYKoIEn31C3N39nYrzLS
+	 wV2jGW6w3KN0K3zsvrErlzYPWwBetvWrY2f307qC1q/3r6J+/p1zFtPeTYhXIBOgN0
+	 eciafNUixANNFxl6vSdZtqlBS5a9LmNMRn55+D94diIDR7T0G/PHhYyWeO5X33k4FG
+	 eTc+U7uq9LECMV+8qgZJNyPQQ3B1/4G+QyMY4iVu63qvL0PddnNwd/KXYnczd4Jcm4
+	 IDC2sERGEVlUEXtxEBNhzMRj5ryAeR0lohVqt8NWNujt4iZz2fJvqK4Z8M+XAaInC8
+	 wBai1QZE/xkAA==
+Message-ID: <ca22b69fe6311ba87a7dcca9948a62a7.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zt9TcLqi34EDlI6b@lizhi-Precision-Tower-5810>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
+References: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH] clk: Switch back to struct platform_driver::remove()
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org
+To: Michael Turquette <mturquette@baylibre.com>, Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Date: Mon, 09 Sep 2024 14:20:55 -0700
+User-Agent: alot/0.10
 
-On 09/09/2024 15:58:40-0400, Frank Li wrote:
-> On Thu, Sep 05, 2024 at 03:45:56PM +0800, Carlos Song wrote:
-> > According to I3C spec 6.2 Timing Specification, the Open Drain High Period
-> > of SCL Clock timing for first broadcast address should be adjusted to 200ns
-> > at least. I3C device working as i2c device will see the broadcast to close
-> > its Spike Filter then change to work at I3C mode. After that I3C open drain
-> > SCL high level should be adjusted back.
-> >
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> 
-> Alexandre Belloni:
-> 
-> 	I have not seen these in patch work
-> 	https://patchwork.kernel.org/project/linux-i3c/list/
-> 
-> 	Any thing wrong. These two patches is critial for some boards.
-> Could you please take care it?
+Quoting Uwe Kleine-K=C3=B6nig (2024-09-09 07:40:25)
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement for
+> platform drivers.
+>=20
+> Convert all clk drivers to use .remove(), with the eventual goal to drop
+> struct platform_driver::remove_new(). As .remove() and .remove_new() have
+> the same prototypes, conversion is done by just changing the structure
+> member name in the driver initializer.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+> ---
+> Hello,
+>=20
+> I was lazy and created a single patch for all of clk. Please tell me if
+> I should split per vendor (or per-driver). Given that touches so many
+> drivers, I also stripped the individual maintainers and just kept the
+> mailing lists. I hope this doesn't prevent people to give feedback, but
+> otherwise the Cc: list gets Huge.
+>=20
 
-They didn't make it to the list, please subscribe and resend. Also, it
-is very very difficult to keep track of all the patches you sent s I'm
-not sure what actually needs to be applied and what has been dropped r
-superseded.
-
-> 
-> best regards
-> Frank Li
-> 
-> > ---
-> > Change for V4:
-> > - No change. Send this patch with svc-i3c-master.c fix patch.
-> > Change for V3:
-> > - Modify comments from Miquel's suggestion
-> > Chnage for V2:
-> > - Fix set_speed description from Frank's comment
-> > ---
-> >  drivers/i3c/master.c       | 12 ++++++++++++
-> >  include/linux/i3c/master.h | 16 ++++++++++++++++
-> >  2 files changed, 28 insertions(+)
-> >
-> > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-> > index 7028f03c2c42..6f3eb710a75d 100644
-> > --- a/drivers/i3c/master.c
-> > +++ b/drivers/i3c/master.c
-> > @@ -1868,6 +1868,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
-> >  		goto err_bus_cleanup;
-> >  	}
-> >
-> > +	if (master->ops->set_speed) {
-> > +		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_SLOW_SPEED);
-> > +		if (ret)
-> > +			goto err_bus_cleanup;
-> > +	}
-> > +
-> >  	/*
-> >  	 * Reset all dynamic address that may have been assigned before
-> >  	 * (assigned by the bootloader for example).
-> > @@ -1876,6 +1882,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
-> >  	if (ret && ret != I3C_ERROR_M2)
-> >  		goto err_bus_cleanup;
-> >
-> > +	if (master->ops->set_speed) {
-> > +		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
-> > +		if (ret)
-> > +			goto err_bus_cleanup;
-> > +	}
-> > +
-> >  	/* Disable all slave events before starting DAA. */
-> >  	ret = i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
-> >  				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
-> > diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-> > index 074f632868d9..2a1ed05d5782 100644
-> > --- a/include/linux/i3c/master.h
-> > +++ b/include/linux/i3c/master.h
-> > @@ -277,6 +277,20 @@ enum i3c_bus_mode {
-> >  	I3C_BUS_MODE_MIXED_SLOW,
-> >  };
-> >
-> > +/**
-> > + * enum i3c_open_drain_speed - I3C open-drain speed
-> > + * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
-> > + *				broadcast address. The first broadcast address at this speed
-> > + *				will be visible to all devices on the I3C bus. I3C devices
-> > + *				working in I2C mode will turn off their spike filter when
-> > + *				switching into I3C mode.
-> > + * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in I3C bus mode.
-> > + */
-> > +enum i3c_open_drain_speed {
-> > +	I3C_OPEN_DRAIN_SLOW_SPEED,
-> > +	I3C_OPEN_DRAIN_NORMAL_SPEED,
-> > +};
-> > +
-> >  /**
-> >   * enum i3c_addr_slot_status - I3C address slot status
-> >   * @I3C_ADDR_SLOT_FREE: address is free
-> > @@ -436,6 +450,7 @@ struct i3c_bus {
-> >   *		      NULL.
-> >   * @enable_hotjoin: enable hot join event detect.
-> >   * @disable_hotjoin: disable hot join event detect.
-> > + * @set_speed: adjust I3C open drain mode timing.
-> >   */
-> >  struct i3c_master_controller_ops {
-> >  	int (*bus_init)(struct i3c_master_controller *master);
-> > @@ -464,6 +479,7 @@ struct i3c_master_controller_ops {
-> >  				 struct i3c_ibi_slot *slot);
-> >  	int (*enable_hotjoin)(struct i3c_master_controller *master);
-> >  	int (*disable_hotjoin)(struct i3c_master_controller *master);
-> > +	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_drain_speed speed);
-> >  };
-> >
-> >  /**
-> > --
-> > 2.34.1
-> >
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+I'll apply it on top of clk-next right before sending the main clk PR to
+Linus.
