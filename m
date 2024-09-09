@@ -1,105 +1,103 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0EB18A932
-	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 20:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1574428;
+	Mon,  9 Sep 2024 20:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725913383; cv=none; b=fLTGHDoJJMewG6Vespzwlv63akdArF/yC6n01yloB3S9WziANGU26FzOsZve8V9cMbhDUO38yNFga/24bpUygwTzkdpyk6C5J+qTJ8p8wUhOWw4W5DXCu04hwAtI5yxG+alqOuv6skJFCro27EqIlzDwvi2GRjDiREHLGiC7Xd0=
+	t=1725913829; cv=none; b=dhiWBU0lsOO+Dh0YKrNsxfWQcEqSCH0kRUE1MrHfNaRWN/aK4BW4eb9Xh0z6QBwn+yNX+OtIcmvrDJsxH9o/+CYkba3Y6XQVUKlpbl2Pusz6meqkOdiYOX2p2MWjJlcEcwbLx6BAIMzygdIlEuYOCdH8DjP8GxQUtw7RZ0hAg+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725913383; c=relaxed/simple;
-	bh=9Qg/whBffpQgTzV4nzL8BF5QVFakLrwBoplzeCEAj68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pjhzXhiRiCxKMF3urt/hHppxxAMz/NAFcN5hPfloUWSZW92dM5Ib0tKkT/G+Skq86TrW0EXfe3UCQ3eyubn3YXL/ZLLx7x8N/O2w06255ZmzmRUwk9hGGPtmvpOEiDW5fv533abc2Cr42g3AjWXbs2rEwN2+v9NO4jeygwJJV4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=vn+TqAAF; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1725913829; c=relaxed/simple;
+	bh=oKfmWm3IfneM0HZc0vrh0zuvBoU1g5YiwFElUI+GMiw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c4CXB+6qBYezdITyZ2+RsHliKjXP2euGoLgXet8z9lVT48MlMgp5yMulFABMJoJihu3w8ykHigBDPE1ow1iTtyi8n2oGKr8FgZvY5wlWkAXwd9Ej6AWWHoz27GxX1mYfGn2mXshza1sSevtUcj72zY8zUnJYHAVzFM8fhE4g+IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKcVYR8e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="vn+TqAAF"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 895F188E1F;
-	Mon,  9 Sep 2024 22:22:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1725913380;
-	bh=q+N5FF/TdNl/iXzXHe7XaDX7qzb5sWKmOL6lslePxZg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vn+TqAAFXLRqUYmBUZMdYyecDUeSbD5QYItdANq1xS0j8O8s0IpZQ9FKxYsZ7rGfa
-	 WbgH2awAEBa9PQ+moYGT4OpmYhUDfoULoP2Gew2Ma625sSTh/mF4/aVF+GJbHHGS5d
-	 YbTgKKCdm7+3HcH3T/lztS1vutXhSCOBVISMKgGpRg4FQ1vg5a9HLKuwc7TgGcVgrK
-	 JQTxOfjMDtOFnpqf4gN4JJmm5tsRZsqReoCGM77qvPnT/JDWaBrC7RILUM03oVyQFk
-	 KbmpROZmgiZUMSCg4ITRzzvg6u5yCM6A/5n3onnMPofNAg6i81uBa95lSuhtu4r/GQ
-	 sqHeKTrY1xgoQ==
-Message-ID: <cceb5ece-3aba-45d1-a5e3-3419245f345b@denx.de>
-Date: Mon, 9 Sep 2024 22:19:59 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKcVYR8e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61727C4CEC5;
+	Mon,  9 Sep 2024 20:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725913829;
+	bh=oKfmWm3IfneM0HZc0vrh0zuvBoU1g5YiwFElUI+GMiw=;
+	h=From:To:List-Id:Cc:Subject:Date:From;
+	b=EKcVYR8eVCldZikPrYbPQqXiCSz23NGnT9RFVA3T+jtstgjvhyR50z/Hzed0I50yW
+	 WsWkurfl3DDknMNg9NhavYhGQi36fL4SxBBWJo3AczajYphoc9cnjdA78HxugZZRne
+	 An7xvI2KrxviWpGfJivU+azBJH1dKLYJJXgU77F1Bb797UXSb02q64bB6p/SeicXjK
+	 iDD88B0eKqNgBtR2OQL4Suz/7lu+niYUc8hHqsNx/iLH33NFkMplE3JWamfJHvdiLR
+	 idl7yYwMIvFmTbVkYkv9NxRshCGDPXlguQ1knjESCpdythACLVafEbT1jRLfBpMQvq
+	 SQdB45UpUp7Xw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Peng Fan <peng.fan@nxp.com>
+Cc: soc@kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] firmware: imx: remove duplicate scmi_imx_misc_ctrl_get()
+Date: Mon,  9 Sep 2024 20:30:18 +0000
+Message-Id: <20240909203023.1275232-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/1] pwm: imx27: workaround of the pwm output bug when
- decrease the duty cycle
-To: Frank Li <Frank.Li@nxp.com>
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
- francesco@dolcini.it, imx@lists.linux.dev, jun.li@nxp.com,
- kernel@pengutronix.de, krzk+dt@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org, p.zabel@pengutronix.de, pratikmanvar09@gmail.com,
- robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org,
- ukleinek@kernel.org, xiaoning.wang@nxp.com
-References: <20240909193855.2394830-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20240909193855.2394830-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
-On 9/9/24 9:38 PM, Frank Li wrote:
+From: Arnd Bergmann <arnd@arndb.de>
 
-[...]
+These two functions have a stub definition when CONFIG_IMX_SCMI_MISC_EXT
+is not set, which conflict with the global definition:
 
-> +	 * Use __raw_writel() to minimize the interval between two writes to
-> +	 * the SAR register to increase the fastest pwm frequency supported.
-> +	 *
-> +	 * When the PWM period is longer than 2us(or <500KHz), this workaround
-> +	 * can solve this problem. No software workaround is available If PMW
+In file included from drivers/firmware/imx/sm-misc.c:6:
+include/linux/firmware/imx/sm.h:30:1: error: expected identifier or '(' before '{' token
+   30 | {
+      | ^
+drivers/firmware/imx/sm-misc.c:26:5: error: redefinition of 'scmi_imx_misc_ctrl_get'
+   26 | int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+include/linux/firmware/imx/sm.h:24:19: note: previous definition of 'scmi_imx_misc_ctrl_get' with type 'int(u32,  u32 *, u32 *)' {aka 'int(unsigned int,  unsigned int *, unsigned int *)'}
+   24 | static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
+      |                   ^~~~~~~~~~~~~~~~~~~~~~
 
-PWM , typo
+There is no real need for the #ifdef, and removing this avoids
+the build failure.
 
-> +	 * period is shorter than IO write.
-> +	 */
-> +	c = clkrate * 1500;
-> +	do_div(c, NSEC_PER_SEC);
-> +
-> +	local_irq_save(flags);
-> +	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
-> +	if (duty_cycles < imx->duty_cycle && val < MX3_PWMSR_FIFOAV_2WORDS) {
-> +		val = readl_relaxed(imx->mmio_base + MX3_PWMCNR);
-> +		if ((val + c >= duty_cycles && val < imx->duty_cycle) ||
-> +		    /*
-> +		     * If counter is close to period, controller may roll over
-> +		     * when next IO write.
-> +		     */
-> +		    val + c >= period_cycles)
-> +			writel_relaxed(imx->duty_cycle, reg_sar);
+Fixes: 0b4f8a68b292 ("firmware: imx: Add i.MX95 MISC driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ include/linux/firmware/imx/sm.h | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-Maybe use imx->mmio_base + MX3_PWMSAR instead of reg_sar here, to be 
-consistent with imx->mmio_base + MX3_PWMSR above ?
+diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
+index 62a2690e2abd..9b85a3f028d1 100644
+--- a/include/linux/firmware/imx/sm.h
++++ b/include/linux/firmware/imx/sm.h
+@@ -17,18 +17,7 @@
+ #define SCMI_IMX_CTRL_SAI4_MCLK		4	/* WAKE SAI4 MCLK */
+ #define SCMI_IMX_CTRL_SAI5_MCLK		5	/* WAKE SAI5 MCLK */
+ 
+-#if IS_ENABLED(CONFIG_IMX_SCMI_MISC_EXT)
+ int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
+ int scmi_imx_misc_ctrl_set(u32 id, u32 val);
+-#else
+-static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
+-{
+-	return -EOPNOTSUPP;
+-}
+ 
+-static inline int scmi_imx_misc_ctrl_set(u32 id, u32 val);
+-{
+-	return -EOPNOTSUPP;
+-}
+-#endif
+ #endif
+-- 
+2.39.2
 
-> +	}
-> +	writel_relaxed(duty_cycles, reg_sar);
-
-Same here
-
-> +	local_irq_restore(flags);
-> +
->   	writel(period_cycles, imx->mmio_base + MX3_PWMPR);
-[...]
-
-Looks good otherwise, thanks !
