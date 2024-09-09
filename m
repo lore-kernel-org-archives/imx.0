@@ -1,94 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630FE189F3E;
-	Mon,  9 Sep 2024 21:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35281189BB6
+	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 21:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725915712; cv=none; b=Yl/qCcrSEHNlv2obRcXOUwZ+WnMZOUPshzBbiMtGeXGx1gtg7IqVIzGVaRse1ZMz79EW+OfzNOPy3tV6QO5BGbPS7Wi2rpDT3bDxzd2ohnwTgUg4fHWKg98kMs/BcFhNRsE4LjVDs7Pb6r8lLyxOmgCkQh8LC4+BHUUxvXpK288=
+	t=1725915815; cv=none; b=qT2oxlA3Wq3+0Zo6CD67m6yN4YGi0YWW00OHmFBOZhcICfxFVK+uTCqKvmyLvQMMMyBCG+bvl9EX0eIWp1p8tBrGT9RdsjTRtqValhCk6qNBDpUJzZa0r4YgW5n6ikGLd35evRkI3sVQNHkJsHeBWR9k77PC2hDmFXQfvSWKU0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725915712; c=relaxed/simple;
-	bh=fk1O36vP6EYATpW7zFnE0wBAJf09Xs8FlL14jwq2K04=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=s8v4TYUuS23W+4wR/aG+231F4/z8cLpBUBxEFWE+AU1mJx43pFP+NK0USRGtYF3qEUC0+I+RfeGZWjK3YUUHSlboWUzy+Ebw2+FxZMwYABt0YFBoVjwx+0fEFXwQA8aanlgQiCUIO5XGY4UUPl4iHRHYZOVS5KCAltHtAaCiYsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U83w8q4v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725915815; c=relaxed/simple;
+	bh=OGwFIBfkQZPm7Mn2DYOWykrTRecZ7Tp+roVH+JLWTbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B3zo+VXoBp3ziPtGSpOyvArcS84d2B3t/sXqEWMrqD3WdNvwxMqQZsSW2BN7hQmGo2q3UM//DXVYhO2xrFCYS1bYqrpscKiyIGDyBX7f6HO6iCuQPUq+q6xCWFECWxRmV65dYSL91C3CTIH5Sj0DoM/uIPljaSRPDrGiuE5dJl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YoLGblid; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U83w8q4v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DBDC4CEC5;
-	Mon,  9 Sep 2024 21:01:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725915712;
-	bh=fk1O36vP6EYATpW7zFnE0wBAJf09Xs8FlL14jwq2K04=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=U83w8q4vmWuUNWWa8wp6WXXICFHNrWHnRAOLoFaJwf+YGIhqaA4++V14XBYpETLmz
-	 Rrd3E+kOLKplgGDfpABUQym08RyIiH3l4jAbmyk5bBAK0s0gOBxgw2KpqYkk67k29Q
-	 bB2annXHCrM4S5XPhPdfW+/6Ff0w15aInu8EqGFqDTaWc6XH5oDKdHJJFazQNbDIc4
-	 p3AukalcGRDrdrFRfFF1YtRIBR9v1CMyNI+juVxM1lxCtHvdKIJ/p3GvzmaDqMOg0z
-	 e01KB1mHz9lEzQnWY0Dh6JJLHfYFid95AQrKjY5TyB7IUFJ0wwiByyCgketuPB89UX
-	 ftt0aAFvxLWog==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: linux-sound@vger.kernel.org, asahi@lists.linux.dev, 
- alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org, 
- patches@opensource.cirrus.com, linux-arm-msm@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, sound-open-firmware@alsa-project.org, 
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
- linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org
-In-Reply-To: <20240909151230.909818-2-u.kleine-koenig@baylibre.com>
-References: <20240909151230.909818-2-u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH] ASoC: Switch back to struct platform_driver::remove()
-Message-Id: <172591570834.136248.17412626468486255591.b4-ty@kernel.org>
-Date: Mon, 09 Sep 2024 22:01:48 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YoLGblid"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 380EA1BF208;
+	Mon,  9 Sep 2024 21:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1725915810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C94iueCtkgJZqwdOpqmnG2jA8jBtTJ3vB4jL9HoEEOY=;
+	b=YoLGblidTwXhZDm/vQcmx5P989eRq14+XupMbGnNV9Nm4xUQQEFGszO9XU4U4HRIaFAiwF
+	Xyg1V/uhxk0WyPddL8awBSeyTJf9HnUn47Rts9TSnrHRsY3isBJZkqU3tpAR6jbpaG06uM
+	rnHX2QqvrHi/50RLmzh7VSLcIIooxi9Xw2J5+Bn6rTDACmOBUbTUyCbyCM3FX762duKD2U
+	286Y6Vx4z03mM3wcyS5wreWH3uv/Sas+PskIrDv2OrchsGiu506SeMJVF1+hUGu9Brcq40
+	34nD8SXvBupMX7k09h7YNDwPmv/3kP5OOwumhZxKRKWfuai8g0Vf4ZGR+gzP8w==
+Date: Mon, 9 Sep 2024 23:03:29 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Carlos Song <carlos.song@nxp.com>, miquel.raynal@bootlin.com,
+	conor.culhane@silvaco.com, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH V4 1/2] i3c: master: support to adjust first broadcast
+ address speed
+Message-ID: <202409092103290fd1d226@mail.local>
+References: <20240905074557.3810026-1-carlos.song@nxp.com>
+ <Zt9TcLqi34EDlI6b@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-99b12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zt9TcLqi34EDlI6b@lizhi-Precision-Tower-5810>
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-On Mon, 09 Sep 2024 17:12:30 +0200, Uwe Kleine-König wrote:
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
+On 09/09/2024 15:58:40-0400, Frank Li wrote:
+> On Thu, Sep 05, 2024 at 03:45:56PM +0800, Carlos Song wrote:
+> > According to I3C spec 6.2 Timing Specification, the Open Drain High Period
+> > of SCL Clock timing for first broadcast address should be adjusted to 200ns
+> > at least. I3C device working as i2c device will see the broadcast to close
+> > its Spike Filter then change to work at I3C mode. After that I3C open drain
+> > SCL high level should be adjusted back.
+> >
+> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> > Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > 
-> Convert all drivers below sound/soc to use .remove(), with the eventual
-> goal to drop struct platform_driver::remove_new(). As .remove() and
-> .remove_new() have the same prototypes, conversion is done by just
-> changing the structure member name in the driver initializer.
+> Alexandre Belloni:
 > 
-> [...]
+> 	I have not seen these in patch work
+> 	https://patchwork.kernel.org/project/linux-i3c/list/
+> 
+> 	Any thing wrong. These two patches is critial for some boards.
+> Could you please take care it?
 
-Applied to
+They didn't make it to the list, please subscribe and resend. Also, it
+is very very difficult to keep track of all the patches you sent s I'm
+not sure what actually needs to be applied and what has been dropped r
+superseded.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> 
+> best regards
+> Frank Li
+> 
+> > ---
+> > Change for V4:
+> > - No change. Send this patch with svc-i3c-master.c fix patch.
+> > Change for V3:
+> > - Modify comments from Miquel's suggestion
+> > Chnage for V2:
+> > - Fix set_speed description from Frank's comment
+> > ---
+> >  drivers/i3c/master.c       | 12 ++++++++++++
+> >  include/linux/i3c/master.h | 16 ++++++++++++++++
+> >  2 files changed, 28 insertions(+)
+> >
+> > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> > index 7028f03c2c42..6f3eb710a75d 100644
+> > --- a/drivers/i3c/master.c
+> > +++ b/drivers/i3c/master.c
+> > @@ -1868,6 +1868,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+> >  		goto err_bus_cleanup;
+> >  	}
+> >
+> > +	if (master->ops->set_speed) {
+> > +		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_SLOW_SPEED);
+> > +		if (ret)
+> > +			goto err_bus_cleanup;
+> > +	}
+> > +
+> >  	/*
+> >  	 * Reset all dynamic address that may have been assigned before
+> >  	 * (assigned by the bootloader for example).
+> > @@ -1876,6 +1882,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+> >  	if (ret && ret != I3C_ERROR_M2)
+> >  		goto err_bus_cleanup;
+> >
+> > +	if (master->ops->set_speed) {
+> > +		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
+> > +		if (ret)
+> > +			goto err_bus_cleanup;
+> > +	}
+> > +
+> >  	/* Disable all slave events before starting DAA. */
+> >  	ret = i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
+> >  				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
+> > diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> > index 074f632868d9..2a1ed05d5782 100644
+> > --- a/include/linux/i3c/master.h
+> > +++ b/include/linux/i3c/master.h
+> > @@ -277,6 +277,20 @@ enum i3c_bus_mode {
+> >  	I3C_BUS_MODE_MIXED_SLOW,
+> >  };
+> >
+> > +/**
+> > + * enum i3c_open_drain_speed - I3C open-drain speed
+> > + * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
+> > + *				broadcast address. The first broadcast address at this speed
+> > + *				will be visible to all devices on the I3C bus. I3C devices
+> > + *				working in I2C mode will turn off their spike filter when
+> > + *				switching into I3C mode.
+> > + * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in I3C bus mode.
+> > + */
+> > +enum i3c_open_drain_speed {
+> > +	I3C_OPEN_DRAIN_SLOW_SPEED,
+> > +	I3C_OPEN_DRAIN_NORMAL_SPEED,
+> > +};
+> > +
+> >  /**
+> >   * enum i3c_addr_slot_status - I3C address slot status
+> >   * @I3C_ADDR_SLOT_FREE: address is free
+> > @@ -436,6 +450,7 @@ struct i3c_bus {
+> >   *		      NULL.
+> >   * @enable_hotjoin: enable hot join event detect.
+> >   * @disable_hotjoin: disable hot join event detect.
+> > + * @set_speed: adjust I3C open drain mode timing.
+> >   */
+> >  struct i3c_master_controller_ops {
+> >  	int (*bus_init)(struct i3c_master_controller *master);
+> > @@ -464,6 +479,7 @@ struct i3c_master_controller_ops {
+> >  				 struct i3c_ibi_slot *slot);
+> >  	int (*enable_hotjoin)(struct i3c_master_controller *master);
+> >  	int (*disable_hotjoin)(struct i3c_master_controller *master);
+> > +	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_drain_speed speed);
+> >  };
+> >
+> >  /**
+> > --
+> > 2.34.1
+> >
 
-Thanks!
-
-[1/1] ASoC: Switch back to struct platform_driver::remove()
-      commit: 130af75b5c05eef4ecd8593371f3e924bcd41241
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
