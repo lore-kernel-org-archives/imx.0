@@ -1,80 +1,114 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9331217C9E8;
-	Mon,  9 Sep 2024 21:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C158F1891C0
+	for <imx@lists.linux.dev>; Mon,  9 Sep 2024 21:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725918080; cv=none; b=bjnS8j72JXkVgLZSi8CbJAS48HLQqmwuH7Vn1LjHkUwMwgQooWTWH9Wz0dmcHTsP0iGM9LxRdduq+sDIbASvdsXwry4NaoIW9p2whkQ/ErU+NV96VbMcojIYVg35HIDbVMtfZVXbQ0FeneYWkr0Q2JbVwqD4WTGlO4GRiidn1+0=
+	t=1725918383; cv=none; b=VqS25UMi2gt2RI+f2cnPoKJZKwBrB1N/+KLsRI16S3adtPuxjhQ+HcQ8tQUEw/79xFnFQXwbH7pn5ULGZZjm9mplgGIiHcbuHXH1F/D3xvbnHQHaM80T6EpAA6EbKqz08F+YC+WwZvAUWxS69bkJTmcAs7HypZttdlmiX/yBrI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725918080; c=relaxed/simple;
-	bh=GTVDmWxvB819jdsoUGb5a3UvxVpzRPws0zKvOkvRCdc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D5jozNDjIb9UiHFEKtiAFtcn7IFRGSXbabohROrIO1dBceOgVkWQIbRBHiDpQ3bwJhcZND1RM5dHV/s5aGzo4OUUAVtHgx7VU2mfi0+cXt88NYCMmQx5Ro7aKdcF497tVE7+BXjQM7LmadEaxaESLz3fDCfiXPCusP5Pg0He7EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+	s=arc-20240116; t=1725918383; c=relaxed/simple;
+	bh=nM6fWCoX1di+0MQViZg543ykFf2oNkQIUsf5k3wnNXM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OpH2h7mxytZ+TDBpnFJfxt1DJyTWtQ3vZ5dEnf6BV9AqhlWvVuyTQ9h+sA7RDn3nsbqJNzO5i8V9BU+CeX1SEdvgB9CtqTVmzddBcJN7DMqhchvo9nelgUMG+d7MK1w87awTQN4nV/b8qGlQrnXQit/gJM0uMs6wNaGQbxjJEUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=atgEs8o5; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1snm86-00E27X-Sm;
-	Mon, 09 Sep 2024 21:41:03 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Li Yang <leoyang.li@nxp.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH] arm64: dts: imx8mp-venice-gw74xx: add M2SKT_GPIO10 gpio configuration
-Date: Mon,  9 Sep 2024 14:41:00 -0700
-Message-Id: <20240909214100.777927-1-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="atgEs8o5"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2f74e613a10so36430941fa.1
+        for <imx@lists.linux.dev>; Mon, 09 Sep 2024 14:46:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1725918380; x=1726523180; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h58eAOOyutx8X4vwncmQ+slvyq67BTtOg7qW508aZBY=;
+        b=atgEs8o5RsrQuSY2ASPZirmFnTQW8guNk4HKcNqLuZv85caQni4AKNPcdUuKLzjlZQ
+         7w1JZ0KXzopRmyHQ8p4hzGEu+7LDgGIZIhJdLcn+EI+9o2gsRL1NKdqWtRHdU+j77p8L
+         /08fvj7SqzxSbEihtP+2N9UflY8agiqYLLEM76CFvzUQDHRujm8jKW2jgauATXZMM1Q9
+         CUnGf7k1GYPq7CGWoeC7Kb5oLkI70JUWBK0xEdK7ad7sQM0vrhNxxflO3rOGZQOEMJLl
+         +DLmLpMjNmYzQJpelCrvgyEPWmh8JMpJnbdbEVPsmTMKPt4AiJqoEF6TjCitvmQe2aE7
+         EUuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725918380; x=1726523180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h58eAOOyutx8X4vwncmQ+slvyq67BTtOg7qW508aZBY=;
+        b=Xoowa/BtqAOv0tuUYIRM/eXBEmsTMUBnmrpMs3KJUbSvY+z2fPEuEhz0fYA/CWh7ck
+         gzXzaWDG75aF2MbbhSaGn7SYV6hc7CfhUEzHZlRBJ0MaPK+vYMTSYZtCis2b0vWE8CZE
+         vW2hL+uNbuML4evX7nT9rXZO1GpzVIdPfWcikFy0Tzf9NIUuwWRfWQIMIDcTHsHtPdpV
+         dytemulFF7XAOm4KfsLjxPk5wfqjG3x/l8X1DRaHJBO354xWy3oPWAsepPwhoX2hByHw
+         jh/xU8bHMIcbRGMhtiKyTLtynZNERJnPlSEX992RVP3Bk5V7atnzNuMDTn7wgkDpwoIh
+         EGvg==
+X-Forwarded-Encrypted: i=1; AJvYcCXN3Ne2nMrpmP1nnoyeOd/mpQ3+NhZgGJrDzWU9S/SMa9v9TRPDqnc/k5UfEgg1C0MxhUE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8zJc1kPWeoma166lDWlKmifq+zk0ZnuqYraO+lQevRu31wVKH
+	bCCQFhKzrgyBLgU5BaYmO0+KVMNXvpjK6t10MleH3VSUpOovljSRul5SuboSShrsBYY59QT5B03
+	FA4pmhZYA1lwOwec34Fahic8MvXCNBF6xDuwZFQ==
+X-Google-Smtp-Source: AGHT+IEjH3/u/TXEjoWXe2Q1DAHyvUARMeL74z3Q9298y4A1ALPxZ2Iw4jLoIipvASJ4nbuMM/siJdKogiXxoONctHU=
+X-Received: by 2002:a2e:be9e:0:b0:2f3:c384:71ee with SMTP id
+ 38308e7fff4ca-2f75aa07bd2mr89494941fa.33.1725918378875; Mon, 09 Sep 2024
+ 14:46:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240905183107.517244-1-tharvey@gateworks.com> <PAXPR04MB8459CD40E8A0925EE3396F2D889E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB8459CD40E8A0925EE3396F2D889E2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Mon, 9 Sep 2024 14:46:07 -0700
+Message-ID: <CAJ+vNU1UH5UNb3rEGtJ_HpsJvCAsgtqAwSfvTS9s1yM6JVad-g@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: imx8m*-venice-gw75xx: add Accelerometer device
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The GW74xx D revision has added a M2SKT_GPIO10 GPIO which routes to the
-GPIO10 pin of the M.2 socket for compatibility with certain devices.
+On Fri, Sep 6, 2024 at 1:14=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
+>
+> > Subject: [PATCH] arm64: dts: imx8m*-venice-gw75xx: add
+> > Accelerometer device
+> >
+> > The GW79xx has a LIS2DE12TR 3-axis accelerometer on the I2C bus
+> > with an interrupt pin. Add it to the device-tree.
+> >
+> > Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> > ---
+> >  .../boot/dts/freescale/imx8mm-venice-gw75xx.dtsi | 16
+> > ++++++++++++++++  .../boot/dts/freescale/imx8mp-venice-gw75xx.dtsi
+> > | 16 ++++++++++++++++
+> >  2 files changed, 32 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+> > b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+> > index 5eb92005195c..417c19774b17 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw75xx.dtsi
+> > @@ -116,6 +116,16 @@ &i2c2 {
+> >       pinctrl-0 =3D <&pinctrl_i2c2>;
+> >       status =3D "okay";
+> >
+> > +     accelerometer@19 {
+> > +             pinctrl-names =3D "default";
+> > +             pinctrl-0 =3D <&pinctrl_accel>;
+> > +             compatible =3D "st,lis2de12";
+> > +             reg =3D <0x19>;
+>
+> Nitpick:
+> compatible, reg should be top.
+> https://docs.kernel.org/devicetree/bindings/dts-coding-style.html
 
-Add the iomux and a line name for this.
+Hi Peng,
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Thanks, I will submit a v2
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-index d765b7972841..9885948952b4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-@@ -299,7 +299,7 @@ &gpio2 {
- &gpio3 {
- 	gpio-line-names =
- 		"", "", "", "", "", "", "m2_rst", "",
--		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "m2_gpio10", "",
- 		"", "", "", "", "", "", "", "",
- 		"", "", "", "", "", "", "", "";
- };
-@@ -816,6 +816,7 @@ MX8MP_IOMUXC_SD2_CLK__GPIO2_IO13	0x40000150 /* PCIE1_WDIS# */
- 			MX8MP_IOMUXC_SD2_CMD__GPIO2_IO14	0x40000150 /* PCIE3_WDIS# */
- 			MX8MP_IOMUXC_SD2_DATA3__GPIO2_IO18	0x40000150 /* PCIE2_WDIS# */
- 			MX8MP_IOMUXC_NAND_DATA00__GPIO3_IO06	0x40000040 /* M2SKT_RST# */
-+			MX8MP_IOMUXC_NAND_DQS__GPIO3_IO14	0x40000040 /* M2SKT_GPIO10 */
- 			MX8MP_IOMUXC_SAI3_TXD__GPIO5_IO01	0x40000104 /* UART_TERM */
- 			MX8MP_IOMUXC_SAI3_TXFS__GPIO4_IO31	0x40000104 /* UART_RS485 */
- 			MX8MP_IOMUXC_SAI3_TXC__GPIO5_IO00	0x40000104 /* UART_HALF */
--- 
-2.25.1
-
+Tim
