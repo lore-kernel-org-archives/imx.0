@@ -1,310 +1,213 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010038.outbound.protection.outlook.com [52.101.69.38])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2105.outbound.protection.outlook.com [40.107.20.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F44638DD3
-	for <imx@lists.linux.dev>; Tue, 10 Sep 2024 05:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5E41B85FC
+	for <imx@lists.linux.dev>; Tue, 10 Sep 2024 06:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725945105; cv=fail; b=YODx2CYbx0i9XlYf7Vt+Slq8Sl/0auw4UWSIbyZnhZzlG/TFVa9zLQfSajlmLw6Ut0+mmT1dQvIb2iEgcQcxI3oKlo4iyvOAfSS6KUnl/+OnxCbNsAOJCD2H5jJQIcathX8q1HfBCvkRqd+LAqcfeXZVstMN9qBa//hQbm6/FuI=
+	t=1725951014; cv=fail; b=HrOUWMleEJU0F0un7NsmkcVHVuWF5DjjPeAGZ/0jgVMqhkBUbOSmjg/xxQgy8so4vldvxXBxhNvjym9hIvgKSAgvxrwM96extapf2QLpnNEFjn2sF25rKAE2dS/QrQp8nig/KeHLo0vZce8VlhVD7Ro+taEdkdZwu1YmggiDL20=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725945105; c=relaxed/simple;
-	bh=HGwhXu76+8AzeAkaceBglWOM4/5RAB1gbP//PtCTuAM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RI0mQaYPbjHfSmEdRZTReUe5WzgOxSxdXiI359h9VTxyxOL6uNsK3+8Jz5NpJGcPT84ZrFtiOHHelLsyOJsI+Og4x6A3GBon8lK4ItoAAiSPIk17rGlRKFVQyGsq9RMb2X6fXT87erd9Bk6mLcQ4VSHYir/vmvJYZuBtImQ79TQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FoswfjlL; arc=fail smtp.client-ip=52.101.69.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1725951014; c=relaxed/simple;
+	bh=YVM3DZ7fgaoo8AFh+M3YkPej1hFJg8F+BScixOg8fGs=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=uQbC1JCkRU/nr38bEIC0Y9Ap3WYE5qvzrvz0RE77u/99hJmB9q0/3w7Bbl1Ox4upvKVP6whFVd876q7IjlYch0d5g7tfeKlunwQDs4LNHrtl4iG4CUrXC3jf65I1aSMJxlazvIg5D6dNdo5z9fmyQk5IrWrtB1cjcUH3cgeqmM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b=g5TkMsTn; arc=fail smtp.client-ip=40.107.20.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FoswfjlL"
+	dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b="g5TkMsTn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l78SCuC7G7A8fK/d/djlGAlYFuoHBjTjfUWKn2fZTpNRCTsQDT5/gnzGXiNBM7fX12ShQRpuP2DE5Pr2XSVCLDEAVbmiHnLyqpm5vVrtsBGrnrNYMTld9KjcDD23cvJUw1K3ncOkaZ+SwTGv3oZLHhNDKCLVACwIOCFgDMZNPVyMVtr8865rXQs376Hbq5x/NkwEN+y81cm7bJu3tY51nsso9+E2mtp5Sjg4W3UNkYgk09ngMn55aZ71zb3Ou+oEJU47HjpoNQ4G1X3Mip2z4sB4WoqqjMM3cUExxVOBbpalpu2CYZimkdxoMmqs8lybA9+S99Q9suju/08NSadd3g==
+ b=nGilCikrkQu4OKodnItzEDaoxGinwUkp8bKm0+VoZs0a3t5/iy2q1jNOo07OOO9+B4I4JsL5ugKi15aOzR4/sOKj+UCeu2/LeTluT27jtRwGdF8dhvRBsvrSkScip7ohqBmaMCwoSxqi/hscJfj6sDMeuED5Ci4qhcG+IS1FgfSFEZXaRl4+urryh1rPQN5hoNiTHGh6mLypVkZFloWidJxNwzskne/8wo+iO+um1Mb49/ZLrIaP7qvP47XtzQqLhzWm0zkDOmw6r+IUU4UtElwera8FlvfhsXbmI/XkwpHfrwSzv0TkIuLByX0OldnCPhRU+gHi7Mw0nKOi6zw3TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LJFBM+DymDnP1sfGuA1pQyYLacxXBo8yXjmG36Xn+LY=;
- b=v3SmoP81K1UelMuvoPH6+yfqOdWL2kc/0iOnWT1ob5zEZ6jW2+NS5PJ+aJ3n6Sz6vdCqZMgNh4Ke+qgOlaOtSz23WyxZRi0OP0Q4F8moY1Lo0P4OuQ3SnrSMtiTfPaMO6bb/TwVkuCPMUUXRcrU8dhmlHLY4LtcojqRul7xIRNre+6P/WJzcLml3x2fmj2LrzYV1JjvhG7NlAzFEeRd1mnfoA8tIw4AdBMIyyomjyYRKS8cw1s+HtyFtsDjozzglgS6Koy9DaVYlC4eiKU2besk8CWM5pEKQAuOPmdsPHVwONbaa0yagw492kBWPwHhP0fS5SYTVhW5ZnWgOFDLZEg==
+ bh=v92r3FTUai8Ga057ufLrC5WY0BB4bHr/sq0UNPy2Lro=;
+ b=n6FK8uTohVZxxBfDgB00o8orfDc/Fx87tY41YV7C8uEcoFj+5tYDCrioWSmU72oB6CEt2yPhBNs9Sr7CNIJsuZqcnaZZPQquPtYQFi8x6O8cqBIGfdAdZZfKi9n0bNz0dsfEv5eCxR7QNm6M7K/JIMxxWhEjdwLN9Rw28oVK9qJjT1SpLwdYWtjzU2dIvQJ7DvQMu3BIRM+pOiBg/IYmmW5KxVrcFzVMlHrOB8mk4tN9EBgI+TJsaGdRdQN82VQfAvccJeiXHcGFoD9faPfEJTDaOA86CAssbzryE/oFVQh7aJKw3WeKMTk/JMP+bXvJY3p/9dxBRgpfnui1T2fdPA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mysnt.onmicrosoft.com;
+ s=selector2-mysnt-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LJFBM+DymDnP1sfGuA1pQyYLacxXBo8yXjmG36Xn+LY=;
- b=FoswfjlL1Oc8YFyxpsrCS1nFOVoyQCSxTa13yC29bHIdh/5FoUvR0OyKwP2r8lXcbTX8FKY/F5Q2PmgeGzC+4AX7TML/qltf4c0xKATmYGMtEFIlZ52XMbUTcQl3js8AVLLSvWq1BW1rNUf3TenZabU7I22/2q171y3I2/eWQRRBgDrAehoyHyDNrg5p3TpvDoeIJJH2dVKFfjbqAsiZm+kbz12/ahE5Dlro6PGSFw2wYCFzSGO4CKJ2g60ICaSXWhmpoyx+E39JB4a5LK5NRjTtqOKiBfNGdH/Vc1+nXA2+CRMlrWfEhbJHIyW/GARzLtId37zIPKXTtLC18o5SPg==
-Received: from DB7PR04MB5003.eurprd04.prod.outlook.com (2603:10a6:10:1a::19)
- by VI1PR04MB7134.eurprd04.prod.outlook.com (2603:10a6:800:12e::11) with
+ bh=v92r3FTUai8Ga057ufLrC5WY0BB4bHr/sq0UNPy2Lro=;
+ b=g5TkMsTn6Vm/9/58bw9jqksbOUVKA34Es4zhIuS6cxZXmMPDBN1bXE0mwJ8SRdhB8Ielozgy13so/p0B3Yk+/LhWXFWLlJzo5b+oUYelwkjrMoiMed/kYsce5V8Q6vjNcZtvOl45Fu2GCswfIAQePpJCKUSLzrYFLKplTD7GmGY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:263::10)
+ by AS4PR10MB5497.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:4fb::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.23; Tue, 10 Sep
- 2024 05:11:38 +0000
-Received: from DB7PR04MB5003.eurprd04.prod.outlook.com
- ([fe80::68ea:5937:4fa7:db2b]) by DB7PR04MB5003.eurprd04.prod.outlook.com
- ([fe80::68ea:5937:4fa7:db2b%6]) with mapi id 15.20.7918.024; Tue, 10 Sep 2024
- 05:11:38 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Frank Li <frank.li@nxp.com>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>
-CC: "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
-	"conor.culhane@silvaco.com" <conor.culhane@silvaco.com>,
-	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH V4 1/2] i3c: master: support to adjust first broadcast
- address speed
-Thread-Topic: [PATCH V4 1/2] i3c: master: support to adjust first broadcast
- address speed
-Thread-Index: AQHbAwNoJoaG/PY8KU2Q1n4BtMb/sLJQeOYw
-Date: Tue, 10 Sep 2024 05:11:38 +0000
-Message-ID:
- <DB7PR04MB5003CB868C835B8A614C863DE89A2@DB7PR04MB5003.eurprd04.prod.outlook.com>
-References: <20240905074557.3810026-1-carlos.song@nxp.com>
- <Zt9TcLqi34EDlI6b@lizhi-Precision-Tower-5810>
- <202409092103290fd1d226@mail.local>
- <Zt9vfXwEMaKbqfco@lizhi-Precision-Tower-5810>
-In-Reply-To: <Zt9vfXwEMaKbqfco@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB7PR04MB5003:EE_|VI1PR04MB7134:EE_
-x-ms-office365-filtering-correlation-id: e0db5f98-45d7-43a1-0737-08dcd1570c96
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?hlxIcMVWfJrOcV5/O5l8J8srRYUwo+6BYC8IAIfunIvvGRYv4/z/tMIJit86?=
- =?us-ascii?Q?u2a/H0+alfIGo/5Oqa/WIAVR2Q6klriGs5TGrF17N38QamgUZtkY4k1blVJ6?=
- =?us-ascii?Q?6Y8RvExbe/ZaYZjMrp78ppPh8XNEjEN139UWUGre53rAC3XAGEMFm0eV+ml/?=
- =?us-ascii?Q?Hi/Vl6yyFXS/PTWFgXa+bqbm9yxKjDubsR7M3XFGR/t8mDoSLr0tMwJ3/o1F?=
- =?us-ascii?Q?rqEozs2U9v/u4mii77ZylMwdOyYtCHKXOIABk84VO+qaBPPyt1WTPfoE5sTD?=
- =?us-ascii?Q?J6C0DwxbY16MA25ayjYGYSjzgnmAYb4LsJ/0mxRyxmTXEiU/qFj7r90Q2xvk?=
- =?us-ascii?Q?9NzGqohMKC0Lj7O5pK3hl0rxZbjytVPgVQVzodF3OQDHqJBLGjnHXdO1TBFA?=
- =?us-ascii?Q?ZKBqmyYMVG7bNgjITymblHrhIgo2s/ThziScaC6eaHC4FjmV0Xt1yU/qRSkI?=
- =?us-ascii?Q?QFUPOZCahdm0GLNVOjWYrKYepfN+DQEyUqiDA5heMFI3ZomVZ6pX8byb/eSQ?=
- =?us-ascii?Q?P7mkFBcL8Ec8GTKdz6HzGHNPh7lj8cBCyer/t1cA+ejVYyemrmVNPgYWh/GT?=
- =?us-ascii?Q?7K9NGhMjUtJikSJil4alMihsaQaGUnpV+bOLYpsgIISG38u2lJyBlPHvyEuq?=
- =?us-ascii?Q?y0323ou0wy8P4i7sHo1mnTsehArCv4R5PS4eoiOKJaHcJSBHpSNCAYJHZRfD?=
- =?us-ascii?Q?dT8Ymgqj5yhrg+l0UwieobIB16IFsPbSaURns7MweYAz5hvMkQobbECZKUU8?=
- =?us-ascii?Q?pVPinkcX1IybAsEr3cV8qqU/HjrWwmvPDW9O6GqU86JVC8EiFllF3h1e4egY?=
- =?us-ascii?Q?YnVo5hHi46YX1oH/NKdUFgw8I2Lak5hE79r+fob3pml14HqF9ENWo1x+Pemu?=
- =?us-ascii?Q?aK8rmiX+yhE1Tk+na6VggJICajkk5aWtEEYMpQUhRgMv+u5LZ+7fWRMap1be?=
- =?us-ascii?Q?R1MkB3h3WTyPPJeqS6nqzC8yHP3sBg0XP03J+r86GBrcN7fgBkPaYRowm1mF?=
- =?us-ascii?Q?pB7MO/zPZGLudzwqqx2auJmfhgmUAcGtiPICD5uY63D3vL5UrnmS/0uOcqic?=
- =?us-ascii?Q?P2bn4gQvil6+OPh30+3G/F4xxOTEpHCbVCDb820RHe6+eJ1bhyv5nOI1Dwnz?=
- =?us-ascii?Q?pkOx6kkvE1XqVv/q+ShFe9GVveRQ4oN+kjdEsHE/PXtxFZi4XZTV6YKd9deG?=
- =?us-ascii?Q?bnfk5jaPs96i9suSpvCD+zzylRuDwBcW+UXf2WuQLTGQzYtHhgr2ZY/VQXVF?=
- =?us-ascii?Q?tapOd4H5Rh5sGT/3hcQ77KUP9OrCUa08mXmgP7EsaUEKkdsNY5y50dykMn/4?=
- =?us-ascii?Q?0qBMlPZFmWXslxNUHLuts6+1FxN5+RO8uWFbHggVsY/ItQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB5003.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?dHGilWD2IyZzPOb6He3WE/NeODmkDze2sTFr2oYS20WA9cO3yzMCkmSmEHW0?=
- =?us-ascii?Q?XbNsR1kqp6QUZme+qJ6qH3X6B+EBKWJn0S7zU8UDBKD/Bxh8ORrP0HnjfiYb?=
- =?us-ascii?Q?MNGyx1DfvxSH+0d9TgctGKQwwQop/nunio6qMaSl9++Tc8Hmmp0lOyQWD7ZE?=
- =?us-ascii?Q?jDXZ0F5sXs/xH3cqueugiJtrbCpVeU+mB1+1tWkASJAk1Gd2RysyL8xsvpUN?=
- =?us-ascii?Q?G5wqTq3O4937qgclM0IlxSPKf3GnAxmLaYbLNWiy2lqW3636Zns1Yc9S5JFT?=
- =?us-ascii?Q?lUxz/YiPb+wUV6ImBrcDvcJenNB+SbOxbB8goQrHBJTD2qkfDW75HNDhSg16?=
- =?us-ascii?Q?oGG6eC5/6EyThqY+vZ/0M64tvrrzmWb9MJ1eEqjPY7McoYryI9rrq7W5OXMU?=
- =?us-ascii?Q?AUhdx0FbqA0lPFN9c3hvAw1fpsNKOo9K2FHkfnc8BDuneH+A5MJVjx9RvEAl?=
- =?us-ascii?Q?grURiWklsE0EPWyxs4JLeSZ3bIPdbzlShL3MI4xCAsOeSR0h+ojVvZmPIdHQ?=
- =?us-ascii?Q?EP0TWJ8MhP5YKUVZKle+AkDC2yTtKOlgeBYvIq4s8sZsmJVho8Fk1S2CPB96?=
- =?us-ascii?Q?OFlWzikBSbV3NQ5QX50s795Zv6E42i8CHd3oaZx9AFjyeJCKWEDWPrmkLO2N?=
- =?us-ascii?Q?Uxs+IAgb8ChBy6H12BCgDk29WaKe8XMHuvGfSx9gGppcuYoPB90+ncY2E9Ht?=
- =?us-ascii?Q?p1wXyggAVhJusD7ufebgSW8Dd5Cufp1Z0m910uRco0Kv2VJh4mWzTwamtIwS?=
- =?us-ascii?Q?08hGBTs+TihFlwueVvzfAJG5SAvcxqiqNCc18kTmNU7PTS1pxwcjdXrrSd/M?=
- =?us-ascii?Q?fgjdUjaZDt0VOr/1ePJOPzpnu8sHerKKEixx2Ax4v+u7wRyxwjS0UDqUgM/h?=
- =?us-ascii?Q?iNmRuIfgI+h8s3TNDD3b8KYdjyTli94VNlEzJoL/knRd3zG6Sb/NFbUJZ9rA?=
- =?us-ascii?Q?WhT8qUUfzkk66MLmhX2rUN8nsU2Bqz312F5ql3QjJ9jM2FbZLPUAdSwo8Qsr?=
- =?us-ascii?Q?Wdlut4irKjiTbfm/wgZnD8CxmxPedPQuw2VDxdpiOoi3L7hdFa1X3H6f6U/t?=
- =?us-ascii?Q?MGKqAXxw/P52uIqDwVoKTjPyM3ZGSCGVJ8tMBVU9BTjqRslGLpwoxP2YmKa3?=
- =?us-ascii?Q?NR5GfyqOUwf+q+tQfJGhqo9F3FN2dQW5simMjdUilu7dgO5jfwck57RZ+PTB?=
- =?us-ascii?Q?k/i4vi2xx178/uEE0sc6INsvtRBXiVOZeioR2Ioxn4+GdAbTnM2nESSWLEq/?=
- =?us-ascii?Q?y3NVKVt2/PLy3joDTBlMPI2KDypBw+9lIkVu3O8lYrp58VbVzx6tptY7Gu66?=
- =?us-ascii?Q?d856NaLIkLobcAcV8tUZZnxHvRNd8Ig6OY8U4lGOavCnD2TC3k1u7GO1BlQ2?=
- =?us-ascii?Q?zRN7/h7lE+yGsAI025S88AJT0b4xK2fFfiard3EWyGNvxvlP4N6QE85aqDCf?=
- =?us-ascii?Q?vSovY9YcHl5iJzXi3pn4e+6bv4IeVqkA/l6JPDH+uzPLebiaNqAhkQB7w1GR?=
- =?us-ascii?Q?f47Ch9xHIcdQ4C+vlU1gt40jXvcWoOEaO+VmdezftBeMrET3qSUucUAyfaX3?=
- =?us-ascii?Q?hZxoKKCphDQcOYmeuss=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.17; Tue, 10 Sep
+ 2024 06:50:07 +0000
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19]) by PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19%4]) with mapi id 15.20.7939.022; Tue, 10 Sep 2024
+ 06:50:07 +0000
+Message-ID: <ef218f6b-7c24-41f2-a3a3-fcd97c29886d@kontron.de>
+Date: Tue, 10 Sep 2024 08:50:04 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: imx8mp-venice*: enable NPU support
+To: Tim Harvey <tharvey@gateworks.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20240909215359.780561-1-tharvey@gateworks.com>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <20240909215359.780561-1-tharvey@gateworks.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0144.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b8::20) To PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:102:263::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR10MB5681:EE_|AS4PR10MB5497:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9f39afa-40de-4dec-cff3-08dcd164ce54
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RnlRWGcvL3VPaFA0SWswZE5hTUhNYXl4M1lTa0VUbDQ3ZzVCZTRFbk5nOUh5?=
+ =?utf-8?B?S0o1SXJOSnF2L21OdlYweE0ydFE4RkJmaDZTMjNFTzkwVzNYT0R1STljQURl?=
+ =?utf-8?B?TzdkM2dCemc3Q2NESlF5WFVTaEl5NWFtQnhhVXpKVVJKZE01K01BZEFsQUp4?=
+ =?utf-8?B?RmdldkNlQ2lqMDdpclhhak1EMUJrN0xxa1pYWVRNeXk2U3c3dnZDQWZST2hJ?=
+ =?utf-8?B?MWhkRnZrVk5CeGNQNDUzdXlzako4NHdsd0lIVVk1dWxiTUdvMGc4WkZ5ay9s?=
+ =?utf-8?B?eEhOb1VHU1p4WFdKd3JFQnFHdmZycVZqYWdUOFBKSlF5ang5K3R0dHlrcDJF?=
+ =?utf-8?B?VkxEKzEzVkNoUjAxejhNMm1JK2RpZSs4OEZRU2x0VGdhOXd0aHg0V2dwV3Zh?=
+ =?utf-8?B?SXp6RXJVY1ZlSnF1bjZsendYcGRaaEc2TUY2ZG5XT1JGc3hKd05LTVEwc0xz?=
+ =?utf-8?B?V2R2S3B4N1RvVDM4NEF2ZlUzbmtaUGI2RkY4dFhRYWZNekEvczFUQ0RoTWpL?=
+ =?utf-8?B?RnRIQ25kaEZDNTdNQnNYVWk3S29vZzBsTU1uQ2FFR25QcFF1RjBkRmtmMGtO?=
+ =?utf-8?B?Y1JCVytmdVR2MktpU2tJSFpRWjdZMHZUMmtnNkl0b3FRam1OdkQ4SXAwL0ZT?=
+ =?utf-8?B?bERXczVkaVFXZ3oyY3RSaEl4OE5jeFVxTDR5Q3RnQnUya0szdXhQRmVTeWpz?=
+ =?utf-8?B?Sy9VR0RmZnJaem5INzAxSEFZUTQ5NFUvVktDRkZkNzVtOVRwT0Rxd1h3azBn?=
+ =?utf-8?B?bFgxa1NzQVh5cUphTlB1K0d1d1JibVRSNVcveUdyTTNqYnkxWmJFZXB0MTZO?=
+ =?utf-8?B?bjdBTzFXdlhBS24yTWhSb0xrL1NKV1pGb1BHR1V5cUJzZzJzV0JRV2FZWUVj?=
+ =?utf-8?B?dXJZNXRSbE1pa1dGai9hVzUrT3FTelppQ0JEZ3ZHUEptT0VYZ1lnRkQ4MWxy?=
+ =?utf-8?B?SWRKdVJoVkhzMXZMSHhGTFkwdGhQdTFhdW5LZFhyZ2pUMDB0T0ZrZjhxQVUx?=
+ =?utf-8?B?VXgzS3pNeUw4T2s4aVRoM0xINXRRSDFPS3dNWkNSSzJRdXJ6OEVqQlE3RXht?=
+ =?utf-8?B?MzhKZ3duSGZLOG8wMHdqdUpka0gzSDFySjVCaXNqNlc1SWFUaHZvL2ZBL3Ns?=
+ =?utf-8?B?bXV5ZHhVUHNxT3ZReVhzd3BxTEFPYks3VUdsaFI5WmpkaWc3WkxFUVlzUUxX?=
+ =?utf-8?B?QldrNnQwRWNGOUpGYVFjOW9Wem55NHU5ZG5BUUV1ckZ6Z0Z1NWZwYjJYeVhy?=
+ =?utf-8?B?TWdpOWJLekNVQ0Z4RU5DbGFKanBhS0xiUFZMYUxrNnUybEJMZFFkb2IwS3NP?=
+ =?utf-8?B?R3ZZUmo0Zmg2UVpKQXVkaS9tQy9oSkZwOXR1cTZzcVFkRHR1RG5mUzNnVDc5?=
+ =?utf-8?B?d2xxMjlGdVpTZE1vUW54N2hGL09PQlhRZjlqSEc4NGMrcWNQWDdhRHgyZEF2?=
+ =?utf-8?B?K1AwMHc3T3dxOExuRFVHSGtlV011a05ZWTZ0bnpGb1hhdEVycnJNMjE1T0ll?=
+ =?utf-8?B?bWh6cno4Y1JrRjhZMW11QmwvTGxreDNZay9nckh2VTljbXZYNW5hN2VVYjNx?=
+ =?utf-8?B?emV0RmY0ZVQzd2xKeFdZcmpoNFh4a2J3QzRKNFFrRER6aUdoYUhMVFhLV3ps?=
+ =?utf-8?B?aWxNMkJWcU9nSG9jZ053dWVrOGUzVmFTREdFU2tmeG40YzJPSzMvdHRiZDdG?=
+ =?utf-8?B?NHA0bitReFpFWWE0RmpMeDkrcW40RFNLdkh4bnd2MHQ0TGdXYmxCNnFLMnR5?=
+ =?utf-8?B?d1B4S1FoTFdqcWNsVHNvTU5Kc3JzMGJUNit6RFNHREpNOTBaUzg2ZzFuV0Fh?=
+ =?utf-8?B?WnVHY0tEYnBTcE5FY2psb2dsVG5Ha0lLcmhFbUpGVzJCd1JXazBsS1JkSXRP?=
+ =?utf-8?Q?KPXUrUs6UoTGE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TGE1WjBGeHNvT0Q5VkhpYXgzVVNxM3JDcnR6RWVuL0Y3QlFobERXR0tOUG5I?=
+ =?utf-8?B?K2pPTDM4NVhwU2RBTWZBTVlsNTJXTTYvK1VSVUdPaUZ6MVY0SnNLelRGbUlo?=
+ =?utf-8?B?L2tuQ3AvMkpqOG5lUU1IWlNoNUVrc2RSR1BoVlBnc0NOT2gwWk5qNHJlbk05?=
+ =?utf-8?B?RUducWhCZ0VhMWpnbVZZQlZ1SHhKRkwrdWFTQTQ4OEF5bVFRRVRaWGFKSmxa?=
+ =?utf-8?B?amZSZlJjSHVlNDN5bGY4V0RxSHhpenpUMGNvcmVuN0xZV2o1bDFxM1ZQUVlz?=
+ =?utf-8?B?Yk1jblRLT25wWXIwM1hqeE5xWUhIL3M4cXZTTVZGZ2FZQk1VTmU2bk82Rmx4?=
+ =?utf-8?B?QjFNbnNhYUdqSjRGNVBjYTkrNjFHMCt1Rmx4SjhEQmNXNGxsdm9NYm5IRXlL?=
+ =?utf-8?B?a1NiMVdsazlMVnpqNkt3RXNRSkkvOEQ5VkZzVHpIUG1ncysrTHJtYjkyQkN0?=
+ =?utf-8?B?UHlmRHFjWGp3VTM0NStrM1NEOWxCNEM0MzFhZ3I3RXpuNmVseHlTanVCL1Yw?=
+ =?utf-8?B?eGFsRDRYRDk3QXd5bHh2a0cxQ214N0M0c1lja3lHSkQ0NDEyUGxXeEtiSFJR?=
+ =?utf-8?B?cjNJYVB3NUE1YnhCczhEY0tXUWg0aVgzQWh4RWpaRXQzejBhRy9oT1ZvOXlV?=
+ =?utf-8?B?d21aenRtUE5UbHNyVHpwdmFRZ0xZZkJySFJwVVpvc0VkN1dqbWVTaENWdDhT?=
+ =?utf-8?B?ODVXbExBT0d3bWdhV21NcUpIMGlvcW9xZ2xiVG1iUlZYUE9yOVF4R2trZEZa?=
+ =?utf-8?B?VlZrUTBCUHl4cjJZSmZXaStGNWdoOHZBaCtua2lSS25jMUl1NjZSY0VXWjJK?=
+ =?utf-8?B?MUZYanpuWndDb1ZnU0ZzN3kzUXQvRy9KNW8zaTlQbDFQdGk5THM3YTB1YVBM?=
+ =?utf-8?B?V2pTODZwZGF3MGovOEcwZmdUamc0anJRUWNiZkFJeFlDNUo1b0RWTzNveWhs?=
+ =?utf-8?B?ZWZJL0tySWswYnRYaTdMQlpZcFkyZ0xDUTZVU3djQUdPYlV0Nk9VQ09CVWJa?=
+ =?utf-8?B?NHc1OVJrM0FtMTdIK0NTTjFiTy9yT21XcVNOR1pNQ3RKem9ucy9EckxZOTg5?=
+ =?utf-8?B?NTF5Lzl5V2lUOWxZZkZ2Uk8vamhXd0dsZFZXdFVlVW5EZkZyYnJjRXFxTzZ4?=
+ =?utf-8?B?TXBQOXF3My9ob21EaS84OEV0dy9pTGtWbGt0Y2NlcVY3SCtxbTM4MlBFOWRU?=
+ =?utf-8?B?aHMwWERXaURuKzBDSVR3TXU0VTdMcFZzRU5UMGJaLzZFNXdjQmZ0TW5WZmN4?=
+ =?utf-8?B?bGp3WVJSWitYc1NxRUJvS2phcEd5Y3ROWGlITVUvbGIwY2pVUU1MQlFPRk94?=
+ =?utf-8?B?RkJQeEF5TXl0UmpFcDVIbXd4Ull3aStncUFQV1ZoYnZJWXFWQlZJUnlzN3dh?=
+ =?utf-8?B?K1F1dFpJQzNsSFdGd1k5TGJJc0lMOXltdERXUm52ZWMxVEYxbSt6TDVjVlRL?=
+ =?utf-8?B?eHhLQ3UzSE1weE96MVVTdVorVGRoY01TalNkRFJob0ZGd0dUTGdHeWRaVzZ2?=
+ =?utf-8?B?RitreWl0aUc4U3k2WTB0Q3RWMU1rM2tuWlZqN3duUEVGYVVBUnVoTm80Qmdm?=
+ =?utf-8?B?anJzS08rdm5XZ3dtMGExWVdRcnM0dU5EOHZTbU1QSWtxK1RuRVlhLzJpbjRW?=
+ =?utf-8?B?MVNBMkU2RUpDSEljT0N1VXRRTXBvcjhtMm5LT015SGtZUW9aanpsL2VoaUhQ?=
+ =?utf-8?B?ekg1cWd0MkFocVdOQ3h2SElnaldUUUFrTmZtV2krSlpBSnNsMTNjOFMrWFhj?=
+ =?utf-8?B?V1dDMjZ2YUtaQVZMYkY1dFZ3MHA3Q2g1WjhVOU1mSDRZcm5JQ2NBSDhvZDZE?=
+ =?utf-8?B?MDUvczl3UjFLcG9wR3Vud2Vpb0tXR0hZUHVGNmxmUFFMZ05ja3p6U3IvRm1M?=
+ =?utf-8?B?T3JKTy80VDRBUkZvRkozbDBnUzR2Y0pXQnY0cThqS2pka3hienpDU2xFOE9C?=
+ =?utf-8?B?WTQvV2NOWnBiU2I5OGNYbWpLKzJtVzhUbnRZWDYyWGRhODBQdUlyWXhqV3Zv?=
+ =?utf-8?B?NjVvSWJZS1hTR0QwWjBZTVZmNkF2RU9nYVprUklJNDBHbXdvUEsxS1BwVmly?=
+ =?utf-8?B?aTBRdG0zSXZyWlU3OXZ4dzUzcDlZNnVWTFpuU3FUdUFpV2dzcWxzdEJNMmtV?=
+ =?utf-8?B?N3RFdytQaWpPbDVnMU9lbmRhMlAyVXBMM2RwN0RFbEdKSWEzeU9oWm5oVWdO?=
+ =?utf-8?B?Q2c9PQ==?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9f39afa-40de-4dec-cff3-08dcd164ce54
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB5003.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0db5f98-45d7-43a1-0737-08dcd1570c96
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2024 05:11:38.3257
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2024 06:50:07.0287
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: a9qemp2PTW2EqSxsifzFhZucA36JdxhyEz88ux4jozIw/F2+cCHZAvM9Swio6220q75tLCSdZKOb2//G3H7yuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7134
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rwd0WQqaGS2d8CoOaGE7vV3XEDtvNaltlxA4NxzyhlrGxkyGHUet4LxLtQFFTNo4tjRhyoO0Sl144WCPf9/m2gMiPv5s2DcJN1MVMZ9JW5A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5497
 
+Hi Tim,
 
+On 09.09.24 11:53 PM, Tim Harvey wrote:
+> The IMX8MP has a VeriSilicon (Vivante VIP8000) NPU which
+> is supported by the etnaviv driver. Enable it.
+> 
+> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi | 4 ++++
+>  arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts  | 4 ++++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+> index 6c75a5ecf56b..f0211a96855b 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+> @@ -393,6 +393,10 @@ &i2c3 {
+>  	status = "okay";
+>  };
+>  
+> +&npu {
+> +	status = "okay";
+> +};
+> +
+>  /* off-board header */
+>  &uart1 {
+>  	pinctrl-names = "default";
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+> index 9885948952b4..8a04b66a4afc 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+> @@ -666,6 +666,10 @@ &i2c4 {
+>  	status = "okay";
+>  };
+>  
+> +&npu {
+> +	status = "okay";
+> +};
+> +
+>  &pcie_phy {
+>  	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
+>  	fsl,clkreq-unsupported;
 
-> On Mon, Sep 09, 2024 at 11:03:29PM +0200, Alexandre Belloni wrote:
-> > On 09/09/2024 15:58:40-0400, Frank Li wrote:
-> > > On Thu, Sep 05, 2024 at 03:45:56PM +0800, Carlos Song wrote:
-> > > > According to I3C spec 6.2 Timing Specification, the Open Drain
-> > > > High Period of SCL Clock timing for first broadcast address should
-> > > > be adjusted to 200ns at least. I3C device working as i2c device
-> > > > will see the broadcast to close its Spike Filter then change to
-> > > > work at I3C mode. After that I3C open drain SCL high level should b=
-e
-> adjusted back.
-> > > >
-> > > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > > > Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > >
-> > > Alexandre Belloni:
-> > >
-> > > 	I have not seen these in patch work
-> > > 	https://patchwork.kernel.org/project/linux-i3c/list/
-> > >
-> > > 	Any thing wrong. These two patches is critial for some boards.
-> > > Could you please take care it?
-> >
-> > They didn't make it to the list, please subscribe and resend. Also, it
-> > is very very difficult to keep track of all the patches you sent s I'm
-> > not sure what actually needs to be applied and what has been dropped r
-> > superseded.
->=20
-> Sorry for that. Only one big patches set (about hotjoin fix) and update m=
-aintaner
-> are directly sent from me.
->=20
-> There are 3 patches from carlos.
-> one patch already in patchwork
-> https://patchwork.kernel.org/project/linux-i3c/patch/20240719080233.84277=
-1
-> -1-carlos.song@nxp.com/
-> the other two patches is what's talking about in this email.
->=20
+I think there is no need for this patch as the NPU is already enabled by
+default in imx8mp.dtsi (same as the GPUs). Or do you disable it in some
+intermediate devicetree include file?
 
-[Carlos]:
-Hi,
-I have subscribe to linux-i3c@lists.infradead.org. Then resend these 2 patc=
-hes V5.
-
-Sorry for confusing!
-
-Thank you very much.
-
-> Anther one from Ravindra can be dropped.
->=20
-> I am not sure how I can help this because there are difference contributo=
-r.
->=20
-> Frank
->=20
-> >
-> > >
-> > > best regards
-> > > Frank Li
-> > >
-> > > > ---
-> > > > Change for V4:
-> > > > - No change. Send this patch with svc-i3c-master.c fix patch.
-> > > > Change for V3:
-> > > > - Modify comments from Miquel's suggestion Chnage for V2:
-> > > > - Fix set_speed description from Frank's comment
-> > > > ---
-> > > >  drivers/i3c/master.c       | 12 ++++++++++++
-> > > >  include/linux/i3c/master.h | 16 ++++++++++++++++
-> > > >  2 files changed, 28 insertions(+)
-> > > >
-> > > > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c index
-> > > > 7028f03c2c42..6f3eb710a75d 100644
-> > > > --- a/drivers/i3c/master.c
-> > > > +++ b/drivers/i3c/master.c
-> > > > @@ -1868,6 +1868,12 @@ static int i3c_master_bus_init(struct
-> i3c_master_controller *master)
-> > > >  		goto err_bus_cleanup;
-> > > >  	}
-> > > >
-> > > > +	if (master->ops->set_speed) {
-> > > > +		ret =3D master->ops->set_speed(master,
-> I3C_OPEN_DRAIN_SLOW_SPEED);
-> > > > +		if (ret)
-> > > > +			goto err_bus_cleanup;
-> > > > +	}
-> > > > +
-> > > >  	/*
-> > > >  	 * Reset all dynamic address that may have been assigned before
-> > > >  	 * (assigned by the bootloader for example).
-> > > > @@ -1876,6 +1882,12 @@ static int i3c_master_bus_init(struct
-> i3c_master_controller *master)
-> > > >  	if (ret && ret !=3D I3C_ERROR_M2)
-> > > >  		goto err_bus_cleanup;
-> > > >
-> > > > +	if (master->ops->set_speed) {
-> > > > +		master->ops->set_speed(master,
-> I3C_OPEN_DRAIN_NORMAL_SPEED);
-> > > > +		if (ret)
-> > > > +			goto err_bus_cleanup;
-> > > > +	}
-> > > > +
-> > > >  	/* Disable all slave events before starting DAA. */
-> > > >  	ret =3D i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
-> > > >  				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
-> diff --git
-> > > > a/include/linux/i3c/master.h b/include/linux/i3c/master.h index
-> > > > 074f632868d9..2a1ed05d5782 100644
-> > > > --- a/include/linux/i3c/master.h
-> > > > +++ b/include/linux/i3c/master.h
-> > > > @@ -277,6 +277,20 @@ enum i3c_bus_mode {
-> > > >  	I3C_BUS_MODE_MIXED_SLOW,
-> > > >  };
-> > > >
-> > > > +/**
-> > > > + * enum i3c_open_drain_speed - I3C open-drain speed
-> > > > + * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending
-> the first
-> > > > + *				broadcast address. The first broadcast address at this
-> speed
-> > > > + *				will be visible to all devices on the I3C bus. I3C devices
-> > > > + *				working in I2C mode will turn off their spike filter when
-> > > > + *				switching into I3C mode.
-> > > > + * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in
-> I3C bus mode.
-> > > > + */
-> > > > +enum i3c_open_drain_speed {
-> > > > +	I3C_OPEN_DRAIN_SLOW_SPEED,
-> > > > +	I3C_OPEN_DRAIN_NORMAL_SPEED,
-> > > > +};
-> > > > +
-> > > >  /**
-> > > >   * enum i3c_addr_slot_status - I3C address slot status
-> > > >   * @I3C_ADDR_SLOT_FREE: address is free @@ -436,6 +450,7 @@
-> > > > struct i3c_bus {
-> > > >   *		      NULL.
-> > > >   * @enable_hotjoin: enable hot join event detect.
-> > > >   * @disable_hotjoin: disable hot join event detect.
-> > > > + * @set_speed: adjust I3C open drain mode timing.
-> > > >   */
-> > > >  struct i3c_master_controller_ops {
-> > > >  	int (*bus_init)(struct i3c_master_controller *master); @@ -464,6
-> > > > +479,7 @@ struct i3c_master_controller_ops {
-> > > >  				 struct i3c_ibi_slot *slot);
-> > > >  	int (*enable_hotjoin)(struct i3c_master_controller *master);
-> > > >  	int (*disable_hotjoin)(struct i3c_master_controller *master);
-> > > > +	int (*set_speed)(struct i3c_master_controller *master, enum
-> > > > +i3c_open_drain_speed speed);
-> > > >  };
-> > > >
-> > > >  /**
-> > > > --
-> > > > 2.34.1
-> > > >
-> >
-> > --
-> > Alexandre Belloni, co-owner and COO, Bootlin Embedded Linux and Kernel
-> > engineering https://bootlin.com
+Thanks
+Frieder
