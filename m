@@ -1,121 +1,178 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011008.outbound.protection.outlook.com [52.101.70.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DB012C484
-	for <imx@lists.linux.dev>; Wed, 11 Sep 2024 07:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726038861; cv=none; b=RQYtoTkK+OPX/Eeh99rGy52fPtY56N/IUiF9Mz8DYFo6KSM8VoDIvjBfCUdVwnRinsXXcgLwHUTpwZztzJCRBKRdJi+7e2x32B5SUeNScvEsqAH/u9O/pysMIMhBdK9MNRvXJJaBUSg98t6DquQex2s25FxJJhUsAt7L36hbvLU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726038861; c=relaxed/simple;
-	bh=VA5dureEmxFcu/FUaV7IedgCxYgv0y8+e5/Q17EGoro=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TfMDyW3H8eGHZcoDRA5K4FUGYYUW5Lg0oL8L69tjhYOCl5Nhjoc8LheRDninJcQCzq9NkHx5jL6QWVfw21sgmCPUqFJtiw1pzvfTFTqQxKZrBB2QfSfs5KsT0mG4KoXv8tHfy3eLjdmxgQfsMqlV85661jBqjyNgNRLFqfaWUbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aYHwBw3X; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=PX9Bu95a reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1258187848
+	for <imx@lists.linux.dev>; Wed, 11 Sep 2024 12:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726057114; cv=fail; b=H5rTN9YEqfEBELxN3LMXRS5hgitHoyc/Apqif+yWYKq/0E2+zwk3KKU/ku0yP4kr55Mo6IPG7LRuHQMbWaUNLEuKJy3Qhh3HaarsRVp2Fbq+GfgZOeE/lM/M+9BMmLkyTAqWZjl2tY0vX/dNyGlCzHmQgU4JLoSTuCiBXxN/iXk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726057114; c=relaxed/simple;
+	bh=yvHw2IyN5SVdWZZlCeVPAQgHScJvikhymQs/g/dInZk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=EO+zUpt6IBLyHOigJejajUiYsjpBaEY3It2E3qMPV/F8Q2b0/hbFPP5kwn3Kn24RQkbsKvwmGyF0eRTNDrBQpdGibbRLJPAMzS3wBVJwIyAs0xMaKMHX2IIrrQTXyKHrv6TBUrdWLb6h8c3YhzwtweSBXDSZSZxrRuEQDqp+TQM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=axJubZzx; arc=fail smtp.client-ip=52.101.70.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aYHwBw3X";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="PX9Bu95a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1726038858; x=1757574858;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pLwl7PjxbyclbLwugzxSxt4q8mheb5QQ1d2tg3yLFYo=;
-  b=aYHwBw3X/68leRq+C5iC2hfogesA2ERvbb7M6VuVAU5VIW7P4ER9JRPt
-   c2mMSBLaUKGAd4ouj/8Wfbiv2HfJhpN04OUWm4CKKGtn7Cb5esbXD7F6z
-   VBtW22xgfKIuJR+Uc0QUH6gOsG+IqFtRGkEOzX1R/CEEmYWwKAqDpUjgE
-   IlLaaTjJ+Te6kVWmeag5x9HyJgO9wcRFmmt7B9fvfONBrHvIkct0hiGEs
-   742jR/dzsj8pTV+Jwuck9JL2SSRUDS4cjoIe26oswaF78v+aLpj+bVgvz
-   zkhke+JWZXc2cP/OBD7yen7rz7zlKYD6ETbsogXzShKHFpMRwnO+chSht
-   Q==;
-X-CSE-ConnectionGUID: DIZZy+MQQw+IUAQkqAjX6Q==
-X-CSE-MsgGUID: ast7DkavRa2t1Wak+21qdQ==
-X-IronPort-AV: E=Sophos;i="6.10,219,1719871200"; 
-   d="scan'208";a="38878854"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 11 Sep 2024 09:14:11 +0200
-X-CheckPoint: {66E14343-2E-E520F13A-D17B83D9}
-X-MAIL-CPID: 9295D6CC141ACF1FB26C1E0DBB020CE6_2
-X-Control-Analysis: str=0001.0A782F1B.66E14343.0192,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E7D9A16C843;
-	Wed, 11 Sep 2024 09:14:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1726038847; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pLwl7PjxbyclbLwugzxSxt4q8mheb5QQ1d2tg3yLFYo=;
-	b=PX9Bu95ag1wZiUFkU3Ehp5wBUgNOKZTfgsF1wmr+g3Ywqq5wH2n7lSsPgs8Mq3HAD8RaRk
-	mvQVfkfjVm8sHMJqU36RBaQWwKtM0241brGjpyEBHVG5jxRiCJzlKaoVre5TyJKepyxMdQ
-	d4TUsRhCGQDl0Kr1GuYGqtnO5z6aruU7jeZlIXpjBAFKGTP2hw9r6DwOZ0EnmLj3aOzMaD
-	QbBtvE/XbKfSA9HwHOrwAsPj2p9M9Y1/Ez//On6gcvT5ee3isgkm3RFftdkewpWozhB9HU
-	F4sf26z2GN/Gv4grsuWxVvwGr/4nWjnoG1Jpn6QDw+Q14WYABvc4b6aGEzSKIA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dt: imx93-tqma9352-mba93xxla: enable Open Drain for MDIO
-Date: Wed, 11 Sep 2024 09:13:59 +0200
-Message-Id: <20240911071359.2971191-2-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="axJubZzx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D40yM07xIrZc9cbzE5I+8VlHSiwhssRLDC7pBA9E3BOQwCWA+ulHKKq/EY6NiYwP0MMBE0DYpHmswVyydca4YPpXor0TMd1n/lqmdPbVoxKugPTqY3J60Z+7y4mai6F4RFGP4FJcwsrJwdedhE78B0/wFt9nhQy9lO26YCezjNMLWHqP7yQtuj8PatB9vu72mIcAUK6ZjCAzA8eZ9ZdrJwBUVxpdkOzTdZ3JKzPgMNHmGgNV2c7XYK+VLb1rcSjK8HKPD4PK542vTF3AQ9UFdtLowqZWKeTXnH6gRRUymUCNIa7IPZKoyDcs6GvGPkz7hAOKf8DeVtMUWde9oGVxnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=37DG/eIz3muj4JojFM/K5KBVFnguHdt1G7QOy9kGYl4=;
+ b=It0GABjgx3zOvTwr93cZl2kQpC7wr11kay0CqQIzADnIQM8h9AOYT52/v0wP31ytWDeSdHGqtBO3VKNR7hNBPsOqr2idOsu+U52sHSbXebSiEBEEwvTrdKzh5FUtucmy+DnjG2ebuWI0cePvjfqebQ1+XJavmP3aXgAAftZI9einQWvxG89Za8fXr4IOwfAEK1BZSwqN7bp9YWLHGMGatE9DfiqeT+3yvT4E8a4uIqMp38xOJ49anK2ggEmJYUyacKh5lLobW19Ljv0YRfuKhlOkpxHayLRLd9mdL5gdxfja78iU8uGdnZGNExjdfbg62KAzqkW0RoMKRCy7ZtmLrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=37DG/eIz3muj4JojFM/K5KBVFnguHdt1G7QOy9kGYl4=;
+ b=axJubZzxaIYCRD7Jkcs8EpyaI7b9ldgqKJlYSfShakc1JiinN/jnBjxBogVpy6+qoKEHjw+CqPMd7NTRPe8809/hp3GQfVAed7Lo3YFo+iqW75Uh5w9EZLIe1iDrjPG8Sb93ZgXvuEtcNu22qWa0qa9elRx/ubl/AiY8aJONwjmKyIsUK9MK02AJnFV2b6XDWs1PpdhdYd4RzHeA0QtudW/pIQpSZjySZWVmu5qpbunDKrXDFY3ymOmTXgc1RaFm2EObqNjCEaEBKyE4jAFYdbZf8gt9WM5TVrgUEtQFs4494cXc/t4BGloOpH+tQXIZ+LIneQqHC0pNn49ryiOA2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU4PR04MB10887.eurprd04.prod.outlook.com (2603:10a6:10:592::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.22; Wed, 11 Sep
+ 2024 12:18:27 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.7918.024; Wed, 11 Sep 2024
+ 12:18:26 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	wenst@chromium.org
+Cc: aisheng.dong@nxp.com,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH] regulator: core: fix the broken behavior of regulator_dev_lookup()
+Date: Wed, 11 Sep 2024 20:03:38 +0800
+Message-Id: <20240911120338.526384-1-wei.fang@nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240911071359.2971191-1-alexander.stein@ew.tq-group.com>
-References: <20240911071359.2971191-1-alexander.stein@ew.tq-group.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR04CA0163.apcprd04.prod.outlook.com (2603:1096:4::25)
+ To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DU4PR04MB10887:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c19705d-b2a4-4335-7280-08dcd25bd6bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?aBl1WdOhLWOU3tEZKuSNp85c8uIw7db2/5hf1CLl+LgNElAClyTV/qhWapnJ?=
+ =?us-ascii?Q?AdtzGDEjXdMznbctvWsyQHFICpFmGW0UjYmDkI46bOcmJmOwH1z8QiORaQ1y?=
+ =?us-ascii?Q?pwnOMCfeLQiOp4sFNWPLjZaTZdUXX2c1hb0d+fpzb2c/rmF7Tsnz5NT2fDys?=
+ =?us-ascii?Q?Qa7GGd9jkPG/WEgQIvI3xxXhEbmxfqEIsM4sPo2Cobs9MrmxchftvyGrG/nC?=
+ =?us-ascii?Q?Whh7sEg7L2zBeG2TDXNlHtR7exo/l7/4K8iHw6BIVFhM/E5CaTAbuHL2Ybo7?=
+ =?us-ascii?Q?izcWSbb1SqxkTtRmwxi5G562hDhcdRSd62VZwgLJOsiB8o0FUh4IApKl7LEL?=
+ =?us-ascii?Q?ZJnbcWUiuT7IDyNiIphtS+d+rb+/S9wWCpNOOZqY8MNWACevK6N7EnvWMSVN?=
+ =?us-ascii?Q?KIMOrdh1W9JeX47gueYTC5VoxjwwObSo+XdA9itkhRizcZwiek5QkW8QUI/t?=
+ =?us-ascii?Q?8K6Tdpi4NJOewo8NeAHp1gM+DHdvOO/pbtYUnhorw7QPBhm4GVs9bGvE4Mzp?=
+ =?us-ascii?Q?eU56MqJg5VVe6nSWBBb+SO/C6MLLXBcvR4a0iWkSjgc6xqlJK5tJplIH+958?=
+ =?us-ascii?Q?NQ9RueqAUOqNh6HCqoo0VO8SjY9cxXi5QKCO9yigVDlUoGqm0CxpaNovU/Jl?=
+ =?us-ascii?Q?UJ7Q2NbrGGxuKCp1zY9e5XVCeC8ySw4HezUWmyK8gc4kGEPvg5iqdN4/tPRX?=
+ =?us-ascii?Q?vGFuT35gmdUghWkizPffYsrypJrW4aDeL8s5JifL6tFjREwITn5M7HgL7TD+?=
+ =?us-ascii?Q?13tpYnTcgFDT3iz4DV5T3KY3M5MIdfHlIjDFMABt6jXmKab86HioC0sx9hRY?=
+ =?us-ascii?Q?1ylrtyCuaA/YMTQCueA3SrvcsT/FQFzrxE/AzXK0OGKR0LQbS1cousZ97qDB?=
+ =?us-ascii?Q?UYnP1roYLFVYGLiTRaY564s156g7nToNxsnM+1p/saDPaNcQe0Ksri/oko1I?=
+ =?us-ascii?Q?OGo//KQNL58CW8XBDnQsZOqFXcx5iGxFviCDfnEhPa+N30tnd1R+BjRdPj3U?=
+ =?us-ascii?Q?8AJZaEW+pWXjvwEM5DpdFrfqfYvnxUKSDn5ehv7VqrQTfb4lrJEweE47fHx8?=
+ =?us-ascii?Q?K3eT9oy/95E5cH/m+qC24GB4oGiHsVTcAvkyJr3lhVuQAqqyBOBG0r0CWJZz?=
+ =?us-ascii?Q?0xHjTvfA5X88oHZatGMXCRrVEP6ZW6pMuHSWjW8P+HBe7Ck4MshngIyJuWwh?=
+ =?us-ascii?Q?g6WuIkBcjHUhgr9xvmnRDbKMObw3OUSWZV7+XUS0D0YVaF2vjuF9OvQpe43k?=
+ =?us-ascii?Q?zpqOsQ4231N9oTVVTuh/RhLd2lTOTj1XFR3C0+3cXCGMDqkV/wkFvQ6iAz64?=
+ =?us-ascii?Q?Iq0d05qDwQNntOObPqxZigtzJDzIETjNtp6kXKcrGdK3HJCx8VbdnbhIT/8Z?=
+ =?us-ascii?Q?RFbzaaAttaaH8i4/G9IhUi5T0pINmHRaEXVueTSZGPYlAZgo1A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QNSXoCifM5XIYO8DZHctZ4uhyvcV57SsksHANquUuToHVOY++q0QQ8y7QGJ0?=
+ =?us-ascii?Q?7ZHDgexXuQGGFAs3JGDBPMLZl+4MrKylRXdp4YRE9ZWSLc1FxajLfRxbzvNp?=
+ =?us-ascii?Q?Li1ph4QR3/q7syA9Jn+d5fFp0IQ9iHT+ElYyB81dgrgtzmyBjZZy1jzc6x5Q?=
+ =?us-ascii?Q?6NA1IAaqPYMbEDPJUOo4S7WiSOtFD+4z4Ju13rj2j7+xGf42AJWgXJ6efaM3?=
+ =?us-ascii?Q?v9UoJ28Q/Gfl94ubuWi+SGsK6k5LNsC2w8msMisaQNbNOpPS3ALm9D5DfOVR?=
+ =?us-ascii?Q?mmXxetJEarbjcUJS6kLh9QPbC19Ie17GyREb/TGRbf5vgfbqmdAUEewWnwAt?=
+ =?us-ascii?Q?0ncTaoORtSYVbt5Amz9Qqito6aZFsNHBrGwp2RHNRej6E0pf666OkMwPSkc1?=
+ =?us-ascii?Q?GhHxxHfV7qsMK1ICppEaV+OSu/0GeZaqm2lh5mHiqEDhKVms3Hl7z8Nkur7G?=
+ =?us-ascii?Q?dCZHHyNJaiAwGyDPuiCbxMoJR1hDhQGnv+HLGKkNIxwSAPJ2VIXz3db16LMX?=
+ =?us-ascii?Q?ka2s8xBzLOznXSmAqf9mwUjMTgpogc183Ov2izXkM8dKZJp98AY7H1XX2jfd?=
+ =?us-ascii?Q?67OyS6GrihKiUgNKk4XrkuiEhdYfwTDs2rhI8Eus4NyPfNjWHHAVB+CEvA2p?=
+ =?us-ascii?Q?t6ue+TBOp7S648gEQzGhHVflzxb8I73b1R7luUjZSzFjOzPDHYYfxEglOPvv?=
+ =?us-ascii?Q?mzTOGhjBcHeZcOyLcBHVkJYuK6ZtsHidGm7111AyrtRPbKeW6pkZ5l//E28g?=
+ =?us-ascii?Q?0sasE09vs0IH3xd+zxjUvoGkglpu+sCbUCXKE3zSWLD0wHMGZEEZUcVO7vHS?=
+ =?us-ascii?Q?N7gZ6ZHADA07OqxNCq74n4CzHlgjPxcoLw6NczrX5vWWg3xEAXFhpVeau+At?=
+ =?us-ascii?Q?BlH1BCPGrlmyDbHq9sj+DQ9/HTtd4V284v17DCAT+yVcLzRyVrBon9mva5U4?=
+ =?us-ascii?Q?ODThRJbybPEOm9SC2LgRdS/DaW0kOlA6N7rnethXQWSVv+4X9LiKBj7nrk89?=
+ =?us-ascii?Q?gAhagzadJxI2j2CRU87d5qicE6ThObb7dLl4eBBI6Mm2uEO1d2pGJbHDCpfV?=
+ =?us-ascii?Q?nO8kxDKo4k0Y+CgSBAtOszZo/p1jtEZpDLy9Vj5/OI+Gnf/u5mGARA+JRt61?=
+ =?us-ascii?Q?MZGxH8Rv5Fjhw8GPLCgjXpqRvhETpmEbQdPO3EA4NJnkPcpbZ6JVFrG/yaK1?=
+ =?us-ascii?Q?MRVy1XImnx2D21oTh8S4ULdYeVOfeIDvWgyZEcQ/qXZZkvGXCDui85O9JGbH?=
+ =?us-ascii?Q?E7Y0204K7+qvIBNLAsP2PblToDCAS/fvscnw667zASLLudvkuwJLePK75Uyk?=
+ =?us-ascii?Q?fmaTtMLoO2x9RSusqyIbpDWdW3MiLRv/idAs/2k1fibisKyC2wn5BTNomlVG?=
+ =?us-ascii?Q?fGyUR4UeF2E37Ens0gFehuMvalQq0jOtf/Cj4NowLp2ScYCrpEQezao3TNK9?=
+ =?us-ascii?Q?fKYZ6CcLFqtFWCaISlVY7MJSdc1jQ1zCWfaH7BdQNG0Yv0lPgb15aK/RbK5B?=
+ =?us-ascii?Q?yAj7oetF1ICGOFO4R393Bbe+a0C79NrnjmM3/Ng/alUsLBdRXziAckBrLe8b?=
+ =?us-ascii?Q?VlIESMj6EdQ0QikQEFEHezUSjlaixZ6xmkrqjCTB?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c19705d-b2a4-4335-7280-08dcd25bd6bf
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2024 12:18:26.8980
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0UfNdZ/c/oLqPhwVYzqO4PZQNVSEi5PbXMnGUYku2LMDrg0WBIogkrtz/mylBW3QZwuLYNQx3UQdF4JiFTzuvQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10887
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+The behavior of regulator_dev_lookup() for non-DT way has been broken
+since the commit b8c325545714 ("regulator: Move OF-specific regulator
+lookup code to of_regulator.c").
 
-Follow suggestion from hardware team.
+Before the commit, of_get_regulator() was used to get the regulator,
+which returns NULL if the regulator is not found. So the regulator
+will be looked up through regulator_lookup_by_name() if no matching
+regulator is found in regulator_map_list.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+However, currently, of_regulator_dev_lookup() is used to instead of
+of_get_regulator(), but the variable 'r' is set to ERR_PTR(-ENODEV)
+instead of NULL if the regulator is not found. In this case, if no
+regulator is found in regulator_map_list, the variable 'r' is still
+ERR_PTR(-ENODEV), So regulator_dev_lookup() returns the value of 'r'
+directly instead of continuing to look up the regulator through
+regulator_lookup_by_name().
+
+Fixes: b8c325545714 ("regulator: Move OF-specific regulator lookup code to of_regulator.c")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
 ---
- .../arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/regulator/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-index 0b4b3bb866d06..2e953a05c590e 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts
-@@ -597,8 +597,8 @@ pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_2 | DSE X4 */
- 			MX93_PAD_ENET1_MDC__ENET_QOS_MDC			0x51e
--			/* SION | HYS | FSEL_2 | DSE X4 */
--			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO			0x4000111e
-+			/* SION | HYS | ODE | FSEL_2 | DSE X4 */
-+			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO			0x4000191e
- 			/* HYS | FSEL_0 | DSE no drive */
- 			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x1000
- 			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x1000
-@@ -629,8 +629,8 @@ pinctrl_fec: fecgrp {
- 		fsl,pins = <
- 			/* PD | FSEL_2 | DSE X4 */
- 			MX93_PAD_ENET2_MDC__ENET1_MDC			0x51e
--			/* SION | HYS | FSEL_2 | DSE X4 */
--			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x4000111e
-+			/* SION | HYS | ODE | FSEL_2 | DSE X4 */
-+			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x4000191e
- 			/* HYS | FSEL_0 | DSE no drive */
- 			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x1000
- 			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x1000
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 835a5531d045..40dbff4017f5 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1965,6 +1965,9 @@ static struct regulator_dev *regulator_dev_lookup(struct device *dev,
+ 			return r;
+ 		if (PTR_ERR(r) == -EPROBE_DEFER)
+ 			return r;
++
++		if (PTR_ERR(r) == -ENODEV)
++			r = NULL;
+ 	}
+ 
+ 	/* if not found, try doing it non-dt way */
 -- 
 2.34.1
 
