@@ -1,29 +1,29 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F3119258B
-	for <imx@lists.linux.dev>; Thu, 12 Sep 2024 08:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D770F19258D
+	for <imx@lists.linux.dev>; Thu, 12 Sep 2024 08:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726129280; cv=none; b=PkAklLHhoYBoK7q4wqH3Npf9b80dKII4wkJqgQRtdNbs3d91lT2g3d3rmBDvBavqSA8pdhiNhPL8cB1ph2Kjv5t2Q4vNUfv4zGW2c8ANbcHNn4ooQfyiK+94JJJvcpiU8Igfp8eu8LUBAD+S2OLJnbM8RS/5+bbI1X0Cf9QUeLw=
+	t=1726129285; cv=none; b=a9sEdPpbGFdQe8UlfSDhDCw2/T24iW5Q0OvuLDzVrLrcpZkukv4pgRML8H2y96Ds9heiQw1XjVYZ1DnSarvo4d9wyuWT7zFLkDZs4VPbrpJf1VV9CZxDUh2NNIuJEA+2M0MISby0oW8TKR6WuacVlAYyWwuEU1+Z8j1BNsfAGwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726129280; c=relaxed/simple;
-	bh=Urzi09HJJ2nfdtIBscNyIejU6jP9nXSjLRTUdoP5NCo=;
+	s=arc-20240116; t=1726129285; c=relaxed/simple;
+	bh=uhGeFDmPYMSKAWPD/jrWWFXKl1eEXDz5JCdoInuqcHU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rW1waLC98pM7QHU2vFBv6AR4d8m9hsAZXQA7us/Ph955D1+yZMiogZbMmRQIxQdbXhBRUzVsLEZbZN6Ocwa04ZF8R59Lcr2BZbOo3z1R/WZX5EtEU+Gfsu38vDbnBZ02yCoHGFjMUsgSH1pNnw10zKhejqOMUpPxvAZtSHZVYRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=ABb5cpa5vrlju34OoBNMwvfcp65rpkA7a3grCe0Czr3MQBa8VrFY3S/hg91PMcvWU0b6epKjKdWY2VjLFjMAsKvZ4B2vNPStVC627BzVlgl8VcOAAnQrxhWxsJt+KH3HF+lBw4KKhuvfRgTPNXomof1SNgOf236zf7SvEWzDRMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X49PB4hhBz2CpBB;
-	Thu, 12 Sep 2024 16:20:46 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4X49Ns42lGzyRmm;
+	Thu, 12 Sep 2024 16:20:29 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 25D881A016C;
-	Thu, 12 Sep 2024 16:21:17 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 41ACA1800D5;
+	Thu, 12 Sep 2024 16:21:16 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 12 Sep
- 2024 16:21:16 +0800
+ 2024 16:21:15 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <laurentiu.palcu@oss.nxp.com>, <l.stach@pengutronix.de>,
 	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
@@ -39,9 +39,9 @@ To: <laurentiu.palcu@oss.nxp.com>, <l.stach@pengutronix.de>,
 	<linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
 	<linux-tegra@vger.kernel.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v2 5/5] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Thu, 12 Sep 2024 16:30:20 +0800
-Message-ID: <20240912083020.3720233-6-ruanjinjie@huawei.com>
+Subject: [PATCH v2 4/5] drm/tegra: dpaux: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Thu, 12 Sep 2024 16:30:19 +0800
+Message-ID: <20240912083020.3720233-5-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240912083020.3720233-1-ruanjinjie@huawei.com>
 References: <20240912083020.3720233-1-ruanjinjie@huawei.com>
@@ -60,36 +60,33 @@ disable_irq() after request_irq() still has a time gap in which
 interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
 disable IRQ auto-enable when request IRQ.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 9e532b3ad9a7 ("drm/tegra: dpaux: Disable interrupt when detached")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
-v2:
-- Add Reviewed-by.
----
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
+ drivers/gpu/drm/tegra/dpaux.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index cb538a262d1c..db36c81d0f12 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1505,15 +1505,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
+diff --git a/drivers/gpu/drm/tegra/dpaux.c b/drivers/gpu/drm/tegra/dpaux.c
+index ae12d001a04b..9646dba950e0 100644
+--- a/drivers/gpu/drm/tegra/dpaux.c
++++ b/drivers/gpu/drm/tegra/dpaux.c
+@@ -517,7 +517,7 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_get_sync(&pdev->dev);
  
- 	irq = platform_get_irq_byname(pdev, name);
- 
--	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
-+	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
- 	if (ret) {
- 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
- 			      name, ret);
- 		return ret;
+-	err = devm_request_irq(dpaux->dev, dpaux->irq, tegra_dpaux_irq, 0,
++	err = devm_request_irq(dpaux->dev, dpaux->irq, tegra_dpaux_irq, IRQF_NO_AUTOEN,
+ 			       dev_name(dpaux->dev), dpaux);
+ 	if (err < 0) {
+ 		dev_err(dpaux->dev, "failed to request IRQ#%u: %d\n",
+@@ -525,8 +525,6 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
+ 		goto err_pm_disable;
  	}
  
--	disable_irq(irq);
+-	disable_irq(dpaux->irq);
 -
- 	return irq;
- }
+ 	dpaux->aux.transfer = tegra_dpaux_transfer;
+ 	dpaux->aux.dev = &pdev->dev;
  
 -- 
 2.34.1
