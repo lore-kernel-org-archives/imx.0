@@ -1,160 +1,164 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D929A1AD9CB
-	for <imx@lists.linux.dev>; Thu, 12 Sep 2024 14:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4431865E6;
+	Thu, 12 Sep 2024 16:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726151140; cv=none; b=oii19O1IVay1qqM9Zihp51HxfRqgqLOZAQtnFsHfXQrPGKxUH8rFf976wCFVOrpXYcMOJH8SzeOV1Wn0L7QCnoNhFcDVw1jpbjsji6zuicPgfytzak7ucnzi2dgQIXbhKSY4bdHWk8k44eZAaHVnpGwTgqT9qafK8Jeuk6KP9Hg=
+	t=1726159391; cv=none; b=BhOwD/REIZofSLHZqLGS2tk97ez6rxlODk27ab2hsubFvhQeX09aG4gJBSQooW6JgFlpNbYYt7Xg0LdYu95yYqmBIFOfMlEbOdvPTcc/7xVsREXsx998stKvDM1Us88UP5ihDN2emNE4knww1fh9Gug39sPLo8uI6isIZ9kTKR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726151140; c=relaxed/simple;
-	bh=8OYqBuEjfe5EjdWcxDT76k63UIQ5ek8DyxYuIqau7AA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jAw+FPphgmOSPAdlI+lrvH9e26JOHJlDf1gwejKE4ezWJcL7ssExl3v/Gpsp/pZ7kqI04Dd6nLsjkwsRmwUakv3Ez6j2ZVxHZg5igAWQo4RjnpGCxIQHciKqZHpPVMLZLvFfhiKc+WeFYE/KiU77lPt5GxO58eu0/st2eE7zZL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jljda30G; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1726159391; c=relaxed/simple;
+	bh=n+QV9j1Ge5Ea/KwCCvA6nCHhIuLYtuF4jbktTu4YuQs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=tVuYIG9eul5V5pmYkxgKNRtKkm0zbHYar685ZQorAt6/qSvj0o++xku8VbUQfl54r29pVBonN3TwwD0J8gYSeviSU/5fg+s7bjfxVEYe4r3DgEQ9X1fzPnWJAwdufXzqnDxOFL1tXpS+KETGtAvIMGiww3fu7QqGmlxKgfG39dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKz/8Nxj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jljda30G"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4582fa01090so281331cf.0
-        for <imx@lists.linux.dev>; Thu, 12 Sep 2024 07:25:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726151138; x=1726755938; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iwLc+XjyWhYA8wehQi12J7lKOf62muLl4QoZfdwa35k=;
-        b=Jljda30GAVhWP5ti0Y6IijcCpaekYFXB7/sT7W4VjbJlI5JG4EWjxIAVX6i0ZJ8Miu
-         miz1F9DujxRfrLUDUCdKFVsH6Er7H24s4KC1sR+0FOIvuBdCulHNYklMSIyBw8Ecjxv4
-         x54JOWfQo2+VgHQxJ0djK/4jVUZxricFuDEDj3Q1++bLVmcd+HplgvlZ3t740Kzoyjzp
-         SftZVLyjeKNGBuIzTERYy9nR4xErbWNpcM08qNPt4A5qgQ6DT10hY1zMC38dpDwwb/MA
-         Q1r3UdeNbbKhjer4JOneZ1beMunEPRRXDFRJ5e1tDpzdzVnwUmZ95u2CfSXhNxeYyWn9
-         8K8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726151138; x=1726755938;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iwLc+XjyWhYA8wehQi12J7lKOf62muLl4QoZfdwa35k=;
-        b=lCz8pFy2ixVlPg/9Tj6QMe97DlB10gl6CJh3lMAWHkNXHlx7SaGkGXTbEqJgPxI+xt
-         s8cQGnIcbeH3iZw1K392TjQHGNdmzQGh5fFdPtl2+zsVZ/GDuIunpow/mBRKj6mYeiIG
-         5A9z6mc87OpqVexCVt94zjB7x/RJRbRXotuByHARFmLwuAhct0CtZt3bqQ+fMXOYqOtk
-         fWZrS2ooTREMRHhiXM9h47jrM45TLp9bFh81UlnT7pIzwtI1KmEDks+jSuzBWgupUKdU
-         bBT64uWWYgh8DGC0g91bh1PwslxUmERtBfF9S5+OWJB0pHjvt0U84ykYFSjWqplN9VJH
-         Bt+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVyowJYyYqY0e5Xm7Rf+tiSa5UOv6cs0yUVOD+XJYiMLcrqMPn64I0Xjcby8xLMG3awkVc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxS2f0AQmHxOlWXEo7r+Wl6NwAuDJB2J2FJazqR999gVnN72MDT
-	ODmr4XyCt2n/Ah9jijLxqUD3+939iU3fEpn1uTTg17/alkWdyWO51JFaCDrsNPt/4/bvR3woctJ
-	4vcFPpgVwrzPg17wT+DYqIPpnyd0/WMURgGjV
-X-Google-Smtp-Source: AGHT+IFyltmncYSZz561uPWQsvsGb5DFmLf+mGb3Vo6WS5NNhJE43ms4WKqkq6D4X3fyD6kxk1+1bYCNn1kURkFiU6A=
-X-Received: by 2002:a05:622a:202:b0:456:7f34:f560 with SMTP id
- d75a77b69052e-458608812bdmr4020001cf.22.1726151137360; Thu, 12 Sep 2024
- 07:25:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKz/8Nxj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8112BC4CEC4;
+	Thu, 12 Sep 2024 16:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726159391;
+	bh=n+QV9j1Ge5Ea/KwCCvA6nCHhIuLYtuF4jbktTu4YuQs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=sKz/8NxjKRsYURXuA4G5xnYe/IrWf6VyneykXNjnDDNA5QesG/zTbw1+RNFFoysba
+	 NWLSCoHPwL1dt2mopnv2WYL7bKBkxWwUtD/11rVfYkjbnSKXe+iU3LmawIMq+feFNb
+	 Q5OaKQ0Ky5xPbJD7OeGdtbQcCPZuGAH3xrBeqeAtjv27QfROCr54G2J3l4WE5/Iqjb
+	 xobz2Xrme0gTxY1YtF1MvvSENC5/dpvFYCT+b6IXBWAgrNVFWkbxBY+xjFo0ltXeSR
+	 8TvK5LokZmNvMdT5yCoxY8S+u0x0yV7wRT8RwP8igeq52q52VHvP6KHbjWxG48mFoO
+	 beEeQ50FzTIXQ==
+From: Mark Brown <broonie@kernel.org>
+To: Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Boris Brezillon <bbrezillon@kernel.org>, Han Xu <han.xu@nxp.com>
+Cc: stable@kernel.org, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240911211146.3337068-1-han.xu@nxp.com>
+References: <20240911211146.3337068-1-han.xu@nxp.com>
+Subject: Re: [PATCH] spi: nxp-fspi: fix the KASAN report out-of-bounds bug
+Message-Id: <172615938925.65102.8851660910253859623.b4-ty@kernel.org>
+Date: Thu, 12 Sep 2024 17:43:09 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240912124514.2329991-1-linyunsheng@huawei.com> <20240912124514.2329991-3-linyunsheng@huawei.com>
-In-Reply-To: <20240912124514.2329991-3-linyunsheng@huawei.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 12 Sep 2024 07:25:23 -0700
-Message-ID: <CAHS8izPc8fy08mL1RJtnxiOvTx=Uk037Q5SKobC80jQocEKMJQ@mail.gmail.com>
-Subject: Re: [RFC 2/2] page_pool: fix IOMMU crash when driver has already unbound
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	liuyonglong@huawei.com, fanghaiqing@huawei.com, 
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-99b12
 
-On Thu, Sep 12, 2024 at 5:51=E2=80=AFAM Yunsheng Lin <linyunsheng@huawei.co=
-m> wrote:
->
-> Networking driver with page_pool support may hand over page
-> still with dma mapping to network stack and try to reuse that
-> page after network stack is done with it and passes it back
-> to page_pool to avoid the penalty of dma mapping/unmapping.
-> With all the caching in the network stack, some pages may be
-> held in the network stack without returning to the page_pool
-> soon enough, and with VF disable causing the driver unbound,
-> the page_pool does not stop the driver from doing it's
-> unbounding work, instead page_pool uses workqueue to check
-> if there is some pages coming back from the network stack
-> periodically, if there is any, it will do the dma unmmapping
-> related cleanup work.
->
-> As mentioned in [1], attempting DMA unmaps after the driver
-> has already unbound may leak resources or at worst corrupt
-> memory. Fundamentally, the page pool code cannot allow DMA
-> mappings to outlive the driver they belong to.
->
-> Currently it seems there are at least two cases that the page
-> is not released fast enough causing dma unmmapping done after
-> driver has already unbound:
-> 1. ipv4 packet defragmentation timeout: this seems to cause
->    delay up to 30 secs:
->
-> 2. skb_defer_free_flush(): this may cause infinite delay if
->    there is no triggering for net_rx_action().
->
-> In order not to do the dma unmmapping after driver has already
-> unbound and stall the unloading of the networking driver, add
-> the pool->items array to record all the pages including the ones
-> which are handed over to network stack, so the page_pool can
-> do the dma unmmapping for those pages when page_pool_destroy()
-> is called.
->
+On Wed, 11 Sep 2024 16:11:45 -0500, Han Xu wrote:
+> Change the memcpy length to fix the out-of-bounds issue when writing the
+> data that is not 4 byte aligned to TX FIFO.
+> 
+> To reproduce the issue, write 3 bytes data to NOR chip.
+> 
+> dd if=3b of=/dev/mtd0
+> [   36.926103] ==================================================================
+> [   36.933409] BUG: KASAN: slab-out-of-bounds in nxp_fspi_exec_op+0x26ec/0x2838
+> [   36.940514] Read of size 4 at addr ffff00081037c2a0 by task dd/455
+> [   36.946721]
+> [   36.948235] CPU: 3 UID: 0 PID: 455 Comm: dd Not tainted 6.11.0-rc5-gc7b0e37c8434 #1070
+> [   36.956185] Hardware name: Freescale i.MX8QM MEK (DT)
+> [   36.961260] Call trace:
+> [   36.963723]  dump_backtrace+0x90/0xe8
+> [   36.967414]  show_stack+0x18/0x24
+> [   36.970749]  dump_stack_lvl+0x78/0x90
+> [   36.974451]  print_report+0x114/0x5cc
+> [   36.978151]  kasan_report+0xa4/0xf0
+> [   36.981670]  __asan_report_load_n_noabort+0x1c/0x28
+> [   36.986587]  nxp_fspi_exec_op+0x26ec/0x2838
+> [   36.990800]  spi_mem_exec_op+0x8ec/0xd30
+> [   36.994762]  spi_mem_no_dirmap_read+0x190/0x1e0
+> [   36.999323]  spi_mem_dirmap_write+0x238/0x32c
+> [   37.003710]  spi_nor_write_data+0x220/0x374
+> [   37.007932]  spi_nor_write+0x110/0x2e8
+> [   37.011711]  mtd_write_oob_std+0x154/0x1f0
+> [   37.015838]  mtd_write_oob+0x104/0x1d0
+> [   37.019617]  mtd_write+0xb8/0x12c
+> [   37.022953]  mtdchar_write+0x224/0x47c
+> [   37.026732]  vfs_write+0x1e4/0x8c8
+> [   37.030163]  ksys_write+0xec/0x1d0
+> [   37.033586]  __arm64_sys_write+0x6c/0x9c
+> [   37.037539]  invoke_syscall+0x6c/0x258
+> [   37.041327]  el0_svc_common.constprop.0+0x160/0x22c
+> [   37.046244]  do_el0_svc+0x44/0x5c
+> [   37.049589]  el0_svc+0x38/0x78
+> [   37.052681]  el0t_64_sync_handler+0x13c/0x158
+> [   37.057077]  el0t_64_sync+0x190/0x194
+> [   37.060775]
+> [   37.062274] Allocated by task 455:
+> [   37.065701]  kasan_save_stack+0x2c/0x54
+> [   37.069570]  kasan_save_track+0x20/0x3c
+> [   37.073438]  kasan_save_alloc_info+0x40/0x54
+> [   37.077736]  __kasan_kmalloc+0xa0/0xb8
+> [   37.081515]  __kmalloc_noprof+0x158/0x2f8
+> [   37.085563]  mtd_kmalloc_up_to+0x120/0x154
+> [   37.089690]  mtdchar_write+0x130/0x47c
+> [   37.093469]  vfs_write+0x1e4/0x8c8
+> [   37.096901]  ksys_write+0xec/0x1d0
+> [   37.100332]  __arm64_sys_write+0x6c/0x9c
+> [   37.104287]  invoke_syscall+0x6c/0x258
+> [   37.108064]  el0_svc_common.constprop.0+0x160/0x22c
+> [   37.112972]  do_el0_svc+0x44/0x5c
+> [   37.116319]  el0_svc+0x38/0x78
+> [   37.119401]  el0t_64_sync_handler+0x13c/0x158
+> [   37.123788]  el0t_64_sync+0x190/0x194
+> [   37.127474]
+> [   37.128977] The buggy address belongs to the object at ffff00081037c2a0
+> [   37.128977]  which belongs to the cache kmalloc-8 of size 8
+> [   37.141177] The buggy address is located 0 bytes inside of
+> [   37.141177]  allocated 3-byte region [ffff00081037c2a0, ffff00081037c2a3)
+> [   37.153465]
+> [   37.154971] The buggy address belongs to the physical page:
+> [   37.160559] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x89037c
+> [   37.168596] flags: 0xbfffe0000000000(node=0|zone=2|lastcpupid=0x1ffff)
+> [   37.175149] page_type: 0xfdffffff(slab)
+> [   37.179021] raw: 0bfffe0000000000 ffff000800002500 dead000000000122 0000000000000000
+> [   37.186788] raw: 0000000000000000 0000000080800080 00000001fdffffff 0000000000000000
+> [   37.194553] page dumped because: kasan: bad access detected
+> [   37.200144]
+> [   37.201647] Memory state around the buggy address:
+> [   37.206460]  ffff00081037c180: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
+> [   37.213701]  ffff00081037c200: fa fc fc fc 05 fc fc fc 03 fc fc fc 02 fc fc fc
+> [   37.220946] >ffff00081037c280: 06 fc fc fc 03 fc fc fc fc fc fc fc fc fc fc fc
+> [   37.228186]                                ^
+> [   37.232473]  ffff00081037c300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> [   37.239718]  ffff00081037c380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> [   37.246962] ==================================================================
+> [   37.254394] Disabling lock debugging due to kernel taint
+> 0+1 records in
+> 0+1 records out
+> 3 bytes copied, 0.335911 s, 0.0 kB/s
+> 
+> [...]
 
-The approach in this patch is a bit complicated. I wonder if there is
-something simpler that we can do. From reading the thread, it seems
-the issue is that in __page_pool_release_page_dma we're calling
-dma_unmap_page_attrs() on a pool->p.dev that has been deleted via
-device_del, right?
+Applied to
 
-Why not consider pool->p.dev unusable if pool->destroy_cnt > 0? I.e.
-in __page_pool_release_page_dma, we can skip dma_unmap_page_attrs() if
-destry_cnt > 0?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-More generally, probably any use of pool->p.dev may be invalid if
-page_pool_destroy has been called. The call sites can be scrubbed for
-latent bugs.
+Thanks!
 
-The hard part is handling the concurrency. I'm not so sure we can fix
-this without introducing some synchronization between the
-page_pool_destroy seeing the device go away and the code paths using
-the device. Are these being called from the fast paths? Jespers
-benchmark can tell for sure if there is any impact on the fast path.
+[1/1] spi: nxp-fspi: fix the KASAN report out-of-bounds bug
+      commit: 2a8787c1cdc7be24fdd8953ecd1a8743a1006235
 
-> Note, the devmem patchset seems to make the bug harder to fix
-> and to backport too, this patch does not consider fixing the
-> case for devmem yet.
->
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-FWIW from a quick look I did not see anything in this patch that is
-extremely hard to port to netmem. AFAICT the issue is that you skipped
-changing page_pool to page_pool_items in net_iov. Once that is done, I
-think the rest should be straightforward.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---=20
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
 Thanks,
-Mina
+Mark
+
